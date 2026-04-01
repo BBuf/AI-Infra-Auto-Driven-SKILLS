@@ -287,7 +287,79 @@ def normalize_source_location(name: str) -> str:
             path = path[len(prefix) :]
             break
     path = path.lstrip("/")
+    if path.startswith("sglang/"):
+        path = "python/" + path
     return f"{path}:{match.group('line')} {match.group('func')}"
+
+
+def source_location_priority(location: str) -> int:
+    text = str(location).strip()
+    if not text or text == "unresolved":
+        return -100
+    if text.startswith("python/sglang/"):
+        return 300
+    if text.startswith("sglang/"):
+        return 290
+    if text.startswith("sgl_kernel/"):
+        return 260
+    if text.startswith("python/"):
+        return 180
+    if text.startswith("torch/") or "/torch/" in text:
+        return 20
+    if ".py:" in text:
+        return 120
+    return 0
+
+
+def is_preferred_source_location(location: str) -> bool:
+    text = str(location).strip()
+    return (
+        text.startswith("python/sglang/")
+        or text.startswith("sglang/")
+        or text.startswith("sgl_kernel/")
+    )
+
+
+def extract_preferred_stack_location(stack: Optional[str]) -> Optional[str]:
+    if not stack:
+        return None
+    parts = [str(part).strip() for part in str(stack).split("->")]
+    ranked: List[Tuple[int, int, str]] = []
+    for index, part in enumerate(parts):
+        normalized = normalize_source_location(part)
+        priority = source_location_priority(normalized)
+        if priority <= 0:
+            continue
+        ranked.append((priority, index, normalized))
+    if not ranked:
+        return None
+    ranked.sort(key=lambda item: (item[0], item[1]), reverse=True)
+    return ranked[0][2]
+
+
+def site_display_location(site: dict) -> str:
+    location = str(site.get("location") or "unresolved").strip()
+    if is_preferred_source_location(location):
+        return location
+    stack_location = extract_preferred_stack_location(site.get("stack"))
+    if stack_location:
+        return stack_location
+    return location
+
+
+def choose_best_location(locations: Dict[str, MappingSiteAggregate]) -> str:
+    if not locations:
+        return "unresolved"
+    ranked = sorted(
+        locations.items(),
+        key=lambda pair: (
+            source_location_priority(pair[0]),
+            pair[1].total_us,
+            pair[1].count,
+        ),
+        reverse=True,
+    )
+    return ranked[0][0]
 
 
 def frame_priority(frame_name: str) -> int:
@@ -566,6 +638,10 @@ def build_stage_payload(
             sites.append(
                 {
                     "location": location,
+                    "display_location": extract_preferred_stack_location(
+                        aggregate_item.stacks.most_common(1)[0][0] if aggregate_item.stacks else None
+                    )
+                    or location,
                     "launches": aggregate_item.count,
                     "total_us": round(aggregate_item.total_us, 3),
                     "share_pct_within_kernel": round(pct(aggregate_item.total_us, total_us), 3),
@@ -575,10 +651,18 @@ def build_stage_payload(
                     "stack": aggregate_item.stacks.most_common(1)[0][0] if aggregate_item.stacks else None,
                 }
             )
+        sites.sort(
+            key=lambda site: (
+                source_location_priority(site_display_location(site)),
+                float(site.get("total_us", 0.0)),
+                int(site.get("launches", 0)),
+            ),
+            reverse=True,
+        )
         kernels_payload[kernel_name] = {
             "category": kernel_categories.get(kernel_name, "other"),
             "sites": sites,
-            "best_location": sites[0]["location"] if sites else "unresolved",
+            "best_location": site_display_location(sites[0]) if sites else choose_best_location(locations),
         }
     return {"kernels": kernels_payload}
 
@@ -626,12 +710,14 @@ def best_site_summary(kernel_entry: Optional[dict]) -> Tuple[str, str]:
     sites = kernel_entry.get("sites") or []
     if not sites:
         return kernel_entry.get("best_location", "unresolved"), "-"
+    preferred_sites = [site for site in sites if is_preferred_source_location(site_display_location(site))]
+    candidate_sites = preferred_sites or sites
     rendered_locations = []
     rendered_cpu_ops = []
-    for site in sites[:2]:
-        location = site.get("location") or "unresolved"
+    for site in candidate_sites[:2]:
+        location = site_display_location(site)
         share = site.get("share_pct_within_kernel")
-        if len(sites) > 1 and share is not None:
+        if len(candidate_sites) > 1 and share is not None:
             rendered_locations.append(f"{location} ({share:.0f}%)")
         else:
             rendered_locations.append(location)
@@ -710,7 +796,7 @@ def ordered_unique(values: Iterable[str], limit: int = 4) -> List[str]:
 
 
 def kernel_row_locations(row: KernelRow, limit: int = 4) -> List[str]:
-    values = [site.get("location") for site in entry_sites(row.entry)]
+    values = [site_display_location(site) for site in entry_sites(row.entry)]
     if not values and row.location and row.location != "unresolved":
         values = [fragment.strip() for fragment in row.location.split("<br>")]
     return ordered_unique(values, limit=limit)

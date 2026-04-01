@@ -122,6 +122,12 @@ CATEGORY_PRIORITY = {
 }
 
 METADATA_NAMES = {"process_name", "thread_name", "process_sort_index", "thread_sort_index"}
+REPO_PREFIXES = (
+    "/data/bbuf/repos/sglang/",
+    "/data/bbuf/sglang/",
+    "/data01/bbuf/repos/sglang/",
+    "/Users/bbuf/工作目录/Common/sglang/",
+)
 
 PYTHON_SCOPE_IGNORE_PREFIXES = (
     "threading.py(",
@@ -316,6 +322,17 @@ def canonicalize_name(name: str) -> str:
 def canonicalize_python_scope_name(name: str) -> str:
     name = re.sub(r"\s+", " ", str(name)).strip()
     name = re.sub(r"0x[0-9a-fA-F]+", "0xADDR", name)
+    match = re.match(r"(?P<path>.+?)\((?P<line>\d+)\): (?P<func>.+)$", name)
+    if match:
+        path = match.group("path")
+        for prefix in REPO_PREFIXES:
+            if path.startswith(prefix):
+                path = path[len(prefix) :]
+                break
+        path = path.lstrip("/")
+        if path.startswith("sglang/"):
+            path = "python/" + path
+        name = f"{path}({match.group('line')}): {match.group('func')}"
     return name
 
 
@@ -379,6 +396,8 @@ def is_meaningful_python_scope(name: str) -> bool:
     if any(normalized.startswith(prefix) for prefix in PYTHON_SCOPE_IGNORE_PREFIXES):
         return False
     if normalized.startswith("python/sglang/"):
+        return True
+    if normalized.startswith("sglang/"):
         return True
     if normalized.startswith("sgl_kernel/"):
         return True
@@ -671,6 +690,8 @@ def choose_best_scope(scope_chain: Sequence[str]) -> Optional[str]:
         score = float(index)
         if scope.startswith("python/sglang/"):
             score += 50.0
+        elif scope.startswith("sglang/"):
+            score += 48.0
         elif scope.startswith("sgl_kernel/"):
             score += 30.0
         elif ".py(" in scope:
