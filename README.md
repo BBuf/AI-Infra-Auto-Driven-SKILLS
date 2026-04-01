@@ -1,4 +1,4 @@
-# bbuf-skills
+# SGLang-Auto-Driven-SKILLS
 
 Agent skills for SGLang development and profiling.
 
