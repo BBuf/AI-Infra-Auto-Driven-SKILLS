@@ -24,39 +24,41 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
-from profile_common import (
-    load_server_args,
-    load_trace_json,
-    run_profiler as shared_run_profiler,
-    select_heaviest_pid,
-)
+from profile_common import load_server_args, load_trace_json
+from profile_common import run_profiler as shared_run_profiler
+from profile_common import select_heaviest_pid
 
-
-COMMUNICATION_KEYWORDS = (
+COMMUNICATION_STRONG_KEYWORDS = (
     "allreduce",
     "all_reduce",
     "reduce_scatter",
     "allgather",
     "all_gather",
-    "broadcast",
     "nccl",
     "cross_device_reduce",
     "deepep",
-    "dispatch",
-    "combine",
     "a2a",
     "alltoall",
     "allreduce_fusion",
     "mooncake",
 )
 
-MEMORY_KEYWORDS = (
+COMMUNICATION_WEAK_KEYWORDS = (
+    "broadcast",
+    "dispatch",
+    "combine",
+)
+
+MEMORY_STRONG_KEYWORDS = (
     "memcpy",
     "memset",
-    "fill",
-    "copy",
     "dma",
     "prefetch",
+)
+
+MEMORY_WEAK_KEYWORDS = (
+    "fill",
+    "copy",
 )
 
 ELEMENTWISE_KEYWORDS = (
@@ -73,7 +75,7 @@ ELEMENTWISE_KEYWORDS = (
     "topk",
     "gate",
     "bias",
-    "cast",
+    "_cast",
     "index",
     "gather",
     "scatter",
@@ -121,7 +123,12 @@ CATEGORY_PRIORITY = {
     "other": 0,
 }
 
-METADATA_NAMES = {"process_name", "thread_name", "process_sort_index", "thread_sort_index"}
+METADATA_NAMES = {
+    "process_name",
+    "thread_name",
+    "process_sort_index",
+    "thread_sort_index",
+}
 REPO_PREFIXES = (
     "/data/bbuf/repos/sglang/",
     "/data/bbuf/sglang/",
@@ -243,7 +250,11 @@ class KernelSourceStats:
 
     @property
     def best_launch_op(self) -> Optional[str]:
-        return self.launch_op_counter.most_common(1)[0][0] if self.launch_op_counter else None
+        return (
+            self.launch_op_counter.most_common(1)[0][0]
+            if self.launch_op_counter
+            else None
+        )
 
 
 @dataclass
@@ -342,16 +353,27 @@ def canonicalize_cpu_op_name(name: str) -> str:
 
 def classify_kernel(name: str) -> str:
     lowered = name.lower()
-    if any(keyword in lowered for keyword in MEMORY_KEYWORDS):
+    looks_compute_like = any(keyword in lowered for keyword in COMPUTE_KEYWORDS)
+    if any(keyword in lowered for keyword in MEMORY_STRONG_KEYWORDS):
         return "memory"
-    if any(keyword in lowered for keyword in COMMUNICATION_KEYWORDS):
+    if any(keyword in lowered for keyword in COMMUNICATION_STRONG_KEYWORDS):
         return "communication"
-    if any(keyword in lowered for keyword in ELEMENTWISE_KEYWORDS):
-        return "elementwise"
     if any(keyword in lowered for keyword in COMPUTE_KEYWORDS):
         return "compute"
+    if any(keyword in lowered for keyword in ELEMENTWISE_KEYWORDS):
+        return "elementwise"
+    if (
+        any(keyword in lowered for keyword in MEMORY_WEAK_KEYWORDS)
+        and not looks_compute_like
+    ):
+        return "memory"
+    if (
+        any(keyword in lowered for keyword in COMMUNICATION_WEAK_KEYWORDS)
+        and not looks_compute_like
+    ):
+        return "communication"
     if lowered.startswith("void "):
-        return "compute"
+        return "other"
     return "other"
 
 
@@ -372,14 +394,27 @@ def is_kernel_event(event: dict) -> bool:
     if "kernel" in cat or cat.startswith("gpu_"):
         return True
     lowered = name.lower()
-    if ".py(" in lowered or lowered.startswith("python/") or lowered.startswith("nn.module:"):
+    if (
+        ".py(" in lowered
+        or lowered.startswith("python/")
+        or lowered.startswith("nn.module:")
+    ):
         return False
     if ("stream" in args or "cuda_stream" in args) and (
         lowered.startswith("void ")
         or lowered.startswith("ampere_")
         or lowered.startswith("sm80_")
         or lowered.startswith("sm90_")
-        or any(keyword in lowered for keyword in COMMUNICATION_KEYWORDS + MEMORY_KEYWORDS + COMPUTE_KEYWORDS)
+        or any(
+            keyword in lowered
+            for keyword in (
+                COMMUNICATION_STRONG_KEYWORDS
+                + COMMUNICATION_WEAK_KEYWORDS
+                + MEMORY_STRONG_KEYWORDS
+                + MEMORY_WEAK_KEYWORDS
+                + COMPUTE_KEYWORDS
+            )
+        )
     ):
         return True
     return False
@@ -406,7 +441,11 @@ def is_meaningful_python_scope(name: str) -> bool:
 
 def is_fallback_python_scope(name: str) -> bool:
     normalized = canonicalize_python_scope_name(name)
-    if not normalized or normalized.startswith("<built-in method") or normalized.startswith("nn.Module:"):
+    if (
+        not normalized
+        or normalized.startswith("<built-in method")
+        or normalized.startswith("nn.Module:")
+    ):
         return False
     if normalized.startswith("threading.py("):
         return False
@@ -437,7 +476,9 @@ def build_correlation_external_lookup(raw_events: Sequence[dict]) -> Dict[int, i
     return lookup
 
 
-def extract_kernel_events(trace: dict, pid_substring: Optional[str]) -> Tuple[List[KernelEvent], Optional[str]]:
+def extract_kernel_events(
+    trace: dict, pid_substring: Optional[str]
+) -> Tuple[List[KernelEvent], Optional[str]]:
     raw_events = trace.get("traceEvents", trace if isinstance(trace, list) else [])
     thread_names = extract_thread_names(raw_events)
     correlation_external = build_correlation_external_lookup(raw_events)
@@ -460,7 +501,12 @@ def extract_kernel_events(trace: dict, pid_substring: Optional[str]) -> Tuple[Li
             continue
         tid = str(event.get("tid"))
         args = event.get("args", {}) or {}
-        stream = args.get("stream") or args.get("cuda_stream") or thread_names.get((pid, tid)) or f"tid={tid}"
+        stream = (
+            args.get("stream")
+            or args.get("cuda_stream")
+            or thread_names.get((pid, tid))
+            or f"tid={tid}"
+        )
         correlation = coerce_int(args.get("correlation"))
         external_id = coerce_int(args.get("External id"))
         if external_id is None and correlation is not None:
@@ -488,8 +534,14 @@ def extract_kernel_events(trace: dict, pid_substring: Optional[str]) -> Tuple[Li
     return kernel_events, chosen_pid
 
 
-def dominant_overlap_name(event: KernelEvent, active_events: Iterable[KernelEvent]) -> Optional[str]:
-    candidates = [other for other in active_events if other.idx != event.idx and other.stream != event.stream]
+def dominant_overlap_name(
+    event: KernelEvent, active_events: Iterable[KernelEvent]
+) -> Optional[str]:
+    candidates = [
+        other
+        for other in active_events
+        if other.idx != event.idx and other.stream != event.stream
+    ]
     if not candidates:
         return None
     candidates.sort(
@@ -551,12 +603,16 @@ def analyze_overlap(events: Sequence[KernelEvent]) -> Dict[str, float]:
     }
 
 
-def aggregate_events(events: Sequence[KernelEvent]) -> Dict[Tuple[str, str], AggregateStats]:
+def aggregate_events(
+    events: Sequence[KernelEvent],
+) -> Dict[Tuple[str, str], AggregateStats]:
     aggregates: Dict[Tuple[str, str], AggregateStats] = {}
     for event in events:
         key = (event.canonical_name, event.category)
         if key not in aggregates:
-            aggregates[key] = AggregateStats(name=event.canonical_name, category=event.category)
+            aggregates[key] = AggregateStats(
+                name=event.canonical_name, category=event.category
+            )
         stats = aggregates[key]
         stats.count += 1
         stats.total_us += event.dur
@@ -571,7 +627,9 @@ def aggregate_events(events: Sequence[KernelEvent]) -> Dict[Tuple[str, str], Agg
     return aggregates
 
 
-def top_hidden_low_roi(aggregates: Dict[Tuple[str, str], AggregateStats]) -> List[AggregateStats]:
+def top_hidden_low_roi(
+    aggregates: Dict[Tuple[str, str], AggregateStats],
+) -> List[AggregateStats]:
     candidates = [
         stats
         for stats in aggregates.values()
@@ -581,7 +639,8 @@ def top_hidden_low_roi(aggregates: Dict[Tuple[str, str], AggregateStats]) -> Lis
     ]
     candidates.sort(
         key=lambda stats: (
-            stats.hidden_us * (1.0 + stats.hidden_by_compute_us / max(stats.hidden_us, 1.0)),
+            stats.hidden_us
+            * (1.0 + stats.hidden_by_compute_us / max(stats.hidden_us, 1.0)),
             stats.hidden_ratio,
         ),
         reverse=True,
@@ -589,7 +648,9 @@ def top_hidden_low_roi(aggregates: Dict[Tuple[str, str], AggregateStats]) -> Lis
     return candidates[:5]
 
 
-def top_overlap_opportunities(aggregates: Dict[Tuple[str, str], AggregateStats]) -> List[AggregateStats]:
+def top_overlap_opportunities(
+    aggregates: Dict[Tuple[str, str], AggregateStats],
+) -> List[AggregateStats]:
     category_weight = {
         "communication": 1.3,
         "memory": 1.15,
@@ -597,7 +658,11 @@ def top_overlap_opportunities(aggregates: Dict[Tuple[str, str], AggregateStats])
         "compute": 0.35,
         "other": 0.8,
     }
-    candidates = [stats for stats in aggregates.values() if stats.total_us >= 5.0 and stats.exclusive_ratio >= 0.45]
+    candidates = [
+        stats
+        for stats in aggregates.values()
+        if stats.total_us >= 5.0 and stats.exclusive_ratio >= 0.45
+    ]
     primary = [stats for stats in candidates if stats.category != "compute"]
     fallback = [stats for stats in candidates if stats.category == "compute"]
     primary.sort(
@@ -620,7 +685,9 @@ def choose_window_events(
     span = window_us if window_us is not None else max(40.0, center.dur * 6.0)
     start = max(0.0, center.ts - span * 0.35)
     end = center.end + span * 0.65
-    window_events = [event for event in events if event.end >= start and event.ts <= end]
+    window_events = [
+        event for event in events if event.end >= start and event.ts <= end
+    ]
     return start, end, window_events
 
 
@@ -630,14 +697,20 @@ def render_ascii_timeline(
     window_us: Optional[float],
     width: int,
 ) -> str:
-    start, end, window_events = choose_window_events(events, representative_idx, window_us)
+    start, end, window_events = choose_window_events(
+        events, representative_idx, window_us
+    )
     if not window_events:
         return "No events found in the selected window."
 
-    streams = sorted({event.stream for event in window_events}, key=lambda item: (len(item), item))
+    streams = sorted(
+        {event.stream for event in window_events}, key=lambda item: (len(item), item)
+    )
     symbol_map: Dict[int, str] = {}
     legend_events = sorted(window_events, key=lambda event: event.dur, reverse=True)[:8]
-    symbol_alphabet = list("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789")
+    symbol_alphabet = list(
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+    )
     for index, event in enumerate(legend_events):
         symbol_map[event.idx] = symbol_alphabet[index]
 
@@ -670,7 +743,9 @@ def render_ascii_timeline(
         for event in row_events:
             char = symbol_map.get(event.idx, CATEGORY_CHARS[event.category])
             left = int((event.ts - start) / max(end - start, 1.0) * (width - 1))
-            right = int(math.ceil((event.end - start) / max(end - start, 1.0) * (width - 1)))
+            right = int(
+                math.ceil((event.end - start) / max(end - start, 1.0) * (width - 1))
+            )
             right = max(left + 1, min(right, width - 1))
             for pos in range(max(0, left), min(width, right + 1)):
                 row[pos] = char
@@ -680,7 +755,9 @@ def render_ascii_timeline(
         lines.append("legend:")
         for event in legend_events:
             symbol = symbol_map[event.idx]
-            lines.append(f"  {symbol} [{event.category[:4]}] {short_name(event.canonical_name, 72)} ({event.dur:.1f} us)")
+            lines.append(
+                f"  {symbol} [{event.category[:4]}] {short_name(event.canonical_name, 72)} ({event.dur:.1f} us)"
+            )
     return "\n".join(lines)
 
 
@@ -711,7 +788,9 @@ def scope_chain_key(scope_chain: Sequence[str]) -> Optional[str]:
     return " -> ".join(trimmed)
 
 
-def extract_cpu_launch_contexts(raw_events: Sequence[dict]) -> Dict[int, List[CPUOpContext]]:
+def extract_cpu_launch_contexts(
+    raw_events: Sequence[dict],
+) -> Dict[int, List[CPUOpContext]]:
     scopes_by_thread: Dict[Tuple[str, str], List[PythonScope]] = defaultdict(list)
     cpu_ops_by_thread: Dict[Tuple[str, str], List[CPUOpContext]] = defaultdict(list)
 
@@ -774,8 +853,16 @@ def extract_cpu_launch_contexts(raw_events: Sequence[dict]) -> Dict[int, List[CP
                 active_scopes.append(payload)
             elif kind == 1:
                 normalized_chain = [scope.normalized_name for scope in active_scopes]
-                meaningful = [scope for scope in normalized_chain if is_meaningful_python_scope(scope)]
-                fallback = [scope for scope in normalized_chain if is_fallback_python_scope(scope)]
+                meaningful = [
+                    scope
+                    for scope in normalized_chain
+                    if is_meaningful_python_scope(scope)
+                ]
+                fallback = [
+                    scope
+                    for scope in normalized_chain
+                    if is_fallback_python_scope(scope)
+                ]
                 chosen_chain = tuple((meaningful or fallback)[-6:])
                 contexts_by_external_id[payload.external_id].append(
                     CPUOpContext(
@@ -795,7 +882,9 @@ def extract_cpu_launch_contexts(raw_events: Sequence[dict]) -> Dict[int, List[CP
     return contexts_by_external_id
 
 
-def choose_cpu_context(contexts: Sequence[CPUOpContext], kernel_ts: float) -> Optional[CPUOpContext]:
+def choose_cpu_context(
+    contexts: Sequence[CPUOpContext], kernel_ts: float
+) -> Optional[CPUOpContext]:
     if not contexts:
         return None
     return min(contexts, key=lambda context: (abs(context.ts - kernel_ts), context.dur))
@@ -827,7 +916,9 @@ def extract_meaningful_python_scopes(raw_events: Sequence[dict]) -> List[PythonS
     return scopes
 
 
-def choose_temporal_scope_chain(scopes: Sequence[PythonScope], kernel_ts: float) -> Tuple[str, ...]:
+def choose_temporal_scope_chain(
+    scopes: Sequence[PythonScope], kernel_ts: float
+) -> Tuple[str, ...]:
     matches = [scope for scope in scopes if scope.ts <= kernel_ts <= scope.end]
     if not matches:
         return ()
@@ -842,16 +933,22 @@ def choose_temporal_scope_chain(scopes: Sequence[PythonScope], kernel_ts: float)
     return tuple(chain[-6:])
 
 
-def build_kernel_source_map(mapping_bundle: TraceBundle) -> Dict[str, KernelSourceStats]:
+def build_kernel_source_map(
+    mapping_bundle: TraceBundle,
+) -> Dict[str, KernelSourceStats]:
     contexts_by_external_id = extract_cpu_launch_contexts(mapping_bundle.raw_events)
     temporal_scopes = extract_meaningful_python_scopes(mapping_bundle.raw_events)
     source_map: Dict[str, KernelSourceStats] = {}
     for event in mapping_bundle.events:
-        stats = source_map.setdefault(event.canonical_name, KernelSourceStats(name=event.canonical_name))
+        stats = source_map.setdefault(
+            event.canonical_name, KernelSourceStats(name=event.canonical_name)
+        )
         stats.total_count += 1
         cpu_context = None
         if event.external_id is not None:
-            cpu_context = choose_cpu_context(contexts_by_external_id.get(event.external_id, []), event.ts)
+            cpu_context = choose_cpu_context(
+                contexts_by_external_id.get(event.external_id, []), event.ts
+            )
 
         launch_op = None
         scope_chain: Tuple[str, ...] = ()
@@ -899,7 +996,9 @@ def build_hidden_suggestion(stats: AggregateStats) -> str:
     overlap = format_overlap_counter(stats.overlap_with, limit=1)
     if overlap != "n/a":
         return f"Mostly hidden under {overlap}. Standalone tuning is probably low ROI."
-    return "Mostly hidden already. Optimize it only if you also change fusion or schedule."
+    return (
+        "Mostly hidden already. Optimize it only if you also change fusion or schedule."
+    )
 
 
 def build_other_suggestion(stats: AggregateStats) -> str:
@@ -929,17 +1028,26 @@ def same_scope_family(left: str, right: str) -> bool:
     return bool(left_func and right_func and left_func == right_func)
 
 
-def is_neighbor_dependency_like(current: KernelEvent, neighbor: Optional[KernelEvent]) -> bool:
+def is_neighbor_dependency_like(
+    current: KernelEvent, neighbor: Optional[KernelEvent]
+) -> bool:
     if neighbor is None:
         return False
     if current.category == "communication":
         return neighbor.category in {"compute", "elementwise", "memory", "other"}
     if current.category in {"elementwise", "memory"}:
-        return neighbor.category in {"compute", "communication", "elementwise", "memory"}
+        return neighbor.category in {
+            "compute",
+            "communication",
+            "elementwise",
+            "memory",
+        }
     return False
 
 
-def build_stream_neighbor_index(events: Sequence[KernelEvent]) -> Dict[int, Tuple[Optional[KernelEvent], Optional[KernelEvent]]]:
+def build_stream_neighbor_index(
+    events: Sequence[KernelEvent],
+) -> Dict[int, Tuple[Optional[KernelEvent], Optional[KernelEvent]]]:
     by_stream: Dict[str, List[KernelEvent]] = defaultdict(list)
     for event in events:
         by_stream[event.stream].append(event)
@@ -949,7 +1057,9 @@ def build_stream_neighbor_index(events: Sequence[KernelEvent]) -> Dict[int, Tupl
         stream_events.sort(key=lambda event: (event.ts, event.end, event.idx))
         for pos, event in enumerate(stream_events):
             prev_event = stream_events[pos - 1] if pos > 0 else None
-            next_event = stream_events[pos + 1] if pos + 1 < len(stream_events) else None
+            next_event = (
+                stream_events[pos + 1] if pos + 1 < len(stream_events) else None
+            )
             index[event.idx] = (prev_event, next_event)
     return index
 
@@ -983,16 +1093,34 @@ def classify_dependency_signal(
     source_map: Dict[str, KernelSourceStats],
 ) -> Tuple[str, str, str]:
     current_scope = source.best_scope if source and source.best_scope else "unmapped"
-    current_launch = source.best_launch_op if source and source.best_launch_op else "n/a"
+    current_launch = (
+        source.best_launch_op if source and source.best_launch_op else "n/a"
+    )
 
     prev_gap = current.ts - prev_event.end if prev_event is not None else None
     next_gap = next_event.ts - current.end if next_event is not None else None
-    prev_source = source_map.get(prev_event.canonical_name) if prev_event is not None else None
-    next_source = source_map.get(next_event.canonical_name) if next_event is not None else None
-    prev_scope = prev_source.best_scope if prev_source and prev_source.best_scope else "unmapped"
-    next_scope = next_source.best_scope if next_source and next_source.best_scope else "unmapped"
-    prev_launch = prev_source.best_launch_op if prev_source and prev_source.best_launch_op else "n/a"
-    next_launch = next_source.best_launch_op if next_source and next_source.best_launch_op else "n/a"
+    prev_source = (
+        source_map.get(prev_event.canonical_name) if prev_event is not None else None
+    )
+    next_source = (
+        source_map.get(next_event.canonical_name) if next_event is not None else None
+    )
+    prev_scope = (
+        prev_source.best_scope if prev_source and prev_source.best_scope else "unmapped"
+    )
+    next_scope = (
+        next_source.best_scope if next_source and next_source.best_scope else "unmapped"
+    )
+    prev_launch = (
+        prev_source.best_launch_op
+        if prev_source and prev_source.best_launch_op
+        else "n/a"
+    )
+    next_launch = (
+        next_source.best_launch_op
+        if next_source and next_source.best_launch_op
+        else "n/a"
+    )
 
     if prev_gap is not None:
         prev_gap = max(prev_gap, 0.0)
@@ -1014,11 +1142,15 @@ def classify_dependency_signal(
         or is_neighbor_dependency_like(current, next_event)
     )
 
-    prev_unclear = prev_tight and not prev_risk and (
-        current_scope == "unmapped" or prev_scope == "unmapped"
+    prev_unclear = (
+        prev_tight
+        and not prev_risk
+        and (current_scope == "unmapped" or prev_scope == "unmapped")
     )
-    next_unclear = next_tight and not next_risk and (
-        current_scope == "unmapped" or next_scope == "unmapped"
+    next_unclear = (
+        next_tight
+        and not next_risk
+        and (current_scope == "unmapped" or next_scope == "unmapped")
     )
 
     if prev_risk and next_risk:
@@ -1096,15 +1228,21 @@ def make_action_row(
     next_neighbor = "none"
     share_pct = (stats.total_us / total_busy_us * 100.0) if total_busy_us > 0 else 0.0
     if representative_idx is not None:
-        current_event = next((event for event in formal_events if event.idx == representative_idx), None)
+        current_event = next(
+            (event for event in formal_events if event.idx == representative_idx), None
+        )
         if current_event is not None:
-            prev_event, next_event = neighbor_index.get(representative_idx, (None, None))
-            dependency_signal, prev_neighbor, next_neighbor = classify_dependency_signal(
-                current=current_event,
-                source=source,
-                prev_event=prev_event,
-                next_event=next_event,
-                source_map=source_map,
+            prev_event, next_event = neighbor_index.get(
+                representative_idx, (None, None)
+            )
+            dependency_signal, prev_neighbor, next_neighbor = (
+                classify_dependency_signal(
+                    current=current_event,
+                    source=source,
+                    prev_event=prev_event,
+                    next_event=next_event,
+                    source_map=source_map,
+                )
             )
     priority, recommendation = build_priority_and_recommendation(
         verdict=verdict,
@@ -1188,7 +1326,9 @@ def render_action_table(rows: Sequence[ActionRow]) -> List[str]:
         "| --- | --- | --- | --- | --- | --- | --- |",
     ]
     if not rows:
-        lines.append("| - | No actionable overlap rows stood out from the formal trace. | - | - | - | - | - |")
+        lines.append(
+            "| - | No actionable overlap rows stood out from the formal trace. | - | - | - | - | - |"
+        )
         return lines
     for row in rows:
         formal_signal = (
@@ -1305,17 +1445,24 @@ def build_report(
                 lines.append(f"     time share: {row.share_pct:.1f}%")
                 lines.append(f"     python scope: {row.python_scope}")
                 lines.append(f"     launch op: {row.launch_op}")
-                lines.append(f"     dependency signal: {dependency_risk_label(row.dependency_signal)}")
+                lines.append(
+                    f"     dependency signal: {dependency_risk_label(row.dependency_signal)}"
+                )
                 lines.append(f"     prev neighbor: {row.prev_neighbor}")
                 lines.append(f"     next neighbor: {row.next_neighbor}")
                 lines.append(f"     recommendation: {row.recommendation}")
                 if stats and stats.best_chain:
-                    lines.append(f"     call chain: {short_name(stats.best_chain, 132)}")
+                    lines.append(
+                        f"     call chain: {short_name(stats.best_chain, 132)}"
+                    )
                 lines.append(f"     conclusion: {row.suggestion}")
 
         timeline_targets: List[int] = []
         for row in rows:
-            if row.representative_idx is not None and row.representative_idx not in timeline_targets:
+            if (
+                row.representative_idx is not None
+                and row.representative_idx not in timeline_targets
+            ):
                 timeline_targets.append(row.representative_idx)
         timeline_targets = timeline_targets[:timeline_count]
 
@@ -1323,20 +1470,38 @@ def build_report(
             lines.append("")
             lines.append("ASCII Timelines")
             for index, representative_idx in enumerate(timeline_targets, start=1):
-                event = next(event for event in formal_bundle.events if event.idx == representative_idx)
-                mapped_scope = detail_lookup.get(event.canonical_name).python_scope if event.canonical_name in detail_lookup else "unmapped"
+                event = next(
+                    event
+                    for event in formal_bundle.events
+                    if event.idx == representative_idx
+                )
+                mapped_scope = (
+                    detail_lookup.get(event.canonical_name).python_scope
+                    if event.canonical_name in detail_lookup
+                    else "unmapped"
+                )
                 lines.append(
                     f"  Window {index}: {short_name(event.canonical_name, 90)} "
                     f"[{event.category}] ts={event.ts:.1f} us dur={event.dur:.1f} us"
                 )
                 lines.append(f"  mapped scope: {short_name(mapped_scope, 120)}")
-                lines.append(render_ascii_timeline(formal_bundle.events, representative_idx, window_us, width))
+                lines.append(
+                    render_ascii_timeline(
+                        formal_bundle.events, representative_idx, window_us, width
+                    )
+                )
                 lines.append("")
 
         lines.append("Notes")
-        lines.append("  - The mapping trace should be graph-off so kernel-to-code attribution stays readable.")
-        lines.append("  - The formal trace should keep the real serving optimizations enabled; overlap conclusions come from this trace.")
-        lines.append("  - A mapped Python scope is a launch-site clue, not proof that the code is dependency-free to reorder.")
+        lines.append(
+            "  - The mapping trace should be graph-off so kernel-to-code attribution stays readable."
+        )
+        lines.append(
+            "  - The formal trace should keep the real serving optimizations enabled; overlap conclusions come from this trace."
+        )
+        lines.append(
+            "  - A mapped Python scope is a launch-site clue, not proof that the code is dependency-free to reorder."
+        )
     return "\n".join(lines).rstrip()
 
 
@@ -1344,24 +1509,37 @@ def discover_trace_file(path: Path) -> Tuple[Path, Optional[dict]]:
     if path.is_file():
         return path, load_server_args(path)
 
-    traces = sorted(path.glob("*.trace.json.gz"), key=lambda candidate: candidate.stat().st_mtime)
+    traces = sorted(
+        path.glob("*.trace.json.gz"), key=lambda candidate: candidate.stat().st_mtime
+    )
     traces.extend(
         sorted(
-            [candidate for candidate in path.glob("*.trace.json") if candidate.name not in {trace.name[:-3] for trace in traces}],
+            [
+                candidate
+                for candidate in path.glob("*.trace.json")
+                if candidate.name not in {trace.name[:-3] for trace in traces}
+            ],
             key=lambda candidate: candidate.stat().st_mtime,
         )
     )
     if not traces:
-        child_dirs = sorted([candidate for candidate in path.iterdir() if candidate.is_dir()], key=lambda candidate: candidate.stat().st_mtime)
+        child_dirs = sorted(
+            [candidate for candidate in path.iterdir() if candidate.is_dir()],
+            key=lambda candidate: candidate.stat().st_mtime,
+        )
         for child_dir in reversed(child_dirs):
-            child_traces = list(child_dir.glob("*.trace.json.gz")) + list(child_dir.glob("*.trace.json"))
+            child_traces = list(child_dir.glob("*.trace.json.gz")) + list(
+                child_dir.glob("*.trace.json")
+            )
             if child_traces:
                 return discover_trace_file(child_dir)
     if not traces:
         raise FileNotFoundError(f"No trace files found under {path}")
 
     non_merged = [trace for trace in traces if not trace.name.startswith("merged-")]
-    tp0 = [trace for trace in non_merged if "-TP-0" in trace.name or "TP-0" in trace.name]
+    tp0 = [
+        trace for trace in non_merged if "-TP-0" in trace.name or "TP-0" in trace.name
+    ]
     chosen = tp0[-1] if tp0 else (non_merged[-1] if non_merged else traces[-1])
     return chosen, load_server_args(path)
 
@@ -1411,24 +1589,82 @@ def resolve_trace_source(
 
 
 def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Analyze SGLang profiler overlap with mapping-trace correlation.")
-    parser.add_argument("--mapping-input", type=str, default=None, help="Graph-off mapping trace file or directory.")
-    parser.add_argument("--mapping-url", type=str, default=None, help="Running graph-off SGLang server URL for the mapping trace.")
-    parser.add_argument("--formal-input", type=str, default=None, help="Formal graph-on trace file or directory.")
-    parser.add_argument("--formal-url", type=str, default=None, help="Running graph-on SGLang server URL for the formal trace.")
+    parser = argparse.ArgumentParser(
+        description="Analyze SGLang profiler overlap with mapping-trace correlation."
+    )
+    parser.add_argument(
+        "--mapping-input",
+        type=str,
+        default=None,
+        help="Graph-off mapping trace file or directory.",
+    )
+    parser.add_argument(
+        "--mapping-url",
+        type=str,
+        default=None,
+        help="Running graph-off SGLang server URL for the mapping trace.",
+    )
+    parser.add_argument(
+        "--formal-input",
+        type=str,
+        default=None,
+        help="Formal graph-on trace file or directory.",
+    )
+    parser.add_argument(
+        "--formal-url",
+        type=str,
+        default=None,
+        help="Running graph-on SGLang server URL for the formal trace.",
+    )
 
     parser.add_argument("--input", type=str, default=None, help=argparse.SUPPRESS)
     parser.add_argument("--url", type=str, default=None, help=argparse.SUPPRESS)
 
-    parser.add_argument("--mapping-output-dir", type=str, default=None, help="Trace output dir when using --mapping-url.")
-    parser.add_argument("--formal-output-dir", type=str, default=None, help="Trace output dir when using --formal-url.")
-    parser.add_argument("--mapping-profile-prefix", type=str, default="mapping-trace", help="Profile prefix for the mapping trace.")
-    parser.add_argument("--formal-profile-prefix", type=str, default="formal-trace", help="Profile prefix for the formal trace.")
+    parser.add_argument(
+        "--mapping-output-dir",
+        type=str,
+        default=None,
+        help="Trace output dir when using --mapping-url.",
+    )
+    parser.add_argument(
+        "--formal-output-dir",
+        type=str,
+        default=None,
+        help="Trace output dir when using --formal-url.",
+    )
+    parser.add_argument(
+        "--mapping-profile-prefix",
+        type=str,
+        default="mapping-trace",
+        help="Profile prefix for the mapping trace.",
+    )
+    parser.add_argument(
+        "--formal-profile-prefix",
+        type=str,
+        default="formal-trace",
+        help="Profile prefix for the formal trace.",
+    )
 
-    parser.add_argument("--start-step", type=int, default=None, help="Pass through to sglang.profiler when generating traces from URLs.")
-    parser.add_argument("--num-steps", type=int, default=5, help="Number of steps to profile when generating traces from URLs.")
-    parser.add_argument("--profile-by-stage", action="store_true", help="Pass through to sglang.profiler.")
-    parser.add_argument("--merge-profiles", action="store_true", help="Pass through to sglang.profiler.")
+    parser.add_argument(
+        "--start-step",
+        type=int,
+        default=None,
+        help="Pass through to sglang.profiler when generating traces from URLs.",
+    )
+    parser.add_argument(
+        "--num-steps",
+        type=int,
+        default=5,
+        help="Number of steps to profile when generating traces from URLs.",
+    )
+    parser.add_argument(
+        "--profile-by-stage",
+        action="store_true",
+        help="Pass through to sglang.profiler.",
+    )
+    parser.add_argument(
+        "--merge-profiles", action="store_true", help="Pass through to sglang.profiler."
+    )
     parser.add_argument(
         "--probe-requests",
         type=int,
@@ -1456,16 +1692,33 @@ def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
         default=0.5,
         help="Seconds to wait after starting the profiler before sending the synthetic probe request.",
     )
-    parser.add_argument("--pid-substring", type=str, default=None, help="Restrict analysis to PIDs containing this substring.")
+    parser.add_argument(
+        "--pid-substring",
+        type=str,
+        default=None,
+        help="Restrict analysis to PIDs containing this substring.",
+    )
     parser.add_argument(
         "--table-limit",
         type=int,
         default=0,
         help="Maximum number of rows in the action table. Use 0 to print all kernels.",
     )
-    parser.add_argument("--timeline-count", type=int, default=3, help="Number of ASCII windows to render from the formal trace.")
-    parser.add_argument("--timeline-width", type=int, default=96, help="ASCII timeline width.")
-    parser.add_argument("--window-us", type=float, default=None, help="Fixed timeline window size in microseconds.")
+    parser.add_argument(
+        "--timeline-count",
+        type=int,
+        default=3,
+        help="Number of ASCII windows to render from the formal trace.",
+    )
+    parser.add_argument(
+        "--timeline-width", type=int, default=96, help="ASCII timeline width."
+    )
+    parser.add_argument(
+        "--window-us",
+        type=float,
+        default=None,
+        help="Fixed timeline window size in microseconds.",
+    )
     parser.add_argument(
         "--table-only",
         action="store_true",

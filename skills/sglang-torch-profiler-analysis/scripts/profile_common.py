@@ -15,7 +15,6 @@ from pathlib import Path
 from typing import Callable, Dict, Iterable, List, Optional, Sequence, Tuple
 from urllib import request
 
-
 STAGE_ORDER = {"extend": 0, "prefill": 0, "decode": 1, "all": 2}
 
 
@@ -71,7 +70,8 @@ def newest_trace_dir(path: Path) -> Path:
     trace_dirs = [
         candidate
         for candidate in child_candidates
-        if list(candidate.glob("*.trace.json")) or list(candidate.glob("*.trace.json.gz"))
+        if list(candidate.glob("*.trace.json"))
+        or list(candidate.glob("*.trace.json.gz"))
     ]
     if not trace_dirs:
         raise FileNotFoundError(f"No trace files found under {path}")
@@ -79,7 +79,9 @@ def newest_trace_dir(path: Path) -> Path:
     return trace_dirs[-1]
 
 
-def discover_trace_targets(path: Path, all_traces: bool) -> Tuple[List[Path], Optional[dict]]:
+def discover_trace_targets(
+    path: Path, all_traces: bool
+) -> Tuple[List[Path], Optional[dict]]:
     if path.is_file():
         return [path], load_server_args(path)
 
@@ -94,14 +96,23 @@ def discover_trace_targets(path: Path, all_traces: bool) -> Tuple[List[Path], Op
     non_merged = [trace for trace in traces if not trace.name.startswith("merged-")]
     selected = non_merged or traces
     if not all_traces:
-        ranks = sorted({rank for rank in (parse_tp_rank(trace) for trace in selected) if rank is not None})
+        ranks = sorted(
+            {
+                rank
+                for rank in (parse_tp_rank(trace) for trace in selected)
+                if rank is not None
+            }
+        )
         if ranks:
             rank = 0 if 0 in ranks else ranks[0]
             selected = [trace for trace in selected if parse_tp_rank(trace) == rank]
         grouped: Dict[str, List[Path]] = defaultdict(list)
         for trace in selected:
             grouped[parse_stage(trace)].append(trace)
-        selected = [sorted(group, key=lambda item: item.stat().st_mtime)[-1] for group in grouped.values()]
+        selected = [
+            sorted(group, key=lambda item: item.stat().st_mtime)[-1]
+            for group in grouped.values()
+        ]
 
     selected.sort(key=lambda item: (STAGE_ORDER.get(parse_stage(item), 99), item.name))
     return selected, load_server_args(trace_dir)
@@ -119,7 +130,9 @@ def post_json(url: str, payload: dict, timeout: float = 60.0) -> Optional[dict]:
     return json.loads(raw.decode("utf-8")) if raw else None
 
 
-def send_probe_request(url: str, prompt: str, max_new_tokens: int, sampling_seed: int) -> None:
+def send_probe_request(
+    url: str, prompt: str, max_new_tokens: int, sampling_seed: int
+) -> None:
     payload = {
         "text": prompt,
         "sampling_params": {
@@ -233,7 +246,9 @@ def select_heaviest_pid(
     return max(durations, key=lambda pid: durations[pid])
 
 
-def write_perfetto_compatible_trace(input_path: Path, output_path: Optional[Path] = None) -> Path:
+def write_perfetto_compatible_trace(
+    input_path: Path, output_path: Optional[Path] = None
+) -> Path:
     resolved_input = input_path.resolve()
     if output_path is None:
         output_name = f"perfetto-compatible-{resolved_input.name}"

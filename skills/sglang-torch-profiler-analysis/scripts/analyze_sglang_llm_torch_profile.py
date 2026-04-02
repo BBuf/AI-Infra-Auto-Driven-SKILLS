@@ -20,27 +20,7 @@ from profile_common import (
     select_heaviest_pid,
 )
 
-
 CATEGORY_PATTERNS: List[Tuple[str, Tuple[str, ...]]] = [
-    (
-        "communication",
-        (
-            "nccl",
-            "allreduce",
-            "all_reduce",
-            "reduce_scatter",
-            "allgather",
-            "all_gather",
-            "alltoall",
-            "all_to_all",
-            "broadcast",
-            "cross_device_reduce",
-            "deepep",
-            "dispatch",
-            "combine",
-            "mooncake",
-        ),
-    ),
     (
         "hybrid_linear",
         (
@@ -56,7 +36,9 @@ CATEGORY_PATTERNS: List[Tuple[str, Tuple[str, ...]]] = [
     (
         "attention",
         (
-            "flash",
+            "flash_attn",
+            "flashattention",
+            "flash_attention",
             "fmha",
             "attention",
             "mla",
@@ -119,12 +101,84 @@ CATEGORY_PATTERNS: List[Tuple[str, Tuple[str, ...]]] = [
         ),
     ),
     (
-        "memory",
-        ("memcpy", "memset", "copy", "fill", "dma", "prefetch"),
+        "elementwise",
+        (
+            "elementwise",
+            "vectorized_elementwise_kernel",
+            "unrolled_elementwise_kernel",
+            "gpu_kernel_impl",
+            "binary_internal",
+            "unaryfunctor",
+            "add_kernel",
+            "sub_kernel",
+            "mul_kernel",
+            "div_",
+            "floor_kernel",
+            "log_kernel",
+            "neg_kernel",
+        ),
     ),
 ]
 
-METADATA_NAMES = {"process_name", "thread_name", "process_sort_index", "thread_sort_index"}
+COMMUNICATION_STRONG_KEYWORDS = (
+    "nccl",
+    "allreduce",
+    "all_reduce",
+    "reduce_scatter",
+    "allgather",
+    "all_gather",
+    "alltoall",
+    "all_to_all",
+    "cross_device_reduce",
+    "deepep",
+    "mooncake",
+)
+
+COMMUNICATION_WEAK_KEYWORDS = (
+    "broadcast",
+    "dispatch",
+    "combine",
+)
+
+MEMORY_STRONG_KEYWORDS = (
+    "memcpy",
+    "memset",
+    "dma",
+    "prefetch",
+)
+
+MEMORY_WEAK_KEYWORDS = (
+    "copy",
+    "fill",
+)
+
+COMPUTE_HINT_KEYWORDS = (
+    "gemm",
+    "gemv",
+    "matmul",
+    "cublas",
+    "cutlass",
+    "wgmma",
+    "mma",
+    "bmm",
+    "nvjet",
+    "fmha",
+    "attention",
+    "flash_attn",
+    "flashattention",
+    "flash_attention",
+    "grouped_mm",
+    "groupgemm",
+    "moe",
+    "expert",
+)
+
+METADATA_NAMES = {
+    "process_name",
+    "thread_name",
+    "process_sort_index",
+    "thread_sort_index",
+}
 REPO_PREFIXES = (
     "/data/bbuf/repos/sglang/",
     "/data/bbuf/sglang/",
@@ -257,13 +311,24 @@ def canonicalize_name(name: str) -> str:
 
 def classify_kernel(name: str) -> str:
     lowered = name.lower()
+    if any(keyword in lowered for keyword in COMMUNICATION_STRONG_KEYWORDS):
+        return "communication"
+    if any(keyword in lowered for keyword in MEMORY_STRONG_KEYWORDS):
+        return "memory"
+    looks_compute_like = any(keyword in lowered for keyword in COMPUTE_HINT_KEYWORDS)
+    if (
+        any(keyword in lowered for keyword in MEMORY_WEAK_KEYWORDS)
+        and not looks_compute_like
+    ):
+        return "memory"
     for category, keywords in CATEGORY_PATTERNS:
         if any(keyword in lowered for keyword in keywords):
             return category
-    if lowered.startswith("void "):
-        return "gemm"
-    if "triton" in lowered:
-        return "other"
+    if (
+        any(keyword in lowered for keyword in COMMUNICATION_WEAK_KEYWORDS)
+        and not looks_compute_like
+    ):
+        return "communication"
     return "other"
 
 
@@ -426,7 +491,11 @@ def is_gpu_kernel_event(event: dict) -> bool:
         return False
     if "kernel" in cat or cat.startswith("gpu_"):
         return True
-    if ".py(" in lowered or lowered.startswith("python/") or lowered.startswith("nn.module:"):
+    if (
+        ".py(" in lowered
+        or lowered.startswith("python/")
+        or lowered.startswith("nn.module:")
+    ):
         return False
     if "stream" in args or "cuda_stream" in args:
         return True
@@ -435,7 +504,13 @@ def is_gpu_kernel_event(event: dict) -> bool:
 
 def extract_trace_data(
     trace: dict,
-) -> Tuple[List[KernelEvent], List[CpuOpEvent], Dict[Tuple[str, str], List[PythonFrame]], Optional[str], float]:
+) -> Tuple[
+    List[KernelEvent],
+    List[CpuOpEvent],
+    Dict[Tuple[str, str], List[PythonFrame]],
+    Optional[str],
+    float,
+]:
     raw_events = trace.get("traceEvents", trace if isinstance(trace, list) else [])
     chosen_pid = select_heaviest_pid(
         raw_events,
@@ -522,7 +597,9 @@ def build_cpu_op_index(cpu_ops: Sequence[CpuOpEvent]) -> Dict[int, List[CpuOpEve
     return dict(output)
 
 
-def match_cpu_op(kernel: KernelEvent, cpu_ops_by_external_id: Dict[int, List[CpuOpEvent]]) -> Optional[CpuOpEvent]:
+def match_cpu_op(
+    kernel: KernelEvent, cpu_ops_by_external_id: Dict[int, List[CpuOpEvent]]
+) -> Optional[CpuOpEvent]:
     if kernel.external_id is None:
         return None
     candidates = cpu_ops_by_external_id.get(kernel.external_id, [])
@@ -560,7 +637,9 @@ def choose_mapping_frame(active_frames: Sequence[PythonFrame]) -> Optional[Pytho
 def build_stack_display(active_frames: Sequence[PythonFrame]) -> str:
     if not active_frames:
         return ""
-    filtered = [item.normalized_name for item in active_frames if frame_priority(item.name) > 0]
+    filtered = [
+        item.normalized_name for item in active_frames if frame_priority(item.name) > 0
+    ]
     if not filtered:
         filtered = [active_frames[-1].normalized_name]
     return " -> ".join(filtered[-4:])
@@ -587,7 +666,9 @@ def aggregate_kernel_sites(
     )
     for kernel in kernels:
         cpu_op = match_cpu_op(kernel, cpu_ops_by_external_id)
-        active_frames = find_active_python_frames(cpu_op, python_frames) if cpu_op else []
+        active_frames = (
+            find_active_python_frames(cpu_op, python_frames) if cpu_op else []
+        )
         chosen_frame = choose_mapping_frame(active_frames)
 
         location = "unresolved"
@@ -639,16 +720,26 @@ def build_stage_payload(
                 {
                     "location": location,
                     "display_location": extract_preferred_stack_location(
-                        aggregate_item.stacks.most_common(1)[0][0] if aggregate_item.stacks else None
+                        aggregate_item.stacks.most_common(1)[0][0]
+                        if aggregate_item.stacks
+                        else None
                     )
                     or location,
                     "launches": aggregate_item.count,
                     "total_us": round(aggregate_item.total_us, 3),
-                    "share_pct_within_kernel": round(pct(aggregate_item.total_us, total_us), 3),
-                    "top_cpu_op": aggregate_item.cpu_ops.most_common(1)[0][0]
-                    if aggregate_item.cpu_ops
-                    else None,
-                    "stack": aggregate_item.stacks.most_common(1)[0][0] if aggregate_item.stacks else None,
+                    "share_pct_within_kernel": round(
+                        pct(aggregate_item.total_us, total_us), 3
+                    ),
+                    "top_cpu_op": (
+                        aggregate_item.cpu_ops.most_common(1)[0][0]
+                        if aggregate_item.cpu_ops
+                        else None
+                    ),
+                    "stack": (
+                        aggregate_item.stacks.most_common(1)[0][0]
+                        if aggregate_item.stacks
+                        else None
+                    ),
                 }
             )
         sites.sort(
@@ -662,7 +753,11 @@ def build_stage_payload(
         kernels_payload[kernel_name] = {
             "category": kernel_categories.get(kernel_name, "other"),
             "sites": sites,
-            "best_location": site_display_location(sites[0]) if sites else choose_best_location(locations),
+            "best_location": (
+                site_display_location(sites[0])
+                if sites
+                else choose_best_location(locations)
+            ),
         }
     return {"kernels": kernels_payload}
 
@@ -672,7 +767,9 @@ def load_kernel_map(path: Path) -> dict:
         return json.load(handle)
 
 
-def relaxed_kernel_entry_lookup(kernels: Dict[str, dict], kernel_name: str) -> Optional[dict]:
+def relaxed_kernel_entry_lookup(
+    kernels: Dict[str, dict], kernel_name: str
+) -> Optional[dict]:
     if kernel_name in kernels:
         return kernels[kernel_name]
     lowered = kernel_name.lower()
@@ -680,7 +777,9 @@ def relaxed_kernel_entry_lookup(kernels: Dict[str, dict], kernel_name: str) -> O
     best_score = -1
     for candidate_key in kernels:
         candidate_lowered = candidate_key.lower()
-        if candidate_lowered.startswith(lowered) or lowered.startswith(candidate_lowered):
+        if candidate_lowered.startswith(lowered) or lowered.startswith(
+            candidate_lowered
+        ):
             score = min(len(candidate_lowered), len(lowered))
         elif candidate_lowered in lowered or lowered in candidate_lowered:
             score = min(len(candidate_lowered), len(lowered)) // 2
@@ -692,7 +791,9 @@ def relaxed_kernel_entry_lookup(kernels: Dict[str, dict], kernel_name: str) -> O
     return kernels.get(best_key) if best_key else None
 
 
-def lookup_kernel_map_entry(kernel_map: dict, stage: str, kernel_name: str) -> Optional[dict]:
+def lookup_kernel_map_entry(
+    kernel_map: dict, stage: str, kernel_name: str
+) -> Optional[dict]:
     stage_map = kernel_map.get("stages", {})
     for candidate_stage in stage_aliases(stage):
         entry = relaxed_kernel_entry_lookup(
@@ -701,7 +802,9 @@ def lookup_kernel_map_entry(kernel_map: dict, stage: str, kernel_name: str) -> O
         )
         if entry:
             return entry
-    return relaxed_kernel_entry_lookup(kernel_map.get("global", {}).get("kernels", {}), kernel_name)
+    return relaxed_kernel_entry_lookup(
+        kernel_map.get("global", {}).get("kernels", {}), kernel_name
+    )
 
 
 def best_site_summary(kernel_entry: Optional[dict]) -> Tuple[str, str]:
@@ -710,7 +813,11 @@ def best_site_summary(kernel_entry: Optional[dict]) -> Tuple[str, str]:
     sites = kernel_entry.get("sites") or []
     if not sites:
         return kernel_entry.get("best_location", "unresolved"), "-"
-    preferred_sites = [site for site in sites if is_preferred_source_location(site_display_location(site))]
+    preferred_sites = [
+        site
+        for site in sites
+        if is_preferred_source_location(site_display_location(site))
+    ]
     candidate_sites = preferred_sites or sites
     rendered_locations = []
     rendered_cpu_ops = []
@@ -724,7 +831,9 @@ def best_site_summary(kernel_entry: Optional[dict]) -> Tuple[str, str]:
         cpu_op = site.get("top_cpu_op")
         if cpu_op:
             rendered_cpu_ops.append(cpu_op)
-    return "<br>".join(rendered_locations), "<br>".join(rendered_cpu_ops) if rendered_cpu_ops else "-"
+    return "<br>".join(rendered_locations), (
+        "<br>".join(rendered_cpu_ops) if rendered_cpu_ops else "-"
+    )
 
 
 def resolve_kernel_entry(
@@ -753,7 +862,9 @@ def build_kernel_rows(
         key=lambda pair: pair[1].total_us,
         reverse=True,
     ):
-        kernel_entry = resolve_kernel_entry(stage, kernel_name, local_stage_payload, external_kernel_map)
+        kernel_entry = resolve_kernel_entry(
+            stage, kernel_name, local_stage_payload, external_kernel_map
+        )
         location, cpu_op = best_site_summary(kernel_entry)
         rows.append(
             KernelRow(
@@ -812,7 +923,9 @@ def summarize_text(values: Iterable[str], limit: int = 4) -> str:
     return "<br>".join(items) if items else "-"
 
 
-def summarize_evidence(rows: Sequence[KernelRow], total_us: float, limit: int = 3) -> str:
+def summarize_evidence(
+    rows: Sequence[KernelRow], total_us: float, limit: int = 3
+) -> str:
     items = []
     for row in rows[:limit]:
         items.append(f"{short_name(row.name, 56)} ({pct(row.total_us, total_us):.1f}%)")
@@ -845,11 +958,20 @@ def detect_fusion_opportunities(
         for row in kernel_rows
         if row.category == "communication"
         and (
-            row_matches(row, "cross_device_reduce", "allreduce", "all_reduce", "custom_all_reduce_ops.py")
+            row_matches(
+                row,
+                "cross_device_reduce",
+                "allreduce",
+                "all_reduce",
+                "custom_all_reduce_ops.py",
+            )
         )
     ]
     comm_us = sum(row.total_us for row in comm_rows)
-    if comm_rows and (tp_size > 1 or any(row_matches(row, "custom_all_reduce_ops.py") for row in comm_rows)):
+    if comm_rows and (
+        tp_size > 1
+        or any(row_matches(row, "custom_all_reduce_ops.py") for row in comm_rows)
+    ):
         opportunities.append(
             FusionOpportunity(
                 pattern="TP all-reduce + residual/RMSNorm",
@@ -870,7 +992,11 @@ def detect_fusion_opportunities(
             )
         )
 
-    is_qwen3_dense = "qwen3" in model_path and "moe" not in model_path and "qwen3-next" not in model_path
+    is_qwen3_dense = (
+        "qwen3" in model_path
+        and "moe" not in model_path
+        and "qwen3-next" not in model_path
+    )
     qwen3_qk_rows = [
         row
         for row in kernel_rows
@@ -939,7 +1065,9 @@ def generate_takeaways(
     server_args: Optional[dict],
     fusion_opportunities: Sequence[FusionOpportunity],
 ) -> List[str]:
-    items = sorted(category_stats.items(), key=lambda pair: pair[1].total_us, reverse=True)
+    items = sorted(
+        category_stats.items(), key=lambda pair: pair[1].total_us, reverse=True
+    )
     if not items:
         return ["No GPU kernel events were found in the selected trace."]
 
@@ -955,7 +1083,9 @@ def generate_takeaways(
             f"The top two categories are `{top_name}` + `{second_name}` at {combined:.1f}% combined."
         )
 
-    comm_share = pct(category_stats.get("communication", Aggregate()).total_us, total_us)
+    comm_share = pct(
+        category_stats.get("communication", Aggregate()).total_us, total_us
+    )
     if comm_share >= 10.0:
         tp = server_args.get("tp_size") if isinstance(server_args, dict) else None
         if tp and tp > 1:
@@ -995,7 +1125,9 @@ def print_mapping_table(
     rendered_rows = limit_kernel_rows(kernel_rows, table_limit)
     label = "all kernels" if table_limit <= 0 else f"first {len(rendered_rows)} kernels"
     print(f"\nKernel-to-Python mapping (Markdown, {label}):")
-    print("| Kernel | Category | GPU time | Share | Launches | Python location | CPU op |")
+    print(
+        "| Kernel | Category | GPU time | Share | Launches | Python location | CPU op |"
+    )
     print("| --- | --- | ---: | ---: | ---: | --- | --- |")
     for row in rendered_rows:
         if row.location != "unresolved":
@@ -1019,10 +1151,14 @@ def print_fusion_opportunity_table(
     total_us: float,
 ) -> None:
     print("\nKernel fuse opportunities (Markdown):")
-    print("| Pattern | Confidence | Related GPU time | Share | Evidence kernels | Current kernel Python location | Candidate fused Python path | Rationale |")
+    print(
+        "| Pattern | Confidence | Related GPU time | Share | Evidence kernels | Current kernel Python location | Candidate fused Python path | Rationale |"
+    )
     print("| --- | --- | ---: | ---: | --- | --- | --- | --- |")
     if not opportunities:
-        print("| No medium-confidence source-backed fusion opportunity matched this trace. | - | - | - | - | - | - | - |")
+        print(
+            "| No medium-confidence source-backed fusion opportunity matched this trace. | - | - | - | - | - | - | - |"
+        )
         return
     for item in opportunities:
         print(
@@ -1097,7 +1233,9 @@ def print_report(
     if not table_only:
         print("\nTop categories by cumulative GPU kernel time:")
         for idx, (name, aggregate_item) in enumerate(
-            sorted(category_stats.items(), key=lambda pair: pair[1].total_us, reverse=True)[:8],
+            sorted(
+                category_stats.items(), key=lambda pair: pair[1].total_us, reverse=True
+            )[:8],
             start=1,
         ):
             print(
@@ -1107,7 +1245,9 @@ def print_report(
 
         print("\nTop kernels by cumulative GPU kernel time:")
         for idx, (name, aggregate_item) in enumerate(
-            sorted(kernel_stats.items(), key=lambda pair: pair[1].total_us, reverse=True)[:top_k],
+            sorted(
+                kernel_stats.items(), key=lambda pair: pair[1].total_us, reverse=True
+            )[:top_k],
             start=1,
         ):
             print(
@@ -1143,10 +1283,18 @@ def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
     )
     parser.add_argument("--input", type=str, help="Trace file or profile directory.")
     parser.add_argument("--url", type=str, help="Running SGLang server URL.")
-    parser.add_argument("--output-dir", type=str, default=None, help="Output root for live profiling.")
-    parser.add_argument("--num-steps", type=int, default=6, help="Profiler steps for live mode.")
-    parser.add_argument("--profile-by-stage", action=argparse.BooleanOptionalAction, default=True)
-    parser.add_argument("--merge-profiles", action=argparse.BooleanOptionalAction, default=False)
+    parser.add_argument(
+        "--output-dir", type=str, default=None, help="Output root for live profiling."
+    )
+    parser.add_argument(
+        "--num-steps", type=int, default=6, help="Profiler steps for live mode."
+    )
+    parser.add_argument(
+        "--profile-by-stage", action=argparse.BooleanOptionalAction, default=True
+    )
+    parser.add_argument(
+        "--merge-profiles", action=argparse.BooleanOptionalAction, default=False
+    )
     parser.add_argument("--profile-prefix", type=str, default=None)
     parser.add_argument("--probe-requests", type=int, default=1)
     parser.add_argument(
@@ -1156,7 +1304,12 @@ def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
     )
     parser.add_argument("--probe-max-new-tokens", type=int, default=96)
     parser.add_argument("--probe-delay", type=float, default=1.0)
-    parser.add_argument("--top-k", type=int, default=12, help="How many top kernels to summarize above the tables.")
+    parser.add_argument(
+        "--top-k",
+        type=int,
+        default=12,
+        help="How many top kernels to summarize above the tables.",
+    )
     parser.add_argument(
         "--kernel-table-limit",
         type=int,
@@ -1211,38 +1364,52 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         print(f"Generated profile directory: {profile_dir}\n")
         input_path = profile_dir
 
-    external_kernel_map = load_kernel_map(Path(args.kernel_map).resolve()) if args.kernel_map else None
+    external_kernel_map = (
+        load_kernel_map(Path(args.kernel_map).resolve()) if args.kernel_map else None
+    )
     traces, server_args = discover_trace_targets(input_path, all_traces=args.all_traces)
 
-    stage_site_stats: DefaultDict[str, DefaultDict[str, DefaultDict[str, MappingSiteAggregate]]] = defaultdict(
-        lambda: defaultdict(lambda: defaultdict(MappingSiteAggregate))
-    )
+    stage_site_stats: DefaultDict[
+        str, DefaultDict[str, DefaultDict[str, MappingSiteAggregate]]
+    ] = defaultdict(lambda: defaultdict(lambda: defaultdict(MappingSiteAggregate)))
     stage_kernel_categories: DefaultDict[str, Dict[str, str]] = defaultdict(dict)
-    global_site_stats: DefaultDict[str, DefaultDict[str, MappingSiteAggregate]] = defaultdict(
-        lambda: defaultdict(MappingSiteAggregate)
+    global_site_stats: DefaultDict[str, DefaultDict[str, MappingSiteAggregate]] = (
+        defaultdict(lambda: defaultdict(MappingSiteAggregate))
     )
     global_kernel_categories: Dict[str, str] = {}
     reports = []
 
     for trace_path in traces:
         trace = load_trace_json(trace_path)
-        kernels, cpu_ops, python_frames, chosen_pid, window_us = extract_trace_data(trace)
+        kernels, cpu_ops, python_frames, chosen_pid, window_us = extract_trace_data(
+            trace
+        )
         cpu_ops_by_external_id = build_cpu_op_index(cpu_ops)
-        local_site_stats = aggregate_kernel_sites(kernels, cpu_ops_by_external_id, python_frames)
+        local_site_stats = aggregate_kernel_sites(
+            kernels, cpu_ops_by_external_id, python_frames
+        )
         stage = parse_stage(trace_path)
-        kernel_categories = {kernel.canonical_name: kernel.category for kernel in kernels}
+        kernel_categories = {
+            kernel.canonical_name: kernel.category for kernel in kernels
+        }
 
         merge_site_stats(stage_site_stats[stage], local_site_stats)
         merge_site_stats(global_site_stats, local_site_stats)
         stage_kernel_categories[stage].update(kernel_categories)
         global_kernel_categories.update(kernel_categories)
-        reports.append((trace_path, kernels, chosen_pid, window_us, stage, kernel_categories))
+        reports.append(
+            (trace_path, kernels, chosen_pid, window_us, stage, kernel_categories)
+        )
 
     stage_payloads = {
-        stage: build_stage_payload(dict(site_stats), stage_kernel_categories.get(stage, {}))
+        stage: build_stage_payload(
+            dict(site_stats), stage_kernel_categories.get(stage, {})
+        )
         for stage, site_stats in stage_site_stats.items()
     }
-    global_payload = build_stage_payload(dict(global_site_stats), global_kernel_categories)
+    global_payload = build_stage_payload(
+        dict(global_site_stats), global_kernel_categories
+    )
 
     if args.export_kernel_map:
         export_path = Path(args.export_kernel_map).resolve()
