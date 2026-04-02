@@ -24,9 +24,24 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
-from profile_common import load_server_args, load_trace_json
+from profile_common import (
+    coerce_optional_int,
+    contains_any_keyword,
+    extract_trace_events,
+    has_stream_marker,
+    is_annotation_event,
+    is_complete_duration_event,
+    is_non_kernel_trace_category,
+    is_trace_metadata_name,
+    load_server_args,
+    load_trace_json,
+    looks_like_python_scope_name,
+    normalize_text,
+)
 from profile_common import run_profiler as shared_run_profiler
-from profile_common import select_heaviest_pid
+from profile_common import (
+    select_heaviest_pid,
+)
 
 COMMUNICATION_STRONG_KEYWORDS = (
     "allreduce",
@@ -123,12 +138,6 @@ CATEGORY_PRIORITY = {
     "other": 0,
 }
 
-METADATA_NAMES = {
-    "process_name",
-    "thread_name",
-    "process_sort_index",
-    "thread_sort_index",
-}
 REPO_PREFIXES = (
     "/data/bbuf/repos/sglang/",
     "/data/bbuf/sglang/",
@@ -159,6 +168,13 @@ PYTHON_SCOPE_IGNORE_PREFIXES = (
     "torch/distributed/",
     "torch/_dynamo/",
     "torch/_inductor/",
+)
+KERNEL_NAME_HINTS = (
+    COMMUNICATION_STRONG_KEYWORDS
+    + COMMUNICATION_WEAK_KEYWORDS
+    + MEMORY_STRONG_KEYWORDS
+    + MEMORY_WEAK_KEYWORDS
+    + COMPUTE_KEYWORDS
 )
 
 
@@ -290,27 +306,14 @@ class ActionRow:
 
 
 def short_name(name: str, max_len: int = 80) -> str:
-    name = re.sub(r"\s+", " ", name).strip()
+    name = normalize_text(name)
     if len(name) <= max_len:
         return name
     return name[: max_len - 3] + "..."
 
 
-def coerce_int(value: object) -> Optional[int]:
-    if value is None:
-        return None
-    if isinstance(value, int):
-        return value
-    if isinstance(value, float) and value.is_integer():
-        return int(value)
-    try:
-        return int(str(value))
-    except (TypeError, ValueError):
-        return None
-
-
 def canonicalize_name(name: str) -> str:
-    name = re.sub(r"\s+", " ", name).strip()
+    name = normalize_text(name)
     name = re.sub(r"0x[0-9a-fA-F]+", "0xADDR", name)
     if name.startswith("void ") and name.endswith(")"):
         depth = 0
@@ -331,7 +334,7 @@ def canonicalize_name(name: str) -> str:
 
 
 def canonicalize_python_scope_name(name: str) -> str:
-    name = re.sub(r"\s+", " ", str(name)).strip()
+    name = normalize_text(name)
     name = re.sub(r"0x[0-9a-fA-F]+", "0xADDR", name)
     match = re.match(r"(?P<path>.+?)\((?P<line>\d+)\): (?P<func>.+)$", name)
     if match:
@@ -348,27 +351,26 @@ def canonicalize_python_scope_name(name: str) -> str:
 
 
 def canonicalize_cpu_op_name(name: str) -> str:
-    return short_name(re.sub(r"\s+", " ", str(name)).strip(), max_len=100)
+    return short_name(normalize_text(name), max_len=100)
 
 
 def classify_kernel(name: str) -> str:
+    # This script only needs broad overlap buckets, so keep the precedence small
+    # and deterministic: memory/communication first, then compute/elementwise.
     lowered = name.lower()
-    looks_compute_like = any(keyword in lowered for keyword in COMPUTE_KEYWORDS)
-    if any(keyword in lowered for keyword in MEMORY_STRONG_KEYWORDS):
+    looks_compute_like = contains_any_keyword(lowered, COMPUTE_KEYWORDS)
+    if contains_any_keyword(lowered, MEMORY_STRONG_KEYWORDS):
         return "memory"
-    if any(keyword in lowered for keyword in COMMUNICATION_STRONG_KEYWORDS):
+    if contains_any_keyword(lowered, COMMUNICATION_STRONG_KEYWORDS):
         return "communication"
-    if any(keyword in lowered for keyword in COMPUTE_KEYWORDS):
+    if contains_any_keyword(lowered, COMPUTE_KEYWORDS):
         return "compute"
-    if any(keyword in lowered for keyword in ELEMENTWISE_KEYWORDS):
+    if contains_any_keyword(lowered, ELEMENTWISE_KEYWORDS):
         return "elementwise"
-    if (
-        any(keyword in lowered for keyword in MEMORY_WEAK_KEYWORDS)
-        and not looks_compute_like
-    ):
+    if contains_any_keyword(lowered, MEMORY_WEAK_KEYWORDS) and not looks_compute_like:
         return "memory"
     if (
-        any(keyword in lowered for keyword in COMMUNICATION_WEAK_KEYWORDS)
+        contains_any_keyword(lowered, COMMUNICATION_WEAK_KEYWORDS)
         and not looks_compute_like
     ):
         return "communication"
@@ -378,43 +380,31 @@ def classify_kernel(name: str) -> str:
 
 
 def is_kernel_event(event: dict) -> bool:
-    if event.get("ph") != "X":
+    # The overlap script prefers a slightly broader kernel detector than the
+    # breakdown script, but it still rejects annotations and Python frames up
+    # front so the later overlap math only sees real GPU work.
+    if not is_complete_duration_event(event):
         return False
-    if event.get("name") in METADATA_NAMES:
+    name = normalize_text(event.get("name", ""))
+    if is_trace_metadata_name(name):
         return False
-    dur = event.get("dur")
-    ts = event.get("ts")
-    if dur is None or ts is None or dur <= 0:
-        return False
-    cat = str(event.get("cat", "")).lower()
+    cat = normalize_text(event.get("cat", "")).lower()
     args = event.get("args", {}) or {}
-    name = str(event.get("name", ""))
-    if "python_function" in cat or "cpu_op" in cat or cat == "trace":
+    if is_non_kernel_trace_category(cat):
+        return False
+    if is_annotation_event(name, cat):
         return False
     if "kernel" in cat or cat.startswith("gpu_"):
         return True
     lowered = name.lower()
-    if (
-        ".py(" in lowered
-        or lowered.startswith("python/")
-        or lowered.startswith("nn.module:")
-    ):
+    if looks_like_python_scope_name(name):
         return False
-    if ("stream" in args or "cuda_stream" in args) and (
+    if has_stream_marker(args) and (
         lowered.startswith("void ")
         or lowered.startswith("ampere_")
         or lowered.startswith("sm80_")
         or lowered.startswith("sm90_")
-        or any(
-            keyword in lowered
-            for keyword in (
-                COMMUNICATION_STRONG_KEYWORDS
-                + COMMUNICATION_WEAK_KEYWORDS
-                + MEMORY_STRONG_KEYWORDS
-                + MEMORY_WEAK_KEYWORDS
-                + COMPUTE_KEYWORDS
-            )
-        )
+        or contains_any_keyword(lowered, KERNEL_NAME_HINTS)
     ):
         return True
     return False
@@ -469,8 +459,8 @@ def build_correlation_external_lookup(raw_events: Sequence[dict]) -> Dict[int, i
     lookup: Dict[int, int] = {}
     for event in raw_events:
         args = event.get("args", {}) or {}
-        correlation = coerce_int(args.get("correlation"))
-        external_id = coerce_int(args.get("External id"))
+        correlation = coerce_optional_int(args.get("correlation"))
+        external_id = coerce_optional_int(args.get("External id"))
         if correlation is not None and external_id is not None:
             lookup[correlation] = external_id
     return lookup
@@ -479,7 +469,9 @@ def build_correlation_external_lookup(raw_events: Sequence[dict]) -> Dict[int, i
 def extract_kernel_events(
     trace: dict, pid_substring: Optional[str]
 ) -> Tuple[List[KernelEvent], Optional[str]]:
-    raw_events = trace.get("traceEvents", trace if isinstance(trace, list) else [])
+    # We first build a clean kernel list from the chosen TP rank, then later
+    # overlap analysis can stay focused on stream timing instead of trace noise.
+    raw_events = extract_trace_events(trace)
     thread_names = extract_thread_names(raw_events)
     correlation_external = build_correlation_external_lookup(raw_events)
     chosen_pid = select_heaviest_pid(
@@ -507,8 +499,8 @@ def extract_kernel_events(
             or thread_names.get((pid, tid))
             or f"tid={tid}"
         )
-        correlation = coerce_int(args.get("correlation"))
-        external_id = coerce_int(args.get("External id"))
+        correlation = coerce_optional_int(args.get("correlation"))
+        external_id = coerce_optional_int(args.get("External id"))
         if external_id is None and correlation is not None:
             external_id = correlation_external.get(correlation)
         name = str(event["name"])
@@ -552,6 +544,9 @@ def dominant_overlap_name(
 
 
 def analyze_overlap(events: Sequence[KernelEvent]) -> Dict[str, float]:
+    # Sweep line over kernel start/end points. For each active time slice we
+    # decide whether a kernel was exposed on the critical path or hidden by work
+    # on other streams.
     points: List[Tuple[float, int, int]] = []
     event_map = {event.idx: event for event in events}
     for event in events:
@@ -791,19 +786,20 @@ def scope_chain_key(scope_chain: Sequence[str]) -> Optional[str]:
 def extract_cpu_launch_contexts(
     raw_events: Sequence[dict],
 ) -> Dict[int, List[CPUOpContext]]:
+    # Rebuild `External id -> CPU op -> active Python scopes` so formal-trace
+    # kernels can be mapped back to readable Python locations from the mapping
+    # trace even when launches are interleaved on the same thread.
     scopes_by_thread: Dict[Tuple[str, str], List[PythonScope]] = defaultdict(list)
     cpu_ops_by_thread: Dict[Tuple[str, str], List[CPUOpContext]] = defaultdict(list)
 
     for event in raw_events:
-        if event.get("ph") != "X":
-            continue
-        dur = event.get("dur")
-        ts = event.get("ts")
-        if dur is None or ts is None or dur <= 0:
+        if not is_complete_duration_event(event):
             continue
         cat = str(event.get("cat", ""))
         pid = str(event.get("pid"))
         tid = str(event.get("tid"))
+        ts = float(event.get("ts", 0.0))
+        dur = float(event.get("dur", 0.0))
         args = event.get("args", {}) or {}
         if cat == "python_function":
             name = canonicalize_python_scope_name(event.get("name", ""))
@@ -813,13 +809,13 @@ def extract_cpu_launch_contexts(
                     normalized_name=name,
                     pid=pid,
                     tid=tid,
-                    ts=float(ts),
-                    dur=float(dur),
-                    end=float(ts) + float(dur),
+                    ts=ts,
+                    dur=dur,
+                    end=ts + dur,
                 )
             )
         elif cat == "cpu_op":
-            external_id = coerce_int(args.get("External id"))
+            external_id = coerce_optional_int(args.get("External id"))
             if external_id is None:
                 continue
             cpu_ops_by_thread[(pid, tid)].append(
@@ -828,9 +824,9 @@ def extract_cpu_launch_contexts(
                     cpu_op_name=str(event.get("name", "")),
                     pid=pid,
                     tid=tid,
-                    ts=float(ts),
-                    dur=float(dur),
-                    end=float(ts) + float(dur),
+                    ts=ts,
+                    dur=dur,
+                    end=ts + dur,
                     scope_chain=(),
                 )
             )
@@ -893,12 +889,12 @@ def choose_cpu_context(
 def extract_meaningful_python_scopes(raw_events: Sequence[dict]) -> List[PythonScope]:
     scopes: List[PythonScope] = []
     for event in raw_events:
-        if event.get("ph") != "X" or str(event.get("cat", "")) != "python_function":
+        if not is_complete_duration_event(event):
             continue
-        dur = event.get("dur")
-        ts = event.get("ts")
-        if dur is None or ts is None or dur <= 0:
+        if str(event.get("cat", "")) != "python_function":
             continue
+        ts = float(event.get("ts", 0.0))
+        dur = float(event.get("dur", 0.0))
         normalized_name = canonicalize_python_scope_name(event.get("name", ""))
         if not is_meaningful_python_scope(normalized_name):
             continue
@@ -908,9 +904,9 @@ def extract_meaningful_python_scopes(raw_events: Sequence[dict]) -> List[PythonS
                 normalized_name=normalized_name,
                 pid=str(event.get("pid")),
                 tid=str(event.get("tid")),
-                ts=float(ts),
-                dur=float(dur),
-                end=float(ts) + float(dur),
+                ts=ts,
+                dur=dur,
+                end=ts + dur,
             )
         )
     return scopes

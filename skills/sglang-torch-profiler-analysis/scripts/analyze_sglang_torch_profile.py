@@ -202,6 +202,9 @@ def resolve_profile_targets(
 
 
 def build_mapping_kernel_map(trace_paths: Sequence[Path]) -> dict:
+    # The graph-off mapping trace is only used to learn stable
+    # kernel -> Python/CPU-op attribution. The final percentages still come from
+    # the formal trace.
     stage_site_stats = defaultdict(
         lambda: defaultdict(lambda: defaultdict(breakdown_cli.MappingSiteAggregate))
     )
@@ -213,10 +216,16 @@ def build_mapping_kernel_map(trace_paths: Sequence[Path]) -> dict:
 
     for trace_path in trace_paths:
         trace = load_trace_json(trace_path)
-        kernels, cpu_ops, python_frames, _, _ = breakdown_cli.extract_trace_data(trace)
+        kernels, cpu_ops, python_frames, launch_events, _, _ = (
+            breakdown_cli.extract_trace_data(trace)
+        )
         cpu_ops_by_external_id = breakdown_cli.build_cpu_op_index(cpu_ops)
+        launches_by_correlation = breakdown_cli.build_launch_index(launch_events)
         local_site_stats = breakdown_cli.aggregate_kernel_sites(
-            kernels, cpu_ops_by_external_id, python_frames
+            kernels,
+            cpu_ops_by_external_id,
+            python_frames,
+            launches_by_correlation=launches_by_correlation,
         )
         stage = parse_stage(trace_path)
         kernel_categories = {
@@ -376,7 +385,7 @@ def run_triage(args: argparse.Namespace) -> int:
 
     for formal_trace in formal_traces:
         trace = load_trace_json(formal_trace)
-        kernels, _, _, _, _ = breakdown_cli.extract_trace_data(trace)
+        kernels, _, _, _, _, _ = breakdown_cli.extract_trace_data(trace)
         if not kernels:
             continue
         stage = parse_stage(formal_trace)

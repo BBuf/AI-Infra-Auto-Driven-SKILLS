@@ -16,6 +16,82 @@ from typing import Callable, Dict, Iterable, List, Optional, Sequence, Tuple
 from urllib import request
 
 STAGE_ORDER = {"extend": 0, "prefill": 0, "decode": 1, "all": 2}
+TRACE_METADATA_NAMES = {
+    "process_name",
+    "thread_name",
+    "process_sort_index",
+    "thread_sort_index",
+}
+NON_KERNEL_TRACE_CATEGORIES = ("python_function", "cpu_op", "trace")
+PYTHON_SCOPE_NAME_PREFIXES = ("python/", "nn.module:")
+
+
+def normalize_text(value: object) -> str:
+    return re.sub(r"\s+", " ", str(value)).strip()
+
+
+def contains_any_keyword(text: str, keywords: Iterable[str]) -> bool:
+    return any(keyword in text for keyword in keywords)
+
+
+def coerce_optional_int(value: object) -> Optional[int]:
+    if value in (None, "", "None"):
+        return None
+    if isinstance(value, int):
+        return value
+    if isinstance(value, float):
+        return int(value) if value.is_integer() else None
+    try:
+        return int(str(value))
+    except (TypeError, ValueError):
+        return None
+
+
+def extract_trace_events(trace: object) -> Sequence[dict]:
+    if isinstance(trace, dict):
+        events = trace.get("traceEvents", [])
+        return events if isinstance(events, list) else []
+    if isinstance(trace, list):
+        return trace
+    return []
+
+
+def is_trace_metadata_name(name: object) -> bool:
+    return str(name) in TRACE_METADATA_NAMES
+
+
+def is_complete_duration_event(event: dict) -> bool:
+    if event.get("ph") != "X":
+        return False
+    dur = event.get("dur")
+    ts = event.get("ts")
+    if dur is None or ts is None:
+        return False
+    try:
+        return float(dur) > 0
+    except (TypeError, ValueError):
+        return False
+
+
+def is_annotation_event(name: object, category: object) -> bool:
+    lowered_name = normalize_text(name).lower()
+    lowered_category = normalize_text(category).lower()
+    return "annotation" in lowered_category or lowered_name.startswith("## call ")
+
+
+def is_non_kernel_trace_category(category: object) -> bool:
+    lowered_category = normalize_text(category).lower()
+    return any(token in lowered_category for token in NON_KERNEL_TRACE_CATEGORIES)
+
+
+def looks_like_python_scope_name(name: object) -> bool:
+    lowered_name = normalize_text(name).lower()
+    return ".py(" in lowered_name or lowered_name.startswith(PYTHON_SCOPE_NAME_PREFIXES)
+
+
+def has_stream_marker(args: Optional[dict]) -> bool:
+    trace_args = args or {}
+    return "stream" in trace_args or "cuda_stream" in trace_args
 
 
 def load_trace_json(path: Path) -> dict:

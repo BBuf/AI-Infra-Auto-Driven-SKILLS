@@ -44,6 +44,95 @@ FLASHINFER_ACT = "void flashinfer::activation::act_and_mul_kernel<__half, &"
 
 FLASHINFER_NORM = "void flashinfer::norm::FusedAddRMSNormKernel<8u, __half>"
 
+GPU_USER_ANNOTATION = {
+    "ph": "X",
+    "cat": "gpu_user_annotation",
+    "name": "## Call CompiledFxGraph deadbeef ##",
+    "ts": 1.0,
+    "dur": 2.0,
+    "args": {"External id": 7},
+}
+
+CORRELATION_EXTERNAL_TRACE = {
+    "traceEvents": [
+        {
+            "ph": "X",
+            "cat": "python_function",
+            "name": "/Users/bbuf/工作目录/Common/sglang/python/sglang/srt/layers/quantization/fp8_utils.py(1341): apply_fp8_linear",
+            "pid": "11",
+            "tid": "11",
+            "ts": 0.0,
+            "dur": 100.0,
+            "args": {"Python id": 1, "Python parent id": None},
+        },
+        {
+            "ph": "X",
+            "cat": "cpu_op",
+            "name": "sgl_kernel::fp8_scaled_mm",
+            "pid": "11",
+            "tid": "11",
+            "ts": 48.0,
+            "dur": 14.0,
+            "args": {"External id": 7},
+        },
+        {
+            "ph": "X",
+            "cat": "cuda_runtime",
+            "name": "cudaLaunchKernelExC",
+            "pid": "11",
+            "tid": "11",
+            "ts": 50.0,
+            "dur": 3.0,
+            "args": {"External id": 7, "correlation": 42},
+        },
+        {
+            "ph": "X",
+            "cat": "kernel",
+            "name": "_static_quant_fp8",
+            "pid": "0",
+            "tid": "13",
+            "ts": 60.0,
+            "dur": 2.0,
+            "args": {"correlation": 42, "stream": 13},
+        },
+    ]
+}
+
+LAUNCH_FALLBACK_TRACE = {
+    "traceEvents": [
+        {
+            "ph": "X",
+            "cat": "python_function",
+            "name": "/Users/bbuf/工作目录/Common/sglang/python/sglang/srt/layers/attention/trtllm_mha_backend.py(695): forward_decode",
+            "pid": "21",
+            "tid": "21",
+            "ts": 10.0,
+            "dur": 60.0,
+            "args": {"Python id": 1, "Python parent id": None},
+        },
+        {
+            "ph": "X",
+            "cat": "cuda_driver",
+            "name": "cuLaunchKernelEx",
+            "pid": "21",
+            "tid": "21",
+            "ts": 40.0,
+            "dur": 4.0,
+            "args": {"correlation": 99},
+        },
+        {
+            "ph": "X",
+            "cat": "kernel",
+            "name": "fmhaSm100fKernel_QkvFp16OFp16H128PagedKvCausalP64MultiCtasKvVarSeqQ8Kv128StaticSwapsAbForGen",
+            "pid": "0",
+            "tid": "13",
+            "ts": 55.0,
+            "dur": 8.0,
+            "args": {"correlation": 99, "stream": 13},
+        },
+    ]
+}
+
 
 class TestKernelClassification(unittest.TestCase):
     def test_llm_breakdown_classifies_cutlass_fp8_linear_as_gemm(self):
@@ -64,6 +153,58 @@ class TestKernelClassification(unittest.TestCase):
 
     def test_overlap_classifies_floor_kernel_as_elementwise(self):
         self.assertEqual(overlap.classify_kernel(FLOOR_ELEMENTWISE), "elementwise")
+
+    def test_llm_breakdown_ignores_gpu_user_annotation(self):
+        self.assertFalse(llm.is_gpu_kernel_event(GPU_USER_ANNOTATION))
+
+    def test_overlap_ignores_gpu_user_annotation(self):
+        self.assertFalse(overlap.is_kernel_event(GPU_USER_ANNOTATION))
+
+    def test_breakdown_recovers_external_id_from_correlation(self):
+        kernels, cpu_ops, python_frames, launch_events, _, _ = llm.extract_trace_data(
+            CORRELATION_EXTERNAL_TRACE
+        )
+        self.assertEqual(kernels[0].external_id, 7)
+        site_stats = llm.aggregate_kernel_sites(
+            kernels,
+            llm.build_cpu_op_index(cpu_ops),
+            python_frames,
+            launches_by_correlation=llm.build_launch_index(launch_events),
+        )
+        sites = site_stats[kernels[0].canonical_name]
+        self.assertIn(
+            "python/sglang/srt/layers/quantization/fp8_utils.py:1341 apply_fp8_linear",
+            sites,
+        )
+        self.assertEqual(
+            sites[
+                "python/sglang/srt/layers/quantization/fp8_utils.py:1341 apply_fp8_linear"
+            ].cpu_ops.most_common(1)[0][0],
+            "sgl_kernel::fp8_scaled_mm",
+        )
+
+    def test_breakdown_falls_back_to_launch_scope_when_cpu_op_is_missing(self):
+        kernels, cpu_ops, python_frames, launch_events, _, _ = llm.extract_trace_data(
+            LAUNCH_FALLBACK_TRACE
+        )
+        self.assertIsNone(kernels[0].external_id)
+        site_stats = llm.aggregate_kernel_sites(
+            kernels,
+            llm.build_cpu_op_index(cpu_ops),
+            python_frames,
+            launches_by_correlation=llm.build_launch_index(launch_events),
+        )
+        sites = site_stats[kernels[0].canonical_name]
+        self.assertIn(
+            "python/sglang/srt/layers/attention/trtllm_mha_backend.py:695 forward_decode",
+            sites,
+        )
+        self.assertEqual(
+            sites[
+                "python/sglang/srt/layers/attention/trtllm_mha_backend.py:695 forward_decode"
+            ].cpu_ops.most_common(1)[0][0],
+            "cuLaunchKernelEx",
+        )
 
 
 if __name__ == "__main__":

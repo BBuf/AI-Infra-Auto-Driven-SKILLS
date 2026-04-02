@@ -13,8 +13,18 @@ from pathlib import Path
 from typing import DefaultDict, Dict, Iterable, List, Optional, Sequence, Tuple
 
 from profile_common import (
+    coerce_optional_int,
+    contains_any_keyword,
     discover_trace_targets,
+    extract_trace_events,
+    has_stream_marker,
+    is_annotation_event,
+    is_complete_duration_event,
+    is_non_kernel_trace_category,
+    is_trace_metadata_name,
     load_trace_json,
+    looks_like_python_scope_name,
+    normalize_text,
     parse_stage,
     run_profiler,
     select_heaviest_pid,
@@ -173,12 +183,6 @@ COMPUTE_HINT_KEYWORDS = (
     "expert",
 )
 
-METADATA_NAMES = {
-    "process_name",
-    "thread_name",
-    "process_sort_index",
-    "thread_sort_index",
-}
 REPO_PREFIXES = (
     "/data/bbuf/repos/sglang/",
     "/data/bbuf/sglang/",
@@ -221,6 +225,7 @@ class KernelEvent:
     ts: float
     dur: float
     external_id: Optional[int]
+    correlation: Optional[int] = None
 
 
 @dataclass
@@ -231,6 +236,16 @@ class CpuOpEvent:
     ts: float
     dur: float
     external_id: int
+
+
+@dataclass
+class LaunchEvent:
+    name: str
+    pid: str
+    tid: str
+    ts: float
+    dur: float
+    correlation: int
 
 
 @dataclass
@@ -294,14 +309,14 @@ class FusionOpportunity:
 
 
 def short_name(name: str, max_len: int = 96) -> str:
-    text = re.sub(r"\s+", " ", name).strip()
+    text = normalize_text(name)
     if len(text) <= max_len:
         return text
     return text[: max_len - 3] + "..."
 
 
 def canonicalize_name(name: str) -> str:
-    text = re.sub(r"\s+", " ", name).strip()
+    text = normalize_text(name)
     text = re.sub(r"0x[0-9a-fA-F]+", "0xADDR", text)
     text = re.sub(r"<[^<>]{40,}>", "<...>", text)
     if text.startswith("void "):
@@ -310,39 +325,29 @@ def canonicalize_name(name: str) -> str:
 
 
 def classify_kernel(name: str) -> str:
+    # Keep the matching order explicit: strong communication/memory signals win
+    # first, then we fall back to weaker category hints.
     lowered = name.lower()
-    if any(keyword in lowered for keyword in COMMUNICATION_STRONG_KEYWORDS):
+    if contains_any_keyword(lowered, COMMUNICATION_STRONG_KEYWORDS):
         return "communication"
-    if any(keyword in lowered for keyword in MEMORY_STRONG_KEYWORDS):
+    if contains_any_keyword(lowered, MEMORY_STRONG_KEYWORDS):
         return "memory"
-    looks_compute_like = any(keyword in lowered for keyword in COMPUTE_HINT_KEYWORDS)
-    if (
-        any(keyword in lowered for keyword in MEMORY_WEAK_KEYWORDS)
-        and not looks_compute_like
-    ):
+    looks_compute_like = contains_any_keyword(lowered, COMPUTE_HINT_KEYWORDS)
+    if contains_any_keyword(lowered, MEMORY_WEAK_KEYWORDS) and not looks_compute_like:
         return "memory"
     for category, keywords in CATEGORY_PATTERNS:
-        if any(keyword in lowered for keyword in keywords):
+        if contains_any_keyword(lowered, keywords):
             return category
     if (
-        any(keyword in lowered for keyword in COMMUNICATION_WEAK_KEYWORDS)
+        contains_any_keyword(lowered, COMMUNICATION_WEAK_KEYWORDS)
         and not looks_compute_like
     ):
         return "communication"
     return "other"
 
 
-def parse_optional_int(value) -> Optional[int]:
-    if value in (None, "", "None"):
-        return None
-    try:
-        return int(value)
-    except (TypeError, ValueError):
-        return None
-
-
 def normalize_source_location(name: str) -> str:
-    text = re.sub(r"\s+", " ", str(name)).strip()
+    text = normalize_text(name)
     match = re.match(r"(?P<path>.+?)\((?P<line>\d+)\): (?P<func>.+)$", text)
     if not match:
         return text
@@ -474,32 +479,33 @@ def format_ms(value_us: float) -> str:
     return f"{value_us / 1000.0:.2f} ms"
 
 
+def is_cuda_launch_event(name: str, cat: str) -> bool:
+    lowered_name = normalize_text(name).lower()
+    lowered_cat = normalize_text(cat).lower()
+    if lowered_cat not in {"cuda_runtime", "cuda_driver"}:
+        return False
+    return "launch" in lowered_name
+
+
 def is_gpu_kernel_event(event: dict) -> bool:
-    if event.get("ph") != "X":
+    # Be conservative here: first drop trace metadata / Python scopes /
+    # annotations, then only accept entries with clear GPU-kernel markers.
+    if not is_complete_duration_event(event):
         return False
-    if event.get("name") in METADATA_NAMES:
+    name = normalize_text(event.get("name", ""))
+    if is_trace_metadata_name(name):
         return False
-    dur = event.get("dur")
-    ts = event.get("ts")
-    if dur is None or ts is None or float(dur) <= 0:
-        return False
-    cat = str(event.get("cat", "")).lower()
+    cat = normalize_text(event.get("cat", "")).lower()
     args = event.get("args") or {}
-    name = str(event.get("name", ""))
-    lowered = name.lower()
-    if "python_function" in cat or "cpu_op" in cat or cat == "trace":
+    if is_non_kernel_trace_category(cat):
+        return False
+    if is_annotation_event(name, cat):
         return False
     if "kernel" in cat or cat.startswith("gpu_"):
         return True
-    if (
-        ".py(" in lowered
-        or lowered.startswith("python/")
-        or lowered.startswith("nn.module:")
-    ):
+    if looks_like_python_scope_name(name):
         return False
-    if "stream" in args or "cuda_stream" in args:
-        return True
-    return False
+    return has_stream_marker(args)
 
 
 def extract_trace_data(
@@ -508,10 +514,15 @@ def extract_trace_data(
     List[KernelEvent],
     List[CpuOpEvent],
     Dict[Tuple[str, str], List[PythonFrame]],
+    List[LaunchEvent],
     Optional[str],
     float,
 ]:
-    raw_events = trace.get("traceEvents", trace if isinstance(trace, list) else [])
+    # Build the basic trace views in one pass so later stages can stay simple:
+    # GPU kernels for ranking, CPU ops for External-id mapping, Python frames for
+    # source attribution, and CUDA launch calls for correlation-based fallback.
+    raw_events = extract_trace_events(trace)
+    correlation_external = build_correlation_external_lookup(raw_events)
     chosen_pid = select_heaviest_pid(
         raw_events,
         is_gpu_kernel_event,
@@ -520,6 +531,7 @@ def extract_trace_data(
 
     kernels: List[KernelEvent] = []
     cpu_ops: List[CpuOpEvent] = []
+    launches: List[LaunchEvent] = []
     python_frames: DefaultDict[Tuple[str, str], List[PythonFrame]] = defaultdict(list)
     min_ts = None
     max_end = None
@@ -545,12 +557,15 @@ def extract_trace_data(
                     tid=tid,
                     ts=ts,
                     dur=dur,
-                    python_id=parse_optional_int(args.get("Python id")),
-                    parent_id=parse_optional_int(args.get("Python parent id")),
+                    python_id=coerce_optional_int(args.get("Python id")),
+                    parent_id=coerce_optional_int(args.get("Python parent id")),
                 )
             )
 
-        external_id = parse_optional_int(args.get("External id"))
+        correlation = coerce_optional_int(args.get("correlation"))
+        external_id = coerce_optional_int(args.get("External id"))
+        if external_id is None and correlation is not None:
+            external_id = correlation_external.get(correlation)
         if cat == "cpu_op" and external_id is not None:
             cpu_ops.append(
                 CpuOpEvent(
@@ -560,6 +575,17 @@ def extract_trace_data(
                     ts=ts,
                     dur=dur,
                     external_id=external_id,
+                )
+            )
+        if is_cuda_launch_event(name, cat) and correlation is not None:
+            launches.append(
+                LaunchEvent(
+                    name=name,
+                    pid=pid,
+                    tid=tid,
+                    ts=ts,
+                    dur=dur,
+                    correlation=correlation,
                 )
             )
 
@@ -578,6 +604,7 @@ def extract_trace_data(
                 ts=ts,
                 dur=dur,
                 external_id=external_id,
+                correlation=correlation,
             )
         )
 
@@ -585,7 +612,18 @@ def extract_trace_data(
         frames.sort(key=lambda item: (item.ts, item.end_ts))
 
     window_us = 0.0 if min_ts is None or max_end is None else max_end - min_ts
-    return kernels, cpu_ops, dict(python_frames), chosen_pid, window_us
+    return kernels, cpu_ops, dict(python_frames), launches, chosen_pid, window_us
+
+
+def build_correlation_external_lookup(raw_events: Sequence[dict]) -> Dict[int, int]:
+    lookup: Dict[int, int] = {}
+    for event in raw_events:
+        args = event.get("args", {}) or {}
+        correlation = coerce_optional_int(args.get("correlation"))
+        external_id = coerce_optional_int(args.get("External id"))
+        if correlation is not None and external_id is not None:
+            lookup[correlation] = external_id
+    return lookup
 
 
 def build_cpu_op_index(cpu_ops: Sequence[CpuOpEvent]) -> Dict[int, List[CpuOpEvent]]:
@@ -602,13 +640,39 @@ def match_cpu_op(
 ) -> Optional[CpuOpEvent]:
     if kernel.external_id is None:
         return None
-    candidates = cpu_ops_by_external_id.get(kernel.external_id, [])
-    if not candidates:
+    return match_timed_event(
+        cpu_ops_by_external_id.get(kernel.external_id, []), kernel.ts
+    )
+
+
+def build_launch_index(
+    launch_events: Sequence[LaunchEvent],
+) -> Dict[int, List[LaunchEvent]]:
+    output: DefaultDict[int, List[LaunchEvent]] = defaultdict(list)
+    for launch in launch_events:
+        output[launch.correlation].append(launch)
+    for items in output.values():
+        items.sort(key=lambda item: item.ts)
+    return dict(output)
+
+
+def match_launch_event(
+    kernel: KernelEvent, launches_by_correlation: Dict[int, List[LaunchEvent]]
+) -> Optional[LaunchEvent]:
+    if kernel.correlation is None:
         return None
-    earlier = [item for item in candidates if item.ts <= kernel.ts + 1e-3]
+    return match_timed_event(
+        launches_by_correlation.get(kernel.correlation, []), kernel.ts
+    )
+
+
+def match_timed_event(events: Sequence, probe_ts: float):
+    if not events:
+        return None
+    earlier = [item for item in events if item.ts <= probe_ts + 1e-3]
     if earlier:
-        return min(earlier, key=lambda item: abs((item.ts + item.dur) - kernel.ts))
-    return min(candidates, key=lambda item: abs(item.ts - kernel.ts))
+        return min(earlier, key=lambda item: abs((item.ts + item.dur) - probe_ts))
+    return min(events, key=lambda item: abs(item.ts - probe_ts))
 
 
 def find_active_python_frames(
@@ -622,6 +686,62 @@ def find_active_python_frames(
     active = [item for item in frames if item.ts <= probe_ts <= item.end_ts]
     active.sort(key=lambda item: (item.ts, item.end_ts))
     return active
+
+
+def find_active_python_frames_at_ts(
+    *,
+    pid: str,
+    tid: str,
+    ts: float,
+    python_frames: Dict[Tuple[str, str], List[PythonFrame]],
+) -> List[PythonFrame]:
+    frames = python_frames.get((pid, tid), [])
+    if not frames:
+        return []
+    active = [item for item in frames if item.ts <= ts <= item.end_ts]
+    active.sort(key=lambda item: (item.ts, item.end_ts))
+    return active
+
+
+def render_kernel_site(
+    active_frames: Sequence[PythonFrame], cpu_op_name: str
+) -> Tuple[str, str, str]:
+    chosen_frame = choose_mapping_frame(active_frames)
+    if chosen_frame is None:
+        return "unresolved", "", cpu_op_name
+    return chosen_frame.normalized_name, build_stack_display(active_frames), cpu_op_name
+
+
+def resolve_kernel_site_context(
+    kernel: KernelEvent,
+    cpu_ops_by_external_id: Dict[int, List[CpuOpEvent]],
+    python_frames: Dict[Tuple[str, str], List[PythonFrame]],
+    launches_by_correlation: Dict[int, List[LaunchEvent]],
+) -> Tuple[str, str, str]:
+    # Prefer the normal External-id path first. If the kernel dropped that link,
+    # fall back to the correlated CUDA launch and reuse the Python frames that
+    # were active when the launch happened.
+    cpu_op = match_cpu_op(kernel, cpu_ops_by_external_id)
+    if cpu_op is not None:
+        active_frames = find_active_python_frames(cpu_op, python_frames)
+        if active_frames:
+            return render_kernel_site(active_frames, cpu_op.name)
+
+    launch_event = match_launch_event(kernel, launches_by_correlation)
+    if launch_event is not None:
+        active_frames = find_active_python_frames_at_ts(
+            pid=launch_event.pid,
+            tid=launch_event.tid,
+            ts=launch_event.ts,
+            python_frames=python_frames,
+        )
+        if active_frames:
+            cpu_op_name = cpu_op.name if cpu_op is not None else launch_event.name
+            return render_kernel_site(active_frames, cpu_op_name)
+        return "unresolved", "", launch_event.name
+
+    cpu_op_name = cpu_op.name if cpu_op is not None else ""
+    return "unresolved", "", cpu_op_name
 
 
 def choose_mapping_frame(active_frames: Sequence[PythonFrame]) -> Optional[PythonFrame]:
@@ -660,25 +780,21 @@ def aggregate_kernel_sites(
     kernels: Sequence[KernelEvent],
     cpu_ops_by_external_id: Dict[int, List[CpuOpEvent]],
     python_frames: Dict[Tuple[str, str], List[PythonFrame]],
+    launches_by_correlation: Optional[Dict[int, List[LaunchEvent]]] = None,
 ) -> Dict[str, Dict[str, MappingSiteAggregate]]:
+    # Each kernel is mapped independently so the fallback behavior stays easy to
+    # reason about and easy to regression-test.
     output: DefaultDict[str, DefaultDict[str, MappingSiteAggregate]] = defaultdict(
         lambda: defaultdict(MappingSiteAggregate)
     )
+    launch_index = launches_by_correlation or {}
     for kernel in kernels:
-        cpu_op = match_cpu_op(kernel, cpu_ops_by_external_id)
-        active_frames = (
-            find_active_python_frames(cpu_op, python_frames) if cpu_op else []
+        location, stack, cpu_op_name = resolve_kernel_site_context(
+            kernel,
+            cpu_ops_by_external_id,
+            python_frames,
+            launch_index,
         )
-        chosen_frame = choose_mapping_frame(active_frames)
-
-        location = "unresolved"
-        stack = ""
-        cpu_op_name = ""
-        if chosen_frame is not None:
-            location = chosen_frame.normalized_name
-            stack = build_stack_display(active_frames)
-        if cpu_op is not None:
-            cpu_op_name = cpu_op.name
 
         item = output[kernel.canonical_name][location]
         item.total_us += kernel.dur
@@ -1381,12 +1497,16 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
     for trace_path in traces:
         trace = load_trace_json(trace_path)
-        kernels, cpu_ops, python_frames, chosen_pid, window_us = extract_trace_data(
-            trace
+        kernels, cpu_ops, python_frames, launch_events, chosen_pid, window_us = (
+            extract_trace_data(trace)
         )
         cpu_ops_by_external_id = build_cpu_op_index(cpu_ops)
+        launches_by_correlation = build_launch_index(launch_events)
         local_site_stats = aggregate_kernel_sites(
-            kernels, cpu_ops_by_external_id, python_frames
+            kernels,
+            cpu_ops_by_external_id,
+            python_frames,
+            launches_by_correlation=launches_by_correlation,
         )
         stage = parse_stage(trace_path)
         kernel_categories = {
