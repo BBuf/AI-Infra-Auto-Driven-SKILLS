@@ -31,6 +31,10 @@ jobs:
           args: --config .github/linters/lychee.toml README.md "skills/**/*.md"
 
       - name: Run clang-format checks
+        if: >-
+          ${{
+            hashFiles('**/*.h', '**/*.c', '**/*.cpp', '**/*.hpp', '**/*.cu', '**/*.cuh', '**/*.cc') != ''
+          }}
         uses: DoozyX/clang-format-lint-action@v0.20
         with:
           source: .
