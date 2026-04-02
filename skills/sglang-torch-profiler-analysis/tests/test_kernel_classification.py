@@ -206,6 +206,44 @@ class TestKernelClassification(unittest.TestCase):
             "cuLaunchKernelEx",
         )
 
+    def test_best_site_summary_labels_within_kernel_site_share(self):
+        location, cpu_op = llm.best_site_summary(
+            {
+                "sites": [
+                    {
+                        "location": (
+                            "python/sglang/srt/layers/quantization/fp8_utils.py:1341 "
+                            "apply_fp8_linear"
+                        ),
+                        "display_location": (
+                            "python/sglang/srt/layers/quantization/fp8_utils.py:1341 "
+                            "apply_fp8_linear"
+                        ),
+                        "share_pct_within_kernel": 63.2,
+                        "top_cpu_op": "sgl_kernel::fp8_scaled_mm",
+                    },
+                    {
+                        "location": "python/sglang/jit_kernel/rope.py:179 apply_rope",
+                        "display_location": (
+                            "python/sglang/jit_kernel/rope.py:179 apply_rope"
+                        ),
+                        "share_pct_within_kernel": 36.8,
+                        "top_cpu_op": "sglang::apply_rope_inplace",
+                    },
+                ]
+            }
+        )
+        self.assertEqual(
+            location,
+            "python/sglang/srt/layers/quantization/fp8_utils.py:1341 apply_fp8_linear "
+            "(site share 63%)<br>python/sglang/jit_kernel/rope.py:179 apply_rope "
+            "(site share 37%)",
+        )
+        self.assertEqual(
+            cpu_op,
+            "sgl_kernel::fp8_scaled_mm<br>sglang::apply_rope_inplace",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

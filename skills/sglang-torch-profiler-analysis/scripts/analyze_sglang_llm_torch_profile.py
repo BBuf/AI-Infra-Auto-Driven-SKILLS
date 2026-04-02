@@ -941,7 +941,7 @@ def best_site_summary(kernel_entry: Optional[dict]) -> Tuple[str, str]:
         location = site_display_location(site)
         share = site.get("share_pct_within_kernel")
         if len(candidate_sites) > 1 and share is not None:
-            rendered_locations.append(f"{location} ({share:.0f}%)")
+            rendered_locations.append(f"{location} (site share {share:.0f}%)")
         else:
             rendered_locations.append(location)
         cpu_op = site.get("top_cpu_op")
@@ -1242,7 +1242,7 @@ def print_mapping_table(
     label = "all kernels" if table_limit <= 0 else f"first {len(rendered_rows)} kernels"
     print(f"\nKernel-to-Python mapping (Markdown, {label}):")
     print(
-        "| Kernel | Category | GPU time | Share | Launches | Python location | CPU op |"
+        "| Kernel | Category | GPU time | Share | Launches | Python location (site share) | CPU op |"
     )
     print("| --- | --- | ---: | ---: | ---: | --- | --- |")
     for row in rendered_rows:

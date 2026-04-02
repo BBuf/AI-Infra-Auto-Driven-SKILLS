@@ -277,7 +277,7 @@ def build_stage_trace_map(trace_paths: Sequence[Path]) -> Dict[str, Path]:
 
 def render_kernel_table(rows: Sequence[dict]) -> List[str]:
     lines = [
-        "| Stage | Kernel | Category | GPU time | Share | Launches | Python location | CPU op |",
+        "| Stage | Kernel | Category | GPU time | Share | Launches | Python location (site share) | CPU op |",
         "| --- | --- | --- | ---: | ---: | ---: | --- | --- |",
     ]
     for row in rows:
