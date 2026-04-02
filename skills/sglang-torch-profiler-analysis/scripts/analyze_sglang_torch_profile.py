@@ -46,7 +46,9 @@ def parse_perfetto_fix_args(argv: Sequence[str]) -> argparse.Namespace:
         prog="analyze_sglang_torch_profile.py perfetto-fix",
         description="Rewrite a trace so overlapping kernel lanes render more reliably in Perfetto.",
     )
-    parser.add_argument("--input", required=True, help="Input trace.json or trace.json.gz path.")
+    parser.add_argument(
+        "--input", required=True, help="Input trace.json or trace.json.gz path."
+    )
     parser.add_argument("--output", default=None, help="Optional output path.")
     return parser.parse_args(argv)
 
@@ -60,17 +62,66 @@ def parse_triage_args(argv: Sequence[str]) -> argparse.Namespace:
             "and fuse opportunities."
         ),
     )
-    parser.add_argument("--mapping-input", type=str, default=None, help="Graph-off mapping trace file or directory.")
-    parser.add_argument("--mapping-url", type=str, default=None, help="Running graph-off SGLang server URL for the mapping trace.")
-    parser.add_argument("--formal-input", type=str, default=None, help="Formal graph-on trace file or directory.")
-    parser.add_argument("--formal-url", type=str, default=None, help="Running graph-on SGLang server URL for the formal trace.")
-    parser.add_argument("--mapping-output-dir", type=str, default=None, help="Trace output dir when using --mapping-url.")
-    parser.add_argument("--formal-output-dir", type=str, default=None, help="Trace output dir when using --formal-url.")
-    parser.add_argument("--mapping-profile-prefix", type=str, default="mapping-trace", help="Profile prefix for the mapping trace.")
-    parser.add_argument("--formal-profile-prefix", type=str, default="formal-trace", help="Profile prefix for the formal trace.")
-    parser.add_argument("--num-steps", type=int, default=6, help="Profiler steps when generating traces from URLs.")
-    parser.add_argument("--profile-by-stage", action=argparse.BooleanOptionalAction, default=True)
-    parser.add_argument("--merge-profiles", action=argparse.BooleanOptionalAction, default=False)
+    parser.add_argument(
+        "--mapping-input",
+        type=str,
+        default=None,
+        help="Graph-off mapping trace file or directory.",
+    )
+    parser.add_argument(
+        "--mapping-url",
+        type=str,
+        default=None,
+        help="Running graph-off SGLang server URL for the mapping trace.",
+    )
+    parser.add_argument(
+        "--formal-input",
+        type=str,
+        default=None,
+        help="Formal graph-on trace file or directory.",
+    )
+    parser.add_argument(
+        "--formal-url",
+        type=str,
+        default=None,
+        help="Running graph-on SGLang server URL for the formal trace.",
+    )
+    parser.add_argument(
+        "--mapping-output-dir",
+        type=str,
+        default=None,
+        help="Trace output dir when using --mapping-url.",
+    )
+    parser.add_argument(
+        "--formal-output-dir",
+        type=str,
+        default=None,
+        help="Trace output dir when using --formal-url.",
+    )
+    parser.add_argument(
+        "--mapping-profile-prefix",
+        type=str,
+        default="mapping-trace",
+        help="Profile prefix for the mapping trace.",
+    )
+    parser.add_argument(
+        "--formal-profile-prefix",
+        type=str,
+        default="formal-trace",
+        help="Profile prefix for the formal trace.",
+    )
+    parser.add_argument(
+        "--num-steps",
+        type=int,
+        default=6,
+        help="Profiler steps when generating traces from URLs.",
+    )
+    parser.add_argument(
+        "--profile-by-stage", action=argparse.BooleanOptionalAction, default=True
+    )
+    parser.add_argument(
+        "--merge-profiles", action=argparse.BooleanOptionalAction, default=False
+    )
     parser.add_argument("--probe-requests", type=int, default=1)
     parser.add_argument(
         "--probe-prompt",
@@ -82,8 +133,18 @@ def parse_triage_args(argv: Sequence[str]) -> argparse.Namespace:
     )
     parser.add_argument("--probe-max-new-tokens", type=int, default=None)
     parser.add_argument("--probe-delay", type=float, default=0.5)
-    parser.add_argument("--start-step", type=int, default=None, help="Pass through to sglang.profiler when generating traces from URLs.")
-    parser.add_argument("--pid-substring", type=str, default=None, help="Restrict overlap analysis to PIDs containing this substring.")
+    parser.add_argument(
+        "--start-step",
+        type=int,
+        default=None,
+        help="Pass through to sglang.profiler when generating traces from URLs.",
+    )
+    parser.add_argument(
+        "--pid-substring",
+        type=str,
+        default=None,
+        help="Restrict overlap analysis to PIDs containing this substring.",
+    )
     parser.add_argument(
         "--kernel-table-limit",
         type=int,
@@ -141,28 +202,40 @@ def resolve_profile_targets(
 
 
 def build_mapping_kernel_map(trace_paths: Sequence[Path]) -> dict:
-    stage_site_stats = defaultdict(lambda: defaultdict(lambda: defaultdict(breakdown_cli.MappingSiteAggregate)))
+    stage_site_stats = defaultdict(
+        lambda: defaultdict(lambda: defaultdict(breakdown_cli.MappingSiteAggregate))
+    )
     stage_kernel_categories: Dict[str, Dict[str, str]] = defaultdict(dict)
-    global_site_stats = defaultdict(lambda: defaultdict(breakdown_cli.MappingSiteAggregate))
+    global_site_stats = defaultdict(
+        lambda: defaultdict(breakdown_cli.MappingSiteAggregate)
+    )
     global_kernel_categories: Dict[str, str] = {}
 
     for trace_path in trace_paths:
         trace = load_trace_json(trace_path)
         kernels, cpu_ops, python_frames, _, _ = breakdown_cli.extract_trace_data(trace)
         cpu_ops_by_external_id = breakdown_cli.build_cpu_op_index(cpu_ops)
-        local_site_stats = breakdown_cli.aggregate_kernel_sites(kernels, cpu_ops_by_external_id, python_frames)
+        local_site_stats = breakdown_cli.aggregate_kernel_sites(
+            kernels, cpu_ops_by_external_id, python_frames
+        )
         stage = parse_stage(trace_path)
-        kernel_categories = {kernel.canonical_name: kernel.category for kernel in kernels}
+        kernel_categories = {
+            kernel.canonical_name: kernel.category for kernel in kernels
+        }
         breakdown_cli.merge_site_stats(stage_site_stats[stage], local_site_stats)
         breakdown_cli.merge_site_stats(global_site_stats, local_site_stats)
         stage_kernel_categories[stage].update(kernel_categories)
         global_kernel_categories.update(kernel_categories)
 
     stage_payloads = {
-        stage: breakdown_cli.build_stage_payload(dict(site_stats), stage_kernel_categories.get(stage, {}))
+        stage: breakdown_cli.build_stage_payload(
+            dict(site_stats), stage_kernel_categories.get(stage, {})
+        )
         for stage, site_stats in stage_site_stats.items()
     }
-    global_payload = breakdown_cli.build_stage_payload(dict(global_site_stats), global_kernel_categories)
+    global_payload = breakdown_cli.build_stage_payload(
+        dict(global_site_stats), global_kernel_categories
+    )
     return {"stages": stage_payloads, "global": global_payload}
 
 
@@ -186,7 +259,9 @@ def pick_trace_for_stage(stage_to_trace: Dict[str, Path], stage: str) -> Optiona
 
 def build_stage_trace_map(trace_paths: Sequence[Path]) -> Dict[str, Path]:
     stage_map: Dict[str, Path] = {}
-    for trace_path in sorted(trace_paths, key=lambda item: (stage_index(parse_stage(item)), item.name)):
+    for trace_path in sorted(
+        trace_paths, key=lambda item: (stage_index(parse_stage(item)), item.name)
+    ):
         stage_map[parse_stage(trace_path)] = trace_path
     return stage_map
 
@@ -200,7 +275,9 @@ def render_kernel_table(rows: Sequence[dict]) -> List[str]:
         lines.append(
             "| {stage} | {kernel} | {category} | {gpu_time} | {share:.1f}% | {launches} | {location} | {cpu_op} |".format(
                 stage=breakdown_cli.escape_md_cell(stage_display(row["stage"])),
-                kernel=breakdown_cli.escape_md_cell(breakdown_cli.short_name(row["kernel"], 72)),
+                kernel=breakdown_cli.escape_md_cell(
+                    breakdown_cli.short_name(row["kernel"], 72)
+                ),
                 category=breakdown_cli.escape_md_cell(row["category"]),
                 gpu_time=breakdown_cli.format_ms(row["total_us"]),
                 share=row["share_pct"],
@@ -229,8 +306,12 @@ def render_overlap_table(rows: Sequence[dict]) -> List[str]:
                     breakdown_cli.escape_md_cell(stage_display(row["stage"])),
                     row["priority"],
                     row["verdict"],
-                    breakdown_cli.escape_md_cell(overlap_cli.short_name(row["kernel"], 38)),
-                    breakdown_cli.escape_md_cell(overlap_cli.short_name(row["python_scope"], 42)),
+                    breakdown_cli.escape_md_cell(
+                        overlap_cli.short_name(row["kernel"], 38)
+                    ),
+                    breakdown_cli.escape_md_cell(
+                        overlap_cli.short_name(row["python_scope"], 42)
+                    ),
                     breakdown_cli.escape_md_cell(formal_signal),
                     overlap_cli.dependency_risk_label(row["dependency_signal"]),
                     row["recommendation"],
@@ -247,7 +328,9 @@ def render_fuse_table(rows: Sequence[dict]) -> List[str]:
         "| --- | --- | --- | ---: | ---: | --- | --- | --- | --- |",
     ]
     if not rows:
-        lines.append("| - | No medium-confidence source-backed fusion opportunity matched this trace. | - | - | - | - | - | - | - |")
+        lines.append(
+            "| - | No medium-confidence source-backed fusion opportunity matched this trace. | - | - | - | - | - | - | - |"
+        )
         return lines
     for row in rows:
         lines.append(
@@ -258,7 +341,9 @@ def render_fuse_table(rows: Sequence[dict]) -> List[str]:
                 gpu_time=breakdown_cli.format_ms(row["related_us"]),
                 share=row["share_pct"],
                 evidence=breakdown_cli.escape_md_cell(row["evidence"]),
-                current_locations=breakdown_cli.escape_md_cell(row["current_locations"]),
+                current_locations=breakdown_cli.escape_md_cell(
+                    row["current_locations"]
+                ),
                 candidate_path=breakdown_cli.escape_md_cell(row["candidate_path"]),
                 rationale=breakdown_cli.escape_md_cell(row["rationale"]),
             )
@@ -296,16 +381,24 @@ def run_triage(args: argparse.Namespace) -> int:
             continue
         stage = parse_stage(formal_trace)
         total_us = sum(kernel.dur for kernel in kernels)
-        kernel_stats = breakdown_cli.aggregate(kernels, key_fn=lambda item: item.canonical_name)
-        kernel_categories = {kernel.canonical_name: kernel.category for kernel in kernels}
+        kernel_stats = breakdown_cli.aggregate(
+            kernels, key_fn=lambda item: item.canonical_name
+        )
+        kernel_categories = {
+            kernel.canonical_name: kernel.category for kernel in kernels
+        }
         full_kernel_rows = breakdown_cli.build_kernel_rows(
             stage=stage,
             kernel_stats=kernel_stats,
             kernel_categories=kernel_categories,
-            local_stage_payload=mapping_kernel_map.get("stages", {}).get(stage, {"kernels": {}}),
+            local_stage_payload=mapping_kernel_map.get("stages", {}).get(
+                stage, {"kernels": {}}
+            ),
             external_kernel_map=mapping_kernel_map,
         )
-        visible_kernel_rows = breakdown_cli.limit_kernel_rows(full_kernel_rows, args.kernel_table_limit)
+        visible_kernel_rows = breakdown_cli.limit_kernel_rows(
+            full_kernel_rows, args.kernel_table_limit
+        )
         for row in visible_kernel_rows:
             kernel_rows_rendered.append(
                 {
@@ -348,18 +441,25 @@ def run_triage(args: argparse.Namespace) -> int:
         if mapping_trace is None:
             continue
         mapping_trace_json = load_trace_json(mapping_trace)
-        mapping_events, mapping_pid = overlap_cli.extract_kernel_events(mapping_trace_json, args.pid_substring)
+        mapping_events, mapping_pid = overlap_cli.extract_kernel_events(
+            mapping_trace_json, args.pid_substring
+        )
         if not mapping_events:
             continue
         formal_trace_json = load_trace_json(formal_trace)
-        formal_events, formal_pid = overlap_cli.extract_kernel_events(formal_trace_json, args.pid_substring)
+        formal_events, formal_pid = overlap_cli.extract_kernel_events(
+            formal_trace_json, args.pid_substring
+        )
         if not formal_events:
             continue
         mapping_bundle = overlap_cli.TraceBundle(
             label=f"mapping-{stage}",
             trace_path=mapping_trace,
             server_args=mapping_server_args,
-            raw_events=mapping_trace_json.get("traceEvents", mapping_trace_json if isinstance(mapping_trace_json, list) else []),
+            raw_events=mapping_trace_json.get(
+                "traceEvents",
+                mapping_trace_json if isinstance(mapping_trace_json, list) else [],
+            ),
             events=mapping_events,
             pid=mapping_pid,
         )
@@ -367,7 +467,10 @@ def run_triage(args: argparse.Namespace) -> int:
             label=f"formal-{stage}",
             trace_path=formal_trace,
             server_args=formal_server_args,
-            raw_events=formal_trace_json.get("traceEvents", formal_trace_json if isinstance(formal_trace_json, list) else []),
+            raw_events=formal_trace_json.get(
+                "traceEvents",
+                formal_trace_json if isinstance(formal_trace_json, list) else [],
+            ),
             events=formal_events,
             pid=formal_pid,
         )
@@ -404,7 +507,7 @@ def run_triage(args: argparse.Namespace) -> int:
     lines.append(f"Formal traces: {', '.join(str(path) for path in formal_traces)}")
     if formal_server_args or mapping_server_args:
         server_args = formal_server_args or mapping_server_args
-        model = server_args.get('model_path') or server_args.get('model')
+        model = server_args.get("model_path") or server_args.get("model")
         if model:
             lines.append(f"Model: {model}")
     lines.append("")
