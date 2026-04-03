@@ -245,6 +245,34 @@ class TestKernelClassification(unittest.TestCase):
             "sgl_kernel::fp8_scaled_mm<br>sglang::apply_rope_inplace",
         )
 
+    def test_breakdown_strips_data01_repo_prefix_from_source_locations(self):
+        self.assertEqual(
+            llm.normalize_source_location(
+                "/data01/bbuf/repos/sglang/python/sglang/srt/models/qwen3_5.py(766): _apply_qk_norm"
+            ),
+            "python/sglang/srt/models/qwen3_5.py:766 _apply_qk_norm",
+        )
+
+    def test_breakdown_keeps_anonymous_namespace_kernel_name(self):
+        self.assertEqual(
+            llm.canonicalize_name(
+                "void (anonymous namespace)::copy_blocks_kernel(int, int)"
+            ),
+            "void (anonymous namespace)::copy_blocks_kernel",
+        )
+
+    def test_fuse_location_summary_formats_function_first(self):
+        self.assertEqual(
+            llm.summarize_locations(
+                [
+                    "python/sglang/srt/models/qwen3_5.py:766 _apply_qk_norm",
+                    "python/sglang/srt/mem_cache/memory_pool.py:86 _set_kv_buffer_impl",
+                ]
+            ),
+            "_apply_qk_norm @ python/sglang/srt/models/qwen3_5.py:766"
+            "<br>_set_kv_buffer_impl @ python/sglang/srt/mem_cache/memory_pool.py:86",
+        )
+
     def test_triage_tables_preserve_full_kernel_and_scope_text(self):
         long_kernel = (
             "void extremely_long_kernel_name_with_many_template_arguments_and_suffixes_"
