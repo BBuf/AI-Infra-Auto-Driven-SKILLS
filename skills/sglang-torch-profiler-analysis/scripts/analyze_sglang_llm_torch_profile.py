@@ -24,6 +24,7 @@ from profile_common import (
     is_trace_metadata_name,
     load_trace_json,
     looks_like_python_scope_name,
+    normalize_repo_relative_path,
     normalize_text,
     parse_stage,
     run_profiler,
@@ -183,13 +184,6 @@ COMPUTE_HINT_KEYWORDS = (
     "expert",
 )
 
-REPO_PREFIXES = (
-    "/data/bbuf/repos/sglang/",
-    "/data/bbuf/sglang/",
-    "/data01/bbuf/repos/sglang/",
-    "/data01/bbuf/sglang/",
-    "/Users/bbuf/工作目录/Common/sglang/",
-)
 NOISE_FRAME_PREFIXES = (
     "threading.py(",
     "multiprocessing/",
@@ -365,14 +359,7 @@ def normalize_source_location(name: str) -> str:
     match = re.match(r"(?P<path>.+?)\((?P<line>\d+)\): (?P<func>.+)$", text)
     if not match:
         return text
-    path = match.group("path")
-    for prefix in REPO_PREFIXES:
-        if path.startswith(prefix):
-            path = path[len(prefix) :]
-            break
-    path = path.lstrip("/")
-    if path.startswith("sglang/"):
-        path = "python/" + path
+    path = normalize_repo_relative_path(match.group("path"))
     return f"{path}:{match.group('line')} {match.group('func')}"
 
 

@@ -245,12 +245,20 @@ class TestKernelClassification(unittest.TestCase):
             "sgl_kernel::fp8_scaled_mm<br>sglang::apply_rope_inplace",
         )
 
-    def test_breakdown_strips_data01_repo_prefix_from_source_locations(self):
+    def test_breakdown_normalizes_arbitrary_repo_prefix_from_source_locations(self):
         self.assertEqual(
             llm.normalize_source_location(
-                "/data01/bbuf/repos/sglang/python/sglang/srt/models/qwen3_5.py(766): _apply_qk_norm"
+                "/mnt/random/worktrees/feature-branch/sglang/python/sglang/srt/models/qwen3_5.py(766): _apply_qk_norm"
             ),
             "python/sglang/srt/models/qwen3_5.py:766 _apply_qk_norm",
+        )
+
+    def test_overlap_normalizes_arbitrary_repo_prefix_from_python_scope(self):
+        self.assertEqual(
+            overlap.canonicalize_python_scope_name(
+                "/tmp/custom-root/another-worktree/sglang/python/sglang/srt/layers/layernorm.py(89): _forward_with_allreduce_fusion"
+            ),
+            "python/sglang/srt/layers/layernorm.py(89): _forward_with_allreduce_fusion",
         )
 
     def test_breakdown_keeps_anonymous_namespace_kernel_name(self):
