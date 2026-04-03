@@ -1250,7 +1250,7 @@ def print_mapping_table(
             resolved_us += row.total_us
         print(
             "| {kernel} | {category} | {gpu_time} | {share:.1f}% | {launches} | {location} | {cpu_op} |".format(
-                kernel=escape_md_cell(short_name(row.name, 72)),
+                kernel=escape_md_cell(row.name),
                 category=escape_md_cell(row.category),
                 gpu_time=format_ms(row.total_us),
                 share=pct(row.total_us, total_us),
@@ -1403,7 +1403,7 @@ def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
         "--output-dir", type=str, default=None, help="Output root for live profiling."
     )
     parser.add_argument(
-        "--num-steps", type=int, default=6, help="Profiler steps for live mode."
+        "--num-steps", type=int, default=5, help="Profiler steps for live mode."
     )
     parser.add_argument(
         "--profile-by-stage", action=argparse.BooleanOptionalAction, default=True

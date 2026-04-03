@@ -113,7 +113,7 @@ def parse_triage_args(argv: Sequence[str]) -> argparse.Namespace:
     parser.add_argument(
         "--num-steps",
         type=int,
-        default=6,
+        default=5,
         help="Profiler steps when generating traces from URLs.",
     )
     parser.add_argument(
@@ -284,9 +284,7 @@ def render_kernel_table(rows: Sequence[dict]) -> List[str]:
         lines.append(
             "| {stage} | {kernel} | {category} | {gpu_time} | {share:.1f}% | {launches} | {location} | {cpu_op} |".format(
                 stage=breakdown_cli.escape_md_cell(stage_display(row["stage"])),
-                kernel=breakdown_cli.escape_md_cell(
-                    breakdown_cli.short_name(row["kernel"], 72)
-                ),
+                kernel=breakdown_cli.escape_md_cell(row["kernel"]),
                 category=breakdown_cli.escape_md_cell(row["category"]),
                 gpu_time=breakdown_cli.format_ms(row["total_us"]),
                 share=row["share_pct"],
@@ -315,12 +313,8 @@ def render_overlap_table(rows: Sequence[dict]) -> List[str]:
                     breakdown_cli.escape_md_cell(stage_display(row["stage"])),
                     row["priority"],
                     row["verdict"],
-                    breakdown_cli.escape_md_cell(
-                        overlap_cli.short_name(row["kernel"], 38)
-                    ),
-                    breakdown_cli.escape_md_cell(
-                        overlap_cli.short_name(row["python_scope"], 42)
-                    ),
+                    breakdown_cli.escape_md_cell(row["kernel"]),
+                    breakdown_cli.escape_md_cell(row["python_scope"]),
                     breakdown_cli.escape_md_cell(formal_signal),
                     overlap_cli.dependency_risk_label(row["dependency_signal"]),
                     row["recommendation"],

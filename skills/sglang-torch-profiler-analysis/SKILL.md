@@ -66,7 +66,7 @@ python3 scripts/analyze_sglang_torch_profile.py triage \
 python3 scripts/analyze_sglang_torch_profile.py triage \
   --mapping-url http://127.0.0.1:31025 \
   --formal-url http://127.0.0.1:31026 \
-  --num-steps 8 \
+  --num-steps 5 \
   --profile-by-stage
 ```
 
@@ -82,7 +82,7 @@ python3 scripts/analyze_sglang_torch_profile.py breakdown \
 ```bash
 python3 scripts/analyze_sglang_torch_profile.py breakdown \
   --url http://127.0.0.1:30000 \
-  --num-steps 8 \
+  --num-steps 5 \
   --profile-by-stage \
   --table-only
 ```
@@ -102,7 +102,7 @@ Or profile both servers directly:
 python3 scripts/analyze_sglang_torch_profile.py overlap \
   --mapping-url http://127.0.0.1:31025 \
   --formal-url http://127.0.0.1:31026 \
-  --num-steps 8
+  --num-steps 5
 ```
 
 ### 6. Perfetto-friendly trace rewrite
@@ -142,7 +142,7 @@ Use when you need:
 - category share such as attention, communication, MoE, norm, quantize, memory
 - top kernels by cumulative GPU time
 - stage-aware prefill vs decode summaries
-- kernel tables already joined with Python locations and CPU ops
+- kernel tables keep full kernel names and full Python locations, already joined with CPU ops
 - conservative source-backed fusion opportunities
 
 This mode works with one trace. A graph-off pre-pass plus `--kernel-map` is optional but recommended for the final polished report.
@@ -152,7 +152,7 @@ This mode works with one trace. A graph-off pre-pass plus `--kernel-map` is opti
 Use when you need:
 
 - a strong answer about which code paths still have overlap headroom
-- a table that says which kernels are already hidden and low ROI
+- a table that says which kernels are already hidden and low ROI, with full kernel names and Python scopes
 - dependency-risk hints near adjacent kernels
 - an ASCII timeline around the most actionable windows
 
