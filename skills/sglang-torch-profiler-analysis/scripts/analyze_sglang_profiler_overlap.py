@@ -323,8 +323,7 @@ def canonicalize_name(name: str) -> str:
                     break
         if split_idx is not None:
             name = name[:split_idx]
-    name = re.sub(r"<[^<>]{40,}>", "<...>", name)
-    return short_name(name, max_len=100)
+    return name
 
 
 def canonicalize_python_scope_name(name: str) -> str:

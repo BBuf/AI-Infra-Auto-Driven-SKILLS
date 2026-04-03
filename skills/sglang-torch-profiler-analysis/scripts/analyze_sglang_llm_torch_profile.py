@@ -328,8 +328,7 @@ def canonicalize_name(name: str) -> str:
                     break
         if split_idx is not None:
             text = text[:split_idx]
-    text = re.sub(r"<[^<>]{40,}>", "<...>", text)
-    return short_name(text, max_len=160)
+    return text
 
 
 def classify_kernel(name: str) -> str:
@@ -1061,7 +1060,7 @@ def summarize_evidence(
 ) -> str:
     items = []
     for row in rows[:limit]:
-        items.append(f"{short_name(row.name, 56)} ({pct(row.total_us, total_us):.1f}%)")
+        items.append(f"{row.name} ({pct(row.total_us, total_us):.1f}%)")
     return "<br>".join(items) if items else "-"
 
 

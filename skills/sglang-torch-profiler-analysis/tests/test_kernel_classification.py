@@ -269,6 +269,29 @@ class TestKernelClassification(unittest.TestCase):
             "void (anonymous namespace)::copy_blocks_kernel",
         )
 
+    def test_breakdown_preserves_full_template_kernel_name(self):
+        kernel_name = (
+            "void at::native::elementwise_kernel<128, 4, "
+            "at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<"
+            "c10::BFloat16, c10::BFloat16, c10::BFloat16, "
+            "at::native::binary_internal::MulFunctor<c10::BFloat16>>, "
+            "at::detail::Array<char*, 3>>>(at::TensorIteratorBase&, int)"
+        )
+        canonical = llm.canonicalize_name(kernel_name)
+        self.assertNotIn("<...>", canonical)
+        self.assertIn("binary_internal::MulFunctor<c10::BFloat16>", canonical)
+
+    def test_overlap_preserves_full_template_kernel_name(self):
+        kernel_name = (
+            "void (anonymous namespace)::store_kvcache<2048l, 4, true, long>(long*, "
+            "long*, int)"
+        )
+        canonical = overlap.canonicalize_name(kernel_name)
+        self.assertEqual(
+            canonical,
+            "void (anonymous namespace)::store_kvcache<2048l, 4, true, long>",
+        )
+
     def test_fuse_location_summary_formats_function_first(self):
         self.assertEqual(
             llm.summarize_locations(
@@ -280,6 +303,29 @@ class TestKernelClassification(unittest.TestCase):
             "_apply_qk_norm @ python/sglang/srt/models/qwen3_5.py:766"
             "<br>_set_kv_buffer_impl @ python/sglang/srt/mem_cache/memory_pool.py:86",
         )
+
+    def test_fuse_evidence_preserves_full_kernel_names(self):
+        kernel_name = (
+            "void at::native::elementwise_kernel<128, 4, "
+            "at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<"
+            "c10::BFloat16, c10::BFloat16, c10::BFloat16, "
+            "at::native::binary_internal::MulFunctor<c10::BFloat16>>>>"
+        )
+        summary = llm.summarize_evidence(
+            [
+                llm.KernelRow(
+                    name=kernel_name,
+                    category="elementwise",
+                    aggregate=llm.Aggregate(total_us=297.7, count=4),
+                    location="python/sglang/srt/models/qwen3_5.py:766 _apply_qk_norm",
+                    cpu_op="aten::mul",
+                    entry=None,
+                )
+            ],
+            total_us=1000.0,
+        )
+        self.assertIn(kernel_name, summary)
+        self.assertNotIn("<...>", summary)
 
     def test_triage_tables_preserve_full_kernel_and_scope_text(self):
         long_kernel = (
