@@ -186,6 +186,8 @@ COMPUTE_HINT_KEYWORDS = (
 REPO_PREFIXES = (
     "/data/bbuf/repos/sglang/",
     "/data/bbuf/sglang/",
+    "/data01/bbuf/repos/sglang/",
+    "/data01/bbuf/sglang/",
     "/Users/bbuf/工作目录/Common/sglang/",
 )
 NOISE_FRAME_PREFIXES = (
@@ -318,9 +320,21 @@ def short_name(name: str, max_len: int = 96) -> str:
 def canonicalize_name(name: str) -> str:
     text = normalize_text(name)
     text = re.sub(r"0x[0-9a-fA-F]+", "0xADDR", text)
+    if text.startswith("void ") and text.endswith(")"):
+        depth = 0
+        split_idx: Optional[int] = None
+        for idx in range(len(text) - 1, -1, -1):
+            char = text[idx]
+            if char == ")":
+                depth += 1
+            elif char == "(":
+                depth -= 1
+                if depth == 0:
+                    split_idx = idx
+                    break
+        if split_idx is not None:
+            text = text[:split_idx]
     text = re.sub(r"<[^<>]{40,}>", "<...>", text)
-    if text.startswith("void "):
-        text = text.split("(", 1)[0]
     return short_name(text, max_len=160)
 
 
@@ -1029,6 +1043,14 @@ def kernel_row_locations(row: KernelRow, limit: int = 4) -> List[str]:
     return ordered_unique(values, limit=limit)
 
 
+def format_location_for_fusion_display(location: str) -> str:
+    text = normalize_text(location)
+    match = re.match(r"(?P<path>.+?):(?P<line>\d+)\s+(?P<func>.+)$", text)
+    if not match:
+        return text
+    return f"{match.group('func')} @ {match.group('path')}:{match.group('line')}"
+
+
 def row_matches(row: KernelRow, *needles: str) -> bool:
     lowered = " ".join([row.name, row.location, row.cpu_op]).lower()
     return any(needle in lowered for needle in needles)
@@ -1036,6 +1058,14 @@ def row_matches(row: KernelRow, *needles: str) -> bool:
 
 def summarize_text(values: Iterable[str], limit: int = 4) -> str:
     items = ordered_unique(values, limit=limit)
+    return "<br>".join(items) if items else "-"
+
+
+def summarize_locations(values: Iterable[str], limit: int = 4) -> str:
+    items = ordered_unique(
+        (format_location_for_fusion_display(value) for value in values),
+        limit=limit,
+    )
     return "<br>".join(items) if items else "-"
 
 
@@ -1094,7 +1124,7 @@ def detect_fusion_opportunities(
                 confidence="Likely" if pct(comm_us, total_us) >= 4.0 else "Conditional",
                 related_us=comm_us,
                 evidence=summarize_evidence(comm_rows, total_us),
-                current_locations=summarize_text(
+                current_locations=summarize_locations(
                     location
                     for row in comm_rows
                     for location in kernel_row_locations(row)
@@ -1155,7 +1185,7 @@ def detect_fusion_opportunities(
                 confidence="Conditional",
                 related_us=qwen3_related_us,
                 evidence=summarize_evidence(qwen3_rows, total_us),
-                current_locations=summarize_text(
+                current_locations=summarize_locations(
                     location
                     for row in qwen3_rows
                     for location in kernel_row_locations(row)
