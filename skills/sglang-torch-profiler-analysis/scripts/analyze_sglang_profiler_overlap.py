@@ -1338,8 +1338,8 @@ def render_action_table(rows: Sequence[ActionRow]) -> List[str]:
                 [
                     row.priority,
                     row.verdict,
-                    short_name(row.kernel, 38),
-                    short_name(row.python_scope, 42),
+                    row.kernel,
+                    row.python_scope,
                     f"{row.total_us:.1f} us, {formal_signal}",
                     dependency_risk_label(row.dependency_signal),
                     row.recommendation,

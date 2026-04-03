@@ -6,6 +6,7 @@ SCRIPTS_DIR = Path(__file__).resolve().parents[1] / "scripts"
 sys.path.insert(0, str(SCRIPTS_DIR))
 
 import analyze_sglang_llm_torch_profile as llm  # noqa: E402
+import analyze_sglang_torch_profile as triage  # noqa: E402
 import analyze_sglang_profiler_overlap as overlap  # noqa: E402
 
 CUTLASS_FP8_GEMM = (
@@ -243,6 +244,83 @@ class TestKernelClassification(unittest.TestCase):
             cpu_op,
             "sgl_kernel::fp8_scaled_mm<br>sglang::apply_rope_inplace",
         )
+
+    def test_triage_tables_preserve_full_kernel_and_scope_text(self):
+        long_kernel = (
+            "void extremely_long_kernel_name_with_many_template_arguments_and_suffixes_"
+            "that_should_remain_fully_visible_in_markdown_tables_for_review"
+        )
+        long_scope = (
+            "python/sglang/srt/models/qwen3_really_long_module_name.py:1234 "
+            "forward_decode_with_detailed_scope_information_and_callsite_context"
+        )
+
+        kernel_lines = triage.render_kernel_table(
+            [
+                {
+                    "stage": "decode",
+                    "kernel": long_kernel,
+                    "category": "gemm",
+                    "total_us": 297.7,
+                    "share_pct": 9.6,
+                    "launches": 4,
+                    "location": f"{long_scope} (site share 100%)",
+                    "cpu_op": "sgl_kernel::fp8_scaled_mm",
+                }
+            ]
+        )
+        self.assertIn(long_kernel, kernel_lines[2])
+        self.assertIn(long_scope, kernel_lines[2])
+
+        overlap_lines = triage.render_overlap_table(
+            [
+                {
+                    "stage": "decode",
+                    "priority": "P1",
+                    "verdict": "actionable",
+                    "kernel": long_kernel,
+                    "python_scope": long_scope,
+                    "total_us": 297.7,
+                    "share_pct": 9.6,
+                    "exclusive_ratio": 1.0,
+                    "hidden_ratio": 0.0,
+                    "dependency_signal": "adjacency unclear",
+                    "recommendation": "inspect code path",
+                }
+            ]
+        )
+        self.assertIn(long_kernel, overlap_lines[2])
+        self.assertIn(long_scope, overlap_lines[2])
+
+    def test_overlap_action_table_preserves_full_kernel_and_scope_text(self):
+        row = overlap.ActionRow(
+            priority="P1",
+            verdict="actionable",
+            kernel=(
+                "void another_extremely_long_kernel_name_for_overlap_action_table_"
+                "that_should_not_be_shortened_when_rendered"
+            ),
+            category="compute",
+            total_us=297.7,
+            share_pct=9.6,
+            exclusive_ratio=1.0,
+            hidden_ratio=0.0,
+            python_scope=(
+                "python/sglang/srt/layers/some_deeply_nested_module.py:567 "
+                "launch_kernel_from_a_scope_that_should_stay_complete"
+            ),
+            launch_op="cudaLaunchKernelExC",
+            mapping_ratio=1.0,
+            dependency_signal="adjacency unclear",
+            prev_neighbor="unmapped",
+            next_neighbor="unmapped",
+            recommendation="inspect overlap window",
+            suggestion="investigate",
+            representative_idx=0,
+        )
+        lines = overlap.render_action_table([row])
+        self.assertIn(row.kernel, lines[2])
+        self.assertIn(row.python_scope, lines[2])
 
 
 if __name__ == "__main__":
