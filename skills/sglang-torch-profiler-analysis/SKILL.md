@@ -185,9 +185,10 @@ Use only when Perfetto fails to render obviously overlapping events cleanly. It 
    - kernel table
    - overlap-opportunity table
    - fuse-opportunity table
-5. Before calling something a "new" optimization idea, compare the top rows against [references/fuse-overlap-catalog.md](references/fuse-overlap-catalog.md). Prefer reporting:
+5. Before calling something a "new" optimization idea, compare the top rows against both [references/fuse-overlap-catalog.md](references/fuse-overlap-catalog.md) and [references/overlap-catalog.md](references/overlap-catalog.md). Always check the `PR-backed / in-flight` sections too. Prefer reporting:
    - an existing fused or overlap path that should already apply here
    - an existing path that appears disabled, unsupported, or regressed in this trace
+   - an upstream PR-backed pattern that already exists but is not merged into the checked-out tree
    - a truly new opportunity only when no catalog entry fits
 6. Use the deeper `overlap` report only when you need source context or ASCII timelines beyond the compact three-table artifact.
 
@@ -204,7 +205,9 @@ Load these only when needed:
 - [references/heuristics.md](references/heuristics.md)
   - overlap labels, dependency-risk interpretation, and limits
 - [references/fuse-overlap-catalog.md](references/fuse-overlap-catalog.md)
-  - source-backed catalog of existing fuse and multi-stream overlap patterns across LLM, VLM, and diffusion
+  - mixed source-backed catalog of existing fuse and overlap patterns, including PR-backed / in-flight rows
+- [references/overlap-catalog.md](references/overlap-catalog.md)
+  - overlap-only lookup table across LLM, VLM, diffusion, disaggregation, HiSparse, and speculative scheduling
 
 ## Output Contract
 
@@ -218,33 +221,3 @@ Return:
 - top kernels
 - one short conclusion about what dominates the run
 - any source-backed fusion opportunities worth checking
-
-If the user wants a compact artifact from `breakdown` only, use `--table-only` so the output centers on the kernel table and the fuse-opportunity table.
-
-### For `overlap`
-
-Return:
-
-- mapping trace path
-- formal trace path
-- key rows from the action table
-- Python code paths with the strongest overlap headroom
-- kernels that are already hidden and should be deprioritized
-- at least one ASCII timeline
-
-If one of the required traces is missing, say that clearly and identify which trace still needs to be collected.
-
-If the user wants a compact artifact from `overlap` only, use `--table-only` so the output centers on the overlap-opportunity table.
-
-### For `triage`
-
-Return:
-
-- mapping trace path or directory
-- formal trace path or directory
-- one kernel table
-- one overlap-opportunity table
-- one fuse-opportunity table
-- one short note saying whether the top findings match an existing catalog entry or look genuinely new
-
-This should be the default final artifact unless the user explicitly asks for the longer overlap walkthrough.
