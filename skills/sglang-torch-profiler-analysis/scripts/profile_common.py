@@ -30,6 +30,18 @@ def normalize_text(value: object) -> str:
     return re.sub(r"\s+", " ", str(value)).strip()
 
 
+def normalize_repo_relative_path(path: object) -> str:
+    text = normalize_text(path).replace("\\", "/")
+    for marker in ("python/sglang/", "sgl_kernel/"):
+        idx = text.find(marker)
+        if idx != -1:
+            return text[idx:].lstrip("/")
+    idx = text.find("sglang/")
+    if idx != -1:
+        return ("python/" + text[idx:]).lstrip("/")
+    return text.lstrip("/")
+
+
 def contains_any_keyword(text: str, keywords: Iterable[str]) -> bool:
     return any(keyword in text for keyword in keywords)
 

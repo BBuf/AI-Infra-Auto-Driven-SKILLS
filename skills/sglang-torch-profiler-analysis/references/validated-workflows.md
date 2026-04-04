@@ -25,7 +25,7 @@ Then:
 ```bash
 python3 scripts/analyze_sglang_torch_profile.py breakdown \
   --url http://127.0.0.1:32240 \
-  --num-steps 6 \
+  --num-steps 5 \
   --profile-by-stage \
   --profile-prefix qwen25_15b_map \
   --export-kernel-map /tmp/qwen25_15b_kernel_map.json
@@ -42,7 +42,7 @@ CUDA_VISIBLE_DEVICES=5 FLASHINFER_DISABLE_VERSION_CHECK=1 python3 -m sglang.laun
 
 FLASHINFER_DISABLE_VERSION_CHECK=1 python3 -m sglang.profiler \
   --url http://127.0.0.1:32241 \
-  --num-steps 6 \
+  --num-steps 5 \
   --profile-by-stage \
   --profile-prefix qwen25_15b_final
 
@@ -80,7 +80,7 @@ Then:
 ```bash
 python3 scripts/analyze_sglang_torch_profile.py breakdown \
   --url http://127.0.0.1:32040 \
-  --num-steps 6 \
+  --num-steps 5 \
   --profile-by-stage \
   --profile-prefix qwen32b_map \
   --export-kernel-map /tmp/qwen32b_kernel_map.json
@@ -98,7 +98,7 @@ CUDA_VISIBLE_DEVICES=1,2 FLASHINFER_DISABLE_VERSION_CHECK=1 python3 -m sglang.la
 
 FLASHINFER_DISABLE_VERSION_CHECK=1 python3 -m sglang.profiler \
   --url http://127.0.0.1:32041 \
-  --num-steps 6 \
+  --num-steps 5 \
   --profile-by-stage \
   --profile-prefix qwen32b_final
 
@@ -147,7 +147,7 @@ Then:
 ```bash
 python3 scripts/analyze_sglang_torch_profile.py breakdown \
   --url http://127.0.0.1:32260 \
-  --num-steps 6 \
+  --num-steps 5 \
   --profile-by-stage \
   --profile-prefix qwen25_tp2_map \
   --export-kernel-map /tmp/qwen25_tp2_map_kernel_map.json

@@ -36,6 +36,7 @@ from profile_common import (
     load_server_args,
     load_trace_json,
     looks_like_python_scope_name,
+    normalize_repo_relative_path,
     normalize_text,
 )
 from profile_common import run_profiler as shared_run_profiler
@@ -137,13 +138,6 @@ CATEGORY_PRIORITY = {
     "elementwise": 1,
     "other": 0,
 }
-
-REPO_PREFIXES = (
-    "/data/bbuf/repos/sglang/",
-    "/data/bbuf/sglang/",
-    "/data01/bbuf/repos/sglang/",
-    "/Users/bbuf/工作目录/Common/sglang/",
-)
 
 PYTHON_SCOPE_IGNORE_PREFIXES = (
     "threading.py(",
@@ -329,8 +323,7 @@ def canonicalize_name(name: str) -> str:
                     break
         if split_idx is not None:
             name = name[:split_idx]
-    name = re.sub(r"<[^<>]{40,}>", "<...>", name)
-    return short_name(name, max_len=100)
+    return name
 
 
 def canonicalize_python_scope_name(name: str) -> str:
@@ -338,14 +331,7 @@ def canonicalize_python_scope_name(name: str) -> str:
     name = re.sub(r"0x[0-9a-fA-F]+", "0xADDR", name)
     match = re.match(r"(?P<path>.+?)\((?P<line>\d+)\): (?P<func>.+)$", name)
     if match:
-        path = match.group("path")
-        for prefix in REPO_PREFIXES:
-            if path.startswith(prefix):
-                path = path[len(prefix) :]
-                break
-        path = path.lstrip("/")
-        if path.startswith("sglang/"):
-            path = "python/" + path
+        path = normalize_repo_relative_path(match.group("path"))
         name = f"{path}({match.group('line')}): {match.group('func')}"
     return name
 
@@ -1338,8 +1324,8 @@ def render_action_table(rows: Sequence[ActionRow]) -> List[str]:
                 [
                     row.priority,
                     row.verdict,
-                    short_name(row.kernel, 38),
-                    short_name(row.python_scope, 42),
+                    row.kernel,
+                    row.python_scope,
                     f"{row.total_us:.1f} us, {formal_signal}",
                     dependency_risk_label(row.dependency_signal),
                     row.recommendation,

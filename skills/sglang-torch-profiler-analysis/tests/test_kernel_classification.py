@@ -7,6 +7,7 @@ sys.path.insert(0, str(SCRIPTS_DIR))
 
 import analyze_sglang_llm_torch_profile as llm  # noqa: E402
 import analyze_sglang_profiler_overlap as overlap  # noqa: E402
+import analyze_sglang_torch_profile as triage  # noqa: E402
 
 CUTLASS_FP8_GEMM = (
     "_ZN7cutlass13device_kernelINS_4gemm6kernel13GemmUniversalIN4cute5tupleIJiiiiEEENS1_10collective"
@@ -243,6 +244,165 @@ class TestKernelClassification(unittest.TestCase):
             cpu_op,
             "sgl_kernel::fp8_scaled_mm<br>sglang::apply_rope_inplace",
         )
+
+    def test_breakdown_normalizes_arbitrary_repo_prefix_from_source_locations(self):
+        self.assertEqual(
+            llm.normalize_source_location(
+                "/mnt/random/worktrees/feature-branch/sglang/python/sglang/srt/models/qwen3_5.py(766): _apply_qk_norm"
+            ),
+            "python/sglang/srt/models/qwen3_5.py:766 _apply_qk_norm",
+        )
+
+    def test_overlap_normalizes_arbitrary_repo_prefix_from_python_scope(self):
+        self.assertEqual(
+            overlap.canonicalize_python_scope_name(
+                "/tmp/custom-root/another-worktree/sglang/python/sglang/srt/layers/layernorm.py(89): _forward_with_allreduce_fusion"
+            ),
+            "python/sglang/srt/layers/layernorm.py(89): _forward_with_allreduce_fusion",
+        )
+
+    def test_breakdown_keeps_anonymous_namespace_kernel_name(self):
+        self.assertEqual(
+            llm.canonicalize_name(
+                "void (anonymous namespace)::copy_blocks_kernel(int, int)"
+            ),
+            "void (anonymous namespace)::copy_blocks_kernel",
+        )
+
+    def test_breakdown_preserves_full_template_kernel_name(self):
+        kernel_name = (
+            "void at::native::elementwise_kernel<128, 4, "
+            "at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<"
+            "c10::BFloat16, c10::BFloat16, c10::BFloat16, "
+            "at::native::binary_internal::MulFunctor<c10::BFloat16>>, "
+            "at::detail::Array<char*, 3>>>(at::TensorIteratorBase&, int)"
+        )
+        canonical = llm.canonicalize_name(kernel_name)
+        self.assertNotIn("<...>", canonical)
+        self.assertIn("binary_internal::MulFunctor<c10::BFloat16>", canonical)
+
+    def test_overlap_preserves_full_template_kernel_name(self):
+        kernel_name = (
+            "void (anonymous namespace)::store_kvcache<2048l, 4, true, long>(long*, "
+            "long*, int)"
+        )
+        canonical = overlap.canonicalize_name(kernel_name)
+        self.assertEqual(
+            canonical,
+            "void (anonymous namespace)::store_kvcache<2048l, 4, true, long>",
+        )
+
+    def test_fuse_location_summary_formats_function_first(self):
+        self.assertEqual(
+            llm.summarize_locations(
+                [
+                    "python/sglang/srt/models/qwen3_5.py:766 _apply_qk_norm",
+                    "python/sglang/srt/mem_cache/memory_pool.py:86 _set_kv_buffer_impl",
+                ]
+            ),
+            "_apply_qk_norm @ python/sglang/srt/models/qwen3_5.py:766"
+            "<br>_set_kv_buffer_impl @ python/sglang/srt/mem_cache/memory_pool.py:86",
+        )
+
+    def test_fuse_evidence_preserves_full_kernel_names(self):
+        kernel_name = (
+            "void at::native::elementwise_kernel<128, 4, "
+            "at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<"
+            "c10::BFloat16, c10::BFloat16, c10::BFloat16, "
+            "at::native::binary_internal::MulFunctor<c10::BFloat16>>>>"
+        )
+        summary = llm.summarize_evidence(
+            [
+                llm.KernelRow(
+                    name=kernel_name,
+                    category="elementwise",
+                    aggregate=llm.Aggregate(total_us=297.7, count=4),
+                    location="python/sglang/srt/models/qwen3_5.py:766 _apply_qk_norm",
+                    cpu_op="aten::mul",
+                    entry=None,
+                )
+            ],
+            total_us=1000.0,
+        )
+        self.assertIn(kernel_name, summary)
+        self.assertNotIn("<...>", summary)
+
+    def test_triage_tables_preserve_full_kernel_and_scope_text(self):
+        long_kernel = (
+            "void extremely_long_kernel_name_with_many_template_arguments_and_suffixes_"
+            "that_should_remain_fully_visible_in_markdown_tables_for_review"
+        )
+        long_scope = (
+            "python/sglang/srt/models/qwen3_really_long_module_name.py:1234 "
+            "forward_decode_with_detailed_scope_information_and_callsite_context"
+        )
+
+        kernel_lines = triage.render_kernel_table(
+            [
+                {
+                    "stage": "decode",
+                    "kernel": long_kernel,
+                    "category": "gemm",
+                    "total_us": 297.7,
+                    "share_pct": 9.6,
+                    "launches": 4,
+                    "location": f"{long_scope} (site share 100%)",
+                    "cpu_op": "sgl_kernel::fp8_scaled_mm",
+                }
+            ]
+        )
+        self.assertIn(long_kernel, kernel_lines[2])
+        self.assertIn(long_scope, kernel_lines[2])
+
+        overlap_lines = triage.render_overlap_table(
+            [
+                {
+                    "stage": "decode",
+                    "priority": "P1",
+                    "verdict": "actionable",
+                    "kernel": long_kernel,
+                    "python_scope": long_scope,
+                    "total_us": 297.7,
+                    "share_pct": 9.6,
+                    "exclusive_ratio": 1.0,
+                    "hidden_ratio": 0.0,
+                    "dependency_signal": "adjacency unclear",
+                    "recommendation": "inspect code path",
+                }
+            ]
+        )
+        self.assertIn(long_kernel, overlap_lines[2])
+        self.assertIn(long_scope, overlap_lines[2])
+
+    def test_overlap_action_table_preserves_full_kernel_and_scope_text(self):
+        row = overlap.ActionRow(
+            priority="P1",
+            verdict="actionable",
+            kernel=(
+                "void another_extremely_long_kernel_name_for_overlap_action_table_"
+                "that_should_not_be_shortened_when_rendered"
+            ),
+            category="compute",
+            total_us=297.7,
+            share_pct=9.6,
+            exclusive_ratio=1.0,
+            hidden_ratio=0.0,
+            python_scope=(
+                "python/sglang/srt/layers/some_deeply_nested_module.py:567 "
+                "launch_kernel_from_a_scope_that_should_stay_complete"
+            ),
+            launch_op="cudaLaunchKernelExC",
+            mapping_ratio=1.0,
+            dependency_signal="adjacency unclear",
+            prev_neighbor="unmapped",
+            next_neighbor="unmapped",
+            recommendation="inspect overlap window",
+            suggestion="investigate",
+            representative_idx=0,
+        )
+        lines = overlap.render_action_table([row])
+        self.assertIn(row.kernel, lines[2])
+        self.assertIn(row.python_scope, lines[2])
 
 
 if __name__ == "__main__":
