@@ -6,8 +6,8 @@ SCRIPTS_DIR = Path(__file__).resolve().parents[1] / "scripts"
 sys.path.insert(0, str(SCRIPTS_DIR))
 
 import analyze_sglang_llm_torch_profile as llm  # noqa: E402
-import analyze_sglang_torch_profile as triage  # noqa: E402
 import analyze_sglang_profiler_overlap as overlap  # noqa: E402
+import analyze_sglang_torch_profile as triage  # noqa: E402
 
 CUTLASS_FP8_GEMM = (
     "_ZN7cutlass13device_kernelINS_4gemm6kernel13GemmUniversalIN4cute5tupleIJiiiiEEENS1_10collective"
