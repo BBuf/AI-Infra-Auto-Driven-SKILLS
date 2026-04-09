@@ -1,4 +1,0 @@
-interface:
-  display_name: "SGLang Torch Profiler Analysis"
-  short_description: "Unified torch-profiler skill for 3-table triage, overlap analysis, and Perfetto trace repair"
-  default_prompt: "Use $sglang-torch-profiler-analysis to inspect an SGLang torch profiler trace or running server. Prefer the compact `triage` workflow first so the result comes back as three tables: kernel mapping, overlap opportunities, and fuse opportunities. Before calling any opportunity new, compare the top rows against the skill's fuse/overlap catalog for existing LLM, VLM, and diffusion patterns. Fall back to `breakdown`, `overlap`, or `perfetto-fix` only when the user needs the deeper per-tool view."
