@@ -24,6 +24,9 @@ skills/
 │       └── pr-history.md
 ├── sglang-diffusion-modelopt-quant/
 │   ├── SKILL.md
+│   ├── scripts/
+│   │   ├── compare_diffusion_trajectory_similarity.py
+│   │   └── convert_modelopt_fp8_checkpoint.py
 │   └── agents/
 │       └── openai.yaml
 ├── sglang-minimax-m2-m25-optimization/
