@@ -1,22 +1,22 @@
 ---
 name: h100
-description: SSH into host `<your-h100-host>`, enter Docker container `<your-container>`, work in `<your-repo-path>`, and use the ready H100 remote environment for SGLang development and validation. Use when a task needs remote CUDA work, GPU-backed smoke tests, diffusion checks, or a safe remote copy instead of local-only execution.
+description: SSH into host `h100_sglang`, enter Docker container `sglang_bbuf`, work in `/sgl-workspace/sglang`, and use the ready H100 remote environment for SGLang development and validation. Use when a task needs remote CUDA work, GPU-backed smoke tests, diffusion checks, or a safe remote copy instead of local-only execution.
 ---
 
 # H100
 
 ## Overview
 
-Use this skill to do SGLang development on the H100 box through `<your-h100-host>`.
-The default container is `<your-container>` and the repo lives at `<your-repo-path>`.
+Use this skill to do SGLang development on the H100 box through `h100_sglang`.
+The default container is `sglang_bbuf` and the repo lives at `/sgl-workspace/sglang`.
 Prefer it whenever local validation is insufficient for CUDA, Triton, diffusion pipelines, or other GPU-backed SGLang behavior.
 
 This environment is already prepared:
 
-- `<your-container>` is running on `lmsysorg/sglang:dev`
-- the repo is cloned at `<your-repo-path>`
+- `sglang_bbuf` is running on `lmsysorg/sglang:dev`
+- the repo is cloned at `/sgl-workspace/sglang`
 - editable installs for `python[all]` and `python[diffusion]` are already done
-- `<your-cache-path>` is mounted to `/root/.cache`
+- `/root/.cache` is mounted as the cache path
 - Infiniband paths are mounted into the container for RDMA-aware workflows:
   `/sys/class/infiniband`, `/dev/infiniband`, and `/usr/sbin/show_gids`
 
@@ -30,16 +30,16 @@ every `docker exec` context. Interactive shells and non-interactive `docker exec
 1. Check the host, container, and GPU state.
 
 ```bash
-ssh <your-h100-host> 'hostname && whoami'
-ssh <your-h100-host> 'docker ps --format "table {{.Names}}\t{{.Status}}" | sed -n "1,20p"'
-ssh <your-h100-host> 'nvidia-smi --query-gpu=index,name,utilization.gpu,memory.used,memory.total --format=csv,noheader,nounits'
+ssh h100_sglang 'hostname && whoami'
+ssh h100_sglang 'docker ps --format "table {{.Names}}\t{{.Status}}" | sed -n "1,20p"'
+ssh h100_sglang 'nvidia-smi --query-gpu=index,name,utilization.gpu,memory.used,memory.total --format=csv,noheader,nounits'
 ```
 
 2. Enter the container and repo.
 
 ```bash
-ssh <your-h100-host> 'docker exec -it <your-container> /bin/zsh'
-cd <your-repo-path>
+ssh h100_sglang 'docker exec -it sglang_bbuf /bin/zsh'
+cd /sgl-workspace/sglang
 echo ${HF_TOKEN:+set}
 ```
 
@@ -67,7 +67,7 @@ If the free GPU list is tight, re-check `nvidia-smi`, choose another GPU, or coo
 5. If the container is not running, start it first.
 
 ```bash
-ssh <your-h100-host> 'docker start <your-container>'
+ssh h100_sglang 'docker start sglang_bbuf'
 ```
 
 ## Safe Remote Workflow
@@ -75,14 +75,14 @@ ssh <your-h100-host> 'docker start <your-container>'
 1. Inspect the default repo before editing it.
 
 ```bash
-ssh <your-h100-host> 'docker exec <your-container> zsh -lc "cd <your-repo-path> && git branch --show-current && git status --short"'
+ssh h100_sglang 'docker exec sglang_bbuf zsh -lc "cd /sgl-workspace/sglang && git branch --show-current && git status --short"'
 ```
 
 2. Fast-forward `<your-repo-path>` to the latest clean `main` before creating
 any validation worktree.
 
 ```bash
-ssh <your-h100-host> 'docker exec <your-container> zsh -lc "cd <your-repo-path> && git fetch origin && git checkout main && git pull --ff-only origin main"'
+ssh h100_sglang 'docker exec sglang_bbuf zsh -lc "cd /sgl-workspace/sglang && git fetch origin && git checkout main && git pull --ff-only origin main"'
 ```
 
 3. Avoid writing directly into `<your-repo-path>` when it is dirty or when the local snapshot differs from the remote `HEAD`.
@@ -92,7 +92,7 @@ ssh <your-h100-host> 'docker exec <your-container> zsh -lc "cd <your-repo-path> 
 Create a detached worktree for remote-only experiments:
 
 ```bash
-ssh <your-h100-host> 'docker exec <your-container> zsh -lc "cd <your-repo-path> && git worktree add --detach /tmp/sglang_validate_h100 HEAD"'
+ssh h100_sglang 'docker exec sglang_bbuf zsh -lc "cd /sgl-workspace/sglang && git worktree add --detach /tmp/sglang_validate_h100 HEAD"'
 ```
 
 Stream the exact local working tree into the container when validating the current local snapshot:
@@ -100,7 +100,8 @@ Stream the exact local working tree into the container when validating the curre
 ```bash
 COPYFILE_DISABLE=1 tar --exclude=.git -cf - . | \
 ssh <your-h100-host> 'docker exec -i <your-container> sh -lc "rm -rf /tmp/sglang_local_validate && mkdir -p /tmp/sglang_local_validate && tar -xf - -C /tmp/sglang_local_validate"'
-ssh <your-h100-host> 'docker exec <your-container> zsh -lc "find /tmp/sglang_local_validate -name '\''._*'\'' -delete"'
+ssh h100_sglang 'docker exec -i sglang_bbuf sh -lc "rm -rf /tmp/sglang_local_validate && mkdir -p /tmp/sglang_local_validate && tar -xf - -C /tmp/sglang_local_validate"'
+ssh h100_sglang 'docker exec sglang_bbuf zsh -lc "find /tmp/sglang_local_validate -name '\''._*'\'' -delete"'
 ```
 
 Use the streamed copy when the goal is "validate exactly what is in the local repo right now".
@@ -117,31 +118,31 @@ That keeps `<your-repo-path>` clean while still validating the exact local delta
 1. Start with import or syntax-level checks.
 
 ```bash
-ssh <your-h100-host> 'docker exec <your-container> zsh -lc "cd /tmp/sglang_local_validate && python -m compileall python/sglang"'
+ssh h100_sglang 'docker exec sglang_bbuf zsh -lc "cd /tmp/sglang_local_validate && python -m compileall python/sglang"'
 ```
 
 For diffusion-specific edits, prefer a narrower first pass:
 
 ```bash
-ssh <your-h100-host> 'docker exec <your-container> zsh -lc "cd /tmp/sglang_local_validate && python -m compileall python/sglang/jit_kernel/diffusion/triton python/sglang/multimodal_gen/runtime/layers"'
+ssh h100_sglang 'docker exec sglang_bbuf zsh -lc "cd /tmp/sglang_local_validate && python -m compileall python/sglang/jit_kernel/diffusion/triton python/sglang/multimodal_gen/runtime/layers"'
 ```
 
 2. Run targeted tests for the changed area.
 
 ```bash
-ssh <your-h100-host> 'docker exec <your-container> env PYTHONPATH=python zsh -lc "cd /tmp/sglang_local_validate && pytest -q path/to/test.py -q"'
+ssh h100_sglang 'docker exec sglang_bbuf env PYTHONPATH=python zsh -lc "cd /tmp/sglang_local_validate && pytest -q path/to/test.py -q"'
 ```
 
 For diffusion changes, start with the fused modulation regression:
 
 ```bash
-ssh <your-h100-host> 'docker exec <your-container> env CUDA_VISIBLE_DEVICES=0 PYTHONPATH=python zsh -lc "cd /tmp/sglang_local_validate && pytest -q python/sglang/jit_kernel/tests/test_qwen_image_modulation.py -q"'
+ssh h100_sglang 'docker exec sglang_bbuf env CUDA_VISIBLE_DEVICES=0 PYTHONPATH=python zsh -lc "cd /tmp/sglang_local_validate && pytest -q python/sglang/jit_kernel/tests/test_qwen_image_modulation.py -q"'
 ```
 
 3. For GPU-backed changes, pin a free GPU explicitly.
 
 ```bash
-ssh <your-h100-host> 'docker exec <your-container> env CUDA_VISIBLE_DEVICES=0 PYTHONPATH=python zsh -lc "cd /tmp/sglang_local_validate && pytest -q path/to/gpu_test.py -q"'
+ssh h100_sglang 'docker exec sglang_bbuf env CUDA_VISIBLE_DEVICES=0 PYTHONPATH=python zsh -lc "cd /tmp/sglang_local_validate && pytest -q path/to/gpu_test.py -q"'
 ```
 
 4. For kernel-heavy diffusion work, run a targeted smoke script for the changed primitives before attempting a model-level run.
@@ -175,5 +176,5 @@ Capture matching eager and compile traces or perf dumps, then run `scripts/analy
 Remove temporary validation directories when finished.
 
 ```bash
-ssh <your-h100-host> 'docker exec <your-container> rm -rf /tmp/sglang_local_validate /tmp/sglang_validate_h100'
+ssh h100_sglang 'docker exec sglang_bbuf rm -rf /tmp/sglang_local_validate /tmp/sglang_validate_h100'
 ```
