@@ -18,7 +18,7 @@ Run commands from the SGLang repo root unless the task explicitly says otherwise
 - Benchmark only when the BF16 and quantized commands are identical except for the checkpoint override being tested.
 - For diffusion FP8, pin `dit_cpu_offload=false` and `dit_layerwise_offload=false`.
 - For multi-transformer pipelines, prefer per-component overrides when different backbones need different checkpoints.
-- If the active SGLang branch does not yet contain the expected conversion or validation tool, add it under `python/sglang/multimodal_gen/tools/` instead of inventing one-off scripts elsewhere.
+- If the active SGLang branch does not yet contain the expected conversion or validation tool, start from this skill's bundled `scripts/` copy and add it under `python/sglang/multimodal_gen/tools/` instead of inventing one-off scripts elsewhere.
 
 ## Read First
 
@@ -32,9 +32,9 @@ Read these sources before changing code:
   - `python/sglang/multimodal_gen/runtime/layers/quantization/modelopt_quant.py`
   - `python/sglang/multimodal_gen/runtime/utils/quantization_utils.py`
   - `python/sglang/multimodal_gen/runtime/loader/transformer_load_utils.py`
-- SGLang diffusion tools:
-  - `python/sglang/multimodal_gen/tools/convert_modelopt_fp8_checkpoint.py`
-  - `python/sglang/multimodal_gen/tools/compare_diffusion_trajectory_similarity.py`
+- Bundled helper scripts in this skill:
+  - `scripts/convert_modelopt_fp8_checkpoint.py`
+  - `scripts/compare_diffusion_trajectory_similarity.py`
 
 If you are working on a new model family, inspect the model's transformer config and tensor naming before changing the generic converter.
 
