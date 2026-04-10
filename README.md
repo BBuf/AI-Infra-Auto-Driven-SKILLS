@@ -22,6 +22,10 @@ skills/
 │   └── references/
 │       ├── playbook.md
 │       └── pr-history.md
+├── sglang-diffusion-modelopt-quant/
+│   ├── SKILL.md
+│   └── agents/
+│       └── openai.yaml
 ├── sglang-minimax-m2-m25-optimization/
 │   ├── SKILL.md
 │   └── references/
@@ -52,4 +56,7 @@ The `h100` and `h100-sglang-diffusion` skills use placeholder values. Replace th
 cp -r skills/h100 ~/.codex/skills/h100
 # or
 cp -r skills/h100 ~/.cursor/skills/h100
+
+# ModelOpt diffusion quant skill
+cp -r skills/sglang-diffusion-modelopt-quant ~/.codex/skills/sglang-diffusion-modelopt-quant
 ```
