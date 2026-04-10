@@ -1,0 +1,39 @@
+{
+  "name": "agent-loop-guardrails",
+  "version": "0.1.0",
+  "description": "Guarded builder/reviewer loop for Codex with stop hooks, protected state files, and local installation helpers.",
+  "author": {
+    "name": "bbuf",
+    "email": "local@localhost",
+    "url": "https://github.com/bbuf"
+  },
+  "homepage": "https://github.com/bbuf/SGLang-Auto-Driven-SKILLS",
+  "repository": "https://github.com/bbuf/SGLang-Auto-Driven-SKILLS",
+  "license": "MIT",
+  "keywords": [
+    "agent-loop",
+    "hooks",
+    "validation",
+    "guardrails",
+    "codex"
+  ],
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json",
+  "interface": {
+    "displayName": "Agent Loop Guardrails",
+    "shortDescription": "Guarded builder/reviewer loops for Codex",
+    "longDescription": "Scaffold and enforce a local agent loop with explicit plan, review, progress, protected state files, and a stop hook that blocks premature completion.",
+    "developerName": "bbuf",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/bbuf/SGLang-Auto-Driven-SKILLS",
+    "privacyPolicyURL": "https://github.com/bbuf/SGLang-Auto-Driven-SKILLS",
+    "termsOfServiceURL": "https://github.com/bbuf/SGLang-Auto-Driven-SKILLS",
+    "defaultPrompt": "Start a guarded agent loop for this task and keep me from stopping before reviewer approval",
+    "screenshots": [],
+    "brandColor": "#1F6FEB"
+  }
+}

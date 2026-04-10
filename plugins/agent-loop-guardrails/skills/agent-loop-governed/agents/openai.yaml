@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent Loop Governed"
+  short_description: "Run tasks under plugin-enforced loop guardrails"
+  default_prompt: "Use $agent-loop-governed to initialize a guarded agent loop for this task and prevent premature stop until reviewer approval."

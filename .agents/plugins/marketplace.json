@@ -1,0 +1,20 @@
+{
+  "name": "sglang-auto-driven-skills",
+  "interface": {
+    "displayName": "SGLang Auto Driven Skills"
+  },
+  "plugins": [
+    {
+      "name": "agent-loop-guardrails",
+      "source": {
+        "source": "local",
+        "path": "./plugins/agent-loop-guardrails"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
