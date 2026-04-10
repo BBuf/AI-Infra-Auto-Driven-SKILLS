@@ -3,6 +3,21 @@
 This tool runs two SGLang diffusion variants with the same prompt and seed,
 captures intermediate denoising latents via `return_trajectory_latents`, and
 reports cosine / error metrics for each timestep plus final frame metrics.
+
+The intended use is quant validation on reduced deterministic smoke settings:
+- same prompt / seed / resolution / step count for both variants
+- BF16 reference on the base model
+- FP8 candidate via `--candidate-transformer-path` and/or component overrides
+
+Example:
+
+    python -m sglang.multimodal_gen.tools.compare_diffusion_trajectory_similarity \
+        --model-path /path/to/model \
+        --prompt "A futuristic cyberpunk city at night" \
+        --width 512 --height 512 --num-inference-steps 8 --seed 42 \
+        --text-encoder-cpu-offload \
+        --candidate-transformer-path /tmp/modelopt_flux2_fp8/sglang_transformer \
+        --output-json /tmp/flux2_similarity.json
 """
 
 from __future__ import annotations
@@ -240,6 +255,7 @@ def build_server_kwargs(args: argparse.Namespace, *, variant: str) -> dict[str, 
 
     kwargs: dict[str, Any] = {
         "model_path": args.model_path,
+        "model_id": args.model_id,
         "backend": args.backend,
         "num_gpus": args.num_gpus,
         "dit_cpu_offload": args.dit_cpu_offload,
@@ -313,6 +329,14 @@ def _to_jsonable(result: dict[str, Any]) -> dict[str, Any]:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--model-path", required=True)
+    parser.add_argument(
+        "--model-id",
+        help=(
+            "Optional model ID override passed to DiffGenerator.from_pretrained. "
+            "Use this when --model-path points to a local directory whose name "
+            "does not match a registered native SGLang model."
+        ),
+    )
     parser.add_argument("--backend", default="sglang")
     parser.add_argument("--prompt", required=True)
     parser.add_argument("--output-json", required=True)
@@ -348,12 +372,7 @@ def main() -> None:
         default=False,
     )
     parser.add_argument(
-        "--dit-cpu-offload",
-        action=argparse.BooleanOptionalAction,
-        default=False,
-    )
-    parser.add_argument(
-        "--dit-layerwise-offload",
+        "--enable-cfg-parallel",
         action=argparse.BooleanOptionalAction,
         default=False,
     )
@@ -368,84 +387,111 @@ def main() -> None:
         default=False,
     )
     parser.add_argument(
-        "--pin-cpu-memory",
+        "--dit-cpu-offload",
         action=argparse.BooleanOptionalAction,
-        default=True,
+        default=False,
     )
     parser.add_argument(
-        "--enable-cfg-parallel",
+        "--dit-layerwise-offload",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+    )
+    parser.add_argument(
+        "--pin-cpu-memory",
         action=argparse.BooleanOptionalAction,
         default=False,
     )
     args = parser.parse_args()
 
-    save_output_dir = None
-    if args.save_output_dir is not None:
-        save_output_dir = Path(args.save_output_dir).expanduser().resolve()
-        save_output_dir.mkdir(parents=True, exist_ok=True)
+    output_json = Path(args.output_json).expanduser().resolve()
+    output_json.parent.mkdir(parents=True, exist_ok=True)
 
-    reference_server_kwargs = build_server_kwargs(args, variant="reference")
-    candidate_server_kwargs = build_server_kwargs(args, variant="candidate")
-    reference_sampling_kwargs = build_sampling_kwargs(
+    save_root: Path | None = None
+    if args.save_output_dir:
+        save_root = Path(args.save_output_dir).expanduser().resolve()
+        save_root.mkdir(parents=True, exist_ok=True)
+
+    ref_server_kwargs = build_server_kwargs(args, variant="reference")
+    cand_server_kwargs = build_server_kwargs(args, variant="candidate")
+
+    ref_sampling_kwargs = build_sampling_kwargs(
         args,
-        output_dir=(
-            str(save_output_dir / "reference") if save_output_dir is not None else None
-        ),
+        output_dir=str(save_root / "reference") if save_root else None,
     )
-    candidate_sampling_kwargs = build_sampling_kwargs(
+    cand_sampling_kwargs = build_sampling_kwargs(
         args,
-        output_dir=(
-            str(save_output_dir / "candidate") if save_output_dir is not None else None
-        ),
+        output_dir=str(save_root / "candidate") if save_root else None,
     )
 
-    reference_result = run_variant(
-        server_kwargs=reference_server_kwargs,
-        sampling_kwargs=reference_sampling_kwargs,
+    reference = run_variant(
+        server_kwargs=ref_server_kwargs,
+        sampling_kwargs=ref_sampling_kwargs,
     )
-    candidate_result = run_variant(
-        server_kwargs=candidate_server_kwargs,
-        sampling_kwargs=candidate_sampling_kwargs,
-    )
-
-    trajectory_metrics = summarize_trajectory_metrics(
-        reference_result.trajectory_latents,
-        candidate_result.trajectory_latents,
-        reference_timesteps=getattr(reference_result, "timesteps", None),
-        candidate_timesteps=getattr(candidate_result, "timesteps", None),
-        step_index=args.trajectory_step_index,
-    )
-    frame_metrics = summarize_output_frame_metrics(
-        extract_result_frames(reference_result),
-        extract_result_frames(candidate_result),
+    candidate = run_variant(
+        server_kwargs=cand_server_kwargs,
+        sampling_kwargs=cand_sampling_kwargs,
     )
 
-    report = {
+    result = {
         "model_path": args.model_path,
         "prompt": args.prompt,
         "seed": args.seed,
-        "width": args.width,
-        "height": args.height,
-        "num_frames": args.num_frames,
-        "num_inference_steps": args.num_inference_steps,
-        "guidance_scale": args.guidance_scale,
-        "guidance_scale_2": args.guidance_scale_2,
-        "reference_server_kwargs": reference_server_kwargs,
-        "candidate_server_kwargs": candidate_server_kwargs,
-        "trajectory_metrics": trajectory_metrics,
-        "frame_metrics": frame_metrics,
-        "reference_output_file_path": reference_result.output_file_path,
-        "candidate_output_file_path": candidate_result.output_file_path,
+        "server_kwargs": {
+            "reference": ref_server_kwargs,
+            "candidate": cand_server_kwargs,
+        },
+        "sampling_kwargs": {
+            "width": args.width,
+            "height": args.height,
+            "num_frames": args.num_frames,
+            "num_inference_steps": args.num_inference_steps,
+            "guidance_scale": args.guidance_scale,
+            "guidance_scale_2": args.guidance_scale_2,
+        },
+        "reference_generation": {
+            "generation_time_s": reference.generation_time,
+            "peak_memory_mb": reference.peak_memory_mb,
+            "output_file_path": reference.output_file_path,
+        },
+        "candidate_generation": {
+            "generation_time_s": candidate.generation_time,
+            "peak_memory_mb": candidate.peak_memory_mb,
+            "output_file_path": candidate.output_file_path,
+        },
+        "trajectory_metrics": summarize_trajectory_metrics(
+            reference.trajectory_latents,
+            candidate.trajectory_latents,
+            reference_timesteps=reference.trajectory_timesteps,
+            candidate_timesteps=candidate.trajectory_timesteps,
+            step_index=args.trajectory_step_index,
+        ),
+        "output_metrics": summarize_output_frame_metrics(
+            extract_result_frames(reference),
+            extract_result_frames(candidate),
+        ),
     }
 
-    output_json = Path(args.output_json).expanduser().resolve()
-    output_json.parent.mkdir(parents=True, exist_ok=True)
     output_json.write_text(
-        json.dumps(_to_jsonable(report), indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
+        json.dumps(_to_jsonable(result), indent=2, sort_keys=True), encoding="utf-8"
     )
 
-    print(json.dumps(_to_jsonable(report), indent=2, ensure_ascii=False))
+    selected = result["trajectory_metrics"]["selected_step_metrics"]
+    frame0 = result["output_metrics"]["frame0_metrics"]
+    print(
+        json.dumps(
+            {
+                "output_json": str(output_json),
+                "trajectory_selected_step": result["trajectory_metrics"][
+                    "selected_step_index"
+                ],
+                "trajectory_cosine": selected["cosine_similarity"],
+                "trajectory_mae": selected["mae"],
+                "frame0_psnr_db": frame0["psnr_db"],
+                "frame0_mae": frame0["mae"],
+            },
+            indent=2,
+        )
+    )
 
 
 if __name__ == "__main__":
