@@ -151,10 +151,10 @@ Do not call the mapping pass a "fast profile". It exists to recover `kernel -> c
    - kernel table
    - overlap-opportunity table
    - fuse-pattern table
-5. Before calling something a "new" optimization idea, compare the top rows against both [references/fuse-overlap-catalog.md](references/fuse-overlap-catalog.md) and [references/overlap-catalog.md](references/overlap-catalog.md). Always check the `PR-backed / in-flight` sections too. Prefer reporting:
+5. Before calling something a "new" optimization idea, compare the top rows against both [references/fuse-overlap-catalog.md](references/fuse-overlap-catalog.md) and [references/overlap-catalog.md](references/overlap-catalog.md). Check mainline rows first, then the `PR-backed / in-flight` sections for still-moving upstream work. Prefer reporting:
    - an existing fused or overlap path that should already apply here
    - an existing path that appears disabled, unsupported, or regressed in this trace
-   - an upstream PR-backed pattern that already exists but is not merged into the checked-out tree
+   - an upstream pattern that is mainline elsewhere but missing locally, or still open upstream
    - a truly new opportunity only when no catalog entry fits
 6. If no exact pattern fully matches but the trace still looks semantically close to a known family, add one flat `AI similarity judgment` note after the tables.
    Use `high`, `medium`, or `low` only.
@@ -171,7 +171,7 @@ Load these only when needed:
 - [references/heuristics.md](references/heuristics.md)
   - overlap labels, dependency-risk interpretation, and limits
 - [references/fuse-overlap-catalog.md](references/fuse-overlap-catalog.md)
-  - mixed source-backed catalog of existing fuse and overlap patterns, including PR-backed / in-flight rows
+  - mixed source-backed catalog of existing fuse and overlap patterns, including mainline rows plus PR-backed / in-flight rows
 - [references/overlap-catalog.md](references/overlap-catalog.md)
   - overlap-only lookup table across LLM, VLM, diffusion, disaggregation, HiSparse, and speculative scheduling
 
