@@ -1,24 +1,24 @@
 ---
 name: sglang-minimax-m2-m25-optimization
-description: "PR-backed optimization manual for `MiniMaxAI/MiniMax-M2*` and `MiniMaxAI/MiniMax-M2.5*` in SGLang. Use when Codex needs to recover, extend, or audit MiniMax-specific optimizations, or when a structurally similar MoE model can reuse the same workflow: classify the serving shape, identify whether the code matches merged mainline or active upstream PR stages, apply the next missing optimization family, and validate on the exact topology, quant format, and backend."
+description: "PR-backed optimization manual for `MiniMaxAI/MiniMax-M2*` and `MiniMaxAI/MiniMax-M2.5*` in SGLang. Use when Codex needs to recover, extend, or audit MiniMax-specific optimizations, or when a structurally similar MoE model can reuse the same workflow: classify the serving shape, identify whether the code matches mainline or still-open upstream PR stages, apply the next missing optimization family, and validate on the exact topology, quant format, and backend."
 ---
 
 # SGLang MiniMax M2/M2.5 Optimization
 
 ## Overview
 
-The skill covers the full MiniMax optimization ladder — merged mainline history plus the active upstream PR track. Use it to recover, extend, or audit MiniMax-specific optimizations, or to reuse the patterns on a structurally similar MoE model.
+The skill covers the full MiniMax optimization ladder — mainline history plus the remaining still-open upstream PR track. Use it to recover, extend, or audit MiniMax-specific optimizations, or to reuse the patterns on a structurally similar MoE model.
 
-As of `2026-04-01`, the MiniMax story is split across two sources of truth:
+As of `2026-04-17`, the MiniMax story is split across two sources of truth:
 
-- merged mainline history already present in `main`
-- active upstream PRs that are important for MiniMax-M2.5, but not fully landed in `main` yet
+- mainline history already present in `main`
+- still-open upstream PRs that are important for MiniMax-M2.5, but not fully landed in `main` yet
 
 This skill tracks both, but it labels them clearly. Do not assume an optimization from a PR page is already in your local tree.
 
 The historical evidence for every stage lives in:
 
-- [references/pr-history.md](references/pr-history.md): merged and active PR evidence, benchmark notes, key code patterns
+- [references/pr-history.md](references/pr-history.md): mainline and still-open PR evidence, benchmark notes, key code patterns
 - [references/playbook.md](references/playbook.md): symptom mapping, commands, validation order
 
 ## Before You Change Anything
@@ -204,7 +204,7 @@ M2.5 stresses loading and quantized checkpoint conventions much harder than the 
 ### Stage M25-1: Fill the remaining quantized-loader gaps not yet in `main`
 
 Status:
-Active upstream PRs, not fully on `main` as of `2026-04-01`.
+Still-open upstream PR, not fully on `main` as of `2026-04-17`.
 
 Some M2.5 quantized checkpoints use fused expert naming that the current mainline loader still does not fully cover.
 
@@ -222,12 +222,12 @@ Some M2.5 quantized checkpoints use fused expert naming that the current mainlin
 ### Stage M25-2: Make the scale-out runtime contract explicit
 
 Status:
-Partly on `main`, partly still active upstream as of `2026-04-01`.
+Partly on `main`, partly still-open upstream as of `2026-04-17`.
 
 For M2.5, the next bottleneck is often not a single kernel. It is the distributed contract across PP, EP, DP, and DeepEP.
 
 
-- keep PP support from the merged mainline path
+- keep PP support from the mainline path
 - make DeepEP runtime requirements explicit, especially hidden-size and dtype expectations
 - treat DP support and DP-attention support as separate stages
 
@@ -244,7 +244,7 @@ For M2.5, the next bottleneck is often not a single kernel. It is the distribute
 ### Stage M25-3: Add the DP-attention and DEP communication optimizations
 
 Status:
-Active upstream PRs, not fully on `main` as of `2026-04-01`.
+Mixed: [#20067](https://github.com/sgl-project/sglang/pull/20067) is part of `main`; [#20489](https://github.com/sgl-project/sglang/pull/20489) and [#20975](https://github.com/sgl-project/sglang/pull/20975) remain open as of `2026-04-17`.
 
 This is the biggest M2.5 scale-out gap. Performance and correctness both depend on using the attention-TP group rather than blindly reusing the model-TP group.
 
@@ -268,9 +268,9 @@ This is the biggest M2.5 scale-out gap. Performance and correctness both depend 
 ### Stage M25-4: Replace the older TP QK norm path with the fused JIT version
 
 Status:
-Active upstream PR, not on `main` as of `2026-04-01`.
+Mainline as [#20673](https://github.com/sgl-project/sglang/pull/20673) by `2026-04-17`.
 
-The merged QK norm path is already specialized, but the upstream branch pushes it further by moving to a fused JIT kernel that reuses custom all-reduce v2 more efficiently.
+The older QK norm path was already specialized; the newer mainline path pushes it further by moving to a fused JIT kernel that reuses custom all-reduce v2 more efficiently.
 
 
 - fuse TP Q and K norm into one custom op
@@ -287,7 +287,7 @@ The merged QK norm path is already specialized, but the upstream branch pushes i
 ### Stage M25-5: Fix TP16 and replicated-KV-head correctness
 
 Status:
-Active upstream PR, not on `main` as of `2026-04-01`.
+Mainline as [#20967](https://github.com/sgl-project/sglang/pull/20967) by `2026-04-17`.
 
 When `num_key_value_heads < tp_size`, multiple TP ranks can share the same KV head. That means the K norm weights and reductions must follow the replica layout, not a naive full-TP assumption.
 
@@ -305,7 +305,7 @@ When `num_key_value_heads < tp_size`, multiple TP ranks can share the same KV he
 ### Stage M25-6: Optional NVFP4 fallback for non-Blackwell GPUs
 
 Status:
-Active upstream PR, not MiniMax-specific, but directly relevant to some MiniMax-M2.5 deployments as of `2026-04-01`.
+Mainline as [#19652](https://github.com/sgl-project/sglang/pull/19652) by `2026-04-17`; not MiniMax-specific, but directly relevant to some MiniMax-M2.5 deployments.
 
 If the target checkpoint is an NVFP4 MiniMax variant on A100, H100, A40, or another non-Blackwell GPU, the real blocker may be the generic FP4 Marlin fallback rather than MiniMax model code.
 
@@ -326,7 +326,7 @@ When debugging a MiniMax issue, prefer this order:
 
 1. classify the exact runtime shape
 2. check whether the relevant optimization already exists on `main`
-3. if not, check whether it lives in an active upstream PR
+3. if not, check whether it lives in a still-open upstream PR
 4. only then decide whether to port, reimplement, or defer it
 
 For the supporting evidence and commands, use:
@@ -340,4 +340,4 @@ For the supporting evidence and commands, use:
 - Do not optimize a generic MoE kernel first if the real problem is MiniMax loader or topology plumbing.
 - Do not assume a TP-only text launch proves PP, DP, DP-attention, or DeepEP correctness.
 - Do not bypass `packed_modules_mapping` or KV-scale remapping just to make one checkpoint load.
-- Do not copy active upstream PR behavior into production without noting that it is not on `main` yet.
+- Do not copy still-open upstream PR behavior into production without noting that it is not on `main` yet.

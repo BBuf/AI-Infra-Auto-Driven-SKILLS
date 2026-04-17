@@ -919,18 +919,18 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
         subsumes=("vLLM-origin Attention + Quantization",),
     ),
     FusionPatternSpec(
-        pattern="PR #37045 MiniMax allreduce_rms kernels",
-        candidate_path=("PR #37045" "<br>vllm/model_executor/models/minimax_m2.py"),
+        pattern="vLLM-origin MiniMax allreduce_rms kernels",
+        candidate_path="vllm/model_executor/models/minimax_m2.py",
         active_keywords=("minimax_allreduce_rms", "minimax_allreduce_rmsnorm"),
         split_groups=(
             ("q_norm", "k_norm", "rmsnorm", "minimax"),
             ("allreduce", "all_reduce", "cross_device_reduce"),
         ),
         rationale_hint=(
-            "An open vLLM PR already ports TRTLLM MiniMax allreduce-plus-RMSNorm"
-            " kernels."
+            "vLLM carries the TRTLLM MiniMax allreduce-plus-RMSNorm kernel"
+            " family as an upstream precedent."
         ),
-        origin="inflight",
+        origin="upstream",
         model_include=("minimax",),
         min_share=0.3,
         likely_share=1.5,

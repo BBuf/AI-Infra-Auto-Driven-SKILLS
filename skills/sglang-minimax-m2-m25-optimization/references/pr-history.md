@@ -2,12 +2,12 @@
 
 This reference was built from local `git log --first-parent main`, local `git show`, and the PR pages in `sgl-project/sglang`.
 
-As of `2026-04-01`, MiniMax optimization evidence falls into two buckets:
+As of `2026-04-17`, MiniMax optimization evidence falls into two buckets:
 
-- merged mainline history already present in `main`
-- active upstream PRs that are highly relevant to MiniMax-M2.5, but not fully landed in `main`
+- mainline history already present in `main`
+- still-open upstream PRs that are highly relevant to MiniMax-M2.5, but not fully landed in `main`
 
-This split matters. The active PRs are still useful as an optimization manual, but they are not yet the same thing as shipped behavior.
+This split matters. The still-open PRs are useful as an optimization manual, but they are not yet the same thing as shipped behavior. PRs that moved from active tracking into mainline are called out below so older porting notes do not make already-shipped features look missing.
 
 Excluded on purpose:
 
@@ -16,7 +16,7 @@ Excluded on purpose:
 - cookbook redirects and other documentation reshuffles
 - generic backend work that only happens to benchmark MiniMax unless it materially changes a MiniMax path
 
-## Merged Mainline History
+## Mainline History
 
 ### `7ebc28f5d` / [#12129](https://github.com/sgl-project/sglang/pull/12129) - first MiniMax-M2 support
 
@@ -141,14 +141,14 @@ For quantized MiniMax-family checkpoints, loader details are part of optimizatio
 
 MiniMax-M2.5 quant support increasingly depends on model-specific loader assumptions, not only generic quant infrastructure.
 
-## Active Upstream PR Track
+## Mixed Mainline And Still-Open Upstream Track
 
-These PRs were still active as of `2026-04-01`. They are not all present in local `main`, but they are important enough to treat as part of the MiniMax optimization manual.
+This section was originally the open-upstream track. As of `2026-04-17`, several entries are now part of upstream `main`; the remaining open entries are still useful as porting or gap-analysis references.
 
 ### [#17826](https://github.com/sgl-project/sglang/pull/17826) - PP and DP for MiniMax-M2
 
 Status:
-Active upstream as of `2026-04-01`.
+Still open upstream as of `2026-04-17`.
 
 - Extends `minimax_m2.py` for PP and DP rather than PP alone.
 - Adds attention-group-aware embedding and layer behavior.
@@ -159,7 +159,7 @@ This is the upstream bridge from PP support toward a fuller MiniMax distributed 
 ### [#19468](https://github.com/sgl-project/sglang/pull/19468) - DeepEP support for MiniMax models
 
 Status:
-Active upstream as of `2026-04-01`.
+Still open upstream as of `2026-04-17`.
 
 - Updates the DeepEP environment for MiniMax hidden size `3072`.
 - Forces bf16 to satisfy DeepEP expectations.
@@ -172,7 +172,7 @@ Some MiniMax-M2.5 DeepEP blockers are runtime-contract issues, not model-code is
 ### [#20031](https://github.com/sgl-project/sglang/pull/20031) - load fused expert weights such as `w13` for AWQ
 
 Status:
-Active upstream as of `2026-04-01`.
+Still open upstream as of `2026-04-17`.
 
 - Extends `load_weights(...)` with fused expert mapping before the older mapping.
 - Adds dedicated weight-loading test coverage in the PR branch.
@@ -187,7 +187,7 @@ M2.5 loader evolution is moving toward explicit fused-expert handling, not only 
 ### [#20067](https://github.com/sgl-project/sglang/pull/20067) - DP attention, reduce-scatter, FP4 all-gather, and all-reduce fusion for MiniMax-M2.5
 
 Status:
-Active upstream as of `2026-04-01`.
+Mainline in upstream `main` as commit `7dbd0dd9f` by `2026-04-17`.
 
 - Switches MiniMax attention and norms to attention-TP-aware metadata.
 - Allows post-MoE communication to avoid unconditional all-reduce.
@@ -203,12 +203,12 @@ Representative accuracy and throughput notes from the PR body:
 - FP4 `DEP4` with bf16 all-gather: accuracy `0.948`, output throughput `5914.209 token/s`
 - FP4 `TP4` with all-reduce fusion: accuracy `0.948`, output throughput `3559.490 token/s`
 
-This is the most important active M2.5 scale-out optimization track.
+This is now the baseline M2.5 scale-out optimization track to verify before porting newer DP-attention cleanup PRs.
 
 ### [#20489](https://github.com/sgl-project/sglang/pull/20489) and [#20975](https://github.com/sgl-project/sglang/pull/20975) - DP-attention fixes for MiniMax M2
 
 Status:
-Active upstream as of `2026-04-01`.
+Still open upstream as of `2026-04-17`.
 
 - Fix attention TP group usage inside MiniMax attention.
 - Fix model-runner and memory-pool assumptions that break at higher DP-attention ranks.
@@ -227,7 +227,7 @@ The M2.5 DP-attention path is not just a model-file change. The runtime plumbing
 ### [#20673](https://github.com/sgl-project/sglang/pull/20673) - fused TP QK norm JIT kernel for MiniMax
 
 Status:
-Active upstream as of `2026-04-01`.
+Mainline in upstream `main` as commit `314d6ecf` by `2026-04-17`.
 
 - Adds `python/sglang/jit_kernel/tests/test_tp_qknorm.py`.
 - Adds `python/sglang/jit_kernel/benchmark/bench_tp_qknorm.py`.
@@ -237,12 +237,12 @@ Representative benchmark note from the PR body:
 
 - decode performance `150 tps -> 157 tps`
 
-MiniMax QK norm optimization is still evolving, but the new direction is a fused JIT op rather than more Python-level reshaping.
+MiniMax QK norm optimization is still evolving, but the mainline direction is now a fused JIT op rather than more Python-level reshaping.
 
 ### [#20967](https://github.com/sgl-project/sglang/pull/20967) - fix repeated output on MiniMax-M2.5 with `tp16`
 
 Status:
-Active upstream as of `2026-04-01`.
+Mainline in upstream `main` as commit `84194c25` by `2026-04-17`.
 
 - Makes `MiniMaxM2RMSNormTP` replica-aware when KV heads are fewer than TP ranks.
 - Changes the norm weight loader and reduction scope to follow logical KV-head replicas.
@@ -252,11 +252,13 @@ At high TP, MiniMax correctness depends on replica-aware norm logic, not only on
 ### [#19652](https://github.com/sgl-project/sglang/pull/19652) - NVFP4 Marlin fallback for non-Blackwell GPUs
 
 Status:
-Active upstream as of `2026-04-01`.
+Mainline in upstream `main` as commit `991f3aa5` by `2026-04-17`.
 
 - Not MiniMax-specific in code ownership, but directly relevant to MiniMax-M2.5 NVFP4 deployments.
 - The PR body explicitly names `mistralai/Minimax-M2.5-NVFP4` as a motivating example.
 - Keeps FP4 weights compressed and routes unsupported native FP4 paths through Marlin fallback for both linear and MoE paths.
+
+For non-Blackwell MiniMax-M2.5 NVFP4 debugging, first validate the mainline fallback path in the current tree before assuming a MiniMax model-file gap.
 
 Some MiniMax-M2.5 deployment blockers belong to the generic FP4 runtime layer rather than the MiniMax model file itself.
 
@@ -270,7 +272,7 @@ If you are trying to understand "what is already comprehensive here", the MiniMa
 - Eagle3 and auxiliary-hidden-state surfaces
 - piecewise CUDA graph and PP support
 - packed or quantized checkpoint loader contracts
-- active upstream M2.5 scale-out work for DP attention, DEP, fused QK norm, and high-TP correctness
+- mainline M2.5 scale-out work for DP attention, fused QK norm, high-TP correctness, and remaining still-open DP / DeepEP gaps
 
 What is intentionally not the main focus of this manual:
 

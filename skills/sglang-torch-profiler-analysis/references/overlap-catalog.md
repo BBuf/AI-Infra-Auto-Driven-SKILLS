@@ -16,8 +16,8 @@ Use it like this:
 3. If a match exists in the mainline sections, report it as an existing
    overlap family that is missing, disabled, regressed, or unsupported on the
    current backend.
-4. If a match exists only in the `PR-backed / in-flight` section, report it as
-   an upstream overlap pattern, not a novel idea.
+4. If a match exists only in the `PR-backed / in-flight`
+   section, report it as an upstream overlap pattern, not a novel idea.
 5. Only call an overlap opportunity "new" when no row in this file or
    `fuse-overlap-catalog.md` fits.
 
@@ -25,6 +25,13 @@ The `vLLM-origin` sections below are comparative references. They are not
 necessarily present in the checked-out `sglang` tree, but they should still be
 treated as upstream or analogous kernel-overlap families before labeling an
 overlap opportunity as novel.
+
+Refresh note `2026-04-17`: stable upstream overlap changes are folded into the
+mainline rows. SGLang [#21877](https://github.com/sgl-project/sglang/pull/21877),
+[#22410](https://github.com/sgl-project/sglang/pull/22410), FlashInfer
+[#2840](https://github.com/flashinfer-ai/flashinfer/pull/2840), [#2720](https://github.com/flashinfer-ai/flashinfer/pull/2720),
+and vLLM [#35968](https://github.com/vllm-project/vllm/pull/35968), [#39301](https://github.com/vllm-project/vllm/pull/39301)
+remain useful open-PR overlap references as of this refresh.
 
 ## 1. LLM / SRT kernel-overlap families
 
@@ -94,16 +101,10 @@ AutoDeploy rather than same-stream PDL windows.
 | Pattern | Trace keywords | Primary code | Existing path | Skill should conclude |
 | --- | --- | --- | --- | --- |
 | TensorRT-LLM multi-stream MLA attention | `multi_stream_mla_attn`<br>`record_event_passthrough`<br>`_aux`<br>`wait_event` | `tensorrt_llm/_torch/auto_deploy/transform/library/multi_stream_attn.py`<br>`tensorrt_llm/_torch/auto_deploy/utils/multi_stream_utils.py` | AutoDeploy rewrites MLA Q/KV forks so the KV projection runs on an auxiliary stream while the Q path stays on the caller stream | Treat exposed Q-branch vs KV-branch overlap as an existing TensorRT-LLM multi-stream family first. |
-| TensorRT-LLM multi-stream MoE shared-vs-routed overlap | `multi_stream_moe`<br>`begin_aux_stream_passthrough`<br>`end_aux_stream_passthrough`<br>`wait_aux_stream_passthrough` | `tensorrt_llm/_torch/auto_deploy/transform/library/multi_stream_moe.py`<br>`tensorrt_llm/_torch/auto_deploy/utils/multi_stream_utils.py` | Shared-expert work is moved to an auxiliary stream while routed-expert MoE work remains on the main stream and rejoins at the merge node | Treat shared-expert vs routed-expert windows as an existing TensorRT-LLM branch-overlap family. |
+| TensorRT-LLM multi-stream MoE shared-vs-routed overlap | `multi_stream_moe`<br>`begin_aux_stream_passthrough`<br>`end_aux_stream_passthrough`<br>`wait_aux_stream_passthrough`<br>`mlir_elementwise_fusion`<br>`piecewise cudagraph`<br>`caller_stream.synchronize()` | `tensorrt_llm/_torch/auto_deploy/transform/library/multi_stream_moe.py`<br>`tensorrt_llm/_torch/auto_deploy/utils/multi_stream_utils.py` | Shared-expert work is moved to an auxiliary stream while routed-expert MoE work remains on the main stream and rejoins at the merge node; the same family includes synchronization rules for MLIR-fused kernels and piecewise cudagraph replay | Treat shared-expert vs routed-expert windows, including altered behavior under MLIR / piecewise graph modes, as an existing TensorRT-LLM branch-overlap family. |
 | TensorRT-LLM multi-stream FP8 GEMM fork parallelism | `multi_stream_gemm`<br>`trtllm_finegrained_fp8_linear`<br>`record_event_passthrough`<br>`_aux` | `tensorrt_llm/_torch/auto_deploy/transform/library/multi_stream_gemm.py`<br>`tensorrt_llm/_torch/auto_deploy/utils/multi_stream_utils.py` | Compiler pass identifies fork points with multiple FP8 linears and moves the largest GEMM to the auxiliary stream so sibling GEMMs overlap | Treat sibling FP8 linear branches as an existing TensorRT-LLM overlap family before designing a new stream split. |
 
-## 8. TensorRT-LLM-origin PR-backed / in-flight kernel-overlap families
-
-| Pattern | Trace keywords | Primary code | Existing path | Skill should conclude |
-| --- | --- | --- | --- | --- |
-| PR `#12847` `multi_stream_moe` sync fix for MLIR and piecewise cudagraphs | `multi_stream_moe`<br>`mlir_elementwise_fusion`<br>`piecewise cudagraph`<br>`caller_stream.synchronize()` | `PR #12847`<br>`tensorrt_llm/_torch/auto_deploy/transform/library/multi_stream_moe.py`<br>`tensorrt_llm/_torch/auto_deploy/utils/multi_stream_utils.py` | Open PR preserves the existing multi-stream MoE overlap family while tightening synchronization when MLIR-fused kernels or piecewise cudagraph replay are present | Treat missing or altered `multi_stream_moe` overlap under MLIR / piecewise graph modes as an in-flight TensorRT-LLM rule first. |
-
-## 9. vLLM-origin kernel-overlap families
+## 8. vLLM-origin kernel-overlap families
 
 | Pattern | Trace keywords | Primary code | Existing path | Skill should conclude |
 | --- | --- | --- | --- | --- |
@@ -112,14 +113,14 @@ AutoDeploy rather than same-stream PDL windows.
 | vLLM-origin shared-expert aux-stream overlap | `aux_stream`<br>`shared_experts_stream`<br>shared expert near router | `vllm/utils/torch_utils.py`<br>`vllm/model_executor/layers/fused_moe/runner/default_moe_runner.py` | MoE shared experts can run on a dedicated aux stream and overlap with router-side work | Treat shared-expert vs router overlap as an existing upstream sparse-model family. |
 | vLLM-origin DCP async all-to-all overlap | `dcp_alltoall`<br>`all_to_all_single`<br>`async_op=True` | `vllm/v1/attention/ops/dcp_alltoall.py` | Output / LSE exchange uses async all-to-all handles instead of serializing collective completion on the main path | Treat DCP all-to-all windows as an upstream async-collective family. |
 
-## 10. vLLM-origin PR-backed / in-flight kernel-overlap families
+## 9. vLLM-origin PR-backed / in-flight kernel-overlap families
 
 | Pattern | Trace keywords | Primary code | Existing path | Skill should conclude |
 | --- | --- | --- | --- | --- |
 | PR `#35968` DSV3.2 multi-stream indexer overlap | `weights_proj`<br>`wk`<br>`k_norm`<br>`aux_stream` | `PR #35968`<br>`vllm/model_executor/models/deepseek_v2.py`<br>`vllm/utils/torch_utils.py` | Open PR overlaps the small `weights_proj` GEMM with `wk + k_norm` on a secondary CUDA stream for decode batches instead of serializing both on the default stream | Treat this as a concrete upstream decode-time kernel-overlap family when traces show underutilized projection overlap opportunities. |
 | PR `#39301` GLM5 router GEMM with PDL overlap | `TRTLLM_ENABLE_PDL`<br>`router_gemm`<br>`GLM5`<br>`FI AR RMS fusion` | `PR #39301`<br>`vllm/model_executor/layers/fused_moe/router/gate_linear.py`<br>`vllm/csrc/moe/dsv3_router_gemm_utils.h` | The GLM5 router GEMM path explicitly uses PDL so the router kernel can overlap with the preceding fused allreduce-plus-RMS block on supported GPUs | Treat router-GEMM launch overlap on GLM5-like traces as an in-flight upstream family first. |
 
-## 11. Important toggles and caveats
+## 10. Important toggles and caveats
 
 | Toggle / env | Location | Effect on trace interpretation |
 | --- | --- | --- |
@@ -141,7 +142,7 @@ AutoDeploy rather than same-stream PDL windows.
 | `PassConfig.enable_sp` | `vllm/config/compilation.py` | Enables vLLM's sequence-parallel staging family that creates RS / AG overlap opportunities. |
 | `PassConfig.fuse_gemm_comms` | `vllm/config/compilation.py` | Enables AsyncTP GEMM + collective overlap and auto-enables `enable_sp` when valid. |
 
-## 12. Suggested refresh commands
+## 11. Suggested refresh commands
 
 These commands are only for maintainers refreshing this catalog by rescanning
 the local source trees. They are not used by the triage scripts at runtime.
