@@ -1,4 +1,4 @@
 interface:
   display_name: "SGLang MiniMax M2/M2.5 Optimization"
-  short_description: "MiniMax M2/M2.5 optimization ladder from mainline and active PR history"
-  default_prompt: "Use $sglang-minimax-m2-m25-optimization to optimize or debug MiniMax-M2 or MiniMax-M2.5 in SGLang, and map the current code to the right merged-mainline or active-upstream stage."
+  short_description: "MiniMax M2/M2.5 optimization ladder from mainline and still-open PR history"
+  default_prompt: "Use $sglang-minimax-m2-m25-optimization to optimize or debug MiniMax-M2 or MiniMax-M2.5 in SGLang, and map the current code to the right mainline or still-open-upstream stage."
