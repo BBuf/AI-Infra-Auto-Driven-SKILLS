@@ -1,4 +1,0 @@
-interface:
-  display_name: "SGLang Diffusion ModelOpt Quant"
-  short_description: "ModelOpt FP8/NVFP4 quantization workflow for SGLang Diffusion"
-  default_prompt: "Quantize a diffusion DiT with NVIDIA ModelOpt and make the resulting FP8 or NVFP4 checkpoint loadable, verifiable, and benchmarkable in SGLang Diffusion."
