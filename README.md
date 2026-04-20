@@ -64,7 +64,7 @@ The `h100` and `h100-sglang-diffusion` skills use placeholder values. Replace th
 
 ## Install
 
-Copy the desired skill directory into the skill path used by your agent product:
+Copy the desired skill directory into your local skill path:
 
 ```bash
 cp -r skills/sglang-prod-incident-triage <agent-skill-dir>/sglang-prod-incident-triage

@@ -1,6 +1,6 @@
 ---
 name: sglang-prod-incident-triage
-description: End-to-end production incident triage for SGLang servers and routers. Use when an agent needs to investigate live or recent SGLang incidents such as health-check failures, latency or throughput regressions, queue growth, request timeouts, distributed stalls, crash dumps, wrong outputs after deploys, PD/EP/HiCache-related incidents, or when it must decide whether to collect metrics, load snapshots, request dumps, OTel traces, torch profiles, or request replays and return a concrete root-cause hypothesis with next steps.
+description: End-to-end production incident triage for SGLang servers and routers. Use when investigating live or recent SGLang incidents such as health-check failures, latency or throughput regressions, queue growth, request timeouts, distributed stalls, crash dumps, wrong outputs after deploys, or PD/EP/HiCache-related incidents, and when deciding whether to collect metrics, load snapshots, request dumps, OTel traces, torch profiles, or request replays before returning a concrete root-cause hypothesis with next steps.
 ---
 
 # SGLang Production Incident Triage
