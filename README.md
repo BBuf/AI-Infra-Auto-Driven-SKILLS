@@ -48,11 +48,6 @@ skills/
 │   └── references/
 │       ├── playbook.md
 │       └── pr-history.md
-└── vllm-kimi-k2-k25-optimization/
-    ├── SKILL.md
-    └── references/
-        ├── playbook.md
-        └── pr-history.md
 ```
 
 ## Placeholders
