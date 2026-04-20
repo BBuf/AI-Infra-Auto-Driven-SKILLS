@@ -1,4 +1,4 @@
-# Replay, Trace, and Profile
+# Replay, Trace, Profile, and Bisect
 
 Use this reference after the first-round triage when you need reproducible
 evidence rather than just live snapshots.
@@ -47,7 +47,7 @@ Treat the dump as the best starting point for reproduction.
 Summarize it first with:
 
 ```bash
-python3 scripts/summarize_request_dump.py \
+python3 scripts/incident_artifact_tool.py summarize-dump \
   --input-file /path/to/crash_dump.pkl
 ```
 
@@ -186,75 +186,36 @@ python3 scripts/convert_otel_2_perfetto.py \
 
 Use this when you want a timeline view that is easier to inspect than raw OTEL.
 
-## Torch Profiling
+## Torch Profiler Handoff
 
-### Live server via HTTP control
+When replay, metrics, and trace data all point to a compute-side issue, switch
+to `sglang-torch-profiler-analysis`.
 
-Start profiling:
+Use that dedicated skill for:
 
-```bash
-curl -X POST http://127.0.0.1:30000/start_profile \
-  -H "Content-Type: application/json" \
-  -d '{"output_dir":"/tmp/incident_profile","num_steps":1,"profile_by_stage":true,"profile_stages":["prefill"],"merge_profiles":true}'
-```
+- trace capture from a live server
+- profile-v2 / `profile_by_stage` details
+- rank-local versus merged trace choice
+- kernel-table, overlap-table, and fuse-pattern analysis
 
-Stop profiling:
+This incident-triage skill should only decide *when* profiling is justified, not
+duplicate the full profiler workflow.
 
-```bash
-curl -X POST http://127.0.0.1:30000/stop_profile
-```
+## Known-good vs known-bad commit regression
 
-Common useful options:
+If one commit is known-good and a newer commit is known-bad:
 
-- `output_dir`
-- `start_step`
-- `num_steps`
-- `activities`
-- `record_shapes`
-- `with_stack`
-- `profile_by_stage`
-- `merge_profiles`
+1. build a deterministic harness from the incident
+2. prefer replay-based harnesses when the failure depends on request mix
+3. use `git bisect run <harness>`
+4. only after bisect isolates a bad change, return to trace or profile if needed
 
-On current SGLang profile-v2 builds, a prefill-focused run may write
-`*-EXTEND.trace.json.gz` rather than a file literally named `PREFILL`. A single
-request can also leave DECODE traces in the same directory even when the
-incident is prefill-side. For prefill regressions, inspect the rank-local
-`TP-0-EXTEND` trace first and treat the merged trace as a secondary artifact.
-
-### Client-driven profile
-
-For a running server:
+Example:
 
 ```bash
-export SGLANG_TORCH_PROFILER_DIR=/tmp/sglang_profiles
-python3 -m sglang.bench_serving \
-  --backend sglang \
-  --num-prompts 10 \
-  --profile
+git bisect start <bad> <good>
+git bisect run bash ./repro_or_check.sh
 ```
-
-### PD-specific rule
-
-For PD disaggregation:
-
-- prefill workers and decode workers must be profiled separately
-- do not treat a mixed PD trace as authoritative
-
-Use dedicated URLs or separate runs.
-
-### When to prefer torch profiling
-
-Use it when:
-
-- live metrics already show a real compute regression
-- replay reproduced the issue
-- you need kernel families, overlap, or source attribution
-
-Do not use it as the first move for:
-
-- server-down incidents
-- wrong-output incidents
-- incidents already explained by queueing or load imbalance
 
 ## Incident-to-Tool Mapping
 
@@ -274,7 +235,7 @@ Best order:
 
 1. metrics and loads
 2. trace if stage ownership is unclear
-3. torch profiler only if compute path remains suspicious
+3. `sglang-torch-profiler-analysis` only if compute path remains suspicious
 
 ### PD transfer stall
 
@@ -291,4 +252,5 @@ Best order:
 1. compare `server_info`
 2. compare `/metrics` and `/v1/loads`
 3. replay stable workload
-4. profile if needed
+4. bisect if one older commit is known-good
+5. `sglang-torch-profiler-analysis` if compute remains suspicious

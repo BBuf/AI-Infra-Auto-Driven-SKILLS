@@ -1,20 +1,156 @@
 #!/usr/bin/env python3
-"""Summarize a collected SGLang incident bundle into a compact first-pass report."""
+"""Collect or inspect incident artifacts for SGLang serving triage."""
 
 from __future__ import annotations
 
 import argparse
+import glob
 import json
 import math
+import os
+import pickle
 import re
+import time
+import urllib.parse
+import urllib.request
 from collections import defaultdict
+from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Sequence
 
 METRIC_RE = re.compile(
     r"^(?P<name>[^{\s]+)(?:\{(?P<labels>[^}]*)\})?\s+(?P<value>[-+]?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?)$"
 )
 LABEL_RE = re.compile(r'([a-zA-Z_:][a-zA-Z0-9_:]*)="((?:[^"\\]|\\.)*)"')
+
+
+def request_text(
+    base_url: str,
+    path: str,
+    token: Optional[str],
+    timeout: float = 10.0,
+) -> tuple[bool, int, str]:
+    url = urllib.parse.urljoin(base_url.rstrip("/") + "/", path.lstrip("/"))
+    req = urllib.request.Request(url)
+    if token:
+        req.add_header("Authorization", f"Bearer {token}")
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            body = resp.read().decode("utf-8", errors="replace")
+            return True, resp.status, body
+    except urllib.error.HTTPError as e:
+        body = e.read().decode("utf-8", errors="replace")
+        return False, e.code, body
+    except Exception as e:  # noqa: BLE001
+        return False, -1, f"{type(e).__name__}: {e}"
+
+
+def request_json(
+    base_url: str,
+    path: str,
+    token: Optional[str],
+    timeout: float = 10.0,
+) -> Dict[str, Any]:
+    ok, status, body = request_text(base_url, path, token, timeout=timeout)
+    result: Dict[str, Any] = {"ok": ok, "status": status, "path": path}
+    if ok:
+        try:
+            result["json"] = json.loads(body)
+        except json.JSONDecodeError:
+            result["text"] = body
+            result["decode_error"] = "response was not valid JSON"
+    else:
+        result["error"] = body
+    return result
+
+
+def request_plain(
+    base_url: str,
+    path: str,
+    token: Optional[str],
+    timeout: float = 10.0,
+) -> Dict[str, Any]:
+    ok, status, body = request_text(base_url, path, token, timeout=timeout)
+    result: Dict[str, Any] = {"ok": ok, "status": status, "path": path}
+    if ok:
+        result["text"] = body
+    else:
+        result["error"] = body
+    return result
+
+
+def write_json(path: Path, obj: Dict[str, Any]) -> None:
+    path.write_text(json.dumps(obj, indent=2, ensure_ascii=False) + "\n")
+
+
+def write_text(path: Path, text: str) -> None:
+    path.write_text(text)
+
+
+def collect_bundle(
+    base_url: str,
+    token: Optional[str],
+    outdir: Optional[str],
+    timeout: float,
+) -> Path:
+    timestamp = time.strftime("%Y%m%d_%H%M%S")
+    bundle_dir = Path(outdir or f"./incident_bundle_{timestamp}").resolve()
+    bundle_dir.mkdir(parents=True, exist_ok=True)
+
+    metadata = {
+        "artifact_type": "incident_bundle",
+        "base_url": base_url,
+        "collected_at": timestamp,
+        "token_provided": bool(token),
+        "timeout_seconds": timeout,
+    }
+    write_json(bundle_dir / "metadata.json", metadata)
+
+    json_endpoints = {
+        "model_info.json": "/model_info",
+        "server_info.json": "/server_info",
+        "loads_all.json": "/v1/loads?include=all",
+        "loads_core_queues_disagg.json": "/v1/loads?include=core,queues,disagg,spec",
+        "hicache_storage_backend.json": "/hicache/storage-backend",
+    }
+    text_endpoints = {
+        "health.txt": "/health",
+        "health_generate.txt": "/health_generate",
+        "metrics.txt": "/metrics",
+    }
+
+    summary_lines = []
+    for filename, path in text_endpoints.items():
+        result = request_plain(base_url, path, token, timeout=timeout)
+        if result.get("ok"):
+            write_text(bundle_dir / filename, str(result.get("text", "")))
+            summary_lines.append(f"{filename}: ok")
+        else:
+            write_json(bundle_dir / f"{filename}.error.json", result)
+            summary_lines.append(
+                f"{filename}: failed status={result.get('status')} error={result.get('error')}"
+            )
+
+    for filename, path in json_endpoints.items():
+        result = request_json(base_url, path, token, timeout=timeout)
+        write_json(bundle_dir / filename, result)
+        if result.get("ok"):
+            summary_lines.append(f"{filename}: ok")
+        else:
+            summary_lines.append(
+                f"{filename}: failed status={result.get('status')} error={result.get('error')}"
+            )
+
+    notes = [
+        "This bundle is read-only. It does not start profiling or change trace level.",
+        "HiCache status may fail if admin_api_key is not configured or the wrong bearer token was used.",
+        "loads_all.json is the best point-in-time load snapshot in this bundle.",
+        "metrics.txt is raw Prometheus text intended for follow-up parsing.",
+    ]
+    write_text(
+        bundle_dir / "SUMMARY.txt", "\n".join(summary_lines + [""] + notes) + "\n"
+    )
+    return bundle_dir
 
 
 def load_json(path: Path) -> Optional[Dict[str, Any]]:
@@ -120,7 +256,7 @@ def add_signal(signals: list[str], text: str) -> None:
         signals.append(text)
 
 
-def build_summary(bundle_dir: Path) -> Dict[str, Any]:
+def build_bundle_summary(bundle_dir: Path) -> Dict[str, Any]:
     metadata = load_json(bundle_dir / "metadata.json") or {}
     model_info = unwrap_result(bundle_dir / "model_info.json") or {}
     server_info = unwrap_result(bundle_dir / "server_info.json") or {}
@@ -154,6 +290,7 @@ def build_summary(bundle_dir: Path) -> Dict[str, Any]:
     )
 
     summary: Dict[str, Any] = {
+        "artifact_type": "incident_bundle",
         "bundle_dir": str(bundle_dir),
         "base_url": metadata.get("base_url"),
         "collected_at": metadata.get("collected_at"),
@@ -287,7 +424,7 @@ def build_summary(bundle_dir: Path) -> Dict[str, Any]:
     return summary
 
 
-def render_text(summary: Dict[str, Any]) -> str:
+def render_bundle_text(summary: Dict[str, Any]) -> str:
     health = summary["health"]
     model = summary["model"]
     topology = summary["topology"]
@@ -355,50 +492,224 @@ def render_text(summary: Dict[str, Any]) -> str:
     return "\n".join(lines) + "\n"
 
 
+def get_field(obj: Any, name: str, default: Any = None) -> Any:
+    if obj is None:
+        return default
+    if isinstance(obj, dict):
+        return obj.get(name, default)
+    return getattr(obj, name, default)
+
+
+def iter_dump_files(
+    input_file: Optional[str], input_folder: Optional[str]
+) -> Sequence[Path]:
+    if input_file:
+        return [Path(input_file)]
+    if input_folder:
+        return [Path(p) for p in sorted(glob.glob(f"{input_folder}/*.pkl"))]
+    raise SystemExit("Either --input-file or --input-folder must be provided.")
+
+
+def load_dump_payload(path: Path) -> dict[str, Any]:
+    with path.open("rb") as fh:
+        payload = pickle.load(fh)
+    if isinstance(payload, dict):
+        return payload
+    return {"requests": payload}
+
+
+def pick_text_preview(req: Any) -> str:
+    candidates = [
+        get_field(req, "origin_input_text"),
+        get_field(req, "text"),
+        get_field(req, "prompt"),
+    ]
+    for value in candidates:
+        if isinstance(value, str) and value:
+            return value
+        if isinstance(value, list) and value:
+            first = value[0]
+            if isinstance(first, str) and first:
+                return first
+    return ""
+
+
+def format_timestamp(ts: Any) -> str:
+    if not isinstance(ts, (int, float)):
+        return "n/a"
+    return datetime.fromtimestamp(ts).strftime("%Y-%m-%d %H:%M:%S")
+
+
+def summarize_request(
+    record: tuple[Any, dict[str, Any], Any, Any], idx: int, preview_chars: int
+) -> list[str]:
+    req, output, start_time, end_time = record
+    preview = pick_text_preview(req).replace("\n", " ").strip()
+    if len(preview) > preview_chars:
+        preview = preview[: preview_chars - 3] + "..."
+
+    output_dict = output if isinstance(output, dict) else {}
+    meta_info = get_field(output_dict, "meta_info", {}) or {}
+    rid = get_field(req, "rid") or get_field(meta_info, "id")
+    stream = bool(get_field(req, "stream", False))
+    prompt_tokens = get_field(meta_info, "prompt_tokens")
+    completion_tokens = get_field(meta_info, "completion_tokens")
+    duration = (
+        end_time - start_time
+        if isinstance(start_time, (int, float)) and isinstance(end_time, (int, float))
+        else None
+    )
+
+    lines = [
+        (
+            f"[{idx}] rid={rid or 'n/a'} stream={stream} "
+            f"prompt_tokens={prompt_tokens if prompt_tokens is not None else 'n/a'} "
+            f"completion_tokens={completion_tokens if completion_tokens is not None else 'n/a'} "
+            f"start={format_timestamp(start_time)} "
+            f"elapsed_s={duration:.3f}"
+            if duration is not None
+            else f"[{idx}] rid={rid or 'n/a'} stream={stream} "
+            f"prompt_tokens={prompt_tokens if prompt_tokens is not None else 'n/a'} "
+            f"completion_tokens={completion_tokens if completion_tokens is not None else 'n/a'} "
+            f"start={format_timestamp(start_time)} elapsed_s=n/a"
+        )
+    ]
+    if preview:
+        lines.append(f"      text={preview}")
+    return lines
+
+
+def summarize_dump_file(path: Path, max_requests: int, preview_chars: int) -> str:
+    payload = load_dump_payload(path)
+    requests = payload.get("requests") or []
+    server_args = payload.get("server_args")
+    launch_command = payload.get("launch_command")
+
+    model_path = get_field(server_args, "model_path")
+    tp_size = get_field(server_args, "tp_size")
+    dp_size = get_field(server_args, "dp_size")
+    pp_size = get_field(server_args, "pp_size")
+    host = get_field(server_args, "host")
+    port = get_field(server_args, "port")
+
+    timestamps = [
+        record[2]
+        for record in requests
+        if isinstance(record, tuple)
+        and len(record) >= 4
+        and isinstance(record[2], (int, float))
+    ]
+    time_span = (
+        max(timestamps) - min(timestamps)
+        if len(timestamps) >= 2
+        else 0.0 if len(timestamps) == 1 else None
+    )
+
+    lines = [
+        f"File: {path}",
+        "Artifact Type: request_or_crash_dump",
+        f"Requests: {len(requests)}",
+        f"Model: {model_path or 'n/a'}",
+        f"Topology: tp={tp_size if tp_size is not None else 'n/a'} "
+        f"dp={dp_size if dp_size is not None else 'n/a'} "
+        f"pp={pp_size if pp_size is not None else 'n/a'}",
+        f"Endpoint: {host or 'n/a'}:{port if port is not None else 'n/a'}",
+        (
+            f"Time span seconds: {time_span:.3f}"
+            if time_span is not None
+            else "Time span seconds: n/a"
+        ),
+    ]
+    if launch_command:
+        lines.append(f"Launch command: {launch_command}")
+
+    for idx, record in enumerate(requests[:max_requests]):
+        if not isinstance(record, tuple) or len(record) < 4:
+            lines.append(f"[{idx}] Unsupported record shape: {type(record)!r}")
+            continue
+        lines.extend(summarize_request(record, idx, preview_chars))
+
+    if len(requests) > max_requests:
+        lines.append(f"... truncated {len(requests) - max_requests} more requests")
+    return "\n".join(lines)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Summarize a collected SGLang incident bundle into a compact first-pass report."
+        description="Collect or inspect incident artifacts for SGLang serving triage."
     )
-    parser.add_argument(
-        "bundle_dir", help="Path to a directory produced by collect_incident_bundle.py"
+    subparsers = parser.add_subparsers(dest="artifact_type", required=True)
+
+    collect_parser = subparsers.add_parser(
+        "collect-bundle", help="Collect a read-only incident bundle from a live server"
     )
-    parser.add_argument(
-        "--out",
-        default=None,
-        help="Optional output text path. Defaults to <bundle_dir>/SUMMARY_REPORT.txt.",
+    collect_parser.add_argument("--base-url", required=True)
+    collect_parser.add_argument(
+        "--token",
+        default=os.environ.get("SGLANG_BEARER_TOKEN"),
+        help="Bearer token for protected endpoints. Defaults to $SGLANG_BEARER_TOKEN.",
     )
-    parser.add_argument(
-        "--json-out",
-        default=None,
-        help="Optional output JSON path. Defaults to <bundle_dir>/SUMMARY_REPORT.json.",
+    collect_parser.add_argument("--outdir", default=None)
+    collect_parser.add_argument("--timeout", type=float, default=10.0)
+
+    bundle_parser = subparsers.add_parser(
+        "summarize-bundle", help="Summarize a directory produced by collect-bundle"
     )
-    parser.add_argument(
-        "--stdout-json",
-        action="store_true",
-        help="Print the JSON summary to stdout instead of the text report.",
+    bundle_parser.add_argument("bundle_dir")
+    bundle_parser.add_argument("--out", default=None)
+    bundle_parser.add_argument("--json-out", default=None)
+    bundle_parser.add_argument("--stdout-json", action="store_true")
+
+    dump_parser = subparsers.add_parser(
+        "summarize-dump", help="Summarize a trusted request dump or crash dump"
     )
+    dump_parser.add_argument("--input-file", default=None)
+    dump_parser.add_argument("--input-folder", default=None)
+    dump_parser.add_argument("--max-requests", type=int, default=20)
+    dump_parser.add_argument("--preview-chars", type=int, default=160)
+
     args = parser.parse_args()
 
-    bundle_dir = Path(args.bundle_dir).resolve()
-    if not bundle_dir.is_dir():
-        raise SystemExit(
-            f"bundle_dir does not exist or is not a directory: {bundle_dir}"
+    if args.artifact_type == "collect-bundle":
+        bundle_dir = collect_bundle(
+            args.base_url, args.token, args.outdir, args.timeout
         )
+        print(bundle_dir)
+        return 0
 
-    summary = build_summary(bundle_dir)
-    out_text = render_text(summary)
+    if args.artifact_type == "summarize-bundle":
+        bundle_dir = Path(args.bundle_dir).resolve()
+        if not bundle_dir.is_dir():
+            raise SystemExit(
+                f"bundle_dir does not exist or is not a directory: {bundle_dir}"
+            )
+        summary = build_bundle_summary(bundle_dir)
+        out_text = render_bundle_text(summary)
+        text_path = Path(args.out) if args.out else bundle_dir / "SUMMARY_REPORT.txt"
+        json_path = (
+            Path(args.json_out) if args.json_out else bundle_dir / "SUMMARY_REPORT.json"
+        )
+        text_path.write_text(out_text)
+        json_path.write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n")
+        if args.stdout_json:
+            print(json.dumps(summary, indent=2, ensure_ascii=False))
+        else:
+            print(out_text, end="")
+        return 0
 
-    text_path = Path(args.out) if args.out else bundle_dir / "SUMMARY_REPORT.txt"
-    json_path = (
-        Path(args.json_out) if args.json_out else bundle_dir / "SUMMARY_REPORT.json"
-    )
-    text_path.write_text(out_text)
-    json_path.write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n")
-
-    if args.stdout_json:
-        print(json.dumps(summary, indent=2, ensure_ascii=False))
-    else:
-        print(out_text, end="")
+    files = iter_dump_files(args.input_file, args.input_folder)
+    if not files:
+        raise SystemExit("No .pkl files matched the provided input.")
+    for idx, path in enumerate(files):
+        if idx:
+            print()
+        print(
+            summarize_dump_file(
+                path=path,
+                max_requests=args.max_requests,
+                preview_chars=args.preview_chars,
+            )
+        )
     return 0
 
 

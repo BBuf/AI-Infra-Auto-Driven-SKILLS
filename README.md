@@ -18,10 +18,8 @@ skills/
 │   │   ├── moe-shared-oob-case-study.md
 │   │   └── replay-trace-profile.md
 │   └── scripts/
-│       ├── collect_incident_bundle.py
-│       ├── replay_trusted_request_dump.py
-│       ├── summarize_request_dump.py
-│       └── summarize_incident_bundle.py
+│       ├── incident_artifact_tool.py
+│       └── replay_trusted_request_dump.py
 ├── sglang-pd-ep-bringup/
 │   ├── SKILL.md
 │   ├── references/

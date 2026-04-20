@@ -170,7 +170,7 @@ In one validated run, the dump contained two requests:
 - request `[1]`: the long `"hello " * 768` trigger prompt
 
 ```bash
-python3 scripts/summarize_request_dump.py \
+python3 scripts/incident_artifact_tool.py summarize-dump \
   --input-file <crash-dump-file>
 ```
 
@@ -226,6 +226,11 @@ The artifact pattern usually looks like:
 
 - `<crash-dump-folder>/<worker-id>/crash_dump_<timestamp>.pkl`
 - `<coredump-folder>/cuda_coredump_<host>.<pid>.<ts>`
+
+After the replay is stable and the failing kernel is known, switch to the
+existing CUDA crash skill or playbook used in your environment for deeper
+kernel-level forensics. This worked example is about incident reproduction and
+root-cause direction, not replacing that narrower workflow.
 
 ## Expected Triage Result
 

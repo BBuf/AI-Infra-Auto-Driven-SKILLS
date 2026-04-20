@@ -18,6 +18,10 @@ Triage in this order:
 Do not start with `torch.profiler` by default. Profiling is expensive and is
 often the wrong first move for production incidents.
 
+If the user already has one known-good commit and one known-bad commit, treat
+that as a regression-search problem first. Build the smallest deterministic
+harness you can, then use `git bisect run` instead of ad-hoc manual testing.
+
 ## Symptom Classes
 
 ### 1. Server down or unhealthy
@@ -177,6 +181,21 @@ Then:
 - replay the crash dump or recent request dump
 - if replay reproduces, escalate to CUDA crash or profiling workflows
 
+### Regression between two commits
+
+Start with:
+
+- the known-good commit
+- the known-bad commit
+- one stable pass/fail harness
+
+Best first move:
+
+- convert the incident into `git bisect run <harness>`
+
+Only after the bad commit is narrowed down should you invest in deeper kernel or
+profiler analysis.
+
 ### One request class fails but others succeed
 
 Start with:
@@ -211,6 +230,9 @@ Likely categories:
 - the issue is clearly inside compute rather than queueing
 - you need kernel-level attribution
 - you already have a reproduction or a live target you can safely profile
+
+When that bar is met, switch to `sglang-torch-profiler-analysis` instead of
+expanding profiler logic in this skill.
 
 ### Use code-level debug paths when:
 

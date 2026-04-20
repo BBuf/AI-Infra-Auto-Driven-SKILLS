@@ -27,12 +27,12 @@ The primary job here is to preserve production evidence, convert a live symptom
 into a replayable incident, and only then escalate to tracing, profiling, or
 kernel-level debugging.
 
-Prefer this skill as the entry point for incidents. Escalate to narrower skills
-only after the symptom is classified:
+Prefer this skill as the entry point for incidents. It should compose with
+existing narrower skills instead of re-implementing them:
 
 - use `sglang-torch-profiler-analysis` after the problem is known to be compute-side
 - use `debug-distributed-hang` when the incident is clearly a TP/PP/DP/EP hang
-- use `debug-cuda-crash` when replay or logs indicate a CUDA crash path
+- use `debug-cuda-crash` when replay plus coredump indicates a CUDA crash path
 
 ## Core Rule
 
@@ -56,18 +56,18 @@ If a live server is reachable, collect a lightweight read-only bundle before
 doing anything intrusive:
 
 ```bash
-python3 scripts/collect_incident_bundle.py \
+python3 scripts/incident_artifact_tool.py collect-bundle \
   --base-url http://127.0.0.1:30000 \
   --outdir /tmp/incident_bundle
 
-python3 scripts/summarize_incident_bundle.py \
+python3 scripts/incident_artifact_tool.py summarize-bundle \
   /tmp/incident_bundle
 ```
 
 If the server is protected:
 
 ```bash
-python3 scripts/collect_incident_bundle.py \
+python3 scripts/incident_artifact_tool.py collect-bundle \
   --base-url http://127.0.0.1:30000 \
   --token "$SGLANG_BEARER_TOKEN" \
   --outdir /tmp/incident_bundle
@@ -84,7 +84,7 @@ This script collects:
 - `/metrics`
 - `/hicache/storage-backend` on a best-effort basis
 
-Then run `scripts/summarize_incident_bundle.py` on the collected directory.
+Then run `scripts/incident_artifact_tool.py summarize-bundle` on the collected directory.
 Use its report as a first-pass readout for:
 
 - health vs health_generate state
@@ -228,7 +228,7 @@ Start with:
 If a crash dump exists, summarize it before replay:
 
 ```bash
-python3 scripts/summarize_request_dump.py \
+python3 scripts/incident_artifact_tool.py summarize-dump \
   --input-file /path/to/crash_dump.pkl
 ```
 
@@ -298,7 +298,9 @@ cuda-gdb "$(which python3)" \
 
 For an instruction-level clue, inspect the faulting PC neighborhood with
 `x/10i <pc>` inside `cuda-gdb`, then hand off to `debug-cuda-crash` if the
-failing kernel boundary is clear but the data lineage is not.
+failing kernel boundary is clear but the data lineage is not. This skill should
+stop at incident reproduction plus failing-kernel identification, not duplicate
+the full CUDA crash playbook.
 
 If you need a concrete crash pattern to practice this flow end to end, load
 [references/moe-shared-oob-case-study.md](references/moe-shared-oob-case-study.md).
@@ -328,22 +330,22 @@ Prefer profiling when:
 - replay already reproduced the issue
 - metrics and loads cannot explain the regression
 
-For live profile control:
+At that point, switch to `sglang-torch-profiler-analysis`. Do not duplicate its
+trace-capture and table-analysis workflow here.
 
-```bash
-curl -X POST http://127.0.0.1:30000/start_profile \
-  -H "Content-Type: application/json" \
-  -d '{"output_dir":"/tmp/incident_profile","num_steps":1,"profile_by_stage":true,"profile_stages":["prefill"],"merge_profiles":true}'
-```
+#### Known-good vs known-bad commit regression
 
-For PD disaggregation, never treat a mixed trace as authoritative. Prefill and
-decode must be profiled separately.
+If the user already knows one good commit and one bad commit, build a small
+deterministic harness before doing deeper manual triage:
 
-On current profile-v2 builds, prefill-focused captures often land in
-`*-EXTEND.trace.json.gz` rather than a file literally named `PREFILL`, and a
-single request may still emit DECODE traces in the same directory. For
-prefill-side incidents, prefer the rank-local `TP-0-EXTEND` trace over the
-merged trace for first-pass attribution.
+1. choose a stable reproducer: fixed request replay, fixed benchmark command, or a correctness checker
+2. make the harness return shell success on good behavior and non-zero on bad behavior
+3. run `git bisect start <bad> <good>`
+4. run `git bisect run <harness>`
+5. only after bisect identifies a candidate commit, return to incident triage for code-path attribution
+
+Prefer replay-backed bisect over hand-testing prompts when the regression depends
+on request shape or long-running serving state.
 
 ### 6. Hand off to a specialized skill when the boundary is clear
 
@@ -365,17 +367,15 @@ Load only what the current step needs:
 - [references/endpoints-and-signals.md](references/endpoints-and-signals.md)
   - endpoint semantics, auth notes, field interpretation
 - [references/replay-trace-profile.md](references/replay-trace-profile.md)
-  - request dump, crash dump, replay, OTEL trace, Perfetto, torch profile
+  - request dump, crash dump, replay, OTel trace, profiler handoff, regression bisect
 - [references/moe-shared-oob-case-study.md](references/moe-shared-oob-case-study.md)
   - worked example: upstream top-k corruption, downstream MoE align shared-memory OOB
 
 ## Scripts
 
-- [scripts/collect_incident_bundle.py](scripts/collect_incident_bundle.py)
-  - collect a read-only incident bundle from a live server
-- [scripts/summarize_incident_bundle.py](scripts/summarize_incident_bundle.py)
-  - summarize the bundle into a compact first-pass report
-- [scripts/summarize_request_dump.py](scripts/summarize_request_dump.py)
+- [scripts/incident_artifact_tool.py](scripts/incident_artifact_tool.py)
+  - collect a read-only incident bundle
+  - summarize a collected bundle into a compact first-pass report
   - summarize a trusted request dump or crash dump before replay
 - [scripts/replay_trusted_request_dump.py](scripts/replay_trusted_request_dump.py)
   - replay a trusted request dump when `safe_pickle_load` blocks stock replay
