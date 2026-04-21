@@ -76,6 +76,53 @@ The exact tensor shape is less important than the design goal:
 - the skipped collective comes from the real distributed model path
 - the resulting symptom is a serving hang, not an immediate injected exception
 
+## How The Hang Was Manufactured
+
+The validation did not use a standalone NCCL toy program. It used a temporary,
+local fault injector in the serving stack to make the incident look like a real
+production stall.
+
+The mechanism was:
+
+1. add a one-shot boolean on each TP worker process
+   - initial state: `False`
+   - purpose: avoid poisoning startup, health checks, or every request
+2. arm that boolean only on rank 0 when a real extend batch satisfies:
+   - `extend_num_tokens == 769`
+   - this is why the trigger is request-shaped rather than unconditional
+3. in the TP logits `all_gather` path, check the one-shot flag on rank 0
+   - if not armed, run the normal `all_gather`
+   - if armed, clear the flag and return the local tensor directly on rank 0
+   - rank 1 still enters the real collective
+
+That creates the exact mismatch we want:
+
+- rank 0 behaves as if the collective already finished
+- rank 1 still waits for the missing participant
+- no clean Python exception is raised first
+- the in-flight HTTP request simply stops making progress
+
+In pseudocode, the temporary validation hook looked like:
+
+```text
+if tp_rank == 0 and extend_num_tokens == 769:
+    inject_next_tp_logits_all_gather = True
+
+if tp_rank == 0 and inject_next_tp_logits_all_gather and is_tp_logits_gather(tensor):
+    inject_next_tp_logits_all_gather = False
+    return tensor
+else:
+    return dist.all_gather(...)
+```
+
+Two details matter here:
+
+- the arming condition comes from a real serving batch property, not a dummy test flag
+- the skipped operation is the real TP logits collective, not an artificial sleep
+
+That is why the failure presents as a realistic serving hang instead of a toy
+repro.
+
 ## Trigger Shape
 
 One validated trigger prompt was:
