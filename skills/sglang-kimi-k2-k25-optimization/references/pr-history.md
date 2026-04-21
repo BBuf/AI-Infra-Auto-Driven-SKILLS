@@ -1,6 +1,6 @@
 # Kimi K2/K2.5 Optimization History
 
-This reference was built from `git log --first-parent main`, local `git show`, and the merged PR pages in `sgl-project/sglang`. It includes merged commits that directly changed Kimi K2 or Kimi K2.5 performance, kernel selection, quantized execution, or large-scale runtime plumbing.
+This reference was built from `git log --first-parent main`, local `git show`, merged PR pages, and the current open PR radar in `sgl-project/sglang`. It includes merged commits that directly changed Kimi K2 or Kimi K2.5 performance, kernel selection, quantized execution, or large-scale runtime plumbing.
 
 When a PR included benchmark numbers, the tables below copy representative rows from the PR body instead of re-running the benchmark locally. For kernel PRs, the focus is on which hot path changed, why it changed, and which code pattern was introduced.
 
@@ -16,7 +16,7 @@ The current-main snapshot below is an exception to that exclusion rule. It recor
 ## Current Main Coverage Snapshot
 
 Snapshot:
-SGLang `origin/main` commit `2cf3ac515`, checked on `2026-04-21`.
+SGLang `origin/main` commit `c122d343a`, checked on `2026-04-21`.
 
 Current Kimi-K2.5 serving contract:
 
@@ -44,6 +44,24 @@ Current backend and adapter validation surface:
 - `test/registered/amd/accuracy/mi35x/test_kimi_k25_mxfp4_eval_mi35x.py` validates Kimi-K2.5-MXFP4 on MI35x at TP8, including default and FP8 KV-cache variants.
 - `test/registered/amd/test_kimi_k25_mxfp4.py`, `test/registered/gb300/test_kimi_k25.py`, and `test/registered/gb300/test_kimi_k25_nvfp4.py` are the current hardware/quantization lanes to inspect before changing MXFP4, NVFP4, cache, or backend-specific behavior.
 - `test/registered/stress/test_stress_kimi_k2.py` stress-tests `moonshotai/Kimi-K2-Thinking` with `--tool-call-parser kimi_k2` and `--reasoning-parser kimi_k2`, so parser changes should not be validated only by short unit tests.
+
+Current open PR radar:
+
+- [#22806](https://github.com/sgl-project/sglang/pull/22806): adds `KimiW4AFp8Config` and Kimi-K2.5 W4AFP8 loading tests, including expert input-scale mapping for gate, up, and down projections.
+- [#22496](https://github.com/sgl-project/sglang/pull/22496): adds Kimi-K2.5 W4A16 DeepEP low-latency support through JIT Marlin/direct DeepEP MoE paths such as `deepep_moe_wna16_marlin_direct.py`.
+- [#22964](https://github.com/sgl-project/sglang/pull/22964): fixes `KimiGPUProcessorWrapper._cpu_call` output after processor metadata changed around `grid_thws` and `image_grid_thw`.
+- [#23186](https://github.com/sgl-project/sglang/pull/23186): adds an AMD/ROCm BF16 fused QK RMSNorm path for `Kimi-K2.5-MXFP4`; the PR reports GSM8K and throughput movement, so treat it as a backend optimization track.
+- [#19703](https://github.com/sgl-project/sglang/pull/19703): migrates `kimi_k2_moe_fused_gate` from the AOT `sgl-kernel` path into `python/sglang/jit_kernel`.
+- [#22488](https://github.com/sgl-project/sglang/pull/22488): generalizes the Kimi2 fused MoE gate JIT path to support GLM-5-style 256-expert shapes, which is relevant when reusing the K2 gate skill on nearby MoE families.
+- [#22208](https://github.com/sgl-project/sglang/pull/22208): tunes AMD gfx950 small-M fused MoE behavior for Kimi-K2.5 `int4_w4a16`.
+- [#21741](https://github.com/sgl-project/sglang/pull/21741): adds generic compressed-tensors W4AFP8 MoE support, a dependency-shaped track for the Kimi W4AFP8 work.
+
+Known closed DeepEP plus int4/Marlin gap:
+
+- [#13789](https://github.com/sgl-project/sglang/pull/13789) tried `moonshotai/Kimi-K2-Thinking --tp 8 --ep 4 --moe-a2a-backend deepep --deepep-mode auto` with `SGLANG_DEEPEP_BF16_DISPATCH=1`, but the PR was closed unmerged.
+- The reported failure was an illegal memory access in the `fused_marlin_moe` path after `DeepEPMoE.forward_marlin_moe(...)` called the compressed-tensors MoE DeepEP-normal path.
+- [#19181](https://github.com/sgl-project/sglang/pull/19181) later landed the generic JIT `moe_wna16_marlin` kernel, but that does not by itself prove Kimi-K2-Thinking DeepEP plus int4/Marlin is production-ready.
+- [#22496](https://github.com/sgl-project/sglang/pull/22496) is the active related work, but it targets Kimi-K2.5 W4A16 DeepEP low-latency rather than Kimi-K2-Thinking.
 
 ## K2: Router, Gating, and MoE Kernel Path
 
