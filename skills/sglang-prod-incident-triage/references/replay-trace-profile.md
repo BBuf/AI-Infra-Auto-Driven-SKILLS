@@ -237,6 +237,11 @@ Best order:
 2. trace if stage ownership is unclear
 3. `sglang-torch-profiler-analysis` only if compute path remains suspicious
 
+For a concrete example of this lighter-weight escalation path, see
+[ttft-prefill-not-queue-case-study.md](ttft-prefill-not-queue-case-study.md).
+That example shows a TTFT spike where the bundle summary is already enough to
+rule out queue pressure as the first-order explanation.
+
 ### PD transfer stall
 
 Best order:

@@ -333,6 +333,12 @@ Prefer profiling when:
 At that point, switch to `sglang-torch-profiler-analysis`. Do not duplicate its
 trace-capture and table-analysis workflow here.
 
+If you need a concrete low-noise latency pattern to practice this decision,
+load
+[references/ttft-prefill-not-queue-case-study.md](references/ttft-prefill-not-queue-case-study.md).
+That worked example shows the cheaper path: a read-only bundle is already enough
+to separate queue pressure from likely prefill-side ownership.
+
 #### Known-good vs known-bad commit regression
 
 If the user already knows one good commit and one bad commit, build a small
@@ -370,6 +376,8 @@ Load only what the current step needs:
   - request dump, crash dump, replay, OTel trace, profiler handoff, regression bisect
 - [references/moe-shared-oob-case-study.md](references/moe-shared-oob-case-study.md)
   - worked example: upstream top-k corruption, downstream MoE align shared-memory OOB
+- [references/ttft-prefill-not-queue-case-study.md](references/ttft-prefill-not-queue-case-study.md)
+  - worked example: TTFT spike with low queue time and likely prefill-side ownership
 
 ## Scripts
 
