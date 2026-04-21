@@ -2,10 +2,10 @@
 
 Use this reference when checking a live server.
 
-## Authentication
+## Auth
 
-Most production-safe read endpoints are public unless the server is protected by
-`api_key` or `admin_api_key`.
+Most read endpoints are public unless the server is protected by `api_key` or
+`admin_api_key`.
 
 Use:
 
@@ -15,59 +15,56 @@ curl -H "Authorization: Bearer <token>" ...
 
 Rules:
 
-- if only `api_key` is configured, normal protected endpoints require `api_key`
-- if `admin_api_key` is configured, admin endpoints require `admin_api_key`
-- some HiCache endpoints explicitly fail if `admin_api_key` is not configured at all
-- `/health` and metrics-style health checks are intended to stay accessible
+- normal protected endpoints require `api_key`
+- admin endpoints require `admin_api_key`
+- some HiCache endpoints fail if `admin_api_key` is not configured at all
+- `/health` and metrics-style health checks are usually still exposed
 
-## Health and Metadata
+## Core Endpoints
 
 ### `/health`
 
 Cheap liveness check.
 
-- `200`: process is up enough to answer basic health
+- `200`: process is alive enough to answer health
 - `503`: starting, shutting down, or unhealthy
 
-This is necessary but not sufficient. A server can return `200` and still be
-latency-degraded.
+`/health` alone is not enough for latency or hang diagnosis.
 
 ### `/health_generate`
 
 Active health check.
 
-- tries to route a minimal generate/embedding request through the runtime
-- more meaningful than `/health` for stuck schedulers or broken worker paths
+- exercises a real generate or embedding path
+- catches stuck schedulers or broken worker paths that `/health` can miss
 
-Use this when requests are timing out but `/health` still returns `200`.
+Use this when requests time out but `/health` is still green.
 
 ### `/model_info`
 
-Returns model-path-level identity:
+Use for model identity:
 
 - `model_path`
 - `tokenizer_path`
 - `is_generation`
 - `weight_version`
-- multimodal capability flags
-- model type / architectures
+- multimodal flags
+- model type or architectures
 
-Use this when correctness regressions may actually be a wrong model or wrong
-weight version.
+This is the first check for wrong-output or wrong-weight problems.
 
 ### `/server_info`
 
-Returns a broad snapshot:
+Use for runtime shape:
 
 - serialized `server_args`
 - scheduler info
 - per-DP `internal_states`
 - SGLang version
 
-Use this for almost every issue. It is the best single snapshot of the live
-runtime configuration.
+This is usually the single best live snapshot.
 
-## Load and Capacity
+## Load And Capacity
 
 ### `/v1/loads?include=all`
 
@@ -82,14 +79,12 @@ Useful fields:
 - `token_usage`
 - `gen_throughput`
 - `cache_hit_rate`
-- optional sections:
-  - `memory`
-  - `speculative`
-  - `lora`
-  - `disaggregation`
-  - `queues`
+- `memory`
+- `speculative`
+- `disaggregation`
+- `queues`
 
-Useful query patterns:
+Useful queries:
 
 ```bash
 curl -s http://127.0.0.1:30000/v1/loads
@@ -98,18 +93,18 @@ curl -s "http://127.0.0.1:30000/v1/loads?include=core,queues,disagg"
 curl -s "http://127.0.0.1:30000/v1/loads?format=prometheus"
 ```
 
-Interpretation:
+What to look for:
 
 - high `num_waiting_reqs` with low compute throughput usually means queueing or capacity pressure
-- high `token_usage` close to 1.0 suggests KV or token-capacity saturation
+- `token_usage` near `1.0` usually means KV or token-capacity pressure
 - low `cache_hit_rate` after a deploy can explain TTFT regressions
-- PD queue fields explain transfer or prealloc bottlenecks that plain queue size hides
+- PD queue fields often explain transfer or prealloc bottlenecks hidden by plain queue size
 
 ### `/metrics`
 
-Prometheus endpoint.
+Prometheus endpoint. Use it when you need trends rather than one live snapshot.
 
-High-value metrics for a first pass:
+High-value metrics:
 
 - `sglang:time_to_first_token_seconds`
 - `sglang:time_per_output_token_seconds`
@@ -121,23 +116,20 @@ High-value metrics for a first pass:
 - `sglang:gen_throughput`
 - `sglang:token_usage`
 
-Use `/metrics` for trend-aware problems. Use `/v1/loads` for a more direct
-point-in-time breakdown.
-
-## Logging and Request Capture
+## Request Capture
 
 ### `/configure_logging`
 
 Used by `python -m sglang.srt.managers.configure_logging`.
 
-It can:
+Main use:
 
 - enable request logging
-- set request logging verbosity
+- set request logging level
 - enable request dump folder
 - set request dump threshold
 
-Useful payload shape:
+Typical payload:
 
 ```json
 {
@@ -148,12 +140,10 @@ Useful payload shape:
 }
 ```
 
-Use this when the problem is ongoing and you need to capture the next failing
-requests without restarting the service.
+Use this when the problem is ongoing and you need the next failing request
+without restarting the service.
 
-## HiCache Admin Endpoints
-
-These are admin-sensitive. They require `admin_api_key` to be configured.
+## HiCache
 
 ### `GET /hicache/storage-backend`
 
@@ -169,29 +159,18 @@ Use this when long-context or PD problems may involve storage-backed KV reuse.
 ### `PUT /hicache/storage-backend`
 ### `DELETE /hicache/storage-backend`
 
-Runtime attach/detach.
+Runtime attach or detach. These are operational actions, not passive checks.
 
-Do not use these casually during debugging. They require the service to be
-fully idle and are operational actions, not observation.
-
-## Profiling and Tracing Controls
+## Profiling And Tracing Controls
 
 ### `/start_profile`
 ### `/stop_profile`
 
-Starts/stops torch profiling on the live server.
-
-Good for:
-
-- targeted live capture after you already narrowed the issue down
-
-Bad first move for:
-
-- generic latency regressions with unknown cause
+Use only after the problem is already narrowed down.
 
 ### `/set_trace_level?level=N`
 
-Controls OpenTelemetry trace verbosity when tracing was enabled at startup.
+Changes trace verbosity when tracing was enabled at startup.
 
 Levels:
 
@@ -200,10 +179,7 @@ Levels:
 - `2`: all slices except nested ones
 - `3`: all slices
 
-Use this when tracing is already configured and you need more or less span detail
-without restart.
-
-## What To Check By Problem Type
+## Quick Reads By Problem Type
 
 ### TTFT spike
 
@@ -229,7 +205,7 @@ Read:
 - `/server_info`
 - `/v1/loads?include=all`
 
-If tracing is enabled, then read trace data before moving to heavier profiling.
+If tracing is already enabled, look at trace data before heavier profiling.
 
 ### Wrong model behavior
 
@@ -237,6 +213,6 @@ Read:
 
 - `/model_info`
 - `/server_info`
-- exact request payload and parser/template config
+- exact request payload and parser or template config
 
-Do not jump to kernel profiling until configuration drift is ruled out.
+Do not jump to kernel profiling until config drift is ruled out.

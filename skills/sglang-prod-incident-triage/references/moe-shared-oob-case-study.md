@@ -1,64 +1,65 @@
-## Example: Upstream Top-K Corruption, Downstream Shared-Memory OOB
+# Example: Upstream Top-K Corruption, Downstream Shared-Memory OOB
 
-Use this case when you want an intentional CUDA failure that:
+Use this case when you want a replay-first CUDA failure that:
 
 - crashes in a downstream MoE align kernel
-- looks like a shared-memory out-of-bounds or illegal-address issue
-- actually originates in the previous routing kernel
-- is best reproduced through crash dump plus replay rather than ad-hoc prompts
-- behaves like a real serving failure instead of a toy standalone kernel crash
+- looks like shared-memory OOB or illegal address
+- actually starts in the previous routing kernel
+- is much easier to understand through dump plus replay than through ad-hoc prompts
 
-This is not meant to replace a low-level CUDA graph or single-kernel debug
-playbook. This case is different: the symptom emerges in a real
-serving path, depends on request shape, surfaces first as a generic runtime
-failure, and only becomes obvious after going through the full
-crash-dump-to-replay-to-coredump workflow.
+The value of this case is simple: the visible crash lands in the consumer
+kernel, but the real bug was injected one kernel earlier.
 
 ## Target Path
 
-Use a Qwen3 MoE model that routes through `fused_topk` instead of grouped top-k:
+Use a Qwen3 MoE model that goes through `fused_topk` rather than grouped top-k:
 
 - model: `Qwen/Qwen3-30B-A3B`
 - `num_experts=128`
 - `num_experts_per_tok=8`
 - `use_grouped_topk=False`
 
-The important call chain is:
+Important call chain:
 
 1. `python/sglang/srt/models/qwen3_moe.py`
 2. `python/sglang/srt/layers/moe/topk.py`
 3. `sgl-kernel/csrc/moe/moe_topk_softmax_kernels.cu`
 4. `sgl-kernel/csrc/moe/moe_align_kernel.cu`
 
-For this model shape, `topk_softmax` dispatches to `topkGatingSoftmax`, not the `moeTopKFast` fallback.
+For this model shape, `topk_softmax` dispatches to `topkGatingSoftmax`.
 
-## Why This Case Is Useful
+## Why It Works
 
-The visible crash shows up in `moe_align_block_size_kernel` here:
+The visible crash shows up in `moe_align_block_size_kernel`:
 
 ```cpp
 int expert_id = topk_ids[i] + 1;
 atomicAdd(&shared_counts[expert_id], 1);
 ```
 
-If one `topk_ids[i]` is corrupted to a very large positive value, the `atomicAdd`
-lands far past `shared_counts[num_experts]`. In `cuda-gdb`, this makes the failing
-kernel look like the align kernel itself is wrong, even though the bad value was
-written one kernel earlier.
+If one `topk_ids[i]` is corrupted to a large positive value, the `atomicAdd`
+writes far past `shared_counts[num_experts]`. `cuda-gdb` then points at the
+align kernel even though the bad value came from the previous routing kernel.
 
-That is the exact behavior you want for a serving-debug skill:
+That is exactly the behavior this skill needs:
 
-- crash dump identifies the triggering request shape
-- replay makes the crash repeatable
-- CUDA coredump tells you which kernel actually faulted
-- code reading is still needed to walk one step upstream and find the real source
+- the request shape matters
+- the crash dump preserves that request shape
+- replay makes the failure stable
+- the coredump names the failing kernel
+- code reading still has to walk one step upstream
 
-## Injection Site
+## Injection
 
 Patch the producer, not the consumer.
 
-Use this site in `sgl-kernel/csrc/moe/moe_topk_softmax_kernels.cu`
-inside `topkGatingSoftmax`, immediately after the normal `indices[idx]` write:
+File:
+
+```bash
+<sglang-root>/sgl-kernel/csrc/moe/moe_topk_softmax_kernels.cu
+```
+
+Patch site inside `topkGatingSoftmax`:
 
 ```cpp
 if (thread_group_idx == 0) {
@@ -78,15 +79,15 @@ if (thread_group_idx == 0) {
 }
 ```
 
-Design notes:
+Rules:
 
-- Keep the corruption in the producer kernel. Do not modify `moe_align_block_size_kernel`.
-- Corrupt exactly one slot. More corruption makes the root cause too obvious.
-- Use a large positive invalid value such as `NUM_EXPERTS + 4096`. Small overruns can just scribble into nearby shared-memory regions and create ambiguous secondary symptoms.
-- Do not add `printf`, `assert`, or metric logging in the injected path.
-- Make the guard depend on request shape. `num_rows == 769` is only an example magic value; any stable rare prefill shape is acceptable.
+- do not modify `moe_align_block_size_kernel`
+- corrupt exactly one slot
+- use a clearly invalid large positive index
+- keep the guard request-shape dependent
+- do not add `printf`, `assert`, or extra logging
 
-## Trigger Shape
+## Trigger
 
 One trigger prompt was:
 
@@ -94,56 +95,36 @@ One trigger prompt was:
 "hello " * 768
 ```
 
-On `Qwen/Qwen3-30B-A3B`, that prompt tokenizes to `769` prompt tokens. With the
-injected producer corruption, the bad routing entry becomes:
+On `Qwen/Qwen3-30B-A3B`, that tokenizes to `769` prompt tokens.
+
+With the injected corruption:
 
 ```text
 topk_ids[17, 0] = 4224
 ```
 
-That value is far outside the valid expert-id range `[0, 127]`, but the visible
-failure still lands later in `moe_align_block_size_kernel`.
+That is outside the valid expert-id range `[0, 127]`, but the visible crash
+still happens later in `moe_align_block_size_kernel`.
 
-Treat that prompt as only one concrete instance. The transferable part is the
-shape-sensitive guard in the producer kernel, not the exact hardware or host.
+## Replay-First Flow
 
-## Replay-First Debug Flow
-
-### 1. Patch the producer in the serving build
-
-Apply the injection only in:
-
-```bash
-<sglang-root>/sgl-kernel/csrc/moe/moe_topk_softmax_kernels.cu
-```
-
-Do not touch:
-
-- `<sglang-root>/sgl-kernel/csrc/moe/moe_align_kernel.cu`
-
-That preserves the downstream false lead.
-
-### 2. Rebuild and install `sglang-kernel`
+### 1. Rebuild the serving kernel package
 
 ```bash
 cd <sglang-root>/sgl-kernel
 make build
 ```
 
-Install the rebuilt package into the exact serving environment that will be used
-for replay. A direct kernel sanity check should confirm that the producer really
-emits an invalid top-k index:
+Install the rebuilt package into the same serving environment used for replay.
 
-```bash
+Optional sanity check:
+
+```text
 row17_col0 4224
 max_idx 4224
 ```
 
-### 3. Start the bad build and collect a crash dump
-
-Keep the launch close to the real serving path. The exact topology is not the
-important part; preserving the same model path, TP setting, CUDA-graph flags,
-and request-dump behavior is.
+### 2. Start the bad build and collect a crash dump
 
 ```bash
 export CUDA_VISIBLE_DEVICES=<gpu0>,<gpu1>
@@ -157,25 +138,23 @@ python -m sglang.launch_server \
   --crash-dump-folder <crash-dump-folder>
 ```
 
-Let production-like traffic or a request generator hit the server until the
-problem occurs and a dump is written. Do not hand-tune prompts first if your
-goal is to practice the production debug path.
+Let serving traffic hit the server until the crash dump is written.
 
-### 4. Summarize the crash dump instead of guessing the prompt shape
+### 3. Summarize the dump
 
-In one run, the dump contained two requests:
+In one run the dump contained:
 
-- request `[0]`: short warmup prompt
-- request `[1]`: the long `"hello " * 768` trigger prompt
+- one short warmup prompt
+- one long trigger prompt: `"hello " * 768`
 
 ```bash
 python3 scripts/incident_artifact_tool.py summarize-dump \
   --input-file <crash-dump-file>
 ```
 
-### 5. Replay the captured request mix
+### 4. Replay the captured request mix
 
-Use the trusted local helper if stock replay is blocked by `safe_pickle_load`:
+If stock replay is blocked by `safe_pickle_load`, use:
 
 ```bash
 python3 scripts/replay_trusted_request_dump.py \
@@ -185,16 +164,13 @@ python3 scripts/replay_trusted_request_dump.py \
   --parallel 1
 ```
 
-In the first runtime-injection smoke run, the client-side visible symptom was
-only:
+The visible client-side failure can still be generic:
 
 ```text
 RuntimeError: Triton Error [CUDA]: an illegal memory access was encountered
 ```
 
-That is the kind of misleading outer symptom this example is meant to teach.
-
-### 6. Restart with CUDA coredumps and replay again
+### 5. Restart with CUDA coredumps and replay again
 
 ```bash
 export CUDA_VISIBLE_DEVICES=<gpu0>,<gpu1>
@@ -210,7 +186,7 @@ python -m sglang.launch_server \
   --crash-dump-folder <crash-dump-folder>
 ```
 
-Replay the same dump again. Then inspect the generated coredump:
+Inspect the coredump:
 
 ```bash
 cuda-gdb "$(which python3)" \
@@ -221,15 +197,12 @@ cuda-gdb "$(which python3)" \
   -ex "x/12i <faulting-pc>"
 ```
 
-The dump pattern usually looks like:
+Typical files:
 
 - `<crash-dump-folder>/<worker-id>/crash_dump_<timestamp>.pkl`
 - `<coredump-folder>/cuda_coredump_<host>.<pid>.<ts>`
 
-After the replay is stable and the failing kernel is known, switch to the
-existing CUDA crash skill or playbook used in your environment for deeper
-kernel-level forensics. This worked example is about replay-based reproduction
-and root-cause direction, not replacing that narrower workflow.
+Then switch to `debug-cuda-crash` or your narrower CUDA workflow.
 
 ## Expected Result
 
@@ -241,44 +214,34 @@ The exception was triggered at PC 0x7f7fe1dfac70  void moe_align_block_size_kern
 #0  0x00007f7fe1dfac00 in void moe_align_block_size_kernel<int>(...)<<<(2,1,1),(1024,1,1)>>> ()
 ```
 
-The first SASS instructions around the faulting PC were:
+The SASS near the faulting PC included:
 
 ```text
 *> 0x7f7fe1dfac70 <...+624>: ATOMS.POPC.INC.32 RZ[R10+URZ+0x4]
    0x7f7fe1dfac80 <...+640>: @!P0 BRA 0x7f7fe1dfabf0
    0x7f7fe1dfac90 <...+656>: BSYNC B0
    0x7f7fe1dfaca0 <...+672>: BAR.SYNC.DEFER_BLOCKING 0x0
-   0x7f7fe1dfacb0 <...+688>: ISETP.NE.AND P0,PT,R17,RZ,PT
-   0x7f7fe1dfacc0 <...+704>: BSSY B0,0x7f7fe1dfae90
-   0x7f7fe1dfacd0 <...+720>: @P0 BRA 0x7f7fe1dfae80
-   0x7f7fe1dface0 <...+736>: LDC R10,c[0x0][0x234]
-   0x7f7fe1dfacf0 <...+752>: LDS R11[R12]
 ```
 
 Expected progression:
 
-1. The process crashes only for a narrow request shape.
-2. The crash dump preserves the exact launch command and request mix.
-3. Replay reproduces the crash without manual prompt fiddling.
-4. `cuda-gdb` points at `moe_align_block_size_kernel`.
-5. The faulting instruction is near the shared-memory `atomicAdd`.
-6. Reading one kernel upstream shows that `topk_ids` was already corrupted in `topkGatingSoftmax`.
+1. the process crashes only for one narrow request shape
+2. the dump preserves the exact request mix
+3. replay reproduces the crash
+4. `cuda-gdb` points at `moe_align_block_size_kernel`
+5. one step upstream, `topkGatingSoftmax` is where the bad `topk_ids` value came from
 
-The important conclusion is:
+Bottom line:
 
 - failing kernel: `moe_align_block_size_kernel`
 - root-cause kernel: `topkGatingSoftmax`
 
 ## What Not To Do
 
-- Do not add a bounds check in `moe_align_block_size_kernel` first and call it fixed.
-- Do not trust the faulting PC as proof that the consumer kernel is the origin.
-- Do not swap to another model path that uses grouped top-k. That bypasses this example.
-- Do not skip replay. Without replay, you are back to guessing at prompt shape.
-- Do not reduce this to a one-off kernel debug exercise. The important lesson is
-  the serving debug flow: collect, replay, coredump, then walk upstream.
+- do not patch `moe_align_block_size_kernel` first and call it fixed
+- do not assume the faulting PC names the root cause
+- do not switch to a grouped-topk model path
+- do not skip replay
 
-## Optional Follow-Up
-
-After demonstrating the bug, fix it by removing the injected corruption and rerun the same replay.
-The replay should stop crashing without any changes to `moe_align_block_size_kernel`.
+After demonstrating the bug, remove the injected corruption and rerun the same
+replay. The crash should disappear without changing `moe_align_block_size_kernel`.

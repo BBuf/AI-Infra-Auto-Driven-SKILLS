@@ -5,20 +5,18 @@ Use this case when:
 - the service feels slow
 - `/health` and `/health_generate` stay green
 - queue growth is not obvious
-- you want the full debug flow, not an immediate profiler jump
+- you want replay before trace or profiling
 
-Use the same loop here:
+Use this loop:
 
 ```text
 baseline bundle
-  -> request dump
+  -> save the slow request
   -> replay the same request
   -> trace or profile only if replay still points to compute-side ownership
 ```
 
-## Baseline Bundle
-
-Collect a bundle during the actual slowdown:
+## 1. Collect a Bundle
 
 ```bash
 python3 scripts/incident_artifact_tool.py collect-bundle \
@@ -29,7 +27,7 @@ python3 scripts/incident_artifact_tool.py summarize-bundle \
   /tmp/incident_bundle_ttft_case
 ```
 
-In one run the summary looked like:
+One summary looked like:
 
 ```text
 Health: /health=ok /health_generate=ok
@@ -38,19 +36,16 @@ Metrics: requests=2 prompt_tokens=1540 generation_tokens=128 avg_ttft_s=3.210 av
 Stage Averages (max across TP ranks): prefill_forward=2.900s, request_process=0.090s
 ```
 
-The first useful signal is:
+First signal:
 
 - `waiting=0`
 - queue time is tiny
 - TTFT is still high
 - `prefill_forward` dominates
 
-That is enough to rule out queue pressure as the first-order explanation, but it
-is not yet the full flow.
+That is enough to rule out queue pressure as the first explanation.
 
-## Capture And Replay
-
-Preserve the exact slow request or request batch:
+## 2. Save and Replay the Slow Request
 
 ```bash
 python3 -m sglang.srt.managers.configure_logging \
@@ -59,7 +54,7 @@ python3 -m sglang.srt.managers.configure_logging \
   --dump-requests-threshold 1
 ```
 
-Then replay the captured request on a clean target:
+Replay:
 
 ```bash
 python3 scripts/playground/replay_request_dump.py \
@@ -67,18 +62,11 @@ python3 scripts/playground/replay_request_dump.py \
   --parallel 1
 ```
 
-The replay run should preserve the same qualitative symptom:
+Replay should preserve the same symptom:
 
 - TTFT stays high
 - queue time stays low
-- the issue looks compute-side, not queue-side
-
-## Next Step
-
-After replay, the likely next move is:
-
-- OTel trace if router/worker or stage ownership is still unclear
-- `sglang-torch-profiler-analysis` if replay still points at prefill-side compute
+- the issue still looks compute-side
 
 ## Expected Result
 

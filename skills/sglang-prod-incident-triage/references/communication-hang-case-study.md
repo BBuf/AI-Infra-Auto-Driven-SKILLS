@@ -4,21 +4,21 @@ Use this case when:
 
 - one request hangs instead of returning
 - the symptom looks like a generic serving stall
-- you want the hang to follow the same skill flow as the crash case
+- you want the same replay-first flow used by the crash case
 
-Do not stop at "the live server is hung". Use this path:
+Use this loop:
 
 ```text
 baseline bundle
-  -> capture the trigger request
-  -> replay the same request on a clean target
-  -> collect replay-time hang bundle and logs
+  -> save the trigger request
+  -> replay on a clean target
+  -> collect replay-time bundle and stacks
   -> switch to debug-distributed-hang
 ```
 
 ## Fault Injection
 
-The injected fault used this shape:
+Injected shape:
 
 1. rank 0 arms a one-shot flag only when a real extend batch satisfies
    `extend_num_tokens == 769`
@@ -28,7 +28,7 @@ The injected fault used this shape:
 That creates a real collective mismatch:
 
 - rank 0 returns local data
-- rank 1 waits inside the collective
+- rank 1 waits in the collective
 - the request stops making progress
 
 One trigger prompt was:
@@ -43,9 +43,7 @@ which tokenized to:
 prompt_tokens = 769
 ```
 
-## Baseline Bundle
-
-Before triggering the bug, collect a healthy bundle:
+## 1. Collect a Healthy Bundle
 
 ```bash
 python3 scripts/incident_artifact_tool.py collect-bundle \
@@ -56,16 +54,14 @@ python3 scripts/incident_artifact_tool.py summarize-bundle \
   /tmp/incident_bundle_ok
 ```
 
-In one run the baseline summary looked like:
+One baseline summary looked like:
 
 ```text
 Health: /health=ok /health_generate=ok
 Point-in-time load: running=0 waiting=0 total=0 token_usage=0.000 throughput=0.000
 ```
 
-## Capture And Replay
-
-Do not diagnose only from the first live hang. Preserve the trigger request:
+## 2. Save and Replay the Trigger Request
 
 ```bash
 python3 -m sglang.srt.managers.configure_logging \
@@ -75,7 +71,7 @@ python3 -m sglang.srt.managers.configure_logging \
 ```
 
 After the live hang is captured, restart a clean debug target with the same
-model path and the same injection, then replay the captured request:
+model path and the same injection, then replay:
 
 ```bash
 python3 scripts/playground/replay_request_dump.py \
@@ -89,11 +85,9 @@ On the replay run, the request hit the same serving path:
 Prefill batch, #new-seq: 1, #new-token: 769, #cached-token: 0
 ```
 
-and then hung again instead of returning.
+and then hung again.
 
-## Replay-Time Bundle And Stacks
-
-While the replayed request is hung, collect another bundle:
+## 3. Collect Replay-Time Bundle And Stacks
 
 ```bash
 python3 scripts/incident_artifact_tool.py collect-bundle \
@@ -101,7 +95,7 @@ python3 scripts/incident_artifact_tool.py collect-bundle \
   --outdir /tmp/incident_bundle_hang
 ```
 
-In one run the replay-time bundle looked like:
+One replay-time bundle looked like:
 
 ```text
 health.txt.error.json:
@@ -128,22 +122,10 @@ process_batch_result
 event_loop_overlap
 ```
 
-## Next Step
-
-At this point, switch to:
-
-- `debug-distributed-hang`
-
-At that point the hang is:
-
-- request-shaped
-- replayable
-- already narrowed to a collective-style stall
-
 ## Expected Result
 
-1. the server was healthy before the trigger request
-2. the same trigger request was preserved and replayed
-3. replay reproduced the same hang
+1. the server is healthy before the trigger request
+2. the same trigger request is saved and replayed
+3. replay reproduces the same hang
 4. replay-time bundle and watchdog stacks point at a distributed stall
 5. the next step is `debug-distributed-hang`, not profiling

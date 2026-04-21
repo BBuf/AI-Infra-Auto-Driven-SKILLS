@@ -1,138 +1,92 @@
-# SGLang First Debug Checks
+# SGLang First Checks
 
-Use this reference when the problem class is still unclear and the first job is
-to decide what to check next instead of jumping into profiling.
+Use this reference when the problem class is still unclear and you need a fast
+starting point.
 
-This reference is for serving problems that show up under real traffic, not for
-already-isolated single-request kernel bugs.
-
-## Core Principle
-
-Work in this order:
+## Default Order
 
 1. classify the symptom
-2. grab the fastest useful signal
-3. decide whether the issue is load-related, correctness-related, or infra-related
-4. only then escalate to trace, profile, or replay
+2. collect the fastest useful signal
+3. save the failing request or dump
+4. replay before you profile
 
-Do not start with `torch.profiler` by default. Profiling is expensive and is
-often the wrong first move for production debug.
+Do not start with `torch.profiler` unless the issue is already clearly
+compute-side.
 
-If the user already has one known-good commit and one known-bad commit, treat
-that as a regression-search problem first. Build the smallest deterministic
-harness you can, then use `git bisect run` instead of ad-hoc manual testing.
+If one commit is known-good and another is known-bad, turn the problem into a
+stable `git bisect run <harness>` first.
 
 ## Problem Classes
 
-### 1. Server down or unhealthy
+### Server down or unhealthy
 
-Typical signals:
-
-- `/health` returns `503`
-- `/health_generate` times out
-- the process crashed or restarted
-- router sees worker unhealthy or missing
-
-First things to check:
+Check:
 
 - `/health`
 - `/health_generate`
 - `/server_info`
-- recent stderr/stdout logs
+- recent stderr/stdout
 - crash dump status if `--crash-dump-folder` is enabled
 
-Common directions:
+Likely directions:
 
-- startup / weight loading failure
+- startup or weight-load failure
 - deadlock or blocked scheduler
-- CUDA crash / OOM
-- auth or routing misconfiguration
+- CUDA crash or OOM
+- auth or routing mismatch
 
-### 2. High latency or low throughput
+### High latency or low throughput
 
-Typical signals:
+Check:
 
-- TTFT regressed
-- TPOT / ITL regressed
-- throughput dropped at same traffic level
-- queue size grows while health stays green
-
-First things to check:
-
-- `/metrics`
 - `/v1/loads?include=all`
+- `/metrics`
 - `/server_info`
-- benchmark command or production request shape
+- the exact request shape or benchmark command
 
-Common directions:
+Likely directions:
 
-- server overloaded or under-provisioned
-- scheduling / queueing problem
+- queueing or capacity pressure
 - cache hit rate collapse
+- PD or EP topology mismatch
 - speculative decoding disabled or ineffective
-- PD / EP / HiCache topology mismatch
-- kernel/backend regression
+- kernel or backend regression
 
-### 3. Wrong output or behavior regression
+### Wrong output or behavior regression
 
-Typical signals:
+Check:
 
-- bad generations
-- model suddenly answers differently
-- function calling or reasoning formatting broke
-- one route or one model variant regressed
-
-First things to check:
-
-- exact request and expected vs actual output
+- exact request and expected output
 - `/model_info`
 - `/server_info`
-- current weight version
-- recent deploy / config delta
+- current weights or recent config change
 
-Common directions:
+Likely directions:
 
 - wrong weights or wrong revision
-- changed chat template / parser / tool config
-- multimodal pre/post-process drift
-- quantization / kernel correctness issue
+- chat template, parser, or tool config drift
+- multimodal preprocessing drift
+- quantization or kernel correctness bug
 
-### 4. Intermittent failure, timeout, or hang
+### Timeout or hang
 
-Typical signals:
+Check:
 
-- some requests never finish
-- distributed jobs hang at scale
-- only high-concurrency traffic fails
-- retries sometimes succeed
-
-First things to check:
-
+- `/health`
+- `/health_generate`
 - `/v1/loads?include=all`
 - request dumps if enabled
+- per-rank logs
 - OTel trace if already enabled
-- worker logs per rank
 
-Common directions:
+Likely directions:
 
 - distributed divergence or collective hang
 - queue starvation or retraction storm
 - PD transfer stall
-- storage / HiCache / remote backend stall
+- storage or HiCache backend stall
 
-## Usual Order
-
-Prefer this escalation order unless the symptom itself forces a later step:
-
-1. health endpoints and server metadata
-2. load and Prometheus metrics
-3. request / crash dumps
-4. request replay
-5. OTel trace
-6. torch profile
-7. custom debug instrumentation or code-level deep dive
-
-## Quick Path By Problem Type
+## Quick Paths
 
 ### TTFT spike
 
@@ -145,14 +99,14 @@ Start with:
 Watch for:
 
 - `num_waiting_reqs` growth
-- `cache_hit_rate` drop
 - `token_usage` saturation
+- `cache_hit_rate` drop
 - PD queue buildup
 
-Only escalate to trace/profile if the slowdown is not already explained by load,
-queue pressure, or a known config mismatch.
+If queue pressure does not explain the slowdown, save the slow request and
+replay it.
 
-### Throughput collapse under load
+### Throughput collapse
 
 Start with:
 
@@ -163,90 +117,81 @@ Start with:
 Watch for:
 
 - low `gen_throughput`
-- high queue size
+- queue growth
 - low cache hit rate
 - speculative metrics collapse
-- PD transfer queues or decode prealloc queues backing up
+- PD transfer or decode prealloc queues backing up
 
 ### Crash after some requests
 
 Start with:
 
 - crash dump folder
-- stderr/stdout logs
+- stderr/stdout
 - request dump folder if available
 
-Then:
-
-- replay the crash dump or recent request dump
-- if replay reproduces, escalate to CUDA crash or profiling workflows
+Then replay the crash dump or recent request dump.
 
 ### Regression between two commits
 
 Start with:
 
-- the known-good commit
-- the known-bad commit
+- known-good commit
+- known-bad commit
 - one stable pass/fail harness
 
 Best move:
 
-- turn the problem into `git bisect run <harness>`
+- `git bisect run <harness>`
 
-Only after the bad commit is narrowed down should you invest in deeper kernel or
-profiler analysis.
-
-### One request class fails but others succeed
+### One request class fails
 
 Start with:
 
 - exact request payload
 - request dump if available
-- narrow reproduction request
+- smallest reproduction request
 
-Likely categories:
+Typical categories:
 
-- multimodal preprocessing edge case
-- parser / structured output bug
+- multimodal edge case
+- parser or structured output bug
 - model-specific kernel path
-- tool call formatting issue
+- tool-call formatting issue
 
 ## When To Switch Tools
 
-### Use request replay when:
+### Use replay when
 
-- you already have a crash dump or request dump
-- the issue seems workload-shape dependent
-- you need a stable local reproduction before deeper profiling
+- a crash dump or request dump already exists
+- the issue depends on request shape or workload mix
+- you need one stable reproducer before going deeper
 
-### Use OTel trace when:
+### Use OTel trace when
 
-- you need request-stage timing
-- you suspect router/worker/PD boundary delay
-- you need cross-thread or cross-process latency attribution
+- request-stage timing is unclear
+- router vs. worker ownership is unclear
+- PD boundaries may be involved
 
-### Use torch profiler when:
+### Use torch profiler when
 
-- the issue is clearly inside compute rather than queueing
+- replay already reproduces the issue
+- queueing and routing are mostly ruled out
 - you need kernel-level attribution
-- you already have a reproduction or a live target you can safely profile
 
-When that bar is met, switch to `sglang-torch-profiler-analysis` instead of
-expanding profiler logic in this skill.
+At that point, switch to `sglang-torch-profiler-analysis`.
 
-### Use code-level debug paths when:
+### Use lower-level debug paths when
 
-- replay and tracing still leave ambiguity
-- the issue looks like a crash, hang, or correctness bug in a specific kernel or distributed path
+- replay plus trace still leave ambiguity
+- the problem looks like a specific crash, hang, or correctness bug
 
 ## What To Return
-
-Every quick debug summary should end with:
 
 - problem class
 - what was checked
 - strongest signal so far
-- current best root-cause hypothesis
+- current best guess
 - what was ruled out
 - next step
 - production risk

@@ -1,15 +1,11 @@
 # Replay, Trace, Profile, and Bisect
 
-Use this reference after the first pass when live snapshots are not enough.
+Use this reference after the first live checks. The goal is to turn the problem
+into something repeatable.
 
-It is for problems that only become repeatable after enough real traffic has
-accumulated, or that depend on workload mix rather than one obvious prompt.
-
-## Request Dump and Replay
+## Save Requests
 
 ### Request dump
-
-Enable request dump on a live server:
 
 ```bash
 python3 -m sglang.srt.managers.configure_logging \
@@ -18,10 +14,10 @@ python3 -m sglang.srt.managers.configure_logging \
   --dump-requests-threshold 100
 ```
 
-This is useful when:
+Use this when:
 
 - the problem is intermittent
-- you need the exact production request shape
+- you need the real request shape
 - you do not want to restart the server
 
 ### Crash dump
@@ -32,26 +28,25 @@ If the server already runs with:
 --crash-dump-folder /tmp/crash_dump
 ```
 
-then SGLang records recent requests before a crash. This is the highest-value
-dump for crash reproduction.
+SGLang saves recent requests before a crash. Treat that dump as the best
+starting point.
 
-The crash-dump tests show the dump contains at least:
-
-- `server_args`
-- `requests`
-- `launch_command` on current SGLang builds
-
-Treat the dump as the best starting point for reproduction.
-Summarize it first with:
+Summarize it first:
 
 ```bash
 python3 scripts/incident_artifact_tool.py summarize-dump \
   --input-file /path/to/crash_dump.pkl
 ```
 
-### Replay
+Current crash-dump tests show at least:
 
-Use the checked-in replay tool:
+- `server_args`
+- `requests`
+- `launch_command`
+
+## Replay
+
+Use the stock replay tool:
 
 ```bash
 python3 scripts/playground/replay_request_dump.py \
@@ -70,23 +65,27 @@ python3 scripts/playground/replay_request_dump.py \
   --parallel 128
 ```
 
-On newer SGLang builds, `safe_pickle_load` may block some captured dump files
-because they include classes such as `ServerArgs` or `GenerateReqInput`.
-If the dump is locally captured and trusted, use the skill-local helper
-`scripts/replay_trusted_request_dump.py` to bypass the allowlist and replay the
-same requests over HTTP.
+If `safe_pickle_load` blocks a locally captured trusted dump, use:
+
+```bash
+python3 scripts/replay_trusted_request_dump.py \
+  --input-file /path/to/request_dump.pkl \
+  --host 127.0.0.1 \
+  --port 30000 \
+  --parallel 1
+```
+
 If that happens, the allowlist is the problem, not the dump.
 
 Use replay before profiling when:
 
-- the problem depends on a real workload mix
-- the issue appears only after some number of requests
-- you need to compare two builds against the same captured traffic
+- the issue depends on workload mix
+- it only appears after some number of requests
+- you need to compare two builds on the same traffic
 
-### CUDA coredump restart-and-replay
+## CUDA Restart-And-Replay
 
-If replay suggests a CUDA crash path such as illegal memory access, warp
-illegal instruction, or device-side assert, restart the same build with:
+If replay points to a CUDA crash path, restart the same build with coredumps:
 
 ```bash
 SGLANG_CUDA_COREDUMP=1 \
@@ -97,33 +96,27 @@ python -m sglang.launch_server \
   ...
 ```
 
-SGLang auto-injects the required `CUDA_*` variables when
-`SGLANG_CUDA_COREDUMP=1`, unless the shell already provided stricter values.
-After reproducing the crash via replay, inspect the generated file with:
+Then inspect the coredump:
 
 ```bash
 cuda-gdb "$(which python3)" \
   -ex "target cudacore /tmp/sglang_cuda_coredumps/cuda_coredump_<host>.<pid>.<ts>"
 ```
 
-Useful first commands inside `cuda-gdb`:
+Good first commands:
 
 - `where`
 - `info cuda kernels`
 - `x/10i <pc>`
 
-Treat the coredump as the place to identify the *failing* kernel, not
-necessarily the *source* of the bad data. It is common for the true bug to live
-one kernel earlier in the routing or preprocessing chain.
+Use the coredump to find the failing kernel, not automatically the root-cause
+kernel.
 
-For a concrete example of this exact pattern, see
-[moe-shared-oob-case-study.md](moe-shared-oob-case-study.md). That example
-corrupts one MoE top-k index in `topkGatingSoftmax`, but the coredump points to
-the later `moe_align_block_size_kernel` shared-memory update.
+See:
 
-## OpenTelemetry Tracing
+- [moe-shared-oob-case-study.md](moe-shared-oob-case-study.md)
 
-### Bring-up
+## Trace
 
 Tracing must be enabled at startup:
 
@@ -134,7 +127,7 @@ python -m sglang.launch_server \
   ...
 ```
 
-Optionally for the router:
+Optional router command:
 
 ```bash
 python -m sglang_router.launch_router \
@@ -150,9 +143,7 @@ export SGLANG_OTLP_EXPORTER_SCHEDULE_DELAY_MILLIS=500
 export SGLANG_OTLP_EXPORTER_MAX_EXPORT_BATCH_SIZE=64
 ```
 
-### Dynamic level control
-
-If trace was enabled, adjust verbosity without restart:
+If tracing is already enabled, change the level without restart:
 
 ```bash
 curl "http://127.0.0.1:30000/set_trace_level?level=1"
@@ -160,18 +151,14 @@ curl "http://127.0.0.1:30000/set_trace_level?level=2"
 curl "http://127.0.0.1:30000/set_trace_level?level=3"
 ```
 
-### Use tracing for
+Use tracing for:
 
-- router vs worker delay attribution
-- tokenizer / scheduler / detokenizer stage timing
-- PD prefill/decode transfer timing
+- router vs. worker delay
+- tokenizer / scheduler / detokenizer timing
+- PD transfer timing
 - request timing across processes
 
-Tracing is not a substitute for kernel-level profiling.
-
-### Perfetto conversion
-
-When you already have OTEL JSON or JSONL output:
+If you already have OTEL JSON or JSONL, convert it for timeline inspection:
 
 ```bash
 python3 scripts/convert_otel_2_perfetto.py \
@@ -179,31 +166,24 @@ python3 scripts/convert_otel_2_perfetto.py \
   --output /tmp/sglang_trace_perfetto.json
 ```
 
-Use this when you want a timeline view that is easier to inspect than raw OTEL.
+## Torch Profiler
 
-## Torch Profiler Next Step
+Switch to `sglang-torch-profiler-analysis` when:
 
-When replay, metrics, and trace data all point to a compute-side issue, switch
-to `sglang-torch-profiler-analysis`.
+- replay already reproduces the issue
+- metrics and loads do not explain it
+- the problem now looks compute-side
 
-Use that dedicated skill for:
+This skill should decide when to profile, not duplicate the profiler workflow.
 
-- trace capture from a live server
-- profile-v2 / `profile_by_stage` details
-- rank-local versus merged trace choice
-- kernel-table, overlap-table, and fuse-pattern analysis
-
-This skill should only decide *when* profiling is justified, not
-duplicate the full profiler workflow.
-
-## Known-good vs known-bad commit regression
+## Bisect
 
 If one commit is known-good and a newer commit is known-bad:
 
 1. build a deterministic harness from the problem
 2. prefer replay-based harnesses when the failure depends on request mix
 3. use `git bisect run <harness>`
-4. only after bisect isolates a bad change, return to trace or profile if needed
+4. only then go back to trace or profile if needed
 
 Example:
 
@@ -212,66 +192,45 @@ git bisect start <bad> <good>
 git bisect run bash ./repro_or_check.sh
 ```
 
-## Common Debug Paths
+## Common Paths
 
 ### Crash
-
-Best order:
 
 1. crash dump
 2. summarize dump
 3. replay
 4. CUDA coredump plus `cuda-gdb`
-5. CUDA crash skill or deeper instrumentation
+5. `debug-cuda-crash` or narrower instrumentation
 
 ### TTFT regression
 
-Best order:
-
 1. baseline metrics and loads
 2. request dump
-3. replay the same slow request
-4. trace if stage ownership is still unclear
-5. `sglang-torch-profiler-analysis` only if replay still points to compute-side ownership
+3. replay the slow request
+4. trace if stage ownership is unclear
+5. `sglang-torch-profiler-analysis` if it still looks compute-side
 
-For a concrete example of this lighter-weight escalation path, see
-[ttft-prefill-not-queue-case-study.md](ttft-prefill-not-queue-case-study.md).
-That example shows a TTFT spike where the bundle summary rules out queue
-pressure first, then replay preserves the same slow request before deeper
-analysis.
+See:
+
+- [ttft-prefill-not-queue-case-study.md](ttft-prefill-not-queue-case-study.md)
 
 ### Distributed hang
 
-Best order:
-
 1. healthy baseline bundle
-2. capture the trigger request
-3. replay the same request on a clean target
-4. replay-time bundle during the hang
-5. watchdog or py-spy stacks
-6. NCCL collective identification
-7. `debug-distributed-hang`
+2. save the trigger request
+3. replay on a clean target
+4. collect replay-time bundle and stacks
+5. identify the NCCL or collective path
+6. switch to `debug-distributed-hang`
 
-For a concrete example of this path, see
-[communication-hang-case-study.md](communication-hang-case-study.md).
-That example shows a request-shaped TP hang where the trigger request is first
-saved and replayed, then the replay-time bundle and watchdog stacks narrow the
-problem before the deeper rank-by-rank workflow takes over.
+See:
 
-### PD transfer stall
-
-Best order:
-
-1. loads with `disagg`
-2. trace spans across prefill/decode
-3. stage-separated profile if compute is still implicated
+- [communication-hang-case-study.md](communication-hang-case-study.md)
 
 ### Throughput regression after deploy
-
-Best order:
 
 1. compare `server_info`
 2. compare `/metrics` and `/v1/loads`
 3. replay stable workload
 4. bisect if one older commit is known-good
-5. `sglang-torch-profiler-analysis` if compute remains suspicious
+5. profile only if compute still looks suspicious
