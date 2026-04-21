@@ -34,7 +34,7 @@ skills/
 │   └── references/
 │       ├── playbook.md
 │       └── pr-history.md
-├── sglang-minimax-m2-m25-optimization/
+├── sglang-minimax-m2-series-optimization/
 │   ├── SKILL.md
 │   └── references/
 │       ├── playbook.md
@@ -45,13 +45,13 @@ skills/
 
 The `h100` and `h100-sglang-diffusion` skills use placeholder values. Replace them before use:
 
-| Placeholder | Meaning |
-|---|---|
-| `<your-h100-host>` | SSH host alias in `~/.ssh/config` |
-| `<your-container>` | Docker container name on the remote host |
-| `<your-repo-path>` | Absolute path to the SGLang repo inside the container |
-| `<your-cache-path>` | Host path mounted as `/root/.cache` |
-| `<your-hf-token>` | Hugging Face access token (never commit the real value) |
+| Placeholder         | Meaning                                                 |
+| ------------------- | ------------------------------------------------------- |
+| `<your-h100-host>`  | SSH host alias in `~/.ssh/config`                       |
+| `<your-container>`  | Docker container name on the remote host                |
+| `<your-repo-path>`  | Absolute path to the SGLang repo inside the container   |
+| `<your-cache-path>` | Host path mounted as `/root/.cache`                     |
+| `<your-hf-token>`   | Hugging Face access token (never commit the real value) |
 
 ## Install
 

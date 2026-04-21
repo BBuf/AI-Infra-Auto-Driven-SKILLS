@@ -1,0 +1,4 @@
+interface:
+  display_name: "SGLang MiniMax M2 Series Optimization"
+  short_description: "Current-main MiniMax M2-series ladder for TP QK norm, distributed runtime, parsers, and M2.7 validation"
+  default_prompt: "Use $sglang-minimax-m2-series-optimization to optimize or debug MiniMax-M2, MiniMax-M2.5, MiniMax-M2.7, or MiniMax-M2.7-highspeed in SGLang, and map the current code to the right mainline, open-PR, parser, distributed, quantized, or backend-specific stage."
