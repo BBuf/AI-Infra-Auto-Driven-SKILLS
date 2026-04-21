@@ -1,6 +1,6 @@
 # SGLang-Auto-Driven-SKILLS
 
-Agent skills for SGLang development and profiling.
+Agent skills for SGLang development, profiling, and production incident triage.
 
 ## Structure
 
@@ -10,6 +10,27 @@ skills/
 │   └── SKILL.md
 ├── h100-sglang-diffusion/
 │   └── SKILL.md
+├── sglang-prod-incident-triage/
+│   ├── SKILL.md
+│   ├── references/
+│   │   ├── decision-tree.md
+│   │   ├── communication-hang-case-study.md
+│   │   ├── endpoints-and-signals.md
+│   │   ├── moe-shared-oob-case-study.md
+│   │   ├── ttft-prefill-not-queue-case-study.md
+│   │   └── replay-trace-profile.md
+│   └── scripts/
+│       ├── incident_artifact_tool.py
+│       └── replay_trusted_request_dump.py
+├── sglang-pd-ep-bringup/
+│   ├── SKILL.md
+│   ├── references/
+│   │   ├── topology-decision.md
+│   │   ├── backend-and-flags.md
+│   │   ├── validation-and-failure-branches.md
+│   │   └── scenario-templates.md
+│   └── scripts/
+│       └── recommend_pd_ep_topology.py
 ├── sglang-torch-profiler-analysis/
 │   ├── SKILL.md
 │   └── scripts/
@@ -27,11 +48,6 @@ skills/
 │   └── references/
 │       ├── playbook.md
 │       └── pr-history.md
-└── vllm-kimi-k2-k25-optimization/
-    ├── SKILL.md
-    └── references/
-        ├── playbook.md
-        └── pr-history.md
 ```
 
 ## Placeholders
@@ -48,8 +64,8 @@ The `h100` and `h100-sglang-diffusion` skills use placeholder values. Replace th
 
 ## Install
 
+Copy the desired skill directory into your local skill path:
+
 ```bash
-cp -r skills/h100 ~/.codex/skills/h100
-# or
-cp -r skills/h100 ~/.cursor/skills/h100
+cp -r skills/sglang-prod-incident-triage <agent-skill-dir>/sglang-prod-incident-triage
 ```
