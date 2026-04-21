@@ -5,7 +5,7 @@ Use this case when:
 - the service feels slow
 - `/health` and `/health_generate` stay green
 - queue growth is not obvious
-- you want the full incident flow, not an immediate profiler jump
+- you want the full debug flow, not an immediate profiler jump
 
 This example should still go through the standard skill path:
 
@@ -38,7 +38,7 @@ Metrics: requests=2 prompt_tokens=1540 generation_tokens=128 avg_ttft_s=3.210 av
 Stage Averages (max across TP ranks): prefill_forward=2.900s, request_process=0.090s
 ```
 
-The first-pass signal is:
+The first useful signal is:
 
 - `waiting=0`
 - queue time is tiny
@@ -80,7 +80,7 @@ After replay, the likely next move is:
 - OTel trace if router/worker or stage ownership is still unclear
 - `sglang-torch-profiler-analysis` if replay still points at prefill-side compute
 
-## Expected Triage Result
+## Expected Debug Result
 
 If this example is behaving as intended, the result should say:
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Collect or inspect incident artifacts for SGLang serving triage."""
+"""Collect or inspect serving bundles and dumps for SGLang debug."""
 
 from __future__ import annotations
 
@@ -438,12 +438,12 @@ def build_bundle_summary(bundle_dir: Path) -> Dict[str, Any]:
     ):
         add_signal(
             signals,
-            f"Prefill forward dominates first-pass stage timing: prefill_forward≈{fmt_float(prefill_forward)}s vs request_process≈{fmt_float(request_process)}s.",
+            f"Prefill forward dominates quick stage timing: prefill_forward≈{fmt_float(prefill_forward)}s vs request_process≈{fmt_float(request_process)}s.",
         )
     if running_reqs == 0 and waiting_reqs == 0:
         add_signal(
             signals,
-            "Bundle snapshot was captured while the server was effectively idle. Reproduce under live traffic or replayed workload if the incident is intermittent.",
+            "Bundle snapshot was captured while the server was effectively idle. Reproduce under live traffic or replayed workload if the problem is intermittent.",
         )
 
     return summary
@@ -512,7 +512,7 @@ def render_bundle_text(summary: Dict[str, Any]) -> str:
     if summary["signals"]:
         lines.extend(f"- {signal}" for signal in summary["signals"])
     else:
-        lines.append("- No strong heuristic signal from the first-pass bundle.")
+        lines.append("- No strong heuristic signal from the bundle.")
 
     return "\n".join(lines) + "\n"
 
@@ -661,12 +661,12 @@ def summarize_dump_file(path: Path, max_requests: int, preview_chars: int) -> st
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Collect or inspect incident artifacts for SGLang serving triage."
+        description="Collect or inspect serving bundles and dumps for SGLang debug."
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     collect_parser = subparsers.add_parser(
-        "collect-bundle", help="Collect a read-only incident bundle from a live server"
+        "collect-bundle", help="Collect a read-only live bundle from a running server"
     )
     collect_parser.add_argument("--base-url", required=True)
     collect_parser.add_argument(

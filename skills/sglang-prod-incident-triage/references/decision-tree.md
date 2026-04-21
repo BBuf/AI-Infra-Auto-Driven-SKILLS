@@ -1,9 +1,9 @@
-# SGLang Incident Decision Tree
+# SGLang Debug Decision Tree
 
-Use this reference when the incident is still ambiguous and the first job is to
-choose the next evidence source instead of jumping into profiling.
+Use this reference when the problem is still ambiguous and the first job is to
+choose the next thing to check instead of jumping into profiling.
 
-This reference is optimized for serving incidents that often show up late under
+This reference is optimized for serving problems that often show up late under
 real traffic, not for already-isolated single-request kernel bugs.
 
 ## Core Principle
@@ -11,12 +11,12 @@ real traffic, not for already-isolated single-request kernel bugs.
 Triage in this order:
 
 1. classify the symptom
-2. capture the cheapest source-backed evidence
+2. grab the cheapest useful clue
 3. decide whether the issue is load-related, correctness-related, or infra-related
 4. only then escalate to trace, profile, or replay
 
 Do not start with `torch.profiler` by default. Profiling is expensive and is
-often the wrong first move for production incidents.
+often the wrong first move for production debug.
 
 If the user already has one known-good commit and one known-bad commit, treat
 that as a regression-search problem first. Build the smallest deterministic
@@ -33,7 +33,7 @@ Typical signals:
 - the process crashed or restarted
 - router sees worker unhealthy or missing
 
-First evidence to collect:
+First things to check:
 
 - `/health`
 - `/health_generate`
@@ -57,7 +57,7 @@ Typical signals:
 - throughput dropped at same traffic level
 - queue size grows while health stays green
 
-First evidence to collect:
+First things to check:
 
 - `/metrics`
 - `/v1/loads?include=all`
@@ -82,7 +82,7 @@ Typical signals:
 - function calling or reasoning formatting broke
 - one route or one model variant regressed
 
-First evidence to collect:
+First things to check:
 
 - exact request and expected vs actual output
 - `/model_info`
@@ -106,7 +106,7 @@ Typical signals:
 - only high-concurrency traffic fails
 - retries sometimes succeed
 
-First evidence to collect:
+First things to check:
 
 - `/v1/loads?include=all`
 - request dumps if enabled
@@ -120,7 +120,7 @@ Likely directions:
 - PD transfer stall
 - storage / HiCache / remote backend stall
 
-## Cheapest Evidence Ladder
+## Cheapest Debug Ladder
 
 Prefer this escalation order unless the symptom itself forces a later step:
 
@@ -191,7 +191,7 @@ Start with:
 
 Best first move:
 
-- convert the incident into `git bisect run <harness>`
+- turn the problem into `git bisect run <harness>`
 
 Only after the bad commit is narrowed down should you invest in deeper kernel or
 profiler analysis.
@@ -211,7 +211,7 @@ Likely categories:
 - model-specific kernel path
 - tool call formatting issue
 
-## Escalation Gates
+## When To Switch Tools
 
 ### Use request replay when:
 
@@ -222,7 +222,7 @@ Likely categories:
 ### Use OTel trace when:
 
 - you need request-stage timing
-- you suspect router/worker/PD handoff delay
+- you suspect router/worker/PD boundary delay
 - you need cross-thread or cross-process latency attribution
 
 ### Use torch profiler when:
@@ -239,13 +239,13 @@ expanding profiler logic in this skill.
 - replay and tracing still leave ambiguity
 - the issue looks like a crash, hang, or correctness bug in a specific kernel or distributed path
 
-## Report Contract
+## What To Return
 
-Every triage should end with:
+Every quick debug summary should end with:
 
-- incident class
-- exact evidence collected
+- problem type
+- exact clues collected
 - current best root-cause hypothesis
 - what was ruled out
-- next highest-signal step
+- next step
 - user-facing risk statement

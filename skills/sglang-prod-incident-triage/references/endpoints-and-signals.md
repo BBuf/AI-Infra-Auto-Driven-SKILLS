@@ -1,6 +1,6 @@
 # SGLang Endpoints and Signals
 
-Use this reference when collecting first-round evidence from a live server.
+Use this reference when collecting first-round clues from a live server.
 
 ## Authentication
 
@@ -64,14 +64,14 @@ Returns a broad snapshot:
 - per-DP `internal_states`
 - SGLang version
 
-Use this for almost every incident. It is the best single snapshot of the live
+Use this for almost every issue. It is the best single snapshot of the live
 runtime configuration.
 
 ## Load and Capacity
 
 ### `/v1/loads?include=all`
 
-Best structured load endpoint for triage.
+Best structured load endpoint for first-round debugging.
 
 Useful fields:
 
@@ -109,7 +109,7 @@ Interpretation:
 
 Prometheus endpoint.
 
-High-value metrics during triage:
+High-value metrics during first-round debugging:
 
 - `sglang:time_to_first_token_seconds`
 - `sglang:time_per_output_token_seconds`
@@ -121,7 +121,7 @@ High-value metrics during triage:
 - `sglang:gen_throughput`
 - `sglang:token_usage`
 
-Use `/metrics` for trend-aware incidents. Use `/v1/loads` for a more direct
+Use `/metrics` for trend-aware problems. Use `/v1/loads` for a more direct
 point-in-time breakdown.
 
 ## Logging and Request Capture
@@ -148,7 +148,7 @@ Useful payload shape:
 }
 ```
 
-Use this when the incident is ongoing and you need to capture the next failing
+Use this when the issue is ongoing and you need to capture the next failing
 requests without restarting the service.
 
 ## HiCache Admin Endpoints
@@ -164,14 +164,14 @@ Returns tokenizer-side HiCache storage status:
 - `hicache_storage_prefetch_policy`
 - `hicache_write_policy`
 
-Use this when long-context or PD incidents may involve storage-backed KV reuse.
+Use this when long-context or PD problems may involve storage-backed KV reuse.
 
 ### `PUT /hicache/storage-backend`
 ### `DELETE /hicache/storage-backend`
 
 Runtime attach/detach.
 
-Do not use these casually during incident triage. They require the service to be
+Do not use these casually during debugging. They require the service to be
 fully idle and are operational actions, not observation.
 
 ## Profiling and Tracing Controls
@@ -203,7 +203,7 @@ Levels:
 Use this when tracing is already configured and you need more or less span detail
 without restart.
 
-## Incident-Specific Reading Patterns
+## What To Check By Problem Type
 
 ### TTFT spike
 

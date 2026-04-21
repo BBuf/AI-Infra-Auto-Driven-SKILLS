@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Replay a trusted SGLang request dump directly over HTTP.
 
-Use this only for locally captured or otherwise trusted dump artifacts.
+Use this only for locally captured or otherwise trusted dump files.
 It uses plain pickle loading to bypass SafeUnpickler restrictions that may block
 the stock replay helper on newer SGLang builds.
 """

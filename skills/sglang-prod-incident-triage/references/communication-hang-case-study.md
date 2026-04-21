@@ -12,8 +12,8 @@ This example should not stop at "the live server is hung". The standard path is:
 baseline bundle
   -> capture the trigger request
   -> replay the same request on a clean target
-  -> collect replay-time hang artifacts
-  -> hand off to debug-distributed-hang
+  -> collect replay-time hang bundle and logs
+  -> switch to debug-distributed-hang
 ```
 
 ## Injection Shape
@@ -92,7 +92,7 @@ Prefill batch, #new-seq: 1, #new-token: 769, #cached-token: 0
 
 and then hung again instead of returning.
 
-## Replay-Time Incident Artifacts
+## Replay-Time Hang Bundle And Logs
 
 While the replayed request is hung, collect another bundle:
 
@@ -118,7 +118,7 @@ loads_core_queues_disagg.json:
   URLError: <urlopen error [Errno 111] Connection refused>
 ```
 
-Then let the watchdog capture the first stack evidence. One TP rank showed:
+Then let the watchdog capture the first useful stack. One TP rank showed:
 
 ```text
 cuEventSynchronize
@@ -131,7 +131,7 @@ event_loop_overlap
 
 ## Next Step
 
-At this point, the skill should stop and hand off to:
+At this point, switch to:
 
 - `debug-distributed-hang`
 
@@ -141,12 +141,12 @@ The point of this example is that the hang is now:
 - replayable
 - already narrowed to a collective-style stall
 
-## Expected Triage Result
+## Expected Debug Result
 
 If the example is behaving as intended, the result should say:
 
 1. the server was healthy before the trigger request
 2. the same trigger request was preserved and replayed
 3. replay reproduced the same hang
-4. replay-time bundle and watchdog evidence point at a distributed stall
+4. replay-time bundle and watchdog stacks point at a distributed stall
 5. the next step is `debug-distributed-hang`, not profiling

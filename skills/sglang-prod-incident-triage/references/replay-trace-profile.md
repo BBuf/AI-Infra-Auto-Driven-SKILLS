@@ -1,9 +1,9 @@
 # Replay, Trace, Profile, and Bisect
 
-Use this reference after the first-round triage when you need reproducible
-evidence rather than just live snapshots.
+Use this reference after the first round of debugging when you need something
+reproducible, not just live snapshots.
 
-It is especially useful for incidents that only become repeatable after enough
+It is especially useful for problems that only become repeatable after enough
 real traffic has accumulated, or that depend on workload mix rather than one
 obvious prompt.
 
@@ -22,7 +22,7 @@ python3 -m sglang.srt.managers.configure_logging \
 
 This is useful when:
 
-- the incident is intermittent
+- the problem is intermittent
 - you need the exact production request shape
 - you do not want to restart the server
 
@@ -35,7 +35,7 @@ If the server already runs with:
 ```
 
 then SGLang records recent requests before a crash. This is the highest-value
-artifact for crash reproduction.
+dump for crash reproduction.
 
 The crash-dump tests show the dump contains at least:
 
@@ -74,15 +74,15 @@ python3 scripts/playground/replay_request_dump.py \
 
 On newer SGLang builds, `safe_pickle_load` may block some captured dump files
 because they include classes such as `ServerArgs` or `GenerateReqInput`.
-If the artifact is locally captured and trusted, use the skill-local helper
+If the dump is locally captured and trusted, use the skill-local helper
 `scripts/replay_trusted_request_dump.py` to bypass the allowlist and replay the
 same requests over HTTP.
-Treat this as a trust-boundary problem in the replay helper, not as evidence
-that the dump is malformed.
+Treat this as a trust-boundary problem in the replay helper, not as a sign that
+the dump is malformed.
 
 Use replay before profiling when:
 
-- the incident depends on a real workload mix
+- the problem depends on a real workload mix
 - the issue appears only after some number of requests
 - you need to compare two builds against the same captured traffic
 
@@ -170,7 +170,7 @@ Tracing is best for:
 - router vs worker delay attribution
 - tokenizer / scheduler / detokenizer stage timing
 - PD prefill/decode transfer timing
-- request lifecycle evidence across processes
+- request lifecycle clues across processes
 
 Tracing is not a substitute for kernel-level profiling.
 
@@ -186,7 +186,7 @@ python3 scripts/convert_otel_2_perfetto.py \
 
 Use this when you want a timeline view that is easier to inspect than raw OTEL.
 
-## Torch Profiler Handoff
+## Torch Profiler Next Step
 
 When replay, metrics, and trace data all point to a compute-side issue, switch
 to `sglang-torch-profiler-analysis`.
@@ -198,14 +198,14 @@ Use that dedicated skill for:
 - rank-local versus merged trace choice
 - kernel-table, overlap-table, and fuse-pattern analysis
 
-This incident-triage skill should only decide *when* profiling is justified, not
+This skill should only decide *when* profiling is justified, not
 duplicate the full profiler workflow.
 
 ## Known-good vs known-bad commit regression
 
 If one commit is known-good and a newer commit is known-bad:
 
-1. build a deterministic harness from the incident
+1. build a deterministic harness from the problem
 2. prefer replay-based harnesses when the failure depends on request mix
 3. use `git bisect run <harness>`
 4. only after bisect isolates a bad change, return to trace or profile if needed
@@ -217,7 +217,7 @@ git bisect start <bad> <good>
 git bisect run bash ./repro_or_check.sh
 ```
 
-## Incident-to-Tool Mapping
+## Debug Path Mapping
 
 ### Crash
 
@@ -252,7 +252,7 @@ Best order:
 1. healthy baseline bundle
 2. capture the trigger request
 3. replay the same request on a clean target
-4. incident bundle during the replayed hang
+4. replay-time bundle during the hang
 5. watchdog or py-spy stacks
 6. NCCL collective identification
 7. `debug-distributed-hang`
@@ -260,8 +260,8 @@ Best order:
 For a concrete example of this path, see
 [communication-hang-case-study.md](communication-hang-case-study.md).
 That example shows a request-shaped TP hang where the trigger request is first
-preserved and replayed, then the replay-time bundle and watchdog evidence prove
-the distributed stall before the deeper rank-by-rank workflow takes over.
+saved and replayed, then the replay-time bundle and watchdog logs prove the
+distributed stall before the deeper rank-by-rank workflow takes over.
 
 ### PD transfer stall
 

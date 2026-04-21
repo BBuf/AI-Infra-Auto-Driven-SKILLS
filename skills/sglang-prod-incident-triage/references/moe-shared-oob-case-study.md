@@ -46,7 +46,7 @@ lands far past `shared_counts[num_experts]`. In `cuda-gdb`, this makes the faili
 kernel look like the align kernel itself is wrong, even though the bad value was
 written one kernel earlier.
 
-That is the exact behavior you want for an incident-triage skill:
+That is the exact behavior you want for a serving-debug skill:
 
 - crash dump identifies the triggering request shape
 - replay makes the crash repeatable
@@ -158,8 +158,8 @@ python -m sglang.launch_server \
 ```
 
 Let production-like traffic or a request generator hit the server until the
-incident occurs and a dump is written. Do not hand-tune prompts first if your
-goal is to practice the production triage path.
+problem occurs and a dump is written. Do not hand-tune prompts first if your
+goal is to practice the production debug path.
 
 ### 4. Summarize the crash dump instead of guessing the prompt shape
 
@@ -221,15 +221,15 @@ cuda-gdb "$(which python3)" \
   -ex "x/12i <faulting-pc>"
 ```
 
-The artifact pattern usually looks like:
+The dump pattern usually looks like:
 
 - `<crash-dump-folder>/<worker-id>/crash_dump_<timestamp>.pkl`
 - `<coredump-folder>/cuda_coredump_<host>.<pid>.<ts>`
 
 After the replay is stable and the failing kernel is known, switch to the
 existing CUDA crash skill or playbook used in your environment for deeper
-kernel-level forensics. This worked example is about incident reproduction and
-root-cause direction, not replacing that narrower workflow.
+kernel-level forensics. This worked example is about replay-based reproduction
+and root-cause direction, not replacing that narrower workflow.
 
 ## Expected Triage Result
 

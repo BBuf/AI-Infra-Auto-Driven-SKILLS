@@ -1,4 +1,4 @@
 interface:
-  display_name: "SGLang Incident Triage"
-  short_description: "Triage SGLang production incidents"
-  default_prompt: "Use $sglang-prod-incident-triage to investigate an SGLang production incident and produce a concrete triage report."
+  display_name: "SGLang Serving Debug"
+  short_description: "Debug SGLang serving problems"
+  default_prompt: "Use $sglang-prod-incident-triage to debug an SGLang serving problem and return a practical quick debug summary."
