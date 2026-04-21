@@ -224,8 +224,3 @@ As of `47c4b3825`, the Kimi mainline looks like this:
 - `fused_marlin_moe.py` uses JIT `moe_wna16_marlin_gemm` and keeps EP zero-fill only under `expert_map is not None`.
 - `kimi_k25.py` is the central K2.5 wrapper for the language model, vision tower, projector, processor, DP ViT, PP range, Eagle3, PCG, and EPLB interfaces.
 - K2.5 quantization and platform optimization are still moving quickly: NVFP4 has mainline fixes, while W4AFP8, K2.5 W4A16 DeepEP low latency, and AMD MXFP4 fused q/k RMSNorm are still open PR tracks.
-
-So if the Kimi skill is updated again, it should probably split the old “K2/K2.5 optimization” story into two explicit narratives:
-
-1. Kimi K2 Thinking runtime path: 384-expert top-k, fused gate, Marlin MoE, EP, PCG, and the boundary that DeepEP is not mainline-ready yet.
-2. Kimi K2.5 multimodal and quantization path: wrapper transparency, PP/DP/Eagle/EPLB, and the latest NVFP4/W4AFP8/AMD/DeepEP-low-latency state.

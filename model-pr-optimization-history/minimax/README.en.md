@@ -2,7 +2,7 @@
 
 This document is based on the latest SGLang `origin/main` snapshot `47c4b3825`, plus patch-level reading of MiniMax-related merged and open PRs. It covers the main line originally represented by the `sglang-minimax-m2-m25-optimization` skill and adds the latest MiniMax M2.7, TP QK RMSNorm allreduce fusion, DP attention, FP4/NVFP4, NPU, DeepEP, EPLB, and tool-call streaming state.
 
-The short conclusion is: as of `47c4b3825`, the mainline MiniMax M2-series model file is `python/sglang/srt/models/minimax_m2.py`. It already supports base loading for M2/M2.1/M2.5, tool calling, reasoning parsing, Eagle3 aux hidden states, PP, DP-attention-related attention-TP grouping, M2.5 reduce-scatter/FP4 all-gather/AR fusion, and the TP QK RMSNorm allreduce fusion you mentioned. M2.7 currently appears mostly as documentation and reuse of the same model class, so the skill should be renamed from `sglang-minimax-m2-m25-optimization` to something more accurate, such as `sglang-minimax-m2-series-optimization` or `sglang-minimax-m2-m27-optimization`.
+The short conclusion is: as of `47c4b3825`, the mainline MiniMax M2-series model file is `python/sglang/srt/models/minimax_m2.py`. It already supports base loading for M2/M2.1/M2.5, tool calling, reasoning parsing, Eagle3 aux hidden states, PP, DP-attention-related attention-TP grouping, M2.5 reduce-scatter/FP4 all-gather/AR fusion, and the TP QK RMSNorm allreduce fusion you mentioned. M2.7 currently appears mostly as documentation and reuse of the same model class.
 
 ## 1. Chronological Overview
 
@@ -195,7 +195,7 @@ Current main already has many attention-TP and empty-hidden-state protections, b
 
 `#13297` adds `get_embed_and_head`, returning `self.model.embed_tokens.weight, self.lm_head.weight`, so Eagle3 can access the main model embedding and lm head.
 
-`#20873` is an open old-docs PR that adds MiniMax-M2.7 and M2.7-highspeed. Although this PR is not merged, latest main already contains `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M2.7.mdx`, and the cookbook navigation includes MiniMax-M2.7. At the code level, M2.7 still reuses the `MiniMaxM2ForCausalLM` model family, so the skill name should no longer be locked to M2.5.
+`#20873` is an open old-docs PR that adds MiniMax-M2.7 and M2.7-highspeed. Although this PR is not merged, latest main already contains `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M2.7.mdx`, and the cookbook navigation includes MiniMax-M2.7. At the code level, M2.7 still reuses the `MiniMaxM2ForCausalLM` model family.
 
 `#23301` is the new open tool-call streaming PR. It rewrites `MinimaxM2Detector.parse_streaming_increment` so string parameters can stream token by token:
 
@@ -227,7 +227,7 @@ The value of this PR is not model throughput; it improves agent/tool-use experie
 
 `#22934` is the open MiniMax EPLB bugfix. It adds `get_moe_weights` to `MiniMaxM2MoE`, using `filter_moe_weight_param_global_expert` to filter local/redundant expert weights. `MiniMaxM2ForCausalLM` gains `_routed_experts_weights_of_layer = LazyValue(...)` and a `routed_experts_weights_of_layer` property. Current main already has a similar wrapper interface for Kimi K2.5, but the MiniMax version has not landed yet.
 
-## 8. Current Main Code Shape and Skill Naming
+## 8. Current Main Code Shape
 
 As of `47c4b3825`, the MiniMax mainline looks like this:
 
@@ -237,5 +237,3 @@ As of `47c4b3825`, the MiniMax mainline looks like this:
 - `MiniMaxM2DecoderLayer` uses `LayerCommunicator` for prepare_attn AR fusion, prepare_mlp, reduce-scatter, and postprocess.
 - The loader supports packed mapping, KV scale remapping, and PP shard skipping; AWQ `w13` merged expert loading is still open.
 - M2.7 appears in docs while the code still reuses the same M2-series implementation.
-
-Therefore, the skill should be renamed from `sglang-minimax-m2-m25-optimization` to `sglang-minimax-m2-series-optimization`. If the latest model name must be explicit, `sglang-minimax-m2-m27-optimization` is also reasonable, but “series” is more durable because M2.7, M2.7-highspeed, and future platform optimizations continue to reuse the same model-family implementation.

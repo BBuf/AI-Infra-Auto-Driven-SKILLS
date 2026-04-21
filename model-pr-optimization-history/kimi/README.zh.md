@@ -224,8 +224,3 @@ patch 和讨论里暴露的问题是在 `DeepEPMoE.forward_marlin_moe -> quant_m
 - `fused_marlin_moe.py` 使用 JIT `moe_wna16_marlin_gemm`，并保留 `expert_map is not None` 下的 EP 清零逻辑。
 - `kimi_k25.py` 是 K2.5 的核心 wrapper，负责 language model、vision tower、projector、processor、DP ViT、PP range、Eagle3、PCG、EPLB 等运行时接口。
 - K2.5 的量化和平台优化还在快速推进：NVFP4 已有主线修复，W4AFP8、K2.5 W4A16 DeepEP low-latency、AMD MXFP4 fused q/k RMSNorm 仍是 open PR 方向。
-
-因此，Kimi skill 如果继续更新，建议把旧的“K2/K2.5 optimization”拆成两条明确叙事：
-
-1. Kimi K2 Thinking runtime path：384 experts top-k、fused gate、Marlin MoE、EP、PCG，以及 DeepEP 尚未主线打通的边界。
-2. Kimi K2.5 multimodal and quantization path：wrapper 透明性、PP/DP/Eagle/EPLB、NVFP4/W4AFP8/AMD/DeepEP low-latency 的最新状态。

@@ -2,7 +2,7 @@
 
 本文基于 SGLang `origin/main` 最新快照 `47c4b3825`，以及 MiniMax 相关 merged、open PR patch 阅读结果整理。范围覆盖原有 `sglang-minimax-m2-m25-optimization` skill 涉及的主线，并补充 MiniMax M2.7、TP QK RMSNorm allreduce fusion、DP attention、FP4/NVFP4、NPU、DeepEP、EPLB 和 tool-call streaming 的最新状态。
 
-阅读结论先放前面：截至 `47c4b3825`，MiniMax M2 系列主线模型文件是 `python/sglang/srt/models/minimax_m2.py`，它已经支持 M2/M2.1/M2.5 的基础加载、tool calling、reasoning parser、Eagle3 aux hidden states、PP、DP attention 相关 attention-TP 分组、M2.5 reduce-scatter/FP4 all-gather/AR fusion，以及你提到的 TP QK RMSNorm allreduce fusion。M2.7 当前主要体现为文档和同一模型类复用，建议 skill 名称从 `sglang-minimax-m2-m25-optimization` 改成更准确的 `sglang-minimax-m2-series-optimization` 或 `sglang-minimax-m2-m27-optimization`。
+阅读结论先放前面：截至 `47c4b3825`，MiniMax M2 系列主线模型文件是 `python/sglang/srt/models/minimax_m2.py`，它已经支持 M2/M2.1/M2.5 的基础加载、tool calling、reasoning parser、Eagle3 aux hidden states、PP、DP attention 相关 attention-TP 分组、M2.5 reduce-scatter/FP4 all-gather/AR fusion，以及你提到的 TP QK RMSNorm allreduce fusion。M2.7 当前主要体现为文档和同一模型类复用。
 
 ## 1. 时间线总览
 
@@ -195,7 +195,7 @@ MiniMax 侧新增 `MiniMaxM2QKRMSNorm`：
 
 `#13297` 补齐 `get_embed_and_head`，返回 `self.model.embed_tokens.weight, self.lm_head.weight`，让 Eagle3 能拿到主模型 embedding 和 lm head。
 
-`#20873` 是 open 的旧文档 PR，增加 MiniMax-M2.7 和 M2.7-highspeed。虽然这个 PR 还没合入，但最新 main 的 `docs_new` 里已经有 `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M2.7.mdx`，并且 cookbook 导航里也有 MiniMax-M2.7。代码层面 M2.7 仍复用 `MiniMaxM2ForCausalLM` 系列模型类，因此 skill 名称最好不要再锁死到 M2.5。
+`#20873` 是 open 的旧文档 PR，增加 MiniMax-M2.7 和 M2.7-highspeed。虽然这个 PR 还没合入，但最新 main 的 `docs_new` 里已经有 `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M2.7.mdx`，并且 cookbook 导航里也有 MiniMax-M2.7。代码层面 M2.7 仍复用 `MiniMaxM2ForCausalLM` 系列模型类。
 
 `#23301` 是 tool-call streaming 的新 open PR。它重写 `MinimaxM2Detector.parse_streaming_increment`，使 string 类型参数可以 token-by-token streaming：
 
@@ -227,7 +227,7 @@ MiniMax 侧新增 `MiniMaxM2QKRMSNorm`：
 
 `#22934` 是 MiniMax EPLB bugfix，仍 open。它给 `MiniMaxM2MoE` 增加 `get_moe_weights`，用 `filter_moe_weight_param_global_expert` 过滤本地/冗余 expert 权重；`MiniMaxM2ForCausalLM` 增加 `_routed_experts_weights_of_layer = LazyValue(...)` 和 `routed_experts_weights_of_layer` property。当前 main 的 Kimi K2.5 已有类似 EPLB wrapper 接口，而 MiniMax 这条还没进主线。
 
-## 8. 当前 main 的代码形态与 skill 命名建议
+## 8. 当前 main 的代码形态
 
 截至 `47c4b3825`，MiniMax 主线形态可以概括为：
 
@@ -237,5 +237,3 @@ MiniMax 侧新增 `MiniMaxM2QKRMSNorm`：
 - `MiniMaxM2DecoderLayer` 通过 `LayerCommunicator` 支持 prepare_attn AR fusion、prepare_mlp、reduce-scatter 和 postprocess。
 - loader 已支持 packed mapping、KV scale remap、PP shard skip；AWQ `w13` merged expert loader 仍 open。
 - 文档层已经出现 M2.7；代码层仍复用同一个 M2 系列实现。
-
-因此建议把 skill 从 `sglang-minimax-m2-m25-optimization` 改成 `sglang-minimax-m2-series-optimization`。如果希望名字里显式表达最新模型，也可以叫 `sglang-minimax-m2-m27-optimization`，但 “series” 更稳，因为 M2.7、M2.7-highspeed 和后续高性能/平台优化都会继续复用同一模型族实现。
