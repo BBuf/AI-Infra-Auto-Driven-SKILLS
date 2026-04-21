@@ -17,20 +17,20 @@ from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict, is_dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import List, Sequence, Tuple
+from typing import Any, Sequence
 
 import requests
 
-Record = Tuple[object, dict, float, float]
+Record = tuple[object, dict[str, Any], float, float]
 
 
-def normalize_mm_data_item(item):
+def normalize_mm_data_item(item: Any) -> Any:
     if isinstance(item, dict) and "url" in item:
         return item["url"]
     return item
 
 
-def normalize_mm_data(data):
+def normalize_mm_data(data: Any) -> Any:
     if data is None:
         return None
     if isinstance(data, list):
@@ -45,14 +45,14 @@ def normalize_mm_data(data):
     return normalize_mm_data_item(data)
 
 
-def normalize_request_data(json_data):
+def normalize_request_data(json_data: dict[str, Any]) -> dict[str, Any]:
     for field in ["image_data", "video_data", "audio_data"]:
         if field in json_data and json_data[field] is not None:
             json_data[field] = normalize_mm_data(json_data[field])
     return json_data
 
 
-def to_plain_dict(obj):
+def to_plain_dict(obj: Any) -> dict[str, Any]:
     if obj is None:
         return {}
     if isinstance(obj, dict):
@@ -81,7 +81,7 @@ def to_plain_dict(obj):
     raise TypeError(f"Unsupported request object type: {type(obj)!r}")
 
 
-def request_to_json_data(req):
+def request_to_json_data(req: Any) -> dict[str, Any]:
     json_data = normalize_request_data(to_plain_dict(req))
     sampling_params = json_data.get("sampling_params")
     if sampling_params is not None and not isinstance(sampling_params, dict):
@@ -89,7 +89,7 @@ def request_to_json_data(req):
     return json_data
 
 
-def load_records(path: Path) -> List[Record]:
+def load_records(path: Path) -> list[Record]:
     with path.open("rb") as fh:
         payload = pickle.load(fh)
     if isinstance(payload, dict) and "requests" in payload:
@@ -97,7 +97,7 @@ def load_records(path: Path) -> List[Record]:
     return payload
 
 
-def iter_files(args) -> Sequence[Path]:
+def iter_files(args: argparse.Namespace) -> Sequence[Path]:
     if args.input_file:
         return [Path(args.input_file)]
     if args.input_folder:
@@ -108,7 +108,13 @@ def iter_files(args) -> Sequence[Path]:
     raise SystemExit("Either --input-file or --input-folder must be provided.")
 
 
-def run_one_request(record, args, replay_init_time, base_time, idx):
+def run_one_request(
+    record: Record,
+    args: argparse.Namespace,
+    replay_init_time: float,
+    base_time: float,
+    idx: int,
+) -> None:
     req, output, start_time, end_time = record
     relative_start = start_time - base_time
     delay = max(0.0, (relative_start - (time.time() - replay_init_time)) / args.speed)
@@ -159,7 +165,7 @@ def run_one_request(record, args, replay_init_time, base_time, idx):
     )
 
 
-def main():
+def main() -> int:
     parser = argparse.ArgumentParser(
         description="Replay a trusted SGLang request dump or crash dump directly over HTTP."
     )
@@ -177,22 +183,22 @@ def main():
     args = parser.parse_args()
 
     files = iter_files(args)
-    print(f"files={[str(p) for p in files]}")
+    print(f"Replay files: {[str(p) for p in files]}")
 
-    records: List[Record] = []
+    records: list[Record] = []
     for path in files:
         records.extend(load_records(path))
 
     if not records:
-        print("len(records)=0")
-        return
+        print("No requests found.")
+        return 0
 
     records.sort(key=lambda x: x[-2])
     records = records[args.req_start : args.req_start + args.req_number]
-    print(f"len(records)={len(records)}")
+    print(f"Replay requests: {len(records)}")
     base_time = records[0][-2]
     print(
-        "base_time=" + datetime.fromtimestamp(base_time).strftime("%Y-%m-%d %H:%M:%S")
+        "Base time: " + datetime.fromtimestamp(base_time).strftime("%Y-%m-%d %H:%M:%S")
     )
 
     replay_init_time = time.time()
@@ -206,7 +212,8 @@ def main():
             )
         for future in futures:
             future.result()
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

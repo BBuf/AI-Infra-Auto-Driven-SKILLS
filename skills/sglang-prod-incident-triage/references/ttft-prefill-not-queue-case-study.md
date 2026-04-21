@@ -1,4 +1,4 @@
-# Worked Example: TTFT Spike With Low Queue Time
+# Example: TTFT Spike With Low Queue Time
 
 Use this case when:
 
@@ -7,7 +7,7 @@ Use this case when:
 - queue growth is not obvious
 - you want the full debug flow, not an immediate profiler jump
 
-This example should still go through the standard skill path:
+Use the same loop here:
 
 ```text
 baseline bundle
@@ -29,7 +29,7 @@ python3 scripts/incident_artifact_tool.py summarize-bundle \
   /tmp/incident_bundle_ttft_case
 ```
 
-One validated summary looked like:
+In one run the summary looked like:
 
 ```text
 Health: /health=ok /health_generate=ok
@@ -80,9 +80,7 @@ After replay, the likely next move is:
 - OTel trace if router/worker or stage ownership is still unclear
 - `sglang-torch-profiler-analysis` if replay still points at prefill-side compute
 
-## Expected Debug Result
-
-If this example is behaving as intended, the result should say:
+## Expected Result
 
 1. the service is healthy
 2. queue pressure is not the main explanation

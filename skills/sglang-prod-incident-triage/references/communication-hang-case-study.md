@@ -1,4 +1,4 @@
-# Worked Example: Replay-First TP Communication Hang
+# Example: Replay-First TP Communication Hang
 
 Use this case when:
 
@@ -6,7 +6,7 @@ Use this case when:
 - the symptom looks like a generic serving stall
 - you want the hang to follow the same skill flow as the crash case
 
-This example should not stop at "the live server is hung". The standard path is:
+Do not stop at "the live server is hung". Use this path:
 
 ```text
 baseline bundle
@@ -16,10 +16,9 @@ baseline bundle
   -> switch to debug-distributed-hang
 ```
 
-## Injection Shape
+## Fault Injection
 
-The validated incident used a temporary serving-side fault injector with this
-shape:
+The injected fault used this shape:
 
 1. rank 0 arms a one-shot flag only when a real extend batch satisfies
    `extend_num_tokens == 769`
@@ -32,7 +31,7 @@ That creates a real collective mismatch:
 - rank 1 waits inside the collective
 - the request stops making progress
 
-One validated trigger prompt was:
+One trigger prompt was:
 
 ```text
 "hello " * 768
@@ -46,7 +45,7 @@ prompt_tokens = 769
 
 ## Baseline Bundle
 
-Before triggering the incident, collect a healthy bundle:
+Before triggering the bug, collect a healthy bundle:
 
 ```bash
 python3 scripts/incident_artifact_tool.py collect-bundle \
@@ -57,7 +56,7 @@ python3 scripts/incident_artifact_tool.py summarize-bundle \
   /tmp/incident_bundle_ok
 ```
 
-One validated baseline summary looked like:
+In one run the baseline summary looked like:
 
 ```text
 Health: /health=ok /health_generate=ok
@@ -75,7 +74,7 @@ python3 -m sglang.srt.managers.configure_logging \
   --dump-requests-threshold 1
 ```
 
-After the live incident is captured, restart a clean debug target with the same
+After the live hang is captured, restart a clean debug target with the same
 model path and the same injection, then replay the captured request:
 
 ```bash
@@ -84,7 +83,7 @@ python3 scripts/playground/replay_request_dump.py \
   --parallel 1
 ```
 
-On the validated run, the replayed request hit the same serving path:
+On the replay run, the request hit the same serving path:
 
 ```text
 Prefill batch, #new-seq: 1, #new-token: 769, #cached-token: 0
@@ -92,7 +91,7 @@ Prefill batch, #new-seq: 1, #new-token: 769, #cached-token: 0
 
 and then hung again instead of returning.
 
-## Replay-Time Hang Bundle And Logs
+## Replay-Time Bundle And Stacks
 
 While the replayed request is hung, collect another bundle:
 
@@ -102,7 +101,7 @@ python3 scripts/incident_artifact_tool.py collect-bundle \
   --outdir /tmp/incident_bundle_hang
 ```
 
-One validated replay-time bundle looked like:
+In one run the replay-time bundle looked like:
 
 ```text
 health.txt.error.json:
@@ -135,15 +134,13 @@ At this point, switch to:
 
 - `debug-distributed-hang`
 
-The point of this example is that the hang is now:
+At that point the hang is:
 
 - request-shaped
 - replayable
 - already narrowed to a collective-style stall
 
-## Expected Debug Result
-
-If the example is behaving as intended, the result should say:
+## Expected Result
 
 1. the server was healthy before the trigger request
 2. the same trigger request was preserved and replayed

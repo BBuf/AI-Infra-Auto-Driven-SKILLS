@@ -21,18 +21,20 @@ METRIC_RE = re.compile(
     r"^(?P<name>[^{\s]+)(?:\{(?P<labels>[^}]*)\})?\s+(?P<value>[-+]?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?)$"
 )
 LABEL_RE = re.compile(r'([a-zA-Z_:][a-zA-Z0-9_:]*)="((?:[^"\\]|\\.)*)"')
-TEXT_ENDPOINTS = {
-    "health.txt": "/health",
-    "health_generate.txt": "/health_generate",
-    "metrics.txt": "/metrics",
-}
-JSON_ENDPOINTS = {
-    "model_info.json": "/model_info",
-    "server_info.json": "/server_info",
-    "loads_all.json": "/v1/loads?include=all",
-    "loads_core_queues_disagg.json": "/v1/loads?include=core,queues,disagg,spec",
-    "hicache_storage_backend.json": "/hicache/storage-backend",
-}
+ENDPOINT_SPECS = (
+    ("text", "health.txt", "/health"),
+    ("text", "health_generate.txt", "/health_generate"),
+    ("text", "metrics.txt", "/metrics"),
+    ("json", "model_info.json", "/model_info"),
+    ("json", "server_info.json", "/server_info"),
+    ("json", "loads_all.json", "/v1/loads?include=all"),
+    (
+        "json",
+        "loads_core_queues_disagg.json",
+        "/v1/loads?include=core,queues,disagg,spec",
+    ),
+    ("json", "hicache_storage_backend.json", "/hicache/storage-backend"),
+)
 BUNDLE_NOTES = [
     "This bundle is read-only. It does not start profiling or change trace level.",
     "HiCache status may fail if admin_api_key is not configured or the wrong bearer token was used.",
@@ -62,37 +64,26 @@ def request_text(
         return False, -1, f"{type(e).__name__}: {e}"
 
 
-def request_json(
+def request_endpoint(
     base_url: str,
     path: str,
     token: Optional[str],
+    parse_json: bool,
     timeout: float = 10.0,
 ) -> Dict[str, Any]:
     ok, status, body = request_text(base_url, path, token, timeout=timeout)
     result: Dict[str, Any] = {"ok": ok, "status": status, "path": path}
-    if ok:
-        try:
-            result["json"] = json.loads(body)
-        except json.JSONDecodeError:
-            result["text"] = body
-            result["decode_error"] = "response was not valid JSON"
-    else:
+    if not ok:
         result["error"] = body
-    return result
-
-
-def request_plain(
-    base_url: str,
-    path: str,
-    token: Optional[str],
-    timeout: float = 10.0,
-) -> Dict[str, Any]:
-    ok, status, body = request_text(base_url, path, token, timeout=timeout)
-    result: Dict[str, Any] = {"ok": ok, "status": status, "path": path}
-    if ok:
+        return result
+    if not parse_json:
         result["text"] = body
-    else:
-        result["error"] = body
+        return result
+    try:
+        result["json"] = json.loads(body)
+    except json.JSONDecodeError:
+        result["text"] = body
+        result["decode_error"] = "response was not valid JSON"
     return result
 
 
@@ -104,6 +95,15 @@ def write_json(path: Path, obj: Dict[str, Any]) -> None:
 
 def write_text(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8")
+
+
+def format_summary_line(filename: str, result: Dict[str, Any]) -> str:
+    if result.get("ok"):
+        return f"{filename}: ok"
+    return (
+        f"{filename}: failed status={result.get('status')} "
+        f"error={result.get('error')}"
+    )
 
 
 def collect_bundle(
@@ -126,26 +126,23 @@ def collect_bundle(
     write_json(bundle_dir / "metadata.json", metadata)
 
     summary_lines = []
-    for filename, path in TEXT_ENDPOINTS.items():
-        result = request_plain(base_url, path, token, timeout=timeout)
-        if result.get("ok"):
-            write_text(bundle_dir / filename, str(result.get("text", "")))
-            summary_lines.append(f"{filename}: ok")
+    for kind, filename, path in ENDPOINT_SPECS:
+        result = request_endpoint(
+            base_url, path, token, parse_json=(kind == "json"), timeout=timeout
+        )
+        output_path = bundle_dir / filename
+        if kind == "text" and result.get("ok"):
+            write_text(output_path, str(result.get("text", "")))
         else:
-            write_json(bundle_dir / f"{filename}.error.json", result)
-            summary_lines.append(
-                f"{filename}: failed status={result.get('status')} error={result.get('error')}"
+            write_json(
+                (
+                    output_path
+                    if kind == "json"
+                    else bundle_dir / f"{filename}.error.json"
+                ),
+                result,
             )
-
-    for filename, path in JSON_ENDPOINTS.items():
-        result = request_json(base_url, path, token, timeout=timeout)
-        write_json(bundle_dir / filename, result)
-        if result.get("ok"):
-            summary_lines.append(f"{filename}: ok")
-        else:
-            summary_lines.append(
-                f"{filename}: failed status={result.get('status')} error={result.get('error')}"
-            )
+        summary_lines.append(format_summary_line(filename, result))
 
     write_text(
         bundle_dir / "SUMMARY.txt",
@@ -404,7 +401,7 @@ def build_bundle_summary(bundle_dir: Path) -> Dict[str, Any]:
     if not health["health_ok"]:
         add_signal(
             signals,
-            "/health failed. Treat this as a startup, crash, or global unhealthy incident first.",
+            "/health failed. Start with startup, crash, or global unhealthy paths.",
         )
     if is_positive_number(waiting_reqs):
         add_signal(
@@ -427,7 +424,7 @@ def build_bundle_summary(bundle_dir: Path) -> Dict[str, Any]:
     ):
         add_signal(
             signals,
-            f"Average TTFT is high ({fmt_float(ttft_avg)}s) while average queue time is low ({fmt_float(queue_avg)}s). Suspect compute-side prefill cost or a request-path slowdown rather than queue pressure.",
+            f"Average TTFT is high ({fmt_float(ttft_avg)}s) while average queue time is low ({fmt_float(queue_avg)}s). This looks more like prefill or request-path work than queue pressure.",
         )
     prefill_forward = per_stage_avg.get("prefill_forward")
     request_process = per_stage_avg.get("request_process")
@@ -438,7 +435,7 @@ def build_bundle_summary(bundle_dir: Path) -> Dict[str, Any]:
     ):
         add_signal(
             signals,
-            f"Prefill forward dominates quick stage timing: prefill_forward≈{fmt_float(prefill_forward)}s vs request_process≈{fmt_float(request_process)}s.",
+            f"Prefill forward dominates quick stage timing: prefill_forward~{fmt_float(prefill_forward)}s vs request_process~{fmt_float(request_process)}s.",
         )
     if running_reqs == 0 and waiting_reqs == 0:
         add_signal(
@@ -508,11 +505,11 @@ def render_bundle_text(summary: Dict[str, Any]) -> str:
         )
 
     lines.append("")
-    lines.append("Signals:")
+    lines.append("What stands out:")
     if summary["signals"]:
         lines.extend(f"- {signal}" for signal in summary["signals"])
     else:
-        lines.append("- No strong heuristic signal from the bundle.")
+        lines.append("- No strong signal from this bundle.")
 
     return "\n".join(lines) + "\n"
 
@@ -585,19 +582,12 @@ def summarize_request(
         else None
     )
 
+    elapsed_str = f"{duration:.3f}" if duration is not None else "n/a"
     lines = [
-        (
-            f"[{idx}] rid={rid or 'n/a'} stream={stream} "
-            f"prompt_tokens={prompt_tokens if prompt_tokens is not None else 'n/a'} "
-            f"completion_tokens={completion_tokens if completion_tokens is not None else 'n/a'} "
-            f"start={format_timestamp(start_time)} "
-            f"elapsed_s={duration:.3f}"
-            if duration is not None
-            else f"[{idx}] rid={rid or 'n/a'} stream={stream} "
-            f"prompt_tokens={prompt_tokens if prompt_tokens is not None else 'n/a'} "
-            f"completion_tokens={completion_tokens if completion_tokens is not None else 'n/a'} "
-            f"start={format_timestamp(start_time)} elapsed_s=n/a"
-        )
+        f"[{idx}] rid={rid or 'n/a'} stream={stream} "
+        f"prompt_tokens={prompt_tokens if prompt_tokens is not None else 'n/a'} "
+        f"completion_tokens={completion_tokens if completion_tokens is not None else 'n/a'} "
+        f"start={format_timestamp(start_time)} elapsed_s={elapsed_str}"
     ]
     if preview:
         lines.append(f"      text={preview}")
@@ -632,7 +622,7 @@ def summarize_dump_file(path: Path, max_requests: int, preview_chars: int) -> st
 
     lines = [
         f"File: {path}",
-        "Artifact Type: request_or_crash_dump",
+        "Dump Type: request_or_crash_dump",
         f"Requests: {len(requests)}",
         f"Model: {model_path or 'n/a'}",
         f"Topology: tp={tp_size if tp_size is not None else 'n/a'} "
@@ -678,7 +668,7 @@ def main() -> int:
     collect_parser.add_argument("--timeout", type=float, default=10.0)
 
     bundle_parser = subparsers.add_parser(
-        "summarize-bundle", help="Summarize a directory produced by collect-bundle"
+        "summarize-bundle", help="Summarize a bundle directory"
     )
     bundle_parser.add_argument("bundle_dir")
     bundle_parser.add_argument("--out", default=None)

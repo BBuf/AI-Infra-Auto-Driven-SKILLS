@@ -1,11 +1,9 @@
 # Replay, Trace, Profile, and Bisect
 
-Use this reference after the first round of debugging when you need something
-reproducible, not just live snapshots.
+Use this reference after the first pass when live snapshots are not enough.
 
-It is especially useful for problems that only become repeatable after enough
-real traffic has accumulated, or that depend on workload mix rather than one
-obvious prompt.
+It is for problems that only become repeatable after enough real traffic has
+accumulated, or that depend on workload mix rather than one obvious prompt.
 
 ## Request Dump and Replay
 
@@ -77,8 +75,7 @@ because they include classes such as `ServerArgs` or `GenerateReqInput`.
 If the dump is locally captured and trusted, use the skill-local helper
 `scripts/replay_trusted_request_dump.py` to bypass the allowlist and replay the
 same requests over HTTP.
-Treat this as a trust-boundary problem in the replay helper, not as a sign that
-the dump is malformed.
+If that happens, the allowlist is the problem, not the dump.
 
 Use replay before profiling when:
 
@@ -163,14 +160,12 @@ curl "http://127.0.0.1:30000/set_trace_level?level=2"
 curl "http://127.0.0.1:30000/set_trace_level?level=3"
 ```
 
-### What tracing is good at
-
-Tracing is best for:
+### Use tracing for
 
 - router vs worker delay attribution
 - tokenizer / scheduler / detokenizer stage timing
 - PD prefill/decode transfer timing
-- request lifecycle clues across processes
+- request timing across processes
 
 Tracing is not a substitute for kernel-level profiling.
 
@@ -217,7 +212,7 @@ git bisect start <bad> <good>
 git bisect run bash ./repro_or_check.sh
 ```
 
-## Debug Path Mapping
+## Common Debug Paths
 
 ### Crash
 
@@ -260,8 +255,8 @@ Best order:
 For a concrete example of this path, see
 [communication-hang-case-study.md](communication-hang-case-study.md).
 That example shows a request-shaped TP hang where the trigger request is first
-saved and replayed, then the replay-time bundle and watchdog logs prove the
-distributed stall before the deeper rank-by-rank workflow takes over.
+saved and replayed, then the replay-time bundle and watchdog stacks narrow the
+problem before the deeper rank-by-rank workflow takes over.
 
 ### PD transfer stall
 

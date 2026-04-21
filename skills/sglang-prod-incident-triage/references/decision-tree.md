@@ -1,17 +1,17 @@
-# SGLang Debug Decision Tree
+# SGLang First Debug Checks
 
-Use this reference when the problem is still ambiguous and the first job is to
-choose the next thing to check instead of jumping into profiling.
+Use this reference when the problem class is still unclear and the first job is
+to decide what to check next instead of jumping into profiling.
 
-This reference is optimized for serving problems that often show up late under
-real traffic, not for already-isolated single-request kernel bugs.
+This reference is for serving problems that show up under real traffic, not for
+already-isolated single-request kernel bugs.
 
 ## Core Principle
 
-Triage in this order:
+Work in this order:
 
 1. classify the symptom
-2. grab the cheapest useful clue
+2. grab the fastest useful signal
 3. decide whether the issue is load-related, correctness-related, or infra-related
 4. only then escalate to trace, profile, or replay
 
@@ -22,7 +22,7 @@ If the user already has one known-good commit and one known-bad commit, treat
 that as a regression-search problem first. Build the smallest deterministic
 harness you can, then use `git bisect run` instead of ad-hoc manual testing.
 
-## Symptom Classes
+## Problem Classes
 
 ### 1. Server down or unhealthy
 
@@ -41,7 +41,7 @@ First things to check:
 - recent stderr/stdout logs
 - crash dump status if `--crash-dump-folder` is enabled
 
-Likely directions:
+Common directions:
 
 - startup / weight loading failure
 - deadlock or blocked scheduler
@@ -64,7 +64,7 @@ First things to check:
 - `/server_info`
 - benchmark command or production request shape
 
-Likely directions:
+Common directions:
 
 - server overloaded or under-provisioned
 - scheduling / queueing problem
@@ -90,7 +90,7 @@ First things to check:
 - current weight version
 - recent deploy / config delta
 
-Likely directions:
+Common directions:
 
 - wrong weights or wrong revision
 - changed chat template / parser / tool config
@@ -113,14 +113,14 @@ First things to check:
 - OTel trace if already enabled
 - worker logs per rank
 
-Likely directions:
+Common directions:
 
 - distributed divergence or collective hang
 - queue starvation or retraction storm
 - PD transfer stall
 - storage / HiCache / remote backend stall
 
-## Cheapest Debug Ladder
+## Usual Order
 
 Prefer this escalation order unless the symptom itself forces a later step:
 
@@ -132,7 +132,7 @@ Prefer this escalation order unless the symptom itself forces a later step:
 6. torch profile
 7. custom debug instrumentation or code-level deep dive
 
-## What To Do First By Incident Type
+## Quick Path By Problem Type
 
 ### TTFT spike
 
@@ -189,7 +189,7 @@ Start with:
 - the known-bad commit
 - one stable pass/fail harness
 
-Best first move:
+Best move:
 
 - turn the problem into `git bisect run <harness>`
 
@@ -243,9 +243,10 @@ expanding profiler logic in this skill.
 
 Every quick debug summary should end with:
 
-- problem type
-- exact clues collected
+- problem class
+- what was checked
+- strongest signal so far
 - current best root-cause hypothesis
 - what was ruled out
 - next step
-- user-facing risk statement
+- production risk

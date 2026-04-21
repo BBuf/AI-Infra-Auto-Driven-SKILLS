@@ -1,6 +1,6 @@
 # SGLang Endpoints and Signals
 
-Use this reference when collecting first-round clues from a live server.
+Use this reference when checking a live server.
 
 ## Authentication
 
@@ -71,7 +71,7 @@ runtime configuration.
 
 ### `/v1/loads?include=all`
 
-Best structured load endpoint for first-round debugging.
+Best structured load endpoint for a first pass.
 
 Useful fields:
 
@@ -109,7 +109,7 @@ Interpretation:
 
 Prometheus endpoint.
 
-High-value metrics during first-round debugging:
+High-value metrics for a first pass:
 
 - `sglang:time_to_first_token_seconds`
 - `sglang:time_per_output_token_seconds`
@@ -148,7 +148,7 @@ Useful payload shape:
 }
 ```
 
-Use this when the issue is ongoing and you need to capture the next failing
+Use this when the problem is ongoing and you need to capture the next failing
 requests without restarting the service.
 
 ## HiCache Admin Endpoints

@@ -1,15 +1,15 @@
-## Worked Example: Upstream Top-K Corruption, Downstream Shared-Memory OOB
+## Example: Upstream Top-K Corruption, Downstream Shared-Memory OOB
 
-Use this case study when you want an intentional CUDA incident that:
+Use this case when you want an intentional CUDA failure that:
 
 - crashes in a downstream MoE align kernel
 - looks like a shared-memory out-of-bounds or illegal-address issue
 - actually originates in the previous routing kernel
 - is best reproduced through crash dump plus replay rather than ad-hoc prompts
-- behaves like a production-serving incident instead of a toy standalone kernel crash
+- behaves like a real serving failure instead of a toy standalone kernel crash
 
 This is not meant to replace a low-level CUDA graph or single-kernel debug
-playbook. The point of this example is different: the symptom emerges in a real
+playbook. This case is different: the symptom emerges in a real
 serving path, depends on request shape, surfaces first as a generic runtime
 failure, and only becomes obvious after going through the full
 crash-dump-to-replay-to-coredump workflow.
@@ -32,7 +32,7 @@ The important call chain is:
 
 For this model shape, `topk_softmax` dispatches to `topkGatingSoftmax`, not the `moeTopKFast` fallback.
 
-## Why This Incident Is Useful
+## Why This Case Is Useful
 
 The visible crash shows up in `moe_align_block_size_kernel` here:
 
@@ -88,7 +88,7 @@ Design notes:
 
 ## Trigger Shape
 
-One validated trigger prompt was:
+One trigger prompt was:
 
 ```text
 "hello " * 768
@@ -107,7 +107,7 @@ failure still lands later in `moe_align_block_size_kernel`.
 Treat that prompt as only one concrete instance. The transferable part is the
 shape-sensitive guard in the producer kernel, not the exact hardware or host.
 
-## Production-Oriented Reproduction Flow
+## Replay-First Debug Flow
 
 ### 1. Patch the producer in the serving build
 
@@ -139,7 +139,7 @@ row17_col0 4224
 max_idx 4224
 ```
 
-### 3. Launch the incident server and collect a crash dump
+### 3. Start the bad build and collect a crash dump
 
 Keep the launch close to the real serving path. The exact topology is not the
 important part; preserving the same model path, TP setting, CUDA-graph flags,
@@ -163,7 +163,7 @@ goal is to practice the production debug path.
 
 ### 4. Summarize the crash dump instead of guessing the prompt shape
 
-In one validated run, the dump contained two requests:
+In one run, the dump contained two requests:
 
 - request `[0]`: short warmup prompt
 - request `[1]`: the long `"hello " * 768` trigger prompt
@@ -231,9 +231,9 @@ existing CUDA crash skill or playbook used in your environment for deeper
 kernel-level forensics. This worked example is about replay-based reproduction
 and root-cause direction, not replacing that narrower workflow.
 
-## Expected Triage Result
+## Expected Result
 
-On one validated run, `cuda-gdb` reported:
+In one run, `cuda-gdb` reported:
 
 ```text
 CUDA Exception: Warp Out-of-range Address
@@ -255,7 +255,7 @@ The first SASS instructions around the faulting PC were:
    0x7f7fe1dfacf0 <...+752>: LDS R11[R12]
 ```
 
-If the incident is behaving as intended, you should see this progression:
+Expected progression:
 
 1. The process crashes only for a narrow request shape.
 2. The crash dump preserves the exact launch command and request mix.
@@ -276,9 +276,9 @@ The important conclusion is:
 - Do not swap to another model path that uses grouped top-k. That bypasses this example.
 - Do not skip replay. Without replay, you are back to guessing at prompt shape.
 - Do not reduce this to a one-off kernel debug exercise. The important lesson is
-  the production incident flow: collect, replay, coredump, then walk upstream.
+  the serving debug flow: collect, replay, coredump, then walk upstream.
 
 ## Optional Follow-Up
 
-After demonstrating the incident, fix it by removing the injected corruption and rerun the same replay.
+After demonstrating the bug, fix it by removing the injected corruption and rerun the same replay.
 The replay should stop crashing without any changes to `moe_align_block_size_kernel`.
