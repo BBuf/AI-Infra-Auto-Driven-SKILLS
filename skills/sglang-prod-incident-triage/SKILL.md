@@ -34,6 +34,13 @@ existing narrower skills instead of re-implementing them:
 - use `debug-distributed-hang` when the incident is clearly a TP/PP/DP/EP hang
 - use `debug-cuda-crash` when replay plus coredump indicates a CUDA crash path
 
+The reference set includes three worked examples that cover the common first
+branches of this skill:
+
+- TTFT spike with low queue time
+- replay-first CUDA crash triage
+- request-shaped distributed hang triage
+
 ## Core Rule
 
 Do not start with profiling by default.
@@ -216,6 +223,12 @@ Start with:
 If the symptom is clearly a distributed stall, switch to `debug-distributed-hang`
 after the first bundle is captured.
 
+If you need a concrete incident pattern to practice that handoff, load
+[references/communication-hang-case-study.md](references/communication-hang-case-study.md).
+That worked example starts from a healthy live server, triggers a request-shaped
+TP hang, preserves an incident bundle while health checks time out, and only
+then hands off to the specialized distributed-hang workflow.
+
 #### Crash or CUDA exception
 
 Start with:
@@ -378,6 +391,8 @@ Load only what the current step needs:
   - worked example: upstream top-k corruption, downstream MoE align shared-memory OOB
 - [references/ttft-prefill-not-queue-case-study.md](references/ttft-prefill-not-queue-case-study.md)
   - worked example: TTFT spike with low queue time and likely prefill-side ownership
+- [references/communication-hang-case-study.md](references/communication-hang-case-study.md)
+  - worked example: request-shaped TP hang with healthy baseline, timed-out health checks, and distributed-hang handoff
 
 ## Scripts
 

@@ -242,6 +242,23 @@ For a concrete example of this lighter-weight escalation path, see
 That example shows a TTFT spike where the bundle summary is already enough to
 rule out queue pressure as the first-order explanation.
 
+### Distributed hang
+
+Best order:
+
+1. healthy baseline bundle
+2. incident bundle during the hang
+3. watchdog or py-spy stacks
+4. NCCL collective identification
+5. `debug-distributed-hang`
+
+For a concrete example of this path, see
+[communication-hang-case-study.md](communication-hang-case-study.md).
+That example shows a request-shaped TP hang where the incident bundle itself
+already proves a live serving stall: `/health` and `/health_generate` time out,
+and load snapshots degrade from reset to refused connections before the deeper
+rank-by-rank hang workflow takes over.
+
 ### PD transfer stall
 
 Best order:

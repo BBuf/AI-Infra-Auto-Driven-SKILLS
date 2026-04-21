@@ -14,6 +14,7 @@ skills/
 │   ├── SKILL.md
 │   ├── references/
 │   │   ├── decision-tree.md
+│   │   ├── communication-hang-case-study.md
 │   │   ├── endpoints-and-signals.md
 │   │   ├── moe-shared-oob-case-study.md
 │   │   ├── ttft-prefill-not-queue-case-study.md

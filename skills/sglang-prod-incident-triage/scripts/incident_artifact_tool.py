@@ -219,12 +219,28 @@ def safe_div(
     return numerator / denominator
 
 
+def first_non_none(*values: Any) -> Any:
+    for value in values:
+        if value is not None:
+            return value
+    return None
+
+
 def fmt_float(value: Optional[float], digits: int = 3) -> str:
     if value is None or (
         isinstance(value, float) and (math.isnan(value) or math.isinf(value))
     ):
         return "n/a"
     return f"{value:.{digits}f}"
+
+
+def is_number_gt(value: Any, threshold: float) -> bool:
+    return (
+        isinstance(value, (int, float))
+        and not math.isnan(value)
+        and not math.isinf(value)
+        and value > threshold
+    )
 
 
 def compute_stage_averages(
@@ -321,30 +337,39 @@ def build_bundle_summary(bundle_dir: Path) -> Dict[str, Any]:
         "capacity": {
             "max_total_num_tokens": server_info.get("max_total_num_tokens"),
             "max_req_input_len": server_info.get("max_req_input_len"),
-            "effective_max_running_requests_per_dp": runtime_state.get(
-                "effective_max_running_requests_per_dp"
-            )
-            or load0.get("max_running_requests"),
-            "weight_gb": memory_usage.get("weight") or memory_usage.get("weight_gb"),
-            "kv_cache_gb": memory_usage.get("kvcache")
-            or memory_usage.get("kv_cache_gb"),
-            "graph_gb": memory_usage.get("graph") or memory_usage.get("graph_gb"),
+            "effective_max_running_requests_per_dp": first_non_none(
+                runtime_state.get("effective_max_running_requests_per_dp"),
+                load0.get("max_running_requests"),
+            ),
+            "weight_gb": first_non_none(
+                memory_usage.get("weight"), memory_usage.get("weight_gb")
+            ),
+            "kv_cache_gb": first_non_none(
+                memory_usage.get("kvcache"), memory_usage.get("kv_cache_gb")
+            ),
+            "graph_gb": first_non_none(
+                memory_usage.get("graph"), memory_usage.get("graph_gb")
+            ),
             "token_capacity": memory_usage.get("token_capacity"),
         },
         "point_in_time_load": {
-            "running_reqs": aggregate.get(
-                "total_running_reqs", load0.get("num_running_reqs")
+            "running_reqs": first_non_none(
+                aggregate.get("total_running_reqs"), load0.get("num_running_reqs")
             ),
-            "waiting_reqs": aggregate.get(
-                "total_waiting_reqs", load0.get("num_waiting_reqs")
+            "waiting_reqs": first_non_none(
+                aggregate.get("total_waiting_reqs"), load0.get("num_waiting_reqs")
             ),
-            "total_reqs": aggregate.get("total_reqs", load0.get("num_total_reqs")),
-            "token_usage": aggregate.get("avg_token_usage", load0.get("token_usage")),
-            "avg_throughput": aggregate.get(
-                "avg_throughput", load0.get("gen_throughput")
+            "total_reqs": first_non_none(
+                aggregate.get("total_reqs"), load0.get("num_total_reqs")
             ),
-            "avg_utilization": aggregate.get(
-                "avg_utilization", load0.get("utilization")
+            "token_usage": first_non_none(
+                aggregate.get("avg_token_usage"), load0.get("token_usage")
+            ),
+            "avg_throughput": first_non_none(
+                aggregate.get("avg_throughput"), load0.get("gen_throughput")
+            ),
+            "avg_utilization": first_non_none(
+                aggregate.get("avg_utilization"), load0.get("utilization")
             ),
             "cache_hit_rate": load0.get("cache_hit_rate"),
             "queues": load0.get("queues"),
@@ -367,6 +392,8 @@ def build_bundle_summary(bundle_dir: Path) -> Dict[str, Any]:
     signals = summary["signals"]
     health = summary["health"]
     point_in_time_load = summary["point_in_time_load"]
+    running_reqs = point_in_time_load.get("running_reqs")
+    waiting_reqs = point_in_time_load.get("waiting_reqs")
 
     if health["health_ok"] and not health["health_generate_ok"]:
         add_signal(
@@ -378,10 +405,10 @@ def build_bundle_summary(bundle_dir: Path) -> Dict[str, Any]:
             signals,
             "/health failed. Treat this as a startup, crash, or global unhealthy incident first.",
         )
-    if point_in_time_load.get("waiting_reqs", 0) > 0:
+    if is_number_gt(waiting_reqs, 0):
         add_signal(
             signals,
-            f"Point-in-time load shows queue buildup: waiting_reqs={point_in_time_load['waiting_reqs']}.",
+            f"Point-in-time load shows queue buildup: waiting_reqs={waiting_reqs}.",
         )
     if (
         point_in_time_load.get("token_usage") is not None
@@ -412,10 +439,7 @@ def build_bundle_summary(bundle_dir: Path) -> Dict[str, Any]:
             signals,
             f"Prefill forward dominates first-pass stage timing: prefill_forward≈{fmt_float(prefill_forward)}s vs request_process≈{fmt_float(request_process)}s.",
         )
-    if (
-        point_in_time_load.get("running_reqs", 0) == 0
-        and point_in_time_load.get("waiting_reqs", 0) == 0
-    ):
+    if running_reqs == 0 and waiting_reqs == 0:
         add_signal(
             signals,
             "Bundle snapshot was captured while the server was effectively idle. Reproduce under live traffic or replayed workload if the incident is intermittent.",
