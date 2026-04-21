@@ -1,129 +1,36 @@
-# Worked Example: Shape-Armed TP All-Gather Hang
+# Worked Example: Replay-First TP Communication Hang
 
-Use this case study when you want an intentional distributed incident that:
+Use this case when:
 
-- hangs only after a specific serving request shape shows up
-- looks like a generic "the server stopped answering" production failure
-- does not start as a clean Python exception
-- should first be captured as a live incident bundle before deeper rank-by-rank debugging
-- naturally hands off to `debug-distributed-hang` after the incident boundary is clear
+- one request hangs instead of returning
+- the symptom looks like a generic serving stall
+- you want the hang to follow the same skill flow as the crash case
 
-This example is the distributed counterpart to the CUDA crash case study.
-The point is not to build a toy NCCL repro in isolation. The point is to make a
-real SGLang serving stack transition from healthy to hung, preserve the
-control-plane evidence, and only then narrow it into a collective mismatch
-investigation.
-
-## Target Path
-
-One validated incident used:
-
-- model: `Qwen/Qwen3-4B`
-- `--tp 2`
-- `--attention-backend triton`
-- `--disable-radix-cache`
-- `--disable-cuda-graph`
-- `--disable-piecewise-cuda-graph`
-
-The important runtime path was:
-
-1. request enters the normal HTTP generate path
-2. rank 0 sees an extend batch with `extend_num_tokens == 769`
-3. that request shape arms a one-shot fault injection
-4. the next TP logits `all_gather` on rank 0 is skipped
-5. rank 1 still enters the collective and the request stops making progress
-
-What matters is not the exact model family. What matters is the structure:
-
-- arm the fault from a real serving batch property
-- skip exactly one collective participant
-- let the incident surface first as a live serving stall
-
-## Why This Incident Is Useful
-
-This pattern teaches the right top-level behavior for a production incident
-skill:
-
-- capture a normal bundle first
-- trigger the request-shaped stall
-- capture an incident bundle while the server is degraded
-- compare health and control-plane behavior
-- then switch to watchdog, py-spy, NCCL logs, and the specialized distributed-hang workflow
-
-It also teaches an important negative lesson: if you jump directly into per-rank
-instrumentation before preserving the live HTTP and load-plane symptoms, you
-lose valuable evidence about how the incident looked to operators.
-
-## Injection Design
-
-Do not inject an unconditional NCCL failure.
-
-Use a two-step design:
-
-1. arm the incident only when rank 0 sees a real serving batch with:
-   - `extend_num_tokens == 769`
-2. when armed, skip one matching TP logits `all_gather` on rank 0
-
-In one validated run, the matching collective input on rank 0 was:
+This example should not stop at "the live server is hung". The standard path is:
 
 ```text
-shape=(1, 75968) dim=-1 dtype=torch.bfloat16
+baseline bundle
+  -> capture the trigger request
+  -> replay the same request on a clean target
+  -> collect replay-time hang artifacts
+  -> hand off to debug-distributed-hang
 ```
 
-The exact tensor shape is less important than the design goal:
+## Injection Shape
 
-- the arm condition comes from request shape
-- the skipped collective comes from the real distributed model path
-- the resulting symptom is a serving hang, not an immediate injected exception
+The validated incident used a temporary serving-side fault injector with this
+shape:
 
-## How The Hang Was Manufactured
+1. rank 0 arms a one-shot flag only when a real extend batch satisfies
+   `extend_num_tokens == 769`
+2. the next TP logits `all_gather` on rank 0 is skipped
+3. the peer TP rank still enters the real collective
 
-The validation did not use a standalone NCCL toy program. It used a temporary,
-local fault injector in the serving stack to make the incident look like a real
-production stall.
+That creates a real collective mismatch:
 
-The mechanism was:
-
-1. add a one-shot boolean on each TP worker process
-   - initial state: `False`
-   - purpose: avoid poisoning startup, health checks, or every request
-2. arm that boolean only on rank 0 when a real extend batch satisfies:
-   - `extend_num_tokens == 769`
-   - this is why the trigger is request-shaped rather than unconditional
-3. in the TP logits `all_gather` path, check the one-shot flag on rank 0
-   - if not armed, run the normal `all_gather`
-   - if armed, clear the flag and return the local tensor directly on rank 0
-   - rank 1 still enters the real collective
-
-That creates the exact mismatch we want:
-
-- rank 0 behaves as if the collective already finished
-- rank 1 still waits for the missing participant
-- no clean Python exception is raised first
-- the in-flight HTTP request simply stops making progress
-
-In pseudocode, the temporary validation hook looked like:
-
-```text
-if tp_rank == 0 and extend_num_tokens == 769:
-    inject_next_tp_logits_all_gather = True
-
-if tp_rank == 0 and inject_next_tp_logits_all_gather and is_tp_logits_gather(tensor):
-    inject_next_tp_logits_all_gather = False
-    return tensor
-else:
-    return dist.all_gather(...)
-```
-
-Two details matter here:
-
-- the arming condition comes from a real serving batch property, not a dummy test flag
-- the skipped operation is the real TP logits collective, not an artificial sleep
-
-That is why the failure presents as a realistic serving hang instead of a toy
-repro.
-
-## Trigger Shape
+- rank 0 returns local data
+- rank 1 waits inside the collective
+- the request stops making progress
 
 One validated trigger prompt was:
 
@@ -131,20 +38,15 @@ One validated trigger prompt was:
 "hello " * 768
 ```
 
-On the validated serving build, that prompt tokenized to:
+which tokenized to:
 
 ```text
 prompt_tokens = 769
 ```
 
-That prompt length armed the one-shot distributed fault only for the long
-request, while short health or smoke requests stayed healthy beforehand.
+## Baseline Bundle
 
-## Production-Oriented Reproduction Flow
-
-### 1. Launch a normal multi-rank server and verify baseline health
-
-Before triggering the incident, collect a baseline bundle:
+Before triggering the incident, collect a healthy bundle:
 
 ```bash
 python3 scripts/incident_artifact_tool.py collect-bundle \
@@ -162,32 +64,37 @@ Health: /health=ok /health_generate=ok
 Point-in-time load: running=0 waiting=0 total=0 token_usage=0.000 throughput=0.000
 ```
 
-That is important. The later hang should be contrasted against a known-good
-control-plane snapshot from the exact same launch.
+## Capture And Replay
 
-### 2. Trigger the long request and keep the server running
+Do not diagnose only from the first live hang. Preserve the trigger request:
 
-Issue the long request through the normal HTTP API. Do not attach a debugger
-first.
-
-The validated request shape was:
-
-```text
-prompt_tokens=769
-max_new_tokens=1
+```bash
+python3 -m sglang.srt.managers.configure_logging \
+  --url http://127.0.0.1:30000 \
+  --dump-requests-folder /tmp/sglang_request_dump_hang \
+  --dump-requests-threshold 1
 ```
 
-In the validated run, the scheduler log recorded:
+After the live incident is captured, restart a clean debug target with the same
+model path and the same injection, then replay the captured request:
+
+```bash
+python3 scripts/playground/replay_request_dump.py \
+  --input-folder /tmp/sglang_request_dump_hang \
+  --parallel 1
+```
+
+On the validated run, the replayed request hit the same serving path:
 
 ```text
 Prefill batch, #new-seq: 1, #new-token: 769, #cached-token: 0
 ```
 
-Then the request stopped making progress instead of returning.
+and then hung again instead of returning.
 
-### 3. Capture a bundle during the hang window
+## Replay-Time Incident Artifacts
 
-While the request is still hung, collect another bundle:
+While the replayed request is hung, collect another bundle:
 
 ```bash
 python3 scripts/incident_artifact_tool.py collect-bundle \
@@ -195,7 +102,7 @@ python3 scripts/incident_artifact_tool.py collect-bundle \
   --outdir /tmp/incident_bundle_hang
 ```
 
-In one validated incident bundle, the control-plane artifacts looked like:
+One validated replay-time bundle looked like:
 
 ```text
 health.txt.error.json:
@@ -211,23 +118,7 @@ loads_core_queues_disagg.json:
   URLError: <urlopen error [Errno 111] Connection refused>
 ```
 
-That transition is exactly why the first bundle matters. The same server moved
-from:
-
-- healthy
-
-to:
-
-- timed out health checks
-- reset or refused load snapshots
-- a hung in-flight request
-
-### 4. Let the watchdog capture the first stack evidence
-
-Do not kill the server immediately. Let SGLang's watchdog emit py-spy dumps.
-
-In one validated run, the soft watchdog dumped rank-local stacks after the hung
-request stayed live long enough. One TP rank showed:
+Then let the watchdog capture the first stack evidence. One TP rank showed:
 
 ```text
 cuEventSynchronize
@@ -238,56 +129,24 @@ process_batch_result
 event_loop_overlap
 ```
 
-That is already enough to classify the problem as a distributed or device-side
-progress stall rather than a simple HTTP routing issue.
+## Next Step
 
-### 5. Hand off to the specialized hang workflow
+At this point, the skill should stop and hand off to:
 
-At this point, switch to `debug-distributed-hang`.
+- `debug-distributed-hang`
 
-That specialized workflow should take over for:
+The point of this example is that the hang is now:
 
-- NCCL collective identification
-- per-rank state logging
-- first-diverge diffing
-- binary search toward the true branch mismatch
-
-This incident-triage skill should stop after:
-
-- preserving the healthy and unhealthy snapshots
-- proving that a real request-shaped serving incident exists
-- identifying the hang as collective-related
+- request-shaped
+- replayable
+- already narrowed to a collective-style stall
 
 ## Expected Triage Result
 
-If this example is behaving as intended, the triage result should say something
-close to:
+If the example is behaving as intended, the result should say:
 
 1. the server was healthy before the trigger request
-2. a specific long prompt shape armed the incident
-3. the request then hung rather than returning a normal response
-4. during the incident, both `/health` and `/health_generate` timed out
-5. load-plane snapshots degraded from timeout to reset or refused connections
-6. watchdog py-spy output showed at least one TP rank stuck in a GPU synchronize path
-7. the next highest-signal step is `debug-distributed-hang`, not torch profiling
-
-## Anti-Patterns
-
-Avoid these mistakes:
-
-- building a toy standalone NCCL repro and calling it equivalent to a serving incident
-- skipping the baseline bundle
-- killing the server before watchdog or py-spy captures stacks
-- jumping to kernel profiling before proving the failure is compute-side
-- assuming `/health` staying green means the request path is healthy
-
-## Relationship To The Other Worked Examples
-
-This case study complements the other two references:
-
-- `ttft-prefill-not-queue-case-study.md`
-  - cheap path: bundle first, rule out queue pressure, escalate only if needed
-- `moe-shared-oob-case-study.md`
-  - heavy crash path: dump -> replay -> coredump -> walk one kernel upstream
-- this file
-  - live hang path: baseline bundle -> trigger stall -> incident bundle -> watchdog -> distributed-hang handoff
+2. the same trigger request was preserved and replayed
+3. replay reproduced the same hang
+4. replay-time bundle and watchdog evidence point at a distributed stall
+5. the next step is `debug-distributed-hang`, not profiling

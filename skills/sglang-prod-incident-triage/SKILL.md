@@ -11,15 +11,14 @@ Use this skill for first-round SGLang serving incident triage.
 
 There is one public workflow:
 
-- collect the cheapest evidence first
-- classify the dominant symptom
-- choose the next artifact or handoff
+- collect a baseline bundle
+- capture a request or crash dump
+- replay on a clean target
+- hand off to the deeper tool only after replay
 
 Do not start with profiling by default.
 
-This skill is for incidents where the first job is deciding what to inspect
-next, not immediately dropping into one specialized workflow. It should compose
-with narrower skills instead of re-implementing them:
+This skill should compose with narrower skills instead of re-implementing them:
 
 - `debug-cuda-crash` when replay plus coredump points to a CUDA crash path
 - `debug-distributed-hang` when the incident is clearly a TP/PP/DP/EP hang
@@ -44,7 +43,7 @@ The references also include three worked examples:
 
 ## Main Flows
 
-### 1. Live server: collect a bundle first
+### 1. Collect a baseline bundle
 
 If a live server is reachable, collect a read-only bundle before anything more
 intrusive:
@@ -85,73 +84,54 @@ Use the summary as the first-pass readout for:
 - point-in-time queue and token usage
 - TTFT / E2E / queue-time heuristics from Prometheus metrics
 
-If the summary says the bundle was captured while the server was idle, do not
-over-read it. Reproduce under traffic or move to request dump plus replay.
-
-### 2. No live server: start from the existing artifact
+If the summary says the bundle was captured while the server was idle, recollect
+it during traffic or move quickly to dump plus replay.
 
 If no live server is reachable, start from the best artifact already available:
 
-- logs
 - crash dump
 - request dump
+- logs
 - CUDA coredump
 - OTel trace
 - torch profile
 
-Do not try to reconstruct a new theory before reading the artifact that already
-exists.
-
-### 3. Classify the dominant symptom first
+### 2. Capture the incident payload
 
 Load [references/decision-tree.md](references/decision-tree.md) and identify the
-incident class before choosing tools:
+dominant class before choosing tools:
 
 - server down or unhealthy
 - latency or throughput regression
 - wrong output or behavior regression
 - intermittent timeout or hang
 
-Do not mix multiple classes together on the first pass. Pick the dominant
-symptom and let it determine the next evidence source.
+Then preserve the request payload that actually triggers the incident:
 
-### 4. Read the control-plane evidence
+- crash path: use `--crash-dump-folder`
+- non-crash path: enable request dump or save the exact trigger request
+
+Do not jump straight from a live symptom to low-level debugging without
+preserving a replayable incident.
+
+### 3. Replay on a clean target
 
 Load [references/endpoints-and-signals.md](references/endpoints-and-signals.md)
-when interpreting the bundle or querying the server manually.
-
-Start with:
-
-```bash
-curl -s http://127.0.0.1:30000/health
-curl -s http://127.0.0.1:30000/health_generate
-curl -s http://127.0.0.1:30000/model_info
-curl -s http://127.0.0.1:30000/server_info
-curl -s "http://127.0.0.1:30000/v1/loads?include=all"
-curl -s http://127.0.0.1:30000/metrics
-```
-
-Read `server_info` for:
-
-- topology and disaggregation settings
-- runtime flags and backends
-- auth and admin settings
-- version and rollout identity
-
-Read `/v1/loads?include=all` for:
-
-- `num_running_reqs`
-- `num_waiting_reqs`
-- `token_usage`
-- `gen_throughput`
-- `cache_hit_rate`
-- `queues`
-- `disaggregation`
-
-### 5. Choose the next escalation only when needed
+when interpreting the baseline bundle or the replay target.
 
 Load [references/replay-trace-profile.md](references/replay-trace-profile.md)
-when the incident needs reproducibility or finer-grained attribution.
+and replay the captured request or dump against a clean target with the same
+model path and important runtime flags.
+
+Canonical order:
+
+1. collect baseline bundle
+2. capture request dump or crash dump
+3. restart a clean debug target if needed
+4. replay the same incident
+5. collect replay-time artifacts
+
+### 4. Hand off only after replay
 
 #### Replay
 
@@ -231,7 +211,7 @@ curl "http://127.0.0.1:30000/set_trace_level?level=2"
 Prefer profiling when:
 
 - the issue is already narrowed to compute-side ownership
-- replay or live serving already reproduces the problem
+- replay already reproduces the problem
 - metrics and loads do not explain the regression
 
 At that point, hand off to `sglang-torch-profiler-analysis`. Do not duplicate
@@ -242,8 +222,9 @@ For a low-noise bundle-first latency example, load
 
 #### Distributed hang
 
-If the incident already looks like a collective stall, capture the first bundle
-and then hand off to `debug-distributed-hang`.
+If the incident looks like a collective stall, preserve the trigger request,
+replay it on a clean target, collect the replay-time hang artifacts, and then
+hand off to `debug-distributed-hang`.
 
 For a concrete handoff pattern, load
 [references/communication-hang-case-study.md](references/communication-hang-case-study.md).
@@ -286,9 +267,9 @@ Load only what the current step needs:
 - [references/moe-shared-oob-case-study.md](references/moe-shared-oob-case-study.md)
   - worked example: upstream top-k corruption, downstream MoE align shared-memory OOB
 - [references/ttft-prefill-not-queue-case-study.md](references/ttft-prefill-not-queue-case-study.md)
-  - worked example: TTFT spike with low queue time and likely prefill-side ownership
+  - worked example: TTFT spike with low queue time, request replay, and likely prefill-side ownership
 - [references/communication-hang-case-study.md](references/communication-hang-case-study.md)
-  - worked example: request-shaped TP hang with healthy baseline and distributed-hang handoff
+  - worked example: request-shaped TP hang with request replay and distributed-hang handoff
 
 ## Scripts
 

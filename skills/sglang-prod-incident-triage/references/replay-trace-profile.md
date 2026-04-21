@@ -233,31 +233,35 @@ Best order:
 
 Best order:
 
-1. metrics and loads
-2. trace if stage ownership is unclear
-3. `sglang-torch-profiler-analysis` only if compute path remains suspicious
+1. baseline metrics and loads
+2. request dump
+3. replay the same slow request
+4. trace if stage ownership is still unclear
+5. `sglang-torch-profiler-analysis` only if replay still points to compute-side ownership
 
 For a concrete example of this lighter-weight escalation path, see
 [ttft-prefill-not-queue-case-study.md](ttft-prefill-not-queue-case-study.md).
-That example shows a TTFT spike where the bundle summary is already enough to
-rule out queue pressure as the first-order explanation.
+That example shows a TTFT spike where the bundle summary rules out queue
+pressure first, then replay preserves the same slow request before deeper
+analysis.
 
 ### Distributed hang
 
 Best order:
 
 1. healthy baseline bundle
-2. incident bundle during the hang
-3. watchdog or py-spy stacks
-4. NCCL collective identification
-5. `debug-distributed-hang`
+2. capture the trigger request
+3. replay the same request on a clean target
+4. incident bundle during the replayed hang
+5. watchdog or py-spy stacks
+6. NCCL collective identification
+7. `debug-distributed-hang`
 
 For a concrete example of this path, see
 [communication-hang-case-study.md](communication-hang-case-study.md).
-That example shows a request-shaped TP hang where the incident bundle itself
-already proves a live serving stall: `/health` and `/health_generate` time out,
-and load snapshots degrade from reset to refused connections before the deeper
-rank-by-rank hang workflow takes over.
+That example shows a request-shaped TP hang where the trigger request is first
+preserved and replayed, then the replay-time bundle and watchdog evidence prove
+the distributed stall before the deeper rank-by-rank workflow takes over.
 
 ### PD transfer stall
 
