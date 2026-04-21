@@ -11,17 +11,34 @@ import os
 import pickle
 import re
 import time
-import urllib.parse
-import urllib.request
 from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, Optional, Sequence
+from urllib import error, parse, request
 
 METRIC_RE = re.compile(
     r"^(?P<name>[^{\s]+)(?:\{(?P<labels>[^}]*)\})?\s+(?P<value>[-+]?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?)$"
 )
 LABEL_RE = re.compile(r'([a-zA-Z_:][a-zA-Z0-9_:]*)="((?:[^"\\]|\\.)*)"')
+TEXT_ENDPOINTS = {
+    "health.txt": "/health",
+    "health_generate.txt": "/health_generate",
+    "metrics.txt": "/metrics",
+}
+JSON_ENDPOINTS = {
+    "model_info.json": "/model_info",
+    "server_info.json": "/server_info",
+    "loads_all.json": "/v1/loads?include=all",
+    "loads_core_queues_disagg.json": "/v1/loads?include=core,queues,disagg,spec",
+    "hicache_storage_backend.json": "/hicache/storage-backend",
+}
+BUNDLE_NOTES = [
+    "This bundle is read-only. It does not start profiling or change trace level.",
+    "HiCache status may fail if admin_api_key is not configured or the wrong bearer token was used.",
+    "loads_all.json is the best point-in-time load snapshot in this bundle.",
+    "metrics.txt is raw Prometheus text intended for follow-up parsing.",
+]
 
 
 def request_text(
@@ -30,15 +47,15 @@ def request_text(
     token: Optional[str],
     timeout: float = 10.0,
 ) -> tuple[bool, int, str]:
-    url = urllib.parse.urljoin(base_url.rstrip("/") + "/", path.lstrip("/"))
-    req = urllib.request.Request(url)
+    url = parse.urljoin(base_url.rstrip("/") + "/", path.lstrip("/"))
+    req = request.Request(url)
     if token:
         req.add_header("Authorization", f"Bearer {token}")
     try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
+        with request.urlopen(req, timeout=timeout) as resp:
             body = resp.read().decode("utf-8", errors="replace")
             return True, resp.status, body
-    except urllib.error.HTTPError as e:
+    except error.HTTPError as e:
         body = e.read().decode("utf-8", errors="replace")
         return False, e.code, body
     except Exception as e:  # noqa: BLE001
@@ -80,11 +97,13 @@ def request_plain(
 
 
 def write_json(path: Path, obj: Dict[str, Any]) -> None:
-    path.write_text(json.dumps(obj, indent=2, ensure_ascii=False) + "\n")
+    path.write_text(
+        json.dumps(obj, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
 
 
 def write_text(path: Path, text: str) -> None:
-    path.write_text(text)
+    path.write_text(text, encoding="utf-8")
 
 
 def collect_bundle(
@@ -106,21 +125,8 @@ def collect_bundle(
     }
     write_json(bundle_dir / "metadata.json", metadata)
 
-    json_endpoints = {
-        "model_info.json": "/model_info",
-        "server_info.json": "/server_info",
-        "loads_all.json": "/v1/loads?include=all",
-        "loads_core_queues_disagg.json": "/v1/loads?include=core,queues,disagg,spec",
-        "hicache_storage_backend.json": "/hicache/storage-backend",
-    }
-    text_endpoints = {
-        "health.txt": "/health",
-        "health_generate.txt": "/health_generate",
-        "metrics.txt": "/metrics",
-    }
-
     summary_lines = []
-    for filename, path in text_endpoints.items():
+    for filename, path in TEXT_ENDPOINTS.items():
         result = request_plain(base_url, path, token, timeout=timeout)
         if result.get("ok"):
             write_text(bundle_dir / filename, str(result.get("text", "")))
@@ -131,7 +137,7 @@ def collect_bundle(
                 f"{filename}: failed status={result.get('status')} error={result.get('error')}"
             )
 
-    for filename, path in json_endpoints.items():
+    for filename, path in JSON_ENDPOINTS.items():
         result = request_json(base_url, path, token, timeout=timeout)
         write_json(bundle_dir / filename, result)
         if result.get("ok"):
@@ -141,14 +147,9 @@ def collect_bundle(
                 f"{filename}: failed status={result.get('status')} error={result.get('error')}"
             )
 
-    notes = [
-        "This bundle is read-only. It does not start profiling or change trace level.",
-        "HiCache status may fail if admin_api_key is not configured or the wrong bearer token was used.",
-        "loads_all.json is the best point-in-time load snapshot in this bundle.",
-        "metrics.txt is raw Prometheus text intended for follow-up parsing.",
-    ]
     write_text(
-        bundle_dir / "SUMMARY.txt", "\n".join(summary_lines + [""] + notes) + "\n"
+        bundle_dir / "SUMMARY.txt",
+        "\n".join(summary_lines + [""] + BUNDLE_NOTES) + "\n",
     )
     return bundle_dir
 
@@ -156,7 +157,7 @@ def collect_bundle(
 def load_json(path: Path) -> Optional[Dict[str, Any]]:
     if not path.exists():
         return None
-    return json.loads(path.read_text())
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def unwrap_result(path: Path) -> Optional[Dict[str, Any]]:
@@ -171,7 +172,7 @@ def unwrap_result(path: Path) -> Optional[Dict[str, Any]]:
 def read_text(path: Path) -> Optional[str]:
     if not path.exists():
         return None
-    return path.read_text()
+    return path.read_text(encoding="utf-8")
 
 
 def endpoint_ok(bundle_dir: Path, stem: str) -> bool:
@@ -219,7 +220,7 @@ def safe_div(
     return numerator / denominator
 
 
-def first_non_none(*values: Any) -> Any:
+def coalesce(*values: Any) -> Any:
     for value in values:
         if value is not None:
             return value
@@ -234,7 +235,7 @@ def fmt_float(value: Optional[float], digits: int = 3) -> str:
     return f"{value:.{digits}f}"
 
 
-def is_number_gt(value: Any, threshold: float) -> bool:
+def is_positive_number(value: Any, threshold: float = 0.0) -> bool:
     return (
         isinstance(value, (int, float))
         and not math.isnan(value)
@@ -337,38 +338,38 @@ def build_bundle_summary(bundle_dir: Path) -> Dict[str, Any]:
         "capacity": {
             "max_total_num_tokens": server_info.get("max_total_num_tokens"),
             "max_req_input_len": server_info.get("max_req_input_len"),
-            "effective_max_running_requests_per_dp": first_non_none(
+            "effective_max_running_requests_per_dp": coalesce(
                 runtime_state.get("effective_max_running_requests_per_dp"),
                 load0.get("max_running_requests"),
             ),
-            "weight_gb": first_non_none(
+            "weight_gb": coalesce(
                 memory_usage.get("weight"), memory_usage.get("weight_gb")
             ),
-            "kv_cache_gb": first_non_none(
+            "kv_cache_gb": coalesce(
                 memory_usage.get("kvcache"), memory_usage.get("kv_cache_gb")
             ),
-            "graph_gb": first_non_none(
+            "graph_gb": coalesce(
                 memory_usage.get("graph"), memory_usage.get("graph_gb")
             ),
             "token_capacity": memory_usage.get("token_capacity"),
         },
         "point_in_time_load": {
-            "running_reqs": first_non_none(
+            "running_reqs": coalesce(
                 aggregate.get("total_running_reqs"), load0.get("num_running_reqs")
             ),
-            "waiting_reqs": first_non_none(
+            "waiting_reqs": coalesce(
                 aggregate.get("total_waiting_reqs"), load0.get("num_waiting_reqs")
             ),
-            "total_reqs": first_non_none(
+            "total_reqs": coalesce(
                 aggregate.get("total_reqs"), load0.get("num_total_reqs")
             ),
-            "token_usage": first_non_none(
+            "token_usage": coalesce(
                 aggregate.get("avg_token_usage"), load0.get("token_usage")
             ),
-            "avg_throughput": first_non_none(
+            "avg_throughput": coalesce(
                 aggregate.get("avg_throughput"), load0.get("gen_throughput")
             ),
-            "avg_utilization": first_non_none(
+            "avg_utilization": coalesce(
                 aggregate.get("avg_utilization"), load0.get("utilization")
             ),
             "cache_hit_rate": load0.get("cache_hit_rate"),
@@ -405,7 +406,7 @@ def build_bundle_summary(bundle_dir: Path) -> Dict[str, Any]:
             signals,
             "/health failed. Treat this as a startup, crash, or global unhealthy incident first.",
         )
-    if is_number_gt(waiting_reqs, 0):
+    if is_positive_number(waiting_reqs):
         add_signal(
             signals,
             f"Point-in-time load shows queue buildup: waiting_reqs={waiting_reqs}.",
@@ -662,7 +663,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(
         description="Collect or inspect incident artifacts for SGLang serving triage."
     )
-    subparsers = parser.add_subparsers(dest="artifact_type", required=True)
+    subparsers = parser.add_subparsers(dest="command", required=True)
 
     collect_parser = subparsers.add_parser(
         "collect-bundle", help="Collect a read-only incident bundle from a live server"
@@ -694,14 +695,14 @@ def main() -> int:
 
     args = parser.parse_args()
 
-    if args.artifact_type == "collect-bundle":
+    if args.command == "collect-bundle":
         bundle_dir = collect_bundle(
             args.base_url, args.token, args.outdir, args.timeout
         )
         print(bundle_dir)
         return 0
 
-    if args.artifact_type == "summarize-bundle":
+    if args.command == "summarize-bundle":
         bundle_dir = Path(args.bundle_dir).resolve()
         if not bundle_dir.is_dir():
             raise SystemExit(
@@ -713,8 +714,11 @@ def main() -> int:
         json_path = (
             Path(args.json_out) if args.json_out else bundle_dir / "SUMMARY_REPORT.json"
         )
-        text_path.write_text(out_text)
-        json_path.write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n")
+        text_path.write_text(out_text, encoding="utf-8")
+        json_path.write_text(
+            json.dumps(summary, indent=2, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
         if args.stdout_json:
             print(json.dumps(summary, indent=2, ensure_ascii=False))
         else:
