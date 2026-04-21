@@ -1,19 +1,21 @@
 # Kimi K2/K2.5 Optimization Playbook
 
-
-
 ## Fast Mapping
 
-| Symptom | Check first | Historical precedent | Likely fix direction |
-| --- | --- | --- | --- |
-| Small-batch K2 decode is router-bound | `topk.py`, `kimi_k2_moe_fused_gate.cu` | [#13150](https://github.com/sgl-project/sglang/pull/13150), [#13287](https://github.com/sgl-project/sglang/pull/13287), [#13332](https://github.com/sgl-project/sglang/pull/13332), [#13374](https://github.com/sgl-project/sglang/pull/13374), [#15306](https://github.com/sgl-project/sglang/pull/15306), [#15347](https://github.com/sgl-project/sglang/pull/15347), [#17325](https://github.com/sgl-project/sglang/pull/17325) | Prefer the best maintained 384-expert fast path, which may be `fused_topk_deepseek` or `kimi_k2_moe_fused_gate`, and keep it PCG-safe |
-| K2 fused MoE is slow on a specific NVIDIA GPU | `fused_moe_triton/configs/` | [#8047](https://github.com/sgl-project/sglang/pull/8047), [#8021](https://github.com/sgl-project/sglang/pull/8021), [#8176](https://github.com/sgl-project/sglang/pull/8176), [#8178](https://github.com/sgl-project/sglang/pull/8178), [#8183](https://github.com/sgl-project/sglang/pull/8183), [#9010](https://github.com/sgl-project/sglang/pull/9010) | Reuse or retune the exact per-device config file |
-| Quantized K2 thinking or K2.5 MoE path wastes memory, breaks under PCG, or changes kernel backend | `fused_marlin_moe.py`, `jit_kernel/moe_wna16_marlin.py` | [#13596](https://github.com/sgl-project/sglang/pull/13596), [#13725](https://github.com/sgl-project/sglang/pull/13725), [#15100](https://github.com/sgl-project/sglang/pull/15100), [#19181](https://github.com/sgl-project/sglang/pull/19181) | Avoid unconditional zero fills, wire real EP metadata, preserve PCG behavior, and optimize the active JIT-backed Marlin path |
-| K2.5 fails to load quantized checkpoints cleanly | `scheduler.py`, `modelopt_quant.py`, `kimi_k25.py` | [#17789](https://github.com/sgl-project/sglang/pull/17789), [#18064](https://github.com/sgl-project/sglang/pull/18064), [#18370](https://github.com/sgl-project/sglang/pull/18370), [#18440](https://github.com/sgl-project/sglang/pull/18440) | Look through `text_config`, preserve weight mapping, keep quant config on the wrapper |
-| K2.5 multimodal DP path scales poorly or behaves incorrectly | `kimi_k25.py`, `vision.py` | [#17991](https://github.com/sgl-project/sglang/pull/17991), [#18689](https://github.com/sgl-project/sglang/pull/18689) | Enable the DP encoder path and remove DP-attention double-reduce or launch mismatches |
-| K2.5 PP or PD features do not work through the wrapper | `kimi_k25.py`, `deepseek_v2.py` | [#18434](https://github.com/sgl-project/sglang/pull/18434), [#19959](https://github.com/sgl-project/sglang/pull/19959), [#20747](https://github.com/sgl-project/sglang/pull/20747), [#21004](https://github.com/sgl-project/sglang/pull/21004) | Expose wrapper properties required by PP/PD/EPLB runtime code |
-| K2.5 speculative decoding breaks with multimodal or DP attention | `kimi_k25.py`, `llama_eagle3.py` | [#19689](https://github.com/sgl-project/sglang/pull/19689), [#21391](https://github.com/sgl-project/sglang/pull/21391) | Expose Eagle3 hooks and respect `mm_input_embeds` during extend |
-| AMD K2.5 int4 tuning is missing or obviously wrong | `benchmark/kernels/fused_moe_triton/` | [#19228](https://github.com/sgl-project/sglang/pull/19228) | Use wrapper-aware tuning and the `int4_w4a16` config files |
+| Symptom                                                                                           | Check first                                                       | Historical precedent                                                                                                                                                                                                                                                                                                                                                                                                               | Likely fix direction                                                                                                                  |
+| ------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Small-batch K2 decode is router-bound                                                             | `topk.py`, `kimi_k2_moe_fused_gate.cu`                            | [#13150](https://github.com/sgl-project/sglang/pull/13150), [#13287](https://github.com/sgl-project/sglang/pull/13287), [#13332](https://github.com/sgl-project/sglang/pull/13332), [#13374](https://github.com/sgl-project/sglang/pull/13374), [#15306](https://github.com/sgl-project/sglang/pull/15306), [#15347](https://github.com/sgl-project/sglang/pull/15347), [#17325](https://github.com/sgl-project/sglang/pull/17325) | Prefer the best maintained 384-expert fast path, which may be `fused_topk_deepseek` or `kimi_k2_moe_fused_gate`, and keep it PCG-safe |
+| K2 fused MoE is slow on a specific NVIDIA GPU                                                     | `fused_moe_triton/configs/`                                       | [#8047](https://github.com/sgl-project/sglang/pull/8047), [#8021](https://github.com/sgl-project/sglang/pull/8021), [#8176](https://github.com/sgl-project/sglang/pull/8176), [#8178](https://github.com/sgl-project/sglang/pull/8178), [#8183](https://github.com/sgl-project/sglang/pull/8183), [#9010](https://github.com/sgl-project/sglang/pull/9010)                                                                         | Reuse or retune the exact per-device config file                                                                                      |
+| Quantized K2 thinking or K2.5 MoE path wastes memory, breaks under PCG, or changes kernel backend | `fused_marlin_moe.py`, `jit_kernel/moe_wna16_marlin.py`           | [#13596](https://github.com/sgl-project/sglang/pull/13596), [#13725](https://github.com/sgl-project/sglang/pull/13725), [#15100](https://github.com/sgl-project/sglang/pull/15100), [#19181](https://github.com/sgl-project/sglang/pull/19181)                                                                                                                                                                                     | Avoid unconditional zero fills, wire real EP metadata, preserve PCG behavior, and optimize the active JIT-backed Marlin path          |
+| K2.5 fails to load quantized checkpoints cleanly                                                  | `scheduler.py`, `modelopt_quant.py`, `kimi_k25.py`                | [#17789](https://github.com/sgl-project/sglang/pull/17789), [#18064](https://github.com/sgl-project/sglang/pull/18064), [#18370](https://github.com/sgl-project/sglang/pull/18370), [#18440](https://github.com/sgl-project/sglang/pull/18440)                                                                                                                                                                                     | Look through `text_config`, preserve weight mapping, keep quant config on the wrapper                                                 |
+| K2.5 multimodal DP path scales poorly or behaves incorrectly                                      | `kimi_k25.py`, `vision.py`                                        | [#17991](https://github.com/sgl-project/sglang/pull/17991), [#18689](https://github.com/sgl-project/sglang/pull/18689)                                                                                                                                                                                                                                                                                                             | Enable the DP encoder path and remove DP-attention double-reduce or launch mismatches                                                 |
+| K2.5 PP or PD features do not work through the wrapper                                            | `kimi_k25.py`, `deepseek_v2.py`                                   | [#18434](https://github.com/sgl-project/sglang/pull/18434), [#19959](https://github.com/sgl-project/sglang/pull/19959), [#20747](https://github.com/sgl-project/sglang/pull/20747), [#21004](https://github.com/sgl-project/sglang/pull/21004)                                                                                                                                                                                     | Expose wrapper properties required by PP/PD/EPLB runtime code                                                                         |
+| K2.5 speculative decoding breaks with multimodal or DP attention                                  | `kimi_k25.py`, `llama_eagle3.py`                                  | [#19689](https://github.com/sgl-project/sglang/pull/19689), [#21391](https://github.com/sgl-project/sglang/pull/21391)                                                                                                                                                                                                                                                                                                             | Expose Eagle3 hooks and respect `mm_input_embeds` during extend                                                                       |
+| K2/K2.5 tool calls, thinking output, or OpenAI streaming ids regress                              | `kimik2_detector.py`, `reasoning_parser.py`, OpenAI serving tests | Current main coverage in `test/registered/function_call/test_kimik2_detector.py`, `test/registered/unit/parser/test_reasoning_parser.py`, `test/registered/unit/entrypoints/openai/test_serving_chat.py`                                                                                                                                                                                                                           | Preserve the `kimi_k2` parser pair and structural-tag behavior before changing serving glue                                           |
+| K2.5 image inputs produce wrong token counts or embedding offsets                                 | `kimi_common.py`, `kimi_k25.py`, `base_processor.py`              | Current main `KimiGridMMDataMixin` and `grid_thws` mapping                                                                                                                                                                                                                                                                                                                                                                         | Keep grid-derived token expansion and multimodal item offsets intact                                                                  |
+| K2.5 LoRA logprobs stop matching trainer reference                                                | LoRA launch args, MoE LoRA sharing, attention backend selection   | Current main `test/registered/lora/test_lora_kimi_k25_logprob_diff.py`                                                                                                                                                                                                                                                                                                                                                             | Validate the adapter path, not only base-model generation                                                                             |
+| K2.5 aiter MLA fails on MI35x native TP8                                                          | AMD registered Kimi-K2.5 aiter MLA test                           | Current main MI35x test documents TP4 for native K2.5 aiter MLA                                                                                                                                                                                                                                                                                                                                                                    | Use TP4 for native aiter MLA, or use the separate TP8 MXFP4 lane when that is the target                                              |
+| AMD K2.5 int4 tuning is missing or obviously wrong                                                | `benchmark/kernels/fused_moe_triton/`                             | [#19228](https://github.com/sgl-project/sglang/pull/19228)                                                                                                                                                                                                                                                                                                                                                                         | Use wrapper-aware tuning and the `int4_w4a16` config files                                                                            |
 
 ## Investigation Commands
 
@@ -24,6 +26,7 @@ git -C /path/to/sglang log --first-parent --oneline main --grep='Kimi'
 git -C /path/to/sglang log --first-parent --oneline main -- python/sglang/srt/models/kimi_k25.py python/sglang/srt/layers/moe/topk.py
 rg -n "kimi_k2_moe_fused_gate|fused_topk_deepseek|moe_wna16_marlin|routed_experts_weights_of_layer|mm_enable_dp_encoder|text_config" python/sglang/srt python/sglang/jit_kernel
 rg -n "E=384|E=385|int4_w4a16" python/sglang/srt/layers/moe/fused_moe_triton/configs
+rg -n "kimi_k2|KimiK2|grid_thws|KimiGridMMDataMixin|Kimi-K2.5" docs docs_new python/sglang/srt test/registered
 ```
 
 If the issue looks multimodal, also inspect:
@@ -45,12 +48,15 @@ Record all of these before editing:
 - TP / DP / EP / PP sizes
 - speculative decoding enabled or not
 - exact GPU family and backend
-
+- parser pair used at launch
+- whether image/video, LoRA, NVFP4/MXFP4, or AMD aiter MLA is part of the reproduction
 
 - K2 + 384 experts + CUDA + small batch
 - K2 thinking + quantized Marlin MoE + EP
 - K2.5 multimodal + PP
 - K2.5 multimodal + DP attention + Eagle3
+- K2.5 + parser/tool-call regression
+- K2.5 + LoRA or quantized backend regression
 
 ### 2. Start from the narrowest Kimi-specific hotspot
 
@@ -87,7 +93,6 @@ Inference from the history:
 
 - `E=384` appears to target pure routed-expert cases.
 - `E=385` likely covers a configuration with one extra expert-like slot, possibly due to shared-expert fusion.
-
 
 ## K2-Specific Guidance
 
@@ -158,6 +163,32 @@ When debugging speculative decoding:
 - on extend mode, prefer `forward_batch.mm_input_embeds`
 - only append fresh token embeddings for the truly new tail token
 
+### Current launch, parser, and multimodal processor contract
+
+Current main documents Kimi-K2.5 with both parsers:
+
+```bash
+python3 -m sglang.launch_server \
+  --model-path moonshotai/Kimi-K2.5 \
+  --tp 8 \
+  --trust-remote-code \
+  --tool-call-parser kimi_k2 \
+  --reasoning-parser kimi_k2
+```
+
+When changing serving or processor code:
+
+- keep `docs_new/docs/basic_usage/kimi_k2_5.mdx` aligned with registered launches
+- keep `kimi_k2` in both `FunctionCallParser` and `ReasoningParser`
+- keep Kimi-K2.5 image expansion based on `grid_thws`, not only placeholder count
+- preserve `KimiGridMMDataMixin` behavior shared by KimiVL and Kimi-K2.5 processors
+
+### Backend-specific K2.5 caveats
+
+- Native Kimi-K2.5 with AMD aiter MLA on MI35x uses TP4 because `64 / 4 = 16` heads per GPU satisfies the aiter ASM MLA constraint; TP8 gives 8 heads per GPU and is not the registered native shape.
+- Kimi-K2.5-MXFP4 on MI35x has its own TP8 aiter MLA lane with default and FP8 KV-cache variants.
+- GB300 and NVFP4 tests are separate validation surfaces for Blackwell-specific quant or cache behavior.
+- LoRA changes need the dedicated Kimi-K2.5 logprob-diff test, because base-model GSM8K can pass while adapter behavior regresses.
 
 ## Validation Order
 
@@ -187,10 +218,30 @@ For the registered CUDA path:
 pytest -q test/registered/8-gpu-models/test_kimi_k25.py
 ```
 
+For parser and OpenAI-serving behavior:
+
+```bash
+pytest -q test/registered/function_call/test_kimik2_detector.py
+pytest -q test/registered/unit/parser/test_reasoning_parser.py -k KimiK2
+pytest -q test/registered/unit/function_call/test_function_call_parser.py -k KimiK2
+pytest -q test/registered/unit/entrypoints/openai/test_serving_chat.py -k kimi_k2
+```
+
 If the issue is specifically DP attention plus spec:
 
-- include the `TP8+DP8+MTP` style launch shape from the registered test
+- current main's registered Kimi-K2.5 file covers TP8 and TP8+DP8; if the issue is specifically MTP or Eagle3, recreate that combined `TP8+DP8+MTP` shape instead of relying only on the current registered file
 - do not validate only the plain TP path
+
+If the issue is backend-specific or adapter-specific, choose the matching lane:
+
+```bash
+pytest -q test/registered/lora/test_lora_kimi_k25_logprob_diff.py
+pytest -q test/registered/amd/accuracy/mi35x/test_kimi_k25_aiter_mla_eval_mi35x.py
+pytest -q test/registered/amd/accuracy/mi35x/test_kimi_k25_mxfp4_eval_mi35x.py
+pytest -q test/registered/gb300/test_kimi_k25.py
+pytest -q test/registered/gb300/test_kimi_k25_nvfp4.py
+pytest -q test/registered/stress/test_stress_kimi_k2.py
+```
 
 ### Tuning updates
 
