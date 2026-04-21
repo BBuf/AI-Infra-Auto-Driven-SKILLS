@@ -1,4 +1,0 @@
-interface:
-  display_name: "SGLang MiniMax M2/M2.5/M2.7 Optimization"
-  short_description: "Current-main MiniMax ladder for M2/M2.5/M2.7 runtime, parsers, and AMD validation"
-  default_prompt: "Use $sglang-minimax-m2-m25-optimization to optimize or debug MiniMax-M2, MiniMax-M2.5, or the current MiniMax-M2.7 validation lane in SGLang, and map the current code to the right mainline, upstream-PR, parser, or backend-specific stage."

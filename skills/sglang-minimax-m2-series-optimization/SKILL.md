@@ -1,21 +1,21 @@
 ---
-name: sglang-minimax-m2-m25-optimization
-description: "PR-backed and current-main optimization manual for `MiniMaxAI/MiniMax-M2*`, `MiniMaxAI/MiniMax-M2.5*`, and the current `MiniMaxAI/MiniMax-M2.7` validation lane in SGLang. Use when Codex needs to recover, extend, or audit MiniMax-specific optimizations, parser contracts, distributed runtime behavior, quantized loading, or backend-specific validation."
+name: sglang-minimax-m2-series-optimization
+description: "PR-backed and current-main optimization manual for the `MiniMaxAI/MiniMax-M2` series, including M2, M2.1, M2.5, M2.7, and M2.7-highspeed. Use when Codex needs to recover, extend, or audit MiniMax-specific optimizations, TP QK norm/all-reduce behavior, parser contracts, distributed runtime behavior, quantized loading, or backend-specific validation."
 ---
 
-# SGLang MiniMax M2/M2.5/M2.7 Optimization
+# SGLang MiniMax M2 Series Optimization
 
 ## Overview
 
 The skill covers the full MiniMax optimization ladder: mainline history, the remaining still-open upstream PR track, and current-main validation lanes. Use it to recover, extend, or audit MiniMax-specific optimizations, or to reuse the patterns on a structurally similar MoE model.
 
-As of `2026-04-21`, refreshed against SGLang `origin/main` commit `2cf3ac515`, the MiniMax story is split across three sources of truth:
+As of `2026-04-21`, refreshed against SGLang `origin/main` commit `c122d343a`, the MiniMax story is split across three sources of truth:
 
 - mainline history already present in `main`
 - still-open upstream PRs that are important for MiniMax-M2.5, but not fully landed in `main` yet
 - current registered docs/tests/workflows, especially the MiniMax-M2.7 AMD accuracy and performance lanes
 
-This skill tracks all three, but it labels them clearly. Do not assume an optimization from a PR page is already in your local tree, and do not assume MiniMax-M2.7 is covered by MiniMax-M2.5 validation just because the same model file is used.
+This skill tracks all three, but it labels them clearly. Do not assume an optimization from a PR page is already in your local tree, and do not assume MiniMax-M2.7 or M2.7-highspeed is covered by MiniMax-M2.5 validation just because the same model file is used.
 
 The historical evidence for every stage lives in:
 
@@ -49,6 +49,8 @@ Do not treat MiniMax as a generic DeepSeek-like MoE.
 - MiniMax-M2 is a QK-normalized attention plus sparse-MoE story.
 - MiniMax-M2.5 adds a much heavier distributed and quantized runtime story.
 - MiniMax-M2.7 currently follows the MiniMax-M2-family model path but has its own AMD accuracy/performance lanes; treat it as a separate validation target.
+- MiniMax-M2.7-highspeed is currently visible through upstream docs work, not a separate current-main runtime path.
+- TP QK norm/all-reduce is already a two-generation mainline optimization: [#16483](https://github.com/sgl-project/sglang/pull/16483) keeps the older RMSNormTP all-reduce aligned, and [#20673](https://github.com/sgl-project/sglang/pull/20673) adds the fused JIT TP QK norm path behind `SGLANG_USE_FUSED_PARALLEL_QKNORM`.
 - The most important distinctions are often not "model size" but:
   - whether attention TP equals model TP
   - whether KV heads are partitioned or replicated
@@ -137,12 +139,17 @@ For MiniMax, QK normalization is a real decode hotspot. Once correctness is soli
 - compute Q and K norm together
 - keep TP-aware reduction in the same specialized path
 - preserve the custom all-reduce fast path by keeping reduction buffers aligned
+- prefer the fused JIT TP QK norm path on supported CUDA launches instead of stopping at the older in-model RMSNormTP path
+- check `SGLANG_USE_FUSED_PARALLEL_QKNORM`, `fused_parallel_qknorm(...)`, and `CustomAllReduceV2` before claiming a missing all-reduce optimization
 
 - [#14416](https://github.com/sgl-project/sglang/pull/14416)
 - [#16483](https://github.com/sgl-project/sglang/pull/16483)
+- [#20673](https://github.com/sgl-project/sglang/pull/20673)
 
 - `MiniMaxM2RMSNormTP` is the active per-layer QK norm implementation
 - the reduction path consistently selects the fast aligned all-reduce path
+- `MiniMaxM2QKRMSNorm` can use the fused TP QK norm custom op when the JIT path is enabled and supported
+- focused validation exists in `python/sglang/jit_kernel/tests/test_tp_qknorm.py` and `python/sglang/jit_kernel/benchmark/bench_tp_qknorm.py`
 
 ### Stage M2-5: Harden for piecewise CUDA graph and pipeline parallelism
 
@@ -185,7 +192,7 @@ M2.5 stresses loading and quantized checkpoint conventions much harder than the 
 ### Stage M25-1: Fill the remaining quantized-loader gaps not yet in `main`
 
 Status:
-Tracked upstream PR work; not fully present in `origin/main` commit `2cf3ac515` as of `2026-04-21`.
+Tracked upstream PR work; not fully present in `origin/main` commit `c122d343a` as of `2026-04-21`.
 
 Some M2.5 quantized checkpoints use fused expert naming that the current mainline loader still does not fully cover.
 
@@ -200,7 +207,7 @@ Some M2.5 quantized checkpoints use fused expert naming that the current mainlin
 ### Stage M25-2: Make the scale-out runtime contract explicit
 
 Status:
-Partly on `main`, partly still tracked from upstream PR work as of `origin/main` commit `2cf3ac515` on `2026-04-21`.
+Partly on `main`, partly still tracked from upstream PR work as of `origin/main` commit `c122d343a` on `2026-04-21`.
 
 For M2.5, the next bottleneck is often not a single kernel. It is the distributed contract across PP, EP, DP, and DeepEP.
 
@@ -219,7 +226,7 @@ For M2.5, the next bottleneck is often not a single kernel. It is the distribute
 ### Stage M25-3: Add the DP-attention and DEP communication optimizations
 
 Status:
-Mixed: [#20067](https://github.com/sgl-project/sglang/pull/20067) is part of `main`; [#20489](https://github.com/sgl-project/sglang/pull/20489) and [#20975](https://github.com/sgl-project/sglang/pull/20975) remain tracked as upstream PR work not fully present in `origin/main` commit `2cf3ac515` as of `2026-04-21`.
+Mixed: [#20067](https://github.com/sgl-project/sglang/pull/20067) is part of `main`; [#20489](https://github.com/sgl-project/sglang/pull/20489) and [#20975](https://github.com/sgl-project/sglang/pull/20975) remain tracked as upstream PR work not fully present in `origin/main` commit `c122d343a` as of `2026-04-21`.
 
 This is the biggest M2.5 scale-out gap. Performance and correctness both depend on using the attention-TP group rather than blindly reusing the model-TP group.
 
@@ -240,7 +247,7 @@ This is the biggest M2.5 scale-out gap. Performance and correctness both depend 
 ### Stage M25-4: Replace the older TP QK norm path with the fused JIT version
 
 Status:
-Mainline as [#20673](https://github.com/sgl-project/sglang/pull/20673) by `origin/main` commit `2cf3ac515` on `2026-04-21`.
+Mainline as [#20673](https://github.com/sgl-project/sglang/pull/20673) by `origin/main` commit `c122d343a` on `2026-04-21`.
 
 The older QK norm path was already specialized; the newer mainline path pushes it further by moving to a fused JIT kernel that reuses custom all-reduce v2 more efficiently.
 
@@ -256,7 +263,7 @@ The older QK norm path was already specialized; the newer mainline path pushes i
 ### Stage M25-5: Fix TP16 and replicated-KV-head correctness
 
 Status:
-Mainline as [#20967](https://github.com/sgl-project/sglang/pull/20967) by `origin/main` commit `2cf3ac515` on `2026-04-21`.
+Mainline as [#20967](https://github.com/sgl-project/sglang/pull/20967) by `origin/main` commit `c122d343a` on `2026-04-21`.
 
 When `num_key_value_heads < tp_size`, multiple TP ranks can share the same KV head. That means the K norm weights and reductions must follow the replica layout, not a naive full-TP assumption.
 
@@ -271,7 +278,7 @@ When `num_key_value_heads < tp_size`, multiple TP ranks can share the same KV he
 ### Stage M25-6: Optional NVFP4 fallback for non-Blackwell GPUs
 
 Status:
-Mainline as [#19652](https://github.com/sgl-project/sglang/pull/19652) by `origin/main` commit `2cf3ac515` on `2026-04-21`; not MiniMax-specific, but directly relevant to some MiniMax-M2.5 deployments.
+Mainline as [#19652](https://github.com/sgl-project/sglang/pull/19652) by `origin/main` commit `c122d343a` on `2026-04-21`; not MiniMax-specific, but directly relevant to some MiniMax-M2.5 deployments.
 
 If the target checkpoint is an NVFP4 MiniMax variant on A100, H100, A40, or another non-Blackwell GPU, the real blocker may be the generic FP4 Marlin fallback rather than MiniMax model code.
 
@@ -285,7 +292,7 @@ If the target checkpoint is an NVFP4 MiniMax variant on A100, H100, A40, or anot
 
 ## M2.7 Current-Main Validation Path
 
-Use this path when the target is `MiniMaxAI/MiniMax-M2.7`, or when an AMD MiniMax change might affect the currently registered M2.7 lanes. M2.7 is not documented in the same way as M2/M2.5 yet, but current main has explicit AMD accuracy and performance coverage.
+Use this path when the target is `MiniMaxAI/MiniMax-M2.7`, `MiniMaxAI/MiniMax-M2.7-highspeed`, or when an AMD MiniMax change might affect the currently registered M2.7 lanes. Current main has explicit AMD accuracy and performance coverage for M2.7, while first-class M2.7 and M2.7-highspeed docs are tracked by upstream PR [#20873](https://github.com/sgl-project/sglang/pull/20873).
 
 ### Stage M27-0: Treat M2.7 as a separate later-family validation target
 
@@ -307,6 +314,18 @@ M2.7 currently reuses the MiniMax-M2-family runtime code, but the active registe
 - M2.7 accuracy and performance suites pass on the target AMD lane
 - M2.5 and M2.7 failures are triaged independently
 - docs do not become the only source of truth for M2.7 until a first-class M2.7 usage doc exists
+
+## Open PR Radar
+
+Check these active upstream tracks before designing a new MiniMax skill or declaring a gap:
+
+- [#22934](https://github.com/sgl-project/sglang/pull/22934): M2.5 EPLB bugfix for missing `routed_experts_weights_of_layer` on `MiniMaxM2ForCausalLM`.
+- [#22744](https://github.com/sgl-project/sglang/pull/22744): NVIDIA `--enable-tf32-matmul` support aimed at reducing FP32 gate GEMM cost for MiniMax-M2.5 decode.
+- [#22300](https://github.com/sgl-project/sglang/pull/22300): FP8 GEMM/deepgemm scale-format fix for fp16 MiniMax-M2.5 models.
+- [#23301](https://github.com/sgl-project/sglang/pull/23301): token-by-token streaming of MiniMax-M2 string tool-call parameters.
+- [#20873](https://github.com/sgl-project/sglang/pull/20873): docs-only M2.7 and M2.7-highspeed support.
+- [#22432](https://github.com/sgl-project/sglang/pull/22432) and [#23190](https://github.com/sgl-project/sglang/pull/23190): NPU split-QKV, TP RMSNorm, RoPE, Eagle3, and DP-attention fixes for MiniMax2.
+- [#17826](https://github.com/sgl-project/sglang/pull/17826), [#19468](https://github.com/sgl-project/sglang/pull/19468), [#20031](https://github.com/sgl-project/sglang/pull/20031), [#20489](https://github.com/sgl-project/sglang/pull/20489), and [#20975](https://github.com/sgl-project/sglang/pull/20975): remaining distributed, DeepEP, quant-loader, and DP-attention cleanup tracks carried from the earlier M2.5 radar.
 
 ## Investigation Order
 
@@ -331,3 +350,4 @@ For the supporting evidence and commands, use:
 - Do not copy still-open upstream PR behavior into production without noting that it is not on `main` yet.
 - Do not assume MiniMax-M2.7 is validated by passing only MiniMax-M2.5 tests; use the M2.7 AMD lanes when the change can affect that checkpoint.
 - Do not omit `--tool-call-parser minimax-m2` or `--reasoning-parser minimax-append-think` when validating tool or reasoning behavior from the serving docs.
+- Do not miss `SGLANG_USE_FUSED_PARALLEL_QKNORM` when benchmarking or diagnosing the current TP QK norm path.
