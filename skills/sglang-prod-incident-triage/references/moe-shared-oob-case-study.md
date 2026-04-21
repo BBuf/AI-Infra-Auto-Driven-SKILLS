@@ -25,10 +25,10 @@ Use a Qwen3 MoE model that routes through `fused_topk` instead of grouped top-k:
 
 The important call chain is:
 
-1. [python/sglang/srt/models/qwen3_moe.py](../../../../sglang/python/sglang/srt/models/qwen3_moe.py)
-2. [python/sglang/srt/layers/moe/topk.py](../../../../sglang/python/sglang/srt/layers/moe/topk.py)
-3. [sgl-kernel/csrc/moe/moe_topk_softmax_kernels.cu](../../../../sglang/sgl-kernel/csrc/moe/moe_topk_softmax_kernels.cu)
-4. [sgl-kernel/csrc/moe/moe_align_kernel.cu](../../../../sglang/sgl-kernel/csrc/moe/moe_align_kernel.cu)
+1. `python/sglang/srt/models/qwen3_moe.py`
+2. `python/sglang/srt/layers/moe/topk.py`
+3. `sgl-kernel/csrc/moe/moe_topk_softmax_kernels.cu`
+4. `sgl-kernel/csrc/moe/moe_align_kernel.cu`
 
 For this model shape, `topk_softmax` dispatches to `topkGatingSoftmax`, not the `moeTopKFast` fallback.
 
@@ -57,8 +57,7 @@ That is the exact behavior you want for an incident-triage skill:
 
 Patch the producer, not the consumer.
 
-Use this site in
-[sgl-kernel/csrc/moe/moe_topk_softmax_kernels.cu](../../../../sglang/sgl-kernel/csrc/moe/moe_topk_softmax_kernels.cu)
+Use this site in `sgl-kernel/csrc/moe/moe_topk_softmax_kernels.cu`
 inside `topkGatingSoftmax`, immediately after the normal `indices[idx]` write:
 
 ```cpp
