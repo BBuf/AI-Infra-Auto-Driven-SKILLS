@@ -1,15 +1,67 @@
 # Kimi K2/K2.5 Optimization History
 
-This reference was built from `git log --first-parent main`, local `git show`, and the merged PR pages in `sgl-project/sglang`. It includes merged commits that directly changed Kimi K2 or Kimi K2.5 performance, kernel selection, quantized execution, or large-scale runtime plumbing.
+This reference was built from `git log --first-parent main`, local `git show`, merged PR pages, and the current open PR radar in `sgl-project/sglang`. It includes merged commits that directly changed Kimi K2 or Kimi K2.5 performance, kernel selection, quantized execution, or large-scale runtime plumbing.
 
 When a PR included benchmark numbers, the tables below copy representative rows from the PR body instead of re-running the benchmark locally. For kernel PRs, the focus is on which hot path changed, why it changed, and which code pattern was introduced.
 
-Excluded on purpose:
+Excluded on purpose for the historical PR ladder:
 
 - parser-only and tool-call formatting fixes
 - CI-only and nightly-only changes
 - docs-only changes
 - platform bring-up commits that did not materially change the optimization playbook
+
+The current-main snapshot below is an exception to that exclusion rule. It records active docs, parser tests, CI lanes, and backend-specific tests because those now define the validation surface for Kimi changes even when they are not themselves optimization PRs.
+
+## Current Main Coverage Snapshot
+
+Snapshot:
+SGLang `origin/main` commit `c122d343a`, checked on `2026-04-21`.
+
+Current Kimi-K2.5 serving contract:
+
+- `docs_new/docs/basic_usage/kimi_k2_5.mdx` documents `moonshotai/Kimi-K2.5` as a 1T-parameter multimodal MoE with 32B active parameters, 256K context, MLA attention, MoonViT vision, thinking and instant modes, and image input support through the OpenAI-compatible vision API.
+- The launch example uses both `--tool-call-parser kimi_k2` and `--reasoning-parser kimi_k2`; thinking is default, with instant mode controlled through `extra_body.chat_template_kwargs.thinking=false`.
+- `test/registered/8-gpu-models/test_kimi_k25.py` runs Kimi-K2.5 with TP8 and TP8+DP8 variants, both with the `kimi_k2` tool and reasoning parsers.
+
+Current parser and OpenAI-serving coverage:
+
+- `python/sglang/srt/function_call/function_call_parser.py` maps `kimi_k2` to `KimiK2Detector`.
+- `python/sglang/srt/parser/reasoning_parser.py` maps `kimi_k2` to the Kimi-K2 reasoning detector.
+- `test/registered/function_call/test_kimik2_detector.py` covers non-streaming, streaming, structural tag, special-token leakage, and end-to-end reasoning plus function-call interactions.
+- `test/registered/unit/function_call/test_function_call_parser.py`, `test/registered/unit/parser/test_reasoning_parser.py`, and `test/registered/unit/entrypoints/openai/test_serving_chat.py` add unit-level coverage for parser selection and `kimi_k2` OpenAI tool-call id formatting.
+
+Current Kimi-K2.5 multimodal processor coverage:
+
+- `python/sglang/srt/multimodal/processors/kimi_common.py` contains `KimiGridMMDataMixin`, shared by KimiVL and Kimi-K2.5 processors.
+- `python/sglang/srt/multimodal/processors/kimi_k25.py` includes GPU image preprocessing utilities and returns `image_grid_thw` / `grid_thws` metadata used by the model.
+- `python/sglang/srt/multimodal/processors/base_processor.py` maps `grid_thws` to image modality for Kimi-K2.5.
+
+Current backend and adapter validation surface:
+
+- `test/registered/lora/test_lora_kimi_k25_logprob_diff.py` validates Kimi-K2.5 LoRA logprobs against reference training data with TP8, Triton LoRA, `experts_shared_outer_loras=True`, FA4 prefill, and FlashInfer decode.
+- `test/registered/amd/accuracy/mi35x/test_kimi_k25_aiter_mla_eval_mi35x.py` documents the native Kimi-K2.5 aiter MLA MI35x constraint: TP must be 4 because Kimi-K2.5 has 64 attention heads and the aiter ASM MLA kernel needs 16 heads per GPU.
+- `test/registered/amd/accuracy/mi35x/test_kimi_k25_mxfp4_eval_mi35x.py` validates Kimi-K2.5-MXFP4 on MI35x at TP8, including default and FP8 KV-cache variants.
+- `test/registered/amd/test_kimi_k25_mxfp4.py`, `test/registered/gb300/test_kimi_k25.py`, and `test/registered/gb300/test_kimi_k25_nvfp4.py` are the current hardware/quantization lanes to inspect before changing MXFP4, NVFP4, cache, or backend-specific behavior.
+- `test/registered/stress/test_stress_kimi_k2.py` stress-tests `moonshotai/Kimi-K2-Thinking` with `--tool-call-parser kimi_k2` and `--reasoning-parser kimi_k2`, so parser changes should not be validated only by short unit tests.
+
+Current open PR radar:
+
+- [#22806](https://github.com/sgl-project/sglang/pull/22806): adds `KimiW4AFp8Config` and Kimi-K2.5 W4AFP8 loading tests, including expert input-scale mapping for gate, up, and down projections.
+- [#22496](https://github.com/sgl-project/sglang/pull/22496): adds Kimi-K2.5 W4A16 DeepEP low-latency support through JIT Marlin/direct DeepEP MoE paths such as `deepep_moe_wna16_marlin_direct.py`.
+- [#22964](https://github.com/sgl-project/sglang/pull/22964): fixes `KimiGPUProcessorWrapper._cpu_call` output after processor metadata changed around `grid_thws` and `image_grid_thw`.
+- [#23186](https://github.com/sgl-project/sglang/pull/23186): adds an AMD/ROCm BF16 fused QK RMSNorm path for `Kimi-K2.5-MXFP4`; the PR reports GSM8K and throughput movement, so treat it as a backend optimization track.
+- [#19703](https://github.com/sgl-project/sglang/pull/19703): migrates `kimi_k2_moe_fused_gate` from the AOT `sgl-kernel` path into `python/sglang/jit_kernel`.
+- [#22488](https://github.com/sgl-project/sglang/pull/22488): generalizes the Kimi2 fused MoE gate JIT path to support GLM-5-style 256-expert shapes, which is relevant when reusing the K2 gate skill on nearby MoE families.
+- [#22208](https://github.com/sgl-project/sglang/pull/22208): tunes AMD gfx950 small-M fused MoE behavior for Kimi-K2.5 `int4_w4a16`.
+- [#21741](https://github.com/sgl-project/sglang/pull/21741): adds generic compressed-tensors W4AFP8 MoE support, a dependency-shaped track for the Kimi W4AFP8 work.
+
+Known closed DeepEP plus int4/Marlin gap:
+
+- [#13789](https://github.com/sgl-project/sglang/pull/13789) tried `moonshotai/Kimi-K2-Thinking --tp 8 --ep 4 --moe-a2a-backend deepep --deepep-mode auto` with `SGLANG_DEEPEP_BF16_DISPATCH=1`, but the PR was closed unmerged.
+- The reported failure was an illegal memory access in the `fused_marlin_moe` path after `DeepEPMoE.forward_marlin_moe(...)` called the compressed-tensors MoE DeepEP-normal path.
+- [#19181](https://github.com/sgl-project/sglang/pull/19181) later landed the generic JIT `moe_wna16_marlin` kernel, but that does not by itself prove Kimi-K2-Thinking DeepEP plus int4/Marlin is production-ready.
+- [#22496](https://github.com/sgl-project/sglang/pull/22496) is the active related work, but it targets Kimi-K2.5 W4A16 DeepEP low-latency rather than Kimi-K2-Thinking.
 
 ## K2: Router, Gating, and MoE Kernel Path
 
@@ -21,12 +73,12 @@ Excluded on purpose:
 
 Capability change:
 
-| Aspect | Before | After |
-| --- | --- | --- |
-| Expert count | fixed `256` | `256` or `384` |
-| Hidden dim | fixed `7168` | still fixed `7168` |
-| Output dtype | fp32 / bf16 | fp32 / bf16 |
-| Token count | `1..16` | `1..16` |
+| Aspect       | Before       | After              |
+| ------------ | ------------ | ------------------ |
+| Expert count | fixed `256`  | `256` or `384`     |
+| Hidden dim   | fixed `7168` | still fixed `7168` |
+| Output dtype | fp32 / bf16  | fp32 / bf16        |
+| Token count  | `1..16`      | `1..16`            |
 
 Code focus:
 
@@ -57,13 +109,13 @@ any K2 optimization that reuses DeepSeek router kernels must first remove the hi
 
 PR benchmark highlights:
 
-| Metric | Main | PR |
-| --- | ---: | ---: |
-| Profiler hotspot | `33 us` | `15 us` |
-| Output throughput, concurrency `1` | `61.101` | `64.239` |
-| Mean TPOT ms, concurrency `1` | `8.424` | `7.501` |
+| Metric                              |      Main |        PR |
+| ----------------------------------- | --------: | --------: |
+| Profiler hotspot                    |   `33 us` |   `15 us` |
+| Output throughput, concurrency `1`  |  `61.101` |  `64.239` |
+| Mean TPOT ms, concurrency `1`       |   `8.424` |   `7.501` |
 | Output throughput, concurrency `32` | `267.557` | `275.438` |
-| Mean TPOT ms, concurrency `32` | `38.666` | `38.297` |
+| Mean TPOT ms, concurrency `32`      |  `38.666` |  `38.297` |
 
 Code focus:
 
@@ -91,18 +143,18 @@ for K2 thinking, first remove unnecessary grouped-topk work before trying to mic
 Representative PR benchmark rows:
 
 | Seq length | Torch Compile us | Fused Kernel us |
-| --- | ---: | ---: |
-| `1` | `10.687` | `7.984` |
-| `1024` | `30.023` | `16.248` |
-| `40000` | `775.371` | `110.548` |
+| ---------- | ---------------: | --------------: |
+| `1`        |         `10.687` |         `7.984` |
+| `1024`     |         `30.023` |        `16.248` |
+| `40000`    |        `775.371` |       `110.548` |
 
-| Metric | Main | PR |
-| --- | ---: | ---: |
-| Profiler hotspot | `14 us` | `9 us` |
-| Output throughput, concurrency `1` | `60.104` | `65.973` |
-| Mean TTFT ms, concurrency `1` | `193.579` | `166.876` |
-| Output throughput, concurrency `32` | `271.123` | `283.044` |
-| Mean TTFT ms, concurrency `32` | `1436.165` | `1371.391` |
+| Metric                              |       Main |         PR |
+| ----------------------------------- | ---------: | ---------: |
+| Profiler hotspot                    |    `14 us` |     `9 us` |
+| Output throughput, concurrency `1`  |   `60.104` |   `65.973` |
+| Mean TTFT ms, concurrency `1`       |  `193.579` |  `166.876` |
+| Output throughput, concurrency `32` |  `271.123` |  `283.044` |
+| Mean TTFT ms, concurrency `32`      | `1436.165` | `1371.391` |
 
 CUDA kernel focus:
 
@@ -157,17 +209,17 @@ Representative PR benchmark rows:
 This PR compares against the previous fused-kernel baseline from [#13287](https://github.com/sgl-project/sglang/pull/13287).
 
 | Seq length | [#13287](https://github.com/sgl-project/sglang/pull/13287) fused kernel us | [#13374](https://github.com/sgl-project/sglang/pull/13374) fused kernel us |
-| --- | ---: | ---: |
-| `1` | `7.970` | `6.391` |
-| `1024` | `16.442` | `13.550` |
-| `40000` | `110.211` | `93.820` |
+| ---------- | -------------------------------------------------------------------------: | -------------------------------------------------------------------------: |
+| `1`        |                                                                    `7.970` |                                                                    `6.391` |
+| `1024`     |                                                                   `16.442` |                                                                   `13.550` |
+| `40000`    |                                                                  `110.211` |                                                                   `93.820` |
 
-| Metric | [#13287](https://github.com/sgl-project/sglang/pull/13287) baseline | [#13374](https://github.com/sgl-project/sglang/pull/13374) PR |
-| --- | ---: | ---: |
-| Profiler hotspot | `9.1 us` | `6.4 us` |
-| Input throughput, concurrency `1` | `3958.378` | `4479.016` |
-| Output throughput, concurrency `1` | `65.973` | `74.650` |
-| Output throughput, concurrency `32` | `283.044` | `285.589` |
+| Metric                              | [#13287](https://github.com/sgl-project/sglang/pull/13287) baseline | [#13374](https://github.com/sgl-project/sglang/pull/13374) PR |
+| ----------------------------------- | ------------------------------------------------------------------: | ------------------------------------------------------------: |
+| Profiler hotspot                    |                                                            `9.1 us` |                                                      `6.4 us` |
+| Input throughput, concurrency `1`   |                                                          `3958.378` |                                                    `4479.016` |
+| Output throughput, concurrency `1`  |                                                            `65.973` |                                                      `74.650` |
+| Output throughput, concurrency `32` |                                                           `283.044` |                                                     `285.589` |
 
 CUDA kernel focus:
 
@@ -215,8 +267,8 @@ after the big wins, small alignment-path cleanups can still matter on heavily ex
 
 PR benchmark highlights:
 
-| Metric | Main | PR |
-| --- | ---: | ---: |
+| Metric           |     Main |     PR |
+| ---------------- | -------: | -----: |
 | Profiler hotspot | `3.5 us` | `2 us` |
 
 Hot-path focus:
@@ -449,21 +501,21 @@ PR benchmark highlights:
 
 Prefill and decode hotspot data from the PR body:
 
-| Stage | Before | After |
-| --- | ---: | ---: |
-| Prefill first MoE | `9.11 ms` | `2.881 ms` |
+| Stage              |     Before |      After |
+| ------------------ | ---------: | ---------: |
+| Prefill first MoE  |  `9.11 ms` | `2.881 ms` |
 | Prefill second MoE | `4.284 ms` | `1.461 ms` |
-| Decode first MoE | `501 us` | `276 us` |
-| Decode second MoE | `180 us` | `82 us` |
+| Decode first MoE   |   `501 us` |   `276 us` |
+| Decode second MoE  |   `180 us` |    `82 us` |
 
 End-to-end throughput data from the PR body:
 
 | Concurrency | Ori tok/s/user | Opt tok/s/user | Ori tput/GPU | Opt tput/GPU |
-| --- | ---: | ---: | ---: | ---: |
-| `4` | `45.097500` | `50.610000` | `22.54875` | `25.30500` |
-| `8` | `30.676250` | `44.176250` | `30.67625` | `44.17625` |
-| `16` | `20.511250` | `32.547500` | `41.02250` | `65.09500` |
-| `32` | `13.784688` | `22.509687` | `55.13875` | `90.03875` |
+| ----------- | -------------: | -------------: | -----------: | -----------: |
+| `4`         |    `45.097500` |    `50.610000` |   `22.54875` |   `25.30500` |
+| `8`         |    `30.676250` |    `44.176250` |   `30.67625` |   `44.17625` |
+| `16`        |    `20.511250` |    `32.547500` |   `41.02250` |   `65.09500` |
+| `32`        |    `13.784688` |    `22.509687` |   `55.13875` |   `90.03875` |
 
 Tooling and tuning focus:
 
