@@ -300,6 +300,8 @@ def render_markdown(rows: list[dict[str, Any]]) -> str:
                 "",
                 "## Failed Or SLA-Failing Candidates",
                 "",
+                "These rows are an audit trail for explored but non-recommended configs. They either failed, were skipped by policy, or completed without passing the SLA.",
+                "",
                 "| Framework | Candidate | Status | SLA | Reason |",
                 "| --- | --- | --- | --- | --- |",
             ]
