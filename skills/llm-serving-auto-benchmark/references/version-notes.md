@@ -258,3 +258,24 @@ An earlier 10-candidate attempt in
 model and backend but omitted the multi-GPU Docker options above. Each candidate
 entered `PyTorchConfig` and then failed startup at NCCL allreduce. Keep those
 container options in the runbook for multi-GPU TensorRT-LLM validation.
+
+### Accuracy Evaluation Feasibility
+
+On 2026-04-22, the accuracy reporting path was checked against local source
+trees:
+
+- SGLang local checkout includes `python -m sglang.test.run_eval` with `mmlu`
+  and `gsm8k` tasks. Its MMLU simple-evals path aggregates subgroup metrics for
+  `stem`, `humanities`, `social_sciences`, and `other`.
+- vLLM local checkout uses `lm_eval.simple_evaluate` against an
+  OpenAI-compatible `/v1/completions` endpoint in its accuracy tests. The native
+  serving benchmark remains a latency/throughput tool, not an accuracy tool.
+- TensorRT-LLM 1.0.0 exposes OpenAI-compatible endpoints through
+  `trtllm-serve serve --backend pytorch`, so the same external evaluator can be
+  used after the best deployment command is chosen. The TensorRT-LLM benchmark
+  client does not produce MMLU/GSM8K accuracy.
+
+The skill therefore treats accuracy as an endpoint-level final-winner evaluation:
+run full MMLU and GSM8K through one common evaluator after the performance
+search, attach the resulting metrics to the selected candidate rows, and report
+MMLU subgroup scores when the evaluator provides them.

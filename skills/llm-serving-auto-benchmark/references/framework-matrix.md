@@ -9,6 +9,18 @@ actual CLI in the target container with `--help` before a long run.
 | vLLM | `vllm serve` | `vllm bench sweep serve` or `vllm bench serve` | `vllm bench sweep serve` can launch `vllm serve` repeatedly and sweep serve/bench parameter JSON files. |
 | TensorRT-LLM | `trtllm-serve serve --backend pytorch` | TensorRT-LLM serving benchmark client or a common OpenAI-compatible benchmark client | This skill pins TensorRT-LLM serving to the PyTorch backend. Non-PyTorch server backends and engine-serving paths are unsupported here. |
 
+## Accuracy Evaluation Feasibility
+
+Use a common OpenAI-compatible evaluator for final accuracy. The serving
+benchmark clients are for throughput and latency; do not rely on them for
+MMLU/GSM8K accuracy.
+
+| Framework | Can run full MMLU/GSM8K accuracy? | Subgroup notes |
+| --- | --- | --- |
+| SGLang | Yes, through `python -m sglang.test.run_eval` or another OpenAI-compatible evaluator. | The SGLang simple-evals MMLU path reports `stem`, `humanities`, `social_sciences`, and `other`. |
+| vLLM | Yes, through its OpenAI-compatible endpoint with the same evaluator. | vLLM's native serving benchmark does not report accuracy; use the common evaluator for MMLU subgroup output. |
+| TensorRT-LLM | Yes when `trtllm-serve serve --backend pytorch` exposes `/v1/completions` or `/v1/chat/completions`. | TensorRT-LLM's serving benchmark does not report accuracy; use the common evaluator. If subgroup metrics are unavailable, report final MMLU only. |
+
 For parameter coverage by framework, see
 [parameter-coverage.md](parameter-coverage.md). For Docker image pull, launch,
 benchmark, and cleanup commands, see

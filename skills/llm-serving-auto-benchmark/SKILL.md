@@ -67,6 +67,8 @@ Collect these before starting a long run:
   `summarization`
 - SLA target: TTFT, TPOT/ITL, end-to-end latency, success rate, or goodput
 - search budget: quick smoke, default search, or exhaustive search
+- accuracy evaluation mode for final winners: OpenAI-compatible chat or
+  completions API, plus any model-specific chat-template or thinking settings
 - output directory for logs and result artifacts
 
 Also collect a version manifest:
@@ -95,6 +97,9 @@ Use these rules throughout the benchmark:
 - Keep failed candidates in the final results with their failure reason.
 - Report both raw throughput and SLA-passing throughput. The fastest failing
   candidate is not the best deployment command.
+- Run accuracy with deterministic sampling on the selected deployment commands,
+  not on every searched candidate. Use the same prompt template and evaluator
+  settings for every framework.
 
 ## Workflow
 
@@ -367,7 +372,59 @@ Search `max_batch_size`, `max_num_tokens`, `max_seq_len`, and validated
 PyTorch-backend config options first. The server backend remains fixed to
 `pytorch`.
 
-### 7. Normalize Results
+### 7. Run Accuracy For Selected Commands
+
+After the performance search chooses each framework's best deployment command,
+relaunch those selected commands and run full MMLU and GSM8K accuracy.
+
+Use a common OpenAI-compatible evaluator whenever possible. This works across
+SGLang, vLLM, and TensorRT-LLM because all three final serving paths expose
+OpenAI-compatible endpoints:
+
+- SGLang: use the native endpoint or `/v1/chat/completions` /
+  `/v1/completions`.
+- vLLM: use its OpenAI-compatible server endpoint. vLLM's serving benchmark
+  does not measure accuracy; use the common evaluator.
+- TensorRT-LLM: use the PyTorch-backend `trtllm-serve` OpenAI-compatible
+  endpoint. TensorRT-LLM's serving benchmark does not measure accuracy; use the
+  common evaluator.
+
+Preferred evaluator when an SGLang checkout is available:
+
+```bash
+python -m sglang.test.run_eval \
+  --base-url http://127.0.0.1:<port> \
+  --model <served-model-name> \
+  --eval-name mmlu \
+  --num-threads 128 \
+  --temperature 0.0
+
+python -m sglang.test.run_eval \
+  --base-url http://127.0.0.1:<port> \
+  --model <served-model-name> \
+  --eval-name gsm8k \
+  --api completion \
+  --num-threads 128 \
+  --temperature 0.0 \
+  --max-tokens 512
+```
+
+Do not pass `--num-examples` in the final report run. The final accuracy table
+must use the full evaluator dataset. For GSM8K, record the number of evaluated
+rows after the evaluator removes few-shot examples to avoid leakage.
+
+MMLU must include subgroup accuracy when the evaluator provides it. The SGLang
+simple-evals path reports `stem`, `humanities`, `social_sciences`, and `other`.
+If the selected evaluator or endpoint cannot produce subgroup metrics, report
+the final MMLU score only and mark the subgroup columns as unavailable in the
+artifact notes. Do not invent subgroup scores from the final score.
+
+Store accuracy under the selected candidate row in the normalized result file,
+using the `accuracy.mmlu` and `accuracy.gsm8k` fields from
+[references/result-schema.md](references/result-schema.md). Keep the MMLU and
+GSM8K raw result JSON or HTML report paths in the artifacts.
+
+### 8. Normalize Results
 
 Write one JSONL row per candidate using the schema in
 [references/result-schema.md](references/result-schema.md). Then run:
@@ -393,14 +450,20 @@ Return a compact report with:
 
 - workload and SLA used
 - hardware and framework versions
-- best candidate per framework
-- overall winner under the SLA
+- for each framework, one table listing the best deployment command for each
+  dataset scenario and all relevant performance metrics
+- one cross-framework comparison table for the selected best command per
+  framework and scenario, including the command, so the deployment choice is
+  obvious for each dataset
+- one accuracy table for the selected deployment command per framework, covering
+  full-dataset MMLU and GSM8K; include MMLU subgroup accuracy when available
 - failed or excluded candidates with reasons
 - exact launch command and benchmark command for each winner
+- exact accuracy evaluation command and artifact path for each accuracy row
 - artifact paths: canonical workload, raw results JSONL, normalized JSONL, CSV or
   markdown summary, and key server logs
-- a caveat if the workload was synthetic or if any framework did not complete a
-  fair search
+- a caveat if the workload was synthetic, if any framework did not complete a
+  fair search, or if any accuracy subgroup could not be produced
 
 Use [references/framework-matrix.md](references/framework-matrix.md) when you
 need command templates or source links for each framework. Use

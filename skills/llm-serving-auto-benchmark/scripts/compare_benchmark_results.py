@@ -56,6 +56,110 @@ def _fmt(value: Any, digits: int = 2) -> str:
     return str(value)
 
 
+def _blank_none(value: Any) -> Any:
+    return "" if value is None else value
+
+
+def _cell(value: Any, digits: int = 2) -> str:
+    text = _fmt(value, digits)
+    return text.replace("\n", "<br>").replace("|", "\\|")
+
+
+def _scenario(row: dict[str, Any]) -> str:
+    for path in (
+        "workload.scenario",
+        "workload.scenario_name",
+        "workload.dataset_scenario",
+        "workload.dataset_name",
+        "workload.kind",
+        "scenario",
+    ):
+        value = _get(row, path)
+        if value:
+            return str(value)
+    return "default"
+
+
+def _server_command(row: dict[str, Any]) -> str:
+    return str(_get(row, "server_command") or _get(row, "launch_command") or "")
+
+
+def _artifact_summary(row: dict[str, Any]) -> str:
+    artifacts = _get(row, "artifacts", {})
+    if not isinstance(artifacts, dict):
+        return ""
+    parts = []
+    for key in ("raw_result", "server_log", "benchmark_log", "summary"):
+        value = artifacts.get(key)
+        if value:
+            parts.append(f"{key}: {value}")
+    return "<br>".join(parts)
+
+
+def _accuracy_score(row: dict[str, Any], task: str) -> Any:
+    for path in (
+        f"accuracy.{task}.accuracy",
+        f"accuracy.{task}.score",
+        f"accuracy.{task}.exact_match",
+        f"evals.{task}.accuracy",
+        f"evals.{task}.score",
+    ):
+        value = _get(row, path)
+        if value is not None:
+            return value
+    return None
+
+
+def _accuracy_count(row: dict[str, Any], task: str) -> Any:
+    for path in (
+        f"accuracy.{task}.num_examples",
+        f"accuracy.{task}.num_requests",
+        f"accuracy.{task}.samples",
+        f"evals.{task}.num_examples",
+    ):
+        value = _get(row, path)
+        if value is not None:
+            return value
+    return None
+
+
+def _mmlu_subcategory(row: dict[str, Any], name: str) -> Any:
+    for path in (
+        f"accuracy.mmlu.subcategories.{name}",
+        f"accuracy.mmlu.metrics.{name}",
+        f"accuracy.mmlu.{name}",
+        f"evals.mmlu.subcategories.{name}",
+        f"evals.mmlu.metrics.{name}",
+    ):
+        value = _get(row, path)
+        if value is not None:
+            return value
+    return None
+
+
+def _accuracy_artifacts(row: dict[str, Any]) -> str:
+    parts = []
+    for task in ("mmlu", "gsm8k"):
+        for path in (
+            f"accuracy.{task}.artifact",
+            f"accuracy.{task}.result_file",
+            f"accuracy.{task}.report",
+            f"evals.{task}.artifact",
+        ):
+            value = _get(row, path)
+            if value:
+                parts.append(f"{task}: {value}")
+                break
+    return "<br>".join(parts)
+
+
+def _has_accuracy(row: dict[str, Any]) -> bool:
+    return (
+        _accuracy_score(row, "mmlu") is not None
+        or _accuracy_score(row, "gsm8k") is not None
+    )
+
+
 def load_rows(path: Path) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     with path.open(encoding="utf-8") as f:
@@ -82,9 +186,21 @@ def best_by_framework(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return sorted(best.values(), key=_rank_key, reverse=True)
 
 
+def best_by_framework_and_scenario(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    best: dict[tuple[str, str], dict[str, Any]] = {}
+    for row in rows:
+        key = (str(_get(row, "framework", "unknown")), _scenario(row))
+        if key not in best or _rank_key(row) > _rank_key(best[key]):
+            best[key] = row
+    return sorted(
+        best.values(), key=lambda row: (_scenario(row), _rank_key(row)), reverse=True
+    )
+
+
 def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
     fields = [
         "framework",
+        "scenario",
         "candidate_id",
         "status",
         "sla_passed",
@@ -93,6 +209,9 @@ def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         "p99_ttft_ms",
         "p99_tpot_ms",
         "gpu_count",
+        "mmlu_accuracy",
+        "gsm8k_accuracy",
+        "server_command",
         "failure_reason",
     ]
     with path.open("w", encoding="utf-8", newline="") as f:
@@ -102,6 +221,7 @@ def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
             writer.writerow(
                 {
                     "framework": _get(row, "framework", ""),
+                    "scenario": _scenario(row),
                     "candidate_id": _get(row, "candidate_id", ""),
                     "status": _get(row, "status", ""),
                     "sla_passed": _bool(row, "sla.passed"),
@@ -112,14 +232,131 @@ def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
                     "p99_ttft_ms": _get(row, "metrics.p99_ttft_ms", ""),
                     "p99_tpot_ms": _get(row, "metrics.p99_tpot_ms", ""),
                     "gpu_count": _get(row, "hardware.gpu_count", ""),
+                    "mmlu_accuracy": _blank_none(_accuracy_score(row, "mmlu")),
+                    "gsm8k_accuracy": _blank_none(_accuracy_score(row, "gsm8k")),
+                    "server_command": _server_command(row),
                     "failure_reason": _get(row, "failure_reason", ""),
                 }
             )
 
 
+def _append_best_commands_by_framework(
+    lines: list[str], scenario_winners: list[dict[str, Any]]
+) -> None:
+    frameworks = sorted(
+        {str(_get(row, "framework", "unknown")) for row in scenario_winners}
+    )
+    lines.extend(["## Best Commands By Framework", ""])
+    for framework in frameworks:
+        lines.extend(
+            [
+                f"### `{framework}`",
+                "",
+                "| Scenario | Candidate | Status | SLA | Req/s | Output tok/s | Total tok/s | P99 TTFT ms | P99 TPOT ms | Success rate | GPUs | Server command | Artifacts |",
+                "| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |",
+            ]
+        )
+        rows = [row for row in scenario_winners if _get(row, "framework") == framework]
+        for row in sorted(rows, key=_scenario):
+            lines.append(
+                "| {scenario} | {candidate} | {status} | {sla} | {rps} | {otps} | {ttps} | {ttft} | {tpot} | {success} | {gpus} | {command} | {artifacts} |".format(
+                    scenario=_cell(_scenario(row)),
+                    candidate=_cell(_get(row, "candidate_id", "")),
+                    status=_cell(_get(row, "status", "")),
+                    sla=_cell(_bool(row, "sla.passed")),
+                    rps=_cell(_get(row, "metrics.request_throughput")),
+                    otps=_cell(_get(row, "metrics.output_token_throughput")),
+                    ttps=_cell(_get(row, "metrics.total_token_throughput")),
+                    ttft=_cell(_get(row, "metrics.p99_ttft_ms")),
+                    tpot=_cell(_get(row, "metrics.p99_tpot_ms")),
+                    success=_cell(_get(row, "metrics.success_rate")),
+                    gpus=_cell(_get(row, "hardware.gpu_count")),
+                    command=_cell(_server_command(row)),
+                    artifacts=_cell(_artifact_summary(row)),
+                )
+            )
+        lines.append("")
+
+
+def _append_cross_framework_table(
+    lines: list[str], scenario_winners: list[dict[str, Any]]
+) -> None:
+    lines.extend(
+        [
+            "## Cross-Framework Best Comparison",
+            "",
+            "| Scenario | Rank | Framework | Candidate | SLA | Req/s | Output tok/s | P99 TTFT ms | P99 TPOT ms | GPUs | Server command |",
+            "| --- | ---: | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | --- |",
+        ]
+    )
+    scenario_names = sorted({_scenario(row) for row in scenario_winners})
+    for scenario_name in scenario_names:
+        rows = [row for row in scenario_winners if _scenario(row) == scenario_name]
+        for rank, row in enumerate(sorted(rows, key=_rank_key, reverse=True), 1):
+            lines.append(
+                "| {scenario} | {rank} | {framework} | {candidate} | {sla} | {rps} | {otps} | {ttft} | {tpot} | {gpus} | {command} |".format(
+                    scenario=_cell(scenario_name),
+                    rank=rank,
+                    framework=_cell(_get(row, "framework", "")),
+                    candidate=_cell(_get(row, "candidate_id", "")),
+                    sla=_cell(_bool(row, "sla.passed")),
+                    rps=_cell(_get(row, "metrics.request_throughput")),
+                    otps=_cell(_get(row, "metrics.output_token_throughput")),
+                    ttft=_cell(_get(row, "metrics.p99_ttft_ms")),
+                    tpot=_cell(_get(row, "metrics.p99_tpot_ms")),
+                    gpus=_cell(_get(row, "hardware.gpu_count")),
+                    command=_cell(_server_command(row)),
+                )
+            )
+    lines.append("")
+
+
+def _append_accuracy_table(
+    lines: list[str], scenario_winners: list[dict[str, Any]]
+) -> None:
+    selected: dict[tuple[str, str], dict[str, Any]] = {}
+    scenarios_by_key: dict[tuple[str, str], set[str]] = {}
+    for row in scenario_winners:
+        key = (str(_get(row, "framework", "")), str(_get(row, "candidate_id", "")))
+        if key not in selected or (
+            not _has_accuracy(selected[key]) and _has_accuracy(row)
+        ):
+            selected[key] = row
+        scenarios_by_key.setdefault(key, set()).add(_scenario(row))
+
+    lines.extend(
+        [
+            "## Accuracy Of Selected Deployment Commands",
+            "",
+            "| Framework | Candidate | Scenarios | MMLU | MMLU stem | MMLU humanities | MMLU social sciences | MMLU other | GSM8K | MMLU examples | GSM8K examples | Accuracy artifacts |",
+            "| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |",
+        ]
+    )
+    for key, row in sorted(selected.items()):
+        scenarios = ", ".join(sorted(scenarios_by_key.get(key, set())))
+        lines.append(
+            "| {framework} | {candidate} | {scenarios} | {mmlu} | {stem} | {humanities} | {social} | {other} | {gsm8k} | {mmlu_n} | {gsm8k_n} | {artifacts} |".format(
+                framework=_cell(key[0]),
+                candidate=_cell(key[1]),
+                scenarios=_cell(scenarios),
+                mmlu=_cell(_accuracy_score(row, "mmlu"), digits=4),
+                stem=_cell(_mmlu_subcategory(row, "stem"), digits=4),
+                humanities=_cell(_mmlu_subcategory(row, "humanities"), digits=4),
+                social=_cell(_mmlu_subcategory(row, "social_sciences"), digits=4),
+                other=_cell(_mmlu_subcategory(row, "other"), digits=4),
+                gsm8k=_cell(_accuracy_score(row, "gsm8k"), digits=4),
+                mmlu_n=_cell(_accuracy_count(row, "mmlu"), digits=0),
+                gsm8k_n=_cell(_accuracy_count(row, "gsm8k"), digits=0),
+                artifacts=_cell(_accuracy_artifacts(row)),
+            )
+        )
+    lines.append("")
+
+
 def render_markdown(rows: list[dict[str, Any]]) -> str:
     ranked = sorted(rows, key=_rank_key, reverse=True)
     winners = best_by_framework(rows)
+    scenario_winners = best_by_framework_and_scenario(rows)
     overall = ranked[0] if ranked else None
 
     lines = ["# Benchmark Summary", ""]
@@ -137,6 +374,15 @@ def render_markdown(rows: list[dict[str, Any]]) -> str:
             f"- Request throughput: `{_fmt(_get(overall, 'metrics.request_throughput'))}`",
             f"- Output token throughput: `{_fmt(_get(overall, 'metrics.output_token_throughput'))}`",
             "",
+        ]
+    )
+
+    _append_best_commands_by_framework(lines, scenario_winners)
+    _append_cross_framework_table(lines, scenario_winners)
+    _append_accuracy_table(lines, scenario_winners)
+
+    lines.extend(
+        [
             "## Best Per Framework",
             "",
             "| Framework | Candidate | Status | SLA | Req/s | Output tok/s | P99 TTFT ms | P99 TPOT ms | GPUs |",

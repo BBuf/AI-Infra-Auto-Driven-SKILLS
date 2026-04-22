@@ -72,11 +72,16 @@ class CompareBenchmarkResultsTest(unittest.TestCase):
         ]
 
         winners = self.mod.best_by_framework(rows)
-        self.assertEqual([row["candidate_id"] for row in winners], ["vllm-best", "sglang-steady"])
+        self.assertEqual(
+            [row["candidate_id"] for row in winners],
+            ["vllm-best", "sglang-steady"],
+        )
 
         summary = self.mod.render_markdown(rows)
         self.assertIn("`vllm`", summary)
         self.assertIn("sglang-fast-fail", summary)
+        self.assertIn("Best Commands By Framework", summary)
+        self.assertIn("Cross-Framework Best Comparison", summary)
 
     def test_load_rows_rejects_non_object_json(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -106,6 +111,84 @@ class CompareBenchmarkResultsTest(unittest.TestCase):
 
         self.assertIn("trt-c1", text)
         self.assertIn("server exited", text)
+
+    def test_renders_scenario_tables_and_accuracy(self) -> None:
+        rows = [
+            {
+                "framework": "sglang",
+                "candidate_id": "sglang-c1",
+                "status": "ok",
+                "workload": {"scenario": "chat"},
+                "sla": {"passed": True},
+                "metrics": {
+                    "request_throughput": 10,
+                    "output_token_throughput": 100,
+                    "p99_ttft_ms": 80,
+                    "p99_tpot_ms": 6,
+                    "success_rate": 1.0,
+                },
+                "hardware": {"gpu_count": 1},
+                "server_command": "python -m sglang.launch_server --model-path m",
+                "accuracy": {
+                    "mmlu": {
+                        "accuracy": 0.72,
+                        "num_examples": 14042,
+                        "subcategories": {
+                            "stem": 0.68,
+                            "humanities": 0.74,
+                            "social_sciences": 0.76,
+                            "other": 0.71,
+                        },
+                    },
+                    "gsm8k": {"accuracy": 0.81, "num_examples": 1319},
+                },
+            },
+            {
+                "framework": "vllm",
+                "candidate_id": "vllm-c1",
+                "status": "ok",
+                "workload": {"scenario": "chat"},
+                "sla": {"passed": True},
+                "metrics": {
+                    "request_throughput": 12,
+                    "output_token_throughput": 90,
+                    "p99_ttft_ms": 85,
+                    "p99_tpot_ms": 7,
+                },
+                "hardware": {"gpu_count": 1},
+                "server_command": "vllm serve m",
+            },
+            {
+                "framework": "sglang",
+                "candidate_id": "sglang-c2",
+                "status": "ok",
+                "workload": {"scenario": "summarization"},
+                "sla": {"passed": True},
+                "metrics": {
+                    "request_throughput": 8,
+                    "output_token_throughput": 140,
+                    "p99_ttft_ms": 120,
+                    "p99_tpot_ms": 8,
+                },
+                "hardware": {"gpu_count": 1},
+                "server_command": "python -m sglang.launch_server --model-path m --long",
+            },
+        ]
+
+        scenario_winners = self.mod.best_by_framework_and_scenario(rows)
+        self.assertEqual(
+            {(row["framework"], row["workload"]["scenario"]) for row in scenario_winners},
+            {("sglang", "chat"), ("vllm", "chat"), ("sglang", "summarization")},
+        )
+
+        summary = self.mod.render_markdown(rows)
+        self.assertIn("### `sglang`", summary)
+        self.assertIn("| chat | sglang-c1", summary)
+        self.assertIn("| summarization | sglang-c2", summary)
+        self.assertIn("Accuracy Of Selected Deployment Commands", summary)
+        self.assertIn("| sglang | sglang-c1 | chat | 0.7200", summary)
+        self.assertIn("0.6800", summary)
+        self.assertIn("0.8100", summary)
 
     def test_cli_writes_markdown_and_csv(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
