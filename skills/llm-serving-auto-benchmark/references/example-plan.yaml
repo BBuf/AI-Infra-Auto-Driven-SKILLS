@@ -1,0 +1,69 @@
+# Example run plan for the llm-serving-auto-benchmark skill.
+#
+# This file is intentionally a control-plane template. The skill can translate
+# it into native SGLang, vLLM, and TensorRT-LLM commands in the target runtime.
+
+model:
+  name: meta-llama/Llama-3.1-70B-Instruct
+  tokenizer: meta-llama/Llama-3.1-70B-Instruct
+  precision: bf16
+  quantization: none
+
+hardware:
+  gpu_model: NVIDIA H100 80GB HBM3
+  gpu_count: 8
+  multi_node: false
+
+workload:
+  kind: custom
+  canonical_jsonl: /bench/workloads/prod_sample.autobench.jsonl
+  endpoint: /v1/chat/completions
+  num_prompts: 1000
+  request_rates: [4, 8, 12, 16]
+  max_concurrency: 256
+  synthetic_fallback:
+    dataset_name: random
+    input_len: 1024
+    output_len: 256
+
+sla:
+  max_p99_ttft_ms: 2000
+  max_p99_tpot_ms: 80
+  min_success_rate: 0.99
+
+search:
+  tier: 2
+  max_candidates_per_framework: 8
+  max_qps_rounds: 5
+  output_dir: /bench/results/llm-serving-auto-benchmark
+
+frameworks:
+  sglang:
+    enabled: true
+    base_server_flags:
+      tp_size: 8
+      trust_remote_code: true
+    search_space:
+      attention_backend: [flashinfer, fa3]
+      chunked_prefill_size: [8192, 16384]
+      max_running_requests: [64, 128]
+
+  vllm:
+    enabled: true
+    base_server_flags:
+      tensor_parallel_size: 8
+      trust_remote_code: true
+    search_space:
+      gpu_memory_utilization: [0.9, 0.95]
+      max_num_seqs: [64, 128]
+      max_num_batched_tokens: [8192, 16384]
+
+  tensorrt_llm:
+    enabled: true
+    base_server_flags:
+      tp_size: 8
+      pp_size: 1
+    search_space:
+      backend: [pytorch, tensorrt]
+      max_batch_size: [64, 128]
+      max_num_tokens: [8192, 16384]
