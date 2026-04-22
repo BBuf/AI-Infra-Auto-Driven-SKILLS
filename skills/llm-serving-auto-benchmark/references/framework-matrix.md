@@ -7,7 +7,7 @@ actual CLI in the target container with `--help` before a long run.
 | --- | --- | --- | --- |
 | SGLang | `python -m sglang.launch_server` | `python -m sglang.auto_benchmark` or `python -m sglang.bench_serving` | Use `auto_benchmark` when available for tiered server-flag search. `bench_serving` supports native and OpenAI-compatible endpoints. |
 | vLLM | `vllm serve` | `vllm bench sweep serve` or `vllm bench serve` | `vllm bench sweep serve` can launch `vllm serve` repeatedly and sweep serve/bench parameter JSON files. |
-| TensorRT-LLM | `trtllm-serve serve` | TensorRT-LLM serving benchmark client or a common OpenAI-compatible benchmark client | `trtllm-serve serve` exposes OpenAI-compatible endpoints. Separate engine build time from serving performance. |
+| TensorRT-LLM | `trtllm-serve serve --backend pytorch` | TensorRT-LLM serving benchmark client or a common OpenAI-compatible benchmark client | This skill pins TensorRT-LLM serving to the PyTorch backend. Non-PyTorch server backends and engine-serving paths are unsupported here. |
 
 For parameter coverage by framework, see
 [parameter-coverage.md](parameter-coverage.md). For Docker image pull, launch,
@@ -79,6 +79,7 @@ vllm bench sweep serve \
 
 ```bash
 trtllm-serve serve <model> \
+  --backend pytorch \
   --tp_size <tp> \
   --pp_size <pp> \
   --kv_cache_free_gpu_memory_fraction 0.75 \
@@ -95,6 +96,10 @@ unless you also provide a ShareGPT `--download-path`. In the 1.0.0 H100 image,
 `--kv_cache_free_gpu_memory_fraction` after checking `--help`. The TensorRT-LLM
 1.0.0 benchmark client accepts `--backend openai` and `--backend openai-chat`,
 not `--backend trtllm`.
+
+Do not replace the server-side `--backend pytorch` with `trt` or an engine
+backend in this skill. Treat those requests as unsupported candidates and record
+that reason in the result table.
 
 When launching Docker containers on a subset of GPUs, quote a comma-separated
 device list:

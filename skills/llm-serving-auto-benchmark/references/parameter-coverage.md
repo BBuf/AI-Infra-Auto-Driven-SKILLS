@@ -38,8 +38,19 @@ Observed flag counts in that environment:
 | `vllm serve --help=all` | 302 | Plain `--help` only shows config groups. |
 | `vllm bench serve --help=all` | 97 | Covers random, ShareGPT, HF, custom, multimodal, and sampling knobs. |
 | `vllm bench sweep serve --help=all` | 15 | Sweeps serve and bench parameter JSON files. |
-| `trtllm-serve serve --help` | 23 | Direct serving surface is smaller; use backend config or build steps for deeper tuning. |
+| `trtllm-serve serve --help` | 23 | Direct serving surface is smaller; this skill fixes `--backend pytorch` and uses direct flags or PyTorch backend config for tuning. |
 | `python -m tensorrt_llm.serve.scripts.benchmark_serving --help` | 53 | OpenAI-compatible benchmark client. |
+
+## TensorRT-LLM Backend Policy
+
+For this skill, TensorRT-LLM serving is pinned to `trtllm-serve serve --backend
+pytorch`. Keep `backend: pytorch` in `base_server_flags`, and do not put
+`backend` in `search_space`.
+
+Reject `trt`, engine-backed serving, or any other non-PyTorch TensorRT-LLM
+server backend as unsupported for this skill. The benchmark client `--backend`
+is separate: TensorRT-LLM 1.0.0 uses `openai` or `openai-chat` to target the
+OpenAI-compatible endpoint.
 
 ## Knob Family Mapping
 
@@ -48,10 +59,10 @@ Observed flag counts in that environment:
 | Parallelism | `--tp-size`, `--pp-size`, `--dp-size`, `--ep-size`, `--expert-parallel-size`, `--attention-context-parallel-size` | `--tensor-parallel-size`, `--pipeline-parallel-size`, `--data-parallel-size`, `--decode-context-parallel-size`, `--enable-expert-parallel` | `--tp_size`, `--pp_size`, `--ep_size`, `--gpus_per_node`, `--cluster_size` |
 | Memory and KV cache | `--mem-fraction-static`, `--max-total-tokens`, `--kv-cache-dtype`, `--page-size`, `--cpu-offload-gb` | `--gpu-memory-utilization`, `--kv-cache-memory-bytes`, `--kv-cache-dtype`, `--block-size`, `--cpu-offload-gb` | `--kv_cache_free_gpu_memory_fraction`; combine with `--max_num_tokens`, `--max_seq_len`, and `--max_batch_size` |
 | Batching and scheduler | `--max-running-requests`, `--max-queued-requests`, `--schedule-policy`, `--schedule-conservativeness`, `--chunked-prefill-size`, `--max-prefill-tokens`, `--prefill-max-requests` | `--max-num-seqs`, `--max-num-batched-tokens`, `--enable-chunked-prefill`, `--max-num-partial-prefills`, `--max-long-partial-prefills`, `--long-prefill-token-threshold`, `--enable-dbo`, `--dbo-prefill-token-threshold`, `--dbo-decode-token-threshold` | `--max_batch_size`, `--max_num_tokens`, `--max_seq_len`; more scheduler details may require `--extra_llm_api_options` |
-| Attention/backend | `--attention-backend`, `--prefill-attention-backend`, `--decode-attention-backend`, `--sampling-backend`, `--grammar-backend` | `--attention-backend`, `--gdn-prefill-backend`, `--mm-encoder-attn-backend` | `--backend`; PyTorch backend details are mostly config-driven |
+| Attention/backend | `--attention-backend`, `--prefill-attention-backend`, `--decode-attention-backend`, `--sampling-backend`, `--grammar-backend` | `--attention-backend`, `--gdn-prefill-backend`, `--mm-encoder-attn-backend` | `--backend pytorch` is fixed; do not search backend choice |
 | CUDA graph and compile | `--disable-cuda-graph`, `--cuda-graph-bs`, `--cuda-graph-max-bs`, `--disable-piecewise-cuda-graph`, `--piecewise-cuda-graph-max-tokens`, `--enable-torch-compile` | `--enforce-eager`, `--compilation-config`, `--cudagraph-capture-sizes`, `--max-cudagraph-capture-size` | use `--extra_llm_api_options`; server logs expose the resolved `PyTorchConfig` |
-| Prefix/speculative | `--disable-radix-cache`, `--disable-chunked-prefix-cache`, `--speculative-algorithm`, `--speculative-draft-model-path`, `--speculative-num-steps`, `--speculative-num-draft-tokens` | `--enable-prefix-caching`, `--speculative-config` | usually via `--extra_llm_api_options` or a backend-specific flow |
-| Dtype, quantization, loading | `--dtype`, `--quantization`, `--load-format`, `--model-loader-extra-config`, `--trust-remote-code` | `--dtype`, `--quantization`, `--load-format`, `--model-loader-extra-config`, `--trust-remote-code`, `--hf-token` | `--trust_remote_code`, `--tokenizer`; quantization and engine options are often outside `trtllm-serve serve` |
+| Prefix/speculative | `--disable-radix-cache`, `--disable-chunked-prefix-cache`, `--speculative-algorithm`, `--speculative-draft-model-path`, `--speculative-num-steps`, `--speculative-num-draft-tokens` | `--enable-prefix-caching`, `--speculative-config` | only use PyTorch-backend options accepted by `--extra_llm_api_options` |
+| Dtype, quantization, loading | `--dtype`, `--quantization`, `--load-format`, `--model-loader-extra-config`, `--trust-remote-code` | `--dtype`, `--quantization`, `--load-format`, `--model-loader-extra-config`, `--trust-remote-code`, `--hf-token` | `--trust_remote_code`, `--tokenizer`; engine build and non-PyTorch quantization flows are outside this skill |
 
 ## Benchmark Client Notes
 
@@ -86,8 +97,8 @@ flag.
   sweep over batching, scheduler, CUDA graph/compile, and prefix cache options
   before comparing winners.
 - TensorRT-LLM should still be searched, but its direct `trtllm-serve serve`
-  surface is narrower. Search the exposed server flags first, then move deeper
-  backend options into `--extra_llm_api_options` or an engine-build phase.
+  surface is narrower. Search the exposed server flags first, then use only
+  PyTorch-backend options accepted by `--extra_llm_api_options`.
 - Keep every translated flag in the artifact manifest. If a family is not
   represented for one framework, say why instead of filling the gap with an
   unrelated option.

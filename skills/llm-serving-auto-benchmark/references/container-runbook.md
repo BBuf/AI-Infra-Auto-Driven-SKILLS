@@ -208,6 +208,11 @@ can be described with serve/bench parameter JSON files.
 
 ## TensorRT-LLM
 
+This skill only supports the TensorRT-LLM PyTorch server backend. Keep
+`--backend pytorch` in every `trtllm-serve serve` command. Do not switch the
+server to `--backend trt`, an engine path, or any other backend; mark that
+candidate unsupported instead.
+
 Server template:
 
 ```bash
@@ -267,8 +272,9 @@ python -m tensorrt_llm.serve.scripts.benchmark_serving \
 '
 ```
 
-For TensorRT-LLM 1.0.0, the serving benchmark `--backend` choices are `openai`
-and `openai-chat`. Do not pass `--backend trtllm`.
+For TensorRT-LLM 1.0.0, the serving benchmark client `--backend` choices are
+`openai` and `openai-chat`. Do not pass `--backend trtllm`. This client flag is
+separate from the server backend pinned above.
 
 ## Cleanup
 

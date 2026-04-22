@@ -106,6 +106,7 @@ frameworks:
 
   tensorrt_llm:
     enabled: true
+    backend_policy: fixed_pytorch
     base_server_flags:
       backend: pytorch
       tp_size: 4
@@ -113,7 +114,8 @@ frameworks:
       kv_cache_free_gpu_memory_fraction: 0.75
       trust_remote_code: true
     search_space:
-      # Verify these names against `trtllm-serve serve --help` and the selected backend.
+      # Verify these names against `trtllm-serve serve --help`.
+      # Do not add backend choices here; TensorRT-LLM is fixed to the PyTorch backend.
       max_batch_size: [64, 128]
       max_num_tokens: [8192, 16384]
       max_seq_len: [12288, 16384]

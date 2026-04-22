@@ -30,6 +30,14 @@ Prefer native tooling when it gives better coverage:
   TensorRT-LLM serving benchmark client or a common OpenAI-compatible benchmark
   client
 
+TensorRT-LLM has one hard scope rule in this skill: the server backend is fixed
+to `trtllm-serve serve --backend pytorch`. Do not search TensorRT-LLM backend
+choice. If a request, config, or candidate asks for `trt`, an engine backend, or
+any other non-PyTorch TensorRT-LLM server backend, reject that candidate as
+unsupported for this skill and record the reason. This does not change the
+benchmark client backend; the TensorRT-LLM benchmark client still uses
+OpenAI-compatible modes such as `--backend openai` or `--backend openai-chat`.
+
 Only pick a winner after each requested framework has had its main serving knobs
 tuned.
 
@@ -116,6 +124,10 @@ groups, so capture `--help=all` before deciding whether a search knob exists.
 Save these `--help` outputs into the run artifact directory. If a listed search
 knob is missing from the current CLI, remove or translate that knob before
 running the benchmark. Do not silently pass unknown flags.
+
+For TensorRT-LLM, also confirm that `trtllm-serve serve --help` accepts
+`--backend pytorch`. If it does not, mark TensorRT-LLM unsupported in that
+environment rather than falling back to a different server backend.
 
 For each framework:
 
@@ -308,6 +320,7 @@ supports it:
 
 ```bash
 trtllm-serve serve <model> \
+  --backend pytorch \
   --tp_size <tp> \
   --pp_size <pp> \
   --kv_cache_free_gpu_memory_fraction 0.75 \
@@ -329,27 +342,30 @@ TensorRT-LLM 1.0.0 image, the KV-cache memory flag accepted by
 `--free_gpu_memory_fraction`. Verify this with `trtllm-serve serve --help`
 before running a search.
 
+TensorRT-LLM backend policy for this skill:
+
+- launch the server with `--backend pytorch`
+- keep `backend: pytorch` in `base_server_flags`
+- do not add `backend` to `search_space`
+- reject `trt`, engine-backed serving, or any other non-PyTorch TensorRT-LLM
+  server backend as unsupported for this skill
+
 Version-sensitive TensorRT-LLM knob families to verify:
 
 - `tp_size`, `pp_size`, and `ep_size`
-- PyTorch backend versus TensorRT engine path when both are available
-- engine build options, quantization, and plugin selections
 - max batch size, max sequence length, max number of tokens, and KV-cache budget
 - inflight batching and scheduler options
-- extra LLM API options YAML used by `trtllm-serve`
-
-Because TensorRT-LLM can involve engine build time, keep build artifacts and
-server artifacts separate from benchmark outputs. Report build time separately
-from serving performance.
+- extra LLM API options YAML used by `trtllm-serve` with the PyTorch backend
 
 The `trtllm-serve serve` CLI exposes fewer direct runtime knobs than SGLang or
-vLLM. Use direct flags when they exist, then use `--extra_llm_api_options` or an
-engine-build step for backend-specific options. Record that split in the final
-report.
+vLLM. Use direct flags when they exist, then use `--extra_llm_api_options` for
+PyTorch-backend settings that are not top-level CLI flags. Keep unsupported
+backend or engine requests in the failure table instead of translating them.
 
 Keep `kv_cache_free_gpu_memory_fraction` in the baseline for the default pass.
-Search `max_batch_size`, `max_num_tokens`, `max_seq_len`, backend choice, and
-engine/config options first.
+Search `max_batch_size`, `max_num_tokens`, `max_seq_len`, and validated
+PyTorch-backend config options first. The server backend remains fixed to
+`pytorch`.
 
 ### 7. Normalize Results
 

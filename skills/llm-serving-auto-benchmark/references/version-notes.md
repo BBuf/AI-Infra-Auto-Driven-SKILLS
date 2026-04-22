@@ -14,7 +14,7 @@ The initial skill text was informed by these local/source snapshots:
 | --- | --- | --- |
 | SGLang | local checkout `7044d5fe7`; H100 container package `sglang 0.5.10rc0` at repo commit `30cd2cf32` | SGLang `bench_serving` help was checked in the H100 validation container. |
 | vLLM | local checkout `ed2f282bc`; H100 image `vllm/vllm-openai:latest` with `vllm 0.19.1`; official docs for `vllm bench sweep serve` and benchmark sweeps | `vllm serve` and `vllm bench serve` were smoke-tested in the H100 validation image. |
-| TensorRT-LLM | H100 image `nvcr.io/nvidia/tensorrt-llm/release:latest` with `tensorrt_llm 1.0.0`; official `trtllm-serve` and serving benchmark docs current on 2026-04-22 | `trtllm-serve serve` and `tensorrt_llm.serve.scripts.benchmark_serving` were smoke-tested in the H100 validation image. |
+| TensorRT-LLM | H100 image `nvcr.io/nvidia/tensorrt-llm/release:latest` with `tensorrt_llm 1.0.0`; official `trtllm-serve` and serving benchmark docs current on 2026-04-22 | `trtllm-serve serve --backend pytorch` and `tensorrt_llm.serve.scripts.benchmark_serving` were smoke-tested in the H100 validation image. Non-PyTorch server backends are out of scope for this skill. |
 
 ## Update Rule
 
@@ -36,6 +36,9 @@ On 2026-04-22, validation used the `h100_sglang` host:
 - `nvcr.io/nvidia/tensorrt-llm/release:latest` image: `tensorrt_llm 1.0.0`.
 - Hugging Face access came from the local H100 skill and was passed as
   environment variables. Do not print the token into logs.
+- TensorRT-LLM serving is pinned to `trtllm-serve serve --backend pytorch` in
+  this skill. Engine-backed and other non-PyTorch TensorRT-LLM server backends
+  are intentionally rejected instead of searched.
 
 ### Parameter Audit
 
