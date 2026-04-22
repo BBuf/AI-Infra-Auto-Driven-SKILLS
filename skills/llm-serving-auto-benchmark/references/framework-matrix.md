@@ -7,7 +7,7 @@ actual CLI in the target container with `--help` before a long run.
 | --- | --- | --- | --- |
 | SGLang | `python -m sglang.launch_server` | `python -m sglang.auto_benchmark` or `python -m sglang.bench_serving` | Use `auto_benchmark` when available for tiered server-flag search. `bench_serving` supports native and OpenAI-compatible endpoints. |
 | vLLM | `vllm serve` | `vllm bench sweep serve` or `vllm bench serve` | `vllm bench sweep serve` can launch `vllm serve` repeatedly and sweep serve/bench parameter JSON files. |
-| TensorRT-LLM | `trtllm-serve` | TensorRT-LLM serving benchmark client or a common OpenAI-compatible benchmark client | `trtllm-serve` exposes OpenAI-compatible endpoints. Separate engine build time from serving performance. |
+| TensorRT-LLM | `trtllm-serve serve` | TensorRT-LLM serving benchmark client or a common OpenAI-compatible benchmark client | `trtllm-serve serve` exposes OpenAI-compatible endpoints. Separate engine build time from serving performance. |
 
 ## Source Links
 
@@ -52,7 +52,7 @@ vllm bench sweep serve \
 ### TensorRT-LLM
 
 ```bash
-trtllm-serve <model> \
+trtllm-serve serve <model> \
   --tp_size <tp> \
   --pp_size <pp> \
   --host 0.0.0.0 \
@@ -62,4 +62,5 @@ trtllm-serve <model> \
 Then benchmark `http://127.0.0.1:8000/v1/completions` or
 `http://127.0.0.1:8000/v1/chat/completions` with the TensorRT-LLM serving
 benchmark client or the same OpenAI-compatible client used for the other
-frameworks.
+frameworks. For TensorRT-LLM 1.0.0 synthetic random data, pass `--random-ids`
+unless you also provide a ShareGPT `--download-path`.

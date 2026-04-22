@@ -9,6 +9,7 @@ the final summary explains what was tried.
 {
   "framework": "sglang",
   "framework_version": "0.5.0",
+  "framework_commit": "abcdef0",
   "candidate_id": "sglang-tp8-flashinfer",
   "model": "meta-llama/Llama-3.1-70B-Instruct",
   "status": "ok",
@@ -46,9 +47,15 @@ the final summary explains what was tried.
   },
   "server_command": "python -m sglang.launch_server ...",
   "benchmark_command": "python -m sglang.bench_serving ...",
+  "validated_cli_flags": {
+    "server": ["tp_size", "attention_backend"],
+    "benchmark": ["dataset_name", "request_rate", "max_concurrency"]
+  },
   "artifacts": {
     "server_log": "/bench/sglang/server.log",
-    "raw_result": "/bench/sglang/results.jsonl"
+    "raw_result": "/bench/sglang/results.jsonl",
+    "server_help": "/bench/sglang/help_launch_server.txt",
+    "benchmark_help": "/bench/sglang/help_bench_serving.txt"
   }
 }
 ```

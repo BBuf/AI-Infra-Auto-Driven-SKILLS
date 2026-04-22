@@ -9,6 +9,23 @@ model:
   precision: bf16
   quantization: none
 
+version_manifest:
+  sglang:
+    package_version: null
+    git_commit: null
+    server_help: artifacts/help/sglang_launch_server.txt
+    benchmark_help: artifacts/help/sglang_bench_serving.txt
+  vllm:
+    package_version: null
+    git_commit: null
+    server_help: artifacts/help/vllm_serve.txt
+    benchmark_help: artifacts/help/vllm_bench_serve.txt
+  tensorrt_llm:
+    package_version: null
+    git_commit: null
+    server_help: artifacts/help/trtllm_serve.txt
+    benchmark_help: artifacts/help/trtllm_benchmark_serving.txt
+
 hardware:
   gpu_model: NVIDIA H100 80GB HBM3
   gpu_count: 8
@@ -44,6 +61,7 @@ frameworks:
       tp_size: 8
       trust_remote_code: true
     search_space:
+      # Verify these names against `python -m sglang.launch_server --help`.
       attention_backend: [flashinfer, fa3]
       chunked_prefill_size: [8192, 16384]
       max_running_requests: [64, 128]
@@ -54,6 +72,7 @@ frameworks:
       tensor_parallel_size: 8
       trust_remote_code: true
     search_space:
+      # Verify these names against `vllm serve --help`.
       gpu_memory_utilization: [0.9, 0.95]
       max_num_seqs: [64, 128]
       max_num_batched_tokens: [8192, 16384]
@@ -64,6 +83,7 @@ frameworks:
       tp_size: 8
       pp_size: 1
     search_space:
-      backend: [pytorch, tensorrt]
+      # Verify these names against `trtllm-serve --help` and the selected backend.
+      backend: [pytorch, trt]
       max_batch_size: [64, 128]
       max_num_tokens: [8192, 16384]

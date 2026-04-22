@@ -27,6 +27,11 @@ Prefer native tooling when it gives better coverage:
 Do not declare a winner until each requested framework has had a reasonable
 chance to tune its important knobs.
 
+Important: the parameter lists in this skill are not a permanent compatibility
+contract. They are version-sensitive candidate knob families. Before every real
+run, record the exact framework version or git commit and verify the concrete
+CLI flag names with `--help` in the target environment.
+
 ## Required Inputs
 
 Collect these before starting a long run:
@@ -42,6 +47,13 @@ Collect these before starting a long run:
 - SLA target: TTFT, TPOT/ITL, end-to-end latency, success rate, or goodput
 - search budget: quick smoke, default search, or exhaustive search
 - output directory for logs and result artifacts
+
+Also collect a version manifest:
+
+- framework package version and git commit when available
+- container image or Python environment identifier
+- `--help` snapshots for the server command and benchmark command
+- whether each parameter in the search plan was accepted by that exact CLI
 
 If real production traffic is the goal, use the real request distribution. A
 synthetic workload is acceptable for bring-up and broad comparison, but it is not
@@ -78,6 +90,10 @@ trtllm-serve --help
 Use the framework-specific `--help` output in the target environment as the
 source of truth. Do not keep a stale launch flag just because it appears in an
 old note.
+
+Save these `--help` outputs into the run artifact directory. If a listed search
+knob is missing from the current CLI, remove or translate that knob before
+running the benchmark. Do not silently pass unknown flags.
 
 For each framework:
 
@@ -153,7 +169,7 @@ python -m sglang.bench_serving \
   --request-rate 8
 ```
 
-High-impact SGLang knobs:
+Version-sensitive SGLang knob families to verify:
 
 - `tp_size`, `pp_size`, `dp_size`, `ep_size`
 - `attention_backend`, `prefill_attention_backend`, `decode_attention_backend`
@@ -180,7 +196,7 @@ vllm bench sweep serve \
 If sweep support is unavailable, run `vllm serve` for each candidate and measure
 with `vllm bench serve`.
 
-High-impact vLLM knobs:
+Version-sensitive vLLM knob families to verify:
 
 - tensor and pipeline parallelism
 - `gpu_memory_utilization`
@@ -196,18 +212,22 @@ High-impact vLLM knobs:
 
 ### 6. Tune TensorRT-LLM
 
-Use `trtllm-serve` as the server entrypoint when the target environment supports
-it:
+Use `trtllm-serve serve` as the server entrypoint when the target environment
+supports it:
 
 ```bash
-trtllm-serve <model> --tp_size <tp> --pp_size <pp> --host 0.0.0.0 --port 8000
+trtllm-serve serve <model> --tp_size <tp> --pp_size <pp> --host 0.0.0.0 --port 8000
 ```
 
 Then benchmark the OpenAI-compatible endpoint with the TensorRT-LLM serving
 benchmark client or with the same OpenAI-compatible client used for the other
 frameworks.
 
-High-impact TensorRT-LLM knobs:
+For TensorRT-LLM 1.0.0, `benchmark_serving --dataset-name random` samples from
+ShareGPT unless you pass either `--download-path` or `--random-ids`. For a fast
+synthetic smoke test, pass `--random-ids`.
+
+Version-sensitive TensorRT-LLM knob families to verify:
 
 - `tp_size`, `pp_size`, and `ep_size`
 - PyTorch backend versus TensorRT engine path when both are available
@@ -258,4 +278,6 @@ Return a compact report with:
 Use [references/framework-matrix.md](references/framework-matrix.md) when you
 need command templates or source links for each framework. Use
 [references/example-plan.yaml](references/example-plan.yaml) as the starting
-point for a full cross-framework run plan.
+point for a full cross-framework run plan. Use
+[references/version-notes.md](references/version-notes.md) to understand which
+source snapshots informed this skill and what has or has not been smoke-tested.
