@@ -109,15 +109,6 @@ def load_rows(path: Path) -> list[dict[str, Any]]:
     return rows
 
 
-def best_by_framework(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    best: dict[str, dict[str, Any]] = {}
-    for row in rows:
-        framework = str(_get(row, "framework", "unknown"))
-        if framework not in best or _rank_key(row) > _rank_key(best[framework]):
-            best[framework] = row
-    return sorted(best.values(), key=_rank_key, reverse=True)
-
-
 def best_by_framework_and_scenario(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     best: dict[tuple[str, str], dict[str, Any]] = {}
     for row in rows:
@@ -240,54 +231,15 @@ def _append_cross_framework_table(
 
 
 def render_markdown(rows: list[dict[str, Any]]) -> str:
-    ranked = sorted(rows, key=_rank_key, reverse=True)
-    winners = best_by_framework(rows)
     scenario_winners = best_by_framework_and_scenario(rows)
-    overall = ranked[0] if ranked else None
 
     lines = ["# Benchmark Summary", ""]
-    if overall is None:
+    if not rows:
         lines.append("No rows found.")
         return "\n".join(lines) + "\n"
 
-    lines.extend(
-        [
-            "## Overall Winner",
-            "",
-            f"- Framework: `{_get(overall, 'framework', 'unknown')}`",
-            f"- Candidate: `{_get(overall, 'candidate_id', 'unknown')}`",
-            f"- SLA passed: `{_bool(overall, 'sla.passed')}`",
-            f"- Request throughput: `{_fmt(_get(overall, 'metrics.request_throughput'))}`",
-            f"- Output token throughput: `{_fmt(_get(overall, 'metrics.output_token_throughput'))}`",
-            "",
-        ]
-    )
-
     _append_best_commands_by_framework(lines, scenario_winners)
     _append_cross_framework_table(lines, scenario_winners)
-
-    lines.extend(
-        [
-            "## Best Per Framework",
-            "",
-            "| Framework | Candidate | Status | SLA | Req/s | Output tok/s | P99 TTFT ms | P99 TPOT ms | GPUs |",
-            "| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |",
-        ]
-    )
-    for row in winners:
-        lines.append(
-            "| {framework} | {candidate} | {status} | {sla} | {rps} | {otps} | {ttft} | {tpot} | {gpus} |".format(
-                framework=_get(row, "framework", ""),
-                candidate=_get(row, "candidate_id", ""),
-                status=_get(row, "status", ""),
-                sla=_bool(row, "sla.passed"),
-                rps=_fmt(_get(row, "metrics.request_throughput")),
-                otps=_fmt(_get(row, "metrics.output_token_throughput")),
-                ttft=_fmt(_get(row, "metrics.p99_ttft_ms")),
-                tpot=_fmt(_get(row, "metrics.p99_tpot_ms")),
-                gpus=_fmt(_get(row, "hardware.gpu_count")),
-            )
-        )
 
     failed = [
         row
@@ -300,7 +252,7 @@ def render_markdown(rows: list[dict[str, Any]]) -> str:
                 "",
                 "## Failed Or SLA-Failing Candidates",
                 "",
-                "These rows are an audit trail for explored but non-recommended configs. They either failed, were skipped by policy, or completed without passing the SLA.",
+                "This table records tried configs that were not selected. They either failed, were skipped by policy, or completed without passing the SLA.",
                 "",
                 "| Framework | Candidate | Status | SLA | Reason |",
                 "| --- | --- | --- | --- | --- |",

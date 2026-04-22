@@ -28,12 +28,13 @@ class CompareBenchmarkResultsTest(unittest.TestCase):
     def setUp(self) -> None:
         self.mod = load_module()
 
-    def test_best_candidate_prefers_successful_sla_passing_rows(self) -> None:
+    def test_scenario_winner_prefers_successful_sla_passing_rows(self) -> None:
         rows = [
             {
                 "framework": "sglang",
                 "candidate_id": "sglang-fast-fail",
                 "status": "ok",
+                "workload": {"scenario": "chat"},
                 "sla": {"passed": False},
                 "metrics": {
                     "request_throughput": 99,
@@ -47,6 +48,7 @@ class CompareBenchmarkResultsTest(unittest.TestCase):
                 "framework": "sglang",
                 "candidate_id": "sglang-steady",
                 "status": "ok",
+                "workload": {"scenario": "chat"},
                 "sla": {"passed": True},
                 "metrics": {
                     "request_throughput": 10,
@@ -60,6 +62,7 @@ class CompareBenchmarkResultsTest(unittest.TestCase):
                 "framework": "vllm",
                 "candidate_id": "vllm-best",
                 "status": "ok",
+                "workload": {"scenario": "chat"},
                 "sla": {"passed": True},
                 "metrics": {
                     "request_throughput": 12,
@@ -71,18 +74,19 @@ class CompareBenchmarkResultsTest(unittest.TestCase):
             },
         ]
 
-        winners = self.mod.best_by_framework(rows)
+        winners = self.mod.best_by_framework_and_scenario(rows)
         self.assertEqual(
             [row["candidate_id"] for row in winners],
             ["vllm-best", "sglang-steady"],
         )
 
         summary = self.mod.render_markdown(rows)
-        self.assertIn("`vllm`", summary)
         self.assertIn("sglang-fast-fail", summary)
         self.assertIn("Best Commands By Framework", summary)
         self.assertIn("Cross-Framework Best Comparison", summary)
-        self.assertIn("audit trail for explored but non-recommended configs", summary)
+        self.assertNotIn("Overall Winner", summary)
+        self.assertNotIn("Best Per Framework", summary)
+        self.assertIn("records tried configs that were not selected", summary)
 
     def test_load_rows_rejects_non_object_json(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -175,6 +179,8 @@ class CompareBenchmarkResultsTest(unittest.TestCase):
         self.assertIn("### `sglang`", summary)
         self.assertIn("| chat | sglang-c1", summary)
         self.assertIn("| summarization | sglang-c2", summary)
+        self.assertNotIn("Overall Winner", summary)
+        self.assertNotIn("Best Per Framework", summary)
         self.assertNotIn("Accuracy Of Selected Deployment Commands", summary)
         self.assertNotIn("MMLU", summary)
         self.assertNotIn("GSM8K", summary)

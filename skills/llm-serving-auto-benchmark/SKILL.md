@@ -397,14 +397,13 @@ Return a compact report with:
   dataset scenario and all relevant performance metrics
 - one cross-framework comparison table for the selected best command per
   framework and scenario, including the command, so the deployment choice is
-  obvious for each dataset
+  clear for each dataset
 - failed or excluded candidates with reasons. Explain that this table is an
-  audit trail, not a recommendation list: it records candidates that failed,
-  were skipped by policy, or completed but missed the SLA, so the reader can see
-  what was tried and why it was not selected.
+  record of tried configs that were not selected: candidates that failed, were
+  skipped by policy, or completed but missed the SLA.
 - exact launch command and benchmark command for each winner
 - artifact paths: canonical workload, raw results JSONL, normalized JSONL, CSV or
-  markdown summary, and key server logs
+  markdown summary, and server logs needed to debug winners or failures
 - a caveat if the workload was synthetic, if any framework did not complete a
   fair search, or if any framework needed framework-specific parameter
   substitutions
