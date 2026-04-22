@@ -56,10 +56,6 @@ def _fmt(value: Any, digits: int = 2) -> str:
     return str(value)
 
 
-def _blank_none(value: Any) -> Any:
-    return "" if value is None else value
-
-
 def _cell(value: Any, digits: int = 2) -> str:
     text = _fmt(value, digits)
     return text.replace("\n", "<br>").replace("|", "\\|")
@@ -94,70 +90,6 @@ def _artifact_summary(row: dict[str, Any]) -> str:
         if value:
             parts.append(f"{key}: {value}")
     return "<br>".join(parts)
-
-
-def _accuracy_score(row: dict[str, Any], task: str) -> Any:
-    for path in (
-        f"accuracy.{task}.accuracy",
-        f"accuracy.{task}.score",
-        f"accuracy.{task}.exact_match",
-        f"evals.{task}.accuracy",
-        f"evals.{task}.score",
-    ):
-        value = _get(row, path)
-        if value is not None:
-            return value
-    return None
-
-
-def _accuracy_count(row: dict[str, Any], task: str) -> Any:
-    for path in (
-        f"accuracy.{task}.num_examples",
-        f"accuracy.{task}.num_requests",
-        f"accuracy.{task}.samples",
-        f"evals.{task}.num_examples",
-    ):
-        value = _get(row, path)
-        if value is not None:
-            return value
-    return None
-
-
-def _mmlu_subcategory(row: dict[str, Any], name: str) -> Any:
-    for path in (
-        f"accuracy.mmlu.subcategories.{name}",
-        f"accuracy.mmlu.metrics.{name}",
-        f"accuracy.mmlu.{name}",
-        f"evals.mmlu.subcategories.{name}",
-        f"evals.mmlu.metrics.{name}",
-    ):
-        value = _get(row, path)
-        if value is not None:
-            return value
-    return None
-
-
-def _accuracy_artifacts(row: dict[str, Any]) -> str:
-    parts = []
-    for task in ("mmlu", "gsm8k"):
-        for path in (
-            f"accuracy.{task}.artifact",
-            f"accuracy.{task}.result_file",
-            f"accuracy.{task}.report",
-            f"evals.{task}.artifact",
-        ):
-            value = _get(row, path)
-            if value:
-                parts.append(f"{task}: {value}")
-                break
-    return "<br>".join(parts)
-
-
-def _has_accuracy(row: dict[str, Any]) -> bool:
-    return (
-        _accuracy_score(row, "mmlu") is not None
-        or _accuracy_score(row, "gsm8k") is not None
-    )
 
 
 def load_rows(path: Path) -> list[dict[str, Any]]:
@@ -209,8 +141,6 @@ def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         "p99_ttft_ms",
         "p99_tpot_ms",
         "gpu_count",
-        "mmlu_accuracy",
-        "gsm8k_accuracy",
         "server_command",
         "failure_reason",
     ]
@@ -232,8 +162,6 @@ def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
                     "p99_ttft_ms": _get(row, "metrics.p99_ttft_ms", ""),
                     "p99_tpot_ms": _get(row, "metrics.p99_tpot_ms", ""),
                     "gpu_count": _get(row, "hardware.gpu_count", ""),
-                    "mmlu_accuracy": _blank_none(_accuracy_score(row, "mmlu")),
-                    "gsm8k_accuracy": _blank_none(_accuracy_score(row, "gsm8k")),
                     "server_command": _server_command(row),
                     "failure_reason": _get(row, "failure_reason", ""),
                 }
@@ -311,48 +239,6 @@ def _append_cross_framework_table(
     lines.append("")
 
 
-def _append_accuracy_table(
-    lines: list[str], scenario_winners: list[dict[str, Any]]
-) -> None:
-    selected: dict[tuple[str, str], dict[str, Any]] = {}
-    scenarios_by_key: dict[tuple[str, str], set[str]] = {}
-    for row in scenario_winners:
-        key = (str(_get(row, "framework", "")), str(_get(row, "candidate_id", "")))
-        if key not in selected or (
-            not _has_accuracy(selected[key]) and _has_accuracy(row)
-        ):
-            selected[key] = row
-        scenarios_by_key.setdefault(key, set()).add(_scenario(row))
-
-    lines.extend(
-        [
-            "## Accuracy Of Selected Deployment Commands",
-            "",
-            "| Framework | Candidate | Scenarios | MMLU | MMLU stem | MMLU humanities | MMLU social sciences | MMLU other | GSM8K | MMLU examples | GSM8K examples | Accuracy artifacts |",
-            "| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |",
-        ]
-    )
-    for key, row in sorted(selected.items()):
-        scenarios = ", ".join(sorted(scenarios_by_key.get(key, set())))
-        lines.append(
-            "| {framework} | {candidate} | {scenarios} | {mmlu} | {stem} | {humanities} | {social} | {other} | {gsm8k} | {mmlu_n} | {gsm8k_n} | {artifacts} |".format(
-                framework=_cell(key[0]),
-                candidate=_cell(key[1]),
-                scenarios=_cell(scenarios),
-                mmlu=_cell(_accuracy_score(row, "mmlu"), digits=4),
-                stem=_cell(_mmlu_subcategory(row, "stem"), digits=4),
-                humanities=_cell(_mmlu_subcategory(row, "humanities"), digits=4),
-                social=_cell(_mmlu_subcategory(row, "social_sciences"), digits=4),
-                other=_cell(_mmlu_subcategory(row, "other"), digits=4),
-                gsm8k=_cell(_accuracy_score(row, "gsm8k"), digits=4),
-                mmlu_n=_cell(_accuracy_count(row, "mmlu"), digits=0),
-                gsm8k_n=_cell(_accuracy_count(row, "gsm8k"), digits=0),
-                artifacts=_cell(_accuracy_artifacts(row)),
-            )
-        )
-    lines.append("")
-
-
 def render_markdown(rows: list[dict[str, Any]]) -> str:
     ranked = sorted(rows, key=_rank_key, reverse=True)
     winners = best_by_framework(rows)
@@ -379,7 +265,6 @@ def render_markdown(rows: list[dict[str, Any]]) -> str:
 
     _append_best_commands_by_framework(lines, scenario_winners)
     _append_cross_framework_table(lines, scenario_winners)
-    _append_accuracy_table(lines, scenario_winners)
 
     lines.extend(
         [

@@ -48,27 +48,6 @@ the final summary explains what was tried.
   },
   "server_command": "python -m sglang.launch_server ...",
   "benchmark_command": "python -m sglang.bench_serving ...",
-  "accuracy": {
-    "mmlu": {
-      "accuracy": 0.742,
-      "num_examples": 14042,
-      "subcategories": {
-        "stem": 0.701,
-        "humanities": 0.781,
-        "social_sciences": 0.764,
-        "other": 0.733
-      },
-      "command": "python -m sglang.test.run_eval --eval-name mmlu ...",
-      "result_file": "/bench/sglang/accuracy/mmlu.json",
-      "report": "/bench/sglang/accuracy/mmlu.html"
-    },
-    "gsm8k": {
-      "accuracy": 0.835,
-      "num_examples": 1314,
-      "command": "python -m sglang.test.run_eval --eval-name gsm8k ...",
-      "result_file": "/bench/sglang/accuracy/gsm8k.json"
-    }
-  },
   "validated_cli_flags": {
     "server": ["tp_size", "attention_backend"],
     "benchmark": ["dataset_name", "request_rate", "max_concurrency"]
@@ -115,10 +94,3 @@ The markdown summary must include these sections:
 2. `Cross-Framework Best Comparison`: one table that compares the best SGLang,
    vLLM, and TensorRT-LLM command for each scenario. Sort each scenario by the
    ranking rule above so the best deployment choice is first.
-3. `Accuracy Of Selected Deployment Commands`: one table for the selected
-   deployment commands. Include MMLU final accuracy, MMLU subgroup accuracy when
-   available, GSM8K accuracy, evaluated example counts, and accuracy artifacts.
-
-Accuracy rows are required for a final report. If the evaluator cannot provide
-MMLU subgroup metrics for a framework, keep the final MMLU score and leave the
-subgroup columns empty with a note in the artifact or caveat text.

@@ -1,4 +1,4 @@
 interface:
   display_name: "LLM Serving Auto Benchmark"
-  short_description: "Compare SGLang, vLLM, and TensorRT-LLM serving performance and accuracy"
-  default_prompt: "Use $llm-serving-auto-benchmark to compare SGLang, vLLM, and TensorRT-LLM for one model under the same workload and SLA. Return per-framework best command tables, a cross-framework performance comparison table, full MMLU/GSM8K accuracy for selected commands, and artifact paths."
+  short_description: "Compare SGLang, vLLM, and TensorRT-LLM serving performance"
+  default_prompt: "Use $llm-serving-auto-benchmark to compare SGLang, vLLM, and TensorRT-LLM for one model under the same workload and SLA. Return per-framework best command tables, a cross-framework performance comparison table, failed candidate notes, and artifact paths."

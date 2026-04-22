@@ -111,8 +111,10 @@ class CompareBenchmarkResultsTest(unittest.TestCase):
 
         self.assertIn("trt-c1", text)
         self.assertIn("server exited", text)
+        self.assertNotIn("mmlu_accuracy", text)
+        self.assertNotIn("gsm8k_accuracy", text)
 
-    def test_renders_scenario_tables_and_accuracy(self) -> None:
+    def test_renders_scenario_tables(self) -> None:
         rows = [
             {
                 "framework": "sglang",
@@ -129,19 +131,6 @@ class CompareBenchmarkResultsTest(unittest.TestCase):
                 },
                 "hardware": {"gpu_count": 1},
                 "server_command": "python -m sglang.launch_server --model-path m",
-                "accuracy": {
-                    "mmlu": {
-                        "accuracy": 0.72,
-                        "num_examples": 14042,
-                        "subcategories": {
-                            "stem": 0.68,
-                            "humanities": 0.74,
-                            "social_sciences": 0.76,
-                            "other": 0.71,
-                        },
-                    },
-                    "gsm8k": {"accuracy": 0.81, "num_examples": 1319},
-                },
             },
             {
                 "framework": "vllm",
@@ -185,10 +174,9 @@ class CompareBenchmarkResultsTest(unittest.TestCase):
         self.assertIn("### `sglang`", summary)
         self.assertIn("| chat | sglang-c1", summary)
         self.assertIn("| summarization | sglang-c2", summary)
-        self.assertIn("Accuracy Of Selected Deployment Commands", summary)
-        self.assertIn("| sglang | sglang-c1 | chat | 0.7200", summary)
-        self.assertIn("0.6800", summary)
-        self.assertIn("0.8100", summary)
+        self.assertNotIn("Accuracy Of Selected Deployment Commands", summary)
+        self.assertNotIn("MMLU", summary)
+        self.assertNotIn("GSM8K", summary)
 
     def test_cli_writes_markdown_and_csv(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

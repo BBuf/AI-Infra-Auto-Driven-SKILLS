@@ -55,24 +55,6 @@ benchmark:
   extra_request_body:
     temperature: 0.0
 
-accuracy:
-  enabled: true
-  evaluator: sglang.test.run_eval
-  run_after_search: selected_commands_only
-  full_dataset: true
-  api:
-    mmlu: chat
-    gsm8k: completion
-  tasks:
-    mmlu:
-      num_examples: null
-      require_subcategories: true
-      expected_subcategories: [stem, humanities, social_sciences, other]
-    gsm8k:
-      num_examples: null
-      num_shots: 5
-  output_dir: /bench/results/llm-serving-auto-benchmark/accuracy
-
 sla:
   max_p99_ttft_ms: 2000
   max_p99_tpot_ms: 80

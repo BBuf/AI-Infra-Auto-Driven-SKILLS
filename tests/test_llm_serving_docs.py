@@ -55,6 +55,31 @@ class LlmServingDocsTest(unittest.TestCase):
         self.assertIn("--ipc=host", runbook)
         self.assertIn("-e NCCL_IB_DISABLE=1", runbook)
 
+    def test_dataset_accuracy_is_not_in_default_contract(self) -> None:
+        expected_files = [
+            "SKILL.md",
+            "agents/openai.yaml",
+            "references/example-plan.yaml",
+            "references/framework-matrix.md",
+            "references/result-schema.md",
+            "references/version-notes.md",
+        ]
+
+        blocked_terms = [
+            "accuracy",
+            "Accuracy",
+            "mmlu",
+            "MMLU",
+            "gsm8k",
+            "GSM8K",
+            "run_eval",
+        ]
+        for rel_path in expected_files:
+            with self.subTest(rel_path=rel_path):
+                text = read_skill_file(*rel_path.split("/"))
+                for term in blocked_terms:
+                    self.assertNotIn(term, text)
+
 
 if __name__ == "__main__":
     unittest.main()
