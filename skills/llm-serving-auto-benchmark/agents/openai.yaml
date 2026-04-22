@@ -1,0 +1,4 @@
+interface:
+  display_name: "LLM Serving Auto Benchmark"
+  short_description: "Compare SGLang, vLLM, and TensorRT-LLM serving performance"
+  default_prompt: "Use $llm-serving-auto-benchmark to compare SGLang, vLLM, and TensorRT-LLM for one model under the same workload and SLA. Return the best deployment command per framework, the overall SLA-passing winner, and the benchmark artifact paths."

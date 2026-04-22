@@ -6,6 +6,15 @@ Agent skills for SGLang/vLLM/TensorRT-LLM development, profiling, and production
 
 ```
 skills/
+├── llm-serving-auto-benchmark/
+│   ├── SKILL.md
+│   ├── references/
+│   │   ├── example-plan.yaml
+│   │   ├── framework-matrix.md
+│   │   ├── result-schema.md
+│   │   └── version-notes.md
+│   └── scripts/
+│       └── compare_benchmark_results.py
 ├── h100/
 │   └── SKILL.md
 ├── h100-sglang-diffusion/
