@@ -21,6 +21,7 @@ the final summary explains what was tried.
   },
   "workload": {
     "kind": "custom",
+    "scenario": "chat",
     "dataset_path": "/bench/workload.autobench.jsonl",
     "num_prompts": 1000,
     "request_rate": 16,
@@ -82,3 +83,19 @@ The default ranking is:
 
 If the user cares more about token throughput than request throughput, swap
 steps 3 and 4 and state that in the final report.
+
+## Final Report Tables
+
+The markdown summary must include these sections:
+
+1. `Best Commands By Framework`: one table per framework. Each table has one row
+   per workload scenario and includes the best candidate, SLA result, throughput,
+   latency metrics, GPU count, exact server command, and artifacts.
+2. `Cross-Framework Best Comparison`: one table that compares the best SGLang,
+   vLLM, and TensorRT-LLM command for each scenario. Sort each scenario by the
+   ranking rule above so the best deployment choice is first.
+3. `Failed Or SLA-Failing Candidates`: include this table when any candidate
+   failed, was skipped, or completed without passing SLA. This table records
+   tried configs that were not selected. Keep each reason concrete enough to
+   tell whether the candidate needs a retry, lower concurrency, a parameter fix,
+   or no further action.

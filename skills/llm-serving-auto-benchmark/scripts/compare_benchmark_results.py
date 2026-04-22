@@ -48,12 +48,52 @@ def _rank_key(row: dict[str, Any]) -> tuple[Any, ...]:
     )
 
 
+def _is_winner_candidate(row: dict[str, Any]) -> bool:
+    return _get(row, "status") == "ok" and _bool(row, "sla.passed")
+
+
 def _fmt(value: Any, digits: int = 2) -> str:
     if value is None:
         return ""
     if isinstance(value, float):
         return f"{value:.{digits}f}"
     return str(value)
+
+
+def _cell(value: Any, digits: int = 2) -> str:
+    text = _fmt(value, digits)
+    return text.replace("\n", "<br>").replace("|", "\\|")
+
+
+def _scenario(row: dict[str, Any]) -> str:
+    for path in (
+        "workload.scenario",
+        "workload.scenario_name",
+        "workload.dataset_scenario",
+        "workload.dataset_name",
+        "workload.kind",
+        "scenario",
+    ):
+        value = _get(row, path)
+        if value:
+            return str(value)
+    return "default"
+
+
+def _server_command(row: dict[str, Any]) -> str:
+    return str(_get(row, "server_command") or _get(row, "launch_command") or "")
+
+
+def _artifact_summary(row: dict[str, Any]) -> str:
+    artifacts = _get(row, "artifacts", {})
+    if not isinstance(artifacts, dict):
+        return ""
+    parts = []
+    for key in ("raw_result", "server_log", "benchmark_log", "summary"):
+        value = artifacts.get(key)
+        if value:
+            parts.append(f"{key}: {value}")
+    return "<br>".join(parts)
 
 
 def load_rows(path: Path) -> list[dict[str, Any]]:
@@ -73,18 +113,23 @@ def load_rows(path: Path) -> list[dict[str, Any]]:
     return rows
 
 
-def best_by_framework(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    best: dict[str, dict[str, Any]] = {}
+def best_by_framework_and_scenario(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    best: dict[tuple[str, str], dict[str, Any]] = {}
     for row in rows:
-        framework = str(_get(row, "framework", "unknown"))
-        if framework not in best or _rank_key(row) > _rank_key(best[framework]):
-            best[framework] = row
-    return sorted(best.values(), key=_rank_key, reverse=True)
+        if not _is_winner_candidate(row):
+            continue
+        key = (str(_get(row, "framework", "unknown")), _scenario(row))
+        if key not in best or _rank_key(row) > _rank_key(best[key]):
+            best[key] = row
+    return sorted(
+        best.values(), key=lambda row: (_scenario(row), _rank_key(row)), reverse=True
+    )
 
 
 def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
     fields = [
         "framework",
+        "scenario",
         "candidate_id",
         "status",
         "sla_passed",
@@ -93,6 +138,7 @@ def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         "p99_ttft_ms",
         "p99_tpot_ms",
         "gpu_count",
+        "server_command",
         "failure_reason",
     ]
     with path.open("w", encoding="utf-8", newline="") as f:
@@ -102,6 +148,7 @@ def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
             writer.writerow(
                 {
                     "framework": _get(row, "framework", ""),
+                    "scenario": _scenario(row),
                     "candidate_id": _get(row, "candidate_id", ""),
                     "status": _get(row, "status", ""),
                     "sla_passed": _bool(row, "sla.passed"),
@@ -112,51 +159,93 @@ def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
                     "p99_ttft_ms": _get(row, "metrics.p99_ttft_ms", ""),
                     "p99_tpot_ms": _get(row, "metrics.p99_tpot_ms", ""),
                     "gpu_count": _get(row, "hardware.gpu_count", ""),
+                    "server_command": _server_command(row),
                     "failure_reason": _get(row, "failure_reason", ""),
                 }
             )
 
 
+def _append_best_commands_by_framework(
+    lines: list[str], scenario_winners: list[dict[str, Any]]
+) -> None:
+    frameworks = sorted(
+        {str(_get(row, "framework", "unknown")) for row in scenario_winners}
+    )
+    lines.extend(["## Best Commands By Framework", ""])
+    for framework in frameworks:
+        lines.extend(
+            [
+                f"### `{framework}`",
+                "",
+                "| Scenario | Candidate | Status | SLA | Req/s | Output tok/s | Total tok/s | P99 TTFT ms | P99 TPOT ms | Success rate | GPUs | Server command | Artifacts |",
+                "| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |",
+            ]
+        )
+        rows = [row for row in scenario_winners if _get(row, "framework") == framework]
+        for row in sorted(rows, key=_scenario):
+            lines.append(
+                "| {scenario} | {candidate} | {status} | {sla} | {rps} | {otps} | {ttps} | {ttft} | {tpot} | {success} | {gpus} | {command} | {artifacts} |".format(
+                    scenario=_cell(_scenario(row)),
+                    candidate=_cell(_get(row, "candidate_id", "")),
+                    status=_cell(_get(row, "status", "")),
+                    sla=_cell(_bool(row, "sla.passed")),
+                    rps=_cell(_get(row, "metrics.request_throughput")),
+                    otps=_cell(_get(row, "metrics.output_token_throughput")),
+                    ttps=_cell(_get(row, "metrics.total_token_throughput")),
+                    ttft=_cell(_get(row, "metrics.p99_ttft_ms")),
+                    tpot=_cell(_get(row, "metrics.p99_tpot_ms")),
+                    success=_cell(_get(row, "metrics.success_rate")),
+                    gpus=_cell(_get(row, "hardware.gpu_count")),
+                    command=_cell(_server_command(row)),
+                    artifacts=_cell(_artifact_summary(row)),
+                )
+            )
+        lines.append("")
+
+
+def _append_cross_framework_table(
+    lines: list[str], scenario_winners: list[dict[str, Any]]
+) -> None:
+    lines.extend(
+        [
+            "## Cross-Framework Best Comparison",
+            "",
+            "| Scenario | Rank | Framework | Candidate | SLA | Req/s | Output tok/s | P99 TTFT ms | P99 TPOT ms | GPUs | Server command |",
+            "| --- | ---: | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | --- |",
+        ]
+    )
+    scenario_names = sorted({_scenario(row) for row in scenario_winners})
+    for scenario_name in scenario_names:
+        rows = [row for row in scenario_winners if _scenario(row) == scenario_name]
+        for rank, row in enumerate(sorted(rows, key=_rank_key, reverse=True), 1):
+            lines.append(
+                "| {scenario} | {rank} | {framework} | {candidate} | {sla} | {rps} | {otps} | {ttft} | {tpot} | {gpus} | {command} |".format(
+                    scenario=_cell(scenario_name),
+                    rank=rank,
+                    framework=_cell(_get(row, "framework", "")),
+                    candidate=_cell(_get(row, "candidate_id", "")),
+                    sla=_cell(_bool(row, "sla.passed")),
+                    rps=_cell(_get(row, "metrics.request_throughput")),
+                    otps=_cell(_get(row, "metrics.output_token_throughput")),
+                    ttft=_cell(_get(row, "metrics.p99_ttft_ms")),
+                    tpot=_cell(_get(row, "metrics.p99_tpot_ms")),
+                    gpus=_cell(_get(row, "hardware.gpu_count")),
+                    command=_cell(_server_command(row)),
+                )
+            )
+    lines.append("")
+
+
 def render_markdown(rows: list[dict[str, Any]]) -> str:
-    ranked = sorted(rows, key=_rank_key, reverse=True)
-    winners = best_by_framework(rows)
-    overall = ranked[0] if ranked else None
+    scenario_winners = best_by_framework_and_scenario(rows)
 
     lines = ["# Benchmark Summary", ""]
-    if overall is None:
+    if not rows:
         lines.append("No rows found.")
         return "\n".join(lines) + "\n"
 
-    lines.extend(
-        [
-            "## Overall Winner",
-            "",
-            f"- Framework: `{_get(overall, 'framework', 'unknown')}`",
-            f"- Candidate: `{_get(overall, 'candidate_id', 'unknown')}`",
-            f"- SLA passed: `{_bool(overall, 'sla.passed')}`",
-            f"- Request throughput: `{_fmt(_get(overall, 'metrics.request_throughput'))}`",
-            f"- Output token throughput: `{_fmt(_get(overall, 'metrics.output_token_throughput'))}`",
-            "",
-            "## Best Per Framework",
-            "",
-            "| Framework | Candidate | Status | SLA | Req/s | Output tok/s | P99 TTFT ms | P99 TPOT ms | GPUs |",
-            "| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |",
-        ]
-    )
-    for row in winners:
-        lines.append(
-            "| {framework} | {candidate} | {status} | {sla} | {rps} | {otps} | {ttft} | {tpot} | {gpus} |".format(
-                framework=_get(row, "framework", ""),
-                candidate=_get(row, "candidate_id", ""),
-                status=_get(row, "status", ""),
-                sla=_bool(row, "sla.passed"),
-                rps=_fmt(_get(row, "metrics.request_throughput")),
-                otps=_fmt(_get(row, "metrics.output_token_throughput")),
-                ttft=_fmt(_get(row, "metrics.p99_ttft_ms")),
-                tpot=_fmt(_get(row, "metrics.p99_tpot_ms")),
-                gpus=_fmt(_get(row, "hardware.gpu_count")),
-            )
-        )
+    _append_best_commands_by_framework(lines, scenario_winners)
+    _append_cross_framework_table(lines, scenario_winners)
 
     failed = [
         row
@@ -168,6 +257,8 @@ def render_markdown(rows: list[dict[str, Any]]) -> str:
             [
                 "",
                 "## Failed Or SLA-Failing Candidates",
+                "",
+                "This table records tried configs that were not selected. They either failed, were skipped by policy, or completed without passing the SLA.",
                 "",
                 "| Framework | Candidate | Status | SLA | Reason |",
                 "| --- | --- | --- | --- | --- |",

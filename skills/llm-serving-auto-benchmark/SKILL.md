@@ -7,12 +7,33 @@ description: Cross-framework LLM serving benchmark skill for SGLang, vLLM, and T
 
 ## Overview
 
-Use this skill to compare SGLang, vLLM, and TensorRT-LLM fairly for the same
-model and workload.
+Use this skill to compare SGLang, vLLM, and TensorRT-LLM for the same model and
+workload.
 
-The goal is not to run one benchmark command per framework. The goal is to run a
-small, controlled search for each framework, normalize the results, and report
-the best configuration under the same latency and throughput constraints.
+Use a config-driven workflow:
+
+- keep launch-only capacity choices in each framework's `base_server_flags`
+- put the search knobs in `search_space`
+- run the same dataset scenarios for every framework
+- generate a bounded candidate list from `search_space`, with the baseline
+  candidate included first
+- keep failed candidates in the result file
+- pick the best SLA-passing candidate after normalizing the results
+
+For model-specific starting points, prefer the shipped configs in
+`configs/cookbook-llm/`. They reuse the SGLang auto-benchmark cookbook model set
+and translate it into framework-native SGLang, vLLM, and TensorRT-LLM server
+flags. Validate those configs before a real run:
+
+```bash
+python skills/llm-serving-auto-benchmark/scripts/validate_cookbook_configs.py \
+  skills/llm-serving-auto-benchmark/configs/cookbook-llm
+```
+
+If you have captured target-environment `--help` files, add
+`--help-dir <artifact-help-dir>`. That check only loads configs, verifies the
+server flag names, and renders candidate commands; it does not launch model
+servers.
 
 Prefer native tooling when it gives better coverage:
 
@@ -24,13 +45,26 @@ Prefer native tooling when it gives better coverage:
   TensorRT-LLM serving benchmark client or a common OpenAI-compatible benchmark
   client
 
-Do not declare a winner until each requested framework has had a reasonable
-chance to tune its important knobs.
+TensorRT-LLM has one hard scope rule in this skill: the server backend is fixed
+to `trtllm-serve serve --backend pytorch`. Do not search TensorRT-LLM backend
+choice. If a request, config, or candidate asks for `trt`, an engine backend, or
+any other non-PyTorch TensorRT-LLM server backend, reject that candidate as
+unsupported for this skill and record the reason. This does not change the
+benchmark client backend; the TensorRT-LLM benchmark client still uses
+OpenAI-compatible modes such as `--backend openai` or `--backend openai-chat`.
 
-Important: the parameter lists in this skill are not a permanent compatibility
-contract. They are version-sensitive candidate knob families. Before every real
-run, record the exact framework version or git commit and verify the concrete
-CLI flag names with `--help` in the target environment.
+Only pick a winner after each requested framework has had its main serving knobs
+tuned.
+
+The parameter lists in this skill are not a compatibility contract. They are
+version-sensitive candidate knob families. Before every real run, record the
+exact framework version or git commit and verify the concrete CLI flag names
+with `--help` in the target environment.
+
+The default search style should stay close to SGLang auto benchmark: start from
+a mostly pure-TP baseline, sweep a small set of high-impact runtime knobs, and
+cap the first pass around 10 candidates per framework. Do not search memory
+fractions by default.
 
 ## Required Inputs
 
@@ -44,6 +78,8 @@ Collect these before starting a long run:
 - endpoint shape: completions, chat completions, responses, or custom
 - workload source: real traffic JSONL, ShareGPT, random synthetic, or generated
   shared-prefix synthetic
+- dataset scenarios when synthetic traffic is used, for example `chat` and
+  `summarization`
 - SLA target: TTFT, TPOT/ITL, end-to-end latency, success rate, or goodput
 - search budget: quick smoke, default search, or exhaustive search
 - output directory for logs and result artifacts
@@ -56,8 +92,8 @@ Also collect a version manifest:
 - whether each parameter in the search plan was accepted by that exact CLI
 
 If real production traffic is the goal, use the real request distribution. A
-synthetic workload is acceptable for bring-up and broad comparison, but it is not
-enough to choose a production winner.
+synthetic workload is fine for bring-up and first-pass comparison, but it is not
+enough for a production choice.
 
 ## Fairness Rules
 
@@ -82,18 +118,31 @@ Use these rules throughout the benchmark:
 Verify all requested frameworks before starting a search:
 
 ```bash
+python -m sglang.launch_server --help
 python -m sglang.bench_serving --help
+vllm serve --help
+vllm serve --help=all
 vllm bench serve --help
-trtllm-serve --help
+vllm bench serve --help=all
+vllm bench sweep serve --help=all
+trtllm-serve serve --help
+python -m tensorrt_llm.serve.scripts.benchmark_serving --help
 ```
 
 Use the framework-specific `--help` output in the target environment as the
 source of truth. Do not keep a stale launch flag just because it appears in an
 old note.
 
+vLLM 0.19 and newer use grouped help. Plain `vllm serve --help` only shows the
+groups, so capture `--help=all` before deciding whether a search knob exists.
+
 Save these `--help` outputs into the run artifact directory. If a listed search
 knob is missing from the current CLI, remove or translate that knob before
 running the benchmark. Do not silently pass unknown flags.
+
+For TensorRT-LLM, also confirm that `trtllm-serve serve --help` accepts
+`--backend pytorch`. If it does not, mark TensorRT-LLM unsupported in that
+environment rather than falling back to a different server backend.
 
 For each framework:
 
@@ -102,6 +151,17 @@ For each framework:
 3. Send one streaming request and verify TTFT can be measured.
 4. Run one tiny benchmark with at least 5 requests.
 5. Save the launch command, benchmark command, server log, and benchmark output.
+
+Before any GPU-backed smoke run, check the requested GPU ids directly with
+`nvidia-smi`. If a requested GPU is already in use, stop and record that fact.
+Do not silently borrow a different GPU count for a performance comparison. It is
+fine to run a smaller one-GPU smoke only when the result is clearly labeled as a
+flow check rather than a fair throughput comparison.
+
+If the target environment runs through containers, follow
+[references/container-runbook.md](references/container-runbook.md). Save the
+image tags, pull commands, launch commands, server logs, benchmark logs, and
+cleanup commands in the artifact directory.
 
 ### 2. Normalize The Workload
 
@@ -132,6 +192,26 @@ When converting user data:
 - keep multimodal or tool-call payloads only if all requested frameworks support
   the chosen endpoint shape
 
+For synthetic bring-up, follow the two-scenario shape used by the SGLang auto
+benchmark references:
+
+```yaml
+dataset:
+  kind: random
+  num_prompts: 80
+  scenario_names: [chat, summarization]
+  input_len: [1000, 8000]
+  output_len: [1000, 1000]
+```
+
+Each aligned `input_len` / `output_len` pair is one scenario. Do not take the
+cartesian product unless the user asks for that.
+
+Before searching any sequence-length limit, compute the largest
+`input_len + output_len` in the dataset. SGLang `context_length`, vLLM
+`max_model_len`, and TensorRT-LLM `max_seq_len` must be at least that value for
+every candidate that is expected to run all scenarios.
+
 ### 3. Pick A Search Tier
 
 Use the smallest tier that can answer the user's question:
@@ -144,10 +224,23 @@ Use the smallest tier that can answer the user's question:
 Default budget:
 
 - `num_prompts: 80` for quick comparison
-- `search.max_candidates: 8` per framework for the first useful pass
+- `search.max_candidates_per_framework: 10` for the first useful pass
+- candidate generation: baseline first, then a bounded product or ordered
+  candidate list from `search_space`
 - at most 5 QPS search rounds unless the user asks for more
 - stop early when every candidate in one framework is clearly OOM or fails the
   basic health check
+
+Keep these in `base_server_flags` unless the user specifically wants a capacity
+or memory study:
+
+- SGLang `mem_fraction_static`
+- SGLang `schedule_policy`
+- vLLM `gpu_memory_utilization`
+- TensorRT-LLM `kv_cache_free_gpu_memory_fraction`
+
+These are real knobs, but they widen the search quickly and often turn a serving
+comparison into a memory-limit study.
 
 ### 4. Tune SGLang
 
@@ -166,7 +259,9 @@ python -m sglang.bench_serving \
   --random-input-len 1024 \
   --random-output-len 256 \
   --num-prompts 80 \
-  --request-rate 8
+  --request-rate 8 \
+  --output-file /path/to/sglang/results.json \
+  --output-details
 ```
 
 Version-sensitive SGLang knob families to verify:
@@ -176,9 +271,17 @@ Version-sensitive SGLang knob families to verify:
 - `sampling_backend`
 - `max_running_requests`, `max_queued_requests`
 - `chunked_prefill_size`, `prefill_max_requests`, `max_prefill_tokens`
-- `max_total_tokens`, `page_size`, `mem_fraction_static`
+- `max_total_tokens`, `page_size`
 - CUDA graph and piecewise CUDA graph settings
 - speculative or EAGLE settings only after the non-speculative baseline is tuned
+
+Keep `mem_fraction_static` and `schedule_policy` pinned in the default pass,
+matching the SGLang auto benchmark cookbook style.
+
+For quick smoke tests, it is reasonable to disable CUDA graph and piecewise CUDA
+graph startup work if the goal is only to prove the framework flow. Record those
+flags in the artifact. Do not carry that smoke setting into a performance winner
+unless the user asked to tune eager-mode serving.
 
 ### 5. Tune vLLM
 
@@ -198,17 +301,32 @@ with `vllm bench serve`.
 
 Version-sensitive vLLM knob families to verify:
 
-- tensor and pipeline parallelism
+- tensor, pipeline, data, decode-context, and expert parallelism
 - `gpu_memory_utilization`
 - `max_num_seqs`
 - `max_num_batched_tokens`
 - `max_model_len`
-- chunked prefill settings
+- `enable_chunked_prefill`, partial prefill limits, and DBO thresholds
 - KV cache dtype and block size
 - dtype and quantization settings
 - CUDA graph capture sizes or eager-mode toggles when relevant
 - prefix cache and speculative decoding settings only when the workload needs
   those features
+
+vLLM should get a normal sweep, not one baseline command. See
+[references/parameter-coverage.md](references/parameter-coverage.md) for the
+H100-verified flag families.
+
+Keep `gpu_memory_utilization` in the baseline for the default pass. Search it
+only when the question is explicitly about fitting the model or trading capacity
+against throughput.
+
+Keep DBO and all2all backend settings out of the default pass unless the target
+vLLM environment is already set up for them. They are real tuning knobs, but a
+candidate can fail at startup if the required all2all backend is not available.
+Also preflight concurrent partial prefill before raising
+`max_num_partial_prefills` above 1; some model/runtime combinations reject it at
+startup.
 
 ### 6. Tune TensorRT-LLM
 
@@ -216,7 +334,13 @@ Use `trtllm-serve serve` as the server entrypoint when the target environment
 supports it:
 
 ```bash
-trtllm-serve serve <model> --tp_size <tp> --pp_size <pp> --host 0.0.0.0 --port 8000
+trtllm-serve serve <model> \
+  --backend pytorch \
+  --tp_size <tp> \
+  --pp_size <pp> \
+  --kv_cache_free_gpu_memory_fraction 0.75 \
+  --host 0.0.0.0 \
+  --port 8000
 ```
 
 Then benchmark the OpenAI-compatible endpoint with the TensorRT-LLM serving
@@ -227,18 +351,36 @@ For TensorRT-LLM 1.0.0, `benchmark_serving --dataset-name random` samples from
 ShareGPT unless you pass either `--download-path` or `--random-ids`. For a fast
 synthetic smoke test, pass `--random-ids`.
 
+TensorRT-LLM flag names are especially version-sensitive. In the H100
+TensorRT-LLM 1.0.0 image, the KV-cache memory flag accepted by
+`trtllm-serve serve` is `--kv_cache_free_gpu_memory_fraction`, not
+`--free_gpu_memory_fraction`. Verify this with `trtllm-serve serve --help`
+before running a search.
+
+TensorRT-LLM backend policy for this skill:
+
+- launch the server with `--backend pytorch`
+- keep `backend: pytorch` in `base_server_flags`
+- do not add `backend` to `search_space`
+- reject `trt`, engine-backed serving, or any other non-PyTorch TensorRT-LLM
+  server backend as unsupported for this skill
+
 Version-sensitive TensorRT-LLM knob families to verify:
 
 - `tp_size`, `pp_size`, and `ep_size`
-- PyTorch backend versus TensorRT engine path when both are available
-- engine build options, quantization, and plugin selections
 - max batch size, max sequence length, max number of tokens, and KV-cache budget
 - inflight batching and scheduler options
-- extra LLM API options YAML used by `trtllm-serve`
+- extra LLM API options YAML used by `trtllm-serve` with the PyTorch backend
 
-Because TensorRT-LLM can involve engine build time, keep build artifacts and
-server artifacts separate from benchmark outputs. Report build time separately
-from serving performance.
+The `trtllm-serve serve` CLI exposes fewer direct runtime knobs than SGLang or
+vLLM. Use direct flags when they exist, then use `--extra_llm_api_options` for
+PyTorch-backend settings that are not top-level CLI flags. Keep unsupported
+backend or engine requests in the failure table instead of translating them.
+
+Keep `kv_cache_free_gpu_memory_fraction` in the baseline for the default pass.
+Search `max_batch_size`, `max_num_tokens`, `max_seq_len`, and validated
+PyTorch-backend config options first. The server backend remains fixed to
+`pytorch`.
 
 ### 7. Normalize Results
 
@@ -266,14 +408,20 @@ Return a compact report with:
 
 - workload and SLA used
 - hardware and framework versions
-- best candidate per framework
-- overall winner under the SLA
-- failed or excluded candidates with reasons
+- for each framework, one table listing the best deployment command for each
+  dataset scenario and all relevant performance metrics
+- one cross-framework comparison table for the selected best command per
+  framework and scenario, including the command, so the deployment choice is
+  clear for each dataset
+- failed or excluded candidates with reasons. Explain that this table is an
+  record of tried configs that were not selected: candidates that failed, were
+  skipped by policy, or completed but missed the SLA.
 - exact launch command and benchmark command for each winner
 - artifact paths: canonical workload, raw results JSONL, normalized JSONL, CSV or
-  markdown summary, and key server logs
-- a caveat if the workload was synthetic or if any framework did not complete a
-  fair search
+  markdown summary, and server logs needed to debug winners or failures
+- a caveat if the workload was synthetic, if any framework did not complete a
+  fair search, or if any framework needed framework-specific parameter
+  substitutions
 
 Use [references/framework-matrix.md](references/framework-matrix.md) when you
 need command templates or source links for each framework. Use
