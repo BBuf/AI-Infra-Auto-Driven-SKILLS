@@ -43,6 +43,7 @@ class LlmServingDocsTest(unittest.TestCase):
             "references/parameter-coverage.md",
             "references/container-runbook.md",
             "references/version-notes.md",
+            "references/cookbook-configs.md",
         ]
 
         for rel_path in expected_files:
@@ -63,6 +64,7 @@ class LlmServingDocsTest(unittest.TestCase):
             "references/framework-matrix.md",
             "references/result-schema.md",
             "references/version-notes.md",
+            "references/cookbook-configs.md",
         ]
 
         blocked_terms = [

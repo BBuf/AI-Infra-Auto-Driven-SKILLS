@@ -98,6 +98,35 @@ empty, so `python -m sglang.auto_benchmark run` failed before launching a real
 candidate. Do not count those SGLang cells as validated. The later runs below
 supersede that note.
 
+### Cookbook Config Read Check
+
+On 2026-04-23, the reusable cookbook config set was checked on `h100_sglang`
+without launching model servers.
+
+Remote help directory:
+
+`/tmp/llm_serving_cookbook_config_help_20260423`
+
+Local validation command:
+
+```bash
+python skills/llm-serving-auto-benchmark/scripts/validate_cookbook_configs.py \
+  --help-dir /tmp/llm_serving_cookbook_config_help_20260423 \
+  skills/llm-serving-auto-benchmark/configs/cookbook-llm
+```
+
+Result: all 38 cookbook-derived configs loaded, generated bounded candidate
+server commands, and passed concrete server-flag validation against the captured
+help files. This check did not start model servers.
+
+Captured server help:
+
+| CLI | Help file | Flags |
+| --- | --- | ---: |
+| `python -m sglang.launch_server --help` | `sglang_launch_server.txt` | 384 |
+| `vllm serve --help=all` | `vllm_serve_all.txt` | 302 |
+| `trtllm-serve serve --help` | `trtllm_serve.txt` | 23 |
+
 ### Validated Smoke Matrix
 
 All rows used a tiny random workload: 4 prompts, 32 input tokens, 8 output

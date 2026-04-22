@@ -20,6 +20,21 @@ Use a config-driven workflow:
 - keep failed candidates in the result file
 - pick the best SLA-passing candidate after normalizing the results
 
+For model-specific starting points, prefer the shipped configs in
+`configs/cookbook-llm/`. They reuse the SGLang auto-benchmark cookbook model set
+and translate it into framework-native SGLang, vLLM, and TensorRT-LLM server
+flags. Validate those configs before a real run:
+
+```bash
+python skills/llm-serving-auto-benchmark/scripts/validate_cookbook_configs.py \
+  skills/llm-serving-auto-benchmark/configs/cookbook-llm
+```
+
+If you have captured target-environment `--help` files, add
+`--help-dir <artifact-help-dir>`. That check only loads configs, verifies the
+server flag names, and renders candidate commands; it does not launch model
+servers.
+
 Prefer native tooling when it gives better coverage:
 
 - SGLang: `python -m sglang.auto_benchmark` when available, otherwise

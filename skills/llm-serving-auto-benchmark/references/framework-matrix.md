@@ -13,6 +13,8 @@ For parameter coverage by framework, see
 [parameter-coverage.md](parameter-coverage.md). For Docker image pull, launch,
 benchmark, and cleanup commands, see
 [container-runbook.md](container-runbook.md).
+For the reusable cookbook-derived config set and validation workflow, see
+[cookbook-configs.md](cookbook-configs.md).
 
 ## Source Links
 
@@ -20,6 +22,7 @@ benchmark, and cleanup commands, see
 - vLLM benchmark sweeps: <https://docs.vllm.ai/en/latest/benchmarking/sweeps/>
 - vLLM `bench sweep serve` CLI: <https://docs.vllm.ai/en/latest/cli/bench/sweep/serve.html>
 - TensorRT-LLM `trtllm-serve`: <https://nvidia.github.io/TensorRT-LLM/commands/trtllm-serve/trtllm-serve.html>
+- TensorRT-LLM model recipes: <https://nvidia.github.io/TensorRT-LLM/deployment-guide/index.html>
 - TensorRT-LLM serving benchmark tutorial: <https://nvidia.github.io/TensorRT-LLM/1.2.0rc6/commands/trtllm-serve/run-benchmark-with-trtllm-serve.html>
 
 ## Command Templates
