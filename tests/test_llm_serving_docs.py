@@ -86,7 +86,8 @@ class LlmServingDocsTest(unittest.TestCase):
 
         for text in (skill, schema):
             normalized = " ".join(text.split())
-            self.assertIn("audit trail", normalized)
+            self.assertIn("tried configs", normalized)
+            self.assertIn("not selected", normalized)
             self.assertIn("failed", normalized)
             self.assertIn("skipped", normalized)
             self.assertIn("SLA", normalized)

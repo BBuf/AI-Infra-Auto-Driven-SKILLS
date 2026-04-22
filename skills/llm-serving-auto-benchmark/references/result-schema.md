@@ -95,7 +95,7 @@ The markdown summary must include these sections:
    vLLM, and TensorRT-LLM command for each scenario. Sort each scenario by the
    ranking rule above so the best deployment choice is first.
 3. `Failed Or SLA-Failing Candidates`: include this table when any candidate
-   failed, was skipped, or completed without passing SLA. Treat it as an audit
-   trail for explored but non-recommended configs, and keep each reason concrete
-   enough to tell whether the candidate needs a retry, lower concurrency, a
-   parameter fix, or no further action.
+   failed, was skipped, or completed without passing SLA. This table records
+   tried configs that were not selected. Keep each reason concrete enough to
+   tell whether the candidate needs a retry, lower concurrency, a parameter fix,
+   or no further action.
