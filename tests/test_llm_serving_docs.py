@@ -52,6 +52,8 @@ class LlmServingDocsTest(unittest.TestCase):
 
         runbook = read_skill_file("references", "container-runbook.md")
         self.assertIn("separate from the server backend pinned above", runbook)
+        self.assertIn("--ipc=host", runbook)
+        self.assertIn("-e NCCL_IB_DISABLE=1", runbook)
 
 
 if __name__ == "__main__":

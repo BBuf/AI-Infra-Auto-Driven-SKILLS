@@ -213,11 +213,20 @@ This skill only supports the TensorRT-LLM PyTorch server backend. Keep
 server to `--backend trt`, an engine path, or any other backend; mark that
 candidate unsupported instead.
 
+For single-node multi-GPU TensorRT-LLM containers, keep the IPC, ulimit, shared
+memory, and NCCL settings below. In H100 validation, a 4-GPU PyTorch-backend
+server entered `PyTorchConfig` but failed NCCL allreduce without these container
+options; the same model and candidate list passed after adding them.
+
 Server template:
 
 ```bash
 docker run -d --name llmbench-trtllm \
   --gpus "$GPU_ARG" \
+  --ipc=host \
+  --ulimit memlock=-1 \
+  --ulimit stack=67108864 \
+  --shm-size=16g \
   --network host \
   -v /data/.cache:/root/.cache \
   -e MODEL \
@@ -226,6 +235,7 @@ docker run -d --name llmbench-trtllm \
   -e PORT \
   -e HF_TOKEN \
   -e HUGGINGFACE_HUB_TOKEN \
+  -e NCCL_IB_DISABLE=1 \
   --entrypoint bash \
   nvcr.io/nvidia/tensorrt-llm/release:latest -lc '
 trtllm-serve serve "$MODEL" \
