@@ -9,6 +9,11 @@ actual CLI in the target container with `--help` before a long run.
 | vLLM | `vllm serve` | `vllm bench sweep serve` or `vllm bench serve` | `vllm bench sweep serve` can launch `vllm serve` repeatedly and sweep serve/bench parameter JSON files. |
 | TensorRT-LLM | `trtllm-serve serve` | TensorRT-LLM serving benchmark client or a common OpenAI-compatible benchmark client | `trtllm-serve serve` exposes OpenAI-compatible endpoints. Separate engine build time from serving performance. |
 
+For parameter coverage by framework, see
+[parameter-coverage.md](parameter-coverage.md). For Docker image pull, launch,
+benchmark, and cleanup commands, see
+[container-runbook.md](container-runbook.md).
+
 ## Source Links
 
 - SGLang Bench Serving Guide: <https://docs.sglang.ai/developer_guide/bench_serving.html>
@@ -41,6 +46,27 @@ python -m sglang.bench_serving \
 ### vLLM
 
 ```bash
+vllm serve <model> \
+  --host 0.0.0.0 \
+  --port 8000 \
+  --tensor-parallel-size <tp> \
+  --gpu-memory-utilization 0.90 \
+  --max-model-len 4096 \
+  --max-num-seqs 64 \
+  --max-num-batched-tokens 8192 \
+  --enable-chunked-prefill
+
+vllm bench serve \
+  --backend vllm \
+  --base-url http://127.0.0.1:8000 \
+  --model <model> \
+  --dataset-name random \
+  --random-input-len 1024 \
+  --random-output-len 256 \
+  --num-prompts 80 \
+  --request-rate 8 \
+  --max-concurrency 64
+
 vllm bench sweep serve \
   --serve-cmd 'vllm serve <model> --port 8000' \
   --bench-cmd 'vllm bench serve --backend vllm --model <model> --port 8000 --dataset-name random --num-prompts 80' \
@@ -66,7 +92,9 @@ benchmark client or the same OpenAI-compatible client used for the other
 frameworks. For TensorRT-LLM 1.0.0 synthetic random data, pass `--random-ids`
 unless you also provide a ShareGPT `--download-path`. In the 1.0.0 H100 image,
 `--free_gpu_memory_fraction` is not accepted by `trtllm-serve serve`; use
-`--kv_cache_free_gpu_memory_fraction` after checking `--help`.
+`--kv_cache_free_gpu_memory_fraction` after checking `--help`. The TensorRT-LLM
+1.0.0 benchmark client accepts `--backend openai` and `--backend openai-chat`,
+not `--backend trtllm`.
 
 When launching Docker containers on a subset of GPUs, quote a comma-separated
 device list:

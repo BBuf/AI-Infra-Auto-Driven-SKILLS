@@ -85,7 +85,10 @@ Verify all requested frameworks before starting a search:
 python -m sglang.launch_server --help
 python -m sglang.bench_serving --help
 vllm serve --help
+vllm serve --help=all
 vllm bench serve --help
+vllm bench serve --help=all
+vllm bench sweep serve --help=all
 trtllm-serve serve --help
 python -m tensorrt_llm.serve.scripts.benchmark_serving --help
 ```
@@ -93,6 +96,9 @@ python -m tensorrt_llm.serve.scripts.benchmark_serving --help
 Use the framework-specific `--help` output in the target environment as the
 source of truth. Do not keep a stale launch flag just because it appears in an
 old note.
+
+vLLM 0.19 and newer use grouped help. Plain `vllm serve --help` only shows the
+groups, so capture `--help=all` before deciding whether a search knob exists.
 
 Save these `--help` outputs into the run artifact directory. If a listed search
 knob is missing from the current CLI, remove or translate that knob before
@@ -111,6 +117,11 @@ Before any GPU-backed smoke run, check the requested GPU ids directly with
 Do not silently borrow a different GPU count for a performance comparison. It is
 fine to run a smaller one-GPU smoke only when the result is clearly labeled as a
 flow check rather than a fair throughput comparison.
+
+If the target environment runs through containers, follow
+[references/container-runbook.md](references/container-runbook.md). Save the
+image tags, pull commands, launch commands, server logs, benchmark logs, and
+cleanup commands in the artifact directory.
 
 ### 2. Normalize The Workload
 
@@ -212,17 +223,22 @@ with `vllm bench serve`.
 
 Version-sensitive vLLM knob families to verify:
 
-- tensor and pipeline parallelism
+- tensor, pipeline, data, decode-context, and expert parallelism
 - `gpu_memory_utilization`
 - `max_num_seqs`
 - `max_num_batched_tokens`
 - `max_model_len`
-- chunked prefill settings
+- `enable_chunked_prefill`, partial prefill limits, and DBO thresholds
 - KV cache dtype and block size
 - dtype and quantization settings
 - CUDA graph capture sizes or eager-mode toggles when relevant
 - prefix cache and speculative decoding settings only when the workload needs
   those features
+
+vLLM has enough server knobs for a real search. Treat it as a peer to SGLang,
+not as a single baseline command. See
+[references/parameter-coverage.md](references/parameter-coverage.md) for the
+H100-verified flag families.
 
 ### 6. Tune TensorRT-LLM
 
@@ -264,6 +280,11 @@ Version-sensitive TensorRT-LLM knob families to verify:
 Because TensorRT-LLM can involve engine build time, keep build artifacts and
 server artifacts separate from benchmark outputs. Report build time separately
 from serving performance.
+
+The `trtllm-serve serve` CLI exposes fewer direct runtime knobs than SGLang and
+vLLM. Do not invent one-to-one parity. Use direct flags when they exist, then use
+`--extra_llm_api_options` or an engine-build step for backend-specific options,
+and record that split in the final report.
 
 ### 7. Normalize Results
 

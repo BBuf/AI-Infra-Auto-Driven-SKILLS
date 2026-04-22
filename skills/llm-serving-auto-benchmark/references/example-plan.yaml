@@ -11,16 +11,20 @@ model:
 
 version_manifest:
   sglang:
+    container_image: lmsysorg/sglang:dev
     package_version: null
     git_commit: null
     server_help: artifacts/help/sglang_launch_server.txt
     benchmark_help: artifacts/help/sglang_bench_serving.txt
   vllm:
+    container_image: vllm/vllm-openai:latest
     package_version: null
     git_commit: null
-    server_help: artifacts/help/vllm_serve.txt
-    benchmark_help: artifacts/help/vllm_bench_serve.txt
+    server_help: artifacts/help/vllm_serve_all.txt
+    benchmark_help: artifacts/help/vllm_bench_serve_all.txt
+    sweep_help: artifacts/help/vllm_bench_sweep_serve_all.txt
   tensorrt_llm:
+    container_image: nvcr.io/nvidia/tensorrt-llm/release:latest
     package_version: null
     git_commit: null
     server_help: artifacts/help/trtllm_serve.txt
@@ -76,6 +80,15 @@ frameworks:
       gpu_memory_utilization: [0.9, 0.95]
       max_num_seqs: [64, 128]
       max_num_batched_tokens: [8192, 16384]
+      max_model_len: [4096, 8192]
+      enable_chunked_prefill: [true]
+      max_num_partial_prefills: [1, 4]
+      max_long_partial_prefills: [1]
+      long_prefill_token_threshold: [0, 4096]
+      enable_prefix_caching: [true]
+      kv_cache_dtype: [auto]
+      block_size: [16]
+      enforce_eager: [false]
 
   tensorrt_llm:
     enabled: true
@@ -88,3 +101,6 @@ frameworks:
       backend: [pytorch, trt]
       max_batch_size: [64, 128]
       max_num_tokens: [8192, 16384]
+      max_seq_len: [4096, 8192]
+      kv_cache_free_gpu_memory_fraction: [0.75, 0.85]
+      extra_llm_api_options: [null]

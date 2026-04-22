@@ -37,6 +37,58 @@ On 2026-04-22, validation used the `h100_sglang` host:
 - Hugging Face access came from the local H100 skill and was passed as
   environment variables. Do not print the token into logs.
 
+### Parameter Audit
+
+On 2026-04-22, a separate H100 parameter audit captured help output and ran
+model-level smoke checks for expanded vLLM and TensorRT-LLM server flags.
+
+Audit directory:
+
+`/tmp/llm_serving_auto_benchmark_param_audit_20260422_094955`
+
+Captured help files include:
+
+- `help/sglang_launch_server.txt`
+- `help/sglang_bench_serving.txt`
+- `help/sglang_auto_benchmark_run.txt`
+- `help/vllm_serve_all.txt`
+- `help/vllm_bench_serve_all.txt`
+- `help/vllm_bench_sweep_serve_all.txt`
+- `help/trtllm_serve.txt`
+- `help/trtllm_benchmark_serving.txt`
+
+Flag-count summary from the captured help:
+
+| CLI | Flags |
+| --- | ---: |
+| `python -m sglang.launch_server --help` | 384 |
+| `vllm serve --help=all` | 302 |
+| `vllm bench serve --help=all` | 97 |
+| `vllm bench sweep serve --help=all` | 15 |
+| `trtllm-serve serve --help` | 23 |
+| `python -m tensorrt_llm.serve.scripts.benchmark_serving --help` | 53 |
+
+GPUs 6 and 7 were not idle during this later audit, so the model-level parameter
+smoke used idle GPU 4 and is labeled as a one-GPU flow check.
+
+| Framework | Model | Expanded flags checked | Result |
+| --- | --- | --- | --- |
+| vLLM 0.19.1 | `TinyLlama/TinyLlama-1.1B-Chat-v1.0` | `--tensor-parallel-size 1`, `--gpu-memory-utilization 0.65`, `--max-model-len 2048`, `--max-num-seqs 16`, `--max-num-batched-tokens 4096`, `--enable-chunked-prefill`, `--kv-cache-dtype auto`, `--block-size 16`, `--enable-prefix-caching`, `--enforce-eager`, `--trust-remote-code` | pass: `model_smoke/vllm/results.json`; completed 4 requests |
+| TensorRT-LLM 1.0.0 | `TinyLlama/TinyLlama-1.1B-Chat-v1.0` | `--backend pytorch`, `--tp_size 1`, `--pp_size 1`, `--max_batch_size 8`, `--max_num_tokens 4096`, `--max_seq_len 2048`, `--kv_cache_free_gpu_memory_fraction 0.65`, `--trust_remote_code` | pass: `model_smoke/trtllm/results.json`; completed 4 requests |
+
+Audit lessons:
+
+- vLLM has a broad serving surface comparable to SGLang, but full discovery
+  requires `vllm serve --help=all` and `vllm bench serve --help=all`.
+- TensorRT-LLM's direct `trtllm-serve serve` flag surface is smaller. The server
+  logs show deeper PyTorch backend settings in `PyTorchConfig`, but many of
+  those settings are not top-level CLI flags.
+- TensorRT-LLM 1.0.0 benchmark serving uses `--backend openai` or
+  `--backend openai-chat`. `--backend trtllm` is rejected.
+- The vLLM server log recorded the expanded non-default args exactly; the
+  TensorRT-LLM server log recorded `max_seq_len`, `max_num_tokens`,
+  `max_batch_size`, and the KV-cache fraction behavior.
+
 The first smoke attempt for `Qwen/Qwen2.5-0.5B-Instruct` and
 `Qwen/Qwen2.5-1.5B-Instruct` had a bad SGLang artifact: the generated config was
 empty, so `python -m sglang.auto_benchmark run` failed before launching a real
