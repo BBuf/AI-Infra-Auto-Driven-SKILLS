@@ -1,6 +1,6 @@
-# SGLang-Auto-Driven-SKILLS
+# AI-Infra-Auto-Driven-SKILLS
 
-Agent skills for SGLang development, profiling, and production incident triage.
+Agent skills for SGLang/vLLM/TensorRT-LLM development, profiling, and production incident triage.
 
 ## Structure
 
