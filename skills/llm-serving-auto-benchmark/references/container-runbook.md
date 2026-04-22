@@ -45,6 +45,26 @@ export RUN_DIR=/tmp/llm-serving-auto-benchmark
 mkdir -p "$RUN_DIR"
 ```
 
+For synthetic validation, use two aligned scenarios rather than one tiny request
+shape:
+
+```bash
+# chat-like
+RANDOM_INPUT_LEN=1000
+RANDOM_OUTPUT_LEN=1000
+
+# summarization-like
+RANDOM_INPUT_LEN=8000
+RANDOM_OUTPUT_LEN=1000
+```
+
+For a fast smoke on larger models, 20 prompts per scenario is a reasonable
+minimum. Do not treat that as a performance result.
+
+Set each framework's sequence-length limit to cover the largest scenario. For
+the example above, use at least 9000 tokens for SGLang `--context-length`, vLLM
+`--max-model-len`, and TensorRT-LLM `--max_seq_len`.
+
 Before launching a server, save the help output:
 
 ```bash
@@ -118,7 +138,9 @@ python -m sglang.bench_serving \
   --random-output-len 8 \
   --num-prompts 4 \
   --request-rate 1 \
-  --max-concurrency 2
+  --max-concurrency 2 \
+  --output-file "$RUN_DIR/sglang/results.json" \
+  --output-details
 ```
 
 ## vLLM

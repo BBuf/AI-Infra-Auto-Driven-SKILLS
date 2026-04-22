@@ -78,7 +78,7 @@ smoke used idle GPU 4 and is labeled as a one-GPU flow check.
 
 Audit lessons:
 
-- vLLM has a broad serving surface comparable to SGLang, but full discovery
+- vLLM has a large serving flag surface, but full discovery
   requires `vllm serve --help=all` and `vllm bench serve --help=all`.
 - TensorRT-LLM's direct `trtllm-serve serve` flag surface is smaller. The server
   logs show deeper PyTorch backend settings in `PyTorchConfig`, but many of
@@ -128,3 +128,59 @@ performance numbers.
   smoke-only check and do not compare throughput against the earlier runs.
 - Clean up by port and container name. Avoid killing raw PIDs unless they are
   proven to belong to the current validation run.
+
+### Larger Model Search Smoke
+
+On 2026-04-22, a larger H100 flow check used idle GPU 4 on `h100_sglang`. Other
+H100s were occupied, so these runs are not throughput comparisons against a
+4-GPU deployment. They are end-to-end checks that the search layout, framework
+commands, cleanup, and result collection work on larger models that fit within a
+4-H100 target budget.
+
+Common workload:
+
+- random `chat`: 512 input tokens, 64 output tokens
+- random `summarization`: 2048 input tokens, 128 output tokens
+- 20 prompts per scenario
+- request rate 1, max concurrency 4
+- 10 server candidates per framework
+
+Artifact directories:
+
+- `/tmp/llm_serving_auto_benchmark_big_models_20260422_101647`
+- `/tmp/llm_serving_auto_benchmark_big_models_20260422_110906`
+
+Both directories contain `summary.tsv`, per-candidate server logs, benchmark
+logs, and successful `results.json` files. The second directory also contains
+`metrics.tsv`; the first directory was interrupted after `Qwen/Qwen3-14B` and
+`metrics.tsv` was generated afterwards from the saved result JSON files.
+
+Scenario-level result counts:
+
+| Model | Framework | Pass | Fail | Notes |
+| --- | --- | ---: | ---: | --- |
+| `Qwen/Qwen3-14B` | SGLang | 16 | 2 | Two startup failures from searched SGLang candidates. |
+| `Qwen/Qwen3-14B` | vLLM | 16 | 2 | DBO candidates failed without a supported all2all backend. |
+| `Qwen/Qwen3-14B` | TensorRT-LLM | 16 | 4 | `max_seq_len 2048` candidates passed chat but failed summarization. |
+| `Qwen/Qwen3-30B-A3B` | SGLang | 16 | 2 | Same SGLang candidate pattern as `Qwen3-14B`. |
+| `Qwen/Qwen3-30B-A3B` | vLLM | 18 | 1 | `max_num_partial_prefills 4` failed; `1` passed. |
+| `Qwen/Qwen3-30B-A3B` | TensorRT-LLM | 20 | 0 | All corrected TensorRT-LLM candidates passed. |
+| `mistralai/Ministral-3-14B-Instruct-2512` | SGLang | 20 | 0 | All candidates passed. |
+| `mistralai/Ministral-3-14B-Instruct-2512` | vLLM | 18 | 1 | `max_num_partial_prefills 4` failed. |
+| `mistralai/Ministral-3-14B-Instruct-2512` | TensorRT-LLM | 0 | 10 | TensorRT-LLM 1.0.0 failed startup with `KeyError: 'ministral3'`. |
+
+Lessons from the larger run:
+
+- SGLang `bench_serving` in this container needs `--output-file` and
+  `--output-details`; the vLLM-style `--save-result` flags are not accepted.
+- Keep DBO out of the default vLLM search unless the environment has the
+  required all2all backend.
+- Keep vLLM concurrent partial prefill at `max_num_partial_prefills: 1` by
+  default. Raising it to 4 failed on the tested larger models.
+- TensorRT-LLM `max_seq_len` candidates must cover the largest input plus output
+  length in the dataset. The too-small `2048` candidates failed only on the
+  longer scenario.
+- TensorRT-LLM model support is version-specific. In the tested 1.0.0 image,
+  `Ministral-3-14B-Instruct-2512` failed before serving because the bundled
+  Transformers mapping did not include `ministral3`.
+- Cleanup used `codex-big-*` container names and left GPU 4 idle at the end.

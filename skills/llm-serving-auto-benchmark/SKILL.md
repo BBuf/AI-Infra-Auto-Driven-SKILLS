@@ -7,12 +7,18 @@ description: Cross-framework LLM serving benchmark skill for SGLang, vLLM, and T
 
 ## Overview
 
-Use this skill to compare SGLang, vLLM, and TensorRT-LLM fairly for the same
-model and workload.
+Use this skill to compare SGLang, vLLM, and TensorRT-LLM for the same model and
+workload.
 
-The goal is not to run one benchmark command per framework. The goal is to run a
-small, controlled search for each framework, normalize the results, and report
-the best configuration under the same latency and throughput constraints.
+Use a config-driven workflow:
+
+- keep launch-only capacity choices in each framework's `base_server_flags`
+- put the search knobs in `search_space`
+- run the same dataset scenarios for every framework
+- generate a bounded candidate list from `search_space`, with the baseline
+  candidate included first
+- keep failed candidates in the result file
+- pick the best SLA-passing candidate after normalizing the results
 
 Prefer native tooling when it gives better coverage:
 
@@ -24,13 +30,18 @@ Prefer native tooling when it gives better coverage:
   TensorRT-LLM serving benchmark client or a common OpenAI-compatible benchmark
   client
 
-Do not declare a winner until each requested framework has had its own main
-serving knobs tuned.
+Only pick a winner after each requested framework has had its main serving knobs
+tuned.
 
 The parameter lists in this skill are not a compatibility contract. They are
 version-sensitive candidate knob families. Before every real run, record the
 exact framework version or git commit and verify the concrete CLI flag names
 with `--help` in the target environment.
+
+The default search style should stay close to SGLang auto benchmark: start from
+a mostly pure-TP baseline, sweep a small set of high-impact runtime knobs, and
+cap the first pass around 10 candidates per framework. Do not search memory
+fractions by default.
 
 ## Required Inputs
 
@@ -44,6 +55,8 @@ Collect these before starting a long run:
 - endpoint shape: completions, chat completions, responses, or custom
 - workload source: real traffic JSONL, ShareGPT, random synthetic, or generated
   shared-prefix synthetic
+- dataset scenarios when synthetic traffic is used, for example `chat` and
+  `summarization`
 - SLA target: TTFT, TPOT/ITL, end-to-end latency, success rate, or goodput
 - search budget: quick smoke, default search, or exhaustive search
 - output directory for logs and result artifacts
@@ -56,8 +69,8 @@ Also collect a version manifest:
 - whether each parameter in the search plan was accepted by that exact CLI
 
 If real production traffic is the goal, use the real request distribution. A
-synthetic workload is acceptable for bring-up and broad comparison, but it is not
-enough to choose a production winner.
+synthetic workload is fine for bring-up and first-pass comparison, but it is not
+enough for a production choice.
 
 ## Fairness Rules
 
@@ -152,6 +165,26 @@ When converting user data:
 - keep multimodal or tool-call payloads only if all requested frameworks support
   the chosen endpoint shape
 
+For synthetic bring-up, follow the two-scenario shape used by the SGLang auto
+benchmark references:
+
+```yaml
+dataset:
+  kind: random
+  num_prompts: 80
+  scenario_names: [chat, summarization]
+  input_len: [1000, 8000]
+  output_len: [1000, 1000]
+```
+
+Each aligned `input_len` / `output_len` pair is one scenario. Do not take the
+cartesian product unless the user asks for that.
+
+Before searching any sequence-length limit, compute the largest
+`input_len + output_len` in the dataset. SGLang `context_length`, vLLM
+`max_model_len`, and TensorRT-LLM `max_seq_len` must be at least that value for
+every candidate that is expected to run all scenarios.
+
 ### 3. Pick A Search Tier
 
 Use the smallest tier that can answer the user's question:
@@ -164,10 +197,23 @@ Use the smallest tier that can answer the user's question:
 Default budget:
 
 - `num_prompts: 80` for quick comparison
-- `search.max_candidates: 8` per framework for the first useful pass
+- `search.max_candidates_per_framework: 10` for the first useful pass
+- candidate generation: baseline first, then a bounded product or ordered
+  candidate list from `search_space`
 - at most 5 QPS search rounds unless the user asks for more
 - stop early when every candidate in one framework is clearly OOM or fails the
   basic health check
+
+Keep these in `base_server_flags` unless the user specifically wants a capacity
+or memory study:
+
+- SGLang `mem_fraction_static`
+- SGLang `schedule_policy`
+- vLLM `gpu_memory_utilization`
+- TensorRT-LLM `kv_cache_free_gpu_memory_fraction`
+
+These are real knobs, but they widen the search quickly and often turn a serving
+comparison into a memory-limit study.
 
 ### 4. Tune SGLang
 
@@ -186,7 +232,9 @@ python -m sglang.bench_serving \
   --random-input-len 1024 \
   --random-output-len 256 \
   --num-prompts 80 \
-  --request-rate 8
+  --request-rate 8 \
+  --output-file /path/to/sglang/results.json \
+  --output-details
 ```
 
 Version-sensitive SGLang knob families to verify:
@@ -196,9 +244,12 @@ Version-sensitive SGLang knob families to verify:
 - `sampling_backend`
 - `max_running_requests`, `max_queued_requests`
 - `chunked_prefill_size`, `prefill_max_requests`, `max_prefill_tokens`
-- `max_total_tokens`, `page_size`, `mem_fraction_static`
+- `max_total_tokens`, `page_size`
 - CUDA graph and piecewise CUDA graph settings
 - speculative or EAGLE settings only after the non-speculative baseline is tuned
+
+Keep `mem_fraction_static` and `schedule_policy` pinned in the default pass,
+matching the SGLang auto benchmark cookbook style.
 
 For quick smoke tests, it is reasonable to disable CUDA graph and piecewise CUDA
 graph startup work if the goal is only to prove the framework flow. Record those
@@ -235,10 +286,20 @@ Version-sensitive vLLM knob families to verify:
 - prefix cache and speculative decoding settings only when the workload needs
   those features
 
-vLLM has enough server knobs for a real search. Treat it as a peer to SGLang,
-not as a single baseline command. See
+vLLM should get a normal sweep, not one baseline command. See
 [references/parameter-coverage.md](references/parameter-coverage.md) for the
 H100-verified flag families.
+
+Keep `gpu_memory_utilization` in the baseline for the default pass. Search it
+only when the question is explicitly about fitting the model or trading capacity
+against throughput.
+
+Keep DBO and all2all backend settings out of the default pass unless the target
+vLLM environment is already set up for them. They are real tuning knobs, but a
+candidate can fail at startup if the required all2all backend is not available.
+Also preflight concurrent partial prefill before raising
+`max_num_partial_prefills` above 1; some model/runtime combinations reject it at
+startup.
 
 ### 6. Tune TensorRT-LLM
 
@@ -281,10 +342,14 @@ Because TensorRT-LLM can involve engine build time, keep build artifacts and
 server artifacts separate from benchmark outputs. Report build time separately
 from serving performance.
 
-The `trtllm-serve serve` CLI exposes fewer direct runtime knobs than SGLang and
-vLLM. Do not invent one-to-one parity. Use direct flags when they exist, then use
-`--extra_llm_api_options` or an engine-build step for backend-specific options,
-and record that split in the final report.
+The `trtllm-serve serve` CLI exposes fewer direct runtime knobs than SGLang or
+vLLM. Use direct flags when they exist, then use `--extra_llm_api_options` or an
+engine-build step for backend-specific options. Record that split in the final
+report.
+
+Keep `kv_cache_free_gpu_memory_fraction` in the baseline for the default pass.
+Search `max_batch_size`, `max_num_tokens`, `max_seq_len`, backend choice, and
+engine/config options first.
 
 ### 7. Normalize Results
 

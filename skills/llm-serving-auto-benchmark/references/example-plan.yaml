@@ -1,11 +1,10 @@
-# Example run plan for the llm-serving-auto-benchmark skill.
-#
-# This file is intentionally a control-plane template. The skill can translate
-# it into native SGLang, vLLM, and TensorRT-LLM commands in the target runtime.
+# Example run plan for the llm-serving-auto-benchmark skill. The layout mirrors
+# SGLang auto benchmark: baseline flags stay in base_server_flags, search knobs
+# stay in search_space, and aligned dataset length pairs define scenarios.
 
 model:
-  name: meta-llama/Llama-3.1-70B-Instruct
-  tokenizer: meta-llama/Llama-3.1-70B-Instruct
+  name: Qwen/Qwen3-32B
+  tokenizer: Qwen/Qwen3-32B
   precision: bf16
   quantization: none
 
@@ -32,20 +31,29 @@ version_manifest:
 
 hardware:
   gpu_model: NVIDIA H100 80GB HBM3
-  gpu_count: 8
+  gpu_count: 4
   multi_node: false
 
-workload:
-  kind: custom
-  canonical_jsonl: /bench/workloads/prod_sample.autobench.jsonl
+dataset:
+  kind: random
+  num_prompts: 80
+  scenario_names: [chat, summarization]
+  input_len: [1000, 8000]
+  output_len: [1000, 1000]
+  canonical_jsonl: null
+
+benchmark:
   endpoint: /v1/chat/completions
-  num_prompts: 1000
-  request_rates: [4, 8, 12, 16]
-  max_concurrency: 256
-  synthetic_fallback:
-    dataset_name: random
-    input_len: 1024
-    output_len: 256
+  backend: auto
+  request_rates: null
+  max_concurrency: [null, 16, 32]
+  qps:
+    lower: 1.0
+    upper: 12.0
+    tolerance: 0.1
+    max_rounds: 5
+  extra_request_body:
+    temperature: 0.0
 
 sla:
   max_p99_ttft_ms: 2000
@@ -54,53 +62,59 @@ sla:
 
 search:
   tier: 2
-  max_candidates_per_framework: 8
-  max_qps_rounds: 5
+  max_candidates_per_framework: 10
+  candidate_generation: baseline_first_bounded_product
+  resume: true
   output_dir: /bench/results/llm-serving-auto-benchmark
 
 frameworks:
   sglang:
     enabled: true
     base_server_flags:
-      tp_size: 8
+      tp_size: 4
       trust_remote_code: true
+      mem_fraction_static: 0.82
+      schedule_policy: lpm
+      context_length: 12288
     search_space:
       # Verify these names against `python -m sglang.launch_server --help`.
-      attention_backend: [flashinfer, fa3]
+      prefill_attention_backend: [fa3, flashinfer]
+      decode_attention_backend: [fa3, flashinfer]
       chunked_prefill_size: [8192, 16384]
       max_running_requests: [64, 128]
 
   vllm:
     enabled: true
     base_server_flags:
-      tensor_parallel_size: 8
+      tensor_parallel_size: 4
       trust_remote_code: true
+      gpu_memory_utilization: 0.90
+      max_model_len: 12288
+      dtype: auto
     search_space:
-      # Verify these names against `vllm serve --help`.
-      gpu_memory_utilization: [0.9, 0.95]
+      # Verify these names against `vllm serve --help=all`.
       max_num_seqs: [64, 128]
       max_num_batched_tokens: [8192, 16384]
-      max_model_len: [4096, 8192]
       enable_chunked_prefill: [true]
-      max_num_partial_prefills: [1, 4]
+      # Raise above 1 only after the target model/runtime supports concurrent partial prefill.
+      max_num_partial_prefills: [1]
       max_long_partial_prefills: [1]
       long_prefill_token_threshold: [0, 4096]
       enable_prefix_caching: [true]
       kv_cache_dtype: [auto]
       block_size: [16]
-      enforce_eager: [false]
 
   tensorrt_llm:
     enabled: true
     base_server_flags:
-      tp_size: 8
+      backend: pytorch
+      tp_size: 4
       pp_size: 1
       kv_cache_free_gpu_memory_fraction: 0.75
+      trust_remote_code: true
     search_space:
       # Verify these names against `trtllm-serve serve --help` and the selected backend.
-      backend: [pytorch, trt]
       max_batch_size: [64, 128]
       max_num_tokens: [8192, 16384]
-      max_seq_len: [4096, 8192]
-      kv_cache_free_gpu_memory_fraction: [0.75, 0.85]
+      max_seq_len: [12288, 16384]
       extra_llm_api_options: [null]

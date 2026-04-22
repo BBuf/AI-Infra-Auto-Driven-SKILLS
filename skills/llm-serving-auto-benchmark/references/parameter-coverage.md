@@ -34,7 +34,7 @@ Observed flag counts in that environment:
 
 | CLI | Flag Count | Note |
 | --- | ---: | --- |
-| `python -m sglang.launch_server --help` | 384 | Broad server surface. |
+| `python -m sglang.launch_server --help` | 384 | Large server flag surface. |
 | `vllm serve --help=all` | 302 | Plain `--help` only shows config groups. |
 | `vllm bench serve --help=all` | 97 | Covers random, ShareGPT, HF, custom, multimodal, and sampling knobs. |
 | `vllm bench sweep serve --help=all` | 15 | Sweeps serve and bench parameter JSON files. |
@@ -54,6 +54,10 @@ Observed flag counts in that environment:
 | Dtype, quantization, loading | `--dtype`, `--quantization`, `--load-format`, `--model-loader-extra-config`, `--trust-remote-code` | `--dtype`, `--quantization`, `--load-format`, `--model-loader-extra-config`, `--trust-remote-code`, `--hf-token` | `--trust_remote_code`, `--tokenizer`; quantization and engine options are often outside `trtllm-serve serve` |
 
 ## Benchmark Client Notes
+
+SGLang `bench_serving` in the H100 validation container writes artifacts with
+`--output-file` and `--output-details`. It does not accept the vLLM-style
+`--save-result`, `--result-dir`, and `--result-filename` flags in that image.
 
 Both vLLM and TensorRT-LLM benchmark clients accepted these shared random-workload
 flags in the H100 audit:
@@ -78,12 +82,38 @@ flag.
 
 ## Search Guidance
 
-- SGLang and vLLM both have broad runtime surfaces. Give both frameworks a real
-  sweep over memory, batching, scheduler, CUDA graph/compile, and prefix cache
-  options before comparing winners.
+- SGLang and vLLM both have large runtime flag surfaces. Give both frameworks a
+  sweep over batching, scheduler, CUDA graph/compile, and prefix cache options
+  before comparing winners.
 - TensorRT-LLM should still be searched, but its direct `trtllm-serve serve`
   surface is narrower. Search the exposed server flags first, then move deeper
   backend options into `--extra_llm_api_options` or an engine-build phase.
 - Keep every translated flag in the artifact manifest. If a family is not
   represented for one framework, say why instead of filling the gap with an
   unrelated option.
+
+Default searches should not sweep memory fractions:
+
+- keep SGLang `mem_fraction_static` in `base_server_flags`
+- keep vLLM `gpu_memory_utilization` in `base_server_flags`
+- keep TensorRT-LLM `kv_cache_free_gpu_memory_fraction` in `base_server_flags`
+
+Move them into `search_space` only for a fit/capacity study. For a normal serving
+comparison, search scheduler, batching, attention/backend, prefix cache, and
+CUDA graph or compile behavior first.
+
+In the 2026-04-22 H100 validation, vLLM accepted `--enable-dbo` but the server
+failed during config validation without a supported all2all backend. Treat DBO
+as a version- and environment-gated extension knob, not part of the default
+candidate list.
+
+The same validation showed that vLLM concurrent partial prefill is model/runtime
+gated: `--max-num-partial-prefills 1` ran on `Qwen/Qwen3-30B-A3B`, while
+`--max-num-partial-prefills 4` failed with "Concurrent Partial Prefill is not
+supported." Keep `1` in the default pass and only raise it after preflight.
+
+Sequence-length candidates must cover the largest dataset scenario. In the same
+H100 validation, a TensorRT-LLM candidate with `--max_seq_len 2048` passed the
+512-to-64 chat-like scenario but failed the 2048-to-128 summarization-like
+scenario. Do not include a `max_model_len`, `context_length`, or `max_seq_len`
+candidate below `max(input_len + output_len)`.
