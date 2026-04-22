@@ -55,6 +55,7 @@ vllm bench sweep serve \
 trtllm-serve serve <model> \
   --tp_size <tp> \
   --pp_size <pp> \
+  --kv_cache_free_gpu_memory_fraction 0.75 \
   --host 0.0.0.0 \
   --port 8000
 ```
@@ -63,4 +64,16 @@ Then benchmark `http://127.0.0.1:8000/v1/completions` or
 `http://127.0.0.1:8000/v1/chat/completions` with the TensorRT-LLM serving
 benchmark client or the same OpenAI-compatible client used for the other
 frameworks. For TensorRT-LLM 1.0.0 synthetic random data, pass `--random-ids`
-unless you also provide a ShareGPT `--download-path`.
+unless you also provide a ShareGPT `--download-path`. In the 1.0.0 H100 image,
+`--free_gpu_memory_fraction` is not accepted by `trtllm-serve serve`; use
+`--kv_cache_free_gpu_memory_fraction` after checking `--help`.
+
+When launching Docker containers on a subset of GPUs, quote a comma-separated
+device list:
+
+```bash
+docker run --gpus '"device=6,7"' ...
+```
+
+`--gpus device=6,7` can be parsed incorrectly by Docker and fail before the
+server starts.

@@ -82,8 +82,9 @@ frameworks:
     base_server_flags:
       tp_size: 8
       pp_size: 1
+      kv_cache_free_gpu_memory_fraction: 0.75
     search_space:
-      # Verify these names against `trtllm-serve --help` and the selected backend.
+      # Verify these names against `trtllm-serve serve --help` and the selected backend.
       backend: [pytorch, trt]
       max_batch_size: [64, 128]
       max_num_tokens: [8192, 16384]

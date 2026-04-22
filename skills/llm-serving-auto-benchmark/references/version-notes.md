@@ -29,34 +29,50 @@ When updating this skill:
 
 ## H100 Validation Notes
 
-On 2026-04-22, the `h100_sglang` environment had:
+On 2026-04-22, validation used the `h100_sglang` host:
 
-- GPUs 6 and 7 idle before validation: 0% utilization and 4 MiB allocated.
 - `sglang_bbuf` container: `sglang 0.5.10rc0`.
 - `vllm/vllm-openai:latest` image: `vllm 0.19.1`.
 - `nvcr.io/nvidia/tensorrt-llm/release:latest` image: `tensorrt_llm 1.0.0`.
+- Hugging Face access came from the local H100 skill and was passed as
+  environment variables. Do not print the token into logs.
 
-Smoke-tested on GPU 6 and 7 with tensor parallel size 2:
+The first smoke attempt for `Qwen/Qwen2.5-0.5B-Instruct` and
+`Qwen/Qwen2.5-1.5B-Instruct` had a bad SGLang artifact: the generated config was
+empty, so `python -m sglang.auto_benchmark run` failed before launching a real
+candidate. Do not count those SGLang cells as validated. The later runs below
+supersede that note.
 
-| Model | SGLang | vLLM | TensorRT-LLM |
-| --- | --- | --- | --- |
-| `Qwen/Qwen2.5-0.5B-Instruct` | pass: `python -m sglang.auto_benchmark run` with one tiny candidate | pass: `vllm serve` plus `vllm bench serve` | pass: `trtllm-serve serve --backend pytorch` plus TensorRT-LLM `benchmark_serving --random-ids` |
-| `Qwen/Qwen2.5-1.5B-Instruct` | pass: `python -m sglang.auto_benchmark run` with one tiny candidate | pass: `vllm serve` plus `vllm bench serve` | pass: `trtllm-serve serve --backend pytorch` plus TensorRT-LLM `benchmark_serving --random-ids` |
+### Validated Smoke Matrix
 
-Cleanup behavior used in validation:
+All rows used a tiny random workload: 4 prompts, 32 input tokens, 8 output
+tokens, request rate 1, and max concurrency 2. These are flow checks, not
+performance numbers.
 
-- SGLang: kill the test port with `fuser`, then kill matching
-  `sglang.launch_server` command lines for the same port.
-- vLLM and TensorRT-LLM: run each server in a uniquely named Docker container
-  and stop it with `docker rm -f`.
-- Re-check GPUs 6 and 7 after every framework. They returned to 0% utilization
-  and 4 MiB allocated after the final cleanup.
+| Model | GPU shape | SGLang auto benchmark | vLLM | TensorRT-LLM |
+| --- | --- | --- | --- | --- |
+| `Qwen/Qwen2.5-7B-Instruct` | GPUs 6,7; TP=2 | pass: `/tmp/llm_serving_auto_benchmark_three_models_20260422_091958/qwen25_7b/sglang_auto/container_results/live_results.jsonl` | pass: `vllm serve` plus `vllm bench serve` | pass after using `--kv_cache_free_gpu_memory_fraction`: `/tmp/llm_serving_auto_benchmark_trt_retry_20260422_092852/qwen25_7b/results.json` |
+| `google/gemma-3-4b-it` | GPUs 6,7; TP=2 for SGLang/vLLM | pass: `/tmp/llm_serving_auto_benchmark_three_models_20260422_091958/gemma3_4b/sglang_auto/container_results/live_results.jsonl` | pass: `vllm serve` plus `vllm bench serve` | fail in TensorRT-LLM 1.0.0: server container exited during startup, including a TP=1 retry on GPU 6 |
+| `mistralai/Ministral-3-8B-Instruct-2512` | GPUs 6,7; TP=2 for SGLang/vLLM | pass: `/tmp/llm_serving_auto_benchmark_three_models_20260422_091958/ministral3_8b/sglang_auto/container_results/live_results.jsonl` | pass: `vllm serve` plus `vllm bench serve` | fail in TensorRT-LLM 1.0.0: server container exited during startup, including a TP=1 retry on GPU 6 |
+| `TinyLlama/TinyLlama-1.1B-Chat-v1.0` | GPU 6 or 7; TP=1 | pass after disabling piecewise CUDA graph: `/tmp/llm_serving_auto_benchmark_tinyllama_sglang_fixed/container_results/live_results.jsonl` | pass: `/tmp/llm_serving_auto_benchmark_more_gpu7_20260422_091149/tinyllama_1_1b/vllm/results.json` | pass: `/tmp/llm_serving_auto_benchmark_tinyllama_trt_manual/results.json` |
 
-TensorRT-LLM notes from validation:
+### Validation Lessons
 
-- The Docker image worked when running `trtllm-serve serve` through `bash -lc`.
-  Overriding the Docker entrypoint directly to `trtllm-serve` missed library
-  setup in this environment and failed to load `libnvinfer.so.10`.
-- For `benchmark_serving --dataset-name random`, use `--random-ids` for fast
-  synthetic smoke tests. Without it, TensorRT-LLM 1.0.0 asks for a ShareGPT
-  `--download-path`.
+- SGLang smoke configs must be real files. After writing a config through
+  `docker exec`, read or checksum it before starting a long run.
+- For quick SGLang flow checks, add both `disable_cuda_graph: true` and
+  `disable_piecewise_cuda_graph: true`. TinyLlama hit a piecewise CUDA graph
+  warmup failure without the second flag.
+- In TensorRT-LLM 1.0.0, `trtllm-serve serve` accepts
+  `--kv_cache_free_gpu_memory_fraction`; `--free_gpu_memory_fraction` exits with
+  a CLI error.
+- `benchmark_serving --dataset-name random` needs `--random-ids` for fast
+  synthetic tests unless a ShareGPT `--download-path` is provided.
+- When using Docker with specific GPUs, quote comma-separated device lists:
+  `--gpus '"device=6,7"'`. The unquoted `--gpus device=6,7` form can fail before
+  the container starts.
+- Check GPU idleness before every framework run, not only at the start. Other
+  jobs can appear mid-validation. If the GPU count changes, record the run as a
+  smoke-only check and do not compare throughput against the earlier runs.
+- Clean up by port and container name. Avoid killing raw PIDs unless they are
+  proven to belong to the current validation run.

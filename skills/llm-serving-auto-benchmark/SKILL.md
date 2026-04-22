@@ -24,13 +24,13 @@ Prefer native tooling when it gives better coverage:
   TensorRT-LLM serving benchmark client or a common OpenAI-compatible benchmark
   client
 
-Do not declare a winner until each requested framework has had a reasonable
-chance to tune its important knobs.
+Do not declare a winner until each requested framework has had its own main
+serving knobs tuned.
 
-Important: the parameter lists in this skill are not a permanent compatibility
-contract. They are version-sensitive candidate knob families. Before every real
-run, record the exact framework version or git commit and verify the concrete
-CLI flag names with `--help` in the target environment.
+The parameter lists in this skill are not a compatibility contract. They are
+version-sensitive candidate knob families. Before every real run, record the
+exact framework version or git commit and verify the concrete CLI flag names
+with `--help` in the target environment.
 
 ## Required Inputs
 
@@ -82,9 +82,12 @@ Use these rules throughout the benchmark:
 Verify all requested frameworks before starting a search:
 
 ```bash
+python -m sglang.launch_server --help
 python -m sglang.bench_serving --help
+vllm serve --help
 vllm bench serve --help
-trtllm-serve --help
+trtllm-serve serve --help
+python -m tensorrt_llm.serve.scripts.benchmark_serving --help
 ```
 
 Use the framework-specific `--help` output in the target environment as the
@@ -102,6 +105,12 @@ For each framework:
 3. Send one streaming request and verify TTFT can be measured.
 4. Run one tiny benchmark with at least 5 requests.
 5. Save the launch command, benchmark command, server log, and benchmark output.
+
+Before any GPU-backed smoke run, check the requested GPU ids directly with
+`nvidia-smi`. If a requested GPU is already in use, stop and record that fact.
+Do not silently borrow a different GPU count for a performance comparison. It is
+fine to run a smaller one-GPU smoke only when the result is clearly labeled as a
+flow check rather than a fair throughput comparison.
 
 ### 2. Normalize The Workload
 
@@ -180,6 +189,11 @@ Version-sensitive SGLang knob families to verify:
 - CUDA graph and piecewise CUDA graph settings
 - speculative or EAGLE settings only after the non-speculative baseline is tuned
 
+For quick smoke tests, it is reasonable to disable CUDA graph and piecewise CUDA
+graph startup work if the goal is only to prove the framework flow. Record those
+flags in the artifact. Do not carry that smoke setting into a performance winner
+unless the user asked to tune eager-mode serving.
+
 ### 5. Tune vLLM
 
 Use vLLM's sweep runner when available:
@@ -216,7 +230,12 @@ Use `trtllm-serve serve` as the server entrypoint when the target environment
 supports it:
 
 ```bash
-trtllm-serve serve <model> --tp_size <tp> --pp_size <pp> --host 0.0.0.0 --port 8000
+trtllm-serve serve <model> \
+  --tp_size <tp> \
+  --pp_size <pp> \
+  --kv_cache_free_gpu_memory_fraction 0.75 \
+  --host 0.0.0.0 \
+  --port 8000
 ```
 
 Then benchmark the OpenAI-compatible endpoint with the TensorRT-LLM serving
@@ -226,6 +245,12 @@ frameworks.
 For TensorRT-LLM 1.0.0, `benchmark_serving --dataset-name random` samples from
 ShareGPT unless you pass either `--download-path` or `--random-ids`. For a fast
 synthetic smoke test, pass `--random-ids`.
+
+TensorRT-LLM flag names are especially version-sensitive. In the H100
+TensorRT-LLM 1.0.0 image, the KV-cache memory flag accepted by
+`trtllm-serve serve` is `--kv_cache_free_gpu_memory_fraction`, not
+`--free_gpu_memory_fraction`. Verify this with `trtllm-serve serve --help`
+before running a search.
 
 Version-sensitive TensorRT-LLM knob families to verify:
 
