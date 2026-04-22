@@ -80,6 +80,17 @@ class LlmServingDocsTest(unittest.TestCase):
                 for term in blocked_terms:
                     self.assertNotIn(term, text)
 
+    def test_failed_candidate_table_is_explained(self) -> None:
+        skill = read_skill_file("SKILL.md")
+        schema = read_skill_file("references", "result-schema.md")
+
+        for text in (skill, schema):
+            normalized = " ".join(text.split())
+            self.assertIn("audit trail", normalized)
+            self.assertIn("failed", normalized)
+            self.assertIn("skipped", normalized)
+            self.assertIn("SLA", normalized)
+
 
 if __name__ == "__main__":
     unittest.main()

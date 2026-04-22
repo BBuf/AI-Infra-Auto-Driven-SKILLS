@@ -82,6 +82,7 @@ class CompareBenchmarkResultsTest(unittest.TestCase):
         self.assertIn("sglang-fast-fail", summary)
         self.assertIn("Best Commands By Framework", summary)
         self.assertIn("Cross-Framework Best Comparison", summary)
+        self.assertIn("audit trail for explored but non-recommended configs", summary)
 
     def test_load_rows_rejects_non_object_json(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
