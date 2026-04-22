@@ -46,6 +46,16 @@ class CompareBenchmarkResultsTest(unittest.TestCase):
             },
             {
                 "framework": "sglang",
+                "candidate_id": "sglang-startup-fail",
+                "status": "failed",
+                "failure_reason": "server did not become ready",
+                "workload": {"scenario": "startup"},
+                "sla": {"passed": False},
+                "metrics": {},
+                "hardware": {"gpu_count": 1},
+            },
+            {
+                "framework": "sglang",
                 "candidate_id": "sglang-steady",
                 "status": "ok",
                 "workload": {"scenario": "chat"},
@@ -82,10 +92,12 @@ class CompareBenchmarkResultsTest(unittest.TestCase):
 
         summary = self.mod.render_markdown(rows)
         self.assertIn("sglang-fast-fail", summary)
+        self.assertIn("sglang-startup-fail", summary)
         self.assertIn("Best Commands By Framework", summary)
         self.assertIn("Cross-Framework Best Comparison", summary)
         self.assertNotIn("Overall Winner", summary)
         self.assertNotIn("Best Per Framework", summary)
+        self.assertNotIn("| startup |", summary)
         self.assertIn("records tried configs that were not selected", summary)
 
     def test_load_rows_rejects_non_object_json(self) -> None:

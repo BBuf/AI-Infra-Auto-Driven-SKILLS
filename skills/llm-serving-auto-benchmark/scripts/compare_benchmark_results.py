@@ -48,6 +48,10 @@ def _rank_key(row: dict[str, Any]) -> tuple[Any, ...]:
     )
 
 
+def _is_winner_candidate(row: dict[str, Any]) -> bool:
+    return _get(row, "status") == "ok" and _bool(row, "sla.passed")
+
+
 def _fmt(value: Any, digits: int = 2) -> str:
     if value is None:
         return ""
@@ -112,6 +116,8 @@ def load_rows(path: Path) -> list[dict[str, Any]]:
 def best_by_framework_and_scenario(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     best: dict[tuple[str, str], dict[str, Any]] = {}
     for row in rows:
+        if not _is_winner_candidate(row):
+            continue
         key = (str(_get(row, "framework", "unknown")), _scenario(row))
         if key not in best or _rank_key(row) > _rank_key(best[key]):
             best[key] = row
