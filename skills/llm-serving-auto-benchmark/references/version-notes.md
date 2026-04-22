@@ -187,3 +187,74 @@ Lessons from the larger run:
   `Ministral-3-14B-Instruct-2512` failed before serving because the bundled
   Transformers mapping did not include `ministral3`.
 - Cleanup used `codex-big-*` container names and left GPU 4 idle at the end.
+
+### TensorRT-LLM PyTorch Backend 4-GPU Validation
+
+After pinning TensorRT-LLM to the PyTorch server backend, a focused H100 run
+validated the container path on four idle H100s.
+
+Run directory:
+
+`/tmp/llm_serving_auto_benchmark_trt_torch4_10cfg_20260422_131031`
+
+Setup:
+
+- model: `Qwen/Qwen3-30B-A3B`
+- GPUs: 0, 1, 2, 3 on `h100_sglang`
+- image: `nvcr.io/nvidia/tensorrt-llm/release:latest`
+- TensorRT-LLM: `1.0.0`
+- server backend: `trtllm-serve serve --backend pytorch`
+- workload: random `chat` 512 -> 64 and random `summarization` 2048 -> 128
+- request count: 20 per scenario
+- request rate: 1
+- max concurrency: 4
+- candidates: 10 TensorRT-LLM server configs over `max_batch_size`,
+  `max_num_tokens`, and `max_seq_len`
+
+The passing Docker server options included:
+
+```bash
+--ipc=host
+--ulimit memlock=-1
+--ulimit stack=67108864
+--shm-size=16g
+-e NCCL_IB_DISABLE=1
+```
+
+Result summary:
+
+| Candidates | Scenario cells | Pass | Fail |
+| ---: | ---: | ---: | ---: |
+| 10 | 20 | 20 | 0 |
+
+Candidate grid:
+
+| Candidate | `max_batch_size` | `max_num_tokens` | `max_seq_len` |
+| ---: | ---: | ---: | ---: |
+| 1 | 64 | 12288 | 4096 |
+| 2 | 64 | 16384 | 4096 |
+| 3 | 128 | 12288 | 4096 |
+| 4 | 128 | 16384 | 4096 |
+| 5 | 64 | 12288 | 8192 |
+| 6 | 64 | 16384 | 8192 |
+| 7 | 128 | 12288 | 8192 |
+| 8 | 128 | 16384 | 8192 |
+| 9 | 32 | 8192 | 4096 |
+| 10 | 32 | 8192 | 8192 |
+
+Representative metrics:
+
+| Candidate | Scenario | Completed | Request/s | Output tok/s | p99 TTFT ms | p99 TPOT ms |
+| ---: | --- | ---: | ---: | ---: | ---: | ---: |
+| 1 | chat | 20 | 0.879 | 56.237 | 176.222 | 12.669 |
+| 1 | summarization | 20 | 0.879 | 112.483 | 70.347 | 6.889 |
+| 8 | chat | 20 | 0.878 | 56.221 | 178.766 | 4.998 |
+| 8 | summarization | 20 | 0.879 | 112.478 | 62.188 | 4.481 |
+| 10 | chat | 20 | 0.879 | 56.228 | 178.633 | 4.960 |
+| 10 | summarization | 20 | 0.879 | 112.485 | 68.294 | 4.530 |
+
+An earlier 10-candidate attempt in
+`/tmp/llm_serving_auto_benchmark_trt_torch4_20260422_130118` used the same
+model and backend but omitted the multi-GPU Docker options above. Each candidate
+entered `PyTorchConfig` and then failed startup at NCCL allreduce. Keep those
+container options in the runbook for multi-GPU TensorRT-LLM validation.
