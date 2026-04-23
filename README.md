@@ -62,6 +62,49 @@ The `h100` and `h100-sglang-diffusion` skills use placeholder values. Replace th
 | `<your-cache-path>` | Host path mounted as `/root/.cache`                     |
 | `<your-hf-token>`   | Hugging Face access token (never commit the real value) |
 
+## Model Optimization Skills
+
+The current model optimization handbook series is split by model family and generation so agents can use the right code/PR history without mixing neighboring architectures:
+
+- `sglang-deepseek-v3-r1-optimization`
+- `sglang-deepseek-v31-optimization`
+- `sglang-deepseek-v32-optimization`
+- `sglang-kimi-k2-k25-optimization`
+- `sglang-minimax-m2-series-optimization`
+- `sglang-qwen3-core-optimization`
+- `sglang-qwen3-next-optimization`
+- `sglang-qwen35-optimization`
+- `sglang-qwen36-optimization`
+- `sglang-qwen3-coder-optimization`
+- `sglang-qwen-vlm-omni-asr-optimization`
+- `sglang-qwen-image-optimization`
+- `sglang-glm45-optimization`
+- `sglang-glm46-glm47-optimization`
+- `sglang-glm5-glm51-optimization`
+- `sglang-glm-vlm-ocr-optimization`
+
+## Model PR Optimization History
+
+The `model-pr-optimization-history/` directory contains bilingual model evolution notes:
+
+- `deepseek-v3-r1`
+- `deepseek-v31`
+- `deepseek-v32`
+- `kimi`
+- `minimax`
+- `qwen3-core`
+- `qwen3-next`
+- `qwen35`
+- `qwen36`
+- `qwen3-coder`
+- `qwen-vlm-omni-asr`
+- `qwen-image`
+- `glm45`
+- `glm46-glm47`
+- `glm5-glm51`
+- `glm-vlm-ocr`
+- `qwen-glm-three-pass-audit-2026-04-23.md` records the 2026-04-23 SGLang docs, git/PR, and public-blog completeness sweep for the Qwen/GLM series.
+
 ## Install
 
 Copy the desired skill directory into your local skill path:
