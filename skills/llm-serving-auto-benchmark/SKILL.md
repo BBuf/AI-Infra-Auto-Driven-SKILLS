@@ -66,6 +66,58 @@ a mostly pure-TP baseline, sweep a small set of high-impact runtime knobs, and
 cap the first pass around 10 candidates per framework. Do not search memory
 fractions by default.
 
+## Validation Environment
+
+This skill is target-agnostic. It assumes any one of the following is
+available, and nothing more:
+
+- a local GPU host with Docker/Podman and the target framework images pulled;
+- a remote GPU host reached via `ssh <host>` with the framework images already
+  running in a container there;
+- a CI runner that can exec into a pre-built image for each framework.
+
+Do not assume a specific operator host name (`h100_sglang`, `b200_*`,
+`radixark*`, `rtx5090_*`, etc.) inside this skill's own workflow. The concrete
+SSH wiring, container names, workspace paths, and HF token plumbing for a given
+box live in the operator-side per-host skills (for example `h100`,
+`h100-sglang-diffusion`, `b200`, `rtx5090`, `radixark02`, `radixark03`); this
+skill only requires that the caller can reach a shell inside a container with
+`sglang`, `vllm`, or `tensorrt_llm` installed.
+
+Historical validation snapshots in `references/` (for example the
+H100-recorded parameter audit) are evidence of which flag names and failure
+modes were seen in a specific image and are not a requirement that the next
+run happens on the same hardware.
+
+## Skill Scope
+
+This skill is a playbook plus a config+validator toolchain, not a
+turn-key orchestrator. The `scripts/` directory contains exactly two tools:
+
+- `validate_cookbook_configs.py`: reads YAML, renders bounded candidate server
+  commands, and checks flag names against captured `--help` snapshots. It never
+  launches a model server.
+- `compare_benchmark_results.py`: takes the normalized per-candidate JSONL and
+  emits the markdown tables described in the Output Contract.
+
+Launching servers, driving the workload, and writing one JSONL row per
+candidate are the operator's responsibility; the skill tells you how to do
+them, and the validator keeps your inputs honest.
+
+The cookbook configs under `configs/cookbook-llm/` and the sample runtime plan
+at `references/example-plan.yaml` use related but not identical schemas:
+
+- Cookbook configs carry `schema_version: 1`, `source.kind`,
+  `benchmark.sla` (nested), and `frameworks.*.server_command`; they must pass
+  `validate_cookbook_configs.py`.
+- `example-plan.yaml` is a shorter runtime plan shape with top-level `sla` and
+  no `server_command`. It is the skeleton a caller fills in for a one-off run
+  and is not expected to pass the cookbook validator as-is.
+
+Either shape can feed a benchmark run; the SLA key names in
+[references/result-schema.md](references/result-schema.md) are the single
+source of truth.
+
 ## Required Inputs
 
 Collect these before starting a long run:
@@ -94,6 +146,49 @@ Also collect a version manifest:
 If real production traffic is the goal, use the real request distribution. A
 synthetic workload is fine for bring-up and first-pass comparison, but it is not
 enough for a production choice.
+
+## Known Gotchas
+
+Short list of failure modes that have bitten past validation runs. Check these
+before starting a long sweep.
+
+- SGLang `fa3` attention backends need Hopper or newer. On A100, L40S, RTX
+  5090, and older GPUs, drop `fa3` from the SGLang `search_space` and keep
+  `flashinfer` (or `triton` when FlashInfer is unavailable).
+- SGLang `bench_serving` has two SGLang-facing backends: `--backend sglang` for
+  the native `/generate` endpoint and `--backend sglang-oai` for the
+  OpenAI-compatible endpoint. For cross-framework comparisons, prefer
+  `sglang-oai` so every framework is measured on the same request path.
+- vLLM `--enable-dbo` only works when the target vLLM image is built with a
+  supported all2all backend. Keep DBO out of the default candidate list unless
+  the operator has verified the image.
+- vLLM `--max-num-partial-prefills > 1` is model- and runtime-gated. Keep `1`
+  in the default pass; raise only after a preflight with the actual model.
+- In the validated TensorRT-LLM 1.0.0 image, `trtllm-serve serve` accepts
+  `--kv_cache_free_gpu_memory_fraction`; the older `--free_gpu_memory_fraction`
+  exits with a CLI error. Re-check the accepted flag name via `--help` on the
+  target image before a real run.
+- TensorRT-LLM 1.0.0 multi-GPU PyTorch-backend servers need `--ipc=host`,
+  `--ulimit memlock=-1`, `--ulimit stack=67108864`, `--shm-size=16g`, and
+  `NCCL_IB_DISABLE=1` (for single-node) or an equivalent NCCL setup.
+- TensorRT-LLM 1.0.0 benchmark client takes `--backend openai` or
+  `--backend openai-chat`; `--backend trtllm` is rejected. This is separate
+  from the server backend, which is pinned to `pytorch` by this skill.
+- `trtllm` `benchmark_serving --dataset-name random` silently falls back to
+  ShareGPT sampling without `--random-ids` (or `--download-path`).
+- `max_seq_len` / `max_model_len` / `context_length` candidates must cover
+  `max(input_len + output_len)` across every scenario, including values inside
+  `search_space`, not just the baseline. The validator checks this; do not
+  bypass it.
+
+## Secrets Hygiene
+
+- Never print `HF_TOKEN`, `HUGGINGFACE_HUB_TOKEN`, or any upstream API key into
+  a saved artifact. Pass them through container `-e VAR` (unquoted on the right
+  side so the host value is inherited) and keep them out of `server_command`
+  and `benchmark_command` fields written to the result JSONL.
+- When a framework echoes the full argv at startup, scrub the log or redact
+  token-shaped substrings before uploading the artifact.
 
 ## Fairness Rules
 
@@ -223,7 +318,9 @@ Use the smallest tier that can answer the user's question:
 
 Default budget:
 
-- `num_prompts: 80` for quick comparison
+- `num_prompts: 80` for the default cross-framework comparison; `num_prompts:
+  20` per scenario is acceptable for a smoke/flow check and must be labeled as
+  such in the artifact (not as a performance result).
 - `search.max_candidates_per_framework: 10` for the first useful pass
 - candidate generation: baseline first, then a bounded product or ordered
   candidate list from `search_space`
@@ -315,7 +412,9 @@ Version-sensitive vLLM knob families to verify:
 
 vLLM should get a normal sweep, not one baseline command. See
 [references/parameter-coverage.md](references/parameter-coverage.md) for the
-H100-verified flag families.
+validated flag families. The historical audit happens to use an H100 host, but
+the flag-family coverage is not H100-specific; confirm each flag on the target
+image's `--help` before a run.
 
 Keep `gpu_memory_utilization` in the baseline for the default pass. Search it
 only when the question is explicitly about fitting the model or trading capacity
@@ -351,11 +450,11 @@ For TensorRT-LLM 1.0.0, `benchmark_serving --dataset-name random` samples from
 ShareGPT unless you pass either `--download-path` or `--random-ids`. For a fast
 synthetic smoke test, pass `--random-ids`.
 
-TensorRT-LLM flag names are especially version-sensitive. In the H100
+TensorRT-LLM flag names are especially version-sensitive. In the validated
 TensorRT-LLM 1.0.0 image, the KV-cache memory flag accepted by
 `trtllm-serve serve` is `--kv_cache_free_gpu_memory_fraction`, not
 `--free_gpu_memory_fraction`. Verify this with `trtllm-serve serve --help`
-before running a search.
+before running a search on any GPU target.
 
 TensorRT-LLM backend policy for this skill:
 

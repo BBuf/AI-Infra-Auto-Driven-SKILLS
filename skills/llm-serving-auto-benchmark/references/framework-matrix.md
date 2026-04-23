@@ -46,6 +46,20 @@ python -m sglang.bench_serving \
   --request-rate 8
 ```
 
+`sglang.bench_serving` has two SGLang-facing backends:
+
+- `--backend sglang` targets SGLang's native `/generate` endpoint. Use this for
+  SGLang-internal comparisons where the native request path is the most direct
+  measurement.
+- `--backend sglang-oai` targets the OpenAI-compatible endpoint
+  (`/v1/completions` or `/v1/chat/completions`). Use this when the cross-framework
+  comparison requires an identical OpenAI-compatible request path for every
+  framework.
+
+For this skill, prefer `--backend sglang-oai` whenever the same benchmark run
+has to compare SGLang against vLLM and TensorR-LLM, and note the backend choice
+in the result row's `workload.endpoint`.
+
 ### vLLM
 
 ```bash
@@ -94,11 +108,11 @@ Then benchmark `http://127.0.0.1:8000/v1/completions` or
 `http://127.0.0.1:8000/v1/chat/completions` with the TensorRT-LLM serving
 benchmark client or the same OpenAI-compatible client used for the other
 frameworks. For TensorRT-LLM 1.0.0 synthetic random data, pass `--random-ids`
-unless you also provide a ShareGPT `--download-path`. In the 1.0.0 H100 image,
-`--free_gpu_memory_fraction` is not accepted by `trtllm-serve serve`; use
-`--kv_cache_free_gpu_memory_fraction` after checking `--help`. The TensorRT-LLM
-1.0.0 benchmark client accepts `--backend openai` and `--backend openai-chat`,
-not `--backend trtllm`.
+unless you also provide a ShareGPT `--download-path`. In the validated
+TensorRT-LLM 1.0.0 image, `--free_gpu_memory_fraction` is not accepted by
+`trtllm-serve serve`; use `--kv_cache_free_gpu_memory_fraction` after checking
+`--help` on the target image. The TensorRT-LLM 1.0.0 benchmark client accepts
+`--backend openai` and `--backend openai-chat`, not `--backend trtllm`.
 
 Do not replace the server-side `--backend pytorch` with `trt` or an engine
 backend in this skill. Treat those requests as unsupported candidates and record

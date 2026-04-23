@@ -19,6 +19,25 @@ import yaml
 
 FRAMEWORKS = ("sglang", "vllm", "tensorrt_llm")
 
+SEQUENCE_LIMIT_KEY = {
+    "sglang": "context_length",
+    "vllm": "max_model_len",
+    "tensorrt_llm": "max_seq_len",
+}
+
+ALLOWED_SLA_KEYS = {
+    "max_p99_ttft_ms",
+    "max_p99_tpot_ms",
+    "min_success_rate",
+    "max_p99_e2e_ms",
+}
+
+DEPRECATED_SLA_KEYS = {
+    "max_ttft_ms": "max_p99_ttft_ms",
+    "max_tpot_ms": "max_p99_tpot_ms",
+    "max_e2e_ms": "max_p99_e2e_ms",
+}
+
 STATIC_SERVER_FLAGS = {
     "sglang": {
         "attention_backend",
@@ -287,27 +306,52 @@ def validate_config(
     for framework in FRAMEWORKS:
         errors.extend(_validate_framework(config, framework, help_flags))
 
-    if _enabled(config, "sglang"):
-        sglang_flags = frameworks["sglang"]["base_server_flags"]
-        context_length = int(sglang_flags.get("context_length", required_sequence))
-        if context_length < required_sequence:
+    for framework in FRAMEWORKS:
+        if not _enabled(config, framework):
+            continue
+        key = SEQUENCE_LIMIT_KEY[framework]
+        fw = frameworks[framework]
+        base_flags = fw.get("base_server_flags", {}) or {}
+        search_space = fw.get("search_space", {}) or {}
+
+        if framework == "sglang":
+            base_value = int(base_flags.get(key, required_sequence))
+        else:
+            base_value = int(base_flags.get(key, 0))
+        if base_value < required_sequence:
             errors.append(
-                "sglang: context_length is smaller than the largest dataset scenario"
+                f"{framework}: base {key} ({base_value}) is smaller than the largest dataset scenario ({required_sequence})"
             )
 
-    if _enabled(config, "vllm"):
-        vllm_flags = frameworks["vllm"]["base_server_flags"]
-        if int(vllm_flags.get("max_model_len", 0)) < required_sequence:
-            errors.append(
-                "vllm: max_model_len is smaller than the largest dataset scenario"
-            )
+        if key in search_space:
+            for value in _as_list(search_space[key]):
+                try:
+                    if int(value) < required_sequence:
+                        errors.append(
+                            f"{framework}: search_space {key} candidate {value} is smaller than the largest dataset scenario ({required_sequence})"
+                        )
+                except (TypeError, ValueError):
+                    errors.append(
+                        f"{framework}: search_space {key} candidate {value!r} is not an integer"
+                    )
 
-    if _enabled(config, "tensorrt_llm"):
-        trt_flags = frameworks["tensorrt_llm"]["base_server_flags"]
-        if int(trt_flags.get("max_seq_len", 0)) < required_sequence:
-            errors.append(
-                "tensorrt_llm: max_seq_len is smaller than the largest dataset scenario"
-            )
+    sla_block = (
+        config.get("benchmark", {}).get("sla")
+        if isinstance(config.get("benchmark"), dict)
+        else None
+    )
+    if sla_block is None:
+        sla_block = config.get("sla")
+    if isinstance(sla_block, dict):
+        for key in sla_block:
+            if key in DEPRECATED_SLA_KEYS:
+                errors.append(
+                    f"sla: {key!r} is deprecated; use {DEPRECATED_SLA_KEYS[key]!r} (see references/result-schema.md)"
+                )
+            elif key not in ALLOWED_SLA_KEYS:
+                errors.append(
+                    f"sla: unknown key {key!r}; allowed keys are {sorted(ALLOWED_SLA_KEYS)}"
+                )
 
     return errors
 

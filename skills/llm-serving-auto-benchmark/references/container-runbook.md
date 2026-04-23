@@ -4,6 +4,14 @@ Use this runbook when the benchmark environment is container-based. It records
 the exact image, command, help output, server log, benchmark log, and cleanup
 step for each framework.
 
+This runbook is target-agnostic. Every `docker run` / `docker exec` command
+works on a local box, an SSH-reachable remote GPU host, or a CI runner; the
+per-host skills (for example `h100`, `b200`, `rtx5090`, `radixark02`,
+`radixark03`) only add the SSH wrapper, container name, and workspace path
+for a specific operator box. Substitute those values where you see
+`$SGLANG_CONTAINER`, `$SGLANG_WORKSPACE`, and similar; nothing below assumes
+an H100.
+
 ## Common Setup
 
 Pull the images that will be used:
@@ -80,21 +88,26 @@ python -m tensorrt_llm.serve.scripts.benchmark_serving --help \
 
 ## SGLang
 
-On the prepared H100 host, the existing `sglang_bbuf` container can be used:
+If a prepared GPU host already has a long-running SGLang container (local or
+reached via ssh; name is operator-specific), reuse it via `docker exec`
+instead of creating a new container. The per-host skills — `h100`,
+`h100-sglang-diffusion`, `b200`, `rtx5090`, `radixark02`, `radixark03`,
+and similar — provide the concrete container name and workspace path for
+that box; this runbook assumes the operator substitutes them:
 
 ```bash
 docker exec \
   -e MODEL \
   -e TP \
   -e PORT \
-  sglang_bbuf bash -lc '
-cd /data/bbuf/repos/sglang
-python -m sglang.launch_server \
-  --model-path "$MODEL" \
-  --tp-size "$TP" \
-  --host 0.0.0.0 \
-  --port "$PORT"
-'
+  "$SGLANG_CONTAINER" bash -lc "
+cd \"\$SGLANG_WORKSPACE\"
+python -m sglang.launch_server \\
+  --model-path \"\$MODEL\" \\
+  --tp-size \"\$TP\" \\
+  --host 0.0.0.0 \\
+  --port \"\$PORT\"
+"
 ```
 
 For a fresh container:
@@ -214,9 +227,11 @@ server to `--backend trt`, an engine path, or any other backend; mark that
 candidate unsupported instead.
 
 For single-node multi-GPU TensorRT-LLM containers, keep the IPC, ulimit, shared
-memory, and NCCL settings below. In H100 validation, a 4-GPU PyTorch-backend
-server entered `PyTorchConfig` but failed NCCL allreduce without these container
-options; the same model and candidate list passed after adding them.
+memory, and NCCL settings below. In a multi-GPU PyTorch-backend validation
+run (captured on an H100 host; the rule is not H100-specific), the server
+entered `PyTorchConfig` but failed NCCL allreduce without these container
+options; the same model and candidate list passed after adding them. Expect
+the same requirement on any single-node multi-GPU target.
 
 Server template:
 

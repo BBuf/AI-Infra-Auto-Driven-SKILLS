@@ -1,6 +1,11 @@
 # Example run plan for the llm-serving-auto-benchmark skill. The layout mirrors
 # SGLang auto benchmark: baseline flags stay in base_server_flags, search knobs
 # stay in search_space, and aligned dataset length pairs define scenarios.
+#
+# Note: this is the runtime plan shape (top-level `sla`, no `schema_version` or
+# `server_command`). Cookbook configs in configs/cookbook-llm/ use the extended
+# schema enforced by scripts/validate_cookbook_configs.py; do not run the
+# validator against this file as-is.
 
 model:
   name: Qwen/Qwen3-32B
@@ -30,6 +35,9 @@ version_manifest:
     benchmark_help: artifacts/help/trtllm_benchmark_serving.txt
 
 hardware:
+  # Example values; replace with the actual target GPU (A100, H100, H200,
+  # B200, MI300, RTX 5090, etc.). gpu_model is recorded for fairness audit,
+  # not used as a scheduling hint.
   gpu_model: NVIDIA H100 80GB HBM3
   gpu_count: 4
   multi_node: false
@@ -119,4 +127,7 @@ frameworks:
       max_batch_size: [64, 128]
       max_num_tokens: [8192, 16384]
       max_seq_len: [12288, 16384]
-      extra_llm_api_options: [null]
+      # Uncomment and point at concrete config files to sweep PyTorch-backend
+      # options via --extra_llm_api_options. A single [null] value contributes
+      # no dimension to the search.
+      # extra_llm_api_options: [null, /path/to/trt_llm_config_A.yaml]
