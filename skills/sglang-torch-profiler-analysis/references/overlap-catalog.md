@@ -26,12 +26,17 @@ necessarily present in the checked-out `sglang` tree, but they should still be
 treated as upstream or analogous kernel-overlap families before labeling an
 overlap opportunity as novel.
 
-Refresh note `2026-04-17`: stable upstream overlap changes are folded into the
-mainline rows. SGLang [#21877](https://github.com/sgl-project/sglang/pull/21877),
-[#22410](https://github.com/sgl-project/sglang/pull/22410), FlashInfer
-[#2840](https://github.com/flashinfer-ai/flashinfer/pull/2840), [#2720](https://github.com/flashinfer-ai/flashinfer/pull/2720),
-and vLLM [#35968](https://github.com/vllm-project/vllm/pull/35968), [#39301](https://github.com/vllm-project/vllm/pull/39301)
-remain useful open-PR overlap references as of this refresh.
+Refresh note `2026-04-22`: rescanned current `sglang`, `flashinfer`,
+`TensorRT-LLM`, and `vllm` mainline overlap paths plus rechecked referenced PR
+state via the GitHub API on `2026-04-22`. Closed-unmerged SGLang
+[#22410](https://github.com/sgl-project/sglang/pull/22410) and FlashInfer
+[#2840](https://github.com/flashinfer-ai/flashinfer/pull/2840) were removed
+from the PR-backed sections. SGLang
+[#21877](https://github.com/sgl-project/sglang/pull/21877), FlashInfer
+[#2720](https://github.com/flashinfer-ai/flashinfer/pull/2720), and vLLM
+[#35968](https://github.com/vllm-project/vllm/pull/35968) /
+[#39301](https://github.com/vllm-project/vllm/pull/39301) remain useful
+upstream overlap references as of this refresh.
 
 ## 1. LLM / SRT kernel-overlap families
 
@@ -71,7 +76,6 @@ remain useful open-PR overlap references as of this refresh.
 | Pattern | Trace keywords | Primary code | Existing path | Skill should conclude |
 | --- | --- | --- | --- | --- |
 | PR `#21877` fused down-GEMM + combine superseding SBO | `enable_fused_grouped_gemm_combine`<br>`combine`<br>`down_gemm` | `PR #21877`<br>`python/sglang/srt/server_args.py`<br>`python/sglang/srt/layers/moe/token_dispatcher/deepep.py` | Fused combine eliminates the standalone combine window, so SBO is intentionally disabled when this path is on | If the trace discussion is about combine overlap, first classify it as this upstream fused-overlap family. |
-| PR `#22410` hiSparse H2D transfer overlap with hit-attention | `transfer_stream`<br>`execute_h2d_async`<br>`hit-attention`<br>`merge_state` | `PR #22410`<br>`python/sglang/srt/layers/attention/nsa_backend.py`<br>`python/sglang/srt/hisparse/hisparse_coordinator.py` | hiSparse decode overlaps host-to-device KV transfer on a transfer stream with hit-attention on the compute stream before running miss-attention and merge | Treat hit-attention vs H2D KV transfer windows as an in-flight SGLang overlap family first. |
 
 ## 5. FlashInfer kernel-overlap families
 
@@ -89,7 +93,6 @@ checkout only calls part of that implementation.
 
 | Pattern | Trace keywords | Primary code | Existing path | Skill should conclude |
 | --- | --- | --- | --- | --- |
-| PR `#2840` CuTeDSL MoE aux-stream overlap race fix | `aux_stream`<br>`use_prealloc`<br>`use_cuda_graph` | `PR #2840`<br>`flashinfer/fused_moe/cute_dsl/fused_moe.py` | Clarifies that async memset overlap is only safe for the preallocated / CUDA-graph case; non-graph mode falls back to main-stream zeroing to avoid races | Treat missing aux-stream overlap in non-graph traces as an intentional safety rule, not a novel opportunity. |
 | PR `#2720` PDL runtime-API migration | `cudaGridDependencySynchronize`<br>`cudaTriggerProgrammaticLaunchCompletion`<br>`inline PTX` | `PR #2720`<br>`include/flashinfer/comm/trtllm_allreduce_fusion.cuh`<br>`include/flashinfer/pos_enc.cuh` | Repo-wide migration preserves the existing PDL overlap family while replacing inline PTX with CUDA runtime APIs across norm, RoPE, attention, and MoE codepaths | Treat PDL-looking launch groups as an upstream FlashInfer overlap family even when implementation details differ across revisions. |
 
 ## 7. TensorRT-LLM-origin kernel-overlap families
@@ -110,7 +113,7 @@ AutoDeploy rather than same-stream PDL windows.
 | --- | --- | --- | --- | --- |
 | vLLM-origin AsyncTP GEMM + collective overlap | `fuse_gemm_comms`<br>`fused_matmul_reduce_scatter`<br>`fused_all_gather_matmul` | `vllm/compilation/passes/fusion/collective_fusion.py`<br>`docs/design/fusions.md` | AsyncTP overlaps GEMM with reduce-scatter / all-gather via symmetric-memory collectives | Treat GEMM+comm windows as a clear vLLM-origin overlap precedent first. |
 | vLLM-origin Sequence Parallelism staging | `enable_sp`<br>`ReduceScatter`<br>`AllGather`<br>`SequenceParallelismPass` | `vllm/compilation/passes/fusion/sequence_parallelism.py`<br>`docs/design/fusions.md` | Sequence-parallel rewrites all-reduce into RS -> local norm -> AG so later passes can overlap comm and compute | Treat RS / AG staging around norm blocks as an upstream overlap-enabling family. |
-| vLLM-origin shared-expert aux-stream overlap | `aux_stream`<br>`shared_experts_stream`<br>shared expert near router | `vllm/utils/torch_utils.py`<br>`vllm/model_executor/layers/fused_moe/runner/default_moe_runner.py` | MoE shared experts can run on a dedicated aux stream and overlap with router-side work | Treat shared-expert vs router overlap as an existing upstream sparse-model family. |
+| vLLM-origin shared-expert aux-stream overlap | `aux_stream`<br>`shared_experts_stream`<br>shared expert near router | `vllm/model_executor/layers/fused_moe/runner/shared_experts.py`<br>`vllm/model_executor/layers/fused_moe/runner/moe_runner_base.py` | MoE shared experts can record the cloned input on `shared_experts_stream`, wait on the caller stream, run in parallel with router-side work, and rejoin before merge | Treat shared-expert vs router overlap as an existing upstream sparse-model family. |
 | vLLM-origin DCP async all-to-all overlap | `dcp_alltoall`<br>`all_to_all_single`<br>`async_op=True` | `vllm/v1/attention/ops/dcp_alltoall.py` | Output / LSE exchange uses async all-to-all handles instead of serializing collective completion on the main path | Treat DCP all-to-all windows as an upstream async-collective family. |
 
 ## 9. vLLM-origin PR-backed / in-flight kernel-overlap families
@@ -161,7 +164,7 @@ git -C "$FLASHINFER_REPO" log --all --format='%h %s' | rg -i 'fused|fusion|overl
 rg -n "multi_stream_moe|multi_stream_mla_attn|multi_stream_gemm|record_event_passthrough|begin_aux_stream_passthrough|end_aux_stream_passthrough|wait_aux_stream_passthrough" "$TRTLLM_REPO/tensorrt_llm/_torch"
 rg -n "mlir_elementwise_fusion|piecewise|cudagraph|caller_stream.synchronize" "$TRTLLM_REPO/tensorrt_llm/_torch"
 git -C "$TRTLLM_REPO" log --all --format='%h %s' | rg -i 'overlap|multi-stream|aux stream|cudagraph|mlir|stream|flashinfer|moe|mla'
-rg -n "fuse_gemm_comms|enable_sp|fused_matmul_reduce_scatter|fused_all_gather_matmul|shared_experts_stream|dcp_alltoall|async_op=True|aux_stream|maybe_execute_in_parallel" "$VLLM_REPO/vllm" "$VLLM_REPO/docs/design/fusions.md"
+rg -n "fuse_gemm_comms|enable_sp|fused_matmul_reduce_scatter|fused_all_gather_matmul|shared_experts_stream|maybe_sync_shared_experts_stream|dcp_alltoall|async_op=True|aux_stream|maybe_execute_in_parallel" "$VLLM_REPO/vllm" "$VLLM_REPO/docs/design/fusions.md"
 git -C "$VLLM_REPO" log --all --format='%h %s' | rg -i 'fused|fusion|overlap|allreduce|reduce-scatter|all-gather|all_to_all|stream|multi-stream|triton|cuda|router'
 # GitHub PR scan terms for the connector or web UI:
 #   "fused OR overlap repo:sgl-project/sglang"
