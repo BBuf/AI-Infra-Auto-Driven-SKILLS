@@ -38,8 +38,9 @@ benchmark:
     upper: 4.0
     tolerance: 0.1
   sla:
-    max_ttft_ms: 1500
-    max_tpot_ms: 30
+    max_p99_ttft_ms: 1500
+    max_p99_tpot_ms: 30
+    min_success_rate: 0.99
   output_dir: ./auto_benchmark_results/cookbook-llm/mimo-v2-flash
 search:
   tier: 2
@@ -130,5 +131,3 @@ frameworks:
       max_seq_len:
       - 12288
       - 16384
-      extra_llm_api_options:
-      - null

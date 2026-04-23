@@ -3,7 +3,31 @@
 Write one JSON object per candidate. Keep failed candidates in the same file so
 the final summary explains what was tried.
 
+## SLA Key Convention
+
+One canonical naming across this skill. Config files and normalized result rows
+must agree.
+
+| Key | Where | Type |
+| --- | --- | --- |
+| `max_p99_ttft_ms` | both | float, milliseconds, p99 |
+| `max_p99_tpot_ms` | both | float, milliseconds, p99 |
+| `min_success_rate` | both | float in [0, 1] |
+| `passed` | result only | bool; recomputed after the run |
+
+Do not use `max_ttft_ms` or `max_tpot_ms` without the `p99_` prefix; those names
+hide whether the target is a mean or a tail. Older cookbook configs used mean
+latency targets by accident and have been migrated to the p99 names above.
+
+The config-level SLA block lives under `benchmark.sla` (cookbook configs) or at
+the top level (example plan). Either location is acceptable, but the key names
+must match this table.
+
 ## JSONL Row
+
+The values below (`gpu_model`, `gpu_count`, file paths, numeric metrics, etc.)
+are illustrative. Replace them with the actual target hardware and measured
+values; this schema is not tied to H100.
 
 ```json
 {
@@ -83,6 +107,17 @@ The default ranking is:
 
 If the user cares more about token throughput than request throughput, swap
 steps 3 and 4 and state that in the final report.
+
+Missing metric semantics:
+
+- If a latency field is absent from a row, the ranking script treats it as the
+  worst possible value, so that row falls below any candidate with a real
+  measurement. Do not write `0` as a placeholder for "no measurement"; leave the
+  field out or set it to `null`.
+- If `metrics.request_throughput` or `metrics.output_token_throughput` is
+  missing, the row ranks below any candidate with a real measurement in those
+  keys. A failed candidate that still produced partial metrics should keep the
+  metrics it did produce.
 
 ## Final Report Tables
 
