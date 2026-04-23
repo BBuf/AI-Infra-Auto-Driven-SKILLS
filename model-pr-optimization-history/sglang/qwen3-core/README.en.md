@@ -139,4 +139,4 @@ The full skill-side source dossier is `skills/model-optimization/sglang/sglang-q
 
 1. Track `#22837`, `#22529`, `#20127`, `#20520`, and `#9147`.
 2. Regression-test Qwen3.5 and Qwen3-Next whenever shared Qwen3 helpers change.
-3. Keep using `skills/model-optimization/sglang/sglang-model-pr-diff-dossier` for any new model PR history.
+3. Keep using `skills/model-optimization/model-pr-diff-dossier` for any new model PR history.

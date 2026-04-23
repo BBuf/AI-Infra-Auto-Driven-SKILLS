@@ -13,7 +13,7 @@ Current evidence snapshot:
 
 - SGLang `origin/main`: `b3e6cf60a` on `2026-04-22`
 - sgl-cookbook `origin/main`: `816bad5` on `2026-04-21`
-- Three-pass completeness audit: `model-pr-optimization-history/sglang/audits/qwen-glm-three-pass-audit-2026-04-23.md`
+- Three-pass completeness audit: `model-pr-optimization-history/sglang/qwen-glm-three-pass-audit-2026-04-23.md`
 - Runtime files: `glm4_moe.py`, `glm4_moe_nextn.py`, `deepseek_nextn.py` when shared MTP infrastructure is touched
 - Docs/snippets: `GLM-5.mdx`, `GLM-5.1.mdx`, `glm-5-deployment.jsx`, `glm-51-deployment.jsx`
 - Tests: `test/registered/8-gpu-models/test_glm_51_fp8.py`, `test/registered/gb300/test_glm5_fp8.py`, `test/registered/gb300/test_glm5_nvfp4.py`

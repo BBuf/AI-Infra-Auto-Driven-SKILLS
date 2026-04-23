@@ -13,7 +13,7 @@ Current evidence snapshot:
 
 - SGLang `origin/main`: `b3e6cf60a` on `2026-04-22`
 - sgl-cookbook `origin/main`: `816bad5` on `2026-04-21`
-- Three-pass completeness audit: `model-pr-optimization-history/sglang/audits/qwen-glm-three-pass-audit-2026-04-23.md`
+- Three-pass completeness audit: `model-pr-optimization-history/sglang/qwen-glm-three-pass-audit-2026-04-23.md`
 - Runtime files: `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`
 - Config: `python/sglang/srt/configs/qwen3_5.py`
 - Cookbook/docs: `docs/basic_usage/qwen3_5.md`, `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx`

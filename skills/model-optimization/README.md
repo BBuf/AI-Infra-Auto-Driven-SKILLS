@@ -2,7 +2,8 @@
 
 This directory stores model-family optimization skills by serving framework.
 
-- `sglang/`: SGLang model optimization skills and the shared PR-diff dossier standard.
+- `model-pr-diff-dossier/`: shared production standard for manual, diff-backed model PR histories across SGLang, vLLM, and future serving frameworks.
+- `sglang/`: SGLang model optimization skills.
 - `vllm/`: reserved for future vLLM model optimization skills.
 
 Every model optimization skill that cites PR history must follow the same rule: read the source diff for each PR and document motivation, implementation, key code excerpt, and validation/risk.

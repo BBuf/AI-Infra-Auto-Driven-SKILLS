@@ -7,8 +7,8 @@ Agent skills for SGLang/vLLM/TensorRT-LLM development, profiling, and production
 ```
 skills/
 ├── model-optimization/
+│   ├── model-pr-diff-dossier/
 │   ├── sglang/
-│   │   ├── sglang-model-pr-diff-dossier/
 │   │   ├── sglang-deepseek-v3-r1-optimization/
 │   │   ├── sglang-qwen3-core-optimization/
 │   │   ├── sglang-glm45-optimization/
@@ -54,8 +54,8 @@ Model PR histories are framework-scoped:
 ```
 model-pr-optimization-history/
 ├── sglang/
-│   ├── audits/
-│   │   └── qwen-glm-three-pass-audit-2026-04-23.md
+│   ├── model-skill-pr-dossier-quality-scan-2026-04-23.md
+│   ├── qwen-glm-three-pass-audit-2026-04-23.md
 │   ├── deepseek-v3-r1/
 │   ├── qwen3-core/
 │   ├── glm45/
@@ -78,7 +78,7 @@ The `h100` and `h100-sglang-diffusion` skills use placeholder values. Replace th
 
 ## Model Optimization Skills
 
-The model optimization handbook series is split first by serving framework, then by model family/generation. This keeps SGLang and future vLLM model dossiers from sharing one flat namespace.
+The model optimization handbook series keeps shared production rules at the `model-optimization/` root, then splits framework-specific model-family skills by serving framework. This keeps SGLang and future vLLM model dossiers organized without duplicating common requirements.
 
 SGLang model optimization skills live under `skills/model-optimization/sglang/`:
 
@@ -98,7 +98,8 @@ SGLang model optimization skills live under `skills/model-optimization/sglang/`:
 - `sglang-glm46-glm47-optimization`
 - `sglang-glm5-glm51-optimization`
 - `sglang-glm-vlm-ocr-optimization`
-- `sglang-model-pr-diff-dossier` records the mandatory production standard for model PR histories: read every PR diff and write motivation, implementation, code excerpt, and validation/risk.
+
+The shared `skills/model-optimization/model-pr-diff-dossier/` skill records the mandatory production standard for model PR histories: read every PR diff and write motivation, implementation, code excerpt, and validation/risk.
 
 Future vLLM model optimization skills should live under `skills/model-optimization/vllm/` and follow the same per-PR dossier standard.
 
@@ -124,7 +125,8 @@ SGLang bilingual model evolution notes live under `model-pr-optimization-history
 - `glm46-glm47`
 - `glm5-glm51`
 - `glm-vlm-ocr`
-- `audits/qwen-glm-three-pass-audit-2026-04-23.md` records the 2026-04-23 SGLang docs, git/PR, and public-blog completeness sweep for the Qwen/GLM series.
+- `model-skill-pr-dossier-quality-scan-2026-04-23.md`
+- `qwen-glm-three-pass-audit-2026-04-23.md` records the 2026-04-23 SGLang docs, git/PR, and public-blog completeness sweep for the Qwen/GLM series.
 
 Future vLLM model histories should live under `model-pr-optimization-history/vllm/`.
 
