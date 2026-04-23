@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 import re
-from bisect import bisect_left, bisect_right
+from bisect import bisect_right
 from collections import Counter, defaultdict
 from dataclasses import dataclass, field
 from functools import lru_cache
@@ -475,9 +475,7 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
             ("apply_qk_norm", "q_norm", "k_norm", "qknorm"),
             ("apply_rope", "rotary", "rope", "mrope"),
         ),
-        rationale_hint=(
-            "SGLang has a fused QK-norm plus RoPE kernel family."
-        ),
+        rationale_hint=("SGLang has a fused QK-norm plus RoPE kernel family."),
         min_share=0.3,
         likely_share=2.0,
         priority=30,
@@ -939,9 +937,7 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
             ("silu", "gelu", "act_and_mul"),
             ("quant", "fp8", "fp4", "block_quant"),
         ),
-        rationale_hint=(
-            "vLLM has an activation-plus-quant fusion family."
-        ),
+        rationale_hint=("vLLM has an activation-plus-quant fusion family."),
         origin="upstream",
         min_share=0.3,
         likely_share=1.5,
@@ -977,9 +973,7 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
             ("router", "gate", "router logits", "gpt_oss"),
             ("gemm", "matmul", "cublas", "cutlass"),
         ),
-        rationale_hint=(
-            "vLLM has a GPT-OSS-specific router GEMM path."
-        ),
+        rationale_hint=("vLLM has a GPT-OSS-specific router GEMM path."),
         origin="upstream",
         model_include=("gpt-oss", "gpt_oss"),
         min_share=0.3,
@@ -1470,7 +1464,9 @@ def build_stage_annotations(
             stage=stage,
             ts=float(event.get("ts", 0.0)),
             end_ts=float(event.get("ts", 0.0)) + float(event.get("dur", 0.0)),
-            external_id=coerce_optional_int((event.get("args") or {}).get("External id")),
+            external_id=coerce_optional_int(
+                (event.get("args") or {}).get("External id")
+            ),
             is_gpu=(category == "gpu_user_annotation"),
         )
         if annotation.external_id is not None:
@@ -1550,10 +1546,16 @@ def resolve_kernel_stage(
         stage, gap = resolve_stage_from_windows(probe_ts, windows)
         if gap == 0.0 and stage is not None:
             return stage
-        if stage is not None and (nearest_gap is None or (gap is not None and gap < nearest_gap)):
+        if stage is not None and (
+            nearest_gap is None or (gap is not None and gap < nearest_gap)
+        ):
             nearest_stage = stage
             nearest_gap = gap
-    if nearest_stage is not None and nearest_gap is not None and nearest_gap <= 20_000.0:
+    if (
+        nearest_stage is not None
+        and nearest_gap is not None
+        and nearest_gap <= 20_000.0
+    ):
         return nearest_stage
     return "all"
 
@@ -1789,7 +1791,9 @@ def thread_has_crossing_frames(frames: Sequence[PythonFrame]) -> bool:
     return False
 
 
-def render_frame_resolution(active_frames: Sequence[PythonFrame]) -> Optional[FrameResolution]:
+def render_frame_resolution(
+    active_frames: Sequence[PythonFrame],
+) -> Optional[FrameResolution]:
     if not active_frames:
         return None
     chosen_frame = choose_mapping_frame(active_frames)
@@ -1885,8 +1889,8 @@ def resolve_kernel_site_context(
     if cpu_op is not None:
         probe_ts = cpu_op.ts + min(cpu_op.dur * 0.5, 1.0)
         if frame_resolution_index is not None:
-            resolved = (
-                frame_resolution_index.get((cpu_op.pid, cpu_op.tid), {}).get(probe_ts)
+            resolved = frame_resolution_index.get((cpu_op.pid, cpu_op.tid), {}).get(
+                probe_ts
             )
             if resolved is not None:
                 return resolved.location, resolved.stack, cpu_op.name
@@ -1897,11 +1901,9 @@ def resolve_kernel_site_context(
     launch_event = match_launch_event(kernel, launches_by_correlation)
     if launch_event is not None:
         if frame_resolution_index is not None:
-            resolved = (
-                frame_resolution_index.get((launch_event.pid, launch_event.tid), {}).get(
-                    launch_event.ts
-                )
-            )
+            resolved = frame_resolution_index.get(
+                (launch_event.pid, launch_event.tid), {}
+            ).get(launch_event.ts)
             if resolved is not None:
                 cpu_op_name = cpu_op.name if cpu_op is not None else launch_event.name
                 return resolved.location, resolved.stack, cpu_op_name
@@ -2219,7 +2221,9 @@ def resolve_kernel_entry(
         kernel_entry = lookup_kernel_map_entry(external_kernel_map, stage, kernel_name)
         if kernel_entry:
             return kernel_entry
-    return relaxed_kernel_entry_lookup(local_stage_payload.get("kernels", {}), kernel_name)
+    return relaxed_kernel_entry_lookup(
+        local_stage_payload.get("kernels", {}), kernel_name
+    )
 
 
 def build_kernel_rows(
@@ -2442,7 +2446,9 @@ def fusion_framework_hints(spec: FusionPatternSpec) -> set[str]:
     return hints
 
 
-def pattern_supports_framework(spec: FusionPatternSpec, framework: Optional[str]) -> bool:
+def pattern_supports_framework(
+    spec: FusionPatternSpec, framework: Optional[str]
+) -> bool:
     normalized = normalize_text(framework).lower()
     if not normalized or normalized == "auto":
         return True

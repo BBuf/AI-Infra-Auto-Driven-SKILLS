@@ -445,7 +445,9 @@ def render_kernel_table_for_stage(rows: Sequence[dict]) -> List[str]:
         "| --- | --- | ---: | ---: | ---: | --- | --- |",
     ]
     if not rows:
-        lines.append("| No kernel rows at or above 1.0% share. | - | - | - | - | - | - |")
+        lines.append(
+            "| No kernel rows at or above 1.0% share. | - | - | - | - | - | - |"
+        )
         return lines
     for row in rows:
         lines.append(
@@ -484,7 +486,9 @@ def render_stage_section_tables(
 
 
 def render_kernel_tables(rows: Sequence[dict]) -> List[str]:
-    return render_stage_section_tables(rows, render_stage_fn=render_kernel_table_for_stage)
+    return render_stage_section_tables(
+        rows, render_stage_fn=render_kernel_table_for_stage
+    )
 
 
 def render_overlap_table_for_stage(rows: Sequence[dict]) -> List[str]:
@@ -577,13 +581,15 @@ def run_triage(args: argparse.Namespace) -> int:
         mapping_server_args = formal_server_args
         mapping_framework = formal_framework
     else:
-        mapping_traces, mapping_server_args, mapping_framework = resolve_profile_targets(
-            label="mapping",
-            input_path=args.mapping_input,
-            url=args.mapping_url,
-            output_dir=args.mapping_output_dir,
-            profile_prefix=args.mapping_profile_prefix,
-            args=args,
+        mapping_traces, mapping_server_args, mapping_framework = (
+            resolve_profile_targets(
+                label="mapping",
+                input_path=args.mapping_input,
+                url=args.mapping_url,
+                output_dir=args.mapping_output_dir,
+                profile_prefix=args.mapping_profile_prefix,
+                args=args,
+            )
         )
         formal_traces, formal_server_args, formal_framework = resolve_profile_targets(
             label="formal",
@@ -609,7 +615,9 @@ def run_triage(args: argparse.Namespace) -> int:
         default_stage = parse_stage(formal_trace)
         stage_groups = kernel_helpers.group_kernels_by_stage(kernels, default_stage)
         formal_cpu_ops_by_external_id = kernel_helpers.build_cpu_op_index(cpu_ops)
-        formal_launches_by_correlation = kernel_helpers.build_launch_index(launch_events)
+        formal_launches_by_correlation = kernel_helpers.build_launch_index(
+            launch_events
+        )
         formal_site_context_cache = {}
         formal_local_stage_payloads: Dict[str, dict] = {}
         for stage_name, stage_kernels in stage_groups.items():
@@ -620,12 +628,14 @@ def run_triage(args: argparse.Namespace) -> int:
                 launches_by_correlation=formal_launches_by_correlation,
                 site_context_cache=formal_site_context_cache,
             )
-            formal_local_stage_payloads[stage_name] = kernel_helpers.build_stage_payload(
-                local_site_stats,
-                {
-                    kernel.canonical_name: kernel.category
-                    for kernel in stage_kernels
-                },
+            formal_local_stage_payloads[stage_name] = (
+                kernel_helpers.build_stage_payload(
+                    local_site_stats,
+                    {
+                        kernel.canonical_name: kernel.category
+                        for kernel in stage_kernels
+                    },
+                )
             )
         trace_total_us = sum(kernel.dur for kernel in kernels)
         for stage in sorted(stage_groups, key=stage_index):

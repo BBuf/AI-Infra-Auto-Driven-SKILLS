@@ -887,7 +887,9 @@ def kernel_alias_token_groups(kernel_name: str) -> List[Tuple[str, ...]]:
     return groups
 
 
-def source_stats_lookup_text(kernel_name: str, stats: Optional[KernelSourceStats]) -> str:
+def source_stats_lookup_text(
+    kernel_name: str, stats: Optional[KernelSourceStats]
+) -> str:
     parts = [kernel_name]
     if stats:
         parts.append(str(stats.best_scope or ""))
@@ -923,6 +925,7 @@ def relaxed_source_stats_lookup(
 
     lowered_compact = normalize_match_text(kernel_name)
     if len(lowered_compact) >= 96:
+
         def common_prefix_len(left: str, right: str) -> int:
             count = 0
             for left_ch, right_ch in zip(left, right):
@@ -1356,7 +1359,8 @@ def build_kernel_source_map(
     fallback_queries = [
         (event.idx, event.ts)
         for event in sampled_events
-        if event.external_id is None or not contexts_by_external_id.get(event.external_id)
+        if event.external_id is None
+        or not contexts_by_external_id.get(event.external_id)
     ]
     temporal_scope_lookup = build_temporal_scope_lookup_from_raw_events(
         mapping_bundle.raw_events,
@@ -1420,7 +1424,9 @@ def build_kernel_source_map(
                         ).strip()
                         if display_location and display_location != "unresolved":
                             launches = int(site.get("launches") or 0)
-                            stats.site_share_counter[display_location] += max(1, launches)
+                            stats.site_share_counter[display_location] += max(
+                                1, launches
+                            )
                             if launches > 0:
                                 stats.scope_counter[display_location] += launches
                         top_cpu_op = site.get("top_cpu_op")
@@ -1530,7 +1536,9 @@ def build_hidden_suggestion(stats: AggregateStats) -> str:
 
 def build_other_suggestion(stats: AggregateStats) -> str:
     if stats.exclusive_ratio >= 0.6:
-        return "Exposed time remains, but it was not one of the leading overlap targets."
+        return (
+            "Exposed time remains, but it was not one of the leading overlap targets."
+        )
     if stats.hidden_ratio >= 0.6:
         return "Often hidden already. Revisit it if launch count or schedule changes."
     return "Mixed exposure and overlap. Inspect it after the higher-share rows above."

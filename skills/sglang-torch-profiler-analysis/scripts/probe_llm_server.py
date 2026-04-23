@@ -14,7 +14,6 @@ from urllib import request
 
 from profile_common import extract_openai_chat_text
 
-
 DEFAULT_PROMPTS = [
     "用一句中文介绍上海。",
     "What is 2+2? Answer briefly.",
@@ -209,7 +208,9 @@ def run_probe(args: argparse.Namespace) -> Dict[str, Any]:
         "requests": args.requests,
         "success": len(samples),
         "errors": len(errors),
-        "all_non_empty": all(sample["non_empty"] for sample in samples) if samples else False,
+        "all_non_empty": (
+            all(sample["non_empty"] for sample in samples) if samples else False
+        ),
         "avg_latency_s": round(statistics.mean(latencies), 3) if latencies else None,
         "p95_latency_s": round(p95(latencies), 3) if latencies else None,
         "samples": samples[:3],
