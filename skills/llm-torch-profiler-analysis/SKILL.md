@@ -1,5 +1,5 @@
 ---
-name: sglang-torch-profiler-analysis
+name: llm-torch-profiler-analysis
 description: "Unified LLM torch-profiler triage skill for `sglang`, `vllm`, and `TensorRT-LLM`. Use it to inspect an existing `trace.json(.gz)` or profile directory, or to drive live profiling against a running server and return one three-table report with kernel, overlap-opportunity, and fuse-pattern tables."
 ---
 
@@ -17,11 +17,11 @@ There is only one public workflow:
 
 - `triage`
 
-Prefer the unified entrypoint:
+Preferred unified entrypoint:
 
 - [scripts/analyze_llm_torch_profile.py](scripts/analyze_llm_torch_profile.py)
 
-Compatibility entrypoint:
+Backwards-compatibility shim (kept so older `docker exec ... analyze_sglang_torch_profile.py ...` calls keep working; it just forwards to the unified entrypoint):
 
 - [scripts/analyze_sglang_torch_profile.py](scripts/analyze_sglang_torch_profile.py)
 

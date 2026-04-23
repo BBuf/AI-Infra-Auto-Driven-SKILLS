@@ -168,7 +168,7 @@ python3 scripts/convert_otel_2_perfetto.py \
 
 ## Torch Profiler
 
-Switch to `sglang-torch-profiler-analysis` when:
+Switch to `llm-torch-profiler-analysis` when:
 
 - replay already reproduces the issue
 - metrics and loads do not explain it
@@ -208,7 +208,7 @@ git bisect run bash ./repro_or_check.sh
 2. request dump
 3. replay the slow request
 4. trace if stage ownership is unclear
-5. `sglang-torch-profiler-analysis` if it still looks compute-side
+5. `llm-torch-profiler-analysis` if it still looks compute-side
 
 See:
 

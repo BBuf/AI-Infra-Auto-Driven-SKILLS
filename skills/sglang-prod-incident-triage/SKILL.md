@@ -22,7 +22,7 @@ This skill should work with more focused skills instead of re-implementing them:
 
 - `debug-cuda-crash` when replay plus coredump points to a CUDA crash path
 - `debug-distributed-hang` when the problem is clearly a TP/PP/DP/EP hang
-- `sglang-torch-profiler-analysis` when the issue is already narrowed to a
+- `llm-torch-profiler-analysis` when the issue is already narrowed to a
   compute-side path
 
 Three examples are included:
@@ -224,7 +224,7 @@ Use profiling when:
 - replay already reproduces the problem
 - metrics and loads do not explain the regression
 
-At that point, switch to `sglang-torch-profiler-analysis`. Do not duplicate
+At that point, switch to `llm-torch-profiler-analysis`. Do not duplicate
 its profiling workflow here.
 
 For a low-noise latency example, read
@@ -257,7 +257,7 @@ long-running serving state.
 
 Switch tools once the fault class is clear:
 
-- `sglang-torch-profiler-analysis` for kernel and overlap attribution
+- `llm-torch-profiler-analysis` for kernel and overlap attribution
 - `debug-distributed-hang` for collective or rank-divergence hangs
 - `debug-cuda-crash` for CUDA crash reproduction and kernel API logging
 
