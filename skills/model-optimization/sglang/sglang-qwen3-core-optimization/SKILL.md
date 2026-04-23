@@ -9,7 +9,7 @@ This skill covers the non-hybrid Qwen3 text path: dense Qwen3, Qwen3 MoE, Qwen3-
 
 ## Mandatory Evidence Standard
 
-When writing or revising Qwen3 Core optimization docs, use [../sglang-model-pr-diff-dossier/SKILL.md](../sglang-model-pr-diff-dossier/SKILL.md) as the production standard.
+When writing or revising Qwen3 Core optimization docs, use [../../model-pr-diff-dossier/SKILL.md](../../model-pr-diff-dossier/SKILL.md) as the production standard.
 
 Do not fill PR history from a script, generated table, or title-level summary. For every PR you cite, read the PR diff or the final merge commit and record:
 
@@ -32,7 +32,7 @@ Current evidence snapshot:
 
 - SGLang mainline checked around `2026-04-22`: `b3e6cf60a`
 - sgl-cookbook mainline checked around `2026-04-21`: `816bad5`
-- Three-pass audit ledger: `model-pr-optimization-history/sglang/audits/qwen-glm-three-pass-audit-2026-04-23.md`
+- Three-pass audit ledger: `model-pr-optimization-history/sglang/qwen-glm-three-pass-audit-2026-04-23.md`
 
 ## Runtime Surfaces
 

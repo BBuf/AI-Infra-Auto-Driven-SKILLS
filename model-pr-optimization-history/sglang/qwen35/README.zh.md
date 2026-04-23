@@ -1,6 +1,6 @@
 # SGLang Qwen3.5 支持与优化时间线
 
-本文不是 PR 编号清单，而是按 PR diff/source 逐个读完后写成的模型优化历史。每个条目都保留了动机、关键实现思路、核心代码片段和验证含义。详细维护准则见 `skills/model-optimization/sglang/sglang-model-pr-diff-dossier`；Qwen3.5 的 canonical skill 侧档案见 `skills/model-optimization/sglang/sglang-qwen35-optimization/references/pr-history.md`。
+本文不是 PR 编号清单，而是按 PR diff/source 逐个读完后写成的模型优化历史。每个条目都保留了动机、关键实现思路、核心代码片段和验证含义。详细维护准则见 `skills/model-optimization/model-pr-diff-dossier`；Qwen3.5 的 canonical skill 侧档案见 `skills/model-optimization/sglang/sglang-qwen35-optimization/references/pr-history.md`。
 
 结论：Qwen3.5 是一个“混合架构 + 多平台 + 多 quant + 多部署形态”的模型族。优化主线不是单一 kernel，而是 GDN 线性注意力、MoE shared expert、MTP/spec-v2、PP/EP/EPLB、VLM/EPD、NIXL PD、Mamba state、FP8/NVFP4/MXFP4/NPU/ROCm 共同演化。
 

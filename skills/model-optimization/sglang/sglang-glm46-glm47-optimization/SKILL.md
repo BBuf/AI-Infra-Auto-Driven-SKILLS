@@ -14,7 +14,7 @@ Current evidence snapshot:
 - SGLang `origin/main`: `b3e6cf60a` on `2026-04-22`
 - sgl-cookbook `origin/main`: `816bad5` on `2026-04-21`
 - Manual PR diff review date: `2026-04-23`
-- Three-pass completeness audit: `model-pr-optimization-history/sglang/audits/qwen-glm-three-pass-audit-2026-04-23.md`
+- Three-pass completeness audit: `model-pr-optimization-history/sglang/qwen-glm-three-pass-audit-2026-04-23.md`
 - Runtime files: `glm4_moe.py`, `glm4_moe_lite.py`, `glm4_moe_nextn.py`
 - Parser files: `glm47_moe_detector.py`, `glm4_moe_detector.py`
 - Docs/snippets: GLM-4.6, GLM-4.7, GLM-4.7-Flash cookbook pages and deployment snippets
@@ -32,7 +32,7 @@ For each cited PR, include:
 - Reviewed files.
 - Validation implications.
 
-Use `sglang-model-pr-diff-dossier` when producing new model PR-history docs.
+Use `model-pr-diff-dossier` when producing new model PR-history docs.
 
 ## Before You Change Anything
 

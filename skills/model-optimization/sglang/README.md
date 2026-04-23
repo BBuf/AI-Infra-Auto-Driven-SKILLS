@@ -2,7 +2,7 @@
 
 SGLang model optimization skills live here, grouped by model family and generation. The skill name in each `SKILL.md` front matter remains stable even though the directory is framework-scoped.
 
-The shared production standard is `sglang-model-pr-diff-dossier`: every model PR history must be based on per-PR source-diff reading and must include motivation, implementation detail, key code excerpt, and validation/risk.
+The shared production standard is `../model-pr-diff-dossier`: every model PR history must be based on per-PR source-diff reading and must include motivation, implementation detail, key code excerpt, and validation/risk.
 
 Current SGLang model skills:
 

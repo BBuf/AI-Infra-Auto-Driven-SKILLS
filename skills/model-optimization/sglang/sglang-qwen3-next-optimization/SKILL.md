@@ -14,7 +14,7 @@ Before writing or changing Qwen3-Next docs/code, read:
 3. The exact PR diffs for any PR you cite
 4. The current SGLang runtime files you are touching
 
-This skill follows the repository-level requirement captured in `skills/model-optimization/sglang/sglang-model-pr-diff-dossier`: every PR entry must be based on code diff inspection and must include motivation, implementation idea, and the key code fragment or pseudo-fragment that explains the change.
+This skill follows the repository-level requirement captured in `skills/model-optimization/model-pr-diff-dossier`: every PR entry must be based on code diff inspection and must include motivation, implementation idea, and the key code fragment or pseudo-fragment that explains the change.
 
 ## Scope
 

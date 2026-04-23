@@ -13,7 +13,7 @@ Current evidence snapshot:
 
 - SGLang `origin/main`: `b3e6cf60a` on `2026-04-22`
 - sgl-cookbook `origin/main`: `816bad5` on `2026-04-21`
-- Three-pass completeness audit: `model-pr-optimization-history/sglang/audits/qwen-glm-three-pass-audit-2026-04-23.md`
+- Three-pass completeness audit: `model-pr-optimization-history/sglang/qwen-glm-three-pass-audit-2026-04-23.md`
 - Parser file: `python/sglang/srt/function_call/qwen3_coder_detector.py`
 - Docs/snippets: `docs_new/cookbook/autoregressive/Qwen/Qwen3-Coder.mdx`, `Qwen3-Coder-Next.mdx`, and their deployment snippets
 - Adjacent runtime: Qwen3 MoE and Qwen3-Next model files, depending on checkpoint

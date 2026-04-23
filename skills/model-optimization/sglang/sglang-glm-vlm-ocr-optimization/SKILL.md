@@ -13,7 +13,7 @@ Current evidence snapshot:
 
 - SGLang `origin/main`: `b3e6cf60a` on `2026-04-22`
 - sgl-cookbook `origin/main`: `816bad5` on `2026-04-21`
-- Three-pass completeness audit: `model-pr-optimization-history/sglang/audits/qwen-glm-three-pass-audit-2026-04-23.md`
+- Three-pass completeness audit: `model-pr-optimization-history/sglang/qwen-glm-three-pass-audit-2026-04-23.md`
 - Detailed PR diff dossier: `references/pr-history.md`
 - Runtime files: `glm4v.py`, `glm4v_moe.py`, `glm_ocr.py`, `glm_ocr_nextn.py`
 - Processor files: `multimodal/processors/glm4v.py`, `glmasr.py` when audio-adjacent
