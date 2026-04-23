@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import argparse
-import math
 import re
 from bisect import bisect_left, bisect_right
 from collections import Counter, defaultdict
@@ -15,21 +13,15 @@ import triage_kernel_helpers as kernel_helpers
 from profile_common import (
     coerce_optional_int,
     contains_any_keyword,
-    discover_trace_targets,
     extract_trace_events,
     has_stream_marker,
     is_annotation_event,
     is_complete_duration_event,
     is_non_kernel_trace_category,
     is_trace_metadata_name,
-    load_server_args,
-    load_trace_json,
     looks_like_python_scope_name,
     normalize_repo_relative_path,
     normalize_text,
-)
-from profile_common import run_profiler as shared_run_profiler
-from profile_common import (
     select_heaviest_pid,
 )
 
@@ -113,14 +105,6 @@ COMPUTE_KEYWORDS = (
     "bmm",
     "mm_kernel",
 )
-
-CATEGORY_CHARS = {
-    "compute": "#",
-    "communication": "=",
-    "elementwise": "~",
-    "memory": "+",
-    "other": "*",
-}
 
 LOW_SIGNAL_FUNCTION_TOKENS = (
     "__torch_function__",
@@ -703,91 +687,6 @@ def top_overlap_opportunities(
     return (primary + fallback)[:5]
 
 
-def choose_window_events(
-    events: Sequence[KernelEvent],
-    representative_idx: int,
-    window_us: Optional[float],
-) -> Tuple[float, float, List[KernelEvent]]:
-    center = next(event for event in events if event.idx == representative_idx)
-    span = window_us if window_us is not None else max(40.0, center.dur * 6.0)
-    start = max(0.0, center.ts - span * 0.35)
-    end = center.end + span * 0.65
-    window_events = [
-        event for event in events if event.end >= start and event.ts <= end
-    ]
-    return start, end, window_events
-
-
-def render_ascii_timeline(
-    events: Sequence[KernelEvent],
-    representative_idx: int,
-    window_us: Optional[float],
-    width: int,
-) -> str:
-    start, end, window_events = choose_window_events(
-        events, representative_idx, window_us
-    )
-    if not window_events:
-        return "No events found in the selected window."
-
-    streams = sorted(
-        {event.stream for event in window_events}, key=lambda item: (len(item), item)
-    )
-    symbol_map: Dict[int, str] = {}
-    legend_events = sorted(window_events, key=lambda event: event.dur, reverse=True)[:8]
-    symbol_alphabet = list(
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-    )
-    for index, event in enumerate(legend_events):
-        symbol_map[event.idx] = symbol_alphabet[index]
-
-    label_width = max(len(stream) for stream in streams)
-    lines = []
-    marker_positions = [0, width // 4, width // 2, (3 * width) // 4, width - 1]
-    header = [" "] * width
-    for position in marker_positions:
-        header[position] = "|"
-    lines.append("time(us) " + "".join(header))
-
-    time_line = [" "] * width
-    markers = [
-        start,
-        start + (end - start) * 0.25,
-        start + (end - start) * 0.5,
-        start + (end - start) * 0.75,
-        end,
-    ]
-    for position, value in zip(marker_positions, markers):
-        text = f"{value:.1f}"
-        begin = min(max(position - len(text) // 2, 0), max(0, width - len(text)))
-        for offset, char in enumerate(text):
-            time_line[begin + offset] = char
-    lines.append("         " + "".join(time_line))
-
-    for stream in streams:
-        row = ["."] * width
-        row_events = [event for event in window_events if event.stream == stream]
-        for event in row_events:
-            char = symbol_map.get(event.idx, CATEGORY_CHARS[event.category])
-            left = int((event.ts - start) / max(end - start, 1.0) * (width - 1))
-            right = int(
-                math.ceil((event.end - start) / max(end - start, 1.0) * (width - 1))
-            )
-            right = max(left + 1, min(right, width - 1))
-            for pos in range(max(0, left), min(width, right + 1)):
-                row[pos] = char
-        lines.append(f"{stream:<{label_width}} " + "".join(row))
-
-    if legend_events:
-        lines.append("legend:")
-        for event in legend_events:
-            symbol = symbol_map[event.idx]
-            lines.append(
-                f"  {symbol} [{event.category[:4]}] {short_name(event.canonical_name, 72)} ({event.dur:.1f} us)"
-            )
-    return "\n".join(lines)
-
-
 def choose_best_scope(scope_chain: Sequence[str]) -> Optional[str]:
     ranked: List[Tuple[float, str]] = []
     for index, scope in enumerate(scope_chain):
@@ -1102,17 +1001,6 @@ def extract_cpu_launch_contexts(
             else:
                 active_scopes.pop(payload, None)
     return contexts_by_external_id
-
-
-def build_correlation_external_lookup(raw_events: Sequence[dict]) -> Dict[int, int]:
-    lookup: Dict[int, int] = {}
-    for event in raw_events:
-        args = event.get("args", {}) or {}
-        correlation = coerce_optional_int(args.get("correlation"))
-        external_id = coerce_optional_int(args.get("External id"))
-        if correlation is not None and external_id is not None:
-            lookup[correlation] = external_id
-    return lookup
 
 
 def is_cuda_launch_event(name: str, cat: str) -> bool:
@@ -1857,239 +1745,3 @@ def build_action_rows(
     if table_limit > 0:
         return rows[:table_limit]
     return rows
-
-
-def render_action_table(rows: Sequence[ActionRow]) -> List[str]:
-    lines = [
-        "| Priority | Verdict | Kernel | Python scope | Formal signal | Dep risk | Recommendation |",
-        "| --- | --- | --- | --- | --- | --- | --- |",
-    ]
-    if not rows:
-        lines.append(
-            "| - | No rows cleared the reporting bar in the formal trace. | - | - | - | - | - |"
-        )
-        return lines
-    for row in rows:
-        formal_signal = (
-            f"share {row.share_pct:.1f}%, "
-            f"excl {row.exclusive_ratio * 100:.1f}% / "
-            f"hid {row.hidden_ratio * 100:.1f}%"
-        )
-        lines.append(
-            "| "
-            + " | ".join(
-                [
-                    row.priority,
-                    row.verdict,
-                    row.kernel,
-                    row.python_scope,
-                    f"{row.total_us:.1f} us, {formal_signal}",
-                    dependency_risk_label(row.dependency_signal),
-                    row.recommendation,
-                ]
-            )
-            + " |"
-        )
-    return lines
-
-
-def trace_summary_line(bundle: TraceBundle) -> str:
-    events = bundle.events
-    streams = sorted({event.stream for event in events})
-    if bundle.overlap_stats is None:
-        return f"{bundle.label}: {len(events)} kernel events, {len(streams)} streams"
-    overlap_ratio = (
-        bundle.overlap_stats["total_overlap_us"] / bundle.overlap_stats["total_busy_us"]
-        if bundle.overlap_stats["total_busy_us"]
-        else 0.0
-    )
-    return (
-        f"{bundle.label}: {len(events)} kernel events, {len(streams)} streams, "
-        f"busy={bundle.overlap_stats['total_busy_us']:.1f} us, "
-        f"2+ stream overlap={bundle.overlap_stats['total_overlap_us']:.1f} us "
-        f"({overlap_ratio * 100:.1f}%), "
-        f"peak_concurrency={int(bundle.overlap_stats['max_concurrent_streams'])}"
-    )
-
-
-def launch_summary(server_args: Optional[dict]) -> Optional[str]:
-    if not server_args:
-        return None
-    model_path = server_args.get("model_path") or server_args.get("model")
-    shape_bits = []
-    if model_path:
-        shape_bits.append(f"model={model_path}")
-    for key in ("tp_size", "dp_size", "pp_size", "ep_size", "enable_dp_attention"):
-        if key in server_args:
-            shape_bits.append(f"{key}={server_args[key]}")
-    return ", ".join(shape_bits) if shape_bits else None
-
-
-def build_report(
-    mapping_bundle: TraceBundle,
-    formal_bundle: TraceBundle,
-    source_map: Dict[str, KernelSourceStats],
-    aggregates: Dict[Tuple[str, str], AggregateStats],
-    rows: Sequence[ActionRow],
-    window_us: Optional[float],
-    timeline_count: int,
-    width: int,
-    table_only: bool,
-) -> str:
-    lines: List[str] = []
-    lines.append(f"Mapping Trace: {mapping_bundle.trace_path}")
-    mapping_launch = launch_summary(mapping_bundle.server_args)
-    if mapping_launch:
-        lines.append(f"Mapping Launch: {mapping_launch}")
-    if mapping_bundle.pid:
-        lines.append(f"Mapping PID slice: {mapping_bundle.pid}")
-    lines.append(trace_summary_line(mapping_bundle))
-
-    lines.append("")
-    lines.append(f"Formal Trace: {formal_bundle.trace_path}")
-    formal_launch = launch_summary(formal_bundle.server_args)
-    if formal_launch:
-        lines.append(f"Formal Launch: {formal_launch}")
-    if formal_bundle.pid:
-        lines.append(f"Formal PID slice: {formal_bundle.pid}")
-    lines.append(trace_summary_line(formal_bundle))
-
-    mapped_kernels = sum(1 for stats in source_map.values() if stats.mapped_count > 0)
-    table_mapped = sum(1 for row in rows if row.python_scope != "unmapped")
-    lines.append("")
-    lines.append(
-        "Source Map Coverage: "
-        f"{mapped_kernels}/{len(source_map)} mapping-trace kernels found a Python scope, "
-        f"{table_mapped}/{len(rows)} table rows were mapped back to code."
-    )
-
-    lines.append("")
-    lines.append("Action Table")
-    lines.extend(render_action_table(rows))
-
-    if not table_only:
-        detail_lookup = {row.kernel: row for row in rows}
-        focus_rows = list(rows)
-        lines.append("")
-        lines.append("Source Context")
-        if not focus_rows:
-            lines.append("  No source-mapped rows to expand.")
-        else:
-            for index, row in enumerate(focus_rows, start=1):
-                stats = relaxed_source_stats_lookup(source_map, row.kernel)
-                lines.append(
-                    f"  {index}. {short_name(row.kernel, 88)} [{row.priority}, {row.verdict}, {row.category}] "
-                    f"mapping={row.mapping_ratio * 100:.1f}%"
-                )
-                lines.append(f"     time share: {row.share_pct:.1f}%")
-                lines.append(f"     python scope: {row.python_scope}")
-                lines.append(f"     launch op: {row.launch_op}")
-                lines.append(
-                    f"     dependency signal: {dependency_risk_label(row.dependency_signal)}"
-                )
-                lines.append(f"     prev neighbor: {row.prev_neighbor}")
-                lines.append(f"     next neighbor: {row.next_neighbor}")
-                lines.append(f"     recommendation: {row.recommendation}")
-                if stats and stats.best_chain:
-                    lines.append(
-                        f"     call chain: {short_name(stats.best_chain, 132)}"
-                    )
-                lines.append(f"     note: {row.suggestion}")
-
-        timeline_targets: List[int] = []
-        for row in rows:
-            if (
-                row.representative_idx is not None
-                and row.representative_idx not in timeline_targets
-            ):
-                timeline_targets.append(row.representative_idx)
-        timeline_targets = timeline_targets[:timeline_count]
-
-        if timeline_targets:
-            lines.append("")
-            lines.append("ASCII Timelines")
-            for index, representative_idx in enumerate(timeline_targets, start=1):
-                event = next(
-                    event
-                    for event in formal_bundle.events
-                    if event.idx == representative_idx
-                )
-                mapped_scope = (
-                    detail_lookup.get(event.canonical_name).python_scope
-                    if event.canonical_name in detail_lookup
-                    else "unmapped"
-                )
-                lines.append(
-                    f"  Window {index}: {short_name(event.canonical_name, 90)} "
-                    f"[{event.category}] ts={event.ts:.1f} us dur={event.dur:.1f} us"
-                )
-                lines.append(f"  mapped scope: {short_name(mapped_scope, 120)}")
-                lines.append(
-                    render_ascii_timeline(
-                        formal_bundle.events, representative_idx, window_us, width
-                    )
-                )
-                lines.append("")
-
-        lines.append("Notes")
-        lines.append(
-            "  - The mapping trace should be graph-off so kernel-to-code attribution stays readable."
-        )
-        lines.append(
-            "  - The formal trace should keep the real serving optimizations enabled; the overlap read comes from this trace."
-        )
-        lines.append(
-            "  - A mapped Python scope is a launch-site clue, not proof that the code is dependency-free to reorder."
-        )
-    return "\n".join(lines).rstrip()
-
-
-def discover_trace_file(path: Path) -> Tuple[Path, Optional[dict]]:
-    traces, server_args = discover_trace_targets(path, all_traces=False)
-    if not traces:
-        raise FileNotFoundError(f"No trace files found under {path}")
-    return traces[0], server_args or load_server_args(path)
-
-
-def resolve_trace_source(
-    label: str,
-    input_path: Optional[str],
-    url: Optional[str],
-    output_dir: Optional[str],
-    profile_prefix: Optional[str],
-    args: argparse.Namespace,
-) -> TraceBundle:
-    if bool(input_path) == bool(url):
-        raise ValueError(f"{label} trace requires exactly one of input path or URL.")
-
-    if url:
-        target_dir = shared_run_profiler(
-            url=url,
-            output_dir=output_dir,
-            num_steps=args.num_steps,
-            profile_by_stage=args.profile_by_stage,
-            merge_profiles=args.merge_profiles,
-            profile_prefix=profile_prefix,
-            probe_requests=max(0, args.probe_requests),
-            probe_prompt=args.probe_prompt,
-            probe_max_new_tokens=args.probe_max_new_tokens,
-            probe_delay=args.probe_delay,
-            start_step=args.start_step,
-        )
-        trace_path, server_args = discover_trace_file(target_dir)
-    else:
-        trace_path, server_args = discover_trace_file(Path(input_path).resolve())
-
-    trace = load_trace_json(trace_path)
-    raw_events = trace.get("traceEvents", trace if isinstance(trace, list) else [])
-    events, pid = extract_kernel_events(trace, args.pid_substring)
-    if not events:
-        raise RuntimeError(f"No GPU kernel events found in {trace_path}")
-    return TraceBundle(
-        label=label,
-        trace_path=trace_path,
-        server_args=server_args,
-        raw_events=raw_events,
-        events=events,
-        pid=pid,
-    )

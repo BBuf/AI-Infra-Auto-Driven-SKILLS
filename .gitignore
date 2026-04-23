@@ -5,6 +5,10 @@ __pycache__/
 *.pyc
 *.pyd
 
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+
 .DS_Store
 Thumbs.db
 

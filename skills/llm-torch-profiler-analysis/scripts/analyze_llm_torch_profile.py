@@ -684,7 +684,6 @@ def run_triage(args: argparse.Namespace) -> int:
                     }
                 )
             for item in kernel_helpers.detect_fusion_opportunities(
-                stage=stage,
                 kernel_rows=full_kernel_rows,
                 total_us=total_us,
                 server_args=formal_server_args or mapping_server_args,

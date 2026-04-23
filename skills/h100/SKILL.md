@@ -78,14 +78,14 @@ ssh h100_sglang 'docker start sglang_bbuf'
 ssh h100_sglang 'docker exec sglang_bbuf zsh -lc "cd /sgl-workspace/sglang && git branch --show-current && git status --short"'
 ```
 
-2. Fast-forward `<your-repo-path>` to the latest clean `main` before creating
+2. Fast-forward `/sgl-workspace/sglang` to the latest clean `main` before creating
 any validation worktree.
 
 ```bash
 ssh h100_sglang 'docker exec sglang_bbuf zsh -lc "cd /sgl-workspace/sglang && git fetch origin && git checkout main && git pull --ff-only origin main"'
 ```
 
-3. Avoid writing directly into `<your-repo-path>` when it is dirty or when the local snapshot differs from the remote `HEAD`.
+3. Avoid writing directly into `/sgl-workspace/sglang` when it is dirty or when the local snapshot differs from the remote `HEAD`.
 
 4. Prefer one of these isolation strategies.
 
@@ -99,8 +99,7 @@ Stream the exact local working tree into the container when validating the curre
 
 ```bash
 COPYFILE_DISABLE=1 tar --exclude=.git -cf - . | \
-ssh <your-h100-host> 'docker exec -i <your-container> sh -lc "rm -rf /tmp/sglang_local_validate && mkdir -p /tmp/sglang_local_validate && tar -xf - -C /tmp/sglang_local_validate"'
-ssh h100_sglang 'docker exec -i sglang_bbuf sh -lc "rm -rf /tmp/sglang_local_validate && mkdir -p /tmp/sglang_local_validate && tar -xf - -C /tmp/sglang_local_validate"'
+  ssh h100_sglang 'docker exec -i sglang_bbuf sh -lc "rm -rf /tmp/sglang_local_validate && mkdir -p /tmp/sglang_local_validate && tar -xf - -C /tmp/sglang_local_validate"'
 ssh h100_sglang 'docker exec sglang_bbuf zsh -lc "find /tmp/sglang_local_validate -name '\''._*'\'' -delete"'
 ```
 
@@ -111,7 +110,7 @@ For patch-oriented remote validation, another good option is:
 - create a detached worktree from that clean commit
 - stream or apply a focused local patch diff into the worktree only
 
-That keeps `<your-repo-path>` clean while still validating the exact local delta.
+That keeps `/sgl-workspace/sglang` clean while still validating the exact local delta.
 
 ## Validation Workflow
 
