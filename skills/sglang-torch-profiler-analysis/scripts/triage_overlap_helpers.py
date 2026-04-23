@@ -1521,24 +1521,24 @@ def format_overlap_counter(counter: Counter, limit: int = 2) -> str:
 
 def build_headroom_suggestion(stats: AggregateStats) -> str:
     if stats.category == "communication":
-        return "Communication is still exposed. Check whether it can overlap with nearby compute."
+        return "Communication is still exposed. Check overlap with nearby compute."
     if stats.category in {"elementwise", "memory"}:
-        return "This path is still exposed. Consider fusion or moving it under nearby compute."
-    return "Exposed time remains. Check stream placement and nearby dependencies."
+        return "This work is still exposed. Check fusion or nearby compute coverage."
+    return (
+        "This work is still exposed. Check stream placement and immediate dependencies."
+    )
 
 
 def build_hidden_suggestion(stats: AggregateStats) -> str:
     overlap = format_overlap_counter(stats.overlap_with, limit=1)
     if overlap != "n/a":
-        return f"Mostly hidden under {overlap}. Tune it only if schedule or fusion changes."
-    return "Mostly hidden already. Revisit it only if schedule or fusion changes."
+        return f"Mostly hidden under {overlap}. Revisit only if schedule or fusion changes."
+    return "Mostly hidden already. Revisit only if schedule or fusion changes."
 
 
 def build_other_suggestion(stats: AggregateStats) -> str:
     if stats.exclusive_ratio >= 0.6:
-        return (
-            "Exposed time remains, but it was not one of the leading overlap targets."
-        )
+        return "Still exposed, but not one of the leading overlap targets."
     if stats.hidden_ratio >= 0.6:
         return "Often hidden already. Revisit it if launch count or schedule changes."
     return "Mixed exposure and overlap. Inspect it after the higher-share rows above."
@@ -1866,7 +1866,7 @@ def render_action_table(rows: Sequence[ActionRow]) -> List[str]:
     ]
     if not rows:
         lines.append(
-            "| - | No overlap rows met the reporting bar in the formal trace. | - | - | - | - | - |"
+            "| - | No rows cleared the reporting bar in the formal trace. | - | - | - | - | - |"
         )
         return lines
     for row in rows:

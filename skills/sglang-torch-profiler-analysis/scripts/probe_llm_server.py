@@ -146,10 +146,6 @@ def openai_request(
         payload,
         timeout=timeout,
     )
-    choices = body.get("choices")
-    if not isinstance(choices, list) or not choices:
-        text, source = extract_openai_chat_text(body)
-        return {"text": text, "source": source}
     text, source = extract_openai_chat_text(body)
     return {"text": text, "source": source}
 

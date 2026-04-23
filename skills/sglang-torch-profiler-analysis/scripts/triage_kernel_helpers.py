@@ -2516,16 +2516,16 @@ def build_pattern_rationale(
                 f"{spec.rationale_hint}"
             )
         return (
-            f"Related split kernels account for {share:.1f}% of cumulative GPU time, and this tree "
-            f"already has this fusion path. {spec.rationale_hint}"
+            f"Split kernels in this family take {share:.1f}% of GPU time. "
+            f"This tree already has a matching path. {spec.rationale_hint}"
         )
     if spec.origin == "upstream":
         return (
-            f"Related kernels line up with an upstream path ({share:.1f}% related GPU time). "
+            f"Matches an upstream path ({share:.1f}% related GPU time). "
             f"{spec.rationale_hint}"
         )
     return (
-        f"Related kernels line up with an open upstream path ({share:.1f}% related GPU time). "
+        f"Matches an open upstream path ({share:.1f}% related GPU time). "
         f"{spec.rationale_hint}"
     )
 

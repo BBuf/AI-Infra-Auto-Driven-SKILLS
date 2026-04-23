@@ -25,6 +25,8 @@ This script is intended to run on the H100 host. It:
 2. captures vLLM formal + eager mapping traces and writes `analysis_vllm.txt`
 3. captures TensorRT-LLM formal + graph-off mapping traces and writes `analysis_trtllm.txt`
 
+This is a legacy single-GPU-per-framework wrapper around the shared host-side runners.
+
 Environment:
   Export `HF_TOKEN` and `HUGGINGFACE_HUB_TOKEN` before running.
 EOF
@@ -96,8 +98,6 @@ done
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MODEL_ROOT="$ROOT/$MODEL_ID"
-SGLANG_LOG="$MODEL_ROOT/sglang_server.log"
-SGLANG_PROFILE_ROOT="$MODEL_ROOT/sglang_profile_live"
 SGLANG_ANALYSIS="$MODEL_ROOT/analysis_sglang.txt"
 VLLM_FORMAL_DIR="$MODEL_ROOT/vllm_formal"
 VLLM_MAPPING_DIR="$MODEL_ROOT/vllm_mapping"
@@ -106,34 +106,18 @@ TRT_FORMAL_DIR="$MODEL_ROOT/trtllm_formal"
 TRT_MAPPING_DIR="$MODEL_ROOT/trtllm_mapping"
 TRT_ANALYSIS="$MODEL_ROOT/analysis_trtllm.txt"
 
-docker exec sglang_bbuf bash -lc "mkdir -p '$MODEL_ROOT' '$SGLANG_PROFILE_ROOT'"
+docker exec sglang_bbuf bash -lc "mkdir -p '$MODEL_ROOT'"
 
-cleanup() {
-  docker exec sglang_bbuf bash -lc "pkill -f 'sglang.launch_server.*--port $SGLANG_PORT' >/dev/null 2>&1 || true" >/dev/null 2>&1 || true
-}
-trap cleanup EXIT
-
-echo "[1/6] SGLang server + probe + live triage"
-docker exec -d sglang_bbuf bash -lc "cd /data/bbuf/repos/sglang && export HF_TOKEN='$HF_TOKEN' HUGGINGFACE_HUB_TOKEN='$HUGGINGFACE_HUB_TOKEN' && CUDA_VISIBLE_DEVICES=$SGLANG_GPU PYTHONPATH=python python3 -m sglang.launch_server --model-path '$MODEL' --port $SGLANG_PORT --tp-size 1 --mem-fraction-static 0.85 --trust-remote-code > '$SGLANG_LOG' 2>&1"
-docker exec sglang_bbuf bash -lc "for i in \$(seq 1 180); do curl -sf http://127.0.0.1:$SGLANG_PORT/v1/models >/dev/null && exit 0; sleep 2; done; exit 1"
-docker exec sglang_bbuf bash -lc "python3 - <<'PY'
-import json, urllib.request
-payload = {
-  'text': '用两句话解释 CUDA graph 和 eager mode 的区别。',
-  'sampling_params': {'temperature': 0.0, 'max_new_tokens': 12},
-  'stream': False,
-}
-req = urllib.request.Request(
-    'http://127.0.0.1:$SGLANG_PORT/generate',
-    data=json.dumps(payload).encode(),
-    headers={'Content-Type': 'application/json'},
-)
-with urllib.request.urlopen(req, timeout=600) as resp:
-    body = json.loads(resp.read().decode())
-print(body.get('text', '')[:240])
-PY"
-docker exec sglang_bbuf bash -lc "cd '$SCRIPT_DIR' && python3 analyze_llm_torch_profile.py --framework sglang --url http://127.0.0.1:$SGLANG_PORT --output-dir '$SGLANG_PROFILE_ROOT' --num-steps 5 --probe-requests 1 --profile-by-stage > '$SGLANG_ANALYSIS'"
-docker exec sglang_bbuf bash -lc "pkill -f 'sglang.launch_server.*--port $SGLANG_PORT' >/dev/null 2>&1 || true"
+echo "[1/6] SGLang formal capture"
+HF_TOKEN="$HF_TOKEN" HUGGINGFACE_HUB_TOKEN="$HUGGINGFACE_HUB_TOKEN" \
+  "$SCRIPT_DIR/run_sglang_torch_profile_host.sh" \
+  --model "$MODEL" \
+  --run-dir "$MODEL_ROOT" \
+  --port "$SGLANG_PORT" \
+  --gpu "$SGLANG_GPU" \
+  --tp-size 1 \
+  --mem-fraction 0.85 \
+  --trust-remote-code
 
 echo "[2/6] vLLM formal"
 HF_TOKEN="$HF_TOKEN" HUGGINGFACE_HUB_TOKEN="$HUGGINGFACE_HUB_TOKEN" \

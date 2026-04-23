@@ -498,7 +498,7 @@ def render_overlap_table_for_stage(rows: Sequence[dict]) -> List[str]:
     ]
     if not rows:
         lines.append(
-            "| - | - | No overlap rows met the 1.0% reporting bar. Use mapping/formal mode for a firmer overlap answer. | - | - | - | - |"
+            "| - | - | No rows cleared the 1.0% reporting bar. Use mapping/formal mode for overlap attribution. | - | - | - | - |"
         )
         return lines
     for row in rows:

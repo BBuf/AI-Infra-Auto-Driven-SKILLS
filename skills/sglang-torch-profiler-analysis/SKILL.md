@@ -36,9 +36,9 @@ Markdown bundling helper:
 - fuse-pattern table
 
 By default, all three tables only render rows at or above `1.0%` cumulative GPU-time share.
-Treat anything below that as noise unless the user explicitly asks for a lower cutoff.
+Rows below that are hidden by default unless the user asks for a lower cutoff.
 
-The fuse-pattern table should stay source-backed and deterministic.
+Keep the fuse-pattern table source-backed and deterministic.
 Do not turn it into a fuzzy matcher.
 
 If exact source-backed matching is weak but a kernel cluster is still close to a known family,
@@ -92,11 +92,15 @@ Validated matrix:
 | --- | --- | --- | --- | --- |
 | `mistralai/Mixtral-8x7B-Instruct-v0.1` | `4x H100` | `4x H100` | `4x H100` | three tables rendered correctly on all three frameworks; benchmark probes returned direct, non-empty text |
 | `Qwen/Qwen2.5-32B-Instruct` | `4x H100` | `4x H100` | `4x H100` | three tables rendered correctly on all three frameworks; benchmark probes returned direct, non-empty text |
-| `Qwen/Qwen3-32B` | `4x H100` | `4x H100` | `4x H100` | three tables rendered correctly on all three frameworks; vLLM and TensorRT-LLM chat probes commonly emitted `<think>` prefixes |
+| `Qwen/Qwen3-32B` | `4x H100` | `4x H100` | `4x H100` | three tables rendered correctly on all three frameworks; vLLM and TensorRT-LLM chat probes often emitted `<think>` prefixes |
 
-This is the current baseline for the unified skill.
+Use this run as the main H100 reference.
 The older `2026-04-22` single-card Qwen3 matrix is still useful for bring-up, but it is
-no longer the main validation reference.
+not the default reference anymore.
+
+Checked-in sample outputs:
+
+- `references/validated_outputs/20260422_h100_qwen3_matrix/qwen3_30b_a3b`
 
 To render a validated run into one markdown document:
 
@@ -140,7 +144,7 @@ If the run that generated the trace logs any of:
 - `Loaded diffusers pipeline`
 
 stop the workflow instead of analyzing the trace.
-Treat it as a backend-selection issue, not as valid native-kernel profiler evidence.
+Handle it as a backend-selection issue, not as native-kernel profiler evidence.
 
 ## Main Flows
 
@@ -151,7 +155,7 @@ python3 scripts/analyze_llm_torch_profile.py \
   --input /path/to/profile_dir_or_trace.json.gz
 ```
 
-Use this when one trace is sufficient.
+Use this when one trace is enough.
 The overlap table stays conservative in single-trace mode and will tell you when a
 mapping/formal pair is needed.
 
@@ -166,9 +170,8 @@ python3 scripts/analyze_llm_torch_profile.py \
   --profile-by-stage
 ```
 
-This path sends `POST /start_profile` to the SGLang server directly.
-Prefer an explicit `--output-dir` under `/data/...` so the trace remains visible to later
-analysis and documentation steps.
+The script sends `POST /start_profile` to the SGLang server directly.
+Keep `--output-dir` under `/data/...` so later analysis and docs can see the trace.
 The script writes `server_args.json`, sends the probe requests after profiling is armed,
 and waits longer for trace flush than the earlier implementation.
 
@@ -236,8 +239,7 @@ python3 scripts/make_trtllm_py_executor_override.py \
 
 The matrix runner does this automatically on H100 before TensorRT-LLM capture starts.
 
-That is the validated path on `h100_sglang` today.
-The working TensorRT-LLM flow there is:
+This is the validated TensorRT-LLM flow on `h100_sglang`:
 
 1. launch `trtllm-serve` with `TLLM_TORCH_PROFILE_TRACE=/data/.../trace.json`
 2. run a few benchmark requests
