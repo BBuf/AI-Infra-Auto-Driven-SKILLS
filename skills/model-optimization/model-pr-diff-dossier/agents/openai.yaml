@@ -1,0 +1,4 @@
+interface:
+  display_name: "Model PR Diff Dossier"
+  short_description: "Manual diff-backed model PR history cards"
+  default_prompt: "Use $model-pr-diff-dossier to manually rewrite model optimization PR history for SGLang, vLLM, or another serving framework with per-PR source-diff review, motivation, implementation notes, code excerpts, and validation implications."

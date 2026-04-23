@@ -6,6 +6,15 @@ Agent skills for SGLang/vLLM/TensorRT-LLM development, profiling, and production
 
 ```
 skills/
+├── model-optimization/
+│   ├── model-pr-diff-dossier/
+│   ├── sglang/
+│   │   ├── sglang-deepseek-v3-r1-optimization/
+│   │   ├── sglang-qwen3-core-optimization/
+│   │   ├── sglang-glm45-optimization/
+│   │   └── ...
+│   └── vllm/
+│       └── README.md
 ├── llm-serving-auto-benchmark/
 │   ├── SKILL.md
 │   ├── references/
@@ -38,16 +47,20 @@ skills/
 │       ├── analyze_sglang_llm_torch_profile.py
 │       ├── analyze_sglang_profiler_overlap.py
 │       └── profile_common.py
-├── sglang-kimi-k2-k25-optimization/
-│   ├── SKILL.md
-│   └── references/
-│       ├── playbook.md
-│       └── pr-history.md
-├── sglang-minimax-m2-series-optimization/
-│   ├── SKILL.md
-│   └── references/
-│       ├── playbook.md
-│       └── pr-history.md
+```
+
+Model PR histories are framework-scoped:
+
+```
+model-pr-optimization-history/
+├── sglang/
+│   ├── model-skill-pr-dossier-quality-scan-2026-04-23.md
+│   ├── deepseek-v3-r1/
+│   ├── qwen3-core/
+│   ├── glm45/
+│   └── ...
+└── vllm/
+    └── README.md
 ```
 
 ## Placeholders
@@ -62,10 +75,64 @@ The `h100` and `h100-sglang-diffusion` skills use placeholder values. Replace th
 | `<your-cache-path>` | Host path mounted as `/root/.cache`                     |
 | `<your-hf-token>`   | Hugging Face access token (never commit the real value) |
 
+## Model Optimization Skills
+
+The model optimization handbook series keeps shared production rules at the `model-optimization/` root, then splits framework-specific model-family skills by serving framework. This keeps SGLang and future vLLM model dossiers organized without duplicating common requirements.
+
+SGLang model optimization skills live under `skills/model-optimization/sglang/`:
+
+- `sglang-deepseek-v3-r1-optimization`
+- `sglang-deepseek-v31-optimization`
+- `sglang-deepseek-v32-optimization`
+- `sglang-kimi-k2-k25-optimization`
+- `sglang-minimax-m2-series-optimization`
+- `sglang-qwen3-core-optimization`
+- `sglang-qwen3-next-optimization`
+- `sglang-qwen35-optimization`
+- `sglang-qwen36-optimization`
+- `sglang-qwen3-coder-optimization`
+- `sglang-qwen-vlm-omni-asr-optimization`
+- `sglang-qwen-image-optimization`
+- `sglang-glm45-optimization`
+- `sglang-glm46-glm47-optimization`
+- `sglang-glm5-glm51-optimization`
+- `sglang-glm-vlm-ocr-optimization`
+
+The shared `skills/model-optimization/model-pr-diff-dossier/` skill records the mandatory production standard for model PR histories: read every PR diff and write motivation, implementation, code excerpt, and validation/risk.
+
+Future vLLM model optimization skills should live under `skills/model-optimization/vllm/` and follow the same per-PR dossier standard.
+
+## Model PR Optimization History
+
+The `model-pr-optimization-history/` directory is framework-scoped.
+
+SGLang bilingual model evolution notes live under `model-pr-optimization-history/sglang/`:
+
+- `deepseek-v3-r1`
+- `deepseek-v31`
+- `deepseek-v32`
+- `kimi`
+- `minimax`
+- `qwen3-core`
+- `qwen3-next`
+- `qwen35`
+- `qwen36`
+- `qwen3-coder`
+- `qwen-vlm-omni-asr`
+- `qwen-image`
+- `glm45`
+- `glm46-glm47`
+- `glm5-glm51`
+- `glm-vlm-ocr`
+- `model-skill-pr-dossier-quality-scan-2026-04-23.md`
+
+Future vLLM model histories should live under `model-pr-optimization-history/vllm/`.
+
 ## Install
 
 Copy the desired skill directory into your local skill path:
 
 ```bash
 cp -r skills/sglang-prod-incident-triage <agent-skill-dir>/sglang-prod-incident-triage
+cp -r skills/model-optimization/sglang/sglang-qwen3-core-optimization <agent-skill-dir>/sglang-qwen3-core-optimization
 ```

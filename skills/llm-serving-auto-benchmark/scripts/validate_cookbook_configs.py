@@ -18,6 +18,7 @@ from typing import Any
 import yaml
 
 FRAMEWORKS = ("sglang", "vllm", "tensorrt_llm")
+ALLOWED_SOURCE_KINDS = {"llm_serving_cookbook"}
 
 SEQUENCE_LIMIT_KEY = {
     "sglang": "context_length",
@@ -287,8 +288,8 @@ def validate_config(
         errors.append("schema_version must be 1")
     if not isinstance(config.get("model", {}).get("name"), str):
         errors.append("model.name must be set")
-    if config.get("source", {}).get("kind") != "sglang_auto_benchmark_cookbook":
-        errors.append("source.kind must be sglang_auto_benchmark_cookbook")
+    if config.get("source", {}).get("kind") not in ALLOWED_SOURCE_KINDS:
+        errors.append(f"source.kind must be one of {sorted(ALLOWED_SOURCE_KINDS)}")
 
     try:
         required_sequence = _max_required_sequence(config["dataset"])

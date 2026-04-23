@@ -1,6 +1,6 @@
-# Example run plan for the llm-serving-auto-benchmark skill. The layout mirrors
-# SGLang auto benchmark: baseline flags stay in base_server_flags, search knobs
-# stay in search_space, and aligned dataset length pairs define scenarios.
+# Example run plan for the llm-serving-auto-benchmark skill. Baseline flags stay
+# in base_server_flags, search knobs stay in search_space, and aligned dataset
+# length pairs define scenarios.
 #
 # Note: this is the runtime plan shape (top-level `sla`, no `schema_version` or
 # `server_command`). Cookbook configs in configs/cookbook-llm/ use the extended
