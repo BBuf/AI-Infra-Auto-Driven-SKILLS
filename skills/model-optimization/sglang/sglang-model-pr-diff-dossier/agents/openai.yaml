@@ -1,0 +1,4 @@
+interface:
+  display_name: "SGLang Model PR Diff Dossier"
+  short_description: "Manual diff-backed model PR history cards"
+  default_prompt: "Use $sglang-model-pr-diff-dossier to manually rewrite SGLang model optimization PR history with per-PR source-diff review, motivation, implementation notes, code excerpts, and validation implications."
