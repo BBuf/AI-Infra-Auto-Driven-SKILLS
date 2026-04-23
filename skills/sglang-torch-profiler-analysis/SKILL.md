@@ -1,21 +1,33 @@
 ---
 name: sglang-torch-profiler-analysis
-description: "Compact SGLang torch-profiler triage skill. Use when Codex should inspect an existing `trace.json(.gz)` or profile directory, trigger `sglang.profiler` against a live server, and return one compact report with kernel, overlap-opportunity, and fuse-pattern tables. Single-trace triage is enough for quick diagnosis; mapping+formal two-trace triage gives stronger overlap conclusions."
+description: "Unified LLM torch-profiler triage skill for `sglang`, `vllm`, and `TensorRT-LLM`. Use it to inspect an existing `trace.json(.gz)` or profile directory, or to drive live profiling against a running server and return one three-table report with kernel, overlap-opportunity, and fuse-pattern tables."
 ---
 
-# SGLang Torch Profiler Analysis
+# Unified LLM Torch Profiler Analysis
 
 ## Overview
 
-Use this skill for SGLang `torch.profiler` analysis.
+Use this skill for `torch.profiler` analysis across:
+
+- `sglang`
+- `vllm`
+- `TensorRT-LLM`
 
 There is only one public workflow:
 
 - `triage`
 
-Use the unified entrypoint:
+Prefer the unified entrypoint:
+
+- [scripts/analyze_llm_torch_profile.py](scripts/analyze_llm_torch_profile.py)
+
+Compatibility entrypoint:
 
 - [scripts/analyze_sglang_torch_profile.py](scripts/analyze_sglang_torch_profile.py)
+
+Markdown bundling helper:
+
+- [scripts/render_triage_markdown_bundle.py](scripts/render_triage_markdown_bundle.py)
 
 `triage` always prints the same three tables:
 
@@ -24,26 +36,100 @@ Use the unified entrypoint:
 - fuse-pattern table
 
 By default, all three tables only render rows at or above `1.0%` cumulative GPU-time share.
-Treat anything below that as noise unless the user explicitly asks for a lower cutoff.
+Rows below that are hidden by default unless the user asks for a lower cutoff.
 
-The script-level fuse-pattern table should stay source-backed and deterministic.
-Do not build a fuzzy string-matching engine into the script for typo-tolerance.
+Keep the fuse-pattern table source-backed and deterministic.
+Do not turn it into a fuzzy matcher.
 
-If exact/source-backed matching is weak but the agent judges that a cluster of kernels
-still looks semantically close to a known pattern, add a short AI note after the table
-with one of these labels:
+If exact source-backed matching is weak but a kernel cluster is still close to a known family,
+add one short note after the tables with exactly one of:
 
-- `high`: very likely the same pattern family; naming drift or minor implementation reshaping is the main uncertainty
-- `medium`: several signals line up, but one important piece is still ambiguous
-- `low`: weak resemblance only; mention it only if it is still worth a human follow-up
+- `high`
+- `medium`
+- `low`
+
+## Capability Matrix
+
+| Capability | SGLang | vLLM | TensorRT-LLM |
+| --- | --- | --- | --- |
+| Existing trace triage | yes | yes | yes |
+| Single-trace live capture | yes | yes, if torch profiler is enabled on server | requires profiler control endpoints |
+| Two-trace mapping+formal triage | yes | yes | yes |
+| Stage-aware live capture | yes | no | no |
+| `--profile-prefix` control | yes | usually ignored on HTTP profiler route | usually ignored on HTTP profiler route |
+
+For TensorRT-LLM, live capture only works when the server exposes `/start_profile` and
+`/stop_profile`, and when the deployment already provides a shared trace path plus the
+required env vars.
+
+## Real H100 Validation
+
+The current reference run is the `4x H100` matrix captured on `2026-04-23` on
+`h100_sglang` under:
+
+- `/data/bbuf/validate/unified_llm_profiler_skill/runs/20260423_h100_large_model_matrix_v3`
+
+Rendered markdown bundle:
+
+- `/data/bbuf/validate/unified_llm_profiler_skill/runs/20260423_h100_large_model_matrix_v3/h100_large_model_matrix_v3_bundle.md`
+
+Validated model directories:
+
+- `mixtral_8x7b_instruct`
+- `qwen2_5_32b_instruct`
+- `qwen3_32b`
+
+Each model directory contains:
+
+- `analysis_sglang.txt`
+- `analysis_vllm.txt`
+- `analysis_trtllm.txt`
+- framework-specific trace roots and probe artifacts
+
+Validated matrix:
+
+| Model | SGLang | vLLM | TensorRT-LLM | Result |
+| --- | --- | --- | --- | --- |
+| `mistralai/Mixtral-8x7B-Instruct-v0.1` | `4x H100` | `4x H100` | `4x H100` | three tables rendered correctly on all three frameworks; benchmark probes returned direct, non-empty text |
+| `Qwen/Qwen2.5-32B-Instruct` | `4x H100` | `4x H100` | `4x H100` | three tables rendered correctly on all three frameworks; benchmark probes returned direct, non-empty text |
+| `Qwen/Qwen3-32B` | `4x H100` | `4x H100` | `4x H100` | three tables rendered correctly on all three frameworks; vLLM and TensorRT-LLM chat probes often emitted `<think>` prefixes |
+
+Use this run as the main H100 reference.
+The older `2026-04-22` single-card Qwen3 matrix is still useful for bring-up, but it is
+not the default reference anymore.
+
+Checked-in sample outputs:
+
+- `references/validated_outputs/20260422_h100_qwen3_matrix/qwen3_30b_a3b`
+
+To render a validated run into one markdown document:
+
+```bash
+python3 scripts/render_triage_markdown_bundle.py \
+  --analysis-root /data/bbuf/validate/unified_llm_profiler_skill/runs/20260423_h100_large_model_matrix_v3 \
+  --output /data/bbuf/validate/unified_llm_profiler_skill/runs/20260423_h100_large_model_matrix_v3/h100_large_model_matrix_v3_bundle.md
+```
+
+The bundle groups by model and keeps the three tables for each framework.
+
+H100 notes:
+
+- all three frameworks now render kernel, overlap, and fuse tables with separate `extend/prefill` and `decode` sections when the trace contains a clean stage split
+- SGLang live capture is validated and calls the server profiler API directly instead of shelling out to `sglang.profiler`
+- SGLang trace flush can lag well beyond a few seconds, so the runner waits longer for artifacts than the earlier implementation
+- SGLang kernel-site reconstruction keeps sampling disabled in the mapping path so the optimized parser does not perturb SGLang table output; equality rechecks matched for `Mixtral-8x7B-Instruct-v0.1`, `Qwen3-32B`, and `nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8`
+- vLLM live capture requires `--output-dir` to match the server `torch_profiler_dir`; the validated H100 flow uses `--profiler-config {"profiler":"torch","torch_profiler_dir":"..."}` and then drives `/start_profile` and `/stop_profile`
+- TensorRT-LLM validation stays on `--backend pytorch`; the H100 flow writes the trace with `TLLM_TORCH_PROFILE_TRACE` and then analyzes the saved trace
+- current TensorRT-LLM `py_executor.py` profiler setup still needs a `with_stack=True` override for table-quality Python locations, and the matrix runner generates that override under `/data/bbuf/validate/unified_llm_profiler_skill/overrides/trtllm`
+- on this host, keep all trace roots under `/data/...`, not `/home/...`
 
 ## When To Use It
 
-- inspect an SGLang torch profiler trace or profile directory
-- profile a live SGLang server and immediately analyze the output
+- inspect a `torch.profiler` trace or profile directory from `sglang`, `vllm`, or `TensorRT-LLM`
+- profile a live serving endpoint and analyze the result
 - summarize which kernel families dominate prefill or decode
 - map kernels back to Python code paths
-- judge whether a code path still has overlap headroom
+- judge whether a code path still leaves overlap opportunity
 - check whether an already-known fusion or overlap path should have applied
 
 ## Diffusion Backend Gate
@@ -52,61 +138,149 @@ For diffusion benchmark or profiling work, only analyze traces produced by the n
 SGLang diffusion backend.
 
 If the run that generated the trace logs any of:
+
 - `Falling back to diffusers backend`
 - `Using diffusers backend`
 - `Loaded diffusers pipeline`
 
-stop the workflow instead of analyzing the trace. Treat it as a backend-selection issue,
-not as valid SGLang diffusion profiler evidence.
+stop the workflow instead of analyzing the trace.
+Handle it as a backend-selection issue, not as native-kernel profiler evidence.
 
 ## Main Flows
 
 ### 1. Single-trace triage from an existing profile dir or trace
 
 ```bash
-python3 scripts/analyze_sglang_torch_profile.py \
+python3 scripts/analyze_llm_torch_profile.py \
   --input /path/to/profile_dir_or_trace.json.gz
 ```
 
-Use this when you want the fastest read on kernel share and likely fused-kernel pattern matches.
-The overlap table stays conservative in single-trace mode and will tell you when a mapping/formal pair is needed.
+Use this when one trace is enough.
+The overlap table stays conservative in single-trace mode and will tell you when a
+mapping/formal pair is needed.
 
-### 2. Single-trace triage from a running server
+### 2. Single-trace live capture from SGLang
 
 ```bash
-python3 scripts/analyze_sglang_torch_profile.py \
+python3 scripts/analyze_llm_torch_profile.py \
+  --framework sglang \
   --url http://127.0.0.1:30000 \
+  --output-dir /data/bbuf/validate/unified_llm_profiler_skill/runs/example/sglang_profile_live \
   --num-steps 5 \
   --profile-by-stage
 ```
 
-### 3. Two-trace triage from existing profile dirs or traces
+The script sends `POST /start_profile` to the SGLang server directly.
+Keep `--output-dir` under `/data/...` so later analysis and docs can see the trace.
+The script writes `server_args.json`, sends the probe requests after profiling is armed,
+and waits longer for trace flush than the earlier implementation.
+
+### 3. Single-trace live capture from vLLM
+
+Launch vLLM with torch profiler enabled, for example:
 
 ```bash
-python3 scripts/analyze_sglang_torch_profile.py triage \
+vllm serve meta-llama/Llama-3.1-8B-Instruct \
+  --profiler-config '{"profiler":"torch","torch_profiler_dir":"/data/bbuf/validate/unified_llm_profiler_skill/runs/example/vllm_profile"}'
+```
+
+Then run:
+
+```bash
+python3 scripts/analyze_llm_torch_profile.py \
+  --framework vllm \
+  --url http://127.0.0.1:8000 \
+  --output-dir /data/bbuf/validate/unified_llm_profiler_skill/runs/example/vllm_profile \
+  --num-steps 5 \
+  --no-profile-by-stage
+```
+
+For vLLM, `--output-dir` must point to the same `torch_profiler_dir` the server uses.
+The current vLLM profiler config already defaults `torch_profiler_with_stack=true`,
+so the runner only needs to set `torch_profiler_dir`.
+On `h100_sglang`, external vLLM containers should mount both:
+
+- `/data/.cache/huggingface:/root/.cache/huggingface`
+- `/data/bbuf/validate/unified_llm_profiler_skill:/data/bbuf/validate/unified_llm_profiler_skill`
+
+### 4. Single-trace live capture from TensorRT-LLM
+
+Use this only when the server exposes `POST /start_profile` and `POST /stop_profile`,
+and the trace path is shared with the current machine.
+
+Typical env expectations are:
+
+- `TLLM_PROFILE_START_STOP=1`
+- `TLLM_TORCH_PROFILE_TRACE=/shared/path/trace.json` or `.json.gz`
+
+Then run:
+
+```bash
+python3 scripts/analyze_llm_torch_profile.py \
+  --framework trtllm \
+  --url http://127.0.0.1:8000 \
+  --output-dir /shared/path \
+  --num-steps 5 \
+  --no-profile-by-stage
+```
+
+If the deployment does not expose the profiler control endpoints, fall back to analyzing
+an existing trace instead of trying live capture.
+
+On the current TensorRT-LLM mainline path, `py_executor.py` creates the torch profiler
+with `record_shapes=True` and `with_modules=True` but not `with_stack=True`.
+For table-quality validation, use the override generator:
+
+```bash
+python3 scripts/make_trtllm_py_executor_override.py \
+  --source /path/to/original/py_executor.py \
+  --output /data/bbuf/validate/unified_llm_profiler_skill/overrides/trtllm/py_executor_with_stack.py
+```
+
+The matrix runner does this automatically on H100 before TensorRT-LLM capture starts.
+
+This is the validated TensorRT-LLM flow on `h100_sglang`:
+
+1. launch `trtllm-serve` with `TLLM_TORCH_PROFILE_TRACE=/data/.../trace.json`
+2. run a few benchmark requests
+3. analyze the emitted trace with `--input /data/.../trace.json`
+
+### 5. Two-trace triage from existing profile dirs or traces
+
+```bash
+python3 scripts/analyze_llm_torch_profile.py triage \
   --mapping-input /path/to/graph_off_profile_dir \
   --formal-input /path/to/graph_on_profile_dir
 ```
 
-Use this when you need stronger overlap conclusions and cleaner kernel-to-source attribution.
+Use this when you need stronger overlap attribution and kernel-to-source mapping.
 
-### 4. Two-trace triage from running servers
+### 6. Two-trace triage from running servers
 
 ```bash
-python3 scripts/analyze_sglang_torch_profile.py triage \
+python3 scripts/analyze_llm_torch_profile.py triage \
+  --framework sglang \
   --mapping-url http://127.0.0.1:31025 \
   --formal-url http://127.0.0.1:31026 \
   --num-steps 5 \
   --profile-by-stage
 ```
 
+For `vllm` or `TensorRT-LLM`, use the same shape but pass:
+
+- `--framework vllm` or `--framework trtllm`
+- `--mapping-output-dir ...`
+- `--formal-output-dir ...`
+- `--no-profile-by-stage`
+
 ## `profile_by_stage`
 
-`profile_by_stage` is not only for PD disaggregation.
+`--profile-by-stage` is only meaningful on the SGLang live-capture path.
 
-- On ordinary non-PD serving, it is still useful because prefill and decode usually have very different bottlenecks.
+- On ordinary non-PD SGLang serving, it is still useful because prefill and decode usually have very different bottlenecks.
 - On the current profile-v2 path inside SGLang, stage-based profiling is effectively the normal path.
 - PD-disaggregated serving adds one extra rule: prefill workers and decode workers must be profiled separately. That is stricter than ordinary `profile_by_stage`.
+- For `vllm` and `TensorRT-LLM`, disable it with `--no-profile-by-stage`.
 
 ## How To Choose The Triage Shape
 
@@ -118,45 +292,47 @@ Use when you want the lowest-friction report:
 - you mainly want kernel share and fusion clues
 - you are comparing two runs side by side by running triage once per trace
 
-This is the recommended default.
+Prefer this by default.
 
 ### Two-trace triage
 
 Use when you need:
 
-- a stronger answer about overlap headroom
+- a stronger overlap answer
 - graph-off source mapping plus graph-on final behavior
 - more trustworthy overlap recommendations in the middle table
 
-1. mapping trace with `--disable-cuda-graph --disable-piecewise-cuda-graph`
+1. mapping trace with graph disabled or with the lower-fusion / more-readable config
 2. formal trace with the real serving optimizations enabled
 
-Do not call the mapping pass a "fast profile". It exists to recover `kernel -> cpu_op -> python scope`.
+Do not call the mapping pass a "fast profile".
+It exists to recover `kernel -> cpu_op -> python scope`.
 
 ## Workflow
 
 ### Single-trace workflow
 
-1. If the user only wants a quick diagnosis, one trace is enough.
-2. Prefer rank-local `TP-0` traces over merged traces.
-3. For a live server, this skill can call `sglang.profiler` and automatically send a small probe request.
-4. Prefer `--profile-by-stage` even on standard serving unless the user explicitly wants an all-stage mixed trace.
+1. If the user only wants a diagnosis, one trace is enough.
+2. Prefer one-rank traces over merged traces whenever the profiler emitted both.
+3. For a live server, let the script drive the profiler only when the framework-specific prerequisites are already met.
+4. Prefer SGLang `--profile-by-stage` unless the user explicitly wants an all-stage mixed trace.
+5. When on `h100_sglang`, create or clean the target trace directory through `docker exec sglang_bbuf ...` so the path is definitely writable under `/data`.
 
 ### Two-trace workflow
 
-1. Produce a mapping trace first with graph disabled.
-2. Produce a formal trace second with graph enabled and the real serving flags kept on.
-3. Run `triage` for the compact three-table report.
+1. Produce a mapping trace first with graph disabled or the lower-fusion configuration.
+2. Produce a formal trace second with the real serving optimizations enabled.
+3. Run `triage` for the three-table report.
 4. Read the results in this order:
    - kernel table
    - overlap-opportunity table
    - fuse-pattern table
-5. Before calling something a "new" optimization idea, compare the top rows against both [references/fuse-overlap-catalog.md](references/fuse-overlap-catalog.md) and [references/overlap-catalog.md](references/overlap-catalog.md). Check mainline rows first, then the `PR-backed / in-flight` sections for still-moving upstream work. Prefer reporting:
+5. Before calling something a "new" optimization idea, compare the top rows against both [references/fuse-overlap-catalog.md](references/fuse-overlap-catalog.md) and [references/overlap-catalog.md](references/overlap-catalog.md). Check mainline rows first, then the `PR-backed / in-flight` sections. Prefer reporting:
    - an existing fused or overlap path that should already apply here
    - an existing path that appears disabled, unsupported, or regressed in this trace
    - an upstream pattern that is mainline elsewhere but missing locally, or still open upstream
    - a truly new opportunity only when no catalog entry fits
-6. If no exact pattern fully matches but the trace still looks semantically close to a known family, add one flat `AI similarity judgment` note after the tables.
+6. If no exact pattern fully matches but the trace is still close to a known family, add one flat similarity note after the tables.
    Use `high`, `medium`, or `low` only.
    Base that note on the full pattern shape, not on one kernel name alone.
    Prefer semantic cues such as producer-consumer chain, source locations, CPU op names, TP context, and model-specific structure.
@@ -167,7 +343,7 @@ Do not call the mapping pass a "fast profile". It exists to recover `kernel -> c
 Load these only when needed:
 
 - [references/source-map.md](references/source-map.md)
-  - upstream SGLang profiler entrypoints and trace-writing source paths
+  - upstream SGLang profiler entrypoints and trace-writing paths; still most useful for SGLang-specific source follow-up
 - [references/heuristics.md](references/heuristics.md)
   - overlap labels, dependency-risk interpretation, and limits
 - [references/fuse-overlap-catalog.md](references/fuse-overlap-catalog.md)
@@ -180,10 +356,11 @@ Load these only when needed:
 Return:
 
 - trace path or generated profile path
+- framework
 - model/server args when available
 - kernel table
 - overlap-opportunity table
 - fuse-pattern table
-- optional `AI similarity judgment` note with `high` / `medium` / `low` when exact matching is inconclusive
-- one short conclusion about what dominates the run
-- whether the overlap conclusion came from single-trace triage or mapping/formal two-trace triage
+- optional similarity note with `high` / `medium` / `low` when exact matching is inconclusive
+- one short summary of what dominates the run
+- whether the overlap read came from single-trace triage or mapping/formal two-trace triage

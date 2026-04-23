@@ -1,4 +1,4 @@
-"""Compact triage entrypoint for SGLang torch-profiler analysis."""
+"""Compact triage entrypoint for unified LLM torch-profiler analysis."""
 
 from __future__ import annotations
 
@@ -12,23 +12,37 @@ import triage_kernel_helpers as kernel_helpers
 import triage_overlap_helpers as overlap_helpers
 from profile_common import (
     discover_trace_targets,
+    framework_display_name,
     load_server_args,
     load_trace_json,
     parse_stage,
+    resolve_framework,
     run_profiler,
 )
 
 MIN_RENDER_SHARE_PCT = 1.0
+MAPPING_KERNEL_SAMPLE_LIMIT_PER_NAME = 16
 
 
 def build_triage_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="analyze_sglang_torch_profile.py",
+        prog="analyze_llm_torch_profile.py",
         description=(
-            "Compact SGLang torch-profiler triage entrypoint. "
+            "Compact LLM torch-profiler triage entrypoint for SGLang, vLLM, and "
+            "TensorRT-LLM. "
             "This prints three tables: kernel mapping, overlap opportunities, "
             "and fuse opportunities. "
             "Use either a single trace/profile input or a mapping+formal two-trace pair."
+        ),
+    )
+    parser.add_argument(
+        "--framework",
+        type=str,
+        default="auto",
+        choices=["auto", "sglang", "vllm", "trtllm", "tllm", "tensorrt-llm"],
+        help=(
+            "Serving framework. Use auto to detect from trace contents, path hints, "
+            "or URL features."
         ),
     )
     parser.add_argument(
@@ -41,19 +55,30 @@ def build_triage_parser() -> argparse.ArgumentParser:
         "--url",
         type=str,
         default=None,
-        help="Running SGLang server URL for single-trace triage.",
+        help=(
+            "Running server URL for single-trace triage. SGLang supports direct "
+            "capture via sglang.profiler. vLLM and TensorRT-LLM require a server-side "
+            "torch-profiler output path exposed via --output-dir."
+        ),
     )
     parser.add_argument(
         "--output-dir",
         type=str,
         default=None,
-        help="Trace output dir when using --url.",
+        help=(
+            "Trace output dir when using --url. For vLLM this should match the "
+            "server's torch_profiler_dir. For TensorRT-LLM it should match the "
+            "directory or file path configured by TLLM_TORCH_PROFILE_TRACE."
+        ),
     )
     parser.add_argument(
         "--profile-prefix",
         type=str,
         default="triage-trace",
-        help="Profile prefix when generating a single trace from --url.",
+        help=(
+            "Profile prefix when generating a trace from --url. SGLang uses it "
+            "directly; vLLM and TensorRT-LLM may ignore it on the HTTP profiler path."
+        ),
     )
     parser.add_argument(
         "--mapping-input",
@@ -65,7 +90,7 @@ def build_triage_parser() -> argparse.ArgumentParser:
         "--mapping-url",
         type=str,
         default=None,
-        help="Running graph-off SGLang server URL for the mapping trace.",
+        help="Running graph-off server URL for the mapping trace.",
     )
     parser.add_argument(
         "--formal-input",
@@ -77,7 +102,7 @@ def build_triage_parser() -> argparse.ArgumentParser:
         "--formal-url",
         type=str,
         default=None,
-        help="Running graph-on SGLang server URL for the formal trace.",
+        help="Running graph-on server URL for the formal trace.",
     )
     parser.add_argument(
         "--mapping-output-dir",
@@ -193,11 +218,16 @@ def resolve_profile_targets(
     output_dir: Optional[str],
     profile_prefix: Optional[str],
     args: argparse.Namespace,
-) -> Tuple[List[Path], Optional[dict]]:
+) -> Tuple[List[Path], Optional[dict], str]:
     if bool(input_path) == bool(url):
         raise ValueError(f"{label} trace requires exactly one of input path or URL.")
 
     if url:
+        framework = resolve_framework(
+            args.framework,
+            input_path=Path(output_dir).resolve() if output_dir else None,
+            url=url,
+        )
         target_dir = run_profiler(
             url=url,
             output_dir=output_dir,
@@ -210,18 +240,29 @@ def resolve_profile_targets(
             probe_max_new_tokens=args.probe_max_new_tokens,
             probe_delay=args.probe_delay,
             start_step=args.start_step,
+            framework=framework,
+            framework_hint_path=output_dir,
         )
         traces, server_args = discover_trace_targets(target_dir, all_traces=False)
-        return traces, server_args
+        resolved_framework = resolve_framework(
+            args.framework,
+            input_path=target_dir,
+            url=url,
+            server_args=server_args,
+        )
+        return traces, server_args, resolved_framework
 
     resolved = Path(input_path).resolve()
     traces, server_args = discover_trace_targets(resolved, all_traces=False)
     if server_args is None:
         server_args = load_server_args(resolved)
-    return traces, server_args
+    framework = resolve_framework(
+        args.framework, input_path=resolved, server_args=server_args
+    )
+    return traces, server_args, framework
 
 
-def build_mapping_kernel_map(trace_paths: Sequence[Path]) -> dict:
+def build_mapping_kernel_map(trace_paths: Sequence[Path], framework: str) -> dict:
     stage_site_stats = defaultdict(
         lambda: defaultdict(lambda: defaultdict(kernel_helpers.MappingSiteAggregate))
     )
@@ -236,22 +277,34 @@ def build_mapping_kernel_map(trace_paths: Sequence[Path]) -> dict:
         kernels, cpu_ops, python_frames, launch_events, _, _ = (
             kernel_helpers.extract_trace_data(trace)
         )
+        if not kernels:
+            continue
         cpu_ops_by_external_id = kernel_helpers.build_cpu_op_index(cpu_ops)
         launches_by_correlation = kernel_helpers.build_launch_index(launch_events)
-        local_site_stats = kernel_helpers.aggregate_kernel_sites(
-            kernels,
-            cpu_ops_by_external_id,
-            python_frames,
-            launches_by_correlation=launches_by_correlation,
-        )
-        stage = parse_stage(trace_path)
-        kernel_categories = {
-            kernel.canonical_name: kernel.category for kernel in kernels
-        }
-        kernel_helpers.merge_site_stats(stage_site_stats[stage], local_site_stats)
-        kernel_helpers.merge_site_stats(global_site_stats, local_site_stats)
-        stage_kernel_categories[stage].update(kernel_categories)
-        global_kernel_categories.update(kernel_categories)
+        site_context_cache = {}
+        default_stage = parse_stage(trace_path)
+        for stage, stage_kernels in kernel_helpers.group_kernels_by_stage(
+            kernels, default_stage
+        ).items():
+            sampled_stage_kernels = (
+                stage_kernels
+                if framework == "sglang"
+                else sample_kernels_for_mapping(stage_kernels)
+            )
+            local_site_stats = kernel_helpers.aggregate_kernel_sites(
+                sampled_stage_kernels,
+                cpu_ops_by_external_id,
+                python_frames,
+                launches_by_correlation=launches_by_correlation,
+                site_context_cache=site_context_cache,
+            )
+            kernel_categories = {
+                kernel.canonical_name: kernel.category for kernel in stage_kernels
+            }
+            kernel_helpers.merge_site_stats(stage_site_stats[stage], local_site_stats)
+            kernel_helpers.merge_site_stats(global_site_stats, local_site_stats)
+            stage_kernel_categories[stage].update(kernel_categories)
+            global_kernel_categories.update(kernel_categories)
 
     stage_payloads = {
         stage: kernel_helpers.build_stage_payload(
@@ -267,6 +320,30 @@ def build_mapping_kernel_map(trace_paths: Sequence[Path]) -> dict:
 
 def stage_index(stage: str) -> int:
     return {"extend": 0, "prefill": 0, "decode": 1, "all": 2}.get(stage, 99)
+
+
+def sample_kernels_for_mapping(
+    kernels: Sequence[kernel_helpers.KernelEvent],
+    per_name_limit: int = MAPPING_KERNEL_SAMPLE_LIMIT_PER_NAME,
+) -> List[kernel_helpers.KernelEvent]:
+    if per_name_limit <= 0:
+        return list(kernels)
+
+    grouped: Dict[str, List[kernel_helpers.KernelEvent]] = defaultdict(list)
+    for kernel in kernels:
+        grouped[kernel.canonical_name].append(kernel)
+
+    sampled: List[kernel_helpers.KernelEvent] = []
+    for kernel_name in sorted(grouped):
+        items = grouped[kernel_name]
+        if len(items) <= per_name_limit:
+            sampled.extend(items)
+            continue
+        for sample_idx in range(per_name_limit):
+            pos = round(sample_idx * (len(items) - 1) / (per_name_limit - 1))
+            sampled.append(items[pos])
+    sampled.sort(key=lambda kernel: (kernel.ts, kernel.name))
+    return sampled
 
 
 def stage_display(stage: str) -> str:
@@ -292,15 +369,89 @@ def build_stage_trace_map(trace_paths: Sequence[Path]) -> Dict[str, Path]:
     return stage_map
 
 
-def render_kernel_table(rows: Sequence[dict]) -> List[str]:
-    lines = [
-        "| Stage | Kernel | Category | GPU time | Share | Launches | Python location (site share) | CPU op |",
-        "| --- | --- | --- | ---: | ---: | ---: | --- | --- |",
+def pick_stage_value(stage_to_value: Dict[str, object], stage: str) -> Optional[object]:
+    if stage in stage_to_value:
+        return stage_to_value[stage]
+    if "all" in stage_to_value:
+        return stage_to_value["all"]
+    if len(stage_to_value) == 1:
+        return next(iter(stage_to_value.values()))
+    return None
+
+
+def render_stages(stage_to_value: Dict[str, object]) -> List[str]:
+    stages = set(stage_to_value)
+    if any(stage != "all" for stage in stages):
+        stages.discard("all")
+    return sorted(stages, key=stage_index)
+
+
+def build_overlap_stage_bundle_map(
+    trace_paths: Sequence[Path],
+    *,
+    label_prefix: str,
+    server_args: Optional[dict],
+    pid_substring: Optional[str],
+) -> Dict[str, overlap_helpers.TraceBundle]:
+    stage_bundles: Dict[str, overlap_helpers.TraceBundle] = {}
+    for trace_path in sorted(
+        trace_paths, key=lambda item: (stage_index(parse_stage(item)), item.name)
+    ):
+        trace_json = load_trace_json(trace_path)
+        raw_events = trace_json.get(
+            "traceEvents",
+            trace_json if isinstance(trace_json, list) else [],
+        )
+        events, pid = overlap_helpers.extract_kernel_events(trace_json, pid_substring)
+        if not events:
+            continue
+        default_stage = parse_stage(trace_path)
+        stage_groups = overlap_helpers.group_events_by_stage(events, default_stage)
+        for stage in render_stages(stage_groups):
+            if stage in stage_bundles:
+                continue
+            stage_bundles[stage] = overlap_helpers.TraceBundle(
+                label=f"{label_prefix}-{stage}",
+                trace_path=trace_path,
+                server_args=server_args,
+                raw_events=raw_events,
+                events=stage_groups[stage],
+                pid=pid,
+            )
+        if "all" in stage_groups and not stage_bundles:
+            stage_bundles["all"] = overlap_helpers.TraceBundle(
+                label=f"{label_prefix}-all",
+                trace_path=trace_path,
+                server_args=server_args,
+                raw_events=raw_events,
+                events=stage_groups["all"],
+                pid=pid,
+            )
+    return stage_bundles
+
+
+def group_rows_by_stage(rows: Sequence[dict]) -> List[Tuple[str, List[dict]]]:
+    grouped: Dict[str, List[dict]] = defaultdict(list)
+    for row in rows:
+        grouped[str(row.get("stage") or "all")].append(row)
+    return [
+        (stage, grouped[stage]) for stage in sorted(grouped.keys(), key=stage_index)
     ]
+
+
+def render_kernel_table_for_stage(rows: Sequence[dict]) -> List[str]:
+    lines = [
+        "| Kernel | Category | GPU time | Share | Launches | Python location (site share) | CPU op |",
+        "| --- | --- | ---: | ---: | ---: | --- | --- |",
+    ]
+    if not rows:
+        lines.append(
+            "| No kernel rows at or above 1.0% share. | - | - | - | - | - | - |"
+        )
+        return lines
     for row in rows:
         lines.append(
-            "| {stage} | {kernel} | {category} | {gpu_time} | {share:.1f}% | {launches} | {location} | {cpu_op} |".format(
-                stage=kernel_helpers.escape_md_cell(stage_display(row["stage"])),
+            "| {kernel} | {category} | {gpu_time} | {share:.1f}% | {launches} | {location} | {cpu_op} |".format(
                 kernel=kernel_helpers.escape_md_cell(row["kernel"]),
                 category=kernel_helpers.escape_md_cell(row["category"]),
                 gpu_time=kernel_helpers.format_ms(row["total_us"]),
@@ -313,14 +464,41 @@ def render_kernel_table(rows: Sequence[dict]) -> List[str]:
     return lines
 
 
-def render_overlap_table(rows: Sequence[dict]) -> List[str]:
+def render_stage_section_tables(
+    rows: Sequence[dict],
+    *,
+    render_stage_fn,
+    stage_label_prefix: str = "#####",
+) -> List[str]:
+    if not rows:
+        return render_stage_fn([])
+    stage_groups = group_rows_by_stage(rows)
+    if len(stage_groups) == 1 and stage_groups[0][0] == "all":
+        return render_stage_fn(stage_groups[0][1])
+
+    lines: List[str] = []
+    for index, (stage, stage_rows) in enumerate(stage_groups):
+        lines.append(f"{stage_label_prefix} {stage_display(stage)}")
+        lines.extend(render_stage_fn(stage_rows))
+        if index != len(stage_groups) - 1:
+            lines.append("")
+    return lines
+
+
+def render_kernel_tables(rows: Sequence[dict]) -> List[str]:
+    return render_stage_section_tables(
+        rows, render_stage_fn=render_kernel_table_for_stage
+    )
+
+
+def render_overlap_table_for_stage(rows: Sequence[dict]) -> List[str]:
     lines = [
-        "| Stage | Priority | Verdict | Kernel | Python scope | Formal signal | Dep risk | Recommendation |",
-        "| --- | --- | --- | --- | --- | --- | --- | --- |",
+        "| Priority | Verdict | Kernel | Python scope | Formal signal | Dep risk | Recommendation |",
+        "| --- | --- | --- | --- | --- | --- | --- |",
     ]
     if not rows:
         lines.append(
-            "| - | - | - | No actionable overlap rows. Use mapping/formal two-trace triage for stronger overlap conclusions. | - | - | - | - |"
+            "| - | - | No rows cleared the 1.0% reporting bar. Use mapping/formal mode for overlap attribution. | - | - | - | - |"
         )
         return lines
     for row in rows:
@@ -332,7 +510,6 @@ def render_overlap_table(rows: Sequence[dict]) -> List[str]:
             "| "
             + " | ".join(
                 [
-                    kernel_helpers.escape_md_cell(stage_display(row["stage"])),
                     row["priority"],
                     row["verdict"],
                     kernel_helpers.escape_md_cell(row["kernel"]),
@@ -347,20 +524,26 @@ def render_overlap_table(rows: Sequence[dict]) -> List[str]:
     return lines
 
 
-def render_fuse_table(rows: Sequence[dict]) -> List[str]:
+def render_overlap_tables(rows: Sequence[dict]) -> List[str]:
+    return render_stage_section_tables(
+        rows,
+        render_stage_fn=render_overlap_table_for_stage,
+    )
+
+
+def render_fuse_table_for_stage(rows: Sequence[dict]) -> List[str]:
     lines = [
-        "| Stage | Pattern | Confidence | Related GPU time | Share | Evidence kernels | Current kernel Python location | Candidate fused Python path | Rationale |",
-        "| --- | --- | --- | ---: | ---: | --- | --- | --- | --- |",
+        "| Pattern | Confidence | Related GPU time | Share | Evidence kernels | Current kernel Python location | Candidate fused Python path | Rationale |",
+        "| --- | --- | ---: | ---: | --- | --- | --- | --- |",
     ]
     if not rows:
         lines.append(
-            "| - | No medium-confidence source-backed fusion opportunity matched this trace. | - | - | - | - | - | - | - |"
+            "| No medium-confidence source-backed fusion opportunity matched this trace. | - | - | - | - | - | - | - |"
         )
         return lines
     for row in rows:
         lines.append(
-            "| {stage} | {pattern} | {confidence} | {gpu_time} | {share:.1f}% | {evidence} | {current_locations} | {candidate_path} | {rationale} |".format(
-                stage=kernel_helpers.escape_md_cell(stage_display(row["stage"])),
+            "| {pattern} | {confidence} | {gpu_time} | {share:.1f}% | {evidence} | {current_locations} | {candidate_path} | {rationale} |".format(
                 pattern=kernel_helpers.escape_md_cell(row["pattern"]),
                 confidence=kernel_helpers.escape_md_cell(row["confidence"]),
                 gpu_time=kernel_helpers.format_ms(row["related_us"]),
@@ -376,10 +559,17 @@ def render_fuse_table(rows: Sequence[dict]) -> List[str]:
     return lines
 
 
+def render_fuse_tables(rows: Sequence[dict]) -> List[str]:
+    return render_stage_section_tables(
+        rows,
+        render_stage_fn=render_fuse_table_for_stage,
+    )
+
+
 def run_triage(args: argparse.Namespace) -> int:
     single_trace_mode = bool(args.input) or bool(args.url)
     if single_trace_mode:
-        formal_traces, formal_server_args = resolve_profile_targets(
+        formal_traces, formal_server_args, formal_framework = resolve_profile_targets(
             label="input",
             input_path=args.input,
             url=args.url,
@@ -389,16 +579,19 @@ def run_triage(args: argparse.Namespace) -> int:
         )
         mapping_traces = formal_traces
         mapping_server_args = formal_server_args
+        mapping_framework = formal_framework
     else:
-        mapping_traces, mapping_server_args = resolve_profile_targets(
-            label="mapping",
-            input_path=args.mapping_input,
-            url=args.mapping_url,
-            output_dir=args.mapping_output_dir,
-            profile_prefix=args.mapping_profile_prefix,
-            args=args,
+        mapping_traces, mapping_server_args, mapping_framework = (
+            resolve_profile_targets(
+                label="mapping",
+                input_path=args.mapping_input,
+                url=args.mapping_url,
+                output_dir=args.mapping_output_dir,
+                profile_prefix=args.mapping_profile_prefix,
+                args=args,
+            )
         )
-        formal_traces, formal_server_args = resolve_profile_targets(
+        formal_traces, formal_server_args, formal_framework = resolve_profile_targets(
             label="formal",
             input_path=args.formal_input,
             url=args.formal_url,
@@ -407,123 +600,151 @@ def run_triage(args: argparse.Namespace) -> int:
             args=args,
         )
 
-    mapping_kernel_map = build_mapping_kernel_map(mapping_traces)
+    mapping_kernel_map = build_mapping_kernel_map(mapping_traces, mapping_framework)
 
     kernel_rows_rendered: List[dict] = []
     fuse_rows_rendered: List[dict] = []
 
     for formal_trace in formal_traces:
         trace = load_trace_json(formal_trace)
-        kernels, _, _, _, _, _ = kernel_helpers.extract_trace_data(trace)
+        kernels, cpu_ops, python_frames, launch_events, _, _ = (
+            kernel_helpers.extract_trace_data(trace)
+        )
         if not kernels:
             continue
-        stage = parse_stage(formal_trace)
-        total_us = sum(kernel.dur for kernel in kernels)
-        kernel_stats = kernel_helpers.aggregate(
-            kernels, key_fn=lambda item: item.canonical_name
+        default_stage = parse_stage(formal_trace)
+        stage_groups = kernel_helpers.group_kernels_by_stage(kernels, default_stage)
+        formal_cpu_ops_by_external_id = kernel_helpers.build_cpu_op_index(cpu_ops)
+        formal_launches_by_correlation = kernel_helpers.build_launch_index(
+            launch_events
         )
-        kernel_categories = {
-            kernel.canonical_name: kernel.category for kernel in kernels
-        }
-        full_kernel_rows = kernel_helpers.build_kernel_rows(
-            stage=stage,
-            kernel_stats=kernel_stats,
-            kernel_categories=kernel_categories,
-            local_stage_payload=mapping_kernel_map.get("stages", {}).get(
-                stage, {"kernels": {}}
-            ),
-            external_kernel_map=mapping_kernel_map,
-        )
-        visible_kernel_rows = kernel_helpers.limit_kernel_rows(
-            full_kernel_rows, args.kernel_table_limit
-        )
-        for row in visible_kernel_rows:
-            share_pct = kernel_helpers.pct(row.total_us, total_us)
-            if share_pct < MIN_RENDER_SHARE_PCT:
-                continue
-            kernel_rows_rendered.append(
-                {
-                    "stage": stage,
-                    "kernel": row.name,
-                    "category": row.category,
-                    "total_us": row.total_us,
-                    "share_pct": share_pct,
-                    "launches": row.aggregate.count,
-                    "location": row.location,
-                    "cpu_op": row.cpu_op,
-                }
+        formal_site_context_cache = {}
+        formal_local_stage_payloads: Dict[str, dict] = {}
+        for stage_name, stage_kernels in stage_groups.items():
+            local_site_stats = kernel_helpers.aggregate_kernel_sites(
+                stage_kernels,
+                formal_cpu_ops_by_external_id,
+                python_frames,
+                launches_by_correlation=formal_launches_by_correlation,
+                site_context_cache=formal_site_context_cache,
             )
-        for item in kernel_helpers.detect_fusion_opportunities(
-            stage=stage,
-            kernel_rows=full_kernel_rows,
-            total_us=total_us,
-            server_args=formal_server_args or mapping_server_args,
-        ):
-            share_pct = kernel_helpers.pct(item.related_us, total_us)
-            if share_pct < MIN_RENDER_SHARE_PCT:
-                continue
-            fuse_rows_rendered.append(
-                {
-                    "stage": stage,
-                    "pattern": item.pattern,
-                    "confidence": item.confidence,
-                    "related_us": item.related_us,
-                    "share_pct": share_pct,
-                    "evidence": item.evidence,
-                    "current_locations": item.current_locations,
-                    "candidate_path": item.candidate_path,
-                    "rationale": item.rationale,
-                }
+            formal_local_stage_payloads[stage_name] = (
+                kernel_helpers.build_stage_payload(
+                    local_site_stats,
+                    {
+                        kernel.canonical_name: kernel.category
+                        for kernel in stage_kernels
+                    },
+                )
             )
+        trace_total_us = sum(kernel.dur for kernel in kernels)
+        for stage in sorted(stage_groups, key=stage_index):
+            stage_kernels = stage_groups[stage]
+            if not stage_kernels:
+                continue
+            total_us = sum(kernel.dur for kernel in stage_kernels)
+            if (
+                stage == "all"
+                and default_stage == "all"
+                and kernel_helpers.pct(total_us, trace_total_us) < MIN_RENDER_SHARE_PCT
+            ):
+                continue
+            kernel_stats = kernel_helpers.aggregate(
+                stage_kernels, key_fn=lambda item: item.canonical_name
+            )
+            kernel_categories = {
+                kernel.canonical_name: kernel.category for kernel in stage_kernels
+            }
+            full_kernel_rows = kernel_helpers.build_kernel_rows(
+                stage=stage,
+                kernel_stats=kernel_stats,
+                kernel_categories=kernel_categories,
+                local_stage_payload=formal_local_stage_payloads.get(
+                    stage, {"kernels": {}}
+                ),
+                external_kernel_map=mapping_kernel_map,
+            )
+            visible_kernel_rows = kernel_helpers.limit_kernel_rows(
+                full_kernel_rows, args.kernel_table_limit
+            )
+            for row in visible_kernel_rows:
+                share_pct = kernel_helpers.pct(row.total_us, total_us)
+                if share_pct < MIN_RENDER_SHARE_PCT:
+                    continue
+                kernel_rows_rendered.append(
+                    {
+                        "stage": stage,
+                        "kernel": row.name,
+                        "category": row.category,
+                        "total_us": row.total_us,
+                        "share_pct": share_pct,
+                        "launches": row.aggregate.count,
+                        "location": row.location,
+                        "cpu_op": row.cpu_op,
+                    }
+                )
+            for item in kernel_helpers.detect_fusion_opportunities(
+                stage=stage,
+                kernel_rows=full_kernel_rows,
+                total_us=total_us,
+                server_args=formal_server_args or mapping_server_args,
+                framework=formal_framework,
+            ):
+                share_pct = kernel_helpers.pct(item.related_us, total_us)
+                if share_pct < MIN_RENDER_SHARE_PCT:
+                    continue
+                fuse_rows_rendered.append(
+                    {
+                        "stage": stage,
+                        "pattern": item.pattern,
+                        "confidence": item.confidence,
+                        "related_us": item.related_us,
+                        "share_pct": share_pct,
+                        "evidence": item.evidence,
+                        "current_locations": item.current_locations,
+                        "candidate_path": item.candidate_path,
+                        "rationale": item.rationale,
+                    }
+                )
 
-    mapping_stage_map = build_stage_trace_map(mapping_traces)
-    formal_stage_map = build_stage_trace_map(formal_traces)
     overlap_rows_rendered: List[dict] = []
     if not single_trace_mode:
-        for stage in sorted(formal_stage_map, key=stage_index):
-            formal_trace = formal_stage_map[stage]
-            mapping_trace = pick_trace_for_stage(mapping_stage_map, stage)
-            if mapping_trace is None:
+        mapping_overlap_bundles = build_overlap_stage_bundle_map(
+            mapping_traces,
+            label_prefix="mapping",
+            server_args=mapping_server_args,
+            pid_substring=args.pid_substring,
+        )
+        formal_overlap_bundles = build_overlap_stage_bundle_map(
+            formal_traces,
+            label_prefix="formal",
+            server_args=formal_server_args,
+            pid_substring=args.pid_substring,
+        )
+        for stage in render_stages(formal_overlap_bundles):
+            formal_bundle = pick_stage_value(formal_overlap_bundles, stage)
+            mapping_bundle = pick_stage_value(mapping_overlap_bundles, stage)
+            if formal_bundle is None or mapping_bundle is None:
                 continue
-            mapping_trace_json = load_trace_json(mapping_trace)
-            mapping_events, mapping_pid = overlap_helpers.extract_kernel_events(
-                mapping_trace_json, args.pid_substring
-            )
-            if not mapping_events:
-                continue
-            formal_trace_json = load_trace_json(formal_trace)
-            formal_events, formal_pid = overlap_helpers.extract_kernel_events(
-                formal_trace_json, args.pid_substring
-            )
-            if not formal_events:
-                continue
-            mapping_bundle = overlap_helpers.TraceBundle(
-                label=f"mapping-{stage}",
-                trace_path=mapping_trace,
-                server_args=mapping_server_args,
-                raw_events=mapping_trace_json.get(
-                    "traceEvents",
-                    mapping_trace_json if isinstance(mapping_trace_json, list) else [],
-                ),
-                events=mapping_events,
-                pid=mapping_pid,
-            )
-            formal_bundle = overlap_helpers.TraceBundle(
-                label=f"formal-{stage}",
-                trace_path=formal_trace,
-                server_args=formal_server_args,
-                raw_events=formal_trace_json.get(
-                    "traceEvents",
-                    formal_trace_json if isinstance(formal_trace_json, list) else [],
-                ),
-                events=formal_events,
-                pid=formal_pid,
-            )
             formal_bundle.overlap_stats = overlap_helpers.analyze_overlap(
                 formal_bundle.events
             )
             aggregates = overlap_helpers.aggregate_events(formal_bundle.events)
-            source_map = overlap_helpers.build_kernel_source_map(mapping_bundle)
+            source_map = overlap_helpers.build_kernel_source_map(
+                mapping_bundle,
+                kernel_map_entry_lookup=lambda stage_name, kernel_name: (
+                    kernel_helpers.lookup_kernel_map_entry(
+                        mapping_kernel_map, stage_name, kernel_name
+                    )
+                    if mapping_kernel_map
+                    else None
+                ),
+                stage=stage,
+            )
+            source_map = overlap_helpers.merge_source_map_from_kernel_payload(
+                source_map,
+                pick_stage_value(formal_local_stage_payloads, stage),
+            )
             stage_rows = overlap_helpers.build_action_rows(
                 aggregates,
                 source_map,
@@ -552,9 +773,20 @@ def run_triage(args: argparse.Namespace) -> int:
 
     lines: List[str] = []
     lines.append("Triage View")
+    lines.append(f"Mode: {'single-trace' if single_trace_mode else 'mapping-formal'}")
     if single_trace_mode:
+        lines.append(f"Framework: {framework_display_name(formal_framework)}")
         lines.append(f"Input traces: {', '.join(str(path) for path in formal_traces)}")
     else:
+        if mapping_framework == formal_framework:
+            lines.append(f"Framework: {framework_display_name(formal_framework)}")
+        else:
+            lines.append(
+                f"Mapping framework: {framework_display_name(mapping_framework)}"
+            )
+            lines.append(
+                f"Formal framework: {framework_display_name(formal_framework)}"
+            )
         lines.append(
             f"Mapping traces: {', '.join(str(path) for path in mapping_traces)}"
         )
@@ -566,13 +798,13 @@ def run_triage(args: argparse.Namespace) -> int:
             lines.append(f"Model: {model}")
     lines.append("")
     lines.append("Kernel Table")
-    lines.extend(render_kernel_table(kernel_rows_rendered))
+    lines.extend(render_kernel_tables(kernel_rows_rendered))
     lines.append("")
     lines.append("Overlap Opportunity Table")
-    lines.extend(render_overlap_table(overlap_rows_rendered))
+    lines.extend(render_overlap_tables(overlap_rows_rendered))
     lines.append("")
     lines.append("Fuse Opportunity Table")
-    lines.extend(render_fuse_table(fuse_rows_rendered))
+    lines.extend(render_fuse_tables(fuse_rows_rendered))
     print("\n".join(lines).rstrip())
     return 0
 
@@ -589,7 +821,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         argv = argv[1:]
     elif not argv[0].startswith("-"):
         triage_parser.error(
-            "This skill now exposes only the compact triage workflow. "
+            "This skill exposes only the triage workflow. "
             "Use single-trace mode (--input/--url) or mapping+formal two-trace mode."
         )
         return 2

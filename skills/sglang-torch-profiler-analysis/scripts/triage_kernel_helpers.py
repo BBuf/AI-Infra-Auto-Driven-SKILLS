@@ -4,8 +4,10 @@ from __future__ import annotations
 
 import json
 import re
+from bisect import bisect_right
 from collections import Counter, defaultdict
 from dataclasses import dataclass, field
+from functools import lru_cache
 from pathlib import Path
 from typing import DefaultDict, Dict, Iterable, List, Optional, Sequence, Tuple
 
@@ -200,12 +202,31 @@ LOW_LEVEL_FRAME_PREFIXES = (
     "torch/nn/modules/module.py",
 )
 
+LOW_SIGNAL_FUNCTION_TOKENS = (
+    "__torch_function__",
+    "__torch_dispatch__",
+    "__call__",
+    "_call_impl",
+    "_wrapped_call_impl",
+)
+
+LOW_SIGNAL_PATH_TOKENS = (
+    "model_executor/parameter.py:",
+    "model_executor/cuda_graph_runner.py:",
+    "compilation/cuda_graph.py:",
+    "pyexecutor/cuda_graph_runner.py:",
+    "pyexecutor/py_executor.py:",
+    "_torch/utils.py:",
+    "torch/fx/graph_module.py:",
+)
+
 
 @dataclass
 class KernelEvent:
     name: str
     canonical_name: str
     category: str
+    stage: str
     pid: str
     tid: str
     ts: float
@@ -244,10 +265,36 @@ class PythonFrame:
     dur: float
     python_id: Optional[int]
     parent_id: Optional[int]
+    end_ts: float
+    priority: int
 
-    @property
-    def end_ts(self) -> float:
-        return self.ts + self.dur
+
+@dataclass
+class TimedEventIndex:
+    events: List[object]
+    start_ts: List[float]
+
+
+@dataclass
+class FrameResolution:
+    location: str
+    stack: str
+
+
+@dataclass(frozen=True)
+class StageAnnotation:
+    stage: str
+    ts: float
+    end_ts: float
+    external_id: Optional[int]
+    is_gpu: bool
+
+
+@dataclass(frozen=True)
+class StageWindow:
+    stage: str
+    ts: float
+    end_ts: float
 
 
 @dataclass
@@ -362,8 +409,7 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
             ("rmsnorm", "layernorm", "fused_add_rmsnorm", "layernorm.py"),
         ),
         rationale_hint=(
-            "FlashInfer already exposes a TP all-reduce plus residual/RMSNorm"
-            " fusion path."
+            "FlashInfer has a TP all-reduce plus residual/RMSNorm fusion path."
         ),
         require_tp=True,
         min_tp_size=2,
@@ -429,9 +475,7 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
             ("apply_qk_norm", "q_norm", "k_norm", "qknorm"),
             ("apply_rope", "rotary", "rope", "mrope"),
         ),
-        rationale_hint=(
-            "SGLang already ships a fused QK-norm plus RoPE kernel family."
-        ),
+        rationale_hint=("SGLang has a fused QK-norm plus RoPE kernel family."),
         min_share=0.3,
         likely_share=2.0,
         priority=30,
@@ -612,6 +656,30 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
         subsumes=("Fused MoE router / top-k / softcapping",),
     ),
     FusionPatternSpec(
+        pattern="Qwen-style shared-expert append into routed top-k output",
+        candidate_path=(
+            "python/sglang/srt/models/qwen2_moe.py"
+            "<br>python/sglang/srt/layers/moe/moe_runner/triton_utils/"
+            "fused_moe_triton_kernels.py"
+        ),
+        active_keywords=(
+            "_append_shared_to_topk_output",
+            "fused_append_shared_experts_with_weights",
+            "_fused_append_shared_experts_with_weights_kernel",
+        ),
+        split_groups=(
+            ("_append_shared_to_topk_output", "topk", "grouped_topk"),
+            ("shared_expert", "shared_expert_gate", "sigmoid"),
+        ),
+        rationale_hint=(
+            "Qwen-style shared experts can already be appended into routed top-k"
+            " output in one Triton prep kernel before fused MoE execution."
+        ),
+        min_share=0.05,
+        likely_share=0.5,
+        priority=55,
+    ),
+    FusionPatternSpec(
         pattern="Fused MoE sum + all-reduce",
         candidate_path=("python/sglang/srt/layers/moe/fused_moe_triton/fused_moe.py"),
         active_keywords=("fuse_sum_all_reduce", "enable_fused_moe_sum_all_reduce"),
@@ -753,8 +821,8 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
             ("cache", "kv_buffer", "cache write"),
         ),
         rationale_hint=(
-            "An open SGLang ROCm PR already wires a fused QK-norm plus RoPE"
-            " plus KV-cache family for Qwen3.5."
+            "Open SGLang ROCm PR wires a fused QK-norm plus RoPE plus KV-cache"
+            " family for Qwen3.5."
         ),
         origin="inflight",
         model_include=("qwen3.5", "qwen3_5"),
@@ -780,8 +848,8 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
             ("memset", "memcpy128"),
         ),
         rationale_hint=(
-            "An open SGLang PR already replaces nvjet FP8 GEMM with CUTLASS to"
-            " remove memset bubbles and extra copies."
+            "Open SGLang PR replaces nvjet FP8 GEMM with CUTLASS to remove"
+            " memset bubbles and extra copies."
         ),
         origin="inflight",
         min_share=0.2,
@@ -792,11 +860,14 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
         pattern="vLLM-origin Attention + Quantization",
         candidate_path=(
             "vllm/compilation/passes/fusion/attn_quant_fusion.py"
+            "<br>vllm/v1/attention/ops/merge_attn_states.py"
+            "<br>vllm/csrc/attention/merge_attn_states.cu"
             "<br>vllm/docs/design/fusions.md"
         ),
         active_keywords=(
             "merge_attn_states",
             "attn_quant_fusion",
+            "output_scale",
             "output_group_scale",
         ),
         split_groups=(
@@ -804,12 +875,30 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
             ("quant", "fp8", "nvfp4", "group_scale"),
         ),
         rationale_hint=(
-            "vLLM already treats attention-epilogue quantization as a reusable"
-            " fused family."
+            "vLLM combines attention merge with attention-epilogue quantization."
         ),
         origin="upstream",
         min_share=0.3,
         likely_share=1.5,
+    ),
+    FusionPatternSpec(
+        pattern="vLLM-origin DSV3.2 fused indexer projections",
+        candidate_path=(
+            "vllm/model_executor/models/deepseek_v2.py"
+            "<br>vllm/model_executor/models/deepseek_mtp.py"
+        ),
+        active_keywords=("wk_weights_proj",),
+        split_groups=(
+            ("wk_weights_proj", "wk", "weights_proj"),
+            ("mergedcolumnparallellinear", "gemm", "matmul"),
+        ),
+        rationale_hint=(
+            "vLLM already fuses the paired `wk` and `weights_proj` indexer"
+            " projections into one DSV3.2 linear family."
+        ),
+        origin="upstream",
+        min_share=0.2,
+        likely_share=1.0,
     ),
     FusionPatternSpec(
         pattern="vLLM-origin RMSNorm + Quantization",
@@ -848,9 +937,7 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
             ("silu", "gelu", "act_and_mul"),
             ("quant", "fp8", "fp4", "block_quant"),
         ),
-        rationale_hint=(
-            "vLLM already treats activation-plus-quant as a reusable fusion" " family."
-        ),
+        rationale_hint=("vLLM has an activation-plus-quant fusion family."),
         origin="upstream",
         min_share=0.3,
         likely_share=1.5,
@@ -867,10 +954,28 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
             ("gemm", "matmul", "cublas", "cutlass"),
         ),
         rationale_hint=(
-            "vLLM already has a specialized DeepSeek router GEMM family for"
-            " small decode batches."
+            "vLLM has a specialized DeepSeek router GEMM family for small"
+            " decode batches."
         ),
         origin="upstream",
+        min_share=0.3,
+        likely_share=1.5,
+    ),
+    FusionPatternSpec(
+        pattern="vLLM-origin GPT-OSS router GEMM",
+        candidate_path=(
+            "vllm/_custom_ops.py"
+            "<br>vllm/model_executor/layers/fused_moe/router/gate_linear.py"
+            "<br>vllm/csrc/moe/gpt_oss_router_gemm.cu"
+        ),
+        active_keywords=("gpt_oss_router_gemm",),
+        split_groups=(
+            ("router", "gate", "router logits", "gpt_oss"),
+            ("gemm", "matmul", "cublas", "cutlass"),
+        ),
+        rationale_hint=("vLLM has a GPT-OSS-specific router GEMM path."),
+        origin="upstream",
+        model_include=("gpt-oss", "gpt_oss"),
         min_share=0.3,
         likely_share=1.5,
     ),
@@ -886,8 +991,8 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
             ("gemm", "matmul", "cutlass", "cublas"),
         ),
         rationale_hint=(
-            "vLLM already has a fused DeepSeek QKV-A projection family for"
-            " decode-latency reduction."
+            "vLLM has a fused DeepSeek QKV-A projection family for decode"
+            " latency reduction."
         ),
         origin="upstream",
         model_include=("deepseek", "glm"),
@@ -909,8 +1014,8 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
             ("quant", "fp8", "nvfp4"),
         ),
         rationale_hint=(
-            "An open vLLM PR already treats QK-norm plus RoPE plus cache plus"
-            " quant as a concrete in-flight fusion family."
+            "Open vLLM PR covers QK-norm plus RoPE plus cache plus quant as"
+            " one fusion family."
         ),
         origin="inflight",
         min_share=0.4,
@@ -927,13 +1032,134 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
             ("allreduce", "all_reduce", "cross_device_reduce"),
         ),
         rationale_hint=(
-            "vLLM carries the TRTLLM MiniMax allreduce-plus-RMSNorm kernel"
-            " family as an upstream precedent."
+            "vLLM includes the TRTLLM-derived MiniMax allreduce-plus-RMSNorm"
+            " kernel family."
         ),
         origin="upstream",
         model_include=("minimax",),
         min_share=0.3,
         likely_share=1.5,
+    ),
+    FusionPatternSpec(
+        pattern="vLLM fused residual add + RMSNorm",
+        candidate_path=(
+            "vllm/_custom_ops.py"
+            "<br>vllm/compilation/passes/fusion/rms_quant_fusion.py"
+        ),
+        active_keywords=(
+            "fused_add_rms_norm",
+            "fused_add_rms_norm_static_fp8_quant",
+        ),
+        rationale_hint=(
+            "vLLM exposes fused residual-add-plus-RMSNorm kernels and matching"
+            " compile-time hooks."
+        ),
+        origin="upstream",
+        min_share=0.1,
+        likely_share=1.0,
+    ),
+    FusionPatternSpec(
+        pattern="vLLM fused activation-and-mul",
+        candidate_path=(
+            "vllm/_custom_ops.py"
+            "<br>vllm/compilation/passes/fusion/act_quant_fusion.py"
+        ),
+        active_keywords=(
+            "silu_and_mul",
+            "silu_and_mul_quant",
+            "silu_and_mul_per_block_quant",
+            "act_and_mul",
+        ),
+        rationale_hint=(
+            "vLLM ships fused activation-and-multiply kernels plus quantized"
+            " variants for the MLP epilogue."
+        ),
+        origin="upstream",
+        min_share=0.1,
+        likely_share=1.0,
+    ),
+    FusionPatternSpec(
+        pattern="TensorRT-LLM FlashInfer residual add + RMSNorm",
+        candidate_path=(
+            "tensorrt_llm/_torch/custom_ops/flashinfer_custom_ops.py"
+            "<br>tensorrt_llm/_torch/modules/rms_norm.py"
+            "<br>tensorrt_llm/_torch/auto_deploy/transform/library/fused_add_rms_norm.py"
+        ),
+        active_keywords=(
+            "flashinfer_fused_add_rmsnorm",
+            "flashinfer_gemma_fused_add_rmsnorm",
+            "flashinfer::norm::FusedAddRMSNormKernel",
+            "FusedAddRMSNormKernel",
+            "auto_deploy::flashinfer_fused_add_rms_norm_inplace",
+        ),
+        rationale_hint=(
+            "TensorRT-LLM exposes a FlashInfer fused residual-add plus RMSNorm"
+            " family, including AutoDeploy rewrites."
+        ),
+        origin="upstream",
+        min_share=0.1,
+        likely_share=1.0,
+    ),
+    FusionPatternSpec(
+        pattern="TensorRT-LLM Triton fused residual add + RMSNorm + FP8 quant",
+        candidate_path=(
+            "tensorrt_llm/_torch/auto_deploy/custom_ops/normalization/"
+            "triton_fused_add_rms_norm_quant_fp8.py"
+            "<br>tensorrt_llm/_torch/auto_deploy/transform/library/"
+            "fuse_rmsnorm_quant_fp8.py"
+        ),
+        active_keywords=(
+            "triton_fused_add_rms_norm_quant_fp8",
+            "fuse_rmsnorm_quant_fp8",
+        ),
+        rationale_hint=(
+            "TensorRT-LLM mainline has a Triton residual-add plus RMSNorm plus"
+            " FP8-quant family in AutoDeploy."
+        ),
+        origin="upstream",
+        min_share=0.2,
+        likely_share=1.0,
+        priority=20,
+    ),
+    FusionPatternSpec(
+        pattern="TensorRT-LLM FlashInfer RMSNorm family",
+        candidate_path=(
+            "tensorrt_llm/_torch/custom_ops/flashinfer_custom_ops.py"
+            "<br>tensorrt_llm/_torch/modules/rms_norm.py"
+            "<br>tensorrt_llm/_torch/auto_deploy/custom_ops/normalization/rms_norm.py"
+        ),
+        active_keywords=(
+            "flashinfer_rmsnorm",
+            "flashinfer_gemma_rmsnorm",
+            "auto_deploy::flashinfer_rms_norm",
+        ),
+        rationale_hint=(
+            "TensorRT-LLM lowers RMSNorm-style ladders to FlashInfer kernels"
+            " and AutoDeploy custom ops."
+        ),
+        origin="upstream",
+        min_share=0.1,
+        likely_share=1.0,
+    ),
+    FusionPatternSpec(
+        pattern="TensorRT-LLM FlashInfer activation / gate epilogues",
+        candidate_path=(
+            "tensorrt_llm/_torch/custom_ops/flashinfer_custom_ops.py"
+            "<br>tensorrt_llm/_torch/auto_deploy/transform/library/fuse_silu_mul.py"
+            "<br>tensorrt_llm/_torch/models/modeling_gemma3.py"
+        ),
+        active_keywords=(
+            "flashinfer_silu_and_mul",
+            "flashinfer_gelu_tanh_and_mul",
+            "auto_deploy::silu_and_mul",
+        ),
+        rationale_hint=(
+            "TensorRT-LLM already rewrites gate activation plus multiply"
+            " ladders into FlashInfer epilogue kernels."
+        ),
+        origin="upstream",
+        min_share=0.1,
+        likely_share=1.0,
     ),
 )
 
@@ -945,6 +1171,7 @@ def short_name(name: str, max_len: int = 96) -> str:
     return text[: max_len - 3] + "..."
 
 
+@lru_cache(maxsize=65536)
 def canonicalize_name(name: str) -> str:
     text = normalize_text(name)
     text = re.sub(r"0x[0-9a-fA-F]+", "0xADDR", text)
@@ -965,6 +1192,7 @@ def canonicalize_name(name: str) -> str:
     return text
 
 
+@lru_cache(maxsize=65536)
 def classify_kernel(name: str) -> str:
     # Keep the matching order explicit: strong communication/memory signals win
     # first, then we fall back to weaker category hints.
@@ -987,6 +1215,7 @@ def classify_kernel(name: str) -> str:
     return "other"
 
 
+@lru_cache(maxsize=65536)
 def normalize_source_location(name: str) -> str:
     text = normalize_text(name)
     match = re.match(r"(?P<path>.+?)\((?P<line>\d+)\): (?P<func>.+)$", text)
@@ -1000,18 +1229,23 @@ def source_location_priority(location: str) -> int:
     text = str(location).strip()
     if not text or text == "unresolved":
         return -100
+    penalty = 80 if is_low_signal_source_location(text) else 0
     if text.startswith("python/sglang/"):
-        return 300
+        return 300 - penalty
     if text.startswith("sglang/"):
-        return 290
+        return 290 - penalty
+    if text.startswith("vllm/"):
+        return 285 - penalty
+    if text.startswith("tensorrt_llm/"):
+        return 280 - penalty
     if text.startswith("sgl_kernel/"):
-        return 260
+        return 260 - penalty
     if text.startswith("python/"):
-        return 180
+        return 180 - penalty
     if text.startswith("torch/") or "/torch/" in text:
         return 20
     if ".py:" in text:
-        return 120
+        return 120 - penalty
     return 0
 
 
@@ -1020,6 +1254,8 @@ def is_preferred_source_location(location: str) -> bool:
     return (
         text.startswith("python/sglang/")
         or text.startswith("sglang/")
+        or text.startswith("vllm/")
+        or text.startswith("tensorrt_llm/")
         or text.startswith("sgl_kernel/")
     )
 
@@ -1043,7 +1279,9 @@ def extract_preferred_stack_location(stack: Optional[str]) -> Optional[str]:
 
 def site_display_location(site: dict) -> str:
     location = str(site.get("location") or "unresolved").strip()
-    if is_preferred_source_location(location):
+    if is_preferred_source_location(location) and not is_low_signal_source_location(
+        location
+    ):
         return location
     stack_location = extract_preferred_stack_location(site.get("stack"))
     if stack_location:
@@ -1066,27 +1304,43 @@ def choose_best_location(locations: Dict[str, MappingSiteAggregate]) -> str:
     return ranked[0][0]
 
 
+@lru_cache(maxsize=65536)
 def frame_priority(frame_name: str) -> int:
     raw_text = str(frame_name).strip()
     normalized_text = normalize_source_location(raw_text)
+    penalty = 80 if is_low_signal_source_location(normalized_text) else 0
     if raw_text.startswith(NOISE_FRAME_PREFIXES):
         return -20
     if normalized_text.startswith("python/sglang/"):
-        return 300
+        return 300 - penalty
     if normalized_text.startswith("sglang/"):
-        return 290
+        return 290 - penalty
+    if normalized_text.startswith("vllm/"):
+        return 285 - penalty
+    if normalized_text.startswith("tensorrt_llm/"):
+        return 280 - penalty
     if normalized_text.startswith("sgl_kernel/"):
-        return 260
+        return 260 - penalty
     if normalized_text.startswith("triton_kernels/"):
-        return 220
+        return 220 - penalty
     if normalized_text.startswith(LOW_LEVEL_FRAME_PREFIXES):
         return 0
     if raw_text.startswith("/data/") or raw_text.startswith("/Users/"):
         if "/sglang/" in raw_text:
             return 120
+        if "/vllm/" in raw_text:
+            return 118
+        if "/TensorRT-LLM/" in raw_text or "/tensorrt_llm/" in raw_text:
+            return 116
         return 100
     if ".py(" in raw_text and "/sglang/" in raw_text:
         return 110
+    if ".py(" in raw_text and "/vllm/" in raw_text:
+        return 108
+    if ".py(" in raw_text and (
+        "/TensorRT-LLM/" in raw_text or "/tensorrt_llm/" in raw_text
+    ):
+        return 106
     if ".py:" in normalized_text and (
         "site-packages" in raw_text or normalized_text.startswith("torch/")
     ):
@@ -1096,6 +1350,16 @@ def frame_priority(frame_name: str) -> int:
     if raw_text.startswith("<built-in method "):
         return -10
     return 0
+
+
+@lru_cache(maxsize=65536)
+def is_low_signal_source_location(location: str) -> bool:
+    lowered = str(location).strip().lower()
+    if not lowered:
+        return False
+    return any(token in lowered for token in LOW_SIGNAL_FUNCTION_TOKENS) or any(
+        token in lowered for token in LOW_SIGNAL_PATH_TOKENS
+    )
 
 
 def stage_label(stage: str) -> str:
@@ -1126,12 +1390,17 @@ def format_ms(value_us: float) -> str:
     return f"{value_us / 1000.0:.2f} ms"
 
 
-def is_cuda_launch_event(name: str, cat: str) -> bool:
+@lru_cache(maxsize=16384)
+def _is_cuda_launch_event_cached(name: str, cat: str) -> bool:
     lowered_name = normalize_text(name).lower()
     lowered_cat = normalize_text(cat).lower()
     if lowered_cat not in {"cuda_runtime", "cuda_driver"}:
         return False
     return "launch" in lowered_name
+
+
+def is_cuda_launch_event(name: str, cat: str) -> bool:
+    return _is_cuda_launch_event_cached(str(name), str(cat))
 
 
 def is_gpu_kernel_event(event: dict) -> bool:
@@ -1155,6 +1424,142 @@ def is_gpu_kernel_event(event: dict) -> bool:
     return has_stream_marker(args)
 
 
+def infer_stage_from_annotation_name(name: str) -> Optional[str]:
+    lowered = normalize_text(name).lower()
+    if not lowered:
+        return None
+    if "generation_1" in lowered or "decode" in lowered:
+        return "decode"
+    if "generation_0" in lowered or "prefill" in lowered:
+        return "extend"
+    return None
+
+
+def build_stage_annotations(
+    raw_events: Sequence[dict],
+) -> Tuple[
+    Dict[int, StageAnnotation],
+    List[StageWindow],
+    List[StageWindow],
+]:
+    by_external_id: Dict[int, StageAnnotation] = {}
+    gpu_annotations: List[StageAnnotation] = []
+    cpu_annotations: List[StageAnnotation] = []
+
+    def should_replace(current: StageAnnotation, candidate: StageAnnotation) -> bool:
+        if candidate.is_gpu != current.is_gpu:
+            return candidate.is_gpu
+        return (candidate.end_ts - candidate.ts) > (current.end_ts - current.ts)
+
+    for event in raw_events:
+        if not is_complete_duration_event(event):
+            continue
+        category = normalize_text(event.get("cat", "")).lower()
+        if category not in {"user_annotation", "gpu_user_annotation"}:
+            continue
+        stage = infer_stage_from_annotation_name(str(event.get("name", "")))
+        if not stage:
+            continue
+        annotation = StageAnnotation(
+            stage=stage,
+            ts=float(event.get("ts", 0.0)),
+            end_ts=float(event.get("ts", 0.0)) + float(event.get("dur", 0.0)),
+            external_id=coerce_optional_int(
+                (event.get("args") or {}).get("External id")
+            ),
+            is_gpu=(category == "gpu_user_annotation"),
+        )
+        if annotation.external_id is not None:
+            existing = by_external_id.get(annotation.external_id)
+            if existing is None or should_replace(existing, annotation):
+                by_external_id[annotation.external_id] = annotation
+        if annotation.is_gpu:
+            gpu_annotations.append(annotation)
+        else:
+            cpu_annotations.append(annotation)
+
+    gpu_annotations.sort(key=lambda item: (item.ts, item.end_ts))
+    cpu_annotations.sort(key=lambda item: (item.ts, item.end_ts))
+    return (
+        by_external_id,
+        merge_stage_windows(gpu_annotations),
+        merge_stage_windows(cpu_annotations),
+    )
+
+
+def merge_stage_windows(annotations: Sequence[StageAnnotation]) -> List[StageWindow]:
+    merged: List[StageWindow] = []
+    for annotation in annotations:
+        if (
+            merged
+            and merged[-1].stage == annotation.stage
+            and annotation.ts <= merged[-1].end_ts + 1e-3
+        ):
+            merged[-1] = StageWindow(
+                stage=merged[-1].stage,
+                ts=merged[-1].ts,
+                end_ts=max(merged[-1].end_ts, annotation.end_ts),
+            )
+            continue
+        merged.append(
+            StageWindow(
+                stage=annotation.stage,
+                ts=annotation.ts,
+                end_ts=annotation.end_ts,
+            )
+        )
+    return merged
+
+
+def resolve_stage_from_windows(
+    probe_ts: float,
+    windows: Sequence[StageWindow],
+) -> Tuple[Optional[str], Optional[float]]:
+    nearest_stage: Optional[str] = None
+    nearest_gap: Optional[float] = None
+    for window in windows:
+        if window.ts <= probe_ts <= window.end_ts + 1e-3:
+            return window.stage, 0.0
+        gap = min(abs(probe_ts - window.ts), abs(probe_ts - window.end_ts))
+        if nearest_gap is None or gap < nearest_gap:
+            nearest_gap = gap
+            nearest_stage = window.stage
+    return nearest_stage, nearest_gap
+
+
+def resolve_kernel_stage(
+    *,
+    kernel_ts: float,
+    external_id: Optional[int],
+    annotations_by_external_id: Dict[int, StageAnnotation],
+    gpu_annotations: Sequence[StageWindow],
+    cpu_annotations: Sequence[StageWindow],
+) -> str:
+    if external_id is not None:
+        annotation = annotations_by_external_id.get(external_id)
+        if annotation is not None:
+            return annotation.stage
+    probe_ts = kernel_ts + 1e-3
+    nearest_stage: Optional[str] = None
+    nearest_gap: Optional[float] = None
+    for windows in (gpu_annotations, cpu_annotations):
+        stage, gap = resolve_stage_from_windows(probe_ts, windows)
+        if gap == 0.0 and stage is not None:
+            return stage
+        if stage is not None and (
+            nearest_gap is None or (gap is not None and gap < nearest_gap)
+        ):
+            nearest_stage = stage
+            nearest_gap = gap
+    if (
+        nearest_stage is not None
+        and nearest_gap is not None
+        and nearest_gap <= 20_000.0
+    ):
+        return nearest_stage
+    return "all"
+
+
 def extract_trace_data(
     trace: dict,
 ) -> Tuple[
@@ -1170,6 +1575,11 @@ def extract_trace_data(
     # source attribution, and CUDA launch calls for correlation-based fallback.
     raw_events = extract_trace_events(trace)
     correlation_external = build_correlation_external_lookup(raw_events)
+    (
+        annotations_by_external_id,
+        gpu_stage_annotations,
+        cpu_stage_annotations,
+    ) = build_stage_annotations(raw_events)
     chosen_pid = select_heaviest_pid(
         raw_events,
         is_gpu_kernel_event,
@@ -1206,6 +1616,8 @@ def extract_trace_data(
                     dur=dur,
                     python_id=coerce_optional_int(args.get("Python id")),
                     parent_id=coerce_optional_int(args.get("Python parent id")),
+                    end_ts=ts + dur,
+                    priority=frame_priority(name),
                 )
             )
 
@@ -1246,6 +1658,13 @@ def extract_trace_data(
                 name=name,
                 canonical_name=canonicalize_name(name),
                 category=classify_kernel(name),
+                stage=resolve_kernel_stage(
+                    kernel_ts=ts,
+                    external_id=external_id,
+                    annotations_by_external_id=annotations_by_external_id,
+                    gpu_annotations=gpu_stage_annotations,
+                    cpu_annotations=cpu_stage_annotations,
+                ),
                 pid=pid,
                 tid=tid,
                 ts=ts,
@@ -1273,17 +1692,27 @@ def build_correlation_external_lookup(raw_events: Sequence[dict]) -> Dict[int, i
     return lookup
 
 
-def build_cpu_op_index(cpu_ops: Sequence[CpuOpEvent]) -> Dict[int, List[CpuOpEvent]]:
+def build_timed_event_index(events: Sequence[object]) -> TimedEventIndex:
+    ordered = list(events)
+    ordered.sort(key=lambda item: item.ts)
+    return TimedEventIndex(
+        events=ordered,
+        start_ts=[float(item.ts) for item in ordered],
+    )
+
+
+def build_cpu_op_index(cpu_ops: Sequence[CpuOpEvent]) -> Dict[int, TimedEventIndex]:
     output: DefaultDict[int, List[CpuOpEvent]] = defaultdict(list)
     for cpu_op in cpu_ops:
         output[cpu_op.external_id].append(cpu_op)
-    for items in output.values():
-        items.sort(key=lambda item: item.ts)
-    return dict(output)
+    return {
+        external_id: build_timed_event_index(items)
+        for external_id, items in output.items()
+    }
 
 
 def match_cpu_op(
-    kernel: KernelEvent, cpu_ops_by_external_id: Dict[int, List[CpuOpEvent]]
+    kernel: KernelEvent, cpu_ops_by_external_id: Dict[int, TimedEventIndex]
 ) -> Optional[CpuOpEvent]:
     if kernel.external_id is None:
         return None
@@ -1294,17 +1723,18 @@ def match_cpu_op(
 
 def build_launch_index(
     launch_events: Sequence[LaunchEvent],
-) -> Dict[int, List[LaunchEvent]]:
+) -> Dict[int, TimedEventIndex]:
     output: DefaultDict[int, List[LaunchEvent]] = defaultdict(list)
     for launch in launch_events:
         output[launch.correlation].append(launch)
-    for items in output.values():
-        items.sort(key=lambda item: item.ts)
-    return dict(output)
+    return {
+        correlation: build_timed_event_index(items)
+        for correlation, items in output.items()
+    }
 
 
 def match_launch_event(
-    kernel: KernelEvent, launches_by_correlation: Dict[int, List[LaunchEvent]]
+    kernel: KernelEvent, launches_by_correlation: Dict[int, TimedEventIndex]
 ) -> Optional[LaunchEvent]:
     if kernel.correlation is None:
         return None
@@ -1313,13 +1743,101 @@ def match_launch_event(
     )
 
 
-def match_timed_event(events: Sequence, probe_ts: float):
+def match_timed_event(index: object, probe_ts: float):
+    if not index:
+        return None
+    if isinstance(index, TimedEventIndex):
+        events = index.events
+        if not events:
+            return None
+        right = bisect_right(index.start_ts, probe_ts + 1e-3)
+        candidates: List[object] = []
+        if right > 0:
+            candidates.extend(events[max(0, right - 4) : right])
+        if right < len(events):
+            candidates.extend(events[right : min(len(events), right + 2)])
+        if not candidates:
+            return None
+        earlier = [item for item in candidates if item.ts <= probe_ts + 1e-3]
+        if earlier:
+            return min(earlier, key=lambda item: abs((item.ts + item.dur) - probe_ts))
+        return min(candidates, key=lambda item: abs(item.ts - probe_ts))
+    events = list(index)
     if not events:
         return None
     earlier = [item for item in events if item.ts <= probe_ts + 1e-3]
     if earlier:
         return min(earlier, key=lambda item: abs((item.ts + item.dur) - probe_ts))
     return min(events, key=lambda item: abs(item.ts - probe_ts))
+
+
+def resolve_active_frames_linear(
+    frames: Sequence[PythonFrame], probe_ts: float
+) -> List[PythonFrame]:
+    active = [item for item in frames if item.ts <= probe_ts <= item.end_ts]
+    active.sort(key=lambda item: (item.ts, item.end_ts))
+    return active
+
+
+def thread_has_crossing_frames(frames: Sequence[PythonFrame]) -> bool:
+    ordered_frames = sorted(frames, key=lambda item: (item.ts, -item.end_ts))
+    stack: List[PythonFrame] = []
+    for frame in ordered_frames:
+        while stack and stack[-1].end_ts < frame.ts:
+            stack.pop()
+        if stack and frame.end_ts > stack[-1].end_ts + 1e-3:
+            return True
+        stack.append(frame)
+    return False
+
+
+def render_frame_resolution(
+    active_frames: Sequence[PythonFrame],
+) -> Optional[FrameResolution]:
+    if not active_frames:
+        return None
+    chosen_frame = choose_mapping_frame(active_frames)
+    if chosen_frame is None:
+        return None
+    return FrameResolution(
+        location=chosen_frame.normalized_name,
+        stack=build_stack_display(active_frames),
+    )
+
+
+def resolve_thread_query_times(
+    frames: Sequence[PythonFrame], query_times: Sequence[float]
+) -> Dict[float, Optional[FrameResolution]]:
+    if not frames or not query_times:
+        return {}
+    ordered_frames = sorted(frames, key=lambda item: (item.ts, -item.end_ts))
+    ordered_queries = sorted(set(float(ts) for ts in query_times))
+    results: Dict[float, Optional[FrameResolution]] = {}
+    active_frames: List[PythonFrame] = []
+    frame_idx = 0
+    total_frames = len(ordered_frames)
+
+    for ts in ordered_queries:
+        while frame_idx < total_frames and ordered_frames[frame_idx].ts <= ts:
+            active_frames.append(ordered_frames[frame_idx])
+            frame_idx += 1
+        if active_frames:
+            active_frames = [
+                frame for frame in active_frames if frame.end_ts >= ts - 1e-3
+            ]
+        results[ts] = render_frame_resolution(active_frames)
+    return results
+
+
+def build_frame_resolution_index(
+    python_frames: Dict[Tuple[str, str], List[PythonFrame]],
+    query_times_by_thread: Dict[Tuple[str, str], Sequence[float]],
+) -> Dict[Tuple[str, str], Dict[float, Optional[FrameResolution]]]:
+    output: Dict[Tuple[str, str], Dict[float, Optional[FrameResolution]]] = {}
+    for thread_key, query_times in query_times_by_thread.items():
+        frames = python_frames.get(thread_key, [])
+        output[thread_key] = resolve_thread_query_times(frames, query_times)
+    return output
 
 
 def find_active_python_frames(
@@ -1330,9 +1848,7 @@ def find_active_python_frames(
     if not frames:
         return []
     probe_ts = cpu_op.ts + min(cpu_op.dur * 0.5, 1.0)
-    active = [item for item in frames if item.ts <= probe_ts <= item.end_ts]
-    active.sort(key=lambda item: (item.ts, item.end_ts))
-    return active
+    return resolve_active_frames_linear(frames, probe_ts)
 
 
 def find_active_python_frames_at_ts(
@@ -1345,9 +1861,7 @@ def find_active_python_frames_at_ts(
     frames = python_frames.get((pid, tid), [])
     if not frames:
         return []
-    active = [item for item in frames if item.ts <= ts <= item.end_ts]
-    active.sort(key=lambda item: (item.ts, item.end_ts))
-    return active
+    return resolve_active_frames_linear(frames, ts)
 
 
 def render_kernel_site(
@@ -1361,21 +1875,38 @@ def render_kernel_site(
 
 def resolve_kernel_site_context(
     kernel: KernelEvent,
-    cpu_ops_by_external_id: Dict[int, List[CpuOpEvent]],
+    cpu_ops_by_external_id: Dict[int, TimedEventIndex],
     python_frames: Dict[Tuple[str, str], List[PythonFrame]],
-    launches_by_correlation: Dict[int, List[LaunchEvent]],
+    launches_by_correlation: Dict[int, TimedEventIndex],
+    frame_resolution_index: Optional[
+        Dict[Tuple[str, str], Dict[float, Optional[FrameResolution]]]
+    ] = None,
 ) -> Tuple[str, str, str]:
     # Prefer the normal External-id path first. If the kernel dropped that link,
     # fall back to the correlated CUDA launch and reuse the Python frames that
     # were active when the launch happened.
     cpu_op = match_cpu_op(kernel, cpu_ops_by_external_id)
     if cpu_op is not None:
+        probe_ts = cpu_op.ts + min(cpu_op.dur * 0.5, 1.0)
+        if frame_resolution_index is not None:
+            resolved = frame_resolution_index.get((cpu_op.pid, cpu_op.tid), {}).get(
+                probe_ts
+            )
+            if resolved is not None:
+                return resolved.location, resolved.stack, cpu_op.name
         active_frames = find_active_python_frames(cpu_op, python_frames)
         if active_frames:
             return render_kernel_site(active_frames, cpu_op.name)
 
     launch_event = match_launch_event(kernel, launches_by_correlation)
     if launch_event is not None:
+        if frame_resolution_index is not None:
+            resolved = frame_resolution_index.get(
+                (launch_event.pid, launch_event.tid), {}
+            ).get(launch_event.ts)
+            if resolved is not None:
+                cpu_op_name = cpu_op.name if cpu_op is not None else launch_event.name
+                return resolved.location, resolved.stack, cpu_op_name
         active_frames = find_active_python_frames_at_ts(
             pid=launch_event.pid,
             tid=launch_event.tid,
@@ -1394,19 +1925,20 @@ def resolve_kernel_site_context(
 def choose_mapping_frame(active_frames: Sequence[PythonFrame]) -> Optional[PythonFrame]:
     if not active_frames:
         return None
-    ranked = sorted(
-        active_frames,
-        key=lambda item: (frame_priority(item.name), item.ts, -item.dur),
-    )
-    return ranked[-1]
+    best = active_frames[0]
+    best_key = (best.priority, best.ts, -best.dur)
+    for item in active_frames[1:]:
+        key = (item.priority, item.ts, -item.dur)
+        if key > best_key:
+            best = item
+            best_key = key
+    return best
 
 
 def build_stack_display(active_frames: Sequence[PythonFrame]) -> str:
     if not active_frames:
         return ""
-    filtered = [
-        item.normalized_name for item in active_frames if frame_priority(item.name) > 0
-    ]
+    filtered = [item.normalized_name for item in active_frames if item.priority > 0]
     if not filtered:
         filtered = [active_frames[-1].normalized_name]
     return " -> ".join(filtered[-4:])
@@ -1423,11 +1955,24 @@ def aggregate(events: Iterable[KernelEvent], key_fn) -> Dict[str, Aggregate]:
     return output
 
 
+def group_kernels_by_stage(
+    kernels: Sequence[KernelEvent], default_stage: str
+) -> Dict[str, List[KernelEvent]]:
+    grouped: DefaultDict[str, List[KernelEvent]] = defaultdict(list)
+    for kernel in kernels:
+        stage = default_stage if default_stage != "all" else (kernel.stage or "all")
+        grouped[stage].append(kernel)
+    return dict(grouped)
+
+
 def aggregate_kernel_sites(
     kernels: Sequence[KernelEvent],
-    cpu_ops_by_external_id: Dict[int, List[CpuOpEvent]],
+    cpu_ops_by_external_id: Dict[int, TimedEventIndex],
     python_frames: Dict[Tuple[str, str], List[PythonFrame]],
-    launches_by_correlation: Optional[Dict[int, List[LaunchEvent]]] = None,
+    launches_by_correlation: Optional[Dict[int, TimedEventIndex]] = None,
+    site_context_cache: Optional[
+        Dict[Tuple[str, str, float, Optional[int], Optional[int]], Tuple[str, str, str]]
+    ] = None,
 ) -> Dict[str, Dict[str, MappingSiteAggregate]]:
     # Each kernel is mapped independently so the fallback behavior stays easy to
     # reason about and easy to regression-test.
@@ -1435,13 +1980,41 @@ def aggregate_kernel_sites(
         lambda: defaultdict(MappingSiteAggregate)
     )
     launch_index = launches_by_correlation or {}
+    query_times_by_thread: DefaultDict[Tuple[str, str], List[float]] = defaultdict(list)
     for kernel in kernels:
-        location, stack, cpu_op_name = resolve_kernel_site_context(
-            kernel,
-            cpu_ops_by_external_id,
-            python_frames,
-            launch_index,
+        cpu_op = match_cpu_op(kernel, cpu_ops_by_external_id)
+        if cpu_op is not None:
+            query_times_by_thread[(cpu_op.pid, cpu_op.tid)].append(
+                cpu_op.ts + min(cpu_op.dur * 0.5, 1.0)
+            )
+        launch_event = match_launch_event(kernel, launch_index)
+        if launch_event is not None:
+            query_times_by_thread[(launch_event.pid, launch_event.tid)].append(
+                launch_event.ts
+            )
+    frame_resolution_index = build_frame_resolution_index(
+        python_frames, query_times_by_thread
+    )
+    resolved_cache = site_context_cache if site_context_cache is not None else {}
+    for kernel in kernels:
+        cache_key = (
+            kernel.pid,
+            kernel.tid,
+            kernel.ts,
+            kernel.external_id,
+            kernel.correlation,
         )
+        cached = resolved_cache.get(cache_key)
+        if cached is None:
+            cached = resolve_kernel_site_context(
+                kernel,
+                cpu_ops_by_external_id,
+                python_frames,
+                launch_index,
+                frame_resolution_index=frame_resolution_index,
+            )
+            resolved_cache[cache_key] = cached
+        location, stack, cpu_op_name = cached
 
         item = output[kernel.canonical_name][location]
         item.total_us += kernel.dur
@@ -1560,7 +2133,7 @@ def relaxed_kernel_entry_lookup(
     # recover the higher-level Python callsite from the mapping trace.
     lowered_compact = normalize_match_text(kernel_name)
     if len(lowered_compact) < 96:
-        return None
+        return alias_kernel_entry_lookup(kernels, kernel_name)
 
     def common_prefix_len(left: str, right: str) -> int:
         count = 0
@@ -1588,7 +2161,9 @@ def relaxed_kernel_entry_lookup(
         if score > best_score:
             best_key = candidate_key
             best_score = score
-    return kernels.get(best_key) if best_key else None
+    if best_key:
+        return kernels.get(best_key)
+    return alias_kernel_entry_lookup(kernels, kernel_name)
 
 
 def lookup_kernel_map_entry(
@@ -1646,7 +2221,9 @@ def resolve_kernel_entry(
         kernel_entry = lookup_kernel_map_entry(external_kernel_map, stage, kernel_name)
         if kernel_entry:
             return kernel_entry
-    return local_stage_payload.get("kernels", {}).get(kernel_name)
+    return relaxed_kernel_entry_lookup(
+        local_stage_payload.get("kernels", {}), kernel_name
+    )
 
 
 def build_kernel_rows(
@@ -1725,6 +2302,89 @@ def normalize_match_text(text: object) -> str:
     return re.sub(r"[^0-9A-Za-z]+", "", normalize_text(text)).lower()
 
 
+def kernel_entry_total_us(entry: Optional[dict]) -> float:
+    if not entry:
+        return 0.0
+    return sum(float(site.get("total_us", 0.0)) for site in entry.get("sites", []))
+
+
+def kernel_entry_lookup_text(kernel_name: str, entry: Optional[dict]) -> str:
+    parts = [kernel_name]
+    if entry:
+        parts.append(str(entry.get("best_location") or ""))
+        for site in entry.get("sites", [])[:4]:
+            parts.append(str(site.get("location") or ""))
+            parts.append(str(site.get("display_location") or ""))
+            parts.append(str(site.get("top_cpu_op") or ""))
+            parts.append(str(site.get("stack") or ""))
+    return normalize_match_text(" ".join(parts))
+
+
+def kernel_alias_token_groups(kernel_name: str) -> List[Tuple[str, ...]]:
+    lowered = normalize_match_text(kernel_name)
+    groups: List[Tuple[str, ...]] = []
+    if "flashattnfwdcombine" in lowered:
+        groups.append(
+            (
+                "flashattnfwdsm90",
+                "flashattnvarlenfunc",
+                "vllmflashattnflashattninterface",
+                "vllmfa3cfwd",
+            )
+        )
+    if "kernelmha" in lowered:
+        groups.append(
+            (
+                "maskedmultiheadattentionkernel",
+                "attentioninplace",
+                "attentionbackendtrtllm",
+            )
+        )
+    if "applybiasropeupdatekvcachev2" in lowered:
+        groups.append(
+            (
+                "fusedqknormropekernel",
+                "applyqknormrope",
+                "modelingqwen3py98applyqknormrope",
+            )
+        )
+    if lowered.startswith("memset"):
+        groups.append(("memset",))
+    return groups
+
+
+def alias_kernel_entry_lookup(
+    kernels: Dict[str, dict], kernel_name: str
+) -> Optional[dict]:
+    alias_groups = kernel_alias_token_groups(kernel_name)
+    if not alias_groups:
+        return None
+
+    best_key = None
+    best_score = -1
+    for candidate_key, entry in kernels.items():
+        candidate_text = kernel_entry_lookup_text(candidate_key, entry)
+        score = 0
+        for group_index, group in enumerate(alias_groups):
+            group_score = max(
+                (len(token) for token in group if token in candidate_text),
+                default=0,
+            )
+            if group_score:
+                score += 1000 * (group_index + 1) + group_score
+        if score <= 0:
+            continue
+        score += max(
+            source_location_priority(str(entry.get("best_location") or "")),
+            source_location_priority(best_site_summary(entry)[0]),
+        )
+        score += int(kernel_entry_total_us(entry) // 10)
+        if score > best_score:
+            best_key = candidate_key
+            best_score = score
+    return kernels.get(best_key) if best_key else None
+
+
 def row_matches(row: KernelRow, *needles: str) -> bool:
     lowered = " ".join([row.name, row.location, row.cpu_op]).lower()
     lowered_compact = normalize_match_text(lowered)
@@ -1774,6 +2434,30 @@ def model_path_from_server_args(server_args: Optional[dict]) -> str:
     return str(server_args.get("model_path") or server_args.get("model") or "")
 
 
+def fusion_framework_hints(spec: FusionPatternSpec) -> set[str]:
+    text = normalize_text(spec.candidate_path).lower()
+    hints: set[str] = set()
+    if "vllm/" in text:
+        hints.add("vllm")
+    if "tensorrt_llm/" in text:
+        hints.add("trtllm")
+    if any(token in text for token in ("python/sglang/", "sgl-kernel/", "sgl_kernel/")):
+        hints.add("sglang")
+    return hints
+
+
+def pattern_supports_framework(
+    spec: FusionPatternSpec, framework: Optional[str]
+) -> bool:
+    normalized = normalize_text(framework).lower()
+    if not normalized or normalized == "auto":
+        return True
+    hints = fusion_framework_hints(spec)
+    if not hints:
+        return True
+    return normalized in hints
+
+
 def matching_rows_for_keywords(
     kernel_rows: Sequence[KernelRow],
     keywords: Sequence[str],
@@ -1812,10 +2496,10 @@ def pattern_model_matches(spec: FusionPatternSpec, model_path: str) -> bool:
 
 def pattern_status(spec: FusionPatternSpec, has_active_match: bool) -> str:
     if spec.origin == "mainline":
-        return "active fused path" if has_active_match else "split candidate"
+        return "mainline direct" if has_active_match else "mainline split"
     if spec.origin == "upstream":
-        return "upstream precedent" if has_active_match else "upstream split precedent"
-    return "in-flight precedent" if has_active_match else "in-flight split precedent"
+        return "upstream direct" if has_active_match else "upstream split"
+    return "pending direct" if has_active_match else "pending split"
 
 
 def build_pattern_rationale(
@@ -1828,20 +2512,20 @@ def build_pattern_rationale(
     if spec.origin == "mainline":
         if has_active_match:
             return (
-                f"This trace already hits the `{spec.pattern}` family directly at {share:.1f}% related GPU time. "
+                f"`{spec.pattern}` is present in this trace ({share:.1f}% related GPU time). "
                 f"{spec.rationale_hint}"
             )
         return (
-            f"Related split kernels occupy {share:.1f}% of cumulative GPU time, and the checked-out SGLang tree "
-            f"already exposes this fusion family. {spec.rationale_hint}"
+            f"Split kernels in this family take {share:.1f}% of GPU time. "
+            f"This tree already has a matching path. {spec.rationale_hint}"
         )
     if spec.origin == "upstream":
         return (
-            f"This trace matches a reusable upstream vLLM precedent at {share:.1f}% related GPU time. "
+            f"Matches an upstream path ({share:.1f}% related GPU time). "
             f"{spec.rationale_hint}"
         )
     return (
-        f"This trace matches a PR-backed / in-flight pattern at {share:.1f}% related GPU time. "
+        f"Matches an open upstream path ({share:.1f}% related GPU time). "
         f"{spec.rationale_hint}"
     )
 
@@ -1865,8 +2549,11 @@ def detect_pattern_match(
     total_us: float,
     model_path: str,
     tp_size: int,
+    framework: Optional[str],
 ) -> Optional[FusionOpportunity]:
     if total_us <= 0:
+        return None
+    if not pattern_supports_framework(spec, framework):
         return None
     if spec.require_tp and tp_size < spec.min_tp_size:
         return None
@@ -1894,9 +2581,9 @@ def detect_pattern_match(
         pattern=spec.pattern,
         status=pattern_status(spec, has_active_match),
         confidence=(
-            "Likely"
+            "Confirmed"
             if has_active_match or pct(related_us, total_us) >= spec.likely_share
-            else "Conditional"
+            else "Candidate"
         ),
         related_us=related_us,
         evidence=summarize_evidence(related_rows, total_us),
@@ -1923,6 +2610,7 @@ def detect_fusion_opportunities(
     kernel_rows: Sequence[KernelRow],
     total_us: float,
     server_args: Optional[dict],
+    framework: Optional[str] = None,
 ) -> List[FusionOpportunity]:
     opportunities: List[FusionOpportunity] = []
     if total_us <= 0:
@@ -1941,6 +2629,7 @@ def detect_fusion_opportunities(
             total_us=total_us,
             model_path=model_path,
             tp_size=tp_size,
+            framework=framework,
         )
         if opportunity is not None:
             raw_matches.append(opportunity)
