@@ -11,7 +11,7 @@ import time
 from collections import Counter, defaultdict
 from functools import lru_cache
 from pathlib import Path
-from typing import Any, Callable, Dict, Iterable, List, Optional, Sequence, Tuple
+from typing import Callable, Dict, Iterable, List, Optional, Sequence, Tuple
 from urllib import request
 
 STAGE_ORDER = {"extend": 0, "prefill": 0, "decode": 1, "all": 2}
@@ -371,7 +371,9 @@ def detect_framework_from_path(path: Path) -> Optional[str]:
     return None
 
 
-def detect_framework_from_url(url: str, output_dir: Optional[str] = None) -> Optional[str]:
+def detect_framework_from_url(
+    url: str, output_dir: Optional[str] = None
+) -> Optional[str]:
     hint = detect_framework_from_text(output_dir or "")
     if hint:
         return hint
@@ -402,9 +404,11 @@ def resolve_framework(
     for hint in (
         detect_framework_from_server_args(server_args),
         detect_framework_from_path(input_path) if input_path else None,
-        detect_framework_from_url(url, str(input_path) if input_path else None)
-        if url
-        else None,
+        (
+            detect_framework_from_url(url, str(input_path) if input_path else None)
+            if url
+            else None
+        ),
     ):
         if hint:
             return hint
@@ -476,7 +480,9 @@ def discover_trace_files(
             seen.add(resolved)
             candidates.append(resolved)
     candidates = [
-        candidate for candidate in candidates if candidate.exists() and file_looks_like_trace(candidate)
+        candidate
+        for candidate in candidates
+        if candidate.exists() and file_looks_like_trace(candidate)
     ]
     candidates.sort(key=lambda item: item.stat().st_mtime)
     if limit is not None and limit >= 0:
@@ -495,7 +501,9 @@ def newest_trace_dir(path: Path) -> Path:
     if not trace_dirs:
         raise FileNotFoundError(f"No trace files found under {path}")
     trace_dirs.sort(
-        key=lambda item: max(trace.stat().st_mtime for trace in traces if trace.parent == item)
+        key=lambda item: max(
+            trace.stat().st_mtime for trace in traces if trace.parent == item
+        )
     )
     return trace_dirs[-1]
 
@@ -541,11 +549,7 @@ def post_json(
 ) -> Optional[dict]:
     req = request.Request(
         url=url,
-        data=(
-            None
-            if payload is None
-            else json.dumps(payload).encode("utf-8")
-        ),
+        data=(None if payload is None else json.dumps(payload).encode("utf-8")),
         headers={"Content-Type": "application/json"},
         method="POST",
     )
@@ -660,7 +664,7 @@ def start_remote_profiler(url: str, framework: str) -> None:
         if framework == "vllm":
             raise RuntimeError(
                 "vLLM live torch profiling requires the server to be launched with "
-                "--profiler-config '{\"profiler\":\"torch\",\"torch_profiler_dir\":\"...\"}' "
+                '--profiler-config \'{"profiler":"torch","torch_profiler_dir":"..."}\' '
                 "and to expose POST /start_profile."
             ) from exc
         if framework == "trtllm":
@@ -703,7 +707,9 @@ def run_remote_profiler(
             # and miss the profiling window entirely.
             time.sleep(max(5.0, probe_delay))
             effective_max_new_tokens = probe_max_new_tokens or max(64, num_steps * 8)
-            model = discover_openai_model(url) if framework in {"vllm", "trtllm"} else None
+            model = (
+                discover_openai_model(url) if framework in {"vllm", "trtllm"} else None
+            )
             for request_idx in range(probe_requests):
                 send_probe_request(
                     url=url,

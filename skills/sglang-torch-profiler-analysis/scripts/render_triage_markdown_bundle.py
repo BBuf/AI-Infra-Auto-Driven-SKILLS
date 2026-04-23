@@ -6,8 +6,7 @@ import argparse
 from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict, Iterable, List, Optional, Sequence, Tuple
-
+from typing import Dict, List, Optional, Sequence, Tuple
 
 FRAMEWORK_LABELS = {
     "sglang": "SGLang",
@@ -187,7 +186,9 @@ def build_bundle_markdown(
         lines.append("## Contents")
         lines.append("")
         for label in ordered_labels:
-            lines.append(f"- [{model_display[label]}](#{slugify(model_display[label])})")
+            lines.append(
+                f"- [{model_display[label]}](#{slugify(model_display[label])})"
+            )
         lines.append("")
 
     for label in ordered_labels:

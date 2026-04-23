@@ -89,7 +89,9 @@ def inject_with_stack(block: str) -> str:
 
 
 def inject_rank0_trace_guard(text: str) -> str:
-    needle = "        enable_torch_trace = bool(torch_trace_path and profile_start_stop)\n"
+    needle = (
+        "        enable_torch_trace = bool(torch_trace_path and profile_start_stop)\n"
+    )
     replacement = (
         "        # Multi-rank PyTorch backend workers race on the same chrome-trace "
         "path.\n"
@@ -114,8 +116,10 @@ def main() -> int:
     text = source.read_text(encoding="utf-8")
     span = find_profile_call_span(text)
     patched_block = inject_with_stack(span.block)
-    patched = text if patched_block == span.block else (
-        text[: span.start] + patched_block + text[span.end :]
+    patched = (
+        text
+        if patched_block == span.block
+        else (text[: span.start] + patched_block + text[span.end :])
     )
     patched = inject_rank0_trace_guard(patched)
     output.parent.mkdir(parents=True, exist_ok=True)
