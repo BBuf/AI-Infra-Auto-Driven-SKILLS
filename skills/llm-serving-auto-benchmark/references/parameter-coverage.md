@@ -4,7 +4,13 @@ Do not compare SGLang, vLLM, and TensorRT-LLM by copying the same flag names
 across frameworks. Compare knob families, then translate each family to the
 flags that the target CLI actually accepts.
 
-## H100 Audit Snapshot
+## Historical Audit Snapshot
+
+The concrete flag counts and captured help output below come from a single
+historical audit on a 4xH100 host. They are evidence of what each CLI exposed
+in a specific image, not a requirement that the next run uses that hardware.
+When you repeat the audit on a different GPU target, re-capture `--help` on
+that image and update the numbers.
 
 Captured on 2026-04-22 in:
 
@@ -66,12 +72,14 @@ OpenAI-compatible endpoint.
 
 ## Benchmark Client Notes
 
-SGLang `bench_serving` in the H100 validation container writes artifacts with
-`--output-file` and `--output-details`. It does not accept the vLLM-style
+SGLang `bench_serving` in the validated SGLang container image writes artifacts
+with `--output-file` and `--output-details`. It does not accept the vLLM-style
 `--save-result`, `--result-dir`, and `--result-filename` flags in that image.
+Re-check on the target image; this is an SGLang CLI difference, not an H100
+behavior.
 
-Both vLLM and TensorRT-LLM benchmark clients accepted these shared random-workload
-flags in the H100 audit:
+Both vLLM and TensorRT-LLM benchmark clients accepted these shared
+random-workload flags in the captured audit:
 
 - `--dataset-name`
 - `--random-input-len`
@@ -103,6 +111,21 @@ flag.
   represented for one framework, say why instead of filling the gap with an
   unrelated option.
 
+Attention backend hardware notes:
+
+- SGLang's `fa3` (FlashAttention-3) prefill and decode backends require Hopper
+  (H100/H200/GB200). On non-Hopper GPUs (A100, L40S, RTX 5090, older cards)
+  `fa3` is not available: drop it from the SGLang `search_space` and fall back
+  to `flashinfer`, or to `triton` for the non-Blackwell path when FlashInfer is
+  missing.
+- vLLM `--attention-backend` has a similar shape: `FLASH_ATTN` and `FLASHINFER`
+  are the safer defaults, and `FLASHINFER_MLA` or DeepSeek-MLA specific paths
+  need a verified driver/vLLM combination in the target image.
+- TensorRT-LLM's backend here is always `pytorch`; attention backend choice
+  inside `PyTorchConfig` is version- and model-dependent. Prefer the defaults
+  emitted in the server log until you have a reason to override them via
+  `--extra_llm_api_options`.
+
 Default searches should not sweep memory fractions:
 
 - keep SGLang `mem_fraction_static` in `base_server_flags`
@@ -113,18 +136,19 @@ Move them into `search_space` only for a fit/capacity study. For a normal servin
 comparison, search scheduler, batching, attention/backend, prefix cache, and
 CUDA graph or compile behavior first.
 
-In the 2026-04-22 H100 validation, vLLM accepted `--enable-dbo` but the server
+In the 2026-04-22 validation run, vLLM accepted `--enable-dbo` but the server
 failed during config validation without a supported all2all backend. Treat DBO
-as a version- and environment-gated extension knob, not part of the default
-candidate list.
+as a version- and environment-gated extension knob on any GPU target, not part
+of the default candidate list.
 
-The same validation showed that vLLM concurrent partial prefill is model/runtime
-gated: `--max-num-partial-prefills 1` ran on `Qwen/Qwen3-30B-A3B`, while
-`--max-num-partial-prefills 4` failed with "Concurrent Partial Prefill is not
-supported." Keep `1` in the default pass and only raise it after preflight.
+The same validation showed that vLLM concurrent partial prefill is model- and
+runtime-gated: `--max-num-partial-prefills 1` ran on `Qwen/Qwen3-30B-A3B`,
+while `--max-num-partial-prefills 4` failed with "Concurrent Partial Prefill is
+not supported." Keep `1` in the default pass and only raise it after a
+model-level preflight in the target image.
 
 Sequence-length candidates must cover the largest dataset scenario. In the same
-H100 validation, a TensorRT-LLM candidate with `--max_seq_len 2048` passed the
+validation run, a TensorRT-LLM candidate with `--max_seq_len 2048` passed the
 512-to-64 chat-like scenario but failed the 2048-to-128 summarization-like
 scenario. Do not include a `max_model_len`, `context_length`, or `max_seq_len`
-candidate below `max(input_len + output_len)`.
+candidate below `max(input_len + output_len)` on any target.
