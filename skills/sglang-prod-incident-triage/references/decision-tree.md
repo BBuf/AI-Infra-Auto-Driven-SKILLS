@@ -179,7 +179,7 @@ Typical categories:
 - queueing and routing are mostly ruled out
 - you need kernel-level attribution
 
-At that point, switch to `sglang-torch-profiler-analysis`.
+At that point, switch to `llm-torch-profiler-analysis`.
 
 ### Use lower-level debug paths when
 
