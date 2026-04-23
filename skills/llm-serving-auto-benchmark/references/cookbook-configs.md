@@ -2,11 +2,15 @@
 
 `configs/cookbook-llm/` is the model-specific starting set for this skill.
 
-The files reuse the SGLang auto-benchmark cookbook model list. SGLang keeps the
-cookbook launch flags and search knobs, except for sequence limits that are too
-small for the shipped two-scenario synthetic workload. vLLM and TensorRT-LLM do
-not reuse SGLang flag names. They use their own serving CLIs and a matching set
-of batching, prefix-cache, and sequence-limit knobs.
+The files define a shared LLM serving cookbook model list. Some SGLang entries
+are seeded from prior serving benchmark recipes and can preserve those launch
+flags where applicable, except for sequence limits that are too small for the
+shipped two-scenario synthetic workload. vLLM and TensorRT-LLM do not reuse
+SGLang flag names. They use their own serving CLIs and a matching set of
+batching, prefix-cache, and sequence-limit knobs.
+
+Each config uses `source.kind: llm_serving_cookbook`; use
+`source_recipe_file` only to record the recipe filename that seeded the entry.
 
 ## Translation Rules
 
@@ -56,5 +60,5 @@ commands. It does not start a model server.
 
 ## Config Count
 
-The current set contains 38 text-serving configs derived from the SGLang
-auto-benchmark cookbook references.
+The current set contains 38 text-serving configs in the shared LLM serving
+cookbook.

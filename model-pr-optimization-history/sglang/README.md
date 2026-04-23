@@ -21,7 +21,6 @@ Current families:
 - `glm5-glm51`
 - `glm-vlm-ocr`
 
-Cross-family audit ledgers live directly in this directory:
+The cross-family quality scan lives directly in this directory:
 
 - `model-skill-pr-dossier-quality-scan-2026-04-23.md`
-- `qwen-glm-three-pass-audit-2026-04-23.md`

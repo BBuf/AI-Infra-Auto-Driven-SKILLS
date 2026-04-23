@@ -32,7 +32,6 @@ Current evidence snapshot:
 
 - SGLang mainline checked around `2026-04-22`: `b3e6cf60a`
 - sgl-cookbook mainline checked around `2026-04-21`: `816bad5`
-- Three-pass audit ledger: `model-pr-optimization-history/sglang/qwen-glm-three-pass-audit-2026-04-23.md`
 
 ## Runtime Surfaces
 

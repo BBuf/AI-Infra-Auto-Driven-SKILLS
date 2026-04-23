@@ -14,7 +14,6 @@ Current evidence snapshot:
 - SGLang `origin/main`: `b3e6cf60a` on `2026-04-22`
 - sgl-cookbook `origin/main`: `816bad5` on `2026-04-21`
 - Manual PR diff review date: `2026-04-23`
-- Three-pass completeness audit: `model-pr-optimization-history/sglang/qwen-glm-three-pass-audit-2026-04-23.md`
 - Docs/snippets: `docs_new/cookbook/diffusion/Qwen-Image/Qwen-Image.mdx`, `Qwen-Image-Edit.mdx`, and `docs_new/src/snippets/diffusion/qwen-image*.jsx`
 - Relevant skill: use the local SGLang diffusion/modelopt skills for implementation-level quantization or profiling work.
 

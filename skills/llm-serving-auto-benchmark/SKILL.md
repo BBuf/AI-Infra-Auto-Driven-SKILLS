@@ -1,14 +1,14 @@
 ---
 name: llm-serving-auto-benchmark
-description: Cross-framework LLM serving benchmark skill for SGLang, vLLM, and TensorRT-LLM. Use when a user wants to find the best deployment command for one model across multiple serving frameworks under the same workload, GPU budget, and latency SLA.
+description: Framework-independent LLM serving benchmark skill for comparing SGLang, vLLM, TensorRT-LLM, or another serving framework. Use when a user wants to find the best deployment command for one model across multiple serving frameworks under the same workload, GPU budget, and latency SLA.
 ---
 
 # LLM Serving Auto Benchmark
 
 ## Overview
 
-Use this skill to compare SGLang, vLLM, and TensorRT-LLM for the same model and
-workload.
+Use this skill to compare LLM serving frameworks such as SGLang, vLLM, and
+TensorRT-LLM for the same model and workload.
 
 Use a config-driven workflow:
 
@@ -21,9 +21,9 @@ Use a config-driven workflow:
 - pick the best SLA-passing candidate after normalizing the results
 
 For model-specific starting points, prefer the shipped configs in
-`configs/cookbook-llm/`. They reuse the SGLang auto-benchmark cookbook model set
-and translate it into framework-native SGLang, vLLM, and TensorRT-LLM server
-flags. Validate those configs before a real run:
+`configs/cookbook-llm/`. They define a framework-neutral LLM serving cookbook
+model set and translate each entry into framework-native SGLang, vLLM, and
+TensorRT-LLM server flags. Validate those configs before a real run:
 
 ```bash
 python skills/llm-serving-auto-benchmark/scripts/validate_cookbook_configs.py \
@@ -61,10 +61,10 @@ version-sensitive candidate knob families. Before every real run, record the
 exact framework version or git commit and verify the concrete CLI flag names
 with `--help` in the target environment.
 
-The default search style should stay close to SGLang auto benchmark: start from
-a mostly pure-TP baseline, sweep a small set of high-impact runtime knobs, and
-cap the first pass around 10 candidates per framework. Do not search memory
-fractions by default.
+The default search style is framework-neutral: start from a mostly pure-TP
+baseline, sweep a small set of high-impact runtime knobs, and cap the first
+pass around 10 candidates per framework. Do not search memory fractions by
+default.
 
 ## Validation Environment
 
@@ -84,10 +84,9 @@ box live in the operator-side per-host skills (for example `h100`,
 skill only requires that the caller can reach a shell inside a container with
 `sglang`, `vllm`, or `tensorrt_llm` installed.
 
-Historical validation snapshots in `references/` (for example the
-H100-recorded parameter audit) are evidence of which flag names and failure
-modes were seen in a specific image and are not a requirement that the next
-run happens on the same hardware.
+Historical validation snapshots in `references/` are evidence of which flag
+names and failure modes were seen in specific images and are not a requirement
+that the next run happens on the same hardware or framework version.
 
 ## Skill Scope
 
@@ -107,7 +106,8 @@ them, and the validator keeps your inputs honest.
 The cookbook configs under `configs/cookbook-llm/` and the sample runtime plan
 at `references/example-plan.yaml` use related but not identical schemas:
 
-- Cookbook configs carry `schema_version: 1`, `source.kind`,
+- Cookbook configs carry `schema_version: 1`, `source.kind` set to
+  `llm_serving_cookbook`,
   `benchmark.sla` (nested), and `frameworks.*.server_command`; they must pass
   `validate_cookbook_configs.py`.
 - `example-plan.yaml` is a shorter runtime plan shape with top-level `sla` and
@@ -287,8 +287,7 @@ When converting user data:
 - keep multimodal or tool-call payloads only if all requested frameworks support
   the chosen endpoint shape
 
-For synthetic bring-up, follow the two-scenario shape used by the SGLang auto
-benchmark references:
+For synthetic bring-up, use the shipped two-scenario shape:
 
 ```yaml
 dataset:
@@ -373,7 +372,7 @@ Version-sensitive SGLang knob families to verify:
 - speculative or EAGLE settings only after the non-speculative baseline is tuned
 
 Keep `mem_fraction_static` and `schedule_policy` pinned in the default pass,
-matching the SGLang auto benchmark cookbook style.
+matching the shared cookbook config style.
 
 For quick smoke tests, it is reasonable to disable CUDA graph and piecewise CUDA
 graph startup work if the goal is only to prove the framework flow. Record those

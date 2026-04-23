@@ -55,7 +55,6 @@ Model PR histories are framework-scoped:
 model-pr-optimization-history/
 ├── sglang/
 │   ├── model-skill-pr-dossier-quality-scan-2026-04-23.md
-│   ├── qwen-glm-three-pass-audit-2026-04-23.md
 │   ├── deepseek-v3-r1/
 │   ├── qwen3-core/
 │   ├── glm45/
@@ -126,7 +125,6 @@ SGLang bilingual model evolution notes live under `model-pr-optimization-history
 - `glm5-glm51`
 - `glm-vlm-ocr`
 - `model-skill-pr-dossier-quality-scan-2026-04-23.md`
-- `qwen-glm-three-pass-audit-2026-04-23.md` records the 2026-04-23 SGLang docs, git/PR, and public-blog completeness sweep for the Qwen/GLM series.
 
 Future vLLM model histories should live under `model-pr-optimization-history/vllm/`.
 
