@@ -11,7 +11,7 @@ Qwen-Image is the diffusion Qwen lane. It is intentionally split from autoregres
 
 Current evidence snapshot:
 
-- SGLang `origin/main`: `b3e6cf60a` on `2026-04-22`
+- SGLang `origin/main`: `bca3dd958` on `2026-04-24`
 - sgl-cookbook `origin/main`: `816bad5` on `2026-04-21`
 - Manual PR diff review date: `2026-04-23`
 - Docs/snippets: `docs_new/cookbook/diffusion/Qwen-Image/Qwen-Image.mdx`, `Qwen-Image-Edit.mdx`, and `docs_new/src/snippets/diffusion/qwen-image*.jsx`
@@ -78,10 +78,10 @@ Keep diffusion pipeline changes separate from autoregressive Qwen.
 - [#21988](https://github.com/sgl-project/sglang/pull/21988): conditional batch multi-output.
 - [#22362](https://github.com/sgl-project/sglang/pull/22362): layer-serving fix.
 - [#22397](https://github.com/sgl-project/sglang/pull/22397): weight-name mapping.
-- [#22953](https://github.com/sgl-project/sglang/pull/22953): IMA bugfix.
+- [#22953](https://github.com/sgl-project/sglang/pull/22953): merged Qwen-Image RoPE overflow guard.
 - [#23155](https://github.com/sgl-project/sglang/pull/23155): ModelOpt FP8.
 
-Read `references/pr-history.md` for the diff-reviewed card of each PR. Most entries are currently open; do not describe them as current-main behavior unless their state changes.
+Read `references/pr-history.md` for the diff-reviewed card of each PR. Most entries are currently open; #22953 is merged in current main and can be treated as current behavior.
 
 ## Validation Lanes
 

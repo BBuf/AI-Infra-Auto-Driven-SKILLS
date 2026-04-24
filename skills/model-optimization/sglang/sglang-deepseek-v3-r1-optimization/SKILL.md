@@ -105,7 +105,7 @@ Check these before declaring a V3/R1 gap:
 - [#21530](https://github.com/sgl-project/sglang/pull/21530): ROCm fused MLA decode RoPE fix for DeepSeek variants, open.
 - [#21531](https://github.com/sgl-project/sglang/pull/21531): migrate `dsv3_router_gemm` from AOT `sgl-kernel` to JIT, open.
 - [#22268](https://github.com/sgl-project/sglang/pull/22268): fix LoRA adapters bypassed in DeepSeek MLA `prepare_qkv_latent`, open.
-- [#22774](https://github.com/sgl-project/sglang/pull/22774): MUSA backend support for DeepSeek V2/V3/R1, open.
+- [#22774](https://github.com/sgl-project/sglang/pull/22774): MUSA backend support for DeepSeek V2/V3/R1, merged at `2026-04-24T01:59:51Z`.
 - [#22938](https://github.com/sgl-project/sglang/pull/22938): restore DeepSeek MLA MI300X paths after the MLA refactor, open.
 - [#23195](https://github.com/sgl-project/sglang/pull/23195): guard `.weight` access in `DeepseekV2AttentionMLA` for AWQ/compressed-tensors, open.
 - [#23257](https://github.com/sgl-project/sglang/pull/23257): double-reduce in `DeepseekV2MoE` with CuteDSL EP plus DP attention, open.
@@ -295,7 +295,7 @@ Key PRs:
 - [#19834](https://github.com/sgl-project/sglang/pull/19834)
 - [#19843](https://github.com/sgl-project/sglang/pull/19843)
 - [#20841](https://github.com/sgl-project/sglang/pull/20841)
-- [#22774](https://github.com/sgl-project/sglang/pull/22774), open
+- [#22774](https://github.com/sgl-project/sglang/pull/22774), merged
 
 ## Validation Surface
 

@@ -113,7 +113,7 @@ Check these before declaring a V3.2 gap:
 - [#21889](https://github.com/sgl-project/sglang/pull/21889): AMD FP4 KV cache quantization for NSA TileLang, open.
 - [#22268](https://github.com/sgl-project/sglang/pull/22268): DeepSeek MLA LoRA adapter bypass in `prepare_qkv_latent`, open.
 - [#22473](https://github.com/sgl-project/sglang/pull/22473): dense MLA decode fallback for short sequences, open.
-- [#22774](https://github.com/sgl-project/sglang/pull/22774): MUSA backend support for DeepSeek V2/V3/R1-class layers, open.
+- [#22774](https://github.com/sgl-project/sglang/pull/22774): MUSA backend support for DeepSeek V2/V3/R1-class layers, merged at `2026-04-24T01:59:51Z`.
 - [#22851](https://github.com/sgl-project/sglang/pull/22851): `--nsa-topk-backend` and FlashInfer/PyTorch top-k, open.
 - [#22865](https://github.com/sgl-project/sglang/pull/22865): sparsity framework extension for non-NSA sparse algorithms, open.
 - [#14332](https://github.com/sgl-project/sglang/pull/14332): V3.2 tool-call parsing without DSML tag, open.

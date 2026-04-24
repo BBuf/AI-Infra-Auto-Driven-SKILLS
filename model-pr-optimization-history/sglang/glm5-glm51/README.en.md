@@ -1,8 +1,8 @@
 # SGLang GLM-5/5.1 Support and Optimization Timeline
 
-Evidence snapshot: SGLang `origin/main` `b3e6cf60a` on `2026-04-22` and sgl-cookbook `origin/main` `816bad5` on `2026-04-21`.
+Evidence snapshot: SGLang `origin/main` `bca3dd958` on `2026-04-24` and sgl-cookbook `origin/main` `816bad5` on `2026-04-21`.
 
-Scope: GLM-5, GLM-5.1, `GlmMoeDsaForCausalLM`, DSA/NSA, FP8/MXFP4/NVFP4, NextN/MTP, tool templates, AMD, GB300, and NPU.
+Scope: GLM-5, GLM-5.1, `GlmMoeDsaForCausalLM`, DSA/NSA, FP8/MXFP4/NVFP4, NextN/MTP, tool templates, AMD, GB300, NPU, and dynamic chunking/profiling.
 
 ## Summary
 
@@ -297,6 +297,39 @@ if should_ignore_layer(mapped_prefix, nextn_quant_config.exclude_layers):
 ```
 
 - Validation implications: test GLM-5-MXFP4 MTP separately from FP8 MTP.
+
+### PR #23060 - GLM-5 dynamic chunking profiling
+
+- Link: https://github.com/sgl-project/sglang/pull/23060
+- State: merged at `2026-04-23T11:30:57Z`
+- Diff coverage: full diff fetched, `30` lines, `1` file.
+- Motivation: pipeline-parallel profiling creates a synthetic `ForwardBatch`; GLM-5 DSA/DP-attention needs `is_extend_in_batch` to be set for that batch.
+- Key implementation:
+
+```diff
++set_is_extend_in_batch(batch.forward_mode.is_extend())
+ _ = model_runner.forward(
+     forward_batch=forward_batch, pp_proxy_tensors=pp_proxy
+ )
+```
+
+- Validation implications: run GLM-5 dynamic chunking/profiling with extend batches before assuming the PP path is safe.
+
+### PR #23540 - GLM-5.1 MI300X/MI325X generator split
+
+- Link: https://github.com/sgl-project/sglang/pull/23540
+- State: merged at `2026-04-23T19:01:59Z`
+- Diff coverage: full diff fetched, `154` lines, `3` files.
+- Motivation: MI300X and MI325X should be separate GLM-5.1 command-generator rows rather than a combined label.
+- Key implementation:
+
+```diff
++{ id: 'mi300x', label: 'MI300X', default: false },
++{ id: 'mi325x', label: 'MI325X', default: false },
++mi325x: { bf16: { tp: 8, mem: 0.80 } },
+```
+
+- Validation implications: GLM-5.1 AMD docs and perf records should distinguish MI300X, MI325X, and MI355X.
 
 ## Next Work
 

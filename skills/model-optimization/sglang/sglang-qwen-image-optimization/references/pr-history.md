@@ -2,7 +2,7 @@
 
 Evidence sweep:
 
-- SGLang `origin/main`: `b3e6cf60a` (`2026-04-22`)
+- SGLang `origin/main`: `bca3dd958` (`2026-04-24`)
 - sgl-cookbook `origin/main`: `816bad5` (`2026-04-21`)
 - Manual diff review date: `2026-04-23`
 - Searched paths: Qwen-Image diffusion configs, DiT runtime, image API, CUDA graph utilities, TeaCache, ModelOpt converter, diffusion quantization docs, ComfyUI executor and pipeline tests.
@@ -415,9 +415,9 @@ r"^(transformer_blocks\.(\d+)\.attn)\.add_q_proj\.(.+)$": (
 ### PR #22953 - Avoid illegal memory access in Qwen-Image RoPE
 
 - Link: https://github.com/sgl-project/sglang/pull/22953
-- State: open
+- State: merged at `2026-04-23T04:41:27Z`
 - Diff stats: `1` file, `+12/-0`
-- Diff coverage: full diff reviewed.
+- Diff coverage: full diff fetched with `gh pr diff --patch`, `32` lines, `1` file; current-main source rechecked at `bca3dd958`.
 - Motivation: Qwen-Image-Edit-2511 can hit CUDA illegal memory access when too many input images and long prompts make text sequence length exceed the RoPE text cache length. Failing inside the CUDA kernel corrupts the GPU context and hides the real validation issue.
 - Key implementation: before building FlashInfer RoPE cos/sin caches, compare `max(txt_seq_lens)` with `txt_freqs.shape[0]` and raise a clear `ValueError` with required length, cache length, overflow, and remediation hints.
 - Key code excerpt:
@@ -437,7 +437,7 @@ if max_txt_seq_len > txt_cache_len:
 ```
 
 - Reviewed files: `python/sglang/multimodal_gen/configs/pipeline_configs/qwen_image.py`
-- Validation implications: large multi-image edit requests should fail fast before entering RoPE kernels. Add a negative test for too many images or overly long prompts.
+- Validation implications: large multi-image edit requests should fail fast before entering RoPE kernels. This guard is present in current SGLang main; add a negative test for too many images or overly long prompts.
 
 ### PR #23155 - Qwen Image ModelOpt FP8 support
 
@@ -503,6 +503,6 @@ if name.endswith(".weight") and is_ignored_by_modelopt(name, ignore_patterns):
 
 ## Validation Notes
 
-- Most Qwen-Image optimization PRs are open. Always re-check PR state and main-branch behavior before implementing against them.
+- Most Qwen-Image optimization PRs are open. #22953 is merged and is now current-main behavior; re-check the remaining open PR state before implementing against them.
 - Treat CUDA graph, TeaCache, dual stream, ModelOpt FP8, RoPE/RMSNorm fusion, LN/modulate fusion, and conditional batching as independent toggles.
 - Every quality-affecting change needs fixed prompt/seed/resolution/steps, saved BF16 output, saved optimized output, latency, memory, and any profiler artifact used for the claim.

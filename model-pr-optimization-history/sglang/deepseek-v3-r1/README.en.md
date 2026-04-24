@@ -242,7 +242,7 @@ Open PRs to track:
 - `#21530`: ROCm fused MLA decode RoPE.
 - `#21531`: `dsv3_router_gemm` JIT migration.
 - `#22268`: DeepSeek MLA LoRA adapter bypass.
-- `#22774`: MUSA backend.
+- `#22774`: MUSA backend, merged at `2026-04-24T01:59:51Z`; the diff adds `_is_musa` guards in DeepSeek MHA/MLA, BF16 fallback for MUSA FP8 MLA weights, and MUSA shared-expert fusion capability checks.
 - `#22938`: MI300X DeepSeek path restoration after the MLA refactor.
 - `#23195`: quantized-layer `.weight` access guard.
 - `#23257`: CuteDSL EP plus DP-attention double reduce.

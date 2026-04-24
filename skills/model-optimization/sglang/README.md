@@ -9,8 +9,13 @@ Current SGLang model skills:
 - `sglang-deepseek-v3-r1-optimization`
 - `sglang-deepseek-v31-optimization`
 - `sglang-deepseek-v32-optimization`
+- `sglang-deepseek-v4-optimization`
+- `sglang-hunyuan3-preview-optimization`
 - `sglang-kimi-k2-k25-optimization`
+- `sglang-ltx23-hq-optimization`
 - `sglang-minimax-m2-series-optimization`
+- `sglang-mixtral-quark-int4fp8-moe-optimization`
+- `sglang-moss-vl-optimization`
 - `sglang-qwen3-core-optimization`
 - `sglang-qwen3-next-optimization`
 - `sglang-qwen35-optimization`
@@ -18,6 +23,7 @@ Current SGLang model skills:
 - `sglang-qwen3-coder-optimization`
 - `sglang-qwen-vlm-omni-asr-optimization`
 - `sglang-qwen-image-optimization`
+- `sglang-z-image-turbo-optimization`
 - `sglang-glm45-optimization`
 - `sglang-glm46-glm47-optimization`
 - `sglang-glm5-glm51-optimization`

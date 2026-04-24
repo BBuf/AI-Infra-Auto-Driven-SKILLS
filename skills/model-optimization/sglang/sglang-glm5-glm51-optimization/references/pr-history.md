@@ -2,7 +2,7 @@
 
 Evidence sweep:
 
-- SGLang `origin/main`: `b3e6cf60a` (`2026-04-22`)
+- SGLang `origin/main`: `bca3dd958` (`2026-04-24`)
 - sgl-cookbook `origin/main`: `816bad5` (`2026-04-21`)
 - Manual diff review date: `2026-04-23`
 - Searched paths: GLM MoE/NextN files, NSA indexer/backend files, GLM-5 docs/snippets, registered GLM-5 tests.
@@ -419,6 +419,53 @@ if should_ignore_layer(mapped_prefix, nextn_quant_config.exclude_layers):
 
 - Reviewed files: `python/sglang/srt/models/deepseek_nextn.py`.
 - Validation implications: GLM-5-MXFP4 MTP must be tested separately from FP8 MTP. The regression should check Quark `exclude_layers`, `eh_proj` loading, and output quality with EAGLE settings.
+
+### PR #23060 - Fix dynamic chunking profiling crash on GLM-5 models
+
+- Link: https://github.com/sgl-project/sglang/pull/23060
+- State: merged at `2026-04-23T11:30:57Z`
+- Diff coverage: full diff fetched with `gh pr diff --patch`, `30` lines, `1` file.
+- Motivation: the pipeline-parallel dynamic chunking profiling path builds a synthetic `ForwardBatch` before calling `model_runner.forward()`. GLM-5 DSA/DP-attention code depends on the thread-local `is_extend_in_batch` flag, so profiling could crash or enter the wrong attention path when that flag was not set.
+- Key implementation: `scheduler_pp_mixin.py` imports `set_is_extend_in_batch` and records whether the profiling batch is an extend batch immediately after `ForwardBatch.init_new(...)`.
+- Key code excerpt:
+
+```diff
++from sglang.srt.layers.dp_attention import set_is_extend_in_batch
+...
+ forward_batch = ForwardBatch.init_new(model_worker_batch, model_runner)
++set_is_extend_in_batch(batch.forward_mode.is_extend())
+ _ = model_runner.forward(
+     forward_batch=forward_batch, pp_proxy_tensors=pp_proxy
+ )
+```
+
+- Reviewed files: `python/sglang/srt/managers/scheduler_pp_mixin.py`.
+- Validation implications: GLM-5 pipeline-parallel profiling and dynamic chunking smoke tests should exercise extend-mode DSA batches, not just normal serving.
+
+### PR #23540 - Split MI300X and MI325X options in GLM-5.1 generator
+
+- Link: https://github.com/sgl-project/sglang/pull/23540
+- State: merged at `2026-04-23T19:01:59Z`
+- Diff coverage: full diff fetched with `gh pr diff --patch`, `154` lines, `3` files.
+- Motivation: the GLM-5.1 command generator previously collapsed MI300X and MI325X into a single selector item. That hid hardware-specific validation lanes and made AMD command generation less explicit.
+- Key implementation: `glm-51-deployment.jsx` adds a separate `mi325x` hardware option, expands AMD checks to include `mi300x`, `mi325x`, and `mi355x`, and adds a dedicated `mi325x` BF16 TP/memory row. Docs navigation also moves GLM-5.1 to the front of the GLM group.
+- Key code excerpts:
+
+```diff
+-{ id: 'mi300x', label: 'MI300X/MI325X', default: false },
++{ id: 'mi300x', label: 'MI300X',        default: false },
++{ id: 'mi325x', label: 'MI325X',        default: false },
+```
+
+```diff
+-const isAMD = hw === 'mi300x' || hw === 'mi355x';
++const isAMD = ['mi300x', 'mi325x', 'mi355x'].includes(hw);
+...
++mi325x: { bf16: { tp: 8, mem: 0.80 } },
+```
+
+- Reviewed files: `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`, `docs_new/docs.json`, `docs_new/cookbook/autoregressive/intro.mdx`.
+- Validation implications: GLM-5.1 AMD command-generation tests should render MI300X, MI325X, and MI355X separately. Do not use one combined MI300X/MI325X row when recording perf or accuracy results.
 
 ## Cookbook Evidence
 
