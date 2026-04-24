@@ -1,0 +1,190 @@
+{
+  "version": "2026-04-24",
+  "sources": [
+    {
+      "name": "InfraTech",
+      "repo": "https://github.com/CalvinXKY/InfraTech",
+      "branch": "main",
+      "audited_commit": "0fe7d3a57dce"
+    },
+    {
+      "name": "self-llm",
+      "repo": "https://github.com/datawhalechina/self-llm",
+      "branch": "master",
+      "audited_commit": "a7cd4ef135b0"
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "deepseek-v3-architecture",
+      "title": "DeepSeek V3 architecture",
+      "aliases": ["deepseek-v3", "deepseek v3", "deepseek-r1", "deepseek r1", "deepseek-v3/r1", "deepseek-ai/deepseek-v3", "deepseek-ai/deepseek-r1"],
+      "source": "InfraTech",
+      "path": "models/deepseek_v3/deepseek_v3_architecture.jpg",
+      "url": "https://raw.githubusercontent.com/CalvinXKY/InfraTech/main/models/deepseek_v3/deepseek_v3_architecture.jpg",
+      "rank": 1
+    },
+    {
+      "id": "deepseek-v3-mla-mha",
+      "title": "DeepSeek V3 MLA MHA computation flow",
+      "aliases": ["deepseek-v3", "deepseek v3", "deepseek mla", "deepseek mla mha", "deepseek-r1"],
+      "source": "InfraTech",
+      "path": "models/deepseek_v3/MLA_MHA.jpg",
+      "url": "https://raw.githubusercontent.com/CalvinXKY/InfraTech/main/models/deepseek_v3/MLA_MHA.jpg",
+      "rank": 2
+    },
+    {
+      "id": "deepseek-v3-mla-mqa",
+      "title": "DeepSeek V3 MLA MQA computation flow",
+      "aliases": ["deepseek-v3", "deepseek v3", "deepseek mla", "deepseek mla mqa", "deepseek-r1"],
+      "source": "InfraTech",
+      "path": "models/deepseek_v3/MLA_MQA.jpg",
+      "url": "https://raw.githubusercontent.com/CalvinXKY/InfraTech/main/models/deepseek_v3/MLA_MQA.jpg",
+      "rank": 3
+    },
+    {
+      "id": "deepseek-v32-architecture",
+      "title": "DeepSeek V3.2 architecture",
+      "aliases": ["deepseek-v3.2", "deepseek v3.2", "deepseek-v32", "deepseek v32", "deepseek-v3.2-exp", "deepseek-v3.2-speciale"],
+      "source": "InfraTech",
+      "path": "models/deepseek_v3_2/deepseek_v3_2_architecture.jpg",
+      "url": "https://raw.githubusercontent.com/CalvinXKY/InfraTech/main/models/deepseek_v3_2/deepseek_v3_2_architecture.jpg",
+      "rank": 1
+    },
+    {
+      "id": "deepseek-v32-dsa-mqa",
+      "title": "DeepSeek V3.2 DSA MQA computation flow",
+      "aliases": ["deepseek-v3.2", "deepseek v3.2", "deepseek dsa", "deepseek dsa mqa"],
+      "source": "InfraTech",
+      "path": "models/deepseek_v3_2/DSA_MQA.jpg",
+      "url": "https://raw.githubusercontent.com/CalvinXKY/InfraTech/main/models/deepseek_v3_2/DSA_MQA.jpg",
+      "rank": 2
+    },
+    {
+      "id": "deepseek-v32-dsa-mha",
+      "title": "DeepSeek V3.2 DSA MHA computation flow",
+      "aliases": ["deepseek-v3.2", "deepseek v3.2", "deepseek dsa", "deepseek dsa mha"],
+      "source": "InfraTech",
+      "path": "models/deepseek_v3_2/DSA_MHA.jpg",
+      "url": "https://raw.githubusercontent.com/CalvinXKY/InfraTech/main/models/deepseek_v3_2/DSA_MHA.jpg",
+      "rank": 3
+    },
+    {
+      "id": "glm5-architecture",
+      "title": "GLM-5 architecture",
+      "aliases": ["glm-5", "glm5", "glm 5", "glm-5.1", "glm5.1", "glm 5.1", "zai-org/glm-5", "zai-org/glm-5.1"],
+      "source": "InfraTech",
+      "path": "models/glm_5/glm_5_architecture.jpg",
+      "url": "https://raw.githubusercontent.com/CalvinXKY/InfraTech/main/models/glm_5/glm_5_architecture.jpg",
+      "rank": 1
+    },
+    {
+      "id": "kimi-k2-architecture",
+      "title": "Kimi K2 architecture",
+      "aliases": ["kimi-k2", "kimi k2", "moonshotai/kimi-k2", "kimi-k2-instruct"],
+      "source": "InfraTech",
+      "path": "models/kimi_k_2/kimi_k_2_architecture.jpg",
+      "url": "https://raw.githubusercontent.com/CalvinXKY/InfraTech/main/models/kimi_k_2/kimi_k_2_architecture.jpg",
+      "rank": 1
+    },
+    {
+      "id": "kimi-k25-architecture",
+      "title": "Kimi K2.5 architecture",
+      "aliases": ["kimi-k2.5", "kimi k2.5", "kimi-k25", "kimi k25", "moonshotai/kimi-k2.5", "nvidia/kimi-k2.5-nvfp4"],
+      "source": "InfraTech",
+      "path": "models/kimi_k_2_5/kimi_k_2_5_architecture.jpg",
+      "url": "https://raw.githubusercontent.com/CalvinXKY/InfraTech/main/models/kimi_k_2_5/kimi_k_2_5_architecture.jpg",
+      "rank": 1
+    },
+    {
+      "id": "minimax-m25-architecture",
+      "title": "MiniMax M2.5 architecture",
+      "aliases": ["minimax-m2.5", "minimax m2.5", "minimax-m25", "minimaxai/minimax-m2.5"],
+      "source": "InfraTech",
+      "path": "models/minimax_m_2_5/minimax_m_2_5_architecture.jpg",
+      "url": "https://raw.githubusercontent.com/CalvinXKY/InfraTech/main/models/minimax_m_2_5/minimax_m_2_5_architecture.jpg",
+      "rank": 1
+    },
+    {
+      "id": "qwen35-moe-architecture",
+      "title": "Qwen3.5 397B-A17B architecture",
+      "aliases": ["qwen3.5", "qwen3.5-397b-a17b", "qwen35", "qwen35-moe", "qwen/qwen3.5-397b-a17b", "nvidia/qwen3.5-397b-a17b-nvfp4"],
+      "source": "InfraTech",
+      "path": "models/qwen3_5/qwen_3_5_397b_a17b_architecture.jpg",
+      "url": "https://raw.githubusercontent.com/CalvinXKY/InfraTech/main/models/qwen3_5/qwen_3_5_397b_a17b_architecture.jpg",
+      "rank": 1
+    },
+    {
+      "id": "qwen35-dense-architecture",
+      "title": "Qwen3.5 27B dense architecture",
+      "aliases": ["qwen3.5-27b", "qwen35-27b", "qwen/qwen3.5-27b", "qwen3.5 dense"],
+      "source": "InfraTech",
+      "path": "models/qwen3_5/qwen_3_5_27b_architecture.jpg",
+      "url": "https://raw.githubusercontent.com/CalvinXKY/InfraTech/main/models/qwen3_5/qwen_3_5_27b_architecture.jpg",
+      "rank": 1
+    },
+    {
+      "id": "qwen3-vl-32b-architecture",
+      "title": "Qwen3-VL 32B architecture",
+      "aliases": ["qwen3-vl", "qwen3 vl", "qwen3-vl-32b", "qwen/qwen3-vl-32b", "qwen3-vl dense"],
+      "source": "InfraTech",
+      "path": "models/qwen3_vl/qwen_3_vl_32b_architecture.jpg",
+      "url": "https://raw.githubusercontent.com/CalvinXKY/InfraTech/main/models/qwen3_vl/qwen_3_vl_32b_architecture.jpg",
+      "rank": 1
+    },
+    {
+      "id": "qwen3-vl-235b-architecture",
+      "title": "Qwen3-VL 235B-A22B architecture",
+      "aliases": ["qwen3-vl-235b", "qwen3-vl-235b-a22b", "qwen/qwen3-vl-235b-a22b", "qwen3-vl moe"],
+      "source": "InfraTech",
+      "path": "models/qwen3_vl/qwen_3_vl_235b_a22b_architecture.jpg",
+      "url": "https://raw.githubusercontent.com/CalvinXKY/InfraTech/main/models/qwen3_vl/qwen_3_vl_235b_a22b_architecture.jpg",
+      "rank": 1
+    },
+    {
+      "id": "step35-flash-architecture",
+      "title": "Step 3.5 Flash architecture",
+      "aliases": ["step-3.5-flash", "step 3.5 flash", "step35", "stepfun-ai/step-3.5-flash"],
+      "source": "InfraTech",
+      "path": "models/step_3_5_flash/step_3_5_flash_architecture.jpg",
+      "url": "https://raw.githubusercontent.com/CalvinXKY/InfraTech/main/models/step_3_5_flash/step_3_5_flash_architecture.jpg",
+      "rank": 1
+    },
+    {
+      "id": "hunyuan-a13b-architecture",
+      "title": "Hunyuan-A13B architecture",
+      "aliases": ["hunyuan-a13b", "hunyuan a13b", "hunyuan-a13b-instruct", "tencent-hunyuan/hunyuan-a13b-instruct"],
+      "source": "self-llm",
+      "path": "models/Hunyuan-A13B-Instruct/images/01-01混元大模型A13B架构图.jpg",
+      "url": "https://raw.githubusercontent.com/datawhalechina/self-llm/master/models/Hunyuan-A13B-Instruct/images/01-01%E6%B7%B7%E5%85%83%E5%A4%A7%E6%A8%A1%E5%9E%8BA13B%E6%9E%B6%E6%9E%84%E5%9B%BE.jpg",
+      "rank": 1
+    },
+    {
+      "id": "hunyuan-a13b-shared-expert",
+      "title": "Hunyuan-A13B shared and routed expert diagram",
+      "aliases": ["hunyuan-a13b", "hunyuan a13b", "hunyuan moe", "hunyuan shared expert"],
+      "source": "self-llm",
+      "path": "models/Hunyuan-A13B-Instruct/images/01-02-共享专家和混合专家.png",
+      "url": "https://raw.githubusercontent.com/datawhalechina/self-llm/master/models/Hunyuan-A13B-Instruct/images/01-02-%E5%85%B1%E4%BA%AB%E4%B8%93%E5%AE%B6%E5%92%8C%E6%B7%B7%E5%90%88%E4%B8%93%E5%AE%B6.png",
+      "rank": 2
+    },
+    {
+      "id": "kimi-vl-architecture",
+      "title": "Kimi-VL architecture",
+      "aliases": ["kimi-vl", "kimi vl", "kimi-vl-a3b", "kimi-vl-a3b-thinking", "moonshotai/kimi-vl"],
+      "source": "self-llm",
+      "path": "models/Kimi-VL/images/02-4.png",
+      "url": "https://raw.githubusercontent.com/datawhalechina/self-llm/master/models/Kimi-VL/images/02-4.png",
+      "rank": 1
+    },
+    {
+      "id": "kimi-vl-training-flow",
+      "title": "Kimi-VL pretraining flow",
+      "aliases": ["kimi-vl", "kimi vl", "kimi-vl training", "kimi-vl pretrain"],
+      "source": "self-llm",
+      "path": "models/Kimi-VL/images/02-5.png",
+      "url": "https://raw.githubusercontent.com/datawhalechina/self-llm/master/models/Kimi-VL/images/02-5.png",
+      "rank": 2
+    }
+  ]
+}
