@@ -54,7 +54,10 @@ def test_force_generate_writes_svg_and_mermaid(tmp_path: Path) -> None:
     assert result["template"] == "hybrid_delta_moe"
     assert Path(result["svg_path"]).is_file()
     assert Path(result["mermaid_path"]).is_file()
-    assert "Gated DeltaNet" in Path(result["svg_path"]).read_text(encoding="utf-8")
+    svg = Path(result["svg_path"]).read_text(encoding="utf-8")
+    assert "architecture-grid" in svg
+    assert "Hybrid block cycle" in svg
+    assert "Gated DeltaNet" in svg
 
 
 def test_nearby_versions_do_not_match_wrong_originals() -> None:
