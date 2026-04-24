@@ -11,7 +11,7 @@ GLM-5/5.1 is a separate lane because it moves from GLM4 MoE into GLM MoE DSA/NSA
 
 Current evidence snapshot:
 
-- SGLang `origin/main`: `b3e6cf60a` on `2026-04-22`
+- SGLang `origin/main`: `bca3dd958` on `2026-04-24`
 - sgl-cookbook `origin/main`: `816bad5` on `2026-04-21`
 - Runtime files: `glm4_moe.py`, `glm4_moe_nextn.py`, `deepseek_nextn.py` when shared MTP infrastructure is touched
 - Docs/snippets: `GLM-5.mdx`, `GLM-5.1.mdx`, `glm-5-deployment.jsx`, `glm-51-deployment.jsx`

@@ -4,7 +4,7 @@ This document covers Qwen-Image, Qwen-Image-Edit, Qwen-Image-Layered, CUDA graph
 
 Evidence snapshot:
 
-- SGLang `origin/main`: `b3e6cf60a` (`2026-04-22`)
+- SGLang `origin/main`: `bca3dd958` (`2026-04-24`)
 - sgl-cookbook `origin/main`: `816bad5` (`2026-04-21`)
 - Manual diff review date: `2026-04-23`
 - Related skill: `skills/model-optimization/sglang/sglang-qwen-image-optimization`
@@ -282,7 +282,8 @@ r"^(transformer_blocks\.(\d+)\.attn)\.add_q_proj\.(.+)$": (
 ### #22953 - Avoid Qwen-Image RoPE illegal memory access
 
 - Link: https://github.com/sgl-project/sglang/pull/22953
-- State: open, `1` file, `+12/-0`
+- State: merged at `2026-04-23T04:41:27Z`, `1` file, `+12/-0`
+- Diff coverage: full diff fetched with `gh pr diff --patch`, `32` lines; current-main source rechecked at `bca3dd958`.
 - Motivation: too many input images or long prompts can make text sequence length exceed RoPE cache length, causing CUDA illegal memory access.
 - Key implementation: check required text length against RoPE text cache before entering the kernel and raise a clear `ValueError`.
 - Code:
@@ -297,7 +298,7 @@ if max_txt_seq_len > txt_cache_len:
     )
 ```
 
-- Validation: long prompt / many-image requests should fail fast before corrupting CUDA context.
+- Validation: long prompt / many-image requests should fail fast before corrupting CUDA context. This guard is present in current SGLang main.
 
 ### #23155 - ModelOpt FP8
 
