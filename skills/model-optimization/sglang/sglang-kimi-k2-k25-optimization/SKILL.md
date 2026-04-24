@@ -9,10 +9,17 @@ description: PR-backed and current-main optimization manual for `moonshotai/Kimi
 
 The skill is an optimization ladder. Identify which stage the current code is at, apply the next missing optimization, and only move deeper after the earlier stage is satisfied.
 
-Current-main snapshot:
-This skill was refreshed against SGLang `origin/main` commit `c122d343a` on `2026-04-21`. Since the older PR ladder was written, current main has added a Kimi-K2.5 usage doc, parser and OpenAI-serving tests for `kimi_k2`, Kimi-K2.5 LoRA regression coverage, AMD/GB300 validation lanes, and a Kimi-K2-Thinking stress test. Treat those as part of the active validation surface, not as optional CI trivia.
-Active open PRs now also define several next likely skill updates: W4AFP8 loading, W4A16 DeepEP low-latency, Kimi-K2.5 multimodal processor fixes, ROCm fused QK RMSNorm, and JIT migration of the older K2 fused gate path.
-One important non-open gap is Kimi-K2-Thinking DeepEP plus int4/Marlin: [#13789](https://github.com/sgl-project/sglang/pull/13789) tried to support it but was closed unmerged after hitting an illegal memory access in the `fused_marlin_moe` path. Do not mark that combination as mainline-supported just because the generic Marlin JIT work in [#19181](https://github.com/sgl-project/sglang/pull/19181) landed.
+Current-main snapshot: refreshed against SGLang `origin/main` commit `c122d343a`
+on `2026-04-21`. Treat the Kimi-K2.5 usage doc, `kimi_k2` parser/OpenAI tests,
+Kimi-K2.5 LoRA regression, AMD/GB300 lanes, and Kimi-K2-Thinking stress test as
+active validation surfaces.
+
+Active open PRs define likely updates for W4AFP8 loading, W4A16 DeepEP
+low-latency, Kimi-K2.5 multimodal processor fixes, ROCm fused QK RMSNorm, and
+JIT migration of the older K2 fused gate path. Keep Kimi-K2-Thinking DeepEP plus
+int4/Marlin marked unsupported: [#13789](https://github.com/sgl-project/sglang/pull/13789)
+closed unmerged after an illegal memory access in `fused_marlin_moe`, even though
+generic Marlin JIT work landed in [#19181](https://github.com/sgl-project/sglang/pull/19181).
 
 The historical evidence for every stage lives in:
 
@@ -384,24 +391,19 @@ Current main has enough Kimi-K2.5 coverage that optimization work should preserv
 - keep the documented Kimi-K2.5 launch contract in sync with tests: `--tool-call-parser kimi_k2` and `--reasoning-parser kimi_k2`
 - preserve Kimi grid metadata flow: `grid_thws`, `KimiGridMMDataMixin`, and the GPU image preprocessing path with CPU-compatible inputs
 - if LoRA, MoE LoRA sharing, attention backend selection, or logprob paths are touched, include the Kimi-K2.5 LoRA regression
-- choose AMD validation by backend and quant shape:
-  - native Kimi-K2.5 with `aiter` MLA uses TP4 on MI35x because 64 heads at TP8 gives only 8 heads per GPU
-  - Kimi-K2.5-MXFP4 MI35x coverage uses TP8 and validates default plus FP8 KV-cache variants
+- choose AMD validation by backend and quant shape: native Kimi-K2.5 with
+  `aiter` MLA uses TP4 on MI35x; Kimi-K2.5-MXFP4 MI35x coverage uses TP8 and
+  validates default plus FP8 KV-cache variants
 - use GB300/NVFP4 lanes when changing Blackwell-specific quant, cache, or kernel behavior
 - use the Kimi-K2-Thinking stress test when parser, long-run stability, or K2 thinking serving paths are involved
 
-- `docs_new/docs/basic_usage/kimi_k2_5.mdx`
-- `python/sglang/srt/function_call/kimik2_detector.py`
-- `python/sglang/srt/parser/reasoning_parser.py`
-- `python/sglang/srt/multimodal/processors/kimi_common.py`
-- `python/sglang/srt/multimodal/processors/kimi_k25.py`
-- `test/registered/function_call/test_kimik2_detector.py`
-- `test/registered/lora/test_lora_kimi_k25_logprob_diff.py`
-- `test/registered/amd/accuracy/mi35x/test_kimi_k25_aiter_mla_eval_mi35x.py`
-- `test/registered/amd/accuracy/mi35x/test_kimi_k25_mxfp4_eval_mi35x.py`
-- `test/registered/gb300/test_kimi_k25.py`
-- `test/registered/gb300/test_kimi_k25_nvfp4.py`
-- `test/registered/stress/test_stress_kimi_k2.py`
+Key files/tests:
+
+- docs/parser/processors: `kimi_k2_5.mdx`, `kimik2_detector.py`,
+  `reasoning_parser.py`, `kimi_common.py`, `kimi_k25.py`
+- registered lanes: `test_kimik2_detector.py`,
+  `test_lora_kimi_k25_logprob_diff.py`, the two MI35x Kimi-K2.5 accuracy tests,
+  `test_kimi_k25.py`, `test_kimi_k25_nvfp4.py`, and `test_stress_kimi_k2.py`
 
 - docs, registered launches, and stress tests agree on the parser flags
 - image token expansion still derives from grid metadata instead of placeholder counts alone
@@ -420,27 +422,17 @@ Use this decision process:
 4. Validate narrowly on the exact serving shape.
 5. Only after that, widen to more topology combinations.
 
-Examples:
-
-- K2 decode is still spending time in generic grouped-topk:
-  you are missing `K2-2`, so do not jump straight to fused-MoE tuning files.
-- K2 fused gate exists but PCG crashes:
-  you are at `K2-6`, so focus on fake op registration or invalid-selection guards.
-- K2.5 int4 on AMD uses a default config:
-  you are at `K25-5`, so tune the wrapper-aware fused-MoE path before editing the model wrapper again.
-- K2.5 PP works but Eagle3 multimodal crashes:
-  you are at `K25-6` or `K25-7`, not at the early support stages.
-- K2.5 tool calls, thinking output, image requests, or LoRA logprobs regress after a runtime change:
-  you are at `K25-8`; check launch parser flags, grid metadata, OpenAI-serving parser tests, and the targeted backend lane before blaming the MoE kernel.
+Quick mapping examples: generic grouped-topk means `K2-2`; fused-gate PCG crash
+means `K2-6`; AMD int4 default config means `K25-5`; Eagle3 multimodal crash
+after PP works means `K25-6` or `K25-7`; parser, thinking, image, or LoRA
+logprob regressions after runtime work mean `K25-8`.
 
 For non-Kimi models, map them by structure:
 
-- a new sparse MoE model with non-generic expert count or router shape:
-  treat it like the K2 path first
-- a quantized sparse MoE model whose hot path runs through Marlin:
-  treat it like the K2 thinking Marlin path
-- a wrapped multimodal model whose PP, PD, DP encoder, or speculative decode support keeps breaking:
-  treat it like the K2.5 path first
+- non-generic sparse MoE expert count or router shape: K2 path first
+- quantized sparse MoE hot path through Marlin: K2 thinking Marlin path
+- wrapped multimodal model with PP, PD, DP encoder, or speculative decode issues:
+  K2.5 path first
 
 ## Guardrails
 
@@ -498,13 +490,11 @@ pytest -q test/registered/gb300/test_kimi_k25_nvfp4.py
 pytest -q test/registered/stress/test_stress_kimi_k2.py
 ```
 
-For tuning work:
-
-- rerun only the relevant tuning script
-- keep the real model, quant, TP, EP, and backend
-- save output under the exact config filename contract
+For tuning work, rerun only the relevant tuning script, keep the real model,
+quant, TP, EP, and backend, and save output under the exact config filename
+contract.
 
 ## References
 
-- Historical evidence and benchmark tables: [references/pr-history.md](references/pr-history.md)
-- Symptom mapping and validation order: [references/playbook.md](references/playbook.md)
+Use [references/pr-history.md](references/pr-history.md) for PR evidence and
+[references/playbook.md](references/playbook.md) for symptom mapping and validation order.

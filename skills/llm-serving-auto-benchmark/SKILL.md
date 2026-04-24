@@ -90,58 +90,35 @@ that the next run happens on the same hardware or framework version.
 
 ## Skill Scope
 
-This skill is a playbook plus a config+validator toolchain, not a
-turn-key orchestrator. The `scripts/` directory contains exactly two tools:
+This skill is a playbook plus a config+validator toolchain, not a turn-key
+orchestrator. The operator still launches servers, drives workloads, and writes
+one normalized JSONL row per candidate.
 
-- `validate_cookbook_configs.py`: reads YAML, renders bounded candidate server
-  commands, and checks flag names against captured `--help` snapshots. It never
-  launches a model server.
-- `compare_benchmark_results.py`: takes the normalized per-candidate JSONL and
-  emits the markdown tables described in the Output Contract.
+The `scripts/` directory contains exactly two tools:
 
-Launching servers, driving the workload, and writing one JSONL row per
-candidate are the operator's responsibility; the skill tells you how to do
-them, and the validator keeps your inputs honest.
+- `validate_cookbook_configs.py`: load cookbook YAML, render bounded candidate
+  server commands, and check flag names against captured `--help` snapshots
+  without launching servers.
+- `compare_benchmark_results.py`: turn normalized per-candidate JSONL into the
+  markdown and optional CSV tables described in the Output Contract.
 
-The cookbook configs under `configs/cookbook-llm/` and the sample runtime plan
-at `references/example-plan.yaml` use related but not identical schemas:
-
-- Cookbook configs carry `schema_version: 1`, `source.kind` set to
-  `llm_serving_cookbook`,
-  `benchmark.sla` (nested), and `frameworks.*.server_command`; they must pass
-  `validate_cookbook_configs.py`.
-- `example-plan.yaml` is a shorter runtime plan shape with top-level `sla` and
-  no `server_command`. It is the skeleton a caller fills in for a one-off run
-  and is not expected to pass the cookbook validator as-is.
-
-Either shape can feed a benchmark run; the SLA key names in
-[references/result-schema.md](references/result-schema.md) are the single
-source of truth.
+Cookbook configs under `configs/cookbook-llm/` must pass the validator. The
+shorter [references/example-plan.yaml](references/example-plan.yaml) is a
+one-off runtime-plan skeleton and is not expected to pass as-is. Use
+[references/result-schema.md](references/result-schema.md) as the single source
+of truth for SLA key names.
 
 ## Required Inputs
 
-Collect these before starting a long run:
+Collect these before a long run:
 
-- model path or Hugging Face repo id
-- tokenizer path if it differs from the model
-- target frameworks: any subset of `sglang`, `vllm`, `tensorrt-llm`
-- GPU model, GPU count, and whether multi-node is allowed
-- precision and quantization constraints
-- endpoint shape: completions, chat completions, responses, or custom
-- workload source: real traffic JSONL, ShareGPT, random synthetic, or generated
-  shared-prefix synthetic
-- dataset scenarios when synthetic traffic is used, for example `chat` and
-  `summarization`
-- SLA target: TTFT, TPOT/ITL, end-to-end latency, success rate, or goodput
-- search budget: quick smoke, default search, or exhaustive search
-- output directory for logs and result artifacts
-
-Also collect a version manifest:
-
-- framework package version and git commit when available
-- container image or Python environment identifier
-- `--help` snapshots for the server command and benchmark command
-- whether each parameter in the search plan was accepted by that exact CLI
+- model and tokenizer path, target frameworks, GPU model/count, multi-node
+  allowance, precision, and quantization constraints
+- endpoint shape, workload source, dataset scenarios, SLA target, search budget,
+  and artifact output directory
+- version manifest: framework package version or git commit, container/Python
+  environment, `--help` snapshots, and whether each search parameter was
+  accepted by that exact CLI
 
 If real production traffic is the goal, use the real request distribution. A
 synthetic workload is fine for bring-up and first-pass comparison, but it is not
@@ -239,13 +216,10 @@ For TensorRT-LLM, also confirm that `trtllm-serve serve --help` accepts
 `--backend pytorch`. If it does not, mark TensorRT-LLM unsupported in that
 environment rather than falling back to a different server backend.
 
-For each framework:
-
-1. Launch a minimal server.
-2. Confirm `/v1/models` or the framework-native model-info endpoint works.
-3. Send one streaming request and verify TTFT can be measured.
-4. Run one tiny benchmark with at least 5 requests.
-5. Save the launch command, benchmark command, server log, and benchmark output.
+For each framework, launch a minimal server, confirm `/v1/models` or the native
+model-info endpoint, send one streaming request, run one tiny benchmark with at
+least 5 requests, then save the launch command, benchmark command, server log,
+and benchmark output.
 
 Before any GPU-backed smoke run, check the requested GPU ids directly with
 `nvidia-smi`. If a requested GPU is already in use, stop and record that fact.
@@ -254,9 +228,8 @@ fine to run a smaller one-GPU smoke only when the result is clearly labeled as a
 flow check rather than a fair throughput comparison.
 
 If the target environment runs through containers, follow
-[references/container-runbook.md](references/container-runbook.md). Save the
-image tags, pull commands, launch commands, server logs, benchmark logs, and
-cleanup commands in the artifact directory.
+[references/container-runbook.md](references/container-runbook.md) and save image
+tags, pull commands, launch/benchmark logs, and cleanup commands.
 
 ### 2. Normalize The Workload
 
@@ -502,24 +475,16 @@ Rank candidates in this order:
 
 ## Output Contract
 
-Return a compact report with:
+Return a compact report with workload/SLA, hardware and framework versions, best
+deployment-command tables per framework/scenario, one cross-framework comparison
+table, exact launch and benchmark commands for winners, and artifact paths for
+workload, raw/normalized results, CSV or markdown summary, and server logs.
 
-- workload and SLA used
-- hardware and framework versions
-- for each framework, one table listing the best deployment command for each
-  dataset scenario and all relevant performance metrics
-- one cross-framework comparison table for the selected best command per
-  framework and scenario, including the command, so the deployment choice is
-  clear for each dataset
-- failed or excluded candidates with reasons. Explain that this table is an
-  record of tried configs that were not selected: candidates that failed, were
-  skipped by policy, or completed but missed the SLA.
-- exact launch command and benchmark command for each winner
-- artifact paths: canonical workload, raw results JSONL, normalized JSONL, CSV or
-  markdown summary, and server logs needed to debug winners or failures
-- a caveat if the workload was synthetic, if any framework did not complete a
-  fair search, or if any framework needed framework-specific parameter
-  substitutions
+Include failed or excluded candidates with reasons. Explain that this table is a
+record of tried configs that were not selected: candidates that failed, were
+skipped by policy, or completed but missed the SLA. Add caveats for synthetic
+workloads, incomplete fair searches, or framework-specific parameter
+substitutions.
 
 Use [references/framework-matrix.md](references/framework-matrix.md) when you
 need command templates or source links for each framework. Use
