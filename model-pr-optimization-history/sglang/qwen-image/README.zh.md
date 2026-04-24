@@ -4,9 +4,9 @@
 
 证据快照：
 
-- SGLang `origin/main`: `b3e6cf60a` (`2026-04-22`)
+- SGLang `origin/main`: `bca3dd958` (`2026-04-24`)
 - sgl-cookbook `origin/main`: `816bad5` (`2026-04-21`)
-- 手工 diff 阅读日期：`2026-04-23`
+- 手工 diff 阅读日期：`2026-04-24`
 - 对应 skill：`skills/model-optimization/sglang/sglang-qwen-image-optimization`
 - 详细 PR 卡片：`skills/model-optimization/sglang/sglang-qwen-image-optimization/references/pr-history.md`
 
@@ -282,7 +282,8 @@ r"^(transformer_blocks\.(\d+)\.attn)\.add_q_proj\.(.+)$": (
 ### #22953 - 避免 Qwen-Image RoPE CUDA illegal memory access
 
 - 链接：https://github.com/sgl-project/sglang/pull/22953
-- 状态：Open，`1` file，`+12/-0`
+- 状态：已合入，`2026-04-23T04:41:27Z`，`1` file，`+12/-0`
+- Diff 覆盖：完整 diff `32` 行；已在 SGLang `bca3dd958` 主线源码复查。
 - Motivation：Qwen-Image-Edit-2511 输入图太多、prompt 过长时 text seq len 超过 RoPE text cache，进入 CUDA kernel 后会 illegal memory access。
 - 实现思路：在进入 FlashInfer RoPE 前检查 `max(txt_seq_lens)` 是否超过 `txt_freqs.shape[0]`，提前抛出明确 `ValueError`。
 - 关键代码：
@@ -297,7 +298,7 @@ if max_txt_seq_len > txt_cache_len:
     )
 ```
 
-- 验证含义：长 prompt / 多图输入应 fail fast，不应污染 CUDA context。
+- 验证含义：长 prompt / 多图输入应 fail fast，不应污染 CUDA context。该保护已经是当前 SGLang main 行为。
 
 ### #23155 - Qwen Image ModelOpt FP8
 

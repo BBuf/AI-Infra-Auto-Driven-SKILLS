@@ -348,7 +348,7 @@ Open PRs to track:
 - `#21889`: AMD TileLang NSA FP4 KV cache quantization.
 - `#22268`: DeepSeek MLA `prepare_qkv_latent` bypassing LoRA adapters.
 - `#22473`: dense MLA decode fallback for short sequences.
-- `#22774`: MUSA backend support for DeepSeek V2/V3/R1-class layers.
+- `#22774`: MUSA backend support for DeepSeek V2/V3/R1-class layers, merged at `2026-04-24T01:59:51Z`; it changes shared DeepSeek MHA/MLA/loader code, so V3.2-adjacent regressions should still watch those common files.
 - `#22851`: add `--nsa-topk-backend` and integrate FlashInfer/PyTorch top-k.
 - `#22865`: extend the sparsity framework for non-NSA sparse algorithms.
 - `#22938`: restore MI300X DeepSeek MLA paths after the MLA refactor.

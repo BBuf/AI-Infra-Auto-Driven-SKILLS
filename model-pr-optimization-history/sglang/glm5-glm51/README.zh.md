@@ -1,6 +1,6 @@
 # SGLang GLM-5/5.1 支持与优化时间线
 
-本文基于 SGLang `origin/main` 快照 `b3e6cf60a`（2026-04-22）和 sgl-cookbook `origin/main` 快照 `816bad5`（2026-04-21）整理，覆盖 GLM-5、GLM-5.1、GlmMoeDsa、NSA/DSA、FP8/MXFP4/NVFP4、NextN/MTP、tool template、AMD/GB300/NPU。
+本文基于 SGLang `origin/main` 快照 `bca3dd958`（2026-04-24）和 sgl-cookbook `origin/main` 快照 `816bad5`（2026-04-21）整理，覆盖 GLM-5、GLM-5.1、GlmMoeDsa、NSA/DSA、FP8/MXFP4/NVFP4、NextN/MTP、tool template、AMD/GB300/NPU 和 dynamic chunking/profiling。
 
 结论：GLM-5/5.1 是 shared DSA/NSA lane。任何触碰 `deepseek_v2.py`、`deepseek_nextn.py`、`nsa_backend.py`、`nsa_indexer.py` 的改动都可能同时影响 DeepSeek V3.2 和 GLM。示例命令必须保留 `--tool-call-parser glm47` 和 `--reasoning-parser glm45`。
 
@@ -314,6 +314,39 @@ if should_ignore_layer(mapped_prefix, nextn_quant_config.exclude_layers):
 ```
 
 - 验证影响：GLM-5-MXFP4 MTP 要独立于 FP8 MTP 测；重点看 Quark `exclude_layers`、`eh_proj` loading 和 EAGLE 输出质量。
+
+### PR #23060 - GLM-5 dynamic chunking profiling crash 修复
+
+- 链接：https://github.com/sgl-project/sglang/pull/23060
+- 状态：已合入，`2026-04-23T11:30:57Z`
+- Diff 覆盖：完整 diff `30` 行，`1` 个文件。
+- Motivation：pipeline-parallel profiling 会构造 synthetic `ForwardBatch`，GLM-5 的 DSA/DP-attention 路径依赖 `is_extend_in_batch`，未设置时 profiling 可能 crash 或走错 attention 分支。
+- 关键实现：
+
+```diff
++set_is_extend_in_batch(batch.forward_mode.is_extend())
+ _ = model_runner.forward(
+     forward_batch=forward_batch, pp_proxy_tensors=pp_proxy
+ )
+```
+
+- 验证影响：GLM-5 dynamic chunking / profiling 要覆盖 extend batch，不能只看普通 serving 启动。
+
+### PR #23540 - GLM-5.1 generator 拆分 MI300X / MI325X
+
+- 链接：https://github.com/sgl-project/sglang/pull/23540
+- 状态：已合入，`2026-04-23T19:01:59Z`
+- Diff 覆盖：完整 diff `154` 行，`3` 个文件。
+- Motivation：GLM-5.1 命令生成器把 MI300X/MI325X 合并成一个选项，容易掩盖两条 AMD 验证线。
+- 关键实现：
+
+```diff
++{ id: 'mi300x', label: 'MI300X', default: false },
++{ id: 'mi325x', label: 'MI325X', default: false },
++mi325x: { bf16: { tp: 8, mem: 0.80 } },
+```
+
+- 验证影响：AMD GLM-5.1 文档、命令和 perf/accuracy 记录需要分别标 MI300X、MI325X、MI355X。
 
 ## 下一步优化建议
 
