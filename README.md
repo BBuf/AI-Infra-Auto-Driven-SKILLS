@@ -21,6 +21,11 @@ skills/
 │   ├── agents/
 │   ├── references/
 │   └── scripts/                   # analyze_llm_torch_profile.py (preferred) + helpers + host runners
+├── model-architecture-diagram/     # return upstream model structure diagrams or generate fallback SVGs
+│   ├── SKILL.md
+│   ├── agents/
+│   ├── references/                 # source diagram index and source notes
+│   └── scripts/                    # model_architecture_diagram.py
 ├── sglang-prod-incident-triage/   # replay-first debug flow for SGLang serving
 │   ├── SKILL.md
 │   ├── agents/
