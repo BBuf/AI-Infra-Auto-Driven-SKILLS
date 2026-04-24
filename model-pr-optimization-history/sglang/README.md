@@ -1,33 +1,41 @@
 # SGLang Model PR Optimization History
 
-SGLang model PR histories are grouped by model family/generation.
-
 Current families:
 
 - `deepseek-v3-r1`
 - `deepseek-v31`
 - `deepseek-v32`
 - `deepseek-v4`
+- `glm-vlm-ocr`
+- `glm45`
+- `glm46-glm47`
+- `glm5-glm51`
 - `hunyuan3-preview`
 - `kimi`
 - `ltx23-hq`
 - `minimax`
 - `mixtral-quark-int4fp8-moe`
 - `moss-vl`
+- `qwen-image`
+- `qwen-vlm-omni-asr`
+- `qwen3-coder`
 - `qwen3-core`
 - `qwen3-next`
 - `qwen35`
 - `qwen36`
-- `qwen3-coder`
-- `qwen-vlm-omni-asr`
-- `qwen-image`
 - `z-image-turbo`
-- `glm45`
-- `glm46-glm47`
-- `glm5-glm51`
-- `glm-vlm-ocr`
+- `ernie45`
+- `gemma4`
+- `gpt-oss`
+- `intern-s1`
+- `internvl35`
+- `llama4`
+- `mimo-v2-flash`
+- `mistral-small-4`
+- `nemotron-super`
+- `step35`
 
-The cross-family quality scan lives directly in this directory:
+Cross-family audits:
 
 - `model-skill-pr-dossier-quality-scan-2026-04-23.md`
 - `model-skill-pr-dossier-quality-scan-2026-04-24.md`
