@@ -826,56 +826,1141 @@ def wrap_svg_text(text: str, width: int = 34) -> list[str]:
     return textwrap.wrap(text, width=width, break_long_words=False) or [text]
 
 
+def primary_style(model: str, template: Template) -> tuple[str, str]:
+    """Match the public InfraTech palette family for generated diagrams."""
+
+    q = normalize(model)
+    if "kimi" in q:
+        return ("#5B5B5B", "#1F2937")
+    if "minimax" in q or "step" in q:
+        return ("#FB7573", "#EF4444")
+    if "qwen" in q:
+        return ("#7C6EF2", "#5B21B6")
+    if "deepseek" in q or "glm" in q:
+        return ("#7288F4", "#2563EB")
+    if template.template_id.startswith("diffusion") or "mova" in q:
+        return ("#F59E0B", "#D97706")
+    if template.template_id in {"vlm", "moonvit_mla_moe"}:
+        return ("#4CC9C0", "#0D9488")
+    return ("#7288F4", "#2563EB")
+
+
+def _shape(
+    out: list[str],
+    x: int,
+    y: int,
+    w: int,
+    h: int,
+    title: str,
+    *,
+    fill: str,
+    stroke: str,
+    text_fill: str = "#FFFFFF",
+    rx: int = 8,
+    font_size: int = 22,
+    weight: int = 400,
+    subtitle: str | None = None,
+    dashed: bool = False,
+    kind: str = "rect",
+) -> None:
+    dash = ' stroke-dasharray="14 9"' if dashed else ""
+    if kind == "trapezoid":
+        inset = min(42, max(16, w // 7))
+        points = f"{x + inset},{y} {x + w - inset},{y} " f"{x + w},{y + h} {x},{y + h}"
+        out.append(
+            f'<polygon points="{points}" fill="{fill}" stroke="{stroke}" '
+            f'stroke-width="2"{dash}/>'
+        )
+    else:
+        out.append(
+            f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="{rx}" '
+            f'fill="{fill}" stroke="{stroke}" stroke-width="2"{dash}/>'
+        )
+    title_y = y + h / 2 + (font_size * 0.34 if subtitle is None else -4)
+    out.append(
+        f'<text x="{x + w / 2:.1f}" y="{title_y:.1f}" text-anchor="middle" '
+        f'font-family="Arial,Helvetica,sans-serif" font-size="{font_size}" '
+        f'font-weight="{weight}" fill="{text_fill}">{escape(title)}</text>'
+    )
+    if subtitle:
+        out.append(
+            f'<text x="{x + w / 2:.1f}" y="{y + h - 13}" text-anchor="middle" '
+            f'font-family="Arial,Helvetica,sans-serif" font-size="13" '
+            f'fill="{text_fill}">{escape(subtitle)}</text>'
+        )
+
+
+def _panel(
+    out: list[str],
+    x: int,
+    y: int,
+    w: int,
+    h: int,
+    title: str,
+    stroke: str,
+    *,
+    font_size: int = 32,
+    title_color: str | None = None,
+) -> None:
+    out.append(
+        f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="14" fill="none" '
+        f'stroke="{stroke}" stroke-width="2.3" stroke-dasharray="16 10"/>'
+    )
+    out.append(
+        f'<text x="{x + 18}" y="{y + 40}" '
+        f'font-family="Arial,Helvetica,sans-serif" font-size="{font_size}" '
+        f'font-weight="700" fill="{title_color or stroke}">{escape(title)}</text>'
+    )
+
+
+def _text(
+    out: list[str],
+    text: str,
+    x: int,
+    y: int,
+    *,
+    size: int = 18,
+    fill: str = "#111111",
+    weight: int = 400,
+    anchor: str = "start",
+) -> None:
+    out.append(
+        f'<text x="{x}" y="{y}" text-anchor="{anchor}" '
+        f'font-family="Arial,Helvetica,sans-serif" font-size="{size}" '
+        f'font-weight="{weight}" fill="{fill}">{escape(text)}</text>'
+    )
+
+
+def _arrow(
+    out: list[str],
+    x1: int,
+    y1: int,
+    x2: int,
+    y2: int,
+    *,
+    stroke: str = "#111111",
+    width: float = 2.2,
+    dashed: bool = False,
+    marker: str = "arrow",
+) -> None:
+    dash = ' stroke-dasharray="12 8"' if dashed else ""
+    out.append(
+        f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" '
+        f'stroke="{stroke}" stroke-width="{width}"{dash} '
+        f'marker-end="url(#{marker})"/>'
+    )
+
+
+def _polyline(
+    out: list[str],
+    points: tuple[tuple[int, int], ...],
+    *,
+    stroke: str = "#111111",
+    width: float = 2.2,
+    dashed: bool = False,
+    marker: str = "arrow",
+) -> None:
+    dash = ' stroke-dasharray="12 8"' if dashed else ""
+    point_text = " ".join(f"{x},{y}" for x, y in points)
+    out.append(
+        f'<polyline points="{point_text}" fill="none" stroke="{stroke}" '
+        f'stroke-width="{width}"{dash} marker-end="url(#{marker})"/>'
+    )
+
+
+def _plus(
+    out: list[str], cx: int, cy: int, *, fill: str, stroke: str = "#111111"
+) -> None:
+    out.append(
+        f'<circle cx="{cx}" cy="{cy}" r="21" fill="{fill}" stroke="{stroke}" '
+        f'stroke-width="2"/>'
+    )
+    out.append(
+        f'<line x1="{cx - 16}" y1="{cy}" x2="{cx + 16}" y2="{cy}" '
+        f'stroke="{stroke}" stroke-width="2"/>'
+    )
+    out.append(
+        f'<line x1="{cx}" y1="{cy - 16}" x2="{cx}" y2="{cy + 16}" '
+        f'stroke="{stroke}" stroke-width="2"/>'
+    )
+
+
+def _mult(out: list[str], cx: int, cy: int, *, fill: str = "#8DD348") -> None:
+    out.append(
+        f'<circle cx="{cx}" cy="{cy}" r="24" fill="{fill}" stroke="#111111" '
+        f'stroke-width="2"/>'
+    )
+    out.append(
+        f'<line x1="{cx - 15}" y1="{cy - 15}" x2="{cx + 15}" y2="{cy + 15}" '
+        f'stroke="#111111" stroke-width="2"/>'
+    )
+    out.append(
+        f'<line x1="{cx - 15}" y1="{cy + 15}" x2="{cx + 15}" y2="{cy - 15}" '
+        f'stroke="#111111" stroke-width="2"/>'
+    )
+
+
+def _shape_label(out: list[str], label: str, x: int, y: int) -> None:
+    for i, line in enumerate(wrap_svg_text(label, width=30)):
+        _text(out, line, x, y + i * 20, size=16)
+
+
+def _source_note(template: Template) -> str:
+    files = ", ".join(template.sglang_files[:4])
+    return f"SGLang refs: {files}"
+
+
+def _layer_label(template: Template) -> tuple[str, str, str]:
+    if template.template_id == "decoder_dense":
+        return ("N x", "Decoder layer", "Attention + dense FFN")
+    if template.template_id in {"mla_moe", "moonvit_mla_moe"}:
+        return ("N x", "MLA-MoE layer", "RMSNorm -> MLA -> MoE")
+    if template.template_id == "dsa_moe":
+        return ("N x", "DSA-MoE layer", "RMSNorm -> DSA/NSA -> MoE")
+    if template.template_id == "hybrid_delta_moe":
+        return ("3+1 x", "Hybrid cycle", "DeltaNet blocks + gated attention")
+    if template.template_id == "swa_moe_mtp":
+        return ("N x", "SWA-MoE layer", "Sliding-window/global attention + MoE")
+    if template.template_id == "vlm":
+        return ("N x", "Vision + LLM", "ViT/projector tokens into decoder")
+    if (
+        template.template_id.startswith("diffusion")
+        or template.template_id == "mova_bimodal_dit"
+    ):
+        return ("T x", "Denoise step", "conditioned DiT block")
+    if template.template_id == "tts_dual_ar":
+        return ("2 x", "AR stack", "slow semantic AR + fast codebook AR")
+    if template.template_id == "audio_hybrid_serving":
+        return ("1 x", "Serving loop", "audio state + SGLang engine")
+    if template.template_id == "reranker":
+        return ("N x", "Encoder block", "bidirectional attention + score head")
+    if template.template_id == "llada":
+        return ("T x", "Denoising step", "masked token refinement")
+    return ("N x", "MoE layer", "Attention + sparse expert layer")
+
+
+def _spine_texts(template: Template) -> dict[str, str]:
+    defaults = {
+        "input": "Text / media",
+        "processor": "Tokenizer / processor",
+        "embed": "Embedding",
+        "shape": "[seq_len, hidden_size]",
+        "norm": "RMSNorm",
+        "top_norm": "RMSNorm",
+        "output": "LM-Head / Output",
+    }
+    if template.template_id in {"diffusion_dit", "diffusion_moe_video"}:
+        defaults.update(
+            {
+                "input": "Prompt / noise",
+                "processor": "Text / image encoder",
+                "embed": "Latent tokens",
+                "shape": "[frames, h*w, channels]",
+                "norm": "AdaLayerNorm",
+                "top_norm": "Scheduler step",
+                "output": "VAE / media output",
+            }
+        )
+    elif template.template_id == "mova_bimodal_dit":
+        defaults.update(
+            {
+                "input": "Prompt + reference",
+                "processor": "Video/audio encoder",
+                "embed": "Bimodal latents",
+                "shape": "[video/audio latent tokens]",
+                "norm": "AdaLayerNorm",
+                "top_norm": "Dual decoder",
+                "output": "Video + audio output",
+            }
+        )
+    elif template.template_id == "tts_dual_ar":
+        defaults.update(
+            {
+                "input": "Text + reference audio",
+                "processor": "Text tokenizer + RVQ",
+                "embed": "Semantic/audio codes",
+                "shape": "[time, codebook_dim]",
+                "norm": "LayerNorm",
+                "top_norm": "DAC vocoder",
+                "output": "Speech waveform",
+            }
+        )
+    elif template.template_id == "audio_hybrid_serving":
+        defaults.update(
+            {
+                "input": "Audio request",
+                "processor": "Audio I/O server",
+                "embed": "Audio + KV state",
+                "shape": "[stream state]",
+                "norm": "State update",
+                "top_norm": "SGLang engine",
+                "output": "Audio response",
+            }
+        )
+    elif template.template_id == "reranker":
+        defaults.update(
+            {
+                "input": "Query + document",
+                "processor": "Pair tokenizer",
+                "embed": "Token embeddings",
+                "shape": "[pair_len, hidden_size]",
+                "norm": "LayerNorm",
+                "top_norm": "Pooling",
+                "output": "Relevance score",
+            }
+        )
+    elif template.template_id == "llada":
+        defaults.update(
+            {
+                "input": "Masked text",
+                "processor": "Noise schedule",
+                "embed": "Token + timestep embedding",
+                "shape": "[seq_len, hidden_size]",
+                "norm": "LayerNorm",
+                "top_norm": "Denoise head",
+                "output": "Decoded tokens",
+            }
+        )
+    elif template.template_id in {"vlm", "moonvit_mla_moe"}:
+        defaults.update(
+            {
+                "input": "Image/video + text",
+                "processor": "Vision processor + tokenizer",
+                "embed": "Visual/text embeddings",
+            }
+        )
+    return defaults
+
+
+def _draw_left_spine(
+    out: list[str],
+    model: str,
+    template: Template,
+    primary: tuple[str, str],
+) -> dict[str, tuple[int, int]]:
+    fill, stroke = primary
+    x = 95
+    w = 390
+    spine = _spine_texts(template)
+    label_repeat, layer_title, layer_subtitle = _layer_label(template)
+    _text(out, spine["input"], x + 155, 1110, size=20, weight=700)
+    _arrow(out, x + w // 2, 1090, x + w // 2, 1048)
+    _shape(out, x, 985, w, 58, spine["processor"], fill=fill, stroke=stroke)
+    _arrow(out, x + w // 2, 985, x + w // 2, 940)
+    _shape(out, x, 875, w, 64, spine["embed"], fill=fill, stroke=stroke)
+    _shape_label(out, spine["shape"], x + 280, 858)
+
+    group_x = x - 45
+    group_y = 315
+    group_w = w + 155
+    group_h = 500
+    _text(out, label_repeat, max(10, group_x - 58), group_y + 58, size=28, weight=700)
+    _panel(
+        out, group_x, group_y, group_w, group_h, layer_title, "#111111", font_size=20
+    )
+
+    plus_fill = stroke if stroke != "#1F2937" else "#5B5B5B"
+    _arrow(out, x + w // 2, 875, x + w // 2, group_y + group_h - 50)
+    _plus(out, x + w // 2, group_y + group_h - 54, fill=plus_fill)
+    _polyline(
+        out,
+        (
+            (x + 18, group_y + group_h - 38),
+            (x + 18, group_y + 270),
+            (x + w // 2 - 25, group_y + 270),
+        ),
+    )
+    _shape(
+        out,
+        x,
+        group_y + 370,
+        w,
+        64,
+        spine["norm"],
+        fill=fill,
+        stroke=stroke,
+    )
+    _arrow(out, x + w // 2, group_y + 370, x + w // 2, group_y + 327)
+    attention_name = {
+        "dsa_moe": "DSA",
+        "mla_moe": "MLA",
+        "moonvit_mla_moe": "MLA",
+        "hybrid_delta_moe": "DeltaNet / Attention",
+        "swa_moe_mtp": "SWA / Full Attention",
+        "vlm": "Vision-LLM Bridge",
+        "diffusion_dit": "DiT Attention",
+        "diffusion_moe_video": "DiT Expert Router",
+        "mova_bimodal_dit": "Cross Attention",
+        "tts_dual_ar": "AR Attention",
+        "audio_hybrid_serving": "Stateful Engine",
+        "reranker": "Self Attention",
+        "llada": "Denoising Attention",
+    }.get(template.template_id, "Attention")
+    _shape(
+        out,
+        x + 50,
+        group_y + 285,
+        w - 100,
+        58,
+        attention_name,
+        fill="#FFFFFF",
+        stroke="#F59E0B",
+        text_fill="#F59E0B",
+        dashed=True,
+        font_size=24,
+        weight=700,
+    )
+    _arrow(out, x + w // 2, group_y + 285, x + w // 2, group_y + 242)
+    _plus(out, x + w // 2, group_y + 240, fill=plus_fill)
+    _polyline(
+        out,
+        (
+            (x + 18, group_y + 252),
+            (x + 18, group_y + 115),
+            (x + w // 2 - 25, group_y + 115),
+        ),
+    )
+    _shape(
+        out,
+        x,
+        group_y + 165,
+        w,
+        64,
+        spine["norm"],
+        fill=fill,
+        stroke=stroke,
+    )
+    _arrow(out, x + w // 2, group_y + 165, x + w // 2, group_y + 120)
+    ffn_label = "MoE" if any(n.kind == "moe" for n in template.nodes) else "FFN"
+    if template.template_id in {"diffusion_dit", "mova_bimodal_dit"}:
+        ffn_label = "MLP / Modulation"
+    if template.template_id == "tts_dual_ar":
+        ffn_label = "Codebook head"
+    _shape(
+        out,
+        x + 50,
+        group_y + 82,
+        w - 100,
+        58,
+        ffn_label,
+        fill="#FFFFFF",
+        stroke="#3B82F6" if ffn_label == "MoE" else "#8DD348",
+        text_fill="#3B82F6" if ffn_label == "MoE" else "#8DD348",
+        dashed=True,
+        font_size=24,
+        weight=700,
+    )
+    _arrow(out, x + w // 2, group_y + 82, x + w // 2, group_y + 38)
+    _plus(out, x + w // 2, group_y + 35, fill=plus_fill)
+
+    _arrow(out, x + w // 2, group_y, x + w // 2, 260)
+    _shape(out, x, 195, w, 64, spine["top_norm"], fill=fill, stroke=stroke)
+    _arrow(out, x + w // 2, 195, x + w // 2, 154)
+    _shape(out, x, 90, w, 64, spine["output"], fill=fill, stroke=stroke)
+    if template.template_id in {
+        "decoder_moe",
+        "mla_moe",
+        "dsa_moe",
+        "swa_moe_mtp",
+        "moonvit_mla_moe",
+    }:
+        _arrow(out, x + w // 2, 90, x + w // 2, 44)
+        _shape(
+            out,
+            x + 75,
+            10,
+            w - 150,
+            58,
+            "MTP",
+            fill="#FFFFFF",
+            stroke="#111111",
+            text_fill="#111111",
+            dashed=True,
+            font_size=22,
+            weight=700,
+        )
+
+    _text(out, layer_subtitle, group_x + 18, group_y + group_h + 36, size=16)
+    return {
+        "attention": (x + w, group_y + 315),
+        "ffn": (x + w, group_y + 110),
+        "input": (x + w, 905),
+    }
+
+
+def _draw_mlp_panel(
+    out: list[str], x: int, y: int, w: int, h: int, title: str = "MLP(FFN)"
+) -> None:
+    green = "#8DD348"
+    _panel(out, x, y, w, h, title, green, font_size=30)
+    mid = x + 150
+    _shape(
+        out,
+        x + 70,
+        y + h - 76,
+        220,
+        54,
+        "Linear(up_proj)",
+        fill=green,
+        stroke="#169BFF",
+    )
+    _shape(
+        out,
+        x + w - 280,
+        y + h - 76,
+        230,
+        54,
+        "Linear(gate_proj)",
+        fill=green,
+        stroke="#169BFF",
+    )
+    _shape(
+        out,
+        x + w - 270,
+        y + h - 170,
+        230,
+        54,
+        "SiLU Activation",
+        fill=green,
+        stroke="#169BFF",
+    )
+    _mult(out, x + w // 2, y + h - 140)
+    _shape(
+        out,
+        mid,
+        y + 72,
+        270,
+        54,
+        "Linear(down_proj)",
+        fill=green,
+        stroke="#169BFF",
+    )
+    _arrow(out, x + w // 2, y + h - 22, x + w // 2, y + h - 95)
+    _arrow(out, x + w - 165, y + h - 76, x + w - 165, y + h - 170)
+    _arrow(out, x + w - 165, y + h - 170, x + w // 2 + 25, y + h - 140)
+    _arrow(out, x + 180, y + h - 76, x + w // 2 - 24, y + h - 140)
+    _arrow(out, x + w // 2, y + h - 116, x + w // 2, y + 126)
+    _shape_label(out, "[seq_len, hidden_size]", x + w - 235, y + 57)
+    _shape_label(out, "[seq_len, intermediate_size]", x + 45, y + h - 120)
+
+
+def _draw_moe_panel(
+    out: list[str],
+    x: int,
+    y: int,
+    w: int,
+    h: int,
+    *,
+    experts: str = "routed experts",
+    router_fill: str = "#2EA8F7",
+) -> None:
+    blue = "#3B82F6"
+    green = "#8DD348"
+    _panel(out, x, y, w, h, "MoE", blue, font_size=32)
+    router_x = x + w // 2 - 90
+    router_y = y + h - 86
+    _shape(
+        out,
+        router_x,
+        router_y,
+        180,
+        56,
+        "Router",
+        fill=router_fill,
+        stroke="#0284C7",
+        font_size=20,
+    )
+    _shape(out, x + 80, y + 120, 180, 54, "MLP", fill=green, stroke="#169BFF")
+    _shape(out, x + w // 2 + 20, y + 120, 180, 54, "MLP", fill=green, stroke="#169BFF")
+    _shape(out, x + w - 220, y + 120, 160, 54, "MLP", fill=green, stroke="#169BFF")
+    _text(out, experts, x + 84, y + 100, size=22, fill=blue, weight=700)
+    _text(out, "1 Shared", x + w - 215, y + 100, size=22, fill=blue, weight=700)
+    _text(out, "top-k active", x + 70, y + h - 98, size=20, fill="#EF0000", weight=700)
+    _text(out, "per token", x + 70, y + h - 70, size=18)
+    _text(out, "...", x + w // 2 - 30, y + 157, size=34, weight=700)
+    _arrow(out, router_x + 90, router_y, router_x + 90, y + 200)
+    for ex, ey in (
+        (x + 170, y + 174),
+        (x + w // 2 + 110, y + 174),
+        (x + w - 140, y + 174),
+    ):
+        _arrow(out, router_x + 90, router_y, ex, ey, dashed=True)
+        _arrow(out, ex, ey, x + w // 2, y + 70, dashed=True)
+    _plus(out, x + w // 2, y + 65, fill="#2EA8F7")
+    _arrow(out, x + w // 2, y + 32, x + w // 2, y - 26)
+
+
+def _draw_attention_panel(
+    out: list[str], x: int, y: int, w: int, h: int, title: str
+) -> None:
+    orange = "#FF9F1A"
+    red = "#F00000"
+    _panel(out, x, y, w, h, title, orange, font_size=30)
+    bottom_y = y + h - 82
+    _shape(
+        out,
+        x + 90,
+        bottom_y,
+        260,
+        54,
+        "Linear(Q down_proj)",
+        fill=orange,
+        stroke=orange,
+        kind="trapezoid",
+    )
+    _shape(
+        out,
+        x + 455,
+        bottom_y,
+        330,
+        54,
+        "Linear(KV down_proj)",
+        fill=orange,
+        stroke=orange,
+        kind="trapezoid",
+    )
+    _shape(out, x + 140, bottom_y - 105, 200, 48, "RMSNorm", fill=orange, stroke=orange)
+    _shape(out, x + 520, bottom_y - 105, 200, 48, "RMSNorm", fill=orange, stroke=orange)
+    _shape(
+        out,
+        x + 140,
+        bottom_y - 200,
+        220,
+        50,
+        "Linear(Q up_proj)",
+        fill=orange,
+        stroke=orange,
+        kind="trapezoid",
+    )
+    _shape(
+        out,
+        x + 500,
+        bottom_y - 200,
+        260,
+        50,
+        "Linear(KV up_proj)",
+        fill=orange,
+        stroke=orange,
+        kind="trapezoid",
+    )
+    _shape(out, x + 110, bottom_y - 285, 125, 48, "RoPE", fill=orange, stroke=orange)
+    _shape(out, x + 300, bottom_y - 285, 125, 48, "Cat", fill=orange, stroke=orange)
+    _shape(out, x + 530, bottom_y - 285, 125, 48, "Split", fill=orange, stroke=orange)
+    _shape(out, x + 705, bottom_y - 285, 125, 48, "Cat", fill=orange, stroke=orange)
+    _shape(
+        out, x + 325, bottom_y - 375, 460, 58, "Attention", fill=orange, stroke=orange
+    )
+    _text(out, "Q", x + 210, bottom_y - 316, size=22, fill=red, weight=700)
+    _text(out, "K", x + 565, bottom_y - 316, size=22, fill=red, weight=700)
+    _text(out, "V", x + 745, bottom_y - 316, size=22, fill=red, weight=700)
+    _shape(
+        out,
+        x + 455,
+        y + 74,
+        230,
+        54,
+        "Linear(O)",
+        fill=orange,
+        stroke=orange,
+    )
+    _shape(out, x + 705, bottom_y - 172, 120, 48, "kv cache", fill=red, stroke=red)
+    _shape(out, x + 355, bottom_y - 172, 120, 48, "pe cache", fill=red, stroke=red)
+
+    _arrow(out, x + w // 2, y + h - 10, x + 220, bottom_y + 54)
+    _arrow(out, x + w // 2, y + h - 10, x + 620, bottom_y + 54)
+    _arrow(out, x + 220, bottom_y, x + 240, bottom_y - 57)
+    _arrow(out, x + 620, bottom_y, x + 620, bottom_y - 57)
+    _arrow(out, x + 240, bottom_y - 105, x + 250, bottom_y - 150)
+    _arrow(out, x + 620, bottom_y - 105, x + 620, bottom_y - 150)
+    _arrow(out, x + 250, bottom_y - 200, x + 180, bottom_y - 237)
+    _arrow(out, x + 250, bottom_y - 200, x + 350, bottom_y - 237)
+    _arrow(out, x + 620, bottom_y - 200, x + 592, bottom_y - 237)
+    _arrow(out, x + 620, bottom_y - 200, x + 745, bottom_y - 237)
+    _arrow(out, x + 180, bottom_y - 285, x + 365, bottom_y - 317)
+    _arrow(out, x + 365, bottom_y - 285, x + 470, bottom_y - 317)
+    _arrow(out, x + 592, bottom_y - 285, x + 575, bottom_y - 317)
+    _arrow(out, x + 745, bottom_y - 285, x + 710, bottom_y - 317)
+    _arrow(out, x + 555, bottom_y - 375, x + 570, y + 128)
+    _shape_label(out, "[seq_len, hidden_size]", x + 402, y + h - 20)
+    _shape_label(out, "[seq_len, heads, qk_head_dim]", x + 70, bottom_y - 215)
+    _shape_label(out, "[seq_len, kv_lora_rank]", x + 660, bottom_y - 104)
+
+
+def _draw_router_panel(out: list[str], x: int, y: int, w: int, h: int) -> None:
+    teal = "#4CC9C0"
+    _panel(out, x, y, w, h, "Router (Gate)", teal, font_size=28)
+    _shape(out, x + 80, y + h - 72, 220, 52, "Linear", fill=teal, stroke=teal)
+    _shape(
+        out, x + 80, y + h - 158, 220, 52, "Sigmoid", fill="#FB7573", stroke="#FB7573"
+    )
+    _shape(out, x + 60, y + 78, 125, 56, "Top k", fill=teal, stroke=teal)
+    _shape(out, x + 215, y + 78, 145, 56, "Select / Sum", fill=teal, stroke=teal)
+    _arrow(out, x + 190, y + h - 20, x + 190, y + h - 106)
+    _arrow(out, x + 190, y + h - 158, x + 128, y + 134)
+    _arrow(out, x + 190, y + h - 158, x + 287, y + 134)
+    _arrow(out, x + 185, y + 106, x + 215, y + 106)
+    _shape_label(out, "[seq_len, num_experts]", x + 70, y + h - 174)
+    _shape_label(out, "top_k_index   top_k_weights", x + 40, y + 58)
+
+
+def _draw_index_panel(out: list[str], x: int, y: int, w: int, h: int) -> None:
+    blue = "#84B9FF"
+    _panel(out, x, y, w, h, "Indexer", blue, font_size=26)
+    _shape(
+        out,
+        x + 40,
+        y + 78,
+        w - 80,
+        54,
+        "Select(top k)",
+        fill="#FFFFFF",
+        stroke=blue,
+        text_fill="#7288F4",
+    )
+    _shape(
+        out,
+        x + 58,
+        y + 175,
+        w - 116,
+        62,
+        "Sparse KV blocks",
+        fill="#FFFFFF",
+        stroke=blue,
+        text_fill="#111111",
+    )
+    _arrow(out, x + w // 2, y + h - 24, x + w // 2, y + 237)
+    _arrow(out, x + w // 2, y + 175, x + w // 2, y + 132)
+    _shape_label(out, "index_topk / local + compressed blocks", x + 36, y + h - 42)
+
+
+def _draw_vision_panel(
+    out: list[str], x: int, y: int, w: int, h: int, *, moonvit: bool = False
+) -> None:
+    teal = "#4CC9C0"
+    blue = "#3B82F6"
+    _panel(out, x, y, w, h, "Vision path", teal, font_size=30)
+    _shape(out, x + 58, y + h - 84, 240, 56, "Image / video", fill=teal, stroke=teal)
+    _shape(
+        out,
+        x + 355,
+        y + h - 84,
+        250,
+        56,
+        "Text tokens",
+        fill="#7288F4",
+        stroke=blue,
+    )
+    _shape(
+        out,
+        x + 58,
+        y + h - 190,
+        240,
+        58,
+        "MoonViT" if moonvit else "ViT / SigLIP",
+        fill=teal,
+        stroke=teal,
+    )
+    _shape(
+        out,
+        x + 58,
+        y + h - 300,
+        240,
+        58,
+        "Projector",
+        fill=teal,
+        stroke=teal,
+    )
+    _shape(
+        out,
+        x + 355,
+        y + h - 300,
+        250,
+        58,
+        "LLM Decoder",
+        fill="#7288F4",
+        stroke=blue,
+    )
+    _arrow(out, x + 178, y + h - 84, x + 178, y + h - 132)
+    _arrow(out, x + 178, y + h - 190, x + 178, y + h - 242)
+    _arrow(out, x + 298, y + h - 271, x + 355, y + h - 271)
+    _arrow(out, x + 480, y + h - 84, x + 480, y + h - 242)
+    _shape_label(out, "patch merge / pixel shuffle / mm projector", x + 52, y + 60)
+
+
+def _draw_dit_panel(
+    out: list[str], x: int, y: int, w: int, h: int, *, bimodal: bool = False
+) -> None:
+    orange = "#FF9F1A"
+    purple = "#7E2E9E"
+    _panel(out, x, y, w, h, "DiT denoiser", orange, font_size=30)
+    _shape(
+        out, x + 70, y + h - 76, 230, 54, "Latent tokens", fill=orange, stroke=orange
+    )
+    _shape(
+        out,
+        x + 380,
+        y + h - 76,
+        250,
+        54,
+        "Conditioning",
+        fill="#7288F4",
+        stroke="#3B82F6",
+    )
+    _shape(out, x + 70, y + h - 190, 230, 56, "Attention", fill=orange, stroke=orange)
+    _shape(
+        out,
+        x + 380,
+        y + h - 190,
+        250,
+        56,
+        "MLP / Modulation",
+        fill="#8DD348",
+        stroke="#8DD348",
+    )
+    _shape(
+        out,
+        x + 210,
+        y + 82,
+        300,
+        58,
+        "Video tower + Audio tower" if bimodal else "VAE decode",
+        fill=purple,
+        stroke=purple,
+    )
+    _shape(out, x + w - 210, y + 82, 135, 58, "Cache", fill="#F00000", stroke="#F00000")
+    _arrow(out, x + 185, y + h - 76, x + 185, y + h - 134)
+    _arrow(out, x + 505, y + h - 76, x + 505, y + h - 134)
+    _arrow(out, x + 185, y + h - 190, x + 360, y + 140)
+    _arrow(out, x + 505, y + h - 190, x + 360, y + 140)
+    _arrow(out, x + 510, y + 111, x + w - 210, y + 111)
+    _shape_label(out, "[batch, frames, h*w, channels]", x + 60, y + h - 214)
+
+
+def _draw_generic_details(
+    out: list[str],
+    template: Template,
+    model: str,
+    anchors: dict[str, tuple[int, int]],
+) -> None:
+    tid = template.template_id
+    if tid in {"mla_moe", "moonvit_mla_moe"}:
+        if tid == "moonvit_mla_moe":
+            _draw_vision_panel(out, 600, 155, 590, 300, moonvit=True)
+            _draw_moe_panel(out, 1230, 155, 560, 300, experts="256 experts")
+            _draw_attention_panel(out, 600, 520, 920, 570, "MLA (MHA mode)")
+            _draw_mlp_panel(out, 1535, 520, 330, 420, "MLP(FFN)")
+            _arrow(
+                out,
+                anchors["input"][0],
+                anchors["input"][1],
+                600,
+                730,
+                dashed=True,
+                stroke="#F59E0B",
+            )
+            return
+        _draw_moe_panel(out, 610, 145, 680, 300, experts="routed experts")
+        _draw_mlp_panel(out, 1330, 145, 470, 300, "MLP(FFN)")
+        _draw_attention_panel(out, 610, 510, 920, 580, "MLA (MHA mode)")
+        _arrow(
+            out,
+            anchors["ffn"][0],
+            anchors["ffn"][1],
+            610,
+            280,
+            dashed=True,
+            stroke="#3B82F6",
+        )
+        _arrow(
+            out,
+            anchors["attention"][0],
+            anchors["attention"][1],
+            610,
+            820,
+            dashed=True,
+            stroke="#F59E0B",
+        )
+        return
+
+    if tid == "dsa_moe":
+        _draw_moe_panel(out, 610, 145, 650, 295, experts="routed experts")
+        _draw_mlp_panel(out, 1300, 145, 480, 295, "MLP(FFN)")
+        _draw_attention_panel(out, 610, 510, 840, 560, "DSA (MQA mode)")
+        _draw_index_panel(out, 1490, 610, 340, 330)
+        _arrow(
+            out,
+            anchors["ffn"][0],
+            anchors["ffn"][1],
+            610,
+            280,
+            dashed=True,
+            stroke="#3B82F6",
+        )
+        _arrow(
+            out,
+            anchors["attention"][0],
+            anchors["attention"][1],
+            610,
+            820,
+            dashed=True,
+            stroke="#F59E0B",
+        )
+        return
+
+    if tid in {"decoder_moe", "swa_moe_mtp"}:
+        _draw_moe_panel(out, 610, 145, 650, 315, experts="routed experts")
+        _draw_router_panel(out, 1300, 145, 430, 315)
+        title = "SWA / GQA" if tid == "swa_moe_mtp" else "GQA / MQA Attention"
+        _draw_attention_panel(out, 610, 530, 875, 540, title)
+        _draw_mlp_panel(out, 1510, 535, 330, 410, "Expert MLP")
+        if tid == "swa_moe_mtp":
+            _shape(
+                out,
+                1270,
+                470,
+                230,
+                56,
+                "Attention sink",
+                fill="#F00000",
+                stroke="#F00000",
+            )
+        _arrow(
+            out,
+            anchors["ffn"][0],
+            anchors["ffn"][1],
+            610,
+            305,
+            dashed=True,
+            stroke="#3B82F6",
+        )
+        _arrow(
+            out,
+            anchors["attention"][0],
+            anchors["attention"][1],
+            610,
+            800,
+            dashed=True,
+            stroke="#F59E0B",
+        )
+        return
+
+    if tid == "decoder_dense":
+        _draw_attention_panel(out, 610, 185, 860, 570, "GQA / MHA Attention")
+        _draw_mlp_panel(out, 610, 805, 650, 300, "Dense MLP")
+        _arrow(
+            out,
+            anchors["attention"][0],
+            anchors["attention"][1],
+            610,
+            520,
+            dashed=True,
+            stroke="#F59E0B",
+        )
+        _arrow(
+            out,
+            anchors["ffn"][0],
+            anchors["ffn"][1],
+            610,
+            930,
+            dashed=True,
+            stroke="#8DD348",
+        )
+        return
+
+    if tid == "hybrid_delta_moe":
+        _panel(out, 610, 145, 625, 335, "Hybrid block cycle", "#F59E0B", font_size=30)
+        _shape(
+            out, 675, 365, 235, 56, "Gated DeltaNet", fill="#FF9F1A", stroke="#FF9F1A"
+        )
+        _shape(
+            out, 945, 365, 220, 56, "Gated DeltaNet", fill="#FF9F1A", stroke="#FF9F1A"
+        )
+        _shape(
+            out, 675, 245, 235, 56, "Gated DeltaNet", fill="#FF9F1A", stroke="#FF9F1A"
+        )
+        _shape(
+            out, 945, 245, 220, 56, "Gated Attention", fill="#7E2E9E", stroke="#7E2E9E"
+        )
+        _arrow(out, 910, 393, 945, 393)
+        _arrow(out, 1055, 365, 1055, 301)
+        _arrow(out, 945, 273, 910, 273)
+        _arrow(out, 792, 245, 792, 301)
+        _draw_moe_panel(out, 1280, 145, 510, 335, experts="MoE / FFN")
+        _draw_attention_panel(out, 610, 545, 900, 525, "Linear-state + gated attention")
+        _shape(
+            out, 1540, 600, 250, 64, "Recurrent state", fill="#F00000", stroke="#F00000"
+        )
+        _arrow(
+            out,
+            anchors["attention"][0],
+            anchors["attention"][1],
+            610,
+            780,
+            dashed=True,
+            stroke="#F59E0B",
+        )
+        return
+
+    if tid == "vlm":
+        _draw_vision_panel(out, 610, 145, 640, 360)
+        _draw_attention_panel(out, 610, 560, 850, 510, "LLM Attention")
+        _draw_mlp_panel(out, 1490, 575, 340, 390, "LLM FFN / MoE")
+        _arrow(
+            out,
+            anchors["input"][0],
+            anchors["input"][1],
+            610,
+            360,
+            dashed=True,
+            stroke="#4CC9C0",
+        )
+        return
+
+    if tid in {"diffusion_dit", "diffusion_moe_video", "mova_bimodal_dit"}:
+        _draw_dit_panel(out, 610, 145, 770, 450, bimodal=tid == "mova_bimodal_dit")
+        if tid == "diffusion_moe_video":
+            _draw_moe_panel(
+                out,
+                1420,
+                145,
+                390,
+                450,
+                experts="timestep experts",
+                router_fill="#4CC9C0",
+            )
+        else:
+            _panel(out, 1420, 145, 390, 450, "Acceleration", "#F00000", font_size=28)
+            _shape(
+                out, 1485, 260, 260, 58, "TeaCache", fill="#F00000", stroke="#F00000"
+            )
+            _shape(
+                out, 1485, 365, 260, 58, "CUDA Graph", fill="#F00000", stroke="#F00000"
+            )
+        _draw_attention_panel(out, 610, 660, 870, 410, "DiT block detail")
+        _arrow(
+            out,
+            anchors["attention"][0],
+            anchors["attention"][1],
+            610,
+            820,
+            dashed=True,
+            stroke="#F59E0B",
+        )
+        return
+
+    if tid == "llada":
+        _draw_attention_panel(
+            out, 610, 160, 840, 520, "Bidirectional denoising Transformer"
+        )
+        _panel(out, 1490, 160, 340, 520, "Mask schedule", "#F00000", font_size=28)
+        _shape(
+            out, 1540, 300, 235, 58, "Mask predictor", fill="#F00000", stroke="#F00000"
+        )
+        _shape(
+            out, 1540, 425, 235, 58, "Refine tokens", fill="#7288F4", stroke="#3B82F6"
+        )
+        _draw_mlp_panel(out, 610, 745, 600, 300, "MLP")
+        return
+
+    if tid == "reranker":
+        _panel(out, 610, 170, 760, 390, "Encoder reranker", "#7288F4", font_size=30)
+        _shape(out, 680, 430, 240, 58, "Query tokens", fill="#7288F4", stroke="#3B82F6")
+        _shape(
+            out, 1010, 430, 240, 58, "Document tokens", fill="#7288F4", stroke="#3B82F6"
+        )
+        _shape(
+            out,
+            800,
+            300,
+            330,
+            60,
+            "Bidirectional encoder",
+            fill="#FF9F1A",
+            stroke="#FF9F1A",
+        )
+        _shape(out, 850, 190, 230, 58, "Score head", fill="#8DD348", stroke="#8DD348")
+        _arrow(out, 800, 430, 900, 360)
+        _arrow(out, 1130, 430, 1030, 360)
+        _arrow(out, 965, 300, 965, 248)
+        _draw_mlp_panel(out, 610, 645, 600, 330, "Classifier MLP")
+        return
+
+    if tid in {"tts_dual_ar", "audio_hybrid_serving"}:
+        _panel(
+            out, 610, 150, 760, 420, "Audio generation stack", "#4CC9C0", font_size=30
+        )
+        _shape(
+            out,
+            690,
+            445,
+            230,
+            58,
+            "Text / reference audio",
+            fill="#4CC9C0",
+            stroke="#4CC9C0",
+        )
+        _shape(out, 1000, 445, 230, 58, "RVQ / codec", fill="#FF9F1A", stroke="#FF9F1A")
+        _shape(out, 690, 320, 230, 58, "Slow AR", fill="#7288F4", stroke="#3B82F6")
+        _shape(out, 1000, 320, 230, 58, "Fast AR", fill="#7288F4", stroke="#3B82F6")
+        _shape(out, 845, 200, 230, 58, "DAC vocoder", fill="#8DD348", stroke="#8DD348")
+        _arrow(out, 805, 445, 805, 378)
+        _arrow(out, 1115, 445, 1115, 378)
+        _arrow(out, 920, 320, 1000, 349)
+        _arrow(out, 1115, 320, 960, 258)
+        _draw_attention_panel(out, 610, 650, 820, 410, "Paged KV / audio state")
+        _shape(
+            out, 1470, 250, 300, 70, "SGLang engine", fill="#7288F4", stroke="#3B82F6"
+        )
+        _shape(
+            out,
+            1470,
+            370,
+            300,
+            70,
+            "Audio I/O server",
+            fill="#4CC9C0",
+            stroke="#4CC9C0",
+        )
+        return
+
+    _draw_attention_panel(out, 610, 185, 860, 570, "Attention")
+    _draw_mlp_panel(out, 610, 805, 650, 300, "FFN")
+
+
 def svg_for(model: str, template: Template) -> str:
-    width = 980
-    node_w = 520
-    node_h = 78
-    gap = 26
-    x = (width - node_w) // 2
-    title_h = 76
-    height = title_h + len(template.nodes) * (node_h + gap) + 46
+    width = 1900
+    height = 1160
+    primary = primary_style(model, template)
+    title = f"{model} Architecture"
+    title_font = max(30, min(38, int(2600 / max(len(title), 1))))
     out: list[str] = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">',
         "<defs>",
-        '<filter id="shadow" x="-5%" y="-5%" width="110%" height="120%"><feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#0F172A" flood-opacity="0.14"/></filter>',
+        '<marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L10,5 L0,10 z" fill="#111111"/></marker>',
         "</defs>",
-        '<rect width="100%" height="100%" fill="#F8FAFC"/>',
-        f'<text x="{width // 2}" y="36" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="24" font-weight="700" fill="#111827">{escape(model)} architecture</text>',
-        f'<text x="{width // 2}" y="60" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="13" fill="#475569">Generated fallback: {escape(template.description)}</text>',
+        '<rect class="architecture-grid" width="100%" height="100%" fill="#FFFFFF"/>',
+        f'<text x="{width // 2}" y="66" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="{title_font}" font-weight="700" fill="#111111">{escape(title)}</text>',
+        f'<text x="{width // 2}" y="106" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="22" fill="#111111">Generated in InfraTech-style layout from SGLang model code surfaces</text>',
+        f'<text x="{width // 2}" y="136" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="16" fill="#555555">{escape(_source_note(template))}</text>',
     ]
-
-    positions: dict[str, tuple[int, int]] = {}
-    for i, node in enumerate(template.nodes):
-        y = title_h + i * (node_h + gap)
-        positions[node.key] = (x, y)
-        fill, stroke = COLORS.get(node.kind, ("#FFFFFF", "#64748B"))
-        out.append(
-            f'<rect x="{x}" y="{y}" width="{node_w}" height="{node_h}" rx="12" fill="{fill}" stroke="{stroke}" stroke-width="2" filter="url(#shadow)"/>'
-        )
-        out.append(
-            f'<text x="{x + 24}" y="{y + 30}" font-family="Inter,Arial,sans-serif" font-size="18" font-weight="700" fill="#0F172A">{escape(node.title)}</text>'
-        )
-        for j, line in enumerate(wrap_svg_text(node.subtitle)):
-            out.append(
-                f'<text x="{x + 24}" y="{y + 54 + j * 15}" font-family="Inter,Arial,sans-serif" font-size="13" fill="#334155">{escape(line)}</text>'
-            )
-
-    for src, dst in template.edges:
-        if src not in positions or dst not in positions:
-            continue
-        sx, sy = positions[src]
-        dx, dy = positions[dst]
-        x1 = sx + node_w // 2
-        y1 = sy + node_h
-        x2 = dx + node_w // 2
-        y2 = dy
-        out.append(
-            f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2 - 8}" stroke="#64748B" stroke-width="2"/>'
-        )
-        out.append(
-            f'<polygon points="{x2 - 6},{y2 - 8} {x2 + 6},{y2 - 8} {x2},{y2}" fill="#64748B"/>'
-        )
-
+    anchors = _draw_left_spine(out, model, template, primary)
+    _draw_generic_details(out, template, model, anchors)
+    _text(
+        out,
+        "context / vocab: read from concrete model config when refining",
+        96,
+        1135,
+        size=17,
+        weight=700,
+    )
+    _text(
+        out,
+        "Generated diagram: module-level; public originals are returned unchanged when available",
+        1280,
+        1135,
+        size=14,
+        fill="#666666",
+    )
     out.append("</svg>")
     return "\n".join(out) + "\n"
 
