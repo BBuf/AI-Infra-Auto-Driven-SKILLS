@@ -131,6 +131,26 @@ class CompareBenchmarkResultsTest(unittest.TestCase):
         self.assertNotIn("mmlu_accuracy", text)
         self.assertNotIn("gsm8k_accuracy", text)
 
+    def test_failed_candidate_table_escapes_markdown_cells(self) -> None:
+        rows = [
+            {
+                "framework": "trt|llm",
+                "candidate_id": "trt|bad",
+                "status": "failed|startup",
+                "failure_reason": "server | exited",
+                "sla": {"passed": False},
+                "metrics": {},
+                "hardware": {"gpu_count": 1},
+            }
+        ]
+
+        summary = self.mod.render_markdown(rows)
+
+        self.assertIn("trt\\|llm", summary)
+        self.assertIn("trt\\|bad", summary)
+        self.assertIn("failed\\|startup", summary)
+        self.assertIn("server \\| exited", summary)
+
     def test_renders_scenario_tables(self) -> None:
         rows = [
             {
@@ -183,7 +203,10 @@ class CompareBenchmarkResultsTest(unittest.TestCase):
 
         scenario_winners = self.mod.best_by_framework_and_scenario(rows)
         self.assertEqual(
-            {(row["framework"], row["workload"]["scenario"]) for row in scenario_winners},
+            {
+                (row["framework"], row["workload"]["scenario"])
+                for row in scenario_winners
+            },
             {("sglang", "chat"), ("vllm", "chat"), ("sglang", "summarization")},
         )
 

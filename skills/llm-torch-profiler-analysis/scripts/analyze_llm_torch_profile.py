@@ -350,25 +350,6 @@ def stage_display(stage: str) -> str:
     return kernel_helpers.stage_label(stage)
 
 
-def pick_trace_for_stage(stage_to_trace: Dict[str, Path], stage: str) -> Optional[Path]:
-    if stage in stage_to_trace:
-        return stage_to_trace[stage]
-    if "all" in stage_to_trace:
-        return stage_to_trace["all"]
-    if len(stage_to_trace) == 1:
-        return next(iter(stage_to_trace.values()))
-    return None
-
-
-def build_stage_trace_map(trace_paths: Sequence[Path]) -> Dict[str, Path]:
-    stage_map: Dict[str, Path] = {}
-    for trace_path in sorted(
-        trace_paths, key=lambda item: (stage_index(parse_stage(item)), item.name)
-    ):
-        stage_map[parse_stage(trace_path)] = trace_path
-    return stage_map
-
-
 def pick_stage_value(stage_to_value: Dict[str, object], stage: str) -> Optional[object]:
     if stage in stage_to_value:
         return stage_to_value[stage]
@@ -604,6 +585,7 @@ def run_triage(args: argparse.Namespace) -> int:
 
     kernel_rows_rendered: List[dict] = []
     fuse_rows_rendered: List[dict] = []
+    formal_stage_payloads: Dict[str, dict] = {}
 
     for formal_trace in formal_traces:
         trace = load_trace_json(formal_trace)
@@ -619,7 +601,6 @@ def run_triage(args: argparse.Namespace) -> int:
             launch_events
         )
         formal_site_context_cache = {}
-        formal_local_stage_payloads: Dict[str, dict] = {}
         for stage_name, stage_kernels in stage_groups.items():
             local_site_stats = kernel_helpers.aggregate_kernel_sites(
                 stage_kernels,
@@ -628,14 +609,9 @@ def run_triage(args: argparse.Namespace) -> int:
                 launches_by_correlation=formal_launches_by_correlation,
                 site_context_cache=formal_site_context_cache,
             )
-            formal_local_stage_payloads[stage_name] = (
-                kernel_helpers.build_stage_payload(
-                    local_site_stats,
-                    {
-                        kernel.canonical_name: kernel.category
-                        for kernel in stage_kernels
-                    },
-                )
+            formal_stage_payloads[stage_name] = kernel_helpers.build_stage_payload(
+                local_site_stats,
+                {kernel.canonical_name: kernel.category for kernel in stage_kernels},
             )
         trace_total_us = sum(kernel.dur for kernel in kernels)
         for stage in sorted(stage_groups, key=stage_index):
@@ -659,9 +635,7 @@ def run_triage(args: argparse.Namespace) -> int:
                 stage=stage,
                 kernel_stats=kernel_stats,
                 kernel_categories=kernel_categories,
-                local_stage_payload=formal_local_stage_payloads.get(
-                    stage, {"kernels": {}}
-                ),
+                local_stage_payload=formal_stage_payloads.get(stage, {"kernels": {}}),
                 external_kernel_map=mapping_kernel_map,
             )
             visible_kernel_rows = kernel_helpers.limit_kernel_rows(
@@ -742,7 +716,7 @@ def run_triage(args: argparse.Namespace) -> int:
             )
             source_map = overlap_helpers.merge_source_map_from_kernel_payload(
                 source_map,
-                pick_stage_value(formal_local_stage_payloads, stage),
+                pick_stage_value(formal_stage_payloads, stage),
             )
             stage_rows = overlap_helpers.build_action_rows(
                 aggregates,

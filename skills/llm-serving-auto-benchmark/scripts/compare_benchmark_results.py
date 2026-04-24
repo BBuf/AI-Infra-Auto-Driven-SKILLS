@@ -267,11 +267,11 @@ def render_markdown(rows: list[dict[str, Any]]) -> str:
         for row in failed:
             lines.append(
                 "| {framework} | {candidate} | {status} | {sla} | {reason} |".format(
-                    framework=_get(row, "framework", ""),
-                    candidate=_get(row, "candidate_id", ""),
-                    status=_get(row, "status", ""),
-                    sla=_bool(row, "sla.passed"),
-                    reason=str(_get(row, "failure_reason", "")).replace("|", "\\|"),
+                    framework=_cell(_get(row, "framework", "")),
+                    candidate=_cell(_get(row, "candidate_id", "")),
+                    status=_cell(_get(row, "status", "")),
+                    sla=_cell(_bool(row, "sla.passed")),
+                    reason=_cell(_get(row, "failure_reason", "")),
                 )
             )
     return "\n".join(lines) + "\n"

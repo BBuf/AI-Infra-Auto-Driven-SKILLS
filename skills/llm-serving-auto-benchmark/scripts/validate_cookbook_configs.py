@@ -140,6 +140,8 @@ def _max_required_sequence(dataset: dict[str, Any]) -> int:
         raise ValueError("dataset.input_len and dataset.output_len must be lists")
     if len(input_len) != len(output_len):
         raise ValueError("dataset.input_len and dataset.output_len must be aligned")
+    if not input_len:
+        raise ValueError("dataset.input_len and dataset.output_len must not be empty")
     return max(int(i) + int(o) for i, o in zip(input_len, output_len, strict=True))
 
 
@@ -231,6 +233,7 @@ def _validate_framework(
     config: dict[str, Any],
     framework: str,
     help_flags: dict[str, set[str]] | None,
+    max_candidates: int,
 ) -> list[str]:
     errors: list[str] = []
     server = config["frameworks"].get(framework)
@@ -247,7 +250,8 @@ def _validate_framework(
     if not isinstance(search_space, dict):
         errors.append(f"{framework}: search_space must be a mapping")
         search_space = {}
-    if not isinstance(server.get("server_command"), str):
+    server_command_is_valid = isinstance(server.get("server_command"), str)
+    if not server_command_is_valid:
         errors.append(f"{framework}: server_command must be a string")
 
     for key in set(base_flags) | set(search_space):
@@ -262,14 +266,17 @@ def _validate_framework(
         if "backend" in search_space:
             errors.append("tensorrt_llm: backend must not appear in search_space")
 
-    max_candidates = int(config["search"].get("max_candidates_per_framework", 1))
     candidates = _candidate_dicts(base_flags, search_space, max_candidates)
     if not candidates:
         errors.append(f"{framework}: no candidates generated")
-    for candidate in candidates:
-        command = render_command(framework, config, candidate)
-        if not command:
-            errors.append(f"{framework}: rendered an empty command")
+    can_render = server_command_is_valid and isinstance(
+        config.get("model", {}).get("name"), str
+    )
+    if can_render:
+        for candidate in candidates:
+            command = render_command(framework, config, candidate)
+            if not command:
+                errors.append(f"{framework}: rendered an empty command")
 
     return errors
 
@@ -297,15 +304,28 @@ def validate_config(
         errors.append(str(exc))
         required_sequence = 0
 
-    if int(config.get("search", {}).get("max_candidates_per_framework", 0)) < 1:
-        errors.append("search.max_candidates_per_framework must be positive")
+    search = config.get("search")
+    if not isinstance(search, dict):
+        errors.append("search must be a mapping")
+        max_candidates = 1
+    else:
+        try:
+            max_candidates = int(search.get("max_candidates_per_framework", 0))
+        except (TypeError, ValueError):
+            errors.append("search.max_candidates_per_framework must be an integer")
+            max_candidates = 1
+        if max_candidates < 1:
+            errors.append("search.max_candidates_per_framework must be positive")
+            max_candidates = 1
 
     frameworks = config.get("frameworks")
     if not isinstance(frameworks, dict):
         return errors + ["frameworks must be a mapping"]
 
     for framework in FRAMEWORKS:
-        errors.extend(_validate_framework(config, framework, help_flags))
+        errors.extend(
+            _validate_framework(config, framework, help_flags, max_candidates)
+        )
 
     for framework in FRAMEWORKS:
         if not _enabled(config, framework):
@@ -314,11 +334,17 @@ def validate_config(
         fw = frameworks[framework]
         base_flags = fw.get("base_server_flags", {}) or {}
         search_space = fw.get("search_space", {}) or {}
+        if not isinstance(base_flags, dict) or not isinstance(search_space, dict):
+            continue
 
-        if framework == "sglang":
-            base_value = int(base_flags.get(key, required_sequence))
-        else:
-            base_value = int(base_flags.get(key, 0))
+        try:
+            if framework == "sglang":
+                base_value = int(base_flags.get(key, required_sequence))
+            else:
+                base_value = int(base_flags.get(key, 0))
+        except (TypeError, ValueError):
+            errors.append(f"{framework}: base {key} is not an integer")
+            continue
         if base_value < required_sequence:
             errors.append(
                 f"{framework}: base {key} ({base_value}) is smaller than the largest dataset scenario ({required_sequence})"

@@ -15,7 +15,9 @@ VALIDATOR = SKILL_ROOT / "scripts" / "validate_cookbook_configs.py"
 
 
 def load_validator():
-    spec = importlib.util.spec_from_file_location("validate_cookbook_configs", VALIDATOR)
+    spec = importlib.util.spec_from_file_location(
+        "validate_cookbook_configs", VALIDATOR
+    )
     assert spec and spec.loader
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
@@ -65,7 +67,9 @@ class LlmServingCookbookConfigsTest(unittest.TestCase):
         self.assertIn("--tp-size 8", sglang_command)
 
         vllm = config["frameworks"]["vllm"]
-        vllm_command = self.mod.render_command("vllm", config, vllm["base_server_flags"])
+        vllm_command = self.mod.render_command(
+            "vllm", config, vllm["base_server_flags"]
+        )
         self.assertIn("vllm serve Qwen/Qwen3-235B-A22B", vllm_command)
         self.assertIn("--tensor-parallel-size 8", vllm_command)
         self.assertNotIn("--tp-size", vllm_command)
@@ -101,6 +105,34 @@ class LlmServingCookbookConfigsTest(unittest.TestCase):
             for path in self.config_paths():
                 with self.subTest(path=path.name):
                     self.assertEqual(self.mod.validate_config(path, help_flags), [])
+
+    def test_invalid_config_reports_errors_without_crashing(self) -> None:
+        config = {
+            "schema_version": 1,
+            "source": {"kind": "llm_serving_cookbook"},
+            "model": {"name": "example/model"},
+            "dataset": {"input_len": [], "output_len": []},
+            "frameworks": {
+                "sglang": {
+                    "enabled": True,
+                    "base_server_flags": {},
+                    "search_space": {},
+                },
+                "vllm": {"enabled": False},
+                "tensorrt_llm": {"enabled": False},
+            },
+        }
+
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "invalid.yaml"
+            path.write_text(yaml.safe_dump(config), encoding="utf-8")
+            errors = self.mod.validate_config(path)
+
+        self.assertIn(
+            "dataset.input_len and dataset.output_len must not be empty", errors
+        )
+        self.assertIn("search must be a mapping", errors)
+        self.assertIn("sglang: server_command must be a string", errors)
 
 
 if __name__ == "__main__":
