@@ -1,97 +1,374 @@
-# SGLang DeepSeek-V4 Support and Optimization Timeline
+# sglang DeepSeek V4 Model PR Optimization History
 
-Scope: DeepSeek-V4 Flash/Pro cookbook support, H200 FP8 checkpoint selection, Blackwell FP4 recipes, DeepEP budgets, MTP/EAGLE, CP, and PD-disaggregation command generation.
+## Scope
 
-Evidence snapshot: SGLang `origin/main` `bca3dd958` (`2026-04-24`). Full dossier: `skills/model-optimization/sglang/sglang-deepseek-v4-optimization/references/pr-history.md`.
+- Rebuilt on: 2026-04-25
+- Source baseline: `sgl-project/sglang` trace worktree commit `880599cd43`
+- PR collection rule: run `git log --name-only -- <model-files>` on model implementation, config, processor, parser, docs/tests, filter by model keywords in commit subjects, then read each PR's final diff through the GitHub Pull Request files API.
+- Preservation rule: PRs explicitly cited by the previous history/skill are retained even if current implementation files no longer trace to them, and the card marks that source.
+- Diffusion model families have been removed from this history set and are no longer part of model optimization skills.
 
-## Diff-Reviewed PRs
+## Implementation File Coverage
 
-- #23605 added the DeepSeek-V4 cookbook and command generator. Diff reviewed: `2113` lines, `4` files. It introduced the Flash/Pro, B200/GB300/H200 matrix and commented-out unverified recipe behavior.
-- #23617 changed H200 Flash from a placeholder to `sgl-project/DeepSeek-V4-Flash-FP8`. Diff reviewed: `33` lines, `1` file.
-- #23628 added a cookbook note warning H200 users to use `sgl-project` checkpoints. Diff reviewed: `24` lines, `1` file.
-- #23622 added the Docker launch skeleton, expanded verified recipe rows, and cleaned CP `--max-running-requests`. Diff reviewed: `292` lines, `2` files.
-- #23634 changed H200 Pro to `sgl-project/DeepSeek-V4-Pro-FP8`. Diff reviewed: `26` lines, `1` file.
+| File | Git-traced PRs |
+| --- | --- |
+| `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` | [#23605](https://github.com/sgl-project/sglang/pull/23605), [#23622](https://github.com/sgl-project/sglang/pull/23622), [#23628](https://github.com/sgl-project/sglang/pull/23628), [#23684](https://github.com/sgl-project/sglang/pull/23684), [#23689](https://github.com/sgl-project/sglang/pull/23689), [#23691](https://github.com/sgl-project/sglang/pull/23691), [#23697](https://github.com/sgl-project/sglang/pull/23697) |
+| `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` | [#23605](https://github.com/sgl-project/sglang/pull/23605), [#23617](https://github.com/sgl-project/sglang/pull/23617), [#23622](https://github.com/sgl-project/sglang/pull/23622), [#23634](https://github.com/sgl-project/sglang/pull/23634), [#23689](https://github.com/sgl-project/sglang/pull/23689), [#23690](https://github.com/sgl-project/sglang/pull/23690), [#23691](https://github.com/sgl-project/sglang/pull/23691), [#23697](https://github.com/sgl-project/sglang/pull/23697), [#23698](https://github.com/sgl-project/sglang/pull/23698) |
 
-## Current Contract
+## PR Coverage Summary
 
-H200 commands must use SGLang FP8 checkpoints; Blackwell commands use DeepSeek Flash/Pro repos. Unverified command-generator cells are intentionally commented out. Parser toggles are `deepseek-v4` for reasoning and `deepseekv4` for tool calls.
+- Git-traced PRs: 11
+- Extra PRs preserved from existing docs: 0
+- Total PRs in this document: 11
+- File trace command: `git log --name-only -- <model-files>`
+- Diff audit source: GitHub Pull Request files API
 
-<!-- MODEL_PR_DIFF_AUDIT:START en -->
+## Timeline
 
-## PR Diff Audit Cards (2026-04-25 rebuild)
+| Date | PR | State | Title | Main files |
+| --- | --- | --- | --- | --- |
+| 2026-04-24 | [#23605](https://github.com/sgl-project/sglang/pull/23605) | merged | Add DeepSeek V4 cookbook | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
+| 2026-04-24 | [#23617](https://github.com/sgl-project/sglang/pull/23617) | merged | Further update Deepseek V4 docs | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` |
+| 2026-04-24 | [#23628](https://github.com/sgl-project/sglang/pull/23628) | merged | [codex] docs: note H200 DeepSeek-V4 checkpoint | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
+| 2026-04-24 | [#23622](https://github.com/sgl-project/sglang/pull/23622) | merged | Again update DeepSeek V4 cookbook | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
+| 2026-04-24 | [#23634](https://github.com/sgl-project/sglang/pull/23634) | merged | Update pro fp8 checkpoint in DeepSeek V4 cookbook | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` |
+| 2026-04-25 | [#23684](https://github.com/sgl-project/sglang/pull/23684) | merged | docs(DeepSeek-V4): note SGLANG_FIX_DSV4_BASE_MODEL_LOAD for base models | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
+| 2026-04-25 | [#23689](https://github.com/sgl-project/sglang/pull/23689) | merged | docs(DeepSeek-V4): mark b200\|small\|pd-disagg + h200\|small\|{cp,pd-disagg} verified | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
+| 2026-04-25 | [#23691](https://github.com/sgl-project/sglang/pull/23691) | merged | docs(DeepSeek-V4): mark gb300\|{small,big}\|{cp,pd-disagg} verified + GB300-specific fixes | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
+| 2026-04-25 | [#23690](https://github.com/sgl-project/sglang/pull/23690) | merged | Small udpate gb300 recipe for deepseek v4 | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` |
+| 2026-04-25 | [#23697](https://github.com/sgl-project/sglang/pull/23697) | merged | update: b300 container for dsv4 | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
+| 2026-04-25 | [#23698](https://github.com/sgl-project/sglang/pull/23698) | merged | docs(DeepSeek-V4): bump GB300 Pro PD decode --mem-fraction-static 0.83 → 0.9 | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` |
 
-This section re-audits `DeepSeek V4` against `sgl-project/sglang` Pull Request metadata and file-level patches. Acceptance rule: every PR needs status, code surface, file-level diff digest, support/optimization interpretation, and verification risk notes; if no public PR is found, keep an explicit no-match conclusion instead of inventing history.
-
-### Timeline
-
-| Created | PR | State | Title | Code surface | Main diff files |
-| --- | ---: | --- | --- | --- | --- |
-| 2026-04-24 | [#23605](https://github.com/sgl-project/sglang/pull/23605) | merged | Add DeepSeek V4 cookbook | docs/config | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/cookbook/autoregressive/intro.mdx` |
-| 2026-04-24 | [#23617](https://github.com/sgl-project/sglang/pull/23617) | merged | Further update Deepseek V4 docs | docs/config | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` |
-| 2026-04-24 | [#23622](https://github.com/sgl-project/sglang/pull/23622) | merged | Again update DeepSeek V4 cookbook | docs/config | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
-| 2026-04-24 | [#23628](https://github.com/sgl-project/sglang/pull/23628) | merged | [codex] docs: note H200 DeepSeek-V4 checkpoint | docs/config | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
-| 2026-04-24 | [#23634](https://github.com/sgl-project/sglang/pull/23634) | merged | Update pro fp8 checkpoint in DeepSeek V4 cookbook | docs/config | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` |
-
-### File-level PR diff reading notes
+## Per-PR Diff Audit Cards
 
 ### PR #23605 - Add DeepSeek V4 cookbook
 
 - Link: https://github.com/sgl-project/sglang/pull/23605
-- Status/date: `merged`, created 2026-04-24, merged 2026-04-24; author `wisclmy0611`.
-- Diff scope read: `4` files, `+1024/-1`; areas: docs/config; keywords: doc, attention, config, cuda, deepep, eagle, expert, flash, fp4, fp8.
+- Status/date: merged / 2026-04-24
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; associated commits `492883c8ca66`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 4 files, +1024/-1, 1041 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For DeepSeek V4, this PR adds or enables a model support/runtime surface. Title: "Add DeepSeek V4 cookbook". The diff centers on `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. The PR body has no extra context, so this assessment comes from the title, file list, and patch.
+- Key implementation: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` added +569/-0 (569 lines); hunks: -0,0 +1,569; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` added +453/-0 (453 lines); hunks: -0,0 +1,453.
 - Code diff details:
-  - `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` added +569/-0 (569 lines); hunks: +export const DeepSeekV4Deployment = () => {; symbols: uses
-  - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` added +453/-0 (453 lines); hunks: +---
-  - `docs_new/cookbook/autoregressive/intro.mdx` modified +1/-1 (2 lines); hunks: metatags:
-  - `docs_new/docs.json` modified +1/-0 (1 lines); hunks: {
-- Optimization/support interpretation: The concrete diff surface is `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/cookbook/autoregressive/intro.mdx`; keywords observed in patches: doc, attention, config, cuda, deepep, eagle. Impact reading: docs or config changed; verify serve flags, defaults, and cookbook commands against runtime code.
-- Risk and verification: Re-run the model path that exercises `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/cookbook/autoregressive/intro.mdx`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` added +569/-0 (569 lines); hunks: -0,0 +1,569
+  - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` added +453/-0 (453 lines); hunks: -0,0 +1,453
+- Key code excerpts:
+
+```diff
+diff -- docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx
+@@ -0,0 +1,569 @@
++export const DeepSeekV4Deployment = () => {
++  // DeepSeek-V4 deployment matrix (small / real checkpoint):
++  //   Hardware × Recipe → concrete launch command.
++  //
++  //   Hardware (quantization determined by GPU generation):
++  //     B200  → FP4 weights, Flash TP=4 / Pro TP=8 single-node
+diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
+@@ -0,0 +1,453 @@
++---
++title: DeepSeek-V4
++metatags:
++    description: "Deploy DeepSeek-V4 with SGLang — a next-generation MoE model from DeepSeek. Blackwell deployments use the FP4 checkpoint; Hopper deployments use the FP8 checkpoi
++tag: NEW
++---
+```
+
+- Reviewed files:
+  - docs: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` added +569/-0; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` added +453/-0
+- Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/cookbook/autoregressive/intro.mdx`, `docs_new/docs.json`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #23617 - Further update Deepseek V4 docs
 
 - Link: https://github.com/sgl-project/sglang/pull/23617
-- Status/date: `merged`, created 2026-04-24, merged 2026-04-24; author `fzyzcjy`.
-- Diff scope read: `1` files, `+5/-6`; areas: docs/config; keywords: doc, flash, fp4, fp8, kv, spec.
+- Status/date: merged / 2026-04-24
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; associated commits `734e1e2965cb`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +5/-6, 18 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For DeepSeek V4, this PR adds or enables a model support/runtime surface. Title: "Further update Deepseek V4 docs". The diff centers on `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`. PR body context: ## Motivation ## Modifications ## Accuracy Tests ## Speed Tests and Profiling ## Checklist - [ ] Format your code according to the Format code with pre-commit. - [ ] Add unit te...
+- Key implementation: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +5/-6 (11 lines); hunks: -137,12 +137,11 @@ export const DeepSeekV4Deployment = () => {.
 - Code diff details:
-  - `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +5/-6 (11 lines); hunks: export const DeepSeekV4Deployment = () => {
-- Optimization/support interpretation: The concrete diff surface is `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; keywords observed in patches: doc, flash, fp4, fp8, kv, spec. Impact reading: docs or config changed; verify serve flags, defaults, and cookbook commands against runtime code.
-- Risk and verification: Re-run the model path that exercises `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +5/-6 (11 lines); hunks: -137,12 +137,11 @@ export const DeepSeekV4Deployment = () => {
+- Key code excerpts:
 
-### PR #23622 - Again update DeepSeek V4 cookbook
+```diff
+diff -- docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx
+@@ -137,12 +137,11 @@ export const DeepSeekV4Deployment = () => {
+-    // H200 needs a separate FP8-only Instruct ckpt (Flash / Pro public repos
+-    // ship FP4-mixed weights). That ckpt is still being uploaded, so we emit a
+-    // placeholder that fails loudly on copy-paste instead of silently pulling
+-    // the wrong weights. Replace with the real slug once Hopper ckpts are public.
+-    "h200|small":  { slug: "<TO_BE_UPLOADED_DeepSeek-V4-Flash-hopper>", tp: 4,  multinode: false },
+-    "h200|big":    { slug: "<TO_BE_UPLOADED_DeepSeek-V4-Pro-hopper>",   tp: 16, multinode: true, nnodes: 2 },
+```
 
-- Link: https://github.com/sgl-project/sglang/pull/23622
-- Status/date: `merged`, created 2026-04-24, merged 2026-04-24; author `fzyzcjy`.
-- Diff scope read: `2` files, `+32/-9`; areas: docs/config; keywords: doc, cache, cuda, deepep, kv, router, spec, test.
-- Code diff details:
-  - `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +19/-9 (28 lines); hunks: export const DeepSeekV4Deployment = () => {; export const DeepSeekV4Deployment = () => {
-  - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +13/-0 (13 lines); hunks: Please refer to the [official SGLang installation guide](../../../docs/get-start
-- Optimization/support interpretation: The concrete diff surface is `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; keywords observed in patches: doc, cache, cuda, deepep, kv, router. Impact reading: docs or config changed; verify serve flags, defaults, and cookbook commands against runtime code.
-- Risk and verification: Re-run the model path that exercises `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+- Reviewed files:
+  - docs: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +5/-6
+- Risk and verification: This is mostly docs/examples in `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #23628 - [codex] docs: note H200 DeepSeek-V4 checkpoint
 
 - Link: https://github.com/sgl-project/sglang/pull/23628
-- Status/date: `merged`, created 2026-04-24, merged 2026-04-24; author `zijiexia`.
-- Diff scope read: `1` files, `+4/-0`; areas: docs/config; keywords: config, doc, spec.
+- Status/date: merged / 2026-04-24
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; associated commits `1a37e57fb1ae`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +4/-0, 11 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For DeepSeek V4, this PR adds or enables a model support/runtime surface. Title: "[codex] docs: note H200 DeepSeek-V4 checkpoint". The diff centers on `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. PR body context: ## Summary - Add a highlighted note in the DeepSeek-V4 deployment section for H200 GPU users. - Clarify that H200 deployments should use the SGLang checkpoint under `sgl-project...
+- Key implementation: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +4/-0 (4 lines); hunks: -99,6 +99,10 @@ Please refer to the [official SGLang installation guide](../.....
 - Code diff details:
-  - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +4/-0 (4 lines); hunks: Please refer to the [official SGLang installation guide](../../../docs/get-start
-- Optimization/support interpretation: The concrete diff surface is `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; keywords observed in patches: config, doc, spec. Impact reading: docs or config changed; verify serve flags, defaults, and cookbook commands against runtime code.
-- Risk and verification: Re-run the model path that exercises `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +4/-0 (4 lines); hunks: -99,6 +99,10 @@ Please refer to the [official SGLang installation guide](../....
+- Key code excerpts:
+
+```diff
+diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
+@@ -99,6 +99,10 @@ Please refer to the [official SGLang installation guide](../../../docs/get-start
++<Note>
++For H200 GPU deployments, use the SGLang checkpoint under `sgl-project`, not the default DeepSeek checkpoint.
++</Note>
+```
+
+- Reviewed files:
+  - docs: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +4/-0
+- Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #23622 - Again update DeepSeek V4 cookbook
+
+- Link: https://github.com/sgl-project/sglang/pull/23622
+- Status/date: merged / 2026-04-24
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; associated commits `3a620cb761ff`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +32/-9, 73 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For DeepSeek V4, this PR extends deployment docs, tests, or CI coverage. Title: "Again update DeepSeek V4 cookbook". The diff centers on `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. The PR body has no extra context, so this assessment comes from the title, file list, and patch.
+- Key implementation: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +19/-9 (28 lines); hunks: -42,11 +42,11 @@ export const DeepSeekV4Deployment = () => {; -161,7 +161,16 @@ export const DeepSeekV4Deployment = () => {; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +13/-0 (13 lines); hunks: -95,6 +95,19 @@ Please refer to the [official SGLang installation guide](../.....
+- Code diff details:
+  - `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +19/-9 (28 lines); hunks: -42,11 +42,11 @@ export const DeepSeekV4Deployment = () => {; -161,7 +161,16 @@ export const DeepSeekV4Deployment = () => {
+  - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +13/-0 (13 lines); hunks: -95,6 +95,19 @@ Please refer to the [official SGLang installation guide](../....
+- Key code excerpts:
+
+```diff
+diff -- docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx
+@@ -42,11 +42,11 @@ export const DeepSeekV4Deployment = () => {
+-        { id: "low-latency",    label: "Low-Latency",      default: true,  subtitle: "MTP 3/4" },
+-        { id: "balanced",       label: "Balanced",         default: false, subtitle: "MTP 1/2 + DeepEP" },
+-        { id: "max-throughput", label: "Max-Throughput",   default: false, subtitle: "DP + DeepEP" },
+-        { id: "cp",             label: "Context-Parallel", default: false, subtitle: "long prompts" },
+-        { id: "pd-disagg",      label: "PD-Disagg",        default: false, subtitle: "1P + 1D + router" },
++        { id: "low-latency",    label: "Low-Latency",      default: true  },
+diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
+@@ -95,6 +95,19 @@ Please refer to the [official SGLang installation guide](../../../docs/get-start
++For how to actually launch one of these images, see [Install → Method 3: Using Docker](../../../docs/get-started/install#method-3-using-docker). A minimal example (substitute the
++'''bash Command
++docker run --gpus all \
++    --shm-size 32g \
++    -p 30000:30000 \
++    -v ~/.cache/huggingface:/root/.cache/huggingface \
+```
+
+- Reviewed files:
+  - docs: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +19/-9; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +13/-0
+- Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #23634 - Update pro fp8 checkpoint in DeepSeek V4 cookbook
 
 - Link: https://github.com/sgl-project/sglang/pull/23634
-- Status/date: `merged`, created 2026-04-24, merged 2026-04-24; author `fzyzcjy`.
-- Diff scope read: `1` files, `+2/-2`; areas: docs/config; keywords: doc, flash, fp4, fp8, kv, spec.
+- Status/date: merged / 2026-04-24
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; associated commits `92bb5c6bbee9`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +2/-2, 12 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For DeepSeek V4, this PR optimizes an inference path or backend selection. Title: "Update pro fp8 checkpoint in DeepSeek V4 cookbook". The diff centers on `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`. The PR body has no extra context, so this assessment comes from the title, file list, and patch.
+- Key implementation: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +2/-2 (4 lines); hunks: -139,9 +139,9 @@ export const DeepSeekV4Deployment = () => {.
 - Code diff details:
-  - `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +2/-2 (4 lines); hunks: export const DeepSeekV4Deployment = () => {
-- Optimization/support interpretation: The concrete diff surface is `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; keywords observed in patches: doc, flash, fp4, fp8, kv, spec. Impact reading: docs or config changed; verify serve flags, defaults, and cookbook commands against runtime code.
-- Risk and verification: Re-run the model path that exercises `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +2/-2 (4 lines); hunks: -139,9 +139,9 @@ export const DeepSeekV4Deployment = () => {
+- Key code excerpts:
 
+```diff
+diff -- docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx
+@@ -139,9 +139,9 @@ export const DeepSeekV4Deployment = () => {
+-    // repackagings; Flash is public, Pro is still being uploaded.
++    // repackagings for both variants.
+-    "h200|big":    { slug: "<TO_BE_UPLOADED_DeepSeek-V4-Pro-FP8>",     tp: 16, multinode: true, nnodes: 2 },
++    "h200|big":    { slug: "sgl-project/DeepSeek-V4-Pro-FP8",          tp: 16, multinode: true, nnodes: 2 },
+```
 
-### Gap and optimization follow-up
+- Reviewed files:
+  - docs: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +2/-2
+- Risk and verification: This is mostly docs/examples in `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
-- Covered PRs: 5; open PRs: 0.
-- Any future PR must add both the timeline row and the file-level diff card; title-only summaries are not acceptable.
+### PR #23684 - docs(DeepSeek-V4): note SGLANG_FIX_DSV4_BASE_MODEL_LOAD for base models
 
-<!-- MODEL_PR_DIFF_AUDIT:END en -->
+- Link: https://github.com/sgl-project/sglang/pull/23684
+- Status/date: merged / 2026-04-25
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; associated commits `fd401c2fb451`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +4/-0, 11 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For DeepSeek V4, this PR fixes a launch, loading, parsing, or numerical issue. Title: "docs(DeepSeek-V4): note SGLANG_FIX_DSV4_BASE_MODEL_LOAD for base models". The diff centers on `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. The PR body has no extra context, so this assessment comes from the title, file list, and patch.
+- Key implementation: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +4/-0 (4 lines); hunks: -147,6 +147,10 @@ The generator currently picks values on the **conservative*....
+- Code diff details:
+  - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +4/-0 (4 lines); hunks: -147,6 +147,10 @@ The generator currently picks values on the **conservative*...
+- Key code excerpts:
+
+```diff
+diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
+@@ -147,6 +147,10 @@ The generator currently picks values on the **conservative** side (mirroring an
++**Base model usage**
++In order to use base models, please enable `SGLANG_FIX_DSV4_BASE_MODEL_LOAD=1` and use latest code, before the next round of testing matrix is finished.
+```
+
+- Reviewed files:
+  - docs: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +4/-0
+- Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #23689 - docs(DeepSeek-V4): mark b200|small|pd-disagg + h200|small|{cp,pd-disagg} verified
+
+- Link: https://github.com/sgl-project/sglang/pull/23689
+- Status/date: merged / 2026-04-25
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; associated commits `d2c61acf2597`
+- Diff scope read: GitHub Pull Request files API returned 2 files, +22/-1, 59 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For DeepSeek V4, this PR extends deployment docs, tests, or CI coverage. Title: "docs(DeepSeek-V4): mark b200|small|pd-disagg + h200|small|{cp,pd-disagg} verified". The diff centers on `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. The PR body has no extra context, so this assessment comes from the title, file list, and patch.
+- Key implementation: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +14/-0 (14 lines); hunks: -164,14 +164,26 @@ export const DeepSeekV4Deployment = () => {; -387,6 +399,7 @@ export const DeepSeekV4Deployment = () => {; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +8/-1 (9 lines); hunks: -145,7 +145,14 @@ The generator currently picks values on the **conservative*....
+- Code diff details:
+  - `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +14/-0 (14 lines); hunks: -164,14 +164,26 @@ export const DeepSeekV4Deployment = () => {; -387,6 +399,7 @@ export const DeepSeekV4Deployment = () => {
+  - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +8/-1 (9 lines); hunks: -145,7 +145,14 @@ The generator currently picks values on the **conservative*...
+- Key code excerpts:
+
+```diff
+diff -- docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx
+@@ -164,14 +164,26 @@ export const DeepSeekV4Deployment = () => {
++    "b200|small|pd-disagg",
++    "h200|small|cp",
++    "h200|small|pd-disagg",
++    // h200|big|pd-disagg: pending verification (needs 4-node H200 cluster with
++    //   shared IB fabric: 2-node prefill + 2-node decode).
++  // Recipes whose command is intentionally not yet provided (e.g. blocked by an
+diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
+@@ -145,7 +145,14 @@ The generator currently picks values on the **conservative** side (mirroring an
+-The H200 image and checkpoint are currently being uploaded — public path coming shortly.
++H200 image (`lmsysorg/sglang:deepseek-v4-hopper`) and FP8 checkpoints
++(`sgl-project/DeepSeek-V4-Flash-FP8`, `sgl-project/DeepSeek-V4-Pro-FP8`) are
++publicly available.
++PD-Disagg recipes on H200 may require `docker run --privileged --ulimit memlock=-1`
++(or `--device /dev/infiniband:/dev/infiniband --cap-add IPC_LOCK`) so mooncake
+```
+
+- Reviewed files:
+  - docs: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +14/-0; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +8/-1
+- Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #23691 - docs(DeepSeek-V4): mark gb300|{small,big}|{cp,pd-disagg} verified + GB300-specific fixes
+
+- Link: https://github.com/sgl-project/sglang/pull/23691
+- Status/date: merged / 2026-04-25
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; associated commits `8a395994edcf`
+- Diff scope read: GitHub Pull Request files API returned 2 files, +56/-5, 113 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For DeepSeek V4, this PR fixes a launch, loading, parsing, or numerical issue. Title: "docs(DeepSeek-V4): mark gb300|{small,big}|{cp,pd-disagg} verified + GB300-specific fixes". The diff centers on `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. The PR body has no extra context, so this assessment comes from the title, file list, and patch.
+- Key implementation: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +49/-5 (54 lines); hunks: -176,6 +176,10 @@ export const DeepSeekV4Deployment = () => {; -372,7 +376,17 @@ export const DeepSeekV4Deployment = () => {; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +7/-0 (7 lines); hunks: -158,6 +158,13 @@ TCP, which can lead to garbled KV transfer on large checkpo....
+- Code diff details:
+  - `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +49/-5 (54 lines); hunks: -176,6 +176,10 @@ export const DeepSeekV4Deployment = () => {; -372,7 +376,17 @@ export const DeepSeekV4Deployment = () => {
+  - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +7/-0 (7 lines); hunks: -158,6 +158,13 @@ TCP, which can lead to garbled KV transfer on large checkpo...
+- Key code excerpts:
+
+```diff
+diff -- docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx
+@@ -176,6 +176,10 @@ export const DeepSeekV4Deployment = () => {
++    "gb300|small|cp",
++    "gb300|big|cp",
++    "gb300|small|pd-disagg",
++    "gb300|big|pd-disagg",
+@@ -372,7 +376,17 @@ export const DeepSeekV4Deployment = () => {
+-      flags.push("  --mem-fraction-static 0.78");
+diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
+@@ -158,6 +158,13 @@ TCP, which can lead to garbled KV transfer on large checkpoints.
++**GB300 PD-Disagg cross-pod MNNVL**
++On some GB300 clusters with cross-pod KV transfer over NVLink, mooncake may
++fail with `nvlink_transport.cpp:497 Requested address ... not found!`. If
++this happens, prepend `MC_FORCE_MNNVL=1 NCCL_MNNVL_ENABLE=1 NCCL_CUMEM_ENABLE=1`
++to both prefill and decode `sglang serve` commands.
+```
+
+- Reviewed files:
+  - docs: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +49/-5; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +7/-0
+- Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #23690 - Small udpate gb300 recipe for deepseek v4
+
+- Link: https://github.com/sgl-project/sglang/pull/23690
+- Status/date: merged / 2026-04-25
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; associated commits `69485a176c87`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +3/-0, 10 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For DeepSeek V4, this PR adds or enables a model support/runtime surface. Title: "Small udpate gb300 recipe for deepseek v4". The diff centers on `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`. PR body context: ## Motivation ## Modifications ## Accuracy Tests ## Speed Tests and Profiling ## Checklist - [ ] Format your code according to the Format code with pre-commit. - [ ] Add unit te...
+- Key implementation: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +3/-0 (3 lines); hunks: -172,6 +172,9 @@ export const DeepSeekV4Deployment = () => {.
+- Code diff details:
+  - `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +3/-0 (3 lines); hunks: -172,6 +172,9 @@ export const DeepSeekV4Deployment = () => {
+- Key code excerpts:
+
+```diff
+diff -- docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx
+@@ -172,6 +172,9 @@ export const DeepSeekV4Deployment = () => {
++    "gb300|small|low-latency",
++    "gb300|small|balanced",
++    "gb300|small|max-throughput",
+```
+
+- Reviewed files:
+  - docs: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +3/-0
+- Risk and verification: This is mostly docs/examples in `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #23697 - update: b300 container for dsv4
+
+- Link: https://github.com/sgl-project/sglang/pull/23697
+- Status/date: merged / 2026-04-25
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; associated commits `0d224e505333`
+- Diff scope read: GitHub Pull Request files API returned 2 files, +11/-2, 41 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For DeepSeek V4, this PR changes model-related implementation. Title: "update: b300 container for dsv4". The diff centers on `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. The PR body has no extra context, so this assessment comes from the title, file list, and patch.
+- Key implementation: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +7/-2 (9 lines); hunks: -26,6 +26,7 @@ export const DeepSeekV4Deployment = () => {; -222,7 +223,9 @@ export const DeepSeekV4Deployment = () => {; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +4/-0 (4 lines); hunks: -80,6 +80,10 @@ Please refer to the [official SGLang installation guide](../.....
+- Code diff details:
+  - `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +7/-2 (9 lines); hunks: -26,6 +26,7 @@ export const DeepSeekV4Deployment = () => {; -222,7 +223,9 @@ export const DeepSeekV4Deployment = () => {
+  - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +4/-0 (4 lines); hunks: -80,6 +80,10 @@ Please refer to the [official SGLang installation guide](../....
+- Key code excerpts:
+
+```diff
+diff -- docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx
+@@ -26,6 +26,7 @@ export const DeepSeekV4Deployment = () => {
++        { id: "b300",  label: "B300 (FP4)",  default: false  },
+@@ -222,7 +223,9 @@ export const DeepSeekV4Deployment = () => {
+-    const { hardware, modelSize, recipe, reasoningParser, toolcall } = values;
++    const { hardware: rawHardware, modelSize, recipe, reasoningParser, toolcall } = values;
++    // B300 usage is identical to B200 — alias so we don't duplicate every spec entry.
++    const hardware = rawHardware === "b300" ? "b200" : rawHardware;
+diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
+@@ -80,6 +80,10 @@ Please refer to the [official SGLang installation guide](../../../docs/get-start
++    <tr>
++      <td style={{padding: "9px 12px", fontWeight: 500, backgroundColor: "rgba(255,255,255,0.02)"}}>NVIDIA B300</td>
++      <td style={{padding: "9px 12px", backgroundColor: "rgba(255,255,255,0.05)"}}><code>lmsysorg/sglang:deepseek-v4-b300</code></td>
++    </tr>
+```
+
+- Reviewed files:
+  - docs: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +7/-2; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +4/-0
+- Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #23698 - docs(DeepSeek-V4): bump GB300 Pro PD decode --mem-fraction-static 0.83 → 0.9
+
+- Link: https://github.com/sgl-project/sglang/pull/23698
+- Status/date: merged / 2026-04-25
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; associated commits `880599cd430f`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +5/-3, 17 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For DeepSeek V4, this PR extends deployment docs, tests, or CI coverage. Title: "docs(DeepSeek-V4): bump GB300 Pro PD decode --mem-fraction-static 0.83 → 0.9". The diff centers on `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`. The PR body has no extra context, so this assessment comes from the title, file list, and patch.
+- Key implementation: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +5/-3 (8 lines); hunks: -495,11 +495,13 @@ export const DeepSeekV4Deployment = () => {.
+- Code diff details:
+  - `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +5/-3 (8 lines); hunks: -495,11 +495,13 @@ export const DeepSeekV4Deployment = () => {
+- Key code excerpts:
+
+```diff
+diff -- docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx
+@@ -495,11 +495,13 @@ export const DeepSeekV4Deployment = () => {
+-        // OOM during CG capture. Verified working on 2026-04-25 (journal
+-        // 2026-04-25-001 Cell D, Δ10).
++        // OOM during CG capture. mem-frac sweep at 0.83 / 0.87 / 0.89 / 0.91
++        // all pass static smoke; 0.9 picked as the default — leaves
++        // ~14 GB / GPU post-CG headroom for mooncake transfer + activation
++        // peaks while giving ~1M-token KV pool.
+```
+
+- Reviewed files:
+  - docs: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +5/-3
+- Risk and verification: This is mostly docs/examples in `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+## Gap-Closure Notes
+
+- This version rejects title-only PR lists; every PR must include trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
+- If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.
