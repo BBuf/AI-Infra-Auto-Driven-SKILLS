@@ -1639,68 +1639,46 @@ def _draw_mlp_panel(
     _panel(out, x, y, w, h, title, green, font_size=30)
     if w < 500:
         mid = x + w // 2
-        bus_x = x + w - 28
-        shape_w = w - 95
-        left = x + 48
+        shape_w = w - 94
+        left = x + 47
+        top_y = y + 76
+        mix_y = y + max(150, min(h - 140, int(h * 0.48)))
+        proj_y = y + h - 76
         _shape(
             out,
             left,
-            y + h - 78,
+            proj_y,
             shape_w,
-            52,
-            "Linear(up_proj)",
+            50,
+            "Linear(up + gate)",
             fill=green,
             stroke="#169BFF",
-            font_size=20,
+            font_size=18,
         )
         _shape(
             out,
             left,
-            y + h - 160,
+            mix_y,
             shape_w,
-            52,
-            "Linear(gate_proj)",
+            50,
+            "SiLU * up",
             fill=green,
             stroke="#169BFF",
-            font_size=20,
+            font_size=18,
         )
         _shape(
             out,
             left,
-            y + h - 242,
+            top_y,
             shape_w,
-            52,
-            "SiLU Activation",
-            fill=green,
-            stroke="#169BFF",
-            font_size=20,
-        )
-        _mult(out, mid, y + h - 132)
-        _shape(
-            out,
-            left,
-            y + 76,
-            shape_w,
-            52,
+            50,
             "Linear(down_proj)",
             fill=green,
             stroke="#169BFF",
-            font_size=20,
+            font_size=18,
         )
-        _arrow(out, mid, y + h - 12, mid, y + h - 26)
-        _arrow(out, mid, y + h - 160, mid, y + h - 190)
-        _arrow(out, mid, y + h - 190, mid, y + h - 152)
-        _arrow(out, mid, y + h - 78, mid, y + h - 112)
-        _polyline(
-            out,
-            (
-                (mid + 20, y + h - 132),
-                (bus_x, y + h - 132),
-                (bus_x, y + 128),
-                (mid, y + 128),
-            ),
-        )
-        _shape_label(out, "[seq_len, hidden_size]", x + 70, y + 57)
+        _arrow(out, mid, proj_y, mid, mix_y + 50)
+        _arrow(out, mid, mix_y, mid, top_y + 50)
         return
     mid = x + 150
     _shape(
@@ -1766,6 +1744,65 @@ def _draw_moe_panel(
     blue = "#3B82F6"
     green = "#8DD348"
     _panel(out, x, y, w, h, "MoE", blue, font_size=32)
+    if w < 470:
+        router_x = x + w // 2 - 76
+        router_y = y + h - 86
+        _shape(
+            out,
+            router_x,
+            router_y,
+            152,
+            54,
+            "Router",
+            fill=router_fill,
+            stroke="#0284C7",
+            font_size=18,
+        )
+        left_expert_x = x + 48
+        right_expert_x = x + w - 188
+        expert_y = y + 156
+        _shape(
+            out,
+            left_expert_x,
+            expert_y,
+            140,
+            50,
+            "MLP",
+            fill=green,
+            stroke="#169BFF",
+            font_size=19,
+        )
+        _shape(
+            out,
+            right_expert_x,
+            expert_y,
+            140,
+            50,
+            "MLP",
+            fill=green,
+            stroke="#169BFF",
+            font_size=19,
+        )
+        _text(out, experts, x + 42, y + 104, size=18, fill=blue, weight=700)
+        _text(out, "top-k", x + 48, y + h - 108, size=18, fill="#EF0000", weight=700)
+        _text(out, "...", x + w // 2 - 14, expert_y + 34, size=26, weight=700)
+        _arrow(out, router_x + 76, router_y, router_x + 76, expert_y + 72)
+        _arrow(
+            out, router_x + 76, router_y, left_expert_x + 70, expert_y + 50, dashed=True
+        )
+        _arrow(
+            out,
+            router_x + 76,
+            router_y,
+            right_expert_x + 70,
+            expert_y + 50,
+            dashed=True,
+        )
+        _arrow(out, left_expert_x + 70, expert_y, x + w // 2, y + 86, dashed=True)
+        _arrow(out, right_expert_x + 70, expert_y, x + w // 2, y + 86, dashed=True)
+        _plus(out, x + w // 2, y + 80, fill="#2EA8F7")
+        _arrow(out, x + w // 2, y + 48, x + w // 2, y + 18)
+        return
     router_x = x + w // 2 - 90
     router_y = y + h - 86
     _shape(
@@ -1805,96 +1842,229 @@ def _draw_attention_panel(
     orange = "#FF9F1A"
     red = "#F00000"
     _panel(out, x, y, w, h, title, orange, font_size=30)
-    bottom_y = y + h - 82
-    attn_y = bottom_y - 375
-    attn_x = x + 240
-    attn_w = 300
-    out_x = x + w - 270
+    if h < 500:
+        bottom_y = y + h - 74
+        top_y = y + 94
+        mid_y = y + h - 190
+        if w < 760:
+            left_x = x + 62
+            right_x = x + w - 292
+            _shape(
+                out,
+                left_x,
+                bottom_y,
+                230,
+                52,
+                "QKV projections",
+                fill=orange,
+                stroke=orange,
+            )
+            _shape(
+                out,
+                left_x,
+                mid_y,
+                230,
+                52,
+                "RoPE / cache split",
+                fill=orange,
+                stroke=orange,
+            )
+            _shape(
+                out,
+                right_x,
+                mid_y,
+                230,
+                52,
+                "Attention",
+                fill=orange,
+                stroke=orange,
+            )
+            _shape(
+                out,
+                right_x,
+                top_y,
+                230,
+                52,
+                "Output proj",
+                fill=orange,
+                stroke=orange,
+            )
+            _shape(
+                out,
+                left_x + 38,
+                top_y,
+                154,
+                48,
+                "KV cache",
+                fill=red,
+                stroke=red,
+                font_size=17,
+            )
+            _arrow(out, left_x + 115, bottom_y, left_x + 115, mid_y + 52)
+            _arrow(out, left_x + 230, mid_y + 26, right_x, mid_y + 26)
+            _arrow(out, right_x + 115, mid_y, right_x + 115, top_y + 52)
+            _polyline(
+                out,
+                (
+                    (left_x + 230, mid_y + 36),
+                    (left_x + 250, mid_y + 36),
+                    (left_x + 250, top_y + 24),
+                    (left_x + 192, top_y + 24),
+                ),
+            )
+            _shape_label(out, "compact Q/K/V path", x + 42, y + 66)
+            return
+
+        proj_x = x + 76
+        prep_x = x + 315
+        attn_x = x + 535
+        out_x = attn_x + 12
+        prep_y = bottom_y - 112
+        _shape(
+            out,
+            proj_x,
+            bottom_y,
+            230,
+            52,
+            "QKV projections",
+            fill=orange,
+            stroke=orange,
+        )
+        _shape(out, prep_x, prep_y, 205, 52, "RoPE + split", fill=orange, stroke=orange)
+        _shape(out, attn_x, prep_y, 230, 52, "Attention", fill=orange, stroke=orange)
+        _shape(out, out_x, top_y, 205, 52, "Output proj", fill=orange, stroke=orange)
+        _shape(
+            out,
+            x + w - 205,
+            bottom_y,
+            145,
+            48,
+            "KV cache",
+            fill=red,
+            stroke=red,
+            font_size=17,
+        )
+        _arrow(out, proj_x + 115, bottom_y, prep_x + 102, prep_y + 52)
+        _arrow(out, prep_x + 205, prep_y + 26, attn_x, prep_y + 26)
+        _arrow(out, attn_x + 115, prep_y, attn_x + 115, top_y + 52)
+        _arrow(out, prep_x + 205, prep_y + 42, x + w - 205, bottom_y + 24)
+        _shape_label(out, "compact Q/K/V path", x + 50, y + 66)
+        return
+
+    bottom_y = y + h - 80
+    norm_y = y + int(h * 0.74)
+    up_y = y + int(h * 0.58)
+    mix_y = y + int(h * 0.42)
+    attn_y = y + 118
+    q_x = x + 72
+    kv_x = x + 380 if w >= 875 else x + 350
+    out_x = x + w - 236
+    attn_w = max(280, min(330, out_x - (x + 320) - 24))
+    attn_x = out_x - attn_w - 24
+
     _shape(
         out,
-        x + 90,
+        q_x,
         bottom_y,
-        260,
-        54,
-        "Linear(Q down_proj)",
-        fill=orange,
-        stroke=orange,
-        kind="trapezoid",
-    )
-    _shape(
-        out,
-        x + 455,
-        bottom_y,
-        330,
-        54,
-        "Linear(KV down_proj)",
-        fill=orange,
-        stroke=orange,
-        kind="trapezoid",
-    )
-    _shape(out, x + 140, bottom_y - 105, 200, 48, "RMSNorm", fill=orange, stroke=orange)
-    _shape(out, x + 520, bottom_y - 105, 200, 48, "RMSNorm", fill=orange, stroke=orange)
-    _shape(
-        out,
-        x + 140,
-        bottom_y - 200,
-        220,
-        50,
-        "Linear(Q up_proj)",
-        fill=orange,
-        stroke=orange,
-        kind="trapezoid",
-    )
-    _shape(
-        out,
-        x + 500,
-        bottom_y - 200,
-        260,
-        50,
-        "Linear(KV up_proj)",
-        fill=orange,
-        stroke=orange,
-        kind="trapezoid",
-    )
-    _shape(out, x + 110, bottom_y - 285, 125, 48, "RoPE", fill=orange, stroke=orange)
-    _shape(out, x + 300, bottom_y - 285, 125, 48, "Cat", fill=orange, stroke=orange)
-    _shape(out, x + 530, bottom_y - 285, 125, 48, "Split", fill=orange, stroke=orange)
-    _shape(out, x + 705, bottom_y - 285, 125, 48, "Cat", fill=orange, stroke=orange)
-    _shape(out, attn_x, attn_y, attn_w, 58, "Attention", fill=orange, stroke=orange)
-    _text(out, "Q", x + 210, bottom_y - 316, size=22, fill=red, weight=700)
-    _text(out, "K", x + 565, bottom_y - 316, size=22, fill=red, weight=700)
-    _text(out, "V", x + 745, bottom_y - 316, size=22, fill=red, weight=700)
-    _shape(
-        out,
-        out_x,
-        attn_y + 2,
         230,
         54,
-        "Linear(O)",
+        "Linear(Q down)",
         fill=orange,
         stroke=orange,
+        kind="trapezoid",
     )
-    _shape(out, x + 705, bottom_y - 172, 120, 48, "kv cache", fill=red, stroke=red)
-    _shape(out, x + 355, bottom_y - 172, 120, 48, "pe cache", fill=red, stroke=red)
+    _shape(
+        out,
+        kv_x,
+        bottom_y,
+        270,
+        54,
+        "Linear(KV down)",
+        fill=orange,
+        stroke=orange,
+        kind="trapezoid",
+    )
+    _shape(out, q_x + 35, norm_y, 160, 48, "RMSNorm", fill=orange, stroke=orange)
+    _shape(out, kv_x + 55, norm_y, 160, 48, "RMSNorm", fill=orange, stroke=orange)
+    _shape(
+        out,
+        q_x + 15,
+        up_y,
+        205,
+        50,
+        "Linear(Q up)",
+        fill=orange,
+        stroke=orange,
+        kind="trapezoid",
+    )
+    _shape(
+        out,
+        kv_x + 10,
+        up_y,
+        240,
+        50,
+        "Linear(KV up)",
+        fill=orange,
+        stroke=orange,
+        kind="trapezoid",
+    )
+    _shape(
+        out,
+        q_x + 5,
+        mix_y,
+        210,
+        50,
+        "Q: RoPE + Cat",
+        fill=orange,
+        stroke=orange,
+        font_size=18,
+    )
+    _shape(
+        out,
+        kv_x + 12,
+        mix_y,
+        230,
+        50,
+        "K/V: Split + Cat",
+        fill=orange,
+        stroke=orange,
+        font_size=18,
+    )
+    _shape(out, attn_x, attn_y, attn_w, 58, "Attention", fill=orange, stroke=orange)
+    _shape(out, out_x, attn_y + 2, 210, 54, "Linear(O)", fill=orange, stroke=orange)
+    _shape(
+        out,
+        q_x + 222,
+        up_y + 8,
+        112,
+        46,
+        "pe cache",
+        fill=red,
+        stroke=red,
+        font_size=16,
+    )
+    _shape(
+        out,
+        kv_x + 260,
+        up_y + 8,
+        112,
+        46,
+        "kv cache",
+        fill=red,
+        stroke=red,
+        font_size=16,
+    )
 
-    _arrow(out, x + w // 2, y + h - 10, x + 220, bottom_y + 54)
-    _arrow(out, x + w // 2, y + h - 10, x + 620, bottom_y + 54)
-    _arrow(out, x + 220, bottom_y, x + 240, bottom_y - 57)
-    _arrow(out, x + 620, bottom_y, x + 620, bottom_y - 57)
-    _arrow(out, x + 240, bottom_y - 105, x + 250, bottom_y - 150)
-    _arrow(out, x + 620, bottom_y - 105, x + 620, bottom_y - 150)
-    _arrow(out, x + 250, bottom_y - 200, x + 180, bottom_y - 237)
-    _arrow(out, x + 250, bottom_y - 200, x + 350, bottom_y - 237)
-    _arrow(out, x + 620, bottom_y - 200, x + 592, bottom_y - 237)
-    _arrow(out, x + 620, bottom_y - 200, x + 745, bottom_y - 237)
-    _arrow(out, x + 180, bottom_y - 285, attn_x + 45, attn_y + 58)
-    _arrow(out, x + 365, bottom_y - 285, attn_x + 115, attn_y + 58)
-    _arrow(out, x + 592, bottom_y - 285, attn_x + 205, attn_y + 58)
-    _arrow(out, x + 745, bottom_y - 285, attn_x + 275, attn_y + 58)
+    _arrow(out, q_x + 115, bottom_y, q_x + 115, norm_y + 48)
+    _arrow(out, kv_x + 135, bottom_y, kv_x + 135, norm_y + 48)
+    _arrow(out, q_x + 115, norm_y, q_x + 118, up_y + 50)
+    _arrow(out, kv_x + 135, norm_y, kv_x + 130, up_y + 50)
+    _arrow(out, q_x + 118, up_y, q_x + 110, mix_y + 50)
+    _arrow(out, kv_x + 130, up_y, kv_x + 127, mix_y + 50)
+    _arrow(out, q_x + 110, mix_y, attn_x + 82, attn_y + 58)
+    _arrow(out, kv_x + 127, mix_y, attn_x + attn_w - 82, attn_y + 58)
     _arrow(out, attn_x + attn_w, attn_y + 29, out_x, attn_y + 29)
-    _shape_label(out, "[seq_len, hidden_size]", x + 402, y + h - 20)
-    _shape_label(out, "[seq_len, heads, qk_head_dim]", x + 70, bottom_y - 215)
-    _shape_label(out, "[seq_len, kv_lora_rank]", x + 660, bottom_y - 104)
+    _shape_label(out, "[heads, qk/v dims]", x + 60, mix_y - 42)
 
 
 def _draw_router_panel(out: list[str], x: int, y: int, w: int, h: int) -> None:
@@ -1910,8 +2080,7 @@ def _draw_router_panel(out: list[str], x: int, y: int, w: int, h: int) -> None:
     _arrow(out, x + 190, y + h - 158, x + 128, y + 134)
     _arrow(out, x + 190, y + h - 158, x + 287, y + 134)
     _arrow(out, x + 185, y + 106, x + 215, y + 106)
-    _shape_label(out, "[seq_len, num_experts]", x + 70, y + h - 174)
-    _shape_label(out, "top_k_index   top_k_weights", x + 40, y + 58)
+    _text(out, "top-k indices + weights", x + 74, y + 58, size=14)
 
 
 def _draw_index_panel(out: list[str], x: int, y: int, w: int, h: int) -> None:
@@ -2367,12 +2536,15 @@ def _draw_generic_details(
             dashed=True,
             stroke="#F59E0B",
         )
-        _arrow(
+        _polyline(
             out,
-            anchors["ffn"][0],
-            anchors["ffn"][1],
-            1270,
-            315,
+            (
+                anchors["ffn"],
+                (560, anchors["ffn"][1]),
+                (560, 125),
+                (1270, 125),
+                (1270, 315),
+            ),
             dashed=True,
             stroke="#3B82F6",
         )
@@ -2442,12 +2614,15 @@ def _draw_generic_details(
             dashed=True,
             stroke="#F59E0B",
         )
-        _arrow(
+        _polyline(
             out,
-            anchors["ffn"][0],
-            anchors["ffn"][1],
-            1280,
-            315,
+            (
+                anchors["ffn"],
+                (560, anchors["ffn"][1]),
+                (560, 125),
+                (1280, 125),
+                (1280, 315),
+            ),
             dashed=True,
             stroke="#3B82F6",
         )
@@ -2615,12 +2790,14 @@ def _draw_generic_details(
         _draw_vision_panel(out, 610, 145, 640, 360)
         _draw_attention_panel(out, 610, 560, 850, 510, "LLM Attention")
         _draw_mlp_panel(out, 1490, 575, 340, 390, "LLM FFN / MoE")
-        _arrow(
+        _polyline(
             out,
-            anchors["input"][0],
-            anchors["input"][1],
-            610,
-            360,
+            (
+                anchors["input"],
+                (560, anchors["input"][1]),
+                (560, 360),
+                (610, 360),
+            ),
             dashed=True,
             stroke="#4CC9C0",
         )
