@@ -1,104 +1,271 @@
-# vLLM Intern-S1 Support and PR History
+# vllm Intern-S1 Model PR Optimization History
 
-This note tracks the vLLM runtime, key PRs, and cookbook-facing touchpoints for Intern-S1.
+## Scope
 
-- Status: supported on current mainline
+- Rebuilt on: 2026-04-25
+- Source baseline: `vllm-project/vllm` trace worktree commit `95995bbef8`
+- PR collection rule: run `git log --name-only -- <model-files>` on model implementation, config, processor, parser, docs/tests, filter by model keywords in commit subjects, then read each PR's final diff through the GitHub Pull Request files API.
+- Preservation rule: PRs explicitly cited by the previous history/skill are retained even if current implementation files no longer trace to them, and the card marks that source.
+- Diffusion model families have been removed from this history set and are no longer part of model optimization skills.
 
-## Key Conclusions
+## Implementation File Coverage
 
-- Intern-S1 leans heavily on shared InternVL processor code in vLLM.
-- Most regressions come from processor compatibility and video-aware serving rather than the text stack alone.
+| File | Git-traced PRs |
+| --- | --- |
+| `examples/tool_chat_template_internlm2_tool.jinja` | no direct PR-number commit |
+| `tests/tool_parsers/test_internlm2_tool_parser.py` | no direct PR-number commit |
+| `vllm/model_executor/models/internlm2.py` | no direct PR-number commit |
+| `vllm/model_executor/models/internlm2_ve.py` | no direct PR-number commit |
+| `vllm/model_executor/models/interns1.py` | [#21628](https://github.com/vllm-project/vllm/pull/21628), [#21671](https://github.com/vllm-project/vllm/pull/21671), [#22417](https://github.com/vllm-project/vllm/pull/22417), [#23510](https://github.com/vllm-project/vllm/pull/23510), [#25644](https://github.com/vllm-project/vllm/pull/25644) |
+| `vllm/model_executor/models/interns1_pro.py` | [#33636](https://github.com/vllm-project/vllm/pull/33636), [#33793](https://github.com/vllm-project/vllm/pull/33793) |
+| `vllm/model_executor/models/interns1_vit.py` | [#21628](https://github.com/vllm-project/vllm/pull/21628), [#27480](https://github.com/vllm-project/vllm/pull/27480) |
+| `vllm/tool_parsers/internlm2_tool_parser.py` | no direct PR-number commit |
 
-## Main Runtime Surfaces
+## PR Coverage Summary
 
-- `vllm/vllm/model_executor/models/interns1.py`
-- `vllm/vllm/model_executor/models/interns1_pro.py`
+- Git-traced PRs: 8
+- Extra PRs preserved from existing docs: 0
+- Total PRs in this document: 8
+- File trace command: `git log --name-only -- <model-files>`
+- Diff audit source: GitHub Pull Request files API
 
-## Landed PRs
+## Timeline
 
-- [#21628](https://github.com/vllm-project/vllm/pull/21628) `Support Intern-S1`: Initial Intern-S1 support in vLLM.
-- [#21671](https://github.com/vllm-project/vllm/pull/21671) `Add video support for Intern-S1`: Extended the family beyond static images.
-- [#22417](https://github.com/vllm-project/vllm/pull/22417) `Fix wrong method name in Intern-S1 image processor`: Patched a processor bug after bring-up.
-- [#33636](https://github.com/vllm-project/vllm/pull/33636) `Intern-S1-Pro`: Added the Pro generation / alias path.
+| Date | PR | State | Title | Main files |
+| --- | --- | --- | --- | --- |
+| 2025-07-26 | [#21628](https://github.com/vllm-project/vllm/pull/21628) | merged | Support Intern-S1 | `vllm/model_executor/models/interns1.py`, `vllm/model_executor/models/interns1_vit.py` |
+| 2025-07-27 | [#21671](https://github.com/vllm-project/vllm/pull/21671) | merged | [VLM] Add video support for Intern-S1 | `vllm/model_executor/models/interns1.py` |
+| 2025-08-07 | [#22417](https://github.com/vllm-project/vllm/pull/22417) | merged | [Bugfix] Fix wrong method name in Intern-S1 image processor | `vllm/model_executor/models/interns1.py` |
+| 2025-09-02 | [#23510](https://github.com/vllm-project/vllm/pull/23510) | merged | Migrate Interns1 inputs to TensorSchema | `vllm/model_executor/models/interns1.py` |
+| 2025-09-25 | [#25644](https://github.com/vllm-project/vllm/pull/25644) | merged | [Bugfix] Fix InternS1 video processing after Transformers v4.56 | `vllm/model_executor/models/interns1.py` |
+| 2025-10-24 | [#27480](https://github.com/vllm-project/vllm/pull/27480) | merged | [Bugfix] Fix interns1-vit qk norm code path | `vllm/model_executor/models/interns1_vit.py` |
+| 2026-02-03 | [#33636](https://github.com/vllm-project/vllm/pull/33636) | merged | [Models] Intern-S1-Pro | `vllm/model_executor/models/interns1_pro.py` |
+| 2026-02-04 | [#33793](https://github.com/vllm-project/vllm/pull/33793) | merged | [Bugfix] Fix interns1-pro initialization and PP | `vllm/model_executor/models/interns1_pro.py` |
 
-## Matching Skill
-
-- `skills/model-optimization/vllm/vllm-intern-s1-optimization/SKILL.md`
-- `skills/model-optimization/vllm/vllm-intern-s1-optimization/references/pr-history.md`
-
-<!-- MODEL_PR_DIFF_AUDIT:START en -->
-
-## PR Diff Audit Cards (2026-04-25 rebuild)
-
-This section re-audits `Intern-S1` against `vllm-project/vllm` Pull Request metadata and file-level patches. Acceptance rule: every PR needs status, code surface, file-level diff digest, support/optimization interpretation, and verification risk notes; if no public PR is found, keep an explicit no-match conclusion instead of inventing history.
-
-### Timeline
-
-| Created | PR | State | Title | Code surface | Main diff files |
-| --- | ---: | --- | --- | --- | --- |
-| 2025-07-25 | [#21628](https://github.com/vllm-project/vllm/pull/21628) | merged | Support Intern-S1 | model wrapper, multimodal/processor, scheduler/runtime, tests/benchmarks, docs/config | `vllm/model_executor/models/interns1.py`, `vllm/model_executor/models/interns1_vit.py`, `examples/offline_inference/vision_language.py` |
-| 2025-07-27 | [#21671](https://github.com/vllm-project/vllm/pull/21671) | merged | [VLM] Add video support for Intern-S1 | model wrapper, multimodal/processor, scheduler/runtime, tests/benchmarks, docs/config | `vllm/model_executor/models/interns1.py`, `examples/offline_inference/vision_language.py`, `docs/models/supported_models.md` |
-| 2025-08-07 | [#22417](https://github.com/vllm-project/vllm/pull/22417) | merged | [Bugfix] Fix wrong method name in Intern-S1 image processor | model wrapper, scheduler/runtime | `vllm/model_executor/models/interns1.py` |
-| 2026-02-03 | [#33636](https://github.com/vllm-project/vllm/pull/33636) | merged | [Models] Intern-S1-Pro | model wrapper, MoE/router, multimodal/processor, scheduler/runtime, tests/benchmarks, docs/config | `vllm/model_executor/models/interns1_pro.py`, `vllm/model_executor/layers/rotary_embedding/fope.py`, `examples/offline_inference/vision_language.py` |
-
-### File-level PR diff reading notes
+## Per-PR Diff Audit Cards
 
 ### PR #21628 - Support Intern-S1
 
 - Link: https://github.com/vllm-project/vllm/pull/21628
-- Status/date: `merged`, created 2025-07-25, merged 2025-07-26; author `lvhan028`.
-- Diff scope read: `7` files, `+1196/-0`; areas: model wrapper, multimodal/processor, scheduler/runtime, tests/benchmarks, docs/config; keywords: vision, config, quant, spec, attention, doc, lora, processor, test.
+- Status/date: merged / 2025-07-26
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/interns1.py`, `vllm/model_executor/models/interns1_vit.py`; associated commits `875af38e0121`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 7 files, +1196/-0, 1247 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Intern-S1, this PR adds or enables a model support/runtime surface. Title: "Support Intern-S1". The diff centers on `vllm/model_executor/models/interns1.py`, `vllm/model_executor/models/interns1_vit.py`. PR body context: ## Essential Elements of an Effective PR Description Checklist - [x] The purpose of the PR, such as "Fix some issue (link existing issues this PR will resolve)". - [x] The test...
+- Key implementation: `vllm/model_executor/models/interns1.py` added +711/-0 (711 lines); hunks: -0,0 +1,711; symbols: InternS1MultiModalProjector, __init__, forward, InternS1ImagePixelInputs, touching `InternS1MultiModalProjector, __init__, forward`; `vllm/model_executor/models/interns1_vit.py` added +421/-0 (421 lines); hunks: -0,0 +1,421; symbols: InternS1VisionPatchEmbeddings, __init__, forward, InternS1VisionEmbeddings, touching `InternS1VisionPatchEmbeddings, __init__, forward`.
 - Code diff details:
-  - `vllm/model_executor/models/interns1.py` added +711/-0 (711 lines); hunks: +# SPDX-License-Identifier: Apache-2.0; symbols: InternS1MultiModalProjector, __init__, forward, InternS1ImagePixelInputs
-  - `vllm/model_executor/models/interns1_vit.py` added +421/-0 (421 lines); hunks: +# SPDX-License-Identifier: Apache-2.0; symbols: InternS1VisionPatchEmbeddings, __init__, forward, InternS1VisionEmbeddings
-  - `examples/offline_inference/vision_language.py` modified +32/-0 (32 lines); hunks: def run_tarsier(questions: list[str], modality: str) -> ModelRequestData:; def run_skyworkr1v(questions: list[str], modality: str) -> ModelRequestData:; symbols: run_tarsier, run_interns1, run_internvl, run_skyworkr1v
-  - `examples/offline_inference/vision_language_multi_image.py` modified +28/-0 (28 lines); hunks: def load_smolvlm(question: str, image_urls: list[str]) -> ModelRequestData:; def load_tarsier2(question: str, image_urls: list[str]) -> ModelRequestData:; symbols: load_smolvlm, load_interns1, load_internvl, load_tarsier2
-  - `tests/models/registry.py` modified +2/-0 (2 lines); hunks: def check_available_online(; symbols: check_available_online
-- Optimization/support interpretation: The concrete diff surface is `vllm/model_executor/models/interns1.py`, `vllm/model_executor/models/interns1_vit.py`, `examples/offline_inference/vision_language.py`; keywords observed in patches: vision, config, quant, spec, attention, doc. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; multimodal processor or media-token code changed; verify image/video/audio metadata, position ids, and batching; scheduler/runtime/cache code changed; verify continuous batching, spec/PD/DP, cache lifetime, and exceptional branches; tests or benchmarks changed; use those cases as regression entry points instead of only checking model load; docs or config changed; verify serve flags, defaults, and cookbook commands against runtime code.
-- Risk and verification: Re-run the model path that exercises `vllm/model_executor/models/interns1.py`, `vllm/model_executor/models/interns1_vit.py`, `examples/offline_inference/vision_language.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `vllm/model_executor/models/interns1.py` added +711/-0 (711 lines); hunks: -0,0 +1,711; symbols: InternS1MultiModalProjector, __init__, forward, InternS1ImagePixelInputs
+  - `vllm/model_executor/models/interns1_vit.py` added +421/-0 (421 lines); hunks: -0,0 +1,421; symbols: InternS1VisionPatchEmbeddings, __init__, forward, InternS1VisionEmbeddings
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/interns1.py
+@@ -0,0 +1,711 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++# --------------------------------------------------------
++# InternS1
++# Copyright (c) 2025 Shanghai AI Lab
++# Licensed under The MIT License [see LICENSE for details]
+diff -- vllm/model_executor/models/interns1_vit.py
+@@ -0,0 +1,421 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++# adapted from https://huggingface.co/OpenGVLab/InternVL2-4B/blob/main/modeling_intern_vit.py
++# --------------------------------------------------------
++# InternVL
++# Copyright (c) 2023 OpenGVLab
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/interns1.py` added +711/-0; `vllm/model_executor/models/interns1_vit.py` added +421/-0
+- Risk and verification: The diff ships test coverage in `tests/models/registry.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #21671 - [VLM] Add video support for Intern-S1
 
 - Link: https://github.com/vllm-project/vllm/pull/21671
-- Status/date: `merged`, created 2025-07-27, merged 2025-07-27; author `Isotr0py`.
-- Diff scope read: `5` files, `+173/-50`; areas: model wrapper, multimodal/processor, scheduler/runtime, tests/benchmarks, docs/config; keywords: spec, vision, config, doc, processor, test.
+- Status/date: merged / 2025-07-27
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/interns1.py`; associated commits `3d847a3125cd`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 5 files, +173/-50, 375 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Intern-S1, this PR adds or enables a model support/runtime surface. Title: "[VLM] Add video support for Intern-S1". The diff centers on `vllm/model_executor/models/interns1.py`. PR body context: ## Essential Elements of an Effective PR Description Checklist - [x] The purpose of the PR, such as "Fix some issue (link existing issues this PR will resolve)". - [ ] The test...
+- Key implementation: `vllm/model_executor/models/interns1.py` modified +166/-45 (211 lines); hunks: -9,9 +9,10; -139,13 +140,13 @@ def get_interns1_target_ratios(; symbols: get_interns1_target_ratios, InternS1ProcessingInfo, get_hf_processor, get_supported_mm_limits, touching `get_interns1_target_ratios, InternS1ProcessingInfo, get_hf_processor`.
 - Code diff details:
-  - `vllm/model_executor/models/interns1.py` modified +166/-45 (211 lines); hunks: from collections.abc import Iterable, Mapping, Sequence; def get_interns1_target_ratios(; symbols: get_interns1_target_ratios, InternS1ProcessingInfo, get_hf_processor, get_supported_mm_limits
-  - `examples/offline_inference/vision_language.py` modified +5/-3 (8 lines); hunks: def run_tarsier(questions: list[str], modality: str) -> ModelRequestData:; def run_interns1(questions: list[str], modality: str) -> ModelRequestData:; symbols: run_tarsier, run_interns1, run_interns1
-  - `docs/models/supported_models.md` modified +1/-1 (2 lines); hunks: Specified using `--task generate`.
-  - `tests/models/multimodal/processing/test_common.py` modified +1/-0 (1 lines); hunks: def _test_processing_correctness_one(; symbols: _test_processing_correctness_one
-  - `vllm/model_executor/models/internvl.py` modified +0/-1 (1 lines); hunks: def get_multimodal_embeddings(self,; symbols: get_multimodal_embeddings
-- Optimization/support interpretation: The concrete diff surface is `vllm/model_executor/models/interns1.py`, `examples/offline_inference/vision_language.py`, `docs/models/supported_models.md`; keywords observed in patches: spec, vision, config, doc, processor, test. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; multimodal processor or media-token code changed; verify image/video/audio metadata, position ids, and batching; scheduler/runtime/cache code changed; verify continuous batching, spec/PD/DP, cache lifetime, and exceptional branches; tests or benchmarks changed; use those cases as regression entry points instead of only checking model load; docs or config changed; verify serve flags, defaults, and cookbook commands against runtime code.
-- Risk and verification: Re-run the model path that exercises `vllm/model_executor/models/interns1.py`, `examples/offline_inference/vision_language.py`, `docs/models/supported_models.md`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `vllm/model_executor/models/interns1.py` modified +166/-45 (211 lines); hunks: -9,9 +9,10; -139,13 +140,13 @@ def get_interns1_target_ratios(; symbols: get_interns1_target_ratios, InternS1ProcessingInfo, get_hf_processor, get_supported_mm_limits
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/interns1.py
+@@ -9,9 +9,10 @@
++import regex as re
+-from transformers import InternVLProcessor, PretrainedConfig
++from transformers import BatchFeature, InternVLProcessor, PretrainedConfig
+@@ -139,13 +140,13 @@ def get_interns1_target_ratios(
+-    """Basic image-only ProcessingInfo for InternS1-style models."""
++    """ProcessingInfo for InternS1-style models."""
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/interns1.py` modified +166/-45
+- Risk and verification: The diff ships test coverage in `tests/models/multimodal/processing/test_common.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #22417 - [Bugfix] Fix wrong method name in Intern-S1 image processor
 
 - Link: https://github.com/vllm-project/vllm/pull/22417
-- Status/date: `merged`, created 2025-08-07, merged 2025-08-07; author `DarkLight1337`.
-- Diff scope read: `1` files, `+1/-1`; areas: model wrapper, scheduler/runtime; keywords: processor.
+- Status/date: merged / 2025-08-07
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/interns1.py`; associated commits `04cf435d95fe`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Intern-S1, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Bugfix] Fix wrong method name in Intern-S1 image processor". The diff centers on `vllm/model_executor/models/interns1.py`. PR body context: # Essential Elements of an Effective PR Description Checklist - [x] The purpose of the PR, such as "Fix some issue (link existing issues this PR will resolve)". - [ ] The test p...
+- Key implementation: `vllm/model_executor/models/interns1.py` modified +1/-1 (2 lines); hunks: -161,7 +161,7 @@ def get_num_image_tokens(; symbols: get_num_image_tokens, touching `get_num_image_tokens`.
 - Code diff details:
-  - `vllm/model_executor/models/interns1.py` modified +1/-1 (2 lines); hunks: def get_num_image_tokens(; symbols: get_num_image_tokens
-- Optimization/support interpretation: The concrete diff surface is `vllm/model_executor/models/interns1.py`; keywords observed in patches: processor. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; scheduler/runtime/cache code changed; verify continuous batching, spec/PD/DP, cache lifetime, and exceptional branches.
-- Risk and verification: Re-run the model path that exercises `vllm/model_executor/models/interns1.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `vllm/model_executor/models/interns1.py` modified +1/-1 (2 lines); hunks: -161,7 +161,7 @@ def get_num_image_tokens(; symbols: get_num_image_tokens
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/interns1.py
+@@ -161,7 +161,7 @@ def get_num_image_tokens(
+-        num_image_patches = processor.get_number_of_image_tokens(
++        num_image_patches = processor.get_number_of_image_patches(
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/interns1.py` modified +1/-1
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/interns1.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #23510 - Migrate Interns1 inputs to TensorSchema
+
+- Link: https://github.com/vllm-project/vllm/pull/23510
+- Status/date: merged / 2025-09-02
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/interns1.py`; associated commits `56d04089ef50`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +50/-51, 167 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Intern-S1, this PR changes model-related implementation. Title: "Migrate Interns1 inputs to TensorSchema". The diff centers on `vllm/model_executor/models/interns1.py`. PR body context: ## Purpose This PR migrates Interns1 inputs from a TypedDict-based definition to a structured TensorSchema model with runtime shape validation. This brings it in line with recen...
+- Key implementation: `vllm/model_executor/models/interns1.py` modified +50/-51 (101 lines); hunks: -7,7 +7,7; -32,6 +32,7; symbols: forward, InternS1ImagePixelInputs, InternS1ImageEmbeddingInputs, touching `forward, InternS1ImagePixelInputs, InternS1ImageEmbeddingInputs`.
+- Code diff details:
+  - `vllm/model_executor/models/interns1.py` modified +50/-51 (101 lines); hunks: -7,7 +7,7; -32,6 +32,7; symbols: forward, InternS1ImagePixelInputs, InternS1ImageEmbeddingInputs
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/interns1.py
+@@ -7,7 +7,7 @@
+-from typing import Literal, Optional, TypedDict, Union
++from typing import Annotated, Literal, Optional, Union
+@@ -32,6 +32,7 @@
++from vllm.utils.tensor_schema import TensorSchema, TensorShape
+@@ -62,51 +63,60 @@ def forward(self, image_features):
+-class InternS1ImagePixelInputs(TypedDict):
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/interns1.py` modified +50/-51
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/interns1.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #25644 - [Bugfix] Fix InternS1 video processing after Transformers v4.56
+
+- Link: https://github.com/vllm-project/vllm/pull/25644
+- Status/date: merged / 2025-09-25
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/interns1.py`; associated commits `03858e6d1c85`
+- Diff scope read: GitHub Pull Request files API returned 4 files, +68/-3, 128 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Intern-S1, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Bugfix] Fix InternS1 video processing after Transformers v4.56". The diff centers on `vllm/model_executor/models/interns1.py`. PR body context: ## Purpose - FIX #25451 ## Test Plan ## Test Result --- Essential Elements of an Effective PR Description Checklist - [x] The purpose of the PR, such as "Fix some issue (link ex...
+- Key implementation: `vllm/model_executor/models/interns1.py` modified +10/-1 (11 lines); hunks: -16,6 +16,8; -31,6 +33,8; symbols: InternS1ProcessingInfo, get_hf_processor, get_supported_mm_limits, touching `InternS1ProcessingInfo, get_hf_processor, get_supported_mm_limits`.
+- Code diff details:
+  - `vllm/model_executor/models/interns1.py` modified +10/-1 (11 lines); hunks: -16,6 +16,8; -31,6 +33,8; symbols: InternS1ProcessingInfo, get_hf_processor, get_supported_mm_limits
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/interns1.py
+@@ -16,6 +16,8 @@
++from transformers.models.internvl.video_processing_internvl import (
++    InternVLVideoProcessor)
+@@ -31,6 +33,8 @@
++from vllm.transformers_utils.processor import (
++    cached_video_processor_from_config)
+@@ -152,7 +156,12 @@ class InternS1ProcessingInfo(BaseProcessingInfo):
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/interns1.py` modified +10/-1
+- Risk and verification: The diff ships test coverage in `tests/models/multimodal/processing/test_common.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #27480 - [Bugfix] Fix interns1-vit qk norm code path
+
+- Link: https://github.com/vllm-project/vllm/pull/27480
+- Status/date: merged / 2025-10-24
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/interns1_vit.py`; associated commits `acc78aeb88c8`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +3/-4, 20 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Intern-S1, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Bugfix] Fix interns1-vit qk norm code path". The diff centers on `vllm/model_executor/models/interns1_vit.py`. PR body context: ## Purpose - Fix https://github.com/InternLM/Intern-S1/issues/29 ## Test Plan ## Test Result --- Essential Elements of an Effective PR Description Checklist - [x] The purpose of...
+- Key implementation: `vllm/model_executor/models/interns1_vit.py` modified +3/-4 (7 lines); hunks: -217,16 +217,15 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
+- Code diff details:
+  - `vllm/model_executor/models/interns1_vit.py` modified +3/-4 (7 lines); hunks: -217,16 +217,15 @@ def __init__(; symbols: __init__, forward
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/interns1_vit.py
+@@ -217,16 +217,15 @@ def __init__(
+-        B, N, C = x.shape
++        """x shape: (B, N, C)"""
+-            B_, N_, H_, D_ = q.shape
+-            q = self.q_norm(q.flatten(-2, -1)).view(B_, N_, H_, D_)
+-            k = self.k_norm(k.flatten(-2, -1)).view(B_, N_, H_, D_)
++            q = self.q_norm(q)
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/interns1_vit.py` modified +3/-4
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/interns1_vit.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #33636 - [Models] Intern-S1-Pro
 
 - Link: https://github.com/vllm-project/vllm/pull/33636
-- Status/date: `merged`, created 2026-02-03, merged 2026-02-03; author `CUHKSZzxy`.
-- Diff scope read: `11` files, `+942/-11`; areas: model wrapper, MoE/router, multimodal/processor, scheduler/runtime, tests/benchmarks, docs/config; keywords: cache, vision, config, moe, expert, kv, attention, flash, processor, quant.
+- Status/date: merged / 2026-02-03
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/interns1_pro.py`; associated commits `a3acfa10719a`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 11 files, +942/-11, 1062 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Intern-S1, this PR adds or enables a model support/runtime surface. Title: "[Models] Intern-S1-Pro". The diff centers on `vllm/model_executor/models/interns1_pro.py`. PR body context: ## Purpose Intern-S1-Pro model support. ## Test Plan ## Test Result --- Essential Elements of an Effective PR Description Checklist - [ ] The purpose of the PR, such as "Fix som...
+- Key implementation: `vllm/model_executor/models/interns1_pro.py` added +633/-0 (633 lines); hunks: -0,0 +1,633; symbols: InternS1ProProcessingInfo, get_hf_config, get_hf_processor, InternS1ProMoeMLP, touching `InternS1ProProcessingInfo, get_hf_config, get_hf_processor`.
 - Code diff details:
-  - `vllm/model_executor/models/interns1_pro.py` added +633/-0 (633 lines); hunks: +# SPDX-License-Identifier: Apache-2.0; symbols: InternS1ProProcessingInfo, get_hf_config, get_hf_processor, InternS1ProMoeMLP
-  - `vllm/model_executor/layers/rotary_embedding/fope.py` added +199/-0 (199 lines); hunks: +# SPDX-License-Identifier: Apache-2.0; symbols: FourierRotaryEmbedding, __init__, _compute_inv_freq, _compute_cos_sin_cache
-  - `examples/offline_inference/vision_language.py` modified +35/-0 (35 lines); hunks: def run_interns1(questions: list[str], modality: str) -> ModelRequestData:; def run_tarsier2(questions: list[str], modality: str) -> ModelRequestData:; symbols: run_interns1, run_interns1_pro, run_internvl, run_tarsier2
-  - `vllm/model_executor/layers/rotary_embedding/__init__.py` modified +23/-0 (23 lines); hunks: from .dual_chunk_rope import DualChunkRotaryEmbedding; def get_rope(; symbols: get_rope
-  - `vllm/model_executor/layers/rotary_embedding/base.py` modified +15/-6 (21 lines); hunks: def __init__(; def __init__(; symbols: __init__, __init__, __init__
-- Optimization/support interpretation: The concrete diff surface is `vllm/model_executor/models/interns1_pro.py`, `vllm/model_executor/layers/rotary_embedding/fope.py`, `examples/offline_inference/vision_language.py`; keywords observed in patches: cache, vision, config, moe, expert, kv. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; MoE/router/top-k/expert logic changed; verify shared/routed experts plus EP/TP/DP and empty-token branches; multimodal processor or media-token code changed; verify image/video/audio metadata, position ids, and batching; scheduler/runtime/cache code changed; verify continuous batching, spec/PD/DP, cache lifetime, and exceptional branches; tests or benchmarks changed; use those cases as regression entry points instead of only checking model load; docs or config changed; verify serve flags, defaults, and cookbook commands against runtime code.
-- Risk and verification: Re-run the model path that exercises `vllm/model_executor/models/interns1_pro.py`, `vllm/model_executor/layers/rotary_embedding/fope.py`, `examples/offline_inference/vision_language.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `vllm/model_executor/models/interns1_pro.py` added +633/-0 (633 lines); hunks: -0,0 +1,633; symbols: InternS1ProProcessingInfo, get_hf_config, get_hf_processor, InternS1ProMoeMLP
+- Key code excerpts:
 
+```diff
+diff -- vllm/model_executor/models/interns1_pro.py
+@@ -0,0 +1,633 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++# Copyright 2025 The vLLM team.
++# Copyright 2025 The Qwen Team.
++# Copyright 2025 The HuggingFace Inc. team.
++# All rights reserved.
+```
 
-### Gap and optimization follow-up
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/interns1_pro.py` added +633/-0
+- Risk and verification: The diff ships test coverage in `tests/models/registry.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
-- Covered PRs: 4; open PRs: 0.
-- Any future PR must add both the timeline row and the file-level diff card; title-only summaries are not acceptable.
+### PR #33793 - [Bugfix] Fix interns1-pro initialization and PP
 
-<!-- MODEL_PR_DIFF_AUDIT:END en -->
+- Link: https://github.com/vllm-project/vllm/pull/33793
+- Status/date: merged / 2026-02-04
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/interns1_pro.py`; associated commits `192ad4648b20`
+- Diff scope read: GitHub Pull Request files API returned 6 files, +43/-22, 163 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Intern-S1, this PR adds or enables a model support/runtime surface. Title: "[Bugfix] Fix interns1-pro initialization and PP". The diff centers on `vllm/model_executor/models/interns1_pro.py`. PR body context: ## Purpose - Fix broken InternS1-PRO intialization because the previous PR is drafted on an old version vLLM. 😅 - Also fix PP for InternS1-PRO ## Test Plan ## Test Result --- Es...
+- Key implementation: `vllm/model_executor/models/interns1_pro.py` modified +26/-12 (38 lines); hunks: -32,7 +32,6; -41,8 +40,8; symbols: __init__, InternS1ProMoeLLMForCausalLM, InternS1ProForConditionalGeneration, touching `__init__, InternS1ProMoeLLMForCausalLM, InternS1ProForConditionalGeneration`.
+- Code diff details:
+  - `vllm/model_executor/models/interns1_pro.py` modified +26/-12 (38 lines); hunks: -32,7 +32,6; -41,8 +40,8; symbols: __init__, InternS1ProMoeLLMForCausalLM, InternS1ProForConditionalGeneration
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/interns1_pro.py
+@@ -32,7 +32,6 @@
+-from vllm.attention.layer import Attention
+@@ -41,8 +40,8 @@
++from vllm.model_executor.layers.attention import Attention
+-from vllm.model_executor.layers.fused_moe.config import RoutingMethodType
+@@ -188,7 +187,6 @@ def __init__(
+-            routing_method_type=RoutingMethodType.Renormalize,
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/interns1_pro.py` modified +26/-12
+- Risk and verification: The diff ships test coverage in `tests/models/multimodal/processing/test_common.py`, `tests/models/multimodal/processing/test_tensor_schema.py`, `tests/models/registry.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+## Gap-Closure Notes
+
+- This version rejects title-only PR lists; every PR must include trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
+- If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.

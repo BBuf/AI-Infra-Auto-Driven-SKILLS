@@ -1,115 +1,408 @@
-# vLLM GLM-4.5 / 4.5V Support and PR History
+# vllm GLM-4.5 Model PR Optimization History
 
-This note tracks the vLLM runtime, key PRs, and remaining risk areas for GLM-4.5 / 4.5V.
+## Scope
 
-- Status: supported on current mainline
+- Rebuilt on: 2026-04-25
+- Source baseline: `vllm-project/vllm` trace worktree commit `95995bbef8`
+- PR collection rule: run `git log --name-only -- <model-files>` on model implementation, config, processor, parser, docs/tests, filter by model keywords in commit subjects, then read each PR's final diff through the GitHub Pull Request files API.
+- Preservation rule: PRs explicitly cited by the previous history/skill are retained even if current implementation files no longer trace to them, and the card marks that source.
+- Diffusion model families have been removed from this history set and are no longer part of model optimization skills.
 
-## Key Conclusions
+## Implementation File Coverage
 
-- The GLM-4.5 lane is where vLLM reorganized the GLM family around text, MoE, and vision variants.
-- Most regressions are in MoE gate behavior, tie-word-embedding policy, and vendor-specific fused MoE tuning.
+| File | Git-traced PRs |
+| --- | --- |
+| `tests/reasoning/test_glm4_moe_reasoning_parser.py` | no direct PR-number commit |
+| `tests/tool_parsers/test_glm4_moe_tool_parser.py` | no direct PR-number commit |
+| `vllm/model_executor/models/glm4_moe.py` | [#21435](https://github.com/vllm-project/vllm/pull/21435), [#22143](https://github.com/vllm-project/vllm/pull/22143), [#22203](https://github.com/vllm-project/vllm/pull/22203), [#22460](https://github.com/vllm-project/vllm/pull/22460), [#22520](https://github.com/vllm-project/vllm/pull/22520), [#22832](https://github.com/vllm-project/vllm/pull/22832), [#24849](https://github.com/vllm-project/vllm/pull/24849), [#25830](https://github.com/vllm-project/vllm/pull/25830) |
+| `vllm/model_executor/models/glm4_moe_lite.py` | no direct PR-number commit |
+| `vllm/model_executor/models/glm4_moe_lite_mtp.py` | no direct PR-number commit |
+| `vllm/model_executor/models/glm4_moe_mtp.py` | [#27597](https://github.com/vllm-project/vllm/pull/27597), [#28805](https://github.com/vllm-project/vllm/pull/28805) |
+| `vllm/tool_parsers/glm4_moe_tool_parser.py` | no direct PR-number commit |
 
-## Main Runtime Surfaces
+## PR Coverage Summary
 
-- `vllm/vllm/model_executor/models/glm4.py`
-- `vllm/vllm/model_executor/models/glm4_moe.py`
-- `vllm/vllm/model_executor/models/glm4v.py`
+- Git-traced PRs: 10
+- Extra PRs preserved from existing docs: 3
+- Total PRs in this document: 13
+- File trace command: `git log --name-only -- <model-files>`
+- Diff audit source: GitHub Pull Request files API
 
-## Landed PRs
+## Timeline
 
-- [#22171](https://github.com/vllm-project/vllm/pull/22171) `Modify the organization of GLM series`: Reworked the family layout so 4.5-era models reused a cleaner GLM structure.
-- [#22460](https://github.com/vllm-project/vllm/pull/22460) `not tie_word_embeddings for glm-4.5 and glm-4.5v`: Aligned the loader with the real 4.5 checkpoint contract instead of forcing tied embeddings.
-- [#22832](https://github.com/vllm-project/vllm/pull/22832) `Modify the gate implementation of glm4_moe`: Changed the GLM4.5 MoE gating path used by text and VL variants.
-- [#23695](https://github.com/vllm-project/vllm/pull/23695) `Add triton fused moe config for GLM-4.5-Air-FP8 on B200`: Added a production kernel-tuning lane for the 4.5 Air FP8 deployment path.
-- [#24589](https://github.com/vllm-project/vllm/pull/24589) `Add documentation for GLM-4.5 series tool-calling and reasoning parser`: Codified the parser choices needed to serve 4.5 reasoning / tool checkpoints correctly.
+| Date | PR | State | Title | Main files |
+| --- | --- | --- | --- | --- |
+| 2025-07-24 | [#21435](https://github.com/vllm-project/vllm/pull/21435) | merged | remove GLM-4 quantization wrong Code | `vllm/model_executor/models/glm4_moe.py` |
+| 2025-08-03 | [#22143](https://github.com/vllm-project/vllm/pull/22143) | merged | fuse fp32 for GLM-4.5 e_score_correction_bias | `vllm/model_executor/models/glm4_moe.py` |
+| 2025-08-04 | [#22171](https://github.com/vllm-project/vllm/pull/22171) | merged | [Misc] Modify the organization of GLM series | `docs/models/supported_models.md`, `tests/models/registry.py`, `tests/models/multimodal/generation/test_common.py` |
+| 2025-08-05 | [#22203](https://github.com/vllm-project/vllm/pull/22203) | merged | self.gate dtype update for GLM-4.5 | `vllm/model_executor/models/glm4_moe.py` |
+| 2025-08-08 | [#22460](https://github.com/vllm-project/vllm/pull/22460) | merged | not tie_word_embeddings for glm-4.5 and glm-4.5v | `vllm/model_executor/models/glm4_moe.py` |
+| 2025-08-09 | [#22520](https://github.com/vllm-project/vllm/pull/22520) | merged | GLM-4.5V with new class name at transformers | `vllm/model_executor/models/glm4_moe.py` |
+| 2025-08-14 | [#22832](https://github.com/vllm-project/vllm/pull/22832) | merged | [Model] Modify the gate implementation of glm4_moe | `vllm/model_executor/models/glm4_moe.py` |
+| 2025-08-27 | [#23695](https://github.com/vllm-project/vllm/pull/23695) | merged | feat: add triton fused moe config for GLM-4.5-Air-FP8 on B200 | `vllm/model_executor/layers/fused_moe/configs/E=128,N=704,device_name=NVIDIA_B200,dtype=fp8_w8a8.json` |
+| 2025-09-10 | [#24589](https://github.com/vllm-project/vllm/pull/24589) | merged | [Doc] Add documentation for GLM-4.5 series models: tool-calling and reasoning parser | `docs/features/reasoning_outputs.md`, `docs/features/tool_calling.md` |
+| 2025-09-17 | [#24849](https://github.com/vllm-project/vllm/pull/24849) | merged | [Model] Apply SharedFusedMoE to glm4_moe. | `vllm/model_executor/models/glm4_moe.py` |
+| 2025-09-28 | [#25830](https://github.com/vllm-project/vllm/pull/25830) | merged | Update GLM-4.5 Doc transformers version | `vllm/model_executor/models/glm4_moe.py` |
+| 2025-11-12 | [#27597](https://github.com/vllm-project/vllm/pull/27597) | merged | [Model] fix glm4_moe_mtp load weights with GLM-4.6 checkpoint. | `vllm/model_executor/models/glm4_moe_mtp.py` |
+| 2025-11-17 | [#28805](https://github.com/vllm-project/vllm/pull/28805) | merged | [BugFix] Fix glm4_moe_mtp load weights bug | `vllm/model_executor/models/glm4_moe_mtp.py` |
 
-## Open PR Radar
+## Per-PR Diff Audit Cards
 
-- No pinned open PR here; re-run PR search before claiming new support.
+### PR #21435 - remove GLM-4 quantization wrong Code
 
-## Matching Skill
+- Link: https://github.com/vllm-project/vllm/pull/21435
+- Status/date: merged / 2025-07-24
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe.py`; associated commits `85bda9e7d053`
+- Diff scope read: GitHub Pull Request files API returned 3 files, +2/-3, 26 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For GLM-4.5, this PR fixes a launch, loading, parsing, or numerical issue. Title: "remove GLM-4 quantization wrong Code". The diff centers on `vllm/model_executor/models/glm4_moe.py`. PR body context: need to remove this line
+- Key implementation: `vllm/model_executor/models/glm4_moe.py` modified +0/-1 (1 lines); hunks: -390,7 +390,6 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `vllm/model_executor/models/glm4_moe.py` modified +0/-1 (1 lines); hunks: -390,7 +390,6 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__
+- Key code excerpts:
 
-- `skills/model-optimization/vllm/vllm-glm45-optimization/SKILL.md`
-- `skills/model-optimization/vllm/vllm-glm45-optimization/references/pr-history.md`
+```diff
+diff -- vllm/model_executor/models/glm4_moe.py
+@@ -390,7 +390,6 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = ""):
+-                quant_config=quant_config,
+```
 
-<!-- MODEL_PR_DIFF_AUDIT:START en -->
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/glm4_moe.py` modified +0/-1
+- Risk and verification: Runtime changes concentrate in `vllm/entrypoints/openai/tool_parsers/glm4_moe_tool_parser.py`, `vllm/model_executor/models/glm4_moe.py`, `vllm/reasoning/glm4_moe_reasoning_parser.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-## PR Diff Audit Cards (2026-04-25 rebuild)
+### PR #22143 - fuse fp32 for GLM-4.5 e_score_correction_bias
 
-This section re-audits `GLM-4.5` against `vllm-project/vllm` Pull Request metadata and file-level patches. Acceptance rule: every PR needs status, code surface, file-level diff digest, support/optimization interpretation, and verification risk notes; if no public PR is found, keep an explicit no-match conclusion instead of inventing history.
+- Link: https://github.com/vllm-project/vllm/pull/22143
+- Status/date: merged / 2025-08-03
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe.py`; associated commits `d3c18c9cb0b6`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +2/-3, 12 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For GLM-4.5, this PR optimizes an inference path or backend selection. Title: "fuse fp32 for GLM-4.5 e_score_correction_bias". The diff centers on `vllm/model_executor/models/glm4_moe.py`. The PR body has no extra context, so this assessment comes from the title, file list, and patch.
+- Key implementation: `vllm/model_executor/models/glm4_moe.py` modified +2/-3 (5 lines); hunks: -125,9 +125,8 @@ def __init__(; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `vllm/model_executor/models/glm4_moe.py` modified +2/-3 (5 lines); hunks: -125,9 +125,8 @@ def __init__(; symbols: __init__
+- Key code excerpts:
 
-### Timeline
+```diff
+diff -- vllm/model_executor/models/glm4_moe.py
+@@ -125,9 +125,8 @@ def __init__(
+-        # noaux_tc is not set in transformers new config now
+-        self.gate.e_score_correction_bias = (nn.Parameter(
+-            torch.empty(config.n_routed_experts)))
++        self.gate.e_score_correction_bias = nn.Parameter(
++            torch.empty(config.n_routed_experts, dtype=torch.float32))
+```
 
-| Created | PR | State | Title | Code surface | Main diff files |
-| --- | ---: | --- | --- | --- | --- |
-| 2025-08-04 | [#22171](https://github.com/vllm-project/vllm/pull/22171) | merged | [Misc] Modify the organization of GLM series | model wrapper, multimodal/processor, scheduler/runtime, tests/benchmarks, docs/config | `docs/models/supported_models.md`, `tests/models/registry.py`, `tests/models/multimodal/generation/test_common.py` |
-| 2025-08-07 | [#22460](https://github.com/vllm-project/vllm/pull/22460) | merged | not tie_word_embeddings for glm-4.5 and glm-4.5v | model wrapper, MoE/router, scheduler/runtime | `vllm/model_executor/models/glm4_moe.py` |
-| 2025-08-13 | [#22832](https://github.com/vllm-project/vllm/pull/22832) | merged | [Model] Modify the gate implementation of glm4_moe | model wrapper, MoE/router, scheduler/runtime, docs/config | `vllm/model_executor/models/glm4_moe.py`, `docs/models/supported_models.md` |
-| 2025-08-26 | [#23695](https://github.com/vllm-project/vllm/pull/23695) | merged | feat: add triton fused moe config for GLM-4.5-Air-FP8 on B200 | MoE/router, quantization, scheduler/runtime, docs/config | `vllm/model_executor/layers/fused_moe/configs/E=128,N=704,device_name=NVIDIA_B200,dtype=fp8_w8a8.json` |
-| 2025-09-10 | [#24589](https://github.com/vllm-project/vllm/pull/24589) | merged | [Doc] Add documentation for GLM-4.5 series models: tool-calling and reasoning parser | docs/config | `docs/features/tool_calling.md`, `docs/features/reasoning_outputs.md` |
-
-### File-level PR diff reading notes
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/glm4_moe.py` modified +2/-3
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/glm4_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #22171 - [Misc] Modify the organization of GLM series
 
 - Link: https://github.com/vllm-project/vllm/pull/22171
-- Status/date: `merged`, created 2025-08-04, merged 2025-08-04; author `jeejeelee`.
-- Diff scope read: `16` files, `+31/-31`; areas: model wrapper, multimodal/processor, scheduler/runtime, tests/benchmarks, docs/config; keywords: test, moe, config, doc, fp8, lora, vision.
+- Status/date: merged / 2025-08-04
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 16 files, +31/-31, 241 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For GLM-4.5, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Misc] Modify the organization of GLM series". The diff centers on `docs/models/supported_models.md`, `tests/models/registry.py`, `tests/models/multimodal/generation/test_common.py`. PR body context: # Essential Elements of an Effective PR Description Checklist - [ ] The purpose of the PR, such as "Fix some issue (link existing issues this PR will resolve)". - [ ] The test p...
+- Key implementation: `docs/models/supported_models.md` modified +5/-5 (10 lines); hunks: -328,7 +328,7 @@ th {; -348,8 +348,8 @@ th {; `tests/models/registry.py` modified +5/-5 (10 lines); hunks: -153,7 +153,7 @@ def check_available_online(; -187,8 +187,8 @@ def check_available_online(; symbols: check_available_online, touching `check_available_online`; `tests/models/multimodal/generation/test_common.py` modified +3/-3 (6 lines); hunks: -355,7 +355,7; -374,7 +374,7; `vllm/model_executor/models/chatglm.py` modified +3/-3 (6 lines); hunks: -1,7 +1,7; -86,10 +86,10 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
-  - `docs/models/supported_models.md` modified +5/-5 (10 lines); hunks: th {; th {
-  - `tests/models/registry.py` modified +5/-5 (10 lines); hunks: def check_available_online(; def check_available_online(; symbols: check_available_online, check_available_online, check_available_online
-  - `tests/models/multimodal/generation/test_common.py` modified +3/-3 (6 lines); hunks: num_logprobs=10,; marks=[large_gpu_mark(min_gb=32)],
-  - `vllm/model_executor/models/chatglm.py` modified +3/-3 (6 lines); hunks: # SPDX-License-Identifier: Apache-2.0; def __init__(; symbols: __init__
-  - `examples/offline_inference/vision_language.py` modified +2/-2 (4 lines); hunks: def run_gemma3(questions: list[str], modality: str) -> ModelRequestData:; def run_glm4v(questions: list[str], modality: str) -> ModelRequestData:; symbols: run_gemma3, run_glm4v, run_glm4v, run_glm4_1v
-- Optimization/support interpretation: The concrete diff surface is `docs/models/supported_models.md`, `tests/models/registry.py`, `tests/models/multimodal/generation/test_common.py`; keywords observed in patches: test, moe, config, doc, fp8, lora. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; multimodal processor or media-token code changed; verify image/video/audio metadata, position ids, and batching; scheduler/runtime/cache code changed; verify continuous batching, spec/PD/DP, cache lifetime, and exceptional branches; tests or benchmarks changed; use those cases as regression entry points instead of only checking model load; docs or config changed; verify serve flags, defaults, and cookbook commands against runtime code.
-- Risk and verification: Re-run the model path that exercises `docs/models/supported_models.md`, `tests/models/registry.py`, `tests/models/multimodal/generation/test_common.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `docs/models/supported_models.md` modified +5/-5 (10 lines); hunks: -328,7 +328,7 @@ th {; -348,8 +348,8 @@ th {
+  - `tests/models/registry.py` modified +5/-5 (10 lines); hunks: -153,7 +153,7 @@ def check_available_online(; -187,8 +187,8 @@ def check_available_online(; symbols: check_available_online
+  - `tests/models/multimodal/generation/test_common.py` modified +3/-3 (6 lines); hunks: -355,7 +355,7; -374,7 +374,7
+  - `vllm/model_executor/models/chatglm.py` modified +3/-3 (6 lines); hunks: -1,7 +1,7; -86,10 +86,10 @@ def __init__(; symbols: __init__
+  - `tests/models/multimodal/processing/test_common.py` modified +2/-2 (4 lines); hunks: -271,8 +271,8 @@ def _test_processing_correctness_one(; symbols: _test_processing_correctness_one
+- Key code excerpts:
+
+```diff
+diff -- docs/models/supported_models.md
+@@ -328,7 +328,7 @@ th {
+-| `ChatGLMModel`, `ChatGLMForConditionalGeneration` | ChatGLM | `THUDM/chatglm2-6b`, `THUDM/chatglm3-6b`, `ShieldLM-6B-chatglm3`, etc. | ✅︎ | ✅︎ | ✅︎ |
++| `ChatGLMModel`, `ChatGLMForConditionalGeneration` | ChatGLM | `zai-org/chatglm2-6b`, `zai-org/chatglm3-6b`, `ShieldLM-6B-chatglm3`, etc. | ✅︎ | ✅︎ | ✅︎ |
+@@ -348,8 +348,8 @@ th {
+-| `GlmForCausalLM` | GLM-4 | `THUDM/glm-4-9b-chat-hf`, etc. | ✅︎ | ✅︎ | ✅︎ |
+-| `Glm4ForCausalLM` | GLM-4-0414 | `THUDM/GLM-4-32B-0414`, etc. | ✅︎ | ✅︎ | ✅︎ |
++| `GlmForCausalLM` | GLM-4 | `zai-org/glm-4-9b-chat-hf`, etc. | ✅︎ | ✅︎ | ✅︎ |
+diff -- tests/models/registry.py
+@@ -153,7 +153,7 @@ def check_available_online(
+-    "ChatGLMModel": _HfExamplesInfo("THUDM/chatglm3-6b",
++    "ChatGLMModel": _HfExamplesInfo("zai-org/chatglm3-6b",
+@@ -187,8 +187,8 @@ def check_available_online(
+-    "GlmForCausalLM": _HfExamplesInfo("THUDM/glm-4-9b-chat-hf"),
+-    "Glm4ForCausalLM": _HfExamplesInfo("THUDM/GLM-4-9B-0414"),
++    "GlmForCausalLM": _HfExamplesInfo("zai-org/glm-4-9b-chat-hf"),
+diff -- tests/models/multimodal/generation/test_common.py
+@@ -355,7 +355,7 @@
+```
+
+- Reviewed files:
+  - docs: `docs/models/supported_models.md` modified +5/-5
+  - tests: `tests/models/registry.py` modified +5/-5; `tests/models/multimodal/generation/test_common.py` modified +3/-3; `tests/models/multimodal/processing/test_common.py` modified +2/-2; `tests/models/language/generation/test_common.py` modified +1/-1; `tests/models/multimodal/processing/test_glm4_1v.py` modified +1/-1; `tests/tokenization/test_cached_tokenizer.py` modified +1/-1
+  - runtime: `vllm/model_executor/models/chatglm.py` modified +3/-3
+- Risk and verification: The diff ships test coverage in `tests/distributed/test_pipeline_parallel.py`, `tests/lora/test_add_lora.py`, `tests/lora/test_chatglm3_tp.py`, `tests/models/language/generation/test_common.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #22203 - self.gate dtype update for GLM-4.5
+
+- Link: https://github.com/vllm-project/vllm/pull/22203
+- Status/date: merged / 2025-08-05
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe.py`; associated commits `6fa41e0c32f3`
+- Diff scope read: GitHub Pull Request files API returned 3 files, +4/-3, 35 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For GLM-4.5, this PR optimizes an inference path or backend selection. Title: "self.gate dtype update for GLM-4.5". The diff centers on `vllm/model_executor/models/glm4_moe.py`. PR body context: The entire self.gate module needs to remain in float32 to ensure benchmark performance for GLM-4.5 and GLM-4.5V during propagation.
+- Key implementation: `vllm/model_executor/models/glm4_moe.py` modified +2/-1 (3 lines); hunks: -123,6 +123,7 @@ def __init__(; -180,7 +181,7 @@ def forward(self, hidden_states: torch.Tensor) -> torch.Tensor:; symbols: __init__, forward, touching `__init__, forward`.
+- Code diff details:
+  - `vllm/model_executor/models/glm4_moe.py` modified +2/-1 (3 lines); hunks: -123,6 +123,7 @@ def __init__(; -180,7 +181,7 @@ def forward(self, hidden_states: torch.Tensor) -> torch.Tensor:; symbols: __init__, forward
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/glm4_moe.py
+@@ -123,6 +123,7 @@ def __init__(
++                                     params_dtype=torch.float32,
+@@ -180,7 +181,7 @@ def forward(self, hidden_states: torch.Tensor) -> torch.Tensor:
+-        router_logits, _ = self.gate(hidden_states)
++        router_logits, _ = self.gate(hidden_states.to(dtype=torch.float32))
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/glm4_moe.py` modified +2/-1
+- Risk and verification: The diff ships test coverage in `tests/models/registry.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #22460 - not tie_word_embeddings for glm-4.5 and glm-4.5v
 
 - Link: https://github.com/vllm-project/vllm/pull/22460
-- Status/date: `merged`, created 2025-08-07, merged 2025-08-08; author `zRzRzRzRzRzRzR`.
-- Diff scope read: `1` files, `+0/-2`; areas: model wrapper, MoE/router, scheduler/runtime; keywords: config, moe, processor, quant.
+- Status/date: merged / 2025-08-08
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe.py`; associated commits `c152e2a8a0f4`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +0/-2, 9 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For GLM-4.5, this PR changes model-related implementation. Title: "not tie_word_embeddings for glm-4.5 and glm-4.5v". The diff centers on `vllm/model_executor/models/glm4_moe.py`. The PR body has no extra context, so this assessment comes from the title, file list, and patch.
+- Key implementation: `vllm/model_executor/models/glm4_moe.py` modified +0/-2 (2 lines); hunks: -601,8 +601,6 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__, touching `__init__`.
 - Code diff details:
-  - `vllm/model_executor/models/glm4_moe.py` modified +0/-2 (2 lines); hunks: def __init__(self, *, vllm_config: VllmConfig, prefix: str = ""):; symbols: __init__
-- Optimization/support interpretation: The concrete diff surface is `vllm/model_executor/models/glm4_moe.py`; keywords observed in patches: config, moe, processor, quant. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; MoE/router/top-k/expert logic changed; verify shared/routed experts plus EP/TP/DP and empty-token branches; scheduler/runtime/cache code changed; verify continuous batching, spec/PD/DP, cache lifetime, and exceptional branches.
-- Risk and verification: Re-run the model path that exercises `vllm/model_executor/models/glm4_moe.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `vllm/model_executor/models/glm4_moe.py` modified +0/-2 (2 lines); hunks: -601,8 +601,6 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/glm4_moe.py
+@@ -601,8 +601,6 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = ""):
+-        if self.config.tie_word_embeddings:
+-            self.lm_head.weight = self.model.embed_tokens.weight
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/glm4_moe.py` modified +0/-2
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/glm4_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #22520 - GLM-4.5V with new class name at transformers
+
+- Link: https://github.com/vllm-project/vllm/pull/22520
+- Status/date: merged / 2025-08-09
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe.py`; associated commits `a6022e6fbcbd`
+- Diff scope read: GitHub Pull Request files API returned 5 files, +13/-6, 61 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For GLM-4.5, this PR changes model-related implementation. Title: "GLM-4.5V with new class name at transformers". The diff centers on `vllm/model_executor/models/glm4_moe.py`. PR body context: As this PR mention: https://github.com/huggingface/transformers/pull/39805
+- Key implementation: `vllm/model_executor/models/glm4_moe.py` modified +7/-1 (8 lines); hunks: -372,7 +372,13 @@ def forward(; symbols: forward, Glm4MoeModel, __init__, touching `forward, Glm4MoeModel, __init__`.
+- Code diff details:
+  - `vllm/model_executor/models/glm4_moe.py` modified +7/-1 (8 lines); hunks: -372,7 +372,13 @@ def forward(; symbols: forward, Glm4MoeModel, __init__
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/glm4_moe.py
+@@ -372,7 +372,13 @@ def forward(
+-@support_torch_compile
++@support_torch_compile(
++    dynamic_arg_dims={
++        "input_ids": 0,
++        "positions": -1,
++        "intermediate_tensors": 0,
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/glm4_moe.py` modified +7/-1
+- Risk and verification: The diff ships test coverage in `tests/models/registry.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #22832 - [Model] Modify the gate implementation of glm4_moe
 
 - Link: https://github.com/vllm-project/vllm/pull/22832
-- Status/date: `merged`, created 2025-08-13, merged 2025-08-14; author `jeejeelee`.
-- Diff scope read: `2` files, `+11/-11`; areas: model wrapper, MoE/router, scheduler/runtime, docs/config; keywords: moe, config, doc, expert, kv, processor, quant, router.
+- Status/date: merged / 2025-08-14
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe.py`; associated commits `92ff41abea13`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +11/-11, 50 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For GLM-4.5, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Model] Modify the gate implementation of glm4_moe". The diff centers on `vllm/model_executor/models/glm4_moe.py`. PR body context: # Essential Elements of an Effective PR Description Checklist - [ ] The purpose of the PR, such as "Fix some issue (link existing issues this PR will resolve)". - [ ] The test p...
+- Key implementation: `vllm/model_executor/models/glm4_moe.py` modified +10/-10 (20 lines); hunks: -41,7 +41,6; -118,14 +117,15 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
-  - `vllm/model_executor/models/glm4_moe.py` modified +10/-10 (20 lines); hunks: from vllm.model_executor.layers.layernorm import RMSNorm; def __init__(; symbols: __init__, forward
-  - `docs/models/supported_models.md` modified +1/-1 (2 lines); hunks: These models primarily accept the [`LLM.generate`](./generative_models.md#llmgen
-- Optimization/support interpretation: The concrete diff surface is `vllm/model_executor/models/glm4_moe.py`, `docs/models/supported_models.md`; keywords observed in patches: moe, config, doc, expert, kv, processor. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; MoE/router/top-k/expert logic changed; verify shared/routed experts plus EP/TP/DP and empty-token branches; scheduler/runtime/cache code changed; verify continuous batching, spec/PD/DP, cache lifetime, and exceptional branches; docs or config changed; verify serve flags, defaults, and cookbook commands against runtime code.
-- Risk and verification: Re-run the model path that exercises `vllm/model_executor/models/glm4_moe.py`, `docs/models/supported_models.md`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `vllm/model_executor/models/glm4_moe.py` modified +10/-10 (20 lines); hunks: -41,7 +41,6; -118,14 +117,15 @@ def __init__(; symbols: __init__, forward
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/glm4_moe.py
+@@ -41,7 +41,6 @@
+-                                               ReplicatedLinear,
+@@ -118,14 +117,15 @@ def __init__(
+-        self.gate = ReplicatedLinear(config.hidden_size,
+-                                     config.n_routed_experts,
+-                                     bias=False,
+-                                     quant_config=None,
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/glm4_moe.py` modified +10/-10
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/glm4_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #23695 - feat: add triton fused moe config for GLM-4.5-Air-FP8 on B200
 
 - Link: https://github.com/vllm-project/vllm/pull/23695
-- Status/date: `merged`, created 2025-08-26, merged 2025-08-27; author `zixuanzhang226`.
-- Diff scope read: `1` files, `+146/-0`; areas: MoE/router, quantization, scheduler/runtime, docs/config; keywords: config, fp8, moe.
+- Status/date: merged / 2025-08-27
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +146/-0, 147 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For GLM-4.5, this PR adds or enables a model support/runtime surface. Title: "feat: add triton fused moe config for GLM-4.5-Air-FP8 on B200". The diff centers on `vllm/model_executor/layers/fused_moe/configs/E=128,N=704,device_name=NVIDIA_B200,dtype=fp8_w8a8.json`. PR body context: ## Purpose Add fused MoE config for GLM-4.5-Air-FP8 on NVIDIA B200, tp = 2 ## Test Result With config: Without config:
+- Key implementation: `vllm/model_executor/layers/fused_moe/configs/E=128,N=704,device_name=NVIDIA_B200,dtype=fp8_w8a8.json` added +146/-0 (146 lines); hunks: -0,0 +1,146.
 - Code diff details:
-  - `vllm/model_executor/layers/fused_moe/configs/E=128,N=704,device_name=NVIDIA_B200,dtype=fp8_w8a8.json` added +146/-0 (146 lines); hunks: +{
-- Optimization/support interpretation: The concrete diff surface is `vllm/model_executor/layers/fused_moe/configs/E=128,N=704,device_name=NVIDIA_B200,dtype=fp8_w8a8.json`; keywords observed in patches: config, fp8, moe. Impact reading: MoE/router/top-k/expert logic changed; verify shared/routed experts plus EP/TP/DP and empty-token branches; quantized loading or quantized kernels changed; verify scales, zero-points, checkpoint names, and fallback behavior; scheduler/runtime/cache code changed; verify continuous batching, spec/PD/DP, cache lifetime, and exceptional branches; docs or config changed; verify serve flags, defaults, and cookbook commands against runtime code.
-- Risk and verification: Re-run the model path that exercises `vllm/model_executor/layers/fused_moe/configs/E=128,N=704,device_name=NVIDIA_B200,dtype=fp8_w8a8.json`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `vllm/model_executor/layers/fused_moe/configs/E=128,N=704,device_name=NVIDIA_B200,dtype=fp8_w8a8.json` added +146/-0 (146 lines); hunks: -0,0 +1,146
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/layers/fused_moe/configs/E=128,N=704,device_name=NVIDIA_B200,dtype=fp8_w8a8.json
+@@ -0,0 +1,146 @@
++{
++    "1": {
++        "BLOCK_SIZE_M": 16,
++        "BLOCK_SIZE_N": 128,
++        "BLOCK_SIZE_K": 128,
++        "GROUP_SIZE_M": 1,
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/layers/fused_moe/configs/E=128,N=704,device_name=NVIDIA_B200,dtype=fp8_w8a8.json` added +146/-0
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/fused_moe/configs/E=128,N=704,device_name=NVIDIA_B200,dtype=fp8_w8a8.json`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #24589 - [Doc] Add documentation for GLM-4.5 series models: tool-calling and reasoning parser
 
 - Link: https://github.com/vllm-project/vllm/pull/24589
-- Status/date: `merged`, created 2025-09-10, merged 2025-09-10; author `WangErXiao`.
-- Diff scope read: `2` files, `+10/-0`; areas: docs/config; keywords: doc.
+- Status/date: merged / 2025-09-10
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +10/-0, 24 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For GLM-4.5, this PR adds or enables a model support/runtime surface. Title: "[Doc] Add documentation for GLM-4.5 series models: tool-calling and reasoning parser". The diff centers on `docs/features/reasoning_outputs.md`, `docs/features/tool_calling.md`. PR body context: Add documentation for GLM-4.5 series models: tool-calling and reasoning parser.
+- Key implementation: `docs/features/reasoning_outputs.md` modified +1/-0 (1 lines); hunks: -15,6 +15,7 @@ vLLM currently supports the following reasoning models:; `docs/features/tool_calling.md` modified +9/-0 (9 lines); hunks: -311,6 +311,15 @@ Flags:.
 - Code diff details:
-  - `docs/features/tool_calling.md` modified +9/-0 (9 lines); hunks: Flags:
-  - `docs/features/reasoning_outputs.md` modified +1/-0 (1 lines); hunks: vLLM currently supports the following reasoning models:
-- Optimization/support interpretation: The concrete diff surface is `docs/features/tool_calling.md`, `docs/features/reasoning_outputs.md`; keywords observed in patches: doc. Impact reading: docs or config changed; verify serve flags, defaults, and cookbook commands against runtime code.
-- Risk and verification: Re-run the model path that exercises `docs/features/tool_calling.md`, `docs/features/reasoning_outputs.md`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `docs/features/reasoning_outputs.md` modified +1/-0 (1 lines); hunks: -15,6 +15,7 @@ vLLM currently supports the following reasoning models:
+  - `docs/features/tool_calling.md` modified +9/-0 (9 lines); hunks: -311,6 +311,15 @@ Flags:
+- Key code excerpts:
 
+```diff
+diff -- docs/features/reasoning_outputs.md
+@@ -15,6 +15,7 @@ vLLM currently supports the following reasoning models:
++| [GLM-4.5 series](https://huggingface.co/collections/zai-org/glm-45-687c621d34bda8c9e4bf503b) | `glm45` | `guided_json`, `guided_regex` | ✅ |
+diff -- docs/features/tool_calling.md
+@@ -311,6 +311,15 @@ Flags:
++### GLM-4.5 Models (`glm45`)
++Supported models:
++* `ZhipuAI/GLM-4.5`
++* `ZhipuAI/GLM-4.5-Air`
++Flags: `--tool-call-parser glm45`
+```
 
-### Gap and optimization follow-up
+- Reviewed files:
+  - docs: `docs/features/reasoning_outputs.md` modified +1/-0; `docs/features/tool_calling.md` modified +9/-0
+- Risk and verification: This is mostly docs/examples in `docs/features/reasoning_outputs.md`, `docs/features/tool_calling.md`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
-- Covered PRs: 5; open PRs: 0.
-- Any future PR must add both the timeline row and the file-level diff card; title-only summaries are not acceptable.
+### PR #24849 - [Model] Apply SharedFusedMoE to glm4_moe.
 
-<!-- MODEL_PR_DIFF_AUDIT:END en -->
+- Link: https://github.com/vllm-project/vllm/pull/24849
+- Status/date: merged / 2025-09-17
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe.py`; associated commits `c15309a730fa`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +55/-30, 114 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For GLM-4.5, this PR optimizes an inference path or backend selection. Title: "[Model] Apply SharedFusedMoE to glm4_moe.". The diff centers on `vllm/model_executor/models/glm4_moe.py`. PR body context: ## Purpose The class `SharedFusedMoE` was proposed by @bnellnm in PR #23273. The model glm4_moe has shared experts but we don't use `SharedFusedMoE` for glm4_moe, I'm not sure w...
+- Key implementation: `vllm/model_executor/models/glm4_moe.py` modified +55/-30 (85 lines); hunks: -46,6 +46,7; -146,25 +147,6 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
+- Code diff details:
+  - `vllm/model_executor/models/glm4_moe.py` modified +55/-30 (85 lines); hunks: -46,6 +46,7; -146,25 +147,6 @@ def __init__(; symbols: __init__, forward
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/glm4_moe.py
+@@ -46,6 +46,7 @@
++from vllm.model_executor.layers.shared_fused_moe import SharedFusedMoE
+@@ -146,25 +147,6 @@ def __init__(
+-        self.experts = FusedMoE(
+-            num_experts=config.n_routed_experts,
+-            top_k=config.num_experts_per_tok,
+-            hidden_size=config.hidden_size,
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/glm4_moe.py` modified +55/-30
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/glm4_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #25830 - Update GLM-4.5 Doc transformers version
+
+- Link: https://github.com/vllm-project/vllm/pull/25830
+- Status/date: merged / 2025-09-28
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe.py`; associated commits `b1ded114b976`
+- Diff scope read: GitHub Pull Request files API returned 4 files, +7/-5, 40 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For GLM-4.5, this PR extends deployment docs, tests, or CI coverage. Title: "Update GLM-4.5 Doc transformers version". The diff centers on `vllm/model_executor/models/glm4_moe.py`. PR body context: Update for GLM-4.5 Doc transformers version
+- Key implementation: `vllm/model_executor/models/glm4_moe.py` modified +1/-1 (2 lines); hunks: -21,7 +21,7.
+- Code diff details:
+  - `vllm/model_executor/models/glm4_moe.py` modified +1/-1 (2 lines); hunks: -21,7 +21,7
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/glm4_moe.py
+@@ -21,7 +21,7 @@
+-"""Inference-only GLM-4.5 model compatible with HuggingFace weights."""
++"""Inference-only GLM-4.5, GLM-4.6 model compatible with HuggingFace weights."""
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/glm4_moe.py` modified +1/-1
+- Risk and verification: The diff ships test coverage in `tests/models/registry.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #27597 - [Model] fix glm4_moe_mtp load weights with GLM-4.6 checkpoint.
+
+- Link: https://github.com/vllm-project/vllm/pull/27597
+- Status/date: merged / 2025-11-12
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe_mtp.py`; associated commits `d3ade61e429f`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +11/-4, 23 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For GLM-4.5, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Model] fix glm4_moe_mtp load weights with GLM-4.6 checkpoint.". The diff centers on `vllm/model_executor/models/glm4_moe_mtp.py`. PR body context: ## Purpose As described in issue#25993, when serving GLM-4.6 with mtp using the following command: It raises the following error: The root cause is that the GLM-4.6 checkpoint d...
+- Key implementation: `vllm/model_executor/models/glm4_moe_mtp.py` modified +11/-4 (15 lines); hunks: -256,11 +256,18 @@ def load_weights(self, weights: Iterable[tuple[str, torch....; symbols: load_weights, touching `load_weights`.
+- Code diff details:
+  - `vllm/model_executor/models/glm4_moe_mtp.py` modified +11/-4 (15 lines); hunks: -256,11 +256,18 @@ def load_weights(self, weights: Iterable[tuple[str, torch....; symbols: load_weights
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/glm4_moe_mtp.py
+@@ -256,11 +256,18 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Tensor]]) -> set[str]:
++        spec_layer = self.model.mtp_start_layer_idx
+-            spec_layer = get_spec_layer_idx_from_weight_name(self.config, name)
+-            if spec_layer is None:
+-                continue
+-            name = self._rewrite_spec_layer_name(spec_layer, name)
++            if name == "lm_head.weight":
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/glm4_moe_mtp.py` modified +11/-4
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/glm4_moe_mtp.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #28805 - [BugFix] Fix glm4_moe_mtp load weights bug
+
+- Link: https://github.com/vllm-project/vllm/pull/28805
+- Status/date: merged / 2025-11-17
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe_mtp.py`; associated commits `ab01cd14e5e2`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +3/-4, 17 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For GLM-4.5, this PR adds or enables a model support/runtime surface. Title: "[BugFix] Fix glm4_moe_mtp load weights bug". The diff centers on `vllm/model_executor/models/glm4_moe_mtp.py`. PR body context: ## Purpose As comment in issue#25993,PR#27597 introduced bugs causing GLM-4.5/GLM-4.6 serving with mtp error because: 1. spec_layer is overwritten by later None assignment in "e...
+- Key implementation: `vllm/model_executor/models/glm4_moe_mtp.py` modified +3/-4 (7 lines); hunks: -256,13 +256,12 @@ def load_weights(self, weights: Iterable[tuple[str, torch....; symbols: load_weights, touching `load_weights`.
+- Code diff details:
+  - `vllm/model_executor/models/glm4_moe_mtp.py` modified +3/-4 (7 lines); hunks: -256,13 +256,12 @@ def load_weights(self, weights: Iterable[tuple[str, torch....; symbols: load_weights
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/glm4_moe_mtp.py
+@@ -256,13 +256,12 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Tensor]]) -> set[str]:
+-        spec_layer = self.model.mtp_start_layer_idx
+-                name = f"model.layers.{spec_layer}.shard_head.head.weight"
++                spec_layer = self.model.mtp_start_layer_idx
++                name = f"model.layers.{spec_layer}.shared_head.head.weight"
+-                # This name is same with local model, rewriting is not needed.
+-                pass
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/glm4_moe_mtp.py` modified +3/-4
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/glm4_moe_mtp.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+## Gap-Closure Notes
+
+- This version rejects title-only PR lists; every PR must include trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
+- If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.

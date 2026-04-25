@@ -1,109 +1,172 @@
-# vLLM Qwen3 Coder PR History
+# vllm Qwen3 Coder PR Diff Audit Reference
 
-Evidence snapshot:
+- Rebuilt on: 2026-04-25
+- Source baseline: `vllm-project/vllm` trace worktree commit `95995bbef8`
+- Collection: model implementation files were traced with `git log --name-only -- <model-files>`, filtered by model keywords in commit subjects, then every PR card was populated from the GitHub Pull Request files API.
+- Extra preserved PRs from prior docs: 4
+- Rule: use this as the backing dossier for the skill, not only PR titles.
 
-- vLLM mainline checked around `0f7be0f2f76814f80f9091220a5fbbb53912ad00`
-- Support status: supported on current mainline
-- Scope: Qwen3 Coder tool parser, structured tool arguments, and coding-oriented parser behavior layered on top of the base Qwen3 runtime.
+## Implementation File Coverage
 
-This family inherits the base runtime context from `qwen3-core`; this file records only the delta that is specific to `qwen3-coder`.
-
-## Landed PRs
-
-### PR #21396 - Add Qwen3CoderToolParser
-
-- Link: https://github.com/vllm-project/vllm/pull/21396
-- Why it mattered: Created the dedicated coder-tool parser instead of reusing a generic Qwen parser.
-- Runtime path: vllm/vllm/model_executor/models/qwen3.py, vllm/vllm/entrypoints/openai/tool_parsers/
-- Validation / risk: re-check this PR if you touch the same loader, parser, quantization, or multimodal surface.
-
-### PR #36032 - Fix anyOf double encoded parameters
-
-- Link: https://github.com/vllm-project/vllm/pull/36032
-- Why it mattered: Fixed a concrete schema serialization bug in coder tool calls.
-- Runtime path: vllm/vllm/model_executor/models/qwen3.py, vllm/vllm/entrypoints/openai/tool_parsers/
-- Validation / risk: re-check this PR if you touch the same loader, parser, quantization, or multimodal surface.
-
-### PR #37831 - Fix anyOf/oneOf type resolution for nullable params
-
-- Link: https://github.com/vllm-project/vllm/pull/37831
-- Why it mattered: Improved nullable parameter handling in complex schemas.
-- Runtime path: vllm/vllm/model_executor/models/qwen3.py, vllm/vllm/entrypoints/openai/tool_parsers/
-- Validation / risk: re-check this PR if you touch the same loader, parser, quantization, or multimodal surface.
-
-### PR #38848 - Fix Qwen3 tool parser for Responses API tools
-
-- Link: https://github.com/vllm-project/vllm/pull/38848
-- Why it mattered: Aligned the tool parser with the Responses API tool surface.
-- Runtime path: vllm/vllm/model_executor/models/qwen3.py, vllm/vllm/entrypoints/openai/tool_parsers/
-- Validation / risk: re-check this PR if you touch the same loader, parser, quantization, or multimodal surface.
-
-## Open PR Radar
-
-- No specific open PR is pinned here; rerun GitHub PR search before asserting new support.
-
-<!-- MODEL_PR_DIFF_AUDIT:START reference -->
-
-# VLLM Qwen3 Coder PR Diff Audit Reference
-
-This reference is rebuilt from the same audited PR metadata used by `model-pr-optimization-history`. It is intentionally concise but keeps a file-level diff digest for every indexed PR.
+| File | Git-traced PRs |
+| --- | --- |
+| `tests/models/multimodal/pooling/test_colqwen3.py` | no direct PR-number commit |
+| `vllm/model_executor/models/colqwen3.py` | no direct PR-number commit |
+| `vllm/model_executor/models/qwen3.py` | no direct PR-number commit |
+| `vllm/transformers_utils/configs/colqwen3.py` | no direct PR-number commit |
 
 ## Timeline
 
-| Created | PR | State | Title | Code surface | Main diff files |
-| --- | ---: | --- | --- | --- | --- |
-| 2025-07-22 | [#21396](https://github.com/vllm-project/vllm/pull/21396) | merged | [Model] Add Qwen3CoderToolParser | tests/benchmarks | `vllm/entrypoints/openai/tool_parsers/qwen3coder_tool_parser.py`, `tests/tool_use/test_qwen3coder_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py` |
-| 2026-03-04 | [#36032](https://github.com/vllm-project/vllm/pull/36032) | merged | qwen3coder tool parser fix anyOf double encoded parameters | misc | `vllm/tool_parsers/qwen3coder_tool_parser.py` |
-| 2026-03-23 | [#37831](https://github.com/vllm-project/vllm/pull/37831) | merged | [Bugfix] Fix Qwen3CoderToolParser anyOf/oneOf type resolution for nullable params | tests/benchmarks | `tests/tool_parsers/test_qwen3coder_tool_parser.py`, `vllm/tool_parsers/qwen3coder_tool_parser.py` |
-| 2026-04-02 | [#38848](https://github.com/vllm-project/vllm/pull/38848) | merged | [Bugfix] Fix Qwen3 tool parser for Responses API tools | tests/benchmarks | `tests/tool_parsers/test_qwen3coder_tool_parser.py`, `vllm/tool_parsers/qwen3coder_tool_parser.py`, `vllm/tool_parsers/qwen3xml_tool_parser.py` |
+| Date | PR | State | Title | Main files |
+| --- | --- | --- | --- | --- |
+| 2025-07-22 | [#21396](https://github.com/vllm-project/vllm/pull/21396) | merged | [Model] Add Qwen3CoderToolParser | `vllm/entrypoints/openai/tool_parsers/qwen3coder_tool_parser.py`, `tests/tool_use/test_qwen3coder_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py` |
+| 2026-03-05 | [#36032](https://github.com/vllm-project/vllm/pull/36032) | merged | qwen3coder tool parser fix anyOf double encoded parameters | `vllm/tool_parsers/qwen3coder_tool_parser.py` |
+| 2026-04-01 | [#37831](https://github.com/vllm-project/vllm/pull/37831) | merged | [Bugfix] Fix Qwen3CoderToolParser anyOf/oneOf type resolution for nullable params | `tests/tool_parsers/test_qwen3coder_tool_parser.py`, `vllm/tool_parsers/qwen3coder_tool_parser.py` |
+| 2026-04-08 | [#38848](https://github.com/vllm-project/vllm/pull/38848) | merged | [Bugfix] Fix Qwen3 tool parser for Responses API tools | `tests/tool_parsers/test_qwen3coder_tool_parser.py`, `vllm/tool_parsers/qwen3coder_tool_parser.py`, `vllm/tool_parsers/qwen3xml_tool_parser.py` |
 
-## Diff Cards
+## Per-PR Diff Audit Cards
 
 ### PR #21396 - [Model] Add Qwen3CoderToolParser
 
 - Link: https://github.com/vllm-project/vllm/pull/21396
-- Status/date: `merged`, created 2025-07-22, merged 2025-07-22; author `ranpox`.
-- Diff scope read: `3` files, `+1289/-0`; areas: tests/benchmarks; keywords: config, fp8, moe, spec, test.
+- Status/date: merged / 2025-07-22
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +1289/-0, 1303 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3 Coder, this PR adds or enables a model support/runtime surface. Title: "[Model] Add Qwen3CoderToolParser". The diff centers on `vllm/entrypoints/openai/tool_parsers/qwen3coder_tool_parser.py`, `tests/tool_use/test_qwen3coder_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py`. PR body context: Edit from @simon-mo Tested locally for both tool use example and unit test.
+- Key implementation: `vllm/entrypoints/openai/tool_parsers/qwen3coder_tool_parser.py` added +669/-0 (669 lines); hunks: -0,0 +1,669; symbols: Qwen3CoderToolParser, __init__, _generate_tool_call_id, _reset_streaming_state, touching `Qwen3CoderToolParser, __init__, _generate_tool_call_id`; `tests/tool_use/test_qwen3coder_tool_parser.py` added +618/-0 (618 lines); hunks: -0,0 +1,618; symbols: qwen3_tokenizer, qwen3_tool_parser, sample_tools, assert_tool_calls, touching `qwen3_tokenizer, qwen3_tool_parser, sample_tools`; `vllm/entrypoints/openai/tool_parsers/__init__.py` modified +2/-0 (2 lines); hunks: -17,6 +17,7; -38,4 +39,5.
 - Code diff details:
-  - `vllm/entrypoints/openai/tool_parsers/qwen3coder_tool_parser.py` added +669/-0 (669 lines); hunks: +# SPDX-License-Identifier: Apache-2.0; symbols: Qwen3CoderToolParser, __init__, _generate_tool_call_id, _reset_streaming_state
-  - `tests/tool_use/test_qwen3coder_tool_parser.py` added +618/-0 (618 lines); hunks: +# SPDX-License-Identifier: Apache-2.0; symbols: qwen3_tokenizer, qwen3_tool_parser, sample_tools, assert_tool_calls
-  - `vllm/entrypoints/openai/tool_parsers/__init__.py` modified +2/-0 (2 lines); hunks: from .mistral_tool_parser import MistralToolParser; "KimiK2ToolParser",
-- Optimization/support interpretation: The concrete diff surface is `vllm/entrypoints/openai/tool_parsers/qwen3coder_tool_parser.py`, `tests/tool_use/test_qwen3coder_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py`; keywords observed in patches: config, fp8, moe, spec, test. Impact reading: tests or benchmarks changed; use those cases as regression entry points instead of only checking model load.
-- Risk and verification: Re-run the model path that exercises `vllm/entrypoints/openai/tool_parsers/qwen3coder_tool_parser.py`, `tests/tool_use/test_qwen3coder_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `vllm/entrypoints/openai/tool_parsers/qwen3coder_tool_parser.py` added +669/-0 (669 lines); hunks: -0,0 +1,669; symbols: Qwen3CoderToolParser, __init__, _generate_tool_call_id, _reset_streaming_state
+  - `tests/tool_use/test_qwen3coder_tool_parser.py` added +618/-0 (618 lines); hunks: -0,0 +1,618; symbols: qwen3_tokenizer, qwen3_tool_parser, sample_tools, assert_tool_calls
+  - `vllm/entrypoints/openai/tool_parsers/__init__.py` modified +2/-0 (2 lines); hunks: -17,6 +17,7; -38,4 +39,5
+- Key code excerpts:
+
+```diff
+diff -- vllm/entrypoints/openai/tool_parsers/qwen3coder_tool_parser.py
+@@ -0,0 +1,669 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++import json
++import uuid
++from collections.abc import Sequence
++from typing import Any, Optional, Union
+diff -- tests/tool_use/test_qwen3coder_tool_parser.py
+@@ -0,0 +1,618 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++import json
++from collections.abc import Generator
++from typing import Optional
++import pytest
+diff -- vllm/entrypoints/openai/tool_parsers/__init__.py
+@@ -17,6 +17,7 @@
+```
+
+- Reviewed files:
+  - runtime: `vllm/entrypoints/openai/tool_parsers/qwen3coder_tool_parser.py` added +669/-0; `vllm/entrypoints/openai/tool_parsers/__init__.py` modified +2/-0
+  - tests: `tests/tool_use/test_qwen3coder_tool_parser.py` added +618/-0
+- Risk and verification: The diff ships test coverage in `tests/tool_use/test_qwen3coder_tool_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #36032 - qwen3coder tool parser fix anyOf double encoded parameters
 
 - Link: https://github.com/vllm-project/vllm/pull/36032
-- Status/date: `merged`, created 2026-03-04, merged 2026-03-05; author `cmunley1`.
-- Diff scope read: `1` files, `+6/-0`; areas: misc; keywords: config.
+- Status/date: merged / 2026-03-05
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +6/-0, 13 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3 Coder, this PR fixes a launch, loading, parsing, or numerical issue. Title: "qwen3coder tool parser fix anyOf double encoded parameters". The diff centers on `vllm/tool_parsers/qwen3coder_tool_parser.py`. PR body context: ## Problem When a tool parameter uses anyOf instead of an explicit type, _convert_param_value falls back to param_type = "string" because anyOf schemas have no top-level "type"...
+- Key implementation: `vllm/tool_parsers/qwen3coder_tool_parser.py` modified +6/-0 (6 lines); hunks: -157,6 +157,12 @@ def _convert_param_value(; symbols: _convert_param_value, touching `_convert_param_value`.
 - Code diff details:
-  - `vllm/tool_parsers/qwen3coder_tool_parser.py` modified +6/-0 (6 lines); hunks: def _convert_param_value(; symbols: _convert_param_value
-- Optimization/support interpretation: The concrete diff surface is `vllm/tool_parsers/qwen3coder_tool_parser.py`; keywords observed in patches: config. Impact reading: the patch is in miscellaneous paths; infer the actual impact from the touched files.
-- Risk and verification: Re-run the model path that exercises `vllm/tool_parsers/qwen3coder_tool_parser.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `vllm/tool_parsers/qwen3coder_tool_parser.py` modified +6/-0 (6 lines); hunks: -157,6 +157,12 @@ def _convert_param_value(; symbols: _convert_param_value
+- Key code excerpts:
+
+```diff
+diff -- vllm/tool_parsers/qwen3coder_tool_parser.py
+@@ -157,6 +157,12 @@ def _convert_param_value(
++        elif (
++            isinstance(param_config[param_name], dict)
++            and "anyOf" in param_config[param_name]
++        ):
++            # anyOf has no top-level "type"; treat as object to trigger json.loads.
++            param_type = "object"
+```
+
+- Reviewed files:
+  - runtime: `vllm/tool_parsers/qwen3coder_tool_parser.py` modified +6/-0
+- Risk and verification: Runtime changes concentrate in `vllm/tool_parsers/qwen3coder_tool_parser.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #37831 - [Bugfix] Fix Qwen3CoderToolParser anyOf/oneOf type resolution for nullable params
 
 - Link: https://github.com/vllm-project/vllm/pull/37831
-- Status/date: `merged`, created 2026-03-23, merged 2026-04-01; author `AAISSJ`.
-- Diff scope read: `2` files, `+254/-14`; areas: tests/benchmarks; keywords: config, spec, test.
+- Status/date: merged / 2026-04-01
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +254/-14, 293 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3 Coder, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Bugfix] Fix Qwen3CoderToolParser anyOf/oneOf type resolution for nullable params". The diff centers on `tests/tool_parsers/test_qwen3coder_tool_parser.py`, `vllm/tool_parsers/qwen3coder_tool_parser.py`. PR body context: ## Purpose Fix incorrect type resolution for `anyOf`/`oneOf` schemas, type-as-array patterns, and `$ref` schemas in `Qwen3CoderToolParser._convert_param_value`. The previous fix...
+- Key implementation: `tests/tool_parsers/test_qwen3coder_tool_parser.py` modified +202/-0 (202 lines); hunks: -430,6 +430,208 @@ def test_extract_tool_calls_type_conversion(qwen3_tool_par...; symbols: test_extract_tool_calls_type_conversion, test_extract_tool_calls_anyof_type_conversion, test_extract_tool_calls_anyof_type_conversion_streaming, touching `test_extract_tool_calls_type_conversion, test_extract_tool_calls_anyof_type_conversion, test_extract_tool_calls_anyof_type_conversion_streaming`; `vllm/tool_parsers/qwen3coder_tool_parser.py` modified +52/-14 (66 lines); hunks: -133,11 +133,58 @@ def _get_arguments_config(; -152,19 +199,10 @@ def _convert_param_value(; symbols: _get_arguments_config, _first_non_null_type, _resolve_param_type, _convert_param_value, touching `_get_arguments_config, _first_non_null_type, _resolve_param_type`.
 - Code diff details:
-  - `tests/tool_parsers/test_qwen3coder_tool_parser.py` modified +202/-0 (202 lines); hunks: def test_extract_tool_calls_type_conversion(qwen3_tool_parser_parametrized):; symbols: test_extract_tool_calls_type_conversion, test_extract_tool_calls_anyof_type_conversion, test_extract_tool_calls_anyof_type_conversion_streaming
-  - `vllm/tool_parsers/qwen3coder_tool_parser.py` modified +52/-14 (66 lines); hunks: def _get_arguments_config(; def _convert_param_value(; symbols: _get_arguments_config, _first_non_null_type, _resolve_param_type, _convert_param_value
-- Optimization/support interpretation: The concrete diff surface is `tests/tool_parsers/test_qwen3coder_tool_parser.py`, `vllm/tool_parsers/qwen3coder_tool_parser.py`; keywords observed in patches: config, spec, test. Impact reading: tests or benchmarks changed; use those cases as regression entry points instead of only checking model load.
-- Risk and verification: Re-run the model path that exercises `tests/tool_parsers/test_qwen3coder_tool_parser.py`, `vllm/tool_parsers/qwen3coder_tool_parser.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `tests/tool_parsers/test_qwen3coder_tool_parser.py` modified +202/-0 (202 lines); hunks: -430,6 +430,208 @@ def test_extract_tool_calls_type_conversion(qwen3_tool_par...; symbols: test_extract_tool_calls_type_conversion, test_extract_tool_calls_anyof_type_conversion, test_extract_tool_calls_anyof_type_conversion_streaming
+  - `vllm/tool_parsers/qwen3coder_tool_parser.py` modified +52/-14 (66 lines); hunks: -133,11 +133,58 @@ def _get_arguments_config(; -152,19 +199,10 @@ def _convert_param_value(; symbols: _get_arguments_config, _first_non_null_type, _resolve_param_type, _convert_param_value
+- Key code excerpts:
+
+```diff
+diff -- tests/tool_parsers/test_qwen3coder_tool_parser.py
+@@ -430,6 +430,208 @@ def test_extract_tool_calls_type_conversion(qwen3_tool_parser_parametrized):
++def test_extract_tool_calls_anyof_type_conversion(qwen3_tool_parser):
++    """Test type conversion for anyOf/oneOf nullable schemas (Pydantic v2).
++    Pydantic v2 emits anyOf for Optional[T] fields, e.g.:
++        Optional[int] -> {"anyOf": [{"type": "integer"}, {"type": "null"}]}
++    The parser must extract the non-null type and apply the correct
++    conversion (int(), float(), etc.) instead of returning a raw string.
+diff -- vllm/tool_parsers/qwen3coder_tool_parser.py
+@@ -133,11 +133,58 @@ def _get_arguments_config(
++    @staticmethod
++    def _first_non_null_type(type_value: Any) -> str | None:
++        """Extract the first non-null type from a type value.
++        Handles both scalar types ("integer") and type-as-array
++        (["integer", "null"]) per JSON Schema spec.
++        """
+```
+
+- Reviewed files:
+  - tests: `tests/tool_parsers/test_qwen3coder_tool_parser.py` modified +202/-0
+  - runtime: `vllm/tool_parsers/qwen3coder_tool_parser.py` modified +52/-14
+- Risk and verification: The diff ships test coverage in `tests/tool_parsers/test_qwen3coder_tool_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #38848 - [Bugfix] Fix Qwen3 tool parser for Responses API tools
 
 - Link: https://github.com/vllm-project/vllm/pull/38848
-- Status/date: `merged`, created 2026-04-02, merged 2026-04-08; author `sfeng33`.
-- Diff scope read: `4` files, `+99/-113`; areas: tests/benchmarks; keywords: config, spec, test.
+- Status/date: merged / 2026-04-08
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 4 files, +99/-113, 425 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3 Coder, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Bugfix] Fix Qwen3 tool parser for Responses API tools". The diff centers on `tests/tool_parsers/test_qwen3coder_tool_parser.py`, `vllm/tool_parsers/qwen3coder_tool_parser.py`, `vllm/tool_parsers/qwen3xml_tool_parser.py`. PR body context: ## Purpose - Both `Qwen3CoderToolParser` and `Qwen3XMLToolParser` assumed all tools have a `.function.name` / `.function.parameters` structure (`ChatCompletionToolsParam`). Resp...
+- Key implementation: `tests/tool_parsers/test_qwen3coder_tool_parser.py` modified +73/-55 (128 lines); hunks: -5,6 +5,7; -49,41 +50,62 @@ def qwen3_tool_parser_parametrized(qwen3_tool_parser, qwen3_...; symbols: qwen3_tool_parser_parametrized, sample_tools, assert_tool_calls, test_extract_tool_calls_no_tools, touching `qwen3_tool_parser_parametrized, sample_tools, assert_tool_calls`; `vllm/tool_parsers/qwen3coder_tool_parser.py` modified +6/-31 (37 lines); hunks: -25,6 +25,7; -109,28 +110,6 @@ def _reset_streaming_state(self):; symbols: _reset_streaming_state, _get_arguments_config, _convert_param_value, _parse_xml_function_call, touching `_reset_streaming_state, _get_arguments_config, _convert_param_value`; `vllm/tool_parsers/qwen3xml_tool_parser.py` modified +6/-27 (33 lines); hunks: -26,6 +26,7; -1000,33 +1001,11 @@ def _get_param_type(self, param_name: str) -> str:; symbols: _get_param_type, repair_param_type, touching `_get_param_type, repair_param_type`; `vllm/tool_parsers/utils.py` modified +14/-0 (14 lines); hunks: -142,6 +142,20 @@ def _extract_tool_info(; symbols: _extract_tool_info, find_tool_properties, _get_tool_schema_from_tool, touching `_extract_tool_info, find_tool_properties, _get_tool_schema_from_tool`.
 - Code diff details:
-  - `tests/tool_parsers/test_qwen3coder_tool_parser.py` modified +73/-55 (128 lines); hunks: from collections.abc import Generator; def qwen3_tool_parser_parametrized(qwen3_tool_parser, qwen3_xml_tool_parser, req; symbols: qwen3_tool_parser_parametrized, sample_tools, sample_tools, assert_tool_calls
-  - `vllm/tool_parsers/qwen3coder_tool_parser.py` modified +6/-31 (37 lines); hunks: Tool,; def _reset_streaming_state(self):; symbols: _reset_streaming_state, _get_arguments_config, _convert_param_value, _convert_param_value
-  - `vllm/tool_parsers/qwen3xml_tool_parser.py` modified +6/-27 (33 lines); hunks: Tool,; def _get_param_type(self, param_name: str) -> str:; symbols: _get_param_type, repair_param_type
-  - `vllm/tool_parsers/utils.py` modified +14/-0 (14 lines); hunks: def _extract_tool_info(; symbols: _extract_tool_info, find_tool_properties, _get_tool_schema_from_tool
-- Optimization/support interpretation: The concrete diff surface is `tests/tool_parsers/test_qwen3coder_tool_parser.py`, `vllm/tool_parsers/qwen3coder_tool_parser.py`, `vllm/tool_parsers/qwen3xml_tool_parser.py`; keywords observed in patches: config, spec, test. Impact reading: tests or benchmarks changed; use those cases as regression entry points instead of only checking model load.
-- Risk and verification: Re-run the model path that exercises `tests/tool_parsers/test_qwen3coder_tool_parser.py`, `vllm/tool_parsers/qwen3coder_tool_parser.py`, `vllm/tool_parsers/qwen3xml_tool_parser.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `tests/tool_parsers/test_qwen3coder_tool_parser.py` modified +73/-55 (128 lines); hunks: -5,6 +5,7; -49,41 +50,62 @@ def qwen3_tool_parser_parametrized(qwen3_tool_parser, qwen3_...; symbols: qwen3_tool_parser_parametrized, sample_tools, assert_tool_calls, test_extract_tool_calls_no_tools
+  - `vllm/tool_parsers/qwen3coder_tool_parser.py` modified +6/-31 (37 lines); hunks: -25,6 +25,7; -109,28 +110,6 @@ def _reset_streaming_state(self):; symbols: _reset_streaming_state, _get_arguments_config, _convert_param_value, _parse_xml_function_call
+  - `vllm/tool_parsers/qwen3xml_tool_parser.py` modified +6/-27 (33 lines); hunks: -26,6 +26,7; -1000,33 +1001,11 @@ def _get_param_type(self, param_name: str) -> str:; symbols: _get_param_type, repair_param_type
+  - `vllm/tool_parsers/utils.py` modified +14/-0 (14 lines); hunks: -142,6 +142,20 @@ def _extract_tool_info(; symbols: _extract_tool_info, find_tool_properties, _get_tool_schema_from_tool
+- Key code excerpts:
 
+```diff
+diff -- tests/tool_parsers/test_qwen3coder_tool_parser.py
+@@ -5,6 +5,7 @@
++from openai.types.responses.function_tool import FunctionTool
+@@ -49,41 +50,62 @@ def qwen3_tool_parser_parametrized(qwen3_tool_parser, qwen3_xml_tool_parser, req
+-@pytest.fixture
+-def sample_tools():
+-    return [
+-        ChatCompletionToolsParam(
+diff -- vllm/tool_parsers/qwen3coder_tool_parser.py
+@@ -25,6 +25,7 @@
++from vllm.tool_parsers.utils import find_tool_properties
+@@ -109,28 +110,6 @@ def _reset_streaming_state(self):
+-    def _get_arguments_config(self, func_name: str, tools: list[Tool] | None) -> dict:
+-        """Extract argument configuration for a function."""
+-        if tools is None:
+-            return {}
+diff -- vllm/tool_parsers/qwen3xml_tool_parser.py
+@@ -26,6 +26,7 @@
+```
 
-<!-- MODEL_PR_DIFF_AUDIT:END reference -->
+- Reviewed files:
+  - tests: `tests/tool_parsers/test_qwen3coder_tool_parser.py` modified +73/-55
+  - runtime: `vllm/tool_parsers/qwen3coder_tool_parser.py` modified +6/-31; `vllm/tool_parsers/qwen3xml_tool_parser.py` modified +6/-27; `vllm/tool_parsers/utils.py` modified +14/-0
+- Risk and verification: The diff ships test coverage in `tests/tool_parsers/test_qwen3coder_tool_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.

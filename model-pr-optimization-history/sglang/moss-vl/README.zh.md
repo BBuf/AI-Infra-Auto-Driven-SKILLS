@@ -1,47 +1,73 @@
-# SGLang Moss-VL 支持与优化时间线
+# sglang MOSS-VL 模型 PR 优化历史
 
-范围：Moss-VL 原生 SGLang runtime、image/video processor、conversation template、多模态 scheduler metadata、cross-attention custom mask、flashinfer prefill 要求。
+## 文档口径
 
-证据快照：SGLang `origin/main` `bca3dd958`（`2026-04-24`）。完整卡片见：`skills/model-optimization/sglang/sglang-moss-vl-optimization/references/pr-history.md`。
+- 重做日期: 2026-04-25
+- 源码基线: `sgl-project/sglang` 当前追溯 worktree commit `880599cd43`
+- PR 收集规则: 先从模型实现、配置、processor、parser、docs/tests 等相关文件执行 `git log --name-only -- <model-files>`，再按 commit subject 的模型关键词过滤，最后用 GitHub Pull Request files API 读取每个 PR 的最终 diff。
+- 额外保留规则: 原 history/skill 已显式引用但未出现在当前实现文件 git trace 中的 PR 会保留，并在卡片里标注来源。
+- diffusion 相关模型已从本目录剔除，不再纳入模型优化 skill/history。
 
-## 已阅读 Diff 的 PR
+## 模型实现文件覆盖
 
-#23454 新增 Moss-VL runtime 支持。已完整阅读 `3397` 行 diff、`10` 个文件。该 PR 新增 `moss_vl.py`、`multimodal/processors/moss_vl.py`，在 `schedule_batch.py` 中加入 Moss-VL 多模态字段，注册 `moss-vl` conversation template，并在 `server_args.py` 中要求 flashinfer prefill。
+| 文件 | git 追溯到的 PR |
+| --- | --- |
+| `python/sglang/srt/models/moss_vl.py` | [#23454](https://github.com/sgl-project/sglang/pull/23454) |
+| `python/sglang/srt/multimodal/processors/moss_vl.py` | [#23454](https://github.com/sgl-project/sglang/pull/23454) |
 
-核心契约：Moss-VL vision token 会按 frame 插入 separator；processor 的 frame visibility 会转换成 packed cross-attention custom mask；encoder-prefix placeholder token 在 text extend 前会被剥离。
+## PR 覆盖总览
 
-<!-- MODEL_PR_DIFF_AUDIT:START zh -->
+- git 追溯 PR 数: 1
+- 原文档显式引用补充 PR 数: 0
+- 当前文档总 PR 数: 1
+- 文件追溯命令: `git log --name-only -- <model-files>`
+- diff 审计来源: GitHub Pull Request files API
 
-## 逐 PR diff 审计卡（2026-04-25 重做）
+## 时间线
 
-本节按 `sgl-project/sglang` 的 Pull Request API 和文件级 patch 重新审计 `MOSS-VL`。验收口径：每个 PR 都要有状态、代码面、文件级 diff 摘要、支持/优化点判断和风险验证点；没有公开相关 PR 时必须写清检索结论，不能编造。
+| 日期 | PR | 状态 | 标题 | 主要文件 |
+| --- | --- | --- | --- | --- |
+| 2026-04-24 | [#23454](https://github.com/sgl-project/sglang/pull/23454) | merged | [srt] Add Moss-VL Python runtime support | `python/sglang/srt/models/moss_vl.py`, `python/sglang/srt/multimodal/processors/moss_vl.py` |
 
-### 时间线总览
-
-| 创建日期 | PR | 状态 | 标题 | 代码面 | 主要 diff 文件 |
-| --- | ---: | --- | --- | --- | --- |
-| 2026-04-22 | [#23454](https://github.com/sgl-project/sglang/pull/23454) | merged | [srt] Add Moss-VL Python runtime support | model wrapper, attention/backend, multimodal/processor, scheduler/runtime, docs/config | `python/sglang/srt/models/moss_vl.py`, `python/sglang/srt/multimodal/processors/moss_vl.py`, `python/sglang/srt/managers/schedule_batch.py` |
-
-### 逐 PR 代码 diff 阅读记录
+## 逐 PR diff 审计卡
 
 ### PR #23454 - [srt] Add Moss-VL Python runtime support
 
-- 链接：https://github.com/sgl-project/sglang/pull/23454
-- 状态/时间：`merged`，created 2026-04-22, merged 2026-04-24；作者 `zsj555`。
-- 代码 diff 已读范围：`10` 个文件，`+2401/-6`；代码面：model wrapper, attention/backend, multimodal/processor, scheduler/runtime, docs/config；关键词：attention, config, processor, spec, cuda, flash, vision, cache, kv, mla。
-- 代码 diff 细节：
-  - `python/sglang/srt/models/moss_vl.py` added +1643/-0 (1643 lines); hunk: +"""PyTorch Moss-VL model for SGLang - Qwen3VL Vision + Text with Cross Attention."""; 符号: MossVLVisionMLP, __init__, forward, MossVLVisionPatchEmbed
-  - `python/sglang/srt/multimodal/processors/moss_vl.py` added +612/-0 (612 lines); hunk: +import asyncio; 符号: MossVLImageProcessor, __init__, _build_mm_items, _build_vision_token_info
-  - `python/sglang/srt/managers/schedule_batch.py` modified +70/-0 (70 lines); hunk: class MultimodalProcessorOutput:; def from_dict(d: dict) -> "MultimodalProcessorOutput":; 符号: MultimodalProcessorOutput:, from_dict, MultimodalInputs:, release_features
-  - `python/sglang/srt/parser/conversation.py` modified +29/-2 (31 lines); hunk: def get_prompt(self) -> str:; def generate_chat_conv(; 符号: get_prompt, generate_chat_conv, generate_chat_conv, generate_chat_conv
-  - `python/sglang/srt/managers/tokenizer_manager.py` modified +12/-2 (14 lines); hunk: async def _tokenize_one_request(; 符号: _tokenize_one_request
-- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/moss_vl.py`, `python/sglang/srt/multimodal/processors/moss_vl.py`, `python/sglang/srt/managers/schedule_batch.py`；patch 关键词为 attention, config, processor, spec, cuda, flash。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；attention、KV cache 或 backend 选择发生变化，要重点核对 prefill/decode、page size、RoPE/MLA/MQA 分支；多模态 processor 或 media token 路径发生变化，要核对 image/video/audio metadata、position ids 和 batch 拼接；scheduler/runtime/cache 路径发生变化，要核对连续批处理、spec/PD/DP、cache 生命周期和异常分支；文档或配置面发生变化，要核对 serve flags、默认值和 cookbook 命令是否与代码一致。
-- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/moss_vl.py`, `python/sglang/srt/multimodal/processors/moss_vl.py`, `python/sglang/srt/managers/schedule_batch.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+- 链接: https://github.com/sgl-project/sglang/pull/23454
+- 状态/时间: merged / 2026-04-24
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/moss_vl.py`, `python/sglang/srt/multimodal/processors/moss_vl.py`；关联提交 `59724e90a9b8`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 10 个文件，+2401/-6，可读 patch 2611 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 该 PR 围绕 MOSS-VL 补齐模型支持入口或运行时能力，标题为「[srt] Add Moss-VL Python runtime support」，变更集中在 `python/sglang/srt/models/moss_vl.py`, `python/sglang/srt/multimodal/processors/moss_vl.py`。PR 描述补充为：## Summary This PR adds Python-side runtime support for Moss-VL in SRT. The changes include: - add `MossVLForConditionalGeneration` model support - add a Moss-VL multimodal proc...
+- 实现要点: `python/sglang/srt/models/moss_vl.py` added +1643/-0 (1643 lines); hunks: -0,0 +1,1643; symbols: MossVLVisionMLP, __init__, forward, MossVLVisionPatchEmbed，涉及 `MossVLVisionMLP, __init__, forward`；`python/sglang/srt/multimodal/processors/moss_vl.py` added +612/-0 (612 lines); hunks: -0,0 +1,612; symbols: MossVLImageProcessor, __init__, _build_mm_items, _build_vision_token_info，涉及 `MossVLImageProcessor, __init__, _build_mm_items`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/moss_vl.py` added +1643/-0 (1643 lines); hunks: -0,0 +1,1643; symbols: MossVLVisionMLP, __init__, forward, MossVLVisionPatchEmbed
+  - `python/sglang/srt/multimodal/processors/moss_vl.py` added +612/-0 (612 lines); hunks: -0,0 +1,612; symbols: MossVLImageProcessor, __init__, _build_mm_items, _build_vision_token_info
+- 关键代码摘录:
 
+```diff
+diff -- python/sglang/srt/models/moss_vl.py
+@@ -0,0 +1,1643 @@
++"""PyTorch Moss-VL model for SGLang - Qwen3VL Vision + Text with Cross Attention."""
++from __future__ import annotations
++import logging
++from functools import partial
++from typing import Iterable, List, Optional, Tuple
++import torch
+diff -- python/sglang/srt/multimodal/processors/moss_vl.py
+@@ -0,0 +1,612 @@
++import asyncio
++import os
++import re
++import tempfile
++from typing import Dict, List, Optional, Tuple, Union
++from urllib.parse import unquote, urlparse
+```
 
-### 补漏和优化点排查
+- 已读文件:
+  - runtime: `python/sglang/srt/models/moss_vl.py` added +1643/-0; `python/sglang/srt/multimodal/processors/moss_vl.py` added +612/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/layers/attention/flashinfer_backend.py`, `python/sglang/srt/managers/schedule_batch.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-- 已覆盖 PR 数：1；open PR 数：0。
-- 后续新增 PR 必须补齐时间线和逐 PR diff 卡片，不能只写一句标题。
+## 补漏结论
 
-<!-- MODEL_PR_DIFF_AUDIT:END zh -->
+- 本版不再接受只列 PR 标题的写法；每个 PR 必须有反查来源、diff 范围、实现要点、代码摘录、已读文件和验证风险。
+- 如果新模型文件落在当前过滤规则之外，先补文件过滤规则，再重新执行本轮 `git log --name-only -- <model-files>` 追溯。

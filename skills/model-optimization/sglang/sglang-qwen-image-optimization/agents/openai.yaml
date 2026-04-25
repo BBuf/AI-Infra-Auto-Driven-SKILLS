@@ -1,4 +1,0 @@
-interface:
-  display_name: "SGLang Qwen-Image Optimization"
-  short_description: "Current-main Qwen-Image diffusion playbook for CUDA graph, TeaCache, ModelOpt FP8, IMA, AMD kernels, and cookbook validation"
-  default_prompt: "Use $sglang-qwen-image-optimization to optimize or debug Qwen-Image or Qwen-Image-Edit in SGLang Diffusion, including BF16/FP8 loading, CUDA graph, TeaCache, IMA, conditional batching, layer serving, AMD kernel tuning, and diffusion cookbook parity."

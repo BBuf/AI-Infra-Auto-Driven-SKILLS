@@ -1,117 +1,488 @@
-# SGLang InternVL3.5 Support and PR History
+# sglang InternVL 3.5 Model PR Optimization History
 
-This note tracks the SGLang runtime, key PRs, and cookbook-facing touchpoints for InternVL3.5.
+## Scope
 
-- Status: 当前 mainline 已支持
+- Rebuilt on: 2026-04-25
+- Source baseline: `sgl-project/sglang` trace worktree commit `880599cd43`
+- PR collection rule: run `git log --name-only -- <model-files>` on model implementation, config, processor, parser, docs/tests, filter by model keywords in commit subjects, then read each PR's final diff through the GitHub Pull Request files API.
+- Preservation rule: PRs explicitly cited by the previous history/skill are retained even if current implementation files no longer trace to them, and the card marks that source.
+- Diffusion model families have been removed from this history set and are no longer part of model optimization skills.
 
-## Key Conclusions
+## Implementation File Coverage
 
-- InternVL3.5 is mostly a processor / encoder / video problem in SGLang.
-- Video handling, data-parallel vision execution, and backend compatibility dominate the risk surface.
+| File | Git-traced PRs |
+| --- | --- |
+| `docs_new/cookbook/autoregressive/InternVL/InternVL3.5.mdx` | no direct PR-number commit |
+| `python/sglang/srt/configs/internvl.py` | [#5350](https://github.com/sgl-project/sglang/pull/5350), [#8067](https://github.com/sgl-project/sglang/pull/8067), [#9705](https://github.com/sgl-project/sglang/pull/9705) |
+| `python/sglang/srt/models/internvl.py` | [#5350](https://github.com/sgl-project/sglang/pull/5350), [#6870](https://github.com/sgl-project/sglang/pull/6870), [#9705](https://github.com/sgl-project/sglang/pull/9705), [#13640](https://github.com/sgl-project/sglang/pull/13640), [#13925](https://github.com/sgl-project/sglang/pull/13925), [#15942](https://github.com/sgl-project/sglang/pull/15942), [#16732](https://github.com/sgl-project/sglang/pull/16732), [#19127](https://github.com/sgl-project/sglang/pull/19127) |
+| `python/sglang/srt/multimodal/internvl_utils.py` | no direct PR-number commit |
+| `python/sglang/srt/multimodal/internvl_vit_cuda_graph_runner.py` | [#16732](https://github.com/sgl-project/sglang/pull/16732) |
+| `python/sglang/srt/multimodal/processors/internvl.py` | [#9381](https://github.com/sgl-project/sglang/pull/9381), [#9795](https://github.com/sgl-project/sglang/pull/9795), [#10375](https://github.com/sgl-project/sglang/pull/10375), [#15942](https://github.com/sgl-project/sglang/pull/15942), [#17040](https://github.com/sgl-project/sglang/pull/17040), [#19127](https://github.com/sgl-project/sglang/pull/19127), [#19997](https://github.com/sgl-project/sglang/pull/19997) |
 
-## Main Runtime Surfaces
+## PR Coverage Summary
 
-- `sglang/python/sglang/srt/models/internvl.py`
+- Git-traced PRs: 14
+- Extra PRs preserved from existing docs: 0
+- Total PRs in this document: 14
+- File trace command: `git log --name-only -- <model-files>`
+- Diff audit source: GitHub Pull Request files API
 
-## Landed PRs
+## Timeline
 
-- [#5350](https://github.com/sgl-project/sglang/pull/5350) `Support InternVL3`: Initial InternVL family support that later carried 3.5.
-- [#13640](https://github.com/sgl-project/sglang/pull/13640) `Support Piecewise CUDA Graph for InternVL`: Added graph capture support on the encoder path.
-- [#13925](https://github.com/sgl-project/sglang/pull/13925) `Support InternVL Vision Encoder Data Parallelism`: Opened the multi-GPU ViT path.
-- [#15942](https://github.com/sgl-project/sglang/pull/15942) `Support Video for InternVL3_5`: Extended support to 3.5 video use cases.
-- [#19127](https://github.com/sgl-project/sglang/pull/19127) `Support processor and embedding inputs for InternVL`: Hardened processor / embed input interoperability.
+| Date | PR | State | Title | Main files |
+| --- | --- | --- | --- | --- |
+| 2025-05-02 | [#5350](https://github.com/sgl-project/sglang/pull/5350) | merged | Support InternVL3 | `python/sglang/srt/configs/internvl.py`, `python/sglang/srt/models/internvl.py`, `python/sglang/srt/managers/multimodal_processors/internvl.py` |
+| 2025-06-11 | [#6870](https://github.com/sgl-project/sglang/pull/6870) | merged | vlm: adapt internvl to VisionAttention | `python/sglang/srt/models/internvl.py` |
+| 2025-07-20 | [#8067](https://github.com/sgl-project/sglang/pull/8067) | merged | fix: fix the bug of loading Internvl3 | `python/sglang/srt/configs/internvl.py` |
+| 2025-08-20 | [#9381](https://github.com/sgl-project/sglang/pull/9381) | merged | fix: InternS1 don't recognize image, updates image token for InternVL processor | `python/sglang/srt/multimodal/processors/internvl.py` |
+| 2025-09-02 | [#9705](https://github.com/sgl-project/sglang/pull/9705) | merged | Support the internvl3.5 family models in sglang | `python/sglang/srt/models/internvl.py`, `python/sglang/srt/configs/internvl.py` |
+| 2025-09-10 | [#9795](https://github.com/sgl-project/sglang/pull/9795) | merged | refactor(InternVL): Use gpu to preprocess the input image | `python/sglang/srt/multimodal/processors/internvl.py` |
+| 2025-09-15 | [#10375](https://github.com/sgl-project/sglang/pull/10375) | merged | fix(internvl): fix accuracy issue of normalization | `python/sglang/srt/multimodal/processors/internvl.py` |
+| 2025-11-21 | [#13640](https://github.com/sgl-project/sglang/pull/13640) | merged | [VLM] Support Piecewise CUDA Graph for InternVL | `python/sglang/srt/models/internvl.py` |
+| 2025-11-26 | [#13925](https://github.com/sgl-project/sglang/pull/13925) | merged | [VLM] Support InternVL Vision Encoder Data Parallelism | `python/sglang/srt/models/internvl.py` |
+| 2025-12-30 | [#15942](https://github.com/sgl-project/sglang/pull/15942) | merged | [VLM] Support Video for InternVL3_5 | `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/models/internvl.py` |
+| 2026-01-14 | [#16732](https://github.com/sgl-project/sglang/pull/16732) | merged | [VLM] Support ViT CUDA Graph for InternVL | `python/sglang/srt/multimodal/internvl_vit_cuda_graph_runner.py`, `python/sglang/srt/models/internvl.py` |
+| 2026-01-26 | [#17040](https://github.com/sgl-project/sglang/pull/17040) | merged | fix(processor): support InternS1 text_config in InternVL processor | `python/sglang/srt/multimodal/processors/internvl.py` |
+| 2026-02-27 | [#19127](https://github.com/sgl-project/sglang/pull/19127) | merged | [vlm][internVL] Support processor and embedding inputs for InternVL | `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/models/internvl.py` |
+| 2026-03-15 | [#19997](https://github.com/sgl-project/sglang/pull/19997) | merged | Fix InternVL and vision attention for non-CUDA backends (e.g. XPU) | `python/sglang/srt/multimodal/processors/internvl.py`, `test/srt/xpu/test_internvl.py` |
 
-## Matching Skill
-
-- `skills/model-optimization/sglang/sglang-internvl35-optimization/SKILL.md`
-- `skills/model-optimization/sglang/sglang-internvl35-optimization/references/pr-history.md`
-
-<!-- MODEL_PR_DIFF_AUDIT:START en -->
-
-## PR Diff Audit Cards (2026-04-25 rebuild)
-
-This section re-audits `InternVL3.5` against `sgl-project/sglang` Pull Request metadata and file-level patches. Acceptance rule: every PR needs status, code surface, file-level diff digest, support/optimization interpretation, and verification risk notes; if no public PR is found, keep an explicit no-match conclusion instead of inventing history.
-
-### Timeline
-
-| Created | PR | State | Title | Code surface | Main diff files |
-| --- | ---: | --- | --- | --- | --- |
-| 2025-04-13 | [#5350](https://github.com/sgl-project/sglang/pull/5350) | merged | Support InternVL3 | model wrapper, multimodal/processor, scheduler/runtime, tests/benchmarks, docs/config | `python/sglang/srt/configs/internvl.py`, `python/sglang/srt/models/internvl.py`, `python/sglang/srt/managers/multimodal_processors/internvl.py` |
-| 2025-11-20 | [#13640](https://github.com/sgl-project/sglang/pull/13640) | merged | [VLM] Support Piecewise CUDA Graph for InternVL | model wrapper, kernel, scheduler/runtime, tests/benchmarks | `test/srt/test_piecewise_cuda_graph.py`, `python/sglang/srt/managers/mm_utils.py`, `python/sglang/srt/models/internvl.py` |
-| 2025-11-25 | [#13925](https://github.com/sgl-project/sglang/pull/13925) | merged | [VLM] Support InternVL Vision Encoder Data Parallelism | model wrapper, multimodal/processor, tests/benchmarks | `python/sglang/srt/models/internvl.py`, `python/sglang/srt/multimodal/mm_utils.py`, `test/nightly/test_encoder_dp.py` |
-| 2025-12-27 | [#15942](https://github.com/sgl-project/sglang/pull/15942) | merged | [VLM] Support Video for InternVL3_5 | model wrapper, multimodal/processor | `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/models/internvl.py` |
-| 2026-02-21 | [#19127](https://github.com/sgl-project/sglang/pull/19127) | merged | [vlm][internVL] Support processor and embedding inputs for InternVL | model wrapper, multimodal/processor, tests/benchmarks | `test/registered/vlm/test_vlm_input_format.py`, `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/multimodal/processors/base_processor.py` |
-
-### File-level PR diff reading notes
+## Per-PR Diff Audit Cards
 
 ### PR #5350 - Support InternVL3
 
 - Link: https://github.com/sgl-project/sglang/pull/5350
-- Status/date: `merged`, created 2025-04-13, merged 2025-05-02; author `xiaomin-D`.
-- Diff scope read: `12` files, `+1728/-9`; areas: model wrapper, multimodal/processor, scheduler/runtime, tests/benchmarks, docs/config; keywords: vision, config, kv, processor, attention, spec, cuda, doc, flash, cache.
+- Status/date: merged / 2025-05-02
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/internvl.py`, `python/sglang/srt/models/internvl.py`; associated commits `3409aaab32c6`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 12 files, +1728/-9, 1901 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For InternVL 3.5, this PR adds or enables a model support/runtime surface. Title: "Support InternVL3". The diff centers on `python/sglang/srt/configs/internvl.py`, `python/sglang/srt/models/internvl.py`, `python/sglang/srt/managers/multimodal_processors/internvl.py`. PR body context: ## Motivation Support InternVL3 ## Modifications Based on PR https://github.com/sgl-project/sglang/pull/3351. and https://github.com/sgl-project/sglang/pull/4433 Support both In...
+- Key implementation: `python/sglang/srt/configs/internvl.py` added +696/-0 (696 lines); hunks: -0,0 +1,696; symbols: InternLM2Config, to, __init__, _rope_scaling_validation, touching `InternLM2Config, to, __init__`; `python/sglang/srt/models/internvl.py` added +670/-0 (670 lines); hunks: -0,0 +1,670; symbols: FlashAttention, __init__, forward, InternAttention, touching `FlashAttention, __init__, forward`; `python/sglang/srt/managers/multimodal_processors/internvl.py` added +232/-0 (232 lines); hunks: -0,0 +1,232; symbols: InternVLImageProcessor, __init__, build_transform, resize_image, touching `InternVLImageProcessor, __init__, build_transform`.
 - Code diff details:
-  - `python/sglang/srt/configs/internvl.py` added +696/-0 (696 lines); hunks: +import copy; symbols: InternLM2Config, to, __init__, _rope_scaling_validation
-  - `python/sglang/srt/models/internvl.py` added +670/-0 (670 lines); hunks: +# Copyright 2023-2024 SGLang Team; symbols: FlashAttention, __init__, forward, InternAttention
-  - `python/sglang/srt/managers/multimodal_processors/internvl.py` added +232/-0 (232 lines); hunks: +# Adapted from https://huggingface.co/OpenGVLab/InternVL2-4B/blob/main/modeling_intern_vit.py; symbols: InternVLImageProcessor, __init__, build_transform, resize_image
-  - `python/sglang/lang/chat_template.py` modified +44/-0 (44 lines); hunks: def get_chat_template_by_model_path(model_path):; def get_chat_template_by_model_path(model_path):; symbols: get_chat_template_by_model_path, get_chat_template_by_model_path, match_gemma3_instruct, match_internvl_chat
-  - `python/sglang/srt/conversation.py` modified +29/-2 (31 lines); hunks: class SeparatorStyle(IntEnum):; def get_prompt(self) -> str:; symbols: SeparatorStyle, get_prompt, generate_chat_conv, generate_chat_conv
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/configs/internvl.py`, `python/sglang/srt/models/internvl.py`, `python/sglang/srt/managers/multimodal_processors/internvl.py`; keywords observed in patches: vision, config, kv, processor, attention, spec. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; multimodal processor or media-token code changed; verify image/video/audio metadata, position ids, and batching; scheduler/runtime/cache code changed; verify continuous batching, spec/PD/DP, cache lifetime, and exceptional branches; tests or benchmarks changed; use those cases as regression entry points instead of only checking model load; docs or config changed; verify serve flags, defaults, and cookbook commands against runtime code.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/configs/internvl.py`, `python/sglang/srt/models/internvl.py`, `python/sglang/srt/managers/multimodal_processors/internvl.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/configs/internvl.py` added +696/-0 (696 lines); hunks: -0,0 +1,696; symbols: InternLM2Config, to, __init__, _rope_scaling_validation
+  - `python/sglang/srt/models/internvl.py` added +670/-0 (670 lines); hunks: -0,0 +1,670; symbols: FlashAttention, __init__, forward, InternAttention
+  - `python/sglang/srt/managers/multimodal_processors/internvl.py` added +232/-0 (232 lines); hunks: -0,0 +1,232; symbols: InternVLImageProcessor, __init__, build_transform, resize_image
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/configs/internvl.py
+@@ -0,0 +1,696 @@
++import copy
++import os
++from shutil import copyfile
++from typing import Any, Dict, List, Optional, Tuple, Union
++import sentencepiece as spm
++from transformers import (
+diff -- python/sglang/srt/models/internvl.py
+@@ -0,0 +1,670 @@
++# Copyright 2023-2024 SGLang Team
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
+diff -- python/sglang/srt/managers/multimodal_processors/internvl.py
+@@ -0,0 +1,232 @@
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/configs/internvl.py` added +696/-0; `python/sglang/srt/models/internvl.py` added +670/-0; `python/sglang/srt/managers/multimodal_processors/internvl.py` added +232/-0
+- Risk and verification: The diff ships test coverage in `test/srt/test_vision_openai_server.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #6870 - vlm: adapt internvl to VisionAttention
+
+- Link: https://github.com/sgl-project/sglang/pull/6870
+- Status/date: merged / 2025-06-11
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/internvl.py`; associated commits `83d87685c531`
+- Diff scope read: GitHub Pull Request files API returned 3 files, +103/-126, 408 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For InternVL 3.5, this PR adds or enables a model support/runtime surface. Title: "vlm: adapt internvl to VisionAttention". The diff centers on `python/sglang/srt/models/internvl.py`. PR body context: ## Motivation ## Modifications ## Checklist - [ ] Format your code according to the Code Formatting with Pre-Commit. - [ ] Add unit tests as outlined in the Running Unit Tests....
+- Key implementation: `python/sglang/srt/models/internvl.py` modified +46/-102 (148 lines); hunks: -11,21 +11,19; -40,83 +38,32; symbols: FlashAttention, InternAttention, __init__, forward, touching `FlashAttention, InternAttention, __init__`.
+- Code diff details:
+  - `python/sglang/srt/models/internvl.py` modified +46/-102 (148 lines); hunks: -11,21 +11,19; -40,83 +38,32; symbols: FlashAttention, InternAttention, __init__, forward
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/internvl.py
+@@ -11,21 +11,19 @@
+-from typing import Iterable, List, Optional, Tuple, Union
++from typing import Iterable, List, Optional, Set, Tuple, Union
+-from einops import rearrange, repeat
+-from sgl_kernel.flash_attn import flash_attn_varlen_func
++from sglang.srt.layers.attention.vision import SingletonCache, VisionAttention
+@@ -40,83 +38,32 @@
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/internvl.py` modified +46/-102
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/attention/vision.py`, `python/sglang/srt/models/internvl.py`, `python/sglang/srt/utils.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #8067 - fix: fix the bug of loading Internvl3
+
+- Link: https://github.com/sgl-project/sglang/pull/8067
+- Status/date: merged / 2025-07-20
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/internvl.py`; associated commits `750838adc4f9`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +3/-0, 17 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For InternVL 3.5, this PR adds or enables a model support/runtime surface. Title: "fix: fix the bug of loading Internvl3". The diff centers on `python/sglang/srt/configs/internvl.py`. PR body context: ## Motivation When trying to use the InternVL3 model, you will get an error: > Unsupported architecture: Qwen2ForCausalLM This is because Internvl3 uses the llm structure of qwe...
+- Key implementation: `python/sglang/srt/configs/internvl.py` modified +3/-0 (3 lines); hunks: -9,6 +9,7; -311,6 +312,8 @@ def __init__(; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `python/sglang/srt/configs/internvl.py` modified +3/-0 (3 lines); hunks: -9,6 +9,7; -311,6 +312,8 @@ def __init__(; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/configs/internvl.py
+@@ -9,6 +9,7 @@
++    Qwen2Config,
+@@ -311,6 +312,8 @@ def __init__(
++        elif llm_config.get("architectures")[0] == "Qwen2ForCausalLM":
++            self.llm_config = Qwen2Config(**llm_config)
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/configs/internvl.py` modified +3/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/configs/internvl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #9381 - fix: InternS1 don't recognize image, updates image token for InternVL processor
+
+- Link: https://github.com/sgl-project/sglang/pull/9381
+- Status/date: merged / 2025-08-20
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/multimodal/processors/internvl.py`; associated commits `84719b527a2d`
+- Diff scope read: GitHub Pull Request files API returned 2 files, +9/-17, 60 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For InternVL 3.5, this PR fixes a launch, loading, parsing, or numerical issue. Title: "fix: InternS1 don't recognize image, updates image token for InternVL processor". The diff centers on `python/sglang/srt/multimodal/processors/internvl.py`. PR body context: Updates the image token for InternVL to ` `. This change aligns the image token with the updated template and improves consistency in image processing. Also removes the `interns...
+- Key implementation: `python/sglang/srt/multimodal/processors/internvl.py` modified +7/-2 (9 lines); hunks: -44,7 +44,7 @@ def __init__(self, hf_config, server_args, _image_processor, *...; -218,13 +218,18 @@ def process_image_internvl(image, input_size=448, max_num=...; symbols: __init__, process_image_internvl, touching `__init__, process_image_internvl`.
+- Code diff details:
+  - `python/sglang/srt/multimodal/processors/internvl.py` modified +7/-2 (9 lines); hunks: -44,7 +44,7 @@ def __init__(self, hf_config, server_args, _image_processor, *...; -218,13 +218,18 @@ def process_image_internvl(image, input_size=448, max_num=...; symbols: __init__, process_image_internvl
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/multimodal/processors/internvl.py
+@@ -44,7 +44,7 @@ def __init__(self, hf_config, server_args, _image_processor, *args, **kwargs):
+-            image_token="<image>",
++            image_token="<IMG_CONTEXT>",
+@@ -218,13 +218,18 @@ def process_image_internvl(image, input_size=448, max_num=12):
++        original_placeholder = "<<<__IMG_CONTEXT_PLACEHOLDER__>>>"
++        input_text = input_text.replace(self.IMG_CONTEXT_TOKEN, original_placeholder)
+-            input_text = input_text.replace("<image>", image_tokens, 1)
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/multimodal/processors/internvl.py` modified +7/-2
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/conversation.py`, `python/sglang/srt/multimodal/processors/internvl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #9705 - Support the internvl3.5 family models in sglang
+
+- Link: https://github.com/sgl-project/sglang/pull/9705
+- Status/date: merged / 2025-09-02
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/internvl.py`, `python/sglang/srt/models/internvl.py`; associated commits `f64b8e3e4e13`
+- Diff scope read: GitHub Pull Request files API returned 2 files, +34/-0, 84 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For InternVL 3.5, this PR adds or enables a model support/runtime surface. Title: "Support the internvl3.5 family models in sglang". The diff centers on `python/sglang/srt/models/internvl.py`, `python/sglang/srt/configs/internvl.py`. PR body context: ## Motivation This PR provides support for all models in the internvl3.5 family ## Modification Registers different backbone models for all internvl3.5 models. Also fixes the qu...
+- Key implementation: `python/sglang/srt/models/internvl.py` modified +28/-0 (28 lines); hunks: -26,8 +26,10; -445,6 +447,14 @@ def __init__(; symbols: __init__, load_weights, touching `__init__, load_weights`; `python/sglang/srt/configs/internvl.py` modified +6/-0 (6 lines); hunks: -6,11 +6,13; -316,7 +318,11 @@ def __init__(; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `python/sglang/srt/models/internvl.py` modified +28/-0 (28 lines); hunks: -26,8 +26,10; -445,6 +447,14 @@ def __init__(; symbols: __init__, load_weights
+  - `python/sglang/srt/configs/internvl.py` modified +6/-0 (6 lines); hunks: -6,11 +6,13; -316,7 +318,11 @@ def __init__(; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/internvl.py
+@@ -26,8 +26,10 @@
++from sglang.srt.models.gpt_oss import GptOssForCausalLM
++from sglang.srt.models.qwen3 import Qwen3ForCausalLM
+@@ -445,6 +447,14 @@ def __init__(
++        elif config.llm_config.architectures[0] == "GptOssForCausalLM":
++            self.language_model = GptOssForCausalLM(
++                config=config.llm_config, quant_config=quant_config
+diff -- python/sglang/srt/configs/internvl.py
+@@ -6,11 +6,13 @@
++    GptOssConfig,
++    Qwen3MoeConfig,
+@@ -316,7 +318,11 @@ def __init__(
++            self.llm_config = Qwen3MoeConfig(**llm_config)
++        elif llm_config.get("architectures")[0] == "Qwen3ForCausalLM":
++        elif llm_config.get("architectures")[0] == "GptOssForCausalLM":
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/internvl.py` modified +28/-0; `python/sglang/srt/configs/internvl.py` modified +6/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/configs/internvl.py`, `python/sglang/srt/models/internvl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #9795 - refactor(InternVL): Use gpu to preprocess the input image
+
+- Link: https://github.com/sgl-project/sglang/pull/9795
+- Status/date: merged / 2025-09-10
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/multimodal/processors/internvl.py`; associated commits `15f993472c58`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +141/-129, 340 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For InternVL 3.5, this PR optimizes an inference path or backend selection. Title: "refactor(InternVL): Use gpu to preprocess the input image". The diff centers on `python/sglang/srt/multimodal/processors/internvl.py`. PR body context: ## Motivation Now ,internvl preprocesses images on the CPU. Putting it on the GPU for preprocessing will improve performance. ## Modifications image operations such as resizing,...
+- Key implementation: `python/sglang/srt/multimodal/processors/internvl.py` modified +141/-129 (270 lines); hunks: -2,8 +2,10; -48,99 +50,6 @@ def __init__(self, hf_config, server_args, _image_processor,...; symbols: __init__, build_transform, resize_image, to_tensor, touching `__init__, build_transform, resize_image`.
+- Code diff details:
+  - `python/sglang/srt/multimodal/processors/internvl.py` modified +141/-129 (270 lines); hunks: -2,8 +2,10; -48,99 +50,6 @@ def __init__(self, hf_config, server_args, _image_processor,...; symbols: __init__, build_transform, resize_image, to_tensor
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/multimodal/processors/internvl.py
+@@ -2,8 +2,10 @@
+-from decord import VideoReader, cpu
++import torchvision.transforms as T
++from decord import VideoReader, cpu, gpu
++from torchvision.transforms import InterpolationMode
+@@ -48,99 +50,6 @@ def __init__(self, hf_config, server_args, _image_processor, *args, **kwargs):
+-    @staticmethod
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/multimodal/processors/internvl.py` modified +141/-129
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/multimodal/processors/internvl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #10375 - fix(internvl): fix accuracy issue of normalization
+
+- Link: https://github.com/sgl-project/sglang/pull/10375
+- Status/date: merged / 2025-09-15
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/multimodal/processors/internvl.py`; associated commits `1fcccda4b2b3`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +20/-8, 69 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For InternVL 3.5, this PR fixes a launch, loading, parsing, or numerical issue. Title: "fix(internvl): fix accuracy issue of normalization". The diff centers on `python/sglang/srt/multimodal/processors/internvl.py`. PR body context: ## Motivation - Found precision issues when testing internvl3 8b, but no issues on 1b and 38b. - The reason for the modification at that time was that we considered using a fixe...
+- Key implementation: `python/sglang/srt/multimodal/processors/internvl.py` modified +20/-8 (28 lines); hunks: -1,5 +1,7; -19,6 +21,20; symbols: InternVLImageProcessor, _get_normalize_tensors, __init__, load_video, touching `InternVLImageProcessor, _get_normalize_tensors, __init__`.
+- Code diff details:
+  - `python/sglang/srt/multimodal/processors/internvl.py` modified +20/-8 (28 lines); hunks: -1,5 +1,7; -19,6 +21,20; symbols: InternVLImageProcessor, _get_normalize_tensors, __init__, load_video
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/multimodal/processors/internvl.py
+@@ -1,5 +1,7 @@
++from functools import lru_cache
+@@ -19,6 +21,20 @@
++    IMAGENET_MEAN = [0.485, 0.456, 0.406]
++    IMAGENET_STD = [0.229, 0.224, 0.225]
++    @staticmethod
++    @lru_cache(maxsize=1)
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/multimodal/processors/internvl.py` modified +20/-8
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/multimodal/processors/internvl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #13640 - [VLM] Support Piecewise CUDA Graph for InternVL
 
 - Link: https://github.com/sgl-project/sglang/pull/13640
-- Status/date: `merged`, created 2025-11-20, merged 2025-11-21; author `yuan-luo`.
-- Diff scope read: `5` files, `+103/-13`; areas: model wrapper, kernel, scheduler/runtime, tests/benchmarks; keywords: cache, cuda, attention, spec, test, config, lora, moe, processor, quant.
+- Status/date: merged / 2025-11-21
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/internvl.py`; associated commits `475962a139d1`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 5 files, +103/-13, 183 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For InternVL 3.5, this PR adds or enables a model support/runtime surface. Title: "[VLM] Support Piecewise CUDA Graph for InternVL". The diff centers on `python/sglang/srt/models/internvl.py`. PR body context: ## Motivation Address https://github.com/sgl-project/sglang/pull/12838 This PR is to support Piecewise CUDA Graph for InternVL. It is a follow up of #13055 . The accuracy result...
+- Key implementation: `python/sglang/srt/models/internvl.py` modified +21/-10 (31 lines); hunks: -14,10 +14,7; -471,6 +468,12 @@ def __init__(; symbols: __init__, pixel_shuffle, forward, pad_input_ids, touching `__init__, pixel_shuffle, forward`.
 - Code diff details:
-  - `test/srt/test_piecewise_cuda_graph.py` modified +41/-0 (41 lines); hunks: def test_gsm8k_accuracy(self):; symbols: test_gsm8k_accuracy, TestPiecewiseCudaGraphInternVL25, setUpClass, tearDownClass
-  - `python/sglang/srt/managers/mm_utils.py` modified +37/-2 (39 lines); hunks: def should_use_external_mm_preprocess(multimodal_model: nn.Module) -> bool:; symbols: should_use_external_mm_preprocess, resolve_external_mm_data_embedding_funcs, external_mm_preprocess_routine
-  - `python/sglang/srt/models/internvl.py` modified +21/-10 (31 lines); hunks: from sglang.srt.layers.attention.vision import SingletonCache, VisionAttention; def __init__(; symbols: __init__, pixel_shuffle, forward, pad_input_ids
-  - `python/sglang/srt/model_executor/model_runner.py` modified +3/-0 (3 lines); hunks: from sglang.srt.lora.lora_registry import LoRARef; def forward_extend(; symbols: forward_extend
-  - `test/srt/run_suite.py` modified +1/-1 (2 lines); hunks: TestFile("test_original_logprobs.py", 41),
-- Optimization/support interpretation: The concrete diff surface is `test/srt/test_piecewise_cuda_graph.py`, `python/sglang/srt/managers/mm_utils.py`, `python/sglang/srt/models/internvl.py`; keywords observed in patches: cache, cuda, attention, spec, test, config. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; CUDA/Triton/C++ kernels or bindings changed; verify shape guards, dtype, device backend, and benchmark coverage; scheduler/runtime/cache code changed; verify continuous batching, spec/PD/DP, cache lifetime, and exceptional branches; tests or benchmarks changed; use those cases as regression entry points instead of only checking model load.
-- Risk and verification: Re-run the model path that exercises `test/srt/test_piecewise_cuda_graph.py`, `python/sglang/srt/managers/mm_utils.py`, `python/sglang/srt/models/internvl.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/models/internvl.py` modified +21/-10 (31 lines); hunks: -14,10 +14,7; -471,6 +468,12 @@ def __init__(; symbols: __init__, pixel_shuffle, forward, pad_input_ids
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/internvl.py
+@@ -14,10 +14,7 @@
+-from sglang.srt.managers.mm_utils import (
+-    MultiModalityDataPaddingPatternTokenPairs,
+-    general_mm_embed_routine,
+-)
++from sglang.srt.managers.mm_utils import MultiModalityDataPaddingPatternTokenPairs
+@@ -471,6 +468,12 @@ def __init__(
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/internvl.py` modified +21/-10
+- Risk and verification: The diff ships test coverage in `test/srt/run_suite.py`, `test/srt/test_piecewise_cuda_graph.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #13925 - [VLM] Support InternVL Vision Encoder Data Parallelism
 
 - Link: https://github.com/sgl-project/sglang/pull/13925
-- Status/date: `merged`, created 2025-11-25, merged 2025-11-26; author `yuan-luo`.
-- Diff scope read: `3` files, `+118/-25`; areas: model wrapper, multimodal/processor, tests/benchmarks; keywords: vision, attention, cache, config, moe, quant, test, triton.
+- Status/date: merged / 2025-11-26
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/internvl.py`; associated commits `ca5c8b16f67d`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +118/-25, 266 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For InternVL 3.5, this PR adds or enables a model support/runtime surface. Title: "[VLM] Support InternVL Vision Encoder Data Parallelism". The diff centers on `python/sglang/srt/models/internvl.py`. PR body context: ## Motivation This PR is to support InternVL Vision-Encoder data parallelism. https://github.com/sgl-project/sglang/issues/12971 From profiling we can see InternVL Vision-Encode...
+- Key implementation: `python/sglang/srt/models/internvl.py` modified +83/-25 (108 lines); hunks: -7,11 +7,16; -28,6 +33,8; symbols: __init__, forward, InternMLP, touching `__init__, forward, InternMLP`.
 - Code diff details:
-  - `python/sglang/srt/models/internvl.py` modified +83/-25 (108 lines); hunks: import torch.nn.functional as F; from sglang.srt.models.qwen2 import Qwen2ForCausalLM; symbols: __init__, __init__, forward, InternMLP
-  - `python/sglang/srt/multimodal/mm_utils.py` modified +34/-0 (34 lines); hunks: def get_dp_encoder_lb_assignment(; symbols: get_dp_encoder_lb_assignment, run_dp_sharded_vision_model, run_dp_sharded_mrope_vision_model
-  - `test/nightly/test_encoder_dp.py` modified +1/-0 (1 lines); hunks: MODELS = [
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/models/internvl.py`, `python/sglang/srt/multimodal/mm_utils.py`, `test/nightly/test_encoder_dp.py`; keywords observed in patches: vision, attention, cache, config, moe, quant. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; multimodal processor or media-token code changed; verify image/video/audio metadata, position ids, and batching; tests or benchmarks changed; use those cases as regression entry points instead of only checking model load.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/models/internvl.py`, `python/sglang/srt/multimodal/mm_utils.py`, `test/nightly/test_encoder_dp.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/models/internvl.py` modified +83/-25 (108 lines); hunks: -7,11 +7,16; -28,6 +33,8; symbols: __init__, forward, InternMLP
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/internvl.py
+@@ -7,11 +7,16 @@
+-from transformers.activations import ACT2FN
++from sglang.srt.distributed import (
++    get_tensor_model_parallel_rank,
++    get_tensor_model_parallel_world_size,
++)
++from sglang.srt.layers.activation import get_act_fn
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/internvl.py` modified +83/-25
+- Risk and verification: The diff ships test coverage in `test/nightly/test_encoder_dp.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #15942 - [VLM] Support Video for InternVL3_5
 
 - Link: https://github.com/sgl-project/sglang/pull/15942
-- Status/date: `merged`, created 2025-12-27, merged 2025-12-30; author `yuan-luo`.
-- Diff scope read: `2` files, `+426/-118`; areas: model wrapper, multimodal/processor; keywords: cache, config, cuda, moe, processor, spec, vision.
+- Status/date: merged / 2025-12-30
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/internvl.py`, `python/sglang/srt/multimodal/processors/internvl.py`; associated commits `94bcc19bcef6`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +426/-118, 658 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For InternVL 3.5, this PR adds or enables a model support/runtime surface. Title: "[VLM] Support Video for InternVL3_5". The diff centers on `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/models/internvl.py`. PR body context: ## Motivation This PR is to enable SGLang supporting InternVL3_5 video input. InternVL3.5-8B demonstrated speedup 2.5x than Qwen2.5-VL-7B video inference. Prompt script: Server...
+- Key implementation: `python/sglang/srt/multimodal/processors/internvl.py` modified +418/-118 (536 lines); hunks: -1,6 +1,8; -15,26 +17,44; symbols: InternVLImageProcessor, InternVLProcessor, _get_normalize_tensors, __init__, touching `InternVLImageProcessor, InternVLProcessor, _get_normalize_tensors`; `python/sglang/srt/models/internvl.py` modified +8/-0 (8 lines); hunks: -539,6 +539,7 @@ def __init__(; -594,6 +595,13 @@ def get_image_feature(self, items: List[MultimodalDataItem]):; symbols: __init__, get_image_feature, get_video_feature, forward, touching `__init__, get_image_feature, get_video_feature`.
 - Code diff details:
-  - `python/sglang/srt/multimodal/processors/internvl.py` modified +418/-118 (536 lines); hunks: # Adapted from https://huggingface.co/OpenGVLab/InternVL2-4B/blob/main/modeling_intern_vit.py; MultimodalSpecialTokens,; symbols: InternVLImageProcessor, InternVLProcessor, _get_normalize_tensors, __init__
-  - `python/sglang/srt/models/internvl.py` modified +8/-0 (8 lines); hunks: def __init__(; def get_image_feature(self, items: List[MultimodalDataItem]):; symbols: __init__, get_image_feature, get_video_feature, forward
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/models/internvl.py`; keywords observed in patches: cache, config, cuda, moe, processor, spec. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; multimodal processor or media-token code changed; verify image/video/audio metadata, position ids, and batching.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/models/internvl.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/multimodal/processors/internvl.py` modified +418/-118 (536 lines); hunks: -1,6 +1,8; -15,26 +17,44; symbols: InternVLImageProcessor, InternVLProcessor, _get_normalize_tensors, __init__
+  - `python/sglang/srt/models/internvl.py` modified +8/-0 (8 lines); hunks: -539,6 +539,7 @@ def __init__(; -594,6 +595,13 @@ def get_image_feature(self, items: List[MultimodalDataItem]):; symbols: __init__, get_image_feature, get_video_feature, forward
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/multimodal/processors/internvl.py
+@@ -1,6 +1,8 @@
++import logging
++from typing import List
+@@ -15,26 +17,44 @@
++logger = logging.getLogger(__name__)
+-class InternVLImageProcessor(BaseMultimodalProcessor):
++class InternVLProcessor(BaseMultimodalProcessor):
+diff -- python/sglang/srt/models/internvl.py
+@@ -539,6 +539,7 @@ def __init__(
++            Modality.VIDEO: self.get_video_feature,
+@@ -594,6 +595,13 @@ def get_image_feature(self, items: List[MultimodalDataItem]):
++    def get_video_feature(self, items: List[MultimodalDataItem]):
++        # items: each item corresponds to one video (recommended)
++        # item.feature shape: [num_frames, 3, 448, 448]  (or [num_tiles, 3, 448, 448])
++        pixel_values = torch.cat([item.feature for item in items], dim=0)
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/multimodal/processors/internvl.py` modified +418/-118; `python/sglang/srt/models/internvl.py` modified +8/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/internvl.py`, `python/sglang/srt/multimodal/processors/internvl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #16732 - [VLM] Support ViT CUDA Graph for InternVL
+
+- Link: https://github.com/sgl-project/sglang/pull/16732
+- Status/date: merged / 2026-01-14
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/internvl.py`, `python/sglang/srt/multimodal/internvl_vit_cuda_graph_runner.py`; associated commits `feae615b1146`
+- Diff scope read: GitHub Pull Request files API returned 3 files, +219/-6, 304 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For InternVL 3.5, this PR adds or enables a model support/runtime surface. Title: "[VLM] Support ViT CUDA Graph for InternVL". The diff centers on `python/sglang/srt/multimodal/internvl_vit_cuda_graph_runner.py`, `python/sglang/srt/models/internvl.py`. PR body context: ## Motivation This PR is to support ViT CUDA Graph for InternVL family. InternVL model is different from Qwen2.5-VL and Qwen3-VL which setting flatten_batch=True, InternVL model...
+- Key implementation: `python/sglang/srt/multimodal/internvl_vit_cuda_graph_runner.py` added +183/-0 (183 lines); hunks: -0,0 +1,183; symbols: InternViTCudaGraphRunner, __init__, device, dtype, touching `InternViTCudaGraphRunner, __init__, device`; `python/sglang/srt/models/internvl.py` modified +27/-3 (30 lines); hunks: -13,6 +13,7; -36,6 +37,9; symbols: forward, __init__, touching `forward, __init__`.
+- Code diff details:
+  - `python/sglang/srt/multimodal/internvl_vit_cuda_graph_runner.py` added +183/-0 (183 lines); hunks: -0,0 +1,183; symbols: InternViTCudaGraphRunner, __init__, device, dtype
+  - `python/sglang/srt/models/internvl.py` modified +27/-3 (30 lines); hunks: -13,6 +13,7; -36,6 +37,9; symbols: forward, __init__
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/multimodal/internvl_vit_cuda_graph_runner.py
+@@ -0,0 +1,183 @@
++# Copyright 2023-2026 SGLang Team
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
+diff -- python/sglang/srt/models/internvl.py
+@@ -13,6 +13,7 @@
++from sglang.srt.environ import envs
+@@ -36,6 +37,9 @@
++from sglang.srt.multimodal.internvl_vit_cuda_graph_runner import (
++    InternViTCudaGraphRunner,
++)
+@@ -82,8 +86,9 @@ def forward(
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/multimodal/internvl_vit_cuda_graph_runner.py` added +183/-0; `python/sglang/srt/models/internvl.py` modified +27/-3
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/internvl.py`, `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/multimodal/internvl_vit_cuda_graph_runner.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #17040 - fix(processor): support InternS1 text_config in InternVL processor
+
+- Link: https://github.com/sgl-project/sglang/pull/17040
+- Status/date: merged / 2026-01-26
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/multimodal/processors/internvl.py`; associated commits `539924037fbc`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +12/-4, 30 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For InternVL 3.5, this PR adds or enables a model support/runtime surface. Title: "fix(processor): support InternS1 text_config in InternVL processor". The diff centers on `python/sglang/srt/multimodal/processors/internvl.py`. PR body context: ## Motivation InternS1 models use `text_config` instead of `llm_config` for the text backbone configuration. When attempting to launch InternS1 models (e.g., `internlm/Intern-S1...
+- Key implementation: `python/sglang/srt/multimodal/processors/internvl.py` modified +12/-4 (16 lines); hunks: -72,7 +72,17 @@ def __init__(self, hf_config, server_args, _image_processor,...; -121,9 +131,7 @@ def __init__(self, hf_config, server_args, _image_processor,...; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `python/sglang/srt/multimodal/processors/internvl.py` modified +12/-4 (16 lines); hunks: -72,7 +72,17 @@ def __init__(self, hf_config, server_args, _image_processor,...; -121,9 +131,7 @@ def __init__(self, hf_config, server_args, _image_processor,...; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/multimodal/processors/internvl.py
+@@ -72,7 +72,17 @@ def __init__(self, hf_config, server_args, _image_processor, *args, **kwargs):
+-        llm_arch = hf_config.llm_config.architectures[0]
++        # Support both InternVL (llm_config) and InternS1 (text_config).
++        # Different multimodal models use different field names for the text backbone:
++        # - InternVL uses: hf_config.llm_config
++        # - InternS1 uses: hf_config.text_config
++        # - Some store architectures at top-level
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/multimodal/processors/internvl.py` modified +12/-4
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/multimodal/processors/internvl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #19127 - [vlm][internVL] Support processor and embedding inputs for InternVL
 
 - Link: https://github.com/sgl-project/sglang/pull/19127
-- Status/date: `merged`, created 2026-02-21, merged 2026-02-27; author `jiangyukunok`.
-- Diff scope read: `4` files, `+282/-7`; areas: model wrapper, multimodal/processor, tests/benchmarks; keywords: processor, spec, vision, config, cuda, test.
+- Status/date: merged / 2026-02-27
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/internvl.py`, `python/sglang/srt/multimodal/processors/internvl.py`; associated commits `f0c208959794`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 4 files, +282/-7, 379 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For InternVL 3.5, this PR adds or enables a model support/runtime surface. Title: "[vlm][internVL] Support processor and embedding inputs for InternVL". The diff centers on `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/models/internvl.py`. PR body context: ## Motivation This PR helps the issue: https://github.com/sgl-project/sglang/issues/6483 For InternVL, it adds support to the processor and embedding inputs. Specifically, Huggi...
+- Key implementation: `python/sglang/srt/multimodal/processors/internvl.py` modified +109/-1 (110 lines); hunks: -9,11 +9,15; -255,9 +259,113 @@ def _resolve_video_num_frames(; symbols: _resolve_video_num_frames, _has_special_format, _process_special_format, process_and_combine_mm_data, touching `_resolve_video_num_frames, _has_special_format, _process_special_format`; `python/sglang/srt/models/internvl.py` modified +7/-0 (7 lines); hunks: -616,13 +616,20 @@ def get_image_feature(self, items: List[MultimodalDataItem]):; symbols: get_image_feature, get_video_feature, touching `get_image_feature, get_video_feature`.
 - Code diff details:
-  - `test/registered/vlm/test_vlm_input_format.py` modified +153/-0 (153 lines); hunks: def _processor_output_image_data(self, processor_output):; symbols: _processor_output_image_data, TestInternVLUnderstandsImage, setUpClass, _init_visual
-  - `python/sglang/srt/multimodal/processors/internvl.py` modified +109/-1 (110 lines); hunks: from decord import VideoReader, cpu, gpu; def _resolve_video_num_frames(; symbols: _resolve_video_num_frames, _has_special_format, _process_special_format, process_and_combine_mm_data
-  - `python/sglang/srt/multimodal/processors/base_processor.py` modified +13/-6 (19 lines); hunks: def __init__(; def build_input_ids(self, prompt, img_grid_thw):; symbols: __init__, build_input_ids, load_mm_data, fast_load_mm_data
-  - `python/sglang/srt/models/internvl.py` modified +7/-0 (7 lines); hunks: def get_image_feature(self, items: List[MultimodalDataItem]):; symbols: get_image_feature, get_video_feature
-- Optimization/support interpretation: The concrete diff surface is `test/registered/vlm/test_vlm_input_format.py`, `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/multimodal/processors/base_processor.py`; keywords observed in patches: processor, spec, vision, config, cuda, test. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; multimodal processor or media-token code changed; verify image/video/audio metadata, position ids, and batching; tests or benchmarks changed; use those cases as regression entry points instead of only checking model load.
-- Risk and verification: Re-run the model path that exercises `test/registered/vlm/test_vlm_input_format.py`, `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/multimodal/processors/base_processor.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/multimodal/processors/internvl.py` modified +109/-1 (110 lines); hunks: -9,11 +9,15; -255,9 +259,113 @@ def _resolve_video_num_frames(; symbols: _resolve_video_num_frames, _has_special_format, _process_special_format, process_and_combine_mm_data
+  - `python/sglang/srt/models/internvl.py` modified +7/-0 (7 lines); hunks: -616,13 +616,20 @@ def get_image_feature(self, items: List[MultimodalDataItem]):; symbols: get_image_feature, get_video_feature
+- Key code excerpts:
 
+```diff
+diff -- python/sglang/srt/multimodal/processors/internvl.py
+@@ -9,11 +9,15 @@
+-from sglang.srt.managers.schedule_batch import Modality, MultimodalDataItem
++from sglang.srt.managers.schedule_batch import (
++    Modality,
++    MultimodalDataItem,
++)
++    BaseMultiModalProcessorOutput,
+diff -- python/sglang/srt/models/internvl.py
+@@ -616,13 +616,20 @@ def get_image_feature(self, items: List[MultimodalDataItem]):
++        # If already precomputed embeddings (not raw pixel values), skip vision encoder.
++        # Normal pixel_values are 4D [N, C, H, W]; precomputed embeddings are 2D or 3D.
++        if pixel_values.dim() != 4:
++            return pixel_values
++        # If already precomputed embeddings, skip vision encoder.
++        if pixel_values.dim() != 4:
+```
 
-### Gap and optimization follow-up
+- Reviewed files:
+  - runtime: `python/sglang/srt/multimodal/processors/internvl.py` modified +109/-1; `python/sglang/srt/models/internvl.py` modified +7/-0
+- Risk and verification: The diff ships test coverage in `test/registered/vlm/test_vlm_input_format.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
-- Covered PRs: 5; open PRs: 0.
-- Any future PR must add both the timeline row and the file-level diff card; title-only summaries are not acceptable.
+### PR #19997 - Fix InternVL and vision attention for non-CUDA backends (e.g. XPU)
 
-<!-- MODEL_PR_DIFF_AUDIT:END en -->
+- Link: https://github.com/sgl-project/sglang/pull/19997
+- Status/date: merged / 2026-03-15
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/multimodal/processors/internvl.py`; associated commits `7458407437ca`
+- Diff scope read: GitHub Pull Request files API returned 6 files, +184/-14, 324 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For InternVL 3.5, this PR fixes a launch, loading, parsing, or numerical issue. Title: "Fix InternVL and vision attention for non-CUDA backends (e.g. XPU)". The diff centers on `python/sglang/srt/multimodal/processors/internvl.py`, `test/srt/xpu/test_internvl.py`. PR body context: ## Motivation InternVL and vision attention currently assume CUDA: they use hardcoded `"cuda"` and `.cuda()`, and the vision attention backend selection does not handle XPU. Thi...
+- Key implementation: `python/sglang/srt/multimodal/processors/internvl.py` modified +17/-10 (27 lines); hunks: -19,6 +19,7; -434,7 +435,7 @@ async def process_qwen_mm_data_async(; symbols: process_qwen_mm_data_async, process_internlm2_mm_data_async, touching `process_qwen_mm_data_async, process_internlm2_mm_data_async`; `test/srt/xpu/test_internvl.py` added +147/-0 (147 lines); hunks: -0,0 +1,147; symbols: InternVLXPUServerBase, setUpClass, tearDownClass, TestInternVL25Server, touching `InternVLXPUServerBase, setUpClass, tearDownClass`.
+- Code diff details:
+  - `python/sglang/srt/multimodal/processors/internvl.py` modified +17/-10 (27 lines); hunks: -19,6 +19,7; -434,7 +435,7 @@ async def process_qwen_mm_data_async(; symbols: process_qwen_mm_data_async, process_internlm2_mm_data_async
+  - `test/srt/xpu/test_internvl.py` added +147/-0 (147 lines); hunks: -0,0 +1,147; symbols: InternVLXPUServerBase, setUpClass, tearDownClass, TestInternVL25Server
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/multimodal/processors/internvl.py
+@@ -19,6 +19,7 @@
++from sglang.srt.utils import get_device
+@@ -434,7 +435,7 @@ async def process_qwen_mm_data_async(
+-        mean, std = self._get_normalize_tensors(device="cuda")
++        mean, std = self._get_normalize_tensors(device=get_device())
+@@ -444,10 +445,11 @@ async def process_qwen_mm_data_async(
+-                    torch.from_numpy(img_np).permute(2, 0, 1).cuda().float() / 255.0
+diff -- test/srt/xpu/test_internvl.py
+@@ -0,0 +1,147 @@
++"""
++XPU tests for InternVL models (InternVL2.5-2B, InternVL3.5-2B).
++Uses the same structure as test_vision_openai_server_a.py: OpenAI /v1 chat API
++and ImageOpenAITestMixin. An XPU-specific base injects --device xpu and
++--attention-backend intel_xpu.
++Usage (pick module path to match your cwd):
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/multimodal/processors/internvl.py` modified +17/-10
+  - tests: `test/srt/xpu/test_internvl.py` added +147/-0
+- Risk and verification: The diff ships test coverage in `test/srt/run_suite.py`, `test/srt/xpu/test_internvl.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+## Gap-Closure Notes
+
+- This version rejects title-only PR lists; every PR must include trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
+- If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.

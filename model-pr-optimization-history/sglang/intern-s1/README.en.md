@@ -1,99 +1,253 @@
-# SGLang Intern-S1 Support and PR History
+# sglang Intern-S1 Model PR Optimization History
 
-This note tracks the SGLang runtime, key PRs, and cookbook-facing touchpoints for Intern-S1.
+## Scope
 
-- Status: 当前 mainline 已支持
+- Rebuilt on: 2026-04-25
+- Source baseline: `sgl-project/sglang` trace worktree commit `880599cd43`
+- PR collection rule: run `git log --name-only -- <model-files>` on model implementation, config, processor, parser, docs/tests, filter by model keywords in commit subjects, then read each PR's final diff through the GitHub Pull Request files API.
+- Preservation rule: PRs explicitly cited by the previous history/skill are retained even if current implementation files no longer trace to them, and the card marks that source.
+- Diffusion model families have been removed from this history set and are no longer part of model optimization skills.
 
-## Key Conclusions
+## Implementation File Coverage
 
-- Intern-S1 leans heavily on shared InternVL processor code in SGLang.
-- Most regressions come from processor compatibility, parser behavior, and video-aware serving rather than the text stack alone.
+| File | Git-traced PRs |
+| --- | --- |
+| `docs_new/cookbook/autoregressive/InternLM/Intern-S1.mdx` | no direct PR-number commit |
+| `python/sglang/srt/function_call/internlm_detector.py` | [#14866](https://github.com/sgl-project/sglang/pull/14866) |
+| `python/sglang/srt/models/interns1.py` | [#8350](https://github.com/sgl-project/sglang/pull/8350), [#9299](https://github.com/sgl-project/sglang/pull/9299), [#12367](https://github.com/sgl-project/sglang/pull/12367) |
+| `python/sglang/srt/models/interns1pro.py` | [#18145](https://github.com/sgl-project/sglang/pull/18145) |
+| `python/sglang/srt/multimodal/processors/interns1pro.py` | [#18145](https://github.com/sgl-project/sglang/pull/18145) |
 
-## Main Runtime Surfaces
+## PR Coverage Summary
 
-- `sglang/python/sglang/srt/models/interns1.py`
-- `sglang/python/sglang/srt/models/internvl.py`
+- Git-traced PRs: 5
+- Extra PRs preserved from existing docs: 2
+- Total PRs in this document: 7
+- File trace command: `git log --name-only -- <model-files>`
+- Diff audit source: GitHub Pull Request files API
 
-## Landed PRs
+## Timeline
 
-- [#9381](https://github.com/sgl-project/sglang/pull/9381) `InternS1 image token updates in InternVL processor`: Aligned the shared processor with Intern-S1 image semantics.
-- [#12367](https://github.com/sgl-project/sglang/pull/12367) `Fix Intern-S1 accuracy and `/generate` input_ids support`: Closed early correctness gaps.
-- [#14866](https://github.com/sgl-project/sglang/pull/14866) `Add tool calling and reasoning parser support for Intern-S1`: Added parser support that cookbook usage depends on.
-- [#17040](https://github.com/sgl-project/sglang/pull/17040) `Support InternS1 text_config in InternVL processor`: Improved sub-config compatibility in shared processors.
+| Date | PR | State | Title | Main files |
+| --- | --- | --- | --- | --- |
+| 2025-07-26 | [#8350](https://github.com/sgl-project/sglang/pull/8350) | merged | model: support intern-s1 | `python/sglang/srt/models/interns1.py` |
+| 2025-08-19 | [#9299](https://github.com/sgl-project/sglang/pull/9299) | merged | support for interns1-mini | `python/sglang/srt/models/interns1.py` |
+| 2025-08-20 | [#9381](https://github.com/sgl-project/sglang/pull/9381) | merged | fix: InternS1 don't recognize image, updates image token for InternVL processor | `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/conversation.py` |
+| 2025-11-03 | [#12367](https://github.com/sgl-project/sglang/pull/12367) | merged | [Bug] Fix Intern-S1 model accuracy and support /generate interface with input_ids | `python/sglang/srt/models/interns1.py` |
+| 2025-12-16 | [#14866](https://github.com/sgl-project/sglang/pull/14866) | merged | Adding tool calling and reasoning parser support for Intern-S1 | `python/sglang/srt/function_call/internlm_detector.py` |
+| 2026-01-26 | [#17040](https://github.com/sgl-project/sglang/pull/17040) | merged | fix(processor): support InternS1 text_config in InternVL processor | `python/sglang/srt/multimodal/processors/internvl.py` |
+| 2026-02-04 | [#18145](https://github.com/sgl-project/sglang/pull/18145) | merged | support interns1-pro | `python/sglang/srt/models/interns1pro.py`, `python/sglang/srt/multimodal/processors/interns1pro.py` |
 
-## Matching Skill
+## Per-PR Diff Audit Cards
 
-- `skills/model-optimization/sglang/sglang-intern-s1-optimization/SKILL.md`
-- `skills/model-optimization/sglang/sglang-intern-s1-optimization/references/pr-history.md`
+### PR #8350 - model: support intern-s1
 
-<!-- MODEL_PR_DIFF_AUDIT:START en -->
+- Link: https://github.com/sgl-project/sglang/pull/8350
+- Status/date: merged / 2025-07-26
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/interns1.py`; associated commits `b7094a5ef197`
+- Diff scope read: GitHub Pull Request files API returned 10 files, +616/-63, 986 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Intern-S1, this PR adds or enables a model support/runtime surface. Title: "model: support intern-s1". The diff centers on `python/sglang/srt/models/interns1.py`. PR body context: ## Motivation Support intern-s1 model of bf16 and fp8 types: - internlm/Intern-S1 - internlm/Intern-S1-FP8 ## Modifications - Add support for intern-s1 models - Pad weights to s...
+- Key implementation: `python/sglang/srt/models/interns1.py` added +328/-0 (328 lines); hunks: -0,0 +1,328; symbols: InternS1ForConditionalGeneration, __init__, _update_hf_config, pixel_shuffle, touching `InternS1ForConditionalGeneration, __init__, _update_hf_config`.
+- Code diff details:
+  - `python/sglang/srt/models/interns1.py` added +328/-0 (328 lines); hunks: -0,0 +1,328; symbols: InternS1ForConditionalGeneration, __init__, _update_hf_config, pixel_shuffle
+- Key code excerpts:
 
-## PR Diff Audit Cards (2026-04-25 rebuild)
+```diff
+diff -- python/sglang/srt/models/interns1.py
+@@ -0,0 +1,328 @@
++from typing import Iterable, List, Optional, Set, Tuple
++import torch
++from torch import nn
++from transformers import PretrainedConfig
++from sglang.srt.distributed import parallel_state
++from sglang.srt.layers.moe.ep_moe.layer import get_moe_impl_class
+```
 
-This section re-audits `Intern-S1` against `sgl-project/sglang` Pull Request metadata and file-level patches. Acceptance rule: every PR needs status, code surface, file-level diff digest, support/optimization interpretation, and verification risk notes; if no public PR is found, keep an explicit no-match conclusion instead of inventing history.
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/interns1.py` added +328/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/lang/chat_template.py`, `python/sglang/srt/configs/internvl.py`, `python/sglang/srt/configs/model_config.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-### Timeline
+### PR #9299 - support for interns1-mini
 
-| Created | PR | State | Title | Code surface | Main diff files |
-| --- | ---: | --- | --- | --- | --- |
-| 2025-08-20 | [#9381](https://github.com/sgl-project/sglang/pull/9381) | merged | fix: InternS1 don't recognize image, updates image token for InternVL processor | multimodal/processor | `python/sglang/srt/conversation.py`, `python/sglang/srt/multimodal/processors/internvl.py` |
-| 2025-10-30 | [#12367](https://github.com/sgl-project/sglang/pull/12367) | merged | [Bug] Fix Intern-S1 model accuracy and support /generate interface with input_ids | model wrapper, multimodal/processor | `python/sglang/srt/models/interns1.py`, `python/sglang/srt/models/internvl.py`, `python/sglang/srt/multimodal/processors/internvl.py` |
-| 2025-12-11 | [#14866](https://github.com/sgl-project/sglang/pull/14866) | merged | Adding tool calling and reasoning parser support for Intern-S1 | misc | `python/sglang/srt/function_call/internlm_detector.py`, `python/sglang/srt/constrained/base_grammar_backend.py`, `python/sglang/srt/constrained/xgrammar_backend.py` |
-| 2026-01-13 | [#17040](https://github.com/sgl-project/sglang/pull/17040) | merged | fix(processor): support InternS1 text_config in InternVL processor | multimodal/processor | `python/sglang/srt/multimodal/processors/internvl.py` |
+- Link: https://github.com/sgl-project/sglang/pull/9299
+- Status/date: merged / 2025-08-19
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/interns1.py`; associated commits `a31ea4482436`
+- Diff scope read: GitHub Pull Request files API returned 2 files, +7/-2, 30 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Intern-S1, this PR adds or enables a model support/runtime surface. Title: "support for interns1-mini". The diff centers on `python/sglang/srt/models/interns1.py`. PR body context: For the coming InternS1-mini model.
+- Key implementation: `python/sglang/srt/models/interns1.py` modified +5/-0 (5 lines); hunks: -21,6 +21,7; -70,6 +71,10 @@ def __init__(; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `python/sglang/srt/models/interns1.py` modified +5/-0 (5 lines); hunks: -21,6 +21,7; -70,6 +71,10 @@ def __init__(; symbols: __init__
+- Key code excerpts:
 
-### File-level PR diff reading notes
+```diff
+diff -- python/sglang/srt/models/interns1.py
+@@ -21,6 +21,7 @@
++from sglang.srt.models.qwen3 import Qwen3ForCausalLM
+@@ -70,6 +71,10 @@ def __init__(
++        elif config.text_config.architectures[0] == "Qwen3ForCausalLM":
++            self.language_model = Qwen3ForCausalLM(
++                config=config.text_config, quant_config=quant_config
++            )
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/interns1.py` modified +5/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/interns1.py`, `python/sglang/srt/models/qwen3.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #9381 - fix: InternS1 don't recognize image, updates image token for InternVL processor
 
 - Link: https://github.com/sgl-project/sglang/pull/9381
-- Status/date: `merged`, created 2025-08-20, merged 2025-08-20; author `JustinTong0323`.
-- Diff scope read: `2` files, `+9/-17`; areas: multimodal/processor; keywords: config, expert, processor, spec, vision.
+- Status/date: merged / 2025-08-20
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +9/-17, 60 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Intern-S1, this PR fixes a launch, loading, parsing, or numerical issue. Title: "fix: InternS1 don't recognize image, updates image token for InternVL processor". The diff centers on `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/conversation.py`. PR body context: Updates the image token for InternVL to ` `. This change aligns the image token with the updated template and improves consistency in image processing. Also removes the `interns...
+- Key implementation: `python/sglang/srt/multimodal/processors/internvl.py` modified +7/-2 (9 lines); hunks: -44,7 +44,7 @@ def __init__(self, hf_config, server_args, _image_processor, *...; -218,13 +218,18 @@ def process_image_internvl(image, input_size=448, max_num=...; symbols: __init__, process_image_internvl, touching `__init__, process_image_internvl`; `python/sglang/srt/conversation.py` modified +2/-15 (17 lines); hunks: -625,7 +625,7 @@ def generate_chat_conv(; -817,20 +817,7 @@ def generate_chat_conv(; symbols: generate_chat_conv, touching `generate_chat_conv`.
 - Code diff details:
-  - `python/sglang/srt/conversation.py` modified +2/-15 (17 lines); hunks: def generate_chat_conv(; def generate_chat_conv(; symbols: generate_chat_conv, generate_chat_conv
-  - `python/sglang/srt/multimodal/processors/internvl.py` modified +7/-2 (9 lines); hunks: def __init__(self, hf_config, server_args, _image_processor, *args, **kwargs):; def process_image_internvl(image, input_size=448, max_num=12):; symbols: __init__, process_image_internvl
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/conversation.py`, `python/sglang/srt/multimodal/processors/internvl.py`; keywords observed in patches: config, expert, processor, spec, vision. Impact reading: multimodal processor or media-token code changed; verify image/video/audio metadata, position ids, and batching.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/conversation.py`, `python/sglang/srt/multimodal/processors/internvl.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/multimodal/processors/internvl.py` modified +7/-2 (9 lines); hunks: -44,7 +44,7 @@ def __init__(self, hf_config, server_args, _image_processor, *...; -218,13 +218,18 @@ def process_image_internvl(image, input_size=448, max_num=...; symbols: __init__, process_image_internvl
+  - `python/sglang/srt/conversation.py` modified +2/-15 (17 lines); hunks: -625,7 +625,7 @@ def generate_chat_conv(; -817,20 +817,7 @@ def generate_chat_conv(; symbols: generate_chat_conv
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/multimodal/processors/internvl.py
+@@ -44,7 +44,7 @@ def __init__(self, hf_config, server_args, _image_processor, *args, **kwargs):
+-            image_token="<image>",
++            image_token="<IMG_CONTEXT>",
+@@ -218,13 +218,18 @@ def process_image_internvl(image, input_size=448, max_num=12):
++        original_placeholder = "<<<__IMG_CONTEXT_PLACEHOLDER__>>>"
++        input_text = input_text.replace(self.IMG_CONTEXT_TOKEN, original_placeholder)
+-            input_text = input_text.replace("<image>", image_tokens, 1)
+diff -- python/sglang/srt/conversation.py
+@@ -625,7 +625,7 @@ def generate_chat_conv(
+-                        if conv.name in ["internvl-2-5", "interns1"]:
++                        if conv.name in ["internvl-2-5"]:
+@@ -817,20 +817,7 @@ def generate_chat_conv(
+-        image_token="<image>",
+-    )
+-)
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/multimodal/processors/internvl.py` modified +7/-2; `python/sglang/srt/conversation.py` modified +2/-15
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/conversation.py`, `python/sglang/srt/multimodal/processors/internvl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #12367 - [Bug] Fix Intern-S1 model accuracy and support /generate interface with input_ids
 
 - Link: https://github.com/sgl-project/sglang/pull/12367
-- Status/date: `merged`, created 2025-10-30, merged 2025-11-03; author `hhaAndroid`.
-- Diff scope read: `3` files, `+8/-41`; areas: model wrapper, multimodal/processor; keywords: attention, config, flash, fp8, processor, quant, vision.
+- Status/date: merged / 2025-11-03
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/interns1.py`; associated commits `65f1d065c5cf`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +8/-41, 110 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Intern-S1, this PR adds or enables a model support/runtime surface. Title: "[Bug] Fix Intern-S1 model accuracy and support /generate interface with input_ids". The diff centers on `python/sglang/srt/models/interns1.py`. PR body context: 1. The version of `pixel_shuffle` used in `intern-s1` is incorrect and the `ps_version` parameter needs to be removed 2. The image processing models in `intern-s1` and `internv1...
+- Key implementation: `python/sglang/srt/models/interns1.py` modified +3/-21 (24 lines); hunks: -1,4 +1,4; -50,16 +50,13 @@ def __init__(; symbols: __init__, pixel_shuffle, extract_feature, load_weights, touching `__init__, pixel_shuffle, extract_feature`.
 - Code diff details:
-  - `python/sglang/srt/models/interns1.py` modified +3/-21 (24 lines); hunks: -from typing import Iterable, List, Optional, Set, Tuple; def __init__(; symbols: __init__, pixel_shuffle, extract_feature, load_weights
-  - `python/sglang/srt/models/internvl.py` modified +1/-19 (20 lines); hunks: -from typing import Iterable, List, Optional, Set, Tuple, Union; def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]]):; symbols: load_weights, load_weights
-  - `python/sglang/srt/multimodal/processors/internvl.py` modified +4/-1 (5 lines); hunks: async def process_mm_data_async(; symbols: process_mm_data_async
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/models/interns1.py`, `python/sglang/srt/models/internvl.py`, `python/sglang/srt/multimodal/processors/internvl.py`; keywords observed in patches: attention, config, flash, fp8, processor, quant. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; multimodal processor or media-token code changed; verify image/video/audio metadata, position ids, and batching.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/models/interns1.py`, `python/sglang/srt/models/internvl.py`, `python/sglang/srt/multimodal/processors/internvl.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/models/interns1.py` modified +3/-21 (24 lines); hunks: -1,4 +1,4; -50,16 +50,13 @@ def __init__(; symbols: __init__, pixel_shuffle, extract_feature, load_weights
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/interns1.py
+@@ -1,4 +1,4 @@
+-from typing import Iterable, List, Optional, Set, Tuple
++from typing import Iterable, List, Optional, Tuple
+@@ -50,16 +50,13 @@ def __init__(
+-        self.ps_version = getattr(config, "ps_version", "v1")
+-        # self.template = getattr(config, 'template', 'internvl2_5')
+-        logger.info(f"ps_version: {self.ps_version}")
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/interns1.py` modified +3/-21
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/interns1.py`, `python/sglang/srt/models/internvl.py`, `python/sglang/srt/multimodal/processors/internvl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #14866 - Adding tool calling and reasoning parser support for Intern-S1
 
 - Link: https://github.com/sgl-project/sglang/pull/14866
-- Status/date: `merged`, created 2025-12-11, merged 2025-12-16; author `KennyYao2001`.
-- Diff scope read: `6` files, `+290/-14`; areas: misc; keywords: kv, moe, spec.
+- Status/date: merged / 2025-12-16
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/function_call/internlm_detector.py`; associated commits `5e96beb3e559`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 6 files, +290/-14, 361 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Intern-S1, this PR adds or enables a model support/runtime surface. Title: "Adding tool calling and reasoning parser support for Intern-S1". The diff centers on `python/sglang/srt/function_call/internlm_detector.py`. PR body context: ## Motivation Fixes #14673 SGLang previously had incomplete support for Intern-S1 models: 1. **Missing Tool Call Parser**: LMDeploy has `--tool-call-parser intern-s1` support, b...
+- Key implementation: `python/sglang/srt/function_call/internlm_detector.py` added +248/-0 (248 lines); hunks: -0,0 +1,248; symbols: InternlmDetector, __init__, has_tool_call, get_arguments, touching `InternlmDetector, __init__, has_tool_call`.
 - Code diff details:
-  - `python/sglang/srt/function_call/internlm_detector.py` added +248/-0 (248 lines); hunks: +# modified from https://github.com/InternLM/lmdeploy/blob/main/lmdeploy/serve/openai/tool_parser/internlm2_parser.py; symbols: InternlmDetector, __init__, has_tool_call, get_arguments
-  - `python/sglang/srt/constrained/base_grammar_backend.py` modified +19/-7 (26 lines); hunks: def create_grammar_backend(; symbols: create_grammar_backend
-  - `python/sglang/srt/constrained/xgrammar_backend.py` modified +18/-5 (23 lines); hunks: def __repr__(self):; def __init__(; symbols: __repr__, TokenizerNotSupportedError, XGrammarGrammarBackend, __init__
-  - `python/sglang/srt/entrypoints/openai/serving_chat.py` modified +2/-2 (4 lines); hunks: def _get_reasoning_from_request(self, request: ChatCompletionRequest) -> bool:; symbols: _get_reasoning_from_request
-  - `python/sglang/srt/function_call/function_call_parser.py` modified +2/-0 (2 lines); hunks: from sglang.srt.function_call.deepseekv32_detector import DeepSeekV32Detector; class FunctionCallParser:; symbols: FunctionCallParser:, __init__
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/function_call/internlm_detector.py`, `python/sglang/srt/constrained/base_grammar_backend.py`, `python/sglang/srt/constrained/xgrammar_backend.py`; keywords observed in patches: kv, moe, spec. Impact reading: the patch is in miscellaneous paths; infer the actual impact from the touched files.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/function_call/internlm_detector.py`, `python/sglang/srt/constrained/base_grammar_backend.py`, `python/sglang/srt/constrained/xgrammar_backend.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/function_call/internlm_detector.py` added +248/-0 (248 lines); hunks: -0,0 +1,248; symbols: InternlmDetector, __init__, has_tool_call, get_arguments
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/function_call/internlm_detector.py
+@@ -0,0 +1,248 @@
++# modified from https://github.com/InternLM/lmdeploy/blob/main/lmdeploy/serve/openai/tool_parser/internlm2_parser.py
++import json
++import logging
++import re
++from typing import List
++from sglang.srt.entrypoints.openai.protocol import Tool
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/function_call/internlm_detector.py` added +248/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/constrained/base_grammar_backend.py`, `python/sglang/srt/constrained/xgrammar_backend.py`, `python/sglang/srt/entrypoints/openai/serving_chat.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #17040 - fix(processor): support InternS1 text_config in InternVL processor
 
 - Link: https://github.com/sgl-project/sglang/pull/17040
-- Status/date: `merged`, created 2026-01-13, merged 2026-01-26; author `Mahdi-CV`.
-- Diff scope read: `1` files, `+12/-4`; areas: multimodal/processor; keywords: config, processor.
+- Status/date: merged / 2026-01-26
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +12/-4, 30 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Intern-S1, this PR adds or enables a model support/runtime surface. Title: "fix(processor): support InternS1 text_config in InternVL processor". The diff centers on `python/sglang/srt/multimodal/processors/internvl.py`. PR body context: ## Motivation InternS1 models use `text_config` instead of `llm_config` for the text backbone configuration. When attempting to launch InternS1 models (e.g., `internlm/Intern-S1...
+- Key implementation: `python/sglang/srt/multimodal/processors/internvl.py` modified +12/-4 (16 lines); hunks: -72,7 +72,17 @@ def __init__(self, hf_config, server_args, _image_processor,...; -121,9 +131,7 @@ def __init__(self, hf_config, server_args, _image_processor,...; symbols: __init__, touching `__init__`.
 - Code diff details:
-  - `python/sglang/srt/multimodal/processors/internvl.py` modified +12/-4 (16 lines); hunks: def __init__(self, hf_config, server_args, _image_processor, *args, **kwargs):; def __init__(self, hf_config, server_args, _image_processor, *args, **kwargs):; symbols: __init__, __init__
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/multimodal/processors/internvl.py`; keywords observed in patches: config, processor. Impact reading: multimodal processor or media-token code changed; verify image/video/audio metadata, position ids, and batching.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/multimodal/processors/internvl.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/multimodal/processors/internvl.py` modified +12/-4 (16 lines); hunks: -72,7 +72,17 @@ def __init__(self, hf_config, server_args, _image_processor,...; -121,9 +131,7 @@ def __init__(self, hf_config, server_args, _image_processor,...; symbols: __init__
+- Key code excerpts:
 
+```diff
+diff -- python/sglang/srt/multimodal/processors/internvl.py
+@@ -72,7 +72,17 @@ def __init__(self, hf_config, server_args, _image_processor, *args, **kwargs):
+-        llm_arch = hf_config.llm_config.architectures[0]
++        # Support both InternVL (llm_config) and InternS1 (text_config).
++        # Different multimodal models use different field names for the text backbone:
++        # - InternVL uses: hf_config.llm_config
++        # - InternS1 uses: hf_config.text_config
++        # - Some store architectures at top-level
+```
 
-### Gap and optimization follow-up
+- Reviewed files:
+  - runtime: `python/sglang/srt/multimodal/processors/internvl.py` modified +12/-4
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/multimodal/processors/internvl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-- Covered PRs: 4; open PRs: 0.
-- Any future PR must add both the timeline row and the file-level diff card; title-only summaries are not acceptable.
+### PR #18145 - support interns1-pro
 
-<!-- MODEL_PR_DIFF_AUDIT:END en -->
+- Link: https://github.com/sgl-project/sglang/pull/18145
+- Status/date: merged / 2026-02-04
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/interns1pro.py`, `python/sglang/srt/multimodal/processors/interns1pro.py`; associated commits `3e7ecb78a60f`
+- Diff scope read: GitHub Pull Request files API returned 6 files, +586/-2, 647 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Intern-S1, this PR adds or enables a model support/runtime surface. Title: "support interns1-pro". The diff centers on `python/sglang/srt/models/interns1pro.py`, `python/sglang/srt/multimodal/processors/interns1pro.py`. PR body context: ## Motivation support internlm/Intern-S1-Pro ## Modifications ## Accuracy Tests ## Benchmarking and Profiling ## Checklist - [x] Format your code according to the Format code wi...
+- Key implementation: `python/sglang/srt/models/interns1pro.py` added +252/-0 (252 lines); hunks: -0,0 +1,252; symbols: InternS1ProTextAttention, __init__, forward_prepare_npu, InternS1ProTextDecoderLayer, touching `InternS1ProTextAttention, __init__, forward_prepare_npu`; `python/sglang/srt/multimodal/processors/interns1pro.py` added +118/-0 (118 lines); hunks: -0,0 +1,118; symbols: InternS1_1ImageProcessor, get_mm_data, process_mm_data_async, touching `InternS1_1ImageProcessor, get_mm_data, process_mm_data_async`.
+- Code diff details:
+  - `python/sglang/srt/models/interns1pro.py` added +252/-0 (252 lines); hunks: -0,0 +1,252; symbols: InternS1ProTextAttention, __init__, forward_prepare_npu, InternS1ProTextDecoderLayer
+  - `python/sglang/srt/multimodal/processors/interns1pro.py` added +118/-0 (118 lines); hunks: -0,0 +1,118; symbols: InternS1_1ImageProcessor, get_mm_data, process_mm_data_async
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/interns1pro.py
+@@ -0,0 +1,252 @@
++import functools
++import logging
++from typing import Any, Dict, Iterable, Optional, Tuple
++import torch
++from transformers import PretrainedConfig
++from sglang.srt.layers.dp_attention import get_attention_tp_rank, get_attention_tp_size
+diff -- python/sglang/srt/multimodal/processors/interns1pro.py
+@@ -0,0 +1,118 @@
++import time
++from typing import List, Union
++from sglang.srt.managers.schedule_batch import Modality, MultimodalDataItem
++from sglang.srt.models.interns1pro import InternS1ProForConditionalGeneration
++from sglang.srt.multimodal.processors.qwen_vl import (
++    QwenVLImageProcessor,
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/interns1pro.py` added +252/-0; `python/sglang/srt/multimodal/processors/interns1pro.py` added +118/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/entrypoints/openai/protocol.py`, `python/sglang/srt/layers/rotary_embedding.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+## Gap-Closure Notes
+
+- This version rejects title-only PR lists; every PR must include trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
+- If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.

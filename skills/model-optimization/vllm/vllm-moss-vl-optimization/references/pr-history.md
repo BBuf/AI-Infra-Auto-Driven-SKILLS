@@ -1,25 +1,28 @@
-# vLLM MOSS-VL PR History
+# vllm MOSS-VL PR Diff Audit Reference
 
-Evidence snapshot:
+- Rebuilt on: 2026-04-25
+- Source baseline: `vllm-project/vllm` trace worktree commit `95995bbef8`
+- Collection: model implementation files were traced with `git log --name-only -- <model-files>`, filtered by model keywords in commit subjects, then every PR card was populated from the GitHub Pull Request files API.
+- Extra preserved PRs from prior docs: 0
+- Rule: use this as the backing dossier for the skill, not only PR titles.
 
-- vLLM mainline checked around `0f7be0f2f76814f80f9091220a5fbbb53912ad00`
-- Support status: not supported on current mainline
-- Scope: Tracking note for MOSS-VL, which does not have a native vLLM mainline model module today.
+## Implementation File Coverage
 
-## Landed PRs
+| File | Git-traced PRs |
+| --- | --- |
+| - | No matching implementation file on current main |
 
-- No landed PR is recorded yet for this family.
+## Timeline
 
-## Open PR Radar
+| Date | PR | State | Title | Main files |
+| --- | --- | --- | --- | --- |
+| - | - | - | no archived PR found | - |
 
-- No specific open PR is pinned here; rerun GitHub PR search before asserting new support.
+## Per-PR Diff Audit Cards
 
-<!-- MODEL_PR_DIFF_AUDIT:START reference -->
+### Public PR search conclusion
 
-# VLLM MOSS-VL PR Diff Audit Reference
-
-This reference is rebuilt from the same audited PR metadata used by `model-pr-optimization-history`. It is intentionally concise but keeps a file-level diff digest for every indexed PR.
-
-- No public PR confirmed for this model path after checking: `MOSS-VL, MOSS VL, mossvl`.
-
-<!-- MODEL_PR_DIFF_AUDIT:END reference -->
+- Conclusion: No public PR was confirmed as part of the vllm MOSS-VL model support or optimization line.
+- Search method: `git log --name-only -- <model-files>` was run on the matched files, and explicit PR links in the previous history/skill were checked.
+- Covered files: no matching implementation file on current main
+- Acceptance rule: if implementation files or PRs appear later, add the same per-PR diff card format.

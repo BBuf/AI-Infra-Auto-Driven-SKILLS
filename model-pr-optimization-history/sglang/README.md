@@ -1,41 +1,33 @@
 # SGLang Model PR Optimization History
 
-Current families:
+Current non-diffusion model families:
 
 - `deepseek-v3-r1`
 - `deepseek-v31`
 - `deepseek-v32`
 - `deepseek-v4`
+- `ernie45`
+- `gemma4`
 - `glm-vlm-ocr`
 - `glm45`
 - `glm46-glm47`
 - `glm5-glm51`
+- `gpt-oss`
 - `hunyuan3-preview`
+- `intern-s1`
+- `internvl35`
 - `kimi`
-- `ltx23-hq`
+- `llama4`
+- `mimo-v2-flash`
 - `minimax`
+- `mistral-small-4`
 - `mixtral-quark-int4fp8-moe`
 - `moss-vl`
-- `qwen-image`
+- `nemotron-super`
 - `qwen-vlm-omni-asr`
 - `qwen3-coder`
 - `qwen3-core`
 - `qwen3-next`
 - `qwen35`
 - `qwen36`
-- `z-image-turbo`
-- `ernie45`
-- `gemma4`
-- `gpt-oss`
-- `intern-s1`
-- `internvl35`
-- `llama4`
-- `mimo-v2-flash`
-- `mistral-small-4`
-- `nemotron-super`
 - `step35`
-
-Cross-family audits:
-
-- `model-skill-pr-dossier-quality-scan-2026-04-23.md`
-- `model-skill-pr-dossier-quality-scan-2026-04-24.md`

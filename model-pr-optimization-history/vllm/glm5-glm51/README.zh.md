@@ -1,87 +1,107 @@
-# vLLM GLM-5 / 5.1 支持与 PR 历史
+# vllm GLM-5/5.1 模型 PR 优化历史
 
-本文记录 vLLM 在提交 `0f7be0f2f76814f80f9091220a5fbbb53912ad00`
-附近对 GLM-5 / 5.1 的已落地支持。
+## 文档口径
 
-- 状态: 当前 mainline 仅部分支持
+- 重做日期: 2026-04-25
+- 源码基线: `vllm-project/vllm` 当前追溯 worktree commit `95995bbef8`
+- PR 收集规则: 先从模型实现、配置、processor、parser、docs/tests 等相关文件执行 `git log --name-only -- <model-files>`，再按 commit subject 的模型关键词过滤，最后用 GitHub Pull Request files API 读取每个 PR 的最终 diff。
+- 额外保留规则: 原 history/skill 已显式引用但未出现在当前实现文件 git trace 中的 PR 会保留，并在卡片里标注来源。
+- diffusion 相关模型已从本目录剔除，不再纳入模型优化 skill/history。
 
-## 核心结论
+## 模型实现文件覆盖
 
-- GLM-5 现在不是独立的 `glm5.py` 实现，而是通过 DeepSeek-V2/V3 的
-  MLA/MoE 运行时做适配。
-- 当前最关键的两步是:
-  `#34124` 负责架构和配置适配，
-  `#34385` 负责修正 MTP 草稿模型的 logits 正确性。
+| 文件 | git 追溯到的 PR |
+| --- | --- |
+| - | 当前主线没有匹配到实现文件 |
 
-## 主要代码面
+## PR 覆盖总览
 
-- `vllm/vllm/model_executor/models/deepseek_v2.py`
-- `vllm/vllm/model_executor/models/registry.py`
-- `vllm/vllm/config/speculative.py`
-- `vllm/vllm/transformers_utils/model_arch_config_convertor.py`
-- `vllm/vllm/v1/spec_decode/eagle.py`
+- git 追溯 PR 数: 0
+- 原文档显式引用补充 PR 数: 2
+- 当前文档总 PR 数: 2
+- 文件追溯命令: `git log --name-only -- <model-files>`
+- diff 审计来源: GitHub Pull Request files API
 
-## 已合入 PR
+## 时间线
 
-- [#34124](https://github.com/vllm-project/vllm/pull/34124)
-  `GLM adaptation`
-  已审 diff: `7` 个文件，`13` 行新增，`3` 行删除。
-  它把 `GlmMoeDsaForCausalLM` 接到 DeepSeek-V2 运行时上，并补了
-  speculative config 与 `indexer_rope_interleave` 适配。
-- [#34385](https://github.com/vllm-project/vllm/pull/34385)
-  `Fix MTP accuracy for GLM-5`
-  已审 diff: `1` 个文件，`18` 行新增。
-  它把目标模型 `lm_head` 显式共享给每个 MTP layer 的
-  `shared_head.head`，否则 GLM-5 draft logits 会出现 NaN 或未初始化输出。
+| 日期 | PR | 状态 | 标题 | 主要文件 |
+| --- | --- | --- | --- | --- |
+| 2026-02-09 | [#34124](https://github.com/vllm-project/vllm/pull/34124) | merged | [Model] GLM adaptation | `vllm/model_executor/models/deepseek_v2.py`, `tests/models/registry.py`, `tests/models/test_initialization.py` |
+| 2026-02-12 | [#34385](https://github.com/vllm-project/vllm/pull/34385) | merged | [Bugfix] Fix MTP accuracy for GLM-5 | `vllm/v1/spec_decode/eagle.py` |
 
-## 当前结论
-
-遇到 GLM-5 问题时，优先检查 DeepSeek 复用路径和 speculative decode 基础
-设施，而不是先去看旧的 `glm4*` 文件。
-
-<!-- MODEL_PR_DIFF_AUDIT:START zh -->
-
-## 逐 PR diff 审计卡（2026-04-25 重做）
-
-本节按 `vllm-project/vllm` 的 Pull Request API 和文件级 patch 重新审计 `GLM-5 / GLM-5.1`。验收口径：每个 PR 都要有状态、代码面、文件级 diff 摘要、支持/优化点判断和风险验证点；没有公开相关 PR 时必须写清检索结论，不能编造。
-
-### 时间线总览
-
-| 创建日期 | PR | 状态 | 标题 | 代码面 | 主要 diff 文件 |
-| --- | ---: | --- | --- | --- | --- |
-| 2026-02-09 | [#34124](https://github.com/vllm-project/vllm/pull/34124) | merged | [Model] GLM adaptation | model wrapper, MoE/router, kernel, scheduler/runtime, tests/benchmarks, docs/config | `vllm/model_executor/models/deepseek_v2.py`, `tests/models/registry.py`, `tests/models/test_initialization.py` |
-| 2026-02-11 | [#34385](https://github.com/vllm-project/vllm/pull/34385) | merged | [Bugfix] Fix MTP accuracy for GLM-5 | scheduler/runtime | `vllm/v1/spec_decode/eagle.py` |
-
-### 逐 PR 代码 diff 阅读记录
+## 逐 PR diff 审计卡
 
 ### PR #34124 - [Model] GLM adaptation
 
-- 链接：https://github.com/vllm-project/vllm/pull/34124
-- 状态/时间：`merged`，created 2026-02-09, merged 2026-02-09；作者 `jeejeelee`。
-- 代码 diff 已读范围：`7` 个文件，`+13/-3`；代码面：model wrapper, MoE/router, kernel, scheduler/runtime, tests/benchmarks, docs/config；关键词：moe, config, kv, spec, test, benchmark, cache, flash, mla。
-- 代码 diff 细节：
-  - `vllm/model_executor/models/deepseek_v2.py` modified +5/-1 (6 lines); hunk: def __init__(; class DeepseekV3ForCausalLM(DeepseekV2ForCausalLM):; 符号: __init__, DeepseekV3ForCausalLM, GlmMoeDsaForCausalLM, get_spec_layer_idx_from_weight_name
-  - `tests/models/registry.py` modified +3/-0 (3 lines); hunk: def check_available_online(; 符号: check_available_online
-  - `tests/models/test_initialization.py` modified +1/-1 (2 lines); hunk: def _initialize_kv_caches_v1(self, vllm_config):; 符号: _initialize_kv_caches_v1
-  - `vllm/config/speculative.py` modified +1/-1 (2 lines); hunk: def compute_hash(self) -> str:; 符号: compute_hash, hf_config_override
-  - `benchmarks/kernels/benchmark_moe.py` modified +1/-0 (1 lines); hunk: def get_model_params(config):; 符号: get_model_params
-- 支持/优化点判断：该 PR 的实际 diff 主要落在 `vllm/model_executor/models/deepseek_v2.py`, `tests/models/registry.py`, `tests/models/test_initialization.py`；patch 关键词为 moe, config, kv, spec, test, benchmark。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；CUDA/Triton/C++ kernel 或 binding 发生变化，要核对 shape guard、dtype、设备后端和 benchmark；scheduler/runtime/cache 路径发生变化，要核对连续批处理、spec/PD/DP、cache 生命周期和异常分支；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载；文档或配置面发生变化，要核对 serve flags、默认值和 cookbook 命令是否与代码一致。
-- 风险与验证：回归时优先跑能覆盖 `vllm/model_executor/models/deepseek_v2.py`, `tests/models/registry.py`, `tests/models/test_initialization.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+- 链接: https://github.com/vllm-project/vllm/pull/34124
+- 状态/时间: merged / 2026-02-09
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+13/-3，可读 patch 72 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 该 PR 围绕 GLM-5/5.1 修复已暴露的启动、加载、解析或数值问题，标题为「[Model] GLM adaptation」，变更集中在 `vllm/model_executor/models/deepseek_v2.py`, `tests/models/registry.py`, `tests/models/test_initialization.py`。PR 描述补充为：## Purpose ## Test Plan ## Test Result --- Essential Elements of an Effective PR Description Checklist - [ ] The purpose of the PR, such as "Fix some issue (link existing issues...
+- 实现要点: `vllm/model_executor/models/deepseek_v2.py` modified +5/-1 (6 lines); hunks: -836,7 +836,7 @@ def __init__(; -1499,6 +1499,10 @@ class DeepseekV3ForCausalLM(DeepseekV2ForCausalLM):; symbols: __init__, DeepseekV3ForCausalLM, GlmMoeDsaForCausalLM, get_spec_layer_idx_from_weight_name，涉及 `__init__, DeepseekV3ForCausalLM, GlmMoeDsaForCausalLM`；`tests/models/registry.py` modified +3/-0 (3 lines); hunks: -275,6 +275,9 @@ def check_available_online(; symbols: check_available_online，涉及 `check_available_online`；`tests/models/test_initialization.py` modified +1/-1 (2 lines); hunks: -97,7 +97,7 @@ def _initialize_kv_caches_v1(self, vllm_config):; symbols: _initialize_kv_caches_v1，涉及 `_initialize_kv_caches_v1`；`vllm/model_executor/models/registry.py` modified +1/-0 (1 lines); hunks: -114,6 +114,7。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/deepseek_v2.py` modified +5/-1 (6 lines); hunks: -836,7 +836,7 @@ def __init__(; -1499,6 +1499,10 @@ class DeepseekV3ForCausalLM(DeepseekV2ForCausalLM):; symbols: __init__, DeepseekV3ForCausalLM, GlmMoeDsaForCausalLM, get_spec_layer_idx_from_weight_name
+  - `tests/models/registry.py` modified +3/-0 (3 lines); hunks: -275,6 +275,9 @@ def check_available_online(; symbols: check_available_online
+  - `tests/models/test_initialization.py` modified +1/-1 (2 lines); hunks: -97,7 +97,7 @@ def _initialize_kv_caches_v1(self, vllm_config):; symbols: _initialize_kv_caches_v1
+  - `vllm/model_executor/models/registry.py` modified +1/-0 (1 lines); hunks: -114,6 +114,7
+  - `vllm/config/speculative.py` modified +1/-1 (2 lines); hunks: -181,7 +181,7 @@ def compute_hash(self) -> str:; symbols: compute_hash, hf_config_override
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/deepseek_v2.py
+@@ -836,7 +836,7 @@ def __init__(
+-                is_neox_style=True,
++                is_neox_style=not getattr(config, "indexer_rope_interleave", True),
+@@ -1499,6 +1499,10 @@ class DeepseekV3ForCausalLM(DeepseekV2ForCausalLM):
++class GlmMoeDsaForCausalLM(DeepseekV2ForCausalLM):
++    pass
+diff -- tests/models/registry.py
+@@ -275,6 +275,9 @@ def check_available_online(
++    "GlmMoeDsaForCausalLM": _HfExamplesInfo(
++        "zai-org/GLM-5", min_transformers_version="5.0.1", is_available_online=False
++    ),
+diff -- tests/models/test_initialization.py
+@@ -97,7 +97,7 @@ def _initialize_kv_caches_v1(self, vllm_config):
+-    if model_arch == "DeepseekV32ForCausalLM":
++    if model_arch in ["DeepseekV32ForCausalLM", "GlmMoeDsaForCausalLM"]:
+diff -- vllm/model_executor/models/registry.py
+@@ -114,6 +114,7 @@
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/deepseek_v2.py` modified +5/-1; `vllm/model_executor/models/registry.py` modified +1/-0; `vllm/config/speculative.py` modified +1/-1; `vllm/transformers_utils/model_arch_config_convertor.py` modified +1/-0
+  - tests: `tests/models/registry.py` modified +3/-0; `tests/models/test_initialization.py` modified +1/-1
+  - other: `benchmarks/kernels/benchmark_moe.py` modified +1/-0
+- 验证与风险: diff 自带测试面 `tests/models/registry.py`, `tests/models/test_initialization.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #34385 - [Bugfix] Fix MTP accuracy for GLM-5
 
-- 链接：https://github.com/vllm-project/vllm/pull/34385
-- 状态/时间：`merged`，created 2026-02-11, merged 2026-02-12；作者 `mgoin`。
-- 代码 diff 已读范围：`1` 个文件，`+18/-0`；代码面：scheduler/runtime；关键词：eagle, spec。
-- 代码 diff 细节：
-  - `vllm/v1/spec_decode/eagle.py` modified +18/-0 (18 lines); hunk: def _maybe_share_lm_head(self, target_language_model: nn.Module) -> None:; 符号: _maybe_share_lm_head, dummy_run
-- 支持/优化点判断：该 PR 的实际 diff 主要落在 `vllm/v1/spec_decode/eagle.py`；patch 关键词为 eagle, spec。影响判断：scheduler/runtime/cache 路径发生变化，要核对连续批处理、spec/PD/DP、cache 生命周期和异常分支。
-- 风险与验证：回归时优先跑能覆盖 `vllm/v1/spec_decode/eagle.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+- 链接: https://github.com/vllm-project/vllm/pull/34385
+- 状态/时间: merged / 2026-02-12
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+18/-0，可读 patch 25 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 该 PR 围绕 GLM-5/5.1 修复已暴露的启动、加载、解析或数值问题，标题为「[Bugfix] Fix MTP accuracy for GLM-5」，变更集中在 `vllm/v1/spec_decode/eagle.py`。PR 描述补充为：## Purpose Fix MTP producing NaN logits for models (e.g. GLM-5) whose checkpoints don't store a duplicate `shared_head.head` weight in the MTP layer (like DeepSeek V3.2). The ex...
+- 实现要点: `vllm/v1/spec_decode/eagle.py` modified +18/-0 (18 lines); hunks: -1506,6 +1506,24 @@ def _maybe_share_lm_head(self, target_language_model: nn....; symbols: _maybe_share_lm_head, dummy_run，涉及 `_maybe_share_lm_head, dummy_run`。
+- 代码 diff 细节:
+  - `vllm/v1/spec_decode/eagle.py` modified +18/-0 (18 lines); hunks: -1506,6 +1506,24 @@ def _maybe_share_lm_head(self, target_language_model: nn....; symbols: _maybe_share_lm_head, dummy_run
+- 关键代码摘录:
 
+```diff
+diff -- vllm/v1/spec_decode/eagle.py
+@@ -1506,6 +1506,24 @@ def _maybe_share_lm_head(self, target_language_model: nn.Module) -> None:
++            # MTP models call compute_logits via shared_head.head (a
++            # ParallelLMHead inside each MTP layer), not self.model.lm_head.
++            # If the checkpoint omits a copy of the lm_head weights at the
++            # MTP layer path, shared_head.head stays uninitialised and
++            # produces NaN logits. Always share it explicitly.
++            inner = getattr(self.model, "model", None)
+```
 
-### 补漏和优化点排查
+- 已读文件:
+  - runtime: `vllm/v1/spec_decode/eagle.py` modified +18/-0
+- 验证与风险: runtime 路径改动集中在 `vllm/v1/spec_decode/eagle.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-- 已覆盖 PR 数：2；open PR 数：0。
-- 后续新增 PR 必须补齐时间线和逐 PR diff 卡片，不能只写一句标题。
+## 补漏结论
 
-<!-- MODEL_PR_DIFF_AUDIT:END zh -->
+- 本版不再接受只列 PR 标题的写法；每个 PR 必须有反查来源、diff 范围、实现要点、代码摘录、已读文件和验证风险。
+- 如果新模型文件落在当前过滤规则之外，先补文件过滤规则，再重新执行本轮 `git log --name-only -- <model-files>` 追溯。

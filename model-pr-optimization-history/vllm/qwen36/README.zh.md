@@ -1,40 +1,43 @@
-# vLLM Qwen3.6 支持与 PR 历史
+# vllm Qwen3.6 模型 PR 优化历史
 
-本文记录 vLLM 中与 Qwen3.6 相关的模型支持、关键 PR、以及仍需持续跟踪的风险点。
+## 文档口径
 
-- 状态: 当前 mainline 不支持
+- 重做日期: 2026-04-25
+- 源码基线: `vllm-project/vllm` 当前追溯 worktree commit `95995bbef8`
+- PR 收集规则: 先从模型实现、配置、processor、parser、docs/tests 等相关文件执行 `git log --name-only -- <model-files>`，再按 commit subject 的模型关键词过滤，最后用 GitHub Pull Request files API 读取每个 PR 的最终 diff。
+- 额外保留规则: 原 history/skill 已显式引用但未出现在当前实现文件 git trace 中的 PR 会保留，并在卡片里标注来源。
+- diffusion 相关模型已从本目录剔除，不再纳入模型优化 skill/history。
 
-## 核心结论
+## 模型实现文件覆盖
 
-- Qwen3.6 should not be treated as automatically covered just because Qwen3 / Qwen3.5 are supported.
-- At the current checked commit, there is no dedicated `Qwen3.6` model module or registry alias.
+| 文件 | git 追溯到的 PR |
+| --- | --- |
+| - | 当前主线没有匹配到实现文件 |
 
-## 主要代码面
+## PR 覆盖总览
 
-- `vllm/vllm/model_executor/models/registry.py`
+- git 追溯 PR 数: 0
+- 原文档显式引用补充 PR 数: 0
+- 当前文档总 PR 数: 0
+- 文件追溯命令: `git log --name-only -- <model-files>`
+- diff 审计来源: GitHub Pull Request files API
 
-## 已合入 PR
+## 时间线
 
-- 当前 dossier 中没有已记录的 merged PR。
+| 日期 | PR | 状态 | 标题 | 主要文件 |
+| --- | --- | --- | --- | --- |
+| - | - | - | 未发现可归档 PR | - |
 
-## Open PR 雷达
-
-- 暂无固定 open PR；需要在声称新支持前重新搜索。
-
-## 配套 skill
-
-- `skills/model-optimization/vllm/vllm-qwen36-optimization/SKILL.md`
-- `skills/model-optimization/vllm/vllm-qwen36-optimization/references/pr-history.md`
-
-<!-- MODEL_PR_DIFF_AUDIT:START zh -->
-
-## 逐 PR diff 审计卡（2026-04-25 重做）
-
-本节按 `vllm-project/vllm` 的 Pull Request API 和文件级 patch 重新审计 `Qwen3.6`。验收口径：每个 PR 都要有状态、代码面、文件级 diff 摘要、支持/优化点判断和风险验证点；没有公开相关 PR 时必须写清检索结论，不能编造。
+## 逐 PR diff 审计卡
 
 ### 公开 PR 检索结论
 
-- 本轮在 `vllm-project/vllm` 中按 `Qwen3.6, Qwen 3.6` 等关键词检索，未确认到可归入该模型支持或优化主线的公开 PR。
-- 当前文档因此只保留 no-match 结论；后续若出现模型文件、processor、kernel 或 benchmark PR，应按本节验收口径补齐卡片。
+- 结论: 未确认到可归入 vllm Qwen3.6 模型支持或优化主线的公开 PR。
+- 检索方式: 已对匹配文件执行 `git log --name-only -- <model-files>`，并检查原 history/skill 中的显式 PR 链接。
+- 覆盖文件: 当前主线没有匹配到实现文件
+- 后续验收: 如果该模型后续出现实现文件或 PR，必须补齐同一模板的逐 PR diff 卡。
 
-<!-- MODEL_PR_DIFF_AUDIT:END zh -->
+## 补漏结论
+
+- 本版不再接受只列 PR 标题的写法；每个 PR 必须有反查来源、diff 范围、实现要点、代码摘录、已读文件和验证风险。
+- 如果新模型文件落在当前过滤规则之外，先补文件过滤规则，再重新执行本轮 `git log --name-only -- <model-files>` 追溯。
