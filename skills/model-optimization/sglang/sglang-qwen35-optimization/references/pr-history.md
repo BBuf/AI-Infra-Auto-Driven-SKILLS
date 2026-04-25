@@ -1,1289 +1,1288 @@
-# Qwen3.5 PR Diff Dossier
-
-本档案按“读过 PR diff 后再手写”的标准维护。每个条目都记录实际打开过的 diff/source、PR 动机、关键实现思路、核心代码片段和验证含义；不要再把 PR 只写成一句话清单。
-
-Evidence baseline:
-
-- SGLang main snapshot used in the earlier sweep: `b3e6cf60a` on 2026-04-22.
-- sgl-cookbook main snapshot used in the earlier sweep: `816bad5` on 2026-04-21.
-- Primary source surface: `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`, Qwen3.5 config, Mamba/KV cache pools, speculative decode, NIXL disaggregation, registered tests, docs and cookbook snippets.
-
-## Runtime Surfaces
-
-- `python/sglang/srt/models/qwen3_5.py`
-- `python/sglang/srt/models/qwen3_5_mtp.py`
-- `python/sglang/srt/configs/qwen3_5.py`
-- `python/sglang/srt/models/qwen2_moe.py`
-- `python/sglang/srt/mem_cache/memory_pool.py`
-- `python/sglang/srt/disaggregation/nixl/conn.py`
-- `python/sglang/jit_kernel/triton/gdn_fused_proj.py`
-- `python/sglang/srt/layers/attention/fla/fused_gdn_gating.py`
-- `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py`
-- `docs/basic_usage/qwen3_5.md`
-- `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx`
-- `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx`
-- `test/registered/4-gpu-models/test_qwen35_fp4_triton.py`
-- `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py`
-- `test/registered/8-gpu-models/test_qwen35.py`
-- `test/registered/gb300/test_qwen35_fp8.py`
-- `test/registered/gb300/test_qwen35_nvfp4.py`
-
-## Diff-Reviewed PR Cards
-
-### PR #18489 - Initial Qwen3.5 dense/MoE/VL support
-
-- Status: merged 2026-02-09, merge commit `27c447653d9cf0f63aea1c190b931be4875cbf86`.
-- Diff reviewed: `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`, `python/sglang/srt/configs/qwen3_5.py`, `qwen_vl.py`, `server_args.py`, `eagle_worker.py`, model runner/config registration.
-- Motivation: SGLang needed day-one support for the new Qwen3.5 family, including dense and MoE text models plus multimodal conditional-generation classes. The PR body explicitly references the upstream HF implementation and states the new `Qwen3_5MoeForConditionalGeneration` and `Qwen3_5ForConditionalGeneration` classes.
-- Key implementation: adds a dedicated Qwen3.5 model file, config registration, Qwen3.5 MTP wrapper, multimodal processor hooks, and server/speculative decode wiring. The initial model brought in hybrid Gated Delta Net linear attention, full attention layers, MoE routing, deepstack multimodal embeddings, packed weight loading and Qwen3 parser deployment flags.
-- Key code excerpt:
-
-```python
-class Qwen3_5ForConditionalGeneration(Qwen3VLForConditionalGeneration):
-    ...
-
-class Qwen3_5MoeForConditionalGeneration(Qwen3VLForConditionalGeneration):
-    ...
-
-EntryClass = [
-    Qwen3_5ForConditionalGeneration,
-    Qwen3_5MoeForConditionalGeneration,
-]
-```
-
-- Validation implication: this PR is the baseline for every later Qwen3.5 optimization. Any later change to GDN projection, MTP, PP, VLM or quantization must be checked against the class names and loader mappings introduced here.
-
-### PR #18538 - Refactor Qwen3.5 MTP body
-
-- Status: merged; diff reviewed in `python/sglang/srt/models/qwen3_5_mtp.py`.
-- Motivation: the first MTP implementation carried a separate `Qwen3_5MultiTokenPredictor` style body, which duplicated model code and made checkpoint loading brittle.
-- Key implementation: the PR replaces the custom predictor body with a nested `Qwen3_5ForCausalLM`, adds the MTP fusion projection `fc`, and uses two `GemmaRMSNorm` pre-fc norms before concatenating token embeddings and target hidden states.
-- Key code excerpt:
-
-```python
-hidden_states = self.enorm(input_embeds)
-target_hidden_states = self.hnorm(target_hidden_states)
-hidden_states = torch.cat([hidden_states, target_hidden_states], dim=-1)
-hidden_states, _ = self.fc(hidden_states)
-return self.model(..., input_embeds=hidden_states, ...)
-```
-
-- Validation implication: MTP weight mapping must translate `model.fc`, `model.pre_fc` and nested model names consistently. This is why later PRs around quant prefixes and spec-v2 all touch `qwen3_5_mtp.py`.
-
-### PR #18544 - Qwen3.5 follow-up for NPU, ModelSlim and EPLB
-
-- Status: merged; diff reviewed in `hybrid_linear_attn_backend.py`, `modelslim.py`, `qwen3_5.py`.
-- Motivation: the fresh model path still had CUDA-centric assumptions and prefix mismatches that blocked Ascend/NPU and ModelSlim quantized checkpoints.
-- Key implementation: skips CUDA JIT/Triton assertions on NPU, normalizes ModelSlim prefixes such as `language_model.`, fixes Qwen3.5 MLP prefix handling for `.linear_attn`, and exposes EPLB expert-location config.
-- Key code excerpt:
-
-```python
-if not is_cpu() and not is_npu():
-    from sglang.srt.layers.attention.fla import ...
-```
-
-```python
-return ModelConfigForExpertLocation(
-    num_layers=config.num_hidden_layers,
-    num_logical_experts=config.num_experts,
-)
-```
-
-- Validation implication: NPU and ModelSlim support are not side notes. They constrain how later fused projection and quantization mappings may rename Qwen3.5 modules.
-
-### PR #18926 - Block-wise FP8 quantization and prefix alignment
-
-- Status: merged 2026-02-18, merge commit `fa5698d7916497288af8fe5a5b57bc4ee7e6fb37`.
-- Diff reviewed: `python/sglang/srt/layers/linear.py`, `python/sglang/srt/layers/quantization/fp8.py`, `python/sglang/srt/models/qwen3_5_mtp.py`, `python/sglang/srt/models/qwen3_vl.py`.
-- Motivation: Qwen3.5 FP8 checkpoints need block-wise scale loading for merged column layers; at the same time, the MTP quant prefix was still `model` while the checkpoint used an MTP-specific hierarchy.
-- Key implementation: adds `_load_merged_block_scale()` for `MergedColumnParallelLinear`, dispatches `BlockQuantScaleParameter` in `weight_loader_v2`, changes Qwen3.5 MTP prefix from `model` to `mtp`, and limits the old `model.` prefix stripping hack to Mistral-3.
-- Key code excerpt:
-
-```python
-elif isinstance(param, BlockQuantScaleParameter):
-    self._load_merged_block_scale(param, loaded_weight)
-    return
-```
-
-```python
-self.model = Qwen3_5ForCausalLM(
-    config,
-    quant_config,
-    prefix=add_prefix("mtp", prefix),
-)
-```
-
-- Validation implication: any Qwen3.5 FP8/NVFP4/MTP load failure should first inspect block scale slicing and `mtp.` prefix mapping before blaming kernels.
-
-### PR #18937 - NVFP4 checkpoint support
-
-- Status: merged; diff reviewed in `qwen3_5.py`, `qwen3_5_mtp.py` and RoPE/loader related hunks.
-- Motivation: NVIDIA ModelOpt FP4/NVFP4 checkpoints cannot quantize every Qwen3.5 module uniformly. Linear attention, full attention and MTP layers need explicit quant guards.
-- Key implementation: disables `modelopt_fp4` quant config in the Qwen3.5 linear-attention/full-attention/MTP paths, tightens expert name checks, and improves unknown RoPE scaling errors to include the actual config dict.
-- Key code excerpt:
-
-```python
-linear_attn_quant_config = (
-    None if quant_config and quant_config.get_name() == "modelopt_fp4"
-    else quant_config
-)
-```
-
-```python
-if quant_config and quant_config.get_name() == "modelopt_fp4":
-    quant_config = None
-```
-
-- Validation implication: NVFP4 Qwen3.5 accuracy depends on intentionally leaving some hybrid modules unquantized; later shared-expert and GDN fusion must preserve those exclusions.
-
-### PR #19070 - Dense Qwen3.5 TP>1 precision fix
-
-- Status: merged; diff reviewed in Qwen3.5 dense/MoE MLP call path.
-- Motivation: dense Qwen3.5 with tensor parallelism greater than one had a precision regression from applying the MoE-style all-reduce fusion path too broadly.
-- Key implementation: separates MoE and dense MLP invocation, passes `should_allreduce_fusion` only where it is valid, marks dense hidden states for deferred communicator postprocessing, and avoids premature all-reduce.
-- Key code excerpt:
-
-```python
-hidden_states = self.mlp(
-    hidden_states,
-    should_allreduce_fusion=should_allreduce_fusion,
-)
-hidden_states._sglang_needs_allreduce_fusion = True
-```
-
-- Validation implication: dense 27B/4B lanes should not inherit every MoE communication optimization automatically.
-
-### PR #19220 - PCG fix for Qwen3.5
-
-- Status: merged; diff reviewed in `qwen3_next.py`, `qwen3_5.py`, `fp8_utils.py`.
-- Motivation: the PCG path added a custom `gdn_with_output` split wrapper that conflicted with Qwen3.5 GDN execution and compile/fake registration expectations.
-- Key implementation: removes the custom GDN PCG wrapper, uses the regular attention call directly, adds fake registration for `sgl_kernel::fp8_blockwise_scaled_mm`, and restores `@torch.no_grad()` on model forward.
-- Key code excerpt:
-
-```python
-hidden_states = self.attn(
-    positions=positions,
-    hidden_states=hidden_states,
-    forward_batch=forward_batch,
-)
-```
-
-- Validation implication: PCG/compile fixes can change graph-capture behavior without changing model math; Qwen3.5 regression tests need both compile and non-compile coverage.
-
-### PR #19391 - Enable Qwen3.5 MTP spec-v2 and add NVFP4 tests
-
-- Status: merged 2026-03-04, merge commit `9457c049e19e1cfa75833ef4351ac5aa26941c2c`.
-- Diff reviewed: `decode.py`, `memory_pool.py`, `forward_batch_info.py`, `qwen3_5_mtp.py`, `server_args.py`, `eagle_worker_v2.py`, `test_qwen35_models.py`.
-- Motivation: MTP v2 needed to work for multimodal Qwen3.5 by carrying `mm_input_embeds` into the draft model; Qwen3.5 NVFP4 also needed real accuracy tests with chat template and acceptance length checks.
-- Key implementation: passes `mm_input_embeds` into `_draft_extend_for_prefill`, treats draft extend v2 correctly in Qwen3.5 MTP, removes incorrect global extra-buffer assertions, and changes radix-cache/spec/no-buffer handling from silent disabling to explicit error.
-- Key code excerpt:
-
-```python
-if mm_input_embeds is not None:
-    forward_batch.mm_input_embeds = mm_input_embeds
-```
-
-```python
-and not forward_batch.forward_mode.is_draft_extend(include_v2=True)
-```
-
-- Validation implication: Qwen3.5 speculative decoding must be validated with `SGLANG_ENABLE_SPEC_V2`, reasoning parser `qwen3`, chat template, and `avg_spec_accept_length > 3.3`.
-
-### PR #19411 - Last-layer communicator flag for Qwen3.5-27B repeat bug
-
-- Status: merged; diff reviewed in Qwen3.5 decoder layer construction.
-- Motivation: Qwen3.5-27B hit a repeat/output issue caused by layer communicator state not knowing when a decoder layer is the final layer.
-- Key implementation: passes `is_last_layer=(layer_id == config.num_hidden_layers - 1)` into Qwen3.5 layer communicator setup.
-- Key code excerpt:
-
-```python
-is_last_layer=(layer_id == config.num_hidden_layers - 1)
-```
-
-- Validation implication: small one-line communicator changes can materially affect dense Qwen3.5 output quality; keep a 27B decode smoke test in the matrix.
-
-### PR #19670 - Pipeline parallel support
-
-- Status: merged; diff reviewed in Qwen3.5 PP model construction and `test_pp_single_node.py`.
-- Motivation: Qwen3.5 could not be split across pipeline stages without missing-layer placeholders and first/last-rank embedding/head handling.
-- Key implementation: adds `PPMissingLayer`, `start_layer`/`end_layer`, `get_pp_indices`, first/last rank embedding/head handling, and a Qwen3.5 PP accuracy test.
-- Key code excerpt:
-
-```python
-self.start_layer, self.end_layer, self.layers = make_layers(
-    config.num_hidden_layers,
-    get_layer,
-    prefix="model.layers",
-)
-```
-
-```python
-def get_embed_and_head(self):
-    embed = self.model.embed_tokens.weight if self.pp_group.is_first_rank else None
-    head = self.lm_head.weight if self.pp_group.is_last_rank else None
-    return embed, head
-```
-
-- Validation implication: every later weight-loading change must skip layers outside the local PP stage and preserve tied embedding semantics.
-
-### PR #19767 - Qwen3.5 MTP and EPLB fixes
-
-- Status: merged; diff reviewed in `qwen2_moe.py`, `qwen3_5_mtp.py`, `qwen3_next` MTP hunks.
-- Motivation: MTP/NEXTN layers should not participate in EPLB expert-location dispatch like normal target-model MoE layers, and MTP forward should not pollute expert distribution recording.
-- Key implementation: adds `is_nextn` to `Qwen2MoeSparseMoeBlock`, disables DeepEP `ExpertLocationDispatchInfo` for nextn, wraps MTP forward with expert-distribution recorder disable, and creates lazy expert-distribution values for normal layers.
-- Key code excerpt:
-
-```python
-if self.is_nextn:
-    self.expert_location_dispatch_info = None
-```
-
-```python
-with get_global_expert_distribution_recorder().disable_this_region():
-    hidden_states = self.model(...)
-```
-
-- Validation implication: MTP speedups and EPLB balancing must be validated together; otherwise speculative draft layers can distort routing telemetry.
-
-### PR #19889 - TRTLLM/FlashInfer all-reduce fusion
-
-- Status: merged; diff reviewed in layernorm all-reduce helper, Qwen2 MoE forward, `server_args.py`.
-- Motivation: Qwen3.5 MoE needed all-reduce fusion with TRTLLM/FlashInfer paths to reduce communication overhead without breaking Gemma-style RMSNorm semantics.
-- Key implementation: introduces `_forward_with_allreduce_fusion`, supports Gemma `weight + 1.0`, adds `should_allreduce_fusion` to `Qwen2MoeSparseMoeBlock.forward`, and declares Qwen3.5 architectures eligible for TRTLLM all-reduce fusion.
-- Key code excerpt:
-
-```python
-return _forward_with_allreduce_fusion(
-    hidden_states,
-    residual,
-    self.weight + 1.0,
-    self.variance_epsilon,
-)
-```
-
-```python
-"Qwen3_5MoeForConditionalGeneration",
-"Qwen3_5ForConditionalGeneration",
-```
-
-- Validation implication: all-reduce fusion changes the communication schedule; compare TP/EP/MTP acceptance and dense accuracy when toggling FlashInfer/TRTLLM backends.
-
-### PR #19961 - Keep GDN `A_log` in FP32
-
-- Status: merged; diff reviewed in Qwen3.5 GDN initialization.
-- Motivation: `A_log` controls linear-attention recurrent dynamics and should not inherit lower precision from BF16/FP8 checkpoint paths.
-- Key implementation: explicitly initializes `A_log` as `torch.float32` even when the surrounding model uses lower precision.
-- Key code excerpt:
-
-```python
-self.A_log = nn.Parameter(
-    torch.empty(self.num_v_heads // self.attn_tp_size, dtype=torch.float32),
-)
-```
-
-- Validation implication: if GDN accuracy regresses after quant or dtype changes, check state parameters such as `A_log` before tuning kernels.
-
-### PR #20386 - Replace `einops.rearrange` with native flatten
-
-- Status: merged; diff reviewed in Qwen3.5 GDN output path.
-- Motivation: `einops.rearrange` added measurable overhead in a hot GDN path.
-- Key implementation: replaces the rearrange call with a native flatten/reshape operation. The PR body reports the operation dropping from about `12.67us` to `4.74us` over 720 calls on H100.
-- Key code excerpt:
-
-```python
-core_attn_out = core_attn_out.flatten(-2)  # ... h d -> ... (h d)
-```
-
-- Validation implication: small Python/tensor-layout simplifications are worth recording when they sit inside decode loops.
-
-### PR #20736 - AMD shared-expert fusion with router experts
-
-- Status: merged; diff reviewed in `qwen2_moe.py`, `qwen3_5.py` shared-expert loader hunks.
-- Motivation: Qwen3.5 MoE has a shared expert whose intermediate size can match routed experts. On AMD/AITER, fusing the shared expert into the routed expert tensor avoids a separate shared-expert MLP path.
-- Key implementation: `Qwen2MoeSparseMoeBlock` computes `num_fused_shared_experts`, expands top-k and expert count by one, appends the shared expert id/weight to `StandardTopKOutput`, and remaps `mlp.shared_expert.*` weights to `mlp.experts.{num_experts_base}.*` in Qwen3.5 loading.
-- Key code excerpt:
-
-```python
-shared_expert_id = self.num_experts
-shared_ids = torch.full((M, self.num_fused_shared_experts), shared_expert_id, ...)
-fused_topk_ids = torch.cat([topk_output.topk_ids, shared_ids], dim=-1)
-fused_topk_weights = torch.cat([topk_output.topk_weights, shared_weights], dim=-1)
-```
-
-```python
-if num_fused_shared_experts > 0 and "mlp.shared_expert." in name:
-    name = name.replace("mlp.shared_expert.", f"mlp.experts.{num_experts_base}.")
-```
-
-- Validation implication: this is a major AMD performance lane but it is fragile for quantized checkpoints. PR #22948 later disables it when MXFP4 shared experts are excluded from quantization.
-
-### PR #20864 - Remove H2D/D2H overhead in Qwen3.5 SpecV2
-
-- Status: merged 2026-03-31, merge commit `03e4f2858d5f164636ffa310f3296f7b5faac209`.
-- Diff reviewed: `python/sglang/srt/model_executor/forward_batch_info.py`, `python/sglang/srt/speculative/eagle_info_v2.py`.
-- Motivation: Qwen3.5 SpecV2 had avoidable host-device overhead in `prepare_v2_verify`, especially for text-only verify batches and Mamba track index construction.
-- Key implementation: uses `torch.stack(...).to(torch.int64)` for Mamba track indices instead of constructing a tensor from a Python list of CUDA scalars, and adds a text-only fast path that creates the mrope delta tensor directly on device.
-- Key code excerpt:
-
-```python
-batch.mamba_track_indices = torch.stack(
-    [req.mamba_ping_pong_track_buffer[req.mamba_next_track_idx] for req in batch.reqs]
-).to(torch.int64)
-```
-
-```python
-if all(mm_input is None for mm_input in mm_inputs):
-    mrope_delta_tensor = torch.zeros((batch_size, 1), dtype=torch.int64, device=device)
-```
-
-- Validation implication: SpecV2 performance investigations should inspect Python list/tensor construction, not only CUDA kernels.
-
-### PR #21019 - Fuse Qwen3.5 GDN split/reshape/cat with Triton
-
-- Status: merged 2026-03-23, merge commit `5bdc07d974f6cf236fa765a685453ea5e587a838`.
-- Diff reviewed: `python/sglang/jit_kernel/triton/gdn_fused_proj.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_next.py`.
-- Motivation: Qwen3-Next and Qwen3.5 checkpoint layouts differ. Qwen3-Next stores fused/interleaved `in_proj_qkvz`; Qwen3.5 stores `in_proj_qkv` and `in_proj_z` separately, so Qwen3.5 needs a contiguous-layout fused projection kernel.
-- Key implementation: introduces `fused_qkvzba_split_reshape_cat`, replaces four projection layers (`in_proj_qkv`, `in_proj_z`, `in_proj_b`, `in_proj_a`) with two fused layers (`in_proj_qkvz`, `in_proj_ba`), adds `_make_packed_weight_loader` for fused and split checkpoint formats, and adds mapping from split checkpoint names to fused parameters.
-- Key code excerpt:
-
-```python
-self.in_proj_qkvz = self.create_qkvz_proj(...)
-self.in_proj_ba = self.create_ba_proj(...)
-self.in_proj_qkvz.weight.weight_loader = self._make_packed_weight_loader(self.in_proj_qkvz)
-self.in_proj_ba.weight.weight_loader = self._make_packed_weight_loader(self.in_proj_ba)
-```
-
-```python
-("in_proj_qkvz.", "in_proj_qkv.", (0, 1, 2)),
-("in_proj_qkvz.", "in_proj_z.", 3),
-("in_proj_ba.", "in_proj_b.", 0),
-("in_proj_ba.", "in_proj_a.", 1),
-```
-
-- Validation implication: the PR body reported about +7.4% output/token throughput and lower TTFT/TPOT on H200. Later PR #22312 is a direct correctness follow-up caused by non-contiguous B/A views after this fusion.
-
-### PR #21070 - PP layer splitting fix
-
-- Status: merged; diff reviewed in Qwen3.5 PP layer construction and loader skip logic.
-- Motivation: Qwen3.5 PP could instantiate or load layers outside the local pipeline stage, causing memory pressure and missing-parameter behavior.
-- Key implementation: passes `pp_rank` and `pp_size` into `make_layers`, and makes fused expert weight loading skip names not present in `params_dict`.
-- Key code excerpt:
-
-```python
-self.start_layer, self.end_layer, self.layers = make_layers(
-    config.num_hidden_layers,
-    get_layer,
-    prefix="model.layers",
-    pp_rank=self.pp_group.rank_in_group,
-    pp_size=self.pp_group.world_size,
-)
-```
-
-```python
-if name not in params_dict:
-    continue
-```
-
-- Validation implication: PP tests must verify both runtime memory behavior and weight loading, especially for MoE and fused projections.
-
-### PR #21234 - AMD MXFP4 Qwen3.5-397B support
-
-- Status: merged; diff reviewed in Qwen3.5 quant mapping and VL subclass mapping.
-- Motivation: AMD gfx950 needed MXFP4 Qwen3.5-397B support, including fused QKV/Gate/GDN projection names.
-- Key implementation: under `_is_gfx95`, declares `packed_modules_mapping` for `qkv_proj`, `gate_up_proj`, `in_proj_qkvz` and `in_proj_ba`; Qwen3.5 VL subclasses reuse the same mapping and disable the HF-to-SGLang mapper.
-- Key code excerpt:
-
-```python
-if _is_gfx95:
-    packed_modules_mapping = {
-        "qkv_proj": ["q_proj", "k_proj", "v_proj"],
-        "gate_up_proj": ["gate_proj", "up_proj"],
-        "in_proj_qkvz": ["in_proj_qkv", "in_proj_z"],
-        "in_proj_ba": ["in_proj_b", "in_proj_a"],
-    }
-```
-
-- Validation implication: AMD MXFP4 and NPU ModelSlim fixes both rely on model-local packed mappings; avoid pushing Qwen3.5 fused mapping back into a global loader-only hack.
-
-### PR #21347 - PP tied-embedding weight loading
-
-- Status: merged; diff reviewed in Qwen3.5 dense and MoE load paths.
-- Motivation: Qwen3.5 4B dense uses tied embeddings, and the last PP rank needs `lm_head.weight` even when `model.embed_tokens.weight` belongs to the first rank.
-- Key implementation: if `tie_word_embeddings` is enabled and the last PP rank sees `model.embed_tokens.weight`, the loader redirects it to `lm_head.weight`.
-- Key code excerpt:
-
-```python
-if self.config.tie_word_embeddings and name == "model.embed_tokens.weight":
-    name = "lm_head.weight"
-```
-
-- Validation implication: tied embedding PP bugs show up as load-time missing heads or decode garbage, not as obvious architecture errors.
-
-### PR #21448 - MoE loading and Mamba cache sharding in PP
-
-- Status: merged; diff reviewed in `memory_pool.py`, Qwen3.5 load paths, Qwen3-VL stage properties.
-- Motivation: pipeline parallel Qwen3.5 should only allocate Mamba state for local layers and only load weights for layers assigned to the current PP stage.
-- Key implementation: Mamba pool receives local `mamba_layer_ids`, maps layer ids relative to `start_layer`, and Qwen3.5 `load_weights` skips layers outside `[start_layer, end_layer)`.
-- Key code excerpt:
-
-```python
-mamba_layer_ids = [
-    layer_id for layer_id in cache_params.layers
-    if start_layer <= layer_id < end_layer
-]
-```
-
-```python
-layer_id = get_layer_id(name)
-if layer_id is not None and (layer_id < self.model.start_layer or layer_id >= self.model.end_layer):
-    continue
-```
-
-- Validation implication: Qwen3.5 PP cannot be validated by attention KV only; Mamba state shape and layer locality must be included.
-
-### PR #21487 - GB300 nightly benchmark suites
-
-- Status: merged 2026-03-29, merge commit `9d64a821735430ad7e3bd2f19e6c87f6ee057c3e`.
-- Diff reviewed: `test/registered/gb300/test_qwen35_fp8.py`, `test_qwen35_nvfp4.py`, GLM/DeepSeek/Kimi GB300 tests, `run_suite.py`.
-- Motivation: GB300/4x B200 NVL4 needed per-model nightly performance coverage for FP8 and NVFP4 lanes, including Qwen3.5 and GLM-5.
-- Key implementation: adds Qwen3.5 FP8 and NVFP4 GB300 registered tests with TP4, MTP/spec-v2, `trtllm_mha`, FlashInfer all-reduce fusion, and Qwen parsers.
-- Key code excerpt:
-
-```python
-QWEN35_FP8_MODEL_PATH = "Qwen/Qwen3.5-397B-A17B-FP8"
-QWEN35_NVFP4_MODEL_PATH = "nvidia/Qwen3.5-397B-A17B-NVFP4"
-```
-
-```python
-extra_args=base_args + mtp_args,
-env={"SGLANG_ENABLE_SPEC_V2": "1"},
-```
-
-- Validation implication: GB300 is now a separate deployment lane; cookbook updates for B200/GB300 must stay aligned with these tests.
-
-### PR #21669 - AMD Qwen3.5 FP8 nightly performance
-
-- Status: merged; diff reviewed in AMD nightly workflow and perf test files.
-- Motivation: AMD CI had accuracy coverage but lacked Qwen3.5-397B FP8 performance tracking on MI30x/MI35x.
-- Key implementation: adds non-blocking AMD perf jobs with `SGLANG_USE_AITER=1`, default model `Qwen/Qwen3.5-397B-A17B-FP8`, TP=8, Triton attention backend, static memory fraction and multithread load config.
-- Key code excerpt:
-
-```python
-QWEN35_FP8_MODEL = "Qwen/Qwen3.5-397B-A17B-FP8"
-other_args=[
-    "--tp", "8",
-    "--attention-backend", "triton",
-    "--model-loader-extra-config", '{"enable_multithread_load": true}',
-]
-```
-
-- Validation implication: AMD perf tests should be treated as optimization guardrails, not just platform smoke tests.
-
-### PR #21692 - NPU Qwen3.5 quantization fix
-
-- Status: merged 2026-04-08, merge commit `cd373667cdfab2677dad680697a954e59473d7f6`.
-- Diff reviewed: `modelslim.py`, `model_loader/loader.py`, `qwen3_5.py`.
-- Motivation: after #21019 fused `in_proj_qkv + in_proj_z` into `in_proj_qkvz` and `in_proj_b + in_proj_a` into `in_proj_ba`, NPU/ModelSlim quantization no longer found the right module mapping.
-- Key implementation: extends Qwen3.5 packed module mapping to NPU, refactors ModelSlim `get_linear_scheme()` to mirror MoE scheme lookup, and checks both per-subset and global packed mappings when skipping layers.
-- Key code excerpt:
-
-```python
-if _is_gfx95 or _is_npu:
-    packed_modules_mapping = {
-        "qkv_proj": ["q_proj", "k_proj", "v_proj"],
-        "gate_up_proj": ["gate_proj", "up_proj"],
-        "in_proj_qkvz": ["in_proj_qkv", "in_proj_z"],
-        "in_proj_ba": ["in_proj_b", "in_proj_a"],
-    }
-```
-
-```python
-if self.is_layer_skipped(prefix, packed_modules_mapping_subset) or self.is_layer_skipped(prefix, self.packed_modules_mapping):
-    return UnquantizedLinearMethod()
-```
-
-- Validation implication: quantization bugs after GDN fusion often live in naming/mapping, not math kernels.
-
-### PR #21849 - Allow Qwen3.5 models for encoder disaggregation
-
-- Status: merged 2026-04-06, merge commit `7f2fcc0b08592fbcccedcc9f27225e1acc0198d9`.
-- Diff reviewed: `server_args.py`, `encode_server.py`, `qwen_vl.py`, `test_epd_disaggregation.py`.
-- Motivation: Qwen3.5 multimodal runtime worked, but encoder disaggregation startup rejected `Qwen3_5ForConditionalGeneration` and `Qwen3_5MoeForConditionalGeneration` because the allowlist was stale.
-- Key implementation: adds both Qwen3.5 architectures to the encoder-disaggregation allowlist, extends video metadata/timestamp handling to `qwen3_5` and `qwen3_5_moe`, and adds an EPD image/video regression test with `Qwen/Qwen3.5-27B`.
-- Key code excerpt:
-
-```python
-"Qwen3_5ForConditionalGeneration",
-"Qwen3_5MoeForConditionalGeneration",
-```
-
-```python
-self.model_type in ["qwen3_vl", "qwen3_vl_moe", "qwen3_5", "qwen3_5_moe"]
-```
-
-- Validation implication: Qwen3.5-VL support includes split encoder/language deployments, not only single-process multimodal serving.
-
-### PR #22145 - NIXL heterogeneous TP KV transfer fix
-
-- Status: merged 2026-04-07, merge commit `3148742ddb2ccd3478065c91f0222bb4817903f0`.
-- Diff reviewed: `python/sglang/srt/disaggregation/nixl/conn.py`.
-- Motivation: NIXL disaggregated serving with heterogeneous TP on non-MLA models hung because RDMA notification keys used `pp_rank` and collapsed all prefill ranks when PP=1; GQA head distribution also used per-rank KV head counts and lost information when total KV heads were fewer than TP ranks.
-- Key implementation: derives head distribution from `total_kv_head_num`, adds GQA replication/unique-head handling, and uses `engine_rank` in KV/state notifications.
-- Key code excerpt:
-
-```python
-total_kv_heads = getattr(self.kv_args, "total_kv_head_num", 0)
-src_heads_per_rank = max(1, total_kv_heads // prefill_tp_size)
-dst_heads_per_rank = max(1, total_kv_heads // decode_tp_size)
-```
-
-```python
-notif = f"{req.room}_kv_{chunk_id}_{int(is_last)}_{self.kv_args.engine_rank}"
-```
-
-- Validation implication: this is Step 1 for Qwen3.5 PD/NIXL hetero TP. Without it, decode can hang forever even though prefill drained requests.
-
-### PR #22240 - NIXL Mamba state slice transfer for heterogeneous TP
-
-- Status: merged 2026-04-07, merge commit `5ae00ecd48b11f943d8ba319f3b0e828d8a41116`.
-- Diff reviewed: `python/sglang/srt/disaggregation/nixl/conn.py`.
-- Motivation: Mooncake supported Mamba state slice transfer for heterogeneous TP, but NIXL raised `RuntimeError`, blocking hybrid Mamba models such as Qwen3.5 under PD with different prefill/decode TP layouts.
-- Key implementation: extends `KVArgsRegisterInfo` with destination state metadata, adds `_send_mamba_state_slice()` to slice `conv_state` and `temporal_state` along the TP-sharded dimension, and sends `state_item_lens`/`state_dim_per_tensor` during registration.
-- Key code excerpt:
-
-```python
-dst_state_item_lens: list[int] = dataclasses.field(default_factory=list)
-dst_state_dim_per_tensor: list[int] = dataclasses.field(default_factory=list)
-```
-
-```python
-src_dim_offset = src_dim_start * src_bytes_per_dim
-dst_dim_offset = dst_dim_start * dst_bytes_per_dim
-bytes_to_send = num_dims_to_send * src_bytes_per_dim
-```
-
-- Validation implication: Qwen3.5 PD tests need both KV cache and Mamba state transfer checks. The PR body validated Qwen3.5-397B-A17B-FP8 GSM8K/GPQA on GB200.
-
-### PR #22312 - GDN non-contiguous B/A tensor correctness fix
-
-- Status: merged 2026-04-10, merge commit `8ba96460440c6f83ed523b33ed07b05e302ad690`.
-- Diff reviewed: `fused_gdn_gating.py`, `fused_sigmoid_gating_recurrent.py`, `test_gdn_noncontiguous_stride.py`.
-- Motivation: after #21019, Qwen3.5-27B could take a fallback BA path where `mixed_ba.split()` returns non-contiguous B/A views. GDN Triton kernels assumed contiguous layout and hardcoded token/batch strides, causing accuracy to collapse from 49/50 to 3/50 in the reported regression test.
-- Key implementation: passes explicit `stride_a` and `stride_b` to `fused_gdn_gating`, computes token-axis `stride_a` in `fused_sigmoid_gating_delta_rule_update`, and adds CUDA regression tests comparing contiguous and split-view non-contiguous inputs.
-- Key code excerpt:
-
-```python
-stride_a = a.stride(0)
-stride_b = b.stride(0)
-blk_a = tl.load(a + i_b * stride_a + head_off, mask=mask)
-blk_b = tl.load(b + i_b * stride_b + head_off, mask=mask)
-```
-
-```python
-stride_a = a.stride()[-2]
-p_a += stride_a
-```
-
-- Validation implication: every fused layout optimization must include stride-aware tests, especially for split views returned by PyTorch.
-
-### PR #22358 - DFLASH support for Qwen3.5 and sibling backends
-
-- Status: merged 2026-04-09, merge commit `c3833ba929ee3a36e75b8d7b58d91e2c86c49d40`.
-- Diff reviewed: `qwen3_5.py`, `qwen3.py`, `qwen3_moe.py`, `qwen3_next.py`, `qwen3_vl.py`, and other backend files.
-- Motivation: DFLASH training/support needed aux hidden-state capture across z-lab model backends without waiting for the later DFLASH spec v2.
-- Key implementation: Qwen3.5 decoder layers call `prepare_attn_and_capture_last_layer_outputs`, Qwen3.5 model tracks `layers_to_capture`, returns `(hidden_states, aux_hidden_states)` when needed, and exposes `set_dflash_layers_to_capture()`.
-- Key code excerpt:
-
-```python
-self.layer_communicator.prepare_attn_and_capture_last_layer_outputs(
-    hidden_states,
-    residual,
-    forward_batch,
-    captured_last_layer_outputs=captured_last_layer_outputs,
-)
-```
-
-```python
-def set_dflash_layers_to_capture(self, layers_to_capture: list[int]):
-    self.layers_to_capture = layers_to_capture
-    for layer_id in self.layers_to_capture:
-        setattr(self.layers[layer_id], "_is_layer_to_capture", True)
-```
-
-- Validation implication: DFLASH changes alter forward return shape when aux states are captured, so serving and logits paths must explicitly unwrap auxiliary hidden states.
-
-### PR #22431 - Qwen3.5 processor-output video fix
-
-- Status: merged 2026-04-18, merge commit `2a327f08772f6b9ada7f2f4792f9b7d0e16a5fa1`.
-- Diff reviewed: `python/sglang/srt/multimodal/processors/qwen_vl.py`.
-- Motivation: when Qwen3.5 video input used `processor_output` format, `preprocess_video()` returned a single object instead of `(video, metadata)`, while Qwen3.5 processing expected two values and raised `ValueError: too many values to unpack`.
-- Key implementation: makes non-`VideoDecoderWrapper` inputs return `(vr, None)` so raw decoded video and processor-output paths share the same tuple contract.
-- Key code excerpt:
-
-```python
-if not is_video_obj:
-    return vr, None
-```
-
-- Validation implication: Qwen3.5 multimodal docs should cover both raw video URL/path input and pre-tokenized processor-output input.
-
-### PR #22493 - MambaPool CPU offload during retraction
-
-- Status: merged 2026-04-22, merge commit `415f64e763750e3350d87b03d554171937279ce7`.
-- Diff reviewed: `schedule_batch.py`, `scheduler.py`, `allocator.py`, `memory_pool.py`, `test_mamba_unittest.py`.
-- Motivation: during request retraction, only attention KV cache was copied to CPU. Qwen3.5 hybrid Mamba state (`conv` + `temporal`) was dropped, corrupting generation after retracted requests resumed.
-- Key implementation: adds `MambaPool.get_cpu_copy()`/`load_cpu_copy()`, extends `HybridLinearKVPool` CPU offload to include optional `mamba_indices`, passes `mamba_pool_idx` from `Req.offload_kv_cache()`/`load_kv_cache()`, and logs `#mamba_num_gained`.
-- Key code excerpt:
-
-```python
-self.kv_cache_cpu = token_to_kv_pool_allocator.get_cpu_copy(
-    token_indices, mamba_indices=self.mamba_pool_idx
-)
-```
-
-```python
-def get_cpu_copy(self, indices, mamba_indices=None, **kwargs):
-    kv_cpu = self.full_kv_pool.get_cpu_copy(indices)
-    mamba_cpu = self.mamba_pool.get_cpu_copy(mamba_indices) if mamba_indices is not None else None
-    return kv_cpu, mamba_cpu
-```
-
-- Validation implication: retraction and memory pressure tests for Qwen3.5 must assert both token KV and Mamba state round-trips.
-
-### PR #22908 - AMD radix-cache/speculative decoding conflict resolution
-
-- Status: merged 2026-04-21, merge commit `ac08ebed6510ae600e50c77ffd5484601f264c3f`.
-- Diff reviewed: `python/sglang/srt/server_args.py`.
-- Motivation: Qwen3.5 MoE speculative decoding with `no_buffer` and radix cache raised a hard error. The suggested `extra_buffer` workaround is CUDA/FLA-only and fails on ROCm.
-- Key implementation: review settled on ROCm-specific handling: if `is_hip()` and radix cache is enabled under incompatible Qwen3.5 speculative settings, automatically disable radix cache; CUDA/other platforms keep the explicit error telling users to use `extra_buffer` and `SGLANG_ENABLE_SPEC_V2=1`.
-- Key code excerpt:
-
-```python
-if is_hip():
-    logger.warning(
-        f"Speculative decoding for {model_arch} is not compatible "
-        "with radix cache on ROCm devices. Automatically disabling radix cache."
-    )
-    self.disable_radix_cache = True
-else:
-    raise ValueError(...)
-```
-
-- Validation implication: AMD commands can omit `--disable-radix-cache` for this conflict, but CUDA commands should still use `--mamba-scheduler-strategy extra_buffer` for spec-v2.
-
-### PR #22913 - Split Qwen3.5 B200 FP4 tests and bump partitions
-
-- Status: merged 2026-04-17, merge commit `005209317888bb497e4c10b2a793b4d1f666c533`.
-- Diff reviewed: `.github/workflows/pr-test.yml`, `test_qwen35_fp4_triton.py`, `test_qwen35_fp4_mtp_v2.py`, deleted `test_qwen35_models.py`.
-- Motivation: all Qwen3.5 NVFP4 B200 tests lived in one file and launched multiple 234GB model servers, causing slower B200 partitions to hit the 30-minute timeout.
-- Key implementation: splits Triton and MTP-v2 tests into separate files, removes v1 MTP per review, and increases `stage-c-test-4-gpu-b200` partitions from 5 to 6.
-- Key code excerpt:
-
-```yaml
-matrix:
-  part: [0, 1, 2, 3, 4, 5]
-```
-
-```python
-register_cuda_ci(est_time=540, suite="stage-c-test-4-gpu-b200")
-envs.SGLANG_ENABLE_SPEC_V2.set(True)
-```
-
-- Validation implication: Qwen3.5 CI stability is part of model optimization history; without split tests, real regressions are hidden behind suite timeouts.
-
-### PR #22948 - Disable shared-expert fusion for MXFP4 excluded shared expert
-
-- Status: merged 2026-04-16, merge commit `52f0b86f5d639e2cf376e12d699d44ec67da460d`.
-- Diff reviewed: `python/sglang/srt/models/qwen2_moe.py`.
-- Motivation: after #20736 enabled shared-expert fusion, Qwen3.5 MXFP4 checkpoints broke because routed experts were MXFP4 but the shared expert remained BF16/FP32 via quant exclusion. Fusing that shared expert into the quantized MoE tensor would require online quantization that did not exist.
-- Key implementation: `can_fuse_shared_expert()` now receives `quant_config` and returns false when `exclude_layers` contains `shared_expert` but not `shared_expert_gate` and not MTP shared-expert paths.
-- Key code excerpt:
-
-```python
-if quant_config is not None:
-    exclude_layers = getattr(quant_config, "exclude_layers", [])
-    if any(
-        "shared_expert" in layer
-        and "shared_expert_gate" not in layer
-        and not layer.startswith("mtp.")
-        for layer in exclude_layers
-    ):
-        return False
-```
-
-- Validation implication: shared-expert fusion must inspect quant exclusion lists, not just model shape.
-
-### PR #23034 - Qwen3.6 docs with Qwen3.5 deployment rule updates
-
-- Status: merged 2026-04-20, merge commit `59b1d86669853d308d484351c1542faa4285e27f`.
-- Diff reviewed: `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`, intro cards and docs JSON.
-- Motivation: Qwen3.6 docs replaced the Qwen card target, but the deployment component also encoded Qwen3.5-derived MTP/Mamba behavior.
-- Key implementation: when MTP/speculative decoding is enabled, the snippet disables Mamba scheduler V1 and forces V2/`extra_buffer`.
-- Key code excerpt:
-
-```jsx
-const mtpEnabled = values.speculative === 'enabled';
-if (mtpEnabled) {
-  return [
-    { id: 'v1', label: 'V1', default: false, disabled: true },
-    { id: 'v2', label: 'V2', default: true },
-  ];
-}
-```
-
-- Validation implication: Qwen3.5 and Qwen3.6 cookbook snippets share runtime assumptions; docs changes can affect user-visible recommended Qwen3.5 commands.
-
-### PR #23467 - FP8 `modules_to_not_convert` dot-boundary fix
-
-- Status: merged 2026-04-22, merge commit `bfec013403ad117bdb0da9486b399a9c87c569d6`.
-- Diff reviewed: `python/sglang/srt/layers/quantization/utils.py`.
-- Motivation: substring matching in FP8 ignored-layer handling caused collisions such as Qwen3.5 `in_proj_a` matching `in_proj_ba`, and Qwen3.6 `mlp.gate` matching `mlp.gate_up_proj`.
-- Key implementation: introduces `_module_path_match()` with exact and dot-boundary matching, and lists fused fallback shards for `qkv_proj`, `gate_up_proj`, `in_proj_ba`, and `in_proj_qkvz`.
-- Key code excerpt:
-
-```python
-def _module_path_match(ignored: str, prefix: str) -> bool:
-    if ignored == prefix:
-        return True
-    if prefix.startswith(ignored + "."):
-        return True
-    return ("." + ignored + ".") in ("." + prefix + ".")
-```
-
-```python
-"_FALLBACK_FUSED_SHARDS": {
-    "in_proj_ba": ["in_proj_b", "in_proj_a"],
-    "in_proj_qkvz": ["in_proj_qkv", "in_proj_z"],
-}
-```
-
-- Validation implication: this is a direct guard for Qwen3.5 fused GDN projection quant loading.
-
-### PR #23474 - Hybrid linear-attention CPU offload fix
-
-- Status: open at review time; diff reviewed in `OffloaderV1` and `test_offloader_tied_params.py`.
-- Motivation: hybrid linear-attention models with tied/view parameters can lose aliasing when CPU offload materializes tensors independently, breaking Qwen3.5/Qwen3.6-style fused/view-heavy weights.
-- Key implementation: records view aliases before offload with `state_dict(keep_vars=True)`, shares device tensors for tied parameters via `src_to_dev`, and recreates cached views using `as_strided`.
-- Key code excerpt:
-
-```python
-for name, tensor in module.state_dict(keep_vars=True).items():
-    ...
-    view_aliases[name] = (src_name, tensor.size(), tensor.stride(), tensor.storage_offset())
-```
-
-```python
-dev_tensor = src_to_dev[src_name].as_strided(size, stride, storage_offset)
-```
-
-- Validation implication: this is not merged history yet, but it is relevant radar for Qwen3.5/Qwen3.6 CPU-offload correctness. Keep it separate from merged PR cards until merged.
-
-## sgl-cookbook / Docs Evidence
-
-- `sgl-cookbook#164`: initial Qwen3.5 cookbook.
-- `sgl-cookbook#168`: FP8 and NVFP4 deployment updates.
-- `sgl-cookbook#169`: B200 configs.
-- `sgl-cookbook#177` and `#214`: H200 FP8 and MTP command updates.
-- `sgl-cookbook#179`: AMD MI300X/MI325X/MI355X deployment notes.
-- `sgl-cookbook#207`: B200 FP8 FlashInfer all-reduce fusion tip.
-- `sgl-cookbook#230`: B200 FP4/NVFP4 generator update.
-- `sgl-cookbook#237`: FP8 KV accuracy caution and command generation cleanup.
-- Official SGLang Qwen3.5 docs describe hybrid GDN + full-attention, shared experts, DeepStack Vision/Conv3d, AMD `--attention-backend triton`, `SGLANG_USE_AITER=1`, `--reasoning-parser qwen3`, and `--tool-call-parser qwen3_coder`.
-- AMD's Qwen3.5 day-0 article confirms the ROCm optimization path: GDN through Triton, shared-expert MoE through hipBLASLt/AITER, and native multimodal kernels through MIOpen/PyTorch.
-
-## Reviewer Checklist For Future Updates
-
-- Do not add a PR number to this file unless its diff/source was opened and reviewed.
-- For every new Qwen3.5 PR, record the actual modified files and at least one concrete code excerpt.
-- Keep merged PRs separate from open radar.
-- Re-check Qwen3.5 with this matrix: dense vs MoE, text vs VLM, BF16 vs FP8 vs NVFP4/MXFP4, CUDA vs ROCm vs NPU, TP/PP/EP, MTP spec-v1/v2, PD/NIXL, and retraction.
-
-<!-- MODEL_PR_DIFF_AUDIT:START reference -->
-
-# SGLANG Qwen3.5 PR Diff Audit Reference
-
-This reference is rebuilt from the same audited PR metadata used by `model-pr-optimization-history`. It is intentionally concise but keeps a file-level diff digest for every indexed PR.
+# sglang Qwen3.5 PR Diff Audit Reference
+
+- Rebuilt on: 2026-04-25
+- Source baseline: `sgl-project/sglang` trace worktree commit `880599cd43`
+- Collection: model implementation files were traced with `git log --name-only -- <model-files>`, filtered by model keywords in commit subjects, then every PR card was populated from the GitHub Pull Request files API.
+- Extra preserved PRs from prior docs: 16
+- Rule: use this as the backing dossier for the skill, not only PR titles.
+
+## Implementation File Coverage
+
+| File | Git-traced PRs |
+| --- | --- |
+| `docs/basic_usage/qwen3_5.md` | no direct PR-number commit |
+| `docs/platforms/ascend/ascend_npu_qwen3_5_examples.md` | no direct PR-number commit |
+| `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx` | no direct PR-number commit |
+| `docs_new/docs/basic_usage/qwen3_5.mdx` | no direct PR-number commit |
+| `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_qwen3_5_examples.mdx` | no direct PR-number commit |
+| `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx` | no direct PR-number commit |
+| `python/sglang/srt/configs/qwen3_5.py` | [#18489](https://github.com/sgl-project/sglang/pull/18489) |
+| `python/sglang/srt/models/qwen3_5.py` | [#18489](https://github.com/sgl-project/sglang/pull/18489), [#18538](https://github.com/sgl-project/sglang/pull/18538), [#18544](https://github.com/sgl-project/sglang/pull/18544), [#18937](https://github.com/sgl-project/sglang/pull/18937), [#19070](https://github.com/sgl-project/sglang/pull/19070), [#19220](https://github.com/sgl-project/sglang/pull/19220), [#19411](https://github.com/sgl-project/sglang/pull/19411), [#19670](https://github.com/sgl-project/sglang/pull/19670), [#19767](https://github.com/sgl-project/sglang/pull/19767), [#20386](https://github.com/sgl-project/sglang/pull/20386), [#20736](https://github.com/sgl-project/sglang/pull/20736), [#21019](https://github.com/sgl-project/sglang/pull/21019), ... (17 total) |
+| `python/sglang/srt/models/qwen3_5_mtp.py` | [#18489](https://github.com/sgl-project/sglang/pull/18489), [#18538](https://github.com/sgl-project/sglang/pull/18538), [#18926](https://github.com/sgl-project/sglang/pull/18926), [#18937](https://github.com/sgl-project/sglang/pull/18937), [#19391](https://github.com/sgl-project/sglang/pull/19391), [#19767](https://github.com/sgl-project/sglang/pull/19767) |
+| `test/lm_eval_configs/Qwen3.5-397B-A17B.yaml` | no direct PR-number commit |
+| `test/manual/4-gpu-models/test_qwen35_hicache.py` | no direct PR-number commit |
+| `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py` | [#22913](https://github.com/sgl-project/sglang/pull/22913) |
+| `test/registered/4-gpu-models/test_qwen35_fp4_triton.py` | [#22913](https://github.com/sgl-project/sglang/pull/22913) |
+| `test/registered/8-gpu-models/test_qwen35.py` | [#19906](https://github.com/sgl-project/sglang/pull/19906), [#22399](https://github.com/sgl-project/sglang/pull/22399) |
+| `test/registered/amd/accuracy/mi30x/test_qwen35_eval_amd.py` | [#21669](https://github.com/sgl-project/sglang/pull/21669) |
+| `test/registered/amd/accuracy/mi35x/test_qwen35_eval_mi35x.py` | [#21669](https://github.com/sgl-project/sglang/pull/21669) |
+| `test/registered/amd/perf/mi30x/test_qwen35_fp8_perf_amd.py` | [#21669](https://github.com/sgl-project/sglang/pull/21669) |
+| `test/registered/amd/perf/mi35x/test_qwen35_fp8_perf_mi35x.py` | [#21669](https://github.com/sgl-project/sglang/pull/21669) |
+| `test/registered/gb300/test_qwen35_fp8.py` | no direct PR-number commit |
+| `test/registered/gb300/test_qwen35_nvfp4.py` | no direct PR-number commit |
 
 ## Timeline
 
-| Created | PR | State | Title | Code surface | Main diff files |
-| --- | ---: | --- | --- | --- | --- |
-| 2026-02-09 | [#18489](https://github.com/sgl-project/sglang/pull/18489) | merged | [MODEL] Adding Support for Qwen3.5 Models | model wrapper, MoE/router, kernel, multimodal/processor, scheduler/runtime, tests/benchmarks, docs/config | `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`, `python/sglang/srt/configs/qwen3_5.py` |
-| 2026-02-10 | [#18538](https://github.com/sgl-project/sglang/pull/18538) | merged | [Qwen3_5] Refactor `Qwen3_5ForCausalLMMTP` class implementation | model wrapper | `python/sglang/srt/models/qwen3_5_mtp.py`, `python/sglang/srt/models/qwen3_5.py` |
-| 2026-02-10 | [#18544](https://github.com/sgl-project/sglang/pull/18544) | merged | [Ascend]Support qwen3.5 | model wrapper, attention/backend, quantization | `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/layers/quantization/modelslim/modelslim.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` |
-| 2026-02-17 | [#18926](https://github.com/sgl-project/sglang/pull/18926) | merged | feat: [Qwen3.5] Support block-wise FP8 quantization and model adaptation | model wrapper, quantization | `python/sglang/srt/layers/linear.py`, `python/sglang/srt/layers/quantization/fp8.py`, `python/sglang/srt/models/qwen3_5_mtp.py` |
-| 2026-02-17 | [#18937](https://github.com/sgl-project/sglang/pull/18937) | merged | [Qwen3.5] Enable nvfp4 checkpoint | model wrapper | `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/layers/rotary_embedding.py`, `python/sglang/srt/models/qwen3_5_mtp.py` |
-| 2026-02-20 | [#19070](https://github.com/sgl-project/sglang/pull/19070) | merged | fix(dense): fix Qwen3.5 dense model precision bug in TP_SIZE>1 | model wrapper | `python/sglang/srt/models/qwen3_5.py` |
-| 2026-02-24 | [#19220](https://github.com/sgl-project/sglang/pull/19220) | merged | [PCG] fix piecewise cuda graph for Qwen3.5 | model wrapper, quantization | `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/layers/quantization/fp8_utils.py` |
-| 2026-02-26 | [#19391](https://github.com/sgl-project/sglang/pull/19391) | merged | [Qwen3.5] Enable MTP spec_v2 and add test for nvidia/Qwen3.5-397B-A17B-NVFP4 | model wrapper, scheduler/runtime, tests/benchmarks | `test/registered/4-gpu-models/test_qwen35_models.py`, `python/sglang/srt/server_args.py`, `python/sglang/srt/disaggregation/decode.py` |
-| 2026-02-26 | [#19411](https://github.com/sgl-project/sglang/pull/19411) | merged | [Qwen3.5] Qwen3.5-27B inference repeat bug fix | model wrapper | `python/sglang/srt/models/qwen3_5.py` |
-| 2026-03-02 | [#19670](https://github.com/sgl-project/sglang/pull/19670) | merged | [Qwen3.5] Support Qwen3.5 Pipeline Parallelism | model wrapper, tests/benchmarks | `python/sglang/srt/models/qwen3_5.py`, `test/registered/distributed/test_pp_single_node.py` |
-| 2026-03-03 | [#19767](https://github.com/sgl-project/sglang/pull/19767) | merged | Fix qwen3.5 mtp eplb related issues | model wrapper, MoE/router | `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`, `python/sglang/srt/models/qwen3_next_mtp.py` |
-| 2026-03-04 | [#19889](https://github.com/sgl-project/sglang/pull/19889) | merged | Use TRTLLM allreduce fusion for Qwen 3.5 | model wrapper, MoE/router | `python/sglang/srt/layers/layernorm.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen2_moe.py` |
-| 2026-03-05 | [#19961](https://github.com/sgl-project/sglang/pull/19961) | merged | fix: change qwen 3.5 linear attention a_log to fp32 | model wrapper | `python/sglang/srt/models/qwen3_5.py` |
-| 2026-03-11 | [#20386](https://github.com/sgl-project/sglang/pull/20386) | merged | perf(qwen3_5): replace einops rearrange with torch.flatten in GatedDe… | model wrapper | `python/sglang/srt/models/qwen3_5.py` |
-| 2026-03-17 | [#20736](https://github.com/sgl-project/sglang/pull/20736) | merged | [AMD] Enable share expert fusion with router experts for Qwen3.5 BF16 & FP8 | model wrapper, MoE/router | `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/models/qwen3_5.py` |
-| 2026-03-18 | [#20864](https://github.com/sgl-project/sglang/pull/20864) | merged | [Perf]Remove H2D for Qwen3.5 SpecV2 | scheduler/runtime | `python/sglang/srt/model_executor/forward_batch_info.py`, `python/sglang/srt/speculative/eagle_info_v2.py` |
-| 2026-03-20 | [#21019](https://github.com/sgl-project/sglang/pull/21019) | merged | [Qwen3.5] Fuse split/reshape/cat ops in GDN projection with Triton kernel | model wrapper, kernel | `python/sglang/srt/models/qwen3_5.py`, `python/sglang/jit_kernel/triton/gdn_fused_proj.py`, `python/sglang/srt/models/qwen3_next.py` |
-| 2026-03-21 | [#21070](https://github.com/sgl-project/sglang/pull/21070) | merged | [Qwen3.5] Fix broken pipeline parallelism layer splitting | model wrapper, tests/benchmarks | `python/sglang/srt/models/qwen3_5.py`, `test/registered/distributed/test_pp_single_node.py` |
-| 2026-03-23 | [#21234](https://github.com/sgl-project/sglang/pull/21234) | merged | [AMD] Support AMD MXFP4 Qwen3.5-397B-A17B model | model wrapper | `python/sglang/srt/models/qwen3_5.py` |
-| 2026-03-24 | [#21347](https://github.com/sgl-project/sglang/pull/21347) | merged | [Bugfix] Fix PP tied embeddings weight loading for qwen3.5 4B dense model | model wrapper | `python/sglang/srt/models/qwen3_5.py` |
-| 2026-03-26 | [#21448](https://github.com/sgl-project/sglang/pull/21448) | merged | [Fix] Fix Qwen3.5 MoE model loading and Mamba cache sharding in PP mode | model wrapper, attention/backend, scheduler/runtime, tests/benchmarks | `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py`, `python/sglang/srt/mem_cache/memory_pool.py` |
-| 2026-03-26 | [#21487](https://github.com/sgl-project/sglang/pull/21487) | merged | feat(ci): add GB300 nightly benchmark test suites | quantization, scheduler/runtime, tests/benchmarks | `python/sglang/test/accuracy_test_runner.py`, `test/registered/gb300/test_deepseek_v32_nvfp4.py`, `test/registered/gb300/test_deepseek_v32.py` |
-| 2026-03-30 | [#21669](https://github.com/sgl-project/sglang/pull/21669) | merged | [AMD] Add Qwen3.5-397B FP8 nightly perf benchmarks for MI30x and MI35x | quantization, tests/benchmarks | `test/registered/amd/perf/mi30x/test_qwen35_fp8_perf_amd.py`, `test/registered/amd/perf/mi35x/test_qwen35_fp8_perf_mi35x.py`, `test/registered/amd/accuracy/mi30x/test_qwen35_eval_amd.py` |
-| 2026-03-30 | [#21692](https://github.com/sgl-project/sglang/pull/21692) | merged | [Bugfix] [NPU] Qwen3.5 with quantization fix | model wrapper, quantization | `python/sglang/srt/layers/quantization/modelslim/modelslim.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/model_loader/loader.py` |
-| 2026-04-01 | [#21849](https://github.com/sgl-project/sglang/pull/21849) | merged | [VLM]: allow Qwen3.5 models for encoder disaggregation | multimodal/processor, tests/benchmarks | `test/registered/distributed/test_epd_disaggregation.py`, `python/sglang/srt/disaggregation/encode_server.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py` |
-| 2026-04-05 | [#22145](https://github.com/sgl-project/sglang/pull/22145) | merged | [Disagg][NIXL] Fix heterogeneous TP KV transfer for non-MLA models (same logic with mooncake, Step 1/2 for Qwen3.5 support) | misc | `python/sglang/srt/disaggregation/nixl/conn.py` |
-| 2026-04-07 | [#22240](https://github.com/sgl-project/sglang/pull/22240) | merged | [Disagg][NIXL] Support Mamba state slice transfer for heterogeneous TP (Step 2/2 for Qwen3.5) | misc | `python/sglang/srt/disaggregation/nixl/conn.py` |
-| 2026-04-08 | [#22312](https://github.com/sgl-project/sglang/pull/22312) | merged | Make GDN support non-continuous B/A Tensor input to fix the accuracy regression of Qwen3.5-27B | attention/backend, tests/benchmarks | `test/registered/attention/test_gdn_noncontiguous_stride.py`, `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py`, `python/sglang/srt/layers/attention/fla/fused_gdn_gating.py` |
-| 2026-04-08 | [#22358](https://github.com/sgl-project/sglang/pull/22358) | merged | Enable DFLASH support for additional model backends | model wrapper, MoE/router | `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/kimi_k25.py`, `python/sglang/srt/models/qwen3_next.py` |
-| 2026-04-09 | [#22431](https://github.com/sgl-project/sglang/pull/22431) | merged | Fix Qwen3.5 video processing when passing video_data in "processor_output" format | multimodal/processor | `python/sglang/srt/multimodal/processors/qwen_vl.py` |
-| 2026-04-10 | [#22493](https://github.com/sgl-project/sglang/pull/22493) | merged | Add MambaPool kvcache offloading during retraction | scheduler/runtime, tests/benchmarks | `test/registered/unit/mem_cache/test_mamba_unittest.py`, `python/sglang/srt/mem_cache/memory_pool.py`, `python/sglang/srt/mem_cache/allocator.py` |
-| 2026-04-15 | [#22908](https://github.com/sgl-project/sglang/pull/22908) | merged | [AMD] Resolve Qwen3.5 MTP (speculative decoding) radix cache conflict. | misc | `python/sglang/srt/server_args.py` |
-| 2026-04-15 | [#22913](https://github.com/sgl-project/sglang/pull/22913) | merged | test(4-gpu-b200): split test_qwen35_models.py + bump partitions 5→6 | model wrapper, quantization, kernel, tests/benchmarks | `test/registered/4-gpu-models/test_qwen35_models.py`, `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py`, `test/registered/4-gpu-models/test_qwen35_fp4_triton.py` |
-| 2026-04-16 | [#22948](https://github.com/sgl-project/sglang/pull/22948) | merged | [AMD] Qwen3.5 MXFP4 breaks after shared expert fusion is enabled | model wrapper, MoE/router | `python/sglang/srt/models/qwen2_moe.py` |
-| 2026-04-17 | [#23034](https://github.com/sgl-project/sglang/pull/23034) | merged | docs: fix links, add Qwen3.6, update Qwen3.5/GLM-5 docs | model wrapper, MoE/router, kernel, multimodal/processor, scheduler/runtime, docs/config | `docs_new/docs/advanced_features/dp_dpa_smg_guide.mdx`, `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/docs/advanced_features/piecewise_cuda_graph.mdx` |
-| 2026-04-22 | [#23467](https://github.com/sgl-project/sglang/pull/23467) | merged | fix: dot-boundary match in is_layer_skipped for FP8 modules_to_not_convert | quantization | `python/sglang/srt/layers/quantization/utils.py` |
-| 2026-04-22 | [#23474](https://github.com/sgl-project/sglang/pull/23474) | open | [Bugfix] Try to fix --cpu-offload-gb on hybrid linear-attn models | tests/benchmarks | `test/registered/unit/utils/test_offloader_tied_params.py`, `python/sglang/srt/utils/offloader.py` |
+| Date | PR | State | Title | Main files |
+| --- | --- | --- | --- | --- |
+| 2026-02-09 | [#18489](https://github.com/sgl-project/sglang/pull/18489) | merged | [MODEL] Adding Support for Qwen3.5 Models | `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`, `python/sglang/srt/configs/qwen3_5.py` |
+| 2026-02-12 | [#18538](https://github.com/sgl-project/sglang/pull/18538) | merged | [Qwen3_5] Refactor `Qwen3_5ForCausalLMMTP` class implementation | `python/sglang/srt/models/qwen3_5_mtp.py`, `python/sglang/srt/models/qwen3_5.py` |
+| 2026-02-12 | [#18544](https://github.com/sgl-project/sglang/pull/18544) | merged | [Ascend]Support qwen3.5 | `python/sglang/srt/models/qwen3_5.py` |
+| 2026-02-18 | [#18926](https://github.com/sgl-project/sglang/pull/18926) | merged | feat: [Qwen3.5] Support block-wise FP8 quantization and model adaptation | `python/sglang/srt/models/qwen3_5_mtp.py` |
+| 2026-02-19 | [#18937](https://github.com/sgl-project/sglang/pull/18937) | merged | [Qwen3.5] Enable nvfp4 checkpoint | `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py` |
+| 2026-02-25 | [#19070](https://github.com/sgl-project/sglang/pull/19070) | merged | fix(dense): fix Qwen3.5 dense model precision bug in TP_SIZE>1 | `python/sglang/srt/models/qwen3_5.py` |
+| 2026-02-26 | [#19220](https://github.com/sgl-project/sglang/pull/19220) | merged | [PCG] fix piecewise cuda graph for Qwen3.5 | `python/sglang/srt/models/qwen3_5.py` |
+| 2026-02-26 | [#19411](https://github.com/sgl-project/sglang/pull/19411) | merged | [Qwen3.5] Qwen3.5-27B inference repeat bug fix | `python/sglang/srt/models/qwen3_5.py` |
+| 2026-03-04 | [#19391](https://github.com/sgl-project/sglang/pull/19391) | merged | [Qwen3.5] Enable MTP spec_v2 and add test for nvidia/Qwen3.5-397B-A17B-NVFP4 | `python/sglang/srt/models/qwen3_5_mtp.py` |
+| 2026-03-06 | [#19906](https://github.com/sgl-project/sglang/pull/19906) | merged | Add Qwen3.5-397B-A17B nightly test (8-GPU) | `test/registered/8-gpu-models/test_qwen35.py` |
+| 2026-03-07 | [#19670](https://github.com/sgl-project/sglang/pull/19670) | merged | [Qwen3.5] Support Qwen3.5 Pipeline Parallelism | `python/sglang/srt/models/qwen3_5.py` |
+| 2026-03-09 | [#19767](https://github.com/sgl-project/sglang/pull/19767) | merged | Fix qwen3.5 mtp eplb related issues | `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py` |
+| 2026-03-12 | [#20386](https://github.com/sgl-project/sglang/pull/20386) | merged | perf(qwen3_5): replace einops rearrange with torch.flatten in GatedDe… | `python/sglang/srt/models/qwen3_5.py` |
+| 2026-03-18 | [#19889](https://github.com/sgl-project/sglang/pull/19889) | merged | Use TRTLLM allreduce fusion for Qwen 3.5 | `python/sglang/srt/layers/layernorm.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen2_moe.py` |
+| 2026-03-18 | [#19961](https://github.com/sgl-project/sglang/pull/19961) | merged | fix: change qwen 3.5 linear attention a_log to fp32 | `python/sglang/srt/models/qwen3_5.py` |
+| 2026-03-21 | [#21070](https://github.com/sgl-project/sglang/pull/21070) | merged | [Qwen3.5] Fix broken pipeline parallelism layer splitting | `python/sglang/srt/models/qwen3_5.py` |
+| 2026-03-23 | [#21019](https://github.com/sgl-project/sglang/pull/21019) | merged | [Qwen3.5] Fuse split/reshape/cat ops in GDN projection with Triton kernel | `python/sglang/srt/models/qwen3_5.py` |
+| 2026-03-29 | [#21487](https://github.com/sgl-project/sglang/pull/21487) | merged | feat(ci): add GB300 nightly benchmark test suites | `python/sglang/test/accuracy_test_runner.py`, `test/registered/gb300/test_deepseek_v32_nvfp4.py`, `test/registered/gb300/test_deepseek_v32.py` |
+| 2026-03-30 | [#21448](https://github.com/sgl-project/sglang/pull/21448) | merged | [Fix] Fix Qwen3.5 MoE model loading and Mamba cache sharding in PP mode | `python/sglang/srt/models/qwen3_5.py` |
+| 2026-03-30 | [#21234](https://github.com/sgl-project/sglang/pull/21234) | merged | [AMD] Support AMD MXFP4 Qwen3.5-397B-A17B model | `python/sglang/srt/models/qwen3_5.py` |
+| 2026-03-31 | [#20864](https://github.com/sgl-project/sglang/pull/20864) | merged | [Perf]Remove H2D for Qwen3.5 SpecV2 | `python/sglang/srt/model_executor/forward_batch_info.py`, `python/sglang/srt/speculative/eagle_info_v2.py` |
+| 2026-04-01 | [#21347](https://github.com/sgl-project/sglang/pull/21347) | merged | [Bugfix] Fix PP tied embeddings weight loading for qwen3.5 4B dense model | `python/sglang/srt/models/qwen3_5.py` |
+| 2026-04-06 | [#21849](https://github.com/sgl-project/sglang/pull/21849) | merged | [VLM]: allow Qwen3.5 models for encoder disaggregation | `python/sglang/srt/multimodal/processors/qwen_vl.py`, `test/registered/distributed/test_epd_disaggregation.py`, `python/sglang/srt/disaggregation/encode_server.py` |
+| 2026-04-07 | [#21669](https://github.com/sgl-project/sglang/pull/21669) | merged | [AMD] Add Qwen3.5-397B FP8 nightly perf benchmarks for MI30x and MI35x | `test/registered/amd/perf/mi30x/test_qwen35_fp8_perf_amd.py`, `test/registered/amd/perf/mi35x/test_qwen35_fp8_perf_mi35x.py`, `test/registered/amd/accuracy/mi30x/test_qwen35_eval_amd.py` |
+| 2026-04-07 | [#22145](https://github.com/sgl-project/sglang/pull/22145) | merged | [Disagg][NIXL] Fix heterogeneous TP KV transfer for non-MLA models (same logic with mooncake, Step 1/2 for Qwen3.5 support) | `python/sglang/srt/disaggregation/nixl/conn.py` |
+| 2026-04-07 | [#22240](https://github.com/sgl-project/sglang/pull/22240) | merged | [Disagg][NIXL] Support Mamba state slice transfer for heterogeneous TP (Step 2/2 for Qwen3.5) | `python/sglang/srt/disaggregation/nixl/conn.py` |
+| 2026-04-08 | [#21692](https://github.com/sgl-project/sglang/pull/21692) | merged | [Bugfix] [NPU] Qwen3.5 with quantization fix | `python/sglang/srt/models/qwen3_5.py` |
+| 2026-04-09 | [#22399](https://github.com/sgl-project/sglang/pull/22399) | merged | [CI] Add GLM-5.1 nightly tests and update Qwen3.5 model | `test/registered/8-gpu-models/test_qwen35.py` |
+| 2026-04-09 | [#22358](https://github.com/sgl-project/sglang/pull/22358) | merged | Enable DFLASH support for additional model backends | `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/kimi_k25.py`, `python/sglang/srt/models/qwen3_next.py` |
+| 2026-04-10 | [#22312](https://github.com/sgl-project/sglang/pull/22312) | merged | Make GDN support non-continuous B/A Tensor input to fix the accuracy regression of Qwen3.5-27B | `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py`, `python/sglang/srt/layers/attention/fla/fused_gdn_gating.py`, `test/registered/attention/test_gdn_noncontiguous_stride.py` |
+| 2026-04-15 | [#20736](https://github.com/sgl-project/sglang/pull/20736) | merged | [AMD] Enable share expert fusion with router experts for Qwen3.5 BF16 & FP8 | `python/sglang/srt/models/qwen3_5.py` |
+| 2026-04-16 | [#22948](https://github.com/sgl-project/sglang/pull/22948) | merged | [AMD] Qwen3.5 MXFP4 breaks after shared expert fusion is enabled | `python/sglang/srt/models/qwen2_moe.py` |
+| 2026-04-17 | [#22913](https://github.com/sgl-project/sglang/pull/22913) | merged | test(4-gpu-b200): split test_qwen35_models.py + bump partitions 5→6 | `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py`, `test/registered/4-gpu-models/test_qwen35_fp4_triton.py` |
+| 2026-04-17 | [#23034](https://github.com/sgl-project/sglang/pull/23034) | merged | docs: fix links, add Qwen3.6, update Qwen3.5/GLM-5 docs | `docs_new/docs/advanced_features/separate_reasoning.mdx`, `docs_new/docs/advanced_features/tool_parser.mdx`, `docs_new/docs/advanced_features/dp_dpa_smg_guide.mdx` |
+| 2026-04-18 | [#22431](https://github.com/sgl-project/sglang/pull/22431) | merged | Fix Qwen3.5 video processing when passing video_data in "processor_output" format | `python/sglang/srt/multimodal/processors/qwen_vl.py` |
+| 2026-04-21 | [#22908](https://github.com/sgl-project/sglang/pull/22908) | merged | [AMD] Resolve Qwen3.5 MTP (speculative decoding) radix cache conflict. | `python/sglang/srt/server_args.py` |
+| 2026-04-22 | [#22493](https://github.com/sgl-project/sglang/pull/22493) | merged | Add MambaPool kvcache offloading during retraction | `test/registered/unit/mem_cache/test_mamba_unittest.py`, `python/sglang/srt/mem_cache/memory_pool.py`, `python/sglang/srt/mem_cache/allocator.py` |
+| 2026-04-22 | [#23474](https://github.com/sgl-project/sglang/pull/23474) | open | [Bugfix] Try to fix --cpu-offload-gb on hybrid linear-attn models | `test/registered/unit/utils/test_offloader_tied_params.py`, `python/sglang/srt/utils/offloader.py` |
+| 2026-04-22 | [#23467](https://github.com/sgl-project/sglang/pull/23467) | merged | fix: dot-boundary match in is_layer_skipped for FP8 modules_to_not_convert | `python/sglang/srt/layers/quantization/utils.py` |
 
-## Diff Cards
+## Per-PR Diff Audit Cards
 
 ### PR #18489 - [MODEL] Adding Support for Qwen3.5 Models
 
 - Link: https://github.com/sgl-project/sglang/pull/18489
-- Status/date: `merged`, created 2026-02-09, merged 2026-02-09; author `zju-stu-lizheng`.
-- Diff scope read: `17` files, `+1923/-9`; areas: model wrapper, MoE/router, kernel, multimodal/processor, scheduler/runtime, tests/benchmarks, docs/config; keywords: moe, config, processor, spec, attention, vision, cache, cuda, expert, kv.
+- Status/date: merged / 2026-02-09
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/qwen3_5.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`; associated commits `27c447653d9c`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 17 files, +1923/-9, 2159 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR adds or enables a model support/runtime surface. Title: "[MODEL] Adding Support for Qwen3.5 Models". The diff centers on `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`, `python/sglang/srt/configs/qwen3_5.py`. PR body context: ## Purpose This PR adds model support for the upcoming Qwen3.5 models, including both dense and MoE variants. Special thanks to @cao1zhg, @yizhang2077, and @attack204 for their...
+- Key implementation: `python/sglang/srt/models/qwen3_5.py` added +1310/-0 (1310 lines); hunks: -0,0 +1,1310; symbols: Qwen3_5GatedDeltaNet, __init__, fix_query_key_value_ordering, forward, touching `Qwen3_5GatedDeltaNet, __init__, fix_query_key_value_ordering`; `python/sglang/srt/models/qwen3_5_mtp.py` added +415/-0 (415 lines); hunks: -0,0 +1,415; symbols: Qwen3_5MultiTokenPredictor, __init__, embed_input_ids, forward, touching `Qwen3_5MultiTokenPredictor, __init__, embed_input_ids`; `python/sglang/srt/configs/qwen3_5.py` added +113/-0 (113 lines); hunks: -0,0 +1,113; symbols: Qwen3_5VisionConfig, Qwen3_5TextConfig, __init__, Qwen3_5Config, touching `Qwen3_5VisionConfig, Qwen3_5TextConfig, __init__`.
 - Code diff details:
-  - `python/sglang/srt/models/qwen3_5.py` added +1310/-0 (1310 lines); hunks: +# Copyright 2025 Qwen Team; symbols: Qwen3_5GatedDeltaNet, __init__, fix_query_key_value_ordering, forward
-  - `python/sglang/srt/models/qwen3_5_mtp.py` added +415/-0 (415 lines); hunks: +# Copyright 2023-2024 SGLang Team; symbols: Qwen3_5MultiTokenPredictor, __init__, embed_input_ids, forward
-  - `python/sglang/srt/configs/qwen3_5.py` added +113/-0 (113 lines); hunks: +from transformers import PretrainedConfig; symbols: Qwen3_5VisionConfig, Qwen3_5TextConfig, __init__, Qwen3_5Config
-  - `python/sglang/srt/model_executor/model_runner.py` modified +14/-3 (17 lines); hunks: Lfm2Config,; def qwen3_next_config(self):; symbols: qwen3_next_config, hybrid_gdn_config, compute_logprobs_only, model_is_mrope
-  - `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +16/-1 (17 lines); hunks: import numpy as np; from sglang.srt.managers.schedule_batch import Modality, MultimodalDataItem; symbols: preprocess_video, QwenVLImageProcessor, process_mm_data_async
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`, `python/sglang/srt/configs/qwen3_5.py`; keywords observed in patches: moe, config, processor, spec, attention, vision. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; MoE/router/top-k/expert logic changed; verify shared/routed experts plus EP/TP/DP and empty-token branches; CUDA/Triton/C++ kernels or bindings changed; verify shape guards, dtype, device backend, and benchmark coverage; multimodal processor or media-token code changed; verify image/video/audio metadata, position ids, and batching; scheduler/runtime/cache code changed; verify continuous batching, spec/PD/DP, cache lifetime, and exceptional branches; tests or benchmarks changed; use those cases as regression entry points instead of only checking model load; docs or config changed; verify serve flags, defaults, and cookbook commands against runtime code.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`, `python/sglang/srt/configs/qwen3_5.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/models/qwen3_5.py` added +1310/-0 (1310 lines); hunks: -0,0 +1,1310; symbols: Qwen3_5GatedDeltaNet, __init__, fix_query_key_value_ordering, forward
+  - `python/sglang/srt/models/qwen3_5_mtp.py` added +415/-0 (415 lines); hunks: -0,0 +1,415; symbols: Qwen3_5MultiTokenPredictor, __init__, embed_input_ids, forward
+  - `python/sglang/srt/configs/qwen3_5.py` added +113/-0 (113 lines); hunks: -0,0 +1,113; symbols: Qwen3_5VisionConfig, Qwen3_5TextConfig, __init__, Qwen3_5Config
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_5.py
+@@ -0,0 +1,1310 @@
++# Copyright 2025 Qwen Team
++# Copyright 2025 SGLang Team
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
+diff -- python/sglang/srt/models/qwen3_5_mtp.py
+@@ -0,0 +1,415 @@
++# Copyright 2023-2024 SGLang Team
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
+diff -- python/sglang/srt/configs/qwen3_5.py
+@@ -0,0 +1,113 @@
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_5.py` added +1310/-0; `python/sglang/srt/models/qwen3_5_mtp.py` added +415/-0; `python/sglang/srt/configs/qwen3_5.py` added +113/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/configs/__init__.py`, `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/configs/qwen3_5.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #18538 - [Qwen3_5] Refactor `Qwen3_5ForCausalLMMTP` class implementation
 
 - Link: https://github.com/sgl-project/sglang/pull/18538
-- Status/date: `merged`, created 2026-02-10, merged 2026-02-12; author `zju-stu-lizheng`.
-- Diff scope read: `2` files, `+62/-118`; areas: model wrapper; keywords: config, moe, quant, attention, expert, processor, spec, triton.
+- Status/date: merged / 2026-02-12
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`; associated commits `4ed2548427a0`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +62/-118, 275 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR extends deployment docs, tests, or CI coverage. Title: "[Qwen3_5] Refactor `Qwen3_5ForCausalLMMTP` class implementation". The diff centers on `python/sglang/srt/models/qwen3_5_mtp.py`, `python/sglang/srt/models/qwen3_5.py`. PR body context: Reduce code redundancy by refactoring MTP to reuse Qwen3_5ForCausalLM - Removed `Qwen3_5MultiTokenPredictor` class, replacing it with `Qwen3_5ForCausalLM` as the main model body...
+- Key implementation: `python/sglang/srt/models/qwen3_5_mtp.py` modified +44/-112 (156 lines); hunks: -24,114 +24,15; -140,7 +41,7 @@ def __init__(; symbols: Qwen3_5MultiTokenPredictor, __init__, embed_input_ids, forward, touching `Qwen3_5MultiTokenPredictor, __init__, embed_input_ids`; `python/sglang/srt/models/qwen3_5.py` modified +18/-6 (24 lines); hunks: -330,6 +330,9 @@ def __init__(; -338,15 +341,18 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
-  - `python/sglang/srt/models/qwen3_5_mtp.py` modified +44/-112 (156 lines); hunks: from sglang.srt.layers.layernorm import GemmaRMSNorm; def __init__(; symbols: Qwen3_5MultiTokenPredictor, __init__, embed_input_ids, forward
-  - `python/sglang/srt/models/qwen3_5.py` modified +18/-6 (24 lines); hunks: def __init__(; def __init__(; symbols: __init__, __init__, __init__, __init__
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/models/qwen3_5_mtp.py`, `python/sglang/srt/models/qwen3_5.py`; keywords observed in patches: config, moe, quant, attention, expert, processor. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/models/qwen3_5_mtp.py`, `python/sglang/srt/models/qwen3_5.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/models/qwen3_5_mtp.py` modified +44/-112 (156 lines); hunks: -24,114 +24,15; -140,7 +41,7 @@ def __init__(; symbols: Qwen3_5MultiTokenPredictor, __init__, embed_input_ids, forward
+  - `python/sglang/srt/models/qwen3_5.py` modified +18/-6 (24 lines); hunks: -330,6 +330,9 @@ def __init__(; -338,15 +341,18 @@ def __init__(; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_5_mtp.py
+@@ -24,114 +24,15 @@
+-from sglang.srt.layers.vocab_parallel_embedding import (
+-    ParallelLMHead,
+-    VocabParallelEmbedding,
+-)
++from sglang.srt.layers.vocab_parallel_embedding import ParallelLMHead
+-from sglang.srt.models.qwen3_5 import Qwen3_5AttentionDecoderLayer
+diff -- python/sglang/srt/models/qwen3_5.py
+@@ -330,6 +330,9 @@ def __init__(
++            is_layer_sparse = True
++            is_previous_layer_sparse = True
++            is_next_layer_sparse = True
+@@ -338,15 +341,18 @@ def __init__(
++            is_layer_sparse = False
++            is_previous_layer_sparse = False
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_5_mtp.py` modified +44/-112; `python/sglang/srt/models/qwen3_5.py` modified +18/-6
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #18544 - [Ascend]Support qwen3.5
 
 - Link: https://github.com/sgl-project/sglang/pull/18544
-- Status/date: `merged`, created 2026-02-10, merged 2026-02-12; author `chenxu214`.
-- Diff scope read: `3` files, `+23/-4`; areas: model wrapper, attention/backend, quantization; keywords: attention, quant, cache, config, cuda, expert, moe.
+- Status/date: merged / 2026-02-12
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_5.py`; associated commits `1edc69be0854`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +23/-4, 75 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR adds or enables a model support/runtime surface. Title: "[Ascend]Support qwen3.5". The diff centers on `python/sglang/srt/models/qwen3_5.py`. PR body context: ## Motivation Ascend adapts qwen3.5 ## Modifications 1、Bugfix with load weights： issue 2、The quantization and import kernel error reporting parts have been modified accordingly....
+- Key implementation: `python/sglang/srt/models/qwen3_5.py` modified +12/-2 (14 lines); hunks: -34,6 +34,7; -328,15 +329,15 @@ def __init__(; symbols: __init__, load_fused_expert_weights, get_model_config_for_expert_location, touching `__init__, load_fused_expert_weights, get_model_config_for_expert_location`.
 - Code diff details:
-  - `python/sglang/srt/models/qwen3_5.py` modified +12/-2 (14 lines); hunks: # Distributed; def __init__(; symbols: __init__, load_fused_expert_weights, get_model_config_for_expert_location
-  - `python/sglang/srt/layers/quantization/modelslim/modelslim.py` modified +9/-0 (9 lines); hunks: def is_layer_skipped(; symbols: is_layer_skipped
-  - `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +2/-2 (4 lines); hunks: from sglang.srt.utils import cpu_has_amx_support, is_cpu, is_cuda, is_npu; def __init__(self, model_runner: ModelRunner):; symbols: __init__
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/layers/quantization/modelslim/modelslim.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`; keywords observed in patches: attention, quant, cache, config, cuda, expert. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; attention, KV cache, or backend selection changed; verify prefill/decode, page size, RoPE/MLA/MQA branches; quantized loading or quantized kernels changed; verify scales, zero-points, checkpoint names, and fallback behavior.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/layers/quantization/modelslim/modelslim.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/models/qwen3_5.py` modified +12/-2 (14 lines); hunks: -34,6 +34,7; -328,15 +329,15 @@ def __init__(; symbols: __init__, load_fused_expert_weights, get_model_config_for_expert_location
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_5.py
+@@ -34,6 +34,7 @@
++from sglang.srt.eplb.expert_location import ModelConfigForExpertLocation
+@@ -328,15 +329,15 @@ def __init__(
+-                prefix=add_prefix("mlp", prefix.replace(".self_attn", "")),
++                prefix=add_prefix("mlp", prefix.replace(".linear_attn", "")),
+-                prefix=add_prefix("mlp", prefix.replace(".self_attn", "")),
++                prefix=add_prefix("mlp", prefix.replace(".linear_attn", "")),
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_5.py` modified +12/-2
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/layers/quantization/modelslim/modelslim.py`, `python/sglang/srt/models/qwen3_5.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #18926 - feat: [Qwen3.5] Support block-wise FP8 quantization and model adaptation
 
 - Link: https://github.com/sgl-project/sglang/pull/18926
-- Status/date: `merged`, created 2026-02-17, merged 2026-02-18; author `zju-stu-lizheng`.
-- Diff scope read: `4` files, `+57/-12`; areas: model wrapper, quantization; keywords: config, quant, kv, attention, awq, expert, fp8, test, vision.
+- Status/date: merged / 2026-02-18
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_5_mtp.py`; associated commits `fa5698d79164`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 4 files, +57/-12, 131 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR adds or enables a model support/runtime surface. Title: "feat: [Qwen3.5] Support block-wise FP8 quantization and model adaptation". The diff centers on `python/sglang/srt/models/qwen3_5_mtp.py`. PR body context: ## Overview This PR introduces support for block-wise FP8 quantization for the Qwen3.5 series and refines model adaptation logic for several architectures (Mistral-3, Qwen3-VL)...
+- Key implementation: `python/sglang/srt/models/qwen3_5_mtp.py` modified +1/-6 (7 lines); hunks: -64,7 +64,7 @@ def __init__(; -214,16 +214,11 @@ def load_fused_expert_weights(; symbols: __init__, load_fused_expert_weights, touching `__init__, load_fused_expert_weights`.
 - Code diff details:
-  - `python/sglang/srt/layers/linear.py` modified +48/-0 (48 lines); hunks: def _load_fused_module_from_checkpoint(; def weight_loader_v2(; symbols: _load_fused_module_from_checkpoint, _load_merged_block_scale, weight_loader_v2, weight_loader_v2
-  - `python/sglang/srt/layers/quantization/fp8.py` modified +5/-2 (7 lines); hunks: def from_config(cls, config: Dict[str, Any]) -> Fp8Config:; symbols: from_config
-  - `python/sglang/srt/models/qwen3_5_mtp.py` modified +1/-6 (7 lines); hunks: def __init__(; def load_fused_expert_weights(; symbols: __init__, load_fused_expert_weights
-  - `python/sglang/srt/models/qwen3_vl.py` modified +3/-4 (7 lines); hunks: def __init__(; def __init__(; symbols: __init__, __init__, load_weights
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/layers/linear.py`, `python/sglang/srt/layers/quantization/fp8.py`, `python/sglang/srt/models/qwen3_5_mtp.py`; keywords observed in patches: config, quant, kv, attention, awq, expert. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; quantized loading or quantized kernels changed; verify scales, zero-points, checkpoint names, and fallback behavior.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/layers/linear.py`, `python/sglang/srt/layers/quantization/fp8.py`, `python/sglang/srt/models/qwen3_5_mtp.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/models/qwen3_5_mtp.py` modified +1/-6 (7 lines); hunks: -64,7 +64,7 @@ def __init__(; -214,16 +214,11 @@ def load_fused_expert_weights(; symbols: __init__, load_fused_expert_weights
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_5_mtp.py
+@@ -64,7 +64,7 @@ def __init__(
+-            prefix=add_prefix("model", prefix),
++            prefix=add_prefix("mtp", prefix),
+@@ -214,16 +214,11 @@ def load_fused_expert_weights(
+-            # Some checkpoints use model.language_model.mtp.* prefix
+-            if "language_model" in name:
+-                name = name.replace(r"model.language_model.", r"model.")
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_5_mtp.py` modified +1/-6
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/linear.py`, `python/sglang/srt/layers/quantization/fp8.py`, `python/sglang/srt/models/qwen3_5_mtp.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #18937 - [Qwen3.5] Enable nvfp4 checkpoint
 
 - Link: https://github.com/sgl-project/sglang/pull/18937
-- Status/date: `merged`, created 2026-02-17, merged 2026-02-19; author `hlu1`.
-- Diff scope read: `3` files, `+26/-8`; areas: model wrapper; keywords: config, fp4, quant, expert, kv.
+- Status/date: merged / 2026-02-19
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`; associated commits `bba2fc49a170`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +26/-8, 98 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR adds or enables a model support/runtime surface. Title: "[Qwen3.5] Enable nvfp4 checkpoint". The diff centers on `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`. PR body context: ## Motivation Enable nvfp4 checkpoint ## Modifications Disable quantization for the Linear, Global attention modules, visual model, and MTP layer. ## Accuracy Tests No MTP: 0.96...
+- Key implementation: `python/sglang/srt/models/qwen3_5.py` modified +19/-7 (26 lines); hunks: -318,8 +318,14 @@ def __init__(; -458,13 +464,19 @@ def __init__(; symbols: __init__, load_weights, load_fused_expert_weights, touching `__init__, load_weights, load_fused_expert_weights`; `python/sglang/srt/models/qwen3_5_mtp.py` modified +4/-0 (4 lines); hunks: -48,6 +48,10 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
-  - `python/sglang/srt/models/qwen3_5.py` modified +19/-7 (26 lines); hunks: def __init__(; def __init__(; symbols: __init__, __init__, __init__, load_weights
-  - `python/sglang/srt/layers/rotary_embedding.py` modified +3/-1 (4 lines); hunks: def get_rope(; symbols: get_rope
-  - `python/sglang/srt/models/qwen3_5_mtp.py` modified +4/-0 (4 lines); hunks: def __init__(; symbols: __init__
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/layers/rotary_embedding.py`, `python/sglang/srt/models/qwen3_5_mtp.py`; keywords observed in patches: config, fp4, quant, expert, kv. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/layers/rotary_embedding.py`, `python/sglang/srt/models/qwen3_5_mtp.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/models/qwen3_5.py` modified +19/-7 (26 lines); hunks: -318,8 +318,14 @@ def __init__(; -458,13 +464,19 @@ def __init__(; symbols: __init__, load_weights, load_fused_expert_weights
+  - `python/sglang/srt/models/qwen3_5_mtp.py` modified +4/-0 (4 lines); hunks: -48,6 +48,10 @@ def __init__(; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_5.py
+@@ -318,8 +318,14 @@ def __init__(
++        linear_attn_quant_config = (
++            None
++            if quant_config and quant_config.get_name() == "modelopt_fp4"
++            else quant_config
++        )
+-            config, layer_id, quant_config, alt_stream, prefix
+diff -- python/sglang/srt/models/qwen3_5_mtp.py
+@@ -48,6 +48,10 @@ def __init__(
++        # The MTP model is unquantized in the nvfp4 checkpoint.
++        if quant_config and quant_config.get_name() == "modelopt_fp4":
++            quant_config = None
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_5.py` modified +19/-7; `python/sglang/srt/models/qwen3_5_mtp.py` modified +4/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/rotary_embedding.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #19070 - fix(dense): fix Qwen3.5 dense model precision bug in TP_SIZE>1
 
 - Link: https://github.com/sgl-project/sglang/pull/19070
-- Status/date: `merged`, created 2026-02-20, merged 2026-02-25; author `zju-stu-lizheng`.
-- Diff scope read: `1` files, `+32/-6`; areas: model wrapper; keywords: moe.
+- Status/date: merged / 2026-02-25
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_5.py`; associated commits `d38c0e537d95`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +32/-6, 56 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR adds or enables a model support/runtime surface. Title: "fix(dense): fix Qwen3.5 dense model precision bug in TP_SIZE>1". The diff centers on `python/sglang/srt/models/qwen3_5.py`. PR body context: fix(dense): fix Qwen3.5 dense model precision bug in TP_SIZE>1 - Add conditional `should_allreduce_fusion` check for MLP layers. - Separate calling logic for MoE vs. Dense block...
+- Key implementation: `python/sglang/srt/models/qwen3_5.py` modified +32/-6 (38 lines); hunks: -400,11 +400,24 @@ def forward(; -633,11 +646,24 @@ def forward(; symbols: forward, touching `forward`.
 - Code diff details:
-  - `python/sglang/srt/models/qwen3_5.py` modified +32/-6 (38 lines); hunks: def forward(; def forward(; symbols: forward, forward
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/models/qwen3_5.py`; keywords observed in patches: moe. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/models/qwen3_5.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/models/qwen3_5.py` modified +32/-6 (38 lines); hunks: -400,11 +400,24 @@ def forward(; -633,11 +646,24 @@ def forward(; symbols: forward
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_5.py
+@@ -400,11 +400,24 @@ def forward(
+-        hidden_states = self.mlp(hidden_states, forward_batch, use_reduce_scatter)
+-        hidden_states, residual = self.layer_communicator.postprocess_layer(
+-            hidden_states, residual, forward_batch
++        should_allreduce_fusion = (
++            self.layer_communicator.should_fuse_mlp_allreduce_with_next_layer(
++                forward_batch
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_5.py` modified +32/-6
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/qwen3_5.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #19220 - [PCG] fix piecewise cuda graph for Qwen3.5
 
 - Link: https://github.com/sgl-project/sglang/pull/19220
-- Status/date: `merged`, created 2026-02-24, merged 2026-02-26; author `zminglei`.
-- Diff scope read: `4` files, `+9/-46`; areas: model wrapper, quantization; keywords: config, attention, cuda, eagle, expert, fp8, kv, lora, moe, quant.
+- Status/date: merged / 2026-02-26
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_5.py`; associated commits `b3202fe6d072`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 4 files, +9/-46, 115 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[PCG] fix piecewise cuda graph for Qwen3.5". The diff centers on `python/sglang/srt/models/qwen3_5.py`. PR body context: ## Motivation fix piecewise cuda graph for Qwen3.5 ## Modifications 1. fix piecewise cuda graph for Qwen3.5 2. clean up legacy code `gdn_with_output` as it's not used anymore. #...
+- Key implementation: `python/sglang/srt/models/qwen3_5.py` modified +1/-21 (22 lines); hunks: -22,9 +22,6; -72,7 +69,6; symbols: forward, _forward, touching `forward, _forward`.
 - Code diff details:
-  - `python/sglang/srt/models/qwen3_next.py` modified +0/-25 (25 lines); hunks: import torch; make_layers,; symbols: set_eagle3_layers_to_capture, gdn_with_output
-  - `python/sglang/srt/models/qwen3_5.py` modified +1/-21 (22 lines); hunks: import torch.nn as nn; from sglang.srt.models.qwen2_moe import Qwen2MoeMLP, Qwen2MoeSparseMoeBlock; symbols: forward, _forward, _forward
-  - `python/sglang/srt/layers/quantization/fp8_utils.py` modified +7/-0 (7 lines); hunks: def _fp8_scaled_mm_abstract(mat_a, mat_b, scales_a, scales_b, out_dtype, bias=No; symbols: _fp8_scaled_mm_abstract, _fp8_blockwise_scaled_mm_abstract
-  - `python/sglang/srt/models/qwen3_vl.py` modified +1/-0 (1 lines); hunks: def get_input_embeddings(self):; symbols: get_input_embeddings, should_apply_lora, forward
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/layers/quantization/fp8_utils.py`; keywords observed in patches: config, attention, cuda, eagle, expert, fp8. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; quantized loading or quantized kernels changed; verify scales, zero-points, checkpoint names, and fallback behavior.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/layers/quantization/fp8_utils.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/models/qwen3_5.py` modified +1/-21 (22 lines); hunks: -22,9 +22,6; -72,7 +69,6; symbols: forward, _forward
+- Key code excerpts:
 
-### PR #19391 - [Qwen3.5] Enable MTP spec_v2 and add test for nvidia/Qwen3.5-397B-A17B-NVFP4
+```diff
+diff -- python/sglang/srt/models/qwen3_5.py
+@@ -22,9 +22,6 @@
+-# Model Executor
+-from sglang.srt.compilation.piecewise_context_manager import get_forward_context
+@@ -72,7 +69,6 @@
+-from sglang.srt.models.qwen3_next import gdn_with_output
+@@ -253,22 +249,6 @@ def forward(
+-    ):
+```
 
-- Link: https://github.com/sgl-project/sglang/pull/19391
-- Status/date: `merged`, created 2026-02-26, merged 2026-03-04; author `hlu1`.
-- Diff scope read: `8` files, `+252/-16`; areas: model wrapper, scheduler/runtime, tests/benchmarks; keywords: scheduler, spec, cache, eagle, test, attention, config, cuda, fp4, kv.
-- Code diff details:
-  - `test/registered/4-gpu-models/test_qwen35_models.py` added +240/-0 (240 lines); hunks: +import unittest; symbols: TestQwen35FP4, setUpClass, tearDownClass, test_gsm8k
-  - `python/sglang/srt/server_args.py` modified +5/-4 (9 lines); hunks: def _handle_mamba_radix_cache(; symbols: _handle_mamba_radix_cache, _handle_sampling_backend
-  - `python/sglang/srt/disaggregation/decode.py` modified +0/-5 (5 lines); hunks: def __init__(; symbols: __init__
-  - `python/sglang/srt/mem_cache/memory_pool.py` modified +0/-5 (5 lines); hunks: def __init__(; symbols: __init__
-  - `python/sglang/srt/speculative/eagle_worker_v2.py` modified +4/-0 (4 lines); hunks: def _draft_extend_for_prefill(; def _draft_extend_for_prefill(; symbols: _draft_extend_for_prefill, _draft_extend_for_prefill, forward_batch_generation
-- Optimization/support interpretation: The concrete diff surface is `test/registered/4-gpu-models/test_qwen35_models.py`, `python/sglang/srt/server_args.py`, `python/sglang/srt/disaggregation/decode.py`; keywords observed in patches: scheduler, spec, cache, eagle, test, attention. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; scheduler/runtime/cache code changed; verify continuous batching, spec/PD/DP, cache lifetime, and exceptional branches; tests or benchmarks changed; use those cases as regression entry points instead of only checking model load.
-- Risk and verification: Re-run the model path that exercises `test/registered/4-gpu-models/test_qwen35_models.py`, `python/sglang/srt/server_args.py`, `python/sglang/srt/disaggregation/decode.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_5.py` modified +1/-21
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/quantization/fp8_utils.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_next.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #19411 - [Qwen3.5] Qwen3.5-27B inference repeat bug fix
 
 - Link: https://github.com/sgl-project/sglang/pull/19411
-- Status/date: `merged`, created 2026-02-26, merged 2026-02-26; author `AlfredYyong`.
-- Diff scope read: `1` files, `+2/-0`; areas: model wrapper; keywords: attention, config.
+- Status/date: merged / 2026-02-26
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_5.py`; associated commits `bdc1e46e5ac9`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +2/-0, 16 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Qwen3.5] Qwen3.5-27B inference repeat bug fix". The diff centers on `python/sglang/srt/models/qwen3_5.py`. PR body context: ## Motivation fix #19393 fix #19322 When deploying the `Qwen3.5-27B` model with `tp=2`, the model produces repetitive (degenerate) outputs, while `tp=1` works correctly. ### Roo...
+- Key implementation: `python/sglang/srt/models/qwen3_5.py` modified +2/-0 (2 lines); hunks: -352,6 +352,7 @@ def __init__(; -542,6 +543,7 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
-  - `python/sglang/srt/models/qwen3_5.py` modified +2/-0 (2 lines); hunks: def __init__(; def __init__(; symbols: __init__, forward, __init__
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/models/qwen3_5.py`; keywords observed in patches: attention, config. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/models/qwen3_5.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/models/qwen3_5.py` modified +2/-0 (2 lines); hunks: -352,6 +352,7 @@ def __init__(; -542,6 +543,7 @@ def __init__(; symbols: __init__, forward
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_5.py
+@@ -352,6 +352,7 @@ def __init__(
++            is_last_layer=(layer_id == config.num_hidden_layers - 1),
+@@ -542,6 +543,7 @@ def __init__(
++            is_last_layer=(layer_id == config.num_hidden_layers - 1),
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_5.py` modified +2/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/qwen3_5.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #19391 - [Qwen3.5] Enable MTP spec_v2 and add test for nvidia/Qwen3.5-397B-A17B-NVFP4
+
+- Link: https://github.com/sgl-project/sglang/pull/19391
+- Status/date: merged / 2026-03-04
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_5_mtp.py`; associated commits `9457c049e19e`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 8 files, +252/-16, 332 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR adds or enables a model support/runtime surface. Title: "[Qwen3.5] Enable MTP spec_v2 and add test for nvidia/Qwen3.5-397B-A17B-NVFP4". The diff centers on `python/sglang/srt/models/qwen3_5_mtp.py`. PR body context: ## Motivation - Make MTP_v2 work for Qwen3.5 by passing `mm_input_embeds` to the MTP head. - Add MTP_v1/v2 and non-MTP accuracy test for `nvidia/Qwen3.5-397B-A17B-NVFP4` and che...
+- Key implementation: `python/sglang/srt/models/qwen3_5_mtp.py` modified +1/-1 (2 lines); hunks: -111,7 +111,7 @@ def forward(; symbols: forward, touching `forward`.
+- Code diff details:
+  - `python/sglang/srt/models/qwen3_5_mtp.py` modified +1/-1 (2 lines); hunks: -111,7 +111,7 @@ def forward(; symbols: forward
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_5_mtp.py
+@@ -111,7 +111,7 @@ def forward(
+-            and not forward_batch.forward_mode.is_draft_extend()
++            and not forward_batch.forward_mode.is_draft_extend(include_v2=True)
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_5_mtp.py` modified +1/-1
+- Risk and verification: The diff ships test coverage in `test/registered/4-gpu-models/test_qwen35_models.py`, `test/registered/4-gpu-models/test_qwen3_next_models_mtp.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #19906 - Add Qwen3.5-397B-A17B nightly test (8-GPU)
+
+- Link: https://github.com/sgl-project/sglang/pull/19906
+- Status/date: merged / 2026-03-06
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/8-gpu-models/test_qwen35.py`; associated commits `ac453b253f58`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +74/-0, 75 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR adds or enables a model support/runtime surface. Title: "Add Qwen3.5-397B-A17B nightly test (8-GPU)". The diff centers on `test/registered/8-gpu-models/test_qwen35.py`. PR body context: ## Summary Add Qwen3.5-397B-A17B as a new 8-GPU nightly test (followup to #19218). Two variants: - **TP8**: base config with `--reasoning-parser=qwen3` - **TP8+MTP**: speculativ...
+- Key implementation: `test/registered/8-gpu-models/test_qwen35.py` added +74/-0 (74 lines); hunks: -0,0 +1,74; symbols: TestQwen35, for, test_qwen35, touching `TestQwen35, for, test_qwen35`.
+- Code diff details:
+  - `test/registered/8-gpu-models/test_qwen35.py` added +74/-0 (74 lines); hunks: -0,0 +1,74; symbols: TestQwen35, for, test_qwen35
+- Key code excerpts:
+
+```diff
+diff -- test/registered/8-gpu-models/test_qwen35.py
+@@ -0,0 +1,74 @@
++import unittest
++from sglang.test.accuracy_test_runner import AccuracyTestParams
++from sglang.test.ci.ci_register import register_cuda_ci
++from sglang.test.performance_test_runner import PerformanceTestParams
++from sglang.test.run_combined_tests import run_combined_tests
++from sglang.test.test_utils import ModelLaunchSettings
+```
+
+- Reviewed files:
+  - tests: `test/registered/8-gpu-models/test_qwen35.py` added +74/-0
+- Risk and verification: The diff ships test coverage in `test/registered/8-gpu-models/test_qwen35.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #19670 - [Qwen3.5] Support Qwen3.5 Pipeline Parallelism
 
 - Link: https://github.com/sgl-project/sglang/pull/19670
-- Status/date: `merged`, created 2026-03-02, merged 2026-03-07; author `yuan-luo`.
-- Diff scope read: `2` files, `+114/-13`; areas: model wrapper, tests/benchmarks; keywords: attention, cache, config, cuda, expert, test.
+- Status/date: merged / 2026-03-07
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_5.py`; associated commits `7da590d4d069`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +114/-13, 194 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR adds or enables a model support/runtime surface. Title: "[Qwen3.5] Support Qwen3.5 Pipeline Parallelism". The diff centers on `python/sglang/srt/models/qwen3_5.py`. PR body context: ## Motivation To close https://github.com/sgl-project/sglang/issues/19500 Currently Qwen3.5 PP will crash with error. With this PR it works. Server: gsm8k no drop. ## Modificati...
+- Key implementation: `python/sglang/srt/models/qwen3_5.py` modified +60/-13 (73 lines); hunks: -30,7 +30,7; -59,6 +59,7; symbols: __init__, get_layer, get_input_embeddings, touching `__init__, get_layer, get_input_embeddings`.
 - Code diff details:
-  - `python/sglang/srt/models/qwen3_5.py` modified +60/-13 (73 lines); hunks: ); from sglang.srt.layers.radix_attention import RadixAttention; symbols: __init__, get_layer, get_layer, get_input_embeddings
-  - `test/registered/distributed/test_pp_single_node.py` modified +54/-0 (54 lines); hunks: def test_pp_consistency(self):; symbols: test_pp_consistency, TestQwen35PPAccuracy, setUpClass, run_gsm8k_test
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/models/qwen3_5.py`, `test/registered/distributed/test_pp_single_node.py`; keywords observed in patches: attention, cache, config, cuda, expert, test. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; tests or benchmarks changed; use those cases as regression entry points instead of only checking model load.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/models/qwen3_5.py`, `test/registered/distributed/test_pp_single_node.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/models/qwen3_5.py` modified +60/-13 (73 lines); hunks: -30,7 +30,7; -59,6 +59,7; symbols: __init__, get_layer, get_input_embeddings
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_5.py
+@@ -30,7 +30,7 @@
+-from sglang.srt.distributed import get_pp_group
++from sglang.srt.distributed import get_pp_group, get_pp_indices
+@@ -59,6 +59,7 @@
++from sglang.srt.layers.utils import PPMissingLayer
+@@ -680,6 +681,8 @@ def __init__(
++        else:
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_5.py` modified +60/-13
+- Risk and verification: The diff ships test coverage in `test/registered/distributed/test_pp_single_node.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #19767 - Fix qwen3.5 mtp eplb related issues
 
 - Link: https://github.com/sgl-project/sglang/pull/19767
-- Status/date: `merged`, created 2026-03-03, merged 2026-03-09; author `luoyuyan`.
-- Diff scope read: `5` files, `+79/-16`; areas: model wrapper, MoE/router; keywords: config, quant, expert, moe, cuda, processor, attention, deepep, router, triton.
+- Status/date: merged / 2026-03-09
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`; associated commits `cabe171b6ce3`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 5 files, +79/-16, 272 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR adds or enables a model support/runtime surface. Title: "Fix qwen3.5 mtp eplb related issues". The diff centers on `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`. PR body context: ## Motivation support eplb with mtp for Qwen3.5 & Qwen3-Next ## Modifications ## Accuracy Tests ## Benchmarking and Profiling ## Checklist - [ ] Format your code according to th...
+- Key implementation: `python/sglang/srt/models/qwen3_5.py` modified +34/-1 (35 lines); hunks: -72,7 +72,14; -294,6 +301,7 @@ def __init__(; symbols: __init__, touching `__init__`; `python/sglang/srt/models/qwen3_5_mtp.py` modified +19/-6 (25 lines); hunks: -22,6 +22,8; -69,6 +71,7 @@ def __init__(; symbols: __init__, get_model_config_for_expert_location, get_embed_and_head, forward, touching `__init__, get_model_config_for_expert_location, get_embed_and_head`.
 - Code diff details:
-  - `python/sglang/srt/models/qwen3_5.py` modified +34/-1 (35 lines); hunks: from sglang.srt.models.qwen3_vl import Qwen3VLForConditionalGeneration; def __init__(; symbols: __init__, __init__, __init__, __init__
-  - `python/sglang/srt/models/qwen3_5_mtp.py` modified +19/-6 (25 lines); hunks: from transformers import PretrainedConfig; def __init__(; symbols: __init__, __init__, get_model_config_for_expert_location, get_embed_and_head
-  - `python/sglang/srt/models/qwen3_next_mtp.py` modified +12/-7 (19 lines); hunks: from transformers import PretrainedConfig; def __init__(; symbols: __init__, forward
-  - `python/sglang/srt/models/qwen2_moe.py` modified +8/-2 (10 lines); hunks: def __init__(; def __init__(; symbols: __init__, __init__, get_moe_weights, _forward_deepep
-  - `python/sglang/srt/models/qwen3_next.py` modified +6/-0 (6 lines); hunks: def __init__(; def __init__(; symbols: __init__, __init__, __init__, __init__
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`, `python/sglang/srt/models/qwen3_next_mtp.py`; keywords observed in patches: config, quant, expert, moe, cuda, processor. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; MoE/router/top-k/expert logic changed; verify shared/routed experts plus EP/TP/DP and empty-token branches.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`, `python/sglang/srt/models/qwen3_next_mtp.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/models/qwen3_5.py` modified +34/-1 (35 lines); hunks: -72,7 +72,14; -294,6 +301,7 @@ def __init__(; symbols: __init__
+  - `python/sglang/srt/models/qwen3_5_mtp.py` modified +19/-6 (25 lines); hunks: -22,6 +22,8; -69,6 +71,7 @@ def __init__(; symbols: __init__, get_model_config_for_expert_location, get_embed_and_head, forward
+- Key code excerpts:
 
-### PR #19889 - Use TRTLLM allreduce fusion for Qwen 3.5
+```diff
+diff -- python/sglang/srt/models/qwen3_5.py
+@@ -72,7 +72,14 @@
+-from sglang.srt.utils import add_prefix, is_cuda, is_npu, make_layers, set_weight_attrs
++from sglang.srt.utils import (
++    LazyValue,
++    add_prefix,
++    is_cuda,
++    is_npu,
+diff -- python/sglang/srt/models/qwen3_5_mtp.py
+@@ -22,6 +22,8 @@
++from sglang.srt.eplb.expert_distribution import get_global_expert_distribution_recorder
++from sglang.srt.eplb.expert_location import ModelConfigForExpertLocation
+@@ -69,6 +71,7 @@ def __init__(
++            is_nextn=True,
+@@ -84,6 +87,15 @@ def __init__(
++    @classmethod
+```
 
-- Link: https://github.com/sgl-project/sglang/pull/19889
-- Status/date: `merged`, created 2026-03-04, merged 2026-03-18; author `b8zhong`.
-- Diff scope read: `4` files, `+88/-52`; areas: model wrapper, MoE/router; keywords: moe, flash, attention, fp4, processor, spec, topk, triton.
-- Code diff details:
-  - `python/sglang/srt/layers/layernorm.py` modified +63/-48 (111 lines); hunks: import torch_npu; def forward_with_allreduce_fusion(; symbols: _forward_with_allreduce_fusion, RMSNorm, __init__, forward_with_allreduce_fusion
-  - `python/sglang/srt/models/qwen3_5.py` modified +12/-2 (14 lines); hunks: def forward(; def forward(; symbols: forward, forward
-  - `python/sglang/srt/models/qwen2_moe.py` modified +11/-2 (13 lines); hunks: RowParallelLinear,; def forward(; symbols: forward, forward
-  - `python/sglang/srt/server_args.py` modified +2/-0 (2 lines); hunks: def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/layers/layernorm.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen2_moe.py`; keywords observed in patches: moe, flash, attention, fp4, processor, spec. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; MoE/router/top-k/expert logic changed; verify shared/routed experts plus EP/TP/DP and empty-token branches.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/layers/layernorm.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen2_moe.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
-
-### PR #19961 - fix: change qwen 3.5 linear attention a_log to fp32
-
-- Link: https://github.com/sgl-project/sglang/pull/19961
-- Status/date: `merged`, created 2026-03-05, merged 2026-03-18; author `shiyu7`.
-- Diff scope read: `1` files, `+1/-1`; areas: model wrapper; keywords: n/a.
-- Code diff details:
-  - `python/sglang/srt/models/qwen3_5.py` modified +1/-1 (2 lines); hunks: def __init__(; symbols: __init__
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/models/qwen3_5.py`; keywords observed in patches: n/a. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/models/qwen3_5.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_5.py` modified +34/-1; `python/sglang/srt/models/qwen3_5_mtp.py` modified +19/-6
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #20386 - perf(qwen3_5): replace einops rearrange with torch.flatten in GatedDe…
 
 - Link: https://github.com/sgl-project/sglang/pull/20386
-- Status/date: `merged`, created 2026-03-11, merged 2026-03-12; author `vedantjh2`.
-- Diff scope read: `1` files, `+1/-2`; areas: model wrapper; keywords: config.
+- Status/date: merged / 2026-03-12
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_5.py`; associated commits `9b55a98a6705`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +1/-2, 17 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR optimizes an inference path or backend selection. Title: "perf(qwen3_5): replace einops rearrange with torch.flatten in GatedDe…". The diff centers on `python/sglang/srt/models/qwen3_5.py`. PR body context: ## Motivation `einops.rearrange` performs Python-level string parsing and validation on **every call**. In `Qwen3_5GatedDeltaNet.forward()`, the pattern `rearrange(x, "... h d -...
+- Key implementation: `python/sglang/srt/models/qwen3_5.py` modified +1/-2 (3 lines); hunks: -20,7 +20,6; -287,7 +286,7 @@ def forward(; symbols: forward, touching `forward`.
 - Code diff details:
-  - `python/sglang/srt/models/qwen3_5.py` modified +1/-2 (3 lines); hunks: import torch; def forward(; symbols: forward
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/models/qwen3_5.py`; keywords observed in patches: config. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/models/qwen3_5.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/models/qwen3_5.py` modified +1/-2 (3 lines); hunks: -20,7 +20,6; -287,7 +286,7 @@ def forward(; symbols: forward
+- Key code excerpts:
 
-### PR #20736 - [AMD] Enable share expert fusion with router experts for Qwen3.5 BF16 & FP8
+```diff
+diff -- python/sglang/srt/models/qwen3_5.py
+@@ -20,7 +20,6 @@
+-from einops import rearrange
+@@ -287,7 +286,7 @@ def forward(
+-        core_attn_out = rearrange(core_attn_out, "... h d -> ... (h d)")
++        core_attn_out = core_attn_out.flatten(-2)  # ... h d -> ... (h d)
+```
 
-- Link: https://github.com/sgl-project/sglang/pull/20736
-- Status/date: `merged`, created 2026-03-17, merged 2026-04-15; author `zhentaocc`.
-- Diff scope read: `2` files, `+218/-8`; areas: model wrapper, MoE/router; keywords: config, cuda, expert, moe, deepep, fp8, quant, router, topk, triton.
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_5.py` modified +1/-2
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/qwen3_5.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #19889 - Use TRTLLM allreduce fusion for Qwen 3.5
+
+- Link: https://github.com/sgl-project/sglang/pull/19889
+- Status/date: merged / 2026-03-18
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 4 files, +88/-52, 210 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR changes model-related implementation. Title: "Use TRTLLM allreduce fusion for Qwen 3.5". The diff centers on `python/sglang/srt/layers/layernorm.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen2_moe.py`. PR body context: Before: 21.5 us After 10.4 us This PR is mainly authored by @vincentzed
+- Key implementation: `python/sglang/srt/layers/layernorm.py` modified +63/-48 (111 lines); hunks: -86,6 +86,53; -303,53 +350,10 @@ def forward_with_allreduce_fusion(; symbols: _forward_with_allreduce_fusion, RMSNorm, __init__, forward_with_allreduce_fusion, touching `_forward_with_allreduce_fusion, RMSNorm, __init__`; `python/sglang/srt/models/qwen3_5.py` modified +12/-2 (14 lines); hunks: -397,7 +397,12 @@ def forward(; -646,7 +651,12 @@ def forward(; symbols: forward, touching `forward`; `python/sglang/srt/models/qwen2_moe.py` modified +11/-2 (13 lines); hunks: -54,7 +54,10; -310,6 +313,7 @@ def forward(; symbols: forward, touching `forward`; `python/sglang/srt/server_args.py` modified +2/-0 (2 lines); hunks: -1978,6 +1978,8 @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments, touching `_handle_model_specific_adjustments`.
 - Code diff details:
-  - `python/sglang/srt/models/qwen2_moe.py` modified +108/-5 (113 lines); hunks: ); from sglang.srt.utils import (; symbols: can_fuse_shared_expert, Qwen2MoeMLP, __init__, __init__
-  - `python/sglang/srt/models/qwen3_5.py` modified +110/-3 (113 lines); hunks: LazyValue,; _is_npu = is_npu(); symbols: __init__, __init__, __init__, _get_num_fused_shared_experts
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/models/qwen3_5.py`; keywords observed in patches: config, cuda, expert, moe, deepep, fp8. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; MoE/router/top-k/expert logic changed; verify shared/routed experts plus EP/TP/DP and empty-token branches.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/models/qwen3_5.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/layers/layernorm.py` modified +63/-48 (111 lines); hunks: -86,6 +86,53; -303,53 +350,10 @@ def forward_with_allreduce_fusion(; symbols: _forward_with_allreduce_fusion, RMSNorm, __init__, forward_with_allreduce_fusion
+  - `python/sglang/srt/models/qwen3_5.py` modified +12/-2 (14 lines); hunks: -397,7 +397,12 @@ def forward(; -646,7 +651,12 @@ def forward(; symbols: forward
+  - `python/sglang/srt/models/qwen2_moe.py` modified +11/-2 (13 lines); hunks: -54,7 +54,10; -310,6 +313,7 @@ def forward(; symbols: forward
+  - `python/sglang/srt/server_args.py` modified +2/-0 (2 lines); hunks: -1978,6 +1978,8 @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments
+- Key code excerpts:
 
-### PR #20864 - [Perf]Remove H2D for Qwen3.5 SpecV2
+```diff
+diff -- python/sglang/srt/layers/layernorm.py
+@@ -86,6 +86,53 @@
++def _forward_with_allreduce_fusion(
++    norm_module,
++    x: torch.Tensor,
++    residual: Optional[torch.Tensor],
++    post_residual_addition: Optional[torch.Tensor],
++    weight: torch.Tensor,
+diff -- python/sglang/srt/models/qwen3_5.py
+@@ -397,7 +397,12 @@ def forward(
+-            hidden_states = self.mlp(hidden_states, forward_batch, use_reduce_scatter)
++            hidden_states = self.mlp(
++                hidden_states,
++                forward_batch,
++                use_reduce_scatter,
++                should_allreduce_fusion,
+diff -- python/sglang/srt/models/qwen2_moe.py
+@@ -54,7 +54,10 @@
+```
 
-- Link: https://github.com/sgl-project/sglang/pull/20864
-- Status/date: `merged`, created 2026-03-18, merged 2026-03-31; author `Chen-0210`.
-- Diff scope read: `2` files, `+17/-13`; areas: scheduler/runtime; keywords: spec, cache, eagle.
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/layernorm.py` modified +63/-48; `python/sglang/srt/models/qwen3_5.py` modified +12/-2; `python/sglang/srt/models/qwen2_moe.py` modified +11/-2; `python/sglang/srt/server_args.py` modified +2/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/layernorm.py`, `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/models/qwen3_5.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #19961 - fix: change qwen 3.5 linear attention a_log to fp32
+
+- Link: https://github.com/sgl-project/sglang/pull/19961
+- Status/date: merged / 2026-03-18
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR fixes a launch, loading, parsing, or numerical issue. Title: "fix: change qwen 3.5 linear attention a_log to fp32". The diff centers on `python/sglang/srt/models/qwen3_5.py`. PR body context: ## Motivation Change the data type of a_log to fp32 in accordance with the original design of Qwen 3.5. ## Accuracy Tests ## Benchmarking and Profiling ## Checklist - [ ] Format...
+- Key implementation: `python/sglang/srt/models/qwen3_5.py` modified +1/-1 (2 lines); hunks: -186,7 +186,7 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
-  - `python/sglang/srt/model_executor/forward_batch_info.py` modified +14/-8 (22 lines); hunks: def _compute_spec_mrope_positions(; symbols: _compute_spec_mrope_positions
-  - `python/sglang/srt/speculative/eagle_info_v2.py` modified +3/-5 (8 lines); hunks: def prepare_for_v2_verify(; symbols: prepare_for_v2_verify
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/model_executor/forward_batch_info.py`, `python/sglang/srt/speculative/eagle_info_v2.py`; keywords observed in patches: spec, cache, eagle. Impact reading: scheduler/runtime/cache code changed; verify continuous batching, spec/PD/DP, cache lifetime, and exceptional branches.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/model_executor/forward_batch_info.py`, `python/sglang/srt/speculative/eagle_info_v2.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/models/qwen3_5.py` modified +1/-1 (2 lines); hunks: -186,7 +186,7 @@ def __init__(; symbols: __init__
+- Key code excerpts:
 
-### PR #21019 - [Qwen3.5] Fuse split/reshape/cat ops in GDN projection with Triton kernel
+```diff
+diff -- python/sglang/srt/models/qwen3_5.py
+@@ -186,7 +186,7 @@ def __init__(
+-            torch.empty(self.num_v_heads // self.attn_tp_size),
++            torch.empty(self.num_v_heads // self.attn_tp_size, dtype=torch.float32),
+```
 
-- Link: https://github.com/sgl-project/sglang/pull/21019
-- Status/date: `merged`, created 2026-03-20, merged 2026-03-23; author `yuan-luo`.
-- Diff scope read: `3` files, `+597/-202`; areas: model wrapper, kernel; keywords: kv, triton, attention, config, cuda, cache, fp8, moe, processor, quant.
-- Code diff details:
-  - `python/sglang/srt/models/qwen3_5.py` modified +285/-65 (350 lines); hunks: import torch; RowParallelLinear,; symbols: __init__, __init__, __init__, __init__
-  - `python/sglang/jit_kernel/triton/gdn_fused_proj.py` added +310/-0 (310 lines); hunks: +from __future__ import annotations; symbols: fused_qkvzba_split_reshape_cat_kernel, fused_qkvzba_split_reshape_cat, fused_qkvzba_split_reshape_cat_contiguous_kernel, fused_qkvzba_split_reshape_cat_contiguous
-  - `python/sglang/srt/models/qwen3_next.py` modified +2/-137 (139 lines); hunks: from typing import Any, Iterable, Optional, Set, Tuple; logger = logging.getLogger(__name__); symbols: fused_qkvzba_split_reshape_cat_kernel, fused_qkvzba_split_reshape_cat, Qwen3GatedDeltaNet, __init__
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/models/qwen3_5.py`, `python/sglang/jit_kernel/triton/gdn_fused_proj.py`, `python/sglang/srt/models/qwen3_next.py`; keywords observed in patches: kv, triton, attention, config, cuda, cache. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; CUDA/Triton/C++ kernels or bindings changed; verify shape guards, dtype, device backend, and benchmark coverage.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/models/qwen3_5.py`, `python/sglang/jit_kernel/triton/gdn_fused_proj.py`, `python/sglang/srt/models/qwen3_next.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_5.py` modified +1/-1
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/qwen3_5.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #21070 - [Qwen3.5] Fix broken pipeline parallelism layer splitting
 
 - Link: https://github.com/sgl-project/sglang/pull/21070
-- Status/date: `merged`, created 2026-03-21, merged 2026-03-21; author `alisonshao`.
-- Diff scope read: `2` files, `+15/-20`; areas: model wrapper, tests/benchmarks; keywords: config, expert, moe, test.
+- Status/date: merged / 2026-03-21
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_5.py`; associated commits `852e112ebf00`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +15/-20, 94 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Qwen3.5] Fix broken pipeline parallelism layer splitting". The diff centers on `python/sglang/srt/models/qwen3_5.py`. PR body context: ## Summary - **Root cause:** `make_layers()` in `Qwen3_5ForCausalLM` (#19670) was called without `pp_rank`/`pp_size`, so all PP stages instantiated every layer and loaded the fu...
+- Key implementation: `python/sglang/srt/models/qwen3_5.py` modified +8/-15 (23 lines); hunks: -29,7 +29,7; -721,25 +721,14 @@ def get_layer(idx: int, prefix: str):; symbols: get_layer, load_fused_expert_weights, touching `get_layer, load_fused_expert_weights`.
 - Code diff details:
-  - `python/sglang/srt/models/qwen3_5.py` modified +8/-15 (23 lines); hunks: ); def get_layer(idx: int, prefix: str):; symbols: get_layer, load_fused_expert_weights, load_fused_expert_weights
-  - `test/registered/distributed/test_pp_single_node.py` modified +7/-5 (12 lines); hunks: def setUpClass(cls):; def run_gsm8k_test(self, pp_size):; symbols: setUpClass, run_gsm8k_test, run_gsm8k_test, run_gsm8k_test
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/models/qwen3_5.py`, `test/registered/distributed/test_pp_single_node.py`; keywords observed in patches: config, expert, moe, test. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; tests or benchmarks changed; use those cases as regression entry points instead of only checking model load.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/models/qwen3_5.py`, `test/registered/distributed/test_pp_single_node.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/models/qwen3_5.py` modified +8/-15 (23 lines); hunks: -29,7 +29,7; -721,25 +721,14 @@ def get_layer(idx: int, prefix: str):; symbols: get_layer, load_fused_expert_weights
+- Key code excerpts:
 
-### PR #21234 - [AMD] Support AMD MXFP4 Qwen3.5-397B-A17B model
+```diff
+diff -- python/sglang/srt/models/qwen3_5.py
+@@ -29,7 +29,7 @@
+-from sglang.srt.distributed import get_pp_group, get_pp_indices
++from sglang.srt.distributed import get_pp_group
+@@ -721,25 +721,14 @@ def get_layer(idx: int, prefix: str):
+-        self.layers = make_layers(
++        self.layers, self._start_layer, self._end_layer = make_layers(
++            pp_rank=self.pp_group.rank_in_group,
+```
 
-- Link: https://github.com/sgl-project/sglang/pull/21234
-- Status/date: `merged`, created 2026-03-23, merged 2026-03-30; author `hubertlu-tw`.
-- Diff scope read: `1` files, `+18/-0`; areas: model wrapper; keywords: config, cuda, expert, kv, moe, vision.
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_5.py` modified +8/-15
+- Risk and verification: The diff ships test coverage in `test/registered/distributed/test_pp_single_node.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #21019 - [Qwen3.5] Fuse split/reshape/cat ops in GDN projection with Triton kernel
+
+- Link: https://github.com/sgl-project/sglang/pull/21019
+- Status/date: merged / 2026-03-23
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_5.py`; associated commits `5bdc07d974f6`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +597/-202, 953 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR optimizes an inference path or backend selection. Title: "[Qwen3.5] Fuse split/reshape/cat ops in GDN projection with Triton kernel". The diff centers on `python/sglang/srt/models/qwen3_5.py`. PR body context: ## Motivation In PR https://github.com/sgl-project/sglang/pull/19321 we fused Qwen3-Next GDN's qkvz_proj and ba_proj. This PR is a follow up. The background that Qwen3-Next and...
+- Key implementation: `python/sglang/srt/models/qwen3_5.py` modified +285/-65 (350 lines); hunks: -20,6 +20,11; -54,6 +59,10; symbols: __init__, touching `__init__`.
 - Code diff details:
-  - `python/sglang/srt/models/qwen3_5.py` modified +18/-0 (18 lines); hunks: cpu_has_amx_support,; _is_cuda = is_cuda(); symbols: forward, Qwen3_5ForCausalLM, __init__, load_fused_expert_weights
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/models/qwen3_5.py`; keywords observed in patches: config, cuda, expert, kv, moe, vision. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/models/qwen3_5.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/models/qwen3_5.py` modified +285/-65 (350 lines); hunks: -20,6 +20,11; -54,6 +59,10; symbols: __init__
+- Key code excerpts:
 
-### PR #21347 - [Bugfix] Fix PP tied embeddings weight loading for qwen3.5 4B dense model
+```diff
+diff -- python/sglang/srt/models/qwen3_5.py
+@@ -20,6 +20,11 @@
++import triton
++from sglang.jit_kernel.triton.gdn_fused_proj import (
++    fused_qkvzba_split_reshape_cat_contiguous,
++)
+@@ -54,6 +59,10 @@
++from sglang.srt.layers.parameter import (
+```
 
-- Link: https://github.com/sgl-project/sglang/pull/21347
-- Status/date: `merged`, created 2026-03-24, merged 2026-04-01; author `edwingao28`.
-- Diff scope read: `1` files, `+22/-0`; areas: model wrapper; keywords: config, expert.
-- Code diff details:
-  - `python/sglang/srt/models/qwen3_5.py` modified +22/-0 (22 lines); hunks: def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]]):; def load_fused_expert_weights(; symbols: load_weights, load_fused_expert_weights
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/models/qwen3_5.py`; keywords observed in patches: config, expert. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/models/qwen3_5.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
-
-### PR #21448 - [Fix] Fix Qwen3.5 MoE model loading and Mamba cache sharding in PP mode
-
-- Link: https://github.com/sgl-project/sglang/pull/21448
-- Status/date: `merged`, created 2026-03-26, merged 2026-03-30; author `sufeng-buaa`.
-- Diff scope read: `6` files, `+78/-8`; areas: model wrapper, attention/backend, scheduler/runtime, tests/benchmarks; keywords: cache, spec, attention, config, kv, mla, cuda, expert, lora, test.
-- Code diff details:
-  - `python/sglang/srt/models/qwen3_5.py` modified +31/-1 (32 lines); hunks: from sglang.srt.layers.radix_attention import RadixAttention; def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]]):; symbols: load_weights, load_fused_expert_weights, load_weights, load_fused_expert_weights
-  - `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py` modified +17/-0 (17 lines); hunks: def _init_pools(self: ModelRunner):; def _init_pools(self: ModelRunner):; symbols: _init_pools, _init_pools, _init_pools
-  - `python/sglang/srt/mem_cache/memory_pool.py` modified +11/-5 (16 lines); hunks: def __init__(; def __init__(; symbols: __init__, __init__, __init__, __init__
-  - `python/sglang/srt/models/qwen3_vl.py` modified +13/-0 (13 lines); hunks: def separate_deepstack_embeds(self, embedding):; symbols: separate_deepstack_embeds, start_layer, end_layer, pad_input_ids
-  - `python/sglang/srt/disaggregation/decode.py` modified +4/-2 (6 lines); hunks: def __init__(; def __init__(; symbols: __init__, __init__
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py`, `python/sglang/srt/mem_cache/memory_pool.py`; keywords observed in patches: cache, spec, attention, config, kv, mla. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; attention, KV cache, or backend selection changed; verify prefill/decode, page size, RoPE/MLA/MQA branches; scheduler/runtime/cache code changed; verify continuous batching, spec/PD/DP, cache lifetime, and exceptional branches; tests or benchmarks changed; use those cases as regression entry points instead of only checking model load.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py`, `python/sglang/srt/mem_cache/memory_pool.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_5.py` modified +285/-65
+- Risk and verification: Runtime changes concentrate in `python/sglang/jit_kernel/triton/gdn_fused_proj.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_next.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #21487 - feat(ci): add GB300 nightly benchmark test suites
 
 - Link: https://github.com/sgl-project/sglang/pull/21487
-- Status/date: `merged`, created 2026-03-26, merged 2026-03-29; author `Kangyan-Zhou`.
-- Diff scope read: `11` files, `+874/-4`; areas: quantization, scheduler/runtime, tests/benchmarks; keywords: test, attention, cuda, eagle, spec, topk, flash, cache, fp4, kv.
+- Status/date: merged / 2026-03-29
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 11 files, +874/-4, 926 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR adds or enables a model support/runtime surface. Title: "feat(ci): add GB300 nightly benchmark test suites". The diff centers on `python/sglang/test/accuracy_test_runner.py`, `test/registered/gb300/test_deepseek_v32_nvfp4.py`, `test/registered/gb300/test_deepseek_v32.py`. PR body context: ## Summary - Add 8 per-model registered test files for GB300 (4x B200 NVL4, arm64) nightly benchmarks - Register two new nightly suites: `nightly-4-gpu-gb300-nvfp4` and `nightly...
+- Key implementation: `python/sglang/test/accuracy_test_runner.py` modified +296/-3 (299 lines); hunks: -150,6 +150,288 @@ def _run_simple_eval(; -224,13 +506,24 @@ def run_accuracy_test(; symbols: _run_simple_eval, _get_nemo_venv, _ensure_nemo_data_prepared, _run_nemo_skills_eval, touching `_run_simple_eval, _get_nemo_venv, _ensure_nemo_data_prepared`; `test/registered/gb300/test_deepseek_v32_nvfp4.py` added +82/-0 (82 lines); hunks: -0,0 +1,82; symbols: TestDeepseekV32Nvfp4, test_deepseek_v32_nvfp4, touching `TestDeepseekV32Nvfp4, test_deepseek_v32_nvfp4`; `test/registered/gb300/test_deepseek_v32.py` added +79/-0 (79 lines); hunks: -0,0 +1,79; symbols: TestDeepseekV32, test_deepseek_v32, touching `TestDeepseekV32, test_deepseek_v32`; `test/registered/gb300/test_qwen35_nvfp4.py` added +79/-0 (79 lines); hunks: -0,0 +1,79; symbols: TestQwen35Nvfp4, test_qwen35_nvfp4, touching `TestQwen35Nvfp4, test_qwen35_nvfp4`.
 - Code diff details:
-  - `python/sglang/test/accuracy_test_runner.py` modified +296/-3 (299 lines); hunks: def _run_simple_eval(; def run_accuracy_test(; symbols: _run_simple_eval, _get_nemo_venv, _ensure_nemo_data_prepared, _run_nemo_skills_eval
-  - `test/registered/gb300/test_deepseek_v32_nvfp4.py` added +82/-0 (82 lines); hunks: +import unittest; symbols: TestDeepseekV32Nvfp4, test_deepseek_v32_nvfp4
-  - `test/registered/gb300/test_deepseek_v32.py` added +79/-0 (79 lines); hunks: +import unittest; symbols: TestDeepseekV32, test_deepseek_v32
-  - `test/registered/gb300/test_qwen35_nvfp4.py` added +79/-0 (79 lines); hunks: +import unittest; symbols: TestQwen35Nvfp4, test_qwen35_nvfp4
-  - `test/registered/gb300/test_qwen35_fp8.py` added +75/-0 (75 lines); hunks: +import unittest; symbols: TestQwen35Fp8, test_qwen35_fp8
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/test/accuracy_test_runner.py`, `test/registered/gb300/test_deepseek_v32_nvfp4.py`, `test/registered/gb300/test_deepseek_v32.py`; keywords observed in patches: test, attention, cuda, eagle, spec, topk. Impact reading: quantized loading or quantized kernels changed; verify scales, zero-points, checkpoint names, and fallback behavior; scheduler/runtime/cache code changed; verify continuous batching, spec/PD/DP, cache lifetime, and exceptional branches; tests or benchmarks changed; use those cases as regression entry points instead of only checking model load.
-- Risk and verification: Re-run the model path that exercises `python/sglang/test/accuracy_test_runner.py`, `test/registered/gb300/test_deepseek_v32_nvfp4.py`, `test/registered/gb300/test_deepseek_v32.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/test/accuracy_test_runner.py` modified +296/-3 (299 lines); hunks: -150,6 +150,288 @@ def _run_simple_eval(; -224,13 +506,24 @@ def run_accuracy_test(; symbols: _run_simple_eval, _get_nemo_venv, _ensure_nemo_data_prepared, _run_nemo_skills_eval
+  - `test/registered/gb300/test_deepseek_v32_nvfp4.py` added +82/-0 (82 lines); hunks: -0,0 +1,82; symbols: TestDeepseekV32Nvfp4, test_deepseek_v32_nvfp4
+  - `test/registered/gb300/test_deepseek_v32.py` added +79/-0 (79 lines); hunks: -0,0 +1,79; symbols: TestDeepseekV32, test_deepseek_v32
+  - `test/registered/gb300/test_qwen35_nvfp4.py` added +79/-0 (79 lines); hunks: -0,0 +1,79; symbols: TestQwen35Nvfp4, test_qwen35_nvfp4
+  - `test/registered/gb300/test_qwen35_fp8.py` added +75/-0 (75 lines); hunks: -0,0 +1,75; symbols: TestQwen35Fp8, test_qwen35_fp8
+- Key code excerpts:
 
-### PR #21669 - [AMD] Add Qwen3.5-397B FP8 nightly perf benchmarks for MI30x and MI35x
+```diff
+diff -- python/sglang/test/accuracy_test_runner.py
+@@ -150,6 +150,288 @@ def _run_simple_eval(
++# Cached uv venv for NeMo Skills (persists across variants within a process).
++_nemo_venv_dir: Optional[str] = None
++_nemo_data_prepared: set = set()
++def _get_nemo_venv() -> Tuple[str, dict]:
++    """Get or create a uv venv with nemo_skills installed.
++    Returns (venv_python_path, env_dict) reusable across calls.
+diff -- test/registered/gb300/test_deepseek_v32_nvfp4.py
+@@ -0,0 +1,82 @@
++import unittest
++from sglang.test.accuracy_test_runner import AccuracyTestParams
++from sglang.test.ci.ci_register import register_cuda_ci
++from sglang.test.performance_test_runner import PerformanceTestParams
++from sglang.test.run_combined_tests import run_combined_tests
++from sglang.test.test_utils import ModelLaunchSettings
+diff -- test/registered/gb300/test_deepseek_v32.py
+@@ -0,0 +1,79 @@
+```
 
-- Link: https://github.com/sgl-project/sglang/pull/21669
-- Status/date: `merged`, created 2026-03-30, merged 2026-04-07; author `michaelzhang-ai`.
-- Diff scope read: `6` files, `+408/-8`; areas: quantization, tests/benchmarks; keywords: test, attention, config, fp8, triton, cache, benchmark, moe.
+- Reviewed files:
+  - tests: `python/sglang/test/accuracy_test_runner.py` modified +296/-3; `test/registered/gb300/test_deepseek_v32_nvfp4.py` added +82/-0; `test/registered/gb300/test_deepseek_v32.py` added +79/-0; `test/registered/gb300/test_qwen35_nvfp4.py` added +79/-0; `test/registered/gb300/test_qwen35_fp8.py` added +75/-0; `test/registered/gb300/test_glm5_nvfp4.py` added +71/-0
+- Risk and verification: The diff ships test coverage in `python/sglang/test/accuracy_test_runner.py`, `python/sglang/test/run_combined_tests.py`, `test/registered/gb300/test_deepseek_v32.py`, `test/registered/gb300/test_deepseek_v32_nvfp4.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #21448 - [Fix] Fix Qwen3.5 MoE model loading and Mamba cache sharding in PP mode
+
+- Link: https://github.com/sgl-project/sglang/pull/21448
+- Status/date: merged / 2026-03-30
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_5.py`; associated commits `9b4dd274787c`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 6 files, +78/-8, 262 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Fix] Fix Qwen3.5 MoE model loading and Mamba cache sharding in PP mode". The diff centers on `python/sglang/srt/models/qwen3_5.py`. PR body context: Co-authored-by: zhangxiaolei123456 ## Motivation Although https://github.com/sgl-project/sglang/pull/19670 and https://github.com/sgl-project/sglang/pull/21070 addressed some Qw...
+- Key implementation: `python/sglang/srt/models/qwen3_5.py` modified +31/-1 (32 lines); hunks: -67,7 +67,7; -1038,6 +1038,13 @@ def load_weights(self, weights: Iterable[Tuple[str, torch...; symbols: load_weights, load_fused_expert_weights, touching `load_weights, load_fused_expert_weights`.
 - Code diff details:
-  - `test/registered/amd/perf/mi30x/test_qwen35_fp8_perf_amd.py` added +139/-0 (139 lines); hunks: +"""Nightly performance benchmark for Qwen3.5-397B-A17B FP8.; symbols: generate_simple_markdown_report, TestNightlyQwen35Fp8Performance, setUpClass, test_bench_qwen35_fp8
-  - `test/registered/amd/perf/mi35x/test_qwen35_fp8_perf_mi35x.py` added +139/-0 (139 lines); hunks: +"""MI35x Nightly performance benchmark for Qwen3.5-397B-A17B FP8.; symbols: generate_simple_markdown_report, TestQwen35Fp8PerfMI35x, setUpClass, test_qwen35_fp8_perf
-  - `test/registered/amd/accuracy/mi30x/test_qwen35_eval_amd.py` modified +42/-1 (43 lines); hunks: import os; def setUpClass(cls):; symbols: setUpClass, setUpClass, tearDownClass, test_lm_eval
-  - `test/registered/amd/accuracy/mi35x/test_qwen35_eval_mi35x.py` modified +36/-3 (39 lines); hunks: import os; def setUpClass(cls):; symbols: setUpClass, test_lm_eval, test_lm_eval
-  - `.github/workflows/nightly-test-amd-rocm720.yml` modified +26/-2 (28 lines); hunks: jobs:; jobs:
-- Optimization/support interpretation: The concrete diff surface is `test/registered/amd/perf/mi30x/test_qwen35_fp8_perf_amd.py`, `test/registered/amd/perf/mi35x/test_qwen35_fp8_perf_mi35x.py`, `test/registered/amd/accuracy/mi30x/test_qwen35_eval_amd.py`; keywords observed in patches: test, attention, config, fp8, triton, cache. Impact reading: quantized loading or quantized kernels changed; verify scales, zero-points, checkpoint names, and fallback behavior; tests or benchmarks changed; use those cases as regression entry points instead of only checking model load.
-- Risk and verification: Re-run the model path that exercises `test/registered/amd/perf/mi30x/test_qwen35_fp8_perf_amd.py`, `test/registered/amd/perf/mi35x/test_qwen35_fp8_perf_mi35x.py`, `test/registered/amd/accuracy/mi30x/test_qwen35_eval_amd.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/models/qwen3_5.py` modified +31/-1 (32 lines); hunks: -67,7 +67,7; -1038,6 +1038,13 @@ def load_weights(self, weights: Iterable[Tuple[str, torch...; symbols: load_weights, load_fused_expert_weights
+- Key code excerpts:
 
-### PR #21692 - [Bugfix] [NPU] Qwen3.5 with quantization fix
+```diff
+diff -- python/sglang/srt/models/qwen3_5.py
+@@ -67,7 +67,7 @@
+-from sglang.srt.layers.utils import PPMissingLayer
++from sglang.srt.layers.utils import PPMissingLayer, get_layer_id
+@@ -1038,6 +1038,13 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]]):
++            layer_id = get_layer_id(name)
++            if (
++                layer_id is not None
+```
 
-- Link: https://github.com/sgl-project/sglang/pull/21692
-- Status/date: `merged`, created 2026-03-30, merged 2026-04-08; author `OrangeRedeng`.
-- Diff scope read: `3` files, `+29/-42`; areas: model wrapper, quantization; keywords: config, moe, quant, vision, expert, kv, triton.
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_5.py` modified +31/-1
+- Risk and verification: The diff ships test coverage in `test/registered/unit/mem_cache/test_mamba_unittest.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #21234 - [AMD] Support AMD MXFP4 Qwen3.5-397B-A17B model
+
+- Link: https://github.com/sgl-project/sglang/pull/21234
+- Status/date: merged / 2026-03-30
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_5.py`; associated commits `e6071e60c097`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +18/-0, 53 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR adds or enables a model support/runtime surface. Title: "[AMD] Support AMD MXFP4 Qwen3.5-397B-A17B model". The diff centers on `python/sglang/srt/models/qwen3_5.py`. PR body context: ## Motivation Enable and validate Qwen3.5 MXFP4 model support on AMD GPUs This PR aims to preserve acceptable accuracy while improving serving performance versus the FP8 baselin...
+- Key implementation: `python/sglang/srt/models/qwen3_5.py` modified +18/-0 (18 lines); hunks: -88,6 +88,7; -98,6 +99,7; symbols: forward, Qwen3_5ForCausalLM, __init__, load_fused_expert_weights, touching `forward, Qwen3_5ForCausalLM, __init__`.
 - Code diff details:
-  - `python/sglang/srt/layers/quantization/modelslim/modelslim.py` modified +25/-39 (64 lines); hunks: FusedMoEMethodBase,; def get_quant_method(; symbols: get_quant_method, get_quant_method, _get_scheme_from_parts, get_linear_scheme
-  - `python/sglang/srt/models/qwen3_5.py` modified +3/-3 (6 lines); hunks: def forward(; def load_fused_expert_weights(; symbols: forward, Qwen3_5ForCausalLM, load_fused_expert_weights, Qwen3_5ForConditionalGeneration
-  - `python/sglang/srt/model_loader/loader.py` modified +1/-0 (1 lines); hunks: def _get_quantization_config(; symbols: _get_quantization_config
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/layers/quantization/modelslim/modelslim.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/model_loader/loader.py`; keywords observed in patches: config, moe, quant, vision, expert, kv. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; quantized loading or quantized kernels changed; verify scales, zero-points, checkpoint names, and fallback behavior.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/layers/quantization/modelslim/modelslim.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/model_loader/loader.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/models/qwen3_5.py` modified +18/-0 (18 lines); hunks: -88,6 +88,7; -98,6 +99,7; symbols: forward, Qwen3_5ForCausalLM, __init__, load_fused_expert_weights
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_5.py
+@@ -88,6 +88,7 @@
++    is_gfx95_supported,
+@@ -98,6 +99,7 @@
++_is_gfx95 = is_gfx95_supported()
+@@ -879,6 +881,14 @@ def forward(
++    if _is_gfx95:
++        packed_modules_mapping = {
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_5.py` modified +18/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/qwen3_5.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #20864 - [Perf]Remove H2D for Qwen3.5 SpecV2
+
+- Link: https://github.com/sgl-project/sglang/pull/20864
+- Status/date: merged / 2026-03-31
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +17/-13, 48 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR optimizes an inference path or backend selection. Title: "[Perf]Remove H2D for Qwen3.5 SpecV2". The diff centers on `python/sglang/srt/model_executor/forward_batch_info.py`, `python/sglang/srt/speculative/eagle_info_v2.py`. PR body context: ## Motivation This PR improves Qwen3.5 specV2 performance by removing unnecessary H2D overhead in the `prepare_v2_verify` path. ## Modifications 1. Use `torch.stack(...).to(torc...
+- Key implementation: `python/sglang/srt/model_executor/forward_batch_info.py` modified +14/-8 (22 lines); hunks: -715,15 +715,21 @@ def _compute_spec_mrope_positions(; symbols: _compute_spec_mrope_positions, touching `_compute_spec_mrope_positions`; `python/sglang/srt/speculative/eagle_info_v2.py` modified +3/-5 (8 lines); hunks: -234,14 +234,12 @@ def prepare_for_v2_verify(; symbols: prepare_for_v2_verify, touching `prepare_for_v2_verify`.
+- Code diff details:
+  - `python/sglang/srt/model_executor/forward_batch_info.py` modified +14/-8 (22 lines); hunks: -715,15 +715,21 @@ def _compute_spec_mrope_positions(; symbols: _compute_spec_mrope_positions
+  - `python/sglang/srt/speculative/eagle_info_v2.py` modified +3/-5 (8 lines); hunks: -234,14 +234,12 @@ def prepare_for_v2_verify(; symbols: prepare_for_v2_verify
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/model_executor/forward_batch_info.py
+@@ -715,15 +715,21 @@ def _compute_spec_mrope_positions(
+-            mrope_deltas = [
+-                (
+-                    torch.tensor([0], dtype=torch.int64)
+-                    if mm_inputs[i] is None
+-                    else mm_inputs[i].mrope_position_delta.squeeze(0)
++            # Split text-only and mixed batches here because SpecV2 text-only batches can avoid an extra D2H.
+diff -- python/sglang/srt/speculative/eagle_info_v2.py
+@@ -234,14 +234,12 @@ def prepare_for_v2_verify(
+-                batch.mamba_track_indices = torch.tensor(
++                batch.mamba_track_indices = torch.stack(
+-                    ],
+-                    dtype=torch.int64,
+-                    device=device,
+-                )
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/model_executor/forward_batch_info.py` modified +14/-8; `python/sglang/srt/speculative/eagle_info_v2.py` modified +3/-5
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/model_executor/forward_batch_info.py`, `python/sglang/srt/speculative/eagle_info_v2.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #21347 - [Bugfix] Fix PP tied embeddings weight loading for qwen3.5 4B dense model
+
+- Link: https://github.com/sgl-project/sglang/pull/21347
+- Status/date: merged / 2026-04-01
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_5.py`; associated commits `2861596fc683`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +22/-0, 36 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Bugfix] Fix PP tied embeddings weight loading for qwen3.5 4B dense model". The diff centers on `python/sglang/srt/models/qwen3_5.py`. PR body context: ## Motivation Fixes #21093. Qwen3.5-4B (dense, `tie_word_embeddings=true`) with `--pp-size 2` produces garbage output. **Root cause:** `Qwen3_5ForConditionalGeneration` and `Qwe...
+- Key implementation: `python/sglang/srt/models/qwen3_5.py` modified +22/-0 (22 lines); hunks: -1384,6 +1384,17 @@ def load_weights(self, weights: Iterable[Tuple[str, torch...; -1549,6 +1560,17 @@ def load_fused_expert_weights(; symbols: load_weights, load_fused_expert_weights, touching `load_weights, load_fused_expert_weights`.
+- Code diff details:
+  - `python/sglang/srt/models/qwen3_5.py` modified +22/-0 (22 lines); hunks: -1384,6 +1384,17 @@ def load_weights(self, weights: Iterable[Tuple[str, torch...; -1549,6 +1560,17 @@ def load_fused_expert_weights(; symbols: load_weights, load_fused_expert_weights
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_5.py
+@@ -1384,6 +1384,17 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]]):
++            if (
++                self.config.tie_word_embeddings
++                and self.pp_group.is_last_rank
++                and "model.embed_tokens.weight" in name
++            ):
++                if "lm_head.weight" in params_dict:
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_5.py` modified +22/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/qwen3_5.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #21849 - [VLM]: allow Qwen3.5 models for encoder disaggregation
 
 - Link: https://github.com/sgl-project/sglang/pull/21849
-- Status/date: `merged`, created 2026-04-01, merged 2026-04-06; author `Ratish1`.
-- Diff scope read: `4` files, `+190/-3`; areas: multimodal/processor, tests/benchmarks; keywords: moe, processor, config, cuda, scheduler, test.
+- Status/date: merged / 2026-04-06
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 4 files, +190/-3, 230 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR adds or enables a model support/runtime surface. Title: "[VLM]: allow Qwen3.5 models for encoder disaggregation". The diff centers on `python/sglang/srt/multimodal/processors/qwen_vl.py`, `test/registered/distributed/test_epd_disaggregation.py`, `python/sglang/srt/disaggregation/encode_server.py`. PR body context: ## Motivation Fixes #21805. SGLang already supports Qwen3.5 multimodal models in the runtime, but encoder disaggregation rejected them during servervstartup. This blocked valid...
+- Key implementation: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +1/-1 (2 lines); hunks: -422,7 +422,7 @@ def get_mm_data(self, prompt, embeddings, **kwargs):; symbols: get_mm_data, touching `get_mm_data`; `test/registered/distributed/test_epd_disaggregation.py` modified +184/-0 (184 lines); hunks: -33,6 +33,7; -813,6 +814,189 @@ def test_mmmu(self):; symbols: test_mmmu, TestEPDDisaggregationQwen35, setUpClass, start_encode, touching `test_mmmu, TestEPDDisaggregationQwen35, setUpClass`; `python/sglang/srt/disaggregation/encode_server.py` modified +3/-2 (5 lines); hunks: -867,10 +867,11 @@ async def _process_mm_items(self, mm_items, modality):; symbols: _process_mm_items, touching `_process_mm_items`; `python/sglang/srt/server_args.py` modified +2/-0 (2 lines); hunks: -3326,6 +3326,8 @@ def _handle_encoder_disaggregation(self):; symbols: _handle_encoder_disaggregation, touching `_handle_encoder_disaggregation`.
 - Code diff details:
-  - `test/registered/distributed/test_epd_disaggregation.py` modified +184/-0 (184 lines); hunks: # Omni model for local testing; override via env var EPD_OMNI_MODEL; def test_mmmu(self):; symbols: test_mmmu, TestEPDDisaggregationQwen35, setUpClass, start_encode
-  - `python/sglang/srt/disaggregation/encode_server.py` modified +3/-2 (5 lines); hunks: async def _process_mm_items(self, mm_items, modality):; symbols: _process_mm_items
-  - `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +1/-1 (2 lines); hunks: def get_mm_data(self, prompt, embeddings, **kwargs):; symbols: get_mm_data
-  - `python/sglang/srt/server_args.py` modified +2/-0 (2 lines); hunks: def _handle_encoder_disaggregation(self):; symbols: _handle_encoder_disaggregation
-- Optimization/support interpretation: The concrete diff surface is `test/registered/distributed/test_epd_disaggregation.py`, `python/sglang/srt/disaggregation/encode_server.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`; keywords observed in patches: moe, processor, config, cuda, scheduler, test. Impact reading: multimodal processor or media-token code changed; verify image/video/audio metadata, position ids, and batching; tests or benchmarks changed; use those cases as regression entry points instead of only checking model load.
-- Risk and verification: Re-run the model path that exercises `test/registered/distributed/test_epd_disaggregation.py`, `python/sglang/srt/disaggregation/encode_server.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +1/-1 (2 lines); hunks: -422,7 +422,7 @@ def get_mm_data(self, prompt, embeddings, **kwargs):; symbols: get_mm_data
+  - `test/registered/distributed/test_epd_disaggregation.py` modified +184/-0 (184 lines); hunks: -33,6 +33,7; -813,6 +814,189 @@ def test_mmmu(self):; symbols: test_mmmu, TestEPDDisaggregationQwen35, setUpClass, start_encode
+  - `python/sglang/srt/disaggregation/encode_server.py` modified +3/-2 (5 lines); hunks: -867,10 +867,11 @@ async def _process_mm_items(self, mm_items, modality):; symbols: _process_mm_items
+  - `python/sglang/srt/server_args.py` modified +2/-0 (2 lines); hunks: -3326,6 +3326,8 @@ def _handle_encoder_disaggregation(self):; symbols: _handle_encoder_disaggregation
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/multimodal/processors/qwen_vl.py
+@@ -422,7 +422,7 @@ def get_mm_data(self, prompt, embeddings, **kwargs):
+-            self.model_type in ["qwen3_vl", "qwen3_vl_moe"]
++            self.model_type in ["qwen3_vl", "qwen3_vl_moe", "qwen3_5", "qwen3_5_moe"]
+diff -- test/registered/distributed/test_epd_disaggregation.py
+@@ -33,6 +33,7 @@
++QWEN35_27B_MODEL = "Qwen/Qwen3.5-27B"
+@@ -813,6 +814,189 @@ def test_mmmu(self):
++@unittest.skipIf(
++    is_in_ci(),
++    "Qwen3.5 EPD image/video test runs locally only",
++)
+diff -- python/sglang/srt/disaggregation/encode_server.py
+@@ -867,10 +867,11 @@ async def _process_mm_items(self, mm_items, modality):
+-                self.model_type in ["qwen3_vl", "qwen3_vl_moe"]
++                self.model_type
++                in ["qwen3_vl", "qwen3_vl_moe", "qwen3_5", "qwen3_5_moe"]
+-                # For qwen3-vl models, we need to store the video timestamps
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +1/-1; `python/sglang/srt/disaggregation/encode_server.py` modified +3/-2; `python/sglang/srt/server_args.py` modified +2/-0
+  - tests: `test/registered/distributed/test_epd_disaggregation.py` modified +184/-0
+- Risk and verification: The diff ships test coverage in `test/registered/distributed/test_epd_disaggregation.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #21669 - [AMD] Add Qwen3.5-397B FP8 nightly perf benchmarks for MI30x and MI35x
+
+- Link: https://github.com/sgl-project/sglang/pull/21669
+- Status/date: merged / 2026-04-07
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/amd/accuracy/mi30x/test_qwen35_eval_amd.py`, `test/registered/amd/accuracy/mi35x/test_qwen35_eval_mi35x.py`, `test/registered/amd/perf/mi30x/test_qwen35_fp8_perf_amd.py`, `test/registered/amd/perf/mi35x/test_qwen35_fp8_perf_mi35x.py`; associated commits `ba78f6e0efb9`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 6 files, +408/-8, 538 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR adds or enables a model support/runtime surface. Title: "[AMD] Add Qwen3.5-397B FP8 nightly perf benchmarks for MI30x and MI35x". The diff centers on `test/registered/amd/perf/mi30x/test_qwen35_fp8_perf_amd.py`, `test/registered/amd/perf/mi35x/test_qwen35_fp8_perf_mi35x.py`, `test/registered/amd/accuracy/mi30x/test_qwen35_eval_amd.py`. PR body context: ## Summary - Add `bench_one_batch` performance tests for **Qwen3.5-397B-A17B-FP8** on both MI325/MI300X and MI35x GPUs - Perf steps run **after** existing Qwen3.5 accuracy tests...
+- Key implementation: `test/registered/amd/perf/mi30x/test_qwen35_fp8_perf_amd.py` added +139/-0 (139 lines); hunks: -0,0 +1,139; symbols: generate_simple_markdown_report, TestNightlyQwen35Fp8Performance, setUpClass, test_bench_qwen35_fp8, touching `generate_simple_markdown_report, TestNightlyQwen35Fp8Performance, setUpClass`; `test/registered/amd/perf/mi35x/test_qwen35_fp8_perf_mi35x.py` added +139/-0 (139 lines); hunks: -0,0 +1,139; symbols: generate_simple_markdown_report, TestQwen35Fp8PerfMI35x, setUpClass, test_qwen35_fp8_perf, touching `generate_simple_markdown_report, TestQwen35Fp8PerfMI35x, setUpClass`; `test/registered/amd/accuracy/mi30x/test_qwen35_eval_amd.py` modified +42/-1 (43 lines); hunks: -8,14 +8,20; -38,7 +44,7 @@ def setUpClass(cls):; symbols: setUpClass, tearDownClass, test_lm_eval, touching `setUpClass, tearDownClass, test_lm_eval`; `test/registered/amd/accuracy/mi35x/test_qwen35_eval_mi35x.py` modified +36/-3 (39 lines); hunks: -8,16 +8,21; -40,12 +45,12 @@ def setUpClass(cls):; symbols: setUpClass, test_lm_eval, touching `setUpClass, test_lm_eval`.
+- Code diff details:
+  - `test/registered/amd/perf/mi30x/test_qwen35_fp8_perf_amd.py` added +139/-0 (139 lines); hunks: -0,0 +1,139; symbols: generate_simple_markdown_report, TestNightlyQwen35Fp8Performance, setUpClass, test_bench_qwen35_fp8
+  - `test/registered/amd/perf/mi35x/test_qwen35_fp8_perf_mi35x.py` added +139/-0 (139 lines); hunks: -0,0 +1,139; symbols: generate_simple_markdown_report, TestQwen35Fp8PerfMI35x, setUpClass, test_qwen35_fp8_perf
+  - `test/registered/amd/accuracy/mi30x/test_qwen35_eval_amd.py` modified +42/-1 (43 lines); hunks: -8,14 +8,20; -38,7 +44,7 @@ def setUpClass(cls):; symbols: setUpClass, tearDownClass, test_lm_eval
+  - `test/registered/amd/accuracy/mi35x/test_qwen35_eval_mi35x.py` modified +36/-3 (39 lines); hunks: -8,16 +8,21; -40,12 +45,12 @@ def setUpClass(cls):; symbols: setUpClass, test_lm_eval
+- Key code excerpts:
+
+```diff
+diff -- test/registered/amd/perf/mi30x/test_qwen35_fp8_perf_amd.py
+@@ -0,0 +1,139 @@
++"""Nightly performance benchmark for Qwen3.5-397B-A17B FP8.
++Tests Qwen3.5-397B-A17B-FP8 (MoE, Hybrid Attention with Gated Delta Networks)
++on 8 GPUs with triton attention backend.
++Model path can be configured via environment variable:
++- QWEN35_FP8_MODEL_PATH: Path to Qwen3.5-FP8 model
++  (default: Qwen/Qwen3.5-397B-A17B-FP8)
+diff -- test/registered/amd/perf/mi35x/test_qwen35_fp8_perf_mi35x.py
+@@ -0,0 +1,139 @@
++"""MI35x Nightly performance benchmark for Qwen3.5-397B-A17B FP8.
++Tests Qwen3.5-397B-A17B-FP8 (MoE, Hybrid Attention with Gated Delta Networks)
++on 8 GPUs with triton attention backend.
++Registry: nightly-perf-8-gpu-mi35x-qwen35-fp8 suite
++"""
++import os
+diff -- test/registered/amd/accuracy/mi30x/test_qwen35_eval_amd.py
+@@ -8,14 +8,20 @@
+```
+
+- Reviewed files:
+  - tests: `test/registered/amd/perf/mi30x/test_qwen35_fp8_perf_amd.py` added +139/-0; `test/registered/amd/perf/mi35x/test_qwen35_fp8_perf_mi35x.py` added +139/-0; `test/registered/amd/accuracy/mi30x/test_qwen35_eval_amd.py` modified +42/-1; `test/registered/amd/accuracy/mi35x/test_qwen35_eval_mi35x.py` modified +36/-3
+- Risk and verification: The diff ships test coverage in `test/registered/amd/accuracy/mi30x/test_qwen35_eval_amd.py`, `test/registered/amd/accuracy/mi35x/test_qwen35_eval_mi35x.py`, `test/registered/amd/perf/mi30x/test_qwen35_fp8_perf_amd.py`, `test/registered/amd/perf/mi35x/test_qwen35_fp8_perf_mi35x.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #22145 - [Disagg][NIXL] Fix heterogeneous TP KV transfer for non-MLA models (same logic with mooncake, Step 1/2 for Qwen3.5 support)
 
 - Link: https://github.com/sgl-project/sglang/pull/22145
-- Status/date: `merged`, created 2026-04-05, merged 2026-04-07; author `YAMY1234`.
-- Diff scope read: `1` files, `+20/-8`; areas: misc; keywords: cache, config, kv, mla.
+- Status/date: merged / 2026-04-07
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +20/-8, 62 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR adds or enables a model support/runtime surface. Title: "[Disagg][NIXL] Fix heterogeneous TP KV transfer for non-MLA models (same logic with mooncake, Step 1/2 for Qwen3.5 support)". The diff centers on `python/sglang/srt/disaggregation/nixl/conn.py`. PR body context: ## Motivation NIXL disaggregated serving with heterogeneous TP (prefill TP ≠ decode TP) on non-MLA models hangs indefinitely due to two bugs in `nixl/conn.py`: 1. **Notification...
+- Key implementation: `python/sglang/srt/disaggregation/nixl/conn.py` modified +20/-8 (28 lines); hunks: -477,25 +477,35 @@ def send_kvcache_slice(; -748,7 +758,9 @@ def add_transfer_request(; symbols: send_kvcache_slice, add_transfer_request, touching `send_kvcache_slice, add_transfer_request`.
 - Code diff details:
-  - `python/sglang/srt/disaggregation/nixl/conn.py` modified +20/-8 (28 lines); hunks: def send_kvcache_slice(; def add_transfer_request(; symbols: send_kvcache_slice, add_transfer_request, add_transfer_request
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/disaggregation/nixl/conn.py`; keywords observed in patches: cache, config, kv, mla. Impact reading: the patch is in miscellaneous paths; infer the actual impact from the touched files.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/disaggregation/nixl/conn.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/disaggregation/nixl/conn.py` modified +20/-8 (28 lines); hunks: -477,25 +477,35 @@ def send_kvcache_slice(; -748,7 +758,9 @@ def add_transfer_request(; symbols: send_kvcache_slice, add_transfer_request
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/disaggregation/nixl/conn.py
+@@ -477,25 +477,35 @@ def send_kvcache_slice(
+-        num_kv_heads = self.kv_args.kv_head_num
+-        # Calculate head distribution
+-        src_heads_per_rank = num_kv_heads
+-        dst_heads_per_rank = num_kv_heads * prefill_tp_size // decode_tp_size
++        # Use total KV head count (not per-rank) for correct head distribution.
++        # Per-rank kv_head_num is max(1, total//tp) which loses info when total < tp.
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/disaggregation/nixl/conn.py` modified +20/-8
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/disaggregation/nixl/conn.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #22240 - [Disagg][NIXL] Support Mamba state slice transfer for heterogeneous TP (Step 2/2 for Qwen3.5)
 
 - Link: https://github.com/sgl-project/sglang/pull/22240
-- Status/date: `merged`, created 2026-04-07, merged 2026-04-07; author `YAMY1234`.
-- Diff scope read: `1` files, `+143/-2`; areas: misc; keywords: kv, spec.
+- Status/date: merged / 2026-04-07
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +143/-2, 207 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR adds or enables a model support/runtime surface. Title: "[Disagg][NIXL] Support Mamba state slice transfer for heterogeneous TP (Step 2/2 for Qwen3.5)". The diff centers on `python/sglang/srt/disaggregation/nixl/conn.py`. PR body context: ## Motivation Depends on #22145. The Mooncake backend already supports Mamba state slice transfer under heterogeneous TP (prefill TP ≠ decode TP), but NIXL lacks this capability...
+- Key implementation: `python/sglang/srt/disaggregation/nixl/conn.py` modified +143/-2 (145 lines); hunks: -84,6 +84,8 @@ class KVArgsRegisterInfo:; -93,6 +95,15 @@ def from_zmq(cls, msg: List[bytes]):; symbols: KVArgsRegisterInfo, from_zmq, _send_mamba_state, touching `KVArgsRegisterInfo, from_zmq, _send_mamba_state`.
 - Code diff details:
-  - `python/sglang/srt/disaggregation/nixl/conn.py` modified +143/-2 (145 lines); hunks: class KVArgsRegisterInfo:; def from_zmq(cls, msg: List[bytes]):; symbols: KVArgsRegisterInfo:, from_zmq, from_zmq, from_zmq
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/disaggregation/nixl/conn.py`; keywords observed in patches: kv, spec. Impact reading: the patch is in miscellaneous paths; infer the actual impact from the touched files.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/disaggregation/nixl/conn.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/disaggregation/nixl/conn.py` modified +143/-2 (145 lines); hunks: -84,6 +84,8 @@ class KVArgsRegisterInfo:; -93,6 +95,15 @@ def from_zmq(cls, msg: List[bytes]):; symbols: KVArgsRegisterInfo, from_zmq, _send_mamba_state
+- Key code excerpts:
 
-### PR #22312 - Make GDN support non-continuous B/A Tensor input to fix the accuracy regression of Qwen3.5-27B
+```diff
+diff -- python/sglang/srt/disaggregation/nixl/conn.py
+@@ -84,6 +84,8 @@ class KVArgsRegisterInfo:
++    dst_state_item_lens: list[int] = dataclasses.field(default_factory=list)
++    dst_state_dim_per_tensor: list[int] = dataclasses.field(default_factory=list)
+@@ -93,6 +95,15 @@ def from_zmq(cls, msg: List[bytes]):
++        dst_state_item_lens = []
++        dst_state_dim_per_tensor = []
++        if len(msg) > 12 and len(msg[12]) > 0:
+```
 
-- Link: https://github.com/sgl-project/sglang/pull/22312
-- Status/date: `merged`, created 2026-04-08, merged 2026-04-10; author `cs-cat`.
-- Diff scope read: `3` files, `+272/-8`; areas: attention/backend, tests/benchmarks; keywords: attention, triton, cache, config, cuda, test.
+- Reviewed files:
+  - runtime: `python/sglang/srt/disaggregation/nixl/conn.py` modified +143/-2
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/disaggregation/nixl/conn.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #21692 - [Bugfix] [NPU] Qwen3.5 with quantization fix
+
+- Link: https://github.com/sgl-project/sglang/pull/21692
+- Status/date: merged / 2026-04-08
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_5.py`; associated commits `cd373667cdfa`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +29/-42, 147 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Bugfix] [NPU] Qwen3.5 with quantization fix". The diff centers on `python/sglang/srt/models/qwen3_5.py`. PR body context: ## Motivation Fix of https://github.com/sgl-project/sglang/issues/21676. After updating the qwen3.5 modeling and changing with to fused and with to fused , quantization no longe...
+- Key implementation: `python/sglang/srt/models/qwen3_5.py` modified +3/-3 (6 lines); hunks: -881,7 +881,7 @@ def forward(; -1310,7 +1310,7 @@ def load_fused_expert_weights(; symbols: forward, Qwen3_5ForCausalLM, load_fused_expert_weights, Qwen3_5ForConditionalGeneration, touching `forward, Qwen3_5ForCausalLM, load_fused_expert_weights`.
 - Code diff details:
-  - `test/registered/attention/test_gdn_noncontiguous_stride.py` added +255/-0 (255 lines); hunks: +"""; symbols: _make_noncontiguous_ab, TestFusedGdnGatingNonContiguous, _run_test, test_small
-  - `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py` modified +9/-6 (15 lines); hunks: def fused_sigmoid_gating_delta_rule_update_kernel(; def fused_sigmoid_gating_delta_rule_update_kernel(; symbols: fused_sigmoid_gating_delta_rule_update_kernel, fused_sigmoid_gating_delta_rule_update_kernel, fused_sigmoid_gating_delta_rule_update_kernel, fused_sigmoid_gating_delta_rule_update
-  - `python/sglang/srt/layers/attention/fla/fused_gdn_gating.py` modified +8/-2 (10 lines); hunks: def fused_gdn_gating_kernel(; def fused_gdn_gating_kernel(; symbols: fused_gdn_gating_kernel, fused_gdn_gating_kernel, fused_gdn_gating, fused_gdn_gating
-- Optimization/support interpretation: The concrete diff surface is `test/registered/attention/test_gdn_noncontiguous_stride.py`, `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py`, `python/sglang/srt/layers/attention/fla/fused_gdn_gating.py`; keywords observed in patches: attention, triton, cache, config, cuda, test. Impact reading: attention, KV cache, or backend selection changed; verify prefill/decode, page size, RoPE/MLA/MQA branches; tests or benchmarks changed; use those cases as regression entry points instead of only checking model load.
-- Risk and verification: Re-run the model path that exercises `test/registered/attention/test_gdn_noncontiguous_stride.py`, `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py`, `python/sglang/srt/layers/attention/fla/fused_gdn_gating.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/models/qwen3_5.py` modified +3/-3 (6 lines); hunks: -881,7 +881,7 @@ def forward(; -1310,7 +1310,7 @@ def load_fused_expert_weights(; symbols: forward, Qwen3_5ForCausalLM, load_fused_expert_weights, Qwen3_5ForConditionalGeneration
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_5.py
+@@ -881,7 +881,7 @@ def forward(
+-    if _is_gfx95:
++    if _is_gfx95 or _is_npu:
+@@ -1310,7 +1310,7 @@ def load_fused_expert_weights(
+-    if _is_gfx95:
++    if _is_gfx95 or _is_npu:
+@@ -1447,7 +1447,7 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]]):
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_5.py` modified +3/-3
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/quantization/modelslim/modelslim.py`, `python/sglang/srt/model_loader/loader.py`, `python/sglang/srt/models/qwen3_5.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #22399 - [CI] Add GLM-5.1 nightly tests and update Qwen3.5 model
+
+- Link: https://github.com/sgl-project/sglang/pull/22399
+- Status/date: merged / 2026-04-09
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/8-gpu-models/test_qwen35.py`; associated commits `46c2b7762765`
+- Diff scope read: GitHub Pull Request files API returned 3 files, +82/-6, 131 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR adds or enables a model support/runtime surface. Title: "[CI] Add GLM-5.1 nightly tests and update Qwen3.5 model". The diff centers on `test/registered/8-gpu-models/test_qwen35.py`. PR body context: ## Summary - Add GLM-5.1 FP8 nightly test for H200/B200 (`nightly-8-gpu-common` suite) with TP8, TP8+DP8, and TP8+DP8+MTP variants - Update GB300 GLM-5 tests to GLM-5.1 model na...
+- Key implementation: `test/registered/8-gpu-models/test_qwen35.py` modified +10/-3 (13 lines); hunks: -9,7 +9,7; -30,6 +30,7 @@ def test_qwen35(self):; symbols: TestQwen35, test_qwen35, touching `TestQwen35, test_qwen35`.
+- Code diff details:
+  - `test/registered/8-gpu-models/test_qwen35.py` modified +10/-3 (13 lines); hunks: -9,7 +9,7; -30,6 +30,7 @@ def test_qwen35(self):; symbols: TestQwen35, test_qwen35
+- Key code excerpts:
+
+```diff
+diff -- test/registered/8-gpu-models/test_qwen35.py
+@@ -9,7 +9,7 @@
+-QWEN35_MODEL_PATH = "Qwen/Qwen3.5-397B-A17B"
++QWEN35_MODEL_PATH = "Qwen/Qwen3.5-397B-A17B-FP8"
+@@ -30,6 +30,7 @@ def test_qwen35(self):
++        dp_args = ["--dp=8", "--enable-dp-attention"]
+@@ -48,8 +49,14 @@ def test_qwen35(self):
+-                extra_args=base_args + mtp_args,
+```
+
+- Reviewed files:
+  - tests: `test/registered/8-gpu-models/test_qwen35.py` modified +10/-3
+- Risk and verification: The diff ships test coverage in `test/registered/8-gpu-models/test_glm_51_fp8.py`, `test/registered/8-gpu-models/test_qwen35.py`, `test/registered/gb300/test_glm5_fp8.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #22358 - Enable DFLASH support for additional model backends
 
 - Link: https://github.com/sgl-project/sglang/pull/22358
-- Status/date: `merged`, created 2026-04-08, merged 2026-04-09; author `mmangkad`.
-- Diff scope read: `8` files, `+152/-5`; areas: model wrapper, MoE/router; keywords: flash, eagle, config, expert, kv, moe, processor, spec.
+- Status/date: merged / 2026-04-09
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 8 files, +152/-5, 299 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR adds or enables a model support/runtime surface. Title: "Enable DFLASH support for additional model backends". The diff centers on `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/kimi_k25.py`, `python/sglang/srt/models/qwen3_next.py`. PR body context: ## Summary Enable DFLASH for additional supported models from the z-lab collection: https://huggingface.co/collections/z-lab/dflash Based on #20547, landing this early to enable...
+- Key implementation: `python/sglang/srt/models/qwen3_5.py` modified +34/-5 (39 lines); hunks: -574,8 +574,15 @@ def forward(; -825,10 +832,16 @@ def forward(; symbols: forward, get_layer, get_input_embeddings, set_dflash_layers_to_capture, touching `forward, get_layer, get_input_embeddings`; `python/sglang/srt/models/kimi_k25.py` modified +24/-0 (24 lines); hunks: -849,6 +849,30 @@ def set_eagle3_layers_to_capture(; symbols: set_eagle3_layers_to_capture, set_dflash_layers_to_capture, get_input_embeddings, lm_head, touching `set_eagle3_layers_to_capture, set_dflash_layers_to_capture, get_input_embeddings`; `python/sglang/srt/models/qwen3_next.py` modified +20/-0 (20 lines); hunks: -813,6 +813,11 @@ def set_eagle3_layers_to_capture(self, layers_to_capture: l...; -947,6 +952,9 @@ def forward(; symbols: set_eagle3_layers_to_capture, set_dflash_layers_to_capture, forward, get_embed_and_head, touching `set_eagle3_layers_to_capture, set_dflash_layers_to_capture, forward`; `python/sglang/srt/models/qwen3_moe.py` modified +17/-0 (17 lines); hunks: -924,6 +924,11 @@ def __init__(; -1079,6 +1084,18 @@ def set_eagle3_layers_to_capture(self, layer_ids: Optiona...; symbols: __init__, set_dflash_layers_to_capture, Qwen3MoeForCausalLM, set_eagle3_layers_to_capture, touching `__init__, set_dflash_layers_to_capture, Qwen3MoeForCausalLM`.
 - Code diff details:
-  - `python/sglang/srt/models/qwen3_5.py` modified +34/-5 (39 lines); hunks: def forward(; def forward(; symbols: forward, forward, get_layer, get_input_embeddings
-  - `python/sglang/srt/models/kimi_k25.py` modified +24/-0 (24 lines); hunks: def set_eagle3_layers_to_capture(; symbols: set_eagle3_layers_to_capture, set_dflash_layers_to_capture, get_input_embeddings, lm_head
-  - `python/sglang/srt/models/qwen3_next.py` modified +20/-0 (20 lines); hunks: def set_eagle3_layers_to_capture(self, layers_to_capture: list[int]):; def forward(; symbols: set_eagle3_layers_to_capture, set_dflash_layers_to_capture, forward, forward
-  - `python/sglang/srt/models/qwen3_moe.py` modified +17/-0 (17 lines); hunks: def __init__(; def set_eagle3_layers_to_capture(self, layer_ids: Optional[List[int]] = None):; symbols: __init__, set_dflash_layers_to_capture, Qwen3MoeForCausalLM, set_eagle3_layers_to_capture
-  - `python/sglang/srt/models/qwen3_vl.py` modified +16/-0 (16 lines); hunks: def __init__(; def forward(; symbols: __init__, forward, set_dflash_layers_to_capture, load_weights
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/kimi_k25.py`, `python/sglang/srt/models/qwen3_next.py`; keywords observed in patches: flash, eagle, config, expert, kv, moe. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; MoE/router/top-k/expert logic changed; verify shared/routed experts plus EP/TP/DP and empty-token branches.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/kimi_k25.py`, `python/sglang/srt/models/qwen3_next.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/models/qwen3_5.py` modified +34/-5 (39 lines); hunks: -574,8 +574,15 @@ def forward(; -825,10 +832,16 @@ def forward(; symbols: forward, get_layer, get_input_embeddings, set_dflash_layers_to_capture
+  - `python/sglang/srt/models/kimi_k25.py` modified +24/-0 (24 lines); hunks: -849,6 +849,30 @@ def set_eagle3_layers_to_capture(; symbols: set_eagle3_layers_to_capture, set_dflash_layers_to_capture, get_input_embeddings, lm_head
+  - `python/sglang/srt/models/qwen3_next.py` modified +20/-0 (20 lines); hunks: -813,6 +813,11 @@ def set_eagle3_layers_to_capture(self, layers_to_capture: l...; -947,6 +952,9 @@ def forward(; symbols: set_eagle3_layers_to_capture, set_dflash_layers_to_capture, forward, get_embed_and_head
+  - `python/sglang/srt/models/qwen3_moe.py` modified +17/-0 (17 lines); hunks: -924,6 +924,11 @@ def __init__(; -1079,6 +1084,18 @@ def set_eagle3_layers_to_capture(self, layer_ids: Optiona...; symbols: __init__, set_dflash_layers_to_capture, Qwen3MoeForCausalLM, set_eagle3_layers_to_capture
+  - `python/sglang/srt/models/qwen3_vl.py` modified +16/-0 (16 lines); hunks: -1122,6 +1122,7 @@ def __init__(; -1246,19 +1247,34 @@ def forward(; symbols: __init__, forward, set_dflash_layers_to_capture, load_weights
+- Key code excerpts:
 
-### PR #22431 - Fix Qwen3.5 video processing when passing video_data in "processor_output" format
+```diff
+diff -- python/sglang/srt/models/qwen3_5.py
+@@ -574,8 +574,15 @@ def forward(
+-        hidden_states, residual = self.layer_communicator.prepare_attn(
+-            hidden_states, residual, forward_batch
++        hidden_states, residual = (
++            self.layer_communicator.prepare_attn_and_capture_last_layer_outputs(
++                hidden_states,
++                residual,
+diff -- python/sglang/srt/models/kimi_k25.py
+@@ -849,6 +849,30 @@ def set_eagle3_layers_to_capture(
++    def set_dflash_layers_to_capture(self, layer_ids: List[int]) -> None:
++        """Set the layers to capture for DFLASH draft model training."""
++        if not hasattr(self.language_model, "set_dflash_layers_to_capture"):
++            raise AttributeError(
++                "language_model does not support DFLASH layer capture."
++            )
+diff -- python/sglang/srt/models/qwen3_next.py
+@@ -813,6 +813,11 @@ def set_eagle3_layers_to_capture(self, layers_to_capture: list[int]):
+```
 
-- Link: https://github.com/sgl-project/sglang/pull/22431
-- Status/date: `merged`, created 2026-04-09, merged 2026-04-18; author `lkhl`.
-- Diff scope read: `1` files, `+1/-1`; areas: multimodal/processor; keywords: processor.
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_5.py` modified +34/-5; `python/sglang/srt/models/kimi_k25.py` modified +24/-0; `python/sglang/srt/models/qwen3_next.py` modified +20/-0; `python/sglang/srt/models/qwen3_moe.py` modified +17/-0; `python/sglang/srt/models/qwen3_vl.py` modified +16/-0; `python/sglang/srt/models/gpt_oss.py` modified +15/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/gpt_oss.py`, `python/sglang/srt/models/kimi_k25.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #22312 - Make GDN support non-continuous B/A Tensor input to fix the accuracy regression of Qwen3.5-27B
+
+- Link: https://github.com/sgl-project/sglang/pull/22312
+- Status/date: merged / 2026-04-10
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +272/-8, 346 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR adds or enables a model support/runtime surface. Title: "Make GDN support non-continuous B/A Tensor input to fix the accuracy regression of Qwen3.5-27B". The diff centers on `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py`, `python/sglang/srt/layers/attention/fla/fused_gdn_gating.py`, `test/registered/attention/test_gdn_noncontiguous_stride.py`. PR body context: ## Motivation This PR fixes #22311 Qwen3.5-27B takes a fallback BA path (after commit 5bdc07d974f6cf236fa765a685453ea5e587a838) that returns non-contiguous split views for a and...
+- Key implementation: `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py` modified +9/-6 (15 lines); hunks: -30,6 +30,7 @@ def fused_sigmoid_gating_delta_rule_update_kernel(; -81,10 +82,10 @@ def fused_sigmoid_gating_delta_rule_update_kernel(; symbols: fused_sigmoid_gating_delta_rule_update_kernel, fused_sigmoid_gating_delta_rule_update, touching `fused_sigmoid_gating_delta_rule_update_kernel, fused_sigmoid_gating_delta_rule_update`; `python/sglang/srt/layers/attention/fla/fused_gdn_gating.py` modified +8/-2 (10 lines); hunks: -16,6 +16,8 @@ def fused_gdn_gating_kernel(; -26,8 +28,8 @@ def fused_gdn_gating_kernel(; symbols: fused_gdn_gating_kernel, fused_gdn_gating, touching `fused_gdn_gating_kernel, fused_gdn_gating`; `test/registered/attention/test_gdn_noncontiguous_stride.py` added +255/-0 (255 lines); hunks: -0,0 +1,255; symbols: _make_noncontiguous_ab, TestFusedGdnGatingNonContiguous, _run_test, test_small, touching `_make_noncontiguous_ab, TestFusedGdnGatingNonContiguous, _run_test`.
 - Code diff details:
-  - `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +1/-1 (2 lines); hunks: async def preprocess_video(; symbols: preprocess_video
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/multimodal/processors/qwen_vl.py`; keywords observed in patches: processor. Impact reading: multimodal processor or media-token code changed; verify image/video/audio metadata, position ids, and batching.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/multimodal/processors/qwen_vl.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py` modified +9/-6 (15 lines); hunks: -30,6 +30,7 @@ def fused_sigmoid_gating_delta_rule_update_kernel(; -81,10 +82,10 @@ def fused_sigmoid_gating_delta_rule_update_kernel(; symbols: fused_sigmoid_gating_delta_rule_update_kernel, fused_sigmoid_gating_delta_rule_update
+  - `python/sglang/srt/layers/attention/fla/fused_gdn_gating.py` modified +8/-2 (10 lines); hunks: -16,6 +16,8 @@ def fused_gdn_gating_kernel(; -26,8 +28,8 @@ def fused_gdn_gating_kernel(; symbols: fused_gdn_gating_kernel, fused_gdn_gating
+  - `test/registered/attention/test_gdn_noncontiguous_stride.py` added +255/-0 (255 lines); hunks: -0,0 +1,255; symbols: _make_noncontiguous_ab, TestFusedGdnGatingNonContiguous, _run_test, test_small
+- Key code excerpts:
 
-### PR #22493 - Add MambaPool kvcache offloading during retraction
+```diff
+diff -- python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py
+@@ -30,6 +30,7 @@ def fused_sigmoid_gating_delta_rule_update_kernel(
++    stride_a,
+@@ -81,10 +82,10 @@ def fused_sigmoid_gating_delta_rule_update_kernel(
+-        p_a = a + (bos * HV + i_hv) * K + o_k
++        p_a = a + bos * stride_a + i_hv * K + o_k
+-        p_a = a + bos * HV + i_hv
++        p_a = a + bos * stride_a + i_hv
+diff -- python/sglang/srt/layers/attention/fla/fused_gdn_gating.py
+@@ -16,6 +16,8 @@ def fused_gdn_gating_kernel(
++    stride_a,
++    stride_b,
+@@ -26,8 +28,8 @@ def fused_gdn_gating_kernel(
+-    blk_a = tl.load(a + off, mask=mask)
+-    blk_b = tl.load(b + off, mask=mask)
++    blk_a = tl.load(a + i_b * stride_a + head_off, mask=mask)
+diff -- test/registered/attention/test_gdn_noncontiguous_stride.py
+@@ -0,0 +1,255 @@
+```
 
-- Link: https://github.com/sgl-project/sglang/pull/22493
-- Status/date: `merged`, created 2026-04-10, merged 2026-04-22; author `hlu1`.
-- Diff scope read: `5` files, `+193/-16`; areas: scheduler/runtime, tests/benchmarks; keywords: cache, kv, test, attention, cuda, mla, scheduler, triton.
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py` modified +9/-6; `python/sglang/srt/layers/attention/fla/fused_gdn_gating.py` modified +8/-2
+  - tests: `test/registered/attention/test_gdn_noncontiguous_stride.py` added +255/-0
+- Risk and verification: The diff ships test coverage in `test/registered/attention/test_gdn_noncontiguous_stride.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #20736 - [AMD] Enable share expert fusion with router experts for Qwen3.5 BF16 & FP8
+
+- Link: https://github.com/sgl-project/sglang/pull/20736
+- Status/date: merged / 2026-04-15
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_5.py`; associated commits `ea05ea5abed1`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +218/-8, 383 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR adds or enables a model support/runtime surface. Title: "[AMD] Enable share expert fusion with router experts for Qwen3.5 BF16 & FP8". The diff centers on `python/sglang/srt/models/qwen3_5.py`. PR body context: ## Motivation Qwen2 MoE and Qwen3.5 MoE models use a **shared expert** in addition to routed experts. When `shared_expert_intermediate_size == moe_intermediate_size`, the shared...
+- Key implementation: `python/sglang/srt/models/qwen3_5.py` modified +110/-3 (113 lines); hunks: -86,9 +86,11; -100,6 +102,8; symbols: __init__, _get_num_fused_shared_experts, get_embed_and_head, touching `__init__, _get_num_fused_shared_experts, get_embed_and_head`.
 - Code diff details:
-  - `test/registered/unit/mem_cache/test_mamba_unittest.py` modified +123/-0 (123 lines); hunks: def make_dummy_req():; symbols: make_dummy_req, test_mamba_pool_cpu_offload, test_hybrid_kv_pool_cpu_offload, test_insert_prev_prefix_len
-  - `python/sglang/srt/mem_cache/memory_pool.py` modified +43/-6 (49 lines); hunks: def fork_from(self, src_index: torch.Tensor) -> Optional[torch.Tensor]:; def set_kv_buffer(; symbols: fork_from, get_cpu_copy, load_cpu_copy, get_contiguous_buf_infos
-  - `python/sglang/srt/mem_cache/allocator.py` modified +8/-8 (16 lines); hunks: def free(self, free_index: torch.Tensor):; def clear(self):; symbols: free, get_cpu_copy, get_cpu_copy, load_cpu_copy
-  - `python/sglang/srt/managers/scheduler.py` modified +11/-0 (11 lines); hunks: def update_running_batch(self, batch: ScheduleBatch) -> Optional[ScheduleBatch]:; def update_running_batch(self, batch: ScheduleBatch) -> Optional[ScheduleBatch; symbols: update_running_batch, update_running_batch
-  - `python/sglang/srt/managers/schedule_batch.py` modified +8/-2 (10 lines); hunks: def offload_kv_cache(self, req_to_token_pool, token_to_kv_pool_allocator):; symbols: offload_kv_cache, load_kv_cache, log_time_stats
-- Optimization/support interpretation: The concrete diff surface is `test/registered/unit/mem_cache/test_mamba_unittest.py`, `python/sglang/srt/mem_cache/memory_pool.py`, `python/sglang/srt/mem_cache/allocator.py`; keywords observed in patches: cache, kv, test, attention, cuda, mla. Impact reading: scheduler/runtime/cache code changed; verify continuous batching, spec/PD/DP, cache lifetime, and exceptional branches; tests or benchmarks changed; use those cases as regression entry points instead of only checking model load.
-- Risk and verification: Re-run the model path that exercises `test/registered/unit/mem_cache/test_mamba_unittest.py`, `python/sglang/srt/mem_cache/memory_pool.py`, `python/sglang/srt/mem_cache/allocator.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/models/qwen3_5.py` modified +110/-3 (113 lines); hunks: -86,9 +86,11; -100,6 +102,8; symbols: __init__, _get_num_fused_shared_experts, get_embed_and_head
+- Key code excerpts:
 
-### PR #22908 - [AMD] Resolve Qwen3.5 MTP (speculative decoding) radix cache conflict.
+```diff
+diff -- python/sglang/srt/models/qwen3_5.py
+@@ -86,9 +86,11 @@
++    get_bool_env_var,
++    is_hip,
+@@ -100,6 +102,8 @@
++_is_hip = is_hip()
++_use_aiter = get_bool_env_var("SGLANG_USE_AITER") and _is_hip
+@@ -528,6 +532,7 @@ def __init__(
+```
 
-- Link: https://github.com/sgl-project/sglang/pull/22908
-- Status/date: `merged`, created 2026-04-15, merged 2026-04-21; author `ChangLiu0709`.
-- Diff scope read: `1` files, `+14/-4`; areas: misc; keywords: cache, scheduler, spec.
-- Code diff details:
-  - `python/sglang/srt/server_args.py` modified +14/-4 (18 lines); hunks: def _handle_mamba_radix_cache(; symbols: _handle_mamba_radix_cache, _handle_sampling_backend
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/server_args.py`; keywords observed in patches: cache, scheduler, spec. Impact reading: the patch is in miscellaneous paths; infer the actual impact from the touched files.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/server_args.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
-
-### PR #22913 - test(4-gpu-b200): split test_qwen35_models.py + bump partitions 5→6
-
-- Link: https://github.com/sgl-project/sglang/pull/22913
-- Status/date: `merged`, created 2026-04-15, merged 2026-04-17; author `alisonshao`.
-- Diff scope read: `4` files, `+184/-247`; areas: model wrapper, quantization, kernel, tests/benchmarks; keywords: cuda, test, attention, config, fp4, quant, scheduler, eagle, flash, spec.
-- Code diff details:
-  - `test/registered/4-gpu-models/test_qwen35_models.py` removed +0/-245 (245 lines); hunks: -import unittest; symbols: TestQwen35FP4, test_gsm8k, TestQwen35FP4MTP, setUpClass
-  - `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py` added +105/-0 (105 lines); hunks: +import unittest; symbols: TestQwen35FP4MTPV2, setUpClass, tearDownClass, test_gsm8k
-  - `test/registered/4-gpu-models/test_qwen35_fp4_triton.py` added +77/-0 (77 lines); hunks: +import unittest; symbols: TestQwen35FP4, test_gsm8k
-  - `.github/workflows/pr-test.yml` modified +2/-2 (4 lines); hunks: jobs:; jobs:
-- Optimization/support interpretation: The concrete diff surface is `test/registered/4-gpu-models/test_qwen35_models.py`, `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py`, `test/registered/4-gpu-models/test_qwen35_fp4_triton.py`; keywords observed in patches: cuda, test, attention, config, fp4, quant. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; quantized loading or quantized kernels changed; verify scales, zero-points, checkpoint names, and fallback behavior; CUDA/Triton/C++ kernels or bindings changed; verify shape guards, dtype, device backend, and benchmark coverage; tests or benchmarks changed; use those cases as regression entry points instead of only checking model load.
-- Risk and verification: Re-run the model path that exercises `test/registered/4-gpu-models/test_qwen35_models.py`, `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py`, `test/registered/4-gpu-models/test_qwen35_fp4_triton.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_5.py` modified +110/-3
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/models/qwen3_5.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #22948 - [AMD] Qwen3.5 MXFP4 breaks after shared expert fusion is enabled
 
 - Link: https://github.com/sgl-project/sglang/pull/22948
-- Status/date: `merged`, created 2026-04-16, merged 2026-04-16; author `mqhc2020`.
-- Diff scope read: `1` files, `+17/-1`; areas: model wrapper, MoE/router; keywords: config, deepep, expert, moe, quant.
+- Status/date: merged / 2026-04-16
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +17/-1, 39 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR adds or enables a model support/runtime surface. Title: "[AMD] Qwen3.5 MXFP4 breaks after shared expert fusion is enabled". The diff centers on `python/sglang/srt/models/qwen2_moe.py`. PR body context: ## Motivation After shared expert fusion is enabled for Qwen3.5 models (as in #20736 ), MXFP4 model hits an issue: the shared expert in the checkpoint is based on BF16 but curre...
+- Key implementation: `python/sglang/srt/models/qwen2_moe.py` modified +17/-1 (18 lines); hunks: -108,6 +108,7; -120,6 +121,20 @@ def can_fuse_shared_expert(; symbols: can_fuse_shared_expert, __init__, touching `can_fuse_shared_expert, __init__`.
 - Code diff details:
-  - `python/sglang/srt/models/qwen2_moe.py` modified +17/-1 (18 lines); hunks: def can_fuse_shared_expert(; def can_fuse_shared_expert(; symbols: can_fuse_shared_expert, can_fuse_shared_expert, __init__
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/models/qwen2_moe.py`; keywords observed in patches: config, deepep, expert, moe, quant. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; MoE/router/top-k/expert logic changed; verify shared/routed experts plus EP/TP/DP and empty-token branches.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/models/qwen2_moe.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/models/qwen2_moe.py` modified +17/-1 (18 lines); hunks: -108,6 +108,7; -120,6 +121,20 @@ def can_fuse_shared_expert(; symbols: can_fuse_shared_expert, __init__
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/qwen2_moe.py
+@@ -108,6 +108,7 @@
++    quant_config: Optional[QuantizationConfig],
+@@ -120,6 +121,20 @@ def can_fuse_shared_expert(
++    # If the shared expert is excluded from quantization (stored as FP32 in the
++    # checkpoint), fusing it into the quantized MoE weight tensor requires online
++    # quantization which is not supported. Disable fusion in this case.
++    if quant_config is not None:
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen2_moe.py` modified +17/-1
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/qwen2_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #22913 - test(4-gpu-b200): split test_qwen35_models.py + bump partitions 5→6
+
+- Link: https://github.com/sgl-project/sglang/pull/22913
+- Status/date: merged / 2026-04-17
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py`, `test/registered/4-gpu-models/test_qwen35_fp4_triton.py`; associated commits `005209317888`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 4 files, +184/-247, 448 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR extends deployment docs, tests, or CI coverage. Title: "test(4-gpu-b200): split test_qwen35_models.py + bump partitions 5→6". The diff centers on `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py`, `test/registered/4-gpu-models/test_qwen35_fp4_triton.py`. PR body context: ## Summary - Splits `test/registered/4-gpu-models/test_qwen35_models.py` into separate files so the CI auto-partitioner can spread the load across separate partitions - Removes...
+- Key implementation: `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py` added +105/-0 (105 lines); hunks: -0,0 +1,105; symbols: TestQwen35FP4MTPV2, setUpClass, tearDownClass, test_gsm8k, touching `TestQwen35FP4MTPV2, setUpClass, tearDownClass`; `test/registered/4-gpu-models/test_qwen35_fp4_triton.py` added +77/-0 (77 lines); hunks: -0,0 +1,77; symbols: TestQwen35FP4, test_gsm8k, touching `TestQwen35FP4, test_gsm8k`.
+- Code diff details:
+  - `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py` added +105/-0 (105 lines); hunks: -0,0 +1,105; symbols: TestQwen35FP4MTPV2, setUpClass, tearDownClass, test_gsm8k
+  - `test/registered/4-gpu-models/test_qwen35_fp4_triton.py` added +77/-0 (77 lines); hunks: -0,0 +1,77; symbols: TestQwen35FP4, test_gsm8k
+- Key code excerpts:
+
+```diff
+diff -- test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py
+@@ -0,0 +1,105 @@
++import unittest
++from types import SimpleNamespace
++import requests
++from sglang.srt.environ import envs
++from sglang.srt.utils import kill_process_tree
++from sglang.test.ci.ci_register import register_cuda_ci
+diff -- test/registered/4-gpu-models/test_qwen35_fp4_triton.py
+@@ -0,0 +1,77 @@
++import unittest
++from sglang.test.accuracy_test_runner import AccuracyTestParams
++from sglang.test.ci.ci_register import register_cuda_ci
++# This eval harness applies the chat_template, which is critical for qwen3.5
++# to get good accuracy on gsm8k
++from sglang.test.run_combined_tests import run_combined_tests
+```
+
+- Reviewed files:
+  - tests: `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py` added +105/-0; `test/registered/4-gpu-models/test_qwen35_fp4_triton.py` added +77/-0
+- Risk and verification: The diff ships test coverage in `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py`, `test/registered/4-gpu-models/test_qwen35_fp4_triton.py`, `test/registered/4-gpu-models/test_qwen35_models.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #23034 - docs: fix links, add Qwen3.6, update Qwen3.5/GLM-5 docs
 
 - Link: https://github.com/sgl-project/sglang/pull/23034
-- Status/date: `merged`, created 2026-04-17, merged 2026-04-17; author `zijiexia`.
-- Diff scope read: `73` files, `+2214/-215`; areas: model wrapper, MoE/router, kernel, multimodal/processor, scheduler/runtime, docs/config; keywords: doc, spec, attention, config, cuda, cache, moe, quant, eagle, expert.
+- Status/date: merged / 2026-04-17
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 73 files, +2214/-215, 3198 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR adds or enables a model support/runtime surface. Title: "docs: fix links, add Qwen3.6, update Qwen3.5/GLM-5 docs". The diff centers on `docs_new/docs/advanced_features/separate_reasoning.mdx`, `docs_new/docs/advanced_features/tool_parser.mdx`, `docs_new/docs/advanced_features/dp_dpa_smg_guide.mdx`. PR body context: ## Summary - **Add Qwen3.6 documentation**: New full deployment guide for Qwen3.6-35B-A3B (hybrid GDN + sparse MoE architecture) with JSX deployment snippet, covering MTP, tool...
+- Key implementation: `docs_new/docs/advanced_features/separate_reasoning.mdx` modified +2/-3 (5 lines); hunks: -207,7 +207,7 @@ print_highlight("==== Text ===="); -226,7 +226,7 @@ print_highlight("==== Original Output ===="); `docs_new/docs/advanced_features/tool_parser.mdx` modified +1/-2 (3 lines); hunks: -718,7 +718,7 @@ for tool_call in tool_calls:; -738,4 +738,3 @@ terminate_process(server_process); symbols: NewModelDetector, that, touching `NewModelDetector, that`; `docs_new/docs/advanced_features/dp_dpa_smg_guide.mdx` added +509/-0 (509 lines); hunks: -0,0 +1,509; `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx` added +471/-0 (471 lines); hunks: -0,0 +1,471.
 - Code diff details:
-  - `docs_new/docs/advanced_features/dp_dpa_smg_guide.mdx` added +509/-0 (509 lines); hunks: +---
-  - `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx` added +471/-0 (471 lines); hunks: +---
-  - `docs_new/docs/advanced_features/piecewise_cuda_graph.mdx` added +299/-0 (299 lines); hunks: +---; symbols: per_token_group_quant_8bit, add
-  - `docs_new/docs/advanced_features/server_arguments.mdx` modified +241/-45 (286 lines); hunks: Please consult the documentation below and [server_args.py](https://github.com/s; Please consult the documentation below and [server_args.py](https://github.com
-  - `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx` added +219/-0 (219 lines); hunks: +export const Qwen36Deployment = () => {
-- Optimization/support interpretation: The concrete diff surface is `docs_new/docs/advanced_features/dp_dpa_smg_guide.mdx`, `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/docs/advanced_features/piecewise_cuda_graph.mdx`; keywords observed in patches: doc, spec, attention, config, cuda, cache. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; MoE/router/top-k/expert logic changed; verify shared/routed experts plus EP/TP/DP and empty-token branches; CUDA/Triton/C++ kernels or bindings changed; verify shape guards, dtype, device backend, and benchmark coverage; multimodal processor or media-token code changed; verify image/video/audio metadata, position ids, and batching; scheduler/runtime/cache code changed; verify continuous batching, spec/PD/DP, cache lifetime, and exceptional branches; docs or config changed; verify serve flags, defaults, and cookbook commands against runtime code.
-- Risk and verification: Re-run the model path that exercises `docs_new/docs/advanced_features/dp_dpa_smg_guide.mdx`, `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/docs/advanced_features/piecewise_cuda_graph.mdx`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `docs_new/docs/advanced_features/separate_reasoning.mdx` modified +2/-3 (5 lines); hunks: -207,7 +207,7 @@ print_highlight("==== Text ===="); -226,7 +226,7 @@ print_highlight("==== Original Output ====")
+  - `docs_new/docs/advanced_features/tool_parser.mdx` modified +1/-2 (3 lines); hunks: -718,7 +718,7 @@ for tool_call in tool_calls:; -738,4 +738,3 @@ terminate_process(server_process); symbols: NewModelDetector, that
+  - `docs_new/docs/advanced_features/dp_dpa_smg_guide.mdx` added +509/-0 (509 lines); hunks: -0,0 +1,509
+  - `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx` added +471/-0 (471 lines); hunks: -0,0 +1,471
+  - `docs_new/docs/advanced_features/piecewise_cuda_graph.mdx` added +299/-0 (299 lines); hunks: -0,0 +1,299; symbols: per_token_group_quant_8bit, add
+- Key code excerpts:
 
-### PR #23467 - fix: dot-boundary match in is_layer_skipped for FP8 modules_to_not_convert
+```diff
+diff -- docs_new/docs/advanced_features/separate_reasoning.mdx
+@@ -207,7 +207,7 @@ print_highlight("==== Text ====")
+-The reasoning separation is enable by default when specify .
++The reasoning separation is enable by default when specify .
+@@ -226,7 +226,7 @@ print_highlight("==== Original Output ====")
+-### SGLang Native API
++### SGLang Native API
+@@ -315,4 +315,3 @@ llm.shutdown()
+diff -- docs_new/docs/advanced_features/tool_parser.mdx
+@@ -718,7 +718,7 @@ for tool_call in tool_calls:
+-> **Note:**
++> **Note:**
+@@ -738,4 +738,3 @@ terminate_process(server_process)
+diff -- docs_new/docs/advanced_features/dp_dpa_smg_guide.mdx
+@@ -0,0 +1,509 @@
++---
++title: "DP, DPA and SGLang DP Router"
++metatags:
+```
 
-- Link: https://github.com/sgl-project/sglang/pull/23467
-- Status/date: `merged`, created 2026-04-22, merged 2026-04-22; author `mickqian`.
-- Diff scope read: `1` files, `+31/-4`; areas: quantization; keywords: config, fp8, kv, moe, quant.
+- Reviewed files:
+  - docs: `docs_new/docs/advanced_features/separate_reasoning.mdx` modified +2/-3; `docs_new/docs/advanced_features/tool_parser.mdx` modified +1/-2; `docs_new/docs/advanced_features/dp_dpa_smg_guide.mdx` added +509/-0; `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx` added +471/-0; `docs_new/docs/advanced_features/piecewise_cuda_graph.mdx` added +299/-0; `docs_new/docs/advanced_features/server_arguments.mdx` modified +241/-45
+- Risk and verification: This is mostly docs/examples in `docs_new/.gitignore`, `docs_new/cards/logos/google.png`, `docs_new/cards/logos/mova.png`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #22431 - Fix Qwen3.5 video processing when passing video_data in "processor_output" format
+
+- Link: https://github.com/sgl-project/sglang/pull/22431
+- Status/date: merged / 2026-04-18
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR fixes a launch, loading, parsing, or numerical issue. Title: "Fix Qwen3.5 video processing when passing video_data in "processor_output" format". The diff centers on `python/sglang/srt/multimodal/processors/qwen_vl.py`. PR body context: ## Motivation Currently, the video preprocessing function of Qwen3.5 requires two return values: https://github.com/sgl-project/sglang/blob/ef6bfc1197ab45290e33941881f23c39fbf30...
+- Key implementation: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +1/-1 (2 lines); hunks: -162,7 +162,7 @@ async def preprocess_video(; symbols: preprocess_video, touching `preprocess_video`.
 - Code diff details:
-  - `python/sglang/srt/layers/quantization/utils.py` modified +31/-4 (35 lines); hunks: def __getattr__(self, name):; def is_layer_skipped(; symbols: __getattr__, _module_path_match, names, is_layer_skipped
-- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/layers/quantization/utils.py`; keywords observed in patches: config, fp8, kv, moe, quant. Impact reading: quantized loading or quantized kernels changed; verify scales, zero-points, checkpoint names, and fallback behavior.
-- Risk and verification: Re-run the model path that exercises `python/sglang/srt/layers/quantization/utils.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +1/-1 (2 lines); hunks: -162,7 +162,7 @@ async def preprocess_video(; symbols: preprocess_video
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/multimodal/processors/qwen_vl.py
+@@ -162,7 +162,7 @@ async def preprocess_video(
+-        return vr
++        return vr, None
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +1/-1
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/multimodal/processors/qwen_vl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #22908 - [AMD] Resolve Qwen3.5 MTP (speculative decoding) radix cache conflict.
+
+- Link: https://github.com/sgl-project/sglang/pull/22908
+- Status/date: merged / 2026-04-21
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +14/-4, 25 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[AMD] Resolve Qwen3.5 MTP (speculative decoding) radix cache conflict.". The diff centers on `python/sglang/srt/server_args.py`. PR body context: ## Motivation When using speculative decoding (e.g., EAGLE) with `Qwen3_5MoeForConditionalGeneration`, SGLang raises a hard `ValueError` in `_handle_mamba_radix_cache()`: This b...
+- Key implementation: `python/sglang/srt/server_args.py` modified +14/-4 (18 lines); hunks: -2326,10 +2326,20 @@ def _handle_mamba_radix_cache(; symbols: _handle_mamba_radix_cache, _handle_sampling_backend, touching `_handle_mamba_radix_cache, _handle_sampling_backend`.
+- Code diff details:
+  - `python/sglang/srt/server_args.py` modified +14/-4 (18 lines); hunks: -2326,10 +2326,20 @@ def _handle_mamba_radix_cache(; symbols: _handle_mamba_radix_cache, _handle_sampling_backend
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/server_args.py
+@@ -2326,10 +2326,20 @@ def _handle_mamba_radix_cache(
+-                    raise ValueError(
+-                        f"Speculative decoding for {model_arch} is not compatible with radix cache when using --mamba-scheduler-strategy no_buffer."
+-                        "To use radix cache with speculative decoding, please use --mamba-scheduler-strategy extra_buffer and set SGLANG_ENABLE_SPEC_V2=1."
+-                    )
++                    if is_hip():
++                        # On ROCm, extra_buffer is unsupported.
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/server_args.py` modified +14/-4
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/server_args.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #22493 - Add MambaPool kvcache offloading during retraction
+
+- Link: https://github.com/sgl-project/sglang/pull/22493
+- Status/date: merged / 2026-04-22
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 5 files, +193/-16, 311 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR adds or enables a model support/runtime surface. Title: "Add MambaPool kvcache offloading during retraction". The diff centers on `test/registered/unit/mem_cache/test_mamba_unittest.py`, `python/sglang/srt/mem_cache/memory_pool.py`, `python/sglang/srt/mem_cache/allocator.py`. PR body context: ## Motivation Mamba-hybrid models (e.g. Qwen3.5-397B-A17B) maintain SSM state (conv + temporal buffers) in MambaPool separate from the attention KV cache. During request retract...
+- Key implementation: `test/registered/unit/mem_cache/test_mamba_unittest.py` modified +123/-0 (123 lines); hunks: -388,6 +388,129 @@ def make_dummy_req():; symbols: make_dummy_req, test_mamba_pool_cpu_offload, test_hybrid_kv_pool_cpu_offload, test_insert_prev_prefix_len, touching `make_dummy_req, test_mamba_pool_cpu_offload, test_hybrid_kv_pool_cpu_offload`; `python/sglang/srt/mem_cache/memory_pool.py` modified +43/-6 (49 lines); hunks: -388,6 +388,28 @@ def fork_from(self, src_index: torch.Tensor) -> Optional[to...; -728,10 +750,10 @@ def set_kv_buffer(; symbols: fork_from, get_cpu_copy, load_cpu_copy, get_contiguous_buf_infos, touching `fork_from, get_cpu_copy, load_cpu_copy`; `python/sglang/srt/mem_cache/allocator.py` modified +8/-8 (16 lines); hunks: -164,11 +164,11 @@ def free(self, free_index: torch.Tensor):; -512,8 +512,8 @@ def clear(self):; symbols: free, get_cpu_copy, load_cpu_copy, touching `free, get_cpu_copy, load_cpu_copy`; `python/sglang/srt/managers/scheduler.py` modified +11/-0 (11 lines); hunks: -2681,11 +2681,20 @@ def update_running_batch(self, batch: ScheduleBatch) ->...; -2715,6 +2724,8 @@ def update_running_batch(self, batch: ScheduleBatch) -> Op...; symbols: update_running_batch, touching `update_running_batch`.
+- Code diff details:
+  - `test/registered/unit/mem_cache/test_mamba_unittest.py` modified +123/-0 (123 lines); hunks: -388,6 +388,129 @@ def make_dummy_req():; symbols: make_dummy_req, test_mamba_pool_cpu_offload, test_hybrid_kv_pool_cpu_offload, test_insert_prev_prefix_len
+  - `python/sglang/srt/mem_cache/memory_pool.py` modified +43/-6 (49 lines); hunks: -388,6 +388,28 @@ def fork_from(self, src_index: torch.Tensor) -> Optional[to...; -728,10 +750,10 @@ def set_kv_buffer(; symbols: fork_from, get_cpu_copy, load_cpu_copy, get_contiguous_buf_infos
+  - `python/sglang/srt/mem_cache/allocator.py` modified +8/-8 (16 lines); hunks: -164,11 +164,11 @@ def free(self, free_index: torch.Tensor):; -512,8 +512,8 @@ def clear(self):; symbols: free, get_cpu_copy, load_cpu_copy
+  - `python/sglang/srt/managers/scheduler.py` modified +11/-0 (11 lines); hunks: -2681,11 +2681,20 @@ def update_running_batch(self, batch: ScheduleBatch) ->...; -2715,6 +2724,8 @@ def update_running_batch(self, batch: ScheduleBatch) -> Op...; symbols: update_running_batch
+  - `python/sglang/srt/managers/schedule_batch.py` modified +8/-2 (10 lines); hunks: -1241,13 +1241,19 @@ def offload_kv_cache(self, req_to_token_pool, token_to_k...; symbols: offload_kv_cache, load_kv_cache, log_time_stats
+- Key code excerpts:
+
+```diff
+diff -- test/registered/unit/mem_cache/test_mamba_unittest.py
+@@ -388,6 +388,129 @@ def make_dummy_req():
++    def test_mamba_pool_cpu_offload(self):
++        """MambaPool.get_cpu_copy / load_cpu_copy round-trips conv and temporal state."""
++        _, _, req_to_token_pool, _ = self._setup_tree_and_allocator()
++        mamba_pool = req_to_token_pool.mamba_pool
++        n = 3
++        indices = mamba_pool.alloc(n)
+diff -- python/sglang/srt/mem_cache/memory_pool.py
+@@ -388,6 +388,28 @@ def fork_from(self, src_index: torch.Tensor) -> Optional[torch.Tensor]:
++    def get_cpu_copy(self, indices, **kwargs):
++        torch.cuda.synchronize()
++        conv_cpu = [
++            conv[:, indices].to("cpu", non_blocking=True)
++            for conv in self.mamba_cache.conv
++        ]
+diff -- python/sglang/srt/mem_cache/allocator.py
+@@ -164,11 +164,11 @@ def free(self, free_index: torch.Tensor):
+```
+
+- Reviewed files:
+  - tests: `test/registered/unit/mem_cache/test_mamba_unittest.py` modified +123/-0
+  - runtime: `python/sglang/srt/mem_cache/memory_pool.py` modified +43/-6; `python/sglang/srt/mem_cache/allocator.py` modified +8/-8; `python/sglang/srt/managers/scheduler.py` modified +11/-0; `python/sglang/srt/managers/schedule_batch.py` modified +8/-2
+- Risk and verification: The diff ships test coverage in `test/registered/unit/mem_cache/test_mamba_unittest.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #23474 - [Bugfix] Try to fix --cpu-offload-gb on hybrid linear-attn models
 
 - Link: https://github.com/sgl-project/sglang/pull/23474
-- Status/date: `open`, created 2026-04-22; author `kawaruko`.
-- Diff scope read: `2` files, `+284/-8`; areas: tests/benchmarks; keywords: attention, cache, cuda, spec, test.
+- Status/date: open / 2026-04-22
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +284/-8, 330 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Bugfix] Try to fix --cpu-offload-gb on hybrid linear-attn models". The diff centers on `test/registered/unit/utils/test_offloader_tied_params.py`, `python/sglang/srt/utils/offloader.py`. PR body context: ## Motivation Fixes #23150. `--cpu-offload-gb > 0` was broken on hybrid linear-attention models (Qwen3-Next, Qwen3.5, Kimi-Linear): the first `/v1/chat/completions` request rais...
+- Key implementation: `test/registered/unit/utils/test_offloader_tied_params.py` added +199/-0 (199 lines); hunks: -0,0 +1,199; symbols: _TiedChild, __init__, forward, _TiedParent, touching `_TiedChild, __init__, forward`; `python/sglang/srt/utils/offloader.py` modified +85/-8 (93 lines); hunks: -1,7 +1,7; -106,16 +106,52 @@ def maybe_offload_to_cpu(self, module: torch.nn.Module) ->...; symbols: maybe_offload_to_cpu, forward, touching `maybe_offload_to_cpu, forward`.
 - Code diff details:
-  - `test/registered/unit/utils/test_offloader_tied_params.py` added +199/-0 (199 lines); hunks: +"""Tests for OffloaderV1 with tied parameters and view aliases (see issue #23150).; symbols: _TiedChild, __init__, forward, _TiedParent
-  - `python/sglang/srt/utils/offloader.py` modified +85/-8 (93 lines); hunks: import logging; def maybe_offload_to_cpu(self, module: torch.nn.Module) -> torch.nn.Module:; symbols: maybe_offload_to_cpu, maybe_offload_to_cpu, forward
-- Optimization/support interpretation: The concrete diff surface is `test/registered/unit/utils/test_offloader_tied_params.py`, `python/sglang/srt/utils/offloader.py`; keywords observed in patches: attention, cache, cuda, spec, test. Impact reading: tests or benchmarks changed; use those cases as regression entry points instead of only checking model load.
-- Risk and verification: Re-run the model path that exercises `test/registered/unit/utils/test_offloader_tied_params.py`, `python/sglang/srt/utils/offloader.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `test/registered/unit/utils/test_offloader_tied_params.py` added +199/-0 (199 lines); hunks: -0,0 +1,199; symbols: _TiedChild, __init__, forward, _TiedParent
+  - `python/sglang/srt/utils/offloader.py` modified +85/-8 (93 lines); hunks: -1,7 +1,7; -106,16 +106,52 @@ def maybe_offload_to_cpu(self, module: torch.nn.Module) ->...; symbols: maybe_offload_to_cpu, forward
+- Key code excerpts:
 
+```diff
+diff -- test/registered/unit/utils/test_offloader_tied_params.py
+@@ -0,0 +1,199 @@
++"""Tests for OffloaderV1 with tied parameters and view aliases (see issue #23150).
++Two failure modes caused the Qwen3-Next / Qwen3.5 CPU-offload regression:
++1. **Tied parameters**: a single nn.Parameter is registered under both a parent
++   and a child module (Qwen3GatedDeltaNet + RadixLinearAttention share
++   ``A_log`` / ``dt_bias``). state_dict() then lists the same tensor under
++   multiple keys, and functional_call(..., tie_weights=True) rejects it when
+diff -- python/sglang/srt/utils/offloader.py
+@@ -1,7 +1,7 @@
+-from typing import Callable, Generator, List, Optional
++from typing import Callable, Dict, Generator, List, Optional
+@@ -106,16 +106,52 @@ def maybe_offload_to_cpu(self, module: torch.nn.Module) -> torch.nn.Module:
++        # Record tensor views that alias each parameter's *original* storage
++        # BEFORE we rebind .data to pinned CPU memory. Some hybrid linear-attn
++        # models (e.g. Qwen3-Next) cache such views, which would otherwise point
+```
 
-<!-- MODEL_PR_DIFF_AUDIT:END reference -->
+- Reviewed files:
+  - tests: `test/registered/unit/utils/test_offloader_tied_params.py` added +199/-0
+  - runtime: `python/sglang/srt/utils/offloader.py` modified +85/-8
+- Risk and verification: The diff ships test coverage in `test/registered/unit/utils/test_offloader_tied_params.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #23467 - fix: dot-boundary match in is_layer_skipped for FP8 modules_to_not_convert
+
+- Link: https://github.com/sgl-project/sglang/pull/23467
+- Status/date: merged / 2026-04-22
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +31/-4, 63 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For Qwen3.5, this PR fixes a launch, loading, parsing, or numerical issue. Title: "fix: dot-boundary match in is_layer_skipped for FP8 modules_to_not_convert". The diff centers on `python/sglang/srt/layers/quantization/utils.py`. PR body context: ## Summary - `is_layer_skipped` uses naive substring match (`ignored in prefix`) on `modules_to_not_convert` entries, which silently fires when an entry is a prefix-substring of...
+- Key implementation: `python/sglang/srt/layers/quantization/utils.py` modified +31/-4 (35 lines); hunks: -43,6 +43,28 @@ def __getattr__(self, name):; -56,16 +78,19 @@ def is_layer_skipped(; symbols: __getattr__, _module_path_match, is_layer_skipped, touching `__getattr__, _module_path_match, is_layer_skipped`.
+- Code diff details:
+  - `python/sglang/srt/layers/quantization/utils.py` modified +31/-4 (35 lines); hunks: -43,6 +43,28 @@ def __getattr__(self, name):; -56,16 +78,19 @@ def is_layer_skipped(; symbols: __getattr__, _module_path_match, is_layer_skipped
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/quantization/utils.py
+@@ -43,6 +43,28 @@ def __getattr__(self, name):
++def _module_path_match(ignored: str, prefix: str) -> bool:
++    # Match on dotted module-path boundaries so that `mlp.gate` does NOT
++    # match `mlp.gate_up_proj`. Needed for quant configs (e.g. Qwen3.6-FP8)
++    # whose `modules_to_not_convert` lists MoE-template names like `mlp.gate`
++    # that collide with fused dense MLP names by plain substring.
++    if ignored == prefix:
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/quantization/utils.py` modified +31/-4
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/quantization/utils.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.

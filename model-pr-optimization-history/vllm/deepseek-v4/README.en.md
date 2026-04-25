@@ -1,115 +1,156 @@
-# vLLM DeepSeek V4 Support and PR History
+# vllm DeepSeek V4 Model PR Optimization History
 
-This note tracks the vLLM status for DeepSeek V4 at commit
-`0f7be0f2f76814f80f9091220a5fbbb53912ad00`.
+## Scope
 
-- Status: not supported on current mainline; only open PR evidence exists
+- Rebuilt on: 2026-04-25
+- Source baseline: `vllm-project/vllm` trace worktree commit `95995bbef8`
+- PR collection rule: run `git log --name-only -- <model-files>` on model implementation, config, processor, parser, docs/tests, filter by model keywords in commit subjects, then read each PR's final diff through the GitHub Pull Request files API.
+- Preservation rule: PRs explicitly cited by the previous history/skill are retained even if current implementation files no longer trace to them, and the card marks that source.
+- Diffusion model families have been removed from this history set and are no longer part of model optimization skills.
 
-## Key Conclusions
+## Implementation File Coverage
 
-- Current mainline still does not register `DeepseekV4ForCausalLM` in
-  `vllm/model_executor/models/registry.py`.
-- The real bring-up work is concentrated in open PR `#40760`, which spans the
-  model, MTP draft path, tokenizer, renderer, parser, tests, and spec-decode
-  glue.
-- Two additional open PRs are already relevant even before merge:
-  `#40811` for BF16 persistent top-k and `#40806` for DSML streaming safety.
+| File | Git-traced PRs |
+| --- | --- |
+| - | No matching implementation file on current main |
 
-## Main Runtime Surfaces
+## PR Coverage Summary
 
-- Current-main check point: `vllm/vllm/model_executor/models/registry.py`
-- Open-radar files:
-  `vllm/vllm/model_executor/models/deepseek_v4.py`,
-  `vllm/vllm/model_executor/models/deepseek_v4_mtp.py`,
-  `vllm/vllm/tokenizers/deepseek_v4.py`,
-  `vllm/vllm/renderers/deepseek_v4.py`,
-  `vllm/vllm/tool_parsers/deepseekv4_tool_parser.py`,
-  `vllm/vllm/v1/spec_decode/eagle.py`,
-  `vllm/csrc/persistent_topk.cuh`
+- Git-traced PRs: 0
+- Extra PRs preserved from existing docs: 3
+- Total PRs in this document: 3
+- File trace command: `git log --name-only -- <model-files>`
+- Diff audit source: GitHub Pull Request files API
 
-## Open PR Radar
+## Timeline
 
-- [#40760](https://github.com/vllm-project/vllm/pull/40760)
-  `[New Model] Support DeepseekV4`
-  Diff reviewed: `156` files, `16193` additions, `760` deletions.
-  The PR adds the proposed model alias, V4 MTP class, tokenizer, renderer,
-  parser, config mapping, and speculative-decode wiring.
-- [#40811](https://github.com/vllm-project/vllm/pull/40811)
-  `[Perf][Kernel] BF16 input support for persistent topK - DeepSeekV4`
-  Diff reviewed: `3` files, `886` additions, `330` deletions.
-  The patch teaches the sparse top-k kernel to handle BF16 ordered keys and adds
-  BF16 kernel tests.
-- [#40806](https://github.com/vllm-project/vllm/pull/40806)
-  `[Bugfix] Fix the DSML token leakage in DSV4/3.2`
-  Diff reviewed: `2` files, `30` additions, `1` deletion.
-  The parser now buffers partial DSML sentinels instead of leaking them as plain
-  text during chunked streaming.
+| Date | PR | State | Title | Main files |
+| --- | --- | --- | --- | --- |
+| 2026-04-24 | [#40760](https://github.com/vllm-project/vllm/pull/40760) | open | [New Model] Support DeepseekV4 | `vllm/model_executor/models/deepseek_v4.py`, `vllm/model_executor/layers/deepseek_v4_attention.py`, `vllm/tokenizers/deepseek_v4_encoding.py` |
+| 2026-04-24 | [#40806](https://github.com/vllm-project/vllm/pull/40806) | open | [Bugfix] Fix the DSML token leakage in DSV4/3.2 | `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `vllm/tool_parsers/deepseekv32_tool_parser.py` |
+| 2026-04-24 | [#40811](https://github.com/vllm-project/vllm/pull/40811) | open | [Perf][Kernel] BF16 input support for persistent topK - DeepSeekV4 | `csrc/persistent_topk.cuh`, `csrc/topk.cu`, `tests/kernels/test_top_k_per_row.py` |
 
-## Current Contract
-
-Do not claim DeepSeek V4 support in vLLM until the model alias appears on
-mainline and the tokenizer/parser path merges with it. If these PRs merge,
-validate model load, tool calling, speculative decoding, and BF16 sparse top-k
-as one connected stack.
-
-<!-- MODEL_PR_DIFF_AUDIT:START en -->
-
-## PR Diff Audit Cards (2026-04-25 rebuild)
-
-This section re-audits `DeepSeek V4` against `vllm-project/vllm` Pull Request metadata and file-level patches. Acceptance rule: every PR needs status, code surface, file-level diff digest, support/optimization interpretation, and verification risk notes; if no public PR is found, keep an explicit no-match conclusion instead of inventing history.
-
-### Timeline
-
-| Created | PR | State | Title | Code surface | Main diff files |
-| --- | ---: | --- | --- | --- | --- |
-| 2026-04-24 | [#40760](https://github.com/vllm-project/vllm/pull/40760) | open | [New Model] Support DeepseekV4 | model wrapper, attention/backend, MoE/router, quantization, kernel, scheduler/runtime, tests/benchmarks, docs/config | `vllm/model_executor/models/deepseek_v4.py`, `vllm/model_executor/layers/deepseek_v4_attention.py`, `tests/kernels/test_fused_inv_rope_fp8_quant.py` |
-| 2026-04-24 | [#40806](https://github.com/vllm-project/vllm/pull/40806) | open | [Bugfix] Fix the DSML token leakage in DSV4/3.2 | tests/benchmarks | `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `vllm/tool_parsers/deepseekv32_tool_parser.py` |
-| 2026-04-24 | [#40811](https://github.com/vllm-project/vllm/pull/40811) | open | [Perf][Kernel] BF16 input support for persistent topK - DeepSeekV4 | MoE/router, kernel, tests/benchmarks | `csrc/persistent_topk.cuh`, `csrc/topk.cu`, `tests/kernels/test_top_k_per_row.py` |
-
-### File-level PR diff reading notes
+## Per-PR Diff Audit Cards
 
 ### PR #40760 - [New Model] Support DeepseekV4
 
 - Link: https://github.com/vllm-project/vllm/pull/40760
-- Status/date: `open`, created 2026-04-24; author `zyongye`.
-- Diff scope read: `158` files, `+16954/-760`; areas: model wrapper, attention/backend, MoE/router, quantization, kernel, scheduler/runtime, tests/benchmarks, docs/config; keywords: kv, attention, cache, cuda, fp8, quant, config, spec, topk, triton.
+- Status/date: open / 2026-04-24
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 158 files, +16954/-760, 21384 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For DeepSeek V4, this PR adds or enables a model support/runtime surface. Title: "[New Model] Support DeepseekV4". The diff centers on `vllm/model_executor/models/deepseek_v4.py`, `vllm/model_executor/layers/deepseek_v4_attention.py`, `vllm/tokenizers/deepseek_v4_encoding.py`. PR body context: Congratulations on Deepseek-ai to release the model. Thanks for all Inferact member's effort for support this. Note: This model implementation is highly optimized. All the compo...
+- Key implementation: `vllm/model_executor/models/deepseek_v4.py` added +1423/-0 (1423 lines); hunks: -0,0 +1,1423; symbols: DeepseekV4FP8Config, __init__, get_name, override_quantization_method, touching `DeepseekV4FP8Config, __init__, get_name`; `vllm/model_executor/layers/deepseek_v4_attention.py` added +1062/-0 (1062 lines); hunks: -0,0 +1,1062; symbols: DeepseekV4MLAModules, DeepseekV4MultiHeadLatentAttentionWrapper, takes, does, touching `DeepseekV4MLAModules, DeepseekV4MultiHeadLatentAttentionWrapper, takes`; `vllm/tokenizers/deepseek_v4_encoding.py` added +757/-0 (757 lines); hunks: -0,0 +1,757; symbols: to_json, tools_from_openai_format, tool_calls_from_openai_format, tool_calls_to_openai_format, touching `to_json, tools_from_openai_format, tool_calls_from_openai_format`; `vllm/model_executor/models/deepseek_v4_mtp.py` added +472/-0 (472 lines); hunks: -0,0 +1,472; symbols: DeepSeekV4MultiTokenPredictorLayer, __init__, forward, DeepSeekV4MultiTokenPredictor, touching `DeepSeekV4MultiTokenPredictorLayer, __init__, forward`.
 - Code diff details:
-  - `vllm/model_executor/models/deepseek_v4.py` added +1423/-0 (1423 lines); hunks: +# SPDX-License-Identifier: Apache-2.0; symbols: DeepseekV4FP8Config, __init__, get_name, override_quantization_method
-  - `vllm/model_executor/layers/deepseek_v4_attention.py` added +1062/-0 (1062 lines); hunks: +# SPDX-License-Identifier: Apache-2.0; symbols: DeepseekV4MLAModules:, DeepseekV4MultiHeadLatentAttentionWrapper, takes, does
-  - `tests/kernels/test_fused_inv_rope_fp8_quant.py` added +998/-0 (998 lines); hunks: +# SPDX-License-Identifier: Apache-2.0; symbols: assert_dequant_close, rotate_gptj, make_cos_sin_cache, reference_inv_rope
-  - `vllm/tokenizers/deepseek_v4_encoding.py` added +757/-0 (757 lines); hunks: +# SPDX-License-Identifier: Apache-2.0; symbols: to_json, tools_from_openai_format, tool_calls_from_openai_format, tool_calls_to_openai_format
-  - `csrc/moe/topk_softplus_sqrt_kernels.cu` added +715/-0 (715 lines); hunks: +/*; symbols: alignas, int, int, int
-- Optimization/support interpretation: The concrete diff surface is `vllm/model_executor/models/deepseek_v4.py`, `vllm/model_executor/layers/deepseek_v4_attention.py`, `tests/kernels/test_fused_inv_rope_fp8_quant.py`; keywords observed in patches: kv, attention, cache, cuda, fp8, quant. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; attention, KV cache, or backend selection changed; verify prefill/decode, page size, RoPE/MLA/MQA branches; MoE/router/top-k/expert logic changed; verify shared/routed experts plus EP/TP/DP and empty-token branches; quantized loading or quantized kernels changed; verify scales, zero-points, checkpoint names, and fallback behavior; CUDA/Triton/C++ kernels or bindings changed; verify shape guards, dtype, device backend, and benchmark coverage; scheduler/runtime/cache code changed; verify continuous batching, spec/PD/DP, cache lifetime, and exceptional branches; tests or benchmarks changed; use those cases as regression entry points instead of only checking model load; docs or config changed; verify serve flags, defaults, and cookbook commands against runtime code.
-- Risk and verification: Re-run the model path that exercises `vllm/model_executor/models/deepseek_v4.py`, `vllm/model_executor/layers/deepseek_v4_attention.py`, `tests/kernels/test_fused_inv_rope_fp8_quant.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `vllm/model_executor/models/deepseek_v4.py` added +1423/-0 (1423 lines); hunks: -0,0 +1,1423; symbols: DeepseekV4FP8Config, __init__, get_name, override_quantization_method
+  - `vllm/model_executor/layers/deepseek_v4_attention.py` added +1062/-0 (1062 lines); hunks: -0,0 +1,1062; symbols: DeepseekV4MLAModules, DeepseekV4MultiHeadLatentAttentionWrapper, takes, does
+  - `vllm/tokenizers/deepseek_v4_encoding.py` added +757/-0 (757 lines); hunks: -0,0 +1,757; symbols: to_json, tools_from_openai_format, tool_calls_from_openai_format, tool_calls_to_openai_format
+  - `vllm/model_executor/models/deepseek_v4_mtp.py` added +472/-0 (472 lines); hunks: -0,0 +1,472; symbols: DeepSeekV4MultiTokenPredictorLayer, __init__, forward, DeepSeekV4MultiTokenPredictor
+  - `vllm/model_executor/layers/deepseek_compressor.py` added +436/-0 (436 lines); hunks: -0,0 +1,436; symbols: CompressorBackend, __init__, get_name, get_supported_kernel_block_sizes
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/deepseek_v4.py
+@@ -0,0 +1,1423 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++import typing
++from collections.abc import Callable, Iterable
++from itertools import islice
++import regex as re
+diff -- vllm/model_executor/layers/deepseek_v4_attention.py
+@@ -0,0 +1,1062 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++"""
++DeepseekV4 MLA Attention Layer
++"""
++from dataclasses import dataclass
+diff -- vllm/tokenizers/deepseek_v4_encoding.py
+@@ -0,0 +1,757 @@
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/deepseek_v4.py` added +1423/-0; `vllm/model_executor/layers/deepseek_v4_attention.py` added +1062/-0; `vllm/tokenizers/deepseek_v4_encoding.py` added +757/-0; `vllm/model_executor/models/deepseek_v4_mtp.py` added +472/-0; `vllm/model_executor/layers/deepseek_compressor.py` added +436/-0; `vllm/model_executor/layers/mhc.py` added +436/-0
+- Risk and verification: The diff ships test coverage in `tests/kernels/attention/test_use_trtllm_attention.py`, `tests/kernels/core/test_fused_q_kv_rmsnorm.py`, `tests/kernels/moe/test_deepgemm.py`, `tests/kernels/moe/test_ocp_mx_moe.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #40806 - [Bugfix] Fix the DSML token leakage in DSV4/3.2
 
 - Link: https://github.com/vllm-project/vllm/pull/40806
-- Status/date: `open`, created 2026-04-24; author `chaunceyjiang`.
-- Diff scope read: `2` files, `+76/-23`; areas: tests/benchmarks; keywords: kv, test.
+- Status/date: open / 2026-04-24
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +76/-23, 144 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For DeepSeek V4, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Bugfix] Fix the DSML token leakage in DSV4/3.2". The diff centers on `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `vllm/tool_parsers/deepseekv32_tool_parser.py`. PR body context: Co-authored-by: @Windswithyou ## Purpose ## Test Plan ## Test Result before after --- Essential Elements of an Effective PR Description Checklist - [ ] The purpose of the PR, su...
+- Key implementation: `tests/tool_parsers/test_deepseekv32_tool_parser.py` modified +52/-0 (52 lines); hunks: -484,6 +484,58 @@ def test_no_emission_while_incomplete(self, parser):; symbols: test_no_emission_while_incomplete, test_no_marker_leak_chunked, test_no_marker_leak_with_prefix_chunked, test_no_marker_leak_char_by_char, touching `test_no_emission_while_incomplete, test_no_marker_leak_chunked, test_no_marker_leak_with_prefix_chunked`; `vllm/tool_parsers/deepseekv32_tool_parser.py` modified +24/-23 (47 lines); hunks: -26,6 +26,7; -54,8 +55,8 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[Tool]...; symbols: __init__, extract_tool_calls, _reset_streaming_state, _extract_delta_tool_calls, touching `__init__, extract_tool_calls, _reset_streaming_state`.
 - Code diff details:
-  - `tests/tool_parsers/test_deepseekv32_tool_parser.py` modified +52/-0 (52 lines); hunks: def test_no_emission_while_incomplete(self, parser):; symbols: test_no_emission_while_incomplete, test_no_marker_leak_chunked, test_no_marker_leak_with_prefix_chunked, test_no_marker_leak_char_by_char
-  - `vllm/tool_parsers/deepseekv32_tool_parser.py` modified +24/-23 (47 lines); hunks: Tool,; def __init__(self, tokenizer: TokenizerLike, tools: list[Tool] \| None = None):; symbols: __init__, extract_tool_calls, _reset_streaming_state, _extract_delta_tool_calls
-- Optimization/support interpretation: The concrete diff surface is `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `vllm/tool_parsers/deepseekv32_tool_parser.py`; keywords observed in patches: kv, test. Impact reading: tests or benchmarks changed; use those cases as regression entry points instead of only checking model load.
-- Risk and verification: Re-run the model path that exercises `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `vllm/tool_parsers/deepseekv32_tool_parser.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `tests/tool_parsers/test_deepseekv32_tool_parser.py` modified +52/-0 (52 lines); hunks: -484,6 +484,58 @@ def test_no_emission_while_incomplete(self, parser):; symbols: test_no_emission_while_incomplete, test_no_marker_leak_chunked, test_no_marker_leak_with_prefix_chunked, test_no_marker_leak_char_by_char
+  - `vllm/tool_parsers/deepseekv32_tool_parser.py` modified +24/-23 (47 lines); hunks: -26,6 +26,7; -54,8 +55,8 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[Tool]...; symbols: __init__, extract_tool_calls, _reset_streaming_state, _extract_delta_tool_calls
+- Key code excerpts:
+
+```diff
+diff -- tests/tool_parsers/test_deepseekv32_tool_parser.py
+@@ -484,6 +484,58 @@ def test_no_emission_while_incomplete(self, parser):
++    def test_no_marker_leak_chunked(self, parser):
++        """Chunked streaming must NOT leak DSML start-marker fragments
++        as content (GitHub #40801)."""
++        full_text = build_tool_call("fn", {"k": "v"})
++        deltas = self._stream_chunked(parser, full_text, chunk_size=5)
++        content = "".join(d.content for d in deltas if d.content is not None)
+diff -- vllm/tool_parsers/deepseekv32_tool_parser.py
+@@ -26,6 +26,7 @@
++from vllm.tool_parsers.utils import partial_tag_overlap
+@@ -54,8 +55,8 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[Tool] | None = None):
+-        self.is_tool_call_started: bool = False
++        self._sent_content_idx: int = 0
+@@ -219,7 +220,7 @@ def extract_tool_calls(
+-        self.is_tool_call_started = False
+```
+
+- Reviewed files:
+  - tests: `tests/tool_parsers/test_deepseekv32_tool_parser.py` modified +52/-0
+  - runtime: `vllm/tool_parsers/deepseekv32_tool_parser.py` modified +24/-23
+- Risk and verification: The diff ships test coverage in `tests/tool_parsers/test_deepseekv32_tool_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #40811 - [Perf][Kernel] BF16 input support for persistent topK - DeepSeekV4
 
 - Link: https://github.com/vllm-project/vllm/pull/40811
-- Status/date: `open`, created 2026-04-24; author `LopezCastroRoberto`.
-- Diff scope read: `3` files, `+886/-330`; areas: MoE/router, kernel, tests/benchmarks; keywords: cuda, topk, attention, config, flash, kv, mla, processor, spec, test.
+- Status/date: open / 2026-04-24
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +886/-330, 1650 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: For DeepSeek V4, this PR adds or enables a model support/runtime surface. Title: "[Perf][Kernel] BF16 input support for persistent topK - DeepSeekV4". The diff centers on `csrc/persistent_topk.cuh`, `csrc/topk.cu`, `tests/kernels/test_top_k_per_row.py`. PR body context: ## Motivation > We further quantize the index scores 𝐼:,: from FP32 to BF16 during this QAT process. This optimization achieves a 2× speedup for the top-k selector, while preser...
+- Key implementation: `csrc/persistent_topk.cuh` modified +593/-218 (811 lines); hunks: -6,10 +6,12; -59,6 +61,76 @@ __device__ __forceinline__ auto convert_to_uint8(float x) ->...; `csrc/topk.cu` modified +156/-112 (268 lines); hunks: -1,5 +1,6; -10,14 +11,153; `tests/kernels/test_top_k_per_row.py` modified +137/-0 (137 lines); hunks: -383,6 +383,7 @@ def run_large_context_topk_test(; -393,6 +394,7 @@ def run_large_context_topk_test(; symbols: run_large_context_topk_test, test_persistent_topk_padded_stride, test_persistent_topk_bf16, touching `run_large_context_topk_test, test_persistent_topk_padded_stride, test_persistent_topk_bf16`.
 - Code diff details:
-  - `csrc/persistent_topk.cuh` modified +593/-218 (811 lines); hunks: #define PERSISTENT_TOPK_CUH_; __device__ __forceinline__ auto convert_to_uint8(float x) -> uint8_t {; symbols: TopKDTypeTraits, TopKDTypeTraits, int, int
-  - `csrc/topk.cu` modified +156/-112 (268 lines); hunks: -// Persistent TopK kernel for DeepSeek V3 sparse attention indexer.; #include "persistent_topk.cuh"; symbols: int, size_t, bool, size_t
-  - `tests/kernels/test_top_k_per_row.py` modified +137/-0 (137 lines); hunks: def run_large_context_topk_test(; def run_large_context_topk_test(; symbols: run_large_context_topk_test, run_large_context_topk_test, run_large_context_topk_test, test_persistent_topk_padded_stride
-- Optimization/support interpretation: The concrete diff surface is `csrc/persistent_topk.cuh`, `csrc/topk.cu`, `tests/kernels/test_top_k_per_row.py`; keywords observed in patches: cuda, topk, attention, config, flash, kv. Impact reading: MoE/router/top-k/expert logic changed; verify shared/routed experts plus EP/TP/DP and empty-token branches; CUDA/Triton/C++ kernels or bindings changed; verify shape guards, dtype, device backend, and benchmark coverage; tests or benchmarks changed; use those cases as regression entry points instead of only checking model load.
-- Risk and verification: Re-run the model path that exercises `csrc/persistent_topk.cuh`, `csrc/topk.cu`, `tests/kernels/test_top_k_per_row.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+  - `csrc/persistent_topk.cuh` modified +593/-218 (811 lines); hunks: -6,10 +6,12; -59,6 +61,76 @@ __device__ __forceinline__ auto convert_to_uint8(float x) ->...
+  - `csrc/topk.cu` modified +156/-112 (268 lines); hunks: -1,5 +1,6; -10,14 +11,153
+  - `tests/kernels/test_top_k_per_row.py` modified +137/-0 (137 lines); hunks: -383,6 +383,7 @@ def run_large_context_topk_test(; -393,6 +394,7 @@ def run_large_context_topk_test(; symbols: run_large_context_topk_test, test_persistent_topk_padded_stride, test_persistent_topk_bf16
+- Key code excerpts:
 
+```diff
+diff -- csrc/persistent_topk.cuh
+@@ -6,10 +6,12 @@
++#include <cuda_bf16.h>
++#include <type_traits>
+@@ -59,6 +61,76 @@ __device__ __forceinline__ auto convert_to_uint8(float x) -> uint8_t {
++// BF16 ordered key: sign-magnitude to ordered unsigned (16-bit)
++// Uses memcpy to avoid dependency on __CUDA_NO_BFLOAT16_CONVERSIONS__
++__device__ __forceinline__ auto convert_to_uint16_bf16(__nv_bfloat16 x)
+diff -- csrc/topk.cu
+@@ -1,5 +1,6 @@
+-// Persistent TopK kernel for DeepSeek V3 sparse attention indexer.
++// Persistent TopK kernel for DeepSeek V3/V4 sparse attention indexer.
++// Supports float32 and bfloat16 input dtypes.
+@@ -10,14 +11,153 @@
++#ifndef USE_ROCM
++namespace {
+diff -- tests/kernels/test_top_k_per_row.py
+@@ -383,6 +383,7 @@ def run_large_context_topk_test(
+```
 
-### Gap and optimization follow-up
+- Reviewed files:
+  - other: `csrc/persistent_topk.cuh` modified +593/-218; `csrc/topk.cu` modified +156/-112
+  - tests: `tests/kernels/test_top_k_per_row.py` modified +137/-0
+- Risk and verification: The diff ships test coverage in `tests/kernels/test_top_k_per_row.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
-- Covered PRs: 3; open PRs: 3.
-- Open PRs to keep tracking: [#40760](https://github.com/vllm-project/vllm/pull/40760), [#40806](https://github.com/vllm-project/vllm/pull/40806), [#40811](https://github.com/vllm-project/vllm/pull/40811)
-- Any future PR must add both the timeline row and the file-level diff card; title-only summaries are not acceptable.
+## Gap-Closure Notes
 
-<!-- MODEL_PR_DIFF_AUDIT:END en -->
+- This version rejects title-only PR lists; every PR must include trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
+- If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.
