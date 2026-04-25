@@ -54,6 +54,7 @@ frameworks:
     base_server_flags:
       tp_size: 8
       model_path: zai-org/GLM-4.6
+      trust_remote_code: true
       mem_fraction_static: 0.82
       schedule_policy: lpm
     search_space:
@@ -80,6 +81,7 @@ frameworks:
     config_source: framework_generic_translation
     base_server_flags:
       tensor_parallel_size: 8
+      trust_remote_code: true
       gpu_memory_utilization: 0.9
       max_model_len: 12288
       dtype: auto
@@ -113,6 +115,7 @@ frameworks:
       backend: pytorch
       tp_size: 8
       pp_size: 1
+      trust_remote_code: true
       kv_cache_free_gpu_memory_fraction: 0.75
       max_seq_len: 12288
     search_space:
