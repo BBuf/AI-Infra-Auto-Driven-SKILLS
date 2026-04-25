@@ -250,7 +250,7 @@ TEMPLATES: dict[str, Template] = {
             ("router", "experts"),
             ("experts", "out"),
         ),
-        ("deepseek_v2.py", "kimi_k25.py", "glm4_moe.py"),
+        ("deepseek_v2.py", "kimi_k25.py", "glm4_moe.py", "glm4_moe_lite.py"),
         (
             "docs/autoregressive/DeepSeek",
             "docs/autoregressive/GLM",
@@ -281,6 +281,137 @@ TEMPLATES: dict[str, Template] = {
         (
             "docs/autoregressive/DeepSeek/DeepSeek-V3_2.md",
             "docs/autoregressive/GLM/GLM-5.md",
+        ),
+    ),
+    "deepseek_v4_mhc_mqa_moe": Template(
+        "deepseek_v4_mhc_mqa_moe",
+        "DeepSeek V4 decoder with MHC residual mixing, compressed MQA attention, MoE, and MTP.",
+        (
+            Node("input", "Text tokens", "token ids + RoPE positions", "input"),
+            Node(
+                "embed", "Embedding", "token embedding, then hc_mult=4 repeat", "embed"
+            ),
+            Node(
+                "mhc",
+                "MHC residual mixer",
+                "hc_pre -> module -> hc_post around attention and FFN",
+                "state",
+            ),
+            Node(
+                "attn",
+                "Compressed MQA attention",
+                "q_lora/wkv, C4 indexer, compressor, attn sink",
+                "attention",
+            ),
+            Node(
+                "moe",
+                "DeepSeek V4 MoE",
+                "256 routed + 1 shared, top-6 active experts",
+                "moe",
+            ),
+            Node(
+                "mtp",
+                "MTP draft path",
+                "separate e_proj/h_proj + V4 decoder layer",
+                "projector",
+            ),
+            Node("out", "HC head + norm + LM head", "logits / next token", "output"),
+        ),
+        (
+            ("input", "embed"),
+            ("embed", "mhc"),
+            ("mhc", "attn"),
+            ("attn", "moe"),
+            ("moe", "mtp"),
+            ("mtp", "out"),
+        ),
+        (
+            "deepseek_v4.py",
+            "deepseek_v4_nextn.py",
+            "configs/deepseek_v4.py",
+            "layers/attention/deepseek_v4_backend_radix.py",
+        ),
+        (
+            "SGLang origin/deepseek_v4:python/sglang/srt/models/deepseek_v4.py",
+            "vLLM origin/woosuk/dsv4-sync:vllm/model_executor/models/deepseek_v4.py",
+        ),
+    ),
+    "hybrid_mamba_moe_attention": Template(
+        "hybrid_mamba_moe_attention",
+        "Hybrid Mamba2, self-attention, MoE, and MLP layer stack.",
+        (
+            Node("input", "Text tokens", "long-context prompt tokens", "input"),
+            Node("embed", "Embedding", "token embedding + positions", "embed"),
+            Node(
+                "schedule",
+                "Layer schedule",
+                "Mamba2, attention, MoE, and MLP layer types",
+                "block",
+            ),
+            Node("mamba", "Mamba2 mixer", "recurrent state + conv/SSM cache", "state"),
+            Node(
+                "attn",
+                "Attention mixer",
+                "GQA self-attention refresh layers",
+                "attention",
+            ),
+            Node(
+                "moe", "MoE / MLP mixers", "routed experts or dense MLP layers", "moe"
+            ),
+            Node("out", "Norm + LM head", "logits / next token", "output"),
+        ),
+        (
+            ("input", "embed"),
+            ("embed", "schedule"),
+            ("schedule", "mamba"),
+            ("schedule", "attn"),
+            ("schedule", "moe"),
+            ("mamba", "out"),
+            ("attn", "out"),
+            ("moe", "out"),
+        ),
+        ("nemotron_h.py", "configs/nemotron_h.py"),
+        (
+            "docs/autoregressive/NVIDIA/Nemotron3-Nano.md",
+            "docs/autoregressive/NVIDIA/Nemotron3-Super.md",
+        ),
+    ),
+    "hybrid_linear_mla_moe": Template(
+        "hybrid_linear_mla_moe",
+        "Hybrid linear attention and periodic MLA decoder with sparse MoE.",
+        (
+            Node("input", "Text tokens", "long-context sequence", "input"),
+            Node("embed", "Embedding", "token embedding + positions", "embed"),
+            Node(
+                "cycle",
+                "Linear-attention / MLA cycle",
+                "KDA or Lightning linear attention with periodic MLA",
+                "block",
+            ),
+            Node(
+                "linear",
+                "Linear attention",
+                "KDA / Lightning recurrent state path",
+                "state",
+            ),
+            Node("mla", "Global MLA", "periodic full-attention refresh", "attention"),
+            Node("moe", "Sparse MoE", "routed experts + shared/dense path", "moe"),
+            Node("out", "Norm + LM head", "logits / next token", "output"),
+        ),
+        (
+            ("input", "embed"),
+            ("embed", "cycle"),
+            ("cycle", "linear"),
+            ("cycle", "mla"),
+            ("linear", "moe"),
+            ("mla", "moe"),
+            ("moe", "out"),
+        ),
+        ("kimi_linear.py", "deepseek_v2.py"),
+        (
+            "docs/autoregressive/Moonshotai/Kimi-Linear.md",
+            "docs/autoregressive/InclusionAI/Ling-2.5-1T.md",
+            "docs/autoregressive/InclusionAI/Ring-2.5-1T.md",
         ),
     ),
     "hybrid_delta_moe": Template(
@@ -643,6 +774,18 @@ RULES: tuple[tuple[str, tuple[str, ...]], ...] = (
         ("kimi[ ._-]?k2[ ._-]?(5|6)", "kimi[ ._-]?k25", "kimi[ ._-]?k26"),
     ),
     (
+        "deepseek_v4_mhc_mqa_moe",
+        ("deepseek[ ._-]?(v4|4)", "dsv4", "deepseek[ ._-]?v[ ._-]?4"),
+    ),
+    (
+        "hybrid_mamba_moe_attention",
+        ("nemotron[ ._-]?3", "nvidia.*nemotron", "nemotron.*(nano|super)"),
+    ),
+    (
+        "hybrid_linear_mla_moe",
+        ("kimi[ ._-]?linear", "ling[ ._-]?2", "ring[ ._-]?2"),
+    ),
+    (
         "dsa_moe",
         ("deepseek.*v3[ ._-]?2", "glm[ ._-]?5", "glm[ ._-]?5[ ._-]?1", "dsa", "nsa"),
     ),
@@ -658,6 +801,8 @@ RULES: tuple[tuple[str, tuple[str, ...]], ...] = (
             "gemma[ ._-]?4",
             "llama[ ._-]?4",
             "mistral[ ._-]?small[ ._-]?4",
+            "ministral[ ._-]?3",
+            "mistral[ ._-]?3",
             "step3[ ._-]?vl",
             "internvl",
             "intern[ ._-]?s1",
@@ -669,6 +814,7 @@ RULES: tuple[tuple[str, tuple[str, ...]], ...] = (
         "mla_moe",
         (
             "deepseek",
+            "glm[ ._-]?4[ ._-]?7[ ._-]?flash",
             "kimi[ ._-]?k2",
             "kimi[ ._-]?k25",
             "kimi[ ._-]?k2[ ._-]?5",
@@ -1017,6 +1163,16 @@ def _layer_label(template: Template) -> tuple[str, str, str]:
         return ("N x", "MLA-MoE layer", "RMSNorm -> MLA -> MoE")
     if template.template_id == "dsa_moe":
         return ("N x", "DSA-MoE layer", "RMSNorm -> DSA/NSA -> MoE")
+    if template.template_id == "deepseek_v4_mhc_mqa_moe":
+        return ("43 x", "V4 MHC layer", "MHC -> compressed MQA -> MoE")
+    if template.template_id == "hybrid_mamba_moe_attention":
+        return ("N x", "Hybrid stack", "Mamba2 / attention / MoE / MLP")
+    if template.template_id == "hybrid_linear_mla_moe":
+        return (
+            "3:1 / 7:1",
+            "Linear-MLA cycle",
+            "linear attention + periodic MLA + MoE",
+        )
     if template.template_id == "hybrid_delta_moe":
         return ("3+1 x", "Hybrid cycle", "DeltaNet blocks + gated attention")
     if template.template_id == "swa_moe_mtp":
@@ -1129,6 +1285,36 @@ def _spine_texts(template: Template) -> dict[str, str]:
                 "embed": "Visual/text embeddings",
             }
         )
+    elif template.template_id == "deepseek_v4_mhc_mqa_moe":
+        defaults.update(
+            {
+                "processor": "Tokenizer",
+                "embed": "Embedding x hc_mult=4",
+                "shape": "[tokens, 4, 4096]",
+                "norm": "MHC pre + RMSNorm",
+                "top_norm": "HC head + RMSNorm",
+                "output": "LM Head / MTP logits",
+            }
+        )
+    elif template.template_id == "hybrid_mamba_moe_attention":
+        defaults.update(
+            {
+                "processor": "Tokenizer",
+                "embed": "Embedding",
+                "norm": "RMSNorm",
+                "top_norm": "RMSNorm",
+                "output": "LM Head",
+            }
+        )
+    elif template.template_id == "hybrid_linear_mla_moe":
+        defaults.update(
+            {
+                "processor": "Tokenizer",
+                "embed": "Embedding",
+                "norm": "RMSNorm",
+                "output": "LM Head",
+            }
+        )
     return defaults
 
 
@@ -1183,6 +1369,9 @@ def _draw_left_spine(
     _arrow(out, x + w // 2, group_y + 370, x + w // 2, group_y + 327)
     attention_name = {
         "dsa_moe": "DSA",
+        "deepseek_v4_mhc_mqa_moe": "Compressed MQA",
+        "hybrid_mamba_moe_attention": "Mamba2 / Attention",
+        "hybrid_linear_mla_moe": "Linear Attention / MLA",
         "mla_moe": "MLA",
         "moonvit_mla_moe": "MLA",
         "hybrid_delta_moe": "DeltaNet / Attention",
@@ -1261,6 +1450,7 @@ def _draw_left_spine(
         "decoder_moe",
         "mla_moe",
         "dsa_moe",
+        "deepseek_v4_mhc_mqa_moe",
         "swa_moe_mtp",
         "moonvit_mla_moe",
     }:
@@ -1636,6 +1826,131 @@ def _draw_dit_panel(
     _shape_label(out, "[batch, frames, h*w, channels]", x + 60, y + h - 214)
 
 
+def _draw_deepseek_v4_mhc_panel(out: list[str], x: int, y: int, w: int, h: int) -> None:
+    pink = "#FB7573"
+    blue = "#7288F4"
+    _panel(out, x, y, w, h, "MHC residual mixer", pink, font_size=28)
+    _shape(out, x + 54, y + h - 82, 165, 54, "Residual x4", fill=pink, stroke=pink)
+    _shape(out, x + 260, y + h - 82, 150, 54, "hc_pre", fill=pink, stroke=pink)
+    _shape(out, x + 82, y + h - 188, 175, 56, "RMSNorm", fill=blue, stroke="#3B82F6")
+    _shape(
+        out, x + 290, y + h - 188, 150, 56, "Module", fill="#FF9F1A", stroke="#FF9F1A"
+    )
+    _shape(out, x + 148, y + 72, 180, 56, "hc_post", fill=pink, stroke=pink)
+    _arrow(out, x + 219, y + h - 55, x + 260, y + h - 55)
+    _arrow(out, x + 335, y + h - 82, x + 185, y + h - 132)
+    _arrow(out, x + 257, y + h - 160, x + 290, y + h - 160)
+    _arrow(out, x + 365, y + h - 188, x + 245, y + 128)
+    _text(out, "hc_mult=4", x + 52, y + 56, size=18, fill="#EF0000", weight=700)
+    _text(out, "sinkhorn_repeat=20", x + 285, y + 56, size=16, fill="#111111")
+
+
+def _draw_deepseek_v4_attention_panel(
+    out: list[str], x: int, y: int, w: int, h: int
+) -> None:
+    orange = "#FF9F1A"
+    red = "#F00000"
+    blue = "#7288F4"
+    _panel(out, x, y, w, h, "Compressed MQA attention", orange, font_size=30)
+    bottom_y = y + h - 74
+    _shape(out, x + 70, bottom_y, 230, 52, "wq_a / wqkv_a", fill=orange, stroke=orange)
+    _shape(out, x + 385, bottom_y, 220, 52, "wkv / wqkv_a", fill=orange, stroke=orange)
+    _shape(out, x + 112, bottom_y - 94, 150, 50, "q_norm", fill=orange, stroke=orange)
+    _shape(out, x + 420, bottom_y - 94, 150, 50, "kv_norm", fill=orange, stroke=orange)
+    _shape(out, x + 92, bottom_y - 185, 190, 50, "wq_b", fill=orange, stroke=orange)
+    _shape(
+        out, x + 380, bottom_y - 185, 230, 50, "KV latent", fill=orange, stroke=orange
+    )
+    _shape(out, x + 82, bottom_y - 278, 135, 48, "RoPE", fill=orange, stroke=orange)
+    _shape(out, x + 246, bottom_y - 278, 135, 48, "64 Q", fill=blue, stroke="#3B82F6")
+    _shape(out, x + 420, bottom_y - 278, 135, 48, "RoPE", fill=orange, stroke=orange)
+    _shape(out, x + 585, bottom_y - 278, 135, 48, "1 KV", fill=blue, stroke="#3B82F6")
+    _shape(out, x + 255, y + 100, 320, 58, "MQA / FlashMLA", fill=orange, stroke=orange)
+    _shape(out, x + 620, y + 100, 175, 58, "attn_sink", fill=red, stroke=red)
+    _shape(out, x + 342, y + 205, 205, 52, "wo_a BMM", fill=orange, stroke=orange)
+    _shape(out, x + 342, y + 300, 205, 52, "wo_b", fill=orange, stroke=orange)
+    _shape(
+        out,
+        x + w - 235,
+        y + 215,
+        190,
+        56,
+        "Compressor",
+        fill="#FFFFFF",
+        stroke=red,
+        text_fill=red,
+        dashed=True,
+        font_size=20,
+        weight=700,
+    )
+    _shape(
+        out,
+        x + w - 235,
+        y + 315,
+        190,
+        56,
+        "C4 Indexer",
+        fill="#FFFFFF",
+        stroke=red,
+        text_fill=red,
+        dashed=True,
+        font_size=20,
+        weight=700,
+    )
+    _text(
+        out,
+        "compress_ratio: 0 / 4 / 128",
+        x + w - 250,
+        y + 190,
+        size=18,
+        fill=red,
+        weight=700,
+    )
+    _text(
+        out, "ratio=4 selects top-512 sparse KV blocks", x + w - 295, y + 395, size=15
+    )
+    _arrow(out, x + 185, bottom_y, x + 187, bottom_y - 44)
+    _arrow(out, x + 495, bottom_y, x + 495, bottom_y - 44)
+    _arrow(out, x + 187, bottom_y - 94, x + 187, bottom_y - 135)
+    _arrow(out, x + 495, bottom_y - 94, x + 495, bottom_y - 135)
+    _arrow(out, x + 187, bottom_y - 185, x + 150, bottom_y - 230)
+    _arrow(out, x + 187, bottom_y - 185, x + 313, bottom_y - 230)
+    _arrow(out, x + 495, bottom_y - 185, x + 487, bottom_y - 230)
+    _arrow(out, x + 495, bottom_y - 185, x + 652, bottom_y - 230)
+    _arrow(out, x + 150, bottom_y - 278, x + 330, y + 158)
+    _arrow(out, x + 313, bottom_y - 278, x + 390, y + 158)
+    _arrow(out, x + 487, bottom_y - 278, x + 450, y + 158)
+    _arrow(out, x + 652, bottom_y - 278, x + 505, y + 158)
+    _arrow(out, x + 575, y + 129, x + 620, y + 129)
+    _arrow(out, x + 415, y + 158, x + 445, y + 205)
+    _arrow(out, x + 445, y + 257, x + 445, y + 300)
+    _arrow(out, x + 605, bottom_y - 160, x + w - 235, y + 243, dashed=True, stroke=red)
+    _arrow(out, x + 300, bottom_y - 160, x + w - 235, y + 343, dashed=True, stroke=red)
+    _shape_label(
+        out,
+        "q_lora_rank=1024; qk=448 noPE + 64 RoPE; v/head_dim=512",
+        x + 50,
+        y + h - 10,
+    )
+
+
+def _draw_deepseek_v4_mtp_panel(out: list[str], x: int, y: int, w: int, h: int) -> None:
+    purple = "#7E2E9E"
+    green = "#8DD348"
+    _panel(out, x, y, w, h, "MTP draft path", purple, font_size=26)
+    _shape(out, x + 35, y + h - 74, 105, 52, "e_proj", fill=purple, stroke=purple)
+    _shape(out, x + 160, y + h - 74, 105, 52, "h_proj", fill=purple, stroke=purple)
+    _plus(out, x + w // 2, y + h - 125, fill=purple)
+    _shape(
+        out, x + 42, y + 150, w - 84, 56, "V4 layer", fill="#7288F4", stroke="#3B82F6"
+    )
+    _shape(out, x + 54, y + 58, w - 108, 56, "hc_head", fill=green, stroke=green)
+    _arrow(out, x + 88, y + h - 74, x + w // 2 - 20, y + h - 125)
+    _arrow(out, x + 212, y + h - 74, x + w // 2 + 20, y + h - 125)
+    _arrow(out, x + w // 2, y + h - 149, x + w // 2, y + 206)
+    _arrow(out, x + w // 2, y + 150, x + w // 2, y + 114)
+
+
 def _draw_generic_details(
     out: list[str],
     template: Template,
@@ -1643,6 +1958,177 @@ def _draw_generic_details(
     anchors: dict[str, tuple[int, int]],
 ) -> None:
     tid = template.template_id
+    if tid == "deepseek_v4_mhc_mqa_moe":
+        _draw_deepseek_v4_mhc_panel(out, 610, 145, 455, 315)
+        _draw_moe_panel(out, 1105, 145, 520, 315, experts="256 routed")
+        _panel(out, 1655, 145, 200, 315, "Config", "#7288F4", font_size=24)
+        _text(out, "43 layers", 1690, 245, size=19, fill="#2563EB", weight=700)
+        _text(out, "hidden=4096", 1688, 295, size=17)
+        _text(out, "vocab=129280", 1688, 342, size=17)
+        _text(out, "top-6 experts", 1688, 389, size=17)
+        _draw_deepseek_v4_attention_panel(out, 610, 520, 930, 550)
+        _draw_deepseek_v4_mtp_panel(out, 1575, 520, 280, 335)
+        _panel(out, 1575, 885, 280, 185, "MoE routing", "#3B82F6", font_size=24)
+        _shape(
+            out,
+            1615,
+            950,
+            205,
+            50,
+            "sqrtsoftplus",
+            fill="#3B82F6",
+            stroke="#3B82F6",
+            font_size=18,
+        )
+        _text(out, "first 3 layers: hash MoE", 1595, 1038, size=17, fill="#111111")
+        _arrow(
+            out,
+            anchors["ffn"][0],
+            anchors["ffn"][1],
+            610,
+            305,
+            dashed=True,
+            stroke="#3B82F6",
+        )
+        _arrow(
+            out,
+            anchors["attention"][0],
+            anchors["attention"][1],
+            610,
+            800,
+            dashed=True,
+            stroke="#F59E0B",
+        )
+        return
+
+    if tid == "hybrid_mamba_moe_attention":
+        _panel(
+            out, 610, 145, 620, 335, "Hybrid layer schedule", "#F59E0B", font_size=30
+        )
+        _shape(out, 670, 375, 190, 56, "Mamba2", fill="#FB7573", stroke="#EF4444")
+        _shape(out, 900, 375, 190, 56, "MoE", fill="#3B82F6", stroke="#3B82F6")
+        _shape(out, 670, 250, 190, 56, "Attention", fill="#FF9F1A", stroke="#FF9F1A")
+        _shape(out, 900, 250, 190, 56, "MLP", fill="#8DD348", stroke="#8DD348")
+        _arrow(out, 860, 403, 900, 403)
+        _arrow(out, 995, 375, 995, 306)
+        _arrow(out, 900, 278, 860, 278)
+        _arrow(out, 765, 306, 765, 375)
+        _text(out, "config block pattern selects layer type", 685, 212, size=18)
+        _draw_moe_panel(out, 1270, 145, 520, 335, experts="routed experts")
+        _panel(out, 610, 545, 500, 430, "Mamba2 mixer", "#FB7573", font_size=30)
+        _shape(out, 690, 820, 165, 56, "Conv state", fill="#FB7573", stroke="#EF4444")
+        _shape(out, 905, 820, 165, 56, "SSM state", fill="#FB7573", stroke="#EF4444")
+        _shape(out, 770, 690, 210, 58, "MambaMixer2", fill="#FB7573", stroke="#EF4444")
+        _shape(out, 800, 590, 150, 56, "RMSNorm", fill="#7288F4", stroke="#3B82F6")
+        _arrow(out, 772, 820, 830, 748)
+        _arrow(out, 988, 820, 920, 748)
+        _arrow(out, 875, 690, 875, 646)
+        _shape_label(out, "prefix cache stores recurrent Mamba2 state", 675, 930)
+        _panel(out, 1145, 545, 650, 430, "GQA attention layer", "#FF9F1A", font_size=30)
+        _shape(out, 1225, 840, 210, 56, "qkv_proj", fill="#FF9F1A", stroke="#FF9F1A")
+        _shape(out, 1495, 840, 185, 56, "RoPE", fill="#FF9F1A", stroke="#FF9F1A")
+        _shape(out, 1320, 720, 310, 58, "Attention", fill="#FF9F1A", stroke="#FF9F1A")
+        _shape(out, 1375, 600, 200, 56, "o_proj", fill="#FF9F1A", stroke="#FF9F1A")
+        _arrow(out, 1435, 868, 1495, 868)
+        _arrow(out, 1588, 840, 1475, 778)
+        _arrow(out, 1370, 840, 1425, 778)
+        _arrow(out, 1475, 720, 1475, 656)
+        _shape_label(out, "standard self-attention refresh layers", 1205, 935)
+        _arrow(
+            out,
+            anchors["attention"][0],
+            anchors["attention"][1],
+            610,
+            760,
+            dashed=True,
+            stroke="#F59E0B",
+        )
+        _arrow(
+            out,
+            anchors["ffn"][0],
+            anchors["ffn"][1],
+            1270,
+            315,
+            dashed=True,
+            stroke="#3B82F6",
+        )
+        return
+
+    if tid == "hybrid_linear_mla_moe":
+        _panel(
+            out,
+            610,
+            145,
+            625,
+            335,
+            "Linear-attention / MLA cycle",
+            "#F59E0B",
+            font_size=28,
+        )
+        _shape(
+            out,
+            675,
+            365,
+            230,
+            56,
+            "KDA / Lightning LA",
+            fill="#FF9F1A",
+            stroke="#FF9F1A",
+        )
+        _shape(out, 945, 365, 220, 56, "Linear state", fill="#FB7573", stroke="#EF4444")
+        _shape(
+            out,
+            675,
+            245,
+            230,
+            56,
+            "KDA / Lightning LA",
+            fill="#FF9F1A",
+            stroke="#FF9F1A",
+        )
+        _shape(out, 945, 245, 220, 56, "MLA refresh", fill="#7E2E9E", stroke="#7E2E9E")
+        _arrow(out, 905, 393, 945, 393)
+        _arrow(out, 1055, 365, 1055, 301)
+        _arrow(out, 945, 273, 905, 273)
+        _arrow(out, 790, 245, 790, 301)
+        _text(out, "Kimi: 3 KDA : 1 MLA", 675, 205, size=17, fill="#111111")
+        _text(out, "Ling/Ring: 7 linear : 1 MLA", 675, 228, size=17, fill="#111111")
+        _draw_moe_panel(out, 1280, 145, 510, 335, experts="sparse experts")
+        _draw_attention_panel(out, 610, 545, 875, 525, "MLA refresh attention")
+        _panel(out, 1515, 545, 315, 360, "Linear state path", "#FB7573", font_size=26)
+        _shape(
+            out, 1560, 680, 225, 58, "Recurrent state", fill="#FB7573", stroke="#EF4444"
+        )
+        _shape(
+            out, 1560, 805, 225, 58, "Short conv gate", fill="#FB7573", stroke="#EF4444"
+        )
+        _arrow(out, 1672, 805, 1672, 738)
+        _shape_label(
+            out,
+            "KDA or Lightning LA state is cached separately from KV cache",
+            1538,
+            610,
+        )
+        _arrow(
+            out,
+            anchors["attention"][0],
+            anchors["attention"][1],
+            610,
+            780,
+            dashed=True,
+            stroke="#F59E0B",
+        )
+        _arrow(
+            out,
+            anchors["ffn"][0],
+            anchors["ffn"][1],
+            1280,
+            315,
+            dashed=True,
+            stroke="#3B82F6",
+        )
+        return
+
     if tid in {"mla_moe", "moonvit_mla_moe"}:
         if tid == "moonvit_mla_moe":
             _draw_vision_panel(out, 600, 155, 590, 300, moonvit=True)
