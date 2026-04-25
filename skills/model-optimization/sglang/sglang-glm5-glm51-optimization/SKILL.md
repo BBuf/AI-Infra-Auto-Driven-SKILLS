@@ -17,6 +17,11 @@ Current evidence snapshot:
 - Docs/snippets: `GLM-5.mdx`, `GLM-5.1.mdx`, `glm-5-deployment.jsx`, `glm-51-deployment.jsx`
 - Tests: `test/registered/8-gpu-models/test_glm_51_fp8.py`, `test/registered/gb300/test_glm5_fp8.py`, `test/registered/gb300/test_glm5_nvfp4.py`
 
+## Non-Negotiable Evidence Rule
+
+Use `skills/model-optimization/model-pr-diff-dossier/SKILL.md` as the production bar.
+Every PR cited for this family must be based on diff reading, not only PR titles.
+
 ## Before You Change Anything
 
 Capture:

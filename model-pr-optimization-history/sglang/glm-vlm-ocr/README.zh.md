@@ -634,3 +634,427 @@ else:
 3. vision encoder DP/PP 改动必须保留 no-DP baseline 和 PP stage loader 检查。
 4. AMD/NPU 平台 PR 必须保留启动、graph capture、模型接口请求和任务精度四类证据。
 5. 文档中凡引用 PR，都按 motivation、实现思路、关键代码、验证、当前状态/风险写完整卡片。
+
+<!-- MODEL_PR_DIFF_AUDIT:START zh -->
+
+## 逐 PR diff 审计卡（2026-04-25 重做）
+
+本节按 `sgl-project/sglang` 的 Pull Request API 和文件级 patch 重新审计 `GLM VLM / OCR`。验收口径：每个 PR 都要有状态、代码面、文件级 diff 摘要、支持/优化点判断和风险验证点；没有公开相关 PR 时必须写清检索结论，不能编造。
+
+### 时间线总览
+
+| 创建日期 | PR | 状态 | 标题 | 代码面 | 主要 diff 文件 |
+| --- | ---: | --- | --- | --- | --- |
+| 2025-08-05 | [#8798](https://github.com/sgl-project/sglang/pull/8798) | merged | Support glm4.1v and glm4.5v | model wrapper, MoE/router, multimodal/processor, tests/benchmarks, docs/config | `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/layers/rotary_embedding.py` |
+| 2025-08-11 | [#9059](https://github.com/sgl-project/sglang/pull/9059) | merged | [GLM4.1V and GLM4.5V] Add vision transformer num_dummy_head support: max tp=4 -> max tp=8 | model wrapper, attention/backend, MoE/router, multimodal/processor, tests/benchmarks | `python/sglang/srt/layers/attention/vision_utils.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/internvl.py` |
+| 2025-08-15 | [#9245](https://github.com/sgl-project/sglang/pull/9245) | merged | Set the default attention backend for GLM-4.5v to fa3 | misc | `python/sglang/srt/utils.py` |
+| 2025-08-19 | [#9349](https://github.com/sgl-project/sglang/pull/9349) | open | Add support for GLM 4.5V FP8 | MoE/router, quantization, kernel, tests/benchmarks, docs/config | `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=128,N=352,device_name=NVIDIA_L40S,dtype=fp8_w8a8.json`, `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py` |
+| 2025-08-24 | [#9554](https://github.com/sgl-project/sglang/pull/9554) | merged | Fix GLM45v launch server cuda torch compile bug | model wrapper | `python/sglang/srt/models/qwen2_5_vl.py` |
+| 2025-09-01 | [#9884](https://github.com/sgl-project/sglang/pull/9884) | merged | [Bug Fix] Fix Glm4vVisionBlock norm | model wrapper | `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/glm4v.py` |
+| 2025-09-08 | [#10147](https://github.com/sgl-project/sglang/pull/10147) | merged | Fix: (glm4v) Add missing field | model wrapper | `python/sglang/srt/models/glm4v.py` |
+| 2025-09-09 | [#10228](https://github.com/sgl-project/sglang/pull/10228) | merged | Add self.capture_aux_hidden_states For GLM-4.5V | model wrapper, MoE/router | `python/sglang/srt/models/glm4v_moe.py` |
+| 2025-10-02 | [#11166](https://github.com/sgl-project/sglang/pull/11166) | merged | Tiny move files to utils folder | model wrapper, MoE/router, kernel, multimodal/processor, scheduler/runtime, tests/benchmarks, docs/config | `test/srt/test_tokenizer_manager.py`, `python/sglang/srt/managers/tp_worker.py`, `python/sglang/srt/managers/scheduler.py` |
+| 2025-10-09 | [#11388](https://github.com/sgl-project/sglang/pull/11388) | merged | Replace pad with cat for better performance | model wrapper | `python/sglang/srt/models/dots_vlm_vit.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/qwen2_5_vl.py` |
+| 2025-10-21 | [#11922](https://github.com/sgl-project/sglang/pull/11922) | merged | [lint] improve ruff check | model wrapper, attention/backend, MoE/router, quantization, kernel, scheduler/runtime, tests/benchmarks, docs/config | `python/sglang/srt/layers/moe/fused_moe_triton/triton_kernels_moe.py`, `python/sglang/srt/utils/common.py`, `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py` |
+| 2025-10-25 | [#12117](https://github.com/sgl-project/sglang/pull/12117) | merged | GLM-4-0414 and GLM-4.1V Code Refactor | model wrapper, MoE/router | `python/sglang/srt/models/glm4.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/layers/rotary_embedding.py` |
+| 2025-11-13 | [#13228](https://github.com/sgl-project/sglang/pull/13228) | merged | Cleanup vision attention related codes | model wrapper, MoE/router | `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen3_vl.py` |
+| 2025-11-28 | [#14097](https://github.com/sgl-project/sglang/pull/14097) | merged | support GLM-V vision model dp | model wrapper, MoE/router, tests/benchmarks | `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/glm4.py`, `python/sglang/srt/models/glm4_moe.py` |
+| 2025-12-08 | [#14662](https://github.com/sgl-project/sglang/pull/14662) | open | [Glm46v] support ktransformers | model wrapper, MoE/router | `python/sglang/srt/models/glm4v_moe.py` |
+| 2025-12-09 | [#14720](https://github.com/sgl-project/sglang/pull/14720) | merged | [GLM-4.6V] Support Pipeline Parallelism for GLM-4.6V & GLM-4.1V | model wrapper, tests/benchmarks | `test/srt/test_pp_single_node.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/test/test_utils.py` |
+| 2025-12-11 | [#14927](https://github.com/sgl-project/sglang/pull/14927) | merged | [CI]add nightly CI for glm4v_moe arch model | tests/benchmarks | `test/nightly/test_vlms_mmmu_eval.py` |
+| 2025-12-12 | [#14998](https://github.com/sgl-project/sglang/pull/14998) | merged | add transformers version validation for glm-4.6v moe models | docs/config | `python/sglang/srt/configs/model_config.py` |
+| 2025-12-15 | [#15205](https://github.com/sgl-project/sglang/pull/15205) | merged | [VLM] Support cos sin cache for Qwen3-VL & GLM-4.1V | model wrapper, attention/backend, multimodal/processor | `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/layers/attention/vision.py` |
+| 2025-12-19 | [#15434](https://github.com/sgl-project/sglang/pull/15434) | merged | Convert cu_seqlens to CPU for npu_flash_attention_unpad operator | model wrapper, attention/backend, MoE/router, multimodal/processor | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/paddleocr_vl.py` |
+| 2026-01-15 | [#17122](https://github.com/sgl-project/sglang/pull/17122) | merged | [bugfix]GLM-4V model | model wrapper, multimodal/processor, tests/benchmarks | `test/registered/ascend/vlm_models/test_ascend_glm_4_5v.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/multimodal/processors/base_processor.py` |
+| 2026-01-20 | [#17420](https://github.com/sgl-project/sglang/pull/17420) | merged | [VLM] Optimize get_rope_index for GLM4v | tests/benchmarks | `benchmark/bench_rope/benchmark_rope_index.py`, `python/sglang/srt/layers/rotary_embedding.py` |
+| 2026-01-22 | [#17582](https://github.com/sgl-project/sglang/pull/17582) | merged | [GLM-OCR] Support GLM-OCR Model | model wrapper, attention/backend, multimodal/processor, docs/config | `python/sglang/srt/models/glm_ocr.py`, `python/sglang/srt/models/glm_ocr_nextn.py`, `python/sglang/srt/layers/attention/vision.py` |
+| 2026-02-16 | [#18885](https://github.com/sgl-project/sglang/pull/18885) | merged | Fix GLM-4V processor registration when glm_ocr is unavailable | multimodal/processor | `python/sglang/srt/multimodal/processors/glm4v.py` |
+| 2026-03-03 | [#19728](https://github.com/sgl-project/sglang/pull/19728) | open | Fix ROCm GLM-4.5V-FP8 startup with unpadded MoE weights and padded FP8 fallback | MoE/router, quantization, kernel, tests/benchmarks | `test/registered/moe/test_fused_moe.py`, `python/sglang/srt/layers/quantization/fp8_kernel.py`, `python/sglang/test/test_custom_ops.py` |
+| 2026-03-06 | [#20033](https://github.com/sgl-project/sglang/pull/20033) | merged | [VLM] Replace conv3d proj with linear for GLM4V | model wrapper, tests/benchmarks | `test/registered/vlm/test_patch_embed_perf.py`, `python/sglang/srt/models/glm4v.py` |
+| 2026-03-10 | [#20282](https://github.com/sgl-project/sglang/pull/20282) | merged | Add Conv2dLayer/Conv3dLayer to fix PyTorch 2.9.1 CuDNN Conv3d bug | model wrapper, tests/benchmarks | `test/unit/test_conv_layer.py`, `python/sglang/srt/layers/conv.py`, `python/sglang/srt/server_args.py` |
+| 2026-03-12 | [#20463](https://github.com/sgl-project/sglang/pull/20463) | merged | [Bugfix] Fix GLM-4.6V vision regression in glm4v_moe and glm_ocr | model wrapper, MoE/router | `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/models/glm_ocr.py` |
+| 2026-03-17 | [#20740](https://github.com/sgl-project/sglang/pull/20740) | merged | Revert "[Bugfix] Fix GLM-4.6V vision regression in glm4v_moe and glm_ocr" | model wrapper, MoE/router | `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/models/glm_ocr.py` |
+| 2026-03-22 | [#21134](https://github.com/sgl-project/sglang/pull/21134) | merged | [Bug Fix] GLM-V / GLM-OCR: field detection for transformers 5.x and MTP omission fix | model wrapper, MoE/router | `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/model_loader/weight_utils.py`, `python/sglang/srt/models/glm_ocr.py` |
+| 2026-04-16 | [#22961](https://github.com/sgl-project/sglang/pull/22961) | open | [NPU] Support GLM-4.5V | model wrapper, MoE/router | `python/sglang/srt/models/glm4_moe.py` |
+
+### 逐 PR 代码 diff 阅读记录
+
+### PR #8798 - Support glm4.1v and glm4.5v
+
+- 链接：https://github.com/sgl-project/sglang/pull/8798
+- 状态/时间：`merged`，created 2025-08-05, merged 2025-08-09；作者 `byjiang1996`。
+- 代码 diff 已读范围：`21` 个文件，`+1584/-19`；代码面：model wrapper, MoE/router, multimodal/processor, tests/benchmarks, docs/config；关键词：vision, attention, config, processor, test, cache, cuda, kv, lora, moe。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/glm4v.py` added +589/-0 (589 lines); hunk: +import logging; 符号: Glm4vRMSNorm, forward, Glm4vVisionMLP, __init__
+  - `python/sglang/srt/models/glm4v_moe.py` added +400/-0 (400 lines); hunk: +import logging; 符号: Glm4vMoeForConditionalGeneration, __init__, determine_num_fused_shared_experts, load_weights
+  - `python/sglang/srt/layers/rotary_embedding.py` modified +230/-1 (231 lines); hunk: # Adapted from https://raw.githubusercontent.com/vllm-project/vllm/refs/tags/v0.6.6.post1/vllm/model_executor/layers/rotary_embedding.py; def __init__(; 符号: __init__, forward, get_rope_index, get_rope_index_glm4v
+  - `python/sglang/srt/multimodal/processors/glm4v.py` added +132/-0 (132 lines); hunk: +import re; 符号: Glm4vImageProcessor, __init__, preprocess_video, process_mm_data_async
+  - `test/srt/test_jinja_template_utils.py` modified +80/-0 (80 lines); hunk: def test_detect_empty_template(self):; 符号: test_detect_empty_template, test_detect_msg_content_pattern, with, test_detect_m_content_pattern
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/layers/rotary_embedding.py`；patch 关键词为 vision, attention, config, processor, test, cache。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；多模态 processor 或 media token 路径发生变化，要核对 image/video/audio metadata、position ids 和 batch 拼接；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载；文档或配置面发生变化，要核对 serve flags、默认值和 cookbook 命令是否与代码一致。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/layers/rotary_embedding.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #9059 - [GLM4.1V and GLM4.5V] Add vision transformer num_dummy_head support: max tp=4 -> max tp=8
+
+- 链接：https://github.com/sgl-project/sglang/pull/9059
+- 状态/时间：`merged`，created 2025-08-11, merged 2025-08-18；作者 `byjiang1996`。
+- 代码 diff 已读范围：`9` 个文件，`+150/-102`；代码面：model wrapper, attention/backend, MoE/router, multimodal/processor, tests/benchmarks；关键词：attention, config, vision, kv, quant, benchmark, moe, triton, expert, processor。
+- 代码 diff 细节：
+  - `python/sglang/srt/layers/attention/vision_utils.py` added +65/-0 (65 lines); hunk: +"""Utility functions for vision attention layers."""; 符号: update_vit_attn_dummy_heads_config, pad_vit_attn_dummy_heads
+  - `python/sglang/srt/models/glm4v.py` modified +52/-1 (53 lines); hunk: from sglang.srt.hf_transformers_utils import get_processor; def __init__(; 符号: __init__, __init__, get_video_feature, _update_hf_config
+  - `python/sglang/srt/models/internvl.py` modified +4/-49 (53 lines); hunk: from transformers.activations import ACT2FN; def __init__(; 符号: __init__, __init__, _update_vision_config, pixel_shuffle
+  - `python/sglang/srt/models/interns1.py` modified +5/-46 (51 lines); hunk: from torch import nn; def __init__(; 符号: __init__, __init__, _update_hf_config, pixel_shuffle
+  - `benchmark/mmmu/bench_hf.py` modified +6/-2 (8 lines); hunk: def eval_mmmu(args):; 符号: eval_mmmu
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/layers/attention/vision_utils.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/internvl.py`；patch 关键词为 attention, config, vision, kv, quant, benchmark。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；attention、KV cache 或 backend 选择发生变化，要重点核对 prefill/decode、page size、RoPE/MLA/MQA 分支；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；多模态 processor 或 media token 路径发生变化，要核对 image/video/audio metadata、position ids 和 batch 拼接；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/layers/attention/vision_utils.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/internvl.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #9245 - Set the default attention backend for GLM-4.5v to fa3
+
+- 链接：https://github.com/sgl-project/sglang/pull/9245
+- 状态/时间：`merged`，created 2025-08-15, merged 2025-08-17；作者 `zifeitong`。
+- 代码 diff 已读范围：`1` 个文件，`+1/-0`；代码面：misc；关键词：config, moe。
+- 代码 diff 细节：
+  - `python/sglang/srt/utils.py` modified +1/-0 (1 lines); hunk: def is_fa3_default_architecture(hf_config):; 符号: is_fa3_default_architecture
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/utils.py`；patch 关键词为 config, moe。影响判断：改动落在杂项路径，要从文件列表反推实际影响面。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/utils.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #9349 - Add support for GLM 4.5V FP8
+
+- 链接：https://github.com/sgl-project/sglang/pull/9349
+- 状态/时间：`open`，created 2025-08-19；作者 `pakjoeng`。
+- 代码 diff 已读范围：`2` 个文件，`+153/-4`；代码面：MoE/router, quantization, kernel, tests/benchmarks, docs/config；关键词：config, moe, triton, benchmark, expert, fp8, topk。
+- 代码 diff 细节：
+  - `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=128,N=352,device_name=NVIDIA_L40S,dtype=fp8_w8a8.json` added +146/-0 (146 lines); hunk: +{
+  - `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py` modified +7/-4 (11 lines); hunk: def main(args: argparse.Namespace):; 符号: main
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=128,N=352,device_name=NVIDIA_L40S,dtype=fp8_w8a8.json`, `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py`；patch 关键词为 config, moe, triton, benchmark, expert, fp8。影响判断：MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；量化加载或量化 kernel 发生变化，要核对 scale、zero-point、checkpoint 命名和 fallback 行为；CUDA/Triton/C++ kernel 或 binding 发生变化，要核对 shape guard、dtype、设备后端和 benchmark；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载；文档或配置面发生变化，要核对 serve flags、默认值和 cookbook 命令是否与代码一致。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=128,N=352,device_name=NVIDIA_L40S,dtype=fp8_w8a8.json`, `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #9554 - Fix GLM45v launch server cuda torch compile bug
+
+- 链接：https://github.com/sgl-project/sglang/pull/9554
+- 状态/时间：`merged`，created 2025-08-24, merged 2025-08-25；作者 `byjiang1996`。
+- 代码 diff 已读范围：`1` 个文件，`+1/-0`；代码面：model wrapper；关键词：n/a。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/qwen2_5_vl.py` modified +1/-0 (1 lines); hunk: def get_video_feature(self, items: List[MultimodalDataItem]) -> torch.Tensor:; 符号: get_video_feature, get_input_embeddings, forward
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/qwen2_5_vl.py`；patch 关键词为 n/a。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/qwen2_5_vl.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #9884 - [Bug Fix] Fix Glm4vVisionBlock norm
+
+- 链接：https://github.com/sgl-project/sglang/pull/9884
+- 状态/时间：`merged`，created 2025-09-01, merged 2025-09-05；作者 `sdpkjc`。
+- 代码 diff 已读范围：`2` 个文件，`+4/-4`；代码面：model wrapper；关键词：config, quant, vision。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/qwen2_5_vl.py` modified +3/-2 (5 lines); hunk: def __init__(; 符号: __init__
+  - `python/sglang/srt/models/glm4v.py` modified +1/-2 (3 lines); hunk: def __init__(; 符号: __init__
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/glm4v.py`；patch 关键词为 config, quant, vision。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/glm4v.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #10147 - Fix: (glm4v) Add missing field
+
+- 链接：https://github.com/sgl-project/sglang/pull/10147
+- 状态/时间：`merged`，created 2025-09-08, merged 2025-09-08；作者 `JustinTong0323`。
+- 代码 diff 已读范围：`1` 个文件，`+3/-0`；代码面：model wrapper；关键词：config, eagle。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/glm4v.py` modified +3/-0 (3 lines); hunk: def __init__(; 符号: __init__, get_image_feature
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/glm4v.py`；patch 关键词为 config, eagle。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/glm4v.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #10228 - Add self.capture_aux_hidden_states For GLM-4.5V
+
+- 链接：https://github.com/sgl-project/sglang/pull/10228
+- 状态/时间：`merged`，created 2025-09-09, merged 2025-09-14；作者 `zRzRzRzRzRzRzR`。
+- 代码 diff 已读范围：`1` 个文件，`+3/-0`；代码面：model wrapper, MoE/router；关键词：config, eagle, expert, moe。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/glm4v_moe.py` modified +3/-0 (3 lines); hunk: def __init__(; 符号: __init__, determine_num_fused_shared_experts
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/glm4v_moe.py`；patch 关键词为 config, eagle, expert, moe。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/glm4v_moe.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #11166 - Tiny move files to utils folder
+
+- 链接：https://github.com/sgl-project/sglang/pull/11166
+- 状态/时间：`merged`，created 2025-10-02, merged 2025-10-03；作者 `fzyzcjy`。
+- 代码 diff 已读范围：`66` 个文件，`+91/-79`；代码面：model wrapper, MoE/router, kernel, multimodal/processor, scheduler/runtime, tests/benchmarks, docs/config；关键词：config, attention, processor, test, benchmark, cache, cuda, expert, lora, moe。
+- 代码 diff 细节：
+  - `test/srt/test_tokenizer_manager.py` modified +12/-4 (16 lines); hunk: def setUp(self):; def setUp(self):; 符号: setUp, setUp, setUp, setUp
+  - `python/sglang/srt/managers/tp_worker.py` modified +6/-6 (12 lines); hunk: from sglang.srt.configs.model_config import ModelConfig; PPProxyTensors,
+  - `python/sglang/srt/managers/scheduler.py` modified +5/-5 (10 lines); hunk: ); set_random_seed,
+  - `python/sglang/srt/managers/tokenizer_manager.py` modified +5/-5 (10 lines); hunk: from sglang.srt.aio_rwlock import RWLock; get_zmq_socket,
+  - `python/sglang/srt/configs/model_config.py` modified +4/-4 (8 lines); hunk: from transformers import PretrainedConfig
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `test/srt/test_tokenizer_manager.py`, `python/sglang/srt/managers/tp_worker.py`, `python/sglang/srt/managers/scheduler.py`；patch 关键词为 config, attention, processor, test, benchmark, cache。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；CUDA/Triton/C++ kernel 或 binding 发生变化，要核对 shape guard、dtype、设备后端和 benchmark；多模态 processor 或 media token 路径发生变化，要核对 image/video/audio metadata、position ids 和 batch 拼接；scheduler/runtime/cache 路径发生变化，要核对连续批处理、spec/PD/DP、cache 生命周期和异常分支；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载；文档或配置面发生变化，要核对 serve flags、默认值和 cookbook 命令是否与代码一致。
+- 风险与验证：回归时优先跑能覆盖 `test/srt/test_tokenizer_manager.py`, `python/sglang/srt/managers/tp_worker.py`, `python/sglang/srt/managers/scheduler.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #11388 - Replace pad with cat for better performance
+
+- 链接：https://github.com/sgl-project/sglang/pull/11388
+- 状态/时间：`merged`，created 2025-10-09, merged 2025-10-10；作者 `yuan-luo`。
+- 代码 diff 已读范围：`5` 个文件，`+5/-5`；代码面：model wrapper；关键词：n/a。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/dots_vlm_vit.py` modified +1/-1 (2 lines); hunk: def forward(; 符号: forward
+  - `python/sglang/srt/models/glm4v.py` modified +1/-1 (2 lines); hunk: def forward(self, x: torch.Tensor, grid_thw: torch.Tensor) -> torch.Tensor:; 符号: forward
+  - `python/sglang/srt/models/qwen2_5_vl.py` modified +1/-1 (2 lines); hunk: def forward(; 符号: forward
+  - `python/sglang/srt/models/qwen2_vl.py` modified +1/-1 (2 lines); hunk: def forward(; 符号: forward
+  - `python/sglang/srt/models/qwen3_vl.py` modified +1/-1 (2 lines); hunk: def forward(; 符号: forward
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/dots_vlm_vit.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/qwen2_5_vl.py`；patch 关键词为 n/a。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/dots_vlm_vit.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/qwen2_5_vl.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #11922 - [lint] improve ruff check
+
+- 链接：https://github.com/sgl-project/sglang/pull/11922
+- 状态/时间：`merged`，created 2025-10-21, merged 2025-10-22；作者 `hnyls2002`。
+- 代码 diff 已读范围：`19` 个文件，`+73/-31`；代码面：model wrapper, attention/backend, MoE/router, quantization, kernel, scheduler/runtime, tests/benchmarks, docs/config；关键词：config, quant, attention, benchmark, cache, kv, triton, doc, expert, flash。
+- 代码 diff 细节：
+  - `python/sglang/srt/layers/moe/fused_moe_triton/triton_kernels_moe.py` modified +20/-19 (39 lines); hunk: PrecisionConfig,; def triton_kernel_fused_experts(; 符号: triton_kernel_fused_experts, triton_kernel_fused_experts, triton_kernel_fused_experts_with_bias, triton_kernel_fused_experts_with_bias
+  - `python/sglang/srt/utils/common.py` modified +10/-2 (12 lines); hunk: import threading; from multiprocessing.reduction import ForkingPickler; 符号: monkey_patch_vllm_gguf_config, get_quant_method_with_embedding_replaced, direct_register_custom_op
+  - `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py` modified +7/-0 (7 lines); hunk: from sglang.srt.layers.quantization.unquant import UnquantizedLinearMethod
+  - `python/sglang/srt/layers/attention/flashinfer_mla_backend.py` modified +4/-1 (5 lines); hunk: ); class PrefillMetadata:; 符号: PrefillMetadata:, FlashInferMhaChunkKVRunner:, __init__
+  - `.pre-commit-config.yaml` modified +3/-1 (4 lines); hunk: repos:
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/layers/moe/fused_moe_triton/triton_kernels_moe.py`, `python/sglang/srt/utils/common.py`, `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py`；patch 关键词为 config, quant, attention, benchmark, cache, kv。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；attention、KV cache 或 backend 选择发生变化，要重点核对 prefill/decode、page size、RoPE/MLA/MQA 分支；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；量化加载或量化 kernel 发生变化，要核对 scale、zero-point、checkpoint 命名和 fallback 行为；CUDA/Triton/C++ kernel 或 binding 发生变化，要核对 shape guard、dtype、设备后端和 benchmark；scheduler/runtime/cache 路径发生变化，要核对连续批处理、spec/PD/DP、cache 生命周期和异常分支；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载；文档或配置面发生变化，要核对 serve flags、默认值和 cookbook 命令是否与代码一致。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/layers/moe/fused_moe_triton/triton_kernels_moe.py`, `python/sglang/srt/utils/common.py`, `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #12117 - GLM-4-0414 and GLM-4.1V Code Refactor
+
+- 链接：https://github.com/sgl-project/sglang/pull/12117
+- 状态/时间：`merged`，created 2025-10-25, merged 2025-10-27；作者 `zRzRzRzRzRzRzR`。
+- 代码 diff 已读范围：`4` 个文件，`+679/-173`；代码面：model wrapper, MoE/router；关键词：config, quant, attention, cache, cuda, eagle, kv, processor, triton, vision。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/glm4.py` modified +391/-77 (468 lines); hunk: # Modeling from:; def __init__(; 符号: Glm4MLP, __init__, forward, Glm4Attention
+  - `python/sglang/srt/models/glm4v.py` modified +196/-55 (251 lines); hunk: +# Copyright 2023-2024 SGLang Team; from sglang.srt.layers.pooler import Pooler, PoolingType; 符号: __init__, forward, Glm4vVisionBlock, Glm4vVisionBlock
+  - `python/sglang/srt/layers/rotary_embedding.py` modified +92/-40 (132 lines); hunk: def _triton_mrope_forward(; def _triton_mrope_forward(; 符号: _triton_mrope_forward, _triton_mrope_forward, triton_mrope, triton_mrope
+  - `python/sglang/srt/models/glm4v_moe.py` modified +0/-1 (1 lines); hunk: def __init__(; 符号: __init__
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/glm4.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/layers/rotary_embedding.py`；patch 关键词为 config, quant, attention, cache, cuda, eagle。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/glm4.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/layers/rotary_embedding.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #13228 - Cleanup vision attention related codes
+
+- 链接：https://github.com/sgl-project/sglang/pull/13228
+- 状态/时间：`merged`，created 2025-11-13, merged 2025-11-16；作者 `JustinTong0323`。
+- 代码 diff 已读范围：`15` 个文件，`+4/-142`；代码面：model wrapper, MoE/router；关键词：config, kv, quant, attention, flash, vision, triton。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/glm4v.py` modified +1/-26 (27 lines); hunk: def __init__(; def __init__(; 符号: __init__, __init__
+  - `python/sglang/srt/models/qwen2_5_vl.py` modified +1/-26 (27 lines); hunk: def __init__(; def __init__(; 符号: __init__, __init__
+  - `python/sglang/srt/models/qwen3_vl.py` modified +1/-23 (24 lines); hunk: def __init__(; def __init__(; 符号: __init__, __init__, __init__
+  - `python/sglang/srt/models/clip.py` modified +0/-13 (13 lines); hunk: def __init__(; def __init__(; 符号: __init__, __init__, __init__
+  - `python/sglang/srt/models/qwen2_vl.py` modified +0/-13 (13 lines); hunk: def __init__(; def __init__(; 符号: __init__, __init__, __init__
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen3_vl.py`；patch 关键词为 config, kv, quant, attention, flash, vision。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen3_vl.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #14097 - support GLM-V vision model dp
+
+- 链接：https://github.com/sgl-project/sglang/pull/14097
+- 状态/时间：`merged`，created 2025-11-28, merged 2025-12-05；作者 `zRzRzRzRzRzRzR`。
+- 代码 diff 已读范围：`4` 个文件，`+91/-52`；代码面：model wrapper, MoE/router, tests/benchmarks；关键词：attention, config, kv, moe, processor, quant, test, vision。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/glm4v.py` modified +84/-50 (134 lines); hunk: from einops import rearrange; from sglang.srt.model_executor.forward_batch_info import ForwardBatch; 符号: __init__, __init__, __init__, forward
+  - `python/sglang/srt/models/glm4.py` modified +3/-1 (4 lines); hunk: def __init__(; 符号: __init__
+  - `python/sglang/srt/models/glm4_moe.py` modified +3/-1 (4 lines); hunk: def __init__(; 符号: __init__
+  - `test/nightly/test_encoder_dp.py` modified +1/-0 (1 lines); hunk: SimpleNamespace(model="Qwen/Qwen2.5-VL-72B-Instruct", mmmu_accuracy=0.55),
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/glm4.py`, `python/sglang/srt/models/glm4_moe.py`；patch 关键词为 attention, config, kv, moe, processor, quant。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/glm4.py`, `python/sglang/srt/models/glm4_moe.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #14662 - [Glm46v] support ktransformers
+
+- 链接：https://github.com/sgl-project/sglang/pull/14662
+- 状态/时间：`open`，created 2025-12-08；作者 `mrhaoxx`。
+- 代码 diff 已读范围：`1` 个文件，`+8/-0`；代码面：model wrapper, MoE/router；关键词：config, expert, moe, quant, triton。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/glm4v_moe.py` modified +8/-0 (8 lines); hunk: from sglang.srt.layers.moe import get_moe_a2a_backend; def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]], is_nextn=Fal; 符号: load_weights, get_model_config_for_expert_location
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/glm4v_moe.py`；patch 关键词为 config, expert, moe, quant, triton。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/glm4v_moe.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #14720 - [GLM-4.6V] Support Pipeline Parallelism for GLM-4.6V & GLM-4.1V
+
+- 链接：https://github.com/sgl-project/sglang/pull/14720
+- 状态/时间：`merged`，created 2025-12-09, merged 2025-12-10；作者 `yuan-luo`。
+- 代码 diff 已读范围：`4` 个文件，`+66/-2`；代码面：model wrapper, tests/benchmarks；关键词：test, mla, cuda, fp4, moe, spec, vision。
+- 代码 diff 细节：
+  - `test/srt/test_pp_single_node.py` modified +38/-0 (38 lines); hunk: from sglang.test.test_utils import (; def test_chunked_prefill_with_small_bs(self):; 符号: test_chunked_prefill_with_small_bs, TestGLM41VPPAccuracy, setUpClass, tearDownClass
+  - `python/sglang/srt/models/glm4v.py` modified +24/-1 (25 lines); hunk: general_mm_embed_routine,; def forward(; 符号: forward, forward, load_weights, load_weights
+  - `python/sglang/test/test_utils.py` modified +3/-0 (3 lines); hunk: DEFAULT_MODEL_NAME_FOR_TEST_MLA = "lmsys/sglang-ci-dsv3-test"
+  - `test/srt/run_suite.py` modified +1/-1 (2 lines); hunk: TestFile("test_gpt_oss_4gpu.py", 300),
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `test/srt/test_pp_single_node.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/test/test_utils.py`；patch 关键词为 test, mla, cuda, fp4, moe, spec。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `test/srt/test_pp_single_node.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/test/test_utils.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #14927 - [CI]add nightly CI for glm4v_moe arch model
+
+- 链接：https://github.com/sgl-project/sglang/pull/14927
+- 状态/时间：`merged`，created 2025-12-11, merged 2025-12-12；作者 `zminglei`。
+- 代码 diff 已读范围：`1` 个文件，`+3/-0`；代码面：tests/benchmarks；关键词：fp8, test。
+- 代码 diff 细节：
+  - `test/nightly/test_vlms_mmmu_eval.py` modified +3/-0 (3 lines); hunk: ): ModelEvalMetrics(0.310, 16.7),
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `test/nightly/test_vlms_mmmu_eval.py`；patch 关键词为 fp8, test。影响判断：测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `test/nightly/test_vlms_mmmu_eval.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #14998 - add transformers version validation for glm-4.6v moe models
+
+- 链接：https://github.com/sgl-project/sglang/pull/14998
+- 状态/时间：`merged`，created 2025-12-12, merged 2025-12-13；作者 `yhyang201`。
+- 代码 diff 已读范围：`1` 个文件，`+37/-0`；代码面：docs/config；关键词：attention, config, moe, quant, vision。
+- 代码 diff 细节：
+  - `python/sglang/srt/configs/model_config.py` modified +37/-0 (37 lines); hunk: def __init__(; def _verify_dual_chunk_attention_config(self) -> None:; 符号: __init__, _verify_dual_chunk_attention_config, _verify_transformers_version, _get_hf_eos_token_id
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/configs/model_config.py`；patch 关键词为 attention, config, moe, quant, vision。影响判断：文档或配置面发生变化，要核对 serve flags、默认值和 cookbook 命令是否与代码一致。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/configs/model_config.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #15205 - [VLM] Support cos sin cache for Qwen3-VL & GLM-4.1V
+
+- 链接：https://github.com/sgl-project/sglang/pull/15205
+- 状态/时间：`merged`，created 2025-12-15, merged 2025-12-18；作者 `yuan-luo`。
+- 代码 diff 已读范围：`4` 个文件，`+100/-80`；代码面：model wrapper, attention/backend, multimodal/processor；关键词：cache, vision, config, processor, quant, attention。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/glm4v.py` modified +34/-50 (84 lines); hunk: from sglang.srt.layers.logits_processor import LogitsProcessor; def forward(; 符号: forward, forward, forward, Glm4vVisionRotaryEmbedding
+  - `python/sglang/srt/models/qwen3_vl.py` modified +41/-20 (61 lines); hunk: import torch.nn as nn; from sglang.srt.layers.logits_processor import LogitsProcessor; 符号: forward, __init__, dtype, device
+  - `python/sglang/srt/layers/attention/vision.py` modified +20/-10 (30 lines); hunk: def forward(; def forward(; 符号: forward, forward
+  - `python/sglang/srt/layers/rotary_embedding.py` modified +5/-0 (5 lines); hunk: def get_cos_sin_with_position(self, positions):; 符号: get_cos_sin_with_position, get_cos_sin, forward_native
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/layers/attention/vision.py`；patch 关键词为 cache, vision, config, processor, quant, attention。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；attention、KV cache 或 backend 选择发生变化，要重点核对 prefill/decode、page size、RoPE/MLA/MQA 分支；多模态 processor 或 media token 路径发生变化，要核对 image/video/audio metadata、position ids 和 batch 拼接。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/layers/attention/vision.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #15434 - Convert cu_seqlens to CPU for npu_flash_attention_unpad operator
+
+- 链接：https://github.com/sgl-project/sglang/pull/15434
+- 状态/时间：`merged`，created 2025-12-19, merged 2026-01-04；作者 `xiaobaicxy`。
+- 代码 diff 已读范围：`9` 个文件，`+36/-13`；代码面：model wrapper, attention/backend, MoE/router, multimodal/processor；关键词：attention, flash, vision, processor, config, cuda, quant, expert, moe。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/qwen3_vl.py` modified +6/-3 (9 lines); hunk: from sglang.srt.multimodal.mm_utils import run_dp_sharded_mrope_vision_model; def forward(; 符号: forward
+  - `python/sglang/srt/models/glm4v.py` modified +5/-1 (6 lines); hunk: from sglang.srt.models.glm4 import Glm4Model; def forward(self, x: torch.Tensor, grid_thw: torch.Tensor) -> torch.Tensor:; 符号: forward
+  - `python/sglang/srt/models/paddleocr_vl.py` modified +4/-2 (6 lines); hunk: from sglang.srt.model_executor.forward_batch_info import ForwardBatch; def forward(; 符号: Projector, forward
+  - `python/sglang/srt/models/qwen2_5_vl.py` modified +4/-2 (6 lines); hunk: from sglang.srt.multimodal.mm_utils import run_dp_sharded_mrope_vision_model; def forward(; 符号: forward
+  - `python/sglang/srt/models/dots_vlm_vit.py` modified +4/-1 (5 lines); hunk: from sglang.srt.distributed import parallel_state; def forward(; 符号: forward
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/paddleocr_vl.py`；patch 关键词为 attention, flash, vision, processor, config, cuda。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；attention、KV cache 或 backend 选择发生变化，要重点核对 prefill/decode、page size、RoPE/MLA/MQA 分支；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；多模态 processor 或 media token 路径发生变化，要核对 image/video/audio metadata、position ids 和 batch 拼接。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/paddleocr_vl.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #17122 - [bugfix]GLM-4V model
+
+- 链接：https://github.com/sgl-project/sglang/pull/17122
+- 状态/时间：`merged`，created 2026-01-15, merged 2026-04-01；作者 `KnightLTC`。
+- 代码 diff 已读范围：`3` 个文件，`+38/-3`；代码面：model wrapper, multimodal/processor, tests/benchmarks；关键词：attention, cuda, benchmark, cache, config, kv, processor, quant, test, vision。
+- 代码 diff 细节：
+  - `test/registered/ascend/vlm_models/test_ascend_glm_4_5v.py` added +33/-0 (33 lines); hunk: +import unittest; 符号: TestGLM4Models, test_vlm_mmmu_benchmark
+  - `python/sglang/srt/models/glm4v.py` modified +2/-2 (4 lines); hunk: def __init__(; def __init__(; 符号: __init__, __init__
+  - `python/sglang/srt/multimodal/processors/base_processor.py` modified +3/-1 (4 lines); hunk: def process_mm_data(; 符号: process_mm_data
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `test/registered/ascend/vlm_models/test_ascend_glm_4_5v.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/multimodal/processors/base_processor.py`；patch 关键词为 attention, cuda, benchmark, cache, config, kv。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；多模态 processor 或 media token 路径发生变化，要核对 image/video/audio metadata、position ids 和 batch 拼接；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `test/registered/ascend/vlm_models/test_ascend_glm_4_5v.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/multimodal/processors/base_processor.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #17420 - [VLM] Optimize get_rope_index for GLM4v
+
+- 链接：https://github.com/sgl-project/sglang/pull/17420
+- 状态/时间：`merged`，created 2026-01-20, merged 2026-02-01；作者 `yuan-luo`。
+- 代码 diff 已读范围：`2` 个文件，`+526/-86`；代码面：tests/benchmarks；关键词：attention, config, vision, benchmark, cuda, moe, test。
+- 代码 diff 细节：
+  - `benchmark/bench_rope/benchmark_rope_index.py` added +425/-0 (425 lines); hunk: +# This script benchmarks MRotaryEmbedding.get_rope_index_glm4v (GLM4V mrope index builder).; 符号: DummyVisionConfig:, DummyHFConfig:, calculate_stats, _sync
+  - `python/sglang/srt/layers/rotary_embedding.py` modified +101/-86 (187 lines); hunk: def get_rope_index(; def get_rope_index(; 符号: get_rope_index, get_rope_index, get_rope_index, get_rope_index_glm4v
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `benchmark/bench_rope/benchmark_rope_index.py`, `python/sglang/srt/layers/rotary_embedding.py`；patch 关键词为 attention, config, vision, benchmark, cuda, moe。影响判断：测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `benchmark/bench_rope/benchmark_rope_index.py`, `python/sglang/srt/layers/rotary_embedding.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #17582 - [GLM-OCR] Support GLM-OCR Model
+
+- 链接：https://github.com/sgl-project/sglang/pull/17582
+- 状态/时间：`merged`，created 2026-01-22, merged 2026-01-27；作者 `zRzRzRzRzRzRzR`。
+- 代码 diff 已读范围：`9` 个文件，`+679/-29`；代码面：model wrapper, attention/backend, multimodal/processor, docs/config；关键词：config, attention, spec, kv, processor, quant, vision, moe, cache, cuda。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/glm_ocr.py` added +435/-0 (435 lines); hunk: +# Copyright 2023-2024 SGLang Team; 符号: GlmOcrRMSNorm, GlmOcrVisionMLP, GlmOcrVisionBlock, __init__
+  - `python/sglang/srt/models/glm_ocr_nextn.py` added +162/-0 (162 lines); hunk: +# Copyright 2023-2024 SGLang Team; 符号: GlmOcrModelNextN, __init__, forward, GlmOcrForConditionalGenerationNextN
+  - `python/sglang/srt/layers/attention/vision.py` modified +49/-19 (68 lines); hunk: def __init__(; def __init__(; 符号: __init__, __init__, __init__, _init_qk_norm
+  - `python/sglang/srt/models/glm4.py` modified +18/-6 (24 lines); hunk: def __init__(; def __init__(; 符号: __init__, __init__, __init__, __init__
+  - `python/sglang/srt/configs/model_config.py` modified +7/-1 (8 lines); hunk: def _config_draft_model(self):; def _verify_transformers_version(self):; 符号: _config_draft_model, _verify_transformers_version, is_generation_model
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/glm_ocr.py`, `python/sglang/srt/models/glm_ocr_nextn.py`, `python/sglang/srt/layers/attention/vision.py`；patch 关键词为 config, attention, spec, kv, processor, quant。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；attention、KV cache 或 backend 选择发生变化，要重点核对 prefill/decode、page size、RoPE/MLA/MQA 分支；多模态 processor 或 media token 路径发生变化，要核对 image/video/audio metadata、position ids 和 batch 拼接；文档或配置面发生变化，要核对 serve flags、默认值和 cookbook 命令是否与代码一致。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/glm_ocr.py`, `python/sglang/srt/models/glm_ocr_nextn.py`, `python/sglang/srt/layers/attention/vision.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #18885 - Fix GLM-4V processor registration when glm_ocr is unavailable
+
+- 链接：https://github.com/sgl-project/sglang/pull/18885
+- 状态/时间：`merged`，created 2026-02-16, merged 2026-02-16；作者 `alisonshao`。
+- 代码 diff 已读范围：`1` 个文件，`+12/-4`；代码面：multimodal/processor；关键词：config, moe, processor, spec。
+- 代码 diff 细节：
+  - `python/sglang/srt/multimodal/processors/glm4v.py` modified +12/-4 (16 lines); hunk: from sglang.srt.layers.rotary_embedding import MRotaryEmbedding; 符号: Glm4vImageProcessor, __init__
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/multimodal/processors/glm4v.py`；patch 关键词为 config, moe, processor, spec。影响判断：多模态 processor 或 media token 路径发生变化，要核对 image/video/audio metadata、position ids 和 batch 拼接。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/multimodal/processors/glm4v.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #19728 - Fix ROCm GLM-4.5V-FP8 startup with unpadded MoE weights and padded FP8 fallback
+
+- 链接：https://github.com/sgl-project/sglang/pull/19728
+- 状态/时间：`open`，created 2026-03-03；作者 `andyluo7`。
+- 代码 diff 已读范围：`4` 个文件，`+104/-4`；代码面：MoE/router, quantization, kernel, tests/benchmarks；关键词：fp8, quant, expert, moe, test, triton, cache, config, cuda, mla。
+- 代码 diff 细节：
+  - `test/registered/moe/test_fused_moe.py` modified +66/-0 (66 lines); hunk: import unittest; def test_various_configurations(self):; 符号: test_various_configurations, test_fp8_unpadded_weights_with_global_moe_padding
+  - `python/sglang/srt/layers/quantization/fp8_kernel.py` modified +21/-4 (25 lines); hunk: def per_token_group_quant_mla_deep_gemm_masked_fp8(; def _native_dynamic_per_token_quant_fp8(output, input, scale):; 符号: per_token_group_quant_mla_deep_gemm_masked_fp8, _copy_with_optional_row_padding, _native_dynamic_per_token_quant_fp8, _native_dynamic_per_token_quant_fp8
+  - `python/sglang/test/test_custom_ops.py` modified +11/-0 (11 lines); hunk: import pytest; def test_scaled_fp8_quant_with_padding(dtype) -> None:; 符号: test_scaled_fp8_quant_with_padding
+  - `python/sglang/srt/layers/moe/fused_moe_triton/fused_moe.py` modified +6/-0 (6 lines); hunk: def fused_experts_impl(; 符号: fused_experts_impl
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `test/registered/moe/test_fused_moe.py`, `python/sglang/srt/layers/quantization/fp8_kernel.py`, `python/sglang/test/test_custom_ops.py`；patch 关键词为 fp8, quant, expert, moe, test, triton。影响判断：MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；量化加载或量化 kernel 发生变化，要核对 scale、zero-point、checkpoint 命名和 fallback 行为；CUDA/Triton/C++ kernel 或 binding 发生变化，要核对 shape guard、dtype、设备后端和 benchmark；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `test/registered/moe/test_fused_moe.py`, `python/sglang/srt/layers/quantization/fp8_kernel.py`, `python/sglang/test/test_custom_ops.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #20033 - [VLM] Replace conv3d proj with linear for GLM4V
+
+- 链接：https://github.com/sgl-project/sglang/pull/20033
+- 状态/时间：`merged`，created 2026-03-06, merged 2026-03-08；作者 `yuan-luo`。
+- 代码 diff 已读范围：`2` 个文件，`+192/-9`；代码面：model wrapper, tests/benchmarks；关键词：benchmark, config, cuda, test, vision。
+- 代码 diff 细节：
+  - `test/registered/vlm/test_patch_embed_perf.py` added +166/-0 (166 lines); hunk: +import os; 符号: ReferenceConv3dPatchEmbed, __init__, forward, _build_modules
+  - `python/sglang/srt/models/glm4v.py` modified +26/-9 (35 lines); hunk: def __init__(; def __init__(; 符号: __init__, forward, copy_conv3d_weight_to_linear, forward
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `test/registered/vlm/test_patch_embed_perf.py`, `python/sglang/srt/models/glm4v.py`；patch 关键词为 benchmark, config, cuda, test, vision。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `test/registered/vlm/test_patch_embed_perf.py`, `python/sglang/srt/models/glm4v.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #20282 - Add Conv2dLayer/Conv3dLayer to fix PyTorch 2.9.1 CuDNN Conv3d bug
+
+- 链接：https://github.com/sgl-project/sglang/pull/20282
+- 状态/时间：`merged`，created 2026-03-10, merged 2026-03-15；作者 `yhyang201`。
+- 代码 diff 已读范围：`18` 个文件，`+704/-90`；代码面：model wrapper, tests/benchmarks；关键词：config, attention, vision, quant, cuda, lora, moe, spec, test。
+- 代码 diff 细节：
+  - `test/unit/test_conv_layer.py` added +363/-0 (363 lines); hunk: +import unittest; 符号: _copy_weights, TestConv2dLayer, test_basic_patch_embedding, test_enable_linear
+  - `python/sglang/srt/layers/conv.py` added +300/-0 (300 lines); hunk: +"""; 符号: _tuplify, _check_enable_linear, _reverse_repeat_tuple, _compute_same_padding_for_pad
+  - `python/sglang/srt/server_args.py` modified +0/-48 (48 lines); hunk: def check_server_args(self):; def check_server_args(self):; 符号: check_server_args, check_server_args, check_torch_2_9_1_cudnn_compatibility, check_lora_server_args
+  - `python/sglang/srt/models/glm4v.py` modified +12/-27 (39 lines); hunk: from sglang.srt.layers.activation import SiluAndMul; def __init__(; 符号: __init__, copy_conv3d_weight_to_linear, forward, Glm4vPatchMerger
+  - `python/sglang/srt/models/pixtral.py` modified +3/-2 (5 lines); hunk: from sglang.srt.layers.activation import SiluAndMul; class VisionTransformer(nn.Module):; 符号: VisionTransformer, __init__, __init__
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `test/unit/test_conv_layer.py`, `python/sglang/srt/layers/conv.py`, `python/sglang/srt/server_args.py`；patch 关键词为 config, attention, vision, quant, cuda, lora。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `test/unit/test_conv_layer.py`, `python/sglang/srt/layers/conv.py`, `python/sglang/srt/server_args.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #20463 - [Bugfix] Fix GLM-4.6V vision regression in glm4v_moe and glm_ocr
+
+- 链接：https://github.com/sgl-project/sglang/pull/20463
+- 状态/时间：`merged`，created 2026-03-12, merged 2026-03-14；作者 `JustinTong0323`。
+- 代码 diff 已读范围：`2` 个文件，`+6/-0`；代码面：model wrapper, MoE/router；关键词：moe。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/glm4v_moe.py` modified +3/-0 (3 lines); hunk: def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]], is_nextn=Fal; 符号: load_weights
+  - `python/sglang/srt/models/glm_ocr.py` modified +3/-0 (3 lines); hunk: def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]], is_nextn=Fal; 符号: load_weights
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/models/glm_ocr.py`；patch 关键词为 moe。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/models/glm_ocr.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #20740 - Revert "[Bugfix] Fix GLM-4.6V vision regression in glm4v_moe and glm_ocr"
+
+- 链接：https://github.com/sgl-project/sglang/pull/20740
+- 状态/时间：`merged`，created 2026-03-17, merged 2026-03-18；作者 `mickqian`。
+- 代码 diff 已读范围：`2` 个文件，`+0/-6`；代码面：model wrapper, MoE/router；关键词：moe。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/glm4v_moe.py` modified +0/-3 (3 lines); hunk: def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]], is_nextn=Fal; 符号: load_weights
+  - `python/sglang/srt/models/glm_ocr.py` modified +0/-3 (3 lines); hunk: def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]], is_nextn=Fal; 符号: load_weights
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/models/glm_ocr.py`；patch 关键词为 moe。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/models/glm_ocr.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #21134 - [Bug Fix] GLM-V / GLM-OCR: field detection for transformers 5.x and MTP omission fix
+
+- 链接：https://github.com/sgl-project/sglang/pull/21134
+- 状态/时间：`merged`，created 2026-03-22, merged 2026-03-23；作者 `zRzRzRzRzRzRzR`。
+- 代码 diff 已读范围：`3` 个文件，`+16/-9`；代码面：model wrapper, MoE/router；关键词：config, moe, expert, quant, vision。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/glm4v_moe.py` modified +7/-7 (14 lines); hunk: def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]], is_nextn=Fal; def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]], is_nextn=F; 符号: load_weights, load_weights
+  - `python/sglang/srt/model_loader/weight_utils.py` modified +5/-1 (6 lines); hunk: def maybe_add_mtp_safetensors(; 符号: maybe_add_mtp_safetensors
+  - `python/sglang/srt/models/glm_ocr.py` modified +4/-1 (5 lines); hunk: from einops import rearrange; class GlmOcrVisionModel(Glm4vVisionModel):; 符号: GlmOcrVisionModel, __init__, __init__, __init__
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/model_loader/weight_utils.py`, `python/sglang/srt/models/glm_ocr.py`；patch 关键词为 config, moe, expert, quant, vision。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/model_loader/weight_utils.py`, `python/sglang/srt/models/glm_ocr.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #22961 - [NPU] Support GLM-4.5V
+
+- 链接：https://github.com/sgl-project/sglang/pull/22961
+- 状态/时间：`open`，created 2026-04-16；作者 `zhsurpass`。
+- 代码 diff 已读范围：`1` 个文件，`+17/-5`；代码面：model wrapper, MoE/router；关键词：kv, moe。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/glm4_moe.py` modified +17/-5 (22 lines); hunk: def forward_prepare(; 符号: forward_prepare
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/glm4_moe.py`；patch 关键词为 kv, moe。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/glm4_moe.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+
+### 补漏和优化点排查
+
+- 已覆盖 PR 数：31；open PR 数：4。
+- 仍需跟进的 open PR：[#9349](https://github.com/sgl-project/sglang/pull/9349), [#14662](https://github.com/sgl-project/sglang/pull/14662), [#19728](https://github.com/sgl-project/sglang/pull/19728), [#22961](https://github.com/sgl-project/sglang/pull/22961)
+- 后续新增 PR 必须补齐时间线和逐 PR diff 卡片，不能只写一句标题。
+
+<!-- MODEL_PR_DIFF_AUDIT:END zh -->

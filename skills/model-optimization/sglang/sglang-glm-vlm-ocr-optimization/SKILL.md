@@ -18,6 +18,11 @@ Current evidence snapshot:
 - Processor files: `multimodal/processors/glm4v.py`, `glmasr.py` when audio-adjacent
 - Docs/snippets: GLM-4.5V, GLM-4.6V, GLM-Glyph, GLM-OCR cookbook pages
 
+## Non-Negotiable Evidence Rule
+
+Use `skills/model-optimization/model-pr-diff-dossier/SKILL.md` as the production bar.
+Every PR cited for this family must be based on diff reading, not only PR titles.
+
 ## Before You Change Anything
 
 Capture:

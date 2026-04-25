@@ -72,3 +72,34 @@ elif model_arch == "MossVLForConditionalGeneration":
 
 - Moss-VL source touches shared multimodal scheduler structures; regressions may show up in logprob start lengths or encoder prefix stripping.
 - If a bug appears only after first-token prefill, inspect `visible_frame_counts` shrinkage and `mm_input.release_features()` before looking at logits.
+
+<!-- MODEL_PR_DIFF_AUDIT:START reference -->
+
+# SGLANG MOSS-VL PR Diff Audit Reference
+
+This reference is rebuilt from the same audited PR metadata used by `model-pr-optimization-history`. It is intentionally concise but keeps a file-level diff digest for every indexed PR.
+
+## Timeline
+
+| Created | PR | State | Title | Code surface | Main diff files |
+| --- | ---: | --- | --- | --- | --- |
+| 2026-04-22 | [#23454](https://github.com/sgl-project/sglang/pull/23454) | merged | [srt] Add Moss-VL Python runtime support | model wrapper, attention/backend, multimodal/processor, scheduler/runtime, docs/config | `python/sglang/srt/models/moss_vl.py`, `python/sglang/srt/multimodal/processors/moss_vl.py`, `python/sglang/srt/managers/schedule_batch.py` |
+
+## Diff Cards
+
+### PR #23454 - [srt] Add Moss-VL Python runtime support
+
+- Link: https://github.com/sgl-project/sglang/pull/23454
+- Status/date: `merged`, created 2026-04-22, merged 2026-04-24; author `zsj555`.
+- Diff scope read: `10` files, `+2401/-6`; areas: model wrapper, attention/backend, multimodal/processor, scheduler/runtime, docs/config; keywords: attention, config, processor, spec, cuda, flash, vision, cache, kv, mla.
+- Code diff details:
+  - `python/sglang/srt/models/moss_vl.py` added +1643/-0 (1643 lines); hunks: +"""PyTorch Moss-VL model for SGLang - Qwen3VL Vision + Text with Cross Attention."""; symbols: MossVLVisionMLP, __init__, forward, MossVLVisionPatchEmbed
+  - `python/sglang/srt/multimodal/processors/moss_vl.py` added +612/-0 (612 lines); hunks: +import asyncio; symbols: MossVLImageProcessor, __init__, _build_mm_items, _build_vision_token_info
+  - `python/sglang/srt/managers/schedule_batch.py` modified +70/-0 (70 lines); hunks: class MultimodalProcessorOutput:; def from_dict(d: dict) -> "MultimodalProcessorOutput":; symbols: MultimodalProcessorOutput:, from_dict, MultimodalInputs:, release_features
+  - `python/sglang/srt/parser/conversation.py` modified +29/-2 (31 lines); hunks: def get_prompt(self) -> str:; def generate_chat_conv(; symbols: get_prompt, generate_chat_conv, generate_chat_conv, generate_chat_conv
+  - `python/sglang/srt/managers/tokenizer_manager.py` modified +12/-2 (14 lines); hunks: async def _tokenize_one_request(; symbols: _tokenize_one_request
+- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/models/moss_vl.py`, `python/sglang/srt/multimodal/processors/moss_vl.py`, `python/sglang/srt/managers/schedule_batch.py`; keywords observed in patches: attention, config, processor, spec, cuda, flash. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; attention, KV cache, or backend selection changed; verify prefill/decode, page size, RoPE/MLA/MQA branches; multimodal processor or media-token code changed; verify image/video/audio metadata, position ids, and batching; scheduler/runtime/cache code changed; verify continuous batching, spec/PD/DP, cache lifetime, and exceptional branches; docs or config changed; verify serve flags, defaults, and cookbook commands against runtime code.
+- Risk and verification: Re-run the model path that exercises `python/sglang/srt/models/moss_vl.py`, `python/sglang/srt/multimodal/processors/moss_vl.py`, `python/sglang/srt/managers/schedule_batch.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+
+
+<!-- MODEL_PR_DIFF_AUDIT:END reference -->
