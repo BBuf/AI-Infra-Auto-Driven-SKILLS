@@ -3,8 +3,8 @@
 - Rebuilt on: 2026-04-25
 - Source baseline: `sgl-project/sglang` trace worktree commit `880599cd43`
 - Collection: model implementation files were traced with `git log --name-only -- <model-files>`, filtered by model keywords in commit subjects, then every PR card was populated from the GitHub Pull Request files API.
-- Extra preserved PRs from prior docs: 35
-- Rule: use this as the backing dossier for the skill, not only PR titles.
+- Extra preserved PRs from prior docs: 37
+- Rule: use this evidence file before changing model-specific skill guidance; it is not only PR titles.
 
 ## Implementation File Coverage
 
@@ -53,6 +53,7 @@
 | 2025-05-16 | [#6136](https://github.com/sgl-project/sglang/pull/6136) | merged | Support precomputed multimodal features for Qwen-VL and Gemma3 models. | `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen2_vl.py` |
 | 2025-09-08 | [#8801](https://github.com/sgl-project/sglang/pull/8801) | merged | Qwen2.5-VL eagle3 infer | `python/sglang/srt/models/qwen2_5_vl.py` |
 | 2025-09-23 | [#10323](https://github.com/sgl-project/sglang/pull/10323) | merged | model: support qwen3-vl series | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/configs/qwen3_vl.py`, `python/sglang/srt/models/qwen3_vl_moe.py` |
+| 2025-09-26 | [#10749](https://github.com/sgl-project/sglang/pull/10749) | merged | Fuse write kv buffer into rope for qwen3 moe & bailing moe | `python/sglang/srt/models/utils.py`, `python/sglang/srt/models/gpt_oss.py`, `python/sglang/srt/models/bailing_moe.py` |
 | 2025-10-01 | [#10985](https://github.com/sgl-project/sglang/pull/10985) | merged | Quick Fix: fix Qwen3-VL launch failure caused by MRotaryEmbedding arg | `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/srt/layers/rotary_embedding.py` |
 | 2025-10-12 | [#11481](https://github.com/sgl-project/sglang/pull/11481) | merged | [smol] [perf] Qwen3-VL in place op. | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen3_vl_moe.py` |
 | 2025-10-15 | [#11458](https://github.com/sgl-project/sglang/pull/11458) | merged | [BugFix][Qwen3-VL]: fix cu_seqlens in qwen3-vl | `python/sglang/srt/models/qwen3_vl.py` |
@@ -105,6 +106,7 @@
 | 2026-03-19 | [#20759](https://github.com/sgl-project/sglang/pull/20759) | merged | [Bugfix] fix qwen3vl hang when --mm-enable-dp-encoder is enable | `python/sglang/srt/models/qwen3_vl.py` |
 | 2026-04-01 | [#21469](https://github.com/sgl-project/sglang/pull/21469) | merged | [3/n] lora moe - Support Qwen3-VL-30B-A3B-Instruct | `python/sglang/srt/models/qwen3_vl_moe.py`, `test/registered/lora/test_lora_qwen3_vl_30b_a3b_instruct_logprob_diff.py` |
 | 2026-04-01 | [#21458](https://github.com/sgl-project/sglang/pull/21458) | merged | [AMD] Optimize Qwen3-VL decode - fuse QK-norm + 3D mRoPE + KV cache write | `python/sglang/srt/models/qwen3.py` |
+| 2026-04-03 | [#19135](https://github.com/sgl-project/sglang/pull/19135) | merged | qwen3 vl skip layer id for pp | `python/sglang/srt/models/qwen3_vl_moe.py` |
 | 2026-04-03 | [#22052](https://github.com/sgl-project/sglang/pull/22052) | open | [Fix] Enable precise embedding interpolation by default for Qwen3-VL | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/server_args.py`, `docs/advanced_features/server_arguments.md` |
 | 2026-04-04 | [#22038](https://github.com/sgl-project/sglang/pull/22038) | merged | [VLM] Chunk-aware ViT encoding with per-image cache and lazy device transfer | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/mem_cache/multimodal_cache.py`, `python/sglang/srt/models/deepseek_vl2.py` |
 | 2026-04-06 | [#21849](https://github.com/sgl-project/sglang/pull/21849) | merged | [VLM]: allow Qwen3.5 models for encoder disaggregation | `python/sglang/srt/multimodal/processors/qwen_vl.py`, `test/registered/distributed/test_epd_disaggregation.py`, `python/sglang/srt/disaggregation/encode_server.py` |
@@ -127,9 +129,9 @@
 
 - Link: https://github.com/sgl-project/sglang/pull/2055
 - Status/date: merged / 2024-11-21
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen2_vl.py`; associated commits `f6f713797bcb`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen2_vl.py`; associated commits `f6f713797bcb`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +39/-12, 114 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "Add support for Qwen2-VL-based embedding models". The diff centers on `python/sglang/srt/models/qwen2_vl.py`. PR body context: ## Motivation Add support for Qwen2-VL based embedding models (e.g. mcdse-2b-v1), as requested in https://github.com/sgl-project/sglang/issues/2032. ## Modifications ## Checklis...
+- Motivation: Title: "Add support for Qwen2-VL-based embedding models"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/models/qwen2_vl.py`; PR body summary: Add support for Qwen2-VL based embedding models (e.g. mcdse-2b-v1), as requested in https://github.com/sgl-project/sglang/issues/2032..
 - Key implementation: `python/sglang/srt/models/qwen2_vl.py` modified +12/-5 (17 lines); hunks: -44,6 +44,7; -559,6 +560,7 @@ def __init__(; symbols: __init__, _process_image_input, forward, touching `__init__, _process_image_input, forward`.
 - Code diff details:
   - `python/sglang/srt/models/qwen2_vl.py` modified +12/-5 (17 lines); hunks: -44,6 +44,7; -559,6 +560,7 @@ def __init__(; symbols: __init__, _process_image_input, forward
@@ -154,9 +156,9 @@ diff -- python/sglang/srt/models/qwen2_vl.py
 
 - Link: https://github.com/sgl-project/sglang/pull/5003
 - Status/date: merged / 2025-04-14
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen2_vl.py`; associated commits `072df753546b`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen2_vl.py`; associated commits `072df753546b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +375/-45, 531 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "Support for Qwen2.5-VL Model in bitsandbytes Format". The diff centers on `python/sglang/srt/models/qwen2_vl.py`, `python/sglang/srt/models/qwen2_5_vl.py`. PR body context: ## Motivation Support for Qwen2.5-VL Model in bitsandbytes Format ## Modifications 1. Added code in `scheduler.py` to automatically load the bnb model format, in line with the d...
+- Motivation: Title: "Support for Qwen2.5-VL Model in bitsandbytes Format"; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `python/sglang/srt/models/qwen2_vl.py`, `python/sglang/srt/models/qwen2_5_vl.py`; PR body summary: Support for Qwen2.5-VL Model in bitsandbytes Format 1. Added code in `scheduler.py` to automatically load the bnb model format, in line with the definition in the documentation....
 - Key implementation: `python/sglang/srt/models/qwen2_vl.py` modified +24/-23 (47 lines); hunks: -152,7 +152,7 @@ def __init__(; -351,7 +351,7 @@ def __init__(; symbols: __init__, dtype, device, forward, touching `__init__, dtype, device`; `python/sglang/srt/models/qwen2_5_vl.py` modified +24/-22 (46 lines); hunks: -141,7 +141,7 @@ def __init__(; -325,7 +325,7 @@ def get_window_index(self, grid_thw):; symbols: __init__, get_window_index, dtype, device, touching `__init__, get_window_index, dtype`.
 - Code diff details:
   - `python/sglang/srt/models/qwen2_vl.py` modified +24/-23 (47 lines); hunks: -152,7 +152,7 @@ def __init__(; -351,7 +351,7 @@ def __init__(; symbols: __init__, dtype, device, forward
@@ -190,9 +192,9 @@ diff -- python/sglang/srt/models/qwen2_5_vl.py
 
 - Link: https://github.com/sgl-project/sglang/pull/5349
 - Status/date: merged / 2025-04-24
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen2_vl.py`; associated commits `c998d04b4692`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen2_vl.py`; associated commits `c998d04b4692`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 26 files, +435/-337, 1363 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "vlm: enable radix cache for qwen-vl models". The diff centers on `python/sglang/srt/models/qwen2_vl.py`, `python/sglang/srt/models/qwen2_5_vl.py`. PR body context: ## Motivation 1. support qwen2vl/qwen2.5vl radix cache 2. fix bugs about mrope calculation in qwen2vl/qwen2.5vl ## Background **mrope** is a special 3D position_id for qwen-vl m...
+- Motivation: Title: "vlm: enable radix cache for qwen-vl models"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/models/qwen2_vl.py`, `python/sglang/srt/models/qwen2_5_vl.py`; PR body summary: 1. support qwen2vl/qwen2.5vl radix cache 2. fix bugs about mrope calculation in qwen2vl/qwen2.5vl Background **mrope** is a special 3D position_id for qwen-vl models. In order t....
 - Key implementation: `python/sglang/srt/models/qwen2_vl.py` modified +3/-7 (10 lines); hunks: -42,7 +42,7; -490,15 +490,11 @@ def __init__(; symbols: __init__, pad_input_ids, get_image_feature, touching `__init__, pad_input_ids, get_image_feature`; `python/sglang/srt/models/qwen2_5_vl.py` modified +3/-6 (9 lines); hunks: -49,7 +49,7; -488,11 +488,8 @@ def __init__(; symbols: __init__, pad_input_ids, get_image_feature, touching `__init__, pad_input_ids, get_image_feature`.
 - Code diff details:
   - `python/sglang/srt/models/qwen2_vl.py` modified +3/-7 (10 lines); hunks: -42,7 +42,7; -490,15 +490,11 @@ def __init__(; symbols: __init__, pad_input_ids, get_image_feature
@@ -226,9 +228,9 @@ diff -- python/sglang/srt/models/qwen2_5_vl.py
 
 - Link: https://github.com/sgl-project/sglang/pull/5783
 - Status/date: merged / 2025-05-01
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen2_vl.py`; associated commits `e97e57e699e5`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen2_vl.py`; associated commits `e97e57e699e5`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +0/-12, 19 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR changes model-related implementation. Title: "Remove unused method `calculate_num_image_tokens` from qwen2_vl.py". The diff centers on `python/sglang/srt/models/qwen2_vl.py`. PR body context: ## Motivation `calculate_num_image_tokens` is not used anywhere, just remove it. ## Modifications ## Checklist - [x] Format your code according to the Code Formatting with Pre-C...
+- Motivation: Title: "Remove unused method `calculate_num_image_tokens` from qwen2_vl.py"; model line: Qwen VLM/Omni/ASR; category: model implementation change; main diff: `python/sglang/srt/models/qwen2_vl.py`; PR body summary: `calculate_num_image_tokens` is not used anywhere, just remove it..
 - Key implementation: `python/sglang/srt/models/qwen2_vl.py` modified +0/-12 (12 lines); hunks: -442,18 +442,6 @@ class Qwen2VLForConditionalGeneration(nn.Module):; symbols: Qwen2VLForConditionalGeneration, calculate_num_image_tokens, __init__, touching `Qwen2VLForConditionalGeneration, calculate_num_image_tokens, __init__`.
 - Code diff details:
   - `python/sglang/srt/models/qwen2_vl.py` modified +0/-12 (12 lines); hunks: -442,18 +442,6 @@ class Qwen2VLForConditionalGeneration(nn.Module):; symbols: Qwen2VLForConditionalGeneration, calculate_num_image_tokens, __init__
@@ -253,9 +255,9 @@ diff -- python/sglang/srt/models/qwen2_vl.py
 
 - Link: https://github.com/sgl-project/sglang/pull/6136
 - Status/date: merged / 2025-05-16
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen2_vl.py`; associated commits `f19a9204cdbd`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen2_vl.py`; associated commits `f19a9204cdbd`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 14 files, +592/-125, 1118 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "Support precomputed multimodal features for Qwen-VL and Gemma3 models.". The diff centers on `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen2_vl.py`. PR body context: ## Motivation When running a VLM via SGLang, it's useful to be able to supply image embeddings directly. For example maybe you've frozen your vision encoder and want to precompu...
+- Motivation: Title: "Support precomputed multimodal features for Qwen-VL and Gemma3 models."; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen2_vl.py`; PR body summary: When running a VLM via SGLang, it's useful to be able to supply image embeddings directly. For example maybe you've frozen your vision encoder and want to precompute features, o....
 - Key implementation: `python/sglang/srt/models/qwen2_5_vl.py` modified +6/-0 (6 lines); hunks: -497,6 +497,12 @@ def pad_input_ids(self, input_ids: List[int], mm_inputs: Mu...; symbols: pad_input_ids, get_image_feature, touching `pad_input_ids, get_image_feature`; `python/sglang/srt/models/qwen2_vl.py` modified +6/-0 (6 lines); hunks: -486,6 +486,12 @@ def pad_input_ids(self, input_ids: List[int], mm_inputs: Mu...; symbols: pad_input_ids, get_image_feature, touching `pad_input_ids, get_image_feature`.
 - Code diff details:
   - `python/sglang/srt/models/qwen2_5_vl.py` modified +6/-0 (6 lines); hunks: -497,6 +497,12 @@ def pad_input_ids(self, input_ids: List[int], mm_inputs: Mu...; symbols: pad_input_ids, get_image_feature
@@ -289,9 +291,9 @@ diff -- python/sglang/srt/models/qwen2_vl.py
 
 - Link: https://github.com/sgl-project/sglang/pull/8801
 - Status/date: merged / 2025-09-08
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen2_5_vl.py`; associated commits `37d83c6e6d8a`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen2_5_vl.py`; associated commits `37d83c6e6d8a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 9 files, +114/-5, 260 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "Qwen2.5-VL eagle3 infer". The diff centers on `python/sglang/srt/models/qwen2_5_vl.py`. PR body context: ## Motivation support qwen2.5-vl eagle3 infer ## Modifications 1. add set_eagle3_layers_to_capture in qwen2 and qwen2.5_vl 2. change raw_bs to raw_num_token for mrope when targe...
+- Motivation: Title: "Qwen2.5-VL eagle3 infer"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/models/qwen2_5_vl.py`; PR body summary: support qwen2.5-vl eagle3 infer 1. add set_eagle3_layers_to_capture in qwen2 and qwen2.5_vl 2. change raw_bs to raw_num_token for mrope when target_verify 3. llama_eagle3 suppor....
 - Key implementation: `python/sglang/srt/models/qwen2_5_vl.py` modified +24/-1 (25 lines); hunks: -517,6 +517,9 @@ def __init__(; -587,9 +590,13 @@ def forward(; symbols: __init__, pad_input_ids, forward, load_weights, touching `__init__, pad_input_ids, forward`.
 - Code diff details:
   - `python/sglang/srt/models/qwen2_5_vl.py` modified +24/-1 (25 lines); hunks: -517,6 +517,9 @@ def __init__(; -587,9 +590,13 @@ def forward(; symbols: __init__, pad_input_ids, forward, load_weights
@@ -316,9 +318,9 @@ diff -- python/sglang/srt/models/qwen2_5_vl.py
 
 - Link: https://github.com/sgl-project/sglang/pull/10323
 - Status/date: merged / 2025-09-23
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/qwen3_vl.py`, `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen3_vl_moe.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`; associated commits `4f564b9e8378`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/qwen3_vl.py`, `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen3_vl_moe.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`; associated commits `4f564b9e8378`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +1898/-8, 2006 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "model: support qwen3-vl series". The diff centers on `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/configs/qwen3_vl.py`, `python/sglang/srt/models/qwen3_vl_moe.py`. PR body context: This PR introduces support for the upcoming **Qwen3-VL** models — including both dense and MoE variants, as well as Instruct and Thinking editions. As the next generation of the...
+- Motivation: Title: "model: support qwen3-vl series"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/configs/qwen3_vl.py`, `python/sglang/srt/models/qwen3_vl_moe.py`; PR body summary: This PR introduces support for the upcoming **Qwen3-VL** models — including both dense and MoE variants, as well as Instruct and Thinking editions. As the next generation of the....
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` added +787/-0 (787 lines); hunks: -0,0 +1,787; symbols: Qwen3_VisionMLP, __init__, forward, Qwen3VLVisionPatchEmbed, touching `Qwen3_VisionMLP, __init__, forward`; `python/sglang/srt/configs/qwen3_vl.py` added +586/-0 (586 lines); hunks: -0,0 +1,586; symbols: Qwen3VLVisionConfig, __init__, Qwen3VLTextConfig, to, touching `Qwen3VLVisionConfig, __init__, Qwen3VLTextConfig`; `python/sglang/srt/models/qwen3_vl_moe.py` added +471/-0 (471 lines); hunks: -0,0 +1,471; symbols: Qwen3MoeLLMModel, __init__, get_input_embeddings, get_image_feature, touching `Qwen3MoeLLMModel, __init__, get_input_embeddings`; `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +8/-1 (9 lines); hunks: -12,6 +12,8; -209,7 +211,12 @@ async def preprocess_video(; symbols: preprocess_video, Qwen2_5VLImageProcessor, __init__, touching `preprocess_video, Qwen2_5VLImageProcessor, __init__`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` added +787/-0 (787 lines); hunks: -0,0 +1,787; symbols: Qwen3_VisionMLP, __init__, forward, Qwen3VLVisionPatchEmbed
@@ -352,13 +354,53 @@ diff -- python/sglang/srt/models/qwen3_vl_moe.py
   - runtime: `python/sglang/srt/models/qwen3_vl.py` added +787/-0; `python/sglang/srt/configs/qwen3_vl.py` added +586/-0; `python/sglang/srt/models/qwen3_vl_moe.py` added +471/-0; `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +8/-1
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/configs/qwen3_vl.py`, `python/sglang/srt/layers/rotary_embedding.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
+### PR #10749 - Fuse write kv buffer into rope for qwen3 moe & bailing moe
+
+- Link: https://github.com/sgl-project/sglang/pull/10749
+- Status/date: merged / 2025-09-26
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 4 files, +105/-34, 207 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Fuse write kv buffer into rope for qwen3 moe & bailing moe"; model line: Qwen VLM/Omni/ASR; category: performance/backend optimization; main diff: `python/sglang/srt/models/utils.py`, `python/sglang/srt/models/gpt_oss.py`, `python/sglang/srt/models/bailing_moe.py`; PR body summary: Fused write kv buffer into rope for qwen3 moe and bailing moe models. Got minor e2e speedup. Inspired by https://github.com/sgl-project/sglang/pull/9014 gsm8k result:.
+- Key implementation: `python/sglang/srt/models/utils.py` added +51/-0 (51 lines); hunks: -0,0 +1,51; symbols: enable_fused_set_kv_buffer, create_fused_set_kv_buffer_arg, touching `enable_fused_set_kv_buffer, create_fused_set_kv_buffer_arg`; `python/sglang/srt/models/gpt_oss.py` modified +7/-30 (37 lines); hunks: -66,6 +66,10; -193,33 +197,6 @@ def forward_normal(; symbols: forward_normal, _enable_fused_set_kv_buffer, _create_fused_set_kv_buffer_arg, GptOssAttention, touching `forward_normal, _enable_fused_set_kv_buffer, _create_fused_set_kv_buffer_arg`; `python/sglang/srt/models/bailing_moe.py` modified +25/-2 (27 lines); hunks: -72,6 +72,10; -555,8 +559,27 @@ def forward(; symbols: forward, touching `forward`; `python/sglang/srt/models/qwen3_moe.py` modified +22/-2 (24 lines); hunks: -60,6 +60,10; -412,15 +416,31 @@ def forward_prepare(; symbols: forward_prepare, forward_core, touching `forward_prepare, forward_core`.
+- Code diff details:
+  - `python/sglang/srt/models/utils.py` added +51/-0 (51 lines); hunks: -0,0 +1,51; symbols: enable_fused_set_kv_buffer, create_fused_set_kv_buffer_arg
+  - `python/sglang/srt/models/gpt_oss.py` modified +7/-30 (37 lines); hunks: -66,6 +66,10; -193,33 +197,6 @@ def forward_normal(; symbols: forward_normal, _enable_fused_set_kv_buffer, _create_fused_set_kv_buffer_arg, GptOssAttention
+  - `python/sglang/srt/models/bailing_moe.py` modified +25/-2 (27 lines); hunks: -72,6 +72,10; -555,8 +559,27 @@ def forward(; symbols: forward
+  - `python/sglang/srt/models/qwen3_moe.py` modified +22/-2 (24 lines); hunks: -60,6 +60,10; -412,15 +416,31 @@ def forward_prepare(; symbols: forward_prepare, forward_core
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/utils.py
+@@ -0,0 +1,51 @@
++# Copyright 2023-2025 SGLang Team
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
+diff -- python/sglang/srt/models/gpt_oss.py
+@@ -66,6 +66,10 @@
++from sglang.srt.models.utils import (
++    create_fused_set_kv_buffer_arg,
++    enable_fused_set_kv_buffer,
++)
+@@ -193,33 +197,6 @@ def forward_normal(
+-def _enable_fused_set_kv_buffer(forward_batch: ForwardBatch):
+diff -- python/sglang/srt/models/bailing_moe.py
+@@ -72,6 +72,10 @@
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/utils.py` added +51/-0; `python/sglang/srt/models/gpt_oss.py` modified +7/-30; `python/sglang/srt/models/bailing_moe.py` modified +25/-2; `python/sglang/srt/models/qwen3_moe.py` modified +22/-2
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/models/gpt_oss.py`, `python/sglang/srt/models/qwen3_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
 ### PR #10985 - Quick Fix: fix Qwen3-VL launch failure caused by MRotaryEmbedding arg
 
 - Link: https://github.com/sgl-project/sglang/pull/10985
 - Status/date: merged / 2025-10-01
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +14/-2, 58 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR fixes a launch, loading, parsing, or numerical issue. Title: "Quick Fix: fix Qwen3-VL launch failure caused by MRotaryEmbedding arg". The diff centers on `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/srt/layers/rotary_embedding.py`. PR body context: ## Motivation https://github.com/sgl-project/sglang/pull/10749 This PR fixes an issue in Qwen3-MOE where `fused_set_kv_buffer_arg` was passed to `q, k = self.rotary_emb`, but on...
+- Motivation: Title: "Quick Fix: fix Qwen3-VL launch failure caused by MRotaryEmbedding arg"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/srt/layers/rotary_embedding.py`; PR body summary: https://github.com/sgl-project/sglang/pull/10749 This PR fixes an issue in Qwen3-MOE where `fused_set_kv_buffer_arg` was passed to `q, k = self.rotary_emb`, but only `RotaryEmbe....
 - Key implementation: `python/sglang/srt/models/qwen3_moe.py` modified +10/-2 (12 lines); hunks: -51,7 +51,7; -358,6 +358,10 @@ def __init__(; symbols: __init__, forward_prepare, forward_core, touching `__init__, forward_prepare, forward_core`; `python/sglang/srt/layers/rotary_embedding.py` modified +4/-0 (4 lines); hunks: -1065,6 +1065,7 @@ def forward(; -1075,6 +1076,9 @@ def forward(; symbols: forward, touching `forward`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_moe.py` modified +10/-2 (12 lines); hunks: -51,7 +51,7; -358,6 +358,10 @@ def __init__(; symbols: __init__, forward_prepare, forward_core
@@ -391,9 +433,9 @@ diff -- python/sglang/srt/layers/rotary_embedding.py
 
 - Link: https://github.com/sgl-project/sglang/pull/11481
 - Status/date: merged / 2025-10-12
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen3_vl_moe.py`; associated commits `be740acdb0ad`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen3_vl_moe.py`; associated commits `be740acdb0ad`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +7/-11, 55 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR optimizes an inference path or backend selection. Title: "[smol] [perf] Qwen3-VL in place op.". The diff centers on `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen3_vl_moe.py`. PR body context: ## Motivation Because it is not touched by `compile` ## Modifications ## Accuracy Tests ## Benchmarking and Profiling ## Checklist - [ ] Format your code according to the Format...
+- Motivation: Title: "[smol] [perf] Qwen3-VL in place op."; model line: Qwen VLM/Omni/ASR; category: performance/backend optimization; main diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen3_vl_moe.py`; PR body summary: Because it is not touched by `compile`.
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +4/-7 (11 lines); hunks: -189,10 +189,10 @@ def forward(; -441,7 +441,7 @@ def forward(; symbols: forward, touching `forward`; `python/sglang/srt/models/qwen3_vl_moe.py` modified +3/-4 (7 lines); hunks: -114,7 +114,7 @@ def forward(; -130,9 +130,8 @@ def forward(; symbols: forward, touching `forward`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +4/-7 (11 lines); hunks: -189,10 +189,10 @@ def forward(; -441,7 +441,7 @@ def forward(; symbols: forward
@@ -427,9 +469,9 @@ diff -- python/sglang/srt/models/qwen3_vl_moe.py
 
 - Link: https://github.com/sgl-project/sglang/pull/11458
 - Status/date: merged / 2025-10-15
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_vl.py`; associated commits `b2c856692092`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_vl.py`; associated commits `b2c856692092`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +5/-3, 19 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[BugFix][Qwen3-VL]: fix cu_seqlens in qwen3-vl". The diff centers on `python/sglang/srt/models/qwen3_vl.py`. PR body context: ## Motivation The implementation of cur_seqlens is inconsistent with the HF implementation, resulting in accuracy issues with multi-frame/multi-patch inputs. ## Modifications Fi...
+- Motivation: Title: "[BugFix][Qwen3-VL]: fix cu_seqlens in qwen3-vl"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/models/qwen3_vl.py`; PR body summary: The implementation of cur_seqlens is inconsistent with the HF implementation, resulting in accuracy issues with multi-frame/multi-patch inputs. Fixed the implementation of cur_s....
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +5/-3 (8 lines); hunks: -452,13 +452,15 @@ def forward(; symbols: forward, touching `forward`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +5/-3 (8 lines); hunks: -452,13 +452,15 @@ def forward(; symbols: forward
@@ -456,7 +498,7 @@ diff -- python/sglang/srt/models/qwen3_vl.py
 - Status/date: merged / 2025-10-16
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/qwen3_omni.py`, `python/sglang/srt/configs/qwen3_vl.py`, `python/sglang/srt/models/qwen3_omni_moe.py`, `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen3_vl_moe.py` and 6 files; associated commits `86b04d25b3f6`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 16 files, +1947/-328, 2837 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR extends deployment docs, tests, or CI coverage. Title: "model: qwen3-omni (thinker-only)". The diff centers on `python/sglang/srt/models/qwen3_omni_moe.py`, `python/sglang/srt/configs/qwen3_omni.py`, `python/sglang/srt/models/qwen3_vl_moe.py`. PR body context: ## Motivation solve #11343 ## Modifications ## Accuracy Tests ## Benchmarking and Profiling ## Checklist - [ ] Format your code according to the Format code with pre-commit. - [...
+- Motivation: Title: "model: qwen3-omni (thinker-only)"; model line: Qwen VLM/Omni/ASR; category: model implementation change; main diff: `python/sglang/srt/models/qwen3_omni_moe.py`, `python/sglang/srt/configs/qwen3_omni.py`, `python/sglang/srt/models/qwen3_vl_moe.py`; PR body summary: solve #11343.
 - Key implementation: `python/sglang/srt/models/qwen3_omni_moe.py` added +661/-0 (661 lines); hunks: -0,0 +1,661; symbols: Qwen3OmniMoeAudioEncoderLayer, __init__, forward, SinusoidsPositionEmbedding, touching `Qwen3OmniMoeAudioEncoderLayer, __init__, forward`; `python/sglang/srt/configs/qwen3_omni.py` added +613/-0 (613 lines); hunks: -0,0 +1,613; symbols: Qwen3OmniMoeAudioEncoderConfig, __init__, Qwen3OmniMoeVisionEncoderConfig, Qwen3OmniMoeTextConfig, touching `Qwen3OmniMoeAudioEncoderConfig, __init__, Qwen3OmniMoeVisionEncoderConfig`; `python/sglang/srt/models/qwen3_vl_moe.py` modified +53/-168 (221 lines); hunks: -14,41 +14,27; -60,28 +46,16 @@ class Qwen3MoeLLMModel(Qwen3MoeModel):; symbols: Qwen3MoeLLMModel, __init__, get_input_embeddings, get_image_feature, touching `Qwen3MoeLLMModel, __init__, get_input_embeddings`; `python/sglang/srt/models/qwen3_vl.py` modified +38/-24 (62 lines); hunks: -15,7 +15,7; -27,7 +27,11; symbols: forward, Qwen3_VisionPatchMerger, Qwen3VLMoeVisionPatchMerger, __init__, touching `forward, Qwen3_VisionPatchMerger, Qwen3VLMoeVisionPatchMerger`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_omni_moe.py` added +661/-0 (661 lines); hunks: -0,0 +1,661; symbols: Qwen3OmniMoeAudioEncoderLayer, __init__, forward, SinusoidsPositionEmbedding
@@ -495,9 +537,9 @@ diff -- python/sglang/srt/models/qwen3_vl_moe.py
 
 - Link: https://github.com/sgl-project/sglang/pull/11377
 - Status/date: merged / 2025-10-21
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/multimodal/processors/qwen_vl.py`; associated commits `fde2decf8b59`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/multimodal/processors/qwen_vl.py`; associated commits `fde2decf8b59`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +26/-8, 49 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[BugFix][Qwen3-VL]: add metadata for video in qwen3-vl". The diff centers on `python/sglang/srt/multimodal/processors/qwen_vl.py`. PR body context: ## Motivation In Qwen3's pre-processing pipeline within the transformers repository, `do_sample_frames=True` is enabled by default, which has already been handled by sglang itse...
+- Motivation: Title: "[BugFix][Qwen3-VL]: add metadata for video in qwen3-vl"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/multimodal/processors/qwen_vl.py`; PR body summary: In Qwen3's pre-processing pipeline within the transformers repository, `do_sample_frames=True` is enabled by default, which has already been handled by sglang itself, resulting....
 - Key implementation: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +26/-8 (34 lines); hunks: -214,7 +214,14 @@ async def preprocess_video(; -279,14 +286,25 @@ async def process_mm_data_async(; symbols: preprocess_video, process_mm_data_async, touching `preprocess_video, process_mm_data_async`.
 - Code diff details:
   - `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +26/-8 (34 lines); hunks: -214,7 +214,14 @@ async def preprocess_video(; -279,14 +286,25 @@ async def process_mm_data_async(; symbols: preprocess_video, process_mm_data_async
@@ -524,7 +566,7 @@ diff -- python/sglang/srt/multimodal/processors/qwen_vl.py
 - Status/date: open / 2025-10-28
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +5/-5, 21 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[BugFix][Qwen2.5-VL]: fix cu_seqlens in qwen2.5-vl". The diff centers on `python/sglang/srt/models/qwen2_5_vl.py`. PR body context: ## Motivation The implementation of cu_seqlens is incorrect and leads to accuracy issues with multi-frame/multi-patch inputs. This exact issue was already solved for Qwen3-VL in...
+- Motivation: Title: "[BugFix][Qwen2.5-VL]: fix cu_seqlens in qwen2.5-vl"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/models/qwen2_5_vl.py`; PR body summary: The implementation of cu_seqlens is incorrect and leads to accuracy issues with multi-frame/multi-patch inputs. This exact issue was already solved for Qwen3-VL in #11458 . This....
 - Key implementation: `python/sglang/srt/models/qwen2_5_vl.py` modified +5/-5 (10 lines); hunks: -430,15 +430,15 @@ def forward(; symbols: forward, touching `forward`.
 - Code diff details:
   - `python/sglang/srt/models/qwen2_5_vl.py` modified +5/-5 (10 lines); hunks: -430,15 +430,15 @@ def forward(; symbols: forward
@@ -551,7 +593,7 @@ diff -- python/sglang/srt/models/qwen2_5_vl.py
 - Status/date: open / 2025-11-05
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 12 files, +496/-55, 884 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[CPU] Add support for Qwen3-vl and Qwen3-omni". The diff centers on `python/sglang/srt/layers/attention/vision.py`, `python/sglang/srt/configs/update_config.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`. PR body context: ## Motivation This PR added frontend support for Qwen3-VL and Qwen3-Omni on CPU. - Fixed the tp=3/6 padding issue in the vision encoder. - Replaced nn.Linear with ReplicatedLine...
+- Motivation: Title: "[CPU] Add support for Qwen3-vl and Qwen3-omni"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/layers/attention/vision.py`, `python/sglang/srt/configs/update_config.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`; PR body summary: This PR added frontend support for Qwen3-VL and Qwen3-Omni on CPU. - Fixed the tp=3/6 padding issue in the vision encoder. - Replaced nn.Linear with ReplicatedLinear - Applied o....
 - Key implementation: `python/sglang/srt/layers/attention/vision.py` modified +80/-12 (92 lines); hunks: -16,9 +16,11; -30,9 +32,11; symbols: forward, VisionAMXAttention, __init__, touching `forward, VisionAMXAttention, __init__`; `python/sglang/srt/configs/update_config.py` modified +54/-20 (74 lines); hunks: -189,28 +189,62 @@ def adjust_config_with_unaligned_cpu_tp(; symbols: adjust_config_with_unaligned_cpu_tp, touching `adjust_config_with_unaligned_cpu_tp`; `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +60/-0 (60 lines); hunks: -32,6 +32,7; -57,6 +58,65; symbols: hacked_preprocess, smart_resize, touching `hacked_preprocess, smart_resize`; `python/sglang/srt/models/qwen3_vl.py` modified +44/-6 (50 lines); hunks: -72,7 +72,14; -88,6 +95,10; symbols: Qwen3_VisionMLP, __init__, forward, touching `Qwen3_VisionMLP, __init__, forward`.
 - Code diff details:
   - `python/sglang/srt/layers/attention/vision.py` modified +80/-12 (92 lines); hunks: -16,9 +16,11; -30,9 +32,11; symbols: forward, VisionAMXAttention, __init__
@@ -593,7 +635,7 @@ diff -- python/sglang/srt/multimodal/processors/qwen_vl.py
 - Status/date: open / 2025-11-05
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +150/-0, 158 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "add qwen3-omni docs". The diff centers on `docs/basic_usage/qwen3_omni.md`, `docs/index.rst`. PR body context: ## Motivation When I was fixing bugs related to qwen3-omni, I couldn't find any user manuals for qwen3-omni. The official qwen3-omni website only provides a vllm version. I also...
+- Motivation: Title: "add qwen3-omni docs"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `docs/basic_usage/qwen3_omni.md`, `docs/index.rst`; PR body summary: When I was fixing bugs related to qwen3-omni, I couldn't find any user manuals for qwen3-omni. The official qwen3-omni website only provides a vllm version. I also noticed that....
 - Key implementation: `docs/basic_usage/qwen3_omni.md` added +149/-0 (149 lines); hunks: -0,0 +1,149; `docs/index.rst` modified +1/-0 (1 lines); hunks: -31,6 +31,7 @@ Its core features include:.
 - Code diff details:
   - `docs/basic_usage/qwen3_omni.md` added +149/-0 (149 lines); hunks: -0,0 +1,149
@@ -622,9 +664,9 @@ diff -- docs/index.rst
 
 - Link: https://github.com/sgl-project/sglang/pull/12240
 - Status/date: merged / 2025-11-06
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/multimodal/processors/qwen_vl.py`; associated commits `fd3034da7515`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/multimodal/processors/qwen_vl.py`; associated commits `fd3034da7515`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +43/-10, 131 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR optimizes an inference path or backend selection. Title: "[VLM] Optimize qwen_vl preprocess_video". The diff centers on `python/sglang/srt/multimodal/processors/qwen_vl.py`. PR body context: ## Motivation The preprocess_video function can be divided into several stages. Through a combination of optimizations, each stage achieved varying degrees of performance improv...
+- Motivation: Title: "[VLM] Optimize qwen_vl preprocess_video"; model line: Qwen VLM/Omni/ASR; category: performance/backend optimization; main diff: `python/sglang/srt/multimodal/processors/qwen_vl.py`; PR body summary: The preprocess_video function can be divided into several stages. Through a combination of optimizations, each stage achieved varying degrees of performance improvement: get_bat....
 - Key implementation: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +43/-10 (53 lines); hunks: -2,8 +2,10; -175,19 +177,25 @@ async def preprocess_video(; symbols: preprocess_video, process_mm_data_async, touching `preprocess_video, process_mm_data_async`.
 - Code diff details:
   - `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +43/-10 (53 lines); hunks: -2,8 +2,10; -175,19 +177,25 @@ async def preprocess_video(; symbols: preprocess_video, process_mm_data_async
@@ -651,7 +693,7 @@ diff -- python/sglang/srt/multimodal/processors/qwen_vl.py
 - Status/date: merged / 2025-11-10
 - Trace source: `git log --name-only -- <model-files>` found it through `docs/basic_usage/qwen3_vl.md`; associated commits `583bb1804e4c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +131/-0, 139 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[Docs] Add docs for Qwen3-VL image and video support". The diff centers on `docs/basic_usage/qwen3_vl.md`. PR body context: Added standalone page for Qwen3 VL model family. cc @mickqian
+- Motivation: Title: "[Docs] Add docs for Qwen3-VL image and video support"; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `docs/basic_usage/qwen3_vl.md`; PR body summary: Added standalone page for Qwen3 VL model family. cc @mickqian.
 - Key implementation: `docs/basic_usage/qwen3_vl.md` added +130/-0 (130 lines); hunks: -0,0 +1,130.
 - Code diff details:
   - `docs/basic_usage/qwen3_vl.md` added +130/-0 (130 lines); hunks: -0,0 +1,130
@@ -676,9 +718,9 @@ diff -- docs/basic_usage/qwen3_vl.md
 
 - Link: https://github.com/sgl-project/sglang/pull/12458
 - Status/date: merged / 2025-11-12
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/multimodal/processors/qwen_vl.py`; associated commits `ffeb28ba6fb7`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/multimodal/processors/qwen_vl.py`; associated commits `ffeb28ba6fb7`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +1/-67, 136 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR fixes a launch, loading, parsing, or numerical issue. Title: "fix: duplicate resize images logic of qwen-vl series models". The diff centers on `python/sglang/srt/multimodal/processors/qwen_vl.py`. PR body context: ## Motivation fix https://github.com/sgl-project/sglang/issues/12390 and https://github.com/sgl-project/sglang/issues/11896 ## Modifications 1. set `MIN_PIXELS`, `MAX_PIXELS`, `...
+- Motivation: Title: "fix: duplicate resize images logic of qwen-vl series models"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/multimodal/processors/qwen_vl.py`; PR body summary: fix https://github.com/sgl-project/sglang/issues/12390 and https://github.com/sgl-project/sglang/issues/11896 1. set `MIN_PIXELS`, `MAX_PIXELS`, `IMAGE_FACTOR` according to mode....
 - Key implementation: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +0/-40 (40 lines); hunks: -1,4 +1,3; -79,26 +78,6 @@ def smart_resize(; symbols: smart_resize, resize_image, round_by_factor, floor_by_factor, touching `smart_resize, resize_image, round_by_factor`.
 - Code diff details:
   - `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +0/-40 (40 lines); hunks: -1,4 +1,3; -79,26 +78,6 @@ def smart_resize(; symbols: smart_resize, resize_image, round_by_factor, floor_by_factor
@@ -703,9 +745,9 @@ diff -- python/sglang/srt/multimodal/processors/qwen_vl.py
 
 - Link: https://github.com/sgl-project/sglang/pull/13075
 - Status/date: merged / 2025-11-12
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen2_5_vl.py`; associated commits `706502ff6cff`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen2_5_vl.py`; associated commits `706502ff6cff`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +88/-54, 244 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[VLM] Support PP for Qwen2.5-VL". The diff centers on `python/sglang/srt/models/qwen2_5_vl.py`. PR body context: ## Motivation This PR is to support PP for Qwen2.5-VL model. ## Modifications ## Accuracy Tests ## Benchmarking and Profiling ## Checklist - [ ] Format your code according to th...
+- Motivation: Title: "[VLM] Support PP for Qwen2.5-VL"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/models/qwen2_5_vl.py`; PR body summary: This PR is to support PP for Qwen2.5-VL model..
 - Key implementation: `python/sglang/srt/models/qwen2_5_vl.py` modified +44/-15 (59 lines); hunks: -40,6 +40,7; -50,13 +51,14; symbols: __init__, forward, load_weights, touching `__init__, forward, load_weights`.
 - Code diff details:
   - `python/sglang/srt/models/qwen2_5_vl.py` modified +44/-15 (59 lines); hunks: -40,6 +40,7; -50,13 +51,14; symbols: __init__, forward, load_weights
@@ -730,9 +772,9 @@ diff -- python/sglang/srt/models/qwen2_5_vl.py
 
 - Link: https://github.com/sgl-project/sglang/pull/13126
 - Status/date: merged / 2025-11-18
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen2_5_vl.py`; associated commits `ac81db66c2d8`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen2_5_vl.py`; associated commits `ac81db66c2d8`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +595/-6, 790 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[VLM][feat] Support encoder DP for Qwen2.5-VL". The diff centers on `python/sglang/srt/models/qwen2_5_vl.py`. PR body context: ## Motivation Based on this PR https://github.com/vllm-project/vllm/pull/22742, vLLM has introduced support for data parallelism (DP) in the vision transformer (ViT) component w...
+- Motivation: Title: "[VLM][feat] Support encoder DP for Qwen2.5-VL"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/models/qwen2_5_vl.py`; PR body summary: Based on this PR https://github.com/vllm-project/vllm/pull/22742, vLLM has introduced support for data parallelism (DP) in the vision transformer (ViT) component while maintaini....
 - Key implementation: `python/sglang/srt/models/qwen2_5_vl.py` modified +44/-2 (46 lines); hunks: -40,6 +40,10; -62,6 +66,8; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
   - `python/sglang/srt/models/qwen2_5_vl.py` modified +44/-2 (46 lines); hunks: -40,6 +40,10; -62,6 +66,8; symbols: __init__, forward
@@ -757,9 +799,9 @@ diff -- python/sglang/srt/models/qwen2_5_vl.py
 
 - Link: https://github.com/sgl-project/sglang/pull/13055
 - Status/date: merged / 2025-11-20
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen2_vl.py`; associated commits `af6bcadcf723`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen2_vl.py`; associated commits `af6bcadcf723`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +710/-29, 970 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[VLM] Support Piecewise CUDA Graph for Qwen2.5-VL". The diff centers on `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen2_vl.py`. PR body context: ## Motivation Address https://github.com/sgl-project/sglang/issues/12838 This PR cooperates closely with @yhyang201 . Per comparing the SGLang and vLLM performance on VLM, one o...
+- Motivation: Title: "[VLM] Support Piecewise CUDA Graph for Qwen2.5-VL"; model line: Qwen VLM/Omni/ASR; category: performance/backend optimization; main diff: `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen2_vl.py`; PR body summary: Address https://github.com/sgl-project/sglang/issues/12838 This PR cooperates closely with @yhyang201 . Per comparing the SGLang and vLLM performance on VLM, one of the key infl....
 - Key implementation: `python/sglang/srt/models/qwen2_5_vl.py` modified +38/-7 (45 lines); hunks: -57,11 +57,12; -566,6 +567,25 @@ def get_video_feature(self, items: List[MultimodalDataItem]...; symbols: get_video_feature, post_process, get_input_embeddings, forward, touching `get_video_feature, post_process, get_input_embeddings`; `python/sglang/srt/models/qwen2_vl.py` modified +16/-7 (23 lines); hunks: -39,10 +39,7; -509,6 +506,7 @@ def forward(; symbols: forward, touching `forward`.
 - Code diff details:
   - `python/sglang/srt/models/qwen2_5_vl.py` modified +38/-7 (45 lines); hunks: -57,11 +57,12; -566,6 +567,25 @@ def get_video_feature(self, items: List[MultimodalDataItem]...; symbols: get_video_feature, post_process, get_input_embeddings, forward
@@ -795,7 +837,7 @@ diff -- python/sglang/srt/models/qwen2_vl.py
 - Status/date: merged / 2025-11-22
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen2_vl.py`, `python/sglang/srt/models/qwen3_vl.py`; associated commits `5625e32cae12`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +169/-13, 229 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR extends deployment docs, tests, or CI coverage. Title: "[VLM] Replace torch.repeat_interleave with faster np.repeat for Qwen-VL series". The diff centers on `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen2_vl.py`. PR body context: ## Motivation Replace `torch.repeat_interleave` with `faster np.repeat` for Qwen2-VL, Qwen3-VL, Qwen3-VL-MoE. E2E TTFT reduces 1.5%. gsm8k matched. More benchmark and profile wi...
+- Motivation: Title: "[VLM] Replace torch.repeat_interleave with faster np.repeat for Qwen-VL series"; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen2_vl.py`; PR body summary: Replace `torch.repeat_interleave` with `faster np.repeat` for Qwen2-VL, Qwen3-VL, Qwen3-VL-MoE. E2E TTFT reduces 1.5%. gsm8k matched. More benchmark and profile will be updated..
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +2/-9 (11 lines); hunks: -46,6 +46,7; -434,15 +435,7 @@ def forward(; symbols: forward, touching `forward`; `python/sglang/srt/models/qwen2_vl.py` modified +2/-4 (6 lines); hunks: -44,6 +44,7; -387,10 +388,7 @@ def forward(; symbols: forward, touching `forward`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +2/-9 (11 lines); hunks: -46,6 +46,7; -434,15 +435,7 @@ def forward(; symbols: forward
@@ -831,7 +873,7 @@ diff -- python/sglang/srt/models/qwen2_vl.py
 - Status/date: open / 2025-11-25
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +30/-3, 63 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[VLM] support qwen3-vl eagle infer". The diff centers on `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/llama_eagle3.py`. PR body context: ## Motivation Support qwen3-vl dense model eagle infer. use qwen3-vl-8b eagle model for test. ## Modifications ## Accuracy Tests server: acc_bench: result: - with eagle: | Tasks...
+- Motivation: Title: "[VLM] support qwen3-vl eagle infer"; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/llama_eagle3.py`; PR body summary: Support qwen3-vl dense model eagle infer. use qwen3-vl-8b eagle model for test. server: acc_bench: result: - with eagle: | Tasks |Version|Filter|n-shot| Metric | |Value | |Stder....
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +23/-1 (24 lines); hunks: -624,6 +624,9 @@ def __init__(; -711,9 +714,13 @@ def forward(; symbols: __init__, separate_deepstack_embeds, forward, load_weights, touching `__init__, separate_deepstack_embeds, forward`; `python/sglang/srt/models/llama_eagle3.py` modified +7/-2 (9 lines); hunks: -116,9 +116,14 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +23/-1 (24 lines); hunks: -624,6 +624,9 @@ def __init__(; -711,9 +714,13 @@ def forward(; symbols: __init__, separate_deepstack_embeds, forward, load_weights
@@ -865,9 +907,9 @@ diff -- python/sglang/srt/models/llama_eagle3.py
 
 - Link: https://github.com/sgl-project/sglang/pull/13983
 - Status/date: merged / 2025-11-26
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_vl_moe.py`; associated commits `15ff6982b94f`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_vl_moe.py`; associated commits `15ff6982b94f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +9/-0, 22 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "Support KTransformers for Qwen3-VL moe". The diff centers on `python/sglang/srt/models/qwen3_vl_moe.py`. PR body context: ## Motivation This pr adds KTransformers Support for qwen3-vl moe models ## Modifications add `get_model_config_for_expert_location` in `Qwen3VLMoeForConditionalGeneration` ## A...
+- Motivation: Title: "Support KTransformers for Qwen3-VL moe"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/models/qwen3_vl_moe.py`; PR body summary: This pr adds KTransformers Support for qwen3-vl moe models add `get_model_config_for_expert_location` in `Qwen3VLMoeForConditionalGeneration`.
 - Key implementation: `python/sglang/srt/models/qwen3_vl_moe.py` modified +9/-0 (9 lines); hunks: -22,6 +22,7; -326,5 +327,13 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: load_weights, get_model_config_for_expert_location, touching `load_weights, get_model_config_for_expert_location`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl_moe.py` modified +9/-0 (9 lines); hunks: -22,6 +22,7; -326,5 +327,13 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: load_weights, get_model_config_for_expert_location
@@ -892,9 +934,9 @@ diff -- python/sglang/srt/models/qwen3_vl_moe.py
 
 - Link: https://github.com/sgl-project/sglang/pull/13904
 - Status/date: merged / 2025-11-28
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen2_5_vl.py`; associated commits `f6e37d3edb94`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen2_5_vl.py`; associated commits `f6e37d3edb94`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-0, 8 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Bugfix] qwen2.5-vl spec decode accept_len low". The diff centers on `python/sglang/srt/models/qwen2_5_vl.py`. PR body context: ## Motivation After this pr, qwen2.5-vl eagle3 infer draft accept_len is low. Because `aux_hidden_states` is miss in logits_processor. Releated issue: https://github.com/sgl-pro...
+- Motivation: Title: "[Bugfix] qwen2.5-vl spec decode accept_len low"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/models/qwen2_5_vl.py`; PR body summary: After this pr, qwen2.5-vl eagle3 infer draft accept_len is low. Because `aux_hidden_states` is miss in logits_processor. Releated issue: https://github.com/sgl-project/SpecForge....
 - Key implementation: `python/sglang/srt/models/qwen2_5_vl.py` modified +1/-0 (1 lines); hunks: -654,6 +654,7 @@ def forward(; symbols: forward, touching `forward`.
 - Code diff details:
   - `python/sglang/srt/models/qwen2_5_vl.py` modified +1/-0 (1 lines); hunks: -654,6 +654,7 @@ def forward(; symbols: forward
@@ -916,7 +958,7 @@ diff -- python/sglang/srt/models/qwen2_5_vl.py
 - Status/date: merged / 2025-11-28
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_vl.py`; associated commits `ea1e9f6b3c3d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +50/-2, 208 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "support qwen3_vl vision model dp". The diff centers on `python/sglang/srt/models/qwen3_vl.py`. PR body context: ## Motivation Based on PR 13126, add support for the Qwen3_VL vision model DP. ## Modifications ## Accuracy Tests ### Qwen/Qwen3-VL-32B-Instruct ## Benchmarking and Profiling se...
+- Motivation: Title: "support qwen3_vl vision model dp"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/models/qwen3_vl.py`; PR body summary: Based on PR 13126, add support for the Qwen3_VL vision model DP. Qwen/Qwen3-VL-32B-Instruct server cmd: bench cmd：.
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +49/-2 (51 lines); hunks: -28,6 +28,10; -47,6 +51,8; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +49/-2 (51 lines); hunks: -28,6 +28,10; -47,6 +51,8; symbols: __init__, forward
@@ -943,7 +985,7 @@ diff -- python/sglang/srt/models/qwen3_vl.py
 - Status/date: merged / 2025-12-04
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen3_vl.py`; associated commits `b2b09f5f24b9`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +48/-47, 149 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[VLM] Introduce Cache for positional embedding ids for Qwen-VL family". The diff centers on `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen3_vl.py`. PR body context: ## Motivation Introduce a cache for rot_pos_emb index computation to boost the calculation. Introduce a mixin class for broader reuse for this mechanism. For cached rotary posit...
+- Motivation: Title: "[VLM] Introduce Cache for positional embedding ids for Qwen-VL family"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen3_vl.py`; PR body summary: Introduce a cache for rot_pos_emb index computation to boost the calculation. Introduce a mixin class for broader reuse for this mechanism. For cached rotary position embedding,....
 - Key implementation: `python/sglang/srt/models/qwen2_5_vl.py` modified +5/-25 (30 lines); hunks: -69,7 +69,7; -246,7 +246,7 @@ def forward(self, x: torch.Tensor) -> torch.Tensor:; symbols: forward, Qwen2_5_VisionTransformer, __init__, device, touching `forward, Qwen2_5_VisionTransformer, __init__`; `python/sglang/srt/models/qwen3_vl.py` modified +5/-22 (27 lines); hunks: -50,7 +50,7; -257,7 +257,7 @@ def forward(self, x: torch.Tensor) -> torch.Tensor:; symbols: forward, Qwen3VLMoeVisionModel, __init__, device, touching `forward, Qwen3VLMoeVisionModel, __init__`.
 - Code diff details:
   - `python/sglang/srt/models/qwen2_5_vl.py` modified +5/-25 (30 lines); hunks: -69,7 +69,7; -246,7 +246,7 @@ def forward(self, x: torch.Tensor) -> torch.Tensor:; symbols: forward, Qwen2_5_VisionTransformer, __init__, device
@@ -977,9 +1019,9 @@ diff -- python/sglang/srt/models/qwen3_vl.py
 
 - Link: https://github.com/sgl-project/sglang/pull/11791
 - Status/date: merged / 2025-12-06
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_omni_moe.py`; associated commits `2ac5b9839508`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_omni_moe.py`; associated commits `2ac5b9839508`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-2, 17 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR fixes a launch, loading, parsing, or numerical issue. Title: "fix rmsnorm -> layernorm in qwen3 omni". The diff centers on `python/sglang/srt/models/qwen3_omni_moe.py`. PR body context: ## Motivation If you look at the transformer's modeling code, then you will notice that it's actually supposed to be layer norm instead of RMS norm. You can transform RMS norm t...
+- Motivation: Title: "fix rmsnorm -> layernorm in qwen3 omni"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/models/qwen3_omni_moe.py`; PR body summary: If you look at the transformer's modeling code, then you will notice that it's actually supposed to be layer norm instead of RMS norm. You can transform RMS norm to be the same....
 - Key implementation: `python/sglang/srt/models/qwen3_omni_moe.py` modified +1/-2 (3 lines); hunks: -31,7 +31,6; -318,7 +317,7 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_omni_moe.py` modified +1/-2 (3 lines); hunks: -31,7 +31,6; -318,7 +317,7 @@ def __init__(; symbols: __init__
@@ -1004,7 +1046,7 @@ diff -- python/sglang/srt/models/qwen3_omni_moe.py
 - Status/date: open / 2025-12-11
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +32/-3, 151 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "Support qwen3-omni with DP Encoder". The diff centers on `python/sglang/srt/models/qwen3_omni_moe.py`, `test/nightly/test_encoder_dp.py`. PR body context: ## Motivation Add support for Qwen3-Omni with vision model DP based on #13724 ## Modifications ## Accuracy Tests Tested Qwen/Qwen3-Omni-30B-A3B-Instruct with dp | Tasks |Version...
+- Motivation: Title: "Support qwen3-omni with DP Encoder"; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `python/sglang/srt/models/qwen3_omni_moe.py`, `test/nightly/test_encoder_dp.py`; PR body summary: Add support for Qwen3-Omni with vision model DP based on #13724 Tested Qwen/Qwen3-Omni-30B-A3B-Instruct with dp | Tasks |Version|Filter|n-shot| Metric | |Value | |Stderr| |-----....
 - Key implementation: `python/sglang/srt/models/qwen3_omni_moe.py` modified +31/-3 (34 lines); hunks: -30,6 +30,10; -42,6 +46,7; symbols: __init__, _get_feat_extract_output_lengths, Qwen3OmniMoeAudioEncoder, touching `__init__, _get_feat_extract_output_lengths, Qwen3OmniMoeAudioEncoder`; `test/nightly/test_encoder_dp.py` modified +1/-0 (1 lines); hunks: -21,6 +21,7.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_omni_moe.py` modified +31/-3 (34 lines); hunks: -30,6 +30,10; -42,6 +46,7; symbols: __init__, _get_feat_extract_output_lengths, Qwen3OmniMoeAudioEncoder
@@ -1036,7 +1078,7 @@ diff -- test/nightly/test_encoder_dp.py
 - Status/date: merged / 2025-12-15
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +363/-8, 413 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[VLM] Support chunked vit attention". The diff centers on `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/managers/mm_utils.py`. PR body context: ## Motivation Inspired by @merrymercy @mickqian . One request with 500 images (or a video with 500 frames) on Qwen3-VL-235B-A22B-Instruct-FP8 will have OOM. The PR have two part...
+- Motivation: Title: "[VLM] Support chunked vit attention"; model line: Qwen VLM/Omni/ASR; category: performance/backend optimization; main diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/managers/mm_utils.py`; PR body summary: Inspired by @merrymercy @mickqian . One request with 500 images (or a video with 500 frames) on Qwen3-VL-235B-A22B-Instruct-FP8 will have OOM. The PR have two parts: - Adds supp....
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +97/-8 (105 lines); hunks: -14,6 +14,7; -53,7 +54,7; symbols: get_image_feature, get_video_feature, touching `get_image_feature, get_video_feature`; `python/sglang/srt/managers/mm_utils.py` modified +266/-0 (266 lines); hunks: -41,6 +41,9; -414,6 +417,67 @@ def _get_precomputed_embedding(; symbols: init_feature_buffer, _get_precomputed_embedding, get_embedding_items_per_chunk_with_extra_padding, _get_chunked_prefill_embedding, touching `init_feature_buffer, _get_precomputed_embedding, get_embedding_items_per_chunk_with_extra_padding`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +97/-8 (105 lines); hunks: -14,6 +14,7; -53,7 +54,7; symbols: get_image_feature, get_video_feature
@@ -1072,7 +1114,7 @@ diff -- python/sglang/srt/managers/mm_utils.py
 - Status/date: merged / 2025-12-17
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_omni_moe.py`, `python/sglang/srt/models/qwen3_vl.py`; associated commits `45a959d3e971`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +119/-20, 243 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[PP] Add pp support for Qwen3-VL". The diff centers on `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen3_omni_moe.py`. PR body context: ## Motivation see issue 11947 test with command : `python3 -m sglang.launch_server --model Qwen/Qwen3-VL-8B-Thinking --tp 2 --pp-size 2` ## Checklist - [ ] Format your code acco...
+- Motivation: Title: "[PP] Add pp support for Qwen3-VL"; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen3_omni_moe.py`; PR body summary: see issue 11947 test with command : `python3 -m sglang.launch_server --model Qwen/Qwen3-VL-8B-Thinking --tp 2 --pp-size 2`.
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +53/-19 (72 lines); hunks: -32,11 +32,13; -599,6 +601,7 @@ def __init__(; symbols: __init__, forward, load_weights, touching `__init__, forward, load_weights`; `python/sglang/srt/models/qwen3_omni_moe.py` modified +4/-1 (5 lines); hunks: -614,7 +614,10 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: load_weights, touching `load_weights`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +53/-19 (72 lines); hunks: -32,11 +32,13; -599,6 +601,7 @@ def __init__(; symbols: __init__, forward, load_weights
@@ -1105,9 +1147,9 @@ diff -- python/sglang/srt/models/qwen3_omni_moe.py
 
 - Link: https://github.com/sgl-project/sglang/pull/15138
 - Status/date: merged / 2025-12-17
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen2_5_vl.py`; associated commits `0071fe9c407a`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen2_5_vl.py`; associated commits `0071fe9c407a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +10/-4, 28 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[bug fix][pp] fix weight load for qwen2.5-vl". The diff centers on `python/sglang/srt/models/qwen2_5_vl.py`. PR body context: ## Motivation Now， There are two bug for Qwen2.5-vl 1. when loading weights for Qwen2.5-vl, errors ouucrs(brought by EPD feature): File "/root/leipi/sglang/python/sglang/srt/man...
+- Motivation: Title: "[bug fix][pp] fix weight load for qwen2.5-vl"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/models/qwen2_5_vl.py`; PR body summary: Now， There are two bug for Qwen2.5-vl 1. when loading weights for Qwen2.5-vl, errors ouucrs(brought by EPD feature): File "/root/leipi/sglang/python/sglang/srt/managers/schedule....
 - Key implementation: `python/sglang/srt/models/qwen2_5_vl.py` modified +10/-4 (14 lines); hunks: -743,6 +743,14 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; -789,10 +797,8 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: load_weights, touching `load_weights`.
 - Code diff details:
   - `python/sglang/srt/models/qwen2_5_vl.py` modified +10/-4 (14 lines); hunks: -743,6 +743,14 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; -789,10 +797,8 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: load_weights
@@ -1134,7 +1176,7 @@ diff -- python/sglang/srt/models/qwen2_5_vl.py
 - Status/date: merged / 2025-12-18
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_vl.py`; associated commits `8fa3dc36c565`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +100/-80, 345 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[VLM] Support cos sin cache for Qwen3-VL & GLM-4.1V". The diff centers on `python/sglang/srt/models/qwen3_vl.py`. PR body context: ## Motivation Support cos sin cache for Qwen3-VL & GLM-4.1V. This PR refactors the rotary positional embedding (RoPE) implementation to expose an explicit cosine/sine cache inte...
+- Motivation: Title: "[VLM] Support cos sin cache for Qwen3-VL & GLM-4.1V"; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `python/sglang/srt/models/qwen3_vl.py`; PR body summary: Support cos sin cache for Qwen3-VL & GLM-4.1V. This PR refactors the rotary positional embedding (RoPE) implementation to expose an explicit cosine/sine cache interface and reus....
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +41/-20 (61 lines); hunks: -24,9 +24,6; -39,6 +36,7; symbols: forward, __init__, dtype, device, touching `forward, __init__, dtype`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +41/-20 (61 lines); hunks: -24,9 +24,6; -39,6 +36,7; symbols: forward, __init__, dtype, device
@@ -1161,7 +1203,7 @@ diff -- python/sglang/srt/models/qwen3_vl.py
 - Status/date: merged / 2025-12-20
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen3_vl.py`; associated commits `019517a35610`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +233/-64, 497 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[VLM] Support ViT Piecewise CUDA Graph for Qwen3-VL". The diff centers on `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen2_5_vl.py`. PR body context: ## Motivation This PR is to enable ViT Piecewise CUDA Graph for Qwen3-VL. Building logic upon ViTCudaGraphRunner to support both Qwen2.5-VL and Qwen3-VL. TP>1 is supported. Benc...
+- Motivation: Title: "[VLM] Support ViT Piecewise CUDA Graph for Qwen3-VL"; model line: Qwen VLM/Omni/ASR; category: performance/backend optimization; main diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen2_5_vl.py`; PR body summary: This PR is to enable ViT Piecewise CUDA Graph for Qwen3-VL. Building logic upon ViTCudaGraphRunner to support both Qwen2.5-VL and Qwen3-VL. TP>1 is supported. Benchmark show 8xH....
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +52/-1 (53 lines); hunks: -57,8 +57,9; -188,6 +189,7 @@ def forward(; symbols: forward, __init__, dtype, touching `forward, __init__, dtype`; `python/sglang/srt/models/qwen2_5_vl.py` modified +2/-3 (5 lines); hunks: -170,7 +170,6 @@ def forward(; -182,7 +181,7 @@ def forward(; symbols: forward, touching `forward`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +52/-1 (53 lines); hunks: -57,8 +57,9; -188,6 +189,7 @@ def forward(; symbols: forward, __init__, dtype
@@ -1195,9 +1237,9 @@ diff -- python/sglang/srt/models/qwen2_5_vl.py
 
 - Link: https://github.com/sgl-project/sglang/pull/15570
 - Status/date: merged / 2025-12-23
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/glmasr.py`, `python/sglang/srt/multimodal/processors/glmasr.py`; associated commits `82f1d6157f8e`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/glmasr.py`, `python/sglang/srt/multimodal/processors/glmasr.py`; associated commits `82f1d6157f8e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +226/-1, 250 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[GLM-ASR] GLM-ASR Support". The diff centers on `python/sglang/srt/models/glmasr.py`, `python/sglang/srt/multimodal/processors/glmasr.py`. PR body context: Note that this PR needs to wait for support from the transformers PR PR
+- Motivation: Title: "[GLM-ASR] GLM-ASR Support"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/models/glmasr.py`, `python/sglang/srt/multimodal/processors/glmasr.py`; PR body summary: Note that this PR needs to wait for support from the transformers PR PR.
 - Key implementation: `python/sglang/srt/models/glmasr.py` added +171/-0 (171 lines); hunks: -0,0 +1,171; symbols: GlmasrForConditionalGeneration, __init__, pad_input_ids, get_audio_feature, touching `GlmasrForConditionalGeneration, __init__, pad_input_ids`; `python/sglang/srt/multimodal/processors/glmasr.py` added +53/-0 (53 lines); hunks: -0,0 +1,53; symbols: GlmasrProcessor, __init__, process_mm_data_async, touching `GlmasrProcessor, __init__, process_mm_data_async`.
 - Code diff details:
   - `python/sglang/srt/models/glmasr.py` added +171/-0 (171 lines); hunks: -0,0 +1,171; symbols: GlmasrForConditionalGeneration, __init__, pad_input_ids, get_audio_feature
@@ -1231,9 +1273,9 @@ diff -- python/sglang/srt/multimodal/processors/glmasr.py
 
 - Link: https://github.com/sgl-project/sglang/pull/15772
 - Status/date: merged / 2025-12-25
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/glmasr.py`, `python/sglang/srt/multimodal/processors/glmasr.py`; associated commits `f3ba71166262`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/glmasr.py`, `python/sglang/srt/multimodal/processors/glmasr.py`; associated commits `f3ba71166262`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +19/-15, 103 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR changes model-related implementation. Title: "Change GLM-ASR class name". The diff centers on `python/sglang/srt/models/glmasr.py`, `python/sglang/srt/multimodal/processors/glmasr.py`. PR body context: The class name for GLM-ASR was changed in the transformers PR, so the original code will be unable to import and find the processor.
+- Motivation: Title: "Change GLM-ASR class name"; model line: Qwen VLM/Omni/ASR; category: model implementation change; main diff: `python/sglang/srt/models/glmasr.py`, `python/sglang/srt/multimodal/processors/glmasr.py`; PR body summary: The class name for GLM-ASR was changed in the transformers PR, so the original code will be unable to import and find the processor..
 - Key implementation: `python/sglang/srt/models/glmasr.py` modified +9/-9 (18 lines); hunks: -22,10 +22,10; -46,7 +46,7; symbols: GlmasrForConditionalGeneration, GlmAsrForConditionalGeneration, __init__, touching `GlmasrForConditionalGeneration, GlmAsrForConditionalGeneration, __init__`; `python/sglang/srt/multimodal/processors/glmasr.py` modified +3/-3 (6 lines); hunks: -1,14 +1,14; symbols: GlmasrProcessor, GlmAsrProcessor, __init__, touching `GlmasrProcessor, GlmAsrProcessor, __init__`.
 - Code diff details:
   - `python/sglang/srt/models/glmasr.py` modified +9/-9 (18 lines); hunks: -22,10 +22,10; -46,7 +46,7; symbols: GlmasrForConditionalGeneration, GlmAsrForConditionalGeneration, __init__
@@ -1269,7 +1311,7 @@ diff -- python/sglang/srt/multimodal/processors/glmasr.py
 - Status/date: open / 2026-01-05
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-0, 10 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Qwen3-VL][PP] Skip loading expert weights not on this rank". The diff centers on `python/sglang/srt/models/qwen3_vl_moe.py`. PR body context: ## Motivation Failed to run Qwen3-vl-235B-A22B-FP8 with pp=2, tp=4 ## Modifications Fix expert weights loading logic, skip loading expert weights not on this PP rank. ## Accurac...
+- Motivation: Title: "[Qwen3-VL][PP] Skip loading expert weights not on this rank"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/models/qwen3_vl_moe.py`; PR body summary: Failed to run Qwen3-vl-235B-A22B-FP8 with pp=2, tp=4 Fix expert weights loading logic, skip loading expert weights not on this PP rank..
 - Key implementation: `python/sglang/srt/models/qwen3_vl_moe.py` modified +3/-0 (3 lines); hunks: -274,6 +274,9 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights, touching `load_weights`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl_moe.py` modified +3/-0 (3 lines); hunks: -274,6 +274,9 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights
@@ -1293,7 +1335,7 @@ diff -- python/sglang/srt/models/qwen3_vl_moe.py
 - Status/date: open / 2026-01-06
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +87/-15, 204 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[Feature] [ROCM] Support Add & LayerNorm fused for Qwen3-VL VIT". The diff centers on `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/layers/layernorm.py`. PR body context: ## Motivation Support Add & LayerNorm fused for Qwen3.5-Next VIT before： after： ## Modifications **layernorm.py :** - In LayerNorm.__init__: when _use_aiter is True, set _forwar...
+- Motivation: Title: "[Feature] [ROCM] Support Add & LayerNorm fused for Qwen3-VL VIT"; model line: Qwen VLM/Omni/ASR; category: performance/backend optimization; main diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/layers/layernorm.py`; PR body summary: Support Add & LayerNorm fused for Qwen3.5-Next VIT before： after： **layernorm.py :** - In LayerNorm.__init__: when _use_aiter is True, set _forward_method = self.forward_aiter -....
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +60/-15 (75 lines); hunks: -42,6 +42,7; -72,7 +73,7; symbols: Qwen3_VisionMLP, __init__, forward, Qwen3VLMoeVisionPatchMerger, touching `Qwen3_VisionMLP, __init__, forward`; `python/sglang/srt/layers/layernorm.py` modified +27/-0 (27 lines); hunks: -67,6 +67,7; -367,6 +368,9 @@ def __init__(; symbols: __init__, forward_cuda, forward_cpu, forward_aiter, touching `__init__, forward_cuda, forward_cpu`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +60/-15 (75 lines); hunks: -42,6 +42,7; -72,7 +73,7; symbols: Qwen3_VisionMLP, __init__, forward, Qwen3VLMoeVisionPatchMerger
@@ -1329,7 +1371,7 @@ diff -- python/sglang/srt/layers/layernorm.py
 - Status/date: open / 2026-01-09
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +113/-36, 307 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Bugfix] fix recompile in qwen3 vl". The diff centers on `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen3_vl_moe.py`, `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`. PR body context: ## Motivation Qwen3-VL automatically injects input_deepstack_embeds into the language model inputs when requests contain mm_inputs (multimodal inputs). The current implementatio...
+- Motivation: Title: "[Bugfix] fix recompile in qwen3 vl"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen3_vl_moe.py`, `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`; PR body summary: Qwen3-VL automatically injects input_deepstack_embeds into the language model inputs when requests contain mm_inputs (multimodal inputs). The current implementation does not han....
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +41/-18 (59 lines); hunks: -913,16 +913,37 @@ def __init__(; -963,7 +984,7 @@ def forward(; symbols: __init__, get_deepstack_embeds, forward, touching `__init__, get_deepstack_embeds, forward`; `python/sglang/srt/models/qwen3_vl_moe.py` modified +29/-8 (37 lines); hunks: -57,19 +57,40 @@ def __init__(; -109,7 +130,7 @@ def forward(; symbols: __init__, get_input_embeddings, get_deepstack_embeds, forward, touching `__init__, get_input_embeddings, get_deepstack_embeds`; `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` modified +25/-1 (26 lines); hunks: -245,6 +245,18 @@ def __init__(self, model_runner: ModelRunner):; -392,6 +404,9 @@ def warmup_torch_compile(self, num_tokens: int):; symbols: __init__, warmup_torch_compile, _cache_loc_dtype, capture_one_batch_size, touching `__init__, warmup_torch_compile, _cache_loc_dtype`; `python/sglang/srt/managers/mm_utils.py` modified +13/-6 (19 lines); hunks: -919,6 +919,7 @@ def embed_mm_inputs(; -1019,12 +1020,16 @@ def embed_mm_inputs(; symbols: embed_mm_inputs, general_mm_embed_routine, touching `embed_mm_inputs, general_mm_embed_routine`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +41/-18 (59 lines); hunks: -913,16 +913,37 @@ def __init__(; -963,7 +984,7 @@ def forward(; symbols: __init__, get_deepstack_embeds, forward
@@ -1371,7 +1413,7 @@ diff -- python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py
 - Status/date: open / 2026-01-13
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +129/-12, 330 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "feat: Support 'use_audio_in_video' option for qwen3omnimoe model". The diff centers on `python/sglang/srt/multimodal/processors/base_processor.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`, `python/sglang/srt/entrypoints/openai/protocol.py`. PR body context: ## Motivation This PR adds support for the `use_audio_in_video` configuration parameter in the `Qwen3-Omni-Moe` model. ## Modifications - Passed this parameter to the input of '...
+- Motivation: Title: "feat: Support 'use_audio_in_video' option for qwen3omnimoe model"; model line: Qwen VLM/Omni/ASR; category: performance/backend optimization; main diff: `python/sglang/srt/multimodal/processors/base_processor.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`, `python/sglang/srt/entrypoints/openai/protocol.py`; PR body summary: This PR adds support for the `use_audio_in_video` configuration parameter in the `Qwen3-Omni-Moe` model. - Passed this parameter to the input of 'Engine' class and openai reques....
 - Key implementation: `python/sglang/srt/multimodal/processors/base_processor.py` modified +34/-3 (37 lines); hunks: -324,7 +324,22 @@ def process_mm_data(; -405,6 +420,7 @@ def _load_single_item(; symbols: process_mm_data, _load_single_item, submit_data_loading_tasks, touching `process_mm_data, _load_single_item, submit_data_loading_tasks`; `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +25/-2 (27 lines); hunks: -151,6 +151,7 @@ async def preprocess_video(; -201,8 +202,16 @@ async def preprocess_video(; symbols: preprocess_video, __init__, process_mm_data_async, touching `preprocess_video, __init__, process_mm_data_async`; `python/sglang/srt/entrypoints/openai/protocol.py` modified +3/-0 (3 lines); hunks: -552,6 +552,8 @@ class ChatCompletionRequest(BaseModel):; -698,6 +700,7 @@ def get_param(param_name: str):; symbols: ChatCompletionRequest, get_param, touching `ChatCompletionRequest, get_param`; `python/sglang/srt/utils/common.py` modified +63/-7 (70 lines); hunks: -72,6 +72,7; -878,6 +879,43 @@ def load_audio(; symbols: load_audio, extract_audio_via_av, ImageData, get_image_bytes, touching `load_audio, extract_audio_via_av, ImageData`.
 - Code diff details:
   - `python/sglang/srt/multimodal/processors/base_processor.py` modified +34/-3 (37 lines); hunks: -324,7 +324,22 @@ def process_mm_data(; -405,6 +420,7 @@ def _load_single_item(; symbols: process_mm_data, _load_single_item, submit_data_loading_tasks
@@ -1412,7 +1454,7 @@ diff -- python/sglang/srt/entrypoints/openai/protocol.py
 - Status/date: open / 2026-01-16
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +27/-9, 56 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR changes model-related implementation. Title: "[Feat] Accelerate qwen3vl by remove cpu op". The diff centers on `python/sglang/srt/layers/attention/vision.py`, `python/sglang/srt/managers/mm_utils.py`. PR body context: # Motivation Accelerate qwen3vl by delete contiguous in vision_attention && delete D2D in torch.where and index_put During the forward pass of the ViT in the Qwen3VL multimodal...
+- Motivation: Title: "[Feat] Accelerate qwen3vl by remove cpu op"; model line: Qwen VLM/Omni/ASR; category: model implementation change; main diff: `python/sglang/srt/layers/attention/vision.py`, `python/sglang/srt/managers/mm_utils.py`; PR body summary: Accelerate qwen3vl by delete contiguous in vision_attention && delete D2D in torch.where and index_put During the forward pass of the ViT in the Qwen3VL multimodal model, some D....
 - Key implementation: `python/sglang/srt/layers/attention/vision.py` modified +3/-3 (6 lines); hunks: -1005,9 +1005,9 @@ def forward(; symbols: forward, touching `forward`; `python/sglang/srt/managers/mm_utils.py` modified +24/-6 (30 lines); hunks: -1029,18 +1029,36 @@ def embed_mm_inputs(; symbols: embed_mm_inputs, touching `embed_mm_inputs`.
 - Code diff details:
   - `python/sglang/srt/layers/attention/vision.py` modified +3/-3 (6 lines); hunks: -1005,9 +1005,9 @@ def forward(; symbols: forward
@@ -1448,7 +1490,7 @@ diff -- python/sglang/srt/managers/mm_utils.py
 - Status/date: open / 2026-01-18
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +35/-0, 62 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "Add Qwen3VL Eagle3 Inference Support". The diff centers on `python/sglang/srt/models/qwen3_vl.py`. PR body context: ## Motivation Add support for EAGLE3 for Qwen3VL. I have not extensively tried to optimize benchmark performance, but the accuracy/performance numbers at the bottom are there to...
+- Motivation: Title: "Add Qwen3VL Eagle3 Inference Support"; model line: Qwen VLM/Omni/ASR; category: performance/backend optimization; main diff: `python/sglang/srt/models/qwen3_vl.py`; PR body summary: Add support for EAGLE3 for Qwen3VL. I have not extensively tried to optimize benchmark performance, but the accuracy/performance numbers at the bottom are there to show that inf....
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +35/-0 (35 lines); hunks: -733,6 +733,9 @@ def __init__(; -920,13 +923,18 @@ def forward(; symbols: __init__, separate_deepstack_embeds, forward, load_weights, touching `__init__, separate_deepstack_embeds, forward`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +35/-0 (35 lines); hunks: -733,6 +733,9 @@ def __init__(; -920,13 +923,18 @@ def forward(; symbols: __init__, separate_deepstack_embeds, forward, load_weights
@@ -1475,7 +1517,7 @@ diff -- python/sglang/srt/models/qwen3_vl.py
 - Status/date: merged / 2026-01-22
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_vl.py`; associated commits `0c2993eed03a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +8/-0, 19 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR fixes a launch, loading, parsing, or numerical issue. Title: "Optimize Qwen3-VL video memory usage". The diff centers on `python/sglang/srt/models/qwen3_vl.py`. PR body context: ## Motivation We observed that when launching the Qwen3-Omni-30B-A3B-Instruct model with sglang, an OOM (Out-of-Memory) error occurs under high-concurrency inference. After anal...
+- Motivation: Title: "Optimize Qwen3-VL video memory usage"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/models/qwen3_vl.py`; PR body summary: We observed that when launching the Qwen3-Omni-30B-A3B-Instruct model with sglang, an OOM (Out-of-Memory) error occurs under high-concurrency inference. After analyzing the prof....
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +8/-0 (8 lines); hunks: -852,10 +852,18 @@ def get_image_feature(self, items: List[MultimodalDataItem...; symbols: get_image_feature, get_video_feature, touching `get_image_feature, get_video_feature`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +8/-0 (8 lines); hunks: -852,10 +852,18 @@ def get_image_feature(self, items: List[MultimodalDataItem...; symbols: get_image_feature, get_video_feature
@@ -1502,7 +1544,7 @@ diff -- python/sglang/srt/models/qwen3_vl.py
 - Status/date: merged / 2026-01-30
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +48/-19, 185 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[BUGFIX] Fix dp size > 1 for qwen3 vl model". The diff centers on `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/multimodal/mm_utils.py`, `python/sglang/srt/layers/linear.py`. PR body context: ## Question In my local tests, the Qwen3-VL service fails to start when both `--mm-enable-dp-encoder` and `--enable-dp-attention` are enabled. I came across the related PR: pr17...
+- Motivation: Title: "[BUGFIX] Fix dp size > 1 for qwen3 vl model"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/multimodal/mm_utils.py`, `python/sglang/srt/layers/linear.py`; PR body summary: Question In my local tests, the Qwen3-VL service fails to start when both `--mm-enable-dp-encoder` and `--enable-dp-attention` are enabled. I came across the related PR: pr17157....
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +14/-13 (27 lines); hunks: -25,14 +25,15; -85,10 +86,8 @@ def __init__(; symbols: __init__, touching `__init__`; `python/sglang/srt/multimodal/mm_utils.py` modified +13/-3 (16 lines); hunks: -495,11 +495,19 @@ def run_dp_sharded_mrope_vision_model(; -611,7 +619,9 @@ def run_dp_sharded_mrope_vision_model(; symbols: run_dp_sharded_mrope_vision_model, touching `run_dp_sharded_mrope_vision_model`; `python/sglang/srt/layers/linear.py` modified +10/-2 (12 lines); hunks: -21,7 +21,10; -1262,6 +1265,7 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`; `python/sglang/srt/model_executor/forward_batch_info.py` modified +9/-1 (10 lines); hunks: -860,7 +860,15 @@ def _pad_inputs_to_size(self, model_runner: ModelRunner, nu...; symbols: _pad_inputs_to_size, touching `_pad_inputs_to_size`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +14/-13 (27 lines); hunks: -25,14 +25,15; -85,10 +86,8 @@ def __init__(; symbols: __init__
@@ -1543,7 +1585,7 @@ diff -- python/sglang/srt/layers/linear.py
 - Status/date: merged / 2026-02-02
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_vl.py`; associated commits `522e13b4d2c1`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +7/-1, 15 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR fixes a launch, loading, parsing, or numerical issue. Title: "fix: correct weight loading prefix mapping for Qwen3-VL". The diff centers on `python/sglang/srt/models/qwen3_vl.py`. PR body context: ## Summary Fix Qwen3-VL-8B model producing garbage output due to incorrect weight loading. Fixes #17887 ## Problem The weight loading code unconditionally copies `embed_tokens.w...
+- Motivation: Title: "fix: correct weight loading prefix mapping for Qwen3-VL"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/models/qwen3_vl.py`; PR body summary: Fix Qwen3-VL-8B model producing garbage output due to incorrect weight loading. Fixes #17887 Problem The weight loading code unconditionally copies `embed_tokens.weight` to `lm_....
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +7/-1 (8 lines); hunks: -959,7 +959,13 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: load_weights, touching `load_weights`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +7/-1 (8 lines); hunks: -959,7 +959,13 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: load_weights
@@ -1568,9 +1610,9 @@ diff -- python/sglang/srt/models/qwen3_vl.py
 
 - Link: https://github.com/sgl-project/sglang/pull/16781
 - Status/date: merged / 2026-02-05
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_vl.py`; associated commits `6a4b81e2d9fc`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_vl.py`; associated commits `6a4b81e2d9fc`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +126/-25, 175 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR optimizes an inference path or backend selection. Title: "Refactor(qwen3-vl) optimize position encoding interpolation". The diff centers on `python/sglang/srt/models/qwen3_vl.py`. PR body context: ## Motivation Sync Slime patches. Optimize fast_pos_embed_interpolate for Qwen3-VL by vectorizing core embedding lookups and interpolation math. This reduces GPU kernel launch o...
+- Motivation: Title: "Refactor(qwen3-vl) optimize position encoding interpolation"; model line: Qwen VLM/Omni/ASR; category: performance/backend optimization; main diff: `python/sglang/srt/models/qwen3_vl.py`; PR body summary: Sync Slime patches. Optimize fast_pos_embed_interpolate for Qwen3-VL by vectorizing core embedding lookups and interpolation math. This reduces GPU kernel launch overhead and im....
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +123/-23 (146 lines); hunks: -19,6 +19,7; -396,31 +397,130 @@ def rot_pos_emb(; symbols: rot_pos_emb, fast_pos_embed_interpolate, _get_interpolation_indices, _calculate_indices_and_weights, touching `rot_pos_emb, fast_pos_embed_interpolate, _get_interpolation_indices`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +123/-23 (146 lines); hunks: -19,6 +19,7; -396,31 +397,130 @@ def rot_pos_emb(; symbols: rot_pos_emb, fast_pos_embed_interpolate, _get_interpolation_indices, _calculate_indices_and_weights
@@ -1597,7 +1639,7 @@ diff -- python/sglang/srt/models/qwen3_vl.py
 - Status/date: open / 2026-02-12
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +3/-1, 18 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[BUG] fix mm_enable_dp_encoder hang for Qwen3-VL models". The diff centers on `python/sglang/srt/layers/vocab_parallel_embedding.py`, `python/sglang/srt/models/qwen3_vl.py`. PR body context: ## Motivation Launch server with --mm-enable-dp-encoder option for Qwen3-VL model( for example LLM parts use tp2 and vision encoder part use DP2) will hang currently. Root cause...
+- Motivation: Title: "[BUG] fix mm_enable_dp_encoder hang for Qwen3-VL models"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/layers/vocab_parallel_embedding.py`, `python/sglang/srt/models/qwen3_vl.py`; PR body summary: Launch server with --mm-enable-dp-encoder option for Qwen3-VL model( for example LLM parts use tp2 and vision encoder part use DP2) will hang currently. Root cause is the VocabP....
 - Key implementation: `python/sglang/srt/layers/vocab_parallel_embedding.py` modified +2/-1 (3 lines); hunks: -224,7 +224,8 @@ def __init__(; symbols: __init__, touching `__init__`; `python/sglang/srt/models/qwen3_vl.py` modified +1/-0 (1 lines); hunks: -308,6 +308,7 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `python/sglang/srt/layers/vocab_parallel_embedding.py` modified +2/-1 (3 lines); hunks: -224,7 +224,8 @@ def __init__(; symbols: __init__
@@ -1625,7 +1667,7 @@ diff -- python/sglang/srt/models/qwen3_vl.py
 - Status/date: open / 2026-02-13
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-0, 8 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "Add Qwen3-Omni to Qwen MoE architecture handling in fused_moe_triton". The diff centers on `benchmark/kernels/fused_moe_triton/common_utils.py`. PR body context: ### What This PR Does This PR simply adds: "Qwen3OmniMoeForConditionalGeneration" to the existing Qwen MoE architecture list. Since Qwen3-Omni follows the same configuration sch...
+- Motivation: Title: "Add Qwen3-Omni to Qwen MoE architecture handling in fused_moe_triton"; model line: Qwen VLM/Omni/ASR; category: performance/backend optimization; main diff: `benchmark/kernels/fused_moe_triton/common_utils.py`; PR body summary: What This PR Does This PR simply adds: "Qwen3OmniMoeForConditionalGeneration" to the existing Qwen MoE architecture list. Since Qwen3-Omni follows the same configuration schema....
 - Key implementation: `benchmark/kernels/fused_moe_triton/common_utils.py` modified +1/-0 (1 lines); hunks: -67,6 +67,7 @@ def get_model_config(; symbols: get_model_config, touching `get_model_config`.
 - Code diff details:
   - `benchmark/kernels/fused_moe_triton/common_utils.py` modified +1/-0 (1 lines); hunks: -67,6 +67,7 @@ def get_model_config(; symbols: get_model_config
@@ -1647,7 +1689,7 @@ diff -- benchmark/kernels/fused_moe_triton/common_utils.py
 - Status/date: open / 2026-02-24
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +475/-0, 519 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[feat] feat: add Qwen3-ASR support like whisper". The diff centers on `python/sglang/srt/multimodal/processors/qwen3_asr.py`, `python/sglang/srt/configs/qwen3_asr.py`, `python/sglang/srt/configs/__init__.py`. PR body context: ## Motivation ## Modifications ## Accuracy Tests ## Benchmarking and Profiling ## Checklist - [ ] Format your code according to the Format code with pre-commit. - [ ] Add unit t...
+- Motivation: Title: "[feat] feat: add Qwen3-ASR support like whisper"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/multimodal/processors/qwen3_asr.py`, `python/sglang/srt/configs/qwen3_asr.py`, `python/sglang/srt/configs/__init__.py`; no usable PR-body summary.
 - Key implementation: `python/sglang/srt/multimodal/processors/qwen3_asr.py` added +252/-0 (252 lines); hunks: -0,0 +1,252; symbols: Qwen3ASRMultimodalProcessor, __init__, _get_feature_extractor, _compute_audio_output_length, touching `Qwen3ASRMultimodalProcessor, __init__, _get_feature_extractor`; `python/sglang/srt/configs/qwen3_asr.py` added +217/-0 (217 lines); hunks: -0,0 +1,217; symbols: Qwen3ASRHFProcessor, __init__, from_pretrained, Qwen3ASRAudioEncoderConfig, touching `Qwen3ASRHFProcessor, __init__, from_pretrained`; `python/sglang/srt/configs/__init__.py` modified +2/-0 (2 lines); hunks: -22,6 +22,7; -47,6 +48,7; `python/sglang/srt/configs/model_config.py` modified +2/-0 (2 lines); hunks: -1259,6 +1259,7 @@ def is_generation_model(model_architectures: List[str], is...; -1299,6 +1300,7 @@ def is_image_gen_model(model_architectures: List[str]):; symbols: is_generation_model, is_image_gen_model, is_audio_model, touching `is_generation_model, is_image_gen_model, is_audio_model`.
 - Code diff details:
   - `python/sglang/srt/multimodal/processors/qwen3_asr.py` added +252/-0 (252 lines); hunks: -0,0 +1,252; symbols: Qwen3ASRMultimodalProcessor, __init__, _get_feature_extractor, _compute_audio_output_length
@@ -1688,7 +1730,7 @@ diff -- python/sglang/srt/configs/__init__.py
 - Status/date: merged / 2026-02-24
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +678/-14, 862 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[VLM] Introduce FlashInfer CUDNN Prefill as ViT Backend". The diff centers on `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/layers/attention/vision.py`, `test/manual/nightly/test_vlms_vit_flashinfer_cudnn.py`. PR body context: ## Motivation FlashInfer CUDNN Prefill demonstrates strong performance. This PR is to introduce it to SGLang as one of VLM ViT attention backends. A new "flashinfer" mm attentio...
+- Motivation: Title: "[VLM] Introduce FlashInfer CUDNN Prefill as ViT Backend"; model line: Qwen VLM/Omni/ASR; category: performance/backend optimization; main diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/layers/attention/vision.py`, `test/manual/nightly/test_vlms_vit_flashinfer_cudnn.py`; PR body summary: FlashInfer CUDNN Prefill demonstrates strong performance. This PR is to introduce it to SGLang as one of VLM ViT attention backends. A new "flashinfer" mm attention backend is a....
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +259/-13 (272 lines); hunks: -30,7 +30,12; -66,15 +71,12; symbols: Qwen3_VisionMLP, __init__, forward, touching `Qwen3_VisionMLP, __init__, forward`; `python/sglang/srt/layers/attention/vision.py` modified +152/-0 (152 lines); hunks: -34,6 +34,7; -64,6 +65,24; symbols: SingletonCache, forward, VisionFlashInferAttention, __init__, touching `SingletonCache, forward, VisionFlashInferAttention`; `test/manual/nightly/test_vlms_vit_flashinfer_cudnn.py` added +258/-0 (258 lines); hunks: -0,0 +1,258; symbols: TestVLMViTFlashinferCudnn, setUpClass, run_mmmu_eval, _run_vlm_mmmu_test, touching `TestVLMViTFlashinferCudnn, setUpClass, run_mmmu_eval`; `python/sglang/srt/server_args.py` modified +9/-1 (10 lines); hunks: -3859,7 +3859,15 @@ def add_cli_args(parser: argparse.ArgumentParser):; symbols: add_cli_args, touching `add_cli_args`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +259/-13 (272 lines); hunks: -30,7 +30,12; -66,15 +71,12; symbols: Qwen3_VisionMLP, __init__, forward
@@ -1729,7 +1771,7 @@ diff -- test/manual/nightly/test_vlms_vit_flashinfer_cudnn.py
 - Status/date: merged / 2026-02-27
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_vl.py`; associated commits `d566816d838c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-0, 8 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR fixes a launch, loading, parsing, or numerical issue. Title: "fix qwen3_vl visual module loading". The diff centers on `python/sglang/srt/models/qwen3_vl.py`. PR body context: ## Motivation Fix https://github.com/sgl-project/sglang/issues/19335 Qwen3_vl's visual model weight loading is broken. Somehow the name mapping logic was deleted. ## Modificatio...
+- Motivation: Title: "fix qwen3_vl visual module loading"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/models/qwen3_vl.py`; PR body summary: Fix https://github.com/sgl-project/sglang/issues/19335 Qwen3_vl's visual model weight loading is broken. Somehow the name mapping logic was deleted. add name replace logic for v....
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +1/-0 (1 lines); hunks: -1357,6 +1357,7 @@ def load_weights(self, weights: Iterable[Tuple[str, torch....; symbols: load_weights, touching `load_weights`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +1/-0 (1 lines); hunks: -1357,6 +1357,7 @@ def load_weights(self, weights: Iterable[Tuple[str, torch....; symbols: load_weights
@@ -1751,7 +1793,7 @@ diff -- python/sglang/srt/models/qwen3_vl.py
 - Status/date: open / 2026-03-02
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 14 files, +199/-108, 518 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[NPU] Fix Qwen3-VL-8B Accuracy for NPU". The diff centers on `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/llama.py`, `python/sglang/srt/layers/rotary_embedding.py`. PR body context: ## Motivation ## Modifications ## Accuracy Tests ## Benchmarking and Profiling ## Checklist - [ ] Format your code according to the Format code with pre-commit. - [ ] Add unit t...
+- Motivation: Title: "[NPU] Fix Qwen3-VL-8B Accuracy for NPU"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/llama.py`, `python/sglang/srt/layers/rotary_embedding.py`; no usable PR-body summary.
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +79/-20 (99 lines); hunks: -19,6 +19,7; -397,30 +398,89 @@ def rot_pos_emb(; symbols: rot_pos_emb, fast_pos_embed_interpolate, forward, Qwen3VLForConditionalGeneration, touching `rot_pos_emb, fast_pos_embed_interpolate, forward`; `python/sglang/srt/models/llama.py` modified +37/-4 (41 lines); hunks: -52,10 +52,14; -185,15 +189,44 @@ def __init__(; symbols: LlamaMLP, __init__, forward_prepare_native, forward_prepare_npu, touching `LlamaMLP, __init__, forward_prepare_native`; `python/sglang/srt/layers/rotary_embedding.py` modified +4/-3 (7 lines); hunks: -115,9 +115,10 @@ def __init__(; -294,8 +295,8 @@ def forward_npu(; symbols: __init__, forward_npu, touching `__init__, forward_npu`; `python/sglang/srt/models/qwen3.py` modified +4/-3 (7 lines); hunks: -161,12 +161,12 @@ def forward_prepare_npu(self, positions, hidden_states, fo...; -372,6 +372,7 @@ def __init__(; symbols: forward_prepare_npu, __init__, touching `forward_prepare_npu, __init__`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +79/-20 (99 lines); hunks: -19,6 +19,7; -397,30 +398,89 @@ def rot_pos_emb(; symbols: rot_pos_emb, fast_pos_embed_interpolate, forward, Qwen3VLForConditionalGeneration
@@ -1792,7 +1834,7 @@ diff -- python/sglang/srt/layers/rotary_embedding.py
 - Status/date: merged / 2026-03-02
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-0, 8 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Qwen3.5] Fix missing `quant_config` in `Qwen3VL`". The diff centers on `python/sglang/srt/models/qwen3_vl.py`. PR body context: ## Motivation Fix missing `quant_config` in `Qwen3VL` causing Qwen3.5 NVFP4 versions to use bf16 KV cache instead of fp8. ## Modifications ## Accuracy Tests ## Benchmarking and...
+- Motivation: Title: "[Qwen3.5] Fix missing `quant_config` in `Qwen3VL`"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/models/qwen3_vl.py`; PR body summary: Fix missing `quant_config` in `Qwen3VL` causing Qwen3.5 NVFP4 versions to use bf16 KV cache instead of fp8..
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +1/-0 (1 lines); hunks: -1025,6 +1025,7 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +1/-0 (1 lines); hunks: -1025,6 +1025,7 @@ def __init__(; symbols: __init__
@@ -1814,7 +1856,7 @@ diff -- python/sglang/srt/models/qwen3_vl.py
 - Status/date: merged / 2026-03-14
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_omni_moe.py`; associated commits `22e67876d6aa`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +52/-28, 130 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[Omni] Optimize AudioEncoder for Qwen3_Omni_Thinker". The diff centers on `python/sglang/srt/models/qwen3_omni_moe.py`. PR body context: ## Motivation Optimize Qwen3_Omni_Thinker with: 1. Support audio encoder layer's FFN TP>1 2. AudioEncoder vectorized mask and conv fast path in order to reduce CPU small tensor...
+- Motivation: Title: "[Omni] Optimize AudioEncoder for Qwen3_Omni_Thinker"; model line: Qwen VLM/Omni/ASR; category: performance/backend optimization; main diff: `python/sglang/srt/models/qwen3_omni_moe.py`; PR body summary: Optimize Qwen3_Omni_Thinker with: 1. Support audio encoder layer's FFN TP>1 2. AudioEncoder vectorized mask and conv fast path in order to reduce CPU small tensor allocator's pr....
 - Key implementation: `python/sglang/srt/models/qwen3_omni_moe.py` modified +52/-28 (80 lines); hunks: -70,8 +70,18 @@ def __init__(; -98,9 +108,9 @@ def forward(; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_omni_moe.py` modified +52/-28 (80 lines); hunks: -70,8 +70,18 @@ def __init__(; -98,9 +108,9 @@ def forward(; symbols: __init__, forward
@@ -1841,7 +1883,7 @@ diff -- python/sglang/srt/models/qwen3_omni_moe.py
 - Status/date: merged / 2026-03-18
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-0, 8 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[DP encoder] Fix `pos_emb `layer TP issue when DP encoder enabled for Qwen3 VL". The diff centers on `python/sglang/srt/models/qwen3_vl.py`. PR body context: Issue description: Enable DP encoder for qwen3-vl model and TP size = 2: Where DP size shall also be equal to TP size, depending image distribution. However, in current init cod...
+- Motivation: Title: "[DP encoder] Fix `pos_emb `layer TP issue when DP encoder enabled for Qwen3 VL"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/models/qwen3_vl.py`; PR body summary: Issue description: Enable DP encoder for qwen3-vl model and TP size = 2: Where DP size shall also be equal to TP size, depending image distribution. However, in current init cod....
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +1/-0 (1 lines); hunks: -330,6 +330,7 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +1/-0 (1 lines); hunks: -330,6 +330,7 @@ def __init__(; symbols: __init__
@@ -1863,7 +1905,7 @@ diff -- python/sglang/srt/models/qwen3_vl.py
 - Status/date: open / 2026-03-18
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +151/-4, 269 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "add EVS support for Qwen3-VL". The diff centers on `python/sglang/srt/multimodal/processors/qwen_vl.py`, `python/sglang/srt/layers/rotary_embedding/mrope_rope_index.py`, `python/sglang/srt/models/qwen3_vl.py`. PR body context: ## Motivation We support EVS(Efficient Video Sampling) for Qwen3-VL. Long video token can be pruned while keeping accuracy ## Modifications * add pruning functions in Qwen-VL's...
+- Motivation: Title: "add EVS support for Qwen3-VL"; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `python/sglang/srt/multimodal/processors/qwen_vl.py`, `python/sglang/srt/layers/rotary_embedding/mrope_rope_index.py`, `python/sglang/srt/models/qwen3_vl.py`; PR body summary: We support EVS(Efficient Video Sampling) for Qwen3-VL. Long video token can be pruned while keeping accuracy * add pruning functions in Qwen-VL's processor * make Qwen3's MROPE....
 - Key implementation: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +109/-0 (109 lines); hunks: -10,6 +10,7; -22,6 +23,9; symbols: __init__, _maybe_apply_qwen3_evs, get_mm_data, process_mm_data_async, touching `__init__, _maybe_apply_qwen3_evs, get_mm_data`; `python/sglang/srt/layers/rotary_embedding/mrope_rope_index.py` modified +20/-2 (22 lines); hunks: -121,6 +121,7 @@ def get_rope_index(; -134,13 +135,22 @@ def get_rope_index(; symbols: get_rope_index, touching `get_rope_index`; `python/sglang/srt/models/qwen3_vl.py` modified +10/-2 (12 lines); hunks: -69,6 +69,7; -1047,7 +1048,7 @@ def forward(; symbols: forward, Qwen3VLForConditionalGeneration, __init__, touching `forward, Qwen3VLForConditionalGeneration, __init__`; `python/sglang/srt/multimodal/evs/evs_processor.py` modified +10/-0 (10 lines); hunks: -65,6 +65,16 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +109/-0 (109 lines); hunks: -10,6 +10,7; -22,6 +23,9; symbols: __init__, _maybe_apply_qwen3_evs, get_mm_data, process_mm_data_async
@@ -1904,7 +1946,7 @@ diff -- python/sglang/srt/models/qwen3_vl.py
 - Status/date: merged / 2026-03-19
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +2/-2, 11 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[Bugfix] fix qwen3vl hang when --mm-enable-dp-encoder is enable". The diff centers on `python/sglang/srt/models/qwen3_vl.py`. PR body context: ## Motivation The Qwen3-VL type model hangs during forward when --mm-enable-dp-encoder is enabled. This is because the VocabParallelEmbedding part remains as TP8 after enabling...
+- Motivation: Title: "[Bugfix] fix qwen3vl hang when --mm-enable-dp-encoder is enable"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/models/qwen3_vl.py`; PR body summary: The Qwen3-VL type model hangs during forward when --mm-enable-dp-encoder is enabled. This is because the VocabParallelEmbedding part remains as TP8 after enabling --mm-enable-dp....
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +2/-2 (4 lines); hunks: -329,8 +329,8 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +2/-2 (4 lines); hunks: -329,8 +329,8 @@ def __init__(; symbols: __init__
@@ -1929,7 +1971,7 @@ diff -- python/sglang/srt/models/qwen3_vl.py
 - Status/date: merged / 2026-04-01
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_vl_moe.py`, `test/registered/lora/test_lora_qwen3_vl_30b_a3b_instruct_logprob_diff.py`; associated commits `cffc95edf455`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +152/-235, 397 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[3/n] lora moe - Support Qwen3-VL-30B-A3B-Instruct". The diff centers on `python/sglang/srt/models/qwen3_vl_moe.py`, `test/registered/lora/test_lora_qwen3_vl_30b_a3b_instruct_logprob_diff.py`. PR body context: ## Motivation - Support Qwen3-VL-30B-A3B-Instruct ## Modifications ## Accuracy Tests ## Benchmarking and Profiling ## Checklist - [x] Format your code according to the Format co...
+- Motivation: Title: "[3/n] lora moe - Support Qwen3-VL-30B-A3B-Instruct"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/models/qwen3_vl_moe.py`, `test/registered/lora/test_lora_qwen3_vl_30b_a3b_instruct_logprob_diff.py`; PR body summary: - Support Qwen3-VL-30B-A3B-Instruct.
 - Key implementation: `python/sglang/srt/models/qwen3_vl_moe.py` modified +1/-2 (3 lines); hunks: -179,9 +179,8 @@ def __init__(; symbols: __init__, should_apply_lora, touching `__init__, should_apply_lora`; `test/registered/lora/test_lora_qwen3_vl_30b_a3b_instruct_logprob_diff.py` added +151/-0 (151 lines); hunks: -0,0 +1,151; symbols: kl_v2, get_prompt_logprobs, TestLoRAQwen3VL_30B_A3B_Instruct_LogprobDiff, test_lora_qwen3_vl_30b_a3b_instruct_logprob_accuracy, touching `kl_v2, get_prompt_logprobs, TestLoRAQwen3VL_30B_A3B_Instruct_LogprobDiff`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl_moe.py` modified +1/-2 (3 lines); hunks: -179,9 +179,8 @@ def __init__(; symbols: __init__, should_apply_lora
@@ -1963,7 +2005,7 @@ diff -- test/registered/lora/test_lora_qwen3_vl_30b_a3b_instruct_logprob_diff.py
 - Status/date: merged / 2026-04-01
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +101/-3, 152 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR optimizes an inference path or backend selection. Title: "[AMD] Optimize Qwen3-VL decode - fuse QK-norm + 3D mRoPE + KV cache write". The diff centers on `python/sglang/srt/models/qwen3.py`. PR body context: ## Motivation Use aiter's fused_qk_norm_mrope_3d_cache_pts_quant_shuffle kernel to replace 4 separate kernel launches (QKV split, QK RMSNorm, 3D mRoPE, KV cache write) with a si...
+- Motivation: Title: "[AMD] Optimize Qwen3-VL decode - fuse QK-norm + 3D mRoPE + KV cache write"; model line: Qwen VLM/Omni/ASR; category: performance/backend optimization; main diff: `python/sglang/srt/models/qwen3.py`; PR body summary: Use aiter's fused_qk_norm_mrope_3d_cache_pts_quant_shuffle kernel to replace 4 separate kernel launches (QKV split, QK RMSNorm, 3D mRoPE, KV cache write) with a single HIP kerne....
 - Key implementation: `python/sglang/srt/models/qwen3.py` modified +101/-3 (104 lines); hunks: -19,6 +19,7; -30,13 +31,25; symbols: __init__, forward_prepare_native, forward_prepare_npu, forward_prepare_aiter_fused_mrope, touching `__init__, forward_prepare_native, forward_prepare_npu`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3.py` modified +101/-3 (104 lines); hunks: -19,6 +19,7; -30,13 +31,25; symbols: __init__, forward_prepare_native, forward_prepare_npu, forward_prepare_aiter_fused_mrope
@@ -1984,13 +2026,40 @@ diff -- python/sglang/srt/models/qwen3.py
   - runtime: `python/sglang/srt/models/qwen3.py` modified +101/-3
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/qwen3.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
+### PR #19135 - qwen3 vl skip layer id for pp
+
+- Link: https://github.com/sgl-project/sglang/pull/19135
+- Status/date: merged / 2026-04-03
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +12/-0, 26 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "qwen3 vl skip layer id for pp"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/models/qwen3_vl_moe.py`; PR body summary: This PR fixes Qwen3-VL MoE failing to start when pipeline parallelism (PP) is enabled. Previously, launching with --pipeline-parallel-size > 1 could crash during weight loading....
+- Key implementation: `python/sglang/srt/models/qwen3_vl_moe.py` modified +12/-0 (12 lines); hunks: -26,6 +26,7; -232,6 +233,17 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: load_weights, touching `load_weights`.
+- Code diff details:
+  - `python/sglang/srt/models/qwen3_vl_moe.py` modified +12/-0 (12 lines); hunks: -26,6 +26,7; -232,6 +233,17 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: load_weights
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_vl_moe.py
+@@ -26,6 +26,7 @@
++from sglang.srt.layers.utils import get_layer_id
+@@ -232,6 +233,17 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]]):
++            layer_id = get_layer_id(name)
++            if (
++                "visual" not in name
++                and layer_id is not None
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_vl_moe.py` modified +12/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/qwen3_vl_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
 ### PR #22052 - [Fix] Enable precise embedding interpolation by default for Qwen3-VL
 
 - Link: https://github.com/sgl-project/sglang/pull/22052
 - Status/date: open / 2026-04-03
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +10/-11, 57 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[Fix] Enable precise embedding interpolation by default for Qwen3-VL". The diff centers on `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/server_args.py`, `docs/advanced_features/server_arguments.md`. PR body context: The previous default (enable_precise_embedding_interpolation=False) uses an align_corners=False interpolation scheme that diverges from the HuggingFace transformers reference im...
+- Motivation: Title: "[Fix] Enable precise embedding interpolation by default for Qwen3-VL"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/server_args.py`, `docs/advanced_features/server_arguments.md`; PR body summary: The previous default (enable_precise_embedding_interpolation=False) uses an align_corners=False interpolation scheme that diverges from the HuggingFace transformers reference im....
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +3/-7 (10 lines); hunks: -310,7 +310,7 @@ def __init__(; -524,12 +524,8 @@ def fast_pos_embed_interpolate_from_list(self, grid_thw):; symbols: __init__, fast_pos_embed_interpolate_from_list, touching `__init__, fast_pos_embed_interpolate_from_list`; `python/sglang/srt/server_args.py` modified +6/-3 (9 lines); hunks: -675,7 +675,7 @@ class ServerArgs:; -5732,9 +5732,12 @@ def add_cli_args(parser: argparse.ArgumentParser):; symbols: ServerArgs, add_cli_args, touching `ServerArgs, add_cli_args`; `docs/advanced_features/server_arguments.md` modified +1/-1 (2 lines); hunks: -469,7 +469,7 @@ Please consult the documentation below and [server_args.py](....
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +3/-7 (10 lines); hunks: -310,7 +310,7 @@ def __init__(; -524,12 +524,8 @@ def fast_pos_embed_interpolate_from_list(self, grid_thw):; symbols: __init__, fast_pos_embed_interpolate_from_list
@@ -2030,7 +2099,7 @@ diff -- docs/advanced_features/server_arguments.md
 - Status/date: merged / 2026-04-04
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +167/-410, 696 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR changes model-related implementation. Title: "[VLM] Chunk-aware ViT encoding with per-image cache and lazy device transfer". The diff centers on `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/mem_cache/multimodal_cache.py`, `python/sglang/srt/models/deepseek_vl2.py`. PR body context: ## Motivation - Per-image embedding cache: Switch multimodal embedding cache granularity from per-request (combine_hashes(all_items)) to per-image (item.hash), improving cache r...
+- Motivation: Title: "[VLM] Chunk-aware ViT encoding with per-image cache and lazy device transfer"; model line: Qwen VLM/Omni/ASR; category: model implementation change; main diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/mem_cache/multimodal_cache.py`, `python/sglang/srt/models/deepseek_vl2.py`; PR body summary: - Per-image embedding cache: Switch multimodal embedding cache granularity from per-request (combine_hashes(all_items)) to per-image (item.hash), improving cache reuse under LRU....
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +10/-104 (114 lines); hunks: -15,7 +15,6; -73,7 +72,7; symbols: get_image_feature, get_video_feature, touching `get_image_feature, get_video_feature`; `python/sglang/srt/mem_cache/multimodal_cache.py` modified +7/-0 (7 lines); hunks: -120,6 +120,13 @@ def set(; symbols: set, get_single, has, touching `set, get_single, has`; `python/sglang/srt/models/deepseek_vl2.py` modified +1/-3 (4 lines); hunks: -270,9 +270,7 @@ def get_image_feature(self, items: List[MultimodalDataItem]):; symbols: get_image_feature, touching `get_image_feature`; `python/sglang/srt/models/phi4mm.py` modified +1/-1 (2 lines); hunks: -440,7 +440,7 @@ def get_audio_feature(self, items: List[MultimodalDataItem])...; symbols: get_audio_feature, touching `get_audio_feature`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +10/-104 (114 lines); hunks: -15,7 +15,6; -73,7 +72,7; symbols: get_image_feature, get_video_feature
@@ -2071,7 +2140,7 @@ diff -- python/sglang/srt/models/deepseek_vl2.py
 - Status/date: merged / 2026-04-06
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +190/-3, 230 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[VLM]: allow Qwen3.5 models for encoder disaggregation". The diff centers on `python/sglang/srt/multimodal/processors/qwen_vl.py`, `test/registered/distributed/test_epd_disaggregation.py`, `python/sglang/srt/disaggregation/encode_server.py`. PR body context: ## Motivation Fixes #21805. SGLang already supports Qwen3.5 multimodal models in the runtime, but encoder disaggregation rejected them during servervstartup. This blocked valid...
+- Motivation: Title: "[VLM]: allow Qwen3.5 models for encoder disaggregation"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/multimodal/processors/qwen_vl.py`, `test/registered/distributed/test_epd_disaggregation.py`, `python/sglang/srt/disaggregation/encode_server.py`; PR body summary: Fixes #21805. SGLang already supports Qwen3.5 multimodal models in the runtime, but encoder disaggregation rejected them during servervstartup. This blocked valid EPD deployment....
 - Key implementation: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +1/-1 (2 lines); hunks: -422,7 +422,7 @@ def get_mm_data(self, prompt, embeddings, **kwargs):; symbols: get_mm_data, touching `get_mm_data`; `test/registered/distributed/test_epd_disaggregation.py` modified +184/-0 (184 lines); hunks: -33,6 +33,7; -813,6 +814,189 @@ def test_mmmu(self):; symbols: test_mmmu, TestEPDDisaggregationQwen35, setUpClass, start_encode, touching `test_mmmu, TestEPDDisaggregationQwen35, setUpClass`; `python/sglang/srt/disaggregation/encode_server.py` modified +3/-2 (5 lines); hunks: -867,10 +867,11 @@ async def _process_mm_items(self, mm_items, modality):; symbols: _process_mm_items, touching `_process_mm_items`; `python/sglang/srt/server_args.py` modified +2/-0 (2 lines); hunks: -3326,6 +3326,8 @@ def _handle_encoder_disaggregation(self):; symbols: _handle_encoder_disaggregation, touching `_handle_encoder_disaggregation`.
 - Code diff details:
   - `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +1/-1 (2 lines); hunks: -422,7 +422,7 @@ def get_mm_data(self, prompt, embeddings, **kwargs):; symbols: get_mm_data
@@ -2112,7 +2181,7 @@ diff -- python/sglang/srt/disaggregation/encode_server.py
 - Status/date: merged / 2026-04-07
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/qwen3_asr.py`, `python/sglang/srt/models/qwen3_asr.py`, `python/sglang/srt/multimodal/processors/qwen3_asr.py`; associated commits `f6e85676b578`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +571/-11, 689 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[Feature] Adding Qwen3-asr Model Support". The diff centers on `python/sglang/srt/models/qwen3_asr.py`, `python/sglang/srt/configs/qwen3_asr.py`, `python/sglang/srt/multimodal/processors/qwen3_asr.py`. PR body context: ## Motivation Issue : https://github.com/sgl-project/sglang/issues/22025 This PR adds support so users can serve Qwen3-ASR via the existing `/v1/audio/transcriptions` endpoint....
+- Motivation: Title: "[Feature] Adding Qwen3-asr Model Support"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/models/qwen3_asr.py`, `python/sglang/srt/configs/qwen3_asr.py`, `python/sglang/srt/multimodal/processors/qwen3_asr.py`; PR body summary: Issue : https://github.com/sgl-project/sglang/issues/22025 This PR adds support so users can serve Qwen3-ASR via the existing `/v1/audio/transcriptions` endpoint. References - v....
 - Key implementation: `python/sglang/srt/models/qwen3_asr.py` added +199/-0 (199 lines); hunks: -0,0 +1,199; symbols: Qwen3ASRForConditionalGeneration, __init__, pad_input_ids, get_audio_feature, touching `Qwen3ASRForConditionalGeneration, __init__, pad_input_ids`; `python/sglang/srt/configs/qwen3_asr.py` added +172/-0 (172 lines); hunks: -0,0 +1,172; symbols: Qwen3ASRThinkerConfig, __init__, Qwen3ASRConfig, get_text_config, touching `Qwen3ASRThinkerConfig, __init__, Qwen3ASRConfig`; `python/sglang/srt/multimodal/processors/qwen3_asr.py` added +95/-0 (95 lines); hunks: -0,0 +1,95; symbols: Qwen3ASRMultimodalProcessor, __init__, _build_transcription_prompt, compute_mrope_positions, touching `Qwen3ASRMultimodalProcessor, __init__, _build_transcription_prompt`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_asr.py` added +199/-0 (199 lines); hunks: -0,0 +1,199; symbols: Qwen3ASRForConditionalGeneration, __init__, pad_input_ids, get_audio_feature
@@ -2151,7 +2220,7 @@ diff -- python/sglang/srt/multimodal/processors/qwen3_asr.py
 - Status/date: merged / 2026-04-08
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +177/-21, 235 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[NPU] fix qwen3.5 video processor". The diff centers on `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py`. PR body context: ## Motivation In the Qwen3VLVideoProcessor, there is a permute operation with more than 8 dimensions which is not supported on the NPU. Following PR #20189 , this PR applies a p...
+- Motivation: Title: "[NPU] fix qwen3.5 video processor"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py`; PR body summary: In the Qwen3VLVideoProcessor, there is a permute operation with more than 8 dimensions which is not supported on the NPU. Following PR #20189 , this PR applies a patch to the Qw....
 - Key implementation: `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py` modified +177/-21 (198 lines); hunks: -7,13 +7,62; -90,31 +139,16 @@ def _preprocess(; symbols: transform_patches_to_flatten, npu_wrapper_preprocess, _preprocess, npu_wrapper_video_preprocess, touching `transform_patches_to_flatten, npu_wrapper_preprocess, _preprocess`.
 - Code diff details:
   - `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py` modified +177/-21 (198 lines); hunks: -7,13 +7,62; -90,31 +139,16 @@ def _preprocess(; symbols: transform_patches_to_flatten, npu_wrapper_preprocess, _preprocess, npu_wrapper_video_preprocess
@@ -2176,9 +2245,9 @@ diff -- python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py
 
 - Link: https://github.com/sgl-project/sglang/pull/22181
 - Status/date: merged / 2026-04-08
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/qwen3_asr.py`, `python/sglang/srt/entrypoints/openai/transcription_adapters/qwen3_asr.py`, `python/sglang/srt/multimodal/processors/qwen3_asr.py`, `test/manual/models/test_qwen3_asr.py`; associated commits `a5ed507a1639`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/qwen3_asr.py`, `python/sglang/srt/entrypoints/openai/transcription_adapters/qwen3_asr.py`, `python/sglang/srt/multimodal/processors/qwen3_asr.py`, `test/manual/models/test_qwen3_asr.py`; associated commits `a5ed507a1639`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +473/-223, 809 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[refactor] [asr] Add transcription adapter for extensible ASR models support". The diff centers on `python/sglang/srt/configs/qwen3_asr.py`, `test/manual/models/test_qwen3_asr.py`, `python/sglang/srt/entrypoints/openai/transcription_adapters/qwen3_asr.py`. PR body context: ## Motivation Follow up of #22073. To remove hardcoded model family detection and branching. See reviews in #22073 and #22089. ## Modifications Mainly scoped under python/sglang...
+- Motivation: Title: "[refactor] [asr] Add transcription adapter for extensible ASR models support"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/configs/qwen3_asr.py`, `test/manual/models/test_qwen3_asr.py`, `python/sglang/srt/entrypoints/openai/transcription_adapters/qwen3_asr.py`; PR body summary: Follow up of #22073. To remove hardcoded model family detection and branching. See reviews in #22073 and #22089. Mainly scoped under python/sglang/srt/entrypoints/openai/ Will c....
 - Key implementation: `python/sglang/srt/configs/qwen3_asr.py` modified +63/-67 (130 lines); hunks: -14,72 +14,6; -167,6 +101,68 @@ def __call__(self, text=None, audio=None, audio_kwargs=None...; symbols: Qwen3ASRThinkerConfig, __init__, Qwen3ASRConfig, get_text_config, touching `Qwen3ASRThinkerConfig, __init__, Qwen3ASRConfig`; `test/manual/models/test_qwen3_asr.py` added +118/-0 (118 lines); hunks: -0,0 +1,118; symbols: download_audio, TestQwen3ASRTranscription, setUpClass, tearDownClass, touching `download_audio, TestQwen3ASRTranscription, setUpClass`; `python/sglang/srt/entrypoints/openai/transcription_adapters/qwen3_asr.py` added +49/-0 (49 lines); hunks: -0,0 +1,49; symbols: Qwen3ASRAdapter, build_sampling_params, postprocess_text, build_verbose_response, touching `Qwen3ASRAdapter, build_sampling_params, postprocess_text`; `python/sglang/srt/multimodal/processors/qwen3_asr.py` modified +8/-5 (13 lines); hunks: -10,11 +10,13; -23,7 +25,7 @@ class Qwen3ASRMultimodalProcessor(BaseMultimodalProcessor):; symbols: Qwen3ASRMultimodalProcessor, __init__, _build_transcription_prompt, touching `Qwen3ASRMultimodalProcessor, __init__, _build_transcription_prompt`.
 - Code diff details:
   - `python/sglang/srt/configs/qwen3_asr.py` modified +63/-67 (130 lines); hunks: -14,72 +14,6; -167,6 +101,68 @@ def __call__(self, text=None, audio=None, audio_kwargs=None...; symbols: Qwen3ASRThinkerConfig, __init__, Qwen3ASRConfig, get_text_config
@@ -2219,7 +2288,7 @@ diff -- python/sglang/srt/entrypoints/openai/transcription_adapters/qwen3_asr.py
 - Status/date: merged / 2026-04-09
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_vl.py`; associated commits `a69be2e866fb`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +24/-0, 51 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[Feature] Support eagle3 for qwen3-vl". The diff centers on `python/sglang/srt/models/qwen3_vl.py`. PR body context: ## Motivation Adapt Eagle3 capture for the Qwen3-VL model ## Modifications Add `set_eagle3_layers_to_capture` function on `qwen3_vl.py`. Like: qwen2_5_vl.py ## Launch Script ##...
+- Motivation: Title: "[Feature] Support eagle3 for qwen3-vl"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/models/qwen3_vl.py`; PR body summary: Adapt Eagle3 capture for the Qwen3-VL model Add `set_eagle3_layers_to_capture` function on `qwen3_vl.py`. Like: qwen2_5_vl.py Launch Script gsm8k: without eagle3: with eagle3: m....
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +24/-0 (24 lines); hunks: -1130,6 +1130,9 @@ def __init__(; -1246,13 +1249,18 @@ def forward(; symbols: __init__, separate_deepstack_embeds, forward, load_weights, touching `__init__, separate_deepstack_embeds, forward`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +24/-0 (24 lines); hunks: -1130,6 +1130,9 @@ def __init__(; -1246,13 +1249,18 @@ def forward(; symbols: __init__, separate_deepstack_embeds, forward, load_weights
@@ -2246,7 +2315,7 @@ diff -- python/sglang/srt/models/qwen3_vl.py
 - Status/date: merged / 2026-04-09
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/entrypoints/openai/transcription_adapters/qwen3_asr.py`, `python/sglang/srt/multimodal/processors/qwen3_asr.py`; associated commits `8b991d98a12c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +263/-2, 325 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[Feature] Add chunk-based streaming ASR for Qwen3-ASR". The diff centers on `python/sglang/srt/entrypoints/openai/transcription_adapters/qwen3_asr.py`, `python/sglang/srt/multimodal/processors/qwen3_asr.py`. PR body context: Motivation Issue: #22025 (streaming input design and implementation) This PR adds chunk-based streaming transcription support for Qwen3-ASR via the existing /v1/audio/transcript...
+- Motivation: Title: "[Feature] Add chunk-based streaming ASR for Qwen3-ASR"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/entrypoints/openai/transcription_adapters/qwen3_asr.py`, `python/sglang/srt/multimodal/processors/qwen3_asr.py`; PR body summary: Motivation Issue: #22025 (streaming input design and implementation) This PR adds chunk-based streaming transcription support for Qwen3-ASR via the existing /v1/audio/transcript....
 - Key implementation: `python/sglang/srt/entrypoints/openai/transcription_adapters/qwen3_asr.py` modified +20/-0 (20 lines); hunks: -9,12 +9,32; symbols: Qwen3ASRAdapter, supports_chunked_streaming, chunked_streaming_config, prompt_template, touching `Qwen3ASRAdapter, supports_chunked_streaming, chunked_streaming_config`; `python/sglang/srt/multimodal/processors/qwen3_asr.py` modified +2/-2 (4 lines); hunks: -12,7 +12,7; -47,7 +47,7 @@ def _build_transcription_prompt(self, input_text: Union[str, l...; symbols: _build_transcription_prompt, compute_mrope_positions, touching `_build_transcription_prompt, compute_mrope_positions`.
 - Code diff details:
   - `python/sglang/srt/entrypoints/openai/transcription_adapters/qwen3_asr.py` modified +20/-0 (20 lines); hunks: -9,12 +9,32; symbols: Qwen3ASRAdapter, supports_chunked_streaming, chunked_streaming_config, prompt_template
@@ -2281,7 +2350,7 @@ diff -- python/sglang/srt/multimodal/processors/qwen3_asr.py
 - Status/date: open / 2026-04-15
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +306/-0, 389 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "fix(config): Add from_dict() for Qwen3VL config classes". The diff centers on `test/registered/unit/configs/test_qwen3_vl_config.py`, `python/sglang/srt/configs/qwen3_5.py`, `python/sglang/srt/configs/qwen3_vl.py`. PR body context: ## Motivation Fix Qwen3-VL and Qwen3.5 model loading with transformers 5.5.0+. Transformers 5.5.0+ natively supports Qwen3-VL, causing `AutoConfig.from_pretrained()` to skip sgl...
+- Motivation: Title: "fix(config): Add from_dict() for Qwen3VL config classes"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `test/registered/unit/configs/test_qwen3_vl_config.py`, `python/sglang/srt/configs/qwen3_5.py`, `python/sglang/srt/configs/qwen3_vl.py`; PR body summary: Fix Qwen3-VL and Qwen3.5 model loading with transformers 5.5.0+. Transformers 5.5.0+ natively supports Qwen3-VL, causing `AutoConfig.from_pretrained()` to skip sglang's config c....
 - Key implementation: `test/registered/unit/configs/test_qwen3_vl_config.py` added +198/-0 (198 lines); hunks: -0,0 +1,198; symbols: TestQwen3VLConfigFromDict, test_qwen3vl_config_dict_conversion, test_qwen3vl_config_with_object, test_qwen3vl_moe_config_dict_conversion, touching `TestQwen3VLConfigFromDict, test_qwen3vl_config_dict_conversion, test_qwen3vl_config_with_object`; `python/sglang/srt/configs/qwen3_5.py` modified +71/-0 (71 lines); hunks: -78,6 +78,17 @@ class Qwen3_5Config(PretrainedConfig):; -112,6 +123,55 @@ class Qwen3_5MoeVisionConfig(Qwen3_5VisionConfig):; symbols: Qwen3_5Config, from_dict, __init__, Qwen3_5MoeVisionConfig, touching `Qwen3_5Config, from_dict, __init__`; `python/sglang/srt/configs/qwen3_vl.py` modified +30/-0 (30 lines); hunks: -236,6 +236,17 @@ class Qwen3VLConfig(PretrainedConfig):; -251,11 +262,15 @@ def __init__(; symbols: Qwen3VLConfig, from_dict, __init__, Qwen3VLMoeConfig, touching `Qwen3VLConfig, from_dict, __init__`; `python/sglang/srt/configs/__init__.py` modified +3/-0 (3 lines); hunks: -25,6 +25,7; -65,4 +66,6.
 - Code diff details:
   - `test/registered/unit/configs/test_qwen3_vl_config.py` added +198/-0 (198 lines); hunks: -0,0 +1,198; symbols: TestQwen3VLConfigFromDict, test_qwen3vl_config_dict_conversion, test_qwen3vl_config_with_object, test_qwen3vl_moe_config_dict_conversion
@@ -2323,7 +2392,7 @@ diff -- python/sglang/srt/configs/qwen3_vl.py
 - Status/date: open / 2026-04-15
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +937/-43, 1151 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR changes model-related implementation. Title: "[Feature] WebSocket streaming audio input for ASR". The diff centers on `test/manual/models/test_qwen3_asr.py`, `python/sglang/srt/entrypoints/openai/serving_transcription_websocket.py`, `python/sglang/srt/entrypoints/openai/streaming_asr.py`. PR body context: ## Motivation Implements M1 of the RFC in sgl-project/sglang#22474. PR #22089 shipped chunked streaming **output** for Qwen3-ASR via `POST /v1/audio/transcriptions?stream=true`...
+- Motivation: Title: "[Feature] WebSocket streaming audio input for ASR"; model line: Qwen VLM/Omni/ASR; category: model implementation change; main diff: `test/manual/models/test_qwen3_asr.py`, `python/sglang/srt/entrypoints/openai/serving_transcription_websocket.py`, `python/sglang/srt/entrypoints/openai/streaming_asr.py`; PR body summary: Implements M1 of the RFC in sgl-project/sglang#22474. PR #22089 shipped chunked streaming **output** for Qwen3-ASR via `POST /v1/audio/transcriptions?stream=true` (SSE over an H....
 - Key implementation: `test/manual/models/test_qwen3_asr.py` modified +451/-3 (454 lines); hunks: -1,17 +1,30; -29,8 +42,96; symbols: _normalize_for_wer, _wer, download_audio, _pcm16_from_audio_bytes, touching `_normalize_for_wer, _wer, download_audio`; `python/sglang/srt/entrypoints/openai/serving_transcription_websocket.py` added +376/-0 (376 lines); hunks: -0,0 +1,376; symbols: names, _safe_close_websocket, _pcm_to_wav, RealtimeMessageType, touching `names, _safe_close_websocket, _pcm_to_wav`; `python/sglang/srt/entrypoints/openai/streaming_asr.py` modified +78/-7 (85 lines); hunks: -1,9 +1,21; -22,13 +34,23 @@ class StreamingASRState:; symbols: StreamingASRState, get_prefix_text, _record_emit, update, touching `StreamingASRState, get_prefix_text, _record_emit`; `python/sglang/srt/entrypoints/openai/serving_transcription.py` modified +15/-33 (48 lines); hunks: -29,7 +29,7; -43,8 +43,12; symbols: _generate_chunked_asr_stream, handle_websocket, touching `_generate_chunked_asr_stream, handle_websocket`.
 - Code diff details:
   - `test/manual/models/test_qwen3_asr.py` modified +451/-3 (454 lines); hunks: -1,17 +1,30; -29,8 +42,96; symbols: _normalize_for_wer, _wer, download_audio, _pcm16_from_audio_bytes
@@ -2365,7 +2434,7 @@ diff -- python/sglang/srt/entrypoints/openai/streaming_asr.py
 - Status/date: open / 2026-04-18
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-0, 8 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR fixes a launch, loading, parsing, or numerical issue. Title: "fix: guard self.model access in Qwen3VLMoeForConditionalGeneration.load_weights". The diff centers on `python/sglang/srt/models/qwen3_vl_moe.py`. PR body context: Fixes #23063 ## Problem When launching a Qwen3-VL-MoE model in `--encoder-only` mode, the server crashes during weight loading with `AttributeError: 'Qwen3VLMoeForConditionalGen...
+- Motivation: Title: "fix: guard self.model access in Qwen3VLMoeForConditionalGeneration.load_weights"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/models/qwen3_vl_moe.py`; PR body summary: Fixes #23063 Problem When launching a Qwen3-VL-MoE model in `--encoder-only` mode, the server crashes during weight loading with `AttributeError: 'Qwen3VLMoeForConditionalGenera....
 - Key implementation: `python/sglang/srt/models/qwen3_vl_moe.py` modified +1/-0 (1 lines); hunks: -235,6 +235,7 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights, touching `load_weights`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl_moe.py` modified +1/-0 (1 lines); hunks: -235,6 +235,7 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights
@@ -2387,7 +2456,7 @@ diff -- python/sglang/srt/models/qwen3_vl_moe.py
 - Status/date: merged / 2026-04-18
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR fixes a launch, loading, parsing, or numerical issue. Title: "Fix Qwen3.5 video processing when passing video_data in "processor_output" format". The diff centers on `python/sglang/srt/multimodal/processors/qwen_vl.py`. PR body context: ## Motivation Currently, the video preprocessing function of Qwen3.5 requires two return values: https://github.com/sgl-project/sglang/blob/ef6bfc1197ab45290e33941881f23c39fbf30...
+- Motivation: Title: "Fix Qwen3.5 video processing when passing video_data in "processor_output" format"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/multimodal/processors/qwen_vl.py`; PR body summary: Currently, the video preprocessing function of Qwen3.5 requires two return values: https://github.com/sgl-project/sglang/blob/ef6bfc1197ab45290e33941881f23c39fbf30ad9/python/sgl....
 - Key implementation: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +1/-1 (2 lines); hunks: -162,7 +162,7 @@ async def preprocess_video(; symbols: preprocess_video, touching `preprocess_video`.
 - Code diff details:
   - `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +1/-1 (2 lines); hunks: -162,7 +162,7 @@ async def preprocess_video(; symbols: preprocess_video
@@ -2410,7 +2479,7 @@ diff -- python/sglang/srt/multimodal/processors/qwen_vl.py
 - Status/date: open / 2026-04-20
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-0, 8 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR fixes a launch, loading, parsing, or numerical issue. Title: "Bugfix: Qwen3-VL-MoE adapt encoder_only". The diff centers on `python/sglang/srt/models/qwen3_vl_moe.py`. PR body context: ## Motivation This bug is caused by PR https://github.com/sgl-project/sglang/pull/19135, `self.model` is created in the parent class and is only created when `--encoder-only` is...
+- Motivation: Title: "Bugfix: Qwen3-VL-MoE adapt encoder_only"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/models/qwen3_vl_moe.py`; PR body summary: This bug is caused by PR https://github.com/sgl-project/sglang/pull/19135, `self.model` is created in the parent class and is only created when `--encoder-only` is not enabled.....
 - Key implementation: `python/sglang/srt/models/qwen3_vl_moe.py` modified +1/-0 (1 lines); hunks: -235,6 +235,7 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights, touching `load_weights`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl_moe.py` modified +1/-0 (1 lines); hunks: -235,6 +235,7 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights
@@ -2432,7 +2501,7 @@ diff -- python/sglang/srt/models/qwen3_vl_moe.py
 - Status/date: closed / 2026-04-21
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-10, 18 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[Bugfix] Fix Qwen3-VL rope config compatibility". The diff centers on `python/sglang/srt/models/qwen3.py`. PR body context: ## Motivation `Qwen3-VL` can fail during model initialization because `qwen3.py` assumes `config.rope_parameters["rope_theta"]` is always available. In practice, Qwen3-VL series...
+- Motivation: Title: "[Bugfix] Fix Qwen3-VL rope config compatibility"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/models/qwen3.py`; PR body summary: `Qwen3-VL` can fail during model initialization because `qwen3.py` assumes `config.rope_parameters["rope_theta"]` is always available. In practice, Qwen3-VL series model exposes....
 - Key implementation: `python/sglang/srt/models/qwen3.py` modified +1/-10 (11 lines); hunks: -316,16 +316,7 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3.py` modified +1/-10 (11 lines); hunks: -316,16 +316,7 @@ def __init__(; symbols: __init__
@@ -2459,7 +2528,7 @@ diff -- python/sglang/srt/models/qwen3.py
 - Status/date: open / 2026-04-22
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +18/-0, 25 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Qwen VLM/Omni/ASR, this PR adds or enables a model support/runtime surface. Title: "[NPU] adapt the Qwen3-ASR model for deployment on NPU". The diff centers on `python/sglang/srt/utils/common.py`. PR body context: ## Motivation Enable Qwen3-ASR model deployment on NPU devices. The current audio loading implementation relies on torchaudio with CUDA dependencies, which is not compatible wit...
+- Motivation: Title: "[NPU] adapt the Qwen3-ASR model for deployment on NPU"; model line: Qwen VLM/Omni/ASR; category: performance/backend optimization; main diff: `python/sglang/srt/utils/common.py`; PR body summary: Enable Qwen3-ASR model deployment on NPU devices. The current audio loading implementation relies on torchaudio with CUDA dependencies, which is not compatible with NPU environm....
 - Key implementation: `python/sglang/srt/utils/common.py` modified +18/-0 (18 lines); hunks: -740,6 +740,24 @@ def load_audio(; symbols: load_audio, touching `load_audio`.
 - Code diff details:
   - `python/sglang/srt/utils/common.py` modified +18/-0 (18 lines); hunks: -740,6 +740,24 @@ def load_audio(; symbols: load_audio

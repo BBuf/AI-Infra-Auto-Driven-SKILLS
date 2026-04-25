@@ -6,7 +6,6 @@
 - 源码基线: `sgl-project/sglang` 当前追溯 worktree commit `880599cd43`
 - PR 收集规则: 先从模型实现、配置、processor、parser、docs/tests 等相关文件执行 `git log --name-only -- <model-files>`，再按 commit subject 的模型关键词过滤，最后用 GitHub Pull Request files API 读取每个 PR 的最终 diff。
 - 额外保留规则: 原 history/skill 已显式引用但未出现在当前实现文件 git trace 中的 PR 会保留，并在卡片里标注来源。
-- diffusion 相关模型已从本目录剔除，不再纳入模型优化 skill/history。
 
 ## 模型实现文件覆盖
 
@@ -45,7 +44,7 @@
 - 状态/时间: merged / 2025-07-31
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 16 个文件，+2340/-23，可读 patch 2530 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Step 3.5 补齐模型支持入口或运行时能力，标题为「model: support Step3V」，变更集中在 `python/sglang/srt/models/step3_vl.py`, `python/sglang/srt/multimodal/processors/step3_vl.py`, `python/sglang/srt/function_call/step3_detector.py`。PR 描述补充为：## Motivation This PR adds the support for Step3VModel. Co-authored-by: Qiaolin-Yu Co-authored-by: ispobock Co-authored-by: nnnobody-code Co-authored-by: jimpang ## Modification...
+- 动机: 标题「model: support Step3V」；模型线: Step 3.5；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/step3_vl.py`, `python/sglang/srt/multimodal/processors/step3_vl.py`, `python/sglang/srt/function_call/step3_detector.py`；PR 正文摘要: This PR adds the support for Step3VModel. Co-authored-by: Qiaolin-Yu Co-authored-by: ispobock Co-authored-by: nnnobody-code Co-authored-by: jimpang - Add Stepv3 model - Add tool...。
 - 实现要点: `python/sglang/srt/models/step3_vl.py` added +994/-0 (994 lines); hunks: -0,0 +1,994; symbols: Step3TextMLP, __init__, forward, Step3TextMoEMLP，涉及 `Step3TextMLP, __init__, forward`；`python/sglang/srt/multimodal/processors/step3_vl.py` added +515/-0 (515 lines); hunks: -0,0 +1,515; symbols: GPUToTensor, forward, Step3VisionProcessor, __init__，涉及 `GPUToTensor, forward, Step3VisionProcessor`；`python/sglang/srt/function_call/step3_detector.py` added +436/-0 (436 lines); hunks: -0,0 +1,436; symbols: get_argument_type, parse_arguments, Step3Detector, __init__，涉及 `get_argument_type, parse_arguments, Step3Detector`；`python/sglang/srt/configs/step3_vl.py` added +172/-0 (172 lines); hunks: -0,0 +1,172; symbols: Step3VisionEncoderConfig, __init__, Step3TextConfig, Step3VLConfig，涉及 `Step3VisionEncoderConfig, __init__, Step3TextConfig`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/step3_vl.py` added +994/-0 (994 lines); hunks: -0,0 +1,994; symbols: Step3TextMLP, __init__, forward, Step3TextMoEMLP
@@ -87,7 +86,7 @@ diff -- python/sglang/srt/function_call/step3_detector.py
 - 状态/时间: merged / 2025-08-03
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+25/-6，可读 patch 107 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Step 3.5 补齐模型支持入口或运行时能力，标题为「feat: Support DP Attention for step3_vl」，变更集中在 `python/sglang/srt/layers/attention/vision.py`, `python/sglang/srt/models/step3_vl.py`, `python/sglang/srt/multimodal/processors/step3_vl.py`。PR 描述补充为：## Motivation Support DP Attention for step3_vl ## Modifications In the implementation prior to `step3_vl`, DP Attention was already supported for the LLM. This update extends D...
+- 动机: 标题「feat: Support DP Attention for step3_vl」；模型线: Step 3.5；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/attention/vision.py`, `python/sglang/srt/models/step3_vl.py`, `python/sglang/srt/multimodal/processors/step3_vl.py`；PR 正文摘要: Support DP Attention for step3_vl In the implementation prior to `step3_vl`, DP Attention was already supported for the LLM. This update extends DP Attention support to the visi...。
 - 实现要点: `python/sglang/srt/layers/attention/vision.py` modified +13/-5 (18 lines); hunks: -11,6 +11,7; -365,19 +366,20 @@ def __init__(; symbols: __init__，涉及 `__init__`；`python/sglang/srt/models/step3_vl.py` modified +9/-0 (9 lines); hunks: -531,11 +531,18 @@ def __init__(; -544,6 +551,8 @@ def __init__(; symbols: __init__，涉及 `__init__`；`python/sglang/srt/multimodal/processors/step3_vl.py` modified +3/-1 (4 lines); hunks: -8,7 +8,7; -276,6 +276,8 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/vision.py` modified +13/-5 (18 lines); hunks: -11,6 +11,7; -365,19 +366,20 @@ def __init__(; symbols: __init__
@@ -126,7 +125,7 @@ diff -- python/sglang/srt/multimodal/processors/step3_vl.py
 - 状态/时间: merged / 2025-08-27
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+600/-2，可读 patch 634 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Step 3.5 补齐模型支持入口或运行时能力，标题为「[router] add step3 tool parser」，变更集中在 `sgl-router/src/tool_parser/parsers/step3_parser.rs`, `sgl-router/tests/tool_parser_step3.rs`, `sgl-router/src/tool_parser/registry.rs`。PR 描述补充为：## Motivation step3 tool parser ## Modifications ## Accuracy Tests ## Benchmarking and Profiling ## Checklist - [x] Format your code according to the Format code with pre-commit...
+- 动机: 标题「[router] add step3 tool parser」；模型线: Step 3.5；类别: 模型支持/运行时入口；主要 diff: `sgl-router/src/tool_parser/parsers/step3_parser.rs`, `sgl-router/tests/tool_parser_step3.rs`, `sgl-router/src/tool_parser/registry.rs`；PR 正文摘要: step3 tool parser。
 - 实现要点: `sgl-router/src/tool_parser/parsers/step3_parser.rs` added +348/-0 (348 lines); hunks: -0,0 +1,348；`sgl-router/tests/tool_parser_step3.rs` added +245/-0 (245 lines); hunks: -0,0 +1,245；`sgl-router/src/tool_parser/registry.rs` modified +3/-1 (4 lines); hunks: -1,5 +1,5; -113,6 +113,8 @@ impl ParserRegistry {；`sgl-router/src/tool_parser/parsers/mod.rs` modified +3/-0 (3 lines); hunks: -9,12 +9,15 @@ pub mod llama_parser;。
 - 代码 diff 细节:
   - `sgl-router/src/tool_parser/parsers/step3_parser.rs` added +348/-0 (348 lines); hunks: -0,0 +1,348
@@ -166,9 +165,9 @@ diff -- sgl-router/src/tool_parser/registry.rs
 
 - 链接: https://github.com/sgl-project/sglang/pull/18084
 - 状态/时间: merged / 2026-02-02
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/configs/step3p5.py`, `python/sglang/srt/models/step3p5.py`, `python/sglang/srt/models/step3p5_mtp.py`；关联提交 `980d2936cd9a`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/configs/step3p5.py`, `python/sglang/srt/models/step3p5.py`, `python/sglang/srt/models/step3p5_mtp.py`；关联提交 `980d2936cd9a`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 15 个文件，+1557/-12，可读 patch 1711 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Step 3.5 补齐模型支持入口或运行时能力，标题为「add Step-3.5-Flash model support」，变更集中在 `python/sglang/srt/models/step3p5.py`, `python/sglang/srt/models/step3p5_mtp.py`, `python/sglang/srt/configs/step3p5.py`。PR 描述补充为：## Motivation add Step-3.5-Flash model support ## Modifications ## Accuracy Tests ## Benchmarking and Profiling ## Checklist - [ ] Format your code according to the Format code...
+- 动机: 标题「add Step-3.5-Flash model support」；模型线: Step 3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/step3p5.py`, `python/sglang/srt/models/step3p5_mtp.py`, `python/sglang/srt/configs/step3p5.py`；PR 正文摘要: add Step-3.5-Flash model support。
 - 实现要点: `python/sglang/srt/models/step3p5.py` added +1037/-0 (1037 lines); hunks: -0,0 +1,1037; symbols: Step3p5MLP, __init__, forward, Step3p5MoEMLP，涉及 `Step3p5MLP, __init__, forward`；`python/sglang/srt/models/step3p5_mtp.py` added +336/-0 (336 lines); hunks: -0,0 +1,336; symbols: get_spec_layer_idx_from_weight_name, SharedHead, __init__, forward，涉及 `get_spec_layer_idx_from_weight_name, SharedHead, __init__`；`python/sglang/srt/configs/step3p5.py` added +97/-0 (97 lines); hunks: -0,0 +1,97; symbols: Step3p5Config, __init__，涉及 `Step3p5Config, __init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/step3p5.py` added +1037/-0 (1037 lines); hunks: -0,0 +1,1037; symbols: Step3p5MLP, __init__, forward, Step3p5MoEMLP
@@ -207,7 +206,7 @@ diff -- python/sglang/srt/configs/step3p5.py
 - 状态/时间: merged / 2026-03-04
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+31/-2，可读 patch 61 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Step 3.5 优化关键推理路径或后端选择，标题为「[Feature] implement the standard multi-layer MTP for step3p5」，变更集中在 `python/sglang/srt/speculative/multi_layer_eagle_worker_v2.py`, `python/sglang/srt/speculative/multi_layer_eagle_draft_extend_cuda_graph_runner.py`。PR 描述补充为：## Motivation The current SGL multi-layer MTP behavior can deviate from the standard Step3.5 Flash design, where hidden states should be propagated step-by-step across MTP layer...
+- 动机: 标题「[Feature] implement the standard multi-layer MTP for step3p5」；模型线: Step 3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/speculative/multi_layer_eagle_worker_v2.py`, `python/sglang/srt/speculative/multi_layer_eagle_draft_extend_cuda_graph_runner.py`；PR 正文摘要: The current SGL multi-layer MTP behavior can deviate from the standard Step3.5 Flash design, where hidden states should be propagated step-by-step across MTP layers/steps. This...。
 - 实现要点: `python/sglang/srt/speculative/multi_layer_eagle_worker_v2.py` modified +21/-2 (23 lines); hunks: -127,6 +127,11 @@ def __init__(; -382,6 +387,15 @@ def _draft_extend_for_prefill(; symbols: __init__, _draft_extend_for_prefill, forward_batch_generation，涉及 `__init__, _draft_extend_for_prefill, forward_batch_generation`；`python/sglang/srt/speculative/multi_layer_eagle_draft_extend_cuda_graph_runner.py` modified +10/-0 (10 lines); hunks: -387,6 +387,16 @@ def run_once():; symbols: run_once，涉及 `run_once`。
 - 代码 diff 细节:
   - `python/sglang/srt/speculative/multi_layer_eagle_worker_v2.py` modified +21/-2 (23 lines); hunks: -127,6 +127,11 @@ def __init__(; -382,6 +387,15 @@ def _draft_extend_for_prefill(; symbols: __init__, _draft_extend_for_prefill, forward_batch_generation
@@ -241,9 +240,9 @@ diff -- python/sglang/srt/speculative/multi_layer_eagle_draft_extend_cuda_graph_
 
 - 链接: https://github.com/sgl-project/sglang/pull/22076
 - 状态/时间: merged / 2026-04-04
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/step3p5.py`；关联提交 `ef130312434c`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/step3p5.py`；关联提交 `ef130312434c`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+0/-1，可读 patch 8 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Step 3.5 修复已暴露的启动、加载、解析或数值问题，标题为「Tiny fix step3.5-flash launch crash」，变更集中在 `python/sglang/srt/models/step3p5.py`。PR 描述补充为：## Motivation Before this, launch step3.5-flash will just crash since step3.5-flash config doesn't have `pad_token_id` afaik, `padding_idx` is not used in the model file, so I s...
+- 动机: 标题「Tiny fix step3.5-flash launch crash」；模型线: Step 3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/step3p5.py`；PR 正文摘要: Before this, launch step3.5-flash will just crash since step3.5-flash config doesn't have `pad_token_id` afaik, `padding_idx` is not used in the model file, so I simply deleted it.。
 - 实现要点: `python/sglang/srt/models/step3p5.py` modified +0/-1 (1 lines); hunks: -667,7 +667,6 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/step3p5.py` modified +0/-1 (1 lines); hunks: -667,7 +667,6 @@ def __init__(; symbols: __init__
@@ -265,7 +264,7 @@ diff -- python/sglang/srt/models/step3p5.py
 - 状态/时间: merged / 2026-04-16
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/step3p5.py`；关联提交 `b8794baa6d61`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+59/-57，可读 patch 211 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Step 3.5 补齐模型支持入口或运行时能力，标题为「[Step3p5] Optimize allreduce in MoE layers」，变更集中在 `python/sglang/srt/models/step3p5.py`。PR 描述补充为：## Motivation ## Modifications - Defer o_proj and share_expert all-reduce, combine with MoE output into a single all-reduce per layer (was 3 separate all-reduces) - Enable allre...
+- 动机: 标题「[Step3p5] Optimize allreduce in MoE layers」；模型线: Step 3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/step3p5.py`；PR 正文摘要: - Defer o_proj and share_expert all-reduce, combine with MoE output into a single all-reduce per layer (was 3 separate all-reduces) - Enable allreduce fusion and reduce-scatter...。
 - 实现要点: `python/sglang/srt/models/step3p5.py` modified +59/-57 (116 lines); hunks: -1,5 +1,3; -57,7 +55,6; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/step3p5.py` modified +59/-57 (116 lines); hunks: -1,5 +1,3; -57,7 +55,6; symbols: __init__
@@ -288,5 +287,5 @@ diff -- python/sglang/srt/models/step3p5.py
 
 ## 补漏结论
 
-- 本版不再接受只列 PR 标题的写法；每个 PR 必须有反查来源、diff 范围、实现要点、代码摘录、已读文件和验证风险。
+- 验收规则: 每个 PR 卡片必须保留反查来源、diff 范围、实现要点、代码摘录、已读文件和验证风险。
 - 如果新模型文件落在当前过滤规则之外，先补文件过滤规则，再重新执行本轮 `git log --name-only -- <model-files>` 追溯。

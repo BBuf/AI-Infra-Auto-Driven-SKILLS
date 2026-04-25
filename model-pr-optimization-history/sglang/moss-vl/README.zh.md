@@ -6,7 +6,6 @@
 - 源码基线: `sgl-project/sglang` 当前追溯 worktree commit `880599cd43`
 - PR 收集规则: 先从模型实现、配置、processor、parser、docs/tests 等相关文件执行 `git log --name-only -- <model-files>`，再按 commit subject 的模型关键词过滤，最后用 GitHub Pull Request files API 读取每个 PR 的最终 diff。
 - 额外保留规则: 原 history/skill 已显式引用但未出现在当前实现文件 git trace 中的 PR 会保留，并在卡片里标注来源。
-- diffusion 相关模型已从本目录剔除，不再纳入模型优化 skill/history。
 
 ## 模型实现文件覆盖
 
@@ -37,7 +36,7 @@
 - 状态/时间: merged / 2026-04-24
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/moss_vl.py`, `python/sglang/srt/multimodal/processors/moss_vl.py`；关联提交 `59724e90a9b8`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 10 个文件，+2401/-6，可读 patch 2611 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MOSS-VL 补齐模型支持入口或运行时能力，标题为「[srt] Add Moss-VL Python runtime support」，变更集中在 `python/sglang/srt/models/moss_vl.py`, `python/sglang/srt/multimodal/processors/moss_vl.py`。PR 描述补充为：## Summary This PR adds Python-side runtime support for Moss-VL in SRT. The changes include: - add `MossVLForConditionalGeneration` model support - add a Moss-VL multimodal proc...
+- 动机: 标题「[srt] Add Moss-VL Python runtime support」；模型线: MOSS-VL；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/moss_vl.py`, `python/sglang/srt/multimodal/processors/moss_vl.py`；PR 正文摘要: This PR adds Python-side runtime support for Moss-VL in SRT. The changes include: - add `MossVLForConditionalGeneration` model support - add a Moss-VL multimodal processor - reg...。
 - 实现要点: `python/sglang/srt/models/moss_vl.py` added +1643/-0 (1643 lines); hunks: -0,0 +1,1643; symbols: MossVLVisionMLP, __init__, forward, MossVLVisionPatchEmbed，涉及 `MossVLVisionMLP, __init__, forward`；`python/sglang/srt/multimodal/processors/moss_vl.py` added +612/-0 (612 lines); hunks: -0,0 +1,612; symbols: MossVLImageProcessor, __init__, _build_mm_items, _build_vision_token_info，涉及 `MossVLImageProcessor, __init__, _build_mm_items`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/moss_vl.py` added +1643/-0 (1643 lines); hunks: -0,0 +1,1643; symbols: MossVLVisionMLP, __init__, forward, MossVLVisionPatchEmbed
@@ -69,5 +68,5 @@ diff -- python/sglang/srt/multimodal/processors/moss_vl.py
 
 ## 补漏结论
 
-- 本版不再接受只列 PR 标题的写法；每个 PR 必须有反查来源、diff 范围、实现要点、代码摘录、已读文件和验证风险。
+- 验收规则: 每个 PR 卡片必须保留反查来源、diff 范围、实现要点、代码摘录、已读文件和验证风险。
 - 如果新模型文件落在当前过滤规则之外，先补文件过滤规则，再重新执行本轮 `git log --name-only -- <model-files>` 追溯。

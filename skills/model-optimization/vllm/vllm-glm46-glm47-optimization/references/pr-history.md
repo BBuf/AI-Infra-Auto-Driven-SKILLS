@@ -4,7 +4,7 @@
 - Source baseline: `vllm-project/vllm` trace worktree commit `95995bbef8`
 - Collection: model implementation files were traced with `git log --name-only -- <model-files>`, filtered by model keywords in commit subjects, then every PR card was populated from the GitHub Pull Request files API.
 - Extra preserved PRs from prior docs: 2
-- Rule: use this as the backing dossier for the skill, not only PR titles.
+- Rule: use this evidence file before changing model-specific skill guidance; it is not only PR titles.
 
 ## Implementation File Coverage
 
@@ -40,7 +40,7 @@
 - Status/date: merged / 2025-10-14
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +441/-0, 444 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For GLM-4.6/4.7, this PR adds or enables a model support/runtime surface. Title: "[Kernel][MoE] Add MoE tunings for GLM 4.6-FP8 and GLM 4.5 Air on NVidia B200". The diff centers on `vllm/model_executor/layers/fused_moe/configs/E=32,N=1408,device_name=NVIDIA_B200.json`, `vllm/model_executor/layers/fused_moe/configs/E=40,N=1536,device_name=NVIDIA_B200,dtype=fp8_w8a8.json`, `vllm/model_executor/layers/fused_moe/configs/E=64,N=1408,device_name=NVIDIA_B200.json`. PR body context: ## Purpose See title. I ran the following: --- Essential Elements of an Effective PR Description Checklist - [x] The purpose of the PR, such as "Fix some issue (link existing is...
+- Motivation: Title: "[Kernel][MoE] Add MoE tunings for GLM 4.6-FP8 and GLM 4.5 Air on NVidia B200"; model line: GLM-4.6/4.7; category: performance/backend optimization; main diff: `vllm/model_executor/layers/fused_moe/configs/E=32,N=1408,device_name=NVIDIA_B200.json`, `vllm/model_executor/layers/fused_moe/configs/E=40,N=1536,device_name=NVIDIA_B200,dtype=fp8_w8a8.json`, `vllm/model_executor/layers/fused_moe/configs/E=64,N=1408,device_name=NVIDIA_B200.json`; PR body summary: See title. I ran the following:.
 - Key implementation: `vllm/model_executor/layers/fused_moe/configs/E=32,N=1408,device_name=NVIDIA_B200.json` added +147/-0 (147 lines); hunks: -0,0 +1,147; `vllm/model_executor/layers/fused_moe/configs/E=40,N=1536,device_name=NVIDIA_B200,dtype=fp8_w8a8.json` added +147/-0 (147 lines); hunks: -0,0 +1,147; `vllm/model_executor/layers/fused_moe/configs/E=64,N=1408,device_name=NVIDIA_B200.json` added +147/-0 (147 lines); hunks: -0,0 +1,147.
 - Code diff details:
   - `vllm/model_executor/layers/fused_moe/configs/E=32,N=1408,device_name=NVIDIA_B200.json` added +147/-0 (147 lines); hunks: -0,0 +1,147
@@ -77,9 +77,9 @@ diff -- vllm/model_executor/layers/fused_moe/configs/E=64,N=1408,device_name=NVI
 
 - Link: https://github.com/vllm-project/vllm/pull/27597
 - Status/date: merged / 2025-11-12
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe_mtp.py`; associated commits `d3ade61e429f`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe_mtp.py`; associated commits `d3ade61e429f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +11/-4, 23 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For GLM-4.6/4.7, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Model] fix glm4_moe_mtp load weights with GLM-4.6 checkpoint.". The diff centers on `vllm/model_executor/models/glm4_moe_mtp.py`. PR body context: ## Purpose As described in issue#25993, when serving GLM-4.6 with mtp using the following command: It raises the following error: The root cause is that the GLM-4.6 checkpoint d...
+- Motivation: Title: "[Model] fix glm4_moe_mtp load weights with GLM-4.6 checkpoint."; model line: GLM-4.6/4.7; category: bug fix; main diff: `vllm/model_executor/models/glm4_moe_mtp.py`; PR body summary: As described in issue#25993, when serving GLM-4.6 with mtp using the following command: It raises the following error: The root cause is that the GLM-4.6 checkpoint doesn't incl....
 - Key implementation: `vllm/model_executor/models/glm4_moe_mtp.py` modified +11/-4 (15 lines); hunks: -256,11 +256,18 @@ def load_weights(self, weights: Iterable[tuple[str, torch....; symbols: load_weights, touching `load_weights`.
 - Code diff details:
   - `vllm/model_executor/models/glm4_moe_mtp.py` modified +11/-4 (15 lines); hunks: -256,11 +256,18 @@ def load_weights(self, weights: Iterable[tuple[str, torch....; symbols: load_weights
@@ -106,7 +106,7 @@ diff -- vllm/model_executor/models/glm4_moe_mtp.py
 - Status/date: merged / 2025-12-09
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +50/-4, 96 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For GLM-4.6/4.7, this PR adds or enables a model support/runtime surface. Title: "[Bugfix]: Fix glm46 awq marlin moe wna16 compatibility". The diff centers on `vllm/model_executor/layers/fused_moe/fused_moe.py`, `vllm/model_executor/layers/quantization/moe_wna16.py`. PR body context: ## Purpose Fixes two issues preventing GLM-4.6-AWQ from loading in vLLM: 1AWQ Marlin fallback compatibility: When AWQ Marlin doesn't support a MoE layer and falls back to MoeWNA...
+- Motivation: Title: "[Bugfix]: Fix glm46 awq marlin moe wna16 compatibility"; model line: GLM-4.6/4.7; category: bug fix; main diff: `vllm/model_executor/layers/fused_moe/fused_moe.py`, `vllm/model_executor/layers/quantization/moe_wna16.py`; PR body summary: Fixes two issues preventing GLM-4.6-AWQ from loading in vLLM: 1AWQ Marlin fallback compatibility: When AWQ Marlin doesn't support a MoE layer and falls back to MoeWNA16, it fail....
 - Key implementation: `vllm/model_executor/layers/fused_moe/fused_moe.py` modified +45/-0 (45 lines); hunks: -895,6 +895,48 @@ def get_moe_configs(; -960,6 +1002,9 @@ def get_moe_wna16_block_config(; symbols: get_moe_configs, _ensure_block_size_k_divisible, get_moe_wna16_block_config, touching `get_moe_configs, _ensure_block_size_k_divisible, get_moe_wna16_block_config`; `vllm/model_executor/layers/quantization/moe_wna16.py` modified +5/-4 (9 lines); hunks: -60,7 +60,7 @@ def __init__(; -107,7 +107,7 @@ def from_config(cls, config: dict[str, Any]) -> "MoeWNA16Con...; symbols: __init__, from_config, get_quant_method, moe_wna16_weight_loader, touching `__init__, from_config, get_quant_method`.
 - Code diff details:
   - `vllm/model_executor/layers/fused_moe/fused_moe.py` modified +45/-0 (45 lines); hunks: -895,6 +895,48 @@ def get_moe_configs(; -960,6 +1002,9 @@ def get_moe_wna16_block_config(; symbols: get_moe_configs, _ensure_block_size_k_divisible, get_moe_wna16_block_config
@@ -142,7 +142,7 @@ diff -- vllm/model_executor/layers/quantization/moe_wna16.py
 - Status/date: merged / 2025-12-20
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe.py`, `vllm/tool_parsers/glm47_moe_tool_parser.py`; associated commits `8a7a41437490`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +38/-3, 73 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For GLM-4.6/4.7, this PR adds or enables a model support/runtime surface. Title: "GLM-4.7 Tool Parser and Doc Update". The diff centers on `vllm/tool_parsers/glm47_moe_tool_parser.py`, `vllm/model_executor/models/glm4_moe.py`. PR body context: Added support for GLM-4.7's Tool Parser and improved documentation.
+- Motivation: Title: "GLM-4.7 Tool Parser and Doc Update"; model line: GLM-4.6/4.7; category: docs/tests/CI; main diff: `vllm/tool_parsers/glm47_moe_tool_parser.py`, `vllm/model_executor/models/glm4_moe.py`; PR body summary: Added support for GLM-4.7's Tool Parser and improved documentation..
 - Key implementation: `vllm/tool_parsers/glm47_moe_tool_parser.py` added +23/-0 (23 lines); hunks: -0,0 +1,23; symbols: Glm47MoeModelToolParser, __init__, touching `Glm47MoeModelToolParser, __init__`; `vllm/model_executor/models/glm4_moe.py` modified +2/-1 (3 lines); hunks: -21,7 +21,8.
 - Code diff details:
   - `vllm/tool_parsers/glm47_moe_tool_parser.py` added +23/-0 (23 lines); hunks: -0,0 +1,23; symbols: Glm47MoeModelToolParser, __init__
@@ -173,9 +173,9 @@ diff -- vllm/model_executor/models/glm4_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/31622
 - Status/date: merged / 2026-01-05
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/tool_parsers/glm4_moe_tool_parser.py`; associated commits `02dbb933cb28`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/tool_parsers/glm4_moe_tool_parser.py`; associated commits `02dbb933cb28`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +68/-0, 76 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For GLM-4.6/4.7, this PR fixes a launch, loading, parsing, or numerical issue. Title: "Fix GLM-4.6v flash tool calling in transformers 5.x". The diff centers on `vllm/tool_parsers/glm4_moe_tool_parser.py`. PR body context: ## Purpose fix #31485 ## Test Plan main branch this branch --- Essential Elements of an Effective PR Description Checklist - [ ] The purpose of the PR, such as "Fix some issue (...
+- Motivation: Title: "Fix GLM-4.6v flash tool calling in transformers 5.x"; model line: GLM-4.6/4.7; category: bug fix; main diff: `vllm/tool_parsers/glm4_moe_tool_parser.py`; PR body summary: fix #31485 main branch this branch.
 - Key implementation: `vllm/tool_parsers/glm4_moe_tool_parser.py` modified +14/-0 (14 lines); hunks: -56,6 +56,20 @@ def __init__(self, tokenizer: TokenizerLike):; symbols: __init__, adjust_request, extract_tool_calls, touching `__init__, adjust_request, extract_tool_calls`.
 - Code diff details:
   - `vllm/tool_parsers/glm4_moe_tool_parser.py` modified +14/-0 (14 lines); hunks: -56,6 +56,20 @@ def __init__(self, tokenizer: TokenizerLike):; symbols: __init__, adjust_request, extract_tool_calls
@@ -202,7 +202,7 @@ diff -- vllm/tool_parsers/glm4_moe_tool_parser.py
 - Status/date: merged / 2026-01-19
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe_lite.py`, `vllm/model_executor/models/glm4_moe_lite_mtp.py`, `vllm/model_executor/models/glm4_moe_mtp.py`; associated commits `71832ba71e77`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 9 files, +1135/-1, 1208 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For GLM-4.6/4.7, this PR adds or enables a model support/runtime surface. Title: "[GLM-4.7] GLM Model support for GLM-Lite". The diff centers on `vllm/model_executor/models/glm4_moe_lite.py`, `vllm/model_executor/models/glm4_moe_lite_mtp.py`, `vllm/model_executor/models/glm4_moe_mtp.py`. PR body context: using with transformers 5.0.0 with GLM-Lite model， transformers PR here
+- Motivation: Title: "[GLM-4.7] GLM Model support for GLM-Lite"; model line: GLM-4.6/4.7; category: model support/runtime entry; main diff: `vllm/model_executor/models/glm4_moe_lite.py`, `vllm/model_executor/models/glm4_moe_lite_mtp.py`, `vllm/model_executor/models/glm4_moe_mtp.py`; PR body summary: using with transformers 5.0.0 with GLM-Lite model， transformers PR here.
 - Key implementation: `vllm/model_executor/models/glm4_moe_lite.py` added +642/-0 (642 lines); hunks: -0,0 +1,642; symbols: Glm4MoeLiteMLP, Glm4MoeLite, Glm4LiteMixtureOfExperts, Glm4MoeLiteAttention, touching `Glm4MoeLiteMLP, Glm4MoeLite, Glm4LiteMixtureOfExperts`; `vllm/model_executor/models/glm4_moe_lite_mtp.py` added +464/-0 (464 lines); hunks: -0,0 +1,464; symbols: SharedHead, __init__, forward, Glm4MoeLiteMultiTokenPredictorLayer, touching `SharedHead, __init__, forward`; `vllm/model_executor/models/glm4_moe_mtp.py` modified +2/-1 (3 lines); hunks: -21,7 +21,8.
 - Code diff details:
   - `vllm/model_executor/models/glm4_moe_lite.py` added +642/-0 (642 lines); hunks: -0,0 +1,642; symbols: Glm4MoeLiteMLP, Glm4MoeLite, Glm4LiteMixtureOfExperts, Glm4MoeLiteAttention
@@ -241,7 +241,7 @@ diff -- vllm/model_executor/models/glm4_moe_mtp.py
 - Status/date: merged / 2026-03-18
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_glm47_moe_tool_parser.py`, `tests/tool_parsers/test_glm4_moe_tool_parser.py`, `vllm/tool_parsers/glm47_moe_tool_parser.py`, `vllm/tool_parsers/glm4_moe_tool_parser.py`; associated commits `fad09e8a1f51`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +193/-6, 244 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For GLM-4.6/4.7, this PR fixes a launch, loading, parsing, or numerical issue. Title: "fix(glm47): improve tool call parsing and content normalization". The diff centers on `tests/tool_parsers/test_glm47_moe_tool_parser.py`, `vllm/tool_parsers/glm47_moe_tool_parser.py`, `vllm/tool_parsers/glm4_moe_tool_parser.py`. PR body context: ## Summary - **Improve GLM-4.7 `func_detail_regex`**: Use `\S+?` instead of `.*?` for the function name capture group, and make the arg group greedy (`.*` vs `.*?`) so all argum...
+- Motivation: Title: "fix(glm47): improve tool call parsing and content normalization"; model line: GLM-4.6/4.7; category: bug fix; main diff: `tests/tool_parsers/test_glm47_moe_tool_parser.py`, `vllm/tool_parsers/glm47_moe_tool_parser.py`, `vllm/tool_parsers/glm4_moe_tool_parser.py`; PR body summary: - **Improve GLM-4.7 `func_detail_regex`**: Use `\S+?` instead of `.*?` for the function name capture group, and make the arg group greedy (`.*` vs `.*?`) so all argument pairs a....
 - Key implementation: `tests/tool_parsers/test_glm47_moe_tool_parser.py` added +168/-0 (168 lines); hunks: -0,0 +1,168; symbols: glm47_tokenizer, glm47_tool_parser, mock_request, TestGlm47ExtractToolCalls, touching `glm47_tokenizer, glm47_tool_parser, mock_request`; `vllm/tool_parsers/glm47_moe_tool_parser.py` modified +16/-2 (18 lines); hunks: -1,6 +1,16; -14,10 +24,14; symbols: Glm47MoeModelToolParser, __init__, touching `Glm47MoeModelToolParser, __init__`; `vllm/tool_parsers/glm4_moe_tool_parser.py` modified +6/-1 (7 lines); hunks: -206,7 +206,12 @@ def extract_tool_calls(; symbols: extract_tool_calls, touching `extract_tool_calls`; `tests/tool_parsers/test_glm4_moe_tool_parser.py` modified +3/-3 (6 lines); hunks: -107,7 +107,7 @@ def test_extract_tool_calls_no_tools(glm4_moe_tool_parser, m...; -152,7 +152,7 @@ def test_extract_tool_calls_no_tools(glm4_moe_tool_parser, m...; symbols: test_extract_tool_calls_no_tools, touching `test_extract_tool_calls_no_tools`.
 - Code diff details:
   - `tests/tool_parsers/test_glm47_moe_tool_parser.py` added +168/-0 (168 lines); hunks: -0,0 +1,168; symbols: glm47_tokenizer, glm47_tool_parser, mock_request, TestGlm47ExtractToolCalls

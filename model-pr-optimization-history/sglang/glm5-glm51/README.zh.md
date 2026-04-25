@@ -6,7 +6,6 @@
 - 源码基线: `sgl-project/sglang` 当前追溯 worktree commit `880599cd43`
 - PR 收集规则: 先从模型实现、配置、processor、parser、docs/tests 等相关文件执行 `git log --name-only -- <model-files>`，再按 commit subject 的模型关键词过滤，最后用 GitHub Pull Request files API 读取每个 PR 的最终 diff。
 - 额外保留规则: 原 history/skill 已显式引用但未出现在当前实现文件 git trace 中的 PR 会保留，并在卡片里标注来源。
-- diffusion 相关模型已从本目录剔除，不再纳入模型优化 skill/history。
 
 ## 模型实现文件覆盖
 
@@ -70,7 +69,7 @@
 - 状态/时间: merged / 2026-02-10
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+22/-7，可读 patch 98 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 GLM-5/5.1 补齐模型支持入口或运行时能力，标题为「Support GlmMoeDsaForCausalLM」，变更集中在 `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/server_args.py`。PR 描述补充为：## Motivation ## Modifications ## Accuracy Tests ## Benchmarking and Profiling ## Checklist - [ ] Format your code according to the Format code with pre-commit. - [ ] Add unit t...
+- 动机: 标题「Support GlmMoeDsaForCausalLM」；模型线: GLM-5/5.1；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/server_args.py`；PR 正文未提供可用摘要。
 - 实现要点: `python/sglang/srt/configs/model_config.py` modified +6/-5 (11 lines); hunks: -61,6 +61,7 @@ def is_deepseek_nsa(config: PretrainedConfig) -> bool:; -271,10 +272,10 @@ def from_server_args(; symbols: is_deepseek_nsa, from_server_args, _config_draft_model, _derive_model_shapes，涉及 `is_deepseek_nsa, from_server_args, _config_draft_model`；`python/sglang/srt/models/glm4_moe.py` modified +6/-1 (7 lines); hunks: -79,6 +79,7; -1279,4 +1280,8 @@ def set_eagle3_layers_to_capture(self, layer_ids: Optional...; symbols: set_eagle3_layers_to_capture, GlmMoeDsaForCausalLM，涉及 `set_eagle3_layers_to_capture, GlmMoeDsaForCausalLM`；`python/sglang/srt/server_args.py` modified +10/-1 (11 lines); hunks: -1194,9 +1194,15 @@ def _handle_model_specific_adjustments(self):; -2323,6 +2329,7 @@ def _handle_speculative_decoding(self):; symbols: _handle_model_specific_adjustments, _handle_speculative_decoding, _handle_deterministic_inference, auto_choose_speculative_params，涉及 `_handle_model_specific_adjustments, _handle_speculative_decoding, _handle_deterministic_inference`。
 - 代码 diff 细节:
   - `python/sglang/srt/configs/model_config.py` modified +6/-5 (11 lines); hunks: -61,6 +61,7 @@ def is_deepseek_nsa(config: PretrainedConfig) -> bool:; -271,10 +272,10 @@ def from_server_args(; symbols: is_deepseek_nsa, from_server_args, _config_draft_model, _derive_model_shapes
@@ -109,7 +108,7 @@ diff -- python/sglang/srt/server_args.py
 - 状态/时间: merged / 2026-02-16
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+2/-1，可读 patch 10 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 GLM-5/5.1 修复已暴露的启动、加载、解析或数值问题，标题为「Fix GLM-5 fused shared expert」，变更集中在 `python/sglang/srt/models/glm4_moe.py`。PR 描述补充为：## Motivation The MoE parts of GLM-5 consists of 256 routing experts and 1 shared expert, but currently the code fully inherits from `DeepseekV2ForCausalLM`, which causes the fu...
+- 动机: 标题「Fix GLM-5 fused shared expert」；模型线: GLM-5/5.1；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/glm4_moe.py`；PR 正文摘要: The MoE parts of GLM-5 consists of 256 routing experts and 1 shared expert, but currently the code fully inherits from `DeepseekV2ForCausalLM`, which causes the fused shared exp...。
 - 实现要点: `python/sglang/srt/models/glm4_moe.py` modified +2/-1 (3 lines); hunks: -1281,7 +1281,8 @@ def set_eagle3_layers_to_capture(self, layer_ids: Optional...; symbols: set_eagle3_layers_to_capture, GlmMoeDsaForCausalLM, determine_num_fused_shared_experts，涉及 `set_eagle3_layers_to_capture, GlmMoeDsaForCausalLM, determine_num_fused_shared_experts`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/glm4_moe.py` modified +2/-1 (3 lines); hunks: -1281,7 +1281,8 @@ def set_eagle3_layers_to_capture(self, layer_ids: Optional...; symbols: set_eagle3_layers_to_capture, GlmMoeDsaForCausalLM, determine_num_fused_shared_experts
@@ -133,7 +132,7 @@ diff -- python/sglang/srt/models/glm4_moe.py
 - 状态/时间: merged / 2026-02-25
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/amd/accuracy/mi30x/test_glm5_eval_amd.py`, `test/registered/amd/accuracy/mi35x/test_glm5_eval_mi35x.py`；关联提交 `23adb50751d5`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+635/-1，可读 patch 725 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 GLM-5/5.1 补齐模型支持入口或运行时能力，标题为「[AMD] [GLM-5 Day 0] Add GLM-5 nightly test」，变更集中在 `test/registered/amd/accuracy/mi35x/test_glm5_eval_mi35x.py`, `test/registered/amd/accuracy/mi30x/test_glm5_eval_amd.py`。PR 描述补充为：## Motivation Add nightly CI accuracy tests for GLM-5 on AMD MI325/MI300X and MI35x runners. GLM-5 is a 744B parameter (40B active) MoE model that uses DeepSeek Sparse Attention...
+- 动机: 标题「[AMD] [GLM-5 Day 0] Add GLM-5 nightly test」；模型线: GLM-5/5.1；类别: 文档/测试/CI；主要 diff: `test/registered/amd/accuracy/mi35x/test_glm5_eval_mi35x.py`, `test/registered/amd/accuracy/mi30x/test_glm5_eval_amd.py`；PR 正文摘要: Add nightly CI accuracy tests for GLM-5 on AMD MI325/MI300X and MI35x runners. GLM-5 is a 744B parameter (40B active) MoE model that uses DeepSeek Sparse Attention (DSA/NSA), sh...。
 - 实现要点: `test/registered/amd/accuracy/mi35x/test_glm5_eval_mi35x.py` added +249/-0 (249 lines); hunks: -0,0 +1,249; symbols: ModelConfig, get_display_name, get_one_example, get_few_shot_examples，涉及 `ModelConfig, get_display_name, get_one_example`；`test/registered/amd/accuracy/mi30x/test_glm5_eval_amd.py` added +244/-0 (244 lines); hunks: -0,0 +1,244; symbols: ModelConfig, get_display_name, get_one_example, get_few_shot_examples，涉及 `ModelConfig, get_display_name, get_one_example`。
 - 代码 diff 细节:
   - `test/registered/amd/accuracy/mi35x/test_glm5_eval_mi35x.py` added +249/-0 (249 lines); hunks: -0,0 +1,249; symbols: ModelConfig, get_display_name, get_one_example, get_few_shot_examples
@@ -169,7 +168,7 @@ diff -- test/registered/amd/accuracy/mi30x/test_glm5_eval_amd.py
 - 状态/时间: merged / 2026-03-09
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+32/-59，可读 patch 200 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 GLM-5/5.1 补齐模型支持入口或运行时能力，标题为「[V32/GLM5] Control the threshold of applying dense attention with an environ」，变更集中在 `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/server_args.py`, `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`。PR 描述补充为：## Motivation - Add an environ `SGLANG_NSA_DENSE_ATTN_KV_LEN_THRESHOLD`, for controlling whether to use dense MHA or sparse MLA kernel. It's set to index.topk by default, thus n...
+- 动机: 标题「[V32/GLM5] Control the threshold of applying dense attention with an environ」；模型线: GLM-5/5.1；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/server_args.py`, `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`；PR 正文摘要: - Add an environ `SGLANG_NSA_DENSE_ATTN_KV_LEN_THRESHOLD`, for controlling whether to use dense MHA or sparse MLA kernel. It's set to index.topk by default, thus not breaking th...。
 - 实现要点: `python/sglang/srt/layers/attention/nsa_backend.py` modified +3/-46 (49 lines); hunks: -16,10 +16,6; -71,15 +67,10; symbols: NSAFlashMLAMetadata, __init__, init_forward_metadata_replay_cuda_graph_from_precomputed, set_nsa_prefill_impl，涉及 `NSAFlashMLAMetadata, __init__, init_forward_metadata_replay_cuda_graph_from_precomputed`；`python/sglang/srt/server_args.py` modified +26/-3 (29 lines); hunks: -1353,12 +1353,35 @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments，涉及 `_handle_model_specific_adjustments`；`test/registered/quant/test_deepseek_v32_fp4_4gpu.py` modified +0/-4 (4 lines); hunks: -34,8 +34,6 @@ def setUpClass(cls):; -103,8 +101,6 @@ def setUpClass(cls):; symbols: setUpClass，涉及 `setUpClass`；`test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py` modified +0/-4 (4 lines); hunks: -39,8 +39,6 @@ def setUpClass(cls):; -131,8 +129,6 @@ def setUpClass(cls):; symbols: setUpClass，涉及 `setUpClass`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa_backend.py` modified +3/-46 (49 lines); hunks: -16,10 +16,6; -71,15 +67,10; symbols: NSAFlashMLAMetadata, __init__, init_forward_metadata_replay_cuda_graph_from_precomputed, set_nsa_prefill_impl
@@ -212,7 +211,7 @@ diff -- test/registered/quant/test_deepseek_v32_fp4_4gpu.py
 - 状态/时间: merged / 2026-04-06
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+11/-12，可读 patch 91 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 GLM-5/5.1 修复已暴露的启动、加载、解析或数值问题，标题为「[Doc] Fix and improve DeepSeek V3.2/GLM-5 documentation」，变更集中在 `docs/basic_usage/deepseek_v32.md`。PR 描述补充为：## Summary Remove skip-softmax section (I think it's for dense attention only, not DSA, per flashinfer constraint below) and improve docs https://github.com/flashinfer-ai/flashi...
+- 动机: 标题「[Doc] Fix and improve DeepSeek V3.2/GLM-5 documentation」；模型线: GLM-5/5.1；类别: 缺陷修复；主要 diff: `docs/basic_usage/deepseek_v32.md`；PR 正文摘要: Remove skip-softmax section (I think it's for dense attention only, not DSA, per flashinfer constraint below) and improve docs https://github.com/flashinfer-ai/flashinfer/blob/v...。
 - 实现要点: `docs/basic_usage/deepseek_v32.md` modified +11/-12 (23 lines); hunks: -3,7 +3,7; -56,13 +56,13 @@ python -m sglang.launch_server --model deepseek-ai/DeepSeek-...。
 - 代码 diff 细节:
   - `docs/basic_usage/deepseek_v32.md` modified +11/-12 (23 lines); hunks: -3,7 +3,7; -56,13 +56,13 @@ python -m sglang.launch_server --model deepseek-ai/DeepSeek-...
@@ -239,7 +238,7 @@ diff -- docs/basic_usage/deepseek_v32.md
 - 状态/时间: merged / 2026-04-08
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+27/-31，可读 patch 73 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 GLM-5/5.1 修复已暴露的启动、加载、解析或数值问题，标题为「[AMD] Fix GLM-5 fp8 KV quant path dispatch on MI300」，变更集中在 `python/sglang/srt/mem_cache/memory_pool.py`。PR 描述补充为：## Motivation On MI300, running GLM-5-fp8 with FP8 KV cache can fail (see CI log). The root cause is that the quant path does not dispatch the correct kernel (`set_mla_kv_buffer...
+- 动机: 标题「[AMD] Fix GLM-5 fp8 KV quant path dispatch on MI300」；模型线: GLM-5/5.1；类别: 缺陷修复；主要 diff: `python/sglang/srt/mem_cache/memory_pool.py`；PR 正文摘要: On MI300, running GLM-5-fp8 with FP8 KV cache can fail (see CI log). The root cause is that the quant path does not dispatch the correct kernel (`set_mla_kv_buffer_triton_fp8_qu...。
 - 实现要点: `python/sglang/srt/mem_cache/memory_pool.py` modified +27/-31 (58 lines); hunks: -45,7 +45,7; -1575,37 +1575,33 @@ def set_mla_kv_buffer(; symbols: set_mla_kv_buffer，涉及 `set_mla_kv_buffer`。
 - 代码 diff 细节:
   - `python/sglang/srt/mem_cache/memory_pool.py` modified +27/-31 (58 lines); hunks: -45,7 +45,7; -1575,37 +1575,33 @@ def set_mla_kv_buffer(; symbols: set_mla_kv_buffer
@@ -266,7 +265,7 @@ diff -- python/sglang/srt/mem_cache/memory_pool.py
 - 状态/时间: merged / 2026-04-08
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/amd/accuracy/mi30x/test_glm5_eval_amd.py`, `test/registered/amd/accuracy/mi35x/test_glm5_eval_mi35x.py`, `test/registered/amd/perf/mi30x/test_glm5_perf_amd.py`, `test/registered/amd/perf/mi35x/test_glm5_perf_mi35x.py`；关联提交 `db60a620dbf1`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+345/-5，可读 patch 448 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 GLM-5/5.1 补齐模型支持入口或运行时能力，标题为「[AMD] Add GLM-5-FP8 nightly performance benchmarks for MI30x and MI35x」，变更集中在 `test/registered/amd/perf/mi35x/test_glm5_perf_mi35x.py`, `test/registered/amd/perf/mi30x/test_glm5_perf_amd.py`, `test/registered/amd/accuracy/mi30x/test_glm5_eval_amd.py`。PR 描述补充为：## Summary Add GLM-5-FP8 nightly perf benchmarks (`bench_one_batch`) for MI30x and MI35x. Both accuracy and perf use `zai-org/GLM-5-FP8` with NSA tilelang backend, TP=8, FP8 KV...
+- 动机: 标题「[AMD] Add GLM-5-FP8 nightly performance benchmarks for MI30x and MI35x」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `test/registered/amd/perf/mi35x/test_glm5_perf_mi35x.py`, `test/registered/amd/perf/mi30x/test_glm5_perf_amd.py`, `test/registered/amd/accuracy/mi30x/test_glm5_eval_amd.py`；PR 正文摘要: Add GLM-5-FP8 nightly perf benchmarks (`bench_one_batch`) for MI30x and MI35x. Both accuracy and perf use `zai-org/GLM-5-FP8` with NSA tilelang backend, TP=8, FP8 KV cache, and...。
 - 实现要点: `test/registered/amd/perf/mi35x/test_glm5_perf_mi35x.py` added +143/-0 (143 lines); hunks: -0,0 +1,143; symbols: generate_simple_markdown_report, TestGLM5PerfMI35x, setUpClass, test_glm5_perf，涉及 `generate_simple_markdown_report, TestGLM5PerfMI35x, setUpClass`；`test/registered/amd/perf/mi30x/test_glm5_perf_amd.py` added +140/-0 (140 lines); hunks: -0,0 +1,140; symbols: generate_simple_markdown_report, TestNightlyGLM5Performance, setUpClass, test_bench_glm5，涉及 `generate_simple_markdown_report, TestNightlyGLM5Performance, setUpClass`；`test/registered/amd/accuracy/mi30x/test_glm5_eval_amd.py` modified +6/-2 (8 lines); hunks: -59,13 +59,17 @@ def get_display_name(self) -> str:; -77,7 +81,7 @@ def get_display_name(self) -> str:; symbols: get_display_name，涉及 `get_display_name`；`test/registered/amd/accuracy/mi35x/test_glm5_eval_mi35x.py` modified +6/-2 (8 lines); hunks: -64,13 +64,17 @@ def get_display_name(self) -> str:; -82,7 +86,7 @@ def get_display_name(self) -> str:; symbols: get_display_name，涉及 `get_display_name`。
 - 代码 diff 细节:
   - `test/registered/amd/perf/mi35x/test_glm5_perf_mi35x.py` added +143/-0 (143 lines); hunks: -0,0 +1,143; symbols: generate_simple_markdown_report, TestGLM5PerfMI35x, setUpClass, test_glm5_perf
@@ -306,7 +305,7 @@ diff -- test/registered/amd/accuracy/mi30x/test_glm5_eval_amd.py
 - 状态/时间: merged / 2026-04-08
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+153/-30，可读 patch 301 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 GLM-5/5.1 补齐模型支持入口或运行时能力，标题为「Add CI tests for GLM-5」，变更集中在 `test/registered/8-gpu-models/test_dsa_models_basic.py`, `test/registered/8-gpu-models/test_dsa_models_mtp.py`。PR 描述补充为：## Motivation ## Modifications ## Accuracy Tests ## Speed Tests and Profiling ## Checklist - [ ] Format your code according to the Format code with pre-commit. - [ ] Add unit te...
+- 动机: 标题「Add CI tests for GLM-5」；模型线: GLM-5/5.1；类别: 文档/测试/CI；主要 diff: `test/registered/8-gpu-models/test_dsa_models_basic.py`, `test/registered/8-gpu-models/test_dsa_models_mtp.py`；PR 正文未提供可用摘要。
 - 实现要点: `test/registered/8-gpu-models/test_dsa_models_basic.py` renamed +121/-1 (122 lines); hunks: -14,9 +14,10; -138,5 +139,124 @@ def test_bs_1_speed(self):; symbols: TestDeepseekV32DP, test_bs_1_speed, TestGLM5DP, setUpClass，涉及 `TestDeepseekV32DP, test_bs_1_speed, TestGLM5DP`；`test/registered/8-gpu-models/test_dsa_models_mtp.py` renamed +32/-29 (61 lines); hunks: -20,6 +20,7; -47,12 +48,13 @@ def setUpClass(cls):; symbols: TestDeepseekV32DPMTP, setUpClass, tearDownClass, test_bs_1_speed，涉及 `TestDeepseekV32DPMTP, setUpClass, tearDownClass`。
 - 代码 diff 细节:
   - `test/registered/8-gpu-models/test_dsa_models_basic.py` renamed +121/-1 (122 lines); hunks: -14,9 +14,10; -138,5 +139,124 @@ def test_bs_1_speed(self):; symbols: TestDeepseekV32DP, test_bs_1_speed, TestGLM5DP, setUpClass
@@ -342,7 +341,7 @@ diff -- test/registered/8-gpu-models/test_dsa_models_mtp.py
 - 状态/时间: merged / 2026-04-09
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/gb300/test_glm5_fp8.py`；关联提交 `46c2b7762765`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+82/-6，可读 patch 131 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 GLM-5/5.1 补齐模型支持入口或运行时能力，标题为「[CI] Add GLM-5.1 nightly tests and update Qwen3.5 model」，变更集中在 `test/registered/gb300/test_glm5_fp8.py`。PR 描述补充为：## Summary - Add GLM-5.1 FP8 nightly test for H200/B200 (`nightly-8-gpu-common` suite) with TP8, TP8+DP8, and TP8+DP8+MTP variants - Update GB300 GLM-5 tests to GLM-5.1 model na...
+- 动机: 标题「[CI] Add GLM-5.1 nightly tests and update Qwen3.5 model」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `test/registered/gb300/test_glm5_fp8.py`；PR 正文摘要: - Add GLM-5.1 FP8 nightly test for H200/B200 (`nightly-8-gpu-common` suite) with TP8, TP8+DP8, and TP8+DP8+MTP variants - Update GB300 GLM-5 tests to GLM-5.1 model names (`zai-o...。
 - 实现要点: `test/registered/gb300/test_glm5_fp8.py` modified +3/-3 (6 lines); hunks: -8,7 +8,7; -27,7 +27,7; symbols: TestGlm5Fp8, test_glm5_fp8，涉及 `TestGlm5Fp8, test_glm5_fp8`。
 - 代码 diff 细节:
   - `test/registered/gb300/test_glm5_fp8.py` modified +3/-3 (6 lines); hunks: -8,7 +8,7; -27,7 +27,7; symbols: TestGlm5Fp8, test_glm5_fp8
@@ -369,7 +368,7 @@ diff -- test/registered/gb300/test_glm5_fp8.py
 - 状态/时间: merged / 2026-04-09
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/amd/accuracy/mi30x/test_glm51_eval_amd.py`, `test/registered/amd/accuracy/mi35x/test_glm51_eval_mi35x.py`, `test/registered/amd/perf/mi30x/test_glm51_perf_amd.py`, `test/registered/amd/perf/mi35x/test_glm51_perf_mi35x.py`；关联提交 `ef6bfc1197ab`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+918/-25，可读 patch 1064 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 GLM-5/5.1 补齐模型支持入口或运行时能力，标题为「[AMD] Add GLM-5.1-FP8 nightly accuracy and performance benchmarks for MI30x and MI35x」，变更集中在 `test/registered/amd/accuracy/mi35x/test_glm51_eval_mi35x.py`, `test/registered/amd/accuracy/mi30x/test_glm51_eval_amd.py`, `test/registered/amd/perf/mi35x/test_glm51_perf_mi35x.py`。PR 描述补充为：## Summary Add GLM-5.1-FP8 nightly accuracy + perf benchmarks (`bench_one_batch`) for MI30x and MI35x. Both GLM-5-FP8 and GLM-5.1-FP8 share identical architecture (`GlmMoeDsaFor...
+- 动机: 标题「[AMD] Add GLM-5.1-FP8 nightly accuracy and performance benchmarks for MI30x and MI35x」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `test/registered/amd/accuracy/mi35x/test_glm51_eval_mi35x.py`, `test/registered/amd/accuracy/mi30x/test_glm51_eval_amd.py`, `test/registered/amd/perf/mi35x/test_glm51_perf_mi35x.py`；PR 正文摘要: Add GLM-5.1-FP8 nightly accuracy + perf benchmarks (`bench_one_batch`) for MI30x and MI35x. Both GLM-5-FP8 and GLM-5.1-FP8 share identical architecture (`GlmMoeDsaForCausalLM`,...。
 - 实现要点: `test/registered/amd/accuracy/mi35x/test_glm51_eval_mi35x.py` added +242/-0 (242 lines); hunks: -0,0 +1,242; symbols: ModelConfig, get_display_name, get_one_example, get_few_shot_examples，涉及 `ModelConfig, get_display_name, get_one_example`；`test/registered/amd/accuracy/mi30x/test_glm51_eval_amd.py` added +238/-0 (238 lines); hunks: -0,0 +1,238; symbols: ModelConfig, get_display_name, get_one_example, get_few_shot_examples，涉及 `ModelConfig, get_display_name, get_one_example`；`test/registered/amd/perf/mi35x/test_glm51_perf_mi35x.py` added +146/-0 (146 lines); hunks: -0,0 +1,146; symbols: generate_simple_markdown_report, TestGLM51PerfMI35x, setUpClass, test_glm51_perf，涉及 `generate_simple_markdown_report, TestGLM51PerfMI35x, setUpClass`；`test/registered/amd/perf/mi30x/test_glm51_perf_amd.py` added +138/-0 (138 lines); hunks: -0,0 +1,138; symbols: generate_simple_markdown_report, TestNightlyGLM51Performance, setUpClass, test_bench_glm51，涉及 `generate_simple_markdown_report, TestNightlyGLM51Performance, setUpClass`。
 - 代码 diff 细节:
   - `test/registered/amd/accuracy/mi35x/test_glm51_eval_mi35x.py` added +242/-0 (242 lines); hunks: -0,0 +1,242; symbols: ModelConfig, get_display_name, get_one_example, get_few_shot_examples
@@ -409,7 +408,7 @@ diff -- test/registered/amd/perf/mi35x/test_glm51_perf_mi35x.py
 - 状态/时间: merged / 2026-04-13
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/platforms/ascend/ascend_npu_glm5_examples.md`；关联提交 `13a4aafdbe69`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+8/-2，可读 patch 19 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 GLM-5/5.1 补齐模型支持入口或运行时能力，标题为「[NPU] update glm5 running guide」，变更集中在 `docs/platforms/ascend/ascend_npu_glm5_examples.md`。PR 描述补充为：## Motivation Update NPU document, add best practice of GLM5 supported on ascend npu ## Modifications ## Accuracy Tests ## Benchmarking and Profiling ## Checklist - [x] Format y...
+- 动机: 标题「[NPU] update glm5 running guide」；模型线: GLM-5/5.1；类别: 文档/测试/CI；主要 diff: `docs/platforms/ascend/ascend_npu_glm5_examples.md`；PR 正文摘要: Update NPU document, add best practice of GLM5 supported on ascend npu。
 - 实现要点: `docs/platforms/ascend/ascend_npu_glm5_examples.md` modified +8/-2 (10 lines); hunks: -53,10 +53,16 @@ docker run -itd --shm-size=16g --privileged=true --name ${NA...。
 - 代码 diff 细节:
   - `docs/platforms/ascend/ascend_npu_glm5_examples.md` modified +8/-2 (10 lines); hunks: -53,10 +53,16 @@ docker run -itd --shm-size=16g --privileged=true --name ${NA...
@@ -436,7 +435,7 @@ diff -- docs/platforms/ascend/ascend_npu_glm5_examples.md
 - 状态/时间: merged / 2026-04-14
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+8/-0，可读 patch 29 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 GLM-5/5.1 修复已暴露的启动、加载、解析或数值问题，标题为「GLM-5/5.1 MXFP4 Checkpoint Inference Compatibility Fix」，变更集中在 `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`, `python/sglang/srt/model_loader/loader.py`, `python/sglang/srt/server_args.py`。PR 描述补充为：## Motivation Addresses this issue regarding AMD Quark-quantized GLM-5 and GLM-5.1 MXFP4 checkpoints when using with SGLang (Exclude-layer names don't match SGLang internal name...
+- 动机: 标题「GLM-5/5.1 MXFP4 Checkpoint Inference Compatibility Fix」；模型线: GLM-5/5.1；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`, `python/sglang/srt/model_loader/loader.py`, `python/sglang/srt/server_args.py`；PR 正文摘要: Addresses this issue regarding AMD Quark-quantized GLM-5 and GLM-5.1 MXFP4 checkpoints when using with SGLang (Exclude-layer names don't match SGLang internal names & Weight sha...。
 - 实现要点: `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` modified +3/-0 (3 lines); hunks: -560,6 +560,9 @@ def post_load_weights(; symbols: post_load_weights，涉及 `post_load_weights`；`python/sglang/srt/model_loader/loader.py` modified +3/-0 (3 lines); hunks: -198,6 +198,9 @@ def _get_quantization_config(; symbols: _get_quantization_config，涉及 `_get_quantization_config`；`python/sglang/srt/server_args.py` modified +2/-0 (2 lines); hunks: -1016,6 +1016,8 @@ def _handle_missing_default_values(self):; symbols: _handle_missing_default_values，涉及 `_handle_missing_default_values`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` modified +3/-0 (3 lines); hunks: -560,6 +560,9 @@ def post_load_weights(; symbols: post_load_weights
@@ -470,7 +469,7 @@ diff -- python/sglang/srt/server_args.py
 - 状态/时间: merged / 2026-04-15
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/amd/accuracy/mi35x/test_glm5_mxfp4_eval_mi35x.py`, `test/registered/amd/perf/mi35x/test_glm5_mxfp4_perf_mi35x.py`；关联提交 `39c6bf730c41`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+528/-130，可读 patch 821 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 GLM-5/5.1 补齐模型支持入口或运行时能力，标题为「[AMD][CI] Add GLM-5-MXFP4 accuracy and perf nightly tests for MI35x」，变更集中在 `test/registered/amd/accuracy/mi35x/test_glm5_mxfp4_eval_mi35x.py`, `test/registered/amd/perf/mi35x/test_glm5_mxfp4_perf_mi35x.py`。PR 描述补充为：## Summary - Add nightly accuracy test (GSM8K 5-shot) and perf benchmark (\`bench_one_batch\`) for \`amd/GLM-5-MXFP4\` on MI35x 8-GPU - Remove obsolete base GLM-5 (BF16 NSA) CI...
+- 动机: 标题「[AMD][CI] Add GLM-5-MXFP4 accuracy and perf nightly tests for MI35x」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `test/registered/amd/accuracy/mi35x/test_glm5_mxfp4_eval_mi35x.py`, `test/registered/amd/perf/mi35x/test_glm5_mxfp4_perf_mi35x.py`；PR 正文摘要: - Add nightly accuracy test (GSM8K 5-shot) and perf benchmark (\`bench_one_batch\`) for \`amd/GLM-5-MXFP4\` on MI35x 8-GPU - Remove obsolete base GLM-5 (BF16 NSA) CI jobs supers...。
 - 实现要点: `test/registered/amd/accuracy/mi35x/test_glm5_mxfp4_eval_mi35x.py` added +281/-0 (281 lines); hunks: -0,0 +1,281; symbols: get_model_path, ModelConfig, __post_init__, get_display_name，涉及 `get_model_path, ModelConfig, __post_init__`；`test/registered/amd/perf/mi35x/test_glm5_mxfp4_perf_mi35x.py` added +187/-0 (187 lines); hunks: -0,0 +1,187; symbols: generate_simple_markdown_report, get_model_path, TestGLM5MXFP4PerfMI35x, setUpClass，涉及 `generate_simple_markdown_report, get_model_path, TestGLM5MXFP4PerfMI35x`。
 - 代码 diff 细节:
   - `test/registered/amd/accuracy/mi35x/test_glm5_mxfp4_eval_mi35x.py` added +281/-0 (281 lines); hunks: -0,0 +1,281; symbols: get_model_path, ModelConfig, __post_init__, get_display_name
@@ -506,7 +505,7 @@ diff -- test/registered/amd/perf/mi35x/test_glm5_mxfp4_perf_mi35x.py
 - 状态/时间: merged / 2026-04-16
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+67/-1，可读 patch 95 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 GLM-5/5.1 修复已暴露的启动、加载、解析或数值问题，标题为「fix: normalize tool message content for GLM5.1 chat template」，变更集中在 `python/sglang/srt/entrypoints/openai/serving_chat.py`, `test/registered/openai_server/basic/test_serving_chat.py`。PR 描述补充为：## Fix: Normalize tool message `content` from array format to string before applying chat template ### Problem Per the OpenAI API specification%20chat.completions%20%3E%20(model...
+- 动机: 标题「fix: normalize tool message content for GLM5.1 chat template」；模型线: GLM-5/5.1；类别: 缺陷修复；主要 diff: `python/sglang/srt/entrypoints/openai/serving_chat.py`, `test/registered/openai_server/basic/test_serving_chat.py`；PR 正文摘要: Fix: Normalize tool message `content` from array format to string before applying chat template Problem Per the OpenAI API specification%20chat.completions%20%3E%20(model)%20cha...。
 - 实现要点: `python/sglang/srt/entrypoints/openai/serving_chat.py` modified +26/-0 (26 lines); hunks: -60,6 +60,28; -457,6 +479,10 @@ def _apply_jinja_template(; symbols: normalize_tool_content, _extract_max_dynamic_patch, _apply_jinja_template，涉及 `normalize_tool_content, _extract_max_dynamic_patch, _apply_jinja_template`；`test/registered/openai_server/basic/test_serving_chat.py` modified +41/-1 (42 lines); hunks: -19,7 +19,10; -894,5 +897,42 @@ def test_required_without_parser_invalid_json_returns_none(...; symbols: test_required_without_parser_invalid_json_returns_none, TestNormalizeToolContent, test_openai_text_parts_flattened, test_multiple_text_parts_joined，涉及 `test_required_without_parser_invalid_json_returns_none, TestNormalizeToolContent, test_openai_text_parts_flattened`。
 - 代码 diff 细节:
   - `python/sglang/srt/entrypoints/openai/serving_chat.py` modified +26/-0 (26 lines); hunks: -60,6 +60,28; -457,6 +479,10 @@ def _apply_jinja_template(; symbols: normalize_tool_content, _extract_max_dynamic_patch, _apply_jinja_template
@@ -543,7 +542,7 @@ diff -- test/registered/openai_server/basic/test_serving_chat.py
 - 状态/时间: merged / 2026-04-19
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+24/-5，可读 patch 72 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 GLM-5/5.1 调整模型相关实现，标题为「[AMD] Reduce NSA indexer kernels (weights_proj, k-cache store kernel fusion)」，变更集中在 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。PR 描述补充为：## Motivation Redundant kernels in the NSA indexer on HIP: weights_proj: - The ReplicatedLinear layer uses fp32 params_dtype, preventing tgemm from dispatching to the tuned bf16...
+- 动机: 标题「[AMD] Reduce NSA indexer kernels (weights_proj, k-cache store kernel fusion)」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；PR 正文摘要: Redundant kernels in the NSA indexer on HIP: weights_proj: - The ReplicatedLinear layer uses fp32 params_dtype, preventing tgemm from dispatching to the tuned bf16 fused kernel...。
 - 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +24/-5 (29 lines); hunks: -14,7 +14,7; -32,14 +32,16; symbols: __init__, _weights_proj_bf16_in_fp32_out, _store_index_k_cache，涉及 `__init__, _weights_proj_bf16_in_fp32_out, _store_index_k_cache`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +24/-5 (29 lines); hunks: -14,7 +14,7; -32,14 +32,16; symbols: __init__, _weights_proj_bf16_in_fp32_out, _store_index_k_cache
@@ -570,7 +569,7 @@ diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
 - 状态/时间: merged / 2026-04-20
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+41/-15，可读 patch 87 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 GLM-5/5.1 补齐模型支持入口或运行时能力，标题为「[AMD] Enable MTP for GLM-5-mxfp4 model」，变更集中在 `python/sglang/srt/models/deepseek_nextn.py`。PR 描述补充为：## Motivation Fix https://github.com/sgl-project/sglang/issues/23142. Quark-quantized GLM-5-MXFP4 checkpoints store MTP (NextN) weights — including `eh_proj` — in FP4-packed for...
+- 动机: 标题「[AMD] Enable MTP for GLM-5-mxfp4 model」；模型线: GLM-5/5.1；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/deepseek_nextn.py`；PR 正文摘要: Fix https://github.com/sgl-project/sglang/issues/23142. Quark-quantized GLM-5-MXFP4 checkpoints store MTP (NextN) weights — including `eh_proj` — in FP4-packed format. The exist...。
 - 实现要点: `python/sglang/srt/models/deepseek_nextn.py` modified +41/-15 (56 lines); hunks: -42,6 +42,7; -99,7 +100,18 @@ def __init__(; symbols: __init__, forward，涉及 `__init__, forward`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/deepseek_nextn.py` modified +41/-15 (56 lines); hunks: -42,6 +42,7; -99,7 +100,18 @@ def __init__(; symbols: __init__, forward
@@ -597,7 +596,7 @@ diff -- python/sglang/srt/models/deepseek_nextn.py
 - 状态/时间: merged / 2026-04-23
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+3/-0，可读 patch 17 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 GLM-5/5.1 补齐模型支持入口或运行时能力，标题为「[fix] Fix dynamic chunking profiling crash on GLM-5 models」，变更集中在 `python/sglang/srt/managers/scheduler_pp_mixin.py`。PR 描述补充为：## Motivation Fixes #23057 When `--enable-dynamic-chunking` is used with GLM-5 (have DeepEP ), the profiling phase crashes with `AttributeError: _is_extend_in_batch`. This silen...
+- 动机: 标题「[fix] Fix dynamic chunking profiling crash on GLM-5 models」；模型线: GLM-5/5.1；类别: 缺陷修复；主要 diff: `python/sglang/srt/managers/scheduler_pp_mixin.py`；PR 正文摘要: Fixes #23057 When `--enable-dynamic-chunking` is used with GLM-5 (have DeepEP ), the profiling phase crashes with `AttributeError: _is_extend_in_batch`. This silently disables d...。
 - 实现要点: `python/sglang/srt/managers/scheduler_pp_mixin.py` modified +3/-0 (3 lines); hunks: -20,6 +20,7; -631,6 +632,8 @@ def profile_and_init_predictor(self: Scheduler):; symbols: profile_and_init_predictor，涉及 `profile_and_init_predictor`。
 - 代码 diff 细节:
   - `python/sglang/srt/managers/scheduler_pp_mixin.py` modified +3/-0 (3 lines); hunks: -20,6 +20,7; -631,6 +632,8 @@ def profile_and_init_predictor(self: Scheduler):; symbols: profile_and_init_predictor
@@ -621,7 +620,7 @@ diff -- python/sglang/srt/managers/scheduler_pp_mixin.py
 - 状态/时间: merged / 2026-04-23
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`；关联提交 `9b2f7f8a91d4`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+15/-13，可读 patch 79 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 GLM-5/5.1 优化关键推理路径或后端选择，标题为「docs: split MI300X and MI325X options in GLM-5.1 generator」，变更集中在 `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`。PR 描述补充为：## Summary - split the GLM-5.1 hardware selector button `MI300X/MI325X` into separate `MI300X` and `MI325X` options - map `MI325X` to the same AMD config path and generated comm...
+- 动机: 标题「docs: split MI300X and MI325X options in GLM-5.1 generator」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`；PR 正文摘要: - split the GLM-5.1 hardware selector button `MI300X/MI325X` into separate `MI300X` and `MI325X` options - map `MI325X` to the same AMD config path and generated command that th...。
 - 实现要点: `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx` modified +6/-4 (10 lines); hunks: -14,7 +14,8 @@ export const GLM51Deployment = () => {; -23,7 +24,7 @@ export const GLM51Deployment = () => {。
 - 代码 diff 细节:
   - `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx` modified +6/-4 (10 lines); hunks: -14,7 +14,8 @@ export const GLM51Deployment = () => {; -23,7 +24,7 @@ export const GLM51Deployment = () => {
@@ -644,5 +643,5 @@ diff -- docs_new/src/snippets/autoregressive/glm-51-deployment.jsx
 
 ## 补漏结论
 
-- 本版不再接受只列 PR 标题的写法；每个 PR 必须有反查来源、diff 范围、实现要点、代码摘录、已读文件和验证风险。
+- 验收规则: 每个 PR 卡片必须保留反查来源、diff 范围、实现要点、代码摘录、已读文件和验证风险。
 - 如果新模型文件落在当前过滤规则之外，先补文件过滤规则，再重新执行本轮 `git log --name-only -- <model-files>` 追溯。

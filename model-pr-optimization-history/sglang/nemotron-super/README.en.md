@@ -6,7 +6,6 @@
 - Source baseline: `sgl-project/sglang` trace worktree commit `880599cd43`
 - PR collection rule: run `git log --name-only -- <model-files>` on model implementation, config, processor, parser, docs/tests, filter by model keywords in commit subjects, then read each PR's final diff through the GitHub Pull Request files API.
 - Preservation rule: PRs explicitly cited by the previous history/skill are retained even if current implementation files no longer trace to them, and the card marks that source.
-- Diffusion model families have been removed from this history set and are no longer part of model optimization skills.
 
 ## Implementation File Coverage
 
@@ -37,8 +36,8 @@
 ## PR Coverage Summary
 
 - Git-traced PRs: 23
-- Extra PRs preserved from existing docs: 1
-- Total PRs in this document: 24
+- Extra PRs preserved from existing docs: 2
+- Total PRs in this document: 25
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -46,6 +45,7 @@
 
 | Date | PR | State | Title | Main files |
 | --- | --- | --- | --- | --- |
+| 2025-08-11 | [#5073](https://github.com/sgl-project/sglang/pull/5073) | closed | [Model] Add support for nvidia/Llama-3_3-Nemotron-Super-49B-v1 | `python/sglang/srt/models/nemotron_nas.py`, `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/utils.py` |
 | 2025-08-17 | [#9067](https://github.com/sgl-project/sglang/pull/9067) | merged | model: support nvidia/Llama-3_3-Nemotron-Super-49B-v1 | `python/sglang/srt/models/nemotron_nas.py` |
 | 2025-10-08 | [#10909](https://github.com/sgl-project/sglang/pull/10909) | merged | model: Support Hybrid Mamba2 NemotronHForCausalLM (nvidia/NVIDIA-Nemotron-Nano-9B-v2) | `python/sglang/srt/models/nemotron_h.py`, `python/sglang/srt/configs/nemotron_h.py` |
 | 2025-10-23 | [#11866](https://github.com/sgl-project/sglang/pull/11866) | merged | Support nvidia/NVIDIA-Nemotron-Nano-9B-v2-FP8/NVFP4 | `python/sglang/srt/models/nemotron_h.py` |
@@ -73,13 +73,52 @@
 
 ## Per-PR Diff Audit Cards
 
+### PR #5073 - [Model] Add support for nvidia/Llama-3_3-Nemotron-Super-49B-v1
+
+- Link: https://github.com/sgl-project/sglang/pull/5073
+- Status/date: closed / 2025-08-11
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +898/-1, 929 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Model] Add support for nvidia/Llama-3_3-Nemotron-Super-49B-v1"; model line: Nemotron Super; category: model support/runtime entry; main diff: `python/sglang/srt/models/nemotron_nas.py`, `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/utils.py`; PR body summary: Add support for nvidia/Llama-3_3-Nemotron-Super-49B-v1 Migration nemotron_nas from vllm.
+- Key implementation: `python/sglang/srt/models/nemotron_nas.py` added +516/-0 (516 lines); hunks: -0,0 +1,516; symbols: _ffn_mult_to_intermediate_size, _find_multiple, DeciLMDecoderLayer, __init__, touching `_ffn_mult_to_intermediate_size, _find_multiple, DeciLMDecoderLayer`; `python/sglang/srt/configs/model_config.py` modified +8/-0 (8 lines); hunks: -320,6 +320,14 @@ def get_total_num_kv_heads(self) -> int:; symbols: get_total_num_kv_heads, touching `get_total_num_kv_heads`; `python/sglang/srt/utils.py` modified +374/-1 (375 lines); hunks: -55,6 +55,8; -439,8 +441,10 @@ def set_cpu_offload_max_bytes(max_bytes: int) -> None:; symbols: set_cpu_offload_max_bytes, maybe_offload_to_cpu, LayerFn, __call__, touching `set_cpu_offload_max_bytes, maybe_offload_to_cpu, LayerFn`.
+- Code diff details:
+  - `python/sglang/srt/models/nemotron_nas.py` added +516/-0 (516 lines); hunks: -0,0 +1,516; symbols: _ffn_mult_to_intermediate_size, _find_multiple, DeciLMDecoderLayer, __init__
+  - `python/sglang/srt/configs/model_config.py` modified +8/-0 (8 lines); hunks: -320,6 +320,14 @@ def get_total_num_kv_heads(self) -> int:; symbols: get_total_num_kv_heads
+  - `python/sglang/srt/utils.py` modified +374/-1 (375 lines); hunks: -55,6 +55,8; -439,8 +441,10 @@ def set_cpu_offload_max_bytes(max_bytes: int) -> None:; symbols: set_cpu_offload_max_bytes, maybe_offload_to_cpu, LayerFn, __call__
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/nemotron_nas.py
+@@ -0,0 +1,516 @@
++# Copyright 2023-2025 SGLang Team
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
+diff -- python/sglang/srt/configs/model_config.py
+@@ -320,6 +320,14 @@ def get_total_num_kv_heads(self) -> int:
++        if self.hf_config.model_type in ["nemotron-nas"]:
++            for block in self.hf_config.block_configs:
++                if not block.attention.no_op:
++                    return (
++                        self.hf_config.num_attention_heads
++                        // block.attention.n_heads_in_group
+diff -- python/sglang/srt/utils.py
+@@ -55,6 +55,8 @@
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/nemotron_nas.py` added +516/-0; `python/sglang/srt/configs/model_config.py` modified +8/-0; `python/sglang/srt/utils.py` modified +374/-1
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/models/nemotron_nas.py`, `python/sglang/srt/utils.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
 ### PR #9067 - model: support nvidia/Llama-3_3-Nemotron-Super-49B-v1
 
 - Link: https://github.com/sgl-project/sglang/pull/9067
 - Status/date: merged / 2025-08-17
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/nemotron_nas.py`; associated commits `845d12a979fb`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/nemotron_nas.py`; associated commits `845d12a979fb`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +465/-5, 505 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "model: support nvidia/Llama-3_3-Nemotron-Super-49B-v1". The diff centers on `python/sglang/srt/models/nemotron_nas.py`. PR body context: Based on: https://github.com/sgl-project/sglang/pull/5073 ### Motivation Add support for nvidia/Llama-3_3-Nemotron-Super-49B-v1 and v1.5. ### Modifications Porting nemotron_nas...
+- Motivation: Title: "model: support nvidia/Llama-3_3-Nemotron-Super-49B-v1"; model line: Nemotron Super; category: docs/tests/CI; main diff: `python/sglang/srt/models/nemotron_nas.py`; PR body summary: Based on: https://github.com/sgl-project/sglang/pull/5073 Add support for nvidia/Llama-3_3-Nemotron-Super-49B-v1 and v1.5. Porting nemotron_nas from VLLM. Sanity Testing `python....
 - Key implementation: `python/sglang/srt/models/nemotron_nas.py` added +435/-0 (435 lines); hunks: -0,0 +1,435; symbols: _ffn_mult_to_intermediate_size, _find_multiple, DeciLMDecoderLayer, __init__, touching `_ffn_mult_to_intermediate_size, _find_multiple, DeciLMDecoderLayer`.
 - Code diff details:
   - `python/sglang/srt/models/nemotron_nas.py` added +435/-0 (435 lines); hunks: -0,0 +1,435; symbols: _ffn_mult_to_intermediate_size, _find_multiple, DeciLMDecoderLayer, __init__
@@ -104,9 +143,9 @@ diff -- python/sglang/srt/models/nemotron_nas.py
 
 - Link: https://github.com/sgl-project/sglang/pull/10909
 - Status/date: merged / 2025-10-08
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/nemotron_h.py`, `python/sglang/srt/models/nemotron_h.py`; associated commits `d6837aea4d2c`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/nemotron_h.py`, `python/sglang/srt/models/nemotron_h.py`; associated commits `d6837aea4d2c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 35 files, +3279/-853, 4929 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "model: Support Hybrid Mamba2 NemotronHForCausalLM (nvidia/NVIDIA-Nemotron-Nano-9B-v2)". The diff centers on `python/sglang/srt/models/nemotron_h.py`, `python/sglang/srt/configs/nemotron_h.py`. PR body context: Support the `NemotronHForCausalLM` architecture, which can include any combination of *Mamba2*, MLP and normal self-attention layers. ## Motivation Support the `NemotronHForCaus...
+- Motivation: Title: "model: Support Hybrid Mamba2 NemotronHForCausalLM (nvidia/NVIDIA-Nemotron-Nano-9B-v2)"; model line: Nemotron Super; category: model support/runtime entry; main diff: `python/sglang/srt/models/nemotron_h.py`, `python/sglang/srt/configs/nemotron_h.py`; PR body summary: Support the `NemotronHForCausalLM` architecture, which can include any combination of *Mamba2*, MLP and normal self-attention layers. Support the `NemotronHForCausalLM` architec....
 - Key implementation: `python/sglang/srt/models/nemotron_h.py` added +514/-0 (514 lines); hunks: -0,0 +1,514; symbols: NemotronHMLP, __init__, forward, NemotronHMLPDecoderLayer, touching `NemotronHMLP, __init__, forward`; `python/sglang/srt/configs/nemotron_h.py` added +286/-0 (286 lines); hunks: -0,0 +1,286; symbols: NemotronHConfig, to, __init__, mamba_layer_ids, touching `NemotronHConfig, to, __init__`.
 - Code diff details:
   - `python/sglang/srt/models/nemotron_h.py` added +514/-0 (514 lines); hunks: -0,0 +1,514; symbols: NemotronHMLP, __init__, forward, NemotronHMLPDecoderLayer
@@ -140,9 +179,9 @@ diff -- python/sglang/srt/configs/nemotron_h.py
 
 - Link: https://github.com/sgl-project/sglang/pull/11866
 - Status/date: merged / 2025-10-23
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/nemotron_h.py`; associated commits `d6fee73d1f59`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/nemotron_h.py`; associated commits `d6fee73d1f59`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +207/-127, 628 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "Support nvidia/NVIDIA-Nemotron-Nano-9B-v2-FP8/NVFP4". The diff centers on `python/sglang/srt/models/nemotron_h.py`. PR body context: ## Motivation Support nvidia/NVIDIA-Nemotron-Nano-9B-v2-FP8 and nvidia/NVIDIA-Nemotron-Nano-9B-v2-NVFP4 variants of https://huggingface.co/nvidia/NVIDIA-Nemotron-Nano-9B-v2. Fol...
+- Motivation: Title: "Support nvidia/NVIDIA-Nemotron-Nano-9B-v2-FP8/NVFP4"; model line: Nemotron Super; category: performance/backend optimization; main diff: `python/sglang/srt/models/nemotron_h.py`; PR body summary: Support nvidia/NVIDIA-Nemotron-Nano-9B-v2-FP8 and nvidia/NVIDIA-Nemotron-Nano-9B-v2-NVFP4 variants of https://huggingface.co/nvidia/NVIDIA-Nemotron-Nano-9B-v2. Following: https:....
 - Key implementation: `python/sglang/srt/models/nemotron_h.py` modified +19/-22 (41 lines); hunks: -48,6 +48,8; -155,6 +157,7 @@ def __init__(; symbols: __init__, forward, NemotronHForCausalLM, _init_model, touching `__init__, forward, NemotronHForCausalLM`.
 - Code diff details:
   - `python/sglang/srt/models/nemotron_h.py` modified +19/-22 (41 lines); hunks: -48,6 +48,8; -155,6 +157,7 @@ def __init__(; symbols: __init__, forward, NemotronHForCausalLM, _init_model
@@ -167,9 +206,9 @@ diff -- python/sglang/srt/models/nemotron_h.py
 
 - Link: https://github.com/sgl-project/sglang/pull/12015
 - Status/date: merged / 2025-10-23
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/nemotron_h.py`; associated commits `6c18addb6f53`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/nemotron_h.py`; associated commits `6c18addb6f53`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +127/-207, 628 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "Revert "Support nvidia/NVIDIA-Nemotron-Nano-9B-v2-FP8/NVFP4"". The diff centers on `python/sglang/srt/models/nemotron_h.py`. PR body context: Reverts sgl-project/sglang#11866
+- Motivation: Title: "Revert "Support nvidia/NVIDIA-Nemotron-Nano-9B-v2-FP8/NVFP4""; model line: Nemotron Super; category: performance/backend optimization; main diff: `python/sglang/srt/models/nemotron_h.py`; PR body summary: Reverts sgl-project/sglang#11866.
 - Key implementation: `python/sglang/srt/models/nemotron_h.py` modified +22/-19 (41 lines); hunks: -48,8 +48,6; -157,7 +155,6 @@ def __init__(; symbols: __init__, forward, NemotronHForCausalLM, _init_model, touching `__init__, forward, NemotronHForCausalLM`.
 - Code diff details:
   - `python/sglang/srt/models/nemotron_h.py` modified +22/-19 (41 lines); hunks: -48,8 +48,6; -157,7 +155,6 @@ def __init__(; symbols: __init__, forward, NemotronHForCausalLM, _init_model
@@ -194,9 +233,9 @@ diff -- python/sglang/srt/models/nemotron_h.py
 
 - Link: https://github.com/sgl-project/sglang/pull/12448
 - Status/date: merged / 2025-11-09
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/jet_nemotron.py`, `python/sglang/srt/models/jet_nemotron.py`; associated commits `3633f8b0cfef`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/jet_nemotron.py`, `python/sglang/srt/models/jet_nemotron.py`; associated commits `3633f8b0cfef`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +678/-2, 733 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "Add Jet-Nemotron". The diff centers on `python/sglang/srt/models/jet_nemotron.py`, `python/sglang/srt/configs/jet_nemotron.py`. PR body context: ## Motivation To add support for Jet-Nemotron. ## Modifications - Added Jet-Nemotron implementation. - Registered Jet-Nemotron as hybrid GDN attention model. - Added Jet-Nemotro...
+- Motivation: Title: "Add Jet-Nemotron"; model line: Nemotron Super; category: model support/runtime entry; main diff: `python/sglang/srt/models/jet_nemotron.py`, `python/sglang/srt/configs/jet_nemotron.py`; PR body summary: To add support for Jet-Nemotron. - Added Jet-Nemotron implementation. - Registered Jet-Nemotron as hybrid GDN attention model. - Added Jet-Nemotron configuration. | Model | GSM8....
 - Key implementation: `python/sglang/srt/models/jet_nemotron.py` added +596/-0 (596 lines); hunks: -0,0 +1,596; symbols: DynamicShortConvolutionKernelGenerator, __init__, forward, DynamicShortConvolution, touching `DynamicShortConvolutionKernelGenerator, __init__, forward`; `python/sglang/srt/configs/jet_nemotron.py` added +74/-0 (74 lines); hunks: -0,0 +1,74; symbols: JetBlockConfig, JetNemotronConfig, full_attention_layer_ids, linear_layer_ids, touching `JetBlockConfig, JetNemotronConfig, full_attention_layer_ids`.
 - Code diff details:
   - `python/sglang/srt/models/jet_nemotron.py` added +596/-0 (596 lines); hunks: -0,0 +1,596; symbols: DynamicShortConvolutionKernelGenerator, __init__, forward, DynamicShortConvolution
@@ -230,9 +269,9 @@ diff -- python/sglang/srt/configs/jet_nemotron.py
 
 - Link: https://github.com/sgl-project/sglang/pull/12690
 - Status/date: merged / 2025-11-21
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/nemotron_h.py`, `python/sglang/srt/models/nemotron_h.py`; associated commits `1b48e1b97484`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/nemotron_h.py`, `python/sglang/srt/models/nemotron_h.py`; associated commits `1b48e1b97484`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 13 files, +775/-67, 1291 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "Feat/nemotron nano v3 support". The diff centers on `python/sglang/srt/models/nemotron_h.py`, `python/sglang/srt/configs/nemotron_h.py`. PR body context: ## Motivation Add support for upcoming NVIDIA Nemotron v3 models. ## Modifications Add an MoE layer to the NemotronH modeling code. Add support for un-gated MoE in the triton co...
+- Motivation: Title: "Feat/nemotron nano v3 support"; model line: Nemotron Super; category: performance/backend optimization; main diff: `python/sglang/srt/models/nemotron_h.py`, `python/sglang/srt/configs/nemotron_h.py`; PR body summary: Add support for upcoming NVIDIA Nemotron v3 models. Add an MoE layer to the NemotronH modeling code. Add support for un-gated MoE in the triton codepath..
 - Key implementation: `python/sglang/srt/models/nemotron_h.py` modified +259/-28 (287 lines); hunks: -22,8 +22,13; -34,9 +39,13; symbols: NemotronHMLP, __init__, forward, _get_or_create_alt_stream, touching `NemotronHMLP, __init__, forward`; `python/sglang/srt/configs/nemotron_h.py` modified +25/-6 (31 lines); hunks: -26,6 +26,7; -189,6 +190,15 @@ def __init__(; symbols: NemotronHConfig, __init__, touching `NemotronHConfig, __init__`.
 - Code diff details:
   - `python/sglang/srt/models/nemotron_h.py` modified +259/-28 (287 lines); hunks: -22,8 +22,13; -34,9 +39,13; symbols: NemotronHMLP, __init__, forward, _get_or_create_alt_stream
@@ -266,9 +305,9 @@ diff -- python/sglang/srt/configs/nemotron_h.py
 
 - Link: https://github.com/sgl-project/sglang/pull/12277
 - Status/date: merged / 2025-11-26
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/nano_nemotron_vl.py`, `python/sglang/srt/models/nano_nemotron_vl.py`, `python/sglang/srt/models/nemotron_h.py`, `python/sglang/srt/multimodal/processors/nano_nemotron_vl.py`; associated commits `082b54c6890a`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/nano_nemotron_vl.py`, `python/sglang/srt/models/nano_nemotron_vl.py`, `python/sglang/srt/models/nemotron_h.py`, `python/sglang/srt/multimodal/processors/nano_nemotron_vl.py`; associated commits `082b54c6890a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 17 files, +1334/-17, 1528 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "Support nvidia/NVIDIA-Nemotron-Nano-12B-v2-VL-BF16 (and nvidia/C-RADIOv2-H)". The diff centers on `python/sglang/srt/models/nano_nemotron_vl.py`, `python/sglang/srt/multimodal/processors/nano_nemotron_vl.py`, `python/sglang/srt/configs/nano_nemotron_vl.py`. PR body context: ## Motivation Support Multimodal nvidia/NVIDIA-Nemotron-Nano-12B-v2-VL-BF16. > NVIDIA Nemotron Nano v2 12B VL model enables multi-image reasoning and video understanding, along...
+- Motivation: Title: "Support nvidia/NVIDIA-Nemotron-Nano-12B-v2-VL-BF16 (and nvidia/C-RADIOv2-H)"; model line: Nemotron Super; category: model support/runtime entry; main diff: `python/sglang/srt/models/nano_nemotron_vl.py`, `python/sglang/srt/multimodal/processors/nano_nemotron_vl.py`, `python/sglang/srt/configs/nano_nemotron_vl.py`; PR body summary: Support Multimodal nvidia/NVIDIA-Nemotron-Nano-12B-v2-VL-BF16. > NVIDIA Nemotron Nano v2 12B VL model enables multi-image reasoning and video understanding, along with strong do....
 - Key implementation: `python/sglang/srt/models/nano_nemotron_vl.py` added +219/-0 (219 lines); hunks: -0,0 +1,219; symbols: NemotronH_Nano_VL_V2, __init__, pad_input_ids, pixel_shuffle, touching `NemotronH_Nano_VL_V2, __init__, pad_input_ids`; `python/sglang/srt/multimodal/processors/nano_nemotron_vl.py` added +197/-0 (197 lines); hunks: -0,0 +1,197; symbols: NanoNemotronVLImageProcessor, __init__, preprocess_image, render_image, touching `NanoNemotronVLImageProcessor, __init__, preprocess_image`; `python/sglang/srt/configs/nano_nemotron_vl.py` added +114/-0 (114 lines); hunks: -0,0 +1,114; symbols: float_triplet, NemotronH_Nano_VL_V2_Config, __init__, create_radio_config, touching `float_triplet, NemotronH_Nano_VL_V2_Config, __init__`; `python/sglang/srt/models/nemotron_h.py` modified +3/-6 (9 lines); hunks: -542,9 +542,6 @@ def get_layer(idx: int, prefix: str):; -557,7 +554,7 @@ def forward(; symbols: get_layer, get_input_embeddings, forward, _init_model, touching `get_layer, get_input_embeddings, forward`.
 - Code diff details:
   - `python/sglang/srt/models/nano_nemotron_vl.py` added +219/-0 (219 lines); hunks: -0,0 +1,219; symbols: NemotronH_Nano_VL_V2, __init__, pad_input_ids, pixel_shuffle
@@ -308,7 +347,7 @@ diff -- python/sglang/srt/configs/nano_nemotron_vl.py
 - Status/date: merged / 2025-12-31
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/nemotron_h.py`; associated commits `47a660d5b925`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +94/-35, 207 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "[NemotronH] PP support". The diff centers on `python/sglang/srt/models/nemotron_h.py`. PR body context: ## Motivation NemotronH models currently do not support running with `--pp-size` that's larger than 1. This PR fixes this. ## Modifications Switch `make_layers_non_pp` with `mak...
+- Motivation: Title: "[NemotronH] PP support"; model line: Nemotron Super; category: bug fix; main diff: `python/sglang/srt/models/nemotron_h.py`; PR body summary: NemotronH models currently do not support running with `--pp-size` that's larger than 1. This PR fixes this. Switch `make_layers_non_pp` with `make_layers`. Only call norm, lm_h....
 - Key implementation: `python/sglang/srt/models/nemotron_h.py` modified +88/-35 (123 lines); hunks: -48,6 +48,7; -65,7 +66,7; symbols: __init__, get_layer, forward, touching `__init__, get_layer, forward`.
 - Code diff details:
   - `python/sglang/srt/models/nemotron_h.py` modified +88/-35 (123 lines); hunks: -48,6 +48,7; -65,7 +66,7; symbols: __init__, get_layer, forward
@@ -335,7 +374,7 @@ diff -- python/sglang/srt/models/nemotron_h.py
 - Status/date: merged / 2026-01-02
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/nemotron_h.py`, `python/sglang/srt/models/nemotron_h.py`; associated commits `b0213323397c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 23 files, +2957/-2, 3056 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "[NemotronH] Add latent MoE support". The diff centers on `python/sglang/srt/models/nemotron_h.py`, `python/sglang/srt/configs/nemotron_h.py`. PR body context: ## Motivation Future NemotronH models will (conditionally) have a linear layer before (and after) the MoE layer, letting the MoE operate in a smaller hidden size. This PR enable...
+- Motivation: Title: "[NemotronH] Add latent MoE support"; model line: Nemotron Super; category: model support/runtime entry; main diff: `python/sglang/srt/models/nemotron_h.py`, `python/sglang/srt/configs/nemotron_h.py`; PR body summary: Future NemotronH models will (conditionally) have a linear layer before (and after) the MoE layer, letting the MoE operate in a smaller hidden size. This PR enables it..
 - Key implementation: `python/sglang/srt/models/nemotron_h.py` modified +32/-1 (33 lines); hunks: -138,6 +138,10 @@ def __init__(; -165,7 +169,7 @@ def __init__(; symbols: __init__, _forward_core, _forward_core_normal, touching `__init__, _forward_core, _forward_core_normal`; `python/sglang/srt/configs/nemotron_h.py` modified +2/-0 (2 lines); hunks: -194,6 +194,7 @@ def __init__(; -259,6 +260,7 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `python/sglang/srt/models/nemotron_h.py` modified +32/-1 (33 lines); hunks: -138,6 +138,10 @@ def __init__(; -165,7 +169,7 @@ def __init__(; symbols: __init__, _forward_core, _forward_core_normal
@@ -366,9 +405,9 @@ diff -- python/sglang/srt/configs/nemotron_h.py
 
 - Link: https://github.com/sgl-project/sglang/pull/14051
 - Status/date: merged / 2026-01-05
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/nano_nemotron_vl.py`, `python/sglang/srt/multimodal/processors/nano_nemotron_vl.py`; associated commits `bebd625ba145`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/nano_nemotron_vl.py`, `python/sglang/srt/multimodal/processors/nano_nemotron_vl.py`; associated commits `bebd625ba145`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 14 files, +821/-56, 1171 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "EVS Framework: Support NemotronH_Nano_VL_V2". The diff centers on `python/sglang/srt/multimodal/processors/nano_nemotron_vl.py`, `python/sglang/srt/models/nano_nemotron_vl.py`. PR body context: ## Motivation > https://arxiv.org/abs/2510.14624: Efficient Video Sampling: Pruning Temporally Redundant Tokens for Faster VLM Inference Add support for EVS pruning to `Nemotron...
+- Motivation: Title: "EVS Framework: Support NemotronH_Nano_VL_V2"; model line: Nemotron Super; category: docs/tests/CI; main diff: `python/sglang/srt/multimodal/processors/nano_nemotron_vl.py`, `python/sglang/srt/models/nano_nemotron_vl.py`; PR body summary: > https://arxiv.org/abs/2510.14624: Efficient Video Sampling: Pruning Temporally Redundant Tokens for Faster VLM Inference Add support for EVS pruning to `NemotronH_Nano_VL_V2`.....
 - Key implementation: `python/sglang/srt/multimodal/processors/nano_nemotron_vl.py` modified +35/-22 (57 lines); hunks: -11,14 +11,16; -40,6 +42,9 @@ class NanoNemotronVLImageProcessor(BaseMultimodalProcessor):; symbols: NanoNemotronVLImageProcessor, __init__, preprocess_image, render_image, touching `NanoNemotronVLImageProcessor, __init__, preprocess_image`; `python/sglang/srt/models/nano_nemotron_vl.py` modified +7/-2 (9 lines); hunks: -36,19 +36,24; symbols: NemotronH_Nano_VL_V2, create_evs_config, __init__, touching `NemotronH_Nano_VL_V2, create_evs_config, __init__`.
 - Code diff details:
   - `python/sglang/srt/multimodal/processors/nano_nemotron_vl.py` modified +35/-22 (57 lines); hunks: -11,14 +11,16; -40,6 +42,9 @@ class NanoNemotronVLImageProcessor(BaseMultimodalProcessor):; symbols: NanoNemotronVLImageProcessor, __init__, preprocess_image, render_image
@@ -402,9 +441,9 @@ diff -- python/sglang/srt/models/nano_nemotron_vl.py
 
 - Link: https://github.com/sgl-project/sglang/pull/17013
 - Status/date: merged / 2026-01-14
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/nemotron_h.py`, `python/sglang/srt/models/nemotron_h_mtp.py`; associated commits `ba625c2d908a`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/nemotron_h.py`, `python/sglang/srt/models/nemotron_h_mtp.py`; associated commits `ba625c2d908a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +378/-1, 408 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "Feat/support nemotron h mtp". The diff centers on `python/sglang/srt/models/nemotron_h_mtp.py`, `python/sglang/srt/models/nemotron_h.py`. PR body context: ## Motivation This PR adds Multi-Token Prediction (MTP) speculative decoding support for NemotronH hybrid Mamba2/Attention models. ## Modifications #### New NemotronH MTP Model...
+- Motivation: Title: "Feat/support nemotron h mtp"; model line: Nemotron Super; category: model support/runtime entry; main diff: `python/sglang/srt/models/nemotron_h_mtp.py`, `python/sglang/srt/models/nemotron_h.py`; PR body summary: This PR adds Multi-Token Prediction (MTP) speculative decoding support for NemotronH hybrid Mamba2/Attention models. New NemotronH MTP Model (nemotron_h_mtp.py) - Introduced `Ne....
 - Key implementation: `python/sglang/srt/models/nemotron_h_mtp.py` added +340/-0 (340 lines); hunks: -0,0 +1,340; symbols: NemotronHMTPAttentionDecoderLayer, __init__, forward, NemotronHMTPMoEDecoderLayer, touching `NemotronHMTPAttentionDecoderLayer, __init__, forward`; `python/sglang/srt/models/nemotron_h.py` modified +28/-1 (29 lines); hunks: -728,7 +728,20 @@ def copy_inputs_before_cuda_graphs(self, input_buffers, **k...; -749,6 +762,20 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; symbols: copy_inputs_before_cuda_graphs, get_seqlen_agnostic_capture_inputs, load_weights, get_embed_and_head, touching `copy_inputs_before_cuda_graphs, get_seqlen_agnostic_capture_inputs, load_weights`.
 - Code diff details:
   - `python/sglang/srt/models/nemotron_h_mtp.py` added +340/-0 (340 lines); hunks: -0,0 +1,340; symbols: NemotronHMTPAttentionDecoderLayer, __init__, forward, NemotronHMTPMoEDecoderLayer
@@ -438,9 +477,9 @@ diff -- python/sglang/srt/models/nemotron_h.py
 
 - Link: https://github.com/sgl-project/sglang/pull/16569
 - Status/date: merged / 2026-01-14
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/nemotron_h.py`; associated commits `72bacc88c8a0`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/nemotron_h.py`; associated commits `72bacc88c8a0`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-2, 14 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR changes model-related implementation. Title: "[NemotronH] Use ReplicatedLinear for fc1_latent_proj". The diff centers on `python/sglang/srt/models/nemotron_h.py`. PR body context: ## Motivation The `fc1_latent_proj` linear layer is relatively small, similar in size to the `gate` and `fc2_latent_proj` layers in the same MoE module, and we don't get a lot f...
+- Motivation: Title: "[NemotronH] Use ReplicatedLinear for fc1_latent_proj"; model line: Nemotron Super; category: model implementation change; main diff: `python/sglang/srt/models/nemotron_h.py`; PR body summary: The `fc1_latent_proj` linear layer is relatively small, similar in size to the `gate` and `fc2_latent_proj` layers in the same MoE module, and we don't get a lot from paralleliz....
 - Key implementation: `python/sglang/srt/models/nemotron_h.py` modified +1/-2 (3 lines); hunks: -191,12 +191,11 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `python/sglang/srt/models/nemotron_h.py` modified +1/-2 (3 lines); hunks: -191,12 +191,11 @@ def __init__(; symbols: __init__
@@ -462,9 +501,9 @@ diff -- python/sglang/srt/models/nemotron_h.py
 
 - Link: https://github.com/sgl-project/sglang/pull/18119
 - Status/date: merged / 2026-02-06
-- Trace source: `git log --name-only -- <model-files>` found it through `test/lm_eval_configs/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16.yaml`, `test/lm_eval_configs/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8.yaml`, `test/registered/models/test_nvidia_nemotron_3_nano.py`; associated commits `c6aa1863be84`
+- Trace source: `git log --name-only -- <model-files>` found it through `test/lm_eval_configs/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16.yaml`, `test/lm_eval_configs/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8.yaml`, `test/registered/models/test_nvidia_nemotron_3_nano.py`; associated commits `c6aa1863be84`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +177/-0, 188 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "Add Nemotron 3 Nano tests". The diff centers on `test/registered/models/test_nvidia_nemotron_3_nano.py`, `test/lm_eval_configs/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16.yaml`, `test/lm_eval_configs/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8.yaml`. PR body context: ## Motivation Add CI test coverage for the NVIDIA Nemotron-3-Nano-30B models (BF16 and FP8 variants) to validate GSM8K accuracy. ## Accuracy Tests Tests were run locally and pas...
+- Motivation: Title: "Add Nemotron 3 Nano tests"; model line: Nemotron Super; category: performance/backend optimization; main diff: `test/registered/models/test_nvidia_nemotron_3_nano.py`, `test/lm_eval_configs/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16.yaml`, `test/lm_eval_configs/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8.yaml`; PR body summary: Add CI test coverage for the NVIDIA Nemotron-3-Nano-30B models (BF16 and FP8 variants) to validate GSM8K accuracy. Tests were run locally and passed..
 - Key implementation: `test/registered/models/test_nvidia_nemotron_3_nano.py` added +41/-0 (41 lines); hunks: -0,0 +1,41; symbols: TestNvidiaNemotron3Nano30BBF16, TestNvidiaNemotron3Nano30BFP8, touching `TestNvidiaNemotron3Nano30BBF16, TestNvidiaNemotron3Nano30BFP8`; `test/lm_eval_configs/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16.yaml` added +13/-0 (13 lines); hunks: -0,0 +1,13; `test/lm_eval_configs/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8.yaml` added +13/-0 (13 lines); hunks: -0,0 +1,13.
 - Code diff details:
   - `test/registered/models/test_nvidia_nemotron_3_nano.py` added +41/-0 (41 lines); hunks: -0,0 +1,41; symbols: TestNvidiaNemotron3Nano30BBF16, TestNvidiaNemotron3Nano30BFP8
@@ -501,9 +540,9 @@ diff -- test/lm_eval_configs/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8.yaml
 
 - Link: https://github.com/sgl-project/sglang/pull/18546
 - Status/date: merged / 2026-02-21
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/nemotron_h.py`; associated commits `33c33a7de9bb`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/nemotron_h.py`; associated commits `33c33a7de9bb`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +100/-71, 251 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "[Quantization] Support config.json quantization_config format, fix exclude_modules matching, and fix KV cache scale loading for Nemotron". The diff centers on `python/sglang/srt/models/nemotron_h.py`. PR body context: ## Summary Fixes several issues with ModelOpt quantization config loading for `NemotronH` (and future models that move away from `hf_quant_config.json`). Ensures models can load...
+- Motivation: Title: "[Quantization] Support config.json quantization_config format, fix exclude_modules matching, and fix KV cache scale loading for Nemotron"; model line: Nemotron Super; category: bug fix; main diff: `python/sglang/srt/models/nemotron_h.py`; PR body summary: Fixes several issues with ModelOpt quantization config loading for `NemotronH` (and future models that move away from `hf_quant_config.json`). Ensures models can load from `conf....
 - Key implementation: `python/sglang/srt/models/nemotron_h.py` modified +7/-0 (7 lines); hunks: -61,6 +61,7; -640,6 +641,12 @@ class NemotronHForCausalLM(nn.Module):; symbols: NemotronHForCausalLM, __init__, touching `NemotronHForCausalLM, __init__`.
 - Code diff details:
   - `python/sglang/srt/models/nemotron_h.py` modified +7/-0 (7 lines); hunks: -61,6 +61,7; -640,6 +641,12 @@ class NemotronHForCausalLM(nn.Module):; symbols: NemotronHForCausalLM, __init__
@@ -528,9 +567,9 @@ diff -- python/sglang/srt/models/nemotron_h.py
 
 - Link: https://github.com/sgl-project/sglang/pull/19433
 - Status/date: merged / 2026-03-03
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/nemotron_h_mtp.py`; associated commits `4c95953b7733`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/nemotron_h_mtp.py`; associated commits `4c95953b7733`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +73/-3, 117 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR fixes a launch, loading, parsing, or numerical issue. Title: "Fix/nemotron mtp quantaized". The diff centers on `python/sglang/srt/models/nemotron_h_mtp.py`. PR body context: ## Motivation Fix code so nemotron+mtp works for quantized checkpoints ## Modifications * mtp layer prefix should be mtp * fused_moe_triton should handle non gated moe correctly...
+- Motivation: Title: "Fix/nemotron mtp quantaized"; model line: Nemotron Super; category: bug fix; main diff: `python/sglang/srt/models/nemotron_h_mtp.py`; PR body summary: Fix code so nemotron+mtp works for quantized checkpoints * mtp layer prefix should be mtp * fused_moe_triton should handle non gated moe correctly * parsing modelopt quant confi....
 - Key implementation: `python/sglang/srt/models/nemotron_h_mtp.py` modified +1/-1 (2 lines); hunks: -297,7 +297,7 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `python/sglang/srt/models/nemotron_h_mtp.py` modified +1/-1 (2 lines); hunks: -297,7 +297,7 @@ def __init__(; symbols: __init__
@@ -551,9 +590,9 @@ diff -- python/sglang/srt/models/nemotron_h_mtp.py
 
 - Link: https://github.com/sgl-project/sglang/pull/19950
 - Status/date: merged / 2026-03-07
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/nemotron_h.py`; associated commits `f8bbf56de7b2`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/nemotron_h.py`; associated commits `f8bbf56de7b2`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +182/-17, 281 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "Refactor NemotronHConfig to canonical layers_block_type and add MTP block-type support". The diff centers on `python/sglang/srt/configs/nemotron_h.py`. PR body context: This PR updates python/sglang/srt/configs/nemotron_h.py to make layers_block_type the source of truth for layer layout and deprecates num_hidden_layers/hybrid_override_pattern a...
+- Motivation: Title: "Refactor NemotronHConfig to canonical layers_block_type and add MTP block-type support"; model line: Nemotron Super; category: model support/runtime entry; main diff: `python/sglang/srt/configs/nemotron_h.py`; PR body summary: This PR updates python/sglang/srt/configs/nemotron_h.py to make layers_block_type the source of truth for layer layout and deprecates num_hidden_layers/hybrid_override_pattern a....
 - Key implementation: `python/sglang/srt/configs/nemotron_h.py` modified +182/-17 (199 lines); hunks: -15,7 +15,6; -31,6 +30,8; symbols: NemotronHConfig, _validate_layers_block_type, _resolve_layers_block_type, touching `NemotronHConfig, _validate_layers_block_type, _resolve_layers_block_type`.
 - Code diff details:
   - `python/sglang/srt/configs/nemotron_h.py` modified +182/-17 (199 lines); hunks: -15,7 +15,6; -31,6 +30,8; symbols: NemotronHConfig, _validate_layers_block_type, _resolve_layers_block_type
@@ -580,7 +619,7 @@ diff -- python/sglang/srt/configs/nemotron_h.py
 - Status/date: merged / 2026-03-12
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/nemotron_h.py`; associated commits `25bd83033d09`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +91/-24, 188 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "Enable Piecewise CUDA Graph for NemotronH Hybrid (Mamba+Attention) Models". The diff centers on `python/sglang/srt/models/nemotron_h.py`. PR body context: ### Motivation Piecewise CUDA graph (PCG) was previously disabled for NemotronH models because the layer detection logic required all layers to use standard GQA attention. Nemot...
+- Motivation: Title: "Enable Piecewise CUDA Graph for NemotronH Hybrid (Mamba+Attention) Models"; model line: Nemotron Super; category: performance/backend optimization; main diff: `python/sglang/srt/models/nemotron_h.py`; PR body summary: Piecewise CUDA graph (PCG) was previously disabled for NemotronH models because the layer detection logic required all layers to use standard GQA attention. NemotronH is a hybri....
 - Key implementation: `python/sglang/srt/models/nemotron_h.py` modified +70/-18 (88 lines); hunks: -21,6 +21,11; -69,6 +74,7; symbols: _forward_core, __init__, _forward_mamba, forward, touching `_forward_core, __init__, _forward_mamba`.
 - Code diff details:
   - `python/sglang/srt/models/nemotron_h.py` modified +70/-18 (88 lines); hunks: -21,6 +21,11; -69,6 +74,7; symbols: _forward_core, __init__, _forward_mamba, forward
@@ -607,7 +646,7 @@ diff -- python/sglang/srt/models/nemotron_h.py
 - Status/date: merged / 2026-03-14
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +277/-11, 413 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "[Model] Support Nemotron 3 Super NVFP4". The diff centers on `python/sglang/srt/layers/quantization/modelopt_quant.py`, `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/layers/quantization/__init__.py`. PR body context: ## Summary Support `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-NVFP4` via `modelopt_mixed` Fix #20472 ## Accuracy Tests ### Without MTP ### With MTP
+- Motivation: Title: "[Model] Support Nemotron 3 Super NVFP4"; model line: Nemotron Super; category: bug fix; main diff: `python/sglang/srt/layers/quantization/modelopt_quant.py`, `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/layers/quantization/__init__.py`; PR body summary: Support `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-NVFP4` via `modelopt_mixed` Fix #20472 Without MTP With MTP.
 - Key implementation: `python/sglang/srt/layers/quantization/modelopt_quant.py` modified +177/-0 (177 lines); hunks: -591,6 +591,183 @@ def __init__(self, quant_config: ModelOptFp8Config):; symbols: __init__, ModelOptMixedPrecisionConfig, override_quantization_method, get_name, touching `__init__, ModelOptMixedPrecisionConfig, override_quantization_method`; `python/sglang/srt/configs/model_config.py` modified +12/-0 (12 lines); hunks: -793,6 +793,11 @@ def _parse_modelopt_quant_config(self, quant_config_dict: d...; -842,6 +847,10 @@ def _get_modelopt_quant_type(self) -> str:; symbols: _parse_modelopt_quant_config, _get_modelopt_quant_type, _validate_quantize_and_serve_config, _verify_quantization, touching `_parse_modelopt_quant_config, _get_modelopt_quant_type, _validate_quantize_and_serve_config`; `python/sglang/srt/layers/quantization/__init__.py` modified +2/-0 (2 lines); hunks: -31,6 +31,7 @@ def override_quantization_method(self, *args, **kwargs):; -57,6 +58,7 @@ def override_quantization_method(self, *args, **kwargs):; symbols: override_quantization_method, touching `override_quantization_method`; `test/registered/model_loading/test_modelopt_loader.py` modified +65/-0 (65 lines); hunks: -14,7 +14,11; -620,5 +624,66 @@ def test_non_modelopt_quant_method_unchanged(self):; symbols: test_non_modelopt_quant_method_unchanged, TestModelOptMixedPrecisionConfig, test_nemotron_mixed_precision_uses_modelopt_mixed, test_mixed_precision_override_does_not_hijack_w4afp8, touching `test_non_modelopt_quant_method_unchanged, TestModelOptMixedPrecisionConfig, test_nemotron_mixed_precision_uses_modelopt_mixed`.
 - Code diff details:
   - `python/sglang/srt/layers/quantization/modelopt_quant.py` modified +177/-0 (177 lines); hunks: -591,6 +591,183 @@ def __init__(self, quant_config: ModelOptFp8Config):; symbols: __init__, ModelOptMixedPrecisionConfig, override_quantization_method, get_name
@@ -649,7 +688,7 @@ diff -- python/sglang/srt/layers/quantization/__init__.py
 - Status/date: merged / 2026-03-14
 - Trace source: `git log --name-only -- <model-files>` found it through `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py`, `test/registered/8-gpu-models/test_nvidia_nemotron_3_super_bf16.py`; associated commits `3e643967e6d7`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +212/-0, 214 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "[CI] Add Nemotron 3 Super 120B CI tests for BF16 and NVFP4". The diff centers on `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py`, `test/registered/8-gpu-models/test_nvidia_nemotron_3_super_bf16.py`. PR body context: ## Summary Add per-PR CI tests for Nemotron-3-Super-120B model: - BF16 variant on Hopper (`stage-c-test-8-gpu-h200`) with TP=8 - NVFP4 variant on Blackwell (`stage-c-test-4-gpu-...
+- Motivation: Title: "[CI] Add Nemotron 3 Super 120B CI tests for BF16 and NVFP4"; model line: Nemotron Super; category: performance/backend optimization; main diff: `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py`, `test/registered/8-gpu-models/test_nvidia_nemotron_3_super_bf16.py`; PR body summary: Add per-PR CI tests for Nemotron-3-Super-120B model: - BF16 variant on Hopper (`stage-c-test-8-gpu-h200`) with TP=8 - NVFP4 variant on Blackwell (`stage-c-test-4-gpu-b200`) with....
 - Key implementation: `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py` added +106/-0 (106 lines); hunks: -0,0 +1,106; symbols: _run_gsm8k, TestNvidiaNemotron3SuperNVFP4, setUpClass, tearDownClass, touching `_run_gsm8k, TestNvidiaNemotron3SuperNVFP4, setUpClass`; `test/registered/8-gpu-models/test_nvidia_nemotron_3_super_bf16.py` added +106/-0 (106 lines); hunks: -0,0 +1,106; symbols: _run_gsm8k, TestNvidiaNemotron3SuperBF16, setUpClass, tearDownClass, touching `_run_gsm8k, TestNvidiaNemotron3SuperBF16, setUpClass`.
 - Code diff details:
   - `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py` added +106/-0 (106 lines); hunks: -0,0 +1,106; symbols: _run_gsm8k, TestNvidiaNemotron3SuperNVFP4, setUpClass, tearDownClass
@@ -683,9 +722,9 @@ diff -- test/registered/8-gpu-models/test_nvidia_nemotron_3_super_bf16.py
 
 - Link: https://github.com/sgl-project/sglang/pull/20458
 - Status/date: merged / 2026-03-15
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/nemotron_h.py`; associated commits `1ac6a2646437`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/nemotron_h.py`; associated commits `1ac6a2646437`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +26/-1, 55 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR fixes a launch, loading, parsing, or numerical issue. Title: "fix: Nemotron chunk size alias". The diff centers on `python/sglang/srt/configs/nemotron_h.py`. PR body context: ## Motivation NemotronH silently ignored Hugging Face chunk_size and fell back to mamba_chunk_size=256, causing NVIDIA Nemotron-3-Super to run with the wrong Mamba chunking para...
+- Motivation: Title: "fix: Nemotron chunk size alias"; model line: Nemotron Super; category: bug fix; main diff: `python/sglang/srt/configs/nemotron_h.py`; PR body summary: NemotronH silently ignored Hugging Face chunk_size and fell back to mamba_chunk_size=256, causing NVIDIA Nemotron-3-Super to run with the wrong Mamba chunking parameter and dive....
 - Key implementation: `python/sglang/srt/configs/nemotron_h.py` modified +26/-1 (27 lines); hunks: -32,6 +32,7; -213,6 +214,28 @@ def _resolve_mtp_layers_block_type(mtp_layers_block_type, k...; symbols: NemotronHConfig, _resolve_mtp_layers_block_type, _resolve_mamba_chunk_size, __init__, touching `NemotronHConfig, _resolve_mtp_layers_block_type, _resolve_mamba_chunk_size`.
 - Code diff details:
   - `python/sglang/srt/configs/nemotron_h.py` modified +26/-1 (27 lines); hunks: -32,6 +32,7; -213,6 +214,28 @@ def _resolve_mtp_layers_block_type(mtp_layers_block_type, k...; symbols: NemotronHConfig, _resolve_mtp_layers_block_type, _resolve_mamba_chunk_size, __init__
@@ -710,9 +749,9 @@ diff -- python/sglang/srt/configs/nemotron_h.py
 
 - Link: https://github.com/sgl-project/sglang/pull/20616
 - Status/date: merged / 2026-03-16
-- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py`, `test/registered/8-gpu-models/test_nvidia_nemotron_3_super_bf16.py`, `test/registered/8-gpu-models/test_nvidia_nemotron_3_super_nightly.py`; associated commits `3879c466b432`
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py`, `test/registered/8-gpu-models/test_nvidia_nemotron_3_super_bf16.py`, `test/registered/8-gpu-models/test_nvidia_nemotron_3_super_nightly.py`; associated commits `3879c466b432`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +145/-6, 180 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "[CI] Add Nemotron 3 Super 120B nightly 8-GPU tests". The diff centers on `test/registered/8-gpu-models/test_nvidia_nemotron_3_super_nightly.py`, `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py`, `test/registered/8-gpu-models/test_nvidia_nemotron_3_super_bf16.py`. PR body context: ## Summary Add nightly 8-GPU CI tests for Nemotron-3-Super-120B model with full gsm8k evaluation (1314 questions): - BF16 variant on Hopper + Blackwell with TP=8 and TP=8+MTP -...
+- Motivation: Title: "[CI] Add Nemotron 3 Super 120B nightly 8-GPU tests"; model line: Nemotron Super; category: performance/backend optimization; main diff: `test/registered/8-gpu-models/test_nvidia_nemotron_3_super_nightly.py`, `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py`, `test/registered/8-gpu-models/test_nvidia_nemotron_3_super_bf16.py`; PR body summary: Add nightly 8-GPU CI tests for Nemotron-3-Super-120B model with full gsm8k evaluation (1314 questions): - BF16 variant on Hopper + Blackwell with TP=8 and TP=8+MTP - NVFP4 varia....
 - Key implementation: `test/registered/8-gpu-models/test_nvidia_nemotron_3_super_nightly.py` added +135/-0 (135 lines); hunks: -0,0 +1,135; symbols: TestNvidiaNemotron3SuperNightly, for, test_nemotron_3_super_bf16, test_nemotron_3_super_nvfp4, touching `TestNvidiaNemotron3SuperNightly, for, test_nemotron_3_super_bf16`; `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py` modified +5/-3 (8 lines); hunks: -37,6 +37,10; -89,9 +93,7 @@ def setUpClass(cls):; symbols: setUpClass, touching `setUpClass`; `test/registered/8-gpu-models/test_nvidia_nemotron_3_super_bf16.py` modified +5/-3 (8 lines); hunks: -37,6 +37,10; -89,9 +93,7 @@ def setUpClass(cls):; symbols: setUpClass, touching `setUpClass`.
 - Code diff details:
   - `test/registered/8-gpu-models/test_nvidia_nemotron_3_super_nightly.py` added +135/-0 (135 lines); hunks: -0,0 +1,135; symbols: TestNvidiaNemotron3SuperNightly, for, test_nemotron_3_super_bf16, test_nemotron_3_super_nvfp4
@@ -749,9 +788,9 @@ diff -- test/registered/8-gpu-models/test_nvidia_nemotron_3_super_bf16.py
 
 - Link: https://github.com/sgl-project/sglang/pull/20580
 - Status/date: merged / 2026-03-17
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/nemotron_h.py`; associated commits `466ff20e5148`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/nemotron_h.py`; associated commits `466ff20e5148`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +7/-7, 28 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Model] Fix NemotronH OOM on unified-mem systems: stream weights". The diff centers on `python/sglang/srt/models/nemotron_h.py`. PR body context: ## Motivation On unified-memory systems like DGX Spark GB10 (119 GB shared CPU+GPU pool), the Nemotron-3-Super-120B-A12B-NVFP4 model (75 GB on disk) cannot load with the current...
+- Motivation: Title: "[Model] Fix NemotronH OOM on unified-mem systems: stream weights"; model line: Nemotron Super; category: bug fix; main diff: `python/sglang/srt/models/nemotron_h.py`; PR body summary: On unified-memory systems like DGX Spark GB10 (119 GB shared CPU+GPU pool), the Nemotron-3-Super-120B-A12B-NVFP4 model (75 GB on disk) cannot load with the current NemotronHForC....
 - Key implementation: `python/sglang/srt/models/nemotron_h.py` modified +7/-7 (14 lines); hunks: -774,12 +774,6 @@ def set_embed_and_head(self, embed, head):; -793,7 +787,13 @@ def load_weights(; symbols: set_embed_and_head, load_weights, touching `set_embed_and_head, load_weights`.
 - Code diff details:
   - `python/sglang/srt/models/nemotron_h.py` modified +7/-7 (14 lines); hunks: -774,12 +774,6 @@ def set_embed_and_head(self, embed, head):; -793,7 +787,13 @@ def load_weights(; symbols: set_embed_and_head, load_weights
@@ -776,9 +815,9 @@ diff -- python/sglang/srt/models/nemotron_h.py
 
 - Link: https://github.com/sgl-project/sglang/pull/21516
 - Status/date: merged / 2026-03-27
-- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py`; associated commits `0138129d3cfc`
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py`; associated commits `0138129d3cfc`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[CI] Fix nemotron nvfp4 test estimated time". The diff centers on `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py`. PR body context: ## Motivation https://github.com/sgl-project/sglang/actions/runs/23623717495/job/68827833526?pr=20904 Fix the timeout here ## Modifications ## Accuracy Tests ## Benchmarking and...
+- Motivation: Title: "[CI] Fix nemotron nvfp4 test estimated time"; model line: Nemotron Super; category: bug fix; main diff: `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py`; PR body summary: https://github.com/sgl-project/sglang/actions/runs/23623717495/job/68827833526?pr=20904 Fix the timeout here.
 - Key implementation: `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py` modified +1/-1 (2 lines); hunks: -11,7 +11,7.
 - Code diff details:
   - `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py` modified +1/-1 (2 lines); hunks: -11,7 +11,7
@@ -799,9 +838,9 @@ diff -- test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py
 
 - Link: https://github.com/sgl-project/sglang/pull/23568
 - Status/date: merged / 2026-04-25
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/nano_nemotron_vl.py`, `python/sglang/srt/models/nano_nemotron_vl.py`, `python/sglang/srt/multimodal/processors/nano_nemotron_vl.py`; associated commits `4a3fe2a0913c`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/nano_nemotron_vl.py`, `python/sglang/srt/models/nano_nemotron_vl.py`, `python/sglang/srt/multimodal/processors/nano_nemotron_vl.py`; associated commits `4a3fe2a0913c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 15 files, +1289/-116, 1817 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "Parakeet nemotron encoder". The diff centers on `python/sglang/srt/multimodal/processors/nano_nemotron_vl.py`, `python/sglang/srt/models/nano_nemotron_vl.py`, `python/sglang/srt/configs/nano_nemotron_vl.py`. PR body context: ## Motivation ## Modifications ## Accuracy Tests ## Speed Tests and Profiling ## Checklist - [ ] Format your code according to the Format code with pre-commit. - [ ] Add unit te...
+- Motivation: Title: "Parakeet nemotron encoder"; model line: Nemotron Super; category: model implementation change; main diff: `python/sglang/srt/multimodal/processors/nano_nemotron_vl.py`, `python/sglang/srt/models/nano_nemotron_vl.py`, `python/sglang/srt/configs/nano_nemotron_vl.py`; no usable PR-body summary.
 - Key implementation: `python/sglang/srt/multimodal/processors/nano_nemotron_vl.py` modified +322/-36 (358 lines); hunks: -11,23 +11,39; -63,18 +79,62 @@ def __init__(self, hf_config, server_args, _image_processor,...; symbols: __init__, preprocess_image, render_image, render_image_dynamic, touching `__init__, preprocess_image, render_image`; `python/sglang/srt/models/nano_nemotron_vl.py` modified +171/-20 (191 lines); hunks: -35,8 +35,10; -66,9 +68,13 @@ def __init__(; symbols: __init__, pad_input_ids, pixel_shuffle, touching `__init__, pad_input_ids, pixel_shuffle`; `python/sglang/srt/configs/nano_nemotron_vl.py` modified +38/-0 (38 lines); hunks: -38,6 +38,7 @@ def __init__(; -51,6 +52,9 @@ def __init__(; symbols: __init__, create_radio_config, touching `__init__, create_radio_config`.
 - Code diff details:
   - `python/sglang/srt/multimodal/processors/nano_nemotron_vl.py` modified +322/-36 (358 lines); hunks: -11,23 +11,39; -63,18 +79,62 @@ def __init__(self, hf_config, server_args, _image_processor,...; symbols: __init__, preprocess_image, render_image, render_image_dynamic
@@ -836,5 +875,5 @@ diff -- python/sglang/srt/configs/nano_nemotron_vl.py
 
 ## Gap-Closure Notes
 
-- This version rejects title-only PR lists; every PR must include trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
+- Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
 - If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.

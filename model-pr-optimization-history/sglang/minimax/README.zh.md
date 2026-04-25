@@ -6,7 +6,6 @@
 - 源码基线: `sgl-project/sglang` 当前追溯 worktree commit `880599cd43`
 - PR 收集规则: 先从模型实现、配置、processor、parser、docs/tests 等相关文件执行 `git log --name-only -- <model-files>`，再按 commit subject 的模型关键词过滤，最后用 GitHub Pull Request files API 读取每个 PR 的最终 diff。
 - 额外保留规则: 原 history/skill 已显式引用但未出现在当前实现文件 git trace 中的 PR 会保留，并在卡片里标注来源。
-- diffusion 相关模型已从本目录剔除，不再纳入模型优化 skill/history。
 
 ## 模型实现文件覆盖
 
@@ -37,8 +36,8 @@
 ## PR 覆盖总览
 
 - git 追溯 PR 数: 25
-- 原文档显式引用补充 PR 数: 15
-- 当前文档总 PR 数: 40
+- 原文档显式引用补充 PR 数: 16
+- 当前文档总 PR 数: 41
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -69,6 +68,7 @@
 | 2026-03-18 | [#19995](https://github.com/sgl-project/sglang/pull/19995) | merged | Add packed_modules_mapping for MiniMax-M2 | `python/sglang/srt/models/minimax_m2.py` |
 | 2026-03-18 | [#20870](https://github.com/sgl-project/sglang/pull/20870) | merged | [MiniMax M2] Fix KV cache scale loading | `python/sglang/srt/models/minimax_m2.py` |
 | 2026-03-20 | [#20975](https://github.com/sgl-project/sglang/pull/20975) | open | fix(dp-attn): fix issues with dp-attention for MiniMax M2 | `python/sglang/srt/models/minimax_m2.py`, `python/sglang/srt/layers/dp_attention.py`, `python/sglang/srt/model_executor/model_runner.py` |
+| 2026-03-20 | [#20931](https://github.com/sgl-project/sglang/pull/20931) | merged | [Bugifx] qwen3 rope parameter compatibility | `python/sglang/srt/models/qwen3_moe.py` |
 | 2026-03-23 | [#17695](https://github.com/sgl-project/sglang/pull/17695) | merged | [NPU] enhance accuracy for model minimaxm2 from 16.5% to 95.5% | `test/registered/ascend/llm_models/test_ascend_minimax_m2.py` |
 | 2026-03-24 | [#20905](https://github.com/sgl-project/sglang/pull/20905) | merged | [NPU][ModelSlim] adapt w2 quant layer for Minimax2.5 | `python/sglang/srt/models/minimax_m2.py` |
 | 2026-03-31 | [#21241](https://github.com/sgl-project/sglang/pull/21241) | merged | [bugfix] Fix rope theta config for MiniMax after transformers v5 update | `python/sglang/srt/models/minimax_m2.py` |
@@ -95,7 +95,7 @@
 - 状态/时间: merged / 2025-10-26
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/function_call/minimax_m2.py`, `python/sglang/srt/models/minimax_m2.py`；关联提交 `7ebc28f5d657`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+1320/-1，可读 patch 1365 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 补齐模型支持入口或运行时能力，标题为「Support MiniMax M2 model」，变更集中在 `python/sglang/srt/models/minimax_m2.py`, `python/sglang/srt/function_call/minimax_m2.py`。PR 描述补充为：## Motivation Supporting MiniMax M2, the SOTA model from MiniMax and we set up a standard for merging new LLMs. 1. Adding model support to SGLang, with minimal disturbance to SG...
+- 动机: 标题「Support MiniMax M2 model」；模型线: MiniMax M2 Series；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/minimax_m2.py`, `python/sglang/srt/function_call/minimax_m2.py`；PR 正文摘要: Supporting MiniMax M2, the SOTA model from MiniMax and we set up a standard for merging new LLMs. 1. Adding model support to SGLang, with minimal disturbance to SGLang's main lo...。
 - 实现要点: `python/sglang/srt/models/minimax_m2.py` added +922/-0 (922 lines); hunks: -0,0 +1,922; symbols: MiniMaxM2RMSNormTP, __init__, weight_loader, forward，涉及 `MiniMaxM2RMSNormTP, __init__, weight_loader`；`python/sglang/srt/function_call/minimax_m2.py` added +367/-0 (367 lines); hunks: -0,0 +1,367; symbols: _safe_val, MinimaxM2Detector, __init__, has_tool_call，涉及 `_safe_val, MinimaxM2Detector, __init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/minimax_m2.py` added +922/-0 (922 lines); hunks: -0,0 +1,922; symbols: MiniMaxM2RMSNormTP, __init__, weight_loader, forward
@@ -131,7 +131,7 @@ diff -- python/sglang/srt/function_call/minimax_m2.py
 - 状态/时间: merged / 2025-10-27
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 补强部署文档、测试或 CI 验证面，标题为「improve mimax-m2 rmsnorm precision」，变更集中在 `python/sglang/srt/models/minimax_m2.py`。PR 描述补充为：## Motivation Improve rmsnorm precision ## Modifications scale with higher fp32 precision
+- 动机: 标题「improve mimax-m2 rmsnorm precision」；模型线: MiniMax M2 Series；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/models/minimax_m2.py`；PR 正文摘要: Improve rmsnorm precision scale with higher fp32 precision。
 - 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +1/-1 (2 lines); hunks: -122,7 +122,7 @@ def forward(; symbols: forward，涉及 `forward`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/minimax_m2.py` modified +1/-1 (2 lines); hunks: -122,7 +122,7 @@ def forward(; symbols: forward
@@ -154,7 +154,7 @@ diff -- python/sglang/srt/models/minimax_m2.py
 - 状态/时间: merged / 2025-11-08
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m2.py`；关联提交 `f1a9c72de3c1`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+34/-3，可读 patch 90 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 补齐模型支持入口或运行时能力，标题为「Support capturing aux_hidden_states for minimax m2.」，变更集中在 `python/sglang/srt/models/minimax_m2.py`。PR 描述补充为：## Motivation Support capturing aux_hidden_states for Minimax M2 for EAGLE3 model training. ## Modifications ## Checklist - [x] Format your code according to the Format code wit...
+- 动机: 标题「Support capturing aux_hidden_states for minimax m2.」；模型线: MiniMax M2 Series；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/minimax_m2.py`；PR 正文摘要: Support capturing aux_hidden_states for Minimax M2 for EAGLE3 model training.。
 - 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +34/-3 (37 lines); hunks: -706,6 +706,9 @@ def layer_fn(idx, prefix: str) -> nn.Module:; -716,7 +719,7 @@ def forward(; symbols: layer_fn, get_input_embeddings, forward，涉及 `layer_fn, get_input_embeddings, forward`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/minimax_m2.py` modified +34/-3 (37 lines); hunks: -706,6 +706,9 @@ def layer_fn(idx, prefix: str) -> nn.Module:; -716,7 +719,7 @@ def forward(; symbols: layer_fn, get_input_embeddings, forward
@@ -181,7 +181,7 @@ diff -- python/sglang/srt/models/minimax_m2.py
 - 状态/时间: merged / 2025-11-15
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m2.py`；关联提交 `b051d76dabb8`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+3/-0，可读 patch 10 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 补齐模型支持入口或运行时能力，标题为「Fix: add missing get_embed_and_head in MiniMax M2 for Eagle3」，变更集中在 `python/sglang/srt/models/minimax_m2.py`。PR 描述补充为：## Motivation Add missing get_embed_and_head for Minimax M2. Tested with ## Modifications ## Accuracy Tests ## Benchmarking and Profiling ## Checklist - [x] Format your code acc...
+- 动机: 标题「Fix: add missing get_embed_and_head in MiniMax M2 for Eagle3」；模型线: MiniMax M2 Series；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/minimax_m2.py`；PR 正文摘要: Add missing get_embed_and_head for Minimax M2. Tested with。
 - 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +3/-0 (3 lines); hunks: -821,6 +821,9 @@ def set_eagle3_layers_to_capture(self, layer_ids: Optional[l...; symbols: set_eagle3_layers_to_capture, get_embed_and_head, forward，涉及 `set_eagle3_layers_to_capture, get_embed_and_head, forward`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/minimax_m2.py` modified +3/-0 (3 lines); hunks: -821,6 +821,9 @@ def set_eagle3_layers_to_capture(self, layer_ids: Optional[l...; symbols: set_eagle3_layers_to_capture, get_embed_and_head, forward
@@ -202,9 +202,9 @@ diff -- python/sglang/srt/models/minimax_m2.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/13659
 - 状态/时间: merged / 2025-11-20
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m2.py`；关联提交 `3f1cfd87b6fd`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m2.py`；关联提交 `3f1cfd87b6fd`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+0/-36，可读 patch 57 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 补齐模型支持入口或运行时能力，标题为「Super tiny remove unused MiniMaxM2MLP class」，变更集中在 `python/sglang/srt/models/minimax_m2.py`。PR 描述补充为：## Motivation ## Modifications ## Accuracy Tests ## Benchmarking and Profiling ## Checklist - [ ] Format your code according to the Format code with pre-commit. - [ ] Add unit t...
+- 动机: 标题「Super tiny remove unused MiniMaxM2MLP class」；模型线: MiniMax M2 Series；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/minimax_m2.py`；PR 正文未提供可用摘要。
 - 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +0/-36 (36 lines); hunks: -31,15 +31,13; -127,40 +125,6 @@ def forward(; symbols: forward, MiniMaxM2MLP, __init__, MiniMaxM2MoE，涉及 `forward, MiniMaxM2MLP, __init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/minimax_m2.py` modified +0/-36 (36 lines); hunks: -31,15 +31,13; -127,40 +125,6 @@ def forward(; symbols: forward, MiniMaxM2MLP, __init__, MiniMaxM2MoE
@@ -231,7 +231,7 @@ diff -- python/sglang/srt/models/minimax_m2.py
 - 状态/时间: merged / 2025-11-26
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m2.py`；关联提交 `e0e8a9963043`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+3/-7，可读 patch 26 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 补齐模型支持入口或运行时能力，标题为「fix: correct usage of minimax-m2 deepep moe forward」，变更集中在 `python/sglang/srt/models/minimax_m2.py`。PR 描述补充为：## Motivation ## Modifications ## Accuracy Tests ## Benchmarking and Profiling ## Checklist - [ ] Format your code according to the Format code with pre-commit. - [ ] Add unit t...
+- 动机: 标题「fix: correct usage of minimax-m2 deepep moe forward」；模型线: MiniMax M2 Series；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/minimax_m2.py`；PR 正文未提供可用摘要。
 - 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +3/-7 (10 lines); hunks: -222,7 +222,7 @@ def forward_deepep(; -231,14 +231,10 @@ def forward_deepep(; symbols: forward_deepep，涉及 `forward_deepep`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/minimax_m2.py` modified +3/-7 (10 lines); hunks: -222,7 +222,7 @@ def forward_deepep(; -231,14 +231,10 @@ def forward_deepep(; symbols: forward_deepep
@@ -258,7 +258,7 @@ diff -- python/sglang/srt/models/minimax_m2.py
 - 状态/时间: merged / 2025-12-02
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m2.py`；关联提交 `3dabd609fb03`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+38/-13，可读 patch 149 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 补齐模型支持入口或运行时能力，标题为「Optimize topk sigmoid in minimax_m2」，变更集中在 `python/sglang/srt/models/minimax_m2.py`。PR 描述补充为：## Motivation This PR optimizes the topk sigmoid in minimax_m2, using the `topk_sigmoid` kernel implementation from #13049. ## Modifications Make the `TopK` to support the `scor...
+- 动机: 标题「Optimize topk sigmoid in minimax_m2」；模型线: MiniMax M2 Series；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/minimax_m2.py`；PR 正文摘要: This PR optimizes the topk sigmoid in minimax_m2, using the `topk_sigmoid` kernel implementation from #13049. Make the `TopK` to support the `scoring_func` parameter. We have va...。
 - 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +0/-3 (3 lines); hunks: -167,9 +167,6 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/minimax_m2.py` modified +0/-3 (3 lines); hunks: -167,9 +167,6 @@ def __init__(; symbols: __init__
@@ -280,9 +280,9 @@ diff -- python/sglang/srt/models/minimax_m2.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/15538
 - 状态/时间: merged / 2025-12-23
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/basic_usage/minimax_m2.md`, `python/sglang/srt/function_call/minimax_m2.py`；关联提交 `5c64a20da7dd`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/basic_usage/minimax_m2.md`, `python/sglang/srt/function_call/minimax_m2.py`；关联提交 `5c64a20da7dd`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+254/-19，可读 patch 345 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 补齐模型支持入口或运行时能力，标题为「Update MiniMax-M2 ToolCall and add MiniMax-M2.1 in Docs」，变更集中在 `python/sglang/srt/function_call/minimax_m2.py`, `docs/basic_usage/minimax_m2.md`。PR 描述补充为：## Motivation The MiniMax-M2 tool call parser supports `anyOf`, `oneOf`, `allOf`, type arrays, and enum fields. And add MiniMax-M2.1 to the documentation. ## Modifications ## Ac...
+- 动机: 标题「Update MiniMax-M2 ToolCall and add MiniMax-M2.1 in Docs」；模型线: MiniMax M2 Series；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/function_call/minimax_m2.py`, `docs/basic_usage/minimax_m2.md`；PR 正文摘要: The MiniMax-M2 tool call parser supports `anyOf`, `oneOf`, `allOf`, type arrays, and enum fields. And add MiniMax-M2.1 to the documentation.。
 - 实现要点: `python/sglang/srt/function_call/minimax_m2.py` modified +185/-17 (202 lines); hunks: -1,5 +1,3; -16,17 +14,6; symbols: _safe_val, MinimaxM2Detector, detect_and_parse, _convert_param_value，涉及 `_safe_val, MinimaxM2Detector, detect_and_parse`；`docs/basic_usage/minimax_m2.md` added +66/-0 (66 lines); hunks: -0,0 +1,66。
 - 代码 diff 细节:
   - `python/sglang/srt/function_call/minimax_m2.py` modified +185/-17 (202 lines); hunks: -1,5 +1,3; -16,17 +14,6; symbols: _safe_val, MinimaxM2Detector, detect_and_parse, _convert_param_value
@@ -319,7 +319,7 @@ diff -- docs/basic_usage/minimax_m2.md
 - 状态/时间: merged / 2025-12-30
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m2.py`；关联提交 `d17b9e639224`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+189/-2，可读 patch 219 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 调整模型相关实现，标题为「Fusing RMSNormTP in minimax_m2」，变更集中在 `python/sglang/srt/models/minimax_m2.py`。PR 描述补充为：## Motivation This PR merges `q_norm` and `k_norm` into `qk_norm`. Each `RMSNormTP` contains 3 kernels: summation, all_reduce, and the remaining norm operation. This implementat...
+- 动机: 标题「Fusing RMSNormTP in minimax_m2」；模型线: MiniMax M2 Series；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/minimax_m2.py`；PR 正文摘要: This PR merges `q_norm` and `k_norm` into `qk_norm`. Each `RMSNormTP` contains 3 kernels: summation, all_reduce, and the remaining norm operation. This implementation combines 3...。
 - 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +189/-2 (191 lines); hunks: -19,6 +19,8; -73,6 +75,164; symbols: rmsnorm_sumsq_kernel_serial, rmsnorm_apply_kernel_serial, rms_sumsq_serial, rms_apply_serial，涉及 `rmsnorm_sumsq_kernel_serial, rmsnorm_apply_kernel_serial, rms_sumsq_serial`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/minimax_m2.py` modified +189/-2 (191 lines); hunks: -19,6 +19,8; -73,6 +75,164; symbols: rmsnorm_sumsq_kernel_serial, rmsnorm_apply_kernel_serial, rms_sumsq_serial, rms_apply_serial
@@ -346,7 +346,7 @@ diff -- python/sglang/srt/models/minimax_m2.py
 - 状态/时间: open / 2026-01-27
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+167/-70，可读 patch 479 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 补齐模型支持入口或运行时能力，标题为「Support Pipeline and Data Parallelism for MiniMax-M2」，变更集中在 `python/sglang/srt/models/minimax_m2.py`。PR 描述补充为：## Motivation Adds Pipeline Parallelism (PP) and Data Parallelism (DP) for `minimax_m2`. Due to the use of RMSNormTP in this model, DP attention is currently not supported. Cont...
+- 动机: 标题「Support Pipeline and Data Parallelism for MiniMax-M2」；模型线: MiniMax M2 Series；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/minimax_m2.py`；PR 正文摘要: Adds Pipeline Parallelism (PP) and Data Parallelism (DP) for `minimax_m2`. Due to the use of RMSNormTP in this model, DP attention is currently not supported. Continue the work...。
 - 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +167/-70 (237 lines); hunks: -16,7 +16,8; -28,7 +29,6; symbols: MiniMaxM2RMSNormTP, __init__, weight_loader, ebias_weight_loader，涉及 `MiniMaxM2RMSNormTP, __init__, weight_loader`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/minimax_m2.py` modified +167/-70 (237 lines); hunks: -16,7 +16,8; -28,7 +29,6; symbols: MiniMaxM2RMSNormTP, __init__, weight_loader, ebias_weight_loader
@@ -373,7 +373,7 @@ diff -- python/sglang/srt/models/minimax_m2.py
 - 状态/时间: merged / 2026-02-01
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m2.py`；关联提交 `486c7de39f5c`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+8/-2，可读 patch 24 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 优化关键推理路径或后端选择，标题为「Optimizing all_reduce in RMSNormTP in minimax_m2」，变更集中在 `python/sglang/srt/models/minimax_m2.py`。PR 描述补充为：## Motivation In RMSNormTP, the cross-device reduction uses an intermediate tensor of shape B × 2 in fp32. The `sglang::cross_device_reduce_1stage` reduction path requires the r...
+- 动机: 标题「Optimizing all_reduce in RMSNormTP in minimax_m2」；模型线: MiniMax M2 Series；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/minimax_m2.py`；PR 正文摘要: In RMSNormTP, the cross-device reduction uses an intermediate tensor of shape B × 2 in fp32. The `sglang::cross_device_reduce_1stage` reduction path requires the reduced tensor...。
 - 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +8/-2 (10 lines); hunks: -166,7 +166,14 @@ def rms_sumsq_serial(x1: torch.Tensor, x2: torch.Tensor) ->...; -285,7 +292,6 @@ def forward(; symbols: rms_sumsq_serial, forward, forward_qk，涉及 `rms_sumsq_serial, forward, forward_qk`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/minimax_m2.py` modified +8/-2 (10 lines); hunks: -166,7 +166,14 @@ def rms_sumsq_serial(x1: torch.Tensor, x2: torch.Tensor) ->...; -285,7 +292,6 @@ def forward(; symbols: rms_sumsq_serial, forward, forward_qk
@@ -400,7 +400,7 @@ diff -- python/sglang/srt/models/minimax_m2.py
 - 状态/时间: merged / 2026-02-05
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m2.py`；关联提交 `079fc8f3c591`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+28/-7，可读 patch 70 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 补齐模型支持入口或运行时能力，标题为「[piecewise graph]: support MiniMax-M2」，变更集中在 `python/sglang/srt/models/minimax_m2.py`。PR 描述补充为：## Motivation ## Modifications ## Accuracy Tests gsm8k with piecewise without piecewise ## Benchmarking and Profiling ## Checklist - [ ] Format your code according to the Format...
+- 动机: 标题「[piecewise graph]: support MiniMax-M2」；模型线: MiniMax M2 Series；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/minimax_m2.py`；PR 正文摘要: gsm8k with piecewise without piecewise。
 - 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +23/-7 (30 lines); hunks: -16,6 +16,7; -442,9 +443,14 @@ def op_select_experts(self, state):; symbols: op_select_experts, op_dispatch_a, op_dispatch_b, forward，涉及 `op_select_experts, op_dispatch_a, op_dispatch_b`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/minimax_m2.py` modified +23/-7 (30 lines); hunks: -16,6 +16,7; -442,9 +443,14 @@ def op_select_experts(self, state):; symbols: op_select_experts, op_dispatch_a, op_dispatch_b, forward
@@ -427,7 +427,7 @@ diff -- python/sglang/srt/models/minimax_m2.py
 - 状态/时间: open / 2026-02-05
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+8/-0，可读 patch 15 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 修复已暴露的启动、加载、解析或数值问题，标题为「[Fix] MiniMax-M2.1 CUDA Graph + torch.compile crashes due to outplace_all_reduce being traced by Dynamo」，变更集中在 `python/sglang/srt/distributed/parallel_state.py`。PR 描述补充为：Fixes https://github.com/sgl-project/sglang/issues/16102 as proposed by @ehartford I confirm this fix works. This needs to be tested in terms of throughput/latency
+- 动机: 标题「[Fix] MiniMax-M2.1 CUDA Graph + torch.compile crashes due to outplace_all_reduce being traced by Dynamo」；模型线: MiniMax M2 Series；类别: 缺陷修复；主要 diff: `python/sglang/srt/distributed/parallel_state.py`；PR 正文摘要: Fixes https://github.com/sgl-project/sglang/issues/16102 as proposed by @ehartford I confirm this fix works. This needs to be tested in terms of throughput/latency。
 - 实现要点: `python/sglang/srt/distributed/parallel_state.py` modified +8/-0 (8 lines); hunks: -586,6 +586,14 @@ def all_reduce(self, input_: torch.Tensor) -> torch.Tensor:; symbols: all_reduce，涉及 `all_reduce`。
 - 代码 diff 细节:
   - `python/sglang/srt/distributed/parallel_state.py` modified +8/-0 (8 lines); hunks: -586,6 +586,14 @@ def all_reduce(self, input_: torch.Tensor) -> torch.Tensor:; symbols: all_reduce
@@ -454,7 +454,7 @@ diff -- python/sglang/srt/distributed/parallel_state.py
 - 状态/时间: open / 2026-02-27
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+10/-2，可读 patch 35 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 补齐模型支持入口或运行时能力，标题为「fix[minimax]: support deepep with minimax models」，变更集中在 `python/sglang/srt/server_args.py`, `docker/Dockerfile`, `scripts/ci/cuda/ci_install_deepep.sh`。PR 描述补充为：1. Update DeepEP to support hidden size of 3072 2. Force `dtype` to be `bfloat16` in order to fix error when using deepep. Before the default was float16 which was cause a DeepE...
+- 动机: 标题「fix[minimax]: support deepep with minimax models」；模型线: MiniMax M2 Series；类别: 缺陷修复；主要 diff: `python/sglang/srt/server_args.py`, `docker/Dockerfile`, `scripts/ci/cuda/ci_install_deepep.sh`；PR 正文摘要: 1. Update DeepEP to support hidden size of 3072 2. Force `dtype` to be `bfloat16` in order to fix error when using deepep. Before the default was float16 which was cause a DeepE...。
 - 实现要点: `python/sglang/srt/server_args.py` modified +6/-0 (6 lines); hunks: -2117,6 +2117,12 @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments，涉及 `_handle_model_specific_adjustments`；`docker/Dockerfile` modified +2/-1 (3 lines); hunks: -9,7 +9,8 @@ ARG HOPPER_SBO=0；`scripts/ci/cuda/ci_install_deepep.sh` modified +2/-1 (3 lines); hunks: -88,9 +88,10 @@ if [ "$GRACE_BLACKWELL" = "1" ]; then。
 - 代码 diff 细节:
   - `python/sglang/srt/server_args.py` modified +6/-0 (6 lines); hunks: -2117,6 +2117,12 @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments
@@ -491,9 +491,9 @@ diff -- scripts/ci/cuda/ci_install_deepep.sh
 
 - 链接: https://github.com/sgl-project/sglang/pull/19443
 - 状态/时间: merged / 2026-02-27
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/basic_usage/minimax_m2.md`, `test/registered/amd/accuracy/mi30x/test_minimax_m25_eval_amd.py`, `test/registered/amd/accuracy/mi35x/test_minimax_m25_eval_mi35x.py`；关联提交 `403195d59de0`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/basic_usage/minimax_m2.md`, `test/registered/amd/accuracy/mi30x/test_minimax_m25_eval_amd.py`, `test/registered/amd/accuracy/mi35x/test_minimax_m25_eval_mi35x.py`；关联提交 `403195d59de0`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+653/-4，可读 patch 766 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 补齐模型支持入口或运行时能力，标题为「[AMD] [MiniMax-M2.5 Day 0] Add MiniMax-M2.5 nightly accuracy test」，变更集中在 `test/registered/amd/accuracy/mi35x/test_minimax_m25_eval_mi35x.py`, `test/registered/amd/accuracy/mi30x/test_minimax_m25_eval_amd.py`, `docs/basic_usage/minimax_m2.md`。PR 描述补充为：## Summary - Add MiniMax-M2.5 (`MiniMaxAI/MiniMax-M2.5`) GSM8K few-shot accuracy tests for AMD GPUs (8-GPU, TP=8 + EP=8) - **MI30x** (MI325/MI300X): `nightly-8-gpu-minimax-m25`...
+- 动机: 标题「[AMD] [MiniMax-M2.5 Day 0] Add MiniMax-M2.5 nightly accuracy test」；模型线: MiniMax M2 Series；类别: 性能/后端优化；主要 diff: `test/registered/amd/accuracy/mi35x/test_minimax_m25_eval_mi35x.py`, `test/registered/amd/accuracy/mi30x/test_minimax_m25_eval_amd.py`, `docs/basic_usage/minimax_m2.md`；PR 正文摘要: - Add MiniMax-M2.5 (`MiniMaxAI/MiniMax-M2.5`) GSM8K few-shot accuracy tests for AMD GPUs (8-GPU, TP=8 + EP=8) - **MI30x** (MI325/MI300X): `nightly-8-gpu-minimax-m25` with aiter...。
 - 实现要点: `test/registered/amd/accuracy/mi35x/test_minimax_m25_eval_mi35x.py` added +249/-0 (249 lines); hunks: -0,0 +1,249; symbols: ModelConfig, __post_init__, get_display_name, get_one_example，涉及 `ModelConfig, __post_init__, get_display_name`；`test/registered/amd/accuracy/mi30x/test_minimax_m25_eval_amd.py` added +245/-0 (245 lines); hunks: -0,0 +1,245; symbols: ModelConfig, __post_init__, get_display_name, get_one_example，涉及 `ModelConfig, __post_init__, get_display_name`；`docs/basic_usage/minimax_m2.md` modified +22/-3 (25 lines); hunks: -1,13 +1,14; -49,6 +50,24 @@ python -m sglang.launch_server \。
 - 代码 diff 细节:
   - `test/registered/amd/accuracy/mi35x/test_minimax_m25_eval_mi35x.py` added +249/-0 (249 lines); hunks: -0,0 +1,249; symbols: ModelConfig, __post_init__, get_display_name, get_one_example
@@ -533,7 +533,7 @@ diff -- docs/basic_usage/minimax_m2.md
 - 状态/时间: merged / 2026-03-02
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m2.py`；关联提交 `2d183c4e6d32`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+35/-7，可读 patch 97 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 补齐模型支持入口或运行时能力，标题为「[Feat] add PP Support for minimax-m2 series」，变更集中在 `python/sglang/srt/models/minimax_m2.py`。PR 描述补充为：## Motivation Support Pipeline Parallel feature on Minimax-M2/2.1/2.5. ## Modifications ## Accuracy Tests In RTX6000D x 8, Minimax-M2.5 ### Only PP /sgl-workspace/sglang# python...
+- 动机: 标题「[Feat] add PP Support for minimax-m2 series」；模型线: MiniMax M2 Series；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/models/minimax_m2.py`；PR 正文摘要: Support Pipeline Parallel feature on Minimax-M2/2.1/2.5. In RTX6000D x 8, Minimax-M2.5 Only PP /sgl-workspace/sglang# python3 benchmark/gsm8k/bench_sglang.py --num-shots 20 --po...。
 - 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +35/-7 (42 lines); hunks: -54,7 +54,7; -967,6 +967,7 @@ def __init__(; symbols: __init__, forward, load_weights，涉及 `__init__, forward, load_weights`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/minimax_m2.py` modified +35/-7 (42 lines); hunks: -54,7 +54,7; -967,6 +967,7 @@ def __init__(; symbols: __init__, forward, load_weights
@@ -560,7 +560,7 @@ diff -- python/sglang/srt/models/minimax_m2.py
 - 状态/时间: open / 2026-03-06
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+203/-9，可读 patch 236 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 补齐模型支持入口或运行时能力，标题为「fix(minimax): support loading merged expert weights (w13) for awq」，变更集中在 `tests/registered/models/test_minimax_m2_weights.py`, `python/sglang/srt/models/minimax_m2.py`。PR 描述补充为：## Motivation ## Modifications ## Accuracy Tests ## Benchmarking and Profiling ## Checklist - [ ] Format your code according to the Format code with pre-commit. - [ ] Add unit t...
+- 动机: 标题「fix(minimax): support loading merged expert weights (w13) for awq」；模型线: MiniMax M2 Series；类别: 缺陷修复；主要 diff: `tests/registered/models/test_minimax_m2_weights.py`, `python/sglang/srt/models/minimax_m2.py`；PR 正文未提供可用摘要。
 - 实现要点: `tests/registered/models/test_minimax_m2_weights.py` added +145/-0 (145 lines); hunks: -0,0 +1,145; symbols: TestMiniMaxM2WeightLoading, setUp, test_load_weights_merged_w13，涉及 `TestMiniMaxM2WeightLoading, setUp, test_load_weights_merged_w13`；`python/sglang/srt/models/minimax_m2.py` modified +58/-9 (67 lines); hunks: -1058,6 +1058,14 @@ def load_weights(self, weights: Iterable[Tuple[str, torch...; -1112,7 +1120,9 @@ def load_weights(self, weights: Iterable[Tuple[str, torch....; symbols: load_weights，涉及 `load_weights`。
 - 代码 diff 细节:
   - `tests/registered/models/test_minimax_m2_weights.py` added +145/-0 (145 lines); hunks: -0,0 +1,145; symbols: TestMiniMaxM2WeightLoading, setUp, test_load_weights_merged_w13
@@ -595,9 +595,9 @@ diff -- python/sglang/srt/models/minimax_m2.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/20083
 - 状态/时间: merged / 2026-03-07
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/8-gpu-models/test_minimax_m25.py`；关联提交 `1aa6ab41deb5`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/8-gpu-models/test_minimax_m25.py`；关联提交 `1aa6ab41deb5`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+12/-14，可读 patch 56 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 补齐模型支持入口或运行时能力，标题为「[Nightly] Replace MiniMax-M2 with MiniMax-M2.5」，变更集中在 `test/registered/8-gpu-models/test_minimax_m25.py`。PR 描述补充为：## Summary - Replace `MiniMaxAI/MiniMax-M2` with `MiniMaxAI/MiniMax-M2.5` - Add `--reasoning-parser=minimax-append-think` and `--mem-fraction-static=0.85` - Remove `--model-load...
+- 动机: 标题「[Nightly] Replace MiniMax-M2 with MiniMax-M2.5」；模型线: MiniMax M2 Series；类别: 模型支持/运行时入口；主要 diff: `test/registered/8-gpu-models/test_minimax_m25.py`；PR 正文摘要: - Replace `MiniMaxAI/MiniMax-M2` with `MiniMaxAI/MiniMax-M2.5` - Add `--reasoning-parser=minimax-append-think` and `--mem-fraction-static=0.85` - Remove `--model-loader-extra-co...。
 - 实现要点: `test/registered/8-gpu-models/test_minimax_m25.py` renamed +12/-14 (26 lines); hunks: -9,32 +9,30; -43,10 +41,10 @@ def test_minimax_m2(self):; symbols: TestMiniMaxM2, for, TestMiniMaxM25, test_minimax_m2，涉及 `TestMiniMaxM2, for, TestMiniMaxM25`。
 - 代码 diff 细节:
   - `test/registered/8-gpu-models/test_minimax_m25.py` renamed +12/-14 (26 lines); hunks: -9,32 +9,30; -43,10 +41,10 @@ def test_minimax_m2(self):; symbols: TestMiniMaxM2, for, TestMiniMaxM25, test_minimax_m2
@@ -624,7 +624,7 @@ diff -- test/registered/8-gpu-models/test_minimax_m25.py
 - 状态/时间: open / 2026-03-13
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+118/-20，可读 patch 247 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 修复已暴露的启动、加载、解析或数值问题，标题为「fix(dp-attn): fix issues with dp-attention for MiniMax M2 and general…」，变更集中在 `python/sglang/srt/models/minimax_m2.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/rotary_embedding/base.py`。PR 描述补充为：… stability This commit addresses several issues related to DP-Attention (Issue #20444): 1. MiniMax M2 Attention: Updated to use 'attn_tp_size' and 'attn_tp_group' for correct h...
+- 动机: 标题「fix(dp-attn): fix issues with dp-attention for MiniMax M2 and general…」；模型线: MiniMax M2 Series；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/minimax_m2.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/rotary_embedding/base.py`；PR 正文摘要: … stability This commit addresses several issues related to DP-Attention (Issue #20444): 1. MiniMax M2 Attention: Updated to use 'attn_tp_size' and 'attn_tp_group' for correct h...。
 - 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +33/-16 (49 lines); hunks: -27,10 +27,14; -244,10 +248,16 @@ def rms_apply_serial(; symbols: rms_apply_serial, MiniMaxM2RMSNormTP, __init__, weight_loader，涉及 `rms_apply_serial, MiniMaxM2RMSNormTP, __init__`；`python/sglang/srt/model_executor/model_runner.py` modified +2/-2 (4 lines); hunks: -1976,14 +1976,14 @@ def _dummy_run(self, batch_size: int, run_ctx=None):; symbols: _dummy_run，涉及 `_dummy_run`；`python/sglang/srt/layers/rotary_embedding/base.py` modified +2/-0 (2 lines); hunks: -291,6 +291,8 @@ def forward_cuda(; symbols: forward_cuda，涉及 `forward_cuda`；`PR_DESCRIPTION.md` added +78/-0 (78 lines); hunks: -0,0 +1,78。
 - 代码 diff 细节:
   - `python/sglang/srt/models/minimax_m2.py` modified +33/-16 (49 lines); hunks: -27,10 +27,14; -244,10 +248,16 @@ def rms_apply_serial(; symbols: rms_apply_serial, MiniMaxM2RMSNormTP, __init__, weight_loader
@@ -666,7 +666,7 @@ diff -- python/sglang/srt/layers/rotary_embedding/base.py
 - 状态/时间: open / 2026-03-18
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+15/-3，可读 patch 41 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 补齐模型支持入口或运行时能力，标题为「docs: add MiniMax-M2.7 and M2.7-highspeed model support」，变更集中在 `docs/basic_usage/minimax_m2.md`, `docs/supported_models/text_generation/generative_models.md`。PR 描述补充为：## Summary - Add MiniMax-M2.7 and M2.7-highspeed to the supported models list in the MiniMax usage docs - Update the generative models table to include M2.7 as the latest varian...
+- 动机: 标题「docs: add MiniMax-M2.7 and M2.7-highspeed model support」；模型线: MiniMax M2 Series；类别: 文档/测试/CI；主要 diff: `docs/basic_usage/minimax_m2.md`, `docs/supported_models/text_generation/generative_models.md`；PR 正文摘要: - Add MiniMax-M2.7 and M2.7-highspeed to the supported models list in the MiniMax usage docs - Update the generative models table to include M2.7 as the latest variant in the Mi...。
 - 实现要点: `docs/basic_usage/minimax_m2.md` modified +14/-2 (16 lines); hunks: -1,13 +1,14; -83,3 +84,14 @@ curl http://localhost:8000/v1/chat/completions \；`docs/supported_models/text_generation/generative_models.md` modified +1/-1 (2 lines); hunks: -37,7 +37,7 @@ in the GitHub search bar.。
 - 代码 diff 细节:
   - `docs/basic_usage/minimax_m2.md` modified +14/-2 (16 lines); hunks: -1,13 +1,14; -83,3 +84,14 @@ curl http://localhost:8000/v1/chat/completions \
@@ -698,7 +698,7 @@ diff -- docs/supported_models/text_generation/generative_models.md
 - 状态/时间: merged / 2026-03-18
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m2.py`；关联提交 `df1d046de2a1`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+12/-0，可读 patch 19 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 补齐模型支持入口或运行时能力，标题为「Add packed_modules_mapping for MiniMax-M2」，变更集中在 `python/sglang/srt/models/minimax_m2.py`。PR 描述补充为：## Motivation Fixes loading error for modelopt quantized MiniMax-M2 where quantizing qkv_proj layer is not skipped when exclude_modules in hf_quant_config.json has: Error messag...
+- 动机: 标题「Add packed_modules_mapping for MiniMax-M2」；模型线: MiniMax M2 Series；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/minimax_m2.py`；PR 正文摘要: Fixes loading error for modelopt quantized MiniMax-M2 where quantizing qkv_proj layer is not skipped when exclude_modules in hf_quant_config.json has: Error message that this PR...。
 - 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +12/-0 (12 lines); hunks: -941,6 +941,18 @@ def forward(; symbols: forward, MiniMaxM2ForCausalLM, __init__，涉及 `forward, MiniMaxM2ForCausalLM, __init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/minimax_m2.py` modified +12/-0 (12 lines); hunks: -941,6 +941,18 @@ def forward(; symbols: forward, MiniMaxM2ForCausalLM, __init__
@@ -725,7 +725,7 @@ diff -- python/sglang/srt/models/minimax_m2.py
 - 状态/时间: merged / 2026-03-18
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m2.py`；关联提交 `a3196d08b8f6`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+8/-0，可读 patch 19 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 补齐模型支持入口或运行时能力，标题为「[MiniMax M2] Fix KV cache scale loading」，变更集中在 `python/sglang/srt/models/minimax_m2.py`。PR 描述补充为：## Motivation When KV cache quantization is enabled in Model-Optimizer, the quantized checkpoint include kv scales as: During the MiniMax loading, the qkv weights are mapped fro...
+- 动机: 标题「[MiniMax M2] Fix KV cache scale loading」；模型线: MiniMax M2 Series；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/minimax_m2.py`；PR 正文摘要: When KV cache quantization is enabled in Model-Optimizer, the quantized checkpoint include kv scales as: During the MiniMax loading, the qkv weights are mapped from shards as by...。
 - 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +8/-0 (8 lines); hunks: -1063,10 +1063,18 @@ def load_weights(self, weights: Iterable[Tuple[str, torc...; symbols: load_weights，涉及 `load_weights`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/minimax_m2.py` modified +8/-0 (8 lines); hunks: -1063,10 +1063,18 @@ def load_weights(self, weights: Iterable[Tuple[str, torc...; symbols: load_weights
@@ -752,7 +752,7 @@ diff -- python/sglang/srt/models/minimax_m2.py
 - 状态/时间: open / 2026-03-20
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+122/-20，可读 patch 258 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 修复已暴露的启动、加载、解析或数值问题，标题为「fix(dp-attn): fix issues with dp-attention for MiniMax M2」，变更集中在 `python/sglang/srt/models/minimax_m2.py`, `python/sglang/srt/layers/dp_attention.py`, `python/sglang/srt/model_executor/model_runner.py`。PR 描述补充为：## Motivation The MiniMax M2 model implementation contained incorrect function names for retrieving attention tensor parallelism (TP) group information. The code was using get_a...
+- 动机: 标题「fix(dp-attn): fix issues with dp-attention for MiniMax M2」；模型线: MiniMax M2 Series；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/minimax_m2.py`, `python/sglang/srt/layers/dp_attention.py`, `python/sglang/srt/model_executor/model_runner.py`；PR 正文摘要: The MiniMax M2 model implementation contained incorrect function names for retrieving attention tensor parallelism (TP) group information. The code was using get_attention_tp_gr...。
 - 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +33/-16 (49 lines); hunks: -28,10 +28,14; -247,10 +251,16 @@ def rms_apply_serial(; symbols: rms_apply_serial, MiniMaxM2RMSNormTP, __init__, weight_loader，涉及 `rms_apply_serial, MiniMaxM2RMSNormTP, __init__`；`python/sglang/srt/layers/dp_attention.py` modified +4/-0 (4 lines); hunks: -328,6 +328,10 @@ def get_attention_tp_size() -> int:; symbols: get_attention_tp_size, get_attention_tp_world_size, get_attention_cp_group，涉及 `get_attention_tp_size, get_attention_tp_world_size, get_attention_cp_group`；`python/sglang/srt/model_executor/model_runner.py` modified +2/-2 (4 lines); hunks: -2121,14 +2121,14 @@ def _dummy_run(self, batch_size: int, run_ctx=None):; symbols: _dummy_run，涉及 `_dummy_run`；`python/sglang/srt/layers/rotary_embedding/base.py` modified +2/-0 (2 lines); hunks: -291,6 +291,8 @@ def forward_cuda(; symbols: forward_cuda，涉及 `forward_cuda`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/minimax_m2.py` modified +33/-16 (49 lines); hunks: -28,10 +28,14; -247,10 +251,16 @@ def rms_apply_serial(; symbols: rms_apply_serial, MiniMaxM2RMSNormTP, __init__, weight_loader
@@ -788,13 +788,40 @@ diff -- python/sglang/srt/model_executor/model_runner.py
   - other: `PR_DESCRIPTION.md` added +78/-0
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/dp_attention.py`, `python/sglang/srt/layers/rotary_embedding/base.py`, `python/sglang/srt/mem_cache/memory_pool.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
+### PR #20931 - [Bugifx] qwen3 rope parameter compatibility
+
+- 链接: https://github.com/sgl-project/sglang/pull/20931
+- 状态/时间: merged / 2026-03-20
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+4/-3，可读 patch 28 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugifx] qwen3 rope parameter compatibility」；模型线: MiniMax M2 Series；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_moe.py`；PR 正文摘要: To fix #20932 SGLang fails to load some Qwen3 MoE checkpoints whose HF config uses top-level `rope_theta` (v4-style) but does not define `rope_parameters` (v5-style). This PR up...。
+- 实现要点: `python/sglang/srt/models/qwen3_moe.py` modified +4/-3 (7 lines); hunks: -78,6 +78,7; -566,7 +567,7 @@ def forward_prepare_native(; symbols: forward_prepare_native, apply_qk_norm_rope, __init__，涉及 `forward_prepare_native, apply_qk_norm_rope, __init__`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/qwen3_moe.py` modified +4/-3 (7 lines); hunks: -78,6 +78,7; -566,7 +567,7 @@ def forward_prepare_native(; symbols: forward_prepare_native, apply_qk_norm_rope, __init__
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_moe.py
+@@ -78,6 +78,7 @@
++from sglang.srt.utils.hf_transformers_utils import get_rope_config
+@@ -566,7 +567,7 @@ def forward_prepare_native(
+-            theta = self.config.rope_parameters["rope_theta"]
++            theta = self.rope_theta
+@@ -691,8 +692,8 @@ def __init__(
+-        rope_theta = config.rope_parameters["rope_theta"]
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/qwen3_moe.py` modified +4/-3
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen3_moe.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
 ### PR #17695 - [NPU] enhance accuracy for model minimaxm2 from 16.5% to 95.5%
 
 - 链接: https://github.com/sgl-project/sglang/pull/17695
 - 状态/时间: merged / 2026-03-23
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/ascend/llm_models/test_ascend_minimax_m2.py`；关联提交 `4641e5a3d2bb`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/ascend/llm_models/test_ascend_minimax_m2.py`；关联提交 `4641e5a3d2bb`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+45/-1，可读 patch 61 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 优化关键推理路径或后端选择，标题为「[NPU] enhance accuracy for model minimaxm2 from 16.5% to 95.5%」，变更集中在 `test/registered/ascend/llm_models/test_ascend_minimax_m2.py`。PR 描述补充为：## Motivation Previously, the accuracy for npu for model minimaxm2 is no more than 16.5%. ## Modifications I pinpointed the problem in fused_topk_npu(), operator--npu_moe_gating...
+- 动机: 标题「[NPU] enhance accuracy for model minimaxm2 from 16.5% to 95.5%」；模型线: MiniMax M2 Series；类别: 性能/后端优化；主要 diff: `test/registered/ascend/llm_models/test_ascend_minimax_m2.py`；PR 正文摘要: Previously, the accuracy for npu for model minimaxm2 is no more than 16.5%. I pinpointed the problem in fused_topk_npu(), operator--npu_moe_gating_topk_softmax. The accuracy is...。
 - 实现要点: `test/registered/ascend/llm_models/test_ascend_minimax_m2.py` added +43/-0 (43 lines); hunks: -0,0 +1,43; symbols: TestMiniMaxM2，涉及 `TestMiniMaxM2`。
 - 代码 diff 细节:
   - `test/registered/ascend/llm_models/test_ascend_minimax_m2.py` added +43/-0 (43 lines); hunks: -0,0 +1,43; symbols: TestMiniMaxM2
@@ -821,7 +848,7 @@ diff -- test/registered/ascend/llm_models/test_ascend_minimax_m2.py
 - 状态/时间: merged / 2026-03-24
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m2.py`；关联提交 `1b4933d45d93`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+22/-30，可读 patch 67 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 补齐模型支持入口或运行时能力，标题为「[NPU][ModelSlim] adapt w2 quant layer for Minimax2.5」，变更集中在 `python/sglang/srt/models/minimax_m2.py`。PR 描述补充为：## Motivation Adapt w2 quant layer suffixes for Minimax2.5 ## Modifications Add '.w2.weight' suffix in get_moe_scheme Refeactor get_moe_scheme function Change prefix mlp to bloc...
+- 动机: 标题「[NPU][ModelSlim] adapt w2 quant layer for Minimax2.5」；模型线: MiniMax M2 Series；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/minimax_m2.py`；PR 正文摘要: Adapt w2 quant layer suffixes for Minimax2.5 Add '.w2.weight' suffix in get_moe_scheme Refeactor get_moe_scheme function Change prefix mlp to block_sparse_moe gsm8k test command...。
 - 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +1/-1 (2 lines); hunks: -713,7 +713,7 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/minimax_m2.py` modified +1/-1 (2 lines); hunks: -713,7 +713,7 @@ def __init__(; symbols: __init__
@@ -842,9 +869,9 @@ diff -- python/sglang/srt/models/minimax_m2.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/21241
 - 状态/时间: merged / 2026-03-31
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m2.py`；关联提交 `b91f78d255d8`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m2.py`；关联提交 `b91f78d255d8`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+3/-3，可读 patch 32 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 修复已暴露的启动、加载、解析或数值问题，标题为「[bugfix] Fix rope theta config for MiniMax after transformers v5 update」，变更集中在 `python/sglang/srt/models/minimax_m2.py`。PR 描述补充为：## Motivation Fixes for Transformers v5 update ## Modifications Same as https://github.com/sgl-project/sglang/pull/20931 ## Accuracy Tests GSM8K ## Benchmarking and Profiling N/...
+- 动机: 标题「[bugfix] Fix rope theta config for MiniMax after transformers v5 update」；模型线: MiniMax M2 Series；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/minimax_m2.py`；PR 正文摘要: Fixes for Transformers v5 update Same as https://github.com/sgl-project/sglang/pull/20931 GSM8K N/A。
 - 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +3/-3 (6 lines); hunks: -73,6 +73,7; -570,7 +571,7 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/minimax_m2.py` modified +3/-3 (6 lines); hunks: -73,6 +73,7; -570,7 +571,7 @@ def __init__(; symbols: __init__
@@ -871,7 +898,7 @@ diff -- python/sglang/srt/models/minimax_m2.py
 - 状态/时间: merged / 2026-04-03
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 16 个文件，+1410/-95，可读 patch 1875 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 修复已暴露的启动、加载、解析或数值问题，标题为「[Feature] NVFP4 Marlin fallback for non-Blackwell GPUs (SM75+)」，变更集中在 `python/sglang/srt/layers/quantization/marlin_utils_fp4.py`, `python/sglang/srt/layers/quantization/modelopt_quant.py`, `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py`。PR 描述补充为：## Motivation Related Issue: #19491 NVFP4-quantized models (e.g., `nvidia/Llama-3.1-8B-Instruct-NVFP4`, `nvidia/DeepSeek-V3-0324-FP4`, `mistralai/Minimax-M2.5-NVFP4`) crash imme...
+- 动机: 标题「[Feature] NVFP4 Marlin fallback for non-Blackwell GPUs (SM75+)」；模型线: MiniMax M2 Series；类别: 缺陷修复；主要 diff: `python/sglang/srt/layers/quantization/marlin_utils_fp4.py`, `python/sglang/srt/layers/quantization/modelopt_quant.py`, `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py`；PR 正文摘要: Related Issue: #19491 NVFP4-quantized models (e.g., `nvidia/Llama-3.1-8B-Instruct-NVFP4`, `nvidia/DeepSeek-V3-0324-FP4`, `mistralai/Minimax-M2.5-NVFP4`) crash immediately on non...。
 - 实现要点: `python/sglang/srt/layers/quantization/marlin_utils_fp4.py` added +320/-0 (320 lines); hunks: -0,0 +1,320; symbols: is_fp4_marlin_supported, should_use_fp4_marlin_fallback, nvfp4_marlin_process_scales, nvfp4_marlin_process_global_scale，涉及 `is_fp4_marlin_supported, should_use_fp4_marlin_fallback, nvfp4_marlin_process_scales`；`python/sglang/srt/layers/quantization/modelopt_quant.py` modified +82/-7 (89 lines); hunks: -40,6 +40,11; -1128,7 +1133,7 @@ def get_supported_act_dtypes(cls) -> List[torch.dtype]:; symbols: get_supported_act_dtypes, get_min_capability, common_group_size, create_weights，涉及 `get_supported_act_dtypes, get_min_capability, common_group_size`；`python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py` modified +66/-8 (74 lines); hunks: -17,6 +17,10; -38,19 +42,27; symbols: CompressedTensorsW4A4Nvfp4MoE, __init__, get_min_capability, create_weights，涉及 `CompressedTensorsW4A4Nvfp4MoE, __init__, get_min_capability`；`python/sglang/srt/layers/moe/fused_moe_triton/fused_marlin_moe.py` modified +33/-10 (43 lines); hunks: -23,6 +23,13 @@ def get_scalar_type(num_bits: int, has_zp: bool):; -46,6 +53,8 @@ def fused_marlin_moe(; symbols: get_scalar_type, _get_fp4_scalar_type, fused_marlin_moe，涉及 `get_scalar_type, _get_fp4_scalar_type, fused_marlin_moe`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/quantization/marlin_utils_fp4.py` added +320/-0 (320 lines); hunks: -0,0 +1,320; symbols: is_fp4_marlin_supported, should_use_fp4_marlin_fallback, nvfp4_marlin_process_scales, nvfp4_marlin_process_global_scale
@@ -911,9 +938,9 @@ diff -- python/sglang/srt/layers/quantization/compressed_tensors/schemes/compres
 
 - 链接: https://github.com/sgl-project/sglang/pull/21524
 - 状态/时间: merged / 2026-04-03
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/amd/perf/mi30x/test_minimax_m25_perf_amd.py`, `test/registered/amd/perf/mi35x/test_minimax_m25_perf_mi35x.py`；关联提交 `d07d0a15ceb8`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/amd/perf/mi30x/test_minimax_m25_perf_amd.py`, `test/registered/amd/perf/mi35x/test_minimax_m25_perf_mi35x.py`；关联提交 `d07d0a15ceb8`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+338/-4，可读 patch 400 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 补齐模型支持入口或运行时能力，标题为「[AMD] Add MiniMax-M2.5 nightly perf benchmarks for MI30x and MI35x」，变更集中在 `test/registered/amd/perf/mi35x/test_minimax_m25_perf_mi35x.py`, `test/registered/amd/perf/mi30x/test_minimax_m25_perf_amd.py`。PR 描述补充为：## Summary - Add `bench_one_batch` performance benchmark tests for MiniMax-M2.5 (TP=8, EP=8, aiter backend) on both MI30x and MI35x - Perf steps run after the existing accuracy...
+- 动机: 标题「[AMD] Add MiniMax-M2.5 nightly perf benchmarks for MI30x and MI35x」；模型线: MiniMax M2 Series；类别: 性能/后端优化；主要 diff: `test/registered/amd/perf/mi35x/test_minimax_m25_perf_mi35x.py`, `test/registered/amd/perf/mi30x/test_minimax_m25_perf_amd.py`；PR 正文摘要: - Add `bench_one_batch` performance benchmark tests for MiniMax-M2.5 (TP=8, EP=8, aiter backend) on both MI30x and MI35x - Perf steps run after the existing accuracy tests in th...。
 - 实现要点: `test/registered/amd/perf/mi35x/test_minimax_m25_perf_mi35x.py` added +146/-0 (146 lines); hunks: -0,0 +1,146; symbols: generate_simple_markdown_report, TestNightlyMiniMaxM25PerformanceMI35x, setUpClass, test_bench_minimax_m25，涉及 `generate_simple_markdown_report, TestNightlyMiniMaxM25PerformanceMI35x, setUpClass`；`test/registered/amd/perf/mi30x/test_minimax_m25_perf_amd.py` added +140/-0 (140 lines); hunks: -0,0 +1,140; symbols: generate_simple_markdown_report, TestNightlyMiniMaxM25Performance, setUpClass, test_bench_minimax_m25，涉及 `generate_simple_markdown_report, TestNightlyMiniMaxM25Performance, setUpClass`。
 - 代码 diff 细节:
   - `test/registered/amd/perf/mi35x/test_minimax_m25_perf_mi35x.py` added +146/-0 (146 lines); hunks: -0,0 +1,146; symbols: generate_simple_markdown_report, TestNightlyMiniMaxM25PerformanceMI35x, setUpClass, test_bench_minimax_m25
@@ -947,9 +974,9 @@ diff -- test/registered/amd/perf/mi30x/test_minimax_m25_perf_amd.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/21792
 - 状态/时间: merged / 2026-04-06
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/8-gpu-models/test_minimax_m25_basic.py`；关联提交 `56266de624f9`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/8-gpu-models/test_minimax_m25_basic.py`；关联提交 `56266de624f9`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+84/-0，可读 patch 85 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 补齐模型支持入口或运行时能力，标题为「[CI] Add basic unit test for Minimax-M2.5」，变更集中在 `test/registered/8-gpu-models/test_minimax_m25_basic.py`。PR 描述补充为：## Motivation A smaller test for MiniMax-M2.5, similar to test_deepseek_v3_basic.py ## Modifications ## Accuracy Tests ## Speed Tests and Profiling ## Checklist - [ ] Format you...
+- 动机: 标题「[CI] Add basic unit test for Minimax-M2.5」；模型线: MiniMax M2 Series；类别: 文档/测试/CI；主要 diff: `test/registered/8-gpu-models/test_minimax_m25_basic.py`；PR 正文摘要: A smaller test for MiniMax-M2.5, similar to test_deepseek_v3_basic.py。
 - 实现要点: `test/registered/8-gpu-models/test_minimax_m25_basic.py` added +84/-0 (84 lines); hunks: -0,0 +1,84; symbols: TestMiniMaxM25Basic, setUpClass, tearDownClass, test_a_gsm8k，涉及 `TestMiniMaxM25Basic, setUpClass, tearDownClass`。
 - 代码 diff 细节:
   - `test/registered/8-gpu-models/test_minimax_m25_basic.py` added +84/-0 (84 lines); hunks: -0,0 +1,84; symbols: TestMiniMaxM25Basic, setUpClass, tearDownClass, test_a_gsm8k
@@ -974,9 +1001,9 @@ diff -- test/registered/8-gpu-models/test_minimax_m25_basic.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/20919
 - 状态/时间: merged / 2026-04-07
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m2.py`；关联提交 `ae38b24cc358`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m2.py`；关联提交 `ae38b24cc358`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+104/-40，可读 patch 298 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 补齐模型支持入口或运行时能力，标题为「[NPU] Support dp-attention for MiniMax2.5」，变更集中在 `python/sglang/srt/models/minimax_m2.py`。PR 描述补充为：## Motivation Support dp-attention for MiniMax2.5 ## Modifications Support dp-attention for MiniMax2.5 Resolve the issue that fused_topk_native does not support num_token_non_pa...
+- 动机: 标题「[NPU] Support dp-attention for MiniMax2.5」；模型线: MiniMax M2 Series；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/minimax_m2.py`；PR 正文摘要: Support dp-attention for MiniMax2.5 Support dp-attention for MiniMax2.5 Resolve the issue that fused_topk_native does not support num_token_non_padded is not None. gsm8k test: A...。
 - 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +82/-39 (121 lines); hunks: -30,7 +30,6; -41,6 +40,12; symbols: MiniMaxM2RMSNormTP, __init__, weight_loader, forward，涉及 `MiniMaxM2RMSNormTP, __init__, weight_loader`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/minimax_m2.py` modified +82/-39 (121 lines); hunks: -30,7 +30,6; -41,6 +40,12; symbols: MiniMaxM2RMSNormTP, __init__, weight_loader, forward
@@ -1003,7 +1030,7 @@ diff -- python/sglang/srt/models/minimax_m2.py
 - 状态/时间: open / 2026-04-08
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+30/-6，可读 patch 65 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 修复已暴露的启动、加载、解析或数值问题，标题为「[NVIDIA] Fix FP8 gemm performance with fp16 models (MInimax-M2.5)」，变更集中在 `python/sglang/srt/layers/quantization/fp8_utils.py`, `python/sglang/srt/layers/quantization/fp8.py`, `python/sglang/srt/model_loader/utils.py`。PR 描述补充为：## Motivation ### Performance issue When using a model with fp16 activations such as Minimax-M2.5 on Blackwell, there is some extra processing of the weight scales at runtime wh...
+- 动机: 标题「[NVIDIA] Fix FP8 gemm performance with fp16 models (MInimax-M2.5)」；模型线: MiniMax M2 Series；类别: 缺陷修复；主要 diff: `python/sglang/srt/layers/quantization/fp8_utils.py`, `python/sglang/srt/layers/quantization/fp8.py`, `python/sglang/srt/model_loader/utils.py`；PR 正文摘要: Performance issue When using a model with fp16 activations such as Minimax-M2.5 on Blackwell, there is some extra processing of the weight scales at runtime which leads to poor...。
 - 实现要点: `python/sglang/srt/layers/quantization/fp8_utils.py` modified +5/-2 (7 lines); hunks: -488,8 +488,11 @@ def flashinfer_gemm_w8a8_block_fp8_linear_with_fallback(; symbols: flashinfer_gemm_w8a8_block_fp8_linear_with_fallback，涉及 `flashinfer_gemm_w8a8_block_fp8_linear_with_fallback`；`python/sglang/srt/layers/quantization/fp8.py` modified +5/-0 (5 lines); hunks: -474,11 +474,16 @@ def process_weights_after_loading_block_quant(self, layer:...; symbols: process_weights_after_loading_block_quant，涉及 `process_weights_after_loading_block_quant`；`python/sglang/srt/model_loader/utils.py` modified +20/-4 (24 lines); hunks: -259,13 +259,29 @@ def post_load_weights(model: nn.Module, model_config: Mode...; symbols: post_load_weights, should_deepgemm_weight_requant_ue8m0, should_async_load，涉及 `post_load_weights, should_deepgemm_weight_requant_ue8m0, should_async_load`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/quantization/fp8_utils.py` modified +5/-2 (7 lines); hunks: -488,8 +488,11 @@ def flashinfer_gemm_w8a8_block_fp8_linear_with_fallback(; symbols: flashinfer_gemm_w8a8_block_fp8_linear_with_fallback
@@ -1042,7 +1069,7 @@ diff -- python/sglang/srt/model_loader/utils.py
 - 状态/时间: open / 2026-04-09
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+69/-11，可读 patch 154 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 补齐模型支持入口或运行时能力，标题为「[NPU] add split_qkv_tp_rmsnorm_rope ops for minimax2」，变更集中在 `python/sglang/srt/models/minimax_m2.py`。PR 描述补充为：## Motivation add split_qkv_tp_rmsnorm_rope ops for Minimax2 ## Modifications add split_qkv_tp_rmsnorm_rope ops for Minimax2 fix cudagraph+eagle3+dp-attention bs > 1 crash error...
+- 动机: 标题「[NPU] add split_qkv_tp_rmsnorm_rope ops for minimax2」；模型线: MiniMax M2 Series；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/minimax_m2.py`；PR 正文摘要: add split_qkv_tp_rmsnorm_rope ops for Minimax2 add split_qkv_tp_rmsnorm_rope ops for Minimax2 fix cudagraph+eagle3+dp-attention bs > 1 crash error 3.5K 1.5K test case launch cmd...。
 - 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +69/-11 (80 lines); hunks: -17,7 +17,7; -42,6 +42,7; symbols: forward_prepare, forward_prepare_npu, forward_core, forward，涉及 `forward_prepare, forward_prepare_npu, forward_core`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/minimax_m2.py` modified +69/-11 (80 lines); hunks: -17,7 +17,7; -42,6 +42,7; symbols: forward_prepare, forward_prepare_npu, forward_core, forward
@@ -1069,7 +1096,7 @@ diff -- python/sglang/srt/models/minimax_m2.py
 - 状态/时间: merged / 2026-04-10
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m2.py`；关联提交 `84194c25c1cd`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+34/-10，可读 patch 73 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 修复已暴露的启动、加载、解析或数值问题，标题为「【BugFix】fix the bug of minimax_m2.5 model that causes repeated outputs when using tp16」，变更集中在 `python/sglang/srt/models/minimax_m2.py`。PR 描述补充为：## Motivation MiniMax M2.5 uses **8 KV heads**. When running with **TP=16**, the tensor parallel size exceeds the number of KV heads, meaning multiple TP ranks must share (repli...
+- 动机: 标题「【BugFix】fix the bug of minimax_m2.5 model that causes repeated outputs when using tp16」；模型线: MiniMax M2 Series；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/minimax_m2.py`；PR 正文摘要: MiniMax M2.5 uses **8 KV heads**. When running with **TP=16**, the tensor parallel size exceeds the number of KV heads, meaning multiple TP ranks must share (replicate) the same...。
 - 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +34/-10 (44 lines); hunks: -253,27 +253,47 @@ def rms_apply_serial(; -641,10 +661,14 @@ def __init__(; symbols: rms_apply_serial, MiniMaxM2RMSNormTP, __init__, weight_loader，涉及 `rms_apply_serial, MiniMaxM2RMSNormTP, __init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/minimax_m2.py` modified +34/-10 (44 lines); hunks: -253,27 +253,47 @@ def rms_apply_serial(; -641,10 +661,14 @@ def __init__(; symbols: rms_apply_serial, MiniMaxM2RMSNormTP, __init__, weight_loader
@@ -1096,7 +1123,7 @@ diff -- python/sglang/srt/models/minimax_m2.py
 - 状态/时间: merged / 2026-04-10
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m2.py`, `test/registered/8-gpu-models/test_minimax_m25.py`；关联提交 `7dbd0dd9f01a`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+39/-6，可读 patch 106 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 补齐模型支持入口或运行时能力，标题为「MiniMax-M2.5 - Support dp attention, dp reduce scatter, FP4 all gather, AR fusion in prepare_attn」，变更集中在 `python/sglang/srt/models/minimax_m2.py`, `test/registered/8-gpu-models/test_minimax_m25.py`。PR 描述补充为：## Motivation * Enables dp attention for MiniMax-M2.5 which is useful for high thoughput use cases. I also added these performance improvements: * For DEP, use reduce-scatter af...
+- 动机: 标题「MiniMax-M2.5 - Support dp attention, dp reduce scatter, FP4 all gather, AR fusion in prepare_attn」；模型线: MiniMax M2 Series；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/minimax_m2.py`, `test/registered/8-gpu-models/test_minimax_m25.py`；PR 正文摘要: * Enables dp attention for MiniMax-M2.5 which is useful for high thoughput use cases. I also added these performance improvements: * For DEP, use reduce-scatter after MoE instea...。
 - 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +25/-6 (31 lines); hunks: -53,10 +53,13; -417,12 +420,20 @@ def forward_normal(; symbols: forward_normal, forward_prepare, forward_core, __init__，涉及 `forward_normal, forward_prepare, forward_core`；`test/registered/8-gpu-models/test_minimax_m25.py` modified +10/-0 (10 lines); hunks: -29,6 +29,10 @@ def test_minimax_m25(self):; -37,6 +41,12 @@ def test_minimax_m25(self):; symbols: test_minimax_m25，涉及 `test_minimax_m25`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/minimax_m2.py` modified +25/-6 (31 lines); hunks: -53,10 +53,13; -417,12 +420,20 @@ def forward_normal(; symbols: forward_normal, forward_prepare, forward_core, __init__
@@ -1133,7 +1160,7 @@ diff -- test/registered/8-gpu-models/test_minimax_m25.py
 - 状态/时间: merged / 2026-04-13
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m2.py`；关联提交 `314d6ecf0880`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 11 个文件，+923/-82，可读 patch 1277 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 优化关键推理路径或后端选择，标题为「[Feature][JIT Kernel] Fused TP QK norm For Minimax」，变更集中在 `python/sglang/srt/models/minimax_m2.py`。PR 描述补充为：## Motivation https://github.com/NVIDIA/TensorRT-LLM/pull/12163 Adapted from trt-llm kernels. Special thanks to @jmydurant. We mainly optimize the memory access and reuse the cu...
+- 动机: 标题「[Feature][JIT Kernel] Fused TP QK norm For Minimax」；模型线: MiniMax M2 Series；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/minimax_m2.py`；PR 正文摘要: https://github.com/NVIDIA/TensorRT-LLM/pull/12163 Adapted from trt-llm kernels. Special thanks to @jmydurant. We mainly optimize the memory access and reuse the custom all reduc...。
 - 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +113/-21 (134 lines); hunks: -17,17 +17,23; -42,6 +48,7; symbols: forward, fused_tp_qknorm, MiniMaxM2QKRMSNorm, __init__，涉及 `forward, fused_tp_qknorm, MiniMaxM2QKRMSNorm`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/minimax_m2.py` modified +113/-21 (134 lines); hunks: -17,17 +17,23; -42,6 +48,7; symbols: forward, fused_tp_qknorm, MiniMaxM2QKRMSNorm, __init__
@@ -1160,7 +1187,7 @@ diff -- python/sglang/srt/models/minimax_m2.py
 - 状态/时间: open / 2026-04-14
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+11/-0，可读 patch 39 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 补齐模型支持入口或运行时能力，标题为「[NVIDIA] Support TF32 matmul to improve MiniMax gate gemm performance」，变更集中在 `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/server_args.py`, `docs/advanced_features/server_arguments.md`。PR 描述补充为：## Motivation Before this change, the fp32 gate gemm takes 9.1% of e2e decode time for MiniMax-M2.5 at bs 64. With `--enable-tf32-matmul`, it is reduced to 3.3%. ## Modification...
+- 动机: 标题「[NVIDIA] Support TF32 matmul to improve MiniMax gate gemm performance」；模型线: MiniMax M2 Series；类别: 性能/后端优化；主要 diff: `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/server_args.py`, `docs/advanced_features/server_arguments.md`；PR 正文摘要: Before this change, the fp32 gate gemm takes 9.1% of e2e decode time for MiniMax-M2.5 at bs 64. With `--enable-tf32-matmul`, it is reduced to 3.3%. Use `torch.set_float32_matmul...。
 - 实现要点: `python/sglang/srt/model_executor/model_runner.py` modified +4/-0 (4 lines); hunks: -449,6 +449,10 @@ def __init__(; symbols: __init__，涉及 `__init__`；`python/sglang/srt/server_args.py` modified +6/-0 (6 lines); hunks: -687,6 +687,7 @@ class ServerArgs:; -6074,6 +6075,11 @@ def add_cli_args(parser: argparse.ArgumentParser):; symbols: ServerArgs, add_cli_args，涉及 `ServerArgs, add_cli_args`；`docs/advanced_features/server_arguments.md` modified +1/-0 (1 lines); hunks: -470,6 +470,7 @@ Please consult the documentation below and [server_args.py](...。
 - 代码 diff 细节:
   - `python/sglang/srt/model_executor/model_runner.py` modified +4/-0 (4 lines); hunks: -449,6 +449,10 @@ def __init__(; symbols: __init__
@@ -1196,9 +1223,9 @@ diff -- docs/advanced_features/server_arguments.md
 
 - 链接: https://github.com/sgl-project/sglang/pull/22722
 - 状态/时间: merged / 2026-04-14
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m2.py`, `test/registered/amd/accuracy/mi30x/test_minimax_m27_eval_amd.py`, `test/registered/amd/accuracy/mi35x/test_minimax_m27_eval_mi35x.py`, `test/registered/amd/perf/mi30x/test_minimax_m27_perf_amd.py`, `test/registered/amd/perf/mi35x/test_minimax_m27_perf_mi35x.py`；关联提交 `eab045b2b74e`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m2.py`, `test/registered/amd/accuracy/mi30x/test_minimax_m27_eval_amd.py`, `test/registered/amd/accuracy/mi35x/test_minimax_m27_eval_mi35x.py`, `test/registered/amd/perf/mi30x/test_minimax_m27_perf_amd.py`, `test/registered/amd/perf/mi35x/test_minimax_m27_perf_mi35x.py`；关联提交 `eab045b2b74e`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+805/-113，可读 patch 1069 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 补齐模型支持入口或运行时能力，标题为「[AMD] Add MiniMax-M2.7 accuracy and performance nightly tests」，变更集中在 `python/sglang/srt/models/minimax_m2.py`, `test/registered/amd/accuracy/mi35x/test_minimax_m27_eval_mi35x.py`, `test/registered/amd/accuracy/mi30x/test_minimax_m27_eval_amd.py`。PR 描述补充为：## Summary - Add MiniMax-M2.7 (https://huggingface.co/MiniMaxAI/MiniMax-M2.7) accuracy (GSM8K 5-shot) and performance (`bench_one_batch`) nightly CI tests for AMD MI30x (MI325/M...
+- 动机: 标题「[AMD] Add MiniMax-M2.7 accuracy and performance nightly tests」；模型线: MiniMax M2 Series；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/minimax_m2.py`, `test/registered/amd/accuracy/mi35x/test_minimax_m27_eval_mi35x.py`, `test/registered/amd/accuracy/mi30x/test_minimax_m27_eval_amd.py`；PR 正文摘要: - Add MiniMax-M2.7 (https://huggingface.co/MiniMaxAI/MiniMax-M2.7) accuracy (GSM8K 5-shot) and performance (`bench_one_batch`) nightly CI tests for AMD MI30x (MI325/MI300X) - Mi...。
 - 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +7/-1 (8 lines); hunks: -33,7 +33,6; -81,9 +80,16；`test/registered/amd/accuracy/mi35x/test_minimax_m27_eval_mi35x.py` added +249/-0 (249 lines); hunks: -0,0 +1,249; symbols: ModelConfig, __post_init__, get_display_name, get_one_example，涉及 `ModelConfig, __post_init__, get_display_name`；`test/registered/amd/accuracy/mi30x/test_minimax_m27_eval_amd.py` added +245/-0 (245 lines); hunks: -0,0 +1,245; symbols: ModelConfig, __post_init__, get_display_name, get_one_example，涉及 `ModelConfig, __post_init__, get_display_name`；`test/registered/amd/perf/mi35x/test_minimax_m27_perf_mi35x.py` added +146/-0 (146 lines); hunks: -0,0 +1,146; symbols: generate_simple_markdown_report, TestNightlyMiniMaxM27PerformanceMI35x, setUpClass, test_bench_minimax_m27，涉及 `generate_simple_markdown_report, TestNightlyMiniMaxM27PerformanceMI35x, setUpClass`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/minimax_m2.py` modified +7/-1 (8 lines); hunks: -33,7 +33,6; -81,9 +80,16
@@ -1240,7 +1267,7 @@ diff -- test/registered/amd/accuracy/mi30x/test_minimax_m27_eval_amd.py
 - 状态/时间: open / 2026-04-16
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+25/-0，可读 patch 53 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 修复已暴露的启动、加载、解析或数值问题，标题为「Minimax eplb bugfix」，变更集中在 `python/sglang/srt/models/minimax_m2.py`。PR 描述补充为：## Motivation fix eplb bug for minimax-m2.5 [2026-03-23 03:19:30 TP2 EP2] Resetting ExpertDistributionRecorder... [2026-03-23 03:19:31 TP5 EP5] Scheduler hit an exception: Trace...
+- 动机: 标题「Minimax eplb bugfix」；模型线: MiniMax M2 Series；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/minimax_m2.py`；PR 正文摘要: fix eplb bug for minimax-m2.5 [2026-03-23 03:19:30 TP2 EP2] Resetting ExpertDistributionRecorder... [2026-03-23 03:19:31 TP5 EP5] Scheduler hit an exception: Traceback (most rec...。
 - 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +25/-0 (25 lines); hunks: -66,6 +66,7; -88,6 +89,7; symbols: op_output, get_moe_weights, MiniMaxM2Attention, __init__，涉及 `op_output, get_moe_weights, MiniMaxM2Attention`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/minimax_m2.py` modified +25/-0 (25 lines); hunks: -66,6 +66,7; -88,6 +89,7; symbols: op_output, get_moe_weights, MiniMaxM2Attention, __init__
@@ -1267,7 +1294,7 @@ diff -- python/sglang/srt/models/minimax_m2.py
 - 状态/时间: open / 2026-04-20
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+66/-10，可读 patch 133 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 补齐模型支持入口或运行时能力，标题为「[NPU] add split_qkv_tp_rmsnorm_rope ops for minimax2 & fix eagle3 hidden states capture in dp attn mode」，变更集中在 `python/sglang/srt/models/minimax_m2.py`。PR 描述补充为：## Motivation add split_qkv_tp_rmsnorm_rope ops for Minimax2 ## Modifications add split_qkv_tp_rmsnorm_rope ops for Minimax2 fix cudagraph+eagle3+dp-attention bs > 1 crash error...
+- 动机: 标题「[NPU] add split_qkv_tp_rmsnorm_rope ops for minimax2 & fix eagle3 hidden states capture in dp attn mode」；模型线: MiniMax M2 Series；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/minimax_m2.py`；PR 正文摘要: add split_qkv_tp_rmsnorm_rope ops for Minimax2 add split_qkv_tp_rmsnorm_rope ops for Minimax2 fix cudagraph+eagle3+dp-attention bs > 1 crash error before: after:。
 - 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +66/-10 (76 lines); hunks: -18,7 +18,7; -93,13 +93,18; symbols: forward_prepare, forward_prepare_npu, forward_core, forward，涉及 `forward_prepare, forward_prepare_npu, forward_core`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/minimax_m2.py` modified +66/-10 (76 lines); hunks: -18,7 +18,7; -93,13 +93,18; symbols: forward_prepare, forward_prepare_npu, forward_core, forward
@@ -1294,7 +1321,7 @@ diff -- python/sglang/srt/models/minimax_m2.py
 - 状态/时间: open / 2026-04-21
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+332/-280，可读 patch 742 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiniMax M2 Series 调整模型相关实现，标题为「[sgl] Stream MiniMax M2 string parameters token-by-token」，变更集中在 `python/sglang/srt/function_call/minimax_m2.py`。PR 描述补充为：## Motivation When using MiniMax-M2/M2.1/M2.5 via SGLang with tool calls, string-typed parameter arguments were not streamed incrementally. The `MinimaxM2Detector` buffered the...
+- 动机: 标题「[sgl] Stream MiniMax M2 string parameters token-by-token」；模型线: MiniMax M2 Series；类别: 模型实现调整；主要 diff: `python/sglang/srt/function_call/minimax_m2.py`；PR 正文摘要: When using MiniMax-M2/M2.1/M2.5 via SGLang with tool calls, string-typed parameter arguments were not streamed incrementally. The `MinimaxM2Detector` buffered the entire XML par...。
 - 实现要点: `python/sglang/srt/function_call/minimax_m2.py` modified +332/-280 (612 lines); hunks: -13,6 +13,11; -24,6 +29,9 @@ class MinimaxM2Detector(BaseFormatDetector):; symbols: MinimaxM2Detector, __init__，涉及 `MinimaxM2Detector, __init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/function_call/minimax_m2.py` modified +332/-280 (612 lines); hunks: -13,6 +13,11; -24,6 +29,9 @@ class MinimaxM2Detector(BaseFormatDetector):; symbols: MinimaxM2Detector, __init__
@@ -1317,5 +1344,5 @@ diff -- python/sglang/srt/function_call/minimax_m2.py
 
 ## 补漏结论
 
-- 本版不再接受只列 PR 标题的写法；每个 PR 必须有反查来源、diff 范围、实现要点、代码摘录、已读文件和验证风险。
+- 验收规则: 每个 PR 卡片必须保留反查来源、diff 范围、实现要点、代码摘录、已读文件和验证风险。
 - 如果新模型文件落在当前过滤规则之外，先补文件过滤规则，再重新执行本轮 `git log --name-only -- <model-files>` 追溯。

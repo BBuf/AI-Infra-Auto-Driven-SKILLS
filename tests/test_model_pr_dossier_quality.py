@@ -30,6 +30,21 @@ PLACEHOLDER_PATTERNS = [
     r"unavailable PR",
     r"GitHub API 返回",
     r"GitHub API returned",
+    r"Motivation: For [^,\n]{1,80}, this PR ",
+    r"动机: 该 PR 围绕",
+    r"The PR body has no extra context",
+    r"PR 正文没有提供额外背景",
+    r"This version rejects title-only PR lists",
+    r"本版不再接受只列 PR 标题",
+    r"Diffusion model families have been removed from this history set",
+    r"diffusion 相关模型已从本目录剔除",
+    r"Essential Elements of an Effective PR Description Checklist",
+    r"Format your code according to the Format code",
+    r"PR body summary: [#\-—– ]+[.]",
+    r"PR 正文摘要: [#\-—– ]+。",
+    r"PR body summary: DRAFT",
+    r"PR 正文摘要: DRAFT",
+    r"[🫡😅👋]",
 ]
 
 ZH_REQUIRED_SECTIONS = [

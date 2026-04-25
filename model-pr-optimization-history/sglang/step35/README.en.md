@@ -6,7 +6,6 @@
 - Source baseline: `sgl-project/sglang` trace worktree commit `880599cd43`
 - PR collection rule: run `git log --name-only -- <model-files>` on model implementation, config, processor, parser, docs/tests, filter by model keywords in commit subjects, then read each PR's final diff through the GitHub Pull Request files API.
 - Preservation rule: PRs explicitly cited by the previous history/skill are retained even if current implementation files no longer trace to them, and the card marks that source.
-- Diffusion model families have been removed from this history set and are no longer part of model optimization skills.
 
 ## Implementation File Coverage
 
@@ -45,7 +44,7 @@
 - Status/date: merged / 2025-07-31
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 16 files, +2340/-23, 2530 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Step 3.5, this PR adds or enables a model support/runtime surface. Title: "model: support Step3V". The diff centers on `python/sglang/srt/models/step3_vl.py`, `python/sglang/srt/multimodal/processors/step3_vl.py`, `python/sglang/srt/function_call/step3_detector.py`. PR body context: ## Motivation This PR adds the support for Step3VModel. Co-authored-by: Qiaolin-Yu Co-authored-by: ispobock Co-authored-by: nnnobody-code Co-authored-by: jimpang ## Modification...
+- Motivation: Title: "model: support Step3V"; model line: Step 3.5; category: model support/runtime entry; main diff: `python/sglang/srt/models/step3_vl.py`, `python/sglang/srt/multimodal/processors/step3_vl.py`, `python/sglang/srt/function_call/step3_detector.py`; PR body summary: This PR adds the support for Step3VModel. Co-authored-by: Qiaolin-Yu Co-authored-by: ispobock Co-authored-by: nnnobody-code Co-authored-by: jimpang - Add Stepv3 model - Add tool....
 - Key implementation: `python/sglang/srt/models/step3_vl.py` added +994/-0 (994 lines); hunks: -0,0 +1,994; symbols: Step3TextMLP, __init__, forward, Step3TextMoEMLP, touching `Step3TextMLP, __init__, forward`; `python/sglang/srt/multimodal/processors/step3_vl.py` added +515/-0 (515 lines); hunks: -0,0 +1,515; symbols: GPUToTensor, forward, Step3VisionProcessor, __init__, touching `GPUToTensor, forward, Step3VisionProcessor`; `python/sglang/srt/function_call/step3_detector.py` added +436/-0 (436 lines); hunks: -0,0 +1,436; symbols: get_argument_type, parse_arguments, Step3Detector, __init__, touching `get_argument_type, parse_arguments, Step3Detector`; `python/sglang/srt/configs/step3_vl.py` added +172/-0 (172 lines); hunks: -0,0 +1,172; symbols: Step3VisionEncoderConfig, __init__, Step3TextConfig, Step3VLConfig, touching `Step3VisionEncoderConfig, __init__, Step3TextConfig`.
 - Code diff details:
   - `python/sglang/srt/models/step3_vl.py` added +994/-0 (994 lines); hunks: -0,0 +1,994; symbols: Step3TextMLP, __init__, forward, Step3TextMoEMLP
@@ -87,7 +86,7 @@ diff -- python/sglang/srt/function_call/step3_detector.py
 - Status/date: merged / 2025-08-03
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +25/-6, 107 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Step 3.5, this PR adds or enables a model support/runtime surface. Title: "feat: Support DP Attention for step3_vl". The diff centers on `python/sglang/srt/layers/attention/vision.py`, `python/sglang/srt/models/step3_vl.py`, `python/sglang/srt/multimodal/processors/step3_vl.py`. PR body context: ## Motivation Support DP Attention for step3_vl ## Modifications In the implementation prior to `step3_vl`, DP Attention was already supported for the LLM. This update extends D...
+- Motivation: Title: "feat: Support DP Attention for step3_vl"; model line: Step 3.5; category: model support/runtime entry; main diff: `python/sglang/srt/layers/attention/vision.py`, `python/sglang/srt/models/step3_vl.py`, `python/sglang/srt/multimodal/processors/step3_vl.py`; PR body summary: Support DP Attention for step3_vl In the implementation prior to `step3_vl`, DP Attention was already supported for the LLM. This update extends DP Attention support to the visi....
 - Key implementation: `python/sglang/srt/layers/attention/vision.py` modified +13/-5 (18 lines); hunks: -11,6 +11,7; -365,19 +366,20 @@ def __init__(; symbols: __init__, touching `__init__`; `python/sglang/srt/models/step3_vl.py` modified +9/-0 (9 lines); hunks: -531,11 +531,18 @@ def __init__(; -544,6 +551,8 @@ def __init__(; symbols: __init__, touching `__init__`; `python/sglang/srt/multimodal/processors/step3_vl.py` modified +3/-1 (4 lines); hunks: -8,7 +8,7; -276,6 +276,8 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `python/sglang/srt/layers/attention/vision.py` modified +13/-5 (18 lines); hunks: -11,6 +11,7; -365,19 +366,20 @@ def __init__(; symbols: __init__
@@ -126,7 +125,7 @@ diff -- python/sglang/srt/multimodal/processors/step3_vl.py
 - Status/date: merged / 2025-08-27
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +600/-2, 634 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Step 3.5, this PR adds or enables a model support/runtime surface. Title: "[router] add step3 tool parser". The diff centers on `sgl-router/src/tool_parser/parsers/step3_parser.rs`, `sgl-router/tests/tool_parser_step3.rs`, `sgl-router/src/tool_parser/registry.rs`. PR body context: ## Motivation step3 tool parser ## Modifications ## Accuracy Tests ## Benchmarking and Profiling ## Checklist - [x] Format your code according to the Format code with pre-commit...
+- Motivation: Title: "[router] add step3 tool parser"; model line: Step 3.5; category: model support/runtime entry; main diff: `sgl-router/src/tool_parser/parsers/step3_parser.rs`, `sgl-router/tests/tool_parser_step3.rs`, `sgl-router/src/tool_parser/registry.rs`; PR body summary: step3 tool parser.
 - Key implementation: `sgl-router/src/tool_parser/parsers/step3_parser.rs` added +348/-0 (348 lines); hunks: -0,0 +1,348; `sgl-router/tests/tool_parser_step3.rs` added +245/-0 (245 lines); hunks: -0,0 +1,245; `sgl-router/src/tool_parser/registry.rs` modified +3/-1 (4 lines); hunks: -1,5 +1,5; -113,6 +113,8 @@ impl ParserRegistry {; `sgl-router/src/tool_parser/parsers/mod.rs` modified +3/-0 (3 lines); hunks: -9,12 +9,15 @@ pub mod llama_parser;.
 - Code diff details:
   - `sgl-router/src/tool_parser/parsers/step3_parser.rs` added +348/-0 (348 lines); hunks: -0,0 +1,348
@@ -166,9 +165,9 @@ diff -- sgl-router/src/tool_parser/registry.rs
 
 - Link: https://github.com/sgl-project/sglang/pull/18084
 - Status/date: merged / 2026-02-02
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/step3p5.py`, `python/sglang/srt/models/step3p5.py`, `python/sglang/srt/models/step3p5_mtp.py`; associated commits `980d2936cd9a`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/step3p5.py`, `python/sglang/srt/models/step3p5.py`, `python/sglang/srt/models/step3p5_mtp.py`; associated commits `980d2936cd9a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 15 files, +1557/-12, 1711 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Step 3.5, this PR adds or enables a model support/runtime surface. Title: "add Step-3.5-Flash model support". The diff centers on `python/sglang/srt/models/step3p5.py`, `python/sglang/srt/models/step3p5_mtp.py`, `python/sglang/srt/configs/step3p5.py`. PR body context: ## Motivation add Step-3.5-Flash model support ## Modifications ## Accuracy Tests ## Benchmarking and Profiling ## Checklist - [ ] Format your code according to the Format code...
+- Motivation: Title: "add Step-3.5-Flash model support"; model line: Step 3.5; category: performance/backend optimization; main diff: `python/sglang/srt/models/step3p5.py`, `python/sglang/srt/models/step3p5_mtp.py`, `python/sglang/srt/configs/step3p5.py`; PR body summary: add Step-3.5-Flash model support.
 - Key implementation: `python/sglang/srt/models/step3p5.py` added +1037/-0 (1037 lines); hunks: -0,0 +1,1037; symbols: Step3p5MLP, __init__, forward, Step3p5MoEMLP, touching `Step3p5MLP, __init__, forward`; `python/sglang/srt/models/step3p5_mtp.py` added +336/-0 (336 lines); hunks: -0,0 +1,336; symbols: get_spec_layer_idx_from_weight_name, SharedHead, __init__, forward, touching `get_spec_layer_idx_from_weight_name, SharedHead, __init__`; `python/sglang/srt/configs/step3p5.py` added +97/-0 (97 lines); hunks: -0,0 +1,97; symbols: Step3p5Config, __init__, touching `Step3p5Config, __init__`.
 - Code diff details:
   - `python/sglang/srt/models/step3p5.py` added +1037/-0 (1037 lines); hunks: -0,0 +1,1037; symbols: Step3p5MLP, __init__, forward, Step3p5MoEMLP
@@ -207,7 +206,7 @@ diff -- python/sglang/srt/configs/step3p5.py
 - Status/date: merged / 2026-03-04
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +31/-2, 61 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Step 3.5, this PR optimizes an inference path or backend selection. Title: "[Feature] implement the standard multi-layer MTP for step3p5". The diff centers on `python/sglang/srt/speculative/multi_layer_eagle_worker_v2.py`, `python/sglang/srt/speculative/multi_layer_eagle_draft_extend_cuda_graph_runner.py`. PR body context: ## Motivation The current SGL multi-layer MTP behavior can deviate from the standard Step3.5 Flash design, where hidden states should be propagated step-by-step across MTP layer...
+- Motivation: Title: "[Feature] implement the standard multi-layer MTP for step3p5"; model line: Step 3.5; category: performance/backend optimization; main diff: `python/sglang/srt/speculative/multi_layer_eagle_worker_v2.py`, `python/sglang/srt/speculative/multi_layer_eagle_draft_extend_cuda_graph_runner.py`; PR body summary: The current SGL multi-layer MTP behavior can deviate from the standard Step3.5 Flash design, where hidden states should be propagated step-by-step across MTP layers/steps. This....
 - Key implementation: `python/sglang/srt/speculative/multi_layer_eagle_worker_v2.py` modified +21/-2 (23 lines); hunks: -127,6 +127,11 @@ def __init__(; -382,6 +387,15 @@ def _draft_extend_for_prefill(; symbols: __init__, _draft_extend_for_prefill, forward_batch_generation, touching `__init__, _draft_extend_for_prefill, forward_batch_generation`; `python/sglang/srt/speculative/multi_layer_eagle_draft_extend_cuda_graph_runner.py` modified +10/-0 (10 lines); hunks: -387,6 +387,16 @@ def run_once():; symbols: run_once, touching `run_once`.
 - Code diff details:
   - `python/sglang/srt/speculative/multi_layer_eagle_worker_v2.py` modified +21/-2 (23 lines); hunks: -127,6 +127,11 @@ def __init__(; -382,6 +387,15 @@ def _draft_extend_for_prefill(; symbols: __init__, _draft_extend_for_prefill, forward_batch_generation
@@ -241,9 +240,9 @@ diff -- python/sglang/srt/speculative/multi_layer_eagle_draft_extend_cuda_graph_
 
 - Link: https://github.com/sgl-project/sglang/pull/22076
 - Status/date: merged / 2026-04-04
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/step3p5.py`; associated commits `ef130312434c`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/step3p5.py`; associated commits `ef130312434c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +0/-1, 8 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Step 3.5, this PR fixes a launch, loading, parsing, or numerical issue. Title: "Tiny fix step3.5-flash launch crash". The diff centers on `python/sglang/srt/models/step3p5.py`. PR body context: ## Motivation Before this, launch step3.5-flash will just crash since step3.5-flash config doesn't have `pad_token_id` afaik, `padding_idx` is not used in the model file, so I s...
+- Motivation: Title: "Tiny fix step3.5-flash launch crash"; model line: Step 3.5; category: bug fix; main diff: `python/sglang/srt/models/step3p5.py`; PR body summary: Before this, launch step3.5-flash will just crash since step3.5-flash config doesn't have `pad_token_id` afaik, `padding_idx` is not used in the model file, so I simply deleted it..
 - Key implementation: `python/sglang/srt/models/step3p5.py` modified +0/-1 (1 lines); hunks: -667,7 +667,6 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `python/sglang/srt/models/step3p5.py` modified +0/-1 (1 lines); hunks: -667,7 +667,6 @@ def __init__(; symbols: __init__
@@ -265,7 +264,7 @@ diff -- python/sglang/srt/models/step3p5.py
 - Status/date: merged / 2026-04-16
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/step3p5.py`; associated commits `b8794baa6d61`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +59/-57, 211 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Step 3.5, this PR adds or enables a model support/runtime surface. Title: "[Step3p5] Optimize allreduce in MoE layers". The diff centers on `python/sglang/srt/models/step3p5.py`. PR body context: ## Motivation ## Modifications - Defer o_proj and share_expert all-reduce, combine with MoE output into a single all-reduce per layer (was 3 separate all-reduces) - Enable allre...
+- Motivation: Title: "[Step3p5] Optimize allreduce in MoE layers"; model line: Step 3.5; category: performance/backend optimization; main diff: `python/sglang/srt/models/step3p5.py`; PR body summary: - Defer o_proj and share_expert all-reduce, combine with MoE output into a single all-reduce per layer (was 3 separate all-reduces) - Enable allreduce fusion and reduce-scatter....
 - Key implementation: `python/sglang/srt/models/step3p5.py` modified +59/-57 (116 lines); hunks: -1,5 +1,3; -57,7 +55,6; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `python/sglang/srt/models/step3p5.py` modified +59/-57 (116 lines); hunks: -1,5 +1,3; -57,7 +55,6; symbols: __init__
@@ -288,5 +287,5 @@ diff -- python/sglang/srt/models/step3p5.py
 
 ## Gap-Closure Notes
 
-- This version rejects title-only PR lists; every PR must include trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
+- Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
 - If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.

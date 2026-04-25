@@ -6,7 +6,6 @@
 - Source baseline: `vllm-project/vllm` trace worktree commit `95995bbef8`
 - PR collection rule: run `git log --name-only -- <model-files>` on model implementation, config, processor, parser, docs/tests, filter by model keywords in commit subjects, then read each PR's final diff through the GitHub Pull Request files API.
 - Preservation rule: PRs explicitly cited by the previous history/skill are retained even if current implementation files no longer trace to them, and the card marks that source.
-- Diffusion model families have been removed from this history set and are no longer part of model optimization skills.
 
 ## Implementation File Coverage
 
@@ -49,7 +48,7 @@
 - Status/date: merged / 2024-10-11
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +776/-72, 1059 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For GLM VLM/OCR, this PR adds or enables a model support/runtime surface. Title: "[Model] Add GLM-4v support and meet vllm==0.6.2". The diff centers on `vllm/model_executor/models/chatglm.py`, `vllm/model_executor/models/glm4_vision_encoder.py`, `tests/models/decoder_only/vision_language/test_glm4.py`. PR body context: Overview --- This PR support the glm-4v-9b multimodal model while maintaining compatibility with `chatglm`. This PR was inspired and reused some code here #5358 This PR is updat...
+- Motivation: Title: "[Model] Add GLM-4v support and meet vllm==0.6.2"; model line: GLM VLM/OCR; category: model support/runtime entry; main diff: `vllm/model_executor/models/chatglm.py`, `vllm/model_executor/models/glm4_vision_encoder.py`, `tests/models/decoder_only/vision_language/test_glm4.py`; PR body summary: Overview This PR support the glm-4v-9b multimodal model while maintaining compatibility with `chatglm`. This PR was inspired and reused some code here #5358 This PR is updated f....
 - Key implementation: `vllm/model_executor/models/chatglm.py` modified +298/-52 (350 lines); hunks: -1,42 +1,229; -127,7 +314,7 @@ class GLMMLP(nn.Module):; symbols: calculate_image_placeholder, mm_input_mapper_for_glmv, merge_glm_vision_embeddings, GLMImagePixelInputs, touching `calculate_image_placeholder, mm_input_mapper_for_glmv, merge_glm_vision_embeddings`; `vllm/model_executor/models/glm4_vision_encoder.py` added +298/-0 (298 lines); hunks: -0,0 +1,298; symbols: PatchEmbedding, __init__, forward, Attention, touching `PatchEmbedding, __init__, forward`; `tests/models/decoder_only/vision_language/test_glm4.py` added +133/-0 (133 lines); hunks: -0,0 +1,133; symbols: run_test, processor, test_models, touching `run_test, processor, test_models`; `vllm/transformers_utils/tokenizer.py` modified +21/-18 (39 lines); hunks: -59,6 +59,26 @@ def __len__(self):; -143,24 +163,7 @@ def get_tokenizer(; symbols: __len__, patch_padding_side, _pad, get_tokenizer, touching `__len__, patch_padding_side, _pad`.
 - Code diff details:
   - `vllm/model_executor/models/chatglm.py` modified +298/-52 (350 lines); hunks: -1,42 +1,229; -127,7 +314,7 @@ class GLMMLP(nn.Module):; symbols: calculate_image_placeholder, mm_input_mapper_for_glmv, merge_glm_vision_embeddings, GLMImagePixelInputs
@@ -92,7 +91,7 @@ diff -- tests/models/decoder_only/vision_language/test_glm4.py
 - Status/date: merged / 2025-07-01
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 17 files, +1946/-16, 2230 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For GLM VLM/OCR, this PR adds or enables a model support/runtime surface. Title: "Add GLM-4.1V model". The diff centers on `vllm/model_executor/models/glm4_1v.py`, `vllm/model_executor/layers/rotary_embedding.py`, `vllm/multimodal/parse.py`. PR body context: This PR aims to add support for the GLM-4.1V model. Due to the upgrade of the implementation in the transformers library, some interfaces have been changed. This model definitel...
+- Motivation: Title: "Add GLM-4.1V model"; model line: GLM VLM/OCR; category: model support/runtime entry; main diff: `vllm/model_executor/models/glm4_1v.py`, `vllm/model_executor/layers/rotary_embedding.py`, `vllm/multimodal/parse.py`; PR body summary: This PR aims to add support for the GLM-4.1V model. Due to the upgrade of the implementation in the transformers library, some interfaces have been changed. This model definitel....
 - Key implementation: `vllm/model_executor/models/glm4_1v.py` added +1589/-0 (1589 lines); hunks: -0,0 +1,1589; symbols: Glm4vImagePixelInputs, Glm4vImageEmbeddingInputs, Glm4vVideoPixelInputs, Glm4vVideoEmbeddingInputs, touching `Glm4vImagePixelInputs, Glm4vImageEmbeddingInputs, Glm4vVideoPixelInputs`; `vllm/model_executor/layers/rotary_embedding.py` modified +119/-0 (119 lines); hunks: -23,6 +23,7; -1118,6 +1119,15 @@ def get_input_positions_tensor(; symbols: get_input_positions_tensor, _glm4v_get_input_positions_tensor, _vl_get_input_positions_tensor, touching `get_input_positions_tensor, _glm4v_get_input_positions_tensor, _vl_get_input_positions_tensor`; `vllm/multimodal/parse.py` modified +40/-2 (42 lines); hunks: -224,8 +224,14 @@ def __init__(self, data: Union[torch.Tensor, list[torch.Ten...; -320,13 +326,15 @@ def __init__(; symbols: __init__, VideoProcessorItems, get_num_frames, touching `__init__, VideoProcessorItems, get_num_frames`; `tests/models/multimodal/generation/test_common.py` modified +28/-0 (28 lines); hunks: -309,6 +309,34.
 - Code diff details:
   - `vllm/model_executor/models/glm4_1v.py` added +1589/-0 (1589 lines); hunks: -0,0 +1,1589; symbols: Glm4vImagePixelInputs, Glm4vImageEmbeddingInputs, Glm4vVideoPixelInputs, Glm4vVideoEmbeddingInputs
@@ -132,9 +131,9 @@ diff -- vllm/multimodal/parse.py
 
 - Link: https://github.com/vllm-project/vllm/pull/21678
 - Status/date: merged / 2025-07-28
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_1v.py`; associated commits `88e46c7c8dfa`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_1v.py`; associated commits `88e46c7c8dfa`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +69/-66, 218 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For GLM VLM/OCR, this PR changes model-related implementation. Title: "Migrate Glm4vImageInputs, Glm4vVideoInputs to TensorSchema". The diff centers on `vllm/model_executor/models/glm4_1v.py`. PR body context: ## Purpose This PR migrates Glm4vImageInputs and Glm4vVideoInputs from a TypedDict-based definition to a structured TensorSchema model with runtime shape validation. This brings...
+- Motivation: Title: "Migrate Glm4vImageInputs, Glm4vVideoInputs to TensorSchema"; model line: GLM VLM/OCR; category: model implementation change; main diff: `vllm/model_executor/models/glm4_1v.py`; PR body summary: This PR migrates Glm4vImageInputs and Glm4vVideoInputs from a TypedDict-based definition to a structured TensorSchema model with runtime shape validation. This brings it in line....
 - Key implementation: `vllm/model_executor/models/glm4_1v.py` modified +46/-65 (111 lines); hunks: -29,7 +29,7; -70,6 +70,7; symbols: Glm4vImagePixelInputs, Glm4vImageEmbeddingInputs, Glm4vVideoPixelInputs, touching `Glm4vImagePixelInputs, Glm4vImageEmbeddingInputs, Glm4vVideoPixelInputs`.
 - Code diff details:
   - `vllm/model_executor/models/glm4_1v.py` modified +46/-65 (111 lines); hunks: -29,7 +29,7; -70,6 +70,7; symbols: Glm4vImagePixelInputs, Glm4vImageEmbeddingInputs, Glm4vVideoPixelInputs
@@ -159,9 +158,9 @@ diff -- vllm/model_executor/models/glm4_1v.py
 
 - Link: https://github.com/vllm-project/vllm/pull/22751
 - Status/date: merged / 2025-08-13
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_1v.py`; associated commits `fde0b611a37e`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_1v.py`; associated commits `fde0b611a37e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +23/-7, 58 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For GLM VLM/OCR, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Model] Decouple glm4v". The diff centers on `vllm/model_executor/models/glm4_1v.py`. PR body context: # Essential Elements of an Effective PR Description Checklist - [x] The purpose of the PR, FIX #22077 - [ ] The test plan, such as providing test command. - [ ] The test results...
+- Motivation: Title: "[Model] Decouple glm4v"; model line: GLM VLM/OCR; category: model implementation change; main diff: `vllm/model_executor/models/glm4_1v.py`; no usable PR-body summary.
 - Key implementation: `vllm/model_executor/models/glm4_1v.py` modified +21/-5 (26 lines); hunks: -1227,10 +1227,7 @@ class Glm4vForConditionalGeneration(nn.Module, SupportsMu...; -1567,7 +1564,26 @@ def get_mm_mapping(self) -> MultiModelKeys:; symbols: Glm4vForConditionalGeneration, get_mm_mapping, Glm4vMoeForConditionalGeneration, touching `Glm4vForConditionalGeneration, get_mm_mapping, Glm4vMoeForConditionalGeneration`.
 - Code diff details:
   - `vllm/model_executor/models/glm4_1v.py` modified +21/-5 (26 lines); hunks: -1227,10 +1227,7 @@ class Glm4vForConditionalGeneration(nn.Module, SupportsMu...; -1567,7 +1564,26 @@ def get_mm_mapping(self) -> MultiModelKeys:; symbols: Glm4vForConditionalGeneration, get_mm_mapping, Glm4vMoeForConditionalGeneration
@@ -188,7 +187,7 @@ diff -- vllm/model_executor/models/glm4_1v.py
 - Status/date: merged / 2025-10-31
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +147/-2, 184 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For GLM VLM/OCR, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Bugfix] Fix broken MRoPE for GLM-4.1V/GLM-4.5V". The diff centers on `vllm/model_executor/models/glm4_1v.py`. PR body context: ## Purpose - Fix #27854 ## Test Plan ## Test Result Example should work now. --- Essential Elements of an Effective PR Description Checklist - [x] The purpose of the PR, such as...
+- Motivation: Title: "[Bugfix] Fix broken MRoPE for GLM-4.1V/GLM-4.5V"; model line: GLM VLM/OCR; category: bug fix; main diff: `vllm/model_executor/models/glm4_1v.py`; PR body summary: - Fix #27854 Example should work now..
 - Key implementation: `vllm/model_executor/models/glm4_1v.py` modified +147/-2 (149 lines); hunks: -26,6 +26,7; -36,7 +37,7; symbols: get_video_replacement_glm4v, Glm4vForConditionalGeneration, get_multimodal_embeddings, get_mrope_input_positions, touching `get_video_replacement_glm4v, Glm4vForConditionalGeneration, get_multimodal_embeddings`.
 - Code diff details:
   - `vllm/model_executor/models/glm4_1v.py` modified +147/-2 (149 lines); hunks: -26,6 +26,7; -36,7 +37,7; symbols: get_video_replacement_glm4v, Glm4vForConditionalGeneration, get_multimodal_embeddings, get_mrope_input_positions
@@ -215,7 +214,7 @@ diff -- vllm/model_executor/models/glm4_1v.py
 - Status/date: merged / 2026-01-26
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_1v.py`, `vllm/model_executor/models/glm_ocr.py`, `vllm/model_executor/models/glm_ocr_mtp.py`; associated commits `bb17e8f11c38`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 14 files, +873/-8, 1048 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For GLM VLM/OCR, this PR adds or enables a model support/runtime surface. Title: "[GLM-OCR] GLM-OCR with MTP Support". The diff centers on `vllm/model_executor/models/glm_ocr.py`, `vllm/model_executor/models/glm_ocr_mtp.py`, `vllm/model_executor/models/glm4_1v.py`. PR body context: A dense model using the GLM-4-0414 architecture with bias, featuring a completely new VIT structure and MTP implementation.
+- Motivation: Title: "[GLM-OCR] GLM-OCR with MTP Support"; model line: GLM VLM/OCR; category: model support/runtime entry; main diff: `vllm/model_executor/models/glm_ocr.py`, `vllm/model_executor/models/glm_ocr_mtp.py`, `vllm/model_executor/models/glm4_1v.py`; PR body summary: A dense model using the GLM-4-0414 architecture with bias, featuring a completely new VIT structure and MTP implementation..
 - Key implementation: `vllm/model_executor/models/glm_ocr.py` added +389/-0 (389 lines); hunks: -0,0 +1,389; symbols: GlmOcrVisionMLP, GlmOcrVisionAttention, __init__, split_qkv, touching `GlmOcrVisionMLP, GlmOcrVisionAttention, __init__`; `vllm/model_executor/models/glm_ocr_mtp.py` added +285/-0 (285 lines); hunks: -0,0 +1,285; symbols: GlmOcrMultiTokenPredictorLayer, __init__, forward, GlmOcrMultiTokenPredictor, touching `GlmOcrMultiTokenPredictorLayer, __init__, forward`; `vllm/model_executor/models/glm4_1v.py` modified +3/-2 (5 lines); hunks: -24,7 +24,8; -1418,7 +1419,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/glm_ocr.py` added +389/-0 (389 lines); hunks: -0,0 +1,389; symbols: GlmOcrVisionMLP, GlmOcrVisionAttention, __init__, split_qkv
@@ -254,7 +253,7 @@ diff -- vllm/model_executor/models/glm4_1v.py
 - Status/date: merged / 2026-01-29
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm_ocr.py`; associated commits `5e73e4900c80`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For GLM VLM/OCR, this PR adds or enables a model support/runtime surface. Title: "[Bugfix] Fix broken GLM-OCR initialization". The diff centers on `vllm/model_executor/models/glm_ocr.py`. PR body context: ## Purpose - The GLM-OCR model is broken actually, because `GlmOcrVisionConfig` is only imported at type checking https://github.com/vllm-project/vllm/blob/c6e7404cc5713a926e8b6...
+- Motivation: Title: "[Bugfix] Fix broken GLM-OCR initialization"; model line: GLM VLM/OCR; category: bug fix; main diff: `vllm/model_executor/models/glm_ocr.py`; PR body summary: - The GLM-OCR model is broken actually, because `GlmOcrVisionConfig` is only imported at type checking https://github.com/vllm-project/vllm/blob/c6e7404cc5713a926e8b6c187b5f197a....
 - Key implementation: `vllm/model_executor/models/glm_ocr.py` modified +1/-1 (2 lines); hunks: -249,7 +249,7 @@ class GlmOcrPatchMerger(Glm4vPatchMerger):; symbols: GlmOcrPatchMerger, GlmOcrVisionTransformer, __init__, touching `GlmOcrPatchMerger, GlmOcrVisionTransformer, __init__`.
 - Code diff details:
   - `vllm/model_executor/models/glm_ocr.py` modified +1/-1 (2 lines); hunks: -249,7 +249,7 @@ class GlmOcrPatchMerger(Glm4vPatchMerger):; symbols: GlmOcrPatchMerger, GlmOcrVisionTransformer, __init__
@@ -275,9 +274,9 @@ diff -- vllm/model_executor/models/glm_ocr.py
 
 - Link: https://github.com/vllm-project/vllm/pull/34483
 - Status/date: merged / 2026-02-13
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_1v.py`; associated commits `dcf6ee8592b4`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_1v.py`; associated commits `dcf6ee8592b4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +22/-2, 40 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For GLM VLM/OCR, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Bugfix] Fix encoder cache underestimation for GLM-4V/GLM-OCR single image". The diff centers on `vllm/model_executor/models/glm4_1v.py`. PR body context: ## Purpose Fixes #34040 `get_image_size_with_most_features()` and `get_num_image_tokens()` called `_get_vision_info()` with the default `num_frames=16` (video), causing `smart_r...
+- Motivation: Title: "[Bugfix] Fix encoder cache underestimation for GLM-4V/GLM-OCR single image"; model line: GLM VLM/OCR; category: bug fix; main diff: `vllm/model_executor/models/glm4_1v.py`; PR body summary: Fixes #34040 `get_image_size_with_most_features()` and `get_num_image_tokens()` called `_get_vision_info()` with the default `num_frames=16` (video), causing `smart_resize` to c....
 - Key implementation: `vllm/model_executor/models/glm4_1v.py` modified +22/-2 (24 lines); hunks: -869,9 +869,28 @@ def _get_vision_info(; -884,7 +903,8 @@ def get_num_image_tokens(; symbols: _get_vision_info, _get_image_max_pixels, get_image_size_with_most_features, get_num_image_tokens, touching `_get_vision_info, _get_image_max_pixels, get_image_size_with_most_features`.
 - Code diff details:
   - `vllm/model_executor/models/glm4_1v.py` modified +22/-2 (24 lines); hunks: -869,9 +869,28 @@ def _get_vision_info(; -884,7 +903,8 @@ def get_num_image_tokens(; symbols: _get_vision_info, _get_image_max_pixels, get_image_size_with_most_features, get_num_image_tokens
@@ -304,7 +303,7 @@ diff -- vllm/model_executor/models/glm4_1v.py
 - Status/date: merged / 2026-03-26
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_1v.py`, `vllm/model_executor/models/glm_ocr.py`; associated commits `757eafcf37ba`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +14/-4, 72 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For GLM VLM/OCR, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[bug-fix] GLM OCR Patch Merger context_dim". The diff centers on `vllm/model_executor/models/glm_ocr.py`, `vllm/model_executor/models/glm4_1v.py`. PR body context: ## Purpose Modified the reading logic in GLM-OCR, the original algorithm implementation error, although the numbers just want to wait, but in fact, it should be text_config inte...
+- Motivation: Title: "[bug-fix] GLM OCR Patch Merger context_dim"; model line: GLM VLM/OCR; category: bug fix; main diff: `vllm/model_executor/models/glm_ocr.py`, `vllm/model_executor/models/glm4_1v.py`; PR body summary: Modified the reading logic in GLM-OCR, the original algorithm implementation error, although the numbers just want to wait, but in fact, it should be text_config intermediate_si....
 - Key implementation: `vllm/model_executor/models/glm_ocr.py` modified +8/-3 (11 lines); hunks: -35,7 +35,10; -250,12 +253,13 @@ class GlmOcrPatchMerger(Glm4vPatchMerger):; symbols: GlmOcrPatchMerger, GlmOcrVisionTransformer, __init__, touching `GlmOcrPatchMerger, GlmOcrVisionTransformer, __init__`; `vllm/model_executor/models/glm4_1v.py` modified +6/-1 (7 lines); hunks: -38,7 +38,10; -604,6 +607,7 @@ def forward(; symbols: forward, Glm4vVisionTransformer, __init__, touching `forward, Glm4vVisionTransformer, __init__`.
 - Code diff details:
   - `vllm/model_executor/models/glm_ocr.py` modified +8/-3 (11 lines); hunks: -35,7 +35,10; -250,12 +253,13 @@ class GlmOcrPatchMerger(Glm4vPatchMerger):; symbols: GlmOcrPatchMerger, GlmOcrVisionTransformer, __init__
@@ -336,5 +335,5 @@ diff -- vllm/model_executor/models/glm4_1v.py
 
 ## Gap-Closure Notes
 
-- This version rejects title-only PR lists; every PR must include trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
+- Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
 - If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.

@@ -6,7 +6,6 @@
 - Source baseline: `sgl-project/sglang` trace worktree commit `880599cd43`
 - PR collection rule: run `git log --name-only -- <model-files>` on model implementation, config, processor, parser, docs/tests, filter by model keywords in commit subjects, then read each PR's final diff through the GitHub Pull Request files API.
 - Preservation rule: PRs explicitly cited by the previous history/skill are retained even if current implementation files no longer trace to them, and the card marks that source.
-- Diffusion model families have been removed from this history set and are no longer part of model optimization skills.
 
 ## Implementation File Coverage
 
@@ -41,7 +40,7 @@
 - Status/date: merged / 2026-04-23
 - Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`, `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx`; associated commits `4868e367f851`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +707/-0, 716 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Hunyuan3 Preview, this PR adds or enables a model support/runtime surface. Title: "docs: add Hunyuan 3 Preview cookbook". The diff centers on `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`, `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx`. PR body context: ## Summary Adds a cookbook entry for Tencent **Hunyuan 3 Preview** (`Hy3-preview` / `Hy3-preview-FP8` / `Hy3-preview-Base`) under `docs_new/cookbook/autoregressive/Tencent/`. -...
+- Motivation: Title: "docs: add Hunyuan 3 Preview cookbook"; model line: Hunyuan3 Preview; category: performance/backend optimization; main diff: `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`, `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx`; PR body summary: Adds a cookbook entry for Tencent **Hunyuan 3 Preview** (`Hy3-preview` / `Hy3-preview-FP8` / `Hy3-preview-Base`) under `docs_new/cookbook/autoregressive/Tencent/`. - **Doc** (`c....
 - Key implementation: `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` added +527/-0 (527 lines); hunks: -0,0 +1,527; symbols: GPUs, touching `GPUs`; `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx` added +174/-0 (174 lines); hunks: -0,0 +1,174; symbols: GPUs, touching `GPUs`.
 - Code diff details:
   - `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` added +527/-0 (527 lines); hunks: -0,0 +1,527; symbols: GPUs
@@ -75,9 +74,9 @@ diff -- docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx
 
 - Link: https://github.com/sgl-project/sglang/pull/23533
 - Status/date: merged / 2026-04-24
-- Trace source: `git log --name-only -- <model-files>` found it through `docs/basic_usage/hy3_preview.md`, `python/sglang/srt/function_call/hunyuan_detector.py`, `test/registered/unit/function_call/test_hunyuan_detector.py`; associated commits `6d038614760f`
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/basic_usage/hy3_preview.md`, `python/sglang/srt/function_call/hunyuan_detector.py`, `test/registered/unit/function_call/test_hunyuan_detector.py`; associated commits `6d038614760f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 25 files, +4095/-3, 4205 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Hunyuan3 Preview, this PR adds or enables a model support/runtime surface. Title: "support Hy3 preview". The diff centers on `test/registered/unit/function_call/test_hunyuan_detector.py`, `python/sglang/srt/function_call/hunyuan_detector.py`, `docs/basic_usage/hy3_preview.md`. PR body context: ## Summary Add support for Tencent Hunyuan V3 (Hy3-preview) models in sglang. ### Components - **Model**: `python/sglang/srt/models/hunyuan_v3.py` (+ MTP variant `hunyuan_v3_nex...
+- Motivation: Title: "support Hy3 preview"; model line: Hunyuan3 Preview; category: model support/runtime entry; main diff: `test/registered/unit/function_call/test_hunyuan_detector.py`, `python/sglang/srt/function_call/hunyuan_detector.py`, `docs/basic_usage/hy3_preview.md`; PR body summary: Add support for Tencent Hunyuan V3 (Hy3-preview) models in sglang. Components - **Model**: `python/sglang/srt/models/hunyuan_v3.py` (+ MTP variant `hunyuan_v3_nextn.py`) - **Too....
 - Key implementation: `test/registered/unit/function_call/test_hunyuan_detector.py` added +733/-0 (733 lines); hunks: -0,0 +1,733; symbols: _make_tools, TestHunyuanDetectorHasToolCall, setUp, test_has_tool_call_true, touching `_make_tools, TestHunyuanDetectorHasToolCall, setUp`; `python/sglang/srt/function_call/hunyuan_detector.py` added +476/-0 (476 lines); hunks: -0,0 +1,476; symbols: HunyuanDetector, __init__, _normalize_type, _get_arg_schema, touching `HunyuanDetector, __init__, _normalize_type`; `docs/basic_usage/hy3_preview.md` added +191/-0 (191 lines); hunks: -0,0 +1,191.
 - Code diff details:
   - `test/registered/unit/function_call/test_hunyuan_detector.py` added +733/-0 (733 lines); hunks: -0,0 +1,733; symbols: _make_tools, TestHunyuanDetectorHasToolCall, setUp, test_has_tool_call_true
@@ -114,5 +113,5 @@ diff -- docs/basic_usage/hy3_preview.md
 
 ## Gap-Closure Notes
 
-- This version rejects title-only PR lists; every PR must include trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
+- Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
 - If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.

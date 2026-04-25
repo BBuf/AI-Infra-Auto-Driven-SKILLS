@@ -3,8 +3,8 @@
 - Rebuilt on: 2026-04-25
 - Source baseline: `vllm-project/vllm` trace worktree commit `95995bbef8`
 - Collection: model implementation files were traced with `git log --name-only -- <model-files>`, filtered by model keywords in commit subjects, then every PR card was populated from the GitHub Pull Request files API.
-- Extra preserved PRs from prior docs: 3
-- Rule: use this as the backing dossier for the skill, not only PR titles.
+- Extra preserved PRs from prior docs: 4
+- Rule: use this evidence file before changing model-specific skill guidance; it is not only PR titles.
 
 ## Implementation File Coverage
 
@@ -24,6 +24,7 @@
 | 2025-08-23 | [#23454](https://github.com/vllm-project/vllm/pull/23454) | merged | Support DeepSeek-V3.1 tool call | `examples/tool_chat_template_deepseekv31.jinja` |
 | 2025-08-27 | [#23666](https://github.com/vllm-project/vllm/pull/23666) | merged | [Feature] Add Hopper DeepGEMM E8M0 for DeepSeekV3.1 scale_fmt | `vllm/model_executor/layers/quantization/fp8.py`, `vllm/model_executor/layers/fused_moe/fused_moe.py`, `vllm/model_executor/layers/fused_moe/triton_deep_gemm_moe.py` |
 | 2025-10-15 | [#25589](https://github.com/vllm-project/vllm/pull/25589) | merged | [Model] Add DeepSeek-V3.1 reasoning parser (split from PR #24972) | `tests/reasoning/test_deepseekv3_reasoning_parser.py`, `vllm/reasoning/deepseek_v3_reasoning_parser.py`, `vllm/reasoning/identity_reasoning_parser.py` |
+| 2026-01-13 | [#29867](https://github.com/vllm-project/vllm/pull/29867) | merged | [Quantization] fix: overflow with static per-tensor scaling | `vllm/model_executor/layers/quantization/utils/quant_utils.py`, `vllm/v1/attention/backends/mla/common.py` |
 | 2026-01-15 | [#32361](https://github.com/vllm-project/vllm/pull/32361) | merged | [BugFix] Fix DeepSeek-V3.1 + DeepGEMM incompatible scale shapes | `vllm/model_executor/layers/quantization/utils/quant_utils.py` |
 
 ## Per-PR Diff Audit Cards
@@ -34,7 +35,7 @@
 - Status/date: merged / 2025-08-23
 - Trace source: `git log --name-only -- <model-files>` found it through `examples/tool_chat_template_deepseekv31.jinja`; associated commits `b8f17f5d980e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +468/-0, 491 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For DeepSeek V3.1, this PR adds or enables a model support/runtime surface. Title: "Support DeepSeek-V3.1 tool call". The diff centers on `examples/tool_chat_template_deepseekv31.jinja`. PR body context: ## Purpose Support DeepSeek-V3.1 tool call. The tool call format of DeepSeek-V3.1 is different from DeepSeek-V3/R1: DeepSeek-V3.1: tool_call_name tool_call_arguments DeepSeek-R1...
+- Motivation: Title: "Support DeepSeek-V3.1 tool call"; model line: DeepSeek V3.1; category: model support/runtime entry; main diff: `examples/tool_chat_template_deepseekv31.jinja`; PR body summary: Support DeepSeek-V3.1 tool call. The tool call format of DeepSeek-V3.1 is different from DeepSeek-V3/R1: DeepSeek-V3.1: tool_call_name tool_call_arguments DeepSeek-R1/V3: functi....
 - Key implementation: `examples/tool_chat_template_deepseekv31.jinja` added +91/-0 (91 lines); hunks: -0,0 +1,91.
 - Code diff details:
   - `examples/tool_chat_template_deepseekv31.jinja` added +91/-0 (91 lines); hunks: -0,0 +1,91
@@ -61,7 +62,7 @@ diff -- examples/tool_chat_template_deepseekv31.jinja
 - Status/date: merged / 2025-08-27
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +68/-53, 322 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For DeepSeek V3.1, this PR adds or enables a model support/runtime surface. Title: "[Feature] Add Hopper DeepGEMM E8M0 for DeepSeekV3.1 scale_fmt". The diff centers on `vllm/model_executor/layers/quantization/fp8.py`, `vllm/model_executor/layers/fused_moe/fused_moe.py`, `vllm/model_executor/layers/fused_moe/triton_deep_gemm_moe.py`. PR body context: ## Purpose Recently DeepGEMM has supported E8M0 scale on Hopper, and this is also required by DeepSeekV3.1 This PR adds the support for it ## Test ### Unit Test ### Accuracy `VL...
+- Motivation: Title: "[Feature] Add Hopper DeepGEMM E8M0 for DeepSeekV3.1 scale_fmt"; model line: DeepSeek V3.1; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/fp8.py`, `vllm/model_executor/layers/fused_moe/fused_moe.py`, `vllm/model_executor/layers/fused_moe/triton_deep_gemm_moe.py`; PR body summary: Recently DeepGEMM has supported E8M0 scale on Hopper, and this is also required by DeepSeekV3.1 This PR adds the support for it Test Unit Test Accuracy `VLLM_USE_DEEP_GEMM=1 lm_....
 - Key implementation: `vllm/model_executor/layers/quantization/fp8.py` modified +4/-5 (9 lines); hunks: -48,8 +48,7; -427,7 +426,7 @@ def process_weights_after_loading(self, layer: Module) -> None:; symbols: process_weights_after_loading, touching `process_weights_after_loading`; `vllm/model_executor/layers/fused_moe/fused_moe.py` modified +3/-4 (7 lines); hunks: -40,7 +40,7; -1431,9 +1431,8 @@ def fused_experts(hidden_states: torch.Tensor,; symbols: fused_experts, touching `fused_experts`; `vllm/model_executor/layers/fused_moe/triton_deep_gemm_moe.py` modified +3/-3 (6 lines); hunks: -10,7 +10,7; -107,7 +107,7 @@ def workspace_shapes(; symbols: TritonOrDeepGemmExperts, workspace_shapes, apply, touching `TritonOrDeepGemmExperts, workspace_shapes, apply`; `vllm/model_executor/layers/fused_moe/batched_deep_gemm_moe.py` modified +2/-2 (4 lines); hunks: -12,7 +12,7; -174,7 +174,7 @@ def silu_mul_fp8_quant_deep_gemm(; symbols: silu_mul_fp8_quant_deep_gemm, touching `silu_mul_fp8_quant_deep_gemm`.
 - Code diff details:
   - `vllm/model_executor/layers/quantization/fp8.py` modified +4/-5 (9 lines); hunks: -48,8 +48,7; -427,7 +426,7 @@ def process_weights_after_loading(self, layer: Module) -> None:; symbols: process_weights_after_loading
@@ -102,7 +103,7 @@ diff -- vllm/model_executor/layers/fused_moe/triton_deep_gemm_moe.py
 - Status/date: merged / 2025-10-15
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +215/-3, 269 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For DeepSeek V3.1, this PR adds or enables a model support/runtime surface. Title: "[Model] Add DeepSeek-V3.1 reasoning parser (split from PR #24972)". The diff centers on `tests/reasoning/test_deepseekv3_reasoning_parser.py`, `vllm/reasoning/deepseek_v3_reasoning_parser.py`, `vllm/reasoning/identity_reasoning_parser.py`. PR body context: ## Purpose This PR adds a new reasoning parser for the DeepSeek-V3.1 model, named deepseek_v3. Unlike previous models such as deepseek_r1, the reasoning parser for DeepSeek-V3.1...
+- Motivation: Title: "[Model] Add DeepSeek-V3.1 reasoning parser (split from PR #24972)"; model line: DeepSeek V3.1; category: model support/runtime entry; main diff: `tests/reasoning/test_deepseekv3_reasoning_parser.py`, `vllm/reasoning/deepseek_v3_reasoning_parser.py`, `vllm/reasoning/identity_reasoning_parser.py`; PR body summary: This PR adds a new reasoning parser for the DeepSeek-V3.1 model, named deepseek_v3. Unlike previous models such as deepseek_r1, the reasoning parser for DeepSeek-V3.1 is determi....
 - Key implementation: `tests/reasoning/test_deepseekv3_reasoning_parser.py` added +76/-0 (76 lines); hunks: -0,0 +1,76; symbols: tokenizer, test_parser_selection, test_identity_reasoning_parser_basic, touching `tokenizer, test_parser_selection, test_identity_reasoning_parser_basic`; `vllm/reasoning/deepseek_v3_reasoning_parser.py` added +66/-0 (66 lines); hunks: -0,0 +1,66; symbols: DeepSeekV3ReasoningParser, __init__, is_reasoning_end, extract_content_ids, touching `DeepSeekV3ReasoningParser, __init__, is_reasoning_end`; `vllm/reasoning/identity_reasoning_parser.py` added +58/-0 (58 lines); hunks: -0,0 +1,58; symbols: IdentityReasoningParser, __init__, is_reasoning_end, extract_content_ids, touching `IdentityReasoningParser, __init__, is_reasoning_end`; `vllm/entrypoints/openai/serving_chat.py` modified +8/-2 (10 lines); hunks: -573,7 +573,10 @@ async def chat_completion_stream_generator(; -1342,7 +1345,10 @@ async def chat_completion_full_generator(; symbols: chat_completion_stream_generator, chat_completion_full_generator, touching `chat_completion_stream_generator, chat_completion_full_generator`.
 - Code diff details:
   - `tests/reasoning/test_deepseekv3_reasoning_parser.py` added +76/-0 (76 lines); hunks: -0,0 +1,76; symbols: tokenizer, test_parser_selection, test_identity_reasoning_parser_basic
@@ -139,13 +140,49 @@ diff -- vllm/reasoning/identity_reasoning_parser.py
   - docs: `docs/features/reasoning_outputs.md` modified +3/-1
 - Risk and verification: The diff ships test coverage in `tests/reasoning/test_deepseekv3_reasoning_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
+### PR #29867 - [Quantization] fix: overflow with static per-tensor scaling
+
+- Link: https://github.com/vllm-project/vllm/pull/29867
+- Status/date: merged / 2026-01-13
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +71/-56, 182 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Quantization] fix: overflow with static per-tensor scaling"; model line: DeepSeek V3.1; category: bug fix; main diff: `vllm/model_executor/layers/quantization/utils/quant_utils.py`, `vllm/v1/attention/backends/mla/common.py`; PR body summary: When dequantizing weights with the `eye` method, the static scaling factor may actually push the 1s out of float8 range. Don't use that method when there's static scaling factors..
+- Key implementation: `vllm/model_executor/layers/quantization/utils/quant_utils.py` modified +61/-2 (63 lines); hunks: -5,7 +5,7; -15,6 +15,9; symbols: scaled_dequantize, get_attribute_fallback, get_and_maybe_dequant_weights, pack_quantized_values_into_int32, touching `scaled_dequantize, get_attribute_fallback, get_and_maybe_dequant_weights`; `vllm/v1/attention/backends/mla/common.py` modified +10/-54 (64 lines); hunks: -207,8 +207,9; -1184,35 +1185,13 @@ def __init__(; symbols: __init__, process_weights_after_loading, get_layer_weight, get_and_maybe_dequant_weights, touching `__init__, process_weights_after_loading, get_layer_weight`.
+- Code diff details:
+  - `vllm/model_executor/layers/quantization/utils/quant_utils.py` modified +61/-2 (63 lines); hunks: -5,7 +5,7; -15,6 +15,9; symbols: scaled_dequantize, get_attribute_fallback, get_and_maybe_dequant_weights, pack_quantized_values_into_int32
+  - `vllm/v1/attention/backends/mla/common.py` modified +10/-54 (64 lines); hunks: -207,8 +207,9; -1184,35 +1185,13 @@ def __init__(; symbols: __init__, process_weights_after_loading, get_layer_weight, get_and_maybe_dequant_weights
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/layers/quantization/utils/quant_utils.py
+@@ -5,7 +5,7 @@
+-from typing import ClassVar, NamedTuple
++from typing import TYPE_CHECKING, ClassVar, NamedTuple
+@@ -15,6 +15,9 @@
++if TYPE_CHECKING:
++    from vllm.model_executor.layers.linear import LinearBase
+@@ -239,7 +242,7 @@ def scaled_dequantize(
+diff -- vllm/v1/attention/backends/mla/common.py
+@@ -207,8 +207,9 @@
+-    LinearBase,
+-    UnquantizedLinearMethod,
++)
++from vllm.model_executor.layers.quantization.utils.quant_utils import (
++    get_and_maybe_dequant_weights,
+@@ -1184,35 +1185,13 @@ def __init__(
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/layers/quantization/utils/quant_utils.py` modified +61/-2; `vllm/v1/attention/backends/mla/common.py` modified +10/-54
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/quantization/utils/quant_utils.py`, `vllm/v1/attention/backends/mla/common.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
 ### PR #32361 - [BugFix] Fix DeepSeek-V3.1 + DeepGEMM incompatible scale shapes
 
 - Link: https://github.com/vllm-project/vllm/pull/32361
 - Status/date: merged / 2026-01-15
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-0, 10 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For DeepSeek V3.1, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[BugFix] Fix DeepSeek-V3.1 + DeepGEMM incompatible scale shapes". The diff centers on `vllm/model_executor/layers/quantization/utils/quant_utils.py`. PR body context: https://github.com/vllm-project/vllm/pull/29867 broke with For DeepGEMM revert to the behavior before https://github.com/vllm-project/vllm/pull/29867 Credit to: Eldar Kurtić for...
+- Motivation: Title: "[BugFix] Fix DeepSeek-V3.1 + DeepGEMM incompatible scale shapes"; model line: DeepSeek V3.1; category: bug fix; main diff: `vllm/model_executor/layers/quantization/utils/quant_utils.py`; PR body summary: https://github.com/vllm-project/vllm/pull/29867 broke with For DeepGEMM revert to the behavior before https://github.com/vllm-project/vllm/pull/29867 Credit to: Eldar Kurtić for....
 - Key implementation: `vllm/model_executor/layers/quantization/utils/quant_utils.py` modified +3/-0 (3 lines); hunks: -299,6 +299,9 @@ def get_and_maybe_dequant_weights(; symbols: get_and_maybe_dequant_weights, touching `get_and_maybe_dequant_weights`.
 - Code diff details:
   - `vllm/model_executor/layers/quantization/utils/quant_utils.py` modified +3/-0 (3 lines); hunks: -299,6 +299,9 @@ def get_and_maybe_dequant_weights(; symbols: get_and_maybe_dequant_weights

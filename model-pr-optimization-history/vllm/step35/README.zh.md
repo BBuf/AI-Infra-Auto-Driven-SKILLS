@@ -6,7 +6,6 @@
 - 源码基线: `vllm-project/vllm` 当前追溯 worktree commit `95995bbef8`
 - PR 收集规则: 先从模型实现、配置、processor、parser、docs/tests 等相关文件执行 `git log --name-only -- <model-files>`，再按 commit subject 的模型关键词过滤，最后用 GitHub Pull Request files API 读取每个 PR 的最终 diff。
 - 额外保留规则: 原 history/skill 已显式引用但未出现在当前实现文件 git trace 中的 PR 会保留，并在卡片里标注来源。
-- diffusion 相关模型已从本目录剔除，不再纳入模型优化 skill/history。
 
 ## 模型实现文件覆盖
 
@@ -49,9 +48,9 @@
 
 - 链接: https://github.com/vllm-project/vllm/pull/33523
 - 状态/时间: merged / 2026-02-02
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/step3p5.py`, `vllm/model_executor/models/step3p5_mtp.py`, `vllm/reasoning/step3p5_reasoning_parser.py`, `vllm/tool_parsers/step3p5_tool_parser.py`, `vllm/transformers_utils/configs/step3p5.py`；关联提交 `c3b40dc3e74d`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/step3p5.py`, `vllm/model_executor/models/step3p5_mtp.py`, `vllm/reasoning/step3p5_reasoning_parser.py`, `vllm/tool_parsers/step3p5_tool_parser.py`, `vllm/transformers_utils/configs/step3p5.py`；关联提交 `c3b40dc3e74d`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 18 个文件，+3107/-4，可读 patch 3270 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Step 3.5 补齐模型支持入口或运行时能力，标题为「[Models] Step-3.5-Flash」，变更集中在 `vllm/tool_parsers/step3p5_tool_parser.py`, `vllm/model_executor/models/step3p5.py`, `vllm/model_executor/models/step3p5_mtp.py`。PR 描述补充为：## Purpose Step-3.5-Flash model support. ## Test Plan ## Test Result --- Essential Elements of an Effective PR Description Checklist - [ ] The purpose of the PR, such as "Fix so...
+- 动机: 标题「[Models] Step-3.5-Flash」；模型线: Step 3.5；类别: 性能/后端优化；主要 diff: `vllm/tool_parsers/step3p5_tool_parser.py`, `vllm/model_executor/models/step3p5.py`, `vllm/model_executor/models/step3p5_mtp.py`；PR 正文摘要: Step-3.5-Flash model support.。
 - 实现要点: `vllm/tool_parsers/step3p5_tool_parser.py` added +1511/-0 (1511 lines); hunks: -0,0 +1,1511; symbols: StreamingXMLToolCallParser, __init__, reset_streaming_state, parse_single_streaming_chunks，涉及 `StreamingXMLToolCallParser, __init__, reset_streaming_state`；`vllm/model_executor/models/step3p5.py` added +894/-0 (894 lines); hunks: -0,0 +1,894; symbols: FP32ReplicatedLinear, forward, Step3p5MLP, __init__，涉及 `FP32ReplicatedLinear, forward, Step3p5MLP`；`vllm/model_executor/models/step3p5_mtp.py` added +315/-0 (315 lines); hunks: -0,0 +1,315; symbols: SharedHead, __init__, forward, Step3p5AMultiTokenPredictorLayer，涉及 `SharedHead, __init__, forward`；`vllm/reasoning/step3p5_reasoning_parser.py` added +153/-0 (153 lines); hunks: -0,0 +1,153; symbols: Step3p5ReasoningParser, start_token, end_token, __init__，涉及 `Step3p5ReasoningParser, start_token, end_token`。
 - 代码 diff 细节:
   - `vllm/tool_parsers/step3p5_tool_parser.py` added +1511/-0 (1511 lines); hunks: -0,0 +1,1511; symbols: StreamingXMLToolCallParser, __init__, reset_streaming_state, parse_single_streaming_chunks
@@ -90,9 +89,9 @@ diff -- vllm/model_executor/models/step3p5_mtp.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/33690
 - 状态/时间: merged / 2026-02-05
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tool_parsers/test_step3p5_tool_parser.py`, `vllm/tool_parsers/step3p5_tool_parser.py`；关联提交 `82914d2ae8d0`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tool_parsers/test_step3p5_tool_parser.py`, `vllm/tool_parsers/step3p5_tool_parser.py`；关联提交 `82914d2ae8d0`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+1455/-5，可读 patch 1508 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Step 3.5 修复已暴露的启动、加载、解析或数值问题，标题为「[Bugfix] Fix step3p5 parser when using mtp」，变更集中在 `tests/tool_parsers/test_step3p5_tool_parser.py`, `vllm/tool_parsers/step3p5_tool_parser.py`。PR 描述补充为：## Purpose Fix step3.5 parser when using mtp. If model outputs ` Essential Elements of an Effective PR Description Checklist - [x] The purpose of the PR, such as "Fix some issue...
+- 动机: 标题「[Bugfix] Fix step3p5 parser when using mtp」；模型线: Step 3.5；类别: 缺陷修复；主要 diff: `tests/tool_parsers/test_step3p5_tool_parser.py`, `vllm/tool_parsers/step3p5_tool_parser.py`；PR 正文摘要: Fix step3.5 parser when using mtp. If model outputs `。
 - 实现要点: `tests/tool_parsers/test_step3p5_tool_parser.py` added +1435/-0 (1435 lines); hunks: -0,0 +1,1435; symbols: step3p5_tokenizer, step3p5_tool_parser, sample_tools, assert_tool_calls，涉及 `step3p5_tokenizer, step3p5_tool_parser, sample_tools`；`vllm/tool_parsers/step3p5_tool_parser.py` modified +20/-5 (25 lines); hunks: -97,11 +97,26 @@ def parse_single_streaming_chunks(self, xml_chunk: str) -> D...; -110,7 +125,7 @@ def parse_single_streaming_chunks(self, xml_chunk: str) -> D...; symbols: parse_single_streaming_chunks，涉及 `parse_single_streaming_chunks`。
 - 代码 diff 细节:
   - `tests/tool_parsers/test_step3p5_tool_parser.py` added +1435/-0 (1435 lines); hunks: -0,0 +1,1435; symbols: step3p5_tokenizer, step3p5_tool_parser, sample_tools, assert_tool_calls
@@ -129,7 +128,7 @@ diff -- vllm/tool_parsers/step3p5_tool_parser.py
 - 状态/时间: merged / 2026-02-07
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/step3p5.py`；关联提交 `db4ede974343`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+28/-32，可读 patch 115 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Step 3.5 补齐模型支持入口或运行时能力，标题为「[Model] Enable Step3p5ForCausalLM testing」，变更集中在 `vllm/model_executor/models/step3p5.py`。PR 描述补充为：## Purpose ## Test Plan ## Test Result --- Essential Elements of an Effective PR Description Checklist - [ ] The purpose of the PR, such as "Fix some issue (link existing issues...
+- 动机: 标题「[Model] Enable Step3p5ForCausalLM testing」；模型线: Step 3.5；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/step3p5.py`；PR 正文未提供可用摘要。
 - 实现要点: `vllm/model_executor/models/step3p5.py` modified +12/-25 (37 lines); hunks: -36,7 +36,6; -770,37 +769,17 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/step3p5.py` modified +12/-25 (37 lines); hunks: -36,7 +36,6; -770,37 +769,17 @@ def __init__(; symbols: __init__
@@ -156,7 +155,7 @@ diff -- vllm/model_executor/models/step3p5.py
 - 状态/时间: merged / 2026-02-22
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/step3p5.py`；关联提交 `b7892a3beff0`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+204/-4，可读 patch 291 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Step 3.5 补齐模型支持入口或运行时能力，标题为「[Model] Add NVFP4 quantization support for Step3.5-Flash」，变更集中在 `vllm/model_executor/models/step3p5.py`。PR 描述补充为：## Summary Enable NVFP4 (FP4) quantized MoE inference for stepfun-ai/Step-3.5-Flash. This model uses a `swiglustep` activation (clipped SwiGLU with `limit=7.0`) on MoE layers 43...
+- 动机: 标题「[Model] Add NVFP4 quantization support for Step3.5-Flash」；模型线: Step 3.5；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/step3p5.py`；PR 正文摘要: Enable NVFP4 (FP4) quantized MoE inference for stepfun-ai/Step-3.5-Flash. This model uses a `swiglustep` activation (clipped SwiGLU with `limit=7.0`) on MoE layers 43-44, which...。
 - 实现要点: `vllm/model_executor/models/step3p5.py` modified +71/-1 (72 lines); hunks: -2,7 +2,8; -231,6 +232,7 @@ def __init__(; symbols: __init__, load_weights，涉及 `__init__, load_weights`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/step3p5.py` modified +71/-1 (72 lines); hunks: -2,7 +2,8; -231,6 +232,7 @@ def __init__(; symbols: __init__, load_weights
@@ -181,9 +180,9 @@ diff -- vllm/model_executor/models/step3p5.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/34211
 - 状态/时间: merged / 2026-02-25
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/reasoning/test_step3p5_reasoning_parser.py`, `vllm/reasoning/step3p5_reasoning_parser.py`；关联提交 `af5e6afa0af2`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/reasoning/test_step3p5_reasoning_parser.py`, `vllm/reasoning/step3p5_reasoning_parser.py`；关联提交 `af5e6afa0af2`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+387/-14，可读 patch 423 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Step 3.5 修复已暴露的启动、加载、解析或数值问题，标题为「[Bugfix] Fix step3p5 reasoning with interleaved thinking」，变更集中在 `tests/reasoning/test_step3p5_reasoning_parser.py`, `vllm/reasoning/step3p5_reasoning_parser.py`。PR 描述补充为：## Purpose When there are multiple rounds of conversation, the prompt contains ` ` from the previous round, and the step3p5 reasoning parser failed to correctly determine the en...
+- 动机: 标题「[Bugfix] Fix step3p5 reasoning with interleaved thinking」；模型线: Step 3.5；类别: 缺陷修复；主要 diff: `tests/reasoning/test_step3p5_reasoning_parser.py`, `vllm/reasoning/step3p5_reasoning_parser.py`；PR 正文摘要: When there are multiple rounds of conversation, the prompt contains ` ` from the previous round, and the step3p5 reasoning parser failed to correctly determine the end of reason...。
 - 实现要点: `tests/reasoning/test_step3p5_reasoning_parser.py` added +341/-0 (341 lines); hunks: -0,0 +1,341; symbols: step3p5_tokenizer, test_reasoning, test_step3p5_streaming_drops_leading_newline，涉及 `step3p5_tokenizer, test_reasoning, test_step3p5_streaming_drops_leading_newline`；`vllm/reasoning/step3p5_reasoning_parser.py` modified +46/-14 (60 lines); hunks: -39,24 +39,59 @@ def __init__(self, tokenizer: TokenizerLike, *args, **kwargs):; -136,9 +171,6 @@ def extract_reasoning_streaming(; symbols: __init__, is_reasoning_end, is_reasoning_end_streaming, _is_reasoning_end_from_ids，涉及 `__init__, is_reasoning_end, is_reasoning_end_streaming`。
 - 代码 diff 细节:
   - `tests/reasoning/test_step3p5_reasoning_parser.py` added +341/-0 (341 lines); hunks: -0,0 +1,341; symbols: step3p5_tokenizer, test_reasoning, test_step3p5_streaming_drops_leading_newline
@@ -220,7 +219,7 @@ diff -- vllm/reasoning/step3p5_reasoning_parser.py
 - 状态/时间: merged / 2026-03-20
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+228/-160，可读 patch 511 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Step 3.5 补强部署文档、测试或 CI 验证面，标题为「[Model] Refactor Step3-VL processor to HF style」，变更集中在 `vllm/transformers_utils/processors/step3_vl.py`, `vllm/model_executor/models/step3_vl.py`, `vllm/transformers_utils/processors/internvl.py`。PR 描述补充为：## Purpose - Make Step3-VL processor contain `image_processor` in order to fit HF call semantics. - Make Step3-VL more efficient by avoiding unnecessary text/token construction...
+- 动机: 标题「[Model] Refactor Step3-VL processor to HF style」；模型线: Step 3.5；类别: 文档/测试/CI；主要 diff: `vllm/transformers_utils/processors/step3_vl.py`, `vllm/model_executor/models/step3_vl.py`, `vllm/transformers_utils/processors/internvl.py`；PR 正文摘要: - Make Step3-VL processor contain `image_processor` in order to fit HF call semantics. - Make Step3-VL more efficient by avoiding unnecessary text/token construction and string...。
 - 实现要点: `vllm/transformers_utils/processors/step3_vl.py` modified +197/-127 (324 lines); hunks: -8,13 +8,13; -185,7 +185,7 @@ def get_num_patches(self, img_width: int, img_height: int) -...; symbols: Step3VisionProcessor, get_num_patches, __call__，涉及 `Step3VisionProcessor, get_num_patches, __call__`；`vllm/model_executor/models/step3_vl.py` modified +27/-29 (56 lines); hunks: -39,7 +39,11; -86,21 +90,30 @@ class Step3VLImageEmbeddingInputs(TensorSchema):; symbols: Step3VLImageEmbeddingInputs, Step3VLProcessingInfo, get_image_processor, get_hf_processor，涉及 `Step3VLImageEmbeddingInputs, Step3VLProcessingInfo, get_image_processor`；`vllm/transformers_utils/processors/internvl.py` modified +4/-3 (7 lines); hunks: -558,6 +558,7 @@ def __call__(; symbols: __call__，涉及 `__call__`；`vllm/transformers_utils/processors/kimi_k25.py` modified +0/-1 (1 lines); hunks: -19,7 +19,6 @@ def __init__(; symbols: __init__, __call__，涉及 `__init__, __call__`。
 - 代码 diff 细节:
   - `vllm/transformers_utils/processors/step3_vl.py` modified +197/-127 (324 lines); hunks: -8,13 +8,13; -185,7 +185,7 @@ def get_num_patches(self, img_width: int, img_height: int) -...; symbols: Step3VisionProcessor, get_num_patches, __call__
@@ -256,5 +255,5 @@ diff -- vllm/transformers_utils/processors/internvl.py
 
 ## 补漏结论
 
-- 本版不再接受只列 PR 标题的写法；每个 PR 必须有反查来源、diff 范围、实现要点、代码摘录、已读文件和验证风险。
+- 验收规则: 每个 PR 卡片必须保留反查来源、diff 范围、实现要点、代码摘录、已读文件和验证风险。
 - 如果新模型文件落在当前过滤规则之外，先补文件过滤规则，再重新执行本轮 `git log --name-only -- <model-files>` 追溯。

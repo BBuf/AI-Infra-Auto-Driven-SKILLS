@@ -1,6 +1,6 @@
 # SGLang Model PR Optimization History
 
-Current non-diffusion model families:
+Current model families:
 
 - `deepseek-v3-r1`
 - `deepseek-v31`
