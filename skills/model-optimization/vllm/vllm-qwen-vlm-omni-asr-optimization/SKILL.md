@@ -75,3 +75,9 @@ layout, not from generic "multimodal" code.
 ## References
 
 - `references/pr-history.md`: diff-reviewed Qwen multimodal cards.
+
+
+## Non-Negotiable Evidence Rule
+
+Use `skills/model-optimization/model-pr-diff-dossier/SKILL.md` as the production bar.
+Every PR cited for this family must be based on diff reading, not only PR titles.

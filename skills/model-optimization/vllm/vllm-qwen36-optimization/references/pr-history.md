@@ -14,3 +14,13 @@ Evidence snapshot:
 ## Open PR Radar
 
 - No specific open PR is pinned here; rerun GitHub PR search before asserting new support.
+
+<!-- MODEL_PR_DIFF_AUDIT:START reference -->
+
+# VLLM Qwen3.6 PR Diff Audit Reference
+
+This reference is rebuilt from the same audited PR metadata used by `model-pr-optimization-history`. It is intentionally concise but keeps a file-level diff digest for every indexed PR.
+
+- No public PR confirmed for this model path after checking: `Qwen3.6, Qwen 3.6`.
+
+<!-- MODEL_PR_DIFF_AUDIT:END reference -->

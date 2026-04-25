@@ -106,3 +106,9 @@ Read `references/pr-history.md` before making a code or documentation claim. Imp
 
 - `references/pr-history.md`: manually diff-reviewed PR cards.
 - `references/playbook.md`: symptom map, validation lanes, and production toggle checklist.
+
+
+## Non-Negotiable Evidence Rule
+
+Use `skills/model-optimization/model-pr-diff-dossier/SKILL.md` as the production bar.
+Every PR cited for this family must be based on diff reading, not only PR titles.

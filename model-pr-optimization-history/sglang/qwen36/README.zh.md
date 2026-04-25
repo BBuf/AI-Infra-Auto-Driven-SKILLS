@@ -160,3 +160,75 @@ sub.__dict__[attr_name] = dev_tensor.as_strided(size, stride, offset)
 1. 不要先写 Qwen3.6 专属模型类；先证明 shared runtime 不能覆盖。
 2. 把 text-only、image、video、reasoning、tool-call、MTP 六类请求做成最小 smoke 集。
 3. CPU offload 和 hybrid cache 问题优先复用 Qwen3-Next/Qwen3.5 验证路径。
+
+<!-- MODEL_PR_DIFF_AUDIT:START zh -->
+
+## 逐 PR diff 审计卡（2026-04-25 重做）
+
+本节按 `sgl-project/sglang` 的 Pull Request API 和文件级 patch 重新审计 `Qwen3.6`。验收口径：每个 PR 都要有状态、代码面、文件级 diff 摘要、支持/优化点判断和风险验证点；没有公开相关 PR 时必须写清检索结论，不能编造。
+
+### 时间线总览
+
+| 创建日期 | PR | 状态 | 标题 | 代码面 | 主要 diff 文件 |
+| --- | ---: | --- | --- | --- | --- |
+| 2026-04-17 | [#23034](https://github.com/sgl-project/sglang/pull/23034) | merged | docs: fix links, add Qwen3.6, update Qwen3.5/GLM-5 docs | model wrapper, MoE/router, kernel, multimodal/processor, scheduler/runtime, docs/config | `docs_new/docs/advanced_features/dp_dpa_smg_guide.mdx`, `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/docs/advanced_features/piecewise_cuda_graph.mdx` |
+| 2026-04-22 | [#23467](https://github.com/sgl-project/sglang/pull/23467) | merged | fix: dot-boundary match in is_layer_skipped for FP8 modules_to_not_convert | quantization | `python/sglang/srt/layers/quantization/utils.py` |
+| 2026-04-22 | [#23474](https://github.com/sgl-project/sglang/pull/23474) | open | [Bugfix] Try to fix --cpu-offload-gb on hybrid linear-attn models | tests/benchmarks | `test/registered/unit/utils/test_offloader_tied_params.py`, `python/sglang/srt/utils/offloader.py` |
+| 2026-04-22 | [#23486](https://github.com/sgl-project/sglang/pull/23486) | merged | docs(cookbook): add Qwen3.6-27B dense variant | docs/config | `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx` |
+
+### 逐 PR 代码 diff 阅读记录
+
+### PR #23034 - docs: fix links, add Qwen3.6, update Qwen3.5/GLM-5 docs
+
+- 链接：https://github.com/sgl-project/sglang/pull/23034
+- 状态/时间：`merged`，created 2026-04-17, merged 2026-04-17；作者 `zijiexia`。
+- 代码 diff 已读范围：`73` 个文件，`+2214/-215`；代码面：model wrapper, MoE/router, kernel, multimodal/processor, scheduler/runtime, docs/config；关键词：doc, spec, attention, config, cuda, cache, moe, quant, eagle, expert。
+- 代码 diff 细节：
+  - `docs_new/docs/advanced_features/dp_dpa_smg_guide.mdx` added +509/-0 (509 lines); hunk: +---
+  - `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx` added +471/-0 (471 lines); hunk: +---
+  - `docs_new/docs/advanced_features/piecewise_cuda_graph.mdx` added +299/-0 (299 lines); hunk: +---; 符号: per_token_group_quant_8bit, add
+  - `docs_new/docs/advanced_features/server_arguments.mdx` modified +241/-45 (286 lines); hunk: Please consult the documentation below and [server_args.py](https://github.com/s; Please consult the documentation below and [server_args.py](https://github.com
+  - `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx` added +219/-0 (219 lines); hunk: +export const Qwen36Deployment = () => {
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `docs_new/docs/advanced_features/dp_dpa_smg_guide.mdx`, `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/docs/advanced_features/piecewise_cuda_graph.mdx`；patch 关键词为 doc, spec, attention, config, cuda, cache。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；CUDA/Triton/C++ kernel 或 binding 发生变化，要核对 shape guard、dtype、设备后端和 benchmark；多模态 processor 或 media token 路径发生变化，要核对 image/video/audio metadata、position ids 和 batch 拼接；scheduler/runtime/cache 路径发生变化，要核对连续批处理、spec/PD/DP、cache 生命周期和异常分支；文档或配置面发生变化，要核对 serve flags、默认值和 cookbook 命令是否与代码一致。
+- 风险与验证：回归时优先跑能覆盖 `docs_new/docs/advanced_features/dp_dpa_smg_guide.mdx`, `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/docs/advanced_features/piecewise_cuda_graph.mdx` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #23467 - fix: dot-boundary match in is_layer_skipped for FP8 modules_to_not_convert
+
+- 链接：https://github.com/sgl-project/sglang/pull/23467
+- 状态/时间：`merged`，created 2026-04-22, merged 2026-04-22；作者 `mickqian`。
+- 代码 diff 已读范围：`1` 个文件，`+31/-4`；代码面：quantization；关键词：config, fp8, kv, moe, quant。
+- 代码 diff 细节：
+  - `python/sglang/srt/layers/quantization/utils.py` modified +31/-4 (35 lines); hunk: def __getattr__(self, name):; def is_layer_skipped(; 符号: __getattr__, _module_path_match, names, is_layer_skipped
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/layers/quantization/utils.py`；patch 关键词为 config, fp8, kv, moe, quant。影响判断：量化加载或量化 kernel 发生变化，要核对 scale、zero-point、checkpoint 命名和 fallback 行为。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/layers/quantization/utils.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #23474 - [Bugfix] Try to fix --cpu-offload-gb on hybrid linear-attn models
+
+- 链接：https://github.com/sgl-project/sglang/pull/23474
+- 状态/时间：`open`，created 2026-04-22；作者 `kawaruko`。
+- 代码 diff 已读范围：`2` 个文件，`+284/-8`；代码面：tests/benchmarks；关键词：attention, cache, cuda, spec, test。
+- 代码 diff 细节：
+  - `test/registered/unit/utils/test_offloader_tied_params.py` added +199/-0 (199 lines); hunk: +"""Tests for OffloaderV1 with tied parameters and view aliases (see issue #23150).; 符号: _TiedChild, __init__, forward, _TiedParent
+  - `python/sglang/srt/utils/offloader.py` modified +85/-8 (93 lines); hunk: import logging; def maybe_offload_to_cpu(self, module: torch.nn.Module) -> torch.nn.Module:; 符号: maybe_offload_to_cpu, maybe_offload_to_cpu, forward
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `test/registered/unit/utils/test_offloader_tied_params.py`, `python/sglang/srt/utils/offloader.py`；patch 关键词为 attention, cache, cuda, spec, test。影响判断：测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `test/registered/unit/utils/test_offloader_tied_params.py`, `python/sglang/srt/utils/offloader.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #23486 - docs(cookbook): add Qwen3.6-27B dense variant
+
+- 链接：https://github.com/sgl-project/sglang/pull/23486
+- 状态/时间：`merged`，created 2026-04-22, merged 2026-04-22；作者 `JustinTong0323`。
+- 代码 diff 已读范围：`2` 个文件，`+55/-17`；代码面：docs/config；关键词：config, doc, fp8, moe, quant, spec, attention, expert, vision。
+- 代码 diff 细节：
+  - `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx` modified +30/-10 (40 lines); hunk: ---; Qwen3.6 features a Gated Delta Networks combined with sparse Mixture-of-Experts
+  - `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx` modified +25/-7 (32 lines); hunk: export const Qwen36Deployment = () => {; export const Qwen36Deployment = () => {
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`；patch 关键词为 config, doc, fp8, moe, quant, spec。影响判断：文档或配置面发生变化，要核对 serve flags、默认值和 cookbook 命令是否与代码一致。
+- 风险与验证：回归时优先跑能覆盖 `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+
+### 补漏和优化点排查
+
+- 已覆盖 PR 数：4；open PR 数：1。
+- 仍需跟进的 open PR：[#23474](https://github.com/sgl-project/sglang/pull/23474)
+- 后续新增 PR 必须补齐时间线和逐 PR diff 卡片，不能只写一句标题。
+
+<!-- MODEL_PR_DIFF_AUDIT:END zh -->

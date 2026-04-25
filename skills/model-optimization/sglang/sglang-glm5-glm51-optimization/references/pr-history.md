@@ -477,3 +477,246 @@ if should_ignore_layer(mapped_prefix, nextn_quant_config.exclude_layers):
 - Preserve parser defaults in examples: `--tool-call-parser glm47` and `--reasoning-parser glm45`.
 - Keep GLM-5 FP8, GLM-5 MXFP4, GLM-5 NVFP4, and GLM-5.1 FP8 validation separate; #22399 explicitly avoids pretending a GLM-5.1 NVFP4 checkpoint exists.
 - For AMD, distinguish correctness CI from non-blocking performance CI and include `SGLANG_USE_AITER=1` lanes where the diff depends on AITER.
+
+<!-- MODEL_PR_DIFF_AUDIT:START reference -->
+
+# SGLANG GLM-5 / GLM-5.1 PR Diff Audit Reference
+
+This reference is rebuilt from the same audited PR metadata used by `model-pr-optimization-history`. It is intentionally concise but keeps a file-level diff digest for every indexed PR.
+
+## Timeline
+
+| Created | PR | State | Title | Code surface | Main diff files |
+| --- | ---: | --- | --- | --- | --- |
+| 2026-02-10 | [#18521](https://github.com/sgl-project/sglang/pull/18521) | merged | Support GlmMoeDsaForCausalLM | model wrapper, MoE/router, docs/config | `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/server_args.py`, `python/sglang/srt/models/glm4_moe.py` |
+| 2026-02-13 | [#18804](https://github.com/sgl-project/sglang/pull/18804) | merged | Fix GLM-5 fused shared expert | model wrapper, MoE/router | `python/sglang/srt/models/glm4_moe.py` |
+| 2026-02-17 | [#18911](https://github.com/sgl-project/sglang/pull/18911) | merged | [AMD] [GLM-5 Day 0] Add GLM-5 nightly test | tests/benchmarks | `test/registered/amd/accuracy/mi35x/test_glm5_eval_mi35x.py`, `test/registered/amd/accuracy/mi30x/test_glm5_eval_amd.py`, `.github/workflows/nightly-test-amd-rocm720.yml` |
+| 2026-03-06 | [#20062](https://github.com/sgl-project/sglang/pull/20062) | merged | [V32/GLM5] Control the threshold of applying dense attention with an environ | attention/backend, quantization, tests/benchmarks, docs/config | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/server_args.py`, `test/registered/quant/test_deepseek_v32_fp4_4gpu.py` |
+| 2026-03-30 | [#21710](https://github.com/sgl-project/sglang/pull/21710) | merged | [AMD] Add GLM-5-FP8 nightly performance benchmarks for MI30x and MI35x | tests/benchmarks | `test/registered/amd/perf/mi35x/test_glm5_perf_mi35x.py`, `test/registered/amd/perf/mi30x/test_glm5_perf_amd.py`, `.github/workflows/nightly-test-amd-rocm720.yml` |
+| 2026-03-31 | [#21773](https://github.com/sgl-project/sglang/pull/21773) | merged | [AMD][CI] Add GLM-5-MXFP4 accuracy and perf nightly tests for MI35x | quantization, tests/benchmarks | `test/registered/amd/accuracy/mi35x/test_glm5_mxfp4_eval_mi35x.py`, `test/registered/amd/perf/mi35x/test_glm5_mxfp4_perf_mi35x.py`, `.github/workflows/nightly-test-amd.yml` |
+| 2026-04-06 | [#22179](https://github.com/sgl-project/sglang/pull/22179) | merged | [Doc] Fix and improve DeepSeek V3.2/GLM-5 documentation | docs/config | `docs/basic_usage/deepseek_v32.md` |
+| 2026-04-07 | [#22285](https://github.com/sgl-project/sglang/pull/22285) | merged | Add CI tests for GLM-5 | model wrapper, tests/benchmarks | `test/registered/8-gpu-models/test_dsa_models_basic.py`, `test/registered/8-gpu-models/test_dsa_models_mtp.py` |
+| 2026-04-08 | [#22314](https://github.com/sgl-project/sglang/pull/22314) | merged | [AMD] Fix GLM-5 fp8 KV quant path dispatch on MI300 | scheduler/runtime | `python/sglang/srt/mem_cache/memory_pool.py` |
+| 2026-04-08 | [#22336](https://github.com/sgl-project/sglang/pull/22336) | merged | [AMD] Add GLM-5.1-FP8 nightly accuracy and performance benchmarks for MI30x and MI35x | tests/benchmarks | `test/registered/amd/accuracy/mi35x/test_glm51_eval_mi35x.py`, `test/registered/amd/accuracy/mi30x/test_glm51_eval_amd.py`, `test/registered/amd/perf/mi35x/test_glm51_perf_mi35x.py` |
+| 2026-04-08 | [#22399](https://github.com/sgl-project/sglang/pull/22399) | merged | [CI] Add GLM-5.1 nightly tests and update Qwen3.5 model | model wrapper, quantization, tests/benchmarks | `test/registered/8-gpu-models/test_glm_51_fp8.py`, `test/registered/8-gpu-models/test_qwen35.py`, `test/registered/gb300/test_glm5_fp8.py` |
+| 2026-04-10 | [#22543](https://github.com/sgl-project/sglang/pull/22543) | merged | GLM-5/5.1 MXFP4 Checkpoint Inference Compatibility Fix | model wrapper | `python/sglang/srt/model_loader/loader.py`, `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`, `python/sglang/srt/server_args.py` |
+| 2026-04-11 | [#22595](https://github.com/sgl-project/sglang/pull/22595) | merged | fix: normalize tool message content for GLM5.1 chat template | tests/benchmarks | `test/registered/openai_server/basic/test_serving_chat.py`, `python/sglang/srt/entrypoints/openai/serving_chat.py` |
+| 2026-04-13 | [#22712](https://github.com/sgl-project/sglang/pull/22712) | merged | [NPU] update glm5 running guide | docs/config | `docs/platforms/ascend/ascend_npu_glm5_examples.md` |
+| 2026-04-15 | [#22850](https://github.com/sgl-project/sglang/pull/22850) | merged | [AMD] Reduce NSA indexer kernels (weights_proj, k-cache store kernel fusion) | attention/backend | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
+| 2026-04-17 | [#23060](https://github.com/sgl-project/sglang/pull/23060) | merged | [fix] Fix dynamic chunking profiling crash on GLM-5 models | scheduler/runtime | `python/sglang/srt/managers/scheduler_pp_mixin.py` |
+| 2026-04-20 | [#23219](https://github.com/sgl-project/sglang/pull/23219) | merged | [AMD] Enable MTP for GLM-5-mxfp4 model | model wrapper | `python/sglang/srt/models/deepseek_nextn.py` |
+| 2026-04-23 | [#23540](https://github.com/sgl-project/sglang/pull/23540) | merged | docs: split MI300X and MI325X options in GLM-5.1 generator | docs/config | `docs_new/docs.json`, `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`, `docs_new/cookbook/autoregressive/intro.mdx` |
+
+## Diff Cards
+
+### PR #18521 - Support GlmMoeDsaForCausalLM
+
+- Link: https://github.com/sgl-project/sglang/pull/18521
+- Status/date: `merged`, created 2026-02-10, merged 2026-02-10; author `JustinTong0323`.
+- Diff scope read: `3` files, `+22/-7`; areas: model wrapper, MoE/router, docs/config; keywords: kv, moe, config, mla, spec, attention, cuda, eagle, flash, topk.
+- Code diff details:
+  - `python/sglang/srt/configs/model_config.py` modified +6/-5 (11 lines); hunks: def is_deepseek_nsa(config: PretrainedConfig) -> bool:; def from_server_args(; symbols: is_deepseek_nsa, from_server_args, _config_draft_model, _derive_model_shapes
+  - `python/sglang/srt/server_args.py` modified +10/-1 (11 lines); hunks: def _handle_model_specific_adjustments(self):; def _handle_speculative_decoding(self):; symbols: _handle_model_specific_adjustments, _handle_speculative_decoding, _handle_deterministic_inference, auto_choose_speculative_params
+  - `python/sglang/srt/models/glm4_moe.py` modified +6/-1 (7 lines); hunks: from sglang.srt.model_executor.cuda_graph_runner import get_is_capture_mode; def set_eagle3_layers_to_capture(self, layer_ids: Optional[List[int]] = None):; symbols: set_eagle3_layers_to_capture, GlmMoeDsaForCausalLM
+- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/server_args.py`, `python/sglang/srt/models/glm4_moe.py`; keywords observed in patches: kv, moe, config, mla, spec, attention. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; MoE/router/top-k/expert logic changed; verify shared/routed experts plus EP/TP/DP and empty-token branches; docs or config changed; verify serve flags, defaults, and cookbook commands against runtime code.
+- Risk and verification: Re-run the model path that exercises `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/server_args.py`, `python/sglang/srt/models/glm4_moe.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+
+### PR #18804 - Fix GLM-5 fused shared expert
+
+- Link: https://github.com/sgl-project/sglang/pull/18804
+- Status/date: `merged`, created 2026-02-13, merged 2026-02-16; author `FrankMinions`.
+- Diff scope read: `1` files, `+2/-1`; areas: model wrapper, MoE/router; keywords: eagle, expert, kv, moe.
+- Code diff details:
+  - `python/sglang/srt/models/glm4_moe.py` modified +2/-1 (3 lines); hunks: def set_eagle3_layers_to_capture(self, layer_ids: Optional[List[int]] = None):; symbols: set_eagle3_layers_to_capture, GlmMoeDsaForCausalLM, determine_num_fused_shared_experts
+- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/models/glm4_moe.py`; keywords observed in patches: eagle, expert, kv, moe. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; MoE/router/top-k/expert logic changed; verify shared/routed experts plus EP/TP/DP and empty-token branches.
+- Risk and verification: Re-run the model path that exercises `python/sglang/srt/models/glm4_moe.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+
+### PR #18911 - [AMD] [GLM-5 Day 0] Add GLM-5 nightly test
+
+- Link: https://github.com/sgl-project/sglang/pull/18911
+- Status/date: `merged`, created 2026-02-17, merged 2026-02-25; author `michaelzhang-ai`.
+- Diff scope read: `5` files, `+635/-1`; areas: tests/benchmarks; keywords: test, attention, benchmark, cache, config, doc, moe.
+- Code diff details:
+  - `test/registered/amd/accuracy/mi35x/test_glm5_eval_mi35x.py` added +249/-0 (249 lines); hunks: +"""MI35x GLM-5 GSM8K Completion Evaluation Test (8-GPU); symbols: ModelConfig:, get_display_name, get_one_example, get_few_shot_examples
+  - `test/registered/amd/accuracy/mi30x/test_glm5_eval_amd.py` added +244/-0 (244 lines); hunks: +"""AMD GLM-5 GSM8K Completion Evaluation Test (8-GPU); symbols: ModelConfig:, get_display_name, get_one_example, get_few_shot_examples
+  - `.github/workflows/nightly-test-amd-rocm720.yml` modified +71/-0 (71 lines); hunks: on:; on:
+  - `.github/workflows/nightly-test-amd.yml` modified +70/-0 (70 lines); hunks: on:; jobs:
+  - `test/registered/amd/accuracy/mi30x/test_gsm8k_eval_amd.py` modified +1/-1 (2 lines); hunks: "meta-llama/Llama-3.2-3B-Instruct": 0.55,
+- Optimization/support interpretation: The concrete diff surface is `test/registered/amd/accuracy/mi35x/test_glm5_eval_mi35x.py`, `test/registered/amd/accuracy/mi30x/test_glm5_eval_amd.py`, `.github/workflows/nightly-test-amd-rocm720.yml`; keywords observed in patches: test, attention, benchmark, cache, config, doc. Impact reading: tests or benchmarks changed; use those cases as regression entry points instead of only checking model load.
+- Risk and verification: Re-run the model path that exercises `test/registered/amd/accuracy/mi35x/test_glm5_eval_mi35x.py`, `test/registered/amd/accuracy/mi30x/test_glm5_eval_amd.py`, `.github/workflows/nightly-test-amd-rocm720.yml`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+
+### PR #20062 - [V32/GLM5] Control the threshold of applying dense attention with an environ
+
+- Link: https://github.com/sgl-project/sglang/pull/20062
+- Status/date: `merged`, created 2026-03-06, merged 2026-03-09; author `Fridge003`.
+- Diff scope read: `6` files, `+32/-59`; areas: attention/backend, quantization, tests/benchmarks, docs/config; keywords: kv, flash, mla, topk, cache, quant, attention, config, cuda, fp4.
+- Code diff details:
+  - `python/sglang/srt/layers/attention/nsa_backend.py` modified +3/-46 (49 lines); hunks: compute_cu_seqlens,; # Reuse this workspace buffer across all NSA backend instances; symbols: NSAFlashMLAMetadata:, __init__, init_forward_metadata_replay_cuda_graph_from_precomputed, set_nsa_prefill_impl
+  - `python/sglang/srt/server_args.py` modified +26/-3 (29 lines); hunks: def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments
+  - `test/registered/quant/test_deepseek_v32_fp4_4gpu.py` modified +0/-4 (4 lines); hunks: def setUpClass(cls):; def setUpClass(cls):; symbols: setUpClass, setUpClass
+  - `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py` modified +0/-4 (4 lines); hunks: def setUpClass(cls):; def setUpClass(cls):; symbols: setUpClass, setUpClass
+  - `python/sglang/srt/environ.py` modified +1/-2 (3 lines); hunks: class Envs:; symbols: Envs:
+- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/server_args.py`, `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`; keywords observed in patches: kv, flash, mla, topk, cache, quant. Impact reading: attention, KV cache, or backend selection changed; verify prefill/decode, page size, RoPE/MLA/MQA branches; quantized loading or quantized kernels changed; verify scales, zero-points, checkpoint names, and fallback behavior; tests or benchmarks changed; use those cases as regression entry points instead of only checking model load; docs or config changed; verify serve flags, defaults, and cookbook commands against runtime code.
+- Risk and verification: Re-run the model path that exercises `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/server_args.py`, `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+
+### PR #21710 - [AMD] Add GLM-5-FP8 nightly performance benchmarks for MI30x and MI35x
+
+- Link: https://github.com/sgl-project/sglang/pull/21710
+- Status/date: `merged`, created 2026-03-30, merged 2026-04-08; author `michaelzhang-ai`.
+- Diff scope read: `6` files, `+345/-5`; areas: tests/benchmarks; keywords: test, fp8, attention, config, benchmark, cache, kv, mla, quant.
+- Code diff details:
+  - `test/registered/amd/perf/mi35x/test_glm5_perf_mi35x.py` added +143/-0 (143 lines); hunks: +"""MI35x Nightly performance benchmark for GLM-5.; symbols: generate_simple_markdown_report, TestGLM5PerfMI35x, setUpClass, test_glm5_perf
+  - `test/registered/amd/perf/mi30x/test_glm5_perf_amd.py` added +140/-0 (140 lines); hunks: +"""Nightly performance benchmark for GLM-5 on MI30x.; symbols: generate_simple_markdown_report, TestNightlyGLM5Performance, setUpClass, test_bench_glm5
+  - `.github/workflows/nightly-test-amd-rocm720.yml` modified +25/-1 (26 lines); hunks: jobs:; jobs:
+  - `.github/workflows/nightly-test-amd.yml` modified +25/-0 (25 lines); hunks: jobs:; jobs:
+  - `test/registered/amd/accuracy/mi30x/test_glm5_eval_amd.py` modified +6/-2 (8 lines); hunks: def get_display_name(self) -> str:; def get_display_name(self) -> str:; symbols: get_display_name, get_display_name
+- Optimization/support interpretation: The concrete diff surface is `test/registered/amd/perf/mi35x/test_glm5_perf_mi35x.py`, `test/registered/amd/perf/mi30x/test_glm5_perf_amd.py`, `.github/workflows/nightly-test-amd-rocm720.yml`; keywords observed in patches: test, fp8, attention, config, benchmark, cache. Impact reading: tests or benchmarks changed; use those cases as regression entry points instead of only checking model load.
+- Risk and verification: Re-run the model path that exercises `test/registered/amd/perf/mi35x/test_glm5_perf_mi35x.py`, `test/registered/amd/perf/mi30x/test_glm5_perf_amd.py`, `.github/workflows/nightly-test-amd-rocm720.yml`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+
+### PR #21773 - [AMD][CI] Add GLM-5-MXFP4 accuracy and perf nightly tests for MI35x
+
+- Link: https://github.com/sgl-project/sglang/pull/21773
+- Status/date: `merged`, created 2026-03-31, merged 2026-04-15; author `michaelzhang-ai`.
+- Diff scope read: `4` files, `+528/-130`; areas: quantization, tests/benchmarks; keywords: fp4, test, benchmark, cache, config, doc, moe, quant.
+- Code diff details:
+  - `test/registered/amd/accuracy/mi35x/test_glm5_mxfp4_eval_mi35x.py` added +281/-0 (281 lines); hunks: +"""MI35x GLM-5-MXFP4 GSM8K Completion Evaluation Test (8-GPU); symbols: get_model_path, ModelConfig:, __post_init__, get_display_name
+  - `test/registered/amd/perf/mi35x/test_glm5_mxfp4_perf_mi35x.py` added +187/-0 (187 lines); hunks: +"""MI35x Nightly performance benchmark for GLM-5-MXFP4 model.; symbols: generate_simple_markdown_report, get_model_path, TestGLM5MXFP4PerfMI35x, setUpClass
+  - `.github/workflows/nightly-test-amd.yml` modified +30/-66 (96 lines); hunks: on:; on:
+  - `.github/workflows/nightly-test-amd-rocm720.yml` modified +30/-64 (94 lines); hunks: on:; on:
+- Optimization/support interpretation: The concrete diff surface is `test/registered/amd/accuracy/mi35x/test_glm5_mxfp4_eval_mi35x.py`, `test/registered/amd/perf/mi35x/test_glm5_mxfp4_perf_mi35x.py`, `.github/workflows/nightly-test-amd.yml`; keywords observed in patches: fp4, test, benchmark, cache, config, doc. Impact reading: quantized loading or quantized kernels changed; verify scales, zero-points, checkpoint names, and fallback behavior; tests or benchmarks changed; use those cases as regression entry points instead of only checking model load.
+- Risk and verification: Re-run the model path that exercises `test/registered/amd/accuracy/mi35x/test_glm5_mxfp4_eval_mi35x.py`, `test/registered/amd/perf/mi35x/test_glm5_mxfp4_perf_mi35x.py`, `.github/workflows/nightly-test-amd.yml`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+
+### PR #22179 - [Doc] Fix and improve DeepSeek V3.2/GLM-5 documentation
+
+- Link: https://github.com/sgl-project/sglang/pull/22179
+- Status/date: `merged`, created 2026-04-06, merged 2026-04-06; author `mmangkad`.
+- Diff scope read: `1` files, `+11/-12`; areas: docs/config; keywords: attention, benchmark, cache, config, deepep, doc, eagle, flash, fp8, kv.
+- Code diff details:
+  - `docs/basic_usage/deepseek_v32.md` modified +11/-12 (23 lines); hunks: DeepSeek-V3.2 model family equips DeepSeek-V3.1-Terminus with DeepSeek Sparse Attention (DSA) through continued training. With DSA, a fine-grained sparse attent
+- Optimization/support interpretation: The concrete diff surface is `docs/basic_usage/deepseek_v32.md`; keywords observed in patches: attention, benchmark, cache, config, deepep, doc. Impact reading: docs or config changed; verify serve flags, defaults, and cookbook commands against runtime code.
+- Risk and verification: Re-run the model path that exercises `docs/basic_usage/deepseek_v32.md`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+
+### PR #22285 - Add CI tests for GLM-5
+
+- Link: https://github.com/sgl-project/sglang/pull/22285
+- Status/date: `merged`, created 2026-04-07, merged 2026-04-08; author `Fridge003`.
+- Diff scope read: `2` files, `+153/-30`; areas: model wrapper, tests/benchmarks; keywords: attention, config, cuda, fp8, kv, test, eagle, spec.
+- Code diff details:
+  - `test/registered/8-gpu-models/test_dsa_models_basic.py` renamed +121/-1 (122 lines); hunks: write_github_step_summary,; def test_bs_1_speed(self):; symbols: TestDeepseekV32DP, test_bs_1_speed, TestGLM5DP, setUpClass
+  - `test/registered/8-gpu-models/test_dsa_models_mtp.py` renamed +32/-29 (61 lines); hunks: register_cuda_ci(est_time=720, suite="stage-c-test-8-gpu-h200"); def setUpClass(cls):; symbols: TestDeepseekV32DPMTP, setUpClass, tearDownClass, test_bs_1_speed
+- Optimization/support interpretation: The concrete diff surface is `test/registered/8-gpu-models/test_dsa_models_basic.py`, `test/registered/8-gpu-models/test_dsa_models_mtp.py`; keywords observed in patches: attention, config, cuda, fp8, kv, test. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; tests or benchmarks changed; use those cases as regression entry points instead of only checking model load.
+- Risk and verification: Re-run the model path that exercises `test/registered/8-gpu-models/test_dsa_models_basic.py`, `test/registered/8-gpu-models/test_dsa_models_mtp.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+
+### PR #22314 - [AMD] Fix GLM-5 fp8 KV quant path dispatch on MI300
+
+- Link: https://github.com/sgl-project/sglang/pull/22314
+- Status/date: `merged`, created 2026-04-08, merged 2026-04-08; author `1am9trash`.
+- Diff scope read: `1` files, `+27/-31`; areas: scheduler/runtime; keywords: attention, cache, fp8, kv, mla, quant, triton.
+- Code diff details:
+  - `python/sglang/srt/mem_cache/memory_pool.py` modified +27/-31 (58 lines); hunks: quantize_k_cache,; def set_mla_kv_buffer(; symbols: set_mla_kv_buffer
+- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/mem_cache/memory_pool.py`; keywords observed in patches: attention, cache, fp8, kv, mla, quant. Impact reading: scheduler/runtime/cache code changed; verify continuous batching, spec/PD/DP, cache lifetime, and exceptional branches.
+- Risk and verification: Re-run the model path that exercises `python/sglang/srt/mem_cache/memory_pool.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+
+### PR #22336 - [AMD] Add GLM-5.1-FP8 nightly accuracy and performance benchmarks for MI30x and MI35x
+
+- Link: https://github.com/sgl-project/sglang/pull/22336
+- Status/date: `merged`, created 2026-04-08, merged 2026-04-09; author `michaelzhang-ai`.
+- Diff scope read: `6` files, `+918/-25`; areas: tests/benchmarks; keywords: test, fp8, attention, benchmark, cache, config, doc, fp4, kv, mla.
+- Code diff details:
+  - `test/registered/amd/accuracy/mi35x/test_glm51_eval_mi35x.py` added +242/-0 (242 lines); hunks: +"""MI35x GLM-5.1 GSM8K Completion Evaluation Test (8-GPU); symbols: ModelConfig:, get_display_name, get_one_example, get_few_shot_examples
+  - `test/registered/amd/accuracy/mi30x/test_glm51_eval_amd.py` added +238/-0 (238 lines); hunks: +"""AMD GLM-5.1 GSM8K Completion Evaluation Test (8-GPU); symbols: ModelConfig:, get_display_name, get_one_example, get_few_shot_examples
+  - `test/registered/amd/perf/mi35x/test_glm51_perf_mi35x.py` added +146/-0 (146 lines); hunks: +"""MI35x Nightly performance benchmark for GLM-5.1.; symbols: generate_simple_markdown_report, TestGLM51PerfMI35x, setUpClass, test_glm51_perf
+  - `test/registered/amd/perf/mi30x/test_glm51_perf_amd.py` added +138/-0 (138 lines); hunks: +"""Nightly performance benchmark for GLM-5.1 on MI30x.; symbols: generate_simple_markdown_report, TestNightlyGLM51Performance, setUpClass, test_bench_glm51
+  - `.github/workflows/nightly-test-amd.yml` modified +87/-4 (91 lines); hunks: on:; on:
+- Optimization/support interpretation: The concrete diff surface is `test/registered/amd/accuracy/mi35x/test_glm51_eval_mi35x.py`, `test/registered/amd/accuracy/mi30x/test_glm51_eval_amd.py`, `test/registered/amd/perf/mi35x/test_glm51_perf_mi35x.py`; keywords observed in patches: test, fp8, attention, benchmark, cache, config. Impact reading: tests or benchmarks changed; use those cases as regression entry points instead of only checking model load.
+- Risk and verification: Re-run the model path that exercises `test/registered/amd/accuracy/mi35x/test_glm51_eval_mi35x.py`, `test/registered/amd/accuracy/mi30x/test_glm51_eval_amd.py`, `test/registered/amd/perf/mi35x/test_glm51_perf_mi35x.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+
+### PR #22399 - [CI] Add GLM-5.1 nightly tests and update Qwen3.5 model
+
+- Link: https://github.com/sgl-project/sglang/pull/22399
+- Status/date: `merged`, created 2026-04-08, merged 2026-04-09; author `Kangyan-Zhou`.
+- Diff scope read: `3` files, `+82/-6`; areas: model wrapper, quantization, tests/benchmarks; keywords: cuda, fp8, test, attention, eagle, spec, topk.
+- Code diff details:
+  - `test/registered/8-gpu-models/test_glm_51_fp8.py` added +69/-0 (69 lines); hunks: +import unittest; symbols: TestGlm51Fp8, test_glm51_fp8
+  - `test/registered/8-gpu-models/test_qwen35.py` modified +10/-3 (13 lines); hunks: # Runs on both H200 and B200 via nightly-8-gpu-common suite; def test_qwen35(self):; symbols: TestQwen35, test_qwen35, test_qwen35
+  - `test/registered/gb300/test_glm5_fp8.py` modified +3/-3 (6 lines); hunks: register_cuda_ci(est_time=7200, suite="nightly-4-gpu-gb300", nightly=True); class TestGlm5Fp8(unittest.TestCase):; symbols: TestGlm5Fp8, test_glm5_fp8, test_glm5_fp8
+- Optimization/support interpretation: The concrete diff surface is `test/registered/8-gpu-models/test_glm_51_fp8.py`, `test/registered/8-gpu-models/test_qwen35.py`, `test/registered/gb300/test_glm5_fp8.py`; keywords observed in patches: cuda, fp8, test, attention, eagle, spec. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; quantized loading or quantized kernels changed; verify scales, zero-points, checkpoint names, and fallback behavior; tests or benchmarks changed; use those cases as regression entry points instead of only checking model load.
+- Risk and verification: Re-run the model path that exercises `test/registered/8-gpu-models/test_glm_51_fp8.py`, `test/registered/8-gpu-models/test_qwen35.py`, `test/registered/gb300/test_glm5_fp8.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+
+### PR #22543 - GLM-5/5.1 MXFP4 Checkpoint Inference Compatibility Fix
+
+- Link: https://github.com/sgl-project/sglang/pull/22543
+- Status/date: `merged`, created 2026-04-10, merged 2026-04-14; author `ColinZ22`.
+- Diff scope read: `3` files, `+8/-0`; areas: model wrapper; keywords: config, quant, cuda, fp4, kv, moe.
+- Code diff details:
+  - `python/sglang/srt/model_loader/loader.py` modified +3/-0 (3 lines); hunks: def _get_quantization_config(; symbols: _get_quantization_config
+  - `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` modified +3/-0 (3 lines); hunks: def post_load_weights(; symbols: post_load_weights
+  - `python/sglang/srt/server_args.py` modified +2/-0 (2 lines); hunks: def _handle_missing_default_values(self):; symbols: _handle_missing_default_values
+- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/model_loader/loader.py`, `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`, `python/sglang/srt/server_args.py`; keywords observed in patches: config, quant, cuda, fp4, kv, moe. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping.
+- Risk and verification: Re-run the model path that exercises `python/sglang/srt/model_loader/loader.py`, `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`, `python/sglang/srt/server_args.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+
+### PR #22595 - fix: normalize tool message content for GLM5.1 chat template
+
+- Link: https://github.com/sgl-project/sglang/pull/22595
+- Status/date: `merged`, created 2026-04-11, merged 2026-04-16; author `whybeyoung`.
+- Diff scope read: `2` files, `+67/-1`; areas: tests/benchmarks; keywords: cuda, doc, test.
+- Code diff details:
+  - `test/registered/openai_server/basic/test_serving_chat.py` modified +41/-1 (42 lines); hunks: ChatCompletionRequest,; def test_required_without_parser_invalid_json_returns_none(self):; symbols: test_required_without_parser_invalid_json_returns_none, TestNormalizeToolContent, test_openai_text_parts_flattened, test_multiple_text_parts_joined
+  - `python/sglang/srt/entrypoints/openai/serving_chat.py` modified +26/-0 (26 lines); hunks: logger = logging.getLogger(__name__); def _apply_jinja_template(; symbols: normalize_tool_content, _extract_max_dynamic_patch, _apply_jinja_template
+- Optimization/support interpretation: The concrete diff surface is `test/registered/openai_server/basic/test_serving_chat.py`, `python/sglang/srt/entrypoints/openai/serving_chat.py`; keywords observed in patches: cuda, doc, test. Impact reading: tests or benchmarks changed; use those cases as regression entry points instead of only checking model load.
+- Risk and verification: Re-run the model path that exercises `test/registered/openai_server/basic/test_serving_chat.py`, `python/sglang/srt/entrypoints/openai/serving_chat.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+
+### PR #22712 - [NPU] update glm5 running guide
+
+- Link: https://github.com/sgl-project/sglang/pull/22712
+- Status/date: `merged`, created 2026-04-13, merged 2026-04-13; author `zhsurpass`.
+- Diff scope read: `1` files, `+8/-2`; areas: docs/config; keywords: doc.
+- Code diff details:
+  - `docs/platforms/ascend/ascend_npu_glm5_examples.md` modified +8/-2 (10 lines); hunks: docker run -itd --shm-size=16g --privileged=true --name ${NAME} \
+- Optimization/support interpretation: The concrete diff surface is `docs/platforms/ascend/ascend_npu_glm5_examples.md`; keywords observed in patches: doc. Impact reading: docs or config changed; verify serve flags, defaults, and cookbook commands against runtime code.
+- Risk and verification: Re-run the model path that exercises `docs/platforms/ascend/ascend_npu_glm5_examples.md`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+
+### PR #22850 - [AMD] Reduce NSA indexer kernels (weights_proj, k-cache store kernel fusion)
+
+- Link: https://github.com/sgl-project/sglang/pull/22850
+- Status/date: `merged`, created 2026-04-15, merged 2026-04-19; author `1am9trash`.
+- Diff scope read: `1` files, `+24/-5`; areas: attention/backend; keywords: attention, cache, cuda, fp8, kv, quant.
+- Code diff details:
+  - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +24/-5 (29 lines); hunks: from sglang.srt.environ import envs; _is_npu = is_npu(); symbols: __init__, _weights_proj_bf16_in_fp32_out, _store_index_k_cache
+- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`; keywords observed in patches: attention, cache, cuda, fp8, kv, quant. Impact reading: attention, KV cache, or backend selection changed; verify prefill/decode, page size, RoPE/MLA/MQA branches.
+- Risk and verification: Re-run the model path that exercises `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+
+### PR #23060 - [fix] Fix dynamic chunking profiling crash on GLM-5 models
+
+- Link: https://github.com/sgl-project/sglang/pull/23060
+- Status/date: `merged`, created 2026-04-17, merged 2026-04-23; author `Baichuan7`.
+- Diff scope read: `1` files, `+3/-0`; areas: scheduler/runtime; keywords: attention, scheduler.
+- Code diff details:
+  - `python/sglang/srt/managers/scheduler_pp_mixin.py` modified +3/-0 (3 lines); hunks: get_attention_dp_rank,; def profile_and_init_predictor(self: Scheduler):; symbols: profile_and_init_predictor
+- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/managers/scheduler_pp_mixin.py`; keywords observed in patches: attention, scheduler. Impact reading: scheduler/runtime/cache code changed; verify continuous batching, spec/PD/DP, cache lifetime, and exceptional branches.
+- Risk and verification: Re-run the model path that exercises `python/sglang/srt/managers/scheduler_pp_mixin.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+
+### PR #23219 - [AMD] Enable MTP for GLM-5-mxfp4 model
+
+- Link: https://github.com/sgl-project/sglang/pull/23219
+- Status/date: `merged`, created 2026-04-20, merged 2026-04-20; author `1am9trash`.
+- Diff scope read: `1` files, `+41/-15`; areas: model wrapper; keywords: attention, config, fp8, processor, quant, spec.
+- Code diff details:
+  - `python/sglang/srt/models/deepseek_nextn.py` modified +41/-15 (56 lines); hunks: is_dp_attention_enabled,; def __init__(; symbols: __init__, forward, __init__
+- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/models/deepseek_nextn.py`; keywords observed in patches: attention, config, fp8, processor, quant, spec. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping.
+- Risk and verification: Re-run the model path that exercises `python/sglang/srt/models/deepseek_nextn.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+
+### PR #23540 - docs: split MI300X and MI325X options in GLM-5.1 generator
+
+- Link: https://github.com/sgl-project/sglang/pull/23540
+- Status/date: `merged`, created 2026-04-23, merged 2026-04-23; author `zijiexia`.
+- Diff scope read: `3` files, `+15/-13`; areas: docs/config; keywords: doc, flash, fp8, quant, spec.
+- Code diff details:
+  - `docs_new/docs.json` modified +8/-8 (16 lines); hunks: {
+  - `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx` modified +6/-4 (10 lines); hunks: export const GLM51Deployment = () => {; export const GLM51Deployment = () => {
+  - `docs_new/cookbook/autoregressive/intro.mdx` modified +1/-1 (2 lines); hunks: metatags:
+- Optimization/support interpretation: The concrete diff surface is `docs_new/docs.json`, `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`, `docs_new/cookbook/autoregressive/intro.mdx`; keywords observed in patches: doc, flash, fp8, quant, spec. Impact reading: docs or config changed; verify serve flags, defaults, and cookbook commands against runtime code.
+- Risk and verification: Re-run the model path that exercises `docs_new/docs.json`, `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`, `docs_new/cookbook/autoregressive/intro.mdx`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+
+
+<!-- MODEL_PR_DIFF_AUDIT:END reference -->

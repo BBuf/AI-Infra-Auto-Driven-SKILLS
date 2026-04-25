@@ -15,6 +15,11 @@ Current evidence snapshot:
 - Diff-reviewed PRs: #23366 and #23624
 - Main runtime files: `ltx_2_pipeline.py`, `ltx_2_denoising.py`, `configs/sample/ltx_2.py`, `configs/pipeline_configs/ltx_2.py`
 
+## Non-Negotiable Evidence Rule
+
+Use `skills/model-optimization/model-pr-diff-dossier/SKILL.md` as the production bar.
+Every PR cited for this family must be based on diff reading, not only PR titles.
+
 ## Before You Change Anything
 
 Capture:

@@ -17,6 +17,11 @@ Current evidence snapshot:
 - Config: `python/sglang/srt/configs/qwen3_5.py`
 - Cookbook/docs: `docs/basic_usage/qwen3_5.md`, `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx`
 
+## Non-Negotiable Evidence Rule
+
+Use `skills/model-optimization/model-pr-diff-dossier/SKILL.md` as the production bar.
+Every PR cited for this family must be based on diff reading, not only PR titles.
+
 ## Before You Change Anything
 
 Capture:
