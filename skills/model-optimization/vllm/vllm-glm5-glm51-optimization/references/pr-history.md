@@ -25,7 +25,7 @@ Evidence snapshot:
     `deepseek_v2` module.
   - Adds a trivial `GlmMoeDsaForCausalLM(DeepseekV2ForCausalLM)` subclass.
   - Treats `glm_moe_dsa` like `deepseek_mtp` in speculative config override.
-  - Extends the arch config convertor and initialization/test registry.
+  - Extends the arch config converter and initialization/test registry.
   - Changes rope style selection to respect `indexer_rope_interleave`.
 - Key code excerpts:
 
