@@ -48,6 +48,44 @@ When no original diagram matches:
 - Include the SGLang files and cookbook docs that should be inspected before making the diagram more exact.
 - Prefer Mermaid plus SVG over hand-drawn prose. The resolver writes both.
 
+## Hosted sgl-cookbook Gallery
+
+Do not commit the full `sgl-cookbook-model-architecture-images/` gallery into
+the repository. The image set is large because it includes public original JPGs
+plus generated PNG/SVG/Mermaid files, so it is hosted as a GitHub Release asset
+and indexed by a GitHub issue instead.
+
+Current hosted artifact:
+
+- Issue index: https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/issues/31
+- Release page: https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/releases/tag/sgl-cookbook-architecture-images-2026-04-25
+- Zip download: https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/releases/download/sgl-cookbook-architecture-images-2026-04-25/sgl-cookbook-model-architecture-images-2026-04-25.zip
+- Digest: `sha256:4ea7f6f53c46b806d84e8252f0a7b30a3c9b608ecca5fc7a29154921380ab00b`
+
+The artifact contains 63 model directories: 62 discovered from sgl-cookbook plus
+the manually audited DeepSeek-V4 support branch. It includes 11 public-original
+matches, 52 generated diagram sets, `index.html`, `index.md`, `manifest.json`,
+contact sheets, and `architecture-audit.md`.
+
+How the gallery was produced:
+
+- Each model document under local sgl-cookbook `docs/autoregressive`,
+  `docs/diffusion`, and `docs/omni` was resolved with
+  `scripts/model_architecture_diagram.py`.
+- Direct public matches from `references/diagram-index.json` were downloaded
+  unchanged from upstream raw GitHub image URLs.
+- Generated diagrams were created as SVG and Mermaid by the resolver; PNG files
+  are headless-Chrome screenshots of the SVGs at a 1920 x 1200 viewport.
+
+To inspect the gallery locally:
+
+```bash
+curl -L -o /tmp/sgl-cookbook-model-architecture-images-2026-04-25.zip \
+  https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/releases/download/sgl-cookbook-architecture-images-2026-04-25/sgl-cookbook-model-architecture-images-2026-04-25.zip
+unzip -q /tmp/sgl-cookbook-model-architecture-images-2026-04-25.zip -d /tmp
+open /tmp/sgl-cookbook-model-architecture-images/index.html
+```
+
 ## Useful Commands
 
 List known original diagram aliases:
