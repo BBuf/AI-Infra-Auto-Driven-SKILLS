@@ -1318,6 +1318,158 @@ def _spine_texts(template: Template) -> dict[str, str]:
     return defaults
 
 
+def _draw_deepseek_v4_left_spine(
+    out: list[str], primary: tuple[str, str]
+) -> dict[str, tuple[int, int]]:
+    fill, stroke = primary
+    x = 95
+    w = 390
+    cx = x + w // 2
+    group_x = x - 45
+    group_y = 315
+    group_w = w + 155
+    group_h = 530
+    plus_fill = stroke if stroke != "#1F2937" else "#5B5B5B"
+
+    _text(out, "Text / media", cx, 1110, size=20, weight=700, anchor="middle")
+    _arrow(out, cx, 1090, cx, 1048)
+    _shape(out, x, 985, w, 58, "Tokenizer", fill=fill, stroke=stroke)
+    _arrow(out, cx, 985, cx, 940)
+    _shape(out, x, 875, w, 64, "Embedding x hc_mult=4", fill=fill, stroke=stroke)
+    _shape_label(out, "[tokens, 4, 4096]", x + 280, 858)
+
+    _text(out, "43 x", max(10, group_x - 42), group_y + 64, size=28, weight=700)
+    _panel(
+        out, group_x, group_y, group_w, group_h, "V4 MHC layer", "#111111", font_size=20
+    )
+
+    attn_norm_y = group_y + 392
+    attn_y = group_y + 294
+    mid_plus_y = group_y + 266
+    moe_norm_y = group_y + 180
+    moe_y = group_y + 84
+    top_plus_y = group_y + 56
+    bottom_plus_y = group_y + 492
+
+    _arrow(out, cx, 875, cx, bottom_plus_y + 18)
+    _plus(out, cx, bottom_plus_y, fill=plus_fill)
+    _arrow(out, cx, bottom_plus_y - 17, cx, attn_norm_y + 64)
+    _shape(
+        out,
+        x,
+        attn_norm_y,
+        w,
+        64,
+        "Attention RMSNorm",
+        fill=fill,
+        stroke=stroke,
+        font_size=22,
+    )
+    _arrow(out, cx, attn_norm_y, cx, attn_y + 58)
+    _shape(
+        out,
+        x + 50,
+        attn_y,
+        w - 100,
+        58,
+        "Compressed MQA",
+        fill="#FFFFFF",
+        stroke="#F59E0B",
+        text_fill="#F59E0B",
+        dashed=True,
+        font_size=22,
+        weight=700,
+    )
+    _arrow(out, cx, attn_y, cx, mid_plus_y + 17)
+    _plus(out, cx, mid_plus_y, fill=plus_fill)
+    _arrow(out, cx, mid_plus_y - 17, cx, moe_norm_y + 64)
+    _shape(
+        out,
+        x,
+        moe_norm_y,
+        w,
+        64,
+        "MoE RMSNorm",
+        fill=fill,
+        stroke=stroke,
+        font_size=22,
+    )
+    _arrow(out, cx, moe_norm_y, cx, moe_y + 58)
+    _shape(
+        out,
+        x + 50,
+        moe_y,
+        w - 100,
+        58,
+        "MoE",
+        fill="#FFFFFF",
+        stroke="#3B82F6",
+        text_fill="#3B82F6",
+        dashed=True,
+        font_size=24,
+        weight=700,
+    )
+    _arrow(out, cx, moe_y, cx, top_plus_y + 17)
+    _plus(out, cx, top_plus_y, fill=plus_fill)
+
+    skip_x = x + 18
+    _polyline(
+        out,
+        (
+            (skip_x, bottom_plus_y - 4),
+            (skip_x, mid_plus_y),
+            (cx - 25, mid_plus_y),
+        ),
+    )
+    _polyline(
+        out,
+        (
+            (skip_x, mid_plus_y - 4),
+            (skip_x, top_plus_y),
+            (cx - 25, top_plus_y),
+        ),
+    )
+
+    _arrow(out, cx, top_plus_y - 17, cx, 260)
+    _shape(out, x, 195, w, 64, "HC head + RMSNorm", fill=fill, stroke=stroke)
+    _arrow(out, cx, 195, cx, 154)
+    _shape(out, x, 90, w, 64, "LM Head / MTP logits", fill=fill, stroke=stroke)
+    _arrow(out, cx, 90, cx, 68)
+    _shape(
+        out,
+        x + 75,
+        10,
+        w - 150,
+        58,
+        "MTP",
+        fill="#FFFFFF",
+        stroke="#111111",
+        text_fill="#111111",
+        dashed=True,
+        font_size=22,
+        weight=700,
+    )
+
+    _text(
+        out,
+        "MHC -> compressed MQA -> MoE",
+        group_x + 18,
+        group_y + group_h - 18,
+        size=14,
+    )
+    _text(
+        out, "hc_pre", x + w + 16, attn_norm_y + 38, size=15, fill="#FB7573", weight=700
+    )
+    _text(
+        out, "hc_pre", x + w + 16, moe_norm_y + 38, size=15, fill="#FB7573", weight=700
+    )
+    return {
+        "attention": (x + w, attn_y + 29),
+        "ffn": (x + w, moe_y + 29),
+        "input": (x + w, 905),
+    }
+
+
 def _draw_left_spine(
     out: list[str],
     model: str,
@@ -1327,6 +1479,8 @@ def _draw_left_spine(
     fill, stroke = primary
     x = 95
     w = 390
+    if template.template_id == "deepseek_v4_mhc_mqa_moe":
+        return _draw_deepseek_v4_left_spine(out, primary)
     spine = _spine_texts(template)
     label_repeat, layer_title, layer_subtitle = _layer_label(template)
     _text(out, spine["input"], x + 155, 1110, size=20, weight=700)
@@ -1943,34 +2097,58 @@ def _draw_deepseek_v4_attention_panel(
     red = "#F00000"
     blue = "#7288F4"
     _panel(out, x, y, w, h, "Compressed MQA attention", orange, font_size=30)
-    bottom_y = y + h - 88
-    q_x = x + 80
-    kv_x = x + 445
+    bottom_y = y + h - 82
+    q_x = x + 70
+    kv_x = x + 420
+    out_x = x + 695
+    side_x = x + 900
+
     _shape(out, q_x, bottom_y, 250, 52, "wq_a / wqkv_a", fill=orange, stroke=orange)
     _shape(out, kv_x, bottom_y, 250, 52, "wkv / wqkv_a", fill=orange, stroke=orange)
-    _shape(out, q_x + 45, bottom_y - 98, 160, 50, "q_norm", fill=orange, stroke=orange)
+    _shape(out, q_x + 45, bottom_y - 94, 160, 50, "q_norm", fill=orange, stroke=orange)
     _shape(
-        out, kv_x + 45, bottom_y - 98, 160, 50, "kv_norm", fill=orange, stroke=orange
+        out, kv_x + 45, bottom_y - 94, 160, 50, "kv_norm", fill=orange, stroke=orange
     )
-    _shape(out, q_x + 20, bottom_y - 196, 210, 50, "wq_b", fill=orange, stroke=orange)
-    _shape(out, kv_x, bottom_y - 196, 250, 50, "KV latent", fill=orange, stroke=orange)
-    _shape(out, q_x, bottom_y - 294, 140, 48, "RoPE", fill=orange, stroke=orange)
-    _shape(out, q_x + 180, bottom_y - 294, 140, 48, "64 Q", fill=blue, stroke="#3B82F6")
-    _shape(out, kv_x - 12, bottom_y - 294, 140, 48, "RoPE", fill=orange, stroke=orange)
+    _shape(out, q_x + 20, bottom_y - 188, 210, 50, "wq_b", fill=orange, stroke=orange)
+    _shape(out, kv_x, bottom_y - 188, 250, 50, "KV latent", fill=orange, stroke=orange)
+    _shape(out, q_x, bottom_y - 284, 138, 48, "RoPE", fill=orange, stroke=orange)
+    _shape(out, q_x + 178, bottom_y - 284, 138, 48, "64 Q", fill=blue, stroke="#3B82F6")
+    _shape(out, kv_x - 24, bottom_y - 284, 138, 48, "RoPE", fill=orange, stroke=orange)
     _shape(
-        out, kv_x + 168, bottom_y - 294, 140, 48, "1 KV", fill=blue, stroke="#3B82F6"
+        out, kv_x + 160, bottom_y - 284, 138, 48, "1 KV", fill=blue, stroke="#3B82F6"
     )
-    _shape(out, x + 390, y + 116, 360, 58, "MQA / FlashMLA", fill=orange, stroke=orange)
-    _shape(out, x + 805, y + 116, 165, 58, "attn_sink", fill=red, stroke=red)
-    _shape(out, x + 455, y + 232, 230, 52, "wo_a BMM", fill=orange, stroke=orange)
-    _shape(out, x + 455, y + 330, 230, 52, "wo_b", fill=orange, stroke=orange)
-    _text(out, "Q path", q_x + 90, bottom_y + 80, size=16, fill="#555555", weight=700)
-    _text(out, "KV path", kv_x + 90, bottom_y + 80, size=16, fill="#555555", weight=700)
+
+    mqa_x = x + 388
+    mqa_y = y + 116
+    _shape(out, mqa_x, mqa_y, 360, 58, "MQA / FlashMLA", fill=orange, stroke=orange)
+    _shape(out, x + 805, mqa_y, 165, 58, "attn_sink", fill=red, stroke=red)
+    _shape(out, out_x, y + 250, 220, 52, "wo_a BMM", fill=orange, stroke=orange)
+    _shape(out, out_x, y + 342, 220, 52, "wo_b", fill=orange, stroke=orange)
+    _text(
+        out,
+        "Q path",
+        q_x + 125,
+        bottom_y + 76,
+        size=16,
+        fill="#555555",
+        weight=700,
+        anchor="middle",
+    )
+    _text(
+        out,
+        "KV path",
+        kv_x + 125,
+        bottom_y + 76,
+        size=16,
+        fill="#555555",
+        weight=700,
+        anchor="middle",
+    )
     _shape(
         out,
-        x + w - 280,
-        y + 252,
-        190,
+        side_x,
+        y + 448,
+        185,
         56,
         "Compressor",
         fill="#FFFFFF",
@@ -1982,9 +2160,9 @@ def _draw_deepseek_v4_attention_panel(
     )
     _shape(
         out,
-        x + w - 280,
-        y + 362,
-        190,
+        side_x,
+        y + 538,
+        185,
         56,
         "C4 Indexer",
         fill="#FFFFFF",
@@ -1997,36 +2175,44 @@ def _draw_deepseek_v4_attention_panel(
     _text(
         out,
         "compress_ratio: 0 / 4 / 128",
-        x + w - 330,
-        y + 225,
-        size=18,
+        side_x - 52,
+        y + 406,
+        size=16,
         fill=red,
         weight=700,
     )
-    _text(
-        out, "ratio=4 selects top-512 sparse KV blocks", x + w - 365, y + 452, size=15
-    )
-    _arrow(out, q_x + 125, bottom_y, q_x + 125, bottom_y - 48)
-    _arrow(out, kv_x + 125, bottom_y, kv_x + 125, bottom_y - 48)
-    _arrow(out, q_x + 125, bottom_y - 98, q_x + 125, bottom_y - 146)
-    _arrow(out, kv_x + 125, bottom_y - 98, kv_x + 125, bottom_y - 146)
-    _arrow(out, q_x + 125, bottom_y - 196, q_x + 70, bottom_y - 246)
-    _arrow(out, q_x + 125, bottom_y - 196, q_x + 250, bottom_y - 246)
-    _arrow(out, kv_x + 125, bottom_y - 196, kv_x + 58, bottom_y - 246)
-    _arrow(out, kv_x + 125, bottom_y - 196, kv_x + 238, bottom_y - 246)
-    _arrow(out, q_x + 70, bottom_y - 294, x + 445, y + 174)
-    _arrow(out, q_x + 250, bottom_y - 294, x + 520, y + 174)
-    _arrow(out, kv_x + 58, bottom_y - 294, x + 590, y + 174)
-    _arrow(out, kv_x + 238, bottom_y - 294, x + 680, y + 174)
-    _arrow(out, x + 750, y + 145, x + 805, y + 145)
-    _arrow(out, x + 570, y + 174, x + 570, y + 232)
-    _arrow(out, x + 570, y + 284, x + 570, y + 330)
+    _text(out, "ratio=4 selects top-512", side_x + 4, y + 624, size=14)
+    _text(out, "sparse KV blocks", side_x + 34, y + 644, size=14)
+    _arrow(out, q_x + 125, bottom_y, q_x + 125, bottom_y - 44)
+    _arrow(out, kv_x + 125, bottom_y, kv_x + 125, bottom_y - 44)
+    _arrow(out, q_x + 125, bottom_y - 94, q_x + 125, bottom_y - 138)
+    _arrow(out, kv_x + 125, bottom_y - 94, kv_x + 125, bottom_y - 138)
+    _arrow(out, q_x + 125, bottom_y - 188, q_x + 69, bottom_y - 236)
+    _arrow(out, q_x + 125, bottom_y - 188, q_x + 247, bottom_y - 236)
+    _arrow(out, kv_x + 125, bottom_y - 188, kv_x + 45, bottom_y - 236)
+    _arrow(out, kv_x + 125, bottom_y - 188, kv_x + 229, bottom_y - 236)
+    _arrow(out, q_x + 69, bottom_y - 284, mqa_x + 86, mqa_y + 58)
+    _arrow(out, q_x + 247, bottom_y - 284, mqa_x + 160, mqa_y + 58)
+    _arrow(out, kv_x + 45, bottom_y - 284, mqa_x + 240, mqa_y + 58)
+    _arrow(out, kv_x + 229, bottom_y - 284, mqa_x + 314, mqa_y + 58)
+    _arrow(out, mqa_x + 360, mqa_y + 29, x + 805, mqa_y + 29)
     _polyline(
         out,
         (
-            (kv_x + 250, bottom_y - 170),
-            (x + w - 330, bottom_y - 170),
-            (x + w - 280, y + 280),
+            (mqa_x + 256, mqa_y + 58),
+            (mqa_x + 256, y + 220),
+            (out_x + 110, y + 220),
+            (out_x + 110, y + 250),
+        ),
+    )
+    _arrow(out, out_x + 110, y + 302, out_x + 110, y + 342)
+    _polyline(
+        out,
+        (
+            (kv_x + 250, bottom_y - 160),
+            (x + w - 20, bottom_y - 160),
+            (x + w - 20, y + 476),
+            (side_x + 185, y + 476),
         ),
         dashed=True,
         stroke=red,
@@ -2034,9 +2220,10 @@ def _draw_deepseek_v4_attention_panel(
     _polyline(
         out,
         (
-            (kv_x + 300, bottom_y - 270),
-            (x + w - 330, bottom_y - 270),
-            (x + w - 280, y + 390),
+            (kv_x + 298, bottom_y - 260),
+            (x + w - 20, bottom_y - 260),
+            (x + w - 20, y + 566),
+            (side_x + 185, y + 566),
         ),
         dashed=True,
         stroke=red,
@@ -2053,10 +2240,13 @@ def _draw_deepseek_v4_mtp_panel(out: list[str], x: int, y: int, w: int, h: int) 
     purple = "#7E2E9E"
     green = "#8DD348"
     _panel(out, x, y, w, h, "MTP draft path", purple, font_size=26)
+    v4_y = y + 148
+    plus_y = y + h - 95
+    proj_y = y + h - 72
     _shape(
         out,
         x + 24,
-        y + h - 72,
+        proj_y,
         92,
         50,
         "e_proj",
@@ -2067,7 +2257,7 @@ def _draw_deepseek_v4_mtp_panel(out: list[str], x: int, y: int, w: int, h: int) 
     _shape(
         out,
         x + w - 116,
-        y + h - 72,
+        proj_y,
         92,
         50,
         "h_proj",
@@ -2075,15 +2265,13 @@ def _draw_deepseek_v4_mtp_panel(out: list[str], x: int, y: int, w: int, h: int) 
         stroke=purple,
         font_size=18,
     )
-    _plus(out, x + w // 2, y + h - 125, fill=purple)
-    _shape(
-        out, x + 28, y + 150, w - 56, 56, "V4 layer", fill="#7288F4", stroke="#3B82F6"
-    )
+    _plus(out, x + w // 2, plus_y, fill=purple)
+    _shape(out, x + 28, v4_y, w - 56, 56, "V4 layer", fill="#7288F4", stroke="#3B82F6")
     _shape(out, x + 42, y + 58, w - 84, 56, "hc_head", fill=green, stroke=green)
-    _arrow(out, x + 70, y + h - 72, x + w // 2 - 17, y + h - 125)
-    _arrow(out, x + w - 70, y + h - 72, x + w // 2 + 17, y + h - 125)
-    _arrow(out, x + w // 2, y + h - 142, x + w // 2, y + 206)
-    _arrow(out, x + w // 2, y + 150, x + w // 2, y + 114)
+    _arrow(out, x + 70, proj_y, x + w // 2 - 17, plus_y)
+    _arrow(out, x + w - 70, proj_y, x + w // 2 + 17, plus_y)
+    _arrow(out, x + w // 2, plus_y - 17, x + w // 2, v4_y + 56)
+    _arrow(out, x + w // 2, v4_y, x + w // 2, y + 114)
 
 
 def _draw_generic_details(
