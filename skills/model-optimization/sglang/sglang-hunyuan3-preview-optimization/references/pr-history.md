@@ -59,5 +59,34 @@ SGLANG_ENABLE_SPEC_V2=1 sglang serve \
 
 ## Validation Notes
 
-- The cookbook still carries a license TODO. Do not treat license text as verified runtime evidence.
+- The cookbook still carries a license placeholder. Do not treat license text as verified runtime evidence.
 - If runtime code support changes later, add separate cards for parser/model files instead of extending this docs-only PR.
+
+<!-- MODEL_PR_DIFF_AUDIT:START reference -->
+
+# SGLANG Hunyuan3 Preview PR Diff Audit Reference
+
+This reference is rebuilt from the same audited PR metadata used by `model-pr-optimization-history`. It is intentionally concise but keeps a file-level diff digest for every indexed PR.
+
+## Timeline
+
+| Created | PR | State | Title | Code surface | Main diff files |
+| --- | ---: | --- | --- | --- | --- |
+| 2026-04-23 | [#23532](https://github.com/sgl-project/sglang/pull/23532) | merged | docs: add Hunyuan 3 Preview cookbook | docs/config | `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`, `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx`, `docs_new/docs.json` |
+
+## Diff Cards
+
+### PR #23532 - docs: add Hunyuan 3 Preview cookbook
+
+- Link: https://github.com/sgl-project/sglang/pull/23532
+- Status/date: `merged`, created 2026-04-23, merged 2026-04-23; author `JustinTong0323`.
+- Diff scope read: `3` files, `+707/-0`; areas: docs/config; keywords: doc, attention, config, eagle, moe, spec, topk, benchmark, expert, flash.
+- Code diff details:
+  - `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` added +527/-0 (527 lines); hunks: +---; symbols: GPUs
+  - `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx` added +174/-0 (174 lines); hunks: +export const Hunyuan3PreviewDeployment = () => {; symbols: GPUs
+  - `docs_new/docs.json` modified +6/-0 (6 lines); hunks: "pages": [
+- Optimization/support interpretation: The concrete diff surface is `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`, `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx`, `docs_new/docs.json`; keywords observed in patches: doc, attention, config, eagle, moe, spec. Impact reading: docs or config changed; verify serve flags, defaults, and cookbook commands against runtime code.
+- Risk and verification: Re-run the model path that exercises `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`, `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx`, `docs_new/docs.json`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+
+
+<!-- MODEL_PR_DIFF_AUDIT:END reference -->

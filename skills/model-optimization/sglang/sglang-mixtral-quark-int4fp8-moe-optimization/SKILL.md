@@ -17,6 +17,11 @@ Current evidence snapshot:
 - Docs: `docs_new/docs/advanced_features/quantization.mdx`
 - Diff-reviewed PRs: #7392, #17116, #23455
 
+## Non-Negotiable Evidence Rule
+
+Use `skills/model-optimization/model-pr-diff-dossier/SKILL.md` as the production bar.
+Every PR cited for this family must be based on diff reading, not only PR titles.
+
 ## Before You Change Anything
 
 Capture:

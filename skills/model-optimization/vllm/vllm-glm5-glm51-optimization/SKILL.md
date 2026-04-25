@@ -66,3 +66,9 @@ actual landed path is the DeepSeek-based alias plus MTP follow-up.
 ## References
 
 - `references/pr-history.md`: diff-reviewed GLM-5 / 5.1 cards.
+
+
+## Non-Negotiable Evidence Rule
+
+Use `skills/model-optimization/model-pr-diff-dossier/SKILL.md` as the production bar.
+Every PR cited for this family must be based on diff reading, not only PR titles.

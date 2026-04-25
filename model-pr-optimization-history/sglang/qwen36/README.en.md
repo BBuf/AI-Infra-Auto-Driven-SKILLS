@@ -162,3 +162,75 @@ sub.__dict__[attr_name] = dev_tensor.as_strided(size, stride, offset)
 ## Next Work
 
 Build smoke tests for text-only, image, video, reasoning, tool calls, and MTP. Reuse Qwen3-Next/Qwen3.5 validation for CPU offload and hybrid cache issues.
+
+<!-- MODEL_PR_DIFF_AUDIT:START en -->
+
+## PR Diff Audit Cards (2026-04-25 rebuild)
+
+This section re-audits `Qwen3.6` against `sgl-project/sglang` Pull Request metadata and file-level patches. Acceptance rule: every PR needs status, code surface, file-level diff digest, support/optimization interpretation, and verification risk notes; if no public PR is found, keep an explicit no-match conclusion instead of inventing history.
+
+### Timeline
+
+| Created | PR | State | Title | Code surface | Main diff files |
+| --- | ---: | --- | --- | --- | --- |
+| 2026-04-17 | [#23034](https://github.com/sgl-project/sglang/pull/23034) | merged | docs: fix links, add Qwen3.6, update Qwen3.5/GLM-5 docs | model wrapper, MoE/router, kernel, multimodal/processor, scheduler/runtime, docs/config | `docs_new/docs/advanced_features/dp_dpa_smg_guide.mdx`, `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/docs/advanced_features/piecewise_cuda_graph.mdx` |
+| 2026-04-22 | [#23467](https://github.com/sgl-project/sglang/pull/23467) | merged | fix: dot-boundary match in is_layer_skipped for FP8 modules_to_not_convert | quantization | `python/sglang/srt/layers/quantization/utils.py` |
+| 2026-04-22 | [#23474](https://github.com/sgl-project/sglang/pull/23474) | open | [Bugfix] Try to fix --cpu-offload-gb on hybrid linear-attn models | tests/benchmarks | `test/registered/unit/utils/test_offloader_tied_params.py`, `python/sglang/srt/utils/offloader.py` |
+| 2026-04-22 | [#23486](https://github.com/sgl-project/sglang/pull/23486) | merged | docs(cookbook): add Qwen3.6-27B dense variant | docs/config | `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx` |
+
+### File-level PR diff reading notes
+
+### PR #23034 - docs: fix links, add Qwen3.6, update Qwen3.5/GLM-5 docs
+
+- Link: https://github.com/sgl-project/sglang/pull/23034
+- Status/date: `merged`, created 2026-04-17, merged 2026-04-17; author `zijiexia`.
+- Diff scope read: `73` files, `+2214/-215`; areas: model wrapper, MoE/router, kernel, multimodal/processor, scheduler/runtime, docs/config; keywords: doc, spec, attention, config, cuda, cache, moe, quant, eagle, expert.
+- Code diff details:
+  - `docs_new/docs/advanced_features/dp_dpa_smg_guide.mdx` added +509/-0 (509 lines); hunks: +---
+  - `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx` added +471/-0 (471 lines); hunks: +---
+  - `docs_new/docs/advanced_features/piecewise_cuda_graph.mdx` added +299/-0 (299 lines); hunks: +---; symbols: per_token_group_quant_8bit, add
+  - `docs_new/docs/advanced_features/server_arguments.mdx` modified +241/-45 (286 lines); hunks: Please consult the documentation below and [server_args.py](https://github.com/s; Please consult the documentation below and [server_args.py](https://github.com
+  - `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx` added +219/-0 (219 lines); hunks: +export const Qwen36Deployment = () => {
+- Optimization/support interpretation: The concrete diff surface is `docs_new/docs/advanced_features/dp_dpa_smg_guide.mdx`, `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/docs/advanced_features/piecewise_cuda_graph.mdx`; keywords observed in patches: doc, spec, attention, config, cuda, cache. Impact reading: model wrapper, forward, or weight-loading code changed; verify architecture mapping, hidden-state shape, and weight-name mapping; MoE/router/top-k/expert logic changed; verify shared/routed experts plus EP/TP/DP and empty-token branches; CUDA/Triton/C++ kernels or bindings changed; verify shape guards, dtype, device backend, and benchmark coverage; multimodal processor or media-token code changed; verify image/video/audio metadata, position ids, and batching; scheduler/runtime/cache code changed; verify continuous batching, spec/PD/DP, cache lifetime, and exceptional branches; docs or config changed; verify serve flags, defaults, and cookbook commands against runtime code.
+- Risk and verification: Re-run the model path that exercises `docs_new/docs/advanced_features/dp_dpa_smg_guide.mdx`, `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/docs/advanced_features/piecewise_cuda_graph.mdx`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+
+### PR #23467 - fix: dot-boundary match in is_layer_skipped for FP8 modules_to_not_convert
+
+- Link: https://github.com/sgl-project/sglang/pull/23467
+- Status/date: `merged`, created 2026-04-22, merged 2026-04-22; author `mickqian`.
+- Diff scope read: `1` files, `+31/-4`; areas: quantization; keywords: config, fp8, kv, moe, quant.
+- Code diff details:
+  - `python/sglang/srt/layers/quantization/utils.py` modified +31/-4 (35 lines); hunks: def __getattr__(self, name):; def is_layer_skipped(; symbols: __getattr__, _module_path_match, names, is_layer_skipped
+- Optimization/support interpretation: The concrete diff surface is `python/sglang/srt/layers/quantization/utils.py`; keywords observed in patches: config, fp8, kv, moe, quant. Impact reading: quantized loading or quantized kernels changed; verify scales, zero-points, checkpoint names, and fallback behavior.
+- Risk and verification: Re-run the model path that exercises `python/sglang/srt/layers/quantization/utils.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+
+### PR #23474 - [Bugfix] Try to fix --cpu-offload-gb on hybrid linear-attn models
+
+- Link: https://github.com/sgl-project/sglang/pull/23474
+- Status/date: `open`, created 2026-04-22; author `kawaruko`.
+- Diff scope read: `2` files, `+284/-8`; areas: tests/benchmarks; keywords: attention, cache, cuda, spec, test.
+- Code diff details:
+  - `test/registered/unit/utils/test_offloader_tied_params.py` added +199/-0 (199 lines); hunks: +"""Tests for OffloaderV1 with tied parameters and view aliases (see issue #23150).; symbols: _TiedChild, __init__, forward, _TiedParent
+  - `python/sglang/srt/utils/offloader.py` modified +85/-8 (93 lines); hunks: import logging; def maybe_offload_to_cpu(self, module: torch.nn.Module) -> torch.nn.Module:; symbols: maybe_offload_to_cpu, maybe_offload_to_cpu, forward
+- Optimization/support interpretation: The concrete diff surface is `test/registered/unit/utils/test_offloader_tied_params.py`, `python/sglang/srt/utils/offloader.py`; keywords observed in patches: attention, cache, cuda, spec, test. Impact reading: tests or benchmarks changed; use those cases as regression entry points instead of only checking model load.
+- Risk and verification: Re-run the model path that exercises `test/registered/unit/utils/test_offloader_tied_params.py`, `python/sglang/srt/utils/offloader.py`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+
+### PR #23486 - docs(cookbook): add Qwen3.6-27B dense variant
+
+- Link: https://github.com/sgl-project/sglang/pull/23486
+- Status/date: `merged`, created 2026-04-22, merged 2026-04-22; author `JustinTong0323`.
+- Diff scope read: `2` files, `+55/-17`; areas: docs/config; keywords: config, doc, fp8, moe, quant, spec, attention, expert, vision.
+- Code diff details:
+  - `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx` modified +30/-10 (40 lines); hunks: ---; Qwen3.6 features a Gated Delta Networks combined with sparse Mixture-of-Experts
+  - `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx` modified +25/-7 (32 lines); hunks: export const Qwen36Deployment = () => {; export const Qwen36Deployment = () => {
+- Optimization/support interpretation: The concrete diff surface is `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`; keywords observed in patches: config, doc, fp8, moe, quant, spec. Impact reading: docs or config changed; verify serve flags, defaults, and cookbook commands against runtime code.
+- Risk and verification: Re-run the model path that exercises `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`; then add the area-specific checks above, especially any changed tests/benchmarks and serving flags.
+
+
+### Gap and optimization follow-up
+
+- Covered PRs: 4; open PRs: 1.
+- Open PRs to keep tracking: [#23474](https://github.com/sgl-project/sglang/pull/23474)
+- Any future PR must add both the timeline row and the file-level diff card; title-only summaries are not acceptable.
+
+<!-- MODEL_PR_DIFF_AUDIT:END en -->

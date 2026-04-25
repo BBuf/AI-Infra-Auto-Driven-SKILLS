@@ -747,3 +747,420 @@ def __init__(
 - GLM-4.7-Flash BF16 / quantized / compressed-tensors-AWQ。
 - AMD MI35x/MI355X FP8 path，检查 AITER fused RMSNorm quant。
 - NPU GLM-4.7/Flash，检查 fused QKNorm/RoPE、dual stream、parser flags。
+
+<!-- MODEL_PR_DIFF_AUDIT:START zh -->
+
+## 逐 PR diff 审计卡（2026-04-25 重做）
+
+本节按 `sgl-project/sglang` 的 Pull Request API 和文件级 patch 重新审计 `GLM-4.6 / GLM-4.7`。验收口径：每个 PR 都要有状态、代码面、文件级 diff 摘要、支持/优化点判断和风险验证点；没有公开相关 PR 时必须写清检索结论，不能编造。
+
+### 时间线总览
+
+| 创建日期 | PR | 状态 | 标题 | 代码面 | 主要 diff 文件 |
+| --- | ---: | --- | --- | --- | --- |
+| 2025-10-22 | [#11951](https://github.com/sgl-project/sglang/pull/11951) | open | WIP: Fix glm-4.6 tool call streaming parse | MoE/router, tests/benchmarks | `sgl-router/src/tool_parser/parsers/glm4_moe_parser.rs`, `python/sglang/srt/function_call/glm4_moe_detector.py`, `sgl-router/tests/tool_parser_glm4_moe.rs` |
+| 2025-10-31 | [#12456](https://github.com/sgl-project/sglang/pull/12456) | merged | [fix] Handle escaped characters in GLM tool call parser to prevent double serialization | MoE/router, tests/benchmarks | `test/srt/test_function_call_parser.py`, `python/sglang/srt/function_call/glm4_moe_detector.py` |
+| 2025-11-23 | [#13786](https://github.com/sgl-project/sglang/pull/13786) | merged | Overlap glm moe gemms in two cuda streams | model wrapper, MoE/router | `python/sglang/srt/models/glm4_moe.py` |
+| 2025-11-25 | [#13873](https://github.com/sgl-project/sglang/pull/13873) | merged | Feat: GLM-4.6 supports shared experts fusion | model wrapper, MoE/router, quantization, kernel, scheduler/runtime, tests/benchmarks, docs/config | `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=161,N=192,device_name=NVIDIA_H200,dtype=fp8_w8a8,per_channel_quant=True.json`, `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/layers/moe/fused_moe_triton/fused_moe_triton_config.py` |
+| 2025-11-26 | [#13989](https://github.com/sgl-project/sglang/pull/13989) | merged | Fix GLM-4.6 tool calls don't support streaming output for arguments i… | MoE/router, tests/benchmarks | `python/sglang/srt/function_call/glm4_moe_detector.py`, `test/registered/function_call/test_function_call_parser.py` |
+| 2025-12-07 | [#14585](https://github.com/sgl-project/sglang/pull/14585) | merged | [Glm46v] Bug fix for accuracy drop and unable to launch server | model wrapper, MoE/router, multimodal/processor, docs/config | `docs/basic_usage/glmv.md`, `python/sglang/srt/models/glm4v_moe.py`, `docs/basic_usage/glm45.md` |
+| 2025-12-08 | [#14668](https://github.com/sgl-project/sglang/pull/14668) | merged | [NVIDIA] Add flashinfer all-to-all MOE dispatcher | model wrapper, attention/backend, MoE/router, quantization, kernel, tests/benchmarks, docs/config | `python/sglang/test/test_flashinfer_dispatcher.py`, `python/sglang/srt/layers/moe/token_dispatcher/flashinfer.py`, `python/sglang/srt/layers/moe/token_dispatcher/flashinfer_utils.py` |
+| 2025-12-17 | [#15333](https://github.com/sgl-project/sglang/pull/15333) | merged | [GLM-4.7] GLM-4.7 Tool Parser and Doc Update | model wrapper, MoE/router, tests/benchmarks, docs/config | `test/registered/function_call/test_function_call_parser.py`, `python/sglang/srt/function_call/glm47_moe_detector.py`, `python/sglang/srt/function_call/glm4_moe_detector.py` |
+| 2025-12-20 | [#15520](https://github.com/sgl-project/sglang/pull/15520) | merged | [model-gateway]: Tool parser for glm47 | MoE/router, tests/benchmarks | `sgl-model-gateway/tests/tool_parser_glm47_moe.rs`, `sgl-model-gateway/src/tool_parser/parsers/glm4_moe.rs`, `sgl-model-gateway/tests/tool_parser_glm4_moe.rs` |
+| 2025-12-24 | [#15753](https://github.com/sgl-project/sglang/pull/15753) | merged | Fix GLM-4.7 MoE Detector complex JSON Schema type parsing | MoE/router, tests/benchmarks | `test/registered/function_call/test_glm47_moe_detector.py`, `python/sglang/srt/function_call/utils.py`, `python/sglang/srt/function_call/glm47_moe_detector.py` |
+| 2025-12-24 | [#15754](https://github.com/sgl-project/sglang/pull/15754) | merged | Fix: Handle empty func_name and None values in GLM MoE detectors | MoE/router, tests/benchmarks | `test/registered/function_call/test_glm47_moe_detector.py`, `python/sglang/srt/function_call/glm47_moe_detector.py`, `python/sglang/srt/function_call/glm4_moe_detector.py` |
+| 2026-01-15 | [#17166](https://github.com/sgl-project/sglang/pull/17166) | merged | [Fix] GLM 4.7 + NVFP4 + MTP | model wrapper, MoE/router, docs/config | `python/sglang/srt/model_loader/weight_utils.py`, `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/server_args.py` |
+| 2026-01-17 | [#17247](https://github.com/sgl-project/sglang/pull/17247) | merged | [New Model] GLM4.7-Flash | model wrapper, attention/backend, MoE/router, docs/config | `python/sglang/srt/models/glm4_moe_lite.py`, `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py` |
+| 2026-01-28 | [#17869](https://github.com/sgl-project/sglang/pull/17869) | open | [NPU]Support model GLM-4.7-Flash for npu, accuracy 81% | model wrapper, attention/backend, tests/benchmarks | `test/registered/ascend/llm_models/test_ascend_glm4_7_flash.py`, `python/sglang/srt/hardware_backend/npu/attention/ascend_backend.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` |
+| 2026-02-17 | [#18930](https://github.com/sgl-project/sglang/pull/18930) | open | [AMD] Unit tests for mtp in GLM-4.7 | attention/backend, quantization, tests/benchmarks | `test/registered/amd/test_glm4v_fp8_mtp.py`, `python/sglang/srt/layers/attention/aiter_backend.py` |
+| 2026-02-20 | [#19040](https://github.com/sgl-project/sglang/pull/19040) | open | feat: add Glm4MoeLiteConfig and fix enable_a2a_moe for GLM-4.7-Flash | model wrapper, MoE/router, docs/config | `python/sglang/srt/configs/glm4_moe_lite.py`, `python/sglang/srt/configs/__init__.py`, `python/sglang/srt/utils/hf_transformers_utils.py` |
+| 2026-02-21 | [#19106](https://github.com/sgl-project/sglang/pull/19106) | open | Fix GLM4 MoE Lite CompressedTensors serving and transformers version checks | model wrapper, attention/backend, MoE/router, tests/benchmarks, docs/config | `test/registered/core/test_deepseek_weight_loader.py`, `test/registered/core/test_model_config_transformers_version.py`, `python/sglang/srt/models/deepseek_v2.py` |
+| 2026-02-24 | [#19246](https://github.com/sgl-project/sglang/pull/19246) | merged | [NPU] optimize glm4.7 | model wrapper, MoE/router, quantization | `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/hardware_backend/npu/utils.py`, `python/sglang/srt/models/glm4_moe_nextn.py` |
+| 2026-03-13 | [#20543](https://github.com/sgl-project/sglang/pull/20543) | merged | fix: do not strip whitespace from GLM tool call values | MoE/router, tests/benchmarks | `test/registered/unit/function_call/test_function_call_parser.py`, `python/sglang/srt/function_call/glm47_moe_detector.py`, `python/sglang/srt/function_call/glm4_moe_detector.py` |
+| 2026-03-22 | [#21135](https://github.com/sgl-project/sglang/pull/21135) | merged | fix: use get_rope_config() to support models without rope_parameters | model wrapper, MoE/router | `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/models/glm4.py`, `python/sglang/srt/models/grok.py` |
+| 2026-03-25 | [#21403](https://github.com/sgl-project/sglang/pull/21403) | merged | [AMD] Fuse RMSNorm + FP8 per-token quant for GLM-4.7-FP8 | model wrapper, MoE/router, quantization | `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/layers/quantization/fp8_utils.py` |
+| 2026-03-27 | [#21534](https://github.com/sgl-project/sglang/pull/21534) | merged | [AMD] Add GLM-4.7-FP8 accuracy CI test for MI35x | quantization, tests/benchmarks | `test/registered/amd/accuracy/mi35x/test_glm47_fp8_eval_mi35x.py`, `.github/workflows/nightly-test-amd-rocm720.yml` |
+| 2026-03-30 | [#21660](https://github.com/sgl-project/sglang/pull/21660) | merged | [GLM-V and GLM-4.7] Cast to FP32 before gate projection for GLM model. | model wrapper, MoE/router | `python/sglang/srt/models/glm4_moe.py` |
+| 2026-04-01 | [#21851](https://github.com/sgl-project/sglang/pull/21851) | merged | GLM-4.7 and GLM-4.7-Flash Loading and import format | model wrapper, MoE/router | `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/models/glm4_moe_lite.py` |
+| 2026-04-08 | [#22315](https://github.com/sgl-project/sglang/pull/22315) | open | [Bugfix] Fix GLM-4.7-FP8 EAGLE accept_len=1.00 due to draft model loading with incorrect quant_config | model wrapper, MoE/router | `python/sglang/srt/models/glm4_moe_nextn.py` |
+| 2026-04-10 | [#22509](https://github.com/sgl-project/sglang/pull/22509) | merged | [NPU]Fix GLM-4.7-Flash failed on NPU | model wrapper, MoE/router | `python/sglang/srt/models/glm4_moe_lite.py`, `python/sglang/srt/models/deepseek_v2.py` |
+| 2026-04-13 | [#22720](https://github.com/sgl-project/sglang/pull/22720) | merged | fix[glm4.7 flash]: properly detect `gfx95_quant_format` | model wrapper, MoE/router | `python/sglang/srt/models/glm4_moe_lite.py` |
+| 2026-04-14 | [#22801](https://github.com/sgl-project/sglang/pull/22801) | open | [NPU]add dual-stream and deepep support for GLM-4.7-Flash | model wrapper, MoE/router | `python/sglang/srt/models/glm4_moe_lite.py`, `python/sglang/srt/layers/moe/token_dispatcher/deepep.py` |
+| 2026-04-14 | [#22823](https://github.com/sgl-project/sglang/pull/22823) | merged | [Bugfix] Preserve auto-detected quant_config for GLM NextN draft model | model wrapper, MoE/router | `python/sglang/srt/models/glm4_moe_nextn.py` |
+| 2026-04-17 | [#23067](https://github.com/sgl-project/sglang/pull/23067) | open | Fix: forward continue_final_message kwargs in Glm45Detector | tests/benchmarks | `test/registered/unit/parser/test_reasoning_parser.py`, `python/sglang/srt/parser/reasoning_parser.py` |
+
+### 逐 PR 代码 diff 阅读记录
+
+### PR #11951 - WIP: Fix glm-4.6 tool call streaming parse
+
+- 链接：https://github.com/sgl-project/sglang/pull/11951
+- 状态/时间：`open`，created 2025-10-22；作者 `tonylt`。
+- 代码 diff 已读范围：`3` 个文件，`+450/-105`；代码面：MoE/router, tests/benchmarks；关键词：moe, router, config, test。
+- 代码 diff 细节：
+  - `sgl-router/src/tool_parser/parsers/glm4_moe_parser.rs` modified +198/-86 (284 lines); hunk: pub struct Glm4MoeParser {; impl Glm4MoeParser {; 符号: Glm4MoeParser
+  - `python/sglang/srt/function_call/glm4_moe_detector.py` modified +180/-19 (199 lines); hunk: from sglang.srt.entrypoints.openai.protocol import Tool; def parse_streaming_increment(; 符号: parse_streaming_increment, parse_streaming_increment, _parse_partial_tool_call, _find_common_prefix
+  - `sgl-router/tests/tool_parser_glm4_moe.rs` modified +72/-0 (72 lines); hunk: async fn test_glm4_nested_json_in_arg_values() {
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `sgl-router/src/tool_parser/parsers/glm4_moe_parser.rs`, `python/sglang/srt/function_call/glm4_moe_detector.py`, `sgl-router/tests/tool_parser_glm4_moe.rs`；patch 关键词为 moe, router, config, test。影响判断：MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `sgl-router/src/tool_parser/parsers/glm4_moe_parser.rs`, `python/sglang/srt/function_call/glm4_moe_detector.py`, `sgl-router/tests/tool_parser_glm4_moe.rs` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #12456 - [fix] Handle escaped characters in GLM tool call parser to prevent double serialization
+
+- 链接：https://github.com/sgl-project/sglang/pull/12456
+- 状态/时间：`merged`，created 2025-10-31, merged 2025-11-05；作者 `soaringk`。
+- 代码 diff 已读范围：`2` 个文件，`+127/-13`；代码面：MoE/router, tests/benchmarks；关键词：moe, test。
+- 代码 diff 细节：
+  - `test/srt/test_function_call_parser.py` modified +103/-0 (103 lines); hunk: def test_partial_tool_call(self):; 符号: test_partial_tool_call, test_array_argument_with_escaped_json, check_params, check_single_todos
+  - `python/sglang/srt/function_call/glm4_moe_detector.py` modified +24/-13 (37 lines); hunk: def get_argument_type(func_name: str, arg_key: str, defined_tools: list):; def __init__(self):; 符号: get_argument_type, parse_arguments, Glm4MoeDetector, __init__
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `test/srt/test_function_call_parser.py`, `python/sglang/srt/function_call/glm4_moe_detector.py`；patch 关键词为 moe, test。影响判断：MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `test/srt/test_function_call_parser.py`, `python/sglang/srt/function_call/glm4_moe_detector.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #13786 - Overlap glm moe gemms in two cuda streams
+
+- 链接：https://github.com/sgl-project/sglang/pull/13786
+- 状态/时间：`merged`，created 2025-11-23, merged 2025-11-25；作者 `Qiaolin-Yu`。
+- 代码 diff 已读范围：`1` 个文件，`+47/-3`；代码面：model wrapper, MoE/router；关键词：cuda, deepep, expert, flash, fp4, moe, router, topk。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/glm4_moe.py` modified +47/-3 (50 lines); hunk: def forward(; 符号: forward, forward_normal_dual_stream, forward_normal
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/glm4_moe.py`；patch 关键词为 cuda, deepep, expert, flash, fp4, moe。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/glm4_moe.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #13873 - Feat: GLM-4.6 supports shared experts fusion
+
+- 链接：https://github.com/sgl-project/sglang/pull/13873
+- 状态/时间：`merged`，created 2025-11-25, merged 2025-12-01；作者 `UranusSeven`。
+- 代码 diff 已读范围：`7` 个文件，`+252/-24`；代码面：model wrapper, MoE/router, quantization, kernel, scheduler/runtime, tests/benchmarks, docs/config；关键词：config, moe, quant, triton, expert, topk, benchmark, cuda, deepep, fp8。
+- 代码 diff 细节：
+  - `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=161,N=192,device_name=NVIDIA_H200,dtype=fp8_w8a8,per_channel_quant=True.json` added +146/-0 (146 lines); hunk: +{
+  - `python/sglang/srt/models/glm4_moe.py` modified +74/-19 (93 lines); hunk: is_cuda,; def __init__(; 符号: __init__, __init__, __init__, forward
+  - `python/sglang/srt/layers/moe/fused_moe_triton/fused_moe_triton_config.py` modified +19/-2 (21 lines); hunk: def try_get_optimal_moe_config(; def try_get_optimal_moe_config(; 符号: try_get_optimal_moe_config, try_get_optimal_moe_config, try_get_optimal_moe_config
+  - `benchmark/kernels/fused_moe_triton/common_utils.py` modified +7/-3 (10 lines); hunk: def get_model_config(; def get_model_config(; 符号: get_model_config, get_model_config
+  - `python/sglang/srt/models/glm4_moe_nextn.py` modified +4/-0 (4 lines); hunk: def __init__(; 符号: __init__, forward
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=161,N=192,device_name=NVIDIA_H200,dtype=fp8_w8a8,per_channel_quant=True.json`, `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/layers/moe/fused_moe_triton/fused_moe_triton_config.py`；patch 关键词为 config, moe, quant, triton, expert, topk。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；量化加载或量化 kernel 发生变化，要核对 scale、zero-point、checkpoint 命名和 fallback 行为；CUDA/Triton/C++ kernel 或 binding 发生变化，要核对 shape guard、dtype、设备后端和 benchmark；scheduler/runtime/cache 路径发生变化，要核对连续批处理、spec/PD/DP、cache 生命周期和异常分支；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载；文档或配置面发生变化，要核对 serve flags、默认值和 cookbook 命令是否与代码一致。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=161,N=192,device_name=NVIDIA_H200,dtype=fp8_w8a8,per_channel_quant=True.json`, `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/layers/moe/fused_moe_triton/fused_moe_triton_config.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #13989 - Fix GLM-4.6 tool calls don't support streaming output for arguments i…
+
+- 链接：https://github.com/sgl-project/sglang/pull/13989
+- 状态/时间：`merged`，created 2025-11-26, merged 2025-12-13；作者 `cynial`。
+- 代码 diff 已读范围：`2` 个文件，`+527/-81`；代码面：MoE/router, tests/benchmarks；关键词：cache, moe, test。
+- 代码 diff 细节：
+  - `python/sglang/srt/function_call/glm4_moe_detector.py` modified +498/-66 (564 lines); hunk: import json; def get_argument_type(func_name: str, arg_key: str, defined_tools: list):; 符号: get_argument_type, StreamState, get_argument_type, get_argument_type
+  - `test/registered/function_call/test_function_call_parser.py` modified +29/-15 (44 lines); hunk: def test_streaming_tool_call(self):; def test_streaming_multiple_tool_calls(self):; 符号: test_streaming_tool_call, test_streaming_multiple_tool_calls, test_invalid_tool_call, test_partial_tool_call
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/function_call/glm4_moe_detector.py`, `test/registered/function_call/test_function_call_parser.py`；patch 关键词为 cache, moe, test。影响判断：MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/function_call/glm4_moe_detector.py`, `test/registered/function_call/test_function_call_parser.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #14585 - [Glm46v] Bug fix for accuracy drop and unable to launch server
+
+- 链接：https://github.com/sgl-project/sglang/pull/14585
+- 状态/时间：`merged`，created 2025-12-07, merged 2025-12-08；作者 `byjiang1996`。
+- 代码 diff 已读范围：`12` 个文件，`+308/-29`；代码面：model wrapper, MoE/router, multimodal/processor, docs/config；关键词：moe, config, attention, processor, doc, quant, vision, cache, cuda, eagle。
+- 代码 diff 细节：
+  - `docs/basic_usage/glmv.md` added +136/-0 (136 lines); hunk: +# GLM-4.6V / GLM-4.5V Usage
+  - `python/sglang/srt/models/glm4v_moe.py` modified +68/-15 (83 lines); hunk: import torch.nn as nn; def __init__(; 符号: __init__, __init__, determine_num_fused_shared_experts, load_weights
+  - `docs/basic_usage/glm45.md` added +70/-0 (70 lines); hunk: +## Launch GLM-4.5 / GLM-4.6 with SGLang
+  - `python/sglang/srt/models/glm4v.py` modified +19/-3 (22 lines); hunk: def __init__(; def __init__(; 符号: __init__, __init__, __init__, get_video_feature
+  - `python/sglang/srt/sampling/custom_logit_processor.py` modified +8/-0 (8 lines); hunk: def __call__(self, logits, custom_param_list: list[dict[str, Any]]):; 符号: __call__, Glm4MoeThinkingBudgetLogitProcessor, Qwen3ThinkingBudgetLogitProcessor
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `docs/basic_usage/glmv.md`, `python/sglang/srt/models/glm4v_moe.py`, `docs/basic_usage/glm45.md`；patch 关键词为 moe, config, attention, processor, doc, quant。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；多模态 processor 或 media token 路径发生变化，要核对 image/video/audio metadata、position ids 和 batch 拼接；文档或配置面发生变化，要核对 serve flags、默认值和 cookbook 命令是否与代码一致。
+- 风险与验证：回归时优先跑能覆盖 `docs/basic_usage/glmv.md`, `python/sglang/srt/models/glm4v_moe.py`, `docs/basic_usage/glm45.md` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #14668 - [NVIDIA] Add flashinfer all-to-all MOE dispatcher
+
+- 链接：https://github.com/sgl-project/sglang/pull/14668
+- 状态/时间：`merged`，created 2025-12-08, merged 2026-01-24；作者 `trevor-m`。
+- 代码 diff 已读范围：`14` 个文件，`+723/-16`；代码面：model wrapper, attention/backend, MoE/router, quantization, kernel, tests/benchmarks, docs/config；关键词：flash, moe, expert, config, deepep, fp4, router, topk, quant, attention。
+- 代码 diff 细节：
+  - `python/sglang/test/test_flashinfer_dispatcher.py` added +322/-0 (322 lines); hunk: +import unittest; 符号: TestFlashinferDispatcher, setUpClass, tearDownClass, create_dispatcher
+  - `python/sglang/srt/layers/moe/token_dispatcher/flashinfer.py` added +263/-0 (263 lines); hunk: +from __future__ import annotations; 符号: FlashinferDispatchOutput, format, FlashinferCombineInput, format
+  - `python/sglang/srt/layers/moe/token_dispatcher/flashinfer_utils.py` added +47/-0 (47 lines); hunk: +import torch.distributed as dist; 符号: CommBackend:, when, TorchDistributedCommBackend, __init__
+  - `python/sglang/srt/layers/quantization/modelopt_quant.py` modified +23/-14 (37 lines); hunk: MoeRunner,; def _slice_scale(w):; 符号: _slice_scale, apply, apply, apply
+  - `python/sglang/srt/server_args.py` modified +23/-2 (25 lines); hunk: "cutlass",; class ServerArgs:; 符号: ServerArgs:, _handle_a2a_moe, _handle_eplb_and_dispatch
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/test/test_flashinfer_dispatcher.py`, `python/sglang/srt/layers/moe/token_dispatcher/flashinfer.py`, `python/sglang/srt/layers/moe/token_dispatcher/flashinfer_utils.py`；patch 关键词为 flash, moe, expert, config, deepep, fp4。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；attention、KV cache 或 backend 选择发生变化，要重点核对 prefill/decode、page size、RoPE/MLA/MQA 分支；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；量化加载或量化 kernel 发生变化，要核对 scale、zero-point、checkpoint 命名和 fallback 行为；CUDA/Triton/C++ kernel 或 binding 发生变化，要核对 shape guard、dtype、设备后端和 benchmark；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载；文档或配置面发生变化，要核对 serve flags、默认值和 cookbook 命令是否与代码一致。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/test/test_flashinfer_dispatcher.py`, `python/sglang/srt/layers/moe/token_dispatcher/flashinfer.py`, `python/sglang/srt/layers/moe/token_dispatcher/flashinfer_utils.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #15333 - [GLM-4.7] GLM-4.7 Tool Parser and Doc Update
+
+- 链接：https://github.com/sgl-project/sglang/pull/15333
+- 状态/时间：`merged`，created 2025-12-17, merged 2025-12-20；作者 `zRzRzRzRzRzRzR`。
+- 代码 diff 已读范围：`7` 个文件，`+809/-394`；代码面：model wrapper, MoE/router, tests/benchmarks, docs/config；关键词：moe, kv, cache, doc, spec, config, fp8, processor, test。
+- 代码 diff 细节：
+  - `test/registered/function_call/test_function_call_parser.py` modified +212/-388 (600 lines); hunk: from sglang.srt.function_call.deepseekv3_detector import DeepSeekV3Detector; def setUp(self):; 符号: setUp, test_detect_and_parse_xml_format, test_streaming_xml_format, test_streaming_json_format
+  - `python/sglang/srt/function_call/glm47_moe_detector.py` added +584/-0 (584 lines); hunk: +import ast; 符号: StreamState, get_argument_type, _convert_to_number, parse_arguments
+  - `python/sglang/srt/function_call/glm4_moe_detector.py` modified +5/-2 (7 lines); hunk: def get_argument_type(; 符号: get_argument_type, _convert_to_number
+  - `docs/basic_usage/glm45.md` modified +4/-2 (6 lines); hunk: -## Launch GLM-4.5 / GLM-4.6 with SGLang; python3 -m sglang.launch_server \
+  - `docs/advanced_features/server_arguments.md` modified +1/-1 (2 lines); hunk: Please consult the documentation below and [server_args.py](https://github.com/s
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `test/registered/function_call/test_function_call_parser.py`, `python/sglang/srt/function_call/glm47_moe_detector.py`, `python/sglang/srt/function_call/glm4_moe_detector.py`；patch 关键词为 moe, kv, cache, doc, spec, config。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载；文档或配置面发生变化，要核对 serve flags、默认值和 cookbook 命令是否与代码一致。
+- 风险与验证：回归时优先跑能覆盖 `test/registered/function_call/test_function_call_parser.py`, `python/sglang/srt/function_call/glm47_moe_detector.py`, `python/sglang/srt/function_call/glm4_moe_detector.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #15520 - [model-gateway]: Tool parser for glm47
+
+- 链接：https://github.com/sgl-project/sglang/pull/15520
+- 状态/时间：`merged`，created 2025-12-20, merged 2025-12-21；作者 `UbeCc`。
+- 代码 diff 已读范围：`8` 个文件，`+179/-26`；代码面：MoE/router, tests/benchmarks；关键词：moe, spec, test, config, benchmark, cache, doc, router。
+- 代码 diff 细节：
+  - `sgl-model-gateway/tests/tool_parser_glm47_moe.rs` added +132/-0 (132 lines); hunk: +//! GLM-4.7 MoE Parser Integration Tests
+  - `sgl-model-gateway/src/tool_parser/parsers/glm4_moe.rs` modified +22/-8 (30 lines); hunk: use crate::{; pub struct Glm4MoeParser {; 符号: Glm4MoeParser
+  - `sgl-model-gateway/tests/tool_parser_glm4_moe.rs` modified +7/-7 (14 lines); hunk: use common::create_test_tools;; The weather will be..."#;
+  - `sgl-model-gateway/src/tool_parser/factory.rs` modified +5/-3 (8 lines); hunk: impl ParserFactory {; impl ParserFactory {
+  - `sgl-model-gateway/benches/tool_parser_benchmark.rs` modified +5/-2 (7 lines); hunk: Let me examine the scan results and provide recommendations."#;; analyze_customer_behavior
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `sgl-model-gateway/tests/tool_parser_glm47_moe.rs`, `sgl-model-gateway/src/tool_parser/parsers/glm4_moe.rs`, `sgl-model-gateway/tests/tool_parser_glm4_moe.rs`；patch 关键词为 moe, spec, test, config, benchmark, cache。影响判断：MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `sgl-model-gateway/tests/tool_parser_glm47_moe.rs`, `sgl-model-gateway/src/tool_parser/parsers/glm4_moe.rs`, `sgl-model-gateway/tests/tool_parser_glm4_moe.rs` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #15753 - Fix GLM-4.7 MoE Detector complex JSON Schema type parsing
+
+- 链接：https://github.com/sgl-project/sglang/pull/15753
+- 状态/时间：`merged`，created 2025-12-24, merged 2026-01-09；作者 `Leoyzen`。
+- 代码 diff 已读范围：`4` 个文件，`+869/-20`；代码面：MoE/router, tests/benchmarks；关键词：moe, spec, config, test。
+- 代码 diff 细节：
+  - `test/registered/function_call/test_glm47_moe_detector.py` modified +678/-3 (681 lines); hunk: from sglang.srt.entrypoints.openai.protocol import Function, Tool; def test_streamed_raw_length_multiple_empty_returns(self):; 符号: test_streamed_raw_length_multiple_empty_returns, TestGlm4ComplexJsonSchema, setUp, test_get_argument_type_simple_type
+  - `python/sglang/srt/function_call/utils.py` modified +104/-1 (105 lines); hunk: from json import JSONDecodeError, JSONDecoder; def _get_tool_schema(tool: Tool) -> dict:; 符号: _get_tool_schema, infer_type_from_json_schema, get_json_schema_constraint
+  - `python/sglang/srt/function_call/glm47_moe_detector.py` modified +43/-10 (53 lines); hunk: ToolCallItem,; def get_argument_type(; 符号: get_argument_type, get_argument_type, _get_value_type, _format_value_complete
+  - `python/sglang/srt/function_call/glm4_moe_detector.py` modified +44/-6 (50 lines); hunk: ToolCallItem,; def get_argument_type(; 符号: get_argument_type, get_argument_type, _convert_to_number, _get_value_type
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `test/registered/function_call/test_glm47_moe_detector.py`, `python/sglang/srt/function_call/utils.py`, `python/sglang/srt/function_call/glm47_moe_detector.py`；patch 关键词为 moe, spec, config, test。影响判断：MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `test/registered/function_call/test_glm47_moe_detector.py`, `python/sglang/srt/function_call/utils.py`, `python/sglang/srt/function_call/glm47_moe_detector.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #15754 - Fix: Handle empty func_name and None values in GLM MoE detectors
+
+- 链接：https://github.com/sgl-project/sglang/pull/15754
+- 状态/时间：`merged`，created 2025-12-24, merged 2025-12-30；作者 `Leoyzen`。
+- 代码 diff 已读范围：`4` 个文件，`+1513/-140`；代码面：MoE/router, tests/benchmarks；关键词：moe, spec, test, cache, config。
+- 代码 diff 细节：
+  - `test/registered/function_call/test_glm47_moe_detector.py` added +1176/-0 (1176 lines); hunk: +import json; 符号: TestGlm47MoeDetector, setUp, test_single_tool_call, test_multiple_tool_calls
+  - `python/sglang/srt/function_call/glm47_moe_detector.py` modified +303/-132 (435 lines); hunk: def get_argument_type(; def __init__(self):; 符号: get_argument_type, _convert_to_number, __init__, _reset_streaming_state
+  - `python/sglang/srt/function_call/glm4_moe_detector.py` modified +19/-8 (27 lines); hunk: def detect_and_parse(self, text: str, tools: List[Tool]) -> StreamingParseResult; def parse_streaming_increment(; 符号: detect_and_parse, parse_streaming_increment, parse_streaming_increment, parse_streaming_increment
+  - `test/registered/function_call/test_function_call_parser.py` modified +15/-0 (15 lines); hunk: def check_single_todos(tool_result, expected):; 符号: check_single_todos, test_empty_function_name_handling, TestGlm47MoeDetector, setUp
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `test/registered/function_call/test_glm47_moe_detector.py`, `python/sglang/srt/function_call/glm47_moe_detector.py`, `python/sglang/srt/function_call/glm4_moe_detector.py`；patch 关键词为 moe, spec, test, cache, config。影响判断：MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `test/registered/function_call/test_glm47_moe_detector.py`, `python/sglang/srt/function_call/glm47_moe_detector.py`, `python/sglang/srt/function_call/glm4_moe_detector.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #17166 - [Fix] GLM 4.7 + NVFP4 + MTP
+
+- 链接：https://github.com/sgl-project/sglang/pull/17166
+- 状态/时间：`merged`，created 2026-01-15, merged 2026-01-21；作者 `b8zhong`。
+- 代码 diff 已读范围：`6` 个文件，`+114/-9`；代码面：model wrapper, MoE/router, docs/config；关键词：config, quant, fp4, moe, cache, flash, spec, attention, expert, fp8。
+- 代码 diff 细节：
+  - `python/sglang/srt/model_loader/weight_utils.py` modified +38/-0 (38 lines); hunk: def filter_duplicate_safetensors_files(; 符号: filter_duplicate_safetensors_files, maybe_add_mtp_safetensors, filter_files_not_needed_for_inference
+  - `python/sglang/srt/configs/model_config.py` modified +17/-8 (25 lines); hunk: def _verify_quantization(self) -> None:; 符号: _verify_quantization
+  - `python/sglang/srt/server_args.py` modified +22/-0 (22 lines); hunk: from sglang.srt.utils.common import (; def _handle_model_specific_adjustments(self):; 符号: _handle_model_specific_adjustments
+  - `python/sglang/srt/utils/common.py` modified +18/-0 (18 lines); hunk: def assert_pkg_version(pkg: str, min_version: str, message: str):; 符号: assert_pkg_version, check_pkg_version_at_least, kill_process_tree
+  - `python/sglang/srt/model_loader/loader.py` modified +14/-0 (14 lines); hunk: get_quant_config,; class Source:; 符号: Source:, init_new, __init__, _get_weights_iterator
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/model_loader/weight_utils.py`, `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/server_args.py`；patch 关键词为 config, quant, fp4, moe, cache, flash。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；文档或配置面发生变化，要核对 serve flags、默认值和 cookbook 命令是否与代码一致。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/model_loader/weight_utils.py`, `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/server_args.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #17247 - [New Model] GLM4.7-Flash
+
+- 链接：https://github.com/sgl-project/sglang/pull/17247
+- 状态/时间：`merged`，created 2026-01-17, merged 2026-01-20；作者 `Qiaolin-Yu`。
+- 代码 diff 已读范围：`6` 个文件，`+842/-12`；代码面：model wrapper, attention/backend, MoE/router, docs/config；关键词：kv, moe, attention, config, cuda, flash, fp8, mla, quant, spec。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/glm4_moe_lite.py` added +808/-0 (808 lines); hunk: +# Copyright 2025-2026 SGLang Team; 符号: Glm4MoeLiteMLP, __init__, forward, Glm4MoeLiteGate
+  - `python/sglang/srt/configs/model_config.py` modified +19/-9 (28 lines); hunk: def _config_draft_model(self):; def _derive_model_shapes(self):; 符号: _config_draft_model, _derive_model_shapes, _derive_model_shapes
+  - `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py` modified +7/-2 (9 lines); hunk: _use_aiter_gfx95,; def _concat_and_cast_mha_k(; 符号: _concat_and_cast_mha_k
+  - `python/sglang/srt/models/glm4_moe.py` modified +3/-1 (4 lines); hunk: def __init__(; def __init__(; 符号: __init__, __init__
+  - `python/sglang/srt/server_args.py` modified +3/-0 (3 lines); hunk: def _handle_model_specific_adjustments(self):; def _handle_speculative_decoding(self):; 符号: _handle_model_specific_adjustments, _handle_speculative_decoding, auto_choose_speculative_params
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/glm4_moe_lite.py`, `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py`；patch 关键词为 kv, moe, attention, config, cuda, flash。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；attention、KV cache 或 backend 选择发生变化，要重点核对 prefill/decode、page size、RoPE/MLA/MQA 分支；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；文档或配置面发生变化，要核对 serve flags、默认值和 cookbook 命令是否与代码一致。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/glm4_moe_lite.py`, `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #17869 - [NPU]Support model GLM-4.7-Flash for npu, accuracy 81%
+
+- 链接：https://github.com/sgl-project/sglang/pull/17869
+- 状态/时间：`open`，created 2026-01-28；作者 `McZyWu`。
+- 代码 diff 已读范围：`4` 个文件，`+86/-5`；代码面：model wrapper, attention/backend, tests/benchmarks；关键词：attention, flash, cache, kv, lora, test, cuda, mla, quant, topk。
+- 代码 diff 细节：
+  - `test/registered/ascend/llm_models/test_ascend_glm4_7_flash.py` added +54/-0 (54 lines); hunk: +import os; 符号: TestGLM47Flash
+  - `python/sglang/srt/hardware_backend/npu/attention/ascend_backend.py` modified +30/-4 (34 lines); hunk: def forward_extend(; 符号: forward_extend
+  - `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` modified +1/-1 (2 lines); hunk: def forward_mha_prepare_npu(; 符号: forward_mha_prepare_npu
+  - `python/sglang/test/ascend/test_ascend_utils.py` modified +1/-0 (1 lines); hunk: DEEPSEEK_R1_0528_W4A8_PER_CHANNEL_WEIGHTS_PATH = os.path.join(
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `test/registered/ascend/llm_models/test_ascend_glm4_7_flash.py`, `python/sglang/srt/hardware_backend/npu/attention/ascend_backend.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py`；patch 关键词为 attention, flash, cache, kv, lora, test。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；attention、KV cache 或 backend 选择发生变化，要重点核对 prefill/decode、page size、RoPE/MLA/MQA 分支；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `test/registered/ascend/llm_models/test_ascend_glm4_7_flash.py`, `python/sglang/srt/hardware_backend/npu/attention/ascend_backend.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #18930 - [AMD] Unit tests for mtp in GLM-4.7
+
+- 链接：https://github.com/sgl-project/sglang/pull/18930
+- 状态/时间：`open`，created 2026-02-17；作者 `almaslof`。
+- 代码 diff 已读范围：`2` 个文件，`+120/-1`；代码面：attention/backend, quantization, tests/benchmarks；关键词：attention, cache, config, cuda, eagle, fp8, kv, mla, spec, test。
+- 代码 diff 细节：
+  - `test/registered/amd/test_glm4v_fp8_mtp.py` added +118/-0 (118 lines); hunk: +import unittest; 符号: TestGLM47FP8TPMTP, setUpClass, tearDownClass, test_a_gsm8k
+  - `python/sglang/srt/layers/attention/aiter_backend.py` modified +2/-1 (3 lines); hunk: def init_forward_metadata_capture_cuda_graph(; 符号: init_forward_metadata_capture_cuda_graph
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `test/registered/amd/test_glm4v_fp8_mtp.py`, `python/sglang/srt/layers/attention/aiter_backend.py`；patch 关键词为 attention, cache, config, cuda, eagle, fp8。影响判断：attention、KV cache 或 backend 选择发生变化，要重点核对 prefill/decode、page size、RoPE/MLA/MQA 分支；量化加载或量化 kernel 发生变化，要核对 scale、zero-point、checkpoint 命名和 fallback 行为；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `test/registered/amd/test_glm4v_fp8_mtp.py`, `python/sglang/srt/layers/attention/aiter_backend.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #19040 - feat: add Glm4MoeLiteConfig and fix enable_a2a_moe for GLM-4.7-Flash
+
+- 链接：https://github.com/sgl-project/sglang/pull/19040
+- 状态/时间：`open`，created 2026-02-20；作者 `lujangus`。
+- 代码 diff 已读范围：`4` 个文件，`+52/-0`；代码面：model wrapper, MoE/router, docs/config；关键词：config, moe, attention, flash, kv, lora, mla, spec。
+- 代码 diff 细节：
+  - `python/sglang/srt/configs/glm4_moe_lite.py` added +47/-0 (47 lines); hunk: +# Copyright 2025-2026 SGLang Team; 符号: Glm4MoeLiteConfig, with, __init__
+  - `python/sglang/srt/configs/__init__.py` modified +2/-0 (2 lines); hunk: from sglang.srt.configs.dots_vlm import DotsVLMConfig; "DotsVLMConfig",
+  - `python/sglang/srt/utils/hf_transformers_utils.py` modified +2/-0 (2 lines); hunk: DotsVLMConfig,; KimiLinearConfig,
+  - `python/sglang/srt/models/glm4_moe_lite.py` modified +1/-0 (1 lines); hunk: def __init__(; 符号: __init__
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/configs/glm4_moe_lite.py`, `python/sglang/srt/configs/__init__.py`, `python/sglang/srt/utils/hf_transformers_utils.py`；patch 关键词为 config, moe, attention, flash, kv, lora。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；文档或配置面发生变化，要核对 serve flags、默认值和 cookbook 命令是否与代码一致。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/configs/glm4_moe_lite.py`, `python/sglang/srt/configs/__init__.py`, `python/sglang/srt/utils/hf_transformers_utils.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #19106 - Fix GLM4 MoE Lite CompressedTensors serving and transformers version checks
+
+- 链接：https://github.com/sgl-project/sglang/pull/19106
+- 状态/时间：`open`，created 2026-02-21；作者 `lesj0610`。
+- 代码 diff 已读范围：`12` 个文件，`+505/-37`；代码面：model wrapper, attention/backend, MoE/router, tests/benchmarks, docs/config；关键词：kv, quant, config, moe, test, expert, mla, awq, cuda, attention。
+- 代码 diff 细节：
+  - `test/registered/core/test_deepseek_weight_loader.py` added +86/-0 (86 lines); hunk: +from types import SimpleNamespace; 符号: _pack_int4_row, test_dequantize_ct_wna16_weight, test_post_load_weights_dequantizes_ct_kv_b_proj, _DummyLoader
+  - `test/registered/core/test_model_config_transformers_version.py` added +84/-0 (84 lines); hunk: +import logging; 符号: _build_model_config_stub, _mock_transformers_version, test_verify_transformers_version_glm4_moe_lite_no_downgrade_warning, test_verify_transformers_version_glm4_moe_lite_requires_tf5
+  - `python/sglang/srt/models/deepseek_v2.py` modified +52/-27 (79 lines); hunk: def __init__(; def forward(; 符号: __init__, forward, DeepseekV2ForCausalLM, __init__
+  - `python/sglang/srt/models/glm4_moe_lite.py` modified +52/-8 (60 lines); hunk: def forward(; def __init__(; 符号: forward, __init__, Glm4MoeLiteForCausalLM, __init__
+  - `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` modified +54/-0 (54 lines); hunk: normalize_e4m3fn_to_e4m3fnuz,; class DeepseekV2WeightLoaderMixin:; 符号: DeepseekV2WeightLoaderMixin:, _dequantize_ct_wna16_weight, do_load_weights, post_load_weights
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `test/registered/core/test_deepseek_weight_loader.py`, `test/registered/core/test_model_config_transformers_version.py`, `python/sglang/srt/models/deepseek_v2.py`；patch 关键词为 kv, quant, config, moe, test, expert。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；attention、KV cache 或 backend 选择发生变化，要重点核对 prefill/decode、page size、RoPE/MLA/MQA 分支；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载；文档或配置面发生变化，要核对 serve flags、默认值和 cookbook 命令是否与代码一致。
+- 风险与验证：回归时优先跑能覆盖 `test/registered/core/test_deepseek_weight_loader.py`, `test/registered/core/test_model_config_transformers_version.py`, `python/sglang/srt/models/deepseek_v2.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #19246 - [NPU] optimize glm4.7
+
+- 链接：https://github.com/sgl-project/sglang/pull/19246
+- 状态/时间：`merged`，created 2026-02-24, merged 2026-04-03；作者 `randgun`。
+- 代码 diff 已读范围：`4` 个文件，`+146/-15`；代码面：model wrapper, MoE/router, quantization；关键词：expert, config, deepep, moe, quant, topk, attention, cuda, kv, processor。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/glm4_moe.py` modified +61/-11 (72 lines); hunk: from sglang.srt.distributed.device_communicators.pynccl_allocator import (; is_cuda,; 符号: Glm4MoeMLP, __init__, forward_prepare, forward_deepep
+  - `python/sglang/srt/hardware_backend/npu/utils.py` modified +64/-0 (64 lines); hunk: def get_indexer_weight_stream():; 符号: get_indexer_weight_stream, get_share_stream, set_share_stream, get_routed_stream
+  - `python/sglang/srt/models/glm4_moe_nextn.py` modified +19/-2 (21 lines); hunk: """Inference-only GLM-4.5, GLM-4.6 Speculative Decoding."""; from transformers import PretrainedConfig; 符号: __init__, forward
+  - `python/sglang/srt/layers/quantization/modelslim/modelslim.py` modified +2/-2 (4 lines); hunk: def _rmsnorm_forward_oot(; 符号: _rmsnorm_forward_oot
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/hardware_backend/npu/utils.py`, `python/sglang/srt/models/glm4_moe_nextn.py`；patch 关键词为 expert, config, deepep, moe, quant, topk。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；量化加载或量化 kernel 发生变化，要核对 scale、zero-point、checkpoint 命名和 fallback 行为。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/hardware_backend/npu/utils.py`, `python/sglang/srt/models/glm4_moe_nextn.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #20543 - fix: do not strip whitespace from GLM tool call values
+
+- 链接：https://github.com/sgl-project/sglang/pull/20543
+- 状态/时间：`merged`，created 2026-03-13, merged 2026-04-09；作者 `lawrence-harmonic`。
+- 代码 diff 已读范围：`3` 个文件，`+66/-2`；代码面：MoE/router, tests/benchmarks；关键词：moe, test。
+- 代码 diff 细节：
+  - `test/registered/unit/function_call/test_function_call_parser.py` modified +66/-0 (66 lines); hunk: def test_empty_function_name_handling(self):; def check_single_todos(tool_result, expected):; 符号: test_empty_function_name_handling, test_whitespace_preserved_in_arg_values, TestGlm47MoeDetector, setUp
+  - `python/sglang/srt/function_call/glm47_moe_detector.py` modified +0/-1 (1 lines); hunk: def _parse_argument_pairs(; 符号: _parse_argument_pairs
+  - `python/sglang/srt/function_call/glm4_moe_detector.py` modified +0/-1 (1 lines); hunk: def _parse_argument_pairs(; 符号: _parse_argument_pairs
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `test/registered/unit/function_call/test_function_call_parser.py`, `python/sglang/srt/function_call/glm47_moe_detector.py`, `python/sglang/srt/function_call/glm4_moe_detector.py`；patch 关键词为 moe, test。影响判断：MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `test/registered/unit/function_call/test_function_call_parser.py`, `python/sglang/srt/function_call/glm47_moe_detector.py`, `python/sglang/srt/function_call/glm4_moe_detector.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #21135 - fix: use get_rope_config() to support models without rope_parameters
+
+- 链接：https://github.com/sgl-project/sglang/pull/21135
+- 状态/时间：`merged`，created 2026-03-22, merged 2026-03-26；作者 `alphabetc1`。
+- 代码 diff 已读范围：`18` 个文件，`+44/-42`；代码面：model wrapper, MoE/router；关键词：config, attention, kv, cuda, moe, cache, expert, lora。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/glm4_moe.py` modified +5/-5 (10 lines); hunk: log_info_on_rank0,; def __init__(; 符号: __init__
+  - `python/sglang/srt/models/glm4.py` modified +5/-3 (8 lines); hunk: kv_cache_scales_loader,; def __init__(; 符号: __init__
+  - `python/sglang/srt/models/grok.py` modified +2/-5 (7 lines); hunk: from sglang.srt.model_loader.loader import DefaultModelLoader; def __init__(; 符号: __init__
+  - `python/sglang/srt/models/llada2.py` modified +4/-2 (6 lines); hunk: is_npu,; def __init__(; 符号: __init__
+  - `python/sglang/srt/models/deepseek.py` modified +2/-2 (4 lines); hunk: from sglang.srt.model_executor.forward_batch_info import ForwardBatch; def __init__(; 符号: __init__
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/models/glm4.py`, `python/sglang/srt/models/grok.py`；patch 关键词为 config, attention, kv, cuda, moe, cache。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/models/glm4.py`, `python/sglang/srt/models/grok.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #21403 - [AMD] Fuse RMSNorm + FP8 per-token quant for GLM-4.7-FP8
+
+- 链接：https://github.com/sgl-project/sglang/pull/21403
+- 状态/时间：`merged`，created 2026-03-25, merged 2026-04-11；作者 `Jacob0226`。
+- 代码 diff 已读范围：`3` 个文件，`+149/-13`；代码面：model wrapper, MoE/router, quantization；关键词：fp8, quant, cache, moe, attention, config, expert, flash, fp4, kv。
+- 代码 diff 细节：
+  - `python/sglang/srt/layers/communicator.py` modified +76/-8 (84 lines); hunk: _is_npu = is_npu(); def model_input_output():; 符号: _fused_rmsnorm_fp8_per_token_quant, model_input_output, AttentionInputs:, __init__
+  - `python/sglang/srt/models/glm4_moe.py` modified +58/-3 (61 lines); hunk: def forward_prepare(; def __init__(; 符号: forward_prepare, __init__, _detect_fp8_per_token_quant, _detect_attn_quant_format
+  - `python/sglang/srt/layers/quantization/fp8_utils.py` modified +15/-2 (17 lines); hunk: import logging; def can_auto_enable_marlin_fp8() -> bool:; 符号: can_auto_enable_marlin_fp8, apply_fp8_ptpc_linear, apply_fp8_ptpc_linear
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/layers/quantization/fp8_utils.py`；patch 关键词为 fp8, quant, cache, moe, attention, config。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；量化加载或量化 kernel 发生变化，要核对 scale、zero-point、checkpoint 命名和 fallback 行为。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/layers/quantization/fp8_utils.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #21534 - [AMD] Add GLM-4.7-FP8 accuracy CI test for MI35x
+
+- 链接：https://github.com/sgl-project/sglang/pull/21534
+- 状态/时间：`merged`，created 2026-03-27, merged 2026-03-28；作者 `Jacob0226`。
+- 代码 diff 已读范围：`2` 个文件，`+96/-0`；代码面：quantization, tests/benchmarks；关键词：fp8, test, benchmark, cache, doc, fp4。
+- 代码 diff 细节：
+  - `test/registered/amd/accuracy/mi35x/test_glm47_fp8_eval_mi35x.py` added +61/-0 (61 lines); hunk: +"""MI35x GLM-4.7-FP8 GSM8K Accuracy Evaluation Test (8-GPU); 符号: TestGLM47FP8EvalMI35x, test_glm_47_fp8
+  - `.github/workflows/nightly-test-amd-rocm720.yml` modified +35/-0 (35 lines); hunk: on:; jobs:
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `test/registered/amd/accuracy/mi35x/test_glm47_fp8_eval_mi35x.py`, `.github/workflows/nightly-test-amd-rocm720.yml`；patch 关键词为 fp8, test, benchmark, cache, doc, fp4。影响判断：量化加载或量化 kernel 发生变化，要核对 scale、zero-point、checkpoint 命名和 fallback 行为；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `test/registered/amd/accuracy/mi35x/test_glm47_fp8_eval_mi35x.py`, `.github/workflows/nightly-test-amd-rocm720.yml` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #21660 - [GLM-V and GLM-4.7] Cast to FP32 before gate projection for GLM model.
+
+- 链接：https://github.com/sgl-project/sglang/pull/21660
+- 状态/时间：`merged`，created 2026-03-30, merged 2026-03-30；作者 `zRzRzRzRzRzRzR`。
+- 代码 diff 已读范围：`1` 个文件，`+6/-1`；代码面：model wrapper, MoE/router；关键词：cache, config, expert, moe。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/glm4_moe.py` modified +6/-1 (7 lines); hunk: def __init__(; 符号: __init__, forward
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/glm4_moe.py`；patch 关键词为 cache, config, expert, moe。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/glm4_moe.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #21851 - GLM-4.7 and GLM-4.7-Flash Loading and import format
+
+- 链接：https://github.com/sgl-project/sglang/pull/21851
+- 状态/时间：`merged`，created 2026-04-01, merged 2026-04-04；作者 `zRzRzRzRzRzRzR`。
+- 代码 diff 已读范围：`2` 个文件，`+139/-86`；代码面：model wrapper, MoE/router；关键词：config, cuda, eagle, expert, flash, kv, moe, router, spec, attention。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/glm4_moe.py` modified +130/-57 (187 lines); hunk: """Inference-only GLM-4.5, GLM-4.6 and GLM-4.7 model compatible with HuggingFace weights"""; ); 符号: __init__, __init__, __init__, __init__
+  - `python/sglang/srt/models/glm4_moe_lite.py` modified +9/-29 (38 lines); hunk: # limitations under the License.; get_tensor_model_parallel_world_size,; 符号: forward, __init__, __init__, __init__
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/models/glm4_moe_lite.py`；patch 关键词为 config, cuda, eagle, expert, flash, kv。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/models/glm4_moe_lite.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #22315 - [Bugfix] Fix GLM-4.7-FP8 EAGLE accept_len=1.00 due to draft model loading with incorrect quant_config
+
+- 链接：https://github.com/sgl-project/sglang/pull/22315
+- 状态/时间：`open`，created 2026-04-08；作者 `maodoudou168`。
+- 代码 diff 已读范围：`1` 个文件，`+7/-5`；代码面：model wrapper, MoE/router；关键词：config, moe, quant, spec。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/glm4_moe_nextn.py` modified +7/-5 (12 lines); hunk: from sglang.srt.model_executor.forward_batch_info import ForwardBatch; def __init__(; 符号: __init__
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/glm4_moe_nextn.py`；patch 关键词为 config, moe, quant, spec。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/glm4_moe_nextn.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #22509 - [NPU]Fix GLM-4.7-Flash failed on NPU
+
+- 链接：https://github.com/sgl-project/sglang/pull/22509
+- 状态/时间：`merged`，created 2026-04-10, merged 2026-04-22；作者 `Todobe`。
+- 代码 diff 已读范围：`2` 个文件，`+4/-2`；代码面：model wrapper, MoE/router；关键词：config, cuda, moe, quant, router。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/glm4_moe_lite.py` modified +3/-1 (4 lines); hunk: import torch; _is_cuda = is_cuda()
+  - `python/sglang/srt/models/deepseek_v2.py` modified +1/-1 (2 lines); hunk: def forward(; 符号: forward
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/glm4_moe_lite.py`, `python/sglang/srt/models/deepseek_v2.py`；patch 关键词为 config, cuda, moe, quant, router。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/glm4_moe_lite.py`, `python/sglang/srt/models/deepseek_v2.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #22720 - fix[glm4.7 flash]: properly detect `gfx95_quant_format`
+
+- 链接：https://github.com/sgl-project/sglang/pull/22720
+- 状态/时间：`merged`，created 2026-04-13, merged 2026-04-13；作者 `ishandhanani`。
+- 代码 diff 已读范围：`1` 个文件，`+2/-0`；代码面：model wrapper, MoE/router；关键词：config, moe, quant。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/glm4_moe_lite.py` modified +2/-0 (2 lines); hunk: def __init__(; 符号: __init__
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/glm4_moe_lite.py`；patch 关键词为 config, moe, quant。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/glm4_moe_lite.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #22801 - [NPU]add dual-stream and deepep support for GLM-4.7-Flash
+
+- 链接：https://github.com/sgl-project/sglang/pull/22801
+- 状态/时间：`open`，created 2026-04-14；作者 `Estrella-xx`。
+- 代码 diff 已读范围：`2` 个文件，`+14/-3`；代码面：model wrapper, MoE/router；关键词：config, moe, attention, cuda, deepep, expert, fp4, fp8, kv, mla。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/glm4_moe_lite.py` modified +13/-2 (15 lines); hunk: get_pp_group,; ParallelLMHead,; 符号: __init__, forward, forward, __init__
+  - `python/sglang/srt/layers/moe/token_dispatcher/deepep.py` modified +1/-1 (2 lines); hunk: def _dispatch_core(; 符号: _dispatch_core
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/glm4_moe_lite.py`, `python/sglang/srt/layers/moe/token_dispatcher/deepep.py`；patch 关键词为 config, moe, attention, cuda, deepep, expert。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/glm4_moe_lite.py`, `python/sglang/srt/layers/moe/token_dispatcher/deepep.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #22823 - [Bugfix] Preserve auto-detected quant_config for GLM NextN draft model
+
+- 链接：https://github.com/sgl-project/sglang/pull/22823
+- 状态/时间：`merged`，created 2026-04-14, merged 2026-04-15；作者 `Jiminator`。
+- 代码 diff 已读范围：`1` 个文件，`+2/-1`；代码面：model wrapper, MoE/router；关键词：config, moe, quant, spec。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/glm4_moe_nextn.py` modified +2/-1 (3 lines); hunk: def __init__(; 符号: __init__
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/glm4_moe_nextn.py`；patch 关键词为 config, moe, quant, spec。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/glm4_moe_nextn.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #23067 - Fix: forward continue_final_message kwargs in Glm45Detector
+
+- 链接：https://github.com/sgl-project/sglang/pull/23067
+- 状态/时间：`open`，created 2026-04-17；作者 `huwwds`。
+- 代码 diff 已读范围：`2` 个文件，`+66/-1`；代码面：tests/benchmarks；关键词：test。
+- 代码 diff 细节：
+  - `test/registered/unit/parser/test_reasoning_parser.py` modified +57/-0 (57 lines); hunk: def test_forced_reasoning_mode(self):; def test_continue_final_message_with_request(self):; 符号: test_forced_reasoning_mode, test_continue_final_message_accepts_kwargs, test_continue_final_message_think_start_in_previous, test_continue_final_message_think_end_in_previous
+  - `python/sglang/srt/parser/reasoning_parser.py` modified +9/-1 (10 lines); hunk: class Glm45Detector(BaseReasoningFormatDetector):; 符号: Glm45Detector, __init__, __init__
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `test/registered/unit/parser/test_reasoning_parser.py`, `python/sglang/srt/parser/reasoning_parser.py`；patch 关键词为 test。影响判断：测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `test/registered/unit/parser/test_reasoning_parser.py`, `python/sglang/srt/parser/reasoning_parser.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+
+### 补漏和优化点排查
+
+- 已覆盖 PR 数：30；open PR 数：8。
+- 仍需跟进的 open PR：[#11951](https://github.com/sgl-project/sglang/pull/11951), [#17869](https://github.com/sgl-project/sglang/pull/17869), [#18930](https://github.com/sgl-project/sglang/pull/18930), [#19040](https://github.com/sgl-project/sglang/pull/19040), [#19106](https://github.com/sgl-project/sglang/pull/19106), [#22315](https://github.com/sgl-project/sglang/pull/22315), [#22801](https://github.com/sgl-project/sglang/pull/22801), [#23067](https://github.com/sgl-project/sglang/pull/23067)
+- 后续新增 PR 必须补齐时间线和逐 PR diff 卡片，不能只写一句标题。
+
+<!-- MODEL_PR_DIFF_AUDIT:END zh -->

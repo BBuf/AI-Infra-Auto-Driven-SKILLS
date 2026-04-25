@@ -99,3 +99,7 @@ Track open/closed-unmerged PRs in `references/pr-history.md` before using them a
 implementation guidance. Important radar lanes include CPU Qwen3-VL/Omni, Qwen3-Omni
 DP encoder, Qwen3-VL EVS, precise embedding interpolation, ASR websocket streaming,
 NPU ASR audio loading, and Qwen3-VL-MoE encoder-only guards.
+## Non-Negotiable Evidence Rule
+
+Use `skills/model-optimization/model-pr-diff-dossier/SKILL.md` as the production bar.
+Every PR cited for this family must be based on diff reading, not only PR titles.

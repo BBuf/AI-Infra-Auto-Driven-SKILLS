@@ -22,6 +22,11 @@ The historical evidence lives in:
 - [references/pr-history.md](references/pr-history.md): chronological PR evidence and code-level notes
 - [references/playbook.md](references/playbook.md): investigation order, symptom mapping, validation commands
 
+## Non-Negotiable Evidence Rule
+
+Use `skills/model-optimization/model-pr-diff-dossier/SKILL.md` as the production bar.
+Every PR cited for this family must be based on diff reading, not only PR titles.
+
 ## Before You Change Anything
 
 Record the exact serving shape first:

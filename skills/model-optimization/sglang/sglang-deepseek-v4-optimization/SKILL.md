@@ -16,6 +16,11 @@ Current evidence snapshot:
 - Command generator: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`
 - Diff-reviewed PRs: #23605, #23617, #23628, #23622, #23634
 
+## Non-Negotiable Evidence Rule
+
+Use `skills/model-optimization/model-pr-diff-dossier/SKILL.md` as the production bar.
+Every PR cited for this family must be based on diff reading, not only PR titles.
+
 ## Before You Change Anything
 
 Capture:

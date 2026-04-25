@@ -59,3 +59,9 @@ original rotary embedding, fused Triton rope, or cached cos/sin route.
 ## References
 
 - `references/pr-history.md`: diff-reviewed Ernie4.5 cards.
+
+
+## Non-Negotiable Evidence Rule
+
+Use `skills/model-optimization/model-pr-diff-dossier/SKILL.md` as the production bar.
+Every PR cited for this family must be based on diff reading, not only PR titles.

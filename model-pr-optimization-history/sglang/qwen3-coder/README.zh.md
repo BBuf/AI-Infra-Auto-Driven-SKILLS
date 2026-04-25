@@ -456,3 +456,257 @@ self.runner.run_benchmark_for_model(
 2. Qwen3-Coder-Next runtime 改动应同步跑 Qwen3-Next MTP/cache 测试。
 3. AMD 改动覆盖 AITER basic 和 MTP，NPU 改动检查 MoE 权重 shape。
 4. Cookbook 命令必须显式带 `--tool-call-parser qwen3_coder`，并说明 parser 与模型性能是两条验证线。
+
+<!-- MODEL_PR_DIFF_AUDIT:START zh -->
+
+## 逐 PR diff 审计卡（2026-04-25 重做）
+
+本节按 `sgl-project/sglang` 的 Pull Request API 和文件级 patch 重新审计 `Qwen3 Coder`。验收口径：每个 PR 都要有状态、代码面、文件级 diff 摘要、支持/优化点判断和风险验证点；没有公开相关 PR 时必须写清检索结论，不能编造。
+
+### 时间线总览
+
+| 创建日期 | PR | 状态 | 标题 | 代码面 | 主要 diff 文件 |
+| --- | ---: | --- | --- | --- | --- |
+| 2025-07-22 | [#8260](https://github.com/sgl-project/sglang/pull/8260) | merged | Preliminary Support for Qwen3XMLDetector | misc | `python/sglang/srt/function_call/qwen3_detector.py`, `python/sglang/srt/function_call/function_call_parser.py`, `python/sglang/srt/server_args.py` |
+| 2025-07-25 | [#8357](https://github.com/sgl-project/sglang/pull/8357) | merged | [Bugfix][Feat] Add XML-ish grammar in EBNFComposer and fix misc bugs in Qwen3 detector | tests/benchmarks | `test/srt/test_function_call_parser.py`, `python/sglang/srt/function_call/ebnf_composer.py`, `python/sglang/srt/function_call/qwen3_coder_detector.py` |
+| 2025-07-26 | [#8371](https://github.com/sgl-project/sglang/pull/8371) | merged | Update qwen3_coder_detector.py for streaming | tests/benchmarks | `python/sglang/srt/function_call/qwen3_coder_detector.py`, `test/srt/test_function_call_parser.py` |
+| 2025-07-28 | [#8445](https://github.com/sgl-project/sglang/pull/8445) | merged | GLM-4.5 Model Support Follow-up | MoE/router, tests/benchmarks | `test/srt/openai_server/function_call/test_tool_choice.py`, `python/sglang/srt/function_call/glm4_moe_detector.py`, `test/srt/openai_server/features/test_enable_thinking.py` |
+| 2025-10-27 | [#12226](https://github.com/sgl-project/sglang/pull/12226) | merged | Forward unknown tool calls instead of dropping | tests/benchmarks, docs/config | `python/sglang/srt/function_call/qwen3_coder_detector.py`, `test/srt/function_call/test_unknown_tool_name.py`, `python/sglang/srt/function_call/base_format_detector.py` |
+| 2025-11-12 | [#13163](https://github.com/sgl-project/sglang/pull/13163) | merged | Remove EBNF Composer | MoE/router, tests/benchmarks | `test/srt/test_function_call_parser.py`, `python/sglang/srt/function_call/ebnf_composer.py`, `test/srt/function_call/test_json_schema_constraint.py` |
+| 2025-11-17 | [#13411](https://github.com/sgl-project/sglang/pull/13411) | open | Improve Qwen3CoderDetector with schema-aware parameter type conversion | tests/benchmarks | `python/sglang/srt/function_call/qwen3_coder_detector.py`, `test/per_commit/function_call/test_function_call_parser.py` |
+| 2025-11-26 | [#13979](https://github.com/sgl-project/sglang/pull/13979) | open | Add Qwen3-Coder-480B to nightly tests | tests/benchmarks | `.github/workflows/nightly-test-nvidia.yml`, `test/nightly/test_qwen3_coder_480b_perf.py`, `test/nightly/nightly_utils.py` |
+| 2026-01-08 | [#16744](https://github.com/sgl-project/sglang/pull/16744) | merged | support new qwen3_coder_detector | tests/benchmarks | `python/sglang/srt/function_call/qwen3_coder_detector.py`, `test/registered/function_call/test_function_call_parser.py` |
+| 2026-01-30 | [#17965](https://github.com/sgl-project/sglang/pull/17965) | merged | [Fix] Triton TP MoE Dpsk V3/Qwen3 Coder with SwapAB | MoE/router, quantization, kernel, tests/benchmarks, docs/config | `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=80,N=640,device_name=NVIDIA_H200,dtype=fp8_w8a8,block_shape=[128, 128]_down.json`, `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=80,N=640,device_name=NVIDIA_H200,dtype=fp8_w8a8,block_shape=[128, 128].json`, `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=257,N=256,device_name=NVIDIA_H200,dtype=fp8_w8a8,block_shape=[128, 128]_down.json` |
+| 2026-02-03 | [#18195](https://github.com/sgl-project/sglang/pull/18195) | merged | Add MoE fused config for Qwen3-Coder-Next-FP8 on H100 TP=2 | MoE/router, quantization, kernel, docs/config | `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=512,N=256,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8,block_shape=[128, 128].json` |
+| 2026-02-04 | [#18224](https://github.com/sgl-project/sglang/pull/18224) | merged | [ModelOPT] Support Qwen 3 Next Coder NVFP4 | model wrapper | `python/sglang/srt/models/qwen3_next.py` |
+| 2026-02-06 | [#18355](https://github.com/sgl-project/sglang/pull/18355) | merged | [AMD] Support Qwen3-Coder-Next on AMD platform | model wrapper, attention/backend | `python/sglang/srt/layers/attention/aiter_backend.py`, `python/sglang/srt/models/qwen3_next.py` |
+| 2026-02-11 | [#18608](https://github.com/sgl-project/sglang/pull/18608) | merged | [AMD] Add Qwen3-Coder-Next accuracy and functionality test scripts for MI35x 8-GPU | tests/benchmarks | `test/registered/amd/accuracy/mi35x/test_qwen3_coder_next_eval_mi35x.py`, `test/registered/amd/test_qwen3_coder_next_8gpu.py` |
+| 2026-02-12 | [#18700](https://github.com/sgl-project/sglang/pull/18700) | merged | [NPU] bugfix for model Qwen3-Coder-Next at weight shape transpose for npu. | attention/backend, MoE/router, quantization | `python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` |
+| 2026-02-16 | [#18882](https://github.com/sgl-project/sglang/pull/18882) | merged | feat: Add FP8 KV cache support for Triton attention backend | attention/backend, quantization, kernel, tests/benchmarks | `python/sglang/srt/layers/attention/triton_backend.py`, `test/registered/quant/test_fp8kv_triton.py`, `python/sglang/srt/layers/attention/triton_ops/decode_attention.py` |
+| 2026-03-03 | [#19736](https://github.com/sgl-project/sglang/pull/19736) | merged | [AMD] Fix Qwen3-Coder-Next: Add missing k_scale/v_scale args to extend_attention_fwd in aiter_backend | attention/backend | `python/sglang/srt/layers/attention/aiter_backend.py` |
+| 2026-04-01 | [#21829](https://github.com/sgl-project/sglang/pull/21829) | open | [Feature] Support incremental streaming for tool_call arguments in Qwen3CoderDetector | misc | `python/sglang/srt/function_call/qwen3_coder_detector.py` |
+
+### 逐 PR 代码 diff 阅读记录
+
+### PR #8260 - Preliminary Support for Qwen3XMLDetector
+
+- 链接：https://github.com/sgl-project/sglang/pull/8260
+- 状态/时间：`merged`，created 2025-07-22, merged 2025-07-22；作者 `yhyang201`。
+- 代码 diff 已读范围：`3` 个文件，`+153/-0`；代码面：misc；关键词：kv, spec。
+- 代码 diff 细节：
+  - `python/sglang/srt/function_call/qwen3_detector.py` added +150/-0 (150 lines); hunk: +import ast; 符号: _safe_val, Qwen3XMLDetector, __init__, has_tool_call
+  - `python/sglang/srt/function_call/function_call_parser.py` modified +2/-0 (2 lines); hunk: from sglang.srt.function_call.llama32_detector import Llama32Detector; class FunctionCallParser:; 符号: FunctionCallParser:, __init__
+  - `python/sglang/srt/server_args.py` modified +1/-0 (1 lines); hunk: def add_cli_args(parser: argparse.ArgumentParser):; 符号: add_cli_args
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/function_call/qwen3_detector.py`, `python/sglang/srt/function_call/function_call_parser.py`, `python/sglang/srt/server_args.py`；patch 关键词为 kv, spec。影响判断：改动落在杂项路径，要从文件列表反推实际影响面。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/function_call/qwen3_detector.py`, `python/sglang/srt/function_call/function_call_parser.py`, `python/sglang/srt/server_args.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #8357 - [Bugfix][Feat] Add XML-ish grammar in EBNFComposer and fix misc bugs in Qwen3 detector
+
+- 链接：https://github.com/sgl-project/sglang/pull/8357
+- 状态/时间：`merged`，created 2025-07-25, merged 2025-07-25；作者 `CatherineSue`。
+- 代码 diff 已读范围：`7` 个文件，`+574/-83`；代码面：tests/benchmarks；关键词：spec, kv, doc, test。
+- 代码 diff 细节：
+  - `test/srt/test_function_call_parser.py` modified +455/-0 (455 lines); hunk: from sglang.srt.function_call.llama32_detector import Llama32Detector; def setUp(self):; 符号: setUp, test_pythonic_detector_ebnf, test_qwen25_detector_ebnf, test_qwen3_coder_detector_ebnf
+  - `python/sglang/srt/function_call/ebnf_composer.py` modified +95/-63 (158 lines); hunk: -from typing import Literal, Optional; class EBNFComposer:; 符号: EBNFComposer:, EBNFComposer:, get_value_rule, _handle_enum
+  - `python/sglang/srt/function_call/qwen3_coder_detector.py` renamed +10/-9 (19 lines); hunk: from sglang.srt.function_call.base_format_detector import BaseFormatDetector; def _safe_val(raw: str) -> Any:; 符号: _safe_val, Qwen3XMLDetector, Qwen3CoderDetector, _parse_block
+  - `python/sglang/srt/function_call/pythonic_detector.py` modified +4/-5 (9 lines); hunk: from sglang.srt.function_call.base_format_detector import BaseFormatDetector; def _get_parameter_value(self, val):; 符号: _get_parameter_value, structure_info, info, supports_structural_tag
+  - `python/sglang/srt/function_call/function_call_parser.py` modified +4/-4 (8 lines); hunk: from sglang.srt.function_call.llama32_detector import Llama32Detector; class FunctionCallParser:; 符号: FunctionCallParser:, __init__, get_structure_constraint
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `test/srt/test_function_call_parser.py`, `python/sglang/srt/function_call/ebnf_composer.py`, `python/sglang/srt/function_call/qwen3_coder_detector.py`；patch 关键词为 spec, kv, doc, test。影响判断：测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `test/srt/test_function_call_parser.py`, `python/sglang/srt/function_call/ebnf_composer.py`, `python/sglang/srt/function_call/qwen3_coder_detector.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #8371 - Update qwen3_coder_detector.py for streaming
+
+- 链接：https://github.com/sgl-project/sglang/pull/8371
+- 状态/时间：`merged`，created 2025-07-26, merged 2025-08-08；作者 `maocheng23`。
+- 代码 diff 已读范围：`2` 个文件，`+348/-67`；代码面：tests/benchmarks；关键词：moe, test。
+- 代码 diff 细节：
+  - `python/sglang/srt/function_call/qwen3_coder_detector.py` modified +219/-9 (228 lines); hunk: def __init__(self):; def parse_streaming_increment(; 符号: __init__, has_tool_call, parse_streaming_increment, _parse_and_stream_parameters
+  - `test/srt/test_function_call_parser.py` modified +129/-58 (187 lines); hunk: def test_parse_streaming_simple(self):; def test_parse_streaming_incomplete(self):; 符号: test_parse_streaming_simple, test_parse_streaming_incomplete, test_edge_case_no_parameters, test_extract_tool_calls_type_conversion
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/function_call/qwen3_coder_detector.py`, `test/srt/test_function_call_parser.py`；patch 关键词为 moe, test。影响判断：测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/function_call/qwen3_coder_detector.py`, `test/srt/test_function_call_parser.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #8445 - GLM-4.5 Model Support Follow-up
+
+- 链接：https://github.com/sgl-project/sglang/pull/8445
+- 状态/时间：`merged`，created 2025-07-28, merged 2025-07-28；作者 `byjiang1996`。
+- 代码 diff 已读范围：`6` 个文件，`+44/-15`；代码面：MoE/router, tests/benchmarks；关键词：test, moe, spec。
+- 代码 diff 细节：
+  - `test/srt/openai_server/function_call/test_tool_choice.py` modified +39/-10 (49 lines); hunk: def get_test_messages(self):; def test_tool_choice_auto_non_streaming(self):; 符号: get_test_messages, test_tool_choice_auto_non_streaming, test_tool_choice_auto_streaming, test_tool_choice_required_non_streaming
+  - `python/sglang/srt/function_call/glm4_moe_detector.py` modified +1/-2 (3 lines); hunk: def build_ebnf(self, tools: List[Tool]):; 符号: build_ebnf
+  - `test/srt/openai_server/features/test_enable_thinking.py` modified +1/-1 (2 lines); hunk: def test_stream_chat_completion_without_reasoning(self):; 符号: test_stream_chat_completion_without_reasoning, TestGLM45EnableThinking, setUpClass
+  - `test/srt/openai_server/function_call/test_openai_function_calling.py` modified +1/-1 (2 lines); hunk: def test_pythonic_tool_call_streaming(self):; 符号: test_pythonic_tool_call_streaming, TestGLM45ServerFunctionCalling, setUpClass
+  - `test/srt/test_function_call_parser.py` modified +1/-1 (2 lines); hunk: def test_streaming_multiple_tool_calls(self):; 符号: test_streaming_multiple_tool_calls, test_tool_call_completion, test_tool_call_id
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `test/srt/openai_server/function_call/test_tool_choice.py`, `python/sglang/srt/function_call/glm4_moe_detector.py`, `test/srt/openai_server/features/test_enable_thinking.py`；patch 关键词为 test, moe, spec。影响判断：MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `test/srt/openai_server/function_call/test_tool_choice.py`, `python/sglang/srt/function_call/glm4_moe_detector.py`, `test/srt/openai_server/features/test_enable_thinking.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #12226 - Forward unknown tool calls instead of dropping
+
+- 链接：https://github.com/sgl-project/sglang/pull/12226
+- 状态/时间：`merged`，created 2025-10-27, merged 2025-11-01；作者 `Surya-Gunukula`。
+- 代码 diff 已读范围：`7` 个文件，`+145/-60`；代码面：tests/benchmarks, docs/config；关键词：config, cache, doc, expert, test。
+- 代码 diff 细节：
+  - `python/sglang/srt/function_call/qwen3_coder_detector.py` modified +41/-37 (78 lines); hunk: from typing import Any, Dict, List, Tuple; def parse_streaming_increment(; 符号: parse_streaming_increment
+  - `test/srt/function_call/test_unknown_tool_name.py` added +69/-0 (69 lines); hunk: +import json; 符号: DummyDetector, has_tool_call, detect_and_parse, test_unknown_tool_name_dropped_default
+  - `python/sglang/srt/function_call/base_format_detector.py` modified +15/-12 (27 lines); hunk: from partial_json_parser.core.options import Allow; def parse_base_json(self, action: Any, tools: List[Tool]) -> List[ToolCallItem]:; 符号: parse_base_json
+  - `docs/references/environment_variables.md` modified +10/-9 (19 lines); hunk: SGLang supports various environment variables that can be used to configure its
+  - `python/sglang/srt/function_call/pythonic_detector.py` modified +4/-1 (5 lines); hunk: from typing import List, Optional; def detect_and_parse(self, text: str, tools: List[Tool]) -> StreamingParseResult; 符号: detect_and_parse
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/function_call/qwen3_coder_detector.py`, `test/srt/function_call/test_unknown_tool_name.py`, `python/sglang/srt/function_call/base_format_detector.py`；patch 关键词为 config, cache, doc, expert, test。影响判断：测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载；文档或配置面发生变化，要核对 serve flags、默认值和 cookbook 命令是否与代码一致。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/function_call/qwen3_coder_detector.py`, `test/srt/function_call/test_unknown_tool_name.py`, `python/sglang/srt/function_call/base_format_detector.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #13163 - Remove EBNF Composer
+
+- 链接：https://github.com/sgl-project/sglang/pull/13163
+- 状态/时间：`merged`，created 2025-11-12, merged 2025-11-13；作者 `TJ5`。
+- 代码 diff 已读范围：`18` 个文件，`+6/-1081`；代码面：MoE/router, tests/benchmarks；关键词：spec, kv, moe, test, doc。
+- 代码 diff 细节：
+  - `test/srt/test_function_call_parser.py` modified +5/-459 (464 lines); hunk: import json; def test_detect_and_parse_with_text_before_tool_call(self):; 符号: test_detect_and_parse_with_text_before_tool_call, TestEBNFGeneration, setUp, test_pythonic_detector_ebnf
+  - `python/sglang/srt/function_call/ebnf_composer.py` removed +0/-344 (344 lines); hunk: -from typing import Any, Dict, Literal, Optional; 符号: EBNFComposer:, get_value_rule, _handle_enum, format_enum_val
+  - `test/srt/function_call/test_json_schema_constraint.py` modified +0/-52 (52 lines); hunk: def test_tools_without_parameters(self):; 符号: test_tools_without_parameters, test_json_schema_vs_ebnf_constraint_generation, test_conflicting_defs_raises_valueerror
+  - `python/sglang/srt/function_call/function_call_parser.py` modified +0/-38 (38 lines); hunk: def get_structure_constraint(; 符号: get_structure_constraint, get_ebnf
+  - `python/sglang/srt/function_call/step3_detector.py` modified +0/-29 (29 lines); hunk: ToolCallItem,; def supports_structural_tag(self) -> bool:; 符号: supports_structural_tag, structure_info, build_ebnf
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `test/srt/test_function_call_parser.py`, `python/sglang/srt/function_call/ebnf_composer.py`, `test/srt/function_call/test_json_schema_constraint.py`；patch 关键词为 spec, kv, moe, test, doc。影响判断：MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `test/srt/test_function_call_parser.py`, `python/sglang/srt/function_call/ebnf_composer.py`, `test/srt/function_call/test_json_schema_constraint.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #13411 - Improve Qwen3CoderDetector with schema-aware parameter type conversion
+
+- 链接：https://github.com/sgl-project/sglang/pull/13411
+- 状态/时间：`open`，created 2025-11-17；作者 `00INDEX`。
+- 代码 diff 已读范围：`2` 个文件，`+155/-10`；代码面：tests/benchmarks；关键词：config, test。
+- 代码 diff 细节：
+  - `python/sglang/srt/function_call/qwen3_coder_detector.py` modified +135/-10 (145 lines); hunk: logger = logging.getLogger(__name__); def parse_streaming_increment(; 符号: _safe_val, _convert_param_value, Qwen3CoderDetector, parse_streaming_increment
+  - `test/per_commit/function_call/test_function_call_parser.py` modified +20/-0 (20 lines); hunk: def test_extract_tool_calls_type_conversion(self):; def test_extract_tool_calls_type_conversion(self):; 符号: test_extract_tool_calls_type_conversion, test_extract_tool_calls_type_conversion, test_extract_tool_calls_type_conversion, test_parse_streaming_incremental
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/function_call/qwen3_coder_detector.py`, `test/per_commit/function_call/test_function_call_parser.py`；patch 关键词为 config, test。影响判断：测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/function_call/qwen3_coder_detector.py`, `test/per_commit/function_call/test_function_call_parser.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #13979 - Add Qwen3-Coder-480B to nightly tests
+
+- 链接：https://github.com/sgl-project/sglang/pull/13979
+- 状态/时间：`open`，created 2025-11-26；作者 `Kangyan-Zhou`。
+- 代码 diff 已读范围：`3` 个文件，`+288/-171`；代码面：tests/benchmarks；关键词：test, benchmark, config, fp8, moe。
+- 代码 diff 细节：
+  - `.github/workflows/nightly-test-nvidia.yml` modified +232/-170 (402 lines); hunk: jobs:; jobs:
+  - `test/nightly/test_qwen3_coder_480b_perf.py` added +53/-0 (53 lines); hunk: +import unittest; 符号: TestNightlyQwen3Coder480BPerformance, setUpClass, test_bench_one_batch
+  - `test/nightly/nightly_utils.py` modified +3/-1 (4 lines); hunk: def run_benchmark_for_model(; def run_benchmark_for_model(; 符号: run_benchmark_for_model, run_benchmark_for_model, run_benchmark_for_model
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `.github/workflows/nightly-test-nvidia.yml`, `test/nightly/test_qwen3_coder_480b_perf.py`, `test/nightly/nightly_utils.py`；patch 关键词为 test, benchmark, config, fp8, moe。影响判断：测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `.github/workflows/nightly-test-nvidia.yml`, `test/nightly/test_qwen3_coder_480b_perf.py`, `test/nightly/nightly_utils.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #16744 - support new qwen3_coder_detector
+
+- 链接：https://github.com/sgl-project/sglang/pull/16744
+- 状态/时间：`merged`，created 2026-01-08, merged 2026-01-19；作者 `attack204`。
+- 代码 diff 已读范围：`2` 个文件，`+637/-667`；代码面：tests/benchmarks；关键词：config, moe, spec, test。
+- 代码 diff 细节：
+  - `python/sglang/srt/function_call/qwen3_coder_detector.py` modified +392/-271 (663 lines); hunk: import ast; logger = logging.getLogger(__name__); 符号: _safe_val, Qwen3CoderDetector, __init__, already
+  - `test/registered/function_call/test_function_call_parser.py` modified +245/-396 (641 lines); hunk: def test_streaming_no_parameters_with_whitespace(self):; 符号: test_streaming_no_parameters_with_whitespace, TestQwen3CoderDetector, setUp, test_has_tool_call
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/function_call/qwen3_coder_detector.py`, `test/registered/function_call/test_function_call_parser.py`；patch 关键词为 config, moe, spec, test。影响判断：测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/function_call/qwen3_coder_detector.py`, `test/registered/function_call/test_function_call_parser.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #17965 - [Fix] Triton TP MoE Dpsk V3/Qwen3 Coder with SwapAB
+
+- 链接：https://github.com/sgl-project/sglang/pull/17965
+- 状态/时间：`merged`，created 2026-01-30, merged 2026-01-31；作者 `b8zhong`。
+- 代码 diff 已读范围：`6` 个文件，`+573/-16`；代码面：MoE/router, quantization, kernel, tests/benchmarks, docs/config；关键词：moe, triton, config, fp8, cuda, benchmark, cache, expert, quant, topk。
+- 代码 diff 细节：
+  - `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=80,N=640,device_name=NVIDIA_H200,dtype=fp8_w8a8,block_shape=[128, 128]_down.json` added +164/-0 (164 lines); hunk: +{
+  - `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=80,N=640,device_name=NVIDIA_H200,dtype=fp8_w8a8,block_shape=[128, 128].json` added +146/-0 (146 lines); hunk: +{
+  - `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=257,N=256,device_name=NVIDIA_H200,dtype=fp8_w8a8,block_shape=[128, 128]_down.json` added +128/-0 (128 lines); hunk: +{
+  - `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=257,N=256,device_name=NVIDIA_H200,dtype=fp8_w8a8,block_shape=[128, 128].json` added +114/-0 (114 lines); hunk: +{
+  - `python/sglang/srt/layers/moe/fused_moe_triton/fused_moe_triton_kernels.py` modified +4/-16 (20 lines); hunk: import triton; from sglang.srt.utils import (; 符号: support_tensor_descriptor, should_enable_swap_ab, is_h20_device_and_sm90_supported
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=80,N=640,device_name=NVIDIA_H200,dtype=fp8_w8a8,block_shape=[128, 128]_down.json`, `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=80,N=640,device_name=NVIDIA_H200,dtype=fp8_w8a8,block_shape=[128, 128].json`, `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=257,N=256,device_name=NVIDIA_H200,dtype=fp8_w8a8,block_shape=[128, 128]_down.json`；patch 关键词为 moe, triton, config, fp8, cuda, benchmark。影响判断：MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；量化加载或量化 kernel 发生变化，要核对 scale、zero-point、checkpoint 命名和 fallback 行为；CUDA/Triton/C++ kernel 或 binding 发生变化，要核对 shape guard、dtype、设备后端和 benchmark；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载；文档或配置面发生变化，要核对 serve flags、默认值和 cookbook 命令是否与代码一致。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=80,N=640,device_name=NVIDIA_H200,dtype=fp8_w8a8,block_shape=[128, 128]_down.json`, `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=80,N=640,device_name=NVIDIA_H200,dtype=fp8_w8a8,block_shape=[128, 128].json`, `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=257,N=256,device_name=NVIDIA_H200,dtype=fp8_w8a8,block_shape=[128, 128]_down.json` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #18195 - Add MoE fused config for Qwen3-Coder-Next-FP8 on H100 TP=2
+
+- 链接：https://github.com/sgl-project/sglang/pull/18195
+- 状态/时间：`merged`，created 2026-02-03, merged 2026-02-04；作者 `mmangkad`。
+- 代码 diff 已读范围：`1` 个文件，`+146/-0`；代码面：MoE/router, quantization, kernel, docs/config；关键词：config, fp8, moe, triton。
+- 代码 diff 细节：
+  - `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=512,N=256,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8,block_shape=[128, 128].json` added +146/-0 (146 lines); hunk: +{
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=512,N=256,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8,block_shape=[128, 128].json`；patch 关键词为 config, fp8, moe, triton。影响判断：MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；量化加载或量化 kernel 发生变化，要核对 scale、zero-point、checkpoint 命名和 fallback 行为；CUDA/Triton/C++ kernel 或 binding 发生变化，要核对 shape guard、dtype、设备后端和 benchmark；文档或配置面发生变化，要核对 serve flags、默认值和 cookbook 命令是否与代码一致。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=512,N=256,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8,block_shape=[128, 128].json` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #18224 - [ModelOPT] Support Qwen 3 Next Coder NVFP4
+
+- 链接：https://github.com/sgl-project/sglang/pull/18224
+- 状态/时间：`merged`，created 2026-02-04, merged 2026-02-08；作者 `vincentzed`。
+- 代码 diff 已读范围：`1` 个文件，`+35/-6`；代码面：model wrapper；关键词：cache, config, expert, fp8, kv, quant。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/qwen3_next.py` modified +35/-6 (41 lines); hunk: def __init__(; class HybridLayerType(enum.Enum):; 符号: __init__, HybridLayerType, Qwen3NextForCausalLM, __init__
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/qwen3_next.py`；patch 关键词为 cache, config, expert, fp8, kv, quant。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/qwen3_next.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #18355 - [AMD] Support Qwen3-Coder-Next on AMD platform
+
+- 链接：https://github.com/sgl-project/sglang/pull/18355
+- 状态/时间：`merged`，created 2026-02-06, merged 2026-02-25；作者 `yichiche`。
+- 代码 diff 已读范围：`2` 个文件，`+213/-74`；代码面：model wrapper, attention/backend；关键词：cuda, attention, cache, config, flash, kv, mla, spec, triton。
+- 代码 diff 细节：
+  - `python/sglang/srt/layers/attention/aiter_backend.py` modified +211/-72 (283 lines); hunk: class ForwardMetadata:; def __init__(; 符号: ForwardMetadata:, __init__, __init__, __init__
+  - `python/sglang/srt/models/qwen3_next.py` modified +2/-2 (4 lines); hunk: def _forward_input_proj(self, hidden_states: torch.Tensor):; 符号: _forward_input_proj
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/layers/attention/aiter_backend.py`, `python/sglang/srt/models/qwen3_next.py`；patch 关键词为 cuda, attention, cache, config, flash, kv。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；attention、KV cache 或 backend 选择发生变化，要重点核对 prefill/decode、page size、RoPE/MLA/MQA 分支。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/layers/attention/aiter_backend.py`, `python/sglang/srt/models/qwen3_next.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #18608 - [AMD] Add Qwen3-Coder-Next accuracy and functionality test scripts for MI35x 8-GPU
+
+- 链接：https://github.com/sgl-project/sglang/pull/18608
+- 状态/时间：`merged`，created 2026-02-11, merged 2026-03-02；作者 `yichiche`。
+- 代码 diff 已读范围：`2` 个文件，`+486/-0`；代码面：tests/benchmarks；关键词：attention, cache, config, eagle, fp8, kv, spec, test, topk, triton。
+- 代码 diff 细节：
+  - `test/registered/amd/accuracy/mi35x/test_qwen3_coder_next_eval_mi35x.py` added +302/-0 (302 lines); hunk: +"""MI35x Qwen3-Coder-Next GSM8K Completion Evaluation Test (8-GPU); 符号: get_model_path, ModelConfig:, __post_init__, get_display_name
+  - `test/registered/amd/test_qwen3_coder_next_8gpu.py` added +184/-0 (184 lines); hunk: +"""MI35x Qwen3-Coder-Next Functionality Test (8-GPU); 符号: TestQwen3CoderNext, setUpClass, tearDownClass, test_a_gsm8k
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `test/registered/amd/accuracy/mi35x/test_qwen3_coder_next_eval_mi35x.py`, `test/registered/amd/test_qwen3_coder_next_8gpu.py`；patch 关键词为 attention, cache, config, eagle, fp8, kv。影响判断：测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `test/registered/amd/accuracy/mi35x/test_qwen3_coder_next_eval_mi35x.py`, `test/registered/amd/test_qwen3_coder_next_8gpu.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #18700 - [NPU] bugfix for model Qwen3-Coder-Next at weight shape transpose for npu.
+
+- 链接：https://github.com/sgl-project/sglang/pull/18700
+- 状态/时间：`merged`，created 2026-02-12, merged 2026-02-25；作者 `Hexq0210`。
+- 代码 diff 已读范围：`2` 个文件，`+3/-3`；代码面：attention/backend, MoE/router, quantization；关键词：attention, cuda, moe, quant。
+- 代码 diff 细节：
+  - `python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py` modified +2/-2 (4 lines); hunk: def npu_fused_moe_without_routing_weights_bf16(; def npu_fused_moe_without_routing_weights_bf16(; 符号: npu_fused_moe_without_routing_weights_bf16, npu_fused_moe_without_routing_weights_bf16
+  - `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +1/-1 (2 lines); hunk: from sglang.srt.utils import cpu_has_amx_support, is_cpu, is_cuda, is_npu
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`；patch 关键词为 attention, cuda, moe, quant。影响判断：attention、KV cache 或 backend 选择发生变化，要重点核对 prefill/decode、page size、RoPE/MLA/MQA 分支；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；量化加载或量化 kernel 发生变化，要核对 scale、zero-point、checkpoint 命名和 fallback 行为。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #18882 - feat: Add FP8 KV cache support for Triton attention backend
+
+- 链接：https://github.com/sgl-project/sglang/pull/18882
+- 状态/时间：`merged`，created 2026-02-16, merged 2026-03-03；作者 `zack041`。
+- 代码 diff 已读范围：`6` 个文件，`+180/-27`；代码面：attention/backend, quantization, kernel, tests/benchmarks；关键词：attention, kv, triton, test, cache, quant, config, cuda, flash, fp8。
+- 代码 diff 细节：
+  - `python/sglang/srt/layers/attention/triton_backend.py` modified +63/-6 (69 lines); hunk: import triton; def __init__(; 符号: __init__, forward_extend, forward_extend, forward_extend
+  - `test/registered/quant/test_fp8kv_triton.py` added +58/-0 (58 lines); hunk: +import unittest; 符号: TestFP8KVCacheTritonBackend, setUpClass, tearDownClass, test_gsm8k
+  - `python/sglang/srt/layers/attention/triton_ops/decode_attention.py` modified +26/-15 (41 lines); hunk: def _fwd_kernel_stage1(; def _fwd_kernel_stage1(; 符号: _fwd_kernel_stage1, _fwd_kernel_stage1, _decode_att_m_fwd, _decode_att_m_fwd
+  - `python/sglang/srt/layers/attention/triton_ops/extend_attention.py` modified +16/-6 (22 lines); hunk: def _fwd_kernel(; def _fwd_kernel(; 符号: _fwd_kernel, _fwd_kernel, _fwd_kernel, extend_attention_fwd
+  - `test/registered/attention/test_triton_attention_kernels.py` modified +14/-0 (14 lines); hunk: def _test_extend_attention_once(self, B, N_CTX, H_Q, H_KV, D):; def _test_extend_attention_once(self, B, N_CTX, H_Q, H_KV, D):; 符号: _test_extend_attention_once, _test_extend_attention_once, _test_extend_attention_sliding_window_once, _test_decode_attention_once
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/layers/attention/triton_backend.py`, `test/registered/quant/test_fp8kv_triton.py`, `python/sglang/srt/layers/attention/triton_ops/decode_attention.py`；patch 关键词为 attention, kv, triton, test, cache, quant。影响判断：attention、KV cache 或 backend 选择发生变化，要重点核对 prefill/decode、page size、RoPE/MLA/MQA 分支；量化加载或量化 kernel 发生变化，要核对 scale、zero-point、checkpoint 命名和 fallback 行为；CUDA/Triton/C++ kernel 或 binding 发生变化，要核对 shape guard、dtype、设备后端和 benchmark；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/layers/attention/triton_backend.py`, `test/registered/quant/test_fp8kv_triton.py`, `python/sglang/srt/layers/attention/triton_ops/decode_attention.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #19736 - [AMD] Fix Qwen3-Coder-Next: Add missing k_scale/v_scale args to extend_attention_fwd in aiter_backend
+
+- 链接：https://github.com/sgl-project/sglang/pull/19736
+- 状态/时间：`merged`，created 2026-03-03, merged 2026-03-04；作者 `michaelzhang-ai`。
+- 代码 diff 已读范围：`1` 个文件，`+2/-0`；代码面：attention/backend；关键词：attention。
+- 代码 diff 细节：
+  - `python/sglang/srt/layers/attention/aiter_backend.py` modified +2/-0 (2 lines); hunk: def forward_extend(; 符号: forward_extend
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/layers/attention/aiter_backend.py`；patch 关键词为 attention。影响判断：attention、KV cache 或 backend 选择发生变化，要重点核对 prefill/decode、page size、RoPE/MLA/MQA 分支。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/layers/attention/aiter_backend.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #21829 - [Feature] Support incremental streaming for tool_call arguments in Qwen3CoderDetector
+
+- 链接：https://github.com/sgl-project/sglang/pull/21829
+- 状态/时间：`open`，created 2026-04-01；作者 `yunkchen`。
+- 代码 diff 已读范围：`1` 个文件，`+140/-0`；代码面：misc；关键词：config。
+- 代码 diff 细节：
+  - `python/sglang/srt/function_call/qwen3_coder_detector.py` modified +140/-0 (140 lines); hunk: def __init__(self):; def _convert_param_value(; 符号: __init__, has_tool_call, _convert_param_value, _should_stream_param
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/function_call/qwen3_coder_detector.py`；patch 关键词为 config。影响判断：改动落在杂项路径，要从文件列表反推实际影响面。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/function_call/qwen3_coder_detector.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+
+### 补漏和优化点排查
+
+- 已覆盖 PR 数：18；open PR 数：3。
+- 仍需跟进的 open PR：[#13411](https://github.com/sgl-project/sglang/pull/13411), [#13979](https://github.com/sgl-project/sglang/pull/13979), [#21829](https://github.com/sgl-project/sglang/pull/21829)
+- 后续新增 PR 必须补齐时间线和逐 PR diff 卡片，不能只写一句标题。
+
+<!-- MODEL_PR_DIFF_AUDIT:END zh -->

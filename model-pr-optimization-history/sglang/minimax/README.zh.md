@@ -237,3 +237,377 @@ MiniMax 侧新增 `MiniMaxM2QKRMSNorm`：
 - `MiniMaxM2DecoderLayer` 通过 `LayerCommunicator` 支持 prepare_attn AR fusion、prepare_mlp、reduce-scatter 和 postprocess。
 - loader 已支持 packed mapping、KV scale remap、PP shard skip；AWQ `w13` merged expert loader 仍 open。
 - 文档层已经出现 M2.7；代码层仍复用同一个 M2 系列实现。
+
+<!-- MODEL_PR_DIFF_AUDIT:START zh -->
+
+## 逐 PR diff 审计卡（2026-04-25 重做）
+
+本节按 `sgl-project/sglang` 的 Pull Request API 和文件级 patch 重新审计 `MiniMax M2 series`。验收口径：每个 PR 都要有状态、代码面、文件级 diff 摘要、支持/优化点判断和风险验证点；没有公开相关 PR 时必须写清检索结论，不能编造。
+
+### 时间线总览
+
+| 创建日期 | PR | 状态 | 标题 | 代码面 | 主要 diff 文件 |
+| --- | ---: | --- | --- | --- | --- |
+| 2025-10-25 | [#12129](https://github.com/sgl-project/sglang/pull/12129) | merged | Support MiniMax M2 model | model wrapper, docs/config | `python/sglang/srt/models/minimax_m2.py`, `python/sglang/srt/function_call/minimax_m2.py`, `python/sglang/srt/parser/reasoning_parser.py` |
+| 2025-10-27 | [#12186](https://github.com/sgl-project/sglang/pull/12186) | merged | improve mimax-m2 rmsnorm precision | model wrapper | `python/sglang/srt/models/minimax_m2.py` |
+| 2025-11-07 | [#12798](https://github.com/sgl-project/sglang/pull/12798) | merged | Support capturing aux_hidden_states for minimax m2. | model wrapper | `python/sglang/srt/models/minimax_m2.py` |
+| 2025-11-14 | [#13297](https://github.com/sgl-project/sglang/pull/13297) | merged | Fix: add missing get_embed_and_head in MiniMax M2 for Eagle3 | model wrapper | `python/sglang/srt/models/minimax_m2.py` |
+| 2025-11-25 | [#13892](https://github.com/sgl-project/sglang/pull/13892) | merged | fix: correct usage of minimax-m2 deepep moe forward | model wrapper | `python/sglang/srt/models/minimax_m2.py` |
+| 2025-11-27 | [#14047](https://github.com/sgl-project/sglang/pull/14047) | merged | Optimize topk sigmoid in minimax_m2 | model wrapper, MoE/router | `python/sglang/srt/layers/moe/topk.py`, `python/sglang/srt/models/minimax_m2.py` |
+| 2025-12-04 | [#14416](https://github.com/sgl-project/sglang/pull/14416) | merged | Fusing RMSNormTP in minimax_m2 | model wrapper | `python/sglang/srt/models/minimax_m2.py` |
+| 2026-01-05 | [#16483](https://github.com/sgl-project/sglang/pull/16483) | merged | Optimizing all_reduce in RMSNormTP in minimax_m2 | model wrapper | `python/sglang/srt/models/minimax_m2.py` |
+| 2026-01-27 | [#17826](https://github.com/sgl-project/sglang/pull/17826) | open | Support Pipeline and Data Parallelism for MiniMax-M2 | model wrapper | `python/sglang/srt/models/minimax_m2.py` |
+| 2026-02-04 | [#18217](https://github.com/sgl-project/sglang/pull/18217) | merged | [piecewise graph]: support MiniMax-M2 | model wrapper, quantization, kernel | `python/sglang/srt/models/minimax_m2.py`, `python/sglang/srt/layers/quantization/fp8_kernel.py` |
+| 2026-02-27 | [#19468](https://github.com/sgl-project/sglang/pull/19468) | open | fix[minimax]: support deepep with minimax models | kernel | `python/sglang/srt/server_args.py`, `docker/Dockerfile`, `scripts/ci/cuda/ci_install_deepep.sh` |
+| 2026-02-28 | [#19577](https://github.com/sgl-project/sglang/pull/19577) | merged | [Feat] add PP Support for minimax-m2 series | model wrapper | `python/sglang/srt/models/minimax_m2.py` |
+| 2026-03-02 | [#19652](https://github.com/sgl-project/sglang/pull/19652) | merged | [Feature] NVFP4 Marlin fallback for non-Blackwell GPUs (SM75+) | MoE/router, quantization, kernel, scheduler/runtime, tests/benchmarks, docs/config | `test/registered/quant/test_nvfp4_marlin_fallback.py`, `python/sglang/srt/layers/quantization/marlin_utils_fp4.py`, `python/sglang/srt/layers/quantization/modelopt_quant.py` |
+| 2026-03-06 | [#19995](https://github.com/sgl-project/sglang/pull/19995) | merged | Add packed_modules_mapping for MiniMax-M2 | model wrapper | `python/sglang/srt/models/minimax_m2.py` |
+| 2026-03-06 | [#20031](https://github.com/sgl-project/sglang/pull/20031) | open | fix(minimax): support loading merged expert weights (w13) for awq | model wrapper, tests/benchmarks | `tests/registered/models/test_minimax_m2_weights.py`, `python/sglang/srt/models/minimax_m2.py` |
+| 2026-03-07 | [#20067](https://github.com/sgl-project/sglang/pull/20067) | merged | MiniMax-M2.5 - Support dp attention, dp reduce scatter, FP4 all gather, AR fusion in prepare_attn | model wrapper, tests/benchmarks | `python/sglang/srt/models/minimax_m2.py`, `test/registered/8-gpu-models/test_minimax_m25.py`, `python/sglang/srt/layers/layernorm.py` |
+| 2026-03-13 | [#20489](https://github.com/sgl-project/sglang/pull/20489) | open | fix(dp-attn): fix issues with dp-attention for MiniMax M2 and general… | model wrapper, scheduler/runtime | `PR_DESCRIPTION.md`, `python/sglang/srt/models/minimax_m2.py`, `python/sglang/srt/mem_cache/memory_pool.py` |
+| 2026-03-16 | [#20673](https://github.com/sgl-project/sglang/pull/20673) | merged | [Feature][JIT Kernel] Fused TP QK norm For Minimax | model wrapper, kernel, tests/benchmarks | `python/sglang/jit_kernel/csrc/distributed/tp_qknorm.cuh`, `python/sglang/jit_kernel/benchmark/bench_tp_qknorm.py`, `python/sglang/jit_kernel/tests/test_tp_qknorm.py` |
+| 2026-03-18 | [#20870](https://github.com/sgl-project/sglang/pull/20870) | merged | [MiniMax M2] Fix KV cache scale loading | model wrapper | `python/sglang/srt/models/minimax_m2.py` |
+| 2026-03-18 | [#20873](https://github.com/sgl-project/sglang/pull/20873) | open | docs: add MiniMax-M2.7 and M2.7-highspeed model support | model wrapper, docs/config | `docs/basic_usage/minimax_m2.md`, `docs/supported_models/text_generation/generative_models.md` |
+| 2026-03-19 | [#20905](https://github.com/sgl-project/sglang/pull/20905) | merged | [NPU][ModelSlim] adapt w2 quant layer for Minimax2.5 | model wrapper, quantization | `python/sglang/srt/layers/quantization/modelslim/modelslim.py`, `python/sglang/srt/models/minimax_m2.py` |
+| 2026-03-20 | [#20967](https://github.com/sgl-project/sglang/pull/20967) | merged | 【BugFix】fix the bug of minimax_m2.5 model that causes repeated outputs when using tp16 | model wrapper | `python/sglang/srt/models/minimax_m2.py` |
+| 2026-03-20 | [#20975](https://github.com/sgl-project/sglang/pull/20975) | open | fix(dp-attn): fix issues with dp-attention for MiniMax M2 | model wrapper, attention/backend, scheduler/runtime | `PR_DESCRIPTION.md`, `python/sglang/srt/models/minimax_m2.py`, `python/sglang/srt/mem_cache/memory_pool.py` |
+| 2026-04-08 | [#22300](https://github.com/sgl-project/sglang/pull/22300) | open | [NVIDIA] Fix FP8 gemm performance with fp16 models (MInimax-M2.5) | quantization | `python/sglang/srt/model_loader/utils.py`, `python/sglang/srt/layers/quantization/fp8_utils.py`, `python/sglang/srt/layers/quantization/fp8.py` |
+| 2026-04-09 | [#22432](https://github.com/sgl-project/sglang/pull/22432) | open | [NPU] add split_qkv_tp_rmsnorm_rope ops for minimax2 | model wrapper | `python/sglang/srt/models/minimax_m2.py` |
+| 2026-04-14 | [#22744](https://github.com/sgl-project/sglang/pull/22744) | open | [NVIDIA] Support TF32 matmul to improve MiniMax gate gemm performance | scheduler/runtime, docs/config | `python/sglang/srt/server_args.py`, `python/sglang/srt/model_executor/model_runner.py`, `docs/advanced_features/server_arguments.md` |
+| 2026-04-16 | [#22934](https://github.com/sgl-project/sglang/pull/22934) | open | Minimax eplb bugfix | model wrapper | `python/sglang/srt/models/minimax_m2.py` |
+| 2026-04-20 | [#23190](https://github.com/sgl-project/sglang/pull/23190) | open | [NPU] add split_qkv_tp_rmsnorm_rope ops for minimax2 & fix eagle3 hidden states capture in dp attn mode | model wrapper | `python/sglang/srt/models/minimax_m2.py` |
+| 2026-04-21 | [#23301](https://github.com/sgl-project/sglang/pull/23301) | open | [sgl] Stream MiniMax M2 string parameters token-by-token | misc | `python/sglang/srt/function_call/minimax_m2.py` |
+
+### 逐 PR 代码 diff 阅读记录
+
+### PR #12129 - Support MiniMax M2 model
+
+- 链接：https://github.com/sgl-project/sglang/pull/12129
+- 状态/时间：`merged`，created 2025-10-25, merged 2025-10-26；作者 `zhaochenyang20`。
+- 代码 diff 已读范围：`5` 个文件，`+1320/-1`；代码面：model wrapper, docs/config；关键词：expert, moe, spec, attention, config, deepep, doc, fp8, kv, processor。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/minimax_m2.py` added +922/-0 (922 lines); hunk: +# Copyright 2023-2024 SGLang Team; 符号: MiniMaxM2RMSNormTP, __init__, weight_loader, forward
+  - `python/sglang/srt/function_call/minimax_m2.py` added +367/-0 (367 lines); hunk: +import ast; 符号: _safe_val, MinimaxM2Detector, __init__, has_tool_call
+  - `python/sglang/srt/parser/reasoning_parser.py` modified +28/-1 (29 lines); hunk: def parse_streaming_increment(self, new_text: str) -> StreamingParseResult:; class ReasoningParser:; 符号: parse_streaming_increment, MiniMaxAppendThinkDetector, __init__, parse_streaming_increment
+  - `python/sglang/srt/function_call/function_call_parser.py` modified +2/-0 (2 lines); hunk: from sglang.srt.function_call.gpt_oss_detector import GptOssDetector; class FunctionCallParser:; 符号: FunctionCallParser:, __init__
+  - `docs/supported_models/generative_models.md` modified +1/-0 (1 lines); hunk: in the GitHub search bar.
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/minimax_m2.py`, `python/sglang/srt/function_call/minimax_m2.py`, `python/sglang/srt/parser/reasoning_parser.py`；patch 关键词为 expert, moe, spec, attention, config, deepep。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；文档或配置面发生变化，要核对 serve flags、默认值和 cookbook 命令是否与代码一致。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/minimax_m2.py`, `python/sglang/srt/function_call/minimax_m2.py`, `python/sglang/srt/parser/reasoning_parser.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #12186 - improve mimax-m2 rmsnorm precision
+
+- 链接：https://github.com/sgl-project/sglang/pull/12186
+- 状态/时间：`merged`，created 2025-10-27, merged 2025-10-27；作者 `haichao592`。
+- 代码 diff 已读范围：`1` 个文件，`+1/-1`；代码面：model wrapper；关键词：n/a。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/minimax_m2.py` modified +1/-1 (2 lines); hunk: def forward(; 符号: forward
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/minimax_m2.py`；patch 关键词为 n/a。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/minimax_m2.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #12798 - Support capturing aux_hidden_states for minimax m2.
+
+- 链接：https://github.com/sgl-project/sglang/pull/12798
+- 状态/时间：`merged`，created 2025-11-07, merged 2025-11-08；作者 `pyc96`。
+- 代码 diff 已读范围：`1` 个文件，`+34/-3`；代码面：model wrapper；关键词：config, eagle, expert, processor, spec。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/minimax_m2.py` modified +34/-3 (37 lines); hunk: def layer_fn(idx, prefix: str) -> nn.Module:; def forward(; 符号: layer_fn, get_input_embeddings, forward, forward
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/minimax_m2.py`；patch 关键词为 config, eagle, expert, processor, spec。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/minimax_m2.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #13297 - Fix: add missing get_embed_and_head in MiniMax M2 for Eagle3
+
+- 链接：https://github.com/sgl-project/sglang/pull/13297
+- 状态/时间：`merged`，created 2025-11-14, merged 2025-11-15；作者 `pyc96`。
+- 代码 diff 已读范围：`1` 个文件，`+3/-0`；代码面：model wrapper；关键词：eagle。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/minimax_m2.py` modified +3/-0 (3 lines); hunk: def set_eagle3_layers_to_capture(self, layer_ids: Optional[list[int]] = None):; 符号: set_eagle3_layers_to_capture, get_embed_and_head, forward
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/minimax_m2.py`；patch 关键词为 eagle。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/minimax_m2.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #13892 - fix: correct usage of minimax-m2 deepep moe forward
+
+- 链接：https://github.com/sgl-project/sglang/pull/13892
+- 状态/时间：`merged`，created 2025-11-25, merged 2025-11-26；作者 `yuukidach`。
+- 代码 diff 已读范围：`1` 个文件，`+3/-7`；代码面：model wrapper；关键词：deepep, expert, router, topk。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/minimax_m2.py` modified +3/-7 (10 lines); hunk: def forward_deepep(; def forward_deepep(; 符号: forward_deepep, forward_deepep
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/minimax_m2.py`；patch 关键词为 deepep, expert, router, topk。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/minimax_m2.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #14047 - Optimize topk sigmoid in minimax_m2
+
+- 链接：https://github.com/sgl-project/sglang/pull/14047
+- 状态/时间：`merged`，created 2025-11-27, merged 2025-12-02；作者 `rogeryoungh`。
+- 代码 diff 已读范围：`2` 个文件，`+38/-13`；代码面：model wrapper, MoE/router；关键词：config, expert, topk, cuda, moe, router。
+- 代码 diff 细节：
+  - `python/sglang/srt/layers/moe/topk.py` modified +38/-10 (48 lines); hunk: ); pass; 符号: TopKConfig:, __init__, forward_native, fused_topk_torch_native
+  - `python/sglang/srt/models/minimax_m2.py` modified +0/-3 (3 lines); hunk: def __init__(; 符号: __init__
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/layers/moe/topk.py`, `python/sglang/srt/models/minimax_m2.py`；patch 关键词为 config, expert, topk, cuda, moe, router。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/layers/moe/topk.py`, `python/sglang/srt/models/minimax_m2.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #14416 - Fusing RMSNormTP in minimax_m2
+
+- 链接：https://github.com/sgl-project/sglang/pull/14416
+- 状态/时间：`merged`，created 2025-12-04, merged 2025-12-30；作者 `rogeryoungh`。
+- 代码 diff 已读范围：`1` 个文件，`+189/-2`；代码面：model wrapper；关键词：config, cuda, deepep, expert, kv, moe, triton。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/minimax_m2.py` modified +189/-2 (191 lines); hunk: from typing import Iterable, Optional, Set, Tuple, Union; logger = logging.getLogger(__name__); 符号: rmsnorm_sumsq_kernel_serial, rmsnorm_apply_kernel_serial, rms_sumsq_serial, rms_apply_serial
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/minimax_m2.py`；patch 关键词为 config, cuda, deepep, expert, kv, moe。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/minimax_m2.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #16483 - Optimizing all_reduce in RMSNormTP in minimax_m2
+
+- 链接：https://github.com/sgl-project/sglang/pull/16483
+- 状态/时间：`merged`，created 2026-01-05, merged 2026-02-01；作者 `rogeryoungh`。
+- 代码 diff 已读范围：`1` 个文件，`+8/-2`；代码面：model wrapper；关键词：triton。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/minimax_m2.py` modified +8/-2 (10 lines); hunk: def rms_sumsq_serial(x1: torch.Tensor, x2: torch.Tensor) -> torch.Tensor:; def forward(; 符号: rms_sumsq_serial, forward, forward_qk
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/minimax_m2.py`；patch 关键词为 triton。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/minimax_m2.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #17826 - Support Pipeline and Data Parallelism for MiniMax-M2
+
+- 链接：https://github.com/sgl-project/sglang/pull/17826
+- 状态/时间：`open`，created 2026-01-27；作者 `rogeryoungh`。
+- 代码 diff 已读范围：`1` 个文件，`+167/-70`；代码面：model wrapper；关键词：attention, config, cuda, deepep, eagle, expert, kv, moe, processor, quant。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/minimax_m2.py` modified +167/-70 (237 lines); hunk: """Inference-only MiniMax M2 model compatible with HuggingFace weights."""; from sglang.srt.distributed import (; 符号: MiniMaxM2RMSNormTP, __init__, weight_loader, ebias_weight_loader
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/minimax_m2.py`；patch 关键词为 attention, config, cuda, deepep, eagle, expert。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/minimax_m2.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #18217 - [piecewise graph]: support MiniMax-M2
+
+- 链接：https://github.com/sgl-project/sglang/pull/18217
+- 状态/时间：`merged`，created 2026-02-04, merged 2026-02-05；作者 `hzh0425`。
+- 代码 diff 已读范围：`2` 个文件，`+28/-7`；代码面：model wrapper, quantization, kernel；关键词：config, cuda, deepep, expert, fp8, quant, router, topk。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/minimax_m2.py` modified +23/-7 (30 lines); hunk: """Inference-only MiniMax M2 model compatible with HuggingFace weights."""; def op_select_experts(self, state):; 符号: op_select_experts, op_dispatch_a, op_dispatch_b, forward
+  - `python/sglang/srt/layers/quantization/fp8_kernel.py` modified +5/-0 (5 lines); hunk: def get_w8a8_block_fp8_configs(; 符号: get_w8a8_block_fp8_configs
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/minimax_m2.py`, `python/sglang/srt/layers/quantization/fp8_kernel.py`；patch 关键词为 config, cuda, deepep, expert, fp8, quant。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；量化加载或量化 kernel 发生变化，要核对 scale、zero-point、checkpoint 命名和 fallback 行为；CUDA/Triton/C++ kernel 或 binding 发生变化，要核对 shape guard、dtype、设备后端和 benchmark。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/minimax_m2.py`, `python/sglang/srt/layers/quantization/fp8_kernel.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #19468 - fix[minimax]: support deepep with minimax models
+
+- 链接：https://github.com/sgl-project/sglang/pull/19468
+- 状态/时间：`open`，created 2026-02-27；作者 `ishandhanani`。
+- 代码 diff 已读范围：`3` 个文件，`+10/-2`；代码面：kernel；关键词：deepep, config, cuda, doc, flash, moe, spec。
+- 代码 diff 细节：
+  - `python/sglang/srt/server_args.py` modified +6/-0 (6 lines); hunk: def _handle_model_specific_adjustments(self):; 符号: _handle_model_specific_adjustments
+  - `docker/Dockerfile` modified +2/-1 (3 lines); hunk: ARG HOPPER_SBO=0
+  - `scripts/ci/cuda/ci_install_deepep.sh` modified +2/-1 (3 lines); hunk: if [ "$GRACE_BLACKWELL" = "1" ]; then
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/server_args.py`, `docker/Dockerfile`, `scripts/ci/cuda/ci_install_deepep.sh`；patch 关键词为 deepep, config, cuda, doc, flash, moe。影响判断：CUDA/Triton/C++ kernel 或 binding 发生变化，要核对 shape guard、dtype、设备后端和 benchmark。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/server_args.py`, `docker/Dockerfile`, `scripts/ci/cuda/ci_install_deepep.sh` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #19577 - [Feat] add PP Support for minimax-m2 series
+
+- 链接：https://github.com/sgl-project/sglang/pull/19577
+- 状态/时间：`merged`，created 2026-02-28, merged 2026-03-02；作者 `LuYanFCP`。
+- 代码 diff 已读范围：`1` 个文件，`+35/-7`；代码面：model wrapper；关键词：attention, config, eagle, processor, quant, spec。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/minimax_m2.py` modified +35/-7 (42 lines); hunk: from sglang.srt.layers.quantization.base_config import QuantizationConfig; def __init__(; 符号: __init__, forward, load_weights, load_weights
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/minimax_m2.py`；patch 关键词为 attention, config, eagle, processor, quant, spec。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/minimax_m2.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #19652 - [Feature] NVFP4 Marlin fallback for non-Blackwell GPUs (SM75+)
+
+- 链接：https://github.com/sgl-project/sglang/pull/19652
+- 状态/时间：`merged`，created 2026-03-02, merged 2026-04-03；作者 `Godmook`。
+- 代码 diff 已读范围：`16` 个文件，`+1410/-95`；代码面：MoE/router, quantization, kernel, scheduler/runtime, tests/benchmarks, docs/config；关键词：fp4, marlin, quant, fp8, moe, expert, config, flash, topk, triton。
+- 代码 diff 细节：
+  - `test/registered/quant/test_nvfp4_marlin_fallback.py` added +788/-0 (788 lines); hunk: +"""Tests for NVFP4 Marlin fallback on non-Blackwell GPUs (SM75+)."""; 符号: _check_requirements, _dequant_fp4_weights, _FakeLayer, TestNvfp4MarlinLinear
+  - `python/sglang/srt/layers/quantization/marlin_utils_fp4.py` added +320/-0 (320 lines); hunk: +# SPDX-License-Identifier: Apache-2.0; 符号: is_fp4_marlin_supported, should_use_fp4_marlin_fallback, nvfp4_marlin_process_scales, nvfp4_marlin_process_global_scale
+  - `python/sglang/srt/layers/quantization/modelopt_quant.py` modified +82/-7 (89 lines); hunk: is_blackwell_supported,; def get_supported_act_dtypes(cls) -> List[torch.dtype]:; 符号: get_supported_act_dtypes, get_min_capability, common_group_size, create_weights
+  - `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py` modified +66/-8 (74 lines); hunk: CompressedTensorsMoEScheme,; class CompressedTensorsW4A4Nvfp4MoE(CompressedTensorsMoEScheme):; 符号: CompressedTensorsW4A4Nvfp4MoE, __init__, get_min_capability, create_weights
+  - `python/sglang/jit_kernel/csrc/gemm/marlin_moe/marlin_template.h` modified +21/-32 (53 lines); hunk: __global__ void Marlin(; __global__ void Marlin(; 符号: void, int, int, int
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `test/registered/quant/test_nvfp4_marlin_fallback.py`, `python/sglang/srt/layers/quantization/marlin_utils_fp4.py`, `python/sglang/srt/layers/quantization/modelopt_quant.py`；patch 关键词为 fp4, marlin, quant, fp8, moe, expert。影响判断：MoE/router/top-k/expert 分支发生变化，要核对 shared/routed expert、EP/TP/DP 组合和空 token 分支；量化加载或量化 kernel 发生变化，要核对 scale、zero-point、checkpoint 命名和 fallback 行为；CUDA/Triton/C++ kernel 或 binding 发生变化，要核对 shape guard、dtype、设备后端和 benchmark；scheduler/runtime/cache 路径发生变化，要核对连续批处理、spec/PD/DP、cache 生命周期和异常分支；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载；文档或配置面发生变化，要核对 serve flags、默认值和 cookbook 命令是否与代码一致。
+- 风险与验证：回归时优先跑能覆盖 `test/registered/quant/test_nvfp4_marlin_fallback.py`, `python/sglang/srt/layers/quantization/marlin_utils_fp4.py`, `python/sglang/srt/layers/quantization/modelopt_quant.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #19995 - Add packed_modules_mapping for MiniMax-M2
+
+- 链接：https://github.com/sgl-project/sglang/pull/19995
+- 状态/时间：`merged`，created 2026-03-06, merged 2026-03-18；作者 `trevor-m`。
+- 代码 diff 已读范围：`1` 个文件，`+12/-0`；代码面：model wrapper；关键词：config, kv。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/minimax_m2.py` modified +12/-0 (12 lines); hunk: def forward(; 符号: forward, MiniMaxM2ForCausalLM, __init__
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/minimax_m2.py`；patch 关键词为 config, kv。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/minimax_m2.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #20031 - fix(minimax): support loading merged expert weights (w13) for awq
+
+- 链接：https://github.com/sgl-project/sglang/pull/20031
+- 状态/时间：`open`，created 2026-03-06；作者 `xueliangyang-oeuler`。
+- 代码 diff 已读范围：`2` 个文件，`+203/-9`；代码面：model wrapper, tests/benchmarks；关键词：config, expert, moe, spec, attention, processor, quant, test。
+- 代码 diff 细节：
+  - `tests/registered/models/test_minimax_m2_weights.py` added +145/-0 (145 lines); hunk: +import unittest; 符号: TestMiniMaxM2WeightLoading, setUp, test_load_weights_merged_w13
+  - `python/sglang/srt/models/minimax_m2.py` modified +58/-9 (67 lines); hunk: def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]]):; def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]]):; 符号: load_weights, load_weights, load_weights
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `tests/registered/models/test_minimax_m2_weights.py`, `python/sglang/srt/models/minimax_m2.py`；patch 关键词为 config, expert, moe, spec, attention, processor。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `tests/registered/models/test_minimax_m2_weights.py`, `python/sglang/srt/models/minimax_m2.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #20067 - MiniMax-M2.5 - Support dp attention, dp reduce scatter, FP4 all gather, AR fusion in prepare_attn
+
+- 链接：https://github.com/sgl-project/sglang/pull/20067
+- 状态/时间：`merged`，created 2026-03-07, merged 2026-04-10；作者 `trevor-m`。
+- 代码 diff 已读范围：`3` 个文件，`+39/-6`；代码面：model wrapper, tests/benchmarks；关键词：attention, config, cuda, expert, flash, fp4, kv, moe, processor, quant。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/minimax_m2.py` modified +25/-6 (31 lines); hunk: RowParallelLinear,; def forward_normal(; 符号: forward_normal, forward_prepare, forward_prepare, forward_core
+  - `test/registered/8-gpu-models/test_minimax_m25.py` modified +10/-0 (10 lines); hunk: def test_minimax_m25(self):; def test_minimax_m25(self):; 符号: test_minimax_m25, test_minimax_m25
+  - `python/sglang/srt/layers/layernorm.py` modified +4/-0 (4 lines); hunk: def forward_cuda(; 符号: forward_cuda
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/minimax_m2.py`, `test/registered/8-gpu-models/test_minimax_m25.py`, `python/sglang/srt/layers/layernorm.py`；patch 关键词为 attention, config, cuda, expert, flash, fp4。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/minimax_m2.py`, `test/registered/8-gpu-models/test_minimax_m25.py`, `python/sglang/srt/layers/layernorm.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #20489 - fix(dp-attn): fix issues with dp-attention for MiniMax M2 and general…
+
+- 链接：https://github.com/sgl-project/sglang/pull/20489
+- 状态/时间：`open`，created 2026-03-13；作者 `xueliangyang-oeuler`。
+- 代码 diff 已读范围：`5` 个文件，`+118/-20`；代码面：model wrapper, scheduler/runtime；关键词：attention, config, cuda, kv, cache, expert, moe, quant, test。
+- 代码 diff 细节：
+  - `PR_DESCRIPTION.md` added +78/-0 (78 lines); hunk: +## PR Motivation
+  - `python/sglang/srt/models/minimax_m2.py` modified +33/-16 (49 lines); hunk: from sglang.srt.batch_overlap.two_batch_overlap import model_forward_maybe_tbo; def rms_apply_serial(; 符号: rms_apply_serial, MiniMaxM2RMSNormTP, __init__, __init__
+  - `python/sglang/srt/mem_cache/memory_pool.py` modified +3/-2 (5 lines); hunk: def _set_kv_buffer_impl(; 符号: _set_kv_buffer_impl
+  - `python/sglang/srt/model_executor/model_runner.py` modified +2/-2 (4 lines); hunk: def _dummy_run(self, batch_size: int, run_ctx=None):; 符号: _dummy_run
+  - `python/sglang/srt/layers/rotary_embedding/base.py` modified +2/-0 (2 lines); hunk: def forward_cuda(; 符号: forward_cuda
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `PR_DESCRIPTION.md`, `python/sglang/srt/models/minimax_m2.py`, `python/sglang/srt/mem_cache/memory_pool.py`；patch 关键词为 attention, config, cuda, kv, cache, expert。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；scheduler/runtime/cache 路径发生变化，要核对连续批处理、spec/PD/DP、cache 生命周期和异常分支。
+- 风险与验证：回归时优先跑能覆盖 `PR_DESCRIPTION.md`, `python/sglang/srt/models/minimax_m2.py`, `python/sglang/srt/mem_cache/memory_pool.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #20673 - [Feature][JIT Kernel] Fused TP QK norm For Minimax
+
+- 链接：https://github.com/sgl-project/sglang/pull/20673
+- 状态/时间：`merged`，created 2026-03-16, merged 2026-04-13；作者 `DarkSharpness`。
+- 代码 diff 已读范围：`11` 个文件，`+923/-82`；代码面：model wrapper, kernel, tests/benchmarks；关键词：cuda, config, test, cache, kv, processor, spec, triton, attention, benchmark。
+- 代码 diff 细节：
+  - `python/sglang/jit_kernel/csrc/distributed/tp_qknorm.cuh` added +325/-0 (325 lines); hunk: +// Adapted from https://github.com/NVIDIA/TensorRT-LLM/pull/12163; 符号: ParallelQKNormParams, auto, KernelTrait, parameters
+  - `python/sglang/jit_kernel/benchmark/bench_tp_qknorm.py` added +170/-0 (170 lines); hunk: +from __future__ import annotations; 符号: parse_args, init_distributed, bench_one, rmsnorm_baseline
+  - `python/sglang/jit_kernel/tests/test_tp_qknorm.py` added +168/-0 (168 lines); hunk: +from __future__ import annotations; 符号: test_tp_qknorm, init_distributed, _all_gather_cat, _rmsnorm_ref
+  - `python/sglang/srt/models/minimax_m2.py` modified +113/-21 (134 lines); hunk: import logging; ); 符号: forward, fused_tp_qknorm, MiniMaxM2QKRMSNorm:, __init__
+  - `python/sglang/jit_kernel/all_reduce.py` modified +50/-6 (56 lines); hunk: import torch; def config_pull(; 符号: config_pull, _jit_custom_all_reduce_pull_module, _jit_custom_all_reduce_pull_module, _jit_custom_all_reduce_pull_module
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/jit_kernel/csrc/distributed/tp_qknorm.cuh`, `python/sglang/jit_kernel/benchmark/bench_tp_qknorm.py`, `python/sglang/jit_kernel/tests/test_tp_qknorm.py`；patch 关键词为 cuda, config, test, cache, kv, processor。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；CUDA/Triton/C++ kernel 或 binding 发生变化，要核对 shape guard、dtype、设备后端和 benchmark；测试或 benchmark 被更新，要把这些用例作为回归入口而不是只看模型能否加载。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/jit_kernel/csrc/distributed/tp_qknorm.cuh`, `python/sglang/jit_kernel/benchmark/bench_tp_qknorm.py`, `python/sglang/jit_kernel/tests/test_tp_qknorm.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #20870 - [MiniMax M2] Fix KV cache scale loading
+
+- 链接：https://github.com/sgl-project/sglang/pull/20870
+- 状态/时间：`merged`，created 2026-03-18, merged 2026-03-18；作者 `chadvoegele`。
+- 代码 diff 已读范围：`1` 个文件，`+8/-0`；代码面：model wrapper；关键词：cache, expert, kv, spec。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/minimax_m2.py` modified +8/-0 (8 lines); hunk: def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]]):; 符号: load_weights
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/minimax_m2.py`；patch 关键词为 cache, expert, kv, spec。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/minimax_m2.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #20873 - docs: add MiniMax-M2.7 and M2.7-highspeed model support
+
+- 链接：https://github.com/sgl-project/sglang/pull/20873
+- 状态/时间：`open`，created 2026-03-18；作者 `octo-patch`。
+- 代码 diff 已读范围：`2` 个文件，`+15/-3`；代码面：model wrapper, docs/config；关键词：doc, moe, expert, test。
+- 代码 diff 细节：
+  - `docs/basic_usage/minimax_m2.md` modified +14/-2 (16 lines); hunk: -# MiniMax M2.5/M2.1/M2 Usage; curl http://localhost:8000/v1/chat/completions \
+  - `docs/supported_models/text_generation/generative_models.md` modified +1/-1 (2 lines); hunk: in the GitHub search bar.
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `docs/basic_usage/minimax_m2.md`, `docs/supported_models/text_generation/generative_models.md`；patch 关键词为 doc, moe, expert, test。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；文档或配置面发生变化，要核对 serve flags、默认值和 cookbook 命令是否与代码一致。
+- 风险与验证：回归时优先跑能覆盖 `docs/basic_usage/minimax_m2.md`, `docs/supported_models/text_generation/generative_models.md` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #20905 - [NPU][ModelSlim] adapt w2 quant layer for Minimax2.5
+
+- 链接：https://github.com/sgl-project/sglang/pull/20905
+- 状态/时间：`merged`，created 2026-03-19, merged 2026-03-24；作者 `shadowxz109`。
+- 代码 diff 已读范围：`2` 个文件，`+22/-30`；代码面：model wrapper, quantization；关键词：config, moe, quant。
+- 代码 diff 细节：
+  - `python/sglang/srt/layers/quantization/modelslim/modelslim.py` modified +21/-29 (50 lines); hunk: def get_moe_scheme(; 符号: get_moe_scheme, is_layer_skipped
+  - `python/sglang/srt/models/minimax_m2.py` modified +1/-1 (2 lines); hunk: def __init__(; 符号: __init__
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/layers/quantization/modelslim/modelslim.py`, `python/sglang/srt/models/minimax_m2.py`；patch 关键词为 config, moe, quant。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；量化加载或量化 kernel 发生变化，要核对 scale、zero-point、checkpoint 命名和 fallback 行为。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/layers/quantization/modelslim/modelslim.py`, `python/sglang/srt/models/minimax_m2.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #20967 - 【BugFix】fix the bug of minimax_m2.5 model that causes repeated outputs when using tp16
+
+- 链接：https://github.com/sgl-project/sglang/pull/20967
+- 状态/时间：`merged`，created 2026-03-20, merged 2026-04-10；作者 `kingkingleeljj`。
+- 代码 diff 已读范围：`1` 个文件，`+34/-10`；代码面：model wrapper；关键词：attention, config, kv。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/minimax_m2.py` modified +34/-10 (44 lines); hunk: def rms_apply_serial(; def __init__(; 符号: rms_apply_serial, MiniMaxM2RMSNormTP, __init__, __init__
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/minimax_m2.py`；patch 关键词为 attention, config, kv。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/minimax_m2.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #20975 - fix(dp-attn): fix issues with dp-attention for MiniMax M2
+
+- 链接：https://github.com/sgl-project/sglang/pull/20975
+- 状态/时间：`open`，created 2026-03-20；作者 `xueliangyang-oeuler`。
+- 代码 diff 已读范围：`6` 个文件，`+122/-20`；代码面：model wrapper, attention/backend, scheduler/runtime；关键词：attention, config, cuda, kv, cache, expert, moe, quant, test。
+- 代码 diff 细节：
+  - `PR_DESCRIPTION.md` added +78/-0 (78 lines); hunk: +## PR Motivation
+  - `python/sglang/srt/models/minimax_m2.py` modified +33/-16 (49 lines); hunk: from sglang.kernel_api_logging import debug_kernel_api; def rms_apply_serial(; 符号: rms_apply_serial, MiniMaxM2RMSNormTP, __init__, __init__
+  - `python/sglang/srt/mem_cache/memory_pool.py` modified +3/-2 (5 lines); hunk: def _set_kv_buffer_impl(; 符号: _set_kv_buffer_impl
+  - `python/sglang/srt/layers/dp_attention.py` modified +4/-0 (4 lines); hunk: def get_attention_tp_size() -> int:; 符号: get_attention_tp_size, get_attention_tp_world_size, get_attention_cp_group
+  - `python/sglang/srt/model_executor/model_runner.py` modified +2/-2 (4 lines); hunk: def _dummy_run(self, batch_size: int, run_ctx=None):; 符号: _dummy_run
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `PR_DESCRIPTION.md`, `python/sglang/srt/models/minimax_m2.py`, `python/sglang/srt/mem_cache/memory_pool.py`；patch 关键词为 attention, config, cuda, kv, cache, expert。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射；attention、KV cache 或 backend 选择发生变化，要重点核对 prefill/decode、page size、RoPE/MLA/MQA 分支；scheduler/runtime/cache 路径发生变化，要核对连续批处理、spec/PD/DP、cache 生命周期和异常分支。
+- 风险与验证：回归时优先跑能覆盖 `PR_DESCRIPTION.md`, `python/sglang/srt/models/minimax_m2.py`, `python/sglang/srt/mem_cache/memory_pool.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #22300 - [NVIDIA] Fix FP8 gemm performance with fp16 models (MInimax-M2.5)
+
+- 链接：https://github.com/sgl-project/sglang/pull/22300
+- 状态/时间：`open`，created 2026-04-08；作者 `trevor-m`。
+- 代码 diff 已读范围：`3` 个文件，`+30/-6`；代码面：quantization；关键词：fp8, quant, triton, config, flash。
+- 代码 diff 细节：
+  - `python/sglang/srt/model_loader/utils.py` modified +20/-4 (24 lines); hunk: def post_load_weights(model: nn.Module, model_config: ModelConfig):; 符号: post_load_weights, should_deepgemm_weight_requant_ue8m0, should_deepgemm_weight_requant_ue8m0, should_async_load
+  - `python/sglang/srt/layers/quantization/fp8_utils.py` modified +5/-2 (7 lines); hunk: def flashinfer_gemm_w8a8_block_fp8_linear_with_fallback(; 符号: flashinfer_gemm_w8a8_block_fp8_linear_with_fallback
+  - `python/sglang/srt/layers/quantization/fp8.py` modified +5/-0 (5 lines); hunk: def process_weights_after_loading_block_quant(self, layer: Module) -> None:; 符号: process_weights_after_loading_block_quant
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/model_loader/utils.py`, `python/sglang/srt/layers/quantization/fp8_utils.py`, `python/sglang/srt/layers/quantization/fp8.py`；patch 关键词为 fp8, quant, triton, config, flash。影响判断：量化加载或量化 kernel 发生变化，要核对 scale、zero-point、checkpoint 命名和 fallback 行为。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/model_loader/utils.py`, `python/sglang/srt/layers/quantization/fp8_utils.py`, `python/sglang/srt/layers/quantization/fp8.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #22432 - [NPU] add split_qkv_tp_rmsnorm_rope ops for minimax2
+
+- 链接：https://github.com/sgl-project/sglang/pull/22432
+- 状态/时间：`open`，created 2026-04-09；作者 `shadowxz109`。
+- 代码 diff 已读范围：`1` 个文件，`+69/-11`；代码面：model wrapper；关键词：attention, cache, config, expert, kv, triton。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/minimax_m2.py` modified +69/-11 (80 lines); hunk: import logging; ); 符号: forward_prepare, forward_prepare_npu, forward_core, forward
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/minimax_m2.py`；patch 关键词为 attention, cache, config, expert, kv, triton。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/minimax_m2.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #22744 - [NVIDIA] Support TF32 matmul to improve MiniMax gate gemm performance
+
+- 链接：https://github.com/sgl-project/sglang/pull/22744
+- 状态/时间：`open`，created 2026-04-14；作者 `trevor-m`。
+- 代码 diff 已读范围：`3` 个文件，`+11/-0`；代码面：scheduler/runtime, docs/config；关键词：moe, cache, doc, fp8, kv。
+- 代码 diff 细节：
+  - `python/sglang/srt/server_args.py` modified +6/-0 (6 lines); hunk: class ServerArgs:; def add_cli_args(parser: argparse.ArgumentParser):; 符号: ServerArgs:, add_cli_args
+  - `python/sglang/srt/model_executor/model_runner.py` modified +4/-0 (4 lines); hunk: def __init__(; 符号: __init__
+  - `docs/advanced_features/server_arguments.md` modified +1/-0 (1 lines); hunk: Please consult the documentation below and [server_args.py](https://github.com/s
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/server_args.py`, `python/sglang/srt/model_executor/model_runner.py`, `docs/advanced_features/server_arguments.md`；patch 关键词为 moe, cache, doc, fp8, kv。影响判断：scheduler/runtime/cache 路径发生变化，要核对连续批处理、spec/PD/DP、cache 生命周期和异常分支；文档或配置面发生变化，要核对 serve flags、默认值和 cookbook 命令是否与代码一致。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/server_args.py`, `python/sglang/srt/model_executor/model_runner.py`, `docs/advanced_features/server_arguments.md` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #22934 - Minimax eplb bugfix
+
+- 链接：https://github.com/sgl-project/sglang/pull/22934
+- 状态/时间：`open`，created 2026-04-16；作者 `DaZhUUU`。
+- 代码 diff 已读范围：`1` 个文件，`+25/-0`；代码面：model wrapper；关键词：attention, config, eagle, expert, moe, quant, topk, triton。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/minimax_m2.py` modified +25/-0 (25 lines); hunk: from sglang.srt.layers.moe.ep_moe.layer import get_moe_impl_class; # Other files (custom_all_reduce.py, hf_transformers_utils.py) also use sglang.srt.utils.; 符号: op_output, get_moe_weights, MiniMaxM2Attention, __init__
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/minimax_m2.py`；patch 关键词为 attention, config, eagle, expert, moe, quant。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/minimax_m2.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #23190 - [NPU] add split_qkv_tp_rmsnorm_rope ops for minimax2 & fix eagle3 hidden states capture in dp attn mode
+
+- 链接：https://github.com/sgl-project/sglang/pull/23190
+- 状态/时间：`open`，created 2026-04-20；作者 `heziiop`。
+- 代码 diff 已读范围：`1` 个文件，`+66/-10`；代码面：model wrapper；关键词：attention, cache, config, cuda, expert, kv, triton。
+- 代码 diff 细节：
+  - `python/sglang/srt/models/minimax_m2.py` modified +66/-10 (76 lines); hunk: import logging; get_compiler_backend,; 符号: forward_prepare, forward_prepare_npu, forward_core, forward
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/models/minimax_m2.py`；patch 关键词为 attention, cache, config, cuda, expert, kv。影响判断：模型 wrapper/forward/weight-load 路径发生变化，要核对 architecture mapping、hidden-state 形状和权重名映射。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/models/minimax_m2.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+### PR #23301 - [sgl] Stream MiniMax M2 string parameters token-by-token
+
+- 链接：https://github.com/sgl-project/sglang/pull/23301
+- 状态/时间：`open`，created 2026-04-21；作者 `lujiajing1126`。
+- 代码 diff 已读范围：`1` 个文件，`+332/-280`；代码面：misc；关键词：config, spec。
+- 代码 diff 细节：
+  - `python/sglang/srt/function_call/minimax_m2.py` modified +332/-280 (612 lines); hunk: logger = logging.getLogger(__name__); class MinimaxM2Detector(BaseFormatDetector):; 符号: MinimaxM2Detector, MinimaxM2Detector, __init__, __init__
+- 支持/优化点判断：该 PR 的实际 diff 主要落在 `python/sglang/srt/function_call/minimax_m2.py`；patch 关键词为 config, spec。影响判断：改动落在杂项路径，要从文件列表反推实际影响面。
+- 风险与验证：回归时优先跑能覆盖 `python/sglang/srt/function_call/minimax_m2.py` 的模型加载/推理路径，再叠加上面的代码面专项检查；如果改动包含测试、benchmark 或 serve flag，需要把它们纳入验证。
+
+
+### 补漏和优化点排查
+
+- 已覆盖 PR 数：29；open PR 数：12。
+- 仍需跟进的 open PR：[#17826](https://github.com/sgl-project/sglang/pull/17826), [#19468](https://github.com/sgl-project/sglang/pull/19468), [#20031](https://github.com/sgl-project/sglang/pull/20031), [#20489](https://github.com/sgl-project/sglang/pull/20489), [#20873](https://github.com/sgl-project/sglang/pull/20873), [#20975](https://github.com/sgl-project/sglang/pull/20975), [#22300](https://github.com/sgl-project/sglang/pull/22300), [#22432](https://github.com/sgl-project/sglang/pull/22432), [#22744](https://github.com/sgl-project/sglang/pull/22744), [#22934](https://github.com/sgl-project/sglang/pull/22934), [#23190](https://github.com/sgl-project/sglang/pull/23190), [#23301](https://github.com/sgl-project/sglang/pull/23301)
+- 后续新增 PR 必须补齐时间线和逐 PR diff 卡片，不能只写一句标题。
+
+<!-- MODEL_PR_DIFF_AUDIT:END zh -->

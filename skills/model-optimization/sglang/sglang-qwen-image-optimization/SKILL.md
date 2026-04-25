@@ -96,3 +96,9 @@ Read `references/pr-history.md` for the diff-reviewed card of each PR. Most entr
 
 - `references/pr-history.md`: manually diff-reviewed PR cards.
 - `references/playbook.md`: symptom map, toggle matrix, and validation rules.
+
+
+## Non-Negotiable Evidence Rule
+
+Use `skills/model-optimization/model-pr-diff-dossier/SKILL.md` as the production bar.
+Every PR cited for this family must be based on diff reading, not only PR titles.

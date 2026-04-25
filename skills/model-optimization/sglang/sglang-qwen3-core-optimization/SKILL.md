@@ -99,3 +99,9 @@ Treat Qwen3 Core as the compatibility baseline:
 - PP/tied embeddings: tied and untied checkpoints, with and without `lm_head.weight`.
 - Parser: streaming and non-streaming reasoning plus `<tool_call>` before and after `</think>`.
 - Platform: CUDA H100/H200/B200/GB200, Ascend NPU, Intel XPU, Apple MLX, and AMD lanes separately.
+
+
+## Non-Negotiable Evidence Rule
+
+Use `skills/model-optimization/model-pr-diff-dossier/SKILL.md` as the production bar.
+Every PR cited for this family must be based on diff reading, not only PR titles.

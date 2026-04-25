@@ -19,6 +19,11 @@ Current evidence snapshot:
 - Parser files: `python/sglang/srt/function_call/glm4_moe_detector.py`
 - Docs/snippets: `docs/basic_usage/glm45.md`, `docs_new/cookbook/autoregressive/GLM/GLM-4.5.mdx`, `glm-45-deployment.jsx`
 
+## Non-Negotiable Evidence Rule
+
+Use `skills/model-optimization/model-pr-diff-dossier/SKILL.md` as the production bar.
+Every PR cited for this family must be based on diff reading, not only PR titles.
+
 ## PR Dossier Rule
 
 Do not summarize a GLM-4.5 optimization PR from title or search results. For every cited PR, read the actual diff first and record:

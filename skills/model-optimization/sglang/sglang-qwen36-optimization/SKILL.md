@@ -16,6 +16,11 @@ Current evidence snapshot:
 - Docs/snippet files: `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`
 - Adjacent runtime files: `qwen3_next.py`, `qwen3_5.py`, Qwen VLM processors, and Qwen3-Coder parser depending on the checkpoint path
 
+## Non-Negotiable Evidence Rule
+
+Use `skills/model-optimization/model-pr-diff-dossier/SKILL.md` as the production bar.
+Every PR cited for this family must be based on diff reading, not only PR titles.
+
 ## Before You Change Anything
 
 Capture:

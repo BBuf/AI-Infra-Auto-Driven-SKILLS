@@ -118,3 +118,9 @@ Each PR card should include:
 - A short key code fragment
 - Validation evidence or missing validation note
 - Whether the PR is current behavior, adjacent, superseded, or open radar
+
+
+## Non-Negotiable Evidence Rule
+
+Use `skills/model-optimization/model-pr-diff-dossier/SKILL.md` as the production bar.
+Every PR cited for this family must be based on diff reading, not only PR titles.
