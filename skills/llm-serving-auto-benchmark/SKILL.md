@@ -469,9 +469,13 @@ Rank candidates in this order:
 1. SLA passed
 2. highest request throughput or goodput
 3. highest output token throughput
-4. lower p99 TTFT
+4. lower mean TTFT
 5. lower p99 TPOT/ITL
 6. lower GPU count or simpler deployment if performance is close
+
+Keep the SLA gate itself unchanged. In the cookbook configs and normalized
+result schema, TTFT SLA still uses `max_p99_ttft_ms`; only the default
+cross-candidate comparison order switches to mean TTFT.
 
 ## Output Contract
 
