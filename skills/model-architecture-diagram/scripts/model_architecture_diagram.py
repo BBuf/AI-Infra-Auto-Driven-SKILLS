@@ -1009,18 +1009,18 @@ def _shape(
     dashed: bool = False,
     kind: str = "rect",
 ) -> None:
-    dash = ' stroke-dasharray="14 9"' if dashed else ""
+    dash = ' stroke-dasharray="11 8"' if dashed else ""
     if kind == "trapezoid":
         inset = min(42, max(16, w // 7))
         points = f"{x + inset},{y} {x + w - inset},{y} " f"{x + w},{y + h} {x},{y + h}"
         out.append(
             f'<polygon points="{points}" fill="{fill}" stroke="{stroke}" '
-            f'stroke-width="2"{dash}/>'
+            f'stroke-width="1.8"{dash}/>'
         )
     else:
         out.append(
             f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="{rx}" '
-            f'fill="{fill}" stroke="{stroke}" stroke-width="2"{dash}/>'
+            f'fill="{fill}" stroke="{stroke}" stroke-width="1.8"{dash}/>'
         )
     title_y = y + h / 2 + (font_size * 0.34 if subtitle is None else -4)
     out.append(
@@ -1050,7 +1050,7 @@ def _panel(
 ) -> None:
     out.append(
         f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="14" fill="none" '
-        f'stroke="{stroke}" stroke-width="2.3" stroke-dasharray="16 10"/>'
+        f'stroke="{stroke}" stroke-width="2" stroke-dasharray="13 9"/>'
     )
     out.append(
         f'<text x="{x + 18}" y="{y + 40}" '
@@ -1085,11 +1085,11 @@ def _arrow(
     y2: int,
     *,
     stroke: str = "#111111",
-    width: float = 2.2,
+    width: float = 1.8,
     dashed: bool = False,
     marker: str = "arrow",
 ) -> None:
-    dash = ' stroke-dasharray="12 8"' if dashed else ""
+    dash = ' stroke-dasharray="10 7"' if dashed else ""
     out.append(
         f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" '
         f'stroke="{stroke}" stroke-width="{width}"{dash} '
@@ -1102,11 +1102,11 @@ def _polyline(
     points: tuple[tuple[int, int], ...],
     *,
     stroke: str = "#111111",
-    width: float = 2.2,
+    width: float = 1.8,
     dashed: bool = False,
     marker: str = "arrow",
 ) -> None:
-    dash = ' stroke-dasharray="12 8"' if dashed else ""
+    dash = ' stroke-dasharray="10 7"' if dashed else ""
     point_text = " ".join(f"{x},{y}" for x, y in points)
     out.append(
         f'<polyline points="{point_text}" fill="none" stroke="{stroke}" '
@@ -1118,37 +1118,37 @@ def _plus(
     out: list[str], cx: int, cy: int, *, fill: str, stroke: str = "#111111"
 ) -> None:
     out.append(
-        f'<circle cx="{cx}" cy="{cy}" r="21" fill="{fill}" stroke="{stroke}" '
-        f'stroke-width="2"/>'
+        f'<circle cx="{cx}" cy="{cy}" r="17" fill="{fill}" stroke="{stroke}" '
+        f'stroke-width="1.8"/>'
     )
     out.append(
-        f'<line x1="{cx - 16}" y1="{cy}" x2="{cx + 16}" y2="{cy}" '
-        f'stroke="{stroke}" stroke-width="2"/>'
+        f'<line x1="{cx - 12}" y1="{cy}" x2="{cx + 12}" y2="{cy}" '
+        f'stroke="{stroke}" stroke-width="1.8"/>'
     )
     out.append(
-        f'<line x1="{cx}" y1="{cy - 16}" x2="{cx}" y2="{cy + 16}" '
-        f'stroke="{stroke}" stroke-width="2"/>'
+        f'<line x1="{cx}" y1="{cy - 12}" x2="{cx}" y2="{cy + 12}" '
+        f'stroke="{stroke}" stroke-width="1.8"/>'
     )
 
 
 def _mult(out: list[str], cx: int, cy: int, *, fill: str = "#8DD348") -> None:
     out.append(
-        f'<circle cx="{cx}" cy="{cy}" r="24" fill="{fill}" stroke="#111111" '
-        f'stroke-width="2"/>'
+        f'<circle cx="{cx}" cy="{cy}" r="20" fill="{fill}" stroke="#111111" '
+        f'stroke-width="1.8"/>'
     )
     out.append(
-        f'<line x1="{cx - 15}" y1="{cy - 15}" x2="{cx + 15}" y2="{cy + 15}" '
-        f'stroke="#111111" stroke-width="2"/>'
+        f'<line x1="{cx - 12}" y1="{cy - 12}" x2="{cx + 12}" y2="{cy + 12}" '
+        f'stroke="#111111" stroke-width="1.8"/>'
     )
     out.append(
-        f'<line x1="{cx - 15}" y1="{cy + 15}" x2="{cx + 15}" y2="{cy - 15}" '
-        f'stroke="#111111" stroke-width="2"/>'
+        f'<line x1="{cx - 12}" y1="{cy + 12}" x2="{cx + 12}" y2="{cy - 12}" '
+        f'stroke="#111111" stroke-width="1.8"/>'
     )
 
 
 def _shape_label(out: list[str], label: str, x: int, y: int) -> None:
-    for i, line in enumerate(wrap_svg_text(label, width=30)):
-        _text(out, line, x, y + i * 20, size=16)
+    for i, line in enumerate(wrap_svg_text(label, width=36)):
+        _text(out, line, x, y + i * 18, size=15)
 
 
 def _source_note(template: Template) -> str:
@@ -1483,6 +1483,71 @@ def _draw_mlp_panel(
 ) -> None:
     green = "#8DD348"
     _panel(out, x, y, w, h, title, green, font_size=30)
+    if w < 500:
+        mid = x + w // 2
+        bus_x = x + w - 28
+        shape_w = w - 95
+        left = x + 48
+        _shape(
+            out,
+            left,
+            y + h - 78,
+            shape_w,
+            52,
+            "Linear(up_proj)",
+            fill=green,
+            stroke="#169BFF",
+            font_size=20,
+        )
+        _shape(
+            out,
+            left,
+            y + h - 160,
+            shape_w,
+            52,
+            "Linear(gate_proj)",
+            fill=green,
+            stroke="#169BFF",
+            font_size=20,
+        )
+        _shape(
+            out,
+            left,
+            y + h - 242,
+            shape_w,
+            52,
+            "SiLU Activation",
+            fill=green,
+            stroke="#169BFF",
+            font_size=20,
+        )
+        _mult(out, mid, y + h - 132)
+        _shape(
+            out,
+            left,
+            y + 76,
+            shape_w,
+            52,
+            "Linear(down_proj)",
+            fill=green,
+            stroke="#169BFF",
+            font_size=20,
+        )
+        _arrow(out, mid, y + h - 12, mid, y + h - 26)
+        _arrow(out, mid, y + h - 160, mid, y + h - 190)
+        _arrow(out, mid, y + h - 190, mid, y + h - 152)
+        _arrow(out, mid, y + h - 78, mid, y + h - 112)
+        _polyline(
+            out,
+            (
+                (mid + 20, y + h - 132),
+                (bus_x, y + h - 132),
+                (bus_x, y + 128),
+                (mid, y + 128),
+            ),
+        )
+        _shape_label(out, "[seq_len, hidden_size]", x + 70, y + 57)
+        return
     mid = x + 150
     _shape(
         out,
@@ -1577,7 +1642,7 @@ def _draw_moe_panel(
         _arrow(out, router_x + 90, router_y, ex, ey, dashed=True)
         _arrow(out, ex, ey, x + w // 2, y + 70, dashed=True)
     _plus(out, x + w // 2, y + 65, fill="#2EA8F7")
-    _arrow(out, x + w // 2, y + 32, x + w // 2, y - 26)
+    _arrow(out, x + w // 2, y + 32, x + w // 2, y + 12)
 
 
 def _draw_attention_panel(
@@ -1587,6 +1652,10 @@ def _draw_attention_panel(
     red = "#F00000"
     _panel(out, x, y, w, h, title, orange, font_size=30)
     bottom_y = y + h - 82
+    attn_y = bottom_y - 375
+    attn_x = x + 240
+    attn_w = 300
+    out_x = x + w - 270
     _shape(
         out,
         x + 90,
@@ -1637,16 +1706,14 @@ def _draw_attention_panel(
     _shape(out, x + 300, bottom_y - 285, 125, 48, "Cat", fill=orange, stroke=orange)
     _shape(out, x + 530, bottom_y - 285, 125, 48, "Split", fill=orange, stroke=orange)
     _shape(out, x + 705, bottom_y - 285, 125, 48, "Cat", fill=orange, stroke=orange)
-    _shape(
-        out, x + 325, bottom_y - 375, 460, 58, "Attention", fill=orange, stroke=orange
-    )
+    _shape(out, attn_x, attn_y, attn_w, 58, "Attention", fill=orange, stroke=orange)
     _text(out, "Q", x + 210, bottom_y - 316, size=22, fill=red, weight=700)
     _text(out, "K", x + 565, bottom_y - 316, size=22, fill=red, weight=700)
     _text(out, "V", x + 745, bottom_y - 316, size=22, fill=red, weight=700)
     _shape(
         out,
-        x + 455,
-        y + 74,
+        out_x,
+        attn_y + 2,
         230,
         54,
         "Linear(O)",
@@ -1666,11 +1733,11 @@ def _draw_attention_panel(
     _arrow(out, x + 250, bottom_y - 200, x + 350, bottom_y - 237)
     _arrow(out, x + 620, bottom_y - 200, x + 592, bottom_y - 237)
     _arrow(out, x + 620, bottom_y - 200, x + 745, bottom_y - 237)
-    _arrow(out, x + 180, bottom_y - 285, x + 365, bottom_y - 317)
-    _arrow(out, x + 365, bottom_y - 285, x + 470, bottom_y - 317)
-    _arrow(out, x + 592, bottom_y - 285, x + 575, bottom_y - 317)
-    _arrow(out, x + 745, bottom_y - 285, x + 710, bottom_y - 317)
-    _arrow(out, x + 555, bottom_y - 375, x + 570, y + 128)
+    _arrow(out, x + 180, bottom_y - 285, attn_x + 45, attn_y + 58)
+    _arrow(out, x + 365, bottom_y - 285, attn_x + 115, attn_y + 58)
+    _arrow(out, x + 592, bottom_y - 285, attn_x + 205, attn_y + 58)
+    _arrow(out, x + 745, bottom_y - 285, attn_x + 275, attn_y + 58)
+    _arrow(out, attn_x + attn_w, attn_y + 29, out_x, attn_y + 29)
     _shape_label(out, "[seq_len, hidden_size]", x + 402, y + h - 20)
     _shape_label(out, "[seq_len, heads, qk_head_dim]", x + 70, bottom_y - 215)
     _shape_label(out, "[seq_len, kv_lora_rank]", x + 660, bottom_y - 104)
@@ -1829,20 +1896,44 @@ def _draw_dit_panel(
 def _draw_deepseek_v4_mhc_panel(out: list[str], x: int, y: int, w: int, h: int) -> None:
     pink = "#FB7573"
     blue = "#7288F4"
+    orange = "#FF9F1A"
     _panel(out, x, y, w, h, "MHC residual mixer", pink, font_size=28)
-    _shape(out, x + 54, y + h - 82, 165, 54, "Residual x4", fill=pink, stroke=pink)
-    _shape(out, x + 260, y + h - 82, 150, 54, "hc_pre", fill=pink, stroke=pink)
-    _shape(out, x + 82, y + h - 188, 175, 56, "RMSNorm", fill=blue, stroke="#3B82F6")
+    _shape(out, x + 58, y + h - 82, 170, 54, "Residual x4", fill=pink, stroke=pink)
+    _shape(out, x + w - 210, y + h - 82, 160, 54, "hc_pre", fill=pink, stroke=pink)
+    _shape(out, x + 82, y + h - 190, 180, 56, "RMSNorm", fill=blue, stroke="#3B82F6")
     _shape(
-        out, x + 290, y + h - 188, 150, 56, "Module", fill="#FF9F1A", stroke="#FF9F1A"
+        out,
+        x + w - 215,
+        y + h - 190,
+        165,
+        56,
+        "Module",
+        fill=orange,
+        stroke=orange,
     )
-    _shape(out, x + 148, y + 72, 180, 56, "hc_post", fill=pink, stroke=pink)
-    _arrow(out, x + 219, y + h - 55, x + 260, y + h - 55)
-    _arrow(out, x + 335, y + h - 82, x + 185, y + h - 132)
-    _arrow(out, x + 257, y + h - 160, x + 290, y + h - 160)
-    _arrow(out, x + 365, y + h - 188, x + 245, y + 128)
+    _shape(out, x + w // 2 - 92, y + 78, 184, 56, "hc_post", fill=pink, stroke=pink)
+    _arrow(out, x + 228, y + h - 55, x + w - 210, y + h - 55)
+    _polyline(
+        out,
+        (
+            (x + w - 130, y + h - 82),
+            (x + w - 130, y + h - 118),
+            (x + 172, y + h - 118),
+            (x + 172, y + h - 134),
+        ),
+    )
+    _arrow(out, x + 262, y + h - 162, x + w - 215, y + h - 162)
+    _polyline(
+        out,
+        (
+            (x + w - 132, y + h - 190),
+            (x + w - 132, y + 156),
+            (x + w // 2, y + 156),
+            (x + w // 2, y + 134),
+        ),
+    )
     _text(out, "hc_mult=4", x + 52, y + 56, size=18, fill="#EF0000", weight=700)
-    _text(out, "sinkhorn_repeat=20", x + 285, y + 56, size=16, fill="#111111")
+    _text(out, "sinkhorn_repeat=20", x + w - 210, y + 56, size=16, fill="#111111")
 
 
 def _draw_deepseek_v4_attention_panel(
@@ -1852,27 +1943,33 @@ def _draw_deepseek_v4_attention_panel(
     red = "#F00000"
     blue = "#7288F4"
     _panel(out, x, y, w, h, "Compressed MQA attention", orange, font_size=30)
-    bottom_y = y + h - 74
-    _shape(out, x + 70, bottom_y, 230, 52, "wq_a / wqkv_a", fill=orange, stroke=orange)
-    _shape(out, x + 385, bottom_y, 220, 52, "wkv / wqkv_a", fill=orange, stroke=orange)
-    _shape(out, x + 112, bottom_y - 94, 150, 50, "q_norm", fill=orange, stroke=orange)
-    _shape(out, x + 420, bottom_y - 94, 150, 50, "kv_norm", fill=orange, stroke=orange)
-    _shape(out, x + 92, bottom_y - 185, 190, 50, "wq_b", fill=orange, stroke=orange)
+    bottom_y = y + h - 88
+    q_x = x + 80
+    kv_x = x + 445
+    _shape(out, q_x, bottom_y, 250, 52, "wq_a / wqkv_a", fill=orange, stroke=orange)
+    _shape(out, kv_x, bottom_y, 250, 52, "wkv / wqkv_a", fill=orange, stroke=orange)
+    _shape(out, q_x + 45, bottom_y - 98, 160, 50, "q_norm", fill=orange, stroke=orange)
     _shape(
-        out, x + 380, bottom_y - 185, 230, 50, "KV latent", fill=orange, stroke=orange
+        out, kv_x + 45, bottom_y - 98, 160, 50, "kv_norm", fill=orange, stroke=orange
     )
-    _shape(out, x + 82, bottom_y - 278, 135, 48, "RoPE", fill=orange, stroke=orange)
-    _shape(out, x + 246, bottom_y - 278, 135, 48, "64 Q", fill=blue, stroke="#3B82F6")
-    _shape(out, x + 420, bottom_y - 278, 135, 48, "RoPE", fill=orange, stroke=orange)
-    _shape(out, x + 585, bottom_y - 278, 135, 48, "1 KV", fill=blue, stroke="#3B82F6")
-    _shape(out, x + 255, y + 100, 320, 58, "MQA / FlashMLA", fill=orange, stroke=orange)
-    _shape(out, x + 620, y + 100, 175, 58, "attn_sink", fill=red, stroke=red)
-    _shape(out, x + 342, y + 205, 205, 52, "wo_a BMM", fill=orange, stroke=orange)
-    _shape(out, x + 342, y + 300, 205, 52, "wo_b", fill=orange, stroke=orange)
+    _shape(out, q_x + 20, bottom_y - 196, 210, 50, "wq_b", fill=orange, stroke=orange)
+    _shape(out, kv_x, bottom_y - 196, 250, 50, "KV latent", fill=orange, stroke=orange)
+    _shape(out, q_x, bottom_y - 294, 140, 48, "RoPE", fill=orange, stroke=orange)
+    _shape(out, q_x + 180, bottom_y - 294, 140, 48, "64 Q", fill=blue, stroke="#3B82F6")
+    _shape(out, kv_x - 12, bottom_y - 294, 140, 48, "RoPE", fill=orange, stroke=orange)
+    _shape(
+        out, kv_x + 168, bottom_y - 294, 140, 48, "1 KV", fill=blue, stroke="#3B82F6"
+    )
+    _shape(out, x + 390, y + 116, 360, 58, "MQA / FlashMLA", fill=orange, stroke=orange)
+    _shape(out, x + 805, y + 116, 165, 58, "attn_sink", fill=red, stroke=red)
+    _shape(out, x + 455, y + 232, 230, 52, "wo_a BMM", fill=orange, stroke=orange)
+    _shape(out, x + 455, y + 330, 230, 52, "wo_b", fill=orange, stroke=orange)
+    _text(out, "Q path", q_x + 90, bottom_y + 80, size=16, fill="#555555", weight=700)
+    _text(out, "KV path", kv_x + 90, bottom_y + 80, size=16, fill="#555555", weight=700)
     _shape(
         out,
-        x + w - 235,
-        y + 215,
+        x + w - 280,
+        y + 252,
         190,
         56,
         "Compressor",
@@ -1885,8 +1982,8 @@ def _draw_deepseek_v4_attention_panel(
     )
     _shape(
         out,
-        x + w - 235,
-        y + 315,
+        x + w - 280,
+        y + 362,
         190,
         56,
         "C4 Indexer",
@@ -1900,37 +1997,55 @@ def _draw_deepseek_v4_attention_panel(
     _text(
         out,
         "compress_ratio: 0 / 4 / 128",
-        x + w - 250,
-        y + 190,
+        x + w - 330,
+        y + 225,
         size=18,
         fill=red,
         weight=700,
     )
     _text(
-        out, "ratio=4 selects top-512 sparse KV blocks", x + w - 295, y + 395, size=15
+        out, "ratio=4 selects top-512 sparse KV blocks", x + w - 365, y + 452, size=15
     )
-    _arrow(out, x + 185, bottom_y, x + 187, bottom_y - 44)
-    _arrow(out, x + 495, bottom_y, x + 495, bottom_y - 44)
-    _arrow(out, x + 187, bottom_y - 94, x + 187, bottom_y - 135)
-    _arrow(out, x + 495, bottom_y - 94, x + 495, bottom_y - 135)
-    _arrow(out, x + 187, bottom_y - 185, x + 150, bottom_y - 230)
-    _arrow(out, x + 187, bottom_y - 185, x + 313, bottom_y - 230)
-    _arrow(out, x + 495, bottom_y - 185, x + 487, bottom_y - 230)
-    _arrow(out, x + 495, bottom_y - 185, x + 652, bottom_y - 230)
-    _arrow(out, x + 150, bottom_y - 278, x + 330, y + 158)
-    _arrow(out, x + 313, bottom_y - 278, x + 390, y + 158)
-    _arrow(out, x + 487, bottom_y - 278, x + 450, y + 158)
-    _arrow(out, x + 652, bottom_y - 278, x + 505, y + 158)
-    _arrow(out, x + 575, y + 129, x + 620, y + 129)
-    _arrow(out, x + 415, y + 158, x + 445, y + 205)
-    _arrow(out, x + 445, y + 257, x + 445, y + 300)
-    _arrow(out, x + 605, bottom_y - 160, x + w - 235, y + 243, dashed=True, stroke=red)
-    _arrow(out, x + 300, bottom_y - 160, x + w - 235, y + 343, dashed=True, stroke=red)
+    _arrow(out, q_x + 125, bottom_y, q_x + 125, bottom_y - 48)
+    _arrow(out, kv_x + 125, bottom_y, kv_x + 125, bottom_y - 48)
+    _arrow(out, q_x + 125, bottom_y - 98, q_x + 125, bottom_y - 146)
+    _arrow(out, kv_x + 125, bottom_y - 98, kv_x + 125, bottom_y - 146)
+    _arrow(out, q_x + 125, bottom_y - 196, q_x + 70, bottom_y - 246)
+    _arrow(out, q_x + 125, bottom_y - 196, q_x + 250, bottom_y - 246)
+    _arrow(out, kv_x + 125, bottom_y - 196, kv_x + 58, bottom_y - 246)
+    _arrow(out, kv_x + 125, bottom_y - 196, kv_x + 238, bottom_y - 246)
+    _arrow(out, q_x + 70, bottom_y - 294, x + 445, y + 174)
+    _arrow(out, q_x + 250, bottom_y - 294, x + 520, y + 174)
+    _arrow(out, kv_x + 58, bottom_y - 294, x + 590, y + 174)
+    _arrow(out, kv_x + 238, bottom_y - 294, x + 680, y + 174)
+    _arrow(out, x + 750, y + 145, x + 805, y + 145)
+    _arrow(out, x + 570, y + 174, x + 570, y + 232)
+    _arrow(out, x + 570, y + 284, x + 570, y + 330)
+    _polyline(
+        out,
+        (
+            (kv_x + 250, bottom_y - 170),
+            (x + w - 330, bottom_y - 170),
+            (x + w - 280, y + 280),
+        ),
+        dashed=True,
+        stroke=red,
+    )
+    _polyline(
+        out,
+        (
+            (kv_x + 300, bottom_y - 270),
+            (x + w - 330, bottom_y - 270),
+            (x + w - 280, y + 390),
+        ),
+        dashed=True,
+        stroke=red,
+    )
     _shape_label(
         out,
         "q_lora_rank=1024; qk=448 noPE + 64 RoPE; v/head_dim=512",
         x + 50,
-        y + h - 10,
+        y + 82,
     )
 
 
@@ -1938,16 +2053,36 @@ def _draw_deepseek_v4_mtp_panel(out: list[str], x: int, y: int, w: int, h: int) 
     purple = "#7E2E9E"
     green = "#8DD348"
     _panel(out, x, y, w, h, "MTP draft path", purple, font_size=26)
-    _shape(out, x + 35, y + h - 74, 105, 52, "e_proj", fill=purple, stroke=purple)
-    _shape(out, x + 160, y + h - 74, 105, 52, "h_proj", fill=purple, stroke=purple)
+    _shape(
+        out,
+        x + 24,
+        y + h - 72,
+        92,
+        50,
+        "e_proj",
+        fill=purple,
+        stroke=purple,
+        font_size=18,
+    )
+    _shape(
+        out,
+        x + w - 116,
+        y + h - 72,
+        92,
+        50,
+        "h_proj",
+        fill=purple,
+        stroke=purple,
+        font_size=18,
+    )
     _plus(out, x + w // 2, y + h - 125, fill=purple)
     _shape(
-        out, x + 42, y + 150, w - 84, 56, "V4 layer", fill="#7288F4", stroke="#3B82F6"
+        out, x + 28, y + 150, w - 56, 56, "V4 layer", fill="#7288F4", stroke="#3B82F6"
     )
-    _shape(out, x + 54, y + 58, w - 108, 56, "hc_head", fill=green, stroke=green)
-    _arrow(out, x + 88, y + h - 74, x + w // 2 - 20, y + h - 125)
-    _arrow(out, x + 212, y + h - 74, x + w // 2 + 20, y + h - 125)
-    _arrow(out, x + w // 2, y + h - 149, x + w // 2, y + 206)
+    _shape(out, x + 42, y + 58, w - 84, 56, "hc_head", fill=green, stroke=green)
+    _arrow(out, x + 70, y + h - 72, x + w // 2 - 17, y + h - 125)
+    _arrow(out, x + w - 70, y + h - 72, x + w // 2 + 17, y + h - 125)
+    _arrow(out, x + w // 2, y + h - 142, x + w // 2, y + 206)
     _arrow(out, x + w // 2, y + 150, x + w // 2, y + 114)
 
 
@@ -1959,33 +2094,34 @@ def _draw_generic_details(
 ) -> None:
     tid = template.template_id
     if tid == "deepseek_v4_mhc_mqa_moe":
-        _draw_deepseek_v4_mhc_panel(out, 610, 145, 455, 315)
-        _draw_moe_panel(out, 1105, 145, 520, 315, experts="256 routed")
-        _panel(out, 1655, 145, 200, 315, "Config", "#7288F4", font_size=24)
-        _text(out, "43 layers", 1690, 245, size=19, fill="#2563EB", weight=700)
-        _text(out, "hidden=4096", 1688, 295, size=17)
-        _text(out, "vocab=129280", 1688, 342, size=17)
-        _text(out, "top-6 experts", 1688, 389, size=17)
-        _draw_deepseek_v4_attention_panel(out, 610, 520, 930, 550)
-        _draw_deepseek_v4_mtp_panel(out, 1575, 520, 280, 335)
-        _panel(out, 1575, 885, 280, 185, "MoE routing", "#3B82F6", font_size=24)
+        _draw_deepseek_v4_mhc_panel(out, 600, 155, 500, 330)
+        _draw_moe_panel(out, 1140, 155, 565, 330, experts="256 routed")
+        _panel(out, 1740, 155, 245, 330, "Config", "#7288F4", font_size=24)
+        _text(out, "43 layers", 1775, 250, size=19, fill="#2563EB", weight=700)
+        _text(out, "hidden=4096", 1774, 302, size=17)
+        _text(out, "vocab=129280", 1774, 352, size=17)
+        _text(out, "top-6 experts", 1774, 402, size=17)
+        _draw_deepseek_v4_attention_panel(out, 600, 540, 1120, 680)
+        _draw_deepseek_v4_mtp_panel(out, 1760, 540, 240, 335)
+        _panel(out, 1760, 915, 240, 245, "MoE routing", "#3B82F6", font_size=24)
         _shape(
             out,
-            1615,
-            950,
-            205,
+            1788,
+            996,
+            184,
             50,
             "sqrtsoftplus",
             fill="#3B82F6",
             stroke="#3B82F6",
-            font_size=18,
+            font_size=17,
         )
-        _text(out, "first 3 layers: hash MoE", 1595, 1038, size=17, fill="#111111")
+        _text(out, "first 3 layers:", 1785, 1082, size=17, fill="#111111")
+        _text(out, "hash MoE", 1815, 1112, size=17, fill="#111111")
         _arrow(
             out,
             anchors["ffn"][0],
             anchors["ffn"][1],
-            610,
+            600,
             305,
             dashed=True,
             stroke="#3B82F6",
@@ -1994,8 +2130,8 @@ def _draw_generic_details(
             out,
             anchors["attention"][0],
             anchors["attention"][1],
-            610,
-            800,
+            600,
+            875,
             dashed=True,
             stroke="#F59E0B",
         )
@@ -2414,15 +2550,15 @@ def _draw_generic_details(
 
 
 def svg_for(model: str, template: Template) -> str:
-    width = 1900
-    height = 1160
+    width = 2048
+    height = 1280
     primary = primary_style(model, template)
     title = f"{model} Architecture"
     title_font = max(30, min(38, int(2600 / max(len(title), 1))))
     out: list[str] = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">',
         "<defs>",
-        '<marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L10,5 L0,10 z" fill="#111111"/></marker>',
+        '<marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,4 L0,8 z" fill="#111111"/></marker>',
         "</defs>",
         '<rect class="architecture-grid" width="100%" height="100%" fill="#FFFFFF"/>',
         f'<text x="{width // 2}" y="66" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="{title_font}" font-weight="700" fill="#111111">{escape(title)}</text>',
@@ -2435,15 +2571,15 @@ def svg_for(model: str, template: Template) -> str:
         out,
         "context / vocab: read from concrete model config when refining",
         96,
-        1135,
+        height - 32,
         size=17,
         weight=700,
     )
     _text(
         out,
         "Generated diagram: module-level; public originals are returned unchanged when available",
-        1280,
-        1135,
+        width - 620,
+        height - 32,
         size=14,
         fill="#666666",
     )
