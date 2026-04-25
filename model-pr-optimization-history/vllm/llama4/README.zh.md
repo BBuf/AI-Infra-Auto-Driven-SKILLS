@@ -6,7 +6,6 @@
 - 源码基线: `vllm-project/vllm` 当前追溯 worktree commit `95995bbef8`
 - PR 收集规则: 先从模型实现、配置、processor、parser、docs/tests 等相关文件执行 `git log --name-only -- <model-files>`，再按 commit subject 的模型关键词过滤，最后用 GitHub Pull Request files API 读取每个 PR 的最终 diff。
 - 额外保留规则: 原 history/skill 已显式引用但未出现在当前实现文件 git trace 中的 PR 会保留，并在卡片里标注来源。
-- diffusion 相关模型已从本目录剔除，不再纳入模型优化 skill/history。
 
 ## 模型实现文件覆盖
 
@@ -26,8 +25,8 @@
 ## PR 覆盖总览
 
 - git 追溯 PR 数: 37
-- 原文档显式引用补充 PR 数: 2
-- 当前文档总 PR 数: 39
+- 原文档显式引用补充 PR 数: 3
+- 当前文档总 PR 数: 40
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -59,6 +58,7 @@
 | 2025-08-13 | [#22701](https://github.com/vllm-project/vllm/pull/22701) | merged | Fix cuda illegal mem access with Llama4 TP8 + rms_norm custom op | `vllm/model_executor/models/llama4.py` |
 | 2025-08-19 | [#22691](https://github.com/vllm-project/vllm/pull/22691) | merged | [bug fix] Fix llama4 spec decoding | `vllm/model_executor/models/llama4.py` |
 | 2025-08-28 | [#22021](https://github.com/vllm-project/vllm/pull/22021) | merged | Migrate Llama4ImagePatchInputs to TensorSchema | `vllm/model_executor/models/mllama4.py` |
+| 2025-09-11 | [#24444](https://github.com/vllm-project/vllm/pull/24444) | merged | [Bugfix] Fix platform-specific routing in CustomOp implementations | `vllm/model_executor/layers/rotary_embedding/mrope.py`, `vllm/model_executor/layers/rotary_embedding/deepseek_scaling_rope.py`, `vllm/model_executor/layers/rotary_embedding/dual_chunk_rope.py` |
 | 2025-09-30 | [#25889](https://github.com/vllm-project/vllm/pull/25889) | merged | [Llama4] [multimodal] Fix misplaced dtype cast of `cos_sin_cache` in `Llama4VisionRotaryEmbedding` | `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py` |
 | 2025-10-06 | [#25961](https://github.com/vllm-project/vllm/pull/25961) | merged | Support llama3 eagle3 head with llama4 verifier | `vllm/model_executor/models/mllama4.py` |
 | 2025-10-14 | [#26790](https://github.com/vllm-project/vllm/pull/26790) | merged | llama4_vision_rope: add HIP override to accept (q, k) and avoid (positions, q, k) mismatch | `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py` |
@@ -83,7 +83,7 @@
 - 状态/时间: merged / 2025-04-06
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 35 个文件，+2369/-142，可读 patch 3141 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 补齐模型支持入口或运行时能力，标题为「[Model] Support Llama4 in vLLM」，变更集中在 `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`, `vllm/model_executor/layers/fused_moe/configs/E=16,N=1024,device_name=AMD_Instinct_MI300X.json`。PR 描述补充为：Add the support for Llama4 Scout (17B x 16 Experts) and Maverick (17B x 128 Experts) in vLLM. Using 8xH100, vLLM can serve Scout with 1M context and Maverick with about 430K. Us...
+- 动机: 标题「[Model] Support Llama4 in vLLM」；模型线: Llama 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`, `vllm/model_executor/layers/fused_moe/configs/E=16,N=1024,device_name=AMD_Instinct_MI300X.json`；PR 正文摘要: Add the support for Llama4 Scout (17B x 16 Experts) and Maverick (17B x 128 Experts) in vLLM. Using 8xH100, vLLM can serve Scout with 1M context and Maverick with about 430K. Us...。
 - 实现要点: `vllm/model_executor/models/mllama4.py` added +886/-0 (886 lines); hunks: -0,0 +1,886; symbols: Llama4ImagePatchInputs, Llama4VisionMLP, __init__, forward，涉及 `Llama4ImagePatchInputs, Llama4VisionMLP, __init__`；`vllm/model_executor/models/llama4.py` added +530/-0 (530 lines); hunks: -0,0 +1,530; symbols: Llama4MoE, custom_routing_function, __init__, forward，涉及 `Llama4MoE, custom_routing_function, __init__`；`vllm/model_executor/layers/fused_moe/configs/E=16,N=1024,device_name=AMD_Instinct_MI300X.json` added +200/-0 (200 lines); hunks: -0,0 +1,200；`tests/models/multimodal/processing/test_llama4.py` added +99/-0 (99 lines); hunks: -0,0 +1,99; symbols: test_processor_override，涉及 `test_processor_override`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/mllama4.py` added +886/-0 (886 lines); hunks: -0,0 +1,886; symbols: Llama4ImagePatchInputs, Llama4VisionMLP, __init__, forward
@@ -123,9 +123,9 @@ diff -- vllm/model_executor/layers/fused_moe/configs/E=16,N=1024,device_name=AMD
 
 - 链接: https://github.com/vllm-project/vllm/pull/16113
 - 状态/时间: merged / 2025-04-07
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/processing/test_llama4.py`, `vllm/model_executor/models/llama4.py`, `vllm/model_executor/models/mllama4.py`；关联提交 `55dcce91df15`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/processing/test_llama4.py`, `vllm/model_executor/models/llama4.py`, `vllm/model_executor/models/mllama4.py`；关联提交 `55dcce91df15`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 43 个文件，+2436/-155，可读 patch 3350 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 补齐模型支持入口或运行时能力，标题为「Upstream Llama4 Support to Main」，变更集中在 `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`, `tests/models/multimodal/processing/test_llama4.py`。PR 描述补充为：As a follow up of https://github.com/vllm-project/vllm/pull/16104, we upstream the Llama4 support to the main branch. The goal of this PR: - Support the llama4 - Clean up some h...
+- 动机: 标题「Upstream Llama4 Support to Main」；模型线: Llama 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`, `tests/models/multimodal/processing/test_llama4.py`；PR 正文摘要: As a follow up of https://github.com/vllm-project/vllm/pull/16104, we upstream the Llama4 support to the main branch. The goal of this PR: - Support the llama4 - Clean up some h...。
 - 实现要点: `vllm/model_executor/models/mllama4.py` added +895/-0 (895 lines); hunks: -0,0 +1,895; symbols: Llama4ImagePatchInputs, Llama4VisionMLP, __init__, forward，涉及 `Llama4ImagePatchInputs, Llama4VisionMLP, __init__`；`vllm/model_executor/models/llama4.py` added +531/-0 (531 lines); hunks: -0,0 +1,531; symbols: Llama4MoE, custom_routing_function, __init__, forward，涉及 `Llama4MoE, custom_routing_function, __init__`；`tests/models/multimodal/processing/test_llama4.py` added +99/-0 (99 lines); hunks: -0,0 +1,99; symbols: test_processor_override，涉及 `test_processor_override`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/mllama4.py` added +895/-0 (895 lines); hunks: -0,0 +1,895; symbols: Llama4ImagePatchInputs, Llama4VisionMLP, __init__, forward
@@ -163,9 +163,9 @@ diff -- tests/models/multimodal/processing/test_llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/16201
 - 状态/时间: merged / 2025-04-07
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mllama4.py`；关联提交 `ed636d99caa0`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mllama4.py`；关联提交 `ed636d99caa0`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+4/-3，可读 patch 22 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 调整模型相关实现，标题为「[Misc] Move Llama 4 projector call into encoder execution」，变更集中在 `vllm/model_executor/models/mllama4.py`。PR 描述补充为：On vLLM we consider encoder execution to generate multimodal embeddings ready to be merged into text embeddings, thus it often includes the projector call even though it's not p...
+- 动机: 标题「[Misc] Move Llama 4 projector call into encoder execution」；模型线: Llama 4；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/mllama4.py`；PR 正文摘要: On vLLM we consider encoder execution to generate multimodal embeddings ready to be merged into text embeddings, thus it often includes the projector call even though it's not p...。
 - 实现要点: `vllm/model_executor/models/mllama4.py` modified +4/-3 (7 lines); hunks: -760,6 +760,8 @@ def _process_image_input(; -791,10 +793,9 @@ def get_input_embeddings(; symbols: _process_image_input, get_multimodal_embeddings, get_input_embeddings，涉及 `_process_image_input, get_multimodal_embeddings, get_input_embeddings`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/mllama4.py` modified +4/-3 (7 lines); hunks: -760,6 +760,8 @@ def _process_image_input(; -791,10 +793,9 @@ def get_input_embeddings(; symbols: _process_image_input, get_multimodal_embeddings, get_input_embeddings
@@ -190,9 +190,9 @@ diff -- vllm/model_executor/models/mllama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/16311
 - 状态/时间: merged / 2025-04-09
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `ec7da6fcf32f`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `ec7da6fcf32f`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+7/-12，可读 patch 33 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 修复已暴露的启动、加载、解析或数值问题，标题为「[BugFix] llama4 qknorm should be not shared across head」，变更集中在 `vllm/model_executor/models/llama4.py`。PR 描述补充为：QKNorm should not be across head, we need to do qknorm per head, score goes up from 0.6858 to 0.7153. This also resovles TP=4 Accuracy Issue https://github.com/vllm-project/vllm...
+- 动机: 标题「[BugFix] llama4 qknorm should be not shared across head」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/llama4.py`；PR 正文摘要: QKNorm should not be across head, we need to do qknorm per head, score goes up from 0.6858 to 0.7153. This also resovles TP=4 Accuracy Issue https://github.com/vllm-project/vllm...。
 - 实现要点: `vllm/model_executor/models/llama4.py` modified +7/-12 (19 lines); hunks: -155,14 +155,8 @@ def __init__(self,; -226,10 +220,11 @@ def forward(; symbols: __init__, forward，涉及 `__init__, forward`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/llama4.py` modified +7/-12 (19 lines); hunks: -155,14 +155,8 @@ def __init__(self,; -226,10 +220,11 @@ def forward(; symbols: __init__, forward
@@ -217,9 +217,9 @@ diff -- vllm/model_executor/models/llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/16365
 - 状态/时间: merged / 2025-04-10
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mllama4.py`；关联提交 `61de3ef74b9c`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mllama4.py`；关联提交 `61de3ef74b9c`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+26/-7，可读 patch 84 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 补强部署文档、测试或 CI 验证面，标题为「[Model] Remove image mm limit for LLaMa4」，变更集中在 `vllm/model_executor/models/mllama4.py`。PR 描述补充为：Follow up in https://github.com/vllm-project/vllm/pull/16104 to remove the hard limit. Added some tests to allow testing more images in vision_language_multi_image.py. Default d...
+- 动机: 标题「[Model] Remove image mm limit for LLaMa4」；模型线: Llama 4；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/mllama4.py`；PR 正文摘要: Follow up in https://github.com/vllm-project/vllm/pull/16104 to remove the hard limit. Added some tests to allow testing more images in vision_language_multi_image.py. Default d...。
 - 实现要点: `vllm/model_executor/models/mllama4.py` modified +3/-1 (4 lines); hunks: -477,7 +477,9 @@ def get_hf_processor(self, **kwargs: object) -> Llama4Proces...; symbols: get_hf_processor, get_supported_mm_limits, get_patch_per_chunk，涉及 `get_hf_processor, get_supported_mm_limits, get_patch_per_chunk`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/mllama4.py` modified +3/-1 (4 lines); hunks: -477,7 +477,9 @@ def get_hf_processor(self, **kwargs: object) -> Llama4Proces...; symbols: get_hf_processor, get_supported_mm_limits, get_patch_per_chunk
@@ -242,9 +242,9 @@ diff -- vllm/model_executor/models/mllama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/16439
 - 状态/时间: merged / 2025-04-11
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `99ef59cf7f93`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `99ef59cf7f93`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+6/-2，可读 patch 18 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 补齐模型支持入口或运行时能力，标题为「[Llama4] Enable attention temperature tuning by default for long context (>32k)」，变更集中在 `vllm/model_executor/models/llama4.py`。PR 描述补充为：Attention temperature tuning (on nope layers) improves accuracy on long context (>32k) tasks. Enabling it by default for long context unless explicitly disabled by the user. Eva...
+- 动机: 标题「[Llama4] Enable attention temperature tuning by default for long context (>32k)」；模型线: Llama 4；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/llama4.py`；PR 正文摘要: Attention temperature tuning (on nope layers) improves accuracy on long context (>32k) tasks. Enabling it by default for long context unless explicitly disabled by the user. Eva...。
 - 实现要点: `vllm/model_executor/models/llama4.py` modified +6/-2 (8 lines); hunks: -467,11 +467,15 @@ class Llama4ForCausalLM(LlamaForCausalLM):; symbols: Llama4ForCausalLM, __init__，涉及 `Llama4ForCausalLM, __init__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/llama4.py` modified +6/-2 (8 lines); hunks: -467,11 +467,15 @@ class Llama4ForCausalLM(LlamaForCausalLM):; symbols: Llama4ForCausalLM, __init__
@@ -269,9 +269,9 @@ diff -- vllm/model_executor/models/llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/16463
 - 状态/时间: merged / 2025-04-11
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `examples/tool_chat_template_llama4_pythonic.jinja`；关联提交 `16eda8c43a9d`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `examples/tool_chat_template_llama4_pythonic.jinja`；关联提交 `16eda8c43a9d`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+182/-2，可读 patch 223 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 修复已暴露的启动、加载、解析或数值问题，标题为「[Frontend] Added chat templates for LLaMa4 pythonic tool calling」，变更集中在 `examples/tool_chat_template_llama4_pythonic.jinja`。PR 描述补充为：# Summary Fixing tool calling related chat templates for llama4. LLaMa4 followed similar pythonic format. Co-authored with @wukaixingxp. Tool call messages and tool response mes...
+- 动机: 标题「[Frontend] Added chat templates for LLaMa4 pythonic tool calling」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `examples/tool_chat_template_llama4_pythonic.jinja`；PR 正文摘要: Fixing tool calling related chat templates for llama4. LLaMa4 followed similar pythonic format. Co-authored with @wukaixingxp. Tool call messages and tool response messages shou...。
 - 实现要点: `examples/tool_chat_template_llama4_pythonic.jinja` added +139/-0 (139 lines); hunks: -0,0 +1,139。
 - 代码 diff 细节:
   - `examples/tool_chat_template_llama4_pythonic.jinja` added +139/-0 (139 lines); hunks: -0,0 +1,139
@@ -296,9 +296,9 @@ diff -- examples/tool_chat_template_llama4_pythonic.jinja
 
 - 链接: https://github.com/vllm-project/vllm/pull/16512
 - 状态/时间: merged / 2025-04-12
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `bd6028d6b0bb`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `bd6028d6b0bb`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+11/-2，可读 patch 31 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 优化关键推理路径或后端选择，标题为「Optimized topk for topk=1 (Llama-4)」，变更集中在 `vllm/model_executor/models/llama4.py`。PR 描述补充为：Clear speedup for latency case, adapted from https://github.com/sgl-project/sglang/commit/86a876d883a7c7a0e2b0fca5ef86e20ab92c0694 (thank you!) Llama Scout FP8 on 2xH100, input/...
+- 动机: 标题「Optimized topk for topk=1 (Llama-4)」；模型线: Llama 4；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/llama4.py`；PR 正文摘要: Clear speedup for latency case, adapted from https://github.com/sgl-project/sglang/commit/86a876d883a7c7a0e2b0fca5ef86e20ab92c0694 (thank you!) Llama Scout FP8 on 2xH100, input/...。
 - 实现要点: `vllm/model_executor/models/llama4.py` modified +2/-2 (4 lines); hunks: -37,7 +37,7; -50,7 +50,7 @@ def custom_routing_function(; symbols: custom_routing_function，涉及 `custom_routing_function`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/llama4.py` modified +2/-2 (4 lines); hunks: -37,7 +37,7; -50,7 +50,7 @@ def custom_routing_function(; symbols: custom_routing_function
@@ -322,9 +322,9 @@ diff -- vllm/model_executor/models/llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/16801
 - 状态/时间: merged / 2025-04-18
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `7eb42556281d`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `7eb42556281d`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+6/-9，可读 patch 58 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 补齐模型支持入口或运行时能力，标题为「[BugFix] Accuracy fix for llama4 int4 - improperly casted scales」，变更集中在 `vllm/model_executor/models/llama4.py`。PR 描述补充为：A few MoE fixes: 1) Scales where fp16/bf16 but were being casted to float unsafely. Add a check by using `.data_ptr ()` 2) Fix `AttributeError: 'FusedMoE' object has no attribut...
+- 动机: 标题「[BugFix] Accuracy fix for llama4 int4 - improperly casted scales」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/llama4.py`；PR 正文摘要: A few MoE fixes: 1) Scales where fp16/bf16 but were being casted to float unsafely. Add a check by using `.data_ptr ()` 2) Fix `AttributeError: 'FusedMoE' object has no attribut...。
 - 实现要点: `vllm/model_executor/models/llama4.py` modified +2/-2 (4 lines); hunks: -51,8 +51,8 @@ def custom_routing_function(; symbols: custom_routing_function, __init__，涉及 `custom_routing_function, __init__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/llama4.py` modified +2/-2 (4 lines); hunks: -51,8 +51,8 @@ def custom_routing_function(; symbols: custom_routing_function, __init__
@@ -347,9 +347,9 @@ diff -- vllm/model_executor/models/llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/16746
 - 状态/时间: merged / 2025-04-18
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mllama4.py`；关联提交 `e31045f95ca0`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mllama4.py`；关联提交 `e31045f95ca0`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+3/-3，可读 patch 21 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 补齐模型支持入口或运行时能力，标题为「[Bugfix] fix pp for llama4」，变更集中在 `vllm/model_executor/models/mllama4.py`。PR 描述补充为：This PR fixes PP for llama4 (https://github.com/vllm-project/vllm/issues/16385) Loading language model with architecture to support PP verification and correct the prefix to sep...
+- 动机: 标题「[Bugfix] fix pp for llama4」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/mllama4.py`；PR 正文摘要: This PR fixes PP for llama4 (https://github.com/vllm-project/vllm/issues/16385) Loading language model with architecture to support PP verification and correct the prefix to sep...。
 - 实现要点: `vllm/model_executor/models/mllama4.py` modified +3/-3 (6 lines); hunks: -672,9 +672,9 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; -824,7 +824,7 @@ def load_weights(self, weights: Iterable[Tuple[str,; symbols: __init__, load_weights，涉及 `__init__, load_weights`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/mllama4.py` modified +3/-3 (6 lines); hunks: -672,9 +672,9 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; -824,7 +824,7 @@ def load_weights(self, weights: Iterable[Tuple[str,; symbols: __init__, load_weights
@@ -374,9 +374,9 @@ diff -- vllm/model_executor/models/mllama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/16428
 - 状态/时间: merged / 2025-04-24
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `examples/tool_chat_template_llama4_json.jinja`；关联提交 `05e1fbfc52ca`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `examples/tool_chat_template_llama4_json.jinja`；关联提交 `05e1fbfc52ca`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+139/-1，可读 patch 172 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 补齐模型支持入口或运行时能力，标题为「Add chat template for Llama 4 models」，变更集中在 `examples/tool_chat_template_llama4_json.jinja`。PR 描述补充为：The main differences are that some token have changed, e.g. start_header_id was changed to header_start. Now the models also support multiple tool calls although one of our para...
+- 动机: 标题「Add chat template for Llama 4 models」；模型线: Llama 4；类别: 模型支持/运行时入口；主要 diff: `examples/tool_chat_template_llama4_json.jinja`；PR 正文摘要: The main differences are that some token have changed, e.g. start_header_id was changed to header_start. Now the models also support multiple tool calls although one of our para...。
 - 实现要点: `examples/tool_chat_template_llama4_json.jinja` added +116/-0 (116 lines); hunks: -0,0 +1,116。
 - 代码 diff 细节:
   - `examples/tool_chat_template_llama4_json.jinja` added +116/-0 (116 lines); hunks: -0,0 +1,116
@@ -401,9 +401,9 @@ diff -- examples/tool_chat_template_llama4_json.jinja
 
 - 链接: https://github.com/vllm-project/vllm/pull/17315
 - 状态/时间: merged / 2025-04-29
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `b4ac4fa04da1`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `b4ac4fa04da1`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+2/-2，可读 patch 11 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 调整模型相关实现，标题为「[model] make llama4 compatible with pure dense layers」，变更集中在 `vllm/model_executor/models/llama4.py`。PR 描述补充为：make llama4 compatible with pure dense layers when interleave_moe_layer_step == 0 (no moe layers)
+- 动机: 标题「[model] make llama4 compatible with pure dense layers」；模型线: Llama 4；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/llama4.py`；PR 正文摘要: make llama4 compatible with pure dense layers when interleave_moe_layer_step == 0 (no moe layers)。
 - 实现要点: `vllm/model_executor/models/llama4.py` modified +2/-2 (4 lines); hunks: -273,8 +273,8 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/llama4.py` modified +2/-2 (4 lines); hunks: -273,8 +273,8 @@ def __init__(; symbols: __init__
@@ -426,9 +426,9 @@ diff -- vllm/model_executor/models/llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/17917
 - 状态/时间: merged / 2025-05-22
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `examples/tool_chat_template_llama4_pythonic.jinja`；关联提交 `c91fe7b1b9c4`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `examples/tool_chat_template_llama4_pythonic.jinja`；关联提交 `c91fe7b1b9c4`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+541/-72，可读 patch 720 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 修复已暴露的启动、加载、解析或数值问题，标题为「[Frontend][Bug Fix] Update llama4 pythonic jinja template and llama4_pythonic parser」，变更集中在 `examples/tool_chat_template_llama4_pythonic.jinja`。PR 描述补充为：Change the llama4 pythonic template and small fix on the edge case where llama4 model may output ` ` unexpectedly. BFCL test result: | Name | reported | Base_vllm | Pythonic_vll...
+- 动机: 标题「[Frontend][Bug Fix] Update llama4 pythonic jinja template and llama4_pythonic parser」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `examples/tool_chat_template_llama4_pythonic.jinja`；PR 正文摘要: Change the llama4 pythonic template and small fix on the edge case where llama4 model may output ` ` unexpectedly. BFCL test result: | Name | reported | Base_vllm | Pythonic_vll...。
 - 实现要点: `examples/tool_chat_template_llama4_pythonic.jinja` modified +36/-64 (100 lines); hunks: -1,85 +1,51; -91,10 +57,12。
 - 代码 diff 细节:
   - `examples/tool_chat_template_llama4_pythonic.jinja` modified +36/-64 (100 lines); hunks: -1,85 +1,51; -91,10 +57,12
@@ -453,9 +453,9 @@ diff -- examples/tool_chat_template_llama4_pythonic.jinja
 
 - 链接: https://github.com/vllm-project/vllm/pull/18368
 - 状态/时间: merged / 2025-06-02
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mllama4.py`；关联提交 `ebb1ec931871`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mllama4.py`；关联提交 `ebb1ec931871`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+214/-68，可读 patch 496 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 补齐模型支持入口或运行时能力，标题为「[Model] enable data parallel for Llama4 vision encoder」，变更集中在 `vllm/model_executor/models/mllama4.py`。PR 描述补充为：**Summary:** Llama4 vision encoder in dp8 is ~3x as fast as in tp8, especially when handling a large number of input images (eg. 9 images per request). Add an enable_vision_enco...
+- 动机: 标题「[Model] enable data parallel for Llama4 vision encoder」；模型线: Llama 4；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/mllama4.py`；PR 正文摘要: **Summary:** Llama4 vision encoder in dp8 is ~3x as fast as in tp8, especially when handling a large number of input images (eg. 9 images per request). Add an enable_vision_enco...。
 - 实现要点: `vllm/model_executor/models/mllama4.py` modified +167/-68 (235 lines); hunks: -34,6 +34,7; -49,6 +50,7; symbols: Llama4ImagePatchInputs, Llama4VisionMLP, __init__, pixel_shuffle，涉及 `Llama4ImagePatchInputs, Llama4VisionMLP, __init__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/mllama4.py` modified +167/-68 (235 lines); hunks: -34,6 +34,7; -49,6 +50,7; symbols: Llama4ImagePatchInputs, Llama4VisionMLP, __init__, pixel_shuffle
@@ -480,9 +480,9 @@ diff -- vllm/model_executor/models/mllama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/19997
 - 状态/时间: merged / 2025-06-25
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `1afa9948f593`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `1afa9948f593`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-2，可读 patch 11 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 补强部署文档、测试或 CI 验证面，标题为「[Llama4] Update `attn_temperature_tuning`」，变更集中在 `vllm/model_executor/models/llama4.py`。PR 描述补充为：## Purpose Since https://github.com/huggingface/transformers/pull/37501 landed It's the below on HF now: So we no longer need this comment ## Test Plan Start the model on TP=8 o...
+- 动机: 标题「[Llama4] Update `attn_temperature_tuning`」；模型线: Llama 4；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/llama4.py`；PR 正文摘要: Since https://github.com/huggingface/transformers/pull/37501 landed It's the below on HF now: So we no longer need this comment Start the model on TP=8 on H100, loaded fine Comm...。
 - 实现要点: `vllm/model_executor/models/llama4.py` modified +1/-2 (3 lines); hunks: -148,9 +148,8 @@ def __init__(self,; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/llama4.py` modified +1/-2 (3 lines); hunks: -148,9 +148,8 @@ def __init__(self,; symbols: __init__
@@ -506,7 +506,7 @@ diff -- vllm/model_executor/models/llama4.py
 - 状态/时间: merged / 2025-07-12
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`, `vllm/model_executor/models/mllama4.py`；关联提交 `4afe687a8291`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+501/-35，可读 patch 693 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 补齐模型支持入口或运行时能力，标题为「Enable ModelOpt Llama4 fp8 checkpoint deployment」，变更集中在 `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`。PR 描述补充为：## Essential Elements of an Effective PR Description Checklist - [x] The purpose of the PR, such as "Fix some issue (link existing issues this PR will resolve)". - [x] The test...
+- 动机: 标题「Enable ModelOpt Llama4 fp8 checkpoint deployment」；模型线: Llama 4；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`；PR 正文未提供可用摘要。
 - 实现要点: `vllm/model_executor/models/mllama4.py` modified +144/-20 (164 lines); hunks: -717,6 +717,7 @@ class Llama4ForConditionalGeneration(nn.Module, SupportsMult...; -902,32 +903,109 @@ def _consolidate_qkv_weights(; symbols: Llama4ForConditionalGeneration, _consolidate_qkv_weights, load_weights, _rename_weight_for_modelopt_checkpoint，涉及 `Llama4ForConditionalGeneration, _consolidate_qkv_weights, load_weights`；`vllm/model_executor/models/llama4.py` modified +55/-4 (59 lines); hunks: -35,7 +35,8; -432,12 +433,24 @@ def load_weights(self, weights: Iterable[tuple[str,; symbols: load_weights，涉及 `load_weights`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/mllama4.py` modified +144/-20 (164 lines); hunks: -717,6 +717,7 @@ class Llama4ForConditionalGeneration(nn.Module, SupportsMult...; -902,32 +903,109 @@ def _consolidate_qkv_weights(; symbols: Llama4ForConditionalGeneration, _consolidate_qkv_weights, load_weights, _rename_weight_for_modelopt_checkpoint
@@ -542,7 +542,7 @@ diff -- vllm/model_executor/models/llama4.py
 - 状态/时间: merged / 2025-07-16
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4_eagle.py`；关联提交 `c11013db8b76`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+258/-18，可读 patch 363 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 补齐模型支持入口或运行时能力，标题为「[Meta] Llama4 EAGLE Support」，变更集中在 `vllm/model_executor/models/llama4_eagle.py`。PR 描述补充为：## Purpose Support EAGLE speculative decoding with dense-only draft model for Llama4, using official Meta based support Original Author: @zixi-qi ## Test Plan Ran with a uploade...
+- 动机: 标题「[Meta] Llama4 EAGLE Support」；模型线: Llama 4；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/llama4_eagle.py`；PR 正文摘要: Support EAGLE speculative decoding with dense-only draft model for Llama4, using official Meta based support Original Author: @zixi-qi Ran with a uploaded scout based eagle to t...。
 - 实现要点: `vllm/model_executor/models/llama4_eagle.py` added +214/-0 (214 lines); hunks: -0,0 +1,214; symbols: LlamaModel, __init__, forward, load_weights，涉及 `LlamaModel, __init__, forward`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/llama4_eagle.py` added +214/-0 (214 lines); hunks: -0,0 +1,214; symbols: LlamaModel, __init__, forward, load_weights
@@ -567,9 +567,9 @@ diff -- vllm/model_executor/models/llama4_eagle.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/21499
 - 状态/时间: merged / 2025-07-30
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `ff08e51940a7`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `ff08e51940a7`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+219/-70，可读 patch 432 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 修复已暴露的启动、加载、解析或数值问题，标题为「[NVIDIA] Fix Llama4 Scout FP4 functionality issues」，变更集中在 `vllm/model_executor/models/llama4.py`。PR 描述补充为：Fix the weight loading issues and accuray issues when using the NVIDIA ModelOpt Llama4 Scout FP4 model. ## Essential Elements of an Effective PR Description Checklist - [x] The...
+- 动机: 标题「[NVIDIA] Fix Llama4 Scout FP4 functionality issues」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/llama4.py`；PR 正文摘要: Fix the weight loading issues and accuray issues when using the NVIDIA ModelOpt Llama4 Scout FP4 model.。
 - 实现要点: `vllm/model_executor/models/llama4.py` modified +205/-67 (272 lines); hunks: -342,34 +342,94 @@ def load_moe_expert_weights(; -382,6 +442,9 @@ def load_moe_expert_weights(; symbols: load_moe_expert_weights, load_weights，涉及 `load_moe_expert_weights, load_weights`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/llama4.py` modified +205/-67 (272 lines); hunks: -342,34 +342,94 @@ def load_moe_expert_weights(; -382,6 +442,9 @@ def load_moe_expert_weights(; symbols: load_moe_expert_weights, load_weights
@@ -594,9 +594,9 @@ diff -- vllm/model_executor/models/llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/20788
 - 状态/时间: merged / 2025-07-31
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`, `vllm/model_executor/models/llama4_eagle.py`；关联提交 `9e0726e5bfd2`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`, `vllm/model_executor/models/llama4_eagle.py`；关联提交 `9e0726e5bfd2`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+206/-37，可读 patch 487 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 补齐模型支持入口或运行时能力，标题为「[Meta] Official Eagle mm support, first enablement on llama4」，变更集中在 `vllm/model_executor/models/llama4_eagle.py`, `vllm/model_executor/models/llama4.py`。PR 描述补充为：## Purpose Enable MM inference for EAGLE, targeting mllama4 in this PR but generally easy to extend to other models Issue with this PR: MM chunked prefill needs to be disabled,...
+- 动机: 标题「[Meta] Official Eagle mm support, first enablement on llama4」；模型线: Llama 4；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/llama4_eagle.py`, `vllm/model_executor/models/llama4.py`；PR 正文摘要: Enable MM inference for EAGLE, targeting mllama4 in this PR but generally easy to extend to other models Issue with this PR: MM chunked prefill needs to be disabled, or set mbnt...。
 - 实现要点: `vllm/model_executor/models/llama4_eagle.py` modified +31/-4 (35 lines); hunks: -37,8 +37,9; -78,15 +79,23 @@ def __init__(; symbols: __init__, get_input_embeddings, forward, load_weights，涉及 `__init__, get_input_embeddings, forward`；`vllm/model_executor/models/llama4.py` modified +1/-0 (1 lines); hunks: -256,6 +256,7 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/llama4_eagle.py` modified +31/-4 (35 lines); hunks: -37,8 +37,9; -78,15 +79,23 @@ def __init__(; symbols: __init__, get_input_embeddings, forward, load_weights
@@ -625,9 +625,9 @@ diff -- vllm/model_executor/models/llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/22107
 - 状态/时间: merged / 2025-08-03
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mllama4.py`；关联提交 `337eb23bcca6`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mllama4.py`；关联提交 `337eb23bcca6`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+5/-4，可读 patch 33 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 修复已暴露的启动、加载、解析或数值问题，标题为「[Fix] Fix llama4 modelopt weight loading error」，变更集中在 `vllm/model_executor/models/mllama4.py`。PR 描述补充为：# Essential Elements of an Effective PR Description Checklist - [x] The purpose of the PR, such as "Fix some issue (link existing issues this PR will resolve)". - [ ] The test p...
+- 动机: 标题「[Fix] Fix llama4 modelopt weight loading error」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/mllama4.py`；PR 正文未提供可用摘要。
 - 实现要点: `vllm/model_executor/models/mllama4.py` modified +5/-4 (9 lines); hunks: -906,11 +906,13 @@ def _consolidate_qkv_weights(; -929,15 +931,14 @@ def _rename_weight_for_modelopt_checkpoint(self, name: str...; symbols: _consolidate_qkv_weights, _rename_weight_for_modelopt_checkpoint，涉及 `_consolidate_qkv_weights, _rename_weight_for_modelopt_checkpoint`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/mllama4.py` modified +5/-4 (9 lines); hunks: -906,11 +906,13 @@ def _consolidate_qkv_weights(; -929,15 +931,14 @@ def _rename_weight_for_modelopt_checkpoint(self, name: str...; symbols: _consolidate_qkv_weights, _rename_weight_for_modelopt_checkpoint
@@ -654,7 +654,7 @@ diff -- vllm/model_executor/models/mllama4.py
 - 状态/时间: merged / 2025-08-12
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+9/-5，可读 patch 35 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 补齐模型支持入口或运行时能力，标题为「Fix Llama4 FlashInfer FP4 MoE issues」，变更集中在 `vllm/model_executor/layers/fused_moe/flashinfer_cutlass_prepare_finalize.py`, `vllm/model_executor/layers/quantization/modelopt.py`, `vllm/model_executor/layers/fused_moe/flashinfer_cutlass_moe.py`。PR 描述补充为：FlashInfer cutlass FP4 MoE already support Llama4, so remove unncessary asserts and set group to 0 when not used. # Essential Elements of an Effective PR Description Checklist -...
+- 动机: 标题「Fix Llama4 FlashInfer FP4 MoE issues」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/layers/fused_moe/flashinfer_cutlass_prepare_finalize.py`, `vllm/model_executor/layers/quantization/modelopt.py`, `vllm/model_executor/layers/fused_moe/flashinfer_cutlass_moe.py`；PR 正文摘要: FlashInfer cutlass FP4 MoE already support Llama4, so remove unncessary asserts and set group to 0 when not used.。
 - 实现要点: `vllm/model_executor/layers/fused_moe/flashinfer_cutlass_prepare_finalize.py` modified +6/-1 (7 lines); hunks: -60,7 +60,12 @@ def prepare(; symbols: prepare，涉及 `prepare`；`vllm/model_executor/layers/quantization/modelopt.py` modified +3/-2 (5 lines); hunks: -1299,8 +1299,9 @@ def apply(; symbols: apply，涉及 `apply`；`vllm/model_executor/layers/fused_moe/flashinfer_cutlass_moe.py` modified +0/-2 (2 lines); hunks: -170,8 +170,6 @@ def apply(; symbols: apply，涉及 `apply`。
 - 代码 diff 细节:
   - `vllm/model_executor/layers/fused_moe/flashinfer_cutlass_prepare_finalize.py` modified +6/-1 (7 lines); hunks: -60,7 +60,12 @@ def prepare(; symbols: prepare
@@ -691,9 +691,9 @@ diff -- vllm/model_executor/layers/fused_moe/flashinfer_cutlass_moe.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/22701
 - 状态/时间: merged / 2025-08-13
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `4f0f844b1675`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `4f0f844b1675`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+6/-2，可读 patch 17 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 补齐模型支持入口或运行时能力，标题为「Fix cuda illegal mem access with Llama4 TP8 + rms_norm custom op」，变更集中在 `vllm/model_executor/models/llama4.py`。PR 描述补充为：The rms_norm custom op cuda kernel supports non-contiguous striding on the "num_tokens" dim, but it assumes that all the num_tokens dims (if there are more than one num_tokens d...
+- 动机: 标题「Fix cuda illegal mem access with Llama4 TP8 + rms_norm custom op」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/llama4.py`；PR 正文摘要: The rms_norm custom op cuda kernel supports non-contiguous striding on the "num_tokens" dim, but it assumes that all the num_tokens dims (if there are more than one num_tokens d...。
 - 实现要点: `vllm/model_executor/models/llama4.py` modified +6/-2 (8 lines); hunks: -224,10 +224,14 @@ def forward(; symbols: forward，涉及 `forward`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/llama4.py` modified +6/-2 (8 lines); hunks: -224,10 +224,14 @@ def forward(; symbols: forward
@@ -718,9 +718,9 @@ diff -- vllm/model_executor/models/llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/22691
 - 状态/时间: merged / 2025-08-19
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `5bfe0dea7a34`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `5bfe0dea7a34`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+4/-2，可读 patch 20 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 修复已暴露的启动、加载、解析或数值问题，标题为「[bug fix] Fix llama4 spec decoding」，变更集中在 `vllm/model_executor/models/llama4.py`。PR 描述补充为：# Essential Elements of an Effective PR Description Checklist - [x] The purpose of the PR, such as "Fix some issue (link existing issues this PR will resolve)". - [x] The test p...
+- 动机: 标题「[bug fix] Fix llama4 spec decoding」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/llama4.py`；PR 正文未提供可用摘要。
 - 实现要点: `vllm/model_executor/models/llama4.py` modified +4/-2 (6 lines); hunks: -195,7 +195,9 @@ def __init__(self,; -206,7 +208,7 @@ def __init__(self,; symbols: __init__, _get_attn_scale，涉及 `__init__, _get_attn_scale`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/llama4.py` modified +4/-2 (6 lines); hunks: -195,7 +195,9 @@ def __init__(self,; -206,7 +208,7 @@ def __init__(self,; symbols: __init__, _get_attn_scale
@@ -745,9 +745,9 @@ diff -- vllm/model_executor/models/llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/22021
 - 状态/时间: merged / 2025-08-28
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mllama4.py`；关联提交 `f32a5bc5058a`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mllama4.py`；关联提交 `f32a5bc5058a`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+23/-18，可读 patch 87 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 调整模型相关实现，标题为「Migrate Llama4ImagePatchInputs to TensorSchema」，变更集中在 `vllm/model_executor/models/mllama4.py`。PR 描述补充为：## Purpose This PR migrates Llama4ImagePatchInputs from a TypedDict-based definition to a structured TensorSchema model with runtime shape validation. This brings it in line wit...
+- 动机: 标题「Migrate Llama4ImagePatchInputs to TensorSchema」；模型线: Llama 4；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/mllama4.py`；PR 正文摘要: This PR migrates Llama4ImagePatchInputs from a TypedDict-based definition to a structured TensorSchema model with runtime shape validation. This brings it in line with recent ch...。
 - 实现要点: `vllm/model_executor/models/mllama4.py` modified +23/-18 (41 lines); hunks: -19,7 +19,7; -53,35 +53,42; symbols: Llama4ImagePatchInputs, _call_hf_processor, _parse_and_validate_image_input，涉及 `Llama4ImagePatchInputs, _call_hf_processor, _parse_and_validate_image_input`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/mllama4.py` modified +23/-18 (41 lines); hunks: -19,7 +19,7; -53,35 +53,42; symbols: Llama4ImagePatchInputs, _call_hf_processor, _parse_and_validate_image_input
@@ -768,13 +768,54 @@ diff -- vllm/model_executor/models/mllama4.py
   - runtime: `vllm/model_executor/models/mllama4.py` modified +23/-18
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/mllama4.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
+### PR #24444 - [Bugfix] Fix platform-specific routing in CustomOp implementations
+
+- 链接: https://github.com/vllm-project/vllm/pull/24444
+- 状态/时间: merged / 2025-09-11
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+53/-30，可读 patch 187 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] Fix platform-specific routing in CustomOp implementations」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/layers/rotary_embedding/mrope.py`, `vllm/model_executor/layers/rotary_embedding/deepseek_scaling_rope.py`, `vllm/model_executor/layers/rotary_embedding/dual_chunk_rope.py`；PR 正文摘要: Some layers inheriting from `CustomOp` are overwriting the `forward` method, effectively disabling the platform routing logic defined in `CustomOp.dispatch_forward()`, resulting...。
+- 实现要点: `vllm/model_executor/layers/rotary_embedding/mrope.py` modified +0/-23 (23 lines); hunks: -8,7 +8,6; -202,28 +201,6 @@ def __init__(; symbols: __init__, forward, forward_native，涉及 `__init__, forward, forward_native`；`vllm/model_executor/layers/rotary_embedding/deepseek_scaling_rope.py` modified +10/-1 (11 lines); hunks: -88,7 +88,7 @@ def _compute_cos_sin_cache(self) -> torch.Tensor:; -129,3 +129,12 @@ def forward(; symbols: _compute_cos_sin_cache, forward, forward_native, forward_cuda，涉及 `_compute_cos_sin_cache, forward, forward_native`；`vllm/model_executor/layers/rotary_embedding/dual_chunk_rope.py` modified +10/-1 (11 lines); hunks: -111,7 +111,7 @@ def _compute_cos_sin_cache(self) -> torch.Tensor:; -161,6 +161,15 @@ def forward(; symbols: _compute_cos_sin_cache, forward, forward_native, forward_cuda，涉及 `_compute_cos_sin_cache, forward, forward_native`；`vllm/model_executor/layers/rotary_embedding/ernie45_vl_rope.py` modified +9/-1 (10 lines); hunks: -12,7 +12,7; -70,3 +70,11 @@ def forward(; symbols: Ernie4_5_VLRotaryEmbedding, forward, forward_native, forward_cuda，涉及 `Ernie4_5_VLRotaryEmbedding, forward, forward_native`。
+- 代码 diff 细节:
+  - `vllm/model_executor/layers/rotary_embedding/mrope.py` modified +0/-23 (23 lines); hunks: -8,7 +8,6; -202,28 +201,6 @@ def __init__(; symbols: __init__, forward, forward_native
+  - `vllm/model_executor/layers/rotary_embedding/deepseek_scaling_rope.py` modified +10/-1 (11 lines); hunks: -88,7 +88,7 @@ def _compute_cos_sin_cache(self) -> torch.Tensor:; -129,3 +129,12 @@ def forward(; symbols: _compute_cos_sin_cache, forward, forward_native, forward_cuda
+  - `vllm/model_executor/layers/rotary_embedding/dual_chunk_rope.py` modified +10/-1 (11 lines); hunks: -111,7 +111,7 @@ def _compute_cos_sin_cache(self) -> torch.Tensor:; -161,6 +161,15 @@ def forward(; symbols: _compute_cos_sin_cache, forward, forward_native, forward_cuda
+  - `vllm/model_executor/layers/rotary_embedding/ernie45_vl_rope.py` modified +9/-1 (10 lines); hunks: -12,7 +12,7; -70,3 +70,11 @@ def forward(; symbols: Ernie4_5_VLRotaryEmbedding, forward, forward_native, forward_cuda
+  - `vllm/model_executor/layers/fused_moe/layer.py` modified +8/-1 (9 lines); hunks: -1593,7 +1593,7 @@ def maybe_all_reduce_tensor_model_parallel(; -1627,6 +1627,13 @@ def forward(; symbols: maybe_all_reduce_tensor_model_parallel, forward, forward_native, forward_cuda
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/layers/rotary_embedding/mrope.py
+@@ -8,7 +8,6 @@
+-from vllm.platforms import current_platform
+@@ -202,28 +201,6 @@ def __init__(
+-        self.use_triton = current_platform.is_cuda_alike()
+-    def forward(
+-        self,
+-        positions: torch.Tensor,
+diff -- vllm/model_executor/layers/rotary_embedding/deepseek_scaling_rope.py
+@@ -88,7 +88,7 @@ def _compute_cos_sin_cache(self) -> torch.Tensor:
+-    def forward(
++    def forward_native(
+@@ -129,3 +129,12 @@ def forward(
++    def forward_cuda(
++        self,
++        positions: torch.Tensor,
+diff -- vllm/model_executor/layers/rotary_embedding/dual_chunk_rope.py
+@@ -111,7 +111,7 @@ def _compute_cos_sin_cache(self) -> torch.Tensor:
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/layers/rotary_embedding/mrope.py` modified +0/-23; `vllm/model_executor/layers/rotary_embedding/deepseek_scaling_rope.py` modified +10/-1; `vllm/model_executor/layers/rotary_embedding/dual_chunk_rope.py` modified +10/-1; `vllm/model_executor/layers/rotary_embedding/ernie45_vl_rope.py` modified +9/-1; `vllm/model_executor/layers/fused_moe/layer.py` modified +8/-1; `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py` modified +8/-1
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/layers/activation.py`, `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/rotary_embedding/deepseek_scaling_rope.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
 ### PR #25889 - [Llama4] [multimodal] Fix misplaced dtype cast of `cos_sin_cache` in `Llama4VisionRotaryEmbedding`
 
 - 链接: https://github.com/vllm-project/vllm/pull/25889
 - 状态/时间: merged / 2025-09-30
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`；关联提交 `43b752c325d5`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+3/-1，可读 patch 11 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 补齐模型支持入口或运行时能力，标题为「[Llama4] [multimodal] Fix misplaced dtype cast of `cos_sin_cache` in `Llama4VisionRotaryEmbedding`」，变更集中在 `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`。PR 描述补充为：## Purpose Fix #25888. Especially, this PR roll back the misplaced dtype cast introduced by #21126 which deteriorates the vision understanding performance of llama 4 family. Not...
+- 动机: 标题「[Llama4] [multimodal] Fix misplaced dtype cast of `cos_sin_cache` in `Llama4VisionRotaryEmbedding`」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`；PR 正文摘要: Fix #25888. Especially, this PR roll back the misplaced dtype cast introduced by #21126 which deteriorates the vision understanding performance of llama 4 family. Note that the...。
 - 实现要点: `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py` modified +3/-1 (4 lines); hunks: -59,7 +59,9 @@ def forward_native( # type: ignore[override]; symbols: forward_native，涉及 `forward_native`。
 - 代码 diff 细节:
   - `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py` modified +3/-1 (4 lines); hunks: -59,7 +59,9 @@ def forward_native( # type: ignore[override]; symbols: forward_native
@@ -797,9 +838,9 @@ diff -- vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/25961
 - 状态/时间: merged / 2025-10-06
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mllama4.py`；关联提交 `05f6846ede18`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mllama4.py`；关联提交 `05f6846ede18`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+83/-8，可读 patch 162 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 补齐模型支持入口或运行时能力，标题为「Support llama3 eagle3 head with llama4 verifier」，变更集中在 `vllm/model_executor/models/mllama4.py`。PR 描述补充为：## Summary This PR enables Eagle3 speculative decoding with Llama3 drafter and Llama4 multimodal verifier support, with configurable auxiliary hidden state layers. ## Key Featur...
+- 动机: 标题「Support llama3 eagle3 head with llama4 verifier」；模型线: Llama 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mllama4.py`；PR 正文摘要: This PR enables Eagle3 speculative decoding with Llama3 drafter and Llama4 multimodal verifier support, with configurable auxiliary hidden state layers. Key Features - **Compati...。
 - 实现要点: `vllm/model_executor/models/mllama4.py` modified +25/-2 (27 lines); hunks: -64,7 +64,12; -717,7 +722,9 @@ def get_dummy_mm_data(; symbols: get_dummy_mm_data, Llama4ForConditionalGeneration, __init__, set_aux_hidden_state_layers，涉及 `get_dummy_mm_data, Llama4ForConditionalGeneration, __init__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/mllama4.py` modified +25/-2 (27 lines); hunks: -64,7 +64,12; -717,7 +722,9 @@ def get_dummy_mm_data(; symbols: get_dummy_mm_data, Llama4ForConditionalGeneration, __init__, set_aux_hidden_state_layers
@@ -824,9 +865,9 @@ diff -- vllm/model_executor/models/mllama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/26790
 - 状态/时间: merged / 2025-10-14
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`；关联提交 `87efc681dbd5`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`；关联提交 `87efc681dbd5`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+7/-0，可读 patch 11 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 补齐模型支持入口或运行时能力，标题为「llama4_vision_rope: add HIP override to accept (q, k) and avoid (positions, q, k) mismatch」，变更集中在 `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`。PR 描述补充为：## Purpose On ROCm/HIP, the base RoPE path expects `(positions, query, key)` and, in the fallback branch, calls `forward_cuda(positions, query, key)`. The Llama4‑Vision RoPE imp...
+- 动机: 标题「llama4_vision_rope: add HIP override to accept (q, k) and avoid (positions, q, k) mismatch」；模型线: Llama 4；类别: 性能/后端优化；主要 diff: `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`；PR 正文摘要: On ROCm/HIP, the base RoPE path expects `(positions, query, key)` and, in the fallback branch, calls `forward_cuda(positions, query, key)`. The Llama4‑Vision RoPE implements `fo...。
 - 实现要点: `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py` modified +7/-0 (7 lines); hunks: -78,3 +78,10 @@ def forward_cuda( # type: ignore[override]; symbols: forward_cuda, forward_hip，涉及 `forward_cuda, forward_hip`。
 - 代码 diff 细节:
   - `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py` modified +7/-0 (7 lines); hunks: -78,3 +78,10 @@ def forward_cuda( # type: ignore[override]; symbols: forward_cuda, forward_hip
@@ -851,9 +892,9 @@ diff -- vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/27136
 - 状态/时间: merged / 2025-10-21
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4_eagle.py`；关联提交 `be4445072c4e`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4_eagle.py`；关联提交 `be4445072c4e`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+17/-10，可读 patch 34 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 修复已暴露的启动、加载、解析或数值问题，标题为「[Fix][Spec Decode] Fix llama4 draft loading with different quantization」，变更集中在 `vllm/model_executor/models/llama4_eagle.py`。PR 描述补充为：## Purpose This PR takes care of the case where draft model and target model may use different quantization configs. `replace` doesn't work with pydantic dataclass `deepcopy` fa...
+- 动机: 标题「[Fix][Spec Decode] Fix llama4 draft loading with different quantization」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/llama4_eagle.py`；PR 正文摘要: This PR takes care of the case where draft model and target model may use different quantization configs. `replace` doesn't work with pydantic dataclass `deepcopy` fails with ne...。
 - 实现要点: `vllm/model_executor/models/llama4_eagle.py` modified +17/-10 (27 lines); hunks: -60,16 +60,23 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/llama4_eagle.py` modified +17/-10 (27 lines); hunks: -60,16 +60,23 @@ def __init__(; symbols: __init__
@@ -878,9 +919,9 @@ diff -- vllm/model_executor/models/llama4_eagle.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/25145
 - 状态/时间: merged / 2025-10-30
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`；关联提交 `b798e39f931a`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`；关联提交 `b798e39f931a`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+22/-32，可读 patch 116 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 补齐模型支持入口或运行时能力，标题为「[XPU][bugfix] fix rope for llama4 and deepseek」，变更集中在 `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`。PR 描述补充为：## Purpose Fix more dispatch issue on xpu introduced in https://github.com/vllm-project/vllm/pull/24444 ## Test Plan ## Test Result --- Essential Elements of an Effective PR Des...
+- 动机: 标题「[XPU][bugfix] fix rope for llama4 and deepseek」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`；PR 正文摘要: Fix more dispatch issue on xpu introduced in https://github.com/vllm-project/vllm/pull/24444。
 - 实现要点: `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py` modified +2/-9 (11 lines); hunks: -5,10 +5,10; -78,10 +78,3 @@ def forward_cuda( # type: ignore[override]; symbols: Llama4VisionRotaryEmbedding, __init__, forward_cuda, forward_hip，涉及 `Llama4VisionRotaryEmbedding, __init__, forward_cuda`。
 - 代码 diff 细节:
   - `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py` modified +2/-9 (11 lines); hunks: -5,10 +5,10; -78,10 +78,3 @@ def forward_cuda( # type: ignore[override]; symbols: Llama4VisionRotaryEmbedding, __init__, forward_cuda, forward_hip
@@ -905,9 +946,9 @@ diff -- vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/28602
 - 状态/时间: merged / 2025-11-14
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mllama4.py`；关联提交 `964d65deedb9`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mllama4.py`；关联提交 `964d65deedb9`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+34/-2，可读 patch 79 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 补齐模型支持入口或运行时能力，标题为「LLaMA4 LoRA Adapter Enablement」，变更集中在 `vllm/model_executor/models/mllama4.py`。PR 描述补充为：## Purpose Adds LoRA Adapter Support for LLaMA 4 Architecture. ## Test Plan Tested with custom LoRA and with vLLM Bench. ## Test Result Tests showed some performance degradation...
+- 动机: 标题「LLaMA4 LoRA Adapter Enablement」；模型线: Llama 4；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/mllama4.py`；PR 正文摘要: Adds LoRA Adapter Support for LLaMA 4 Architecture. Tested with custom LoRA and with vLLM Bench. Tests showed some performance degradation (TTFT and ITL) with concurrent use of...。
 - 实现要点: `vllm/model_executor/models/mllama4.py` modified +34/-2 (36 lines); hunks: -35,6 +35,7; -45,6 +46,7; symbols: get_dummy_mm_data, Llama4ForConditionalGeneration, _load_other_weights, get_expert_mapping，涉及 `get_dummy_mm_data, Llama4ForConditionalGeneration, _load_other_weights`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/mllama4.py` modified +34/-2 (36 lines); hunks: -35,6 +35,7; -45,6 +46,7; symbols: get_dummy_mm_data, Llama4ForConditionalGeneration, _load_other_weights, get_expert_mapping
@@ -932,9 +973,9 @@ diff -- vllm/model_executor/models/mllama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/28577
 - 状态/时间: merged / 2025-11-20
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `dc45efc8ef7f`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `dc45efc8ef7f`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+7/-0，可读 patch 28 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 修复已暴露的启动、加载、解析或数值问题，标题为「[BugFix] Fix Llama4 Pipeline Parallelism Assert Error」，变更集中在 `vllm/model_executor/models/llama4.py`。PR 描述补充为：Summary: When enabling PP for Llama4 model, each rank has a few `PPMissingLayer()`. The line `assert isinstance(layer, Llama4DecoderLayer)` raises assert error when encountering...
+- 动机: 标题「[BugFix] Fix Llama4 Pipeline Parallelism Assert Error」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/llama4.py`；PR 正文摘要: Summary: When enabling PP for Llama4 model, each rank has a few `PPMissingLayer()`. The line `assert isinstance(layer, Llama4DecoderLayer)` raises assert error when encountering...。
 - 实现要点: `vllm/model_executor/models/llama4.py` modified +7/-0 (7 lines); hunks: -54,6 +54,7; -738,6 +739,9 @@ def set_moe_parameters(self):; symbols: set_moe_parameters, update_physical_experts_metadata，涉及 `set_moe_parameters, update_physical_experts_metadata`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/llama4.py` modified +7/-0 (7 lines); hunks: -54,6 +54,7; -738,6 +739,9 @@ def set_moe_parameters(self):; symbols: set_moe_parameters, update_physical_experts_metadata
@@ -959,9 +1000,9 @@ diff -- vllm/model_executor/models/llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/29926
 - 状态/时间: merged / 2025-12-05
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4_eagle.py`；关联提交 `962d703818c0`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4_eagle.py`；关联提交 `962d703818c0`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+16/-3，可读 patch 46 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 修复已暴露的启动、加载、解析或数值问题，标题为「[Bugfix][llama4_eagle] Fix missing 'lm_head' attribute」，变更集中在 `vllm/model_executor/models/llama4_eagle.py`。PR 描述补充为：This PR: 1. Fixes llama4_eagle model by adding the missing `lm_head` attribute to the model class. 2. Fixes `test_spec_decode.py::test_eagle_correctness[FLASH_ATTN-llama4_eagle]...
+- 动机: 标题「[Bugfix][llama4_eagle] Fix missing 'lm_head' attribute」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/llama4_eagle.py`；PR 正文摘要: This PR: 1. Fixes llama4_eagle model by adding the missing `lm_head` attribute to the model class. 2. Fixes `test_spec_decode.py::test_eagle_correctness[FLASH_ATTN-llama4_eagle]...。
 - 实现要点: `vllm/model_executor/models/llama4_eagle.py` modified +11/-2 (13 lines); hunks: -28,7 +28,10; -182,6 +185,12 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__, transform，涉及 `__init__, transform`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/llama4_eagle.py` modified +11/-2 (13 lines); hunks: -28,7 +28,10; -182,6 +185,12 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__, transform
@@ -986,9 +1027,9 @@ diff -- vllm/model_executor/models/llama4_eagle.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/30709
 - 状态/时间: merged / 2026-01-10
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`, `vllm/model_executor/models/mllama4.py`；关联提交 `ea6d067a2aeb`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`, `vllm/model_executor/models/mllama4.py`；关联提交 `ea6d067a2aeb`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+85/-20，可读 patch 202 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 调整模型相关实现，标题为「[Misc][LLaMa4] Compile LLaMa Vision Encoder」，变更集中在 `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`。PR 描述补充为：## Purpose We want to speedup up inference for mllama4 by applying `torch.compile` to the intensive workload, similar to what is done in #23207. We start by enabling the VisionE...
+- 动机: 标题「[Misc][LLaMa4] Compile LLaMa Vision Encoder」；模型线: Llama 4；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`；PR 正文摘要: We want to speedup up inference for mllama4 by applying `torch.compile` to the intensive workload, similar to what is done in #23207. We start by enabling the VisionEncoder + Pi...。
 - 实现要点: `vllm/model_executor/models/mllama4.py` modified +29/-9 (38 lines); hunks: -31,9 +31,11; -47,6 +49,7; symbols: forward, Llama4VisionModel, __init__，涉及 `forward, Llama4VisionModel, __init__`；`vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py` modified +5/-2 (7 lines); hunks: -60,14 +60,17 @@ def forward_native( # type: ignore[override]; symbols: forward_native，涉及 `forward_native`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/mllama4.py` modified +29/-9 (38 lines); hunks: -31,9 +31,11; -47,6 +49,7; symbols: forward, Llama4VisionModel, __init__
@@ -1022,9 +1063,9 @@ diff -- vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/32886
 - 状态/时间: merged / 2026-01-23
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `1fb648bf107e`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `1fb648bf107e`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+21/-1，可读 patch 36 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 补齐模型支持入口或运行时能力，标题为「[Bugfix] Fix FP8 MoE EP Weight Loading for ModelOpt Llama4」，变更集中在 `vllm/model_executor/models/llama4.py`。PR 描述补充为：## Purpose #32862 Add a version-guarded fallback in Llama4 MoE weight loading to avoid CPU FP8 indexing on older PyTorch releases. For torch Essential Elements of an Effective P...
+- 动机: 标题「[Bugfix] Fix FP8 MoE EP Weight Loading for ModelOpt Llama4」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/llama4.py`；PR 正文摘要: 32862 Add a version-guarded fallback in Llama4 MoE weight loading to avoid CPU FP8 indexing on older PyTorch releases. For torch。
 - 实现要点: `vllm/model_executor/models/llama4.py` modified +21/-1 (22 lines); hunks: -51,6 +51,8; -504,7 +506,25 @@ def load_moe_expert_weights(; symbols: load_moe_expert_weights，涉及 `load_moe_expert_weights`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/llama4.py` modified +21/-1 (22 lines); hunks: -51,6 +51,8; -504,7 +506,25 @@ def load_moe_expert_weights(; symbols: load_moe_expert_weights
@@ -1049,9 +1090,9 @@ diff -- vllm/model_executor/models/llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/34243
 - 状态/时间: merged / 2026-02-11
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `11c7ace34061`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `11c7ace34061`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+29/-5，可读 patch 76 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 补齐模型支持入口或运行时能力，标题为「[Bugfix] Enable attn quantization of Llama-4 by correctly permuting scales for rope (int8, fp8)」，变更集中在 `vllm/model_executor/models/llama4.py`。PR 描述补充为：Llama-4 weights of `q/k_proj` are permuted during model loading to prepare the model for interleaved/gpt-neox rope. The same permutation needs to be applied on quantization weig...
+- 动机: 标题「[Bugfix] Enable attn quantization of Llama-4 by correctly permuting scales for rope (int8, fp8)」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/llama4.py`；PR 正文摘要: Llama-4 weights of `q/k_proj` are permuted during model loading to prepare the model for interleaved/gpt-neox rope. The same permutation needs to be applied on quantization weig...。
 - 实现要点: `vllm/model_executor/models/llama4.py` modified +29/-5 (34 lines); hunks: -44,6 +44,9; -829,11 +832,20 @@ def permute_qk_weight_for_rotary(; symbols: permute_qk_weight_for_rotary, permute，涉及 `permute_qk_weight_for_rotary, permute`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/llama4.py` modified +29/-5 (34 lines); hunks: -44,6 +44,9; -829,11 +832,20 @@ def permute_qk_weight_for_rotary(; symbols: permute_qk_weight_for_rotary, permute
@@ -1076,9 +1117,9 @@ diff -- vllm/model_executor/models/llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/34471
 - 状态/时间: merged / 2026-02-19
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `ee1d25f199ee`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `ee1d25f199ee`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+29/-68，可读 patch 114 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 补齐模型支持入口或运行时能力，标题为「[Llama4,Quantization] Simplify and generalize logic for Q/K permutations in quantized self-attn layers」，变更集中在 `vllm/model_executor/models/llama4.py`。PR 描述补充为：This PR resolves a couple of issues in loading of Llama-4 models with quantized self-attention layers. Current logic hardcodes support only for NVFP4 modelopt ckpts, and for INT...
+- 动机: 标题「[Llama4,Quantization] Simplify and generalize logic for Q/K permutations in quantized self-attn layers」；模型线: Llama 4；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/llama4.py`；PR 正文摘要: This PR resolves a couple of issues in loading of Llama-4 models with quantized self-attention layers. Current logic hardcodes support only for NVFP4 modelopt ckpts, and for INT...。
 - 实现要点: `vllm/model_executor/models/llama4.py` modified +29/-68 (97 lines); hunks: -44,9 +44,6; -831,74 +828,38 @@ def permute_qk_weight_for_rotary(; symbols: permute_qk_weight_for_rotary, permute，涉及 `permute_qk_weight_for_rotary, permute`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/llama4.py` modified +29/-68 (97 lines); hunks: -44,9 +44,6; -831,74 +828,38 @@ def permute_qk_weight_for_rotary(; symbols: permute_qk_weight_for_rotary, permute
@@ -1103,9 +1144,9 @@ diff -- vllm/model_executor/models/llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/34997
 - 状态/时间: merged / 2026-02-21
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `0e22cd618b5d`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `0e22cd618b5d`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+68/-29，可读 patch 114 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 修复已暴露的启动、加载、解析或数值问题，标题为「Revert "[Llama4,Quantization] Simplify and generalize logic for Q/K permutations in quantized self-attn layers "」，变更集中在 `vllm/model_executor/models/llama4.py`。PR 描述补充为：Reverts vllm-project/vllm#34471 to fix CI failures: https://github.com/vllm-project/vllm/issues/34995 FIX: https://github.com/vllm-project/vllm/issues/34995 cc @eldarkurtic
+- 动机: 标题「Revert "[Llama4,Quantization] Simplify and generalize logic for Q/K permutations in quantized self-attn layers "」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/llama4.py`；PR 正文摘要: Reverts vllm-project/vllm#34471 to fix CI failures: https://github.com/vllm-project/vllm/issues/34995 FIX: https://github.com/vllm-project/vllm/issues/34995 cc @eldarkurtic。
 - 实现要点: `vllm/model_executor/models/llama4.py` modified +68/-29 (97 lines); hunks: -44,6 +44,9; -828,38 +831,74 @@ def permute_qk_weight_for_rotary(; symbols: permute_qk_weight_for_rotary, permute，涉及 `permute_qk_weight_for_rotary, permute`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/llama4.py` modified +68/-29 (97 lines); hunks: -44,6 +44,9; -828,38 +831,74 @@ def permute_qk_weight_for_rotary(; symbols: permute_qk_weight_for_rotary, permute
@@ -1130,9 +1171,9 @@ diff -- vllm/model_executor/models/llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/35033
 - 状态/时间: merged / 2026-02-23
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `1e8438a89a64`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `1e8438a89a64`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+31/-70，可读 patch 127 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 修复已暴露的启动、加载、解析或数值问题，标题为「[Llama4,CI] Bring back Llama-4 bug fixes, and also fix Maverick tests」，变更集中在 `vllm/model_executor/models/llama4.py`。PR 描述补充为：Bring back reverted Llama-4 bug fix changes from https://github.com/vllm-project/vllm/pull/34471 (reverted with https://github.com/vllm-project/vllm/pull/34997) and also fix the...
+- 动机: 标题「[Llama4,CI] Bring back Llama-4 bug fixes, and also fix Maverick tests」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/llama4.py`；PR 正文摘要: Bring back reverted Llama-4 bug fix changes from https://github.com/vllm-project/vllm/pull/34471 (reverted with https://github.com/vllm-project/vllm/pull/34997) and also fix the...。
 - 实现要点: `vllm/model_executor/models/llama4.py` modified +29/-68 (97 lines); hunks: -44,9 +44,6; -831,74 +828,38 @@ def permute_qk_weight_for_rotary(; symbols: permute_qk_weight_for_rotary, permute，涉及 `permute_qk_weight_for_rotary, permute`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/llama4.py` modified +29/-68 (97 lines); hunks: -44,9 +44,6; -831,74 +828,38 @@ def permute_qk_weight_for_rotary(; symbols: permute_qk_weight_for_rotary, permute
@@ -1157,9 +1198,9 @@ diff -- vllm/model_executor/models/llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/35147
 - 状态/时间: merged / 2026-02-24
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mllama4.py`；关联提交 `012dee92331c`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mllama4.py`；关联提交 `012dee92331c`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+23/-1，可读 patch 30 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Llama 4 补齐模型支持入口或运行时能力，标题为「[Feature] Add LoRA tower/connector support for Llama 4 Vision (mllama4)」，变更集中在 `vllm/model_executor/models/mllama4.py`。PR 描述补充为：## Purpose Enable LoRA adapters for the vision tower and connector of Llama 4 Vision (`Llama4ForConditionalGeneration` / `mllama4.py`), as part of #31479. Previously, LoRA could...
+- 动机: 标题「[Feature] Add LoRA tower/connector support for Llama 4 Vision (mllama4)」；模型线: Llama 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mllama4.py`；PR 正文摘要: Enable LoRA adapters for the vision tower and connector of Llama 4 Vision (`Llama4ForConditionalGeneration` / `mllama4.py`), as part of #31479. Previously, LoRA could only be ap...。
 - 实现要点: `vllm/model_executor/models/mllama4.py` modified +23/-1 (24 lines); hunks: -1151,6 +1151,28 @@ def get_mm_mapping(self) -> MultiModelKeys:; symbols: get_mm_mapping, get_num_mm_encoder_tokens, get_num_mm_connector_tokens，涉及 `get_mm_mapping, get_num_mm_encoder_tokens, get_num_mm_connector_tokens`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/mllama4.py` modified +23/-1 (24 lines); hunks: -1151,6 +1151,28 @@ def get_mm_mapping(self) -> MultiModelKeys:; symbols: get_mm_mapping, get_num_mm_encoder_tokens, get_num_mm_connector_tokens
@@ -1182,5 +1223,5 @@ diff -- vllm/model_executor/models/mllama4.py
 
 ## 补漏结论
 
-- 本版不再接受只列 PR 标题的写法；每个 PR 必须有反查来源、diff 范围、实现要点、代码摘录、已读文件和验证风险。
+- 验收规则: 每个 PR 卡片必须保留反查来源、diff 范围、实现要点、代码摘录、已读文件和验证风险。
 - 如果新模型文件落在当前过滤规则之外，先补文件过滤规则，再重新执行本轮 `git log --name-only -- <model-files>` 追溯。

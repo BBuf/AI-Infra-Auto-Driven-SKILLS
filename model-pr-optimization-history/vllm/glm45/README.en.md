@@ -6,7 +6,6 @@
 - Source baseline: `vllm-project/vllm` trace worktree commit `95995bbef8`
 - PR collection rule: run `git log --name-only -- <model-files>` on model implementation, config, processor, parser, docs/tests, filter by model keywords in commit subjects, then read each PR's final diff through the GitHub Pull Request files API.
 - Preservation rule: PRs explicitly cited by the previous history/skill are retained even if current implementation files no longer trace to them, and the card marks that source.
-- Diffusion model families have been removed from this history set and are no longer part of model optimization skills.
 
 ## Implementation File Coverage
 
@@ -52,9 +51,9 @@
 
 - Link: https://github.com/vllm-project/vllm/pull/21435
 - Status/date: merged / 2025-07-24
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe.py`; associated commits `85bda9e7d053`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe.py`; associated commits `85bda9e7d053`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +2/-3, 26 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For GLM-4.5, this PR fixes a launch, loading, parsing, or numerical issue. Title: "remove GLM-4 quantization wrong Code". The diff centers on `vllm/model_executor/models/glm4_moe.py`. PR body context: need to remove this line
+- Motivation: Title: "remove GLM-4 quantization wrong Code"; model line: GLM-4.5; category: bug fix; main diff: `vllm/model_executor/models/glm4_moe.py`; PR body summary: need to remove this line.
 - Key implementation: `vllm/model_executor/models/glm4_moe.py` modified +0/-1 (1 lines); hunks: -390,7 +390,6 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/glm4_moe.py` modified +0/-1 (1 lines); hunks: -390,7 +390,6 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__
@@ -74,9 +73,9 @@ diff -- vllm/model_executor/models/glm4_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/22143
 - Status/date: merged / 2025-08-03
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe.py`; associated commits `d3c18c9cb0b6`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe.py`; associated commits `d3c18c9cb0b6`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +2/-3, 12 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For GLM-4.5, this PR optimizes an inference path or backend selection. Title: "fuse fp32 for GLM-4.5 e_score_correction_bias". The diff centers on `vllm/model_executor/models/glm4_moe.py`. The PR body has no extra context, so this assessment comes from the title, file list, and patch.
+- Motivation: Title: "fuse fp32 for GLM-4.5 e_score_correction_bias"; model line: GLM-4.5; category: performance/backend optimization; main diff: `vllm/model_executor/models/glm4_moe.py`; no usable PR-body summary.
 - Key implementation: `vllm/model_executor/models/glm4_moe.py` modified +2/-3 (5 lines); hunks: -125,9 +125,8 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/glm4_moe.py` modified +2/-3 (5 lines); hunks: -125,9 +125,8 @@ def __init__(; symbols: __init__
@@ -102,7 +101,7 @@ diff -- vllm/model_executor/models/glm4_moe.py
 - Status/date: merged / 2025-08-04
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 16 files, +31/-31, 241 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For GLM-4.5, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Misc] Modify the organization of GLM series". The diff centers on `docs/models/supported_models.md`, `tests/models/registry.py`, `tests/models/multimodal/generation/test_common.py`. PR body context: # Essential Elements of an Effective PR Description Checklist - [ ] The purpose of the PR, such as "Fix some issue (link existing issues this PR will resolve)". - [ ] The test p...
+- Motivation: Title: "[Misc] Modify the organization of GLM series"; model line: GLM-4.5; category: model implementation change; main diff: `docs/models/supported_models.md`, `tests/models/registry.py`, `tests/models/multimodal/generation/test_common.py`; no usable PR-body summary.
 - Key implementation: `docs/models/supported_models.md` modified +5/-5 (10 lines); hunks: -328,7 +328,7 @@ th {; -348,8 +348,8 @@ th {; `tests/models/registry.py` modified +5/-5 (10 lines); hunks: -153,7 +153,7 @@ def check_available_online(; -187,8 +187,8 @@ def check_available_online(; symbols: check_available_online, touching `check_available_online`; `tests/models/multimodal/generation/test_common.py` modified +3/-3 (6 lines); hunks: -355,7 +355,7; -374,7 +374,7; `vllm/model_executor/models/chatglm.py` modified +3/-3 (6 lines); hunks: -1,7 +1,7; -86,10 +86,10 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `docs/models/supported_models.md` modified +5/-5 (10 lines); hunks: -328,7 +328,7 @@ th {; -348,8 +348,8 @@ th {
@@ -143,9 +142,9 @@ diff -- tests/models/multimodal/generation/test_common.py
 
 - Link: https://github.com/vllm-project/vllm/pull/22203
 - Status/date: merged / 2025-08-05
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe.py`; associated commits `6fa41e0c32f3`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe.py`; associated commits `6fa41e0c32f3`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +4/-3, 35 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For GLM-4.5, this PR optimizes an inference path or backend selection. Title: "self.gate dtype update for GLM-4.5". The diff centers on `vllm/model_executor/models/glm4_moe.py`. PR body context: The entire self.gate module needs to remain in float32 to ensure benchmark performance for GLM-4.5 and GLM-4.5V during propagation.
+- Motivation: Title: "self.gate dtype update for GLM-4.5"; model line: GLM-4.5; category: performance/backend optimization; main diff: `vllm/model_executor/models/glm4_moe.py`; PR body summary: The entire self.gate module needs to remain in float32 to ensure benchmark performance for GLM-4.5 and GLM-4.5V during propagation..
 - Key implementation: `vllm/model_executor/models/glm4_moe.py` modified +2/-1 (3 lines); hunks: -123,6 +123,7 @@ def __init__(; -180,7 +181,7 @@ def forward(self, hidden_states: torch.Tensor) -> torch.Tensor:; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
   - `vllm/model_executor/models/glm4_moe.py` modified +2/-1 (3 lines); hunks: -123,6 +123,7 @@ def __init__(; -180,7 +181,7 @@ def forward(self, hidden_states: torch.Tensor) -> torch.Tensor:; symbols: __init__, forward
@@ -170,7 +169,7 @@ diff -- vllm/model_executor/models/glm4_moe.py
 - Status/date: merged / 2025-08-08
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe.py`; associated commits `c152e2a8a0f4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +0/-2, 9 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For GLM-4.5, this PR changes model-related implementation. Title: "not tie_word_embeddings for glm-4.5 and glm-4.5v". The diff centers on `vllm/model_executor/models/glm4_moe.py`. The PR body has no extra context, so this assessment comes from the title, file list, and patch.
+- Motivation: Title: "not tie_word_embeddings for glm-4.5 and glm-4.5v"; model line: GLM-4.5; category: model implementation change; main diff: `vllm/model_executor/models/glm4_moe.py`; no usable PR-body summary.
 - Key implementation: `vllm/model_executor/models/glm4_moe.py` modified +0/-2 (2 lines); hunks: -601,8 +601,6 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/glm4_moe.py` modified +0/-2 (2 lines); hunks: -601,8 +601,6 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__
@@ -191,9 +190,9 @@ diff -- vllm/model_executor/models/glm4_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/22520
 - Status/date: merged / 2025-08-09
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe.py`; associated commits `a6022e6fbcbd`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe.py`; associated commits `a6022e6fbcbd`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +13/-6, 61 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For GLM-4.5, this PR changes model-related implementation. Title: "GLM-4.5V with new class name at transformers". The diff centers on `vllm/model_executor/models/glm4_moe.py`. PR body context: As this PR mention: https://github.com/huggingface/transformers/pull/39805
+- Motivation: Title: "GLM-4.5V with new class name at transformers"; model line: GLM-4.5; category: model implementation change; main diff: `vllm/model_executor/models/glm4_moe.py`; PR body summary: As this PR mention: https://github.com/huggingface/transformers/pull/39805.
 - Key implementation: `vllm/model_executor/models/glm4_moe.py` modified +7/-1 (8 lines); hunks: -372,7 +372,13 @@ def forward(; symbols: forward, Glm4MoeModel, __init__, touching `forward, Glm4MoeModel, __init__`.
 - Code diff details:
   - `vllm/model_executor/models/glm4_moe.py` modified +7/-1 (8 lines); hunks: -372,7 +372,13 @@ def forward(; symbols: forward, Glm4MoeModel, __init__
@@ -220,7 +219,7 @@ diff -- vllm/model_executor/models/glm4_moe.py
 - Status/date: merged / 2025-08-14
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe.py`; associated commits `92ff41abea13`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +11/-11, 50 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For GLM-4.5, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Model] Modify the gate implementation of glm4_moe". The diff centers on `vllm/model_executor/models/glm4_moe.py`. PR body context: # Essential Elements of an Effective PR Description Checklist - [ ] The purpose of the PR, such as "Fix some issue (link existing issues this PR will resolve)". - [ ] The test p...
+- Motivation: Title: "[Model] Modify the gate implementation of glm4_moe"; model line: GLM-4.5; category: model implementation change; main diff: `vllm/model_executor/models/glm4_moe.py`; no usable PR-body summary.
 - Key implementation: `vllm/model_executor/models/glm4_moe.py` modified +10/-10 (20 lines); hunks: -41,7 +41,6; -118,14 +117,15 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
   - `vllm/model_executor/models/glm4_moe.py` modified +10/-10 (20 lines); hunks: -41,7 +41,6; -118,14 +117,15 @@ def __init__(; symbols: __init__, forward
@@ -247,7 +246,7 @@ diff -- vllm/model_executor/models/glm4_moe.py
 - Status/date: merged / 2025-08-27
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +146/-0, 147 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For GLM-4.5, this PR adds or enables a model support/runtime surface. Title: "feat: add triton fused moe config for GLM-4.5-Air-FP8 on B200". The diff centers on `vllm/model_executor/layers/fused_moe/configs/E=128,N=704,device_name=NVIDIA_B200,dtype=fp8_w8a8.json`. PR body context: ## Purpose Add fused MoE config for GLM-4.5-Air-FP8 on NVIDIA B200, tp = 2 ## Test Result With config: Without config:
+- Motivation: Title: "feat: add triton fused moe config for GLM-4.5-Air-FP8 on B200"; model line: GLM-4.5; category: performance/backend optimization; main diff: `vllm/model_executor/layers/fused_moe/configs/E=128,N=704,device_name=NVIDIA_B200,dtype=fp8_w8a8.json`; PR body summary: Add fused MoE config for GLM-4.5-Air-FP8 on NVIDIA B200, tp = 2 With config: Without config:.
 - Key implementation: `vllm/model_executor/layers/fused_moe/configs/E=128,N=704,device_name=NVIDIA_B200,dtype=fp8_w8a8.json` added +146/-0 (146 lines); hunks: -0,0 +1,146.
 - Code diff details:
   - `vllm/model_executor/layers/fused_moe/configs/E=128,N=704,device_name=NVIDIA_B200,dtype=fp8_w8a8.json` added +146/-0 (146 lines); hunks: -0,0 +1,146
@@ -274,7 +273,7 @@ diff -- vllm/model_executor/layers/fused_moe/configs/E=128,N=704,device_name=NVI
 - Status/date: merged / 2025-09-10
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +10/-0, 24 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For GLM-4.5, this PR adds or enables a model support/runtime surface. Title: "[Doc] Add documentation for GLM-4.5 series models: tool-calling and reasoning parser". The diff centers on `docs/features/reasoning_outputs.md`, `docs/features/tool_calling.md`. PR body context: Add documentation for GLM-4.5 series models: tool-calling and reasoning parser.
+- Motivation: Title: "[Doc] Add documentation for GLM-4.5 series models: tool-calling and reasoning parser"; model line: GLM-4.5; category: docs/tests/CI; main diff: `docs/features/reasoning_outputs.md`, `docs/features/tool_calling.md`; PR body summary: Add documentation for GLM-4.5 series models: tool-calling and reasoning parser..
 - Key implementation: `docs/features/reasoning_outputs.md` modified +1/-0 (1 lines); hunks: -15,6 +15,7 @@ vLLM currently supports the following reasoning models:; `docs/features/tool_calling.md` modified +9/-0 (9 lines); hunks: -311,6 +311,15 @@ Flags:.
 - Code diff details:
   - `docs/features/reasoning_outputs.md` modified +1/-0 (1 lines); hunks: -15,6 +15,7 @@ vLLM currently supports the following reasoning models:
@@ -302,9 +301,9 @@ diff -- docs/features/tool_calling.md
 
 - Link: https://github.com/vllm-project/vllm/pull/24849
 - Status/date: merged / 2025-09-17
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe.py`; associated commits `c15309a730fa`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe.py`; associated commits `c15309a730fa`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +55/-30, 114 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For GLM-4.5, this PR optimizes an inference path or backend selection. Title: "[Model] Apply SharedFusedMoE to glm4_moe.". The diff centers on `vllm/model_executor/models/glm4_moe.py`. PR body context: ## Purpose The class `SharedFusedMoE` was proposed by @bnellnm in PR #23273. The model glm4_moe has shared experts but we don't use `SharedFusedMoE` for glm4_moe, I'm not sure w...
+- Motivation: Title: "[Model] Apply SharedFusedMoE to glm4_moe."; model line: GLM-4.5; category: performance/backend optimization; main diff: `vllm/model_executor/models/glm4_moe.py`; PR body summary: The class `SharedFusedMoE` was proposed by @bnellnm in PR #23273. The model glm4_moe has shared experts but we don't use `SharedFusedMoE` for glm4_moe, I'm not sure why, please....
 - Key implementation: `vllm/model_executor/models/glm4_moe.py` modified +55/-30 (85 lines); hunks: -46,6 +46,7; -146,25 +147,6 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
   - `vllm/model_executor/models/glm4_moe.py` modified +55/-30 (85 lines); hunks: -46,6 +46,7; -146,25 +147,6 @@ def __init__(; symbols: __init__, forward
@@ -329,9 +328,9 @@ diff -- vllm/model_executor/models/glm4_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/25830
 - Status/date: merged / 2025-09-28
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe.py`; associated commits `b1ded114b976`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe.py`; associated commits `b1ded114b976`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +7/-5, 40 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For GLM-4.5, this PR extends deployment docs, tests, or CI coverage. Title: "Update GLM-4.5 Doc transformers version". The diff centers on `vllm/model_executor/models/glm4_moe.py`. PR body context: Update for GLM-4.5 Doc transformers version
+- Motivation: Title: "Update GLM-4.5 Doc transformers version"; model line: GLM-4.5; category: docs/tests/CI; main diff: `vllm/model_executor/models/glm4_moe.py`; PR body summary: Update for GLM-4.5 Doc transformers version.
 - Key implementation: `vllm/model_executor/models/glm4_moe.py` modified +1/-1 (2 lines); hunks: -21,7 +21,7.
 - Code diff details:
   - `vllm/model_executor/models/glm4_moe.py` modified +1/-1 (2 lines); hunks: -21,7 +21,7
@@ -352,9 +351,9 @@ diff -- vllm/model_executor/models/glm4_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/27597
 - Status/date: merged / 2025-11-12
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe_mtp.py`; associated commits `d3ade61e429f`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe_mtp.py`; associated commits `d3ade61e429f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +11/-4, 23 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For GLM-4.5, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Model] fix glm4_moe_mtp load weights with GLM-4.6 checkpoint.". The diff centers on `vllm/model_executor/models/glm4_moe_mtp.py`. PR body context: ## Purpose As described in issue#25993, when serving GLM-4.6 with mtp using the following command: It raises the following error: The root cause is that the GLM-4.6 checkpoint d...
+- Motivation: Title: "[Model] fix glm4_moe_mtp load weights with GLM-4.6 checkpoint."; model line: GLM-4.5; category: bug fix; main diff: `vllm/model_executor/models/glm4_moe_mtp.py`; PR body summary: As described in issue#25993, when serving GLM-4.6 with mtp using the following command: It raises the following error: The root cause is that the GLM-4.6 checkpoint doesn't incl....
 - Key implementation: `vllm/model_executor/models/glm4_moe_mtp.py` modified +11/-4 (15 lines); hunks: -256,11 +256,18 @@ def load_weights(self, weights: Iterable[tuple[str, torch....; symbols: load_weights, touching `load_weights`.
 - Code diff details:
   - `vllm/model_executor/models/glm4_moe_mtp.py` modified +11/-4 (15 lines); hunks: -256,11 +256,18 @@ def load_weights(self, weights: Iterable[tuple[str, torch....; symbols: load_weights
@@ -379,9 +378,9 @@ diff -- vllm/model_executor/models/glm4_moe_mtp.py
 
 - Link: https://github.com/vllm-project/vllm/pull/28805
 - Status/date: merged / 2025-11-17
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe_mtp.py`; associated commits `ab01cd14e5e2`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe_mtp.py`; associated commits `ab01cd14e5e2`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-4, 17 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For GLM-4.5, this PR adds or enables a model support/runtime surface. Title: "[BugFix] Fix glm4_moe_mtp load weights bug". The diff centers on `vllm/model_executor/models/glm4_moe_mtp.py`. PR body context: ## Purpose As comment in issue#25993,PR#27597 introduced bugs causing GLM-4.5/GLM-4.6 serving with mtp error because: 1. spec_layer is overwritten by later None assignment in "e...
+- Motivation: Title: "[BugFix] Fix glm4_moe_mtp load weights bug"; model line: GLM-4.5; category: bug fix; main diff: `vllm/model_executor/models/glm4_moe_mtp.py`; PR body summary: As comment in issue#25993,PR#27597 introduced bugs causing GLM-4.5/GLM-4.6 serving with mtp error because: 1. spec_layer is overwritten by later None assignment in "else" branch....
 - Key implementation: `vllm/model_executor/models/glm4_moe_mtp.py` modified +3/-4 (7 lines); hunks: -256,13 +256,12 @@ def load_weights(self, weights: Iterable[tuple[str, torch....; symbols: load_weights, touching `load_weights`.
 - Code diff details:
   - `vllm/model_executor/models/glm4_moe_mtp.py` modified +3/-4 (7 lines); hunks: -256,13 +256,12 @@ def load_weights(self, weights: Iterable[tuple[str, torch....; symbols: load_weights
@@ -404,5 +403,5 @@ diff -- vllm/model_executor/models/glm4_moe_mtp.py
 
 ## Gap-Closure Notes
 
-- This version rejects title-only PR lists; every PR must include trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
+- Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
 - If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.

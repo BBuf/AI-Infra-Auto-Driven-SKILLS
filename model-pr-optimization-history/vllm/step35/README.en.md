@@ -6,7 +6,6 @@
 - Source baseline: `vllm-project/vllm` trace worktree commit `95995bbef8`
 - PR collection rule: run `git log --name-only -- <model-files>` on model implementation, config, processor, parser, docs/tests, filter by model keywords in commit subjects, then read each PR's final diff through the GitHub Pull Request files API.
 - Preservation rule: PRs explicitly cited by the previous history/skill are retained even if current implementation files no longer trace to them, and the card marks that source.
-- Diffusion model families have been removed from this history set and are no longer part of model optimization skills.
 
 ## Implementation File Coverage
 
@@ -49,9 +48,9 @@
 
 - Link: https://github.com/vllm-project/vllm/pull/33523
 - Status/date: merged / 2026-02-02
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/step3p5.py`, `vllm/model_executor/models/step3p5_mtp.py`, `vllm/reasoning/step3p5_reasoning_parser.py`, `vllm/tool_parsers/step3p5_tool_parser.py`, `vllm/transformers_utils/configs/step3p5.py`; associated commits `c3b40dc3e74d`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/step3p5.py`, `vllm/model_executor/models/step3p5_mtp.py`, `vllm/reasoning/step3p5_reasoning_parser.py`, `vllm/tool_parsers/step3p5_tool_parser.py`, `vllm/transformers_utils/configs/step3p5.py`; associated commits `c3b40dc3e74d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 18 files, +3107/-4, 3270 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Step 3.5, this PR adds or enables a model support/runtime surface. Title: "[Models] Step-3.5-Flash". The diff centers on `vllm/tool_parsers/step3p5_tool_parser.py`, `vllm/model_executor/models/step3p5.py`, `vllm/model_executor/models/step3p5_mtp.py`. PR body context: ## Purpose Step-3.5-Flash model support. ## Test Plan ## Test Result --- Essential Elements of an Effective PR Description Checklist - [ ] The purpose of the PR, such as "Fix so...
+- Motivation: Title: "[Models] Step-3.5-Flash"; model line: Step 3.5; category: performance/backend optimization; main diff: `vllm/tool_parsers/step3p5_tool_parser.py`, `vllm/model_executor/models/step3p5.py`, `vllm/model_executor/models/step3p5_mtp.py`; PR body summary: Step-3.5-Flash model support..
 - Key implementation: `vllm/tool_parsers/step3p5_tool_parser.py` added +1511/-0 (1511 lines); hunks: -0,0 +1,1511; symbols: StreamingXMLToolCallParser, __init__, reset_streaming_state, parse_single_streaming_chunks, touching `StreamingXMLToolCallParser, __init__, reset_streaming_state`; `vllm/model_executor/models/step3p5.py` added +894/-0 (894 lines); hunks: -0,0 +1,894; symbols: FP32ReplicatedLinear, forward, Step3p5MLP, __init__, touching `FP32ReplicatedLinear, forward, Step3p5MLP`; `vllm/model_executor/models/step3p5_mtp.py` added +315/-0 (315 lines); hunks: -0,0 +1,315; symbols: SharedHead, __init__, forward, Step3p5AMultiTokenPredictorLayer, touching `SharedHead, __init__, forward`; `vllm/reasoning/step3p5_reasoning_parser.py` added +153/-0 (153 lines); hunks: -0,0 +1,153; symbols: Step3p5ReasoningParser, start_token, end_token, __init__, touching `Step3p5ReasoningParser, start_token, end_token`.
 - Code diff details:
   - `vllm/tool_parsers/step3p5_tool_parser.py` added +1511/-0 (1511 lines); hunks: -0,0 +1,1511; symbols: StreamingXMLToolCallParser, __init__, reset_streaming_state, parse_single_streaming_chunks
@@ -90,9 +89,9 @@ diff -- vllm/model_executor/models/step3p5_mtp.py
 
 - Link: https://github.com/vllm-project/vllm/pull/33690
 - Status/date: merged / 2026-02-05
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_step3p5_tool_parser.py`, `vllm/tool_parsers/step3p5_tool_parser.py`; associated commits `82914d2ae8d0`
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_step3p5_tool_parser.py`, `vllm/tool_parsers/step3p5_tool_parser.py`; associated commits `82914d2ae8d0`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +1455/-5, 1508 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Step 3.5, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Bugfix] Fix step3p5 parser when using mtp". The diff centers on `tests/tool_parsers/test_step3p5_tool_parser.py`, `vllm/tool_parsers/step3p5_tool_parser.py`. PR body context: ## Purpose Fix step3.5 parser when using mtp. If model outputs ` Essential Elements of an Effective PR Description Checklist - [x] The purpose of the PR, such as "Fix some issue...
+- Motivation: Title: "[Bugfix] Fix step3p5 parser when using mtp"; model line: Step 3.5; category: bug fix; main diff: `tests/tool_parsers/test_step3p5_tool_parser.py`, `vllm/tool_parsers/step3p5_tool_parser.py`; PR body summary: Fix step3.5 parser when using mtp. If model outputs `.
 - Key implementation: `tests/tool_parsers/test_step3p5_tool_parser.py` added +1435/-0 (1435 lines); hunks: -0,0 +1,1435; symbols: step3p5_tokenizer, step3p5_tool_parser, sample_tools, assert_tool_calls, touching `step3p5_tokenizer, step3p5_tool_parser, sample_tools`; `vllm/tool_parsers/step3p5_tool_parser.py` modified +20/-5 (25 lines); hunks: -97,11 +97,26 @@ def parse_single_streaming_chunks(self, xml_chunk: str) -> D...; -110,7 +125,7 @@ def parse_single_streaming_chunks(self, xml_chunk: str) -> D...; symbols: parse_single_streaming_chunks, touching `parse_single_streaming_chunks`.
 - Code diff details:
   - `tests/tool_parsers/test_step3p5_tool_parser.py` added +1435/-0 (1435 lines); hunks: -0,0 +1,1435; symbols: step3p5_tokenizer, step3p5_tool_parser, sample_tools, assert_tool_calls
@@ -129,7 +128,7 @@ diff -- vllm/tool_parsers/step3p5_tool_parser.py
 - Status/date: merged / 2026-02-07
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/step3p5.py`; associated commits `db4ede974343`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +28/-32, 115 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Step 3.5, this PR adds or enables a model support/runtime surface. Title: "[Model] Enable Step3p5ForCausalLM testing". The diff centers on `vllm/model_executor/models/step3p5.py`. PR body context: ## Purpose ## Test Plan ## Test Result --- Essential Elements of an Effective PR Description Checklist - [ ] The purpose of the PR, such as "Fix some issue (link existing issues...
+- Motivation: Title: "[Model] Enable Step3p5ForCausalLM testing"; model line: Step 3.5; category: docs/tests/CI; main diff: `vllm/model_executor/models/step3p5.py`; no usable PR-body summary.
 - Key implementation: `vllm/model_executor/models/step3p5.py` modified +12/-25 (37 lines); hunks: -36,7 +36,6; -770,37 +769,17 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/step3p5.py` modified +12/-25 (37 lines); hunks: -36,7 +36,6; -770,37 +769,17 @@ def __init__(; symbols: __init__
@@ -156,7 +155,7 @@ diff -- vllm/model_executor/models/step3p5.py
 - Status/date: merged / 2026-02-22
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/step3p5.py`; associated commits `b7892a3beff0`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +204/-4, 291 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Step 3.5, this PR adds or enables a model support/runtime surface. Title: "[Model] Add NVFP4 quantization support for Step3.5-Flash". The diff centers on `vllm/model_executor/models/step3p5.py`. PR body context: ## Summary Enable NVFP4 (FP4) quantized MoE inference for stepfun-ai/Step-3.5-Flash. This model uses a `swiglustep` activation (clipped SwiGLU with `limit=7.0`) on MoE layers 43...
+- Motivation: Title: "[Model] Add NVFP4 quantization support for Step3.5-Flash"; model line: Step 3.5; category: performance/backend optimization; main diff: `vllm/model_executor/models/step3p5.py`; PR body summary: Enable NVFP4 (FP4) quantized MoE inference for stepfun-ai/Step-3.5-Flash. This model uses a `swiglustep` activation (clipped SwiGLU with `limit=7.0`) on MoE layers 43-44, which....
 - Key implementation: `vllm/model_executor/models/step3p5.py` modified +71/-1 (72 lines); hunks: -2,7 +2,8; -231,6 +232,7 @@ def __init__(; symbols: __init__, load_weights, touching `__init__, load_weights`.
 - Code diff details:
   - `vllm/model_executor/models/step3p5.py` modified +71/-1 (72 lines); hunks: -2,7 +2,8; -231,6 +232,7 @@ def __init__(; symbols: __init__, load_weights
@@ -181,9 +180,9 @@ diff -- vllm/model_executor/models/step3p5.py
 
 - Link: https://github.com/vllm-project/vllm/pull/34211
 - Status/date: merged / 2026-02-25
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_step3p5_reasoning_parser.py`, `vllm/reasoning/step3p5_reasoning_parser.py`; associated commits `af5e6afa0af2`
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_step3p5_reasoning_parser.py`, `vllm/reasoning/step3p5_reasoning_parser.py`; associated commits `af5e6afa0af2`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +387/-14, 423 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Step 3.5, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Bugfix] Fix step3p5 reasoning with interleaved thinking". The diff centers on `tests/reasoning/test_step3p5_reasoning_parser.py`, `vllm/reasoning/step3p5_reasoning_parser.py`. PR body context: ## Purpose When there are multiple rounds of conversation, the prompt contains ` ` from the previous round, and the step3p5 reasoning parser failed to correctly determine the en...
+- Motivation: Title: "[Bugfix] Fix step3p5 reasoning with interleaved thinking"; model line: Step 3.5; category: bug fix; main diff: `tests/reasoning/test_step3p5_reasoning_parser.py`, `vllm/reasoning/step3p5_reasoning_parser.py`; PR body summary: When there are multiple rounds of conversation, the prompt contains ` ` from the previous round, and the step3p5 reasoning parser failed to correctly determine the end of reason....
 - Key implementation: `tests/reasoning/test_step3p5_reasoning_parser.py` added +341/-0 (341 lines); hunks: -0,0 +1,341; symbols: step3p5_tokenizer, test_reasoning, test_step3p5_streaming_drops_leading_newline, touching `step3p5_tokenizer, test_reasoning, test_step3p5_streaming_drops_leading_newline`; `vllm/reasoning/step3p5_reasoning_parser.py` modified +46/-14 (60 lines); hunks: -39,24 +39,59 @@ def __init__(self, tokenizer: TokenizerLike, *args, **kwargs):; -136,9 +171,6 @@ def extract_reasoning_streaming(; symbols: __init__, is_reasoning_end, is_reasoning_end_streaming, _is_reasoning_end_from_ids, touching `__init__, is_reasoning_end, is_reasoning_end_streaming`.
 - Code diff details:
   - `tests/reasoning/test_step3p5_reasoning_parser.py` added +341/-0 (341 lines); hunks: -0,0 +1,341; symbols: step3p5_tokenizer, test_reasoning, test_step3p5_streaming_drops_leading_newline
@@ -220,7 +219,7 @@ diff -- vllm/reasoning/step3p5_reasoning_parser.py
 - Status/date: merged / 2026-03-20
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +228/-160, 511 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Step 3.5, this PR extends deployment docs, tests, or CI coverage. Title: "[Model] Refactor Step3-VL processor to HF style". The diff centers on `vllm/transformers_utils/processors/step3_vl.py`, `vllm/model_executor/models/step3_vl.py`, `vllm/transformers_utils/processors/internvl.py`. PR body context: ## Purpose - Make Step3-VL processor contain `image_processor` in order to fit HF call semantics. - Make Step3-VL more efficient by avoiding unnecessary text/token construction...
+- Motivation: Title: "[Model] Refactor Step3-VL processor to HF style"; model line: Step 3.5; category: docs/tests/CI; main diff: `vllm/transformers_utils/processors/step3_vl.py`, `vllm/model_executor/models/step3_vl.py`, `vllm/transformers_utils/processors/internvl.py`; PR body summary: - Make Step3-VL processor contain `image_processor` in order to fit HF call semantics. - Make Step3-VL more efficient by avoiding unnecessary text/token construction and string....
 - Key implementation: `vllm/transformers_utils/processors/step3_vl.py` modified +197/-127 (324 lines); hunks: -8,13 +8,13; -185,7 +185,7 @@ def get_num_patches(self, img_width: int, img_height: int) -...; symbols: Step3VisionProcessor, get_num_patches, __call__, touching `Step3VisionProcessor, get_num_patches, __call__`; `vllm/model_executor/models/step3_vl.py` modified +27/-29 (56 lines); hunks: -39,7 +39,11; -86,21 +90,30 @@ class Step3VLImageEmbeddingInputs(TensorSchema):; symbols: Step3VLImageEmbeddingInputs, Step3VLProcessingInfo, get_image_processor, get_hf_processor, touching `Step3VLImageEmbeddingInputs, Step3VLProcessingInfo, get_image_processor`; `vllm/transformers_utils/processors/internvl.py` modified +4/-3 (7 lines); hunks: -558,6 +558,7 @@ def __call__(; symbols: __call__, touching `__call__`; `vllm/transformers_utils/processors/kimi_k25.py` modified +0/-1 (1 lines); hunks: -19,7 +19,6 @@ def __init__(; symbols: __init__, __call__, touching `__init__, __call__`.
 - Code diff details:
   - `vllm/transformers_utils/processors/step3_vl.py` modified +197/-127 (324 lines); hunks: -8,13 +8,13; -185,7 +185,7 @@ def get_num_patches(self, img_width: int, img_height: int) -...; symbols: Step3VisionProcessor, get_num_patches, __call__
@@ -256,5 +255,5 @@ diff -- vllm/transformers_utils/processors/internvl.py
 
 ## Gap-Closure Notes
 
-- This version rejects title-only PR lists; every PR must include trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
+- Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
 - If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.

@@ -1,6 +1,6 @@
 # SGLang Model Optimization Skills
 
-Current non-diffusion SGLang model skills:
+Current SGLang model skills:
 
 - `sglang-deepseek-v3-r1-optimization`
 - `sglang-deepseek-v31-optimization`

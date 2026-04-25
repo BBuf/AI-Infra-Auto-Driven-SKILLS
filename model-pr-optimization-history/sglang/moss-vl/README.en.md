@@ -6,7 +6,6 @@
 - Source baseline: `sgl-project/sglang` trace worktree commit `880599cd43`
 - PR collection rule: run `git log --name-only -- <model-files>` on model implementation, config, processor, parser, docs/tests, filter by model keywords in commit subjects, then read each PR's final diff through the GitHub Pull Request files API.
 - Preservation rule: PRs explicitly cited by the previous history/skill are retained even if current implementation files no longer trace to them, and the card marks that source.
-- Diffusion model families have been removed from this history set and are no longer part of model optimization skills.
 
 ## Implementation File Coverage
 
@@ -37,7 +36,7 @@
 - Status/date: merged / 2026-04-24
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/moss_vl.py`, `python/sglang/srt/multimodal/processors/moss_vl.py`; associated commits `59724e90a9b8`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +2401/-6, 2611 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For MOSS-VL, this PR adds or enables a model support/runtime surface. Title: "[srt] Add Moss-VL Python runtime support". The diff centers on `python/sglang/srt/models/moss_vl.py`, `python/sglang/srt/multimodal/processors/moss_vl.py`. PR body context: ## Summary This PR adds Python-side runtime support for Moss-VL in SRT. The changes include: - add `MossVLForConditionalGeneration` model support - add a Moss-VL multimodal proc...
+- Motivation: Title: "[srt] Add Moss-VL Python runtime support"; model line: MOSS-VL; category: model support/runtime entry; main diff: `python/sglang/srt/models/moss_vl.py`, `python/sglang/srt/multimodal/processors/moss_vl.py`; PR body summary: This PR adds Python-side runtime support for Moss-VL in SRT. The changes include: - add `MossVLForConditionalGeneration` model support - add a Moss-VL multimodal processor - reg....
 - Key implementation: `python/sglang/srt/models/moss_vl.py` added +1643/-0 (1643 lines); hunks: -0,0 +1,1643; symbols: MossVLVisionMLP, __init__, forward, MossVLVisionPatchEmbed, touching `MossVLVisionMLP, __init__, forward`; `python/sglang/srt/multimodal/processors/moss_vl.py` added +612/-0 (612 lines); hunks: -0,0 +1,612; symbols: MossVLImageProcessor, __init__, _build_mm_items, _build_vision_token_info, touching `MossVLImageProcessor, __init__, _build_mm_items`.
 - Code diff details:
   - `python/sglang/srt/models/moss_vl.py` added +1643/-0 (1643 lines); hunks: -0,0 +1,1643; symbols: MossVLVisionMLP, __init__, forward, MossVLVisionPatchEmbed
@@ -69,5 +68,5 @@ diff -- python/sglang/srt/multimodal/processors/moss_vl.py
 
 ## Gap-Closure Notes
 
-- This version rejects title-only PR lists; every PR must include trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
+- Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
 - If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.

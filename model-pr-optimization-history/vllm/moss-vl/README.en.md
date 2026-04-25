@@ -6,7 +6,6 @@
 - Source baseline: `vllm-project/vllm` trace worktree commit `95995bbef8`
 - PR collection rule: run `git log --name-only -- <model-files>` on model implementation, config, processor, parser, docs/tests, filter by model keywords in commit subjects, then read each PR's final diff through the GitHub Pull Request files API.
 - Preservation rule: PRs explicitly cited by the previous history/skill are retained even if current implementation files no longer trace to them, and the card marks that source.
-- Diffusion model families have been removed from this history set and are no longer part of model optimization skills.
 
 ## Implementation File Coverage
 
@@ -39,5 +38,5 @@
 
 ## Gap-Closure Notes
 
-- This version rejects title-only PR lists; every PR must include trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
+- Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
 - If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.

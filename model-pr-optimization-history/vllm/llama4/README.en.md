@@ -6,7 +6,6 @@
 - Source baseline: `vllm-project/vllm` trace worktree commit `95995bbef8`
 - PR collection rule: run `git log --name-only -- <model-files>` on model implementation, config, processor, parser, docs/tests, filter by model keywords in commit subjects, then read each PR's final diff through the GitHub Pull Request files API.
 - Preservation rule: PRs explicitly cited by the previous history/skill are retained even if current implementation files no longer trace to them, and the card marks that source.
-- Diffusion model families have been removed from this history set and are no longer part of model optimization skills.
 
 ## Implementation File Coverage
 
@@ -26,8 +25,8 @@
 ## PR Coverage Summary
 
 - Git-traced PRs: 37
-- Extra PRs preserved from existing docs: 2
-- Total PRs in this document: 39
+- Extra PRs preserved from existing docs: 3
+- Total PRs in this document: 40
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -59,6 +58,7 @@
 | 2025-08-13 | [#22701](https://github.com/vllm-project/vllm/pull/22701) | merged | Fix cuda illegal mem access with Llama4 TP8 + rms_norm custom op | `vllm/model_executor/models/llama4.py` |
 | 2025-08-19 | [#22691](https://github.com/vllm-project/vllm/pull/22691) | merged | [bug fix] Fix llama4 spec decoding | `vllm/model_executor/models/llama4.py` |
 | 2025-08-28 | [#22021](https://github.com/vllm-project/vllm/pull/22021) | merged | Migrate Llama4ImagePatchInputs to TensorSchema | `vllm/model_executor/models/mllama4.py` |
+| 2025-09-11 | [#24444](https://github.com/vllm-project/vllm/pull/24444) | merged | [Bugfix] Fix platform-specific routing in CustomOp implementations | `vllm/model_executor/layers/rotary_embedding/mrope.py`, `vllm/model_executor/layers/rotary_embedding/deepseek_scaling_rope.py`, `vllm/model_executor/layers/rotary_embedding/dual_chunk_rope.py` |
 | 2025-09-30 | [#25889](https://github.com/vllm-project/vllm/pull/25889) | merged | [Llama4] [multimodal] Fix misplaced dtype cast of `cos_sin_cache` in `Llama4VisionRotaryEmbedding` | `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py` |
 | 2025-10-06 | [#25961](https://github.com/vllm-project/vllm/pull/25961) | merged | Support llama3 eagle3 head with llama4 verifier | `vllm/model_executor/models/mllama4.py` |
 | 2025-10-14 | [#26790](https://github.com/vllm-project/vllm/pull/26790) | merged | llama4_vision_rope: add HIP override to accept (q, k) and avoid (positions, q, k) mismatch | `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py` |
@@ -83,7 +83,7 @@
 - Status/date: merged / 2025-04-06
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 35 files, +2369/-142, 3141 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "[Model] Support Llama4 in vLLM". The diff centers on `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`, `vllm/model_executor/layers/fused_moe/configs/E=16,N=1024,device_name=AMD_Instinct_MI300X.json`. PR body context: Add the support for Llama4 Scout (17B x 16 Experts) and Maverick (17B x 128 Experts) in vLLM. Using 8xH100, vLLM can serve Scout with 1M context and Maverick with about 430K. Us...
+- Motivation: Title: "[Model] Support Llama4 in vLLM"; model line: Llama 4; category: model support/runtime entry; main diff: `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`, `vllm/model_executor/layers/fused_moe/configs/E=16,N=1024,device_name=AMD_Instinct_MI300X.json`; PR body summary: Add the support for Llama4 Scout (17B x 16 Experts) and Maverick (17B x 128 Experts) in vLLM. Using 8xH100, vLLM can serve Scout with 1M context and Maverick with about 430K. Us....
 - Key implementation: `vllm/model_executor/models/mllama4.py` added +886/-0 (886 lines); hunks: -0,0 +1,886; symbols: Llama4ImagePatchInputs, Llama4VisionMLP, __init__, forward, touching `Llama4ImagePatchInputs, Llama4VisionMLP, __init__`; `vllm/model_executor/models/llama4.py` added +530/-0 (530 lines); hunks: -0,0 +1,530; symbols: Llama4MoE, custom_routing_function, __init__, forward, touching `Llama4MoE, custom_routing_function, __init__`; `vllm/model_executor/layers/fused_moe/configs/E=16,N=1024,device_name=AMD_Instinct_MI300X.json` added +200/-0 (200 lines); hunks: -0,0 +1,200; `tests/models/multimodal/processing/test_llama4.py` added +99/-0 (99 lines); hunks: -0,0 +1,99; symbols: test_processor_override, touching `test_processor_override`.
 - Code diff details:
   - `vllm/model_executor/models/mllama4.py` added +886/-0 (886 lines); hunks: -0,0 +1,886; symbols: Llama4ImagePatchInputs, Llama4VisionMLP, __init__, forward
@@ -123,9 +123,9 @@ diff -- vllm/model_executor/layers/fused_moe/configs/E=16,N=1024,device_name=AMD
 
 - Link: https://github.com/vllm-project/vllm/pull/16113
 - Status/date: merged / 2025-04-07
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/processing/test_llama4.py`, `vllm/model_executor/models/llama4.py`, `vllm/model_executor/models/mllama4.py`; associated commits `55dcce91df15`
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/processing/test_llama4.py`, `vllm/model_executor/models/llama4.py`, `vllm/model_executor/models/mllama4.py`; associated commits `55dcce91df15`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 43 files, +2436/-155, 3350 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "Upstream Llama4 Support to Main". The diff centers on `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`, `tests/models/multimodal/processing/test_llama4.py`. PR body context: As a follow up of https://github.com/vllm-project/vllm/pull/16104, we upstream the Llama4 support to the main branch. The goal of this PR: - Support the llama4 - Clean up some h...
+- Motivation: Title: "Upstream Llama4 Support to Main"; model line: Llama 4; category: model support/runtime entry; main diff: `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`, `tests/models/multimodal/processing/test_llama4.py`; PR body summary: As a follow up of https://github.com/vllm-project/vllm/pull/16104, we upstream the Llama4 support to the main branch. The goal of this PR: - Support the llama4 - Clean up some h....
 - Key implementation: `vllm/model_executor/models/mllama4.py` added +895/-0 (895 lines); hunks: -0,0 +1,895; symbols: Llama4ImagePatchInputs, Llama4VisionMLP, __init__, forward, touching `Llama4ImagePatchInputs, Llama4VisionMLP, __init__`; `vllm/model_executor/models/llama4.py` added +531/-0 (531 lines); hunks: -0,0 +1,531; symbols: Llama4MoE, custom_routing_function, __init__, forward, touching `Llama4MoE, custom_routing_function, __init__`; `tests/models/multimodal/processing/test_llama4.py` added +99/-0 (99 lines); hunks: -0,0 +1,99; symbols: test_processor_override, touching `test_processor_override`.
 - Code diff details:
   - `vllm/model_executor/models/mllama4.py` added +895/-0 (895 lines); hunks: -0,0 +1,895; symbols: Llama4ImagePatchInputs, Llama4VisionMLP, __init__, forward
@@ -163,9 +163,9 @@ diff -- tests/models/multimodal/processing/test_llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/16201
 - Status/date: merged / 2025-04-07
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mllama4.py`; associated commits `ed636d99caa0`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mllama4.py`; associated commits `ed636d99caa0`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +4/-3, 22 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR changes model-related implementation. Title: "[Misc] Move Llama 4 projector call into encoder execution". The diff centers on `vllm/model_executor/models/mllama4.py`. PR body context: On vLLM we consider encoder execution to generate multimodal embeddings ready to be merged into text embeddings, thus it often includes the projector call even though it's not p...
+- Motivation: Title: "[Misc] Move Llama 4 projector call into encoder execution"; model line: Llama 4; category: model implementation change; main diff: `vllm/model_executor/models/mllama4.py`; PR body summary: On vLLM we consider encoder execution to generate multimodal embeddings ready to be merged into text embeddings, thus it often includes the projector call even though it's not p....
 - Key implementation: `vllm/model_executor/models/mllama4.py` modified +4/-3 (7 lines); hunks: -760,6 +760,8 @@ def _process_image_input(; -791,10 +793,9 @@ def get_input_embeddings(; symbols: _process_image_input, get_multimodal_embeddings, get_input_embeddings, touching `_process_image_input, get_multimodal_embeddings, get_input_embeddings`.
 - Code diff details:
   - `vllm/model_executor/models/mllama4.py` modified +4/-3 (7 lines); hunks: -760,6 +760,8 @@ def _process_image_input(; -791,10 +793,9 @@ def get_input_embeddings(; symbols: _process_image_input, get_multimodal_embeddings, get_input_embeddings
@@ -190,9 +190,9 @@ diff -- vllm/model_executor/models/mllama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/16311
 - Status/date: merged / 2025-04-09
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `ec7da6fcf32f`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `ec7da6fcf32f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +7/-12, 33 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[BugFix] llama4 qknorm should be not shared across head". The diff centers on `vllm/model_executor/models/llama4.py`. PR body context: QKNorm should not be across head, we need to do qknorm per head, score goes up from 0.6858 to 0.7153. This also resovles TP=4 Accuracy Issue https://github.com/vllm-project/vllm...
+- Motivation: Title: "[BugFix] llama4 qknorm should be not shared across head"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/models/llama4.py`; PR body summary: QKNorm should not be across head, we need to do qknorm per head, score goes up from 0.6858 to 0.7153. This also resovles TP=4 Accuracy Issue https://github.com/vllm-project/vllm....
 - Key implementation: `vllm/model_executor/models/llama4.py` modified +7/-12 (19 lines); hunks: -155,14 +155,8 @@ def __init__(self,; -226,10 +220,11 @@ def forward(; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
   - `vllm/model_executor/models/llama4.py` modified +7/-12 (19 lines); hunks: -155,14 +155,8 @@ def __init__(self,; -226,10 +220,11 @@ def forward(; symbols: __init__, forward
@@ -217,9 +217,9 @@ diff -- vllm/model_executor/models/llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/16365
 - Status/date: merged / 2025-04-10
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mllama4.py`; associated commits `61de3ef74b9c`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mllama4.py`; associated commits `61de3ef74b9c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +26/-7, 84 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR extends deployment docs, tests, or CI coverage. Title: "[Model] Remove image mm limit for LLaMa4". The diff centers on `vllm/model_executor/models/mllama4.py`. PR body context: Follow up in https://github.com/vllm-project/vllm/pull/16104 to remove the hard limit. Added some tests to allow testing more images in vision_language_multi_image.py. Default d...
+- Motivation: Title: "[Model] Remove image mm limit for LLaMa4"; model line: Llama 4; category: docs/tests/CI; main diff: `vllm/model_executor/models/mllama4.py`; PR body summary: Follow up in https://github.com/vllm-project/vllm/pull/16104 to remove the hard limit. Added some tests to allow testing more images in vision_language_multi_image.py. Default d....
 - Key implementation: `vllm/model_executor/models/mllama4.py` modified +3/-1 (4 lines); hunks: -477,7 +477,9 @@ def get_hf_processor(self, **kwargs: object) -> Llama4Proces...; symbols: get_hf_processor, get_supported_mm_limits, get_patch_per_chunk, touching `get_hf_processor, get_supported_mm_limits, get_patch_per_chunk`.
 - Code diff details:
   - `vllm/model_executor/models/mllama4.py` modified +3/-1 (4 lines); hunks: -477,7 +477,9 @@ def get_hf_processor(self, **kwargs: object) -> Llama4Proces...; symbols: get_hf_processor, get_supported_mm_limits, get_patch_per_chunk
@@ -242,9 +242,9 @@ diff -- vllm/model_executor/models/mllama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/16439
 - Status/date: merged / 2025-04-11
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `99ef59cf7f93`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `99ef59cf7f93`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +6/-2, 18 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "[Llama4] Enable attention temperature tuning by default for long context (>32k)". The diff centers on `vllm/model_executor/models/llama4.py`. PR body context: Attention temperature tuning (on nope layers) improves accuracy on long context (>32k) tasks. Enabling it by default for long context unless explicitly disabled by the user. Eva...
+- Motivation: Title: "[Llama4] Enable attention temperature tuning by default for long context (>32k)"; model line: Llama 4; category: docs/tests/CI; main diff: `vllm/model_executor/models/llama4.py`; PR body summary: Attention temperature tuning (on nope layers) improves accuracy on long context (>32k) tasks. Enabling it by default for long context unless explicitly disabled by the user. Eva....
 - Key implementation: `vllm/model_executor/models/llama4.py` modified +6/-2 (8 lines); hunks: -467,11 +467,15 @@ class Llama4ForCausalLM(LlamaForCausalLM):; symbols: Llama4ForCausalLM, __init__, touching `Llama4ForCausalLM, __init__`.
 - Code diff details:
   - `vllm/model_executor/models/llama4.py` modified +6/-2 (8 lines); hunks: -467,11 +467,15 @@ class Llama4ForCausalLM(LlamaForCausalLM):; symbols: Llama4ForCausalLM, __init__
@@ -269,9 +269,9 @@ diff -- vllm/model_executor/models/llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/16463
 - Status/date: merged / 2025-04-11
-- Trace source: `git log --name-only -- <model-files>` found it through `examples/tool_chat_template_llama4_pythonic.jinja`; associated commits `16eda8c43a9d`
+- Trace source: `git log --name-only -- <model-files>` found it through `examples/tool_chat_template_llama4_pythonic.jinja`; associated commits `16eda8c43a9d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +182/-2, 223 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Frontend] Added chat templates for LLaMa4 pythonic tool calling". The diff centers on `examples/tool_chat_template_llama4_pythonic.jinja`. PR body context: # Summary Fixing tool calling related chat templates for llama4. LLaMa4 followed similar pythonic format. Co-authored with @wukaixingxp. Tool call messages and tool response mes...
+- Motivation: Title: "[Frontend] Added chat templates for LLaMa4 pythonic tool calling"; model line: Llama 4; category: bug fix; main diff: `examples/tool_chat_template_llama4_pythonic.jinja`; PR body summary: Fixing tool calling related chat templates for llama4. LLaMa4 followed similar pythonic format. Co-authored with @wukaixingxp. Tool call messages and tool response messages shou....
 - Key implementation: `examples/tool_chat_template_llama4_pythonic.jinja` added +139/-0 (139 lines); hunks: -0,0 +1,139.
 - Code diff details:
   - `examples/tool_chat_template_llama4_pythonic.jinja` added +139/-0 (139 lines); hunks: -0,0 +1,139
@@ -296,9 +296,9 @@ diff -- examples/tool_chat_template_llama4_pythonic.jinja
 
 - Link: https://github.com/vllm-project/vllm/pull/16512
 - Status/date: merged / 2025-04-12
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `bd6028d6b0bb`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `bd6028d6b0bb`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +11/-2, 31 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR optimizes an inference path or backend selection. Title: "Optimized topk for topk=1 (Llama-4)". The diff centers on `vllm/model_executor/models/llama4.py`. PR body context: Clear speedup for latency case, adapted from https://github.com/sgl-project/sglang/commit/86a876d883a7c7a0e2b0fca5ef86e20ab92c0694 (thank you!) Llama Scout FP8 on 2xH100, input/...
+- Motivation: Title: "Optimized topk for topk=1 (Llama-4)"; model line: Llama 4; category: performance/backend optimization; main diff: `vllm/model_executor/models/llama4.py`; PR body summary: Clear speedup for latency case, adapted from https://github.com/sgl-project/sglang/commit/86a876d883a7c7a0e2b0fca5ef86e20ab92c0694 (thank you!) Llama Scout FP8 on 2xH100, input/....
 - Key implementation: `vllm/model_executor/models/llama4.py` modified +2/-2 (4 lines); hunks: -37,7 +37,7; -50,7 +50,7 @@ def custom_routing_function(; symbols: custom_routing_function, touching `custom_routing_function`.
 - Code diff details:
   - `vllm/model_executor/models/llama4.py` modified +2/-2 (4 lines); hunks: -37,7 +37,7; -50,7 +50,7 @@ def custom_routing_function(; symbols: custom_routing_function
@@ -322,9 +322,9 @@ diff -- vllm/model_executor/models/llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/16801
 - Status/date: merged / 2025-04-18
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `7eb42556281d`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `7eb42556281d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +6/-9, 58 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "[BugFix] Accuracy fix for llama4 int4 - improperly casted scales". The diff centers on `vllm/model_executor/models/llama4.py`. PR body context: A few MoE fixes: 1) Scales where fp16/bf16 but were being casted to float unsafely. Add a check by using `.data_ptr ()` 2) Fix `AttributeError: 'FusedMoE' object has no attribut...
+- Motivation: Title: "[BugFix] Accuracy fix for llama4 int4 - improperly casted scales"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/models/llama4.py`; PR body summary: A few MoE fixes: 1) Scales where fp16/bf16 but were being casted to float unsafely. Add a check by using `.data_ptr ()` 2) Fix `AttributeError: 'FusedMoE' object has no attribut....
 - Key implementation: `vllm/model_executor/models/llama4.py` modified +2/-2 (4 lines); hunks: -51,8 +51,8 @@ def custom_routing_function(; symbols: custom_routing_function, __init__, touching `custom_routing_function, __init__`.
 - Code diff details:
   - `vllm/model_executor/models/llama4.py` modified +2/-2 (4 lines); hunks: -51,8 +51,8 @@ def custom_routing_function(; symbols: custom_routing_function, __init__
@@ -347,9 +347,9 @@ diff -- vllm/model_executor/models/llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/16746
 - Status/date: merged / 2025-04-18
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mllama4.py`; associated commits `e31045f95ca0`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mllama4.py`; associated commits `e31045f95ca0`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-3, 21 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "[Bugfix] fix pp for llama4". The diff centers on `vllm/model_executor/models/mllama4.py`. PR body context: This PR fixes PP for llama4 (https://github.com/vllm-project/vllm/issues/16385) Loading language model with architecture to support PP verification and correct the prefix to sep...
+- Motivation: Title: "[Bugfix] fix pp for llama4"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/models/mllama4.py`; PR body summary: This PR fixes PP for llama4 (https://github.com/vllm-project/vllm/issues/16385) Loading language model with architecture to support PP verification and correct the prefix to sep....
 - Key implementation: `vllm/model_executor/models/mllama4.py` modified +3/-3 (6 lines); hunks: -672,9 +672,9 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; -824,7 +824,7 @@ def load_weights(self, weights: Iterable[Tuple[str,; symbols: __init__, load_weights, touching `__init__, load_weights`.
 - Code diff details:
   - `vllm/model_executor/models/mllama4.py` modified +3/-3 (6 lines); hunks: -672,9 +672,9 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; -824,7 +824,7 @@ def load_weights(self, weights: Iterable[Tuple[str,; symbols: __init__, load_weights
@@ -374,9 +374,9 @@ diff -- vllm/model_executor/models/mllama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/16428
 - Status/date: merged / 2025-04-24
-- Trace source: `git log --name-only -- <model-files>` found it through `examples/tool_chat_template_llama4_json.jinja`; associated commits `05e1fbfc52ca`
+- Trace source: `git log --name-only -- <model-files>` found it through `examples/tool_chat_template_llama4_json.jinja`; associated commits `05e1fbfc52ca`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +139/-1, 172 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "Add chat template for Llama 4 models". The diff centers on `examples/tool_chat_template_llama4_json.jinja`. PR body context: The main differences are that some token have changed, e.g. start_header_id was changed to header_start. Now the models also support multiple tool calls although one of our para...
+- Motivation: Title: "Add chat template for Llama 4 models"; model line: Llama 4; category: model support/runtime entry; main diff: `examples/tool_chat_template_llama4_json.jinja`; PR body summary: The main differences are that some token have changed, e.g. start_header_id was changed to header_start. Now the models also support multiple tool calls although one of our para....
 - Key implementation: `examples/tool_chat_template_llama4_json.jinja` added +116/-0 (116 lines); hunks: -0,0 +1,116.
 - Code diff details:
   - `examples/tool_chat_template_llama4_json.jinja` added +116/-0 (116 lines); hunks: -0,0 +1,116
@@ -401,9 +401,9 @@ diff -- examples/tool_chat_template_llama4_json.jinja
 
 - Link: https://github.com/vllm-project/vllm/pull/17315
 - Status/date: merged / 2025-04-29
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `b4ac4fa04da1`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `b4ac4fa04da1`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +2/-2, 11 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR changes model-related implementation. Title: "[model] make llama4 compatible with pure dense layers". The diff centers on `vllm/model_executor/models/llama4.py`. PR body context: make llama4 compatible with pure dense layers when interleave_moe_layer_step == 0 (no moe layers)
+- Motivation: Title: "[model] make llama4 compatible with pure dense layers"; model line: Llama 4; category: model implementation change; main diff: `vllm/model_executor/models/llama4.py`; PR body summary: make llama4 compatible with pure dense layers when interleave_moe_layer_step == 0 (no moe layers).
 - Key implementation: `vllm/model_executor/models/llama4.py` modified +2/-2 (4 lines); hunks: -273,8 +273,8 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/llama4.py` modified +2/-2 (4 lines); hunks: -273,8 +273,8 @@ def __init__(; symbols: __init__
@@ -426,9 +426,9 @@ diff -- vllm/model_executor/models/llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/17917
 - Status/date: merged / 2025-05-22
-- Trace source: `git log --name-only -- <model-files>` found it through `examples/tool_chat_template_llama4_pythonic.jinja`; associated commits `c91fe7b1b9c4`
+- Trace source: `git log --name-only -- <model-files>` found it through `examples/tool_chat_template_llama4_pythonic.jinja`; associated commits `c91fe7b1b9c4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +541/-72, 720 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Frontend][Bug Fix] Update llama4 pythonic jinja template and llama4_pythonic parser". The diff centers on `examples/tool_chat_template_llama4_pythonic.jinja`. PR body context: Change the llama4 pythonic template and small fix on the edge case where llama4 model may output ` ` unexpectedly. BFCL test result: | Name | reported | Base_vllm | Pythonic_vll...
+- Motivation: Title: "[Frontend][Bug Fix] Update llama4 pythonic jinja template and llama4_pythonic parser"; model line: Llama 4; category: bug fix; main diff: `examples/tool_chat_template_llama4_pythonic.jinja`; PR body summary: Change the llama4 pythonic template and small fix on the edge case where llama4 model may output ` ` unexpectedly. BFCL test result: | Name | reported | Base_vllm | Pythonic_vll....
 - Key implementation: `examples/tool_chat_template_llama4_pythonic.jinja` modified +36/-64 (100 lines); hunks: -1,85 +1,51; -91,10 +57,12.
 - Code diff details:
   - `examples/tool_chat_template_llama4_pythonic.jinja` modified +36/-64 (100 lines); hunks: -1,85 +1,51; -91,10 +57,12
@@ -453,9 +453,9 @@ diff -- examples/tool_chat_template_llama4_pythonic.jinja
 
 - Link: https://github.com/vllm-project/vllm/pull/18368
 - Status/date: merged / 2025-06-02
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mllama4.py`; associated commits `ebb1ec931871`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mllama4.py`; associated commits `ebb1ec931871`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +214/-68, 496 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "[Model] enable data parallel for Llama4 vision encoder". The diff centers on `vllm/model_executor/models/mllama4.py`. PR body context: **Summary:** Llama4 vision encoder in dp8 is ~3x as fast as in tp8, especially when handling a large number of input images (eg. 9 images per request). Add an enable_vision_enco...
+- Motivation: Title: "[Model] enable data parallel for Llama4 vision encoder"; model line: Llama 4; category: docs/tests/CI; main diff: `vllm/model_executor/models/mllama4.py`; PR body summary: **Summary:** Llama4 vision encoder in dp8 is ~3x as fast as in tp8, especially when handling a large number of input images (eg. 9 images per request). Add an enable_vision_enco....
 - Key implementation: `vllm/model_executor/models/mllama4.py` modified +167/-68 (235 lines); hunks: -34,6 +34,7; -49,6 +50,7; symbols: Llama4ImagePatchInputs, Llama4VisionMLP, __init__, pixel_shuffle, touching `Llama4ImagePatchInputs, Llama4VisionMLP, __init__`.
 - Code diff details:
   - `vllm/model_executor/models/mllama4.py` modified +167/-68 (235 lines); hunks: -34,6 +34,7; -49,6 +50,7; symbols: Llama4ImagePatchInputs, Llama4VisionMLP, __init__, pixel_shuffle
@@ -480,9 +480,9 @@ diff -- vllm/model_executor/models/mllama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/19997
 - Status/date: merged / 2025-06-25
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `1afa9948f593`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `1afa9948f593`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-2, 11 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR extends deployment docs, tests, or CI coverage. Title: "[Llama4] Update `attn_temperature_tuning`". The diff centers on `vllm/model_executor/models/llama4.py`. PR body context: ## Purpose Since https://github.com/huggingface/transformers/pull/37501 landed It's the below on HF now: So we no longer need this comment ## Test Plan Start the model on TP=8 o...
+- Motivation: Title: "[Llama4] Update `attn_temperature_tuning`"; model line: Llama 4; category: model implementation change; main diff: `vllm/model_executor/models/llama4.py`; PR body summary: Since https://github.com/huggingface/transformers/pull/37501 landed It's the below on HF now: So we no longer need this comment Start the model on TP=8 on H100, loaded fine Comm....
 - Key implementation: `vllm/model_executor/models/llama4.py` modified +1/-2 (3 lines); hunks: -148,9 +148,8 @@ def __init__(self,; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/llama4.py` modified +1/-2 (3 lines); hunks: -148,9 +148,8 @@ def __init__(self,; symbols: __init__
@@ -506,7 +506,7 @@ diff -- vllm/model_executor/models/llama4.py
 - Status/date: merged / 2025-07-12
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`, `vllm/model_executor/models/mllama4.py`; associated commits `4afe687a8291`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +501/-35, 693 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "Enable ModelOpt Llama4 fp8 checkpoint deployment". The diff centers on `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`. PR body context: ## Essential Elements of an Effective PR Description Checklist - [x] The purpose of the PR, such as "Fix some issue (link existing issues this PR will resolve)". - [x] The test...
+- Motivation: Title: "Enable ModelOpt Llama4 fp8 checkpoint deployment"; model line: Llama 4; category: performance/backend optimization; main diff: `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`; no usable PR-body summary.
 - Key implementation: `vllm/model_executor/models/mllama4.py` modified +144/-20 (164 lines); hunks: -717,6 +717,7 @@ class Llama4ForConditionalGeneration(nn.Module, SupportsMult...; -902,32 +903,109 @@ def _consolidate_qkv_weights(; symbols: Llama4ForConditionalGeneration, _consolidate_qkv_weights, load_weights, _rename_weight_for_modelopt_checkpoint, touching `Llama4ForConditionalGeneration, _consolidate_qkv_weights, load_weights`; `vllm/model_executor/models/llama4.py` modified +55/-4 (59 lines); hunks: -35,7 +35,8; -432,12 +433,24 @@ def load_weights(self, weights: Iterable[tuple[str,; symbols: load_weights, touching `load_weights`.
 - Code diff details:
   - `vllm/model_executor/models/mllama4.py` modified +144/-20 (164 lines); hunks: -717,6 +717,7 @@ class Llama4ForConditionalGeneration(nn.Module, SupportsMult...; -902,32 +903,109 @@ def _consolidate_qkv_weights(; symbols: Llama4ForConditionalGeneration, _consolidate_qkv_weights, load_weights, _rename_weight_for_modelopt_checkpoint
@@ -542,7 +542,7 @@ diff -- vllm/model_executor/models/llama4.py
 - Status/date: merged / 2025-07-16
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4_eagle.py`; associated commits `c11013db8b76`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +258/-18, 363 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "[Meta] Llama4 EAGLE Support". The diff centers on `vllm/model_executor/models/llama4_eagle.py`. PR body context: ## Purpose Support EAGLE speculative decoding with dense-only draft model for Llama4, using official Meta based support Original Author: @zixi-qi ## Test Plan Ran with a uploade...
+- Motivation: Title: "[Meta] Llama4 EAGLE Support"; model line: Llama 4; category: docs/tests/CI; main diff: `vllm/model_executor/models/llama4_eagle.py`; PR body summary: Support EAGLE speculative decoding with dense-only draft model for Llama4, using official Meta based support Original Author: @zixi-qi Ran with a uploaded scout based eagle to t....
 - Key implementation: `vllm/model_executor/models/llama4_eagle.py` added +214/-0 (214 lines); hunks: -0,0 +1,214; symbols: LlamaModel, __init__, forward, load_weights, touching `LlamaModel, __init__, forward`.
 - Code diff details:
   - `vllm/model_executor/models/llama4_eagle.py` added +214/-0 (214 lines); hunks: -0,0 +1,214; symbols: LlamaModel, __init__, forward, load_weights
@@ -567,9 +567,9 @@ diff -- vllm/model_executor/models/llama4_eagle.py
 
 - Link: https://github.com/vllm-project/vllm/pull/21499
 - Status/date: merged / 2025-07-30
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `ff08e51940a7`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `ff08e51940a7`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +219/-70, 432 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[NVIDIA] Fix Llama4 Scout FP4 functionality issues". The diff centers on `vllm/model_executor/models/llama4.py`. PR body context: Fix the weight loading issues and accuray issues when using the NVIDIA ModelOpt Llama4 Scout FP4 model. ## Essential Elements of an Effective PR Description Checklist - [x] The...
+- Motivation: Title: "[NVIDIA] Fix Llama4 Scout FP4 functionality issues"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/models/llama4.py`; PR body summary: Fix the weight loading issues and accuray issues when using the NVIDIA ModelOpt Llama4 Scout FP4 model..
 - Key implementation: `vllm/model_executor/models/llama4.py` modified +205/-67 (272 lines); hunks: -342,34 +342,94 @@ def load_moe_expert_weights(; -382,6 +442,9 @@ def load_moe_expert_weights(; symbols: load_moe_expert_weights, load_weights, touching `load_moe_expert_weights, load_weights`.
 - Code diff details:
   - `vllm/model_executor/models/llama4.py` modified +205/-67 (272 lines); hunks: -342,34 +342,94 @@ def load_moe_expert_weights(; -382,6 +442,9 @@ def load_moe_expert_weights(; symbols: load_moe_expert_weights, load_weights
@@ -594,9 +594,9 @@ diff -- vllm/model_executor/models/llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/20788
 - Status/date: merged / 2025-07-31
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`, `vllm/model_executor/models/llama4_eagle.py`; associated commits `9e0726e5bfd2`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`, `vllm/model_executor/models/llama4_eagle.py`; associated commits `9e0726e5bfd2`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +206/-37, 487 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "[Meta] Official Eagle mm support, first enablement on llama4". The diff centers on `vllm/model_executor/models/llama4_eagle.py`, `vllm/model_executor/models/llama4.py`. PR body context: ## Purpose Enable MM inference for EAGLE, targeting mllama4 in this PR but generally easy to extend to other models Issue with this PR: MM chunked prefill needs to be disabled,...
+- Motivation: Title: "[Meta] Official Eagle mm support, first enablement on llama4"; model line: Llama 4; category: docs/tests/CI; main diff: `vllm/model_executor/models/llama4_eagle.py`, `vllm/model_executor/models/llama4.py`; PR body summary: Enable MM inference for EAGLE, targeting mllama4 in this PR but generally easy to extend to other models Issue with this PR: MM chunked prefill needs to be disabled, or set mbnt....
 - Key implementation: `vllm/model_executor/models/llama4_eagle.py` modified +31/-4 (35 lines); hunks: -37,8 +37,9; -78,15 +79,23 @@ def __init__(; symbols: __init__, get_input_embeddings, forward, load_weights, touching `__init__, get_input_embeddings, forward`; `vllm/model_executor/models/llama4.py` modified +1/-0 (1 lines); hunks: -256,6 +256,7 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/llama4_eagle.py` modified +31/-4 (35 lines); hunks: -37,8 +37,9; -78,15 +79,23 @@ def __init__(; symbols: __init__, get_input_embeddings, forward, load_weights
@@ -625,9 +625,9 @@ diff -- vllm/model_executor/models/llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/22107
 - Status/date: merged / 2025-08-03
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mllama4.py`; associated commits `337eb23bcca6`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mllama4.py`; associated commits `337eb23bcca6`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +5/-4, 33 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Fix] Fix llama4 modelopt weight loading error". The diff centers on `vllm/model_executor/models/mllama4.py`. PR body context: # Essential Elements of an Effective PR Description Checklist - [x] The purpose of the PR, such as "Fix some issue (link existing issues this PR will resolve)". - [ ] The test p...
+- Motivation: Title: "[Fix] Fix llama4 modelopt weight loading error"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/models/mllama4.py`; no usable PR-body summary.
 - Key implementation: `vllm/model_executor/models/mllama4.py` modified +5/-4 (9 lines); hunks: -906,11 +906,13 @@ def _consolidate_qkv_weights(; -929,15 +931,14 @@ def _rename_weight_for_modelopt_checkpoint(self, name: str...; symbols: _consolidate_qkv_weights, _rename_weight_for_modelopt_checkpoint, touching `_consolidate_qkv_weights, _rename_weight_for_modelopt_checkpoint`.
 - Code diff details:
   - `vllm/model_executor/models/mllama4.py` modified +5/-4 (9 lines); hunks: -906,11 +906,13 @@ def _consolidate_qkv_weights(; -929,15 +931,14 @@ def _rename_weight_for_modelopt_checkpoint(self, name: str...; symbols: _consolidate_qkv_weights, _rename_weight_for_modelopt_checkpoint
@@ -654,7 +654,7 @@ diff -- vllm/model_executor/models/mllama4.py
 - Status/date: merged / 2025-08-12
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +9/-5, 35 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "Fix Llama4 FlashInfer FP4 MoE issues". The diff centers on `vllm/model_executor/layers/fused_moe/flashinfer_cutlass_prepare_finalize.py`, `vllm/model_executor/layers/quantization/modelopt.py`, `vllm/model_executor/layers/fused_moe/flashinfer_cutlass_moe.py`. PR body context: FlashInfer cutlass FP4 MoE already support Llama4, so remove unncessary asserts and set group to 0 when not used. # Essential Elements of an Effective PR Description Checklist -...
+- Motivation: Title: "Fix Llama4 FlashInfer FP4 MoE issues"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/layers/fused_moe/flashinfer_cutlass_prepare_finalize.py`, `vllm/model_executor/layers/quantization/modelopt.py`, `vllm/model_executor/layers/fused_moe/flashinfer_cutlass_moe.py`; PR body summary: FlashInfer cutlass FP4 MoE already support Llama4, so remove unncessary asserts and set group to 0 when not used..
 - Key implementation: `vllm/model_executor/layers/fused_moe/flashinfer_cutlass_prepare_finalize.py` modified +6/-1 (7 lines); hunks: -60,7 +60,12 @@ def prepare(; symbols: prepare, touching `prepare`; `vllm/model_executor/layers/quantization/modelopt.py` modified +3/-2 (5 lines); hunks: -1299,8 +1299,9 @@ def apply(; symbols: apply, touching `apply`; `vllm/model_executor/layers/fused_moe/flashinfer_cutlass_moe.py` modified +0/-2 (2 lines); hunks: -170,8 +170,6 @@ def apply(; symbols: apply, touching `apply`.
 - Code diff details:
   - `vllm/model_executor/layers/fused_moe/flashinfer_cutlass_prepare_finalize.py` modified +6/-1 (7 lines); hunks: -60,7 +60,12 @@ def prepare(; symbols: prepare
@@ -691,9 +691,9 @@ diff -- vllm/model_executor/layers/fused_moe/flashinfer_cutlass_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/22701
 - Status/date: merged / 2025-08-13
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `4f0f844b1675`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `4f0f844b1675`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +6/-2, 17 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "Fix cuda illegal mem access with Llama4 TP8 + rms_norm custom op". The diff centers on `vllm/model_executor/models/llama4.py`. PR body context: The rms_norm custom op cuda kernel supports non-contiguous striding on the "num_tokens" dim, but it assumes that all the num_tokens dims (if there are more than one num_tokens d...
+- Motivation: Title: "Fix cuda illegal mem access with Llama4 TP8 + rms_norm custom op"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/models/llama4.py`; PR body summary: The rms_norm custom op cuda kernel supports non-contiguous striding on the "num_tokens" dim, but it assumes that all the num_tokens dims (if there are more than one num_tokens d....
 - Key implementation: `vllm/model_executor/models/llama4.py` modified +6/-2 (8 lines); hunks: -224,10 +224,14 @@ def forward(; symbols: forward, touching `forward`.
 - Code diff details:
   - `vllm/model_executor/models/llama4.py` modified +6/-2 (8 lines); hunks: -224,10 +224,14 @@ def forward(; symbols: forward
@@ -718,9 +718,9 @@ diff -- vllm/model_executor/models/llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/22691
 - Status/date: merged / 2025-08-19
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `5bfe0dea7a34`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `5bfe0dea7a34`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +4/-2, 20 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[bug fix] Fix llama4 spec decoding". The diff centers on `vllm/model_executor/models/llama4.py`. PR body context: # Essential Elements of an Effective PR Description Checklist - [x] The purpose of the PR, such as "Fix some issue (link existing issues this PR will resolve)". - [x] The test p...
+- Motivation: Title: "[bug fix] Fix llama4 spec decoding"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/models/llama4.py`; no usable PR-body summary.
 - Key implementation: `vllm/model_executor/models/llama4.py` modified +4/-2 (6 lines); hunks: -195,7 +195,9 @@ def __init__(self,; -206,7 +208,7 @@ def __init__(self,; symbols: __init__, _get_attn_scale, touching `__init__, _get_attn_scale`.
 - Code diff details:
   - `vllm/model_executor/models/llama4.py` modified +4/-2 (6 lines); hunks: -195,7 +195,9 @@ def __init__(self,; -206,7 +208,7 @@ def __init__(self,; symbols: __init__, _get_attn_scale
@@ -745,9 +745,9 @@ diff -- vllm/model_executor/models/llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/22021
 - Status/date: merged / 2025-08-28
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mllama4.py`; associated commits `f32a5bc5058a`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mllama4.py`; associated commits `f32a5bc5058a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +23/-18, 87 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR changes model-related implementation. Title: "Migrate Llama4ImagePatchInputs to TensorSchema". The diff centers on `vllm/model_executor/models/mllama4.py`. PR body context: ## Purpose This PR migrates Llama4ImagePatchInputs from a TypedDict-based definition to a structured TensorSchema model with runtime shape validation. This brings it in line wit...
+- Motivation: Title: "Migrate Llama4ImagePatchInputs to TensorSchema"; model line: Llama 4; category: model implementation change; main diff: `vllm/model_executor/models/mllama4.py`; PR body summary: This PR migrates Llama4ImagePatchInputs from a TypedDict-based definition to a structured TensorSchema model with runtime shape validation. This brings it in line with recent ch....
 - Key implementation: `vllm/model_executor/models/mllama4.py` modified +23/-18 (41 lines); hunks: -19,7 +19,7; -53,35 +53,42; symbols: Llama4ImagePatchInputs, _call_hf_processor, _parse_and_validate_image_input, touching `Llama4ImagePatchInputs, _call_hf_processor, _parse_and_validate_image_input`.
 - Code diff details:
   - `vllm/model_executor/models/mllama4.py` modified +23/-18 (41 lines); hunks: -19,7 +19,7; -53,35 +53,42; symbols: Llama4ImagePatchInputs, _call_hf_processor, _parse_and_validate_image_input
@@ -768,13 +768,54 @@ diff -- vllm/model_executor/models/mllama4.py
   - runtime: `vllm/model_executor/models/mllama4.py` modified +23/-18
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/mllama4.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
+### PR #24444 - [Bugfix] Fix platform-specific routing in CustomOp implementations
+
+- Link: https://github.com/vllm-project/vllm/pull/24444
+- Status/date: merged / 2025-09-11
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 8 files, +53/-30, 187 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Bugfix] Fix platform-specific routing in CustomOp implementations"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/layers/rotary_embedding/mrope.py`, `vllm/model_executor/layers/rotary_embedding/deepseek_scaling_rope.py`, `vllm/model_executor/layers/rotary_embedding/dual_chunk_rope.py`; PR body summary: Some layers inheriting from `CustomOp` are overwriting the `forward` method, effectively disabling the platform routing logic defined in `CustomOp.dispatch_forward()`, resulting....
+- Key implementation: `vllm/model_executor/layers/rotary_embedding/mrope.py` modified +0/-23 (23 lines); hunks: -8,7 +8,6; -202,28 +201,6 @@ def __init__(; symbols: __init__, forward, forward_native, touching `__init__, forward, forward_native`; `vllm/model_executor/layers/rotary_embedding/deepseek_scaling_rope.py` modified +10/-1 (11 lines); hunks: -88,7 +88,7 @@ def _compute_cos_sin_cache(self) -> torch.Tensor:; -129,3 +129,12 @@ def forward(; symbols: _compute_cos_sin_cache, forward, forward_native, forward_cuda, touching `_compute_cos_sin_cache, forward, forward_native`; `vllm/model_executor/layers/rotary_embedding/dual_chunk_rope.py` modified +10/-1 (11 lines); hunks: -111,7 +111,7 @@ def _compute_cos_sin_cache(self) -> torch.Tensor:; -161,6 +161,15 @@ def forward(; symbols: _compute_cos_sin_cache, forward, forward_native, forward_cuda, touching `_compute_cos_sin_cache, forward, forward_native`; `vllm/model_executor/layers/rotary_embedding/ernie45_vl_rope.py` modified +9/-1 (10 lines); hunks: -12,7 +12,7; -70,3 +70,11 @@ def forward(; symbols: Ernie4_5_VLRotaryEmbedding, forward, forward_native, forward_cuda, touching `Ernie4_5_VLRotaryEmbedding, forward, forward_native`.
+- Code diff details:
+  - `vllm/model_executor/layers/rotary_embedding/mrope.py` modified +0/-23 (23 lines); hunks: -8,7 +8,6; -202,28 +201,6 @@ def __init__(; symbols: __init__, forward, forward_native
+  - `vllm/model_executor/layers/rotary_embedding/deepseek_scaling_rope.py` modified +10/-1 (11 lines); hunks: -88,7 +88,7 @@ def _compute_cos_sin_cache(self) -> torch.Tensor:; -129,3 +129,12 @@ def forward(; symbols: _compute_cos_sin_cache, forward, forward_native, forward_cuda
+  - `vllm/model_executor/layers/rotary_embedding/dual_chunk_rope.py` modified +10/-1 (11 lines); hunks: -111,7 +111,7 @@ def _compute_cos_sin_cache(self) -> torch.Tensor:; -161,6 +161,15 @@ def forward(; symbols: _compute_cos_sin_cache, forward, forward_native, forward_cuda
+  - `vllm/model_executor/layers/rotary_embedding/ernie45_vl_rope.py` modified +9/-1 (10 lines); hunks: -12,7 +12,7; -70,3 +70,11 @@ def forward(; symbols: Ernie4_5_VLRotaryEmbedding, forward, forward_native, forward_cuda
+  - `vllm/model_executor/layers/fused_moe/layer.py` modified +8/-1 (9 lines); hunks: -1593,7 +1593,7 @@ def maybe_all_reduce_tensor_model_parallel(; -1627,6 +1627,13 @@ def forward(; symbols: maybe_all_reduce_tensor_model_parallel, forward, forward_native, forward_cuda
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/layers/rotary_embedding/mrope.py
+@@ -8,7 +8,6 @@
+-from vllm.platforms import current_platform
+@@ -202,28 +201,6 @@ def __init__(
+-        self.use_triton = current_platform.is_cuda_alike()
+-    def forward(
+-        self,
+-        positions: torch.Tensor,
+diff -- vllm/model_executor/layers/rotary_embedding/deepseek_scaling_rope.py
+@@ -88,7 +88,7 @@ def _compute_cos_sin_cache(self) -> torch.Tensor:
+-    def forward(
++    def forward_native(
+@@ -129,3 +129,12 @@ def forward(
++    def forward_cuda(
++        self,
++        positions: torch.Tensor,
+diff -- vllm/model_executor/layers/rotary_embedding/dual_chunk_rope.py
+@@ -111,7 +111,7 @@ def _compute_cos_sin_cache(self) -> torch.Tensor:
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/layers/rotary_embedding/mrope.py` modified +0/-23; `vllm/model_executor/layers/rotary_embedding/deepseek_scaling_rope.py` modified +10/-1; `vllm/model_executor/layers/rotary_embedding/dual_chunk_rope.py` modified +10/-1; `vllm/model_executor/layers/rotary_embedding/ernie45_vl_rope.py` modified +9/-1; `vllm/model_executor/layers/fused_moe/layer.py` modified +8/-1; `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py` modified +8/-1
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/activation.py`, `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/rotary_embedding/deepseek_scaling_rope.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
 ### PR #25889 - [Llama4] [multimodal] Fix misplaced dtype cast of `cos_sin_cache` in `Llama4VisionRotaryEmbedding`
 
 - Link: https://github.com/vllm-project/vllm/pull/25889
 - Status/date: merged / 2025-09-30
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`; associated commits `43b752c325d5`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-1, 11 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "[Llama4] [multimodal] Fix misplaced dtype cast of `cos_sin_cache` in `Llama4VisionRotaryEmbedding`". The diff centers on `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`. PR body context: ## Purpose Fix #25888. Especially, this PR roll back the misplaced dtype cast introduced by #21126 which deteriorates the vision understanding performance of llama 4 family. Not...
+- Motivation: Title: "[Llama4] [multimodal] Fix misplaced dtype cast of `cos_sin_cache` in `Llama4VisionRotaryEmbedding`"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`; PR body summary: Fix #25888. Especially, this PR roll back the misplaced dtype cast introduced by #21126 which deteriorates the vision understanding performance of llama 4 family. Note that the....
 - Key implementation: `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py` modified +3/-1 (4 lines); hunks: -59,7 +59,9 @@ def forward_native( # type: ignore[override]; symbols: forward_native, touching `forward_native`.
 - Code diff details:
   - `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py` modified +3/-1 (4 lines); hunks: -59,7 +59,9 @@ def forward_native( # type: ignore[override]; symbols: forward_native
@@ -797,9 +838,9 @@ diff -- vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py
 
 - Link: https://github.com/vllm-project/vllm/pull/25961
 - Status/date: merged / 2025-10-06
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mllama4.py`; associated commits `05f6846ede18`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mllama4.py`; associated commits `05f6846ede18`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +83/-8, 162 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "Support llama3 eagle3 head with llama4 verifier". The diff centers on `vllm/model_executor/models/mllama4.py`. PR body context: ## Summary This PR enables Eagle3 speculative decoding with Llama3 drafter and Llama4 multimodal verifier support, with configurable auxiliary hidden state layers. ## Key Featur...
+- Motivation: Title: "Support llama3 eagle3 head with llama4 verifier"; model line: Llama 4; category: model support/runtime entry; main diff: `vllm/model_executor/models/mllama4.py`; PR body summary: This PR enables Eagle3 speculative decoding with Llama3 drafter and Llama4 multimodal verifier support, with configurable auxiliary hidden state layers. Key Features - **Compati....
 - Key implementation: `vllm/model_executor/models/mllama4.py` modified +25/-2 (27 lines); hunks: -64,7 +64,12; -717,7 +722,9 @@ def get_dummy_mm_data(; symbols: get_dummy_mm_data, Llama4ForConditionalGeneration, __init__, set_aux_hidden_state_layers, touching `get_dummy_mm_data, Llama4ForConditionalGeneration, __init__`.
 - Code diff details:
   - `vllm/model_executor/models/mllama4.py` modified +25/-2 (27 lines); hunks: -64,7 +64,12; -717,7 +722,9 @@ def get_dummy_mm_data(; symbols: get_dummy_mm_data, Llama4ForConditionalGeneration, __init__, set_aux_hidden_state_layers
@@ -824,9 +865,9 @@ diff -- vllm/model_executor/models/mllama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/26790
 - Status/date: merged / 2025-10-14
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`; associated commits `87efc681dbd5`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`; associated commits `87efc681dbd5`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +7/-0, 11 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "llama4_vision_rope: add HIP override to accept (q, k) and avoid (positions, q, k) mismatch". The diff centers on `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`. PR body context: ## Purpose On ROCm/HIP, the base RoPE path expects `(positions, query, key)` and, in the fallback branch, calls `forward_cuda(positions, query, key)`. The Llama4‑Vision RoPE imp...
+- Motivation: Title: "llama4_vision_rope: add HIP override to accept (q, k) and avoid (positions, q, k) mismatch"; model line: Llama 4; category: performance/backend optimization; main diff: `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`; PR body summary: On ROCm/HIP, the base RoPE path expects `(positions, query, key)` and, in the fallback branch, calls `forward_cuda(positions, query, key)`. The Llama4‑Vision RoPE implements `fo....
 - Key implementation: `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py` modified +7/-0 (7 lines); hunks: -78,3 +78,10 @@ def forward_cuda( # type: ignore[override]; symbols: forward_cuda, forward_hip, touching `forward_cuda, forward_hip`.
 - Code diff details:
   - `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py` modified +7/-0 (7 lines); hunks: -78,3 +78,10 @@ def forward_cuda( # type: ignore[override]; symbols: forward_cuda, forward_hip
@@ -851,9 +892,9 @@ diff -- vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py
 
 - Link: https://github.com/vllm-project/vllm/pull/27136
 - Status/date: merged / 2025-10-21
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4_eagle.py`; associated commits `be4445072c4e`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4_eagle.py`; associated commits `be4445072c4e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +17/-10, 34 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Fix][Spec Decode] Fix llama4 draft loading with different quantization". The diff centers on `vllm/model_executor/models/llama4_eagle.py`. PR body context: ## Purpose This PR takes care of the case where draft model and target model may use different quantization configs. `replace` doesn't work with pydantic dataclass `deepcopy` fa...
+- Motivation: Title: "[Fix][Spec Decode] Fix llama4 draft loading with different quantization"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/models/llama4_eagle.py`; PR body summary: This PR takes care of the case where draft model and target model may use different quantization configs. `replace` doesn't work with pydantic dataclass `deepcopy` fails with ne....
 - Key implementation: `vllm/model_executor/models/llama4_eagle.py` modified +17/-10 (27 lines); hunks: -60,16 +60,23 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/llama4_eagle.py` modified +17/-10 (27 lines); hunks: -60,16 +60,23 @@ def __init__(; symbols: __init__
@@ -878,9 +919,9 @@ diff -- vllm/model_executor/models/llama4_eagle.py
 
 - Link: https://github.com/vllm-project/vllm/pull/25145
 - Status/date: merged / 2025-10-30
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`; associated commits `b798e39f931a`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`; associated commits `b798e39f931a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +22/-32, 116 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "[XPU][bugfix] fix rope for llama4 and deepseek". The diff centers on `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`. PR body context: ## Purpose Fix more dispatch issue on xpu introduced in https://github.com/vllm-project/vllm/pull/24444 ## Test Plan ## Test Result --- Essential Elements of an Effective PR Des...
+- Motivation: Title: "[XPU][bugfix] fix rope for llama4 and deepseek"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`; PR body summary: Fix more dispatch issue on xpu introduced in https://github.com/vllm-project/vllm/pull/24444.
 - Key implementation: `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py` modified +2/-9 (11 lines); hunks: -5,10 +5,10; -78,10 +78,3 @@ def forward_cuda( # type: ignore[override]; symbols: Llama4VisionRotaryEmbedding, __init__, forward_cuda, forward_hip, touching `Llama4VisionRotaryEmbedding, __init__, forward_cuda`.
 - Code diff details:
   - `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py` modified +2/-9 (11 lines); hunks: -5,10 +5,10; -78,10 +78,3 @@ def forward_cuda( # type: ignore[override]; symbols: Llama4VisionRotaryEmbedding, __init__, forward_cuda, forward_hip
@@ -905,9 +946,9 @@ diff -- vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py
 
 - Link: https://github.com/vllm-project/vllm/pull/28602
 - Status/date: merged / 2025-11-14
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mllama4.py`; associated commits `964d65deedb9`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mllama4.py`; associated commits `964d65deedb9`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +34/-2, 79 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "LLaMA4 LoRA Adapter Enablement". The diff centers on `vllm/model_executor/models/mllama4.py`. PR body context: ## Purpose Adds LoRA Adapter Support for LLaMA 4 Architecture. ## Test Plan Tested with custom LoRA and with vLLM Bench. ## Test Result Tests showed some performance degradation...
+- Motivation: Title: "LLaMA4 LoRA Adapter Enablement"; model line: Llama 4; category: performance/backend optimization; main diff: `vllm/model_executor/models/mllama4.py`; PR body summary: Adds LoRA Adapter Support for LLaMA 4 Architecture. Tested with custom LoRA and with vLLM Bench. Tests showed some performance degradation (TTFT and ITL) with concurrent use of....
 - Key implementation: `vllm/model_executor/models/mllama4.py` modified +34/-2 (36 lines); hunks: -35,6 +35,7; -45,6 +46,7; symbols: get_dummy_mm_data, Llama4ForConditionalGeneration, _load_other_weights, get_expert_mapping, touching `get_dummy_mm_data, Llama4ForConditionalGeneration, _load_other_weights`.
 - Code diff details:
   - `vllm/model_executor/models/mllama4.py` modified +34/-2 (36 lines); hunks: -35,6 +35,7; -45,6 +46,7; symbols: get_dummy_mm_data, Llama4ForConditionalGeneration, _load_other_weights, get_expert_mapping
@@ -932,9 +973,9 @@ diff -- vllm/model_executor/models/mllama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/28577
 - Status/date: merged / 2025-11-20
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `dc45efc8ef7f`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `dc45efc8ef7f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +7/-0, 28 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[BugFix] Fix Llama4 Pipeline Parallelism Assert Error". The diff centers on `vllm/model_executor/models/llama4.py`. PR body context: Summary: When enabling PP for Llama4 model, each rank has a few `PPMissingLayer()`. The line `assert isinstance(layer, Llama4DecoderLayer)` raises assert error when encountering...
+- Motivation: Title: "[BugFix] Fix Llama4 Pipeline Parallelism Assert Error"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/models/llama4.py`; PR body summary: Summary: When enabling PP for Llama4 model, each rank has a few `PPMissingLayer()`. The line `assert isinstance(layer, Llama4DecoderLayer)` raises assert error when encountering....
 - Key implementation: `vllm/model_executor/models/llama4.py` modified +7/-0 (7 lines); hunks: -54,6 +54,7; -738,6 +739,9 @@ def set_moe_parameters(self):; symbols: set_moe_parameters, update_physical_experts_metadata, touching `set_moe_parameters, update_physical_experts_metadata`.
 - Code diff details:
   - `vllm/model_executor/models/llama4.py` modified +7/-0 (7 lines); hunks: -54,6 +54,7; -738,6 +739,9 @@ def set_moe_parameters(self):; symbols: set_moe_parameters, update_physical_experts_metadata
@@ -959,9 +1000,9 @@ diff -- vllm/model_executor/models/llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/29926
 - Status/date: merged / 2025-12-05
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4_eagle.py`; associated commits `962d703818c0`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4_eagle.py`; associated commits `962d703818c0`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +16/-3, 46 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Bugfix][llama4_eagle] Fix missing 'lm_head' attribute". The diff centers on `vllm/model_executor/models/llama4_eagle.py`. PR body context: This PR: 1. Fixes llama4_eagle model by adding the missing `lm_head` attribute to the model class. 2. Fixes `test_spec_decode.py::test_eagle_correctness[FLASH_ATTN-llama4_eagle]...
+- Motivation: Title: "[Bugfix][llama4_eagle] Fix missing 'lm_head' attribute"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/models/llama4_eagle.py`; PR body summary: This PR: 1. Fixes llama4_eagle model by adding the missing `lm_head` attribute to the model class. 2. Fixes `test_spec_decode.py::test_eagle_correctness[FLASH_ATTN-llama4_eagle]....
 - Key implementation: `vllm/model_executor/models/llama4_eagle.py` modified +11/-2 (13 lines); hunks: -28,7 +28,10; -182,6 +185,12 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__, transform, touching `__init__, transform`.
 - Code diff details:
   - `vllm/model_executor/models/llama4_eagle.py` modified +11/-2 (13 lines); hunks: -28,7 +28,10; -182,6 +185,12 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__, transform
@@ -986,9 +1027,9 @@ diff -- vllm/model_executor/models/llama4_eagle.py
 
 - Link: https://github.com/vllm-project/vllm/pull/30709
 - Status/date: merged / 2026-01-10
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`, `vllm/model_executor/models/mllama4.py`; associated commits `ea6d067a2aeb`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`, `vllm/model_executor/models/mllama4.py`; associated commits `ea6d067a2aeb`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +85/-20, 202 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR changes model-related implementation. Title: "[Misc][LLaMa4] Compile LLaMa Vision Encoder". The diff centers on `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`. PR body context: ## Purpose We want to speedup up inference for mllama4 by applying `torch.compile` to the intensive workload, similar to what is done in #23207. We start by enabling the VisionE...
+- Motivation: Title: "[Misc][LLaMa4] Compile LLaMa Vision Encoder"; model line: Llama 4; category: model implementation change; main diff: `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`; PR body summary: We want to speedup up inference for mllama4 by applying `torch.compile` to the intensive workload, similar to what is done in #23207. We start by enabling the VisionEncoder + Pi....
 - Key implementation: `vllm/model_executor/models/mllama4.py` modified +29/-9 (38 lines); hunks: -31,9 +31,11; -47,6 +49,7; symbols: forward, Llama4VisionModel, __init__, touching `forward, Llama4VisionModel, __init__`; `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py` modified +5/-2 (7 lines); hunks: -60,14 +60,17 @@ def forward_native( # type: ignore[override]; symbols: forward_native, touching `forward_native`.
 - Code diff details:
   - `vllm/model_executor/models/mllama4.py` modified +29/-9 (38 lines); hunks: -31,9 +31,11; -47,6 +49,7; symbols: forward, Llama4VisionModel, __init__
@@ -1022,9 +1063,9 @@ diff -- vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py
 
 - Link: https://github.com/vllm-project/vllm/pull/32886
 - Status/date: merged / 2026-01-23
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `1fb648bf107e`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `1fb648bf107e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +21/-1, 36 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "[Bugfix] Fix FP8 MoE EP Weight Loading for ModelOpt Llama4". The diff centers on `vllm/model_executor/models/llama4.py`. PR body context: ## Purpose #32862 Add a version-guarded fallback in Llama4 MoE weight loading to avoid CPU FP8 indexing on older PyTorch releases. For torch Essential Elements of an Effective P...
+- Motivation: Title: "[Bugfix] Fix FP8 MoE EP Weight Loading for ModelOpt Llama4"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/models/llama4.py`; PR body summary: 32862 Add a version-guarded fallback in Llama4 MoE weight loading to avoid CPU FP8 indexing on older PyTorch releases. For torch.
 - Key implementation: `vllm/model_executor/models/llama4.py` modified +21/-1 (22 lines); hunks: -51,6 +51,8; -504,7 +506,25 @@ def load_moe_expert_weights(; symbols: load_moe_expert_weights, touching `load_moe_expert_weights`.
 - Code diff details:
   - `vllm/model_executor/models/llama4.py` modified +21/-1 (22 lines); hunks: -51,6 +51,8; -504,7 +506,25 @@ def load_moe_expert_weights(; symbols: load_moe_expert_weights
@@ -1049,9 +1090,9 @@ diff -- vllm/model_executor/models/llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/34243
 - Status/date: merged / 2026-02-11
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `11c7ace34061`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `11c7ace34061`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +29/-5, 76 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "[Bugfix] Enable attn quantization of Llama-4 by correctly permuting scales for rope (int8, fp8)". The diff centers on `vllm/model_executor/models/llama4.py`. PR body context: Llama-4 weights of `q/k_proj` are permuted during model loading to prepare the model for interleaved/gpt-neox rope. The same permutation needs to be applied on quantization weig...
+- Motivation: Title: "[Bugfix] Enable attn quantization of Llama-4 by correctly permuting scales for rope (int8, fp8)"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/models/llama4.py`; PR body summary: Llama-4 weights of `q/k_proj` are permuted during model loading to prepare the model for interleaved/gpt-neox rope. The same permutation needs to be applied on quantization weig....
 - Key implementation: `vllm/model_executor/models/llama4.py` modified +29/-5 (34 lines); hunks: -44,6 +44,9; -829,11 +832,20 @@ def permute_qk_weight_for_rotary(; symbols: permute_qk_weight_for_rotary, permute, touching `permute_qk_weight_for_rotary, permute`.
 - Code diff details:
   - `vllm/model_executor/models/llama4.py` modified +29/-5 (34 lines); hunks: -44,6 +44,9; -829,11 +832,20 @@ def permute_qk_weight_for_rotary(; symbols: permute_qk_weight_for_rotary, permute
@@ -1076,9 +1117,9 @@ diff -- vllm/model_executor/models/llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/34471
 - Status/date: merged / 2026-02-19
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `ee1d25f199ee`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `ee1d25f199ee`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +29/-68, 114 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "[Llama4,Quantization] Simplify and generalize logic for Q/K permutations in quantized self-attn layers". The diff centers on `vllm/model_executor/models/llama4.py`. PR body context: This PR resolves a couple of issues in loading of Llama-4 models with quantized self-attention layers. Current logic hardcodes support only for NVFP4 modelopt ckpts, and for INT...
+- Motivation: Title: "[Llama4,Quantization] Simplify and generalize logic for Q/K permutations in quantized self-attn layers"; model line: Llama 4; category: performance/backend optimization; main diff: `vllm/model_executor/models/llama4.py`; PR body summary: This PR resolves a couple of issues in loading of Llama-4 models with quantized self-attention layers. Current logic hardcodes support only for NVFP4 modelopt ckpts, and for INT....
 - Key implementation: `vllm/model_executor/models/llama4.py` modified +29/-68 (97 lines); hunks: -44,9 +44,6; -831,74 +828,38 @@ def permute_qk_weight_for_rotary(; symbols: permute_qk_weight_for_rotary, permute, touching `permute_qk_weight_for_rotary, permute`.
 - Code diff details:
   - `vllm/model_executor/models/llama4.py` modified +29/-68 (97 lines); hunks: -44,9 +44,6; -831,74 +828,38 @@ def permute_qk_weight_for_rotary(; symbols: permute_qk_weight_for_rotary, permute
@@ -1103,9 +1144,9 @@ diff -- vllm/model_executor/models/llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/34997
 - Status/date: merged / 2026-02-21
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `0e22cd618b5d`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `0e22cd618b5d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +68/-29, 114 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR fixes a launch, loading, parsing, or numerical issue. Title: "Revert "[Llama4,Quantization] Simplify and generalize logic for Q/K permutations in quantized self-attn layers "". The diff centers on `vllm/model_executor/models/llama4.py`. PR body context: Reverts vllm-project/vllm#34471 to fix CI failures: https://github.com/vllm-project/vllm/issues/34995 FIX: https://github.com/vllm-project/vllm/issues/34995 cc @eldarkurtic
+- Motivation: Title: "Revert "[Llama4,Quantization] Simplify and generalize logic for Q/K permutations in quantized self-attn layers ""; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/models/llama4.py`; PR body summary: Reverts vllm-project/vllm#34471 to fix CI failures: https://github.com/vllm-project/vllm/issues/34995 FIX: https://github.com/vllm-project/vllm/issues/34995 cc @eldarkurtic.
 - Key implementation: `vllm/model_executor/models/llama4.py` modified +68/-29 (97 lines); hunks: -44,6 +44,9; -828,38 +831,74 @@ def permute_qk_weight_for_rotary(; symbols: permute_qk_weight_for_rotary, permute, touching `permute_qk_weight_for_rotary, permute`.
 - Code diff details:
   - `vllm/model_executor/models/llama4.py` modified +68/-29 (97 lines); hunks: -44,6 +44,9; -828,38 +831,74 @@ def permute_qk_weight_for_rotary(; symbols: permute_qk_weight_for_rotary, permute
@@ -1130,9 +1171,9 @@ diff -- vllm/model_executor/models/llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/35033
 - Status/date: merged / 2026-02-23
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `1e8438a89a64`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `1e8438a89a64`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +31/-70, 127 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Llama4,CI] Bring back Llama-4 bug fixes, and also fix Maverick tests". The diff centers on `vllm/model_executor/models/llama4.py`. PR body context: Bring back reverted Llama-4 bug fix changes from https://github.com/vllm-project/vllm/pull/34471 (reverted with https://github.com/vllm-project/vllm/pull/34997) and also fix the...
+- Motivation: Title: "[Llama4,CI] Bring back Llama-4 bug fixes, and also fix Maverick tests"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/models/llama4.py`; PR body summary: Bring back reverted Llama-4 bug fix changes from https://github.com/vllm-project/vllm/pull/34471 (reverted with https://github.com/vllm-project/vllm/pull/34997) and also fix the....
 - Key implementation: `vllm/model_executor/models/llama4.py` modified +29/-68 (97 lines); hunks: -44,9 +44,6; -831,74 +828,38 @@ def permute_qk_weight_for_rotary(; symbols: permute_qk_weight_for_rotary, permute, touching `permute_qk_weight_for_rotary, permute`.
 - Code diff details:
   - `vllm/model_executor/models/llama4.py` modified +29/-68 (97 lines); hunks: -44,9 +44,6; -831,74 +828,38 @@ def permute_qk_weight_for_rotary(; symbols: permute_qk_weight_for_rotary, permute
@@ -1157,9 +1198,9 @@ diff -- vllm/model_executor/models/llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/35147
 - Status/date: merged / 2026-02-24
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mllama4.py`; associated commits `012dee92331c`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mllama4.py`; associated commits `012dee92331c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +23/-1, 30 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "[Feature] Add LoRA tower/connector support for Llama 4 Vision (mllama4)". The diff centers on `vllm/model_executor/models/mllama4.py`. PR body context: ## Purpose Enable LoRA adapters for the vision tower and connector of Llama 4 Vision (`Llama4ForConditionalGeneration` / `mllama4.py`), as part of #31479. Previously, LoRA could...
+- Motivation: Title: "[Feature] Add LoRA tower/connector support for Llama 4 Vision (mllama4)"; model line: Llama 4; category: model support/runtime entry; main diff: `vllm/model_executor/models/mllama4.py`; PR body summary: Enable LoRA adapters for the vision tower and connector of Llama 4 Vision (`Llama4ForConditionalGeneration` / `mllama4.py`), as part of #31479. Previously, LoRA could only be ap....
 - Key implementation: `vllm/model_executor/models/mllama4.py` modified +23/-1 (24 lines); hunks: -1151,6 +1151,28 @@ def get_mm_mapping(self) -> MultiModelKeys:; symbols: get_mm_mapping, get_num_mm_encoder_tokens, get_num_mm_connector_tokens, touching `get_mm_mapping, get_num_mm_encoder_tokens, get_num_mm_connector_tokens`.
 - Code diff details:
   - `vllm/model_executor/models/mllama4.py` modified +23/-1 (24 lines); hunks: -1151,6 +1151,28 @@ def get_mm_mapping(self) -> MultiModelKeys:; symbols: get_mm_mapping, get_num_mm_encoder_tokens, get_num_mm_connector_tokens
@@ -1182,5 +1223,5 @@ diff -- vllm/model_executor/models/mllama4.py
 
 ## Gap-Closure Notes
 
-- This version rejects title-only PR lists; every PR must include trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
+- Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
 - If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.

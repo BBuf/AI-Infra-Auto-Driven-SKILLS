@@ -1,6 +1,6 @@
 # vLLM Model Optimization Skills
 
-Current non-diffusion vLLM model skills:
+Current vLLM model skills:
 
 - `vllm-deepseek-v3-r1-optimization`
 - `vllm-deepseek-v31-optimization`

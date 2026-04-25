@@ -4,7 +4,7 @@
 - Source baseline: `sgl-project/sglang` trace worktree commit `880599cd43`
 - Collection: model implementation files were traced with `git log --name-only -- <model-files>`, filtered by model keywords in commit subjects, then every PR card was populated from the GitHub Pull Request files API.
 - Extra preserved PRs from prior docs: 0
-- Rule: use this as the backing dossier for the skill, not only PR titles.
+- Rule: use this evidence file before changing model-specific skill guidance; it is not only PR titles.
 
 ## Implementation File Coverage
 
@@ -27,7 +27,7 @@
 - Status/date: merged / 2026-04-24
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/moss_vl.py`, `python/sglang/srt/multimodal/processors/moss_vl.py`; associated commits `59724e90a9b8`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +2401/-6, 2611 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For MOSS-VL, this PR adds or enables a model support/runtime surface. Title: "[srt] Add Moss-VL Python runtime support". The diff centers on `python/sglang/srt/models/moss_vl.py`, `python/sglang/srt/multimodal/processors/moss_vl.py`. PR body context: ## Summary This PR adds Python-side runtime support for Moss-VL in SRT. The changes include: - add `MossVLForConditionalGeneration` model support - add a Moss-VL multimodal proc...
+- Motivation: Title: "[srt] Add Moss-VL Python runtime support"; model line: MOSS-VL; category: model support/runtime entry; main diff: `python/sglang/srt/models/moss_vl.py`, `python/sglang/srt/multimodal/processors/moss_vl.py`; PR body summary: This PR adds Python-side runtime support for Moss-VL in SRT. The changes include: - add `MossVLForConditionalGeneration` model support - add a Moss-VL multimodal processor - reg....
 - Key implementation: `python/sglang/srt/models/moss_vl.py` added +1643/-0 (1643 lines); hunks: -0,0 +1,1643; symbols: MossVLVisionMLP, __init__, forward, MossVLVisionPatchEmbed, touching `MossVLVisionMLP, __init__, forward`; `python/sglang/srt/multimodal/processors/moss_vl.py` added +612/-0 (612 lines); hunks: -0,0 +1,612; symbols: MossVLImageProcessor, __init__, _build_mm_items, _build_vision_token_info, touching `MossVLImageProcessor, __init__, _build_mm_items`.
 - Code diff details:
   - `python/sglang/srt/models/moss_vl.py` added +1643/-0 (1643 lines); hunks: -0,0 +1,1643; symbols: MossVLVisionMLP, __init__, forward, MossVLVisionPatchEmbed

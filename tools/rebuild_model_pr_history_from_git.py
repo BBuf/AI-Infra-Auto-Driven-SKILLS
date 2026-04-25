@@ -589,6 +589,62 @@ def plain(text: str, limit: int = 220) -> str:
     return text
 
 
+def body_excerpt(text: str, limit: int = 220) -> str:
+    """Keep useful PR-body context and drop repository checklist boilerplate."""
+    text = re.sub(r"`{3,}.*?`{3,}", " ", text or "", flags=re.S)
+    text = re.sub(r"<!--.*?-->", " ", text, flags=re.S)
+    cutoff_markers = [
+        "Essential Elements of an Effective PR Description Checklist",
+        "Format your code according to",
+        "\n## Checklist",
+        "\n### Checklist",
+        "\n## TODO",
+        "\n### TODO",
+        "\nTODO:",
+        "\n**TODO",
+        "\n---\nEssential Elements",
+    ]
+    lower = text.lower()
+    cutoffs = [lower.find(marker.lower()) for marker in cutoff_markers if lower.find(marker.lower()) >= 0]
+    if cutoffs:
+        text = text[: min(cutoffs)]
+
+    useful_lines: list[str] = []
+    heading_only = re.compile(
+        r"^#{1,6}\s*(motivation|modifications?|accuracy tests?|speed tests?.*|"
+        r"benchmark(?:ing)?(?: and profiling)?|test plan|test result|purpose|summary)\s*:?\s*$",
+        re.I,
+    )
+    for raw_line in text.splitlines():
+        line = raw_line.strip()
+        if not line:
+            continue
+        if re.fullmatch(r"[#>*_\-\s.]+", line):
+            continue
+        if heading_only.match(line):
+            continue
+        if re.match(r"^[-*]\s*\[[ xX]\]", line):
+            continue
+        line = re.sub(r"^#{1,6}\s*", "", line).strip()
+        line = re.sub(r"^DRAFT:\s*", "", line, flags=re.I)
+        useful_lines.append(line)
+
+    cleaned = plain(" ".join(useful_lines), limit)
+    cleaned = re.sub(r"[\U0001F000-\U0001FAFF\U00002700-\U000027BF]+", "", cleaned).strip()
+    cleaned = re.sub(r"\s+(---|--|-)$", "", cleaned).strip()
+    empty_templates = {
+        "## Motivation ## Modifications ## Accuracy Tests ## Benchmarking and Profiling",
+        "## Purpose ## Test Plan ## Test Result",
+    }
+    if (
+        not cleaned
+        or re.fullmatch(r"[#>*_\-\s.]+", cleaned)
+        or any(cleaned.lower() == template.lower() for template in empty_templates)
+    ):
+        return ""
+    return cleaned
+
+
 def file_status(file: dict[str, Any]) -> str:
     return file.get("status") or "modified"
 
@@ -692,17 +748,22 @@ def digest_file(file: dict[str, Any]) -> str:
 
 def diff_snippet(files: list[dict[str, Any]], max_lines: int = 18) -> str:
     snippets: list[str] = []
+    seen_files: set[str] = set()
     for file in files:
+        filename = file.get("filename", "")
+        if filename in seen_files:
+            continue
+        seen_files.add(filename)
         patch = patch_lines(file)
         if not patch:
             continue
-        snippets.append(f"diff -- {file.get('filename', '')}")
+        snippets.append(f"diff -- {filename}")
         picked: list[str] = []
         for line in patch:
             if line.startswith(("+++", "---")):
                 continue
             if line.startswith("@@") or (line[:1] in {"+", "-"} and line[1:].strip()):
-                picked.append(line[:180])
+                picked.append(line[:180].rstrip())
             if len(picked) >= 7:
                 break
         snippets.extend(picked)
@@ -765,22 +826,22 @@ def source_text_en(bundle: PRBundle) -> str:
 
 def motivation_zh(bundle: PRBundle, model_title: str) -> str:
     title = pr_title(bundle)
-    body = plain((bundle.info or {}).get("body") or "", 180)
+    body = body_excerpt((bundle.info or {}).get("body") or "", 180)
     files = top_files(bundle, 4)
     names = ", ".join(f"`{f.get('filename')}`" for f in files[:3]) or "文件级 diff"
     lower = f"{title} {body}".lower()
-    if any(token in lower for token in ("support", "add ", "introduce", "initial", "enable")):
-        verb = "补齐模型支持入口或运行时能力"
-    elif any(token in lower for token in ("fix", "bug", "wrong", "error", "crash", "regression")):
-        verb = "修复已暴露的启动、加载、解析或数值问题"
+    if any(token in lower for token in ("fix", "bug", "wrong", "error", "crash", "regression")):
+        category = "缺陷修复"
     elif any(token in lower for token in ("perf", "opt", "fuse", "fp8", "fp4", "deepgemm", "deepep", "flash", "aiter", "cuda", "triton")):
-        verb = "优化关键推理路径或后端选择"
+        category = "性能/后端优化"
     elif any(token in lower for token in ("doc", "cookbook", "test", "ci", "benchmark")):
-        verb = "补强部署文档、测试或 CI 验证面"
+        category = "文档/测试/CI"
+    elif any(token in lower for token in ("support", "add ", "introduce", "initial", "enable")):
+        category = "模型支持/运行时入口"
     else:
-        verb = "调整模型相关实现"
-    body_part = f"PR 描述补充为：{body}" if body else "PR 正文没有提供额外背景，判断主要来自标题、文件列表和 patch。"
-    return f"该 PR 围绕 {model_title} {verb}，标题为「{title}」，变更集中在 {names}。{body_part}"
+        category = "模型实现调整"
+    body_part = f"；PR 正文摘要: {body}" if body else "；PR 正文未提供可用摘要"
+    return f"标题「{title}」；模型线: {model_title}；类别: {category}；主要 diff: {names}{body_part}。"
 
 
 def implementation_zh(bundle: PRBundle) -> str:
@@ -814,22 +875,22 @@ def validation_zh(bundle: PRBundle) -> str:
 
 def motivation_en(bundle: PRBundle, model_title: str) -> str:
     title = pr_title(bundle)
-    body = plain((bundle.info or {}).get("body") or "", 180)
+    body = body_excerpt((bundle.info or {}).get("body") or "", 180)
     files = top_files(bundle, 4)
     names = ", ".join(f"`{f.get('filename')}`" for f in files[:3]) or "the file-level diff"
     lower = f"{title} {body}".lower()
-    if any(token in lower for token in ("support", "add ", "introduce", "initial", "enable")):
-        verb = "adds or enables a model support/runtime surface"
-    elif any(token in lower for token in ("fix", "bug", "wrong", "error", "crash", "regression")):
-        verb = "fixes a launch, loading, parsing, or numerical issue"
+    if any(token in lower for token in ("fix", "bug", "wrong", "error", "crash", "regression")):
+        category = "bug fix"
     elif any(token in lower for token in ("perf", "opt", "fuse", "fp8", "fp4", "deepgemm", "deepep", "flash", "aiter", "cuda", "triton")):
-        verb = "optimizes an inference path or backend selection"
+        category = "performance/backend optimization"
     elif any(token in lower for token in ("doc", "cookbook", "test", "ci", "benchmark")):
-        verb = "extends deployment docs, tests, or CI coverage"
+        category = "docs/tests/CI"
+    elif any(token in lower for token in ("support", "add ", "introduce", "initial", "enable")):
+        category = "model support/runtime entry"
     else:
-        verb = "changes model-related implementation"
-    body_part = f"PR body context: {body}" if body else "The PR body has no extra context, so this assessment comes from the title, file list, and patch."
-    return f"For {model_title}, this PR {verb}. Title: \"{title}\". The diff centers on {names}. {body_part}"
+        category = "model implementation change"
+    body_part = f"; PR body summary: {body}" if body else "; no usable PR-body summary"
+    return f"Title: \"{title}\"; model line: {model_title}; category: {category}; main diff: {names}{body_part}."
 
 
 def implementation_en(bundle: PRBundle) -> str:
@@ -1031,7 +1092,6 @@ def render_history_zh(framework: str, model: str, files: list[str], traces: dict
         - 源码基线: `{repo}` 当前追溯 worktree commit `{commit}`
         - PR 收集规则: 先从模型实现、配置、processor、parser、docs/tests 等相关文件执行 `git log --name-only -- <model-files>`，再按 commit subject 的模型关键词过滤，最后用 GitHub Pull Request files API 读取每个 PR 的最终 diff。
         - 额外保留规则: 原 history/skill 已显式引用但未出现在当前实现文件 git trace 中的 PR 会保留，并在卡片里标注来源。
-        - diffusion 相关模型已从本目录剔除，不再纳入模型优化 skill/history。
 
         ## 模型实现文件覆盖
 
@@ -1053,7 +1113,7 @@ def render_history_zh(framework: str, model: str, files: list[str], traces: dict
 
         ## 补漏结论
 
-        - 本版不再接受只列 PR 标题的写法；每个 PR 必须有反查来源、diff 范围、实现要点、代码摘录、已读文件和验证风险。
+        - 验收规则: 每个 PR 卡片必须保留反查来源、diff 范围、实现要点、代码摘录、已读文件和验证风险。
         - 如果新模型文件落在当前过滤规则之外，先补文件过滤规则，再重新执行本轮 `git log --name-only -- <model-files>` 追溯。
         """
     )
@@ -1082,7 +1142,6 @@ def render_history_en(framework: str, model: str, files: list[str], traces: dict
         - Source baseline: `{repo}` trace worktree commit `{commit}`
         - PR collection rule: run `git log --name-only -- <model-files>` on model implementation, config, processor, parser, docs/tests, filter by model keywords in commit subjects, then read each PR's final diff through the GitHub Pull Request files API.
         - Preservation rule: PRs explicitly cited by the previous history/skill are retained even if current implementation files no longer trace to them, and the card marks that source.
-        - Diffusion model families have been removed from this history set and are no longer part of model optimization skills.
 
         ## Implementation File Coverage
 
@@ -1104,7 +1163,7 @@ def render_history_en(framework: str, model: str, files: list[str], traces: dict
 
         ## Gap-Closure Notes
 
-        - This version rejects title-only PR lists; every PR must include trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
+        - Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
         - If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.
         """
     )
@@ -1130,7 +1189,7 @@ def render_reference(framework: str, model: str, files: list[str], traces: dict[
         - Source baseline: `{repo}` trace worktree commit `{commit}`
         - Collection: model implementation files were traced with `git log --name-only -- <model-files>`, filtered by model keywords in commit subjects, then every PR card was populated from the GitHub Pull Request files API.
         - Extra preserved PRs from prior docs: {existing_only_count}
-        - Rule: use this as the backing dossier for the skill, not only PR titles.
+        - Rule: use this evidence file before changing model-specific skill guidance; it is not only PR titles.
 
         ## Implementation File Coverage
 
@@ -1149,21 +1208,21 @@ def render_reference(framework: str, model: str, files: list[str], traces: dict[
 def update_indexes() -> None:
     model_lines = "\n".join(f"- `{model}`" for model in MODEL_ORDER)
     (HISTORY_ROOT / "sglang" / "README.md").write_text(
-        f"# SGLang Model PR Optimization History\n\nCurrent non-diffusion model families:\n\n{model_lines}\n",
+        f"# SGLang Model PR Optimization History\n\nCurrent model families:\n\n{model_lines}\n",
         encoding="utf-8",
     )
     (HISTORY_ROOT / "vllm" / "README.md").write_text(
-        f"# vLLM Model PR Optimization History\n\nCurrent non-diffusion model families:\n\n{model_lines}\n",
+        f"# vLLM Model PR Optimization History\n\nCurrent model families:\n\n{model_lines}\n",
         encoding="utf-8",
     )
     sglang_skill_lines = "\n".join(f"- `{skill_dir('sglang', model).name}`" for model in MODEL_ORDER)
     vllm_skill_lines = "\n".join(f"- `{skill_dir('vllm', model).name}`" for model in MODEL_ORDER)
     (SKILL_ROOT / "sglang" / "README.md").write_text(
-        f"# SGLang Model Optimization Skills\n\nCurrent non-diffusion SGLang model skills:\n\n{sglang_skill_lines}\n",
+        f"# SGLang Model Optimization Skills\n\nCurrent SGLang model skills:\n\n{sglang_skill_lines}\n",
         encoding="utf-8",
     )
     (SKILL_ROOT / "vllm" / "README.md").write_text(
-        f"# vLLM Model Optimization Skills\n\nCurrent non-diffusion vLLM model skills:\n\n{vllm_skill_lines}\n",
+        f"# vLLM Model Optimization Skills\n\nCurrent vLLM model skills:\n\n{vllm_skill_lines}\n",
         encoding="utf-8",
     )
 

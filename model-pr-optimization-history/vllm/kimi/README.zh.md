@@ -6,7 +6,6 @@
 - 源码基线: `vllm-project/vllm` 当前追溯 worktree commit `95995bbef8`
 - PR 收集规则: 先从模型实现、配置、processor、parser、docs/tests 等相关文件执行 `git log --name-only -- <model-files>`，再按 commit subject 的模型关键词过滤，最后用 GitHub Pull Request files API 读取每个 PR 的最终 diff。
 - 额外保留规则: 原 history/skill 已显式引用但未出现在当前实现文件 git trace 中的 PR 会保留，并在卡片里标注来源。
-- diffusion 相关模型已从本目录剔除，不再纳入模型优化 skill/history。
 
 ## 模型实现文件覆盖
 
@@ -34,8 +33,8 @@
 ## PR 覆盖总览
 
 - git 追溯 PR 数: 29
-- 原文档显式引用补充 PR 数: 0
-- 当前文档总 PR 数: 29
+- 原文档显式引用补充 PR 数: 1
+- 当前文档总 PR 数: 30
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -53,6 +52,7 @@
 | 2025-10-31 | [#27834](https://github.com/vllm-project/vllm/pull/27834) | merged | [Kimi-Linear] Correct prefixes and add compatibility to AWQ quants | `vllm/model_executor/models/kimi_linear.py` |
 | 2025-10-31 | [#27885](https://github.com/vllm-project/vllm/pull/27885) | merged | fix incorrect type annotation in KimiMLP | `vllm/model_executor/models/kimi_linear.py` |
 | 2025-11-24 | [#29309](https://github.com/vllm-project/vllm/pull/29309) | merged | [XPU]fix Kimi-VL-A3B-thinking on xpu | `vllm/model_executor/models/moonvit.py` |
+| 2025-12-15 | [#30125](https://github.com/vllm-project/vllm/pull/30125) | merged | [CustomOp][MM] Extract MMEncoderAttention as CustomOp and replace the backend of QwenVisionAttention with it. | `tests/models/multimodal/generation/test_vit_backend_functionality.py`, `vllm/attention/layers/mm_encoder_attention.py`, `vllm/model_executor/models/qwen2_vl.py` |
 | 2025-12-30 | [#31207](https://github.com/vllm-project/vllm/pull/31207) | merged | fix: update kimi k2 tool parser logic | `tests/tool_parsers/test_kimi_k2_tool_parser.py`, `vllm/tool_parsers/kimi_k2_tool_parser.py` |
 | 2026-01-06 | [#31738](https://github.com/vllm-project/vllm/pull/31738) | merged | [Models]: Use `MMEncoderAttention` for MoonViT | `vllm/model_executor/models/moonvit.py`, `vllm/model_executor/models/kimi_vl.py` |
 | 2026-01-27 | [#33131](https://github.com/vllm-project/vllm/pull/33131) | merged | [Models] Kimi-K2.5 | `vllm/model_executor/models/kimi_k25_vit.py`, `vllm/model_executor/models/kimi_k25.py`, `vllm/transformers_utils/configs/kimi_k25.py` |
@@ -81,7 +81,7 @@
 - 状态/时间: merged / 2025-04-14
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_vl.py`, `vllm/model_executor/models/moonvit.py`, `vllm/transformers_utils/configs/kimi_vl.py`, `vllm/transformers_utils/configs/moonvit.py`；关联提交 `b1308b84a3a6`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 18 个文件，+1436/-14，可读 patch 1618 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Kimi K2/K2.5/Linear/VL 补齐模型支持入口或运行时能力，标题为「[Model][VLM] Add Kimi-VL model support」，变更集中在 `vllm/model_executor/models/moonvit.py`, `vllm/model_executor/models/kimi_vl.py`, `vllm/transformers_utils/configs/kimi_vl.py`。PR 描述补充为：CLOSES #16387 # Feature * Added support for Kimi-VL * https://github.com/MoonshotAI/Kimi-VL/ * https://huggingface.co/moonshotai/Kimi-VL-A3B-Instruct * https://huggingface.co/mo...
+- 动机: 标题「[Model][VLM] Add Kimi-VL model support」；模型线: Kimi K2/K2.5/Linear/VL；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/moonvit.py`, `vllm/model_executor/models/kimi_vl.py`, `vllm/transformers_utils/configs/kimi_vl.py`；PR 正文摘要: CLOSES #16387 Feature * Added support for Kimi-VL * https://github.com/MoonshotAI/Kimi-VL/ * https://huggingface.co/moonshotai/Kimi-VL-A3B-Instruct * https://huggingface.co/moon...。
 - 实现要点: `vllm/model_executor/models/moonvit.py` added +628/-0 (628 lines); hunks: -0,0 +1,628; symbols: multihead_attention, sdpa_attention, _apply_rope_input_validation, apply_rope，涉及 `multihead_attention, sdpa_attention, _apply_rope_input_validation`；`vllm/model_executor/models/kimi_vl.py` added +608/-0 (608 lines); hunks: -0,0 +1,608; symbols: MaxImageTokenMeta, KimiVLMultiModalProjector, __init__, forward，涉及 `MaxImageTokenMeta, KimiVLMultiModalProjector, __init__`；`vllm/transformers_utils/configs/kimi_vl.py` added +36/-0 (36 lines); hunks: -0,0 +1,36; symbols: KimiVLConfig, __init__，涉及 `KimiVLConfig, __init__`；`vllm/transformers_utils/configs/moonvit.py` added +32/-0 (32 lines); hunks: -0,0 +1,32; symbols: MoonViTConfig, __init__，涉及 `MoonViTConfig, __init__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/moonvit.py` added +628/-0 (628 lines); hunks: -0,0 +1,628; symbols: multihead_attention, sdpa_attention, _apply_rope_input_validation, apply_rope
@@ -119,9 +119,9 @@ diff -- vllm/transformers_utils/configs/kimi_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/16833
 - 状态/时间: merged / 2025-04-18
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_vl.py`；关联提交 `aadb6565628c`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_vl.py`；关联提交 `aadb6565628c`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+20/-44，可读 patch 139 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Kimi K2/K2.5/Linear/VL 调整模型相关实现，标题为「[Misc] Clean up Kimi-VL」，变更集中在 `vllm/model_executor/models/kimi_vl.py`。PR 描述补充为：Apply #15799 and #16416 to Kimi-VL model. cc @courage17340
+- 动机: 标题「[Misc] Clean up Kimi-VL」；模型线: Kimi K2/K2.5/Linear/VL；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/kimi_vl.py`；PR 正文摘要: Apply #15799 and #16416 to Kimi-VL model. cc @courage17340。
 - 实现要点: `vllm/model_executor/models/kimi_vl.py` modified +17/-40 (57 lines); hunks: -56,7 +56,6; -70,22 +69,20; symbols: KimiVLProcessingInfo, get_hf_config, get_supported_mm_limits, get_num_image_tokens，涉及 `KimiVLProcessingInfo, get_hf_config, get_supported_mm_limits`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/kimi_vl.py` modified +17/-40 (57 lines); hunks: -56,7 +56,6; -70,22 +69,20; symbols: KimiVLProcessingInfo, get_hf_config, get_supported_mm_limits, get_num_image_tokens
@@ -146,9 +146,9 @@ diff -- vllm/model_executor/models/kimi_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/17156
 - 状态/时间: merged / 2025-04-25
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_vl.py`；关联提交 `69bff9bc8934`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_vl.py`；关联提交 `69bff9bc8934`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-2，可读 patch 10 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Kimi K2/K2.5/Linear/VL 补齐模型支持入口或运行时能力，标题为「fix float16 support for kimi-vl」，变更集中在 `vllm/model_executor/models/kimi_vl.py`。PR 描述补充为：FIX https://github.com/MoonshotAI/Kimi-VL/issues/41 inference with float16: output:
+- 动机: 标题「fix float16 support for kimi-vl」；模型线: Kimi K2/K2.5/Linear/VL；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/kimi_vl.py`；PR 正文摘要: FIX https://github.com/MoonshotAI/Kimi-VL/issues/41 inference with float16: output:。
 - 实现要点: `vllm/model_executor/models/kimi_vl.py` modified +1/-2 (3 lines); hunks: -340,8 +340,7 @@ def _parse_and_validate_image_input(; symbols: _parse_and_validate_image_input，涉及 `_parse_and_validate_image_input`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/kimi_vl.py` modified +1/-2 (3 lines); hunks: -340,8 +340,7 @@ def _parse_and_validate_image_input(; symbols: _parse_and_validate_image_input
@@ -170,9 +170,9 @@ diff -- vllm/model_executor/models/kimi_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/21769
 - 状态/时间: merged / 2025-08-05
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_vl.py`；关联提交 `05fae021750b`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_vl.py`；关联提交 `05fae021750b`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+15/-9，可读 patch 55 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Kimi K2/K2.5/Linear/VL 调整模型相关实现，标题为「Migrate KimiVLImagePixelInputs to TensorSchema」，变更集中在 `vllm/model_executor/models/kimi_vl.py`。PR 描述补充为：## Purpose This PR migrates KimiVLImagePixelInputs from a TypedDict-based definition to a structured TensorSchema model with runtime shape validation. This brings it in line wit...
+- 动机: 标题「Migrate KimiVLImagePixelInputs to TensorSchema」；模型线: Kimi K2/K2.5/Linear/VL；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/kimi_vl.py`；PR 正文摘要: This PR migrates KimiVLImagePixelInputs from a TypedDict-based definition to a structured TensorSchema model with runtime shape validation. This brings it in line with recent ch...。
 - 实现要点: `vllm/model_executor/models/kimi_vl.py` modified +15/-9 (24 lines); hunks: -46,7 +46,7; -79,6 +79,7; symbols: forward, KimiVLImagePixelInputs, _parse_and_validate_image_input，涉及 `forward, KimiVLImagePixelInputs, _parse_and_validate_image_input`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/kimi_vl.py` modified +15/-9 (24 lines); hunks: -46,7 +46,7; -79,6 +79,7; symbols: forward, KimiVLImagePixelInputs, _parse_and_validate_image_input
@@ -197,9 +197,9 @@ diff -- vllm/model_executor/models/kimi_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/23114
 - 状态/时间: merged / 2025-08-19
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_vl.py`；关联提交 `fda9537c5e61`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_vl.py`；关联提交 `fda9537c5e61`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+18/-13，可读 patch 77 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Kimi K2/K2.5/Linear/VL 补齐模型支持入口或运行时能力，标题为「[Model] Support Pipeline Parallelism for moonshotai/Kimi-VL-A3B-Thinking-2506」，变更集中在 `vllm/model_executor/models/kimi_vl.py`。PR 描述补充为：## Purpose Fixes https://github.com/vllm-project/vllm/issues/23077 Support Pipeline Parallelism for moonshotai/Kimi-VL-A3B-Thinking-2506 ## Test Plan ## Test Result ## (Optional...
+- 动机: 标题「[Model] Support Pipeline Parallelism for moonshotai/Kimi-VL-A3B-Thinking-2506」；模型线: Kimi K2/K2.5/Linear/VL；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/kimi_vl.py`；PR 正文摘要: Fixes https://github.com/vllm-project/vllm/issues/23077 Support Pipeline Parallelism for moonshotai/Kimi-VL-A3B-Thinking-2506 (Optional) Documentation Update。
 - 实现要点: `vllm/model_executor/models/kimi_vl.py` modified +17/-12 (29 lines); hunks: -54,16 +54,16; -81,7 +81,7; symbols: get_replacement, KimiVLForConditionalGeneration, get_placeholder_str, __init__，涉及 `get_replacement, KimiVLForConditionalGeneration, get_placeholder_str`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/kimi_vl.py` modified +17/-12 (29 lines); hunks: -54,16 +54,16; -81,7 +81,7; symbols: get_replacement, KimiVLForConditionalGeneration, get_placeholder_str, __init__
@@ -224,9 +224,9 @@ diff -- vllm/model_executor/models/kimi_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/23817
 - 状态/时间: merged / 2025-09-01
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_vl.py`, `vllm/model_executor/models/moonvit.py`；关联提交 `a0e0efd6bdcf`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_vl.py`, `vllm/model_executor/models/moonvit.py`；关联提交 `a0e0efd6bdcf`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+157/-62，可读 patch 478 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Kimi K2/K2.5/Linear/VL 补齐模型支持入口或运行时能力，标题为「[Model] Support DP for ViT on Kimi-VL-A3B-Thinking-2506」，变更集中在 `vllm/model_executor/models/moonvit.py`, `vllm/model_executor/models/kimi_vl.py`。PR 描述补充为：## Purpose Add option to run MiniCPM-V-4 vision encoder in data parallel manner while the main model is in TP. Can be enabled by flag: mm_encoder_tp_mode="data" ## Test Plan ##...
+- 动机: 标题「[Model] Support DP for ViT on Kimi-VL-A3B-Thinking-2506」；模型线: Kimi K2/K2.5/Linear/VL；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/moonvit.py`, `vllm/model_executor/models/kimi_vl.py`；PR 正文摘要: Add option to run MiniCPM-V-4 vision encoder in data parallel manner while the main model is in TP. Can be enabled by flag: mm_encoder_tp_mode="data" banchmark。
 - 实现要点: `vllm/model_executor/models/moonvit.py` modified +55/-22 (77 lines); hunks: -42,7 +42,6; -55,6 +54,8; symbols: MLP2, __init__, forward, MoonVitEncoderLayer，涉及 `MLP2, __init__, forward`；`vllm/model_executor/models/kimi_vl.py` modified +39/-15 (54 lines); hunks: -56,6 +56,7; -76,6 +77,7; symbols: MaxImageTokenMeta, KimiVLMultiModalProjector, __init__, forward，涉及 `MaxImageTokenMeta, KimiVLMultiModalProjector, __init__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/moonvit.py` modified +55/-22 (77 lines); hunks: -42,7 +42,6; -55,6 +54,8; symbols: MLP2, __init__, forward, MoonVitEncoderLayer
@@ -262,7 +262,7 @@ diff -- vllm/model_executor/models/kimi_vl.py
 - 状态/时间: merged / 2025-10-30
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_linear.py`, `vllm/transformers_utils/configs/kimi_linear.py`；关联提交 `4e68cc9b6aa2`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 15 个文件，+1326/-49，可读 patch 1510 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Kimi K2/K2.5/Linear/VL 补齐模型支持入口或运行时能力，标题为「[Model] Introduce Kimi Linear to vLLM」，变更集中在 `vllm/model_executor/models/kimi_linear.py`, `vllm/transformers_utils/configs/kimi_linear.py`。PR 描述补充为：## Purpose Introducing Kimi Linear, an advanced hybrid attention model that combines the efficiency of Kimi Delta Attention (KDA), a refined version of Gated DeltaNet, with redu...
+- 动机: 标题「[Model] Introduce Kimi Linear to vLLM」；模型线: Kimi K2/K2.5/Linear/VL；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/kimi_linear.py`, `vllm/transformers_utils/configs/kimi_linear.py`；PR 正文摘要: Introducing Kimi Linear, an advanced hybrid attention model that combines the efficiency of Kimi Delta Attention (KDA), a refined version of Gated DeltaNet, with reduced memory...。
 - 实现要点: `vllm/model_executor/models/kimi_linear.py` added +663/-0 (663 lines); hunks: -0,0 +1,663; symbols: KimiMLP, __init__, forward, KimiMoE，涉及 `KimiMLP, __init__, forward`；`vllm/transformers_utils/configs/kimi_linear.py` added +144/-0 (144 lines); hunks: -0,0 +1,144; symbols: KimiLinearConfig, __init__, is_mla, is_moe，涉及 `KimiLinearConfig, __init__, is_mla`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/kimi_linear.py` added +663/-0 (663 lines); hunks: -0,0 +1,663; symbols: KimiMLP, __init__, forward, KimiMoE
@@ -296,9 +296,9 @@ diff -- vllm/transformers_utils/configs/kimi_linear.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/27834
 - 状态/时间: merged / 2025-10-31
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_linear.py`；关联提交 `e5ef4dfc11ab`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_linear.py`；关联提交 `e5ef4dfc11ab`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+2/-1，可读 patch 17 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Kimi K2/K2.5/Linear/VL 补齐模型支持入口或运行时能力，标题为「[Kimi-Linear] Correct prefixes and add compatibility to AWQ quants」，变更集中在 `vllm/model_executor/models/kimi_linear.py`。PR 描述补充为：## Purpose This PR purpose is to add prefix to shared_experts params and correct block_sparse_moe prefix from "mlp" to "block_sparse_moe", which ultimately allows vllm to initia...
+- 动机: 标题「[Kimi-Linear] Correct prefixes and add compatibility to AWQ quants」；模型线: Kimi K2/K2.5/Linear/VL；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/kimi_linear.py`；PR 正文摘要: This PR purpose is to add prefix to shared_experts params and correct block_sparse_moe prefix from "mlp" to "block_sparse_moe", which ultimately allows vllm to initiate layer na...。
 - 实现要点: `vllm/model_executor/models/kimi_linear.py` modified +2/-1 (3 lines); hunks: -155,6 +155,7 @@ def __init__(; -340,7 +341,7 @@ def __init__(; symbols: __init__, forward，涉及 `__init__, forward`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/kimi_linear.py` modified +2/-1 (3 lines); hunks: -155,6 +155,7 @@ def __init__(; -340,7 +341,7 @@ def __init__(; symbols: __init__, forward
@@ -321,9 +321,9 @@ diff -- vllm/model_executor/models/kimi_linear.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/27885
 - 状态/时间: merged / 2025-10-31
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_linear.py`；关联提交 `bc306fe5e978`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_linear.py`；关联提交 `bc306fe5e978`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-2，可读 patch 17 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Kimi K2/K2.5/Linear/VL 修复已暴露的启动、加载、解析或数值问题，标题为「fix incorrect type annotation in KimiMLP」，变更集中在 `vllm/model_executor/models/kimi_linear.py`。PR 描述补充为：Description: ## Summary Fixed incorrect type annotation for `quant_config` parameter in `KimiMLP.__init__()`. ## Changes - Changed `quant_config` type from `QKVParallelLinear |...
+- 动机: 标题「fix incorrect type annotation in KimiMLP」；模型线: Kimi K2/K2.5/Linear/VL；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/kimi_linear.py`；PR 正文摘要: Description: Fixed incorrect type annotation for `quant_config` parameter in `KimiMLP.__init__()`. Changes - Changed `quant_config` type from `QKVParallelLinear | None` to `Quan...。
 - 实现要点: `vllm/model_executor/models/kimi_linear.py` modified +1/-2 (3 lines); hunks: -22,7 +22,6; -61,7 +60,7 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/kimi_linear.py` modified +1/-2 (3 lines); hunks: -22,7 +22,6; -61,7 +60,7 @@ def __init__(; symbols: __init__
@@ -346,9 +346,9 @@ diff -- vllm/model_executor/models/kimi_linear.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/29309
 - 状态/时间: merged / 2025-11-24
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/moonvit.py`；关联提交 `3cfa63ad9916`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/moonvit.py`；关联提交 `3cfa63ad9916`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+14/-6，可读 patch 52 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Kimi K2/K2.5/Linear/VL 补齐模型支持入口或运行时能力，标题为「[XPU]fix Kimi-VL-A3B-thinking on xpu」，变更集中在 `vllm/model_executor/models/moonvit.py`。PR 描述补充为：## Purpose enable Kimi-VL-A3B-thinking text/image support on xpu. For image processing, we route to `flash_attn` backend and use `varlen_attention`. `torch.SDPA` path can't work...
+- 动机: 标题「[XPU]fix Kimi-VL-A3B-thinking on xpu」；模型线: Kimi K2/K2.5/Linear/VL；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/moonvit.py`；PR 正文摘要: enable Kimi-VL-A3B-thinking text/image support on xpu. For image processing, we route to `flash_attn` backend and use `varlen_attention`. `torch.SDPA` path can't work due to OOM...。
 - 实现要点: `vllm/model_executor/models/moonvit.py` modified +14/-6 (20 lines); hunks: -56,10 +56,13; -106,10 +109,10 @@ def multihead_attention(; symbols: multihead_attention, Rope2DPosEmb, __init__，涉及 `multihead_attention, Rope2DPosEmb, __init__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/moonvit.py` modified +14/-6 (20 lines); hunks: -56,10 +56,13; -106,10 +109,10 @@ def multihead_attention(; symbols: multihead_attention, Rope2DPosEmb, __init__
@@ -369,13 +369,55 @@ diff -- vllm/model_executor/models/moonvit.py
   - runtime: `vllm/model_executor/models/moonvit.py` modified +14/-6
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/moonvit.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
+### PR #30125 - [CustomOp][MM] Extract MMEncoderAttention as CustomOp and replace the backend of QwenVisionAttention with it.
+
+- 链接: https://github.com/vllm-project/vllm/pull/30125
+- 状态/时间: merged / 2025-12-15
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 24 个文件，+1264/-853，可读 patch 3625 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[CustomOp][MM] Extract MMEncoderAttention as CustomOp and replace the backend of QwenVisionAttention with it.」；模型线: Kimi K2/K2.5/Linear/VL；类别: 模型实现调整；主要 diff: `tests/models/multimodal/generation/test_vit_backend_functionality.py`, `vllm/attention/layers/mm_encoder_attention.py`, `vllm/model_executor/models/qwen2_vl.py`；PR 正文摘要: To avoid maintaining a variety of modeling files in vllm-ascend, we propose to remove all files in `models` dir in vllm-ascend. After this, the only thing a vllm plugin need to...。
+- 实现要点: `tests/models/multimodal/generation/test_vit_backend_functionality.py` added +434/-0 (434 lines); hunks: -0,0 +1,434; symbols: build_dots_ocr_prompt, build_processor_prompt, build_ovis_prompt, build_qwen2_5_video_prompt，涉及 `build_dots_ocr_prompt, build_processor_prompt, build_ovis_prompt`；`vllm/attention/layers/mm_encoder_attention.py` added +284/-0 (284 lines); hunks: -0,0 +1,284; symbols: maybe_get_vit_flash_attn_backend, MMEncoderAttention, __init__, enabled，涉及 `maybe_get_vit_flash_attn_backend, MMEncoderAttention, __init__`；`vllm/model_executor/models/qwen2_vl.py` modified +47/-96 (143 lines); hunks: -33,7 +33,6; -45,10 +44,8; symbols: __init__, split_qkv, forward，涉及 `__init__, split_qkv, forward`；`vllm/model_executor/models/glm4_1v.py` modified +46/-91 (137 lines); hunks: -47,8 +47,10; -191,10 +193,15 @@ def __init__(; symbols: __init__, split_qkv, forward，涉及 `__init__, split_qkv, forward`。
+- 代码 diff 细节:
+  - `tests/models/multimodal/generation/test_vit_backend_functionality.py` added +434/-0 (434 lines); hunks: -0,0 +1,434; symbols: build_dots_ocr_prompt, build_processor_prompt, build_ovis_prompt, build_qwen2_5_video_prompt
+  - `vllm/attention/layers/mm_encoder_attention.py` added +284/-0 (284 lines); hunks: -0,0 +1,284; symbols: maybe_get_vit_flash_attn_backend, MMEncoderAttention, __init__, enabled
+  - `vllm/model_executor/models/qwen2_vl.py` modified +47/-96 (143 lines); hunks: -33,7 +33,6; -45,10 +44,8; symbols: __init__, split_qkv, forward
+  - `vllm/model_executor/models/glm4_1v.py` modified +46/-91 (137 lines); hunks: -47,8 +47,10; -191,10 +193,15 @@ def __init__(; symbols: __init__, split_qkv, forward
+  - `vllm/model_executor/models/dots_ocr.py` modified +46/-83 (129 lines); hunks: -5,15 +5,14; -254,11 +253,15 @@ def __init__(; symbols: __init__, forward
+- 关键代码摘录:
+
+```diff
+diff -- tests/models/multimodal/generation/test_vit_backend_functionality.py
+@@ -0,0 +1,434 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++"""
++Consolidated test for ViT attention backend functionality across multiple models.
++This test validates that each multimodal model can successfully generate outputs
++using different ViT attention backends. Tests are parametrized by model and backend.
+diff -- vllm/attention/layers/mm_encoder_attention.py
+@@ -0,0 +1,284 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++from collections.abc import Callable
++import torch
++from vllm.attention.backends.registry import AttentionBackendEnum
++from vllm.attention.ops.vit_attn_wrappers import (
+diff -- vllm/model_executor/models/qwen2_vl.py
+@@ -33,7 +33,6 @@
+```
+
+- 已读文件:
+  - tests: `tests/models/multimodal/generation/test_vit_backend_functionality.py` added +434/-0
+  - runtime: `vllm/attention/layers/mm_encoder_attention.py` added +284/-0; `vllm/model_executor/models/qwen2_vl.py` modified +47/-96; `vllm/model_executor/models/glm4_1v.py` modified +46/-91; `vllm/model_executor/models/dots_ocr.py` modified +46/-83; `vllm/model_executor/models/siglip2navit.py` modified +45/-84; `vllm/model_executor/models/qwen2_5_vl.py` modified +48/-76
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/generation/test_vit_backend_functionality.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
 ### PR #31207 - fix: update kimi k2 tool parser logic
 
 - 链接: https://github.com/vllm-project/vllm/pull/31207
 - 状态/时间: merged / 2025-12-30
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tool_parsers/test_kimi_k2_tool_parser.py`, `vllm/tool_parsers/kimi_k2_tool_parser.py`；关联提交 `358bfd315cad`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tool_parsers/test_kimi_k2_tool_parser.py`, `vllm/tool_parsers/kimi_k2_tool_parser.py`；关联提交 `358bfd315cad`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+211/-202，可读 patch 511 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Kimi K2/K2.5/Linear/VL 修复已暴露的启动、加载、解析或数值问题，标题为「fix: update kimi k2 tool parser logic」，变更集中在 `tests/tool_parsers/test_kimi_k2_tool_parser.py`, `vllm/tool_parsers/kimi_k2_tool_parser.py`。PR 描述补充为：Purpose Fix streaming content leakage in Kimi-K2 tool parser. During streaming tool calls, the content field incorrectly contained tool call markers and content (e.g., functions...
+- 动机: 标题「fix: update kimi k2 tool parser logic」；模型线: Kimi K2/K2.5/Linear/VL；类别: 缺陷修复；主要 diff: `tests/tool_parsers/test_kimi_k2_tool_parser.py`, `vllm/tool_parsers/kimi_k2_tool_parser.py`；PR 正文摘要: Purpose Fix streaming content leakage in Kimi-K2 tool parser. During streaming tool calls, the content field incorrectly contained tool call markers and content (e.g., functions...。
 - 实现要点: `tests/tool_parsers/test_kimi_k2_tool_parser.py` modified +192/-191 (383 lines); hunks: -44,6 +44,33 @@ def assert_tool_calls(; -346,61 +373,32 @@ def test_token_leak_between_section_and_tool_begin(kimi_k2...; symbols: assert_tool_calls, run_streaming_sequence, test_extract_tool_calls_no_tools, test_token_leak_between_section_and_tool_begin，涉及 `assert_tool_calls, run_streaming_sequence, test_extract_tool_calls_no_tools`；`vllm/tool_parsers/kimi_k2_tool_parser.py` modified +19/-11 (30 lines); hunks: -122,7 +122,6 @@ def _check_and_strip_markers(self, text: str) -> tuple[str,...; -238,6 +237,7 @@ def extract_tool_calls_streaming(; symbols: _check_and_strip_markers, _reset_section_state, extract_tool_calls_streaming，涉及 `_check_and_strip_markers, _reset_section_state, extract_tool_calls_streaming`。
 - 代码 diff 细节:
   - `tests/tool_parsers/test_kimi_k2_tool_parser.py` modified +192/-191 (383 lines); hunks: -44,6 +44,33 @@ def assert_tool_calls(; -346,61 +373,32 @@ def test_token_leak_between_section_and_tool_begin(kimi_k2...; symbols: assert_tool_calls, run_streaming_sequence, test_extract_tool_calls_no_tools, test_token_leak_between_section_and_tool_begin
@@ -410,9 +452,9 @@ diff -- vllm/tool_parsers/kimi_k2_tool_parser.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/31738
 - 状态/时间: merged / 2026-01-06
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_vl.py`, `vllm/model_executor/models/moonvit.py`；关联提交 `7101e0851f73`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_vl.py`, `vllm/model_executor/models/moonvit.py`；关联提交 `7101e0851f73`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+72/-158，可读 patch 345 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Kimi K2/K2.5/Linear/VL 调整模型相关实现，标题为「[Models]: Use `MMEncoderAttention` for MoonViT」，变更集中在 `vllm/model_executor/models/moonvit.py`, `vllm/model_executor/models/kimi_vl.py`。PR 描述补充为：## Purpose - We missed MoonViT for Kimi-VL in https://github.com/vllm-project/vllm/pull/30125https://github.com/vllm-project/vllm/pull/30125 - This PR updates its attention inte...
+- 动机: 标题「[Models]: Use `MMEncoderAttention` for MoonViT」；模型线: Kimi K2/K2.5/Linear/VL；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/moonvit.py`, `vllm/model_executor/models/kimi_vl.py`；PR 正文摘要: - We missed MoonViT for Kimi-VL in https://github.com/vllm-project/vllm/pull/30125https://github.com/vllm-project/vllm/pull/30125 - This PR updates its attention interface, and...。
 - 实现要点: `vllm/model_executor/models/moonvit.py` modified +71/-157 (228 lines); hunks: -51,118 +51,20; -411,11 +313,19 @@ def __init__(; symbols: multihead_attention, sdpa_attention, _apply_rope_input_validation, __init__，涉及 `multihead_attention, sdpa_attention, _apply_rope_input_validation`；`vllm/model_executor/models/kimi_vl.py` modified +1/-1 (2 lines); hunks: -325,7 +325,7 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/moonvit.py` modified +71/-157 (228 lines); hunks: -51,118 +51,20; -411,11 +313,19 @@ def __init__(; symbols: multihead_attention, sdpa_attention, _apply_rope_input_validation, __init__
@@ -444,7 +486,7 @@ diff -- vllm/model_executor/models/kimi_vl.py
 - 状态/时间: merged / 2026-01-27
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_k25.py`, `vllm/model_executor/models/kimi_k25_vit.py`, `vllm/reasoning/kimi_k2_reasoning_parser.py`, `vllm/transformers_utils/configs/kimi_k25.py`；关联提交 `b539f988e1ee`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 16 个文件，+1799/-8，可读 patch 2011 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Kimi K2/K2.5/Linear/VL 补齐模型支持入口或运行时能力，标题为「[Models] Kimi-K2.5」，变更集中在 `vllm/model_executor/models/kimi_k25_vit.py`, `vllm/model_executor/models/kimi_k25.py`, `vllm/transformers_utils/configs/kimi_k25.py`。PR 描述补充为：## Purpose Kimi-K2.5 model support - see recipe at https://docs.vllm.ai/projects/recipes/en/latest/moonshotai/Kimi-K2.5.html ## Test Plan ## Test Result --- Essential Elements o...
+- 动机: 标题「[Models] Kimi-K2.5」；模型线: Kimi K2/K2.5/Linear/VL；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/kimi_k25_vit.py`, `vllm/model_executor/models/kimi_k25.py`, `vllm/transformers_utils/configs/kimi_k25.py`；PR 正文摘要: Kimi-K2.5 model support - see recipe at https://docs.vllm.ai/projects/recipes/en/latest/moonshotai/Kimi-K2.5.html。
 - 实现要点: `vllm/model_executor/models/kimi_k25_vit.py` added +678/-0 (678 lines); hunks: -0,0 +1,678; symbols: _apply_rope_input_validation, get_rope_shape_decorate, wrapper, get_rope_shape，涉及 `_apply_rope_input_validation, get_rope_shape_decorate, wrapper`；`vllm/model_executor/models/kimi_k25.py` added +581/-0 (581 lines); hunks: -0,0 +1,581; symbols: MaxImageTokenMeta, KimiK25MediaPixelInputs, MoonshotKimiVAutoProcessor, __init__，涉及 `MaxImageTokenMeta, KimiK25MediaPixelInputs, MoonshotKimiVAutoProcessor`；`vllm/transformers_utils/configs/kimi_k25.py` added +129/-0 (129 lines); hunks: -0,0 +1,129; symbols: KimiK25VisionConfig, __init__, KimiK25Config, hidden_size，涉及 `KimiK25VisionConfig, __init__, KimiK25Config`；`vllm/reasoning/kimi_k2_reasoning_parser.py` added +80/-0 (80 lines); hunks: -0,0 +1,80; symbols: KimiK2ReasoningParser, __init__, is_reasoning_end, is_reasoning_end_streaming，涉及 `KimiK2ReasoningParser, __init__, is_reasoning_end`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/kimi_k25_vit.py` added +678/-0 (678 lines); hunks: -0,0 +1,678; symbols: _apply_rope_input_validation, get_rope_shape_decorate, wrapper, get_rope_shape
@@ -482,9 +524,9 @@ diff -- vllm/transformers_utils/configs/kimi_k25.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/33320
 - 状态/时间: merged / 2026-01-29
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_k25.py`；关联提交 `17b17c068453`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_k25.py`；关联提交 `17b17c068453`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+2/-1，可读 patch 17 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Kimi K2/K2.5/Linear/VL 补齐模型支持入口或运行时能力，标题为「[Backport] [Kimi-K2.5] Replace torch.cuda with current_platform for d…」，变更集中在 `vllm/model_executor/models/kimi_k25.py`。PR 描述补充为：commit msg: Replaced the hardcoded `torch.cuda.current_device()` with `current_platform.current_device()` in the `KimiK25ForConditionalGeneration` initialization. This change en...
+- 动机: 标题「[Backport] [Kimi-K2.5] Replace torch.cuda with current_platform for d…」；模型线: Kimi K2/K2.5/Linear/VL；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/kimi_k25.py`；PR 正文摘要: commit msg: Replaced the hardcoded `torch.cuda.current_device()` with `current_platform.current_device()` in the `KimiK25ForConditionalGeneration` initialization. This change en...。
 - 实现要点: `vllm/model_executor/models/kimi_k25.py` modified +2/-1 (3 lines); hunks: -58,6 +58,7; -320,7 +321,7 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/kimi_k25.py` modified +2/-1 (3 lines); hunks: -58,6 +58,7; -320,7 +321,7 @@ def __init__(; symbols: __init__
@@ -507,9 +549,9 @@ diff -- vllm/model_executor/models/kimi_k25.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/33346
 - 状态/时间: merged / 2026-01-30
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_k25.py`, `vllm/model_executor/models/kimi_k25_vit.py`；关联提交 `8bfc8d5600ed`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_k25.py`, `vllm/model_executor/models/kimi_k25_vit.py`；关联提交 `8bfc8d5600ed`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+40/-176，可读 patch 282 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Kimi K2/K2.5/Linear/VL 补强部署文档、测试或 CI 验证面，标题为「[Models] Refactor Kimi-K2.5 weight loading」，变更集中在 `vllm/model_executor/models/kimi_k25.py`, `vllm/model_executor/models/kimi_k25_vit.py`。PR 描述补充为：## Purpose - Refactor Kim-K2.5 model interface usage to catch up previous refactoring ## Test Plan ## Test Result --- Essential Elements of an Effective PR Description Checklist...
+- 动机: 标题「[Models] Refactor Kimi-K2.5 weight loading」；模型线: Kimi K2/K2.5/Linear/VL；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/kimi_k25.py`, `vllm/model_executor/models/kimi_k25_vit.py`；PR 正文摘要: - Refactor Kim-K2.5 model interface usage to catch up previous refactoring。
 - 实现要点: `vllm/model_executor/models/kimi_k25.py` modified +38/-174 (212 lines); hunks: -23,16 +23,7; -64,7 +55,12; symbols: KimiK25ForConditionalGeneration, get_placeholder_str, __init__, _parse_and_validate_media_input，涉及 `KimiK25ForConditionalGeneration, get_placeholder_str, __init__`；`vllm/model_executor/models/kimi_k25_vit.py` modified +2/-2 (4 lines); hunks: -660,13 +660,13 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/kimi_k25.py` modified +38/-174 (212 lines); hunks: -23,16 +23,7; -64,7 +55,12; symbols: KimiK25ForConditionalGeneration, get_placeholder_str, __init__, _parse_and_validate_media_input
@@ -541,9 +583,9 @@ diff -- vllm/model_executor/models/kimi_k25_vit.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/33562
 - 状态/时间: merged / 2026-02-02
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_k25.py`；关联提交 `4061dcf4c51a`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_k25.py`；关联提交 `4061dcf4c51a`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+96/-12，可读 patch 221 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Kimi K2/K2.5/Linear/VL 补齐模型支持入口或运行时能力，标题为「[Bugfix] Enable Kimi k25 processor test」，变更集中在 `vllm/model_executor/models/kimi_k25.py`。PR 描述补充为：## Purpose - Enable Kimi-K2.5 processor test - Add vision chunk to vision example ## Test Plan ## Test Result Test should pass --- Essential Elements of an Effective PR Descript...
+- 动机: 标题「[Bugfix] Enable Kimi k25 processor test」；模型线: Kimi K2/K2.5/Linear/VL；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/kimi_k25.py`；PR 正文摘要: - Enable Kimi-K2.5 processor test - Add vision chunk to vision example Test should pass。
 - 实现要点: `vllm/model_executor/models/kimi_k25.py` modified +27/-5 (32 lines); hunks: -96,16 +96,20 @@ class MoonshotKimiVAutoProcessor(ProcessorMixin):; -122,13 +126,30 @@ def __call__(; symbols: MoonshotKimiVAutoProcessor, __init__, __call__，涉及 `MoonshotKimiVAutoProcessor, __init__, __call__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/kimi_k25.py` modified +27/-5 (32 lines); hunks: -96,16 +96,20 @@ class MoonshotKimiVAutoProcessor(ProcessorMixin):; -122,13 +126,30 @@ def __call__(; symbols: MoonshotKimiVAutoProcessor, __init__, __call__
@@ -570,7 +612,7 @@ diff -- vllm/model_executor/models/kimi_k25.py
 - 状态/时间: merged / 2026-02-05
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_k25.py`；关联提交 `a2522839d87d`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+15/-5，可读 patch 53 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Kimi K2/K2.5/Linear/VL 修复已暴露的启动、加载、解析或数值问题，标题为「[Bugfix] Fix Kimi-K2.5 NVFP4 checkpoints weight loading」，变更集中在 `vllm/model_executor/models/kimi_k25.py`。PR 描述补充为：## Purpose - `nvidia/Kimi-K2.5-NVFP4` is quantized based on legacy model layout (`language_model.layers.*`), which was refactored at #33346 - Since v0.15.0 has released, this PR...
+- 动机: 标题「[Bugfix] Fix Kimi-K2.5 NVFP4 checkpoints weight loading」；模型线: Kimi K2/K2.5/Linear/VL；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/kimi_k25.py`；PR 正文摘要: - `nvidia/Kimi-K2.5-NVFP4` is quantized based on legacy model layout (`language_model.layers.*`), which was refactored at #33346 - Since v0.15.0 has released, this PR adds backw...。
 - 实现要点: `vllm/model_executor/models/kimi_k25.py` modified +14/-4 (18 lines); hunks: -24,7 +24,11; -302,7 +306,9 @@ def split_video_chunks(self, video):; symbols: split_video_chunks, KimiK25ForConditionalGeneration, compute_logits，涉及 `split_video_chunks, KimiK25ForConditionalGeneration, compute_logits`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/kimi_k25.py` modified +14/-4 (18 lines); hunks: -24,7 +24,11; -302,7 +306,9 @@ def split_video_chunks(self, video):; symbols: split_video_chunks, KimiK25ForConditionalGeneration, compute_logits
@@ -595,9 +637,9 @@ diff -- vllm/model_executor/models/kimi_k25.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/34427
 - 状态/时间: merged / 2026-02-13
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_k25.py`；关联提交 `62788f99a4d0`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_k25.py`；关联提交 `62788f99a4d0`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+0/-5，可读 patch 19 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Kimi K2/K2.5/Linear/VL 修复已暴露的启动、加载、解析或数值问题，标题为「[Bugfix] Delete unused redundant code in Kimi-K2.5」，变更集中在 `vllm/model_executor/models/kimi_k25.py`。PR 描述补充为：## Purpose ## Test Plan ## Test Result --- Essential Elements of an Effective PR Description Checklist - [ ] The purpose of the PR, such as "Fix some issue (link existing issues...
+- 动机: 标题「[Bugfix] Delete unused redundant code in Kimi-K2.5」；模型线: Kimi K2/K2.5/Linear/VL；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/kimi_k25.py`；PR 正文未提供可用摘要。
 - 实现要点: `vllm/model_executor/models/kimi_k25.py` modified +0/-5 (5 lines); hunks: -11,7 +11,6; -378,10 +377,6 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/kimi_k25.py` modified +0/-5 (5 lines); hunks: -11,7 +11,6; -378,10 +377,6 @@ def __init__(; symbols: __init__
@@ -622,9 +664,9 @@ diff -- vllm/model_executor/models/kimi_k25.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/34501
 - 状态/时间: merged / 2026-02-13
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_k25.py`, `vllm/model_executor/models/kimi_k25_vit.py`；关联提交 `4a9952ec1b15`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_k25.py`, `vllm/model_executor/models/kimi_k25_vit.py`；关联提交 `4a9952ec1b15`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+26/-0，可读 patch 158 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Kimi K2/K2.5/Linear/VL 补齐模型支持入口或运行时能力，标题为「[Bugfix] Add quant_config in ViT of Kimi-K2.5」，变更集中在 `vllm/model_executor/models/kimi_k25_vit.py`, `vllm/model_executor/models/kimi_k25.py`。PR 描述补充为：## Purpose - In Kimi-K2.5, if the ViT is quantized, we need to transfer `quant_config` to the ViT module. ## Test Plan - We test the w4a8 weights including ViT quant. - The weig...
+- 动机: 标题「[Bugfix] Add quant_config in ViT of Kimi-K2.5」；模型线: Kimi K2/K2.5/Linear/VL；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/kimi_k25_vit.py`, `vllm/model_executor/models/kimi_k25.py`；PR 正文摘要: - In Kimi-K2.5, if the ViT is quantized, we need to transfer `quant_config` to the ViT module. - We test the w4a8 weights including ViT quant. - The weights path: https://models...。
 - 实现要点: `vllm/model_executor/models/kimi_k25_vit.py` modified +15/-0 (15 lines); hunks: -28,6 +28,7; -304,6 +305,7 @@ def __init__(; symbols: __init__，涉及 `__init__`；`vllm/model_executor/models/kimi_k25.py` modified +11/-0 (11 lines); hunks: -23,6 +23,10; -361,6 +365,7 @@ def __init__(; symbols: __init__, _maybe_ignore_quant_config, _parse_and_validate_media_input，涉及 `__init__, _maybe_ignore_quant_config, _parse_and_validate_media_input`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/kimi_k25_vit.py` modified +15/-0 (15 lines); hunks: -28,6 +28,7; -304,6 +305,7 @@ def __init__(; symbols: __init__
@@ -658,9 +700,9 @@ diff -- vllm/model_executor/models/kimi_k25.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/33646
 - 状态/时间: merged / 2026-02-27
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/reasoning/kimi_k2_reasoning_parser.py`；关联提交 `9251ed5c4fc6`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/reasoning/kimi_k2_reasoning_parser.py`；关联提交 `9251ed5c4fc6`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+230/-2，可读 patch 240 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Kimi K2/K2.5/Linear/VL 修复已暴露的启动、加载、解析或数值问题，标题为「[Bugfix] Handle case when kimi ends reasoning with a tool call」，变更集中在 `vllm/reasoning/kimi_k2_reasoning_parser.py`。PR 描述补充为：## Purpose Kimi reasoning parser is currently based off Deepseeks. However, Kimi may start a tool call without using a think end token. When kimi ends with a tool call inside re...
+- 动机: 标题「[Bugfix] Handle case when kimi ends reasoning with a tool call」；模型线: Kimi K2/K2.5/Linear/VL；类别: 缺陷修复；主要 diff: `vllm/reasoning/kimi_k2_reasoning_parser.py`；PR 正文摘要: Kimi reasoning parser is currently based off Deepseeks. However, Kimi may start a tool call without using a think end token. When kimi ends with a tool call inside reasoning, th...。
 - 实现要点: `vllm/reasoning/kimi_k2_reasoning_parser.py` added +228/-0 (228 lines); hunks: -0,0 +1,228; symbols: KimiK2ReasoningParser, __init__, _is_identity_mode, is_reasoning_end，涉及 `KimiK2ReasoningParser, __init__, _is_identity_mode`。
 - 代码 diff 细节:
   - `vllm/reasoning/kimi_k2_reasoning_parser.py` added +228/-0 (228 lines); hunks: -0,0 +1,228; symbols: KimiK2ReasoningParser, __init__, _is_identity_mode, is_reasoning_end
@@ -685,9 +727,9 @@ diff -- vllm/reasoning/kimi_k2_reasoning_parser.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/36192
 - 状态/时间: merged / 2026-03-06
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_k25.py`；关联提交 `00bd08edeee5`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_k25.py`；关联提交 `00bd08edeee5`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+7/-2，可读 patch 30 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Kimi K2/K2.5/Linear/VL 调整模型相关实现，标题为「[Security] Respect user trust_remote_code setting in NemotronVL and KimiK25」，变更集中在 `vllm/model_executor/models/kimi_k25.py`。PR 描述补充为：Replace hardcoded trust_remote_code=True with the user's configured trust_remote_code setting from model_config in both nemotron_vl.py and kimi_k25.py. This prevents bypassing t...
+- 动机: 标题「[Security] Respect user trust_remote_code setting in NemotronVL and KimiK25」；模型线: Kimi K2/K2.5/Linear/VL；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/kimi_k25.py`；PR 正文摘要: Replace hardcoded trust_remote_code=True with the user's configured trust_remote_code setting from model_config in both nemotron_vl.py and kimi_k25.py. This prevents bypassing t...。
 - 实现要点: `vllm/model_executor/models/kimi_k25.py` modified +2/-1 (3 lines); hunks: -174,7 +174,8 @@ def __init__(self, ctx: InputProcessingContext) -> None:; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/kimi_k25.py` modified +2/-1 (3 lines); hunks: -174,7 +174,8 @@ def __init__(self, ctx: InputProcessingContext) -> None:; symbols: __init__
@@ -711,7 +753,7 @@ diff -- vllm/model_executor/models/kimi_k25.py
 - 状态/时间: merged / 2026-03-11
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_audio.py`, `vllm/tokenizers/kimi_audio.py`, `vllm/transformers_utils/chat_templates/template_kimi_audio.jinja`, `vllm/transformers_utils/processors/kimi_audio.py`；关联提交 `42fadebecb79`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 14 个文件，+1446/-29，可读 patch 1583 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Kimi K2/K2.5/Linear/VL 补齐模型支持入口或运行时能力，标题为「[Model] Add support for moonshotai/Kimi-Audio-7B-Instruct」，变更集中在 `vllm/model_executor/models/kimi_audio.py`, `vllm/tokenizers/kimi_audio.py`, `vllm/transformers_utils/processors/kimi_audio.py`。PR 描述补充为：This PR adds support for the Kimi-Audio-7B-Instruct model from Moonshot AI, which is a state-of-the-art speech-to-text model combining Whisper encoder with Qwen2 LLM. ## Purpose...
+- 动机: 标题「[Model] Add support for moonshotai/Kimi-Audio-7B-Instruct」；模型线: Kimi K2/K2.5/Linear/VL；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/kimi_audio.py`, `vllm/tokenizers/kimi_audio.py`, `vllm/transformers_utils/processors/kimi_audio.py`；PR 正文摘要: This PR adds support for the Kimi-Audio-7B-Instruct model from Moonshot AI, which is a state-of-the-art speech-to-text model combining Whisper encoder with Qwen2 LLM. - Add supp...。
 - 实现要点: `vllm/model_executor/models/kimi_audio.py` added +725/-0 (725 lines); hunks: -0,0 +1,725; symbols: _get_feat_extract_output_lengths, KimiAudioWhisperEncoder, __init__, KimiAudioProcessingInfo，涉及 `_get_feat_extract_output_lengths, KimiAudioWhisperEncoder, __init__`；`vllm/tokenizers/kimi_audio.py` added +410/-0 (410 lines); hunks: -0,0 +1,410; symbols: _load_tiktoken_encoding, KimiAudioTokenizer, from_pretrained, __init__，涉及 `_load_tiktoken_encoding, KimiAudioTokenizer, from_pretrained`；`vllm/transformers_utils/processors/kimi_audio.py` added +163/-0 (163 lines); hunks: -0,0 +1,163; symbols: _get_feat_extract_output_lengths, KimiAudioProcessor, __init__, check_argument_for_proper_class，涉及 `_get_feat_extract_output_lengths, KimiAudioProcessor, __init__`；`vllm/renderers/kimi_audio.py` added +49/-0 (49 lines); hunks: -0,0 +1,49; symbols: KimiAudioRenderer, from_config，涉及 `KimiAudioRenderer, from_config`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/kimi_audio.py` added +725/-0 (725 lines); hunks: -0,0 +1,725; symbols: _get_feat_extract_output_lengths, KimiAudioWhisperEncoder, __init__, KimiAudioProcessingInfo
@@ -750,9 +792,9 @@ diff -- vllm/transformers_utils/processors/kimi_audio.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/36361
 - 状态/时间: merged / 2026-03-11
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_k25.py`；关联提交 `557389473755`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_k25.py`；关联提交 `557389473755`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+499/-8，可读 patch 649 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Kimi K2/K2.5/Linear/VL 调整模型相关实现，标题为「Kimi k2.5 MLA based eagle3」，变更集中在 `vllm/model_executor/models/kimi_k25.py`。PR 描述补充为：## Purpose @IzzyPutterman is original author. This allows for Eagles that share MLA instead of GQA for attention, so one can train Eagle3s for Kimi and Deepseek and use them acr...
+- 动机: 标题「Kimi k2.5 MLA based eagle3」；模型线: Kimi K2/K2.5/Linear/VL；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/kimi_k25.py`；PR 正文摘要: @IzzyPutterman is original author. This allows for Eagles that share MLA instead of GQA for attention, so one can train Eagle3s for Kimi and Deepseek and use them across TRTLLM,...。
 - 实现要点: `vllm/model_executor/models/kimi_k25.py` modified +14/-1 (15 lines); hunks: -28,6 +28,8; -311,7 +313,12 @@ def split_video_chunks(self, video):; symbols: split_video_chunks, KimiK25ForConditionalGeneration, compute_logits, set_aux_hidden_state_layers，涉及 `split_video_chunks, KimiK25ForConditionalGeneration, compute_logits`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/kimi_k25.py` modified +14/-1 (15 lines); hunks: -28,6 +28,8; -311,7 +313,12 @@ def split_video_chunks(self, video):; symbols: split_video_chunks, KimiK25ForConditionalGeneration, compute_logits, set_aux_hidden_state_layers
@@ -777,9 +819,9 @@ diff -- vllm/model_executor/models/kimi_k25.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/36903
 - 状态/时间: merged / 2026-03-14
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_audio.py`；关联提交 `a8e8d62dd80f`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_audio.py`；关联提交 `a8e8d62dd80f`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+89/-116，可读 patch 382 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Kimi K2/K2.5/Linear/VL 补齐模型支持入口或运行时能力，标题为「[Misc] Clean up Kimi-audio whisper encoder loading」，变更集中在 `vllm/model_executor/models/kimi_audio.py`。PR 描述补充为：## Purpose - Add `subfolder` to `DefaultModelLoader.Source`, which can allow us to load model components from subfolder similar to vLLM-Omni's diffusion loader: https://github.c...
+- 动机: 标题「[Misc] Clean up Kimi-audio whisper encoder loading」；模型线: Kimi K2/K2.5/Linear/VL；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/kimi_audio.py`；PR 正文摘要: - Add `subfolder` to `DefaultModelLoader.Source`, which can allow us to load model components from subfolder similar to vLLM-Omni's diffusion loader: https://github.com/vllm-pro...。
 - 实现要点: `vllm/model_executor/models/kimi_audio.py` modified +61/-111 (172 lines); hunks: -3,25 +3,21; -64,15 +60,6; symbols: _get_whisper_local_path, _get_feat_extract_output_lengths, KimiAudioWhisperEncoder, __init__，涉及 `_get_whisper_local_path, _get_feat_extract_output_lengths, KimiAudioWhisperEncoder`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/kimi_audio.py` modified +61/-111 (172 lines); hunks: -3,25 +3,21; -64,15 +60,6; symbols: _get_whisper_local_path, _get_feat_extract_output_lengths, KimiAudioWhisperEncoder, __init__
@@ -804,9 +846,9 @@ diff -- vllm/model_executor/models/kimi_audio.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/37371
 - 状态/时间: merged / 2026-03-18
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_linear.py`；关联提交 `17808394bc48`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_linear.py`；关联提交 `17808394bc48`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+235/-219，可读 patch 527 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Kimi K2/K2.5/Linear/VL 修复已暴露的启动、加载、解析或数值问题，标题为「standardize load_weights using AutoWeightsLoader for kimi_linear and minimax_text_01」，变更集中在 `vllm/model_executor/models/kimi_linear.py`。PR 描述补充为：FIX (partial) #15697 ## Test Plan Verified the refactor with a mock-weight loading script using a "Tiny Model Hack" (reducing layers to 1 for fast validation): Mock Weights: Gen...
+- 动机: 标题「standardize load_weights using AutoWeightsLoader for kimi_linear and minimax_text_01」；模型线: Kimi K2/K2.5/Linear/VL；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/kimi_linear.py`；PR 正文摘要: FIX (partial) #15697 Verified the refactor with a mock-weight loading script using a "Tiny Model Hack" (reducing layers to 1 for fast validation): Mock Weights: Generated fake t...。
 - 实现要点: `vllm/model_executor/models/kimi_linear.py` modified +97/-88 (185 lines); hunks: -46,6 +46,7; -472,94 +473,7 @@ def forward(; symbols: forward, KimiLinearForCausalLM, __init__, embed_input_ids，涉及 `forward, KimiLinearForCausalLM, __init__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/kimi_linear.py` modified +97/-88 (185 lines); hunks: -46,6 +46,7; -472,94 +473,7 @@ def forward(; symbols: forward, KimiLinearForCausalLM, __init__, embed_input_ids
@@ -833,7 +875,7 @@ diff -- vllm/model_executor/models/kimi_linear.py
 - 状态/时间: merged / 2026-03-19
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/reasoning/test_kimi_k2_reasoning_parser.py`；关联提交 `c63ca2b2e696`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+173/-18，可读 patch 227 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Kimi K2/K2.5/Linear/VL 补齐模型支持入口或运行时能力，标题为「[Bugfix] Add Kimi-K2.5 reasoning/tool parser aliases and tool_call_id support」，变更集中在 `tests/reasoning/test_kimi_k2_reasoning_parser.py`。PR 描述补充为：## Summary Fixes https://github.com/vllm-project/vllm/issues/37397 Kimi-K2.5 (`model_type: kimi_k25`) reuses the same ` `/` ` reasoning format as Kimi-K2, but vLLM had several g...
+- 动机: 标题「[Bugfix] Add Kimi-K2.5 reasoning/tool parser aliases and tool_call_id support」；模型线: Kimi K2/K2.5/Linear/VL；类别: 缺陷修复；主要 diff: `tests/reasoning/test_kimi_k2_reasoning_parser.py`；PR 正文摘要: Fixes https://github.com/vllm-project/vllm/issues/37397 Kimi-K2.5 (`model_type: kimi_k25`) reuses the same ` `/` ` reasoning format as Kimi-K2, but vLLM had several gaps: - Only...。
 - 实现要点: `tests/reasoning/test_kimi_k2_reasoning_parser.py` added +155/-0 (155 lines); hunks: -0,0 +1,155; symbols: kimi_k2_tokenizer, test_parser_selection_thinking_enabled, test_parser_selection_thinking_disabled, test_extract_reasoning_with_think_tags，涉及 `kimi_k2_tokenizer, test_parser_selection_thinking_enabled, test_parser_selection_thinking_disabled`。
 - 代码 diff 细节:
   - `tests/reasoning/test_kimi_k2_reasoning_parser.py` added +155/-0 (155 lines); hunks: -0,0 +1,155; symbols: kimi_k2_tokenizer, test_parser_selection_thinking_enabled, test_parser_selection_thinking_disabled, test_extract_reasoning_with_think_tags
@@ -858,9 +900,9 @@ diff -- tests/reasoning/test_kimi_k2_reasoning_parser.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/37693
 - 状态/时间: merged / 2026-03-20
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_k25.py`, `vllm/transformers_utils/processors/kimi_k25.py`；关联提交 `37aadf623786`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_k25.py`, `vllm/transformers_utils/processors/kimi_k25.py`；关联提交 `37aadf623786`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+128/-95，可读 patch 366 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Kimi K2/K2.5/Linear/VL 补强部署文档、测试或 CI 验证面，标题为「[Model] Update Kimi-K25 and Isaac processors to fit HF-style」，变更集中在 `vllm/transformers_utils/processors/kimi_k25.py`, `vllm/model_executor/models/kimi_k25.py`。PR 描述补充为：## Purpose Refactor processor logic to fit HF calling style. ## Test Plan `tests/models/multimodal/generation/test_common.py` passes for Isaac 0.2. (Isaac 0.1 is failing on main...
+- 动机: 标题「[Model] Update Kimi-K25 and Isaac processors to fit HF-style」；模型线: Kimi K2/K2.5/Linear/VL；类别: 文档/测试/CI；主要 diff: `vllm/transformers_utils/processors/kimi_k25.py`, `vllm/model_executor/models/kimi_k25.py`；PR 正文摘要: Refactor processor logic to fit HF calling style. `tests/models/multimodal/generation/test_common.py` passes for Isaac 0.2. (Isaac 0.1 is failing on main because of incorrect sa...。
 - 实现要点: `vllm/transformers_utils/processors/kimi_k25.py` modified +54/-38 (92 lines); hunks: -1,38 +1,41; -42,31 +45,44 @@ def __call__(; symbols: KimiK25Processor, __init__, __call__，涉及 `KimiK25Processor, __init__, __call__`；`vllm/model_executor/models/kimi_k25.py` modified +16/-18 (34 lines); hunks: -104,19 +104,25 @@ class KimiK25ProcessingInfo(BaseProcessingInfo):; -132,20 +138,15 @@ def get_supported_mm_limits(self) -> Mapping[str, int | No...; symbols: KimiK25ProcessingInfo, __init__, get_hf_processor, get_supported_mm_limits，涉及 `KimiK25ProcessingInfo, __init__, get_hf_processor`。
 - 代码 diff 细节:
   - `vllm/transformers_utils/processors/kimi_k25.py` modified +54/-38 (92 lines); hunks: -1,38 +1,41; -42,31 +45,44 @@ def __call__(; symbols: KimiK25Processor, __init__, __call__
@@ -894,9 +936,9 @@ diff -- vllm/model_executor/models/kimi_k25.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/39344
 - 状态/时间: merged / 2026-04-12
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_k25.py`；关联提交 `17e787a7792b`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_k25.py`；关联提交 `17e787a7792b`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+24/-3，可读 patch 41 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Kimi K2/K2.5/Linear/VL 修复已暴露的启动、加载、解析或数值问题，标题为「fix(kimi_k25): resolve media_placeholder_token_id from tokenizer」，变更集中在 `vllm/model_executor/models/kimi_k25.py`。PR 描述补充为：## Summary Kimi-K2.5 multimodal inference (images/video) is completely broken because `KimiK25Config.media_placeholder_token_id` (163605) disagrees with the tokenizer's actual m...
+- 动机: 标题「fix(kimi_k25): resolve media_placeholder_token_id from tokenizer」；模型线: Kimi K2/K2.5/Linear/VL；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/kimi_k25.py`；PR 正文摘要: Kimi-K2.5 multimodal inference (images/video) is completely broken because `KimiK25Config.media_placeholder_token_id` (163605) disagrees with the tokenizer's actual mapping for...。
 - 实现要点: `vllm/model_executor/models/kimi_k25.py` modified +24/-3 (27 lines); hunks: -113,7 +113,29 @@ def __init__(self, ctx: InputProcessingContext) -> None:; -232,8 +254,7 @@ def _get_prompt_updates(; symbols: __init__, _get_prompt_updates, get_replacement，涉及 `__init__, _get_prompt_updates, get_replacement`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/kimi_k25.py` modified +24/-3 (27 lines); hunks: -113,7 +113,29 @@ def __init__(self, ctx: InputProcessingContext) -> None:; -232,8 +254,7 @@ def _get_prompt_updates(; symbols: __init__, _get_prompt_updates, get_replacement
@@ -921,9 +963,9 @@ diff -- vllm/model_executor/models/kimi_k25.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/38579
 - 状态/时间: merged / 2026-04-19
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tool_parsers/test_kimi_k2_tool_parser.py`, `vllm/tool_parsers/kimi_k2_tool_parser.py`；关联提交 `03ce1c6ed908`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tool_parsers/test_kimi_k2_tool_parser.py`, `vllm/tool_parsers/kimi_k2_tool_parser.py`；关联提交 `03ce1c6ed908`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+684/-1405，可读 patch 2206 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Kimi K2/K2.5/Linear/VL 修复已暴露的启动、加载、解析或数值问题，标题为「[Bugfix] Kimi-K2 tool parser streaming - fix token leakage, argument truncation, and content dropping」，变更集中在 `tests/tool_parsers/test_kimi_k2_tool_parser.py`, `vllm/tool_parsers/kimi_k2_tool_parser.py`。PR 描述补充为：## Purpose Rewrites KimiK2ToolParser streaming to re-parse current_text on each streaming delta instead of tracking incremental token-ID counts. This eliminates the fragile stat...
+- 动机: 标题「[Bugfix] Kimi-K2 tool parser streaming - fix token leakage, argument truncation, and content dropping」；模型线: Kimi K2/K2.5/Linear/VL；类别: 缺陷修复；主要 diff: `tests/tool_parsers/test_kimi_k2_tool_parser.py`, `vllm/tool_parsers/kimi_k2_tool_parser.py`；PR 正文摘要: Rewrites KimiK2ToolParser streaming to re-parse current_text on each streaming delta instead of tracking incremental token-ID counts. This eliminates the fragile state machine t...。
 - 实现要点: `tests/tool_parsers/test_kimi_k2_tool_parser.py` modified +525/-921 (1446 lines); hunks: -3,14 +3,20; -20,959 +26,557 @@ def kimi_k2_tokenizer():; symbols: kimi_k2_tokenizer, kimi_k2_tool_parser, parser, assert_tool_calls，涉及 `kimi_k2_tokenizer, kimi_k2_tool_parser, parser`；`vllm/tool_parsers/kimi_k2_tool_parser.py` modified +159/-484 (643 lines); hunks: -1,6 +1,5; -17,137 +16,59; symbols: KimiK2ToolParser, __init__, _check_and_strip_markers, _reset_section_state，涉及 `KimiK2ToolParser, __init__, _check_and_strip_markers`。
 - 代码 diff 细节:
   - `tests/tool_parsers/test_kimi_k2_tool_parser.py` modified +525/-921 (1446 lines); hunks: -3,14 +3,20; -20,959 +26,557 @@ def kimi_k2_tokenizer():; symbols: kimi_k2_tokenizer, kimi_k2_tool_parser, parser, assert_tool_calls
@@ -956,5 +998,5 @@ diff -- vllm/tool_parsers/kimi_k2_tool_parser.py
 
 ## 补漏结论
 
-- 本版不再接受只列 PR 标题的写法；每个 PR 必须有反查来源、diff 范围、实现要点、代码摘录、已读文件和验证风险。
+- 验收规则: 每个 PR 卡片必须保留反查来源、diff 范围、实现要点、代码摘录、已读文件和验证风险。
 - 如果新模型文件落在当前过滤规则之外，先补文件过滤规则，再重新执行本轮 `git log --name-only -- <model-files>` 追溯。

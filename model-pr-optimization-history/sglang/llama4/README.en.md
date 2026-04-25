@@ -6,7 +6,6 @@
 - Source baseline: `sgl-project/sglang` trace worktree commit `880599cd43`
 - PR collection rule: run `git log --name-only -- <model-files>` on model implementation, config, processor, parser, docs/tests, filter by model keywords in commit subjects, then read each PR's final diff through the GitHub Pull Request files API.
 - Preservation rule: PRs explicitly cited by the previous history/skill are retained even if current implementation files no longer trace to them, and the card marks that source.
-- Diffusion model families have been removed from this history set and are no longer part of model optimization skills.
 
 ## Implementation File Coverage
 
@@ -76,7 +75,7 @@
 - Status/date: merged / 2025-04-07
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`, `python/sglang/srt/models/mllama4.py`; associated commits `f04c80dc42be`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 27 files, +2213/-21, 2640 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "Add Llama4 support". The diff centers on `python/sglang/srt/models/llama4.py`, `python/sglang/srt/managers/multimodal_processors/mllama4.py`, `python/sglang/srt/models/mllama4.py`. PR body context: ## Motivation - Add LM support for meta-llama/Llama4 model family. ## Modifications - Add conversation template support for Llama4 models @ispobock - Implement Llama4 language m...
+- Motivation: Title: "Add Llama4 support"; model line: Llama 4; category: model support/runtime entry; main diff: `python/sglang/srt/models/llama4.py`, `python/sglang/srt/managers/multimodal_processors/mllama4.py`, `python/sglang/srt/models/mllama4.py`; PR body summary: - Add LM support for meta-llama/Llama4 model family. - Add conversation template support for Llama4 models @ispobock - Implement Llama4 language model @ch-wan - Implement local....
 - Key implementation: `python/sglang/srt/models/llama4.py` added +420/-0 (420 lines); hunks: -0,0 +1,420; symbols: Llama4MoE, custom_routing_function, __init__, forward, touching `Llama4MoE, custom_routing_function, __init__`; `python/sglang/srt/managers/multimodal_processors/mllama4.py` added +161/-0 (161 lines); hunks: -0,0 +1,161; symbols: Mllama4ImageProcessor, __init__, process_mm_data_async, get_patch_per_chunk, touching `Mllama4ImageProcessor, __init__, process_mm_data_async`; `python/sglang/srt/models/mllama4.py` added +154/-0 (154 lines); hunks: -0,0 +1,154; symbols: Llama4ForConditionalGeneration, __init__, forward, permute_qk_weight_for_rotary, touching `Llama4ForConditionalGeneration, __init__, forward`.
 - Code diff details:
   - `python/sglang/srt/models/llama4.py` added +420/-0 (420 lines); hunks: -0,0 +1,420; symbols: Llama4MoE, custom_routing_function, __init__, forward
@@ -113,9 +112,9 @@ diff -- python/sglang/srt/models/mllama4.py
 
 - Link: https://github.com/sgl-project/sglang/pull/5159
 - Status/date: merged / 2025-04-08
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`; associated commits `5039d547724c`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`; associated commits `5039d547724c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +77/-19, 178 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "Support 2x8xH100 for Llama 4". The diff centers on `python/sglang/srt/models/llama4.py`. PR body context: ## Motivation 2x8xH100 + Maverick Comparison test: 1x8xH100 + Scout ## Modifications ## Checklist - [ ] Format your code according to the Code Formatting with Pre-Commit. - [ ]...
+- Motivation: Title: "Support 2x8xH100 for Llama 4"; model line: Llama 4; category: docs/tests/CI; main diff: `python/sglang/srt/models/llama4.py`; PR body summary: 2x8xH100 + Maverick Comparison test: 1x8xH100 + Scout.
 - Key implementation: `python/sglang/srt/models/llama4.py` modified +77/-19 (96 lines); hunks: -27,6 +27,13; -38,6 +45,7; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
   - `python/sglang/srt/models/llama4.py` modified +77/-19 (96 lines); hunks: -27,6 +27,13; -38,6 +45,7; symbols: __init__, forward
@@ -140,9 +139,9 @@ diff -- python/sglang/srt/models/llama4.py
 
 - Link: https://github.com/sgl-project/sglang/pull/5128
 - Status/date: merged / 2025-04-09
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`; associated commits `86a876d883a7`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`; associated commits `86a876d883a7`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +18/-15, 75 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR optimizes an inference path or backend selection. Title: "Optimize topk operation in llama4". The diff centers on `python/sglang/srt/models/llama4.py`. PR body context: ## Motivation Before: * bs=1: 120.41 * bs=64: 3514 * gsm8k: 92.3 After (original PR): * bs=1: 123.14 (improved) * bs=64: 3681 (only run twice, may be randomness or improvement)...
+- Motivation: Title: "Optimize topk operation in llama4"; model line: Llama 4; category: performance/backend optimization; main diff: `python/sglang/srt/models/llama4.py`; PR body summary: Before: * bs=1: 120.41 * bs=64: 3514 * gsm8k: 92.3 After (original PR): * bs=1: 123.14 (improved) * bs=64: 3681 (only run twice, may be randomness or improvement) * gsm8k: 92.6....
 - Key implementation: `python/sglang/srt/models/llama4.py` modified +2/-2 (4 lines); hunks: -48,7 +48,7; -63,7 +63,7 @@ def custom_routing_function(; symbols: custom_routing_function, touching `custom_routing_function`.
 - Code diff details:
   - `python/sglang/srt/models/llama4.py` modified +2/-2 (4 lines); hunks: -48,7 +48,7; -63,7 +63,7 @@ def custom_routing_function(; symbols: custom_routing_function
@@ -168,7 +167,7 @@ diff -- python/sglang/srt/models/llama4.py
 - Status/date: merged / 2025-04-09
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`, `python/sglang/srt/models/mllama4.py`; associated commits `406524821457`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 14 files, +537/-106, 1026 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "Support Llama4 fp8 inference". The diff centers on `python/sglang/srt/models/mllama4.py`, `python/sglang/srt/models/llama4.py`. PR body context: ## Motivation Support llama4 fp8 inference for meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8 @zhyncs @ispobock @zhaochenyang20 ## Modifications ## Benchmark | Dataset | Scor...
+- Motivation: Title: "Support Llama4 fp8 inference"; model line: Llama 4; category: performance/backend optimization; main diff: `python/sglang/srt/models/mllama4.py`, `python/sglang/srt/models/llama4.py`; PR body summary: Support llama4 fp8 inference for meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8 @zhyncs @ispobock @zhaochenyang20 | Dataset | Score | |-----|------| | gsm8k | 93.6 | | mmlu |....
 - Key implementation: `python/sglang/srt/models/mllama4.py` modified +52/-18 (70 lines); hunks: -7,6 +7,7; -16,6 +17,7; symbols: Llama4ForConditionalGeneration, __init__, load_weights, touching `Llama4ForConditionalGeneration, __init__, load_weights`; `python/sglang/srt/models/llama4.py` modified +1/-1 (2 lines); hunks: -414,7 +414,7 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `python/sglang/srt/models/mllama4.py` modified +52/-18 (70 lines); hunks: -7,6 +7,7; -16,6 +17,7; symbols: Llama4ForConditionalGeneration, __init__, load_weights
@@ -198,9 +197,9 @@ diff -- python/sglang/srt/models/llama4.py
 
 - Link: https://github.com/sgl-project/sglang/pull/5144
 - Status/date: merged / 2025-04-09
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`, `python/sglang/srt/models/mllama4.py`; associated commits `fbebcb7aa4aa`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`, `python/sglang/srt/models/mllama4.py`; associated commits `fbebcb7aa4aa`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +145/-65, 403 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "model: support mllama4". The diff centers on `python/sglang/srt/models/mllama4.py`, `python/sglang/srt/managers/multimodal_processors/mllama4.py`, `python/sglang/srt/models/llama4.py`. PR body context: ## Motivation ## Modifications ## Checklist - [ ] Format your code according to the Code Formatting with Pre-Commit. - [ ] Add unit tests as outlined in the Running Unit Tests....
+- Motivation: Title: "model: support mllama4"; model line: Llama 4; category: model support/runtime entry; main diff: `python/sglang/srt/models/mllama4.py`, `python/sglang/srt/managers/multimodal_processors/mllama4.py`, `python/sglang/srt/models/llama4.py`; no usable PR-body summary.
 - Key implementation: `python/sglang/srt/models/mllama4.py` modified +50/-11 (61 lines); hunks: -1,14 +1,19; -30,6 +35,9 @@ def __init__(; symbols: __init__, pad_input_ids, get_image_feature, forward, touching `__init__, pad_input_ids, get_image_feature`; `python/sglang/srt/managers/multimodal_processors/mllama4.py` modified +21/-36 (57 lines); hunks: -1,10 +1,8; -15,7 +13,6; symbols: Mllama4ImageProcessor, __init__, process_mm_data_async, touching `Mllama4ImageProcessor, __init__, process_mm_data_async`; `python/sglang/srt/models/llama4.py` modified +3/-0 (3 lines); hunks: -466,6 +466,9 @@ def __init__(; symbols: __init__, get_input_embeddings, _init_model, touching `__init__, get_input_embeddings, _init_model`.
 - Code diff details:
   - `python/sglang/srt/models/mllama4.py` modified +50/-11 (61 lines); hunks: -1,14 +1,19; -30,6 +35,9 @@ def __init__(; symbols: __init__, pad_input_ids, get_image_feature, forward
@@ -237,9 +236,9 @@ diff -- python/sglang/srt/models/llama4.py
 
 - Link: https://github.com/sgl-project/sglang/pull/5127
 - Status/date: merged / 2025-04-11
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`; associated commits `cd7e32e2cb15`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`; associated commits `cd7e32e2cb15`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +18/-12, 56 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR optimizes an inference path or backend selection. Title: "Optimize attention in llama4". The diff centers on `python/sglang/srt/models/llama4.py`. PR body context: ## Motivation Before: * bs=1: 120.41 * bs=64: 3514 * gsm8k: 92.3 After: * bs=1: 124.12 * bs=64: 3634 * gsm8k: 92.0 Command: ## Modifications ## Checklist - [ ] Format your code...
+- Motivation: Title: "Optimize attention in llama4"; model line: Llama 4; category: performance/backend optimization; main diff: `python/sglang/srt/models/llama4.py`; PR body summary: Before: * bs=1: 120.41 * bs=64: 3514 * gsm8k: 92.3 After: * bs=1: 124.12 * bs=64: 3634 * gsm8k: 92.0 Command:.
 - Key implementation: `python/sglang/srt/models/llama4.py` modified +18/-12 (30 lines); hunks: -240,37 +240,43 @@ def __init__(; symbols: __init__, _get_attn_scale, _mul_attn_scale, forward, touching `__init__, _get_attn_scale, _mul_attn_scale`.
 - Code diff details:
   - `python/sglang/srt/models/llama4.py` modified +18/-12 (30 lines); hunks: -240,37 +240,43 @@ def __init__(; symbols: __init__, _get_attn_scale, _mul_attn_scale, forward
@@ -266,7 +265,7 @@ diff -- python/sglang/srt/models/llama4.py
 - Status/date: merged / 2025-05-09
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +125/-8, 203 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Bugfix] Fix Llama4 gibberish output with long context and CUDA graph". The diff centers on `python/sglang/srt/layers/attention/flashattention_backend.py`. PR body context: ## Motivation Llama4 is generating gibberish output with long context (larger than 8192) with cuda graph. This PR fixes the issue. This is because the local attention mechanism...
+- Motivation: Title: "[Bugfix] Fix Llama4 gibberish output with long context and CUDA graph"; model line: Llama 4; category: bug fix; main diff: `python/sglang/srt/layers/attention/flashattention_backend.py`; PR body summary: Llama4 is generating gibberish output with long context (larger than 8192) with cuda graph. This PR fixes the issue. This is because the local attention mechanism wasn't properl....
 - Key implementation: `python/sglang/srt/layers/attention/flashattention_backend.py` modified +125/-8 (133 lines); hunks: -913,8 +913,10 @@ def forward_decode(; -970,7 +972,7 @@ def forward_decode(; symbols: forward_decode, init_cuda_graph_state, touching `forward_decode, init_cuda_graph_state`.
 - Code diff details:
   - `python/sglang/srt/layers/attention/flashattention_backend.py` modified +125/-8 (133 lines); hunks: -913,8 +913,10 @@ def forward_decode(; -970,7 +972,7 @@ def forward_decode(; symbols: forward_decode, init_cuda_graph_state
@@ -291,9 +290,9 @@ diff -- python/sglang/srt/layers/attention/flashattention_backend.py
 
 - Link: https://github.com/sgl-project/sglang/pull/6679
 - Status/date: merged / 2025-05-31
-- Trace source: `git log --name-only -- <model-files>` found it through `examples/chat_template/tool_chat_template_llama4_pythonic.jinja`; associated commits `4fac524b14a0`
+- Trace source: `git log --name-only -- <model-files>` found it through `examples/chat_template/tool_chat_template_llama4_pythonic.jinja`; associated commits `4fac524b14a0`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +165/-73, 350 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR extends deployment docs, tests, or CI coverage. Title: "update llama4 chat template and pythonic parser". The diff centers on `examples/chat_template/tool_chat_template_llama4_pythonic.jinja`. PR body context: update llama4 chat template and pythonic parser to remove and ## Motivation - llama4 chat template updated in https://www.llama.com/docs/model-cards-and-prompt-formats/llama4/ a...
+- Motivation: Title: "update llama4 chat template and pythonic parser"; model line: Llama 4; category: docs/tests/CI; main diff: `examples/chat_template/tool_chat_template_llama4_pythonic.jinja`; PR body summary: update llama4 chat template and pythonic parser to remove and - llama4 chat template updated in https://www.llama.com/docs/model-cards-and-prompt-formats/llama4/ and vllm https:....
 - Key implementation: `examples/chat_template/tool_chat_template_llama4_pythonic.jinja` modified +35/-63 (98 lines); hunks: -1,86 +1,52; -92,10 +58,12.
 - Code diff details:
   - `examples/chat_template/tool_chat_template_llama4_pythonic.jinja` modified +35/-63 (98 lines); hunks: -1,86 +1,52; -92,10 +58,12
@@ -318,9 +317,9 @@ diff -- examples/chat_template/tool_chat_template_llama4_pythonic.jinja
 
 - Link: https://github.com/sgl-project/sglang/pull/6985
 - Status/date: merged / 2025-07-01
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mllama4.py`; associated commits `886d34496475`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mllama4.py`; associated commits `886d34496475`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +139/-19, 237 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "support llama4 eagle3". The diff centers on `python/sglang/srt/models/mllama4.py`. PR body context: ## Motivation support llama4 eagle3 draft model https://huggingface.co/nvidia/Llama-4-Maverick-17B-128E-Eagle3 ## Test #### performence test batch size=1 | Output throughput --...
+- Motivation: Title: "support llama4 eagle3"; model line: Llama 4; category: performance/backend optimization; main diff: `python/sglang/srt/models/mllama4.py`; PR body summary: support llama4 eagle3 draft model https://huggingface.co/nvidia/Llama-4-Maverick-17B-128E-Eagle3 Test performence test batch size=1 | Output throughput -- | -- Llama4-17B-128E +....
 - Key implementation: `python/sglang/srt/models/mllama4.py` modified +29/-0 (29 lines); hunks: -223,5 +223,34 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: load_weights, set_eagle3_layers_to_capture, get_embed_and_head, set_embed_and_head, touching `load_weights, set_eagle3_layers_to_capture, get_embed_and_head`.
 - Code diff details:
   - `python/sglang/srt/models/mllama4.py` modified +29/-0 (29 lines); hunks: -223,5 +223,34 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: load_weights, set_eagle3_layers_to_capture, get_embed_and_head, set_embed_and_head
@@ -345,9 +344,9 @@ diff -- python/sglang/srt/models/mllama4.py
 
 - Link: https://github.com/sgl-project/sglang/pull/7729
 - Status/date: merged / 2025-07-04
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`; associated commits `8c298031d57e`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`; associated commits `8c298031d57e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +32/-45, 115 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR changes model-related implementation. Title: "refactor llama4 dp attention logic". The diff centers on `python/sglang/srt/models/llama4.py`. PR body context: ## Motivation use communicator to replace dp attention logic in llama4 ## Modifications ## Checklist - [ ] Format your code according to the Code Formatting with Pre-Commit. - [...
+- Motivation: Title: "refactor llama4 dp attention logic"; model line: Llama 4; category: model implementation change; main diff: `python/sglang/srt/models/llama4.py`; PR body summary: use communicator to replace dp attention logic in llama4.
 - Key implementation: `python/sglang/srt/models/llama4.py` modified +32/-45 (77 lines); hunks: -27,9 +27,8; -367,7 +366,10 @@ def __init__(; symbols: __init__, _is_moe_layer, forward, touching `__init__, _is_moe_layer, forward`.
 - Code diff details:
   - `python/sglang/srt/models/llama4.py` modified +32/-45 (77 lines); hunks: -27,9 +27,8; -367,7 +366,10 @@ def __init__(; symbols: __init__, _is_moe_layer, forward
@@ -374,7 +373,7 @@ diff -- python/sglang/srt/models/llama4.py
 - Status/date: merged / 2025-07-08
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mllama4.py`; associated commits `659907e32b95`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +643/-81, 847 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "Enable ModelOpt Llama4 fp8 checkpoint deployment in SGLang". The diff centers on `python/sglang/srt/models/mllama4.py`. PR body context: ## Motivation Enable ModelOpt Llama4 fp8 checkpoint deployment in SGLang, as part of our efforts to promote ModelOpt in SGLang. See https://github.com/sgl-project/sglang/issues/...
+- Motivation: Title: "Enable ModelOpt Llama4 fp8 checkpoint deployment in SGLang"; model line: Llama 4; category: performance/backend optimization; main diff: `python/sglang/srt/models/mllama4.py`; PR body summary: Enable ModelOpt Llama4 fp8 checkpoint deployment in SGLang, as part of our efforts to promote ModelOpt in SGLang. See https://github.com/sgl-project/sglang/issues/5251 Resolve r....
 - Key implementation: `python/sglang/srt/models/mllama4.py` modified +360/-79 (439 lines); hunks: -1,3 +1,6; -19,6 +22,13; symbols: Llama4ForConditionalGeneration, __init__, _has_vision_weights, _check_vision_weights_in_index, touching `Llama4ForConditionalGeneration, __init__, _has_vision_weights`.
 - Code diff details:
   - `python/sglang/srt/models/mllama4.py` modified +360/-79 (439 lines); hunks: -1,3 +1,6; -19,6 +22,13; symbols: Llama4ForConditionalGeneration, __init__, _has_vision_weights, _check_vision_weights_in_index
@@ -399,9 +398,9 @@ diff -- python/sglang/srt/models/mllama4.py
 
 - Link: https://github.com/sgl-project/sglang/pull/7840
 - Status/date: merged / 2025-07-08
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/multimodal/processors/mllama4.py`; associated commits `4bab50a6b580`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/multimodal/processors/mllama4.py`; associated commits `4bab50a6b580`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +82/-63, 186 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "Fix llama4 vision". The diff centers on `python/sglang/srt/multimodal/processors/mllama4.py`. PR body context: ## Motivation This pull request primarily introduces initial support for Llama 4 vision models by integrating its conversation template and updating model recognition. Additiona...
+- Motivation: Title: "Fix llama4 vision"; model line: Llama 4; category: bug fix; main diff: `python/sglang/srt/multimodal/processors/mllama4.py`; PR body summary: This pull request primarily introduces initial support for Llama 4 vision models by integrating its conversation template and updating model recognition. Additionally, it includ....
 - Key implementation: `python/sglang/srt/multimodal/processors/mllama4.py` modified +62/-60 (122 lines); hunks: -60,70 +60,72 @@ async def process_mm_data_async(; symbols: process_mm_data_async, touching `process_mm_data_async`.
 - Code diff details:
   - `python/sglang/srt/multimodal/processors/mllama4.py` modified +62/-60 (122 lines); hunks: -60,70 +60,72 @@ async def process_mm_data_async(; symbols: process_mm_data_async
@@ -426,9 +425,9 @@ diff -- python/sglang/srt/multimodal/processors/mllama4.py
 
 - Link: https://github.com/sgl-project/sglang/pull/8272
 - Status/date: merged / 2025-07-23
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mllama4.py`; associated commits `e2d66f60c8f8`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mllama4.py`; associated commits `e2d66f60c8f8`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +11/-3, 47 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR changes model-related implementation. Title: "Skip llama4 vision module loading when multimodal disabled". The diff centers on `python/sglang/srt/models/mllama4.py`. PR body context: ## Motivation Skip llama4 vision module loading when multimodal disabled.
+- Motivation: Title: "Skip llama4 vision module loading when multimodal disabled"; model line: Llama 4; category: model implementation change; main diff: `python/sglang/srt/models/mllama4.py`; PR body summary: Skip llama4 vision module loading when multimodal disabled..
 - Key implementation: `python/sglang/srt/models/mllama4.py` modified +10/-3 (13 lines); hunks: -23,6 +23,7; -55,13 +56,17 @@ def __init__(; symbols: __init__, load_weights, _should_skip_weight, _transform_weight_name, touching `__init__, load_weights, _should_skip_weight`.
 - Code diff details:
   - `python/sglang/srt/models/mllama4.py` modified +10/-3 (13 lines); hunks: -23,6 +23,7; -55,13 +56,17 @@ def __init__(; symbols: __init__, load_weights, _should_skip_weight, _transform_weight_name
@@ -453,9 +452,9 @@ diff -- python/sglang/srt/models/mllama4.py
 
 - Link: https://github.com/sgl-project/sglang/pull/8156
 - Status/date: merged / 2025-07-27
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/multimodal/processors/mllama4.py`; associated commits `44d600cd675f`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/multimodal/processors/mllama4.py`; associated commits `44d600cd675f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +449/-123, 235 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "Support precomputed_embeddings for Llama 4". The diff centers on `python/sglang/srt/multimodal/processors/mllama4.py`. PR body context: ## Motivation Support precomputed_embeddings for llama 4 to close #8065 ## Modifications 1. Simplified mllama4 processor by calling `process_and_combine_mm_data`. 2. Added an ex...
+- Motivation: Title: "Support precomputed_embeddings for Llama 4"; model line: Llama 4; category: model support/runtime entry; main diff: `python/sglang/srt/multimodal/processors/mllama4.py`; PR body summary: Support precomputed_embeddings for llama 4 to close #8065 1. Simplified mllama4 processor by calling `process_and_combine_mm_data`. 2. Added an example notebook for running visi....
 - Key implementation: `python/sglang/srt/multimodal/processors/mllama4.py` modified +16/-109 (125 lines); hunks: -22,12 +22,12 @@ def __init__(self, hf_config, server_args, _processor, *args...; -37,114 +37,21 @@ async def process_mm_data_async(; symbols: __init__, process_mm_data_async, touching `__init__, process_mm_data_async`.
 - Code diff details:
   - `python/sglang/srt/multimodal/processors/mllama4.py` modified +16/-109 (125 lines); hunks: -22,12 +22,12 @@ def __init__(self, hf_config, server_args, _processor, *args...; -37,114 +37,21 @@ async def process_mm_data_async(; symbols: __init__, process_mm_data_async
@@ -480,9 +479,9 @@ diff -- python/sglang/srt/multimodal/processors/mllama4.py
 
 - Link: https://github.com/sgl-project/sglang/pull/8512
 - Status/date: merged / 2025-08-02
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`, `python/sglang/srt/models/mllama4.py`; associated commits `ea93079b3038`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`, `python/sglang/srt/models/mllama4.py`; associated commits `ea93079b3038`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +518/-52, 903 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "model: adapt mllama4 to VisionAttention". The diff centers on `python/sglang/srt/models/mllama4.py`, `python/sglang/srt/models/llama4.py`. PR body context: ## Motivation To resolve https://github.com/sgl-project/sglang/issues/8487 and close #8468, adapt mllama4 to support Vision attention ## Modifications ## Accuracy Test WIP ## Be...
+- Motivation: Title: "model: adapt mllama4 to VisionAttention"; model line: Llama 4; category: docs/tests/CI; main diff: `python/sglang/srt/models/mllama4.py`, `python/sglang/srt/models/llama4.py`; PR body summary: To resolve https://github.com/sgl-project/sglang/issues/8487 and close #8468, adapt mllama4 to support Vision attention WIP Benchmark & Profiling WIP.
 - Key implementation: `python/sglang/srt/models/mllama4.py` modified +428/-19 (447 lines); hunks: -1,17 +1,24; -26,10 +33,10; symbols: Llama4VisionMLP, __init__, forward, pixel_shuffle, touching `Llama4VisionMLP, __init__, forward`; `python/sglang/srt/models/llama4.py` modified +11/-2 (13 lines); hunks: -241,13 +241,22 @@ def __init__(; -257,7 +266,7 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `python/sglang/srt/models/mllama4.py` modified +428/-19 (447 lines); hunks: -1,17 +1,24; -26,10 +33,10; symbols: Llama4VisionMLP, __init__, forward, pixel_shuffle
@@ -516,9 +515,9 @@ diff -- python/sglang/srt/models/llama4.py
 
 - Link: https://github.com/sgl-project/sglang/pull/8683
 - Status/date: merged / 2025-08-03
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`; associated commits `7ed8e51bc31e`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`; associated commits `7ed8e51bc31e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +2/-0, 9 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[fix] Fix divide by zero error for llama4.". The diff centers on `python/sglang/srt/models/llama4.py`. PR body context: ## Motivation - When loading a pure dense model (similar to llama4 guard), sglang throws the following error - Llama 4 guard model has 0 experts hence the modulo operation throw...
+- Motivation: Title: "[fix] Fix divide by zero error for llama4."; model line: Llama 4; category: bug fix; main diff: `python/sglang/srt/models/llama4.py`; PR body summary: - When loading a pure dense model (similar to llama4 guard), sglang throws the following error - Llama 4 guard model has 0 experts hence the modulo operation throws an exception....
 - Key implementation: `python/sglang/srt/models/llama4.py` modified +2/-0 (2 lines); hunks: -406,6 +406,8 @@ def __init__(; symbols: __init__, _is_moe_layer, forward, touching `__init__, _is_moe_layer, forward`.
 - Code diff details:
   - `python/sglang/srt/models/llama4.py` modified +2/-0 (2 lines); hunks: -406,6 +406,8 @@ def __init__(; symbols: __init__, _is_moe_layer, forward
@@ -539,9 +538,9 @@ diff -- python/sglang/srt/models/llama4.py
 
 - Link: https://github.com/sgl-project/sglang/pull/6752
 - Status/date: merged / 2025-08-09
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`; associated commits `4a9f3eef90a5`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`; associated commits `4a9f3eef90a5`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR fixes a launch, loading, parsing, or numerical issue. Title: "Tiny Llama4 type error in constructor". The diff centers on `python/sglang/srt/models/llama4.py`. PR body context: ## Motivation Fix the type error. self.use_rope doesn't need to be an int `self.use_rope` should be a boolean because: 1. **It's used as a boolean flag:** 2. **RadixAttention ex...
+- Motivation: Title: "Tiny Llama4 type error in constructor"; model line: Llama 4; category: bug fix; main diff: `python/sglang/srt/models/llama4.py`; PR body summary: Fix the type error. self.use_rope doesn't need to be an int `self.use_rope` should be a boolean because: 1. **It's used as a boolean flag:** 2. **RadixAttention expects boolean:....
 - Key implementation: `python/sglang/srt/models/llama4.py` modified +1/-1 (2 lines); hunks: -203,7 +203,7 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `python/sglang/srt/models/llama4.py` modified +1/-1 (2 lines); hunks: -203,7 +203,7 @@ def __init__(; symbols: __init__
@@ -562,9 +561,9 @@ diff -- python/sglang/srt/models/llama4.py
 
 - Link: https://github.com/sgl-project/sglang/pull/9101
 - Status/date: merged / 2025-08-14
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`; associated commits `4c22897a66ab`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`; associated commits `4c22897a66ab`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +68/-16, 210 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "Feature: support qwen and llama4 reducescatter for dp attention padding". The diff centers on `python/sglang/srt/models/llama4.py`. PR body context: ## Motivation Similar to #8280 and #8539 , this PR adds support for using reduce-scatter instead of all-reduce after MoE/MLP layers in Qwen2 MoE, Qwen3 MoE, and Llama4 when DP a...
+- Motivation: Title: "Feature: support qwen and llama4 reducescatter for dp attention padding"; model line: Llama 4; category: model support/runtime entry; main diff: `python/sglang/srt/models/llama4.py`; PR body summary: Similar to #8280 and #8539 , this PR adds support for using reduce-scatter instead of all-reduce after MoE/MLP layers in Qwen2 MoE, Qwen3 MoE, and Llama4 when DP attention uses....
 - Key implementation: `python/sglang/srt/models/llama4.py` modified +16/-3 (19 lines); hunks: -131,14 +131,19 @@ def __init__(; -412,6 +417,7 @@ def __init__(; symbols: __init__, forward, _is_moe_layer, touching `__init__, forward, _is_moe_layer`.
 - Code diff details:
   - `python/sglang/srt/models/llama4.py` modified +16/-3 (19 lines); hunks: -131,14 +131,19 @@ def __init__(; -412,6 +417,7 @@ def __init__(; symbols: __init__, forward, _is_moe_layer
@@ -589,9 +588,9 @@ diff -- python/sglang/srt/models/llama4.py
 
 - Link: https://github.com/sgl-project/sglang/pull/10047
 - Status/date: merged / 2025-09-06
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`, `python/sglang/srt/models/mllama4.py`; associated commits `ab62b135c18a`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`, `python/sglang/srt/models/mllama4.py`; associated commits `ab62b135c18a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +123/-13, 220 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "support Llama4 with non uniformed intermediate size across layers for…". The diff centers on `python/sglang/srt/models/mllama4.py`, `python/sglang/srt/models/llama4.py`, `test/srt/lora/test_lora_llama4.py`. PR body context: … Lora ## Motivation Llama4 doesn't support Lora for all modules since the intermediate_sizes are different between moe layer and non-moe layers, it would fail since lora mem po...
+- Motivation: Title: "support Llama4 with non uniformed intermediate size across layers for…"; model line: Llama 4; category: model support/runtime entry; main diff: `python/sglang/srt/models/mllama4.py`, `python/sglang/srt/models/llama4.py`, `test/srt/lora/test_lora_llama4.py`; PR body summary: … Lora Llama4 doesn't support Lora for all modules since the intermediate_sizes are different between moe layer and non-moe layers, it would fail since lora mem pool is allocate....
 - Key implementation: `python/sglang/srt/models/mllama4.py` modified +25/-0 (25 lines); hunks: -961,5 +961,30 @@ def get_embed(self):; symbols: get_embed, set_embed, get_hidden_dim, touching `get_embed, set_embed, get_hidden_dim`; `python/sglang/srt/models/llama4.py` modified +9/-0 (9 lines); hunks: -423,6 +423,12 @@ def _is_moe_layer(self, layer_id: int) -> bool:; -540,6 +546,9 @@ def __init__(; symbols: _is_moe_layer, get_intermediate_size, forward, __init__, touching `_is_moe_layer, get_intermediate_size, forward`; `test/srt/lora/test_lora_llama4.py` added +61/-0 (61 lines); hunks: -0,0 +1,61; symbols: TestLlama4LoRA, setUpClass, test_bringup, touching `TestLlama4LoRA, setUpClass, test_bringup`.
 - Code diff details:
   - `python/sglang/srt/models/mllama4.py` modified +25/-0 (25 lines); hunks: -961,5 +961,30 @@ def get_embed(self):; symbols: get_embed, set_embed, get_hidden_dim
@@ -629,9 +628,9 @@ diff -- test/srt/lora/test_lora_llama4.py
 
 - Link: https://github.com/sgl-project/sglang/pull/10611
 - Status/date: merged / 2025-09-29
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mllama4.py`; associated commits `9de1320b637c`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mllama4.py`; associated commits `9de1320b637c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +14/-3, 40 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR fixes a launch, loading, parsing, or numerical issue. Title: "fix: fp8 mllama4 without vision modules being quantized". The diff centers on `python/sglang/srt/models/mllama4.py`. PR body context: ## Motivation fix #9758, where vision models are not quantized in a quantized model ## Modifications ## Accuracy Tests ## Benchmarking and Profiling ## Checklist - [ ] Format yo...
+- Motivation: Title: "fix: fp8 mllama4 without vision modules being quantized"; model line: Llama 4; category: bug fix; main diff: `python/sglang/srt/models/mllama4.py`; PR body summary: fix #9758, where vision models are not quantized in a quantized model.
 - Key implementation: `python/sglang/srt/models/mllama4.py` modified +14/-3 (17 lines); hunks: -291,7 +291,7 @@ def __init__(; -446,9 +446,20 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
   - `python/sglang/srt/models/mllama4.py` modified +14/-3 (17 lines); hunks: -291,7 +291,7 @@ def __init__(; -446,9 +446,20 @@ def __init__(; symbols: __init__, forward
@@ -656,9 +655,9 @@ diff -- python/sglang/srt/models/mllama4.py
 
 - Link: https://github.com/sgl-project/sglang/pull/10042
 - Status/date: merged / 2025-10-06
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mllama4.py`; associated commits `c7a104c12bda`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mllama4.py`; associated commits `c7a104c12bda`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[quantization] Fix scale remapping for mllama4". The diff centers on `python/sglang/srt/models/mllama4.py`. PR body context: Small bugfix. Previously the method always returns False regardless of whether remap happens. This PR fix kv scale loading for ckpts that store kv_scale in naming pattern that a...
+- Motivation: Title: "[quantization] Fix scale remapping for mllama4"; model line: Llama 4; category: bug fix; main diff: `python/sglang/srt/models/mllama4.py`; PR body summary: Small bugfix. Previously the method always returns False regardless of whether remap happens. This PR fix kv scale loading for ckpts that store kv_scale in naming pattern that a....
 - Key implementation: `python/sglang/srt/models/mllama4.py` modified +1/-1 (2 lines); hunks: -700,7 +700,7 @@ def _handle_scale_remapping(self, name: str, params_dict: di...; symbols: _handle_scale_remapping, _handle_stacked_params, touching `_handle_scale_remapping, _handle_stacked_params`.
 - Code diff details:
   - `python/sglang/srt/models/mllama4.py` modified +1/-1 (2 lines); hunks: -700,7 +700,7 @@ def _handle_scale_remapping(self, name: str, params_dict: di...; symbols: _handle_scale_remapping, _handle_stacked_params
@@ -679,9 +678,9 @@ diff -- python/sglang/srt/models/mllama4.py
 
 - Link: https://github.com/sgl-project/sglang/pull/11282
 - Status/date: merged / 2025-10-07
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mllama4.py`; associated commits `fd8a0b29c044`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mllama4.py`; associated commits `fd8a0b29c044`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR fixes a launch, loading, parsing, or numerical issue. Title: "fix: correct scale parameter remapping logic in Llama4ForConditionalGeneration". The diff centers on `python/sglang/srt/models/mllama4.py`. PR body context: ## Motivation Fix the issue below, which is caused by https://github.com/sgl-project/sglang/pull/10042 It looks like https://github.com/sgl-project/sglang/pull/10611 should be i...
+- Motivation: Title: "fix: correct scale parameter remapping logic in Llama4ForConditionalGeneration"; model line: Llama 4; category: bug fix; main diff: `python/sglang/srt/models/mllama4.py`; PR body summary: Fix the issue below, which is caused by https://github.com/sgl-project/sglang/pull/10042 It looks like https://github.com/sgl-project/sglang/pull/10611 should be included in the....
 - Key implementation: `python/sglang/srt/models/mllama4.py` modified +1/-1 (2 lines); hunks: -700,7 +700,7 @@ def _handle_scale_remapping(self, name: str, params_dict: di...; symbols: _handle_scale_remapping, _handle_stacked_params, touching `_handle_scale_remapping, _handle_stacked_params`.
 - Code diff details:
   - `python/sglang/srt/models/mllama4.py` modified +1/-1 (2 lines); hunks: -700,7 +700,7 @@ def _handle_scale_remapping(self, name: str, params_dict: di...; symbols: _handle_scale_remapping, _handle_stacked_params
@@ -702,9 +701,9 @@ diff -- python/sglang/srt/models/mllama4.py
 
 - Link: https://github.com/sgl-project/sglang/pull/12405
 - Status/date: merged / 2025-10-31
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`; associated commits `34c286b8115e`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`; associated commits `34c286b8115e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR fixes a launch, loading, parsing, or numerical issue. Title: "Fix the shared expert & routed expert overlap in Llama 4". The diff centers on `python/sglang/srt/models/llama4.py`. PR body context: It seems that the original PR to overlap the shared expert and routed expert computation for Llama 4 specifically was correct, but incorrectly applied: https://github.com/sgl-pr...
+- Motivation: Title: "Fix the shared expert & routed expert overlap in Llama 4"; model line: Llama 4; category: bug fix; main diff: `python/sglang/srt/models/llama4.py`; PR body summary: It seems that the original PR to overlap the shared expert and routed expert computation for Llama 4 specifically was correct, but incorrectly applied: https://github.com/sgl-pr....
 - Key implementation: `python/sglang/srt/models/llama4.py` modified +1/-1 (2 lines); hunks: -148,7 +148,7 @@ def forward(; symbols: forward, _forward_core, touching `forward, _forward_core`.
 - Code diff details:
   - `python/sglang/srt/models/llama4.py` modified +1/-1 (2 lines); hunks: -148,7 +148,7 @@ def forward(; symbols: forward, _forward_core
@@ -725,9 +724,9 @@ diff -- python/sglang/srt/models/llama4.py
 
 - Link: https://github.com/sgl-project/sglang/pull/12811
 - Status/date: merged / 2025-11-08
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`; associated commits `49653c88964f`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`; associated commits `49653c88964f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-2, 26 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR optimizes an inference path or backend selection. Title: "use fast stream instead of torch.cuda.current_stream in llama 4 shared experts overlap". The diff centers on `python/sglang/srt/models/llama4.py`. PR body context: Don't use `torch.cuda.current_stream`, use `get_current_device_stream_fast()`, just like #12524 | Metric | Before | After | Δ | Gain | |:--|:--:|:--:|:--:|:--:| | Request Throug...
+- Motivation: Title: "use fast stream instead of torch.cuda.current_stream in llama 4 shared experts overlap"; model line: Llama 4; category: performance/backend optimization; main diff: `python/sglang/srt/models/llama4.py`; PR body summary: Don't use `torch.cuda.current_stream`, use `get_current_device_stream_fast()`, just like #12524 | Metric | Before | After | Δ | Gain | |:--|:--:|:--:|:--:|:--:| | Request Throug....
 - Key implementation: `python/sglang/srt/models/llama4.py` modified +3/-2 (5 lines); hunks: -58,6 +58,7; -164,7 +165,7 @@ def _forward_core_normal(self, hidden_states):; symbols: _forward_core_normal, _forward_core_shared_routed_overlap, touching `_forward_core_normal, _forward_core_shared_routed_overlap`.
 - Code diff details:
   - `python/sglang/srt/models/llama4.py` modified +3/-2 (5 lines); hunks: -58,6 +58,7; -164,7 +165,7 @@ def _forward_core_normal(self, hidden_states):; symbols: _forward_core_normal, _forward_core_shared_routed_overlap
@@ -754,7 +753,7 @@ diff -- python/sglang/srt/models/llama4.py
 - Status/date: merged / 2025-11-25
 - Trace source: `git log --name-only -- <model-files>` found it through `docs/basic_usage/llama4.md`; associated commits `fcccaf9001ab`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +24/-5, 50 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "Add Llama4 attention backend auto-selection". The diff centers on `docs/basic_usage/llama4.md`. PR body context: ## Motivation When using Llama4 models without explicitly specifying the `--attention-backend` parameter, user encounter an `AssertionError` during server initialization: `Asser...
+- Motivation: Title: "Add Llama4 attention backend auto-selection"; model line: Llama 4; category: bug fix; main diff: `docs/basic_usage/llama4.md`; PR body summary: When using Llama4 models without explicitly specifying the `--attention-backend` parameter, user encounter an `AssertionError` during server initialization: `AssertionError: fa3....
 - Key implementation: `docs/basic_usage/llama4.md` modified +9/-0 (9 lines); hunks: -21,6 +21,15 @@ python3 -m sglang.launch_server \.
 - Code diff details:
   - `docs/basic_usage/llama4.md` modified +9/-0 (9 lines); hunks: -21,6 +21,15 @@ python3 -m sglang.launch_server \
@@ -779,9 +778,9 @@ diff -- docs/basic_usage/llama4.md
 
 - Link: https://github.com/sgl-project/sglang/pull/16599
 - Status/date: merged / 2026-01-07
-- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/8-gpu-models/test_llama4.py`; associated commits `2ff872311b4d`
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/8-gpu-models/test_llama4.py`; associated commits `2ff872311b4d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +55/-0, 56 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR extends deployment docs, tests, or CI coverage. Title: "ci: adding llama4 placeholder test to nightly". The diff centers on `test/registered/8-gpu-models/test_llama4.py`. PR body context: ## Motivation Adding llama4 placeholder test to nightly based on pr-test file. Pending merge from @ispobock for exact configs. ## Modifications Added new test-llama4.py. ## Accu...
+- Motivation: Title: "ci: adding llama4 placeholder test to nightly"; model line: Llama 4; category: docs/tests/CI; main diff: `test/registered/8-gpu-models/test_llama4.py`; PR body summary: Adding llama4 placeholder test to nightly based on pr-test file. Pending merge from @ispobock for exact configs. Added new test-llama4.py. pending merge from ke before testing. n/a.
 - Key implementation: `test/registered/8-gpu-models/test_llama4.py` added +55/-0 (55 lines); hunks: -0,0 +1,55; symbols: TestLlama4Unified, for, test_llama4, touching `TestLlama4Unified, for, test_llama4`.
 - Code diff details:
   - `test/registered/8-gpu-models/test_llama4.py` added +55/-0 (55 lines); hunks: -0,0 +1,55; symbols: TestLlama4Unified, for, test_llama4
@@ -806,9 +805,9 @@ diff -- test/registered/8-gpu-models/test_llama4.py
 
 - Link: https://github.com/sgl-project/sglang/pull/16971
 - Status/date: merged / 2026-01-14
-- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/8-gpu-models/test_llama4.py`; associated commits `aa2b4f766179`
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/8-gpu-models/test_llama4.py`; associated commits `aa2b4f766179`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +22/-21, 142 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR fixes a launch, loading, parsing, or numerical issue. Title: "fix: renaming test file and job names + skip blocking llama4 nightly". The diff centers on `test/registered/8-gpu-models/test_llama4.py`. PR body context: ## Motivation For clearer naming and unblocking nightly. ## Modifications Changed test class names for registered/8-gpu-models and adjusted nightly-test-perf-8-gpu-b200 and nigh...
+- Motivation: Title: "fix: renaming test file and job names + skip blocking llama4 nightly"; model line: Llama 4; category: bug fix; main diff: `test/registered/8-gpu-models/test_llama4.py`; PR body summary: For clearer naming and unblocking nightly. Changed test class names for registered/8-gpu-models and adjusted nightly-test-perf-8-gpu-b200 and nightly-test-general-8-gpu-b200 n/a....
 - Key implementation: `test/registered/8-gpu-models/test_llama4.py` modified +2/-1 (3 lines); hunks: -12,7 +12,8; symbols: TestLlama4Unified, TestLlama4, for, touching `TestLlama4Unified, TestLlama4, for`.
 - Code diff details:
   - `test/registered/8-gpu-models/test_llama4.py` modified +2/-1 (3 lines); hunks: -12,7 +12,8; symbols: TestLlama4Unified, TestLlama4, for
@@ -830,9 +829,9 @@ diff -- test/registered/8-gpu-models/test_llama4.py
 
 - Link: https://github.com/sgl-project/sglang/pull/12813
 - Status/date: merged / 2026-01-30
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`; associated commits `22df62d5862b`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`; associated commits `22df62d5862b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +8/-2, 38 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "add weightless qk norm to RMSNorm interface for Llama 4". The diff centers on `python/sglang/srt/models/llama4.py`. PR body context: Otherwise with Llama 4 that has weightless qk_norm, we get these false warnings: After:
+- Motivation: Title: "add weightless qk norm to RMSNorm interface for Llama 4"; model line: Llama 4; category: model support/runtime entry; main diff: `python/sglang/srt/models/llama4.py`; PR body summary: Otherwise with Llama 4 that has weightless qk_norm, we get these false warnings: After:.
 - Key implementation: `python/sglang/srt/models/llama4.py` modified +1/-0 (1 lines); hunks: -242,6 +242,7 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `python/sglang/srt/models/llama4.py` modified +1/-0 (1 lines); hunks: -242,6 +242,7 @@ def __init__(; symbols: __init__
@@ -852,9 +851,9 @@ diff -- python/sglang/srt/models/llama4.py
 
 - Link: https://github.com/sgl-project/sglang/pull/17123
 - Status/date: merged / 2026-02-27
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`; associated commits `bc9190435b3f`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`; associated commits `bc9190435b3f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +37/-1, 67 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Llama 4, this PR adds or enables a model support/runtime surface. Title: "llama4 npu adapt". The diff centers on `python/sglang/srt/models/llama4.py`. PR body context: ## Motivation llama4 npu adapt ## Modifications 1. Add ascend in attention backend list for llama4 ## Accuracy Tests NPU GPU ## Benchmarking and Profiling ## Checklist - [x] For...
+- Motivation: Title: "llama4 npu adapt"; model line: Llama 4; category: model support/runtime entry; main diff: `python/sglang/srt/models/llama4.py`; PR body summary: llama4 npu adapt 1. Add ascend in attention backend list for llama4 NPU GPU.
 - Key implementation: `python/sglang/srt/models/llama4.py` modified +4/-0 (4 lines); hunks: -56,11 +56,13; -329,6 +331,8 @@ def forward(; symbols: forward, touching `forward`.
 - Code diff details:
   - `python/sglang/srt/models/llama4.py` modified +4/-0 (4 lines); hunks: -56,11 +56,13; -329,6 +331,8 @@ def forward(; symbols: forward
@@ -876,5 +875,5 @@ diff -- python/sglang/srt/models/llama4.py
 
 ## Gap-Closure Notes
 
-- This version rejects title-only PR lists; every PR must include trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
+- Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
 - If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.

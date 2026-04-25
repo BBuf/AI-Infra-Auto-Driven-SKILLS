@@ -6,7 +6,6 @@
 - 源码基线: `sgl-project/sglang` 当前追溯 worktree commit `880599cd43`
 - PR 收集规则: 先从模型实现、配置、processor、parser、docs/tests 等相关文件执行 `git log --name-only -- <model-files>`，再按 commit subject 的模型关键词过滤，最后用 GitHub Pull Request files API 读取每个 PR 的最终 diff。
 - 额外保留规则: 原 history/skill 已显式引用但未出现在当前实现文件 git trace 中的 PR 会保留，并在卡片里标注来源。
-- diffusion 相关模型已从本目录剔除，不再纳入模型优化 skill/history。
 
 ## 模型实现文件覆盖
 
@@ -50,9 +49,9 @@
 
 - 链接: https://github.com/sgl-project/sglang/pull/6059
 - 状态/时间: merged / 2025-05-22
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/mimo.py`, `python/sglang/srt/models/mimo_mtp.py`；关联提交 `a6ae3af15e84`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/mimo.py`, `python/sglang/srt/models/mimo_mtp.py`；关联提交 `a6ae3af15e84`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+344/-6，可读 patch 388 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiMo V2 Flash 补齐模型支持入口或运行时能力，标题为「Support XiaomiMiMo inference with mtp」，变更集中在 `python/sglang/srt/models/mimo_mtp.py`, `python/sglang/srt/models/mimo.py`。PR 描述补充为：## Motivation Support XiaomiMiMo inference with mtp ## Modifications Add new model support. Add corresponding MTP accuracy & latency test ### How to start server ## Test Result...
+- 动机: 标题「Support XiaomiMiMo inference with mtp」；模型线: MiMo V2 Flash；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/models/mimo_mtp.py`, `python/sglang/srt/models/mimo.py`；PR 正文摘要: Support XiaomiMiMo inference with mtp Add new model support. Add corresponding MTP accuracy & latency test How to start server test/send_one benchmark/gsm8k Throughput increased...。
 - 实现要点: `python/sglang/srt/models/mimo_mtp.py` added +220/-0 (220 lines); hunks: -0,0 +1,220; symbols: MiMoMultiTokenPredictorLayer, __init__, forward, MiMoMTP，涉及 `MiMoMultiTokenPredictorLayer, __init__, forward`；`python/sglang/srt/models/mimo.py` renamed +0/-0 (0 lines)。
 - 代码 diff 细节:
   - `python/sglang/srt/models/mimo_mtp.py` added +220/-0 (220 lines); hunks: -0,0 +1,220; symbols: MiMoMultiTokenPredictorLayer, __init__, forward, MiMoMTP
@@ -78,9 +77,9 @@ diff -- python/sglang/srt/models/mimo_mtp.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/7370
 - 状态/时间: merged / 2025-06-20
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/mimo_mtp.py`；关联提交 `dea8aa7ab8e8`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/mimo_mtp.py`；关联提交 `dea8aa7ab8e8`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+2/-18，可读 patch 36 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiMo V2 Flash 补齐模型支持入口或运行时能力，标题为「Clean unused import for mimo mtp model」，变更集中在 `python/sglang/srt/models/mimo_mtp.py`。PR 描述补充为：## Motivation ## Modifications Clean unused import for mimo mtp model. ## Checklist - [x] Format your code according to the Code Formatting with Pre-Commit. - [ ] Add unit tests...
+- 动机: 标题「Clean unused import for mimo mtp model」；模型线: MiMo V2 Flash；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/mimo_mtp.py`；PR 正文摘要: Clean unused import for mimo mtp model.。
 - 实现要点: `python/sglang/srt/models/mimo_mtp.py` modified +2/-18 (20 lines); hunks: -7,33 +7,17; symbols: MiMoMultiTokenPredictorLayer，涉及 `MiMoMultiTokenPredictorLayer`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/mimo_mtp.py` modified +2/-18 (20 lines); hunks: -7,33 +7,17; symbols: MiMoMultiTokenPredictorLayer
@@ -107,7 +106,7 @@ diff -- python/sglang/srt/models/mimo_mtp.py
 - 状态/时间: merged / 2025-12-19
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/function_call/mimo_detector.py`, `python/sglang/srt/models/mimo_v2_flash.py`, `python/sglang/srt/models/mimo_v2_flash_nextn.py`；关联提交 `160a06cab23f`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 38 个文件，+5396/-169，可读 patch 6509 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiMo V2 Flash 补齐模型支持入口或运行时能力，标题为「[Feature] Xiaomi `MiMo-V2-Flash` day0 support」，变更集中在 `python/sglang/srt/models/mimo_v2_flash.py`, `python/sglang/srt/models/mimo_v2_flash_nextn.py`, `python/sglang/srt/function_call/mimo_detector.py`。PR 描述补充为：## Motivation MiMo-V2-Flash is a Mixture-of-Experts (MoE) language model with 309B total parameters and 15B active parameters. Designed for high-speed reasoning and agentic work...
+- 动机: 标题「[Feature] Xiaomi `MiMo-V2-Flash` day0 support」；模型线: MiMo V2 Flash；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/mimo_v2_flash.py`, `python/sglang/srt/models/mimo_v2_flash_nextn.py`, `python/sglang/srt/function_call/mimo_detector.py`；PR 正文摘要: MiMo-V2-Flash is a Mixture-of-Experts (MoE) language model with 309B total parameters and 15B active parameters. Designed for high-speed reasoning and agentic workflows, it util...。
 - 实现要点: `python/sglang/srt/models/mimo_v2_flash.py` added +927/-0 (927 lines); hunks: -0,0 +1,927; symbols: MiMoV2MLP, __init__, forward, MoEGate，涉及 `MiMoV2MLP, __init__, forward`；`python/sglang/srt/models/mimo_v2_flash_nextn.py` added +366/-0 (366 lines); hunks: -0,0 +1,366; symbols: MiMoV2MTPLayer, __init__, forward, MiMoV2ModelNextN，涉及 `MiMoV2MTPLayer, __init__, forward`；`python/sglang/srt/function_call/mimo_detector.py` added +281/-0 (281 lines); hunks: -0,0 +1,281; symbols: _get_param_type, _convert_param_value, MiMoDetector, __init__，涉及 `_get_param_type, _convert_param_value, MiMoDetector`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/mimo_v2_flash.py` added +927/-0 (927 lines); hunks: -0,0 +1,927; symbols: MiMoV2MLP, __init__, forward, MoEGate
@@ -146,7 +145,7 @@ diff -- python/sglang/srt/function_call/mimo_detector.py
 - 状态/时间: merged / 2025-12-20
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/mimo_v2_flash.py`；关联提交 `165f5c04cbc2`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+66/-10，可读 patch 175 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiMo V2 Flash 优化关键推理路径或后端选择，标题为「Optimize MiMo-V2-Flash by flashinfer fused allreduce」，变更集中在 `python/sglang/srt/models/mimo_v2_flash.py`。PR 描述补充为：## Motivation This PR is to make MiMo-V2-Flash model leverage FlashInfer fused_allreduce to fuse allreduce+rmsnorm+residual_add. The E2E TTFT reduce 5.1%. ## Modifications ## Ac...
+- 动机: 标题「Optimize MiMo-V2-Flash by flashinfer fused allreduce」；模型线: MiMo V2 Flash；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/mimo_v2_flash.py`；PR 正文摘要: This PR is to make MiMo-V2-Flash model leverage FlashInfer fused_allreduce to fuse allreduce+rmsnorm+residual_add. The E2E TTFT reduce 5.1%. Main: PR: 8xB200 TTFT: 683.26ms -->...。
 - 实现要点: `python/sglang/srt/models/mimo_v2_flash.py` modified +66/-10 (76 lines); hunks: -13,7 +13,7; -45,7 +45,11; symbols: __init__, forward, forward_normal，涉及 `__init__, forward, forward_normal`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/mimo_v2_flash.py` modified +66/-10 (76 lines); hunks: -13,7 +13,7; -45,7 +45,11; symbols: __init__, forward, forward_normal
@@ -173,7 +172,7 @@ diff -- python/sglang/srt/models/mimo_v2_flash.py
 - 状态/时间: merged / 2025-12-25
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+16/-16，可读 patch 76 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiMo V2 Flash 修复已暴露的启动、加载、解析或数值问题，标题为「[MiMoV2Flash] fix: respect --swa-full-tokens-ratio arg」，变更集中在 `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/server_args.py`。PR 描述补充为：## Motivation MiMoV2Flash uses SWA, it should respect the argument `--swa-full-tokens-ratio` to allocate corresponding size of KV cache. ## Modifications ## Accuracy Tests ## Be...
+- 动机: 标题「[MiMoV2Flash] fix: respect --swa-full-tokens-ratio arg」；模型线: MiMo V2 Flash；类别: 缺陷修复；主要 diff: `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/server_args.py`；PR 正文摘要: MiMoV2Flash uses SWA, it should respect the argument `--swa-full-tokens-ratio` to allocate corresponding size of KV cache.。
 - 实现要点: `python/sglang/srt/model_executor/model_runner.py` modified +10/-12 (22 lines); hunks: -334,7 +334,6 @@ def __init__(; -1582,10 +1581,9 @@ def profile_max_num_token(self, total_gpu_memory: int):; symbols: __init__, profile_max_num_token, handle_max_mamba_cache, set_num_token_hybrid，涉及 `__init__, profile_max_num_token, handle_max_mamba_cache`；`python/sglang/srt/server_args.py` modified +6/-4 (10 lines); hunks: -1203,11 +1203,11 @@ def _handle_model_specific_adjustments(self):; -2263,6 +2263,8 @@ def _handle_cache_compatibility(self):; symbols: _handle_model_specific_adjustments, _handle_cache_compatibility, _handle_deterministic_inference，涉及 `_handle_model_specific_adjustments, _handle_cache_compatibility, _handle_deterministic_inference`。
 - 代码 diff 细节:
   - `python/sglang/srt/model_executor/model_runner.py` modified +10/-12 (22 lines); hunks: -334,7 +334,6 @@ def __init__(; -1582,10 +1581,9 @@ def profile_max_num_token(self, total_gpu_memory: int):; symbols: __init__, profile_max_num_token, handle_max_mamba_cache, set_num_token_hybrid
@@ -207,9 +206,9 @@ diff -- python/sglang/srt/server_args.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/18051
 - 状态/时间: merged / 2026-02-01
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/mimo_v2_flash.py`；关联提交 `9227d4f74883`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/mimo_v2_flash.py`；关联提交 `9227d4f74883`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+3/-20，可读 patch 60 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiMo V2 Flash 补齐模型支持入口或运行时能力，标题为「[Fix] Remove no use code in MiMo-V2-Flash」，变更集中在 `python/sglang/srt/models/mimo_v2_flash.py`。PR 描述补充为：## Motivation https://github.com/sgl-project/sglang/pull/15464 introduced some code piece unrelated with flashinfer fused allreduce which had no usage. This PR is to wipe them o...
+- 动机: 标题「[Fix] Remove no use code in MiMo-V2-Flash」；模型线: MiMo V2 Flash；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/mimo_v2_flash.py`；PR 正文摘要: https://github.com/sgl-project/sglang/pull/15464 introduced some code piece unrelated with flashinfer fused allreduce which had no usage. This PR is to wipe them off. Gsm8k no d...。
 - 实现要点: `python/sglang/srt/models/mimo_v2_flash.py` modified +3/-20 (23 lines); hunks: -13,7 +13,7; -557,16 +557,10 @@ def forward(; symbols: forward, get_input_embedding, get_input_embeddings, set_eagle3_layers_to_capture，涉及 `forward, get_input_embedding, get_input_embeddings`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/mimo_v2_flash.py` modified +3/-20 (23 lines); hunks: -13,7 +13,7; -557,16 +557,10 @@ def forward(; symbols: forward, get_input_embedding, get_input_embeddings, set_eagle3_layers_to_capture
@@ -236,7 +235,7 @@ diff -- python/sglang/srt/models/mimo_v2_flash.py
 - 状态/时间: merged / 2026-02-02
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/mimo_v2_flash.py`；关联提交 `cbf150039037`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+292/-8，可读 patch 366 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiMo V2 Flash 补齐模型支持入口或运行时能力，标题为「[MiMoV2Flash] [feat]: support two batch overlap」，变更集中在 `python/sglang/srt/models/mimo_v2_flash.py`。PR 描述补充为：## Motivation support mimo_v2_flash two batch overlap: p: d: lb: ## Modifications ## Accuracy Tests ## Benchmarking and Profiling ## Checklist - [ ] Format your code according t...
+- 动机: 标题「[MiMoV2Flash] [feat]: support two batch overlap」；模型线: MiMo V2 Flash；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/mimo_v2_flash.py`；PR 正文摘要: support mimo_v2_flash two batch overlap: p: d: lb:。
 - 实现要点: `python/sglang/srt/models/mimo_v2_flash.py` modified +208/-8 (216 lines); hunks: -19,18 +19,21; -66,7 +69,12; symbols: forward_deepep, op_gate, op_select_experts, op_dispatch_a，涉及 `forward_deepep, op_gate, op_select_experts`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/mimo_v2_flash.py` modified +208/-8 (216 lines); hunks: -19,18 +19,21; -66,7 +69,12; symbols: forward_deepep, op_gate, op_select_experts, op_dispatch_a
@@ -263,7 +262,7 @@ diff -- python/sglang/srt/models/mimo_v2_flash.py
 - 状态/时间: merged / 2026-04-01
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+7/-0，可读 patch 21 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiMo V2 Flash 补齐模型支持入口或运行时能力，标题为「fix(MiMo-V2-Flash): add mimo reasoning parser」，变更集中在 `python/sglang/srt/entrypoints/openai/serving_chat.py`, `python/sglang/srt/parser/reasoning_parser.py`。PR 描述补充为：## Motivation MiMo-V2-Flash and similar models default enable_thinking to false in their chat templates, but qwen3-family requests without the flag are currently treated as reas...
+- 动机: 标题「fix(MiMo-V2-Flash): add mimo reasoning parser」；模型线: MiMo V2 Flash；类别: 缺陷修复；主要 diff: `python/sglang/srt/entrypoints/openai/serving_chat.py`, `python/sglang/srt/parser/reasoning_parser.py`；PR 正文摘要: MiMo-V2-Flash and similar models default enable_thinking to false in their chat templates, but qwen3-family requests without the flag are currently treated as reasoning-enabled,...。
 - 实现要点: `python/sglang/srt/entrypoints/openai/serving_chat.py` modified +6/-0 (6 lines); hunks: -1268,6 +1268,12 @@ def _get_reasoning_from_request(self, request: ChatComple...; symbols: _get_reasoning_from_request，涉及 `_get_reasoning_from_request`；`python/sglang/srt/parser/reasoning_parser.py` modified +1/-0 (1 lines); hunks: -495,6 +495,7 @@ class ReasoningParser:; symbols: ReasoningParser，涉及 `ReasoningParser`。
 - 代码 diff 细节:
   - `python/sglang/srt/entrypoints/openai/serving_chat.py` modified +6/-0 (6 lines); hunks: -1268,6 +1268,12 @@ def _get_reasoning_from_request(self, request: ChatComple...; symbols: _get_reasoning_from_request
@@ -290,5 +289,5 @@ diff -- python/sglang/srt/parser/reasoning_parser.py
 
 ## 补漏结论
 
-- 本版不再接受只列 PR 标题的写法；每个 PR 必须有反查来源、diff 范围、实现要点、代码摘录、已读文件和验证风险。
+- 验收规则: 每个 PR 卡片必须保留反查来源、diff 范围、实现要点、代码摘录、已读文件和验证风险。
 - 如果新模型文件落在当前过滤规则之外，先补文件过滤规则，再重新执行本轮 `git log --name-only -- <model-files>` 追溯。

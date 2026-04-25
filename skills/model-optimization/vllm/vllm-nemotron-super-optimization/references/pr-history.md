@@ -3,8 +3,8 @@
 - Rebuilt on: 2026-04-25
 - Source baseline: `vllm-project/vllm` trace worktree commit `95995bbef8`
 - Collection: model implementation files were traced with `git log --name-only -- <model-files>`, filtered by model keywords in commit subjects, then every PR card was populated from the GitHub Pull Request files API.
-- Extra preserved PRs from prior docs: 0
-- Rule: use this as the backing dossier for the skill, not only PR titles.
+- Extra preserved PRs from prior docs: 2
+- Rule: use this evidence file before changing model-specific skill guidance; it is not only PR titles.
 
 ## Implementation File Coverage
 
@@ -53,6 +53,7 @@
 | 2025-08-19 | [#22023](https://github.com/vllm-project/vllm/pull/22023) | merged | Migrate InternVLImagePixelInputs (in nemotron_vl.py) to TensorSchema | `vllm/model_executor/models/nemotron_vl.py` |
 | 2025-09-10 | [#23644](https://github.com/vllm-project/vllm/pull/23644) | merged | Support for NemotronH Nano VLM | `vllm/model_executor/models/nano_nemotron_vl.py` |
 | 2025-09-25 | [#25708](https://github.com/vllm-project/vllm/pull/25708) | merged | [Model] rename NemotronH_Nano_VL -> NemotronH_Nano_VL_V2 | `vllm/model_executor/models/nano_nemotron_vl.py` |
+| 2025-09-26 | [#22980](https://github.com/vllm-project/vllm/pull/22980) | merged | EVS Support (Video tokens pruning) | `vllm/multimodal/evs.py`, `vllm/model_executor/models/qwen2_5_vl.py`, `tests/models/multimodal/generation/test_qwen2_5_vl.py` |
 | 2025-10-04 | [#26186](https://github.com/vllm-project/vllm/pull/26186) | merged | Fix issue of using only the part of video frame [Nemotron Nano] | `vllm/model_executor/models/nano_nemotron_vl.py` |
 | 2025-10-06 | [#26269](https://github.com/vllm-project/vllm/pull/26269) | merged | [Model] EVS support for nano_nemotron_vl | `vllm/model_executor/models/nano_nemotron_vl.py` |
 | 2025-10-20 | [#27107](https://github.com/vllm-project/vllm/pull/27107) | merged | Nemotron Nano V2 VL + EVS Video Support | `vllm/model_executor/models/nano_nemotron_vl.py` |
@@ -71,6 +72,7 @@
 | 2026-01-29 | [#33189](https://github.com/vllm-project/vllm/pull/33189) | merged | [Misc][Build] Lazy load cv2 in nemotron_parse.py | `vllm/model_executor/models/nemotron_parse.py` |
 | 2026-01-29 | [#32669](https://github.com/vllm-project/vllm/pull/32669) | merged | Bugfix: Pass router logits dtype in nemotron shared experts | `vllm/model_executor/models/nemotron_h.py` |
 | 2026-02-02 | [#32790](https://github.com/vllm-project/vllm/pull/32790) | merged | [MoE] Enable Shared/Routed Overlap For Latent MoE (Nemotron-H) | `vllm/model_executor/models/nemotron_h.py` |
+| 2026-02-12 | [#33506](https://github.com/vllm-project/vllm/pull/33506) | merged | [Kernel] Support Flashinfer trtllm fused MoE non gated FP8 & NVFP4 | `vllm/model_executor/layers/quantization/utils/flashinfer_utils.py`, `vllm/model_executor/layers/quantization/utils/flashinfer_fp4_moe.py`, `vllm/model_executor/layers/fused_moe/flashinfer_trtllm_moe.py` |
 | 2026-02-16 | [#34582](https://github.com/vllm-project/vllm/pull/34582) | merged | [NemotronH] Do not force router to run in fp32 | `vllm/model_executor/models/nemotron_h.py` |
 | 2026-02-18 | [#34725](https://github.com/vllm-project/vllm/pull/34725) | merged | [Bugfix] Fix NVFP4 TRTLLM MoE non-gated support; add gsm8k for Nemotron-3-Nano FP8+NVFP4 | `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-Fp8-ModelOpt-fi-trtllm.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-fi-cutlass.yaml` |
 | 2026-02-19 | [#34808](https://github.com/vllm-project/vllm/pull/34808) | merged | Revert "[NemotronH] Do not force router to run in fp32 (#34582)" | `vllm/model_executor/models/nemotron_h.py` |
@@ -108,9 +110,9 @@
 
 - Link: https://github.com/vllm-project/vllm/pull/6611
 - Status/date: merged / 2024-07-26
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron.py`, `vllm/transformers_utils/configs/nemotron.py`; associated commits `07278c37ddd8`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron.py`, `vllm/transformers_utils/configs/nemotron.py`; associated commits `07278c37ddd8`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 9 files, +776/-1, 847 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "[Model] Support Nemotron models (Nemotron-3, Nemotron-4, Minitron)". The diff centers on `vllm/model_executor/models/nemotron.py`, `vllm/transformers_utils/configs/nemotron.py`. PR body context: FIX https://github.com/vllm-project/vllm/issues/5722 Based off https://github.com/huggingface/transformers/pull/31699 - Nemotron-3 loads and produces reasonable output. Nemotron...
+- Motivation: Title: "[Model] Support Nemotron models (Nemotron-3, Nemotron-4, Minitron)"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nemotron.py`, `vllm/transformers_utils/configs/nemotron.py`; PR body summary: FIX https://github.com/vllm-project/vllm/issues/5722 Based off https://github.com/huggingface/transformers/pull/31699 - Nemotron-3 loads and produces reasonable output. Nemotron....
 - Key implementation: `vllm/model_executor/models/nemotron.py` added +531/-0 (531 lines); hunks: -0,0 +1,531; symbols: _cast_if_autocast_enabled, NemotronLayerNorm1P, __init__, forward, touching `_cast_if_autocast_enabled, NemotronLayerNorm1P, __init__`; `vllm/transformers_utils/configs/nemotron.py` added +209/-0 (209 lines); hunks: -0,0 +1,209; symbols: NemotronConfig, to, __init__, _rope_scaling_validation, touching `NemotronConfig, to, __init__`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron.py` added +531/-0 (531 lines); hunks: -0,0 +1,531; symbols: _cast_if_autocast_enabled, NemotronLayerNorm1P, __init__, forward
@@ -144,9 +146,9 @@ diff -- vllm/transformers_utils/configs/nemotron.py
 
 - Link: https://github.com/vllm-project/vllm/pull/7611
 - Status/date: merged / 2024-08-16
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron.py`, `vllm/transformers_utils/configs/nemotron.py`; associated commits `44f26a946645`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron.py`, `vllm/transformers_utils/configs/nemotron.py`; associated commits `44f26a946645`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +29/-35, 181 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Model] Align nemotron config with final HF state and fix lm-eval-small". The diff centers on `vllm/transformers_utils/configs/nemotron.py`, `vllm/model_executor/models/nemotron.py`. PR body context: Fixes the failing lm-eval-small test by switching to a more stable model checkpoint. It turns out nvidia changed the checkpoint tokenizer to something that is not valid for lm-e...
+- Motivation: Title: "[Model] Align nemotron config with final HF state and fix lm-eval-small"; model line: Nemotron Super; category: bug fix; main diff: `vllm/transformers_utils/configs/nemotron.py`, `vllm/model_executor/models/nemotron.py`; PR body summary: Fixes the failing lm-eval-small test by switching to a more stable model checkpoint. It turns out nvidia changed the checkpoint tokenizer to something that is not valid for lm-e....
 - Key implementation: `vllm/transformers_utils/configs/nemotron.py` modified +18/-24 (42 lines); hunks: -35,20 +35,20 @@ class NemotronConfig(PretrainedConfig):; -63,38 +63,33 @@ class NemotronConfig(PretrainedConfig):; symbols: NemotronConfig, __init__, touching `NemotronConfig, __init__`; `vllm/model_executor/models/nemotron.py` modified +3/-3 (6 lines); hunks: -53,7 +53,7; -161,7 +161,7 @@ def __init__(; symbols: _cast_if_autocast_enabled, __init__, touching `_cast_if_autocast_enabled, __init__`.
 - Code diff details:
   - `vllm/transformers_utils/configs/nemotron.py` modified +18/-24 (42 lines); hunks: -35,20 +35,20 @@ class NemotronConfig(PretrainedConfig):; -63,38 +63,33 @@ class NemotronConfig(PretrainedConfig):; symbols: NemotronConfig, __init__
@@ -180,9 +182,9 @@ diff -- vllm/model_executor/models/nemotron.py
 
 - Link: https://github.com/vllm-project/vllm/pull/15008
 - Status/date: merged / 2025-03-31
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_nas.py`; associated commits `3aa2b6a63714`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_nas.py`; associated commits `3aa2b6a63714`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +524/-133, 764 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "[Model] Update support for NemotronNAS models". The diff centers on `vllm/model_executor/models/nemotron_nas.py`. PR body context: Add support for latest (as of March 18, 2025) `nemotron-nas` type models. These models are currently of architecture `DeciLMForCausalLM`. Practically: - Define `has_noops` model...
+- Motivation: Title: "[Model] Update support for NemotronNAS models"; model line: Nemotron Super; category: docs/tests/CI; main diff: `vllm/model_executor/models/nemotron_nas.py`; PR body summary: Add support for latest (as of March 18, 2025) `nemotron-nas` type models. These models are currently of architecture `DeciLMForCausalLM`. Practically: - Define `has_noops` model....
 - Key implementation: `vllm/model_executor/models/nemotron_nas.py` added +454/-0 (454 lines); hunks: -0,0 +1,454; symbols: _ffn_mult_to_intermediate_size, _find_multiple, DeciLMDecoderLayer, __init__, touching `_ffn_mult_to_intermediate_size, _find_multiple, DeciLMDecoderLayer`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_nas.py` added +454/-0 (454 lines); hunks: -0,0 +1,454; symbols: _ffn_mult_to_intermediate_size, _find_multiple, DeciLMDecoderLayer, __init__
@@ -207,9 +209,9 @@ diff -- vllm/model_executor/models/nemotron_nas.py
 
 - Link: https://github.com/vllm-project/vllm/pull/18427
 - Status/date: merged / 2025-05-26
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_nas.py`; associated commits `6d68030f1cac`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_nas.py`; associated commits `6d68030f1cac`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +67/-16, 129 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "[Model] Add support for YARN in NemotronNAS models". The diff centers on `vllm/model_executor/models/nemotron_nas.py`. PR body context: Update NemotronNAS models' attention block such that they can utilize YARN scaling.
+- Motivation: Title: "[Model] Add support for YARN in NemotronNAS models"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_nas.py`; PR body summary: Update NemotronNAS models' attention block such that they can utilize YARN scaling..
 - Key implementation: `vllm/model_executor/models/nemotron_nas.py` modified +46/-2 (48 lines); hunks: -23,18 +23,20; -62,6 +64,48 @@ def _find_multiple(n: int, k: int) -> int:; symbols: _find_multiple, DeciLMAttention, __init__, _init_rotary_emb, touching `_find_multiple, DeciLMAttention, __init__`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_nas.py` modified +46/-2 (48 lines); hunks: -23,18 +23,20; -62,6 +64,48 @@ def _find_multiple(n: int, k: int) -> int:; symbols: _find_multiple, DeciLMAttention, __init__, _init_rotary_emb
@@ -236,7 +238,7 @@ diff -- vllm/model_executor/models/nemotron_nas.py
 - Status/date: merged / 2025-06-05
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`, `vllm/transformers_utils/configs/nemotron_h.py`; associated commits `cb6d572e85a3`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +829/-0, 866 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "[Model] NemotronH support". The diff centers on `vllm/model_executor/models/nemotron_h.py`, `vllm/transformers_utils/configs/nemotron_h.py`. PR body context: This PR adds support to NemotronH family models: * https://huggingface.co/nvidia/Nemotron-H-8B-Base-8K * https://huggingface.co/nvidia/Nemotron-H-47B-Base-8K * https://huggingfa...
+- Motivation: Title: "[Model] NemotronH support"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_h.py`, `vllm/transformers_utils/configs/nemotron_h.py`; PR body summary: This PR adds support to NemotronH family models: * https://huggingface.co/nvidia/Nemotron-H-8B-Base-8K * https://huggingface.co/nvidia/Nemotron-H-47B-Base-8K * https://huggingfa....
 - Key implementation: `vllm/model_executor/models/nemotron_h.py` added +565/-0 (565 lines); hunks: -0,0 +1,565; symbols: NemotronHMLP, __init__, forward, NemotronHMLPDecoderLayer, touching `NemotronHMLP, __init__, forward`; `vllm/transformers_utils/configs/nemotron_h.py` added +258/-0 (258 lines); hunks: -0,0 +1,258; symbols: NemotronHConfig, to, __init__, layers_block_type, touching `NemotronHConfig, to, __init__`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_h.py` added +565/-0 (565 lines); hunks: -0,0 +1,565; symbols: NemotronHMLP, __init__, forward, NemotronHMLPDecoderLayer
@@ -270,9 +272,9 @@ diff -- vllm/transformers_utils/configs/nemotron_h.py
 
 - Link: https://github.com/vllm-project/vllm/pull/19249
 - Status/date: merged / 2025-06-06
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `7661e92ef85e`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `7661e92ef85e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +16/-8, 88 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Model] Optimize nemotron_h implementation". The diff centers on `vllm/model_executor/models/nemotron_h.py`. PR body context: ## Essential Elements of an Effective PR Description Checklist - [ ] The purpose of the PR, such as "Fix some issue (link existing issues this PR will resolve)". - [ ] The test...
+- Motivation: Title: "[Model] Optimize nemotron_h implementation"; model line: Nemotron Super; category: performance/backend optimization; main diff: `vllm/model_executor/models/nemotron_h.py`; no usable PR-body summary.
 - Key implementation: `vllm/model_executor/models/nemotron_h.py` modified +16/-8 (24 lines); hunks: -1,4 +1,5; -29,7 +30,7; symbols: __init__, NemotronHForCausalLM, touching `__init__, NemotronHForCausalLM`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_h.py` modified +16/-8 (24 lines); hunks: -1,4 +1,5; -29,7 +30,7; symbols: __init__, NemotronHForCausalLM
@@ -297,9 +299,9 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - Link: https://github.com/vllm-project/vllm/pull/20349
 - Status/date: merged / 2025-07-17
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/processing/test_nemotron_vl.py`, `vllm/model_executor/models/nemotron_vl.py`, `vllm/transformers_utils/configs/nemotron.py`; associated commits `4ef00b5caca4`
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/processing/test_nemotron_vl.py`, `vllm/model_executor/models/nemotron_vl.py`, `vllm/transformers_utils/configs/nemotron.py`; associated commits `4ef00b5caca4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 11 files, +701/-3, 837 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "[VLM] Add Nemotron-Nano-VL-8B-V1 support". The diff centers on `vllm/model_executor/models/nemotron_vl.py`, `tests/models/multimodal/processing/test_nemotron_vl.py`, `vllm/transformers_utils/configs/nemotron.py`. PR body context: - Added support for Nemotron-Nano-VL-8B-V1 support - Added C-Radios embedding model support - Current support is copying all cradio code from HF. But the code is actually downlo...
+- Motivation: Title: "[VLM] Add Nemotron-Nano-VL-8B-V1 support"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_vl.py`, `tests/models/multimodal/processing/test_nemotron_vl.py`, `vllm/transformers_utils/configs/nemotron.py`; PR body summary: - Added support for Nemotron-Nano-VL-8B-V1 support - Added C-Radios embedding model support - Current support is copying all cradio code from HF. But the code is actually downlo....
 - Key implementation: `vllm/model_executor/models/nemotron_vl.py` added +505/-0 (505 lines); hunks: -0,0 +1,505; symbols: NemotronVLProcessor, __init__, image_token_id, _preprocess_image, touching `NemotronVLProcessor, __init__, image_token_id`; `tests/models/multimodal/processing/test_nemotron_vl.py` added +134/-0 (134 lines); hunks: -0,0 +1,134; symbols: _get_expected_num_patches, _run_check, test_processor_override, touching `_get_expected_num_patches, _run_check, test_processor_override`; `vllm/transformers_utils/configs/nemotron.py` modified +1/-1 (2 lines); hunks: -202,4 +202,4 @@ def _rope_scaling_validation(self):; symbols: _rope_scaling_validation, touching `_rope_scaling_validation`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_vl.py` added +505/-0 (505 lines); hunks: -0,0 +1,505; symbols: NemotronVLProcessor, __init__, image_token_id, _preprocess_image
@@ -337,9 +339,9 @@ diff -- vllm/transformers_utils/configs/nemotron.py
 
 - Link: https://github.com/vllm-project/vllm/pull/22349
 - Status/date: merged / 2025-08-11
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`, `vllm/transformers_utils/configs/nemotron_h.py`; associated commits `14a5d903ab82`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`, `vllm/transformers_utils/configs/nemotron_h.py`; associated commits `14a5d903ab82`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +23/-7, 91 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "[Model] NemotronH Support". The diff centers on `vllm/model_executor/models/nemotron_h.py`, `vllm/transformers_utils/configs/nemotron_h.py`. PR body context: 1. Heterogeneuous FFN support 2. Calculate head_dim - Changed from `config.expand * config.hidden_size` to `config.mamba_num_heads * config.mamba_head_dim` 3. Added support for...
+- Motivation: Title: "[Model] NemotronH Support"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_h.py`, `vllm/transformers_utils/configs/nemotron_h.py`; PR body summary: 1. Heterogeneuous FFN support 2. Calculate head_dim - Changed from `config.expand * config.hidden_size` to `config.mamba_num_heads * config.mamba_head_dim` 3. Added support for....
 - Key implementation: `vllm/model_executor/models/nemotron_h.py` modified +21/-5 (26 lines); hunks: -64,20 +64,32 @@ class NemotronHMLP(nn.Module):; -110,6 +122,7 @@ def __init__(; symbols: NemotronHMLP, __init__, touching `NemotronHMLP, __init__`; `vllm/transformers_utils/configs/nemotron_h.py` modified +2/-2 (4 lines); hunks: -151,7 +151,7 @@ def __init__(; -194,7 +194,7 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_h.py` modified +21/-5 (26 lines); hunks: -64,20 +64,32 @@ class NemotronHMLP(nn.Module):; -110,6 +122,7 @@ def __init__(; symbols: NemotronHMLP, __init__
@@ -372,9 +374,9 @@ diff -- vllm/transformers_utils/configs/nemotron_h.py
 
 - Link: https://github.com/vllm-project/vllm/pull/22739
 - Status/date: merged / 2025-08-13
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/processing/test_nemotron_vl.py`, `vllm/model_executor/models/nemotron_vl.py`; associated commits `a01e0018b50f`
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/processing/test_nemotron_vl.py`, `vllm/model_executor/models/nemotron_vl.py`; associated commits `a01e0018b50f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +190/-4, 234 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Bugfix] Fix Nemotron VL image processing". The diff centers on `vllm/model_executor/models/nemotron_vl.py`, `tests/models/multimodal/processing/test_nemotron_vl.py`. PR body context: ## Purpose Correct image processing for Nemotron VL: - Do not normalize images like InternVL - Use a correct method to `find_closest_aspect_ratio` ## Test Plan Using this script...
+- Motivation: Title: "[Bugfix] Fix Nemotron VL image processing"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nemotron_vl.py`, `tests/models/multimodal/processing/test_nemotron_vl.py`; PR body summary: Correct image processing for Nemotron VL: - Do not normalize images like InternVL - Use a correct method to `find_closest_aspect_ratio` Using this script to test vLLM Nemotron V....
 - Key implementation: `vllm/model_executor/models/nemotron_vl.py` modified +186/-0 (186 lines); hunks: -13,6 +13,7; -27,6 +28,7; symbols: build_transform, find_closest_aspect_ratio, calculate_nemotron_vl_targets, dynamic_preprocess_nemotron_vl, touching `build_transform, find_closest_aspect_ratio, calculate_nemotron_vl_targets`; `tests/models/multimodal/processing/test_nemotron_vl.py` modified +4/-4 (8 lines); hunks: -23,15 +23,15 @@ def _get_expected_num_patches(; symbols: _get_expected_num_patches, touching `_get_expected_num_patches`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_vl.py` modified +186/-0 (186 lines); hunks: -13,6 +13,7; -27,6 +28,7; symbols: build_transform, find_closest_aspect_ratio, calculate_nemotron_vl_targets, dynamic_preprocess_nemotron_vl
@@ -409,9 +411,9 @@ diff -- tests/models/multimodal/processing/test_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/22023
 - Status/date: merged / 2025-08-19
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_vl.py`; associated commits `e75f34226161`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_vl.py`; associated commits `e75f34226161`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +5/-23, 43 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR changes model-related implementation. Title: "Migrate InternVLImagePixelInputs (in nemotron_vl.py) to TensorSchema". The diff centers on `vllm/model_executor/models/nemotron_vl.py`. PR body context: ## Purpose This PR migrates InternVLImagePixelInputs (in nemotron_vl.py) from a TypedDict-based definition to a structured TensorSchema model with runtime shape validation. This...
+- Motivation: Title: "Migrate InternVLImagePixelInputs (in nemotron_vl.py) to TensorSchema"; model line: Nemotron Super; category: model implementation change; main diff: `vllm/model_executor/models/nemotron_vl.py`; PR body summary: This PR migrates InternVLImagePixelInputs (in nemotron_vl.py) from a TypedDict-based definition to a structured TensorSchema model with runtime shape validation. This brings it....
 - Key implementation: `vllm/model_executor/models/nemotron_vl.py` modified +5/-23 (28 lines); hunks: -458,27 +458,6 @@ def extract_feature(self, pixel_values: torch.Tensor) -> to...; -516,9 +495,12 @@ def _parse_and_validate_image_input(; symbols: extract_feature, _validate_pixel_values, _validate_shape, _parse_and_validate_image_input, touching `extract_feature, _validate_pixel_values, _validate_shape`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_vl.py` modified +5/-23 (28 lines); hunks: -458,27 +458,6 @@ def extract_feature(self, pixel_values: torch.Tensor) -> to...; -516,9 +495,12 @@ def _parse_and_validate_image_input(; symbols: extract_feature, _validate_pixel_values, _validate_shape, _parse_and_validate_image_input
@@ -436,9 +438,9 @@ diff -- vllm/model_executor/models/nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/23644
 - Status/date: merged / 2025-09-10
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `72d30108a0fe`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `72d30108a0fe`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +1400/-1, 1423 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "Support for NemotronH Nano VLM". The diff centers on `vllm/model_executor/models/nano_nemotron_vl.py`. PR body context: Adds a new multimodal model implementation: `vllm/model_executor/models/nano_nemotron_vl.py` for online serving do the following: 1. `vllm serve --runner generate --max-model-le...
+- Motivation: Title: "Support for NemotronH Nano VLM"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; PR body summary: Adds a new multimodal model implementation: `vllm/model_executor/models/nano_nemotron_vl.py` for online serving do the following: 1. `vllm serve --runner generate --max-model-le....
 - Key implementation: `vllm/model_executor/models/nano_nemotron_vl.py` added +1395/-0 (1395 lines); hunks: -0,0 +1,1395; symbols: NanoNemotronVLImagePixelInputs, NanoNemotronVLImageEmbeddinInputs, NanoNemotronVLVideoPixelInputs, NanoNemotronVLVideoEmbeddingInputs, touching `NanoNemotronVLImagePixelInputs, NanoNemotronVLImageEmbeddinInputs, NanoNemotronVLVideoPixelInputs`.
 - Code diff details:
   - `vllm/model_executor/models/nano_nemotron_vl.py` added +1395/-0 (1395 lines); hunks: -0,0 +1,1395; symbols: NanoNemotronVLImagePixelInputs, NanoNemotronVLImageEmbeddinInputs, NanoNemotronVLVideoPixelInputs, NanoNemotronVLVideoEmbeddingInputs
@@ -463,9 +465,9 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/25708
 - Status/date: merged / 2025-09-25
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `57329a8c013c`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `57329a8c013c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +6/-6, 47 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR changes model-related implementation. Title: "[Model] rename NemotronH_Nano_VL -> NemotronH_Nano_VL_V2". The diff centers on `vllm/model_executor/models/nano_nemotron_vl.py`. PR body context: Small PR to rename architecture `NemotronH_Nano_VL` -> `NemotronH_Nano_VL_V2` --- Essential Elements of an Effective PR Description Checklist - [ ] The purpose of the PR, such a...
+- Motivation: Title: "[Model] rename NemotronH_Nano_VL -> NemotronH_Nano_VL_V2"; model line: Nemotron Super; category: model implementation change; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; PR body summary: Small PR to rename architecture `NemotronH_Nano_VL` -> `NemotronH_Nano_VL_V2`.
 - Key implementation: `vllm/model_executor/models/nano_nemotron_vl.py` modified +4/-4 (8 lines); hunks: -869,8 +869,8 @@ def get_dummy_mm_data(; -1249,7 +1249,7 @@ def print_architecture(self,; symbols: get_dummy_mm_data, NemotronH_Nano_VL, NemotronH_Nano_VL_V2, get_placeholder_str, touching `get_dummy_mm_data, NemotronH_Nano_VL, NemotronH_Nano_VL_V2`.
 - Code diff details:
   - `vllm/model_executor/models/nano_nemotron_vl.py` modified +4/-4 (8 lines); hunks: -869,8 +869,8 @@ def get_dummy_mm_data(; -1249,7 +1249,7 @@ def print_architecture(self,; symbols: get_dummy_mm_data, NemotronH_Nano_VL, NemotronH_Nano_VL_V2, get_placeholder_str
@@ -486,13 +488,55 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
   - runtime: `vllm/model_executor/models/nano_nemotron_vl.py` modified +4/-4
 - Risk and verification: The diff ships test coverage in `tests/models/registry.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
+### PR #22980 - EVS Support (Video tokens pruning)
+
+- Link: https://github.com/vllm-project/vllm/pull/22980
+- Status/date: merged / 2025-09-26
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 8 files, +783/-39, 1076 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "EVS Support (Video tokens pruning)"; model line: Nemotron Super; category: docs/tests/CI; main diff: `vllm/multimodal/evs.py`, `vllm/model_executor/models/qwen2_5_vl.py`, `tests/models/multimodal/generation/test_qwen2_5_vl.py`; PR body summary: Enable use of Efficient Video Sampling (EVS) for redundant video tokens pruning: EVS reduces TTFT and ITL by pruning less important vision tokens from the LLM: - Added tests to....
+- Key implementation: `vllm/multimodal/evs.py` added +273/-0 (273 lines); hunks: -0,0 +1,273; symbols: compute_retained_tokens_count, compute_retention_mask, compute_mrope_for_media, recompute_mrope_positions, touching `compute_retained_tokens_count, compute_retention_mask, compute_mrope_for_media`; `vllm/model_executor/models/qwen2_5_vl.py` modified +226/-12 (238 lines); hunks: -25,9 +25,9; -58,15 +58,22; symbols: Qwen2_5_VLImagePixelInputs, Qwen2_5_VLImageEmbeddingInputs, Qwen2_5_VLVideoPixelInputs, Qwen2_5_VLVideoEmbeddingInputs, touching `Qwen2_5_VLImagePixelInputs, Qwen2_5_VLImageEmbeddingInputs, Qwen2_5_VLVideoPixelInputs`; `tests/models/multimodal/generation/test_qwen2_5_vl.py` added +132/-0 (132 lines); hunks: -0,0 +1,132; symbols: qwen2_5_vl_chat_template, test_qwen2_5_vl_evs_functionality, test_qwen2_5_vl_evs_batched_videos, touching `qwen2_5_vl_chat_template, test_qwen2_5_vl_evs_functionality, test_qwen2_5_vl_evs_batched_videos`; `vllm/model_executor/models/interfaces.py` modified +55/-0 (55 lines); hunks: -115,6 +115,42 @@ def get_input_embeddings(; -142,6 +178,25 @@ def supports_multimodal_encoder_tp_data(; symbols: get_input_embeddings, SupportsMultiModalPruning, recompute_mrope_positions, supports_multimodal, touching `get_input_embeddings, SupportsMultiModalPruning, recompute_mrope_positions`.
+- Code diff details:
+  - `vllm/multimodal/evs.py` added +273/-0 (273 lines); hunks: -0,0 +1,273; symbols: compute_retained_tokens_count, compute_retention_mask, compute_mrope_for_media, recompute_mrope_positions
+  - `vllm/model_executor/models/qwen2_5_vl.py` modified +226/-12 (238 lines); hunks: -25,9 +25,9; -58,15 +58,22; symbols: Qwen2_5_VLImagePixelInputs, Qwen2_5_VLImageEmbeddingInputs, Qwen2_5_VLVideoPixelInputs, Qwen2_5_VLVideoEmbeddingInputs
+  - `tests/models/multimodal/generation/test_qwen2_5_vl.py` added +132/-0 (132 lines); hunks: -0,0 +1,132; symbols: qwen2_5_vl_chat_template, test_qwen2_5_vl_evs_functionality, test_qwen2_5_vl_evs_batched_videos
+  - `vllm/model_executor/models/interfaces.py` modified +55/-0 (55 lines); hunks: -115,6 +115,42 @@ def get_input_embeddings(; -142,6 +178,25 @@ def supports_multimodal_encoder_tp_data(; symbols: get_input_embeddings, SupportsMultiModalPruning, recompute_mrope_positions, supports_multimodal
+  - `vllm/config/multimodal.py` modified +9/-0 (9 lines); hunks: -78,6 +78,11 @@ class MultiModalConfig:; -118,3 +123,7 @@ def merge_mm_processor_kwargs(; symbols: MultiModalConfig, compute_hash, merge_mm_processor_kwargs, is_multimodal_pruning_enabled
+- Key code excerpts:
+
+```diff
+diff -- vllm/multimodal/evs.py
+@@ -0,0 +1,273 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++# SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
++#
++# NVIDIA CORPORATION and its licensors retain all intellectual property
++# and proprietary rights in and to this software, related documentation
+diff -- vllm/model_executor/models/qwen2_5_vl.py
+@@ -25,9 +25,9 @@
+-from collections.abc import Iterable, Mapping
++from collections.abc import Iterable, Mapping, Sequence
+-from typing import Annotated, Callable, Literal, Optional, Union
++from typing import Annotated, Any, Callable, Literal, Optional, Union
+@@ -58,15 +58,22 @@
+-from vllm.multimodal.inputs import MultiModalFieldConfig
+diff -- tests/models/multimodal/generation/test_qwen2_5_vl.py
+@@ -0,0 +1,132 @@
+```
+
+- Reviewed files:
+  - runtime: `vllm/multimodal/evs.py` added +273/-0; `vllm/model_executor/models/qwen2_5_vl.py` modified +226/-12; `vllm/model_executor/models/interfaces.py` modified +55/-0; `vllm/config/multimodal.py` modified +9/-0; `vllm/v1/worker/gpu_model_runner.py` modified +67/-16; `vllm/config/model.py` modified +16/-11
+  - tests: `tests/models/multimodal/generation/test_qwen2_5_vl.py` added +132/-0
+- Risk and verification: The diff ships test coverage in `tests/models/multimodal/generation/test_qwen2_5_vl.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
 ### PR #26186 - Fix issue of using only the part of video frame [Nemotron Nano]
 
 - Link: https://github.com/vllm-project/vllm/pull/26186
 - Status/date: merged / 2025-10-04
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `5a05f2660370`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `5a05f2660370`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR fixes a launch, loading, parsing, or numerical issue. Title: "Fix issue of using only the part of video frame [Nemotron Nano]". The diff centers on `vllm/model_executor/models/nano_nemotron_vl.py`. PR body context: ## Purpose This MR fixes a bug in Nemotron Nano model which caused video modality to use only part of the video frame. By mistake the preprocessing code used wrong tile (top-lef...
+- Motivation: Title: "Fix issue of using only the part of video frame [Nemotron Nano]"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; PR body summary: This MR fixes a bug in Nemotron Nano model which caused video modality to use only part of the video frame. By mistake the preprocessing code used wrong tile (top-left tile inst....
 - Key implementation: `vllm/model_executor/models/nano_nemotron_vl.py` modified +1/-1 (2 lines); hunks: -208,7 +208,7 @@ def video_to_pixel_values(; symbols: video_to_pixel_values, touching `video_to_pixel_values`.
 - Code diff details:
   - `vllm/model_executor/models/nano_nemotron_vl.py` modified +1/-1 (2 lines); hunks: -208,7 +208,7 @@ def video_to_pixel_values(; symbols: video_to_pixel_values
@@ -513,9 +557,9 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/26269
 - Status/date: merged / 2025-10-06
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `b8f603cebe39`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `b8f603cebe39`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +224/-31, 447 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "[Model] EVS support for nano_nemotron_vl". The diff centers on `vllm/model_executor/models/nano_nemotron_vl.py`. PR body context: ## Purpose Add support for EVS (Efficient Video Sampling, introduced in https://github.com/vllm-project/vllm/pull/22980) for Nano Nemotron VL model. Contrary to other multimodal...
+- Motivation: Title: "[Model] EVS support for nano_nemotron_vl"; model line: Nemotron Super; category: docs/tests/CI; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; PR body summary: Add support for EVS (Efficient Video Sampling, introduced in https://github.com/vllm-project/vllm/pull/22980) for Nano Nemotron VL model. Contrary to other multimodal models (fo....
 - Key implementation: `vllm/model_executor/models/nano_nemotron_vl.py` modified +207/-19 (226 lines); hunks: -30,6 +30,7; -44,6 +45,10; symbols: __init__, supports_video, _preprocess_video, get_image_repl, touching `__init__, supports_video, _preprocess_video`.
 - Code diff details:
   - `vllm/model_executor/models/nano_nemotron_vl.py` modified +207/-19 (226 lines); hunks: -30,6 +30,7; -44,6 +45,10; symbols: __init__, supports_video, _preprocess_video, get_image_repl
@@ -540,9 +584,9 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/27107
 - Status/date: merged / 2025-10-20
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `e93ff6c8b92b`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `e93ff6c8b92b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +316/-105, 771 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "Nemotron Nano V2 VL + EVS Video Support". The diff centers on `vllm/model_executor/models/nano_nemotron_vl.py`. PR body context: ## Purpose This MR adds support for EVS to Nemotron Nano 2 VL. Co-authored with @tomeras91 and @nvnbagrov ## Test Plan Tested internally
+- Motivation: Title: "Nemotron Nano V2 VL + EVS Video Support"; model line: Nemotron Super; category: docs/tests/CI; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; PR body summary: This MR adds support for EVS to Nemotron Nano 2 VL. Co-authored with @tomeras91 and @nvnbagrov Tested internally.
 - Key implementation: `vllm/model_executor/models/nano_nemotron_vl.py` modified +266/-49 (315 lines); hunks: -14,14 +14,15; -53,12 +54,14; symbols: NanoNemotronVLVideoPixelInputs, NanoNemotronVLVideoEmbeddingInputs, video_to_pixel_values, input_conditioner, touching `NanoNemotronVLVideoPixelInputs, NanoNemotronVLVideoEmbeddingInputs, video_to_pixel_values`.
 - Code diff details:
   - `vllm/model_executor/models/nano_nemotron_vl.py` modified +266/-49 (315 lines); hunks: -14,14 +14,15; -53,12 +54,14; symbols: NanoNemotronVLVideoPixelInputs, NanoNemotronVLVideoEmbeddingInputs, video_to_pixel_values, input_conditioner
@@ -569,7 +613,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 - Status/date: merged / 2025-10-23
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`, `vllm/transformers_utils/configs/nemotron_h.py`; associated commits `61089465a610`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +413/-39, 765 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "[Model] Add MoE support for NemotronH". The diff centers on `vllm/model_executor/models/nemotron_h.py`, `vllm/transformers_utils/configs/nemotron_h.py`. PR body context: ## Purpose Add support for an MoE module in the NemotronH architecture. This MoE module is relatively unique (to the best of my knowledge, comparable only to nomic-ai/nomic-embe...
+- Motivation: Title: "[Model] Add MoE support for NemotronH"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_h.py`, `vllm/transformers_utils/configs/nemotron_h.py`; PR body summary: Add support for an MoE module in the NemotronH architecture. This MoE module is relatively unique (to the best of my knowledge, comparable only to nomic-ai/nomic-embed-text-v2-m....
 - Key implementation: `vllm/model_executor/models/nemotron_h.py` modified +329/-27 (356 lines); hunks: -18,21 +18,27; -54,16 +60,19; symbols: NemotronHMLP, __init__, forward, NemotronHMoE, touching `NemotronHMLP, __init__, forward`; `vllm/transformers_utils/configs/nemotron_h.py` modified +20/-0 (20 lines); hunks: -185,6 +185,15 @@ def __init__(; -241,6 +250,15 @@ def __init__(; symbols: __init__, layers_block_type, touching `__init__, layers_block_type`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_h.py` modified +329/-27 (356 lines); hunks: -18,21 +18,27; -54,16 +60,19; symbols: NemotronHMLP, __init__, forward, NemotronHMoE
@@ -603,9 +647,9 @@ diff -- vllm/transformers_utils/configs/nemotron_h.py
 
 - Link: https://github.com/vllm-project/vllm/pull/27968
 - Status/date: merged / 2025-11-04
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `77f8001f5330`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `77f8001f5330`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +13/-5, 67 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "[Model][Bugfix] fix pipeline parallelism support for NemotronH". The diff centers on `vllm/model_executor/models/nemotron_h.py`. PR body context: ## Purpose Prior to this PR, pipeline parallelism was broken for the NemotronH architecture. This PR makes the necessary fixes in the modeling file to fix this. ## Test Plan Mak...
+- Motivation: Title: "[Model][Bugfix] fix pipeline parallelism support for NemotronH"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nemotron_h.py`; PR body summary: Prior to this PR, pipeline parallelism was broken for the NemotronH architecture. This PR makes the necessary fixes in the modeling file to fix this. Make sure nvidia/NVIDIA-Nem....
 - Key implementation: `vllm/model_executor/models/nemotron_h.py` modified +13/-5 (18 lines); hunks: -20,6 +20,7; -549,7 +550,7 @@ def get_layer(prefix: str):; symbols: get_layer, forward, load_weights, touching `get_layer, forward, load_weights`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_h.py` modified +13/-5 (18 lines); hunks: -20,6 +20,7; -549,7 +550,7 @@ def get_layer(prefix: str):; symbols: get_layer, forward, load_weights
@@ -630,9 +674,9 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - Link: https://github.com/vllm-project/vllm/pull/30795
 - Status/date: merged / 2025-12-17
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_nas.py`; associated commits `f5db6385a19b`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_nas.py`; associated commits `f5db6385a19b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +7/-4, 18 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR fixes a launch, loading, parsing, or numerical issue. Title: "Fix nemotron_nas intermediate_size computation". The diff centers on `vllm/model_executor/models/nemotron_nas.py`. PR body context: ## Purpose Fix how intermediate_size in nemotron_nas.py is being computed. Some model configurations don't contain ffn_mult field (the current assumption) and store intermediate...
+- Motivation: Title: "Fix nemotron_nas intermediate_size computation"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nemotron_nas.py`; PR body summary: Fix how intermediate_size in nemotron_nas.py is being computed. Some model configurations don't contain ffn_mult field (the current assumption) and store intermediate_size in ff....
 - Key implementation: `vllm/model_executor/models/nemotron_nas.py` modified +7/-4 (11 lines); hunks: -169,10 +169,13 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_nas.py` modified +7/-4 (11 lines); hunks: -169,10 +169,13 @@ def __init__(; symbols: __init__
@@ -657,9 +701,9 @@ diff -- vllm/model_executor/models/nemotron_nas.py
 
 - Link: https://github.com/vllm-project/vllm/pull/31539
 - Status/date: merged / 2025-12-31
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `108a2728f74d`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `108a2728f74d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +14/-10, 38 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "Add get_expert_mapping to NemotronHModel (for LoRA support)". The diff centers on `vllm/model_executor/models/nemotron_h.py`. PR body context: ## Purpose Add function `get_expert_mapping` to class `NemotronHModel`, required for basic LoRA support. LoRA support for all linear layers will be added in a separate PR. ## Te...
+- Motivation: Title: "Add get_expert_mapping to NemotronHModel (for LoRA support)"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_h.py`; PR body summary: Add function `get_expert_mapping` to class `NemotronHModel`, required for basic LoRA support. LoRA support for all linear layers will be added in a separate PR. Nemotron-H model....
 - Key implementation: `vllm/model_executor/models/nemotron_h.py` modified +14/-10 (24 lines); hunks: -632,14 +632,7 @@ def forward(; -653,8 +646,19 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; symbols: forward, load_weights, get_expert_mapping, touching `forward, load_weights, get_expert_mapping`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_h.py` modified +14/-10 (24 lines); hunks: -632,14 +632,7 @@ def forward(; -653,8 +646,19 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; symbols: forward, load_weights, get_expert_mapping
@@ -684,9 +728,9 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - Link: https://github.com/vllm-project/vllm/pull/30864
 - Status/date: merged / 2026-01-05
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/generation/test_nemotron_parse.py`, `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/model_executor/models/nemotron_parse.py`; associated commits `ee212918250a`
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/generation/test_nemotron_parse.py`, `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/model_executor/models/nemotron_parse.py`; associated commits `ee212918250a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 13 files, +1117/-31, 1329 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "[Model] Nemotron Parse 1.1 Support". The diff centers on `vllm/model_executor/models/nemotron_parse.py`, `tests/models/multimodal/generation/test_nemotron_parse.py`, `vllm/model_executor/models/nano_nemotron_vl.py`. PR body context: ## Purpose - Add support for NVIDIA Nemotron Parse 1.1 (HF name: `nvidia/NVIDIA-Nemotron-Parse-v1.1`) - Adapted from https://github.com/amalad/vllm/blob/nemotron_parse/vllm/mode...
+- Motivation: Title: "[Model] Nemotron Parse 1.1 Support"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_parse.py`, `tests/models/multimodal/generation/test_nemotron_parse.py`, `vllm/model_executor/models/nano_nemotron_vl.py`; PR body summary: - Add support for NVIDIA Nemotron Parse 1.1 (HF name: `nvidia/NVIDIA-Nemotron-Parse-v1.1`) - Adapted from https://github.com/amalad/vllm/blob/nemotron_parse/vllm/model_executor/....
 - Key implementation: `vllm/model_executor/models/nemotron_parse.py` added +958/-0 (958 lines); hunks: -0,0 +1,958; symbols: BartScaledWordEmbedding, __init__, forward, BartParallelLMHead, touching `BartScaledWordEmbedding, __init__, forward`; `tests/models/multimodal/generation/test_nemotron_parse.py` added +89/-0 (89 lines); hunks: -0,0 +1,89; symbols: run_test, test_models, touching `run_test, test_models`; `vllm/model_executor/models/nano_nemotron_vl.py` modified +2/-7 (9 lines); hunks: -1220,7 +1220,7 @@ def extract_feature(self, pixel_values):; -1695,12 +1695,7 @@ def get_vit_model_from_radio_config(self, hf_config):; symbols: extract_feature, get_vit_model_from_radio_config, touching `extract_feature, get_vit_model_from_radio_config`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_parse.py` added +958/-0 (958 lines); hunks: -0,0 +1,958; symbols: BartScaledWordEmbedding, __init__, forward, BartParallelLMHead
@@ -724,9 +768,9 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/31807
 - Status/date: merged / 2026-01-06
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `28c94770adfc`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `28c94770adfc`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-5, 18 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR changes model-related implementation. Title: "[NemotronH] Use ReplicatedLinear for fc1_latent_proj". The diff centers on `vllm/model_executor/models/nemotron_h.py`. PR body context: ## Purpose Current implementation of latent MoE uses a ColumnParallelLinear for the `fc1_latent_proj` layer. After profiling, the synchronization overhead is quite substantial,...
+- Motivation: Title: "[NemotronH] Use ReplicatedLinear for fc1_latent_proj"; model line: Nemotron Super; category: model implementation change; main diff: `vllm/model_executor/models/nemotron_h.py`; PR body summary: Current implementation of latent MoE uses a ColumnParallelLinear for the `fc1_latent_proj` layer. After profiling, the synchronization overhead is quite substantial, and given t....
 - Key implementation: `vllm/model_executor/models/nemotron_h.py` modified +1/-5 (6 lines); hunks: -210,16 +210,12 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_h.py` modified +1/-5 (6 lines); hunks: -210,16 +210,12 @@ def __init__(; symbols: __init__
@@ -751,9 +795,9 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - Link: https://github.com/vllm-project/vllm/pull/31898
 - Status/date: merged / 2026-01-07
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `bf184a66218b`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `bf184a66218b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +4/-0, 18 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "Enable quantized attention in NemotronH models". The diff centers on `vllm/model_executor/models/nemotron_h.py`. PR body context: ## Purpose Current NemotronH implementation doesn't support running with quantized attention and KV cache. This PR fixes it, propagating the quant config, and adding a remapping...
+- Motivation: Title: "Enable quantized attention in NemotronH models"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nemotron_h.py`; PR body summary: Current NemotronH implementation doesn't support running with quantized attention and KV cache. This PR fixes it, propagating the quant config, and adding a remapping of the K&V....
 - Key implementation: `vllm/model_executor/models/nemotron_h.py` modified +1/-0 (1 lines); hunks: -483,6 +483,7 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_h.py` modified +1/-0 (1 lines); hunks: -483,6 +483,7 @@ def __init__(; symbols: __init__
@@ -773,9 +817,9 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - Link: https://github.com/vllm-project/vllm/pull/30802
 - Status/date: merged / 2026-01-19
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `aa7f37ccfa16`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `aa7f37ccfa16`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +497/-27, 717 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "Add support for LoRA adapters in Nemotron-H models". The diff centers on `vllm/model_executor/models/nemotron_h.py`. PR body context: ## Purpose Add support for LoRA adapters in Nemotron-H models (such as https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8). No support for `VLLM_USE_FLASHINFER_MOE...
+- Motivation: Title: "Add support for LoRA adapters in Nemotron-H models"; model line: Nemotron Super; category: performance/backend optimization; main diff: `vllm/model_executor/models/nemotron_h.py`; PR body summary: Add support for LoRA adapters in Nemotron-H models (such as https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8). No support for `VLLM_USE_FLASHINFER_MOE_FP8` at th....
 - Key implementation: `vllm/model_executor/models/nemotron_h.py` modified +3/-0 (3 lines); hunks: -747,6 +747,9 @@ class NemotronHForCausalLM(; symbols: NemotronHForCausalLM, touching `NemotronHForCausalLM`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_h.py` modified +3/-0 (3 lines); hunks: -747,6 +747,9 @@ class NemotronHForCausalLM(; symbols: NemotronHForCausalLM
@@ -796,9 +840,9 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - Link: https://github.com/vllm-project/vllm/pull/32121
 - Status/date: merged / 2026-01-19
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `cd3ac5b79703`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `cd3ac5b79703`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +755/-164, 1299 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "support dynamic resolution image encoding for Nemotron Nano VL". The diff centers on `vllm/model_executor/models/nano_nemotron_vl.py`. PR body context: Adds dynamic image resolution support for encoding images with Nemotron Nano VL, while preserving static resolution images as-is. This means that images contribute a variable nu...
+- Motivation: Title: "support dynamic resolution image encoding for Nemotron Nano VL"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; PR body summary: Adds dynamic image resolution support for encoding images with Nemotron Nano VL, while preserving static resolution images as-is. This means that images contribute a variable nu....
 - Key implementation: `vllm/model_executor/models/nano_nemotron_vl.py` modified +544/-141 (685 lines); hunks: -8,11 +8,15; -23,6 +27,7; symbols: NanoNemotronVLImagePixelInputs, NanoNemotronVLImagePixelInputsDynamic, NanoNemotronVLImageEmbeddingInputs, calculate_timestamps, touching `NanoNemotronVLImagePixelInputs, NanoNemotronVLImagePixelInputsDynamic, NanoNemotronVLImageEmbeddingInputs`.
 - Code diff details:
   - `vllm/model_executor/models/nano_nemotron_vl.py` modified +544/-141 (685 lines); hunks: -8,11 +8,15; -23,6 +27,7; symbols: NanoNemotronVLImagePixelInputs, NanoNemotronVLImagePixelInputsDynamic, NanoNemotronVLImageEmbeddingInputs, calculate_timestamps
@@ -823,9 +867,9 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/32682
 - Status/date: merged / 2026-01-21
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `27ca95b3c9e6`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `27ca95b3c9e6`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-1, 11 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "[Bugfix] Fix Nemotron-Nano-v2-vlm static resolution". The diff centers on `vllm/model_executor/models/nano_nemotron_vl.py`. PR body context: `NanoNemotronVLImagePixelInputs.__init__()` expects `num_patches`, not `image_num_patches`. Regression introduced in: https://github.com/vllm-project/vllm/pull/32121
+- Motivation: Title: "[Bugfix] Fix Nemotron-Nano-v2-vlm static resolution"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; PR body summary: `NanoNemotronVLImagePixelInputs.__init__()` expects `num_patches`, not `image_num_patches`. Regression introduced in: https://github.com/vllm-project/vllm/pull/32121.
 - Key implementation: `vllm/model_executor/models/nano_nemotron_vl.py` modified +3/-1 (4 lines); hunks: -1678,7 +1678,9 @@ def _parse_and_validate_image_input(; symbols: _parse_and_validate_image_input, _process_image_input_dynamic, touching `_parse_and_validate_image_input, _process_image_input_dynamic`.
 - Code diff details:
   - `vllm/model_executor/models/nano_nemotron_vl.py` modified +3/-1 (4 lines); hunks: -1678,7 +1678,9 @@ def _parse_and_validate_image_input(; symbols: _parse_and_validate_image_input, _process_image_input_dynamic
@@ -848,9 +892,9 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/32265
 - Status/date: merged / 2026-01-27
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `f3a5ee705fa9`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `f3a5ee705fa9`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +31/-0, 106 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "[LoRA][Spec Decode] Support LoRA for Nemotron-H MTP models". The diff centers on `vllm/model_executor/models/nemotron_h.py`. PR body context: ## Purpose Based on this PR: https://github.com/vllm-project/vllm/pull/30802 This PR aims to allow **LoRA support** for **Nemotron-H models with MTP**. More information about th...
+- Motivation: Title: "[LoRA][Spec Decode] Support LoRA for Nemotron-H MTP models"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_h.py`; PR body summary: Based on this PR: https://github.com/vllm-project/vllm/pull/30802 This PR aims to allow **LoRA support** for **Nemotron-H models with MTP**. More information about the Nemotron....
 - Key implementation: `vllm/model_executor/models/nemotron_h.py` modified +3/-0 (3 lines); hunks: -771,6 +771,9 @@ class NemotronHForCausalLM(; symbols: NemotronHForCausalLM, get_mamba_state_dtype_from_config, touching `NemotronHForCausalLM, get_mamba_state_dtype_from_config`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_h.py` modified +3/-0 (3 lines); hunks: -771,6 +771,9 @@ class NemotronHForCausalLM(; symbols: NemotronHForCausalLM, get_mamba_state_dtype_from_config
@@ -871,9 +915,9 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - Link: https://github.com/vllm-project/vllm/pull/32549
 - Status/date: merged / 2026-01-27
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `83fb2d09e8f6`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `83fb2d09e8f6`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +75/-5, 162 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "Support heterogeneous NemotronHPuzzle model". The diff centers on `vllm/model_executor/models/nemotron_h.py`. PR body context: This PR adds support for NemotronHPuzzleForCausalLM - a heterogeneous variant of NemotronH where different layers can have varying configurations (expert counts, sliding windows...
+- Motivation: Title: "Support heterogeneous NemotronHPuzzle model"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_h.py`; PR body summary: This PR adds support for NemotronHPuzzleForCausalLM - a heterogeneous variant of NemotronH where different layers can have varying configurations (expert counts, sliding windows....
 - Key implementation: `vllm/model_executor/models/nemotron_h.py` modified +43/-3 (46 lines); hunks: -354,8 +354,12 @@ def __init__(; -479,6 +483,9 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_h.py` modified +43/-3 (46 lines); hunks: -354,8 +354,12 @@ def __init__(; -479,6 +483,9 @@ def __init__(; symbols: __init__, forward
@@ -898,9 +942,9 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - Link: https://github.com/vllm-project/vllm/pull/33189
 - Status/date: merged / 2026-01-29
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_parse.py`; associated commits `9e138cb01d65`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_parse.py`; associated commits `9e138cb01d65`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +4/-1, 26 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Misc][Build] Lazy load cv2 in nemotron_parse.py". The diff centers on `vllm/model_executor/models/nemotron_parse.py`. PR body context: ## Purpose Lazy loads the cv2 module to avoid import errors in certain envs when not needed Error trace ## Test Plan Build locally in problem env and test for above error ## Tes...
+- Motivation: Title: "[Misc][Build] Lazy load cv2 in nemotron_parse.py"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nemotron_parse.py`; PR body summary: Lazy loads the cv2 module to avoid import errors in certain envs when not needed Error trace Build locally in problem env and test for above error Local build succeeded as expec....
 - Key implementation: `vllm/model_executor/models/nemotron_parse.py` modified +4/-1 (5 lines); hunks: -11,7 +11,6; -416,6 +415,8 @@ def _create_transforms(self):; symbols: _create_transforms, _resize_with_aspect_ratio, touching `_create_transforms, _resize_with_aspect_ratio`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_parse.py` modified +4/-1 (5 lines); hunks: -11,7 +11,6; -416,6 +415,8 @@ def _create_transforms(self):; symbols: _create_transforms, _resize_with_aspect_ratio
@@ -924,9 +968,9 @@ diff -- vllm/model_executor/models/nemotron_parse.py
 
 - Link: https://github.com/vllm-project/vllm/pull/32669
 - Status/date: merged / 2026-01-29
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `e01ff5c070f4`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `e01ff5c070f4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-1, 22 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "Bugfix: Pass router logits dtype in nemotron shared experts". The diff centers on `vllm/model_executor/models/nemotron_h.py`. PR body context: ## Purpose A change introduced in this PR , requires passing `router_logits_dtype` to MoE layer. When running with `dp > 1` and flashinfer cutlass MoE kernel in nvfp4, the follo...
+- Motivation: Title: "Bugfix: Pass router logits dtype in nemotron shared experts"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nemotron_h.py`; PR body summary: A change introduced in this PR , requires passing `router_logits_dtype` to MoE layer. When running with `dp > 1` and flashinfer cutlass MoE kernel in nvfp4, the following error....
 - Key implementation: `vllm/model_executor/models/nemotron_h.py` modified +3/-1 (4 lines); hunks: -145,11 +145,12 @@ def __init__(; -209,6 +210,7 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_h.py` modified +3/-1 (4 lines); hunks: -145,11 +145,12 @@ def __init__(; -209,6 +210,7 @@ def __init__(; symbols: __init__
@@ -950,9 +994,9 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - Link: https://github.com/vllm-project/vllm/pull/32790
 - Status/date: merged / 2026-02-02
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `0aca8b8c628e`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `0aca8b8c628e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +303/-58, 499 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "[MoE] Enable Shared/Routed Overlap For Latent MoE (Nemotron-H)". The diff centers on `vllm/model_executor/models/nemotron_h.py`. PR body context: Enable parallel CUDA stream execution between shared and routed experts for latent MoE architectures (e.g., Nemotron-H). ## Problem Latent MoE compresses the input before routin...
+- Motivation: Title: "[MoE] Enable Shared/Routed Overlap For Latent MoE (Nemotron-H)"; model line: Nemotron Super; category: performance/backend optimization; main diff: `vllm/model_executor/models/nemotron_h.py`; PR body summary: Enable parallel CUDA stream execution between shared and routed experts for latent MoE architectures (e.g., Nemotron-H). Problem Latent MoE compresses the input before routing t....
 - Key implementation: `vllm/model_executor/models/nemotron_h.py` modified +30/-42 (72 lines); hunks: -188,10 +188,29 @@ def __init__(; -211,30 +230,9 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_h.py` modified +30/-42 (72 lines); hunks: -188,10 +188,29 @@ def __init__(; -211,30 +230,9 @@ def __init__(; symbols: __init__, forward
@@ -973,13 +1017,55 @@ diff -- vllm/model_executor/models/nemotron_h.py
   - runtime: `vllm/model_executor/models/nemotron_h.py` modified +30/-42
 - Risk and verification: The diff ships test coverage in `tests/kernels/moe/test_shared_fused_moe_routed_transform.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
+### PR #33506 - [Kernel] Support Flashinfer trtllm fused MoE non gated FP8 & NVFP4
+
+- Link: https://github.com/vllm-project/vllm/pull/33506
+- Status/date: merged / 2026-02-12
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 5 files, +197/-45, 562 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Kernel] Support Flashinfer trtllm fused MoE non gated FP8 & NVFP4"; model line: Nemotron Super; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/utils/flashinfer_utils.py`, `vllm/model_executor/layers/quantization/utils/flashinfer_fp4_moe.py`, `vllm/model_executor/layers/fused_moe/flashinfer_trtllm_moe.py`; PR body summary: Add support for Flashinfer trtllm fused MoE non-gated activation for FP8 and for NVFP4. Changes: - Pass `activation_type` argument to FlashInfer trtllm fused MoE FP8 and NVFP4.....
+- Key implementation: `vllm/model_executor/layers/quantization/utils/flashinfer_utils.py` modified +88/-5 (93 lines); hunks: -6,6 +6,7; -18,14 +19,28 @@ class FlashinferMoeBackend(Enum):; symbols: FlashinferMoeBackend, activation_to_flashinfer_int, swap_w13_to_w31, rotate_weights_for_fi_trtllm_fp8_per_tensor_moe, touching `FlashinferMoeBackend, activation_to_flashinfer_int, swap_w13_to_w31`; `vllm/model_executor/layers/quantization/utils/flashinfer_fp4_moe.py` modified +51/-19 (70 lines); hunks: -15,6 +15,10; -50,8 +54,8 @@ def _supports_current_device() -> bool:; symbols: _supports_current_device, _supports_no_act_and_mul, _supports_quant_scheme, _supports_activation, touching `_supports_current_device, _supports_no_act_and_mul, _supports_quant_scheme`; `vllm/model_executor/layers/fused_moe/flashinfer_trtllm_moe.py` modified +8/-6 (14 lines); hunks: -35,8 +35,8 @@ def _supports_current_device() -> bool:; -52,8 +52,7 @@ def _supports_quant_scheme(; symbols: _supports_current_device, _supports_no_act_and_mul, _supports_quant_scheme, _supports_activation, touching `_supports_current_device, _supports_no_act_and_mul, _supports_quant_scheme`; `vllm/model_executor/layers/quantization/modelopt.py` modified +4/-3 (7 lines); hunks: -937,10 +937,11 @@ def apply_monolithic(; symbols: apply_monolithic, touching `apply_monolithic`.
+- Code diff details:
+  - `vllm/model_executor/layers/quantization/utils/flashinfer_utils.py` modified +88/-5 (93 lines); hunks: -6,6 +6,7; -18,14 +19,28 @@ class FlashinferMoeBackend(Enum):; symbols: FlashinferMoeBackend, activation_to_flashinfer_int, swap_w13_to_w31, rotate_weights_for_fi_trtllm_fp8_per_tensor_moe
+  - `vllm/model_executor/layers/quantization/utils/flashinfer_fp4_moe.py` modified +51/-19 (70 lines); hunks: -15,6 +15,10; -50,8 +54,8 @@ def _supports_current_device() -> bool:; symbols: _supports_current_device, _supports_no_act_and_mul, _supports_quant_scheme, _supports_activation
+  - `vllm/model_executor/layers/fused_moe/flashinfer_trtllm_moe.py` modified +8/-6 (14 lines); hunks: -35,8 +35,8 @@ def _supports_current_device() -> bool:; -52,8 +52,7 @@ def _supports_quant_scheme(; symbols: _supports_current_device, _supports_no_act_and_mul, _supports_quant_scheme, _supports_activation
+  - `vllm/model_executor/layers/quantization/modelopt.py` modified +4/-3 (7 lines); hunks: -937,10 +937,11 @@ def apply_monolithic(; symbols: apply_monolithic
+  - `tests/kernels/moe/test_flashinfer.py` modified +46/-12 (58 lines); hunks: -71,7 +71,8 @@ def quant_fp8_per_tensor_batches(a):; -81,6 +82,20 @@ def quant_fp8_per_tensor_batches(a):; symbols: quant_fp8_per_tensor_batches, check_accuracy, TestData, make_moe_tensors_8bit
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/layers/quantization/utils/flashinfer_utils.py
+@@ -6,6 +6,7 @@
++from vllm.model_executor.layers.fused_moe.activation import MoEActivation
+@@ -18,14 +19,28 @@ class FlashinferMoeBackend(Enum):
++def activation_to_flashinfer_int(activation: MoEActivation) -> int:
++    from flashinfer.fused_moe.core import ActivationType
++    # silu and gelu are mapped to their gated versions SwiGLU and GeGLU respectively
++    ACTIVATION_TO_FI_ACTIVATION = {
+diff -- vllm/model_executor/layers/quantization/utils/flashinfer_fp4_moe.py
+@@ -15,6 +15,10 @@
++from vllm.model_executor.layers.quantization.utils.flashinfer_utils import (
++    activation_to_flashinfer_int,
++    align_fp4_moe_weights_for_fi,
++)
+@@ -50,8 +54,8 @@ def _supports_current_device() -> bool:
+-    """Does not support non-gated MoE (i.e. Nemotron-Nano)."""
+diff -- vllm/model_executor/layers/fused_moe/flashinfer_trtllm_moe.py
+@@ -35,8 +35,8 @@ def _supports_current_device() -> bool:
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/layers/quantization/utils/flashinfer_utils.py` modified +88/-5; `vllm/model_executor/layers/quantization/utils/flashinfer_fp4_moe.py` modified +51/-19; `vllm/model_executor/layers/fused_moe/flashinfer_trtllm_moe.py` modified +8/-6; `vllm/model_executor/layers/quantization/modelopt.py` modified +4/-3
+  - tests: `tests/kernels/moe/test_flashinfer.py` modified +46/-12
+- Risk and verification: The diff ships test coverage in `tests/kernels/moe/test_flashinfer.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
 ### PR #34582 - [NemotronH] Do not force router to run in fp32
 
 - Link: https://github.com/vllm-project/vllm/pull/34582
 - Status/date: merged / 2026-02-16
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `3b30e6150777`, `3eff45d793da`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `3b30e6150777`, `3eff45d793da`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +5/-4, 41 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR changes model-related implementation. Title: "[NemotronH] Do not force router to run in fp32". The diff centers on `vllm/model_executor/models/nemotron_h.py`. PR body context: ## Purpose Current code forces the MoE router computation to FP32, even though checkpoints have it in bfloat16. This takes up about 40% of the forward pass, under normal workloa...
+- Motivation: Title: "[NemotronH] Do not force router to run in fp32"; model line: Nemotron Super; category: model implementation change; main diff: `vllm/model_executor/models/nemotron_h.py`; PR body summary: Current code forces the MoE router computation to FP32, even though checkpoints have it in bfloat16. This takes up about 40% of the forward pass, under normal workloads, and doe....
 - Key implementation: `vllm/model_executor/models/nemotron_h.py` modified +1/-4 (5 lines); hunks: -148,12 +148,10 @@ def __init__(; -232,7 +230,6 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_h.py` modified +1/-4 (5 lines); hunks: -148,12 +148,10 @@ def __init__(; -232,7 +230,6 @@ def __init__(; symbols: __init__, forward
@@ -1004,9 +1090,9 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - Link: https://github.com/vllm-project/vllm/pull/34725
 - Status/date: merged / 2026-02-18
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-Fp8-ModelOpt-fi-trtllm.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-fi-cutlass.yaml`; associated commits `caeb887bf633`
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-Fp8-ModelOpt-fi-trtllm.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-fi-cutlass.yaml`; associated commits `caeb887bf633`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +20/-0, 33 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "[Bugfix] Fix NVFP4 TRTLLM MoE non-gated support; add gsm8k for Nemotron-3-Nano FP8+NVFP4". The diff centers on `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-Fp8-ModelOpt-fi-trtllm.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-fi-cutlass.yaml`. PR body context: ## Purpose FIX https://github.com/vllm-project/vllm/issues/34728 Add a test for the integration added in https://github.com/vllm-project/vllm/pull/33506 ## Test Plan ## Test Res...
+- Motivation: Title: "[Bugfix] Fix NVFP4 TRTLLM MoE non-gated support; add gsm8k for Nemotron-3-Nano FP8+NVFP4"; model line: Nemotron Super; category: bug fix; main diff: `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-Fp8-ModelOpt-fi-trtllm.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-fi-cutlass.yaml`; PR body summary: FIX https://github.com/vllm-project/vllm/issues/34728 Add a test for the integration added in https://github.com/vllm-project/vllm/pull/33506.
 - Key implementation: `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-Fp8-ModelOpt-fi-trtllm.yaml` added +8/-0 (8 lines); hunks: -0,0 +1,8; `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-fi-cutlass.yaml` added +8/-0 (8 lines); hunks: -0,0 +1,8.
 - Code diff details:
   - `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-Fp8-ModelOpt-fi-trtllm.yaml` added +8/-0 (8 lines); hunks: -0,0 +1,8
@@ -1040,9 +1126,9 @@ diff -- tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-
 
 - Link: https://github.com/vllm-project/vllm/pull/34808
 - Status/date: merged / 2026-02-19
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `3eff45d793da`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `3eff45d793da`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +4/-1, 30 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "Revert "[NemotronH] Do not force router to run in fp32 (#34582)"". The diff centers on `vllm/model_executor/models/nemotron_h.py`. PR body context: ## Purpose #34582 introduced an accuracy degradation. Working with @robertgshaw2-redhat for a better implementation of this performance improvement in #34302 ## Test Plan ## Tes...
+- Motivation: Title: "Revert "[NemotronH] Do not force router to run in fp32 (#34582)""; model line: Nemotron Super; category: performance/backend optimization; main diff: `vllm/model_executor/models/nemotron_h.py`; PR body summary: 34582 introduced an accuracy degradation. Working with @robertgshaw2-redhat for a better implementation of this performance improvement in #34302.
 - Key implementation: `vllm/model_executor/models/nemotron_h.py` modified +4/-1 (5 lines); hunks: -148,10 +148,12 @@ def __init__(; -230,6 +232,7 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_h.py` modified +4/-1 (5 lines); hunks: -148,10 +148,12 @@ def __init__(; -230,6 +232,7 @@ def __init__(; symbols: __init__, forward
@@ -1069,7 +1155,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 - Status/date: merged / 2026-02-24
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`, `vllm/model_executor/models/nemotron_h_mtp.py`, `vllm/transformers_utils/configs/nemotron_h.py`; associated commits `f5972a872fa3`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 19 files, +800/-158, 1473 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "[Model][Spec Decode] Nemotron-H MTP and Mamba Speculative Decoding Support". The diff centers on `vllm/model_executor/models/nemotron_h_mtp.py`, `vllm/transformers_utils/configs/nemotron_h.py`, `vllm/model_executor/models/nemotron_h.py`. PR body context: ## Purpose This PR adds support for MTP for the Nemotron-H model family, which will be introduced with Nemotron V3 Super. To facilitate this, we also implement speculative decod...
+- Motivation: Title: "[Model][Spec Decode] Nemotron-H MTP and Mamba Speculative Decoding Support"; model line: Nemotron Super; category: docs/tests/CI; main diff: `vllm/model_executor/models/nemotron_h_mtp.py`, `vllm/transformers_utils/configs/nemotron_h.py`, `vllm/model_executor/models/nemotron_h.py`; PR body summary: This PR adds support for MTP for the Nemotron-H model family, which will be introduced with Nemotron V3 Super. To facilitate this, we also implement speculative decoding support....
 - Key implementation: `vllm/model_executor/models/nemotron_h_mtp.py` added +503/-0 (503 lines); hunks: -0,0 +1,503; symbols: NemotronHMTPAttentionDecoderLayer, __init__, forward, NemotronHMTPMoEDecoderLayer, touching `NemotronHMTPAttentionDecoderLayer, __init__, forward`; `vllm/transformers_utils/configs/nemotron_h.py` modified +6/-3 (9 lines); hunks: -51,6 +51,8 @@ class NemotronHConfig(PretrainedConfig):; -150,6 +152,7 @@ def __init__(; symbols: NemotronHConfig, __init__, touching `NemotronHConfig, __init__`; `vllm/model_executor/models/nemotron_h.py` modified +8/-0 (8 lines); hunks: -636,6 +636,9 @@ def forward(; -702,6 +705,10 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; symbols: forward, is_spec_layer, _get_max_n_routed_experts, load_weights, touching `forward, is_spec_layer, _get_max_n_routed_experts`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_h_mtp.py` added +503/-0 (503 lines); hunks: -0,0 +1,503; symbols: NemotronHMTPAttentionDecoderLayer, __init__, forward, NemotronHMTPMoEDecoderLayer
@@ -1106,9 +1192,9 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - Link: https://github.com/vllm-project/vllm/pull/35297
 - Status/date: merged / 2026-02-26
-- Trace source: `git log --name-only -- <model-files>` found it through `examples/pooling/embed/template/nemotron_embed_vl.jinja`, `vllm/model_executor/models/nemotron_vl.py`; associated commits `111d86906999`
+- Trace source: `git log --name-only -- <model-files>` found it through `examples/pooling/embed/template/nemotron_embed_vl.jinja`, `vllm/model_executor/models/nemotron_vl.py`; associated commits `111d86906999`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +545/-31, 752 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "[Model] Add nvidia/llama-nemotron-embed-vl-1b-v2 multimodal embedding model". The diff centers on `vllm/model_executor/models/nemotron_vl.py`, `examples/pooling/embed/template/nemotron_embed_vl.jinja`. PR body context: ## Purpose Add support for the nvidia/llama-nemotron-embed-vl-1b-v2 embedding model. The model is quite similar to already implemented `LlamaNemotronVLChatModel`, but not exactl...
+- Motivation: Title: "[Model] Add nvidia/llama-nemotron-embed-vl-1b-v2 multimodal embedding model"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_vl.py`, `examples/pooling/embed/template/nemotron_embed_vl.jinja`; PR body summary: Add support for the nvidia/llama-nemotron-embed-vl-1b-v2 embedding model. The model is quite similar to already implemented `LlamaNemotronVLChatModel`, but not exactly compatibl....
 - Key implementation: `vllm/model_executor/models/nemotron_vl.py` modified +271/-31 (302 lines); hunks: -18,6 +18,7; -30,24 +31,28; symbols: build_transform, image_to_pixel_values_nemotron_vl, NemotronVLProcessor, __init__, touching `build_transform, image_to_pixel_values_nemotron_vl, NemotronVLProcessor`; `examples/pooling/embed/template/nemotron_embed_vl.jinja` added +20/-0 (20 lines); hunks: -0,0 +1,20.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_vl.py` modified +271/-31 (302 lines); hunks: -18,6 +18,7; -30,24 +31,28; symbols: build_transform, image_to_pixel_values_nemotron_vl, NemotronVLProcessor, __init__
@@ -1143,9 +1229,9 @@ diff -- examples/pooling/embed/template/nemotron_embed_vl.jinja
 
 - Link: https://github.com/vllm-project/vllm/pull/35396
 - Status/date: merged / 2026-02-26
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `832a780f3aed`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `832a780f3aed`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +5/-0, 12 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR extends deployment docs, tests, or CI coverage. Title: "Nemotron: use per-layer config in NemotronHMLPDecoderLayer for heterogeneous models". The diff centers on `vllm/model_executor/models/nemotron_h.py`. PR body context: The change makes NemotronHMLPDecoderLayer use a layer-specific config (when available) instead of always using the global model config.
+- Motivation: Title: "Nemotron: use per-layer config in NemotronHMLPDecoderLayer for heterogeneous models"; model line: Nemotron Super; category: docs/tests/CI; main diff: `vllm/model_executor/models/nemotron_h.py`; PR body summary: The change makes NemotronHMLPDecoderLayer use a layer-specific config (when available) instead of always using the global model config..
 - Key implementation: `vllm/model_executor/models/nemotron_h.py` modified +5/-0 (5 lines); hunks: -298,6 +298,11 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_h.py` modified +5/-0 (5 lines); hunks: -298,6 +298,11 @@ def __init__(; symbols: __init__
@@ -1168,9 +1254,9 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - Link: https://github.com/vllm-project/vllm/pull/35100
 - Status/date: merged / 2026-02-27
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `c8aca0c9e1b3`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `c8aca0c9e1b3`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +448/-20, 678 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "Support parakeet as audio encoder for nemotron-nano-vl". The diff centers on `vllm/model_executor/models/nano_nemotron_vl.py`. The PR body has no extra context, so this assessment comes from the title, file list, and patch.
+- Motivation: Title: "Support parakeet as audio encoder for nemotron-nano-vl"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; no usable PR-body summary.
 - Key implementation: `vllm/model_executor/models/nano_nemotron_vl.py` modified +254/-20 (274 lines); hunks: -44,6 +44,7; -55,12 +56,14; symbols: NanoNemotronVLAudioFeatureInputs, __init__, _preprocess_video, _preprocess_audio, touching `NanoNemotronVLAudioFeatureInputs, __init__, _preprocess_video`.
 - Code diff details:
   - `vllm/model_executor/models/nano_nemotron_vl.py` modified +254/-20 (274 lines); hunks: -44,6 +44,7; -55,12 +56,14; symbols: NanoNemotronVLAudioFeatureInputs, __init__, _preprocess_video, _preprocess_audio
@@ -1195,9 +1281,9 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/35735
 - Status/date: merged / 2026-03-03
-- Trace source: `git log --name-only -- <model-files>` found it through `examples/pooling/score/template/nemotron-vl-rerank.jinja`, `tests/models/multimodal/pooling/test_llama_nemotron_vl.py`, `vllm/model_executor/models/nemotron_vl.py`; associated commits `c8b678e53e37`
+- Trace source: `git log --name-only -- <model-files>` found it through `examples/pooling/score/template/nemotron-vl-rerank.jinja`, `tests/models/multimodal/pooling/test_llama_nemotron_vl.py`, `vllm/model_executor/models/nemotron_vl.py`; associated commits `c8b678e53e37`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 9 files, +503/-149, 723 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "[Model] Add support for nvidia/llama-nemotron-rerank-vl-1b-v2". The diff centers on `tests/models/multimodal/pooling/test_llama_nemotron_vl.py`, `vllm/model_executor/models/nemotron_vl.py`, `examples/pooling/score/template/nemotron-vl-rerank.jinja`. PR body context: ## Purpose Add support for the nvidia/llama-nemotron-rerank-vl-1b-v2 reranking model. ## Test Plan I put the HF comparison test in the same file as the tests for the related emb...
+- Motivation: Title: "[Model] Add support for nvidia/llama-nemotron-rerank-vl-1b-v2"; model line: Nemotron Super; category: docs/tests/CI; main diff: `tests/models/multimodal/pooling/test_llama_nemotron_vl.py`, `vllm/model_executor/models/nemotron_vl.py`, `examples/pooling/score/template/nemotron-vl-rerank.jinja`; PR body summary: Add support for the nvidia/llama-nemotron-rerank-vl-1b-v2 reranking model. I put the HF comparison test in the same file as the tests for the related embedding model, renaming t....
 - Key implementation: `tests/models/multimodal/pooling/test_llama_nemotron_vl.py` added +355/-0 (355 lines); hunks: -0,0 +1,355; symbols: _run_test, test_models_text, test_models_image, _pil_to_data_uri, touching `_run_test, test_models_text, test_models_image`; `vllm/model_executor/models/nemotron_vl.py` modified +57/-0 (57 lines); hunks: -7,6 +7,7; -18,6 +19,7; symbols: load_weights, LlamaNemotronVLForSequenceClassification, __init__, touching `load_weights, LlamaNemotronVLForSequenceClassification, __init__`; `examples/pooling/score/template/nemotron-vl-rerank.jinja` added +15/-0 (15 lines); hunks: -0,0 +1,15.
 - Code diff details:
   - `tests/models/multimodal/pooling/test_llama_nemotron_vl.py` added +355/-0 (355 lines); hunks: -0,0 +1,355; symbols: _run_test, test_models_text, test_models_image, _pil_to_data_uri
@@ -1236,9 +1322,9 @@ diff -- examples/pooling/score/template/nemotron-vl-rerank.jinja
 
 - Link: https://github.com/vllm-project/vllm/pull/35539
 - Status/date: merged / 2026-03-04
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `5d199ac8f25a`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `5d199ac8f25a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +225/-1, 293 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "Support Audio Extraction from MP4 Video for Nemotron Nano VL". The diff centers on `vllm/model_executor/models/nano_nemotron_vl.py`. PR body context: ## Support Audio Extraction from MP4 Video for Nemotron Nano VL ### Summary - Enables the Nemotron Nano VL model to extract and process audio tracks from MP4 video inputs, compl...
+- Motivation: Title: "Support Audio Extraction from MP4 Video for Nemotron Nano VL"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; PR body summary: Support Audio Extraction from MP4 Video for Nemotron Nano VL - Enables the Nemotron Nano VL model to extract and process audio tracks from MP4 video inputs, completing the Audio....
 - Key implementation: `vllm/model_executor/models/nano_nemotron_vl.py` modified +129/-1 (130 lines); hunks: -59,18 +59,25; -1381,6 +1388,127 @@ class NanoNemotronVLMultiModalProcessor(; symbols: NanoNemotronVLMultiModalProcessor, _extract_audio_from_videos, apply, _get_mm_fields_config, touching `NanoNemotronVLMultiModalProcessor, _extract_audio_from_videos, apply`.
 - Code diff details:
   - `vllm/model_executor/models/nano_nemotron_vl.py` modified +129/-1 (130 lines); hunks: -59,18 +59,25; -1381,6 +1388,127 @@ class NanoNemotronVLMultiModalProcessor(; symbols: NanoNemotronVLMultiModalProcessor, _extract_audio_from_videos, apply, _get_mm_fields_config
@@ -1263,9 +1349,9 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/36192
 - Status/date: merged / 2026-03-06
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_vl.py`; associated commits `00bd08edeee5`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_vl.py`; associated commits `00bd08edeee5`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +7/-2, 30 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR changes model-related implementation. Title: "[Security] Respect user trust_remote_code setting in NemotronVL and KimiK25". The diff centers on `vllm/model_executor/models/nemotron_vl.py`. PR body context: Replace hardcoded trust_remote_code=True with the user's configured trust_remote_code setting from model_config in both nemotron_vl.py and kimi_k25.py. This prevents bypassing t...
+- Motivation: Title: "[Security] Respect user trust_remote_code setting in NemotronVL and KimiK25"; model line: Nemotron Super; category: model implementation change; main diff: `vllm/model_executor/models/nemotron_vl.py`; PR body summary: Replace hardcoded trust_remote_code=True with the user's configured trust_remote_code setting from model_config in both nemotron_vl.py and kimi_k25.py. This prevents bypassing t....
 - Key implementation: `vllm/model_executor/models/nemotron_vl.py` modified +5/-1 (6 lines); hunks: -402,6 +402,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; -456,7 +457,10 @@ def _init_vision_model(; symbols: __init__, _init_vision_model, _init_mlp1, touching `__init__, _init_vision_model, _init_mlp1`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_vl.py` modified +5/-1 (6 lines); hunks: -402,6 +402,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; -456,7 +457,10 @@ def _init_vision_model(; symbols: __init__, _init_vision_model, _init_mlp1
@@ -1290,9 +1376,9 @@ diff -- vllm/model_executor/models/nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/35657
 - Status/date: merged / 2026-03-08
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `b7332b058c3b`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `b7332b058c3b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +80/-61, 217 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR changes model-related implementation. Title: "[Model] Nano Nemotron VL - fast media preprocessing". The diff centers on `vllm/model_executor/models/nano_nemotron_vl.py`. PR body context: * Dropping `PIL.resize` * Using batched resize for video frames
+- Motivation: Title: "[Model] Nano Nemotron VL - fast media preprocessing"; model line: Nemotron Super; category: model implementation change; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; PR body summary: * Dropping `PIL.resize` * Using batched resize for video frames.
 - Key implementation: `vllm/model_executor/models/nano_nemotron_vl.py` modified +80/-61 (141 lines); hunks: -17,11 +17,11; -214,7 +214,12 @@ class NanoNemotronVLVideoEmbeddingInputs(TensorSchema):; symbols: NanoNemotronVLVideoEmbeddingInputs, dynamic_preprocess, image_to_pixel_values, video_to_pixel_values, touching `NanoNemotronVLVideoEmbeddingInputs, dynamic_preprocess, image_to_pixel_values`.
 - Code diff details:
   - `vllm/model_executor/models/nano_nemotron_vl.py` modified +80/-61 (141 lines); hunks: -17,11 +17,11; -214,7 +214,12 @@ class NanoNemotronVLVideoEmbeddingInputs(TensorSchema):; symbols: NanoNemotronVLVideoEmbeddingInputs, dynamic_preprocess, image_to_pixel_values, video_to_pixel_values
@@ -1317,9 +1403,9 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/36393
 - Status/date: merged / 2026-03-09
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`; associated commits `203a7f27dac2`
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`; associated commits `203a7f27dac2`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +186/-0, 195 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "add nemotron v3 reasoning parser". The diff centers on `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`. PR body context: Signed-off-by: > ## Purpose Add the Nemotron v3 parser to codebase ## Test Plan run Nano (nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16) with new parser and see reasoning works. ad...
+- Motivation: Title: "add nemotron v3 reasoning parser"; model line: Nemotron Super; category: docs/tests/CI; main diff: `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`; PR body summary: Signed-off-by: > Add the Nemotron v3 parser to codebase run Nano (nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16) with new parser and see reasoning works. add sanity tests for new c....
 - Key implementation: `tests/reasoning/test_nemotron_v3_reasoning_parser.py` added +150/-0 (150 lines); hunks: -0,0 +1,150; symbols: ReasoningCase, FakeNemotronTokenizer, __init__, get_vocab, touching `ReasoningCase, FakeNemotronTokenizer, __init__`; `vllm/reasoning/nemotron_v3_reasoning_parser.py` added +32/-0 (32 lines); hunks: -0,0 +1,32; symbols: NemotronV3ReasoningParser, extract_reasoning, touching `NemotronV3ReasoningParser, extract_reasoning`.
 - Code diff details:
   - `tests/reasoning/test_nemotron_v3_reasoning_parser.py` added +150/-0 (150 lines); hunks: -0,0 +1,150; symbols: ReasoningCase, FakeNemotronTokenizer, __init__, get_vocab
@@ -1354,9 +1440,9 @@ diff -- vllm/reasoning/nemotron_v3_reasoning_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/36635
 - Status/date: merged / 2026-03-11
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`; associated commits `e661b9ee83d9`
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`; associated commits `e661b9ee83d9`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +26/-1, 41 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[NemotronH] Small fix reasoning parser". The diff centers on `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`. PR body context: ## Purpose ## Test Plan ## Test Result --- Essential Elements of an Effective PR Description Checklist - [ ] The purpose of the PR, such as "Fix some issue (link existing issues...
+- Motivation: Title: "[NemotronH] Small fix reasoning parser"; model line: Nemotron Super; category: bug fix; main diff: `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`; no usable PR-body summary.
 - Key implementation: `tests/reasoning/test_nemotron_v3_reasoning_parser.py` modified +22/-0 (22 lines); hunks: -128,6 +128,28 @@ def test_nemotron_v3_without_thinking_returns_content(; symbols: test_nemotron_v3_without_thinking_returns_content, test_nemotron_v3_force_nonempty_content_returns_content, test_nemotron_v3_with_thinking_keeps_truncated_reasoning, touching `test_nemotron_v3_without_thinking_returns_content, test_nemotron_v3_force_nonempty_content_returns_content, test_nemotron_v3_with_thinking_keeps_truncated_reasoning`; `vllm/reasoning/nemotron_v3_reasoning_parser.py` modified +4/-1 (5 lines); hunks: -24,7 +24,10 @@ def extract_reasoning(; symbols: extract_reasoning, touching `extract_reasoning`.
 - Code diff details:
   - `tests/reasoning/test_nemotron_v3_reasoning_parser.py` modified +22/-0 (22 lines); hunks: -128,6 +128,28 @@ def test_nemotron_v3_without_thinking_returns_content(; symbols: test_nemotron_v3_without_thinking_returns_content, test_nemotron_v3_force_nonempty_content_returns_content, test_nemotron_v3_with_thinking_keeps_truncated_reasoning
@@ -1390,9 +1476,9 @@ diff -- vllm/reasoning/nemotron_v3_reasoning_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/37456
 - Status/date: merged / 2026-03-18
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_parse.py`; associated commits `7476d148db99`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_parse.py`; associated commits `7476d148db99`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +0/-259, 288 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR changes model-related implementation. Title: "[Model] Remove unnecessary processor definition for Nemotron Parse". The diff centers on `vllm/transformers_utils/processors/nemotron_parse.py`, `vllm/model_executor/models/nemotron_parse.py`. PR body context: ## Purpose The in-tree definition isn't necessary as a processor is already defined on HF Hub: https://huggingface.co/nvidia/NVIDIA-Nemotron-Parse-v1.1/blob/main/hf_nemotron_par...
+- Motivation: Title: "[Model] Remove unnecessary processor definition for Nemotron Parse"; model line: Nemotron Super; category: model implementation change; main diff: `vllm/transformers_utils/processors/nemotron_parse.py`, `vllm/model_executor/models/nemotron_parse.py`; PR body summary: The in-tree definition isn't necessary as a processor is already defined on HF Hub: https://huggingface.co/nvidia/NVIDIA-Nemotron-Parse-v1.1/blob/main/hf_nemotron_parse_processo....
 - Key implementation: `vllm/transformers_utils/processors/nemotron_parse.py` removed +0/-245 (245 lines); hunks: -1,245 +0,0; symbols: NemotronParseImageProcessor, __init__, _create_transforms, _resize_with_aspect_ratio, touching `NemotronParseImageProcessor, __init__, _create_transforms`; `vllm/model_executor/models/nemotron_parse.py` modified +0/-12 (12 lines); hunks: -55,7 +55,6; -367,17 +366,6 @@ class NemotronParsePixelInputs(TensorSchema):; symbols: NemotronParsePixelInputs, NemotronParseProcessingInfo, get_hf_config, get_hf_processor, touching `NemotronParsePixelInputs, NemotronParseProcessingInfo, get_hf_config`.
 - Code diff details:
   - `vllm/transformers_utils/processors/nemotron_parse.py` removed +0/-245 (245 lines); hunks: -1,245 +0,0; symbols: NemotronParseImageProcessor, __init__, _create_transforms, _resize_with_aspect_ratio
@@ -1426,9 +1512,9 @@ diff -- vllm/model_executor/models/nemotron_parse.py
 
 - Link: https://github.com/vllm-project/vllm/pull/36808
 - Status/date: merged / 2026-03-19
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/transformers_utils/processors/nano_nemotron_vl.py`; associated commits `0b6d52629fe8`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/transformers_utils/processors/nano_nemotron_vl.py`; associated commits `0b6d52629fe8`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +553/-130, 1189 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "Support temporal compression for Nemotron-3-VL videos". The diff centers on `vllm/transformers_utils/processors/nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py`. PR body context: ## Purpose Support temporal compression for videos in Nano Nemotron VL ## Test Plan ## Test Result --- Essential Elements of an Effective PR Description Checklist - [ ] The purp...
+- Motivation: Title: "Support temporal compression for Nemotron-3-VL videos"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/transformers_utils/processors/nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py`; PR body summary: Support temporal compression for videos in Nano Nemotron VL.
 - Key implementation: `vllm/transformers_utils/processors/nano_nemotron_vl.py` modified +205/-27 (232 lines); hunks: -11,6 +11,7; -43,6 +44,12; symbols: calculate_timestamps, image_to_pixel_values, _compute_aspect_preserving_size, get_video_target_size_and_feature_size, touching `calculate_timestamps, image_to_pixel_values, _compute_aspect_preserving_size`; `vllm/model_executor/models/nano_nemotron_vl.py` modified +175/-35 (210 lines); hunks: -8,6 +8,7; -77,6 +78,7; symbols: get_num_frames_with_most_features, get_hf_processor, _get_prompt_updates, get_video_replacement_internvl, touching `get_num_frames_with_most_features, get_hf_processor, _get_prompt_updates`.
 - Code diff details:
   - `vllm/transformers_utils/processors/nano_nemotron_vl.py` modified +205/-27 (232 lines); hunks: -11,6 +11,7; -43,6 +44,12; symbols: calculate_timestamps, image_to_pixel_values, _compute_aspect_preserving_size, get_video_target_size_and_feature_size
@@ -1462,9 +1548,9 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/37407
 - Status/date: merged / 2026-03-19
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/generation/test_nemotron_parse.py`, `vllm/model_executor/models/nemotron_parse.py`; associated commits `765e4610651b`
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/generation/test_nemotron_parse.py`, `vllm/model_executor/models/nemotron_parse.py`; associated commits `765e4610651b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +49/-19, 138 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[Bugfix] Fix Nemotron Parse loading". The diff centers on `tests/models/multimodal/generation/test_nemotron_parse.py`, `vllm/model_executor/models/nemotron_parse.py`. PR body context: ## Purpose - Fix Nemotron Parse not able to be loaded since #29856. The test wasn't effectively being run as per #34323 so we never caught the issue - Remove `core_model` tag fr...
+- Motivation: Title: "[Bugfix] Fix Nemotron Parse loading"; model line: Nemotron Super; category: bug fix; main diff: `tests/models/multimodal/generation/test_nemotron_parse.py`, `vllm/model_executor/models/nemotron_parse.py`; PR body summary: - Fix Nemotron Parse not able to be loaded since #29856. The test wasn't effectively being run as per #34323 so we never caught the issue - Remove `core_model` tag from Keye-VL....
 - Key implementation: `tests/models/multimodal/generation/test_nemotron_parse.py` modified +44/-11 (55 lines); hunks: -1,21 +1,53; -44,6 +76,8 @@ def run_test(; symbols: DummyLogprobs, __init__, __repr__, mask_bbox_tokens, touching `DummyLogprobs, __init__, __repr__`; `vllm/model_executor/models/nemotron_parse.py` modified +3/-2 (5 lines); hunks: -319,8 +319,9 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Te...; symbols: load_weights, touching `load_weights`.
 - Code diff details:
   - `tests/models/multimodal/generation/test_nemotron_parse.py` modified +44/-11 (55 lines); hunks: -1,21 +1,53; -44,6 +76,8 @@ def run_test(; symbols: DummyLogprobs, __init__, __repr__, mask_bbox_tokens
@@ -1498,9 +1584,9 @@ diff -- vllm/model_executor/models/nemotron_parse.py
 
 - Link: https://github.com/vllm-project/vllm/pull/37613
 - Status/date: merged / 2026-03-20
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/pooling/test_llama_nemotron_vl.py`; associated commits `fb4e8bf442c5`
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/pooling/test_llama_nemotron_vl.py`; associated commits `fb4e8bf442c5`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +8/-1, 40 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR fixes a launch, loading, parsing, or numerical issue. Title: "[ROCm][CI] Fix accuracy for llama-nemotron-vl pooling tests". The diff centers on `tests/models/multimodal/pooling/test_llama_nemotron_vl.py`. PR body context: Follow-up for: - #34839 Fixes small accuracy diff due to differences in HF and vLLM attention backends on ROCm in `mi250_1: Multi-Modal Models (Extended Pooling) ` Motivation: h...
+- Motivation: Title: "[ROCm][CI] Fix accuracy for llama-nemotron-vl pooling tests"; model line: Nemotron Super; category: bug fix; main diff: `tests/models/multimodal/pooling/test_llama_nemotron_vl.py`; PR body summary: Follow-up for: - #34839 Fixes small accuracy diff due to differences in HF and vLLM attention backends on ROCm in `mi250_1: Multi-Modal Models (Extended Pooling) ` Motivation: h....
 - Key implementation: `tests/models/multimodal/pooling/test_llama_nemotron_vl.py` modified +8/-1 (9 lines); hunks: -22,8 +22,10; -70,6 +72,7 @@ def _run_test(; symbols: _run_test, _run_vllm_reranker, _run_reranker_test, touching `_run_test, _run_vllm_reranker, _run_reranker_test`.
 - Code diff details:
   - `tests/models/multimodal/pooling/test_llama_nemotron_vl.py` modified +8/-1 (9 lines); hunks: -22,8 +22,10; -70,6 +72,7 @@ def _run_test(; symbols: _run_test, _run_vllm_reranker, _run_reranker_test
@@ -1527,7 +1613,7 @@ diff -- tests/models/multimodal/pooling/test_llama_nemotron_vl.py
 - Status/date: merged / 2026-03-22
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h_mtp.py`; associated commits `e74c17e15331`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +6/-3, 28 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "Enable `NemotronHPuzzle` + `NemotronHMTP`". The diff centers on `vllm/model_executor/models/nemotron_h_mtp.py`. PR body context: Enable `NemotronHPuzzle` + `NemotronHMTP`.
+- Motivation: Title: "Enable `NemotronHPuzzle` + `NemotronHMTP`"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_h_mtp.py`; PR body summary: Enable `NemotronHPuzzle` + `NemotronHMTP`..
 - Key implementation: `vllm/model_executor/models/nemotron_h_mtp.py` modified +5/-2 (7 lines); hunks: -395,13 +395,16 @@ def load_weights(self, weights: Iterable[tuple[str, torch....; symbols: load_weights, touching `load_weights`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_h_mtp.py` modified +5/-2 (7 lines); hunks: -395,13 +395,16 @@ def load_weights(self, weights: Iterable[tuple[str, torch....; symbols: load_weights
@@ -1554,7 +1640,7 @@ diff -- vllm/model_executor/models/nemotron_h_mtp.py
 - Status/date: merged / 2026-03-24
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-BF16.yaml`, `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-FP8.yaml`, `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-NVFP4.yaml`; associated commits `56777b5c898d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +37/-0, 55 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR optimizes an inference path or backend selection. Title: "[Test] E2E Nemotron-3-Super tests". The diff centers on `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-BF16.yaml`, `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-FP8.yaml`, `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-NVFP4.yaml`. PR body context: ## Purpose Adding 3 E2E tests for Nemotron-3-Super, in BF16, FP8 and NVFP4, with speculative decoding. ## Test Plan Three new tests pass. ## Test Result They do 🎉 --- Essential...
+- Motivation: Title: "[Test] E2E Nemotron-3-Super tests"; model line: Nemotron Super; category: performance/backend optimization; main diff: `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-BF16.yaml`, `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-FP8.yaml`, `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-NVFP4.yaml`; PR body summary: Adding 3 E2E tests for Nemotron-3-Super, in BF16, FP8 and NVFP4, with speculative decoding. Three new tests pass. They do.
 - Key implementation: `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-BF16.yaml` added +11/-0 (11 lines); hunks: -0,0 +1,11; `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-FP8.yaml` added +11/-0 (11 lines); hunks: -0,0 +1,11; `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-NVFP4.yaml` added +11/-0 (11 lines); hunks: -0,0 +1,11.
 - Code diff details:
   - `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-BF16.yaml` added +11/-0 (11 lines); hunks: -0,0 +1,11
@@ -1591,9 +1677,9 @@ diff -- tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-NVFP4.yaml
 
 - Link: https://github.com/vllm-project/vllm/pull/37903
 - Status/date: merged / 2026-03-24
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/transformers_utils/processors/nano_nemotron_vl.py`; associated commits `a0d487b2e1d5`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/transformers_utils/processors/nano_nemotron_vl.py`; associated commits `a0d487b2e1d5`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +32/-44, 122 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR changes model-related implementation. Title: "nano_nemotron_vl: suppress readonly torch.from_numpy() warning in image and video resize paths". The diff centers on `vllm/transformers_utils/processors/nano_nemotron_vl.py`. PR body context: nano_nemotron_vl: suppress readonly torch.from_numpy() warning in image and video resize paths. No functional difference should be observed aside from the warning being suppress...
+- Motivation: Title: "nano_nemotron_vl: suppress readonly torch.from_numpy() warning in image and video resize paths"; model line: Nemotron Super; category: model implementation change; main diff: `vllm/transformers_utils/processors/nano_nemotron_vl.py`; PR body summary: nano_nemotron_vl: suppress readonly torch.from_numpy() warning in image and video resize paths. No functional difference should be observed aside from the warning being suppress....
 - Key implementation: `vllm/transformers_utils/processors/nano_nemotron_vl.py` modified +32/-44 (76 lines); hunks: -8,6 +8,7; -66,6 +67,30 @@ def input_conditioner(x: torch.Tensor, norm_mean: torch.Tenso...; symbols: input_conditioner, _bicubic_from_ndarray, dynamic_preprocess, video_to_pixel_values, touching `input_conditioner, _bicubic_from_ndarray, dynamic_preprocess`.
 - Code diff details:
   - `vllm/transformers_utils/processors/nano_nemotron_vl.py` modified +32/-44 (76 lines); hunks: -8,6 +8,7; -66,6 +67,30 @@ def input_conditioner(x: torch.Tensor, norm_mean: torch.Tenso...; symbols: input_conditioner, _bicubic_from_ndarray, dynamic_preprocess, video_to_pixel_values
@@ -1618,9 +1704,9 @@ diff -- vllm/transformers_utils/processors/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/38018
 - Status/date: merged / 2026-03-26
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `e812bf70bd66`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `e812bf70bd66`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 12 files, +215/-145, 595 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "[Model] Use helper function to run MM processors with token inputs (where applicable)". The diff centers on `vllm/transformers_utils/processors/pixtral.py`, `vllm/transformers_utils/processors/voxtral.py`, `vllm/multimodal/processing/processor.py`. PR body context: ## Purpose Define helper function `call_hf_processor_mm_only` to replace `ProcessorMixin.__call__` in order to handle token inputs, since not all HF processors support empty tex...
+- Motivation: Title: "[Model] Use helper function to run MM processors with token inputs (where applicable)"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/transformers_utils/processors/pixtral.py`, `vllm/transformers_utils/processors/voxtral.py`, `vllm/multimodal/processing/processor.py`; PR body summary: Define helper function `call_hf_processor_mm_only` to replace `ProcessorMixin.__call__` in order to handle token inputs, since not all HF processors support empty text. This is....
 - Key implementation: `vllm/transformers_utils/processors/pixtral.py` modified +9/-58 (67 lines); hunks: -5,10 +5,7; -55,62 +52,16 @@ class MistralCommonPixtralProcessor(ProcessorMixin):; symbols: MistralCommonPixtralProcessor, __init__, image_break_id, image_token_id, touching `MistralCommonPixtralProcessor, __init__, image_break_id`; `vllm/transformers_utils/processors/voxtral.py` modified +8/-54 (62 lines); hunks: -8,9 +8,6; -62,58 +59,15 @@ class MistralCommonVoxtralProcessor(ProcessorMixin):; symbols: MistralCommonVoxtralProcessor, __init__, audio_token_id, begin_audio_token_id, touching `MistralCommonVoxtralProcessor, __init__, audio_token_id`; `vllm/multimodal/processing/processor.py` modified +41/-10 (51 lines); hunks: -5,8 +5,15; -21,6 +28,7; symbols: _apply_hf_processor_text_mm, _apply_hf_processor_mm_only, _apply_hf_processor_main, touching `_apply_hf_processor_text_mm, _apply_hf_processor_mm_only, _apply_hf_processor_main`; `vllm/transformers_utils/processors/isaac.py` modified +32/-16 (48 lines); hunks: -1,16 +1,15; -308,15 +307,22 @@ def process_vision_for_patches(; symbols: process_vision_for_patches, IsaacImageProcessorKwargs, IsaacImagesKwargs, IsaacProcessorKwargs, touching `process_vision_for_patches, IsaacImageProcessorKwargs, IsaacImagesKwargs`.
 - Code diff details:
   - `vllm/transformers_utils/processors/pixtral.py` modified +9/-58 (67 lines); hunks: -5,10 +5,7; -55,62 +52,16 @@ class MistralCommonPixtralProcessor(ProcessorMixin):; symbols: MistralCommonPixtralProcessor, __init__, image_break_id, image_token_id
@@ -1659,9 +1745,9 @@ diff -- vllm/multimodal/processing/processor.py
 
 - Link: https://github.com/vllm-project/vllm/pull/38567
 - Status/date: merged / 2026-03-30
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `e812bf70bd66`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `e812bf70bd66`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +14/-0, 21 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR fixes a launch, loading, parsing, or numerical issue. Title: "Restore non-hf processor path for Nano-Nemotron-VL (bypass `call_hf_processor_mm_only`) - fixes #38018". The diff centers on `vllm/model_executor/models/nano_nemotron_vl.py`. PR body context: Run old processing path for nano-nemotron-vl by no-op overriding `BaseMultiModalProcessor._call_hf_processor`, thus bypassing `call_hf_processor_mm_only` which assumes the proce...
+- Motivation: Title: "Restore non-hf processor path for Nano-Nemotron-VL (bypass `call_hf_processor_mm_only`) - fixes #38018"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; PR body summary: Run old processing path for nano-nemotron-vl by no-op overriding `BaseMultiModalProcessor._call_hf_processor`, thus bypassing `call_hf_processor_mm_only` which assumes the proce....
 - Key implementation: `vllm/model_executor/models/nano_nemotron_vl.py` modified +14/-0 (14 lines); hunks: -307,6 +307,20 @@ def get_num_frames_with_most_features(; symbols: get_num_frames_with_most_features, NanoNemotronVLMultiModalProcessor, _call_hf_processor, _get_image_fields_config, touching `get_num_frames_with_most_features, NanoNemotronVLMultiModalProcessor, _call_hf_processor`.
 - Code diff details:
   - `vllm/model_executor/models/nano_nemotron_vl.py` modified +14/-0 (14 lines); hunks: -307,6 +307,20 @@ def get_num_frames_with_most_features(; symbols: get_num_frames_with_most_features, NanoNemotronVLMultiModalProcessor, _call_hf_processor, _get_image_fields_config
@@ -1686,9 +1772,9 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/38655
 - Status/date: merged / 2026-04-03
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/transformers_utils/processors/nano_nemotron_vl.py`; associated commits `fa9e68022d29`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/transformers_utils/processors/nano_nemotron_vl.py`; associated commits `fa9e68022d29`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +84/-52, 331 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR fixes a launch, loading, parsing, or numerical issue. Title: "Fix Nano Nemotron VL regressions". The diff centers on `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/transformers_utils/processors/nano_nemotron_vl.py`. PR body context: Fixes two recent Nano Nemotron VL regressions: 1. Stop deep-copying `VllmConfig` in the mamba state helpers. Since #37467, `get_mamba_state_shape_from_config()` runs during work...
+- Motivation: Title: "Fix Nano Nemotron VL regressions"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/transformers_utils/processors/nano_nemotron_vl.py`; PR body summary: Fixes two recent Nano Nemotron VL regressions: 1. Stop deep-copying `VllmConfig` in the mamba state helpers. Since #37467, `get_mamba_state_shape_from_config()` runs during work....
 - Key implementation: `vllm/model_executor/models/nano_nemotron_vl.py` modified +29/-23 (52 lines); hunks: -7,7 +7,6; -17,7 +16,7; symbols: get_hf_processor, is_dynamic_tiler, supports_video, supports_audio, touching `get_hf_processor, is_dynamic_tiler, supports_video`; `vllm/transformers_utils/processors/nano_nemotron_vl.py` modified +17/-15 (32 lines); hunks: -356,15 +356,6 @@ def _images_to_pixel_values_lst(; -519,7 +510,6 @@ def compute_params(; symbols: _images_to_pixel_values_lst, get_cached_feature_size, DynamicResolutionParams, compute_params, touching `_images_to_pixel_values_lst, get_cached_feature_size, DynamicResolutionParams`.
 - Code diff details:
   - `vllm/model_executor/models/nano_nemotron_vl.py` modified +29/-23 (52 lines); hunks: -7,7 +7,6; -17,7 +16,7; symbols: get_hf_processor, is_dynamic_tiler, supports_video, supports_audio
@@ -1722,9 +1808,9 @@ diff -- vllm/transformers_utils/processors/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/39029
 - Status/date: merged / 2026-04-05
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `d56e95223917`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `d56e95223917`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-2, 16 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR fixes a launch, loading, parsing, or numerical issue. Title: "nano_nemotron_vl: fix tensor device mismatch exception when video profiling". The diff centers on `vllm/model_executor/models/nano_nemotron_vl.py`. The PR body has no extra context, so this assessment comes from the title, file list, and patch.
+- Motivation: Title: "nano_nemotron_vl: fix tensor device mismatch exception when video profiling"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; no usable PR-body summary.
 - Key implementation: `vllm/model_executor/models/nano_nemotron_vl.py` modified +3/-2 (5 lines); hunks: -1239,12 +1239,13 @@ def _create_final_video_embeddings(; symbols: _create_final_video_embeddings, touching `_create_final_video_embeddings`.
 - Code diff details:
   - `vllm/model_executor/models/nano_nemotron_vl.py` modified +3/-2 (5 lines); hunks: -1239,12 +1239,13 @@ def _create_final_video_embeddings(; symbols: _create_final_video_embeddings
@@ -1748,9 +1834,9 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/38727
 - Status/date: merged / 2026-04-07
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `a9a0e0551f03`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `a9a0e0551f03`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +52/-10, 84 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR changes model-related implementation. Title: "nano-nemotron-vl: get_mm_max_tokens_per_item for audio, video, image == seq_len". The diff centers on `vllm/model_executor/models/nano_nemotron_vl.py`. PR body context: For nano-nemotron-vl: Hardcode `max_seq_len` as the upper limit of mm items. This is a coarse way to currently sidestep the limits of the dummy audio-video profiling interface....
+- Motivation: Title: "nano-nemotron-vl: get_mm_max_tokens_per_item for audio, video, image == seq_len"; model line: Nemotron Super; category: model implementation change; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; PR body summary: For nano-nemotron-vl: Hardcode `max_seq_len` as the upper limit of mm items. This is a coarse way to currently sidestep the limits of the dummy audio-video profiling interface.....
 - Key implementation: `vllm/model_executor/models/nano_nemotron_vl.py` modified +52/-10 (62 lines); hunks: -288,6 +288,35 @@ def get_max_image_tokens(self) -> int:; -306,6 +335,26 @@ def get_num_frames_with_most_features(; symbols: get_max_image_tokens, get_dummy_image_size_and_max_tokens, get_num_frames_with_most_features, get_mm_max_tokens_per_item, touching `get_max_image_tokens, get_dummy_image_size_and_max_tokens, get_num_frames_with_most_features`.
 - Code diff details:
   - `vllm/model_executor/models/nano_nemotron_vl.py` modified +52/-10 (62 lines); hunks: -288,6 +288,35 @@ def get_max_image_tokens(self) -> int:; -306,6 +335,26 @@ def get_num_frames_with_most_features(; symbols: get_max_image_tokens, get_dummy_image_size_and_max_tokens, get_num_frames_with_most_features, get_mm_max_tokens_per_item
@@ -1775,9 +1861,9 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/38538
 - Status/date: merged / 2026-04-09
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/transformers_utils/processors/nano_nemotron_vl.py`; associated commits `df2503e125f3`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/transformers_utils/processors/nano_nemotron_vl.py`; associated commits `df2503e125f3`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +74/-18, 162 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR fixes a launch, loading, parsing, or numerical issue. Title: "nemotron-nano-vl: Allow `use_audio_in_video` to be passed at `vllm serve` time". The diff centers on `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/transformers_utils/processors/nano_nemotron_vl.py`. PR body context: ## Summary - Fix `use_audio_in_video` crash when audio is pre-populated by chat completions endpoint (same bug as #39124) - Resolve `use_audio_in_video` statically at init inste...
+- Motivation: Title: "nemotron-nano-vl: Allow `use_audio_in_video` to be passed at `vllm serve` time"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/transformers_utils/processors/nano_nemotron_vl.py`; PR body summary: - Fix `use_audio_in_video` crash when audio is pre-populated by chat completions endpoint (same bug as #39124) - Resolve `use_audio_in_video` statically at init instead of insta....
 - Key implementation: `vllm/model_executor/models/nano_nemotron_vl.py` modified +72/-18 (90 lines); hunks: -597,19 +597,26 @@ def _get_prompt_updates(; -618,7 +625,16 @@ def _extract_audio_from_videos(; symbols: _get_prompt_updates, _extract_audio_from_videos, apply, touching `_get_prompt_updates, _extract_audio_from_videos, apply`; `vllm/transformers_utils/processors/nano_nemotron_vl.py` modified +2/-0 (2 lines); hunks: -771,6 +771,7 @@ def __init__(; -781,6 +782,7 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/nano_nemotron_vl.py` modified +72/-18 (90 lines); hunks: -597,19 +597,26 @@ def _get_prompt_updates(; -618,7 +625,16 @@ def _extract_audio_from_videos(; symbols: _get_prompt_updates, _extract_audio_from_videos, apply
@@ -1808,9 +1894,9 @@ diff -- vllm/transformers_utils/processors/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/37580
 - Status/date: merged / 2026-04-10
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `270e8a410254`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `270e8a410254`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +11/-36, 73 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR changes model-related implementation. Title: "Nemotron Nano VL: Streamline pixel shuffle". The diff centers on `vllm/model_executor/models/nano_nemotron_vl.py`. PR body context: When doing spatial merging. avoids a sequence of two `contiguous` calls by merging both dimensions at once. Also renamed variables `h, w` so they have the correct order. Validat...
+- Motivation: Title: "Nemotron Nano VL: Streamline pixel shuffle"; model line: Nemotron Super; category: model implementation change; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; PR body summary: When doing spatial merging. avoids a sequence of two `contiguous` calls by merging both dimensions at once. Also renamed variables `h, w` so they have the correct order. Validat....
 - Key implementation: `vllm/model_executor/models/nano_nemotron_vl.py` modified +11/-36 (47 lines); hunks: -1005,38 +1005,27 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: s...; -1045,22 +1034,8 @@ def pixel_shuffle_dynamic_res(; symbols: __init__, pixel_shuffle, pixel_shuffle_dynamic_res, touching `__init__, pixel_shuffle, pixel_shuffle_dynamic_res`.
 - Code diff details:
   - `vllm/model_executor/models/nano_nemotron_vl.py` modified +11/-36 (47 lines); hunks: -1005,38 +1005,27 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: s...; -1045,22 +1034,8 @@ def pixel_shuffle_dynamic_res(; symbols: __init__, pixel_shuffle, pixel_shuffle_dynamic_res
@@ -1835,9 +1921,9 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/39901
 - Status/date: merged / 2026-04-15
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `8b5531933a7b`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `8b5531933a7b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +7/-0, 21 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "FIX: support language_model.backbone naming in NemotronH Nano VL quantization config". The diff centers on `vllm/model_executor/models/nano_nemotron_vl.py`. PR body context: Models quantized with ModelOpt may ship `config.json` with` language_model.backbone.layers.* `paths in quantized_layers, but vLLM internally renames backbone to model (via Nemot...
+- Motivation: Title: "FIX: support language_model.backbone naming in NemotronH Nano VL quantization config"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; PR body summary: Models quantized with ModelOpt may ship `config.json` with` language_model.backbone.layers.* `paths in quantized_layers, but vLLM internally renames backbone to model (via Nemot....
 - Key implementation: `vllm/model_executor/models/nano_nemotron_vl.py` modified +7/-0 (7 lines); hunks: -37,6 +37,7; -903,6 +904,12 @@ class NemotronH_Nano_VL_V2(; symbols: NemotronH_Nano_VL_V2, get_placeholder_str, touching `NemotronH_Nano_VL_V2, get_placeholder_str`.
 - Code diff details:
   - `vllm/model_executor/models/nano_nemotron_vl.py` modified +7/-0 (7 lines); hunks: -37,6 +37,7; -903,6 +904,12 @@ class NemotronH_Nano_VL_V2(; symbols: NemotronH_Nano_VL_V2, get_placeholder_str
@@ -1862,9 +1948,9 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/40283
 - Status/date: merged / 2026-04-19
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/transformers_utils/processors/nano_nemotron_vl.py`; associated commits `982beae809b1`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/transformers_utils/processors/nano_nemotron_vl.py`; associated commits `982beae809b1`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +116/-98, 384 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR optimizes an inference path or backend selection. Title: "Optimize nemotron VL image/video preprocessing". The diff centers on `vllm/transformers_utils/processors/nano_nemotron_vl.py`. PR body context: ## Purpose Compile and reorganize image/video preprocessing for nemotron nano VL, reducing the amount of CPU time and memory needed. - Fused resize+normalize+cast under @torch.c...
+- Motivation: Title: "Optimize nemotron VL image/video preprocessing"; model line: Nemotron Super; category: performance/backend optimization; main diff: `vllm/transformers_utils/processors/nano_nemotron_vl.py`; PR body summary: Compile and reorganize image/video preprocessing for nemotron nano VL, reducing the amount of CPU time and memory needed. - Fused resize+normalize+cast under @torch.compile — CP....
 - Key implementation: `vllm/transformers_utils/processors/nano_nemotron_vl.py` modified +116/-98 (214 lines); hunks: -8,7 +8,6; -26,7 +25,7; symbols: calculate_timestamps, input_conditioner, _bicubic_resize_and_normalize, _bicubic_from_ndarray, touching `calculate_timestamps, input_conditioner, _bicubic_resize_and_normalize`.
 - Code diff details:
   - `vllm/transformers_utils/processors/nano_nemotron_vl.py` modified +116/-98 (214 lines); hunks: -8,7 +8,6; -26,7 +25,7; symbols: calculate_timestamps, input_conditioner, _bicubic_resize_and_normalize, _bicubic_from_ndarray
@@ -1889,9 +1975,9 @@ diff -- vllm/transformers_utils/processors/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/40724
 - Status/date: merged / 2026-04-24
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `9ad5abe7722b`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `9ad5abe7722b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-1, 11 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: For Nemotron Super, this PR adds or enables a model support/runtime surface. Title: "Fix Nano Nemotron VL static image inputs". The diff centers on `vllm/model_executor/models/nano_nemotron_vl.py`. PR body context: Fixes regression on image inputs with non-dynamic resolution introduced by https://github.com/vllm-project/vllm/pull/38655
+- Motivation: Title: "Fix Nano Nemotron VL static image inputs"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; PR body summary: Fixes regression on image inputs with non-dynamic resolution introduced by https://github.com/vllm-project/vllm/pull/38655.
 - Key implementation: `vllm/model_executor/models/nano_nemotron_vl.py` modified +3/-1 (4 lines); hunks: -1124,7 +1124,9 @@ def _parse_and_validate_image_input(; symbols: _parse_and_validate_image_input, _process_image_input_dynamic, touching `_parse_and_validate_image_input, _process_image_input_dynamic`.
 - Code diff details:
   - `vllm/model_executor/models/nano_nemotron_vl.py` modified +3/-1 (4 lines); hunks: -1124,7 +1124,9 @@ def _parse_and_validate_image_input(; symbols: _parse_and_validate_image_input, _process_image_input_dynamic

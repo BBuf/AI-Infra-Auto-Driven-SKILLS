@@ -6,7 +6,6 @@
 - 源码基线: `vllm-project/vllm` 当前追溯 worktree commit `95995bbef8`
 - PR 收集规则: 先从模型实现、配置、processor、parser、docs/tests 等相关文件执行 `git log --name-only -- <model-files>`，再按 commit subject 的模型关键词过滤，最后用 GitHub Pull Request files API 读取每个 PR 的最终 diff。
 - 额外保留规则: 原 history/skill 已显式引用但未出现在当前实现文件 git trace 中的 PR 会保留，并在卡片里标注来源。
-- diffusion 相关模型已从本目录剔除，不再纳入模型优化 skill/history。
 
 ## 模型实现文件覆盖
 
@@ -42,7 +41,7 @@
 - 状态/时间: merged / 2025-05-12
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mimo.py`, `vllm/model_executor/models/mimo_mtp.py`；关联提交 `acee8f48aa9c`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+507/-4，可读 patch 576 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiMo V2 Flash 补齐模型支持入口或运行时能力，标题为「[Model] Support MiMo-7B inference with MTP」，变更集中在 `vllm/model_executor/models/mimo_mtp.py`, `vllm/model_executor/models/mimo.py`。PR 描述补充为：MiMo-7B is a decoder-only Transformer LM with MTP layers that exhibits extraordinary reasoning potential. The model and technical report are open-sourced in https://github.com/X...
+- 动机: 标题「[Model] Support MiMo-7B inference with MTP」；模型线: MiMo V2 Flash；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mimo_mtp.py`, `vllm/model_executor/models/mimo.py`；PR 正文摘要: MiMo-7B is a decoder-only Transformer LM with MTP layers that exhibits extraordinary reasoning potential. The model and technical report are open-sourced in https://github.com/X...。
 - 实现要点: `vllm/model_executor/models/mimo_mtp.py` added +283/-0 (283 lines); hunks: -0,0 +1,283; symbols: MiMoMultiTokenPredictorLayer, __init__, forward, MiMoMultiTokenPredictor，涉及 `MiMoMultiTokenPredictorLayer, __init__, forward`；`vllm/model_executor/models/mimo.py` added +190/-0 (190 lines); hunks: -0,0 +1,190; symbols: MiMoModel, forward, load_weights, MiMoForCausalLM，涉及 `MiMoModel, forward, load_weights`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/mimo_mtp.py` added +283/-0 (283 lines); hunks: -0,0 +1,283; symbols: MiMoMultiTokenPredictorLayer, __init__, forward, MiMoMultiTokenPredictor
@@ -78,7 +77,7 @@ diff -- vllm/model_executor/models/mimo.py
 - 状态/时间: merged / 2025-09-18
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mimo_mtp.py`；关联提交 `c4cb0af98a8e`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+20/-6，可读 patch 61 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiMo V2 Flash 修复已暴露的启动、加载、解析或数值问题，标题为「[spec decode] Fix MTP inference path for MiMo-7B model」，变更集中在 `vllm/model_executor/models/mimo_mtp.py`。PR 描述补充为：## Purpose Fix MiMo-7B MTP inference path ## Test Plan Acceptance rate test + lm_eval ## Test Result - acceptance rate - lm_eval baseline - lm_eval with mtp --- Essential Elemen...
+- 动机: 标题「[spec decode] Fix MTP inference path for MiMo-7B model」；模型线: MiMo V2 Flash；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/mimo_mtp.py`；PR 正文摘要: Fix MiMo-7B MTP inference path Acceptance rate test + lm_eval - acceptance rate - lm_eval baseline - lm_eval with mtp。
 - 实现要点: `vllm/model_executor/models/mimo_mtp.py` modified +14/-4 (18 lines); hunks: -241,17 +241,27 @@ def load_weights(self, weights: Iterable[tuple[str,; symbols: load_weights, map_model_name_to_mtp_param_name, _rewrite_spec_layer_name，涉及 `load_weights, map_model_name_to_mtp_param_name, _rewrite_spec_layer_name`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/mimo_mtp.py` modified +14/-4 (18 lines); hunks: -241,17 +241,27 @@ def load_weights(self, weights: Iterable[tuple[str,; symbols: load_weights, map_model_name_to_mtp_param_name, _rewrite_spec_layer_name
@@ -105,7 +104,7 @@ diff -- vllm/model_executor/models/mimo_mtp.py
 - 状态/时间: merged / 2025-12-19
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mimo_v2_flash.py`；关联提交 `969bbc7c6166`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+789/-13，可读 patch 946 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiMo V2 Flash 补齐模型支持入口或运行时能力，标题为「[Model] Add MiMo-V2-Flash support」，变更集中在 `vllm/model_executor/models/mimo_v2_flash.py`。PR 描述补充为：## Purpose Add support for MiMo-V2-Flash. ## Examples ### Example 1 ### Example 2 ## Accuracy GSM8K
+- 动机: 标题「[Model] Add MiMo-V2-Flash support」；模型线: MiMo V2 Flash；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/mimo_v2_flash.py`；PR 正文摘要: Add support for MiMo-V2-Flash. Examples Example 1 Example 2 Accuracy GSM8K。
 - 实现要点: `vllm/model_executor/models/mimo_v2_flash.py` added +720/-0 (720 lines); hunks: -0,0 +1,720; symbols: MiMoV2MLP, __init__, forward, MiMoV2MoE，涉及 `MiMoV2MLP, __init__, forward`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/mimo_v2_flash.py` added +720/-0 (720 lines); hunks: -0,0 +1,720; symbols: MiMoV2MLP, __init__, forward, MiMoV2MoE
@@ -130,9 +129,9 @@ diff -- vllm/model_executor/models/mimo_v2_flash.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/31175
 - 状态/时间: merged / 2026-01-05
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mimo_v2_flash.py`；关联提交 `951302989814`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mimo_v2_flash.py`；关联提交 `951302989814`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+10/-13，可读 patch 79 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiMo V2 Flash 修复已暴露的启动、加载、解析或数值问题，标题为「[Bugfix] Properly apply v_scale for mimo_v2_flash」，变更集中在 `vllm/model_executor/models/mimo_v2_flash.py`。PR 描述补充为：## Purpose Noticed this when comparing with the Transformers implementation Before: After: ## Test Plan ## Test Result --- Essential Elements of an Effective PR Description Chec...
+- 动机: 标题「[Bugfix] Properly apply v_scale for mimo_v2_flash」；模型线: MiMo V2 Flash；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/mimo_v2_flash.py`；PR 正文摘要: Noticed this when comparing with the Transformers implementation Before: After:。
 - 实现要点: `vllm/model_executor/models/mimo_v2_flash.py` modified +10/-13 (23 lines); hunks: -211,6 +211,7 @@ def __init__(; -241,6 +242,7 @@ def __init__(; symbols: __init__, forward，涉及 `__init__, forward`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/mimo_v2_flash.py` modified +10/-13 (23 lines); hunks: -211,6 +211,7 @@ def __init__(; -241,6 +242,7 @@ def __init__(; symbols: __init__, forward
@@ -157,9 +156,9 @@ diff -- vllm/model_executor/models/mimo_v2_flash.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/40045
 - 状态/时间: merged / 2026-04-24
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mimo_v2_flash.py`；关联提交 `e8ee2a78dbc0`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mimo_v2_flash.py`；关联提交 `e8ee2a78dbc0`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+112/-24，可读 patch 270 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 MiMo V2 Flash 优化关键推理路径或后端选择，标题为「[Attention] use diff kv backend for mimo v2 flash」，变更集中在 `vllm/model_executor/models/mimo_v2_flash.py`。PR 描述补充为：## Purpose ### Diff kv A key characteristic of mimo v2 flash architecture is that the attention layer uses different head dimensions for keys and values (v_head_dim != head_dim)...
+- 动机: 标题「[Attention] use diff kv backend for mimo v2 flash」；模型线: MiMo V2 Flash；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/mimo_v2_flash.py`；PR 正文摘要: Diff kv A key characteristic of mimo v2 flash architecture is that the attention layer uses different head dimensions for keys and values (v_head_dim != head_dim) We use `FlashA...。
 - 实现要点: `vllm/model_executor/models/mimo_v2_flash.py` modified +14/-8 (22 lines); hunks: -46,6 +46,9; -287,6 +290,15 @@ def __init__(; symbols: __init__, forward，涉及 `__init__, forward`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/mimo_v2_flash.py` modified +14/-8 (22 lines); hunks: -46,6 +46,9; -287,6 +290,15 @@ def __init__(; symbols: __init__, forward
@@ -182,5 +181,5 @@ diff -- vllm/model_executor/models/mimo_v2_flash.py
 
 ## 补漏结论
 
-- 本版不再接受只列 PR 标题的写法；每个 PR 必须有反查来源、diff 范围、实现要点、代码摘录、已读文件和验证风险。
+- 验收规则: 每个 PR 卡片必须保留反查来源、diff 范围、实现要点、代码摘录、已读文件和验证风险。
 - 如果新模型文件落在当前过滤规则之外，先补文件过滤规则，再重新执行本轮 `git log --name-only -- <model-files>` 追溯。

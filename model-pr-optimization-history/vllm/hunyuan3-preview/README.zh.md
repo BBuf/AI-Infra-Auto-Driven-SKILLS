@@ -6,7 +6,6 @@
 - 源码基线: `vllm-project/vllm` 当前追溯 worktree commit `95995bbef8`
 - PR 收集规则: 先从模型实现、配置、processor、parser、docs/tests 等相关文件执行 `git log --name-only -- <model-files>`，再按 commit subject 的模型关键词过滤，最后用 GitHub Pull Request files API 读取每个 PR 的最终 diff。
 - 额外保留规则: 原 history/skill 已显式引用但未出现在当前实现文件 git trace 中的 PR 会保留，并在卡片里标注来源。
-- diffusion 相关模型已从本目录剔除，不再纳入模型优化 skill/history。
 
 ## 模型实现文件覆盖
 
@@ -45,7 +44,7 @@
 - 状态/时间: merged / 2025-07-23
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+57/-19，可读 patch 136 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Hunyuan3 Preview 补齐模型支持入口或运行时能力，标题为「[Model] add Hunyuan V1 Dense Model support.」，变更集中在 `vllm/model_executor/models/hunyuan_v1.py`, `vllm/model_executor/models/registry.py`, `tests/models/registry.py`。PR 描述补充为：## Essential Elements of an Effective PR Description Checklist - [x] The purpose of the PR, such as "Fix some issue (link existing issues this PR will resolve)". - [x] The test...
+- 动机: 标题「[Model] add Hunyuan V1 Dense Model support.」；模型线: Hunyuan3 Preview；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/hunyuan_v1.py`, `vllm/model_executor/models/registry.py`, `tests/models/registry.py`；PR 正文未提供可用摘要。
 - 实现要点: `vllm/model_executor/models/hunyuan_v1.py` renamed +52/-18 (70 lines); hunks: -61,6 +61,19; -140,8 +153,8 @@ def __init__(; symbols: _is_moe, _get_cla_factor, __init__, _split_qkv_weight，涉及 `_is_moe, _get_cla_factor, __init__`；`vllm/model_executor/models/registry.py` modified +2/-1 (3 lines); hunks: -79,7 +79,8；`tests/models/registry.py` modified +2/-0 (2 lines); hunks: -199,6 +199,8 @@ def check_available_online(; symbols: check_available_online，涉及 `check_available_online`；`docs/models/supported_models.md` modified +1/-0 (1 lines); hunks: -363,6 +363,7 @@ th {。
 - 代码 diff 细节:
   - `vllm/model_executor/models/hunyuan_v1.py` renamed +52/-18 (70 lines); hunks: -61,6 +61,19; -140,8 +153,8 @@ def __init__(; symbols: _is_moe, _get_cla_factor, __init__, _split_qkv_weight
@@ -87,7 +86,7 @@ diff -- docs/models/supported_models.md
 - 状态/时间: merged / 2025-11-25
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 18 个文件，+2415/-4，可读 patch 2653 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Hunyuan3 Preview 补齐模型支持入口或运行时能力，标题为「[Model] Add HunyuanOCR support」，变更集中在 `vllm/model_executor/models/hunyuan_vision.py`, `vllm/transformers_utils/processors/hunyuan_vl_image.py`, `vllm/transformers_utils/configs/hunyuan_vl.py`。PR 描述补充为：## Purpose - Add HunyuanOCR support ## Test Plan ## Test Result --- Essential Elements of an Effective PR Description Checklist - [ ] The purpose of the PR, such as "Fix some is...
+- 动机: 标题「[Model] Add HunyuanOCR support」；模型线: Hunyuan3 Preview；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/hunyuan_vision.py`, `vllm/transformers_utils/processors/hunyuan_vl_image.py`, `vllm/transformers_utils/configs/hunyuan_vl.py`；PR 正文摘要: - Add HunyuanOCR support。
 - 实现要点: `vllm/model_executor/models/hunyuan_vision.py` added +1028/-0 (1028 lines); hunks: -0,0 +1,1028; symbols: HunYuanVLImagePixelInputs, HunYuanVLImageEmbeddingInputs, HunYuanVisionMLP, __init__，涉及 `HunYuanVLImagePixelInputs, HunYuanVLImageEmbeddingInputs, HunYuanVisionMLP`；`vllm/transformers_utils/processors/hunyuan_vl_image.py` added +477/-0 (477 lines); hunks: -0,0 +1,477; symbols: for, smart_resize, HunYuanVLImageProcessor, __init__，涉及 `for, smart_resize, HunYuanVLImageProcessor`；`vllm/transformers_utils/configs/hunyuan_vl.py` added +322/-0 (322 lines); hunks: -0,0 +1,322; symbols: HunYuanVLVisionConfig, __init__, HunYuanVLTextConfig, to，涉及 `HunYuanVLVisionConfig, __init__, HunYuanVLTextConfig`；`vllm/transformers_utils/processors/hunyuan_vl.py` added +233/-0 (233 lines); hunks: -0,0 +1,233; symbols: HunYuanVLProcessor, __init__, __call__, batch_decode，涉及 `HunYuanVLProcessor, __init__, __call__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/hunyuan_vision.py` added +1028/-0 (1028 lines); hunks: -0,0 +1,1028; symbols: HunYuanVLImagePixelInputs, HunYuanVLImageEmbeddingInputs, HunYuanVisionMLP, __init__
@@ -128,7 +127,7 @@ diff -- vllm/transformers_utils/configs/hunyuan_vl.py
 - 状态/时间: merged / 2026-01-27
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+49/-3，可读 patch 165 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Hunyuan3 Preview 补齐模型支持入口或运行时能力，标题为「feature: support eagle3 for HunyuanVL & Hunyuan」，变更集中在 `vllm/model_executor/models/hunyuan_v1.py`, `vllm/model_executor/models/hunyuan_vision.py`, `vllm/v1/spec_decode/eagle.py`。PR 描述补充为：## Purpose Eagle3 models: https://huggingface.co/collections/AngelSlim/eagle3 ## Test Plan ## Test Result 详细结果见：AngelSlim Speculative-Decoding ### HunyuanOCR Model | Model | Met...
+- 动机: 标题「feature: support eagle3 for HunyuanVL & Hunyuan」；模型线: Hunyuan3 Preview；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/hunyuan_v1.py`, `vllm/model_executor/models/hunyuan_vision.py`, `vllm/v1/spec_decode/eagle.py`；PR 正文摘要: Eagle3 models: https://huggingface.co/collections/AngelSlim/eagle3 详细结果见：AngelSlim Speculative-Decoding HunyuanOCR Model | Model | Method | OmniDocBench | | |-------------|-----...。
 - 实现要点: `vllm/model_executor/models/hunyuan_v1.py` modified +17/-2 (19 lines); hunks: -66,7 +66,7; -630,6 +630,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__, embed_input_ids, forward, _split_qkv_weight，涉及 `__init__, embed_input_ids, forward`；`vllm/model_executor/models/hunyuan_vision.py` modified +9/-0 (9 lines); hunks: -83,6 +83,7; -780,6 +781,7 @@ class HunYuanVLForConditionalGeneration(; symbols: HunYuanVLForConditionalGeneration, embed_multimodal, set_aux_hidden_state_layers, get_eagle3_aux_hidden_state_layers，涉及 `HunYuanVLForConditionalGeneration, embed_multimodal, set_aux_hidden_state_layers`；`vllm/v1/spec_decode/eagle.py` modified +15/-0 (15 lines); hunks: -115,6 +115,8 @@ def __init__(; -129,6 +131,12 @@ def __init__(; symbols: __init__, _get_positions, _set_positions，涉及 `__init__, _get_positions, _set_positions`；`vllm/config/speculative.py` modified +8/-1 (9 lines); hunks: -675,7 +675,14 @@ def _verify_args(self) -> Self:; symbols: _verify_args，涉及 `_verify_args`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/hunyuan_v1.py` modified +17/-2 (19 lines); hunks: -66,7 +66,7; -630,6 +630,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__, embed_input_ids, forward, _split_qkv_weight
@@ -166,9 +165,9 @@ diff -- vllm/v1/spec_decode/eagle.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/40681
 - 状态/时间: merged / 2026-04-23
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/reasoning/test_hy_v3_reasoning_parser.py`, `tests/tool_parsers/test_hy_v3_tool_parser.py`, `vllm/model_executor/models/hy_v3.py`, `vllm/model_executor/models/hy_v3_mtp.py`, `vllm/reasoning/hy_v3_reasoning_parser.py` 等 7 个文件；关联提交 `d0009ddb0b96`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/reasoning/test_hy_v3_reasoning_parser.py`, `tests/tool_parsers/test_hy_v3_tool_parser.py`, `vllm/model_executor/models/hy_v3.py`, `vllm/model_executor/models/hy_v3_mtp.py`, `vllm/reasoning/hy_v3_reasoning_parser.py` 等 7 个文件；关联提交 `d0009ddb0b96`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 16 个文件，+2696/-0，可读 patch 2801 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 该 PR 围绕 Hunyuan3 Preview 补齐模型支持入口或运行时能力，标题为「[Model] Support Hy3 preview」，变更集中在 `vllm/model_executor/models/hy_v3.py`, `vllm/tool_parsers/hy_v3_tool_parser.py`, `vllm/model_executor/models/hy_v3_mtp.py`。PR 描述补充为：## Purpose Support Hy3-preview model ## Test Plan Test model, reasoning parser and tool parser. ## Test Result All pass. --- Hy3-preview model Hy3 preview is a Mixture-of-Expert...
+- 动机: 标题「[Model] Support Hy3 preview」；模型线: Hunyuan3 Preview；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/hy_v3.py`, `vllm/tool_parsers/hy_v3_tool_parser.py`, `vllm/model_executor/models/hy_v3_mtp.py`；PR 正文摘要: Support Hy3-preview model Test model, reasoning parser and tool parser. All pass. Hy3-preview model Hy3 preview is a Mixture-of-Experts model with integrated fast and slow think...。
 - 实现要点: `vllm/model_executor/models/hy_v3.py` added +707/-0 (707 lines); hunks: -0,0 +1,707; symbols: HYV3FeedForward, __init__, forward, HYV3MoEFused，涉及 `HYV3FeedForward, __init__, forward`；`vllm/tool_parsers/hy_v3_tool_parser.py` added +645/-0 (645 lines); hunks: -0,0 +1,645; symbols: HYV3ToolParser, _normalize_type, _get_arg_schema, _get_schema_options，涉及 `HYV3ToolParser, _normalize_type, _get_arg_schema`；`vllm/model_executor/models/hy_v3_mtp.py` added +470/-0 (470 lines); hunks: -0,0 +1,470; symbols: _is_moe, _get_cla_factor, HYV3SharedHead, __init__，涉及 `_is_moe, _get_cla_factor, HYV3SharedHead`；`tests/tool_parsers/test_hy_v3_tool_parser.py` added +274/-0 (274 lines); hunks: -0,0 +1,274; symbols: hy_v3_tokenizer, hy_v3_tool_parser, mock_request, TestHYV3ExtractToolCalls，涉及 `hy_v3_tokenizer, hy_v3_tool_parser, mock_request`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/hy_v3.py` added +707/-0 (707 lines); hunks: -0,0 +1,707; symbols: HYV3FeedForward, __init__, forward, HYV3MoEFused
@@ -206,5 +205,5 @@ diff -- vllm/model_executor/models/hy_v3_mtp.py
 
 ## 补漏结论
 
-- 本版不再接受只列 PR 标题的写法；每个 PR 必须有反查来源、diff 范围、实现要点、代码摘录、已读文件和验证风险。
+- 验收规则: 每个 PR 卡片必须保留反查来源、diff 范围、实现要点、代码摘录、已读文件和验证风险。
 - 如果新模型文件落在当前过滤规则之外，先补文件过滤规则，再重新执行本轮 `git log --name-only -- <model-files>` 追溯。

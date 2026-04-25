@@ -4,7 +4,7 @@
 - Source baseline: `vllm-project/vllm` trace worktree commit `95995bbef8`
 - Collection: model implementation files were traced with `git log --name-only -- <model-files>`, filtered by model keywords in commit subjects, then every PR card was populated from the GitHub Pull Request files API.
 - Extra preserved PRs from prior docs: 0
-- Rule: use this as the backing dossier for the skill, not only PR titles.
+- Rule: use this evidence file before changing model-specific skill guidance; it is not only PR titles.
 
 ## Implementation File Coverage
 
