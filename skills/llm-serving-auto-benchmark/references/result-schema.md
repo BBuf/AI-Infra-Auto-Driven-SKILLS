@@ -101,19 +101,27 @@ The default ranking is:
 2. `sla.passed == true`
 3. higher `metrics.request_throughput`
 4. higher `metrics.output_token_throughput`
-5. lower `metrics.p99_ttft_ms`
-6. lower `metrics.p99_tpot_ms`
+5. lower `metrics.mean_ttft_ms`
+6. lower `metrics.mean_tpot_ms`
 7. lower `hardware.gpu_count`
 
 If the user cares more about token throughput than request throughput, swap
 steps 3 and 4 and state that in the final report.
 
+This ranking rule does not change the SLA gate. Keep `sla.max_p99_ttft_ms` and
+`sla.max_p99_tpot_ms` as the tail-latency constraints; use mean TTFT and mean
+TPOT only for default winner selection among rows that have already passed SLA.
+
 Missing metric semantics:
 
-- If a latency field is absent from a row, the ranking script treats it as the
-  worst possible value, so that row falls below any candidate with a real
-  measurement. Do not write `0` as a placeholder for "no measurement"; leave the
-  field out or set it to `null`.
+- If `metrics.mean_ttft_ms` is absent from a row, the ranking script treats it
+  as the worst possible value, so that row falls below any candidate with a
+  real mean-TTFT measurement. Do not write `0` as a placeholder for "no
+  measurement"; leave the field out or set it to `null`.
+- If `metrics.mean_tpot_ms` is absent from a row, the ranking script treats it
+  as the worst possible value, so that row falls below any candidate with a
+  real mean-TPOT measurement. Do not write `0` as a placeholder for "no
+  measurement"; leave the field out or set it to `null`.
 - If `metrics.request_throughput` or `metrics.output_token_throughput` is
   missing, the row ranks below any candidate with a real measurement in those
   keys. A failed candidate that still produced partial metrics should keep the
