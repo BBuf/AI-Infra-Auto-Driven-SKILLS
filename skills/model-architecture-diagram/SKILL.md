@@ -58,14 +58,20 @@ and indexed by a GitHub issue instead.
 Current hosted artifact:
 
 - Issue index: https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/issues/31
-- Release page: https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/releases/tag/sgl-cookbook-architecture-images-2026-04-25
-- Zip download: https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/releases/download/sgl-cookbook-architecture-images-2026-04-25/sgl-cookbook-model-architecture-images-2026-04-25.zip
-- Digest: `sha256:4ea7f6f53c46b806d84e8252f0a7b30a3c9b608ecca5fc7a29154921380ab00b`
+- Release page: https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/releases/tag/sgl-cookbook-architecture-images-2026-04-25-v2
+- Zip download: https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/releases/download/sgl-cookbook-architecture-images-2026-04-25-v2/sgl-cookbook-model-architecture-images-2026-04-25-v2.zip
+- Digest: `sha256:65e0d29ac6e6e2a71468445de05ea6df304a6dc84d529ead1a412c6f7804b8ee`
 
 The artifact contains 63 model directories: 62 discovered from sgl-cookbook plus
 the manually audited DeepSeek-V4 support branch. It includes 11 public-original
 matches, 52 generated diagram sets, `index.html`, `index.md`, `manifest.json`,
 contact sheets, and `architecture-audit.md`.
+
+The 2026-04-25-v2 artifact regenerated every generated fallback diagram after a
+visual refinement pass that reduced connector and label overlap, resized
+residual icons and arrowheads, restyled narrow FFN panels, moved generic
+attention output projections out of the main attention block, and re-laid out
+the DeepSeek-V4 MHC/MQA/MoE/MTP detail view.
 
 How the gallery was produced:
 
@@ -75,14 +81,14 @@ How the gallery was produced:
 - Direct public matches from `references/diagram-index.json` were downloaded
   unchanged from upstream raw GitHub image URLs.
 - Generated diagrams were created as SVG and Mermaid by the resolver; PNG files
-  are headless-Chrome screenshots of the SVGs at a 1920 x 1200 viewport.
+  are headless-Chrome screenshots of the SVGs at a 2048 x 1280 viewport.
 
 To inspect the gallery locally:
 
 ```bash
-curl -L -o /tmp/sgl-cookbook-model-architecture-images-2026-04-25.zip \
-  https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/releases/download/sgl-cookbook-architecture-images-2026-04-25/sgl-cookbook-model-architecture-images-2026-04-25.zip
-unzip -q /tmp/sgl-cookbook-model-architecture-images-2026-04-25.zip -d /tmp
+curl -L -o /tmp/sgl-cookbook-model-architecture-images-2026-04-25-v2.zip \
+  https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/releases/download/sgl-cookbook-architecture-images-2026-04-25-v2/sgl-cookbook-model-architecture-images-2026-04-25-v2.zip
+unzip -q /tmp/sgl-cookbook-model-architecture-images-2026-04-25-v2.zip -d /tmp
 open /tmp/sgl-cookbook-model-architecture-images/index.html
 ```
 
