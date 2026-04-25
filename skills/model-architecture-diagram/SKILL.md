@@ -58,20 +58,22 @@ and indexed by a GitHub issue instead.
 Current hosted artifact:
 
 - Issue index: https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/issues/31
-- Release page: https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/releases/tag/sgl-cookbook-architecture-images-2026-04-25-v3
-- Zip download: https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/releases/download/sgl-cookbook-architecture-images-2026-04-25-v3/sgl-cookbook-model-architecture-images-2026-04-25-v3.zip
-- Digest: `sha256:ac43b8f4cd7b7129288e7c4333883391a35220e6ae0e2cec5abd7d5783d5dce2`
+- Release page: https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/releases/tag/sgl-cookbook-architecture-images-2026-04-25-v4
+- Zip download: https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/releases/download/sgl-cookbook-architecture-images-2026-04-25-v4/sgl-cookbook-model-architecture-images-2026-04-25-v4.zip
+- Digest: `sha256:d93a70496749cab71ff3f9091be913bdd32cb77c5bde88a5323ffedfeb4efc67`
 
 The artifact contains 63 model directories: 62 discovered from sgl-cookbook plus
 the manually audited DeepSeek-V4 support branch. It includes 11 public-original
 matches, 52 generated diagram sets, `index.html`, `index.md`, `manifest.json`,
 contact sheets, and `architecture-audit.md`.
 
-The 2026-04-25-v3 artifact keeps the v2 generated-fallback refinement pass and
-replaces the DeepSeek-V4 generated diagram with a dedicated visual correction:
-the left spine now separates Attention RMSNorm and MoE RMSNorm lanes, the
-compressed MQA panel separates Q, KV, output-projection, and sparse-compression
-lanes, and the MTP draft plus node is spaced away from the V4 layer box.
+The 2026-04-25-v4 artifact keeps the DeepSeek-V4 dedicated correction and
+regenerates all 52 generated fallback diagrams with the shared v4 visual pass:
+attention details use cleaner Q/KV lanes, compact attention panels route output
+projection arrows vertically to avoid label overlap, narrow MLP panels use a
+stacked up-gate/activation/down-projection flow, small MoE panels stay inside
+their bounds, and hybrid/VLM connector arrows are routed around neighboring
+panels instead of diagonally crossing them.
 
 How the gallery was produced:
 
@@ -86,9 +88,9 @@ How the gallery was produced:
 To inspect the gallery locally:
 
 ```bash
-curl -L -o /tmp/sgl-cookbook-model-architecture-images-2026-04-25-v3.zip \
-  https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/releases/download/sgl-cookbook-architecture-images-2026-04-25-v3/sgl-cookbook-model-architecture-images-2026-04-25-v3.zip
-unzip -q /tmp/sgl-cookbook-model-architecture-images-2026-04-25-v3.zip -d /tmp
+curl -L -o /tmp/sgl-cookbook-model-architecture-images-2026-04-25-v4.zip \
+  https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/releases/download/sgl-cookbook-architecture-images-2026-04-25-v4/sgl-cookbook-model-architecture-images-2026-04-25-v4.zip
+unzip -q /tmp/sgl-cookbook-model-architecture-images-2026-04-25-v4.zip -d /tmp
 open /tmp/sgl-cookbook-model-architecture-images/index.html
 ```
 
