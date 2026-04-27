@@ -1,17 +1,53 @@
 {
-  "version": "2026-04-24",
+  "version": "2026-04-27",
   "sources": [
     {
       "name": "InfraTech",
       "repo": "https://github.com/CalvinXKY/InfraTech",
       "branch": "main",
-      "audited_commit": "0fe7d3a57dce"
+      "audited_commit": "fc85c8e112a1"
     },
     {
       "name": "self-llm",
       "repo": "https://github.com/datawhalechina/self-llm",
       "branch": "master",
       "audited_commit": "a7cd4ef135b0"
+    },
+    {
+      "name": "Z-Image",
+      "repo": "https://github.com/Tongyi-MAI/Z-Image",
+      "branch": "main",
+      "audited_commit": "26f23eda626f"
+    },
+    {
+      "name": "Wan2.1",
+      "repo": "https://github.com/Wan-Video/Wan2.1",
+      "branch": "main",
+      "audited_commit": "9737cba9c1c3"
+    },
+    {
+      "name": "Wan2.2",
+      "repo": "https://github.com/Wan-Video/Wan2.2",
+      "branch": "main",
+      "audited_commit": "42bf4cfaa384"
+    },
+    {
+      "name": "HunyuanVideo",
+      "repo": "https://github.com/Tencent-Hunyuan/HunyuanVideo",
+      "branch": "main",
+      "audited_commit": "e260ed40c88d"
+    },
+    {
+      "name": "Hunyuan3D-2",
+      "repo": "https://github.com/Tencent-Hunyuan/Hunyuan3D-2",
+      "branch": "main",
+      "audited_commit": "f8db63096c82"
+    },
+    {
+      "name": "Flux.1-Architecture-Diagram",
+      "repo": "https://github.com/brayevalerien/Flux.1-Architecture-Diagram",
+      "branch": "main",
+      "audited_commit": "5d6718e283d6"
     }
   ],
   "diagrams": [
@@ -70,6 +106,15 @@
       "rank": 3
     },
     {
+      "id": "deepseek-v4-architecture",
+      "title": "DeepSeek V4 architecture",
+      "aliases": ["deepseek-v4", "deepseek v4", "deepseek-v4-pro", "deepseek v4 pro", "deepseek-ai/deepseek-v4-pro"],
+      "source": "InfraTech",
+      "path": "models/deepseek_v4/deepseek_v4_architecture.jpg",
+      "url": "https://raw.githubusercontent.com/CalvinXKY/InfraTech/main/models/deepseek_v4/deepseek_v4_architecture.jpg",
+      "rank": 1
+    },
+    {
       "id": "glm5-architecture",
       "title": "GLM-5 architecture",
       "aliases": ["glm-5", "glm5", "glm 5", "glm-5.1", "glm5.1", "glm 5.1", "zai-org/glm-5", "zai-org/glm-5.1"],
@@ -97,6 +142,33 @@
       "rank": 1
     },
     {
+      "id": "minimax-m2-architecture",
+      "title": "MiniMax M2 architecture",
+      "aliases": ["minimax-m2", "minimax m2", "minimaxai/minimax-m2"],
+      "source": "self-llm",
+      "path": "models/MiniMax-M2/images/01-01.png",
+      "url": "https://raw.githubusercontent.com/datawhalechina/self-llm/master/models/MiniMax-M2/images/01-01.png",
+      "rank": 1
+    },
+    {
+      "id": "minimax-m2-mlp",
+      "title": "MiniMax M2 MLP module",
+      "aliases": ["minimax-m2", "minimax m2", "minimax-m2 mlp", "minimax m2 mlp"],
+      "source": "self-llm",
+      "path": "models/MiniMax-M2/images/01-02.png",
+      "url": "https://raw.githubusercontent.com/datawhalechina/self-llm/master/models/MiniMax-M2/images/01-02.png",
+      "rank": 2
+    },
+    {
+      "id": "minimax-m2-expert-routing",
+      "title": "MiniMax M2 expert routing",
+      "aliases": ["minimax-m2", "minimax m2", "minimax-m2 expert routing", "minimax m2 expert routing"],
+      "source": "self-llm",
+      "path": "models/MiniMax-M2/images/01-03.png",
+      "url": "https://raw.githubusercontent.com/datawhalechina/self-llm/master/models/MiniMax-M2/images/01-03.png",
+      "rank": 3
+    },
+    {
       "id": "minimax-m25-architecture",
       "title": "MiniMax M2.5 architecture",
       "aliases": ["minimax-m2.5", "minimax m2.5", "minimax-m25", "minimaxai/minimax-m2.5"],
@@ -104,6 +176,33 @@
       "path": "models/minimax_m_2_5/minimax_m_2_5_architecture.jpg",
       "url": "https://raw.githubusercontent.com/CalvinXKY/InfraTech/main/models/minimax_m_2_5/minimax_m_2_5_architecture.jpg",
       "rank": 1
+    },
+    {
+      "id": "qwen3-model-structure",
+      "title": "Qwen3 model structure",
+      "aliases": ["qwen3", "qwen 3", "qwen3-8b", "qwen3-30b-a3b", "qwen3-235b-a22b", "qwen/qwen3-30b-a3b", "qwen/qwen3-235b-a22b"],
+      "source": "self-llm",
+      "path": "models/Qwen3/images/01-01.png",
+      "url": "https://raw.githubusercontent.com/datawhalechina/self-llm/master/models/Qwen3/images/01-01.png",
+      "rank": 1
+    },
+    {
+      "id": "qwen3-moe-structure",
+      "title": "Qwen3 MoE structure",
+      "aliases": ["qwen3", "qwen 3", "qwen3 moe", "qwen 3 moe", "qwen3-30b-a3b", "qwen3-235b-a22b", "qwen/qwen3-30b-a3b", "qwen/qwen3-235b-a22b"],
+      "source": "self-llm",
+      "path": "models/Qwen3/images/01-02.png",
+      "url": "https://raw.githubusercontent.com/datawhalechina/self-llm/master/models/Qwen3/images/01-02.png",
+      "rank": 2
+    },
+    {
+      "id": "qwen3-shared-expert-comparison",
+      "title": "Qwen3 shared expert comparison",
+      "aliases": ["qwen3", "qwen 3", "qwen3 shared expert", "qwen 3 shared expert", "qwen3 moe", "qwen3-30b-a3b", "qwen3-235b-a22b"],
+      "source": "self-llm",
+      "path": "models/Qwen3/images/01-03.png",
+      "url": "https://raw.githubusercontent.com/datawhalechina/self-llm/master/models/Qwen3/images/01-03.png",
+      "rank": 3
     },
     {
       "id": "qwen35-moe-architecture",
@@ -142,12 +241,39 @@
       "rank": 1
     },
     {
+      "id": "qwen3-vl-deepstack-feature-extraction",
+      "title": "Qwen3-VL DeepStack feature extraction flow",
+      "aliases": ["qwen3-vl deepstack", "qwen3 vl deepstack", "qwen3-vl feature extraction", "qwen3-vl-moe", "qwen/qwen3-vl-235b-a22b"],
+      "source": "self-llm",
+      "path": "models/Qwen3-VL/images/01-01.png",
+      "url": "https://raw.githubusercontent.com/datawhalechina/self-llm/master/models/Qwen3-VL/images/01-01.png",
+      "rank": 2
+    },
+    {
+      "id": "qwen3-vl-visual-feature-injection",
+      "title": "Qwen3-VL visual feature injection flow",
+      "aliases": ["qwen3-vl visual feature injection", "qwen3 vl visual injection", "qwen3-vl deepstack", "qwen3-vl-moe", "qwen/qwen3-vl-235b-a22b"],
+      "source": "self-llm",
+      "path": "models/Qwen3-VL/images/01-02.png",
+      "url": "https://raw.githubusercontent.com/datawhalechina/self-llm/master/models/Qwen3-VL/images/01-02.png",
+      "rank": 3
+    },
+    {
       "id": "step35-flash-architecture",
       "title": "Step 3.5 Flash architecture",
       "aliases": ["step-3.5-flash", "step 3.5 flash", "step35", "stepfun-ai/step-3.5-flash"],
       "source": "InfraTech",
       "path": "models/step_3_5_flash/step_3_5_flash_architecture.jpg",
       "url": "https://raw.githubusercontent.com/CalvinXKY/InfraTech/main/models/step_3_5_flash/step_3_5_flash_architecture.jpg",
+      "rank": 1
+    },
+    {
+      "id": "llama4-moe-shared-expert",
+      "title": "Llama 4 MoE shared expert diagram",
+      "aliases": ["llama-4", "llama4", "llama 4", "llama4 moe", "llama-4-scout", "llama-4-maverick", "meta-llama/llama-4-scout-17b-16e-instruct", "meta-llama/llama-4-maverick-17b-128e-instruct"],
+      "source": "self-llm",
+      "path": "models/Llama4/images/01-3.png",
+      "url": "https://raw.githubusercontent.com/datawhalechina/self-llm/master/models/Llama4/images/01-3.png",
       "rank": 1
     },
     {
@@ -185,6 +311,141 @@
       "path": "models/Kimi-VL/images/02-5.png",
       "url": "https://raw.githubusercontent.com/datawhalechina/self-llm/master/models/Kimi-VL/images/02-5.png",
       "rank": 2
+    },
+    {
+      "id": "z-image-architecture",
+      "title": "Z-Image S3-DiT architecture",
+      "aliases": ["z-image", "z image", "z-image-turbo", "tongyi-mai/z-image", "tongyi-mai/z-image-turbo", "s3-dit"],
+      "source": "Z-Image",
+      "path": "assets/architecture.webp",
+      "url": "https://raw.githubusercontent.com/Tongyi-MAI/Z-Image/main/assets/architecture.webp",
+      "rank": 1
+    },
+    {
+      "id": "z-image-training-pipeline",
+      "title": "Z-Image training pipeline",
+      "aliases": ["z-image training", "z image training", "z-image-turbo training", "tongyi-mai/z-image-turbo"],
+      "source": "Z-Image",
+      "path": "assets/training_pipeline.jpg",
+      "url": "https://raw.githubusercontent.com/Tongyi-MAI/Z-Image/main/assets/training_pipeline.jpg",
+      "rank": 2
+    },
+    {
+      "id": "z-image-decoupled-dmd",
+      "title": "Z-Image Decoupled-DMD diagram",
+      "aliases": ["z-image decoupled dmd", "z image decoupled dmd", "decoupled-dmd", "z-image-turbo"],
+      "source": "Z-Image",
+      "path": "assets/decoupled-dmd.webp",
+      "url": "https://raw.githubusercontent.com/Tongyi-MAI/Z-Image/main/assets/decoupled-dmd.webp",
+      "rank": 3
+    },
+    {
+      "id": "z-image-dmdr",
+      "title": "Z-Image DMDR diagram",
+      "aliases": ["z-image dmdr", "z image dmdr", "dmdr", "z-image-turbo"],
+      "source": "Z-Image",
+      "path": "assets/DMDR.webp",
+      "url": "https://raw.githubusercontent.com/Tongyi-MAI/Z-Image/main/assets/DMDR.webp",
+      "rank": 4
+    },
+    {
+      "id": "wan21-video-dit-architecture",
+      "title": "Wan2.1 video DiT architecture",
+      "aliases": ["wan2.1", "wan 2.1", "wan2.1 video dit", "wan-ai/wan2.1-t2v-14b", "wan-ai/wan2.1-t2v-14b-diffusers", "wan-ai/wan2.1-i2v-14b-720p"],
+      "source": "Wan2.1",
+      "path": "assets/video_dit_arch.jpg",
+      "url": "https://raw.githubusercontent.com/Wan-Video/Wan2.1/main/assets/video_dit_arch.jpg",
+      "rank": 1
+    },
+    {
+      "id": "wan22-moe-architecture",
+      "title": "Wan2.2 MoE architecture",
+      "aliases": ["wan2.2", "wan 2.2", "wan2.2 moe", "wan-ai/wan2.2-t2v-a14b", "wan-ai/wan2.2-t2v-a14b-diffusers", "wan-ai/wan2.2-i2v-a14b-diffusers"],
+      "source": "Wan2.2",
+      "path": "assets/moe_arch.png",
+      "url": "https://raw.githubusercontent.com/Wan-Video/Wan2.2/main/assets/moe_arch.png",
+      "rank": 1
+    },
+    {
+      "id": "wan22-moe-transition",
+      "title": "Wan2.2 MoE transition schedule",
+      "aliases": ["wan2.2", "wan 2.2", "wan2.2 moe transition", "wan 2.2 moe transition", "wan2.2 high-noise expert", "wan2.2 low-noise expert"],
+      "source": "Wan2.2",
+      "path": "assets/moe_2.png",
+      "url": "https://raw.githubusercontent.com/Wan-Video/Wan2.2/main/assets/moe_2.png",
+      "rank": 2
+    },
+    {
+      "id": "wan22-vae",
+      "title": "Wan2.2 high-compression VAE diagram",
+      "aliases": ["wan2.2", "wan 2.2", "wan2.2 vae", "wan 2.2 vae", "wan2.2-ti2v-5b", "wan-ai/wan2.2-ti2v-5b", "wan-ai/wan2.2-ti2v-5b-diffusers"],
+      "source": "Wan2.2",
+      "path": "assets/vae.png",
+      "url": "https://raw.githubusercontent.com/Wan-Video/Wan2.2/main/assets/vae.png",
+      "rank": 3
+    },
+    {
+      "id": "hunyuanvideo-overall-architecture",
+      "title": "HunyuanVideo overall architecture",
+      "aliases": ["hunyuanvideo", "hunyuan video", "tencent/hunyuanvideo", "tencent-hunyuan/hunyuanvideo"],
+      "source": "HunyuanVideo",
+      "path": "assets/overall.png",
+      "url": "https://raw.githubusercontent.com/Tencent-Hunyuan/HunyuanVideo/main/assets/overall.png",
+      "rank": 1
+    },
+    {
+      "id": "hunyuanvideo-backbone",
+      "title": "HunyuanVideo dual-stream to single-stream backbone",
+      "aliases": ["hunyuanvideo backbone", "hunyuan video backbone", "hunyuanvideo dual-stream", "hunyuanvideo single-stream"],
+      "source": "HunyuanVideo",
+      "path": "assets/backbone.png",
+      "url": "https://raw.githubusercontent.com/Tencent-Hunyuan/HunyuanVideo/main/assets/backbone.png",
+      "rank": 2
+    },
+    {
+      "id": "hunyuanvideo-text-encoder",
+      "title": "HunyuanVideo MLLM text encoder",
+      "aliases": ["hunyuanvideo text encoder", "hunyuan video text encoder", "hunyuanvideo mllm"],
+      "source": "HunyuanVideo",
+      "path": "assets/text_encoder.png",
+      "url": "https://raw.githubusercontent.com/Tencent-Hunyuan/HunyuanVideo/main/assets/text_encoder.png",
+      "rank": 3
+    },
+    {
+      "id": "hunyuanvideo-3d-vae",
+      "title": "HunyuanVideo 3D VAE",
+      "aliases": ["hunyuanvideo 3d vae", "hunyuan video 3d vae", "hunyuanvideo vae"],
+      "source": "HunyuanVideo",
+      "path": "assets/3dvae.png",
+      "url": "https://raw.githubusercontent.com/Tencent-Hunyuan/HunyuanVideo/main/assets/3dvae.png",
+      "rank": 4
+    },
+    {
+      "id": "hunyuan3d2-system-overview",
+      "title": "Hunyuan3D 2.0 system overview",
+      "aliases": ["hunyuan3d", "hunyuan3d-2", "hunyuan3d 2", "hunyuan3d-2.0", "tencent-hunyuan/hunyuan3d-2"],
+      "source": "Hunyuan3D-2",
+      "path": "assets/images/system.jpg",
+      "url": "https://raw.githubusercontent.com/Tencent-Hunyuan/Hunyuan3D-2/main/assets/images/system.jpg",
+      "rank": 1
+    },
+    {
+      "id": "hunyuan3d2-architecture",
+      "title": "Hunyuan3D 2.0 two-stage architecture",
+      "aliases": ["hunyuan3d-2 architecture", "hunyuan3d 2 architecture", "hunyuan3d-2.0 architecture", "hunyuan3d-dit", "hunyuan3d-paint"],
+      "source": "Hunyuan3D-2",
+      "path": "assets/images/arch.jpg",
+      "url": "https://raw.githubusercontent.com/Tencent-Hunyuan/Hunyuan3D-2/main/assets/images/arch.jpg",
+      "rank": 2
+    },
+    {
+      "id": "flux1-architecture",
+      "title": "FLUX.1 architecture diagram",
+      "aliases": ["flux.1", "flux-1", "flux.1-dev", "flux-1-dev", "black-forest-labs/flux.1-dev"],
+      "source": "Flux.1-Architecture-Diagram",
+      "path": "flux_architecture_diagram.png",
+      "url": "https://raw.githubusercontent.com/brayevalerien/Flux.1-Architecture-Diagram/main/flux_architecture_diagram.png",
+      "rank": 1
     }
   ]
 }
