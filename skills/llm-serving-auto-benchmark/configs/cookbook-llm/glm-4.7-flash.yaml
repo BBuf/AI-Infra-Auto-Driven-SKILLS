@@ -53,6 +53,7 @@ frameworks:
     server_command: python -m sglang.launch_server
     base_server_flags:
       model_path: zai-org/GLM-4.7-Flash
+      trust_remote_code: true
       mem_fraction_static: 0.82
       schedule_policy: lpm
     search_space:
@@ -75,6 +76,7 @@ frameworks:
     config_source: framework_generic_translation
     base_server_flags:
       tensor_parallel_size: 1
+      trust_remote_code: true
       gpu_memory_utilization: 0.9
       max_model_len: 12288
       dtype: auto
@@ -108,6 +110,7 @@ frameworks:
       backend: pytorch
       tp_size: 1
       pp_size: 1
+      trust_remote_code: true
       kv_cache_free_gpu_memory_fraction: 0.75
       max_seq_len: 12288
     search_space:

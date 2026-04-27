@@ -83,6 +83,21 @@ class LlmServingCookbookConfigsTest(unittest.TestCase):
         self.assertIn("--tp_size 8", trt_command)
         self.assertNotIn("--tp-size", trt_command)
 
+    def test_glm_configs_explicitly_enable_trust_remote_code(self) -> None:
+        glm_configs = (
+            "glm-4.5.yaml",
+            "glm-4.6.yaml",
+            "glm-4.7.yaml",
+            "glm-4.7-flash.yaml",
+        )
+
+        for config_name in glm_configs:
+            config = self.load_config(CONFIG_ROOT / config_name)
+            with self.subTest(path=config_name):
+                for framework in self.mod.FRAMEWORKS:
+                    flags = config["frameworks"][framework]["base_server_flags"]
+                    self.assertIs(flags.get("trust_remote_code"), True)
+
     def test_help_snapshot_path_validates_all_config_flags(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             help_dir = Path(tmp)
