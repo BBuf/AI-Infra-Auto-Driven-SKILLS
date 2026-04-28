@@ -8,16 +8,17 @@ analysis, and production triage.**
 [![GitHub stars](https://img.shields.io/github/stars/BBuf/AI-Infra-Auto-Driven-SKILLS?style=social)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/BBuf/AI-Infra-Auto-Driven-SKILLS?style=social)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/forks)
 [![Last commit](https://img.shields.io/github/last-commit/BBuf/AI-Infra-Auto-Driven-SKILLS?style=flat-square)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/commits/main)
-[![Agent skills](https://img.shields.io/badge/agent_skills-66-2f80ed?style=flat-square)](#repository-map)
+[![Core skills](https://img.shields.io/badge/core_skills-7-2f80ed?style=flat-square)](#start-here)
+[![Model optimization](https://img.shields.io/badge/model_optimization-catalog-8250df?style=flat-square)](#model-optimization-skills)
 [![Model histories](https://img.shields.io/badge/model_histories-58-2ea44f?style=flat-square)](#model-pr-optimization-history)
 
 </div>
 
-This repo is not a prompt dump. It is a curated skill library for AI
-infrastructure agents that need to make concrete progress on SGLang, vLLM, and
-TensorRT-LLM work: benchmark fairly, read upstream PRs with diff evidence,
-profile kernels, debug serving incidents, and keep model-family optimization
-knowledge reusable.
+This repo is not a prompt dump. It combines a small set of core operational
+skills with a model-family optimization catalog for AI infrastructure agents
+that need to make concrete progress on SGLang, vLLM, and TensorRT-LLM work:
+benchmark fairly, read upstream PRs with diff evidence, profile kernels, debug
+serving incidents, and keep model-family optimization knowledge reusable.
 
 If these runbooks save you a failed benchmark run, a stale model-support
 assumption, or a late-night production triage loop, a star helps more AI-infra
@@ -27,7 +28,8 @@ engineers find the project.
 
 | Highlight | What it helps with |
 | --- | --- |
-| 66 agent skills | Reuse battle-tested workflows instead of rewriting one-off prompts. |
+| 7 core operational skills | Reuse battle-tested workflows for benchmarking, profiling, diagrams, incidents, SOTA loops, and H100 operations. |
+| Model optimization catalog | Browse framework-specific model-family runbooks under `skills/model-optimization/` without treating each model page as a core skill. |
 | SGLang, vLLM, and TensorRT-LLM coverage | Compare serving stacks with the same workload, SLA, and evidence format. |
 | Diff-backed model PR dossiers | Track why model-support PRs landed, what code changed, and what risks remain. |
 | Profiler-to-action playbooks | Turn torch-profiler traces into kernel, overlap, and fusion opportunities. |
