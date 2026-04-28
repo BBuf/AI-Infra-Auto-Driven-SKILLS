@@ -65,7 +65,7 @@
 | 2026-03-23 | [#21134](https://github.com/sgl-project/sglang/pull/21134) | merged | [Bug Fix] GLM-V / GLM-OCR: field detection for transformers 5.x and MTP omission fix | `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/models/glm_ocr.py` |
 | 2026-03-29 | [#19788](https://github.com/sgl-project/sglang/pull/19788) | closed | [Feature] Optimizations for class Qwen3VLMoeVisionModel (Conv3d to Linear) in Qwen3VL | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen3_vl_moe.py`, `test/registered/vlm/test_qwen3vl_conv3d_to_linear.py` |
 | 2026-04-01 | [#17122](https://github.com/sgl-project/sglang/pull/17122) | merged | [bugfix]GLM-4V model | `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/multimodal/processors/base_processor.py`, `test/registered/ascend/vlm_models/test_ascend_glm_4_5v.py` |
-| 2026-04-16 | [#22961](https://github.com/sgl-project/sglang/pull/22961) | open | [NPU] Support GLM-4.5V | `python/sglang/srt/models/glm4_moe.py` |
+| 2026-04-16 | [#22961](https://github.com/sgl-project/sglang/pull/22961) | merged | [NPU] Support GLM-4.5V | `python/sglang/srt/models/glm4_moe.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -1254,7 +1254,7 @@ diff -- test/registered/ascend/vlm_models/test_ascend_glm_4_5v.py
 ### PR #22961 - [NPU] Support GLM-4.5V
 
 - 链接: https://github.com/sgl-project/sglang/pull/22961
-- 状态/时间: open / 2026-04-16
+- 状态/时间: merged / 2026-04-28T01:08:19Z
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+17/-5，可读 patch 36 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[NPU] Support GLM-4.5V」；模型线: GLM VLM/OCR；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/glm4_moe.py`；PR 正文摘要: Support GLM-4.5V on NPU. 1. When calling the split_qkv_rmsnorm_rope function, pass the correct arguments based on the use_qk_norm parameter.The `split_qkv_rmsnorm_rope` kernel a...。

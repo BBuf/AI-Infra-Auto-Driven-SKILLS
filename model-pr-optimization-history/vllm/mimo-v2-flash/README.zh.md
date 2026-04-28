@@ -2,8 +2,8 @@
 
 ## 文档口径
 
-- 重做日期: 2026-04-25
-- 源码基线: `vllm-project/vllm` 当前追溯 worktree commit `95995bbef8`
+- 重做日期: 2026-04-28
+- 源码基线: `vllm-project/vllm` `origin/main` commit `fd74c90d9`
 - PR 收集规则: 先从模型实现、配置、processor、parser、docs/tests 等相关文件执行 `git log --name-only -- <model-files>`，再按 commit subject 的模型关键词过滤，最后用 GitHub Pull Request files API 读取每个 PR 的最终 diff。
 - 额外保留规则: 原 history/skill 已显式引用但未出现在当前实现文件 git trace 中的 PR 会保留，并在卡片里标注来源。
 
@@ -14,12 +14,15 @@
 | `vllm/model_executor/models/mimo.py` | [#17433](https://github.com/vllm-project/vllm/pull/17433) |
 | `vllm/model_executor/models/mimo_mtp.py` | [#17433](https://github.com/vllm-project/vllm/pull/17433), [#25136](https://github.com/vllm-project/vllm/pull/25136) |
 | `vllm/model_executor/models/mimo_v2_flash.py` | [#30836](https://github.com/vllm-project/vllm/pull/30836), [#31175](https://github.com/vllm-project/vllm/pull/31175), [#40045](https://github.com/vllm-project/vllm/pull/40045) |
+| `vllm/model_executor/models/mimo_v2.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
+| `vllm/model_executor/models/mimo_v2_mtp.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
+| `vllm/model_executor/models/mimo_v2_omni.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 5
+- git 追溯 PR 数: 6
 - 原文档显式引用补充 PR 数: 0
-- 当前文档总 PR 数: 5
+- 当前文档总 PR 数: 6
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -32,6 +35,7 @@
 | 2025-12-19 | [#30836](https://github.com/vllm-project/vllm/pull/30836) | merged | [Model] Add MiMo-V2-Flash support | `vllm/model_executor/models/mimo_v2_flash.py` |
 | 2026-01-05 | [#31175](https://github.com/vllm-project/vllm/pull/31175) | merged | [Bugfix] Properly apply v_scale for mimo_v2_flash | `vllm/model_executor/models/mimo_v2_flash.py` |
 | 2026-04-24 | [#40045](https://github.com/vllm-project/vllm/pull/40045) | merged | [Attention] use diff kv backend for mimo v2 flash | `vllm/model_executor/models/mimo_v2_flash.py` |
+| 2026-04-27 | [#40967](https://github.com/vllm-project/vllm/pull/40967) | merged | [Model] Add MiMo-V2.5 support | `vllm/model_executor/models/mimo_v2.py`, `vllm/model_executor/models/mimo_v2_mtp.py`, `vllm/model_executor/models/mimo_v2_omni.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -178,6 +182,42 @@ diff -- vllm/model_executor/models/mimo_v2_flash.py
 - 已读文件:
   - runtime: `vllm/model_executor/models/mimo_v2_flash.py` modified +14/-8
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/layers/attention/attention.py`, `vllm/model_executor/models/mimo_v2_flash.py`, `vllm/v1/attention/backends/fa_utils.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #40967 - [Model] Add MiMo-V2.5 support
+
+- 链接: https://github.com/vllm-project/vllm/pull/40967
+- 状态/时间: merged / 2026-04-27T13:26:52Z
+- 反查来源: 当前主线 MiMo-V2.5 Pro、MTP 和 Omni 实现文件。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 12 个文件，+4737/-5；本卡优先审计 model、MTP、Omni、registry、config 和 supported-model docs/tests。
+- 动机: 标题「[Model] Add MiMo-V2.5 support」；模型线: MiMo V2/V2.5；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mimo_v2.py`, `vllm/model_executor/models/mimo_v2_mtp.py`, `vllm/model_executor/models/mimo_v2_omni.py`；在历史 Flash runtime 之后补齐 Pro 和 Omni 支持。
+- 实现要点: 在 `mimo_v2.py` 新增 MiMo-V2.5 Pro runtime；在 `mimo_v2_mtp.py` 新增 MTP rewrite；在 `mimo_v2_omni.py` 新增 Omni 多模态/audio/image/video runtime；补 registry/test 的 Pro/Omni/MTP 条目；给 MiMo-V2 MTP 增加 speculative config override；并在 fused linear loading 中处理 block-quant scale sharding。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/mimo_v2.py` 新增 active MiMo-V2.5 runtime，并保留 Flash/Pro architecture mapping。
+  - `vllm/model_executor/models/mimo_v2_mtp.py` 新增 MiMo-V2 MTP model classes 和 architecture-specific layer counts。
+  - `vllm/model_executor/models/mimo_v2_omni.py` 新增 multimodal Omni support。
+  - `vllm/config/speculative.py` 将 Pro/Omni/Flash architectures 映射到 `mimo_v2_mtp`。
+- 关键代码摘录:
+
+```diff
+diff -- vllm/config/speculative.py
++        if (arch := hf_config.architectures[0]) in (
++            "MiMoV2ProForCausalLM",
++            "MiMoV2OmniForCausalLM",
++        ):
++            hf_config.model_type = "mimo_v2_mtp"
+diff -- tests/models/registry.py
++    "MiMoV2ProForCausalLM": _HfExamplesInfo(
++        "XiaomiMiMo/MiMo-V2.5-Pro", trust_remote_code=True, is_available_online=False
++    ),
++    "MiMoV2OmniForCausalLM": _HfExamplesInfo(
++        "XiaomiMiMo/MiMo-V2.5-Omni", trust_remote_code=True, is_available_online=False
++    ),
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/mimo_v2.py`, `vllm/model_executor/models/mimo_v2_mtp.py`, `vllm/model_executor/models/mimo_v2_omni.py`, `vllm/model_executor/models/mimo_audio.py`
+  - config/registry/tests: `vllm/config/speculative.py`, `vllm/model_executor/models/registry.py`, `tests/models/registry.py`, `docs/models/supported_models.md`
+- 验证与风险: 需要回归 Pro text serving、Omni multimodal loading、MTP speculative config rewrite、block-quant fused linear loading 和 registry imports；私有或占位 checkpoint 可能需要 access-aware smoke tests。
 
 ## 补漏结论
 

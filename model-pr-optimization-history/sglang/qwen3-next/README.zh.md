@@ -83,7 +83,7 @@
 | 2026-03-26 | [#21496](https://github.com/sgl-project/sglang/pull/21496) | merged | Revert "bugfix for weight loading for qwen3-next" | `python/sglang/srt/models/qwen3_next.py` |
 | 2026-03-30 | [#21662](https://github.com/sgl-project/sglang/pull/21662) | merged | [Fix] Fix weight_loader property assignment for qwen3-next FP8 models | `python/sglang/srt/models/qwen3_next.py` |
 | 2026-03-30 | [#21684](https://github.com/sgl-project/sglang/pull/21684) | open | [bugfix] fix Qwen3-next memory leak | `python/sglang/srt/mem_cache/allocator.py`, `python/sglang/srt/mem_cache/memory_pool.py` |
-| 2026-03-30 | [#21698](https://github.com/sgl-project/sglang/pull/21698) | open | [npu]fix: qwen3-next w8a8 precision bugs | `python/sglang/srt/models/qwen3_next.py` |
+| 2026-03-30 | [#21698](https://github.com/sgl-project/sglang/pull/21698) | merged | [npu]fix: qwen3-next w8a8 precision bugs | `python/sglang/srt/models/qwen3_next.py` |
 | 2026-04-07 | [#22073](https://github.com/sgl-project/sglang/pull/22073) | merged | [Feature] Adding Qwen3-asr Model Support | `python/sglang/srt/models/qwen3_asr.py`, `python/sglang/srt/configs/qwen3_asr.py`, `python/sglang/srt/multimodal/processors/qwen3_asr.py` |
 | 2026-04-09 | [#22358](https://github.com/sgl-project/sglang/pull/22358) | merged | Enable DFLASH support for additional model backends | `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/kimi_k25.py`, `python/sglang/srt/models/qwen3_next.py` |
 | 2026-04-10 | [#22458](https://github.com/sgl-project/sglang/pull/22458) | merged | Fix NCCL AllGather hanging issue for Qwen3 Next MTP | `python/sglang/srt/speculative/eagle_info.py`, `python/sglang/srt/speculative/eagle_info_v2.py` |
@@ -1729,7 +1729,7 @@ diff -- python/sglang/srt/models/qwen3_next.py
 ### PR #21684 - [bugfix] fix Qwen3-next memory leak
 
 - 链接: https://github.com/sgl-project/sglang/pull/21684
-- 状态/时间: open / 2026-03-30
+- 状态/时间: merged / 2026-04-27T10:14:34Z
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+2/-2，可读 patch 18 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[bugfix] fix Qwen3-next memory leak」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `python/sglang/srt/mem_cache/allocator.py`, `python/sglang/srt/mem_cache/memory_pool.py`；PR 正文未提供可用摘要。
@@ -1757,7 +1757,7 @@ diff -- python/sglang/srt/mem_cache/memory_pool.py
 ### PR #21698 - [npu]fix: qwen3-next w8a8 precision bugs
 
 - 链接: https://github.com/sgl-project/sglang/pull/21698
-- 状态/时间: open / 2026-03-30
+- 状态/时间: merged / 2026-04-27T10:14:34Z
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+22/-5，可读 patch 41 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[npu]fix: qwen3-next w8a8 precision bugs」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_next.py`；PR 正文摘要: The change at https://github.com/sgl-project/sglang/pull/19321 caused qwen3-next to fail in running the w8a8 model on NPU due to incorrect loading of the in_proj_qkvz quantizati...。

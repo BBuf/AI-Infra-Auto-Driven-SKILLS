@@ -120,7 +120,7 @@ AutoDeploy rather than same-stream PDL windows.
 
 | Pattern | Trace keywords | Primary code | Existing path | Skill should conclude |
 | --- | --- | --- | --- | --- |
-| PR `#35968` DSV3.2 multi-stream indexer overlap | `weights_proj`<br>`wk`<br>`k_norm`<br>`aux_stream` | `PR #35968`<br>`vllm/model_executor/models/deepseek_v2.py`<br>`vllm/utils/torch_utils.py` | Open PR overlaps the small `weights_proj` GEMM with `wk + k_norm` on a secondary CUDA stream for decode batches instead of serializing both on the default stream | Treat this as a concrete upstream decode-time kernel-overlap family when traces show underutilized projection overlap opportunities. |
+| PR `#35968` DSV3.2 multi-stream indexer overlap | `weights_proj`<br>`wk`<br>`k_norm`<br>`aux_stream` | `PR #35968`<br>`vllm/model_executor/models/deepseek_v2.py`<br>`vllm/utils/torch_utils.py` | Closed PR explored overlapping the small `weights_proj` GEMM with `wk + k_norm` on a secondary CUDA stream for decode batches instead of serializing both on the default stream | Treat this as a concrete upstream decode-time kernel-overlap family when traces show underutilized projection overlap opportunities. |
 | PR `#39301` GLM5 router GEMM with PDL overlap | `TRTLLM_ENABLE_PDL`<br>`router_gemm`<br>`GLM5`<br>`FI AR RMS fusion` | `PR #39301`<br>`vllm/model_executor/layers/fused_moe/router/gate_linear.py`<br>`vllm/csrc/moe/dsv3_router_gemm_utils.h` | The GLM5 router GEMM path explicitly uses PDL so the router kernel can overlap with the preceding fused allreduce-plus-RMS block on supported GPUs | Treat router-GEMM launch overlap on GLM5-like traces as an in-flight upstream family first. |
 
 ## 10. Important toggles and caveats

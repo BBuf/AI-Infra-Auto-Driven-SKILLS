@@ -77,7 +77,7 @@
 | 2026-04-06 | [#21792](https://github.com/sgl-project/sglang/pull/21792) | merged | [CI] Add basic unit test for Minimax-M2.5 | `test/registered/8-gpu-models/test_minimax_m25_basic.py` |
 | 2026-04-07 | [#20919](https://github.com/sgl-project/sglang/pull/20919) | merged | [NPU] Support dp-attention for MiniMax2.5 | `python/sglang/srt/models/minimax_m2.py` |
 | 2026-04-08 | [#22300](https://github.com/sgl-project/sglang/pull/22300) | open | [NVIDIA] Fix FP8 gemm performance with fp16 models (MInimax-M2.5) | `python/sglang/srt/layers/quantization/fp8_utils.py`, `python/sglang/srt/layers/quantization/fp8.py`, `python/sglang/srt/model_loader/utils.py` |
-| 2026-04-09 | [#22432](https://github.com/sgl-project/sglang/pull/22432) | open | [NPU] add split_qkv_tp_rmsnorm_rope ops for minimax2 | `python/sglang/srt/models/minimax_m2.py` |
+| 2026-04-09 | [#22432](https://github.com/sgl-project/sglang/pull/22432) | closed | [NPU] add split_qkv_tp_rmsnorm_rope ops for minimax2 | `python/sglang/srt/models/minimax_m2.py` |
 | 2026-04-10 | [#20967](https://github.com/sgl-project/sglang/pull/20967) | merged | 【BugFix】fix the bug of minimax_m2.5 model that causes repeated outputs when using tp16 | `python/sglang/srt/models/minimax_m2.py` |
 | 2026-04-10 | [#20067](https://github.com/sgl-project/sglang/pull/20067) | merged | MiniMax-M2.5 - Support dp attention, dp reduce scatter, FP4 all gather, AR fusion in prepare_attn | `python/sglang/srt/models/minimax_m2.py`, `test/registered/8-gpu-models/test_minimax_m25.py` |
 | 2026-04-13 | [#20673](https://github.com/sgl-project/sglang/pull/20673) | merged | [Feature][JIT Kernel] Fused TP QK norm For Minimax | `python/sglang/srt/models/minimax_m2.py` |
@@ -1066,7 +1066,7 @@ diff -- python/sglang/srt/model_loader/utils.py
 ### PR #22432 - [NPU] add split_qkv_tp_rmsnorm_rope ops for minimax2
 
 - 链接: https://github.com/sgl-project/sglang/pull/22432
-- 状态/时间: open / 2026-04-09
+- 状态/时间: closed / 2026-04-27T09:26:49Z
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+69/-11，可读 patch 154 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[NPU] add split_qkv_tp_rmsnorm_rope ops for minimax2」；模型线: MiniMax M2 Series；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/minimax_m2.py`；PR 正文摘要: add split_qkv_tp_rmsnorm_rope ops for Minimax2 add split_qkv_tp_rmsnorm_rope ops for Minimax2 fix cudagraph+eagle3+dp-attention bs > 1 crash error 3.5K 1.5K test case launch cmd...。

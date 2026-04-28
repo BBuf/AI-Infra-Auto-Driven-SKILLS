@@ -65,7 +65,7 @@
 | 2026-03-23 | [#21134](https://github.com/sgl-project/sglang/pull/21134) | merged | [Bug Fix] GLM-V / GLM-OCR: field detection for transformers 5.x and MTP omission fix | `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/models/glm_ocr.py` |
 | 2026-03-29 | [#19788](https://github.com/sgl-project/sglang/pull/19788) | closed | [Feature] Optimizations for class Qwen3VLMoeVisionModel (Conv3d to Linear) in Qwen3VL | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen3_vl_moe.py`, `test/registered/vlm/test_qwen3vl_conv3d_to_linear.py` |
 | 2026-04-01 | [#17122](https://github.com/sgl-project/sglang/pull/17122) | merged | [bugfix]GLM-4V model | `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/multimodal/processors/base_processor.py`, `test/registered/ascend/vlm_models/test_ascend_glm_4_5v.py` |
-| 2026-04-16 | [#22961](https://github.com/sgl-project/sglang/pull/22961) | open | [NPU] Support GLM-4.5V | `python/sglang/srt/models/glm4_moe.py` |
+| 2026-04-16 | [#22961](https://github.com/sgl-project/sglang/pull/22961) | merged | [NPU] Support GLM-4.5V | `python/sglang/srt/models/glm4_moe.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -1254,7 +1254,7 @@ diff -- test/registered/ascend/vlm_models/test_ascend_glm_4_5v.py
 ### PR #22961 - [NPU] Support GLM-4.5V
 
 - Link: https://github.com/sgl-project/sglang/pull/22961
-- Status/date: open / 2026-04-16
+- Status/date: merged / 2026-04-28T01:08:19Z
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +17/-5, 36 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[NPU] Support GLM-4.5V"; model line: GLM VLM/OCR; category: model support/runtime entry; main diff: `python/sglang/srt/models/glm4_moe.py`; PR body summary: Support GLM-4.5V on NPU. 1. When calling the split_qkv_rmsnorm_rope function, pass the correct arguments based on the use_qk_norm parameter.The `split_qkv_rmsnorm_rope` kernel a....

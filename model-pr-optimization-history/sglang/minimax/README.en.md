@@ -77,7 +77,7 @@
 | 2026-04-06 | [#21792](https://github.com/sgl-project/sglang/pull/21792) | merged | [CI] Add basic unit test for Minimax-M2.5 | `test/registered/8-gpu-models/test_minimax_m25_basic.py` |
 | 2026-04-07 | [#20919](https://github.com/sgl-project/sglang/pull/20919) | merged | [NPU] Support dp-attention for MiniMax2.5 | `python/sglang/srt/models/minimax_m2.py` |
 | 2026-04-08 | [#22300](https://github.com/sgl-project/sglang/pull/22300) | open | [NVIDIA] Fix FP8 gemm performance with fp16 models (MInimax-M2.5) | `python/sglang/srt/layers/quantization/fp8_utils.py`, `python/sglang/srt/layers/quantization/fp8.py`, `python/sglang/srt/model_loader/utils.py` |
-| 2026-04-09 | [#22432](https://github.com/sgl-project/sglang/pull/22432) | open | [NPU] add split_qkv_tp_rmsnorm_rope ops for minimax2 | `python/sglang/srt/models/minimax_m2.py` |
+| 2026-04-09 | [#22432](https://github.com/sgl-project/sglang/pull/22432) | closed | [NPU] add split_qkv_tp_rmsnorm_rope ops for minimax2 | `python/sglang/srt/models/minimax_m2.py` |
 | 2026-04-10 | [#20967](https://github.com/sgl-project/sglang/pull/20967) | merged | 【BugFix】fix the bug of minimax_m2.5 model that causes repeated outputs when using tp16 | `python/sglang/srt/models/minimax_m2.py` |
 | 2026-04-10 | [#20067](https://github.com/sgl-project/sglang/pull/20067) | merged | MiniMax-M2.5 - Support dp attention, dp reduce scatter, FP4 all gather, AR fusion in prepare_attn | `python/sglang/srt/models/minimax_m2.py`, `test/registered/8-gpu-models/test_minimax_m25.py` |
 | 2026-04-13 | [#20673](https://github.com/sgl-project/sglang/pull/20673) | merged | [Feature][JIT Kernel] Fused TP QK norm For Minimax | `python/sglang/srt/models/minimax_m2.py` |
@@ -1066,7 +1066,7 @@ diff -- python/sglang/srt/model_loader/utils.py
 ### PR #22432 - [NPU] add split_qkv_tp_rmsnorm_rope ops for minimax2
 
 - Link: https://github.com/sgl-project/sglang/pull/22432
-- Status/date: open / 2026-04-09
+- Status/date: closed / 2026-04-27T09:26:49Z
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +69/-11, 154 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[NPU] add split_qkv_tp_rmsnorm_rope ops for minimax2"; model line: MiniMax M2 Series; category: bug fix; main diff: `python/sglang/srt/models/minimax_m2.py`; PR body summary: add split_qkv_tp_rmsnorm_rope ops for Minimax2 add split_qkv_tp_rmsnorm_rope ops for Minimax2 fix cudagraph+eagle3+dp-attention bs > 1 crash error 3.5K 1.5K test case launch cmd....

@@ -2,8 +2,8 @@
 
 ## 文档口径
 
-- 重做日期: 2026-04-25
-- 源码基线: `sgl-project/sglang` 当前追溯 worktree commit `880599cd43`
+- 重做日期: 2026-04-28
+- 源码基线: `sgl-project/sglang` `origin/main` commit `6fbad22fe`
 - PR 收集规则: 先从模型实现、配置、processor、parser、docs/tests 等相关文件执行 `git log --name-only -- <model-files>`，再按 commit subject 的模型关键词过滤，最后用 GitHub Pull Request files API 读取每个 PR 的最终 diff。
 - 额外保留规则: 原 history/skill 已显式引用但未出现在当前实现文件 git trace 中的 PR 会保留，并在卡片里标注来源。
 
@@ -13,6 +13,9 @@
 | --- | --- |
 | `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.5.mdx` | 无直接 PR 号提交 |
 | `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.6.mdx` | [#23394](https://github.com/sgl-project/sglang/pull/23394) |
+| `python/sglang/srt/model_loader/loader.py` | [#23408](https://github.com/sgl-project/sglang/pull/23408) |
+| `python/sglang/srt/models/kimi_k25.py` | [#23408](https://github.com/sgl-project/sglang/pull/23408) |
+| `python/sglang/srt/multimodal/processors/kimi_k25.py` | [#23501](https://github.com/sgl-project/sglang/pull/23501) |
 | `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.mdx` | 无直接 PR 号提交 |
 | `docs_new/cookbook/autoregressive/Moonshotai/Kimi-Linear.mdx` | 无直接 PR 号提交 |
 | `docs_new/docs/basic_usage/kimi_k2_5.mdx` | 无直接 PR 号提交 |
@@ -141,6 +144,8 @@
 | 2026-04-16 | [#13789](https://github.com/sgl-project/sglang/pull/13789) | closed | [DeepEP Support] Support kimi-k2-thinking deepep | `python/sglang/srt/layers/moe/fused_moe_triton/fused_marlin_moe.py`, `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors_moe.py`, `python/sglang/srt/layers/moe/fused_moe_triton/moe_align_block_size.py` |
 | 2026-04-21 | [#23186](https://github.com/sgl-project/sglang/pull/23186) | merged | [AMD] Fused qk rmsnorm bf16 for amd/Kimi-K2.5-MXFP4 | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` |
 | 2026-04-21 | [#23394](https://github.com/sgl-project/sglang/pull/23394) | merged | [docs] sync kimi-k2.6 from sgl-cookbook | `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.6.mdx` |
+| 2026-04-27 | [#23408](https://github.com/sgl-project/sglang/pull/23408) | merged | [AMD] Fix Kimi-K2.6 Quark MXFP4 loading prefix and packed module mapping | `python/sglang/srt/model_loader/loader.py`, `python/sglang/srt/models/kimi_k25.py` |
+| 2026-04-27 | [#23501](https://github.com/sgl-project/sglang/pull/23501) | merged | [VLM] Fix Kimi-K2.5 CPU path: rename grid_thws -> image_grid_thw | `python/sglang/srt/multimodal/processors/kimi_k25.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -2637,6 +2642,58 @@ diff -- docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.6.mdx
 - 已读文件:
   - docs: `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.6.mdx` modified +34/-2
 - 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.6.mdx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #23408 - [AMD] Fix Kimi-K2.6 Quark MXFP4 loading prefix and packed module mapping
+
+- 链接: https://github.com/sgl-project/sglang/pull/23408
+- 状态/时间: merged / 2026-04-27T06:56:16Z
+- 反查来源: 当前主线 Kimi-K2.6 AMD/Quark 加载路径。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+8/-2；本卡覆盖完整 runtime diff。
+- 动机: 标题「[AMD] Fix Kimi-K2.6 Quark MXFP4 loading prefix and packed module mapping」；模型线: Kimi K2/K2.5/K2.6；类别: 缺陷修复；主要 diff: `python/sglang/srt/model_loader/loader.py`, `python/sglang/srt/models/kimi_k25.py`；修复 Kimi-K2.6 的 Quark MXFP4 加载。
+- 实现要点: Quark packed-module mapping 增加 `fused_qkv_a_proj_with_mqa`；`KimiK25ForConditionalGeneration` 选择 `language_model` prefix 时把 `QuarkConfig` 视作 `ModelSlimConfig` 同类路径。
+- 代码 diff 细节:
+  - `python/sglang/srt/model_loader/loader.py` 为 Quark 增加 fused QKV/A packed-module mapping。
+  - `python/sglang/srt/models/kimi_k25.py` import `QuarkConfig` 并加入 language-model prefix 条件。
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/model_loader/loader.py
++                "fused_qkv_a_proj_with_mqa": ["q_a_proj", "kv_a_proj_with_mqa"],
+diff -- python/sglang/srt/models/kimi_k25.py
++from sglang.srt.layers.quantization.quark.quark import QuarkConfig
+-                    if isinstance(quant_config, ModelSlimConfig)
++                    if isinstance(quant_config, (ModelSlimConfig, QuarkConfig))
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/model_loader/loader.py`, `python/sglang/srt/models/kimi_k25.py`
+- 验证与风险: 需要回归 AMD Kimi-K2.6 MXFP4/Quark loading，并确认 Kimi-K2.5 ModelSlim 路径 prefix 行为不变。
+
+### PR #23501 - [VLM] Fix Kimi-K2.5 CPU path: rename grid_thws -> image_grid_thw
+
+- 链接: https://github.com/sgl-project/sglang/pull/23501
+- 状态/时间: merged / 2026-04-27T20:34:29Z
+- 反查来源: 当前主线 Kimi-K2.5 多模态 CPU processor 路径。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+5/-1；本卡覆盖完整 processor diff。
+- 动机: 标题「[VLM] Fix Kimi-K2.5 CPU path: rename grid_thws -> image_grid_thw」；模型线: Kimi K2/K2.5/K2.6；类别: 缺陷修复；主要 diff: `python/sglang/srt/multimodal/processors/kimi_k25.py`；让 CPU processor 输出字段对齐 runtime 期待的 image grid 字段。
+- 实现要点: HF processor 返回后，如果存在 `grid_thws`，就移动到 `image_grid_thw`，兼容已不再读取 `grid_thws` 的调用点。
+- 代码 diff 细节:
+  - `python/sglang/srt/multimodal/processors/kimi_k25.py` 修改 `_cpu_call` 输出规范化。
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/multimodal/processors/kimi_k25.py
+-        return self._hf_processor(text=[input_text], **kwargs)
++        out = self._hf_processor(text=[input_text], **kwargs)
++        grid_thws = out.pop("grid_thws", None)
++        if grid_thws is not None:
++            out["image_grid_thw"] = grid_thws
++        return out
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/multimodal/processors/kimi_k25.py`
+- 验证与风险: 需要回归 Kimi-K2.5 图片 CPU preprocessing，以及任何期待 `image_grid_thw` 的 GPU wrapper 路径；这是多模态 CPU path 常见字段不匹配点。
 
 ## 补漏结论
 

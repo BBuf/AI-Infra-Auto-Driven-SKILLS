@@ -2,8 +2,8 @@
 
 ## 文档口径
 
-- 重做日期: 2026-04-25
-- 源码基线: `vllm-project/vllm` 当前追溯 worktree commit `95995bbef8`
+- 重做日期: 2026-04-28
+- 源码基线: `vllm-project/vllm` `origin/main` commit `fd74c90d9`
 - PR 收集规则: 先从模型实现、配置、processor、parser、docs/tests 等相关文件执行 `git log --name-only -- <model-files>`，再按 commit subject 的模型关键词过滤，最后用 GitHub Pull Request files API 读取每个 PR 的最终 diff。
 - 额外保留规则: 原 history/skill 已显式引用但未出现在当前实现文件 git trace 中的 PR 会保留，并在卡片里标注来源。
 
@@ -11,13 +11,19 @@
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
-| - | 当前主线没有匹配到实现文件 |
+| `vllm/model_executor/models/deepseek_v4.py` | [#40860](https://github.com/vllm-project/vllm/pull/40860), [#41006](https://github.com/vllm-project/vllm/pull/41006) |
+| `vllm/model_executor/models/deepseek_v4_mtp.py` | [#40860](https://github.com/vllm-project/vllm/pull/40860), [#41006](https://github.com/vllm-project/vllm/pull/41006) |
+| `vllm/model_executor/layers/deepseek_v4_attention.py` | [#40860](https://github.com/vllm-project/vllm/pull/40860) |
+| `vllm/tokenizers/deepseek_v4.py` | [#40860](https://github.com/vllm-project/vllm/pull/40860) |
+| `vllm/renderers/deepseek_v4.py` | [#40860](https://github.com/vllm-project/vllm/pull/40860) |
+| `vllm/tool_parsers/deepseekv4_tool_parser.py` | [#40860](https://github.com/vllm-project/vllm/pull/40860) |
+| `vllm/model_executor/models/registry.py` | [#40860](https://github.com/vllm-project/vllm/pull/40860) |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 0
-- 原文档显式引用补充 PR 数: 3
-- 当前文档总 PR 数: 3
+- git 追溯 PR 数: 3
+- 原文档显式引用补充 PR 数: 2
+- 当前文档总 PR 数: 5
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -25,8 +31,10 @@
 
 | 日期 | PR | 状态 | 标题 | 主要文件 |
 | --- | --- | --- | --- | --- |
-| 2026-04-24 | [#40760](https://github.com/vllm-project/vllm/pull/40760) | open | [New Model] Support DeepseekV4 | `vllm/model_executor/models/deepseek_v4.py`, `vllm/model_executor/layers/deepseek_v4_attention.py`, `vllm/tokenizers/deepseek_v4_encoding.py` |
-| 2026-04-24 | [#40806](https://github.com/vllm-project/vllm/pull/40806) | open | [Bugfix] Fix the DSML token leakage in DSV4/3.2 | `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `vllm/tool_parsers/deepseekv32_tool_parser.py` |
+| 2026-04-24 | [#40760](https://github.com/vllm-project/vllm/pull/40760) | closed | [New Model] Support DeepseekV4 | `vllm/model_executor/models/deepseek_v4.py`, `vllm/model_executor/layers/deepseek_v4_attention.py`, `vllm/tokenizers/deepseek_v4_encoding.py` |
+| 2026-04-26 | [#40806](https://github.com/vllm-project/vllm/pull/40806) | merged | [Bugfix] Fix the DSML token leakage in DSV4/3.2 | `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `vllm/tool_parsers/deepseekv32_tool_parser.py` |
+| 2026-04-27 | [#40860](https://github.com/vllm-project/vllm/pull/40860) | merged | [Feat] DeepSeek V4 Rebased | `vllm/model_executor/models/deepseek_v4.py`, `vllm/model_executor/models/deepseek_v4_mtp.py`, `vllm/model_executor/models/registry.py` |
+| 2026-04-28 | [#41006](https://github.com/vllm-project/vllm/pull/41006) | merged | [Model] Support DSV4 base | `vllm/model_executor/models/deepseek_v4.py`, `vllm/model_executor/models/deepseek_v4_mtp.py` |
 | 2026-04-24 | [#40811](https://github.com/vllm-project/vllm/pull/40811) | open | [Perf][Kernel] BF16 input support for persistent topK - DeepSeekV4 | `csrc/persistent_topk.cuh`, `csrc/topk.cu`, `tests/kernels/test_top_k_per_row.py` |
 
 ## 逐 PR diff 审计卡
@@ -34,9 +42,9 @@
 ### PR #40760 - [New Model] Support DeepseekV4
 
 - 链接: https://github.com/vllm-project/vllm/pull/40760
-- 状态/时间: open / 2026-04-24
+- 状态/时间: closed / 2026-04-27T01:51:00Z
 - 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 158 个文件，+16954/-760，可读 patch 21384 行；本卡优先审计模型相关文件和高变更量文件。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 158 个文件，+16968/-760；该分支已关闭并被合入的 #40860 取代，本卡仅保留历史上下文。
 - 动机: 标题「[New Model] Support DeepseekV4」；模型线: DeepSeek V4；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/deepseek_v4.py`, `vllm/model_executor/layers/deepseek_v4_attention.py`, `vllm/tokenizers/deepseek_v4_encoding.py`；PR 正文摘要: Congratulations on Deepseek-ai to release the model. Thanks for all Inferact member's effort for support this. Note: This model implementation is highly optimized. All the compo...。
 - 实现要点: `vllm/model_executor/models/deepseek_v4.py` added +1423/-0 (1423 lines); hunks: -0,0 +1,1423; symbols: DeepseekV4FP8Config, __init__, get_name, override_quantization_method，涉及 `DeepseekV4FP8Config, __init__, get_name`；`vllm/model_executor/layers/deepseek_v4_attention.py` added +1062/-0 (1062 lines); hunks: -0,0 +1,1062; symbols: DeepseekV4MLAModules, DeepseekV4MultiHeadLatentAttentionWrapper, takes, does，涉及 `DeepseekV4MLAModules, DeepseekV4MultiHeadLatentAttentionWrapper, takes`；`vllm/tokenizers/deepseek_v4_encoding.py` added +757/-0 (757 lines); hunks: -0,0 +1,757; symbols: to_json, tools_from_openai_format, tool_calls_from_openai_format, tool_calls_to_openai_format，涉及 `to_json, tools_from_openai_format, tool_calls_from_openai_format`；`vllm/model_executor/models/deepseek_v4_mtp.py` added +472/-0 (472 lines); hunks: -0,0 +1,472; symbols: DeepSeekV4MultiTokenPredictorLayer, __init__, forward, DeepSeekV4MultiTokenPredictor，涉及 `DeepSeekV4MultiTokenPredictorLayer, __init__, forward`。
 - 代码 diff 细节:
@@ -70,12 +78,12 @@ diff -- vllm/tokenizers/deepseek_v4_encoding.py
 
 - 已读文件:
   - runtime: `vllm/model_executor/models/deepseek_v4.py` added +1423/-0; `vllm/model_executor/layers/deepseek_v4_attention.py` added +1062/-0; `vllm/tokenizers/deepseek_v4_encoding.py` added +757/-0; `vllm/model_executor/models/deepseek_v4_mtp.py` added +472/-0; `vllm/model_executor/layers/deepseek_compressor.py` added +436/-0; `vllm/model_executor/layers/mhc.py` added +436/-0
-- 验证与风险: diff 自带测试面 `tests/kernels/attention/test_use_trtllm_attention.py`, `tests/kernels/core/test_fused_q_kv_rmsnorm.py`, `tests/kernels/moe/test_deepgemm.py`, `tests/kernels/moe/test_ocp_mx_moe.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+- 验证与风险: 这是已关闭的历史前序分支；当前主线行为应以 #40860/#41006 为准。
 
 ### PR #40806 - [Bugfix] Fix the DSML token leakage in DSV4/3.2
 
 - 链接: https://github.com/vllm-project/vllm/pull/40806
-- 状态/时间: open / 2026-04-24
+- 状态/时间: merged / 2026-04-26T00:58:50Z
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+76/-23，可读 patch 144 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Fix the DSML token leakage in DSV4/3.2」；模型线: DeepSeek V4；类别: 缺陷修复；主要 diff: `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `vllm/tool_parsers/deepseekv32_tool_parser.py`；PR 正文摘要: Co-authored-by: @Windswithyou before after。
@@ -108,6 +116,74 @@ diff -- vllm/tool_parsers/deepseekv32_tool_parser.py
   - tests: `tests/tool_parsers/test_deepseekv32_tool_parser.py` modified +52/-0
   - runtime: `vllm/tool_parsers/deepseekv32_tool_parser.py` modified +24/-23
 - 验证与风险: diff 自带测试面 `tests/tool_parsers/test_deepseekv32_tool_parser.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #40860 - [Feat] DeepSeek V4 Rebased
+
+- 链接: https://github.com/vllm-project/vllm/pull/40860
+- 状态/时间: merged / 2026-04-27T01:31:09Z
+- 反查来源: 当前主线实现文件和 registry alias。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 150 个文件，+16313/-717；本卡优先审计模型、registry、tokenizer、renderer、parser 和 MTP 文件。
+- 动机: 标题「[Feat] DeepSeek V4 Rebased」；模型线: DeepSeek V4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/deepseek_v4.py`, `vllm/model_executor/models/deepseek_v4_mtp.py`, `vllm/model_executor/models/registry.py`；该 PR 取代已关闭的 #40760 分支。
+- 实现要点: `vllm/model_executor/models/deepseek_v4.py` 新增 causal LM、FP8/MXFP4 感知 quant 类、MegaMoE expert 路径和权重映射；`vllm/model_executor/models/deepseek_v4_mtp.py` 新增 MTP；`registry.py` 注册 `DeepseekV4ForCausalLM` 与 `DeepSeekV4MTPModel`；tokenizer、renderer 和 tool parser 文件补齐 DeepSeek V4 的 OpenAI 兼容行为。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/deepseek_v4.py` 新增主模型、quant dispatch、MoE blocks、MLA plumbing 和 `DeepseekV4ForCausalLM`。
+  - `vllm/model_executor/models/deepseek_v4_mtp.py` 新增 MTP draft model 和权重重映射。
+  - `vllm/model_executor/models/registry.py` 新增 DeepSeek V4 model 与 MTP alias。
+  - `vllm/tool_parsers/deepseekv4_tool_parser.py` 基于 DSV3.2 parser 派生 V4 DSML parser。
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/registry.py
++    "DeepseekV4ForCausalLM": ("deepseek_v4", "DeepseekV4ForCausalLM"),
++    "DeepSeekV4MTPModel": ("deepseek_v4_mtp", "DeepSeekV4MTP"),
+diff -- vllm/tool_parsers/deepseekv4_tool_parser.py
++class DeepSeekV4ToolParser(DeepSeekV32ToolParser):
++    tool_call_start_token: str = "<｜DSML｜tool_calls>"
++    tool_call_end_token: str = "</｜DSML｜tool_calls>"
+diff -- vllm/model_executor/models/deepseek_v4.py
++class DeepseekV4FP8Config(Fp8Config):
++class DeepseekV4ForCausalLM(nn.Module):
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/deepseek_v4.py`, `vllm/model_executor/models/deepseek_v4_mtp.py`, `vllm/model_executor/layers/deepseek_v4_attention.py`, `vllm/model_executor/layers/deepseek_compressor.py`
+  - parser/tokenizer: `vllm/tool_parsers/deepseekv4_tool_parser.py`, `vllm/tokenizers/deepseek_v4.py`, `vllm/renderers/deepseek_v4.py`
+  - registry: `vllm/model_executor/models/registry.py`
+- 验证与风险: 需要验证模型加载、base generation、MTP speculative decode、DSML tool parsing 和 quantized expert routing；#40806 的 parser 测试应继续保持通过。
+
+### PR #41006 - [Model] Support DSV4 base
+
+- 链接: https://github.com/vllm-project/vllm/pull/41006
+- 状态/时间: merged / 2026-04-28T00:16:56Z
+- 反查来源: 当前主线 follow-up，直接修改 `deepseek_v4.py` 和 `deepseek_v4_mtp.py`。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+111/-23；本卡覆盖完整运行时 diff。
+- 动机: 标题「[Model] Support DSV4 base」；模型线: DeepSeek V4；类别: 缺陷修复/模型支持；主要 diff: `vllm/model_executor/models/deepseek_v4.py`, `vllm/model_executor/models/deepseek_v4_mtp.py`；修复 Flash-Base / FP8 expert checkpoint 不应走 MXFP4 expert 路径的问题。
+- 实现要点: 新增 `_DEEPSEEK_V4_EXPERT_DTYPES = ("fp4", "fp8")`；从当前 vLLM config 延迟解析 `expert_dtype`；FP4 experts 走 `Mxfp4MoEMethod`，FP8 experts 回落到 `Fp8Config`；按 FP4/FP8 expert 分别构造 scale suffix 权重映射；MTP loader 同步选择 expert scale suffix。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/deepseek_v4.py` 修改 quant dispatch、MegaMoE 校验和 per-instance weight mapper 选择。
+  - `vllm/model_executor/models/deepseek_v4_mtp.py` 修改 FP4 vs FP8 expert 的 scale suffix 映射。
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/deepseek_v4.py
++_DEEPSEEK_V4_EXPERT_DTYPES = ("fp4", "fp8")
++    def expert_dtype(self) -> str:
++        expert_dtype = getattr(hf_config, "expert_dtype", "fp4")
++    def is_scale_e8m0(self) -> bool:
++        return self.expert_dtype == "fp4"
++            if self.expert_dtype == "fp4":
++                return Mxfp4MoEMethod(layer.moe_config)
+diff -- vllm/model_executor/models/deepseek_v4_mtp.py
++        expert_scale_suffix = (
++            ".weight_scale"
++            if getattr(self.config, "expert_dtype", "fp4") == "fp4"
++            else ".weight_scale_inv"
++        )
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/deepseek_v4.py`, `vllm/model_executor/models/deepseek_v4_mtp.py`
+- 验证与风险: FP4 expert checkpoint 与 FP8 expert/base checkpoint 都要回归；主要风险是 scale suffix 或 MoE quant method 选错但加载时不立刻暴露。
 
 ### PR #40811 - [Perf][Kernel] BF16 input support for persistent topK - DeepSeekV4
 

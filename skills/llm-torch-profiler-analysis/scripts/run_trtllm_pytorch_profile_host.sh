@@ -46,6 +46,8 @@ Environment:
 Notes:
   - Run this on the H100 host, not inside `sglang_bbuf`.
   - It always pins TensorRT-LLM to `--backend pytorch`.
+  - The default image tag is floating; record the resolved TensorRT-LLM version
+    in the run manifest and pass --image for reproducible validation.
   - Profiling uses `TLLM_PROFILE_START_STOP` and `TLLM_TORCH_PROFILE_TRACE`.
   - For Python-location recovery, prefer a `py_executor.py` override with `with_stack=True`.
   - A small benchmark summary is written after the trace is emitted.

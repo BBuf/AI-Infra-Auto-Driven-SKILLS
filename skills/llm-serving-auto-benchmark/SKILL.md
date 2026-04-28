@@ -141,15 +141,18 @@ before starting a long sweep.
   the operator has verified the image.
 - vLLM `--max-num-partial-prefills > 1` is model- and runtime-gated. Keep `1`
   in the default pass; raise only after a preflight with the actual model.
-- In the validated TensorRT-LLM 1.0.0 image, `trtllm-serve serve` accepts
+- The historical TensorRT-LLM 1.0.0 validation image accepted
   `--kv_cache_free_gpu_memory_fraction`; the older `--free_gpu_memory_fraction`
-  exits with a CLI error. Re-check the accepted flag name via `--help` on the
-  target image before a real run.
-- TensorRT-LLM 1.0.0 multi-GPU PyTorch-backend servers need `--ipc=host`,
-  `--ulimit memlock=-1`, `--ulimit stack=67108864`, `--shm-size=16g`, and
-  `NCCL_IB_DISABLE=1` (for single-node) or an equivalent NCCL setup.
-- TensorRT-LLM 1.0.0 benchmark client takes `--backend openai` or
-  `--backend openai-chat`; `--backend trtllm` is rejected. This is separate
+  exited with a CLI error. TensorRT-LLM was refreshed to 1.2.1 stable and
+  1.3.0 release candidates by 2026-04-28, so re-check the accepted flag name
+  via `--help` on the target image before a real run.
+- The historical TensorRT-LLM 1.0.0 multi-GPU PyTorch-backend validation used
+  `--ipc=host`, `--ulimit memlock=-1`, `--ulimit stack=67108864`,
+  `--shm-size=16g`, and `NCCL_IB_DISABLE=1` (for single-node) or an equivalent
+  NCCL setup. Keep these as a starting point, not as a version-independent
+  requirement.
+- The historical TensorRT-LLM 1.0.0 benchmark client took `--backend openai` or
+  `--backend openai-chat`; `--backend trtllm` was rejected. This is separate
   from the server backend, which is pinned to `pytorch` by this skill.
 - `trtllm` `benchmark_serving --dataset-name random` silently falls back to
   ShareGPT sampling without `--random-ids` (or `--download-path`).
@@ -418,15 +421,18 @@ Then benchmark the OpenAI-compatible endpoint with the TensorRT-LLM serving
 benchmark client or with the same OpenAI-compatible client used for the other
 frameworks.
 
-For TensorRT-LLM 1.0.0, `benchmark_serving --dataset-name random` samples from
-ShareGPT unless you pass either `--download-path` or `--random-ids`. For a fast
-synthetic smoke test, pass `--random-ids`.
+In the historical TensorRT-LLM 1.0.0 validation image,
+`benchmark_serving --dataset-name random` sampled from ShareGPT unless either
+`--download-path` or `--random-ids` was passed. For a fast synthetic smoke test,
+pass `--random-ids`, then confirm the behavior on the target TensorRT-LLM image.
 
 TensorRT-LLM flag names are especially version-sensitive. In the validated
 TensorRT-LLM 1.0.0 image, the KV-cache memory flag accepted by
-`trtllm-serve serve` is `--kv_cache_free_gpu_memory_fraction`, not
-`--free_gpu_memory_fraction`. Verify this with `trtllm-serve serve --help`
-before running a search on any GPU target.
+`trtllm-serve serve` was `--kv_cache_free_gpu_memory_fraction`, not
+`--free_gpu_memory_fraction`. TensorRT-LLM 1.2.1 is the latest stable GitHub
+release as of 2026-04-28, with 1.3.0 release candidates also published; verify
+the current flag with `trtllm-serve serve --help` before running a search on any
+GPU target.
 
 TensorRT-LLM backend policy for this skill:
 

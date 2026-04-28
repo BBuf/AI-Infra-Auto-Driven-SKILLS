@@ -6,15 +6,33 @@ of trusting the examples blindly.
 
 ## Authored Snapshot
 
-Last updated: 2026-04-22.
+Last updated: 2026-04-28.
+
+## 2026-04-28 Release Freshness Check
+
+The H100 validation notes below are still useful as reproduced command evidence,
+but they are no longer the newest upstream releases:
+
+| Framework | Current release signal checked on 2026-04-28 | Impact |
+| --- | --- | --- |
+| SGLang | GitHub release `v0.5.10.post1` from 2026-04-09 | Historical `0.5.10rc0` smoke notes should be treated as pre-release validation. |
+| vLLM | GitHub release `v0.20.0` from 2026-04-27 | vLLM moved past the `0.19.1` image used for the original smoke run; re-capture grouped `--help=all` output before using old search-space assumptions. |
+| TensorRT-LLM | GitHub latest stable `v1.2.1` from 2026-04-20 and `v1.3.0rc12` pre-release from 2026-04-17 | The `tensorrt_llm 1.0.0` notes are historical. Re-check server flags, benchmark-client backend names, and PyTorch-backend profiling behavior on the target image. |
+
+Source pages:
+
+- <https://github.com/sgl-project/sglang/releases/tag/v0.5.10.post1>
+- <https://github.com/vllm-project/vllm/releases/tag/v0.20.0>
+- <https://github.com/NVIDIA/TensorRT-LLM/releases/tag/v1.2.1>
+- <https://github.com/NVIDIA/TensorRT-LLM/releases/tag/v1.3.0rc12>
 
 The initial skill text was informed by these local/source snapshots:
 
 | Framework | Snapshot | Notes |
 | --- | --- | --- |
-| SGLang | local checkout `7044d5fe7`; H100 container package `sglang 0.5.10rc0` at repo commit `30cd2cf32` | SGLang `bench_serving` help was checked in the H100 validation container. |
-| vLLM | local checkout `ed2f282bc`; H100 image `vllm/vllm-openai:latest` with `vllm 0.19.1`; official docs for `vllm bench sweep serve` and benchmark sweeps | `vllm serve` and `vllm bench serve` were smoke-tested in the H100 validation image. |
-| TensorRT-LLM | H100 image `nvcr.io/nvidia/tensorrt-llm/release:latest` with `tensorrt_llm 1.0.0`; official `trtllm-serve` and serving benchmark docs current on 2026-04-22 | `trtllm-serve serve --backend pytorch` and `tensorrt_llm.serve.scripts.benchmark_serving` were smoke-tested in the H100 validation image. Non-PyTorch server backends are out of scope for this skill. |
+| SGLang | local checkout `7044d5fe7`; H100 container package `sglang 0.5.10rc0` at repo commit `30cd2cf32` | SGLang `bench_serving` help was checked in the H100 validation container. This is now a historical pre-release snapshot. |
+| vLLM | local checkout `ed2f282bc`; H100 image `vllm/vllm-openai:latest` with `vllm 0.19.1`; official docs for `vllm bench sweep serve` and benchmark sweeps | `vllm serve` and `vllm bench serve` were smoke-tested in the H100 validation image. Re-check against `v0.20.0` or the target image before reuse. |
+| TensorRT-LLM | H100 image `nvcr.io/nvidia/tensorrt-llm/release:latest` with `tensorrt_llm 1.0.0`; official `trtllm-serve` and serving benchmark docs current on 2026-04-22 | `trtllm-serve serve --backend pytorch` and `tensorrt_llm.serve.scripts.benchmark_serving` were smoke-tested in the H100 validation image. Non-PyTorch server backends are out of scope for this skill. Re-check against `v1.2.1` or the target image before reuse. |
 
 ## Update Rule
 
