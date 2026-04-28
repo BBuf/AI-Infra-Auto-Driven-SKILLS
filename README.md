@@ -48,10 +48,6 @@ engineers find the project.
 | Triage SGLang production incidents | [`sglang-prod-incident-triage`](skills/sglang-prod-incident-triage/) |
 | Adapt an H100 operator runbook | [`h100`](skills/h100/) |
 
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=BBuf/AI-Infra-Auto-Driven-SKILLS&type=Date)](https://star-history.com/#BBuf/AI-Infra-Auto-Driven-SKILLS&Date)
-
 ## Repository Map
 
 ```text
@@ -159,3 +155,7 @@ cp -r skills/model-architecture-diagram <agent-skill-dir>/model-architecture-dia
 cp -r skills/model-optimization/sglang/sglang-qwen3-core-optimization <agent-skill-dir>/sglang-qwen3-core-optimization
 cp -r skills/model-optimization/vllm/vllm-qwen3-core-optimization <agent-skill-dir>/vllm-qwen3-core-optimization
 ```
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=BBuf/AI-Infra-Auto-Driven-SKILLS&type=Date)](https://star-history.com/#BBuf/AI-Infra-Auto-Driven-SKILLS&Date)
