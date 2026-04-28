@@ -9,8 +9,8 @@ analysis, and production triage.**
 [![GitHub forks](https://img.shields.io/github/forks/BBuf/AI-Infra-Auto-Driven-SKILLS?style=social)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/forks)
 [![Last commit](https://img.shields.io/github/last-commit/BBuf/AI-Infra-Auto-Driven-SKILLS?style=flat-square)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/commits/main)
 [![Core skills](https://img.shields.io/badge/core_skills-7-2f80ed?style=flat-square)](#start-here)
-[![Model optimization](https://img.shields.io/badge/model_optimization-catalog-8250df?style=flat-square)](#model-optimization-skills)
-[![Model histories](https://img.shields.io/badge/model_histories-58-2ea44f?style=flat-square)](#model-pr-optimization-history)
+[![Model optimization](https://img.shields.io/badge/model_optimization-catalog-8250df?style=flat-square)](#model-optimization-catalog)
+[![Model histories](https://img.shields.io/badge/model_histories-58-2ea44f?style=flat-square)](#model-optimization-catalog)
 
 </div>
 
@@ -123,154 +123,30 @@ SKILL and replace the concrete SSH alias, Docker name, and workspace path in
 one pass rather than introducing generic `<...>` placeholders that drift out of
 sync.
 
-## Model Optimization Skills
+## Model Optimization Catalog
 
-The model optimization handbook series keeps shared production rules at the
-`model-optimization/` root, then splits framework-specific model-family skills
-by serving framework.
+Model-family material is organized as a catalog rather than counted as core
+operational skills. Use the skill page when you want an agent runbook, and the
+history page when you want the diff-backed PR evolution notes for the same
+model family.
 
-SGLang model optimization skills live under `skills/model-optimization/sglang/`:
+| Framework | Agent runbooks | Bilingual PR histories |
+| --- | --- | --- |
+| SGLang | [`skills/model-optimization/sglang/`](skills/model-optimization/sglang/) | [`model-pr-optimization-history/sglang/`](model-pr-optimization-history/sglang/) |
+| vLLM | [`skills/model-optimization/vllm/`](skills/model-optimization/vllm/) | [`model-pr-optimization-history/vllm/`](model-pr-optimization-history/vllm/) |
+| Shared standard | [`model-pr-diff-dossier`](skills/model-optimization/model-pr-diff-dossier/) | Cross-family audit notes live beside the framework history directories. |
 
-- `sglang-deepseek-v3-r1-optimization`
-- `sglang-deepseek-v31-optimization`
-- `sglang-deepseek-v32-optimization`
-- `sglang-deepseek-v4-optimization`
-- `sglang-glm-vlm-ocr-optimization`
-- `sglang-glm45-optimization`
-- `sglang-glm46-glm47-optimization`
-- `sglang-glm5-glm51-optimization`
-- `sglang-hunyuan3-preview-optimization`
-- `sglang-kimi-k2-k25-optimization`
-- `sglang-minimax-m2-series-optimization`
-- `sglang-mixtral-quark-int4fp8-moe-optimization`
-- `sglang-moss-vl-optimization`
-- `sglang-qwen-vlm-omni-asr-optimization`
-- `sglang-qwen3-coder-optimization`
-- `sglang-qwen3-core-optimization`
-- `sglang-qwen3-next-optimization`
-- `sglang-qwen35-optimization`
-- `sglang-qwen36-optimization`
-- `sglang-ernie45-optimization`
-- `sglang-gemma4-optimization`
-- `sglang-gpt-oss-optimization`
-- `sglang-intern-s1-optimization`
-- `sglang-internvl35-optimization`
-- `sglang-llama4-optimization`
-- `sglang-mimo-v2-flash-optimization`
-- `sglang-mistral-small-4-optimization`
-- `sglang-nemotron-super-optimization`
-- `sglang-step35-optimization`
+Covered model families are listed once here; exact skill directory names may
+carry framework prefixes or newer model-version qualifiers.
 
-vLLM model optimization skills live under `skills/model-optimization/vllm/`:
-
-- `vllm-deepseek-v3-r1-optimization`
-- `vllm-deepseek-v31-optimization`
-- `vllm-deepseek-v32-optimization`
-- `vllm-deepseek-v4-optimization`
-- `vllm-glm-vlm-ocr-optimization`
-- `vllm-glm45-optimization`
-- `vllm-glm46-glm47-optimization`
-- `vllm-glm5-glm51-optimization`
-- `vllm-hunyuan3-preview-optimization`
-- `vllm-kimi-optimization`
-- `vllm-minimax-optimization`
-- `vllm-mixtral-quark-int4fp8-moe-optimization`
-- `vllm-moss-vl-optimization`
-- `vllm-qwen-vlm-omni-asr-optimization`
-- `vllm-qwen3-coder-optimization`
-- `vllm-qwen3-core-optimization`
-- `vllm-qwen3-next-optimization`
-- `vllm-qwen35-optimization`
-- `vllm-qwen36-optimization`
-- `vllm-ernie45-optimization`
-- `vllm-gemma4-optimization`
-- `vllm-gpt-oss-optimization`
-- `vllm-intern-s1-optimization`
-- `vllm-internvl35-optimization`
-- `vllm-llama4-optimization`
-- `vllm-mimo-v2-flash-optimization`
-- `vllm-mistral-small-4-optimization`
-- `vllm-nemotron-super-optimization`
-- `vllm-step35-optimization`
-
-The shared `skills/model-optimization/model-pr-diff-dossier/` skill records the
-mandatory production standard for model PR histories: read every PR diff and
-write motivation, implementation, code excerpt, and validation/risk.
-
-## Model PR Optimization History
-
-The `model-pr-optimization-history/` directory is framework-scoped.
-
-SGLang bilingual model evolution notes live under
-`model-pr-optimization-history/sglang/`:
-
-- `deepseek-v3-r1`
-- `deepseek-v31`
-- `deepseek-v32`
-- `deepseek-v4`
-- `glm-vlm-ocr`
-- `glm45`
-- `glm46-glm47`
-- `glm5-glm51`
-- `hunyuan3-preview`
-- `kimi`
-- `minimax`
-- `mixtral-quark-int4fp8-moe`
-- `moss-vl`
-- `qwen-vlm-omni-asr`
-- `qwen3-coder`
-- `qwen3-core`
-- `qwen3-next`
-- `qwen35`
-- `qwen36`
-- `ernie45`
-- `gemma4`
-- `gpt-oss`
-- `intern-s1`
-- `internvl35`
-- `llama4`
-- `mimo-v2-flash`
-- `mistral-small-4`
-- `nemotron-super`
-- `step35`
-
-Cross-family audits sit next to those directories:
-
-- `model-skill-pr-dossier-quality-scan-2026-04-23.md`
-- `model-skill-pr-dossier-quality-scan-2026-04-24.md`
-
-vLLM bilingual model evolution notes live under
-`model-pr-optimization-history/vllm/`:
-
-- `deepseek-v3-r1`
-- `deepseek-v31`
-- `deepseek-v32`
-- `deepseek-v4`
-- `glm-vlm-ocr`
-- `glm45`
-- `glm46-glm47`
-- `glm5-glm51`
-- `hunyuan3-preview`
-- `kimi`
-- `minimax`
-- `mixtral-quark-int4fp8-moe`
-- `moss-vl`
-- `qwen-vlm-omni-asr`
-- `qwen3-coder`
-- `qwen3-core`
-- `qwen3-next`
-- `qwen35`
-- `qwen36`
-- `ernie45`
-- `gemma4`
-- `gpt-oss`
-- `intern-s1`
-- `internvl35`
-- `llama4`
-- `mimo-v2-flash`
-- `mistral-small-4`
-- `nemotron-super`
-- `step35`
+```text
+deepseek-v3-r1, deepseek-v31, deepseek-v32, deepseek-v4,
+ernie45, gemma4, glm-vlm-ocr, glm45, glm46-glm47, glm5-glm51,
+gpt-oss, hunyuan3-preview, intern-s1, internvl35, kimi, llama4,
+mimo-v2-flash, minimax, mistral-small-4, mixtral-quark-int4fp8-moe,
+moss-vl, nemotron-super, qwen-vlm-omni-asr, qwen3-coder,
+qwen3-core, qwen3-next, qwen35, qwen36, step35
+```
 
 ## Install
 
