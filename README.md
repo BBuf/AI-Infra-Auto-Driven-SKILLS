@@ -1,9 +1,56 @@
+<div align="center">
+
 # AI-Infra-Auto-Driven-SKILLS
 
-Agent skills for SGLang/vLLM/TensorRT-LLM development, profiling, and
-production incident triage.
+**Evidence-first agent skills for LLM serving, model optimization, profiler
+analysis, and production triage.**
 
-## Structure
+[![GitHub stars](https://img.shields.io/github/stars/BBuf/AI-Infra-Auto-Driven-SKILLS?style=social)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/BBuf/AI-Infra-Auto-Driven-SKILLS?style=social)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/forks)
+[![Last commit](https://img.shields.io/github/last-commit/BBuf/AI-Infra-Auto-Driven-SKILLS?style=flat-square)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/commits/main)
+[![Agent skills](https://img.shields.io/badge/agent_skills-66-2f80ed?style=flat-square)](#repository-map)
+[![Model histories](https://img.shields.io/badge/model_histories-58-2ea44f?style=flat-square)](#model-pr-optimization-history)
+
+</div>
+
+This repo is not a prompt dump. It is a curated skill library for AI
+infrastructure agents that need to make concrete progress on SGLang, vLLM, and
+TensorRT-LLM work: benchmark fairly, read upstream PRs with diff evidence,
+profile kernels, debug serving incidents, and keep model-family optimization
+knowledge reusable.
+
+If these runbooks save you a failed benchmark run, a stale model-support
+assumption, or a late-night production triage loop, a star helps more AI-infra
+engineers find the project.
+
+## Why Star This Repo
+
+| Highlight | What it helps with |
+| --- | --- |
+| 66 agent skills | Reuse battle-tested workflows instead of rewriting one-off prompts. |
+| SGLang, vLLM, and TensorRT-LLM coverage | Compare serving stacks with the same workload, SLA, and evidence format. |
+| Diff-backed model PR dossiers | Track why model-support PRs landed, what code changed, and what risks remain. |
+| Profiler-to-action playbooks | Turn torch-profiler traces into kernel, overlap, and fusion opportunities. |
+| Replay-first production triage | Preserve the evidence trail while debugging real SGLang serving incidents. |
+| Public model architecture gallery | Resolve original architecture diagrams for popular LLM, VLM, MoE, OCR, and diffusion families. |
+
+## Start Here
+
+| Goal | Open this first |
+| --- | --- |
+| Compare SGLang, vLLM, and TensorRT-LLM serving performance | [`llm-serving-auto-benchmark`](skills/llm-serving-auto-benchmark/) |
+| Diagnose a torch-profiler trace | [`llm-torch-profiler-analysis`](skills/llm-torch-profiler-analysis/) |
+| Drive an end-to-end SGLang SOTA loop | [`sglang-sota-performance`](skills/sglang-sota-performance/) |
+| Read model-family optimization history | [`model-pr-optimization-history`](model-pr-optimization-history/) |
+| Fetch original model architecture diagrams | [`model-architecture-diagram`](skills/model-architecture-diagram/) |
+| Triage SGLang production incidents | [`sglang-prod-incident-triage`](skills/sglang-prod-incident-triage/) |
+| Adapt an H100 operator runbook | [`h100`](skills/h100/) |
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=BBuf/AI-Infra-Auto-Driven-SKILLS&type=Date)](https://star-history.com/#BBuf/AI-Infra-Auto-Driven-SKILLS&Date)
+
+## Repository Map
 
 ```text
 skills/
