@@ -145,7 +145,7 @@ ssh h100_sglang 'docker exec -i sglang_bbuf env CUDA_VISIBLE_DEVICES=0 PYTHONPAT
 Run this after any change to `jit_kernel/diffusion/triton`:
 
 ```bash
-ssh h100_sglang 'docker exec sglang_bbuf env CUDA_VISIBLE_DEVICES=0 PYTHONPATH=python zsh -lc "cd /tmp/sglang_local_validate && pytest -q python/sglang/jit_kernel/tests/test_qwen_image_modulation.py -q"'
+ssh h100_sglang 'docker exec sglang_bbuf env CUDA_VISIBLE_DEVICES=0 PYTHONPATH=python zsh -lc "cd /tmp/sglang_local_validate && pytest -q python/sglang/jit_kernel/tests/diffusion/test_qwen_image_modulation.py -q"'
 ```
 
 ### 4. General Diffusion Tests
@@ -180,11 +180,16 @@ ssh h100_sglang 'docker exec sglang_bbuf env CUDA_VISIBLE_DEVICES=0 PYTHONPATH=p
 ## Torch Compile Attribution
 
 When a benchmark compares eager vs `torch.compile`, do not stop at the speedup number.
-Capture matching eager and compile traces or perf dumps, then run:
+Capture matching eager and compile perf dumps or profile dirs. Compare structured
+perf dumps with the in-repo comparator:
 
 ```bash
-ssh h100_sglang 'docker exec sglang_bbuf zsh -lc "cd /tmp/sglang_local_validate && python scripts/analyze_diffusion_torch_compile.py"'
+ssh h100_sglang 'docker exec sglang_bbuf zsh -lc "cd /tmp/sglang_local_validate && python python/sglang/multimodal_gen/benchmarks/compare_perf.py eager.json compile.json"'
 ```
+
+For trace-level attribution, use `llm-torch-profiler-analysis` on the matching
+profile dirs and explain whether the gain came from fewer launches, fewer copies,
+or fused kernels replacing eager ATen ops.
 
 ## Cleanup
 
