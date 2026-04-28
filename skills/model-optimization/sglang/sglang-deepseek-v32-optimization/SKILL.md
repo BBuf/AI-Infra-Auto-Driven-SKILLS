@@ -130,7 +130,7 @@ Check these before declaring a V3.2 gap:
 - [#20534](https://github.com/sgl-project/sglang/pull/20534): transfer FP8 K/K-scale for CP indexer prefill gather, open.
 - [#21623](https://github.com/sgl-project/sglang/pull/21623): unit tests for `encoding_dsv32.py`, open.
 - [#22792](https://github.com/sgl-project/sglang/pull/22792): AITER `indexer_k_quant_and_cache`, open.
-- [#23268](https://github.com/sgl-project/sglang/pull/23268): NPU accuracy fix for NSA CP plus prefix cache, open.
+- [#23268](https://github.com/sgl-project/sglang/pull/23268): NPU fix for NSA CP plus prefix cache, merged on 2026-04-28.
 - [#22938](https://github.com/sgl-project/sglang/pull/22938): restore DeepSeek MLA MI300X paths after the MLA refactor, open.
 - [#23195](https://github.com/sgl-project/sglang/pull/23195): guard `.weight` access in DeepSeek MLA for AWQ/compressed-tensors, open.
 - [#23241](https://github.com/sgl-project/sglang/pull/23241): 3FS backend for DSA/mamba, open.

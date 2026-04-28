@@ -107,12 +107,15 @@ trtllm-serve serve <model> \
 Then benchmark `http://127.0.0.1:8000/v1/completions` or
 `http://127.0.0.1:8000/v1/chat/completions` with the TensorRT-LLM serving
 benchmark client or the same OpenAI-compatible client used for the other
-frameworks. For TensorRT-LLM 1.0.0 synthetic random data, pass `--random-ids`
-unless you also provide a ShareGPT `--download-path`. In the validated
-TensorRT-LLM 1.0.0 image, `--free_gpu_memory_fraction` is not accepted by
-`trtllm-serve serve`; use `--kv_cache_free_gpu_memory_fraction` after checking
-`--help` on the target image. The TensorRT-LLM 1.0.0 benchmark client accepts
-`--backend openai` and `--backend openai-chat`, not `--backend trtllm`.
+frameworks. In the historical TensorRT-LLM 1.0.0 validation image, synthetic
+random data needed `--random-ids` unless a ShareGPT `--download-path` was also
+provided. That image also rejected `--free_gpu_memory_fraction` for
+`trtllm-serve serve`; use `--kv_cache_free_gpu_memory_fraction` only after
+checking `--help` on the target image. TensorRT-LLM 1.2.1 is the latest stable
+GitHub release as of 2026-04-28, with 1.3.0 release candidates also published,
+so treat the 1.0.0 notes as historical validation evidence. The 1.0.0 benchmark
+client accepted `--backend openai` and `--backend openai-chat`, not
+`--backend trtllm`.
 
 Do not replace the server-side `--backend pytorch` with `trt` or an engine
 backend in this skill. Treat those requests as unsupported candidates and record

@@ -2,8 +2,8 @@
 
 ## 文档口径
 
-- 重做日期: 2026-04-25
-- 源码基线: `sgl-project/sglang` 当前追溯 worktree commit `880599cd43`
+- 重做日期: 2026-04-28
+- 源码基线: `sgl-project/sglang` `origin/main` commit `6fbad22fe`
 - PR 收集规则: 先从模型实现、配置、processor、parser、docs/tests 等相关文件执行 `git log --name-only -- <model-files>`，再按 commit subject 的模型关键词过滤，最后用 GitHub Pull Request files API 读取每个 PR 的最终 diff。
 - 额外保留规则: 原 history/skill 已显式引用但未出现在当前实现文件 git trace 中的 PR 会保留，并在卡片里标注来源。
 
@@ -18,15 +18,19 @@
 | `python/sglang/srt/models/mimo_mtp.py` | [#6059](https://github.com/sgl-project/sglang/pull/6059), [#7370](https://github.com/sgl-project/sglang/pull/7370) |
 | `python/sglang/srt/models/mimo_v2_flash.py` | [#15207](https://github.com/sgl-project/sglang/pull/15207), [#15464](https://github.com/sgl-project/sglang/pull/15464), [#17634](https://github.com/sgl-project/sglang/pull/17634), [#18051](https://github.com/sgl-project/sglang/pull/18051) |
 | `python/sglang/srt/models/mimo_v2_flash_nextn.py` | [#15207](https://github.com/sgl-project/sglang/pull/15207) |
+| `python/sglang/srt/models/mimo_v2.py` | [#23808](https://github.com/sgl-project/sglang/pull/23808) |
+| `python/sglang/srt/models/mimo_v2_nextn.py` | [#23808](https://github.com/sgl-project/sglang/pull/23808) |
+| `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx` | [#23851](https://github.com/sgl-project/sglang/pull/23851) |
+| `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx` | [#23851](https://github.com/sgl-project/sglang/pull/23851) |
 | `test/registered/8-gpu-models/test_mimo_models.py` | 无直接 PR 号提交 |
 | `test/registered/ascend/llm_models/test_npu_mimo_7b_rl.py` | 无直接 PR 号提交 |
 | `test/registered/ascend/vlm_models/test_npu_mimo_vl_7b_rl.py` | 无直接 PR 号提交 |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 6
+- git 追溯 PR 数: 8
 - 原文档显式引用补充 PR 数: 2
-- 当前文档总 PR 数: 8
+- 当前文档总 PR 数: 10
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -42,6 +46,8 @@
 | 2026-02-01 | [#18051](https://github.com/sgl-project/sglang/pull/18051) | merged | [Fix] Remove no use code in MiMo-V2-Flash | `python/sglang/srt/models/mimo_v2_flash.py` |
 | 2026-02-02 | [#17634](https://github.com/sgl-project/sglang/pull/17634) | merged | [MiMoV2Flash] [feat]: support two batch overlap | `python/sglang/srt/models/mimo_v2_flash.py` |
 | 2026-04-01 | [#21414](https://github.com/sgl-project/sglang/pull/21414) | merged | fix(MiMo-V2-Flash): add mimo reasoning parser | `python/sglang/srt/entrypoints/openai/serving_chat.py`, `python/sglang/srt/parser/reasoning_parser.py` |
+| 2026-04-28 | [#23808](https://github.com/sgl-project/sglang/pull/23808) | merged | [Feature] Xiaomi MiMo-V2.5-Pro day0 support | `python/sglang/srt/models/mimo_v2.py`, `python/sglang/srt/models/mimo_v2_nextn.py`, `python/sglang/srt/configs/model_config.py` |
+| 2026-04-27 | [#23851](https://github.com/sgl-project/sglang/pull/23851) | merged | docs: add MiMo-V2.5 docs | `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`, `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx` |
 
 ## 逐 PR diff 审计卡
 
@@ -286,6 +292,66 @@ diff -- python/sglang/srt/parser/reasoning_parser.py
 - 已读文件:
   - runtime: `python/sglang/srt/entrypoints/openai/serving_chat.py` modified +6/-0; `python/sglang/srt/parser/reasoning_parser.py` modified +1/-0
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/entrypoints/openai/serving_chat.py`, `python/sglang/srt/parser/reasoning_parser.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #23808 - [Feature] Xiaomi MiMo-V2.5-Pro day0 support
+
+- 链接: https://github.com/sgl-project/sglang/pull/23808
+- 状态/时间: merged / 2026-04-28T03:43:29Z
+- 反查来源: 当前主线实现文件，从 `mimo_v2_flash.py` 重命名到 `mimo_v2.py`。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+80/-23；本卡覆盖 model config、runtime rename、MTP rename、server args 和 common utils。
+- 动机: 标题「[Feature] Xiaomi MiMo-V2.5-Pro day0 support」；模型线: MiMo V2/V2.5；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/mimo_v2.py`, `python/sglang/srt/models/mimo_v2_nextn.py`, `python/sglang/srt/configs/model_config.py`。
+- 实现要点: 将 Flash runtime 重命名为通用 `mimo_v2.py`；新增 `MiMoV2ForCausalLM`；保留 `MiMoV2FlashForCausalLM` alias；draft 模型映射到 `MiMoV2MTP`；position embeddings 支持 `context_len` fallback；Pro checkpoint 支持 fused `qkv_proj` 加载；hybrid SWA 和 attention-sink 检测扩展到 `MiMoV2ForCausalLM`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/mimo_v2_flash.py` 重命名为 `python/sglang/srt/models/mimo_v2.py`，新增 `MiMoV2ForCausalLM` 并保留 `MiMoV2FlashForCausalLM` alias。
+  - `python/sglang/srt/models/mimo_v2_flash_nextn.py` 重命名为 `python/sglang/srt/models/mimo_v2_nextn.py`。
+  - `python/sglang/srt/configs/model_config.py` 将 `MiMoV2ForCausalLM` 接入 draft、hybrid SWA 和 attention-sink 路径。
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/mimo_v2_flash.py python/sglang/srt/models/mimo_v2.py
+-class MiMoV2FlashForCausalLM(nn.Module):
++class MiMoV2ForCausalLM(nn.Module):
++# Keep the old Flash architecture name loadable while new configs use MiMoV2ForCausalLM.
++class MiMoV2FlashForCausalLM(MiMoV2ForCausalLM):
++    pass
++EntryClass = [MiMoV2ForCausalLM, MiMoV2FlashForCausalLM]
+diff -- python/sglang/srt/configs/model_config.py
++            "MiMoV2ForCausalLM",
++            "MiMoV2FlashForCausalLM",
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/mimo_v2.py`, `python/sglang/srt/models/mimo_v2_nextn.py`, `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/server_args.py`, `python/sglang/srt/utils/common.py`
+- 验证与风险: 老 Flash architecture 配置和新 MiMo-V2.5-Pro 配置都要回归；主要风险是 alias 注册、MTP rewrite、fused `qkv_proj` TP 切分和 hybrid SWA/full attention cache sizing。
+
+### PR #23851 - docs: add MiMo-V2.5 docs
+
+- 链接: https://github.com/sgl-project/sglang/pull/23851
+- 状态/时间: merged / 2026-04-27T17:38:42Z
+- 反查来源: 当前主线 MiMo-V2.5 cookbook 与 deployment snippet。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+1025/-1；本卡优先审计 MiMo-V2.5 cookbook 和 command generator。
+- 动机: 标题「docs: add MiMo-V2.5 docs」；模型线: MiMo V2/V2.5；类别: 文档/测试/CI；主要 diff: `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`, `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx`；补齐 MiMo-V2.5-Pro 和 MiMo-V2.5 部署 recipe。
+- 实现要点: 新增 cookbook 页面，包含 variant/hardware 表、Docker image 矩阵、command generator import、Pro 与 310B 部署约束、DeepEP toggle 指南、reasoning output 示例和 multimodal 调用示例。
+- 代码 diff 细节:
+  - `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx` 新增 MiMo-V2.5/Pro guide。
+  - `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx` 新增 deployment command generator。
+  - docs navigation 将页面加入 autoregressive Xiaomi 分组。
+- 关键代码摘录:
+
+```diff
+diff -- docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx
++title: MiMo-V2.5
++[MiMo-V2.5-Pro](https://huggingface.co/XiaomiMiMo/MiMo-V2.5-Pro)
++[MiMo-V2.5](https://huggingface.co/XiaomiMiMo/MiMo-V2.5)
++import { MiMoV25Deployment } from '/src/snippets/autoregressive/mimo-v25-deployment.jsx'
++<MiMoV25Deployment />
+diff -- docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx
++export const MiMoV25Deployment = () => {
+```
+
+- 已读文件:
+  - docs: `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`, `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx`, docs navigation files
+- 验证与风险: cookbook 要当作可执行 launch 矩阵看待；复制到生产前需要核对生成的 CLI flags、checkpoint slugs、Docker image tags、TP/DP 约束、EAGLE settings 和 multimodal API 示例。
 
 ## 补漏结论
 

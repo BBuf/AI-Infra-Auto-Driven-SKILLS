@@ -2,8 +2,8 @@
 
 ## Scope
 
-- Rebuilt on: 2026-04-25
-- Source baseline: `sgl-project/sglang` trace worktree commit `880599cd43`
+- Rebuilt on: 2026-04-28
+- Source baseline: `sgl-project/sglang` `origin/main` commit `6fbad22fe`
 - PR collection rule: run `git log --name-only -- <model-files>` on model implementation, config, processor, parser, docs/tests, filter by model keywords in commit subjects, then read each PR's final diff through the GitHub Pull Request files API.
 - Preservation rule: PRs explicitly cited by the previous history/skill are retained even if current implementation files no longer trace to them, and the card marks that source.
 
@@ -18,15 +18,19 @@
 | `python/sglang/srt/models/mimo_mtp.py` | [#6059](https://github.com/sgl-project/sglang/pull/6059), [#7370](https://github.com/sgl-project/sglang/pull/7370) |
 | `python/sglang/srt/models/mimo_v2_flash.py` | [#15207](https://github.com/sgl-project/sglang/pull/15207), [#15464](https://github.com/sgl-project/sglang/pull/15464), [#17634](https://github.com/sgl-project/sglang/pull/17634), [#18051](https://github.com/sgl-project/sglang/pull/18051) |
 | `python/sglang/srt/models/mimo_v2_flash_nextn.py` | [#15207](https://github.com/sgl-project/sglang/pull/15207) |
+| `python/sglang/srt/models/mimo_v2.py` | [#23808](https://github.com/sgl-project/sglang/pull/23808) |
+| `python/sglang/srt/models/mimo_v2_nextn.py` | [#23808](https://github.com/sgl-project/sglang/pull/23808) |
+| `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx` | [#23851](https://github.com/sgl-project/sglang/pull/23851) |
+| `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx` | [#23851](https://github.com/sgl-project/sglang/pull/23851) |
 | `test/registered/8-gpu-models/test_mimo_models.py` | no direct PR-number commit |
 | `test/registered/ascend/llm_models/test_npu_mimo_7b_rl.py` | no direct PR-number commit |
 | `test/registered/ascend/vlm_models/test_npu_mimo_vl_7b_rl.py` | no direct PR-number commit |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 6
+- Git-traced PRs: 8
 - Extra PRs preserved from existing docs: 2
-- Total PRs in this document: 8
+- Total PRs in this document: 10
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -42,6 +46,8 @@
 | 2026-02-01 | [#18051](https://github.com/sgl-project/sglang/pull/18051) | merged | [Fix] Remove no use code in MiMo-V2-Flash | `python/sglang/srt/models/mimo_v2_flash.py` |
 | 2026-02-02 | [#17634](https://github.com/sgl-project/sglang/pull/17634) | merged | [MiMoV2Flash] [feat]: support two batch overlap | `python/sglang/srt/models/mimo_v2_flash.py` |
 | 2026-04-01 | [#21414](https://github.com/sgl-project/sglang/pull/21414) | merged | fix(MiMo-V2-Flash): add mimo reasoning parser | `python/sglang/srt/entrypoints/openai/serving_chat.py`, `python/sglang/srt/parser/reasoning_parser.py` |
+| 2026-04-28 | [#23808](https://github.com/sgl-project/sglang/pull/23808) | merged | [Feature] Xiaomi MiMo-V2.5-Pro day0 support | `python/sglang/srt/models/mimo_v2.py`, `python/sglang/srt/models/mimo_v2_nextn.py`, `python/sglang/srt/configs/model_config.py` |
+| 2026-04-27 | [#23851](https://github.com/sgl-project/sglang/pull/23851) | merged | docs: add MiMo-V2.5 docs | `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`, `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx` |
 
 ## Per-PR Diff Audit Cards
 
@@ -286,6 +292,66 @@ diff -- python/sglang/srt/parser/reasoning_parser.py
 - Reviewed files:
   - runtime: `python/sglang/srt/entrypoints/openai/serving_chat.py` modified +6/-0; `python/sglang/srt/parser/reasoning_parser.py` modified +1/-0
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/entrypoints/openai/serving_chat.py`, `python/sglang/srt/parser/reasoning_parser.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #23808 - [Feature] Xiaomi MiMo-V2.5-Pro day0 support
+
+- Link: https://github.com/sgl-project/sglang/pull/23808
+- Status/date: merged / 2026-04-28T03:43:29Z
+- Trace source: current-main implementation files renamed from `mimo_v2_flash.py` to `mimo_v2.py`.
+- Diff scope read: GitHub Pull Request files API returned 5 files, +80/-23; this card covers model config, runtime rename, MTP rename, server args, and common utils.
+- Motivation: Title: "[Feature] Xiaomi MiMo-V2.5-Pro day0 support"; model line: MiMo V2/V2.5; category: model support/runtime entry; main diff: `python/sglang/srt/models/mimo_v2.py`, `python/sglang/srt/models/mimo_v2_nextn.py`, `python/sglang/srt/configs/model_config.py`.
+- Key implementation: renames the Flash runtime to generic `mimo_v2.py`; introduces `MiMoV2ForCausalLM`; keeps `MiMoV2FlashForCausalLM` as an alias; maps draft models to `MiMoV2MTP`; adds `context_len` fallback for position embeddings; supports fused `qkv_proj` loading for Pro checkpoints; extends hybrid SWA and attention-sink detection to `MiMoV2ForCausalLM`.
+- Code diff details:
+  - `python/sglang/srt/models/mimo_v2_flash.py` renamed to `python/sglang/srt/models/mimo_v2.py`, with `MiMoV2ForCausalLM` and alias `MiMoV2FlashForCausalLM`.
+  - `python/sglang/srt/models/mimo_v2_flash_nextn.py` renamed to `python/sglang/srt/models/mimo_v2_nextn.py`.
+  - `python/sglang/srt/configs/model_config.py` adds `MiMoV2ForCausalLM` to draft, hybrid SWA, and attention-sink paths.
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/mimo_v2_flash.py python/sglang/srt/models/mimo_v2.py
+-class MiMoV2FlashForCausalLM(nn.Module):
++class MiMoV2ForCausalLM(nn.Module):
++# Keep the old Flash architecture name loadable while new configs use MiMoV2ForCausalLM.
++class MiMoV2FlashForCausalLM(MiMoV2ForCausalLM):
++    pass
++EntryClass = [MiMoV2ForCausalLM, MiMoV2FlashForCausalLM]
+diff -- python/sglang/srt/configs/model_config.py
++            "MiMoV2ForCausalLM",
++            "MiMoV2FlashForCausalLM",
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/mimo_v2.py`, `python/sglang/srt/models/mimo_v2_nextn.py`, `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/server_args.py`, `python/sglang/srt/utils/common.py`
+- Risk and verification: Re-test both old Flash architecture configs and new MiMo-V2.5-Pro configs; the main risks are alias registration, MTP rewrite, fused `qkv_proj` TP sharding, and hybrid SWA/full attention cache sizing.
+
+### PR #23851 - docs: add MiMo-V2.5 docs
+
+- Link: https://github.com/sgl-project/sglang/pull/23851
+- Status/date: merged / 2026-04-27T17:38:42Z
+- Trace source: current-main MiMo-V2.5 cookbook and deployment snippet.
+- Diff scope read: GitHub Pull Request files API returned 7 files, +1025/-1; this card prioritizes the MiMo-V2.5 cookbook and command generator.
+- Motivation: Title: "docs: add MiMo-V2.5 docs"; model line: MiMo V2/V2.5; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`, `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx`; documents MiMo-V2.5-Pro and MiMo-V2.5 deployment recipes.
+- Key implementation: adds a new cookbook page with variant/hardware tables, Docker image matrix, command generator import, Pro and 310B deployment constraints, DeepEP toggle guidance, reasoning output examples, and multimodal invocation examples.
+- Code diff details:
+  - `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx` added the MiMo-V2.5/Pro guide.
+  - `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx` added the deployment command generator.
+  - docs navigation adds the page to the autoregressive Xiaomi section.
+- Key code excerpts:
+
+```diff
+diff -- docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx
++title: MiMo-V2.5
++[MiMo-V2.5-Pro](https://huggingface.co/XiaomiMiMo/MiMo-V2.5-Pro)
++[MiMo-V2.5](https://huggingface.co/XiaomiMiMo/MiMo-V2.5)
++import { MiMoV25Deployment } from '/src/snippets/autoregressive/mimo-v25-deployment.jsx'
++<MiMoV25Deployment />
+diff -- docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx
++export const MiMoV25Deployment = () => {
+```
+
+- Reviewed files:
+  - docs: `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`, `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx`, docs navigation files
+- Risk and verification: Treat the cookbook as an executable launch matrix; verify generated CLI flags, checkpoint slugs, Docker image tags, TP/DP constraints, EAGLE settings, and multimodal API examples before copying into production.
 
 ## Gap-Closure Notes
 

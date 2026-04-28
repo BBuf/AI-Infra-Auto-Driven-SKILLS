@@ -7,14 +7,17 @@ description: PR-backed and current-main optimization manual for DeepSeek-V4 in S
 
 ## Overview
 
-DeepSeek-V4 is documented as a cookbook/command-generator lane in SGLang current main. The inspected PRs are docs/snippet-only, but they are serving-critical because they encode the hardware/checkpoint matrix, DeepEP environment budgets, MTP settings, verified recipes, and parser flags users copy into production.
+DeepSeek-V4 is now both a current-main runtime lane and a cookbook/command-generator lane in SGLang. The latest PRs include the original deployment matrix, AMD/DeepSeek-V4 runtime integration, CUDA-graph support, DeepGEMM warmup, benchmarking scripts, parser/tool-call support, and model-level fixes.
 
 Current evidence snapshot:
 
-- SGLang `origin/main`: `bca3dd958` on `2026-04-24`
+- SGLang `origin/main`: `6fbad22fe` on `2026-04-28`
+- Main runtime: `python/sglang/srt/models/deepseek_v4.py`
+- Main MTP runtime: `python/sglang/srt/models/deepseek_v4_nextn.py`
+- Main attention backend: `python/sglang/srt/layers/attention/deepseek_v4_backend.py`
 - Main docs: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`
 - Command generator: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`
-- Diff-reviewed PRs: #23605, #23617, #23628, #23622, #23634
+- Diff-reviewed PRs: #23605, #23617, #23628, #23622, #23634, #23684, #23689, #23690, #23691, #23697, #23698, #23725, #23737, #23742, #23756, #23776, #23787, #23810, #23817, #23832, #23883
 
 ## Non-Negotiable Evidence Rule
 
@@ -41,6 +44,12 @@ Treat the DeepSeek-V4 docs as an executable deployment matrix, not ordinary pros
 - Blackwell uses the DeepSeek Flash/Pro repos directly.
 - Unverified generator cells are intentionally rendered as commented shell no-ops.
 - Recipe verification state is part of the serving contract.
+- Runtime support is no longer docs-only: #23787 added the DeepSeek-V4 model,
+  tokenizer/parser, compressed attention, memory pool, and JIT kernels; #23832
+  adds CUDA-graph capture support for the DeepSeek-V4 attention/indexer path.
+- #23776 adds the `swiglu_limit` clamp in `DeepseekV2MLP` for V4 checkpoints;
+  keep that model-level fix in mind before debugging meaningless-number output.
+- #23756/#23883 make DeepGEMM warmup behavior part of the deployment surface.
 
 ## PR Dossier Rule
 
@@ -49,10 +58,12 @@ Before adding DeepSeek-V4 evidence, open the PR diff/source and update `referenc
 ## Validation Lanes
 
 - B200 Flash/Pro low-latency, balanced, max-throughput, and CP recipe command generation.
+- GB200/GB300 verified recipes, including Pro low-latency, CP, and PD-disagg cells.
 - H200 Flash low-latency, balanced, and max-throughput command generation with `sgl-project/DeepSeek-V4-Flash-FP8`.
 - H200 Pro command generation with `sgl-project/DeepSeek-V4-Pro-FP8` and TP=16 multinode note.
 - Parser flags toggled on/off in generated commands.
 - PD-disagg commands checked for router port and commented/uncommented state.
+- Runtime smoke on `DeepseekV4ForCausalLM`, MTP/nextn, DSML parser, compressed attention, and CUDA-graph replay after changes to `deepseek_v4.py` or attention/indexer code.
 
 ## References
 

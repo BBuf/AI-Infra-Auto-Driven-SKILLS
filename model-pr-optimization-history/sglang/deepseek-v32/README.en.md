@@ -310,7 +310,7 @@
 | 2026-04-20 | [#21249](https://github.com/sgl-project/sglang/pull/21249) | merged | Support allreduce fusion with cp | `python/sglang/srt/layers/flashinfer_comm_fusion.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/communicator.py` |
 | 2026-04-20 | [#22914](https://github.com/sgl-project/sglang/pull/22914) | merged | [Refactor] Deduplicate NSA utils.py into cp_utils.py for context parallel | `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/utils/cp_utils.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2026-04-20 | [#23257](https://github.com/sgl-project/sglang/pull/23257) | open | Fix double-reduce in DeepseekV2MoE with flashinfer_cutedsl + EP + DP-attention | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/moe/moe_runner/flashinfer_cutedsl.py` |
-| 2026-04-20 | [#23268](https://github.com/sgl-project/sglang/pull/23268) | open | 【NPU】【bugfix】accuracy fix when enable both nsa cp and prefixcache | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` |
+| 2026-04-20 | [#23268](https://github.com/sgl-project/sglang/pull/23268) | merged | 【NPU】【bugfix】accuracy fix when enable both nsa cp and prefixcache | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` |
 | 2026-04-20 | [#22003](https://github.com/sgl-project/sglang/pull/22003) | merged | Support moe_dp_size = 1 for various attention_cp_size | `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/layers/dp_attention.py`, `python/sglang/srt/models/qwen3_moe.py` |
 | 2026-04-20 | [#21599](https://github.com/sgl-project/sglang/pull/21599) | merged | [SPEC][1/N] feat: add adaptive speculative_num_steps for EAGLE topk=1 | `python/sglang/srt/model_executor/cuda_graph_runner.py`, `benchmark/bench_adaptive_speculative.py`, `test/registered/unit/spec/test_adaptive_spec_params.py` |
 | 2026-04-20 | [#23219](https://github.com/sgl-project/sglang/pull/23219) | merged | [AMD] Enable MTP for GLM-5-mxfp4 model | `python/sglang/srt/models/deepseek_nextn.py` |
@@ -7547,7 +7547,7 @@ diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
 ### PR #23195 - [Bugfix] Guard .weight access in DeepseekV2AttentionMLA for AWQ / compressed-tensors
 
 - Link: https://github.com/sgl-project/sglang/pull/23195
-- Status/date: open / 2026-04-20
+- Status/date: merged / 2026-04-28T01:08:29Z
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +138/-14, 186 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Guard .weight access in DeepseekV2AttentionMLA for AWQ / compressed-tensors"; model line: DeepSeek V3.2; category: bug fix; main diff: `test/registered/unit/models/test_deepseek_v2_attention_mla.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py`; PR body summary: Hey all, this is my first PR, thought I'd try my hand a a recent bug. Fixes #22855. When a DeepseekV2-architecture checkpoint is loaded with a `compressed_tensors`-wrapped AWQ q....
@@ -7668,7 +7668,7 @@ diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
 ### PR #23257 - Fix double-reduce in DeepseekV2MoE with flashinfer_cutedsl + EP + DP-attention
 
 - Link: https://github.com/sgl-project/sglang/pull/23257
-- Status/date: open / 2026-04-20
+- Status/date: merged / 2026-04-28T01:08:29Z
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +5/-0, 33 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Fix double-reduce in DeepseekV2MoE with flashinfer_cutedsl + EP + DP-attention"; model line: DeepSeek V3.2; category: bug fix; main diff: `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/moe/moe_runner/flashinfer_cutedsl.py`; PR body summary: Running `nvidia/DeepSeek-V3-0324-NVFP4` with `--moe-runner-backend flashinfer_cutedsl --enable-dp-attention --ep-size N --dp-size N` (N>1) hit two separate bugs. **Bug 1 — doubl....
@@ -7699,7 +7699,7 @@ diff -- python/sglang/srt/layers/moe/moe_runner/flashinfer_cutedsl.py
 ### PR #23268 - 【NPU】【bugfix】accuracy fix when enable both nsa cp and prefixcache
 
 - Link: https://github.com/sgl-project/sglang/pull/23268
-- Status/date: open / 2026-04-20
+- Status/date: merged / 2026-04-28T01:08:29Z
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +21/-5, 40 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "【NPU】【bugfix】accuracy fix when enable both nsa cp and prefixcache"; model line: DeepSeek V3.2; category: bug fix; main diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py`; PR body summary: when enable both nsa cp and prefixcache, inference accuracy is abnormal. python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py python/sglang/srt/layers....

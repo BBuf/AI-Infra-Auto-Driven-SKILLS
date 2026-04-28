@@ -42,7 +42,7 @@
 - For support PRs such as `#8798` or `#17582`, inspect architecture registration, processor registration, token padding, loader mapping, and tests.
 - For performance PRs such as `#15205`, `#17420`, `#20033`, and `#20282`, preserve the before/after hot path and the correctness guard.
 - For revert chains such as `#20463` -> `#20740`, document both the discovered failure mode and the current-main revert.
-- For open PRs such as `#9349`, `#14662`, `#19728`, and `#22961`, label them as radar only and do not describe them as shipped.
+- For open PRs such as `#9349`, `#14662`, and `#19728`, label them as radar only and do not describe them as shipped. PR `#22961` is no longer radar; it merged on 2026-04-28 and is current NPU GLM-4.5V behavior.
 
 ## Change Rules
 

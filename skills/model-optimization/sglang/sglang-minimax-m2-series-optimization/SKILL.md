@@ -329,7 +329,7 @@ Check these active upstream tracks before designing a new MiniMax skill or decla
 - [#22300](https://github.com/sgl-project/sglang/pull/22300): FP8 GEMM/deepgemm scale-format fix for fp16 MiniMax-M2.5 models.
 - [#23301](https://github.com/sgl-project/sglang/pull/23301): token-by-token streaming of MiniMax-M2 string tool-call parameters.
 - [#20873](https://github.com/sgl-project/sglang/pull/20873): docs-only M2.7 and M2.7-highspeed support.
-- [#22432](https://github.com/sgl-project/sglang/pull/22432) and [#23190](https://github.com/sgl-project/sglang/pull/23190): NPU split-QKV, TP RMSNorm, RoPE, Eagle3, and DP-attention fixes for MiniMax2.
+- [#22432](https://github.com/sgl-project/sglang/pull/22432) closed unmerged on 2026-04-27 after exploring NPU split-QKV / TP RMSNorm / RoPE wiring for MiniMax2; [#23190](https://github.com/sgl-project/sglang/pull/23190) remains the follow-up to check for NPU Eagle3 and DP-attention fixes.
 - [#17826](https://github.com/sgl-project/sglang/pull/17826), [#19468](https://github.com/sgl-project/sglang/pull/19468), [#20031](https://github.com/sgl-project/sglang/pull/20031), [#20489](https://github.com/sgl-project/sglang/pull/20489), and [#20975](https://github.com/sgl-project/sglang/pull/20975): remaining distributed, DeepEP, quant-loader, and DP-attention cleanup tracks carried from the earlier M2.5 radar.
 
 ## Investigation Order

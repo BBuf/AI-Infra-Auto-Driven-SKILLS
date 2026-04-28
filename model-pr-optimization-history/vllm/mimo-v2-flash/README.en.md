@@ -2,8 +2,8 @@
 
 ## Scope
 
-- Rebuilt on: 2026-04-25
-- Source baseline: `vllm-project/vllm` trace worktree commit `95995bbef8`
+- Rebuilt on: 2026-04-28
+- Source baseline: `vllm-project/vllm` `origin/main` commit `fd74c90d9`
 - PR collection rule: run `git log --name-only -- <model-files>` on model implementation, config, processor, parser, docs/tests, filter by model keywords in commit subjects, then read each PR's final diff through the GitHub Pull Request files API.
 - Preservation rule: PRs explicitly cited by the previous history/skill are retained even if current implementation files no longer trace to them, and the card marks that source.
 
@@ -14,12 +14,15 @@
 | `vllm/model_executor/models/mimo.py` | [#17433](https://github.com/vllm-project/vllm/pull/17433) |
 | `vllm/model_executor/models/mimo_mtp.py` | [#17433](https://github.com/vllm-project/vllm/pull/17433), [#25136](https://github.com/vllm-project/vllm/pull/25136) |
 | `vllm/model_executor/models/mimo_v2_flash.py` | [#30836](https://github.com/vllm-project/vllm/pull/30836), [#31175](https://github.com/vllm-project/vllm/pull/31175), [#40045](https://github.com/vllm-project/vllm/pull/40045) |
+| `vllm/model_executor/models/mimo_v2.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
+| `vllm/model_executor/models/mimo_v2_mtp.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
+| `vllm/model_executor/models/mimo_v2_omni.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 5
+- Git-traced PRs: 6
 - Extra PRs preserved from existing docs: 0
-- Total PRs in this document: 5
+- Total PRs in this document: 6
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -32,6 +35,7 @@
 | 2025-12-19 | [#30836](https://github.com/vllm-project/vllm/pull/30836) | merged | [Model] Add MiMo-V2-Flash support | `vllm/model_executor/models/mimo_v2_flash.py` |
 | 2026-01-05 | [#31175](https://github.com/vllm-project/vllm/pull/31175) | merged | [Bugfix] Properly apply v_scale for mimo_v2_flash | `vllm/model_executor/models/mimo_v2_flash.py` |
 | 2026-04-24 | [#40045](https://github.com/vllm-project/vllm/pull/40045) | merged | [Attention] use diff kv backend for mimo v2 flash | `vllm/model_executor/models/mimo_v2_flash.py` |
+| 2026-04-27 | [#40967](https://github.com/vllm-project/vllm/pull/40967) | merged | [Model] Add MiMo-V2.5 support | `vllm/model_executor/models/mimo_v2.py`, `vllm/model_executor/models/mimo_v2_mtp.py`, `vllm/model_executor/models/mimo_v2_omni.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -178,6 +182,42 @@ diff -- vllm/model_executor/models/mimo_v2_flash.py
 - Reviewed files:
   - runtime: `vllm/model_executor/models/mimo_v2_flash.py` modified +14/-8
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/attention/attention.py`, `vllm/model_executor/models/mimo_v2_flash.py`, `vllm/v1/attention/backends/fa_utils.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #40967 - [Model] Add MiMo-V2.5 support
+
+- Link: https://github.com/vllm-project/vllm/pull/40967
+- Status/date: merged / 2026-04-27T13:26:52Z
+- Trace source: current-main implementation files for MiMo-V2.5 Pro, MTP, and Omni.
+- Diff scope read: GitHub Pull Request files API returned 12 files, +4737/-5; this card prioritizes model, MTP, Omni, registry, config, and supported-model docs/tests.
+- Motivation: Title: "[Model] Add MiMo-V2.5 support"; model line: MiMo V2/V2.5; category: model support/runtime entry; main diff: `vllm/model_executor/models/mimo_v2.py`, `vllm/model_executor/models/mimo_v2_mtp.py`, `vllm/model_executor/models/mimo_v2_omni.py`; adds Pro and Omni support after the historical Flash runtime.
+- Key implementation: adds MiMo-V2.5 Pro runtime in `mimo_v2.py`, MTP rewrite in `mimo_v2_mtp.py`, Omni multimodal/audio/image/video runtime in `mimo_v2_omni.py`, registry/test entries for Pro/Omni/MTP, speculative config override for MiMo-V2 MTP, and block-quant scale sharding in fused linear loading.
+- Code diff details:
+  - `vllm/model_executor/models/mimo_v2.py` adds the active MiMo-V2.5 runtime and keeps Flash/Pro architecture mappings.
+  - `vllm/model_executor/models/mimo_v2_mtp.py` adds MiMo-V2 MTP model classes and architecture-specific layer counts.
+  - `vllm/model_executor/models/mimo_v2_omni.py` adds multimodal Omni support.
+  - `vllm/config/speculative.py` maps Pro/Omni/Flash architectures to `mimo_v2_mtp`.
+- Key code excerpts:
+
+```diff
+diff -- vllm/config/speculative.py
++        if (arch := hf_config.architectures[0]) in (
++            "MiMoV2ProForCausalLM",
++            "MiMoV2OmniForCausalLM",
++        ):
++            hf_config.model_type = "mimo_v2_mtp"
+diff -- tests/models/registry.py
++    "MiMoV2ProForCausalLM": _HfExamplesInfo(
++        "XiaomiMiMo/MiMo-V2.5-Pro", trust_remote_code=True, is_available_online=False
++    ),
++    "MiMoV2OmniForCausalLM": _HfExamplesInfo(
++        "XiaomiMiMo/MiMo-V2.5-Omni", trust_remote_code=True, is_available_online=False
++    ),
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/mimo_v2.py`, `vllm/model_executor/models/mimo_v2_mtp.py`, `vllm/model_executor/models/mimo_v2_omni.py`, `vllm/model_executor/models/mimo_audio.py`
+  - config/registry/tests: `vllm/config/speculative.py`, `vllm/model_executor/models/registry.py`, `tests/models/registry.py`, `docs/models/supported_models.md`
+- Risk and verification: Re-test Pro text serving, Omni multimodal loading, MTP speculative config rewrite, block-quant fused linear loading, and registry imports; private/placeholder checkpoints may require access-aware smoke tests.
 
 ## Gap-Closure Notes
 
