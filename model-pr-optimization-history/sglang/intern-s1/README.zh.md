@@ -1,12 +1,5 @@
 # sglang Intern-S1 模型 PR 优化历史
 
-## 覆盖范围
-
-- 重做日期: 2026-05-01
-- 源码基线: `sgl-project/sglang` 当前追溯 worktree commit `4197c55968`
-- PR 收集规则: 先从模型实现、配置、processor、parser、docs/tests 等相关文件执行 `git log --name-only -- <model-files>`，再按 commit subject 的模型关键词过滤，最后用 GitHub Pull Request files API 读取每个 PR 的最终 diff。
-- 额外保留规则: 原 history/skill 已显式引用但未出现在当前实现文件 git trace 中的 PR 会保留，并在卡片里标注来源。
-
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |

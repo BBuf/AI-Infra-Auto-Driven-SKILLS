@@ -65,7 +65,6 @@ PLACEHOLDER_PATTERNS = [
 ]
 
 ZH_REQUIRED_SECTIONS = [
-    "## 覆盖范围",
     "## 模型实现文件覆盖",
     "## PR 覆盖总览",
     "## 时间线",
@@ -73,7 +72,6 @@ ZH_REQUIRED_SECTIONS = [
 ]
 
 EN_REQUIRED_SECTIONS = [
-    "## Scope",
     "## Implementation File Coverage",
     "## PR Coverage Summary",
     "## Timeline",
