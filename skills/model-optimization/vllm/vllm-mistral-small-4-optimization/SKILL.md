@@ -1,6 +1,6 @@
 ---
 name: vllm-mistral-small-4-optimization
-description: PR-backed optimization manual for Mistral Small 4 in vLLM. Use when Codex needs to audit, debug, extend, or document Mistral Small 4, Leanstral, and closely related Mistral Large 3 / Ministral serving behavior, including multimodal and MoE execution.
+description: PR-backed optimization manual for Mistral Small 4 in vLLM. Use when an engineer needs to audit, debug, extend, or document Mistral Small 4, Leanstral, and closely related Mistral Large 3 / Ministral serving behavior, including multimodal and MoE execution.
 ---
 
 # vLLM Mistral Small 4 Optimization

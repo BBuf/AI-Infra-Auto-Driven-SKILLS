@@ -1,6 +1,6 @@
 ---
 name: vllm-gemma4-optimization
-description: PR-backed optimization manual for Gemma 4 in vLLM. Use when Codex needs to audit, debug, extend, or document Gemma 4 text, MoE, multimodal, reasoning, tool use, and quantized MoE serving.
+description: PR-backed optimization manual for Gemma 4 in vLLM. Use when an engineer needs to audit, debug, extend, or document Gemma 4 text, MoE, multimodal, reasoning, tool use, and quantized MoE serving.
 ---
 
 # vLLM Gemma 4 Optimization

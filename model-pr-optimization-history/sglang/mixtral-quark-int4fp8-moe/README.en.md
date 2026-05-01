@@ -1,12 +1,5 @@
 # sglang Mixtral Quark INT4/FP8 MoE Model PR Optimization History
 
-## Scope
-
-- Rebuilt on: 2026-04-25
-- Source baseline: `sgl-project/sglang` trace worktree commit `880599cd43`
-- PR collection rule: run `git log --name-only -- <model-files>` on model implementation, config, processor, parser, docs/tests, filter by model keywords in commit subjects, then read each PR's final diff through the GitHub Pull Request files API.
-- Preservation rule: PRs explicitly cited by the previous history/skill are retained even if current implementation files no longer trace to them, and the card marks that source.
-
 ## Implementation File Coverage
 
 | File | Git-traced PRs |
@@ -16,19 +9,19 @@
 | `python/sglang/srt/layers/quantization/quark/schemes/__init__.py` | [#10485](https://github.com/sgl-project/sglang/pull/10485), [#18252](https://github.com/sgl-project/sglang/pull/18252) |
 | `python/sglang/srt/layers/quantization/quark/schemes/quark_scheme.py` | [#18252](https://github.com/sgl-project/sglang/pull/18252) |
 | `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4.py` | [#10485](https://github.com/sgl-project/sglang/pull/10485), [#18252](https://github.com/sgl-project/sglang/pull/18252), [#19422](https://github.com/sgl-project/sglang/pull/19422) |
-| `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` | [#18252](https://github.com/sgl-project/sglang/pull/18252), [#18684](https://github.com/sgl-project/sglang/pull/18684), [#21040](https://github.com/sgl-project/sglang/pull/21040), [#21067](https://github.com/sgl-project/sglang/pull/21067), [#21097](https://github.com/sgl-project/sglang/pull/21097), [#23585](https://github.com/sgl-project/sglang/pull/23585) |
+| `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` | [#18252](https://github.com/sgl-project/sglang/pull/18252), [#18684](https://github.com/sgl-project/sglang/pull/18684), [#21040](https://github.com/sgl-project/sglang/pull/21040), [#21067](https://github.com/sgl-project/sglang/pull/21067), [#21097](https://github.com/sgl-project/sglang/pull/21097), [#23585](https://github.com/sgl-project/sglang/pull/23585), [#23597](https://github.com/sgl-project/sglang/pull/23597) |
 | `python/sglang/srt/layers/quantization/quark/schemes/quark_w8a8_fp8.py` | [#10485](https://github.com/sgl-project/sglang/pull/10485), [#18252](https://github.com/sgl-project/sglang/pull/18252) |
 | `python/sglang/srt/layers/quantization/quark/schemes/quark_w8a8_fp8_moe.py` | [#18252](https://github.com/sgl-project/sglang/pull/18252) |
 | `python/sglang/srt/layers/quantization/quark/utils.py` | [#10485](https://github.com/sgl-project/sglang/pull/10485) |
-| `python/sglang/srt/layers/quantization/quark_int4fp8_moe.py` | [#7392](https://github.com/sgl-project/sglang/pull/7392) |
+| `python/sglang/srt/layers/quantization/quark_int4fp8_moe.py` | [#7392](https://github.com/sgl-project/sglang/pull/7392), [#23597](https://github.com/sgl-project/sglang/pull/23597) |
 | `python/sglang/srt/models/mixtral.py` | [#460](https://github.com/sgl-project/sglang/pull/460), [#1081](https://github.com/sgl-project/sglang/pull/1081), [#1290](https://github.com/sgl-project/sglang/pull/1290), [#1418](https://github.com/sgl-project/sglang/pull/1418), [#1835](https://github.com/sgl-project/sglang/pull/1835), [#2156](https://github.com/sgl-project/sglang/pull/2156), [#2163](https://github.com/sgl-project/sglang/pull/2163), [#2300](https://github.com/sgl-project/sglang/pull/2300), [#2371](https://github.com/sgl-project/sglang/pull/2371), [#2563](https://github.com/sgl-project/sglang/pull/2563), [#6223](https://github.com/sgl-project/sglang/pull/6223), [#7966](https://github.com/sgl-project/sglang/pull/7966), ... (17 total) |
 | `python/sglang/srt/models/mixtral_quant.py` | [#460](https://github.com/sgl-project/sglang/pull/460), [#1081](https://github.com/sgl-project/sglang/pull/1081) |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 27
+- Git-traced PRs: 28
 - Extra PRs preserved from existing docs: 5
-- Total PRs in this document: 32
+- Total PRs in this document: 33
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -68,6 +61,7 @@
 | 2026-03-25 | [#21040](https://github.com/sgl-project/sglang/pull/21040) | merged | [AMD][MoRI] Auto-select dispatch quantization type from MoE weight dtype. | `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` |
 | 2026-04-13 | [#21097](https://github.com/sgl-project/sglang/pull/21097) | merged | [AMD] Add MoE weights and scales padding | `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` |
 | 2026-04-24 | [#23585](https://github.com/sgl-project/sglang/pull/23585) | merged | Move expert_mask_gpu from FusedMoE layer to StandardDispatcher | `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` |
+| 2026-05-01 | [#23597](https://github.com/sgl-project/sglang/pull/23597) | merged | [MoE] Add Aiter MoE runner backend and purge aiter.fused_moe from quant methods | `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`, `python/sglang/srt/layers/quantization/quark_int4fp8_moe.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -77,7 +71,7 @@
 - Status/date: merged / 2024-05-21
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mixtral.py`, `python/sglang/srt/models/mixtral_quant.py`; associated commits `0fafc5606b0d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +636/-121, 921 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "port fp8 mixtral"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `python/sglang/srt/models/mixtral_quant.py`, `python/sglang/srt/models/mixtral.py`; no usable PR-body summary.
+- Motivation: Title: "port fp8 mixtral"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `python/sglang/srt/models/mixtral_quant.py`, `python/sglang/srt/models/mixtral.py`; technical summary: Covers "port fp8 mixtral"; the main implementation surface is `python/sglang/srt/models/mixtral_quant.py`, `python/sglang/srt/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/mixtral_quant.py` added +371/-0 (371 lines); hunks: -0,0 +1,371; symbols: MixtralMLP, __init__, forward, MixtralMoE, touching `MixtralMLP, __init__, forward`; `python/sglang/srt/models/mixtral.py` modified +240/-101 (341 lines); hunks: -1,5 +1,5; -8,131 +8,226; symbols: MixtralMLP, __init__, forward, MixtralMoE, touching `MixtralMLP, __init__, forward`.
 - Code diff details:
   - `python/sglang/srt/models/mixtral_quant.py` added +371/-0 (371 lines); hunks: -0,0 +1,371; symbols: MixtralMLP, __init__, forward, MixtralMoE
@@ -113,7 +107,7 @@ diff -- python/sglang/srt/models/mixtral.py
 - Status/date: merged / 2024-08-13
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mixtral.py`, `python/sglang/srt/models/mixtral_quant.py`; associated commits `ad3e4f16199a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +57/-258, 515 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Update the mixtral to use the better FusedMoE layer"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `python/sglang/srt/models/mixtral.py`, `python/sglang/srt/models/mixtral_quant.py`; no usable PR-body summary.
+- Motivation: Title: "Update the mixtral to use the better FusedMoE layer"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `python/sglang/srt/models/mixtral.py`, `python/sglang/srt/models/mixtral_quant.py`; technical summary: Covers "Update the mixtral to use the better FusedMoE layer"; the main implementation surface is `python/sglang/srt/models/mixtral.py`, `python/sglang/srt/models/mixtral_quant.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/mixtral.py` modified +55/-253 (308 lines); hunks: -18,34 +18,25; -69,216 +60,44 @@ def __init__(; symbols: __init__, weight_loader, process_weights_after_loading, forward, touching `__init__, weight_loader, process_weights_after_loading`; `python/sglang/srt/models/mixtral_quant.py` modified +0/-3 (3 lines); hunks: -160,7 +160,6 @@ def __init__(; -183,7 +182,6 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `python/sglang/srt/models/mixtral.py` modified +55/-253 (308 lines); hunks: -18,34 +18,25; -69,216 +60,44 @@ def __init__(; symbols: __init__, weight_loader, process_weights_after_loading, forward
@@ -148,7 +142,7 @@ diff -- python/sglang/srt/models/mixtral_quant.py
 - Status/date: merged / 2024-09-01
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mixtral.py`; associated commits `9b0805242eea`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "fix: resolve fp8 for mixtral"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `python/sglang/srt/models/mixtral.py`; no usable PR-body summary.
+- Motivation: Title: "fix: resolve fp8 for mixtral"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `python/sglang/srt/models/mixtral.py`; technical summary: Covers "fix: resolve fp8 for mixtral"; the main implementation surface is `python/sglang/srt/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/mixtral.py` modified +1/-1 (2 lines); hunks: -362,7 +362,7 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights, touching `load_weights`.
 - Code diff details:
   - `python/sglang/srt/models/mixtral.py` modified +1/-1 (2 lines); hunks: -362,7 +362,7 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights
@@ -171,7 +165,7 @@ diff -- python/sglang/srt/models/mixtral.py
 - Status/date: merged / 2024-09-09
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +151/-12, 275 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Add torchao quant (int4/int8/fp8) to llama models"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `python/sglang/srt/layers/torchao_utils.py`, `python/sglang/srt/models/llama.py`, `python/sglang/srt/model_executor/model_runner.py`; PR body summary: Summary: We want to hack before we work on a proper solution proper solution will be rewrite llama model with tensor parallelism: https://pytorch.org/docs/stable/distributed.ten....
+- Motivation: Title: "Add torchao quant (int4/int8/fp8) to llama models"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `python/sglang/srt/layers/torchao_utils.py`, `python/sglang/srt/models/llama.py`, `python/sglang/srt/model_executor/model_runner.py`; technical summary: Covers "Add torchao quant (int4/int8/fp8) to llama models"; the main implementation surface is `python/sglang/srt/layers/torchao_utils.py`, `python/sglang/srt/models/llama.py`, `python/sglang/srt/model_executor/model_runner.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/layers/torchao_utils.py` added +36/-0 (36 lines); hunks: -0,0 +1,36; symbols: torchao_quantize_param_data, touching `torchao_quantize_param_data`; `python/sglang/srt/models/llama.py` modified +22/-0 (22 lines); hunks: -42,6 +42,8; -299,6 +301,7 @@ def __init__(; symbols: __init__, load_weights, Phi3ForCausalLM, touching `__init__, load_weights, Phi3ForCausalLM`; `python/sglang/srt/model_executor/model_runner.py` modified +1/-0 (1 lines); hunks: -97,6 +97,7 @@ def __init__(; symbols: __init__, touching `__init__`; `test/srt/test_torchao.py` added +73/-0 (73 lines); hunks: -0,0 +1,73; symbols: TestTorchCompile, setUpClass, tearDownClass, test_mmlu, touching `TestTorchCompile, setUpClass, tearDownClass`.
 - Code diff details:
   - `python/sglang/srt/layers/torchao_utils.py` added +36/-0 (36 lines); hunks: -0,0 +1,36; symbols: torchao_quantize_param_data
@@ -213,7 +207,7 @@ diff -- python/sglang/srt/model_executor/model_runner.py
 - Status/date: merged / 2024-09-14
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mixtral.py`; associated commits `30b404ce72b5`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +50/-20, 138 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Add torchao quant for mixtral and qwen_moe"; model line: Mixtral Quark INT4/FP8 MoE; category: docs/tests/CI; main diff: `python/sglang/srt/models/mixtral.py`; PR body summary: Summary: Similar to https://github.com/sgl-project/sglang/pull/1341 we add torchao quantization to mixtral model Test Plan: Note: compile is not working yet, and I can't install....
+- Motivation: Title: "Add torchao quant for mixtral and qwen_moe"; model line: Mixtral Quark INT4/FP8 MoE; category: docs/tests/CI; main diff: `python/sglang/srt/models/mixtral.py`; technical summary: Covers "Add torchao quant for mixtral and qwen_moe"; the main implementation surface is `python/sglang/srt/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/mixtral.py` modified +5/-0 (5 lines); hunks: -41,6 +41,8; -296,6 +298,7 @@ def __init__(; symbols: __init__, load_weights, touching `__init__, load_weights`.
 - Code diff details:
   - `python/sglang/srt/models/mixtral.py` modified +5/-0 (5 lines); hunks: -41,6 +41,8; -296,6 +298,7 @@ def __init__(; symbols: __init__, load_weights
@@ -240,7 +234,7 @@ diff -- python/sglang/srt/models/mixtral.py
 - Status/date: merged / 2024-10-29
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mixtral.py`; associated commits `54dd3ea12277`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-0, 10 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[FP8 KV Cache, Mixtral] Avoid KeyError at loading pre-quantized FP8 m…"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `python/sglang/srt/models/mixtral.py`; PR body summary: …odel with kv_scale Reuse FP8 quantized Mixtral models, to avoid KeyError, just skip/ignore `kv_scale` for now. E.g. `amd/Mixtral-8x7B-Instruct-v0.1-FP8-KV` has `kv_scale` embed....
+- Motivation: Title: "[FP8 KV Cache, Mixtral] Avoid KeyError at loading pre-quantized FP8 m…"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `python/sglang/srt/models/mixtral.py`; technical summary: Covers "[FP8 KV Cache, Mixtral] Avoid KeyError at loading pre-quantized FP8 m…"; the main implementation surface is `python/sglang/srt/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/mixtral.py` modified +3/-0 (3 lines); hunks: -369,6 +369,9 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights, touching `load_weights`.
 - Code diff details:
   - `python/sglang/srt/models/mixtral.py` modified +3/-0 (3 lines); hunks: -369,6 +369,9 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights
@@ -264,7 +258,7 @@ diff -- python/sglang/srt/models/mixtral.py
 - Status/date: merged / 2024-11-24
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mixtral.py`; associated commits `e3938b2f9c96`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +28/-14, 162 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "feat: update other MoE models deps"; model line: Mixtral Quark INT4/FP8 MoE; category: model implementation change; main diff: `python/sglang/srt/models/mixtral.py`; no usable PR-body summary.
+- Motivation: Title: "feat: update other MoE models deps"; model line: Mixtral Quark INT4/FP8 MoE; category: model implementation change; main diff: `python/sglang/srt/models/mixtral.py`; technical summary: Covers "feat: update other MoE models deps"; the main implementation surface is `python/sglang/srt/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/mixtral.py` modified +1/-1 (2 lines); hunks: -22,7 +22,6; -36,6 +35,7.
 - Code diff details:
   - `python/sglang/srt/models/mixtral.py` modified +1/-1 (2 lines); hunks: -22,7 +22,6; -36,6 +35,7
@@ -288,7 +282,7 @@ diff -- python/sglang/srt/models/mixtral.py
 - Status/date: merged / 2024-11-24
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mixtral.py`; associated commits `be0124bda09d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 76 files, +19/-19, 199 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Rename triton_fused_moe -> fused_moe_triton"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `python/sglang/srt/models/mixtral.py`; no usable PR-body summary.
+- Motivation: Title: "Rename triton_fused_moe -> fused_moe_triton"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `python/sglang/srt/models/mixtral.py`; technical summary: Covers "Rename triton_fused_moe -> fused_moe_triton"; the main implementation surface is `python/sglang/srt/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/mixtral.py` modified +1/-1 (2 lines); hunks: -25,6 +25,7; -35,7 +36,6.
 - Code diff details:
   - `python/sglang/srt/models/mixtral.py` modified +1/-1 (2 lines); hunks: -25,6 +25,7; -35,7 +36,6
@@ -312,7 +306,7 @@ diff -- python/sglang/srt/models/mixtral.py
 - Status/date: merged / 2024-12-03
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mixtral.py`; associated commits `1228f7ca69e6`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +44/-2, 78 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix gptq for moe layers"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `python/sglang/srt/models/mixtral.py`; PR body summary: Try to fix https://github.com/sgl-project/sglang/issues/2117 https://github.com/sgl-project/sglang/issues/2270 We can run `python3 -m sglang.launch_server --model TheBloke/Mixtr....
+- Motivation: Title: "Fix gptq for moe layers"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `python/sglang/srt/models/mixtral.py`; technical summary: Covers "Fix gptq for moe layers"; the main implementation surface is `python/sglang/srt/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/mixtral.py` modified +10/-2 (12 lines); hunks: -339,7 +339,9 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; -353,6 +355,10 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: load_weights, touching `load_weights`.
 - Code diff details:
   - `python/sglang/srt/models/mixtral.py` modified +10/-2 (12 lines); hunks: -339,7 +339,9 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; -353,6 +355,10 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: load_weights
@@ -339,7 +333,7 @@ diff -- python/sglang/srt/models/mixtral.py
 - Status/date: merged / 2024-12-05
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +1172/-8, 1320 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "MoE Expert Parallel Impl"; model line: Mixtral Quark INT4/FP8 MoE; category: model support/runtime entry; main diff: `python/sglang/srt/layers/ep_moe/layer.py`, `python/sglang/srt/layers/ep_moe/kernels.py`, `python/sglang/srt/models/mixtral.py`; PR body summary: This is the implementation of MoE Expert Parallel, seamlessly integrated with TP. The expert parallel size (ep-size) matches the tensor parallel size (tp-size). It supports the....
+- Motivation: Title: "MoE Expert Parallel Impl"; model line: Mixtral Quark INT4/FP8 MoE; category: model support/runtime entry; main diff: `python/sglang/srt/layers/ep_moe/layer.py`, `python/sglang/srt/layers/ep_moe/kernels.py`, `python/sglang/srt/models/mixtral.py`; technical summary: Covers "MoE Expert Parallel Impl"; the main implementation surface is `python/sglang/srt/layers/ep_moe/layer.py`, `python/sglang/srt/layers/ep_moe/kernels.py`, `python/sglang/srt/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/layers/ep_moe/layer.py` added +661/-0 (661 lines); hunks: -0,0 +1,661; symbols: GroupedGemmRunner, __init__, _init_flashinfer_wrapper, forward, touching `GroupedGemmRunner, __init__, _init_flashinfer_wrapper`; `python/sglang/srt/layers/ep_moe/kernels.py` added +349/-0 (349 lines); hunks: -0,0 +1,349; symbols: compute_seg_indptr_triton_kernel, compute_src2dst_triton_kernel, run_moe_ep_preproess, pre_reorder_triton_kernel, touching `compute_seg_indptr_triton_kernel, compute_src2dst_triton_kernel, run_moe_ep_preproess`; `python/sglang/srt/models/mixtral.py` modified +13/-5 (18 lines); hunks: -21,9 +21,13; -38,6 +42,7; symbols: __init__, forward, load_weights, touching `__init__, forward, load_weights`; `python/sglang/srt/models/deepseek_v2.py` modified +5/-3 (8 lines); hunks: -31,6 +31,7; -113,12 +114,12 @@ def __init__(; symbols: __init__, load_weights, touching `__init__, load_weights`.
 - Code diff details:
   - `python/sglang/srt/layers/ep_moe/layer.py` added +661/-0 (661 lines); hunks: -0,0 +1,661; symbols: GroupedGemmRunner, __init__, _init_flashinfer_wrapper, forward
@@ -381,7 +375,7 @@ diff -- python/sglang/srt/models/mixtral.py
 - Status/date: merged / 2024-12-06
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mixtral.py`; associated commits `3d32e4a32c4c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +1172/-8, 1320 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "MoE Expert Parallel"; model line: Mixtral Quark INT4/FP8 MoE; category: model implementation change; main diff: `python/sglang/srt/models/mixtral.py`; PR body summary: Resubmit the PR for MoE-EP. Please refer to the details in the previous PR: https://github.com/sgl-project/sglang/pull/2203..
+- Motivation: Title: "MoE Expert Parallel"; model line: Mixtral Quark INT4/FP8 MoE; category: model implementation change; main diff: `python/sglang/srt/models/mixtral.py`; technical summary: Covers "MoE Expert Parallel"; the main implementation surface is `python/sglang/srt/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/mixtral.py` modified +13/-5 (18 lines); hunks: -21,9 +21,13; -38,6 +42,7; symbols: __init__, forward, load_weights, touching `__init__, forward, load_weights`.
 - Code diff details:
   - `python/sglang/srt/models/mixtral.py` modified +13/-5 (18 lines); hunks: -21,9 +21,13; -38,6 +42,7; symbols: __init__, forward, load_weights
@@ -408,7 +402,7 @@ diff -- python/sglang/srt/models/mixtral.py
 - Status/date: merged / 2024-12-23
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mixtral.py`; associated commits `e835a50021e0`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 88 files, +338/-344, 1108 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Reorg moe code"; model line: Mixtral Quark INT4/FP8 MoE; category: model implementation change; main diff: `python/sglang/srt/models/mixtral.py`; PR body summary: Reorg moe code and reuse common part..
+- Motivation: Title: "Reorg moe code"; model line: Mixtral Quark INT4/FP8 MoE; category: model implementation change; main diff: `python/sglang/srt/models/mixtral.py`; technical summary: Covers "Reorg moe code"; the main implementation surface is `python/sglang/srt/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/mixtral.py` modified +2/-2 (4 lines); hunks: -27,15 +27,15.
 - Code diff details:
   - `python/sglang/srt/models/mixtral.py` modified +2/-2 (4 lines); hunks: -27,15 +27,15
@@ -433,7 +427,7 @@ diff -- python/sglang/srt/models/mixtral.py
 - Status/date: open / 2025-05-12
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +651/-3, 752 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Feature][ROCM] add online int4_fp8_moe quant feature"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `python/sglang/srt/layers/quantization/quark_w4a8_int4fp8.py`, `python/sglang/srt/layers/quark_utils.py`, `python/sglang/srt/model_executor/model_runner.py`; PR body summary: Quark int4_fp8_moe on the fly quant. In this PR, we support on the fly quantization of int4_fp8_moe using quark. `python bench_one_batch.py --model-path /model/mistralai/Mixtral....
+- Motivation: Title: "[Feature][ROCM] add online int4_fp8_moe quant feature"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `python/sglang/srt/layers/quantization/quark_w4a8_int4fp8.py`, `python/sglang/srt/layers/quark_utils.py`, `python/sglang/srt/model_executor/model_runner.py`; technical summary: Covers "[Feature][ROCM] add online int4_fp8_moe quant feature"; the main implementation surface is `python/sglang/srt/layers/quantization/quark_w4a8_int4fp8.py`, `python/sglang/srt/layers/quark_utils.py`, `python/sglang/srt/model_executor/model_runner.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/layers/quantization/quark_w4a8_int4fp8.py` added +524/-0 (524 lines); hunks: -0,0 +1,524; symbols: dummy_func, QuarkInt4Fp8Config, for, __init__, touching `dummy_func, QuarkInt4Fp8Config, for`; `python/sglang/srt/layers/quark_utils.py` added +104/-0 (104 lines); hunks: -0,0 +1,104; symbols: apply_quark_quant_config_to_model, online_quant, quantize_fp8_scale_tensorwise, quantize_int4_scale_columnwise, touching `apply_quark_quant_config_to_model, online_quant, quantize_fp8_scale_tensorwise`; `python/sglang/srt/model_executor/model_runner.py` modified +6/-0 (6 lines); hunks: -49,6 +49,7; -168,6 +169,7 @@ def __init__(; symbols: __init__, initialize, touching `__init__, initialize`; `python/sglang/srt/layers/quantization/__init__.py` modified +2/-0 (2 lines); hunks: -66,6 +66,7 @@ def override_quantization_method(self, *args, **kwargs):; -77,6 +78,7 @@ def override_quantization_method(self, *args, **kwargs):; symbols: override_quantization_method, touching `override_quantization_method`.
 - Code diff details:
   - `python/sglang/srt/layers/quantization/quark_w4a8_int4fp8.py` added +524/-0 (524 lines); hunks: -0,0 +1,524; symbols: dummy_func, QuarkInt4Fp8Config, for, __init__
@@ -474,7 +468,7 @@ diff -- python/sglang/srt/model_executor/model_runner.py
 - Status/date: merged / 2025-05-12
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mixtral.py`; associated commits `bad7c26fdc7f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +179/-47, 391 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[PP] Fix init_memory_pool desync & add PP for mixtral"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `python/sglang/srt/models/mixtral.py`; no usable PR-body summary.
+- Motivation: Title: "[PP] Fix init_memory_pool desync & add PP for mixtral"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `python/sglang/srt/models/mixtral.py`; technical summary: Covers "[PP] Fix init_memory_pool desync & add PP for mixtral"; the main implementation surface is `python/sglang/srt/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/mixtral.py` modified +98/-34 (132 lines); hunks: -16,13 +16,15; -38,14 +40,17; symbols: MixtralMoE, __init__, forward, touching `MixtralMoE, __init__, forward`.
 - Code diff details:
   - `python/sglang/srt/models/mixtral.py` modified +98/-34 (132 lines); hunks: -16,13 +16,15; -38,14 +40,17; symbols: MixtralMoE, __init__, forward
@@ -501,7 +495,7 @@ diff -- python/sglang/srt/models/mixtral.py
 - Status/date: merged / 2025-07-19
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mixtral.py`; associated commits `15ad6c908670`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 39 files, +557/-872, 2848 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[1/N] MoE Refactor: refactor `select_experts`"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `python/sglang/srt/models/mixtral.py`; PR body summary: This pull request extracts the `select_experts` computation from within `FusedMoE` and `EPMoE`, moving it outside these modules. This refactoring offers three key benefits: - En....
+- Motivation: Title: "[1/N] MoE Refactor: refactor `select_experts`"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `python/sglang/srt/models/mixtral.py`; technical summary: Covers "[1/N] MoE Refactor: refactor `select_experts`"; the main implementation surface is `python/sglang/srt/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/mixtral.py` modified +9/-2 (11 lines); hunks: -37,6 +37,7; -86,14 +87,19 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
   - `python/sglang/srt/models/mixtral.py` modified +9/-2 (11 lines); hunks: -37,6 +37,7; -86,14 +87,19 @@ def __init__(; symbols: __init__, forward
@@ -528,7 +522,7 @@ diff -- python/sglang/srt/models/mixtral.py
 - Status/date: merged / 2025-07-29
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mixtral.py`; associated commits `9effeb5bddf2`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 15 files, +107/-11, 407 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Support EPLB in FusedMoE"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `python/sglang/srt/models/mixtral.py`; PR body summary: Fix #8398.
+- Motivation: Title: "Support EPLB in FusedMoE"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `python/sglang/srt/models/mixtral.py`; technical summary: Covers "Support EPLB in FusedMoE"; the main implementation surface is `python/sglang/srt/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/mixtral.py` modified +3/-0 (3 lines); hunks: -69,6 +69,7 @@ def __init__(; -97,6 +98,7 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `python/sglang/srt/models/mixtral.py` modified +3/-0 (3 lines); hunks: -69,6 +69,7 @@ def __init__(; -97,6 +98,7 @@ def __init__(; symbols: __init__
@@ -554,7 +548,7 @@ diff -- python/sglang/srt/models/mixtral.py
 - Status/date: merged / 2025-08-01
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mixtral.py`; associated commits `6c88f6c8d908`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 38 files, +342/-299, 1748 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[5/N] MoE Refactor: Update MoE parallelism arguments"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `python/sglang/srt/models/mixtral.py`; PR body summary: This PR introduces `--moe-a2a-backend` and deprecates `--enable-ep-moe` and `--enable-deepep-moe`. Benchmark & Profiling.
+- Motivation: Title: "[5/N] MoE Refactor: Update MoE parallelism arguments"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `python/sglang/srt/models/mixtral.py`; technical summary: Covers "[5/N] MoE Refactor: Update MoE parallelism arguments"; the main implementation surface is `python/sglang/srt/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/mixtral.py` modified +3/-3 (6 lines); hunks: -24,6 +24,7; -94,7 +95,7 @@ def __init__(; symbols: __init__, load_weights, touching `__init__, load_weights`.
 - Code diff details:
   - `python/sglang/srt/models/mixtral.py` modified +3/-3 (6 lines); hunks: -24,6 +24,7; -94,7 +95,7 @@ def __init__(; symbols: __init__, load_weights
@@ -581,7 +575,7 @@ diff -- python/sglang/srt/models/mixtral.py
 - Status/date: merged / 2025-08-15
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mixtral.py`; associated commits `295895120df4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 69 files, +958/-1039, 4640 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[6/N] MoE Refactor: Cleanup MoE-related configs"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `python/sglang/srt/models/mixtral.py`; PR body summary: - Adding `--moe-runner-backend` and deprecating `--enable-triton-kernel-moe`, `--enable-flashinfer-cutlass-moe`, and `--enable-flashinfer-trtllm-moe`. - Adding `TopKOutputChecke....
+- Motivation: Title: "[6/N] MoE Refactor: Cleanup MoE-related configs"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `python/sglang/srt/models/mixtral.py`; technical summary: Covers "[6/N] MoE Refactor: Cleanup MoE-related configs"; the main implementation surface is `python/sglang/srt/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/mixtral.py` modified +0/-2 (2 lines); hunks: -47,7 +47,6; -104,7 +103,6 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `python/sglang/srt/models/mixtral.py` modified +0/-2 (2 lines); hunks: -47,7 +47,6; -104,7 +103,6 @@ def __init__(; symbols: __init__
@@ -605,7 +599,7 @@ diff -- python/sglang/srt/models/mixtral.py
 - Status/date: merged / 2025-10-08
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mixtral.py`; associated commits `3c06b673aff9`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 19 files, +496/-1778, 2897 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[8/N] MoE Refactor: deprecate `EPMoE`"; model line: Mixtral Quark INT4/FP8 MoE; category: model implementation change; main diff: `python/sglang/srt/models/mixtral.py`; no usable PR-body summary.
+- Motivation: Title: "[8/N] MoE Refactor: deprecate `EPMoE`"; model line: Mixtral Quark INT4/FP8 MoE; category: model implementation change; main diff: `python/sglang/srt/models/mixtral.py`; technical summary: Covers "[8/N] MoE Refactor: deprecate `EPMoE`"; the main implementation surface is `python/sglang/srt/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/mixtral.py` modified +1/-3 (4 lines); hunks: -36,7 +36,6; -94,8 +93,7 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `python/sglang/srt/models/mixtral.py` modified +1/-3 (4 lines); hunks: -36,7 +36,6; -94,8 +93,7 @@ def __init__(; symbols: __init__
@@ -631,7 +625,7 @@ diff -- python/sglang/srt/models/mixtral.py
 - Status/date: merged / 2025-11-13
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/layers/quantization/quark/quark.py`, `python/sglang/srt/layers/quantization/quark/schemes/__init__.py`, `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4.py`, `python/sglang/srt/layers/quantization/quark/schemes/quark_w8a8_fp8.py`, `python/sglang/srt/layers/quantization/quark/utils.py`; associated commits `67e9d287eea0`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +666/-243, 1041 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Quantization] Support Quark Dense + MoE FP8 & FP8 PTPC"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `python/sglang/srt/layers/quantization/fp8_utils.py`, `python/sglang/srt/layers/quantization/quark/schemes/quark_w8a8_fp8.py`, `python/sglang/srt/layers/quantization/quark/quark.py`; PR body summary: Includes #10396 and #10289. Verified with Qwen3-30b-a3b-thinking-2507 quantized by Quark, running gsm8k..
+- Motivation: Title: "[Quantization] Support Quark Dense + MoE FP8 & FP8 PTPC"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `python/sglang/srt/layers/quantization/fp8_utils.py`, `python/sglang/srt/layers/quantization/quark/schemes/quark_w8a8_fp8.py`, `python/sglang/srt/layers/quantization/quark/quark.py`; technical summary: Covers "[Quantization] Support Quark Dense + MoE FP8 & FP8 PTPC"; the main implementation surface is `python/sglang/srt/layers/quantization/fp8_utils.py`, `python/sglang/srt/layers/quantization/quark/schemes/quark_w8a8_fp8.py`, `python/sglang/srt/layers/quantization/quark/quark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/layers/quantization/fp8_utils.py` modified +116/-220 (336 lines); hunks: -604,158 +604,16 @@ def apply_fp8_linear(; -783,87 +641,125 @@ def apply_fp8_linear(; symbols: apply_fp8_linear, can_auto_enable_marlin_fp8, touching `apply_fp8_linear, can_auto_enable_marlin_fp8`; `python/sglang/srt/layers/quantization/quark/schemes/quark_w8a8_fp8.py` added +186/-0 (186 lines); hunks: -0,0 +1,186; symbols: QuarkW8A8Fp8, __init__, get_min_capability, process_weights_after_loading, touching `QuarkW8A8Fp8, __init__, get_min_capability`; `python/sglang/srt/layers/quantization/quark/quark.py` modified +42/-1 (43 lines); hunks: -14,7 +14,11; -173,6 +177,37 @@ def _check_scheme_supported(self, min_capability: int, erro...; symbols: _check_scheme_supported, _is_fp8_w8a8, _is_mx_fp4, _get_scheme_from_config, touching `_check_scheme_supported, _is_fp8_w8a8, _is_mx_fp4`; `python/sglang/srt/layers/quantization/__init__.py` modified +3/-11 (14 lines); hunks: -35,6 +35,7 @@ def override_quantization_method(self, *args, **kwargs):; -65,23 +66,14 @@ def override_quantization_method(self, *args, **kwargs):; symbols: override_quantization_method, touching `override_quantization_method`.
 - Code diff details:
   - `python/sglang/srt/layers/quantization/fp8_utils.py` modified +116/-220 (336 lines); hunks: -604,158 +604,16 @@ def apply_fp8_linear(; -783,87 +641,125 @@ def apply_fp8_linear(; symbols: apply_fp8_linear, can_auto_enable_marlin_fp8
@@ -672,7 +666,7 @@ diff -- python/sglang/srt/layers/quantization/quark/quark.py
 - Status/date: merged / 2025-11-20
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mixtral.py`; associated commits `b5344b31b8f1`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +24/-160, 315 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Piecewise CUDA Graph] Fix recompile issue for Mixtral and Grok2"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `python/sglang/srt/models/mixtral.py`; PR body summary: Co-Author: Oasis-Git Co-Author: Minglei Zhu Co-Author: Ke Bao To close https://github.com/sgl-project/sglang/issues/13469 Recompile Debugging Note Thanks a lot to @Oasis-Git and....
+- Motivation: Title: "[Piecewise CUDA Graph] Fix recompile issue for Mixtral and Grok2"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `python/sglang/srt/models/mixtral.py`; technical summary: Covers "[Piecewise CUDA Graph] Fix recompile issue for Mixtral and Grok2"; the main implementation surface is `python/sglang/srt/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/mixtral.py` modified +1/-0 (1 lines); hunks: -353,6 +353,7 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
   - `python/sglang/srt/models/mixtral.py` modified +1/-0 (1 lines); hunks: -353,6 +353,7 @@ def __init__(; symbols: __init__, forward
@@ -694,7 +688,7 @@ diff -- python/sglang/srt/models/mixtral.py
 - Status/date: merged / 2025-12-09
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/layers/quantization/quark/quark.py`; associated commits `c106b54b57d8`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +594/-96, 1032 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Aiter fp8 kv cache"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `python/sglang/srt/layers/quantization/quark/quark.py`; PR body summary: Support fp8 kv cache in aiter-backend of AMD. Aiter backend only support mla decode fp8 computation. Other attention function still do bf16 computation Aiter backend and model r....
+- Motivation: Title: "Aiter fp8 kv cache"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `python/sglang/srt/layers/quantization/quark/quark.py`; technical summary: Covers "Aiter fp8 kv cache"; the main implementation surface is `python/sglang/srt/layers/quantization/quark/quark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/layers/quantization/quark/quark.py` modified +2/-0 (2 lines); hunks: -71,6 +71,8 @@ def get_quant_method(; symbols: get_quant_method, touching `get_quant_method`.
 - Code diff details:
   - `python/sglang/srt/layers/quantization/quark/quark.py` modified +2/-0 (2 lines); hunks: -71,6 +71,8 @@ def get_quant_method(; symbols: get_quant_method
@@ -717,7 +711,7 @@ diff -- python/sglang/srt/layers/quantization/quark/quark.py
 - Status/date: merged / 2026-01-14
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/layers/quantization/quark_int4fp8_moe.py`; associated commits `5af84c8af554`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 12 files, +615/-15, 759 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[AMD][Quantization] Add `int4fp8_moe` online quantization on ROCm"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `python/sglang/srt/layers/quantization/quark_int4fp8_moe.py`; PR body summary: As per title, this PR supersedes https://github.com/sgl-project/sglang/pull/6238. This PR implements loading MOE models checkpoints in high-precision (fp16, bf16), quantizing on....
+- Motivation: Title: "[AMD][Quantization] Add `int4fp8_moe` online quantization on ROCm"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `python/sglang/srt/layers/quantization/quark_int4fp8_moe.py`; technical summary: Covers "[AMD][Quantization] Add `int4fp8_moe` online quantization on ROCm"; the main implementation surface is `python/sglang/srt/layers/quantization/quark_int4fp8_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/layers/quantization/quark_int4fp8_moe.py` added +443/-0 (443 lines); hunks: -0,0 +1,443; symbols: tqdm_reset_no_print, QuarkInt4Fp8Config, for, __init__, touching `tqdm_reset_no_print, QuarkInt4Fp8Config, for`.
 - Code diff details:
   - `python/sglang/srt/layers/quantization/quark_int4fp8_moe.py` added +443/-0 (443 lines); hunks: -0,0 +1,443; symbols: tqdm_reset_no_print, QuarkInt4Fp8Config, for, __init__
@@ -744,7 +738,7 @@ diff -- python/sglang/srt/layers/quantization/quark_int4fp8_moe.py
 - Status/date: merged / 2026-01-19
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 19 files, +310/-66, 596 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[AMD CI] Migrate and Add More Testcases"; model line: Mixtral Quark INT4/FP8 MoE; category: docs/tests/CI; main diff: `.github/workflows/pr-test-amd.yml`, `test/registered/amd/test_deepseek_v3_mtp.py`, `test/registered/amd/test_deepseek_v3_basic.py`; PR body summary: Cleans up and reorganizes AMD CI test infrastructure. - Renamed suite: `stage-a-test-1` → `stage-a-test-1-amd` (5 files) - Update suite name: `stage-b-test-small-1-gpu` → `stage....
+- Motivation: Title: "[AMD CI] Migrate and Add More Testcases"; model line: Mixtral Quark INT4/FP8 MoE; category: docs/tests/CI; main diff: `.github/workflows/pr-test-amd.yml`, `test/registered/amd/test_deepseek_v3_mtp.py`, `test/registered/amd/test_deepseek_v3_basic.py`; technical summary: Covers "[AMD CI] Migrate and Add More Testcases"; the main implementation surface is `.github/workflows/pr-test-amd.yml`, `test/registered/amd/test_deepseek_v3_mtp.py`, `test/registered/amd/test_deepseek_v3_basic.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `.github/workflows/pr-test-amd.yml` modified +81/-47 (128 lines); hunks: -149,7 +149,10 @@ jobs:; -190,7 +193,7 @@ jobs:; `test/registered/amd/test_deepseek_v3_mtp.py` added +116/-0 (116 lines); hunks: -0,0 +1,116; symbols: TestDeepseekV3MTP, setUpClass, tearDownClass, test_a_gsm8k, touching `TestDeepseekV3MTP, setUpClass, tearDownClass`; `test/registered/amd/test_deepseek_v3_basic.py` added +84/-0 (84 lines); hunks: -0,0 +1,84; symbols: TestDeepseekV3Basic, setUpClass, tearDownClass, test_a_gsm8k, touching `TestDeepseekV3Basic, setUpClass, tearDownClass`; `test/srt/run_suite.py` modified +0/-8 (8 lines); hunks: -91,10 +91,7; -103,15 +100,10.
 - Code diff details:
   - `.github/workflows/pr-test-amd.yml` modified +81/-47 (128 lines); hunks: -149,7 +149,10 @@ jobs:; -190,7 +193,7 @@ jobs:
@@ -786,7 +780,7 @@ diff -- test/registered/amd/test_deepseek_v3_basic.py
 - Status/date: merged / 2026-02-16
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 19 files, +2643/-2237, 5144 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[2/N] Quantization Refactor: Compressed tensors MoE schemes"; model line: Mixtral Quark INT4/FP8 MoE; category: model support/runtime entry; main diff: `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors_moe.py`, `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_wNa16_moe.py`, `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py`; PR body summary: Add MoE schemes to compressed-tensors instead of storing all classes in a single file. This should make it easier to implement additional functionality as well as clearly show t....
+- Motivation: Title: "[2/N] Quantization Refactor: Compressed tensors MoE schemes"; model line: Mixtral Quark INT4/FP8 MoE; category: model support/runtime entry; main diff: `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors_moe.py`, `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_wNa16_moe.py`, `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py`; technical summary: Covers "[2/N] Quantization Refactor: Compressed tensors MoE schemes"; the main implementation surface is `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors_moe.py`, `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_wNa16_moe.py`, `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors_moe.py` removed +0/-2190 (2190 lines); hunks: -1,2190 +0,0; symbols: GPTQMarlinState, CompressedTensorsMoEMethod, __new__, get_moe_method, touching `GPTQMarlinState, CompressedTensorsMoEMethod, __new__`; `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_wNa16_moe.py` added +621/-0 (621 lines); hunks: -0,0 +1,621; symbols: GPTQMarlinState, CompressedTensorsWNA16MoE, __init__, get_min_capability, touching `GPTQMarlinState, CompressedTensorsWNA16MoE, __init__`; `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py` added +421/-0 (421 lines); hunks: -0,0 +1,421; symbols: CompressedTensorsW4A4Nvfp4MoE, __init__, get_min_capability, create_weights, touching `CompressedTensorsW4A4Nvfp4MoE, __init__, get_min_capability`; `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w8a8_fp8_moe.py` added +384/-0 (384 lines); hunks: -0,0 +1,384; symbols: CompressedTensorsW8A8Fp8MoE, __init__, get_min_capability, create_weights, touching `CompressedTensorsW8A8Fp8MoE, __init__, get_min_capability`.
 - Code diff details:
   - `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors_moe.py` removed +0/-2190 (2190 lines); hunks: -1,2190 +0,0; symbols: GPTQMarlinState, CompressedTensorsMoEMethod, __new__, get_moe_method
@@ -827,7 +821,7 @@ diff -- python/sglang/srt/layers/quantization/compressed_tensors/schemes/compres
 - Status/date: merged / 2026-02-18
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/layers/quantization/quark/quark.py`, `python/sglang/srt/layers/quantization/quark/schemes/__init__.py`, `python/sglang/srt/layers/quantization/quark/schemes/quark_scheme.py`, `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4.py`, `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` and 7 files; associated commits `150ed881be2c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +396/-243, 835 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[4/N] Quantization Refactor: Quark MoE schemes"; model line: Mixtral Quark INT4/FP8 MoE; category: model support/runtime entry; main diff: `python/sglang/srt/layers/quantization/quark/schemes/quark_w8a8_fp8_moe.py`, `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`, `python/sglang/srt/layers/quantization/quark/quark.py`; PR body summary: Add MoE schemes to quark instead of storing all classes in a single file. Follow up to https://github.com/sgl-project/sglang/pull/17503 Images and motivation for this PR can be....
+- Motivation: Title: "[4/N] Quantization Refactor: Quark MoE schemes"; model line: Mixtral Quark INT4/FP8 MoE; category: model support/runtime entry; main diff: `python/sglang/srt/layers/quantization/quark/schemes/quark_w8a8_fp8_moe.py`, `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`, `python/sglang/srt/layers/quantization/quark/quark.py`; technical summary: Covers "[4/N] Quantization Refactor: Quark MoE schemes"; the main implementation surface is `python/sglang/srt/layers/quantization/quark/schemes/quark_w8a8_fp8_moe.py`, `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`, `python/sglang/srt/layers/quantization/quark/quark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/layers/quantization/quark/schemes/quark_w8a8_fp8_moe.py` renamed +5/-221 (226 lines); hunks: -9,248 +9,32; -479,7 +263,7 @@ def create_moe_runner(; symbols: QuarkMoEMethod, __init__, get_moe_method, QuarkW4A4MXFp4MoEMethod, touching `QuarkMoEMethod, __init__, get_moe_method`; `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` added +213/-0 (213 lines); hunks: -0,0 +1,213; symbols: QuarkW4A4MXFp4MoE, __init__, get_min_capability, create_weights, touching `QuarkW4A4MXFp4MoE, __init__, get_min_capability`; `python/sglang/srt/layers/quantization/quark/quark.py` modified +96/-10 (106 lines); hunks: -2,29 +2,36; -77,7 +84,7 @@ def get_quant_method(; symbols: get_quant_method, _find_matched_config, _get_scheme_from_config, touching `get_quant_method, _find_matched_config, _get_scheme_from_config`; `python/sglang/srt/layers/quantization/quark/schemes/quark_scheme.py` modified +65/-4 (69 lines); hunks: -1,14 +1,20; -30,6 +36,14 @@ def create_weights(self, *args, **kwargs):; symbols: QuarkScheme, QuarkLinearScheme, used, create_weights, touching `QuarkScheme, QuarkLinearScheme, used`.
 - Code diff details:
   - `python/sglang/srt/layers/quantization/quark/schemes/quark_w8a8_fp8_moe.py` renamed +5/-221 (226 lines); hunks: -9,248 +9,32; -479,7 +263,7 @@ def create_moe_runner(; symbols: QuarkMoEMethod, __init__, get_moe_method, QuarkW4A4MXFp4MoEMethod
@@ -868,7 +862,7 @@ diff -- python/sglang/srt/layers/quantization/quark/quark.py
 - Status/date: merged / 2026-02-26
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4.py`; associated commits `5172c378456f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +73/-20, 194 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[AMD] Use fused GEMM with FP8 cast for FP8 prefill"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4.py`; PR body summary: cc @HaiShaw, @kkHuang-amd When using FP8 prefill, q, k, v tensors require a separate element-wise BF16 to FP8 cast before the prefill attention kernel, adding overhead. - Use th....
+- Motivation: Title: "[AMD] Use fused GEMM with FP8 cast for FP8 prefill"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4.py`; technical summary: Covers "[AMD] Use fused GEMM with FP8 cast for FP8 prefill"; the main implementation surface is `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4.py` modified +30/-5 (35 lines); hunks: -10,6 +10,9; -87,20 +90,29 @@ def apply_weights(; symbols: apply_weights, touching `apply_weights`.
 - Code diff details:
   - `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4.py` modified +30/-5 (35 lines); hunks: -10,6 +10,9; -87,20 +90,29 @@ def apply_weights(; symbols: apply_weights
@@ -895,7 +889,7 @@ diff -- python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4.py
 - Status/date: merged / 2026-03-20
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`; associated commits `941945371314`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +131/-36, 388 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[AMD] Add MoE weights and scales padding"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`; PR body summary: Right now, Aiter MoE requires weights and scales to align with a fixed number. Since some models have intermediate sizes that don't fit this rule, we need to add extra padding t....
+- Motivation: Title: "[AMD] Add MoE weights and scales padding"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`; technical summary: Covers "[AMD] Add MoE weights and scales padding"; the main implementation surface is `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` modified +23/-5 (28 lines); hunks: -8,6 +8,7; -73,10 +74,20 @@ def create_weights(; symbols: create_weights, touching `create_weights`.
 - Code diff details:
   - `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` modified +23/-5 (28 lines); hunks: -8,6 +8,7; -73,10 +74,20 @@ def create_weights(; symbols: create_weights
@@ -922,7 +916,7 @@ diff -- python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe
 - Status/date: merged / 2026-03-21
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`; associated commits `048d90e1651a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +36/-131, 388 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Revert "[AMD] Add MoE weights and scales padding""; model line: Mixtral Quark INT4/FP8 MoE; category: docs/tests/CI; main diff: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`; PR body summary: Reverts sgl-project/sglang#18684 Caused CI failure: https://github.com/sgl-project/sglang/actions/runs/23367673750/job/67984876644.
+- Motivation: Title: "Revert "[AMD] Add MoE weights and scales padding""; model line: Mixtral Quark INT4/FP8 MoE; category: docs/tests/CI; main diff: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`; technical summary: Covers "Revert "[AMD] Add MoE weights and scales padding""; the main implementation surface is `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` modified +5/-23 (28 lines); hunks: -8,7 +8,6; -74,20 +73,10 @@ def create_weights(; symbols: create_weights, touching `create_weights`.
 - Code diff details:
   - `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` modified +5/-23 (28 lines); hunks: -8,7 +8,6; -74,20 +73,10 @@ def create_weights(; symbols: create_weights
@@ -949,7 +943,7 @@ diff -- python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe
 - Status/date: merged / 2026-03-25
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`; associated commits `61a902ce88ea`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +90/-54, 331 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[AMD][MoRI] Auto-select dispatch quantization type from MoE weight dtype."; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`; PR body summary: Previously, MoRI EP dispatch quantization type (BF16/FP8/FP4) was controlled entirely by environment variables (`SGLANG_MORI_FP8_DISP` / `SGLANG_MORI_FP4_DISP`), requiring users....
+- Motivation: Title: "[AMD][MoRI] Auto-select dispatch quantization type from MoE weight dtype."; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`; technical summary: Covers "[AMD][MoRI] Auto-select dispatch quantization type from MoE weight dtype."; the main implementation surface is `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` modified +4/-0 (4 lines); hunks: -160,6 +160,10 @@ def process_weights_after_loading(self, layer: torch.nn.Mod...; symbols: process_weights_after_loading, create_moe_runner, touching `process_weights_after_loading, create_moe_runner`.
 - Code diff details:
   - `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` modified +4/-0 (4 lines); hunks: -160,6 +160,10 @@ def process_weights_after_loading(self, layer: torch.nn.Mod...; symbols: process_weights_after_loading, create_moe_runner
@@ -973,7 +967,7 @@ diff -- python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe
 - Status/date: merged / 2026-04-13
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`; associated commits `f4f9e6818916`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +153/-46, 432 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[AMD] Add MoE weights and scales padding"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`; PR body summary: Right now, Aiter MoE requires weights and scales to align with a fixed number. Since some models have intermediate sizes that don't fit this rule, we need to add extra padding t....
+- Motivation: Title: "[AMD] Add MoE weights and scales padding"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`; technical summary: Covers "[AMD] Add MoE weights and scales padding"; the main implementation surface is `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` modified +20/-5 (25 lines); hunks: -8,6 +8,7; -73,10 +74,20 @@ def create_weights(; symbols: create_weights, touching `create_weights`.
 - Code diff details:
   - `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` modified +20/-5 (25 lines); hunks: -8,6 +8,7; -73,10 +74,20 @@ def create_weights(; symbols: create_weights
@@ -1000,7 +994,7 @@ diff -- python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe
 - Status/date: merged / 2026-04-24
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`; associated commits `000a2525e196`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +25/-25, 124 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Move expert_mask_gpu from FusedMoE layer to StandardDispatcher"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`; PR body summary: The aiter `expert_mask_gpu` tensor is a pure function of the dispatcher's `local_expert_mapping` and `num_local_experts`, but today it lives on `FusedMoE` and is computed in `Fu....
+- Motivation: Title: "Move expert_mask_gpu from FusedMoE layer to StandardDispatcher"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`; technical summary: Covers "Move expert_mask_gpu from FusedMoE layer to StandardDispatcher"; the main implementation surface is `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` modified +1/-1 (2 lines); hunks: -227,6 +227,6 @@ def apply_weights(; symbols: apply_weights, touching `apply_weights`.
 - Code diff details:
   - `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` modified +1/-1 (2 lines); hunks: -227,6 +227,6 @@ def apply_weights(; symbols: apply_weights
@@ -1016,6 +1010,42 @@ diff -- python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe
 - Reviewed files:
   - runtime: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` modified +1/-1
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/moe/fused_moe_triton/layer.py`, `python/sglang/srt/layers/moe/token_dispatcher/standard.py`, `python/sglang/srt/layers/quantization/fp8.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #23597 - [MoE] Add Aiter MoE runner backend and purge aiter.fused_moe from quant methods
+
+- Link: https://github.com/sgl-project/sglang/pull/23597
+- Status/date: merged / 2026-05-01
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`, `python/sglang/srt/layers/quantization/quark_int4fp8_moe.py`; associated commits `108bfd8b6a0d`
+- Diff scope read: GitHub Pull Request files API returned 10 files, +316/-251, 873 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[MoE] Add Aiter MoE runner backend and purge aiter.fused_moe from quant methods"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`, `python/sglang/srt/layers/quantization/quark_int4fp8_moe.py`; technical summary: Covers "[MoE] Add Aiter MoE runner backend and purge aiter.fused_moe from quant methods"; the main implementation surface is `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`, `python/sglang/srt/layers/quantization/quark_int4fp8_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` modified +25/-29 (54 lines); hunks: -7,7 +7,7; -32,8 +32,6; symbols: process_weights_after_loading, create_moe_runner, apply_weights, touching `process_weights_after_loading, create_moe_runner, apply_weights`; `python/sglang/srt/layers/quantization/quark_int4fp8_moe.py` modified +25/-22 (47 lines); hunks: -11,7 +11,7; -27,8 +27,6; symbols: process_weights_after_loading, create_moe_runner, apply, touching `process_weights_after_loading, create_moe_runner, apply`.
+- Code diff details:
+  - `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` modified +25/-29 (54 lines); hunks: -7,7 +7,7; -32,8 +32,6; symbols: process_weights_after_loading, create_moe_runner, apply_weights
+  - `python/sglang/srt/layers/quantization/quark_int4fp8_moe.py` modified +25/-22 (47 lines); hunks: -11,7 +11,7; -27,8 +27,6; symbols: process_weights_after_loading, create_moe_runner, apply
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py
+@@ -7,7 +7,7 @@
+-from sglang.srt.layers.moe import MoeRunnerConfig
++from sglang.srt.layers.moe import MoeRunner, MoeRunnerBackend, MoeRunnerConfig
+@@ -32,8 +32,6 @@
+-    from aiter import ActivationType, QuantType
+-    from aiter.fused_moe import fused_moe
+@@ -182,24 +180,31 @@ def process_weights_after_loading(self, layer: torch.nn.Module) -> None:
+diff -- python/sglang/srt/layers/quantization/quark_int4fp8_moe.py
+@@ -11,7 +11,7 @@
+-from sglang.srt.layers.moe import MoeRunnerConfig
++from sglang.srt.layers.moe import MoeRunner, MoeRunnerBackend, MoeRunnerConfig
+@@ -27,8 +27,6 @@
+-    from aiter import ActivationType, QuantType
+-    from aiter.fused_moe import fused_moe
+@@ -405,39 +403,44 @@ def process_weights_after_loading(self, layer: torch.nn.Module) -> None:
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` modified +25/-29; `python/sglang/srt/layers/quantization/quark_int4fp8_moe.py` modified +25/-22
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/moe/moe_runner/aiter.py`, `python/sglang/srt/layers/moe/moe_runner/runner.py`, `python/sglang/srt/layers/moe/utils.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ## Gap-Closure Notes
 

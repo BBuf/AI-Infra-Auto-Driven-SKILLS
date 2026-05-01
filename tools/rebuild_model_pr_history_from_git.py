@@ -33,8 +33,18 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 COMMON_ROOT = ROOT.parent
 FRAMEWORK_ROOTS = {
-    "sglang": COMMON_ROOT / "_worktrees" / "sglang-pr-history",
-    "vllm": COMMON_ROOT / "_worktrees" / "vllm-pr-history",
+    "sglang": Path(
+        os.environ.get(
+            "SGLANG_PR_HISTORY_ROOT",
+            str(COMMON_ROOT / "_worktrees" / "sglang-pr-history"),
+        )
+    ),
+    "vllm": Path(
+        os.environ.get(
+            "VLLM_PR_HISTORY_ROOT",
+            str(COMMON_ROOT / "_worktrees" / "vllm-pr-history"),
+        )
+    ),
 }
 REPOS = {
     "sglang": "sgl-project/sglang",
@@ -589,62 +599,6 @@ def plain(text: str, limit: int = 220) -> str:
     return text
 
 
-def body_excerpt(text: str, limit: int = 220) -> str:
-    """Keep useful PR-body context and drop repository checklist boilerplate."""
-    text = re.sub(r"`{3,}.*?`{3,}", " ", text or "", flags=re.S)
-    text = re.sub(r"<!--.*?-->", " ", text, flags=re.S)
-    cutoff_markers = [
-        "Essential Elements of an Effective PR Description Checklist",
-        "Format your code according to",
-        "\n## Checklist",
-        "\n### Checklist",
-        "\n## TODO",
-        "\n### TODO",
-        "\nTODO:",
-        "\n**TODO",
-        "\n---\nEssential Elements",
-    ]
-    lower = text.lower()
-    cutoffs = [lower.find(marker.lower()) for marker in cutoff_markers if lower.find(marker.lower()) >= 0]
-    if cutoffs:
-        text = text[: min(cutoffs)]
-
-    useful_lines: list[str] = []
-    heading_only = re.compile(
-        r"^#{1,6}\s*(motivation|modifications?|accuracy tests?|speed tests?.*|"
-        r"benchmark(?:ing)?(?: and profiling)?|test plan|test result|purpose|summary)\s*:?\s*$",
-        re.I,
-    )
-    for raw_line in text.splitlines():
-        line = raw_line.strip()
-        if not line:
-            continue
-        if re.fullmatch(r"[#>*_\-\s.]+", line):
-            continue
-        if heading_only.match(line):
-            continue
-        if re.match(r"^[-*]\s*\[[ xX]\]", line):
-            continue
-        line = re.sub(r"^#{1,6}\s*", "", line).strip()
-        line = re.sub(r"^DRAFT:\s*", "", line, flags=re.I)
-        useful_lines.append(line)
-
-    cleaned = plain(" ".join(useful_lines), limit)
-    cleaned = re.sub(r"[\U0001F000-\U0001FAFF\U00002700-\U000027BF]+", "", cleaned).strip()
-    cleaned = re.sub(r"\s+(---|--|-)$", "", cleaned).strip()
-    empty_templates = {
-        "## Motivation ## Modifications ## Accuracy Tests ## Benchmarking and Profiling",
-        "## Purpose ## Test Plan ## Test Result",
-    }
-    if (
-        not cleaned
-        or re.fullmatch(r"[#>*_\-\s.]+", cleaned)
-        or any(cleaned.lower() == template.lower() for template in empty_templates)
-    ):
-        return ""
-    return cleaned
-
-
 def file_status(file: dict[str, Any]) -> str:
     return file.get("status") or "modified"
 
@@ -791,7 +745,8 @@ def pr_when(bundle: PRBundle) -> str:
 
 
 def pr_title(bundle: PRBundle) -> str:
-    return plain((bundle.info or {}).get("title") or f"PR #{bundle.number}", 160)
+    title = plain((bundle.info or {}).get("title") or f"PR #{bundle.number}", 160)
+    return re.sub(r"^\s*(?:\[(?:codex|claude|chatgpt)\]\s*)+", "", title, flags=re.I).strip()
 
 
 def pr_url(bundle: PRBundle) -> str:
@@ -826,10 +781,9 @@ def source_text_en(bundle: PRBundle) -> str:
 
 def motivation_zh(bundle: PRBundle, model_title: str) -> str:
     title = pr_title(bundle)
-    body = body_excerpt((bundle.info or {}).get("body") or "", 180)
     files = top_files(bundle, 4)
-    names = ", ".join(f"`{f.get('filename')}`" for f in files[:3]) or "文件级 diff"
-    lower = f"{title} {body}".lower()
+    names = ", ".join(f"`{f.get('filename')}`" for f in files[:3]) or "仅元数据 PR 卡片"
+    lower = " ".join([title, names]).lower()
     if any(token in lower for token in ("fix", "bug", "wrong", "error", "crash", "regression")):
         category = "缺陷修复"
     elif any(token in lower for token in ("perf", "opt", "fuse", "fp8", "fp4", "deepgemm", "deepep", "flash", "aiter", "cuda", "triton")):
@@ -840,7 +794,13 @@ def motivation_zh(bundle: PRBundle, model_title: str) -> str:
         category = "模型支持/运行时入口"
     else:
         category = "模型实现调整"
-    body_part = f"；PR 正文摘要: {body}" if body else "；PR 正文未提供可用摘要"
+    if files:
+        summary = f"覆盖「{title}」；主要实现面是 {names}。下方保留文件级证据、代码摘录和验证风险"
+    else:
+        summary = (
+            f"覆盖「{title}」；GitHub 文件列表为空，本卡保留 PR 元数据、缺失 patch 的状态和验证风险，不编造文件级证据"
+        )
+    body_part = f"；技术摘要: {summary}"
     return f"标题「{title}」；模型线: {model_title}；类别: {category}；主要 diff: {names}{body_part}。"
 
 
@@ -875,10 +835,9 @@ def validation_zh(bundle: PRBundle) -> str:
 
 def motivation_en(bundle: PRBundle, model_title: str) -> str:
     title = pr_title(bundle)
-    body = body_excerpt((bundle.info or {}).get("body") or "", 180)
     files = top_files(bundle, 4)
-    names = ", ".join(f"`{f.get('filename')}`" for f in files[:3]) or "the file-level diff"
-    lower = f"{title} {body}".lower()
+    names = ", ".join(f"`{f.get('filename')}`" for f in files[:3]) or "metadata-only PR card"
+    lower = " ".join([title, names]).lower()
     if any(token in lower for token in ("fix", "bug", "wrong", "error", "crash", "regression")):
         category = "bug fix"
     elif any(token in lower for token in ("perf", "opt", "fuse", "fp8", "fp4", "deepgemm", "deepep", "flash", "aiter", "cuda", "triton")):
@@ -889,7 +848,17 @@ def motivation_en(bundle: PRBundle, model_title: str) -> str:
         category = "model support/runtime entry"
     else:
         category = "model implementation change"
-    body_part = f"; PR body summary: {body}" if body else "; no usable PR-body summary"
+    if files:
+        summary = (
+            f'Covers "{title}"; the main implementation surface is {names}. '
+            "File-level evidence, code excerpts, and validation risks are preserved below"
+        )
+    else:
+        summary = (
+            f'Covers "{title}"; GitHub returned an empty changed-file list, so this card records PR metadata, '
+            "the missing-patch state, and validation risks without inventing file evidence"
+        )
+    body_part = f"; technical summary: {summary}"
     return f"Title: \"{title}\"; model line: {model_title}; category: {category}; main diff: {names}{body_part}."
 
 
@@ -1073,7 +1042,6 @@ def no_pr_section_en(model_title: str, framework: str, files: list[str]) -> str:
 def render_history_zh(framework: str, model: str, files: list[str], traces: dict[int, TraceInfo], bundles: list[PRBundle], existing_only_count: int) -> str:
     title = MODEL_TITLES[model]
     repo = REPOS[framework]
-    commit = framework_commit(framework)
     cards = "\n\n".join(card_zh(bundle, title) for bundle in bundles)
     pr_section = f"## 逐 PR diff 审计卡\n\n{cards}" if cards else no_pr_section_zh(title, framework, files)
     traced_count = sum(1 for bundle in bundles if bundle.trace.files)
@@ -1085,13 +1053,6 @@ def render_history_zh(framework: str, model: str, files: list[str], traces: dict
     body = clean_block(
         f"""\
         # {framework} {title} 模型 PR 优化历史
-
-        ## 文档口径
-
-        - 重做日期: {TODAY}
-        - 源码基线: `{repo}` 当前追溯 worktree commit `{commit}`
-        - PR 收集规则: 先从模型实现、配置、processor、parser、docs/tests 等相关文件执行 `git log --name-only -- <model-files>`，再按 commit subject 的模型关键词过滤，最后用 GitHub Pull Request files API 读取每个 PR 的最终 diff。
-        - 额外保留规则: 原 history/skill 已显式引用但未出现在当前实现文件 git trace 中的 PR 会保留，并在卡片里标注来源。
 
         ## 模型实现文件覆盖
 
@@ -1123,7 +1084,6 @@ def render_history_zh(framework: str, model: str, files: list[str], traces: dict
 def render_history_en(framework: str, model: str, files: list[str], traces: dict[int, TraceInfo], bundles: list[PRBundle], existing_only_count: int) -> str:
     title = MODEL_TITLES[model]
     repo = REPOS[framework]
-    commit = framework_commit(framework)
     cards = "\n\n".join(card_en(bundle, title) for bundle in bundles)
     pr_section = f"## Per-PR Diff Audit Cards\n\n{cards}" if cards else no_pr_section_en(title, framework, files)
     traced_count = sum(1 for bundle in bundles if bundle.trace.files)
@@ -1135,13 +1095,6 @@ def render_history_en(framework: str, model: str, files: list[str], traces: dict
     body = clean_block(
         f"""\
         # {framework} {title} Model PR Optimization History
-
-        ## Scope
-
-        - Rebuilt on: {TODAY}
-        - Source baseline: `{repo}` trace worktree commit `{commit}`
-        - PR collection rule: run `git log --name-only -- <model-files>` on model implementation, config, processor, parser, docs/tests, filter by model keywords in commit subjects, then read each PR's final diff through the GitHub Pull Request files API.
-        - Preservation rule: PRs explicitly cited by the previous history/skill are retained even if current implementation files no longer trace to them, and the card marks that source.
 
         ## Implementation File Coverage
 

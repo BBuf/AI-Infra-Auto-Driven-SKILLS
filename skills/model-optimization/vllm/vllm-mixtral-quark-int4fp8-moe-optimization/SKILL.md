@@ -1,6 +1,6 @@
 ---
 name: vllm-mixtral-quark-int4fp8-moe-optimization
-description: PR-backed optimization manual for Mixtral Quark / INT4-FP8 MoE in vLLM. Use when Codex needs to audit, debug, extend, or document Mixtral MoE, expert parallelism, FP8 / ModelOpt quantization, and EPLB in vLLM, which together form the nearest equivalent to Quark INT4-FP8 Mixtral serving.
+description: PR-backed optimization manual for Mixtral Quark / INT4-FP8 MoE in vLLM. Use when an engineer needs to audit, debug, extend, or document Mixtral MoE, expert parallelism, FP8 / ModelOpt quantization, and EPLB in vLLM, which together form the nearest equivalent to Quark INT4-FP8 Mixtral serving.
 ---
 
 # vLLM Mixtral Quark / INT4-FP8 MoE Optimization
@@ -40,7 +40,7 @@ Every PR cited for this family must be based on diff reading, not only PR titles
 - [#15961](https://github.com/vllm-project/vllm/pull/15961) `Support ModelOpt quantization of Mixtral model`: Extended the family to NVIDIA ModelOpt quantization flows.
 - [#22842](https://github.com/vllm-project/vllm/pull/22842) `Support EPLB for Mixtral Model`: Added expert-parallel load balancing to the Mixtral family.
 
-## Open Radar
+## Open Optimization Items
 
 - Re-run PR search before claiming new support beyond the checked mainline commit.
 

@@ -1,6 +1,6 @@
 ---
 name: sglang-intern-s1-optimization
-description: PR-backed optimization manual for Intern-S1 in SGLang. Use when Codex needs to audit, debug, extend, or document Intern-S1 language and video-aware serving, processor integration, and tool/reasoning parser behavior.
+description: PR-backed optimization manual for Intern-S1 in SGLang. Use when an engineer needs to audit, debug, extend, or document Intern-S1 language and video-aware serving, processor integration, and tool/reasoning parser behavior.
 ---
 
 # SGLang Intern-S1 Optimization

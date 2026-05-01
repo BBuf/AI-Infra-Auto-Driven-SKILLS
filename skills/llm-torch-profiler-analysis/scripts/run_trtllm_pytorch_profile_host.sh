@@ -22,7 +22,8 @@ Usage:
 Options:
   --model TEXT                     Hugging Face model id.
   --run-dir PATH                  Shared /data run directory for logs and traces.
-  --stage prefill|decode          Capture window. Prefill uses 1-1, decode uses 2-4.
+  --stage prefill|decode          Capture window. Prefill profiles 4090->1 by
+                                  default; decode profiles 1->2048 by default.
   --port INT                      Host port for trtllm-serve.
   --gpus TEXT                     CUDA_VISIBLE_DEVICES value, for example 0 or 2,3,4,5.
   --gpu TEXT                      Alias for --gpus.
@@ -32,8 +33,15 @@ Options:
   --hf-cache PATH                 Host Hugging Face cache path.
   --override-py-executor PATH     Optional py_executor.py override path.
   --disable-cudagraph             Generate/use a YAML override with cuda_graph_config: null.
-  --request-max-tokens INT        Generation length for the probe request.
-  --prompt TEXT                   Probe prompt.
+  --input-len INT                 Synthetic prompt length for this stage.
+                                  Defaults: prefill 4090, decode 1.
+  --request-max-tokens INT        Generation length for this stage.
+                                  Defaults: prefill 1, decode 2048.
+  --output-len INT                Alias for --request-max-tokens.
+  --prompt TEXT                   Probe prompt. Defaults to a synthetic prompt
+                                  sized by --input-len.
+  --warmup-steps INT              Warmup steps before the profiler window. Defaults to 10.
+  --active-steps INT              Active profiler steps to capture. Defaults to 5.
   --max-seq-len INT               Serve max sequence length.
   --kv-fraction FLOAT             KV cache free GPU memory fraction.
   --container-name TEXT           Override container name.
@@ -60,7 +68,10 @@ HF_CACHE="/data/.cache/huggingface"
 OVERRIDE_PY_EXECUTOR=""
 DISABLE_CUDAGRAPH=0
 REQUEST_MAX_TOKENS=""
-PROMPT="用两句话解释 CUDA graph 和 eager mode 的区别。"
+INPUT_LEN=""
+PROMPT=""
+WARMUP_STEPS=10
+ACTIVE_STEPS=5
 MAX_SEQ_LEN=4096
 KV_FRACTION=0.85
 CONTAINER_NAME=""
@@ -124,12 +135,28 @@ while [[ $# -gt 0 ]]; do
       DISABLE_CUDAGRAPH=1
       shift
       ;;
+    --input-len)
+      INPUT_LEN="$2"
+      shift 2
+      ;;
     --request-max-tokens)
+      REQUEST_MAX_TOKENS="$2"
+      shift 2
+      ;;
+    --output-len)
       REQUEST_MAX_TOKENS="$2"
       shift 2
       ;;
     --prompt)
       PROMPT="$2"
+      shift 2
+      ;;
+    --warmup-steps)
+      WARMUP_STEPS="$2"
+      shift 2
+      ;;
+    --active-steps)
+      ACTIVE_STEPS="$2"
       shift 2
       ;;
     --max-seq-len)
@@ -192,21 +219,25 @@ fi
 
 case "$STAGE" in
   prefill)
-    PROFILE_START_STOP="1-1"
     TRACE_PATH="$RUN_DIR/trace-prefill.json"
     LOG_PATH="$RUN_DIR/server-prefill.log"
     BENCHMARK_PATH="$RUN_DIR/benchmark-prefill.json"
+    if [[ -z "$INPUT_LEN" ]]; then
+      INPUT_LEN=4090
+    fi
     if [[ -z "$REQUEST_MAX_TOKENS" ]]; then
-      REQUEST_MAX_TOKENS=8
+      REQUEST_MAX_TOKENS=1
     fi
     ;;
   decode)
-    PROFILE_START_STOP="2-4"
     TRACE_PATH="$RUN_DIR/trace-decode.json"
     LOG_PATH="$RUN_DIR/server-decode.log"
     BENCHMARK_PATH="$RUN_DIR/benchmark-decode.json"
+    if [[ -z "$INPUT_LEN" ]]; then
+      INPUT_LEN=1
+    fi
     if [[ -z "$REQUEST_MAX_TOKENS" ]]; then
-      REQUEST_MAX_TOKENS=24
+      REQUEST_MAX_TOKENS=2048
     fi
     ;;
   *)
@@ -214,6 +245,22 @@ case "$STAGE" in
     exit 2
     ;;
 esac
+
+if (( WARMUP_STEPS < 0 || ACTIVE_STEPS < 1 )); then
+  echo "--warmup-steps must be >= 0 and --active-steps must be >= 1." >&2
+  exit 2
+fi
+
+case "$STAGE" in
+  prefill)
+    profile_start=$((WARMUP_STEPS + 1))
+    ;;
+  decode)
+    profile_start=$((WARMUP_STEPS + 2))
+    ;;
+esac
+profile_stop=$((profile_start + ACTIVE_STEPS - 1))
+PROFILE_START_STOP="${profile_start}-${profile_stop}"
 
 if [[ -z "$CONTAINER_NAME" ]]; then
   model_slug="${MODEL##*/}"
@@ -311,21 +358,28 @@ import sys
 import urllib.request
 
 sys.path.insert(0, ${SCRIPT_DIR@Q})
-from profile_common import extract_openai_chat_text
+from profile_common import extract_openai_chat_text, synthetic_prompt
+
+prompt = ${PROMPT@Q} or synthetic_prompt(int(${INPUT_LEN@Q}))
+stage = ${STAGE@Q}
+warmup_steps = int(${WARMUP_STEPS@Q})
+active_steps = int(${ACTIVE_STEPS@Q})
+request_count = warmup_steps + active_steps if stage == "prefill" else 1
 
 payload = {
     "model": ${MODEL@Q},
-    "messages": [{"role": "user", "content": ${PROMPT@Q}}],
+    "messages": [{"role": "user", "content": prompt}],
     "temperature": 0,
     "max_tokens": int(${REQUEST_MAX_TOKENS@Q}),
 }
-req = urllib.request.Request(
-    "http://127.0.0.1:${PORT}/v1/chat/completions",
-    data=json.dumps(payload).encode(),
-    headers={"Content-Type": "application/json"},
-)
-with urllib.request.urlopen(req, timeout=600) as resp:
-    body = json.loads(resp.read().decode())
+for request_idx in range(request_count):
+    req = urllib.request.Request(
+        "http://127.0.0.1:${PORT}/v1/chat/completions",
+        data=json.dumps(payload).encode(),
+        headers={"Content-Type": "application/json"},
+    )
+    with urllib.request.urlopen(req, timeout=600) as resp:
+        body = json.loads(resp.read().decode())
 text, source = extract_openai_chat_text(body)
 print(text[:400] if text else f"[empty completion; source={source}]")
 PY

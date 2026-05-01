@@ -23,6 +23,10 @@ This script is intended to run on the H100 host. It:
 3. captures TensorRT-LLM formal + graph-off mapping traces and writes `analysis_trtllm.txt`
 4. stores one benchmark JSON per framework under the model run directory
 
+Default profiler workloads are stage-separated:
+  prefill: input 4090, output 1
+  decode:  input 1, output 2048
+
 Environment:
   Export `HF_TOKEN` and `HUGGINGFACE_HUB_TOKEN` before running.
 EOF
@@ -44,6 +48,11 @@ SGLANG_MEM_FRACTION="0.85"
 MAX_MODEL_LEN="4096"
 KV_FRACTION="0.85"
 SGLANG_SERVER_EXTRA=""
+PROFILE_WORKLOAD="both"
+PREFILL_INPUT_LEN=4090
+PREFILL_OUTPUT_LEN=1
+DECODE_INPUT_LEN=1
+DECODE_OUTPUT_LEN=2048
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TRT_IMAGE="nvcr.io/nvidia/tensorrt-llm/release:latest"
 TRT_OVERRIDE_ROOT="/data/bbuf/validate/unified_llm_profiler_skill/overrides/trtllm"
@@ -68,6 +77,11 @@ while [[ $# -gt 0 ]]; do
     --sglang-server-extra) SGLANG_SERVER_EXTRA="$2"; shift 2 ;;
     --max-model-len) MAX_MODEL_LEN="$2"; shift 2 ;;
     --kv-fraction) KV_FRACTION="$2"; shift 2 ;;
+    --profile-workload) PROFILE_WORKLOAD="$2"; shift 2 ;;
+    --prefill-input-len) PREFILL_INPUT_LEN="$2"; shift 2 ;;
+    --prefill-output-len) PREFILL_OUTPUT_LEN="$2"; shift 2 ;;
+    --decode-input-len) DECODE_INPUT_LEN="$2"; shift 2 ;;
+    --decode-output-len) DECODE_OUTPUT_LEN="$2"; shift 2 ;;
     --help|-h) usage; exit 0 ;;
     *)
       echo "Unknown argument: $1" >&2
@@ -142,6 +156,11 @@ sglang_args=(
   --gpus "$GPUS"
   --tp-size "$TP_SIZE"
   --mem-fraction "$SGLANG_MEM_FRACTION"
+  --profile-workload "$PROFILE_WORKLOAD"
+  --prefill-input-len "$PREFILL_INPUT_LEN"
+  --prefill-output-len "$PREFILL_OUTPUT_LEN"
+  --decode-input-len "$DECODE_INPUT_LEN"
+  --decode-output-len "$DECODE_OUTPUT_LEN"
   --trust-remote-code
 )
 if [[ -n "$SGLANG_SERVER_EXTRA" ]]; then
@@ -162,6 +181,11 @@ HF_TOKEN="$HF_TOKEN" HUGGINGFACE_HUB_TOKEN="$HUGGINGFACE_HUB_TOKEN" \
   --gpus "$GPUS" \
   --tensor-parallel-size "$TP_SIZE" \
   --max-model-len "$MAX_MODEL_LEN" \
+  --profile-workload "$PROFILE_WORKLOAD" \
+  --prefill-input-len "$PREFILL_INPUT_LEN" \
+  --prefill-output-len "$PREFILL_OUTPUT_LEN" \
+  --decode-input-len "$DECODE_INPUT_LEN" \
+  --decode-output-len "$DECODE_OUTPUT_LEN" \
   --trust-remote-code
 
 echo "[3/6] vLLM mapping"
@@ -174,6 +198,11 @@ HF_TOKEN="$HF_TOKEN" HUGGINGFACE_HUB_TOKEN="$HUGGINGFACE_HUB_TOKEN" \
   --tensor-parallel-size "$TP_SIZE" \
   --profiler-active-iterations 2 \
   --max-model-len "$MAX_MODEL_LEN" \
+  --profile-workload "$PROFILE_WORKLOAD" \
+  --prefill-input-len "$PREFILL_INPUT_LEN" \
+  --prefill-output-len "$PREFILL_OUTPUT_LEN" \
+  --decode-input-len "$DECODE_INPUT_LEN" \
+  --decode-output-len "$DECODE_OUTPUT_LEN" \
   --trust-remote-code \
   --enforce-eager
 
@@ -190,6 +219,8 @@ HF_TOKEN="$HF_TOKEN" HUGGINGFACE_HUB_TOKEN="$HUGGINGFACE_HUB_TOKEN" \
   --gpus "$GPUS" \
   --tp-size "$TP_SIZE" \
   --kv-fraction "$KV_FRACTION" \
+  --input-len "$PREFILL_INPUT_LEN" \
+  --output-len "$PREFILL_OUTPUT_LEN" \
   --override-py-executor "$TRT_OVERRIDE_PATH" \
   --trust-remote-code
 HF_TOKEN="$HF_TOKEN" HUGGINGFACE_HUB_TOKEN="$HUGGINGFACE_HUB_TOKEN" \
@@ -201,6 +232,8 @@ HF_TOKEN="$HF_TOKEN" HUGGINGFACE_HUB_TOKEN="$HUGGINGFACE_HUB_TOKEN" \
   --gpus "$GPUS" \
   --tp-size "$TP_SIZE" \
   --kv-fraction "$KV_FRACTION" \
+  --input-len "$DECODE_INPUT_LEN" \
+  --output-len "$DECODE_OUTPUT_LEN" \
   --override-py-executor "$TRT_OVERRIDE_PATH" \
   --trust-remote-code
 HF_TOKEN="$HF_TOKEN" HUGGINGFACE_HUB_TOKEN="$HUGGINGFACE_HUB_TOKEN" \
@@ -212,6 +245,8 @@ HF_TOKEN="$HF_TOKEN" HUGGINGFACE_HUB_TOKEN="$HUGGINGFACE_HUB_TOKEN" \
   --gpus "$GPUS" \
   --tp-size "$TP_SIZE" \
   --kv-fraction "$KV_FRACTION" \
+  --input-len "$PREFILL_INPUT_LEN" \
+  --output-len "$PREFILL_OUTPUT_LEN" \
   --override-py-executor "$TRT_OVERRIDE_PATH" \
   --disable-cudagraph \
   --trust-remote-code
@@ -224,6 +259,8 @@ HF_TOKEN="$HF_TOKEN" HUGGINGFACE_HUB_TOKEN="$HUGGINGFACE_HUB_TOKEN" \
   --gpus "$GPUS" \
   --tp-size "$TP_SIZE" \
   --kv-fraction "$KV_FRACTION" \
+  --input-len "$DECODE_INPUT_LEN" \
+  --output-len "$DECODE_OUTPUT_LEN" \
   --override-py-executor "$TRT_OVERRIDE_PATH" \
   --disable-cudagraph \
   --trust-remote-code

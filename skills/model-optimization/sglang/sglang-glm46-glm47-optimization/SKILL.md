@@ -1,6 +1,6 @@
 ---
 name: sglang-glm46-glm47-optimization
-description: PR-backed and current-main optimization manual for GLM-4.6, GLM-4.6V-adjacent text paths, GLM-4.7, and GLM-4.7-Flash in SGLang. Use when Codex needs to recover, extend, or audit GLM shared-expert fusion, dual-stream MoE GEMM overlap, GLM-4.7 tool parser, NVFP4/MTP, GLM4-MoE-Lite/Flash loading, AMD/NPU validation, or GLM-4.6/4.7 cookbook recipes.
+description: PR-backed and current-main optimization manual for GLM-4.6, GLM-4.6V-adjacent text paths, GLM-4.7, and GLM-4.7-Flash in SGLang. Use when an engineer needs to recover, extend, or audit GLM shared-expert fusion, dual-stream MoE GEMM overlap, GLM-4.7 tool parser, NVFP4/MTP, GLM4-MoE-Lite/Flash loading, AMD/NPU validation, or GLM-4.6/4.7 cookbook recipes.
 ---
 
 # SGLang GLM-4.6/4.7 Optimization

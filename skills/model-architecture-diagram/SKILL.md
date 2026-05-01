@@ -31,6 +31,13 @@ Use `references/diagram-index.json` as the source of truth. It stores raw GitHub
 - `Tencent-Hunyuan/Hunyuan3D-2`
 - `brayevalerien/Flux.1-Architecture-Diagram`
 
+Prefer detailed implementation, cookbook, or architecture-card diagrams over
+paper figures. Good sources show module boundaries, dataflow, MoE / attention /
+cache paths, or model-specific runtime structure rather than only a high-level
+paper overview. Official repository diagrams and curated implementation
+diagrams are first choice; paper figures are fallback only when no more detailed
+public original diagram is indexed.
+
 Do not copy remote image binaries into the skill. Return the raw GitHub URLs so the chat renderer can display the original image.
 
 ## Existing Diagram Rule

@@ -128,8 +128,16 @@ uses much more memory for the same workload, run profiler triage before patching
 
 Use `llm-torch-profiler-analysis` against the SGLang best command first:
 
-- capture live SGLang profiles with `--profile-by-stage` when possible
-- keep separate `extend/prefill` and `decode` traces when the server supports it
+- capture live SGLang profiles with `--profile-workload both`; the profiler
+  skill labels `prefill/` and `decode/` by workload directory for this mode
+- keep separate `extend/prefill` and `decode` traces; do not use one mixed
+  request as the default profiler workload
+- set profiler lengths from the slow benchmark scenario instead of the profiler
+  defaults: prefill uses the slow input length with output `1`, and decode uses
+  input `1` with the slow output length
+- for mixed benchmark datasets, choose the slowest representative bucket
+  already reported by the benchmark, usually p50 or p95 input/output lengths,
+  and record that bucket beside the profiler artifact path
 - run mapping+formal triage if single-trace output cannot map kernels to useful
   Python source locations
 - save the kernel, overlap-opportunity, and fuse-pattern tables in artifacts
@@ -190,6 +198,33 @@ After patching, rerun:
 If the patch changes SGLang's available knobs, re-search SGLang's best command.
 If competitor versions or commands changed during the work, rerun their best
 commands too. Preserve before/after artifacts.
+
+## H100 Validation Snapshot
+
+On 2026-05-01, this workflow was smoke-validated on `h100_sglang` with two
+real model runs and two competitor checks per run. Artifacts were saved
+under
+`/data/bbuf/validate/sglang_sota_performance_skill/runs/20260501_two_model_validation`.
+
+| Model | GPUs | Workload | SGLang result | vLLM check | TensorRT-LLM check |
+| --- | --- | --- | --- | --- | --- |
+| `Qwen/Qwen2.5-7B-Instruct` | 2x H100, TP=2 | random, input 512/output 64, 24 prompts, 10 warmup requests | 52.09 req/s, mean TTFT 144.85 ms, mean ITL 4.91 ms | 51.06 req/s, mean TTFT 159.19 ms, mean ITL 4.85 ms | 49.71 req/s, mean TTFT 177.54 ms, mean ITL 4.77 ms |
+| `Qwen/Qwen2.5-32B-Instruct` | 4x H100, TP=4 | random, input 512/output 64, 16 prompts, 10 warmup requests | 18.47 req/s, mean TTFT 247.06 ms, mean ITL 9.66 ms | 18.78 req/s, mean TTFT 218.68 ms, mean ITL 9.98 ms | 15.48 req/s, mean TTFT 445.62 ms, mean ITL 9.27 ms |
+
+Use this only as a workflow health check, not as a universal performance
+claim. The TensorRT-LLM checks used `trtllm-serve serve --backend pytorch` and
+the same OpenAI-compatible random workload.
+
+Additional 2-card validation on 2026-05-01 exercised the full handoff from
+bounded cross-framework search into SGLang stage-separated profiling. The
+benchmark workload was random input `512`, output `64`, 8 prompts, and the
+profiler used the same slow-workload lengths: prefill `512->1` and decode
+`1->64`, with warmup 10 and capture 5.
+
+| Model | GPUs | Best SGLang | Best vLLM | Profiler result | Artifact root |
+| --- | --- | --- | --- | --- | --- |
+| `Qwen/Qwen3-8B` | 2x H100, TP=2 | `sglang_mem086`, 21.64 req/s | `vllm_mem080`, 22.88 req/s | kernel, overlap, and fuse tables rendered with separate `extend/prefill` and `decode` sections | `/data/bbuf/validate/core_skill_validation_20260501/qwen3_8b/sota` |
+| `mistralai/Mistral-7B-Instruct-v0.3` | 2x H100, TP=2 | `sglang_mem080`, 24.09 req/s | `vllm_mem090`, 24.76 req/s | kernel, overlap, and fuse tables rendered with separate `extend/prefill` and `decode` sections | `/data/bbuf/validate/core_skill_validation_20260501/mistral_7b_instruct_v03/sota` |
 
 ## Stop Conditions
 

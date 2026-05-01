@@ -1,6 +1,6 @@
 ---
 name: vllm-kimi-optimization
-description: PR-backed optimization manual for Kimi K2 / K2.5 / Linear / Audio / VL in vLLM. Use when Codex needs to audit, debug, extend, or document Kimi-VL, Kimi-Linear, Kimi-K2.5, Kimi-Audio, parser aliases, and quantized MLA behavior in vLLM.
+description: PR-backed optimization manual for Kimi K2 / K2.5 / Linear / Audio / VL in vLLM. Use when an engineer needs to audit, debug, extend, or document Kimi-VL, Kimi-Linear, Kimi-K2.5, Kimi-Audio, parser aliases, and quantized MLA behavior in vLLM.
 ---
 
 # vLLM Kimi K2 / K2.5 / Linear / Audio / VL Optimization
@@ -42,7 +42,7 @@ Every PR cited for this family must be based on diff reading, not only PR titles
 - [#36127](https://github.com/vllm-project/vllm/pull/36127) `Add support for moonshotai/Kimi-Audio-7B-Instruct`: Extended the family to audio-conditioned serving.
 - [#37438](https://github.com/vllm-project/vllm/pull/37438) `Add Kimi-K2.5 reasoning/tool parser aliases`: Aligned parser aliases and tool-call IDs with the newer model outputs.
 
-## Open Radar
+## Open Optimization Items
 
 - Re-run PR search before claiming new support beyond the checked mainline commit.
 

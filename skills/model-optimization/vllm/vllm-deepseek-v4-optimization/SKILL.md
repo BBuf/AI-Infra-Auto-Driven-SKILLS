@@ -1,6 +1,6 @@
 ---
 name: vllm-deepseek-v4-optimization
-description: PR-backed optimization manual for DeepSeek V4 in vLLM. Use when Codex needs to audit, debug, extend, or document DeepSeek V4 current-main support in vLLM, including the model module, MTP path, tokenizer/renderer, DSML tool parser, expert-dtype handling, and BF16 persistent-topk follow-up.
+description: PR-backed optimization manual for DeepSeek V4 in vLLM. Use when an engineer needs to audit, debug, extend, or document DeepSeek V4 current-main support in vLLM, including the model module, MTP path, tokenizer/renderer, DSML tool parser, expert-dtype handling, and BF16 persistent-topk follow-up.
 ---
 
 # vLLM DeepSeek V4 Optimization
@@ -8,7 +8,7 @@ description: PR-backed optimization manual for DeepSeek V4 in vLLM. Use when Cod
 ## Overview
 
 This skill tracks DeepSeek V4 as a current-main vLLM model family. The old
-open-radar bring-up PR was superseded by the rebased mainline landing, and the
+open bring-up PR was superseded by the rebased mainline landing, and the
 runtime now includes the registry aliases, model/MTP files, tokenizer/renderer,
 tool parser, and follow-up handling for FP4-vs-FP8 expert checkpoints.
 
@@ -56,7 +56,7 @@ PR cards, not only PR titles.
 - Open PR `#40811` extends persistent top-k from FP32-only assumptions to
   BF16 input support, which matters for the DeepSeek V4 sparse indexer path.
 
-## PR Radar
+## Open Optimization Items
 
 - [#40860](https://github.com/vllm-project/vllm/pull/40860) `[Feat] DeepSeek V4 Rebased`: mainline support landing.
 - [#41006](https://github.com/vllm-project/vllm/pull/41006) `Support DSV4 base`: FP4/FP8 expert-dtype handling and mapper split.

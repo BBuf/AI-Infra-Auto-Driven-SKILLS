@@ -1,6 +1,6 @@
 ---
 name: sglang-mistral-small-4-optimization
-description: PR-backed optimization manual for Mistral Small 4 in SGLang. Use when Codex needs to audit, debug, extend, or document Mistral Small 4, Leanstral, and closely related Mistral Large 3 / Ministral serving behavior, including multimodal and EAGLE paths.
+description: PR-backed optimization manual for Mistral Small 4 in SGLang. Use when an engineer needs to audit, debug, extend, or document Mistral Small 4, Leanstral, and closely related Mistral Large 3 / Ministral serving behavior, including multimodal and EAGLE paths.
 ---
 
 # SGLang Mistral Small 4 Optimization

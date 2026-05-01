@@ -1,6 +1,6 @@
 ---
 name: vllm-qwen3-next-optimization
-description: PR-backed optimization manual for Qwen3-Next in vLLM. Use when Codex needs to audit, debug, extend, or document Qwen3-Next GDN attention, MTP, packed module naming, PP, and cross-hardware tuned MoE configuration in vLLM.
+description: PR-backed optimization manual for Qwen3-Next in vLLM. Use when an engineer needs to audit, debug, extend, or document Qwen3-Next GDN attention, MTP, packed module naming, PP, and cross-hardware tuned MoE configuration in vLLM.
 ---
 
 # vLLM Qwen3-Next Optimization
@@ -40,7 +40,7 @@ Every PR cited for this family must be based on diff reading, not only PR titles
 - [#31722](https://github.com/vllm-project/vllm/pull/31722) `Speed-up of GDN attention decode part`: Improved decode throughput on the GDN attention path.
 - [#33657](https://github.com/vllm-project/vllm/pull/33657) `Initial support for GDN attention on Qwen3-next/Qwen3.5 (XPU)`: Extended the family beyond CUDA with XPU GDN coverage.
 
-## Open Radar
+## Open Optimization Items
 
 - Re-run PR search before claiming new support beyond the checked mainline commit.
 

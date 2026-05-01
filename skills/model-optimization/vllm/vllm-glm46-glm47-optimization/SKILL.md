@@ -1,6 +1,6 @@
 ---
 name: vllm-glm46-glm47-optimization
-description: PR-backed optimization manual for GLM-4.6 / 4.7 in vLLM. Use when Codex needs to audit, debug, extend, or document GLM-4.6, GLM-4.6V, GLM-4.7, GLM-4.7-Flash, GLM-Lite, and the parser / quant / fused-MoE deltas after the 4.5 generation.
+description: PR-backed optimization manual for GLM-4.6 / 4.7 in vLLM. Use when an engineer needs to audit, debug, extend, or document GLM-4.6, GLM-4.6V, GLM-4.7, GLM-4.7-Flash, GLM-Lite, and the parser / quant / fused-MoE deltas after the 4.5 generation.
 ---
 
 # vLLM GLM-4.6 / 4.7 Optimization
@@ -40,7 +40,7 @@ Every PR cited for this family must be based on diff reading, not only PR titles
 - [#31386](https://github.com/vllm-project/vllm/pull/31386) `GLM Model support for GLM-Lite`: Extended the same runtime family to the Lite checkpoint line.
 - [#37386](https://github.com/vllm-project/vllm/pull/37386) `Improve tool call parsing and content normalization for glm47`: Fixed concrete parsing errors that surfaced in newer GLM-4.7 outputs.
 
-## Open Radar
+## Open Optimization Items
 
 - Re-run PR search before claiming new support beyond the checked mainline commit.
 

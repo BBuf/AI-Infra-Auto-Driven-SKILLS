@@ -1,6 +1,6 @@
 ---
 name: sglang-glm-vlm-ocr-optimization
-description: PR-backed and current-main optimization manual for GLM-4V, GLM-4.1V, GLM-4.5V, GLM-4.6V, GLM-Glyph, and GLM-OCR in SGLang. Use when Codex needs to recover, extend, or audit GLM vision processors, GLM4V MoE, vision encoder DP/PP, GLM-OCR/NextN loading, transformers compatibility, Conv3D-to-linear projection, AMD/NPU validation, or VLM/OCR cookbook recipes.
+description: PR-backed and current-main optimization manual for GLM-4V, GLM-4.1V, GLM-4.5V, GLM-4.6V, GLM-Glyph, and GLM-OCR in SGLang. Use when an engineer needs to recover, extend, or audit GLM vision processors, GLM4V MoE, vision encoder DP/PP, GLM-OCR/NextN loading, transformers compatibility, Conv3D-to-linear projection, AMD/NPU validation, or VLM/OCR cookbook recipes.
 ---
 
 # SGLang GLM VLM/OCR Optimization

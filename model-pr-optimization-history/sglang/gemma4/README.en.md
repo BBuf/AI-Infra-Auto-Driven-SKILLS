@@ -1,12 +1,5 @@
 # sglang Gemma 4 Model PR Optimization History
 
-## Scope
-
-- Rebuilt on: 2026-04-25
-- Source baseline: `sgl-project/sglang` trace worktree commit `880599cd43`
-- PR collection rule: run `git log --name-only -- <model-files>` on model implementation, config, processor, parser, docs/tests, filter by model keywords in commit subjects, then read each PR's final diff through the GitHub Pull Request files API.
-- Preservation rule: PRs explicitly cited by the previous history/skill are retained even if current implementation files no longer trace to them, and the card marks that source.
-
 ## Implementation File Coverage
 
 | File | Git-traced PRs |
@@ -46,7 +39,7 @@
 - Status/date: merged / 2026-04-07
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/function_call/gemma4_detector.py`, `python/sglang/srt/layers/gemma4_fused_ops.py`, `python/sglang/srt/models/gemma4_audio.py`, `python/sglang/srt/models/gemma4_causal.py`, `python/sglang/srt/models/gemma4_mm.py` and 7 files; associated commits `2813cb6d9a5b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 35 files, +6007/-70, 6694 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[New Model] Gemma 4"; model line: Gemma 4; category: model support/runtime entry; main diff: `python/sglang/srt/models/gemma4_causal.py`, `python/sglang/srt/models/gemma4_mm.py`, `python/sglang/srt/models/gemma4_audio.py`; PR body summary: Add Gemma 4 model support to SGLang. Gemma 4 is Google's next-generation family of open models featuring Dense and MoE architectures, multimodal support (text, image, audio), hy....
+- Motivation: Title: "[New Model] Gemma 4"; model line: Gemma 4; category: model support/runtime entry; main diff: `python/sglang/srt/models/gemma4_causal.py`, `python/sglang/srt/models/gemma4_mm.py`, `python/sglang/srt/models/gemma4_audio.py`; technical summary: Covers "[New Model] Gemma 4"; the main implementation surface is `python/sglang/srt/models/gemma4_causal.py`, `python/sglang/srt/models/gemma4_mm.py`, `python/sglang/srt/models/gemma4_audio.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/gemma4_causal.py` added +1009/-0 (1009 lines); hunks: -0,0 +1,1009; symbols: get_attention_sliding_window_size, Gemma4Router, __init__, fuse_scale, touching `get_attention_sliding_window_size, Gemma4Router, __init__`; `python/sglang/srt/models/gemma4_mm.py` added +878/-0 (878 lines); hunks: -0,0 +1,878; symbols: Gemma4ImagePixelInputs, Gemma4AudioInputs, Gemma4MultimodalEmbedder, __init__, touching `Gemma4ImagePixelInputs, Gemma4AudioInputs, Gemma4MultimodalEmbedder`; `python/sglang/srt/models/gemma4_audio.py` added +873/-0 (873 lines); hunks: -0,0 +1,873; symbols: Gemma4AudioRelativePositionEmbedding, __init__, _get_timing_signal_1d_pos, _relative_shift, touching `Gemma4AudioRelativePositionEmbedding, __init__, _get_timing_signal_1d_pos`; `python/sglang/srt/models/gemma4_vision.py` added +599/-0 (599 lines); hunks: -0,0 +1,599; symbols: _rotate_half, _apply_rotary, Gemma4VisionRotaryEmbedding, __init__, touching `_rotate_half, _apply_rotary, Gemma4VisionRotaryEmbedding`.
 - Code diff details:
   - `python/sglang/srt/models/gemma4_causal.py` added +1009/-0 (1009 lines); hunks: -0,0 +1,1009; symbols: get_attention_sliding_window_size, Gemma4Router, __init__, fuse_scale
@@ -87,7 +80,7 @@ diff -- python/sglang/srt/models/gemma4_audio.py
 - Status/date: merged / 2026-04-10
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +8/-0, 15 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[nvidia] Gemma4 nvfp4 fix"; model line: Gemma 4; category: bug fix; main diff: `python/sglang/srt/layers/attention/triton_ops/extend_attention.py`; PR body summary: Based on #21952 and depends on https://github.com/flashinfer-ai/flashinfer/pull/2959 Gemma 4 NVFP4 checkpoints does not work on GB200 for the following reasons: Triton attention....
+- Motivation: Title: "[nvidia] Gemma4 nvfp4 fix"; model line: Gemma 4; category: bug fix; main diff: `python/sglang/srt/layers/attention/triton_ops/extend_attention.py`; technical summary: Covers "[nvidia] Gemma4 nvfp4 fix"; the main implementation surface is `python/sglang/srt/layers/attention/triton_ops/extend_attention.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/layers/attention/triton_ops/extend_attention.py` modified +8/-0 (8 lines); hunks: -72,6 +72,14 @@ def _get_block_sizes_for_extend_attention(Lq: int, Lv: int):; symbols: _get_block_sizes_for_extend_attention, touching `_get_block_sizes_for_extend_attention`.
 - Code diff details:
   - `python/sglang/srt/layers/attention/triton_ops/extend_attention.py` modified +8/-0 (8 lines); hunks: -72,6 +72,14 @@ def _get_block_sizes_for_extend_attention(Lq: int, Lv: int):; symbols: _get_block_sizes_for_extend_attention
@@ -114,7 +107,7 @@ diff -- python/sglang/srt/layers/attention/triton_ops/extend_attention.py
 - Status/date: merged / 2026-04-16
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 18 files, +2838/-1515, 4528 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Upgrade transformers to 5.5.3 and refactor hf_transformers_utils into subpackage"; model line: Gemma 4; category: model implementation change; main diff: `python/sglang/srt/utils/hf_transformers/tokenizer.py`, `python/sglang/srt/configs/qwen3_5.py`, `python/sglang/srt/configs/step3p5.py`; PR body summary: Refactor `hf_transformers_utils.py` into `hf_transformers/` subpackage and upgrade pinned `transformers` from `5.3.0` to `5.5.3` with compatibility patches. Refactoring Split th....
+- Motivation: Title: "Upgrade transformers to 5.5.3 and refactor hf_transformers_utils into subpackage"; model line: Gemma 4; category: model implementation change; main diff: `python/sglang/srt/utils/hf_transformers/tokenizer.py`, `python/sglang/srt/configs/qwen3_5.py`, `python/sglang/srt/configs/step3p5.py`; technical summary: Covers "Upgrade transformers to 5.5.3 and refactor hf_transformers_utils into subpackage"; the main implementation surface is `python/sglang/srt/utils/hf_transformers/tokenizer.py`, `python/sglang/srt/configs/qwen3_5.py`, `python/sglang/srt/configs/step3p5.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/utils/hf_transformers/tokenizer.py` added +551/-0 (551 lines); hunks: -0,0 +1,551; symbols: _load_tokenizer_by_declared_class, declared, mapping, like, touching `_load_tokenizer_by_declared_class, declared, mapping`; `python/sglang/srt/configs/qwen3_5.py` modified +16/-0 (16 lines); hunks: -8,6 +8,9 @@ class Qwen3_5VisionConfig(Qwen3VLVisionConfig):; -109,14 +112,27 @@ def __init__(; symbols: Qwen3_5VisionConfig, __init__, Qwen3_5TextConfig, Qwen3_5MoeVisionConfig, touching `Qwen3_5VisionConfig, __init__, Qwen3_5TextConfig`; `python/sglang/srt/configs/step3p5.py` modified +9/-0 (9 lines); hunks: -94,4 +94,13 @@ def __init__(; symbols: __init__, touching `__init__`; `python/sglang/srt/models/qwen3_vl.py` modified +7/-1 (8 lines); hunks: -1091,9 +1091,15 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `python/sglang/srt/utils/hf_transformers/tokenizer.py` added +551/-0 (551 lines); hunks: -0,0 +1,551; symbols: _load_tokenizer_by_declared_class, declared, mapping, like
@@ -156,7 +149,7 @@ diff -- python/sglang/srt/configs/step3p5.py
 - Status/date: merged / 2026-04-17
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +6/-3, 17 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[CI] Adding Gemma 4 to Nightly CI"; model line: Gemma 4; category: docs/tests/CI; main diff: `test/registered/eval/test_vlms_mmmu_eval.py`; PR body summary: Adding Gemma 4 variants to Nightly CI following https://github.com/sgl-project/sglang/pull/21952 Pending https://github.com/sgl-project/sglang/pull/21569 upgrade transformer to....
+- Motivation: Title: "[CI] Adding Gemma 4 to Nightly CI"; model line: Gemma 4; category: docs/tests/CI; main diff: `test/registered/eval/test_vlms_mmmu_eval.py`; technical summary: Covers "[CI] Adding Gemma 4 to Nightly CI"; the main implementation surface is `test/registered/eval/test_vlms_mmmu_eval.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `test/registered/eval/test_vlms_mmmu_eval.py` modified +6/-3 (9 lines); hunks: -33,10 +33,13.
 - Code diff details:
   - `test/registered/eval/test_vlms_mmmu_eval.py` modified +6/-3 (9 lines); hunks: -33,10 +33,13

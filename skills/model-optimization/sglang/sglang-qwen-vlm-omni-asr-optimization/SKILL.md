@@ -1,6 +1,6 @@
 ---
 name: sglang-qwen-vlm-omni-asr-optimization
-description: PR-diff-backed optimization manual for Qwen2.5-VL, Qwen3-VL, Qwen3-VL-MoE, Qwen3-Omni, Qwen3-ASR, and Qwen3.5 multimodal paths in SGLang. Use when Codex needs to audit, debug, extend, or document multimodal processors, ViT DP/PP/chunk/cache, mRoPE, DeepStack, EAGLE3, LoRA, audio encoder, streaming ASR, encoder disaggregation, AMD/NPU/CPU support, or Qwen VLM cookbook deployment recipes.
+description: PR-diff-backed optimization manual for Qwen2.5-VL, Qwen3-VL, Qwen3-VL-MoE, Qwen3-Omni, Qwen3-ASR, and Qwen3.5 multimodal paths in SGLang. Use when an engineer needs to audit, debug, extend, or document multimodal processors, ViT DP/PP/chunk/cache, mRoPE, DeepStack, EAGLE3, LoRA, audio encoder, streaming ASR, encoder disaggregation, AMD/NPU/CPU support, or Qwen VLM cookbook deployment recipes.
 ---
 
 # SGLang Qwen VLM / Omni / ASR Optimization
@@ -93,7 +93,7 @@ DP/PP encoder routing, and streaming ASR.
 - Qwen3-ASR final transcription, HTTP streaming, websocket streaming if present.
 - Hardware-specific reruns on AMD, NPU, or CPU when those paths are touched.
 
-## Open Radar
+## Open Optimization Items
 
 Track open/closed-unmerged PRs in `references/pr-history.md` before using them as
 implementation guidance. Important radar lanes include CPU Qwen3-VL/Omni, Qwen3-Omni

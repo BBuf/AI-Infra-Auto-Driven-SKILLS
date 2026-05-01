@@ -1,12 +1,5 @@
 # vllm MiniMax M2 Series Model PR Optimization History
 
-## Scope
-
-- Rebuilt on: 2026-04-25
-- Source baseline: `vllm-project/vllm` trace worktree commit `95995bbef8`
-- PR collection rule: run `git log --name-only -- <model-files>` on model implementation, config, processor, parser, docs/tests, filter by model keywords in commit subjects, then read each PR's final diff through the GitHub Pull Request files API.
-- Preservation rule: PRs explicitly cited by the previous history/skill are retained even if current implementation files no longer trace to them, and the card marks that source.
-
 ## Implementation File Coverage
 
 | File | Git-traced PRs |
@@ -19,7 +12,7 @@
 | `tests/tool_parsers/test_minimax_m2_tool_parser.py` | [#35895](https://github.com/vllm-project/vllm/pull/35895) |
 | `tests/tool_parsers/test_minimax_tool_parser.py` | no direct PR-number commit |
 | `vllm/compilation/passes/fusion/minimax_qk_norm_fusion.py` | [#37045](https://github.com/vllm-project/vllm/pull/37045) |
-| `vllm/model_executor/models/minimax_m2.py` | [#27535](https://github.com/vllm-project/vllm/pull/27535), [#27537](https://github.com/vllm-project/vllm/pull/27537), [#27627](https://github.com/vllm-project/vllm/pull/27627), [#30384](https://github.com/vllm-project/vllm/pull/30384), [#31493](https://github.com/vllm-project/vllm/pull/31493), [#32736](https://github.com/vllm-project/vllm/pull/32736), [#32763](https://github.com/vllm-project/vllm/pull/32763), [#36965](https://github.com/vllm-project/vllm/pull/36965), [#37045](https://github.com/vllm-project/vllm/pull/37045), [#37214](https://github.com/vllm-project/vllm/pull/37214), [#37512](https://github.com/vllm-project/vllm/pull/37512) |
+| `vllm/model_executor/models/minimax_m2.py` | [#27535](https://github.com/vllm-project/vllm/pull/27535), [#27537](https://github.com/vllm-project/vllm/pull/27537), [#27627](https://github.com/vllm-project/vllm/pull/27627), [#30384](https://github.com/vllm-project/vllm/pull/30384), [#31493](https://github.com/vllm-project/vllm/pull/31493), [#32736](https://github.com/vllm-project/vllm/pull/32736), [#32763](https://github.com/vllm-project/vllm/pull/32763), [#36965](https://github.com/vllm-project/vllm/pull/36965), [#37045](https://github.com/vllm-project/vllm/pull/37045), [#37214](https://github.com/vllm-project/vllm/pull/37214), [#37512](https://github.com/vllm-project/vllm/pull/37512), [#38191](https://github.com/vllm-project/vllm/pull/38191) |
 | `vllm/model_executor/models/minimax_text_01.py` | [#13454](https://github.com/vllm-project/vllm/pull/13454), [#16328](https://github.com/vllm-project/vllm/pull/16328), [#19592](https://github.com/vllm-project/vllm/pull/19592), [#20211](https://github.com/vllm-project/vllm/pull/20211), [#22151](https://github.com/vllm-project/vllm/pull/22151), [#22589](https://github.com/vllm-project/vllm/pull/22589), [#22928](https://github.com/vllm-project/vllm/pull/22928), [#23831](https://github.com/vllm-project/vllm/pull/23831), [#37371](https://github.com/vllm-project/vllm/pull/37371) |
 | `vllm/model_executor/models/minimax_vl_01.py` | [#16328](https://github.com/vllm-project/vllm/pull/16328), [#17354](https://github.com/vllm-project/vllm/pull/17354), [#22116](https://github.com/vllm-project/vllm/pull/22116) |
 | `vllm/parser/minimax_m2_parser.py` | [#39683](https://github.com/vllm-project/vllm/pull/39683), [#39861](https://github.com/vllm-project/vllm/pull/39861) |
@@ -29,9 +22,9 @@
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 30
+- Git-traced PRs: 31
 - Extra PRs preserved from existing docs: 2
-- Total PRs in this document: 32
+- Total PRs in this document: 33
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -71,6 +64,7 @@
 | 2026-04-10 | [#37045](https://github.com/vllm-project/vllm/pull/37045) | merged | [Kernel] Porting the TRTLLM minimax_allreduce_rms kernels | `vllm/model_executor/models/minimax_m2.py`, `vllm/compilation/passes/fusion/minimax_qk_norm_fusion.py`, `tests/kernels/core/test_minimax_reduce_rms.py` |
 | 2026-04-14 | [#39683](https://github.com/vllm-project/vllm/pull/39683) | merged | [Bugfix]: Fix MinimaxM2ToolParser missing tools parameter | `vllm/parser/minimax_m2_parser.py` |
 | 2026-04-16 | [#39861](https://github.com/vllm-project/vllm/pull/39861) | merged | [Bugfix] Accept **kwargs in MiniMaxM2Parser.__init__() | `vllm/parser/minimax_m2_parser.py` |
+| 2026-04-27 | [#38191](https://github.com/vllm-project/vllm/pull/38191) | merged | [Bugfix] Fix k_norm weight sharding in MiniMaxM2Attention when total_num_kv_heads < tp_size | `vllm/model_executor/models/minimax_m2.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -80,7 +74,7 @@
 - Status/date: merged / 2025-04-01
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/minimax_text_01.py`; associated commits `9ef98d527ee1`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 11 files, +2440/-130, 2657 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model][MiniMaxText01] Support MiniMaxText01 model inference"; model line: MiniMax M2 Series; category: model support/runtime entry; main diff: `vllm/model_executor/models/minimax_text_01.py`; PR body summary: This PR is intended to support the MiniMaxText01 model inference. It can run on a single machine with 8xH800 and 8xH20, where a single H800 machine can handle a maximum context....
+- Motivation: Title: "[Model][MiniMaxText01] Support MiniMaxText01 model inference"; model line: MiniMax M2 Series; category: model support/runtime entry; main diff: `vllm/model_executor/models/minimax_text_01.py`; technical summary: Covers "[Model][MiniMaxText01] Support MiniMaxText01 model inference"; the main implementation surface is `vllm/model_executor/models/minimax_text_01.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/minimax_text_01.py` added +1273/-0 (1273 lines); hunks: -0,0 +1,1273; symbols: replace_weight_name, weight_loader_with_alias, wrapper, inner_func, touching `replace_weight_name, weight_loader_with_alias, wrapper`.
 - Code diff details:
   - `vllm/model_executor/models/minimax_text_01.py` added +1273/-0 (1273 lines); hunks: -0,0 +1,1273; symbols: replace_weight_name, weight_loader_with_alias, wrapper, inner_func
@@ -107,7 +101,7 @@ diff -- vllm/model_executor/models/minimax_text_01.py
 - Status/date: merged / 2025-04-29
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/processing/test_minimax_vl_01.py`, `vllm/model_executor/models/minimax_text_01.py`, `vllm/model_executor/models/minimax_vl_01.py`; associated commits `cde384cd92c8`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 11 files, +954/-19, 1193 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model] support MiniMax-VL-01 model"; model line: MiniMax M2 Series; category: performance/backend optimization; main diff: `vllm/model_executor/models/minimax_vl_01.py`, `tests/models/multimodal/processing/test_minimax_vl_01.py`, `vllm/transformers_utils/configs/minimax_vl_01.py`; PR body summary: CLOSES #12073 This PR is intended to support the MiniMaxVL01 model inference. It adopts the “ViT-MLP-LLM” framework, which is a commonly used technique in the field of multimoda....
+- Motivation: Title: "[Model] support MiniMax-VL-01 model"; model line: MiniMax M2 Series; category: performance/backend optimization; main diff: `vllm/model_executor/models/minimax_vl_01.py`, `tests/models/multimodal/processing/test_minimax_vl_01.py`, `vllm/transformers_utils/configs/minimax_vl_01.py`; technical summary: Covers "[Model] support MiniMax-VL-01 model"; the main implementation surface is `vllm/model_executor/models/minimax_vl_01.py`, `tests/models/multimodal/processing/test_minimax_vl_01.py`, `vllm/transformers_utils/configs/minimax_vl_01.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/minimax_vl_01.py` added +615/-0 (615 lines); hunks: -0,0 +1,615; symbols: MaxImageTokenMeta, MiniMaxVL01ImagePixelInputs, MiniMaxVL01ImageEmbeddingInputs, image_size_to_num_patches, touching `MaxImageTokenMeta, MiniMaxVL01ImagePixelInputs, MiniMaxVL01ImageEmbeddingInputs`; `tests/models/multimodal/processing/test_minimax_vl_01.py` added +99/-0 (99 lines); hunks: -0,0 +1,99; symbols: test_processor_override, _validate_image_prompt_replacements_one, _test_image_prompt_replacements, test_processor_prompt_replacements_regression, touching `test_processor_override, _validate_image_prompt_replacements_one, _test_image_prompt_replacements`; `vllm/transformers_utils/configs/minimax_vl_01.py` added +70/-0 (70 lines); hunks: -0,0 +1,70; symbols: MiniMaxVL01Config, __init__, touching `MiniMaxVL01Config, __init__`; `vllm/transformers_utils/configs/minimax_text_01.py` added +69/-0 (69 lines); hunks: -0,0 +1,69; symbols: MiniMaxText01Config, __init__, touching `MiniMaxText01Config, __init__`.
 - Code diff details:
   - `vllm/model_executor/models/minimax_vl_01.py` added +615/-0 (615 lines); hunks: -0,0 +1,615; symbols: MaxImageTokenMeta, MiniMaxVL01ImagePixelInputs, MiniMaxVL01ImageEmbeddingInputs, image_size_to_num_patches
@@ -149,7 +143,7 @@ diff -- vllm/transformers_utils/configs/minimax_vl_01.py
 - Status/date: merged / 2025-04-29
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/processing/test_minimax_vl_01.py`, `vllm/model_executor/models/minimax_vl_01.py`; associated commits `00ee37efa236`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +38/-283, 442 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Clean up MiniMax-VL and fix processing"; model line: MiniMax M2 Series; category: bug fix; main diff: `vllm/model_executor/models/minimax_vl_01.py`, `tests/models/multimodal/processing/test_minimax_vl_01.py`; PR body summary: Follow-up to #16328 @qscqesze can you verify this fix? Also, can you open another PR after this one to add example scripts under `examples/offline_inference/vision_language.py`....
+- Motivation: Title: "[Bugfix] Clean up MiniMax-VL and fix processing"; model line: MiniMax M2 Series; category: bug fix; main diff: `vllm/model_executor/models/minimax_vl_01.py`, `tests/models/multimodal/processing/test_minimax_vl_01.py`; technical summary: Covers "[Bugfix] Clean up MiniMax-VL and fix processing"; the main implementation surface is `vllm/model_executor/models/minimax_vl_01.py`, `tests/models/multimodal/processing/test_minimax_vl_01.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/minimax_vl_01.py` modified +30/-282 (312 lines); hunks: -1,52 +1,32; -69,66 +49,8 @@ class MiniMaxVL01ImageEmbeddingInputs(TypedDict):; symbols: MaxImageTokenMeta, MiniMaxVL01ImagePixelInputs, MiniMaxVL01ImageEmbeddingInputs, image_size_to_num_patches, touching `MaxImageTokenMeta, MiniMaxVL01ImagePixelInputs, MiniMaxVL01ImageEmbeddingInputs`; `tests/models/multimodal/processing/test_minimax_vl_01.py` modified +0/-1 (1 lines); hunks: -12,7 +12,6; symbols: test_processor_override, touching `test_processor_override`.
 - Code diff details:
   - `vllm/model_executor/models/minimax_vl_01.py` modified +30/-282 (312 lines); hunks: -1,52 +1,32; -69,66 +49,8 @@ class MiniMaxVL01ImageEmbeddingInputs(TypedDict):; symbols: MaxImageTokenMeta, MiniMaxVL01ImagePixelInputs, MiniMaxVL01ImageEmbeddingInputs, image_size_to_num_patches
@@ -181,7 +175,7 @@ diff -- tests/models/multimodal/processing/test_minimax_vl_01.py
 - Status/date: merged / 2025-06-13
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/minimax_text_01.py`; associated commits `a24cb91600bd`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-3, 27 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model] Fix minimax model cache & lm_head precision"; model line: MiniMax M2 Series; category: bug fix; main diff: `vllm/model_executor/models/minimax_text_01.py`; PR body summary: Change the precision of the MiniMax model in vLLM: update the LM head and KV cache from bfloat16 (bf16) to float32 (fp32). Purpose: To improve numerical stability and output acc....
+- Motivation: Title: "[Model] Fix minimax model cache & lm_head precision"; model line: MiniMax M2 Series; category: bug fix; main diff: `vllm/model_executor/models/minimax_text_01.py`; technical summary: Covers "[Model] Fix minimax model cache & lm_head precision"; the main implementation surface is `vllm/model_executor/models/minimax_text_01.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/minimax_text_01.py` modified +3/-3 (6 lines); hunks: -856,7 +856,7 @@ def layer_fn(prefix):; -1021,7 +1021,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: layer_fn, __init__, forward, compute_logits, touching `layer_fn, __init__, forward`.
 - Code diff details:
   - `vllm/model_executor/models/minimax_text_01.py` modified +3/-3 (6 lines); hunks: -856,7 +856,7 @@ def layer_fn(prefix):; -1021,7 +1021,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: layer_fn, __init__, forward, compute_logits
@@ -208,7 +202,7 @@ diff -- vllm/model_executor/models/minimax_text_01.py
 - Status/date: merged / 2025-06-16
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +4/-0, 25 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model] Add support for MiniMaxM1ForCausalLM (shares architecture with MiniMaxText01ForCausalLM)"; model line: MiniMax M2 Series; category: docs/tests/CI; main diff: `tests/models/registry.py`, `docs/models/supported_models.md`, `vllm/model_executor/models/registry.py`; PR body summary: We would like to propose official support for the MiniMaxM1ForCausalLM model within vLLM. This model shares the exact same architecture and inference behavior as MiniMaxText01Fo....
+- Motivation: Title: "[Model] Add support for MiniMaxM1ForCausalLM (shares architecture with MiniMaxText01ForCausalLM)"; model line: MiniMax M2 Series; category: docs/tests/CI; main diff: `tests/models/registry.py`, `docs/models/supported_models.md`, `vllm/model_executor/models/registry.py`; technical summary: Covers "[Model] Add support for MiniMaxM1ForCausalLM (shares architecture with MiniMaxText01ForCausalLM)"; the main implementation surface is `tests/models/registry.py`, `docs/models/supported_models.md`, `vllm/model_executor/models/registry.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `tests/models/registry.py` modified +2/-0 (2 lines); hunks: -205,6 +205,8 @@ def check_available_online(; symbols: check_available_online, touching `check_available_online`; `docs/models/supported_models.md` modified +1/-0 (1 lines); hunks: -370,6 +370,7 @@ Specified using `--task generate`.; `vllm/model_executor/models/registry.py` modified +1/-0 (1 lines); hunks: -36,6 +36,7; symbols: name, touching `name`.
 - Code diff details:
   - `tests/models/registry.py` modified +2/-0 (2 lines); hunks: -205,6 +205,8 @@ def check_available_online(; symbols: check_available_online
@@ -241,7 +235,7 @@ diff -- vllm/model_executor/models/registry.py
 - Status/date: merged / 2025-06-28
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +9/-1, 31 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[CI Fix] Pin tests/models/registry.py MiniMaxText01ForCausalLM to revision due to model changes"; model line: MiniMax M2 Series; category: bug fix; main diff: `tests/models/registry.py`, `tests/models/test_initialization.py`; PR body summary: FIX https://github.com/vllm-project/vllm/issues/20198 It seems like the model definition has changed upstream this morning https://huggingface.co/MiniMaxAI/MiniMax-Text-01/commi....
+- Motivation: Title: "[CI Fix] Pin tests/models/registry.py MiniMaxText01ForCausalLM to revision due to model changes"; model line: MiniMax M2 Series; category: bug fix; main diff: `tests/models/registry.py`, `tests/models/test_initialization.py`; technical summary: Covers "[CI Fix] Pin tests/models/registry.py MiniMaxText01ForCausalLM to revision due to model changes"; the main implementation surface is `tests/models/registry.py`, `tests/models/test_initialization.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `tests/models/registry.py` modified +8/-1 (9 lines); hunks: -70,6 +70,12 @@ class _HfExamplesInfo:; -207,7 +213,8 @@ def check_available_online(; symbols: _HfExamplesInfo, check_transformers_version, check_available_online, touching `_HfExamplesInfo, check_transformers_version, check_available_online`; `tests/models/test_initialization.py` modified +1/-0 (1 lines); hunks: -88,6 +88,7 @@ def _initialize_kv_caches_v1(self, vllm_config):; symbols: _initialize_kv_caches_v1, touching `_initialize_kv_caches_v1`.
 - Code diff details:
   - `tests/models/registry.py` modified +8/-1 (9 lines); hunks: -70,6 +70,12 @@ class _HfExamplesInfo:; -207,7 +213,8 @@ def check_available_online(; symbols: _HfExamplesInfo, check_transformers_version, check_available_online
@@ -272,7 +266,7 @@ diff -- tests/models/test_initialization.py
 - Status/date: merged / 2025-07-03
 - Trace source: `git log --name-only -- <model-files>` found it through `examples/tool_chat_template_minimax_m1.jinja`; associated commits `363528de27db`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +842/-1, 866 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Feature] Support MiniMax-M1 function calls features"; model line: MiniMax M2 Series; category: docs/tests/CI; main diff: `examples/tool_chat_template_minimax_m1.jinja`; PR body summary: Support MiniMax-M1 function calls features How to use: test_scripts: Outpt: Streaming Test: Output:.
+- Motivation: Title: "[Feature] Support MiniMax-M1 function calls features"; model line: MiniMax M2 Series; category: docs/tests/CI; main diff: `examples/tool_chat_template_minimax_m1.jinja`; technical summary: Covers "[Feature] Support MiniMax-M1 function calls features"; the main implementation surface is `examples/tool_chat_template_minimax_m1.jinja`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `examples/tool_chat_template_minimax_m1.jinja` added +91/-0 (91 lines); hunks: -0,0 +1,91.
 - Code diff details:
   - `examples/tool_chat_template_minimax_m1.jinja` added +91/-0 (91 lines); hunks: -0,0 +1,91
@@ -299,7 +293,7 @@ diff -- examples/tool_chat_template_minimax_m1.jinja
 - Status/date: merged / 2025-07-11
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/minimax_text_01.py`; associated commits `922f316441ce`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +36/-11, 101 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model] Support HF format of minimax"; model line: MiniMax M2 Series; category: docs/tests/CI; main diff: `vllm/model_executor/models/minimax_text_01.py`; PR body summary: https://github.com/vllm-project/vllm/pull/20199 set us up to test the older format of `MiniMaxAI/MiniMax-Text-01` we initially implemented. This PR implements the small changes....
+- Motivation: Title: "[Model] Support HF format of minimax"; model line: MiniMax M2 Series; category: docs/tests/CI; main diff: `vllm/model_executor/models/minimax_text_01.py`; technical summary: Covers "[Model] Support HF format of minimax"; the main implementation surface is `vllm/model_executor/models/minimax_text_01.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/minimax_text_01.py` modified +33/-11 (44 lines); hunks: -667,16 +667,24 @@ def __init__(; -794,6 +802,18 @@ def __init__(; symbols: __init__, which_layer, is_linear_attn_layer, touching `__init__, which_layer, is_linear_attn_layer`.
 - Code diff details:
   - `vllm/model_executor/models/minimax_text_01.py` modified +33/-11 (44 lines); hunks: -667,16 +667,24 @@ def __init__(; -794,6 +802,18 @@ def __init__(; symbols: __init__, which_layer, is_linear_attn_layer
@@ -326,7 +320,7 @@ diff -- vllm/model_executor/models/minimax_text_01.py
 - Status/date: merged / 2025-08-09
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/minimax_text_01.py`; associated commits `6ade99eafa37`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +234/-42, 448 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[V1] [Hybrid] Support Minimax-Text-01 in V1"; model line: MiniMax M2 Series; category: model support/runtime entry; main diff: `vllm/model_executor/models/minimax_text_01.py`; no usable PR-body summary.
+- Motivation: Title: "[V1] [Hybrid] Support Minimax-Text-01 in V1"; model line: MiniMax M2 Series; category: model support/runtime entry; main diff: `vllm/model_executor/models/minimax_text_01.py`; technical summary: Covers "[V1] [Hybrid] Support Minimax-Text-01 in V1"; the main implementation surface is `vllm/model_executor/models/minimax_text_01.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/minimax_text_01.py` modified +152/-40 (192 lines); hunks: -14,8 +14,9; -33,6 +34,9; symbols: jit_linear_forward_prefix, MiniMaxText01LinearAttention, mamba_type, get_state_shape, touching `jit_linear_forward_prefix, MiniMaxText01LinearAttention, mamba_type`.
 - Code diff details:
   - `vllm/model_executor/models/minimax_text_01.py` modified +152/-40 (192 lines); hunks: -14,8 +14,9; -33,6 +34,9; symbols: jit_linear_forward_prefix, MiniMaxText01LinearAttention, mamba_type, get_state_shape
@@ -353,7 +347,7 @@ diff -- vllm/model_executor/models/minimax_text_01.py
 - Status/date: merged / 2025-08-15
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/minimax_text_01.py`; associated commits `75531a6c1342`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 23 files, +467/-87, 1435 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[V1] [Hybrid] Support using float32 for state in Hybrid Models (Mamba2, Mamba1, Minimax)"; model line: MiniMax M2 Series; category: model support/runtime entry; main diff: `vllm/model_executor/models/minimax_text_01.py`; PR body summary: This PR adds support for customizing the dtype of the state stored for models based on mamba/mamba2/linear attention. It introduces a new CLI argument `mamba_ssm_cache_dtype` wh....
+- Motivation: Title: "[V1] [Hybrid] Support using float32 for state in Hybrid Models (Mamba2, Mamba1, Minimax)"; model line: MiniMax M2 Series; category: model support/runtime entry; main diff: `vllm/model_executor/models/minimax_text_01.py`; technical summary: Covers "[V1] [Hybrid] Support using float32 for state in Hybrid Models (Mamba2, Mamba1, Minimax)"; the main implementation surface is `vllm/model_executor/models/minimax_text_01.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/minimax_text_01.py` modified +31/-3 (34 lines); hunks: -16,7 +16,8; -36,7 +37,7; symbols: MiniMaxText01LinearAttention, mamba_type, get_state_dtype, get_state_shape, touching `MiniMaxText01LinearAttention, mamba_type, get_state_dtype`.
 - Code diff details:
   - `vllm/model_executor/models/minimax_text_01.py` modified +31/-3 (34 lines); hunks: -16,7 +16,8; -36,7 +37,7; symbols: MiniMaxText01LinearAttention, mamba_type, get_state_dtype, get_state_shape
@@ -380,7 +374,7 @@ diff -- vllm/model_executor/models/minimax_text_01.py
 - Status/date: merged / 2025-08-19
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/minimax_vl_01.py`; associated commits `31fd3265c8b2`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +123/-32, 258 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix broken Minimax-01-VL model"; model line: MiniMax M2 Series; category: bug fix; main diff: `vllm/model_executor/models/minimax_vl_01.py`; no usable PR-body summary.
+- Motivation: Title: "[Bugfix] Fix broken Minimax-01-VL model"; model line: MiniMax M2 Series; category: bug fix; main diff: `vllm/model_executor/models/minimax_vl_01.py`; technical summary: Covers "[Bugfix] Fix broken Minimax-01-VL model"; the main implementation surface is `vllm/model_executor/models/minimax_vl_01.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/minimax_vl_01.py` modified +89/-31 (120 lines); hunks: -1,11 +1,13; -17,6 +19,7; symbols: MiniMaxVL01ImagePixelInputs, MiniMaxVL01ImageEmbeddingInputs, _get_mm_fields_config, touching `MiniMaxVL01ImagePixelInputs, MiniMaxVL01ImageEmbeddingInputs, _get_mm_fields_config`.
 - Code diff details:
   - `vllm/model_executor/models/minimax_vl_01.py` modified +89/-31 (120 lines); hunks: -1,11 +1,13; -17,6 +19,7; symbols: MiniMaxVL01ImagePixelInputs, MiniMaxVL01ImageEmbeddingInputs, _get_mm_fields_config
@@ -407,7 +401,7 @@ diff -- vllm/model_executor/models/minimax_vl_01.py
 - Status/date: merged / 2025-08-27
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/minimax_text_01.py`; associated commits `dd589322801e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +98/-137, 387 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[V1] [Hybrid] Enable compile and piecewise CUDA graph for MiniMax-Text models"; model line: MiniMax M2 Series; category: performance/backend optimization; main diff: `vllm/model_executor/models/minimax_text_01.py`; no usable PR-body summary.
+- Motivation: Title: "[V1] [Hybrid] Enable compile and piecewise CUDA graph for MiniMax-Text models"; model line: MiniMax M2 Series; category: performance/backend optimization; main diff: `vllm/model_executor/models/minimax_text_01.py`; technical summary: Covers "[V1] [Hybrid] Enable compile and piecewise CUDA graph for MiniMax-Text models"; the main implementation surface is `vllm/model_executor/models/minimax_text_01.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/minimax_text_01.py` modified +97/-137 (234 lines); hunks: -1,7 +1,6; -19,13 +18,14; symbols: forward, MiniMaxText01RotaryEmbedding, __init__, _compute_inv_freq, touching `forward, MiniMaxText01RotaryEmbedding, __init__`.
 - Code diff details:
   - `vllm/model_executor/models/minimax_text_01.py` modified +97/-137 (234 lines); hunks: -1,7 +1,6; -19,13 +18,14; symbols: forward, MiniMaxText01RotaryEmbedding, __init__, _compute_inv_freq
@@ -434,7 +428,7 @@ diff -- vllm/model_executor/models/minimax_text_01.py
 - Status/date: merged / 2025-08-30
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/minimax_text_01.py`; associated commits `4071c76cf3cf`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +448/-410, 917 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[V1] [Hybrid] Move MiniMaxLinearAttention into layers/mamba"; model line: MiniMax M2 Series; category: model implementation change; main diff: `vllm/model_executor/models/minimax_text_01.py`; PR body summary: This PR just moves the `MinimaxLinearAttention` layer into the `layers/mamba` directory, to be consistent with the other mamba-like layers (e.g., mamba1, mamba2, short_conv). cc....
+- Motivation: Title: "[V1] [Hybrid] Move MiniMaxLinearAttention into layers/mamba"; model line: MiniMax M2 Series; category: model implementation change; main diff: `vllm/model_executor/models/minimax_text_01.py`; technical summary: Covers "[V1] [Hybrid] Move MiniMaxLinearAttention into layers/mamba"; the main implementation surface is `vllm/model_executor/models/minimax_text_01.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/minimax_text_01.py` modified +6/-410 (416 lines); hunks: -1,45 +1,37; -50,10 +42,7; symbols: inner_func, MiniMaxText01RMSNormTP, __init__, weight_loader, touching `inner_func, MiniMaxText01RMSNormTP, __init__`.
 - Code diff details:
   - `vllm/model_executor/models/minimax_text_01.py` modified +6/-410 (416 lines); hunks: -1,45 +1,37; -50,10 +42,7; symbols: inner_func, MiniMaxText01RMSNormTP, __init__, weight_loader
@@ -461,7 +455,7 @@ diff -- vllm/model_executor/models/minimax_text_01.py
 - Status/date: merged / 2025-10-26
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/minimax_m2.py`, `vllm/reasoning/minimax_m2_reasoning_parser.py`; associated commits `720af6ab7911`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +1306/-0, 1347 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model][MiniMax-M2] Support MiniMax-M2 Model"; model line: MiniMax M2 Series; category: docs/tests/CI; main diff: `vllm/model_executor/models/minimax_m2.py`, `vllm/reasoning/minimax_m2_reasoning_parser.py`; PR body summary: This PR is intended to support the MiniMax-M2 model inference. It has been tested on a single machine with both 8x96GB and 4x96GB GPU configurations. Deploy Deploy on 8 GPUs Dep....
+- Motivation: Title: "[Model][MiniMax-M2] Support MiniMax-M2 Model"; model line: MiniMax M2 Series; category: docs/tests/CI; main diff: `vllm/model_executor/models/minimax_m2.py`, `vllm/reasoning/minimax_m2_reasoning_parser.py`; technical summary: Covers "[Model][MiniMax-M2] Support MiniMax-M2 Model"; the main implementation surface is `vllm/model_executor/models/minimax_m2.py`, `vllm/reasoning/minimax_m2_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/minimax_m2.py` added +585/-0 (585 lines); hunks: -0,0 +1,585; symbols: MiniMaxM2MoE, __init__, ebias_weight_loader, forward, touching `MiniMaxM2MoE, __init__, ebias_weight_loader`; `vllm/reasoning/minimax_m2_reasoning_parser.py` added +69/-0 (69 lines); hunks: -0,0 +1,69; symbols: MiniMaxM2ReasoningParser, start_token, end_token, MiniMaxM2AppendThinkReasoningParser, touching `MiniMaxM2ReasoningParser, start_token, end_token`.
 - Code diff details:
   - `vllm/model_executor/models/minimax_m2.py` added +585/-0 (585 lines); hunks: -0,0 +1,585; symbols: MiniMaxM2MoE, __init__, ebias_weight_loader, forward
@@ -497,7 +491,7 @@ diff -- vllm/reasoning/minimax_m2_reasoning_parser.py
 - Status/date: merged / 2025-10-27
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/minimax_m2.py`; associated commits `5980604c44d8`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +2/-3, 13 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix MiniMax-M2 copyright"; model line: MiniMax M2 Series; category: bug fix; main diff: `vllm/model_executor/models/minimax_m2.py`; PR body summary: Fix MiniMax-M2 copyright..
+- Motivation: Title: "Fix MiniMax-M2 copyright"; model line: MiniMax M2 Series; category: bug fix; main diff: `vllm/model_executor/models/minimax_m2.py`; technical summary: Covers "Fix MiniMax-M2 copyright"; the main implementation surface is `vllm/model_executor/models/minimax_m2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/minimax_m2.py` modified +2/-3 (5 lines); hunks: -1,10 +1,9.
 - Code diff details:
   - `vllm/model_executor/models/minimax_m2.py` modified +2/-3 (5 lines); hunks: -1,10 +1,9
@@ -523,7 +517,7 @@ diff -- vllm/model_executor/models/minimax_m2.py
 - Status/date: merged / 2025-10-29
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/minimax_m2.py`; associated commits `d6704dd099b7`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +1/-19, 41 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix MiniMax-M2 rmsnorm precision and remove useless code"; model line: MiniMax M2 Series; category: bug fix; main diff: `vllm/model_executor/models/minimax_m2.py`; PR body summary: - Fix rmsnorm precision - Remove useless code.
+- Motivation: Title: "Fix MiniMax-M2 rmsnorm precision and remove useless code"; model line: MiniMax M2 Series; category: bug fix; main diff: `vllm/model_executor/models/minimax_m2.py`; technical summary: Covers "Fix MiniMax-M2 rmsnorm precision and remove useless code"; the main implementation surface is `vllm/model_executor/models/minimax_m2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/minimax_m2.py` modified +0/-18 (18 lines); hunks: -263,23 +263,6 @@ def __init__(; -288,7 +271,6 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/minimax_m2.py` modified +0/-18 (18 lines); hunks: -263,23 +263,6 @@ def __init__(; -288,7 +271,6 @@ def __init__(; symbols: __init__
@@ -550,7 +544,7 @@ diff -- vllm/model_executor/models/minimax_m2.py
 - Status/date: merged / 2025-12-10
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/minimax_m2.py`; associated commits `d017bceb08ea`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[BugFix] Fix minimax m2 model rotary_dim"; model line: MiniMax M2 Series; category: bug fix; main diff: `vllm/model_executor/models/minimax_m2.py`; PR body summary: After #29966, get_rope always reads partial_rotary_factor from the configuration and performs the multiplication again, even if rotary_dim has already been scaled. This leads to....
+- Motivation: Title: "[BugFix] Fix minimax m2 model rotary_dim"; model line: MiniMax M2 Series; category: bug fix; main diff: `vllm/model_executor/models/minimax_m2.py`; technical summary: Covers "[BugFix] Fix minimax m2 model rotary_dim"; the main implementation surface is `vllm/model_executor/models/minimax_m2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/minimax_m2.py` modified +1/-1 (2 lines); hunks: -201,7 +201,7 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/minimax_m2.py` modified +1/-1 (2 lines); hunks: -201,7 +201,7 @@ def __init__(; symbols: __init__
@@ -573,7 +567,7 @@ diff -- vllm/model_executor/models/minimax_m2.py
 - Status/date: merged / 2025-12-11
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_minimax_m2_append_reasoning_parser.py`, `tests/reasoning/test_minimax_m2_reasoning_parser.py`, `vllm/reasoning/minimax_m2_reasoning_parser.py`; associated commits `6299628d326f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +468/-0, 484 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[bugfix] fix MiniMaxM2ReasoningParser streaming output not separating reasoning_content."; model line: MiniMax M2 Series; category: bug fix; main diff: `tests/reasoning/test_minimax_m2_reasoning_parser.py`, `tests/reasoning/test_minimax_m2_append_reasoning_parser.py`, `vllm/reasoning/minimax_m2_reasoning_parser.py`; PR body summary: Fix `minimax_m2` reasoning parser not separating `content` and `reasoning_content` in streaming mode. Problem MiniMax-M2 models don't generate ` ` start token, only ` ` end toke....
+- Motivation: Title: "[bugfix] fix MiniMaxM2ReasoningParser streaming output not separating reasoning_content."; model line: MiniMax M2 Series; category: bug fix; main diff: `tests/reasoning/test_minimax_m2_reasoning_parser.py`, `tests/reasoning/test_minimax_m2_append_reasoning_parser.py`, `vllm/reasoning/minimax_m2_reasoning_parser.py`; technical summary: Covers "[bugfix] fix MiniMaxM2ReasoningParser streaming output not separating reasoning_content."; the main implementation surface is `tests/reasoning/test_minimax_m2_reasoning_parser.py`, `tests/reasoning/test_minimax_m2_append_reasoning_parser.py`, `vllm/reasoning/minimax_m2_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `tests/reasoning/test_minimax_m2_reasoning_parser.py` added +230/-0 (230 lines); hunks: -0,0 +1,230; symbols: minimax_m2_tokenizer, test_reasoning, touching `minimax_m2_tokenizer, test_reasoning`; `tests/reasoning/test_minimax_m2_append_reasoning_parser.py` added +195/-0 (195 lines); hunks: -0,0 +1,195; symbols: minimax_m2_tokenizer, test_reasoning, touching `minimax_m2_tokenizer, test_reasoning`; `vllm/reasoning/minimax_m2_reasoning_parser.py` modified +43/-0 (43 lines); hunks: -19,6 +19,10; -31,6 +35,45 @@ def end_token(self) -> str:; symbols: MiniMaxM2ReasoningParser, end_token, extract_reasoning_streaming, MiniMaxM2AppendThinkReasoningParser, touching `MiniMaxM2ReasoningParser, end_token, extract_reasoning_streaming`.
 - Code diff details:
   - `tests/reasoning/test_minimax_m2_reasoning_parser.py` added +230/-0 (230 lines); hunks: -0,0 +1,230; symbols: minimax_m2_tokenizer, test_reasoning
@@ -613,7 +607,7 @@ diff -- vllm/reasoning/minimax_m2_reasoning_parser.py
 - Status/date: merged / 2025-12-17
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/tool_parsers/minimax_m2_tool_parser.py`; associated commits `20fda431515d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +137/-4, 186 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix][Frontend] Prevent IndexError in MiniMax M2 tool parser during streaming extraction"; model line: MiniMax M2 Series; category: bug fix; main diff: `tests/tool_use/test_minimax_m2_tool_parser.py`, `vllm/tool_parsers/minimax_m2_tool_parser.py`; PR body summary: Fix https://github.com/vllm-project/vllm/issues/30554. Prevent IndexError in MiniMax M2 tool parser during streaming extraction. Add args str to streamed_args_for_tool field..
+- Motivation: Title: "[Bugfix][Frontend] Prevent IndexError in MiniMax M2 tool parser during streaming extraction"; model line: MiniMax M2 Series; category: bug fix; main diff: `tests/tool_use/test_minimax_m2_tool_parser.py`, `vllm/tool_parsers/minimax_m2_tool_parser.py`; technical summary: Covers "[Bugfix][Frontend] Prevent IndexError in MiniMax M2 tool parser during streaming extraction"; the main implementation surface is `tests/tool_use/test_minimax_m2_tool_parser.py`, `vllm/tool_parsers/minimax_m2_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `tests/tool_use/test_minimax_m2_tool_parser.py` added +119/-0 (119 lines); hunks: -0,0 +1,119; symbols: FakeTokenizer, __init__, get_vocab, minimax_m2_tool_parser, touching `FakeTokenizer, __init__, get_vocab`; `vllm/tool_parsers/minimax_m2_tool_parser.py` modified +18/-4 (22 lines); hunks: -122,6 +122,8 @@ def _reset_streaming_state(self):; -421,9 +423,12 @@ def extract_tool_calls_streaming(; symbols: _reset_streaming_state, _extract_name, extract_tool_calls_streaming, touching `_reset_streaming_state, _extract_name, extract_tool_calls_streaming`.
 - Code diff details:
   - `tests/tool_use/test_minimax_m2_tool_parser.py` added +119/-0 (119 lines); hunks: -0,0 +1,119; symbols: FakeTokenizer, __init__, get_vocab, minimax_m2_tool_parser
@@ -650,7 +644,7 @@ diff -- vllm/tool_parsers/minimax_m2_tool_parser.py
 - Status/date: merged / 2025-12-22
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/tool_parsers/minimax_m2_tool_parser.py`; associated commits `c02a2705f9ce`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +167/-48, 257 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Update MiniMax-M2 ToolCall and add MiniMax-M2.1 in Docs"; model line: MiniMax M2 Series; category: docs/tests/CI; main diff: `vllm/tool_parsers/minimax_m2_tool_parser.py`; PR body summary: The MiniMax-M2 tool call parser supports `anyOf`, `oneOf`, `allOf`, type arrays, and enum fields. And add MiniMax-M2.1 to the documentation..
+- Motivation: Title: "Update MiniMax-M2 ToolCall and add MiniMax-M2.1 in Docs"; model line: MiniMax M2 Series; category: docs/tests/CI; main diff: `vllm/tool_parsers/minimax_m2_tool_parser.py`; technical summary: Covers "Update MiniMax-M2 ToolCall and add MiniMax-M2.1 in Docs"; the main implementation surface is `vllm/tool_parsers/minimax_m2_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/tool_parsers/minimax_m2_tool_parser.py` modified +166/-47 (213 lines); hunks: -138,37 +138,167 @@ def _extract_name(self, name_str: str) -> str:; -207,17 +337,11 @@ def _parse_single_invoke(; symbols: _extract_name, _convert_param_value, _extract_types_from_schema, _convert_param_value_with_types, touching `_extract_name, _convert_param_value, _extract_types_from_schema`.
 - Code diff details:
   - `vllm/tool_parsers/minimax_m2_tool_parser.py` modified +166/-47 (213 lines); hunks: -138,37 +138,167 @@ def _extract_name(self, name_str: str) -> str:; -207,17 +337,11 @@ def _parse_single_invoke(; symbols: _extract_name, _convert_param_value, _extract_types_from_schema, _convert_param_value_with_types
@@ -677,7 +671,7 @@ diff -- vllm/tool_parsers/minimax_m2_tool_parser.py
 - Status/date: merged / 2025-12-29
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/minimax_m2.py`; associated commits `5bc664110f12`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +25/-2, 41 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Optimize QKNorm for MiniMax-M2/M2.1"; model line: MiniMax M2 Series; category: performance/backend optimization; main diff: `vllm/model_executor/models/minimax_m2.py`; PR body summary: Fuses QKNorm in tensor-parallel mode so that only a single all_reduce is launched, reducing communication overhead. Part of #31478. Benchmarks were conducted on MiniMax-M2.1 wit....
+- Motivation: Title: "Optimize QKNorm for MiniMax-M2/M2.1"; model line: MiniMax M2 Series; category: performance/backend optimization; main diff: `vllm/model_executor/models/minimax_m2.py`; technical summary: Covers "Optimize QKNorm for MiniMax-M2/M2.1"; the main implementation surface is `vllm/model_executor/models/minimax_m2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/minimax_m2.py` modified +3/-2 (5 lines); hunks: -234,8 +234,9 @@ def forward(; symbols: forward, touching `forward`.
 - Code diff details:
   - `vllm/model_executor/models/minimax_m2.py` modified +3/-2 (5 lines); hunks: -234,8 +234,9 @@ def forward(; symbols: forward
@@ -703,7 +697,7 @@ diff -- vllm/model_executor/models/minimax_m2.py
 - Status/date: merged / 2026-01-15
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/tool_parsers/minimax_m2_tool_parser.py`; associated commits `19b251fe3d26`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +2/-5, 19 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix optional parameter parsing in MiniMax M2 tool parser #32278"; model line: MiniMax M2 Series; category: bug fix; main diff: `vllm/tool_parsers/minimax_m2_tool_parser.py`; PR body summary: 32278 main branch: "logprobs":null, \"logfile\": \"/tmp/foo\"}".
+- Motivation: Title: "Fix optional parameter parsing in MiniMax M2 tool parser #32278"; model line: MiniMax M2 Series; category: bug fix; main diff: `vllm/tool_parsers/minimax_m2_tool_parser.py`; technical summary: Covers "Fix optional parameter parsing in MiniMax M2 tool parser #32278"; the main implementation surface is `vllm/tool_parsers/minimax_m2_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/tool_parsers/minimax_m2_tool_parser.py` modified +2/-5 (7 lines); hunks: -217,16 +217,13 @@ def _convert_param_value_with_types(; symbols: _convert_param_value_with_types, touching `_convert_param_value_with_types`.
 - Code diff details:
   - `vllm/tool_parsers/minimax_m2_tool_parser.py` modified +2/-5 (7 lines); hunks: -217,16 +217,13 @@ def _convert_param_value_with_types(; symbols: _convert_param_value_with_types
@@ -730,7 +724,7 @@ diff -- vllm/tool_parsers/minimax_m2_tool_parser.py
 - Status/date: merged / 2026-01-24
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/minimax_m2.py`; associated commits `bc0d291bfebf`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +11/-3, 35 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "feat: Complete LoRA support for MiniMaxM2 Fixes #32736"; model line: MiniMax M2 Series; category: bug fix; main diff: `vllm/model_executor/models/minimax_m2.py`; PR body summary: FIX #32736 This PR builds upon #31703 by adding the missing components to enable full LoRA support for MiniMaxM2ForCausalLM. Changes: - Add SupportsLoRA interface to MiniMaxM2Fo....
+- Motivation: Title: "feat: Complete LoRA support for MiniMaxM2 Fixes #32736"; model line: MiniMax M2 Series; category: bug fix; main diff: `vllm/model_executor/models/minimax_m2.py`; technical summary: Covers "feat: Complete LoRA support for MiniMaxM2 Fixes #32736"; the main implementation surface is `vllm/model_executor/models/minimax_m2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/minimax_m2.py` modified +10/-2 (12 lines); hunks: -59,7 +59,7; -487,7 +487,15 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; symbols: load_weights, MiniMaxM2ForCausalLM, __init__, touching `load_weights, MiniMaxM2ForCausalLM, __init__`.
 - Code diff details:
   - `vllm/model_executor/models/minimax_m2.py` modified +10/-2 (12 lines); hunks: -59,7 +59,7; -487,7 +487,15 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; symbols: load_weights, MiniMaxM2ForCausalLM, __init__
@@ -757,7 +751,7 @@ diff -- vllm/model_executor/models/minimax_m2.py
 - Status/date: merged / 2026-02-26
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/reasoning/minimax_m2_reasoning_parser.py`; associated commits `7fea7250a46c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +6/-1, 17 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bug] Fix missing tag after tool call in MiniMax 2.1"; model line: MiniMax M2 Series; category: bug fix; main diff: `vllm/reasoning/minimax_m2_reasoning_parser.py`; PR body summary: Fix: #35349 This PR improves the reasoning end detection logic in MiniMaxM2AppendThinkReasoningParser.is_reasoning_end. After a successful tool call, the following line incorrec....
+- Motivation: Title: "[Bug] Fix missing tag after tool call in MiniMax 2.1"; model line: MiniMax M2 Series; category: bug fix; main diff: `vllm/reasoning/minimax_m2_reasoning_parser.py`; technical summary: Covers "[Bug] Fix missing tag after tool call in MiniMax 2.1"; the main implementation surface is `vllm/reasoning/minimax_m2_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/reasoning/minimax_m2_reasoning_parser.py` modified +6/-1 (7 lines); hunks: -87,10 +87,15 @@ class MiniMaxM2AppendThinkReasoningParser(ReasoningParser):; symbols: MiniMaxM2AppendThinkReasoningParser, __init__, is_reasoning_end, extract_content_ids, touching `MiniMaxM2AppendThinkReasoningParser, __init__, is_reasoning_end`.
 - Code diff details:
   - `vllm/reasoning/minimax_m2_reasoning_parser.py` modified +6/-1 (7 lines); hunks: -87,10 +87,15 @@ class MiniMaxM2AppendThinkReasoningParser(ReasoningParser):; symbols: MiniMaxM2AppendThinkReasoningParser, __init__, is_reasoning_end, extract_content_ids
@@ -784,7 +778,7 @@ diff -- vllm/reasoning/minimax_m2_reasoning_parser.py
 - Status/date: merged / 2026-03-12
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_minimax_m2_tool_parser.py`, `vllm/tool_parsers/minimax_m2_tool_parser.py`; associated commits `8647c6cf510b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +534/-532, 1119 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix minimax_m2 tool parser when stream interval > 1"; model line: MiniMax M2 Series; category: bug fix; main diff: `vllm/tool_parsers/minimax_m2_tool_parser.py`, `tests/tool_parsers/test_minimax_m2_tool_parser.py`, `tests/tool_use/test_minimax_m2_tool_parser.py`; PR body summary: Fix MiniMax M2 tool parser dropping arguments when stream_interval > 1. Background MiniMax M2 uses XML-based tool call format: The old parser used an incremental state machine t....
+- Motivation: Title: "[Bugfix] Fix minimax_m2 tool parser when stream interval > 1"; model line: MiniMax M2 Series; category: bug fix; main diff: `vllm/tool_parsers/minimax_m2_tool_parser.py`, `tests/tool_parsers/test_minimax_m2_tool_parser.py`, `tests/tool_use/test_minimax_m2_tool_parser.py`; technical summary: Covers "[Bugfix] Fix minimax_m2 tool parser when stream interval > 1"; the main implementation surface is `vllm/tool_parsers/minimax_m2_tool_parser.py`, `tests/tool_parsers/test_minimax_m2_tool_parser.py`, `tests/tool_use/test_minimax_m2_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/tool_parsers/minimax_m2_tool_parser.py` modified +90/-413 (503 lines); hunks: -37,37 +37,10 @@ def __init__(self, tokenizer: TokenizerLike):; -103,46 +76,15 @@ def _generate_tool_call_id(self) -> str:; symbols: __init__, type, _generate_tool_call_id, _reset_streaming_state, touching `__init__, type, _generate_tool_call_id`; `tests/tool_parsers/test_minimax_m2_tool_parser.py` added +444/-0 (444 lines); hunks: -0,0 +1,444; symbols: FakeTokenizer, __init__, get_vocab, parser, touching `FakeTokenizer, __init__, get_vocab`; `tests/tool_use/test_minimax_m2_tool_parser.py` removed +0/-119 (119 lines); hunks: -1,119 +0,0; symbols: FakeTokenizer, __init__, get_vocab, minimax_m2_tool_parser, touching `FakeTokenizer, __init__, get_vocab`.
 - Code diff details:
   - `vllm/tool_parsers/minimax_m2_tool_parser.py` modified +90/-413 (503 lines); hunks: -37,37 +37,10 @@ def __init__(self, tokenizer: TokenizerLike):; -103,46 +76,15 @@ def _generate_tool_call_id(self) -> str:; symbols: __init__, type, _generate_tool_call_id, _reset_streaming_state
@@ -824,7 +818,7 @@ diff -- tests/tool_use/test_minimax_m2_tool_parser.py
 - Status/date: merged / 2026-03-18
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/minimax_text_01.py`; associated commits `17808394bc48`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +235/-219, 527 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "standardize load_weights using AutoWeightsLoader for kimi_linear and minimax_text_01"; model line: MiniMax M2 Series; category: bug fix; main diff: `vllm/model_executor/models/minimax_text_01.py`; PR body summary: FIX (partial) #15697 Verified the refactor with a mock-weight loading script using a "Tiny Model Hack" (reducing layers to 1 for fast validation): Mock Weights: Generated fake t....
+- Motivation: Title: "standardize load_weights using AutoWeightsLoader for kimi_linear and minimax_text_01"; model line: MiniMax M2 Series; category: bug fix; main diff: `vllm/model_executor/models/minimax_text_01.py`; technical summary: Covers "standardize load_weights using AutoWeightsLoader for kimi_linear and minimax_text_01"; the main implementation surface is `vllm/model_executor/models/minimax_text_01.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/minimax_text_01.py` modified +138/-131 (269 lines); hunks: -52,7 +52,12; -494,6 +499,8 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: replace_weight_name, __init__, _clear_prefill_cache, embed_input_ids, touching `replace_weight_name, __init__, _clear_prefill_cache`.
 - Code diff details:
   - `vllm/model_executor/models/minimax_text_01.py` modified +138/-131 (269 lines); hunks: -52,7 +52,12; -494,6 +499,8 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: replace_weight_name, __init__, _clear_prefill_cache, embed_input_ids
@@ -851,7 +845,7 @@ diff -- vllm/model_executor/models/minimax_text_01.py
 - Status/date: merged / 2026-03-26
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/minimax_m2.py`; associated commits `74056039b776`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +11/-0, 18 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix minimax m2.5 nvfp4 kv scales weight loading"; model line: MiniMax M2 Series; category: bug fix; main diff: `vllm/model_executor/models/minimax_m2.py`; PR body summary: Fix kv scale weight loading issue in minimax m2.5 nvfp4:.
+- Motivation: Title: "Fix minimax m2.5 nvfp4 kv scales weight loading"; model line: MiniMax M2 Series; category: bug fix; main diff: `vllm/model_executor/models/minimax_m2.py`; technical summary: Covers "Fix minimax m2.5 nvfp4 kv scales weight loading"; the main implementation surface is `vllm/model_executor/models/minimax_m2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/minimax_m2.py` modified +11/-0 (11 lines); hunks: -439,6 +439,17 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; symbols: load_weights, touching `load_weights`.
 - Code diff details:
   - `vllm/model_executor/models/minimax_m2.py` modified +11/-0 (11 lines); hunks: -439,6 +439,17 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; symbols: load_weights
@@ -878,7 +872,7 @@ diff -- vllm/model_executor/models/minimax_m2.py
 - Status/date: merged / 2026-03-30
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/minimax_m2.py`; associated commits `63babd17f1b1`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +137/-10, 238 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model][Quantization] Add GGUF support for MiniMax-M2.1"; model line: MiniMax M2 Series; category: bug fix; main diff: `vllm/model_executor/models/minimax_m2.py`; PR body summary: FIX #28724 Add GGUF loading support for MiniMax-M2.1 (456B MoE, 45.9B active, 256 experts, 8 active per token). This enables serving GGUF-quantized MiniMax-M2.1 checkpoints (e.g....
+- Motivation: Title: "[Model][Quantization] Add GGUF support for MiniMax-M2.1"; model line: MiniMax M2 Series; category: bug fix; main diff: `vllm/model_executor/models/minimax_m2.py`; technical summary: Covers "[Model][Quantization] Add GGUF support for MiniMax-M2.1"; the main implementation surface is `vllm/model_executor/models/minimax_m2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/minimax_m2.py` modified +5/-2 (7 lines); hunks: -331,7 +331,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; -518,7 +518,10 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/minimax_m2.py` modified +5/-2 (7 lines); hunks: -331,7 +331,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; -518,7 +518,10 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__
@@ -905,7 +899,7 @@ diff -- vllm/model_executor/models/minimax_m2.py
 - Status/date: merged / 2026-04-06
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/minimax_m2.py`; associated commits `f6983f01de2b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +24/-5, 99 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "MiniMax-M2: add Eagle3 speculative decoding support"; model line: MiniMax M2 Series; category: model support/runtime entry; main diff: `vllm/model_executor/models/minimax_m2.py`; PR body summary: - Add SupportsEagle3 interface to MiniMaxM2ForCausalLM with aux hidden state collection in MiniMaxM2Model.forward() - Register Eagle3MiniMaxM2ForCausalLM in speculative decoding....
+- Motivation: Title: "MiniMax-M2: add Eagle3 speculative decoding support"; model line: MiniMax M2 Series; category: model support/runtime entry; main diff: `vllm/model_executor/models/minimax_m2.py`; technical summary: Covers "MiniMax-M2: add Eagle3 speculative decoding support"; the main implementation surface is `vllm/model_executor/models/minimax_m2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/minimax_m2.py` modified +16/-5 (21 lines); hunks: -24,6 +24,7; -59,7 +60,7; symbols: forward, MiniMaxM2Model, __init__, touching `forward, MiniMaxM2Model, __init__`.
 - Code diff details:
   - `vllm/model_executor/models/minimax_m2.py` modified +16/-5 (21 lines); hunks: -24,6 +24,7; -59,7 +60,7; symbols: forward, MiniMaxM2Model, __init__
@@ -932,7 +926,7 @@ diff -- vllm/model_executor/models/minimax_m2.py
 - Status/date: merged / 2026-04-10
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/kernels/core/test_minimax_reduce_rms.py`, `vllm/compilation/passes/fusion/minimax_qk_norm_fusion.py`, `vllm/model_executor/models/minimax_m2.py`; associated commits `ecd1ea13634e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 14 files, +1861/-4, 1936 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Kernel] Porting the TRTLLM minimax_allreduce_rms kernels"; model line: MiniMax M2 Series; category: model implementation change; main diff: `vllm/model_executor/models/minimax_m2.py`, `vllm/compilation/passes/fusion/minimax_qk_norm_fusion.py`, `tests/kernels/core/test_minimax_reduce_rms.py`; PR body summary: See: https://github.com/NVIDIA/TensorRT-LLM/pull/12163 Plan Accuracy Verification(https://github.com/vllm-project/vllm/pull/37045/commits/69f231c7b211a9088bf591679fcdced35d4e919....
+- Motivation: Title: "[Kernel] Porting the TRTLLM minimax_allreduce_rms kernels"; model line: MiniMax M2 Series; category: model implementation change; main diff: `vllm/model_executor/models/minimax_m2.py`, `vllm/compilation/passes/fusion/minimax_qk_norm_fusion.py`, `tests/kernels/core/test_minimax_reduce_rms.py`; technical summary: Covers "[Kernel] Porting the TRTLLM minimax_allreduce_rms kernels"; the main implementation surface is `vllm/model_executor/models/minimax_m2.py`, `vllm/compilation/passes/fusion/minimax_qk_norm_fusion.py`, `tests/kernels/core/test_minimax_reduce_rms.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/minimax_m2.py` modified +1/-3 (4 lines); hunks: -233,9 +233,7 @@ def forward(; symbols: forward, touching `forward`; `vllm/compilation/passes/fusion/minimax_qk_norm_fusion.py` added +340/-0 (340 lines); hunks: -0,0 +1,340; symbols: _minimax_qk_norm_fused, _minimax_qk_norm_fused_fake, MiniMaxQKNormPattern, __init__, touching `_minimax_qk_norm_fused, _minimax_qk_norm_fused_fake, MiniMaxQKNormPattern`; `tests/kernels/core/test_minimax_reduce_rms.py` added +152/-0 (152 lines); hunks: -0,0 +1,152; symbols: _worker_forward_qk, test_minimax_reduce_rms_qk, touching `_worker_forward_qk, test_minimax_reduce_rms_qk`.
 - Code diff details:
   - `vllm/model_executor/models/minimax_m2.py` modified +1/-3 (4 lines); hunks: -233,9 +233,7 @@ def forward(; symbols: forward
@@ -972,7 +966,7 @@ diff -- tests/kernels/core/test_minimax_reduce_rms.py
 - Status/date: merged / 2026-04-14
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/parser/minimax_m2_parser.py`; associated commits `d2130a47bb97`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +5/-2, 25 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix]: Fix MinimaxM2ToolParser missing tools parameter"; model line: MiniMax M2 Series; category: bug fix; main diff: `vllm/parser/minimax_m2_parser.py`; PR body summary: [Bugfix]: Fix MinimaxM2ToolParser missing tools parameter before.
+- Motivation: Title: "[Bugfix]: Fix MinimaxM2ToolParser missing tools parameter"; model line: MiniMax M2 Series; category: bug fix; main diff: `vllm/parser/minimax_m2_parser.py`; technical summary: Covers "[Bugfix]: Fix MinimaxM2ToolParser missing tools parameter"; the main implementation surface is `vllm/parser/minimax_m2_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/parser/minimax_m2_parser.py` modified +5/-2 (7 lines); hunks: -13,6 +13,9; -40,12 +43,12 @@ class MiniMaxM2Parser(DelegatingParser):; symbols: MiniMaxM2Parser, __init__, touching `MiniMaxM2Parser, __init__`.
 - Code diff details:
   - `vllm/parser/minimax_m2_parser.py` modified +5/-2 (7 lines); hunks: -13,6 +13,9; -40,12 +43,12 @@ class MiniMaxM2Parser(DelegatingParser):; symbols: MiniMaxM2Parser, __init__
@@ -999,7 +993,7 @@ diff -- vllm/parser/minimax_m2_parser.py
 - Status/date: merged / 2026-04-16
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/parser/minimax_m2_parser.py`; associated commits `8d7c9628337a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +9/-3, 21 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Accept **kwargs in MiniMaxM2Parser.__init__()"; model line: MiniMax M2 Series; category: bug fix; main diff: `vllm/parser/minimax_m2_parser.py`; PR body summary: Fixes #39847. `MiniMaxM2Parser.__init__()` does not accept `**kwargs`, causing a `TypeError` on every streaming chat completion request when serving MiniMax M2 models: The error....
+- Motivation: Title: "[Bugfix] Accept **kwargs in MiniMaxM2Parser.__init__()"; model line: MiniMax M2 Series; category: bug fix; main diff: `vllm/parser/minimax_m2_parser.py`; technical summary: Covers "[Bugfix] Accept **kwargs in MiniMaxM2Parser.__init__()"; the main implementation surface is `vllm/parser/minimax_m2_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/parser/minimax_m2_parser.py` modified +9/-3 (12 lines); hunks: -43,11 +43,17 @@ class MiniMaxM2Parser(DelegatingParser):; symbols: MiniMaxM2Parser, __init__, touching `MiniMaxM2Parser, __init__`.
 - Code diff details:
   - `vllm/parser/minimax_m2_parser.py` modified +9/-3 (12 lines); hunks: -43,11 +43,17 @@ class MiniMaxM2Parser(DelegatingParser):; symbols: MiniMaxM2Parser, __init__
@@ -1019,6 +1013,33 @@ diff -- vllm/parser/minimax_m2_parser.py
 - Reviewed files:
   - runtime: `vllm/parser/minimax_m2_parser.py` modified +9/-3
 - Risk and verification: Runtime changes concentrate in `vllm/parser/minimax_m2_parser.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #38191 - [Bugfix] Fix k_norm weight sharding in MiniMaxM2Attention when total_num_kv_heads < tp_size
+
+- Link: https://github.com/vllm-project/vllm/pull/38191
+- Status/date: merged / 2026-04-27
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/minimax_m2.py`; associated commits `f8ac0c7cf0e3`
+- Diff scope read: GitHub Pull Request files API returned 2 files, +44/-12, 97 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Bugfix] Fix k_norm weight sharding in MiniMaxM2Attention when total_num_kv_heads < tp_size"; model line: MiniMax M2 Series; category: bug fix; main diff: `vllm/model_executor/models/minimax_m2.py`; technical summary: Covers "[Bugfix] Fix k_norm weight sharding in MiniMaxM2Attention when total_num_kv_heads < tp_size"; the main implementation surface is `vllm/model_executor/models/minimax_m2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/minimax_m2.py` modified +16/-3 (19 lines); hunks: -35,6 +35,7; -220,9 +221,21 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
+- Code diff details:
+  - `vllm/model_executor/models/minimax_m2.py` modified +16/-3 (19 lines); hunks: -35,6 +35,7; -220,9 +221,21 @@ def __init__(; symbols: __init__, forward
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/minimax_m2.py
+@@ -35,6 +35,7 @@
++    get_tensor_model_parallel_rank,
+@@ -220,9 +221,21 @@ def __init__(
+-        self.k_norm = MiniMaxText01RMSNormTP(
+-            self.head_dim * self.total_num_kv_heads, eps=rms_norm_eps
+-        )
++        if self.total_num_kv_heads >= tp_size:
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/minimax_m2.py` modified +16/-3
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/mamba/linear_attn.py`, `vllm/model_executor/models/minimax_m2.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ## Gap-Closure Notes
 

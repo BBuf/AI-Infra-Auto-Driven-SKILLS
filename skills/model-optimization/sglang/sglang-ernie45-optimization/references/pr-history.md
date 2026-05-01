@@ -1,7 +1,7 @@
 # sglang ERNIE 4.5 PR Diff Audit Reference
 
-- Rebuilt on: 2026-04-25
-- Source baseline: `sgl-project/sglang` trace worktree commit `880599cd43`
+- Rebuilt on: 2026-05-01
+- Source baseline: `sgl-project/sglang` trace worktree commit `4197c55968`
 - Collection: model implementation files were traced with `git log --name-only -- <model-files>`, filtered by model keywords in commit subjects, then every PR card was populated from the GitHub Pull Request files API.
 - Extra preserved PRs from prior docs: 3
 - Rule: use this evidence file before changing model-specific skill guidance; it is not only PR titles.
@@ -30,7 +30,7 @@
 - Status/date: merged / 2026-01-26
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +2072/-0, 2103 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model] Add Ernie4.5 VL model support"; model line: ERNIE 4.5; category: model support/runtime entry; main diff: `python/sglang/srt/models/ernie45_vl.py`, `python/sglang/srt/models/ernie45_moe_vl.py`, `python/sglang/srt/multimodal/processors/ernie45_vl.py`; PR body summary: Add Baidu Ernie4.5 VL model support `ernie45_moe_vl.py` the text backbone `ernie45_vl.py` the vit `processors/ernie45_vl.py` the processor `rotary_embedding.py::Ernie4_5_VLRotar....
+- Motivation: Title: "[Model] Add Ernie4.5 VL model support"; model line: ERNIE 4.5; category: model support/runtime entry; main diff: `python/sglang/srt/models/ernie45_vl.py`, `python/sglang/srt/models/ernie45_moe_vl.py`, `python/sglang/srt/multimodal/processors/ernie45_vl.py`; technical summary: Covers "[Model] Add Ernie4.5 VL model support"; the main implementation surface is `python/sglang/srt/models/ernie45_vl.py`, `python/sglang/srt/models/ernie45_moe_vl.py`, `python/sglang/srt/multimodal/processors/ernie45_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/ernie45_vl.py` added +845/-0 (845 lines); hunks: -0,0 +1,845; symbols: Ernie4_5_VisionMLP, __init__, forward, Ernie4_5_VisionBlock, touching `Ernie4_5_VisionMLP, __init__, forward`; `python/sglang/srt/models/ernie45_moe_vl.py` added +552/-0 (552 lines); hunks: -0,0 +1,552; symbols: Ernie4_5_VLMoeAttention, __init__, forward, Ernie4_5_VLMoeMoE, touching `Ernie4_5_VLMoeAttention, __init__, forward`; `python/sglang/srt/multimodal/processors/ernie45_vl.py` added +417/-0 (417 lines); hunks: -0,0 +1,417; symbols: smart_resize, resize_image, round_by_factor, ceil_by_factor, touching `smart_resize, resize_image, round_by_factor`; `python/sglang/srt/layers/rotary_embedding.py` modified +256/-0 (256 lines); hunks: -2284,6 +2284,177 @@ def get_rope_index_glm4v(; -2323,6 +2494,91 @@ def _get_llm_pos_ids_for_vision(; symbols: get_rope_index_glm4v, get_rope_index_ernie45, _get_feat_extract_output_lengths, _get_llm_pos_ids_for_vision, touching `get_rope_index_glm4v, get_rope_index_ernie45, _get_feat_extract_output_lengths`.
 - Code diff details:
   - `python/sglang/srt/models/ernie45_vl.py` added +845/-0 (845 lines); hunks: -0,0 +1,845; symbols: Ernie4_5_VisionMLP, __init__, forward, Ernie4_5_VisionBlock
@@ -72,7 +72,7 @@ diff -- python/sglang/srt/multimodal/processors/ernie45_vl.py
 - Status/date: merged / 2026-02-16
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +268/-3, 308 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[VLM] Optimize Ernie4.5-VL rotary embedding with fused triton kernel"; model line: ERNIE 4.5; category: performance/backend optimization; main diff: `python/sglang/srt/layers/rotary_embedding.py`; PR body summary: Current Ernie4.5VL MRoPE occupies a major portion in inference time. It has many small ops which introduces quite a lot of GPU bubbles. This PR is to introduce a fused Triton ke....
+- Motivation: Title: "[VLM] Optimize Ernie4.5-VL rotary embedding with fused triton kernel"; model line: ERNIE 4.5; category: performance/backend optimization; main diff: `python/sglang/srt/layers/rotary_embedding.py`; technical summary: Covers "[VLM] Optimize Ernie4.5-VL rotary embedding with fused triton kernel"; the main implementation surface is `python/sglang/srt/layers/rotary_embedding.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/layers/rotary_embedding.py` modified +268/-3 (271 lines); hunks: -2787,9 +2787,238 @@ def _compute_cos_sin_cache(self) -> torch.Tensor:; -2834,14 +3063,16 @@ def forward_native( # type: ignore[override]; symbols: _compute_cos_sin_cache, _triton_ernie45_rope_qk_fused, triton_ernie45_rope_fused_inplace, Ernie4_5_VLRotaryEmbedding, touching `_compute_cos_sin_cache, _triton_ernie45_rope_qk_fused, triton_ernie45_rope_fused_inplace`.
 - Code diff details:
   - `python/sglang/srt/layers/rotary_embedding.py` modified +268/-3 (271 lines); hunks: -2787,9 +2787,238 @@ def _compute_cos_sin_cache(self) -> torch.Tensor:; -2834,14 +3063,16 @@ def forward_native( # type: ignore[override]; symbols: _compute_cos_sin_cache, _triton_ernie45_rope_qk_fused, triton_ernie45_rope_fused_inplace, Ernie4_5_VLRotaryEmbedding
@@ -99,7 +99,7 @@ diff -- python/sglang/srt/layers/rotary_embedding.py
 - Status/date: merged / 2026-03-04
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +34/-12, 102 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[VLM] Support cos sin cache for Ernie4.5-VL"; model line: ERNIE 4.5; category: docs/tests/CI; main diff: `python/sglang/srt/models/ernie45_vl.py`; PR body summary: This PR refactors the rotary positional embedding implementation to expose an explicit cos/sin cache interface and reuse it in the 2D vision RoPE code path. Instead of recomputi....
+- Motivation: Title: "[VLM] Support cos sin cache for Ernie4.5-VL"; model line: ERNIE 4.5; category: docs/tests/CI; main diff: `python/sglang/srt/models/ernie45_vl.py`; technical summary: Covers "[VLM] Support cos sin cache for Ernie4.5-VL"; the main implementation surface is `python/sglang/srt/models/ernie45_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/ernie45_vl.py` modified +34/-12 (46 lines); hunks: -30,6 +30,7; -120,14 +121,16 @@ def forward(; symbols: forward, __init__, dtype, device, touching `forward, __init__, dtype`.
 - Code diff details:
   - `python/sglang/srt/models/ernie45_vl.py` modified +34/-12 (46 lines); hunks: -30,6 +30,7; -120,14 +121,16 @@ def forward(; symbols: forward, __init__, dtype, device

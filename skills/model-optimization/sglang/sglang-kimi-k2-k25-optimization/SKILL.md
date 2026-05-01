@@ -1,6 +1,6 @@
 ---
 name: sglang-kimi-k2-k25-optimization
-description: PR-backed and current-main optimization manual for `moonshotai/Kimi-K2*`, `moonshotai/Kimi-K2.5*`, and `moonshotai/Kimi-K2.6*` in SGLang. Use when Codex needs to recover, extend, or audit Kimi optimizations, including K2 router/MoE fast paths, K2 thinking Marlin paths, K2.5/K2.6 wrapper/multimodal/runtime plumbing, W4AFP8/W4A16/MXFP4 quant tracks, parser contracts, LoRA coverage, and backend-specific validation.
+description: PR-backed and current-main optimization manual for `moonshotai/Kimi-K2*`, `moonshotai/Kimi-K2.5*`, and `moonshotai/Kimi-K2.6*` in SGLang. Use when an engineer needs to recover, extend, or audit Kimi optimizations, including K2 router/MoE fast paths, K2 thinking Marlin paths, K2.5/K2.6 wrapper/multimodal/runtime plumbing, W4AFP8/W4A16/MXFP4 quant tracks, parser contracts, LoRA coverage, and backend-specific validation.
 ---
 
 # SGLang Kimi K2/K2.5/K2.6 Optimization
@@ -92,7 +92,7 @@ Reuse this skill on a non-Kimi model when it shares one or more of these traits:
 
 Reuse the optimization order and validation discipline, not the literal Kimi constants or filenames.
 
-## Open PR Radar
+## Open Optimization Items
 
 Check these active upstream tracks before designing a new Kimi skill or declaring a gap:
 

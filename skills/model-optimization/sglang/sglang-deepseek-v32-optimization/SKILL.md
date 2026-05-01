@@ -1,6 +1,6 @@
 ---
 name: sglang-deepseek-v32-optimization
-description: PR-backed and current-main optimization manual for DeepSeek V3.2, V3.2-Exp, V3.2-Speciale, NVFP4, and MXFP4 in SGLang. Use when Codex needs to recover, extend, or audit DSA/NSA sparse attention, NSA indexer, FP8/BF16/FP4 KV cache, context parallel, MTP, IndexCache, DSML tool calling, V3.2 docs/tests, AMD/NPU/Blackwell backends, or open NSA/DSA PRs.
+description: PR-backed and current-main optimization manual for DeepSeek V3.2, V3.2-Exp, V3.2-Speciale, NVFP4, and MXFP4 in SGLang. Use when an engineer needs to recover, extend, or audit DSA/NSA sparse attention, NSA indexer, FP8/BF16/FP4 KV cache, context parallel, MTP, IndexCache, DSML tool calling, V3.2 docs/tests, AMD/NPU/Blackwell backends, or open NSA/DSA PRs.
 ---
 
 # SGLang DeepSeek V3.2 Optimization

@@ -1,6 +1,6 @@
 ---
 name: sglang-internvl35-optimization
-description: PR-backed optimization manual for InternVL3.5 in SGLang. Use when Codex needs to audit, debug, extend, or document InternVL3.5 multimodal processor, video support, ViT DP / CUDA graph, and non-CUDA backend compatibility.
+description: PR-backed optimization manual for InternVL3.5 in SGLang. Use when an engineer needs to audit, debug, extend, or document InternVL3.5 multimodal processor, video support, ViT DP / CUDA graph, and non-CUDA backend compatibility.
 ---
 
 # SGLang InternVL3.5 Optimization

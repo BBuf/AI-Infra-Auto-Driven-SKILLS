@@ -1,6 +1,6 @@
 ---
 name: vllm-ernie45-optimization
-description: PR-backed optimization manual for Ernie4.5 / Ernie4.5-VL in vLLM. Use when Codex needs to audit, debug, extend, or document Baidu Ernie4.5 text/VL/MoE runtime, vision rotary, and long-input stability.
+description: PR-backed optimization manual for Ernie4.5 / Ernie4.5-VL in vLLM. Use when an engineer needs to audit, debug, extend, or document Baidu Ernie4.5 text/VL/MoE runtime, vision rotary, and long-input stability.
 ---
 
 # vLLM Ernie4.5 / Ernie4.5-VL Optimization

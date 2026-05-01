@@ -1,6 +1,6 @@
 ---
 name: sglang-minimax-m2-series-optimization
-description: "PR-backed and current-main optimization manual for the `MiniMaxAI/MiniMax-M2` series, including M2, M2.1, M2.5, M2.7, and M2.7-highspeed. Use when Codex needs to recover, extend, or audit MiniMax-specific optimizations, TP QK norm/all-reduce behavior, parser contracts, distributed runtime behavior, quantized loading, or backend-specific validation."
+description: "PR-backed and current-main optimization manual for the `MiniMaxAI/MiniMax-M2` series, including M2, M2.1, M2.5, M2.7, and M2.7-highspeed. Use when an engineer needs to recover, extend, or audit MiniMax-specific optimizations, TP QK norm/all-reduce behavior, parser contracts, distributed runtime behavior, quantized loading, or backend-specific validation."
 ---
 
 # SGLang MiniMax M2 Series Optimization
@@ -320,7 +320,7 @@ M2.7 currently reuses the MiniMax-M2-family runtime code, but the active registe
 - M2.5 and M2.7 failures are triaged independently
 - docs do not become the only source of truth for M2.7 until a first-class M2.7 usage doc exists
 
-## Open PR Radar
+## Open Optimization Items
 
 Check these active upstream tracks before designing a new MiniMax skill or declaring a gap:
 

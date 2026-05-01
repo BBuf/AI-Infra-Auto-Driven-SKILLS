@@ -1,6 +1,6 @@
 ---
 name: vllm-minimax-optimization
-description: PR-backed optimization manual for MiniMax M1 / M2 / VL in vLLM. Use when Codex needs to audit, debug, extend, or document MiniMaxText01, MiniMax-M1, MiniMax-M2, MiniMax-VL-01, LoRA, and Eagle3 support in vLLM.
+description: PR-backed optimization manual for MiniMax M1 / M2 / VL in vLLM. Use when an engineer needs to audit, debug, extend, or document MiniMaxText01, MiniMax-M1, MiniMax-M2, MiniMax-VL-01, LoRA, and Eagle3 support in vLLM.
 ---
 
 # vLLM MiniMax M1 / M2 / VL Optimization
@@ -41,7 +41,7 @@ Every PR cited for this family must be based on diff reading, not only PR titles
 - [#32763](https://github.com/vllm-project/vllm/pull/32763) `Complete LoRA support for MiniMaxM2`: Finished missing adapter wiring in the M2 family.
 - [#37512](https://github.com/vllm-project/vllm/pull/37512) `MiniMax-M2: add Eagle3 speculative decoding support`: Enabled the draft-model acceleration path for MiniMax M2.
 
-## Open Radar
+## Open Optimization Items
 
 - Re-run PR search before claiming new support beyond the checked mainline commit.
 

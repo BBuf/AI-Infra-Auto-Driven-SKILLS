@@ -1,6 +1,6 @@
 ---
 name: sglang-glm5-glm51-optimization
-description: PR-backed and current-main optimization manual for GLM-5 and GLM-5.1 in SGLang. Use when Codex needs to recover, extend, or audit GLM-5 DSA/NSA/NSA indexer paths, GLM-5.1 FP8/MXFP4/NVFP4, NextN/MTP, dense-attention threshold, NSA TileLang/AITER, tool templates, EAGLE, PCG, AMD/Blackwell/NPU validation, or GLM-5 cookbook recipes.
+description: PR-backed and current-main optimization manual for GLM-5 and GLM-5.1 in SGLang. Use when an engineer needs to recover, extend, or audit GLM-5 DSA/NSA/NSA indexer paths, GLM-5.1 FP8/MXFP4/NVFP4, NextN/MTP, dense-attention threshold, NSA TileLang/AITER, tool templates, EAGLE, PCG, AMD/Blackwell/NPU validation, or GLM-5 cookbook recipes.
 ---
 
 # SGLang GLM-5/5.1 Optimization
@@ -67,7 +67,7 @@ GLM-5/5.1 should be debugged like a GLM-specific DSA/MTP system, not like plain 
 
 Before adding GLM-5/5.1 PR evidence, open the PR diff/source and write a full card in `references/pr-history.md` with motivation, key implementation, code excerpt, reviewed files, and validation implications.
 
-Do not add one-line open PR radar lists. Open PRs can be recorded only after their diffs are reviewed and they are clearly separated from merged history.
+Do not add one-line open PR lists. Open PRs can be recorded only after their diffs are reviewed and they are clearly separated from merged history.
 
 ## Validation Lanes
 

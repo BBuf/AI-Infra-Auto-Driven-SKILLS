@@ -1,6 +1,6 @@
 ---
 name: sglang-deepseek-v4-optimization
-description: PR-backed and current-main optimization manual for DeepSeek-V4 in SGLang. Use when Codex needs to audit or extend DeepSeek-V4 Flash/Pro serving recipes, FP4-vs-FP8 checkpoint selection, H200/B200/GB300 launch commands, DeepEP dispatch-token budgets, context-parallel and PD-disaggregation recipes, MTP/EAGLE settings, or DeepSeek-V4 parser flags.
+description: PR-backed and current-main optimization manual for DeepSeek-V4 in SGLang. Use when an engineer needs to audit or extend DeepSeek-V4 Flash/Pro serving recipes, FP4-vs-FP8 checkpoint selection, H200/B200/GB300 launch commands, DeepEP dispatch-token budgets, context-parallel and PD-disaggregation recipes, MTP/EAGLE settings, or DeepSeek-V4 parser flags.
 ---
 
 # SGLang DeepSeek-V4 Optimization

@@ -88,6 +88,17 @@ Historical validation snapshots in `references/` are evidence of which flag
 names and failure modes were seen in specific images and are not a requirement
 that the next run happens on the same hardware or framework version.
 
+Additional H100 validation on `2026-05-01` used two 2-card models with a
+bounded search of two SGLang memory-fraction candidates and two vLLM
+memory-utilization candidates. The workload was random input `512`, output
+`64`, 8 prompts, and 2 warmup requests, only to prove the search and summary
+path can finish quickly.
+
+| Model | GPUs | Best SGLang | Best vLLM | Artifact root |
+| --- | --- | --- | --- | --- |
+| `Qwen/Qwen3-8B` | 2x H100, TP=2 | `sglang_mem086`, 21.64 req/s, 1385.05 output tok/s, mean TTFT 70.54 ms | `vllm_mem080`, 22.88 req/s, 1464.25 output tok/s, mean TTFT 60.56 ms | `/data/bbuf/validate/core_skill_validation_20260501/qwen3_8b/auto_benchmark` |
+| `mistralai/Mistral-7B-Instruct-v0.3` | 2x H100, TP=2 | `sglang_mem080`, 24.09 req/s, 1541.92 output tok/s, mean TTFT 61.47 ms | `vllm_mem090`, 24.76 req/s, 1584.54 output tok/s, mean TTFT 58.63 ms | `/data/bbuf/validate/core_skill_validation_20260501/mistral_7b_instruct_v03/auto_benchmark` |
+
 ## Skill Scope
 
 This skill is a playbook plus a config+validator toolchain, not a turn-key
@@ -123,6 +134,13 @@ Collect these before a long run:
 If real production traffic is the goal, use the real request distribution. A
 synthetic workload is fine for bring-up and first-pass comparison, but it is not
 enough for a production choice.
+
+Record each scenario's input/output length distribution in the normalized
+result rows. This is now part of the profiler handoff contract: if SGLang is
+slower and `sglang-sota-performance` invokes `llm-torch-profiler-analysis`,
+the profiler workload must reuse the slow SGLang benchmark scenario lengths
+instead of falling back to its generic prefill `4090->1` and decode `1->2048`
+defaults.
 
 ## Known Gotchas
 
@@ -276,6 +294,10 @@ dataset:
 
 Each aligned `input_len` / `output_len` pair is one scenario. Do not take the
 cartesian product unless the user asks for that.
+Name each scenario and keep the aligned pair in the artifacts. For custom
+datasets, compute or record representative `input_len` and `output_len`
+buckets, at least p50 and p95 when possible, so later profiler runs can match
+the slow bucket rather than profiling an unrelated synthetic shape.
 
 Before searching any sequence-length limit, compute the largest
 `input_len + output_len` in the dataset. SGLang `context_length`, vLLM
@@ -490,6 +512,10 @@ Return a compact report with workload/SLA, hardware and framework versions, best
 deployment-command tables per framework/scenario, one cross-framework comparison
 table, exact launch and benchmark commands for winners, and artifact paths for
 workload, raw/normalized results, CSV or markdown summary, and server logs.
+
+When SGLang is not the winner, include a profiler handoff note with the slow
+SGLang scenario name and the exact input/output lengths or percentile bucket to
+pass to `llm-torch-profiler-analysis`.
 
 Include failed or excluded candidates with reasons. Explain that this table is a
 record of tried configs that were not selected: candidates that failed, were

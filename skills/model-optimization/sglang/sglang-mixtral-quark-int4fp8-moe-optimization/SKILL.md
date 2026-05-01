@@ -1,6 +1,6 @@
 ---
 name: sglang-mixtral-quark-int4fp8-moe-optimization
-description: PR-backed optimization manual for Mixtral-8x7B with SGLang's AMD-only quark_int4fp8_moe online MoE quantization. Use when Codex needs to audit or extend Mixtral AMD quantization, online INT4-to-FP8 MoE loading, AITER fused-MoE execution, or the registered GSM8K regression test.
+description: PR-backed optimization manual for Mixtral-8x7B with SGLang's AMD-only quark_int4fp8_moe online MoE quantization. Use when an engineer needs to audit or extend Mixtral AMD quantization, online INT4-to-FP8 MoE loading, AITER fused-MoE execution, or the registered GSM8K regression test.
 ---
 
 # SGLang Mixtral Quark INT4-FP8 MoE Optimization

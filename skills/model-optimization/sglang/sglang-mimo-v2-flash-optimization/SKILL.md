@@ -1,6 +1,6 @@
 ---
 name: sglang-mimo-v2-flash-optimization
-description: PR-backed optimization manual for MiMo-V2 / MiMo-V2-Flash / MiMo-V2.5 in SGLang. Use when Codex needs to audit, debug, extend, or document MiMo-V2 inference-centric MoE runtime, flashinfer/TRT-LLM fused all-reduce, overlap, MTP/EAGLE, multimodal/pro variants, and reasoning parser behavior.
+description: PR-backed optimization manual for MiMo-V2 / MiMo-V2-Flash / MiMo-V2.5 in SGLang. Use when an engineer needs to audit, debug, extend, or document MiMo-V2 inference-centric MoE runtime, flashinfer/TRT-LLM fused all-reduce, overlap, MTP/EAGLE, multimodal/pro variants, and reasoning parser behavior.
 ---
 
 # SGLang MiMo-V2 / MiMo-V2.5 Optimization

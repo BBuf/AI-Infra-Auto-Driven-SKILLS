@@ -1,12 +1,5 @@
 # sglang Qwen3.5 模型 PR 优化历史
 
-## 文档口径
-
-- 重做日期: 2026-04-25
-- 源码基线: `sgl-project/sglang` 当前追溯 worktree commit `880599cd43`
-- PR 收集规则: 先从模型实现、配置、processor、parser、docs/tests 等相关文件执行 `git log --name-only -- <model-files>`，再按 commit subject 的模型关键词过滤，最后用 GitHub Pull Request files API 读取每个 PR 的最终 diff。
-- 额外保留规则: 原 history/skill 已显式引用但未出现在当前实现文件 git trace 中的 PR 会保留，并在卡片里标注来源。
-
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
@@ -18,12 +11,13 @@
 | `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_qwen3_5_examples.mdx` | 无直接 PR 号提交 |
 | `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx` | 无直接 PR 号提交 |
 | `python/sglang/srt/configs/qwen3_5.py` | [#18489](https://github.com/sgl-project/sglang/pull/18489) |
-| `python/sglang/srt/models/qwen3_5.py` | [#18489](https://github.com/sgl-project/sglang/pull/18489), [#18538](https://github.com/sgl-project/sglang/pull/18538), [#18544](https://github.com/sgl-project/sglang/pull/18544), [#18937](https://github.com/sgl-project/sglang/pull/18937), [#19070](https://github.com/sgl-project/sglang/pull/19070), [#19220](https://github.com/sgl-project/sglang/pull/19220), [#19411](https://github.com/sgl-project/sglang/pull/19411), [#19670](https://github.com/sgl-project/sglang/pull/19670), [#19767](https://github.com/sgl-project/sglang/pull/19767), [#20386](https://github.com/sgl-project/sglang/pull/20386), [#20736](https://github.com/sgl-project/sglang/pull/20736), [#21019](https://github.com/sgl-project/sglang/pull/21019), ... (17 total) |
-| `python/sglang/srt/models/qwen3_5_mtp.py` | [#18489](https://github.com/sgl-project/sglang/pull/18489), [#18538](https://github.com/sgl-project/sglang/pull/18538), [#18926](https://github.com/sgl-project/sglang/pull/18926), [#18937](https://github.com/sgl-project/sglang/pull/18937), [#19391](https://github.com/sgl-project/sglang/pull/19391), [#19767](https://github.com/sgl-project/sglang/pull/19767) |
+| `python/sglang/srt/models/qwen3_5.py` | [#18489](https://github.com/sgl-project/sglang/pull/18489), [#18538](https://github.com/sgl-project/sglang/pull/18538), [#18544](https://github.com/sgl-project/sglang/pull/18544), [#18937](https://github.com/sgl-project/sglang/pull/18937), [#19070](https://github.com/sgl-project/sglang/pull/19070), [#19220](https://github.com/sgl-project/sglang/pull/19220), [#19411](https://github.com/sgl-project/sglang/pull/19411), [#19484](https://github.com/sgl-project/sglang/pull/19484), [#19670](https://github.com/sgl-project/sglang/pull/19670), [#19767](https://github.com/sgl-project/sglang/pull/19767), [#20386](https://github.com/sgl-project/sglang/pull/20386), [#20736](https://github.com/sgl-project/sglang/pull/20736), ... (22 total) |
+| `python/sglang/srt/models/qwen3_5_mtp.py` | [#18489](https://github.com/sgl-project/sglang/pull/18489), [#18538](https://github.com/sgl-project/sglang/pull/18538), [#18926](https://github.com/sgl-project/sglang/pull/18926), [#18937](https://github.com/sgl-project/sglang/pull/18937), [#19391](https://github.com/sgl-project/sglang/pull/19391), [#19767](https://github.com/sgl-project/sglang/pull/19767), [#20918](https://github.com/sgl-project/sglang/pull/20918) |
 | `test/lm_eval_configs/Qwen3.5-397B-A17B.yaml` | 无直接 PR 号提交 |
-| `test/manual/4-gpu-models/test_qwen35_hicache.py` | 无直接 PR 号提交 |
 | `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py` | [#22913](https://github.com/sgl-project/sglang/pull/22913) |
 | `test/registered/4-gpu-models/test_qwen35_fp4_triton.py` | [#22913](https://github.com/sgl-project/sglang/pull/22913) |
+| `test/registered/4-gpu-models/test_qwen35_hicache.py` | [#21371](https://github.com/sgl-project/sglang/pull/21371) |
+| `test/registered/4-gpu-models/test_qwen35_models.py` | [#19150](https://github.com/sgl-project/sglang/pull/19150), [#19391](https://github.com/sgl-project/sglang/pull/19391), [#20540](https://github.com/sgl-project/sglang/pull/20540), [#21081](https://github.com/sgl-project/sglang/pull/21081), [#21371](https://github.com/sgl-project/sglang/pull/21371), [#22913](https://github.com/sgl-project/sglang/pull/22913) |
 | `test/registered/8-gpu-models/test_qwen35.py` | [#19906](https://github.com/sgl-project/sglang/pull/19906), [#22399](https://github.com/sgl-project/sglang/pull/22399) |
 | `test/registered/amd/accuracy/mi30x/test_qwen35_eval_amd.py` | [#21669](https://github.com/sgl-project/sglang/pull/21669) |
 | `test/registered/amd/accuracy/mi35x/test_qwen35_eval_mi35x.py` | [#21669](https://github.com/sgl-project/sglang/pull/21669) |
@@ -31,12 +25,15 @@
 | `test/registered/amd/perf/mi35x/test_qwen35_fp8_perf_mi35x.py` | [#21669](https://github.com/sgl-project/sglang/pull/21669) |
 | `test/registered/gb300/test_qwen35_fp8.py` | 无直接 PR 号提交 |
 | `test/registered/gb300/test_qwen35_nvfp4.py` | 无直接 PR 号提交 |
+| `test/registered/lora/test_lora_qwen3_5_35b_a3b_logprob_diff.py` | [#23594](https://github.com/sgl-project/sglang/pull/23594) |
+| `test/registered/lora/test_lora_qwen3_5_4b_logprob_diff.py` | [#23594](https://github.com/sgl-project/sglang/pull/23594) |
+| `test/registered/unit/models/test_qwen3_5_packed_weight_loader.py` | [#23062](https://github.com/sgl-project/sglang/pull/23062) |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 23
+- git 追溯 PR 数: 33
 - 原文档显式引用补充 PR 数: 17
-- 当前文档总 PR 数: 40
+- 当前文档总 PR 数: 50
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -52,16 +49,20 @@
 | 2026-02-25 | [#19070](https://github.com/sgl-project/sglang/pull/19070) | merged | fix(dense): fix Qwen3.5 dense model precision bug in TP_SIZE>1 | `python/sglang/srt/models/qwen3_5.py` |
 | 2026-02-26 | [#19220](https://github.com/sgl-project/sglang/pull/19220) | merged | [PCG] fix piecewise cuda graph for Qwen3.5 | `python/sglang/srt/models/qwen3_5.py` |
 | 2026-02-26 | [#19411](https://github.com/sgl-project/sglang/pull/19411) | merged | [Qwen3.5] Qwen3.5-27B inference repeat bug fix | `python/sglang/srt/models/qwen3_5.py` |
-| 2026-03-04 | [#19391](https://github.com/sgl-project/sglang/pull/19391) | merged | [Qwen3.5] Enable MTP spec_v2 and add test for nvidia/Qwen3.5-397B-A17B-NVFP4 | `python/sglang/srt/models/qwen3_5_mtp.py` |
+| 2026-03-04 | [#19391](https://github.com/sgl-project/sglang/pull/19391) | merged | [Qwen3.5] Enable MTP spec_v2 and add test for nvidia/Qwen3.5-397B-A17B-NVFP4 | `python/sglang/srt/models/qwen3_5_mtp.py`, `test/registered/4-gpu-models/test_qwen35_models.py` |
 | 2026-03-06 | [#19906](https://github.com/sgl-project/sglang/pull/19906) | merged | Add Qwen3.5-397B-A17B nightly test (8-GPU) | `test/registered/8-gpu-models/test_qwen35.py` |
 | 2026-03-07 | [#19670](https://github.com/sgl-project/sglang/pull/19670) | merged | [Qwen3.5] Support Qwen3.5 Pipeline Parallelism | `python/sglang/srt/models/qwen3_5.py` |
 | 2026-03-09 | [#19767](https://github.com/sgl-project/sglang/pull/19767) | merged | Fix qwen3.5 mtp eplb related issues | `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py` |
 | 2026-03-12 | [#20386](https://github.com/sgl-project/sglang/pull/20386) | merged | perf(qwen3_5): replace einops rearrange with torch.flatten in GatedDe… | `python/sglang/srt/models/qwen3_5.py` |
+| 2026-03-15 | [#20540](https://github.com/sgl-project/sglang/pull/20540) | merged | [CI]: Add CI For HiMambaRadixTree and qwen3.5 | `test/registered/4-gpu-models/test_qwen35_models.py` |
+| 2026-03-18 | [#19150](https://github.com/sgl-project/sglang/pull/19150) | merged | [NVIDIA] Integrate FlashInfer decode kernel (Blackwell) for Qwen3.5 | `test/registered/4-gpu-models/test_qwen35_models.py` |
 | 2026-03-18 | [#19889](https://github.com/sgl-project/sglang/pull/19889) | merged | Use TRTLLM allreduce fusion for Qwen 3.5 | `python/sglang/srt/layers/layernorm.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen2_moe.py` |
 | 2026-03-18 | [#19961](https://github.com/sgl-project/sglang/pull/19961) | merged | fix: change qwen 3.5 linear attention a_log to fp32 | `python/sglang/srt/models/qwen3_5.py` |
 | 2026-03-20 | [#19321](https://github.com/sgl-project/sglang/pull/19321) | merged | [Qwen3-Next] Fuse Qwen3-Next GDN's qkvz_proj and ba_proj | `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/layers/linear.py` |
+| 2026-03-21 | [#21081](https://github.com/sgl-project/sglang/pull/21081) | merged | Fix test_qwen35_models | `test/registered/4-gpu-models/test_qwen35_models.py` |
 | 2026-03-21 | [#21070](https://github.com/sgl-project/sglang/pull/21070) | merged | [Qwen3.5] Fix broken pipeline parallelism layer splitting | `python/sglang/srt/models/qwen3_5.py` |
 | 2026-03-23 | [#21019](https://github.com/sgl-project/sglang/pull/21019) | merged | [Qwen3.5] Fuse split/reshape/cat ops in GDN projection with Triton kernel | `python/sglang/srt/models/qwen3_5.py` |
+| 2026-03-25 | [#21371](https://github.com/sgl-project/sglang/pull/21371) | merged | [CI] Fix TestQwen35WithHiCache | `test/registered/4-gpu-models/test_qwen35_hicache.py`, `test/registered/4-gpu-models/test_qwen35_models.py` |
 | 2026-03-29 | [#21487](https://github.com/sgl-project/sglang/pull/21487) | merged | feat(ci): add GB300 nightly benchmark test suites | `python/sglang/test/accuracy_test_runner.py`, `test/registered/gb300/test_deepseek_v32_nvfp4.py`, `test/registered/gb300/test_deepseek_v32.py` |
 | 2026-03-30 | [#21448](https://github.com/sgl-project/sglang/pull/21448) | merged | [Fix] Fix Qwen3.5 MoE model loading and Mamba cache sharding in PP mode | `python/sglang/srt/models/qwen3_5.py` |
 | 2026-03-30 | [#21234](https://github.com/sgl-project/sglang/pull/21234) | merged | [AMD] Support AMD MXFP4 Qwen3.5-397B-A17B model | `python/sglang/srt/models/qwen3_5.py` |
@@ -77,13 +78,19 @@
 | 2026-04-10 | [#22312](https://github.com/sgl-project/sglang/pull/22312) | merged | Make GDN support non-continuous B/A Tensor input to fix the accuracy regression of Qwen3.5-27B | `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py`, `python/sglang/srt/layers/attention/fla/fused_gdn_gating.py`, `test/registered/attention/test_gdn_noncontiguous_stride.py` |
 | 2026-04-15 | [#20736](https://github.com/sgl-project/sglang/pull/20736) | merged | [AMD] Enable share expert fusion with router experts for Qwen3.5 BF16 & FP8 | `python/sglang/srt/models/qwen3_5.py` |
 | 2026-04-16 | [#22948](https://github.com/sgl-project/sglang/pull/22948) | merged | [AMD] Qwen3.5 MXFP4 breaks after shared expert fusion is enabled | `python/sglang/srt/models/qwen2_moe.py` |
-| 2026-04-17 | [#22913](https://github.com/sgl-project/sglang/pull/22913) | merged | test(4-gpu-b200): split test_qwen35_models.py + bump partitions 5→6 | `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py`, `test/registered/4-gpu-models/test_qwen35_fp4_triton.py` |
+| 2026-04-17 | [#22913](https://github.com/sgl-project/sglang/pull/22913) | merged | test(4-gpu-b200): split test_qwen35_models.py + bump partitions 5→6 | `test/registered/4-gpu-models/test_qwen35_models.py`, `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py`, `test/registered/4-gpu-models/test_qwen35_fp4_triton.py` |
 | 2026-04-17 | [#23034](https://github.com/sgl-project/sglang/pull/23034) | merged | docs: fix links, add Qwen3.6, update Qwen3.5/GLM-5 docs | `docs_new/docs/advanced_features/separate_reasoning.mdx`, `docs_new/docs/advanced_features/tool_parser.mdx`, `docs_new/docs/advanced_features/dp_dpa_smg_guide.mdx` |
 | 2026-04-18 | [#22431](https://github.com/sgl-project/sglang/pull/22431) | merged | Fix Qwen3.5 video processing when passing video_data in "processor_output" format | `python/sglang/srt/multimodal/processors/qwen_vl.py` |
 | 2026-04-21 | [#22908](https://github.com/sgl-project/sglang/pull/22908) | merged | [AMD] Resolve Qwen3.5 MTP (speculative decoding) radix cache conflict. | `python/sglang/srt/server_args.py` |
 | 2026-04-22 | [#22493](https://github.com/sgl-project/sglang/pull/22493) | merged | Add MambaPool kvcache offloading during retraction | `test/registered/unit/mem_cache/test_mamba_unittest.py`, `python/sglang/srt/mem_cache/memory_pool.py`, `python/sglang/srt/mem_cache/allocator.py` |
 | 2026-04-22 | [#23474](https://github.com/sgl-project/sglang/pull/23474) | open | [Bugfix] Try to fix --cpu-offload-gb on hybrid linear-attn models | `test/registered/unit/utils/test_offloader_tied_params.py`, `python/sglang/srt/utils/offloader.py` |
 | 2026-04-22 | [#23467](https://github.com/sgl-project/sglang/pull/23467) | merged | fix: dot-boundary match in is_layer_skipped for FP8 modules_to_not_convert | `python/sglang/srt/layers/quantization/utils.py` |
+| 2026-04-26 | [#19484](https://github.com/sgl-project/sglang/pull/19484) | merged | [CPU] Add Qwen3.5 model optimization for CPU | `python/sglang/srt/models/qwen3_5.py` |
+| 2026-04-27 | [#20918](https://github.com/sgl-project/sglang/pull/20918) | merged | [NPU] Support MTP for Qwen3.5 | `python/sglang/srt/models/qwen3_5_mtp.py` |
+| 2026-04-28 | [#23471](https://github.com/sgl-project/sglang/pull/23471) | merged | [Fix] NVFP4 qwen3.5 quant error fix by add packed_modules_mapping | `python/sglang/srt/models/qwen3_5.py` |
+| 2026-04-29 | [#23815](https://github.com/sgl-project/sglang/pull/23815) | merged | [NPU] Fix DeepEP LL dispatch BF16 flag and skip triton kernel on NPU for Qwen3.5 | `python/sglang/srt/models/qwen3_5.py` |
+| 2026-04-30 | [#23594](https://github.com/sgl-project/sglang/pull/23594) | merged | LoRA support for qwen3.5 and nemotron3 | `python/sglang/srt/models/qwen3_5.py`, `test/registered/lora/test_lora_qwen3_5_35b_a3b_logprob_diff.py`, `test/registered/lora/test_lora_qwen3_5_4b_logprob_diff.py` |
+| 2026-04-30 | [#23062](https://github.com/sgl-project/sglang/pull/23062) | merged | [bugfix]fix(qwen3_5): broadcast per-tensor scale in _make_packed_weight_loader for FP8 models | `test/registered/unit/models/test_qwen3_5_packed_weight_loader.py`, `python/sglang/srt/models/qwen3_5.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -93,7 +100,7 @@
 - 状态/时间: merged / 2026-02-09
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/configs/qwen3_5.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`；关联提交 `27c447653d9c`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 17 个文件，+1923/-9，可读 patch 2159 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[MODEL] Adding Support for Qwen3.5 Models」；模型线: Qwen3.5；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`, `python/sglang/srt/configs/qwen3_5.py`；PR 正文摘要: This PR adds model support for the upcoming Qwen3.5 models, including both dense and MoE variants. Special thanks to @cao1zhg, @yizhang2077, and @attack204 for their review, and...。
+- 动机: 标题「[MODEL] Adding Support for Qwen3.5 Models」；模型线: Qwen3.5；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`, `python/sglang/srt/configs/qwen3_5.py`；技术摘要: 覆盖「[MODEL] Adding Support for Qwen3.5 Models」；主要实现面是 `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`, `python/sglang/srt/configs/qwen3_5.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/qwen3_5.py` added +1310/-0 (1310 lines); hunks: -0,0 +1,1310; symbols: Qwen3_5GatedDeltaNet, __init__, fix_query_key_value_ordering, forward，涉及 `Qwen3_5GatedDeltaNet, __init__, fix_query_key_value_ordering`；`python/sglang/srt/models/qwen3_5_mtp.py` added +415/-0 (415 lines); hunks: -0,0 +1,415; symbols: Qwen3_5MultiTokenPredictor, __init__, embed_input_ids, forward，涉及 `Qwen3_5MultiTokenPredictor, __init__, embed_input_ids`；`python/sglang/srt/configs/qwen3_5.py` added +113/-0 (113 lines); hunks: -0,0 +1,113; symbols: Qwen3_5VisionConfig, Qwen3_5TextConfig, __init__, Qwen3_5Config，涉及 `Qwen3_5VisionConfig, Qwen3_5TextConfig, __init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/qwen3_5.py` added +1310/-0 (1310 lines); hunks: -0,0 +1,1310; symbols: Qwen3_5GatedDeltaNet, __init__, fix_query_key_value_ordering, forward
@@ -132,7 +139,7 @@ diff -- python/sglang/srt/configs/qwen3_5.py
 - 状态/时间: merged / 2026-02-12
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`；关联提交 `4ed2548427a0`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+62/-118，可读 patch 275 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Qwen3_5] Refactor `Qwen3_5ForCausalLMMTP` class implementation」；模型线: Qwen3.5；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/models/qwen3_5_mtp.py`, `python/sglang/srt/models/qwen3_5.py`；PR 正文摘要: Reduce code redundancy by refactoring MTP to reuse Qwen3_5ForCausalLM - Removed `Qwen3_5MultiTokenPredictor` class, replacing it with `Qwen3_5ForCausalLM` as the main model body...。
+- 动机: 标题「[Qwen3_5] Refactor `Qwen3_5ForCausalLMMTP` class implementation」；模型线: Qwen3.5；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/models/qwen3_5_mtp.py`, `python/sglang/srt/models/qwen3_5.py`；技术摘要: 覆盖「[Qwen3_5] Refactor `Qwen3_5ForCausalLMMTP` class implementation」；主要实现面是 `python/sglang/srt/models/qwen3_5_mtp.py`, `python/sglang/srt/models/qwen3_5.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/qwen3_5_mtp.py` modified +44/-112 (156 lines); hunks: -24,114 +24,15; -140,7 +41,7 @@ def __init__(; symbols: Qwen3_5MultiTokenPredictor, __init__, embed_input_ids, forward，涉及 `Qwen3_5MultiTokenPredictor, __init__, embed_input_ids`；`python/sglang/srt/models/qwen3_5.py` modified +18/-6 (24 lines); hunks: -330,6 +330,9 @@ def __init__(; -338,15 +341,18 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/qwen3_5_mtp.py` modified +44/-112 (156 lines); hunks: -24,114 +24,15; -140,7 +41,7 @@ def __init__(; symbols: Qwen3_5MultiTokenPredictor, __init__, embed_input_ids, forward
@@ -168,7 +175,7 @@ diff -- python/sglang/srt/models/qwen3_5.py
 - 状态/时间: merged / 2026-02-12
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_5.py`；关联提交 `1edc69be0854`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+23/-4，可读 patch 75 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Ascend]Support qwen3.5」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_5.py`；PR 正文摘要: Ascend adapts qwen3.5 1、Bugfix with load weights： issue 2、The quantization and import kernel error reporting parts have been modified accordingly. python -m sglang.launch_server...。
+- 动机: 标题「[Ascend]Support qwen3.5」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_5.py`；技术摘要: 覆盖「[Ascend]Support qwen3.5」；主要实现面是 `python/sglang/srt/models/qwen3_5.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/qwen3_5.py` modified +12/-2 (14 lines); hunks: -34,6 +34,7; -328,15 +329,15 @@ def __init__(; symbols: __init__, load_fused_expert_weights, get_model_config_for_expert_location，涉及 `__init__, load_fused_expert_weights, get_model_config_for_expert_location`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/qwen3_5.py` modified +12/-2 (14 lines); hunks: -34,6 +34,7; -328,15 +329,15 @@ def __init__(; symbols: __init__, load_fused_expert_weights, get_model_config_for_expert_location
@@ -195,7 +202,7 @@ diff -- python/sglang/srt/models/qwen3_5.py
 - 状态/时间: merged / 2026-02-18
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_5_mtp.py`；关联提交 `fa5698d79164`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+57/-12，可读 patch 131 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「feat: [Qwen3.5] Support block-wise FP8 quantization and model adaptation」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/qwen3_5_mtp.py`；PR 正文摘要: Overview This PR introduces support for block-wise FP8 quantization for the Qwen3.5 series and refines model adaptation logic for several architectures (Mistral-3, Qwen3-VL) to...。
+- 动机: 标题「feat: [Qwen3.5] Support block-wise FP8 quantization and model adaptation」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/qwen3_5_mtp.py`；技术摘要: 覆盖「feat: [Qwen3.5] Support block-wise FP8 quantization and model adaptation」；主要实现面是 `python/sglang/srt/models/qwen3_5_mtp.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/qwen3_5_mtp.py` modified +1/-6 (7 lines); hunks: -64,7 +64,7 @@ def __init__(; -214,16 +214,11 @@ def load_fused_expert_weights(; symbols: __init__, load_fused_expert_weights，涉及 `__init__, load_fused_expert_weights`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/qwen3_5_mtp.py` modified +1/-6 (7 lines); hunks: -64,7 +64,7 @@ def __init__(; -214,16 +214,11 @@ def load_fused_expert_weights(; symbols: __init__, load_fused_expert_weights
@@ -222,7 +229,7 @@ diff -- python/sglang/srt/models/qwen3_5_mtp.py
 - 状态/时间: merged / 2026-02-19
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`；关联提交 `bba2fc49a170`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+26/-8，可读 patch 98 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Qwen3.5] Enable nvfp4 checkpoint」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`；PR 正文摘要: Enable nvfp4 checkpoint Disable quantization for the Linear, Global attention modules, visual model, and MTP layer. No MTP: 0.960 MTP3: 0.969, acceptance len: 3.47。
+- 动机: 标题「[Qwen3.5] Enable nvfp4 checkpoint」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`；技术摘要: 覆盖「[Qwen3.5] Enable nvfp4 checkpoint」；主要实现面是 `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/qwen3_5.py` modified +19/-7 (26 lines); hunks: -318,8 +318,14 @@ def __init__(; -458,13 +464,19 @@ def __init__(; symbols: __init__, load_weights, load_fused_expert_weights，涉及 `__init__, load_weights, load_fused_expert_weights`；`python/sglang/srt/models/qwen3_5_mtp.py` modified +4/-0 (4 lines); hunks: -48,6 +48,10 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/qwen3_5.py` modified +19/-7 (26 lines); hunks: -318,8 +318,14 @@ def __init__(; -458,13 +464,19 @@ def __init__(; symbols: __init__, load_weights, load_fused_expert_weights
@@ -255,7 +262,7 @@ diff -- python/sglang/srt/models/qwen3_5_mtp.py
 - 状态/时间: merged / 2026-02-25
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_5.py`；关联提交 `d38c0e537d95`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+32/-6，可读 patch 56 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「fix(dense): fix Qwen3.5 dense model precision bug in TP_SIZE>1」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_5.py`；PR 正文摘要: fix(dense): fix Qwen3.5 dense model precision bug in TP_SIZE>1 - Add conditional `should_allreduce_fusion` check for MLP layers. - Separate calling logic for MoE vs. Dense block...。
+- 动机: 标题「fix(dense): fix Qwen3.5 dense model precision bug in TP_SIZE>1」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_5.py`；技术摘要: 覆盖「fix(dense): fix Qwen3.5 dense model precision bug in TP_SIZE>1」；主要实现面是 `python/sglang/srt/models/qwen3_5.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/qwen3_5.py` modified +32/-6 (38 lines); hunks: -400,11 +400,24 @@ def forward(; -633,11 +646,24 @@ def forward(; symbols: forward，涉及 `forward`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/qwen3_5.py` modified +32/-6 (38 lines); hunks: -400,11 +400,24 @@ def forward(; -633,11 +646,24 @@ def forward(; symbols: forward
@@ -282,7 +289,7 @@ diff -- python/sglang/srt/models/qwen3_5.py
 - 状态/时间: merged / 2026-02-26
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_5.py`；关联提交 `b3202fe6d072`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+9/-46，可读 patch 115 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[PCG] fix piecewise cuda graph for Qwen3.5」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_5.py`；PR 正文摘要: fix piecewise cuda graph for Qwen3.5 1. fix piecewise cuda graph for Qwen3.5 2. clean up legacy code `gdn_with_output` as it's not used anymore. main: This PR:。
+- 动机: 标题「[PCG] fix piecewise cuda graph for Qwen3.5」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_5.py`；技术摘要: 覆盖「[PCG] fix piecewise cuda graph for Qwen3.5」；主要实现面是 `python/sglang/srt/models/qwen3_5.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/qwen3_5.py` modified +1/-21 (22 lines); hunks: -22,9 +22,6; -72,7 +69,6; symbols: forward, _forward，涉及 `forward, _forward`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/qwen3_5.py` modified +1/-21 (22 lines); hunks: -22,9 +22,6; -72,7 +69,6; symbols: forward, _forward
@@ -309,7 +316,7 @@ diff -- python/sglang/srt/models/qwen3_5.py
 - 状态/时间: merged / 2026-02-26
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_5.py`；关联提交 `bdc1e46e5ac9`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+2/-0，可读 patch 16 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Qwen3.5] Qwen3.5-27B inference repeat bug fix」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_5.py`；PR 正文摘要: fix #19393 fix #19322 When deploying the `Qwen3.5-27B` model with `tp=2`, the model produces repetitive (degenerate) outputs, while `tp=1` works correctly. Root Cause `Qwen3_5Li...。
+- 动机: 标题「[Qwen3.5] Qwen3.5-27B inference repeat bug fix」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_5.py`；技术摘要: 覆盖「[Qwen3.5] Qwen3.5-27B inference repeat bug fix」；主要实现面是 `python/sglang/srt/models/qwen3_5.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/qwen3_5.py` modified +2/-0 (2 lines); hunks: -352,6 +352,7 @@ def __init__(; -542,6 +543,7 @@ def __init__(; symbols: __init__, forward，涉及 `__init__, forward`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/qwen3_5.py` modified +2/-0 (2 lines); hunks: -352,6 +352,7 @@ def __init__(; -542,6 +543,7 @@ def __init__(; symbols: __init__, forward
@@ -331,12 +338,13 @@ diff -- python/sglang/srt/models/qwen3_5.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/19391
 - 状态/时间: merged / 2026-03-04
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_5_mtp.py`；关联提交 `9457c049e19e`；保留自原 history/skill 显式引用
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_5_mtp.py`, `test/registered/4-gpu-models/test_qwen35_models.py`；关联提交 `9457c049e19e`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+252/-16，可读 patch 332 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Qwen3.5] Enable MTP spec_v2 and add test for nvidia/Qwen3.5-397B-A17B-NVFP4」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/qwen3_5_mtp.py`；PR 正文摘要: - Make MTP_v2 work for Qwen3.5 by passing `mm_input_embeds` to the MTP head. - Add MTP_v1/v2 and non-MTP accuracy test for `nvidia/Qwen3.5-397B-A17B-NVFP4` and check acceptance...。
-- 实现要点: `python/sglang/srt/models/qwen3_5_mtp.py` modified +1/-1 (2 lines); hunks: -111,7 +111,7 @@ def forward(; symbols: forward，涉及 `forward`。
+- 动机: 标题「[Qwen3.5] Enable MTP spec_v2 and add test for nvidia/Qwen3.5-397B-A17B-NVFP4」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/qwen3_5_mtp.py`, `test/registered/4-gpu-models/test_qwen35_models.py`；技术摘要: 覆盖「[Qwen3.5] Enable MTP spec_v2 and add test for nvidia/Qwen3.5-397B-A17B-NVFP4」；主要实现面是 `python/sglang/srt/models/qwen3_5_mtp.py`, `test/registered/4-gpu-models/test_qwen35_models.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/qwen3_5_mtp.py` modified +1/-1 (2 lines); hunks: -111,7 +111,7 @@ def forward(; symbols: forward，涉及 `forward`；`test/registered/4-gpu-models/test_qwen35_models.py` added +240/-0 (240 lines); hunks: -0,0 +1,240; symbols: TestQwen35FP4, setUpClass, tearDownClass, test_gsm8k，涉及 `TestQwen35FP4, setUpClass, tearDownClass`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/qwen3_5_mtp.py` modified +1/-1 (2 lines); hunks: -111,7 +111,7 @@ def forward(; symbols: forward
+  - `test/registered/4-gpu-models/test_qwen35_models.py` added +240/-0 (240 lines); hunks: -0,0 +1,240; symbols: TestQwen35FP4, setUpClass, tearDownClass, test_gsm8k
 - 关键代码摘录:
 
 ```diff
@@ -344,10 +352,19 @@ diff -- python/sglang/srt/models/qwen3_5_mtp.py
 @@ -111,7 +111,7 @@ def forward(
 -            and not forward_batch.forward_mode.is_draft_extend()
 +            and not forward_batch.forward_mode.is_draft_extend(include_v2=True)
+diff -- test/registered/4-gpu-models/test_qwen35_models.py
+@@ -0,0 +1,240 @@
++import unittest
++from types import SimpleNamespace
++import requests
++from sglang.srt.environ import envs
++from sglang.srt.utils import kill_process_tree
++from sglang.test.ci.ci_register import register_cuda_ci
 ```
 
 - 已读文件:
   - runtime: `python/sglang/srt/models/qwen3_5_mtp.py` modified +1/-1
+  - tests: `test/registered/4-gpu-models/test_qwen35_models.py` added +240/-0
 - 验证与风险: diff 自带测试面 `test/registered/4-gpu-models/test_qwen35_models.py`, `test/registered/4-gpu-models/test_qwen3_next_models_mtp.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #19906 - Add Qwen3.5-397B-A17B nightly test (8-GPU)
@@ -356,7 +373,7 @@ diff -- python/sglang/srt/models/qwen3_5_mtp.py
 - 状态/时间: merged / 2026-03-06
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/8-gpu-models/test_qwen35.py`；关联提交 `ac453b253f58`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+74/-0，可读 patch 75 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Add Qwen3.5-397B-A17B nightly test (8-GPU)」；模型线: Qwen3.5；类别: 文档/测试/CI；主要 diff: `test/registered/8-gpu-models/test_qwen35.py`；PR 正文摘要: Add Qwen3.5-397B-A17B as a new 8-GPU nightly test (followup to #19218). Two variants: - **TP8**: base config with `--reasoning-parser=qwen3` - **TP8+MTP**: speculative decoding...。
+- 动机: 标题「Add Qwen3.5-397B-A17B nightly test (8-GPU)」；模型线: Qwen3.5；类别: 文档/测试/CI；主要 diff: `test/registered/8-gpu-models/test_qwen35.py`；技术摘要: 覆盖「Add Qwen3.5-397B-A17B nightly test (8-GPU)」；主要实现面是 `test/registered/8-gpu-models/test_qwen35.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/8-gpu-models/test_qwen35.py` added +74/-0 (74 lines); hunks: -0,0 +1,74; symbols: TestQwen35, for, test_qwen35，涉及 `TestQwen35, for, test_qwen35`。
 - 代码 diff 细节:
   - `test/registered/8-gpu-models/test_qwen35.py` added +74/-0 (74 lines); hunks: -0,0 +1,74; symbols: TestQwen35, for, test_qwen35
@@ -383,7 +400,7 @@ diff -- test/registered/8-gpu-models/test_qwen35.py
 - 状态/时间: merged / 2026-03-07
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_5.py`；关联提交 `7da590d4d069`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+114/-13，可读 patch 194 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Qwen3.5] Support Qwen3.5 Pipeline Parallelism」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_5.py`；PR 正文摘要: To close https://github.com/sgl-project/sglang/issues/19500 Currently Qwen3.5 PP will crash with error. With this PR it works. Server: gsm8k no drop. There are several modificat...。
+- 动机: 标题「[Qwen3.5] Support Qwen3.5 Pipeline Parallelism」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_5.py`；技术摘要: 覆盖「[Qwen3.5] Support Qwen3.5 Pipeline Parallelism」；主要实现面是 `python/sglang/srt/models/qwen3_5.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/qwen3_5.py` modified +60/-13 (73 lines); hunks: -30,7 +30,7; -59,6 +59,7; symbols: __init__, get_layer, get_input_embeddings，涉及 `__init__, get_layer, get_input_embeddings`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/qwen3_5.py` modified +60/-13 (73 lines); hunks: -30,7 +30,7; -59,6 +59,7; symbols: __init__, get_layer, get_input_embeddings
@@ -410,7 +427,7 @@ diff -- python/sglang/srt/models/qwen3_5.py
 - 状态/时间: merged / 2026-03-09
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`；关联提交 `cabe171b6ce3`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+79/-16，可读 patch 272 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Fix qwen3.5 mtp eplb related issues」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`；PR 正文摘要: support eplb with mtp for Qwen3.5 & Qwen3-Next。
+- 动机: 标题「Fix qwen3.5 mtp eplb related issues」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`；技术摘要: 覆盖「Fix qwen3.5 mtp eplb related issues」；主要实现面是 `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/qwen3_5.py` modified +34/-1 (35 lines); hunks: -72,7 +72,14; -294,6 +301,7 @@ def __init__(; symbols: __init__，涉及 `__init__`；`python/sglang/srt/models/qwen3_5_mtp.py` modified +19/-6 (25 lines); hunks: -22,6 +22,8; -69,6 +71,7 @@ def __init__(; symbols: __init__, get_model_config_for_expert_location, get_embed_and_head, forward，涉及 `__init__, get_model_config_for_expert_location, get_embed_and_head`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/qwen3_5.py` modified +34/-1 (35 lines); hunks: -72,7 +72,14; -294,6 +301,7 @@ def __init__(; symbols: __init__
@@ -446,7 +463,7 @@ diff -- python/sglang/srt/models/qwen3_5_mtp.py
 - 状态/时间: merged / 2026-03-12
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_5.py`；关联提交 `9b55a98a6705`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-2，可读 patch 17 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「perf(qwen3_5): replace einops rearrange with torch.flatten in GatedDe…」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/qwen3_5.py`；PR 正文摘要: `einops.rearrange` performs Python-level string parsing and validation on **every call**. In `Qwen3_5GatedDeltaNet.forward()`, the pattern `rearrange(x, "... h d -> ... (h d)")`...。
+- 动机: 标题「perf(qwen3_5): replace einops rearrange with torch.flatten in GatedDe…」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/qwen3_5.py`；技术摘要: 覆盖「perf(qwen3_5): replace einops rearrange with torch.flatten in GatedDe…」；主要实现面是 `python/sglang/srt/models/qwen3_5.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/qwen3_5.py` modified +1/-2 (3 lines); hunks: -20,7 +20,6; -287,7 +286,7 @@ def forward(; symbols: forward，涉及 `forward`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/qwen3_5.py` modified +1/-2 (3 lines); hunks: -20,7 +20,6; -287,7 +286,7 @@ def forward(; symbols: forward
@@ -465,13 +482,67 @@ diff -- python/sglang/srt/models/qwen3_5.py
   - runtime: `python/sglang/srt/models/qwen3_5.py` modified +1/-2
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen3_5.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
+### PR #20540 - [CI]: Add CI For HiMambaRadixTree and qwen3.5
+
+- 链接: https://github.com/sgl-project/sglang/pull/20540
+- 状态/时间: merged / 2026-03-15
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/4-gpu-models/test_qwen35_models.py`；关联提交 `7142a594f950`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+80/-7，可读 patch 120 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[CI]: Add CI For HiMambaRadixTree and qwen3.5」；模型线: Qwen3.5；类别: 文档/测试/CI；主要 diff: `test/registered/4-gpu-models/test_qwen35_models.py`；技术摘要: 覆盖「[CI]: Add CI For HiMambaRadixTree and qwen3.5」；主要实现面是 `test/registered/4-gpu-models/test_qwen35_models.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/4-gpu-models/test_qwen35_models.py` modified +78/-5 (83 lines); hunks: -1,3 +1,5; -17,13 +19,11; symbols: TestQwen35FP4, test_gsm8k, TestQwen35WithHiCache, setUpClass，涉及 `TestQwen35FP4, test_gsm8k, TestQwen35WithHiCache`。
+- 代码 diff 细节:
+  - `test/registered/4-gpu-models/test_qwen35_models.py` modified +78/-5 (83 lines); hunks: -1,3 +1,5; -17,13 +19,11; symbols: TestQwen35FP4, test_gsm8k, TestQwen35WithHiCache, setUpClass
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/4-gpu-models/test_qwen35_models.py
+@@ -1,3 +1,5 @@
++import shutil
++import tempfile
+@@ -17,13 +19,11 @@
+-register_cuda_ci(est_time=1000, suite="stage-c-test-4-gpu-b200")
++register_cuda_ci(est_time=1400, suite="stage-c-test-4-gpu-b200")
+-ACC_THRESHOLDS = {
+```
+
+- 已读文件:
+  - tests: `test/registered/4-gpu-models/test_qwen35_models.py` modified +78/-5
+- 验证与风险: diff 自带测试面 `test/registered/4-gpu-models/test_qwen35_models.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #19150 - [NVIDIA] Integrate FlashInfer decode kernel (Blackwell) for Qwen3.5
+
+- 链接: https://github.com/sgl-project/sglang/pull/19150
+- 状态/时间: merged / 2026-03-18
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/4-gpu-models/test_qwen35_models.py`；关联提交 `4cc19862efde`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+160/-127，可读 patch 492 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[NVIDIA] Integrate FlashInfer decode kernel (Blackwell) for Qwen3.5」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `test/registered/4-gpu-models/test_qwen35_models.py`；技术摘要: 覆盖「[NVIDIA] Integrate FlashInfer decode kernel (Blackwell) for Qwen3.5」；主要实现面是 `test/registered/4-gpu-models/test_qwen35_models.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/4-gpu-models/test_qwen35_models.py` modified +53/-53 (106 lines); hunks: -7,15 +7,18; -26,62 +29,59; symbols: TestQwen35FP4, setUpClass, test_gsm8k, tearDownClass，涉及 `TestQwen35FP4, setUpClass, test_gsm8k`。
+- 代码 diff 细节:
+  - `test/registered/4-gpu-models/test_qwen35_models.py` modified +53/-53 (106 lines); hunks: -7,15 +7,18; -26,62 +29,59; symbols: TestQwen35FP4, setUpClass, test_gsm8k, tearDownClass
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/4-gpu-models/test_qwen35_models.py
+@@ -7,15 +7,18 @@
++from sglang.test.accuracy_test_runner import AccuracyTestParams
++from sglang.test.run_combined_tests import run_combined_tests
++    ModelLaunchSettings,
+@@ -26,62 +29,59 @@
+-class TestQwen35FP4(CustomTestCase):
+-    @classmethod
+```
+
+- 已读文件:
+  - tests: `test/registered/4-gpu-models/test_qwen35_models.py` modified +53/-53
+- 验证与风险: diff 自带测试面 `python/sglang/test/accuracy_test_runner.py`, `test/registered/4-gpu-models/test_qwen35_models.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
 ### PR #19889 - Use TRTLLM allreduce fusion for Qwen 3.5
 
 - 链接: https://github.com/sgl-project/sglang/pull/19889
 - 状态/时间: merged / 2026-03-18
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+88/-52，可读 patch 210 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Use TRTLLM allreduce fusion for Qwen 3.5」；模型线: Qwen3.5；类别: 模型实现调整；主要 diff: `python/sglang/srt/layers/layernorm.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen2_moe.py`；PR 正文摘要: Before: 21.5 us After 10.4 us This PR is mainly authored by @vincentzed。
+- 动机: 标题「Use TRTLLM allreduce fusion for Qwen 3.5」；模型线: Qwen3.5；类别: 模型实现调整；主要 diff: `python/sglang/srt/layers/layernorm.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen2_moe.py`；技术摘要: 覆盖「Use TRTLLM allreduce fusion for Qwen 3.5」；主要实现面是 `python/sglang/srt/layers/layernorm.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen2_moe.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/layernorm.py` modified +63/-48 (111 lines); hunks: -86,6 +86,53; -303,53 +350,10 @@ def forward_with_allreduce_fusion(; symbols: _forward_with_allreduce_fusion, RMSNorm, __init__, forward_with_allreduce_fusion，涉及 `_forward_with_allreduce_fusion, RMSNorm, __init__`；`python/sglang/srt/models/qwen3_5.py` modified +12/-2 (14 lines); hunks: -397,7 +397,12 @@ def forward(; -646,7 +651,12 @@ def forward(; symbols: forward，涉及 `forward`；`python/sglang/srt/models/qwen2_moe.py` modified +11/-2 (13 lines); hunks: -54,7 +54,10; -310,6 +313,7 @@ def forward(; symbols: forward，涉及 `forward`；`python/sglang/srt/server_args.py` modified +2/-0 (2 lines); hunks: -1978,6 +1978,8 @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments，涉及 `_handle_model_specific_adjustments`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/layernorm.py` modified +63/-48 (111 lines); hunks: -86,6 +86,53; -303,53 +350,10 @@ def forward_with_allreduce_fusion(; symbols: _forward_with_allreduce_fusion, RMSNorm, __init__, forward_with_allreduce_fusion
@@ -511,7 +582,7 @@ diff -- python/sglang/srt/models/qwen2_moe.py
 - 状态/时间: merged / 2026-03-18
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「fix: change qwen 3.5 linear attention a_log to fp32」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_5.py`；PR 正文摘要: Change the data type of a_log to fp32 in accordance with the original design of Qwen 3.5.。
+- 动机: 标题「fix: change qwen 3.5 linear attention a_log to fp32」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_5.py`；技术摘要: 覆盖「fix: change qwen 3.5 linear attention a_log to fp32」；主要实现面是 `python/sglang/srt/models/qwen3_5.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/qwen3_5.py` modified +1/-1 (2 lines); hunks: -186,7 +186,7 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/qwen3_5.py` modified +1/-1 (2 lines); hunks: -186,7 +186,7 @@ def __init__(; symbols: __init__
@@ -534,7 +605,7 @@ diff -- python/sglang/srt/models/qwen3_5.py
 - 状态/时间: merged / 2026-03-20
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+107/-17，可读 patch 207 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Qwen3-Next] Fuse Qwen3-Next GDN's qkvz_proj and ba_proj」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/layers/linear.py`；PR 正文摘要: This PR is to fuse Qwen3-Next GDN's qkvz_proj and ba_proj with MergedColumnParallelLinear in order to improve performance. TTFT speedup 2.6%. (Stably) E2E throughput increases 2...。
+- 动机: 标题「[Qwen3-Next] Fuse Qwen3-Next GDN's qkvz_proj and ba_proj」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/layers/linear.py`；技术摘要: 覆盖「[Qwen3-Next] Fuse Qwen3-Next GDN's qkvz_proj and ba_proj」；主要实现面是 `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/layers/linear.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/qwen3_next.py` modified +83/-11 (94 lines); hunks: -20,6 +20,7; -245,28 +246,38 @@ def __init__(; symbols: __init__, fix_query_key_value_ordering, _make_packed_weight_loader, weight_loader，涉及 `__init__, fix_query_key_value_ordering, _make_packed_weight_loader`；`python/sglang/srt/layers/linear.py` modified +24/-6 (30 lines); hunks: -531,8 +531,15 @@ def weight_loader(; -699,7 +706,10 @@ def weight_loader(; symbols: weight_loader, _load_fused_module_from_checkpoint, weight_loader_v2，涉及 `weight_loader, _load_fused_module_from_checkpoint, weight_loader_v2`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/qwen3_next.py` modified +83/-11 (94 lines); hunks: -20,6 +20,7; -245,28 +246,38 @@ def __init__(; symbols: __init__, fix_query_key_value_ordering, _make_packed_weight_loader, weight_loader
@@ -564,13 +635,40 @@ diff -- python/sglang/srt/layers/linear.py
   - runtime: `python/sglang/srt/models/qwen3_next.py` modified +83/-11; `python/sglang/srt/layers/linear.py` modified +24/-6
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/linear.py`, `python/sglang/srt/models/qwen3_next.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
+### PR #21081 - Fix test_qwen35_models
+
+- 链接: https://github.com/sgl-project/sglang/pull/21081
+- 状态/时间: merged / 2026-03-21
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/4-gpu-models/test_qwen35_models.py`；关联提交 `3f883ebf2e11`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+6/-5，可读 patch 18 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Fix test_qwen35_models」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `test/registered/4-gpu-models/test_qwen35_models.py`；未提供可用技术摘要。
+- 实现要点: `test/registered/4-gpu-models/test_qwen35_models.py` modified +6/-5 (11 lines); hunks: -60,11 +60,12 @@ def test_gsm8k(self):; symbols: test_gsm8k，涉及 `test_gsm8k`。
+- 代码 diff 细节:
+  - `test/registered/4-gpu-models/test_qwen35_models.py` modified +6/-5 (11 lines); hunks: -60,11 +60,12 @@ def test_gsm8k(self):; symbols: test_gsm8k
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/4-gpu-models/test_qwen35_models.py
+@@ -60,11 +60,12 @@ def test_gsm8k(self):
+-            ModelLaunchSettings(
+-                QWEN35_FP4_MODEL,
+-                extra_args=base_args + ["--linear-attn-decode-backend", "flashinfer"],
+-                variant="FlashInfer",
+-            ),
++            # TODO: Fix this and re-enable it
+```
+
+- 已读文件:
+  - tests: `test/registered/4-gpu-models/test_qwen35_models.py` modified +6/-5
+- 验证与风险: diff 自带测试面 `test/registered/4-gpu-models/test_qwen35_models.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
 ### PR #21070 - [Qwen3.5] Fix broken pipeline parallelism layer splitting
 
 - 链接: https://github.com/sgl-project/sglang/pull/21070
 - 状态/时间: merged / 2026-03-21
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_5.py`；关联提交 `852e112ebf00`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+15/-20，可读 patch 94 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Qwen3.5] Fix broken pipeline parallelism layer splitting」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_5.py`；PR 正文摘要: - **Root cause:** `make_layers()` in `Qwen3_5ForCausalLM` (#19670) was called without `pp_rank`/`pp_size`, so all PP stages instantiated every layer and loaded the full model (~...。
+- 动机: 标题「[Qwen3.5] Fix broken pipeline parallelism layer splitting」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_5.py`；技术摘要: 覆盖「[Qwen3.5] Fix broken pipeline parallelism layer splitting」；主要实现面是 `python/sglang/srt/models/qwen3_5.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/qwen3_5.py` modified +8/-15 (23 lines); hunks: -29,7 +29,7; -721,25 +721,14 @@ def get_layer(idx: int, prefix: str):; symbols: get_layer, load_fused_expert_weights，涉及 `get_layer, load_fused_expert_weights`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/qwen3_5.py` modified +8/-15 (23 lines); hunks: -29,7 +29,7; -721,25 +721,14 @@ def get_layer(idx: int, prefix: str):; symbols: get_layer, load_fused_expert_weights
@@ -597,7 +695,7 @@ diff -- python/sglang/srt/models/qwen3_5.py
 - 状态/时间: merged / 2026-03-23
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_5.py`；关联提交 `5bdc07d974f6`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+597/-202，可读 patch 953 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Qwen3.5] Fuse split/reshape/cat ops in GDN projection with Triton kernel」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/qwen3_5.py`；PR 正文摘要: In PR https://github.com/sgl-project/sglang/pull/19321 we fused Qwen3-Next GDN's qkvz_proj and ba_proj. This PR is a follow up. The background that Qwen3-Next and Qwen3.5's chec...。
+- 动机: 标题「[Qwen3.5] Fuse split/reshape/cat ops in GDN projection with Triton kernel」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/qwen3_5.py`；技术摘要: 覆盖「[Qwen3.5] Fuse split/reshape/cat ops in GDN projection with Triton kernel」；主要实现面是 `python/sglang/srt/models/qwen3_5.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/qwen3_5.py` modified +285/-65 (350 lines); hunks: -20,6 +20,11; -54,6 +59,10; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/qwen3_5.py` modified +285/-65 (350 lines); hunks: -20,6 +20,11; -54,6 +59,10; symbols: __init__
@@ -618,13 +716,49 @@ diff -- python/sglang/srt/models/qwen3_5.py
   - runtime: `python/sglang/srt/models/qwen3_5.py` modified +285/-65
 - 验证与风险: runtime 路径改动集中在 `python/sglang/jit_kernel/triton/gdn_fused_proj.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_next.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
+### PR #21371 - [CI] Fix TestQwen35WithHiCache
+
+- 链接: https://github.com/sgl-project/sglang/pull/21371
+- 状态/时间: merged / 2026-03-25
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/4-gpu-models/test_qwen35_hicache.py`, `test/registered/4-gpu-models/test_qwen35_models.py`；关联提交 `f5c225eeba3c`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+128/-103，可读 patch 249 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[CI] Fix TestQwen35WithHiCache」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `test/registered/4-gpu-models/test_qwen35_hicache.py`, `test/registered/4-gpu-models/test_qwen35_models.py`；技术摘要: 覆盖「[CI] Fix TestQwen35WithHiCache」；主要实现面是 `test/registered/4-gpu-models/test_qwen35_hicache.py`, `test/registered/4-gpu-models/test_qwen35_models.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/4-gpu-models/test_qwen35_hicache.py` added +127/-0 (127 lines); hunks: -0,0 +1,127; symbols: TestQwen35WithHiCache, setUpClass, tearDownClass, _run_gsm8k，涉及 `TestQwen35WithHiCache, setUpClass, tearDownClass`；`test/registered/4-gpu-models/test_qwen35_models.py` modified +1/-103 (104 lines); hunks: -1,6 +1,3; -26,8 +23,7; symbols: TestQwen35FP4, test_gsm8k, TestQwen35WithHiCache, setUpClass，涉及 `TestQwen35FP4, test_gsm8k, TestQwen35WithHiCache`。
+- 代码 diff 细节:
+  - `test/registered/4-gpu-models/test_qwen35_hicache.py` added +127/-0 (127 lines); hunks: -0,0 +1,127; symbols: TestQwen35WithHiCache, setUpClass, tearDownClass, _run_gsm8k
+  - `test/registered/4-gpu-models/test_qwen35_models.py` modified +1/-103 (104 lines); hunks: -1,6 +1,3; -26,8 +23,7; symbols: TestQwen35FP4, test_gsm8k, TestQwen35WithHiCache, setUpClass
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/4-gpu-models/test_qwen35_hicache.py
+@@ -0,0 +1,127 @@
++import shutil
++import tempfile
++import time
++import unittest
++from types import SimpleNamespace
++import requests
+diff -- test/registered/4-gpu-models/test_qwen35_models.py
+@@ -1,6 +1,3 @@
+-import shutil
+-import tempfile
+-import time
+@@ -26,8 +23,7 @@
+-QWEN35_27B_MODEL = "Qwen/Qwen3.5-27B"
+-ACC_THRESHOLDS = {QWEN35_FP4_MODEL: {"gsm8k": 0.95}, QWEN35_27B_MODEL: {"gsm8k": 0.8}}
+```
+
+- 已读文件:
+  - tests: `test/registered/4-gpu-models/test_qwen35_hicache.py` added +127/-0; `test/registered/4-gpu-models/test_qwen35_models.py` modified +1/-103
+- 验证与风险: diff 自带测试面 `test/registered/4-gpu-models/test_qwen35_hicache.py`, `test/registered/4-gpu-models/test_qwen35_models.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
 ### PR #21487 - feat(ci): add GB300 nightly benchmark test suites
 
 - 链接: https://github.com/sgl-project/sglang/pull/21487
 - 状态/时间: merged / 2026-03-29
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 11 个文件，+874/-4，可读 patch 926 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「feat(ci): add GB300 nightly benchmark test suites」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `python/sglang/test/accuracy_test_runner.py`, `test/registered/gb300/test_deepseek_v32_nvfp4.py`, `test/registered/gb300/test_deepseek_v32.py`；PR 正文摘要: - Add 8 per-model registered test files for GB300 (4x B200 NVL4, arm64) nightly benchmarks - Register two new nightly suites: `nightly-4-gpu-gb300-nvfp4` and `nightly-4-gpu-gb30...。
+- 动机: 标题「feat(ci): add GB300 nightly benchmark test suites」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `python/sglang/test/accuracy_test_runner.py`, `test/registered/gb300/test_deepseek_v32_nvfp4.py`, `test/registered/gb300/test_deepseek_v32.py`；技术摘要: 覆盖「feat(ci): add GB300 nightly benchmark test suites」；主要实现面是 `python/sglang/test/accuracy_test_runner.py`, `test/registered/gb300/test_deepseek_v32_nvfp4.py`, `test/registered/gb300/test_deepseek_v32.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/test/accuracy_test_runner.py` modified +296/-3 (299 lines); hunks: -150,6 +150,288 @@ def _run_simple_eval(; -224,13 +506,24 @@ def run_accuracy_test(; symbols: _run_simple_eval, _get_nemo_venv, _ensure_nemo_data_prepared, _run_nemo_skills_eval，涉及 `_run_simple_eval, _get_nemo_venv, _ensure_nemo_data_prepared`；`test/registered/gb300/test_deepseek_v32_nvfp4.py` added +82/-0 (82 lines); hunks: -0,0 +1,82; symbols: TestDeepseekV32Nvfp4, test_deepseek_v32_nvfp4，涉及 `TestDeepseekV32Nvfp4, test_deepseek_v32_nvfp4`；`test/registered/gb300/test_deepseek_v32.py` added +79/-0 (79 lines); hunks: -0,0 +1,79; symbols: TestDeepseekV32, test_deepseek_v32，涉及 `TestDeepseekV32, test_deepseek_v32`；`test/registered/gb300/test_qwen35_nvfp4.py` added +79/-0 (79 lines); hunks: -0,0 +1,79; symbols: TestQwen35Nvfp4, test_qwen35_nvfp4，涉及 `TestQwen35Nvfp4, test_qwen35_nvfp4`。
 - 代码 diff 细节:
   - `python/sglang/test/accuracy_test_runner.py` modified +296/-3 (299 lines); hunks: -150,6 +150,288 @@ def _run_simple_eval(; -224,13 +506,24 @@ def run_accuracy_test(; symbols: _run_simple_eval, _get_nemo_venv, _ensure_nemo_data_prepared, _run_nemo_skills_eval
@@ -665,7 +799,7 @@ diff -- test/registered/gb300/test_deepseek_v32.py
 - 状态/时间: merged / 2026-03-30
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_5.py`；关联提交 `9b4dd274787c`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+78/-8，可读 patch 262 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Fix] Fix Qwen3.5 MoE model loading and Mamba cache sharding in PP mode」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_5.py`；PR 正文摘要: Co-authored-by: zhangxiaolei123456 Although https://github.com/sgl-project/sglang/pull/19670 and https://github.com/sgl-project/sglang/pull/21070 addressed some Qwen3.5 PP issue...。
+- 动机: 标题「[Fix] Fix Qwen3.5 MoE model loading and Mamba cache sharding in PP mode」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_5.py`；技术摘要: 覆盖「[Fix] Fix Qwen3.5 MoE model loading and Mamba cache sharding in PP mode」；主要实现面是 `python/sglang/srt/models/qwen3_5.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/qwen3_5.py` modified +31/-1 (32 lines); hunks: -67,7 +67,7; -1038,6 +1038,13 @@ def load_weights(self, weights: Iterable[Tuple[str, torch...; symbols: load_weights, load_fused_expert_weights，涉及 `load_weights, load_fused_expert_weights`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/qwen3_5.py` modified +31/-1 (32 lines); hunks: -67,7 +67,7; -1038,6 +1038,13 @@ def load_weights(self, weights: Iterable[Tuple[str, torch...; symbols: load_weights, load_fused_expert_weights
@@ -692,7 +826,7 @@ diff -- python/sglang/srt/models/qwen3_5.py
 - 状态/时间: merged / 2026-03-30
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_5.py`；关联提交 `e6071e60c097`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+18/-0，可读 patch 53 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[AMD] Support AMD MXFP4 Qwen3.5-397B-A17B model」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/qwen3_5.py`；PR 正文摘要: Enable and validate Qwen3.5 MXFP4 model support on AMD GPUs This PR aims to preserve acceptable accuracy while improving serving performance versus the FP8 baseline. - Added SGL...。
+- 动机: 标题「[AMD] Support AMD MXFP4 Qwen3.5-397B-A17B model」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/qwen3_5.py`；技术摘要: 覆盖「[AMD] Support AMD MXFP4 Qwen3.5-397B-A17B model」；主要实现面是 `python/sglang/srt/models/qwen3_5.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/qwen3_5.py` modified +18/-0 (18 lines); hunks: -88,6 +88,7; -98,6 +99,7; symbols: forward, Qwen3_5ForCausalLM, __init__, load_fused_expert_weights，涉及 `forward, Qwen3_5ForCausalLM, __init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/qwen3_5.py` modified +18/-0 (18 lines); hunks: -88,6 +88,7; -98,6 +99,7; symbols: forward, Qwen3_5ForCausalLM, __init__, load_fused_expert_weights
@@ -719,7 +853,7 @@ diff -- python/sglang/srt/models/qwen3_5.py
 - 状态/时间: merged / 2026-03-31
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+17/-13，可读 patch 48 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Perf]Remove H2D for Qwen3.5 SpecV2」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/model_executor/forward_batch_info.py`, `python/sglang/srt/speculative/eagle_info_v2.py`；PR 正文摘要: This PR improves Qwen3.5 specV2 performance by removing unnecessary H2D overhead in the `prepare_v2_verify` path. 1. Use `torch.stack(...).to(torch.int64)` to build `mamba_track...。
+- 动机: 标题「[Perf]Remove H2D for Qwen3.5 SpecV2」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/model_executor/forward_batch_info.py`, `python/sglang/srt/speculative/eagle_info_v2.py`；技术摘要: 覆盖「[Perf]Remove H2D for Qwen3.5 SpecV2」；主要实现面是 `python/sglang/srt/model_executor/forward_batch_info.py`, `python/sglang/srt/speculative/eagle_info_v2.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/model_executor/forward_batch_info.py` modified +14/-8 (22 lines); hunks: -715,15 +715,21 @@ def _compute_spec_mrope_positions(; symbols: _compute_spec_mrope_positions，涉及 `_compute_spec_mrope_positions`；`python/sglang/srt/speculative/eagle_info_v2.py` modified +3/-5 (8 lines); hunks: -234,14 +234,12 @@ def prepare_for_v2_verify(; symbols: prepare_for_v2_verify，涉及 `prepare_for_v2_verify`。
 - 代码 diff 细节:
   - `python/sglang/srt/model_executor/forward_batch_info.py` modified +14/-8 (22 lines); hunks: -715,15 +715,21 @@ def _compute_spec_mrope_positions(; symbols: _compute_spec_mrope_positions
@@ -755,7 +889,7 @@ diff -- python/sglang/srt/speculative/eagle_info_v2.py
 - 状态/时间: merged / 2026-04-01
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_5.py`；关联提交 `2861596fc683`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+22/-0，可读 patch 36 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix] Fix PP tied embeddings weight loading for qwen3.5 4B dense model」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_5.py`；PR 正文摘要: Fixes #21093. Qwen3.5-4B (dense, `tie_word_embeddings=true`) with `--pp-size 2` produces garbage output. **Root cause:** `Qwen3_5ForConditionalGeneration` and `Qwen3_5MoeForCond...。
+- 动机: 标题「[Bugfix] Fix PP tied embeddings weight loading for qwen3.5 4B dense model」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_5.py`；技术摘要: 覆盖「[Bugfix] Fix PP tied embeddings weight loading for qwen3.5 4B dense model」；主要实现面是 `python/sglang/srt/models/qwen3_5.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/qwen3_5.py` modified +22/-0 (22 lines); hunks: -1384,6 +1384,17 @@ def load_weights(self, weights: Iterable[Tuple[str, torch...; -1549,6 +1560,17 @@ def load_fused_expert_weights(; symbols: load_weights, load_fused_expert_weights，涉及 `load_weights, load_fused_expert_weights`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/qwen3_5.py` modified +22/-0 (22 lines); hunks: -1384,6 +1384,17 @@ def load_weights(self, weights: Iterable[Tuple[str, torch...; -1549,6 +1560,17 @@ def load_fused_expert_weights(; symbols: load_weights, load_fused_expert_weights
@@ -782,7 +916,7 @@ diff -- python/sglang/srt/models/qwen3_5.py
 - 状态/时间: merged / 2026-04-06
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+190/-3，可读 patch 230 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[VLM]: allow Qwen3.5 models for encoder disaggregation」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/multimodal/processors/qwen_vl.py`, `test/registered/distributed/test_epd_disaggregation.py`, `python/sglang/srt/disaggregation/encode_server.py`；PR 正文摘要: Fixes #21805. SGLang already supports Qwen3.5 multimodal models in the runtime, but encoder disaggregation rejected them during servervstartup. This blocked valid EPD deployment...。
+- 动机: 标题「[VLM]: allow Qwen3.5 models for encoder disaggregation」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/multimodal/processors/qwen_vl.py`, `test/registered/distributed/test_epd_disaggregation.py`, `python/sglang/srt/disaggregation/encode_server.py`；技术摘要: 覆盖「[VLM]: allow Qwen3.5 models for encoder disaggregation」；主要实现面是 `python/sglang/srt/multimodal/processors/qwen_vl.py`, `test/registered/distributed/test_epd_disaggregation.py`, `python/sglang/srt/disaggregation/encode_server.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +1/-1 (2 lines); hunks: -422,7 +422,7 @@ def get_mm_data(self, prompt, embeddings, **kwargs):; symbols: get_mm_data，涉及 `get_mm_data`；`test/registered/distributed/test_epd_disaggregation.py` modified +184/-0 (184 lines); hunks: -33,6 +33,7; -813,6 +814,189 @@ def test_mmmu(self):; symbols: test_mmmu, TestEPDDisaggregationQwen35, setUpClass, start_encode，涉及 `test_mmmu, TestEPDDisaggregationQwen35, setUpClass`；`python/sglang/srt/disaggregation/encode_server.py` modified +3/-2 (5 lines); hunks: -867,10 +867,11 @@ async def _process_mm_items(self, mm_items, modality):; symbols: _process_mm_items，涉及 `_process_mm_items`；`python/sglang/srt/server_args.py` modified +2/-0 (2 lines); hunks: -3326,6 +3326,8 @@ def _handle_encoder_disaggregation(self):; symbols: _handle_encoder_disaggregation，涉及 `_handle_encoder_disaggregation`。
 - 代码 diff 细节:
   - `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +1/-1 (2 lines); hunks: -422,7 +422,7 @@ def get_mm_data(self, prompt, embeddings, **kwargs):; symbols: get_mm_data
@@ -823,7 +957,7 @@ diff -- python/sglang/srt/disaggregation/encode_server.py
 - 状态/时间: merged / 2026-04-07
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/amd/accuracy/mi30x/test_qwen35_eval_amd.py`, `test/registered/amd/accuracy/mi35x/test_qwen35_eval_mi35x.py`, `test/registered/amd/perf/mi30x/test_qwen35_fp8_perf_amd.py`, `test/registered/amd/perf/mi35x/test_qwen35_fp8_perf_mi35x.py`；关联提交 `ba78f6e0efb9`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+408/-8，可读 patch 538 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[AMD] Add Qwen3.5-397B FP8 nightly perf benchmarks for MI30x and MI35x」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `test/registered/amd/perf/mi30x/test_qwen35_fp8_perf_amd.py`, `test/registered/amd/perf/mi35x/test_qwen35_fp8_perf_mi35x.py`, `test/registered/amd/accuracy/mi30x/test_qwen35_eval_amd.py`；PR 正文摘要: - Add `bench_one_batch` performance tests for **Qwen3.5-397B-A17B-FP8** on both MI325/MI300X and MI35x GPUs - Perf steps run **after** existing Qwen3.5 accuracy tests in the sam...。
+- 动机: 标题「[AMD] Add Qwen3.5-397B FP8 nightly perf benchmarks for MI30x and MI35x」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `test/registered/amd/perf/mi30x/test_qwen35_fp8_perf_amd.py`, `test/registered/amd/perf/mi35x/test_qwen35_fp8_perf_mi35x.py`, `test/registered/amd/accuracy/mi30x/test_qwen35_eval_amd.py`；技术摘要: 覆盖「[AMD] Add Qwen3.5-397B FP8 nightly perf benchmarks for MI30x and MI35x」；主要实现面是 `test/registered/amd/perf/mi30x/test_qwen35_fp8_perf_amd.py`, `test/registered/amd/perf/mi35x/test_qwen35_fp8_perf_mi35x.py`, `test/registered/amd/accuracy/mi30x/test_qwen35_eval_amd.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/amd/perf/mi30x/test_qwen35_fp8_perf_amd.py` added +139/-0 (139 lines); hunks: -0,0 +1,139; symbols: generate_simple_markdown_report, TestNightlyQwen35Fp8Performance, setUpClass, test_bench_qwen35_fp8，涉及 `generate_simple_markdown_report, TestNightlyQwen35Fp8Performance, setUpClass`；`test/registered/amd/perf/mi35x/test_qwen35_fp8_perf_mi35x.py` added +139/-0 (139 lines); hunks: -0,0 +1,139; symbols: generate_simple_markdown_report, TestQwen35Fp8PerfMI35x, setUpClass, test_qwen35_fp8_perf，涉及 `generate_simple_markdown_report, TestQwen35Fp8PerfMI35x, setUpClass`；`test/registered/amd/accuracy/mi30x/test_qwen35_eval_amd.py` modified +42/-1 (43 lines); hunks: -8,14 +8,20; -38,7 +44,7 @@ def setUpClass(cls):; symbols: setUpClass, tearDownClass, test_lm_eval，涉及 `setUpClass, tearDownClass, test_lm_eval`；`test/registered/amd/accuracy/mi35x/test_qwen35_eval_mi35x.py` modified +36/-3 (39 lines); hunks: -8,16 +8,21; -40,12 +45,12 @@ def setUpClass(cls):; symbols: setUpClass, test_lm_eval，涉及 `setUpClass, test_lm_eval`。
 - 代码 diff 细节:
   - `test/registered/amd/perf/mi30x/test_qwen35_fp8_perf_amd.py` added +139/-0 (139 lines); hunks: -0,0 +1,139; symbols: generate_simple_markdown_report, TestNightlyQwen35Fp8Performance, setUpClass, test_bench_qwen35_fp8
@@ -863,7 +997,7 @@ diff -- test/registered/amd/accuracy/mi30x/test_qwen35_eval_amd.py
 - 状态/时间: merged / 2026-04-07
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+20/-8，可读 patch 62 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Disagg][NIXL] Fix heterogeneous TP KV transfer for non-MLA models (same logic with mooncake, Step 1/2 for Qwen3.5 support)」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/disaggregation/nixl/conn.py`；PR 正文摘要: NIXL disaggregated serving with heterogeneous TP (prefill TP ≠ decode TP) on non-MLA models hangs indefinitely due to two bugs in `nixl/conn.py`: 1. **Notification key collision...。
+- 动机: 标题「[Disagg][NIXL] Fix heterogeneous TP KV transfer for non-MLA models (same logic with mooncake, Step 1/2 for Qwen3.5 support)」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/disaggregation/nixl/conn.py`；技术摘要: 覆盖「[Disagg][NIXL] Fix heterogeneous TP KV transfer for non-MLA models (same logic with mooncake, Step 1/2 for Qwen3.5 support)」；主要实现面是 `python/sglang/srt/disaggregation/nixl/conn.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/disaggregation/nixl/conn.py` modified +20/-8 (28 lines); hunks: -477,25 +477,35 @@ def send_kvcache_slice(; -748,7 +758,9 @@ def add_transfer_request(; symbols: send_kvcache_slice, add_transfer_request，涉及 `send_kvcache_slice, add_transfer_request`。
 - 代码 diff 细节:
   - `python/sglang/srt/disaggregation/nixl/conn.py` modified +20/-8 (28 lines); hunks: -477,25 +477,35 @@ def send_kvcache_slice(; -748,7 +758,9 @@ def add_transfer_request(; symbols: send_kvcache_slice, add_transfer_request
@@ -890,7 +1024,7 @@ diff -- python/sglang/srt/disaggregation/nixl/conn.py
 - 状态/时间: merged / 2026-04-07
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+143/-2，可读 patch 207 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Disagg][NIXL] Support Mamba state slice transfer for heterogeneous TP (Step 2/2 for Qwen3.5)」；模型线: Qwen3.5；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/disaggregation/nixl/conn.py`；PR 正文摘要: Depends on #22145. The Mooncake backend already supports Mamba state slice transfer under heterogeneous TP (prefill TP ≠ decode TP), but NIXL lacks this capability and raises `R...。
+- 动机: 标题「[Disagg][NIXL] Support Mamba state slice transfer for heterogeneous TP (Step 2/2 for Qwen3.5)」；模型线: Qwen3.5；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/disaggregation/nixl/conn.py`；技术摘要: 覆盖「[Disagg][NIXL] Support Mamba state slice transfer for heterogeneous TP (Step 2/2 for Qwen3.5)」；主要实现面是 `python/sglang/srt/disaggregation/nixl/conn.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/disaggregation/nixl/conn.py` modified +143/-2 (145 lines); hunks: -84,6 +84,8 @@ class KVArgsRegisterInfo:; -93,6 +95,15 @@ def from_zmq(cls, msg: List[bytes]):; symbols: KVArgsRegisterInfo, from_zmq, _send_mamba_state，涉及 `KVArgsRegisterInfo, from_zmq, _send_mamba_state`。
 - 代码 diff 细节:
   - `python/sglang/srt/disaggregation/nixl/conn.py` modified +143/-2 (145 lines); hunks: -84,6 +84,8 @@ class KVArgsRegisterInfo:; -93,6 +95,15 @@ def from_zmq(cls, msg: List[bytes]):; symbols: KVArgsRegisterInfo, from_zmq, _send_mamba_state
@@ -917,7 +1051,7 @@ diff -- python/sglang/srt/disaggregation/nixl/conn.py
 - 状态/时间: merged / 2026-04-08
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_5.py`；关联提交 `cd373667cdfa`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+29/-42，可读 patch 147 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix] [NPU] Qwen3.5 with quantization fix」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_5.py`；PR 正文摘要: Fix of https://github.com/sgl-project/sglang/issues/21676. After updating the qwen3.5 modeling and changing with to fused and with to fused , quantization no longer works Server...。
+- 动机: 标题「[Bugfix] [NPU] Qwen3.5 with quantization fix」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_5.py`；技术摘要: 覆盖「[Bugfix] [NPU] Qwen3.5 with quantization fix」；主要实现面是 `python/sglang/srt/models/qwen3_5.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/qwen3_5.py` modified +3/-3 (6 lines); hunks: -881,7 +881,7 @@ def forward(; -1310,7 +1310,7 @@ def load_fused_expert_weights(; symbols: forward, Qwen3_5ForCausalLM, load_fused_expert_weights, Qwen3_5ForConditionalGeneration，涉及 `forward, Qwen3_5ForCausalLM, load_fused_expert_weights`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/qwen3_5.py` modified +3/-3 (6 lines); hunks: -881,7 +881,7 @@ def forward(; -1310,7 +1310,7 @@ def load_fused_expert_weights(; symbols: forward, Qwen3_5ForCausalLM, load_fused_expert_weights, Qwen3_5ForConditionalGeneration
@@ -944,7 +1078,7 @@ diff -- python/sglang/srt/models/qwen3_5.py
 - 状态/时间: merged / 2026-04-09
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/8-gpu-models/test_qwen35.py`；关联提交 `46c2b7762765`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+82/-6，可读 patch 131 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[CI] Add GLM-5.1 nightly tests and update Qwen3.5 model」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `test/registered/8-gpu-models/test_qwen35.py`；PR 正文摘要: - Add GLM-5.1 FP8 nightly test for H200/B200 (`nightly-8-gpu-common` suite) with TP8, TP8+DP8, and TP8+DP8+MTP variants - Update GB300 GLM-5 tests to GLM-5.1 model names (`zai-o...。
+- 动机: 标题「[CI] Add GLM-5.1 nightly tests and update Qwen3.5 model」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `test/registered/8-gpu-models/test_qwen35.py`；技术摘要: 覆盖「[CI] Add GLM-5.1 nightly tests and update Qwen3.5 model」；主要实现面是 `test/registered/8-gpu-models/test_qwen35.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/8-gpu-models/test_qwen35.py` modified +10/-3 (13 lines); hunks: -9,7 +9,7; -30,6 +30,7 @@ def test_qwen35(self):; symbols: TestQwen35, test_qwen35，涉及 `TestQwen35, test_qwen35`。
 - 代码 diff 细节:
   - `test/registered/8-gpu-models/test_qwen35.py` modified +10/-3 (13 lines); hunks: -9,7 +9,7; -30,6 +30,7 @@ def test_qwen35(self):; symbols: TestQwen35, test_qwen35
@@ -971,7 +1105,7 @@ diff -- test/registered/8-gpu-models/test_qwen35.py
 - 状态/时间: merged / 2026-04-09
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+152/-5，可读 patch 299 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Enable DFLASH support for additional model backends」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/kimi_k25.py`, `python/sglang/srt/models/qwen3_next.py`；PR 正文摘要: Enable DFLASH for additional supported models from the z-lab collection: https://huggingface.co/collections/z-lab/dflash Based on #20547, landing this early to enable support fo...。
+- 动机: 标题「Enable DFLASH support for additional model backends」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/kimi_k25.py`, `python/sglang/srt/models/qwen3_next.py`；技术摘要: 覆盖「Enable DFLASH support for additional model backends」；主要实现面是 `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/kimi_k25.py`, `python/sglang/srt/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/qwen3_5.py` modified +34/-5 (39 lines); hunks: -574,8 +574,15 @@ def forward(; -825,10 +832,16 @@ def forward(; symbols: forward, get_layer, get_input_embeddings, set_dflash_layers_to_capture，涉及 `forward, get_layer, get_input_embeddings`；`python/sglang/srt/models/kimi_k25.py` modified +24/-0 (24 lines); hunks: -849,6 +849,30 @@ def set_eagle3_layers_to_capture(; symbols: set_eagle3_layers_to_capture, set_dflash_layers_to_capture, get_input_embeddings, lm_head，涉及 `set_eagle3_layers_to_capture, set_dflash_layers_to_capture, get_input_embeddings`；`python/sglang/srt/models/qwen3_next.py` modified +20/-0 (20 lines); hunks: -813,6 +813,11 @@ def set_eagle3_layers_to_capture(self, layers_to_capture: l...; -947,6 +952,9 @@ def forward(; symbols: set_eagle3_layers_to_capture, set_dflash_layers_to_capture, forward, get_embed_and_head，涉及 `set_eagle3_layers_to_capture, set_dflash_layers_to_capture, forward`；`python/sglang/srt/models/qwen3_moe.py` modified +17/-0 (17 lines); hunks: -924,6 +924,11 @@ def __init__(; -1079,6 +1084,18 @@ def set_eagle3_layers_to_capture(self, layer_ids: Optiona...; symbols: __init__, set_dflash_layers_to_capture, Qwen3MoeForCausalLM, set_eagle3_layers_to_capture，涉及 `__init__, set_dflash_layers_to_capture, Qwen3MoeForCausalLM`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/qwen3_5.py` modified +34/-5 (39 lines); hunks: -574,8 +574,15 @@ def forward(; -825,10 +832,16 @@ def forward(; symbols: forward, get_layer, get_input_embeddings, set_dflash_layers_to_capture
@@ -1012,7 +1146,7 @@ diff -- python/sglang/srt/models/qwen3_next.py
 - 状态/时间: merged / 2026-04-10
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+272/-8，可读 patch 346 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Make GDN support non-continuous B/A Tensor input to fix the accuracy regression of Qwen3.5-27B」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py`, `python/sglang/srt/layers/attention/fla/fused_gdn_gating.py`, `test/registered/attention/test_gdn_noncontiguous_stride.py`；PR 正文摘要: This PR fixes #22311 Qwen3.5-27B takes a fallback BA path (after commit 5bdc07d974f6cf236fa765a685453ea5e587a838) that returns non-contiguous split views for a and b. The existi...。
+- 动机: 标题「Make GDN support non-continuous B/A Tensor input to fix the accuracy regression of Qwen3.5-27B」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py`, `python/sglang/srt/layers/attention/fla/fused_gdn_gating.py`, `test/registered/attention/test_gdn_noncontiguous_stride.py`；技术摘要: 覆盖「Make GDN support non-continuous B/A Tensor input to fix the accuracy regression of Qwen3.5-27B」；主要实现面是 `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py`, `python/sglang/srt/layers/attention/fla/fused_gdn_gating.py`, `test/registered/attention/test_gdn_noncontiguous_stride.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py` modified +9/-6 (15 lines); hunks: -30,6 +30,7 @@ def fused_sigmoid_gating_delta_rule_update_kernel(; -81,10 +82,10 @@ def fused_sigmoid_gating_delta_rule_update_kernel(; symbols: fused_sigmoid_gating_delta_rule_update_kernel, fused_sigmoid_gating_delta_rule_update，涉及 `fused_sigmoid_gating_delta_rule_update_kernel, fused_sigmoid_gating_delta_rule_update`；`python/sglang/srt/layers/attention/fla/fused_gdn_gating.py` modified +8/-2 (10 lines); hunks: -16,6 +16,8 @@ def fused_gdn_gating_kernel(; -26,8 +28,8 @@ def fused_gdn_gating_kernel(; symbols: fused_gdn_gating_kernel, fused_gdn_gating，涉及 `fused_gdn_gating_kernel, fused_gdn_gating`；`test/registered/attention/test_gdn_noncontiguous_stride.py` added +255/-0 (255 lines); hunks: -0,0 +1,255; symbols: _make_noncontiguous_ab, TestFusedGdnGatingNonContiguous, _run_test, test_small，涉及 `_make_noncontiguous_ab, TestFusedGdnGatingNonContiguous, _run_test`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py` modified +9/-6 (15 lines); hunks: -30,6 +30,7 @@ def fused_sigmoid_gating_delta_rule_update_kernel(; -81,10 +82,10 @@ def fused_sigmoid_gating_delta_rule_update_kernel(; symbols: fused_sigmoid_gating_delta_rule_update_kernel, fused_sigmoid_gating_delta_rule_update
@@ -1052,7 +1186,7 @@ diff -- test/registered/attention/test_gdn_noncontiguous_stride.py
 - 状态/时间: merged / 2026-04-15
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_5.py`；关联提交 `ea05ea5abed1`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+218/-8，可读 patch 383 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[AMD] Enable share expert fusion with router experts for Qwen3.5 BF16 & FP8」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/qwen3_5.py`；PR 正文摘要: Qwen2 MoE and Qwen3.5 MoE models use a **shared expert** in addition to routed experts. When `shared_expert_intermediate_size == moe_intermediate_size`, the shared expert can be...。
+- 动机: 标题「[AMD] Enable share expert fusion with router experts for Qwen3.5 BF16 & FP8」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/qwen3_5.py`；技术摘要: 覆盖「[AMD] Enable share expert fusion with router experts for Qwen3.5 BF16 & FP8」；主要实现面是 `python/sglang/srt/models/qwen3_5.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/qwen3_5.py` modified +110/-3 (113 lines); hunks: -86,9 +86,11; -100,6 +102,8; symbols: __init__, _get_num_fused_shared_experts, get_embed_and_head，涉及 `__init__, _get_num_fused_shared_experts, get_embed_and_head`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/qwen3_5.py` modified +110/-3 (113 lines); hunks: -86,9 +86,11; -100,6 +102,8; symbols: __init__, _get_num_fused_shared_experts, get_embed_and_head
@@ -1079,7 +1213,7 @@ diff -- python/sglang/srt/models/qwen3_5.py
 - 状态/时间: merged / 2026-04-16
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+17/-1，可读 patch 39 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[AMD] Qwen3.5 MXFP4 breaks after shared expert fusion is enabled」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/qwen2_moe.py`；PR 正文摘要: After shared expert fusion is enabled for Qwen3.5 models (as in #20736 ), MXFP4 model hits an issue: the shared expert in the checkpoint is based on BF16 but current weight load...。
+- 动机: 标题「[AMD] Qwen3.5 MXFP4 breaks after shared expert fusion is enabled」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/qwen2_moe.py`；技术摘要: 覆盖「[AMD] Qwen3.5 MXFP4 breaks after shared expert fusion is enabled」；主要实现面是 `python/sglang/srt/models/qwen2_moe.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/qwen2_moe.py` modified +17/-1 (18 lines); hunks: -108,6 +108,7; -120,6 +121,20 @@ def can_fuse_shared_expert(; symbols: can_fuse_shared_expert, __init__，涉及 `can_fuse_shared_expert, __init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/qwen2_moe.py` modified +17/-1 (18 lines); hunks: -108,6 +108,7; -120,6 +121,20 @@ def can_fuse_shared_expert(; symbols: can_fuse_shared_expert, __init__
@@ -1104,16 +1238,25 @@ diff -- python/sglang/srt/models/qwen2_moe.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/22913
 - 状态/时间: merged / 2026-04-17
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py`, `test/registered/4-gpu-models/test_qwen35_fp4_triton.py`；关联提交 `005209317888`；保留自原 history/skill 显式引用
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py`, `test/registered/4-gpu-models/test_qwen35_fp4_triton.py`, `test/registered/4-gpu-models/test_qwen35_models.py`；关联提交 `005209317888`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+184/-247，可读 patch 448 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「test(4-gpu-b200): split test_qwen35_models.py + bump partitions 5→6」；模型线: Qwen3.5；类别: 文档/测试/CI；主要 diff: `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py`, `test/registered/4-gpu-models/test_qwen35_fp4_triton.py`；PR 正文摘要: - Splits `test/registered/4-gpu-models/test_qwen35_models.py` into separate files so the CI auto-partitioner can spread the load across separate partitions - Removes the v1 MTP...。
-- 实现要点: `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py` added +105/-0 (105 lines); hunks: -0,0 +1,105; symbols: TestQwen35FP4MTPV2, setUpClass, tearDownClass, test_gsm8k，涉及 `TestQwen35FP4MTPV2, setUpClass, tearDownClass`；`test/registered/4-gpu-models/test_qwen35_fp4_triton.py` added +77/-0 (77 lines); hunks: -0,0 +1,77; symbols: TestQwen35FP4, test_gsm8k，涉及 `TestQwen35FP4, test_gsm8k`。
+- 动机: 标题「test(4-gpu-b200): split test_qwen35_models.py + bump partitions 5→6」；模型线: Qwen3.5；类别: 文档/测试/CI；主要 diff: `test/registered/4-gpu-models/test_qwen35_models.py`, `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py`, `test/registered/4-gpu-models/test_qwen35_fp4_triton.py`；技术摘要: 覆盖「test(4-gpu-b200): split test_qwen35_models.py + bump partitions 5→6」；主要实现面是 `test/registered/4-gpu-models/test_qwen35_models.py`, `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py`, `test/registered/4-gpu-models/test_qwen35_fp4_triton.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/4-gpu-models/test_qwen35_models.py` removed +0/-245 (245 lines); hunks: -1,245 +0,0; symbols: TestQwen35FP4, test_gsm8k, TestQwen35FP4MTP, setUpClass，涉及 `TestQwen35FP4, test_gsm8k, TestQwen35FP4MTP`；`test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py` added +105/-0 (105 lines); hunks: -0,0 +1,105; symbols: TestQwen35FP4MTPV2, setUpClass, tearDownClass, test_gsm8k，涉及 `TestQwen35FP4MTPV2, setUpClass, tearDownClass`；`test/registered/4-gpu-models/test_qwen35_fp4_triton.py` added +77/-0 (77 lines); hunks: -0,0 +1,77; symbols: TestQwen35FP4, test_gsm8k，涉及 `TestQwen35FP4, test_gsm8k`。
 - 代码 diff 细节:
+  - `test/registered/4-gpu-models/test_qwen35_models.py` removed +0/-245 (245 lines); hunks: -1,245 +0,0; symbols: TestQwen35FP4, test_gsm8k, TestQwen35FP4MTP, setUpClass
   - `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py` added +105/-0 (105 lines); hunks: -0,0 +1,105; symbols: TestQwen35FP4MTPV2, setUpClass, tearDownClass, test_gsm8k
   - `test/registered/4-gpu-models/test_qwen35_fp4_triton.py` added +77/-0 (77 lines); hunks: -0,0 +1,77; symbols: TestQwen35FP4, test_gsm8k
 - 关键代码摘录:
 
 ```diff
+diff -- test/registered/4-gpu-models/test_qwen35_models.py
+@@ -1,245 +0,0 @@
+-import unittest
+-from types import SimpleNamespace
+-import requests
+-from sglang.srt.environ import envs
+-from sglang.srt.utils import kill_process_tree
+-from sglang.test.accuracy_test_runner import AccuracyTestParams
 diff -- test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py
 @@ -0,0 +1,105 @@
 +import unittest
@@ -1124,16 +1267,10 @@ diff -- test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py
 +from sglang.test.ci.ci_register import register_cuda_ci
 diff -- test/registered/4-gpu-models/test_qwen35_fp4_triton.py
 @@ -0,0 +1,77 @@
-+import unittest
-+from sglang.test.accuracy_test_runner import AccuracyTestParams
-+from sglang.test.ci.ci_register import register_cuda_ci
-+# This eval harness applies the chat_template, which is critical for qwen3.5
-+# to get good accuracy on gsm8k
-+from sglang.test.run_combined_tests import run_combined_tests
 ```
 
 - 已读文件:
-  - tests: `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py` added +105/-0; `test/registered/4-gpu-models/test_qwen35_fp4_triton.py` added +77/-0
+  - tests: `test/registered/4-gpu-models/test_qwen35_models.py` removed +0/-245; `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py` added +105/-0; `test/registered/4-gpu-models/test_qwen35_fp4_triton.py` added +77/-0
 - 验证与风险: diff 自带测试面 `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py`, `test/registered/4-gpu-models/test_qwen35_fp4_triton.py`, `test/registered/4-gpu-models/test_qwen35_models.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #23034 - docs: fix links, add Qwen3.6, update Qwen3.5/GLM-5 docs
@@ -1142,7 +1279,7 @@ diff -- test/registered/4-gpu-models/test_qwen35_fp4_triton.py
 - 状态/时间: merged / 2026-04-17
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 73 个文件，+2214/-215，可读 patch 3198 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「docs: fix links, add Qwen3.6, update Qwen3.5/GLM-5 docs」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `docs_new/docs/advanced_features/separate_reasoning.mdx`, `docs_new/docs/advanced_features/tool_parser.mdx`, `docs_new/docs/advanced_features/dp_dpa_smg_guide.mdx`；PR 正文摘要: - **Add Qwen3.6 documentation**: New full deployment guide for Qwen3.6-35B-A3B (hybrid GDN + sparse MoE architecture) with JSX deployment snippet, covering MTP, tool calling (`q...。
+- 动机: 标题「docs: fix links, add Qwen3.6, update Qwen3.5/GLM-5 docs」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `docs_new/docs/advanced_features/separate_reasoning.mdx`, `docs_new/docs/advanced_features/tool_parser.mdx`, `docs_new/docs/advanced_features/dp_dpa_smg_guide.mdx`；技术摘要: 覆盖「docs: fix links, add Qwen3.6, update Qwen3.5/GLM-5 docs」；主要实现面是 `docs_new/docs/advanced_features/separate_reasoning.mdx`, `docs_new/docs/advanced_features/tool_parser.mdx`, `docs_new/docs/advanced_features/dp_dpa_smg_guide.mdx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/docs/advanced_features/separate_reasoning.mdx` modified +2/-3 (5 lines); hunks: -207,7 +207,7 @@ print_highlight("==== Text ===="); -226,7 +226,7 @@ print_highlight("==== Original Output ====")；`docs_new/docs/advanced_features/tool_parser.mdx` modified +1/-2 (3 lines); hunks: -718,7 +718,7 @@ for tool_call in tool_calls:; -738,4 +738,3 @@ terminate_process(server_process); symbols: NewModelDetector, that，涉及 `NewModelDetector, that`；`docs_new/docs/advanced_features/dp_dpa_smg_guide.mdx` added +509/-0 (509 lines); hunks: -0,0 +1,509；`docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx` added +471/-0 (471 lines); hunks: -0,0 +1,471。
 - 代码 diff 细节:
   - `docs_new/docs/advanced_features/separate_reasoning.mdx` modified +2/-3 (5 lines); hunks: -207,7 +207,7 @@ print_highlight("==== Text ===="); -226,7 +226,7 @@ print_highlight("==== Original Output ====")
@@ -1183,7 +1320,7 @@ diff -- docs_new/docs/advanced_features/dp_dpa_smg_guide.mdx
 - 状态/时间: merged / 2026-04-18
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Fix Qwen3.5 video processing when passing video_data in "processor_output" format」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/multimodal/processors/qwen_vl.py`；PR 正文摘要: Currently, the video preprocessing function of Qwen3.5 requires two return values: https://github.com/sgl-project/sglang/blob/ef6bfc1197ab45290e33941881f23c39fbf30ad9/python/sgl...。
+- 动机: 标题「Fix Qwen3.5 video processing when passing video_data in "processor_output" format」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/multimodal/processors/qwen_vl.py`；技术摘要: 覆盖「Fix Qwen3.5 video processing when passing video_data in "processor_output" format」；主要实现面是 `python/sglang/srt/multimodal/processors/qwen_vl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +1/-1 (2 lines); hunks: -162,7 +162,7 @@ async def preprocess_video(; symbols: preprocess_video，涉及 `preprocess_video`。
 - 代码 diff 细节:
   - `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +1/-1 (2 lines); hunks: -162,7 +162,7 @@ async def preprocess_video(; symbols: preprocess_video
@@ -1206,7 +1343,7 @@ diff -- python/sglang/srt/multimodal/processors/qwen_vl.py
 - 状态/时间: merged / 2026-04-21
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+14/-4，可读 patch 25 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[AMD] Resolve Qwen3.5 MTP (speculative decoding) radix cache conflict.」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/server_args.py`；PR 正文摘要: When using speculative decoding (e.g., EAGLE) with `Qwen3_5MoeForConditionalGeneration`, SGLang raises a hard `ValueError` in `_handle_mamba_radix_cache()`: This blocks users fr...。
+- 动机: 标题「[AMD] Resolve Qwen3.5 MTP (speculative decoding) radix cache conflict.」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/server_args.py`；技术摘要: 覆盖「[AMD] Resolve Qwen3.5 MTP (speculative decoding) radix cache conflict.」；主要实现面是 `python/sglang/srt/server_args.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/server_args.py` modified +14/-4 (18 lines); hunks: -2326,10 +2326,20 @@ def _handle_mamba_radix_cache(; symbols: _handle_mamba_radix_cache, _handle_sampling_backend，涉及 `_handle_mamba_radix_cache, _handle_sampling_backend`。
 - 代码 diff 细节:
   - `python/sglang/srt/server_args.py` modified +14/-4 (18 lines); hunks: -2326,10 +2326,20 @@ def _handle_mamba_radix_cache(; symbols: _handle_mamba_radix_cache, _handle_sampling_backend
@@ -1233,7 +1370,7 @@ diff -- python/sglang/srt/server_args.py
 - 状态/时间: merged / 2026-04-22
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+193/-16，可读 patch 311 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Add MambaPool kvcache offloading during retraction」；模型线: Qwen3.5；类别: 模型支持/运行时入口；主要 diff: `test/registered/unit/mem_cache/test_mamba_unittest.py`, `python/sglang/srt/mem_cache/memory_pool.py`, `python/sglang/srt/mem_cache/allocator.py`；PR 正文摘要: Mamba-hybrid models (e.g. Qwen3.5-397B-A17B) maintain SSM state (conv + temporal buffers) in MambaPool separate from the attention KV cache. During request retraction, only the...。
+- 动机: 标题「Add MambaPool kvcache offloading during retraction」；模型线: Qwen3.5；类别: 模型支持/运行时入口；主要 diff: `test/registered/unit/mem_cache/test_mamba_unittest.py`, `python/sglang/srt/mem_cache/memory_pool.py`, `python/sglang/srt/mem_cache/allocator.py`；技术摘要: 覆盖「Add MambaPool kvcache offloading during retraction」；主要实现面是 `test/registered/unit/mem_cache/test_mamba_unittest.py`, `python/sglang/srt/mem_cache/memory_pool.py`, `python/sglang/srt/mem_cache/allocator.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/unit/mem_cache/test_mamba_unittest.py` modified +123/-0 (123 lines); hunks: -388,6 +388,129 @@ def make_dummy_req():; symbols: make_dummy_req, test_mamba_pool_cpu_offload, test_hybrid_kv_pool_cpu_offload, test_insert_prev_prefix_len，涉及 `make_dummy_req, test_mamba_pool_cpu_offload, test_hybrid_kv_pool_cpu_offload`；`python/sglang/srt/mem_cache/memory_pool.py` modified +43/-6 (49 lines); hunks: -388,6 +388,28 @@ def fork_from(self, src_index: torch.Tensor) -> Optional[to...; -728,10 +750,10 @@ def set_kv_buffer(; symbols: fork_from, get_cpu_copy, load_cpu_copy, get_contiguous_buf_infos，涉及 `fork_from, get_cpu_copy, load_cpu_copy`；`python/sglang/srt/mem_cache/allocator.py` modified +8/-8 (16 lines); hunks: -164,11 +164,11 @@ def free(self, free_index: torch.Tensor):; -512,8 +512,8 @@ def clear(self):; symbols: free, get_cpu_copy, load_cpu_copy，涉及 `free, get_cpu_copy, load_cpu_copy`；`python/sglang/srt/managers/scheduler.py` modified +11/-0 (11 lines); hunks: -2681,11 +2681,20 @@ def update_running_batch(self, batch: ScheduleBatch) ->...; -2715,6 +2724,8 @@ def update_running_batch(self, batch: ScheduleBatch) -> Op...; symbols: update_running_batch，涉及 `update_running_batch`。
 - 代码 diff 细节:
   - `test/registered/unit/mem_cache/test_mamba_unittest.py` modified +123/-0 (123 lines); hunks: -388,6 +388,129 @@ def make_dummy_req():; symbols: make_dummy_req, test_mamba_pool_cpu_offload, test_hybrid_kv_pool_cpu_offload, test_insert_prev_prefix_len
@@ -1275,7 +1412,7 @@ diff -- python/sglang/srt/mem_cache/allocator.py
 - 状态/时间: open / 2026-04-22
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+284/-8，可读 patch 330 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix] Try to fix --cpu-offload-gb on hybrid linear-attn models」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `test/registered/unit/utils/test_offloader_tied_params.py`, `python/sglang/srt/utils/offloader.py`；PR 正文摘要: Fixes #23150. `--cpu-offload-gb > 0` was broken on hybrid linear-attention models (Qwen3-Next, Qwen3.5, Kimi-Linear): the first `/v1/chat/completions` request raised While fixin...。
+- 动机: 标题「[Bugfix] Try to fix --cpu-offload-gb on hybrid linear-attn models」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `test/registered/unit/utils/test_offloader_tied_params.py`, `python/sglang/srt/utils/offloader.py`；技术摘要: 覆盖「[Bugfix] Try to fix --cpu-offload-gb on hybrid linear-attn models」；主要实现面是 `test/registered/unit/utils/test_offloader_tied_params.py`, `python/sglang/srt/utils/offloader.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/unit/utils/test_offloader_tied_params.py` added +199/-0 (199 lines); hunks: -0,0 +1,199; symbols: _TiedChild, __init__, forward, _TiedParent，涉及 `_TiedChild, __init__, forward`；`python/sglang/srt/utils/offloader.py` modified +85/-8 (93 lines); hunks: -1,7 +1,7; -106,16 +106,52 @@ def maybe_offload_to_cpu(self, module: torch.nn.Module) ->...; symbols: maybe_offload_to_cpu, forward，涉及 `maybe_offload_to_cpu, forward`。
 - 代码 diff 细节:
   - `test/registered/unit/utils/test_offloader_tied_params.py` added +199/-0 (199 lines); hunks: -0,0 +1,199; symbols: _TiedChild, __init__, forward, _TiedParent
@@ -1312,7 +1449,7 @@ diff -- python/sglang/srt/utils/offloader.py
 - 状态/时间: merged / 2026-04-22
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+31/-4，可读 patch 63 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「fix: dot-boundary match in is_layer_skipped for FP8 modules_to_not_convert」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/layers/quantization/utils.py`；PR 正文摘要: - `is_layer_skipped` uses naive substring match (`ignored in prefix`) on `modules_to_not_convert` entries, which silently fires when an entry is a prefix-substring of a fused li...。
+- 动机: 标题「fix: dot-boundary match in is_layer_skipped for FP8 modules_to_not_convert」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/layers/quantization/utils.py`；技术摘要: 覆盖「fix: dot-boundary match in is_layer_skipped for FP8 modules_to_not_convert」；主要实现面是 `python/sglang/srt/layers/quantization/utils.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/quantization/utils.py` modified +31/-4 (35 lines); hunks: -43,6 +43,28 @@ def __getattr__(self, name):; -56,16 +78,19 @@ def is_layer_skipped(; symbols: __getattr__, _module_path_match, is_layer_skipped，涉及 `__getattr__, _module_path_match, is_layer_skipped`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/quantization/utils.py` modified +31/-4 (35 lines); hunks: -43,6 +43,28 @@ def __getattr__(self, name):; -56,16 +78,19 @@ def is_layer_skipped(; symbols: __getattr__, _module_path_match, is_layer_skipped
@@ -1332,6 +1469,191 @@ diff -- python/sglang/srt/layers/quantization/utils.py
 - 已读文件:
   - runtime: `python/sglang/srt/layers/quantization/utils.py` modified +31/-4
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/quantization/utils.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #19484 - [CPU] Add Qwen3.5 model optimization for CPU
+
+- 链接: https://github.com/sgl-project/sglang/pull/19484
+- 状态/时间: merged / 2026-04-26
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_5.py`；关联提交 `10fd0faccd85`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 20 个文件，+768/-209，可读 patch 1454 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[CPU] Add Qwen3.5 model optimization for CPU」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/qwen3_5.py`；技术摘要: 覆盖「[CPU] Add Qwen3.5 model optimization for CPU」；主要实现面是 `python/sglang/srt/models/qwen3_5.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/qwen3_5.py` modified +37/-4 (41 lines); hunks: -124,8 +124,16 @@ def __init__(; -321,7 +329,20 @@ def weight_loader(param, loaded_weight, loaded_shard_id=None):; symbols: __init__, weight_loader, forward, load_weights，涉及 `__init__, weight_loader, forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/qwen3_5.py` modified +37/-4 (41 lines); hunks: -124,8 +124,16 @@ def __init__(; -321,7 +329,20 @@ def weight_loader(param, loaded_weight, loaded_shard_id=None):; symbols: __init__, weight_loader, forward, load_weights
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_5.py
+@@ -124,8 +124,16 @@ def __init__(
+-        self.num_v_heads = config.linear_num_value_heads
+-        self.num_k_heads = config.linear_num_key_heads
++        self.num_v_heads = (
++            config.linear_num_value_heads
++            if not _is_cpu
++            else config.linear_num_value_heads_cpu
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/qwen3_5.py` modified +37/-4
+- 验证与风险: diff 自带测试面 `test/srt/cpu/test_mamba.py`, `test/srt/cpu/test_qwen3.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #20918 - [NPU] Support MTP for Qwen3.5
+
+- 链接: https://github.com/sgl-project/sglang/pull/20918
+- 状态/时间: merged / 2026-04-27
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_5_mtp.py`；关联提交 `32c3513816b0`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 10 个文件，+809/-10，可读 patch 963 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[NPU] Support MTP for Qwen3.5」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_5_mtp.py`；技术摘要: 覆盖「[NPU] Support MTP for Qwen3.5」；主要实现面是 `python/sglang/srt/models/qwen3_5_mtp.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/qwen3_5_mtp.py` modified +23/-1 (24 lines); hunks: -15,13 +15,15; -31,7 +33,8; symbols: __init__, forward，涉及 `__init__, forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/qwen3_5_mtp.py` modified +23/-1 (24 lines); hunks: -15,13 +15,15; -31,7 +33,8; symbols: __init__, forward
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_5_mtp.py
+@@ -15,13 +15,15 @@
++from contextlib import ExitStack
++from sglang.srt.environ import envs
+@@ -31,7 +33,8 @@
+-from sglang.srt.utils import add_prefix
++from sglang.srt.server_args import get_global_server_args
++from sglang.srt.utils import add_prefix, is_npu
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/qwen3_5_mtp.py` modified +23/-1
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/environ.py`, `python/sglang/srt/hardware_backend/npu/attention/ascend_gdn_backend.py`, `python/sglang/srt/hardware_backend/npu/attention/ascend_hybrid_linear_attn_backend.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #23471 - [Fix] NVFP4 qwen3.5 quant error fix by add packed_modules_mapping
+
+- 链接: https://github.com/sgl-project/sglang/pull/23471
+- 状态/时间: merged / 2026-04-28
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_5.py`；关联提交 `9814cc89ce03`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+11/-13，可读 patch 45 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Fix] NVFP4 qwen3.5 quant error fix by add packed_modules_mapping」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_5.py`；技术摘要: 覆盖「[Fix] NVFP4 qwen3.5 quant error fix by add packed_modules_mapping」；主要实现面是 `python/sglang/srt/models/qwen3_5.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/qwen3_5.py` modified +11/-13 (24 lines); hunks: -900,13 +900,12 @@ def forward(; -1345,9 +1344,9 @@ def load_fused_expert_weights(; symbols: forward, Qwen3_5ForCausalLM, __init__, load_fused_expert_weights，涉及 `forward, Qwen3_5ForCausalLM, __init__`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/qwen3_5.py` modified +11/-13 (24 lines); hunks: -900,13 +900,12 @@ def forward(; -1345,9 +1344,9 @@ def load_fused_expert_weights(; symbols: forward, Qwen3_5ForCausalLM, __init__, load_fused_expert_weights
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_5.py
+@@ -900,13 +900,12 @@ def forward(
+-    if _is_gfx95 or _is_npu:
+-        packed_modules_mapping = {
+-            "qkv_proj": ["q_proj", "k_proj", "v_proj"],
+-            "gate_up_proj": ["gate_proj", "up_proj"],
+-            "in_proj_qkvz": ["in_proj_qkv", "in_proj_z"],
+-            "in_proj_ba": ["in_proj_b", "in_proj_a"],
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/qwen3_5.py` modified +11/-13
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen3_5.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #23815 - [NPU] Fix DeepEP LL dispatch BF16 flag and skip triton kernel on NPU for Qwen3.5
+
+- 链接: https://github.com/sgl-project/sglang/pull/23815
+- 状态/时间: merged / 2026-04-29
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_5.py`；关联提交 `08699bb1b2d3`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+12/-2，可读 patch 37 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[NPU] Fix DeepEP LL dispatch BF16 flag and skip triton kernel on NPU for Qwen3.5」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_5.py`；技术摘要: 覆盖「[NPU] Fix DeepEP LL dispatch BF16 flag and skip triton kernel on NPU for Qwen3.5」；主要实现面是 `python/sglang/srt/models/qwen3_5.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/qwen3_5.py` modified +7/-1 (8 lines); hunks: -464,7 +464,11 @@ def forward(; -488,6 +492,8 @@ def forward(; symbols: forward，涉及 `forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/qwen3_5.py` modified +7/-1 (8 lines); hunks: -464,7 +464,11 @@ def forward(; -488,6 +492,8 @@ def forward(; symbols: forward
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_5.py
+@@ -464,7 +464,11 @@ def forward(
+-        if self.num_v_heads // self.num_k_heads in [1, 2, 4] and not _is_cpu:
++        if (
++            self.num_v_heads // self.num_k_heads in [1, 2, 4]
++            and not _is_cpu
++            and not _is_npu
++        ):
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/qwen3_5.py` modified +7/-1
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/moe/token_dispatcher/deepep.py`, `python/sglang/srt/models/qwen3_5.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #23594 - LoRA support for qwen3.5 and nemotron3
+
+- 链接: https://github.com/sgl-project/sglang/pull/23594
+- 状态/时间: merged / 2026-04-30
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_5.py`, `test/registered/lora/test_lora_qwen3_5_35b_a3b_logprob_diff.py`, `test/registered/lora/test_lora_qwen3_5_4b_logprob_diff.py`；关联提交 `c8c1c9261d72`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 21 个文件，+1131/-127，可读 patch 1734 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「LoRA support for qwen3.5 and nemotron3」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_5.py`, `test/registered/lora/test_lora_qwen3_5_35b_a3b_logprob_diff.py`, `test/registered/lora/test_lora_qwen3_5_4b_logprob_diff.py`；技术摘要: 覆盖「LoRA support for qwen3.5 and nemotron3」；主要实现面是 `python/sglang/srt/models/qwen3_5.py`, `test/registered/lora/test_lora_qwen3_5_35b_a3b_logprob_diff.py`, `test/registered/lora/test_lora_qwen3_5_4b_logprob_diff.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/qwen3_5.py` modified +76/-0 (76 lines); hunks: -945,6 +945,65 @@ class Qwen3_5ForCausalLM(nn.Module):; -1386,6 +1445,8 @@ class Qwen3_5ForConditionalGeneration(Qwen3VLForConditiona...; symbols: Qwen3_5ForCausalLM, get_hidden_dim, __init__, Qwen3_5ForConditionalGeneration，涉及 `Qwen3_5ForCausalLM, get_hidden_dim, __init__`；`test/registered/lora/test_lora_qwen3_5_35b_a3b_logprob_diff.py` added +157/-0 (157 lines); hunks: -0,0 +1,157; symbols: kl_v2, get_prompt_logprobs, TestLoRAQwen3_5_35B_A3B_LogprobDiff, test_lora_qwen3_5_35b_a3b_logprob_accuracy，涉及 `kl_v2, get_prompt_logprobs, TestLoRAQwen3_5_35B_A3B_LogprobDiff`；`test/registered/lora/test_lora_qwen3_5_4b_logprob_diff.py` added +146/-0 (146 lines); hunks: -0,0 +1,146; symbols: kl_v2, get_prompt_logprobs, TestLoRAQwen3_5_4BLogprobDiff, test_lora_qwen3_5_4b_logprob_accuracy，涉及 `kl_v2, get_prompt_logprobs, TestLoRAQwen3_5_4BLogprobDiff`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/qwen3_5.py` modified +76/-0 (76 lines); hunks: -945,6 +945,65 @@ class Qwen3_5ForCausalLM(nn.Module):; -1386,6 +1445,8 @@ class Qwen3_5ForConditionalGeneration(Qwen3VLForConditiona...; symbols: Qwen3_5ForCausalLM, get_hidden_dim, __init__, Qwen3_5ForConditionalGeneration
+  - `test/registered/lora/test_lora_qwen3_5_35b_a3b_logprob_diff.py` added +157/-0 (157 lines); hunks: -0,0 +1,157; symbols: kl_v2, get_prompt_logprobs, TestLoRAQwen3_5_35B_A3B_LogprobDiff, test_lora_qwen3_5_35b_a3b_logprob_accuracy
+  - `test/registered/lora/test_lora_qwen3_5_4b_logprob_diff.py` added +146/-0 (146 lines); hunks: -0,0 +1,146; symbols: kl_v2, get_prompt_logprobs, TestLoRAQwen3_5_4BLogprobDiff, test_lora_qwen3_5_4b_logprob_accuracy
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_5.py
+@@ -945,6 +945,65 @@ class Qwen3_5ForCausalLM(nn.Module):
++    supported_lora_modules = [
++        "qkv_proj",
++        "o_proj",
++        "out_proj",
++        "in_proj_qkvz",
++        "gate_up_proj",
+diff -- test/registered/lora/test_lora_qwen3_5_35b_a3b_logprob_diff.py
+@@ -0,0 +1,157 @@
++# Copyright 2023-2025 SGLang Team
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
+diff -- test/registered/lora/test_lora_qwen3_5_4b_logprob_diff.py
+@@ -0,0 +1,146 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/qwen3_5.py` modified +76/-0
+  - tests: `test/registered/lora/test_lora_qwen3_5_35b_a3b_logprob_diff.py` added +157/-0; `test/registered/lora/test_lora_qwen3_5_4b_logprob_diff.py` added +146/-0
+- 验证与风险: diff 自带测试面 `test/registered/lora/test_chunked_sgmv_backend.py`, `test/registered/lora/test_lora_nemotron_3_super_120b_a12b_logprob_diff.py`, `test/registered/lora/test_lora_qwen3_5_35b_a3b_logprob_diff.py`, `test/registered/lora/test_lora_qwen3_5_4b_logprob_diff.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #23062 - [bugfix]fix(qwen3_5): broadcast per-tensor scale in _make_packed_weight_loader for FP8 models
+
+- 链接: https://github.com/sgl-project/sglang/pull/23062
+- 状态/时间: merged / 2026-04-30
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_5.py`, `test/registered/unit/models/test_qwen3_5_packed_weight_loader.py`；关联提交 `936c9c235596`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+220/-7，可读 patch 235 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[bugfix]fix(qwen3_5): broadcast per-tensor scale in _make_packed_weight_loader for FP8 models」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `test/registered/unit/models/test_qwen3_5_packed_weight_loader.py`, `python/sglang/srt/models/qwen3_5.py`；技术摘要: 覆盖「[bugfix]fix(qwen3_5): broadcast per-tensor scale in _make_packed_weight_loader for FP8 models」；主要实现面是 `test/registered/unit/models/test_qwen3_5_packed_weight_loader.py`, `python/sglang/srt/models/qwen3_5.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/unit/models/test_qwen3_5_packed_weight_loader.py` added +216/-0 (216 lines); hunks: -0,0 +1,216; symbols: _make_mock_module, _make_per_tensor_scale_param, TestMakePackedWeightLoader, test_scalar_weight_broadcast，涉及 `_make_mock_module, _make_per_tensor_scale_param, TestMakePackedWeightLoader`；`python/sglang/srt/models/qwen3_5.py` modified +4/-7 (11 lines); hunks: -320,13 +320,10 @@ def weight_loader(param, loaded_weight, loaded_shard_id=No...; symbols: weight_loader，涉及 `weight_loader`。
+- 代码 diff 细节:
+  - `test/registered/unit/models/test_qwen3_5_packed_weight_loader.py` added +216/-0 (216 lines); hunks: -0,0 +1,216; symbols: _make_mock_module, _make_per_tensor_scale_param, TestMakePackedWeightLoader, test_scalar_weight_broadcast
+  - `python/sglang/srt/models/qwen3_5.py` modified +4/-7 (11 lines); hunks: -320,13 +320,10 @@ def weight_loader(param, loaded_weight, loaded_shard_id=No...; symbols: weight_loader
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/unit/models/test_qwen3_5_packed_weight_loader.py
+@@ -0,0 +1,216 @@
++"""
++Unit tests for Qwen3_5GatedDeltaNet._make_packed_weight_loader.
++Validates that per-tensor FP8 scales (scalar or single-element tensors)
++are broadcast to every logical shard, while normal multi-element weights
++are split correctly.
++Regression test for https://github.com/sgl-project/sglang/issues/23051
+diff -- python/sglang/srt/models/qwen3_5.py
+@@ -320,13 +320,10 @@ def weight_loader(param, loaded_weight, loaded_shard_id=None):
+-                if len(loaded_weight.shape) == 0:
+-                    # Scalar only makes sense for a single logical shard.
+-                    assert len(split_sizes) == 1 and split_sizes[0] == 1, (
+-                        f"Unexpected scalar for tuple shard load: "
+-                        f"{loaded_shard_id=}, {split_sizes=}"
+-                    )
+```
+
+- 已读文件:
+  - tests: `test/registered/unit/models/test_qwen3_5_packed_weight_loader.py` added +216/-0
+  - runtime: `python/sglang/srt/models/qwen3_5.py` modified +4/-7
+- 验证与风险: diff 自带测试面 `test/registered/unit/models/test_qwen3_5_packed_weight_loader.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论
 

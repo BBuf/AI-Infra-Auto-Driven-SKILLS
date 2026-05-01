@@ -1,6 +1,6 @@
 ---
 name: sglang-deepseek-v3-r1-optimization
-description: PR-backed and current-main optimization manual for DeepSeek V3 and DeepSeek R1 in SGLang. Use when Codex needs to recover, extend, or audit DeepSeek V3/R1 MLA, MoE, shared experts, FP8/FP4/W4AFP8/MXFP4/NVFP4 loading, MTP, DeepEP, DP attention, LoRA, backend selection, or validation lanes.
+description: PR-backed and current-main optimization manual for DeepSeek V3 and DeepSeek R1 in SGLang. Use when an engineer needs to recover, extend, or audit DeepSeek V3/R1 MLA, MoE, shared experts, FP8/FP4/W4AFP8/MXFP4/NVFP4 loading, MTP, DeepEP, DP attention, LoRA, backend selection, or validation lanes.
 ---
 
 # SGLang DeepSeek V3/R1 Optimization

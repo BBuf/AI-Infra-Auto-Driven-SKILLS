@@ -1,12 +1,5 @@
 # vllm Qwen3 Coder 模型 PR 优化历史
 
-## 文档口径
-
-- 重做日期: 2026-04-25
-- 源码基线: `vllm-project/vllm` 当前追溯 worktree commit `95995bbef8`
-- PR 收集规则: 先从模型实现、配置、processor、parser、docs/tests 等相关文件执行 `git log --name-only -- <model-files>`，再按 commit subject 的模型关键词过滤，最后用 GitHub Pull Request files API 读取每个 PR 的最终 diff。
-- 额外保留规则: 原 history/skill 已显式引用但未出现在当前实现文件 git trace 中的 PR 会保留，并在卡片里标注来源。
-
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
@@ -41,7 +34,7 @@
 - 状态/时间: merged / 2025-07-22
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+1289/-0，可读 patch 1303 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Model] Add Qwen3CoderToolParser」；模型线: Qwen3 Coder；类别: 文档/测试/CI；主要 diff: `vllm/entrypoints/openai/tool_parsers/qwen3coder_tool_parser.py`, `tests/tool_use/test_qwen3coder_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py`；PR 正文摘要: Edit from @simon-mo Tested locally for both tool use example and unit test.。
+- 动机: 标题「[Model] Add Qwen3CoderToolParser」；模型线: Qwen3 Coder；类别: 文档/测试/CI；主要 diff: `vllm/entrypoints/openai/tool_parsers/qwen3coder_tool_parser.py`, `tests/tool_use/test_qwen3coder_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py`；技术摘要: 覆盖「[Model] Add Qwen3CoderToolParser」；主要实现面是 `vllm/entrypoints/openai/tool_parsers/qwen3coder_tool_parser.py`, `tests/tool_use/test_qwen3coder_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/entrypoints/openai/tool_parsers/qwen3coder_tool_parser.py` added +669/-0 (669 lines); hunks: -0,0 +1,669; symbols: Qwen3CoderToolParser, __init__, _generate_tool_call_id, _reset_streaming_state，涉及 `Qwen3CoderToolParser, __init__, _generate_tool_call_id`；`tests/tool_use/test_qwen3coder_tool_parser.py` added +618/-0 (618 lines); hunks: -0,0 +1,618; symbols: qwen3_tokenizer, qwen3_tool_parser, sample_tools, assert_tool_calls，涉及 `qwen3_tokenizer, qwen3_tool_parser, sample_tools`；`vllm/entrypoints/openai/tool_parsers/__init__.py` modified +2/-0 (2 lines); hunks: -17,6 +17,7; -38,4 +39,5。
 - 代码 diff 细节:
   - `vllm/entrypoints/openai/tool_parsers/qwen3coder_tool_parser.py` added +669/-0 (669 lines); hunks: -0,0 +1,669; symbols: Qwen3CoderToolParser, __init__, _generate_tool_call_id, _reset_streaming_state
@@ -81,7 +74,7 @@ diff -- vllm/entrypoints/openai/tool_parsers/__init__.py
 - 状态/时间: merged / 2026-03-05
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+6/-0，可读 patch 13 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「qwen3coder tool parser fix anyOf double encoded parameters」；模型线: Qwen3 Coder；类别: 缺陷修复；主要 diff: `vllm/tool_parsers/qwen3coder_tool_parser.py`；PR 正文摘要: Problem When a tool parameter uses anyOf instead of an explicit type, _convert_param_value falls back to param_type = "string" because anyOf schemas have no top-level "type" key...。
+- 动机: 标题「qwen3coder tool parser fix anyOf double encoded parameters」；模型线: Qwen3 Coder；类别: 缺陷修复；主要 diff: `vllm/tool_parsers/qwen3coder_tool_parser.py`；技术摘要: 覆盖「qwen3coder tool parser fix anyOf double encoded parameters」；主要实现面是 `vllm/tool_parsers/qwen3coder_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/tool_parsers/qwen3coder_tool_parser.py` modified +6/-0 (6 lines); hunks: -157,6 +157,12 @@ def _convert_param_value(; symbols: _convert_param_value，涉及 `_convert_param_value`。
 - 代码 diff 细节:
   - `vllm/tool_parsers/qwen3coder_tool_parser.py` modified +6/-0 (6 lines); hunks: -157,6 +157,12 @@ def _convert_param_value(; symbols: _convert_param_value
@@ -108,7 +101,7 @@ diff -- vllm/tool_parsers/qwen3coder_tool_parser.py
 - 状态/时间: merged / 2026-04-01
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+254/-14，可读 patch 293 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix] Fix Qwen3CoderToolParser anyOf/oneOf type resolution for nullable params」；模型线: Qwen3 Coder；类别: 缺陷修复；主要 diff: `tests/tool_parsers/test_qwen3coder_tool_parser.py`, `vllm/tool_parsers/qwen3coder_tool_parser.py`；PR 正文摘要: Fix incorrect type resolution for `anyOf`/`oneOf` schemas, type-as-array patterns, and `$ref` schemas in `Qwen3CoderToolParser._convert_param_value`. The previous fix (#36032) h...。
+- 动机: 标题「[Bugfix] Fix Qwen3CoderToolParser anyOf/oneOf type resolution for nullable params」；模型线: Qwen3 Coder；类别: 缺陷修复；主要 diff: `tests/tool_parsers/test_qwen3coder_tool_parser.py`, `vllm/tool_parsers/qwen3coder_tool_parser.py`；技术摘要: 覆盖「[Bugfix] Fix Qwen3CoderToolParser anyOf/oneOf type resolution for nullable params」；主要实现面是 `tests/tool_parsers/test_qwen3coder_tool_parser.py`, `vllm/tool_parsers/qwen3coder_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `tests/tool_parsers/test_qwen3coder_tool_parser.py` modified +202/-0 (202 lines); hunks: -430,6 +430,208 @@ def test_extract_tool_calls_type_conversion(qwen3_tool_par...; symbols: test_extract_tool_calls_type_conversion, test_extract_tool_calls_anyof_type_conversion, test_extract_tool_calls_anyof_type_conversion_streaming，涉及 `test_extract_tool_calls_type_conversion, test_extract_tool_calls_anyof_type_conversion, test_extract_tool_calls_anyof_type_conversion_streaming`；`vllm/tool_parsers/qwen3coder_tool_parser.py` modified +52/-14 (66 lines); hunks: -133,11 +133,58 @@ def _get_arguments_config(; -152,19 +199,10 @@ def _convert_param_value(; symbols: _get_arguments_config, _first_non_null_type, _resolve_param_type, _convert_param_value，涉及 `_get_arguments_config, _first_non_null_type, _resolve_param_type`。
 - 代码 diff 细节:
   - `tests/tool_parsers/test_qwen3coder_tool_parser.py` modified +202/-0 (202 lines); hunks: -430,6 +430,208 @@ def test_extract_tool_calls_type_conversion(qwen3_tool_par...; symbols: test_extract_tool_calls_type_conversion, test_extract_tool_calls_anyof_type_conversion, test_extract_tool_calls_anyof_type_conversion_streaming
@@ -145,7 +138,7 @@ diff -- vllm/tool_parsers/qwen3coder_tool_parser.py
 - 状态/时间: merged / 2026-04-08
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+99/-113，可读 patch 425 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix] Fix Qwen3 tool parser for Responses API tools」；模型线: Qwen3 Coder；类别: 缺陷修复；主要 diff: `tests/tool_parsers/test_qwen3coder_tool_parser.py`, `vllm/tool_parsers/qwen3coder_tool_parser.py`, `vllm/tool_parsers/qwen3xml_tool_parser.py`；PR 正文摘要: - Both `Qwen3CoderToolParser` and `Qwen3XMLToolParser` assumed all tools have a `.function.name` / `.function.parameters` structure (`ChatCompletionToolsParam`). Responses API `...。
+- 动机: 标题「[Bugfix] Fix Qwen3 tool parser for Responses API tools」；模型线: Qwen3 Coder；类别: 缺陷修复；主要 diff: `tests/tool_parsers/test_qwen3coder_tool_parser.py`, `vllm/tool_parsers/qwen3coder_tool_parser.py`, `vllm/tool_parsers/qwen3xml_tool_parser.py`；技术摘要: 覆盖「[Bugfix] Fix Qwen3 tool parser for Responses API tools」；主要实现面是 `tests/tool_parsers/test_qwen3coder_tool_parser.py`, `vllm/tool_parsers/qwen3coder_tool_parser.py`, `vllm/tool_parsers/qwen3xml_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `tests/tool_parsers/test_qwen3coder_tool_parser.py` modified +73/-55 (128 lines); hunks: -5,6 +5,7; -49,41 +50,62 @@ def qwen3_tool_parser_parametrized(qwen3_tool_parser, qwen3_...; symbols: qwen3_tool_parser_parametrized, sample_tools, assert_tool_calls, test_extract_tool_calls_no_tools，涉及 `qwen3_tool_parser_parametrized, sample_tools, assert_tool_calls`；`vllm/tool_parsers/qwen3coder_tool_parser.py` modified +6/-31 (37 lines); hunks: -25,6 +25,7; -109,28 +110,6 @@ def _reset_streaming_state(self):; symbols: _reset_streaming_state, _get_arguments_config, _convert_param_value, _parse_xml_function_call，涉及 `_reset_streaming_state, _get_arguments_config, _convert_param_value`；`vllm/tool_parsers/qwen3xml_tool_parser.py` modified +6/-27 (33 lines); hunks: -26,6 +26,7; -1000,33 +1001,11 @@ def _get_param_type(self, param_name: str) -> str:; symbols: _get_param_type, repair_param_type，涉及 `_get_param_type, repair_param_type`；`vllm/tool_parsers/utils.py` modified +14/-0 (14 lines); hunks: -142,6 +142,20 @@ def _extract_tool_info(; symbols: _extract_tool_info, find_tool_properties, _get_tool_schema_from_tool，涉及 `_extract_tool_info, find_tool_properties, _get_tool_schema_from_tool`。
 - 代码 diff 细节:
   - `tests/tool_parsers/test_qwen3coder_tool_parser.py` modified +73/-55 (128 lines); hunks: -5,6 +5,7; -49,41 +50,62 @@ def qwen3_tool_parser_parametrized(qwen3_tool_parser, qwen3_...; symbols: qwen3_tool_parser_parametrized, sample_tools, assert_tool_calls, test_extract_tool_calls_no_tools

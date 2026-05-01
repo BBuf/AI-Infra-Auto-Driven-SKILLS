@@ -1,6 +1,6 @@
 ---
 name: vllm-step35-optimization
-description: PR-backed optimization manual for Step3.5 / Step3-VL in vLLM. Use when Codex needs to audit, debug, extend, or document Step3.5-Flash and Step3-VL serving, NVFP4, tool/reasoning parser, and HF-style processor evolution.
+description: PR-backed optimization manual for Step3.5 / Step3-VL in vLLM. Use when an engineer needs to audit, debug, extend, or document Step3.5-Flash and Step3-VL serving, NVFP4, tool/reasoning parser, and HF-style processor evolution.
 ---
 
 # vLLM Step3.5 / Step3-VL Optimization

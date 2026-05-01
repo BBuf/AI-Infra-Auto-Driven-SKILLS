@@ -1,6 +1,6 @@
 ---
 name: vllm-qwen35-optimization
-description: PR-backed optimization manual for Qwen3.5 in vLLM. Use when Codex needs to audit, debug, extend, or document Qwen3.5 dense / MoE / GDN runtime, MTP, FP8 and NVFP4 quantization, LoRA, and Eagle3 in vLLM.
+description: PR-backed optimization manual for Qwen3.5 in vLLM. Use when an engineer needs to audit, debug, extend, or document Qwen3.5 dense / MoE / GDN runtime, MTP, FP8 and NVFP4 quantization, LoRA, and Eagle3 in vLLM.
 ---
 
 # vLLM Qwen3.5 Optimization
@@ -40,7 +40,7 @@ Every PR cited for this family must be based on diff reading, not only PR titles
 - [#37975](https://github.com/vllm-project/vllm/pull/37975) `Extract GatedDeltaNetAttention into shared layer for Qwen3Next and Qwen3.5`: Reduced duplicated GDN logic across related families.
 - [#39181](https://github.com/vllm-project/vllm/pull/39181) `Fix EP precision for Qwen3.5, Qwen3-Next`: Patched a serving-precision bug under expert parallelism.
 
-## Open Radar
+## Open Optimization Items
 
 - Re-run PR search before claiming new support beyond the checked mainline commit.
 

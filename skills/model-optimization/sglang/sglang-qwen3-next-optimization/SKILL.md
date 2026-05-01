@@ -1,6 +1,6 @@
 ---
 name: sglang-qwen3-next-optimization
-description: PR-diff-backed optimization manual for Qwen3-Next, Qwen3-Next MTP, and Qwen3-Coder-Next shared hybrid paths in SGLang. Use when Codex needs to audit, extend, or debug Qwen3-Next GDN/Mamba/RadixLinearAttention, MTP/EAGLE/NEXTN, FP8/NVFP4/ModelOpt loading, CPU offload, FlashInfer/CuTe/Gluon GDN kernels, AMD/NPU/Blackwell paths, mixed-chunk extra_buffer behavior, or Qwen3-Next cookbook deployment flags.
+description: PR-diff-backed optimization manual for Qwen3-Next, Qwen3-Next MTP, and Qwen3-Coder-Next shared hybrid paths in SGLang. Use when an engineer needs to audit, extend, or debug Qwen3-Next GDN/Mamba/RadixLinearAttention, MTP/EAGLE/NEXTN, FP8/NVFP4/ModelOpt loading, CPU offload, FlashInfer/CuTe/Gluon GDN kernels, AMD/NPU/Blackwell paths, mixed-chunk extra_buffer behavior, or Qwen3-Next cookbook deployment flags.
 ---
 
 # SGLang Qwen3-Next Optimization
@@ -86,7 +86,7 @@ Scheduler/cache correctness:
 
 - Do not claim a PR is retained behavior if a later PR reverted or superseded it. For example, document `#21313` and `#21496` only as intermediate loader history; current behavior comes from `#21662`.
 - Mark adjacent PRs clearly. `#22073` is Qwen3-ASR and only touches shared Qwen-family surfaces; do not treat it as a GDN optimization.
-- For open PRs, label them as open radar and avoid presenting them as current-main behavior.
+- For open PRs, label them as open optimization candidates and avoid presenting them as current-main behavior.
 - When a PR title says Qwen3-Next but the current diff only touches Qwen3.5/shared code, say so. `#19812` is an example; merged Qwen3-Next MTP/EPLB behavior comes from `#19767`.
 - For backend-specific PRs, state backend assumptions. NPU conv state layout, AMD dual stream behavior, and CUDA FlashInfer/CuTe kernels are not interchangeable.
 
@@ -117,7 +117,7 @@ Each PR card should include:
 - Implementation idea in concrete code terms
 - A short key code fragment
 - Validation evidence or missing validation note
-- Whether the PR is current behavior, adjacent, superseded, or open radar
+- Whether the PR is current behavior, adjacent, superseded, or an open optimization candidate
 
 
 ## Non-Negotiable Evidence Rule

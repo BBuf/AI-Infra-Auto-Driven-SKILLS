@@ -1,6 +1,6 @@
 ---
 name: sglang-gpt-oss-optimization
-description: PR-backed optimization manual for GPT-OSS in SGLang. Use when Codex needs to audit, debug, extend, or document OpenAI GPT-OSS MoE, MXFP4/FP8 quantization, DP/EP, reasoning parser, tool calling, and Eagle/spec decode.
+description: PR-backed optimization manual for GPT-OSS in SGLang. Use when an engineer needs to audit, debug, extend, or document OpenAI GPT-OSS MoE, MXFP4/FP8 quantization, DP/EP, reasoning parser, tool calling, and Eagle/spec decode.
 ---
 
 # SGLang GPT-OSS Optimization

@@ -1,6 +1,6 @@
 ---
 name: vllm-internvl35-optimization
-description: PR-backed optimization manual for InternVL3.5 in vLLM. Use when Codex needs to audit, debug, extend, or document InternVL3.5 multimodal processor, video support, ViT DP / torch.compile, and backend compatibility.
+description: PR-backed optimization manual for InternVL3.5 in vLLM. Use when an engineer needs to audit, debug, extend, or document InternVL3.5 multimodal processor, video support, ViT DP / torch.compile, and backend compatibility.
 ---
 
 # vLLM InternVL3.5 Optimization

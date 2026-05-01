@@ -1,6 +1,12 @@
 # Model Architecture Diagram Source Notes
 
-Audited on `2026-04-27`.
+Audited on `2026-05-01`.
+
+Selection rule added on `2026-05-01`: prefer detailed implementation,
+cookbook, and architecture-card diagrams over direct paper figures whenever the
+public sources provide both. Paper figures are acceptable fallback evidence only
+when no more detailed public original diagram is indexed for the requested
+model.
 
 ## Upstream Diagram Sources
 

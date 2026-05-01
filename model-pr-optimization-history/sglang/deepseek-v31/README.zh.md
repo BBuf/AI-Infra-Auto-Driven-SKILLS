@@ -1,12 +1,5 @@
 # sglang DeepSeek V3.1 模型 PR 优化历史
 
-## 文档口径
-
-- 重做日期: 2026-04-25
-- 源码基线: `sgl-project/sglang` 当前追溯 worktree commit `880599cd43`
-- PR 收集规则: 先从模型实现、配置、processor、parser、docs/tests 等相关文件执行 `git log --name-only -- <model-files>`，再按 commit subject 的模型关键词过滤，最后用 GitHub Pull Request files API 读取每个 PR 的最终 diff。
-- 额外保留规则: 原 history/skill 已显式引用但未出现在当前实现文件 git trace 中的 PR 会保留，并在卡片里标注来源。
-
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
@@ -82,7 +75,7 @@
 - 状态/时间: merged / 2025-08-21
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+136/-78，可读 patch 245 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Add deepseek v3.1 thinking parser support and update docs」；模型线: DeepSeek V3.1；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/entrypoints/openai/serving_chat.py`, `python/sglang/srt/reasoning_parser.py`；PR 正文摘要: Adds documentation and examples for enabling model reasoning capabilities in the OpenAI API completions endpoint. This includes support for different model families like DeepSee...。
+- 动机: 标题「Add deepseek v3.1 thinking parser support and update docs」；模型线: DeepSeek V3.1；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/entrypoints/openai/serving_chat.py`, `python/sglang/srt/reasoning_parser.py`；技术摘要: 覆盖「Add deepseek v3.1 thinking parser support and update docs」；主要实现面是 `python/sglang/srt/entrypoints/openai/serving_chat.py`, `python/sglang/srt/reasoning_parser.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/entrypoints/openai/serving_chat.py` modified +9/-6 (15 lines); hunks: -859,12 +859,15 @@ def _get_enable_thinking_from_request(self, request: ChatC...; symbols: _get_enable_thinking_from_request, _process_tool_call_stream，涉及 `_get_enable_thinking_from_request, _process_tool_call_stream`；`python/sglang/srt/reasoning_parser.py` modified +4/-3 (7 lines); hunks: -513,12 +513,13 @@ class ReasoningParser:; symbols: ReasoningParser, __init__，涉及 `ReasoningParser, __init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/entrypoints/openai/serving_chat.py` modified +9/-6 (15 lines); hunks: -859,12 +859,15 @@ def _get_enable_thinking_from_request(self, request: ChatC...; symbols: _get_enable_thinking_from_request, _process_tool_call_stream
@@ -118,7 +111,7 @@ diff -- python/sglang/srt/reasoning_parser.py
 - 状态/时间: merged / 2025-08-23
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+82/-4，可读 patch 112 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[doc] deepseekv31 support」；模型线: DeepSeek V3.1；类别: 性能/后端优化；主要 diff: `benchmark/deepseek_v3/README.md`, `docs/basic_usage/deepseek.md`；PR 正文摘要: Update docs for deepseekv3.1 DeepSeek-V3.1 is natively supported by SGLang - Fast and Efficient in Large Scale Serving, enjoy all the existing optimization introduced in SGLang...。
+- 动机: 标题「[doc] deepseekv31 support」；模型线: DeepSeek V3.1；类别: 性能/后端优化；主要 diff: `benchmark/deepseek_v3/README.md`, `docs/basic_usage/deepseek.md`；技术摘要: 覆盖「[doc] deepseekv31 support」；主要实现面是 `benchmark/deepseek_v3/README.md`, `docs/basic_usage/deepseek.md`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `benchmark/deepseek_v3/README.md` modified +80/-2 (82 lines); hunks: -1,4 +1,4; -50,7 +50,9 @@ Add performance optimization options as nee；`docs/basic_usage/deepseek.md` modified +2/-2 (4 lines); hunks: -5,9 +5,9 @@ SGLang provides many optimizations specifically designed for the...。
 - 代码 diff 细节:
   - `benchmark/deepseek_v3/README.md` modified +80/-2 (82 lines); hunks: -1,4 +1,4; -50,7 +50,9 @@ Add performance optimization options as nee
@@ -153,7 +146,7 @@ diff -- docs/basic_usage/deepseek.md
 - 状态/时间: merged / 2025-08-27
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `examples/chat_template/tool_chat_template_deepseekv31.jinja`, `python/sglang/srt/function_call/deepseekv31_detector.py`；关联提交 `b9683be6538e`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+315/-0，可读 patch 331 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Support DeepSeek-V3.1 tool call」；模型线: DeepSeek V3.1；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/function_call/deepseekv31_detector.py`, `examples/chat_template/tool_chat_template_deepseekv31.jinja`；PR 正文摘要: Support tool call for DeepSeek-V3.1 The tool call format of DeepSeek-V3.1 is different from DeepSeek-V3/R1: DeepSeek-V3.1: tool_call_name tool_call_arguments DeepSeek-R1/V3: fun...。
+- 动机: 标题「Support DeepSeek-V3.1 tool call」；模型线: DeepSeek V3.1；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/function_call/deepseekv31_detector.py`, `examples/chat_template/tool_chat_template_deepseekv31.jinja`；技术摘要: 覆盖「Support DeepSeek-V3.1 tool call」；主要实现面是 `python/sglang/srt/function_call/deepseekv31_detector.py`, `examples/chat_template/tool_chat_template_deepseekv31.jinja`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/function_call/deepseekv31_detector.py` added +222/-0 (222 lines); hunks: -0,0 +1,222; symbols: DeepSeekV31Detector, __init__, has_tool_call, detect_and_parse，涉及 `DeepSeekV31Detector, __init__, has_tool_call`；`examples/chat_template/tool_chat_template_deepseekv31.jinja` added +91/-0 (91 lines); hunks: -0,0 +1,91。
 - 代码 diff 细节:
   - `python/sglang/srt/function_call/deepseekv31_detector.py` added +222/-0 (222 lines); hunks: -0,0 +1,222; symbols: DeepSeekV31Detector, __init__, has_tool_call, detect_and_parse
@@ -190,7 +183,7 @@ diff -- examples/chat_template/tool_chat_template_deepseekv31.jinja
 - 状态/时间: merged / 2025-09-03
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `examples/chat_template/tool_chat_template_deepseekv31.jinja`；关联提交 `cc9a31c66226`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+3/-3，可读 patch 17 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Update tool_chat_template_deepseekv31.jinja」；模型线: DeepSeek V3.1；类别: 模型实现调整；主要 diff: `examples/chat_template/tool_chat_template_deepseekv31.jinja`；PR 正文摘要: 增加tojson，解决多轮工具调用报错的问题： https://github.com/sgl-project/sglang/issues/9891。
+- 动机: 标题「Update tool_chat_template_deepseekv31.jinja」；模型线: DeepSeek V3.1；类别: 模型实现调整；主要 diff: `examples/chat_template/tool_chat_template_deepseekv31.jinja`；技术摘要: 覆盖「Update tool_chat_template_deepseekv31.jinja」；主要实现面是 `examples/chat_template/tool_chat_template_deepseekv31.jinja`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `examples/chat_template/tool_chat_template_deepseekv31.jinja` modified +3/-3 (6 lines); hunks: -43,13 +43,13。
 - 代码 diff 细节:
   - `examples/chat_template/tool_chat_template_deepseekv31.jinja` modified +3/-3 (6 lines); hunks: -43,13 +43,13
@@ -217,7 +210,7 @@ diff -- examples/chat_template/tool_chat_template_deepseekv31.jinja
 - 状态/时间: merged / 2025-09-27
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 12 个文件，+1558/-50，可读 patch 1876 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Use jsonschema to constrain required or specific tool choice」；模型线: DeepSeek V3.1；类别: 文档/测试/CI；主要 diff: `test/srt/function_call/test_json_schema_constraint.py`, `test/srt/openai_server/function_call/test_tool_choice.py`, `test/srt/test_function_call_parser.py`；PR 正文摘要: EBNF constraints for tool choice are hard to read and extend. They must be individually created for each model's tool call format. Instead, we can use a much more easily extende...。
+- 动机: 标题「Use jsonschema to constrain required or specific tool choice」；模型线: DeepSeek V3.1；类别: 文档/测试/CI；主要 diff: `test/srt/function_call/test_json_schema_constraint.py`, `test/srt/openai_server/function_call/test_tool_choice.py`, `test/srt/test_function_call_parser.py`；技术摘要: 覆盖「Use jsonschema to constrain required or specific tool choice」；主要实现面是 `test/srt/function_call/test_json_schema_constraint.py`, `test/srt/openai_server/function_call/test_tool_choice.py`, `test/srt/test_function_call_parser.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/srt/function_call/test_json_schema_constraint.py` added +618/-0 (618 lines); hunks: -0,0 +1,618; symbols: TestJsonSchemaConstraint, setUp, test_required_tool_choice_schema, test_specific_tool_choice_schema，涉及 `TestJsonSchemaConstraint, setUp, test_required_tool_choice_schema`；`test/srt/openai_server/function_call/test_tool_choice.py` modified +319/-14 (333 lines); hunks: -343,6 +343,142 @@ def test_tool_choice_specific_function_streaming(self):; -408,6 +544,10 @@ def test_multi_tool_scenario_required(self):; symbols: test_tool_choice_specific_function_streaming, test_required_streaming_arguments_chunks_json, test_complex_parameters_required_non_streaming, test_multi_tool_scenario_auto，涉及 `test_tool_choice_specific_function_streaming, test_required_streaming_arguments_chunks_json, test_complex_parameters_required_non_streaming`；`test/srt/test_function_call_parser.py` modified +319/-0 (319 lines); hunks: -5,8 +5,10; -2190,5 +2192,322 @@ def test_partial_tool_call(self):; symbols: test_partial_tool_call, TestJsonArrayParser, setUp, test_json_detector_ebnf，涉及 `test_partial_tool_call, TestJsonArrayParser, setUp`；`python/sglang/srt/entrypoints/openai/serving_chat.py` modified +115/-22 (137 lines); hunks: -9,6 +9,7; -25,6 +26,8; symbols: _validate_request, _process_messages, _build_sampling_params, _build_chat_response，涉及 `_validate_request, _process_messages, _build_sampling_params`。
 - 代码 diff 细节:
   - `test/srt/function_call/test_json_schema_constraint.py` added +618/-0 (618 lines); hunks: -0,0 +1,618; symbols: TestJsonSchemaConstraint, setUp, test_required_tool_choice_schema, test_specific_tool_choice_schema
@@ -259,7 +252,7 @@ diff -- test/srt/test_function_call_parser.py
 - 状态/时间: merged / 2025-09-29
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+8/-10，可读 patch 54 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「feat(reasoning): improve enable thinking from request」；模型线: DeepSeek V3.1；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/entrypoints/openai/serving_chat.py`；PR 正文摘要: read from request's "enable_thinking" or "thinking", should also filtered with `reasoning_parser` there is a real case: to compat dpsk and qwen, both `chat_template_kwargs.enabl...。
+- 动机: 标题「feat(reasoning): improve enable thinking from request」；模型线: DeepSeek V3.1；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/entrypoints/openai/serving_chat.py`；技术摘要: 覆盖「feat(reasoning): improve enable thinking from request」；主要实现面是 `python/sglang/srt/entrypoints/openai/serving_chat.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/entrypoints/openai/serving_chat.py` modified +8/-10 (18 lines); hunks: -64,6 +64,7 @@ def __init__(; -563,10 +564,7 @@ async def _generate_chat_stream(; symbols: __init__, _request_id_prefix, _generate_chat_stream, _build_chat_response，涉及 `__init__, _request_id_prefix, _generate_chat_stream`。
 - 代码 diff 细节:
   - `python/sglang/srt/entrypoints/openai/serving_chat.py` modified +8/-10 (18 lines); hunks: -64,6 +64,7 @@ def __init__(; -563,10 +564,7 @@ async def _generate_chat_stream(; symbols: __init__, _request_id_prefix, _generate_chat_stream, _build_chat_response
@@ -286,7 +279,7 @@ diff -- python/sglang/srt/entrypoints/openai/serving_chat.py
 - 状态/时间: merged / 2025-10-03
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+29/-1，可读 patch 81 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Add --thinking-mode to run_eval」；模型线: DeepSeek V3.1；类别: 模型支持/运行时入口；主要 diff: `python/sglang/test/run_eval.py`, `python/sglang/test/simple_eval_common.py`；PR 正文摘要: Enabling thinking mode improves the accuracy score in GPQA for Deepseek V3.2. Add `--thinking-mode` to run_eval for models with think/non-think modes. There is variance in the r...。
+- 动机: 标题「Add --thinking-mode to run_eval」；模型线: DeepSeek V3.1；类别: 模型支持/运行时入口；主要 diff: `python/sglang/test/run_eval.py`, `python/sglang/test/simple_eval_common.py`；技术摘要: 覆盖「Add --thinking-mode to run_eval」；主要实现面是 `python/sglang/test/run_eval.py`, `python/sglang/test/simple_eval_common.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/test/run_eval.py` modified +25/-0 (25 lines); hunks: -16,13 +16,29; -136,6 +152,8 @@ def run_eval(args):; symbols: get_thinking_kwargs, run_eval_once, run_eval，涉及 `get_thinking_kwargs, run_eval_once, run_eval`；`python/sglang/test/simple_eval_common.py` modified +4/-1 (5 lines); hunks: -93,6 +93,7 @@ def __init__(; -104,9 +105,10 @@ def __init__(; symbols: __init__, _handle_image, __call__，涉及 `__init__, _handle_image, __call__`。
 - 代码 diff 细节:
   - `python/sglang/test/run_eval.py` modified +25/-0 (25 lines); hunks: -16,13 +16,29; -136,6 +152,8 @@ def run_eval(args):; symbols: get_thinking_kwargs, run_eval_once, run_eval
@@ -322,7 +315,7 @@ diff -- python/sglang/test/simple_eval_common.py
 - 状态/时间: merged / 2025-10-07
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+24/-12，可读 patch 65 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Update tool parser and related documentation」；模型线: DeepSeek V3.1；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/function_call/function_call_parser.py`, `python/sglang/srt/server_args.py`；PR 正文摘要: - Updated supported parsers table to include Qwen, DeepSeek, GLM, and Mistral models. - Refactored tool call parser mappings to use simplified names. - Implemented deprecation w...。
+- 动机: 标题「Update tool parser and related documentation」；模型线: DeepSeek V3.1；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/function_call/function_call_parser.py`, `python/sglang/srt/server_args.py`；技术摘要: 覆盖「Update tool parser and related documentation」；主要实现面是 `python/sglang/srt/function_call/function_call_parser.py`, `python/sglang/srt/server_args.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/function_call/function_call_parser.py` modified +8/-6 (14 lines); hunks: -35,17 +35,19 @@ class FunctionCallParser:; symbols: FunctionCallParser, __init__，涉及 `FunctionCallParser, __init__`；`python/sglang/srt/server_args.py` modified +7/-1 (8 lines); hunks: -527,7 +527,13 @@ def __post_init__(self):; symbols: __post_init__, _handle_deprecated_args, _handle_missing_default_values，涉及 `__post_init__, _handle_deprecated_args, _handle_missing_default_values`。
 - 代码 diff 细节:
   - `python/sglang/srt/function_call/function_call_parser.py` modified +8/-6 (14 lines); hunks: -35,17 +35,19 @@ class FunctionCallParser:; symbols: FunctionCallParser, __init__
@@ -358,7 +351,7 @@ diff -- python/sglang/srt/server_args.py
 - 状态/时间: merged / 2025-10-30
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+331/-9，可读 patch 380 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Fix DeepSeek chat templates to handle tool call arguments type checking (#11700)」；模型线: DeepSeek V3.1；类别: 缺陷修复；主要 diff: `test/srt/test_deepseek_chat_templates.py`, `examples/chat_template/tool_chat_template_deepseekv3.jinja`, `examples/chat_template/tool_chat_template_deepseekv31.jinja`；PR 正文摘要: This commit fixes the double JSON encoding issue in DeepSeek chat templates (v3, v3.1, v3.2) that was causing incorrect tool call formatting in multi-round function calling scen...。
+- 动机: 标题「Fix DeepSeek chat templates to handle tool call arguments type checking (#11700)」；模型线: DeepSeek V3.1；类别: 缺陷修复；主要 diff: `test/srt/test_deepseek_chat_templates.py`, `examples/chat_template/tool_chat_template_deepseekv3.jinja`, `examples/chat_template/tool_chat_template_deepseekv31.jinja`；技术摘要: 覆盖「Fix DeepSeek chat templates to handle tool call arguments type checking (#11700)」；主要实现面是 `test/srt/test_deepseek_chat_templates.py`, `examples/chat_template/tool_chat_template_deepseekv3.jinja`, `examples/chat_template/tool_chat_template_deepseekv31.jinja`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/srt/test_deepseek_chat_templates.py` added +319/-0 (319 lines); hunks: -0,0 +1,319; symbols: TestDeepSeekChatTemplateToolCalls, setUpClass, _render_template, test_tool_arguments_as_dict，涉及 `TestDeepSeekChatTemplateToolCalls, setUpClass, _render_template`；`examples/chat_template/tool_chat_template_deepseekv3.jinja` modified +4/-3 (7 lines); hunks: -47,15 +47,16；`examples/chat_template/tool_chat_template_deepseekv31.jinja` modified +4/-3 (7 lines); hunks: -41,15 +41,16；`examples/chat_template/tool_chat_template_deepseekv32.jinja` modified +4/-3 (7 lines); hunks: -42,15 +42,16。
 - 代码 diff 细节:
   - `test/srt/test_deepseek_chat_templates.py` added +319/-0 (319 lines); hunks: -0,0 +1,319; symbols: TestDeepSeekChatTemplateToolCalls, setUpClass, _render_template, test_tool_arguments_as_dict
@@ -399,7 +392,7 @@ diff -- examples/chat_template/tool_chat_template_deepseekv31.jinja
 - 状态/时间: merged / 2025-11-13
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+0/-5，可读 patch 40 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Remove enable_dp_attention in deepseek nightly tests」；模型线: DeepSeek V3.1；类别: 文档/测试/CI；主要 diff: `test/srt/nightly/test_deepseek_v32_perf.py`, `test/srt/nightly/test_deepseek_v31_perf.py`；PR 正文未提供可用摘要。
+- 动机: 标题「Remove enable_dp_attention in deepseek nightly tests」；模型线: DeepSeek V3.1；类别: 文档/测试/CI；主要 diff: `test/srt/nightly/test_deepseek_v32_perf.py`, `test/srt/nightly/test_deepseek_v31_perf.py`；未提供可用技术摘要。
 - 实现要点: `test/srt/nightly/test_deepseek_v32_perf.py` modified +0/-3 (3 lines); hunks: -27,7 +27,6 @@ def setUpClass(cls):; -38,7 +37,6 @@ def setUpClass(cls):; symbols: setUpClass，涉及 `setUpClass`；`test/srt/nightly/test_deepseek_v31_perf.py` modified +0/-2 (2 lines); hunks: -27,7 +27,6 @@ def setUpClass(cls):; -38,7 +37,6 @@ def setUpClass(cls):; symbols: setUpClass，涉及 `setUpClass`。
 - 代码 diff 细节:
   - `test/srt/nightly/test_deepseek_v32_perf.py` modified +0/-3 (3 lines); hunks: -27,7 +27,6 @@ def setUpClass(cls):; -38,7 +37,6 @@ def setUpClass(cls):; symbols: setUpClass
@@ -431,7 +424,7 @@ diff -- test/srt/nightly/test_deepseek_v31_perf.py
 - 状态/时间: merged / 2025-11-14
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/function_call/deepseekv31_detector.py`；关联提交 `fc5da1e80b78`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+4/-9，可读 patch 34 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Tool Call] Steamline function arguments when tool_choice="auto" for deepseekv31_detector」；模型线: DeepSeek V3.1；类别: 模型实现调整；主要 diff: `python/sglang/srt/function_call/deepseekv31_detector.py`；PR 正文摘要: The current `deepseekv31_detector` only detects complete function arguments and immediately returns them while clearing the buffer. This approach can lead to a poor user experie...。
+- 动机: 标题「[Tool Call] Steamline function arguments when tool_choice="auto" for deepseekv31_detector」；模型线: DeepSeek V3.1；类别: 模型实现调整；主要 diff: `python/sglang/srt/function_call/deepseekv31_detector.py`；技术摘要: 覆盖「[Tool Call] Steamline function arguments when tool_choice="auto" for deepseekv31_detector」；主要实现面是 `python/sglang/srt/function_call/deepseekv31_detector.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/function_call/deepseekv31_detector.py` modified +4/-9 (13 lines); hunks: -115,13 +115,14 @@ def parse_streaming_increment(; -180,15 +181,9 @@ def parse_streaming_increment(; symbols: parse_streaming_increment，涉及 `parse_streaming_increment`。
 - 代码 diff 细节:
   - `python/sglang/srt/function_call/deepseekv31_detector.py` modified +4/-9 (13 lines); hunks: -115,13 +115,14 @@ def parse_streaming_increment(; -180,15 +181,9 @@ def parse_streaming_increment(; symbols: parse_streaming_increment
@@ -458,7 +451,7 @@ diff -- python/sglang/srt/function_call/deepseekv31_detector.py
 - 状态/时间: merged / 2025-11-26
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/deepseek_v2.py`；关联提交 `13e5beeab499`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Fix Deepseek v3.1 loading issue」；模型线: DeepSeek V3.1；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/deepseek_v2.py`；PR 正文摘要: Fix nightly test error in https://github.com/sgl-project/sglang/actions/runs/19689716521/job/56402800532。
+- 动机: 标题「Fix Deepseek v3.1 loading issue」；模型线: DeepSeek V3.1；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「Fix Deepseek v3.1 loading issue」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +1/-1 (2 lines); hunks: -3568,7 +3568,7 @@ def post_load_weights(self, is_nextn=False, weight_names=N...; symbols: post_load_weights，涉及 `post_load_weights`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/deepseek_v2.py` modified +1/-1 (2 lines); hunks: -3568,7 +3568,7 @@ def post_load_weights(self, is_nextn=False, weight_names=N...; symbols: post_load_weights
@@ -481,7 +474,7 @@ diff -- python/sglang/srt/models/deepseek_v2.py
 - 状态/时间: merged / 2025-12-10
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `examples/chat_template/tool_chat_template_deepseekv31.jinja`；关联提交 `ef1ab2302ab2`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+5/-1，可读 patch 13 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Auto Sync] Update tool_chat_template_deepseekv31.jinja (20251210)」；模型线: DeepSeek V3.1；类别: 模型实现调整；主要 diff: `examples/chat_template/tool_chat_template_deepseekv31.jinja`；PR 正文摘要: Sync changes from commit `abd3e13d`. **Files Changed:** - examples/chat_template/tool_chat_template_deepseekv31.jinja Author: Jue Wang *This is an automated PR created by script...。
+- 动机: 标题「[Auto Sync] Update tool_chat_template_deepseekv31.jinja (20251210)」；模型线: DeepSeek V3.1；类别: 模型实现调整；主要 diff: `examples/chat_template/tool_chat_template_deepseekv31.jinja`；技术摘要: 覆盖「[Auto Sync] Update tool_chat_template_deepseekv31.jinja (20251210)」；主要实现面是 `examples/chat_template/tool_chat_template_deepseekv31.jinja`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `examples/chat_template/tool_chat_template_deepseekv31.jinja` modified +5/-1 (6 lines); hunks: -19,7 +19,11。
 - 代码 diff 细节:
   - `examples/chat_template/tool_chat_template_deepseekv31.jinja` modified +5/-1 (6 lines); hunks: -19,7 +19,11
@@ -508,7 +501,7 @@ diff -- examples/chat_template/tool_chat_template_deepseekv31.jinja
 - 状态/时间: merged / 2025-12-31
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/function_call/deepseekv31_detector.py`；关联提交 `2667c857a78f`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 7 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Fix DeepSeekV31's structural tag trigger」；模型线: DeepSeek V3.1；类别: 缺陷修复；主要 diff: `python/sglang/srt/function_call/deepseekv31_detector.py`；PR 正文摘要: As titled. To prevent LLMs generating tool calls with wrong name Reference (can be seen in other models in the SGLang codebase as well):。
+- 动机: 标题「Fix DeepSeekV31's structural tag trigger」；模型线: DeepSeek V3.1；类别: 缺陷修复；主要 diff: `python/sglang/srt/function_call/deepseekv31_detector.py`；技术摘要: 覆盖「Fix DeepSeekV31's structural tag trigger」；主要实现面是 `python/sglang/srt/function_call/deepseekv31_detector.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/function_call/deepseekv31_detector.py` modified +1/-1 (2 lines); hunks: -202,5 +202,5 @@ def structure_info(self) -> _GetInfoFunc:; symbols: structure_info，涉及 `structure_info`。
 - 代码 diff 细节:
   - `python/sglang/srt/function_call/deepseekv31_detector.py` modified +1/-1 (2 lines); hunks: -202,5 +202,5 @@ def structure_info(self) -> _GetInfoFunc:; symbols: structure_info
@@ -531,7 +524,7 @@ diff -- python/sglang/srt/function_call/deepseekv31_detector.py
 - 状态/时间: merged / 2026-01-07
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-2，可读 patch 17 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[CI] Enable dpsk v31 test on nightly H200」；模型线: DeepSeek V3.1；类别: 文档/测试/CI；主要 diff: `test/registered/8-gpu-models/test_deepseek_v31.py`；PR 正文未提供可用摘要。
+- 动机: 标题「[CI] Enable dpsk v31 test on nightly H200」；模型线: DeepSeek V3.1；类别: 文档/测试/CI；主要 diff: `test/registered/8-gpu-models/test_deepseek_v31.py`；未提供可用技术摘要。
 - 实现要点: `test/registered/8-gpu-models/test_deepseek_v31.py` modified +1/-2 (3 lines); hunks: -4,15 +4,14; symbols: TestDeepseekV31Unified, for，涉及 `TestDeepseekV31Unified, for`。
 - 代码 diff 细节:
   - `test/registered/8-gpu-models/test_deepseek_v31.py` modified +1/-2 (3 lines); hunks: -4,15 +4,14; symbols: TestDeepseekV31Unified, for
@@ -555,7 +548,7 @@ diff -- test/registered/8-gpu-models/test_deepseek_v31.py
 - 状态/时间: merged / 2026-01-16
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+3/-2，可读 patch 26 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Remove deepseek-r1 from THINKING_MODE_CHOICES in run_eval.py」；模型线: DeepSeek V3.1；类别: 模型支持/运行时入口；主要 diff: `python/sglang/test/run_eval.py`；PR 正文摘要: deepseek-r1 is a pure reasoning model with no way to enable/disable reasoning, unless you modify the chat template directly. Starting from v3.1, deepseek introduced hybrid reaso...。
+- 动机: 标题「Remove deepseek-r1 from THINKING_MODE_CHOICES in run_eval.py」；模型线: DeepSeek V3.1；类别: 模型支持/运行时入口；主要 diff: `python/sglang/test/run_eval.py`；技术摘要: 覆盖「Remove deepseek-r1 from THINKING_MODE_CHOICES in run_eval.py」；主要实现面是 `python/sglang/test/run_eval.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/test/run_eval.py` modified +3/-2 (5 lines); hunks: -22,6 +22,7 @@ def get_thinking_kwargs(args):; -203,7 +204,7 @@ def run_eval(args):; symbols: get_thinking_kwargs, run_eval，涉及 `get_thinking_kwargs, run_eval`。
 - 代码 diff 细节:
   - `python/sglang/test/run_eval.py` modified +3/-2 (5 lines); hunks: -22,6 +22,7 @@ def get_thinking_kwargs(args):; -203,7 +204,7 @@ def run_eval(args):; symbols: get_thinking_kwargs, run_eval
@@ -582,7 +575,7 @@ diff -- python/sglang/test/run_eval.py
 - 状态/时间: merged / 2026-01-16
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+959/-217，可读 patch 1311 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[DeepSeek V3.1/V3.2] Optimize fused moe configs for H20 & H20-3E based on swapab」；模型线: DeepSeek V3.1；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=257,N=256,device_name=NVIDIA_H20,dtype=fp8_w8a8,block_shape=[128, 128]_down.json`, `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=257,N=256,device_name=NVIDIA_H20-3e,dtype=fp8_w8a8,block_shape=[128, 128]_down.json`, `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=257,N=256,device_name=NVIDIA_H20,dtype=fp8_w8a8,block_shape=[128, 128].json`；PR 正文摘要: 1. Performance tuning based on the code after fused moe swapab #16723. The optimal configuration of fused MoE changes when swapab is taken into consideration. 2. Optimize the tu...。
+- 动机: 标题「[DeepSeek V3.1/V3.2] Optimize fused moe configs for H20 & H20-3E based on swapab」；模型线: DeepSeek V3.1；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=257,N=256,device_name=NVIDIA_H20,dtype=fp8_w8a8,block_shape=[128, 128]_down.json`, `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=257,N=256,device_name=NVIDIA_H20-3e,dtype=fp8_w8a8,block_shape=[128, 128]_down.json`, `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=257,N=256,device_name=NVIDIA_H20,dtype=fp8_w8a8,block_shape=[128, 128].json`；技术摘要: 覆盖「[DeepSeek V3.1/V3.2] Optimize fused moe configs for H20 & H20-3E based on swapab」；主要实现面是 `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=257,N=256,device_name=NVIDIA_H20,dtype=fp8_w8a8,block_shape=[128, 128]_down.json`, `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=257,N=256,device_name=NVIDIA_H20-3e,dtype=fp8_w8a8,block_shape=[128, 128]_down.json`, `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=257,N=256,device_name=NVIDIA_H20,dtype=fp8_w8a8,block_shape=[128, 128].json`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=257,N=256,device_name=NVIDIA_H20,dtype=fp8_w8a8,block_shape=[128, 128]_down.json` added +164/-0 (164 lines); hunks: -0,0 +1,164；`python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=257,N=256,device_name=NVIDIA_H20-3e,dtype=fp8_w8a8,block_shape=[128, 128]_down.json` added +164/-0 (164 lines); hunks: -0,0 +1,164；`python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=257,N=256,device_name=NVIDIA_H20,dtype=fp8_w8a8,block_shape=[128, 128].json` added +146/-0 (146 lines); hunks: -0,0 +1,146；`python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=257,N=256,device_name=NVIDIA_H20-3e,dtype=fp8_w8a8,block_shape=[128, 128].json` added +146/-0 (146 lines); hunks: -0,0 +1,146。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=257,N=256,device_name=NVIDIA_H20,dtype=fp8_w8a8,block_shape=[128, 128]_down.json` added +164/-0 (164 lines); hunks: -0,0 +1,164
@@ -624,7 +617,7 @@ diff -- python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=257
 - 状态/时间: closed / 2026-01-19
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+14/-16，可读 patch 56 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「fix: Fixed the issue where "finish_reason":"stop" appeared when calling the tool and the tool was in the content.」；模型线: DeepSeek V3.1；类别: 缺陷修复；主要 diff: `python/sglang/srt/function_call/deepseekv32_detector.py`, `examples/chat_template/tool_chat_template_deepseekv32.jinja`；PR 正文摘要: Motivation The DeepSeek-V3.2 model exhibits an issue with tool call parsing: tool call information is always output as plain text in the content field instead of being correctly...。
+- 动机: 标题「fix: Fixed the issue where "finish_reason":"stop" appeared when calling the tool and the tool was in the content.」；模型线: DeepSeek V3.1；类别: 缺陷修复；主要 diff: `python/sglang/srt/function_call/deepseekv32_detector.py`, `examples/chat_template/tool_chat_template_deepseekv32.jinja`；技术摘要: 覆盖「fix: Fixed the issue where "finish_reason":"stop" appeared when calling the tool and the tool was in the content.」；主要实现面是 `python/sglang/srt/function_call/deepseekv32_detector.py`, `examples/chat_template/tool_chat_template_deepseekv32.jinja`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/function_call/deepseekv32_detector.py` modified +8/-4 (12 lines); hunks: -195,12 +195,16 @@ def detect_and_parse(self, text: str, tools: list[Tool]) -...; symbols: detect_and_parse，涉及 `detect_and_parse`；`examples/chat_template/tool_chat_template_deepseekv32.jinja` modified +6/-12 (18 lines); hunks: -22,7 +22,7; -41,20 +41,14。
 - 代码 diff 细节:
   - `python/sglang/srt/function_call/deepseekv32_detector.py` modified +8/-4 (12 lines); hunks: -195,12 +195,16 @@ def detect_and_parse(self, text: str, tools: list[Tool]) -...; symbols: detect_and_parse
@@ -661,7 +654,7 @@ diff -- examples/chat_template/tool_chat_template_deepseekv32.jinja
 - 状态/时间: closed / 2026-01-22
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+14/-16，可读 patch 56 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「fix: Fixed the issue where "finish_reason":"stop" appeared when calling the tool and the tool was in the content.」；模型线: DeepSeek V3.1；类别: 缺陷修复；主要 diff: `python/sglang/srt/function_call/deepseekv32_detector.py`, `examples/chat_template/tool_chat_template_deepseekv32.jinja`；PR 正文摘要: The DeepSeek-V3.2 model exhibits an issue with tool call parsing: tool call information is always output as plain text in the content field instead of being correctly parsed int...。
+- 动机: 标题「fix: Fixed the issue where "finish_reason":"stop" appeared when calling the tool and the tool was in the content.」；模型线: DeepSeek V3.1；类别: 缺陷修复；主要 diff: `python/sglang/srt/function_call/deepseekv32_detector.py`, `examples/chat_template/tool_chat_template_deepseekv32.jinja`；技术摘要: 覆盖「fix: Fixed the issue where "finish_reason":"stop" appeared when calling the tool and the tool was in the content.」；主要实现面是 `python/sglang/srt/function_call/deepseekv32_detector.py`, `examples/chat_template/tool_chat_template_deepseekv32.jinja`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/function_call/deepseekv32_detector.py` modified +8/-4 (12 lines); hunks: -195,12 +195,16 @@ def detect_and_parse(self, text: str, tools: list[Tool]) -...; symbols: detect_and_parse，涉及 `detect_and_parse`；`examples/chat_template/tool_chat_template_deepseekv32.jinja` modified +6/-12 (18 lines); hunks: -22,7 +22,7; -41,20 +41,14。
 - 代码 diff 细节:
   - `python/sglang/srt/function_call/deepseekv32_detector.py` modified +8/-4 (12 lines); hunks: -195,12 +195,16 @@ def detect_and_parse(self, text: str, tools: list[Tool]) -...; symbols: detect_and_parse
@@ -698,7 +691,7 @@ diff -- examples/chat_template/tool_chat_template_deepseekv32.jinja
 - 状态/时间: closed / 2026-01-24
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+14/-16，可读 patch 56 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「fix: Fixed the issue where "finish_reason":"stop" appeared when calling the tool and the tool was in the content.」；模型线: DeepSeek V3.1；类别: 缺陷修复；主要 diff: `python/sglang/srt/function_call/deepseekv32_detector.py`, `examples/chat_template/tool_chat_template_deepseekv32.jinja`；PR 正文摘要: 1. Motivation The DeepSeek-V3.2 model exhibits an issue with tool call parsing: tool call information is always output as plain text in the content field instead of being correc...。
+- 动机: 标题「fix: Fixed the issue where "finish_reason":"stop" appeared when calling the tool and the tool was in the content.」；模型线: DeepSeek V3.1；类别: 缺陷修复；主要 diff: `python/sglang/srt/function_call/deepseekv32_detector.py`, `examples/chat_template/tool_chat_template_deepseekv32.jinja`；技术摘要: 覆盖「fix: Fixed the issue where "finish_reason":"stop" appeared when calling the tool and the tool was in the content.」；主要实现面是 `python/sglang/srt/function_call/deepseekv32_detector.py`, `examples/chat_template/tool_chat_template_deepseekv32.jinja`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/function_call/deepseekv32_detector.py` modified +8/-4 (12 lines); hunks: -195,12 +195,16 @@ def detect_and_parse(self, text: str, tools: list[Tool]) -...; symbols: detect_and_parse，涉及 `detect_and_parse`；`examples/chat_template/tool_chat_template_deepseekv32.jinja` modified +6/-12 (18 lines); hunks: -22,7 +22,7; -41,20 +41,14。
 - 代码 diff 细节:
   - `python/sglang/srt/function_call/deepseekv32_detector.py` modified +8/-4 (12 lines); hunks: -195,12 +195,16 @@ def detect_and_parse(self, text: str, tools: list[Tool]) -...; symbols: detect_and_parse
@@ -735,7 +728,7 @@ diff -- examples/chat_template/tool_chat_template_deepseekv32.jinja
 - 状态/时间: open / 2026-01-26
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+79/-2，可读 patch 102 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「fix: missing Assistant token after tool output in DeepSeek v3.1/v3.2 chat templates」；模型线: DeepSeek V3.1；类别: 缺陷修复；主要 diff: `test/manual/test_deepseek_chat_templates.py`, `examples/chat_template/tool_chat_template_deepseekv31.jinja`, `examples/chat_template/tool_chat_template_deepseekv32.jinja`；PR 正文摘要: Fix missing ` ` token after tool output in DeepSeek v3.1 and v3.2 chat templates. When an assistant message follows a tool output, the ` ` token was not being added. This caused...。
+- 动机: 标题「fix: missing Assistant token after tool output in DeepSeek v3.1/v3.2 chat templates」；模型线: DeepSeek V3.1；类别: 缺陷修复；主要 diff: `test/manual/test_deepseek_chat_templates.py`, `examples/chat_template/tool_chat_template_deepseekv31.jinja`, `examples/chat_template/tool_chat_template_deepseekv32.jinja`；技术摘要: 覆盖「fix: missing Assistant token after tool output in DeepSeek v3.1/v3.2 chat templates」；主要实现面是 `test/manual/test_deepseek_chat_templates.py`, `examples/chat_template/tool_chat_template_deepseekv31.jinja`, `examples/chat_template/tool_chat_template_deepseekv32.jinja`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/manual/test_deepseek_chat_templates.py` modified +77/-0 (77 lines); hunks: -313,6 +313,83 @@ def test_tool_call_with_content(self):; symbols: test_tool_call_with_content, test_assistant_marker_after_tool_output，涉及 `test_tool_call_with_content, test_assistant_marker_after_tool_output`；`examples/chat_template/tool_chat_template_deepseekv31.jinja` modified +1/-1 (2 lines); hunks: -60,7 +60,7；`examples/chat_template/tool_chat_template_deepseekv32.jinja` modified +1/-1 (2 lines); hunks: -57,7 +57,7。
 - 代码 diff 细节:
   - `test/manual/test_deepseek_chat_templates.py` modified +77/-0 (77 lines); hunks: -313,6 +313,83 @@ def test_tool_call_with_content(self):; symbols: test_tool_call_with_content, test_assistant_marker_after_tool_output
@@ -773,7 +766,7 @@ diff -- examples/chat_template/tool_chat_template_deepseekv32.jinja
 - 状态/时间: open / 2026-02-04
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+21/-3，可读 patch 57 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Fix function call arguments missing in streaming mode for DeepSeek V3.1」；模型线: DeepSeek V3.1；类别: 缺陷修复；主要 diff: `python/sglang/srt/function_call/deepseekv31_detector.py`；PR 正文摘要: Problem When using DeepSeek V3/V3.1 models with function calling in streaming mode, the tool call arguments are returned as empty `{}` even when the model generates valid parame...。
+- 动机: 标题「Fix function call arguments missing in streaming mode for DeepSeek V3.1」；模型线: DeepSeek V3.1；类别: 缺陷修复；主要 diff: `python/sglang/srt/function_call/deepseekv31_detector.py`；技术摘要: 覆盖「Fix function call arguments missing in streaming mode for DeepSeek V3.1」；主要实现面是 `python/sglang/srt/function_call/deepseekv31_detector.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/function_call/deepseekv31_detector.py` modified +21/-3 (24 lines); hunks: -52,6 +52,7 @@ def __init__(self):; -111,6 +112,18 @@ def parse_streaming_increment(; symbols: __init__, has_tool_call, parse_streaming_increment，涉及 `__init__, has_tool_call, parse_streaming_increment`。
 - 代码 diff 细节:
   - `python/sglang/srt/function_call/deepseekv31_detector.py` modified +21/-3 (24 lines); hunks: -52,6 +52,7 @@ def __init__(self):; -111,6 +112,18 @@ def parse_streaming_increment(; symbols: __init__, has_tool_call, parse_streaming_increment
@@ -800,7 +793,7 @@ diff -- python/sglang/srt/function_call/deepseekv31_detector.py
 - 状态/时间: open / 2026-03-31
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+163/-19，可读 patch 270 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[NPU] Update DeepSeek-V3.1 and DeepSeek-V3.2 model deployment instructions in documentation」；模型线: DeepSeek V3.1；类别: 文档/测试/CI；主要 diff: `docs/platforms/ascend/ascend_npu_best_practice.md`；PR 正文摘要: Updates the documentation for deploying the DeepSeek-V3.1 and DeepSeek-V3.2 model on Ascend NPU Based on the main branch of the sglang-project, we adjusted parameters, retuned t...。
+- 动机: 标题「[NPU] Update DeepSeek-V3.1 and DeepSeek-V3.2 model deployment instructions in documentation」；模型线: DeepSeek V3.1；类别: 文档/测试/CI；主要 diff: `docs/platforms/ascend/ascend_npu_best_practice.md`；技术摘要: 覆盖「[NPU] Update DeepSeek-V3.1 and DeepSeek-V3.2 model deployment instructions in documentation」；主要实现面是 `docs/platforms/ascend/ascend_npu_best_practice.md`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs/platforms/ascend/ascend_npu_best_practice.md` modified +163/-19 (182 lines); hunks: -20,6 +20,7 @@ you encounter issues or have any questions, please [open an is...; -177,7 +178,148 @@ We tested it based on the `RANDOM` dataset.。
 - 代码 diff 细节:
   - `docs/platforms/ascend/ascend_npu_best_practice.md` modified +163/-19 (182 lines); hunks: -20,6 +20,7 @@ you encounter issues or have any questions, please [open an is...; -177,7 +178,148 @@ We tested it based on the `RANDOM` dataset.
@@ -827,7 +820,7 @@ diff -- docs/platforms/ascend/ascend_npu_best_practice.md
 - 状态/时间: open / 2026-04-09
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+314/-0，可读 patch 315 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Test] Add unit tests for DeepSeekV31Detector」；模型线: DeepSeek V3.1；类别: 文档/测试/CI；主要 diff: `test/registered/unit/function_call/test_deepseekv31_detector.py`；PR 正文摘要: Part of #20865 (improve unit test coverage). `srt/function_call/deepseekv31_detector.py` previously had no direct test coverage — unlike its siblings `DeepSeekV3Detector` and `D...。
+- 动机: 标题「[Test] Add unit tests for DeepSeekV31Detector」；模型线: DeepSeek V3.1；类别: 文档/测试/CI；主要 diff: `test/registered/unit/function_call/test_deepseekv31_detector.py`；技术摘要: 覆盖「[Test] Add unit tests for DeepSeekV31Detector」；主要实现面是 `test/registered/unit/function_call/test_deepseekv31_detector.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/unit/function_call/test_deepseekv31_detector.py` added +314/-0 (314 lines); hunks: -0,0 +1,314; symbols: _wrap_single, _make_tools, TestDeepSeekV31DetectorHasToolCall, setUp，涉及 `_wrap_single, _make_tools, TestDeepSeekV31DetectorHasToolCall`。
 - 代码 diff 细节:
   - `test/registered/unit/function_call/test_deepseekv31_detector.py` added +314/-0 (314 lines); hunks: -0,0 +1,314; symbols: _wrap_single, _make_tools, TestDeepSeekV31DetectorHasToolCall, setUp
@@ -854,7 +847,7 @@ diff -- test/registered/unit/function_call/test_deepseekv31_detector.py
 - 状态/时间: merged / 2026-04-11
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 9 个文件，+306/-61，可读 patch 516 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Fix tool call constrained decoding and parsing for models with native formats」；模型线: DeepSeek V3.1；类别: 缺陷修复；主要 diff: `test/registered/unit/function_call/test_function_call_parser.py`, `python/sglang/srt/entrypoints/openai/serving_chat.py`, `python/sglang/srt/function_call/function_call_parser.py`；PR 正文摘要: When a model-specific `--tool-call-parser` is configured (e.g. `kimi_k2`, `deepseekv3`, `qwen25`), `tool_choice="required"` previously: 1. Forced a **generic JSON schema** const...。
+- 动机: 标题「Fix tool call constrained decoding and parsing for models with native formats」；模型线: DeepSeek V3.1；类别: 缺陷修复；主要 diff: `test/registered/unit/function_call/test_function_call_parser.py`, `python/sglang/srt/entrypoints/openai/serving_chat.py`, `python/sglang/srt/function_call/function_call_parser.py`；技术摘要: 覆盖「Fix tool call constrained decoding and parsing for models with native formats」；主要实现面是 `test/registered/unit/function_call/test_function_call_parser.py`, `python/sglang/srt/entrypoints/openai/serving_chat.py`, `python/sglang/srt/function_call/function_call_parser.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/unit/function_call/test_function_call_parser.py` modified +113/-0 (113 lines); hunks: -3859,6 +3859,119 @@ def test_streaming_function_call_marker_json_split_at_qu...; symbols: test_streaming_function_call_marker_json_split_at_quotes, TestGetStructureConstraint, _make_tools, _make_parser，涉及 `test_streaming_function_call_marker_json_split_at_quotes, TestGetStructureConstraint, _make_tools`；`python/sglang/srt/entrypoints/openai/serving_chat.py` modified +67/-43 (110 lines); hunks: -361,9 +361,11 @@ def _process_messages(; -1136,22 +1138,56 @@ def _process_tool_calls(; symbols: _process_messages, _process_tool_calls, _process_tool_call_stream，涉及 `_process_messages, _process_tool_calls, _process_tool_call_stream`；`python/sglang/srt/function_call/function_call_parser.py` modified +35/-11 (46 lines); hunks: -3,6 +3,7; -32,7 +33,10; symbols: parse_stream_chunk, get_structure_tag, get_structure_constraint，涉及 `parse_stream_chunk, get_structure_tag, get_structure_constraint`；`test/registered/openai_server/function_call/test_tool_choice.py` modified +8/-2 (10 lines); hunks: -348,8 +348,12 @@ def test_tool_choice_specific_function_streaming(self):; -406,13 +410,15 @@ def test_required_streaming_arguments_chunks_json(self):; symbols: test_tool_choice_specific_function_streaming, test_required_streaming_arguments_chunks_json, test_complex_parameters_required_non_streaming，涉及 `test_tool_choice_specific_function_streaming, test_required_streaming_arguments_chunks_json, test_complex_parameters_required_non_streaming`。
 - 代码 diff 细节:
   - `test/registered/unit/function_call/test_function_call_parser.py` modified +113/-0 (113 lines); hunks: -3859,6 +3859,119 @@ def test_streaming_function_call_marker_json_split_at_qu...; symbols: test_streaming_function_call_marker_json_split_at_quotes, TestGetStructureConstraint, _make_tools, _make_parser
@@ -896,7 +889,7 @@ diff -- python/sglang/srt/function_call/function_call_parser.py
 - 状态/时间: open / 2026-04-16
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+1017/-1，可读 patch 1063 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Test] Add unit tests for 7 missing function call detectors」；模型线: DeepSeek V3.1；类别: 文档/测试/CI；主要 diff: `test/registered/unit/function_call/test_function_call_parser.py`, `test/registered/openai_server/function_call/test_tool_choice.py`, `test/registered/unit/function_call/test_kimik2_detector.py`；PR 正文摘要: - Add unit tests for 7 previously uncovered detector classes: DeepSeekV31, GptOss, Internlm, Step3, Trinity, MiMo, MinimaxM2 - Strengthen DeepSeekV3 detector coverage from 1 tes...。
+- 动机: 标题「[Test] Add unit tests for 7 missing function call detectors」；模型线: DeepSeek V3.1；类别: 文档/测试/CI；主要 diff: `test/registered/unit/function_call/test_function_call_parser.py`, `test/registered/openai_server/function_call/test_tool_choice.py`, `test/registered/unit/function_call/test_kimik2_detector.py`；技术摘要: 覆盖「[Test] Add unit tests for 7 missing function call detectors」；主要实现面是 `test/registered/unit/function_call/test_function_call_parser.py`, `test/registered/openai_server/function_call/test_tool_choice.py`, `test/registered/unit/function_call/test_kimik2_detector.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/unit/function_call/test_function_call_parser.py` modified +960/-1 (961 lines); hunks: -2,9 +2,11; -15,16 +17,22; symbols: TestPythonicDetector, setUp, test_has_tool_call, test_detect_and_parse_single，涉及 `TestPythonicDetector, setUp, test_has_tool_call`；`test/registered/openai_server/function_call/test_tool_choice.py` modified +57/-0 (57 lines); hunks: -894,5 +894,62 @@ def setUpClass(cls):; symbols: setUpClass, TestToolChoiceWithConstrainedDecoding, test_tool_choice_required_strict_finish_reason，涉及 `setUpClass, TestToolChoiceWithConstrainedDecoding, test_tool_choice_required_strict_finish_reason`；`test/registered/unit/function_call/test_kimik2_detector.py` renamed +0/-0 (0 lines)。
 - 代码 diff 细节:
   - `test/registered/unit/function_call/test_function_call_parser.py` modified +960/-1 (961 lines); hunks: -2,9 +2,11; -15,16 +17,22; symbols: TestPythonicDetector, setUp, test_has_tool_call, test_detect_and_parse_single
@@ -933,7 +926,7 @@ diff -- test/registered/openai_server/function_call/test_tool_choice.py
 - 状态/时间: merged / 2026-04-17
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+272/-18，可读 patch 344 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Allow piecewise CUDA graph with speculative decoding」；模型线: DeepSeek V3.1；类别: 性能/后端优化；主要 diff: `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`, `python/sglang/srt/model_executor/model_runner.py`, `test/registered/piecewise_cuda_graph/test_pcg_with_speculative_decoding.py`；PR 正文摘要: - Allow `--enable-piecewise-cuda-graph` to coexist with all speculative decoding algorithms (EAGLE/EAGLE3/NEXTN/STANDALONE/NGRAM) - Previously all speculative algorithms disable...。
+- 动机: 标题「Allow piecewise CUDA graph with speculative decoding」；模型线: DeepSeek V3.1；类别: 性能/后端优化；主要 diff: `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`, `python/sglang/srt/model_executor/model_runner.py`, `test/registered/piecewise_cuda_graph/test_pcg_with_speculative_decoding.py`；技术摘要: 覆盖「Allow piecewise CUDA graph with speculative decoding」；主要实现面是 `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`, `python/sglang/srt/model_executor/model_runner.py`, `test/registered/piecewise_cuda_graph/test_pcg_with_speculative_decoding.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` modified +10/-0 (10 lines); hunks: -417,6 +417,16 @@ def can_run(self, forward_batch: ForwardBatch):; symbols: can_run，涉及 `can_run`；`python/sglang/srt/model_executor/model_runner.py` modified +4/-0 (4 lines); hunks: -2554,6 +2554,10 @@ def init_piecewise_cuda_graphs(self):; symbols: init_piecewise_cuda_graphs，涉及 `init_piecewise_cuda_graphs`；`test/registered/piecewise_cuda_graph/test_pcg_with_speculative_decoding.py` added +243/-0 (243 lines); hunks: -0,0 +1,243; symbols: TestPCGWithMTP, setUpClass, tearDownClass, test_gsm8k，涉及 `TestPCGWithMTP, setUpClass, tearDownClass`；`python/sglang/srt/server_args.py` modified +15/-18 (33 lines); hunks: -1113,56 +1113,53 @@ def _handle_piecewise_cuda_graph(self):; symbols: _handle_piecewise_cuda_graph，涉及 `_handle_piecewise_cuda_graph`。
 - 代码 diff 细节:
   - `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` modified +10/-0 (10 lines); hunks: -417,6 +417,16 @@ def can_run(self, forward_batch: ForwardBatch):; symbols: can_run
@@ -974,7 +967,7 @@ diff -- test/registered/piecewise_cuda_graph/test_pcg_with_speculative_decoding.
 - 状态/时间: merged / 2026-04-20
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 13 个文件，+1296/-33，可读 patch 1579 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[SPEC][1/N] feat: add adaptive speculative_num_steps for EAGLE topk=1」；模型线: DeepSeek V3.1；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/model_executor/cuda_graph_runner.py`, `benchmark/bench_adaptive_speculative.py`, `test/registered/unit/spec/test_adaptive_spec_params.py`；PR 正文摘要: One of the core parameters of speculative decoding is `speculative_num_steps`, which controls how many autoregressive draft-model steps are executed in each round. It directly d...。
+- 动机: 标题「[SPEC][1/N] feat: add adaptive speculative_num_steps for EAGLE topk=1」；模型线: DeepSeek V3.1；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/model_executor/cuda_graph_runner.py`, `benchmark/bench_adaptive_speculative.py`, `test/registered/unit/spec/test_adaptive_spec_params.py`；技术摘要: 覆盖「[SPEC][1/N] feat: add adaptive speculative_num_steps for EAGLE topk=1」；主要实现面是 `python/sglang/srt/model_executor/cuda_graph_runner.py`, `benchmark/bench_adaptive_speculative.py`, `test/registered/unit/spec/test_adaptive_spec_params.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/model_executor/cuda_graph_runner.py` modified +26/-12 (38 lines); hunks: -512,7 +512,14 @@ def set_global_graph_memory_pool(val):; -551,6 +558,17 @@ def __init__(self, model_runner: ModelRunner):; symbols: set_global_graph_memory_pool, CudaGraphRunner, __init__，涉及 `set_global_graph_memory_pool, CudaGraphRunner, __init__`；`benchmark/bench_adaptive_speculative.py` added +263/-0 (263 lines); hunks: -0,0 +1,263; symbols: build_phase_plan, send_request, run_phase, summarize_phases，涉及 `build_phase_plan, send_request, run_phase`；`test/registered/unit/spec/test_adaptive_spec_params.py` added +195/-0 (195 lines); hunks: -0,0 +1,195; symbols: TestAdaptiveSpeculativeParams, test_initial_steps_snap_to_nearest_candidate_preferring_larger_step, test_update_respects_warmup_and_interval, test_empty_batches_do_not_consume_warmup_or_shift_steps，涉及 `TestAdaptiveSpeculativeParams, test_initial_steps_snap_to_nearest_candidate_preferring_larger_step, test_update_respects_warmup_and_interval`；`test/registered/spec/eagle/test_adaptive_speculative.py` added +170/-0 (170 lines); hunks: -0,0 +1,170; symbols: TestAdaptiveSpeculativeServer, setUpClass, tearDownClass, _get_internal_state，涉及 `TestAdaptiveSpeculativeServer, setUpClass, tearDownClass`。
 - 代码 diff 细节:
   - `python/sglang/srt/model_executor/cuda_graph_runner.py` modified +26/-12 (38 lines); hunks: -512,7 +512,14 @@ def set_global_graph_memory_pool(val):; -551,6 +558,17 @@ def __init__(self, model_runner: ModelRunner):; symbols: set_global_graph_memory_pool, CudaGraphRunner, __init__
@@ -1018,7 +1011,7 @@ diff -- test/registered/unit/spec/test_adaptive_spec_params.py
 - 状态/时间: merged / 2026-04-21
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+72/-4，可读 patch 131 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Opt-in strip of thinking tokens from radix cache」；模型线: DeepSeek V3.1；类别: 缺陷修复；主要 diff: `test/registered/unit/mem_cache/test_unified_radix_cache_unittest.py`, `python/sglang/srt/managers/schedule_batch.py`, `python/sglang/srt/server_args.py`；PR 正文摘要: Fixes #22373. Closes #22617, #22950. Opt-in: enable with `--strip-thinking-cache`. Off by default. Why Reasoning-model requests (`--reasoning-parser `) insert all output tokens...。
+- 动机: 标题「Opt-in strip of thinking tokens from radix cache」；模型线: DeepSeek V3.1；类别: 缺陷修复；主要 diff: `test/registered/unit/mem_cache/test_unified_radix_cache_unittest.py`, `python/sglang/srt/managers/schedule_batch.py`, `python/sglang/srt/server_args.py`；技术摘要: 覆盖「Opt-in strip of thinking tokens from radix cache」；主要实现面是 `test/registered/unit/mem_cache/test_unified_radix_cache_unittest.py`, `python/sglang/srt/managers/schedule_batch.py`, `python/sglang/srt/server_args.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/unit/mem_cache/test_unified_radix_cache_unittest.py` modified +52/-1 (53 lines); hunks: -30,7 +30,11; -485,6 +489,53 @@ def test_cache_finished_req_insert(self):; symbols: test_cache_finished_req_insert, test_cache_finished_req_strips_thinking, test_cache_finished_req_no_insert，涉及 `test_cache_finished_req_insert, test_cache_finished_req_strips_thinking, test_cache_finished_req_no_insert`；`python/sglang/srt/managers/schedule_batch.py` modified +9/-2 (11 lines); hunks: -903,13 +903,20 @@ def output_ids_through_stop(self) -> List[int]:; -921,7 +928,7 @@ def pop_overallocated_kv_cache(self) -> Tuple[int, int]:; symbols: output_ids_through_stop, _cache_commit_len, pop_committed_kv_cache, pop_overallocated_kv_cache，涉及 `output_ids_through_stop, _cache_commit_len, pop_committed_kv_cache`；`python/sglang/srt/server_args.py` modified +8/-0 (8 lines); hunks: -436,6 +436,7 @@ class ServerArgs:; -4879,6 +4880,13 @@ def add_cli_args(parser: argparse.ArgumentParser):; symbols: ServerArgs, add_cli_args，涉及 `ServerArgs, add_cli_args`；`python/sglang/srt/mem_cache/common.py` modified +3/-1 (4 lines); hunks: -489,7 +489,9 @@ def release_kv_cache(req: Req, tree_cache: BasePrefixCache,...; symbols: release_kv_cache，涉及 `release_kv_cache`。
 - 代码 diff 细节:
   - `test/registered/unit/mem_cache/test_unified_radix_cache_unittest.py` modified +52/-1 (53 lines); hunks: -30,7 +30,11; -485,6 +489,53 @@ def test_cache_finished_req_insert(self):; symbols: test_cache_finished_req_insert, test_cache_finished_req_strips_thinking, test_cache_finished_req_no_insert
@@ -1059,7 +1052,7 @@ diff -- python/sglang/srt/server_args.py
 - 状态/时间: closed / 2026-04-21
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 11 个文件，+597/-64，可读 patch 850 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[fix] Parser-gated two-phase cache stripping for reasoning radix caches (fixes #22373)」；模型线: DeepSeek V3.1；类别: 缺陷修复；主要 diff: `python/sglang/srt/parser/reasoning_parser.py`, `python/sglang/srt/configs/model_config.py`, `test/registered/unit/mem_cache/test_radix_cache_thinking.py`；PR 正文摘要: Fix dead reasoning branches in radix cache for multi-turn separated-thinking models Fixes #22373. Related to #22617. What is the problem Reasoning models (QwQ-32B, DeepSeek-R1,...。
+- 动机: 标题「[fix] Parser-gated two-phase cache stripping for reasoning radix caches (fixes #22373)」；模型线: DeepSeek V3.1；类别: 缺陷修复；主要 diff: `python/sglang/srt/parser/reasoning_parser.py`, `python/sglang/srt/configs/model_config.py`, `test/registered/unit/mem_cache/test_radix_cache_thinking.py`；技术摘要: 覆盖「[fix] Parser-gated two-phase cache stripping for reasoning radix caches (fixes #22373)」；主要实现面是 `python/sglang/srt/parser/reasoning_parser.py`, `python/sglang/srt/configs/model_config.py`, `test/registered/unit/mem_cache/test_radix_cache_thinking.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/parser/reasoning_parser.py` modified +8/-0 (8 lines); hunks: -19,6 +19,10 @@ def __init__(; -395,6 +399,10 @@ class MiniMaxAppendThinkDetector(BaseReasoningFormatDetector):; symbols: __init__, BaseReasoningFormatDetector, providing, MiniMaxAppendThinkDetector，涉及 `__init__, BaseReasoningFormatDetector, providing`；`python/sglang/srt/configs/model_config.py` modified +1/-0 (1 lines); hunks: -242,6 +242,7 @@ def __init__(; symbols: __init__，涉及 `__init__`；`test/registered/unit/mem_cache/test_radix_cache_thinking.py` added +238/-0 (238 lines); hunks: -0,0 +1,238; symbols: _MockReqToTokenPool, __init__, write, _MockAllocator，涉及 `_MockReqToTokenPool, __init__, write`；`test/registered/unit/mem_cache/test_radix_cache_thinking_gated.py` added +220/-0 (220 lines); hunks: -0,0 +1,220; symbols: _MockReqToTokenPool, __init__, write, _MockAllocator，涉及 `_MockReqToTokenPool, __init__, write`。
 - 代码 diff 细节:
   - `python/sglang/srt/parser/reasoning_parser.py` modified +8/-0 (8 lines); hunks: -19,6 +19,10 @@ def __init__(; -395,6 +399,10 @@ class MiniMaxAppendThinkDetector(BaseReasoningFormatDetector):; symbols: __init__, BaseReasoningFormatDetector, providing, MiniMaxAppendThinkDetector
@@ -1101,12 +1094,12 @@ diff -- test/registered/unit/mem_cache/test_radix_cache_thinking.py
 - 状态/时间: open / 2026-04-21
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+193/-10，可读 patch 290 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[SPEC V2][2/N] feat: adaptive spec support spec v2」；模型线: DeepSeek V3.1；类别: 性能/后端优化；主要 diff: `python/sglang/srt/speculative/eagle_worker_v2.py`, `python/sglang/srt/speculative/eagle_info_v2.py`, `python/sglang/srt/managers/scheduler_output_processor_mixin.py`；PR 正文摘要: adaptive spec support spec v2: 1. launch sgl+adaptive spec+spec v2 2. benchmark 3. result Models: - Target model: `/models/ZhipuAI/GLM-4.7-FP8` - Draft model: `/models/ZhipuAI/G...。
-- 实现要点: `python/sglang/srt/speculative/eagle_worker_v2.py` modified +173/-0 (173 lines); hunks: -30,8 +30,13; -671,6 +676,13 @@ def __init__(; symbols: __init__, target_worker, forward_batch_generation, on_verify_complete_cpu，涉及 `__init__, target_worker, forward_batch_generation`；`python/sglang/srt/speculative/eagle_info_v2.py` modified +8/-4 (12 lines); hunks: -114,14 +114,18 @@ def prepare_for_decode(self: EagleDraftInput, batch: Sched...; -163,7 +167,7 @@ def prepare_for_decode(self: EagleDraftInput, batch: Schedul...; symbols: prepare_for_decode, prepare_for_v2_draft，涉及 `prepare_for_decode, prepare_for_v2_draft`；`python/sglang/srt/managers/scheduler_output_processor_mixin.py` modified +10/-1 (11 lines); hunks: -358,8 +358,17 @@ def _resolve_spec_overlap_token_ids(; symbols: _resolve_spec_overlap_token_ids，涉及 `_resolve_spec_overlap_token_ids`；`python/sglang/srt/speculative/adaptive_spec_params.py` modified +0/-5 (5 lines); hunks: -32,11 +32,6 @@ def adaptive_unsupported_reason(server_args: ServerArgs) -> s...; symbols: adaptive_unsupported_reason，涉及 `adaptive_unsupported_reason`。
+- 动机: 标题「[SPEC V2][2/N] feat: adaptive spec support spec v2」；模型线: DeepSeek V3.1；类别: 性能/后端优化；主要 diff: `python/sglang/srt/speculative/eagle_worker_v2.py`, `python/sglang/srt/speculative/eagle_info_v2.py`, `python/sglang/srt/managers/scheduler_output_processor_mixin.py`；技术摘要: 覆盖「[SPEC V2][2/N] feat: adaptive spec support spec v2」；主要实现面是 `python/sglang/srt/speculative/eagle_worker_v2.py`, `python/sglang/srt/speculative/eagle_info_v2.py`, `python/sglang/srt/managers/scheduler_output_processor_mixin.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/speculative/eagle_worker_v2.py` modified +173/-0 (173 lines); hunks: -30,8 +30,13; -671,6 +676,13 @@ def __init__(; symbols: __init__, target_worker, forward_batch_generation, on_verify_complete_cpu，涉及 `__init__, target_worker, forward_batch_generation`；`python/sglang/srt/speculative/eagle_info_v2.py` modified +8/-4 (12 lines); hunks: -114,14 +114,18 @@ def prepare_for_decode(self: EagleDraftInput, batch: Sched...; -163,7 +167,7 @@ def prepare_for_decode(self: EagleDraftInput, batch: Schedul...; symbols: prepare_for_decode, prepare_for_v2_draft，涉及 `prepare_for_decode, prepare_for_v2_draft`；`python/sglang/srt/managers/scheduler_output_processor_mixin.py` modified +10/-1 (11 lines); hunks: -360,8 +360,17 @@ def _resolve_spec_overlap_token_ids(; symbols: _resolve_spec_overlap_token_ids，涉及 `_resolve_spec_overlap_token_ids`；`python/sglang/srt/speculative/adaptive_spec_params.py` modified +0/-5 (5 lines); hunks: -32,11 +32,6 @@ def adaptive_unsupported_reason(server_args: ServerArgs) -> s...; symbols: adaptive_unsupported_reason，涉及 `adaptive_unsupported_reason`。
 - 代码 diff 细节:
   - `python/sglang/srt/speculative/eagle_worker_v2.py` modified +173/-0 (173 lines); hunks: -30,8 +30,13; -671,6 +676,13 @@ def __init__(; symbols: __init__, target_worker, forward_batch_generation, on_verify_complete_cpu
   - `python/sglang/srt/speculative/eagle_info_v2.py` modified +8/-4 (12 lines); hunks: -114,14 +114,18 @@ def prepare_for_decode(self: EagleDraftInput, batch: Sched...; -163,7 +167,7 @@ def prepare_for_decode(self: EagleDraftInput, batch: Schedul...; symbols: prepare_for_decode, prepare_for_v2_draft
-  - `python/sglang/srt/managers/scheduler_output_processor_mixin.py` modified +10/-1 (11 lines); hunks: -358,8 +358,17 @@ def _resolve_spec_overlap_token_ids(; symbols: _resolve_spec_overlap_token_ids
+  - `python/sglang/srt/managers/scheduler_output_processor_mixin.py` modified +10/-1 (11 lines); hunks: -360,8 +360,17 @@ def _resolve_spec_overlap_token_ids(; symbols: _resolve_spec_overlap_token_ids
   - `python/sglang/srt/speculative/adaptive_spec_params.py` modified +0/-5 (5 lines); hunks: -32,11 +32,6 @@ def adaptive_unsupported_reason(server_args: ServerArgs) -> s...; symbols: adaptive_unsupported_reason
   - `python/sglang/srt/managers/utils.py` modified +1/-0 (1 lines); hunks: -27,6 +27,7 @@ class GenerationBatchResult:; symbols: GenerationBatchResult
 - 关键代码摘录:
@@ -1129,7 +1122,7 @@ diff -- python/sglang/srt/speculative/eagle_info_v2.py
 +        for i, r in enumerate(batch.reqs):
 +            cur_kv_len = current_kv_lens_cpu[i].item()
 diff -- python/sglang/srt/managers/scheduler_output_processor_mixin.py
-@@ -358,8 +358,17 @@ def _resolve_spec_overlap_token_ids(
+@@ -360,8 +360,17 @@ def _resolve_spec_overlap_token_ids(
 ```
 
 - 已读文件:

@@ -1,6 +1,6 @@
 ---
 name: vllm-deepseek-v31-optimization
-description: PR-backed optimization manual for DeepSeek V3.1 in vLLM. Use when Codex needs to audit, debug, extend, or document DeepSeek V3.1 parser, scale-format, DeepGEMM, and reasoning-tooling deltas layered on top of the base DeepSeek V3 runtime.
+description: PR-backed optimization manual for DeepSeek V3.1 in vLLM. Use when an engineer needs to audit, debug, extend, or document DeepSeek V3.1 parser, scale-format, DeepGEMM, and reasoning-tooling deltas layered on top of the base DeepSeek V3 runtime.
 ---
 
 # vLLM DeepSeek V3.1 Optimization
@@ -39,7 +39,7 @@ Every PR cited for this family must be based on diff reading, not only PR titles
 - [#25589](https://github.com/vllm-project/vllm/pull/25589) `Add DeepSeek-V3.1 reasoning parser`: Separated V3.1 reasoning output handling from generic DeepSeek parsing.
 - [#32361](https://github.com/vllm-project/vllm/pull/32361) `Fix DeepSeek-V3.1 + DeepGEMM incompatible scale shapes`: Patched a concrete shape mismatch between newer checkpoints and DeepGEMM assumptions.
 
-## Open Radar
+## Open Optimization Items
 
 - Re-run PR search before claiming new support beyond the checked mainline commit.
 

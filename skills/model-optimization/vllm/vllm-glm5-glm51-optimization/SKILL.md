@@ -1,6 +1,6 @@
 ---
 name: vllm-glm5-glm51-optimization
-description: PR-backed optimization manual for GLM-5 / GLM-5.1 in vLLM. Use when Codex needs to audit, debug, extend, or document the current partial GLM-5 bring-up in vLLM, especially the `GlmMoeDsaForCausalLM` aliasing into the DeepSeek-V2/V3 runtime, rope interleave handling, and GLM-5 MTP correctness.
+description: PR-backed optimization manual for GLM-5 / GLM-5.1 in vLLM. Use when an engineer needs to audit, debug, extend, or document the current partial GLM-5 bring-up in vLLM, especially the `GlmMoeDsaForCausalLM` aliasing into the DeepSeek-V2/V3 runtime, rope interleave handling, and GLM-5 MTP correctness.
 ---
 
 # vLLM GLM-5 / 5.1 Optimization
@@ -51,7 +51,7 @@ actual landed path is the DeepSeek-based alias plus MTP follow-up.
 - [#34124](https://github.com/vllm-project/vllm/pull/34124) `GLM adaptation`
 - [#34385](https://github.com/vllm-project/vllm/pull/34385) `Fix MTP accuracy for GLM-5`
 
-## Open Radar
+## Open Optimization Items
 
 - Re-run PR search before claiming broader GLM-5 router, parser, or multimodal
   support beyond the checked mainline commit.

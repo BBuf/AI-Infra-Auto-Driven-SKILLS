@@ -1,6 +1,6 @@
 ---
 name: vllm-gpt-oss-optimization
-description: PR-backed optimization manual for GPT-OSS in vLLM. Use when Codex needs to audit, debug, extend, or document OpenAI GPT-OSS MoE, MXFP4/FP8 quantization, DP/EP, reasoning parser, tool calling, and Eagle/spec decode.
+description: PR-backed optimization manual for GPT-OSS in vLLM. Use when an engineer needs to audit, debug, extend, or document OpenAI GPT-OSS MoE, MXFP4/FP8 quantization, DP/EP, reasoning parser, tool calling, and Eagle/spec decode.
 ---
 
 # vLLM GPT-OSS Optimization

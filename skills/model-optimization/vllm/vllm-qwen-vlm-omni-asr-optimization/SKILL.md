@@ -1,6 +1,6 @@
 ---
 name: vllm-qwen-vlm-omni-asr-optimization
-description: PR-backed optimization manual for Qwen2.5-VL / Qwen3-VL / Qwen3-Omni / Qwen3-ASR in vLLM. Use when Codex needs to audit, debug, extend, or document the multimodal Qwen runtime in vLLM, especially Qwen2.5-VL attention hot paths, Qwen3-VL video and interleaved MRoPE handling, Qwen3-Omni thinker audio-in-video logic, and Qwen3-ASR / realtime speech support.
+description: PR-backed optimization manual for Qwen2.5-VL / Qwen3-VL / Qwen3-Omni / Qwen3-ASR in vLLM. Use when an engineer needs to audit, debug, extend, or document the multimodal Qwen runtime in vLLM, especially Qwen2.5-VL attention hot paths, Qwen3-VL video and interleaved MRoPE handling, Qwen3-Omni thinker audio-in-video logic, and Qwen3-ASR / realtime speech support.
 ---
 
 # vLLM Qwen2.5-VL / Qwen3-VL / Qwen3-Omni / Qwen3-ASR Optimization

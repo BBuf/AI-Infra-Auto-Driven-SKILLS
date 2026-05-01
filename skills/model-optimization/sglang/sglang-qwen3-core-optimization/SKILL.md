@@ -1,6 +1,6 @@
 ---
 name: sglang-qwen3-core-optimization
-description: PR-diff-backed optimization manual for Qwen3 dense and Qwen3 MoE in SGLang. Use when Codex needs to recover, extend, audit, or write documentation for Qwen3/Qwen3-30B/Qwen3-235B-A22B, FP8/NVFP4/MXFP4/W4A4, fused QK-norm/RoPE/KV-store paths, FlashInfer TRTLLM-GEN-MoE, DeepEP/EPLB/TBO/context parallel, EAGLE3, LoRA, PP/tied embeddings, Ascend NPU/XPU/MLX support, or Qwen3 reasoning/tool-parser behavior.
+description: PR-diff-backed optimization manual for Qwen3 dense and Qwen3 MoE in SGLang. Use when an engineer needs to recover, extend, audit, or write documentation for Qwen3/Qwen3-30B/Qwen3-235B-A22B, FP8/NVFP4/MXFP4/W4A4, fused QK-norm/RoPE/KV-store paths, FlashInfer TRTLLM-GEN-MoE, DeepEP/EPLB/TBO/context parallel, EAGLE3, LoRA, PP/tied embeddings, Ascend NPU/XPU/MLX support, or Qwen3 reasoning/tool-parser behavior.
 ---
 
 # SGLang Qwen3 Core Optimization
@@ -75,7 +75,7 @@ Treat Qwen3 Core as the compatibility baseline:
 7. For platform work, keep CUDA, NPU, XPU, MLX, and AMD logic behind backend-specific gates.
 8. Update PR history docs with per-PR diff cards if the change affects model support or serving behavior.
 
-## Open Radar to Recheck
+## Open Optimization Items
 
 - [#9147](https://github.com/sgl-project/sglang/pull/9147): Qwen3-MoE W4AFP8.
 - [#20127](https://github.com/sgl-project/sglang/pull/20127): tied embeddings for Qwen MoE and Qwen3-Next.

@@ -1,6 +1,6 @@
 ---
 name: vllm-qwen3-coder-optimization
-description: PR-backed optimization manual for Qwen3 Coder in vLLM. Use when Codex needs to audit, debug, extend, or document Qwen3 Coder tool parser, structured tool arguments, and coding-oriented parser behavior layered on top of the base Qwen3 runtime.
+description: PR-backed optimization manual for Qwen3 Coder in vLLM. Use when an engineer needs to audit, debug, extend, or document Qwen3 Coder tool parser, structured tool arguments, and coding-oriented parser behavior layered on top of the base Qwen3 runtime.
 ---
 
 # vLLM Qwen3 Coder Optimization
@@ -39,7 +39,7 @@ Every PR cited for this family must be based on diff reading, not only PR titles
 - [#37831](https://github.com/vllm-project/vllm/pull/37831) `Fix anyOf/oneOf type resolution for nullable params`: Improved nullable parameter handling in complex schemas.
 - [#38848](https://github.com/vllm-project/vllm/pull/38848) `Fix Qwen3 tool parser for Responses API tools`: Aligned the tool parser with the Responses API tool surface.
 
-## Open Radar
+## Open Optimization Items
 
 - Re-run PR search before claiming new support beyond the checked mainline commit.
 

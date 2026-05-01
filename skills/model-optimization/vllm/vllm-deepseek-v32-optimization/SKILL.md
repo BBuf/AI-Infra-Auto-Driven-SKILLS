@@ -1,6 +1,6 @@
 ---
 name: vllm-deepseek-v32-optimization
-description: PR-backed optimization manual for DeepSeek V3.2 in vLLM. Use when Codex needs to audit, debug, extend, or document DeepSeek V3.2 sparse-MLA / DSA runtime, indexer, tool parser, MTP fallback, and long-context decode kernels in vLLM.
+description: PR-backed optimization manual for DeepSeek V3.2 in vLLM. Use when an engineer needs to audit, debug, extend, or document DeepSeek V3.2 sparse-MLA / DSA runtime, indexer, tool parser, MTP fallback, and long-context decode kernels in vLLM.
 ---
 
 # vLLM DeepSeek V3.2 Optimization
@@ -40,7 +40,7 @@ Every PR cited for this family must be based on diff reading, not only PR titles
 - [#33090](https://github.com/vllm-project/vllm/pull/33090) `Fix DeepseekV32 `AssertionError: num_kv_heads == 1``: Removed a hard failure triggered by newer V3.2 attention shapes.
 - [#37421](https://github.com/vllm-project/vllm/pull/37421) `Persistent TopK scheduler for DeepSeek-V3.2 decode`: Modernized the decode scheduler with a CUDAGraph-safe persistent TopK kernel.
 
-## Open Radar
+## Open Optimization Items
 
 - Re-run PR search before claiming new support beyond the checked mainline commit.
 

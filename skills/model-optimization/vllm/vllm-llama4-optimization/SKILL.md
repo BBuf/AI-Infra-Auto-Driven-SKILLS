@@ -1,6 +1,6 @@
 ---
 name: vllm-llama4-optimization
-description: PR-backed optimization manual for Llama 4 in vLLM. Use when Codex needs to audit, debug, extend, or document Llama4 text and multimodal runtime, FP8/FP4 quantization, router behavior, long-context attention, and Eagle support.
+description: PR-backed optimization manual for Llama 4 in vLLM. Use when an engineer needs to audit, debug, extend, or document Llama4 text and multimodal runtime, FP8/FP4 quantization, router behavior, long-context attention, and Eagle support.
 ---
 
 # vLLM Llama 4 Optimization
