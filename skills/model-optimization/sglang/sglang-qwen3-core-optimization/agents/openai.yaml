@@ -1,4 +1,0 @@
-interface:
-  display_name: "SGLang Qwen3 Core Optimization"
-  short_description: "Current-main Qwen3 dense/MoE playbook for quantization, fused QK-norm/RoPE, MoE, LoRA, parser, and platform validation"
-  default_prompt: "Use $sglang-qwen3-core-optimization to optimize or debug Qwen3 dense or Qwen3 MoE in SGLang, including BF16/FP8/NVFP4/MXFP4 loading, fused QK-norm/RoPE/KV-store paths, MoE backend tuning, LoRA, reasoning/tool parser behavior, and AMD/NPU/Blackwell validation."

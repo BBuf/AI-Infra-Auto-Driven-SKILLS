@@ -1,4 +1,0 @@
-interface:
-  display_name: "SGLang Qwen3.5 Optimization"
-  short_description: "Current-main Qwen3.5 playbook for quantized loading, MTP, PP/EPLB, GDN fusion, shared experts, and cookbook validation"
-  default_prompt: "Use $sglang-qwen35-optimization to optimize or debug Qwen3.5 in SGLang, including FP8/NVFP4/MXFP4 loading, PP and tied embeddings, MTP/EPLB, GDN projection fusion, shared expert fusion, and AMD/NPU/Blackwell cookbook validation."

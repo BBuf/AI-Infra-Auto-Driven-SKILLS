@@ -1,4 +1,0 @@
-interface:
-  display_name: "SGLang Qwen3.6 Optimization"
-  short_description: "Current-main Qwen3.6 playbook for deployment docs, hybrid GDN/Mamba flags, multimodal requests, reasoning, tool calls, and MTP"
-  default_prompt: "Use $sglang-qwen36-optimization to optimize or debug Qwen3.6 in SGLang, including Qwen3.6-35B-A3B/27B deployment commands, Mamba scheduler strategy, MTP, multimodal inputs, Qwen3 reasoning parser, Qwen3-Coder tool parser, and cookbook parity."

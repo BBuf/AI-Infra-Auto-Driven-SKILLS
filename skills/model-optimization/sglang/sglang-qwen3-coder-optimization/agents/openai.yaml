@@ -1,4 +1,0 @@
-interface:
-  display_name: "SGLang Qwen3-Coder Optimization"
-  short_description: "Current-main Qwen3-Coder playbook for tool parser behavior, Coder-Next loading, quantized recipes, MoE/GDN paths, and hardware validation"
-  default_prompt: "Use $sglang-qwen3-coder-optimization to optimize or debug Qwen3-Coder or Qwen3-Coder-Next in SGLang, including qwen3_coder tool parsing, incremental streaming arguments, FP8/NVFP4 loading, MoE/GDN runtime paths, and NVIDIA/AMD/NPU cookbook validation."

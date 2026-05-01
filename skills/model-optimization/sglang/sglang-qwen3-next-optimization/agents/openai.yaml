@@ -1,4 +1,0 @@
-interface:
-  display_name: "SGLang Qwen3-Next Optimization"
-  short_description: "Current-main Qwen3-Next playbook for hybrid GDN/Mamba state, MTP, quantized loading, all-reduce, and platform validation"
-  default_prompt: "Use $sglang-qwen3-next-optimization to optimize or debug Qwen3-Next in SGLang, including RadixLinearAttention, GDN projection fusion, Mamba/radix-cache scheduling, MTP/EAGLE, FP8/NVFP4/ModelOpt loading, CPU offload, and AMD/NPU/Blackwell validation."
