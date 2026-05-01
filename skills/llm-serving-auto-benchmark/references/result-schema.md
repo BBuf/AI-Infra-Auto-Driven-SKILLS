@@ -47,6 +47,12 @@ values; this schema is not tied to H100.
     "kind": "custom",
     "scenario": "chat",
     "dataset_path": "/bench/workload.autobench.jsonl",
+    "input_len": 2048,
+    "output_len": 512,
+    "input_len_p50": 1800,
+    "input_len_p95": 4096,
+    "output_len_p50": 384,
+    "output_len_p95": 1024,
     "num_prompts": 1000,
     "request_rate": 16,
     "max_concurrency": 256,
@@ -84,6 +90,17 @@ values; this schema is not tied to H100.
   }
 }
 ```
+
+`input_len` and `output_len` are the representative scenario lengths used for
+synthetic workloads or a named bucket. For custom production-like datasets,
+also include p50/p95 buckets when available. These fields let
+`sglang-sota-performance` pass the slow benchmark shape directly into
+`llm-torch-profiler-analysis`:
+
+- prefill profile: `--prefill-input-len <slow input len>` and
+  `--prefill-output-len 1`
+- decode profile: `--decode-input-len 1` and
+  `--decode-output-len <slow output len>`
 
 ## Status Values
 

@@ -1,6 +1,6 @@
 ---
 name: sglang-hunyuan3-preview-optimization
-description: PR-backed and current-main optimization manual for Tencent Hunyuan 3 Preview in SGLang. Use when Codex needs to audit or extend Hunyuan3 Preview cookbook recipes, BF16 MoE hardware sizing, H200/B200/B300/GB300 command generation, MTP/EAGLE flags, `hunyuan` reasoning/tool parsers, Blackwell attention backend selection, or trust-remote-code launch guidance.
+description: PR-backed and current-main optimization manual for Tencent Hunyuan 3 Preview in SGLang. Use when an engineer needs to audit or extend Hunyuan3 Preview cookbook recipes, BF16 MoE hardware sizing, H200/B200/B300/GB300 command generation, MTP/EAGLE flags, `hunyuan` reasoning/tool parsers, Blackwell attention backend selection, or trust-remote-code launch guidance.
 ---
 
 # SGLang Hunyuan 3 Preview Optimization

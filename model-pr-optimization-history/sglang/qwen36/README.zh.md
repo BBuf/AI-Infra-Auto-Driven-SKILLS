@@ -1,12 +1,5 @@
 # sglang Qwen3.6 模型 PR 优化历史
 
-## 文档口径
-
-- 重做日期: 2026-04-25
-- 源码基线: `sgl-project/sglang` 当前追溯 worktree commit `880599cd43`
-- PR 收集规则: 先从模型实现、配置、processor、parser、docs/tests 等相关文件执行 `git log --name-only -- <model-files>`，再按 commit subject 的模型关键词过滤，最后用 GitHub Pull Request files API 读取每个 PR 的最终 diff。
-- 额外保留规则: 原 history/skill 已显式引用但未出现在当前实现文件 git trace 中的 PR 会保留，并在卡片里标注来源。
-
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
@@ -39,7 +32,7 @@
 - 状态/时间: merged / 2026-04-17
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 73 个文件，+2214/-215，可读 patch 3198 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「docs: fix links, add Qwen3.6, update Qwen3.5/GLM-5 docs」；模型线: Qwen3.6；类别: 缺陷修复；主要 diff: `docs_new/docs/advanced_features/separate_reasoning.mdx`, `docs_new/docs/advanced_features/tool_parser.mdx`, `docs_new/docs/advanced_features/dp_dpa_smg_guide.mdx`；PR 正文摘要: - **Add Qwen3.6 documentation**: New full deployment guide for Qwen3.6-35B-A3B (hybrid GDN + sparse MoE architecture) with JSX deployment snippet, covering MTP, tool calling (`q...。
+- 动机: 标题「docs: fix links, add Qwen3.6, update Qwen3.5/GLM-5 docs」；模型线: Qwen3.6；类别: 缺陷修复；主要 diff: `docs_new/docs/advanced_features/separate_reasoning.mdx`, `docs_new/docs/advanced_features/tool_parser.mdx`, `docs_new/docs/advanced_features/dp_dpa_smg_guide.mdx`；技术摘要: 覆盖「docs: fix links, add Qwen3.6, update Qwen3.5/GLM-5 docs」；主要实现面是 `docs_new/docs/advanced_features/separate_reasoning.mdx`, `docs_new/docs/advanced_features/tool_parser.mdx`, `docs_new/docs/advanced_features/dp_dpa_smg_guide.mdx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/docs/advanced_features/separate_reasoning.mdx` modified +2/-3 (5 lines); hunks: -207,7 +207,7 @@ print_highlight("==== Text ===="); -226,7 +226,7 @@ print_highlight("==== Original Output ====")；`docs_new/docs/advanced_features/tool_parser.mdx` modified +1/-2 (3 lines); hunks: -718,7 +718,7 @@ for tool_call in tool_calls:; -738,4 +738,3 @@ terminate_process(server_process); symbols: NewModelDetector, that，涉及 `NewModelDetector, that`；`docs_new/docs/advanced_features/dp_dpa_smg_guide.mdx` added +509/-0 (509 lines); hunks: -0,0 +1,509；`docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx` added +471/-0 (471 lines); hunks: -0,0 +1,471。
 - 代码 diff 细节:
   - `docs_new/docs/advanced_features/separate_reasoning.mdx` modified +2/-3 (5 lines); hunks: -207,7 +207,7 @@ print_highlight("==== Text ===="); -226,7 +226,7 @@ print_highlight("==== Original Output ====")
@@ -80,7 +73,7 @@ diff -- docs_new/docs/advanced_features/dp_dpa_smg_guide.mdx
 - 状态/时间: open / 2026-04-22
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+284/-8，可读 patch 330 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix] Try to fix --cpu-offload-gb on hybrid linear-attn models」；模型线: Qwen3.6；类别: 缺陷修复；主要 diff: `test/registered/unit/utils/test_offloader_tied_params.py`, `python/sglang/srt/utils/offloader.py`；PR 正文摘要: Fixes #23150. `--cpu-offload-gb > 0` was broken on hybrid linear-attention models (Qwen3-Next, Qwen3.5, Kimi-Linear): the first `/v1/chat/completions` request raised While fixin...。
+- 动机: 标题「[Bugfix] Try to fix --cpu-offload-gb on hybrid linear-attn models」；模型线: Qwen3.6；类别: 缺陷修复；主要 diff: `test/registered/unit/utils/test_offloader_tied_params.py`, `python/sglang/srt/utils/offloader.py`；技术摘要: 覆盖「[Bugfix] Try to fix --cpu-offload-gb on hybrid linear-attn models」；主要实现面是 `test/registered/unit/utils/test_offloader_tied_params.py`, `python/sglang/srt/utils/offloader.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/unit/utils/test_offloader_tied_params.py` added +199/-0 (199 lines); hunks: -0,0 +1,199; symbols: _TiedChild, __init__, forward, _TiedParent，涉及 `_TiedChild, __init__, forward`；`python/sglang/srt/utils/offloader.py` modified +85/-8 (93 lines); hunks: -1,7 +1,7; -106,16 +106,52 @@ def maybe_offload_to_cpu(self, module: torch.nn.Module) ->...; symbols: maybe_offload_to_cpu, forward，涉及 `maybe_offload_to_cpu, forward`。
 - 代码 diff 细节:
   - `test/registered/unit/utils/test_offloader_tied_params.py` added +199/-0 (199 lines); hunks: -0,0 +1,199; symbols: _TiedChild, __init__, forward, _TiedParent
@@ -117,7 +110,7 @@ diff -- python/sglang/srt/utils/offloader.py
 - 状态/时间: merged / 2026-04-22
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+31/-4，可读 patch 63 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「fix: dot-boundary match in is_layer_skipped for FP8 modules_to_not_convert」；模型线: Qwen3.6；类别: 缺陷修复；主要 diff: `python/sglang/srt/layers/quantization/utils.py`；PR 正文摘要: - `is_layer_skipped` uses naive substring match (`ignored in prefix`) on `modules_to_not_convert` entries, which silently fires when an entry is a prefix-substring of a fused li...。
+- 动机: 标题「fix: dot-boundary match in is_layer_skipped for FP8 modules_to_not_convert」；模型线: Qwen3.6；类别: 缺陷修复；主要 diff: `python/sglang/srt/layers/quantization/utils.py`；技术摘要: 覆盖「fix: dot-boundary match in is_layer_skipped for FP8 modules_to_not_convert」；主要实现面是 `python/sglang/srt/layers/quantization/utils.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/quantization/utils.py` modified +31/-4 (35 lines); hunks: -43,6 +43,28 @@ def __getattr__(self, name):; -56,16 +78,19 @@ def is_layer_skipped(; symbols: __getattr__, _module_path_match, is_layer_skipped，涉及 `__getattr__, _module_path_match, is_layer_skipped`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/quantization/utils.py` modified +31/-4 (35 lines); hunks: -43,6 +43,28 @@ def __getattr__(self, name):; -56,16 +78,19 @@ def is_layer_skipped(; symbols: __getattr__, _module_path_match, is_layer_skipped
@@ -144,7 +137,7 @@ diff -- python/sglang/srt/layers/quantization/utils.py
 - 状态/时间: merged / 2026-04-22
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`；关联提交 `de962f327432`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+55/-17，可读 patch 170 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「docs(cookbook): add Qwen3.6-27B dense variant」；模型线: Qwen3.6；类别: 性能/后端优化；主要 diff: `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`；PR 正文摘要: Qwen3.6 ships a 27B dense variant (`Qwen3.6-27B` / `Qwen3.6-27B-FP8`) alongside the existing 35B-A3B MoE. Update the cookbook page and deployment snippet to cover both. - Rewrit...。
+- 动机: 标题「docs(cookbook): add Qwen3.6-27B dense variant」；模型线: Qwen3.6；类别: 性能/后端优化；主要 diff: `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`；技术摘要: 覆盖「docs(cookbook): add Qwen3.6-27B dense variant」；主要实现面是 `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx` modified +30/-10 (40 lines); hunks: -1,26 +1,29; -29,30 +32,43 @@ Qwen3.6 features a Gated Delta Networks combined with sparse...；`docs_new/src/snippets/autoregressive/qwen36-deployment.jsx` modified +25/-7 (32 lines); hunks: -10,6 +10,14 @@ export const Qwen36Deployment = () => {; -66,9 +74,18 @@ export const Qwen36Deployment = () => {。
 - 代码 diff 细节:
   - `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx` modified +30/-10 (40 lines); hunks: -1,26 +1,29; -29,30 +32,43 @@ Qwen3.6 features a Gated Delta Networks combined with sparse...

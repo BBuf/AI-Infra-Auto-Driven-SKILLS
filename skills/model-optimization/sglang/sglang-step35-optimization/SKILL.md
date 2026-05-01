@@ -1,6 +1,6 @@
 ---
 name: sglang-step35-optimization
-description: PR-backed optimization manual for Step3.5 / Step3-VL in SGLang. Use when Codex needs to audit, debug, extend, or document Step3.5-Flash and Step3-VL-10B serving, MTP, MoE all-reduce, tool/reasoning parser, and processor evolution.
+description: PR-backed optimization manual for Step3.5 / Step3-VL in SGLang. Use when an engineer needs to audit, debug, extend, or document Step3.5-Flash and Step3-VL-10B serving, MTP, MoE all-reduce, tool/reasoning parser, and processor evolution.
 ---
 
 # SGLang Step3.5 / Step3-VL Optimization

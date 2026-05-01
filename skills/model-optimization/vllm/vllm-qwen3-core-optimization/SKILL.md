@@ -1,6 +1,6 @@
 ---
 name: vllm-qwen3-core-optimization
-description: PR-backed optimization manual for Qwen3 Core in vLLM. Use when Codex needs to audit, debug, extend, or document Qwen3 dense, Qwen3 MoE, embeddings/rerankers, GGUF/GPTQ/ModelOpt quant paths, and Eagle3 speculative decoding in vLLM.
+description: PR-backed optimization manual for Qwen3 Core in vLLM. Use when an engineer needs to audit, debug, extend, or document Qwen3 dense, Qwen3 MoE, embeddings/rerankers, GGUF/GPTQ/ModelOpt quant paths, and Eagle3 speculative decoding in vLLM.
 ---
 
 # vLLM Qwen3 Core Optimization
@@ -42,7 +42,7 @@ Every PR cited for this family must be based on diff reading, not only PR titles
 - [#23490](https://github.com/vllm-project/vllm/pull/23490) `Fix Qwen3 MoE GPTQ inference`: Patched runtime correctness after GPTQ startup succeeded.
 - [#26485](https://github.com/vllm-project/vllm/pull/26485) `Add EAGLE-3 Speculative Decoding Support for Qwen3 MoE`: Enabled the draft-model path on top of the base Qwen3 MoE runtime.
 
-## Open Radar
+## Open Optimization Items
 
 - Re-run PR search before claiming new support beyond the checked mainline commit.
 

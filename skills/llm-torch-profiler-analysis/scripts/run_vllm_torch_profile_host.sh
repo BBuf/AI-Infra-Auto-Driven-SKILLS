@@ -34,6 +34,12 @@ Options:
   --trust-remote-code           Pass --trust-remote-code.
   --request-max-tokens INT      Generation length for the probe request.
   --prompt TEXT                 Probe prompt.
+  --warmup-steps INT            Warmup steps before profiling. Defaults to 10.
+  --profile-workload TEXT       legacy|prefill|decode|both. Defaults to both.
+  --prefill-input-len INT       Synthetic prefill prompt length. Defaults to 4090.
+  --prefill-output-len INT      Synthetic prefill output length. Defaults to 1.
+  --decode-input-len INT        Synthetic decode prompt length. Defaults to 1.
+  --decode-output-len INT       Synthetic decode output length. Defaults to 2048.
   --container-name TEXT         Override container name.
   --help                        Show this message.
 
@@ -44,6 +50,7 @@ Notes:
   - Run this on the H100 host, not inside `sglang_bbuf`.
   - This uses the vLLM torch-profiler flow: `--profiler-config`, then POST
     `/start_profile` and `/stop_profile`.
+  - Default capture is two labeled profiles: prefill 4090->1 and decode 1->2048.
   - Current vLLM profiler config already defaults `torch_profiler_with_stack=true`.
   - A small benchmark summary is written after profiling.
 EOF
@@ -59,6 +66,12 @@ TRUST_REMOTE_CODE=0
 REQUEST_MAX_TOKENS=12
 PROFILER_ACTIVE_ITERATIONS=5
 PROMPT="用两句话解释 CUDA graph 和 eager mode 的区别。"
+WARMUP_STEPS=10
+PROFILE_WORKLOAD="both"
+PREFILL_INPUT_LEN=4090
+PREFILL_OUTPUT_LEN=1
+DECODE_INPUT_LEN=1
+DECODE_OUTPUT_LEN=2048
 CONTAINER_NAME=""
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -129,6 +142,30 @@ while [[ $# -gt 0 ]]; do
       PROMPT="$2"
       shift 2
       ;;
+    --warmup-steps)
+      WARMUP_STEPS="$2"
+      shift 2
+      ;;
+    --profile-workload)
+      PROFILE_WORKLOAD="$2"
+      shift 2
+      ;;
+    --prefill-input-len)
+      PREFILL_INPUT_LEN="$2"
+      shift 2
+      ;;
+    --prefill-output-len)
+      PREFILL_OUTPUT_LEN="$2"
+      shift 2
+      ;;
+    --decode-input-len)
+      DECODE_INPUT_LEN="$2"
+      shift 2
+      ;;
+    --decode-output-len)
+      DECODE_OUTPUT_LEN="$2"
+      shift 2
+      ;;
     --container-name)
       CONTAINER_NAME="$2"
       shift 2
@@ -181,6 +218,7 @@ fi
 
 PROFILE_DIR="$RUN_DIR/vllm_profile"
 LOG_PATH="$RUN_DIR/server.log"
+ANALYSIS_PATH="$RUN_DIR/analysis_vllm_live.txt"
 BENCHMARK_PATH="$RUN_DIR/benchmark_vllm.json"
 
 if [[ -z "$CONTAINER_NAME" ]]; then
@@ -260,38 +298,26 @@ if [[ "$ready" -ne 1 ]]; then
   exit 1
 fi
 
-curl -sf -X POST "http://127.0.0.1:${PORT}/start_profile" >/dev/null
-
-python3 - <<PY
-import json
-import sys
-import urllib.request
-
-sys.path.insert(0, ${SCRIPT_DIR@Q})
-from profile_common import extract_openai_chat_text
-
-payload = {
-    "model": ${MODEL@Q},
-    "messages": [{"role": "user", "content": ${PROMPT@Q}}],
-    "temperature": 0,
-    "max_tokens": int(${REQUEST_MAX_TOKENS@Q}),
-}
-req = urllib.request.Request(
-    "http://127.0.0.1:${PORT}/v1/chat/completions",
-    data=json.dumps(payload).encode(),
-    headers={"Content-Type": "application/json"},
-)
-with urllib.request.urlopen(req, timeout=600) as resp:
-    body = json.loads(resp.read().decode())
-text, source = extract_openai_chat_text(body)
-print(text[:400] if text else f"[empty completion; source={source}]")
-PY
-
-curl -sf -X POST "http://127.0.0.1:${PORT}/stop_profile" >/dev/null
+python3 "$SCRIPT_DIR/analyze_llm_torch_profile.py" \
+  --framework vllm \
+  --url "http://127.0.0.1:${PORT}" \
+  --output-dir "$PROFILE_DIR" \
+  --num-steps "$PROFILER_ACTIVE_ITERATIONS" \
+  --warmup-steps "$WARMUP_STEPS" \
+  --probe-requests 1 \
+  --no-profile-by-stage \
+  --profile-workload "$PROFILE_WORKLOAD" \
+  --probe-prompt "$PROMPT" \
+  --probe-max-new-tokens "$REQUEST_MAX_TOKENS" \
+  --prefill-input-len "$PREFILL_INPUT_LEN" \
+  --prefill-output-len "$PREFILL_OUTPUT_LEN" \
+  --decode-input-len "$DECODE_INPUT_LEN" \
+  --decode-output-len "$DECODE_OUTPUT_LEN" \
+  > "$ANALYSIS_PATH"
 
 profile_found=0
 for _ in $(seq 1 240); do
-  if find "$PROFILE_DIR" -maxdepth 1 -type f \( -name '*.pt.trace.json' -o -name '*.pt.trace.json.gz' \) | grep -q .; then
+  if find "$PROFILE_DIR" -type f \( -name '*.pt.trace.json' -o -name '*.pt.trace.json.gz' -o -name '*.trace.json' -o -name '*.trace.json.gz' \) | grep -q .; then
     profile_found=1
     break
   fi
@@ -310,6 +336,8 @@ python3 "$SCRIPT_DIR/probe_llm_server.py" \
   | docker exec -i sglang_bbuf bash -lc "cat > '$BENCHMARK_PATH'" >/dev/null
 
 docker logs "$CONTAINER_NAME" 2>&1 | docker exec -i sglang_bbuf bash -lc "cat > '$LOG_PATH'" || true
+sed -n '1,240p' "$ANALYSIS_PATH"
 echo "PROFILE_DIR=$PROFILE_DIR"
 echo "LOG_PATH=$LOG_PATH"
+echo "ANALYSIS_PATH=$ANALYSIS_PATH"
 echo "BENCHMARK_PATH=$BENCHMARK_PATH"

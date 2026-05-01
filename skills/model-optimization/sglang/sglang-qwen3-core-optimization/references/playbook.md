@@ -77,4 +77,4 @@ For Qwen3 MoE performance, always record:
 - For quantized checkpoints, preserve BF16 fallback tests and weight-name mapping tests.
 - For parser work, validate accumulated final JSON and incremental streaming chunks.
 - For docs-only PRs, quote the exact command/config diff and tie it to a validation lane.
-- For open PRs, write "open radar" and avoid implying support has landed.
+- For open PRs, write "open optimization candidate" and avoid implying support has landed.

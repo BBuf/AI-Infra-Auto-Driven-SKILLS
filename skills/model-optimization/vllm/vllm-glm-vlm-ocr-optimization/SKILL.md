@@ -1,6 +1,6 @@
 ---
 name: vllm-glm-vlm-ocr-optimization
-description: PR-backed optimization manual for GLM VLM / OCR in vLLM. Use when Codex needs to audit, debug, extend, or document GLM-4V, GLM-4.1V, GLM-OCR, GLM visual processor, MRoPE, video, and OCR MTP behavior in vLLM.
+description: PR-backed optimization manual for GLM VLM / OCR in vLLM. Use when an engineer needs to audit, debug, extend, or document GLM-4V, GLM-4.1V, GLM-OCR, GLM visual processor, MRoPE, video, and OCR MTP behavior in vLLM.
 ---
 
 # vLLM GLM VLM / OCR Optimization
@@ -41,7 +41,7 @@ Every PR cited for this family must be based on diff reading, not only PR titles
 - [#33350](https://github.com/vllm-project/vllm/pull/33350) `Fix broken GLM-OCR initialization`: Fixed startup failures in the GLM-OCR path after the first bring-up.
 - [#37962](https://github.com/vllm-project/vllm/pull/37962) `GLM OCR Patch Merger context_dim`: Updated the patch-merger contract for newer OCR checkpoints.
 
-## Open Radar
+## Open Optimization Items
 
 - Re-run PR search before claiming new support beyond the checked mainline commit.
 

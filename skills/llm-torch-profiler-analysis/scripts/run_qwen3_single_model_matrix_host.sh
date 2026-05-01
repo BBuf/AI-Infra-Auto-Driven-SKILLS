@@ -26,6 +26,8 @@ This script is intended to run on the H100 host. It:
 3. captures TensorRT-LLM formal + graph-off mapping traces and writes `analysis_trtllm.txt`
 
 This is a legacy single-GPU-per-framework wrapper around the shared host-side runners.
+It now forwards the same default stage-separated workloads as the shared matrix:
+prefill 4090->1 and decode 1->2048.
 
 Environment:
   Export `HF_TOKEN` and `HUGGINGFACE_HUB_TOKEN` before running.
@@ -46,6 +48,11 @@ TRT_FORMAL_PREFILL_PORT=""
 TRT_FORMAL_DECODE_PORT=""
 TRT_MAPPING_PREFILL_PORT=""
 TRT_MAPPING_DECODE_PORT=""
+PROFILE_WORKLOAD="both"
+PREFILL_INPUT_LEN=4090
+PREFILL_OUTPUT_LEN=1
+DECODE_INPUT_LEN=1
+DECODE_OUTPUT_LEN=2048
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -63,6 +70,11 @@ while [[ $# -gt 0 ]]; do
     --trt-formal-decode-port) TRT_FORMAL_DECODE_PORT="$2"; shift 2 ;;
     --trt-mapping-prefill-port) TRT_MAPPING_PREFILL_PORT="$2"; shift 2 ;;
     --trt-mapping-decode-port) TRT_MAPPING_DECODE_PORT="$2"; shift 2 ;;
+    --profile-workload) PROFILE_WORKLOAD="$2"; shift 2 ;;
+    --prefill-input-len) PREFILL_INPUT_LEN="$2"; shift 2 ;;
+    --prefill-output-len) PREFILL_OUTPUT_LEN="$2"; shift 2 ;;
+    --decode-input-len) DECODE_INPUT_LEN="$2"; shift 2 ;;
+    --decode-output-len) DECODE_OUTPUT_LEN="$2"; shift 2 ;;
     --help|-h) usage; exit 0 ;;
     *)
       echo "Unknown argument: $1" >&2
@@ -117,6 +129,11 @@ HF_TOKEN="$HF_TOKEN" HUGGINGFACE_HUB_TOKEN="$HUGGINGFACE_HUB_TOKEN" \
   --gpu "$SGLANG_GPU" \
   --tp-size 1 \
   --mem-fraction 0.85 \
+  --profile-workload "$PROFILE_WORKLOAD" \
+  --prefill-input-len "$PREFILL_INPUT_LEN" \
+  --prefill-output-len "$PREFILL_OUTPUT_LEN" \
+  --decode-input-len "$DECODE_INPUT_LEN" \
+  --decode-output-len "$DECODE_OUTPUT_LEN" \
   --trust-remote-code
 
 echo "[2/6] vLLM formal"
@@ -126,6 +143,11 @@ HF_TOKEN="$HF_TOKEN" HUGGINGFACE_HUB_TOKEN="$HUGGINGFACE_HUB_TOKEN" \
   --run-dir "$VLLM_FORMAL_DIR" \
   --port "$VLLM_FORMAL_PORT" \
   --gpu "$VLLM_GPU" \
+  --profile-workload "$PROFILE_WORKLOAD" \
+  --prefill-input-len "$PREFILL_INPUT_LEN" \
+  --prefill-output-len "$PREFILL_OUTPUT_LEN" \
+  --decode-input-len "$DECODE_INPUT_LEN" \
+  --decode-output-len "$DECODE_OUTPUT_LEN" \
   --trust-remote-code
 
 echo "[3/6] vLLM mapping"
@@ -135,6 +157,11 @@ HF_TOKEN="$HF_TOKEN" HUGGINGFACE_HUB_TOKEN="$HUGGINGFACE_HUB_TOKEN" \
   --run-dir "$VLLM_MAPPING_DIR" \
   --port "$VLLM_MAPPING_PORT" \
   --gpu "$VLLM_GPU" \
+  --profile-workload "$PROFILE_WORKLOAD" \
+  --prefill-input-len "$PREFILL_INPUT_LEN" \
+  --prefill-output-len "$PREFILL_OUTPUT_LEN" \
+  --decode-input-len "$DECODE_INPUT_LEN" \
+  --decode-output-len "$DECODE_OUTPUT_LEN" \
   --trust-remote-code \
   --enforce-eager
 
@@ -149,6 +176,8 @@ HF_TOKEN="$HF_TOKEN" HUGGINGFACE_HUB_TOKEN="$HUGGINGFACE_HUB_TOKEN" \
   --stage prefill \
   --port "$TRT_FORMAL_PREFILL_PORT" \
   --gpu "$TRT_FORMAL_GPU" \
+  --input-len "$PREFILL_INPUT_LEN" \
+  --output-len "$PREFILL_OUTPUT_LEN" \
   --override-py-executor /data/bbuf/validate/unified_llm_profiler_skill/overrides/trtllm/py_executor_with_stack.py \
   --trust-remote-code
 HF_TOKEN="$HF_TOKEN" HUGGINGFACE_HUB_TOKEN="$HUGGINGFACE_HUB_TOKEN" \
@@ -158,6 +187,8 @@ HF_TOKEN="$HF_TOKEN" HUGGINGFACE_HUB_TOKEN="$HUGGINGFACE_HUB_TOKEN" \
   --stage decode \
   --port "$TRT_FORMAL_DECODE_PORT" \
   --gpu "$TRT_FORMAL_GPU" \
+  --input-len "$DECODE_INPUT_LEN" \
+  --output-len "$DECODE_OUTPUT_LEN" \
   --override-py-executor /data/bbuf/validate/unified_llm_profiler_skill/overrides/trtllm/py_executor_with_stack.py \
   --trust-remote-code
 HF_TOKEN="$HF_TOKEN" HUGGINGFACE_HUB_TOKEN="$HUGGINGFACE_HUB_TOKEN" \
@@ -167,6 +198,8 @@ HF_TOKEN="$HF_TOKEN" HUGGINGFACE_HUB_TOKEN="$HUGGINGFACE_HUB_TOKEN" \
   --stage prefill \
   --port "$TRT_MAPPING_PREFILL_PORT" \
   --gpu "$TRT_MAPPING_GPU" \
+  --input-len "$PREFILL_INPUT_LEN" \
+  --output-len "$PREFILL_OUTPUT_LEN" \
   --override-py-executor /data/bbuf/validate/unified_llm_profiler_skill/overrides/trtllm/py_executor_with_stack.py \
   --disable-cudagraph \
   --trust-remote-code
@@ -177,6 +210,8 @@ HF_TOKEN="$HF_TOKEN" HUGGINGFACE_HUB_TOKEN="$HUGGINGFACE_HUB_TOKEN" \
   --stage decode \
   --port "$TRT_MAPPING_DECODE_PORT" \
   --gpu "$TRT_MAPPING_GPU" \
+  --input-len "$DECODE_INPUT_LEN" \
+  --output-len "$DECODE_OUTPUT_LEN" \
   --override-py-executor /data/bbuf/validate/unified_llm_profiler_skill/overrides/trtllm/py_executor_with_stack.py \
   --disable-cudagraph \
   --trust-remote-code

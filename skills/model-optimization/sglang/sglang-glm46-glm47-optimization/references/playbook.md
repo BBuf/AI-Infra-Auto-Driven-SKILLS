@@ -127,7 +127,7 @@ When producing docs or debugging performance, keep these as separate rows in the
 
 When updating model history docs:
 
-- Include merged PR cards and open PR radar separately.
+- Include merged PR cards and open PR candidates separately.
 - Mention `glm47` tool parser and `glm45` reasoning parser explicitly for GLM-4.7.
 - Mention `glm4_moe_lite` and `Glm4MoeLiteForCausalLM` explicitly for Flash.
 - Explain whether each code excerpt came from the full model, Lite model, NextN, parser, quant loader, or hardware backend.

@@ -1,6 +1,6 @@
 ---
 name: sglang-ernie45-optimization
-description: PR-backed optimization manual for Ernie4.5 / Ernie4.5-VL in SGLang. Use when Codex needs to audit, debug, extend, or document the SGLang Ernie4.5 multimodal runtime, especially the initial VL landing, fused Triton rotary path, and later cos/sin cache rewrite for Ernie4.5-VL.
+description: PR-backed optimization manual for Ernie4.5 / Ernie4.5-VL in SGLang. Use when an engineer needs to audit, debug, extend, or document the SGLang Ernie4.5 multimodal runtime, especially the initial VL landing, fused Triton rotary path, and later cos/sin cache rewrite for Ernie4.5-VL.
 ---
 
 # SGLang Ernie4.5 / Ernie4.5-VL Optimization

@@ -1,6 +1,6 @@
 ---
 name: sglang-glm45-optimization
-description: PR-backed and current-main optimization manual for GLM-4.5 and GLM-4.5 Air/MoE in SGLang. Use when Codex needs to recover, extend, or audit GLM-4.5 MoE loading, A2A/DeepEP, reduce-scatter behavior, NVFP4 padding, tool parser behavior, AMD/NPU/Blackwell validation, or GLM-4.5 cookbook recipes.
+description: PR-backed and current-main optimization manual for GLM-4.5 and GLM-4.5 Air/MoE in SGLang. Use when an engineer needs to recover, extend, or audit GLM-4.5 MoE loading, A2A/DeepEP, reduce-scatter behavior, NVFP4 padding, tool parser behavior, AMD/NPU/Blackwell validation, or GLM-4.5 cookbook recipes.
 ---
 
 # SGLang GLM-4.5 Optimization

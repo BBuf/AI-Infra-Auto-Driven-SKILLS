@@ -1,12 +1,5 @@
 # vllm ERNIE 4.5 Model PR Optimization History
 
-## Scope
-
-- Rebuilt on: 2026-04-25
-- Source baseline: `vllm-project/vllm` trace worktree commit `95995bbef8`
-- PR collection rule: run `git log --name-only -- <model-files>` on model implementation, config, processor, parser, docs/tests, filter by model keywords in commit subjects, then read each PR's final diff through the GitHub Pull Request files API.
-- Preservation rule: PRs explicitly cited by the previous history/skill are retained even if current implementation files no longer trace to them, and the card marks that source.
-
 ## Implementation File Coverage
 
 | File | Git-traced PRs |
@@ -58,7 +51,7 @@
 - Status/date: merged / 2025-07-02
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +634/-0, 657 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model] Add Ernie4.5 and Ernie4.5MoE Model Support"; model line: ERNIE 4.5; category: model support/runtime entry; main diff: `vllm/model_executor/models/ernie45_moe.py`, `vllm/model_executor/models/ernie45.py`, `tests/models/registry.py`; PR body summary: Support Baidu Ernie4.5 model for vllm In this PR, I have provided the implementation of the Ernie4.5 and Ernie4.5MoE model structure through two files: ernie45.py and ernie45_mo....
+- Motivation: Title: "[Model] Add Ernie4.5 and Ernie4.5MoE Model Support"; model line: ERNIE 4.5; category: model support/runtime entry; main diff: `vllm/model_executor/models/ernie45_moe.py`, `vllm/model_executor/models/ernie45.py`, `tests/models/registry.py`; technical summary: Covers "[Model] Add Ernie4.5 and Ernie4.5MoE Model Support"; the main implementation surface is `vllm/model_executor/models/ernie45_moe.py`, `vllm/model_executor/models/ernie45.py`, `tests/models/registry.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/ernie45_moe.py` added +583/-0 (583 lines); hunks: -0,0 +1,583; symbols: Ernie4_5_MoeMLP, __init__, forward, Ernie4_5_MoeMoE, touching `Ernie4_5_MoeMLP, __init__, forward`; `vllm/model_executor/models/ernie45.py` added +43/-0 (43 lines); hunks: -0,0 +1,43; symbols: Ernie4_5_ForCausalLM, __init__, touching `Ernie4_5_ForCausalLM, __init__`; `tests/models/registry.py` modified +4/-0 (4 lines); hunks: -162,6 +162,10 @@ def check_available_online(; symbols: check_available_online, touching `check_available_online`; `docs/models/supported_models.md` modified +2/-0 (2 lines); hunks: -330,6 +330,8 @@ Specified using `--task generate`..
 - Code diff details:
   - `vllm/model_executor/models/ernie45_moe.py` added +583/-0 (583 lines); hunks: -0,0 +1,583; symbols: Ernie4_5_MoeMLP, __init__, forward, Ernie4_5_MoeMoE
@@ -101,7 +94,7 @@ diff -- tests/models/registry.py
 - Status/date: merged / 2025-07-28
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +6/-5, 39 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix Ernie4_5_MoeForCausalLM shared experts"; model line: ERNIE 4.5; category: bug fix; main diff: `vllm/model_executor/models/ernie45_moe.py`; no usable PR-body summary.
+- Motivation: Title: "[Bugfix] Fix Ernie4_5_MoeForCausalLM shared experts"; model line: ERNIE 4.5; category: bug fix; main diff: `vllm/model_executor/models/ernie45_moe.py`; technical summary: Covers "[Bugfix] Fix Ernie4_5_MoeForCausalLM shared experts"; the main implementation surface is `vllm/model_executor/models/ernie45_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/ernie45_moe.py` modified +6/-5 (11 lines); hunks: -109,8 +109,8 @@ def __init__(; -137,7 +137,7 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
   - `vllm/model_executor/models/ernie45_moe.py` modified +6/-5 (11 lines); hunks: -109,8 +109,8 @@ def __init__(; -137,7 +137,7 @@ def __init__(; symbols: __init__, forward
@@ -128,7 +121,7 @@ diff -- vllm/model_executor/models/ernie45_moe.py
 - Status/date: merged / 2025-07-28
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/ernie45.py`; associated commits `656c24f1b5d8`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +8/-8, 51 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[`Ernie 4.5`] Name Change for Base 0.3B Model"; model line: ERNIE 4.5; category: model implementation change; main diff: `vllm/model_executor/models/ernie45.py`; PR body summary: Internally discussed with baidu/ernie team to have the name change from `Ernie4_5_For...` to `Ernie4_5For...` Relevant hub PRs that need to be merged before: - https://huggingfa....
+- Motivation: Title: "[`Ernie 4.5`] Name Change for Base 0.3B Model"; model line: ERNIE 4.5; category: model implementation change; main diff: `vllm/model_executor/models/ernie45.py`; technical summary: Covers "[`Ernie 4.5`] Name Change for Base 0.3B Model"; the main implementation surface is `vllm/model_executor/models/ernie45.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/ernie45.py` modified +1/-1 (2 lines); hunks: -28,7 +28,7; symbols: Ernie4_5_ForCausalLM, Ernie4_5ForCausalLM, __init__, touching `Ernie4_5_ForCausalLM, Ernie4_5ForCausalLM, __init__`.
 - Code diff details:
   - `vllm/model_executor/models/ernie45.py` modified +1/-1 (2 lines); hunks: -28,7 +28,7; symbols: Ernie4_5_ForCausalLM, Ernie4_5ForCausalLM, __init__
@@ -151,7 +144,7 @@ diff -- vllm/model_executor/models/ernie45.py
 - Status/date: merged / 2025-08-27
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 11 files, +2463/-0, 2540 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model] Add Ernie4.5 VL Model Support"; model line: ERNIE 4.5; category: model support/runtime entry; main diff: `vllm/model_executor/models/ernie45_vl.py`, `vllm/model_executor/models/ernie45_vl_moe.py`, `vllm/model_executor/layers/rotary_embedding/mrope.py`; PR body summary: Support Baidu Ernie4.5 VL model for vllm Note: torch.compile is not supported. Due to the model limitations of multimodal experts and text experts, using torch.compile may fail....
+- Motivation: Title: "[Model] Add Ernie4.5 VL Model Support"; model line: ERNIE 4.5; category: model support/runtime entry; main diff: `vllm/model_executor/models/ernie45_vl.py`, `vllm/model_executor/models/ernie45_vl_moe.py`, `vllm/model_executor/layers/rotary_embedding/mrope.py`; technical summary: Covers "[Model] Add Ernie4.5 VL Model Support"; the main implementation surface is `vllm/model_executor/models/ernie45_vl.py`, `vllm/model_executor/models/ernie45_vl_moe.py`, `vllm/model_executor/layers/rotary_embedding/mrope.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/ernie45_vl.py` added +1504/-0 (1504 lines); hunks: -0,0 +1,1504; symbols: rotate_half, apply_rotary_emb_torch, apply_rotary_pos_emb_vision, all_gather_interleave, touching `rotate_half, apply_rotary_emb_torch, apply_rotary_pos_emb_vision`; `vllm/model_executor/models/ernie45_vl_moe.py` added +723/-0 (723 lines); hunks: -0,0 +1,723; symbols: Ernie4_5_VLMoeMLP, Ernie4_5_VLMoeAttention, __init__, forward, touching `Ernie4_5_VLMoeMLP, Ernie4_5_VLMoeAttention, __init__`; `vllm/model_executor/layers/rotary_embedding/mrope.py` modified +123/-0 (123 lines); hunks: -393,6 +393,15 @@ def get_input_positions_tensor(; -513,6 +522,120 @@ def _glm4v_get_input_positions_tensor(; symbols: get_input_positions_tensor, _glm4v_get_input_positions_tensor, _ernie_get_input_positions_tensor, _vl_get_input_positions_tensor, touching `get_input_positions_tensor, _glm4v_get_input_positions_tensor, _ernie_get_input_positions_tensor`; `vllm/model_executor/layers/rotary_embedding/ernie45_vl_rope.py` added +72/-0 (72 lines); hunks: -0,0 +1,72; symbols: Ernie4_5_VLRotaryEmbedding, forward, touching `Ernie4_5_VLRotaryEmbedding, forward`.
 - Code diff details:
   - `vllm/model_executor/models/ernie45_vl.py` added +1504/-0 (1504 lines); hunks: -0,0 +1,1504; symbols: rotate_half, apply_rotary_emb_torch, apply_rotary_pos_emb_vision, all_gather_interleave
@@ -194,7 +187,7 @@ diff -- vllm/model_executor/layers/rotary_embedding/mrope.py
 - Status/date: merged / 2025-09-09
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +18/-7, 60 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[BugFix][Model] Fix Ernie4.5-VL hanging on long inputs"; model line: ERNIE 4.5; category: bug fix; main diff: `vllm/model_executor/models/ernie45_vl.py`, `vllm/model_executor/models/ernie45_vl_moe.py`; PR body summary: Implement the `get_mm_max_tokens_per_item` method to ensure a larger `encoder_compute_budget` and prevent hanging on long inputs. `python examples/offline_inference/vision_langu....
+- Motivation: Title: "[BugFix][Model] Fix Ernie4.5-VL hanging on long inputs"; model line: ERNIE 4.5; category: bug fix; main diff: `vllm/model_executor/models/ernie45_vl.py`, `vllm/model_executor/models/ernie45_vl_moe.py`; technical summary: Covers "[BugFix][Model] Fix Ernie4.5-VL hanging on long inputs"; the main implementation surface is `vllm/model_executor/models/ernie45_vl.py`, `vllm/model_executor/models/ernie45_vl_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/ernie45_vl.py` modified +10/-4 (14 lines); hunks: -66,8 +66,6; -839,6 +837,15 @@ def get_image_processor(self, **kwargs: object):; symbols: get_image_processor, get_supported_mm_limits, get_mm_max_tokens_per_item, _get_vision_info, touching `get_image_processor, get_supported_mm_limits, get_mm_max_tokens_per_item`; `vllm/model_executor/models/ernie45_vl_moe.py` modified +8/-3 (11 lines); hunks: -287,8 +287,13 @@ def forward(; -310,7 +315,7 @@ def forward(; symbols: forward, touching `forward`.
 - Code diff details:
   - `vllm/model_executor/models/ernie45_vl.py` modified +10/-4 (14 lines); hunks: -66,8 +66,6; -839,6 +837,15 @@ def get_image_processor(self, **kwargs: object):; symbols: get_image_processor, get_supported_mm_limits, get_mm_max_tokens_per_item, _get_vision_info
@@ -230,7 +223,7 @@ diff -- vllm/model_executor/models/ernie45_vl_moe.py
 - Status/date: merged / 2025-09-30
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/ernie45_moe.py`, `vllm/model_executor/models/ernie45_vl_moe.py`; associated commits `ef6e0e7132ec`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +13/-7, 83 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix][Model]fix ernie45 moe gate&bias dtype to float32"; model line: ERNIE 4.5; category: bug fix; main diff: `vllm/model_executor/models/ernie45_vl_moe.py`, `vllm/model_executor/models/ernie45_moe.py`; PR body summary: fix issue https://github.com/vllm-project/vllm/issues/25833 refer transformers:https://github.com/huggingface/transformers/blob/main/src/transformers/models/ernie4_5_moe/modelin....
+- Motivation: Title: "[Bugfix][Model]fix ernie45 moe gate&bias dtype to float32"; model line: ERNIE 4.5; category: bug fix; main diff: `vllm/model_executor/models/ernie45_vl_moe.py`, `vllm/model_executor/models/ernie45_moe.py`; technical summary: Covers "[Bugfix][Model]fix ernie45 moe gate&bias dtype to float32"; the main implementation surface is `vllm/model_executor/models/ernie45_vl_moe.py`, `vllm/model_executor/models/ernie45_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/ernie45_vl_moe.py` modified +10/-5 (15 lines); hunks: -199,7 +199,7 @@ def __init__(; -209,6 +209,7 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`; `vllm/model_executor/models/ernie45_moe.py` modified +3/-2 (5 lines); hunks: -120,11 +120,12 @@ def __init__(; -157,7 +158,7 @@ def forward(self, hidden_states: torch.Tensor) -> torch.Tensor:; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
   - `vllm/model_executor/models/ernie45_vl_moe.py` modified +10/-5 (15 lines); hunks: -199,7 +199,7 @@ def __init__(; -209,6 +209,7 @@ def __init__(; symbols: __init__, forward
@@ -266,7 +259,7 @@ diff -- vllm/model_executor/models/ernie45_moe.py
 - Status/date: merged / 2025-10-12
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +132/-7, 243 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[EPLB] Support ernie4.5-moe"; model line: ERNIE 4.5; category: model support/runtime entry; main diff: `vllm/model_executor/models/ernie45_moe.py`; no usable PR-body summary.
+- Motivation: Title: "[EPLB] Support ernie4.5-moe"; model line: ERNIE 4.5; category: model support/runtime entry; main diff: `vllm/model_executor/models/ernie45_moe.py`; technical summary: Covers "[EPLB] Support ernie4.5-moe"; the main implementation surface is `vllm/model_executor/models/ernie45_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/ernie45_moe.py` modified +132/-7 (139 lines); hunks: -33,8 +33,12; -58,7 +62,7; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
   - `vllm/model_executor/models/ernie45_moe.py` modified +132/-7 (139 lines); hunks: -33,8 +33,12; -58,7 +62,7; symbols: __init__, forward
@@ -293,7 +286,7 @@ diff -- vllm/model_executor/models/ernie45_moe.py
 - Status/date: merged / 2025-10-13
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_ernie45_reasoning_parser.py`, `vllm/reasoning/ernie45_reasoning_parser.py`; associated commits `782505ed8eb4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +870/-0, 909 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model] Add reasoning_parser and tool_parser for Ernie45 thinking"; model line: ERNIE 4.5; category: docs/tests/CI; main diff: `vllm/reasoning/ernie45_reasoning_parser.py`, `tests/reasoning/test_ernie45_reasoning_parser.py`; PR body summary: Add reasoning_parser and tool_parser for Ernie45 thinking reasoning format: `abc\n \n\n\n \ndef\n \n` toolcall format: `abc\n \n\n\n \nxyz\n \n` Test **start server** **Result**....
+- Motivation: Title: "[Model] Add reasoning_parser and tool_parser for Ernie45 thinking"; model line: ERNIE 4.5; category: docs/tests/CI; main diff: `vllm/reasoning/ernie45_reasoning_parser.py`, `tests/reasoning/test_ernie45_reasoning_parser.py`; technical summary: Covers "[Model] Add reasoning_parser and tool_parser for Ernie45 thinking"; the main implementation surface is `vllm/reasoning/ernie45_reasoning_parser.py`, `tests/reasoning/test_ernie45_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/reasoning/ernie45_reasoning_parser.py` added +169/-0 (169 lines); hunks: -0,0 +1,169; symbols: Ernie45ReasoningParser, start_token, end_token, __init__, touching `Ernie45ReasoningParser, start_token, end_token`; `tests/reasoning/test_ernie45_reasoning_parser.py` added +124/-0 (124 lines); hunks: -0,0 +1,124; symbols: ernie45_tokenizer, test_reasoning, touching `ernie45_tokenizer, test_reasoning`.
 - Code diff details:
   - `vllm/reasoning/ernie45_reasoning_parser.py` added +169/-0 (169 lines); hunks: -0,0 +1,169; symbols: Ernie45ReasoningParser, start_token, end_token, __init__
@@ -330,7 +323,7 @@ diff -- tests/reasoning/test_ernie45_reasoning_parser.py
 - Status/date: merged / 2025-10-14
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/ernie45_moe.py`; associated commits `01ad27faff35`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +22/-12, 71 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model][Bugfix]fix ernie45 load failed due to ernie45 eplb code"; model line: ERNIE 4.5; category: bug fix; main diff: `vllm/model_executor/models/ernie45_moe.py`; PR body summary: fix following issue by PR https://github.com/vllm-project/vllm/pull/22100 Running the following test script python test_eplb.py --mode eplb python test_eplb.py --mode normal.
+- Motivation: Title: "[Model][Bugfix]fix ernie45 load failed due to ernie45 eplb code"; model line: ERNIE 4.5; category: bug fix; main diff: `vllm/model_executor/models/ernie45_moe.py`; technical summary: Covers "[Model][Bugfix]fix ernie45 load failed due to ernie45 eplb code"; the main implementation surface is `vllm/model_executor/models/ernie45_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/ernie45_moe.py` modified +22/-12 (34 lines); hunks: -23,7 +23,8; -139,10 +140,10 @@ def __init__(; symbols: __init__, load_weights, touching `__init__, load_weights`.
 - Code diff details:
   - `vllm/model_executor/models/ernie45_moe.py` modified +22/-12 (34 lines); hunks: -23,7 +23,8; -139,10 +140,10 @@ def __init__(; symbols: __init__, load_weights
@@ -357,7 +350,7 @@ diff -- vllm/model_executor/models/ernie45_moe.py
 - Status/date: merged / 2025-10-16
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/ernie45_vl_moe.py`; associated commits `e51928793e10`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +22/-5, 55 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model][Bugfix] fix ernie45 vl run failed from shared experts optimization"; model line: ERNIE 4.5; category: bug fix; main diff: `vllm/model_executor/models/ernie45_vl_moe.py`; PR body summary: Fix the following issue Due to `SharedFusedMoE` `forward` return is tuple (https://github.com/vllm-project/vllm/issues/26145), it is no `flatten()` method English translation is.
+- Motivation: Title: "[Model][Bugfix] fix ernie45 vl run failed from shared experts optimization"; model line: ERNIE 4.5; category: bug fix; main diff: `vllm/model_executor/models/ernie45_vl_moe.py`; technical summary: Covers "[Model][Bugfix] fix ernie45 vl run failed from shared experts optimization"; the main implementation surface is `vllm/model_executor/models/ernie45_vl_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/ernie45_vl_moe.py` modified +22/-5 (27 lines); hunks: -341,7 +341,10 @@ def forward(; -353,16 +356,26 @@ def forward(; symbols: forward, touching `forward`.
 - Code diff details:
   - `vllm/model_executor/models/ernie45_vl_moe.py` modified +22/-5 (27 lines); hunks: -341,7 +341,10 @@ def forward(; -353,16 +356,26 @@ def forward(; symbols: forward
@@ -384,7 +377,7 @@ diff -- vllm/model_executor/models/ernie45_vl_moe.py
 - Status/date: merged / 2025-10-27
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/ernie45_moe.py`; associated commits `63b22e0dbb90`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +2/-0, 9 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model][Bugfix] fix ernie45 moe 300B SharedFusedMoE output tuple"; model line: ERNIE 4.5; category: bug fix; main diff: `vllm/model_executor/models/ernie45_moe.py`; PR body summary: fix the following issue ERNIE-4.5-300B-A47B-PT non shared expert model, but the output of `SharedFuseMoE` is still tuple Add an else branch to handle this situation.
+- Motivation: Title: "[Model][Bugfix] fix ernie45 moe 300B SharedFusedMoE output tuple"; model line: ERNIE 4.5; category: bug fix; main diff: `vllm/model_executor/models/ernie45_moe.py`; technical summary: Covers "[Model][Bugfix] fix ernie45 moe 300B SharedFusedMoE output tuple"; the main implementation surface is `vllm/model_executor/models/ernie45_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/ernie45_moe.py` modified +2/-0 (2 lines); hunks: -215,6 +215,8 @@ def forward(self, hidden_states: torch.Tensor) -> torch.Tensor:; symbols: forward, touching `forward`.
 - Code diff details:
   - `vllm/model_executor/models/ernie45_moe.py` modified +2/-0 (2 lines); hunks: -215,6 +215,8 @@ def forward(self, hidden_states: torch.Tensor) -> torch.Tensor:; symbols: forward
@@ -407,7 +400,7 @@ diff -- vllm/model_executor/models/ernie45_moe.py
 - Status/date: merged / 2025-11-04
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/reasoning/ernie45_reasoning_parser.py`; associated commits `43a6acfb7de8`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +2/-2, 11 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model] fix ernie45 reasoning_parser"; model line: ERNIE 4.5; category: bug fix; main diff: `vllm/reasoning/ernie45_reasoning_parser.py`; PR body summary: Fix the following issues with ernie45 reasoning parser.
+- Motivation: Title: "[Model] fix ernie45 reasoning_parser"; model line: ERNIE 4.5; category: bug fix; main diff: `vllm/reasoning/ernie45_reasoning_parser.py`; technical summary: Covers "[Model] fix ernie45 reasoning_parser"; the main implementation surface is `vllm/reasoning/ernie45_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/reasoning/ernie45_reasoning_parser.py` modified +2/-2 (4 lines); hunks: -36,8 +36,8 @@ def end_token(self) -> str:; symbols: end_token, __init__, touching `end_token, __init__`.
 - Code diff details:
   - `vllm/reasoning/ernie45_reasoning_parser.py` modified +2/-2 (4 lines); hunks: -36,8 +36,8 @@ def end_token(self) -> str:; symbols: end_token, __init__
@@ -432,7 +425,7 @@ diff -- vllm/reasoning/ernie45_reasoning_parser.py
 - Status/date: merged / 2025-12-25
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +82/-5, 137 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model][Ernie4.5-VL] Support video metadata for timestamp rendering"; model line: ERNIE 4.5; category: model support/runtime entry; main diff: `vllm/model_executor/models/ernie45_vl.py`, `tests/models/multimodal/processing/test_common.py`; PR body summary: ERNIE-4.5-VL requires video metadata to render timestamps. This PR forwards video inputs as (frames, metadata) tuples to the HuggingFace processor when supported. For forward/ba....
+- Motivation: Title: "[Model][Ernie4.5-VL] Support video metadata for timestamp rendering"; model line: ERNIE 4.5; category: model support/runtime entry; main diff: `vllm/model_executor/models/ernie45_vl.py`, `tests/models/multimodal/processing/test_common.py`; technical summary: Covers "[Model][Ernie4.5-VL] Support video metadata for timestamp rendering"; the main implementation surface is `vllm/model_executor/models/ernie45_vl.py`, `tests/models/multimodal/processing/test_common.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/ernie45_vl.py` modified +80/-4 (84 lines); hunks: -21,7 +21,7; -41,7 +41,7; symbols: get_max_video_tokens, Ernie4_5VLMultiModalProcessor, _get_data_parser, _pixel_values_norm, touching `get_max_video_tokens, Ernie4_5VLMultiModalProcessor, _get_data_parser`; `tests/models/multimodal/processing/test_common.py` modified +2/-1 (3 lines); hunks: -104,7 +104,8 @@ def create_metadata(frames: np.ndarray):; symbols: create_metadata, touching `create_metadata`.
 - Code diff details:
   - `vllm/model_executor/models/ernie45_vl.py` modified +80/-4 (84 lines); hunks: -21,7 +21,7; -41,7 +41,7; symbols: get_max_video_tokens, Ernie4_5VLMultiModalProcessor, _get_data_parser, _pixel_values_norm
@@ -466,7 +459,7 @@ diff -- tests/models/multimodal/processing/test_common.py
 - Status/date: merged / 2026-04-14
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/model_executor/test_ernie45_vl_mrope.py`, `vllm/model_executor/models/ernie45_vl.py`; associated commits `0008729abfbd`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +196/-123, 339 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model] Use mm_features for Ernie-4.5 VL M-RoPE"; model line: ERNIE 4.5; category: model implementation change; main diff: `vllm/model_executor/models/ernie45_vl.py`, `tests/model_executor/test_ernie45_vl_mrope.py`; PR body summary: Implement the Ernie-4.5 VL slice of #32656 by switching M-RoPE position calculation from the legacy `input_tokens` marker-scanning path to `mm_features`. This change refactors `....
+- Motivation: Title: "[Model] Use mm_features for Ernie-4.5 VL M-RoPE"; model line: ERNIE 4.5; category: model implementation change; main diff: `vllm/model_executor/models/ernie45_vl.py`, `tests/model_executor/test_ernie45_vl_mrope.py`; technical summary: Covers "[Model] Use mm_features for Ernie-4.5 VL M-RoPE"; the main implementation surface is `vllm/model_executor/models/ernie45_vl.py`, `tests/model_executor/test_ernie45_vl_mrope.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/ernie45_vl.py` modified +53/-123 (176 lines); hunks: -23,9 +23,8; -1401,131 +1400,62 @@ def get_mrope_input_positions(; symbols: get_mrope_input_positions, iter_mm_grid_thw, _parse_and_validate_image_input, touching `get_mrope_input_positions, iter_mm_grid_thw, _parse_and_validate_image_input`; `tests/model_executor/test_ernie45_vl_mrope.py` added +143/-0 (143 lines); hunks: -0,0 +1,143; symbols: _force_cpu_default_device, DummyConfig, make_model, make_mm_feature, touching `_force_cpu_default_device, DummyConfig, make_model`.
 - Code diff details:
   - `vllm/model_executor/models/ernie45_vl.py` modified +53/-123 (176 lines); hunks: -23,9 +23,8; -1401,131 +1400,62 @@ def get_mrope_input_positions(; symbols: get_mrope_input_positions, iter_mm_grid_thw, _parse_and_validate_image_input

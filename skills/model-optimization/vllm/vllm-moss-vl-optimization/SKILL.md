@@ -1,6 +1,6 @@
 ---
 name: vllm-moss-vl-optimization
-description: PR-backed optimization manual for MOSS-VL in vLLM. Use when Codex needs to audit, debug, extend, or document Tracking note for MOSS-VL, which does not have a native vLLM mainline model module today.
+description: PR-backed optimization manual for MOSS-VL in vLLM. Use when an engineer needs to audit, debug, extend, or document Tracking note for MOSS-VL, which does not have a native vLLM mainline model module today.
 ---
 
 # vLLM MOSS-VL Optimization
@@ -34,7 +34,7 @@ Every PR cited for this family must be based on diff reading, not only PR titles
 
 - No landed PR is recorded yet for this family.
 
-## Open Radar
+## Open Optimization Items
 
 - Re-run PR search before claiming new support beyond the checked mainline commit.
 

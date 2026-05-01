@@ -1,6 +1,6 @@
 ---
 name: sglang-qwen36-optimization
-description: PR-backed and current-main optimization manual for Qwen3.6 in SGLang. Use when Codex needs to recover, extend, or audit Qwen3.6-35B-A3B/27B dense deployment, hybrid Gated Delta Network behavior, multimodal inputs, thinking preservation, Qwen3 reasoning plus Qwen3-Coder tool parser, MTP, Mamba scheduler strategy, FP8/BF16 commands, CPU offload, or cookbook parity.
+description: PR-backed and current-main optimization manual for Qwen3.6 in SGLang. Use when an engineer needs to recover, extend, or audit Qwen3.6-35B-A3B/27B dense deployment, hybrid Gated Delta Network behavior, multimodal inputs, thinking preservation, Qwen3 reasoning plus Qwen3-Coder tool parser, MTP, Mamba scheduler strategy, FP8/BF16 commands, CPU offload, or cookbook parity.
 ---
 
 # SGLang Qwen3.6 Optimization
@@ -64,7 +64,7 @@ Qwen3.6 work should preserve deployment semantics while reusing lower-level Qwen
 
 Before adding Qwen3.6 PR evidence, open the PR diff/source and write a full card in `references/pr-history.md` with motivation, key implementation, code excerpt, reviewed files, and validation implications.
 
-Do not add title-only open PR radar lists. If an open PR matters for Qwen3.6, keep it in a clearly marked open-radar card only after reviewing the diff, as done for `#23474`.
+Do not add title-only open PR lists. If an open PR matters for Qwen3.6, keep it in a clearly marked open optimization card only after reviewing the diff, as done for `#23474`.
 
 ## Validation Lanes
 

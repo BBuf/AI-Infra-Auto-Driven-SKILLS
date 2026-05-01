@@ -1,6 +1,6 @@
 ---
 name: sglang-deepseek-v31-optimization
-description: PR-backed and current-main optimization manual for DeepSeek V3.1 and DeepSeek-V3.1-Terminus in SGLang. Use when Codex needs to recover, extend, or audit DeepSeek V3.1 tool calling, thinking mode, chat templates, streaming parser behavior, loading fixes, MTP validation, fused MoE configs, or backend-specific tests.
+description: PR-backed and current-main optimization manual for DeepSeek V3.1 and DeepSeek-V3.1-Terminus in SGLang. Use when an engineer needs to recover, extend, or audit DeepSeek V3.1 tool calling, thinking mode, chat templates, streaming parser behavior, loading fixes, MTP validation, fused MoE configs, or backend-specific tests.
 ---
 
 # SGLang DeepSeek V3.1 Optimization

@@ -1,6 +1,6 @@
 ---
 name: vllm-intern-s1-optimization
-description: PR-backed optimization manual for Intern-S1 in vLLM. Use when Codex needs to audit, debug, extend, or document Intern-S1 language and video-aware serving, processor integration, and tool/reasoning parser behavior.
+description: PR-backed optimization manual for Intern-S1 in vLLM. Use when an engineer needs to audit, debug, extend, or document Intern-S1 language and video-aware serving, processor integration, and tool/reasoning parser behavior.
 ---
 
 # vLLM Intern-S1 Optimization

@@ -1,6 +1,6 @@
 ---
 name: vllm-deepseek-v3-r1-optimization
-description: PR-backed optimization manual for DeepSeek V3 / R1 in vLLM. Use when Codex needs to audit, debug, extend, or document DeepSeek V3 and DeepSeek R1 MLA, MoE, packed-module loading, LoRA, MTP/Eagle, and quantized ROCm/CUDA validation paths.
+description: PR-backed optimization manual for DeepSeek V3 / R1 in vLLM. Use when an engineer needs to audit, debug, extend, or document DeepSeek V3 and DeepSeek R1 MLA, MoE, packed-module loading, LoRA, MTP/Eagle, and quantized ROCm/CUDA validation paths.
 ---
 
 # vLLM DeepSeek V3 / R1 Optimization
@@ -41,7 +41,7 @@ Every PR cited for this family must be based on diff reading, not only PR titles
 - [#29545](https://github.com/vllm-project/vllm/pull/29545) `Fix DeepSeek R1 MTP weight loading`: Hardened R1 NextN / MTP draft loading after launch failures on draft weights.
 - [#36247](https://github.com/vllm-project/vllm/pull/36247) `Fix compressed-tensors quantization failure for DeepSeek-R1 on MI300x`: Closed a production ROCm gap for compressed-tensors DeepSeek-R1 deployment.
 
-## Open Radar
+## Open Optimization Items
 
 - Re-run PR search before claiming new support beyond the checked mainline commit.
 

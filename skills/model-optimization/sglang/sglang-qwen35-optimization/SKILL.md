@@ -1,6 +1,6 @@
 ---
 name: sglang-qwen35-optimization
-description: PR-backed and current-main optimization manual for Qwen3.5 in SGLang. Use when Codex needs to recover, extend, or audit Qwen3.5 dense/MoE, Qwen3.5 FP8/NVFP4/MXFP4, MTP, GDN projection, PP, EPLB, AMD/NPU/Blackwell deployments, FP8 KV caution paths, or Qwen3.5 cookbook recipes.
+description: PR-backed and current-main optimization manual for Qwen3.5 in SGLang. Use when an engineer needs to recover, extend, or audit Qwen3.5 dense/MoE, Qwen3.5 FP8/NVFP4/MXFP4, MTP, GDN projection, PP, EPLB, AMD/NPU/Blackwell deployments, FP8 KV caution paths, or Qwen3.5 cookbook recipes.
 ---
 
 # SGLang Qwen3.5 Optimization
@@ -72,7 +72,7 @@ Before adding or updating any Qwen3.5 PR entry, open the PR diff/source and then
 - reviewed files
 - validation implication
 
-Do not add one-line PR radar lists to this skill. If a PR is still open, keep it in a clearly marked open-radar section only after reading its diff, as done for `#23474`.
+Do not add one-line open PR lists to this skill. If a PR is still open, keep it in a clearly marked open optimization section only after reading its diff, as done for `#23474`.
 
 ## Validation Lanes
 

@@ -1,6 +1,6 @@
 ---
 name: sglang-qwen3-coder-optimization
-description: PR-backed and current-main optimization manual for Qwen3-Coder and Qwen3-Coder-Next in SGLang. Use when Codex needs to recover, extend, or audit Qwen3-Coder-480B-A35B, Qwen3-Coder-Next, tool-call parser behavior, incremental streaming tool arguments, NVFP4/FP8 loading, MoE fused configs, AMD/NPU/Blackwell recipes, or coding-agent deployment docs.
+description: PR-backed and current-main optimization manual for Qwen3-Coder and Qwen3-Coder-Next in SGLang. Use when an engineer needs to recover, extend, or audit Qwen3-Coder-480B-A35B, Qwen3-Coder-Next, tool-call parser behavior, incremental streaming tool arguments, NVFP4/FP8 loading, MoE fused configs, AMD/NPU/Blackwell recipes, or coding-agent deployment docs.
 ---
 
 # SGLang Qwen3-Coder Optimization

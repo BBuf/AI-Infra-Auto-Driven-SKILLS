@@ -1,6 +1,6 @@
 ---
 name: vllm-glm45-optimization
-description: PR-backed optimization manual for GLM-4.5 / 4.5V in vLLM. Use when Codex needs to audit, debug, extend, or document GLM-4.5 text, GLM-4.5V, GLM-4.5-Air, shared MoE routing, and tool/reasoning parser behavior in vLLM.
+description: PR-backed optimization manual for GLM-4.5 / 4.5V in vLLM. Use when an engineer needs to audit, debug, extend, or document GLM-4.5 text, GLM-4.5V, GLM-4.5-Air, shared MoE routing, and tool/reasoning parser behavior in vLLM.
 ---
 
 # vLLM GLM-4.5 / 4.5V Optimization
@@ -40,7 +40,7 @@ Every PR cited for this family must be based on diff reading, not only PR titles
 - [#23695](https://github.com/vllm-project/vllm/pull/23695) `Add triton fused moe config for GLM-4.5-Air-FP8 on B200`: Added a production kernel-tuning lane for the 4.5 Air FP8 deployment path.
 - [#24589](https://github.com/vllm-project/vllm/pull/24589) `Add documentation for GLM-4.5 series tool-calling and reasoning parser`: Codified the parser choices needed to serve 4.5 reasoning / tool checkpoints correctly.
 
-## Open Radar
+## Open Optimization Items
 
 - Re-run PR search before claiming new support beyond the checked mainline commit.
 
