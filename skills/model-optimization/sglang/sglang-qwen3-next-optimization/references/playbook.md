@@ -75,4 +75,4 @@ When adding a PR to Qwen3-Next docs, include:
 - Which files and execution path changed
 - The essential code fragment
 - Benchmark/accuracy evidence, or a clear note that validation was not provided
-- Current status: merged/current-main, open radar, adjacent, reverted, or superseded
+- Current status: merged/current-main, open optimization candidate, adjacent, reverted, or superseded

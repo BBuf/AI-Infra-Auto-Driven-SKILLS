@@ -1,9 +1,9 @@
 # sglang Intern-S1 模型 PR 优化历史
 
-## 文档口径
+## 覆盖范围
 
-- 重做日期: 2026-04-25
-- 源码基线: `sgl-project/sglang` 当前追溯 worktree commit `880599cd43`
+- 重做日期: 2026-05-01
+- 源码基线: `sgl-project/sglang` 当前追溯 worktree commit `4197c55968`
 - PR 收集规则: 先从模型实现、配置、processor、parser、docs/tests 等相关文件执行 `git log --name-only -- <model-files>`，再按 commit subject 的模型关键词过滤，最后用 GitHub Pull Request files API 读取每个 PR 的最终 diff。
 - 额外保留规则: 原 history/skill 已显式引用但未出现在当前实现文件 git trace 中的 PR 会保留，并在卡片里标注来源。
 
@@ -45,7 +45,7 @@
 - 状态/时间: merged / 2025-07-26
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/interns1.py`；关联提交 `b7094a5ef197`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 10 个文件，+616/-63，可读 patch 986 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「model: support intern-s1」；模型线: Intern-S1；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/interns1.py`；PR 正文摘要: Support intern-s1 model of bf16 and fp8 types: - internlm/Intern-S1 - internlm/Intern-S1-FP8 - Add support for intern-s1 models - Pad weights to support TP for vision model。
+- 动机: 标题「model: support intern-s1」；模型线: Intern-S1；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/interns1.py`；技术摘要: 覆盖「model: support intern-s1」；主要实现面是 `python/sglang/srt/models/interns1.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/interns1.py` added +328/-0 (328 lines); hunks: -0,0 +1,328; symbols: InternS1ForConditionalGeneration, __init__, _update_hf_config, pixel_shuffle，涉及 `InternS1ForConditionalGeneration, __init__, _update_hf_config`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/interns1.py` added +328/-0 (328 lines); hunks: -0,0 +1,328; symbols: InternS1ForConditionalGeneration, __init__, _update_hf_config, pixel_shuffle
@@ -72,7 +72,7 @@ diff -- python/sglang/srt/models/interns1.py
 - 状态/时间: merged / 2025-08-19
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/interns1.py`；关联提交 `a31ea4482436`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+7/-2，可读 patch 30 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「support for interns1-mini」；模型线: Intern-S1；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/interns1.py`；PR 正文摘要: For the coming InternS1-mini model.。
+- 动机: 标题「support for interns1-mini」；模型线: Intern-S1；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/interns1.py`；技术摘要: 覆盖「support for interns1-mini」；主要实现面是 `python/sglang/srt/models/interns1.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/interns1.py` modified +5/-0 (5 lines); hunks: -21,6 +21,7; -70,6 +71,10 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/interns1.py` modified +5/-0 (5 lines); hunks: -21,6 +21,7; -70,6 +71,10 @@ def __init__(; symbols: __init__
@@ -99,7 +99,7 @@ diff -- python/sglang/srt/models/interns1.py
 - 状态/时间: merged / 2025-08-20
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+9/-17，可读 patch 60 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「fix: InternS1 don't recognize image, updates image token for InternVL processor」；模型线: Intern-S1；类别: 缺陷修复；主要 diff: `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/conversation.py`；PR 正文摘要: Updates the image token for InternVL to ` `. This change aligns the image token with the updated template and improves consistency in image processing. Also removes the `interns...。
+- 动机: 标题「fix: InternS1 don't recognize image, updates image token for InternVL processor」；模型线: Intern-S1；类别: 缺陷修复；主要 diff: `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/conversation.py`；技术摘要: 覆盖「fix: InternS1 don't recognize image, updates image token for InternVL processor」；主要实现面是 `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/conversation.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/multimodal/processors/internvl.py` modified +7/-2 (9 lines); hunks: -44,7 +44,7 @@ def __init__(self, hf_config, server_args, _image_processor, *...; -218,13 +218,18 @@ def process_image_internvl(image, input_size=448, max_num=...; symbols: __init__, process_image_internvl，涉及 `__init__, process_image_internvl`；`python/sglang/srt/conversation.py` modified +2/-15 (17 lines); hunks: -625,7 +625,7 @@ def generate_chat_conv(; -817,20 +817,7 @@ def generate_chat_conv(; symbols: generate_chat_conv，涉及 `generate_chat_conv`。
 - 代码 diff 细节:
   - `python/sglang/srt/multimodal/processors/internvl.py` modified +7/-2 (9 lines); hunks: -44,7 +44,7 @@ def __init__(self, hf_config, server_args, _image_processor, *...; -218,13 +218,18 @@ def process_image_internvl(image, input_size=448, max_num=...; symbols: __init__, process_image_internvl
@@ -135,7 +135,7 @@ diff -- python/sglang/srt/conversation.py
 - 状态/时间: merged / 2025-11-03
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/interns1.py`；关联提交 `65f1d065c5cf`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+8/-41，可读 patch 110 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bug] Fix Intern-S1 model accuracy and support /generate interface with input_ids」；模型线: Intern-S1；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/interns1.py`；PR 正文摘要: 1. The version of `pixel_shuffle` used in `intern-s1` is incorrect and the `ps_version` parameter needs to be removed 2. The image processing models in `intern-s1` and `internv1...。
+- 动机: 标题「[Bug] Fix Intern-S1 model accuracy and support /generate interface with input_ids」；模型线: Intern-S1；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/interns1.py`；技术摘要: 覆盖「[Bug] Fix Intern-S1 model accuracy and support /generate interface with input_ids」；主要实现面是 `python/sglang/srt/models/interns1.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/interns1.py` modified +3/-21 (24 lines); hunks: -1,4 +1,4; -50,16 +50,13 @@ def __init__(; symbols: __init__, pixel_shuffle, extract_feature, load_weights，涉及 `__init__, pixel_shuffle, extract_feature`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/interns1.py` modified +3/-21 (24 lines); hunks: -1,4 +1,4; -50,16 +50,13 @@ def __init__(; symbols: __init__, pixel_shuffle, extract_feature, load_weights
@@ -162,7 +162,7 @@ diff -- python/sglang/srt/models/interns1.py
 - 状态/时间: merged / 2025-12-16
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/function_call/internlm_detector.py`；关联提交 `5e96beb3e559`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+290/-14，可读 patch 361 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Adding tool calling and reasoning parser support for Intern-S1」；模型线: Intern-S1；类别: 缺陷修复；主要 diff: `python/sglang/srt/function_call/internlm_detector.py`；PR 正文摘要: Fixes #14673 SGLang previously had incomplete support for Intern-S1 models: 1. **Missing Tool Call Parser**: LMDeploy has `--tool-call-parser intern-s1` support, but SGLang did...。
+- 动机: 标题「Adding tool calling and reasoning parser support for Intern-S1」；模型线: Intern-S1；类别: 缺陷修复；主要 diff: `python/sglang/srt/function_call/internlm_detector.py`；技术摘要: 覆盖「Adding tool calling and reasoning parser support for Intern-S1」；主要实现面是 `python/sglang/srt/function_call/internlm_detector.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/function_call/internlm_detector.py` added +248/-0 (248 lines); hunks: -0,0 +1,248; symbols: InternlmDetector, __init__, has_tool_call, get_arguments，涉及 `InternlmDetector, __init__, has_tool_call`。
 - 代码 diff 细节:
   - `python/sglang/srt/function_call/internlm_detector.py` added +248/-0 (248 lines); hunks: -0,0 +1,248; symbols: InternlmDetector, __init__, has_tool_call, get_arguments
@@ -189,7 +189,7 @@ diff -- python/sglang/srt/function_call/internlm_detector.py
 - 状态/时间: merged / 2026-01-26
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+12/-4，可读 patch 30 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「fix(processor): support InternS1 text_config in InternVL processor」；模型线: Intern-S1；类别: 缺陷修复；主要 diff: `python/sglang/srt/multimodal/processors/internvl.py`；PR 正文摘要: InternS1 models use `text_config` instead of `llm_config` for the text backbone configuration. When attempting to launch InternS1 models (e.g., `internlm/Intern-S1`), the Intern...。
+- 动机: 标题「fix(processor): support InternS1 text_config in InternVL processor」；模型线: Intern-S1；类别: 缺陷修复；主要 diff: `python/sglang/srt/multimodal/processors/internvl.py`；技术摘要: 覆盖「fix(processor): support InternS1 text_config in InternVL processor」；主要实现面是 `python/sglang/srt/multimodal/processors/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/multimodal/processors/internvl.py` modified +12/-4 (16 lines); hunks: -72,7 +72,17 @@ def __init__(self, hf_config, server_args, _image_processor,...; -121,9 +131,7 @@ def __init__(self, hf_config, server_args, _image_processor,...; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/multimodal/processors/internvl.py` modified +12/-4 (16 lines); hunks: -72,7 +72,17 @@ def __init__(self, hf_config, server_args, _image_processor,...; -121,9 +131,7 @@ def __init__(self, hf_config, server_args, _image_processor,...; symbols: __init__
@@ -216,7 +216,7 @@ diff -- python/sglang/srt/multimodal/processors/internvl.py
 - 状态/时间: merged / 2026-02-04
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/interns1pro.py`, `python/sglang/srt/multimodal/processors/interns1pro.py`；关联提交 `3e7ecb78a60f`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+586/-2，可读 patch 647 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「support interns1-pro」；模型线: Intern-S1；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/interns1pro.py`, `python/sglang/srt/multimodal/processors/interns1pro.py`；PR 正文摘要: support internlm/Intern-S1-Pro。
+- 动机: 标题「support interns1-pro」；模型线: Intern-S1；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/interns1pro.py`, `python/sglang/srt/multimodal/processors/interns1pro.py`；技术摘要: 覆盖「support interns1-pro」；主要实现面是 `python/sglang/srt/models/interns1pro.py`, `python/sglang/srt/multimodal/processors/interns1pro.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/interns1pro.py` added +252/-0 (252 lines); hunks: -0,0 +1,252; symbols: InternS1ProTextAttention, __init__, forward_prepare_npu, InternS1ProTextDecoderLayer，涉及 `InternS1ProTextAttention, __init__, forward_prepare_npu`；`python/sglang/srt/multimodal/processors/interns1pro.py` added +118/-0 (118 lines); hunks: -0,0 +1,118; symbols: InternS1_1ImageProcessor, get_mm_data, process_mm_data_async，涉及 `InternS1_1ImageProcessor, get_mm_data, process_mm_data_async`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/interns1pro.py` added +252/-0 (252 lines); hunks: -0,0 +1,252; symbols: InternS1ProTextAttention, __init__, forward_prepare_npu, InternS1ProTextDecoderLayer

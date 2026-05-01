@@ -36,7 +36,7 @@ Use this playbook together with `references/pr-history.md`. Do not diagnose a Qw
 - CUDA/H200/B200/GB300: check `trtllm_mha`, FlashInfer all-reduce fusion, `modelopt_fp4`, FP8 KV caveats, and the B200/GB300 registered tests.
 - AMD MI300/MI325/MI350/MI355: check `SGLANG_USE_AITER=1`, `--attention-backend triton`, ROCm radix-cache behavior, and whether shared-expert fusion is allowed for the target quantization.
 - NPU: check ModelSlim names and packed-module mapping after GDN fusion.
-- CPU/offload: keep view/tied-parameter aliasing in mind; open radar `#23474` is relevant but not merged history.
+- CPU/offload: keep view/tied-parameter aliasing in mind; open PR `#23474` is relevant but not merged history.
 
 ## Validation Commands
 
@@ -52,5 +52,5 @@ python -m pytest test/registered/gb300/test_qwen35_nvfp4.py
 
 - Do not add a PR to the playbook or history unless the diff/source has been opened.
 - Each PR entry must include motivation, implementation idea, a real code snippet, and validation meaning.
-- Keep merged PR history separate from open radar.
+- Keep merged PR history separate from open PR candidates.
 - Cookbook updates must mention the exact model, quantization, parser, backend, Mamba scheduler, KV dtype, and hardware lane they are meant for.

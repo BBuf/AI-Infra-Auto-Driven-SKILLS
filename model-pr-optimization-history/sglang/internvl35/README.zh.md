@@ -1,9 +1,9 @@
 # sglang InternVL 3.5 模型 PR 优化历史
 
-## 文档口径
+## 覆盖范围
 
-- 重做日期: 2026-04-25
-- 源码基线: `sgl-project/sglang` 当前追溯 worktree commit `880599cd43`
+- 重做日期: 2026-05-01
+- 源码基线: `sgl-project/sglang` 当前追溯 worktree commit `4197c55968`
 - PR 收集规则: 先从模型实现、配置、processor、parser、docs/tests 等相关文件执行 `git log --name-only -- <model-files>`，再按 commit subject 的模型关键词过滤，最后用 GitHub Pull Request files API 读取每个 PR 的最终 diff。
 - 额外保留规则: 原 history/skill 已显式引用但未出现在当前实现文件 git trace 中的 PR 会保留，并在卡片里标注来源。
 
@@ -55,7 +55,7 @@
 - 状态/时间: closed / 2025-03-21
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 24 个文件，+4538/-163，可读 patch 5186 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「model: Intern vl 2.5」；模型线: InternVL 3.5；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/deepseek_janus_pro.py`, `python/sglang/srt/models/internvl.py`, `python/sglang/srt/tokenizers/lmtokenizer.py`；PR 正文摘要: Support InternVL2_5, as requested in #3092 1. InternVLChatModel。
+- 动机: 标题「model: Intern vl 2.5」；模型线: InternVL 3.5；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/deepseek_janus_pro.py`, `python/sglang/srt/models/internvl.py`, `python/sglang/srt/tokenizers/lmtokenizer.py`；技术摘要: 覆盖「model: Intern vl 2.5」；主要实现面是 `python/sglang/srt/models/deepseek_janus_pro.py`, `python/sglang/srt/models/internvl.py`, `python/sglang/srt/tokenizers/lmtokenizer.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/deepseek_janus_pro.py` added +2174/-0 (2174 lines); hunks: -0,0 +1,2174; symbols: VQ_16, ModelArgs, _ntuple, parse，涉及 `VQ_16, ModelArgs, _ntuple`；`python/sglang/srt/models/internvl.py` added +622/-0 (622 lines); hunks: -0,0 +1,622; symbols: InternVisionEmbeddings, __init__, _get_pos_embed, forward，涉及 `InternVisionEmbeddings, __init__, _get_pos_embed`；`python/sglang/srt/tokenizers/lmtokenizer.py` added +242/-0 (242 lines); hunks: -0,0 +1,242; symbols: InternLM2Tokenizer, __init__, no_prefix_space_tokens, vocab_size，涉及 `InternLM2Tokenizer, __init__, no_prefix_space_tokens`；`python/sglang/srt/configs/janus.py` added +155/-0 (155 lines); hunks: -0,0 +1,155; symbols: DictToObject, __init__, VisionConfig, GenAlignerConfig，涉及 `DictToObject, __init__, VisionConfig`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/deepseek_janus_pro.py` added +2174/-0 (2174 lines); hunks: -0,0 +1,2174; symbols: VQ_16, ModelArgs, _ntuple, parse
@@ -96,7 +96,7 @@ diff -- python/sglang/srt/tokenizers/lmtokenizer.py
 - 状态/时间: merged / 2025-05-02
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/configs/internvl.py`, `python/sglang/srt/models/internvl.py`；关联提交 `3409aaab32c6`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 12 个文件，+1728/-9，可读 patch 1901 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Support InternVL3」；模型线: InternVL 3.5；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/configs/internvl.py`, `python/sglang/srt/models/internvl.py`, `python/sglang/srt/managers/multimodal_processors/internvl.py`；PR 正文摘要: Support InternVL3 Based on PR https://github.com/sgl-project/sglang/pull/3351. and https://github.com/sgl-project/sglang/pull/4433 Support both InternLM2ForCausalLM & Qwen2ForCa...。
+- 动机: 标题「Support InternVL3」；模型线: InternVL 3.5；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/configs/internvl.py`, `python/sglang/srt/models/internvl.py`, `python/sglang/srt/managers/multimodal_processors/internvl.py`；技术摘要: 覆盖「Support InternVL3」；主要实现面是 `python/sglang/srt/configs/internvl.py`, `python/sglang/srt/models/internvl.py`, `python/sglang/srt/managers/multimodal_processors/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/configs/internvl.py` added +696/-0 (696 lines); hunks: -0,0 +1,696; symbols: InternLM2Config, to, __init__, _rope_scaling_validation，涉及 `InternLM2Config, to, __init__`；`python/sglang/srt/models/internvl.py` added +670/-0 (670 lines); hunks: -0,0 +1,670; symbols: FlashAttention, __init__, forward, InternAttention，涉及 `FlashAttention, __init__, forward`；`python/sglang/srt/managers/multimodal_processors/internvl.py` added +232/-0 (232 lines); hunks: -0,0 +1,232; symbols: InternVLImageProcessor, __init__, build_transform, resize_image，涉及 `InternVLImageProcessor, __init__, build_transform`。
 - 代码 diff 细节:
   - `python/sglang/srt/configs/internvl.py` added +696/-0 (696 lines); hunks: -0,0 +1,696; symbols: InternLM2Config, to, __init__, _rope_scaling_validation
@@ -135,7 +135,7 @@ diff -- python/sglang/srt/managers/multimodal_processors/internvl.py
 - 状态/时间: closed / 2025-05-30
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 16 个文件，+1210/-16，可读 patch 1464 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Support InternVL2.5」；模型线: InternVL 3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/internvl.py`, `python/sglang/srt/managers/tokenizer_manager.py`, `python/sglang/srt/configs/model_config.py`；PR 正文摘要: Support InternVL2.5 Based on PR #3351. Support both InternLM2ForCausalLM & Qwen2ForCausalLM as language model. Fix bugs in multi-nodes deployment。
+- 动机: 标题「Support InternVL2.5」；模型线: InternVL 3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/internvl.py`, `python/sglang/srt/managers/tokenizer_manager.py`, `python/sglang/srt/configs/model_config.py`；技术摘要: 覆盖「Support InternVL2.5」；主要实现面是 `python/sglang/srt/models/internvl.py`, `python/sglang/srt/managers/tokenizer_manager.py`, `python/sglang/srt/configs/model_config.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/internvl.py` added +733/-0 (733 lines); hunks: -0,0 +1,733; symbols: FlashAttention, __init__, forward, InternVisionEmbeddings，涉及 `FlashAttention, __init__, forward`；`python/sglang/srt/managers/tokenizer_manager.py` modified +7/-2 (9 lines); hunks: -49,7 +49,11; -187,7 +191,7 @@ def __init__(; symbols: __init__，涉及 `__init__`；`python/sglang/srt/configs/model_config.py` modified +5/-1 (6 lines); hunks: -318,7 +318,10 @@ def _verify_quantization(self) -> None:; -472,6 +475,7 @@ def is_generation_model(model_architectures: List[str], is_e...; symbols: _verify_quantization, get_hf_eos_token_id, is_generation_model，涉及 `_verify_quantization, get_hf_eos_token_id, is_generation_model`；`python/sglang/srt/models/deepseek_janus_pro.py` modified +1/-1 (2 lines); hunks: -1984,7 +1984,7 @@ def forward(; symbols: forward，涉及 `forward`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/internvl.py` added +733/-0 (733 lines); hunks: -0,0 +1,733; symbols: FlashAttention, __init__, forward, InternVisionEmbeddings
@@ -176,7 +176,7 @@ diff -- python/sglang/srt/configs/model_config.py
 - 状态/时间: merged / 2025-06-11
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/internvl.py`；关联提交 `83d87685c531`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+103/-126，可读 patch 408 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「vlm: adapt internvl to VisionAttention」；模型线: InternVL 3.5；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/internvl.py`；PR 正文未提供可用摘要。
+- 动机: 标题「vlm: adapt internvl to VisionAttention」；模型线: InternVL 3.5；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/internvl.py`；未提供可用技术摘要。
 - 实现要点: `python/sglang/srt/models/internvl.py` modified +46/-102 (148 lines); hunks: -11,21 +11,19; -40,83 +38,32; symbols: FlashAttention, InternAttention, __init__, forward，涉及 `FlashAttention, InternAttention, __init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/internvl.py` modified +46/-102 (148 lines); hunks: -11,21 +11,19; -40,83 +38,32; symbols: FlashAttention, InternAttention, __init__, forward
@@ -203,7 +203,7 @@ diff -- python/sglang/srt/models/internvl.py
 - 状态/时间: merged / 2025-07-20
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/configs/internvl.py`；关联提交 `750838adc4f9`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+3/-0，可读 patch 17 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「fix: fix the bug of loading Internvl3」；模型线: InternVL 3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/configs/internvl.py`；PR 正文摘要: When trying to use the InternVL3 model, you will get an error: > Unsupported architecture: Qwen2ForCausalLM This is because Internvl3 uses the llm structure of qwen2 in models e...。
+- 动机: 标题「fix: fix the bug of loading Internvl3」；模型线: InternVL 3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/configs/internvl.py`；技术摘要: 覆盖「fix: fix the bug of loading Internvl3」；主要实现面是 `python/sglang/srt/configs/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/configs/internvl.py` modified +3/-0 (3 lines); hunks: -9,6 +9,7; -311,6 +312,8 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/configs/internvl.py` modified +3/-0 (3 lines); hunks: -9,6 +9,7; -311,6 +312,8 @@ def __init__(; symbols: __init__
@@ -228,7 +228,7 @@ diff -- python/sglang/srt/configs/internvl.py
 - 状态/时间: merged / 2025-08-20
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/multimodal/processors/internvl.py`；关联提交 `84719b527a2d`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+9/-17，可读 patch 60 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「fix: InternS1 don't recognize image, updates image token for InternVL processor」；模型线: InternVL 3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/multimodal/processors/internvl.py`；PR 正文摘要: Updates the image token for InternVL to ` `. This change aligns the image token with the updated template and improves consistency in image processing. Also removes the `interns...。
+- 动机: 标题「fix: InternS1 don't recognize image, updates image token for InternVL processor」；模型线: InternVL 3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/multimodal/processors/internvl.py`；技术摘要: 覆盖「fix: InternS1 don't recognize image, updates image token for InternVL processor」；主要实现面是 `python/sglang/srt/multimodal/processors/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/multimodal/processors/internvl.py` modified +7/-2 (9 lines); hunks: -44,7 +44,7 @@ def __init__(self, hf_config, server_args, _image_processor, *...; -218,13 +218,18 @@ def process_image_internvl(image, input_size=448, max_num=...; symbols: __init__, process_image_internvl，涉及 `__init__, process_image_internvl`。
 - 代码 diff 细节:
   - `python/sglang/srt/multimodal/processors/internvl.py` modified +7/-2 (9 lines); hunks: -44,7 +44,7 @@ def __init__(self, hf_config, server_args, _image_processor, *...; -218,13 +218,18 @@ def process_image_internvl(image, input_size=448, max_num=...; symbols: __init__, process_image_internvl
@@ -255,7 +255,7 @@ diff -- python/sglang/srt/multimodal/processors/internvl.py
 - 状态/时间: merged / 2025-09-02
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/configs/internvl.py`, `python/sglang/srt/models/internvl.py`；关联提交 `f64b8e3e4e13`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+34/-0，可读 patch 84 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Support the internvl3.5 family models in sglang」；模型线: InternVL 3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/internvl.py`, `python/sglang/srt/configs/internvl.py`；PR 正文摘要: This PR provides support for all models in the internvl3.5 family Registers different backbone models for all internvl3.5 models. Also fixes the quantization error for moe model...。
+- 动机: 标题「Support the internvl3.5 family models in sglang」；模型线: InternVL 3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/internvl.py`, `python/sglang/srt/configs/internvl.py`；技术摘要: 覆盖「Support the internvl3.5 family models in sglang」；主要实现面是 `python/sglang/srt/models/internvl.py`, `python/sglang/srt/configs/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/internvl.py` modified +28/-0 (28 lines); hunks: -26,8 +26,10; -445,6 +447,14 @@ def __init__(; symbols: __init__, load_weights，涉及 `__init__, load_weights`；`python/sglang/srt/configs/internvl.py` modified +6/-0 (6 lines); hunks: -6,11 +6,13; -316,7 +318,11 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/internvl.py` modified +28/-0 (28 lines); hunks: -26,8 +26,10; -445,6 +447,14 @@ def __init__(; symbols: __init__, load_weights
@@ -291,7 +291,7 @@ diff -- python/sglang/srt/configs/internvl.py
 - 状态/时间: merged / 2025-09-10
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/multimodal/processors/internvl.py`；关联提交 `15f993472c58`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+141/-129，可读 patch 340 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「refactor(InternVL): Use gpu to preprocess the input image」；模型线: InternVL 3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/multimodal/processors/internvl.py`；PR 正文摘要: Now ,internvl preprocesses images on the CPU. Putting it on the GPU for preprocessing will improve performance. image operations such as resizing, tiling, and normalization were...。
+- 动机: 标题「refactor(InternVL): Use gpu to preprocess the input image」；模型线: InternVL 3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/multimodal/processors/internvl.py`；技术摘要: 覆盖「refactor(InternVL): Use gpu to preprocess the input image」；主要实现面是 `python/sglang/srt/multimodal/processors/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/multimodal/processors/internvl.py` modified +141/-129 (270 lines); hunks: -2,8 +2,10; -48,99 +50,6 @@ def __init__(self, hf_config, server_args, _image_processor,...; symbols: __init__, build_transform, resize_image, to_tensor，涉及 `__init__, build_transform, resize_image`。
 - 代码 diff 细节:
   - `python/sglang/srt/multimodal/processors/internvl.py` modified +141/-129 (270 lines); hunks: -2,8 +2,10; -48,99 +50,6 @@ def __init__(self, hf_config, server_args, _image_processor,...; symbols: __init__, build_transform, resize_image, to_tensor
@@ -318,7 +318,7 @@ diff -- python/sglang/srt/multimodal/processors/internvl.py
 - 状态/时间: merged / 2025-09-15
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/multimodal/processors/internvl.py`；关联提交 `1fcccda4b2b3`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+20/-8，可读 patch 69 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「fix(internvl): fix accuracy issue of normalization」；模型线: InternVL 3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/multimodal/processors/internvl.py`；PR 正文摘要: - Found precision issues when testing internvl3 8b, but no issues on 1b and 38b. - The reason for the modification at that time was that we considered using a fixed mean and var...。
+- 动机: 标题「fix(internvl): fix accuracy issue of normalization」；模型线: InternVL 3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/multimodal/processors/internvl.py`；技术摘要: 覆盖「fix(internvl): fix accuracy issue of normalization」；主要实现面是 `python/sglang/srt/multimodal/processors/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/multimodal/processors/internvl.py` modified +20/-8 (28 lines); hunks: -1,5 +1,7; -19,6 +21,20; symbols: InternVLImageProcessor, _get_normalize_tensors, __init__, load_video，涉及 `InternVLImageProcessor, _get_normalize_tensors, __init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/multimodal/processors/internvl.py` modified +20/-8 (28 lines); hunks: -1,5 +1,7; -19,6 +21,20; symbols: InternVLImageProcessor, _get_normalize_tensors, __init__, load_video
@@ -345,7 +345,7 @@ diff -- python/sglang/srt/multimodal/processors/internvl.py
 - 状态/时间: merged / 2025-11-21
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/internvl.py`；关联提交 `475962a139d1`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+103/-13，可读 patch 183 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[VLM] Support Piecewise CUDA Graph for InternVL」；模型线: InternVL 3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/internvl.py`；PR 正文摘要: Address https://github.com/sgl-project/sglang/pull/12838 This PR is to support Piecewise CUDA Graph for InternVL. It is a follow up of #13055 . The accuracy result is as expected.。
+- 动机: 标题「[VLM] Support Piecewise CUDA Graph for InternVL」；模型线: InternVL 3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/internvl.py`；技术摘要: 覆盖「[VLM] Support Piecewise CUDA Graph for InternVL」；主要实现面是 `python/sglang/srt/models/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/internvl.py` modified +21/-10 (31 lines); hunks: -14,10 +14,7; -471,6 +468,12 @@ def __init__(; symbols: __init__, pixel_shuffle, forward, pad_input_ids，涉及 `__init__, pixel_shuffle, forward`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/internvl.py` modified +21/-10 (31 lines); hunks: -14,10 +14,7; -471,6 +468,12 @@ def __init__(; symbols: __init__, pixel_shuffle, forward, pad_input_ids
@@ -372,7 +372,7 @@ diff -- python/sglang/srt/models/internvl.py
 - 状态/时间: merged / 2025-11-26
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/internvl.py`；关联提交 `ca5c8b16f67d`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+118/-25，可读 patch 266 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[VLM] Support InternVL Vision Encoder Data Parallelism」；模型线: InternVL 3.5；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/internvl.py`；PR 正文摘要: This PR is to support InternVL Vision-Encoder data parallelism. https://github.com/sgl-project/sglang/issues/12971 From profiling we can see InternVL Vision-Encoder is computing...。
+- 动机: 标题「[VLM] Support InternVL Vision Encoder Data Parallelism」；模型线: InternVL 3.5；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/internvl.py`；技术摘要: 覆盖「[VLM] Support InternVL Vision Encoder Data Parallelism」；主要实现面是 `python/sglang/srt/models/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/internvl.py` modified +83/-25 (108 lines); hunks: -7,11 +7,16; -28,6 +33,8; symbols: __init__, forward, InternMLP，涉及 `__init__, forward, InternMLP`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/internvl.py` modified +83/-25 (108 lines); hunks: -7,11 +7,16; -28,6 +33,8; symbols: __init__, forward, InternMLP
@@ -399,7 +399,7 @@ diff -- python/sglang/srt/models/internvl.py
 - 状态/时间: merged / 2025-12-30
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/internvl.py`, `python/sglang/srt/multimodal/processors/internvl.py`；关联提交 `94bcc19bcef6`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+426/-118，可读 patch 658 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[VLM] Support Video for InternVL3_5」；模型线: InternVL 3.5；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/models/internvl.py`；PR 正文摘要: This PR is to enable SGLang supporting InternVL3_5 video input. InternVL3.5-8B demonstrated speedup 2.5x than Qwen2.5-VL-7B video inference. Prompt script: Server side: InternVL...。
+- 动机: 标题「[VLM] Support Video for InternVL3_5」；模型线: InternVL 3.5；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/models/internvl.py`；技术摘要: 覆盖「[VLM] Support Video for InternVL3_5」；主要实现面是 `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/models/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/multimodal/processors/internvl.py` modified +418/-118 (536 lines); hunks: -1,6 +1,8; -15,26 +17,44; symbols: InternVLImageProcessor, InternVLProcessor, _get_normalize_tensors, __init__，涉及 `InternVLImageProcessor, InternVLProcessor, _get_normalize_tensors`；`python/sglang/srt/models/internvl.py` modified +8/-0 (8 lines); hunks: -539,6 +539,7 @@ def __init__(; -594,6 +595,13 @@ def get_image_feature(self, items: List[MultimodalDataItem]):; symbols: __init__, get_image_feature, get_video_feature, forward，涉及 `__init__, get_image_feature, get_video_feature`。
 - 代码 diff 细节:
   - `python/sglang/srt/multimodal/processors/internvl.py` modified +418/-118 (536 lines); hunks: -1,6 +1,8; -15,26 +17,44; symbols: InternVLImageProcessor, InternVLProcessor, _get_normalize_tensors, __init__
@@ -435,7 +435,7 @@ diff -- python/sglang/srt/models/internvl.py
 - 状态/时间: merged / 2026-01-14
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/internvl.py`, `python/sglang/srt/multimodal/internvl_vit_cuda_graph_runner.py`；关联提交 `feae615b1146`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+219/-6，可读 patch 304 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[VLM] Support ViT CUDA Graph for InternVL」；模型线: InternVL 3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/multimodal/internvl_vit_cuda_graph_runner.py`, `python/sglang/srt/models/internvl.py`；PR 正文摘要: This PR is to support ViT CUDA Graph for InternVL family. InternVL model is different from Qwen2.5-VL and Qwen3-VL which setting flatten_batch=True, InternVL model's flatten_bat...。
+- 动机: 标题「[VLM] Support ViT CUDA Graph for InternVL」；模型线: InternVL 3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/multimodal/internvl_vit_cuda_graph_runner.py`, `python/sglang/srt/models/internvl.py`；技术摘要: 覆盖「[VLM] Support ViT CUDA Graph for InternVL」；主要实现面是 `python/sglang/srt/multimodal/internvl_vit_cuda_graph_runner.py`, `python/sglang/srt/models/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/multimodal/internvl_vit_cuda_graph_runner.py` added +183/-0 (183 lines); hunks: -0,0 +1,183; symbols: InternViTCudaGraphRunner, __init__, device, dtype，涉及 `InternViTCudaGraphRunner, __init__, device`；`python/sglang/srt/models/internvl.py` modified +27/-3 (30 lines); hunks: -13,6 +13,7; -36,6 +37,9; symbols: forward, __init__，涉及 `forward, __init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/multimodal/internvl_vit_cuda_graph_runner.py` added +183/-0 (183 lines); hunks: -0,0 +1,183; symbols: InternViTCudaGraphRunner, __init__, device, dtype
@@ -471,7 +471,7 @@ diff -- python/sglang/srt/models/internvl.py
 - 状态/时间: merged / 2026-01-26
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/multimodal/processors/internvl.py`；关联提交 `539924037fbc`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+12/-4，可读 patch 30 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「fix(processor): support InternS1 text_config in InternVL processor」；模型线: InternVL 3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/multimodal/processors/internvl.py`；PR 正文摘要: InternS1 models use `text_config` instead of `llm_config` for the text backbone configuration. When attempting to launch InternS1 models (e.g., `internlm/Intern-S1`), the Intern...。
+- 动机: 标题「fix(processor): support InternS1 text_config in InternVL processor」；模型线: InternVL 3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/multimodal/processors/internvl.py`；技术摘要: 覆盖「fix(processor): support InternS1 text_config in InternVL processor」；主要实现面是 `python/sglang/srt/multimodal/processors/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/multimodal/processors/internvl.py` modified +12/-4 (16 lines); hunks: -72,7 +72,17 @@ def __init__(self, hf_config, server_args, _image_processor,...; -121,9 +131,7 @@ def __init__(self, hf_config, server_args, _image_processor,...; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/multimodal/processors/internvl.py` modified +12/-4 (16 lines); hunks: -72,7 +72,17 @@ def __init__(self, hf_config, server_args, _image_processor,...; -121,9 +131,7 @@ def __init__(self, hf_config, server_args, _image_processor,...; symbols: __init__
@@ -498,7 +498,7 @@ diff -- python/sglang/srt/multimodal/processors/internvl.py
 - 状态/时间: merged / 2026-02-27
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/internvl.py`, `python/sglang/srt/multimodal/processors/internvl.py`；关联提交 `f0c208959794`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+282/-7，可读 patch 379 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[vlm][internVL] Support processor and embedding inputs for InternVL」；模型线: InternVL 3.5；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/models/internvl.py`；PR 正文摘要: This PR helps the issue: https://github.com/sgl-project/sglang/issues/6483 For InternVL, it adds support to the processor and embedding inputs. Specifically, HuggingFace process...。
+- 动机: 标题「[vlm][internVL] Support processor and embedding inputs for InternVL」；模型线: InternVL 3.5；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/models/internvl.py`；技术摘要: 覆盖「[vlm][internVL] Support processor and embedding inputs for InternVL」；主要实现面是 `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/models/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/multimodal/processors/internvl.py` modified +109/-1 (110 lines); hunks: -9,11 +9,15; -255,9 +259,113 @@ def _resolve_video_num_frames(; symbols: _resolve_video_num_frames, _has_special_format, _process_special_format, process_and_combine_mm_data，涉及 `_resolve_video_num_frames, _has_special_format, _process_special_format`；`python/sglang/srt/models/internvl.py` modified +7/-0 (7 lines); hunks: -616,13 +616,20 @@ def get_image_feature(self, items: List[MultimodalDataItem]):; symbols: get_image_feature, get_video_feature，涉及 `get_image_feature, get_video_feature`。
 - 代码 diff 细节:
   - `python/sglang/srt/multimodal/processors/internvl.py` modified +109/-1 (110 lines); hunks: -9,11 +9,15; -255,9 +259,113 @@ def _resolve_video_num_frames(; symbols: _resolve_video_num_frames, _has_special_format, _process_special_format, process_and_combine_mm_data
@@ -534,7 +534,7 @@ diff -- python/sglang/srt/models/internvl.py
 - 状态/时间: merged / 2026-03-15
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/multimodal/processors/internvl.py`；关联提交 `7458407437ca`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+184/-14，可读 patch 324 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Fix InternVL and vision attention for non-CUDA backends (e.g. XPU)」；模型线: InternVL 3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/multimodal/processors/internvl.py`, `test/srt/xpu/test_internvl.py`；PR 正文摘要: InternVL and vision attention currently assume CUDA: they use hardcoded `"cuda"` and `.cuda()`, and the vision attention backend selection does not handle XPU. This prevents run...。
+- 动机: 标题「Fix InternVL and vision attention for non-CUDA backends (e.g. XPU)」；模型线: InternVL 3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/multimodal/processors/internvl.py`, `test/srt/xpu/test_internvl.py`；技术摘要: 覆盖「Fix InternVL and vision attention for non-CUDA backends (e.g. XPU)」；主要实现面是 `python/sglang/srt/multimodal/processors/internvl.py`, `test/srt/xpu/test_internvl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/multimodal/processors/internvl.py` modified +17/-10 (27 lines); hunks: -19,6 +19,7; -434,7 +435,7 @@ async def process_qwen_mm_data_async(; symbols: process_qwen_mm_data_async, process_internlm2_mm_data_async，涉及 `process_qwen_mm_data_async, process_internlm2_mm_data_async`；`test/srt/xpu/test_internvl.py` added +147/-0 (147 lines); hunks: -0,0 +1,147; symbols: InternVLXPUServerBase, setUpClass, tearDownClass, TestInternVL25Server，涉及 `InternVLXPUServerBase, setUpClass, tearDownClass`。
 - 代码 diff 细节:
   - `python/sglang/srt/multimodal/processors/internvl.py` modified +17/-10 (27 lines); hunks: -19,6 +19,7; -434,7 +435,7 @@ async def process_qwen_mm_data_async(; symbols: process_qwen_mm_data_async, process_internlm2_mm_data_async

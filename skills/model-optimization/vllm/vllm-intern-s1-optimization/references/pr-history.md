@@ -1,7 +1,7 @@
 # vllm Intern-S1 PR Diff Audit Reference
 
-- Rebuilt on: 2026-04-25
-- Source baseline: `vllm-project/vllm` trace worktree commit `95995bbef8`
+- Rebuilt on: 2026-05-01
+- Source baseline: `vllm-project/vllm` trace worktree commit `7075df79b3`
 - Collection: model implementation files were traced with `git log --name-only -- <model-files>`, filtered by model keywords in commit subjects, then every PR card was populated from the GitHub Pull Request files API.
 - Extra preserved PRs from prior docs: 0
 - Rule: use this evidence file before changing model-specific skill guidance; it is not only PR titles.
@@ -40,7 +40,7 @@
 - Status/date: merged / 2025-07-26
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/interns1.py`, `vllm/model_executor/models/interns1_vit.py`; associated commits `875af38e0121`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +1196/-0, 1247 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Support Intern-S1"; model line: Intern-S1; category: model support/runtime entry; main diff: `vllm/model_executor/models/interns1.py`, `vllm/model_executor/models/interns1_vit.py`; no usable PR-body summary.
+- Motivation: Title: "Support Intern-S1"; model line: Intern-S1; category: model support/runtime entry; main diff: `vllm/model_executor/models/interns1.py`, `vllm/model_executor/models/interns1_vit.py`; technical summary: Covers "Support Intern-S1"; the main implementation surface is `vllm/model_executor/models/interns1.py`, `vllm/model_executor/models/interns1_vit.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/interns1.py` added +711/-0 (711 lines); hunks: -0,0 +1,711; symbols: InternS1MultiModalProjector, __init__, forward, InternS1ImagePixelInputs, touching `InternS1MultiModalProjector, __init__, forward`; `vllm/model_executor/models/interns1_vit.py` added +421/-0 (421 lines); hunks: -0,0 +1,421; symbols: InternS1VisionPatchEmbeddings, __init__, forward, InternS1VisionEmbeddings, touching `InternS1VisionPatchEmbeddings, __init__, forward`.
 - Code diff details:
   - `vllm/model_executor/models/interns1.py` added +711/-0 (711 lines); hunks: -0,0 +1,711; symbols: InternS1MultiModalProjector, __init__, forward, InternS1ImagePixelInputs
@@ -76,7 +76,7 @@ diff -- vllm/model_executor/models/interns1_vit.py
 - Status/date: merged / 2025-07-27
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/interns1.py`; associated commits `3d847a3125cd`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +173/-50, 375 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[VLM] Add video support for Intern-S1"; model line: Intern-S1; category: model support/runtime entry; main diff: `vllm/model_executor/models/interns1.py`; no usable PR-body summary.
+- Motivation: Title: "[VLM] Add video support for Intern-S1"; model line: Intern-S1; category: model support/runtime entry; main diff: `vllm/model_executor/models/interns1.py`; technical summary: Covers "[VLM] Add video support for Intern-S1"; the main implementation surface is `vllm/model_executor/models/interns1.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/interns1.py` modified +166/-45 (211 lines); hunks: -9,9 +9,10; -139,13 +140,13 @@ def get_interns1_target_ratios(; symbols: get_interns1_target_ratios, InternS1ProcessingInfo, get_hf_processor, get_supported_mm_limits, touching `get_interns1_target_ratios, InternS1ProcessingInfo, get_hf_processor`.
 - Code diff details:
   - `vllm/model_executor/models/interns1.py` modified +166/-45 (211 lines); hunks: -9,9 +9,10; -139,13 +140,13 @@ def get_interns1_target_ratios(; symbols: get_interns1_target_ratios, InternS1ProcessingInfo, get_hf_processor, get_supported_mm_limits
@@ -103,7 +103,7 @@ diff -- vllm/model_executor/models/interns1.py
 - Status/date: merged / 2025-08-07
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/interns1.py`; associated commits `04cf435d95fe`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix wrong method name in Intern-S1 image processor"; model line: Intern-S1; category: bug fix; main diff: `vllm/model_executor/models/interns1.py`; no usable PR-body summary.
+- Motivation: Title: "[Bugfix] Fix wrong method name in Intern-S1 image processor"; model line: Intern-S1; category: bug fix; main diff: `vllm/model_executor/models/interns1.py`; technical summary: Covers "[Bugfix] Fix wrong method name in Intern-S1 image processor"; the main implementation surface is `vllm/model_executor/models/interns1.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/interns1.py` modified +1/-1 (2 lines); hunks: -161,7 +161,7 @@ def get_num_image_tokens(; symbols: get_num_image_tokens, touching `get_num_image_tokens`.
 - Code diff details:
   - `vllm/model_executor/models/interns1.py` modified +1/-1 (2 lines); hunks: -161,7 +161,7 @@ def get_num_image_tokens(; symbols: get_num_image_tokens
@@ -126,7 +126,7 @@ diff -- vllm/model_executor/models/interns1.py
 - Status/date: merged / 2025-09-02
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/interns1.py`; associated commits `56d04089ef50`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +50/-51, 167 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Migrate Interns1 inputs to TensorSchema"; model line: Intern-S1; category: model implementation change; main diff: `vllm/model_executor/models/interns1.py`; PR body summary: This PR migrates Interns1 inputs from a TypedDict-based definition to a structured TensorSchema model with runtime shape validation. This brings it in line with recent changes t....
+- Motivation: Title: "Migrate Interns1 inputs to TensorSchema"; model line: Intern-S1; category: model implementation change; main diff: `vllm/model_executor/models/interns1.py`; technical summary: Covers "Migrate Interns1 inputs to TensorSchema"; the main implementation surface is `vllm/model_executor/models/interns1.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/interns1.py` modified +50/-51 (101 lines); hunks: -7,7 +7,7; -32,6 +32,7; symbols: forward, InternS1ImagePixelInputs, InternS1ImageEmbeddingInputs, touching `forward, InternS1ImagePixelInputs, InternS1ImageEmbeddingInputs`.
 - Code diff details:
   - `vllm/model_executor/models/interns1.py` modified +50/-51 (101 lines); hunks: -7,7 +7,7; -32,6 +32,7; symbols: forward, InternS1ImagePixelInputs, InternS1ImageEmbeddingInputs
@@ -153,7 +153,7 @@ diff -- vllm/model_executor/models/interns1.py
 - Status/date: merged / 2025-09-25
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/interns1.py`; associated commits `03858e6d1c85`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +68/-3, 128 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix InternS1 video processing after Transformers v4.56"; model line: Intern-S1; category: bug fix; main diff: `vllm/model_executor/models/interns1.py`; PR body summary: - FIX #25451.
+- Motivation: Title: "[Bugfix] Fix InternS1 video processing after Transformers v4.56"; model line: Intern-S1; category: bug fix; main diff: `vllm/model_executor/models/interns1.py`; technical summary: Covers "[Bugfix] Fix InternS1 video processing after Transformers v4.56"; the main implementation surface is `vllm/model_executor/models/interns1.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/interns1.py` modified +10/-1 (11 lines); hunks: -16,6 +16,8; -31,6 +33,8; symbols: InternS1ProcessingInfo, get_hf_processor, get_supported_mm_limits, touching `InternS1ProcessingInfo, get_hf_processor, get_supported_mm_limits`.
 - Code diff details:
   - `vllm/model_executor/models/interns1.py` modified +10/-1 (11 lines); hunks: -16,6 +16,8; -31,6 +33,8; symbols: InternS1ProcessingInfo, get_hf_processor, get_supported_mm_limits
@@ -180,7 +180,7 @@ diff -- vllm/model_executor/models/interns1.py
 - Status/date: merged / 2025-10-24
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/interns1_vit.py`; associated commits `acc78aeb88c8`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-4, 20 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix interns1-vit qk norm code path"; model line: Intern-S1; category: bug fix; main diff: `vllm/model_executor/models/interns1_vit.py`; PR body summary: - Fix https://github.com/InternLM/Intern-S1/issues/29.
+- Motivation: Title: "[Bugfix] Fix interns1-vit qk norm code path"; model line: Intern-S1; category: bug fix; main diff: `vllm/model_executor/models/interns1_vit.py`; technical summary: Covers "[Bugfix] Fix interns1-vit qk norm code path"; the main implementation surface is `vllm/model_executor/models/interns1_vit.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/interns1_vit.py` modified +3/-4 (7 lines); hunks: -217,16 +217,15 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
   - `vllm/model_executor/models/interns1_vit.py` modified +3/-4 (7 lines); hunks: -217,16 +217,15 @@ def __init__(; symbols: __init__, forward
@@ -207,7 +207,7 @@ diff -- vllm/model_executor/models/interns1_vit.py
 - Status/date: merged / 2026-02-03
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/interns1_pro.py`; associated commits `a3acfa10719a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 11 files, +942/-11, 1062 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Models] Intern-S1-Pro"; model line: Intern-S1; category: model support/runtime entry; main diff: `vllm/model_executor/models/interns1_pro.py`; PR body summary: Intern-S1-Pro model support..
+- Motivation: Title: "[Models] Intern-S1-Pro"; model line: Intern-S1; category: model support/runtime entry; main diff: `vllm/model_executor/models/interns1_pro.py`; technical summary: Covers "[Models] Intern-S1-Pro"; the main implementation surface is `vllm/model_executor/models/interns1_pro.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/interns1_pro.py` added +633/-0 (633 lines); hunks: -0,0 +1,633; symbols: InternS1ProProcessingInfo, get_hf_config, get_hf_processor, InternS1ProMoeMLP, touching `InternS1ProProcessingInfo, get_hf_config, get_hf_processor`.
 - Code diff details:
   - `vllm/model_executor/models/interns1_pro.py` added +633/-0 (633 lines); hunks: -0,0 +1,633; symbols: InternS1ProProcessingInfo, get_hf_config, get_hf_processor, InternS1ProMoeMLP
@@ -234,7 +234,7 @@ diff -- vllm/model_executor/models/interns1_pro.py
 - Status/date: merged / 2026-02-04
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/interns1_pro.py`; associated commits `192ad4648b20`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +43/-22, 163 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix interns1-pro initialization and PP"; model line: Intern-S1; category: bug fix; main diff: `vllm/model_executor/models/interns1_pro.py`; PR body summary: - Fix broken InternS1-PRO intialization because the previous PR is drafted on an old version vLLM.  - Also fix PP for InternS1-PRO.
+- Motivation: Title: "[Bugfix] Fix interns1-pro initialization and PP"; model line: Intern-S1; category: bug fix; main diff: `vllm/model_executor/models/interns1_pro.py`; technical summary: Covers "[Bugfix] Fix interns1-pro initialization and PP"; the main implementation surface is `vllm/model_executor/models/interns1_pro.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/interns1_pro.py` modified +26/-12 (38 lines); hunks: -32,7 +32,6; -41,8 +40,8; symbols: __init__, InternS1ProMoeLLMForCausalLM, InternS1ProForConditionalGeneration, touching `__init__, InternS1ProMoeLLMForCausalLM, InternS1ProForConditionalGeneration`.
 - Code diff details:
   - `vllm/model_executor/models/interns1_pro.py` modified +26/-12 (38 lines); hunks: -32,7 +32,6; -41,8 +40,8; symbols: __init__, InternS1ProMoeLLMForCausalLM, InternS1ProForConditionalGeneration

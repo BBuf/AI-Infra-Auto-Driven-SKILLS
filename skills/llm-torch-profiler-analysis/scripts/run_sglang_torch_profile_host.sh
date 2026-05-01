@@ -28,12 +28,20 @@ Options:
   --mem-fraction FLOAT         SGLang static memory fraction.
   --request-max-tokens INT     Generation length for the probe request.
   --prompt TEXT                Probe prompt.
+  --warmup-steps INT           Warmup steps before profiling. Defaults to 10.
+  --profile-workload TEXT      legacy|prefill|decode|both. Defaults to both.
+  --prefill-input-len INT      Synthetic prefill prompt length. Defaults to 4090.
+  --prefill-output-len INT     Synthetic prefill output length. Defaults to 1.
+  --decode-input-len INT       Synthetic decode prompt length. Defaults to 1.
+  --decode-output-len INT      Synthetic decode output length. Defaults to 2048.
+  --repo-dir PATH              SGLang repo path inside `sglang_bbuf`.
   --server-extra TEXT          Extra args appended to launch_server.
   --help                       Show this message.
 
 Notes:
   - Run this on the H100 host. It uses `docker exec sglang_bbuf`.
-  - The server is launched first, then the profiler capture runs with `--profile-by-stage`.
+  - The server is launched first, then the profiler capture runs with
+    stage-separated prefill/decode workloads and `--profile-by-stage`.
   - A small benchmark summary is written after profiling.
 EOF
 }
@@ -47,6 +55,13 @@ TRUST_REMOTE_CODE=0
 MEM_FRACTION=0.85
 REQUEST_MAX_TOKENS=12
 PROMPT="用两句话解释 CUDA graph 和 eager mode 的区别。"
+WARMUP_STEPS=10
+PROFILE_WORKLOAD="both"
+PREFILL_INPUT_LEN=4090
+PREFILL_OUTPUT_LEN=1
+DECODE_INPUT_LEN=1
+DECODE_OUTPUT_LEN=2048
+SGLANG_REPO_DIR="${SGLANG_REPO_DIR:-/data/bbuf/repos/sglang}"
 SERVER_EXTRA=""
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -90,6 +105,34 @@ while [[ $# -gt 0 ]]; do
       ;;
     --prompt)
       PROMPT="$2"
+      shift 2
+      ;;
+    --warmup-steps)
+      WARMUP_STEPS="$2"
+      shift 2
+      ;;
+    --profile-workload)
+      PROFILE_WORKLOAD="$2"
+      shift 2
+      ;;
+    --prefill-input-len)
+      PREFILL_INPUT_LEN="$2"
+      shift 2
+      ;;
+    --prefill-output-len)
+      PREFILL_OUTPUT_LEN="$2"
+      shift 2
+      ;;
+    --decode-input-len)
+      DECODE_INPUT_LEN="$2"
+      shift 2
+      ;;
+    --decode-output-len)
+      DECODE_OUTPUT_LEN="$2"
+      shift 2
+      ;;
+    --repo-dir)
+      SGLANG_REPO_DIR="$2"
       shift 2
       ;;
     --server-extra)
@@ -144,7 +187,7 @@ fi
 
 docker exec sglang_bbuf bash -lc "mkdir -p '$RUN_DIR' '$PROFILE_ROOT'"
 docker exec sglang_bbuf bash -lc "pkill -f '$LAUNCH_PATTERN' >/dev/null 2>&1 || true"
-docker exec sglang_bbuf bash -lc "mkdir -p '$RUN_DIR' '$PROFILE_ROOT' && cd /data/bbuf/repos/sglang && rm -f '$PID_PATH' && (CUDA_VISIBLE_DEVICES=$GPUS PYTHONPATH=python nohup $SERVER_ARGS > '$LOG_PATH' 2>&1 < /dev/null & echo \$! > '$PID_PATH')"
+docker exec sglang_bbuf bash -lc "mkdir -p '$RUN_DIR' '$PROFILE_ROOT' && cd '$SGLANG_REPO_DIR' && rm -f '$PID_PATH' && (CUDA_VISIBLE_DEVICES=$GPUS PYTHONPATH=python nohup $SERVER_ARGS > '$LOG_PATH' 2>&1 < /dev/null & echo \$! > '$PID_PATH')"
 
 cleanup() {
   docker exec sglang_bbuf bash -lc "pkill -f '$LAUNCH_PATTERN' >/dev/null 2>&1 || true" >/dev/null 2>&1 || true
@@ -189,7 +232,7 @@ text = body.get("text", "")
 print(text[:400])
 PY
 
-docker exec sglang_bbuf bash -lc "cd /data/bbuf/validate/unified_llm_profiler_skill/dev_skill/scripts && python3 analyze_llm_torch_profile.py --framework sglang --url http://127.0.0.1:${PORT} --output-dir '$PROFILE_ROOT' --num-steps 5 --probe-requests 1 --profile-by-stage > '$ANALYSIS_PATH'"
+docker exec sglang_bbuf bash -lc "cd '$SCRIPT_DIR' && python3 analyze_llm_torch_profile.py --framework sglang --url http://127.0.0.1:${PORT} --output-dir '$PROFILE_ROOT' --num-steps 5 --warmup-steps '$WARMUP_STEPS' --probe-requests 1 --profile-by-stage --profile-workload '$PROFILE_WORKLOAD' --prefill-input-len '$PREFILL_INPUT_LEN' --prefill-output-len '$PREFILL_OUTPUT_LEN' --decode-input-len '$DECODE_INPUT_LEN' --decode-output-len '$DECODE_OUTPUT_LEN' > '$ANALYSIS_PATH'"
 python3 "$SCRIPT_DIR/probe_llm_server.py" \
   --framework sglang \
   --url "http://127.0.0.1:${PORT}" \

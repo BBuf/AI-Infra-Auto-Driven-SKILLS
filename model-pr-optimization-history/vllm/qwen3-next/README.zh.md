@@ -1,9 +1,9 @@
 # vllm Qwen3 Next 模型 PR 优化历史
 
-## 文档口径
+## 覆盖范围
 
-- 重做日期: 2026-04-25
-- 源码基线: `vllm-project/vllm` 当前追溯 worktree commit `95995bbef8`
+- 重做日期: 2026-05-01
+- 源码基线: `vllm-project/vllm` 当前追溯 worktree commit `7075df79b3`
 - PR 收集规则: 先从模型实现、配置、processor、parser、docs/tests 等相关文件执行 `git log --name-only -- <model-files>`，再按 commit subject 的模型关键词过滤，最后用 GitHub Pull Request files API 读取每个 PR 的最终 diff。
 - 额外保留规则: 原 history/skill 已显式引用但未出现在当前实现文件 git trace 中的 PR 会保留，并在卡片里标注来源。
 
@@ -18,8 +18,8 @@
 ## PR 覆盖总览
 
 - git 追溯 PR 数: 22
-- 原文档显式引用补充 PR 数: 7
-- 当前文档总 PR 数: 29
+- 原文档显式引用补充 PR 数: 9
+- 当前文档总 PR 数: 31
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -27,6 +27,7 @@
 
 | 日期 | PR | 状态 | 标题 | 主要文件 |
 | --- | --- | --- | --- | --- |
+| 2025-06-18 | [#19784](https://github.com/vllm-project/vllm/pull/19784) | merged | [Minor] Zero-initialize attn output buffer | `vllm/attention/layer.py` |
 | 2025-09-01 | [#23994](https://github.com/vllm-project/vllm/pull/23994) | merged | [BUGFIX] GPTQ quantization compatibility for Qwen3 MOE models (AutoGPTQ and AutoRound-GPTQ) | `vllm/model_executor/models/qwen3_moe.py`, `vllm/model_executor/layers/quantization/gptq.py`, `vllm/model_executor/layers/quantization/gptq_marlin.py` |
 | 2025-09-11 | [#24526](https://github.com/vllm-project/vllm/pull/24526) | merged | Add the support for the qwen3 next model (a hybrid attention model). | `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/models/qwen3_next_mtp.py`, `vllm/transformers_utils/configs/qwen3_next.py` |
 | 2025-09-12 | [#24709](https://github.com/vllm-project/vllm/pull/24709) | merged | [BugFix] Fix Qwen3-Next PP | `vllm/model_executor/models/qwen3_next.py` |
@@ -36,6 +37,7 @@
 | 2025-09-19 | [#25243](https://github.com/vllm-project/vllm/pull/25243) | merged | [Qwen] Remove cuda hard-code in qwen3 next | `vllm/model_executor/models/qwen3_next.py` |
 | 2025-09-20 | [#25268](https://github.com/vllm-project/vllm/pull/25268) | merged | [BUGFIX] GPTQ quantization compatibility for Qwen3 Next MOE models (AutoGPTQ and AutoRound-GPTQ) | `vllm/model_executor/models/qwen3_next.py` |
 | 2025-09-26 | [#25743](https://github.com/vllm-project/vllm/pull/25743) | merged | [Qwen3-Next][GDN] fixes cuda graph capturing bug in GDN metadata and a stride bug in causal_conv_1d. | `vllm/model_executor/layers/mamba/ops/causal_conv1d.py`, `vllm/v1/attention/backends/gdn_attn.py`, `vllm/v1/worker/gpu_model_runner.py` |
+| 2025-10-14 | [#26680](https://github.com/vllm-project/vllm/pull/26680) | merged | remove attn output view kernel | `vllm/attention/layer.py`, `vllm/v1/attention/backends/flash_attn.py`, `vllm/v1/attention/backends/flashinfer.py` |
 | 2025-10-16 | [#26437](https://github.com/vllm-project/vllm/pull/26437) | merged | [PERF] Qwen3-next MTP speedup (change bool mask indexing to index_select / index_copy to reduce d2h) | `vllm/model_executor/models/qwen3_next.py` |
 | 2025-10-17 | [#27030](https://github.com/vllm-project/vllm/pull/27030) | merged | [Bugfix][Qwen] fixes the weights dtype in qwen3_next: it is actually a bfloat16 | `vllm/model_executor/models/qwen3_next.py` |
 | 2025-10-21 | [#26440](https://github.com/vllm-project/vllm/pull/26440) | merged | [Performance] Dual stream execution of "shared_experts" and "selected_experts" inside FusedMoE | `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/models/deepseek_v2.py`, `vllm/model_executor/layers/fused_moe/shared_fused_moe.py` |
@@ -59,13 +61,36 @@
 
 ## 逐 PR diff 审计卡
 
+### PR #19784 - [Minor] Zero-initialize attn output buffer
+
+- 链接: https://github.com/vllm-project/vllm/pull/19784
+- 状态/时间: merged / 2025-06-18
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Minor] Zero-initialize attn output buffer」；模型线: Qwen3 Next；类别: 模型支持/运行时入口；主要 diff: `vllm/attention/layer.py`；未提供可用技术摘要。
+- 实现要点: `vllm/attention/layer.py` modified +1/-1 (2 lines); hunks: -209,7 +209,7 @@ def forward(; symbols: forward，涉及 `forward`。
+- 代码 diff 细节:
+  - `vllm/attention/layer.py` modified +1/-1 (2 lines); hunks: -209,7 +209,7 @@ def forward(; symbols: forward
+- 关键代码摘录:
+
+```diff
+diff -- vllm/attention/layer.py
+@@ -209,7 +209,7 @@ def forward(
+-            output = torch.empty(output_shape,
++            output = torch.zeros(output_shape,
+```
+
+- 已读文件:
+  - runtime: `vllm/attention/layer.py` modified +1/-1
+- 验证与风险: runtime 路径改动集中在 `vllm/attention/layer.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
 ### PR #23994 - [BUGFIX] GPTQ quantization compatibility for Qwen3 MOE models (AutoGPTQ and AutoRound-GPTQ)
 
 - 链接: https://github.com/vllm-project/vllm/pull/23994
 - 状态/时间: merged / 2025-09-01
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+17/-4，可读 patch 57 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[BUGFIX] GPTQ quantization compatibility for Qwen3 MOE models (AutoGPTQ and AutoRound-GPTQ)」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_moe.py`, `vllm/model_executor/layers/quantization/gptq.py`, `vllm/model_executor/layers/quantization/gptq_marlin.py`；PR 正文摘要: The following PR attempts to make the quantized MOE model chart compatible with AutoGPTQ and Autoround-GPTQ. The PR: https://github.com/vllm-project/vllm/issues/23467 attempted...。
+- 动机: 标题「[BUGFIX] GPTQ quantization compatibility for Qwen3 MOE models (AutoGPTQ and AutoRound-GPTQ)」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_moe.py`, `vllm/model_executor/layers/quantization/gptq.py`, `vllm/model_executor/layers/quantization/gptq_marlin.py`；技术摘要: 覆盖「[BUGFIX] GPTQ quantization compatibility for Qwen3 MOE models (AutoGPTQ and AutoRound-GPTQ)」；主要实现面是 `vllm/model_executor/models/qwen3_moe.py`, `vllm/model_executor/layers/quantization/gptq.py`, `vllm/model_executor/layers/quantization/gptq_marlin.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_moe.py` modified +7/-3 (10 lines); hunks: -159,9 +159,13 @@ def __init__(; symbols: __init__, _maybe_ignore_quant_config，涉及 `__init__, _maybe_ignore_quant_config`；`vllm/model_executor/layers/quantization/gptq.py` modified +7/-1 (8 lines); hunks: -37,6 +37,7 @@ def __init__(; -74,6 +75,9 @@ def __init__(; symbols: __init__, __repr__, from_config, get_quant_method，涉及 `__init__, __repr__, from_config`；`vllm/model_executor/layers/quantization/gptq_marlin.py` modified +3/-0 (3 lines); hunks: -119,6 +119,9 @@ def __init__(self, weight_bits: int, group_size: int, desc_a...; symbols: __init__, __repr__，涉及 `__init__, __repr__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/qwen3_moe.py` modified +7/-3 (10 lines); hunks: -159,9 +159,13 @@ def __init__(; symbols: __init__, _maybe_ignore_quant_config
@@ -104,7 +129,7 @@ diff -- vllm/model_executor/layers/quantization/gptq_marlin.py
 - 状态/时间: merged / 2025-09-11
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/models/qwen3_next_mtp.py`, `vllm/transformers_utils/configs/qwen3_next.py`；关联提交 `e93f4cc9e374`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 29 个文件，+2476/-61，可读 patch 3045 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Add the support for the qwen3 next model (a hybrid attention model).」；模型线: Qwen3 Next；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/models/qwen3_next_mtp.py`, `vllm/transformers_utils/configs/qwen3_next.py`；PR 正文未提供可用摘要。
+- 动机: 标题「Add the support for the qwen3 next model (a hybrid attention model).」；模型线: Qwen3 Next；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/models/qwen3_next_mtp.py`, `vllm/transformers_utils/configs/qwen3_next.py`；未提供可用技术摘要。
 - 实现要点: `vllm/model_executor/models/qwen3_next.py` added +1294/-0 (1294 lines); hunks: -0,0 +1,1294; symbols: Qwen3NextSparseMoeBlock, __init__, _maybe_ignore_quant_config, forward，涉及 `Qwen3NextSparseMoeBlock, __init__, _maybe_ignore_quant_config`；`vllm/model_executor/models/qwen3_next_mtp.py` added +285/-0 (285 lines); hunks: -0,0 +1,285; symbols: Qwen3NextMultiTokenPredictor, __init__, get_input_embeddings, forward，涉及 `Qwen3NextMultiTokenPredictor, __init__, get_input_embeddings`；`vllm/transformers_utils/configs/qwen3_next.py` added +275/-0 (275 lines); hunks: -0,0 +1,275; symbols: Qwen3NextConfig, to, __init__，涉及 `Qwen3NextConfig, to, __init__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/qwen3_next.py` added +1294/-0 (1294 lines); hunks: -0,0 +1,1294; symbols: Qwen3NextSparseMoeBlock, __init__, _maybe_ignore_quant_config, forward
@@ -143,7 +168,7 @@ diff -- vllm/transformers_utils/configs/qwen3_next.py
 - 状态/时间: merged / 2025-09-12
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `f592b3174b39`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+7/-3，可读 patch 31 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[BugFix] Fix Qwen3-Next PP」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；PR 正文摘要: Fixes https://github.com/vllm-project/vllm/issues/24703。
+- 动机: 标题「[BugFix] Fix Qwen3-Next PP」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[BugFix] Fix Qwen3-Next PP」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_next.py` modified +7/-3 (10 lines); hunks: -2,6 +2,7; -917,8 +918,11 @@ def get_layer(prefix: str):; symbols: get_layer, get_input_embeddings, forward，涉及 `get_layer, get_input_embeddings, forward`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/qwen3_next.py` modified +7/-3 (10 lines); hunks: -2,6 +2,7; -917,8 +918,11 @@ def get_layer(prefix: str):; symbols: get_layer, get_input_embeddings, forward
@@ -170,7 +195,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 - 状态/时间: merged / 2025-09-17
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `dd6a910aac65`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+139/-34，可读 patch 385 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix][Qwen3-Next] fixes the varlen issue in qwen3-next's MTP implementation.」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；PR 正文摘要: This PR fixes the corner cases where guided decoding backend rollbacks draft tokens, causing unaligned verify batches. Fixes #24730. Fixes #24881.。
+- 动机: 标题「[Bugfix][Qwen3-Next] fixes the varlen issue in qwen3-next's MTP implementation.」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Bugfix][Qwen3-Next] fixes the varlen issue in qwen3-next's MTP implementation.」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_next.py` modified +3/-7 (10 lines); hunks: -417,9 +417,7 @@ def _forward(; -458,9 +456,6 @@ def _forward(; symbols: _forward，涉及 `_forward`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/qwen3_next.py` modified +3/-7 (10 lines); hunks: -417,9 +417,7 @@ def _forward(; -458,9 +456,6 @@ def _forward(; symbols: _forward
@@ -197,7 +222,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 - 状态/时间: merged / 2025-09-18
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `027d37df389b`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+26/-23，可读 patch 101 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix][Qwen3-Next] add prefixes to shared_expert in qwen3-next and mlp in qwen2moe to successfully load ignored params in quantized models」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；PR 正文摘要: Due to qwen3-next does not pass prefixes as it loads shared_expert modules, and thus, it can not match shared_expert modules with the ignore list in quantization config, and ult...。
+- 动机: 标题「[Bugfix][Qwen3-Next] add prefixes to shared_expert in qwen3-next and mlp in qwen2moe to successfully load ignored params in quantized models」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Bugfix][Qwen3-Next] add prefixes to shared_expert in qwen3-next and mlp in qwen2moe to successfully load ignored params in quantized models」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_next.py` modified +1/-0 (1 lines); hunks: -138,6 +138,7 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/qwen3_next.py` modified +1/-0 (1 lines); hunks: -138,6 +138,7 @@ def __init__(; symbols: __init__
@@ -219,7 +244,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 - 状态/时间: merged / 2025-09-18
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/models/qwen3_next_mtp.py`；关联提交 `ef7eefe17a7d`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+22/-21，可读 patch 104 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Qwen] Add fp8 checkpoint support for qwen3-next.」；模型线: Qwen3 Next；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/models/qwen3_next_mtp.py`；PR 正文摘要: Prepare the incoming open-sourced fp8 checkpoints for qwen3-next.。
+- 动机: 标题「[Qwen] Add fp8 checkpoint support for qwen3-next.」；模型线: Qwen3 Next；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/models/qwen3_next_mtp.py`；技术摘要: 覆盖「[Qwen] Add fp8 checkpoint support for qwen3-next.」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/models/qwen3_next_mtp.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_next.py` modified +17/-18 (35 lines); hunks: -30,7 +30,6; -254,12 +253,20 @@ def __init__(; symbols: __init__, _forward, load_weights, Qwen3NextForCausalLM，涉及 `__init__, _forward, load_weights`；`vllm/model_executor/models/qwen3_next_mtp.py` modified +5/-3 (8 lines); hunks: -63,7 +63,9 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = ""):; -72,7 +74,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = ""):; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/qwen3_next.py` modified +17/-18 (35 lines); hunks: -30,7 +30,6; -254,12 +253,20 @@ def __init__(; symbols: __init__, _forward, load_weights, Qwen3NextForCausalLM
@@ -255,7 +280,7 @@ diff -- vllm/model_executor/models/qwen3_next_mtp.py
 - 状态/时间: merged / 2025-09-19
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `838d7116ba59`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Qwen] Remove cuda hard-code in qwen3 next」；模型线: Qwen3 Next；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen3_next.py`；PR 正文摘要: [Qwen] Changed device specification from hard-coded CUDA devices to platform-independent device selectors Test through the exsiting tests。
+- 动机: 标题「[Qwen] Remove cuda hard-code in qwen3 next」；模型线: Qwen3 Next；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Qwen] Remove cuda hard-code in qwen3 next」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_next.py` modified +1/-1 (2 lines); hunks: -306,7 +306,7 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/qwen3_next.py` modified +1/-1 (2 lines); hunks: -306,7 +306,7 @@ def __init__(; symbols: __init__
@@ -278,7 +303,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 - 状态/时间: merged / 2025-09-20
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `36429096171f`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+5/-3，可读 patch 15 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[BUGFIX] GPTQ quantization compatibility for Qwen3 Next MOE models (AutoGPTQ and AutoRound-GPTQ)」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；PR 正文摘要: Hi everyone! This PR fixes the same issue as the following PR: https://github.com/vllm-project/vllm/pull/23994 Only for qwen3 next, you need to check if it has been quantized wi...。
+- 动机: 标题「[BUGFIX] GPTQ quantization compatibility for Qwen3 Next MOE models (AutoGPTQ and AutoRound-GPTQ)」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[BUGFIX] GPTQ quantization compatibility for Qwen3 Next MOE models (AutoGPTQ and AutoRound-GPTQ)」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_next.py` modified +5/-3 (8 lines); hunks: -148,9 +148,11 @@ def __init__(; symbols: __init__, _maybe_ignore_quant_config，涉及 `__init__, _maybe_ignore_quant_config`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/qwen3_next.py` modified +5/-3 (8 lines); hunks: -148,9 +148,11 @@ def __init__(; symbols: __init__, _maybe_ignore_quant_config
@@ -305,7 +330,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 - 状态/时间: merged / 2025-09-26
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+50/-45，可读 patch 192 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Qwen3-Next][GDN] fixes cuda graph capturing bug in GDN metadata and a stride bug in causal_conv_1d.」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/layers/mamba/ops/causal_conv1d.py`, `vllm/v1/attention/backends/gdn_attn.py`, `vllm/v1/worker/gpu_model_runner.py`；PR 正文摘要: After #24507 the cuda graph capturing of GDN was broken, see: #25647. To fixes that, this PR refactors the GND's `build_for_cudagraph` part. Along this PR, a potential stride is...。
+- 动机: 标题「[Qwen3-Next][GDN] fixes cuda graph capturing bug in GDN metadata and a stride bug in causal_conv_1d.」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/layers/mamba/ops/causal_conv1d.py`, `vllm/v1/attention/backends/gdn_attn.py`, `vllm/v1/worker/gpu_model_runner.py`；技术摘要: 覆盖「[Qwen3-Next][GDN] fixes cuda graph capturing bug in GDN metadata and a stride bug in causal_conv_1d.」；主要实现面是 `vllm/model_executor/layers/mamba/ops/causal_conv1d.py`, `vllm/v1/attention/backends/gdn_attn.py`, `vllm/v1/worker/gpu_model_runner.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/layers/mamba/ops/causal_conv1d.py` modified +8/-3 (11 lines); hunks: -41,6 +41,7 @@ def _causal_conv1d_fwd_kernel( # continuous batching; -69,7 +70,7 @@ def _causal_conv1d_fwd_kernel( # continuous batching; symbols: _causal_conv1d_fwd_kernel, causal_conv1d_fn, grid，涉及 `_causal_conv1d_fwd_kernel, causal_conv1d_fn, grid`；`vllm/v1/attention/backends/gdn_attn.py` modified +26/-35 (61 lines); hunks: -125,31 +125,33 @@ def build( # type: ignore[override]; -158,7 +160,6 @@ def build( # type: ignore[override]; symbols: build, build_for_cudagraph_capture，涉及 `build, build_for_cudagraph_capture`；`vllm/v1/worker/gpu_model_runner.py` modified +16/-7 (23 lines); hunks: -360,8 +360,8 @@ def __init__(; -1099,17 +1099,25 @@ def _prepare_inputs(; symbols: __init__, _prepare_inputs，涉及 `__init__, _prepare_inputs`。
 - 代码 diff 细节:
   - `vllm/model_executor/layers/mamba/ops/causal_conv1d.py` modified +8/-3 (11 lines); hunks: -41,6 +41,7 @@ def _causal_conv1d_fwd_kernel( # continuous batching; -69,7 +70,7 @@ def _causal_conv1d_fwd_kernel( # continuous batching; symbols: _causal_conv1d_fwd_kernel, causal_conv1d_fn, grid
@@ -338,13 +363,54 @@ diff -- vllm/v1/worker/gpu_model_runner.py
   - runtime: `vllm/model_executor/layers/mamba/ops/causal_conv1d.py` modified +8/-3; `vllm/v1/attention/backends/gdn_attn.py` modified +26/-35; `vllm/v1/worker/gpu_model_runner.py` modified +16/-7
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/layers/mamba/ops/causal_conv1d.py`, `vllm/v1/attention/backends/gdn_attn.py`, `vllm/v1/worker/gpu_model_runner.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
+### PR #26680 - remove attn output view kernel
+
+- 链接: https://github.com/vllm-project/vllm/pull/26680
+- 状态/时间: merged / 2025-10-14
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 10 个文件，+12/-12，可读 patch 108 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「remove attn output view kernel」；模型线: Qwen3 Next；类别: 模型支持/运行时入口；主要 diff: `vllm/attention/layer.py`, `vllm/v1/attention/backends/flash_attn.py`, `vllm/v1/attention/backends/flashinfer.py`；技术摘要: 覆盖「remove attn output view kernel」；主要实现面是 `vllm/attention/layer.py`, `vllm/v1/attention/backends/flash_attn.py`, `vllm/v1/attention/backends/flashinfer.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/attention/layer.py` modified +3/-3 (6 lines); hunks: -346,7 +346,7 @@ def forward(; -705,7 +705,7 @@ def forward(; symbols: forward，涉及 `forward`；`vllm/v1/attention/backends/flash_attn.py` modified +1/-1 (2 lines); hunks: -530,7 +530,7 @@ def forward(; symbols: forward，涉及 `forward`；`vllm/v1/attention/backends/flashinfer.py` modified +1/-1 (2 lines); hunks: -857,7 +857,7 @@ def forward(; symbols: forward，涉及 `forward`；`vllm/v1/attention/backends/flex_attention.py` modified +1/-1 (2 lines); hunks: -767,7 +767,7 @@ def forward(; symbols: forward，涉及 `forward`。
+- 代码 diff 细节:
+  - `vllm/attention/layer.py` modified +3/-3 (6 lines); hunks: -346,7 +346,7 @@ def forward(; -705,7 +705,7 @@ def forward(; symbols: forward
+  - `vllm/v1/attention/backends/flash_attn.py` modified +1/-1 (2 lines); hunks: -530,7 +530,7 @@ def forward(; symbols: forward
+  - `vllm/v1/attention/backends/flashinfer.py` modified +1/-1 (2 lines); hunks: -857,7 +857,7 @@ def forward(; symbols: forward
+  - `vllm/v1/attention/backends/flex_attention.py` modified +1/-1 (2 lines); hunks: -767,7 +767,7 @@ def forward(; symbols: forward
+  - `vllm/v1/attention/backends/rocm_aiter_fa.py` modified +1/-1 (2 lines); hunks: -485,7 +485,7 @@ def forward(; symbols: forward
+- 关键代码摘录:
+
+```diff
+diff -- vllm/attention/layer.py
+@@ -346,7 +346,7 @@ def forward(
+-            output = torch.zeros(output_shape, dtype=output_dtype, device=query.device)
++            output = torch.empty(output_shape, dtype=output_dtype, device=query.device)
+@@ -705,7 +705,7 @@ def forward(
+-                output = torch.zeros(output_shape, dtype=q.dtype, device=q.device)
++                output = torch.empty(output_shape, dtype=q.dtype, device=q.device)
+@@ -722,7 +722,7 @@ def forward(
+diff -- vllm/v1/attention/backends/flash_attn.py
+@@ -530,7 +530,7 @@ def forward(
+-            return output
++            return output.fill_(0)
+diff -- vllm/v1/attention/backends/flashinfer.py
+@@ -857,7 +857,7 @@ def forward(
+-            return output
++            return output.fill_(0)
+diff -- vllm/v1/attention/backends/flex_attention.py
+@@ -767,7 +767,7 @@ def forward(
+```
+
+- 已读文件:
+  - runtime: `vllm/attention/layer.py` modified +3/-3; `vllm/v1/attention/backends/flash_attn.py` modified +1/-1; `vllm/v1/attention/backends/flashinfer.py` modified +1/-1; `vllm/v1/attention/backends/flex_attention.py` modified +1/-1; `vllm/v1/attention/backends/rocm_aiter_fa.py` modified +1/-1; `vllm/v1/attention/backends/rocm_aiter_unified_attn.py` modified +1/-1
+- 验证与风险: runtime 路径改动集中在 `vllm/attention/layer.py`, `vllm/v1/attention/backends/flash_attn.py`, `vllm/v1/attention/backends/flashinfer.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
 ### PR #26437 - [PERF] Qwen3-next MTP speedup (change bool mask indexing to index_select / index_copy to reduce d2h)
 
 - 链接: https://github.com/vllm-project/vllm/pull/26437
 - 状态/时间: merged / 2025-10-16
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `785d8b6410c3`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+56/-36，可读 patch 203 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[PERF] Qwen3-next MTP speedup (change bool mask indexing to index_select / index_copy to reduce d2h)」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；PR 正文摘要: Qwen3-next MTP suffered from d h memory transfers on prefill phase. That makes MTP slower than STM (at least for some inputs). This PR fixes the following 1. Remove boolean inde...。
+- 动机: 标题「[PERF] Qwen3-next MTP speedup (change bool mask indexing to index_select / index_copy to reduce d2h)」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[PERF] Qwen3-next MTP speedup (change bool mask indexing to index_select / index_copy to reduce d2h)」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_next.py` modified +12/-12 (24 lines); hunks: -423,7 +423,7 @@ def rearrange_mixed_qkv(self, mixed_qkv):; -455,16 +455,15 @@ def _forward(; symbols: rearrange_mixed_qkv, forward, _forward，涉及 `rearrange_mixed_qkv, forward, _forward`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/qwen3_next.py` modified +12/-12 (24 lines); hunks: -423,7 +423,7 @@ def rearrange_mixed_qkv(self, mixed_qkv):; -455,16 +455,15 @@ def _forward(; symbols: rearrange_mixed_qkv, forward, _forward
@@ -371,7 +437,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 - 状态/时间: merged / 2025-10-17
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `bde9e2272a28`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+0/-1，可读 patch 8 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix][Qwen] fixes the weights dtype in qwen3_next: it is actually a bfloat16」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；PR 正文未提供可用摘要。
+- 动机: 标题「[Bugfix][Qwen] fixes the weights dtype in qwen3_next: it is actually a bfloat16」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；未提供可用技术摘要。
 - 实现要点: `vllm/model_executor/models/qwen3_next.py` modified +0/-1 (1 lines); hunks: -325,7 +325,6 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/qwen3_next.py` modified +0/-1 (1 lines); hunks: -325,7 +325,6 @@ def __init__(; symbols: __init__
@@ -393,7 +459,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 - 状态/时间: merged / 2025-10-21
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+122/-22，可读 patch 271 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Performance] Dual stream execution of "shared_experts" and "selected_experts" inside FusedMoE」；模型线: Qwen3 Next；类别: 性能/后端优化；主要 diff: `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/models/deepseek_v2.py`, `vllm/model_executor/layers/fused_moe/shared_fused_moe.py`；PR 正文摘要: This PR executes the shared_experts part of the FusedMoE on a separate GPU stream, so that the execution is parallelized with the "selected_experts" part. This is possible since...。
+- 动机: 标题「[Performance] Dual stream execution of "shared_experts" and "selected_experts" inside FusedMoE」；模型线: Qwen3 Next；类别: 性能/后端优化；主要 diff: `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/models/deepseek_v2.py`, `vllm/model_executor/layers/fused_moe/shared_fused_moe.py`；技术摘要: 覆盖「[Performance] Dual stream execution of "shared_experts" and "selected_experts" inside FusedMoE」；主要实现面是 `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/models/deepseek_v2.py`, `vllm/model_executor/layers/fused_moe/shared_fused_moe.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/layers/fused_moe/layer.py` modified +89/-15 (104 lines); hunks: -57,7 +57,7; -1082,6 +1082,17 @@ def __init__(; symbols: __init__, shared_experts, gate, tp_size，涉及 `__init__, shared_experts, gate`；`vllm/model_executor/models/deepseek_v2.py` modified +12/-6 (18 lines); hunks: -227,6 +227,7 @@ def __init__(; -264,12 +265,17 @@ def forward(self, hidden_states: torch.Tensor) -> torch.Te...; symbols: __init__, forward，涉及 `__init__, forward`；`vllm/model_executor/layers/fused_moe/shared_fused_moe.py` modified +16/-1 (17 lines); hunks: -18,25 +18,40 @@ class SharedFusedMoE(FusedMoE):; symbols: SharedFusedMoE, __init__, shared_experts, gate，涉及 `SharedFusedMoE, __init__, shared_experts`；`vllm/envs.py` modified +5/-0 (5 lines); hunks: -213,6 +213,7; -1379,6 +1380,10 @@ def get_vllm_port() -> int | None:; symbols: get_default_cache_root, get_vllm_port，涉及 `get_default_cache_root, get_vllm_port`。
 - 代码 diff 细节:
   - `vllm/model_executor/layers/fused_moe/layer.py` modified +89/-15 (104 lines); hunks: -57,7 +57,7; -1082,6 +1082,17 @@ def __init__(; symbols: __init__, shared_experts, gate, tp_size
@@ -433,7 +499,7 @@ diff -- vllm/model_executor/layers/fused_moe/shared_fused_moe.py
 - 状态/时间: merged / 2025-10-29
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `8df98c2161e2`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+12/-5，可读 patch 31 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[perf] Enable concurrent execution of "shared_experts" and "selected_experts" in qwen3-next」；模型线: Qwen3 Next；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen3_next.py`；PR 正文摘要: Follow https://github.com/vllm-project/vllm/pull/26440, enable concurrent execution of "shared_experts" and "selected_experts" in qwen3-next Disable multi-stream for shared expe...。
+- 动机: 标题「[perf] Enable concurrent execution of "shared_experts" and "selected_experts" in qwen3-next」；模型线: Qwen3 Next；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[perf] Enable concurrent execution of "shared_experts" and "selected_experts" in qwen3-next」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_next.py` modified +12/-5 (17 lines); hunks: -159,6 +159,7 @@ def __init__(self, vllm_config: VllmConfig, prefix: str = ""):; -181,11 +182,17 @@ def forward(self, hidden_states: torch.Tensor) -> torch.Te...; symbols: __init__, forward，涉及 `__init__, forward`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/qwen3_next.py` modified +12/-5 (17 lines); hunks: -159,6 +159,7 @@ def __init__(self, vllm_config: VllmConfig, prefix: str = ""):; -181,11 +182,17 @@ def forward(self, hidden_states: torch.Tensor) -> torch.Te...; symbols: __init__, forward
@@ -460,7 +526,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 - 状态/时间: open / 2025-11-06
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+2/-1，可读 patch 17 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Qwen3-Next][Perf][Attention] Replace torch.zeros with torch.empty to reduce overhead」；模型线: Qwen3 Next；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen3_next.py`；PR 正文摘要: As https://github.com/vllm-project/vllm/pull/26680 and https://github.com/vllm-project/vllm/pull/19784 mentioned, using `torch.zeros` to allocate attention output buffer will in...。
+- 动机: 标题「[Qwen3-Next][Perf][Attention] Replace torch.zeros with torch.empty to reduce overhead」；模型线: Qwen3 Next；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Qwen3-Next][Perf][Attention] Replace torch.zeros with torch.empty to reduce overhead」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_next.py` modified +2/-1 (3 lines); hunks: -462,7 +462,7 @@ def forward(; -503,6 +503,7 @@ def _forward_core(; symbols: forward, _forward_core，涉及 `forward, _forward_core`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/qwen3_next.py` modified +2/-1 (3 lines); hunks: -462,7 +462,7 @@ def forward(; -503,6 +503,7 @@ def _forward_core(; symbols: forward, _forward_core
@@ -485,7 +551,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 - 状态/时间: merged / 2025-11-09
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `7ae5a5fb1115`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+2/-0，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Misc] Add some comments in qwen3-next」；模型线: Qwen3 Next；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/qwen3_next.py`；PR 正文摘要: As discussed in https://github.com/vllm-project/vllm/pull/28182, we should not use `torch.empty` to allocate attention output buffer in qwen3 `Qwen3NextGatedDeltaNet`。
+- 动机: 标题「[Misc] Add some comments in qwen3-next」；模型线: Qwen3 Next；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Misc] Add some comments in qwen3-next」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_next.py` modified +2/-0 (2 lines); hunks: -462,6 +462,8 @@ def forward(; symbols: forward，涉及 `forward`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/qwen3_next.py` modified +2/-0 (2 lines); hunks: -462,6 +462,8 @@ def forward(; symbols: forward
@@ -508,7 +574,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 - 状态/时间: merged / 2025-11-11
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `f0359fffa434`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix] fix qwen3-next crash」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；PR 正文摘要: partially fix https://github.com/vllm-project/vllm/issues/27571 In decoding phase with cuda garaph, we will pad for pre-captured cudagraph size. This makes `batch` don't equal t...。
+- 动机: 标题「[Bugfix] fix qwen3-next crash」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Bugfix] fix qwen3-next crash」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_next.py` modified +1/-1 (2 lines); hunks: -585,7 +585,7 @@ def _forward_core(; symbols: _forward_core，涉及 `_forward_core`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/qwen3_next.py` modified +1/-1 (2 lines); hunks: -585,7 +585,7 @@ def _forward_core(; symbols: _forward_core
@@ -531,7 +597,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 - 状态/时间: merged / 2025-11-19
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `73ff872db0d4`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+2/-2，可读 patch 11 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix] Fix typo in Qwen3 Next model executor」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；PR 正文摘要: There is an issue in Qwen3Next model loading because of typo with paddings. Sorry, not sure if PR description is sufficient. But bug is obvious and I fixed it by modifying files...。
+- 动机: 标题「[Bugfix] Fix typo in Qwen3 Next model executor」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Bugfix] Fix typo in Qwen3 Next model executor」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_next.py` modified +2/-2 (4 lines); hunks: -1154,8 +1154,8 @@ def set_moe_parameters(self):; symbols: set_moe_parameters，涉及 `set_moe_parameters`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/qwen3_next.py` modified +2/-2 (4 lines); hunks: -1154,8 +1154,8 @@ def set_moe_parameters(self):; symbols: set_moe_parameters
@@ -556,7 +622,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 - 状态/时间: merged / 2025-12-13
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `ace34e378320`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+7/-0，可读 patch 21 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix] Qwen3-next with --hf-overrides \{\"num_hidden_layers\":8\}」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；PR 正文摘要: I'm testing qwen3 next with `vllm serve Qwen/Qwen3-Next-80B-A3B-Instruct --hf-overrides \{\"num_hidden_layers\":8\} --enforce-eager` to fit in one gpu card. But I get this error...。
+- 动机: 标题「[Bugfix] Qwen3-next with --hf-overrides \{\"num_hidden_layers\":8\}」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Bugfix] Qwen3-next with --hf-overrides \{\"num_hidden_layers\":8\}」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_next.py` modified +7/-0 (7 lines); hunks: -1093,6 +1093,8 @@ def load_weights(self, weights: Iterable[tuple[str, torch....; -1109,6 +1111,11 @@ def load_weights(self, weights: Iterable[tuple[str, torch...; symbols: load_weights，涉及 `load_weights`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/qwen3_next.py` modified +7/-0 (7 lines); hunks: -1093,6 +1093,8 @@ def load_weights(self, weights: Iterable[tuple[str, torch....; -1109,6 +1111,11 @@ def load_weights(self, weights: Iterable[tuple[str, torch...; symbols: load_weights
@@ -583,7 +649,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 - 状态/时间: merged / 2026-01-06
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[PERF] Speed-up of GDN attention decode part (Qwen3-Next)」；模型线: Qwen3 Next；类别: 性能/后端优化；主要 diff: `vllm/model_executor/layers/fla/ops/fused_recurrent.py`；PR 正文摘要: Speed Up GDN Attention (Decode) - `fused_recurrent_gated_delta_rule_fwd` Benchmarks H200 — `fused_recurrent_gated_delta_rule_fwd` with shapes from Qwen3-Next Before | Batch Size...。
+- 动机: 标题「[PERF] Speed-up of GDN attention decode part (Qwen3-Next)」；模型线: Qwen3 Next；类别: 性能/后端优化；主要 diff: `vllm/model_executor/layers/fla/ops/fused_recurrent.py`；技术摘要: 覆盖「[PERF] Speed-up of GDN attention decode part (Qwen3-Next)」；主要实现面是 `vllm/model_executor/layers/fla/ops/fused_recurrent.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/layers/fla/ops/fused_recurrent.py` modified +1/-1 (2 lines); hunks: -189,7 +189,7 @@ def fused_recurrent_gated_delta_rule_fwd(; symbols: fused_recurrent_gated_delta_rule_fwd，涉及 `fused_recurrent_gated_delta_rule_fwd`。
 - 代码 diff 细节:
   - `vllm/model_executor/layers/fla/ops/fused_recurrent.py` modified +1/-1 (2 lines); hunks: -189,7 +189,7 @@ def fused_recurrent_gated_delta_rule_fwd(; symbols: fused_recurrent_gated_delta_rule_fwd
@@ -606,7 +672,7 @@ diff -- vllm/model_executor/layers/fla/ops/fused_recurrent.py
 - 状态/时间: merged / 2026-01-08
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `96fcd3c267a0`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+7/-1，可读 patch 15 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Misc] Support qwen3-next lora」；模型线: Qwen3 Next；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/qwen3_next.py`；PR 正文摘要: Replace the torch.nn.Linear of shared_expert_gate in the qwen3-next model with ReplicatedLinear, so that lora can correctly identify shared_expert_gate.。
+- 动机: 标题「[Misc] Support qwen3-next lora」；模型线: Qwen3 Next；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Misc] Support qwen3-next lora」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_next.py` modified +7/-1 (8 lines); hunks: -145,7 +145,13 @@ def __init__(self, vllm_config: VllmConfig, prefix: str = ""):; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/qwen3_next.py` modified +7/-1 (8 lines); hunks: -145,7 +145,13 @@ def __init__(self, vllm_config: VllmConfig, prefix: str = ""):; symbols: __init__
@@ -633,7 +699,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 - 状态/时间: merged / 2026-02-13
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `eea3024f43e0`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+42/-6，可读 patch 91 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix] Fix mamba state dtype setting for Qwen3-Next and Qwen3.5」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；PR 正文摘要: Previously conv and ssm state dtypes are coupled for Qwen3-Next, and therefore affected Qwen3.5 which inherits from it. This PR fixes the dtype setting for both models. Note: Fo...。
+- 动机: 标题「[Bugfix] Fix mamba state dtype setting for Qwen3-Next and Qwen3.5」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Bugfix] Fix mamba state dtype setting for Qwen3-Next and Qwen3.5」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_next.py` modified +6/-2 (8 lines); hunks: -341,7 +341,9 @@ def mamba_type(self) -> str:; -1372,7 +1374,9 @@ def get_mamba_state_dtype_from_config(; symbols: mamba_type, get_state_dtype, get_state_shape, get_mamba_state_dtype_from_config，涉及 `mamba_type, get_state_dtype, get_state_shape`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/qwen3_next.py` modified +6/-2 (8 lines); hunks: -341,7 +341,9 @@ def mamba_type(self) -> str:; -1372,7 +1374,9 @@ def get_mamba_state_dtype_from_config(; symbols: mamba_type, get_state_dtype, get_state_shape, get_mamba_state_dtype_from_config
@@ -660,7 +726,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 - 状态/时间: merged / 2026-02-17
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+182/-87，可读 patch 402 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Revert "[Models] Fuse Qwen3.5 GDN's qkvz_proj and ba_proj"」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_5.py`, `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/layers/linear.py`；PR 正文摘要: FIX https://github.com/vllm-project/vllm/issues/34640 Reverts vllm-project/vllm#34492 It makes the output of qwen3 next as random symbols local-chat-completions (model=Qwen/Qwen...。
+- 动机: 标题「Revert "[Models] Fuse Qwen3.5 GDN's qkvz_proj and ba_proj"」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_5.py`, `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/layers/linear.py`；技术摘要: 覆盖「Revert "[Models] Fuse Qwen3.5 GDN's qkvz_proj and ba_proj"」；主要实现面是 `vllm/model_executor/models/qwen3_5.py`, `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/layers/linear.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_5.py` modified +166/-32 (198 lines); hunks: -30,20 +30,36; -57,8 +73,11; symbols: get_hf_config, Qwen3_5GatedDeltaNet, fix_query_key_value_ordering, __init__，涉及 `get_hf_config, Qwen3_5GatedDeltaNet, fix_query_key_value_ordering`；`vllm/model_executor/models/qwen3_next.py` modified +10/-27 (37 lines); hunks: -44,7 +44,6; -407,19 +406,19 @@ def __init__(; symbols: __init__, create_qkvz_proj, fix_query_key_value_ordering，涉及 `__init__, create_qkvz_proj, fix_query_key_value_ordering`；`vllm/model_executor/layers/linear.py` modified +6/-28 (34 lines); hunks: -685,13 +685,8 @@ def weight_loader(; -830,10 +825,7 @@ def weight_loader(; symbols: weight_loader, _load_fused_module_from_checkpoint, weight_loader_v2，涉及 `weight_loader, _load_fused_module_from_checkpoint, weight_loader_v2`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/qwen3_5.py` modified +166/-32 (198 lines); hunks: -30,20 +30,36; -57,8 +73,11; symbols: get_hf_config, Qwen3_5GatedDeltaNet, fix_query_key_value_ordering, __init__
@@ -699,7 +765,7 @@ diff -- vllm/model_executor/layers/linear.py
 - 状态/时间: merged / 2026-02-18
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `c0bd8b13da36`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+102/-192，可读 patch 477 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix] Redo Qwen3.5/Qwen3-Next GDN projector fusion」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；PR 正文摘要: - Redo https://github.com/vllm-project/vllm/pull/34683 and fix the root issue - Actualy, Qwen3-Next's qkvz_proj output_sizes should be `output_sizes=[sum((key_dim, key_dim, valu...。
+- 动机: 标题「[Bugfix] Redo Qwen3.5/Qwen3-Next GDN projector fusion」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Bugfix] Redo Qwen3.5/Qwen3-Next GDN projector fusion」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_next.py` modified +27/-10 (37 lines); hunks: -44,6 +44,7; -406,19 +407,19 @@ def __init__(; symbols: __init__, create_qkvz_proj, fix_query_key_value_ordering，涉及 `__init__, create_qkvz_proj, fix_query_key_value_ordering`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/qwen3_next.py` modified +27/-10 (37 lines); hunks: -44,6 +44,7; -406,19 +407,19 @@ def __init__(; symbols: __init__, create_qkvz_proj, fix_query_key_value_ordering
@@ -726,7 +792,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 - 状态/时间: merged / 2026-03-09
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `dc6b57846686`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+509/-31，可读 patch 585 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Kernel] Add fused_sigmoid_gating_delta_rule_update kernel for Qwen3 Next」；模型线: Qwen3 Next；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen3_next.py`；PR 正文摘要: This PR adds `fused_sigmoid_gating_delta_rule_update` kernel, to save memory traffic and launch overhead. The idea is inspired by vllm-ascend Summary: * Fuse `fused_gdn_gating`...。
+- 动机: 标题「[Kernel] Add fused_sigmoid_gating_delta_rule_update kernel for Qwen3 Next」；模型线: Qwen3 Next；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Kernel] Add fused_sigmoid_gating_delta_rule_update kernel for Qwen3 Next」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_next.py` modified +32/-31 (63 lines); hunks: -34,7 +34,7; -731,41 +731,40 @@ def _forward_core(; symbols: _forward_core，涉及 `_forward_core`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/qwen3_next.py` modified +32/-31 (63 lines); hunks: -34,7 +34,7; -731,41 +731,40 @@ def _forward_core(; symbols: _forward_core
@@ -753,7 +819,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 - 状态/时间: merged / 2026-03-10
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `4e95ec111cd1`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+45/-6，可读 patch 72 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix] Fix Qwen3-Next in_proj_ba weight sharding with TP > 1」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；PR 正文摘要: MergedColumnParallelLinear split the interleaved GQA weight at the midpoint, scrambling b/a gating values across TP ranks. Use single-shard output_sizes to preserve the layout....。
+- 动机: 标题「[Bugfix] Fix Qwen3-Next in_proj_ba weight sharding with TP > 1」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Bugfix] Fix Qwen3-Next in_proj_ba weight sharding with TP > 1」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_next.py` modified +27/-6 (33 lines); hunks: -412,12 +412,11 @@ def __init__(; -497,6 +496,28 @@ def create_qkvz_proj(; symbols: __init__, create_qkvz_proj, create_ba_proj, fix_query_key_value_ordering，涉及 `__init__, create_qkvz_proj, create_ba_proj`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/qwen3_next.py` modified +27/-6 (33 lines); hunks: -412,12 +412,11 @@ def __init__(; -497,6 +496,28 @@ def create_qkvz_proj(; symbols: __init__, create_qkvz_proj, create_ba_proj, fix_query_key_value_ordering
@@ -780,7 +846,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 - 状态/时间: merged / 2026-03-18
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `a913b612d8a8`, `f1740006e47d`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+115/-5，可读 patch 174 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Perf] Enable dual stream execution of input projection for Qwen3」；模型线: Qwen3 Next；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen3_next.py`；PR 正文摘要: This PR Enable dual stream execution of input projection for Qwen3 Next. * Parallelize the execution of `in_proj_qkvz` and `in_proj_ba` in 2 streams, because their outputs are i...。
+- 动机: 标题「[Perf] Enable dual stream execution of input projection for Qwen3」；模型线: Qwen3 Next；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Perf] Enable dual stream execution of input projection for Qwen3」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_next.py` modified +61/-3 (64 lines); hunks: -82,7 +82,11; -419,6 +423,12 @@ def __init__(; symbols: __init__, forward, _warmup_prefill_kernels, _forward_in_proj，涉及 `__init__, forward, _warmup_prefill_kernels`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/qwen3_next.py` modified +61/-3 (64 lines); hunks: -82,7 +82,11; -419,6 +423,12 @@ def __init__(; symbols: __init__, forward, _warmup_prefill_kernels, _forward_in_proj
@@ -807,7 +873,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 - 状态/时间: merged / 2026-03-18
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `a913b612d8a8`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix] Fix ROCm crash in qwen3_next multi-stream events (#36795)」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；PR 正文摘要: PR #36795 introduced maybe_execute_in_parallel for qwen3_next but gated CUDA event creation on is_cuda() while the aux stream uses is_cuda_alike(), causing AttributeError: 'None...。
+- 动机: 标题「[Bugfix] Fix ROCm crash in qwen3_next multi-stream events (#36795)」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Bugfix] Fix ROCm crash in qwen3_next multi-stream events (#36795)」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_next.py` modified +1/-1 (2 lines); hunks: -426,7 +426,7 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/qwen3_next.py` modified +1/-1 (2 lines); hunks: -426,7 +426,7 @@ def __init__(; symbols: __init__
@@ -830,7 +896,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 - 状态/时间: merged / 2026-04-03
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+150/-0，可读 patch 185 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[XPU] Initial support for GDN attention on Qwen3-next/Qwen3.5」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/layers/mamba/gdn_linear_attn.py`, `vllm/model_executor/layers/layernorm.py`, `vllm/platforms/xpu.py`；PR 正文摘要: This PR enables Qwen3-next/Qwen3.5 support for XPU path, using triton attention due to k/v in-contiguous not supported. Need mamba cache block size fix like #37467。
+- 动机: 标题「[XPU] Initial support for GDN attention on Qwen3-next/Qwen3.5」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/layers/mamba/gdn_linear_attn.py`, `vllm/model_executor/layers/layernorm.py`, `vllm/platforms/xpu.py`；技术摘要: 覆盖「[XPU] Initial support for GDN attention on Qwen3-next/Qwen3.5」；主要实现面是 `vllm/model_executor/layers/mamba/gdn_linear_attn.py`, `vllm/model_executor/layers/layernorm.py`, `vllm/platforms/xpu.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/layers/mamba/gdn_linear_attn.py` modified +94/-0 (94 lines); hunks: -260,6 +260,9 @@ def __init__(; -491,6 +494,13 @@ def forward(; symbols: __init__, forward, forward_cuda, forward_xpu，涉及 `__init__, forward, forward_cuda`；`vllm/model_executor/layers/layernorm.py` modified +5/-0 (5 lines); hunks: -560,6 +560,11 @@ def forward_cuda(; symbols: forward_cuda, forward_xpu, LayerNorm，涉及 `forward_cuda, forward_xpu, LayerNorm`；`vllm/platforms/xpu.py` modified +51/-0 (51 lines); hunks: -218,6 +218,57 @@ def check_and_update_config(cls, vllm_config: VllmConfig) -...; symbols: check_and_update_config, update_block_size_for_backend, support_hybrid_kv_cache，涉及 `check_and_update_config, update_block_size_for_backend, support_hybrid_kv_cache`。
 - 代码 diff 细节:
   - `vllm/model_executor/layers/mamba/gdn_linear_attn.py` modified +94/-0 (94 lines); hunks: -260,6 +260,9 @@ def __init__(; -491,6 +494,13 @@ def forward(; symbols: __init__, forward, forward_cuda, forward_xpu
@@ -869,7 +935,7 @@ diff -- vllm/platforms/xpu.py
 - 状态/时间: merged / 2026-04-08
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `f3c7941ec8d3`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+4/-0，可读 patch 32 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix]Fix EP precision for Qwen3.5, Qwen3-Next」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；PR 正文摘要: Do not shard shared experts weights when sequence parallel is enabled to fix precision issue for Qwen3.5/Qwen3-Next with EP. At present, when sequence_parallel is enabled, share...。
+- 动机: 标题「[Bugfix]Fix EP precision for Qwen3.5, Qwen3-Next」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Bugfix]Fix EP precision for Qwen3.5, Qwen3-Next」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_next.py` modified +1/-0 (1 lines); hunks: -140,6 +140,7 @@ def __init__(self, vllm_config: VllmConfig, prefix: str = ""):; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/qwen3_next.py` modified +1/-0 (1 lines); hunks: -140,6 +140,7 @@ def __init__(self, vllm_config: VllmConfig, prefix: str = ""):; symbols: __init__

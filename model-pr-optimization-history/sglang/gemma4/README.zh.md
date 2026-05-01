@@ -1,9 +1,9 @@
 # sglang Gemma 4 模型 PR 优化历史
 
-## 文档口径
+## 覆盖范围
 
-- 重做日期: 2026-04-25
-- 源码基线: `sgl-project/sglang` 当前追溯 worktree commit `880599cd43`
+- 重做日期: 2026-05-01
+- 源码基线: `sgl-project/sglang` 当前追溯 worktree commit `4197c55968`
 - PR 收集规则: 先从模型实现、配置、processor、parser、docs/tests 等相关文件执行 `git log --name-only -- <model-files>`，再按 commit subject 的模型关键词过滤，最后用 GitHub Pull Request files API 读取每个 PR 的最终 diff。
 - 额外保留规则: 原 history/skill 已显式引用但未出现在当前实现文件 git trace 中的 PR 会保留，并在卡片里标注来源。
 
@@ -46,7 +46,7 @@
 - 状态/时间: merged / 2026-04-07
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/function_call/gemma4_detector.py`, `python/sglang/srt/layers/gemma4_fused_ops.py`, `python/sglang/srt/models/gemma4_audio.py`, `python/sglang/srt/models/gemma4_causal.py`, `python/sglang/srt/models/gemma4_mm.py` 等 7 个文件；关联提交 `2813cb6d9a5b`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 35 个文件，+6007/-70，可读 patch 6694 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[New Model] Gemma 4」；模型线: Gemma 4；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/gemma4_causal.py`, `python/sglang/srt/models/gemma4_mm.py`, `python/sglang/srt/models/gemma4_audio.py`；PR 正文摘要: Add Gemma 4 model support to SGLang. Gemma 4 is Google's next-generation family of open models featuring Dense and MoE architectures, multimodal support (text, image, audio), hy...。
+- 动机: 标题「[New Model] Gemma 4」；模型线: Gemma 4；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/gemma4_causal.py`, `python/sglang/srt/models/gemma4_mm.py`, `python/sglang/srt/models/gemma4_audio.py`；技术摘要: 覆盖「[New Model] Gemma 4」；主要实现面是 `python/sglang/srt/models/gemma4_causal.py`, `python/sglang/srt/models/gemma4_mm.py`, `python/sglang/srt/models/gemma4_audio.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/gemma4_causal.py` added +1009/-0 (1009 lines); hunks: -0,0 +1,1009; symbols: get_attention_sliding_window_size, Gemma4Router, __init__, fuse_scale，涉及 `get_attention_sliding_window_size, Gemma4Router, __init__`；`python/sglang/srt/models/gemma4_mm.py` added +878/-0 (878 lines); hunks: -0,0 +1,878; symbols: Gemma4ImagePixelInputs, Gemma4AudioInputs, Gemma4MultimodalEmbedder, __init__，涉及 `Gemma4ImagePixelInputs, Gemma4AudioInputs, Gemma4MultimodalEmbedder`；`python/sglang/srt/models/gemma4_audio.py` added +873/-0 (873 lines); hunks: -0,0 +1,873; symbols: Gemma4AudioRelativePositionEmbedding, __init__, _get_timing_signal_1d_pos, _relative_shift，涉及 `Gemma4AudioRelativePositionEmbedding, __init__, _get_timing_signal_1d_pos`；`python/sglang/srt/models/gemma4_vision.py` added +599/-0 (599 lines); hunks: -0,0 +1,599; symbols: _rotate_half, _apply_rotary, Gemma4VisionRotaryEmbedding, __init__，涉及 `_rotate_half, _apply_rotary, Gemma4VisionRotaryEmbedding`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/gemma4_causal.py` added +1009/-0 (1009 lines); hunks: -0,0 +1,1009; symbols: get_attention_sliding_window_size, Gemma4Router, __init__, fuse_scale
@@ -87,7 +87,7 @@ diff -- python/sglang/srt/models/gemma4_audio.py
 - 状态/时间: merged / 2026-04-10
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+8/-0，可读 patch 15 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[nvidia] Gemma4 nvfp4 fix」；模型线: Gemma 4；类别: 缺陷修复；主要 diff: `python/sglang/srt/layers/attention/triton_ops/extend_attention.py`；PR 正文摘要: Based on #21952 and depends on https://github.com/flashinfer-ai/flashinfer/pull/2959 Gemma 4 NVFP4 checkpoints does not work on GB200 for the following reasons: Triton attention...。
+- 动机: 标题「[nvidia] Gemma4 nvfp4 fix」；模型线: Gemma 4；类别: 缺陷修复；主要 diff: `python/sglang/srt/layers/attention/triton_ops/extend_attention.py`；技术摘要: 覆盖「[nvidia] Gemma4 nvfp4 fix」；主要实现面是 `python/sglang/srt/layers/attention/triton_ops/extend_attention.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/triton_ops/extend_attention.py` modified +8/-0 (8 lines); hunks: -72,6 +72,14 @@ def _get_block_sizes_for_extend_attention(Lq: int, Lv: int):; symbols: _get_block_sizes_for_extend_attention，涉及 `_get_block_sizes_for_extend_attention`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/triton_ops/extend_attention.py` modified +8/-0 (8 lines); hunks: -72,6 +72,14 @@ def _get_block_sizes_for_extend_attention(Lq: int, Lv: int):; symbols: _get_block_sizes_for_extend_attention
@@ -114,7 +114,7 @@ diff -- python/sglang/srt/layers/attention/triton_ops/extend_attention.py
 - 状态/时间: merged / 2026-04-16
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 18 个文件，+2838/-1515，可读 patch 4528 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Upgrade transformers to 5.5.3 and refactor hf_transformers_utils into subpackage」；模型线: Gemma 4；类别: 模型实现调整；主要 diff: `python/sglang/srt/utils/hf_transformers/tokenizer.py`, `python/sglang/srt/configs/qwen3_5.py`, `python/sglang/srt/configs/step3p5.py`；PR 正文摘要: Refactor `hf_transformers_utils.py` into `hf_transformers/` subpackage and upgrade pinned `transformers` from `5.3.0` to `5.5.3` with compatibility patches. Refactoring Split th...。
+- 动机: 标题「Upgrade transformers to 5.5.3 and refactor hf_transformers_utils into subpackage」；模型线: Gemma 4；类别: 模型实现调整；主要 diff: `python/sglang/srt/utils/hf_transformers/tokenizer.py`, `python/sglang/srt/configs/qwen3_5.py`, `python/sglang/srt/configs/step3p5.py`；技术摘要: 覆盖「Upgrade transformers to 5.5.3 and refactor hf_transformers_utils into subpackage」；主要实现面是 `python/sglang/srt/utils/hf_transformers/tokenizer.py`, `python/sglang/srt/configs/qwen3_5.py`, `python/sglang/srt/configs/step3p5.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/utils/hf_transformers/tokenizer.py` added +551/-0 (551 lines); hunks: -0,0 +1,551; symbols: _load_tokenizer_by_declared_class, declared, mapping, like，涉及 `_load_tokenizer_by_declared_class, declared, mapping`；`python/sglang/srt/configs/qwen3_5.py` modified +16/-0 (16 lines); hunks: -8,6 +8,9 @@ class Qwen3_5VisionConfig(Qwen3VLVisionConfig):; -109,14 +112,27 @@ def __init__(; symbols: Qwen3_5VisionConfig, __init__, Qwen3_5TextConfig, Qwen3_5MoeVisionConfig，涉及 `Qwen3_5VisionConfig, __init__, Qwen3_5TextConfig`；`python/sglang/srt/configs/step3p5.py` modified +9/-0 (9 lines); hunks: -94,4 +94,13 @@ def __init__(; symbols: __init__，涉及 `__init__`；`python/sglang/srt/models/qwen3_vl.py` modified +7/-1 (8 lines); hunks: -1091,9 +1091,15 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/utils/hf_transformers/tokenizer.py` added +551/-0 (551 lines); hunks: -0,0 +1,551; symbols: _load_tokenizer_by_declared_class, declared, mapping, like
@@ -156,7 +156,7 @@ diff -- python/sglang/srt/configs/step3p5.py
 - 状态/时间: merged / 2026-04-17
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+6/-3，可读 patch 17 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[CI] Adding Gemma 4 to Nightly CI」；模型线: Gemma 4；类别: 文档/测试/CI；主要 diff: `test/registered/eval/test_vlms_mmmu_eval.py`；PR 正文摘要: Adding Gemma 4 variants to Nightly CI following https://github.com/sgl-project/sglang/pull/21952 Pending https://github.com/sgl-project/sglang/pull/21569 upgrade transformer to...。
+- 动机: 标题「[CI] Adding Gemma 4 to Nightly CI」；模型线: Gemma 4；类别: 文档/测试/CI；主要 diff: `test/registered/eval/test_vlms_mmmu_eval.py`；技术摘要: 覆盖「[CI] Adding Gemma 4 to Nightly CI」；主要实现面是 `test/registered/eval/test_vlms_mmmu_eval.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/eval/test_vlms_mmmu_eval.py` modified +6/-3 (9 lines); hunks: -33,10 +33,13。
 - 代码 diff 细节:
   - `test/registered/eval/test_vlms_mmmu_eval.py` modified +6/-3 (9 lines); hunks: -33,10 +33,13

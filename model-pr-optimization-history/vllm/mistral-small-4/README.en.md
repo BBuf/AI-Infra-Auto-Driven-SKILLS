@@ -2,8 +2,8 @@
 
 ## Scope
 
-- Rebuilt on: 2026-04-25
-- Source baseline: `vllm-project/vllm` trace worktree commit `95995bbef8`
+- Rebuilt on: 2026-05-01
+- Source baseline: `vllm-project/vllm` trace worktree commit `7075df79b3`
 - PR collection rule: run `git log --name-only -- <model-files>` on model implementation, config, processor, parser, docs/tests, filter by model keywords in commit subjects, then read each PR's final diff through the GitHub Pull Request files API.
 - Preservation rule: PRs explicitly cited by the previous history/skill are retained even if current implementation files no longer trace to them, and the card marks that source.
 
@@ -11,7 +11,7 @@
 
 | File | Git-traced PRs |
 | --- | --- |
-| `examples/offline_inference/mistral-small.py` | [#15184](https://github.com/vllm-project/vllm/pull/15184), [#16147](https://github.com/vllm-project/vllm/pull/16147), [#36156](https://github.com/vllm-project/vllm/pull/36156), [#36782](https://github.com/vllm-project/vllm/pull/36782) |
+| `examples/generate/multimodal/mistral-small_offline.py` | no direct PR-number commit |
 | `examples/tool_chat_template_mistral.jinja` | [#5649](https://github.com/vllm-project/vllm/pull/5649) |
 | `examples/tool_chat_template_mistral3.jinja` | [#17195](https://github.com/vllm-project/vllm/pull/17195), [#17644](https://github.com/vllm-project/vllm/pull/17644) |
 | `examples/tool_chat_template_mistral_parallel.jinja` | [#5649](https://github.com/vllm-project/vllm/pull/5649) |
@@ -28,6 +28,7 @@
 | `tests/tool_use/mistral/utils.py` | [#39217](https://github.com/vllm-project/vllm/pull/39217) |
 | `vllm/model_executor/models/mistral.py` | [#1196](https://github.com/vllm-project/vllm/pull/1196), [#1220](https://github.com/vllm-project/vllm/pull/1220), [#1254](https://github.com/vllm-project/vllm/pull/1254), [#1303](https://github.com/vllm-project/vllm/pull/1303), [#2868](https://github.com/vllm-project/vllm/pull/2868), [#32780](https://github.com/vllm-project/vllm/pull/32780), [#33095](https://github.com/vllm-project/vllm/pull/33095) |
 | `vllm/model_executor/models/mistral3.py` | [#15505](https://github.com/vllm-project/vllm/pull/15505), [#15950](https://github.com/vllm-project/vllm/pull/15950), [#17270](https://github.com/vllm-project/vllm/pull/17270), [#17428](https://github.com/vllm-project/vllm/pull/17428), [#21945](https://github.com/vllm-project/vllm/pull/21945), [#33939](https://github.com/vllm-project/vllm/pull/33939), [#36928](https://github.com/vllm-project/vllm/pull/36928) |
+| `vllm/model_executor/models/mistral_eagle.py` | [#41024](https://github.com/vllm-project/vllm/pull/41024) |
 | `vllm/model_executor/models/mistral_large_3.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757) |
 | `vllm/model_executor/models/mistral_large_3_eagle.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757), [#36163](https://github.com/vllm-project/vllm/pull/36163), [#37232](https://github.com/vllm-project/vllm/pull/37232) |
 | `vllm/reasoning/mistral_reasoning_parser.py` | [#30391](https://github.com/vllm-project/vllm/pull/30391) |
@@ -39,9 +40,9 @@
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 47
-- Extra PRs preserved from existing docs: 4
-- Total PRs in this document: 51
+- Git-traced PRs: 44
+- Extra PRs preserved from existing docs: 8
+- Total PRs in this document: 52
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -100,6 +101,7 @@
 | 2026-04-22 | [#40531](https://github.com/vllm-project/vllm/pull/40531) | merged | [Bugfix][Parser] Fix Mistral pre-v11 tool parser failing on trailing model output | `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py` |
 | 2026-04-24 | [#40043](https://github.com/vllm-project/vllm/pull/40043) | merged | [Feature] Avoid eager import of the "mistral_common" package. | `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/utils/mistral.py` |
 | 2026-04-24 | [#39294](https://github.com/vllm-project/vllm/pull/39294) | merged | [Bugfix][Parser] Fix Mistral tool parser for HF tokenizers | `vllm/tool_parsers/mistral_tool_parser.py` |
+| 2026-04-28 | [#41024](https://github.com/vllm-project/vllm/pull/41024) | merged | [FEATURE] Add EagleMistralForCausalLM | `vllm/model_executor/models/mistral_eagle.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -109,7 +111,7 @@
 - Status/date: merged / 2023-09-28
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral.py`, `vllm/transformers_utils/configs/mistral.py`; associated commits `bb1ba58f0647`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 13 files, +571/-25, 795 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Mistral] Mistral-7B-v0.1 support"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `vllm/model_executor/models/mistral.py`, `vllm/transformers_utils/configs/mistral.py`; no usable PR-body summary.
+- Motivation: Title: "[Mistral] Mistral-7B-v0.1 support"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `vllm/model_executor/models/mistral.py`, `vllm/transformers_utils/configs/mistral.py`; technical summary: Covers "[Mistral] Mistral-7B-v0.1 support"; the main implementation surface is `vllm/model_executor/models/mistral.py`, `vllm/transformers_utils/configs/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/mistral.py` added +404/-0 (404 lines); hunks: -0,0 +1,404; symbols: MistralMLP, __init__, forward, MistralAttention, touching `MistralMLP, __init__, forward`; `vllm/transformers_utils/configs/mistral.py` added +66/-0 (66 lines); hunks: -0,0 +1,66; symbols: MistralConfig, __init__, touching `MistralConfig, __init__`.
 - Code diff details:
   - `vllm/model_executor/models/mistral.py` added +404/-0 (404 lines); hunks: -0,0 +1,404; symbols: MistralMLP, __init__, forward, MistralAttention
@@ -145,7 +147,7 @@ diff -- vllm/transformers_utils/configs/mistral.py
 - Status/date: merged / 2023-09-28
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral.py`; associated commits `a8e98aee0c16`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +27/-14, 124 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix Mistral model"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/model_executor/models/mistral.py`; PR body summary: Should be merged after #1196 This PR includes a bug fix for MistralConfig and sliding window plus small stylistic changes..
+- Motivation: Title: "Fix Mistral model"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/model_executor/models/mistral.py`; technical summary: Covers "Fix Mistral model"; the main implementation surface is `vllm/model_executor/models/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/mistral.py` modified +1/-1 (2 lines); hunks: -29,7 +29,6; -46,6 +45,7.
 - Code diff details:
   - `vllm/model_executor/models/mistral.py` modified +1/-1 (2 lines); hunks: -29,7 +29,6; -46,6 +45,7
@@ -169,7 +171,7 @@ diff -- vllm/model_executor/models/mistral.py
 - Status/date: merged / 2023-10-10
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral.py`; associated commits `b95ee898fe1c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Minor] Fix comment in mistral.py"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/model_executor/models/mistral.py`; no usable PR-body summary.
+- Motivation: Title: "[Minor] Fix comment in mistral.py"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/model_executor/models/mistral.py`; technical summary: Covers "[Minor] Fix comment in mistral.py"; the main implementation surface is `vllm/model_executor/models/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/mistral.py` modified +1/-1 (2 lines); hunks: -20,7 +20,7.
 - Code diff details:
   - `vllm/model_executor/models/mistral.py` modified +1/-1 (2 lines); hunks: -20,7 +20,7
@@ -192,7 +194,7 @@ diff -- vllm/model_executor/models/mistral.py
 - Status/date: merged / 2023-10-13
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral.py`, `vllm/transformers_utils/configs/mistral.py`; associated commits `e7c8555d0652`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +4/-81, 136 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Bump up transformers version & Remove MistralConfig"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `vllm/transformers_utils/configs/mistral.py`, `vllm/model_executor/models/mistral.py`; PR body summary: Now that MistralConfig is officially supported by the stable release of HF transformers, we can remove our `MistralConfig`..
+- Motivation: Title: "Bump up transformers version & Remove MistralConfig"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `vllm/transformers_utils/configs/mistral.py`, `vllm/model_executor/models/mistral.py`; technical summary: Covers "Bump up transformers version & Remove MistralConfig"; the main implementation surface is `vllm/transformers_utils/configs/mistral.py`, `vllm/model_executor/models/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/transformers_utils/configs/mistral.py` removed +0/-66 (66 lines); hunks: -1,66 +0,0; symbols: MistralConfig, __init__, touching `MistralConfig, __init__`; `vllm/model_executor/models/mistral.py` modified +1/-1 (2 lines); hunks: -29,6 +29,7; -44,7 +45,6.
 - Code diff details:
   - `vllm/transformers_utils/configs/mistral.py` removed +0/-66 (66 lines); hunks: -1,66 +0,0; symbols: MistralConfig, __init__
@@ -225,7 +227,7 @@ diff -- vllm/model_executor/models/mistral.py
 - Status/date: merged / 2024-02-22
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral.py`; associated commits `344020c926ad`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +6/-379, 421 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Migrate MistralForCausalLM to LlamaForCausalLM"; model line: Mistral Small 4; category: model implementation change; main diff: `vllm/model_executor/models/mistral.py`; PR body summary: Mistral is the same as Llama arch except `sliding_window` parameter in `PagedAttention`. This is a subsequent PR of #2637..
+- Motivation: Title: "Migrate MistralForCausalLM to LlamaForCausalLM"; model line: Mistral Small 4; category: model implementation change; main diff: `vllm/model_executor/models/mistral.py`; technical summary: Covers "Migrate MistralForCausalLM to LlamaForCausalLM"; the main implementation surface is `vllm/model_executor/models/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/mistral.py` removed +0/-377 (377 lines); hunks: -1,377 +0,0; symbols: MistralMLP, __init__, forward, MistralAttention, touching `MistralMLP, __init__, forward`.
 - Code diff details:
   - `vllm/model_executor/models/mistral.py` removed +0/-377 (377 lines); hunks: -1,377 +0,0; symbols: MistralMLP, __init__, forward, MistralAttention
@@ -252,7 +254,7 @@ diff -- vllm/model_executor/models/mistral.py
 - Status/date: merged / 2024-09-04
 - Trace source: `git log --name-only -- <model-files>` found it through `examples/tool_chat_template_mistral.jinja`, `examples/tool_chat_template_mistral_parallel.jinja`; associated commits `e02ce498be2e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 26 files, +2588/-83, 3136 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Feature] OpenAI-Compatible Tools API + Streaming for Hermes & Mistral models"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `examples/tool_chat_template_mistral_parallel.jinja`, `examples/tool_chat_template_mistral.jinja`; PR body summary: OpenAI Tool Use Checklist This (Draft) PR will add support for OpenAI-style tool calling in a way that is minimally opinionated about tool use formats & prompt formatting. The f....
+- Motivation: Title: "[Feature] OpenAI-Compatible Tools API + Streaming for Hermes & Mistral models"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `examples/tool_chat_template_mistral_parallel.jinja`, `examples/tool_chat_template_mistral.jinja`; technical summary: Covers "[Feature] OpenAI-Compatible Tools API + Streaming for Hermes & Mistral models"; the main implementation surface is `examples/tool_chat_template_mistral_parallel.jinja`, `examples/tool_chat_template_mistral.jinja`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `examples/tool_chat_template_mistral_parallel.jinja` added +94/-0 (94 lines); hunks: -0,0 +1,94; `examples/tool_chat_template_mistral.jinja` added +86/-0 (86 lines); hunks: -0,0 +1,86.
 - Code diff details:
   - `examples/tool_chat_template_mistral_parallel.jinja` added +94/-0 (94 lines); hunks: -0,0 +1,94
@@ -288,7 +290,7 @@ diff -- examples/tool_chat_template_mistral.jinja
 - Status/date: merged / 2025-03-18
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/fixtures/mistral_small_3_chat.json`; associated commits `f863ffc96532`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +34/-60, 204 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Mistral-Small 3.1] Update docs and tests"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `tests/models/fixtures/mistral_small_3_chat.json`; PR body summary: Some tests for new mistral-small-3.1 checkpoint. However, tests are even failing for pixtral-12b at the moment.
+- Motivation: Title: "[Mistral-Small 3.1] Update docs and tests"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `tests/models/fixtures/mistral_small_3_chat.json`; technical summary: Covers "[Mistral-Small 3.1] Update docs and tests"; the main implementation surface is `tests/models/fixtures/mistral_small_3_chat.json`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `tests/models/fixtures/mistral_small_3_chat.json` added +1/-0 (1 lines); hunks: -0,0 +1.
 - Code diff details:
   - `tests/models/fixtures/mistral_small_3_chat.json` added +1/-0 (1 lines); hunks: -0,0 +1
@@ -308,9 +310,9 @@ diff -- tests/models/fixtures/mistral_small_3_chat.json
 
 - Link: https://github.com/vllm-project/vllm/pull/15184
 - Status/date: merged / 2025-03-20
-- Trace source: `git log --name-only -- <model-files>` found it through `examples/offline_inference/mistral-small.py`; associated commits `34868b106a8a`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +8/-2, 37 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Doc] Update Mistral Small 3.1/Pixtral example"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `examples/offline_inference/mistral-small.py`; PR body summary: The model repo has both mistral & HF format configs and weights, but vLLM currently only supports the mistral format, therefore the example needs to point to those until the HF....
+- Motivation: Title: "[Doc] Update Mistral Small 3.1/Pixtral example"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `examples/offline_inference/mistral-small.py`; technical summary: Covers "[Doc] Update Mistral Small 3.1/Pixtral example"; the main implementation surface is `examples/offline_inference/mistral-small.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `examples/offline_inference/mistral-small.py` renamed +8/-2 (10 lines); hunks: -6,14 +6,16; -51,6 +53,8 @@ def run_simple_demo(args: argparse.Namespace):; symbols: run_simple_demo, run_advanced_demo, touching `run_simple_demo, run_advanced_demo`.
 - Code diff details:
   - `examples/offline_inference/mistral-small.py` renamed +8/-2 (10 lines); hunks: -6,14 +6,16; -51,6 +53,8 @@ def run_simple_demo(args: argparse.Namespace):; symbols: run_simple_demo, run_advanced_demo
@@ -337,7 +339,7 @@ diff -- examples/offline_inference/mistral-small.py
 - Status/date: merged / 2025-04-01
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral3.py`; associated commits `51d7c6a2b23e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 9 files, +723/-4, 805 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model] Support Mistral3 in the HF Transformers format"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/model_executor/models/mistral3.py`; PR body summary: Works for text input and single image batches. Requires a fix to the pixtral processing in Transformers (https://github.com/huggingface/transformers/pull/37019). It still fails....
+- Motivation: Title: "[Model] Support Mistral3 in the HF Transformers format"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/model_executor/models/mistral3.py`; technical summary: Covers "[Model] Support Mistral3 in the HF Transformers format"; the main implementation surface is `vllm/model_executor/models/mistral3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/mistral3.py` added +656/-0 (656 lines); hunks: -0,0 +1,656; symbols: Mistral3ImagePixelInputs, Mistral3PatchMerger, __init__, forward, touching `Mistral3ImagePixelInputs, Mistral3PatchMerger, __init__`.
 - Code diff details:
   - `vllm/model_executor/models/mistral3.py` added +656/-0 (656 lines); hunks: -0,0 +1,656; symbols: Mistral3ImagePixelInputs, Mistral3PatchMerger, __init__, forward
@@ -364,7 +366,7 @@ diff -- vllm/model_executor/models/mistral3.py
 - Status/date: merged / 2025-04-02
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral3.py`; associated commits `f021b9799386`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +10/-7, 55 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[V1] Support Mistral3 in V1"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `vllm/model_executor/models/mistral3.py`; no usable PR-body summary.
+- Motivation: Title: "[V1] Support Mistral3 in V1"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `vllm/model_executor/models/mistral3.py`; technical summary: Covers "[V1] Support Mistral3 in V1"; the main implementation surface is `vllm/model_executor/models/mistral3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/mistral3.py` modified +9/-6 (15 lines); hunks: -31,12 +31,12; -425,7 +425,7 @@ def init_vision_tower_for_llava(; symbols: Mistral3ImagePixelInputs, init_vision_tower_for_llava, Mistral3ForConditionalGeneration, _parse_and_validate_image_input, touching `Mistral3ImagePixelInputs, init_vision_tower_for_llava, Mistral3ForConditionalGeneration`.
 - Code diff details:
   - `vllm/model_executor/models/mistral3.py` modified +9/-6 (15 lines); hunks: -31,12 +31,12; -425,7 +425,7 @@ def init_vision_tower_for_llava(; symbols: Mistral3ImagePixelInputs, init_vision_tower_for_llava, Mistral3ForConditionalGeneration, _parse_and_validate_image_input
@@ -389,9 +391,9 @@ diff -- vllm/model_executor/models/mistral3.py
 
 - Link: https://github.com/vllm-project/vllm/pull/16147
 - Status/date: merged / 2025-04-07
-- Trace source: `git log --name-only -- <model-files>` found it through `examples/offline_inference/mistral-small.py`; associated commits `0a5738672158`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +22/-8, 77 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Misc] Update Mistral-3.1 example"; model line: Mistral Small 4; category: model implementation change; main diff: `examples/offline_inference/mistral-small.py`; PR body summary: Update Mistral-3.1 example so people don't think that they always have to use Mistral format, even for quantized models.
+- Motivation: Title: "[Misc] Update Mistral-3.1 example"; model line: Mistral Small 4; category: model implementation change; main diff: `examples/offline_inference/mistral-small.py`; technical summary: Covers "[Misc] Update Mistral-3.1 example"; the main implementation surface is `examples/offline_inference/mistral-small.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `examples/offline_inference/mistral-small.py` modified +22/-8 (30 lines); hunks: -13,9 +13,14; -44,19 +49,22; symbols: run_simple_demo, run_advanced_demo, main, touching `run_simple_demo, run_advanced_demo, main`.
 - Code diff details:
   - `examples/offline_inference/mistral-small.py` modified +22/-8 (30 lines); hunks: -13,9 +13,14; -44,19 +49,22; symbols: run_simple_demo, run_advanced_demo, main
@@ -418,7 +420,7 @@ diff -- examples/offline_inference/mistral-small.py
 - Status/date: merged / 2025-04-28
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral3.py`; associated commits `cb3f2d8d10ff`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +5/-3, 22 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix Mistral3 spatial merge error"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/model_executor/models/mistral3.py`; PR body summary: FIX https://github.com/vllm-project/vllm/issues/16675 We just were not patching spatial_merge_size into the vision config in both of the places needed. This results in the dummy....
+- Motivation: Title: "[Bugfix] Fix Mistral3 spatial merge error"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/model_executor/models/mistral3.py`; technical summary: Covers "[Bugfix] Fix Mistral3 spatial merge error"; the main implementation surface is `vllm/model_executor/models/mistral3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/mistral3.py` modified +3/-0 (3 lines); hunks: -272,6 +272,9 @@ def _get_prompt_updates(; symbols: _get_prompt_updates, get_replacement, touching `_get_prompt_updates, get_replacement`.
 - Code diff details:
   - `vllm/model_executor/models/mistral3.py` modified +3/-0 (3 lines); hunks: -272,6 +272,9 @@ def _get_prompt_updates(; symbols: _get_prompt_updates, get_replacement
@@ -442,7 +444,7 @@ diff -- vllm/model_executor/models/mistral3.py
 - Status/date: merged / 2025-04-29
 - Trace source: `git log --name-only -- <model-files>` found it through `examples/tool_chat_template_mistral3.jinja`; associated commits `96e06e3cb73f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +119/-0, 121 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Misc] Add a Jinja template to support Mistral3 function calling"; model line: Mistral Small 4; category: bug fix; main diff: `examples/tool_chat_template_mistral3.jinja`; PR body summary: Fix https://github.com/vllm-project/vllm/issues/16292 Usage:.
+- Motivation: Title: "[Misc] Add a Jinja template to support Mistral3 function calling"; model line: Mistral Small 4; category: bug fix; main diff: `examples/tool_chat_template_mistral3.jinja`; technical summary: Covers "[Misc] Add a Jinja template to support Mistral3 function calling"; the main implementation surface is `examples/tool_chat_template_mistral3.jinja`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `examples/tool_chat_template_mistral3.jinja` added +119/-0 (119 lines); hunks: -0,0 +1,119.
 - Code diff details:
   - `examples/tool_chat_template_mistral3.jinja` added +119/-0 (119 lines); hunks: -0,0 +1,119
@@ -469,7 +471,7 @@ diff -- examples/tool_chat_template_mistral3.jinja
 - Status/date: merged / 2025-04-30
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral3.py`; associated commits `a44c4f1d2f7c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +15/-4, 51 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Support LoRA for Mistral3"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `vllm/model_executor/models/mistral3.py`; PR body summary: Tested manually Download the LoRA weights Serve the model with the LoRA weights Send a request to the base model Send a request to the LoRA model.
+- Motivation: Title: "Support LoRA for Mistral3"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `vllm/model_executor/models/mistral3.py`; technical summary: Covers "Support LoRA for Mistral3"; the main implementation surface is `vllm/model_executor/models/mistral3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/mistral3.py` modified +14/-3 (17 lines); hunks: -18,6 +18,7; -31,7 +32,8; symbols: init_vision_tower_for_llava, Mistral3ForConditionalGeneration, load_weights, get_mm_mapping, touching `init_vision_tower_for_llava, Mistral3ForConditionalGeneration, load_weights`.
 - Code diff details:
   - `vllm/model_executor/models/mistral3.py` modified +14/-3 (17 lines); hunks: -18,6 +18,7; -31,7 +32,8; symbols: init_vision_tower_for_llava, Mistral3ForConditionalGeneration, load_weights, get_mm_mapping
@@ -496,7 +498,7 @@ diff -- vllm/model_executor/models/mistral3.py
 - Status/date: merged / 2025-05-08
 - Trace source: `git log --name-only -- <model-files>` found it through `examples/tool_chat_template_mistral3.jinja`; associated commits `ca04b97c9361`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +9/-2, 23 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix tool call template validation for Mistral models"; model line: Mistral Small 4; category: bug fix; main diff: `examples/tool_chat_template_mistral3.jinja`; PR body summary: This fixes an issue where the template validation fails after function calling due to incorrect message role alternation checking. The fix properly filters tool-related messages....
+- Motivation: Title: "[Bugfix] Fix tool call template validation for Mistral models"; model line: Mistral Small 4; category: bug fix; main diff: `examples/tool_chat_template_mistral3.jinja`; technical summary: Covers "[Bugfix] Fix tool call template validation for Mistral models"; the main implementation surface is `examples/tool_chat_template_mistral3.jinja`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `examples/tool_chat_template_mistral3.jinja` modified +9/-2 (11 lines); hunks: -29,7 +29,14; -116,4 +123,4.
 - Code diff details:
   - `examples/tool_chat_template_mistral3.jinja` modified +9/-2 (11 lines); hunks: -29,7 +29,14; -116,4 +123,4
@@ -523,7 +525,7 @@ diff -- examples/tool_chat_template_mistral3.jinja
 - Status/date: merged / 2025-06-05
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +32/-4, 70 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[mistral_common] Add v11 tokenizer"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `vllm/entrypoints/openai/tool_parsers/mistral_tool_parser.py`, `vllm/transformers_utils/tokenizers/mistral.py`; PR body summary: Support of new mistral_common v11 tokenizer.
+- Motivation: Title: "[mistral_common] Add v11 tokenizer"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `vllm/entrypoints/openai/tool_parsers/mistral_tool_parser.py`, `vllm/transformers_utils/tokenizers/mistral.py`; technical summary: Covers "[mistral_common] Add v11 tokenizer"; the main implementation surface is `vllm/entrypoints/openai/tool_parsers/mistral_tool_parser.py`, `vllm/transformers_utils/tokenizers/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/entrypoints/openai/tool_parsers/mistral_tool_parser.py` modified +30/-4 (34 lines); hunks: -44,11 +44,17 @@ def is_valid_id(id: str) -> bool:; -70,6 +76,12 @@ def __init__(self, tokenizer: AnyTokenizer):; symbols: is_valid_id, _is_fn_name_regex_support, MistralToolParser, __init__, touching `is_valid_id, _is_fn_name_regex_support, MistralToolParser`; `vllm/transformers_utils/tokenizers/mistral.py` modified +2/-0 (2 lines); hunks: -187,6 +187,8 @@ class MistralTokenizer(TokenizerBase):; symbols: MistralTokenizer, __init__, touching `MistralTokenizer, __init__`.
 - Code diff details:
   - `vllm/entrypoints/openai/tool_parsers/mistral_tool_parser.py` modified +30/-4 (34 lines); hunks: -44,11 +44,17 @@ def is_valid_id(id: str) -> bool:; -70,6 +76,12 @@ def __init__(self, tokenizer: AnyTokenizer):; symbols: is_valid_id, _is_fn_name_regex_support, MistralToolParser, __init__
@@ -555,7 +557,7 @@ diff -- vllm/transformers_utils/tokenizers/mistral.py
 - Status/date: merged / 2025-06-26
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/language/generation/test_mistral.py`; associated commits `754b00edb3fd`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +53/-2, 73 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix Mistral tool-parser regex for nested JSON"; model line: Mistral Small 4; category: bug fix; main diff: `tests/models/language/generation/test_mistral.py`; PR body summary: FIX https://github.com/vllm-project/vllm/pull/19193#discussion_r2166913872 Capture the full outermost argument block (including nested braces) and add a unit test validating cor....
+- Motivation: Title: "[Bugfix] Fix Mistral tool-parser regex for nested JSON"; model line: Mistral Small 4; category: bug fix; main diff: `tests/models/language/generation/test_mistral.py`; technical summary: Covers "[Bugfix] Fix Mistral tool-parser regex for nested JSON"; the main implementation surface is `tests/models/language/generation/test_mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `tests/models/language/generation/test_mistral.py` modified +51/-0 (51 lines); hunks: -10,6 +10,7; -318,3 +319,53 @@ def test_mistral_guided_decoding(; symbols: test_mistral_guided_decoding, test_mistral_function_call_nested_json, _StubMistralTokenizer, __init__, touching `test_mistral_guided_decoding, test_mistral_function_call_nested_json, _StubMistralTokenizer`.
 - Code diff details:
   - `tests/models/language/generation/test_mistral.py` modified +51/-0 (51 lines); hunks: -10,6 +10,7; -318,3 +319,53 @@ def test_mistral_guided_decoding(; symbols: test_mistral_guided_decoding, test_mistral_function_call_nested_json, _StubMistralTokenizer, __init__
@@ -582,7 +584,7 @@ diff -- tests/models/language/generation/test_mistral.py
 - Status/date: merged / 2025-07-07
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/transformers_utils/configs/mistral.py`; associated commits `14601f5fba13`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +167/-113, 320 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Config] Refactor mistral configs"; model line: Mistral Small 4; category: model implementation change; main diff: `vllm/transformers_utils/configs/mistral.py`; PR body summary: There is too much mistral config logic in the more general: `vllm/transformers_utils/config.py` file => let's move this into a config/mistral.py file similar to how it's done fo....
+- Motivation: Title: "[Config] Refactor mistral configs"; model line: Mistral Small 4; category: model implementation change; main diff: `vllm/transformers_utils/configs/mistral.py`; technical summary: Covers "[Config] Refactor mistral configs"; the main implementation surface is `vllm/transformers_utils/configs/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/transformers_utils/configs/mistral.py` added +120/-0 (120 lines); hunks: -0,0 +1,120; symbols: adapt_config_dict, _remap_mistral_vision_args, _remap_mistral_yarn_args, _remap_general_mistral_args, touching `adapt_config_dict, _remap_mistral_vision_args, _remap_mistral_yarn_args`.
 - Code diff details:
   - `vllm/transformers_utils/configs/mistral.py` added +120/-0 (120 lines); hunks: -0,0 +1,120; symbols: adapt_config_dict, _remap_mistral_vision_args, _remap_mistral_yarn_args, _remap_general_mistral_args
@@ -609,7 +611,7 @@ diff -- vllm/transformers_utils/configs/mistral.py
 - Status/date: merged / 2025-08-20
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral3.py`; associated commits `c4477f55e581`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +17/-21, 69 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Migrate Mistral3ImagePixelInputs to TensorSchema"; model line: Mistral Small 4; category: model implementation change; main diff: `vllm/model_executor/models/mistral3.py`; PR body summary: This PR migrates Mistral3ImagePixelInputs from a TypedDict-based definition to a structured TensorSchema model with runtime shape validation. This brings it in line with recent....
+- Motivation: Title: "Migrate Mistral3ImagePixelInputs to TensorSchema"; model line: Mistral Small 4; category: model implementation change; main diff: `vllm/model_executor/models/mistral3.py`; technical summary: Covers "Migrate Mistral3ImagePixelInputs to TensorSchema"; the main implementation surface is `vllm/model_executor/models/mistral3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/mistral3.py` modified +17/-21 (38 lines); hunks: -3,7 +3,7; -32,6 +32,7; symbols: Mistral3ImagePixelInputs, Mistral3PatchMerger, __init__, _validate_pixel_values, touching `Mistral3ImagePixelInputs, Mistral3PatchMerger, __init__`.
 - Code diff details:
   - `vllm/model_executor/models/mistral3.py` modified +17/-21 (38 lines); hunks: -3,7 +3,7; -32,6 +32,7; symbols: Mistral3ImagePixelInputs, Mistral3PatchMerger, __init__, _validate_pixel_values
@@ -636,7 +638,7 @@ diff -- vllm/model_executor/models/mistral3.py
 - Status/date: merged / 2025-10-09
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_mistral_reasoning_parser.py`; associated commits `c6187f55f7c4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 18 files, +2349/-461, 3215 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Refactor MistralTokenizer"; model line: Mistral Small 4; category: model implementation change; main diff: `tests/reasoning/test_mistral_reasoning_parser.py`; PR body summary: The `MistralTokenizer` has not been updated in a while and this PR makes a major refactor of the tokenizer. It leverages the MistralCommonTokenizer from `transformers` and updat....
+- Motivation: Title: "Refactor MistralTokenizer"; model line: Mistral Small 4; category: model implementation change; main diff: `tests/reasoning/test_mistral_reasoning_parser.py`; technical summary: Covers "Refactor MistralTokenizer"; the main implementation surface is `tests/reasoning/test_mistral_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `tests/reasoning/test_mistral_reasoning_parser.py` modified +1/-27 (28 lines); hunks: -2,8 +2,6; -14,33 +12,9; symbols: mistral_tokenizer, touching `mistral_tokenizer`.
 - Code diff details:
   - `tests/reasoning/test_mistral_reasoning_parser.py` modified +1/-27 (28 lines); hunks: -2,8 +2,6; -14,33 +12,9; symbols: mistral_tokenizer
@@ -663,7 +665,7 @@ diff -- tests/reasoning/test_mistral_reasoning_parser.py
 - Status/date: merged / 2025-11-19
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 104 files, +544/-912, 4603 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Update `rope_scaling` to `rope_parameters` in preparation for Transformers v5"; model line: Mistral Small 4; category: model implementation change; main diff: `vllm/model_executor/layers/rotary_embedding/__init__.py`, `vllm/transformers_utils/configs/nemotron.py`, `vllm/model_executor/models/deepseek_v2.py`; PR body summary: In Transformers v5: - `rope_scaling` is now called `rope_parameters` - `rope_theta` now lives inside `rope_parameters` - `rope_parameters` may be nested for models which have di....
+- Motivation: Title: "Update `rope_scaling` to `rope_parameters` in preparation for Transformers v5"; model line: Mistral Small 4; category: model implementation change; main diff: `vllm/model_executor/layers/rotary_embedding/__init__.py`, `vllm/transformers_utils/configs/nemotron.py`, `vllm/model_executor/models/deepseek_v2.py`; technical summary: Covers "Update `rope_scaling` to `rope_parameters` in preparation for Transformers v5"; the main implementation surface is `vllm/model_executor/layers/rotary_embedding/__init__.py`, `vllm/transformers_utils/configs/nemotron.py`, `vllm/model_executor/models/deepseek_v2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/layers/rotary_embedding/__init__.py` modified +38/-38 (76 lines); hunks: -26,23 +26,23 @@ def get_rope(; -60,15 +60,15 @@ def get_rope(; symbols: get_rope, touching `get_rope`; `vllm/transformers_utils/configs/nemotron.py` modified +31/-29 (60 lines); hunks: -88,8 +88,8 @@ class NemotronConfig(PretrainedConfig):; -132,8 +132,7 @@ def __init__(; symbols: NemotronConfig, __init__, _rope_scaling_validation, touching `NemotronConfig, __init__, _rope_scaling_validation`; `vllm/model_executor/models/deepseek_v2.py` modified +13/-30 (43 lines); hunks: -27,7 +27,6; -111,8 +110,6 @@ def __init__(; symbols: __init__, touching `__init__`; `vllm/model_executor/models/chameleon.py` modified +4/-25 (29 lines); hunks: -264,8 +264,7 @@ def __init__(; -292,7 +291,6 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/layers/rotary_embedding/__init__.py` modified +38/-38 (76 lines); hunks: -26,23 +26,23 @@ def get_rope(; -60,15 +60,15 @@ def get_rope(; symbols: get_rope
@@ -704,7 +706,7 @@ diff -- vllm/model_executor/models/deepseek_v2.py
 - Status/date: merged / 2025-11-21
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/transformers_utils/configs/mistral.py`; associated commits `434f3d3eb869`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +4/-0, 11 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix mistral config"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/transformers_utils/configs/mistral.py`; PR body summary: Hi ! With the recent refactoring of rope_parameters #https://github.com/vllm-project/vllm/pull/28542 it introduced a breaking change for Mistral configs using yarn. This is the....
+- Motivation: Title: "Fix mistral config"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/transformers_utils/configs/mistral.py`; technical summary: Covers "Fix mistral config"; the main implementation surface is `vllm/transformers_utils/configs/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/transformers_utils/configs/mistral.py` modified +4/-0 (4 lines); hunks: -90,6 +90,10 @@ def _remap_mistral_yarn_args(config: dict) -> dict:; symbols: _remap_mistral_yarn_args, touching `_remap_mistral_yarn_args`.
 - Code diff details:
   - `vllm/transformers_utils/configs/mistral.py` modified +4/-0 (4 lines); hunks: -90,6 +90,10 @@ def _remap_mistral_yarn_args(config: dict) -> dict:; symbols: _remap_mistral_yarn_args
@@ -727,7 +729,7 @@ diff -- vllm/transformers_utils/configs/mistral.py
 - Status/date: merged / 2025-11-21
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/language/generation/test_mistral.py`, `vllm/transformers_utils/configs/mistral.py`; associated commits `57430fc95c8a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 15 files, +230/-34, 497 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Default model load/config/tokenizer to `mistral` format if relevant files exist"; model line: Mistral Small 4; category: model implementation change; main diff: `tests/models/language/generation/test_mistral.py`, `vllm/transformers_utils/configs/mistral.py`; PR body summary: This PR aims to improve Mistral user experience by changing the "auto" behavior of `--load_format auto --config_format auto --tokenizer_mode auto` to default to Mistral when rel....
+- Motivation: Title: "Default model load/config/tokenizer to `mistral` format if relevant files exist"; model line: Mistral Small 4; category: model implementation change; main diff: `tests/models/language/generation/test_mistral.py`, `vllm/transformers_utils/configs/mistral.py`; technical summary: Covers "Default model load/config/tokenizer to `mistral` format if relevant files exist"; the main implementation surface is `tests/models/language/generation/test_mistral.py`, `vllm/transformers_utils/configs/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `tests/models/language/generation/test_mistral.py` modified +1/-1 (2 lines); hunks: -208,7 +208,7 @@ def test_mistral_format(; symbols: test_mistral_format, touching `test_mistral_format`; `vllm/transformers_utils/configs/mistral.py` modified +1/-1 (2 lines); hunks: -118,7 +118,7 @@ def _remap_general_mistral_args(config: dict) -> dict:; symbols: _remap_general_mistral_args, touching `_remap_general_mistral_args`.
 - Code diff details:
   - `tests/models/language/generation/test_mistral.py` modified +1/-1 (2 lines); hunks: -208,7 +208,7 @@ def test_mistral_format(; symbols: test_mistral_format
@@ -756,7 +758,7 @@ diff -- vllm/transformers_utils/configs/mistral.py
 - Status/date: merged / 2025-11-22
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/transformers_utils/configs/mistral.py`; associated commits `d1cf8214e523`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +25/-4, 69 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Use HF config fields as fallback when loading Mistral config"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/transformers_utils/configs/mistral.py`; PR body summary: - Detect `model_type = "mamba"` to load the correct architecture for `mistralai/Mamba-Codestral-7B-v0.1` - If the HF Hub repo has a HF config, fallback to its fields if they are....
+- Motivation: Title: "[Bugfix] Use HF config fields as fallback when loading Mistral config"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/transformers_utils/configs/mistral.py`; technical summary: Covers "[Bugfix] Use HF config fields as fallback when loading Mistral config"; the main implementation surface is `vllm/transformers_utils/configs/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/transformers_utils/configs/mistral.py` modified +10/-3 (13 lines); hunks: -9,14 +9,18; -52,6 +56,9 @@ def adapt_config_dict(config_dict: dict[str, Any], **kwargs) -...; symbols: adapt_config_dict, touching `adapt_config_dict`.
 - Code diff details:
   - `vllm/transformers_utils/configs/mistral.py` modified +10/-3 (13 lines); hunks: -9,14 +9,18; -52,6 +56,9 @@ def adapt_config_dict(config_dict: dict[str, Any], **kwargs) -...; symbols: adapt_config_dict
@@ -783,7 +785,7 @@ diff -- vllm/transformers_utils/configs/mistral.py
 - Status/date: merged / 2025-12-02
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/tokenizers_/test_mistral.py`, `vllm/model_executor/models/mistral_large_3.py`, `vllm/model_executor/models/mistral_large_3_eagle.py`, `vllm/tokenizers/mistral.py`, `vllm/transformers_utils/configs/mistral.py`; associated commits `d8c6210eeaa7`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 16 files, +724/-30, 1015 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Add Mistral Large 3 and Ministral 3"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `vllm/model_executor/models/mistral_large_3_eagle.py`, `tests/tokenizers_/test_mistral.py`, `vllm/transformers_utils/configs/mistral.py`; PR body summary: This PR adds support to Mistral-Large-3 and Ministral-3..
+- Motivation: Title: "Add Mistral Large 3 and Ministral 3"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `vllm/model_executor/models/mistral_large_3_eagle.py`, `tests/tokenizers_/test_mistral.py`, `vllm/transformers_utils/configs/mistral.py`; technical summary: Covers "Add Mistral Large 3 and Ministral 3"; the main implementation surface is `vllm/model_executor/models/mistral_large_3_eagle.py`, `tests/tokenizers_/test_mistral.py`, `vllm/transformers_utils/configs/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/mistral_large_3_eagle.py` added +165/-0 (165 lines); hunks: -0,0 +1,165; symbols: EagleMistralLarge3Model, __init__, forward, EagleMistralLarge3ForCausalLM, touching `EagleMistralLarge3Model, __init__, forward`; `tests/tokenizers_/test_mistral.py` modified +151/-7 (158 lines); hunks: -91,6 +91,118; -1108,13 +1220,6 @@ def test_decode(; symbols: test_prepare_apply_chat_template_tools_and_messages, test_decode, test_decode_empty, test_decode_int, touching `test_prepare_apply_chat_template_tools_and_messages, test_decode, test_decode_empty`; `vllm/transformers_utils/configs/mistral.py` modified +62/-12 (74 lines); hunks: -18,9 +18,31 @@ def adapt_config_dict(; -140,17 +162,20 @@ def _remap_general_mistral_args(config: dict) -> dict:; symbols: adapt_config_dict, _remap_general_mistral_args, _remap_mistral_quantization_args, _remap_mistral_audio_args, touching `adapt_config_dict, _remap_general_mistral_args, _remap_mistral_quantization_args`; `vllm/model_executor/models/mistral_large_3.py` added +63/-0 (63 lines); hunks: -0,0 +1,63; symbols: MistralLarge3ForCausalLM, load_weights, _remap_mistral_to_ds, touching `MistralLarge3ForCausalLM, load_weights, _remap_mistral_to_ds`.
 - Code diff details:
   - `vllm/model_executor/models/mistral_large_3_eagle.py` added +165/-0 (165 lines); hunks: -0,0 +1,165; symbols: EagleMistralLarge3Model, __init__, forward, EagleMistralLarge3ForCausalLM
@@ -825,7 +827,7 @@ diff -- vllm/transformers_utils/configs/mistral.py
 - Status/date: merged / 2025-12-02
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/language/generation/test_mistral.py`; associated commits `1b1e35aaf9d9`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +36/-1, 48 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[BUGFIX] Fix regex pattern for Mistral Tool Call"; model line: Mistral Small 4; category: bug fix; main diff: `tests/models/language/generation/test_mistral.py`; PR body summary: Candidate to fix https://buildkite.com/vllm/ci/builds/41533#019adeaf-51ed-4dac-a952-c9d9db0723a5/194-1495.
+- Motivation: Title: "[BUGFIX] Fix regex pattern for Mistral Tool Call"; model line: Mistral Small 4; category: bug fix; main diff: `tests/models/language/generation/test_mistral.py`; technical summary: Covers "[BUGFIX] Fix regex pattern for Mistral Tool Call"; the main implementation surface is `tests/models/language/generation/test_mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `tests/models/language/generation/test_mistral.py` modified +35/-0 (35 lines); hunks: -315,3 +315,38 @@ def get_vocab():; symbols: get_vocab, touching `get_vocab`.
 - Code diff details:
   - `tests/models/language/generation/test_mistral.py` modified +35/-0 (35 lines); hunks: -315,3 +315,38 @@ def get_vocab():; symbols: get_vocab
@@ -852,7 +854,7 @@ diff -- tests/models/language/generation/test_mistral.py
 - Status/date: merged / 2025-12-11
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_mistral_reasoning_parser.py`, `vllm/reasoning/mistral_reasoning_parser.py`; associated commits `aa3c250c487e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +186/-64, 383 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[IMPROVEMENT] Change MistralReasoningParser behavior"; model line: Mistral Small 4; category: bug fix; main diff: `tests/reasoning/test_mistral_reasoning_parser.py`, `vllm/reasoning/mistral_reasoning_parser.py`; PR body summary: Fix #30139 `MistralReasoningParser` took advantage of Deepseek's v1 implementation which means that initially we forced several misgenerated traces to fall into the reasoning co....
+- Motivation: Title: "[IMPROVEMENT] Change MistralReasoningParser behavior"; model line: Mistral Small 4; category: bug fix; main diff: `tests/reasoning/test_mistral_reasoning_parser.py`, `vllm/reasoning/mistral_reasoning_parser.py`; technical summary: Covers "[IMPROVEMENT] Change MistralReasoningParser behavior"; the main implementation surface is `tests/reasoning/test_mistral_reasoning_parser.py`, `vllm/reasoning/mistral_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `tests/reasoning/test_mistral_reasoning_parser.py` modified +84/-61 (145 lines); hunks: -18,47 +18,53 @@ def mistral_tokenizer():; -78,17 +84,17 @@ def mistral_tokenizer():; symbols: mistral_tokenizer, touching `mistral_tokenizer`; `vllm/reasoning/mistral_reasoning_parser.py` modified +102/-3 (105 lines); hunks: -3,20 +3,29; -53,3 +62,93 @@ def end_token(self) -> str:; symbols: MistralReasoningParser, __init__, end_token, is_reasoning_end, touching `MistralReasoningParser, __init__, end_token`.
 - Code diff details:
   - `tests/reasoning/test_mistral_reasoning_parser.py` modified +84/-61 (145 lines); hunks: -18,47 +18,53 @@ def mistral_tokenizer():; -78,17 +84,17 @@ def mistral_tokenizer():; symbols: mistral_tokenizer
@@ -889,7 +891,7 @@ diff -- vllm/reasoning/mistral_reasoning_parser.py
 - Status/date: closed / 2025-12-15
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 241 files, +6757/-2646, 15228 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix edge case Mistral tool parser"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/model_executor/models/audioflamingo3.py`, `vllm/model_executor/models/bagel.py`, `vllm/model_executor/models/qwen3_vl.py`; PR body summary: - Fixing an edge case in Mistral tool parser without streaming where content before [TOOL_CALLS] contains { - Returning partial json instead of [TOOL_CALLS] when json is wrong,....
+- Motivation: Title: "Fix edge case Mistral tool parser"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/model_executor/models/audioflamingo3.py`, `vllm/model_executor/models/bagel.py`, `vllm/model_executor/models/qwen3_vl.py`; technical summary: Covers "Fix edge case Mistral tool parser"; the main implementation surface is `vllm/model_executor/models/audioflamingo3.py`, `vllm/model_executor/models/bagel.py`, `vllm/model_executor/models/qwen3_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/audioflamingo3.py` added +639/-0 (639 lines); hunks: -0,0 +1,639; symbols: AudioFlamingo3FeatureInputs, AudioFlamingo3EmbeddingInputs, AudioFlamingo3Encoder, __init__, touching `AudioFlamingo3FeatureInputs, AudioFlamingo3EmbeddingInputs, AudioFlamingo3Encoder`; `vllm/model_executor/models/bagel.py` added +584/-0 (584 lines); hunks: -0,0 +1,584; symbols: BagelImagePixelInputs, BagelVisionMLP, __init__, forward, touching `BagelImagePixelInputs, BagelVisionMLP, __init__`; `vllm/model_executor/models/qwen3_vl.py` modified +448/-34 (482 lines); hunks: -50,7 +50,7; -67,12 +67,19; symbols: __init__, forward, touching `__init__, forward`; `tests/models/multimodal/generation/test_vit_backend_functionality.py` added +434/-0 (434 lines); hunks: -0,0 +1,434; symbols: build_dots_ocr_prompt, build_processor_prompt, build_ovis_prompt, build_qwen2_5_video_prompt, touching `build_dots_ocr_prompt, build_processor_prompt, build_ovis_prompt`.
 - Code diff details:
   - `vllm/model_executor/models/audioflamingo3.py` added +639/-0 (639 lines); hunks: -0,0 +1,639; symbols: AudioFlamingo3FeatureInputs, AudioFlamingo3EmbeddingInputs, AudioFlamingo3Encoder, __init__
@@ -931,7 +933,7 @@ diff -- vllm/model_executor/models/qwen3_vl.py
 - Status/date: merged / 2025-12-23
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`; associated commits `38c361f99dff`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +115/-56, 224 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix edge case Mistral tool parser"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/tool_parsers/mistral_tool_parser.py`, `tests/tool_parsers/test_mistral_tool_parser.py`; PR body summary: New version of https://github.com/vllm-project/vllm/pull/30588 - Fixing an edge case in Mistral tool parser without streaming where content before [TOOL_CALLS] contains { - Retu....
+- Motivation: Title: "Fix edge case Mistral tool parser"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/tool_parsers/mistral_tool_parser.py`, `tests/tool_parsers/test_mistral_tool_parser.py`; technical summary: Covers "Fix edge case Mistral tool parser"; the main implementation surface is `vllm/tool_parsers/mistral_tool_parser.py`, `tests/tool_parsers/test_mistral_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/tool_parsers/mistral_tool_parser.py` modified +81/-54 (135 lines); hunks: -131,78 +131,105 @@ def extract_tool_calls(; symbols: extract_tool_calls, extract_tool_calls_streaming, touching `extract_tool_calls, extract_tool_calls_streaming`; `tests/tool_parsers/test_mistral_tool_parser.py` modified +34/-2 (36 lines); hunks: -281,6 +281,8 @@ def test_extract_tool_calls_pre_v11_tokenizer(; -326,6 +328,36 @@ def test_extract_tool_calls_pre_v11_tokenizer(; symbols: test_extract_tool_calls_pre_v11_tokenizer, test_extract_tool_calls, test_extract_tool_calls_streaming, touching `test_extract_tool_calls_pre_v11_tokenizer, test_extract_tool_calls, test_extract_tool_calls_streaming`.
 - Code diff details:
   - `vllm/tool_parsers/mistral_tool_parser.py` modified +81/-54 (135 lines); hunks: -131,78 +131,105 @@ def extract_tool_calls(; symbols: extract_tool_calls, extract_tool_calls_streaming
@@ -968,7 +970,7 @@ diff -- tests/tool_parsers/test_mistral_tool_parser.py
 - Status/date: merged / 2025-12-26
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/tokenizers/mistral.py`; associated commits `48e744976cf4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +24/-57, 181 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Mistral common] Ensure all functions are imported from the top & only use public methods"; model line: Mistral Small 4; category: model implementation change; main diff: `vllm/tokenizers/mistral.py`; PR body summary: This PR makes sure that only public methods are used and that all imports are done at the top.
+- Motivation: Title: "[Mistral common] Ensure all functions are imported from the top & only use public methods"; model line: Mistral Small 4; category: model implementation change; main diff: `vllm/tokenizers/mistral.py`; technical summary: Covers "[Mistral common] Ensure all functions are imported from the top & only use public methods"; the main implementation surface is `vllm/tokenizers/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/tokenizers/mistral.py` modified +20/-53 (73 lines); hunks: -3,17 +3,28; -101,8 +112,6 @@ def _prepare_apply_chat_template_tools_and_messages(; symbols: _prepare_apply_chat_template_tools_and_messages, validate_request_params, _tekken_token_to_id, from_pretrained, touching `_prepare_apply_chat_template_tools_and_messages, validate_request_params, _tekken_token_to_id`.
 - Code diff details:
   - `vllm/tokenizers/mistral.py` modified +20/-53 (73 lines); hunks: -3,17 +3,28; -101,8 +112,6 @@ def _prepare_apply_chat_template_tools_and_messages(; symbols: _prepare_apply_chat_template_tools_and_messages, validate_request_params, _tekken_token_to_id, from_pretrained
@@ -995,7 +997,7 @@ diff -- vllm/tokenizers/mistral.py
 - Status/date: merged / 2026-01-22
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral.py`; associated commits `1579c9b5fd0f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +248/-115, 426 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Llama.py -> mistral.py] Extract mistral-only relevant code into separate file"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `vllm/model_executor/models/mistral.py`; PR body summary: We're adding more and more mistral-only code to the llama.py class which makes it harder to read and creates possible future unwanted dependencies. E.g. if other models depend o....
+- Motivation: Title: "[Llama.py -> mistral.py] Extract mistral-only relevant code into separate file"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `vllm/model_executor/models/mistral.py`; technical summary: Covers "[Llama.py -> mistral.py] Extract mistral-only relevant code into separate file"; the main implementation surface is `vllm/model_executor/models/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/mistral.py` added +242/-0 (242 lines); hunks: -0,0 +1,242; symbols: MistralAttention, __init__, _get_llama_4_attn_scale, forward, touching `MistralAttention, __init__, _get_llama_4_attn_scale`.
 - Code diff details:
   - `vllm/model_executor/models/mistral.py` added +242/-0 (242 lines); hunks: -0,0 +1,242; symbols: MistralAttention, __init__, _get_llama_4_attn_scale, forward
@@ -1022,7 +1024,7 @@ diff -- vllm/model_executor/models/mistral.py
 - Status/date: merged / 2026-01-26
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral.py`; associated commits `d56afd45fd4e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +0/-8, 17 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Remove unused logic in `models/mistral.py`"; model line: Mistral Small 4; category: model implementation change; main diff: `vllm/model_executor/models/mistral.py`; PR body summary: Some unused logic was added in #32780, cleaning it up..
+- Motivation: Title: "Remove unused logic in `models/mistral.py`"; model line: Mistral Small 4; category: model implementation change; main diff: `vllm/model_executor/models/mistral.py`; technical summary: Covers "Remove unused logic in `models/mistral.py`"; the main implementation surface is `vllm/model_executor/models/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/mistral.py` modified +0/-8 (8 lines); hunks: -156,16 +156,8 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/mistral.py` modified +0/-8 (8 lines); hunks: -156,16 +156,8 @@ def __init__(; symbols: __init__
@@ -1049,7 +1051,7 @@ diff -- vllm/model_executor/models/mistral.py
 - Status/date: merged / 2026-01-31
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 16 files, +1104/-31, 1278 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Add support for Mistral Large 3 inference with Flashinfer MoE"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_B200,dtype=fp8_w8a8.json`, `vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_B200.json`, `vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_GB200,dtype=fp8_w8a8.json`; PR body summary: Allow inference of Mistral Large 3 on Blackwell with Flashinfer TRTLLM (`latency`) backend for better performance. This PR updates Flashinfer to 0.6.2 that includes fixed kernel....
+- Motivation: Title: "Add support for Mistral Large 3 inference with Flashinfer MoE"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_B200,dtype=fp8_w8a8.json`, `vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_B200.json`, `vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_GB200,dtype=fp8_w8a8.json`; technical summary: Covers "Add support for Mistral Large 3 inference with Flashinfer MoE"; the main implementation surface is `vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_B200,dtype=fp8_w8a8.json`, `vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_B200.json`, `vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_GB200,dtype=fp8_w8a8.json`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_B200,dtype=fp8_w8a8.json` added +147/-0 (147 lines); hunks: -0,0 +1,147; `vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_B200.json` added +147/-0 (147 lines); hunks: -0,0 +1,147; `vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_GB200,dtype=fp8_w8a8.json` added +147/-0 (147 lines); hunks: -0,0 +1,147; `vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_H200,dtype=fp8_w8a8,block_shape=[128,128].json` added +147/-0 (147 lines); hunks: -0,0 +1,147.
 - Code diff details:
   - `vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_B200,dtype=fp8_w8a8.json` added +147/-0 (147 lines); hunks: -0,0 +1,147
@@ -1090,7 +1092,7 @@ diff -- vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVI
 - Status/date: merged / 2026-02-02
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/transformers_utils/configs/mistral.py`; associated commits `beb889948276`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +25/-22, 82 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix mistral sliding window parsing"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/transformers_utils/configs/mistral.py`; PR body summary: We are not correctly parsing the sliding window for `voxtral_streaming.py` (it is falling back to full attention instead of sliding window). This is because the `sliding_window`....
+- Motivation: Title: "Fix mistral sliding window parsing"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/transformers_utils/configs/mistral.py`; technical summary: Covers "Fix mistral sliding window parsing"; the main implementation surface is `vllm/transformers_utils/configs/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/transformers_utils/configs/mistral.py` modified +25/-9 (34 lines); hunks: -14,6 +14,7 @@ def adapt_config_dict(; -161,6 +162,29 @@ def _remap_general_mistral_args(config: dict) -> dict:; symbols: adapt_config_dict, _remap_general_mistral_args, _remap_mistral_sliding_window, _remap_mistral_quantization_args, touching `adapt_config_dict, _remap_general_mistral_args, _remap_mistral_sliding_window`.
 - Code diff details:
   - `vllm/transformers_utils/configs/mistral.py` modified +25/-9 (34 lines); hunks: -14,6 +14,7 @@ def adapt_config_dict(; -161,6 +162,29 @@ def _remap_general_mistral_args(config: dict) -> dict:; symbols: adapt_config_dict, _remap_general_mistral_args, _remap_mistral_sliding_window, _remap_mistral_quantization_args
@@ -1117,7 +1119,7 @@ diff -- vllm/transformers_utils/configs/mistral.py
 - Status/date: merged / 2026-02-07
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral3.py`; associated commits `4df44c16ba8c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +9/-1, 31 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Enable Eagle3 speculative decoding for Mistral3ForConditionalGeneration to support eagle3"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `vllm/model_executor/models/mistral3.py`; PR body summary: This PR adds support for Eagle3 spec decoding for Mistral3ForConditionalGeneration model. Changes were tested with a locally trained speculator model, and observed reasonable ac....
+- Motivation: Title: "Enable Eagle3 speculative decoding for Mistral3ForConditionalGeneration to support eagle3"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `vllm/model_executor/models/mistral3.py`; technical summary: Covers "Enable Eagle3 speculative decoding for Mistral3ForConditionalGeneration to support eagle3"; the main implementation surface is `vllm/model_executor/models/mistral3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/mistral3.py` modified +9/-1 (10 lines); hunks: -44,6 +44,7; -408,7 +409,7 @@ def init_vision_tower_for_llava(; symbols: init_vision_tower_for_llava, Mistral3ForConditionalGeneration, get_placeholder_str, set_aux_hidden_state_layers, touching `init_vision_tower_for_llava, Mistral3ForConditionalGeneration, get_placeholder_str`.
 - Code diff details:
   - `vllm/model_executor/models/mistral3.py` modified +9/-1 (10 lines); hunks: -44,6 +44,7; -408,7 +409,7 @@ def init_vision_tower_for_llava(; symbols: init_vision_tower_for_llava, Mistral3ForConditionalGeneration, get_placeholder_str, set_aux_hidden_state_layers
@@ -1144,7 +1146,7 @@ diff -- vllm/model_executor/models/mistral3.py
 - Status/date: merged / 2026-02-12
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/transformers_utils/configs/mistral.py`; associated commits `f5897613fb27`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +8/-0, 15 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix Mistral config remap to accept compressed-tensors quantization #34028"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/transformers_utils/configs/mistral.py`; PR body summary: fixed 34028.
+- Motivation: Title: "Fix Mistral config remap to accept compressed-tensors quantization #34028"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/transformers_utils/configs/mistral.py`; technical summary: Covers "Fix Mistral config remap to accept compressed-tensors quantization #34028"; the main implementation surface is `vllm/transformers_utils/configs/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/transformers_utils/configs/mistral.py` modified +8/-0 (8 lines); hunks: -198,6 +198,14 @@ def _remap_mistral_quantization_args(config: dict) -> dict:; symbols: _remap_mistral_quantization_args, touching `_remap_mistral_quantization_args`.
 - Code diff details:
   - `vllm/transformers_utils/configs/mistral.py` modified +8/-0 (8 lines); hunks: -198,6 +198,14 @@ def _remap_mistral_quantization_args(config: dict) -> dict:; symbols: _remap_mistral_quantization_args
@@ -1171,7 +1173,7 @@ diff -- vllm/transformers_utils/configs/mistral.py
 - Status/date: merged / 2026-02-23
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/utils/mistral.py`; associated commits `54e2f83d0a82`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 14 files, +68/-48, 399 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Feature] Lazy import for the "mistral" tokenizer module."; model line: Mistral Small 4; category: model implementation change; main diff: `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/tokenizers/mistral.py`, `vllm/utils/mistral.py`; PR body summary: This allows vLLM to be used without `mistral_common[image]` being installed. It should also speed up the startup if you are not actually using that package. The changes mostly c....
+- Motivation: Title: "[Feature] Lazy import for the "mistral" tokenizer module."; model line: Mistral Small 4; category: model implementation change; main diff: `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/tokenizers/mistral.py`, `vllm/utils/mistral.py`; technical summary: Covers "[Feature] Lazy import for the "mistral" tokenizer module."; the main implementation surface is `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/tokenizers/mistral.py`, `vllm/utils/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/tool_parsers/mistral_tool_parser.py` modified +4/-6 (10 lines); hunks: -25,10 +25,10; -66,9 +66,7 @@ def is_valid_id(id: str) -> bool:; symbols: is_valid_id, _is_pre_v11_tokeniser, MistralToolParser, __init__, touching `is_valid_id, _is_pre_v11_tokeniser, MistralToolParser`; `vllm/tokenizers/mistral.py` modified +2/-0 (2 lines); hunks: -210,6 +210,8 @@ def _tekken_token_to_id(tokenizer: "Tekkenizer", t: str | by...; symbols: _tekken_token_to_id, MistralTokenizer, from_pretrained, touching `_tekken_token_to_id, MistralTokenizer, from_pretrained`; `vllm/utils/mistral.py` added +28/-0 (28 lines); hunks: -0,0 +1,28; symbols: is_mistral_tokenizer, attribute, touching `is_mistral_tokenizer, attribute`.
 - Code diff details:
   - `vllm/tool_parsers/mistral_tool_parser.py` modified +4/-6 (10 lines); hunks: -25,10 +25,10; -66,9 +66,7 @@ def is_valid_id(id: str) -> bool:; symbols: is_valid_id, _is_pre_v11_tokeniser, MistralToolParser, __init__
@@ -1208,9 +1210,9 @@ diff -- vllm/utils/mistral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/36156
 - Status/date: merged / 2026-03-06
-- Trace source: `git log --name-only -- <model-files>` found it through `examples/offline_inference/mistral-small.py`; associated commits `de00ebeac4ab`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +5/-2, 21 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix simple Mistral-Small example"; model line: Mistral Small 4; category: bug fix; main diff: `examples/offline_inference/mistral-small.py`; PR body summary: PLEASE FILL IN THE PR DESCRIPTION HERE ENSURING ALL CHECKLIST ITEMS (AT THE BOTTOM) HAVE BEEN CONSIDERED. Mistral-format `apply_chat_template` doesn't accept `image_pil` content....
+- Motivation: Title: "[Bugfix] Fix simple Mistral-Small example"; model line: Mistral Small 4; category: bug fix; main diff: `examples/offline_inference/mistral-small.py`; technical summary: Covers "[Bugfix] Fix simple Mistral-Small example"; the main implementation surface is `examples/offline_inference/mistral-small.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `examples/offline_inference/mistral-small.py` modified +5/-2 (7 lines); hunks: -7,6 +7,7; -79,8 +80,10 @@ def run_simple_demo(args: argparse.Namespace):; symbols: run_simple_demo, touching `run_simple_demo`.
 - Code diff details:
   - `examples/offline_inference/mistral-small.py` modified +5/-2 (7 lines); hunks: -7,6 +7,7; -79,8 +80,10 @@ def run_simple_demo(args: argparse.Namespace):; symbols: run_simple_demo
@@ -1235,9 +1237,9 @@ diff -- examples/offline_inference/mistral-small.py
 
 - Link: https://github.com/vllm-project/vllm/pull/36782
 - Status/date: merged / 2026-03-11
-- Trace source: `git log --name-only -- <model-files>` found it through `examples/offline_inference/mistral-small.py`; associated commits `f33251ffc851`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +6/-6, 26 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix Mistral-small `--format`"; model line: Mistral Small 4; category: bug fix; main diff: `examples/offline_inference/mistral-small.py`; PR body summary: Update both advanced and simple mistral-small.py example. Why: "auto" is pointing to `mistral` lately, not to `hf`, so regardless the specified `--format`, the choice will be al....
+- Motivation: Title: "[Bugfix] Fix Mistral-small `--format`"; model line: Mistral Small 4; category: bug fix; main diff: `examples/offline_inference/mistral-small.py`; technical summary: Covers "[Bugfix] Fix Mistral-small `--format`"; the main implementation surface is `examples/offline_inference/mistral-small.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `examples/offline_inference/mistral-small.py` modified +6/-6 (12 lines); hunks: -62,9 +62,9 @@ def run_simple_demo(args: argparse.Namespace):; -102,9 +102,9 @@ def run_advanced_demo(args: argparse.Namespace):; symbols: run_simple_demo, run_advanced_demo, touching `run_simple_demo, run_advanced_demo`.
 - Code diff details:
   - `examples/offline_inference/mistral-small.py` modified +6/-6 (12 lines); hunks: -62,9 +62,9 @@ def run_simple_demo(args: argparse.Namespace):; -102,9 +102,9 @@ def run_advanced_demo(args: argparse.Namespace):; symbols: run_simple_demo, run_advanced_demo
@@ -1264,7 +1266,7 @@ diff -- examples/offline_inference/mistral-small.py
 - Status/date: merged / 2026-03-11
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral_large_3_eagle.py`, `vllm/transformers_utils/configs/mistral.py`; associated commits `afebeffbfbf2`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +28/-1, 61 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Add support to Mistral large 3 eagle with dense layers"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `vllm/transformers_utils/configs/mistral.py`, `vllm/model_executor/models/mistral_large_3_eagle.py`; PR body summary: This PR adds support to Dense layers for Mistral Large 3 eagle..
+- Motivation: Title: "Add support to Mistral large 3 eagle with dense layers"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `vllm/transformers_utils/configs/mistral.py`, `vllm/model_executor/models/mistral_large_3_eagle.py`; technical summary: Covers "Add support to Mistral large 3 eagle with dense layers"; the main implementation surface is `vllm/transformers_utils/configs/mistral.py`, `vllm/model_executor/models/mistral_large_3_eagle.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/transformers_utils/configs/mistral.py` modified +23/-0 (23 lines); hunks: -19,6 +19,10 @@ def adapt_config_dict(; -291,3 +295,22 @@ def _remap_moe_args(config: dict) -> dict:; symbols: adapt_config_dict, _remap_moe_args, _remap_mistral_mla_args, touching `adapt_config_dict, _remap_moe_args, _remap_mistral_mla_args`; `vllm/model_executor/models/mistral_large_3_eagle.py` modified +5/-1 (6 lines); hunks: -1,6 +1,7; -33,7 +34,9 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/transformers_utils/configs/mistral.py` modified +23/-0 (23 lines); hunks: -19,6 +19,10 @@ def adapt_config_dict(; -291,3 +295,22 @@ def _remap_moe_args(config: dict) -> dict:; symbols: adapt_config_dict, _remap_moe_args, _remap_mistral_mla_args
@@ -1300,7 +1302,7 @@ diff -- vllm/model_executor/models/mistral_large_3_eagle.py
 - Status/date: merged / 2026-03-14
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/tokenizers/mistral.py`; associated commits `e42b49bd69d4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +22/-3, 74 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Mistral common v10"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `vllm/tokenizers/mistral.py`; PR body summary: This PR adds support to mistral-common 1.10.0. Reasoning effort is now supported for the Tokenizer v15 version. To ensure BC, reasoning_effort is passed to MistralCommonBackend....
+- Motivation: Title: "Mistral common v10"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `vllm/tokenizers/mistral.py`; technical summary: Covers "Mistral common v10"; the main implementation surface is `vllm/tokenizers/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/tokenizers/mistral.py` modified +19/-0 (19 lines); hunks: -7,6 +7,9; -192,6 +195,15 @@ def validate_request_params(request: "ChatCompletionRequest"):; symbols: validate_request_params, _tekken_token_to_id, apply_chat_template, decode, touching `validate_request_params, _tekken_token_to_id, apply_chat_template`.
 - Code diff details:
   - `vllm/tokenizers/mistral.py` modified +19/-0 (19 lines); hunks: -7,6 +7,9; -192,6 +195,15 @@ def validate_request_params(request: "ChatCompletionRequest"):; symbols: validate_request_params, _tekken_token_to_id, apply_chat_template, decode
@@ -1327,7 +1329,7 @@ diff -- vllm/tokenizers/mistral.py
 - Status/date: merged / 2026-03-16
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/transformers_utils/configs/mistral.py`; associated commits `ffbc2e5bdbfb`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +49/-30, 162 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Patch Mistral config"; model line: Mistral Small 4; category: model implementation change; main diff: `vllm/transformers_utils/configs/mistral.py`; PR body summary: This PR does the following: - rope parameters are now casted to the type expected by Transformers v5. I believe it has no effect on vLLM computations but please correct me if I'....
+- Motivation: Title: "Patch Mistral config"; model line: Mistral Small 4; category: model implementation change; main diff: `vllm/transformers_utils/configs/mistral.py`; technical summary: Covers "Patch Mistral config"; the main implementation surface is `vllm/transformers_utils/configs/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/transformers_utils/configs/mistral.py` modified +10/-7 (17 lines); hunks: -113,12 +113,13 @@ def _remap_mistral_vision_args(config: dict) -> dict:; -128,9 +129,10 @@ def _remap_mistral_yarn_args(config: dict) -> dict:; symbols: _remap_mistral_vision_args, _remap_mistral_yarn_args, _remap_general_mistral_args, touching `_remap_mistral_vision_args, _remap_mistral_yarn_args, _remap_general_mistral_args`.
 - Code diff details:
   - `vllm/transformers_utils/configs/mistral.py` modified +10/-7 (17 lines); hunks: -113,12 +113,13 @@ def _remap_mistral_vision_args(config: dict) -> dict:; -128,9 +129,10 @@ def _remap_mistral_yarn_args(config: dict) -> dict:; symbols: _remap_mistral_vision_args, _remap_mistral_yarn_args, _remap_general_mistral_args
@@ -1354,7 +1356,7 @@ diff -- vllm/transformers_utils/configs/mistral.py
 - Status/date: merged / 2026-03-16
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral_large_3_eagle.py`; associated commits `7961486a9b74`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-0, 8 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix EagleMistralLarge3Model initialization"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/model_executor/models/mistral_large_3_eagle.py`; PR body summary: This PR fixes initialization of `EagleMistralLarge3Model` due to #36361 that added `aux_hidden_state_layers` init requirement. ran an inference on main it raises error, now it w....
+- Motivation: Title: "Fix EagleMistralLarge3Model initialization"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/model_executor/models/mistral_large_3_eagle.py`; technical summary: Covers "Fix EagleMistralLarge3Model initialization"; the main implementation surface is `vllm/model_executor/models/mistral_large_3_eagle.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/mistral_large_3_eagle.py` modified +1/-0 (1 lines); hunks: -74,6 +74,7 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/mistral_large_3_eagle.py` modified +1/-0 (1 lines); hunks: -74,6 +74,7 @@ def __init__(; symbols: __init__
@@ -1376,7 +1378,7 @@ diff -- vllm/model_executor/models/mistral_large_3_eagle.py
 - Status/date: merged / 2026-03-17
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py`; associated commits `5db91f0aaf35`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +42/-34, 147 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix some Mistral parser issues"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py`; PR body summary: This PR seeks to fix some parser issues before refactoring how Mistral handle requests inspired by #37081.
+- Motivation: Title: "Fix some Mistral parser issues"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py`; technical summary: Covers "Fix some Mistral parser issues"; the main implementation surface is `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/tokenizers/mistral.py` modified +27/-26 (53 lines); hunks: -15,8 +15,15; -26,21 +33,20; symbols: from_pretrained, __init__, convert_tokens_to_ids, touching `from_pretrained, __init__, convert_tokens_to_ids`; `vllm/tool_parsers/mistral_tool_parser.py` modified +7/-3 (10 lines); hunks: -241,7 +241,10 @@ def extract_tool_calls_streaming(; -275,7 +278,8 @@ def _extract_tool_calls_streaming(; symbols: extract_tool_calls_streaming, _extract_tool_calls_streaming, _extract_tool_calls_streaming_pre_v11_tokenizer, touching `extract_tool_calls_streaming, _extract_tool_calls_streaming, _extract_tool_calls_streaming_pre_v11_tokenizer`.
 - Code diff details:
   - `vllm/tokenizers/mistral.py` modified +27/-26 (53 lines); hunks: -15,8 +15,15; -26,21 +33,20; symbols: from_pretrained, __init__, convert_tokens_to_ids
@@ -1412,7 +1414,7 @@ diff -- vllm/tool_parsers/mistral_tool_parser.py
 - Status/date: merged / 2026-03-18
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral3.py`; associated commits `5bc1da147fb0`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-0, 10 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[LoRA][BugFix] Fix skipped LoRA adapters for Mistral3"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/model_executor/models/mistral3.py`; PR body summary: Currently, there is a bug with Mistral3 models that some LoRA adapters are skipped and the model produces identical results with and without LoRA. This PR fixes the bug by bring....
+- Motivation: Title: "[LoRA][BugFix] Fix skipped LoRA adapters for Mistral3"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/model_executor/models/mistral3.py`; technical summary: Covers "[LoRA][BugFix] Fix skipped LoRA adapters for Mistral3"; the main implementation surface is `vllm/model_executor/models/mistral3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/mistral3.py` modified +3/-0 (3 lines); hunks: -429,6 +429,9 @@ class Mistral3ForConditionalGeneration(; symbols: Mistral3ForConditionalGeneration, touching `Mistral3ForConditionalGeneration`.
 - Code diff details:
   - `vllm/model_executor/models/mistral3.py` modified +3/-0 (3 lines); hunks: -429,6 +429,9 @@ class Mistral3ForConditionalGeneration(; symbols: Mistral3ForConditionalGeneration
@@ -1436,7 +1438,7 @@ diff -- vllm/model_executor/models/mistral3.py
 - Status/date: merged / 2026-04-06
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/tokenizers_/test_mistral.py`, `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py`; associated commits `fef56c18555e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +601/-29, 816 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Mistral Grammar] Support Grammar Factory"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`, `tests/tokenizers_/test_mistral.py`; PR body summary: This PR adds support to the Mistral grammar factory that creates lark grammar based on `tools`, `tool_choice`, `structured_outputs` and `reasoning`. To do that it adds the follo....
+- Motivation: Title: "[Mistral Grammar] Support Grammar Factory"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`, `tests/tokenizers_/test_mistral.py`; technical summary: Covers "[Mistral Grammar] Support Grammar Factory"; the main implementation surface is `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`, `tests/tokenizers_/test_mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `tests/tool_parsers/test_mistral_tool_parser.py` modified +344/-3 (347 lines); hunks: -3,19 +3,43; -40,6 +64,13 @@ def mistral_tool_parser(mistral_tokenizer):; symbols: mistral_tool_parser, non_mistral_parser, assert_tool_calls, test_fast_detokenization_text_detection_pre_v11, touching `mistral_tool_parser, non_mistral_parser, assert_tool_calls`; `vllm/tool_parsers/mistral_tool_parser.py` modified +133/-9 (142 lines); hunks: -10,6 +10,18; -25,6 +37,7; symbols: StreamingState, MistralToolParser, __init__, adjust_request, touching `StreamingState, MistralToolParser, __init__`; `tests/tokenizers_/test_mistral.py` modified +28/-0 (28 lines); hunks: -3,8 +3,10; -2407,3 +2409,29 @@ def test_convert_ids_to_tokens(; symbols: test_convert_ids_to_tokens, test_grammar_factory, test_llg_tokenizer, touching `test_convert_ids_to_tokens, test_grammar_factory, test_llg_tokenizer`; `vllm/tokenizers/mistral.py` modified +25/-0 (25 lines); hunks: -1,9 +1,12; -45,6 +48,7; symbols: convert_ids_to_tokens, supports_grammar, grammar_factory, llg_tokenizer, touching `convert_ids_to_tokens, supports_grammar, grammar_factory`.
 - Code diff details:
   - `tests/tool_parsers/test_mistral_tool_parser.py` modified +344/-3 (347 lines); hunks: -3,19 +3,43; -40,6 +64,13 @@ def mistral_tool_parser(mistral_tokenizer):; symbols: mistral_tool_parser, non_mistral_parser, assert_tool_calls, test_fast_detokenization_text_detection_pre_v11
@@ -1477,7 +1479,7 @@ diff -- tests/tokenizers_/test_mistral.py
 - Status/date: merged / 2026-04-07
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/transformers_utils/configs/mistral.py`; associated commits `edcc37a8cee2`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +6/-0, 21 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix Mistral yarn warning in Transformers v5"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/transformers_utils/configs/mistral.py`; PR body summary: As of https://github.com/huggingface/transformers/pull/41250 the `ignore_keys` argument to `validate_rope` was removed in favour of `ClassVar`s attached to the config classes th....
+- Motivation: Title: "Fix Mistral yarn warning in Transformers v5"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/transformers_utils/configs/mistral.py`; technical summary: Covers "Fix Mistral yarn warning in Transformers v5"; the main implementation surface is `vllm/transformers_utils/configs/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/transformers_utils/configs/mistral.py` modified +6/-0 (6 lines); hunks: -2,7 +2,9; -134,6 +136,10 @@ def _remap_mistral_yarn_args(config: dict) -> dict:; symbols: _remap_mistral_yarn_args, touching `_remap_mistral_yarn_args`.
 - Code diff details:
   - `vllm/transformers_utils/configs/mistral.py` modified +6/-0 (6 lines); hunks: -2,7 +2,9; -134,6 +136,10 @@ def _remap_mistral_yarn_args(config: dict) -> dict:; symbols: _remap_mistral_yarn_args
@@ -1504,7 +1506,7 @@ diff -- vllm/transformers_utils/configs/mistral.py
 - Status/date: merged / 2026-04-16
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_mistral_tool_parser.py`, `tests/tool_use/mistral/test_mistral_tool_calls.py`, `tests/tool_use/mistral/utils.py`, `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py`; associated commits `c0722f22de71`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +1601/-266, 2396 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Mistral Grammar] Fix tool and reasoning parsing"; model line: Mistral Small 4; category: bug fix; main diff: `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/tokenizers/mistral.py`; PR body summary: When Mistral models are served with `--tool-call-parser mistral` and a `mistral-common` compatible tokenizer (tekken/v11+), #38150 introduced grammar-based tool-call enforcement....
+- Motivation: Title: "[Mistral Grammar] Fix tool and reasoning parsing"; model line: Mistral Small 4; category: bug fix; main diff: `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/tokenizers/mistral.py`; technical summary: Covers "[Mistral Grammar] Fix tool and reasoning parsing"; the main implementation surface is `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/tokenizers/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `tests/tool_parsers/test_mistral_tool_parser.py` modified +752/-180 (932 lines); hunks: -3,6 +3,7; -23,24 +24,33; symbols: mistral_pre_v11_tokenizer, stream_delta_message_generator, test_extract_tool_calls_no_tools, touching `mistral_pre_v11_tokenizer, stream_delta_message_generator, test_extract_tool_calls_no_tools`; `vllm/tool_parsers/mistral_tool_parser.py` modified +178/-10 (188 lines); hunks: -1,12 +1,15; -37,14 +40,19; symbols: _is_pre_v11_tokeniser, MistralToolParser, MistralStreamingResult, adjust_request, touching `_is_pre_v11_tokeniser, MistralToolParser, MistralStreamingResult`; `vllm/tokenizers/mistral.py` modified +49/-38 (87 lines); hunks: -54,6 +54,50; -159,44 +203,11 @@ def _prepare_apply_chat_template_tools_and_messages(; symbols: _pop_unallowed_keys_and_warn, adapt_inplace_to_mistral_tool, maybe_serialize_tool_calls, _prepare_apply_chat_template_tools_and_messages, touching `_pop_unallowed_keys_and_warn, adapt_inplace_to_mistral_tool, maybe_serialize_tool_calls`; `tests/tool_use/mistral/test_mistral_tool_calls.py` modified +480/-3 (483 lines); hunks: -1,25 +1,198; -28,3 +201,307 @@ async def test_tool_call_with_tool_choice(client: openai.As...; symbols: _requires_tool_parser, _is_pre_v11, StreamedToolCallResult, _collect_streamed_tool_call, touching `_requires_tool_parser, _is_pre_v11, StreamedToolCallResult`.
 - Code diff details:
   - `tests/tool_parsers/test_mistral_tool_parser.py` modified +752/-180 (932 lines); hunks: -3,6 +3,7; -23,24 +24,33; symbols: mistral_pre_v11_tokenizer, stream_delta_message_generator, test_extract_tool_calls_no_tools
@@ -1546,7 +1548,7 @@ diff -- vllm/tokenizers/mistral.py
 - Status/date: merged / 2026-04-22
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`; associated commits `cfa49213d778`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +66/-18, 160 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix][Parser] Fix Mistral pre-v11 tool parser failing on trailing model output"; model line: Mistral Small 4; category: bug fix; main diff: `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`; PR body summary: Mistral-7B-Instruct-v0.3 tool calls fail with `JSONDecodeError: Extra data` in the pre-v11 `extract_tool_calls()` path when the model emits trailing tokens after the JSON tool c....
+- Motivation: Title: "[Bugfix][Parser] Fix Mistral pre-v11 tool parser failing on trailing model output"; model line: Mistral Small 4; category: bug fix; main diff: `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`; technical summary: Covers "[Bugfix][Parser] Fix Mistral pre-v11 tool parser failing on trailing model output"; the main implementation surface is `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `tests/tool_parsers/test_mistral_tool_parser.py` modified +49/-9 (58 lines); hunks: -24,7 +24,6; -250,6 +249,7 @@ def test_extract_tool_calls_no_tools(parser_fixture, request):; symbols: test_extract_tool_calls_no_tools, test_extract_tool_calls_pre_v11_tokenizer, test_extract_tool_calls_pre_v11_multiple_bot_tokens_raises, test_extract_tool_calls_pre_v11_regex_fallback_raises, touching `test_extract_tool_calls_no_tools, test_extract_tool_calls_pre_v11_tokenizer, test_extract_tool_calls_pre_v11_multiple_bot_tokens_raises`; `vllm/tool_parsers/mistral_tool_parser.py` modified +17/-9 (26 lines); hunks: -479,21 +479,28 @@ def extract_tool_calls(; -504,7 +511,8 @@ def extract_tool_calls(; symbols: extract_tool_calls, touching `extract_tool_calls`.
 - Code diff details:
   - `tests/tool_parsers/test_mistral_tool_parser.py` modified +49/-9 (58 lines); hunks: -24,7 +24,6; -250,6 +249,7 @@ def test_extract_tool_calls_no_tools(parser_fixture, request):; symbols: test_extract_tool_calls_no_tools, test_extract_tool_calls_pre_v11_tokenizer, test_extract_tool_calls_pre_v11_multiple_bot_tokens_raises, test_extract_tool_calls_pre_v11_regex_fallback_raises
@@ -1583,7 +1585,7 @@ diff -- vllm/tool_parsers/mistral_tool_parser.py
 - Status/date: merged / 2026-04-24
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/utils/mistral.py`; associated commits `56bdf85e10b8`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +47/-23, 194 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Feature] Avoid eager import of the "mistral_common" package."; model line: Mistral Small 4; category: model implementation change; main diff: `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/utils/mistral.py`; PR body summary: Avoid eager imports of `mistral_common` when Mistral is not used. This adds `is_mistral_tool_parser()` to the `vllm.utils.mistral` package. This is similar to the approach taken....
+- Motivation: Title: "[Feature] Avoid eager import of the "mistral_common" package."; model line: Mistral Small 4; category: model implementation change; main diff: `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/utils/mistral.py`; technical summary: Covers "[Feature] Avoid eager import of the "mistral_common" package."; the main implementation surface is `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/utils/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/tool_parsers/mistral_tool_parser.py` modified +2/-0 (2 lines); hunks: -118,6 +118,8 @@ class MistralToolParser(ToolParser):; symbols: MistralToolParser, touching `MistralToolParser`; `vllm/utils/mistral.py` modified +15/-0 (15 lines); hunks: -12,8 +12,10; -26,3 +28,16 @@ def is_mistral_tokenizer(obj: TokenizerLike | None) -> TypeGu...; symbols: is_mistral_tokenizer, is_mistral_tool_parser, attribute, touching `is_mistral_tokenizer, is_mistral_tool_parser, attribute`.
 - Code diff details:
   - `vllm/tool_parsers/mistral_tool_parser.py` modified +2/-0 (2 lines); hunks: -118,6 +118,8 @@ class MistralToolParser(ToolParser):; symbols: MistralToolParser
@@ -1614,7 +1616,7 @@ diff -- vllm/utils/mistral.py
 - Status/date: merged / 2026-04-24
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/tool_parsers/mistral_tool_parser.py`; associated commits `2ec18f5df43e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +13/-4, 59 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix][Parser] Fix Mistral tool parser for HF tokenizers"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/tool_parsers/mistral_tool_parser.py`; PR body summary: Fix Mistral tool parser failing with `IncompleteJSONError` when using `--tokenizer-mode hf` with `--tool-call-parser mistral`. When using an HF tokenizer (e.g., with `--tokenize....
+- Motivation: Title: "[Bugfix][Parser] Fix Mistral tool parser for HF tokenizers"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/tool_parsers/mistral_tool_parser.py`; technical summary: Covers "[Bugfix][Parser] Fix Mistral tool parser for HF tokenizers"; the main implementation surface is `vllm/tool_parsers/mistral_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/tool_parsers/mistral_tool_parser.py` modified +13/-4 (17 lines); hunks: -91,7 +91,12 @@ def is_valid_id(id: str) -> bool:; -137,15 +142,15 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[T...; symbols: is_valid_id, _is_pre_v11_tokeniser, __init__, extract_tool_calls, touching `is_valid_id, _is_pre_v11_tokeniser, __init__`.
 - Code diff details:
   - `vllm/tool_parsers/mistral_tool_parser.py` modified +13/-4 (17 lines); hunks: -91,7 +91,12 @@ def is_valid_id(id: str) -> bool:; -137,15 +142,15 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[T...; symbols: is_valid_id, _is_pre_v11_tokeniser, __init__, extract_tool_calls
@@ -1634,6 +1636,33 @@ diff -- vllm/tool_parsers/mistral_tool_parser.py
 - Reviewed files:
   - runtime: `vllm/tool_parsers/mistral_tool_parser.py` modified +13/-4
 - Risk and verification: Runtime changes concentrate in `vllm/tool_parsers/mistral_tool_parser.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #41024 - [FEATURE] Add EagleMistralForCausalLM
+
+- Link: https://github.com/vllm-project/vllm/pull/41024
+- Status/date: merged / 2026-04-28
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral_eagle.py`; associated commits `e9f8f31e9a4c`
+- Diff scope read: GitHub Pull Request files API returned 3 files, +172/-0, 187 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[FEATURE] Add EagleMistralForCausalLM"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `vllm/model_executor/models/mistral_eagle.py`; technical summary: Covers "[FEATURE] Add EagleMistralForCausalLM"; the main implementation surface is `vllm/model_executor/models/mistral_eagle.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/mistral_eagle.py` added +166/-0 (166 lines); hunks: -0,0 +1,166; symbols: EagleMistralDecoderLayer, __init__, get_quant_config, EagleMistralModel, touching `EagleMistralDecoderLayer, __init__, get_quant_config`.
+- Code diff details:
+  - `vllm/model_executor/models/mistral_eagle.py` added +166/-0 (166 lines); hunks: -0,0 +1,166; symbols: EagleMistralDecoderLayer, __init__, get_quant_config, EagleMistralModel
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/mistral_eagle.py
+@@ -0,0 +1,166 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++from collections.abc import Iterable
++import torch
++import torch.nn as nn
++from vllm.compilation.decorators import support_torch_compile
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/mistral_eagle.py` added +166/-0
+- Risk and verification: The diff ships test coverage in `tests/models/registry.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes
 

@@ -1,7 +1,7 @@
 # vllm GLM-5/5.1 PR Diff Audit Reference
 
-- Rebuilt on: 2026-04-25
-- Source baseline: `vllm-project/vllm` trace worktree commit `95995bbef8`
+- Rebuilt on: 2026-05-01
+- Source baseline: `vllm-project/vllm` trace worktree commit `7075df79b3`
 - Collection: model implementation files were traced with `git log --name-only -- <model-files>`, filtered by model keywords in commit subjects, then every PR card was populated from the GitHub Pull Request files API.
 - Extra preserved PRs from prior docs: 2
 - Rule: use this evidence file before changing model-specific skill guidance; it is not only PR titles.
@@ -27,7 +27,7 @@
 - Status/date: merged / 2026-02-09
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +13/-3, 72 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model] GLM adaptation"; model line: GLM-5/5.1; category: model implementation change; main diff: `vllm/model_executor/models/deepseek_v2.py`, `tests/models/registry.py`, `tests/models/test_initialization.py`; no usable PR-body summary.
+- Motivation: Title: "[Model] GLM adaptation"; model line: GLM-5/5.1; category: model implementation change; main diff: `vllm/model_executor/models/deepseek_v2.py`, `tests/models/registry.py`, `tests/models/test_initialization.py`; technical summary: Covers "[Model] GLM adaptation"; the main implementation surface is `vllm/model_executor/models/deepseek_v2.py`, `tests/models/registry.py`, `tests/models/test_initialization.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/deepseek_v2.py` modified +5/-1 (6 lines); hunks: -836,7 +836,7 @@ def __init__(; -1499,6 +1499,10 @@ class DeepseekV3ForCausalLM(DeepseekV2ForCausalLM):; symbols: __init__, DeepseekV3ForCausalLM, GlmMoeDsaForCausalLM, get_spec_layer_idx_from_weight_name, touching `__init__, DeepseekV3ForCausalLM, GlmMoeDsaForCausalLM`; `tests/models/registry.py` modified +3/-0 (3 lines); hunks: -275,6 +275,9 @@ def check_available_online(; symbols: check_available_online, touching `check_available_online`; `tests/models/test_initialization.py` modified +1/-1 (2 lines); hunks: -97,7 +97,7 @@ def _initialize_kv_caches_v1(self, vllm_config):; symbols: _initialize_kv_caches_v1, touching `_initialize_kv_caches_v1`; `vllm/model_executor/models/registry.py` modified +1/-0 (1 lines); hunks: -114,6 +114,7.
 - Code diff details:
   - `vllm/model_executor/models/deepseek_v2.py` modified +5/-1 (6 lines); hunks: -836,7 +836,7 @@ def __init__(; -1499,6 +1499,10 @@ class DeepseekV3ForCausalLM(DeepseekV2ForCausalLM):; symbols: __init__, DeepseekV3ForCausalLM, GlmMoeDsaForCausalLM, get_spec_layer_idx_from_weight_name
@@ -70,7 +70,7 @@ diff -- vllm/model_executor/models/registry.py
 - Status/date: merged / 2026-02-12
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +18/-0, 25 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix MTP accuracy for GLM-5"; model line: GLM-5/5.1; category: bug fix; main diff: `vllm/v1/spec_decode/eagle.py`; PR body summary: Fix MTP producing NaN logits for models (e.g. GLM-5) whose checkpoints don't store a duplicate `shared_head.head` weight in the MTP layer (like DeepSeek V3.2). The existing `_ma....
+- Motivation: Title: "[Bugfix] Fix MTP accuracy for GLM-5"; model line: GLM-5/5.1; category: bug fix; main diff: `vllm/v1/spec_decode/eagle.py`; technical summary: Covers "[Bugfix] Fix MTP accuracy for GLM-5"; the main implementation surface is `vllm/v1/spec_decode/eagle.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/v1/spec_decode/eagle.py` modified +18/-0 (18 lines); hunks: -1506,6 +1506,24 @@ def _maybe_share_lm_head(self, target_language_model: nn....; symbols: _maybe_share_lm_head, dummy_run, touching `_maybe_share_lm_head, dummy_run`.
 - Code diff details:
   - `vllm/v1/spec_decode/eagle.py` modified +18/-0 (18 lines); hunks: -1506,6 +1506,24 @@ def _maybe_share_lm_head(self, target_language_model: nn....; symbols: _maybe_share_lm_head, dummy_run

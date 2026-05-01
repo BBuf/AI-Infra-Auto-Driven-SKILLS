@@ -2,8 +2,8 @@
 
 ## Scope
 
-- Rebuilt on: 2026-04-25
-- Source baseline: `sgl-project/sglang` trace worktree commit `880599cd43`
+- Rebuilt on: 2026-05-01
+- Source baseline: `sgl-project/sglang` trace worktree commit `4197c55968`
 - PR collection rule: run `git log --name-only -- <model-files>` on model implementation, config, processor, parser, docs/tests, filter by model keywords in commit subjects, then read each PR's final diff through the GitHub Pull Request files API.
 - Preservation rule: PRs explicitly cited by the previous history/skill are retained even if current implementation files no longer trace to them, and the card marks that source.
 
@@ -13,12 +13,15 @@
 | --- | --- |
 | `docs_new/cookbook/autoregressive/Mistral/Devstral-2.mdx` | no direct PR-number commit |
 | `docs_new/cookbook/autoregressive/Mistral/Ministral-3.mdx` | no direct PR-number commit |
+| `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx` | no direct PR-number commit |
 | `docs_new/cookbook/autoregressive/Mistral/Mistral-Small-4.mdx` | no direct PR-number commit |
 | `docs_new/src/snippets/autoregressive/ministral-3-deployment.jsx` | no direct PR-number commit |
+| `docs_new/src/snippets/autoregressive/mistral-medium-3-5-deployment.jsx` | no direct PR-number commit |
 | `docs_new/src/snippets/autoregressive/mistral-small-4-deployment.jsx` | no direct PR-number commit |
 | `python/sglang/srt/function_call/mistral_detector.py` | [#6597](https://github.com/sgl-project/sglang/pull/6597), [#14921](https://github.com/sgl-project/sglang/pull/14921), [#20708](https://github.com/sgl-project/sglang/pull/20708) |
 | `python/sglang/srt/models/ministral3.py` | [#14251](https://github.com/sgl-project/sglang/pull/14251) |
 | `python/sglang/srt/models/mistral.py` | [#108](https://github.com/sgl-project/sglang/pull/108), [#5099](https://github.com/sgl-project/sglang/pull/5099) |
+| `python/sglang/srt/models/mistral_eagle.py` | no direct PR-number commit |
 | `python/sglang/srt/models/mistral_large_3.py` | [#14213](https://github.com/sgl-project/sglang/pull/14213), [#14466](https://github.com/sgl-project/sglang/pull/14466), [#14485](https://github.com/sgl-project/sglang/pull/14485) |
 | `python/sglang/srt/models/mistral_large_3_eagle.py` | [#14466](https://github.com/sgl-project/sglang/pull/14466), [#14485](https://github.com/sgl-project/sglang/pull/14485), [#20708](https://github.com/sgl-project/sglang/pull/20708) |
 | `python/sglang/srt/utils/hf_transformers/mistral_utils.py` | no direct PR-number commit |
@@ -66,7 +69,7 @@
 - Status/date: merged / 2024-01-26
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mistral.py`; associated commits `cd6872334e9e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +10/-0, 11 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix Mistral model loading"; model line: Mistral Small 4; category: bug fix; main diff: `python/sglang/srt/models/mistral.py`; PR body summary: Close #107 Co-authored with @johndun.
+- Motivation: Title: "Fix Mistral model loading"; model line: Mistral Small 4; category: bug fix; main diff: `python/sglang/srt/models/mistral.py`; technical summary: Covers "Fix Mistral model loading"; the main implementation surface is `python/sglang/srt/models/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/mistral.py` added +10/-0 (10 lines); hunks: -0,0 +1,10; symbols: MistralForCausalLM, __init__, touching `MistralForCausalLM, __init__`.
 - Code diff details:
   - `python/sglang/srt/models/mistral.py` added +10/-0 (10 lines); hunks: -0,0 +1,10; symbols: MistralForCausalLM, __init__
@@ -93,7 +96,7 @@ diff -- python/sglang/srt/models/mistral.py
 - Status/date: merged / 2025-05-17
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mistral.py`; associated commits `64825b839521`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +152/-21, 272 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "model(vlm): mistral 3.1"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `python/sglang/srt/models/mistral.py`; PR body summary: Support Mistral Small 3.1 VLM (#4518). This is an extension to #5084 (#2351) by reusing the same `LlavaForConditionalGeneration` backbone and `Pixtral` vision encoder..
+- Motivation: Title: "model(vlm): mistral 3.1"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `python/sglang/srt/models/mistral.py`; technical summary: Covers "model(vlm): mistral 3.1"; the main implementation surface is `python/sglang/srt/models/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/mistral.py` modified +71/-1 (72 lines); hunks: -13,11 +13,81; symbols: MistralForCausalLM, Mistral3ForConditionalGeneration, __init__, get_image_feature, touching `MistralForCausalLM, Mistral3ForConditionalGeneration, __init__`.
 - Code diff details:
   - `python/sglang/srt/models/mistral.py` modified +71/-1 (72 lines); hunks: -13,11 +13,81; symbols: MistralForCausalLM, Mistral3ForConditionalGeneration, __init__, get_image_feature
@@ -120,7 +123,7 @@ diff -- python/sglang/srt/models/mistral.py
 - Status/date: merged / 2025-05-26
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/function_call/mistral_detector.py`; associated commits `16f69b1f65c6`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +318/-61, 529 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "feat: Improve Mistral and Qwen25 function call parsing"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `python/sglang/srt/function_call/mistral_detector.py`; PR body summary: This PR focuses to resolve the **parallel tool calls parsing** for `MistralDetector` and `Qwen25Detector` See Multiple Tool Call Support for MistralDetector and Qwen25Detector f....
+- Motivation: Title: "feat: Improve Mistral and Qwen25 function call parsing"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `python/sglang/srt/function_call/mistral_detector.py`; technical summary: Covers "feat: Improve Mistral and Qwen25 function call parsing"; the main implementation surface is `python/sglang/srt/function_call/mistral_detector.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/function_call/mistral_detector.py` modified +72/-26 (98 lines); hunks: -1,4 +1,5; -11,12 +12,14; symbols: MistralDetector, __init__, has_tool_call, _clean_text, touching `MistralDetector, __init__, has_tool_call`.
 - Code diff details:
   - `python/sglang/srt/function_call/mistral_detector.py` modified +72/-26 (98 lines); hunks: -1,4 +1,5; -11,12 +12,14; symbols: MistralDetector, __init__, has_tool_call, _clean_text
@@ -147,7 +150,7 @@ diff -- python/sglang/srt/function_call/mistral_detector.py
 - Status/date: merged / 2025-12-04
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mistral_large_3.py`; associated commits `842807843671`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 16 files, +1400/-120, 2012 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Add Mistral Large 3 support."; model line: Mistral Small 4; category: model support/runtime entry; main diff: `python/sglang/srt/models/mistral_large_3.py`; PR body summary: This PR introduces support for model Mistral Large 3. To enable the model, several key modifications were made. * Two new models are supported: MistralLarge3ForCausalLM and Pixt....
+- Motivation: Title: "Add Mistral Large 3 support."; model line: Mistral Small 4; category: model support/runtime entry; main diff: `python/sglang/srt/models/mistral_large_3.py`; technical summary: Covers "Add Mistral Large 3 support."; the main implementation surface is `python/sglang/srt/models/mistral_large_3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/mistral_large_3.py` added +81/-0 (81 lines); hunks: -0,0 +1,81; symbols: MistralLarge3ForCausalLM, load_weights, _iterable_remap_mistral_to_ds, touching `MistralLarge3ForCausalLM, load_weights, _iterable_remap_mistral_to_ds`.
 - Code diff details:
   - `python/sglang/srt/models/mistral_large_3.py` added +81/-0 (81 lines); hunks: -0,0 +1,81; symbols: MistralLarge3ForCausalLM, load_weights, _iterable_remap_mistral_to_ds
@@ -174,7 +177,7 @@ diff -- python/sglang/srt/models/mistral_large_3.py
 - Status/date: merged / 2025-12-04
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/ministral3.py`; associated commits `6d37e7088337`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 14 files, +245/-26, 405 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "ministral3"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `python/sglang/srt/models/ministral3.py`; PR body summary: Usage Assume this PR is merged: Or you could install transformers from source: Now you can launch the server with: Then run the following MMMU benchmark script:.
+- Motivation: Title: "ministral3"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `python/sglang/srt/models/ministral3.py`; technical summary: Covers "ministral3"; the main implementation surface is `python/sglang/srt/models/ministral3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/ministral3.py` added +157/-0 (157 lines); hunks: -0,0 +1,157; symbols: _get_llama_4_attn_scale, Ministral3Attention, __init__, forward, touching `_get_llama_4_attn_scale, Ministral3Attention, __init__`.
 - Code diff details:
   - `python/sglang/srt/models/ministral3.py` added +157/-0 (157 lines); hunks: -0,0 +1,157; symbols: _get_llama_4_attn_scale, Ministral3Attention, __init__, forward
@@ -201,7 +204,7 @@ diff -- python/sglang/srt/models/ministral3.py
 - Status/date: merged / 2025-12-05
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mistral_large_3.py`, `python/sglang/srt/models/mistral_large_3_eagle.py`; associated commits `205f041e9619`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 9 files, +313/-62, 550 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Add Mistral Large 3 Eagle Support"; model line: Mistral Small 4; category: performance/backend optimization; main diff: `python/sglang/srt/models/mistral_large_3_eagle.py`, `python/sglang/srt/models/mistral_large_3.py`; PR body summary: Support Mistral Large 3 Eagle. The eagle checkpoint `mistralai/Mistral-Large-3-675B-Instruct-2512-Eagle` is using the FP8 per-tensor quantization while the standard FP8/NVFP4 ch....
+- Motivation: Title: "Add Mistral Large 3 Eagle Support"; model line: Mistral Small 4; category: performance/backend optimization; main diff: `python/sglang/srt/models/mistral_large_3_eagle.py`, `python/sglang/srt/models/mistral_large_3.py`; technical summary: Covers "Add Mistral Large 3 Eagle Support"; the main implementation surface is `python/sglang/srt/models/mistral_large_3_eagle.py`, `python/sglang/srt/models/mistral_large_3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/mistral_large_3_eagle.py` added +105/-0 (105 lines); hunks: -0,0 +1,105; symbols: MistralLarge3Model, __init__, forward, MistralLarge3ForCausalLMEagle, touching `MistralLarge3Model, __init__, forward`; `python/sglang/srt/models/mistral_large_3.py` modified +0/-3 (3 lines); hunks: -72,9 +72,6 @@ def _iterable_remap_mistral_to_ds(; symbols: _iterable_remap_mistral_to_ds, touching `_iterable_remap_mistral_to_ds`.
 - Code diff details:
   - `python/sglang/srt/models/mistral_large_3_eagle.py` added +105/-0 (105 lines); hunks: -0,0 +1,105; symbols: MistralLarge3Model, __init__, forward, MistralLarge3ForCausalLMEagle
@@ -233,7 +236,7 @@ diff -- python/sglang/srt/models/mistral_large_3.py
 - Status/date: merged / 2025-12-12
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/function_call/mistral_detector.py`; associated commits `fd1ebbb0d614`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +274/-34, 361 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "update mistral detector"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `python/sglang/srt/function_call/mistral_detector.py`; PR body summary: This PR updates `MistralDetector` to recognize and parse an additional “legacy compact” tool-call syntax emitted by some templates/models: - **Canonical (newly supported)**: `[T....
+- Motivation: Title: "update mistral detector"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `python/sglang/srt/function_call/mistral_detector.py`; technical summary: Covers "update mistral detector"; the main implementation surface is `python/sglang/srt/function_call/mistral_detector.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/function_call/mistral_detector.py` modified +240/-34 (274 lines); hunks: -1,47 +1,49; -51,31 +53,235 @@ def detect_and_parse(self, text: str, tools: List[Tool]) ->...; symbols: MistralDetector, __init__, has_tool_call, detect_and_parse, touching `MistralDetector, __init__, has_tool_call`.
 - Code diff details:
   - `python/sglang/srt/function_call/mistral_detector.py` modified +240/-34 (274 lines); hunks: -1,47 +1,49; -51,31 +53,235 @@ def detect_and_parse(self, text: str, tools: List[Tool]) ->...; symbols: MistralDetector, __init__, has_tool_call, detect_and_parse
@@ -260,7 +263,7 @@ diff -- python/sglang/srt/function_call/mistral_detector.py
 - Status/date: merged / 2025-12-13
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mistral_large_3.py`, `python/sglang/srt/models/mistral_large_3_eagle.py`; associated commits `f6031adf0875`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 11 files, +502/-36, 707 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Mistral Large 3 NVFP4 support"; model line: Mistral Small 4; category: performance/backend optimization; main diff: `python/sglang/srt/models/mistral_large_3.py`, `python/sglang/srt/models/mistral_large_3_eagle.py`; PR body summary: Support Mistral Large 3 NVFP4. Depends on https://github.com/sgl-project/sglang/pull/14466. * GSM8K test results:.
+- Motivation: Title: "Mistral Large 3 NVFP4 support"; model line: Mistral Small 4; category: performance/backend optimization; main diff: `python/sglang/srt/models/mistral_large_3.py`, `python/sglang/srt/models/mistral_large_3_eagle.py`; technical summary: Covers "Mistral Large 3 NVFP4 support"; the main implementation surface is `python/sglang/srt/models/mistral_large_3.py`, `python/sglang/srt/models/mistral_large_3_eagle.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/mistral_large_3.py` modified +1/-1 (2 lines); hunks: -1,5 +1,5; `python/sglang/srt/models/mistral_large_3_eagle.py` modified +2/-0 (2 lines); hunks: -1,3 +1,5.
 - Code diff details:
   - `python/sglang/srt/models/mistral_large_3.py` modified +1/-1 (2 lines); hunks: -1,5 +1,5
@@ -288,7 +291,7 @@ diff -- python/sglang/srt/models/mistral_large_3_eagle.py
 - Status/date: merged / 2025-12-18
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +340/-151, 624 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Mistral Large 3 NVFP4 TRTLLM MoE support"; model line: Mistral Small 4; category: performance/backend optimization; main diff: `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors_moe.py`, `python/sglang/srt/layers/quantization/utils.py`, `python/sglang/srt/layers/quantization/modelopt_quant.py`; PR body summary: Support Mistral Large 3 NVFP4 TRTLLM MoE. Tested with cmd from #14485 + `--moe-runner-backend flashinfer_trtllm`: Accuracy TRTLLM MoE: Default cutlass MoE: Perf TRTLLM MoE: Defa....
+- Motivation: Title: "Mistral Large 3 NVFP4 TRTLLM MoE support"; model line: Mistral Small 4; category: performance/backend optimization; main diff: `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors_moe.py`, `python/sglang/srt/layers/quantization/utils.py`, `python/sglang/srt/layers/quantization/modelopt_quant.py`; technical summary: Covers "Mistral Large 3 NVFP4 TRTLLM MoE support"; the main implementation surface is `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors_moe.py`, `python/sglang/srt/layers/quantization/utils.py`, `python/sglang/srt/layers/quantization/modelopt_quant.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors_moe.py` modified +193/-21 (214 lines); hunks: -11,10 +11,15; -29,10 +34,18; symbols: __init__, create_weights, process_weights_after_loading, touching `__init__, create_weights, process_weights_after_loading`; `python/sglang/srt/layers/quantization/utils.py` modified +140/-0 (140 lines); hunks: -592,3 +592,143 @@ def swizzle_blockscale(scale: torch.Tensor):; symbols: swizzle_blockscale, reorder_w1w3_to_w3w1, prepare_static_weights_for_trtllm_fp4_moe, touching `swizzle_blockscale, reorder_w1w3_to_w3w1, prepare_static_weights_for_trtllm_fp4_moe`; `python/sglang/srt/layers/quantization/modelopt_quant.py` modified +2/-125 (127 lines); hunks: -42,6 +42,7; -1398,130 +1399,6 @@ def create_weights(; symbols: create_weights, prepare_static_weights_for_kernel, process_weights_after_loading, _slice_scale, touching `create_weights, prepare_static_weights_for_kernel, process_weights_after_loading`; `python/sglang/srt/layers/moe/ep_moe/layer.py` modified +2/-1 (3 lines); hunks: -548,8 +548,9 @@ def get_moe_impl_class(quant_config: Optional[QuantizationCo...; symbols: get_moe_impl_class, touching `get_moe_impl_class`.
 - Code diff details:
   - `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors_moe.py` modified +193/-21 (214 lines); hunks: -11,10 +11,15; -29,10 +34,18; symbols: __init__, create_weights, process_weights_after_loading
@@ -329,7 +332,7 @@ diff -- python/sglang/srt/layers/quantization/modelopt_quant.py
 - Status/date: merged / 2026-02-03
 - Trace source: `git log --name-only -- <model-files>` found it through `test/registered/8-gpu-models/test_mistral_large3.py`; associated commits `99fab2ce673e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +115/-111, 282 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix Mistral Large 3 NVFP4 TRTLLM MoE"; model line: Mistral Small 4; category: bug fix; main diff: `test/registered/8-gpu-models/test_mistral_large3.py`; PR body summary: TRTLLM MoE refactoring PR(#15151) broke Mistral Large 3 NVFP4 MoE support(#15049), this PR is trying to fix the issue. Same with results in #15049.
+- Motivation: Title: "[Bugfix] Fix Mistral Large 3 NVFP4 TRTLLM MoE"; model line: Mistral Small 4; category: bug fix; main diff: `test/registered/8-gpu-models/test_mistral_large3.py`; technical summary: Covers "[Bugfix] Fix Mistral Large 3 NVFP4 TRTLLM MoE"; the main implementation surface is `test/registered/8-gpu-models/test_mistral_large3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `test/registered/8-gpu-models/test_mistral_large3.py` modified +21/-8 (29 lines); hunks: -9,19 +9,21; -56,22 +58,33 @@ def test_mistral_large3_all_variants(self):; symbols: TestMistralLarge3, for, test_mistral_large3_all_variants, touching `TestMistralLarge3, for, test_mistral_large3_all_variants`.
 - Code diff details:
   - `test/registered/8-gpu-models/test_mistral_large3.py` modified +21/-8 (29 lines); hunks: -9,19 +9,21; -56,22 +58,33 @@ def test_mistral_large3_all_variants(self):; symbols: TestMistralLarge3, for, test_mistral_large3_all_variants
@@ -356,7 +359,7 @@ diff -- test/registered/8-gpu-models/test_mistral_large3.py
 - Status/date: merged / 2026-02-25
 - Trace source: `git log --name-only -- <model-files>` found it through `test/registered/8-gpu-models/test_mistral_large3.py`; associated commits `350190487be4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +60/-17, 143 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Flashinfer MOE FP8 support for Mistral Large 3."; model line: Mistral Small 4; category: performance/backend optimization; main diff: `test/registered/8-gpu-models/test_mistral_large3.py`; PR body summary: This PR brings in Flashinfer MOE FP8 support for Mistral Large 3. It requires an upcoming release of flashinfer to work. Without EP8: With EP8:.
+- Motivation: Title: "Flashinfer MOE FP8 support for Mistral Large 3."; model line: Mistral Small 4; category: performance/backend optimization; main diff: `test/registered/8-gpu-models/test_mistral_large3.py`; technical summary: Covers "Flashinfer MOE FP8 support for Mistral Large 3."; the main implementation surface is `test/registered/8-gpu-models/test_mistral_large3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `test/registered/8-gpu-models/test_mistral_large3.py` modified +2/-5 (7 lines); hunks: -46,6 +46,7 @@ def test_mistral_large3_all_variants(self):; -58,10 +59,6 @@ def test_mistral_large3_all_variants(self):; symbols: test_mistral_large3_all_variants, touching `test_mistral_large3_all_variants`.
 - Code diff details:
   - `test/registered/8-gpu-models/test_mistral_large3.py` modified +2/-5 (7 lines); hunks: -46,6 +46,7 @@ def test_mistral_large3_all_variants(self):; -58,10 +59,6 @@ def test_mistral_large3_all_variants(self):; symbols: test_mistral_large3_all_variants
@@ -383,7 +386,7 @@ diff -- test/registered/8-gpu-models/test_mistral_large3.py
 - Status/date: merged / 2026-02-26
 - Trace source: `git log --name-only -- <model-files>` found it through `test/registered/8-gpu-models/test_mistral_large3.py`; associated commits `e14fd4accb43`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix nightly Mistral-Large-3 NVFP4 accuracy threshold"; model line: Mistral Small 4; category: bug fix; main diff: `test/registered/8-gpu-models/test_mistral_large3.py`; PR body summary: - Lower gsm8k baseline accuracy from 0.90 to 0.85 for the Mistral-Large-3 nightly test - The NVFP4 quantized variant (`Mistral-Large-3-675B-Instruct-2512-NVFP4`) has slightly un....
+- Motivation: Title: "Fix nightly Mistral-Large-3 NVFP4 accuracy threshold"; model line: Mistral Small 4; category: bug fix; main diff: `test/registered/8-gpu-models/test_mistral_large3.py`; technical summary: Covers "Fix nightly Mistral-Large-3 NVFP4 accuracy threshold"; the main implementation surface is `test/registered/8-gpu-models/test_mistral_large3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `test/registered/8-gpu-models/test_mistral_large3.py` modified +1/-1 (2 lines); hunks: -88,7 +88,7 @@ def test_mistral_large3_all_variants(self):; symbols: test_mistral_large3_all_variants, touching `test_mistral_large3_all_variants`.
 - Code diff details:
   - `test/registered/8-gpu-models/test_mistral_large3.py` modified +1/-1 (2 lines); hunks: -88,7 +88,7 @@ def test_mistral_large3_all_variants(self):; symbols: test_mistral_large3_all_variants
@@ -406,7 +409,7 @@ diff -- test/registered/8-gpu-models/test_mistral_large3.py
 - Status/date: merged / 2026-03-18
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/function_call/mistral_detector.py`, `python/sglang/srt/models/mistral_large_3_eagle.py`; associated commits `6b8a6545b231`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 18 files, +360/-124, 868 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Add Mistral Small 4 (Pixtral) support"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `python/sglang/srt/function_call/mistral_detector.py`, `python/sglang/srt/models/mistral_large_3_eagle.py`; PR body summary: - Add Mistral Small 4 (119B) model support, reusing the MistralLarge3/DeepSeekV3 backend with Pixtral vision encoder - Handle Mistral-native config format (`params.json`) for Mi....
+- Motivation: Title: "Add Mistral Small 4 (Pixtral) support"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `python/sglang/srt/function_call/mistral_detector.py`, `python/sglang/srt/models/mistral_large_3_eagle.py`; technical summary: Covers "Add Mistral Small 4 (Pixtral) support"; the main implementation surface is `python/sglang/srt/function_call/mistral_detector.py`, `python/sglang/srt/models/mistral_large_3_eagle.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/function_call/mistral_detector.py` modified +17/-9 (26 lines); hunks: -90,19 +90,27 @@ def detect_and_parse(self, text: str, tools: List[Tool]) ->...; symbols: detect_and_parse, parse_streaming_increment, touching `detect_and_parse, parse_streaming_increment`; `python/sglang/srt/models/mistral_large_3_eagle.py` modified +11/-3 (14 lines); hunks: -18,7 +18,10; -99,9 +102,14 @@ def __init__(; symbols: MistralLarge3Model, MistralLarge3EagleModel, __init__, touching `MistralLarge3Model, MistralLarge3EagleModel, __init__`.
 - Code diff details:
   - `python/sglang/srt/function_call/mistral_detector.py` modified +17/-9 (26 lines); hunks: -90,19 +90,27 @@ def detect_and_parse(self, text: str, tools: List[Tool]) ->...; symbols: detect_and_parse, parse_streaming_increment
@@ -442,7 +445,7 @@ diff -- python/sglang/srt/models/mistral_large_3_eagle.py
 - Status/date: merged / 2026-03-30
 - Trace source: `git log --name-only -- <model-files>` found it through `test/registered/models/test_ministral4_models.py`; associated commits `1d6424d5ad2d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +59/-7, 83 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "fix: Mistral Small 4 fails to start due to config/weight format mismatch"; model line: Mistral Small 4; category: bug fix; main diff: `test/registered/models/test_ministral4_models.py`; PR body summary: Fixes #21611 `mistralai/Mistral-Small-4-119B-2603` fails to start with `AttributeError` because `w_kc` is `None`. Root Cause Mistral Small 4 ships with **both** `params.json` an....
+- Motivation: Title: "fix: Mistral Small 4 fails to start due to config/weight format mismatch"; model line: Mistral Small 4; category: bug fix; main diff: `test/registered/models/test_ministral4_models.py`; technical summary: Covers "fix: Mistral Small 4 fails to start due to config/weight format mismatch"; the main implementation surface is `test/registered/models/test_ministral4_models.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `test/registered/models/test_ministral4_models.py` added +32/-0 (32 lines); hunks: -0,0 +1,32; symbols: TestMistralSmall4TextOnly, TestMistralSmall4MMMU, touching `TestMistralSmall4TextOnly, TestMistralSmall4MMMU`.
 - Code diff details:
   - `test/registered/models/test_ministral4_models.py` added +32/-0 (32 lines); hunks: -0,0 +1,32; symbols: TestMistralSmall4TextOnly, TestMistralSmall4MMMU
@@ -469,7 +472,7 @@ diff -- test/registered/models/test_ministral4_models.py
 - Status/date: merged / 2026-04-06
 - Trace source: `git log --name-only -- <model-files>` found it through `test/registered/unit/function_call/test_mistral_detector.py`; associated commits `30f5b8760851`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +595/-0, 598 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[CI] Add unit tests for function_call detectors (hermes, llama32, mistral)"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `test/registered/unit/function_call/test_mistral_detector.py`; PR body summary: - Add 39 unit tests for three previously untested function call format detectors - Contributes to #20865 (Improve Unit Test Coverage) - Tests are CPU-only, no server or model lo....
+- Motivation: Title: "[CI] Add unit tests for function_call detectors (hermes, llama32, mistral)"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `test/registered/unit/function_call/test_mistral_detector.py`; technical summary: Covers "[CI] Add unit tests for function_call detectors (hermes, llama32, mistral)"; the main implementation surface is `test/registered/unit/function_call/test_mistral_detector.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `test/registered/unit/function_call/test_mistral_detector.py` added +224/-0 (224 lines); hunks: -0,0 +1,224; symbols: TestMistralDetector, setUp, test_has_tool_call_json_array_format, test_has_tool_call_compact_format, touching `TestMistralDetector, setUp, test_has_tool_call_json_array_format`.
 - Code diff details:
   - `test/registered/unit/function_call/test_mistral_detector.py` added +224/-0 (224 lines); hunks: -0,0 +1,224; symbols: TestMistralDetector, setUp, test_has_tool_call_json_array_format, test_has_tool_call_compact_format

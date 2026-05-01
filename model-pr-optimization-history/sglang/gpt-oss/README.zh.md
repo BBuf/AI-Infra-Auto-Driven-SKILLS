@@ -1,9 +1,9 @@
 # sglang GPT-OSS 模型 PR 优化历史
 
-## 文档口径
+## 覆盖范围
 
-- 重做日期: 2026-04-25
-- 源码基线: `sgl-project/sglang` 当前追溯 worktree commit `880599cd43`
+- 重做日期: 2026-05-01
+- 源码基线: `sgl-project/sglang` 当前追溯 worktree commit `4197c55968`
 - PR 收集规则: 先从模型实现、配置、processor、parser、docs/tests 等相关文件执行 `git log --name-only -- <model-files>`，再按 commit subject 的模型关键词过滤，最后用 GitHub Pull Request files API 读取每个 PR 的最终 diff。
 - 额外保留规则: 原 history/skill 已显式引用但未出现在当前实现文件 git trace 中的 PR 会保留，并在卡片里标注来源。
 
@@ -78,7 +78,7 @@
 - 状态/时间: merged / 2025-08-05
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/gpt_oss.py`；关联提交 `c1d2061f97ae`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 12 个文件，+1595/-47，可读 patch 2185 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Add initial support for gpt-oss」；模型线: GPT-OSS；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/gpt_oss.py`；PR 正文摘要: Future progress will be tracked here: https://github.com/sgl-project/sglang/issues/8833 **This PR only works for FP8/BF16 ckpt. The FP8/BF16 ckpt has been uploaded to:** `lmsys/...。
+- 动机: 标题「Add initial support for gpt-oss」；模型线: GPT-OSS；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/gpt_oss.py`；技术摘要: 覆盖「Add initial support for gpt-oss」；主要实现面是 `python/sglang/srt/models/gpt_oss.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/gpt_oss.py` added +923/-0 (923 lines); hunks: -0,0 +1,923; symbols: GptOssConfig, __init__, get_attention_sliding_window_size, GptOssSparseMoeBlock，涉及 `GptOssConfig, __init__, get_attention_sliding_window_size`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/gpt_oss.py` added +923/-0 (923 lines); hunks: -0,0 +1,923; symbols: GptOssConfig, __init__, get_attention_sliding_window_size, GptOssSparseMoeBlock
@@ -105,7 +105,7 @@ diff -- python/sglang/srt/models/gpt_oss.py
 - 状态/时间: merged / 2025-08-06
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/gpt_oss.py`；关联提交 `168033d5fb1e`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 9 个文件，+791/-325，可读 patch 1320 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Support mxfp4 for GPT-OSS」；模型线: GPT-OSS；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/gpt_oss.py`；PR 正文未提供可用摘要。
+- 动机: 标题「Support mxfp4 for GPT-OSS」；模型线: GPT-OSS；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/gpt_oss.py`；未提供可用技术摘要。
 - 实现要点: `python/sglang/srt/models/gpt_oss.py` modified +209/-9 (218 lines); hunks: -25,6 +25,8; -108,11 +110,15 @@ def __init__(; symbols: __init__, _get_default_weight_mapping, load_weights，涉及 `__init__, _get_default_weight_mapping, load_weights`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/gpt_oss.py` modified +209/-9 (218 lines); hunks: -25,6 +25,8; -108,11 +110,15 @@ def __init__(; symbols: __init__, _get_default_weight_mapping, load_weights
@@ -132,7 +132,7 @@ diff -- python/sglang/srt/models/gpt_oss.py
 - 状态/时间: merged / 2025-08-08
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/gpt_oss.py`；关联提交 `1d24db834803`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+269/-119，可读 patch 956 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Expert Parallelism for GPT-OSS」；模型线: GPT-OSS；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/gpt_oss.py`；PR 正文摘要: - What's in this PR: - Enable GPT-OSS launch without triton-kernels - Support expert parallelism for GPT-OSS Example: - TODO: Benchmark & Profiling。
+- 动机: 标题「Expert Parallelism for GPT-OSS」；模型线: GPT-OSS；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/gpt_oss.py`；技术摘要: 覆盖「Expert Parallelism for GPT-OSS」；主要实现面是 `python/sglang/srt/models/gpt_oss.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/gpt_oss.py` modified +54/-47 (101 lines); hunks: -28,6 +28,7; -96,11 +97,6 @@ def __init__(; symbols: __init__, _load_mxfp4_experts_weights，涉及 `__init__, _load_mxfp4_experts_weights`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/gpt_oss.py` modified +54/-47 (101 lines); hunks: -28,6 +28,7; -96,11 +97,6 @@ def __init__(; symbols: __init__, _load_mxfp4_experts_weights
@@ -159,7 +159,7 @@ diff -- python/sglang/srt/models/gpt_oss.py
 - 状态/时间: merged / 2025-08-12
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/function_call/gpt_oss_detector.py`；关联提交 `a21849013607`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 10 个文件，+717/-409，可读 patch 1293 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「(gpt-oss, oai, chat): Remove Harmony Integration and Implement Native GPT-OSS Tool Call Support」；模型线: GPT-OSS；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/function_call/gpt_oss_detector.py`；PR 正文摘要: Why remove Harmony Harmony integration was removed due to two critical limitations: 1. Missing output token ID support: Harmony requires output token IDs for proper functioning,...。
+- 动机: 标题「(gpt-oss, oai, chat): Remove Harmony Integration and Implement Native GPT-OSS Tool Call Support」；模型线: GPT-OSS；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/function_call/gpt_oss_detector.py`；技术摘要: 覆盖「(gpt-oss, oai, chat): Remove Harmony Integration and Implement Native GPT-OSS Tool Call Support」；主要实现面是 `python/sglang/srt/function_call/gpt_oss_detector.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/function_call/gpt_oss_detector.py` added +331/-0 (331 lines); hunks: -0,0 +1,331; symbols: GptOssDetector, __init__, has_tool_call, detect_and_parse，涉及 `GptOssDetector, __init__, has_tool_call`。
 - 代码 diff 细节:
   - `python/sglang/srt/function_call/gpt_oss_detector.py` added +331/-0 (331 lines); hunks: -0,0 +1,331; symbols: GptOssDetector, __init__, has_tool_call, detect_and_parse
@@ -186,7 +186,7 @@ diff -- python/sglang/srt/function_call/gpt_oss_detector.py
 - 状态/时间: merged / 2025-08-13
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/gpt_oss.py`；关联提交 `9394ed63867d`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+19/-7，可读 patch 47 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Fix gpt-oss ~2x memory consumption issue」；模型线: GPT-OSS；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/gpt_oss.py`；PR 正文未提供可用摘要。
+- 动机: 标题「Fix gpt-oss ~2x memory consumption issue」；模型线: GPT-OSS；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/gpt_oss.py`；未提供可用技术摘要。
 - 实现要点: `python/sglang/srt/models/gpt_oss.py` modified +19/-7 (26 lines); hunks: -64,7 +64,13; -655,6 +661,18 @@ def __init__(; symbols: __init__, routed_experts_weights_of_layer, forward, _load_normal_weights，涉及 `__init__, routed_experts_weights_of_layer, forward`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/gpt_oss.py` modified +19/-7 (26 lines); hunks: -64,7 +64,13; -655,6 +661,18 @@ def __init__(; symbols: __init__, routed_experts_weights_of_layer, forward, _load_normal_weights
@@ -213,7 +213,7 @@ diff -- python/sglang/srt/models/gpt_oss.py
 - 状态/时间: merged / 2025-08-13
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/gpt_oss.py`；关联提交 `0ff6d1fce122`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+24/-6，可读 patch 121 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Support FA3 backend for gpt-oss」；模型线: GPT-OSS；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/gpt_oss.py`；PR 正文摘要: Apply changes of https://github.com/sgl-project/sgl-attn/pull/4. `openai/gpt-oss-20b` mmlu 4k: Benchmark & Profiling `openai/gpt-oss-20b` TP1 4k in 1k out Triton: FA3: `openai/g...。
+- 动机: 标题「Support FA3 backend for gpt-oss」；模型线: GPT-OSS；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/gpt_oss.py`；技术摘要: 覆盖「Support FA3 backend for gpt-oss」；主要实现面是 `python/sglang/srt/models/gpt_oss.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/gpt_oss.py` modified +1/-1 (2 lines); hunks: -294,7 +294,7 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/gpt_oss.py` modified +1/-1 (2 lines); hunks: -294,7 +294,7 @@ def __init__(; symbols: __init__
@@ -236,7 +236,7 @@ diff -- python/sglang/srt/models/gpt_oss.py
 - 状态/时间: merged / 2025-08-13
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/gpt_oss.py`；关联提交 `6b7c24712cda`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+5/-1，可读 patch 14 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Fix broken trtllm_mha attn backend with gpt-oss」；模型线: GPT-OSS；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/gpt_oss.py`；PR 正文摘要: FA3 PR #9028 broke trtllm_mha attn backend.。
+- 动机: 标题「Fix broken trtllm_mha attn backend with gpt-oss」；模型线: GPT-OSS；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/gpt_oss.py`；技术摘要: 覆盖「Fix broken trtllm_mha attn backend with gpt-oss」；主要实现面是 `python/sglang/srt/models/gpt_oss.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/gpt_oss.py` modified +5/-1 (6 lines); hunks: -293,8 +293,12 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/gpt_oss.py` modified +5/-1 (6 lines); hunks: -293,8 +293,12 @@ def __init__(; symbols: __init__
@@ -263,7 +263,7 @@ diff -- python/sglang/srt/models/gpt_oss.py
 - 状态/时间: merged / 2025-08-20
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/gpt_oss.py`；关联提交 `c10b8e6a0f2a`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+6/-5，可读 patch 25 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Support DP attention with GPT-OSS」；模型线: GPT-OSS；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/models/gpt_oss.py`；PR 正文摘要: Tested on 4x B200 with DP4 Attn + EP4 MoE Total output: `66,941.40 tok/s` Total output per GPU: `16,735.35 tok/s/gpu` Cmds:。
+- 动机: 标题「Support DP attention with GPT-OSS」；模型线: GPT-OSS；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/models/gpt_oss.py`；技术摘要: 覆盖「Support DP attention with GPT-OSS」；主要实现面是 `python/sglang/srt/models/gpt_oss.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/gpt_oss.py` modified +1/-1 (2 lines); hunks: -1123,7 +1123,7 @@ def _load_normal_weights(; symbols: _load_normal_weights，涉及 `_load_normal_weights`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/gpt_oss.py` modified +1/-1 (2 lines); hunks: -1123,7 +1123,7 @@ def _load_normal_weights(; symbols: _load_normal_weights
@@ -286,7 +286,7 @@ diff -- python/sglang/srt/models/gpt_oss.py
 - 状态/时间: merged / 2025-08-21
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/gpt_oss.py`；关联提交 `dae9a80f43e8`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+11/-3，可读 patch 46 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[fix] Fix mxfp4 weight loading bug with TP sharding in GPT-OSS」；模型线: GPT-OSS；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/gpt_oss.py`；PR 正文摘要: gpqa and mmlu with tp=4 were incorrect. The tp=1 and tep=4 scores are correct though. The bug is due to incorrect TP sharding of mxfp4 MoE weights, which missed loading the last...。
+- 动机: 标题「[fix] Fix mxfp4 weight loading bug with TP sharding in GPT-OSS」；模型线: GPT-OSS；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/gpt_oss.py`；技术摘要: 覆盖「[fix] Fix mxfp4 weight loading bug with TP sharding in GPT-OSS」；主要实现面是 `python/sglang/srt/models/gpt_oss.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/gpt_oss.py` modified +9/-1 (10 lines); hunks: -16,6 +16,7; -788,18 +789,25 @@ def _load_mxfp4_experts_weights(self, weights):; symbols: _load_mxfp4_experts_weights，涉及 `_load_mxfp4_experts_weights`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/gpt_oss.py` modified +9/-1 (10 lines); hunks: -16,6 +16,7; -788,18 +789,25 @@ def _load_mxfp4_experts_weights(self, weights):; symbols: _load_mxfp4_experts_weights
@@ -313,7 +313,7 @@ diff -- python/sglang/srt/models/gpt_oss.py
 - 状态/时间: merged / 2025-08-22
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/gpt_oss.py`；关联提交 `849957bc76c3`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+6/-3，可读 patch 16 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「fix: tmp revert gpt oss tp sharding on hopper」；模型线: GPT-OSS；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/gpt_oss.py`；PR 正文未提供可用摘要。
+- 动机: 标题「fix: tmp revert gpt oss tp sharding on hopper」；模型线: GPT-OSS；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/gpt_oss.py`；未提供可用技术摘要。
 - 实现要点: `python/sglang/srt/models/gpt_oss.py` modified +6/-3 (9 lines); hunks: -793,9 +793,12 @@ def _load_mxfp4_experts_weights(self, weights):; symbols: _load_mxfp4_experts_weights，涉及 `_load_mxfp4_experts_weights`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/gpt_oss.py` modified +6/-3 (9 lines); hunks: -793,9 +793,12 @@ def _load_mxfp4_experts_weights(self, weights):; symbols: _load_mxfp4_experts_weights
@@ -340,7 +340,7 @@ diff -- python/sglang/srt/models/gpt_oss.py
 - 状态/时间: merged / 2025-08-22
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/basic_usage/gpt_oss.md`；关联提交 `fedfe91c1a6e`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+106/-0，可读 patch 110 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Docs] Add doc and quick demo for gpt-oss responses api & buildin tools」；模型线: GPT-OSS；类别: 文档/测试/CI；主要 diff: `docs/basic_usage/gpt_oss.md`；PR 正文未提供可用摘要。
+- 动机: 标题「[Docs] Add doc and quick demo for gpt-oss responses api & buildin tools」；模型线: GPT-OSS；类别: 文档/测试/CI；主要 diff: `docs/basic_usage/gpt_oss.md`；未提供可用技术摘要。
 - 实现要点: `docs/basic_usage/gpt_oss.md` modified +106/-0 (106 lines); hunks: -1,3 +1,109。
 - 代码 diff 细节:
   - `docs/basic_usage/gpt_oss.md` modified +106/-0 (106 lines); hunks: -1,3 +1,109
@@ -367,7 +367,7 @@ diff -- docs/basic_usage/gpt_oss.md
 - 状态/时间: merged / 2025-08-25
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/function_call/gpt_oss_detector.py`；关联提交 `a0a77d937b99`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+1681/-556，可读 patch 2406 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Fix Harmony reasoning parser for and auto-separation for gpt-oss models」；模型线: GPT-OSS；类别: 缺陷修复；主要 diff: `python/sglang/srt/function_call/gpt_oss_detector.py`；PR 正文摘要: This PR fixes critical regressions in Harmony reasoning output parsing that were introduced in PR #9043. After that change, gpt-oss models were incorrectly concatenating analysi...。
+- 动机: 标题「Fix Harmony reasoning parser for and auto-separation for gpt-oss models」；模型线: GPT-OSS；类别: 缺陷修复；主要 diff: `python/sglang/srt/function_call/gpt_oss_detector.py`；技术摘要: 覆盖「Fix Harmony reasoning parser for and auto-separation for gpt-oss models」；主要实现面是 `python/sglang/srt/function_call/gpt_oss_detector.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/function_call/gpt_oss_detector.py` modified +144/-256 (400 lines); hunks: -1,7 +1,7; -10,60 +10,31; symbols: GptOssDetector, __init__, has_tool_call, detect_and_parse，涉及 `GptOssDetector, __init__, has_tool_call`。
 - 代码 diff 细节:
   - `python/sglang/srt/function_call/gpt_oss_detector.py` modified +144/-256 (400 lines); hunks: -1,7 +1,7; -10,60 +10,31; symbols: GptOssDetector, __init__, has_tool_call, detect_and_parse
@@ -394,7 +394,7 @@ diff -- python/sglang/srt/function_call/gpt_oss_detector.py
 - 状态/时间: merged / 2025-08-25
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/basic_usage/gpt_oss.md`；关联提交 `9b08d975a0a5`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+166/-611，可读 patch 638 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[docs] Refactor, remove compiled results and add gpt-oss」；模型线: GPT-OSS；类别: 文档/测试/CI；主要 diff: `docs/basic_usage/gpt_oss.md`；PR 正文摘要: 1. I refactored `docs/advanced_features/function_calling.ipynb`, making sure the servers are turned off as expected. I moved `Tool Choice Mode` to the end of the docs, and I fin...。
+- 动机: 标题「[docs] Refactor, remove compiled results and add gpt-oss」；模型线: GPT-OSS；类别: 文档/测试/CI；主要 diff: `docs/basic_usage/gpt_oss.md`；技术摘要: 覆盖「[docs] Refactor, remove compiled results and add gpt-oss」；主要实现面是 `docs/basic_usage/gpt_oss.md`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs/basic_usage/gpt_oss.md` modified +5/-0 (5 lines); hunks: -23,6 +23,11 @@ GPT‑OSS can call built‑in tools for web search and Python exe...。
 - 代码 diff 细节:
   - `docs/basic_usage/gpt_oss.md` modified +5/-0 (5 lines); hunks: -23,6 +23,11 @@ GPT‑OSS can call built‑in tools for web search and Python exe...
@@ -417,7 +417,7 @@ diff -- docs/basic_usage/gpt_oss.md
 - 状态/时间: merged / 2025-08-28
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `benchmark/gpt_oss/README.md`；关联提交 `d0934a519257`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+163/-0，可读 patch 164 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「gpt-oss blog reproduction document」；模型线: GPT-OSS；类别: 文档/测试/CI；主要 diff: `benchmark/gpt_oss/README.md`；PR 正文未提供可用摘要。
+- 动机: 标题「gpt-oss blog reproduction document」；模型线: GPT-OSS；类别: 文档/测试/CI；主要 diff: `benchmark/gpt_oss/README.md`；未提供可用技术摘要。
 - 实现要点: `benchmark/gpt_oss/README.md` added +163/-0 (163 lines); hunks: -0,0 +1,163。
 - 代码 diff 细节:
   - `benchmark/gpt_oss/README.md` added +163/-0 (163 lines); hunks: -0,0 +1,163
@@ -444,7 +444,7 @@ diff -- benchmark/gpt_oss/README.md
 - 状态/时间: merged / 2025-09-01
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/gpt_oss.py`；关联提交 `9db8025376b2`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+5/-4，可读 patch 30 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「support fp8 kvcache for hybrid attn backend on GPT-OSS」；模型线: GPT-OSS；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/gpt_oss.py`；PR 正文摘要: 9782 On B200/GB200 kv cache volume actually blocks the batch size which is the bottleneck for the GPT-OSS performance. And the trtllm-mha cuda kernel could not support Q(bf16),...。
+- 动机: 标题「support fp8 kvcache for hybrid attn backend on GPT-OSS」；模型线: GPT-OSS；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/gpt_oss.py`；技术摘要: 覆盖「support fp8 kvcache for hybrid attn backend on GPT-OSS」；主要实现面是 `python/sglang/srt/models/gpt_oss.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/gpt_oss.py` modified +5/-4 (9 lines); hunks: -193,8 +193,9 @@ def forward_normal(; -341,7 +342,7 @@ def forward_prepare(; symbols: forward_normal, _enable_fused_set_kv_buffer, forward_prepare, forward_core，涉及 `forward_normal, _enable_fused_set_kv_buffer, forward_prepare`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/gpt_oss.py` modified +5/-4 (9 lines); hunks: -193,8 +193,9 @@ def forward_normal(; -341,7 +342,7 @@ def forward_prepare(; symbols: forward_normal, _enable_fused_set_kv_buffer, forward_prepare, forward_core
@@ -471,7 +471,7 @@ diff -- python/sglang/srt/models/gpt_oss.py
 - 状态/时间: merged / 2025-09-15
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/basic_usage/gpt_oss.md`；关联提交 `0b14159fc4e0`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+12/-2，可读 patch 35 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Add reasoning examples for GPT-OSS in Markdown examples」；模型线: GPT-OSS；类别: 模型支持/运行时入口；主要 diff: `docs/basic_usage/gpt_oss.md`；PR 正文摘要: A useful parameter, and it's not mentioned here already. The information is already in Hugging Face, but it's nice to have it in the examples as well.。
+- 动机: 标题「Add reasoning examples for GPT-OSS in Markdown examples」；模型线: GPT-OSS；类别: 模型支持/运行时入口；主要 diff: `docs/basic_usage/gpt_oss.md`；技术摘要: 覆盖「Add reasoning examples for GPT-OSS in Markdown examples」；主要实现面是 `docs/basic_usage/gpt_oss.md`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs/basic_usage/gpt_oss.md` modified +11/-1 (12 lines); hunks: -6,7 +6,7 @@ Please refer to [https://github.com/sgl-project/sglang/issues/88...; -69,6 +69,16 @@ tools = [。
 - 代码 diff 细节:
   - `docs/basic_usage/gpt_oss.md` modified +11/-1 (12 lines); hunks: -6,7 +6,7 @@ Please refer to [https://github.com/sgl-project/sglang/issues/88...; -69,6 +69,16 @@ tools = [
@@ -498,7 +498,7 @@ diff -- docs/basic_usage/gpt_oss.md
 - 状态/时间: merged / 2025-09-15
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/function_call/gpt_oss_detector.py`；关联提交 `28c79dc84ab8`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+23/-0，可读 patch 30 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「fix: gpt-oss streaming dropping normal content when tools are provided but not used」；模型线: GPT-OSS；类别: 缺陷修复；主要 diff: `python/sglang/srt/function_call/gpt_oss_detector.py`；PR 正文摘要: Streaming chat responses returned empty content when tools were provided but not actually invoked. For gpt-oss, the tool-call streaming path uses the Harmony parser, which filte...。
+- 动机: 标题「fix: gpt-oss streaming dropping normal content when tools are provided but not used」；模型线: GPT-OSS；类别: 缺陷修复；主要 diff: `python/sglang/srt/function_call/gpt_oss_detector.py`；技术摘要: 覆盖「fix: gpt-oss streaming dropping normal content when tools are provided but not used」；主要实现面是 `python/sglang/srt/function_call/gpt_oss_detector.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/function_call/gpt_oss_detector.py` modified +23/-0 (23 lines); hunks: -81,6 +81,29 @@ def parse_streaming_increment(; symbols: parse_streaming_increment，涉及 `parse_streaming_increment`。
 - 代码 diff 细节:
   - `python/sglang/srt/function_call/gpt_oss_detector.py` modified +23/-0 (23 lines); hunks: -81,6 +81,29 @@ def parse_streaming_increment(; symbols: parse_streaming_increment
@@ -525,7 +525,7 @@ diff -- python/sglang/srt/function_call/gpt_oss_detector.py
 - 状态/时间: merged / 2025-12-30
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+48/-25，可读 patch 124 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Eagle: GPT-OSS Eagle v2 support」；模型线: GPT-OSS；类别: 性能/后端优化；主要 diff: `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/model_executor/cuda_graph_runner.py`, `python/sglang/srt/speculative/eagle_worker.py`；PR 正文摘要: EAGLE v2/v3 models from GPT-OSS introduce an optional auxiliary hidden-state mechanism that improves speculative decoding quality by exposing additional per-layer representation...。
+- 动机: 标题「Eagle: GPT-OSS Eagle v2 support」；模型线: GPT-OSS；类别: 性能/后端优化；主要 diff: `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/model_executor/cuda_graph_runner.py`, `python/sglang/srt/speculative/eagle_worker.py`；技术摘要: 覆盖「Eagle: GPT-OSS Eagle v2 support」；主要实现面是 `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/model_executor/cuda_graph_runner.py`, `python/sglang/srt/speculative/eagle_worker.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/model_executor/model_runner.py` modified +30/-23 (53 lines); hunks: -345,6 +345,32 @@ def __init__(; -593,30 +619,11 @@ def initialize(self, min_per_gpu_memory: float):; symbols: __init__, initialize, _dummy_run，涉及 `__init__, initialize, _dummy_run`；`python/sglang/srt/model_executor/cuda_graph_runner.py` modified +4/-1 (5 lines); hunks: -349,7 +349,10 @@ def __init__(self, model_runner: ModelRunner):; symbols: __init__，涉及 `__init__`；`python/sglang/srt/speculative/eagle_worker.py` modified +10/-0 (10 lines); hunks: -186,6 +186,15 @@ def __init__(; -897,6 +906,7 @@ def forward_draft_extend_after_decode(self, batch: ScheduleB...; symbols: __init__, forward_draft_extend_after_decode，涉及 `__init__, forward_draft_extend_after_decode`；`python/sglang/srt/speculative/eagle_draft_extend_cuda_graph_runner.py` modified +4/-1 (5 lines); hunks: -100,7 +100,10 @@ def __init__(self, eagle_worker: EAGLEWorker):; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/model_executor/model_runner.py` modified +30/-23 (53 lines); hunks: -345,6 +345,32 @@ def __init__(; -593,30 +619,11 @@ def initialize(self, min_per_gpu_memory: float):; symbols: __init__, initialize, _dummy_run
@@ -565,7 +565,7 @@ diff -- python/sglang/srt/speculative/eagle_worker.py
 - 状态/时间: merged / 2026-01-07
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/test/gpt_oss_common.py`, `test/registered/core/test_gpt_oss_1gpu.py`；关联提交 `0c474273c514`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 15 个文件，+48/-26，可读 patch 255 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Fix gpt_oss_common import path and migrate core tests」；模型线: GPT-OSS；类别: 缺陷修复；主要 diff: `test/registered/core/test_gpt_oss_1gpu.py`, `python/sglang/test/gpt_oss_common.py`；PR 正文摘要: Fix sys.path hack by moving gpt_oss_common.py to python/sglang/test/ and migrate core tests to test/registered/core/.。
+- 动机: 标题「Fix gpt_oss_common import path and migrate core tests」；模型线: GPT-OSS；类别: 缺陷修复；主要 diff: `test/registered/core/test_gpt_oss_1gpu.py`, `python/sglang/test/gpt_oss_common.py`；技术摘要: 覆盖「Fix gpt_oss_common import path and migrate core tests」；主要实现面是 `test/registered/core/test_gpt_oss_1gpu.py`, `python/sglang/test/gpt_oss_common.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/core/test_gpt_oss_1gpu.py` renamed +5/-1 (6 lines); hunks: -1,6 +1,10; symbols: TestGptOss1Gpu，涉及 `TestGptOss1Gpu`；`python/sglang/test/gpt_oss_common.py` renamed +0/-0 (0 lines)。
 - 代码 diff 细节:
   - `test/registered/core/test_gpt_oss_1gpu.py` renamed +5/-1 (6 lines); hunks: -1,6 +1,10; symbols: TestGptOss1Gpu
@@ -592,7 +592,7 @@ diff -- test/registered/core/test_gpt_oss_1gpu.py
 - 状态/时间: merged / 2026-01-18
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/gpt_oss.py`；关联提交 `733de6be31e2`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+96/-17，可读 patch 244 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[NPU]Support GPT-OSS for NPU」；模型线: GPT-OSS；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/gpt_oss.py`；PR 正文摘要: Co-author: @mczywu Adapting GPT-OSS model for NPU. 1. Operators capable of handling sinks and sliding windows have been added to the Ascend backend for attention. 2. The swiglu...。
+- 动机: 标题「[NPU]Support GPT-OSS for NPU」；模型线: GPT-OSS；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/gpt_oss.py`；技术摘要: 覆盖「[NPU]Support GPT-OSS for NPU」；主要实现面是 `python/sglang/srt/models/gpt_oss.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/gpt_oss.py` modified +20/-15 (35 lines); hunks: -71,9 +71,10; -129,6 +130,7 @@ def __init__(; symbols: __init__, forward_prepare，涉及 `__init__, forward_prepare`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/gpt_oss.py` modified +20/-15 (35 lines); hunks: -71,9 +71,10; -129,6 +130,7 @@ def __init__(; symbols: __init__, forward_prepare
@@ -619,7 +619,7 @@ diff -- python/sglang/srt/models/gpt_oss.py
 - 状态/时间: merged / 2026-01-22
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/gpt_oss.py`；关联提交 `61abff66c150`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[NPU] [Bug Fix] Fix typo in npu device check in gpt_oss.py」；模型线: GPT-OSS；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/gpt_oss.py`；PR 正文摘要: NPU support for gpt-oss enabled through the following PR https://github.com/sgl-project/sglang/pull/14197 has a small typo in npu device check for activation. That needs to be f...。
+- 动机: 标题「[NPU] [Bug Fix] Fix typo in npu device check in gpt_oss.py」；模型线: GPT-OSS；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/gpt_oss.py`；技术摘要: 覆盖「[NPU] [Bug Fix] Fix typo in npu device check in gpt_oss.py」；主要实现面是 `python/sglang/srt/models/gpt_oss.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/gpt_oss.py` modified +1/-1 (2 lines); hunks: -492,7 +492,7 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/gpt_oss.py` modified +1/-1 (2 lines); hunks: -492,7 +492,7 @@ def __init__(; symbols: __init__
@@ -642,7 +642,7 @@ diff -- python/sglang/srt/models/gpt_oss.py
 - 状态/时间: merged / 2026-02-03
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/8-gpu-models/test_gpt_oss_120b.py`；关联提交 `c8da307d7e63`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+88/-4，可读 patch 121 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「feature: adding gpt-oss 120b nightly test」；模型线: GPT-OSS；类别: 文档/测试/CI；主要 diff: `test/registered/8-gpu-models/test_gpt_oss_120b.py`；PR 正文摘要: Adding gpt-oss nightly tests to h200 and b200 nightly suites, testing key configs as listed on SGL cookbook here: https://cookbook.sglang.io/docs/autoregressive/OpenAI/GPT-OSS b...。
+- 动机: 标题「feature: adding gpt-oss 120b nightly test」；模型线: GPT-OSS；类别: 文档/测试/CI；主要 diff: `test/registered/8-gpu-models/test_gpt_oss_120b.py`；技术摘要: 覆盖「feature: adding gpt-oss 120b nightly test」；主要实现面是 `test/registered/8-gpu-models/test_gpt_oss_120b.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/8-gpu-models/test_gpt_oss_120b.py` added +84/-0 (84 lines); hunks: -0,0 +1,84; symbols: TestGptOss120B, for, test_gpt_oss_120b_all_variants，涉及 `TestGptOss120B, for, test_gpt_oss_120b_all_variants`。
 - 代码 diff 细节:
   - `test/registered/8-gpu-models/test_gpt_oss_120b.py` added +84/-0 (84 lines); hunks: -0,0 +1,84; symbols: TestGptOss120B, for, test_gpt_oss_120b_all_variants
@@ -669,7 +669,7 @@ diff -- test/registered/8-gpu-models/test_gpt_oss_120b.py
 - 状态/时间: merged / 2026-02-12
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/gpt_oss.py`；关联提交 `2bd8363486e4`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+68/-32，可读 patch 228 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[PCG] GPT OSS Triton Kernel Support」；模型线: GPT-OSS；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/gpt_oss.py`；PR 正文摘要: Support Backend for GPT-OSS。
+- 动机: 标题「[PCG] GPT OSS Triton Kernel Support」；模型线: GPT-OSS；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/gpt_oss.py`；技术摘要: 覆盖「[PCG] GPT OSS Triton Kernel Support」；主要实现面是 `python/sglang/srt/models/gpt_oss.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/gpt_oss.py` modified +21/-4 (25 lines); hunks: -25,6 +25,10; -72,6 +76,7; symbols: forward_normal, moe_impl, GptOssAttention, __init__，涉及 `forward_normal, moe_impl, GptOssAttention`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/gpt_oss.py` modified +21/-4 (25 lines); hunks: -25,6 +25,10; -72,6 +76,7; symbols: forward_normal, moe_impl, GptOssAttention, __init__
@@ -696,7 +696,7 @@ diff -- python/sglang/srt/models/gpt_oss.py
 - 状态/时间: merged / 2026-02-16
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/4-gpu-models/test_gpt_oss_4gpu.py`；关联提交 `8290171f5247`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+0/-2，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[CI] Remove `--mem-fraction-static 0.93` from gpt-oss test」；模型线: GPT-OSS；类别: 文档/测试/CI；主要 diff: `test/registered/4-gpu-models/test_gpt_oss_4gpu.py`；PR 正文摘要: Remove `--mem-fraction-static 0.93` from gpt-oss test to avoid OOMs.。
+- 动机: 标题「[CI] Remove `--mem-fraction-static 0.93` from gpt-oss test」；模型线: GPT-OSS；类别: 文档/测试/CI；主要 diff: `test/registered/4-gpu-models/test_gpt_oss_4gpu.py`；技术摘要: 覆盖「[CI] Remove `--mem-fraction-static 0.93` from gpt-oss test」；主要实现面是 `test/registered/4-gpu-models/test_gpt_oss_4gpu.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/4-gpu-models/test_gpt_oss_4gpu.py` modified +0/-2 (2 lines); hunks: -30,8 +30,6 @@ def test_mxfp4_120b(self):; symbols: test_mxfp4_120b，涉及 `test_mxfp4_120b`。
 - 代码 diff 细节:
   - `test/registered/4-gpu-models/test_gpt_oss_4gpu.py` modified +0/-2 (2 lines); hunks: -30,8 +30,6 @@ def test_mxfp4_120b(self):; symbols: test_mxfp4_120b
@@ -719,7 +719,7 @@ diff -- test/registered/4-gpu-models/test_gpt_oss_4gpu.py
 - 状态/时间: merged / 2026-02-20
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+31/-1，可读 patch 69 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[GPT-OSS] support fp8 online quantization for gpt-oss bf16」；模型线: GPT-OSS；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/quantization/fp8.py`, `python/sglang/srt/server_args.py`；PR 正文摘要: 1. Keep `moe_runner_backend` as `auto` when launch gpt-oss bf16 with online quantization (e.g. fp8) to pick up either `deep_gemm` or `triton` moe backend, since `triton_kernels`...。
+- 动机: 标题「[GPT-OSS] support fp8 online quantization for gpt-oss bf16」；模型线: GPT-OSS；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/quantization/fp8.py`, `python/sglang/srt/server_args.py`；技术摘要: 覆盖「[GPT-OSS] support fp8 online quantization for gpt-oss bf16」；主要实现面是 `python/sglang/srt/layers/quantization/fp8.py`, `python/sglang/srt/server_args.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/quantization/fp8.py` modified +26/-0 (26 lines); hunks: -677,6 +677,7 @@ def __init__(self, quant_config: Fp8Config):; -706,8 +707,10 @@ def create_weights(; symbols: __init__, create_weights, apply，涉及 `__init__, create_weights, apply`；`python/sglang/srt/server_args.py` modified +5/-1 (6 lines); hunks: -1386,7 +1386,11 @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments，涉及 `_handle_model_specific_adjustments`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/quantization/fp8.py` modified +26/-0 (26 lines); hunks: -677,6 +677,7 @@ def __init__(self, quant_config: Fp8Config):; -706,8 +707,10 @@ def create_weights(; symbols: __init__, create_weights, apply
@@ -755,7 +755,7 @@ diff -- python/sglang/srt/server_args.py
 - 状态/时间: merged / 2026-03-06
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/core/test_gpt_oss_sm120.py`；关联提交 `8cdb7e1fd453`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+34/-0，可读 patch 35 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[CI] Add GPT-OSS test for SM120」；模型线: GPT-OSS；类别: 缺陷修复；主要 diff: `test/registered/core/test_gpt_oss_sm120.py`；PR 正文摘要: Adds an SM120-specific CI test for GPT-OSS to prevent regressions on consumer Blackwell hardware. This follows up on #20040.。
+- 动机: 标题「[CI] Add GPT-OSS test for SM120」；模型线: GPT-OSS；类别: 缺陷修复；主要 diff: `test/registered/core/test_gpt_oss_sm120.py`；技术摘要: 覆盖「[CI] Add GPT-OSS test for SM120」；主要实现面是 `test/registered/core/test_gpt_oss_sm120.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/core/test_gpt_oss_sm120.py` added +34/-0 (34 lines); hunks: -0,0 +1,34; symbols: TestGptOssSm120, setUpClass, test_mxfp4_20b，涉及 `TestGptOssSm120, setUpClass, test_mxfp4_20b`。
 - 代码 diff 细节:
   - `test/registered/core/test_gpt_oss_sm120.py` added +34/-0 (34 lines); hunks: -0,0 +1,34; symbols: TestGptOssSm120, setUpClass, test_mxfp4_20b
@@ -782,7 +782,7 @@ diff -- test/registered/core/test_gpt_oss_sm120.py
 - 状态/时间: merged / 2026-03-24
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/gpt_oss.py`；关联提交 `bbe25b24126d`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+65/-2，可读 patch 91 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Use FlashInfer tinygemm for GPT-OSS MoE router on SM90+」；模型线: GPT-OSS；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/gpt_oss.py`；PR 正文摘要: FlashInfer 0.6.6 (actually 0.6.5) added `tinygemm_bf16`, a faster kernel for small GEMMs. This applies it to the GPT-OSS MoE router on SM90+. Accuracy Test (GPQA) Before: After:...。
+- 动机: 标题「Use FlashInfer tinygemm for GPT-OSS MoE router on SM90+」；模型线: GPT-OSS；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/gpt_oss.py`；技术摘要: 覆盖「Use FlashInfer tinygemm for GPT-OSS MoE router on SM90+」；主要实现面是 `python/sglang/srt/models/gpt_oss.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/gpt_oss.py` modified +65/-2 (67 lines); hunks: -75,10 +75,34; -97,6 +121,45 @@ def get_attention_sliding_window_size(config):; symbols: GptOssConfig, get_attention_sliding_window_size, TinyGemmLinear, __init__，涉及 `GptOssConfig, get_attention_sliding_window_size, TinyGemmLinear`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/gpt_oss.py` modified +65/-2 (67 lines); hunks: -75,10 +75,34; -97,6 +121,45 @@ def get_attention_sliding_window_size(config):; symbols: GptOssConfig, get_attention_sliding_window_size, TinyGemmLinear, __init__
@@ -809,7 +809,7 @@ diff -- python/sglang/srt/models/gpt_oss.py
 - 状态/时间: merged / 2026-04-02
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/gpt_oss.py`, `test/registered/lora/test_lora_gpt_oss_20b_logprob_diff.py`；关联提交 `566b4a4f1ccc`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+195/-24，可读 patch 328 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[4/n] Support gpt oss 20b lora」；模型线: GPT-OSS；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/models/gpt_oss.py`, `test/registered/lora/test_lora_gpt_oss_20b_logprob_diff.py`；PR 正文摘要: 1. Support gpt oss 20b lora 2. Tune some ci thresholds - more strictly。
+- 动机: 标题「[4/n] Support gpt oss 20b lora」；模型线: GPT-OSS；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/models/gpt_oss.py`, `test/registered/lora/test_lora_gpt_oss_20b_logprob_diff.py`；技术摘要: 覆盖「[4/n] Support gpt oss 20b lora」；主要实现面是 `python/sglang/srt/models/gpt_oss.py`, `test/registered/lora/test_lora_gpt_oss_20b_logprob_diff.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/gpt_oss.py` modified +8/-0 (8 lines); hunks: -17,6 +17,7; -651,6 +652,13 @@ def forward(; symbols: forward, GptOssForCausalLM, should_apply_lora, __init__，涉及 `forward, GptOssForCausalLM, should_apply_lora`；`test/registered/lora/test_lora_gpt_oss_20b_logprob_diff.py` added +151/-0 (151 lines); hunks: -0,0 +1,151; symbols: kl_v2, get_prompt_logprobs, TestLoRAGptOss20BLogprobDiff, test_lora_gpt_oss_20b_logprob_accuracy，涉及 `kl_v2, get_prompt_logprobs, TestLoRAGptOss20BLogprobDiff`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/gpt_oss.py` modified +8/-0 (8 lines); hunks: -17,6 +17,7; -651,6 +652,13 @@ def forward(; symbols: forward, GptOssForCausalLM, should_apply_lora, __init__
@@ -846,7 +846,7 @@ diff -- test/registered/lora/test_lora_gpt_oss_20b_logprob_diff.py
 - 状态/时间: merged / 2026-04-08
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/4-gpu-models/test_gpt_oss_4gpu.py`；关联提交 `2ad5e6df12d3`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+2/-2，可读 patch 18 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[CI] Relax gpt-oss 4GPU accuracy threshold from 0.60 to 0.58」；模型线: GPT-OSS；类别: 性能/后端优化；主要 diff: `test/registered/4-gpu-models/test_gpt_oss_4gpu.py`；PR 正文摘要: - Lower `expected_score` for both `test_bf16_120b` and `test_mxfp4_120b` from 0.60 to 0.58 - 21% failure rate on both B200 and H100 runners at the 0.60 threshold Score Trend Dat...。
+- 动机: 标题「[CI] Relax gpt-oss 4GPU accuracy threshold from 0.60 to 0.58」；模型线: GPT-OSS；类别: 性能/后端优化；主要 diff: `test/registered/4-gpu-models/test_gpt_oss_4gpu.py`；技术摘要: 覆盖「[CI] Relax gpt-oss 4GPU accuracy threshold from 0.60 to 0.58」；主要实现面是 `test/registered/4-gpu-models/test_gpt_oss_4gpu.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/4-gpu-models/test_gpt_oss_4gpu.py` modified +2/-2 (4 lines); hunks: -13,7 +13,7 @@ def test_bf16_120b(self):; -23,7 +23,7 @@ def test_mxfp4_120b(self):; symbols: test_bf16_120b, test_mxfp4_120b，涉及 `test_bf16_120b, test_mxfp4_120b`。
 - 代码 diff 细节:
   - `test/registered/4-gpu-models/test_gpt_oss_4gpu.py` modified +2/-2 (4 lines); hunks: -13,7 +13,7 @@ def test_bf16_120b(self):; -23,7 +23,7 @@ def test_mxfp4_120b(self):; symbols: test_bf16_120b, test_mxfp4_120b

@@ -2,8 +2,8 @@
 
 ## Scope
 
-- Rebuilt on: 2026-04-25
-- Source baseline: `vllm-project/vllm` trace worktree commit `95995bbef8`
+- Rebuilt on: 2026-05-01
+- Source baseline: `vllm-project/vllm` trace worktree commit `7075df79b3`
 - PR collection rule: run `git log --name-only -- <model-files>` on model implementation, config, processor, parser, docs/tests, filter by model keywords in commit subjects, then read each PR's final diff through the GitHub Pull Request files API.
 - Preservation rule: PRs explicitly cited by the previous history/skill are retained even if current implementation files no longer trace to them, and the card marks that source.
 
@@ -93,7 +93,7 @@
 - Status/date: merged / 2025-08-06
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gpt_oss.py`; associated commits `de98252f497b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +503/-0, 530 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Add GPT-OSS model code and config [1/N]"; model line: GPT-OSS; category: performance/backend optimization; main diff: `vllm/model_executor/models/gpt_oss.py`; PR body summary: Add model code and config only. Need to add the MXFP4 MoE support for functionality..
+- Motivation: Title: "Add GPT-OSS model code and config [1/N]"; model line: GPT-OSS; category: performance/backend optimization; main diff: `vllm/model_executor/models/gpt_oss.py`; technical summary: Covers "Add GPT-OSS model code and config [1/N]"; the main implementation surface is `vllm/model_executor/models/gpt_oss.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/gpt_oss.py` added +472/-0 (472 lines); hunks: -0,0 +1,472; symbols: OAIAttention, __init__, forward, MLPBlock, touching `OAIAttention, __init__, forward`.
 - Code diff details:
   - `vllm/model_executor/models/gpt_oss.py` added +472/-0 (472 lines); hunks: -0,0 +1,472; symbols: OAIAttention, __init__, forward, MLPBlock
@@ -120,7 +120,7 @@ diff -- vllm/model_executor/models/gpt_oss.py
 - Status/date: merged / 2025-08-07
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gpt_oss.py`; associated commits `5c7cc33f4daf`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-3, 21 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[gpt-oss] fix model config with hf_config"; model line: GPT-OSS; category: bug fix; main diff: `vllm/model_executor/models/gpt_oss.py`; no usable PR-body summary.
+- Motivation: Title: "[gpt-oss] fix model config with hf_config"; model line: GPT-OSS; category: bug fix; main diff: `vllm/model_executor/models/gpt_oss.py`; technical summary: Covers "[gpt-oss] fix model config with hf_config"; the main implementation surface is `vllm/model_executor/models/gpt_oss.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/gpt_oss.py` modified +3/-3 (6 lines); hunks: -61,9 +61,9 @@ def __init__(; -154,7 +154,7 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/gpt_oss.py` modified +3/-3 (6 lines); hunks: -61,9 +61,9 @@ def __init__(; -154,7 +154,7 @@ def __init__(; symbols: __init__
@@ -147,7 +147,7 @@ diff -- vllm/model_executor/models/gpt_oss.py
 - Status/date: merged / 2025-08-08
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/kernels/moe/test_gpt_oss_triton_kernels.py`; associated commits `e789cad6b8b5`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +755/-9, 859 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[gpt-oss] triton kernel mxfp4"; model line: GPT-OSS; category: performance/backend optimization; main diff: `tests/kernels/moe/test_gpt_oss_triton_kernels.py`; PR body summary: Need nightly torch and triton main to work. Don't merge. want for accuracy test.
+- Motivation: Title: "[gpt-oss] triton kernel mxfp4"; model line: GPT-OSS; category: performance/backend optimization; main diff: `tests/kernels/moe/test_gpt_oss_triton_kernels.py`; technical summary: Covers "[gpt-oss] triton kernel mxfp4"; the main implementation surface is `tests/kernels/moe/test_gpt_oss_triton_kernels.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `tests/kernels/moe/test_gpt_oss_triton_kernels.py` added +375/-0 (375 lines); hunks: -0,0 +1,375; symbols: deshuffle, init_compute_data, ModelConfig, swiglu, touching `deshuffle, init_compute_data, ModelConfig`.
 - Code diff details:
   - `tests/kernels/moe/test_gpt_oss_triton_kernels.py` added +375/-0 (375 lines); hunks: -0,0 +1,375; symbols: deshuffle, init_compute_data, ModelConfig, swiglu
@@ -174,7 +174,7 @@ diff -- tests/kernels/moe/test_gpt_oss_triton_kernels.py
 - Status/date: merged / 2025-08-10
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gpt_oss.py`; associated commits `0c5254b82acc`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +342/-125, 726 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[oss] Init gpt-oss bf16 support"; model line: GPT-OSS; category: model support/runtime entry; main diff: `vllm/model_executor/models/gpt_oss.py`; no usable PR-body summary.
+- Motivation: Title: "[oss] Init gpt-oss bf16 support"; model line: GPT-OSS; category: model support/runtime entry; main diff: `vllm/model_executor/models/gpt_oss.py`; technical summary: Covers "[oss] Init gpt-oss bf16 support"; the main implementation surface is `vllm/model_executor/models/gpt_oss.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/gpt_oss.py` modified +149/-3 (152 lines); hunks: -160,7 +160,9 @@ def __init__(; -262,8 +264,8 @@ def compute_logits(self, hidden_states: torch.Tensor,; symbols: __init__, forward, compute_logits, load_weights, touching `__init__, forward, compute_logits`.
 - Code diff details:
   - `vllm/model_executor/models/gpt_oss.py` modified +149/-3 (152 lines); hunks: -160,7 +160,9 @@ def __init__(; -262,8 +264,8 @@ def compute_logits(self, hidden_states: torch.Tensor,; symbols: __init__, forward, compute_logits, load_weights
@@ -201,7 +201,7 @@ diff -- vllm/model_executor/models/gpt_oss.py
 - Status/date: merged / 2025-08-13
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gpt_oss.py`; associated commits `c6b928798e96`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +20/-9, 96 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Force TRTLLM attention for gpt-oss on SM100"; model line: GPT-OSS; category: model support/runtime entry; main diff: `vllm/model_executor/models/gpt_oss.py`; PR body summary: If attention sinks are being used, then use_trtllm_attention should return True since we only support sinks with that backend. This PR also moves the float32 sinks cast that the....
+- Motivation: Title: "Force TRTLLM attention for gpt-oss on SM100"; model line: GPT-OSS; category: model support/runtime entry; main diff: `vllm/model_executor/models/gpt_oss.py`; technical summary: Covers "Force TRTLLM attention for gpt-oss on SM100"; the main implementation surface is `vllm/model_executor/models/gpt_oss.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/gpt_oss.py` modified +1/-4 (5 lines); hunks: -8,7 +8,6; -70,11 +69,9 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/gpt_oss.py` modified +1/-4 (5 lines); hunks: -8,7 +8,6; -70,11 +69,9 @@ def __init__(; symbols: __init__
@@ -228,7 +228,7 @@ diff -- vllm/model_executor/models/gpt_oss.py
 - Status/date: merged / 2025-08-15
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gpt_oss.py`; associated commits `81f4b9648117`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +150/-24, 290 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Kernel] Add cuda kernel for gpt_oss activation"; model line: GPT-OSS; category: performance/backend optimization; main diff: `vllm/model_executor/models/gpt_oss.py`; no usable PR-body summary.
+- Motivation: Title: "[Kernel] Add cuda kernel for gpt_oss activation"; model line: GPT-OSS; category: performance/backend optimization; main diff: `vllm/model_executor/models/gpt_oss.py`; technical summary: Covers "[Kernel] Add cuda kernel for gpt_oss activation"; the main implementation surface is `vllm/model_executor/models/gpt_oss.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/gpt_oss.py` modified +1/-1 (2 lines); hunks: -159,7 +159,7 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
   - `vllm/model_executor/models/gpt_oss.py` modified +1/-1 (2 lines); hunks: -159,7 +159,7 @@ def __init__(; symbols: __init__, forward
@@ -251,7 +251,7 @@ diff -- vllm/model_executor/models/gpt_oss.py
 - Status/date: merged / 2025-08-15
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gpt_oss.py`; associated commits `f1f0d2fab8a1`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +24/-150, 290 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Revert "[Kernel] Add cuda kernel for gpt_oss activation""; model line: GPT-OSS; category: performance/backend optimization; main diff: `vllm/model_executor/models/gpt_oss.py`; PR body summary: Reverts vllm-project/vllm#22538.
+- Motivation: Title: "Revert "[Kernel] Add cuda kernel for gpt_oss activation""; model line: GPT-OSS; category: performance/backend optimization; main diff: `vllm/model_executor/models/gpt_oss.py`; technical summary: Covers "Revert "[Kernel] Add cuda kernel for gpt_oss activation""; the main implementation surface is `vllm/model_executor/models/gpt_oss.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/gpt_oss.py` modified +1/-1 (2 lines); hunks: -159,7 +159,7 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
   - `vllm/model_executor/models/gpt_oss.py` modified +1/-1 (2 lines); hunks: -159,7 +159,7 @@ def __init__(; symbols: __init__, forward
@@ -274,7 +274,7 @@ diff -- vllm/model_executor/models/gpt_oss.py
 - Status/date: merged / 2025-08-17
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gpt_oss.py`; associated commits `4d4061b6e73d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 9 files, +157/-42, 330 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Kernel] Add cuda kernel for gpt_oss activation"; model line: GPT-OSS; category: performance/backend optimization; main diff: `vllm/model_executor/models/gpt_oss.py`; no usable PR-body summary.
+- Motivation: Title: "[Kernel] Add cuda kernel for gpt_oss activation"; model line: GPT-OSS; category: performance/backend optimization; main diff: `vllm/model_executor/models/gpt_oss.py`; technical summary: Covers "[Kernel] Add cuda kernel for gpt_oss activation"; the main implementation surface is `vllm/model_executor/models/gpt_oss.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/gpt_oss.py` modified +1/-1 (2 lines); hunks: -159,7 +159,7 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
   - `vllm/model_executor/models/gpt_oss.py` modified +1/-1 (2 lines); hunks: -159,7 +159,7 @@ def __init__(; symbols: __init__, forward
@@ -297,7 +297,7 @@ diff -- vllm/model_executor/models/gpt_oss.py
 - Status/date: merged / 2025-08-27
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gpt_oss.py`; associated commits `fecbb7c78298`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +6/-1, 33 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix][gpt-oss] passing the cache config in gpt-oss"; model line: GPT-OSS; category: bug fix; main diff: `vllm/model_executor/models/gpt_oss.py`; PR body summary: Summary: ATT. Otherwise, kv cache fp8 is not supported in 20/120b model Differential Revision: D81004120.
+- Motivation: Title: "[Bugfix][gpt-oss] passing the cache config in gpt-oss"; model line: GPT-OSS; category: bug fix; main diff: `vllm/model_executor/models/gpt_oss.py`; technical summary: Covers "[Bugfix][gpt-oss] passing the cache config in gpt-oss"; the main implementation surface is `vllm/model_executor/models/gpt_oss.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/gpt_oss.py` modified +6/-1 (7 lines); hunks: -174,12 +174,15 @@ class TransformerBlock(torch.nn.Module):; -203,6 +206,7 @@ def __init__(; symbols: TransformerBlock, __init__, touching `TransformerBlock, __init__`.
 - Code diff details:
   - `vllm/model_executor/models/gpt_oss.py` modified +6/-1 (7 lines); hunks: -174,12 +174,15 @@ class TransformerBlock(torch.nn.Module):; -203,6 +206,7 @@ def __init__(; symbols: TransformerBlock, __init__
@@ -324,7 +324,7 @@ diff -- vllm/model_executor/models/gpt_oss.py
 - Status/date: merged / 2025-08-28
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gpt_oss.py`; associated commits `c5d004aaaf3b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +87/-34, 232 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model] Add PP support and VLM backbone compatability for GPT-OSS"; model line: GPT-OSS; category: bug fix; main diff: `vllm/model_executor/models/gpt_oss.py`; PR body summary: - OpenGVLab/InternVL3_5-GPT-OSS-20B-A4B-Preview can't work out-of-box yet because of missing PP support and VLM backbone compatability for GPT-OSS - This PR fix them to allow `O....
+- Motivation: Title: "[Model] Add PP support and VLM backbone compatability for GPT-OSS"; model line: GPT-OSS; category: bug fix; main diff: `vllm/model_executor/models/gpt_oss.py`; technical summary: Covers "[Model] Add PP support and VLM backbone compatability for GPT-OSS"; the main implementation surface is `vllm/model_executor/models/gpt_oss.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/gpt_oss.py` modified +86/-33 (119 lines); hunks: -11,7 +11,8; -27,7 +28,10; symbols: __init__, forward, MLPBlock, touching `__init__, forward, MLPBlock`.
 - Code diff details:
   - `vllm/model_executor/models/gpt_oss.py` modified +86/-33 (119 lines); hunks: -11,7 +11,8; -27,7 +28,10; symbols: __init__, forward, MLPBlock
@@ -351,7 +351,7 @@ diff -- vllm/model_executor/models/gpt_oss.py
 - Status/date: merged / 2025-08-28
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gpt_oss.py`; associated commits `bfab219648fd`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +2/-3, 12 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model] [gpt-oss] fix gpt-oss pp support"; model line: GPT-OSS; category: bug fix; main diff: `vllm/model_executor/models/gpt_oss.py`; PR body summary: when _dummy_run in pp mode, it will trigger assertion fail.
+- Motivation: Title: "[Model] [gpt-oss] fix gpt-oss pp support"; model line: GPT-OSS; category: bug fix; main diff: `vllm/model_executor/models/gpt_oss.py`; technical summary: Covers "[Model] [gpt-oss] fix gpt-oss pp support"; the main implementation surface is `vllm/model_executor/models/gpt_oss.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/gpt_oss.py` modified +2/-3 (5 lines); hunks: -668,9 +668,8 @@ def forward(self,; symbols: forward, compute_logits, touching `forward, compute_logits`.
 - Code diff details:
   - `vllm/model_executor/models/gpt_oss.py` modified +2/-3 (5 lines); hunks: -668,9 +668,8 @@ def forward(self,; symbols: forward, compute_logits
@@ -377,7 +377,7 @@ diff -- vllm/model_executor/models/gpt_oss.py
 - Status/date: merged / 2025-08-28
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +14/-15, 89 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model][gpt-oss] Support DP+EP for GPT-OSS with FlashInfer trtllm-gen MoE"; model line: GPT-OSS; category: bug fix; main diff: `vllm/model_executor/layers/fused_moe/config.py`, `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/quantization/mxfp4.py`; PR body summary: Changes: - Enable EP for GPT-OSS with FlashInfer trtllm-gen MoE - Fix an issue that VLLM_USE_FLASHINFER_MOE_FP4 is checked even when the quant dtype is not nvfp4. Run GPT-OSS-12....
+- Motivation: Title: "[Model][gpt-oss] Support DP+EP for GPT-OSS with FlashInfer trtllm-gen MoE"; model line: GPT-OSS; category: bug fix; main diff: `vllm/model_executor/layers/fused_moe/config.py`, `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/quantization/mxfp4.py`; technical summary: Covers "[Model][gpt-oss] Support DP+EP for GPT-OSS with FlashInfer trtllm-gen MoE"; the main implementation surface is `vllm/model_executor/layers/fused_moe/config.py`, `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/quantization/mxfp4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/layers/fused_moe/config.py` modified +8/-7 (15 lines); hunks: -190,12 +190,6 @@ def use_deepep_ll_kernels(self):; -404,7 +398,14 @@ def use_deepep_ll_kernels(self):; symbols: use_deepep_ll_kernels, use_flashinfer_cutlass_kernels, make, touching `use_deepep_ll_kernels, use_flashinfer_cutlass_kernels, make`; `vllm/model_executor/layers/fused_moe/layer.py` modified +4/-4 (8 lines); hunks: -920,7 +920,7 @@ def __init__(; -974,7 +974,7 @@ def use_deepep_ll_kernels(self):; symbols: __init__, use_deepep_ll_kernels, use_flashinfer_cutlass_kernels, update_expert_map, touching `__init__, use_deepep_ll_kernels, use_flashinfer_cutlass_kernels`; `vllm/model_executor/layers/quantization/mxfp4.py` modified +2/-4 (6 lines); hunks: -623,8 +623,6 @@ def apply(; -650,12 +648,12 @@ def apply(; symbols: apply, touching `apply`.
 - Code diff details:
   - `vllm/model_executor/layers/fused_moe/config.py` modified +8/-7 (15 lines); hunks: -190,12 +190,6 @@ def use_deepep_ll_kernels(self):; -404,7 +398,14 @@ def use_deepep_ll_kernels(self):; symbols: use_deepep_ll_kernels, use_flashinfer_cutlass_kernels, make
@@ -416,7 +416,7 @@ diff -- vllm/model_executor/layers/quantization/mxfp4.py
 - Status/date: merged / 2025-09-17
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/evals/gpt_oss/__init__.py`, `tests/evals/gpt_oss/conftest.py`, `tests/evals/gpt_oss/test_gpqa_correctness.py`; associated commits `493b10f8bf38`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +136/-0, 147 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[CI] GPT-OSS GPQA eval test for Blackwell"; model line: GPT-OSS; category: performance/backend optimization; main diff: `tests/evals/gpt_oss/test_gpqa_correctness.py`, `tests/evals/gpt_oss/conftest.py`, `tests/evals/gpt_oss/__init__.py`; PR body summary: Register a gpqa eval test in CI to test the Blackwell FlashInfer integration for `openai/gpt-oss-20b`.
+- Motivation: Title: "[CI] GPT-OSS GPQA eval test for Blackwell"; model line: GPT-OSS; category: performance/backend optimization; main diff: `tests/evals/gpt_oss/test_gpqa_correctness.py`, `tests/evals/gpt_oss/conftest.py`, `tests/evals/gpt_oss/__init__.py`; technical summary: Covers "[CI] GPT-OSS GPQA eval test for Blackwell"; the main implementation surface is `tests/evals/gpt_oss/test_gpqa_correctness.py`, `tests/evals/gpt_oss/conftest.py`, `tests/evals/gpt_oss/__init__.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `tests/evals/gpt_oss/test_gpqa_correctness.py` added +102/-0 (102 lines); hunks: -0,0 +1,102; symbols: run_gpqa_eval, test_gpqa_correctness, touching `run_gpqa_eval, test_gpqa_correctness`; `tests/evals/gpt_oss/conftest.py` added +18/-0 (18 lines); hunks: -0,0 +1,18; symbols: pytest_addoption, touching `pytest_addoption`; `tests/evals/gpt_oss/__init__.py` added +2/-0 (2 lines); hunks: -0,0 +1,2.
 - Code diff details:
   - `tests/evals/gpt_oss/test_gpqa_correctness.py` added +102/-0 (102 lines); hunks: -0,0 +1,102; symbols: run_gpqa_eval, test_gpqa_correctness
@@ -455,7 +455,7 @@ diff -- tests/evals/gpt_oss/__init__.py
 - Status/date: merged / 2025-09-22
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gpt_oss.py`; associated commits `21467f9a1c62`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +41/-12, 111 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Enable Eagle3 speculative decoding for GPT-OSS model"; model line: GPT-OSS; category: docs/tests/CI; main diff: `vllm/model_executor/models/gpt_oss.py`; PR body summary: This PR adds support for EAGLE3 speculative decoding for GPT-OSS model. Changes tested with a locally trained speculator model, and observed reasonable acceptance rates..
+- Motivation: Title: "Enable Eagle3 speculative decoding for GPT-OSS model"; model line: GPT-OSS; category: docs/tests/CI; main diff: `vllm/model_executor/models/gpt_oss.py`; technical summary: Covers "Enable Eagle3 speculative decoding for GPT-OSS model"; the main implementation surface is `vllm/model_executor/models/gpt_oss.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/gpt_oss.py` modified +17/-2 (19 lines); hunks: -28,7 +28,7; -239,6 +239,7 @@ def __init__(; symbols: __init__, get_input_embeddings, forward, _load_weights_mxfp4, touching `__init__, get_input_embeddings, forward`.
 - Code diff details:
   - `vllm/model_executor/models/gpt_oss.py` modified +17/-2 (19 lines); hunks: -28,7 +28,7; -239,6 +239,7 @@ def __init__(; symbols: __init__, get_input_embeddings, forward, _load_weights_mxfp4
@@ -482,7 +482,7 @@ diff -- vllm/model_executor/models/gpt_oss.py
 - Status/date: merged / 2025-10-01
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/evals/gpt_oss/test_gpqa_correctness.py`; associated commits `ee04c0cd04cf`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +3/-4, 28 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[CI] Tweaks to GPT-OSS Eval (Blackwell) for stability"; model line: GPT-OSS; category: docs/tests/CI; main diff: `tests/evals/gpt_oss/test_gpqa_correctness.py`; PR body summary: Using TP was slowing down inference greatly for gpt-oss-20b and reducing thread count helps stability.
+- Motivation: Title: "[CI] Tweaks to GPT-OSS Eval (Blackwell) for stability"; model line: GPT-OSS; category: docs/tests/CI; main diff: `tests/evals/gpt_oss/test_gpqa_correctness.py`; technical summary: Covers "[CI] Tweaks to GPT-OSS Eval (Blackwell) for stability"; the main implementation surface is `tests/evals/gpt_oss/test_gpqa_correctness.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `tests/evals/gpt_oss/test_gpqa_correctness.py` modified +2/-3 (5 lines); hunks: -26,7 +26,8 @@ def run_gpqa_eval(model_name: str, base_url: str) -> float:; -72,8 +73,6 @@ def test_gpqa_correctness(request):; symbols: run_gpqa_eval, test_gpqa_correctness, touching `run_gpqa_eval, test_gpqa_correctness`.
 - Code diff details:
   - `tests/evals/gpt_oss/test_gpqa_correctness.py` modified +2/-3 (5 lines); hunks: -26,7 +26,8 @@ def run_gpqa_eval(model_name: str, base_url: str) -> float:; -72,8 +73,6 @@ def test_gpqa_correctness(request):; symbols: run_gpqa_eval, test_gpqa_correctness
@@ -509,7 +509,7 @@ diff -- tests/evals/gpt_oss/test_gpqa_correctness.py
 - Status/date: merged / 2025-10-18
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 14 files, +911/-32, 1107 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[GPT-OSS] Structure_Tag support for gpt-oss tool-call in cot"; model line: GPT-OSS; category: model support/runtime entry; main diff: `tests/entrypoints/openai/test_gptoss_structural_tags_integration.py`, `tests/v1/structured_output/test_reasoning_structured_output.py`, `vllm/reasoning/gptoss_reasoning_parser.py`; PR body summary: The model sometimes generates function calls in CoT that have not been provided in tool_server. This PR uses structural tag to force model to 1. do not generate function calls w....
+- Motivation: Title: "[GPT-OSS] Structure_Tag support for gpt-oss tool-call in cot"; model line: GPT-OSS; category: model support/runtime entry; main diff: `tests/entrypoints/openai/test_gptoss_structural_tags_integration.py`, `tests/v1/structured_output/test_reasoning_structured_output.py`, `vllm/reasoning/gptoss_reasoning_parser.py`; technical summary: Covers "[GPT-OSS] Structure_Tag support for gpt-oss tool-call in cot"; the main implementation surface is `tests/entrypoints/openai/test_gptoss_structural_tags_integration.py`, `tests/v1/structured_output/test_reasoning_structured_output.py`, `vllm/reasoning/gptoss_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `tests/entrypoints/openai/test_gptoss_structural_tags_integration.py` added +280/-0 (280 lines); hunks: -0,0 +1,280; symbols: TestGptOssStructuralTagsIntegration, mock_tokenizer, gptoss_parser, tool_server_with_python, touching `TestGptOssStructuralTagsIntegration, mock_tokenizer, gptoss_parser`; `tests/v1/structured_output/test_reasoning_structured_output.py` added +207/-0 (207 lines); hunks: -0,0 +1,207; symbols: TestReasoningStructuredOutput, mock_model_config, mock_scheduler_config, mock_vllm_config, touching `TestReasoningStructuredOutput, mock_model_config, mock_scheduler_config`; `vllm/reasoning/gptoss_reasoning_parser.py` modified +75/-1 (76 lines); hunks: -1,17 +1,61; -81,3 +125,33 @@ def extract_reasoning_content(; symbols: from_builtin_tool_to_tag, tag_with_builtin_funcs, GptOssReasoningParser, extract_reasoning_content, touching `from_builtin_tool_to_tag, tag_with_builtin_funcs, GptOssReasoningParser`; `tests/v1/entrypoints/llm/test_struct_output_generate.py` modified +46/-0 (46 lines); hunks: -864,3 +864,49 @@ def test_structured_output_batched_with_non_structured_outp...; symbols: test_structured_output_batched_with_non_structured_outputs_requests, test_structured_output_with_structural_tag, touching `test_structured_output_batched_with_non_structured_outputs_requests, test_structured_output_with_structural_tag`.
 - Code diff details:
   - `tests/entrypoints/openai/test_gptoss_structural_tags_integration.py` added +280/-0 (280 lines); hunks: -0,0 +1,280; symbols: TestGptOssStructuralTagsIntegration, mock_tokenizer, gptoss_parser, tool_server_with_python
@@ -551,7 +551,7 @@ diff -- vllm/reasoning/gptoss_reasoning_parser.py
 - Status/date: merged / 2025-10-21
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gpt_oss.py`; associated commits `aef368aa0857`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +30/-13, 89 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[BugFix] GPT-OSS Attention DP + MoE TP weight loading issue"; model line: GPT-OSS; category: bug fix; main diff: `vllm/model_executor/models/gpt_oss.py`; PR body summary: Fix GPT-OSS weight loading issue when Attention DP + MoE TP is used. The GPT-OSS weight loading script does not consider the fact that tp needs to be flattened across dp in MoE,....
+- Motivation: Title: "[BugFix] GPT-OSS Attention DP + MoE TP weight loading issue"; model line: GPT-OSS; category: bug fix; main diff: `vllm/model_executor/models/gpt_oss.py`; technical summary: Covers "[BugFix] GPT-OSS Attention DP + MoE TP weight loading issue"; the main implementation surface is `vllm/model_executor/models/gpt_oss.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/gpt_oss.py` modified +16/-4 (20 lines); hunks: -11,13 +11,15; -305,8 +307,13 @@ def _load_weights_mxfp4(; symbols: _load_weights_mxfp4, _load_weights_other, touching `_load_weights_mxfp4, _load_weights_other`.
 - Code diff details:
   - `vllm/model_executor/models/gpt_oss.py` modified +16/-4 (20 lines); hunks: -11,13 +11,15; -305,8 +307,13 @@ def _load_weights_mxfp4(; symbols: _load_weights_mxfp4, _load_weights_other
@@ -578,7 +578,7 @@ diff -- vllm/model_executor/models/gpt_oss.py
 - Status/date: merged / 2025-11-05
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gpt_oss.py`; associated commits `18b39828d904`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +101/-6, 160 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[XPU] Add gpt-oss model support for Intel GPU"; model line: GPT-OSS; category: performance/backend optimization; main diff: `vllm/model_executor/models/gpt_oss.py`; PR body summary: this PR introduce a new `IpexFp4MoeMethod` for xpu, which support Wfp4A16 moe_gemm, implemented in ipex library. With that we can run openai/gpt-oss-20b, openai/gpt-oss-120b on....
+- Motivation: Title: "[XPU] Add gpt-oss model support for Intel GPU"; model line: GPT-OSS; category: performance/backend optimization; main diff: `vllm/model_executor/models/gpt_oss.py`; technical summary: Covers "[XPU] Add gpt-oss model support for Intel GPU"; the main implementation surface is `vllm/model_executor/models/gpt_oss.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/gpt_oss.py` modified +0/-3 (3 lines); hunks: -329,9 +329,6 @@ def _load_weights_mxfp4(; symbols: _load_weights_mxfp4, touching `_load_weights_mxfp4`.
 - Code diff details:
   - `vllm/model_executor/models/gpt_oss.py` modified +0/-3 (3 lines); hunks: -329,9 +329,6 @@ def _load_weights_mxfp4(; symbols: _load_weights_mxfp4
@@ -601,7 +601,7 @@ diff -- vllm/model_executor/models/gpt_oss.py
 - Status/date: merged / 2025-11-11
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gpt_oss.py`; associated commits `5a1271d83a65`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +101/-4, 154 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Quantization] fix attention quantization of gpt_oss model"; model line: GPT-OSS; category: bug fix; main diff: `vllm/model_executor/models/gpt_oss.py`; PR body summary: There are mainly two aiming purposes of this PR: 1. Enable attention quantization (FP8, MXFP4, UnquantizedLinearMethod, _etc_) by passing `quant_config` to `OAIAttention` and as....
+- Motivation: Title: "[Quantization] fix attention quantization of gpt_oss model"; model line: GPT-OSS; category: bug fix; main diff: `vllm/model_executor/models/gpt_oss.py`; technical summary: Covers "[Quantization] fix attention quantization of gpt_oss model"; the main implementation surface is `vllm/model_executor/models/gpt_oss.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/gpt_oss.py` modified +8/-2 (10 lines); hunks: -198,6 +198,7 @@ class TransformerBlock(torch.nn.Module):; -207,7 +208,10 @@ def __init__(; symbols: TransformerBlock, __init__, touching `TransformerBlock, __init__`.
 - Code diff details:
   - `vllm/model_executor/models/gpt_oss.py` modified +8/-2 (10 lines); hunks: -198,6 +198,7 @@ class TransformerBlock(torch.nn.Module):; -207,7 +208,10 @@ def __init__(; symbols: TransformerBlock, __init__
@@ -628,7 +628,7 @@ diff -- vllm/model_executor/models/gpt_oss.py
 - Status/date: merged / 2025-11-12
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gpt_oss.py`; associated commits `a9d18b51078d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +5/-5, 31 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix gpt_oss packed_modules_mapping"; model line: GPT-OSS; category: bug fix; main diff: `vllm/model_executor/models/gpt_oss.py`; PR body summary: https://github.com/vllm-project/vllm/pull/27334 modified the `packed_modules_mapping`, which resulted in test failures for gpt-oss LoRA see: https://buildkite.com/vllm/ci/builds....
+- Motivation: Title: "[Bugfix] Fix gpt_oss packed_modules_mapping"; model line: GPT-OSS; category: bug fix; main diff: `vllm/model_executor/models/gpt_oss.py`; technical summary: Covers "[Bugfix] Fix gpt_oss packed_modules_mapping"; the main implementation surface is `vllm/model_executor/models/gpt_oss.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/gpt_oss.py` modified +5/-5 (10 lines); hunks: -92,7 +92,7 @@ def __init__(; -129,7 +129,7 @@ def __init__(; symbols: __init__, forward, _load_weights_other, load_weights, touching `__init__, forward, _load_weights_other`.
 - Code diff details:
   - `vllm/model_executor/models/gpt_oss.py` modified +5/-5 (10 lines); hunks: -92,7 +92,7 @@ def __init__(; -129,7 +129,7 @@ def __init__(; symbols: __init__, forward, _load_weights_other, load_weights
@@ -655,7 +655,7 @@ diff -- vllm/model_executor/models/gpt_oss.py
 - Status/date: merged / 2025-11-16
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gpt_oss.py`; associated commits `af02c409702f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 10 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fixed gpt-oss _load_weights_other() parameter position bug"; model line: GPT-OSS; category: bug fix; main diff: `vllm/model_executor/models/gpt_oss.py`; PR body summary: Summary: Signed-off-by: Dezhan Tu dezhantu@gmail.com For `_load_weights_other()`, `ep_rank_start` and `ep_rank_end` positions are wrongly placed, leading to the failure of loadi....
+- Motivation: Title: "Fixed gpt-oss _load_weights_other() parameter position bug"; model line: GPT-OSS; category: bug fix; main diff: `vllm/model_executor/models/gpt_oss.py`; technical summary: Covers "Fixed gpt-oss _load_weights_other() parameter position bug"; the main implementation surface is `vllm/model_executor/models/gpt_oss.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/gpt_oss.py` modified +1/-1 (2 lines); hunks: -641,8 +641,8 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Te...; symbols: load_weights, touching `load_weights`.
 - Code diff details:
   - `vllm/model_executor/models/gpt_oss.py` modified +1/-1 (2 lines); hunks: -641,8 +641,8 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Te...; symbols: load_weights
@@ -678,7 +678,7 @@ diff -- vllm/model_executor/models/gpt_oss.py
 - Status/date: merged / 2025-11-16
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gpt_oss.py`; associated commits `8d259fad6cd5`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 10 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix gpt oss weight loading with EP + bf16"; model line: GPT-OSS; category: bug fix; main diff: `vllm/model_executor/models/gpt_oss.py`; PR body summary: The signature for `_load_weights_other` is incorrect. The start and end indices are flipped, which casues an indexing issue when attempting to extract the weights on the current....
+- Motivation: Title: "Fix gpt oss weight loading with EP + bf16"; model line: GPT-OSS; category: bug fix; main diff: `vllm/model_executor/models/gpt_oss.py`; technical summary: Covers "Fix gpt oss weight loading with EP + bf16"; the main implementation surface is `vllm/model_executor/models/gpt_oss.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/gpt_oss.py` modified +1/-1 (2 lines); hunks: -494,8 +494,8 @@ def _load_weights_mxfp4(; symbols: _load_weights_mxfp4, _load_weights_other, touching `_load_weights_mxfp4, _load_weights_other`.
 - Code diff details:
   - `vllm/model_executor/models/gpt_oss.py` modified +1/-1 (2 lines); hunks: -494,8 +494,8 @@ def _load_weights_mxfp4(; symbols: _load_weights_mxfp4, _load_weights_other
@@ -701,7 +701,7 @@ diff -- vllm/model_executor/models/gpt_oss.py
 - Status/date: merged / 2025-11-20
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gpt_oss.py`; associated commits `6eb745d9bdf5`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +12/-7, 60 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Add truncate arg to yarn to match openai implementation of gpt-oss"; model line: GPT-OSS; category: bug fix; main diff: `vllm/model_executor/models/gpt_oss.py`; PR body summary: Refer to the issue for context: https://github.com/vllm-project/vllm/issues/27722. VLLM's implementation of Yarn does not match OpenAI's for GPT-OSS. This PR provides a fix. I t....
+- Motivation: Title: "Add truncate arg to yarn to match openai implementation of gpt-oss"; model line: GPT-OSS; category: bug fix; main diff: `vllm/model_executor/models/gpt_oss.py`; technical summary: Covers "Add truncate arg to yarn to match openai implementation of gpt-oss"; the main implementation surface is `vllm/model_executor/models/gpt_oss.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/gpt_oss.py` modified +1/-0 (1 lines); hunks: -78,6 +78,7 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/gpt_oss.py` modified +1/-0 (1 lines); hunks: -78,6 +78,7 @@ def __init__(; symbols: __init__
@@ -723,7 +723,7 @@ diff -- vllm/model_executor/models/gpt_oss.py
 - Status/date: merged / 2025-11-28
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gpt_oss.py`; associated commits `5f5521bd5d7d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 10 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix parameter order in GPT-OSS weight loading function for non-MXFP4 weights"; model line: GPT-OSS; category: bug fix; main diff: `vllm/model_executor/models/gpt_oss.py`; PR body summary: Current arguments order is wrong as _load_weights_other accepts ep_rank_end as the first argument and ep_rank_start as the second. This only affects non-MXFP4 GPTOSS variants li....
+- Motivation: Title: "Fix parameter order in GPT-OSS weight loading function for non-MXFP4 weights"; model line: GPT-OSS; category: bug fix; main diff: `vllm/model_executor/models/gpt_oss.py`; technical summary: Covers "Fix parameter order in GPT-OSS weight loading function for non-MXFP4 weights"; the main implementation surface is `vllm/model_executor/models/gpt_oss.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/gpt_oss.py` modified +1/-1 (2 lines); hunks: -647,8 +647,8 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Te...; symbols: load_weights, touching `load_weights`.
 - Code diff details:
   - `vllm/model_executor/models/gpt_oss.py` modified +1/-1 (2 lines); hunks: -647,8 +647,8 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Te...; symbols: load_weights
@@ -746,7 +746,7 @@ diff -- vllm/model_executor/models/gpt_oss.py
 - Status/date: merged / 2026-01-28
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gpt_oss.py`; associated commits `59bcc5b6f2e6`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 9 files, +327/-11, 489 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Use aiter triton fused_add_rmsnorm_pad for gpt-oss"; model line: GPT-OSS; category: performance/backend optimization; main diff: `vllm/model_executor/models/gpt_oss.py`; PR body summary: Adds fused padding op before router GEMM on ROCm, eliminating this unfused pad after the GEMM before the fused_moe: https://github.com/ROCm/vllm/blob/main/vllm/model_executor/la....
+- Motivation: Title: "Use aiter triton fused_add_rmsnorm_pad for gpt-oss"; model line: GPT-OSS; category: performance/backend optimization; main diff: `vllm/model_executor/models/gpt_oss.py`; technical summary: Covers "Use aiter triton fused_add_rmsnorm_pad for gpt-oss"; the main implementation surface is `vllm/model_executor/models/gpt_oss.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/gpt_oss.py` modified +1/-1 (2 lines); hunks: -187,7 +187,7 @@ def forward(self, x: torch.Tensor) -> torch.Tensor:; symbols: forward, touching `forward`.
 - Code diff details:
   - `vllm/model_executor/models/gpt_oss.py` modified +1/-1 (2 lines); hunks: -187,7 +187,7 @@ def forward(self, x: torch.Tensor) -> torch.Tensor:; symbols: forward
@@ -769,7 +769,7 @@ diff -- vllm/model_executor/models/gpt_oss.py
 - Status/date: merged / 2026-02-10
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/kernels/moe/test_gpt_oss_triton_kernels.py`, `tests/models/quantization/test_gpt_oss.py`, `vllm/model_executor/models/gpt_oss.py`; associated commits `b129136c7a73`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 13 files, +1094/-213, 1860 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[ROCm][Quantization] GPT_OSS in amd-quark format model loading and emulations"; model line: GPT-OSS; category: model implementation change; main diff: `vllm/model_executor/models/gpt_oss.py`, `tests/models/quantization/test_gpt_oss.py`, `tests/kernels/moe/test_gpt_oss_triton_kernels.py`; PR body summary: This PR aims for: - Models: - Quantization schemes: - TP: See results below. (Sub)-tasks.
+- Motivation: Title: "[ROCm][Quantization] GPT_OSS in amd-quark format model loading and emulations"; model line: GPT-OSS; category: model implementation change; main diff: `vllm/model_executor/models/gpt_oss.py`, `tests/models/quantization/test_gpt_oss.py`, `tests/kernels/moe/test_gpt_oss_triton_kernels.py`; technical summary: Covers "[ROCm][Quantization] GPT_OSS in amd-quark format model loading and emulations"; the main implementation surface is `vllm/model_executor/models/gpt_oss.py`, `tests/models/quantization/test_gpt_oss.py`, `tests/kernels/moe/test_gpt_oss_triton_kernels.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/gpt_oss.py` modified +491/-18 (509 lines); hunks: -1,6 +1,7; -25,13 +26,17; symbols: __init__, forward, get_expert_mapping, _load_weights_mxfp4, touching `__init__, forward, get_expert_mapping`; `tests/models/quantization/test_gpt_oss.py` added +110/-0 (110 lines); hunks: -0,0 +1,110; symbols: has_huggingface_access, ModelCase, EvaluationConfig, get_model_args, touching `has_huggingface_access, ModelCase, EvaluationConfig`; `tests/kernels/moe/test_gpt_oss_triton_kernels.py` modified +13/-7 (20 lines); hunks: -22,7 +22,7; -298,12 +298,18 @@ def test_equiv(num_token, a_dtype, w_dtype, tp, workspace_...; symbols: test_equiv, touching `test_equiv`.
 - Code diff details:
   - `vllm/model_executor/models/gpt_oss.py` modified +491/-18 (509 lines); hunks: -1,6 +1,7; -25,13 +26,17; symbols: __init__, forward, get_expert_mapping, _load_weights_mxfp4
@@ -809,7 +809,7 @@ diff -- tests/kernels/moe/test_gpt_oss_triton_kernels.py
 - Status/date: merged / 2026-02-11
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gpt_oss.py`; associated commits `83e26c834ef1`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +0/-1, 8 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[GPT-OSS] Remove unnecessary contiguous"; model line: GPT-OSS; category: docs/tests/CI; main diff: `vllm/model_executor/models/gpt_oss.py`; PR body summary: Remove unnecessary contiguous for GPT-OSS. Test Result PR: main:.
+- Motivation: Title: "[GPT-OSS] Remove unnecessary contiguous"; model line: GPT-OSS; category: docs/tests/CI; main diff: `vllm/model_executor/models/gpt_oss.py`; technical summary: Covers "[GPT-OSS] Remove unnecessary contiguous"; the main implementation surface is `vllm/model_executor/models/gpt_oss.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/gpt_oss.py` modified +0/-1 (1 lines); hunks: -140,7 +140,6 @@ def forward(; symbols: forward, touching `forward`.
 - Code diff details:
   - `vllm/model_executor/models/gpt_oss.py` modified +0/-1 (1 lines); hunks: -140,7 +140,6 @@ def forward(; symbols: forward
@@ -831,7 +831,7 @@ diff -- vllm/model_executor/models/gpt_oss.py
 - Status/date: merged / 2026-02-27
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gpt_oss.py`; associated commits `1f3dbd95fd13`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +14/-8, 50 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix][Model] Fix gpt-oss batch invariance"; model line: GPT-OSS; category: bug fix; main diff: `vllm/model_executor/models/gpt_oss.py`; PR body summary: GPT-OSS is listed as verified in the batch invariance doc, but rerunning the provided tests on an H100 suggests it does not in fact work in all the claimed supported configurati....
+- Motivation: Title: "[Bugfix][Model] Fix gpt-oss batch invariance"; model line: GPT-OSS; category: bug fix; main diff: `vllm/model_executor/models/gpt_oss.py`; technical summary: Covers "[Bugfix][Model] Fix gpt-oss batch invariance"; the main implementation surface is `vllm/model_executor/models/gpt_oss.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/gpt_oss.py` modified +13/-2 (15 lines); hunks: -23,7 +23,11; -165,7 +169,14 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/gpt_oss.py` modified +13/-2 (15 lines); hunks: -23,7 +23,11; -165,7 +169,14 @@ def __init__(; symbols: __init__
@@ -858,7 +858,7 @@ diff -- vllm/model_executor/models/gpt_oss.py
 - Status/date: merged / 2026-03-02
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +24/-6, 73 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[ROCm] add amd-quark package in requirements for rocm to use quantized models"; model line: GPT-OSS; category: bug fix; main diff: `tests/quantization/test_quark.py`, `requirements/rocm.txt`; PR body summary: Fix https://github.com/vllm-project/vllm/issues/35633 - Added amd-quark to requirements/rocm.txt. This way, it can be picked up for building docker, wheel or building from sourc....
+- Motivation: Title: "[ROCm] add amd-quark package in requirements for rocm to use quantized models"; model line: GPT-OSS; category: bug fix; main diff: `tests/quantization/test_quark.py`, `requirements/rocm.txt`; technical summary: Covers "[ROCm] add amd-quark package in requirements for rocm to use quantized models"; the main implementation surface is `tests/quantization/test_quark.py`, `requirements/rocm.txt`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `tests/quantization/test_quark.py` modified +20/-5 (25 lines); hunks: -26,9 +26,12; -200,7 +203,10 @@ def get_model_args(; symbols: get_model_args, test_ocp_mx_wikitext_correctness, test_mxfp4_gsm8k_correctness, test_mxfp4_fused_qdq_match_quark, touching `get_model_args, test_ocp_mx_wikitext_correctness, test_mxfp4_gsm8k_correctness`; `requirements/rocm.txt` modified +4/-1 (5 lines); hunks: -19,4 +19,7 @@ setuptools>=77.0.3,<80.0.0.
 - Code diff details:
   - `tests/quantization/test_quark.py` modified +20/-5 (25 lines); hunks: -26,9 +26,12; -200,7 +203,10 @@ def get_model_args(; symbols: get_model_args, test_ocp_mx_wikitext_correctness, test_mxfp4_gsm8k_correctness, test_mxfp4_fused_qdq_match_quark
@@ -894,7 +894,7 @@ diff -- requirements/rocm.txt
 - Status/date: merged / 2026-03-03
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/quantization/test_gpt_oss.py`; associated commits `8b9e8b74541e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +5/-5, 22 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[ROCm][CI] Fix Assertion Logic For `test_gpt_oss`"; model line: GPT-OSS; category: bug fix; main diff: `tests/models/quantization/test_gpt_oss.py`; PR body summary: After https://github.com/vllm-project/vllm/pull/35658 was merged, we saw `Quantized Models Test` started failing in AMD CI: https://buildkite.com/vllm/amd-ci/builds/5661/steps/c....
+- Motivation: Title: "[ROCm][CI] Fix Assertion Logic For `test_gpt_oss`"; model line: GPT-OSS; category: bug fix; main diff: `tests/models/quantization/test_gpt_oss.py`; technical summary: Covers "[ROCm][CI] Fix Assertion Logic For `test_gpt_oss`"; the main implementation surface is `tests/models/quantization/test_gpt_oss.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `tests/models/quantization/test_gpt_oss.py` modified +5/-5 (10 lines); hunks: -12,8 +12,8; -104,7 +104,7 @@ def test_gpt_oss_attention_quantization(; symbols: test_gpt_oss_attention_quantization, touching `test_gpt_oss_attention_quantization`.
 - Code diff details:
   - `tests/models/quantization/test_gpt_oss.py` modified +5/-5 (10 lines); hunks: -12,8 +12,8; -104,7 +104,7 @@ def test_gpt_oss_attention_quantization(; symbols: test_gpt_oss_attention_quantization
@@ -921,7 +921,7 @@ diff -- tests/models/quantization/test_gpt_oss.py
 - Status/date: merged / 2026-03-03
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/quantization/test_gpt_oss.py`; associated commits `e7213003cbf6`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +5/-0, 19 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[ROCm][CI] Fix TP size issue for `test_gpt_oss`"; model line: GPT-OSS; category: bug fix; main diff: `tests/models/quantization/test_gpt_oss.py`; PR body summary: `Quantized Models Test` is allocated to a 1 GPU agent pool in CI, but tries to run multi-GPU tests (example: https://buildkite.com/vllm/amd-ci/builds/5699/steps/canvas?sid=019cb....
+- Motivation: Title: "[ROCm][CI] Fix TP size issue for `test_gpt_oss`"; model line: GPT-OSS; category: bug fix; main diff: `tests/models/quantization/test_gpt_oss.py`; technical summary: Covers "[ROCm][CI] Fix TP size issue for `test_gpt_oss`"; the main implementation surface is `tests/models/quantization/test_gpt_oss.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `tests/models/quantization/test_gpt_oss.py` modified +5/-0 (5 lines); hunks: -21,6 +21,8; -83,6 +85,9 @@ def get_model_args(self, tp_size: int):; symbols: get_model_args, test_gpt_oss_attention_quantization, touching `get_model_args, test_gpt_oss_attention_quantization`.
 - Code diff details:
   - `tests/models/quantization/test_gpt_oss.py` modified +5/-0 (5 lines); hunks: -21,6 +21,8; -83,6 +85,9 @@ def get_model_args(self, tp_size: int):; symbols: get_model_args, test_gpt_oss_attention_quantization
@@ -946,7 +946,7 @@ diff -- tests/models/quantization/test_gpt_oss.py
 - Status/date: merged / 2026-03-07
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/quantization/test_gpt_oss.py`; associated commits `fc4657756ff0`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +8/-1, 27 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[ROCm][CI] Enable AITER for failing `test_gpt_oss` test case on MI355"; model line: GPT-OSS; category: performance/backend optimization; main diff: `tests/models/quantization/test_gpt_oss.py`; PR body summary: This test case is passing on MI325 but failing on MI350: `pytest -v -s tests/models/quantization/test_gpt_oss.py::test_gpt_oss_attention_quantization[amd/gpt-oss-20b-MoE-Quant-W....
+- Motivation: Title: "[ROCm][CI] Enable AITER for failing `test_gpt_oss` test case on MI355"; model line: GPT-OSS; category: performance/backend optimization; main diff: `tests/models/quantization/test_gpt_oss.py`; technical summary: Covers "[ROCm][CI] Enable AITER for failing `test_gpt_oss` test case on MI355"; the main implementation surface is `tests/models/quantization/test_gpt_oss.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `tests/models/quantization/test_gpt_oss.py` modified +8/-1 (9 lines); hunks: -21,6 +21,7; -83,11 +84,17 @@ def get_model_args(self, tp_size: int):; symbols: get_model_args, test_gpt_oss_attention_quantization, touching `get_model_args, test_gpt_oss_attention_quantization`.
 - Code diff details:
   - `tests/models/quantization/test_gpt_oss.py` modified +8/-1 (9 lines); hunks: -21,6 +21,7; -83,11 +84,17 @@ def get_model_args(self, tp_size: int):; symbols: get_model_args, test_gpt_oss_attention_quantization
@@ -973,7 +973,7 @@ diff -- tests/models/quantization/test_gpt_oss.py
 - Status/date: merged / 2026-03-10
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/evals/gpt_oss/configs/gpt-oss-20b-rocm-baseline.yaml`, `tests/evals/gpt_oss/configs/models-gfx942.txt`, `tests/evals/gpt_oss/configs/models-gfx950.txt`; associated commits `179547d62c73`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +16/-4, 40 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[ROCm][CI] Fix ROCm GPT-OSS Eval test group"; model line: GPT-OSS; category: bug fix; main diff: `tests/evals/gpt_oss/configs/gpt-oss-20b-rocm-baseline.yaml`, `tests/evals/gpt_oss/configs/models-gfx942.txt`, `tests/evals/gpt_oss/configs/models-gfx950.txt`; PR body summary: Fixes optional test `ROCm GPT-OSS Eval` in AMD-CI external evaluation signal. cc @kenroche.
+- Motivation: Title: "[ROCm][CI] Fix ROCm GPT-OSS Eval test group"; model line: GPT-OSS; category: bug fix; main diff: `tests/evals/gpt_oss/configs/gpt-oss-20b-rocm-baseline.yaml`, `tests/evals/gpt_oss/configs/models-gfx942.txt`, `tests/evals/gpt_oss/configs/models-gfx950.txt`; technical summary: Covers "[ROCm][CI] Fix ROCm GPT-OSS Eval test group"; the main implementation surface is `tests/evals/gpt_oss/configs/gpt-oss-20b-rocm-baseline.yaml`, `tests/evals/gpt_oss/configs/models-gfx942.txt`, `tests/evals/gpt_oss/configs/models-gfx950.txt`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `tests/evals/gpt_oss/configs/gpt-oss-20b-rocm-baseline.yaml` added +6/-0 (6 lines); hunks: -0,0 +1,6; `tests/evals/gpt_oss/configs/models-gfx942.txt` added +3/-0 (3 lines); hunks: -0,0 +1,3; `tests/evals/gpt_oss/configs/models-gfx950.txt` added +3/-0 (3 lines); hunks: -0,0 +1,3.
 - Code diff details:
   - `tests/evals/gpt_oss/configs/gpt-oss-20b-rocm-baseline.yaml` added +6/-0 (6 lines); hunks: -0,0 +1,6
@@ -1012,7 +1012,7 @@ diff -- tests/evals/gpt_oss/configs/models-gfx950.txt
 - Status/date: merged / 2026-03-18
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +40/-3, 105 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Perf] Eliminate padding and slicing op for GPT-OSS with Flashinfer MXFP4 MXFP8 MoE"; model line: GPT-OSS; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/mxfp4.py`, `vllm/model_executor/layers/fused_moe/fused_moe_method_base.py`, `vllm/model_executor/layers/fused_moe/runner/default_moe_runner.py`; PR body summary: - Depends on Flashinfer update #30993 - Eliminated padding op before the MoE: by setting the alignment in flashinfer mxfp8 quant, the output quantized tensor will be padded. - E....
+- Motivation: Title: "[Perf] Eliminate padding and slicing op for GPT-OSS with Flashinfer MXFP4 MXFP8 MoE"; model line: GPT-OSS; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/mxfp4.py`, `vllm/model_executor/layers/fused_moe/fused_moe_method_base.py`, `vllm/model_executor/layers/fused_moe/runner/default_moe_runner.py`; technical summary: Covers "[Perf] Eliminate padding and slicing op for GPT-OSS with Flashinfer MXFP4 MXFP8 MoE"; the main implementation surface is `vllm/model_executor/layers/quantization/mxfp4.py`, `vllm/model_executor/layers/fused_moe/fused_moe_method_base.py`, `vllm/model_executor/layers/fused_moe/runner/default_moe_runner.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/layers/quantization/mxfp4.py` modified +16/-1 (17 lines); hunks: -294,6 +294,12 @@ def __init__(self, moe: FusedMoEConfig):; -1130,9 +1136,17 @@ def apply_monolithic(; symbols: __init__, skip_forward_padding, create_weights, apply_monolithic, touching `__init__, skip_forward_padding, create_weights`; `vllm/model_executor/layers/fused_moe/fused_moe_method_base.py` modified +5/-0 (5 lines); hunks: -101,6 +101,11 @@ def topk_indices_dtype(self) -> torch.dtype | None:; symbols: topk_indices_dtype, skip_forward_padding, supports_eplb, touching `topk_indices_dtype, skip_forward_padding, supports_eplb`; `vllm/model_executor/layers/fused_moe/runner/default_moe_runner.py` modified +4/-1 (5 lines); hunks: -415,7 +415,10 @@ def forward(; symbols: forward, touching `forward`; `tests/compile/fusions_e2e/models.py` modified +9/-0 (9 lines); hunks: -162,3 +162,12.
 - Code diff details:
   - `vllm/model_executor/layers/quantization/mxfp4.py` modified +16/-1 (17 lines); hunks: -294,6 +294,12 @@ def __init__(self, moe: FusedMoEConfig):; -1130,9 +1136,17 @@ def apply_monolithic(; symbols: __init__, skip_forward_padding, create_weights, apply_monolithic
@@ -1054,7 +1054,7 @@ diff -- vllm/model_executor/layers/fused_moe/runner/default_moe_runner.py
 - Status/date: merged / 2026-03-18
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gpt_oss.py`; associated commits `9bd723110689`, `b1169d7be8ad`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 13 files, +875/-13, 1035 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Kernel] Add gpt-oss Router GEMM kernel"; model line: GPT-OSS; category: performance/backend optimization; main diff: `vllm/model_executor/models/gpt_oss.py`; PR body summary: This PR add gpt-oss optimized Router GEMM kernel. 1% - 2% output token throughput improvement at batch size 1. Added unit test. Unit test passed. Micro bench `gpt_oss_router_gem....
+- Motivation: Title: "[Kernel] Add gpt-oss Router GEMM kernel"; model line: GPT-OSS; category: performance/backend optimization; main diff: `vllm/model_executor/models/gpt_oss.py`; technical summary: Covers "[Kernel] Add gpt-oss Router GEMM kernel"; the main implementation surface is `vllm/model_executor/models/gpt_oss.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/gpt_oss.py` modified +3/-7 (10 lines); hunks: -20,12 +20,11; -175,13 +174,11 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
   - `vllm/model_executor/models/gpt_oss.py` modified +3/-7 (10 lines); hunks: -20,12 +20,11; -175,13 +174,11 @@ def __init__(; symbols: __init__, forward
@@ -1081,7 +1081,7 @@ diff -- vllm/model_executor/models/gpt_oss.py
 - Status/date: merged / 2026-03-20
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/kernels/moe/test_gpt_oss_triton_kernels.py`; associated commits `d0532bf38da5`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +73/-4, 108 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Perf] Eliminate redundant SparseMatrix creation in gpt_oss_triton_kernels"; model line: GPT-OSS; category: performance/backend optimization; main diff: `tests/kernels/moe/test_gpt_oss_triton_kernels.py`; PR body summary: During profiling I noticed `_sum_bitmatrix_rows` + `_bitmatrix_metadata_compute_stage1` +`_bitmatrix_metadata_compute_stage2` kernels were launched twice. * Creating `SparseMatr....
+- Motivation: Title: "[Perf] Eliminate redundant SparseMatrix creation in gpt_oss_triton_kernels"; model line: GPT-OSS; category: performance/backend optimization; main diff: `tests/kernels/moe/test_gpt_oss_triton_kernels.py`; technical summary: Covers "[Perf] Eliminate redundant SparseMatrix creation in gpt_oss_triton_kernels"; the main implementation surface is `tests/kernels/moe/test_gpt_oss_triton_kernels.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `tests/kernels/moe/test_gpt_oss_triton_kernels.py` modified +44/-0 (44 lines); hunks: -21,12 +21,16; -355,3 +359,43 @@ def test_unit_shuffle():; symbols: test_unit_shuffle, test_legacy_routing, touching `test_unit_shuffle, test_legacy_routing`.
 - Code diff details:
   - `tests/kernels/moe/test_gpt_oss_triton_kernels.py` modified +44/-0 (44 lines); hunks: -21,12 +21,16; -355,3 +359,43 @@ def test_unit_shuffle():; symbols: test_unit_shuffle, test_legacy_routing
@@ -1108,7 +1108,7 @@ diff -- tests/kernels/moe/test_gpt_oss_triton_kernels.py
 - Status/date: merged / 2026-04-02
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gpt_oss.py`; associated commits `9bd723110689`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 13 files, +12/-875, 1027 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Revert "[Kernel] Add gpt-oss Router GEMM kernel (#37205)""; model line: GPT-OSS; category: model support/runtime entry; main diff: `vllm/model_executor/models/gpt_oss.py`; PR body summary: PLEASE FILL IN THE PR DESCRIPTION HERE ENSURING ALL CHECKLIST ITEMS (AT THE BOTTOM) HAVE BEEN CONSIDERED. This PR commit b1169d7be8add20ab1db4bc93c2b5c6336ef9754, which is repor....
+- Motivation: Title: "Revert "[Kernel] Add gpt-oss Router GEMM kernel (#37205)""; model line: GPT-OSS; category: model support/runtime entry; main diff: `vllm/model_executor/models/gpt_oss.py`; technical summary: Covers "Revert "[Kernel] Add gpt-oss Router GEMM kernel (#37205)""; the main implementation surface is `vllm/model_executor/models/gpt_oss.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/gpt_oss.py` modified +6/-3 (9 lines); hunks: -20,11 +20,12; -174,11 +175,13 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
   - `vllm/model_executor/models/gpt_oss.py` modified +6/-3 (9 lines); hunks: -20,11 +20,12; -174,11 +175,13 @@ def __init__(; symbols: __init__, forward
@@ -1135,7 +1135,7 @@ diff -- vllm/model_executor/models/gpt_oss.py
 - Status/date: merged / 2026-04-02
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/evals/gpt_oss/configs/models-gfx950.txt`; associated commits `82a006beebf0`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +10/-1, 18 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[CI][ROCm] Add gpt-oss w4a8 in CI"; model line: GPT-OSS; category: docs/tests/CI; main diff: `tests/evals/gpt_oss/configs/models-gfx950.txt`; PR body summary: Enable coverage on https://github.com/vllm-project/vllm/blob/f73bcb1c51cfc764f534fcd109f8437e196be2ec/vllm/model_executor/layers/quantization/quark/quark_moe.py#L1095 Next steps....
+- Motivation: Title: "[CI][ROCm] Add gpt-oss w4a8 in CI"; model line: GPT-OSS; category: docs/tests/CI; main diff: `tests/evals/gpt_oss/configs/models-gfx950.txt`; technical summary: Covers "[CI][ROCm] Add gpt-oss w4a8 in CI"; the main implementation surface is `tests/evals/gpt_oss/configs/models-gfx950.txt`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `tests/evals/gpt_oss/configs/models-gfx950.txt` modified +2/-1 (3 lines); hunks: -1,3 +1,4.
 - Code diff details:
   - `tests/evals/gpt_oss/configs/models-gfx950.txt` modified +2/-1 (3 lines); hunks: -1,3 +1,4
@@ -1159,7 +1159,7 @@ diff -- tests/evals/gpt_oss/configs/models-gfx950.txt
 - Status/date: merged / 2026-04-14
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/kernels/moe/test_gpt_oss_triton_kernels.py`, `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py`; associated commits `1a9353bb02e6`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +16/-12, 100 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[MoE] Move GPT OSS Triton kernel experts into fused_moe/experts/"; model line: GPT-OSS; category: performance/backend optimization; main diff: `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py`, `tests/kernels/moe/test_gpt_oss_triton_kernels.py`; PR body summary: - Moves `gpt_oss_triton_kernels_moe.py` from `fused_moe/` root into `fused_moe/experts/`, consistent with the ongoing migration of expert kernel files (e.g. `trtllm_nvfp4_moe.py....
+- Motivation: Title: "[MoE] Move GPT OSS Triton kernel experts into fused_moe/experts/"; model line: GPT-OSS; category: performance/backend optimization; main diff: `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py`, `tests/kernels/moe/test_gpt_oss_triton_kernels.py`; technical summary: Covers "[MoE] Move GPT OSS Triton kernel experts into fused_moe/experts/"; the main implementation surface is `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py`, `tests/kernels/moe/test_gpt_oss_triton_kernels.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py` renamed +0/-0 (0 lines); `tests/kernels/moe/test_gpt_oss_triton_kernels.py` modified +1/-1 (2 lines); hunks: -25,7 +25,7.
 - Code diff details:
   - `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py` renamed +0/-0 (0 lines)

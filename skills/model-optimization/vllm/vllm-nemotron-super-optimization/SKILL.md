@@ -1,6 +1,6 @@
 ---
 name: vllm-nemotron-super-optimization
-description: PR-backed optimization manual for Nemotron Super / Nano Hybrid in vLLM. Use when Codex needs to audit, debug, extend, or document NemotronH, Nemotron 3 Super, Nemotron Nano hybrid Mamba+Attention+MoE, MTP, NVFP4, and VL adjacencies.
+description: PR-backed optimization manual for Nemotron Super / Nano Hybrid in vLLM. Use when an engineer needs to audit, debug, extend, or document NemotronH, Nemotron 3 Super, Nemotron Nano hybrid Mamba+Attention+MoE, MTP, NVFP4, and VL adjacencies.
 ---
 
 # vLLM Nemotron Super / Nano Hybrid Optimization

@@ -1,9 +1,9 @@
 # vllm Gemma 4 模型 PR 优化历史
 
-## 文档口径
+## 覆盖范围
 
-- 重做日期: 2026-04-25
-- 源码基线: `vllm-project/vllm` 当前追溯 worktree commit `95995bbef8`
+- 重做日期: 2026-05-01
+- 源码基线: `vllm-project/vllm` 当前追溯 worktree commit `7075df79b3`
 - PR 收集规则: 先从模型实现、配置、processor、parser、docs/tests 等相关文件执行 `git log --name-only -- <model-files>`，再按 commit subject 的模型关键词过滤，最后用 GitHub Pull Request files API 读取每个 PR 的最终 diff。
 - 额外保留规则: 原 history/skill 已显式引用但未出现在当前实现文件 git trace 中的 PR 会保留，并在卡片里标注来源。
 
@@ -19,7 +19,7 @@
 | `tests/tool_parsers/test_gemma4_tool_parser.py` | [#38826](https://github.com/vllm-project/vllm/pull/38826), [#38909](https://github.com/vllm-project/vllm/pull/38909), [#38992](https://github.com/vllm-project/vllm/pull/38992), [#39027](https://github.com/vllm-project/vllm/pull/39027), [#39114](https://github.com/vllm-project/vllm/pull/39114), [#39679](https://github.com/vllm-project/vllm/pull/39679) |
 | `tests/tool_use/test_gemma4_responses_adjust_request.py` | 无直接 PR 号提交 |
 | `vllm/model_executor/layers/rotary_embedding/gemma4_rope.py` | [#38826](https://github.com/vllm-project/vllm/pull/38826) |
-| `vllm/model_executor/models/gemma4.py` | [#38826](https://github.com/vllm-project/vllm/pull/38826), [#38844](https://github.com/vllm-project/vllm/pull/38844), [#38879](https://github.com/vllm-project/vllm/pull/38879), [#39045](https://github.com/vllm-project/vllm/pull/39045), [#39083](https://github.com/vllm-project/vllm/pull/39083), [#39450](https://github.com/vllm-project/vllm/pull/39450) |
+| `vllm/model_executor/models/gemma4.py` | [#38826](https://github.com/vllm-project/vllm/pull/38826), [#38844](https://github.com/vllm-project/vllm/pull/38844), [#38879](https://github.com/vllm-project/vllm/pull/38879), [#39045](https://github.com/vllm-project/vllm/pull/39045), [#39083](https://github.com/vllm-project/vllm/pull/39083), [#39450](https://github.com/vllm-project/vllm/pull/39450), [#40786](https://github.com/vllm-project/vllm/pull/40786), [#41206](https://github.com/vllm-project/vllm/pull/41206) |
 | `vllm/model_executor/models/gemma4_mm.py` | [#38826](https://github.com/vllm-project/vllm/pull/38826), [#38872](https://github.com/vllm-project/vllm/pull/38872), [#39234](https://github.com/vllm-project/vllm/pull/39234), [#39291](https://github.com/vllm-project/vllm/pull/39291), [#39450](https://github.com/vllm-project/vllm/pull/39450), [#39842](https://github.com/vllm-project/vllm/pull/39842), [#40411](https://github.com/vllm-project/vllm/pull/40411), [#40534](https://github.com/vllm-project/vllm/pull/40534) |
 | `vllm/reasoning/gemma4_reasoning_parser.py` | [#38826](https://github.com/vllm-project/vllm/pull/38826), [#39027](https://github.com/vllm-project/vllm/pull/39027) |
 | `vllm/reasoning/gemma4_utils.py` | [#38826](https://github.com/vllm-project/vllm/pull/38826) |
@@ -28,9 +28,9 @@
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 18
+- git 追溯 PR 数: 20
 - 原文档显式引用补充 PR 数: 0
-- 当前文档总 PR 数: 18
+- 当前文档总 PR 数: 20
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -56,6 +56,8 @@
 | 2026-04-19 | [#39083](https://github.com/vllm-project/vllm/pull/39083) | merged | [FEAT] [Perf] [Gemma4] Fused Gemma4 Routing Function Triton | `vllm/model_executor/models/gemma4.py`, `tests/kernels/moe/test_gemma4router.py` |
 | 2026-04-21 | [#40411](https://github.com/vllm-project/vllm/pull/40411) | merged | [Bugfix] Gemma4: fix multimodal embedder norm order to match HF reference | `vllm/model_executor/models/gemma4_mm.py` |
 | 2026-04-24 | [#40534](https://github.com/vllm-project/vllm/pull/40534) | merged | [Model] Gemma4: add bidirectional vision attention for sliding layers with window guard | `vllm/model_executor/models/gemma4_mm.py` |
+| 2026-04-29 | [#40786](https://github.com/vllm-project/vllm/pull/40786) | merged | Fix PP in Gemma4 | `vllm/model_executor/models/gemma4.py` |
+| 2026-04-30 | [#41206](https://github.com/vllm-project/vllm/pull/41206) | merged | Fix Gemma4 MoE expert weight remapping | `vllm/model_executor/models/gemma4.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -65,7 +67,7 @@
 - 状态/时间: merged / 2026-04-02
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/processing/test_gemma4.py`, `tests/reasoning/test_gemma4_reasoning_parser.py`, `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/model_executor/layers/rotary_embedding/gemma4_rope.py`, `vllm/model_executor/models/gemma4.py` 等 10 个文件；关联提交 `08ed2b9688b4`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 20 个文件，+5051/-1，可读 patch 5167 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「feat(models): implement Google Gemma 4 architecture support (MoE, Multimodal, Reasoning, Tool-Use)」；模型线: Gemma 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/gemma4_mm.py`, `vllm/model_executor/models/gemma4.py`, `vllm/tool_parsers/gemma4_tool_parser.py`；PR 正文摘要: PR Title `feat(models): implement Google Gemma 4 architecture support (MoE, Multimodal, Reasoning, Tool-Use)` PR Description **Sumary** This PR introduces comprehensive support...。
+- 动机: 标题「feat(models): implement Google Gemma 4 architecture support (MoE, Multimodal, Reasoning, Tool-Use)」；模型线: Gemma 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/gemma4_mm.py`, `vllm/model_executor/models/gemma4.py`, `vllm/tool_parsers/gemma4_tool_parser.py`；技术摘要: 覆盖「feat(models): implement Google Gemma 4 architecture support (MoE, Multimodal, Reasoning, Tool-Use)」；主要实现面是 `vllm/model_executor/models/gemma4_mm.py`, `vllm/model_executor/models/gemma4.py`, `vllm/tool_parsers/gemma4_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/gemma4_mm.py` added +1341/-0 (1341 lines); hunks: -0,0 +1,1341; symbols: Gemma4ImagePixelInputs, Gemma4AudioInputs, Gemma4VideoInputs, Gemma4ProcessingInfo，涉及 `Gemma4ImagePixelInputs, Gemma4AudioInputs, Gemma4VideoInputs`；`vllm/model_executor/models/gemma4.py` added +1239/-0 (1239 lines); hunks: -0,0 +1,1239; symbols: _get_text_config, Gemma4MLP, __init__, forward，涉及 `_get_text_config, Gemma4MLP, __init__`；`vllm/tool_parsers/gemma4_tool_parser.py` added +724/-0 (724 lines); hunks: -0,0 +1,724; symbols: _parse_gemma4_value, _parse_gemma4_args, _parse_gemma4_array, Gemma4ToolParser，涉及 `_parse_gemma4_value, _parse_gemma4_args, _parse_gemma4_array`；`tests/tool_parsers/test_gemma4_tool_parser.py` added +504/-0 (504 lines); hunks: -0,0 +1,504; symbols: mock_tokenizer, parser, mock_request, TestParseGemma4Args，涉及 `mock_tokenizer, parser, mock_request`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/gemma4_mm.py` added +1341/-0 (1341 lines); hunks: -0,0 +1,1341; symbols: Gemma4ImagePixelInputs, Gemma4AudioInputs, Gemma4VideoInputs, Gemma4ProcessingInfo
@@ -107,7 +109,7 @@ diff -- vllm/tool_parsers/gemma4_tool_parser.py
 - 状态/时间: merged / 2026-04-02
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/tool_parsers/gemma4_tool_parser.py`；关联提交 `bb39382b2b28`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+3/-3，可读 patch 20 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix]: Fix Gemma4ToolParser.__init__() missing `tools` parameter」；模型线: Gemma 4；类别: 缺陷修复；主要 diff: `vllm/tool_parsers/gemma4_tool_parser.py`；PR 正文摘要: Fix `Gemma4ToolParser.__init__()` to accept the `tools` parameter, matching the base `ToolParser` interface. Without this fix, enabling tool calling with `--tool-call-parser gem...。
+- 动机: 标题「[Bugfix]: Fix Gemma4ToolParser.__init__() missing `tools` parameter」；模型线: Gemma 4；类别: 缺陷修复；主要 diff: `vllm/tool_parsers/gemma4_tool_parser.py`；技术摘要: 覆盖「[Bugfix]: Fix Gemma4ToolParser.__init__() missing `tools` parameter」；主要实现面是 `vllm/tool_parsers/gemma4_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/tool_parsers/gemma4_tool_parser.py` modified +3/-3 (6 lines); hunks: -38,7 +38,7; -281,8 +281,8 @@ class Gemma4ToolParser(ToolParser):; symbols: Gemma4ToolParser, __init__，涉及 `Gemma4ToolParser, __init__`。
 - 代码 diff 细节:
   - `vllm/tool_parsers/gemma4_tool_parser.py` modified +3/-3 (6 lines); hunks: -38,7 +38,7; -281,8 +281,8 @@ class Gemma4ToolParser(ToolParser):; symbols: Gemma4ToolParser, __init__
@@ -134,7 +136,7 @@ diff -- vllm/tool_parsers/gemma4_tool_parser.py
 - 状态/时间: merged / 2026-04-03
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/gemma4_mm.py`；关联提交 `550643541956`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+5/-300，可读 patch 333 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Misc] Clean up Gemma4 implementation」；模型线: Gemma 4；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/gemma4_mm.py`；PR 正文未提供可用摘要。
+- 动机: 标题「[Misc] Clean up Gemma4 implementation」；模型线: Gemma 4；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/gemma4_mm.py`；未提供可用技术摘要。
 - 实现要点: `vllm/model_executor/models/gemma4_mm.py` modified +3/-6 (9 lines); hunks: -15,7 +15,6; -480,12 +479,10 @@ def _call_hf_processor(; symbols: _call_hf_processor，涉及 `_call_hf_processor`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/gemma4_mm.py` modified +3/-6 (9 lines); hunks: -15,7 +15,6; -480,12 +479,10 @@ def _call_hf_processor(; symbols: _call_hf_processor
@@ -161,7 +163,7 @@ diff -- vllm/model_executor/models/gemma4_mm.py
 - 状态/时间: merged / 2026-04-05
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`；关联提交 `f53fa26e05c4`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+33/-3，可读 patch 48 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix] Fix invalid JSON in Gemma 4 streaming tool calls by stripping partial delimiters」；模型线: Gemma 4；类别: 缺陷修复；主要 diff: `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`；PR 正文摘要: Issue #38946 Fix Gemma 4 streaming tool calls producing invalid JSON due to partial delimiter chars not being stripped cc @sallyom。
+- 动机: 标题「[Bugfix] Fix invalid JSON in Gemma 4 streaming tool calls by stripping partial delimiters」；模型线: Gemma 4；类别: 缺陷修复；主要 diff: `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`；技术摘要: 覆盖「[Bugfix] Fix invalid JSON in Gemma 4 streaming tool calls by stripping partial delimiters」；主要实现面是 `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `tests/tool_parsers/test_gemma4_tool_parser.py` modified +29/-0 (29 lines); hunks: -502,3 +502,32 @@ def test_streaming_empty_args(self, parser, mock_request):; symbols: test_streaming_empty_args, test_streaming_split_delimiter_no_invalid_json，涉及 `test_streaming_empty_args, test_streaming_split_delimiter_no_invalid_json`；`vllm/tool_parsers/gemma4_tool_parser.py` modified +4/-3 (7 lines); hunks: -675,10 +675,11 @@ def _emit_argument_diff(self, raw_args_str: str) -> DeltaM...; symbols: _emit_argument_diff，涉及 `_emit_argument_diff`。
 - 代码 diff 细节:
   - `tests/tool_parsers/test_gemma4_tool_parser.py` modified +29/-0 (29 lines); hunks: -502,3 +502,32 @@ def test_streaming_empty_args(self, parser, mock_request):; symbols: test_streaming_empty_args, test_streaming_split_delimiter_no_invalid_json
@@ -198,7 +200,7 @@ diff -- vllm/tool_parsers/gemma4_tool_parser.py
 - 状态/时间: merged / 2026-04-06
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/gemma4.py`；关联提交 `47e605092b7f`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+369/-47，可读 patch 490 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Gemma4] Enable Fast Prefill Optimization」；模型线: Gemma 4；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/gemma4.py`；PR 正文摘要: Add `--kv-sharing-fast-prefill` support for Gemma 4 models, porting the YOCO (You Only Cache Once) fast prefill optimization from Gemma3n. When enabled, the cross-decoder layers...。
+- 动机: 标题「[Gemma4] Enable Fast Prefill Optimization」；模型线: Gemma 4；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/gemma4.py`；技术摘要: 覆盖「[Gemma4] Enable Fast Prefill Optimization」；主要实现面是 `vllm/model_executor/models/gemma4.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/gemma4.py` modified +369/-47 (416 lines); hunks: -19,6 +19,7; -32,6 +33,7; symbols: forward, _run_decoder_layers, Gemma4SelfDecoderLayers, __init__，涉及 `forward, _run_decoder_layers, Gemma4SelfDecoderLayers`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/gemma4.py` modified +369/-47 (416 lines); hunks: -19,6 +19,7; -32,6 +33,7; symbols: forward, _run_decoder_layers, Gemma4SelfDecoderLayers, __init__
@@ -225,7 +227,7 @@ diff -- vllm/model_executor/models/gemma4.py
 - 状态/时间: merged / 2026-04-08
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`；关联提交 `d734445fcd79`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+64/-2，可读 patch 77 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix][Frontend] Fix Gemma4 streaming HTML duplication after tool calls」；模型线: Gemma 4；类别: 缺陷修复；主要 diff: `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`；PR 正文摘要: Fix a Gemma4 streaming bug where buffered deltas are stitched back into `current_text`, which can corrupt normal text after or inside tool calls. This showed up most clearly wit...。
+- 动机: 标题「[Bugfix][Frontend] Fix Gemma4 streaming HTML duplication after tool calls」；模型线: Gemma 4；类别: 缺陷修复；主要 diff: `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`；技术摘要: 覆盖「[Bugfix][Frontend] Fix Gemma4 streaming HTML duplication after tool calls」；主要实现面是 `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `tests/tool_parsers/test_gemma4_tool_parser.py` modified +60/-0 (60 lines); hunks: -531,3 +531,63 @@ def test_streaming_split_delimiter_no_invalid_json(self, pa...; symbols: test_streaming_split_delimiter_no_invalid_json, test_streaming_does_not_duplicate_plain_text_after_tool_call, wrapped_extract_streaming, test_streaming_html_argument_does_not_duplicate_tag_prefixes，涉及 `test_streaming_split_delimiter_no_invalid_json, test_streaming_does_not_duplicate_plain_text_after_tool_call, wrapped_extract_streaming`；`vllm/tool_parsers/gemma4_tool_parser.py` modified +4/-2 (6 lines); hunks: -436,8 +436,10 @@ def extract_tool_calls_streaming(; symbols: extract_tool_calls_streaming，涉及 `extract_tool_calls_streaming`。
 - 代码 diff 细节:
   - `tests/tool_parsers/test_gemma4_tool_parser.py` modified +60/-0 (60 lines); hunks: -531,3 +531,63 @@ def test_streaming_split_delimiter_no_invalid_json(self, pa...; symbols: test_streaming_split_delimiter_no_invalid_json, test_streaming_does_not_duplicate_plain_text_after_tool_call, wrapped_extract_streaming, test_streaming_html_argument_does_not_duplicate_tag_prefixes
@@ -262,7 +264,7 @@ diff -- vllm/tool_parsers/gemma4_tool_parser.py
 - 状态/时间: merged / 2026-04-08
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`；关联提交 `13151a4df43d`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+78/-8，可读 patch 159 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix] Fix Gemma4 streaming tool call corruption for split boolean/number values」；模型线: Gemma 4；类别: 缺陷修复；主要 diff: `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`；PR 正文摘要: Fix https://github.com/vllm-project/vllm/issues/39089 Root cause: _parse_gemma4_value() misidentified partial literals as bare strings, causing a type change (string → boolean)...。
+- 动机: 标题「[Bugfix] Fix Gemma4 streaming tool call corruption for split boolean/number values」；模型线: Gemma 4；类别: 缺陷修复；主要 diff: `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`；技术摘要: 覆盖「[Bugfix] Fix Gemma4 streaming tool call corruption for split boolean/number values」；主要实现面是 `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `tests/tool_parsers/test_gemma4_tool_parser.py` modified +45/-0 (45 lines); hunks: -491,6 +491,51 @@ def test_streaming_numeric_args(self, parser, mock_request):; symbols: test_streaming_numeric_args, test_streaming_boolean_split_across_chunks, test_streaming_false_split_across_chunks, test_streaming_number_split_across_chunks，涉及 `test_streaming_numeric_args, test_streaming_boolean_split_across_chunks, test_streaming_false_split_across_chunks`；`vllm/tool_parsers/gemma4_tool_parser.py` modified +33/-8 (41 lines); hunks: -78,7 +78,7 @@ def _parse_gemma4_value(value_str: str) -> object:; -89,6 +89,12 @@ def _parse_gemma4_args(args_str: str) -> dict:; symbols: _parse_gemma4_value, _parse_gemma4_args，涉及 `_parse_gemma4_value, _parse_gemma4_args`。
 - 代码 diff 细节:
   - `tests/tool_parsers/test_gemma4_tool_parser.py` modified +45/-0 (45 lines); hunks: -491,6 +491,51 @@ def test_streaming_numeric_args(self, parser, mock_request):; symbols: test_streaming_numeric_args, test_streaming_boolean_split_across_chunks, test_streaming_false_split_across_chunks, test_streaming_number_split_across_chunks
@@ -299,7 +301,7 @@ diff -- vllm/tool_parsers/gemma4_tool_parser.py
 - 状态/时间: merged / 2026-04-08
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `examples/tool_chat_template_gemma4.jinja`, `tests/reasoning/test_gemma4_reasoning_parser.py`, `tests/renderers/test_gemma4_chat_template.py`, `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/reasoning/gemma4_reasoning_parser.py` 等 6 个文件；关联提交 `8477fe427d17`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 12 个文件，+878/-16，可读 patch 1083 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Tool] `adjust_request` to reasoning parser, and Gemma4 fixes」；模型线: Gemma 4；类别: 缺陷修复；主要 diff: `tests/reasoning/test_gemma4_reasoning_parser.py`, `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/reasoning/gemma4_reasoning_parser.py`；PR 正文摘要: Fix multiple issues preventing Gemma4 models from working correctly with multi-turn tool calling and reasoning in vLLM: - Add new Gemma4 chat template that properly encodes tool...。
+- 动机: 标题「[Tool] `adjust_request` to reasoning parser, and Gemma4 fixes」；模型线: Gemma 4；类别: 缺陷修复；主要 diff: `tests/reasoning/test_gemma4_reasoning_parser.py`, `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/reasoning/gemma4_reasoning_parser.py`；技术摘要: 覆盖「[Tool] `adjust_request` to reasoning parser, and Gemma4 fixes」；主要实现面是 `tests/reasoning/test_gemma4_reasoning_parser.py`, `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/reasoning/gemma4_reasoning_parser.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `tests/reasoning/test_gemma4_reasoning_parser.py` modified +87/-8 (95 lines); hunks: -4,6 +4,9; -100,6 +103,39 @@ def generic_tokenizer():; symbols: generic_tokenizer, test_gemma4_reasoning, gemma4_encode_output, _encode，涉及 `generic_tokenizer, test_gemma4_reasoning, gemma4_encode_output`；`tests/tool_parsers/test_gemma4_tool_parser.py` modified +40/-0 (40 lines); hunks: -114,6 +114,19 @@ def test_empty_value(self):; -636,3 +649,30 @@ def test_streaming_html_argument_does_not_duplicate_tag_pre...; symbols: test_empty_value, test_empty_value_partial_withheld, test_empty_value_after_other_keys_partial_withheld, TestParseGemma4Array，涉及 `test_empty_value, test_empty_value_partial_withheld, test_empty_value_after_other_keys_partial_withheld`；`vllm/reasoning/gemma4_reasoning_parser.py` modified +35/-3 (38 lines); hunks: -52,6 +52,16 @@ def __init__(self, tokenizer: TokenizerLike, *args, **kwargs):; -63,6 +73,29 @@ def end_token(self) -> str:; symbols: __init__, adjust_request, start_token, end_token，涉及 `__init__, adjust_request, start_token`；`vllm/tool_parsers/gemma4_tool_parser.py` modified +4/-2 (6 lines); hunks: -122,14 +122,16 @@ def _parse_gemma4_args(args_str: str, *, partial: bool = F...; symbols: _parse_gemma4_args，涉及 `_parse_gemma4_args`。
 - 代码 diff 细节:
   - `tests/reasoning/test_gemma4_reasoning_parser.py` modified +87/-8 (95 lines); hunks: -4,6 +4,9; -100,6 +103,39 @@ def generic_tokenizer():; symbols: generic_tokenizer, test_gemma4_reasoning, gemma4_encode_output, _encode
@@ -342,7 +344,7 @@ diff -- vllm/reasoning/gemma4_reasoning_parser.py
 - 状态/时间: merged / 2026-04-09
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/gemma4.py`；关联提交 `3aecdf08b4a8`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+34/-14，可读 patch 89 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Gemma4] Support quantized MoE」；模型线: Gemma 4；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/gemma4.py`；PR 正文摘要: - Expand gemma4 MoE weight loading to include logic for 2D quantized layers and parameters Testing - Existing MoE checkpoints(without quantization) load without issue - Quantize...。
+- 动机: 标题「[Gemma4] Support quantized MoE」；模型线: Gemma 4；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/gemma4.py`；技术摘要: 覆盖「[Gemma4] Support quantized MoE」；主要实现面是 `vllm/model_executor/models/gemma4.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/gemma4.py` modified +34/-14 (48 lines); hunks: -1248,21 +1248,27 @@ def load_weights(self, weights: Iterable[tuple[str, torc...; -1322,9 +1328,21 @@ def load_weights(self, weights: Iterable[tuple[str, torch...; symbols: load_weights, _weight_iterator，涉及 `load_weights, _weight_iterator`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/gemma4.py` modified +34/-14 (48 lines); hunks: -1248,21 +1248,27 @@ def load_weights(self, weights: Iterable[tuple[str, torc...; -1322,9 +1328,21 @@ def load_weights(self, weights: Iterable[tuple[str, torch...; symbols: load_weights, _weight_iterator
@@ -369,7 +371,7 @@ diff -- vllm/model_executor/models/gemma4.py
 - 状态/时间: merged / 2026-04-10
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/gemma4.py`, `vllm/model_executor/models/gemma4_mm.py`；关联提交 `e7cfd7c5b9a1`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+43/-10，可读 patch 146 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Add Gemma4 Eagle3 support」；模型线: Gemma 4；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/gemma4.py`, `vllm/model_executor/models/gemma4_mm.py`；PR 正文摘要: Enables Eagle3 style speculative decoding on Gemma4 models. Test model: RedHatAI/gemma-4-31B-it-speculator.eagle3 Served locally and verified it ran and produced reasonable acce...。
+- 动机: 标题「Add Gemma4 Eagle3 support」；模型线: Gemma 4；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/gemma4.py`, `vllm/model_executor/models/gemma4_mm.py`；技术摘要: 覆盖「Add Gemma4 Eagle3 support」；主要实现面是 `vllm/model_executor/models/gemma4.py`, `vllm/model_executor/models/gemma4_mm.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/gemma4.py` modified +20/-5 (25 lines); hunks: -60,7 +60,13; -838,7 +844,7 @@ def forward(; symbols: forward, Gemma4Model, __init__，涉及 `forward, Gemma4Model, __init__`；`vllm/model_executor/models/gemma4_mm.py` modified +12/-2 (14 lines); hunks: -64,7 +64,12; -845,7 +850,12 @@ def forward(self, inputs_embeds: torch.Tensor) -> torch.Ten...; symbols: forward, Gemma4ForConditionalGeneration，涉及 `forward, Gemma4ForConditionalGeneration`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/gemma4.py` modified +20/-5 (25 lines); hunks: -60,7 +60,13; -838,7 +844,7 @@ def forward(; symbols: forward, Gemma4Model, __init__
@@ -405,7 +407,7 @@ diff -- vllm/model_executor/models/gemma4_mm.py
 - 状态/时间: merged / 2026-04-11
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/gemma4.py`；关联提交 `92feb9991d15`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+40/-0，可读 patch 66 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Gemma4][Bugfix]: Enable Gemma4ForCasualLM to load lora adapters correctly」；模型线: Gemma 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/gemma4.py`；PR 正文摘要: `Gemma4ForConditionalGeneration` names the text stack under `model.language_model.*`, while the text-only `Gemma4ForCausalLM` path exposes the same layers under `model.*`. That...。
+- 动机: 标题「[Gemma4][Bugfix]: Enable Gemma4ForCasualLM to load lora adapters correctly」；模型线: Gemma 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/gemma4.py`；技术摘要: 覆盖「[Gemma4][Bugfix]: Enable Gemma4ForCasualLM to load lora adapters correctly」；主要实现面是 `vllm/model_executor/models/gemma4.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/gemma4.py` modified +17/-0 (17 lines); hunks: -69,6 +69,7; -1397,6 +1398,22 @@ def load_weights(self, weights: Iterable[tuple[str, torch...; symbols: load_weights, Gemma4ForCausalLM，涉及 `load_weights, Gemma4ForCausalLM`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/gemma4.py` modified +17/-0 (17 lines); hunks: -69,6 +69,7; -1397,6 +1398,22 @@ def load_weights(self, weights: Iterable[tuple[str, torch...; symbols: load_weights, Gemma4ForCausalLM
@@ -432,7 +434,7 @@ diff -- vllm/model_executor/models/gemma4.py
 - 状态/时间: merged / 2026-04-14
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`；关联提交 `b075604da10a`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+12/-0，可读 patch 26 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix] Fix Gemma4 tool parser converting bare `null` to string `"null"`」；模型线: Gemma 4；类别: 缺陷修复；主要 diff: `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`；PR 正文摘要: When serving a Gemma4 model with `--enable-auto-tool-choice --tool-call-parser gemma4`, a tool parameter that accepts `null` (e.g. `{"type": "string", "nullable": true}`) is mis...。
+- 动机: 标题「[Bugfix] Fix Gemma4 tool parser converting bare `null` to string `"null"`」；模型线: Gemma 4；类别: 缺陷修复；主要 diff: `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`；技术摘要: 覆盖「[Bugfix] Fix Gemma4 tool parser converting bare `null` to string `"null"`」；主要实现面是 `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `tests/tool_parsers/test_gemma4_tool_parser.py` modified +8/-0 (8 lines); hunks: -85,6 +85,14 @@ def test_boolean_false(self):; symbols: test_boolean_false, test_null_value, test_mixed_types，涉及 `test_boolean_false, test_null_value, test_mixed_types`；`vllm/tool_parsers/gemma4_tool_parser.py` modified +4/-0 (4 lines); hunks: -66,6 +66,10 @@ def _parse_gemma4_value(value_str: str) -> object:; symbols: _parse_gemma4_value，涉及 `_parse_gemma4_value`。
 - 代码 diff 细节:
   - `tests/tool_parsers/test_gemma4_tool_parser.py` modified +8/-0 (8 lines); hunks: -85,6 +85,14 @@ def test_boolean_false(self):; symbols: test_boolean_false, test_null_value, test_mixed_types
@@ -466,7 +468,7 @@ diff -- vllm/tool_parsers/gemma4_tool_parser.py
 - 状态/时间: merged / 2026-04-15
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/gemma4_mm.py`；关联提交 `6dc949140693`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+7/-2，可读 patch 18 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Model] Fix Gemma 4 token repetition by dynamic BOS injection for PT models」；模型线: Gemma 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/gemma4_mm.py`；PR 正文摘要: This PR fixes the token repetition issue (e.g., "is is is is...") observed in Gemma 4 Pre-Trained (PT) models when running in completion mode (without a chat template). The issu...。
+- 动机: 标题「[Model] Fix Gemma 4 token repetition by dynamic BOS injection for PT models」；模型线: Gemma 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/gemma4_mm.py`；技术摘要: 覆盖「[Model] Fix Gemma 4 token repetition by dynamic BOS injection for PT models」；主要实现面是 `vllm/model_executor/models/gemma4_mm.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/gemma4_mm.py` modified +7/-2 (9 lines); hunks: -167,10 +167,15 @@ def get_default_tok_params(self):; symbols: get_default_tok_params, get_hf_processor，涉及 `get_default_tok_params, get_hf_processor`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/gemma4_mm.py` modified +7/-2 (9 lines); hunks: -167,10 +167,15 @@ def get_default_tok_params(self):; symbols: get_default_tok_params, get_hf_processor
@@ -493,7 +495,7 @@ diff -- vllm/model_executor/models/gemma4_mm.py
 - 状态/时间: merged / 2026-04-17
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/gemma4_mm.py`；关联提交 `b1dc87a0989f`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+3/-2，可读 patch 13 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Models][Gemma4] Prevent GPU/CPU sync in `embed_input_ids`」；模型线: Gemma 4；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/gemma4_mm.py`；PR 正文摘要: This removes blocking GPU/CPU sync in Gemma4 `embed_input_ids` following up from #34246 **Before:** **After:**。
+- 动机: 标题「[Models][Gemma4] Prevent GPU/CPU sync in `embed_input_ids`」；模型线: Gemma 4；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/gemma4_mm.py`；技术摘要: 覆盖「[Models][Gemma4] Prevent GPU/CPU sync in `embed_input_ids`」；主要实现面是 `vllm/model_executor/models/gemma4_mm.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/gemma4_mm.py` modified +3/-2 (5 lines); hunks: -1254,9 +1254,10 @@ def embed_input_ids(; symbols: embed_input_ids，涉及 `embed_input_ids`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/gemma4_mm.py` modified +3/-2 (5 lines); hunks: -1254,9 +1254,10 @@ def embed_input_ids(; symbols: embed_input_ids
@@ -519,7 +521,7 @@ diff -- vllm/model_executor/models/gemma4_mm.py
 - 状态/时间: merged / 2026-04-17
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/gemma4_mm.py`；关联提交 `640cc9dd7dae`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+10/-2，可读 patch 35 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「feat: Add LoRA support for Gemma4ForConditionalGeneration」；模型线: Gemma 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/gemma4_mm.py`；PR 正文摘要: fix https://github.com/vllm-project/vllm/issues/39246 Enable LoRA for Gemma4ForConditionalGeneration > Implement: > - get_num_mm_connector_tokens > - get_num_mm_encoder_tokens >...。
+- 动机: 标题「feat: Add LoRA support for Gemma4ForConditionalGeneration」；模型线: Gemma 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/gemma4_mm.py`；技术摘要: 覆盖「feat: Add LoRA support for Gemma4ForConditionalGeneration」；主要实现面是 `vllm/model_executor/models/gemma4_mm.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/gemma4_mm.py` modified +10/-2 (12 lines); hunks: -67,6 +67,7; -880,6 +881,7 @@ class Gemma4ForConditionalGeneration(; symbols: Gemma4ForConditionalGeneration, load_weights, get_mm_mapping，涉及 `Gemma4ForConditionalGeneration, load_weights, get_mm_mapping`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/gemma4_mm.py` modified +10/-2 (12 lines); hunks: -67,6 +67,7; -880,6 +881,7 @@ class Gemma4ForConditionalGeneration(; symbols: Gemma4ForConditionalGeneration, load_weights, get_mm_mapping
@@ -546,7 +548,7 @@ diff -- vllm/model_executor/models/gemma4_mm.py
 - 状态/时间: merged / 2026-04-19
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/moe/test_gemma4router.py`, `vllm/model_executor/models/gemma4.py`；关联提交 `45232a454e4c`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+180/-16，可读 patch 226 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[FEAT] [Perf] [Gemma4] Fused Gemma4 Routing Function Triton」；模型线: Gemma 4；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/gemma4.py`, `tests/kernels/moe/test_gemma4router.py`；PR 正文摘要: Improve the performance of Gemma4 by introducing triton fused routing function. The custom routing function introduces many synchronizations point and read write to global memor...。
+- 动机: 标题「[FEAT] [Perf] [Gemma4] Fused Gemma4 Routing Function Triton」；模型线: Gemma 4；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/gemma4.py`, `tests/kernels/moe/test_gemma4router.py`；技术摘要: 覆盖「[FEAT] [Perf] [Gemma4] Fused Gemma4 Routing Function Triton」；主要实现面是 `vllm/model_executor/models/gemma4.py`, `tests/kernels/moe/test_gemma4router.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/gemma4.py` modified +122/-16 (138 lines); hunks: -57,7 +57,9; -79,6 +81,120; symbols: _gemma4_routing_kernel, gemma4_fused_routing_kernel_triton, gemma4_routing_function_torch, _get_text_config，涉及 `_gemma4_routing_kernel, gemma4_fused_routing_kernel_triton, gemma4_routing_function_torch`；`tests/kernels/moe/test_gemma4router.py` added +57/-0 (57 lines); hunks: -0,0 +1,57; symbols: sort_by_id, test_gemma4_routing_kernel_triton，涉及 `sort_by_id, test_gemma4_routing_kernel_triton`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/gemma4.py` modified +122/-16 (138 lines); hunks: -57,7 +57,9; -79,6 +81,120; symbols: _gemma4_routing_kernel, gemma4_fused_routing_kernel_triton, gemma4_routing_function_torch, _get_text_config
@@ -583,7 +585,7 @@ diff -- tests/kernels/moe/test_gemma4router.py
 - 状态/时间: merged / 2026-04-21
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/gemma4_mm.py`；关联提交 `20d37434911d`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+9/-8，可读 patch 32 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix] Gemma4: fix multimodal embedder norm order to match HF reference」；模型线: Gemma 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/gemma4_mm.py`；PR 正文摘要: Fix the norm ordering in `Gemma4MultimodalEmbedder` to match the HF transformers reference implementation. The vLLM implementation had **post-projection** RMSNorm while the HF r...。
+- 动机: 标题「[Bugfix] Gemma4: fix multimodal embedder norm order to match HF reference」；模型线: Gemma 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/gemma4_mm.py`；技术摘要: 覆盖「[Bugfix] Gemma4: fix multimodal embedder norm order to match HF reference」；主要实现面是 `vllm/model_executor/models/gemma4_mm.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/gemma4_mm.py` modified +9/-8 (17 lines); hunks: -849,22 +849,23 @@ def __init__(; symbols: __init__, forward，涉及 `__init__, forward`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/gemma4_mm.py` modified +9/-8 (17 lines); hunks: -849,22 +849,23 @@ def __init__(; symbols: __init__, forward
@@ -610,7 +612,7 @@ diff -- vllm/model_executor/models/gemma4_mm.py
 - 状态/时间: merged / 2026-04-24
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/gemma4_mm.py`；关联提交 `512f52219240`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+73/-1，可读 patch 108 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Model] Gemma4: add bidirectional vision attention for sliding layers with window guard」；模型线: Gemma 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/gemma4_mm.py`；PR 正文摘要: Implement `use_bidirectional_attention="vision"` support for Gemma4 models (gemma-4-31B-it, gemma-4-26B-A4B-it), addressing #40106. Gemma4's architecture applies bidirectional a...。
+- 动机: 标题「[Model] Gemma4: add bidirectional vision attention for sliding layers with window guard」；模型线: Gemma 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/gemma4_mm.py`；技术摘要: 覆盖「[Model] Gemma4: add bidirectional vision attention for sliding layers with window guard」；主要实现面是 `vllm/model_executor/models/gemma4_mm.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/gemma4_mm.py` modified +59/-0 (59 lines); hunks: -969,6 +969,16 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; -1310,6 +1320,12 @@ def forward(; symbols: __init__, forward, compute_logits, _clear_mm_prefix_for_full_attn_layers，涉及 `__init__, forward, compute_logits`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/gemma4_mm.py` modified +59/-0 (59 lines); hunks: -969,6 +969,16 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; -1310,6 +1320,12 @@ def forward(; symbols: __init__, forward, compute_logits, _clear_mm_prefix_for_full_attn_layers
@@ -630,6 +632,59 @@ diff -- vllm/model_executor/models/gemma4_mm.py
 - 已读文件:
   - runtime: `vllm/model_executor/models/gemma4_mm.py` modified +59/-0
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/gemma4_mm.py`, `vllm/v1/worker/gpu_model_runner.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #40786 - Fix PP in Gemma4
+
+- 链接: https://github.com/vllm-project/vllm/pull/40786
+- 状态/时间: merged / 2026-04-29
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/gemma4.py`；关联提交 `5371d6fb4023`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+9/-16，可读 patch 49 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Fix PP in Gemma4」；模型线: Gemma 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/gemma4.py`；技术摘要: 覆盖「Fix PP in Gemma4」；主要实现面是 `vllm/model_executor/models/gemma4.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/gemma4.py` modified +9/-16 (25 lines); hunks: -1144,11 +1144,6 @@ def _make_empty_intermediate_tensors(; -1312,13 +1307,12 @@ def forward(; symbols: _make_empty_intermediate_tensors, forward，涉及 `_make_empty_intermediate_tensors, forward`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/gemma4.py` modified +9/-16 (25 lines); hunks: -1144,11 +1144,6 @@ def _make_empty_intermediate_tensors(; -1312,13 +1307,12 @@ def forward(; symbols: _make_empty_intermediate_tensors, forward
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/gemma4.py
+@@ -1144,11 +1144,6 @@ def _make_empty_intermediate_tensors(
+-                "residual": torch.zeros(
+-                    (batch_size, hidden_size),
+-                    dtype=dtype,
+-                    device=device,
+-                ),
+@@ -1312,13 +1307,12 @@ def forward(
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/gemma4.py` modified +9/-16
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/gemma4.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #41206 - Fix Gemma4 MoE expert weight remapping
+
+- 链接: https://github.com/vllm-project/vllm/pull/41206
+- 状态/时间: merged / 2026-04-30
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/gemma4.py`；关联提交 `ca97f7b9bbf2`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+5/-1，可读 patch 20 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Fix Gemma4 MoE expert weight remapping」；模型线: Gemma 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/gemma4.py`；技术摘要: 覆盖「Fix Gemma4 MoE expert weight remapping」；主要实现面是 `vllm/model_executor/models/gemma4.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/gemma4.py` modified +5/-1 (6 lines); hunks: -84,6 +84,10; -1650,7 +1654,7 @@ def _weight_iterator():; symbols: _remap_gemma4_expert_weight_name, _gemma4_routing_kernel, _weight_iterator，涉及 `_remap_gemma4_expert_weight_name, _gemma4_routing_kernel, _weight_iterator`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/gemma4.py` modified +5/-1 (6 lines); hunks: -84,6 +84,10; -1650,7 +1654,7 @@ def _weight_iterator():; symbols: _remap_gemma4_expert_weight_name, _gemma4_routing_kernel, _weight_iterator
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/gemma4.py
+@@ -84,6 +84,10 @@
++def _remap_gemma4_expert_weight_name(name: str) -> str:
++    return re.sub(r"(?<!\.moe)\.experts\.(\d+)\.", r".moe.experts.\1.", name)
+@@ -1650,7 +1654,7 @@ def _weight_iterator():
+-                name = re.sub(r"\.experts\.(\d+)\.", r".moe.experts.\1.", name)
++                name = _remap_gemma4_expert_weight_name(name)
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/gemma4.py` modified +5/-1
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/gemma4.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ## 补漏结论
 

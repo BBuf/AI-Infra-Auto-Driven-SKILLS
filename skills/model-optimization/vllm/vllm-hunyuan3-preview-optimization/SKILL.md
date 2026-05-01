@@ -1,6 +1,6 @@
 ---
 name: vllm-hunyuan3-preview-optimization
-description: PR-backed optimization manual for Hunyuan 3 Preview in vLLM. Use when Codex needs to audit, debug, extend, or document Adjacent Hunyuan dense / OCR / VL support in vLLM relevant to Hunyuan 3 Preview planning, without a dedicated `Hunyuan3Preview` mainline alias yet.
+description: PR-backed optimization manual for Hunyuan 3 Preview in vLLM. Use when an engineer needs to audit, debug, extend, or document Adjacent Hunyuan dense / OCR / VL support in vLLM relevant to Hunyuan 3 Preview planning, without a dedicated `Hunyuan3Preview` mainline alias yet.
 ---
 
 # vLLM Hunyuan 3 Preview Optimization
@@ -37,7 +37,7 @@ Every PR cited for this family must be based on diff reading, not only PR titles
 - [#29327](https://github.com/vllm-project/vllm/pull/29327) `Add HunyuanOCR support`: Extended the family to OCR workloads instead of text-only generation.
 - [#33035](https://github.com/vllm-project/vllm/pull/33035) `Eagle3 support for HunyuanVL & Hunyuan`: Added speculative decoding support on top of the Hunyuan family.
 
-## Open Radar
+## Open Optimization Items
 
 - Re-run PR search before claiming new support beyond the checked mainline commit.
 

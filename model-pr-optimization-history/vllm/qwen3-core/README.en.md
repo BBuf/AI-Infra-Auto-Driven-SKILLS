@@ -2,8 +2,8 @@
 
 ## Scope
 
-- Rebuilt on: 2026-04-25
-- Source baseline: `vllm-project/vllm` trace worktree commit `95995bbef8`
+- Rebuilt on: 2026-05-01
+- Source baseline: `vllm-project/vllm` trace worktree commit `7075df79b3`
 - PR collection rule: run `git log --name-only -- <model-files>` on model implementation, config, processor, parser, docs/tests, filter by model keywords in commit subjects, then read each PR's final diff through the GitHub Pull Request files API.
 - Preservation rule: PRs explicitly cited by the previous history/skill are retained even if current implementation files no longer trace to them, and the card marks that source.
 
@@ -21,7 +21,7 @@
 ## PR Coverage Summary
 
 - Git-traced PRs: 27
-- Extra PRs preserved from existing docs: 0
+- Extra PRs preserved from existing docs: 1
 - Total PRs in this document: 27
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
@@ -66,7 +66,7 @@
 - Status/date: merged / 2025-04-07
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3.py`, `vllm/model_executor/models/qwen3_moe.py`; associated commits `7699258ef013`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +893/-5, 937 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model] Add Qwen3 and Qwen3MoE"; model line: Qwen3 Core; category: model support/runtime entry; main diff: `vllm/model_executor/models/qwen3_moe.py`, `vllm/model_executor/models/qwen3.py`; PR body summary: Description Recently, I have submitted a pull request to Hugging Face Transformers containing the implementation of the Qwen3 and Qwen3MoE model. I would also like to contribute....
+- Motivation: Title: "[Model] Add Qwen3 and Qwen3MoE"; model line: Qwen3 Core; category: model support/runtime entry; main diff: `vllm/model_executor/models/qwen3_moe.py`, `vllm/model_executor/models/qwen3.py`; technical summary: Covers "[Model] Add Qwen3 and Qwen3MoE"; the main implementation surface is `vllm/model_executor/models/qwen3_moe.py`, `vllm/model_executor/models/qwen3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/qwen3_moe.py` added +531/-0 (531 lines); hunks: -0,0 +1,531; symbols: Qwen3MoeMLP, __init__, forward, Qwen3MoeSparseMoeBlock, touching `Qwen3MoeMLP, __init__, forward`; `vllm/model_executor/models/qwen3.py` added +329/-0 (329 lines); hunks: -0,0 +1,329; symbols: Qwen3Attention, __init__, forward, Qwen3DecoderLayer, touching `Qwen3Attention, __init__, forward`.
 - Code diff details:
   - `vllm/model_executor/models/qwen3_moe.py` added +531/-0 (531 lines); hunks: -0,0 +1,531; symbols: Qwen3MoeMLP, __init__, forward, Qwen3MoeSparseMoeBlock
@@ -102,7 +102,7 @@ diff -- vllm/model_executor/models/qwen3.py
 - Status/date: merged / 2025-04-08
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_moe.py`; associated commits `5a1e1c8353b9`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +220/-198, 514 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model] use AutoWeightsLoader for phimoe,qwen2_moe,qwen3_moe"; model line: Qwen3 Core; category: bug fix; main diff: `vllm/model_executor/models/qwen3_moe.py`; PR body summary: FIX https://github.com/vllm-project/vllm/issues/15697 - Qwen3MoeForCausalLM Because can't download Qwen/Qwen3-MoE-15B-A2B this model, so not test. - Qwen2MoeForCausalLM - PhiMoE....
+- Motivation: Title: "[Model] use AutoWeightsLoader for phimoe,qwen2_moe,qwen3_moe"; model line: Qwen3 Core; category: bug fix; main diff: `vllm/model_executor/models/qwen3_moe.py`; technical summary: Covers "[Model] use AutoWeightsLoader for phimoe,qwen2_moe,qwen3_moe"; the main implementation surface is `vllm/model_executor/models/qwen3_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/qwen3_moe.py` modified +65/-58 (123 lines); hunks: -52,7 +52,8; -326,7 +327,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__, forward, Qwen3MoeForCausalLM, get_input_embeddings, touching `__init__, forward, Qwen3MoeForCausalLM`.
 - Code diff details:
   - `vllm/model_executor/models/qwen3_moe.py` modified +65/-58 (123 lines); hunks: -52,7 +52,8; -326,7 +327,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__, forward, Qwen3MoeForCausalLM, get_input_embeddings
@@ -129,7 +129,7 @@ diff -- vllm/model_executor/models/qwen3_moe.py
 - Status/date: merged / 2025-05-07
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3.py`, `vllm/model_executor/models/qwen3_moe.py`; associated commits `f80ae5bdcfa7`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +19/-15, 97 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Kernel] Use fused rmsnorm for some models like qwen3 series"; model line: Qwen3 Core; category: performance/backend optimization; main diff: `vllm/model_executor/models/qwen3.py`, `vllm/model_executor/models/qwen3_moe.py`; PR body summary: Some models like qwen3 series still use forward_native method when q and k need to be normalized. The reason why fused rmsnorm kernel is not being used is that before q norm and....
+- Motivation: Title: "[Kernel] Use fused rmsnorm for some models like qwen3 series"; model line: Qwen3 Core; category: performance/backend optimization; main diff: `vllm/model_executor/models/qwen3.py`, `vllm/model_executor/models/qwen3_moe.py`; technical summary: Covers "[Kernel] Use fused rmsnorm for some models like qwen3 series"; the main implementation surface is `vllm/model_executor/models/qwen3.py`, `vllm/model_executor/models/qwen3_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/qwen3.py` modified +2/-2 (4 lines); hunks: -133,11 +133,11 @@ def forward(; symbols: forward, touching `forward`; `vllm/model_executor/models/qwen3_moe.py` modified +2/-2 (4 lines); hunks: -225,12 +225,12 @@ def forward(; symbols: forward, touching `forward`.
 - Code diff details:
   - `vllm/model_executor/models/qwen3.py` modified +2/-2 (4 lines); hunks: -133,11 +133,11 @@ def forward(; symbols: forward
@@ -161,7 +161,7 @@ diff -- vllm/model_executor/models/qwen3_moe.py
 - Status/date: merged / 2025-05-14
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_moe.py`; associated commits `63dc3426e078`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +11/-0, 18 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model] Add packed_modules_mapping for Qwen3-MOE"; model line: Qwen3 Core; category: model support/runtime entry; main diff: `vllm/model_executor/models/qwen3_moe.py`; no usable PR-body summary.
+- Motivation: Title: "[Model] Add packed_modules_mapping for Qwen3-MOE"; model line: Qwen3 Core; category: model support/runtime entry; main diff: `vllm/model_executor/models/qwen3_moe.py`; technical summary: Covers "[Model] Add packed_modules_mapping for Qwen3-MOE"; the main implementation surface is `vllm/model_executor/models/qwen3_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/qwen3_moe.py` modified +11/-0 (11 lines); hunks: -475,6 +475,17 @@ def load_weights(self, weights: Iterable[Tuple[str,; symbols: load_weights, Qwen3MoeForCausalLM, touching `load_weights, Qwen3MoeForCausalLM`.
 - Code diff details:
   - `vllm/model_executor/models/qwen3_moe.py` modified +11/-0 (11 lines); hunks: -475,6 +475,17 @@ def load_weights(self, weights: Iterable[Tuple[str,; symbols: load_weights, Qwen3MoeForCausalLM
@@ -188,7 +188,7 @@ diff -- vllm/model_executor/models/qwen3_moe.py
 - Status/date: merged / 2025-06-11
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3.py`; associated commits `3952731e8f25`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +396/-19, 470 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[New Model]: Support Qwen3 Embedding & Reranker"; model line: Qwen3 Core; category: model support/runtime entry; main diff: `vllm/model_executor/models/qwen3.py`; PR body summary: - Qwen3 Embedding - Qwen/Qwen3-Embedding-0.6B - Qwen/Qwen3-Embedding-4B - Qwen/Qwen3-Embedding-8B - Qwen3 Reranker - Qwen/Qwen3-Reranker-0.6B - Qwen/Qwen3-Reranker-4B - Qwen/Qwe....
+- Motivation: Title: "[New Model]: Support Qwen3 Embedding & Reranker"; model line: Qwen3 Core; category: model support/runtime entry; main diff: `vllm/model_executor/models/qwen3.py`; technical summary: Covers "[New Model]: Support Qwen3 Embedding & Reranker"; the main implementation surface is `vllm/model_executor/models/qwen3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/qwen3.py` modified +123/-2 (125 lines); hunks: -38,13 +38,15; -319,3 +321,122 @@ def load_weights(self, weights: Iterable[tuple[str,; symbols: load_weights, Qwen3ForSequenceClassification, __init__, forward, touching `load_weights, Qwen3ForSequenceClassification, __init__`.
 - Code diff details:
   - `vllm/model_executor/models/qwen3.py` modified +123/-2 (125 lines); hunks: -38,13 +38,15; -319,3 +321,122 @@ def load_weights(self, weights: Iterable[tuple[str,; symbols: load_weights, Qwen3ForSequenceClassification, __init__, forward
@@ -215,7 +215,7 @@ diff -- vllm/model_executor/models/qwen3.py
 - Status/date: merged / 2025-06-20
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_moe.py`; associated commits `e41bf15cd04e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Chore]: qwen3-moe-type-hints-mistake"; model line: Qwen3 Core; category: model implementation change; main diff: `vllm/model_executor/models/qwen3_moe.py`; no usable PR-body summary.
+- Motivation: Title: "[Chore]: qwen3-moe-type-hints-mistake"; model line: Qwen3 Core; category: model implementation change; main diff: `vllm/model_executor/models/qwen3_moe.py`; technical summary: Covers "[Chore]: qwen3-moe-type-hints-mistake"; the main implementation surface is `vllm/model_executor/models/qwen3_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/qwen3_moe.py` modified +1/-1 (2 lines); hunks: -294,7 +294,7 @@ def forward(; symbols: forward, touching `forward`.
 - Code diff details:
   - `vllm/model_executor/models/qwen3_moe.py` modified +1/-1 (2 lines); hunks: -294,7 +294,7 @@ def forward(; symbols: forward
@@ -238,7 +238,7 @@ diff -- vllm/model_executor/models/qwen3_moe.py
 - Status/date: merged / 2025-06-30
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_moe.py`; associated commits `f5dfa0753163`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +15/-9, 53 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Skip loading extra parameters for modelopt Qwen3 MoE model"; model line: Qwen3 Core; category: bug fix; main diff: `vllm/model_executor/models/qwen3_moe.py`; no usable PR-body summary.
+- Motivation: Title: "[Bugfix] Skip loading extra parameters for modelopt Qwen3 MoE model"; model line: Qwen3 Core; category: bug fix; main diff: `vllm/model_executor/models/qwen3_moe.py`; technical summary: Covers "[Bugfix] Skip loading extra parameters for modelopt Qwen3 MoE model"; the main implementation surface is `vllm/model_executor/models/qwen3_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/qwen3_moe.py` modified +15/-9 (24 lines); hunks: -386,6 +386,11 @@ def load_weights(self, weights: Iterable[tuple[str,; -410,10 +415,11 @@ def load_weights(self, weights: Iterable[tuple[str,; symbols: load_weights, touching `load_weights`.
 - Code diff details:
   - `vllm/model_executor/models/qwen3_moe.py` modified +15/-9 (24 lines); hunks: -386,6 +386,11 @@ def load_weights(self, weights: Iterable[tuple[str,; -410,10 +415,11 @@ def load_weights(self, weights: Iterable[tuple[str,; symbols: load_weights
@@ -265,7 +265,7 @@ diff -- vllm/model_executor/models/qwen3_moe.py
 - Status/date: merged / 2025-07-30
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_moe.py`; associated commits `d979dd6bebb1`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +142/-24, 273 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Feature][EPLB] Add eplb support for Qwen3"; model line: Qwen3 Core; category: model support/runtime entry; main diff: `vllm/model_executor/models/qwen3_moe.py`; no usable PR-body summary.
+- Motivation: Title: "[Feature][EPLB] Add eplb support for Qwen3"; model line: Qwen3 Core; category: model support/runtime entry; main diff: `vllm/model_executor/models/qwen3_moe.py`; technical summary: Covers "[Feature][EPLB] Add eplb support for Qwen3"; the main implementation surface is `vllm/model_executor/models/qwen3_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/qwen3_moe.py` modified +142/-24 (166 lines); hunks: -22,7 +22,8; -31,8 +32,9; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/qwen3_moe.py` modified +142/-24 (166 lines); hunks: -22,7 +22,8; -31,8 +32,9; symbols: __init__
@@ -292,7 +292,7 @@ diff -- vllm/model_executor/models/qwen3_moe.py
 - Status/date: merged / 2025-08-07
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3.py`, `vllm/model_executor/models/qwen3_moe.py`; associated commits `7377131a2ccb`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +60/-31, 176 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Qwen3] Enable dual-chunk-attention support for Qwen3 models."; model line: Qwen3 Core; category: model support/runtime entry; main diff: `vllm/model_executor/models/qwen3.py`, `vllm/model_executor/models/qwen3_moe.py`; no usable PR-body summary.
+- Motivation: Title: "[Qwen3] Enable dual-chunk-attention support for Qwen3 models."; model line: Qwen3 Core; category: model support/runtime entry; main diff: `vllm/model_executor/models/qwen3.py`, `vllm/model_executor/models/qwen3_moe.py`; technical summary: Covers "[Qwen3] Enable dual-chunk-attention support for Qwen3 models."; the main implementation surface is `vllm/model_executor/models/qwen3.py`, `vllm/model_executor/models/qwen3_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/qwen3.py` modified +40/-24 (64 lines); hunks: -23,7 +23,7; -47,27 +47,31; symbols: Qwen3Attention, __init__, touching `Qwen3Attention, __init__`; `vllm/model_executor/models/qwen3_moe.py` modified +20/-7 (27 lines); hunks: -159,6 +159,7 @@ def __init__(; -182,6 +183,7 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/qwen3.py` modified +40/-24 (64 lines); hunks: -23,7 +23,7; -47,27 +47,31; symbols: Qwen3Attention, __init__
@@ -328,7 +328,7 @@ diff -- vllm/model_executor/models/qwen3_moe.py
 - Status/date: merged / 2025-08-08
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_moe.py`; associated commits `d57dc2364e88`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +58/-37, 129 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Add ModelOpt Qwen3 nvfp4 support"; model line: Qwen3 Core; category: performance/backend optimization; main diff: `vllm/model_executor/models/qwen3_moe.py`; no usable PR-body summary.
+- Motivation: Title: "Add ModelOpt Qwen3 nvfp4 support"; model line: Qwen3 Core; category: performance/backend optimization; main diff: `vllm/model_executor/models/qwen3_moe.py`; technical summary: Covers "Add ModelOpt Qwen3 nvfp4 support"; the main implementation surface is `vllm/model_executor/models/qwen3_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/qwen3_moe.py` modified +13/-3 (16 lines); hunks: -48,7 +48,8; -471,12 +472,21 @@ def load_weights(self, weights: Iterable[tuple[str,; symbols: load_weights, touching `load_weights`.
 - Code diff details:
   - `vllm/model_executor/models/qwen3_moe.py` modified +13/-3 (16 lines); hunks: -48,7 +48,8; -471,12 +472,21 @@ def load_weights(self, weights: Iterable[tuple[str,; symbols: load_weights
@@ -355,7 +355,7 @@ diff -- vllm/model_executor/models/qwen3_moe.py
 - Status/date: merged / 2025-08-11
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_moe.py`; associated commits `1e55dfa7e552`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[BUGFIX] KeyError 'layers.14.mlp.gate.g_idx' for Qwen3-MoE with GPTQ on ROCm"; model line: Qwen3 Core; category: bug fix; main diff: `vllm/model_executor/models/qwen3_moe.py`; PR body summary: Description: This PR fixes a KeyError for 'layers.14.mlp.gate.g_idx' that was popping up when loading GPTQ-quantized Qwen3-MoE models, particularly in ROCm setups. The problem s....
+- Motivation: Title: "[BUGFIX] KeyError 'layers.14.mlp.gate.g_idx' for Qwen3-MoE with GPTQ on ROCm"; model line: Qwen3 Core; category: bug fix; main diff: `vllm/model_executor/models/qwen3_moe.py`; technical summary: Covers "[BUGFIX] KeyError 'layers.14.mlp.gate.g_idx' for Qwen3-MoE with GPTQ on ROCm"; the main implementation surface is `vllm/model_executor/models/qwen3_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/qwen3_moe.py` modified +1/-1 (2 lines); hunks: -122,7 +122,7 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
   - `vllm/model_executor/models/qwen3_moe.py` modified +1/-1 (2 lines); hunks: -122,7 +122,7 @@ def __init__(; symbols: __init__, forward
@@ -378,7 +378,7 @@ diff -- vllm/model_executor/models/qwen3_moe.py
 - Status/date: merged / 2025-08-13
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_moe.py`; associated commits `b159c0a67aaa`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +12/-0, 26 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix GGUF loader for Qwen3 MoE."; model line: Qwen3 Core; category: bug fix; main diff: `vllm/model_executor/models/qwen3_moe.py`; PR body summary: Despite upstream repositories (gguf-py, transformers) having added support for Qwen3 MoE GGUF quantization, vLLM GGUF loading is still broken. This PR aims to fix the GGUF loade....
+- Motivation: Title: "Fix GGUF loader for Qwen3 MoE."; model line: Qwen3 Core; category: bug fix; main diff: `vllm/model_executor/models/qwen3_moe.py`; technical summary: Covers "Fix GGUF loader for Qwen3 MoE."; the main implementation surface is `vllm/model_executor/models/qwen3_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/qwen3_moe.py` modified +1/-0 (1 lines); hunks: -375,6 +375,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/qwen3_moe.py` modified +1/-0 (1 lines); hunks: -375,6 +375,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__
@@ -400,7 +400,7 @@ diff -- vllm/model_executor/models/qwen3_moe.py
 - Status/date: merged / 2025-08-19
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_moe.py`; associated commits `4f510bc2a175`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-5, 20 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model] Removes redundant all-reduce operation in Qwen3MoeSparseMoeBlock"; model line: Qwen3 Core; category: performance/backend optimization; main diff: `vllm/model_executor/models/qwen3_moe.py`; PR body summary: Remove redundant all-reduce operation and reuse the all-reduce implementation provided by `FusedMoE` (see `vllm/model_executor/layers/fused_moe/layer.py#L1672`). The existing te....
+- Motivation: Title: "[Model] Removes redundant all-reduce operation in Qwen3MoeSparseMoeBlock"; model line: Qwen3 Core; category: performance/backend optimization; main diff: `vllm/model_executor/models/qwen3_moe.py`; technical summary: Covers "[Model] Removes redundant all-reduce operation in Qwen3MoeSparseMoeBlock"; the main implementation surface is `vllm/model_executor/models/qwen3_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/qwen3_moe.py` modified +1/-5 (6 lines); hunks: -139,7 +139,7 @@ def __init__(; -163,10 +163,6 @@ def forward(self, hidden_states: torch.Tensor) -> torch.Ten...; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
   - `vllm/model_executor/models/qwen3_moe.py` modified +1/-5 (6 lines); hunks: -139,7 +139,7 @@ def __init__(; -163,10 +163,6 @@ def forward(self, hidden_states: torch.Tensor) -> torch.Ten...; symbols: __init__, forward
@@ -427,7 +427,7 @@ diff -- vllm/model_executor/models/qwen3_moe.py
 - Status/date: merged / 2025-08-25
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_moe.py`; associated commits `a9082a4d144e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +18/-6, 43 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix Qwen3 MoE GPTQ inference"; model line: Qwen3 Core; category: bug fix; main diff: `vllm/model_executor/models/qwen3_moe.py`; PR body summary: - Fix #23467 (Optional) Documentation Update.
+- Motivation: Title: "[Bugfix] Fix Qwen3 MoE GPTQ inference"; model line: Qwen3 Core; category: bug fix; main diff: `vllm/model_executor/models/qwen3_moe.py`; technical summary: Covers "[Bugfix] Fix Qwen3 MoE GPTQ inference"; the main implementation surface is `vllm/model_executor/models/qwen3_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/qwen3_moe.py` modified +18/-6 (24 lines); hunks: -45,6 +45,9; -146,11 +149,20 @@ def __init__(; symbols: __init__, _maybe_ignore_quant_config, forward, load_weights, touching `__init__, _maybe_ignore_quant_config, forward`.
 - Code diff details:
   - `vllm/model_executor/models/qwen3_moe.py` modified +18/-6 (24 lines); hunks: -45,6 +45,9; -146,11 +149,20 @@ def __init__(; symbols: __init__, _maybe_ignore_quant_config, forward, load_weights
@@ -454,7 +454,7 @@ diff -- vllm/model_executor/models/qwen3_moe.py
 - Status/date: merged / 2025-09-01
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_moe.py`; associated commits `183a70967a90`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +17/-4, 57 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[BUGFIX] GPTQ quantization compatibility for Qwen3 MOE models (AutoGPTQ and AutoRound-GPTQ)"; model line: Qwen3 Core; category: bug fix; main diff: `vllm/model_executor/models/qwen3_moe.py`; PR body summary: The following PR attempts to make the quantized MOE model chart compatible with AutoGPTQ and Autoround-GPTQ. The PR: https://github.com/vllm-project/vllm/issues/23467 attempted....
+- Motivation: Title: "[BUGFIX] GPTQ quantization compatibility for Qwen3 MOE models (AutoGPTQ and AutoRound-GPTQ)"; model line: Qwen3 Core; category: bug fix; main diff: `vllm/model_executor/models/qwen3_moe.py`; technical summary: Covers "[BUGFIX] GPTQ quantization compatibility for Qwen3 MOE models (AutoGPTQ and AutoRound-GPTQ)"; the main implementation surface is `vllm/model_executor/models/qwen3_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/qwen3_moe.py` modified +7/-3 (10 lines); hunks: -159,9 +159,13 @@ def __init__(; symbols: __init__, _maybe_ignore_quant_config, touching `__init__, _maybe_ignore_quant_config`.
 - Code diff details:
   - `vllm/model_executor/models/qwen3_moe.py` modified +7/-3 (10 lines); hunks: -159,9 +159,13 @@ def __init__(; symbols: __init__, _maybe_ignore_quant_config
@@ -481,7 +481,7 @@ diff -- vllm/model_executor/models/qwen3_moe.py
 - Status/date: merged / 2025-09-17
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_moe.py`; associated commits `0f7acdd73ca6`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 13 files, +2084/-17, 2262 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model] Support Qwen3-VL Model Series"; model line: Qwen3 Core; category: model support/runtime entry; main diff: `vllm/model_executor/models/qwen3_moe.py`; PR body summary: This PR adds model support for the upcoming Qwen3-VL models, including both dense and MoE variants. Reference HF implementation - https://github.com/huggingface/transformers/pul....
+- Motivation: Title: "[Model] Support Qwen3-VL Model Series"; model line: Qwen3 Core; category: model support/runtime entry; main diff: `vllm/model_executor/models/qwen3_moe.py`; technical summary: Covers "[Model] Support Qwen3-VL Model Series"; the main implementation surface is `vllm/model_executor/models/qwen3_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/qwen3_moe.py` modified +1/-1 (2 lines); hunks: -378,7 +378,7 @@ class Qwen3MoeModel(nn.Module):; symbols: Qwen3MoeModel, __init__, touching `Qwen3MoeModel, __init__`.
 - Code diff details:
   - `vllm/model_executor/models/qwen3_moe.py` modified +1/-1 (2 lines); hunks: -378,7 +378,7 @@ class Qwen3MoeModel(nn.Module):; symbols: Qwen3MoeModel, __init__
@@ -504,7 +504,7 @@ diff -- vllm/model_executor/models/qwen3_moe.py
 - Status/date: merged / 2025-09-27
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_moe.py`; associated commits `614475401466`, `a5354b3ed247`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 23 files, +541/-376, 1804 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix][WideEP] Apply TP Attn + EP MoE fix to other models"; model line: Qwen3 Core; category: bug fix; main diff: `vllm/model_executor/models/qwen3_moe.py`; PR body summary: Prior to this PR, in many cases, using TP Attn and EP MoEs with `--tensor-parallel-size N --data-parallel-size M --enable-expert-parallel` would result in factor `N` redundant w....
+- Motivation: Title: "[Bugfix][WideEP] Apply TP Attn + EP MoE fix to other models"; model line: Qwen3 Core; category: bug fix; main diff: `vllm/model_executor/models/qwen3_moe.py`; technical summary: Covers "[Bugfix][WideEP] Apply TP Attn + EP MoE fix to other models"; the main implementation surface is `vllm/model_executor/models/qwen3_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/qwen3_moe.py` modified +33/-27 (60 lines); hunks: -29,13 +29,13; -51,6 +51,7; symbols: Qwen3MoeSparseMoeBlock, __init__, forward, touching `Qwen3MoeSparseMoeBlock, __init__, forward`.
 - Code diff details:
   - `vllm/model_executor/models/qwen3_moe.py` modified +33/-27 (60 lines); hunks: -29,13 +29,13; -51,6 +51,7; symbols: Qwen3MoeSparseMoeBlock, __init__, forward
@@ -531,7 +531,7 @@ diff -- vllm/model_executor/models/qwen3_moe.py
 - Status/date: merged / 2025-09-28
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_moe.py`; associated commits `614475401466`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +4/-4, 36 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix Qwen3-VL regression from #24982"; model line: Qwen3 Core; category: bug fix; main diff: `vllm/model_executor/models/qwen3_moe.py`; PR body summary: 24982 caused a regression since the Qwen3-VL needs to access the text config of Qwen3-MoE via `get_text_config()` Tested locally to make sure both Qwen3-VL and Qwen3-MoE can loa....
+- Motivation: Title: "[Bugfix] Fix Qwen3-VL regression from #24982"; model line: Qwen3 Core; category: bug fix; main diff: `vllm/model_executor/models/qwen3_moe.py`; technical summary: Covers "[Bugfix] Fix Qwen3-VL regression from #24982"; the main implementation surface is `vllm/model_executor/models/qwen3_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/qwen3_moe.py` modified +4/-4 (8 lines); hunks: -107,7 +107,7 @@ def __init__(; -293,7 +293,7 @@ class Qwen3MoeDecoderLayer(nn.Module):; symbols: __init__, Qwen3MoeDecoderLayer, Qwen3MoeModel, touching `__init__, Qwen3MoeDecoderLayer, Qwen3MoeModel`.
 - Code diff details:
   - `vllm/model_executor/models/qwen3_moe.py` modified +4/-4 (8 lines); hunks: -107,7 +107,7 @@ def __init__(; -293,7 +293,7 @@ class Qwen3MoeDecoderLayer(nn.Module):; symbols: __init__, Qwen3MoeDecoderLayer, Qwen3MoeModel
@@ -558,7 +558,7 @@ diff -- vllm/model_executor/models/qwen3_moe.py
 - Status/date: merged / 2025-10-11
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_moe.py`; associated commits `d2a71530c159`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +33/-4, 85 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Add EAGLE-3 Speculative Decoding Support for Qwen3 MoE"; model line: Qwen3 Core; category: docs/tests/CI; main diff: `vllm/model_executor/models/qwen3_moe.py`; PR body summary: This PR adds support for EAGLE-3 speculative decoding to the `Qwen3MoeForCausalLM` model, enabling faster inference with draft models like `nm-testing/Mockup-qwen235-eagle3-fp16....
+- Motivation: Title: "Add EAGLE-3 Speculative Decoding Support for Qwen3 MoE"; model line: Qwen3 Core; category: docs/tests/CI; main diff: `vllm/model_executor/models/qwen3_moe.py`; technical summary: Covers "Add EAGLE-3 Speculative Decoding Support for Qwen3 MoE"; the main implementation surface is `vllm/model_executor/models/qwen3_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/qwen3_moe.py` modified +33/-4 (37 lines); hunks: -64,7 +64,7; -422,6 +422,8 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__, get_input_embeddings, forward, get_expert_mapping, touching `__init__, get_input_embeddings, forward`.
 - Code diff details:
   - `vllm/model_executor/models/qwen3_moe.py` modified +33/-4 (37 lines); hunks: -64,7 +64,7; -422,6 +422,8 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__, get_input_embeddings, forward, get_expert_mapping
@@ -585,7 +585,7 @@ diff -- vllm/model_executor/models/qwen3_moe.py
 - Status/date: merged / 2025-11-10
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_moe.py`; associated commits `34553b9d2702`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +78/-30, 251 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Performance] Support FP8 flashinfer TRTLLM MOE on Qwen3 and Qwen-3next"; model line: Qwen3 Core; category: performance/backend optimization; main diff: `vllm/model_executor/models/qwen3_moe.py`; PR body summary: - Integrate multiple routing methods for FP8 flashinfer trtllm MOE, currently only DS and Llama4 - Add FP8 flashinfer trtllm MOE support on Qwen3 and Qwen3-next **Qwen3-Next-80B....
+- Motivation: Title: "[Performance] Support FP8 flashinfer TRTLLM MOE on Qwen3 and Qwen-3next"; model line: Qwen3 Core; category: performance/backend optimization; main diff: `vllm/model_executor/models/qwen3_moe.py`; technical summary: Covers "[Performance] Support FP8 flashinfer TRTLLM MOE on Qwen3 and Qwen-3next"; the main implementation surface is `vllm/model_executor/models/qwen3_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/qwen3_moe.py` modified +2/-0 (2 lines); hunks: -43,6 +43,7; -171,6 +172,7 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/qwen3_moe.py` modified +2/-0 (2 lines); hunks: -43,6 +43,7; -171,6 +172,7 @@ def __init__(; symbols: __init__
@@ -609,7 +609,7 @@ diff -- vllm/model_executor/models/qwen3_moe.py
 - Status/date: merged / 2025-12-10
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_moe.py`; associated commits `06462392e40f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +14/-0, 28 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[bugfix][quantization] fix quark qwen3 kv_cache quantization"; model line: Qwen3 Core; category: bug fix; main diff: `vllm/model_executor/models/qwen3_moe.py`; PR body summary: Qwen3moe cannot effectively recognize the kv_cache scale. We need to call the get_cache_scale method in the base class to identify it. test scripts:.
+- Motivation: Title: "[bugfix][quantization] fix quark qwen3 kv_cache quantization"; model line: Qwen3 Core; category: bug fix; main diff: `vllm/model_executor/models/qwen3_moe.py`; technical summary: Covers "[bugfix][quantization] fix quark qwen3 kv_cache quantization"; the main implementation surface is `vllm/model_executor/models/qwen3_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/qwen3_moe.py` modified +14/-0 (14 lines); hunks: -403,6 +403,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; -505,6 +506,19 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; symbols: __init__, load_weights, touching `__init__, load_weights`.
 - Code diff details:
   - `vllm/model_executor/models/qwen3_moe.py` modified +14/-0 (14 lines); hunks: -403,6 +403,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; -505,6 +506,19 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; symbols: __init__, load_weights
@@ -636,7 +636,7 @@ diff -- vllm/model_executor/models/qwen3_moe.py
 - Status/date: merged / 2026-01-24
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_moe.py`; associated commits `8edaf3857027`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +56/-16, 143 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Models] Add `SharedFusedMoE` support to Qwen3MoE"; model line: Qwen3 Core; category: bug fix; main diff: `vllm/model_executor/models/qwen3_moe.py`; PR body summary: - Fix https://github.com/vllm-project/vllm-omni/pull/560#discussion_r2655368800 - Qwen3-omni's MoE talker has share experts in its sparse moe block, while vLLM's Qwen3MoE impl a....
+- Motivation: Title: "[Models] Add `SharedFusedMoE` support to Qwen3MoE"; model line: Qwen3 Core; category: bug fix; main diff: `vllm/model_executor/models/qwen3_moe.py`; technical summary: Covers "[Models] Add `SharedFusedMoE` support to Qwen3MoE"; the main implementation surface is `vllm/model_executor/models/qwen3_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/qwen3_moe.py` modified +56/-16 (72 lines); hunks: -29,6 +29,7; -42,7 +43,7; symbols: __init__, forward, Qwen3MoeSparseMoeBlock, touching `__init__, forward, Qwen3MoeSparseMoeBlock`.
 - Code diff details:
   - `vllm/model_executor/models/qwen3_moe.py` modified +56/-16 (72 lines); hunks: -29,6 +29,7; -42,7 +43,7; symbols: __init__, forward, Qwen3MoeSparseMoeBlock
@@ -663,7 +663,7 @@ diff -- vllm/model_executor/models/qwen3_moe.py
 - Status/date: merged / 2026-02-06
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3.py`, `vllm/model_executor/models/qwen3_moe.py`; associated commits `2991dd3d2241`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +132/-13, 188 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix][Model] Support LoRA on Qwen3 Output Embedding"; model line: Qwen3 Core; category: bug fix; main diff: `vllm/model_executor/models/qwen3.py`, `vllm/model_executor/models/qwen3_moe.py`; PR body summary: This PR adds support for LoRA on the embed/unembed layers for Qwen3 dense/MoE models. It is a simplified version of #26115 that removes the changes for supporting zero-padded vo....
+- Motivation: Title: "[Bugfix][Model] Support LoRA on Qwen3 Output Embedding"; model line: Qwen3 Core; category: bug fix; main diff: `vllm/model_executor/models/qwen3.py`, `vllm/model_executor/models/qwen3_moe.py`; technical summary: Covers "[Bugfix][Model] Support LoRA on Qwen3 Output Embedding"; the main implementation surface is `vllm/model_executor/models/qwen3.py`, `vllm/model_executor/models/qwen3_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/qwen3.py` modified +5/-0 (5 lines); hunks: -263,6 +263,11 @@ class Qwen3ForCausalLM(nn.Module, SupportsLoRA, SupportsPP,...; symbols: Qwen3ForCausalLM, __init__, touching `Qwen3ForCausalLM, __init__`; `vllm/model_executor/models/qwen3_moe.py` modified +5/-0 (5 lines); hunks: -689,6 +689,11 @@ class Qwen3MoeForCausalLM(; symbols: Qwen3MoeForCausalLM, __init__, touching `Qwen3MoeForCausalLM, __init__`.
 - Code diff details:
   - `vllm/model_executor/models/qwen3.py` modified +5/-0 (5 lines); hunks: -263,6 +263,11 @@ class Qwen3ForCausalLM(nn.Module, SupportsLoRA, SupportsPP,...; symbols: Qwen3ForCausalLM, __init__
@@ -695,7 +695,7 @@ diff -- vllm/model_executor/models/qwen3_moe.py
 - Status/date: merged / 2026-02-14
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/pooling/test_colqwen3.py`, `vllm/model_executor/models/colqwen3.py`, `vllm/transformers_utils/configs/colqwen3.py`; associated commits `d1ea65d0a1c6`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +935/-0, 982 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[new model] add COLQwen3 code & Inference"; model line: Qwen3 Core; category: model support/runtime entry; main diff: `vllm/model_executor/models/colqwen3.py`, `tests/models/multimodal/pooling/test_colqwen3.py`, `vllm/transformers_utils/configs/colqwen3.py`; PR body summary: Add native support for **ColQwen3** multi-modal late interaction models in vLLM. ColPali (arXiv:2407.01449) introduces a ColBERT-style multi-vector retrieval approach for vision....
+- Motivation: Title: "[new model] add COLQwen3 code & Inference"; model line: Qwen3 Core; category: model support/runtime entry; main diff: `vllm/model_executor/models/colqwen3.py`, `tests/models/multimodal/pooling/test_colqwen3.py`, `vllm/transformers_utils/configs/colqwen3.py`; technical summary: Covers "[new model] add COLQwen3 code & Inference"; the main implementation surface is `vllm/model_executor/models/colqwen3.py`, `tests/models/multimodal/pooling/test_colqwen3.py`, `vllm/transformers_utils/configs/colqwen3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/colqwen3.py` added +306/-0 (306 lines); hunks: -0,0 +1,306; symbols: ColQwen3ProcessingInfo, get_hf_config, get_hf_processor, _supports_video, touching `ColQwen3ProcessingInfo, get_hf_config, get_hf_processor`; `tests/models/multimodal/pooling/test_colqwen3.py` added +156/-0 (156 lines); hunks: -0,0 +1,156; symbols: _run_token_embed_test, _run_late_interaction_test, _run_relevance_test, test_colqwen3_token_embed, touching `_run_token_embed_test, _run_late_interaction_test, _run_relevance_test`; `vllm/transformers_utils/configs/colqwen3.py` added +58/-0 (58 lines); hunks: -0,0 +1,58; symbols: that, ColQwen3Config, for, __init__, touching `that, ColQwen3Config, for`.
 - Code diff details:
   - `vllm/model_executor/models/colqwen3.py` added +306/-0 (306 lines); hunks: -0,0 +1,306; symbols: ColQwen3ProcessingInfo, get_hf_config, get_hf_processor, _supports_video
@@ -735,7 +735,7 @@ diff -- vllm/transformers_utils/configs/colqwen3.py
 - Status/date: merged / 2026-02-21
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/pooling/test_colqwen3.py`, `vllm/model_executor/models/colqwen3.py`; associated commits `5719a4e4e601`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +532/-66, 843 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Frontend] Support multimodal inputs for late-interaction scoring (ColQwen3) + NewModel: nvidia/nemotron-colembed"; model line: Qwen3 Core; category: model support/runtime entry; main diff: `tests/models/multimodal/pooling/test_colqwen3.py`, `vllm/model_executor/models/colqwen3.py`; PR body summary: Follow-up to #34398 (`[new model] add COLQwen3 code & Inference`). PR #34398 added native support for ColQwen3 multi-modal late interaction models, but the `/score` and `/rerank....
+- Motivation: Title: "[Frontend] Support multimodal inputs for late-interaction scoring (ColQwen3) + NewModel: nvidia/nemotron-colembed"; model line: Qwen3 Core; category: model support/runtime entry; main diff: `tests/models/multimodal/pooling/test_colqwen3.py`, `vllm/model_executor/models/colqwen3.py`; technical summary: Covers "[Frontend] Support multimodal inputs for late-interaction scoring (ColQwen3) + NewModel: nvidia/nemotron-colembed"; the main implementation surface is `tests/models/multimodal/pooling/test_colqwen3.py`, `vllm/model_executor/models/colqwen3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `tests/models/multimodal/pooling/test_colqwen3.py` modified +191/-0 (191 lines); hunks: -7,19 +7,31; -33,6 +45,43; symbols: _make_base64_image, _make_image_mm_param, _make_text_mm_param, _run_token_embed_test, touching `_make_base64_image, _make_image_mm_param, _make_text_mm_param`; `vllm/model_executor/models/colqwen3.py` modified +8/-6 (14 lines); hunks: -16,6 +16,7; -229,13 +230,14 @@ def forward(; symbols: forward, touching `forward`.
 - Code diff details:
   - `tests/models/multimodal/pooling/test_colqwen3.py` modified +191/-0 (191 lines); hunks: -7,19 +7,31; -33,6 +45,43; symbols: _make_base64_image, _make_image_mm_param, _make_text_mm_param, _run_token_embed_test
@@ -772,7 +772,7 @@ diff -- vllm/model_executor/models/colqwen3.py
 - Status/date: merged / 2026-03-04
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_moe.py`; associated commits `c8c3935b7013`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +129/-36, 221 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix][Model] Fix FP8 k_scale/v_scale not loaded for Qwen3-MoE"; model line: Qwen3 Core; category: bug fix; main diff: `vllm/model_executor/models/qwen3_moe.py`; PR body summary: FP8 KV cache scales from llm-compressor checkpoints (e.g. `qkv_proj.k_scale`) were silently dropped during weight loading in Qwen3MoeModel, causing fallback to scale=1.0 and acc....
+- Motivation: Title: "[Bugfix][Model] Fix FP8 k_scale/v_scale not loaded for Qwen3-MoE"; model line: Qwen3 Core; category: bug fix; main diff: `vllm/model_executor/models/qwen3_moe.py`; technical summary: Covers "[Bugfix][Model] Fix FP8 k_scale/v_scale not loaded for Qwen3-MoE"; the main implementation surface is `vllm/model_executor/models/qwen3_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/qwen3_moe.py` modified +6/-18 (24 lines); hunks: -535,10 +535,6 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; -562,6 +558,10 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; symbols: load_weights, touching `load_weights`.
 - Code diff details:
   - `vllm/model_executor/models/qwen3_moe.py` modified +6/-18 (24 lines); hunks: -535,10 +535,6 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; -562,6 +558,10 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; symbols: load_weights
@@ -799,7 +799,7 @@ diff -- vllm/model_executor/models/qwen3_moe.py
 - Status/date: merged / 2026-04-23
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_moe.py`; associated commits `342c58bc548f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +13/-5, 25 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[BugFix]fix Qwen3 MoE call gate twice"; model line: Qwen3 Core; category: bug fix; main diff: `vllm/model_executor/models/qwen3_moe.py`; PR body summary: Qwen3 MoE model will call gate gemm twice, we find this in xpu kernel profiling. thanks @zufangzhu raise this. see discussion here https://github.com/vllm-project/vllm/pull/3532....
+- Motivation: Title: "[BugFix]fix Qwen3 MoE call gate twice"; model line: Qwen3 Core; category: bug fix; main diff: `vllm/model_executor/models/qwen3_moe.py`; technical summary: Covers "[BugFix]fix Qwen3 MoE call gate twice"; the main implementation surface is `vllm/model_executor/models/qwen3_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/qwen3_moe.py` modified +13/-5 (18 lines); hunks: -231,11 +231,19 @@ def forward(self, hidden_states: torch.Tensor) -> torch.Te...; symbols: forward, touching `forward`.
 - Code diff details:
   - `vllm/model_executor/models/qwen3_moe.py` modified +13/-5 (18 lines); hunks: -231,11 +231,19 @@ def forward(self, hidden_states: torch.Tensor) -> torch.Te...; symbols: forward

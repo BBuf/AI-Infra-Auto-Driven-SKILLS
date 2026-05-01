@@ -1,6 +1,6 @@
 ---
 name: sglang-moss-vl-optimization
-description: PR-backed and current-main optimization manual for Moss-VL in SGLang. Use when Codex needs to audit or extend Moss-VL multimodal runtime support, Qwen3VL-like vision encoder plumbing, cross-attention custom masks, vision position ids, image/video processor behavior, conversation template registration, flashinfer prefill requirements, or Moss-VL weight loading.
+description: PR-backed and current-main optimization manual for Moss-VL in SGLang. Use when an engineer needs to audit or extend Moss-VL multimodal runtime support, Qwen3VL-like vision encoder plumbing, cross-attention custom masks, vision position ids, image/video processor behavior, conversation template registration, flashinfer prefill requirements, or Moss-VL weight loading.
 ---
 
 # SGLang Moss-VL Optimization

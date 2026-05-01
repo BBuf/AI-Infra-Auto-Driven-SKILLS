@@ -2,8 +2,8 @@
 
 ## Scope
 
-- Rebuilt on: 2026-04-25
-- Source baseline: `sgl-project/sglang` trace worktree commit `880599cd43`
+- Rebuilt on: 2026-05-01
+- Source baseline: `sgl-project/sglang` trace worktree commit `4197c55968`
 - PR collection rule: run `git log --name-only -- <model-files>` on model implementation, config, processor, parser, docs/tests, filter by model keywords in commit subjects, then read each PR's final diff through the GitHub Pull Request files API.
 - Preservation rule: PRs explicitly cited by the previous history/skill are retained even if current implementation files no longer trace to them, and the card marks that source.
 
@@ -22,8 +22,8 @@
 ## PR Coverage Summary
 
 - Git-traced PRs: 8
-- Extra PRs preserved from existing docs: 27
-- Total PRs in this document: 35
+- Extra PRs preserved from existing docs: 28
+- Total PRs in this document: 36
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -64,8 +64,9 @@
 | 2026-03-18 | [#20740](https://github.com/sgl-project/sglang/pull/20740) | merged | Revert "[Bugfix] Fix GLM-4.6V vision regression in glm4v_moe and glm_ocr" | `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/models/glm_ocr.py` |
 | 2026-03-23 | [#21134](https://github.com/sgl-project/sglang/pull/21134) | merged | [Bug Fix] GLM-V / GLM-OCR: field detection for transformers 5.x and MTP omission fix | `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/models/glm_ocr.py` |
 | 2026-03-29 | [#19788](https://github.com/sgl-project/sglang/pull/19788) | closed | [Feature] Optimizations for class Qwen3VLMoeVisionModel (Conv3d to Linear) in Qwen3VL | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen3_vl_moe.py`, `test/registered/vlm/test_qwen3vl_conv3d_to_linear.py` |
+| 2026-03-30 | [#18559](https://github.com/sgl-project/sglang/pull/18559) | closed | Optimizations for Qwen3VL models | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/layers/attention/vision.py`, `python/sglang/srt/multimodal/processors/base_processor.py` |
 | 2026-04-01 | [#17122](https://github.com/sgl-project/sglang/pull/17122) | merged | [bugfix]GLM-4V model | `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/multimodal/processors/base_processor.py`, `test/registered/ascend/vlm_models/test_ascend_glm_4_5v.py` |
-| 2026-04-16 | [#22961](https://github.com/sgl-project/sglang/pull/22961) | merged | [NPU] Support GLM-4.5V | `python/sglang/srt/models/glm4_moe.py` |
+| 2026-04-28 | [#22961](https://github.com/sgl-project/sglang/pull/22961) | merged | [NPU] Fix issue and support GLM-4.5V | `python/sglang/srt/models/glm4_moe.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -75,7 +76,7 @@
 - Status/date: closed / 2025-08-07
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 13 files, +1019/-12, 1136 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[WIP] Support glm4.1v"; model line: GLM VLM/OCR; category: model support/runtime entry; main diff: `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/multimodal/processors/glm4v.py`, `python/sglang/srt/layers/rotary_embedding.py`; PR body summary: Close https://github.com/sgl-project/sglang/issues/7993 This pull request introduces support for the GLM-4V model within the sglang framework. It includes the necessary model fi....
+- Motivation: Title: "[WIP] Support glm4.1v"; model line: GLM VLM/OCR; category: model support/runtime entry; main diff: `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/multimodal/processors/glm4v.py`, `python/sglang/srt/layers/rotary_embedding.py`; technical summary: Covers "[WIP] Support glm4.1v"; the main implementation surface is `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/multimodal/processors/glm4v.py`, `python/sglang/srt/layers/rotary_embedding.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/glm4v.py` added +552/-0 (552 lines); hunks: -0,0 +1,552; symbols: Glm4vRMSNorm, forward, Glm4vVisionMLP, __init__, touching `Glm4vRMSNorm, forward, Glm4vVisionMLP`; `python/sglang/srt/multimodal/processors/glm4v.py` added +185/-0 (185 lines); hunks: -0,0 +1,185; symbols: Glm4vImageProcessor, __init__, preprocess_video, process_mm_data_async, touching `Glm4vImageProcessor, __init__, preprocess_video`; `python/sglang/srt/layers/rotary_embedding.py` modified +175/-1 (176 lines); hunks: -1,6 +1,7; -946,7 +947,37 @@ def __init__(; symbols: __init__, forward, get_rope_index, get_rope_index_glm4v, touching `__init__, forward, get_rope_index`; `python/sglang/srt/multimodal/processors/base_processor.py` modified +9/-3 (12 lines); hunks: -22,13 +22,19 @@ class BaseMultiModalProcessorOutput:; symbols: BaseMultiModalProcessorOutput, organize_results, touching `BaseMultiModalProcessorOutput, organize_results`.
 - Code diff details:
   - `python/sglang/srt/models/glm4v.py` added +552/-0 (552 lines); hunks: -0,0 +1,552; symbols: Glm4vRMSNorm, forward, Glm4vVisionMLP, __init__
@@ -117,7 +118,7 @@ diff -- python/sglang/srt/layers/rotary_embedding.py
 - Status/date: merged / 2025-08-09
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 21 files, +1584/-19, 1822 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Support glm4.1v and glm4.5v"; model line: GLM VLM/OCR; category: model support/runtime entry; main diff: `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/layers/rotary_embedding.py`; PR body summary: Close https://github.com/sgl-project/sglang/issues/7993. Adapted from https://github.com/sgl-project/sglang/pull/8015 and depend on https://github.com/huggingface/transformers/p....
+- Motivation: Title: "Support glm4.1v and glm4.5v"; model line: GLM VLM/OCR; category: model support/runtime entry; main diff: `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/layers/rotary_embedding.py`; technical summary: Covers "Support glm4.1v and glm4.5v"; the main implementation surface is `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/layers/rotary_embedding.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/glm4v.py` added +589/-0 (589 lines); hunks: -0,0 +1,589; symbols: Glm4vRMSNorm, forward, Glm4vVisionMLP, __init__, touching `Glm4vRMSNorm, forward, Glm4vVisionMLP`; `python/sglang/srt/models/glm4v_moe.py` added +400/-0 (400 lines); hunks: -0,0 +1,400; symbols: Glm4vMoeForConditionalGeneration, __init__, determine_num_fused_shared_experts, load_weights, touching `Glm4vMoeForConditionalGeneration, __init__, determine_num_fused_shared_experts`; `python/sglang/srt/layers/rotary_embedding.py` modified +230/-1 (231 lines); hunks: -1,6 +1,7; -946,7 +947,37 @@ def __init__(; symbols: __init__, forward, get_rope_index, get_rope_index_glm4v, touching `__init__, forward, get_rope_index`; `python/sglang/srt/multimodal/processors/glm4v.py` added +132/-0 (132 lines); hunks: -0,0 +1,132; symbols: Glm4vImageProcessor, __init__, preprocess_video, process_mm_data_async, touching `Glm4vImageProcessor, __init__, preprocess_video`.
 - Code diff details:
   - `python/sglang/srt/models/glm4v.py` added +589/-0 (589 lines); hunks: -0,0 +1,589; symbols: Glm4vRMSNorm, forward, Glm4vVisionMLP, __init__
@@ -159,7 +160,7 @@ diff -- python/sglang/srt/layers/rotary_embedding.py
 - Status/date: merged / 2025-08-17
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-0, 8 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Set the default attention backend for GLM-4.5v to fa3"; model line: GLM VLM/OCR; category: model implementation change; main diff: `python/sglang/srt/utils.py`; PR body summary: As suggested in https://huggingface.co/zai-org/GLM-4.5V#sglang.
+- Motivation: Title: "Set the default attention backend for GLM-4.5v to fa3"; model line: GLM VLM/OCR; category: model implementation change; main diff: `python/sglang/srt/utils.py`; technical summary: Covers "Set the default attention backend for GLM-4.5v to fa3"; the main implementation surface is `python/sglang/srt/utils.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/utils.py` modified +1/-0 (1 lines); hunks: -2343,6 +2343,7 @@ def is_fa3_default_architecture(hf_config):; symbols: is_fa3_default_architecture, touching `is_fa3_default_architecture`.
 - Code diff details:
   - `python/sglang/srt/utils.py` modified +1/-0 (1 lines); hunks: -2343,6 +2343,7 @@ def is_fa3_default_architecture(hf_config):; symbols: is_fa3_default_architecture
@@ -181,7 +182,7 @@ diff -- python/sglang/srt/utils.py
 - Status/date: merged / 2025-08-18
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 9 files, +150/-102, 423 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[GLM4.1V and GLM4.5V] Add vision transformer num_dummy_head support: max tp=4 -> max tp=8"; model line: GLM VLM/OCR; category: model support/runtime entry; main diff: `python/sglang/srt/layers/attention/vision_utils.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/internvl.py`; PR body summary: In some GLM4v models, `num_key_value_heads=8` in text attention and `num_heads=12` in vision attention so `tp=4` is the max supported tp_size today `(num_key_value_heads % tp_si....
+- Motivation: Title: "[GLM4.1V and GLM4.5V] Add vision transformer num_dummy_head support: max tp=4 -> max tp=8"; model line: GLM VLM/OCR; category: model support/runtime entry; main diff: `python/sglang/srt/layers/attention/vision_utils.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/internvl.py`; technical summary: Covers "[GLM4.1V and GLM4.5V] Add vision transformer num_dummy_head support: max tp=4 -> max tp=8"; the main implementation surface is `python/sglang/srt/layers/attention/vision_utils.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/internvl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/layers/attention/vision_utils.py` added +65/-0 (65 lines); hunks: -0,0 +1,65; symbols: update_vit_attn_dummy_heads_config, pad_vit_attn_dummy_heads, touching `update_vit_attn_dummy_heads_config, pad_vit_attn_dummy_heads`; `python/sglang/srt/models/glm4v.py` modified +52/-1 (53 lines); hunks: -9,6 +9,7; -91,6 +92,7 @@ def __init__(; symbols: __init__, get_video_feature, _update_hf_config, _pad_vit_attn_dummy_heads, touching `__init__, get_video_feature, _update_hf_config`; `python/sglang/srt/models/internvl.py` modified +4/-49 (53 lines); hunks: -10,7 +10,7; -412,7 +412,7 @@ def __init__(; symbols: __init__, _update_vision_config, pixel_shuffle, pad_input_ids, touching `__init__, _update_vision_config, pixel_shuffle`; `python/sglang/srt/models/interns1.py` modified +5/-46 (51 lines); hunks: -4,7 +4,7; -35,7 +35,7 @@ def __init__(; symbols: __init__, _update_hf_config, pixel_shuffle, pad_input_ids, touching `__init__, _update_hf_config, pixel_shuffle`.
 - Code diff details:
   - `python/sglang/srt/layers/attention/vision_utils.py` added +65/-0 (65 lines); hunks: -0,0 +1,65; symbols: update_vit_attn_dummy_heads_config, pad_vit_attn_dummy_heads
@@ -223,7 +224,7 @@ diff -- python/sglang/srt/models/internvl.py
 - Status/date: open / 2025-08-19
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +153/-4, 165 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Add support for GLM 4.5V FP8"; model line: GLM VLM/OCR; category: performance/backend optimization; main diff: `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=128,N=352,device_name=NVIDIA_L40S,dtype=fp8_w8a8.json`, `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py`; PR body summary: Add moe kernel generation support for GLM 4.5V FP8 Write according to the GLM 4.5V FP8 configuration. N/A N/A.
+- Motivation: Title: "Add support for GLM 4.5V FP8"; model line: GLM VLM/OCR; category: performance/backend optimization; main diff: `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=128,N=352,device_name=NVIDIA_L40S,dtype=fp8_w8a8.json`, `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py`; technical summary: Covers "Add support for GLM 4.5V FP8"; the main implementation surface is `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=128,N=352,device_name=NVIDIA_L40S,dtype=fp8_w8a8.json`, `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=128,N=352,device_name=NVIDIA_L40S,dtype=fp8_w8a8.json` added +146/-0 (146 lines); hunks: -0,0 +1,146; `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py` modified +7/-4 (11 lines); hunks: -441,10 +441,13 @@ def main(args: argparse.Namespace):; symbols: main, touching `main`.
 - Code diff details:
   - `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=128,N=352,device_name=NVIDIA_L40S,dtype=fp8_w8a8.json` added +146/-0 (146 lines); hunks: -0,0 +1,146
@@ -260,7 +261,7 @@ diff -- benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py
 - Status/date: merged / 2025-08-25
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-0, 8 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix GLM45v launch server cuda torch compile bug"; model line: GLM VLM/OCR; category: bug fix; main diff: `python/sglang/srt/models/qwen2_5_vl.py`; PR body summary: After recent sglang code changes, glm45v launch server would fail with this error during torch compile - From https://discuss.pytorch.org/t/index-select-functions-with-out-argum....
+- Motivation: Title: "Fix GLM45v launch server cuda torch compile bug"; model line: GLM VLM/OCR; category: bug fix; main diff: `python/sglang/srt/models/qwen2_5_vl.py`; technical summary: Covers "Fix GLM45v launch server cuda torch compile bug"; the main implementation surface is `python/sglang/srt/models/qwen2_5_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/qwen2_5_vl.py` modified +1/-0 (1 lines); hunks: -526,6 +526,7 @@ def get_video_feature(self, items: List[MultimodalDataItem])...; symbols: get_video_feature, get_input_embeddings, forward, touching `get_video_feature, get_input_embeddings, forward`.
 - Code diff details:
   - `python/sglang/srt/models/qwen2_5_vl.py` modified +1/-0 (1 lines); hunks: -526,6 +526,7 @@ def get_video_feature(self, items: List[MultimodalDataItem])...; symbols: get_video_feature, get_input_embeddings, forward
@@ -282,7 +283,7 @@ diff -- python/sglang/srt/models/qwen2_5_vl.py
 - Status/date: merged / 2025-09-05
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/glm4v.py`; associated commits `0f6ac5e21db0`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +4/-4, 27 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bug Fix] Fix Glm4vVisionBlock norm"; model line: GLM VLM/OCR; category: bug fix; main diff: `python/sglang/srt/models/glm4v.py`; PR body summary: This PR fixes a runtime crash in `Glm4vVisionBlock` when running vision prefill. After #9709, `Qwen2_5_VisionBlock` calls `norm2(x2d, residual=attn2d)` and expects a residual-aw....
+- Motivation: Title: "[Bug Fix] Fix Glm4vVisionBlock norm"; model line: GLM VLM/OCR; category: bug fix; main diff: `python/sglang/srt/models/glm4v.py`; technical summary: Covers "[Bug Fix] Fix Glm4vVisionBlock norm"; the main implementation surface is `python/sglang/srt/models/glm4v.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/glm4v.py` modified +1/-2 (3 lines); hunks: -93,9 +93,8 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `python/sglang/srt/models/glm4v.py` modified +1/-2 (3 lines); hunks: -93,9 +93,8 @@ def __init__(; symbols: __init__
@@ -306,7 +307,7 @@ diff -- python/sglang/srt/models/glm4v.py
 - Status/date: merged / 2025-09-08
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/glm4v.py`; associated commits `8116804e4f6e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-0, 10 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix: (glm4v) Add missing field"; model line: GLM VLM/OCR; category: bug fix; main diff: `python/sglang/srt/models/glm4v.py`; PR body summary: Fix: https://github.com/sgl-project/sglang/actions/runs/17539177242/job/49807888401.
+- Motivation: Title: "Fix: (glm4v) Add missing field"; model line: GLM VLM/OCR; category: bug fix; main diff: `python/sglang/srt/models/glm4v.py`; technical summary: Covers "Fix: (glm4v) Add missing field"; the main implementation surface is `python/sglang/srt/models/glm4v.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/glm4v.py` modified +3/-0 (3 lines); hunks: -497,6 +497,9 @@ def __init__(; symbols: __init__, get_image_feature, touching `__init__, get_image_feature`.
 - Code diff details:
   - `python/sglang/srt/models/glm4v.py` modified +3/-0 (3 lines); hunks: -497,6 +497,9 @@ def __init__(; symbols: __init__, get_image_feature
@@ -329,7 +330,7 @@ diff -- python/sglang/srt/models/glm4v.py
 - Status/date: merged / 2025-09-14
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-0, 10 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Add self.capture_aux_hidden_states For GLM-4.5V"; model line: GLM VLM/OCR; category: model support/runtime entry; main diff: `python/sglang/srt/models/glm4v_moe.py`; no usable PR-body summary.
+- Motivation: Title: "Add self.capture_aux_hidden_states For GLM-4.5V"; model line: GLM VLM/OCR; category: model support/runtime entry; main diff: `python/sglang/srt/models/glm4v_moe.py`; technical summary: Covers "Add self.capture_aux_hidden_states For GLM-4.5V"; the main implementation surface is `python/sglang/srt/models/glm4v_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/glm4v_moe.py` modified +3/-0 (3 lines); hunks: -74,6 +74,9 @@ def __init__(; symbols: __init__, determine_num_fused_shared_experts, touching `__init__, determine_num_fused_shared_experts`.
 - Code diff details:
   - `python/sglang/srt/models/glm4v_moe.py` modified +3/-0 (3 lines); hunks: -74,6 +74,9 @@ def __init__(; symbols: __init__, determine_num_fused_shared_experts
@@ -352,7 +353,7 @@ diff -- python/sglang/srt/models/glm4v_moe.py
 - Status/date: merged / 2025-10-03
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 66 files, +91/-79, 794 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Tiny move files to utils folder"; model line: GLM VLM/OCR; category: model implementation change; main diff: `test/srt/test_tokenizer_manager.py`, `python/sglang/srt/managers/tokenizer_manager.py`, `python/sglang/srt/configs/model_config.py`; PR body summary: cc @merrymercy.
+- Motivation: Title: "Tiny move files to utils folder"; model line: GLM VLM/OCR; category: model implementation change; main diff: `test/srt/test_tokenizer_manager.py`, `python/sglang/srt/managers/tokenizer_manager.py`, `python/sglang/srt/configs/model_config.py`; technical summary: Covers "Tiny move files to utils folder"; the main implementation surface is `test/srt/test_tokenizer_manager.py`, `python/sglang/srt/managers/tokenizer_manager.py`, `python/sglang/srt/configs/model_config.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `test/srt/test_tokenizer_manager.py` modified +12/-4 (16 lines); hunks: -31,7 +31,9 @@ def setUp(self):; -125,7 +127,9 @@ def setUp(self):; symbols: setUp, touching `setUp`; `python/sglang/srt/managers/tokenizer_manager.py` modified +5/-5 (10 lines); hunks: -43,11 +43,6; -99,6 +94,11; `python/sglang/srt/configs/model_config.py` modified +4/-4 (8 lines); hunks: -23,16 +23,16; `python/sglang/srt/model_executor/model_runner.py` modified +2/-2 (4 lines); hunks: -29,7 +29,6; -115,7 +114,6.
 - Code diff details:
   - `test/srt/test_tokenizer_manager.py` modified +12/-4 (16 lines); hunks: -31,7 +31,9 @@ def setUp(self):; -125,7 +127,9 @@ def setUp(self):; symbols: setUp
@@ -394,7 +395,7 @@ diff -- python/sglang/srt/configs/model_config.py
 - Status/date: merged / 2025-10-10
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +5/-5, 45 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Replace pad with cat for better performance"; model line: GLM VLM/OCR; category: performance/backend optimization; main diff: `python/sglang/srt/models/dots_vlm_vit.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/qwen2_5_vl.py`; PR body summary: Using concatenation tends to be faster than padding..
+- Motivation: Title: "Replace pad with cat for better performance"; model line: GLM VLM/OCR; category: performance/backend optimization; main diff: `python/sglang/srt/models/dots_vlm_vit.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/qwen2_5_vl.py`; technical summary: Covers "Replace pad with cat for better performance"; the main implementation surface is `python/sglang/srt/models/dots_vlm_vit.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/qwen2_5_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/dots_vlm_vit.py` modified +1/-1 (2 lines); hunks: -323,7 +323,7 @@ def forward(; symbols: forward, touching `forward`; `python/sglang/srt/models/glm4v.py` modified +1/-1 (2 lines); hunks: -434,7 +434,7 @@ def forward(self, x: torch.Tensor, grid_thw: torch.Tensor) -...; symbols: forward, touching `forward`; `python/sglang/srt/models/qwen2_5_vl.py` modified +1/-1 (2 lines); hunks: -436,7 +436,7 @@ def forward(; symbols: forward, touching `forward`; `python/sglang/srt/models/qwen2_vl.py` modified +1/-1 (2 lines); hunks: -407,7 +407,7 @@ def forward(; symbols: forward, touching `forward`.
 - Code diff details:
   - `python/sglang/srt/models/dots_vlm_vit.py` modified +1/-1 (2 lines); hunks: -323,7 +323,7 @@ def forward(; symbols: forward
@@ -435,7 +436,7 @@ diff -- python/sglang/srt/models/qwen3_vl.py
 - Status/date: merged / 2025-10-22
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 19 files, +73/-31, 354 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[lint] improve ruff check"; model line: GLM VLM/OCR; category: bug fix; main diff: `python/sglang/srt/layers/moe/fused_moe_triton/triton_kernels_moe.py`, `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py`, `python/sglang/srt/layers/attention/flashinfer_mla_backend.py`; PR body summary: Prev PR #11685 added `python/sglang` to the Ruff lint scope, but the pre-commit args were written as: These arguments are interpreted as `--select=F401 F821 --fixable=F401`, whi....
+- Motivation: Title: "[lint] improve ruff check"; model line: GLM VLM/OCR; category: bug fix; main diff: `python/sglang/srt/layers/moe/fused_moe_triton/triton_kernels_moe.py`, `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py`, `python/sglang/srt/layers/attention/flashinfer_mla_backend.py`; technical summary: Covers "[lint] improve ruff check"; the main implementation surface is `python/sglang/srt/layers/moe/fused_moe_triton/triton_kernels_moe.py`, `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py`, `python/sglang/srt/layers/attention/flashinfer_mla_backend.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/layers/moe/fused_moe_triton/triton_kernels_moe.py` modified +20/-19 (39 lines); hunks: -13,7 +13,8; -119,14 +120,14 @@ def triton_kernel_fused_experts(; symbols: triton_kernel_fused_experts, triton_kernel_fused_experts_with_bias, touching `triton_kernel_fused_experts, triton_kernel_fused_experts_with_bias`; `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py` modified +7/-0 (7 lines); hunks: -44,6 +44,13; `python/sglang/srt/layers/attention/flashinfer_mla_backend.py` modified +4/-1 (5 lines); hunks: -38,6 +38,9; -66,7 +69,7 @@ class PrefillMetadata:; symbols: PrefillMetadata, FlashInferMhaChunkKVRunner, __init__, touching `PrefillMetadata, FlashInferMhaChunkKVRunner, __init__`; `python/sglang/srt/models/opt.py` modified +4/-0 (4 lines); hunks: -13,6 +13,7; -46,6 +47,9; symbols: get_activation, touching `get_activation`.
 - Code diff details:
   - `python/sglang/srt/layers/moe/fused_moe_triton/triton_kernels_moe.py` modified +20/-19 (39 lines); hunks: -13,7 +13,8; -119,14 +120,14 @@ def triton_kernel_fused_experts(; symbols: triton_kernel_fused_experts, triton_kernel_fused_experts_with_bias
@@ -476,7 +477,7 @@ diff -- python/sglang/srt/layers/attention/flashinfer_mla_backend.py
 - Status/date: merged / 2025-10-27
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +679/-173, 1187 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "GLM-4-0414 and GLM-4.1V Code Refactor"; model line: GLM VLM/OCR; category: model implementation change; main diff: `python/sglang/srt/models/glm4.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/layers/rotary_embedding.py`; PR body summary: Used new interfaces, including the addition of PPMissingLayer, and discarded some useless old code.
+- Motivation: Title: "GLM-4-0414 and GLM-4.1V Code Refactor"; model line: GLM VLM/OCR; category: model implementation change; main diff: `python/sglang/srt/models/glm4.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/layers/rotary_embedding.py`; technical summary: Covers "GLM-4-0414 and GLM-4.1V Code Refactor"; the main implementation surface is `python/sglang/srt/models/glm4.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/layers/rotary_embedding.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/glm4.py` modified +391/-77 (468 lines); hunks: -15,46 +15,119; -63,27 +136,30 @@ def __init__(; symbols: Glm4MLP, __init__, forward, Glm4Attention, touching `Glm4MLP, __init__, forward`; `python/sglang/srt/models/glm4v.py` modified +196/-55 (251 lines); hunks: -1,15 +1,35; -20,13 +40,14; symbols: __init__, forward, Glm4vVisionBlock, touching `__init__, forward, Glm4vVisionBlock`; `python/sglang/srt/layers/rotary_embedding.py` modified +92/-40 (132 lines); hunks: -1070,6 +1070,7 @@ def _triton_mrope_forward(; -1124,51 +1125,99 @@ def _triton_mrope_forward(; symbols: _triton_mrope_forward, triton_mrope, touching `_triton_mrope_forward, triton_mrope`; `python/sglang/srt/models/glm4v_moe.py` modified +0/-1 (1 lines); hunks: -53,7 +53,6 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `python/sglang/srt/models/glm4.py` modified +391/-77 (468 lines); hunks: -15,46 +15,119; -63,27 +136,30 @@ def __init__(; symbols: Glm4MLP, __init__, forward, Glm4Attention
@@ -516,7 +517,7 @@ diff -- python/sglang/srt/layers/rotary_embedding.py
 - Status/date: merged / 2025-11-16
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 15 files, +4/-142, 378 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Cleanup vision attention related codes"; model line: GLM VLM/OCR; category: performance/backend optimization; main diff: `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen3_vl.py`; PR body summary: Most of the codes for vision attention are hard coded or dead codes. This PR removes them, supports the auto set of `--mm-attention-backend triton_attn` on B200..
+- Motivation: Title: "Cleanup vision attention related codes"; model line: GLM VLM/OCR; category: performance/backend optimization; main diff: `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen3_vl.py`; technical summary: Covers "Cleanup vision attention related codes"; the main implementation surface is `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen3_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/glm4v.py` modified +1/-26 (27 lines); hunks: -104,7 +104,6 @@ def __init__(; -114,37 +113,13 @@ def __init__(; symbols: __init__, touching `__init__`; `python/sglang/srt/models/qwen2_5_vl.py` modified +1/-26 (27 lines); hunks: -111,7 +111,6 @@ def __init__(; -121,37 +120,13 @@ def __init__(; symbols: __init__, touching `__init__`; `python/sglang/srt/models/qwen3_vl.py` modified +1/-23 (24 lines); hunks: -130,7 +130,6 @@ def __init__(; -140,33 +139,13 @@ def __init__(; symbols: __init__, touching `__init__`; `python/sglang/srt/models/clip.py` modified +0/-13 (13 lines); hunks: -141,7 +141,6 @@ def __init__(; -150,22 +149,11 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `python/sglang/srt/models/glm4v.py` modified +1/-26 (27 lines); hunks: -104,7 +104,6 @@ def __init__(; -114,37 +113,13 @@ def __init__(; symbols: __init__
@@ -557,7 +558,7 @@ diff -- python/sglang/srt/models/qwen3_vl.py
 - Status/date: merged / 2025-11-18
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +595/-6, 790 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[VLM][feat] Support encoder DP for Qwen2.5-VL"; model line: GLM VLM/OCR; category: model support/runtime entry; main diff: `python/sglang/srt/multimodal/mm_utils.py`, `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/layers/attention/vision.py`; PR body summary: Based on this PR https://github.com/vllm-project/vllm/pull/22742, vLLM has introduced support for data parallelism (DP) in the vision transformer (ViT) component while maintaini....
+- Motivation: Title: "[VLM][feat] Support encoder DP for Qwen2.5-VL"; model line: GLM VLM/OCR; category: model support/runtime entry; main diff: `python/sglang/srt/multimodal/mm_utils.py`, `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/layers/attention/vision.py`; technical summary: Covers "[VLM][feat] Support encoder DP for Qwen2.5-VL"; the main implementation surface is `python/sglang/srt/multimodal/mm_utils.py`, `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/layers/attention/vision.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/multimodal/mm_utils.py` modified +268/-0 (268 lines); hunks: -28,14 +28,22; -347,3 +355,263 @@ def process_images(images, image_processor, model_cfg):; symbols: process_images, get_dp_encoder_lb_assignment, run_dp_sharded_mrope_vision_model, touching `process_images, get_dp_encoder_lb_assignment, run_dp_sharded_mrope_vision_model`; `python/sglang/srt/models/qwen2_5_vl.py` modified +44/-2 (46 lines); hunks: -40,6 +40,10; -62,6 +66,8; symbols: __init__, forward, touching `__init__, forward`; `python/sglang/srt/layers/attention/vision.py` modified +3/-4 (7 lines); hunks: -486,13 +486,12 @@ def __init__(; symbols: __init__, touching `__init__`; `test/srt/nightly/test_encoder_dp.py` added +270/-0 (270 lines); hunks: -0,0 +1,270; symbols: TestVLMEncoderDP, setUpClass, run_mmmu_eval, _run_vlm_mmmu_test, touching `TestVLMEncoderDP, setUpClass, run_mmmu_eval`.
 - Code diff details:
   - `python/sglang/srt/multimodal/mm_utils.py` modified +268/-0 (268 lines); hunks: -28,14 +28,22; -347,3 +355,263 @@ def process_images(images, image_processor, model_cfg):; symbols: process_images, get_dp_encoder_lb_assignment, run_dp_sharded_mrope_vision_model
@@ -599,7 +600,7 @@ diff -- python/sglang/srt/layers/attention/vision.py
 - Status/date: merged / 2025-11-28
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +50/-2, 208 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "support qwen3_vl vision model dp"; model line: GLM VLM/OCR; category: model support/runtime entry; main diff: `python/sglang/srt/models/qwen3_vl.py`, `test/nightly/test_encoder_dp.py`; PR body summary: Based on PR 13126, add support for the Qwen3_VL vision model DP. Qwen/Qwen3-VL-32B-Instruct server cmd: bench cmd：.
+- Motivation: Title: "support qwen3_vl vision model dp"; model line: GLM VLM/OCR; category: model support/runtime entry; main diff: `python/sglang/srt/models/qwen3_vl.py`, `test/nightly/test_encoder_dp.py`; technical summary: Covers "support qwen3_vl vision model dp"; the main implementation surface is `python/sglang/srt/models/qwen3_vl.py`, `test/nightly/test_encoder_dp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +49/-2 (51 lines); hunks: -28,6 +28,10; -47,6 +51,8; symbols: __init__, forward, touching `__init__, forward`; `test/nightly/test_encoder_dp.py` modified +1/-0 (1 lines); hunks: -19,6 +19,7.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +49/-2 (51 lines); hunks: -28,6 +28,10; -47,6 +51,8; symbols: __init__, forward
@@ -631,7 +632,7 @@ diff -- test/nightly/test_encoder_dp.py
 - Status/date: merged / 2025-12-05
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +91/-52, 329 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "support GLM-V vision model dp"; model line: GLM VLM/OCR; category: model support/runtime entry; main diff: `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/glm4.py`, `python/sglang/srt/models/glm4_moe.py`; PR body summary: Based on https://github.com/sgl-project/sglang/pull/13126 and https://github.com/sgl-project/sglang/pull/13724, add support for the GLM-V vision model DP..
+- Motivation: Title: "support GLM-V vision model dp"; model line: GLM VLM/OCR; category: model support/runtime entry; main diff: `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/glm4.py`, `python/sglang/srt/models/glm4_moe.py`; technical summary: Covers "support GLM-V vision model dp"; the main implementation surface is `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/glm4.py`, `python/sglang/srt/models/glm4_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/glm4v.py` modified +84/-50 (134 lines); hunks: -27,18 +27,24; -48,6 +54,8; symbols: __init__, forward, touching `__init__, forward`; `python/sglang/srt/models/glm4.py` modified +3/-1 (4 lines); hunks: -220,7 +220,9 @@ def __init__(; symbols: __init__, touching `__init__`; `python/sglang/srt/models/glm4_moe.py` modified +3/-1 (4 lines); hunks: -682,7 +682,9 @@ def __init__(; symbols: __init__, touching `__init__`; `test/nightly/test_encoder_dp.py` modified +1/-0 (1 lines); hunks: -24,6 +24,7.
 - Code diff details:
   - `python/sglang/srt/models/glm4v.py` modified +84/-50 (134 lines); hunks: -27,18 +27,24; -48,6 +54,8; symbols: __init__, forward
@@ -672,7 +673,7 @@ diff -- python/sglang/srt/models/glm4_moe.py
 - Status/date: open / 2025-12-08
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +8/-0, 21 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Glm46v] support ktransformers"; model line: GLM VLM/OCR; category: model support/runtime entry; main diff: `python/sglang/srt/models/glm4v_moe.py`; PR body summary: support ktransformers for GLM-4.6V.
+- Motivation: Title: "[Glm46v] support ktransformers"; model line: GLM VLM/OCR; category: model support/runtime entry; main diff: `python/sglang/srt/models/glm4v_moe.py`; technical summary: Covers "[Glm46v] support ktransformers"; the main implementation surface is `python/sglang/srt/models/glm4v_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/glm4v_moe.py` modified +8/-0 (8 lines); hunks: -16,6 +16,7; -281,5 +282,12 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: load_weights, get_model_config_for_expert_location, touching `load_weights, get_model_config_for_expert_location`.
 - Code diff details:
   - `python/sglang/srt/models/glm4v_moe.py` modified +8/-0 (8 lines); hunks: -16,6 +16,7; -281,5 +282,12 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: load_weights, get_model_config_for_expert_location
@@ -699,7 +700,7 @@ diff -- python/sglang/srt/models/glm4v_moe.py
 - Status/date: merged / 2025-12-10
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +66/-2, 144 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[GLM-4.6V] Support Pipeline Parallelism for GLM-4.6V & GLM-4.1V"; model line: GLM VLM/OCR; category: model support/runtime entry; main diff: `python/sglang/srt/models/glm4v.py`, `test/srt/test_pp_single_node.py`, `python/sglang/test/test_utils.py`; PR body summary: This PR is to support GLM-4.6V and GLM-4.1V Pipeline Parallelism. In main branch GLM-4.6V and GLM-4.1V PP don't work correctly. There are two reasons: 1. In pp-size > 1, some pi....
+- Motivation: Title: "[GLM-4.6V] Support Pipeline Parallelism for GLM-4.6V & GLM-4.1V"; model line: GLM VLM/OCR; category: model support/runtime entry; main diff: `python/sglang/srt/models/glm4v.py`, `test/srt/test_pp_single_node.py`, `python/sglang/test/test_utils.py`; technical summary: Covers "[GLM-4.6V] Support Pipeline Parallelism for GLM-4.6V & GLM-4.1V"; the main implementation surface is `python/sglang/srt/models/glm4v.py`, `test/srt/test_pp_single_node.py`, `python/sglang/test/test_utils.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/glm4v.py` modified +24/-1 (25 lines); hunks: -51,7 +51,7; -659,6 +659,7 @@ def forward(; symbols: forward, load_weights, touching `forward, load_weights`; `test/srt/test_pp_single_node.py` modified +38/-0 (38 lines); hunks: -19,6 +19,7; -318,5 +319,42 @@ def test_chunked_prefill_with_small_bs(self):; symbols: test_chunked_prefill_with_small_bs, TestGLM41VPPAccuracy, setUpClass, tearDownClass, touching `test_chunked_prefill_with_small_bs, TestGLM41VPPAccuracy, setUpClass`; `python/sglang/test/test_utils.py` modified +3/-0 (3 lines); hunks: -57,6 +57,9; `test/srt/run_suite.py` modified +1/-1 (2 lines); hunks: -150,7 +150,7.
 - Code diff details:
   - `python/sglang/srt/models/glm4v.py` modified +24/-1 (25 lines); hunks: -51,7 +51,7; -659,6 +659,7 @@ def forward(; symbols: forward, load_weights
@@ -740,7 +741,7 @@ diff -- python/sglang/test/test_utils.py
 - Status/date: merged / 2025-12-12
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-0, 10 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[CI]add nightly CI for glm4v_moe arch model"; model line: GLM VLM/OCR; category: bug fix; main diff: `test/nightly/test_vlms_mmmu_eval.py`; PR body summary: add nightly CI for glm4v_moe arch model to prevent silent regression like this https://github.com/sgl-project/sglang/issues/14582. Note: existing `zai-org/GLM-4.1V-9B-Thinking`....
+- Motivation: Title: "[CI]add nightly CI for glm4v_moe arch model"; model line: GLM VLM/OCR; category: bug fix; main diff: `test/nightly/test_vlms_mmmu_eval.py`; technical summary: Covers "[CI]add nightly CI for glm4v_moe arch model"; the main implementation surface is `test/nightly/test_vlms_mmmu_eval.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `test/nightly/test_vlms_mmmu_eval.py` modified +3/-0 (3 lines); hunks: -46,6 +46,9.
 - Code diff details:
   - `test/nightly/test_vlms_mmmu_eval.py` modified +3/-0 (3 lines); hunks: -46,6 +46,9
@@ -764,7 +765,7 @@ diff -- test/nightly/test_vlms_mmmu_eval.py
 - Status/date: merged / 2025-12-13
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +37/-0, 51 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "add transformers version validation for glm-4.6v moe models"; model line: GLM VLM/OCR; category: model support/runtime entry; main diff: `python/sglang/srt/configs/model_config.py`; PR body summary: This PR adds a version check for the installed transformers library to ensure compatibility with GLM-4.6v MoE vision models. For models requiring Transformers ≥ 5.0.0 (e.g., GLM....
+- Motivation: Title: "add transformers version validation for glm-4.6v moe models"; model line: GLM VLM/OCR; category: model support/runtime entry; main diff: `python/sglang/srt/configs/model_config.py`; technical summary: Covers "add transformers version validation for glm-4.6v moe models"; the main implementation surface is `python/sglang/srt/configs/model_config.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/configs/model_config.py` modified +37/-0 (37 lines); hunks: -205,6 +205,8 @@ def __init__(; -773,6 +775,41 @@ def _verify_dual_chunk_attention_config(self) -> None:; symbols: __init__, _verify_dual_chunk_attention_config, _verify_transformers_version, _get_hf_eos_token_id, touching `__init__, _verify_dual_chunk_attention_config, _verify_transformers_version`.
 - Code diff details:
   - `python/sglang/srt/configs/model_config.py` modified +37/-0 (37 lines); hunks: -205,6 +205,8 @@ def __init__(; -773,6 +775,41 @@ def _verify_dual_chunk_attention_config(self) -> None:; symbols: __init__, _verify_dual_chunk_attention_config, _verify_transformers_version, _get_hf_eos_token_id
@@ -791,7 +792,7 @@ diff -- python/sglang/srt/configs/model_config.py
 - Status/date: merged / 2025-12-18
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +100/-80, 345 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[VLM] Support cos sin cache for Qwen3-VL & GLM-4.1V"; model line: GLM VLM/OCR; category: docs/tests/CI; main diff: `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/layers/attention/vision.py`; PR body summary: Support cos sin cache for Qwen3-VL & GLM-4.1V. This PR refactors the rotary positional embedding (RoPE) implementation to expose an explicit cosine/sine cache interface and reus....
+- Motivation: Title: "[VLM] Support cos sin cache for Qwen3-VL & GLM-4.1V"; model line: GLM VLM/OCR; category: docs/tests/CI; main diff: `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/layers/attention/vision.py`; technical summary: Covers "[VLM] Support cos sin cache for Qwen3-VL & GLM-4.1V"; the main implementation surface is `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/layers/attention/vision.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/glm4v.py` modified +34/-50 (84 lines); hunks: -44,6 +44,7; -157,7 +158,8 @@ def forward(; symbols: forward, Glm4vVisionRotaryEmbedding, __init__, touching `forward, Glm4vVisionRotaryEmbedding, __init__`; `python/sglang/srt/models/qwen3_vl.py` modified +41/-20 (61 lines); hunks: -24,9 +24,6; -39,6 +36,7; symbols: forward, __init__, dtype, device, touching `forward, __init__, dtype`; `python/sglang/srt/layers/attention/vision.py` modified +20/-10 (30 lines); hunks: -675,6 +675,8 @@ def forward(; -724,26 +726,34 @@ def forward(; symbols: forward, touching `forward`; `python/sglang/srt/layers/rotary_embedding.py` modified +5/-0 (5 lines); hunks: -219,6 +219,11 @@ def get_cos_sin_with_position(self, positions):; symbols: get_cos_sin_with_position, get_cos_sin, forward_native, touching `get_cos_sin_with_position, get_cos_sin, forward_native`.
 - Code diff details:
   - `python/sglang/srt/models/glm4v.py` modified +34/-50 (84 lines); hunks: -44,6 +44,7; -157,7 +158,8 @@ def forward(; symbols: forward, Glm4vVisionRotaryEmbedding, __init__
@@ -831,7 +832,7 @@ diff -- python/sglang/srt/layers/attention/vision.py
 - Status/date: merged / 2026-01-04
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 9 files, +36/-13, 169 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Convert cu_seqlens to CPU for npu_flash_attention_unpad operator"; model line: GLM VLM/OCR; category: performance/backend optimization; main diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/paddleocr_vl.py`; PR body summary: In order to improve the performance of VisionAscendAttention, we convert cu_seqlens to CPU before the first transformer layer, because converting it to CPU per layer would inter....
+- Motivation: Title: "Convert cu_seqlens to CPU for npu_flash_attention_unpad operator"; model line: GLM VLM/OCR; category: performance/backend optimization; main diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/paddleocr_vl.py`; technical summary: Covers "Convert cu_seqlens to CPU for npu_flash_attention_unpad operator"; the main implementation surface is `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/paddleocr_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +6/-3 (9 lines); hunks: -63,7 +63,7; -446,9 +446,12 @@ def forward(; symbols: forward, touching `forward`; `python/sglang/srt/models/glm4v.py` modified +5/-1 (6 lines); hunks: -57,7 +57,7; -514,6 +514,10 @@ def forward(self, x: torch.Tensor, grid_thw: torch.Tensor)...; symbols: forward, touching `forward`; `python/sglang/srt/models/paddleocr_vl.py` modified +4/-2 (6 lines); hunks: -36,7 +36,7; -442,7 +442,9 @@ def forward(; symbols: Projector, forward, touching `Projector, forward`; `python/sglang/srt/models/qwen2_5_vl.py` modified +4/-2 (6 lines); hunks: -76,7 +76,7; -453,7 +453,9 @@ def forward(; symbols: forward, touching `forward`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +6/-3 (9 lines); hunks: -63,7 +63,7; -446,9 +446,12 @@ def forward(; symbols: forward
@@ -872,7 +873,7 @@ diff -- python/sglang/srt/models/paddleocr_vl.py
 - Status/date: merged / 2026-01-27
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/glm_ocr.py`, `python/sglang/srt/models/glm_ocr_nextn.py`, `python/sglang/srt/multimodal/processors/glm4v.py`; associated commits `7106f6c8e150`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 9 files, +679/-29, 851 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[GLM-OCR] Support GLM-OCR Model"; model line: GLM VLM/OCR; category: model support/runtime entry; main diff: `python/sglang/srt/models/glm_ocr.py`, `python/sglang/srt/models/glm_ocr_nextn.py`, `python/sglang/srt/multimodal/processors/glm4v.py`; PR body summary: Support for GLM-OCR Model, transformers PR here Need transformer>=5.0.0dev0, but not 5.0.0, so also changed min requirements in glm4v..
+- Motivation: Title: "[GLM-OCR] Support GLM-OCR Model"; model line: GLM VLM/OCR; category: model support/runtime entry; main diff: `python/sglang/srt/models/glm_ocr.py`, `python/sglang/srt/models/glm_ocr_nextn.py`, `python/sglang/srt/multimodal/processors/glm4v.py`; technical summary: Covers "[GLM-OCR] Support GLM-OCR Model"; the main implementation surface is `python/sglang/srt/models/glm_ocr.py`, `python/sglang/srt/models/glm_ocr_nextn.py`, `python/sglang/srt/multimodal/processors/glm4v.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/glm_ocr.py` added +435/-0 (435 lines); hunks: -0,0 +1,435; symbols: GlmOcrRMSNorm, GlmOcrVisionMLP, GlmOcrVisionBlock, __init__, touching `GlmOcrRMSNorm, GlmOcrVisionMLP, GlmOcrVisionBlock`; `python/sglang/srt/models/glm_ocr_nextn.py` added +162/-0 (162 lines); hunks: -0,0 +1,162; symbols: GlmOcrModelNextN, __init__, forward, GlmOcrForConditionalGenerationNextN, touching `GlmOcrModelNextN, __init__, forward`; `python/sglang/srt/multimodal/processors/glm4v.py` modified +6/-1 (7 lines); hunks: -3,14 +3,19; symbols: Glm4vImageProcessor, __init__, touching `Glm4vImageProcessor, __init__`; `python/sglang/srt/models/glm4v.py` modified +0/-2 (2 lines); hunks: -758,8 +758,6 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights, touching `load_weights`.
 - Code diff details:
   - `python/sglang/srt/models/glm_ocr.py` added +435/-0 (435 lines); hunks: -0,0 +1,435; symbols: GlmOcrRMSNorm, GlmOcrVisionMLP, GlmOcrVisionBlock, __init__
@@ -912,7 +913,7 @@ diff -- python/sglang/srt/multimodal/processors/glm4v.py
 - Status/date: merged / 2026-02-01
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +526/-86, 758 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[VLM] Optimize get_rope_index for GLM4v"; model line: GLM VLM/OCR; category: performance/backend optimization; main diff: `python/sglang/srt/layers/rotary_embedding.py`, `benchmark/bench_rope/benchmark_rope_index.py`; PR body summary: Speedup **12%** to **600%**(long token length) for get_rope_index for GLM4v. Benchmark test added. lmms_evals no drop. PR: Main:.
+- Motivation: Title: "[VLM] Optimize get_rope_index for GLM4v"; model line: GLM VLM/OCR; category: performance/backend optimization; main diff: `python/sglang/srt/layers/rotary_embedding.py`, `benchmark/bench_rope/benchmark_rope_index.py`; technical summary: Covers "[VLM] Optimize get_rope_index for GLM4v"; the main implementation surface is `python/sglang/srt/layers/rotary_embedding.py`, `benchmark/bench_rope/benchmark_rope_index.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/layers/rotary_embedding.py` modified +101/-86 (187 lines); hunks: -1700,11 +1700,12 @@ def get_rope_index(; -1737,24 +1738,24 @@ def get_rope_index(; symbols: get_rope_index, get_rope_index_glm4v, touching `get_rope_index, get_rope_index_glm4v`; `benchmark/bench_rope/benchmark_rope_index.py` added +425/-0 (425 lines); hunks: -0,0 +1,425; symbols: DummyVisionConfig, DummyHFConfig, calculate_stats, _sync, touching `DummyVisionConfig, DummyHFConfig, calculate_stats`.
 - Code diff details:
   - `python/sglang/srt/layers/rotary_embedding.py` modified +101/-86 (187 lines); hunks: -1700,11 +1700,12 @@ def get_rope_index(; -1737,24 +1738,24 @@ def get_rope_index(; symbols: get_rope_index, get_rope_index_glm4v
@@ -949,7 +950,7 @@ diff -- benchmark/bench_rope/benchmark_rope_index.py
 - Status/date: merged / 2026-02-16
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/multimodal/processors/glm4v.py`; associated commits `206accd15de3`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +12/-4, 33 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix GLM-4V processor registration when glm_ocr is unavailable"; model line: GLM VLM/OCR; category: bug fix; main diff: `python/sglang/srt/multimodal/processors/glm4v.py`; PR body summary: Fix nightly test failures where GLM-4V models fail with "No processor registered for architecture" or show "Model not evaluated". Affected tests: - **4-GPU**: `test_encoder_dp.p....
+- Motivation: Title: "Fix GLM-4V processor registration when glm_ocr is unavailable"; model line: GLM VLM/OCR; category: bug fix; main diff: `python/sglang/srt/multimodal/processors/glm4v.py`; technical summary: Covers "Fix GLM-4V processor registration when glm_ocr is unavailable"; the main implementation surface is `python/sglang/srt/multimodal/processors/glm4v.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/multimodal/processors/glm4v.py` modified +12/-4 (16 lines); hunks: -3,20 +3,28; symbols: Glm4vImageProcessor, __init__, touching `Glm4vImageProcessor, __init__`.
 - Code diff details:
   - `python/sglang/srt/multimodal/processors/glm4v.py` modified +12/-4 (16 lines); hunks: -3,20 +3,28; symbols: Glm4vImageProcessor, __init__
@@ -976,7 +977,7 @@ diff -- python/sglang/srt/multimodal/processors/glm4v.py
 - Status/date: open / 2026-03-03
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +104/-4, 179 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix ROCm GLM-4.5V-FP8 startup with unpadded MoE weights and padded FP8 fallback"; model line: GLM VLM/OCR; category: bug fix; main diff: `python/sglang/srt/layers/quantization/fp8_kernel.py`, `python/sglang/srt/layers/moe/fused_moe_triton/fused_moe.py`, `test/registered/moe/test_fused_moe.py`; PR body summary: This fixes two ROCm regressions that blocked `GLM-4.5V-FP8` startup on MI300X when launching with: Root Cause There were two independent failures on ROCm: 1. `fused_moe_triton/f....
+- Motivation: Title: "Fix ROCm GLM-4.5V-FP8 startup with unpadded MoE weights and padded FP8 fallback"; model line: GLM VLM/OCR; category: bug fix; main diff: `python/sglang/srt/layers/quantization/fp8_kernel.py`, `python/sglang/srt/layers/moe/fused_moe_triton/fused_moe.py`, `test/registered/moe/test_fused_moe.py`; technical summary: Covers "Fix ROCm GLM-4.5V-FP8 startup with unpadded MoE weights and padded FP8 fallback"; the main implementation surface is `python/sglang/srt/layers/quantization/fp8_kernel.py`, `python/sglang/srt/layers/moe/fused_moe_triton/fused_moe.py`, `test/registered/moe/test_fused_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/layers/quantization/fp8_kernel.py` modified +21/-4 (25 lines); hunks: -1541,6 +1541,23 @@ def per_token_group_quant_mla_deep_gemm_masked_fp8(; -1549,10 +1566,10 @@ def _native_dynamic_per_token_quant_fp8(output, input, s...; symbols: per_token_group_quant_mla_deep_gemm_masked_fp8, _copy_with_optional_row_padding, _native_dynamic_per_token_quant_fp8, _native_dynamic_per_tensor_quant_fp8, touching `per_token_group_quant_mla_deep_gemm_masked_fp8, _copy_with_optional_row_padding, _native_dynamic_per_token_quant_fp8`; `python/sglang/srt/layers/moe/fused_moe_triton/fused_moe.py` modified +6/-0 (6 lines); hunks: -351,6 +351,12 @@ def fused_experts_impl(; symbols: fused_experts_impl, touching `fused_experts_impl`; `test/registered/moe/test_fused_moe.py` modified +66/-0 (66 lines); hunks: -1,9 +1,11; -239,6 +241,70 @@ def test_various_configurations(self):; symbols: test_various_configurations, test_fp8_unpadded_weights_with_global_moe_padding, touching `test_various_configurations, test_fp8_unpadded_weights_with_global_moe_padding`; `python/sglang/test/test_custom_ops.py` modified +11/-0 (11 lines); hunks: -3,11 +3,14; -141,6 +144,14 @@ def test_scaled_fp8_quant_with_padding(dtype) -> None:; symbols: test_scaled_fp8_quant_with_padding, touching `test_scaled_fp8_quant_with_padding`.
 - Code diff details:
   - `python/sglang/srt/layers/quantization/fp8_kernel.py` modified +21/-4 (25 lines); hunks: -1541,6 +1541,23 @@ def per_token_group_quant_mla_deep_gemm_masked_fp8(; -1549,10 +1566,10 @@ def _native_dynamic_per_token_quant_fp8(output, input, s...; symbols: per_token_group_quant_mla_deep_gemm_masked_fp8, _copy_with_optional_row_padding, _native_dynamic_per_token_quant_fp8, _native_dynamic_per_tensor_quant_fp8
@@ -1017,7 +1018,7 @@ diff -- test/registered/moe/test_fused_moe.py
 - Status/date: merged / 2026-03-08
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/glm4v.py`; associated commits `97a2a9be0f45`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +192/-9, 228 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[VLM] Replace conv3d proj with linear for GLM4V"; model line: GLM VLM/OCR; category: performance/backend optimization; main diff: `python/sglang/srt/models/glm4v.py`; PR body summary: Inspired by https://github.com/sgl-project/sglang/pull/19788 with some optimizations: lmms_evals no drops. Main and PR are the same score: More performance test will be done soo....
+- Motivation: Title: "[VLM] Replace conv3d proj with linear for GLM4V"; model line: GLM VLM/OCR; category: performance/backend optimization; main diff: `python/sglang/srt/models/glm4v.py`; technical summary: Covers "[VLM] Replace conv3d proj with linear for GLM4V"; the main implementation surface is `python/sglang/srt/models/glm4v.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/glm4v.py` modified +26/-9 (35 lines); hunks: -211,16 +211,26 @@ def __init__(; -446,10 +456,16 @@ def __init__(; symbols: __init__, forward, copy_conv3d_weight_to_linear, Glm4vPatchMerger, touching `__init__, forward, copy_conv3d_weight_to_linear`.
 - Code diff details:
   - `python/sglang/srt/models/glm4v.py` modified +26/-9 (35 lines); hunks: -211,16 +211,26 @@ def __init__(; -446,10 +456,16 @@ def __init__(; symbols: __init__, forward, copy_conv3d_weight_to_linear, Glm4vPatchMerger
@@ -1044,7 +1045,7 @@ diff -- python/sglang/srt/models/glm4v.py
 - Status/date: merged / 2026-03-14
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/models/glm_ocr.py`; associated commits `c330b687a116`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +6/-0, 18 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix GLM-4.6V vision regression in glm4v_moe and glm_ocr"; model line: GLM VLM/OCR; category: bug fix; main diff: `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/models/glm_ocr.py`; PR body summary: PR #20033 replaced `Conv3d` with `Linear` in `Glm4vVisionPatchEmbed` and added `copy_conv3d_weight_to_linear()` at the end of `glm4v.py`'s `load_weights()`. However, `glm4v_moe.....
+- Motivation: Title: "[Bugfix] Fix GLM-4.6V vision regression in glm4v_moe and glm_ocr"; model line: GLM VLM/OCR; category: bug fix; main diff: `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/models/glm_ocr.py`; technical summary: Covers "[Bugfix] Fix GLM-4.6V vision regression in glm4v_moe and glm_ocr"; the main implementation surface is `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/models/glm_ocr.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/glm4v_moe.py` modified +3/-0 (3 lines); hunks: -281,5 +281,8 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights, touching `load_weights`; `python/sglang/srt/models/glm_ocr.py` modified +3/-0 (3 lines); hunks: -431,5 +431,8 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights, touching `load_weights`.
 - Code diff details:
   - `python/sglang/srt/models/glm4v_moe.py` modified +3/-0 (3 lines); hunks: -281,5 +281,8 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights
@@ -1072,7 +1073,7 @@ diff -- python/sglang/srt/models/glm_ocr.py
 - Status/date: merged / 2026-03-15
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 18 files, +704/-90, 1053 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Add Conv2dLayer/Conv3dLayer to fix PyTorch 2.9.1 CuDNN Conv3d bug"; model line: GLM VLM/OCR; category: bug fix; main diff: `python/sglang/srt/layers/conv.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/pixtral.py`; PR body summary: Very thanks for the benchmark data in this PR: https://github.com/sgl-project/sglang/pull/19788 - Add `Conv2dLayer`/`Conv3dLayer` in `sglang/srt/layers/conv.py`. Conv3dLayer ena....
+- Motivation: Title: "Add Conv2dLayer/Conv3dLayer to fix PyTorch 2.9.1 CuDNN Conv3d bug"; model line: GLM VLM/OCR; category: bug fix; main diff: `python/sglang/srt/layers/conv.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/pixtral.py`; technical summary: Covers "Add Conv2dLayer/Conv3dLayer to fix PyTorch 2.9.1 CuDNN Conv3d bug"; the main implementation surface is `python/sglang/srt/layers/conv.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/pixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/layers/conv.py` added +300/-0 (300 lines); hunks: -0,0 +1,300; symbols: _tuplify, _check_enable_linear, _reverse_repeat_tuple, _compute_same_padding_for_pad, touching `_tuplify, _check_enable_linear, _reverse_repeat_tuple`; `python/sglang/srt/models/glm4v.py` modified +12/-27 (39 lines); hunks: -35,6 +35,7; -203,34 +204,25 @@ def __init__(; symbols: __init__, copy_conv3d_weight_to_linear, forward, Glm4vPatchMerger, touching `__init__, copy_conv3d_weight_to_linear, forward`; `python/sglang/srt/models/pixtral.py` modified +3/-2 (5 lines); hunks: -35,6 +35,7; -328,7 +329,7 @@ class VisionTransformer(nn.Module):; symbols: VisionTransformer, __init__, touching `VisionTransformer, __init__`; `python/sglang/srt/models/clip.py` modified +2/-1 (3 lines); hunks: -11,6 +11,7; -32,7 +33,7 @@ def __init__(self, config: CLIPVisionConfig):; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `python/sglang/srt/layers/conv.py` added +300/-0 (300 lines); hunks: -0,0 +1,300; symbols: _tuplify, _check_enable_linear, _reverse_repeat_tuple, _compute_same_padding_for_pad
@@ -1113,7 +1114,7 @@ diff -- python/sglang/srt/models/pixtral.py
 - Status/date: merged / 2026-03-18
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/models/glm_ocr.py`; associated commits `f15b3338c9f3`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +0/-6, 18 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Revert "[Bugfix] Fix GLM-4.6V vision regression in glm4v_moe and glm_ocr""; model line: GLM VLM/OCR; category: bug fix; main diff: `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/models/glm_ocr.py`; PR body summary: Reverts sgl-project/sglang#20463 per request by @JustinTong0323.
+- Motivation: Title: "Revert "[Bugfix] Fix GLM-4.6V vision regression in glm4v_moe and glm_ocr""; model line: GLM VLM/OCR; category: bug fix; main diff: `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/models/glm_ocr.py`; technical summary: Covers "Revert "[Bugfix] Fix GLM-4.6V vision regression in glm4v_moe and glm_ocr""; the main implementation surface is `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/models/glm_ocr.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/glm4v_moe.py` modified +0/-3 (3 lines); hunks: -281,8 +281,5 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights, touching `load_weights`; `python/sglang/srt/models/glm_ocr.py` modified +0/-3 (3 lines); hunks: -431,8 +431,5 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights, touching `load_weights`.
 - Code diff details:
   - `python/sglang/srt/models/glm4v_moe.py` modified +0/-3 (3 lines); hunks: -281,8 +281,5 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights
@@ -1141,7 +1142,7 @@ diff -- python/sglang/srt/models/glm_ocr.py
 - Status/date: merged / 2026-03-23
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/models/glm_ocr.py`; associated commits `fcaad42b0038`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +16/-9, 74 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bug Fix] GLM-V / GLM-OCR: field detection for transformers 5.x and MTP omission fix"; model line: GLM VLM/OCR; category: bug fix; main diff: `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/models/glm_ocr.py`; PR body summary: Mainly modify several issues 1. Modified the position of the replacement model module to ensure that the MTP has a normal acceptance rate after reading, otherwise the accept len....
+- Motivation: Title: "[Bug Fix] GLM-V / GLM-OCR: field detection for transformers 5.x and MTP omission fix"; model line: GLM VLM/OCR; category: bug fix; main diff: `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/models/glm_ocr.py`; technical summary: Covers "[Bug Fix] GLM-V / GLM-OCR: field detection for transformers 5.x and MTP omission fix"; the main implementation surface is `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/models/glm_ocr.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/glm4v_moe.py` modified +7/-7 (14 lines); hunks: -158,6 +158,13 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; -196,13 +203,6 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: load_weights, touching `load_weights`; `python/sglang/srt/models/glm_ocr.py` modified +4/-1 (5 lines); hunks: -26,6 +26,7; -151,6 +152,7 @@ class GlmOcrVisionModel(Glm4vVisionModel):; symbols: GlmOcrVisionModel, __init__, touching `GlmOcrVisionModel, __init__`.
 - Code diff details:
   - `python/sglang/srt/models/glm4v_moe.py` modified +7/-7 (14 lines); hunks: -158,6 +158,13 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; -196,13 +203,6 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: load_weights
@@ -1177,7 +1178,7 @@ diff -- python/sglang/srt/models/glm_ocr.py
 - Status/date: closed / 2026-03-29
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +155/-12, 209 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Feature] Optimizations for class Qwen3VLMoeVisionModel (Conv3d to Linear) in Qwen3VL"; model line: GLM VLM/OCR; category: performance/backend optimization; main diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen3_vl_moe.py`, `test/registered/vlm/test_qwen3vl_conv3d_to_linear.py`; PR body summary: + This PR is part of (https://github.com/sgl-project/sglang/issues/18784 and https://github.com/sgl-project/sglang/pull/18559). Corresponding information and performance data is....
+- Motivation: Title: "[Feature] Optimizations for class Qwen3VLMoeVisionModel (Conv3d to Linear) in Qwen3VL"; model line: GLM VLM/OCR; category: performance/backend optimization; main diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen3_vl_moe.py`, `test/registered/vlm/test_qwen3vl_conv3d_to_linear.py`; technical summary: Covers "[Feature] Optimizations for class Qwen3VLMoeVisionModel (Conv3d to Linear) in Qwen3VL"; the main implementation surface is `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen3_vl_moe.py`, `test/registered/vlm/test_qwen3vl_conv3d_to_linear.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +26/-12 (38 lines); hunks: -147,20 +147,26 @@ def __init__(self, config) -> None:; -407,10 +413,16 @@ def __init__(; symbols: __init__, copy_conv3d_weight_to_linear, forward, Qwen3_VisionBlock, touching `__init__, copy_conv3d_weight_to_linear, forward`; `python/sglang/srt/models/qwen3_vl_moe.py` modified +2/-0 (2 lines); hunks: -355,6 +355,8 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights, touching `load_weights`; `test/registered/vlm/test_qwen3vl_conv3d_to_linear.py` added +127/-0 (127 lines); hunks: -0,0 +1,127; symbols: _set_default_device_npu, _build_model, test_conv3d_to_linear, touching `_set_default_device_npu, _build_model, test_conv3d_to_linear`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +26/-12 (38 lines); hunks: -147,20 +147,26 @@ def __init__(self, config) -> None:; -407,10 +413,16 @@ def __init__(; symbols: __init__, copy_conv3d_weight_to_linear, forward, Qwen3_VisionBlock
@@ -1211,13 +1212,54 @@ diff -- test/registered/vlm/test_qwen3vl_conv3d_to_linear.py
   - tests: `test/registered/vlm/test_qwen3vl_conv3d_to_linear.py` added +127/-0
 - Risk and verification: The diff ships test coverage in `test/registered/vlm/test_qwen3vl_conv3d_to_linear.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
+### PR #18559 - Optimizations for Qwen3VL models
+
+- Link: https://github.com/sgl-project/sglang/pull/18559
+- Status/date: closed / 2026-03-30
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 6 files, +512/-33, 730 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Optimizations for Qwen3VL models"; model line: GLM VLM/OCR; category: performance/backend optimization; main diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/layers/attention/vision.py`, `python/sglang/srt/multimodal/processors/base_processor.py`; technical summary: Covers "Optimizations for Qwen3VL models"; the main implementation surface is `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/layers/attention/vision.py`, `python/sglang/srt/multimodal/processors/base_processor.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +445/-15 (460 lines); hunks: -16,15 +16,17; -90,8 +92,12 @@ def __init__(; symbols: __init__, forward, Qwen3VLVisionPatchEmbed, touching `__init__, forward, Qwen3VLVisionPatchEmbed`; `python/sglang/srt/layers/attention/vision.py` modified +32/-14 (46 lines); hunks: -3,6 +3,7; -755,8 +756,13 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`; `python/sglang/srt/multimodal/processors/base_processor.py` modified +6/-1 (7 lines); hunks: -431,7 +431,12 @@ def _load_single_item(; symbols: _load_single_item, touching `_load_single_item`; `python/sglang/srt/utils/common.py` modified +20/-2 (22 lines); hunks: -101,6 +101,8; -923,8 +925,24 @@ def load_image(; symbols: load_image, touching `load_image`.
+- Code diff details:
+  - `python/sglang/srt/models/qwen3_vl.py` modified +445/-15 (460 lines); hunks: -16,15 +16,17; -90,8 +92,12 @@ def __init__(; symbols: __init__, forward, Qwen3VLVisionPatchEmbed
+  - `python/sglang/srt/layers/attention/vision.py` modified +32/-14 (46 lines); hunks: -3,6 +3,7; -755,8 +756,13 @@ def __init__(; symbols: __init__, forward
+  - `python/sglang/srt/multimodal/processors/base_processor.py` modified +6/-1 (7 lines); hunks: -431,7 +431,12 @@ def _load_single_item(; symbols: _load_single_item
+  - `python/sglang/srt/utils/common.py` modified +20/-2 (22 lines); hunks: -101,6 +101,8; -923,8 +925,24 @@ def load_image(; symbols: load_image
+  - `python/sglang/srt/model_loader/loader.py` modified +8/-0 (8 lines); hunks: -683,7 +683,15 @@ def load_model(; symbols: load_model, load_weights_and_postprocess
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_vl.py
+@@ -16,15 +16,17 @@
++import os  # wili
+-import numpy as np
++import numpy as np  # wili
++from vfly.utils.parallel import dit_sp_gather, dit_sp_split  # wili
+@@ -90,8 +92,12 @@ def __init__(
+-        self.tp_size = 1 if use_data_parallel else get_attention_tp_size()
+diff -- python/sglang/srt/layers/attention/vision.py
+@@ -3,6 +3,7 @@
++import os  # wili
+@@ -755,8 +756,13 @@ def __init__(
+-        self.tp_size = 1 if use_data_parallel else get_attention_tp_size()
+-        self.tp_rank = 0 if use_data_parallel else get_attention_tp_rank()
++        self.enable_vfly = bool(int(os.environ.get("ENABLE_VFLY", "0")))  # wili
++        if self.enable_vfly:  # wili, reuse TP group but keep TP size as 1
+diff -- python/sglang/srt/multimodal/processors/base_processor.py
+@@ -431,7 +431,12 @@ def _load_single_item(
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_vl.py` modified +445/-15; `python/sglang/srt/layers/attention/vision.py` modified +32/-14; `python/sglang/srt/multimodal/processors/base_processor.py` modified +6/-1; `python/sglang/srt/utils/common.py` modified +20/-2; `python/sglang/srt/model_loader/loader.py` modified +8/-0; `python/sglang/srt/batch_invariant_ops/batch_invariant_ops.py` modified +1/-1
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/batch_invariant_ops/batch_invariant_ops.py`, `python/sglang/srt/layers/attention/vision.py`, `python/sglang/srt/model_loader/loader.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
 ### PR #17122 - [bugfix]GLM-4V model
 
 - Link: https://github.com/sgl-project/sglang/pull/17122
 - Status/date: merged / 2026-04-01
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +38/-3, 70 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[bugfix]GLM-4V model"; model line: GLM VLM/OCR; category: bug fix; main diff: `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/multimodal/processors/base_processor.py`, `test/registered/ascend/vlm_models/test_ascend_glm_4_5v.py`; PR body summary: GLM-4V model bugfix 1. In VisionAttention, it is necessary to use num_dumy_heads to calculate. If num_dumy_heads=0 and the result of num_dumy_heads+num_heads is not an integer m....
+- Motivation: Title: "[bugfix]GLM-4V model"; model line: GLM VLM/OCR; category: bug fix; main diff: `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/multimodal/processors/base_processor.py`, `test/registered/ascend/vlm_models/test_ascend_glm_4_5v.py`; technical summary: Covers "[bugfix]GLM-4V model"; the main implementation surface is `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/multimodal/processors/base_processor.py`, `test/registered/ascend/vlm_models/test_ascend_glm_4_5v.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/glm4v.py` modified +2/-2 (4 lines); hunks: -414,6 +414,7 @@ def __init__(; -553,15 +554,14 @@ def __init__(; symbols: __init__, touching `__init__`; `python/sglang/srt/multimodal/processors/base_processor.py` modified +3/-1 (4 lines); hunks: -407,7 +407,9 @@ def process_mm_data(; symbols: process_mm_data, touching `process_mm_data`; `test/registered/ascend/vlm_models/test_ascend_glm_4_5v.py` added +33/-0 (33 lines); hunks: -0,0 +1,33; symbols: TestGLM4Models, test_vlm_mmmu_benchmark, touching `TestGLM4Models, test_vlm_mmmu_benchmark`.
 - Code diff details:
   - `python/sglang/srt/models/glm4v.py` modified +2/-2 (4 lines); hunks: -414,6 +414,7 @@ def __init__(; -553,15 +554,14 @@ def __init__(; symbols: __init__
@@ -1251,21 +1293,21 @@ diff -- test/registered/ascend/vlm_models/test_ascend_glm_4_5v.py
   - tests: `test/registered/ascend/vlm_models/test_ascend_glm_4_5v.py` added +33/-0
 - Risk and verification: The diff ships test coverage in `test/registered/ascend/vlm_models/test_ascend_glm_4_5v.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
-### PR #22961 - [NPU] Support GLM-4.5V
+### PR #22961 - [NPU] Fix issue and support GLM-4.5V
 
 - Link: https://github.com/sgl-project/sglang/pull/22961
-- Status/date: merged / 2026-04-28T01:08:19Z
+- Status/date: merged / 2026-04-28
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +17/-5, 36 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[NPU] Support GLM-4.5V"; model line: GLM VLM/OCR; category: model support/runtime entry; main diff: `python/sglang/srt/models/glm4_moe.py`; PR body summary: Support GLM-4.5V on NPU. 1. When calling the split_qkv_rmsnorm_rope function, pass the correct arguments based on the use_qk_norm parameter.The `split_qkv_rmsnorm_rope` kernel a....
-- Key implementation: `python/sglang/srt/models/glm4_moe.py` modified +17/-5 (22 lines); hunks: -313,18 +313,30 @@ def forward_prepare(; symbols: forward_prepare, touching `forward_prepare`.
+- Motivation: Title: "[NPU] Fix issue and support GLM-4.5V"; model line: GLM VLM/OCR; category: bug fix; main diff: `python/sglang/srt/models/glm4_moe.py`; technical summary: Covers "[NPU] Fix issue and support GLM-4.5V"; the main implementation surface is `python/sglang/srt/models/glm4_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/glm4_moe.py` modified +17/-5 (22 lines); hunks: -314,18 +314,30 @@ def forward_prepare(; symbols: forward_prepare, touching `forward_prepare`.
 - Code diff details:
-  - `python/sglang/srt/models/glm4_moe.py` modified +17/-5 (22 lines); hunks: -313,18 +313,30 @@ def forward_prepare(; symbols: forward_prepare
+  - `python/sglang/srt/models/glm4_moe.py` modified +17/-5 (22 lines); hunks: -314,18 +314,30 @@ def forward_prepare(; symbols: forward_prepare
 - Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/glm4_moe.py
-@@ -313,18 +313,30 @@ def forward_prepare(
+@@ -314,18 +314,30 @@ def forward_prepare(
 +            if self.use_qk_norm:
 +                eps = self.q_norm.variance_epsilon
 +                q_weight = self.q_norm.weight

@@ -1,6 +1,6 @@
 ---
 name: vllm-mimo-v2-flash-optimization
-description: PR-backed optimization manual for MiMo-V2 / MiMo-V2-Flash / MiMo-V2.5 in vLLM. Use when Codex needs to audit, debug, extend, or document MiMo-V2 inference-centric MoE runtime, MTP behavior, MiMo-V2.5 Pro/Omni support, and the transition from older MiMo checkpoints in vLLM.
+description: PR-backed optimization manual for MiMo-V2 / MiMo-V2-Flash / MiMo-V2.5 in vLLM. Use when an engineer needs to audit, debug, extend, or document MiMo-V2 inference-centric MoE runtime, MTP behavior, MiMo-V2.5 Pro/Omni support, and the transition from older MiMo checkpoints in vLLM.
 ---
 
 # vLLM MiMo-V2 / MiMo-V2.5 Optimization
