@@ -1,4 +1,0 @@
-interface:
-  display_name: "SGLang GLM VLM/OCR Optimization"
-  short_description: "Current-main GLM visual/OCR playbook for processors, vision encoder DP/PP, GLM4V MoE, GLM-OCR NextN, transformers compatibility, and platform validation"
-  default_prompt: "Use $sglang-glm-vlm-ocr-optimization to optimize or debug GLM-4V, GLM-4.1V, GLM-4.5V, GLM-4.6V, GLM-Glyph, or GLM-OCR in SGLang, including multimodal processors, vision encoder DP/PP, GLM4V MoE loading, GLM-OCR NextN, transformers compatibility, and AMD/NPU cookbook validation."

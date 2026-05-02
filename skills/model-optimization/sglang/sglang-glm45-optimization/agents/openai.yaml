@@ -1,4 +1,0 @@
-interface:
-  display_name: "SGLang GLM-4.5 Optimization"
-  short_description: "Current-main GLM-4.5 playbook for MoE, A2A/reduce-scatter, NVFP4 padding, parser behavior, and platform validation"
-  default_prompt: "Use $sglang-glm45-optimization to optimize or debug GLM-4.5 in SGLang, including GLM MoE loading, A2A/DeepEP, reduce-scatter behavior, NVFP4 padding, GLM45 tool parsing, and AMD/NPU/Blackwell cookbook validation."

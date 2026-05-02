@@ -1,4 +1,0 @@
-interface:
-  display_name: "Model Architecture Diagram"
-  short_description: "Return public original model structure diagrams"
-  default_prompt: "Use $model-architecture-diagram to return the architecture diagram for DeepSeek-V3."

@@ -1,4 +1,0 @@
-interface:
-  display_name: "SGLang DeepSeek V3.1 Optimization"
-  short_description: "Current-main DeepSeek V3.1 playbook for thinking mode, tool calling, chat templates, parser streaming, loading, MTP, and validation"
-  default_prompt: "Use $sglang-deepseek-v31-optimization to optimize or debug DeepSeek V3.1 or DeepSeek-V3.1-Terminus in SGLang, including deepseekv31 tool-call parsing, thinking mode with deepseek-v3 reasoning parser, chat template behavior, streaming deltas, loading fixes, MTP validation, and H20/H20-3E fused MoE config checks."

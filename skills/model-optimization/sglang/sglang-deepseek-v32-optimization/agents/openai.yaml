@@ -1,4 +1,0 @@
-interface:
-  display_name: "SGLang DeepSeek V3.2 Optimization"
-  short_description: "Current-main DeepSeek V3.2 playbook for DSA/NSA, indexer, CP, MTP, IndexCache, DSML parser, KV cache, and backend validation"
-  default_prompt: "Use $sglang-deepseek-v32-optimization to optimize or debug DeepSeek V3.2, V3.2-Exp, NVFP4, or MXFP4 in SGLang, including DSA/NSA sparse attention, NSA indexer, KV-cache dtype and backends, context parallel, MTP/spec decoding, IndexCache, DSML tool calling, AMD/NPU/Blackwell backends, and model-backed validation lanes."

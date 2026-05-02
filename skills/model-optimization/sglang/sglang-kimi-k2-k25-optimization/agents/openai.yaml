@@ -1,4 +1,0 @@
-interface:
-  display_name: "SGLang Kimi K2/K2.5 Optimization"
-  short_description: "Current-main Kimi playbook for MoE, VLM, parser, quant, LoRA, backend validation, and open PR review"
-  default_prompt: "Use $sglang-kimi-k2-k25-optimization to optimize or debug moonshotai/Kimi-K2 or Kimi-K2.5 in SGLang, including K2 router/MoE paths, K2.5 wrapper and multimodal plumbing, W4AFP8/W4A16 quant tracks, kimi_k2 parser behavior, LoRA, and backend-specific validation lanes."
