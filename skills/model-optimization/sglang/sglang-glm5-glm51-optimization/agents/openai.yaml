@@ -1,4 +1,0 @@
-interface:
-  display_name: "SGLang GLM-5/5.1 Optimization"
-  short_description: "Current-main GLM-5/5.1 playbook for DSA/NSA, FP8/MXFP4/NVFP4, NextN/MTP, templates, EAGLE/PCG, and AMD/Blackwell validation"
-  default_prompt: "Use $sglang-glm5-glm51-optimization to optimize or debug GLM-5 or GLM-5.1 in SGLang, including DSA/NSA indexer paths, dense-attention thresholds, FP8/MXFP4/NVFP4 loading, MTP/NextN, tool templates, EAGLE/PCG, and AMD/NPU/Blackwell cookbook validation."

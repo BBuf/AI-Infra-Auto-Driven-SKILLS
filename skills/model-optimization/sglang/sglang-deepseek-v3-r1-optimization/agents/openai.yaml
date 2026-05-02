@@ -1,4 +1,0 @@
-interface:
-  display_name: "SGLang DeepSeek V3/R1 Optimization"
-  short_description: "Current-main DeepSeek V3/R1 ladder for MLA, MoE, quantized R1, MTP, DeepEP, LoRA, and backend validation"
-  default_prompt: "Use $sglang-deepseek-v3-r1-optimization to optimize or debug DeepSeek V3 or DeepSeek R1 in SGLang, including MLA backend selection, shared-expert MoE behavior, FP8/FP4/W4AFP8/MXFP4/NVFP4 loading, MTP/NextN, DeepEP, DP attention, LoRA, and hardware-specific validation lanes."

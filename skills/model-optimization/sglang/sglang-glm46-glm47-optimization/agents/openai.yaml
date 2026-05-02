@@ -1,4 +1,0 @@
-interface:
-  display_name: "SGLang GLM-4.6/4.7 Optimization"
-  short_description: "Current-main GLM-4.6/4.7 playbook for shared-expert fusion, dual-stream MoE, GLM-4.7 parser, NVFP4/MTP, Flash/lite loading, and platform validation"
-  default_prompt: "Use $sglang-glm46-glm47-optimization to optimize or debug GLM-4.6, GLM-4.7, or GLM-4.7-Flash in SGLang, including shared-expert fusion, MoE GEMM overlap, GLM-4.7 tool parsing, NVFP4/MTP, Flash/lite loading, and AMD/NPU cookbook validation."
