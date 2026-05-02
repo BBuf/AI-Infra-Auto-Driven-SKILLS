@@ -68,7 +68,7 @@
 | 2026-04-06 | [#21792](https://github.com/sgl-project/sglang/pull/21792) | merged | [CI] Add basic unit test for Minimax-M2.5 | `test/registered/8-gpu-models/test_minimax_m25_basic.py` |
 | 2026-04-07 | [#20919](https://github.com/sgl-project/sglang/pull/20919) | merged | [NPU] Support dp-attention for MiniMax2.5 | `python/sglang/srt/models/minimax_m2.py` |
 | 2026-04-08 | [#22300](https://github.com/sgl-project/sglang/pull/22300) | open | [NVIDIA] Fix FP8 gemm performance with fp16 models (MInimax-M2.5) | `python/sglang/srt/layers/quantization/fp8_utils.py`, `python/sglang/srt/layers/quantization/fp8.py`, `python/sglang/srt/model_loader/utils.py` |
-| 2026-04-10 | [#20967](https://github.com/sgl-project/sglang/pull/20967) | merged | 【BugFix】fix the bug of minimax_m2.5 model that causes repeated outputs when using tp16 | `python/sglang/srt/models/minimax_m2.py` |
+| 2026-04-10 | [#20967](https://github.com/sgl-project/sglang/pull/20967) | merged | [BugFix] fix the bug of minimax_m2.5 model that causes repeated outputs when using tp16 | `python/sglang/srt/models/minimax_m2.py` |
 | 2026-04-10 | [#20067](https://github.com/sgl-project/sglang/pull/20067) | merged | MiniMax-M2.5 - Support dp attention, dp reduce scatter, FP4 all gather, AR fusion in prepare_attn | `python/sglang/srt/models/minimax_m2.py`, `test/registered/8-gpu-models/test_minimax_m25.py` |
 | 2026-04-13 | [#20673](https://github.com/sgl-project/sglang/pull/20673) | merged | [Feature][JIT Kernel] Fused TP QK norm For Minimax | `python/sglang/srt/models/minimax_m2.py` |
 | 2026-04-14 | [#22744](https://github.com/sgl-project/sglang/pull/22744) | open | [NVIDIA] Support TF32 matmul to improve MiniMax gate gemm performance | `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/server_args.py`, `docs/advanced_features/server_arguments.md` |
@@ -1054,13 +1054,13 @@ diff -- python/sglang/srt/model_loader/utils.py
   - runtime: `python/sglang/srt/layers/quantization/fp8_utils.py` modified +5/-2; `python/sglang/srt/layers/quantization/fp8.py` modified +5/-0; `python/sglang/srt/model_loader/utils.py` modified +20/-4
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/quantization/fp8.py`, `python/sglang/srt/layers/quantization/fp8_utils.py`, `python/sglang/srt/model_loader/utils.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-### PR #20967 - 【BugFix】fix the bug of minimax_m2.5 model that causes repeated outputs when using tp16
+### PR #20967 - [BugFix] fix the bug of minimax_m2.5 model that causes repeated outputs when using tp16
 
 - Link: https://github.com/sgl-project/sglang/pull/20967
 - Status/date: merged / 2026-04-10
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/minimax_m2.py`; associated commits `84194c25c1cd`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +34/-10, 73 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "【BugFix】fix the bug of minimax_m2.5 model that causes repeated outputs when using tp16"; model line: MiniMax M2 Series; category: bug fix; main diff: `python/sglang/srt/models/minimax_m2.py`; technical summary: Covers "【BugFix】fix the bug of minimax_m2.5 model that causes repeated outputs when using tp16"; the main implementation surface is `python/sglang/srt/models/minimax_m2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "[BugFix] fix the bug of minimax_m2.5 model that causes repeated outputs when using tp16"; model line: MiniMax M2 Series; category: bug fix; main diff: `python/sglang/srt/models/minimax_m2.py`; technical summary: Covers "[BugFix] fix the bug of minimax_m2.5 model that causes repeated outputs when using tp16"; the main implementation surface is `python/sglang/srt/models/minimax_m2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/minimax_m2.py` modified +34/-10 (44 lines); hunks: -253,27 +253,47 @@ def rms_apply_serial(; -641,10 +661,14 @@ def __init__(; symbols: rms_apply_serial, MiniMaxM2RMSNormTP, __init__, weight_loader, touching `rms_apply_serial, MiniMaxM2RMSNormTP, __init__`.
 - Code diff details:
   - `python/sglang/srt/models/minimax_m2.py` modified +34/-10 (44 lines); hunks: -253,27 +253,47 @@ def rms_apply_serial(; -641,10 +661,14 @@ def __init__(; symbols: rms_apply_serial, MiniMaxM2RMSNormTP, __init__, weight_loader
