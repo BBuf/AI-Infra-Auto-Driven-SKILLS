@@ -281,7 +281,7 @@
       "title": "Hunyuan-A13B architecture",
       "aliases": ["hunyuan-a13b", "hunyuan a13b", "hunyuan-a13b-instruct", "tencent-hunyuan/hunyuan-a13b-instruct"],
       "source": "self-llm",
-      "path": "models/Hunyuan-A13B-Instruct/images/01-01混元大模型A13B架构图.jpg",
+      "path": "models/Hunyuan-A13B-Instruct/images/01-01-Hunyuan-A13B-architecture.jpg",
       "url": "https://raw.githubusercontent.com/datawhalechina/self-llm/master/models/Hunyuan-A13B-Instruct/images/01-01%E6%B7%B7%E5%85%83%E5%A4%A7%E6%A8%A1%E5%9E%8BA13B%E6%9E%B6%E6%9E%84%E5%9B%BE.jpg",
       "rank": 1
     },
@@ -290,7 +290,7 @@
       "title": "Hunyuan-A13B shared and routed expert diagram",
       "aliases": ["hunyuan-a13b", "hunyuan a13b", "hunyuan moe", "hunyuan shared expert"],
       "source": "self-llm",
-      "path": "models/Hunyuan-A13B-Instruct/images/01-02-共享专家和混合专家.png",
+      "path": "models/Hunyuan-A13B-Instruct/images/01-02-shared-and-routed-experts.png",
       "url": "https://raw.githubusercontent.com/datawhalechina/self-llm/master/models/Hunyuan-A13B-Instruct/images/01-02-%E5%85%B1%E4%BA%AB%E4%B8%93%E5%AE%B6%E5%92%8C%E6%B7%B7%E5%90%88%E4%B8%93%E5%AE%B6.png",
       "rank": 2
     },
