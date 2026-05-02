@@ -57,18 +57,18 @@ Do not commit the `sgl-cookbook-model-architecture-images/` gallery into the rep
 Current hosted artifact:
 
 - Issue index: https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/issues/31
-- Release page: https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/releases/tag/sgl-cookbook-architecture-images-2026-04-27
-- Zip download: https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/releases/download/sgl-cookbook-architecture-images-2026-04-27/sgl-cookbook-model-architecture-images-2026-04-27.zip
-- Digest: `sha256:07d4989e4ee8e137013556efb79478028e77fd598ccc67d055fcbf902b5b0efc`
+- Release page: https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/releases/tag/sgl-cookbook-architecture-images-2026-05-02
+- Zip download: https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/releases/download/sgl-cookbook-architecture-images-2026-05-02/sgl-cookbook-model-architecture-images-2026-05-02.zip
+- Digest: `sha256:ea432081849a250429d3d1ecf246e267c5cc42f989aaf4b9ca695b581e7fa50f`
 
 The artifact contains 44 public original diagram image files from the indexed upstream repositories, plus a lightweight `index.html`, `index.md`, `manifest.json`, HTML contact sheet, and `architecture-audit.md`.
 
 To inspect the gallery locally:
 
 ```bash
-curl -L -o /tmp/sgl-cookbook-model-architecture-images-2026-04-27.zip \
-  https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/releases/download/sgl-cookbook-architecture-images-2026-04-27/sgl-cookbook-model-architecture-images-2026-04-27.zip
-unzip -q /tmp/sgl-cookbook-model-architecture-images-2026-04-27.zip -d /tmp
+curl -L -o /tmp/sgl-cookbook-model-architecture-images-2026-05-02.zip \
+  https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/releases/download/sgl-cookbook-architecture-images-2026-05-02/sgl-cookbook-model-architecture-images-2026-05-02.zip
+unzip -q /tmp/sgl-cookbook-model-architecture-images-2026-05-02.zip -d /tmp
 open /tmp/sgl-cookbook-model-architecture-images/index.html
 ```
 
