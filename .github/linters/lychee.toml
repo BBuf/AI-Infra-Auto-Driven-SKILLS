@@ -11,3 +11,9 @@ exclude = [
   "^http://127\\.0\\.0\\.1(:[0-9]+)?(/|$)",
   "^http://0\\.0\\.0\\.0(/|$)",
 ]
+
+# Skip vendored upstream documentation trees that contain stale
+# index.html cross-references inherited from the original HTML.
+exclude_path = [
+  "skills/gpu-kernel-ako4all/references/cuda-cpp/vendored-docs",
+]
