@@ -13,6 +13,8 @@ repos:
       - id: check-toml
       - id: check-ast
       - id: check-added-large-files
+        args: ["--maxkb=2048"]
+        exclude: ^skills/gpu-kernel-ako4all/references/cuda-cpp/vendored-docs/
       - id: check-merge-conflict
       - id: check-shebang-scripts-are-executable
       - id: detect-private-key

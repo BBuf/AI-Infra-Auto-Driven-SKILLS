@@ -8,7 +8,7 @@ SGLang optimization, production incidents, and model PR intelligence.**
 [![GitHub stars](https://img.shields.io/github/stars/BBuf/AI-Infra-Auto-Driven-SKILLS?style=social)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/BBuf/AI-Infra-Auto-Driven-SKILLS?style=social)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/forks)
 [![Last commit](https://img.shields.io/github/last-commit/BBuf/AI-Infra-Auto-Driven-SKILLS?style=flat-square)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/commits/main)
-[![Core skills](https://img.shields.io/badge/core_skills-7-2f80ed?style=flat-square)](#core-skills)
+[![Core skills](https://img.shields.io/badge/core_skills-8-2f80ed?style=flat-square)](#core-skills)
 [![Model runbooks](https://img.shields.io/badge/model_runbooks-58-8250df?style=flat-square)](#model-optimization-catalog)
 [![PR histories](https://img.shields.io/badge/pr_histories-58-2ea44f?style=flat-square)](#model-optimization-catalog)
 
@@ -31,7 +31,7 @@ find it.
 
 | Signal | What makes it useful |
 | --- | --- |
-| **7 core operational skills** | Small, focused playbooks for benchmark search, profiler analysis, SOTA loops, incidents, architecture diagrams, and H100 runs. |
+| **8 core operational skills** | Small, focused playbooks for benchmark search, profiler analysis, SOTA loops, incidents, architecture diagrams, GPU kernels, and H100 runs. |
 | **58 model optimization runbooks** | SGLang and vLLM model-family skills for DeepSeek, Qwen, GLM, Kimi, MiniMax, Llama, Mistral, Nemotron, and more. |
 | **58 PR history dossiers** | Diff-backed model evolution notes that record what changed, where it changed, and what risks remain. |
 | **Stage-separated profiler workflow** | Prefill and decode are profiled as separate workloads so hot kernels do not get misattributed. |
@@ -47,6 +47,7 @@ find it.
 | Explain a torch-profiler trace with kernel, overlap, and fusion tables | [`llm-torch-profiler-analysis`](skills/llm-torch-profiler-analysis/) |
 | Drive a full SGLang performance loop against vLLM/TensorRT-LLM | [`sglang-sota-performance`](skills/sglang-sota-performance/) |
 | Debug a live or recent SGLang serving incident from evidence | [`sglang-prod-incident-triage`](skills/sglang-prod-incident-triage/) |
+| Optimize Triton, CUDA, CUTLASS, or CuTe DSL kernels with AKO4ALL | [`gpu-kernel-ako4all`](skills/gpu-kernel-ako4all/) |
 | Find original public model architecture diagrams | [`model-architecture-diagram`](skills/model-architecture-diagram/) |
 | Reuse model-family optimization knowledge | [`skills/model-optimization`](skills/model-optimization/) |
 | Read model PR evolution by framework | [`model-pr-optimization-history`](model-pr-optimization-history/) |
@@ -59,6 +60,7 @@ find it.
 | [`llm-torch-profiler-analysis`](skills/llm-torch-profiler-analysis/) | You need a three-table profiler report that keeps `extend/prefill` and `decode` evidence separate. |
 | [`sglang-sota-performance`](skills/sglang-sota-performance/) | You want SGLang to match or beat the best observed framework result for a specific model and workload. |
 | [`sglang-prod-incident-triage`](skills/sglang-prod-incident-triage/) | You need to turn queue growth, timeouts, wrong outputs, crashes, or distributed stalls into a replay and next debug step. |
+| [`gpu-kernel-ako4all`](skills/gpu-kernel-ako4all/) | You need an AKO4ALL-centered loop for Triton, CUDA C++/PTX, CUTLASS/CuTe C++, or CuTe DSL kernel work. |
 | [`model-architecture-diagram`](skills/model-architecture-diagram/) | You need original public architecture diagrams for popular LLM, VLM, MoE, OCR, and diffusion model families. |
 | [`h100`](skills/h100/) | You need an H100 operator runbook for SGLang validation in the configured remote environment. |
 | [`h100-sglang-diffusion`](skills/h100-sglang-diffusion/) | You need the H100 workflow with diffusion-specific paths and validation expectations. |
@@ -118,6 +120,7 @@ cp -r skills/llm-serving-auto-benchmark <agent-skill-dir>/llm-serving-auto-bench
 cp -r skills/llm-torch-profiler-analysis <agent-skill-dir>/llm-torch-profiler-analysis
 cp -r skills/sglang-sota-performance <agent-skill-dir>/sglang-sota-performance
 cp -r skills/sglang-prod-incident-triage <agent-skill-dir>/sglang-prod-incident-triage
+cp -r skills/gpu-kernel-ako4all <agent-skill-dir>/gpu-kernel-ako4all
 cp -r skills/model-architecture-diagram <agent-skill-dir>/model-architecture-diagram
 ```
 
@@ -140,6 +143,7 @@ skills/
 ├── llm-torch-profiler-analysis/     # profiler capture and trace triage
 ├── sglang-sota-performance/         # end-to-end SGLang optimization loop
 ├── sglang-prod-incident-triage/     # replay-first serving incident workflow
+├── gpu-kernel-ako4all/              # AKO4ALL GPU kernel optimization loop
 ├── model-architecture-diagram/      # public architecture diagram resolver
 ├── h100/                            # H100 operator runbook
 ├── h100-sglang-diffusion/           # H100 diffusion operator runbook
