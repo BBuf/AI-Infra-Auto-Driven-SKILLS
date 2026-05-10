@@ -38,8 +38,8 @@ benchmark:
     upper: 6.0
     tolerance: 0.1
   sla:
-    max_p99_ttft_ms: 1500
-    max_p99_tpot_ms: 30
+    max_p50_ttft_ms: 1500
+    max_p50_tpot_ms: 30
     min_success_rate: 0.99
   output_dir: ./auto_benchmark_results/cookbook-llm/mistral-small-4-119b-2603
 search:

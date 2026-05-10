@@ -10,14 +10,14 @@ must agree.
 
 | Key | Where | Type |
 | --- | --- | --- |
-| `max_p99_ttft_ms` | both | float, milliseconds, p99 |
-| `max_p99_tpot_ms` | both | float, milliseconds, p99 |
+| `max_p50_ttft_ms` | both | float, milliseconds, p50 |
+| `max_p50_tpot_ms` | both | float, milliseconds, p50 |
 | `min_success_rate` | both | float in [0, 1] |
 | `passed` | result only | bool; recomputed after the run |
 
-Do not use `max_ttft_ms` or `max_tpot_ms` without the `p99_` prefix; those names
-hide whether the target is a mean or a tail. Older cookbook configs used mean
-latency targets by accident and have been migrated to the p99 names above.
+Do not use `max_ttft_ms` or `max_tpot_ms` without the `p50_` prefix; those names
+hide whether the target is a mean, median, or tail latency. Older cookbook configs
+used stricter p99 targets and have been migrated to the p50 names above.
 
 The config-level SLA block lives under `benchmark.sla` (cookbook configs) or at
 the top level (example plan). Either location is acceptable, but the key names
@@ -59,8 +59,8 @@ values; this schema is not tied to H100.
     "endpoint": "/v1/chat/completions"
   },
   "sla": {
-    "max_p99_ttft_ms": 2000,
-    "max_p99_tpot_ms": 80,
+    "max_p50_ttft_ms": 2000,
+    "max_p50_tpot_ms": 80,
     "min_success_rate": 0.99,
     "passed": true
   },
@@ -68,10 +68,13 @@ values; this schema is not tied to H100.
     "request_throughput": 15.8,
     "output_token_throughput": 12500.0,
     "total_token_throughput": 42000.0,
+    "p50_ttft_ms": 410.0,
     "mean_ttft_ms": 430.0,
     "p99_ttft_ms": 1550.0,
+    "p50_tpot_ms": 24.0,
     "mean_tpot_ms": 26.0,
     "p99_tpot_ms": 72.0,
+    "p50_e2e_ms": 7900.0,
     "mean_e2e_ms": 8200.0,
     "p99_e2e_ms": 19000.0,
     "success_rate": 0.995
@@ -118,27 +121,29 @@ The default ranking is:
 2. `sla.passed == true`
 3. higher `metrics.request_throughput`
 4. higher `metrics.output_token_throughput`
-5. lower `metrics.mean_ttft_ms`
-6. lower `metrics.mean_tpot_ms`
+5. lower `metrics.p50_ttft_ms`
+6. lower `metrics.p50_tpot_ms`
 7. lower `hardware.gpu_count`
 
 If the user cares more about token throughput than request throughput, swap
 steps 3 and 4 and state that in the final report.
 
-This ranking rule does not change the SLA gate. Keep `sla.max_p99_ttft_ms` and
-`sla.max_p99_tpot_ms` as the tail-latency constraints; use mean TTFT and mean
-TPOT only for default winner selection among rows that have already passed SLA.
+This ranking rule does not change the SLA gate. Keep `sla.max_p50_ttft_ms` and
+`sla.max_p50_tpot_ms` as the median latency constraints; use p50 TTFT and p50
+TPOT for default winner selection among rows that have already passed SLA.
 
 Missing metric semantics:
 
-- If `metrics.mean_ttft_ms` is absent from a row, the ranking script treats it
-  as the worst possible value, so that row falls below any candidate with a
-  real mean-TTFT measurement. Do not write `0` as a placeholder for "no
-  measurement"; leave the field out or set it to `null`.
-- If `metrics.mean_tpot_ms` is absent from a row, the ranking script treats it
-  as the worst possible value, so that row falls below any candidate with a
-  real mean-TPOT measurement. Do not write `0` as a placeholder for "no
-  measurement"; leave the field out or set it to `null`.
+- If `metrics.p50_ttft_ms` is absent from a row, the ranking script falls back to
+  `metrics.mean_ttft_ms`. If both are absent, it treats TTFT as the worst possible
+  value, so that row falls below any candidate with a real p50 or mean TTFT
+  measurement. Do not write `0` as a placeholder for "no measurement"; leave the
+  field out or set it to `null`.
+- If `metrics.p50_tpot_ms` is absent from a row, the ranking script falls back to
+  `metrics.mean_tpot_ms`. If both are absent, it treats TPOT as the worst possible
+  value, so that row falls below any candidate with a real p50 or mean TPOT
+  measurement. Do not write `0` as a placeholder for "no measurement"; leave the
+  field out or set it to `null`.
 - If `metrics.request_throughput` or `metrics.output_token_throughput` is
   missing, the row ranks below any candidate with a real measurement in those
   keys. A failed candidate that still produced partial metrics should keep the

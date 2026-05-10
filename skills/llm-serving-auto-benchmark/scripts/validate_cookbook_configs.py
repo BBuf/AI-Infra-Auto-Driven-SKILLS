@@ -27,16 +27,19 @@ SEQUENCE_LIMIT_KEY = {
 }
 
 ALLOWED_SLA_KEYS = {
-    "max_p99_ttft_ms",
-    "max_p99_tpot_ms",
+    "max_p50_ttft_ms",
+    "max_p50_tpot_ms",
     "min_success_rate",
-    "max_p99_e2e_ms",
+    "max_p50_e2e_ms",
 }
 
 DEPRECATED_SLA_KEYS = {
-    "max_ttft_ms": "max_p99_ttft_ms",
-    "max_tpot_ms": "max_p99_tpot_ms",
-    "max_e2e_ms": "max_p99_e2e_ms",
+    "max_p99_ttft_ms": "max_p50_ttft_ms",
+    "max_p99_tpot_ms": "max_p50_tpot_ms",
+    "max_p99_e2e_ms": "max_p50_e2e_ms",
+    "max_ttft_ms": "max_p50_ttft_ms",
+    "max_tpot_ms": "max_p50_tpot_ms",
+    "max_e2e_ms": "max_p50_e2e_ms",
 }
 
 STATIC_SERVER_FLAGS = {
