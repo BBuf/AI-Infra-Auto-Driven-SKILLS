@@ -36,12 +36,23 @@ def _bool(row: dict[str, Any], path: str, default: bool = False) -> bool:
     return bool(value)
 
 
-def _mean_ttft_ms(row: dict[str, Any]) -> float:
+def _p50_or_mean_ttft_ms(row: dict[str, Any]) -> float:
+    if _get(row, "metrics.p50_ttft_ms") is not None:
+        return _float(row, "metrics.p50_ttft_ms", 1e30)
     return _float(row, "metrics.mean_ttft_ms", 1e30)
 
 
-def _mean_tpot_ms(row: dict[str, Any]) -> float:
+def _p50_or_mean_tpot_ms(row: dict[str, Any]) -> float:
+    if _get(row, "metrics.p50_tpot_ms") is not None:
+        return _float(row, "metrics.p50_tpot_ms", 1e30)
     return _float(row, "metrics.mean_tpot_ms", 1e30)
+
+
+def _p50_or_mean_value(row: dict[str, Any], metric: str) -> Any:
+    p50_value = _get(row, f"metrics.p50_{metric}_ms")
+    if p50_value is not None:
+        return p50_value
+    return _get(row, f"metrics.mean_{metric}_ms")
 
 
 def _rank_key(row: dict[str, Any]) -> tuple[Any, ...]:
@@ -50,8 +61,8 @@ def _rank_key(row: dict[str, Any]) -> tuple[Any, ...]:
         _bool(row, "sla.passed"),
         _float(row, "metrics.request_throughput"),
         _float(row, "metrics.output_token_throughput"),
-        -_mean_ttft_ms(row),
-        -_mean_tpot_ms(row),
+        -_p50_or_mean_ttft_ms(row),
+        -_p50_or_mean_tpot_ms(row),
         -_float(row, "hardware.gpu_count", 1e30),
     )
 
@@ -143,6 +154,8 @@ def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         "sla_passed",
         "request_throughput",
         "output_token_throughput",
+        "p50_ttft_ms",
+        "p50_tpot_ms",
         "mean_ttft_ms",
         "mean_tpot_ms",
         "p99_ttft_ms",
@@ -166,6 +179,8 @@ def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
                     "output_token_throughput": _get(
                         row, "metrics.output_token_throughput", ""
                     ),
+                    "p50_ttft_ms": _get(row, "metrics.p50_ttft_ms", ""),
+                    "p50_tpot_ms": _get(row, "metrics.p50_tpot_ms", ""),
                     "mean_ttft_ms": _get(row, "metrics.mean_ttft_ms", ""),
                     "mean_tpot_ms": _get(row, "metrics.mean_tpot_ms", ""),
                     "p99_ttft_ms": _get(row, "metrics.p99_ttft_ms", ""),
@@ -189,7 +204,7 @@ def _append_best_commands_by_framework(
             [
                 f"### `{framework}`",
                 "",
-                "| Scenario | Candidate | Status | SLA | Req/s | Output tok/s | Total tok/s | Mean TTFT ms | Mean TPOT ms | Success rate | GPUs | Server command | Artifacts |",
+                "| Scenario | Candidate | Status | SLA | Req/s | Output tok/s | Total tok/s | P50 TTFT ms | P50 TPOT ms | Success rate | GPUs | Server command | Artifacts |",
                 "| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |",
             ]
         )
@@ -204,8 +219,8 @@ def _append_best_commands_by_framework(
                     rps=_cell(_get(row, "metrics.request_throughput")),
                     otps=_cell(_get(row, "metrics.output_token_throughput")),
                     ttps=_cell(_get(row, "metrics.total_token_throughput")),
-                    ttft=_cell(_get(row, "metrics.mean_ttft_ms")),
-                    tpot=_cell(_get(row, "metrics.mean_tpot_ms")),
+                    ttft=_cell(_p50_or_mean_value(row, "ttft")),
+                    tpot=_cell(_p50_or_mean_value(row, "tpot")),
                     success=_cell(_get(row, "metrics.success_rate")),
                     gpus=_cell(_get(row, "hardware.gpu_count")),
                     command=_cell(_server_command(row)),
@@ -222,7 +237,7 @@ def _append_cross_framework_table(
         [
             "## Cross-Framework Best Comparison",
             "",
-            "| Scenario | Rank | Framework | Candidate | SLA | Req/s | Output tok/s | Mean TTFT ms | Mean TPOT ms | GPUs | Server command |",
+            "| Scenario | Rank | Framework | Candidate | SLA | Req/s | Output tok/s | P50 TTFT ms | P50 TPOT ms | GPUs | Server command |",
             "| --- | ---: | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | --- |",
         ]
     )
@@ -239,8 +254,8 @@ def _append_cross_framework_table(
                     sla=_cell(_bool(row, "sla.passed")),
                     rps=_cell(_get(row, "metrics.request_throughput")),
                     otps=_cell(_get(row, "metrics.output_token_throughput")),
-                    ttft=_cell(_get(row, "metrics.mean_ttft_ms")),
-                    tpot=_cell(_get(row, "metrics.mean_tpot_ms")),
+                    ttft=_cell(_p50_or_mean_value(row, "ttft")),
+                    tpot=_cell(_p50_or_mean_value(row, "tpot")),
                     gpus=_cell(_get(row, "hardware.gpu_count")),
                     command=_cell(_server_command(row)),
                 )

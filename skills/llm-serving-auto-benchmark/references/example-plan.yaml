@@ -64,8 +64,8 @@ benchmark:
     temperature: 0.0
 
 sla:
-  max_p99_ttft_ms: 2000
-  max_p99_tpot_ms: 80
+  max_p50_ttft_ms: 2000
+  max_p50_tpot_ms: 80
   min_success_rate: 0.99
 
 search:
