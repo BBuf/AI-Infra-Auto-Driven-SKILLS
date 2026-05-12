@@ -1,0 +1,158 @@
+{
+  "generated_date": "2026-05-12",
+  "verification_method": [
+    "arXiv PDF and abstract were read through arxiv.org.",
+    "External repositories were verified with git ls-remote.",
+    "Kernel paths were sampled with shallow sparse clones in a user-selected temporary directory.",
+    "GitHub web search was used for public repository discovery when direct API search hit anonymous rate limits."
+  ],
+  "local_references": [
+    {
+      "name": "gpu-kernel-ako4all references",
+      "path": "<user-configured-gpu-kernel-reference-docs>",
+      "use_for": [
+        "AKO loop discipline",
+        "Triton authoring rules",
+        "CUDA C++ and PTX debugging",
+        "CUTLASS and CuTe DSL routing",
+        "SM90/SM100/SM103/SM120 architecture constraints",
+        "profiling and troubleshooting"
+      ],
+      "must_read_first": [
+        "ako4all-kernel-loop.md",
+        "cuda-cpp-kernel-reference.md",
+        "triton-kernel-reference.md",
+        "profiling-debugging-reference.md",
+        "nvidia-architecture-reference.md"
+      ]
+    },
+    {
+      "name": "target kernel project worktree",
+      "path": "<user-configured-target-kernel-project-worktree>",
+      "use_for": [
+        "main-branch tests",
+        "semantic wrappers",
+        "integration targets after standalone candidate wins"
+      ],
+      "important_paths": [
+        "src/kernels",
+        "tests/kernels",
+        "benchmarks",
+        "include/kernel_project",
+        "kernel-library"
+      ]
+    }
+  ],
+  "external_repositories": [
+    {
+      "name": "FlashInfer",
+      "repo": "flashinfer-ai/flashinfer",
+      "url": "https://github.com/flashinfer-ai/flashinfer",
+      "verified_head": "9f4d16174e81dc818ca65f9eb930ec5fd8a9b395",
+      "kernel_paths": [
+        "csrc",
+        "csrc/fmha_v2/fmha",
+        "csrc/fmha_v2/fmha/hopper",
+        "csrc/fmha_v2/fmha/warpspec",
+        "csrc/fmha_cutlass_sm100.cu",
+        "csrc/blackwell_fmha_plan.cu",
+        "benchmarks/bench_blackwell_attention.py",
+        "benchmarks/bench_blackwell_attention_cutedsl.py",
+        "benchmarks/bench_cutlass_fused_moe.py",
+        "benchmarks/bench_cute_dsl_blockscaled_gemm.py"
+      ],
+      "read_when": [
+        "attention prefill/decode/page-cache kernels",
+        "FlashInfer-style generated kernels",
+        "Blackwell FMHA or grouped GEMM comparison",
+        "MoE, rope, norm, sampling, quantization baselines"
+      ],
+      "do_not_copy_rule": "Treat as inspiration and baseline reference. Do not copy code into a KernelPilot candidate unless license and attribution are explicitly handled."
+    },
+    {
+      "name": "FlashAttention",
+      "repo": "Dao-AILab/flash-attention",
+      "url": "https://github.com/Dao-AILab/flash-attention",
+      "verified_head": "ab66326aaa4fe3529fbc00f3156f3a762dd3141b",
+      "kernel_paths": [
+        "csrc/flash_attn/src",
+        "csrc/flash_attn/src/flash_fwd_kernel.h",
+        "csrc/flash_attn/src/flash_bwd_kernel.h",
+        "csrc/flash_attn/src/softmax.h",
+        "csrc/flash_attn/src/kernel_traits.h",
+        "flash_attn/cute",
+        "benchmarks/benchmark_attn.py",
+        "benchmarks/bench_sm90.py"
+      ],
+      "read_when": [
+        "online softmax attention algorithm",
+        "FlashAttention-2/3 CUDA/CUTLASS structure",
+        "FlashAttention-4 CuTe DSL structure",
+        "attention benchmark shape setup"
+      ],
+      "do_not_copy_rule": "Use as a reference implementation family and comparison source, not as direct candidate code."
+    },
+    {
+      "name": "hi-ops / HPC Ops",
+      "repo": "Tencent/hpc-ops",
+      "url": "https://github.com/Tencent/hpc-ops",
+      "verified_head": "8d300e1be9e5e2089e1da3c134f1e237b9063e21",
+      "kernel_paths": [
+        "hpc/attention.py",
+        "hpc/group_gemm.py",
+        "hpc/normalization.py",
+        "hpc/rope.py",
+        "hpc/fuse_moe.py",
+        "hpc/act.py",
+        "src/attention",
+        "src/group_gemm",
+        "src/normalization",
+        "src/rope",
+        "src/fuse_moe",
+        "src/activation",
+        "tests/test_attention_decode_bf16.py",
+        "tests/test_attention_prefill_bf16.py",
+        "tests/test_group_gemm_blockwise.py",
+        "tests/test_normalization.py",
+        "tests/test_rope.py"
+      ],
+      "read_when": [
+        "Tencent hi-ops attention, group GEMM, normalization, RoPE, activation, or fused MoE references",
+        "operator-level API and test design for LLM CUDA kernels",
+        "CUTLASS-backed implementation comparisons"
+      ],
+      "do_not_copy_rule": "Use as a reference source for hypotheses and tests. Do not copy implementation code into a KernelPilot candidate without explicit license and attribution handling."
+    },
+    {
+      "name": "DeepGEMM",
+      "repo": "deepseek-ai/DeepGEMM",
+      "url": "https://github.com/deepseek-ai/DeepGEMM",
+      "verified_head": "714dd1a4a980f7937a74343d19a8eba4fe321480",
+      "kernel_paths": [
+        "csrc/apis/gemm.hpp",
+        "csrc/apis/attention.hpp",
+        "csrc/jit",
+        "csrc/jit_kernels/heuristics",
+        "csrc/jit_kernels/impls",
+        "deep_gemm/include/deep_gemm/common",
+        "deep_gemm/include/deep_gemm/impls",
+        "deep_gemm/include/deep_gemm/mma",
+        "deep_gemm/include/deep_gemm/ptx",
+        "deep_gemm/include/deep_gemm/scheduler",
+        "deep_gemm/testing/bench.py",
+        "tests/test_bf16.py",
+        "tests/test_fp8_fp4.py",
+        "tests/test_attention.py",
+        "tests/test_mega_moe.py"
+      ],
+      "read_when": [
+        "JIT GEMM and grouped GEMM kernels",
+        "SM90/SM100 FP8/FP4/BF16 GEMM scheduling",
+        "TMA/WGMMA/tcgen05 PTX patterns",
+        "DeepSeek-style attention logits and MegaGEMM/MegaMoE layout references"
+      ],
+      "do_not_copy_rule": "Reference only. Treat DeepGEMM kernels as external prior art and use fresh KernelPilot candidates for target tasks."
+    }
+  ],
+  "unconfirmed_or_rejected_aliases": []
+}
