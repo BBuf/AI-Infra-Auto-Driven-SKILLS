@@ -1,5 +1,9 @@
 # sglang MiMo V2 Flash Model PR Optimization History
 
+## 2026-05-15 Source Refresh Addendum
+
+SGLang `origin/main` was rechecked at `50f405816`. No newer MiMo runtime PR was found after `#23811`/`#23945`; however, the current MiMo-V2.5 cookbook/snippet now distinguishes Pro H100/H200 TP=16 multi-node Hopper, B200 TP=8 Blackwell, GB300 TP=8 multi-node, and base MiMo-V2.5 TP=4/TP=8 DP=2 paths. EAGLE still requires `SGLANG_ENABLE_SPEC_V2=1`.
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

@@ -158,19 +158,22 @@ before starting a long sweep.
   the operator has verified the image.
 - vLLM `--max-num-partial-prefills > 1` is model- and runtime-gated. Keep `1`
   in the default pass; raise only after a preflight with the actual model.
-- The historical TensorRT-LLM 1.0.0 validation image accepted
-  `--kv_cache_free_gpu_memory_fraction`; the older `--free_gpu_memory_fraction`
-  exited with a CLI error. TensorRT-LLM was refreshed to 1.2.1 stable and
-  1.3.0 release candidates by 2026-04-28, so re-check the accepted flag name
-  via `--help` on the target image before a real run.
+- TensorRT-LLM current mainline was rechecked at `7021547` on 2026-05-15, and
+  the serving flag evidence from `b9e1945` still applies because newer commits
+  only touched CI/test-waive files. That evidence accepts both
+  `--kv_cache_free_gpu_memory_fraction` and `--free_gpu_memory_fraction` as
+  server aliases. Keep
+  `kv_cache_free_gpu_memory_fraction` in shipped configs because it maps
+  directly to the `KvCacheConfig` field and remains compatible with the older
+  validation image that rejected the shorter alias.
 - The historical TensorRT-LLM 1.0.0 multi-GPU PyTorch-backend validation used
   `--ipc=host`, `--ulimit memlock=-1`, `--ulimit stack=67108864`,
   `--shm-size=16g`, and `NCCL_IB_DISABLE=1` (for single-node) or an equivalent
   NCCL setup. Keep these as a starting point, not as a version-independent
   requirement.
-- The historical TensorRT-LLM 1.0.0 benchmark client took `--backend openai` or
-  `--backend openai-chat`; `--backend trtllm` was rejected. This is separate
-  from the server backend, which is pinned to `pytorch` by this skill.
+- TensorRT-LLM current mainline still exposes benchmark client backends
+  `openai` and `openai-chat`, not `trtllm`. This is separate from the server
+  backend, which is pinned to `pytorch` by this skill.
 - `trtllm` `benchmark_serving --dataset-name random` silently falls back to
   ShareGPT sampling without `--random-ids` (or `--download-path`).
 - `max_seq_len` / `max_model_len` / `context_length` candidates must cover
@@ -449,10 +452,11 @@ pass `--random-ids`, then confirm the behavior on the target TensorRT-LLM image.
 TensorRT-LLM flag names are especially version-sensitive. In the validated
 TensorRT-LLM 1.0.0 image, the KV-cache memory flag accepted by
 `trtllm-serve serve` was `--kv_cache_free_gpu_memory_fraction`, not
-`--free_gpu_memory_fraction`. TensorRT-LLM 1.2.1 is the latest stable GitHub
-release as of 2026-04-28, with 1.3.0 release candidates also published; verify
-the current flag with `trtllm-serve serve --help` before running a search on any
-GPU target.
+`--free_gpu_memory_fraction`. Current mainline was rechecked at `7021547` on
+2026-05-15; the newer commits did not touch serving code, so the `b9e1945`
+serving flag evidence still applies: both aliases are accepted and
+`trtllm-serve` still defaults to the PyTorch backend. Always verify flags with
+`trtllm-serve serve --help` before running a search on any GPU target.
 
 TensorRT-LLM backend policy for this skill:
 

@@ -93,6 +93,7 @@ STATIC_SERVER_FLAGS = {
         "backend",
         "ep_size",
         "extra_llm_api_options",
+        "free_gpu_memory_fraction",
         "host",
         "kv_cache_free_gpu_memory_fraction",
         "max_batch_size",

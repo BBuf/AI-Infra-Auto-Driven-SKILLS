@@ -1,5 +1,9 @@
 # sglang MiMo V2 Flash 模型 PR 优化历史
 
+## 2026-05-15 源码复核补记
+
+已按 SGLang `origin/main` 的 `50f405816` 复核 MiMo 相关代码。没有发现 `#23811`/`#23945` 之后新的 MiMo runtime PR；但当前 MiMo-V2.5 cookbook/snippet 已明确 Pro H100/H200 TP=16 多机 Hopper、B200 TP=8 Blackwell、GB300 TP=8 多机，以及 base MiMo-V2.5 TP=4/TP=8 DP=2 路径，EAGLE 仍需 `SGLANG_ENABLE_SPEC_V2=1`。
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |

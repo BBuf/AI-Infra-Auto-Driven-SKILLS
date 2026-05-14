@@ -6,6 +6,14 @@
 - Extra preserved PRs from prior docs: 3
 - Rule: use this evidence file before changing model-specific skill guidance; it is not only PR titles.
 
+## 2026-05-15 Source Refresh Addendum
+
+vLLM `origin/main` was rechecked at `f3d536059`. One MiMo-specific runtime follow-up landed after the existing `#41029` history entry:
+
+| PR | State | Main source evidence | Guidance update |
+| --- | --- | --- | --- |
+| [#41905](https://github.com/vllm-project/vllm/pull/41905) | merged | `vllm/model_executor/models/mimo_v2_mtp.py` | MiMo-V2.5 MTP support was extended after the original history generation. |
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

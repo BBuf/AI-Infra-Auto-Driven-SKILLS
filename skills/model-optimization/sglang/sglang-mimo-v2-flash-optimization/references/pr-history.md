@@ -6,6 +6,16 @@
 - Extra preserved PRs from prior docs: 5
 - Rule: use this evidence file before changing model-specific skill guidance; it is not only PR titles.
 
+## 2026-05-15 Source Refresh Addendum
+
+SGLang `origin/main` was rechecked at `50f405816`. No newer MiMo-specific runtime PR was found after the existing MiMo-V2.5 entries, but the current cookbook/snippet source changes the operational reading:
+
+| Source | Current guidance |
+| --- | --- |
+| `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx` | MiMo-V2.5-Pro H100/H200 recipes use TP=16 multi-node Hopper paths with FA3 + DeepEP; B200 uses TP=8 single-node Blackwell paths with FA4 + FlashInfer TRT-LLM; GB300 has a separate multi-node TP=8 recipe. |
+| `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx` | Base MiMo-V2.5 keeps TP=4 interleaved recipes, H100/H200 TP=8 DP=2 + DP attention options, and B200/GB300 TP=4 paths. |
+| `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx` | EAGLE guidance still relies on `SGLANG_ENABLE_SPEC_V2=1`; keep this in launch and verification plans. |
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

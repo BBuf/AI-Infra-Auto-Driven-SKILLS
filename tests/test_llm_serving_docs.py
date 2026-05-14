@@ -38,18 +38,18 @@ class LlmServingDocsTest(unittest.TestCase):
         self.assertIn("Do not add backend choices here", search_space)
 
     def test_reference_files_keep_server_backend_pinned(self) -> None:
-        expected_files = [
-            "references/framework-matrix.md",
-            "references/parameter-coverage.md",
-            "references/container-runbook.md",
-            "references/version-notes.md",
-            "references/cookbook-configs.md",
-        ]
+        expected_files = {
+            "SKILL.md": "--backend pytorch",
+            "references/framework-reference.md": "--backend pytorch",
+            "references/container-runbook.md": "--backend pytorch",
+            "references/example-plan.yaml": "backend: pytorch",
+            "configs/cookbook-llm/README.md": "backend: pytorch",
+        }
 
-        for rel_path in expected_files:
+        for rel_path, expected_text in expected_files.items():
             with self.subTest(rel_path=rel_path):
                 text = read_skill_file(*rel_path.split("/"))
-                self.assertIn("--backend pytorch", text)
+                self.assertIn(expected_text, text)
 
         runbook = read_skill_file("references", "container-runbook.md")
         self.assertIn("separate from the server backend pinned above", runbook)
@@ -59,12 +59,11 @@ class LlmServingDocsTest(unittest.TestCase):
     def test_dataset_accuracy_is_not_in_default_contract(self) -> None:
         expected_files = [
             "SKILL.md",
-            "agents/openai.yaml",
             "references/example-plan.yaml",
-            "references/framework-matrix.md",
+            "references/framework-reference.md",
+            "references/container-runbook.md",
             "references/result-schema.md",
-            "references/version-notes.md",
-            "references/cookbook-configs.md",
+            "configs/cookbook-llm/README.md",
         ]
 
         blocked_terms = [

@@ -1,5 +1,9 @@
 # sglang DeepSeek V3.2 Model PR Optimization History
 
+## 2026-05-15 Source Refresh Addendum
+
+SGLang `origin/main` was rechecked at `50f405816`. The DeepSeek-V3.2 NSA/indexer history should now include `#23562` AMD page-size-sensitive pre-shuffle/index-buffer behavior, `#23856` indexer GEMM moving to `torch.mm`, and `#25205` AMD NSA indexer auto-fallback to `page_size=1`.
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

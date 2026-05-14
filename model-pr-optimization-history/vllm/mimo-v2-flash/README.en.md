@@ -1,5 +1,9 @@
 # vllm MiMo V2 Flash Model PR Optimization History
 
+## 2026-05-15 Source Refresh Addendum
+
+vLLM `origin/main` was rechecked at `f3d536059`. `#41905` extends MiMo-V2.5 MTP support in `vllm/model_executor/models/mimo_v2_mtp.py`; include it with the existing `#40967` / `#41029` MiMo-V2.5 history.
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

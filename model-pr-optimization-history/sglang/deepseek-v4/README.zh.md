@@ -1,5 +1,9 @@
 # sglang DeepSeek V4 模型 PR 优化历史
 
+## 2026-05-15 源码复核补记
+
+已按 SGLang `origin/main` 的 `50f405816` 复核 DeepSeek-V4 相关代码。除下方 2026-05-01 生成的历史卡片外，当前优化判断还需要纳入 `#24367` B300 Pro serving config 更新、`#24775` MHC pipeline 优化、`#24793` DSV4 分支修复 cherry-pick、`#24816` SM90 CUTLASS W4A16/MXFP4 MoE、`#24890` KV Compression V2、`#24897` fused SiLU+clamp+FP8 quant、`#24925` TokenSpeed MLA、`#24949` DeepSeek-V4-Pro shared expert TP=1、`#24986` Hopper W4(MXFP4)A16、`#25001` MLA LoRA q_b/kv_b、`#25052` W4A4 MegaMoE、`#25152` H200 FP8 Flash max-throughput env 指引，以及 `#25243` H100 cookbook 更新。
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
