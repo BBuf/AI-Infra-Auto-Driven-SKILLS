@@ -2,7 +2,7 @@
 
 ## 2026-05-15 Source Refresh Addendum
 
-vLLM `origin/main` was rechecked at `f3d536059`. The Kimi history should add `#41778`: `tokenspeed_mla.py`, prefill TokenSpeed MLA, `mla_attention.py`, and CUDA platform gating enable TokenSpeed MLA for DSR1/Kimi-K2.5 on Blackwell FP8-KV paths.
+vLLM `origin/main` was rechecked at `f3d536059`. The Kimi history should add `#41068` Kimi-K2 reasoning streaming end-token guard, `#41778` TokenSpeed MLA for DSR1/Kimi-K2.5 on Blackwell FP8-KV paths, and `#42081` Kimi-K2.5 ViT projector dtype handling.
 
 ## Implementation File Coverage
 

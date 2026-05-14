@@ -8,11 +8,13 @@
 
 ## 2026-05-15 Source Refresh Addendum
 
-vLLM `origin/main` was rechecked at `f3d536059`. Kimi guidance should include the post-history MLA backend change:
+vLLM `origin/main` was rechecked at `f3d536059`. Kimi guidance should include these post-history parser, MLA backend, and dtype fixes:
 
 | PR | State | Main source evidence | Guidance update |
 | --- | --- | --- | --- |
+| [#41068](https://github.com/vllm-project/vllm/pull/41068) | merged | `vllm/reasoning/kimi_k2_reasoning_parser.py`, `tests/reasoning/test_kimi_k2_reasoning_parser.py` | Kimi-K2 reasoning streaming now guards against buffered end-token leakage. |
 | [#41778](https://github.com/vllm-project/vllm/pull/41778) | merged | `vllm/v1/attention/backends/mla/tokenspeed_mla.py`, `vllm/v1/attention/backends/mla/prefill/tokenspeed_mla.py`, `vllm/model_executor/layers/attention/mla_attention.py`, `vllm/platforms/cuda.py` | TokenSpeed MLA is enabled for DSR1/Kimi-K2.5 on Blackwell FP8-KV and should be part of Kimi-K2.5 MLA profiling. |
+| [#42081](https://github.com/vllm-project/vllm/pull/42081) | merged | `vllm/model_executor/models/kimi_k25_vit.py` | Kimi-K2.5 ViT `mm_projector_forward` dtype handling has a post-history fix. |
 
 ## Implementation File Coverage
 

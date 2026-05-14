@@ -145,7 +145,7 @@ H100 notes:
 - SGLang kernel-site reconstruction keeps sampling disabled in the mapping path so the optimized parser does not perturb SGLang table output; equality rechecks matched for `Mixtral-8x7B-Instruct-v0.1`, `Qwen3-32B`, and `nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8`
 - vLLM live capture requires `--output-dir` to match the server `torch_profiler_dir`; the validated H100 flow uses `--profiler-config {"profiler":"torch","torch_profiler_dir":"..."}` and then drives `/start_profile` and `/stop_profile`
 - TensorRT-LLM validation stays on `--backend pytorch`; the H100 flow writes the trace with `TLLM_TORCH_PROFILE_TRACE` and then analyzes the saved trace
-- TensorRT-LLM mainline checked at `b9e1945` on 2026-05-14 still creates the PyTorch profiler with `record_shapes=True` and `with_modules=True`, but not `with_stack=True`; keep the override path for table-quality Python locations unless the target image proves otherwise
+- TensorRT-LLM current mainline was rechecked at `7021547` on 2026-05-15; the newer commits did not touch profiling/server code, so the `b9e1945` profiler evidence still applies: PyTorch profiling uses `record_shapes=True` and `with_modules=True`, but not `with_stack=True`; keep the override path for table-quality Python locations unless the target image proves otherwise
 - on this host, keep all trace roots under `/data/...`, not `/home/...`
 
 ## When To Use It

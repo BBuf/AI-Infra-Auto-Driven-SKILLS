@@ -2,7 +2,7 @@
 
 ## 2026-05-15 源码复核补记
 
-已按 vLLM `origin/main` 的 `f3d536059` 复核 MiMo 相关代码。`#41029` 之后没有发现新的 MiMo runtime/attention 文件改动；本轮 vLLM 新提交主要是多模态/video、CI 或 DeepSeek/Kimi sparse-MLA 相关，因此下方 MiMo 历史仍可作为当前依据。
+已按 vLLM `origin/main` 的 `f3d536059` 复核 MiMo 相关代码。`#41905` 在 `vllm/model_executor/models/mimo_v2_mtp.py` 中扩展 MiMo-V2.5 MTP support；需要和既有 `#40967` / `#41029` MiMo-V2.5 历史一起看。
 
 ## 模型实现文件覆盖
 

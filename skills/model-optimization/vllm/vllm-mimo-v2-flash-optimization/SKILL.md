@@ -13,11 +13,12 @@ the transition from older MiMo checkpoints.
 
 Evidence snapshot:
 
-- vLLM `origin/main`: `f3d536059` on `2026-05-15`; no newer
-  MiMo-specific files changed after `#41029`
+- vLLM `origin/main`: `f3d536059` on `2026-05-15`
 - Latest family update: `#40967` added MiMo-V2.5 Pro and Omni support, moving
   the active runtime surface to `mimo_v2.py`, `mimo_v2_mtp.py`, and
   `mimo_v2_omni.py` while retaining the historical Flash architecture alias.
+- Latest MTP follow-up: `#41905` extends MiMo-V2.5 MTP support in
+  `vllm/model_executor/models/mimo_v2_mtp.py`.
 - Canonical PR notes: `references/pr-history.md`
 - History mirrors: `model-pr-optimization-history/vllm/mimo-v2-flash/README.zh.md` and `README.en.md`
 

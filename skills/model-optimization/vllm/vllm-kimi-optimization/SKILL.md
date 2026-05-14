@@ -13,8 +13,9 @@ Evidence snapshot:
 
 - vLLM `origin/main`: `f3d536059` on `2026-05-15`
 - Support status: supported on current mainline
-- Latest relevant follow-up: `#41778` adds the TokenSpeed MLA backend for
-  DSR1 / Kimi-K2.5 prefill and decode on Blackwell FP8-KV shapes.
+- Latest relevant follow-ups: `#41068` hardens Kimi-K2 reasoning streaming,
+  `#41778` adds the TokenSpeed MLA backend for DSR1 / Kimi-K2.5 prefill and
+  decode on Blackwell FP8-KV shapes, and `#42081` fixes a Kimi-K2.5 ViT dtype issue.
 - Canonical PR notes: `references/pr-history.md`
 - History mirrors: `model-pr-optimization-history/vllm/kimi/README.zh.md` and `README.en.md`
 
@@ -47,6 +48,8 @@ Every PR cited for this family must be based on diff reading, not only PR titles
 - [#36127](https://github.com/vllm-project/vllm/pull/36127) `Add support for moonshotai/Kimi-Audio-7B-Instruct`: Extended the family to audio-conditioned serving.
 - [#37438](https://github.com/vllm-project/vllm/pull/37438) `Add Kimi-K2.5 reasoning/tool parser aliases`: Aligned parser aliases and tool-call IDs with the newer model outputs.
 - [#41778](https://github.com/vllm-project/vllm/pull/41778) `Add TOKENSPEED_MLA backend for DSR1/Kimi K25`: Adds Blackwell FP8-KV TokenSpeed MLA prefill/decode kernels and backend selection hooks.
+- [#42081](https://github.com/vllm-project/vllm/pull/42081) `Fix kimi dtype issue with mm_projector_forward`: Fixes a Kimi-K2.5 ViT projector dtype issue.
+- [#41068](https://github.com/vllm-project/vllm/pull/41068) `KimiK2ReasoningParser`: Guards against buffered end-token in streaming reasoning output.
 
 ## Open Optimization Items
 

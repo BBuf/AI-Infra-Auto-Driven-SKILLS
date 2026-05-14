@@ -29,7 +29,8 @@ Current evidence snapshot:
 - Command generator: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`
 - Diff-reviewed PRs through the first V4 landing: #23605, #23617, #23628, #23622, #23634, #23684, #23689, #23690, #23691, #23697, #23698, #23725, #23737, #23742, #23756, #23776, #23787, #23810, #23817, #23832, #23883
 - New source-reviewed follow-up tracks to account for before new work:
-  #24816, #24890, #24897, #24925, #24986, #25001, #25052, #25243
+  #24367, #24775, #24793, #24816, #24890, #24897, #24925, #24949,
+  #24986, #25001, #25052, #25152, #25243
 
 ## Non-Negotiable Evidence Rule
 
@@ -60,11 +61,14 @@ Treat the DeepSeek-V4 docs as an executable deployment matrix, not ordinary pros
   tokenizer/parser, compressed attention, memory pool, and JIT kernels; #23832
   adds CUDA-graph capture support for the DeepSeek-V4 attention/indexer path.
 - The latest mainline added more DSV4-specific runtime than the first landing:
-  Tokenspeed MLA prefill/decode kernels for Blackwell FP8 KV cache (#24925),
-  KV Compression V2 (#24890), fused SiLU+clamp+FP8 quant (#24897),
-  FlashInfer SM90 CUTLASS MXFP4 MoE W4A16 (#24816), Hopper W4(MXFP4)A16
-  support (#24986), W4A4 MegaMoE (#25052), and H100 deployment commands
-  (#25243).
+  MHC pipeline optimization with DeepGEMM, fused norm, and fused hc_head
+  (#24775); Tokenspeed MLA prefill/decode kernels for Blackwell FP8 KV cache
+  (#24925); DeepSeek-V4-Pro shared-expert TP=1 handling (#24949); KV
+  Compression V2 (#24890); fused SiLU+clamp+FP8 quant (#24897); FlashInfer
+  SM90 CUTLASS MXFP4 MoE W4A16 (#24816); Hopper W4(MXFP4)A16 support
+  (#24986); W4A4 MegaMoE (#25052); B300 Pro accuracy-verified serving config
+  docs (#24367); H200 FP8 Flash max-throughput `SGLANG_JIT_DEEPGEMM_PRECOMPILE=0`
+  guidance (#25152); and H100 deployment commands (#25243).
 - #23776 adds the `swiglu_limit` clamp in `DeepseekV2MLP` for V4 checkpoints;
   keep that model-level fix in mind before debugging meaningless-number output.
 - #23756/#23883 make DeepGEMM warmup behavior part of the deployment surface.

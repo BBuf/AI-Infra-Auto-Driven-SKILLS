@@ -2,7 +2,7 @@
 
 ## 2026-05-15 Source Refresh Addendum
 
-vLLM `origin/main` was rechecked at `f3d536059`. No newer MiMo runtime or attention files changed after `#41029`; the newer vLLM commits in this refresh were mainly multimodal/video, CI, or DeepSeek/Kimi sparse-MLA related, so the MiMo history below remains current.
+vLLM `origin/main` was rechecked at `f3d536059`. `#41905` extends MiMo-V2.5 MTP support in `vllm/model_executor/models/mimo_v2_mtp.py`; include it with the existing `#40967` / `#41029` MiMo-V2.5 history.
 
 ## Implementation File Coverage
 

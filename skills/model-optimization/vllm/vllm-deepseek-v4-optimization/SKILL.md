@@ -14,12 +14,13 @@ tool parser, and follow-up handling for FP4-vs-FP8 expert checkpoints.
 
 Evidence snapshot:
 
-- vLLM `origin/main`: `f3d536059` on `2026-05-15`; no newer
-  DeepSeek-V4-specific files changed after `2317682f9`
+- vLLM `origin/main`: `f3d536059` on `2026-05-15`
 - Support status: landed on current mainline after `#40860`
 - Diff-reviewed PRs: `#40760`, `#40860`, `#40806`, `#41006`, `#40811`
 - New source-reviewed mainline follow-ups to account for:
-  `#40392`, `#41255`, `#41263`, `#41428`, `#41778`, `#42112`, `#42320`, `#42342`
+  `#40392`, `#40871`, `#41255`, `#41263`, `#41428`, `#41443`, `#41522`,
+  `#41536`, `#41694`, `#41778`, `#41801`, `#41812`, `#41946`, `#41957`,
+  `#42112`, `#42169`, `#42236`, `#42320`, `#42342`
 - Canonical PR notes: `references/pr-history.md`
 - History mirrors: `model-pr-optimization-history/vllm/deepseek-v4/README.zh.md`
   and `README.en.md`
@@ -79,6 +80,13 @@ PR cards, not only PR titles.
   integrated Tile `head_compute_mix_kernel` support for DeepSeek-V4.
 - `#42112` fixed TRTLLM ragged MLA prefill workspace warmup in vLLM's MLA
   prefill backend, so warmup behavior is part of current performance triage.
+- Later current-main work also includes AMD DeepSeek-V4 support (`#40871`),
+  a pre-attn GEMM knob (`#41443`), MegaMoE pure-TP guarding (`#41522`), fused
+  `mhc_post_pre` (`#41536`), PP support (`#41694`), DSV3.2/DSV4 parser bool
+  handling (`#41801`), ROCm sparse-MLA Triton kernels (`#41812`), AITER MHC
+  support (`#41946`), disaggregated serving mapping fixes (`#41957`), top-k
+  numerical fixes for unaligned max-model-len (`#42169`), and improved
+  dequant gather K cache kernels (`#42236`).
 
 ## Open Optimization Items
 
@@ -102,6 +110,9 @@ PR cards, not only PR titles.
   against the generic router path.
 - For MLA decode/prefill regressions, verify compile-pass visibility for
   `MLARoPEKVCacheCatFusionPass` and backend selection for `TOKENSPEED_MLA`.
+- On ROCm, compare DSV4 sparse-MLA traces against `rocm_aiter_mla_sparse_dsv4.py`,
+  AITER MHC kernels, and the current dequant gather K cache kernel before
+  designing a new backend.
 - Rerun streaming tool-parser tests to ensure DSML sentinels never leak into
   user-visible content.
 

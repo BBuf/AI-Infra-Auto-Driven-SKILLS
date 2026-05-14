@@ -2,7 +2,7 @@
 
 ## 2026-05-15 源码复核补记
 
-已按 vLLM `origin/main` 的 `f3d536059` 复核 Kimi 相关代码。当前历史需要补充 `#41778`：`tokenspeed_mla.py`、prefill TokenSpeed MLA、`mla_attention.py` 和 CUDA platform gating 共同使 DSR1/Kimi-K2.5 可在 Blackwell FP8-KV 路径上使用 TokenSpeed MLA。
+已按 vLLM `origin/main` 的 `f3d536059` 复核 Kimi 相关代码。当前历史需要补充 `#41068` Kimi-K2 reasoning streaming end-token guard、`#41778` TokenSpeed MLA for DSR1/Kimi-K2.5 on Blackwell FP8-KV paths，以及 `#42081` Kimi-K2.5 ViT projector dtype handling。
 
 ## 模型实现文件覆盖
 

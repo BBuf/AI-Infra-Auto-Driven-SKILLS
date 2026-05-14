@@ -2,7 +2,7 @@
 
 ## 2026-05-15 Source Refresh Addendum
 
-SGLang `origin/main` was rechecked at `50f405816`. In addition to the generated 2026-05-01 history below, current DeepSeek-V4 optimization guidance should include `#24816` SM90 CUTLASS W4A16/MXFP4 MoE, `#24890` KV Compression V2, `#24897` fused SiLU+clamp+FP8 quant, `#24925` TokenSpeed MLA, `#24986` Hopper W4(MXFP4)A16, `#25001` MLA LoRA q_b/kv_b, `#25052` W4A4 MegaMoE, and `#25243` H100 cookbook refresh.
+SGLang `origin/main` was rechecked at `50f405816`. In addition to the generated 2026-05-01 history below, current DeepSeek-V4 optimization guidance should include `#24367` B300 Pro serving-config refresh, `#24775` MHC pipeline optimization, `#24793` DSV4 branch fix cherry-picks, `#24816` SM90 CUTLASS W4A16/MXFP4 MoE, `#24890` KV Compression V2, `#24897` fused SiLU+clamp+FP8 quant, `#24925` TokenSpeed MLA, `#24949` DeepSeek-V4-Pro shared-expert TP=1 handling, `#24986` Hopper W4(MXFP4)A16, `#25001` MLA LoRA q_b/kv_b, `#25052` W4A4 MegaMoE, `#25152` H200 FP8 Flash max-throughput env guidance, and `#25243` H100 cookbook refresh.
 
 ## Implementation File Coverage
 

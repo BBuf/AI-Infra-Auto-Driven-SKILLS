@@ -158,9 +158,11 @@ before starting a long sweep.
   the operator has verified the image.
 - vLLM `--max-num-partial-prefills > 1` is model- and runtime-gated. Keep `1`
   in the default pass; raise only after a preflight with the actual model.
-- TensorRT-LLM current mainline checked on 2026-05-14
-  (`b9e1945`) accepts both `--kv_cache_free_gpu_memory_fraction` and
-  `--free_gpu_memory_fraction` as server aliases. Keep
+- TensorRT-LLM current mainline was rechecked at `7021547` on 2026-05-15, and
+  the serving flag evidence from `b9e1945` still applies because newer commits
+  only touched CI/test-waive files. That evidence accepts both
+  `--kv_cache_free_gpu_memory_fraction` and `--free_gpu_memory_fraction` as
+  server aliases. Keep
   `kv_cache_free_gpu_memory_fraction` in shipped configs because it maps
   directly to the `KvCacheConfig` field and remains compatible with the older
   validation image that rejected the shorter alias.
@@ -450,9 +452,10 @@ pass `--random-ids`, then confirm the behavior on the target TensorRT-LLM image.
 TensorRT-LLM flag names are especially version-sensitive. In the validated
 TensorRT-LLM 1.0.0 image, the KV-cache memory flag accepted by
 `trtllm-serve serve` was `--kv_cache_free_gpu_memory_fraction`, not
-`--free_gpu_memory_fraction`. Current mainline checked at `b9e1945` on
-2026-05-14 accepts both aliases and still defaults `trtllm-serve` to the
-PyTorch backend, but always verify the current flags with
+`--free_gpu_memory_fraction`. Current mainline was rechecked at `7021547` on
+2026-05-15; the newer commits did not touch serving code, so the `b9e1945`
+serving flag evidence still applies: both aliases are accepted and
+`trtllm-serve` still defaults to the PyTorch backend. Always verify flags with
 `trtllm-serve serve --help` before running a search on any GPU target.
 
 TensorRT-LLM backend policy for this skill:
