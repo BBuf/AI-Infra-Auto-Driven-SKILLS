@@ -11,12 +11,17 @@ This skill covers the DeepSeek V3.2 support and optimization ladder active in SG
 
 Current-main snapshot:
 
-- SGLang `origin/main`: `929e00eea` on `2026-04-21`
-- sgl-cookbook `origin/main`: `8ec4d03` on `2026-04-21`
+- SGLang `origin/main`: `50f405816` on `2026-05-14`
+- sgl-cookbook `origin/main`: `7b5bd9c` on `2026-05-13`
 - V3.2 runtime entry: `DeepseekV32ForCausalLM` in `python/sglang/srt/models/deepseek_v2.py`
 - NSA backend: `python/sglang/srt/layers/attention/nsa_backend.py`
 - NSA indexer: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`
 - V3.2 tool parser: `python/sglang/srt/function_call/deepseekv32_detector.py`
+- Latest DSA/NSA follow-ups to account for before new work:
+  `#23562` AMD preshuffle paged MQA plus `page_size=64` for NSA indexer,
+  `#23856` Torch `mm` for indexer GEMM, `#23965` PDL enablement for
+  DSV3.2/GLM5 kernels, `#25205` AMD auto-fallback to `page_size=1` when the
+  AITER preshuffle gluon kernel is unavailable.
 
 The historical evidence lives in:
 
@@ -42,6 +47,8 @@ Record the exact serving shape first:
 - `--nsa-prefill-cp-mode`: `round-robin-split` or `in-seq-split`
 - MTP enabled or not
 - IndexCache knobs: `index_topk_freq`, `index_topk_pattern`
+- AMD NSA indexer page-size mode: preshuffle `page_size=64` when available,
+  auto-fallback `page_size=1` when the AITER preshuffle gluon kernel is absent
 - tool parser: V3.2-Exp may use `deepseekv31` in the cookbook path, standard V3.2 uses `deepseekv32`
 - reasoning parser: `--reasoning-parser deepseek-v3`
 - hardware: H200, B200/GB200/GB300, AMD MI300/MI355, NPU, or another backend
@@ -174,6 +181,10 @@ V3.2 has model-specific defaults:
 - ROCm defaults to TileLang NSA backends
 - Blackwell defaults now prefer TRTLLM NSA kernels
 - Hopper often uses `flashmla_sparse`, `flashmla_kv`, or `fa3`
+- AMD mainline now has both the preshuffle paged-MQA path and the
+  `page_size=1` fallback for unavailable AITER preshuffle kernels; page-size
+  differences are a first-order correctness/performance clue, not a cosmetic
+  launch detail.
 
 Key PRs:
 
@@ -199,6 +210,9 @@ Key PRs:
 - [#22232](https://github.com/sgl-project/sglang/pull/22232)
 - [#22424](https://github.com/sgl-project/sglang/pull/22424)
 - [#22850](https://github.com/sgl-project/sglang/pull/22850)
+- [#23562](https://github.com/sgl-project/sglang/pull/23562)
+- [#23856](https://github.com/sgl-project/sglang/pull/23856)
+- [#25205](https://github.com/sgl-project/sglang/pull/25205)
 
 Success check:
 

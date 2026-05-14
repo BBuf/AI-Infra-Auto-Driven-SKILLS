@@ -6,6 +6,21 @@
 - Extra preserved PRs from prior docs: 5
 - Rule: use this evidence file before changing model-specific skill guidance; it is not only PR titles.
 
+## 2026-05-15 Source Refresh Addendum
+
+SGLang `origin/main` was rechecked at `50f405816`. The generated card set below is still the long-form diff archive, but current DeepSeek-V4 guidance must also account for these source-reviewed mainline changes:
+
+| PR | State | Main source evidence | Guidance update |
+| --- | --- | --- | --- |
+| [#24816](https://github.com/sgl-project/sglang/pull/24816) | merged | `python/sglang/srt/layers/quantization/mxfp4_flashinfer_cutlass_moe.py`, `python/sglang/test/bench_mxfp4_sm90_kernels.py`, `test/registered/quant/test_mxfp4_sm90_cutlass.py` | Treat FlashInfer SM90 CUTLASS W4A16/MXFP4 MoE as a current DeepSeek-V4 kernel option. |
+| [#24890](https://github.com/sgl-project/sglang/pull/24890) | merged | `python/sglang/jit_kernel/dsv4/compress.py`, `python/sglang/srt/layers/attention/dsv4/compressor_v2.py`, `python/sglang/srt/models/deepseek_v4.py` | Prefer KV Compression V2 evidence before changing compressed-attention or memory-pool behavior. |
+| [#24897](https://github.com/sgl-project/sglang/pull/24897) | merged | `python/sglang/srt/models/deepseek_v2.py` | Keep fused SiLU + clamp + FP8 quant in the DeepSeek-V4 MLP path. |
+| [#24925](https://github.com/sgl-project/sglang/pull/24925) | merged | `python/sglang/srt/layers/attention/trtllm_mla_backend.py`, `python/sglang/srt/layers/attention/tokenspeed_mla_backend.py`, `python/sglang/srt/server_args.py` | Include TokenSpeed MLA when profiling Blackwell FP8-KV MLA regressions. |
+| [#24986](https://github.com/sgl-project/sglang/pull/24986) | merged | `python/sglang/srt/layers/quantization/mxfp4.py`, `python/sglang/srt/layers/quantization/mxfp4_marlin_moe.py`, `test/registered/h200/test_deepseek_v4.py` | Hopper W4(MXFP4)A16 now has a checked SGLang path. |
+| [#25001](https://github.com/sgl-project/sglang/pull/25001) | merged | `python/sglang/srt/lora/deepseek_mla_correction.py`, `python/sglang/srt/lora/triton_ops/kv_b_lora_absorbed.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` | MLA LoRA q_b/kv_b support is a live constraint for attention edits. |
+| [#25052](https://github.com/sgl-project/sglang/pull/25052) | merged | `python/sglang/srt/layers/moe/mega_moe.py`, `python/sglang/srt/environ.py`, `test/srt/models/test_megablox_moe.py` | W4A4 MegaMoE should be checked before changing DeepSeek-V4 MoE routing or quantization. |
+| [#25243](https://github.com/sgl-project/sglang/pull/25243) | merged | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` | H100 deployment command guidance was refreshed after the original history generation. |
+
 ## Open Optimization Items
 
 | PR | Signal | Why it matters |

@@ -1,5 +1,9 @@
 # vllm MiMo V2 Flash Model PR Optimization History
 
+## 2026-05-15 Source Refresh Addendum
+
+vLLM `origin/main` was rechecked at `f3d536059`. No newer MiMo runtime or attention files changed after `#41029`; the newer vLLM commits in this refresh were mainly multimodal/video, CI, or DeepSeek/Kimi sparse-MLA related, so the MiMo history below remains current.
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

@@ -145,7 +145,7 @@ H100 notes:
 - SGLang kernel-site reconstruction keeps sampling disabled in the mapping path so the optimized parser does not perturb SGLang table output; equality rechecks matched for `Mixtral-8x7B-Instruct-v0.1`, `Qwen3-32B`, and `nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8`
 - vLLM live capture requires `--output-dir` to match the server `torch_profiler_dir`; the validated H100 flow uses `--profiler-config {"profiler":"torch","torch_profiler_dir":"..."}` and then drives `/start_profile` and `/stop_profile`
 - TensorRT-LLM validation stays on `--backend pytorch`; the H100 flow writes the trace with `TLLM_TORCH_PROFILE_TRACE` and then analyzes the saved trace
-- the 2026-04-22 TensorRT-LLM 1.0.0 `py_executor.py` profiler setup still needed a `with_stack=True` override for table-quality Python locations, and the matrix runner generated that override under `/data/bbuf/validate/unified_llm_profiler_skill/overrides/trtllm`; re-check this on TensorRT-LLM 1.2.1 or any 1.3.x release-candidate image before assuming the override is still required
+- TensorRT-LLM mainline checked at `b9e1945` on 2026-05-14 still creates the PyTorch profiler with `record_shapes=True` and `with_modules=True`, but not `with_stack=True`; keep the override path for table-quality Python locations unless the target image proves otherwise
 - on this host, keep all trace roots under `/data/...`, not `/home/...`
 
 ## When To Use It
@@ -283,7 +283,7 @@ and the trace path is shared with the current machine.
 
 Typical env expectations are:
 
-- `TLLM_PROFILE_START_STOP=1`
+- `TLLM_PROFILE_START_STOP=<start>-<stop>` such as `10-20`
 - `TLLM_TORCH_PROFILE_TRACE=/shared/path/trace.json` or `.json.gz`
 
 Then run:
@@ -318,7 +318,7 @@ The matrix runner does this automatically on H100 before TensorRT-LLM capture st
 
 This is the validated TensorRT-LLM flow on `h100_sglang`:
 
-1. launch `trtllm-serve` with `TLLM_TORCH_PROFILE_TRACE=/data/.../trace.json`
+1. launch `trtllm-serve` with `TLLM_PROFILE_START_STOP=<start>-<stop>` and `TLLM_TORCH_PROFILE_TRACE=/data/.../trace.json`
 2. run a few benchmark requests
 3. analyze the emitted trace with `--input /data/.../trace.json`
 

@@ -1,5 +1,9 @@
 # vllm DeepSeek V3.2 Model PR Optimization History
 
+## 2026-05-15 Source Refresh Addendum
+
+vLLM `origin/main` was rechecked at `f3d536059`. The DeepSeek-V3.2 history should add `#42062`: `vllm/v1/attention/ops/rocm_aiter_mla_sparse.py` enables ROCm AITER/Gluon paged-MQA logits on `gfx950`/MI355X sparse MLA.
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

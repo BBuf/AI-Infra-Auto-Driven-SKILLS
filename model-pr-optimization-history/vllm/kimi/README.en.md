@@ -1,5 +1,9 @@
 # vllm Kimi K2/K2.5/Linear/VL Model PR Optimization History
 
+## 2026-05-15 Source Refresh Addendum
+
+vLLM `origin/main` was rechecked at `f3d536059`. The Kimi history should add `#41778`: `tokenspeed_mla.py`, prefill TokenSpeed MLA, `mla_attention.py`, and CUDA platform gating enable TokenSpeed MLA for DSR1/Kimi-K2.5 on Blackwell FP8-KV paths.
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

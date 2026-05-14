@@ -1,5 +1,9 @@
 # sglang Kimi K2/K2.5/Linear/VL 模型 PR 优化历史
 
+## 2026-05-15 源码复核补记
+
+已按 SGLang `origin/main` 的 `50f405816` 复核 Kimi 相关代码。当前优化历史需要补充 `#23848` Kimi-K2.6 AMD MI30x/MI35x nightly 验证、`#24826` Kimi-K2.5 MLA-based EAGLE3 源码路径，以及 `#25033` MLA EAGLE + DP attention 修复。
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |

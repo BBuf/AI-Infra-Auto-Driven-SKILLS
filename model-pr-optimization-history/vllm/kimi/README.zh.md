@@ -1,5 +1,9 @@
 # vllm Kimi K2/K2.5/Linear/VL 模型 PR 优化历史
 
+## 2026-05-15 源码复核补记
+
+已按 vLLM `origin/main` 的 `f3d536059` 复核 Kimi 相关代码。当前历史需要补充 `#41778`：`tokenspeed_mla.py`、prefill TokenSpeed MLA、`mla_attention.py` 和 CUDA platform gating 共同使 DSR1/Kimi-K2.5 可在 Blackwell FP8-KV 路径上使用 TokenSpeed MLA。
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |

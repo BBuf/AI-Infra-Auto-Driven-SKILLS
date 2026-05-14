@@ -13,7 +13,8 @@ the transition from older MiMo checkpoints.
 
 Evidence snapshot:
 
-- vLLM `origin/main`: `fd74c90d9` on `2026-04-27`
+- vLLM `origin/main`: `f3d536059` on `2026-05-15`; no newer
+  MiMo-specific files changed after `#41029`
 - Latest family update: `#40967` added MiMo-V2.5 Pro and Omni support, moving
   the active runtime surface to `mimo_v2.py`, `mimo_v2_mtp.py`, and
   `mimo_v2_omni.py` while retaining the historical Flash architecture alias.

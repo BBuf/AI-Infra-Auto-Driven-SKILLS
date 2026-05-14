@@ -6,14 +6,20 @@
 - Extra preserved PRs from prior docs: 3
 - Rule: use this evidence file before changing model-specific skill guidance; it is not only PR titles.
 
-## Open Optimization Items
+## 2026-05-15 Source Refresh Addendum
 
-| PR | Signal | Why it matters |
-| --- | --- | --- |
-| [#41263](https://github.com/vllm-project/vllm/pull/41263) | fuse norm/router low latency | Concrete DeepSeek-V4 norm-router fusion precedent. |
-| [#41428](https://github.com/vllm-project/vllm/pull/41428) | fused indexer Q quant | Relevant to FP4 indexer-Q quant ladders. |
-| [#41255](https://github.com/vllm-project/vllm/pull/41255) | Tile kernels and `head_compute_mix_kernel` | Specialized MLA/head-compute kernel work. |
-| [#41441](https://github.com/vllm-project/vllm/pull/41441) | all-reduce plus `mhc_post` fusion | Affects collective-plus-postprocess overlap reads. |
+vLLM `origin/main` was rechecked at `f3d536059`. The generated history below predates several DeepSeek-V4 merges; current guidance should treat these as merged source evidence:
+
+| PR | State | Main source evidence | Guidance update |
+| --- | --- | --- | --- |
+| [#41255](https://github.com/vllm-project/vllm/pull/41255) | merged | `vllm/model_executor/layers/mhc.py`, `vllm/model_executor/models/deepseek_v4.py` | Tile kernels and `head_compute_mix_kernel` are current DeepSeek-V4 specialization evidence. |
+| [#41263](https://github.com/vllm-project/vllm/pull/41263) | merged | `vllm/model_executor/layers/fused_moe/router/norm_gate_linear.py`, `csrc/moe/dsv4_norm_router_gemm*` | Norm/router low-latency fusion is merged and should be compared before new router fusion work. |
+| [#41428](https://github.com/vllm-project/vllm/pull/41428) | merged | `vllm/v1/attention/ops/deepseek_v4_ops/fused_indexer_q.py`, `vllm/v1/attention/ops/deepseek_v4_ops/fused_indexer_q_cutedsl.py` | Fused Indexer-Q quant has a current CUDA/CuTe DSL path. |
+| [#41778](https://github.com/vllm-project/vllm/pull/41778) | merged | `vllm/v1/attention/backends/mla/tokenspeed_mla.py`, `vllm/v1/attention/backends/mla/prefill/tokenspeed_mla.py`, `vllm/model_executor/layers/attention/mla_attention.py` | TokenSpeed MLA affects DSR1/Kimi-K2.5 and is a useful Blackwell FP8-KV comparison point. |
+| [#42112](https://github.com/vllm-project/vllm/pull/42112) | merged | `vllm/v1/attention/backends/mla/trtllm_ragged.py`, `vllm/v1/attention/backends/mla/flashinfer.py` | Ragged MLA prefill workspace warmup is current workspace-management evidence. |
+| [#42320](https://github.com/vllm-project/vllm/pull/42320) | merged | `vllm/model_executor/models/deepseek_v4_mtp.py` | DeepSeek-V4 MTP hidden-state handling has a post-history fix. |
+| [#42342](https://github.com/vllm-project/vllm/pull/42342) | merged | `vllm/v1/attention/ops/deepseek_v4_ops/*` | Cutlass/CuTe dependency handling changed after the original history generation. |
+| [#41441](https://github.com/vllm-project/vllm/pull/41441) | not merged at refresh | PR discussion/code only | Keep as a watch item for all-reduce plus `mhc_post` fusion rather than merged guidance. |
 
 ## Implementation File Coverage
 

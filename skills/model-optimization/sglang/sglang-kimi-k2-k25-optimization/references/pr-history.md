@@ -6,6 +6,16 @@
 - Extra preserved PRs from prior docs: 43
 - Rule: use this evidence file before changing model-specific skill guidance; it is not only PR titles.
 
+## 2026-05-15 Source Refresh Addendum
+
+SGLang `origin/main` was rechecked at `50f405816`. Kimi guidance should include the following newer K2.5/K2.6 source and CI evidence:
+
+| PR | State | Main source evidence | Guidance update |
+| --- | --- | --- | --- |
+| [#23848](https://github.com/sgl-project/sglang/pull/23848) | merged | `test/registered/amd/accuracy/mi30x/test_kimi_k2_eval_amd.py`, `test/registered/amd/accuracy/mi35x/test_kimi_k2_eval_mi35x.py` | Kimi-K2.6 AMD MI30x/MI35x nightly checks should be treated as current validation evidence. |
+| [#24826](https://github.com/sgl-project/sglang/pull/24826) | merged | `python/sglang/srt/models/kimi_k25_eagle3.py`, `python/sglang/srt/hf_transformers_utils.py` | Kimi-K2.5 MLA-based EAGLE3 is now a distinct source path. |
+| [#25033](https://github.com/sgl-project/sglang/pull/25033) | merged | `python/sglang/srt/models/kimi_k25_eagle3.py` | Preserve the MLA EAGLE + DP attention fix when touching Kimi speculative decoding. |
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

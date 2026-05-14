@@ -6,6 +6,10 @@
 - Extra preserved PRs from prior docs: 3
 - Rule: use this evidence file before changing model-specific skill guidance; it is not only PR titles.
 
+## 2026-05-15 Source Refresh Addendum
+
+vLLM `origin/main` was rechecked at `f3d536059`. No MiMo-specific runtime or attention files changed after the existing `#41029` history entry, so the MiMo guidance below remains current for vLLM. Newer vLLM commits in this refresh were unrelated multimodal/video, CI, or DeepSeek/Kimi sparse-MLA changes.
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

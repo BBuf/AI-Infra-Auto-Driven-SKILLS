@@ -14,9 +14,12 @@ tool parser, and follow-up handling for FP4-vs-FP8 expert checkpoints.
 
 Evidence snapshot:
 
-- vLLM `origin/main`: `fd74c90d9` on `2026-04-27`
+- vLLM `origin/main`: `f3d536059` on `2026-05-15`; no newer
+  DeepSeek-V4-specific files changed after `2317682f9`
 - Support status: landed on current mainline after `#40860`
 - Diff-reviewed PRs: `#40760`, `#40860`, `#40806`, `#41006`, `#40811`
+- New source-reviewed mainline follow-ups to account for:
+  `#40392`, `#41255`, `#41263`, `#41428`, `#41778`, `#42112`, `#42320`, `#42342`
 - Canonical PR notes: `references/pr-history.md`
 - History mirrors: `model-pr-optimization-history/vllm/deepseek-v4/README.zh.md`
   and `README.en.md`
@@ -42,6 +45,15 @@ PR cards, not only PR titles.
   `vllm/vllm/tool_parsers/deepseekv4_tool_parser.py`
 - Kernel follow-up in open PR:
   `vllm/csrc/persistent_topk.cuh`, `vllm/csrc/topk.cu`
+- Low-latency fused norm/router path:
+  `vllm/model_executor/layers/fused_moe/router/norm_gate_linear.py`,
+  `vllm/csrc/moe/dsv4_norm_router_gemm*`
+- MLA RoPE + KV-cache cat compile fusion:
+  `vllm/compilation/passes/fusion/mla_rope_kvcache_cat_fusion.py`
+- Blackwell TokenSpeed MLA backend:
+  `vllm/v1/attention/backends/mla/tokenspeed_mla.py`,
+  `vllm/v1/attention/backends/mla/prefill/tokenspeed_mla.py`,
+  `vllm/model_executor/layers/attention/mla_attention.py`
 
 ## Current Main Summary
 
@@ -55,6 +67,18 @@ PR cards, not only PR titles.
 - `#40806` fixed DSML marker leakage for DSV3.2/DSV4 streaming parser paths.
 - Open PR `#40811` extends persistent top-k from FP32-only assumptions to
   BF16 input support, which matters for the DeepSeek V4 sparse indexer path.
+- `#41263` is no longer only an in-flight idea: current mainline includes the
+  DSV4 fused norm + router GEMM low-latency path.
+- `#40392` added the MLA RoPE + unified KV-cache update compile fusion
+  (`fuse_rope_kvcache_cat_mla`), so split RoPE / concat / cache-update ladders
+  should be compared against that pass first.
+- `#41778` added the TokenSpeed MLA backend for Blackwell FP8-KV DeepSeek/Kimi
+  MLA prefill/decode shapes; verify backend selection before writing a new MLA
+  kernel.
+- `#41428` improved the fused DeepSeek-V4 indexer Q quant kernel, and `#41255`
+  integrated Tile `head_compute_mix_kernel` support for DeepSeek-V4.
+- `#42112` fixed TRTLLM ragged MLA prefill workspace warmup in vLLM's MLA
+  prefill backend, so warmup behavior is part of current performance triage.
 
 ## Open Optimization Items
 
@@ -74,6 +98,10 @@ PR cards, not only PR titles.
 - If `#40811` merges, rerun kernel tests in
   `tests/kernels/test_top_k_per_row.py`, especially BF16 decode and long-context
   cases.
+- For low-latency decode, verify `dsv4_norm_router_gemm*` dispatch and compare
+  against the generic router path.
+- For MLA decode/prefill regressions, verify compile-pass visibility for
+  `MLARoPEKVCacheCatFusionPass` and backend selection for `TOKENSPEED_MLA`.
 - Rerun streaming tool-parser tests to ensure DSML sentinels never leak into
   user-visible content.
 

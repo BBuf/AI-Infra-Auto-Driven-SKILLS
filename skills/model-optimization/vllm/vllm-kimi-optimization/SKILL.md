@@ -11,8 +11,10 @@ This skill covers Kimi-VL, Kimi-Linear, Kimi-K2.5, Kimi-Audio, parser aliases, a
 
 Evidence snapshot:
 
-- vLLM mainline checked around `0f7be0f2f76814f80f9091220a5fbbb53912ad00`
+- vLLM `origin/main`: `f3d536059` on `2026-05-15`
 - Support status: supported on current mainline
+- Latest relevant follow-up: `#41778` adds the TokenSpeed MLA backend for
+  DSR1 / Kimi-K2.5 prefill and decode on Blackwell FP8-KV shapes.
 - Canonical PR notes: `references/pr-history.md`
 - History mirrors: `model-pr-optimization-history/vllm/kimi/README.zh.md` and `README.en.md`
 
@@ -32,6 +34,9 @@ Every PR cited for this family must be based on diff reading, not only PR titles
 
 - The Kimi family in vLLM spans vision, linear-attention, K2.5, and audio checkpoints.
 - The most fragile areas are MLA plus FP8/NVFP4 loading, processor evolution, and parser alias compatibility between K2 and K2.5.
+- On Blackwell, Kimi-K2.5 MLA traces must be compared against
+  `TOKENSPEED_MLA` backend eligibility before proposing a new prefill/decode
+  attention kernel.
 
 ## Key Landed PRs
 
@@ -41,6 +46,7 @@ Every PR cited for this family must be based on diff reading, not only PR titles
 - [#33876](https://github.com/vllm-project/vllm/pull/33876) `Fix Kimi-K2.5 NVFP4 checkpoints weight loading`: Closed a concrete launch blocker for quantized K2.5 checkpoints.
 - [#36127](https://github.com/vllm-project/vllm/pull/36127) `Add support for moonshotai/Kimi-Audio-7B-Instruct`: Extended the family to audio-conditioned serving.
 - [#37438](https://github.com/vllm-project/vllm/pull/37438) `Add Kimi-K2.5 reasoning/tool parser aliases`: Aligned parser aliases and tool-call IDs with the newer model outputs.
+- [#41778](https://github.com/vllm-project/vllm/pull/41778) `Add TOKENSPEED_MLA backend for DSR1/Kimi K25`: Adds Blackwell FP8-KV TokenSpeed MLA prefill/decode kernels and backend selection hooks.
 
 ## Open Optimization Items
 

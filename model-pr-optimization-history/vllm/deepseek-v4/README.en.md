@@ -1,5 +1,9 @@
 # vllm DeepSeek V4 Model PR Optimization History
 
+## 2026-05-15 Source Refresh Addendum
+
+vLLM `origin/main` was rechecked at `f3d536059`. Items that were previously open in the generated history are now mainline evidence: `#41255` tile/head-compute kernels, `#41263` norm/router fusion, and `#41428` fused Indexer-Q quant. Also include `#41778` TokenSpeed MLA, `#42112` ragged MLA prefill workspace warmup, `#42320` MTP hidden-state fix, and `#42342` Cutlass/CuTe dependency fix. `#41441` all-reduce + `mhc_post` remains only a watch item.
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

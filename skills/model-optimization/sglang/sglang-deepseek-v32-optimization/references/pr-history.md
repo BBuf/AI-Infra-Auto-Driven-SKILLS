@@ -6,6 +6,16 @@
 - Extra preserved PRs from prior docs: 120
 - Rule: use this evidence file before changing model-specific skill guidance; it is not only PR titles.
 
+## 2026-05-15 Source Refresh Addendum
+
+SGLang `origin/main` was rechecked at `50f405816`. The DeepSeek-V3.2 NSA/indexer guidance should now include these mainline source changes:
+
+| PR | State | Main source evidence | Guidance update |
+| --- | --- | --- | --- |
+| [#23562](https://github.com/sgl-project/sglang/pull/23562) | merged | `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/mem_cache/memory_pool.py` | AMD sparse-attention work introduced page-size-sensitive pre-shuffle/index-buffer behavior. |
+| [#23856](https://github.com/sgl-project/sglang/pull/23856) | merged | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` | Indexer GEMM now uses `torch.mm`; avoid assuming the previous custom GEMM path is still the first tuning target. |
+| [#25205](https://github.com/sgl-project/sglang/pull/25205) | merged | `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py` | AMD now auto-falls back the NSA indexer to `page_size=1`; preserve that fallback in correctness and perf experiments. |
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

@@ -14,8 +14,8 @@ variants, and reasoning parser behavior.
 
 Evidence snapshot:
 
-- SGLang `origin/main`: `6fbad22fe` on `2026-04-28`
-- sgl-cookbook checked around `e88b0fd8ac5b1caa6eb42766035029220053369b`
+- SGLang `origin/main`: `50f405816` on `2026-05-14`
+- sgl-cookbook `origin/main`: `7b5bd9c` on `2026-05-13`
 - Latest family update: `#23808` renamed the runtime to `mimo_v2.py` /
   `mimo_v2_nextn.py` while keeping the old Flash architecture alias loadable;
   `#23851` added the MiMo-V2.5 cookbook and command generator.
@@ -49,6 +49,16 @@ Every PR cited for this family must be based on diff reading, not only PR titles
 - MiMo-V2.5-Pro adds 1.02T text/pro serving with EAGLE speculative decoding;
   MiMo-V2.5 covers the 310B multimodal line and TP=4-interleaved fused
   `qkv_proj` constraints.
+- The current MiMo-V2.5 generator encodes the important deployment split:
+  Pro uses H100/H200 two-node TP=16 with Hopper `fa3 + DeepEP`, B200 single-node
+  TP=8 with Blackwell `fa4 + flashinfer_trtllm`, and GB300 two-node TP=8 with
+  NCCL MNNVL. Base MiMo-V2.5 is multimodal and the checkpoint is TP=4
+  interleaved, so H100/H200 use `--tp 8 --dp 2 --enable-dp-attention`, while
+  B200/GB300 use `--tp 4`.
+- When DP attention is enabled for base MiMo-V2.5, also account for the DP
+  output/encoder flags used by the generator (`--enable-dp-lm-head` and
+  `--mm-enable-dp-encoder`).
+- EAGLE MTP in the current generator requires `SGLANG_ENABLE_SPEC_V2=1`.
 - All-reduce fusion, overlap, hybrid SWA/full attention, MTP/EAGLE, and
   reasoning parser behavior matter more than generic loader work.
 
@@ -65,6 +75,10 @@ Every PR cited for this family must be based on diff reading, not only PR titles
 ## Validation Lanes
 
 - Startup on MiMo-V2-Flash and current MiMo-V2.5/Pro checkpoints or cookbook routes.
+- Base MiMo-V2.5: verify the TP=4-interleaved constraint by checking that
+  effective attention TP per DP group remains 4.
+- Pro: validate the Hopper DeepEP lane separately from the Blackwell
+  `flashinfer_trtllm` lane; do not transfer backend assumptions across them.
 - Re-run the parser, quantization, or multimodal lane that matches this family.
 - Re-check MTP/EAGLE, `qkv_proj` loading, hybrid SWA/full attention, and registered/manual tests after touching loader or processor code.
 

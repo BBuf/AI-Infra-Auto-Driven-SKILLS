@@ -1,5 +1,9 @@
 # vllm DeepSeek V4 模型 PR 优化历史
 
+## 2026-05-15 源码复核补记
+
+已按 vLLM `origin/main` 的 `f3d536059` 复核 DeepSeek-V4 相关代码。下方历史中原先作为开放优化项的 `#41255` tile/head-compute、`#41263` norm/router fusion、`#41428` fused Indexer-Q quant 已进入 main；还应补充 `#41778` TokenSpeed MLA、`#42112` ragged MLA prefill workspace warmup、`#42320` MTP hidden-state 修复、`#42342` Cutlass/CuTe dependency 修复。`#41441` all-reduce + `mhc_post` 仍只作为 watch item。
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |

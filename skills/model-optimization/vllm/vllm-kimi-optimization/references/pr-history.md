@@ -6,6 +6,14 @@
 - Extra preserved PRs from prior docs: 1
 - Rule: use this evidence file before changing model-specific skill guidance; it is not only PR titles.
 
+## 2026-05-15 Source Refresh Addendum
+
+vLLM `origin/main` was rechecked at `f3d536059`. Kimi guidance should include the post-history MLA backend change:
+
+| PR | State | Main source evidence | Guidance update |
+| --- | --- | --- | --- |
+| [#41778](https://github.com/vllm-project/vllm/pull/41778) | merged | `vllm/v1/attention/backends/mla/tokenspeed_mla.py`, `vllm/v1/attention/backends/mla/prefill/tokenspeed_mla.py`, `vllm/model_executor/layers/attention/mla_attention.py`, `vllm/platforms/cuda.py` | TokenSpeed MLA is enabled for DSR1/Kimi-K2.5 on Blackwell FP8-KV and should be part of Kimi-K2.5 MLA profiling. |
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |
