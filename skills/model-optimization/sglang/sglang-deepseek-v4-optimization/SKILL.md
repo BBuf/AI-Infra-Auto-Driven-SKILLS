@@ -12,7 +12,7 @@ DeepSeek-V4 is now both a current-main runtime lane and a cookbook/command-gener
 Current evidence snapshot:
 
 - SGLang `origin/main`: `50f405816` on `2026-05-14`
-- sgl-cookbook `origin/main`: `7b5bd9c` on `2026-05-13`
+- sgl-cookbook `origin/main`: `7b5bd9c` on `2026-05-01`
 - Main runtime: `python/sglang/srt/models/deepseek_v4.py`
 - Main MTP runtime: `python/sglang/srt/models/deepseek_v4_nextn.py`
 - Main attention backend: `python/sglang/srt/layers/attention/deepseek_v4_backend.py`

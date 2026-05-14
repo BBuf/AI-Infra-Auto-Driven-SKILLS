@@ -13,7 +13,7 @@ SGLang `origin/main` was rechecked at `50f405816`. Kimi guidance should include 
 | PR | State | Main source evidence | Guidance update |
 | --- | --- | --- | --- |
 | [#23848](https://github.com/sgl-project/sglang/pull/23848) | merged | `test/registered/amd/accuracy/mi30x/test_kimi_k26_eval_amd.py`, `test/registered/amd/accuracy/mi35x/test_kimi_k26_eval_mi35x.py`, `test/registered/amd/perf/mi30x/test_kimi_k26_perf_amd.py`, `test/registered/amd/perf/mi35x/test_kimi_k26_perf_mi35x.py` | Kimi-K2.6 AMD MI30x/MI35x nightly checks should be treated as current validation evidence. |
-| [#24826](https://github.com/sgl-project/sglang/pull/24826) | merged | `python/sglang/srt/models/kimi_k25_eagle3.py`, `python/sglang/srt/hf_transformers_utils.py` | Kimi-K2.5 MLA-based EAGLE3 is now a distinct source path. |
+| [#24826](https://github.com/sgl-project/sglang/pull/24826) | merged | `python/sglang/srt/models/kimi_k25_eagle3.py`, `python/sglang/srt/utils/hf_transformers_utils.py` | Kimi-K2.5 MLA-based EAGLE3 is now a distinct source path. |
 | [#25033](https://github.com/sgl-project/sglang/pull/25033) | merged | `python/sglang/srt/models/kimi_k25_eagle3.py` | Preserve the MLA EAGLE + DP attention fix when touching Kimi speculative decoding. |
 
 ## Implementation File Coverage

@@ -15,7 +15,7 @@ variants, and reasoning parser behavior.
 Evidence snapshot:
 
 - SGLang `origin/main`: `50f405816` on `2026-05-14`
-- sgl-cookbook `origin/main`: `7b5bd9c` on `2026-05-13`
+- sgl-cookbook `origin/main`: `7b5bd9c` on `2026-05-01`
 - Latest family update: `#23808` renamed the runtime to `mimo_v2.py` /
   `mimo_v2_nextn.py` while keeping the old Flash architecture alias loadable;
   `#23851` added the MiMo-V2.5 cookbook and command generator.

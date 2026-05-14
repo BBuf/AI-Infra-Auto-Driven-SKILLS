@@ -12,7 +12,7 @@ This skill covers the DeepSeek V3.2 support and optimization ladder active in SG
 Current-main snapshot:
 
 - SGLang `origin/main`: `50f405816` on `2026-05-14`
-- sgl-cookbook `origin/main`: `7b5bd9c` on `2026-05-13`
+- sgl-cookbook `origin/main`: `7b5bd9c` on `2026-05-01`
 - V3.2 runtime entry: `DeepseekV32ForCausalLM` in `python/sglang/srt/models/deepseek_v2.py`
 - NSA backend: `python/sglang/srt/layers/attention/nsa_backend.py`
 - NSA indexer: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`

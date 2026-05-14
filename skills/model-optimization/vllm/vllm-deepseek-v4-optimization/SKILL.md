@@ -45,10 +45,10 @@ PR cards, not only PR titles.
 - Tool parser path:
   `vllm/vllm/tool_parsers/deepseekv4_tool_parser.py`
 - Kernel follow-up in open PR:
-  `vllm/csrc/persistent_topk.cuh`, `vllm/csrc/topk.cu`
+  `csrc/persistent_topk.cuh`, `csrc/topk.cu`
 - Low-latency fused norm/router path:
   `vllm/model_executor/layers/fused_moe/router/norm_gate_linear.py`,
-  `vllm/csrc/moe/dsv4_norm_router_gemm*`
+  `csrc/moe/dsv4_norm_router_gemm*`
 - MLA RoPE + KV-cache cat compile fusion:
   `vllm/compilation/passes/fusion/mla_rope_kvcache_cat_fusion.py`
 - Blackwell TokenSpeed MLA backend:

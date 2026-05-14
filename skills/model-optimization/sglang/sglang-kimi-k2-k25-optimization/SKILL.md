@@ -10,7 +10,7 @@ description: PR-backed and current-main optimization manual for `moonshotai/Kimi
 The skill is an optimization ladder. Identify which stage the current code is at, apply the next missing optimization, and only move deeper after the earlier stage is satisfied.
 
 Current-main snapshot: refreshed against SGLang `origin/main` commit `50f405816`
-on `2026-05-14` and sgl-cookbook `7b5bd9c` on `2026-05-13`. Treat the
+on `2026-05-14` and sgl-cookbook `7b5bd9c` on `2026-05-01`. Treat the
 Kimi-K2.5 usage doc, Kimi-K2.6 cookbook, `kimi_k2` parser/OpenAI tests,
 Kimi-K2.5 LoRA regression, AMD/GB300 lanes, Kimi-K2.5 CPU multimodal path,
 AMD Kimi-K2.6 MXFP4 loading, Kimi-K2.5 EAGLE3/MLA, and Kimi-K2-Thinking stress
