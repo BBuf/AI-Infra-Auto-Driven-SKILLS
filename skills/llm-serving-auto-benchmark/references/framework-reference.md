@@ -75,13 +75,19 @@ trtllm-serve serve <model> \
   --backend pytorch \
   --tp_size <tp> \
   --kv_cache_free_gpu_memory_fraction 0.75 \
+  --config <extra-llm-api-options.yaml> \
   --host 0.0.0.0 \
   --port 8000
 ```
 
 Benchmark the OpenAI-compatible endpoint with the TensorRT-LLM serving benchmark
 client or the same OpenAI-compatible client used for the other frameworks. Keep
-server backend choice fixed to `pytorch`.
+server backend choice fixed to `pytorch`. On TensorRT-LLM current mainline
+checked at `b9e1945` on 2026-05-14, `--backend` choices are `pytorch`,
+`tensorrt`/`trt`, and `_autodeploy`, with `pytorch` as the default; this skill
+still rejects non-PyTorch server candidates. `--config` is the current alias for
+extra LLM API options, and `--kv_cache_free_gpu_memory_fraction` /
+`--free_gpu_memory_fraction` are both accepted aliases.
 
 ## Knob Family Mapping
 
@@ -109,5 +115,8 @@ Framework CLIs move quickly. For every real run:
 4. Record which frameworks were model-smoked and which only passed preflight.
 
 Historical validation from April 2026 used SGLang `0.5.10rc0`, vLLM `0.19.1`,
-and TensorRT-LLM `1.0.0`. Treat those notes as old evidence, not as current
-compatibility guarantees.
+and TensorRT-LLM `1.0.0`. A source refresh on 2026-05-15 checked SGLang
+`50f405816`, vLLM `f3d536059`, and TensorRT-LLM `7021547`; the TensorRT-LLM
+serving flag evidence still comes from `b9e1945` because the newer commits did
+not touch serving code. Treat these as version evidence, not as a substitute
+for target-image `--help`.

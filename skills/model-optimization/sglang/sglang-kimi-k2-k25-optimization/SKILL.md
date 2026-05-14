@@ -9,13 +9,14 @@ description: PR-backed and current-main optimization manual for `moonshotai/Kimi
 
 The skill is an optimization ladder. Identify which stage the current code is at, apply the next missing optimization, and only move deeper after the earlier stage is satisfied.
 
-Current-main snapshot: refreshed against SGLang `origin/main` commit `6fbad22fe`
-on `2026-04-28`. Treat the Kimi-K2.5 usage doc, Kimi-K2.6 cookbook,
-`kimi_k2` parser/OpenAI tests, Kimi-K2.5 LoRA regression, AMD/GB300 lanes,
-Kimi-K2.5 CPU multimodal path, AMD Kimi-K2.6 MXFP4 loading, and
-Kimi-K2-Thinking stress test as active validation surfaces.
+Current-main snapshot: refreshed against SGLang `origin/main` commit `50f405816`
+on `2026-05-14` and sgl-cookbook `7b5bd9c` on `2026-05-01`. Treat the
+Kimi-K2.5 usage doc, Kimi-K2.6 cookbook, `kimi_k2` parser/OpenAI tests,
+Kimi-K2.5 LoRA regression, AMD/GB300 lanes, Kimi-K2.5 CPU multimodal path,
+AMD Kimi-K2.6 MXFP4 loading, Kimi-K2.5 EAGLE3/MLA, and Kimi-K2-Thinking stress
+test as active validation surfaces.
 
-Active open PRs define likely updates for W4AFP8 loading, W4A16 DeepEP
+Active upstream tracks define likely updates for W4AFP8 loading, W4A16 DeepEP
 low-latency, Kimi-K2.6 nightly/tuning/speculative-decoding coverage, ROCm fused QK RMSNorm, and
 JIT migration of the older K2 fused gate path. Keep Kimi-K2-Thinking DeepEP plus
 int4/Marlin marked unsupported: [#13789](https://github.com/sgl-project/sglang/pull/13789)
@@ -28,6 +29,12 @@ Latest landed deltas to account for:
   Kimi-K2.6 Quark MXFP4 loading prefix and packed-module mapping.
 - [#23501](https://github.com/sgl-project/sglang/pull/23501) fixed the
   Kimi-K2.5 CPU multimodal path by renaming `grid_thws` to `image_grid_thw`.
+- [#23848](https://github.com/sgl-project/sglang/pull/23848) added Kimi-K2.6
+  AMD nightly test coverage for MI30x and MI35x.
+- [#24826](https://github.com/sgl-project/sglang/pull/24826) added
+  Kimi-K2.5 EAGLE3 MLA support.
+- [#25033](https://github.com/sgl-project/sglang/pull/25033) fixed Kimi-K2.5
+  MLA EAGLE with DP attention.
 
 The historical evidence for every stage lives in:
 
@@ -45,6 +52,8 @@ Record the exact serving shape first:
 
 - K2 or K2.5
 - K2.6 cookbook or runtime path, especially AMD/MXFP4 lanes
+- K2.6 hardware class: H200/B200/B300 use TP=8 in the generator, GB200/GB300
+  and AMD MI300X/MI325X/MI350X/MI355X use TP=4
 - thinking or instruct
 - text-only or multimodal
 - native or quantized weights
@@ -62,7 +71,15 @@ Do not treat K2 and K2.5 as one optimization problem.
 - K2 is mainly a `384 experts` router and MoE hot-path story.
 - K2 thinking adds a separate quantized Marlin MoE story.
 - K2.5 is much more wrapper-heavy: `text_config`, quant mapping, PP/PD/EPLB, multimodal DP encoder, Eagle3, and PCG compatibility all matter.
-- K2.6 currently extends the K2.5-style cookbook and AMD quantization story; do not assume K2.5 MXFP4/W4AFP8 fixes automatically cover K2.6 without checking prefix and packed-module mapping.
+- K2.6 extends the K2.5-style cookbook and AMD quantization story; do not
+  assume K2.5 MXFP4/W4AFP8 fixes automatically cover K2.6 without checking
+  prefix and packed-module mapping.
+- K2.6 generator commands default to `--reasoning-parser kimi_k2` and
+  `--tool-call-parser kimi_k2`; AMD commands also set `SGLANG_USE_AITER=1`,
+  `SGLANG_ROCM_FUSED_DECODE_MLA=0`, `--mem-fraction-static 0.8`, and
+  `--kv-cache-dtype fp8_e4m3`.
+- K2.5 EAGLE3 / MLA validation now needs a DP-attention lane; do not treat a
+  single-TP EAGLE smoke as enough coverage.
 - Current K2/K2.5 serving also has a parser contract: tool calls and thinking output are expected to go through `kimi_k2`.
 - Current open PRs split into three useful future tracks: quantized K2.5 loading/execution, multimodal wrapper correctness, and backend-specific fused norm or MoE kernel work.
 
@@ -100,7 +117,7 @@ Check these active upstream tracks before designing a new Kimi skill or declarin
 - [#22496](https://github.com/sgl-project/sglang/pull/22496): Kimi-K2.5 W4A16 DeepEP low-latency path with JIT Marlin and direct DeepEP MoE work.
 - [#22964](https://github.com/sgl-project/sglang/pull/22964): `KimiGPUProcessorWrapper._cpu_call` output fix after grid metadata changed from `grid_thws` toward `image_grid_thw`.
 - [#23186](https://github.com/sgl-project/sglang/pull/23186): AMD/ROCm BF16 fused QK RMSNorm path for `Kimi-K2.5-MXFP4`.
-- [#23848](https://github.com/sgl-project/sglang/pull/23848): AMD Kimi-K2.6 nightly tests for MI30x/MI35x.
+- [#23848](https://github.com/sgl-project/sglang/pull/23848): AMD Kimi-K2.6 nightly tests for MI30x/MI35x, merged and now part of current validation evidence.
 - [#23381](https://github.com/sgl-project/sglang/pull/23381): MI355X Kimi-K2.6 tuning artifacts.
 - [#23563](https://github.com/sgl-project/sglang/pull/23563): Kimi-K2.6 speculative decoding cookbook plus draft attention backend fix.
 - [#19703](https://github.com/sgl-project/sglang/pull/19703): migrate `kimi_k2_moe_fused_gate` from AOT `sgl-kernel` into the JIT kernel module.

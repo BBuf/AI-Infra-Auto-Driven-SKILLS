@@ -6,6 +6,16 @@
 - Extra preserved PRs from prior docs: 6
 - Rule: use this evidence file before changing model-specific skill guidance; it is not only PR titles.
 
+## 2026-05-15 Source Refresh Addendum
+
+vLLM `origin/main` was rechecked at `f3d536059`. DeepSeek-V3.2 guidance should add the post-history ROCm sparse-MLA changes:
+
+| PR | State | Main source evidence | Guidance update |
+| --- | --- | --- | --- |
+| [#41217](https://github.com/vllm-project/vllm/pull/41217) | merged | `vllm/model_executor/models/deepseek_v2.py`, `vllm/v1/attention/backends/mla/rocm_aiter_mla_sparse.py`, `vllm/v1/attention/ops/rocm_aiter_mla_sparse.py` | ROCm DeepSeek-V3.2 sparse-MLA/indexer optimization changed the AITER sparse backend surface. |
+| [#41835](https://github.com/vllm-project/vllm/pull/41835) | merged | `vllm/model_executor/models/deepseek_v2.py`, `vllm/v1/attention/backends/mla/rocm_aiter_mla.py` | TP4 AITER MLA is enabled for DeepSeek-V3.2 on ROCm. |
+| [#42062](https://github.com/vllm-project/vllm/pull/42062) | merged | `vllm/v1/attention/ops/rocm_aiter_mla_sparse.py` | ROCm AITER/Gluon paged-MQA logits are enabled on `gfx950`/MI355X sparse MLA; AMD traces should check this before attributing paged-MQA cost elsewhere. |
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

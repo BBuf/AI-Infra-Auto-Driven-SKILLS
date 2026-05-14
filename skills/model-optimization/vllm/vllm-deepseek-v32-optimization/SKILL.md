@@ -11,8 +11,11 @@ This skill covers DeepSeek V3.2 sparse-MLA / DSA runtime, indexer, tool parser, 
 
 Evidence snapshot:
 
-- vLLM mainline checked around `0f7be0f2f76814f80f9091220a5fbbb53912ad00`
+- vLLM `origin/main`: `f3d536059` on `2026-05-15`
 - Support status: supported on current mainline
+- Latest relevant follow-ups: `#41217` further optimizes ROCm sparse MLA,
+  `#41835` enables TP4 AITER MLA, and `#42062` enables the ROCm AITER/Gluon
+  paged-MQA logits path on gfx950 / MI355X sparse-MLA shapes.
 - Canonical PR notes: `references/pr-history.md`
 - History mirrors: `model-pr-optimization-history/vllm/deepseek-v32/README.zh.md` and `README.en.md`
 
@@ -30,6 +33,9 @@ Every PR cited for this family must be based on diff reading, not only PR titles
 
 - DeepSeek V3.2 is the major vLLM fork of the DeepSeek line because it adds sparse MLA and indexer logic.
 - Most regressions land in the indexer builder, tokenizer / parser, and specialized decode kernels rather than the generic V3 loader.
+- On AMD gfx950, sparse-MLA traces should now be checked against
+  `vllm/v1/attention/ops/rocm_aiter_mla_sparse.py` before treating paged-MQA
+  logits as a missing kernel.
 
 ## Key Landed PRs
 
@@ -39,6 +45,9 @@ Every PR cited for this family must be based on diff reading, not only PR titles
 - [#29848](https://github.com/vllm-project/vllm/pull/29848) `Add DeepSeek-V3.2 tool parser`: Added the parser surface that cookbook-style V3.2 reasoning deployments depend on.
 - [#33090](https://github.com/vllm-project/vllm/pull/33090) `Fix DeepseekV32 `AssertionError: num_kv_heads == 1``: Removed a hard failure triggered by newer V3.2 attention shapes.
 - [#37421](https://github.com/vllm-project/vllm/pull/37421) `Persistent TopK scheduler for DeepSeek-V3.2 decode`: Modernized the decode scheduler with a CUDAGraph-safe persistent TopK kernel.
+- [#41217](https://github.com/vllm-project/vllm/pull/41217) `dsv3.2 further optimization`: Updates ROCm sparse-MLA indexer and AITER sparse backend paths.
+- [#41835](https://github.com/vllm-project/vllm/pull/41835) `Enable V3.2 TP4 AITER MLA`: Enables AITER MLA for TP4 DeepSeek-V3.2 on ROCm.
+- [#42062](https://github.com/vllm-project/vllm/pull/42062) `Enable gluon paged MQA logits on gfx950`: Enables the ROCm/AITER paged-MQA logits path for MI355X-class sparse MLA.
 
 ## Open Optimization Items
 

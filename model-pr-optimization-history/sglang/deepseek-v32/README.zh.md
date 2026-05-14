@@ -1,5 +1,9 @@
 # sglang DeepSeek V3.2 模型 PR 优化历史
 
+## 2026-05-15 源码复核补记
+
+已按 SGLang `origin/main` 的 `50f405816` 复核 DeepSeek-V3.2 NSA/indexer 代码。当前历史需要补充 `#23562` AMD page-size-sensitive pre-shuffle/index-buffer 行为、`#23856` indexer GEMM 切到 `torch.mm`，以及 `#25205` AMD NSA indexer 自动回退到 `page_size=1`。
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |

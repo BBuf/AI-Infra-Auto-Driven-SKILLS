@@ -808,7 +808,8 @@ def start_remote_profiler(url: str, framework: str) -> None:
             raise RuntimeError(
                 "TensorRT-LLM live torch profiling requires "
                 "a server build that exposes POST /start_profile plus the env vars "
-                "TLLM_PROFILE_START_STOP=1 and TLLM_TORCH_PROFILE_TRACE=/shared/path."
+                "TLLM_PROFILE_START_STOP=<start>-<stop> and "
+                "TLLM_TORCH_PROFILE_TRACE=/shared/path."
             ) from exc
         raise
 

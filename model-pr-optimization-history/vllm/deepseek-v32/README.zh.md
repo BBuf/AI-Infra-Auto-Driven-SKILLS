@@ -1,5 +1,9 @@
 # vllm DeepSeek V3.2 模型 PR 优化历史
 
+## 2026-05-15 源码复核补记
+
+已按 vLLM `origin/main` 的 `f3d536059` 复核 DeepSeek-V3.2 相关代码。当前历史需要补充 `#41217` ROCm sparse-MLA/indexer 优化、`#41835` TP4 AITER MLA 启用，以及 `#42062`：`vllm/v1/attention/ops/rocm_aiter_mla_sparse.py` 在 `gfx950`/MI355X sparse MLA 上启用 ROCm AITER/Gluon paged-MQA logits。
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |

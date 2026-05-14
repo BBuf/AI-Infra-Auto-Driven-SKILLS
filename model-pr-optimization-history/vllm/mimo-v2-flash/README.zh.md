@@ -1,5 +1,9 @@
 # vllm MiMo V2 Flash 模型 PR 优化历史
 
+## 2026-05-15 源码复核补记
+
+已按 vLLM `origin/main` 的 `f3d536059` 复核 MiMo 相关代码。`#41905` 在 `vllm/model_executor/models/mimo_v2_mtp.py` 中扩展 MiMo-V2.5 MTP support；需要和既有 `#40967` / `#41029` MiMo-V2.5 历史一起看。
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |

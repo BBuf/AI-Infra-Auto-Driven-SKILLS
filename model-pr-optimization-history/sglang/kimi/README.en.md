@@ -1,5 +1,9 @@
 # sglang Kimi K2/K2.5/Linear/VL Model PR Optimization History
 
+## 2026-05-15 Source Refresh Addendum
+
+SGLang `origin/main` was rechecked at `50f405816`. The Kimi history should now include `#23848` Kimi-K2.6 AMD MI30x/MI35x nightly validation, `#24826` Kimi-K2.5 MLA-based EAGLE3 source path, and `#25033` MLA EAGLE + DP attention fix.
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |
