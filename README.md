@@ -11,6 +11,7 @@ SGLang optimization, production incidents, and model PR intelligence.**
 [![Core skills](https://img.shields.io/badge/core_skills-8-2f80ed?style=flat-square)](#core-skills)
 [![Model runbooks](https://img.shields.io/badge/model_runbooks-58-8250df?style=flat-square)](#model-optimization-catalog)
 [![PR histories](https://img.shields.io/badge/pr_histories-58-2ea44f?style=flat-square)](#model-optimization-catalog)
+[![KernelPilot](https://img.shields.io/badge/sibling-KernelPilot-ff7b72?style=flat-square)](https://github.com/BBuf/kernel-pilot)
 
 </div>
 
@@ -22,6 +23,11 @@ TensorRT-LLM fairly; split prefill and decode profiler evidence; turn traces
 into kernel and fusion opportunities; triage SGLang production incidents from a
 replay; and keep model-family optimization history close to the code that
 actually changed.
+
+For autonomous GPU kernel optimization loops, pair this repo with
+**[KernelPilot](https://github.com/BBuf/kernel-pilot)**: a Humanize-powered
+kernel agent loop with PR-driven CUDA kernel knowledge, Nsight Compute evidence,
+and clean standalone optimization repos.
 
 If this saves you one stale model-support assumption, one misleading profiler
 trace, or one late-night benchmark loop, a star helps more AI-infra engineers
@@ -38,6 +44,7 @@ find it.
 | **Framework-neutral benchmark schema** | Compare SGLang, vLLM, and TensorRT-LLM with the same workload, SLA, artifact layout, and result table. |
 | **Profiler-to-action fusion catalog** | Connect torch-profiler rows to known SGLang/vLLM fusion, overlap, and torch.compile patterns. |
 | **Replay-first incident triage** | Preserve evidence, reproduce the request path, and choose the next debug tool before patching. |
+| **KernelPilot sibling loop** | Use [KernelPilot](https://github.com/BBuf/kernel-pilot) when the task moves from serving/profiler triage into autonomous CUDA/Triton/CuTe/TileLang kernel iteration. |
 
 ## What You Can Do
 
@@ -48,9 +55,26 @@ find it.
 | Drive a full SGLang performance loop against vLLM/TensorRT-LLM | [`sglang-sota-performance`](skills/sglang-sota-performance/) |
 | Debug a live or recent SGLang serving incident from evidence | [`sglang-prod-incident-triage`](skills/sglang-prod-incident-triage/) |
 | Optimize Triton, CUDA, CUTLASS, or CuTe DSL kernels with AKO4ALL | [`gpu-kernel-ako4all`](skills/gpu-kernel-ako4all/) |
+| Run an autonomous Humanize kernel optimization loop with NCU evidence | [`KernelPilot`](https://github.com/BBuf/kernel-pilot) |
 | Find original public model architecture diagrams | [`model-architecture-diagram`](skills/model-architecture-diagram/) |
 | Reuse model-family optimization knowledge | [`skills/model-optimization`](skills/model-optimization/) |
 | Read model PR evolution by framework | [`model-pr-optimization-history`](model-pr-optimization-history/) |
+
+## Sibling Project: KernelPilot
+
+[KernelPilot](https://github.com/BBuf/kernel-pilot) is the kernel-optimization
+lab for this agent ecosystem.
+
+Use this repo when the agent needs AI-infra operating memory: serving benchmark
+search, profiler triage, SGLang incident handling, model-family runbooks, and
+PR histories. Use KernelPilot when the agent needs to keep optimizing a concrete
+GPU kernel across rounds: build a clean standalone repo, derive or write
+candidates, run correctness tests, benchmark on target hardware, collect Nsight
+Compute evidence, and preserve every source idea in ledgers.
+
+Together, the two repos cover the path from "which model or serving stack is
+slow?" to "which kernel edit should be tried next, and what evidence says it
+worked?"
 
 ## Core Skills
 
