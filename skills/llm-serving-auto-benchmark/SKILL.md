@@ -76,13 +76,11 @@ available, and nothing more:
   running in a container there;
 - a CI runner that can exec into a pre-built image for each framework.
 
-Do not assume a specific operator host name (`h100_sglang`, `b200_*`,
-`radixark*`, `rtx5090_*`, etc.) inside this skill's own workflow. The concrete
-SSH wiring, container names, workspace paths, and HF token plumbing for a given
-box live in the operator-side per-host skills (for example `h100`,
-`h100-sglang-diffusion`, `b200`, `rtx5090`, `radixark02`, `radixark03`); this
-skill only requires that the caller can reach a shell inside a container with
-`sglang`, `vllm`, or `tensorrt_llm` installed.
+Do not assume a specific operator host name inside this skill's own workflow.
+The concrete SSH wiring, container names, workspace paths, and HF token plumbing
+for a given box live in operator-side per-host skills; this skill only requires
+that the caller can reach a shell inside a container with `sglang`, `vllm`, or
+`tensorrt_llm` installed.
 
 Reference files are optional and version-sensitive. Treat historical flag notes
 as evidence from one image, not as a compatibility guarantee for the next run.

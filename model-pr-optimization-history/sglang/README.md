@@ -34,9 +34,9 @@ Current model families:
 
 ## Open Optimization Items
 
-Refresh: `2026-05-01`. Keep these rows close to the relevant model histories and
-skills; move them into the per-model PR history once they land or become
-directly traceable through model implementation files.
+Refresh: `2026-05-01`. Keep these rows close to the relevant model histories;
+move them into the per-model PR history once they land or become directly
+traceable through model implementation files.
 
 | PR | Model / area | Current signal | Why it matters |
 | --- | --- | --- | --- |
