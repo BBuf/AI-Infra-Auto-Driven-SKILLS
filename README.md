@@ -8,7 +8,7 @@ SGLang optimization, production incidents, and model PR intelligence.**
 [![GitHub stars](https://img.shields.io/github/stars/BBuf/AI-Infra-Auto-Driven-SKILLS?style=social)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/BBuf/AI-Infra-Auto-Driven-SKILLS?style=social)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/forks)
 [![Last commit](https://img.shields.io/github/last-commit/BBuf/AI-Infra-Auto-Driven-SKILLS?style=flat-square)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/commits/main)
-[![Core skills](https://img.shields.io/badge/core_skills-9-2f80ed?style=flat-square)](#core-skills)
+[![Core skills](https://img.shields.io/badge/core_skills-8-2f80ed?style=flat-square)](#core-skills)
 [![PR histories](https://img.shields.io/badge/pr_histories-58-2ea44f?style=flat-square)](#model-pr-history-catalog)
 [![KernelPilot](https://img.shields.io/badge/sibling-KernelPilot-ff7b72?style=flat-square)](https://github.com/BBuf/kernel-pilot)
 
@@ -34,7 +34,7 @@ find it.
 
 | Signal | What makes it useful |
 | --- | --- |
-| **9 core operational skills** | Small, focused playbooks for benchmark search, profiler analysis, Humanize-governed SOTA loops, incidents, architecture diagrams, GPU kernels, and H100 runs. |
+| **8 core operational skills** | Small, focused playbooks for benchmark search, profiler analysis, Humanize-governed SOTA loops, incidents, architecture diagrams, H100 runs, and PR history. |
 | **58 PR history dossiers** | A queryable, PR-driven model history knowledge base that records what changed, where it changed, and what risks remain. |
 | **Stage-separated profiler workflow** | Prefill and decode are profiled as separate workloads so hot kernels do not get misattributed. |
 | **Framework-neutral benchmark schema** | Compare SGLang, vLLM, and TensorRT-LLM with the same workload, SLA, artifact layout, and result table. |
@@ -51,7 +51,6 @@ find it.
 | Drive a full SGLang performance loop against vLLM/TensorRT-LLM | [`sglang-sota-performance`](skills/sglang-sota-performance/) |
 | Turn the SGLang SOTA loop into one Humanize-governed model patch loop | [`sglang-sota-humanize-loop`](skills/sglang-sota-humanize-loop/) |
 | Debug a live or recent SGLang serving incident from evidence | [`sglang-prod-incident-triage`](skills/sglang-prod-incident-triage/) |
-| Optimize Triton, CUDA, CUTLASS, or CuTe DSL kernels with AKO4ALL | [`gpu-kernel-ako4all`](skills/gpu-kernel-ako4all/) |
 | Run standalone kernel optimization loops or query kernel evidence | [`KernelPilot`](https://github.com/BBuf/kernel-pilot) |
 | Find original public model architecture diagrams | [`model-architecture-diagram`](skills/model-architecture-diagram/) |
 | Query PR-driven model optimization history by framework | [`model-pr-optimization-history`](model-pr-optimization-history/) |
@@ -65,7 +64,6 @@ find it.
 | [`sglang-sota-performance`](skills/sglang-sota-performance/) | You want SGLang to match or beat the best observed framework result for a specific model and workload. |
 | [`sglang-sota-humanize-loop`](skills/sglang-sota-humanize-loop/) | You want the SGLang SOTA workflow to run as one model-level Humanize RLCR loop after the fixed fair benchmark and profiler gate, with KernelPilot knowledge and `ncu-report` as kernel assists only. |
 | [`sglang-prod-incident-triage`](skills/sglang-prod-incident-triage/) | You need to turn queue growth, timeouts, wrong outputs, crashes, or distributed stalls into a replay and next debug step. |
-| [`gpu-kernel-ako4all`](skills/gpu-kernel-ako4all/) | You need an AKO4ALL-centered loop for Triton, CUDA C++/PTX, CUTLASS/CuTe C++, or CuTe DSL kernel work. |
 | [`model-architecture-diagram`](skills/model-architecture-diagram/) | You need original public architecture diagrams for popular LLM, VLM, MoE, OCR, and diffusion model families. |
 | [`h100`](skills/h100/) | You need an H100 operator runbook for SGLang validation in the configured remote environment. |
 | [`h100-sglang-diffusion`](skills/h100-sglang-diffusion/) | You need the H100 workflow with diffusion-specific paths and validation expectations. |
@@ -145,7 +143,6 @@ cp -r skills/llm-torch-profiler-analysis <agent-skill-dir>/llm-torch-profiler-an
 cp -r skills/sglang-sota-performance <agent-skill-dir>/sglang-sota-performance
 cp -r skills/sglang-sota-humanize-loop <agent-skill-dir>/sglang-sota-humanize-loop
 cp -r skills/sglang-prod-incident-triage <agent-skill-dir>/sglang-prod-incident-triage
-cp -r skills/gpu-kernel-ako4all <agent-skill-dir>/gpu-kernel-ako4all
 cp -r skills/model-architecture-diagram <agent-skill-dir>/model-architecture-diagram
 cp -r model-pr-optimization-history <agent-skill-dir>/model-pr-history-knowledge
 ```
@@ -167,7 +164,6 @@ skills/
 ├── sglang-sota-performance/         # end-to-end SGLang optimization loop
 ├── sglang-sota-humanize-loop/       # Humanize-governed SGLang SOTA loop
 ├── sglang-prod-incident-triage/     # replay-first serving incident workflow
-├── gpu-kernel-ako4all/              # AKO4ALL GPU kernel optimization loop
 ├── model-architecture-diagram/      # public architecture diagram resolver
 ├── h100/                            # H100 operator runbook
 ├── h100-sglang-diffusion/           # H100 diffusion operator runbook
