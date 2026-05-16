@@ -51,7 +51,6 @@ REPOS = {
     "vllm": "vllm-project/vllm",
 }
 HISTORY_ROOT = ROOT / "model-pr-optimization-history"
-SKILL_ROOT = ROOT / "skills" / "model-optimization"
 CACHE_PATH = Path(os.environ.get("MODEL_PR_HISTORY_CACHE", "/tmp/model_pr_history_git_trace_cache_v4.json"))
 TODAY = date.today().isoformat()
 
@@ -504,8 +503,6 @@ def extract_existing_prs(framework: str, model: str) -> set[int]:
     paths = [
         HISTORY_ROOT / framework / model / "README.zh.md",
         HISTORY_ROOT / framework / model / "README.en.md",
-        skill_pr_history_path(framework, model),
-        skill_dir(framework, model) / "SKILL.md",
     ]
     numbers: set[int] = set()
     for path in paths:
@@ -559,20 +556,6 @@ def sort_key(bundle: PRBundle) -> tuple[str, int]:
     info = bundle.info or {}
     when = info.get("merged_at") or info.get("closed_at") or info.get("created_at") or ""
     return (when, bundle.number)
-
-
-def skill_dir(framework: str, model: str) -> Path:
-    if framework == "sglang" and model == "kimi":
-        name = "sglang-kimi-k2-k25-optimization"
-    elif framework == "sglang" and model == "minimax":
-        name = "sglang-minimax-m2-series-optimization"
-    else:
-        name = f"{framework}-{model}-optimization"
-    return SKILL_ROOT / framework / name
-
-
-def skill_pr_history_path(framework: str, model: str) -> Path:
-    return skill_dir(framework, model) / "references" / "pr-history.md"
 
 
 def md_escape(text: str) -> str:
@@ -1123,41 +1106,6 @@ def render_history_en(framework: str, model: str, files: list[str], traces: dict
     return body.strip() + "\n"
 
 
-def render_reference(framework: str, model: str, files: list[str], traces: dict[int, TraceInfo], bundles: list[PRBundle], existing_only_count: int) -> str:
-    title = MODEL_TITLES[model]
-    repo = REPOS[framework]
-    commit = framework_commit(framework)
-    cards = "\n\n".join(card_en(bundle, title) for bundle in bundles)
-    pr_section = f"## Per-PR Diff Audit Cards\n\n{cards}" if cards else no_pr_section_en(title, framework, files)
-    timeline = (
-        timeline_en(bundles)
-        if bundles
-        else "| Date | PR | State | Title | Main files |\n| --- | --- | --- | --- | --- |\n| - | - | - | no archived PR found | - |"
-    )
-    body = clean_block(
-        f"""\
-        # {framework} {title} PR Diff Audit Reference
-
-        - Rebuilt on: {TODAY}
-        - Source baseline: `{repo}` trace worktree commit `{commit}`
-        - Collection: model implementation files were traced with `git log --name-only -- <model-files>`, filtered by model keywords in commit subjects, then every PR card was populated from the GitHub Pull Request files API.
-        - Extra preserved PRs from prior docs: {existing_only_count}
-        - Rule: use this evidence file before changing model-specific skill guidance; it is not only PR titles.
-
-        ## Implementation File Coverage
-
-        {coverage_table(files, traces, repo, "en")}
-
-        ## Timeline
-
-        {timeline}
-
-        {pr_section}
-        """
-    )
-    return body.strip() + "\n"
-
-
 def update_indexes() -> None:
     model_lines = "\n".join(f"- `{model}`" for model in MODEL_ORDER)
     (HISTORY_ROOT / "sglang" / "README.md").write_text(
@@ -1168,33 +1116,6 @@ def update_indexes() -> None:
         f"# vLLM Model PR Optimization History\n\nCurrent model families:\n\n{model_lines}\n",
         encoding="utf-8",
     )
-    sglang_skill_lines = "\n".join(f"- `{skill_dir('sglang', model).name}`" for model in MODEL_ORDER)
-    vllm_skill_lines = "\n".join(f"- `{skill_dir('vllm', model).name}`" for model in MODEL_ORDER)
-    (SKILL_ROOT / "sglang" / "README.md").write_text(
-        f"# SGLang Model Optimization Skills\n\nCurrent SGLang model skills:\n\n{sglang_skill_lines}\n",
-        encoding="utf-8",
-    )
-    (SKILL_ROOT / "vllm" / "README.md").write_text(
-        f"# vLLM Model Optimization Skills\n\nCurrent vLLM model skills:\n\n{vllm_skill_lines}\n",
-        encoding="utf-8",
-    )
-
-
-def ensure_skill_entry(framework: str, model: str) -> None:
-    path = skill_dir(framework, model) / "SKILL.md"
-    if not path.exists():
-        return
-    text = path.read_text(encoding="utf-8")
-    additions: list[str] = []
-    if "references/pr-history.md" not in text:
-        additions.append("- Use `references/pr-history.md` as the audited PR dossier before changing this model path.")
-    if "model-pr-diff-dossier" not in text:
-        additions.append("- Follow the shared `model-pr-diff-dossier` standard for every cited PR.")
-    if "not only PR titles" not in text:
-        additions.append("- PR evidence must be diff-backed, not only PR titles.")
-    if additions:
-        text = text.rstrip() + "\n\n## PR Dossier Standard\n\n" + "\n".join(additions) + "\n"
-        path.write_text(text, encoding="utf-8")
 
 
 def rebuild(dry_run: bool = False) -> None:
@@ -1243,13 +1164,6 @@ def rebuild(dry_run: bool = False) -> None:
                 render_history_en(framework, model, files, traces, bundles, existing_only_count),
                 encoding="utf-8",
             )
-            ref = skill_pr_history_path(framework, model)
-            ref.parent.mkdir(parents=True, exist_ok=True)
-            ref.write_text(
-                render_reference(framework, model, files, traces, bundles, existing_only_count),
-                encoding="utf-8",
-            )
-            ensure_skill_entry(framework, model)
             save_cache(cache)
     save_cache(cache)
 

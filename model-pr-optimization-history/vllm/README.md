@@ -34,8 +34,8 @@ Current model families:
 
 ## Current Watch / Landed Items
 
-Refresh: `2026-05-15`. Keep watch rows close to the relevant model histories and
-skills; landed rows that are already mirrored in per-model docs remain here as
+Refresh: `2026-05-15`. Keep watch rows close to the relevant model histories;
+landed rows that are already mirrored in per-model docs remain here as
 cross-model navigation hints.
 
 | PR | Model / area | Status | Current signal | Why it matters |

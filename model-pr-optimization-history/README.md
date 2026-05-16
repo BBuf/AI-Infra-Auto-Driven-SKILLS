@@ -1,8 +1,11 @@
 # Model PR Optimization History
 
-This directory stores model PR optimization histories by serving framework.
+This directory stores PR-driven model optimization histories by serving
+framework. These records are documentation, not installable per-model skills.
 
 - `sglang/`: SGLang model histories and audits.
 - `vllm/`: vLLM model histories and audits.
 
-Each model history is bilingual when practical (`README.zh.md` and `README.en.md`) and should mirror the corresponding model skill's `references/pr-history.md`.
+Each model history is bilingual when practical (`README.zh.md` and
+`README.en.md`) and should be grounded in inspected PR diffs, source files, and
+validation/risk notes.

@@ -9,8 +9,7 @@ SGLang optimization, production incidents, and model PR intelligence.**
 [![GitHub forks](https://img.shields.io/github/forks/BBuf/AI-Infra-Auto-Driven-SKILLS?style=social)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/forks)
 [![Last commit](https://img.shields.io/github/last-commit/BBuf/AI-Infra-Auto-Driven-SKILLS?style=flat-square)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/commits/main)
 [![Core skills](https://img.shields.io/badge/core_skills-9-2f80ed?style=flat-square)](#core-skills)
-[![Model runbooks](https://img.shields.io/badge/model_runbooks-58-8250df?style=flat-square)](#model-optimization-catalog)
-[![PR histories](https://img.shields.io/badge/pr_histories-58-2ea44f?style=flat-square)](#model-optimization-catalog)
+[![PR histories](https://img.shields.io/badge/pr_histories-58-2ea44f?style=flat-square)](#model-pr-history-catalog)
 [![KernelPilot](https://img.shields.io/badge/sibling-KernelPilot-ff7b72?style=flat-square)](https://github.com/BBuf/kernel-pilot)
 
 </div>
@@ -24,11 +23,8 @@ into kernel and fusion opportunities; triage SGLang production incidents from a
 replay; and keep model-family optimization history close to the code that
 actually changed.
 
-For kernel work, pair this repo with
-**[KernelPilot](https://github.com/BBuf/kernel-pilot)**. Use its full
-`humanize-kernel-agent-loop` for standalone kernel campaigns, or use its
-`kernel-knowledge` and `ncu-report` skills as evidence assists inside an
-SGLang model-level optimization loop.
+For standalone kernel campaigns and kernel evidence tools, see the sibling
+project **[KernelPilot](https://github.com/BBuf/kernel-pilot)**.
 
 If this saves you one stale model-support assumption, one misleading profiler
 trace, or one late-night benchmark loop, a star helps more AI-infra engineers
@@ -39,13 +35,12 @@ find it.
 | Signal | What makes it useful |
 | --- | --- |
 | **9 core operational skills** | Small, focused playbooks for benchmark search, profiler analysis, Humanize-governed SOTA loops, incidents, architecture diagrams, GPU kernels, and H100 runs. |
-| **58 model optimization runbooks** | SGLang and vLLM model-family skills for DeepSeek, Qwen, GLM, Kimi, MiniMax, Llama, Mistral, Nemotron, and more. |
-| **58 PR history dossiers** | Diff-backed model evolution notes that record what changed, where it changed, and what risks remain. |
+| **58 PR history dossiers** | PR-driven model evolution notes that record what changed, where it changed, and what risks remain. |
 | **Stage-separated profiler workflow** | Prefill and decode are profiled as separate workloads so hot kernels do not get misattributed. |
 | **Framework-neutral benchmark schema** | Compare SGLang, vLLM, and TensorRT-LLM with the same workload, SLA, artifact layout, and result table. |
 | **Profiler-to-action fusion catalog** | Connect torch-profiler rows to known SGLang/vLLM fusion, overlap, and torch.compile patterns. |
 | **Replay-first incident triage** | Preserve evidence, reproduce the request path, and choose the next debug tool before patching. |
-| **KernelPilot evidence bridge** | Use [KernelPilot](https://github.com/BBuf/kernel-pilot) either as a standalone kernel loop or as PR-diff knowledge plus NCU evidence inside a model-level SGLang loop. |
+| **KernelPilot sibling project** | Link out to [KernelPilot](https://github.com/BBuf/kernel-pilot) for standalone kernel loops, kernel knowledge, and NCU report workflows. |
 
 ## What You Can Do
 
@@ -57,39 +52,9 @@ find it.
 | Turn the SGLang SOTA loop into one Humanize-governed model patch loop | [`sglang-sota-humanize-loop`](skills/sglang-sota-humanize-loop/) |
 | Debug a live or recent SGLang serving incident from evidence | [`sglang-prod-incident-triage`](skills/sglang-prod-incident-triage/) |
 | Optimize Triton, CUDA, CUTLASS, or CuTe DSL kernels with AKO4ALL | [`gpu-kernel-ako4all`](skills/gpu-kernel-ako4all/) |
-| Run a standalone Humanize kernel optimization loop with PR knowledge and NCU evidence | [`KernelPilot`](https://github.com/BBuf/kernel-pilot) |
+| Run standalone kernel optimization loops or query kernel evidence | [`KernelPilot`](https://github.com/BBuf/kernel-pilot) |
 | Find original public model architecture diagrams | [`model-architecture-diagram`](skills/model-architecture-diagram/) |
-| Reuse model-family optimization knowledge | [`skills/model-optimization`](skills/model-optimization/) |
-| Read model PR evolution by framework | [`model-pr-optimization-history`](model-pr-optimization-history/) |
-
-## Sibling Project: KernelPilot
-
-[KernelPilot](https://github.com/BBuf/kernel-pilot) is the kernel evidence and
-standalone kernel-loop lab for this agent ecosystem. Its current public surface
-is three skills:
-
-| KernelPilot skill | What it contributes |
-| --- | --- |
-| `humanize-kernel-agent-loop` | A full Humanize RLCR loop for a concrete kernel target. It creates a clean standalone optimization repo with bindings, tests, benchmarks, ledgers, lineage, profile artifacts, and review-gated iteration. |
-| `kernel-knowledge` | A local PR-diff-first CUDA knowledge base for Hopper and Blackwell work. The current snapshot has 3,660 PR evidence bundles from 14 upstream repos, 52 wiki synthesis pages, and a 2026-05-16 refresh cutoff. |
-| `ncu-report` | An Nsight Compute workflow that turns baseline/candidate reports into metrics, source counters, PM sampling, PTX/SASS evidence, a bottleneck diagnosis, and exactly one next kernel edit. |
-
-Use this repo when the agent needs AI-infra operating memory: fair serving
-benchmark search, profiler triage, SGLang incident handling, model-family
-runbooks, and PR histories. Use the full KernelPilot loop when the task is a
-standalone kernel campaign and the framework checkout should stay read-only by
-default.
-
-For [`sglang-sota-humanize-loop`](skills/sglang-sota-humanize-loop/), do not
-start a nested KernelPilot or kernel RLCR loop. The SGLang model campaign keeps
-one model-level Humanize RLCR loop. If the bottleneck is kernel-local, borrow
-KernelPilot's `kernel-knowledge` and `ncu-report` evidence, patch the SGLang
-checkout directly, then re-run the same real-model benchmark and profiler before
-claiming progress.
-
-Together, the two repos cover the path from "which model or serving stack is
-slow?" to "which source-backed kernel edit should be tried next, and what
-model-level evidence says it worked?"
+| Read PR-driven model optimization history by framework | [`model-pr-optimization-history`](model-pr-optimization-history/) |
 
 ## Core Skills
 
@@ -105,16 +70,16 @@ model-level evidence says it worked?"
 | [`h100`](skills/h100/) | You need an H100 operator runbook for SGLang validation in the configured remote environment. |
 | [`h100-sglang-diffusion`](skills/h100-sglang-diffusion/) | You need the H100 workflow with diffusion-specific paths and validation expectations. |
 
-## Model Optimization Catalog
+## Model PR History Catalog
 
-The model optimization layer is intentionally larger than the core skill set.
-Core skills teach an agent how to work; model runbooks teach it what has
-already happened for each model family.
+The model optimization layer is now documentation-only: 58 PR-driven history
+dossiers under `model-pr-optimization-history/`. These are not installed as
+skills. They preserve diff-backed model evolution records for SGLang and vLLM.
 
-| Framework | Runbooks | PR histories |
-| --- | ---: | ---: |
-| [SGLang](skills/model-optimization/sglang/) | 29 | 29 |
-| [vLLM](skills/model-optimization/vllm/) | 29 | 29 |
+| Framework | PR histories |
+| --- | ---: |
+| [SGLang](model-pr-optimization-history/sglang/) | 29 |
+| [vLLM](model-pr-optimization-history/vllm/) | 29 |
 
 Covered families include:
 
@@ -154,8 +119,9 @@ The repo is opinionated about evidence because performance work gets noisy fast.
   evidence is needed, and still pass the same real-model benchmark/profile gate.
 - Incident triage should start from replayable evidence instead of changing code
   from symptoms alone.
-- Model optimization notes should point back to PRs, files, diffs, and risk
-  surfaces rather than vague summary text.
+- Model optimization histories should point back to PRs, files, diffs, and risk
+  surfaces rather than vague summary text; they live as PR-driven docs, not
+  per-model skills.
 
 ## Install
 
@@ -171,28 +137,9 @@ cp -r skills/gpu-kernel-ako4all <agent-skill-dir>/gpu-kernel-ako4all
 cp -r skills/model-architecture-diagram <agent-skill-dir>/model-architecture-diagram
 ```
 
-Install a model-family skill when you are working on that exact family:
-
-```bash
-cp -r skills/model-optimization/sglang/sglang-qwen3-core-optimization <agent-skill-dir>/sglang-qwen3-core-optimization
-cp -r skills/model-optimization/vllm/vllm-qwen3-core-optimization <agent-skill-dir>/vllm-qwen3-core-optimization
-```
-
 The H100 skills document a concrete operator environment. If you adapt them,
 replace the SSH alias, container name, and workspace paths in one pass, and keep
 secrets such as Hugging Face tokens out of the repository.
-
-Install KernelPilot separately when you want `kernel-knowledge`, `ncu-report`,
-or the standalone `humanize-kernel-agent-loop`:
-
-```bash
-git clone https://github.com/BBuf/kernel-pilot.git
-cd kernel-pilot
-humanize/scripts/install-skills-codex.sh
-```
-
-After restarting the agent session, the KernelPilot-side skills should be
-available as `humanize-kernel-agent-loop`, `kernel-knowledge`, and `ncu-report`.
 
 ## Repository Map
 
@@ -208,13 +155,11 @@ skills/
 ├── h100/                            # H100 operator runbook
 ├── h100-sglang-diffusion/           # H100 diffusion operator runbook
 └── model-optimization/
-    ├── model-pr-diff-dossier/       # shared PR dossier standard
-    ├── sglang/                      # 29 SGLang model-family runbooks
-    └── vllm/                        # 29 vLLM model-family runbooks
+    └── model-pr-diff-dossier/       # shared PR history quality standard
 
 model-pr-optimization-history/
-├── sglang/                          # 29 SGLang model-family histories
-└── vllm/                            # 29 vLLM model-family histories
+├── sglang/                          # 29 PR-driven SGLang model histories
+└── vllm/                            # 29 PR-driven vLLM model histories
 ```
 
 ## Star History
