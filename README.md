@@ -169,6 +169,13 @@ model-pr-optimization-history/
 └── vllm/                            # 29 PR-driven vLLM model histories
 ```
 
+## Related Projects
+
+- **[Humanize](https://github.com/PolyArch/humanize)** provides the RLCR
+  workflow that powers the Humanize-governed SGLang SOTA loop.
+- **[KernelPilot](https://github.com/BBuf/kernel-pilot)** is the sibling home
+  for standalone kernel loops, kernel knowledge, and NCU report workflows.
+
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=BBuf/AI-Infra-Auto-Driven-SKILLS&type=Date)](https://star-history.com/#BBuf/AI-Infra-Auto-Driven-SKILLS&Date)
