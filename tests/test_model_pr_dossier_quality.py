@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import re
+import subprocess
+import sys
 from pathlib import Path
 
 
@@ -78,12 +80,6 @@ EN_REQUIRED_SECTIONS = [
     "## Per-PR Diff Audit Cards",
 ]
 
-REF_REQUIRED_SECTIONS = [
-    "## Implementation File Coverage",
-    "## Timeline",
-    "## Per-PR Diff Audit Cards",
-]
-
 
 def _pr_cards(text: str) -> list[str]:
     return re.findall(r"^### PR #\d+.*?(?=^### PR #\d+|\Z)", text, re.S | re.M)
@@ -152,12 +148,80 @@ def test_diffusion_model_families_are_removed() -> None:
         for path in [
             HISTORY_ROOT / "sglang" / "README.md",
             HISTORY_ROOT / "vllm" / "README.md",
-            SKILL_ROOT / "sglang" / "README.md",
-            SKILL_ROOT / "vllm" / "README.md",
         ]
     )
     for slug in DIFFUSION_SLUGS:
         assert slug not in index_text
+
+
+def test_model_runbook_skill_directories_are_removed() -> None:
+    assert not (SKILL_ROOT / "sglang").exists()
+    assert not (SKILL_ROOT / "vllm").exists()
+    assert (SKILL_ROOT / "model-pr-diff-dossier" / "SKILL.md").exists()
+    assert not list(SKILL_ROOT.glob("*/*/SKILL.md"))
+    assert not list(SKILL_ROOT.glob("*/*/references/pr-history.md"))
+
+
+def test_model_pr_history_is_queryable_knowledge_base() -> None:
+    skill_text = (HISTORY_ROOT / "SKILL.md").read_text(encoding="utf-8")
+    assert "model-pr-history-knowledge" in skill_text
+    assert "scripts/query.py" in skill_text
+    assert "history/model-pr-history-notes.md" in skill_text
+    assert "not a\nset of per-model skills" in skill_text
+
+    list_result = subprocess.run(
+        [sys.executable, "scripts/query.py", "--list"],
+        cwd=HISTORY_ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    assert "sglang/qwen3-core" in list_result.stdout
+    assert "vllm/qwen3-core" in list_result.stdout
+
+    paths_result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/query.py",
+            "--framework",
+            "sglang",
+            "--model",
+            "qwen3-core",
+            "--paths-only",
+        ],
+        cwd=HISTORY_ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    assert "sglang/qwen3-core/README.en.md" in paths_result.stdout
+
+    search_result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/query.py",
+            "--framework",
+            "sglang",
+            "--model",
+            "qwen3-core",
+            "fused qk norm",
+        ],
+        cwd=HISTORY_ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    assert "sglang/qwen3-core" in search_result.stdout
+    assert "Read:" in search_result.stdout
+
+    model_id_result = subprocess.run(
+        [sys.executable, "scripts/query.py", "Qwen/Qwen3-8B", "--limit", "1"],
+        cwd=HISTORY_ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    assert model_id_result.stdout.startswith("## sglang/qwen3-core")
 
 
 def test_history_docs_share_the_git_traced_diff_card_format() -> None:
@@ -178,28 +242,3 @@ def test_history_docs_share_the_git_traced_diff_card_format() -> None:
             for required in EN_REQUIRED_SECTIONS:
                 assert required in text, f"{path} missing {required}"
             _assert_en_cards(path, text)
-
-
-def test_skill_pr_history_references_share_the_same_card_format() -> None:
-    references = sorted(SKILL_ROOT.glob("*/*/references/pr-history.md"))
-    assert references, "no model optimization skill PR references found"
-
-    for path in references:
-        text = path.read_text(encoding="utf-8")
-        _assert_no_placeholders(path, text)
-        assert "GitHub Pull Request files API" in text, f"{path} must cite the diff source"
-        assert "not only PR titles" in text, f"{path} must reject title-only summaries"
-        for required in REF_REQUIRED_SECTIONS:
-            assert required in text, f"{path} missing {required}"
-        _assert_en_cards(path, text)
-
-
-def test_model_optimization_skill_entries_link_to_diff_dossier_rule() -> None:
-    skill_docs = sorted(SKILL_ROOT.glob("*/*/SKILL.md"))
-    assert skill_docs, "no model optimization skill entry docs found"
-
-    for path in skill_docs:
-        text = path.read_text(encoding="utf-8")
-        assert "references/pr-history.md" in text, f"{path} must link its audited PR history"
-        assert "model-pr-diff-dossier" in text, f"{path} must point to the diff dossier standard"
-        assert "not only PR titles" in text, f"{path} must reject title-only PR summaries"

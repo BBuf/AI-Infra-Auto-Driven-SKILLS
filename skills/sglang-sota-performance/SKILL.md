@@ -28,10 +28,10 @@ Before a real run, read only the needed sections from:
 
 - `../llm-serving-auto-benchmark/SKILL.md`
 - `../llm-torch-profiler-analysis/SKILL.md`
+- `../../model-pr-optimization-history/SKILL.md`
 
-If the run uses a remote GPU host, also read the matching host skill such as
-`h100`, `b200`, `rtx5090`, or another operator-side skill that gives SSH,
-container, workspace, and artifact-path conventions.
+If the run uses a remote GPU host, also read the matching operator-side host
+skill that gives SSH, container, workspace, and artifact-path conventions.
 
 ## Required Inputs
 
@@ -42,6 +42,8 @@ Collect or infer these before starting a long search:
 - target GPU type/count, single-node or multi-node allowance, and VRAM budget
 - workload distribution: dataset, input/output lengths, request rate or
   concurrency mode, sampling settings, endpoint style, and SLA target
+- model-family history slug when it can be inferred from the model id,
+  checkpoint, or SGLang source path
 - frameworks to compare: default to SGLang, vLLM, and TensorRT-LLM when all are
   available in the target environment
 - artifact root for commands, logs, benchmark JSONL, profiles, analysis reports,
@@ -62,6 +64,8 @@ runs/YYYYMMDD_<model_slug>_sota_loop/
   benchmark/
   profiles/
   analysis/
+  history/
+    model-pr-history-notes.md
   patches/
   final_report.md
 ```
@@ -77,6 +81,22 @@ Never write Hugging Face tokens or other secrets into artifacts.
 Verify the model can be loaded by each framework before launching a sweep.
 Capture each framework's current `--help` output and version. Remove candidate
 flags that are not accepted by that exact environment.
+
+Infer the model-family slug and read the model PR history knowledge base before
+patch planning:
+
+- Use `model-pr-optimization-history/scripts/query.py --list` or a keyword
+  search when the slug is unclear.
+- Read the matching SGLang history first for SGLang optimization work.
+- Read the matching vLLM history too when vLLM is the leading competitor, the
+  competitor profile shows a missing SGLang fast path, or vLLM PRs touched the
+  same model stage.
+- Save `history/model-pr-history-notes.md` with the docs read, PR numbers,
+  source files, symbols, validation risks, and the decision each item
+  influenced.
+
+Use these notes as prior implementation knowledge. They do not replace the fair
+benchmark, profiler tables, or real-model validation.
 
 For TensorRT-LLM, keep the server backend within the scope of
 `llm-serving-auto-benchmark`: `trtllm-serve serve --backend pytorch`.
@@ -148,6 +168,10 @@ why the other framework is faster. Compare stage by stage, not just total QPS.
 ### 5. Turn Tables Into A Root Cause
 
 Use the profiler tables to identify the narrowest plausible bottleneck.
+Cross-check the candidate SGLang source path against
+`history/model-pr-history-notes.md` before editing model-specific code; prior
+PRs often reveal guarded fast paths, open risks, or competitor implementations
+that explain the measured gap.
 
 Typical signals:
 
@@ -247,6 +271,7 @@ Return a compact report with:
 - best deployment command per framework
 - benchmark comparison table before patch and after patch
 - SGLang gap analysis, including exact profiler table rows and source paths
+- model PR history docs and PR evidence that influenced source-path selection
 - patch summary with changed files and correctness tests
 - real-model validation result and whether SGLang reached target-environment SOTA
 

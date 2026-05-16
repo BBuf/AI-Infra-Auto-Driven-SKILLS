@@ -5,12 +5,11 @@ the exact image, command, help output, server log, benchmark log, and cleanup
 step for each framework.
 
 This runbook is target-agnostic. Every `docker run` / `docker exec` command
-works on a local box, an SSH-reachable remote GPU host, or a CI runner; the
-per-host skills (for example `h100`, `b200`, `rtx5090`, `radixark02`,
-`radixark03`) only add the SSH wrapper, container name, and workspace path
-for a specific operator box. Substitute those values where you see
-`$SGLANG_CONTAINER`, `$SGLANG_WORKSPACE`, and similar; nothing below assumes
-an H100.
+works on a local box, an SSH-reachable remote GPU host, or a CI runner; any
+operator-side host skill only adds the SSH wrapper, container name, and
+workspace path for a specific box. Substitute those values where you see
+`$SGLANG_CONTAINER`, `$SGLANG_WORKSPACE`, and similar; nothing below assumes a
+specific host.
 
 ## Common Setup
 
@@ -90,10 +89,9 @@ python -m tensorrt_llm.serve.scripts.benchmark_serving --help \
 
 If a prepared GPU host already has a long-running SGLang container (local or
 reached via ssh; name is operator-specific), reuse it via `docker exec`
-instead of creating a new container. The per-host skills — `h100`,
-`h100-sglang-diffusion`, `b200`, `rtx5090`, `radixark02`, `radixark03`,
-and similar — provide the concrete container name and workspace path for
-that box; this runbook assumes the operator substitutes them:
+instead of creating a new container. Operator-side host skills provide the
+concrete container name and workspace path for that box; this runbook assumes
+the operator substitutes them:
 
 ```bash
 docker exec \

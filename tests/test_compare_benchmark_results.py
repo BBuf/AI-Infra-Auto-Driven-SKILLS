@@ -233,8 +233,10 @@ class CompareBenchmarkResultsTest(unittest.TestCase):
         self.assertNotIn("Accuracy Of Selected Deployment Commands", summary)
         self.assertNotIn("MMLU", summary)
         self.assertNotIn("GSM8K", summary)
-        self.assertIn("Mean TTFT ms", summary)
-        self.assertIn("Mean TPOT ms", summary)
+        self.assertIn("P50 TTFT ms", summary)
+        self.assertIn("P50 TPOT ms", summary)
+        self.assertNotIn("Mean TTFT ms", summary)
+        self.assertNotIn("Mean TPOT ms", summary)
         self.assertNotIn("P99 TTFT ms", summary)
         self.assertNotIn("P99 TPOT ms", summary)
 
