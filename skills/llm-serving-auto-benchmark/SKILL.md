@@ -134,7 +134,7 @@ enough for a production choice.
 
 Record each scenario's input/output length distribution in the normalized
 result rows. This is now part of the profiler handoff contract: if SGLang is
-slower and `sglang-sota-performance` invokes `llm-torch-profiler-analysis`,
+slower and `sglang-sota-humanize-loop` invokes `llm-torch-profiler-analysis`,
 the profiler workload must reuse the slow SGLang benchmark scenario lengths
 instead of falling back to its generic prefill `4090->1` and decode `1->2048`
 defaults.

@@ -96,8 +96,8 @@ values; this schema is not tied to H100.
 
 `input_len` and `output_len` are the representative scenario lengths used for
 synthetic workloads or a named bucket. For custom production-like datasets,
-also include p50/p95 buckets when available. These fields let
-`sglang-sota-performance` pass the slow benchmark shape directly into
+also include p50/p95 buckets when available. These fields let the
+`sglang-sota-humanize-loop` skill pass the slow benchmark shape directly into
 `llm-torch-profiler-analysis`:
 
 - prefill profile: `--prefill-input-len <slow input len>` and
