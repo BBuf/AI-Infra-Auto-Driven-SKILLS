@@ -202,7 +202,7 @@ Allowed `--profile-workload` values:
 - `decode`: capture only the one-input / long-output workload
 - `legacy`: keep the old `--probe-prompt` / `--probe-max-new-tokens` behavior
 
-For `sglang-sota-performance`, do not use the defaults if the slow SGLang
+For `sglang-sota-humanize-loop`, do not use the defaults if the slow SGLang
 benchmark scenario has a known input/output distribution.
 Set the profiler lengths from that slow scenario instead: prefill uses the slow
 input length with output `1`, and decode uses input `1` with the slow output
