@@ -72,8 +72,8 @@ qwen3-next, qwen35, qwen36, step35
 
 ## SOTA Loop Contract
 
-For `sglang-sota-performance` and `sglang-sota-humanize-loop`, this knowledge
-base is an early context source:
+For `sglang-sota-humanize-loop`, this knowledge base is an early context
+source:
 
 - Read it after model identification and before patch planning.
 - Include the history paths and key PR evidence in `analysis/root-cause.md` or

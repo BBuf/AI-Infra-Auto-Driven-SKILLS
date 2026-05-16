@@ -11,8 +11,8 @@ Use this skill when the user names a model and wants the SGLang serving path to
 autonomously keep improving until it matches or beats the best reproducible
 vLLM or TensorRT-LLM result in the same target environment.
 
-This is a Humanize wrapper around the existing SOTA workflow. It separates the
-work into two phases:
+This is the repository's top-level SGLang SOTA workflow. It separates the work
+into two phases:
 
 1. A fixed baseline phase that must be completed once before any code patching.
 2. A Humanize RLCR phase that iterates on SGLang patches using benchmark and
@@ -46,7 +46,6 @@ only because the optional knowledge repository is unavailable.
 
 Read these before a real run:
 
-- `../sglang-sota-performance/SKILL.md`
 - `../llm-serving-auto-benchmark/SKILL.md`
 - `../llm-torch-profiler-analysis/SKILL.md`
 - `../../model-pr-optimization-history/SKILL.md`
