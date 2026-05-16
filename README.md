@@ -24,10 +24,11 @@ into kernel and fusion opportunities; triage SGLang production incidents from a
 replay; and keep model-family optimization history close to the code that
 actually changed.
 
-For autonomous GPU kernel optimization loops, pair this repo with
-**[KernelPilot](https://github.com/BBuf/kernel-pilot)**: a Humanize-powered
-kernel agent loop with PR-driven CUDA kernel knowledge, Nsight Compute evidence,
-and clean standalone optimization repos.
+For kernel work, pair this repo with
+**[KernelPilot](https://github.com/BBuf/kernel-pilot)**. Use its full
+`humanize-kernel-agent-loop` for standalone kernel campaigns, or use its
+`kernel-knowledge` and `ncu-report` skills as evidence assists inside an
+SGLang model-level optimization loop.
 
 If this saves you one stale model-support assumption, one misleading profiler
 trace, or one late-night benchmark loop, a star helps more AI-infra engineers
@@ -44,7 +45,7 @@ find it.
 | **Framework-neutral benchmark schema** | Compare SGLang, vLLM, and TensorRT-LLM with the same workload, SLA, artifact layout, and result table. |
 | **Profiler-to-action fusion catalog** | Connect torch-profiler rows to known SGLang/vLLM fusion, overlap, and torch.compile patterns. |
 | **Replay-first incident triage** | Preserve evidence, reproduce the request path, and choose the next debug tool before patching. |
-| **KernelPilot sibling loop** | Use [KernelPilot](https://github.com/BBuf/kernel-pilot) when the task moves from serving/profiler triage into autonomous CUDA/Triton/CuTe/TileLang kernel iteration. |
+| **KernelPilot evidence bridge** | Use [KernelPilot](https://github.com/BBuf/kernel-pilot) either as a standalone kernel loop or as PR-diff knowledge plus NCU evidence inside a model-level SGLang loop. |
 
 ## What You Can Do
 
@@ -53,29 +54,42 @@ find it.
 | Search the best serving command across frameworks | [`llm-serving-auto-benchmark`](skills/llm-serving-auto-benchmark/) |
 | Explain a torch-profiler trace with kernel, overlap, and fusion tables | [`llm-torch-profiler-analysis`](skills/llm-torch-profiler-analysis/) |
 | Drive a full SGLang performance loop against vLLM/TensorRT-LLM | [`sglang-sota-performance`](skills/sglang-sota-performance/) |
-| Turn the SGLang SOTA loop into a Humanize-governed autonomous patch loop | [`sglang-sota-humanize-loop`](skills/sglang-sota-humanize-loop/) |
+| Turn the SGLang SOTA loop into one Humanize-governed model patch loop | [`sglang-sota-humanize-loop`](skills/sglang-sota-humanize-loop/) |
 | Debug a live or recent SGLang serving incident from evidence | [`sglang-prod-incident-triage`](skills/sglang-prod-incident-triage/) |
 | Optimize Triton, CUDA, CUTLASS, or CuTe DSL kernels with AKO4ALL | [`gpu-kernel-ako4all`](skills/gpu-kernel-ako4all/) |
-| Run an autonomous Humanize kernel optimization loop with NCU evidence | [`KernelPilot`](https://github.com/BBuf/kernel-pilot) |
+| Run a standalone Humanize kernel optimization loop with PR knowledge and NCU evidence | [`KernelPilot`](https://github.com/BBuf/kernel-pilot) |
 | Find original public model architecture diagrams | [`model-architecture-diagram`](skills/model-architecture-diagram/) |
 | Reuse model-family optimization knowledge | [`skills/model-optimization`](skills/model-optimization/) |
 | Read model PR evolution by framework | [`model-pr-optimization-history`](model-pr-optimization-history/) |
 
 ## Sibling Project: KernelPilot
 
-[KernelPilot](https://github.com/BBuf/kernel-pilot) is the kernel-optimization
-lab for this agent ecosystem.
+[KernelPilot](https://github.com/BBuf/kernel-pilot) is the kernel evidence and
+standalone kernel-loop lab for this agent ecosystem. Its current public surface
+is three skills:
 
-Use this repo when the agent needs AI-infra operating memory: serving benchmark
-search, profiler triage, SGLang incident handling, model-family runbooks, and
-PR histories. Use KernelPilot when the agent needs to keep optimizing a concrete
-GPU kernel across rounds: build a clean standalone repo, derive or write
-candidates, run correctness tests, benchmark on target hardware, collect Nsight
-Compute evidence, and preserve every source idea in ledgers.
+| KernelPilot skill | What it contributes |
+| --- | --- |
+| `humanize-kernel-agent-loop` | A full Humanize RLCR loop for a concrete kernel target. It creates a clean standalone optimization repo with bindings, tests, benchmarks, ledgers, lineage, profile artifacts, and review-gated iteration. |
+| `kernel-knowledge` | A local PR-diff-first CUDA knowledge base for Hopper and Blackwell work. The current snapshot has 3,660 PR evidence bundles from 14 upstream repos, 52 wiki synthesis pages, and a 2026-05-16 refresh cutoff. |
+| `ncu-report` | An Nsight Compute workflow that turns baseline/candidate reports into metrics, source counters, PM sampling, PTX/SASS evidence, a bottleneck diagnosis, and exactly one next kernel edit. |
+
+Use this repo when the agent needs AI-infra operating memory: fair serving
+benchmark search, profiler triage, SGLang incident handling, model-family
+runbooks, and PR histories. Use the full KernelPilot loop when the task is a
+standalone kernel campaign and the framework checkout should stay read-only by
+default.
+
+For [`sglang-sota-humanize-loop`](skills/sglang-sota-humanize-loop/), do not
+start a nested KernelPilot or kernel RLCR loop. The SGLang model campaign keeps
+one model-level Humanize RLCR loop. If the bottleneck is kernel-local, borrow
+KernelPilot's `kernel-knowledge` and `ncu-report` evidence, patch the SGLang
+checkout directly, then re-run the same real-model benchmark and profiler before
+claiming progress.
 
 Together, the two repos cover the path from "which model or serving stack is
-slow?" to "which kernel edit should be tried next, and what evidence says it
-worked?"
+slow?" to "which source-backed kernel edit should be tried next, and what
+model-level evidence says it worked?"
 
 ## Core Skills
 
@@ -84,7 +98,7 @@ worked?"
 | [`llm-serving-auto-benchmark`](skills/llm-serving-auto-benchmark/) | You need a fair, bounded serving benchmark search for SGLang, vLLM, TensorRT-LLM, or another OpenAI-compatible stack. |
 | [`llm-torch-profiler-analysis`](skills/llm-torch-profiler-analysis/) | You need a three-table profiler report that keeps `extend/prefill` and `decode` evidence separate. |
 | [`sglang-sota-performance`](skills/sglang-sota-performance/) | You want SGLang to match or beat the best observed framework result for a specific model and workload. |
-| [`sglang-sota-humanize-loop`](skills/sglang-sota-humanize-loop/) | You want the SGLang SOTA workflow to run as a Humanize RLCR loop after the fixed fair benchmark and profiler gate. |
+| [`sglang-sota-humanize-loop`](skills/sglang-sota-humanize-loop/) | You want the SGLang SOTA workflow to run as one model-level Humanize RLCR loop after the fixed fair benchmark and profiler gate, with KernelPilot knowledge and `ncu-report` as kernel assists only. |
 | [`sglang-prod-incident-triage`](skills/sglang-prod-incident-triage/) | You need to turn queue growth, timeouts, wrong outputs, crashes, or distributed stalls into a replay and next debug step. |
 | [`gpu-kernel-ako4all`](skills/gpu-kernel-ako4all/) | You need an AKO4ALL-centered loop for Triton, CUDA C++/PTX, CUTLASS/CuTe C++, or CuTe DSL kernel work. |
 | [`model-architecture-diagram`](skills/model-architecture-diagram/) | You need original public architecture diagrams for popular LLM, VLM, MoE, OCR, and diffusion model families. |
@@ -132,6 +146,12 @@ The repo is opinionated about evidence because performance work gets noisy fast.
   table.
 - SOTA claims should be scoped to the exact model, hardware, framework commits,
   precision, workload, and SLA used in the run.
+- Humanize SGLang SOTA loops should keep the fair benchmark and required
+  profiler evidence outside the patch loop, then use one model-level RLCR loop
+  for SGLang code changes.
+- Kernel-local SGLang fixes inside that loop should cite KernelPilot knowledge
+  pages or PR bundles when they influence code, store NCU digests when counter
+  evidence is needed, and still pass the same real-model benchmark/profile gate.
 - Incident triage should start from replayable evidence instead of changing code
   from symptoms alone.
 - Model optimization notes should point back to PRs, files, diffs, and risk
@@ -161,6 +181,18 @@ cp -r skills/model-optimization/vllm/vllm-qwen3-core-optimization <agent-skill-d
 The H100 skills document a concrete operator environment. If you adapt them,
 replace the SSH alias, container name, and workspace paths in one pass, and keep
 secrets such as Hugging Face tokens out of the repository.
+
+Install KernelPilot separately when you want `kernel-knowledge`, `ncu-report`,
+or the standalone `humanize-kernel-agent-loop`:
+
+```bash
+git clone https://github.com/BBuf/kernel-pilot.git
+cd kernel-pilot
+humanize/scripts/install-skills-codex.sh
+```
+
+After restarting the agent session, the KernelPilot-side skills should be
+available as `humanize-kernel-agent-loop`, `kernel-knowledge`, and `ncu-report`.
 
 ## Repository Map
 
