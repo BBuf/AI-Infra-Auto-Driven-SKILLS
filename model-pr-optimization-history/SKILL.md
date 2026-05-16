@@ -82,4 +82,3 @@ base is an early context source:
   prior changes on that file before writing a new patch.
 - If a competitor is faster, search that competitor's model history for the
   same model family and stage before assuming the gap is kernel-local.
-
