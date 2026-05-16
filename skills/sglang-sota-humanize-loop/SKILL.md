@@ -1,6 +1,6 @@
 ---
 name: sglang-sota-humanize-loop
-description: "Run an autonomous Humanize-governed SGLang SOTA performance loop for one LLM model: first perform the fixed fair SGLang/vLLM/TensorRT-LLM deployment search and benchmark, then profile every required leading framework, compare kernel/overlap/fusion evidence, patch SGLang code, optionally invoke KernelPilot for slow kernels, and iterate until SGLang matches or beats the best observed framework under the same workload and SLA."
+description: "Run an autonomous Humanize-governed SGLang SOTA performance loop for one LLM model: first perform the fixed fair SGLang/vLLM/TensorRT-LLM deployment search and benchmark, then profile every required leading framework, compare kernel/overlap/fusion evidence, patch SGLang code, optionally use KernelPilot knowledge and ncu-report evidence for kernel-local fixes, and iterate until SGLang matches or beats the best observed framework under the same workload and SLA."
 ---
 
 # SGLang SOTA Humanize Loop
@@ -18,11 +18,13 @@ work into two phases:
 2. A Humanize RLCR phase that iterates on SGLang patches using benchmark and
    profiler evidence until the stop criteria are met.
 
-Run only one Humanize RLCR loop at a time in one Codex session. KernelPilot is a
-serialized handoff, not a nested live loop inside an active SGLang RLCR round.
-Do not rely on resuming the exact same `.humanize/rlcr/<timestamp>` session
-after a KernelPilot loop. Preserve model-loop continuity with checkpoint files
-and start a fresh SGLang continuation RLCR after KernelPilot completes.
+Run exactly one Humanize RLCR loop for the model campaign. Do not start a
+KernelPilot Humanize loop, `humanize-kernel-agent-loop`, or any second
+`setup-rlcr-loop.sh` session from this skill. KernelPilot is used only as a
+knowledge and source-evidence repository, while `ncu-report` supplies measured
+kernel diagnostics. All SGLang patches, including kernel patches, stay inside
+the same model-level RLCR loop and are accepted only after real-model
+benchmark/profile revalidation.
 
 ## Runtime Roots
 
@@ -31,13 +33,13 @@ The installer hydrates these local paths:
 ```text
 Humanize runtime: /Users/bbuf/.codex/skills/humanize
 KernelPilot root: /Users/bbuf/工作目录/Common/kernel-pilot
-KernelPilot loop skill: /Users/bbuf/.codex/skills/humanize-kernel-agent-loop/SKILL.md
+ncu-report skill: /Users/bbuf/.codex/skills/ncu-report/SKILL.md
 ```
 
 If the Humanize runtime is missing, locate a skill directory containing
-`scripts/setup-rlcr-loop.sh`. If KernelPilot is missing and a kernel-level
-optimization is needed, locate a repository containing `knowledge/index.json`
-and `references/kernel-source-catalog.md`.
+`scripts/setup-rlcr-loop.sh`. If KernelPilot is missing, continue with
+SGLang/vLLM/TensorRT-LLM source and PR evidence; do not block the model loop
+only because the optional knowledge repository is unavailable.
 
 ## Companion Skills
 
@@ -46,12 +48,15 @@ Read these before a real run:
 - `../sglang-sota-performance/SKILL.md`
 - `../llm-serving-auto-benchmark/SKILL.md`
 - `../llm-torch-profiler-analysis/SKILL.md`
+- `/Users/bbuf/.codex/skills/ncu-report/SKILL.md` when a kernel edit needs
+  Nsight Compute evidence
 - the matching host or operator skill for SSH, container, GPU, and artifact
   conventions
 
-Read the KernelPilot loop skill only after profiler evidence identifies a
-specific slow kernel family or candidate kernel path that should be optimized
-outside the framework checkout.
+Read KernelPilot knowledge files only after profiler evidence identifies a
+specific slow kernel family or candidate kernel path. Use them for source ideas,
+PR references, implementation patterns, and provenance checks, not for starting a
+separate optimization loop.
 
 ## Contract
 
@@ -69,7 +74,7 @@ and initial root-cause report exist.
 
 Treat the model optimization campaign as the durable unit, not one Humanize
 session directory. The campaign is recoverable from the run artifact root,
-checkpoint files, benchmark/profile artifacts, ledgers, and continuation plan.
+checkpoint files, benchmark/profile artifacts, NCU digests, and ledgers.
 
 ## Phase 0: Inputs And Run Directory
 
@@ -92,10 +97,12 @@ runs/YYYYMMDD_<model_slug>_sota_humanize/
   benchmark/
   profiles/
   analysis/
+  kernel/
+    kernelpilot-knowledge-notes.md
+    ncu-digests/
   patches/
   humanize/
     model-loop-checkpoint.md
-    sglang-continuation-plan.md
   final_report.md
 ```
 
@@ -202,15 +209,13 @@ The plan must require:
 - re-running real model benchmark/profile after each accepted patch
 - continuing through multiple minimal patches when one patch only closes part
   of the gap
-- using KernelPilot when the profiler root cause is an optimizable CUDA, Triton,
-  CuTe, CUTLASS, TileLang, or torch.compile kernel path
-- never running a KernelPilot `setup-rlcr-loop.sh` while the SGLang RLCR loop is
-  still active in the same Codex session
-- writing a model-loop checkpoint and SGLang continuation plan before leaving a
-  SGLang RLCR for a KernelPilot handoff
-- limiting the KernelPilot optimization loop to at most 10 Humanize rounds, then
-  returning the best correct candidate or a no-kernel-change result to the model
-  loop
+- using KernelPilot knowledge and `ncu-report` only as assists when the profiler
+  root cause is an optimizable CUDA, Triton, CuTe, CUTLASS, TileLang, or
+  torch.compile kernel path
+- never starting a KernelPilot RLCR, `humanize-kernel-agent-loop`, or second
+  `.humanize/rlcr` tree for kernel work
+- keeping kernel edits, microbench harnesses, NCU digests, integration, and
+  real-model revalidation inside the single SGLang model loop
 - recording every attempt, failed idea, partial win, rejected source idea, and
   final selected patch in artifacts
 
@@ -235,34 +240,35 @@ After setup succeeds:
 
 If the hook blocks exit, follow the generated next-round prompt exactly.
 
-## KernelPilot Handoff
+## Kernel Evidence Assist
 
-Use KernelPilot only when the cross-framework profiler evidence points at a
-specific kernel or small kernel family, not for generic scheduling or benchmark
-knob tuning.
+Use KernelPilot knowledge and `ncu-report` only when the cross-framework
+profiler evidence points at a specific kernel or small kernel family. Keep
+generic scheduling, overlap, batching, memory residency, and benchmark-command
+issues in the normal SGLang patch path.
 
 ### Eligibility Gate
 
-KernelPilot is allowed only when all of these are true:
+Kernel-level assistance is allowed only when all of these are true:
 
 - SGLang is still more than `1%` behind the best framework for the fixed
   benchmark scenario after the required repeat/profiler checks.
 - The slow stage has a concrete SGLang kernel or tightly scoped kernel family
-  in the kernel table with at least `1%` cumulative GPU-time share. Do not use
-  KernelPilot for a lone kernel below `1%` share unless a single shared
+  in the kernel table with at least `1%` cumulative GPU-time share. Do not spend
+  kernel-specialist effort on a lone kernel below `1%` share unless a shared
   implementation affects an aggregated family above `1%`.
 - The profiler comparison shows that kernel or family is plausibly part of the
   SGLang gap: the winning framework has a faster equivalent path, SGLang runs
   extra kernel work for the same stage, or SGLang's own kernel evidence shows a
   local inefficiency that cannot be explained by scheduling, overlap, launch
   overhead, data movement, or a missing framework fast path.
-- The proposed KernelPilot target has a clear standalone correctness reference,
-  representative shapes/dtypes/layouts from the model run, and a path to port
-  the selected candidate back into the active SGLang serving code.
+- The proposed kernel target has a clear correctness reference,
+  representative shapes/dtypes/layouts from the model run, and a path to wire
+  the candidate into the active SGLang serving code.
 
 If any condition fails, keep the work in the SGLang RLCR loop and patch the
 appropriate non-kernel issue first. Do not send sub-`1%` profiler rows to
-KernelPilot just because they look locally optimizable.
+kernel-specialist research just because they look locally optimizable.
 
 Examples:
 
@@ -272,83 +278,52 @@ Examples:
 - The gap survives SGLang scheduling and overlap patches and the remaining hot
   row is kernel-local.
 
-### No Simultaneous RLCR Loops
+### Single-Loop Kernel Workflow
 
-Do not start KernelPilot's `setup-rlcr-loop.sh` while an SGLang SOTA RLCR loop is
-active in the same Codex session. A live nested loop can confuse Humanize's
-project-root and Stop-hook state because both loops maintain `.humanize/rlcr`
-state, round summaries, goal trackers, and exit gates.
+Do not start KernelPilot's `setup-rlcr-loop.sh`, `humanize-kernel-agent-loop`, or
+any standalone `.humanize/rlcr` session. A kernel candidate is just another
+SGLang patch candidate in the active model RLCR round.
 
-Use one of these serialized patterns:
+For each eligible kernel target:
 
-- If Phase 3 already proves the root cause is kernel-local, run the KernelPilot
-  loop first in its standalone optimization repo, wait for it to complete, port
-  the selected candidate into SGLang, then start the SGLang SOTA RLCR loop for
-  integration and real-model revalidation.
-- If a kernel-local bottleneck is discovered after the SGLang RLCR loop has
-  started, do not launch KernelPilot from inside that round. Write
-  `analysis/kernelpilot-handoff.md` with the target kernel, shapes, dtype,
-  profiler rows, source paths, and acceptance criteria. Also write
-  `humanize/model-loop-checkpoint.md` and
-  `humanize/sglang-continuation-plan.md`; finish the current SGLang round as a
-  handoff checkpoint, not as final success; then start the standalone
-  KernelPilot loop only after the SGLang RLCR loop is no longer active.
-- After KernelPilot completes, return to SGLang with the selected candidate,
-  provenance, correctness results, benchmark result, and profile digest, then
-  start a fresh non-nested SGLang continuation RLCR from
-  `humanize/sglang-continuation-plan.md`.
+1. Record `kernel/kernelpilot-knowledge-notes.md` with the target kernel,
+   model-derived shapes, dtype/layout, profiler rows, source paths, and the
+   reason kernel-local work is more promising than scheduling or overlap work.
+2. Read only the relevant KernelPilot knowledge entries, source catalog rows,
+   PR notes, and referenced upstream code for that operator/architecture.
+3. Record provenance, license/notice requirements, copied snippets, and rejected
+   ideas before adapting any implementation pattern.
+4. Use `ncu-report` when the next kernel edit is not obvious, a candidate is
+   within `+/-2%`, a candidate regresses, or reviewer feedback asks for measured
+   counter evidence.
+5. Store NCU outputs under `kernel/ncu-digests/<version>/` or the host's
+   equivalent artifact root. Each digest must compare baseline vs candidate and
+   end with exactly one concrete next edit.
+6. Patch the SGLang kernel or call path directly in the SGLang checkout, with
+   focused correctness and microbench coverage when available.
+7. Wire the candidate into the active model-serving path that produced the
+   original profiler row.
+8. Re-run the same real-model benchmark and profiler after the candidate is
+   correct. A microbench or NCU win alone is not success.
 
-If the Humanize Stop hook rejects the handoff round because the original SOTA ACs
-are not met, update the active plan/round summary to make the handoff checkpoint
-explicitly scoped: the current loop is completing the safe suspension artifact,
-not claiming final SOTA. Do not bypass the hook or edit Humanize state files.
+If no focused harness exists, build the smallest harness that preserves the
+model-derived shapes/dtypes/layouts. If NCU cannot run on the host, record the
+blocker in the digest path and keep the next edit grounded in the available
+torch-profiler and source evidence.
 
-### Continuation Contract
+### Model-Loop Checkpoint
 
-Before leaving SGLang RLCR for KernelPilot, `humanize/model-loop-checkpoint.md`
-must record:
+After every accepted round, update `humanize/model-loop-checkpoint.md` with:
 
 - original model, tokenizer, precision, quantization, hardware, workload, SLA,
   artifact root, and benchmark winner commands
-- current SGLang branch, commit, patches already applied, tests already run,
-  and current best SGLang benchmark row
-- remaining gap, profiler rows, cumulative GPU-time share for the target kernel
-  or kernel family, source paths, and why the next step is KernelPilot rather
-  than another SGLang-local patch
-- exact KernelPilot standalone repo path to use or create
+- current SGLang branch, commit, patches applied, tests run, and current best
+  SGLang benchmark row
+- remaining gap, profiler rows, kernel-assist notes, NCU digest paths, rejected
+  source ideas, and the next planned SGLang patch
 
-`humanize/sglang-continuation-plan.md` must be a ready-to-use Humanize plan
-draft for the post-KernelPilot integration loop. It must say to import the
-KernelPilot selected candidate, make it active in the SGLang model-serving path,
-re-run correctness, re-run the same real-model benchmark/profile, update
-ledgers, and continue until the original SOTA stop criteria are met.
-
-After KernelPilot finishes, do not try to resurrect the old `.humanize/rlcr`
-session. Copy or adapt `humanize/sglang-continuation-plan.md` into
-`.humanize/sglang-sota-agent/refined-plan.md`, fill in the KernelPilot result
-paths, and start a new SGLang RLCR with `setup-rlcr-loop.sh`.
-
-When using KernelPilot:
-
-- Create or enter the clean standalone optimization repo required by
-  `humanize-kernel-agent-loop`.
-- Cap the KernelPilot Humanize loop at 10 rounds. When launching the standalone
-  KernelPilot Humanize loop, pass `--max 10` to the Humanize setup command if
-  that setup path supports normal Humanize options; otherwise stop after the
-  tenth KernelPilot round and return the best correct candidate found so far.
-- Keep the SGLang checkout protected from experimental kernel mutations until a
-  correct candidate wins in the standalone harness.
-- Record source provenance, license/notice, copied files, and deltas before
-  adapting competitor or upstream kernel code.
-- Port only the selected candidate or minimal integration change back to SGLang,
-  and wire it into the active model-serving path that produced the original
-  profiler row.
-- Re-run the same model-level benchmark and profiler after porting. Do not
-  continue the SGLang model loop from a standalone microbench win alone.
-
-KernelPilot owns its own standalone repo and Humanize state, but it still must
-not be live at the same time as the parent SGLang RLCR loop in the same Codex
-session.
+This checkpoint is for campaign recovery inside the same model-level workflow.
+It is not a handoff to another RLCR loop.
 
 ## Loop Ledgers
 

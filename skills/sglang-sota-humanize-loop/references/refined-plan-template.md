@@ -15,6 +15,9 @@ quantization, and SLA captured in `<artifact-root>`.
 The fixed benchmark phase is complete. The RLCR loop must patch SGLang code
 using profiler evidence, re-run the same model-level benchmark/profile, and
 continue through minimal patches until SGLang reaches the stop criteria.
+Kernel-local work stays inside this same model-level RLCR loop: KernelPilot may
+provide knowledge and source evidence, and `ncu-report` may provide measured
+counter digests, but no separate KernelPilot or kernel RLCR loop is started.
 
 ## Acceptance Criteria
 
@@ -50,33 +53,31 @@ continue through minimal patches until SGLang reaches the stop criteria.
     - A patch disables correctness checks, weakens output quality, or changes
       only launch parameters after the winner table is known.
 
-- AC-4: Kernel-level bottlenecks use KernelPilot when appropriate
+- AC-4: Kernel-level bottlenecks stay inside the model RLCR loop
   - Positive Tests (expected to PASS):
     - For a specific slow CUDA/Triton/CuTe/CUTLASS/TileLang/torch.compile
       kernel, the profiler evidence shows SGLang is more than 1% behind and the
       target kernel or tightly scoped kernel family has at least 1% cumulative
       GPU-time share in the slow stage.
-    - The loop serializes the KernelPilot handoff: either run KernelPilot
-      before starting SGLang RLCR, or write
-      `analysis/kernelpilot-handoff.md` and wait until the SGLang RLCR loop is
-      no longer active before starting KernelPilot.
-    - Before leaving SGLang RLCR for KernelPilot, the loop writes
-      `humanize/model-loop-checkpoint.md` and
-      `humanize/sglang-continuation-plan.md`.
-    - The KernelPilot Humanize loop is capped at 10 rounds, then returns the
-      best correct candidate or an explicit no-kernel-change result.
-    - The standalone KernelPilot optimization repo records provenance, ledgers,
-      correctness tests, benchmarks, and profiler evidence there.
-    - Only the selected kernel candidate is ported back to SGLang, wired into
-      the active model-serving path, and validated with the same model-level
-      benchmark/profile.
+    - KernelPilot is used only as a knowledge/source-evidence repository:
+      relevant knowledge entries, source catalog rows, PR notes, and referenced
+      upstream code are recorded in `kernel/kernelpilot-knowledge-notes.md`.
+    - `ncu-report` is used when the next kernel edit is unclear, a candidate is
+      within +/-2%, a candidate regresses, or review asks for counter evidence;
+      each digest under `kernel/ncu-digests/<version>/` compares baseline vs
+      candidate and ends with exactly one concrete next edit.
+    - The kernel candidate is patched directly in the SGLang checkout, wired
+      into the active model-serving path, and validated with focused correctness
+      checks plus the same real-model benchmark/profile.
   - Negative Tests (expected to FAIL):
-    - KernelPilot is started for a lone SGLang kernel below 1% cumulative
-      GPU-time share with no aggregated family above 1%.
-    - A KernelPilot `setup-rlcr-loop.sh` is launched while the SGLang RLCR loop
-      is still active in the same Codex session.
-    - Experimental kernel mutations are made directly in SGLang before a clean
-      standalone candidate proves correctness and speed.
+    - A KernelPilot `setup-rlcr-loop.sh`, `humanize-kernel-agent-loop`, or
+      second `.humanize/rlcr` session is launched for kernel work.
+    - Kernel-specialist effort is spent on a lone SGLang kernel below 1%
+      cumulative GPU-time share with no aggregated family above 1%.
+    - Upstream or competitor kernel code is copied without recording
+      provenance, license/notice obligations, and the local delta.
+    - The loop declares success from a microbench or NCU win without rerunning
+      the same model-level benchmark/profile.
 
 - AC-5: Real-model revalidation is run after each accepted patch
   - Positive Tests (expected to PASS):
@@ -103,28 +104,27 @@ continue through minimal patches until SGLang reaches the stop criteria.
     - The loop stops while SGLang remains more than 1% behind and there is an
       uninvestigated profiler table row with plausible SGLang source impact.
 
-- AC-8: Model-loop continuity survives KernelPilot handoff
+- AC-8: Single-loop continuity is preserved
   - Positive Tests (expected to PASS):
-    - If the SGLang RLCR is suspended for KernelPilot, the checkpoint records
-      the original benchmark winners, workload/SLA, SGLang commit, applied
-      patches, current best SGLang result, remaining gap, profiler rows, and
-      KernelPilot target repo.
-    - After KernelPilot completes, a fresh SGLang continuation RLCR can be
-      started from `humanize/sglang-continuation-plan.md` without relying on the
-      old `.humanize/rlcr/<timestamp>` session.
+    - `humanize/model-loop-checkpoint.md` records the original benchmark
+      winners, workload/SLA, SGLang commit, applied patches, current best
+      SGLang result, remaining gap, profiler rows, kernel-assist notes, NCU
+      digest paths, rejected source ideas, and the next planned SGLang patch.
+    - The campaign can resume from the same model-loop artifacts without
+      relying on a KernelPilot result directory or a second Humanize session.
   - Negative Tests (expected to FAIL):
-    - The loop assumes the exact parent `.humanize/rlcr/<timestamp>` session can
-      be safely resumed after a standalone KernelPilot RLCR.
-    - KernelPilot results are ported back without rerunning the same model-level
-      benchmark/profile and updating the ledgers.
+    - The loop suspends the model RLCR to wait for a KernelPilot or kernel RLCR
+      loop.
+    - Kernel changes are accepted without updating the checkpoint, ledgers, NCU
+      digest links when applicable, and real-model benchmark/profile results.
 
 ## Path Boundaries
 
 ### Upper Bound (Maximum Scope)
 
-Multiple minimal SGLang patches, optional standalone KernelPilot kernel work,
-and repeated real-model benchmark/profile runs are allowed when needed to close
-the measured gap.
+Multiple minimal SGLang patches, kernel-local SGLang edits assisted by
+KernelPilot knowledge and `ncu-report`, and repeated real-model
+benchmark/profile runs are allowed when needed to close the measured gap.
 
 ### Lower Bound (Minimum Scope)
 
@@ -135,11 +135,13 @@ revalidation, unless the initial evidence proves no patch is needed.
 
 - Can use: SGLang source patches, guarded heuristics, existing fast-path
   selection, fusion or overlap fixes, model-specific runtime fixes,
-  KernelPilot standalone kernel optimization for eligible hot kernels, focused
-  tests, microbenchmarks, torch-profiler, Nsight Compute, and Nsight Systems.
+  KernelPilot knowledge/source evidence for eligible hot kernels,
+  `ncu-report` digests, focused tests, microbenchmarks, torch-profiler, Nsight
+  Compute, and Nsight Systems.
 - Cannot use: changing the fixed workload/SLA after seeing results, removing a
   competitor from comparison without a recorded unsupported reason, disabling
-  correctness or tokenizer behavior, launching KernelPilot for sub-1% lone
+  correctness or tokenizer behavior, launching KernelPilot or any second RLCR
+  loop for kernel work, spending kernel-specialist effort on sub-1% lone
   kernels, or claiming SOTA from smoke-only runs.
 
 ## Dependencies and Sequence
@@ -162,14 +164,16 @@ revalidation, unless the initial evidence proves no patch is needed.
      patch.
    - After two weak rounds below 1% geomean improvement over the prior best,
      expand code-first research before editing again.
-   - If a kernel-local handoff is required, write the checkpoint and
-     continuation plan before leaving SGLang RLCR.
+   - If a kernel-local bottleneck remains, use KernelPilot knowledge and
+     `ncu-report` inside the same model loop, then validate the integrated
+     SGLang patch with the same real-model benchmark/profile.
    - Stop only under AC-7.
 
 ## Implementation Notes
 
 - Keep Humanize local state under `.humanize/`.
 - Keep benchmark/profile artifacts under `<artifact-root>`.
+- Keep KernelPilot knowledge notes and NCU digests under `<artifact-root>/kernel/`.
 - Commit SGLang changes after each round summary.
 - Mention exact changed files, commands, result deltas, and remaining risk in
   each Humanize round summary.

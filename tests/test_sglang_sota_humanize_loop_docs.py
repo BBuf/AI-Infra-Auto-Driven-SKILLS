@@ -38,31 +38,39 @@ class SglangSotaHumanizeLoopDocsTest(unittest.TestCase):
         self.assertIn("fuse-pattern table", text)
         self.assertIn("Do not patch SGLang until this report exists", text)
 
-    def test_humanize_and_kernelpilot_contract_is_explicit(self) -> None:
+    def test_humanize_and_kernel_assist_contract_is_explicit(self) -> None:
         text = read_skill_file("SKILL.md")
         template = read_skill_file("references", "refined-plan-template.md")
 
         self.assertIn("setup-rlcr-loop.sh", text)
         self.assertIn(".humanize/sglang-sota-agent/refined-plan.md", text)
-        self.assertIn("KernelPilot Handoff", text)
-        self.assertIn("No Simultaneous RLCR Loops", text)
-        self.assertIn("analysis/kernelpilot-handoff.md", text)
+        self.assertIn("Kernel Evidence Assist", text)
+        self.assertIn("Single-Loop Kernel Workflow", text)
+        self.assertIn("kernel/kernelpilot-knowledge-notes.md", text)
+        self.assertIn("kernel/ncu-digests/<version>/", text)
+        self.assertIn("ncu-report", text)
         self.assertIn("humanize/model-loop-checkpoint.md", text)
-        self.assertIn("humanize/sglang-continuation-plan.md", text)
-        self.assertIn("Do not rely on resuming the exact same", text)
-        self.assertIn("not be live at the same time", text)
+        self.assertIn("Do not start KernelPilot's `setup-rlcr-loop.sh`", text)
+        self.assertIn("any standalone `.humanize/rlcr` session", text)
+        self.assertIn("knowledge and source-evidence repository", text)
         self.assertIn("patching SGLang code, not just benchmark parameters", text)
-        self.assertIn("AC-4: Kernel-level bottlenecks use KernelPilot", template)
-        self.assertIn("AC-8: Model-loop continuity survives KernelPilot handoff", template)
-        self.assertIn("old `.humanize/rlcr/<timestamp>` session", template)
-        self.assertIn("setup-rlcr-loop.sh` is launched while the SGLang RLCR loop", template)
+        self.assertIn(
+            "AC-4: Kernel-level bottlenecks stay inside the model RLCR loop",
+            template,
+        )
+        self.assertIn("AC-8: Single-loop continuity is preserved", template)
+        self.assertIn("KernelPilot is used only as a knowledge/source-evidence", template)
+        self.assertIn("second `.humanize/rlcr` session is launched", template)
+        self.assertIn("each digest under `kernel/ncu-digests/<version>/`", template)
         self.assertIn("Eligibility Gate", text)
         self.assertIn("at least `1%` cumulative GPU-time share", text)
-        self.assertIn("Cap the KernelPilot Humanize loop at 10 rounds", text)
-        self.assertIn("wired into", template)
+        self.assertIn("The kernel candidate is patched directly", template)
         self.assertIn("the active model-serving path", template)
         self.assertIn("sub-1% lone", template)
         self.assertIn("AC-7: Stop criteria are satisfied", template)
+        self.assertNotIn("KernelPilot Handoff", text)
+        self.assertNotIn("sglang-continuation-plan.md", text)
+        self.assertNotIn("Cap the KernelPilot Humanize loop", text)
 
 
 if __name__ == "__main__":
