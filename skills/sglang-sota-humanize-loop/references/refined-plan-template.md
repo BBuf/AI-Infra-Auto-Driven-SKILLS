@@ -15,6 +15,9 @@ quantization, and SLA captured in `<artifact-root>`.
 The fixed benchmark phase is complete. The RLCR loop must patch SGLang code
 using profiler evidence, re-run the same model-level benchmark/profile, and
 continue through minimal patches until SGLang reaches the stop criteria.
+The matching PR-driven model history has been read from
+`model-pr-optimization-history`, and `history/model-pr-history-notes.md`
+records the SGLang/vLLM PR evidence that influenced source-path selection.
 Kernel-local work stays inside this same model-level RLCR loop: KernelPilot may
 provide knowledge and source evidence, and `ncu-report` may provide measured
 counter digests, but no separate KernelPilot or kernel RLCR loop is started.
@@ -31,8 +34,14 @@ counter digests, but no separate KernelPilot or kernel RLCR loop is started.
     - A patch changes only benchmark workload, request count, SLA, or competitor
       commands to make SGLang look faster.
 
-- AC-2: Required profiler evidence exists before patching
+- AC-2: Required model PR history and profiler evidence exists before patching
   - Positive Tests (expected to PASS):
+    - `history/model-pr-history-notes.md` exists under `<artifact-root>`.
+    - The notes cite the matching SGLang model history when available.
+    - The notes cite matching vLLM history when vLLM is the leading competitor
+      or when vLLM evidence influenced a suspected missing SGLang fast path.
+    - The notes include docs read, PR numbers, source files, symbols,
+      validation risks, and the decision each item influenced.
     - SGLang profile analysis exists for the slow scenario.
     - At least the best framework profile analysis exists.
     - If both vLLM and TensorRT-LLM are more than 1% ahead, both competitor
@@ -42,6 +51,8 @@ counter digests, but no separate KernelPilot or kernel RLCR loop is started.
   - Negative Tests (expected to FAIL):
     - A code patch is proposed without citing a profiler table row and source
       path or kernel family.
+    - A model-specific source patch is proposed without checking matching model
+      PR history for prior SGLang changes and relevant competitor evidence.
 
 - AC-3: SGLang patches are evidence-driven and minimal
   - Positive Tests (expected to PASS):
@@ -108,8 +119,9 @@ counter digests, but no separate KernelPilot or kernel RLCR loop is started.
   - Positive Tests (expected to PASS):
     - `humanize/model-loop-checkpoint.md` records the original benchmark
       winners, workload/SLA, SGLang commit, applied patches, current best
-      SGLang result, remaining gap, profiler rows, kernel-assist notes, NCU
-      digest paths, rejected source ideas, and the next planned SGLang patch.
+      SGLang result, remaining gap, model PR history notes, profiler rows,
+      kernel-assist notes, NCU digest paths, rejected source ideas, and the
+      next planned SGLang patch.
     - The campaign can resume from the same model-loop artifacts without
       relying on a KernelPilot result directory or a second Humanize session.
   - Negative Tests (expected to FAIL):
@@ -134,7 +146,8 @@ revalidation, unless the initial evidence proves no patch is needed.
 ### Allowed Choices
 
 - Can use: SGLang source patches, guarded heuristics, existing fast-path
-  selection, fusion or overlap fixes, model-specific runtime fixes,
+  selection, fusion or overlap fixes, model-specific runtime fixes, PR-driven
+  model history knowledge for SGLang/vLLM source-path selection,
   KernelPilot knowledge/source evidence for eligible hot kernels,
   `ncu-report` digests, focused tests, microbenchmarks, torch-profiler, Nsight
   Compute, and Nsight Systems.
@@ -149,6 +162,8 @@ revalidation, unless the initial evidence proves no patch is needed.
 ### Milestones
 
 1. Preserve fixed baseline artifacts
+   - Confirm `history/model-pr-history-notes.md` has matching SGLang history
+     and, when applicable, leading-competitor vLLM history.
    - Confirm winner commands, workload, SLA, and gap.
    - Confirm required profile analyses and root-cause report.
 2. Patch the highest-confidence SGLang bottleneck
@@ -173,6 +188,7 @@ revalidation, unless the initial evidence proves no patch is needed.
 
 - Keep Humanize local state under `.humanize/`.
 - Keep benchmark/profile artifacts under `<artifact-root>`.
+- Keep model PR history notes under `<artifact-root>/history/`.
 - Keep KernelPilot knowledge notes and NCU digests under `<artifact-root>/kernel/`.
 - Commit SGLang changes after each round summary.
 - Mention exact changed files, commands, result deltas, and remaining risk in

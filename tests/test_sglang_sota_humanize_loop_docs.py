@@ -38,6 +38,26 @@ class SglangSotaHumanizeLoopDocsTest(unittest.TestCase):
         self.assertIn("fuse-pattern table", text)
         self.assertIn("Do not patch SGLang until this report exists", text)
 
+    def test_model_pr_history_knowledge_gate_is_explicit(self) -> None:
+        text = read_skill_file("SKILL.md")
+        template = read_skill_file("references", "refined-plan-template.md")
+
+        self.assertIn("Model PR history knowledge", text)
+        self.assertIn("../../model-pr-optimization-history/SKILL.md", text)
+        self.assertIn("Phase 0.5: Model PR History Knowledge Gate", text)
+        self.assertIn("history/model-pr-history-notes.md", text)
+        self.assertIn("model-pr-optimization-history", text)
+        self.assertIn("Treat these notes like KernelPilot knowledge", text)
+        self.assertIn("preserving and consulting `history/model-pr-history-notes.md`", text)
+        self.assertIn(
+            "AC-2: Required model PR history and profiler evidence exists before patching",
+            template,
+        )
+        self.assertIn("matching SGLang model history", template)
+        self.assertIn("matching vLLM history", template)
+        self.assertIn("model-specific source patch", template)
+        self.assertIn("<artifact-root>/history/", template)
+
     def test_humanize_and_kernel_assist_contract_is_explicit(self) -> None:
         text = read_skill_file("SKILL.md")
         template = read_skill_file("references", "refined-plan-template.md")

@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import re
+import subprocess
+import sys
 from pathlib import Path
 
 
@@ -158,6 +160,68 @@ def test_model_runbook_skill_directories_are_removed() -> None:
     assert (SKILL_ROOT / "model-pr-diff-dossier" / "SKILL.md").exists()
     assert not list(SKILL_ROOT.glob("*/*/SKILL.md"))
     assert not list(SKILL_ROOT.glob("*/*/references/pr-history.md"))
+
+
+def test_model_pr_history_is_queryable_knowledge_base() -> None:
+    skill_text = (HISTORY_ROOT / "SKILL.md").read_text(encoding="utf-8")
+    assert "model-pr-history-knowledge" in skill_text
+    assert "scripts/query.py" in skill_text
+    assert "history/model-pr-history-notes.md" in skill_text
+    assert "not a\nset of per-model skills" in skill_text
+
+    list_result = subprocess.run(
+        [sys.executable, "scripts/query.py", "--list"],
+        cwd=HISTORY_ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    assert "sglang/qwen3-core" in list_result.stdout
+    assert "vllm/qwen3-core" in list_result.stdout
+
+    paths_result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/query.py",
+            "--framework",
+            "sglang",
+            "--model",
+            "qwen3-core",
+            "--paths-only",
+        ],
+        cwd=HISTORY_ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    assert "sglang/qwen3-core/README.en.md" in paths_result.stdout
+
+    search_result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/query.py",
+            "--framework",
+            "sglang",
+            "--model",
+            "qwen3-core",
+            "fused qk norm",
+        ],
+        cwd=HISTORY_ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    assert "sglang/qwen3-core" in search_result.stdout
+    assert "Read:" in search_result.stdout
+
+    model_id_result = subprocess.run(
+        [sys.executable, "scripts/query.py", "Qwen/Qwen3-8B", "--limit", "1"],
+        cwd=HISTORY_ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    assert model_id_result.stdout.startswith("## sglang/qwen3-core")
 
 
 def test_history_docs_share_the_git_traced_diff_card_format() -> None:

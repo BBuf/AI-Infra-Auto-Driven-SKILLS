@@ -35,7 +35,7 @@ find it.
 | Signal | What makes it useful |
 | --- | --- |
 | **9 core operational skills** | Small, focused playbooks for benchmark search, profiler analysis, Humanize-governed SOTA loops, incidents, architecture diagrams, GPU kernels, and H100 runs. |
-| **58 PR history dossiers** | PR-driven model evolution notes that record what changed, where it changed, and what risks remain. |
+| **58 PR history dossiers** | A queryable, PR-driven model history knowledge base that records what changed, where it changed, and what risks remain. |
 | **Stage-separated profiler workflow** | Prefill and decode are profiled as separate workloads so hot kernels do not get misattributed. |
 | **Framework-neutral benchmark schema** | Compare SGLang, vLLM, and TensorRT-LLM with the same workload, SLA, artifact layout, and result table. |
 | **Profiler-to-action fusion catalog** | Connect torch-profiler rows to known SGLang/vLLM fusion, overlap, and torch.compile patterns. |
@@ -54,7 +54,7 @@ find it.
 | Optimize Triton, CUDA, CUTLASS, or CuTe DSL kernels with AKO4ALL | [`gpu-kernel-ako4all`](skills/gpu-kernel-ako4all/) |
 | Run standalone kernel optimization loops or query kernel evidence | [`KernelPilot`](https://github.com/BBuf/kernel-pilot) |
 | Find original public model architecture diagrams | [`model-architecture-diagram`](skills/model-architecture-diagram/) |
-| Read PR-driven model optimization history by framework | [`model-pr-optimization-history`](model-pr-optimization-history/) |
+| Query PR-driven model optimization history by framework | [`model-pr-optimization-history`](model-pr-optimization-history/) |
 
 ## Core Skills
 
@@ -72,9 +72,12 @@ find it.
 
 ## Model PR History Catalog
 
-The model optimization layer is now documentation-only: 58 PR-driven history
-dossiers under `model-pr-optimization-history/`. These are not installed as
-skills. They preserve diff-backed model evolution records for SGLang and vLLM.
+The model optimization layer is now one knowledge base:
+[`model-pr-optimization-history`](model-pr-optimization-history/). It contains
+58 PR-driven history dossiers and a small query helper. These are not
+per-model runbook skills; they preserve diff-backed model evolution records for
+SGLang and vLLM so SOTA loops can read prior source and PR evidence before
+patching.
 
 | Framework | PR histories |
 | --- | ---: |
@@ -99,6 +102,15 @@ Each model-family history is designed to answer practical questions:
 - What optimization or correctness risk should be checked before touching it?
 - Which upstream idea should be compared before writing a new kernel or fusion?
 
+Query examples:
+
+```bash
+cd model-pr-optimization-history
+python3 scripts/query.py --list
+python3 scripts/query.py --framework sglang --model qwen3-core --paths-only
+python3 scripts/query.py --framework vllm "qwen3 fused qk norm"
+```
+
 ## Evidence Standards
 
 The repo is opinionated about evidence because performance work gets noisy fast.
@@ -120,8 +132,8 @@ The repo is opinionated about evidence because performance work gets noisy fast.
 - Incident triage should start from replayable evidence instead of changing code
   from symptoms alone.
 - Model optimization histories should point back to PRs, files, diffs, and risk
-  surfaces rather than vague summary text; they live as PR-driven docs, not
-  per-model skills.
+  surfaces rather than vague summary text; they live as one PR-driven knowledge
+  base, not per-model skills.
 
 ## Install
 
@@ -135,7 +147,12 @@ cp -r skills/sglang-sota-humanize-loop <agent-skill-dir>/sglang-sota-humanize-lo
 cp -r skills/sglang-prod-incident-triage <agent-skill-dir>/sglang-prod-incident-triage
 cp -r skills/gpu-kernel-ako4all <agent-skill-dir>/gpu-kernel-ako4all
 cp -r skills/model-architecture-diagram <agent-skill-dir>/model-architecture-diagram
+cp -r model-pr-optimization-history <agent-skill-dir>/model-pr-history-knowledge
 ```
+
+Copy `model-pr-optimization-history` only when you want the agent to query the
+PR-driven model knowledge base locally. It replaces the old per-model runbook
+skill layout with one shared knowledge root.
 
 The H100 skills document a concrete operator environment. If you adapt them,
 replace the SSH alias, container name, and workspace paths in one pass, and keep
@@ -158,6 +175,8 @@ skills/
     └── model-pr-diff-dossier/       # shared PR history quality standard
 
 model-pr-optimization-history/
+├── SKILL.md                         # knowledge-base usage instructions
+├── scripts/query.py                 # local model/keyword query helper
 ├── sglang/                          # 29 PR-driven SGLang model histories
 └── vllm/                            # 29 PR-driven vLLM model histories
 ```

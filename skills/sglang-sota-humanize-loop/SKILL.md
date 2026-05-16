@@ -34,6 +34,7 @@ The installer hydrates these local paths:
 Humanize runtime: /Users/bbuf/.codex/skills/humanize
 KernelPilot root: /Users/bbuf/工作目录/Common/kernel-pilot
 ncu-report skill: /Users/bbuf/.codex/skills/ncu-report/SKILL.md
+Model PR history knowledge: /Users/bbuf/工作目录/Common/AI-Infra-Auto-Driven-SKILLS/model-pr-optimization-history
 ```
 
 If the Humanize runtime is missing, locate a skill directory containing
@@ -48,6 +49,7 @@ Read these before a real run:
 - `../sglang-sota-performance/SKILL.md`
 - `../llm-serving-auto-benchmark/SKILL.md`
 - `../llm-torch-profiler-analysis/SKILL.md`
+- `../../model-pr-optimization-history/SKILL.md`
 - `/Users/bbuf/.codex/skills/ncu-report/SKILL.md` when a kernel edit needs
   Nsight Compute evidence
 - the matching host or operator skill for SSH, container, GPU, and artifact
@@ -86,6 +88,8 @@ Collect or infer:
 - GPU type/count, visible GPU ids, container or remote shell, CUDA/NCCL versions,
   and whether multi-node is allowed
 - framework set, defaulting to SGLang, vLLM, and TensorRT-LLM when available
+- model-family history slug inferred from the model id, checkpoint, or hot
+  SGLang/vLLM source path when possible
 - artifact root
 
 Create one run directory:
@@ -97,6 +101,8 @@ runs/YYYYMMDD_<model_slug>_sota_humanize/
   benchmark/
   profiles/
   analysis/
+  history/
+    model-pr-history-notes.md
   kernel/
     kernelpilot-knowledge-notes.md
     ncu-digests/
@@ -107,6 +113,28 @@ runs/YYYYMMDD_<model_slug>_sota_humanize/
 ```
 
 Never save Hugging Face tokens or other secrets in artifacts.
+
+## Phase 0.5: Model PR History Knowledge Gate
+
+Before the fixed benchmark and before any patch planning, query and read
+`model-pr-optimization-history` for the target model family.
+
+Rules:
+
+- If the slug is unclear, run `scripts/query.py "<model id or family>"` from
+  the knowledge root and choose the closest model-family history.
+- Read the SGLang history for that family whenever it exists.
+- Read the vLLM history too when vLLM is in the comparison set, later becomes
+  the leading competitor, or its source/trace suggests a missing SGLang fast
+  path.
+- Write `history/model-pr-history-notes.md` with the paths read, PR numbers,
+  source files, symbols, validation risks, and the concrete decision each item
+  influences.
+- Treat these notes like KernelPilot knowledge: source and PR memory that helps
+  choose a better patch, not measured proof by itself.
+
+If the knowledge root is unavailable, record the blocker in the same notes file
+and continue with benchmark/profile evidence.
 
 ## Phase 1: Fixed Fair Benchmark Gate
 
@@ -205,6 +233,8 @@ profile paths, root-cause rows, and target artifact root.
 The plan must require:
 
 - preserving the fixed benchmark workload and SLA throughout the loop
+- preserving and consulting `history/model-pr-history-notes.md` before choosing
+  model-specific SGLang source paths
 - patching SGLang code, not just benchmark parameters
 - re-running real model benchmark/profile after each accepted patch
 - continuing through multiple minimal patches when one patch only closes part
@@ -319,8 +349,8 @@ After every accepted round, update `humanize/model-loop-checkpoint.md` with:
   artifact root, and benchmark winner commands
 - current SGLang branch, commit, patches applied, tests run, and current best
   SGLang benchmark row
-- remaining gap, profiler rows, kernel-assist notes, NCU digest paths, rejected
-  source ideas, and the next planned SGLang patch
+- remaining gap, profiler rows, model PR history notes, kernel-assist notes, NCU
+  digest paths, rejected source ideas, and the next planned SGLang patch
 
 This checkpoint is for campaign recovery inside the same model-level workflow.
 It is not a handoff to another RLCR loop.
@@ -341,6 +371,8 @@ humanize/profile-digests/
 Every patch attempt gets an attempt row. Only correct patches with measured
 improvement get optimization rows. Source ideas must include both profiler rows
 and code provenance so later rounds can avoid re-reading the same source.
+Model PR history evidence should be recorded beside SGLang, vLLM,
+TensorRT-LLM, KernelPilot, and NCU source ideas when it influenced the patch.
 
 After two consecutive rounds with less than `1%` geomean improvement over the
 prior best SGLang result, expand research before editing again. Prefer code and
@@ -361,5 +393,5 @@ Stop only when one of these is true:
   hardware or algorithmic limit and no low-risk SGLang patch remains.
 
 The final report must include the pre-loop benchmark table, post-patch benchmark
-table, all winner commands, profile paths, SGLang changed files, tests, and
-whether SGLang reached target-environment SOTA.
+table, all winner commands, model PR history paths, profile paths, SGLang
+changed files, tests, and whether SGLang reached target-environment SOTA.
