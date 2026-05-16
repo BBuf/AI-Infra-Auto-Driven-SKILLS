@@ -30,9 +30,8 @@ Before a real run, read only the needed sections from:
 - `../llm-torch-profiler-analysis/SKILL.md`
 - `../../model-pr-optimization-history/SKILL.md`
 
-If the run uses a remote GPU host, also read the matching host skill such as
-`h100`, `b200`, `rtx5090`, or another operator-side skill that gives SSH,
-container, workspace, and artifact-path conventions.
+If the run uses a remote GPU host, also read the matching operator-side host
+skill that gives SSH, container, workspace, and artifact-path conventions.
 
 ## Required Inputs
 
