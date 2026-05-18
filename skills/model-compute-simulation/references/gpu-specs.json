@@ -1,0 +1,9 @@
+{
+  "h20": {
+    "display_name": "NVIDIA H20",
+    "bf16_tflops": 148,
+    "fp8_tflops": 296,
+    "memory_bw_tb_s": 4.00,
+    "hbm_gb": 96
+  }
+}
