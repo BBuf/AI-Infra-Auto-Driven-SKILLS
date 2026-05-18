@@ -28,7 +28,17 @@ benchmark/profile revalidation.
 
 ## Runtime Roots
 
-The installer hydrates these local paths:
+This skill can run from Claude Code, Codex, or another compatible skill runtime.
+Resolve companion roots in this order:
+
+1. Prefer installed Claude Code skills under `~/.claude/skills` when running in
+   Claude Code.
+2. Prefer installed Codex skills under `${CODEX_HOME:-~/.codex}/skills` when
+   running in Codex.
+3. Fall back to checked-out repositories when the skills are symlinked or kept
+   local for development.
+
+Example local paths from the author's workstation:
 
 ```text
 Humanize runtime: /Users/bbuf/.codex/skills/humanize
@@ -37,8 +47,17 @@ ncu-report skill: /Users/bbuf/.codex/skills/ncu-report/SKILL.md
 Model PR history knowledge: /Users/bbuf/工作目录/Common/AI-Infra-Auto-Driven-SKILLS/model-pr-optimization-history
 ```
 
-If the Humanize runtime is missing, locate a skill directory containing
-`scripts/setup-rlcr-loop.sh`. If KernelPilot is missing, continue with
+For Claude Code installs, the equivalent defaults are typically:
+
+```text
+Humanize runtime: ~/.claude/plugins/cache/KernelPilot/humanize/<version>
+KernelPilot root: /path/to/kernel-pilot
+ncu-report skill: ~/.claude/plugins/cache/KernelPilot/humanize/<version>/skills/ncu-report/SKILL.md
+Model PR history knowledge: ~/.claude/skills/model-pr-history-knowledge
+```
+
+If the Humanize runtime is missing, locate a plugin or skill directory
+containing `scripts/setup-rlcr-loop.sh`. If KernelPilot is missing, continue with
 SGLang/vLLM/TensorRT-LLM source and PR evidence; do not block the model loop
 only because the optional knowledge repository is unavailable.
 
@@ -49,8 +68,8 @@ Read these before a real run:
 - `../llm-serving-auto-benchmark/SKILL.md`
 - `../llm-torch-profiler-analysis/SKILL.md`
 - `../../model-pr-optimization-history/SKILL.md`
-- `/Users/bbuf/.codex/skills/ncu-report/SKILL.md` when a kernel edit needs
-  Nsight Compute evidence
+- `ncu-report/SKILL.md` from the installed Humanize/KernelPilot plugin when a
+  kernel edit needs Nsight Compute evidence
 - the matching host or operator skill for SSH, container, GPU, and artifact
   conventions
 
@@ -253,11 +272,15 @@ The plan must require:
 From the SGLang checkout, run:
 
 ```bash
-"/Users/bbuf/.codex/skills/humanize/scripts/setup-rlcr-loop.sh" \
+"$HUMANIZE_RUNTIME_ROOT/scripts/setup-rlcr-loop.sh" \
   .humanize/sglang-sota-agent/refined-plan.md --yolo
 ```
 
-If setup exits non-zero, stop and report the error. Do not bypass the gate.
+If `HUMANIZE_RUNTIME_ROOT` is not already set by the client/plugin environment,
+resolve it to the installed Humanize runtime first. In Claude Code, this is
+usually `~/.claude/plugins/cache/KernelPilot/humanize/<version>`; in Codex, it
+is often `${CODEX_HOME:-~/.codex}/skills/humanize`. If setup exits non-zero,
+stop and report the error. Do not bypass the gate.
 
 After setup succeeds:
 

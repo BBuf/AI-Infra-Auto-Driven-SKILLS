@@ -131,20 +131,51 @@ The repo is opinionated about evidence because performance work gets noisy fast.
 
 ## Install
 
-Copy only the skills you want into your agent skill directory:
+This repository is not Codex-only. The skills are plain `SKILL.md` directories
+and can be installed into Claude Code, Codex, Kimi, or another compatible agent
+runtime.
+
+### Claude Code
+
+Install only the skills you want into Claude Code's user skill directory. Symlink
+is recommended for local development because updates to this checkout are picked
+up immediately:
 
 ```bash
-cp -r skills/llm-serving-auto-benchmark <agent-skill-dir>/llm-serving-auto-benchmark
-cp -r skills/llm-torch-profiler-analysis <agent-skill-dir>/llm-torch-profiler-analysis
-cp -r skills/sglang-sota-humanize-loop <agent-skill-dir>/sglang-sota-humanize-loop
-cp -r skills/sglang-prod-incident-triage <agent-skill-dir>/sglang-prod-incident-triage
-cp -r skills/model-architecture-diagram <agent-skill-dir>/model-architecture-diagram
-cp -r model-pr-optimization-history <agent-skill-dir>/model-pr-history-knowledge
+git clone https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS.git
+cd AI-Infra-Auto-Driven-SKILLS
+
+mkdir -p ~/.claude/skills
+ln -s "$PWD/skills/llm-serving-auto-benchmark" ~/.claude/skills/llm-serving-auto-benchmark
+ln -s "$PWD/skills/llm-torch-profiler-analysis" ~/.claude/skills/llm-torch-profiler-analysis
+ln -s "$PWD/skills/sglang-sota-humanize-loop" ~/.claude/skills/sglang-sota-humanize-loop
+ln -s "$PWD/skills/sglang-prod-incident-triage" ~/.claude/skills/sglang-prod-incident-triage
+ln -s "$PWD/skills/model-architecture-diagram" ~/.claude/skills/model-architecture-diagram
+ln -s "$PWD/model-pr-optimization-history" ~/.claude/skills/model-pr-history-knowledge
 ```
 
-Copy `model-pr-optimization-history` only when you want the agent to query the
+Restart Claude Code after installing. The skills can then be invoked by name,
+for example `[$llm-serving-auto-benchmark]`, `[$llm-torch-profiler-analysis]`,
+or `[$sglang-sota-humanize-loop]`.
+
+If you prefer copies instead of symlinks, replace `ln -s` with `cp -R`. Copy
+`model-pr-optimization-history` only when you want the agent to query the
 PR-driven model knowledge base locally. It replaces the old per-model runbook
 skill layout with one shared knowledge root.
+
+### Generic Agent Skill Directory
+
+For Codex, Kimi, or another compatible runtime, copy or symlink the same
+directories into that runtime's skill directory:
+
+```bash
+cp -R skills/llm-serving-auto-benchmark <agent-skill-dir>/llm-serving-auto-benchmark
+cp -R skills/llm-torch-profiler-analysis <agent-skill-dir>/llm-torch-profiler-analysis
+cp -R skills/sglang-sota-humanize-loop <agent-skill-dir>/sglang-sota-humanize-loop
+cp -R skills/sglang-prod-incident-triage <agent-skill-dir>/sglang-prod-incident-triage
+cp -R skills/model-architecture-diagram <agent-skill-dir>/model-architecture-diagram
+cp -R model-pr-optimization-history <agent-skill-dir>/model-pr-history-knowledge
+```
 
 ## Repository Map
 
