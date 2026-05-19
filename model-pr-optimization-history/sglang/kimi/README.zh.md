@@ -1,8 +1,8 @@
 # sglang Kimi K2/K2.5/Linear/VL 模型 PR 优化历史
 
-## 2026-05-15 源码复核补记
+## 2026-05-19 PR 补漏复核
 
-已按 SGLang `origin/main` 的 `50f405816` 复核 Kimi 相关代码。当前优化历史需要补充 `#23848` Kimi-K2.6 AMD MI30x/MI35x nightly 验证、`#24826` Kimi-K2.5 MLA-based EAGLE3 源码路径，以及 `#25033` MLA EAGLE + DP attention 修复。
+已按 sglang 上游 `origin/main@78cb38ed5` 和 GitHub Pull Request files API 复核；本轮补齐 `#23848`, `#24826`, `#25033`, `#25265`, `#25269`, `#25390`, `#25740` 的时间线与逐 PR diff 审计卡。
 
 ## 模型实现文件覆盖
 
@@ -50,8 +50,8 @@
 ## PR 覆盖总览
 
 - git 追溯 PR 数: 41
-- 原文档显式引用补充 PR 数: 43
-- 当前文档总 PR 数: 84
+- 原文档显式引用补充 PR 数: 49
+- 当前文档总 PR 数: 90
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -143,6 +143,12 @@
 | 2026-04-27 | [#23848](https://github.com/sgl-project/sglang/pull/23848) | open | [AMD] Add Kimi-K2.6 in nightly tests for MI30x and MI35x | `test/registered/amd/perf/mi35x/test_kimi_k26_perf_mi35x.py`, `test/registered/amd/perf/mi30x/test_kimi_k26_perf_amd.py`, `test/registered/amd/accuracy/mi35x/test_kimi_k26_eval_mi35x.py` |
 | 2026-04-27 | [#23501](https://github.com/sgl-project/sglang/pull/23501) | merged | [VLM] Fix Kimi-K2.5 CPU path: rename grid_thws -> image_grid_thw | `python/sglang/srt/multimodal/processors/kimi_k25.py` |
 | 2026-04-30 | [#22964](https://github.com/sgl-project/sglang/pull/22964) | closed | [fix][Kimi] fix KimiGPUProcessorWrapper _cpu_call output | `python/sglang/srt/multimodal/processors/kimi_k25.py` |
+| 2026-05-10 | [#24826](https://github.com/sgl-project/sglang/pull/24826) | merged | [spec decoding] support kimi-k2.5-eagle3-mla | `python/sglang/srt/models/kimi_k25_eagle3.py`, `python/sglang/srt/utils/hf_transformers/common.py`, `python/sglang/srt/configs/model_config.py` |
+| 2026-05-12 | [#25033](https://github.com/sgl-project/sglang/pull/25033) | merged | Fix kimi k2.5 mla eagle + dp attention | `python/sglang/srt/models/kimi_k25_eagle3.py` |
+| 2026-05-15 | [#25265](https://github.com/sgl-project/sglang/pull/25265) | merged | [perf] fix kimi tokenizer to improve ttft | `python/sglang/srt/managers/tokenizer_manager.py` |
+| 2026-05-18 | [#25390](https://github.com/sgl-project/sglang/pull/25390) | merged | [AMD] Enable shared-experts fusion with new KIMI-K2.5-MXFP4 model. | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/quantization/quark/quark.py` |
+| 2026-05-19 | [#25269](https://github.com/sgl-project/sglang/pull/25269) | merged | [NPU][Docs] Add Kimi-K2.5-W4A8 instance doc on NPU | `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_kimi_k2.5_examples.mdx` |
+| 2026-05-19 | [#25740](https://github.com/sgl-project/sglang/pull/25740) | merged | [AMD] Bump amd/Kimi-K2.5-MXFP4 revision to align with shared-experts fusion | `test/registered/amd/test_kimi_k25_mxfp4.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -2814,6 +2820,204 @@ diff -- python/sglang/srt/multimodal/processors/kimi_k25.py
 - 已读文件:
   - runtime: `python/sglang/srt/multimodal/processors/kimi_k25.py` modified +6/-1
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/multimodal/processors/kimi_k25.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #24826 - [spec decoding] support kimi-k2.5-eagle3-mla
+
+- 链接: https://github.com/sgl-project/sglang/pull/24826
+- 状态/时间: merged / 2026-05-10
+- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@78cb38ed5` 提交历史和 GitHub Pull Request files API 反查；关联提交 `a87fb399deaa`。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+465/-0，可读 patch 480 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[spec decoding] support kimi-k2.5-eagle3-mla」；模型线: Kimi K2/K2.5/Linear/VL；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/kimi_k25_eagle3.py`, `python/sglang/srt/utils/hf_transformers/common.py`, `python/sglang/srt/configs/model_config.py`；技术摘要: 覆盖「[spec decoding] support kimi-k2.5-eagle3-mla」，下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/kimi_k25_eagle3.py` added +458/-0 (458 lines); hunks: -0,0 +1,458  @@ +"""EAGLE3 draft model with MLA attention for Kimi-K2.5.；`python/sglang/srt/utils/hf_transformers/common.py` modified +6/-0 (6 lines); hunks: -119,6 +119,12  @@ class _DeepseekV4ConfigAlias(_HFDeepseekV3Config):; symbols: _DeepseekV4ConfigAlias，涉及 `_DeepseekV4ConfigAlias`；`python/sglang/srt/configs/model_config.py` modified +1/-0 (1 lines); hunks: -608,6 +608,7  @@ def _derive_model_shapes(self):; symbols: _derive_model_shapes，涉及 `_derive_model_shapes`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/kimi_k25_eagle3.py` added +458/-0 (458 lines); hunks: -0,0 +1,458  @@ +"""EAGLE3 draft model with MLA attention for Kimi-K2.5.
+  - `python/sglang/srt/utils/hf_transformers/common.py` modified +6/-0 (6 lines); hunks: -119,6 +119,12  @@ class _DeepseekV4ConfigAlias(_HFDeepseekV3Config):; symbols: _DeepseekV4ConfigAlias，涉及 `_DeepseekV4ConfigAlias`
+  - `python/sglang/srt/configs/model_config.py` modified +1/-0 (1 lines); hunks: -608,6 +608,7  @@ def _derive_model_shapes(self):; symbols: _derive_model_shapes，涉及 `_derive_model_shapes`
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/kimi_k25_eagle3.py
+@@ -0,0 +1,458 @@
++"""EAGLE3 draft model with MLA attention for Kimi-K2.5.
++
++The ``kimi-k2.5-eagle3-mla`` checkpoint pairs an EAGLE3 layout
++(concatenated [embed_norm, hidden_norm] pre-attention input, fc projection
++over the concatenated multi-layer aux hidden states, single decoder layer,
++dense MLP) with DeepSeek-V2 multi-latent attention. Sharing the MLA layout
++with the Kimi-K2.5 target keeps the draft KV cache small.
++"""
+diff -- python/sglang/srt/utils/hf_transformers/common.py
+@@ -119,6 +119,12 @@ class _DeepseekV4ConfigAlias(_HFDeepseekV3Config):
++
++    # For kimi_k25_eagle3
++    class _KimiK2ConfigAlias(_HFDeepseekV3Config):
++        model_type = "kimi_k2"
++
++    _CONFIG_REGISTRY["kimi_k2"] = _KimiK2ConfigAlias
+diff -- python/sglang/srt/configs/model_config.py
+@@ -608,6 +608,7 @@ def _derive_model_shapes(self):
++            or "Eagle3DeepseekV2ForCausalLM" in self.hf_config.architectures
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/kimi_k25_eagle3.py` added +458/-0; `python/sglang/srt/utils/hf_transformers/common.py` modified +6/-0; `python/sglang/srt/configs/model_config.py` modified +1/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/kimi_k25_eagle3.py`, `python/sglang/srt/utils/hf_transformers/common.py`, `python/sglang/srt/configs/model_config.py`；风险点是权重加载、并行切分、attention/MoE 后端选择、量化 dtype 和 parser 输出，需要至少做一次真实 checkpoint 或等价 smoke。
+
+### PR #25033 - Fix kimi k2.5 mla eagle + dp attention
+
+- 链接: https://github.com/sgl-project/sglang/pull/25033
+- 状态/时间: merged / 2026-05-12
+- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@78cb38ed5` 提交历史和 GitHub Pull Request files API 反查；关联提交 `cfc41d5b15fe`。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+15/-1，可读 patch 23 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Fix kimi k2.5 mla eagle + dp attention」；模型线: Kimi K2/K2.5/Linear/VL；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/kimi_k25_eagle3.py`；技术摘要: 覆盖「Fix kimi k2.5 mla eagle + dp attention」，下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/kimi_k25_eagle3.py` modified +15/-1 (16 lines); hunks: -223,7 +223,21  @@ def forward(; symbols: forward，涉及 `forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/kimi_k25_eagle3.py` modified +15/-1 (16 lines); hunks: -223,7 +223,21  @@ def forward(; symbols: forward，涉及 `forward`
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/kimi_k25_eagle3.py
+@@ -223,7 +223,21 @@ def forward(
+-            embeds = self.embed_tokens(input_ids)
++            # MM positions in input_ids hold MM_PAD_SHIFT_VALUE+hash sentinels (far above
++            # vocab_size). Use target-produced mm_input_embeds for these positions and
++            # only call embed_tokens on the appended next-token to avoid embed OOB.
++            embeds = forward_batch.mm_input_embeds
++            if (
++                forward_batch.forward_mode.is_extend()
++                and forward_batch.contains_mm_inputs()
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/kimi_k25_eagle3.py` modified +15/-1
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/kimi_k25_eagle3.py`；风险点是权重加载、并行切分、attention/MoE 后端选择、量化 dtype 和 parser 输出，需要至少做一次真实 checkpoint 或等价 smoke。
+
+### PR #25265 - [perf] fix kimi tokenizer to improve ttft
+
+- 链接: https://github.com/sgl-project/sglang/pull/25265
+- 状态/时间: merged / 2026-05-15
+- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@78cb38ed5` 提交历史和 GitHub Pull Request files API 反查；关联提交 `7af4320d67a3`。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+10/-3，可读 patch 20 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[perf] fix kimi tokenizer to improve ttft」；模型线: Kimi K2/K2.5/Linear/VL；类别: 性能/后端优化；主要 diff: `python/sglang/srt/managers/tokenizer_manager.py`；技术摘要: 覆盖「[perf] fix kimi tokenizer to improve ttft」，下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/managers/tokenizer_manager.py` modified +10/-3 (13 lines); hunks: -689,9 +689,16  @@ async def _tokenize_texts(; symbols: _tokenize_texts，涉及 `_tokenize_texts`。
+- 代码 diff 细节:
+  - `python/sglang/srt/managers/tokenizer_manager.py` modified +10/-3 (13 lines); hunks: -689,9 +689,16  @@ async def _tokenize_texts(; symbols: _tokenize_texts，涉及 `_tokenize_texts`
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/managers/tokenizer_manager.py
+@@ -689,9 +689,16 @@ async def _tokenize_texts(
+-            encoded = self.tokenizer(tokenizer_input, **tokenizer_kwargs)
+-            input_ids = encoded["input_ids"]
+-            token_type_ids = encoded.get("token_type_ids") if is_cross_encoder else None
++
++            if not is_cross_encoder and (not getattr(self.tokenizer, "is_fast", False)):
++                input_ids = [self.tokenizer.encode(t) for t in tokenizer_input]
++                token_type_ids = None
++            else:
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/managers/tokenizer_manager.py` modified +10/-3
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/managers/tokenizer_manager.py`；风险点是权重加载、并行切分、attention/MoE 后端选择、量化 dtype 和 parser 输出，需要至少做一次真实 checkpoint 或等价 smoke。
+
+### PR #25390 - [AMD] Enable shared-experts fusion with new KIMI-K2.5-MXFP4 model.
+
+- 链接: https://github.com/sgl-project/sglang/pull/25390
+- 状态/时间: merged / 2026-05-18
+- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@78cb38ed5` 提交历史和 GitHub Pull Request files API 反查；关联提交 `abe2ec2aff6f`。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+18/-2，可读 patch 41 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[AMD] Enable shared-experts fusion with new KIMI-K2.5-MXFP4 model.」；模型线: Kimi K2/K2.5/Linear/VL；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/quantization/quark/quark.py`；技术摘要: 覆盖「[AMD] Enable shared-experts fusion with new KIMI-K2.5-MXFP4 model.」，下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +11/-1 (12 lines); hunks: -2355,6 +2355,12  @@ def __init__(; -2422,7 +2428,11  @@ def determine_num_fused_shared_experts(; symbols: __init__, determine_num_fused_shared_experts，涉及 `__init__, determine_num_fused_shared_experts`；`python/sglang/srt/layers/quantization/quark/quark.py` modified +7/-1 (8 lines); hunks: -71,7 +71,13  @@ def get_name(self) -> str:; symbols: get_name，涉及 `get_name`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/deepseek_v2.py` modified +11/-1 (12 lines); hunks: -2355,6 +2355,12  @@ def __init__(; -2422,7 +2428,11  @@ def determine_num_fused_shared_experts(; symbols: __init__, determine_num_fused_shared_experts，涉及 `__init__, determine_num_fused_shared_experts`
+  - `python/sglang/srt/layers/quantization/quark/quark.py` modified +7/-1 (8 lines); hunks: -71,7 +71,13  @@ def get_name(self) -> str:; symbols: get_name，涉及 `get_name`
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -2355,6 +2355,12 @@ def __init__(
++        # Quant configs like Quark may rely on the model to provide fused-module
++        # mappings so exclusion checks can unfuse derived names back to the
++        # checkpoint's source layer names.
++        if quant_config is not None and hasattr(quant_config, "packed_modules_mapping"):
++            quant_config.packed_modules_mapping = self.packed_modules_mapping
++
+@@ -2422,7 +2428,11 @@ def determine_num_fused_shared_experts(
+-            or self.config.n_routed_experts != 256
+diff -- python/sglang/srt/layers/quantization/quark/quark.py
+@@ -71,7 +71,13 @@ def get_name(self) -> str:
+-        self.exclude_layers = hf_to_sglang_mapper.apply_list(self.exclude_layers)
++        mapped = hf_to_sglang_mapper.apply_list(self.exclude_layers)
++        expanded = []
++        for name in mapped:
++            expanded.append(name)
++            if name.startswith("language_model."):
++                expanded.append(name.removeprefix("language_model."))
++        self.exclude_layers = list(dict.fromkeys(expanded))
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +11/-1; `python/sglang/srt/layers/quantization/quark/quark.py` modified +7/-1
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/quantization/quark/quark.py`；风险点是权重加载、并行切分、attention/MoE 后端选择、量化 dtype 和 parser 输出，需要至少做一次真实 checkpoint 或等价 smoke。
+
+### PR #25269 - [NPU][Docs] Add Kimi-K2.5-W4A8 instance doc on NPU
+
+- 链接: https://github.com/sgl-project/sglang/pull/25269
+- 状态/时间: merged / 2026-05-19
+- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@78cb38ed5` 提交历史和 GitHub Pull Request files API 反查；关联提交 `d028697d17b3`。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+314/-0，可读 patch 315 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[NPU][Docs] Add Kimi-K2.5-W4A8 instance doc on NPU」；模型线: Kimi K2/K2.5/Linear/VL；类别: 文档/测试/CI；主要 diff: `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_kimi_k2.5_examples.mdx`；技术摘要: 覆盖「[NPU][Docs] Add Kimi-K2.5-W4A8 instance doc on NPU」，下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_kimi_k2.5_examples.mdx` added +314/-0 (314 lines); hunks: -0,0 +1,314  @@ +---。
+- 代码 diff 细节:
+  - `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_kimi_k2.5_examples.mdx` added +314/-0 (314 lines); hunks: -0,0 +1,314  @@ +---
+- 关键代码摘录:
+
+```diff
+diff -- docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_kimi_k2.5_examples.mdx
+@@ -0,0 +1,314 @@
++---
++title: "Kimi K2.5 examples"
++metatags:
++  description: "Documentation for Kimi K2.5 examples"
++---
++## Introduction
++
++Kimi K2.5 is an open-source, native multimodal agentic model built through continual pretraining on approximately 15 trillion mixed visual and text tokens atop Kimi-K2-Base. It se
+```
+
+- 已读文件:
+  - docs: `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_kimi_k2.5_examples.mdx` added +314/-0
+- 验证与风险: 该 PR 主要落在文档/测试/CI ``docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_kimi_k2.5_examples.mdx``；验证重点是命令、CI 选择器和模型仓库名仍映射到当前实现。
+
+### PR #25740 - [AMD] Bump amd/Kimi-K2.5-MXFP4 revision to align with shared-experts fusion
+
+- 链接: https://github.com/sgl-project/sglang/pull/25740
+- 状态/时间: merged / 2026-05-19
+- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@78cb38ed5` 提交历史和 GitHub Pull Request files API 反查；关联提交 `7c3f614e2352`。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+7/-1，可读 patch 15 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[AMD] Bump amd/Kimi-K2.5-MXFP4 revision to align with shared-experts fusion」；模型线: Kimi K2/K2.5/Linear/VL；类别: 性能/后端优化；主要 diff: `test/registered/amd/test_kimi_k25_mxfp4.py`；技术摘要: 覆盖「[AMD] Bump amd/Kimi-K2.5-MXFP4 revision to align with shared-experts fusion」，下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/amd/test_kimi_k25_mxfp4.py` modified +7/-1 (8 lines); hunks: -27,7 +27,13  @@ register_amd_ci(est_time=3600, suite="stage-c-test-large-8-gpu-amd-mi35x"); symbols: est_time，涉及 `est_time`。
+- 代码 diff 细节:
+  - `test/registered/amd/test_kimi_k25_mxfp4.py` modified +7/-1 (8 lines); hunks: -27,7 +27,13  @@ register_amd_ci(est_time=3600, suite="stage-c-test-large-8-gpu-amd-mi35x"); symbols: est_time，涉及 `est_time`
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/amd/test_kimi_k25_mxfp4.py
+@@ -27,7 +27,13 @@
+-KIMI_K25_MXFP4_REVISION = "b071bc6f8eb042e093e14f3b8bdbad71c18e09d3"
++# Bumped from b071bc6f -> 419004c8 (HF main HEAD as of 2026-05-18). The pinned
++# b071bc6f revision keeps shared_experts unquantized (bf16), which is
++# incompatible with the shared-experts fusion path enabled for Kimi-K2.5
++# (n_routed_experts=384) in #25390. Revisions from 94d8c1bd onward quantize
++# shared_experts to MXFP4 so the fusion can copy weights between routed and
++# shared experts without a dtype/shape mismatch.
++KIMI_K25_MXFP4_REVISION = "419004c8716cf22c929aa15d39b85e09a8a2091a"
+```
+
+- 已读文件:
+  - tests: `test/registered/amd/test_kimi_k25_mxfp4.py` modified +7/-1
+- 验证与风险: diff 主要补测试面 ``test/registered/amd/test_kimi_k25_mxfp4.py``；后续改同一区域时应复跑相关测试并确认覆盖的模型路径仍有效。
 
 ## 补漏结论
 

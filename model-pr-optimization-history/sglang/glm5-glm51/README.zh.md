@@ -1,5 +1,9 @@
 # sglang GLM-5/5.1 模型 PR 优化历史
 
+## 2026-05-19 PR 补漏复核
+
+已按 sglang 上游 `origin/main@78cb38ed5` 和 GitHub Pull Request files API 复核；本轮补齐 `#25453` 的时间线与逐 PR diff 审计卡。
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
@@ -26,8 +30,8 @@
 ## PR 覆盖总览
 
 - git 追溯 PR 数: 7
-- 原文档显式引用补充 PR 数: 11
-- 当前文档总 PR 数: 18
+- 原文档显式引用补充 PR 数: 12
+- 当前文档总 PR 数: 19
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -53,6 +57,7 @@
 | 2026-04-20 | [#23219](https://github.com/sgl-project/sglang/pull/23219) | merged | [AMD] Enable MTP for GLM-5-mxfp4 model | `python/sglang/srt/models/deepseek_nextn.py` |
 | 2026-04-23 | [#23060](https://github.com/sgl-project/sglang/pull/23060) | merged | [fix] Fix dynamic chunking profiling crash on GLM-5 models | `python/sglang/srt/managers/scheduler_pp_mixin.py` |
 | 2026-04-23 | [#23540](https://github.com/sgl-project/sglang/pull/23540) | merged | docs: split MI300X and MI325X options in GLM-5.1 generator | `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx` |
+| 2026-05-16 | [#25453](https://github.com/sgl-project/sglang/pull/25453) | merged | [CI] Lower mem-fraction-static for GLM-5.1 FP8 8-GPU test to 0.85 | `test/registered/8-gpu-models/test_glm_51_fp8.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -633,6 +638,29 @@ diff -- docs_new/src/snippets/autoregressive/glm-51-deployment.jsx
 - 已读文件:
   - docs: `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx` modified +6/-4
 - 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/intro.mdx`, `docs_new/docs.json`, `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #25453 - [CI] Lower mem-fraction-static for GLM-5.1 FP8 8-GPU test to 0.85
+
+- 链接: https://github.com/sgl-project/sglang/pull/25453
+- 状态/时间: merged / 2026-05-16
+- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@78cb38ed5` 提交历史和 GitHub Pull Request files API 反查；关联提交 `a741d0cc56b9`。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[CI] Lower mem-fraction-static for GLM-5.1 FP8 8-GPU test to 0.85」；模型线: GLM-5/5.1；类别: 文档/测试/CI；主要 diff: `test/registered/8-gpu-models/test_glm_51_fp8.py`；技术摘要: 覆盖「[CI] Lower mem-fraction-static for GLM-5.1 FP8 8-GPU test to 0.85」，下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/8-gpu-models/test_glm_51_fp8.py` modified +1/-1 (2 lines); hunks: -15,7 +15,7  @@ "--trust-remote-code",。
+- 代码 diff 细节:
+  - `test/registered/8-gpu-models/test_glm_51_fp8.py` modified +1/-1 (2 lines); hunks: -15,7 +15,7  @@ "--trust-remote-code",
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/8-gpu-models/test_glm_51_fp8.py
+@@ -15,7 +15,7 @@
+-    "--mem-fraction-static=0.9",
++    "--mem-fraction-static=0.85",
+```
+
+- 已读文件:
+  - tests: `test/registered/8-gpu-models/test_glm_51_fp8.py` modified +1/-1
+- 验证与风险: diff 主要补测试面 ``test/registered/8-gpu-models/test_glm_51_fp8.py``；后续改同一区域时应复跑相关测试并确认覆盖的模型路径仍有效。
 
 ## 补漏结论
 

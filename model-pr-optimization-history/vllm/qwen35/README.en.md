@@ -1,5 +1,9 @@
 # vllm Qwen3.5 Model PR Optimization History
 
+## 2026-05-19 PR Backfill Audit
+
+Rechecked vllm upstream `origin/main@07beaed84` and the GitHub Pull Request files API; this pass adds timeline entries and per-PR diff audit cards for `#42311`, `#42716`.
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |
@@ -22,8 +26,8 @@
 ## PR Coverage Summary
 
 - Git-traced PRs: 29
-- Extra PRs preserved from existing docs: 6
-- Total PRs in this document: 34
+- Extra PRs preserved from existing docs: 7
+- Total PRs in this document: 36
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -65,6 +69,8 @@
 | 2026-04-03 | [#38927](https://github.com/vllm-project/vllm/pull/38927) | merged | [Bugfix][LoRA] Fix missing in_proj_z in Qwen3_5ForConditionalGenerati… | `vllm/model_executor/models/qwen3_5.py` |
 | 2026-04-08 | [#39181](https://github.com/vllm-project/vllm/pull/39181) | merged | [Bugfix]Fix EP precision for Qwen3.5, Qwen3-Next | `vllm/model_executor/models/qwen2_moe.py`, `vllm/model_executor/models/qwen3_next.py` |
 | 2026-04-21 | [#37114](https://github.com/vllm-project/vllm/pull/37114) | merged | [Bugfix] LoRA: extend expert base_layer loading to Qwen3.5 and Step3.x | `vllm/model_executor/models/qwen3_5.py`, `vllm/model_executor/models/qwen3_5_mtp.py` |
+| 2026-05-17 | [#42716](https://github.com/vllm-project/vllm/pull/42716) | merged | Fix Weight loading for  Qwen3.5-MTP and Qwen3-VL using runai_streamer | `vllm/model_executor/models/qwen3_5_mtp.py`, `vllm/model_executor/models/qwen3_vl_moe.py` |
+| 2026-05-18 | [#42311](https://github.com/vllm-project/vllm/pull/42311) | merged | [Model] [Perf] Use flatten for Qwen3.5's GDN output projection | `vllm/model_executor/layers/mamba/gdn_linear_attn.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -1052,3 +1058,64 @@ diff -- vllm/model_executor/models/qwen3_5_mtp.py
 
 - Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
 - If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.
+
+### PR #42716 - Fix Weight loading for  Qwen3.5-MTP and Qwen3-VL using runai_streamer
+
+- Link: https://github.com/vllm-project/vllm/pull/42716
+- Status/date: merged / 2026-05-17
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@07beaed84` history, and the GitHub Pull Request files API; associated commit `a94189295b8b`.
+- Diff scope read: GitHub Pull Request files API returned 2 files, +4/-4, 22 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Fix Weight loading for  Qwen3.5-MTP and Qwen3-VL using runai_streamer"; model line: Qwen3.5; category: bug fix; main diff: `vllm/model_executor/models/qwen3_5_mtp.py`, `vllm/model_executor/models/qwen3_vl_moe.py`; technical summary: Covers "Fix Weight loading for  Qwen3.5-MTP and Qwen3-VL using runai_streamer" with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `vllm/model_executor/models/qwen3_5_mtp.py` modified +2/-2 (4 lines); hunks: -175,8 +175,8  @@ def load_fused_expert_weights(; symbols: load_fused_expert_weights, touching `load_fused_expert_weights`；`vllm/model_executor/models/qwen3_vl_moe.py` modified +2/-2 (4 lines); hunks: -152,8 +152,8  @@ def load_fused_expert_weights(; symbols: load_fused_expert_weights, touching `load_fused_expert_weights`.
+- Code diff details:
+  - `vllm/model_executor/models/qwen3_5_mtp.py` modified +2/-2 (4 lines); hunks: -175,8 +175,8  @@ def load_fused_expert_weights(; symbols: load_fused_expert_weights, touching `load_fused_expert_weights`
+  - `vllm/model_executor/models/qwen3_vl_moe.py` modified +2/-2 (4 lines); hunks: -152,8 +152,8  @@ def load_fused_expert_weights(; symbols: load_fused_expert_weights, touching `load_fused_expert_weights`
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_5_mtp.py
+@@ -175,8 +175,8 @@ def load_fused_expert_weights(
+-                shard_id,
+-                expert_id,
++                shard_id=shard_id,
++                expert_id=expert_id,
+diff -- vllm/model_executor/models/qwen3_vl_moe.py
+@@ -152,8 +152,8 @@ def load_fused_expert_weights(
+-                shard_id,
+-                expert_id,
++                shard_id=shard_id,
++                expert_id=expert_id,
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/qwen3_5_mtp.py` modified +2/-2; `vllm/model_executor/models/qwen3_vl_moe.py` modified +2/-2
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/qwen3_5_mtp.py`, `vllm/model_executor/models/qwen3_vl_moe.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.
+
+### PR #42311 - [Model] [Perf] Use flatten for Qwen3.5's GDN output projection
+
+- Link: https://github.com/vllm-project/vllm/pull/42311
+- Status/date: merged / 2026-05-18
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@07beaed84` history, and the GitHub Pull Request files API; associated commit `5ab6d1b3fd40`.
+- Diff scope read: GitHub Pull Request files API returned 1 files, +3/-3, 27 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Model] [Perf] Use flatten for Qwen3.5's GDN output projection"; model line: Qwen3.5; category: performance/backend optimization; main diff: `vllm/model_executor/layers/mamba/gdn_linear_attn.py`; technical summary: Covers "[Model] [Perf] Use flatten for Qwen3.5's GDN output projection" with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `vllm/model_executor/layers/mamba/gdn_linear_attn.py` modified +3/-3 (6 lines); hunks: -697,7 +697,7  @@ def _output_projection(; -857,7 +857,7  @@ def forward_xpu(; symbols: _output_projection, forward_xpu, forward_cpu, touching `_output_projection, forward_xpu, forward_cpu`.
+- Code diff details:
+  - `vllm/model_executor/layers/mamba/gdn_linear_attn.py` modified +3/-3 (6 lines); hunks: -697,7 +697,7  @@ def _output_projection(; -857,7 +857,7  @@ def forward_xpu(; symbols: _output_projection, forward_xpu, forward_cpu, touching `_output_projection, forward_xpu, forward_cpu`
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/layers/mamba/gdn_linear_attn.py
+@@ -697,7 +697,7 @@ def _output_projection(
+-        core_attn_out = rearrange(core_attn_out, "... h d -> ... (h d)")
++        core_attn_out = core_attn_out.flatten(-2)  # ... h d -> ... (h d)
+@@ -857,7 +857,7 @@ def forward_xpu(
+-        core_attn_out = rearrange(core_attn_out, "... h d -> ... (h d)")
++        core_attn_out = core_attn_out.flatten(-2)  # ... h d -> ... (h d)
+@@ -907,7 +907,7 @@ def forward_cpu(
+-        core_attn_out = rearrange(core_attn_out, "... h d -> ... (h d)")
++        core_attn_out = core_attn_out.flatten(-2)  # ... h d -> ... (h d)
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/layers/mamba/gdn_linear_attn.py` modified +3/-3
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/mamba/gdn_linear_attn.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.

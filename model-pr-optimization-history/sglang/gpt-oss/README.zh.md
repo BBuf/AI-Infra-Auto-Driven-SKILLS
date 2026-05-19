@@ -1,5 +1,9 @@
 # sglang GPT-OSS 模型 PR 优化历史
 
+## 2026-05-19 PR 补漏复核
+
+已按 sglang 上游 `origin/main@78cb38ed5` 和 GitHub Pull Request files API 复核；本轮补齐 `#25335` 的时间线与逐 PR diff 审计卡。
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
@@ -24,8 +28,8 @@
 ## PR 覆盖总览
 
 - git 追溯 PR 数: 27
-- 原文档显式引用补充 PR 数: 2
-- 当前文档总 PR 数: 29
+- 原文档显式引用补充 PR 数: 3
+- 当前文档总 PR 数: 30
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -62,6 +66,7 @@
 | 2026-03-24 | [#20755](https://github.com/sgl-project/sglang/pull/20755) | merged | Use FlashInfer tinygemm for GPT-OSS MoE router on SM90+ | `python/sglang/srt/models/gpt_oss.py` |
 | 2026-04-02 | [#21570](https://github.com/sgl-project/sglang/pull/21570) | merged | [4/n] Support gpt oss 20b lora | `python/sglang/srt/models/gpt_oss.py`, `test/registered/lora/test_lora_gpt_oss_20b_logprob_diff.py` |
 | 2026-04-08 | [#22237](https://github.com/sgl-project/sglang/pull/22237) | merged | [CI] Relax gpt-oss 4GPU accuracy threshold from 0.60 to 0.58 | `test/registered/4-gpu-models/test_gpt_oss_4gpu.py` |
+| 2026-05-15 | [#25335](https://github.com/sgl-project/sglang/pull/25335) | merged | [Fix] Fix gpt oss triton kernels and upgrade flashinfer back to 0.6.11.post1 | `python/sglang/srt/layers/quantization/mxfp4.py`, `python/sglang/srt/layers/moe/topk.py`, `python/sglang/srt/layers/quantization/fp4_utils.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -858,6 +863,60 @@ diff -- test/registered/4-gpu-models/test_gpt_oss_4gpu.py
 - 已读文件:
   - tests: `test/registered/4-gpu-models/test_gpt_oss_4gpu.py` modified +2/-2
 - 验证与风险: diff 自带测试面 `test/registered/4-gpu-models/test_gpt_oss_4gpu.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #25335 - [Fix] Fix gpt oss triton kernels and upgrade flashinfer back to 0.6.11.post1
+
+- 链接: https://github.com/sgl-project/sglang/pull/25335
+- 状态/时间: merged / 2026-05-15
+- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@78cb38ed5` 提交历史和 GitHub Pull Request files API 反查；关联提交 `0c19540550e1`。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 13 个文件，+147/-53，可读 patch 404 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Fix] Fix gpt oss triton kernels and upgrade flashinfer back to 0.6.11.post1」；模型线: GPT-OSS；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/quantization/mxfp4.py`, `python/sglang/srt/layers/moe/topk.py`, `python/sglang/srt/layers/quantization/fp4_utils.py`；技术摘要: 覆盖「[Fix] Fix gpt oss triton kernels and upgrade flashinfer back to 0.6.11.post1」，下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/quantization/mxfp4.py` modified +46/-3 (49 lines); hunks: -141,6 +141,7  @@ def _get_flashinfer_mxfp4_device_permute_indices(; -156,6 +157,49  @@ def _get_flashinfer_mxfp4_device_permute_indices(; symbols: _get_flashinfer_mxfp4_device_permute_indices, _swizzle_mxfp4，涉及 `_get_flashinfer_mxfp4_device_permute_indices, _swizzle_mxfp4`；`python/sglang/srt/layers/moe/topk.py` modified +44/-1 (45 lines); hunks: -32,7 +32,50  @@ import torch.nn.functional as F；`python/sglang/srt/layers/quantization/fp4_utils.py` modified +7/-7 (14 lines); hunks: -34,13 +34,13  @@ def _flashinfer_fp4_quantize_impl(; symbols: _flashinfer_fp4_quantize_impl，涉及 `_flashinfer_fp4_quantize_impl`；`python/sglang/srt/layers/moe/moe_runner/triton_kernels.py` modified +6/-2 (8 lines); hunks: -19,8 +19,12  @@ from sglang.srt.layers.moe.utils import MoeRunnerBackend。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/quantization/mxfp4.py` modified +46/-3 (49 lines); hunks: -141,6 +141,7  @@ def _get_flashinfer_mxfp4_device_permute_indices(; -156,6 +157,49  @@ def _get_flashinfer_mxfp4_device_permute_indices(; symbols: _get_flashinfer_mxfp4_device_permute_indices, _swizzle_mxfp4，涉及 `_get_flashinfer_mxfp4_device_permute_indices, _swizzle_mxfp4`
+  - `python/sglang/srt/layers/moe/topk.py` modified +44/-1 (45 lines); hunks: -32,7 +32,50  @@ import torch.nn.functional as F
+  - `python/sglang/srt/layers/quantization/fp4_utils.py` modified +7/-7 (14 lines); hunks: -34,13 +34,13  @@ def _flashinfer_fp4_quantize_impl(; symbols: _flashinfer_fp4_quantize_impl，涉及 `_flashinfer_fp4_quantize_impl`
+  - `python/sglang/srt/layers/moe/moe_runner/triton_kernels.py` modified +6/-2 (8 lines); hunks: -19,8 +19,12  @@ from sglang.srt.layers.moe.utils import MoeRunnerBackend
+  - `python/sglang/srt/layers/moe/fused_moe_triton/triton_kernels_moe.py` modified +4/-3 (7 lines); hunks: -11,11 +11,13  @@ FlexCtx,; -297,9 +299,8  @@ def triton_kernel_fused_experts_with_bias(; symbols: triton_kernel_fused_experts_with_bias，涉及 `triton_kernel_fused_experts_with_bias`
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/quantization/mxfp4.py
+@@ -141,6 +141,7 @@ def _get_flashinfer_mxfp4_device_permute_indices(
++_sm120_mxfp4_min_warps_patched = False
+@@ -156,6 +157,49 @@ def _get_flashinfer_mxfp4_device_permute_indices(
++def _patch_sm120_mxfp4_min_warps():
++    global _sm120_mxfp4_min_warps_patched
++    if _sm120_mxfp4_min_warps_patched:
++        return
++
++    import inspect
+diff -- python/sglang/srt/layers/moe/topk.py
+@@ -32,7 +32,50 @@
+-    from triton_kernels.routing import GatherIndx, RoutingData, ScatterIndx, routing
++    from triton_kernels.matmul_ogs import GatherIndx, RoutingData, ScatterIndx
++    from triton_kernels.tensor import make_ragged_tensor_metadata
++    from triton_kernels.topk import topk as triton_kernels_topk
++
++    def routing(
++        logits,
++        n_expts_act,
+diff -- python/sglang/srt/layers/quantization/fp4_utils.py
+@@ -34,13 +34,13 @@ def _flashinfer_fp4_quantize_impl(
+-            input,
+-            global_scale,
+-            sf_vec_size,
+-            sf_use_ue8m0,
+-            is_sf_swizzled_layout,
+-            is_sf_8x4_layout,
+-            enable_pdl,
++            input=input,
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/quantization/mxfp4.py` modified +46/-3; `python/sglang/srt/layers/moe/topk.py` modified +44/-1; `python/sglang/srt/layers/quantization/fp4_utils.py` modified +7/-7; `python/sglang/srt/layers/moe/moe_runner/triton_kernels.py` modified +6/-2
+  - tests: `test/registered/moe/test_cutedsl_moe.py` modified +9/-6; `test/registered/unit/layers/quantization/test_mxfp4_sm90_cutlass.py` modified +1/-6
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/quantization/mxfp4.py`, `python/sglang/srt/layers/moe/topk.py`, `python/sglang/srt/layers/quantization/fp4_utils.py`；风险点是权重加载、并行切分、attention/MoE 后端选择、量化 dtype 和 parser 输出，需要至少做一次真实 checkpoint 或等价 smoke。
 
 ## 补漏结论
 

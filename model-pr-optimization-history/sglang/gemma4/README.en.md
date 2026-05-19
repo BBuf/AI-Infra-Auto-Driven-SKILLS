@@ -1,5 +1,9 @@
 # sglang Gemma 4 Model PR Optimization History
 
+## 2026-05-19 PR Backfill Audit
+
+Rechecked sglang upstream `origin/main@78cb38ed5` and the GitHub Pull Request files API; this pass adds timeline entries and per-PR diff audit cards for `#25006`, `#25547`.
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |
@@ -17,8 +21,8 @@
 ## PR Coverage Summary
 
 - Git-traced PRs: 1
-- Extra PRs preserved from existing docs: 3
-- Total PRs in this document: 4
+- Extra PRs preserved from existing docs: 5
+- Total PRs in this document: 6
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -30,6 +34,8 @@
 | 2026-04-10 | [#22079](https://github.com/sgl-project/sglang/pull/22079) | merged | [nvidia] Gemma4 nvfp4 fix | `python/sglang/srt/layers/attention/triton_ops/extend_attention.py` |
 | 2026-04-16 | [#21569](https://github.com/sgl-project/sglang/pull/21569) | merged | Upgrade transformers to 5.5.3 and refactor hf_transformers_utils into subpackage | `python/sglang/srt/utils/hf_transformers/tokenizer.py`, `python/sglang/srt/configs/qwen3_5.py`, `python/sglang/srt/configs/step3p5.py` |
 | 2026-04-17 | [#22408](https://github.com/sgl-project/sglang/pull/22408) | merged | [CI] Adding Gemma 4 to Nightly CI | `test/registered/eval/test_vlms_mmmu_eval.py` |
+| 2026-05-17 | [#25006](https://github.com/sgl-project/sglang/pull/25006) | merged | Enable trtllm_mha as gemma4 default attn backend. | `python/sglang/srt/server_args.py` |
+| 2026-05-18 | [#25547](https://github.com/sgl-project/sglang/pull/25547) | merged | Respect user override for Gemma4 attention backend | `python/sglang/srt/server_args.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -174,3 +180,61 @@ diff -- test/registered/eval/test_vlms_mmmu_eval.py
 
 - Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
 - If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.
+
+### PR #25006 - Enable trtllm_mha as gemma4 default attn backend.
+
+- Link: https://github.com/sgl-project/sglang/pull/25006
+- Status/date: merged / 2026-05-17
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@78cb38ed5` history, and the GitHub Pull Request files API; associated commit `c67b2870569a`.
+- Diff scope read: GitHub Pull Request files API returned 1 files, +6/-2, 16 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Enable trtllm_mha as gemma4 default attn backend."; model line: Gemma 4; category: model support/runtime entry; main diff: `python/sglang/srt/server_args.py`; technical summary: Covers "Enable trtllm_mha as gemma4 default attn backend." with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `python/sglang/srt/server_args.py` modified +6/-2 (8 lines); hunks: -2192,9 +2192,13  @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments, touching `_handle_model_specific_adjustments`.
+- Code diff details:
+  - `python/sglang/srt/server_args.py` modified +6/-2 (8 lines); hunks: -2192,9 +2192,13  @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments, touching `_handle_model_specific_adjustments`
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/server_args.py
+@@ -2192,9 +2192,13 @@ def _handle_model_specific_adjustments(self):
+-            if self.is_attention_backend_not_set():
++            if is_sm100_supported():
++                self.attention_backend = "trtllm_mha"
++            else:
+-                logger.info("Use triton as default attention backend for Gemma4")
++            logger.info(
++                f"Use {self.attention_backend} as default attention backend for Gemma4"
++            )
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/server_args.py` modified +6/-2
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/server_args.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.
+
+### PR #25547 - Respect user override for Gemma4 attention backend
+
+- Link: https://github.com/sgl-project/sglang/pull/25547
+- Status/date: merged / 2026-05-18
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@78cb38ed5` history, and the GitHub Pull Request files API; associated commit `b29e41e8b3f1`.
+- Diff scope read: GitHub Pull Request files API returned 1 files, +22/-5, 35 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Respect user override for Gemma4 attention backend"; model line: Gemma 4; category: model support/runtime entry; main diff: `python/sglang/srt/server_args.py`; technical summary: Covers "Respect user override for Gemma4 attention backend" with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `python/sglang/srt/server_args.py` modified +22/-5 (27 lines); hunks: -2192,12 +2192,29  @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments, touching `_handle_model_specific_adjustments`.
+- Code diff details:
+  - `python/sglang/srt/server_args.py` modified +22/-5 (27 lines); hunks: -2192,12 +2192,29  @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments, touching `_handle_model_specific_adjustments`
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/server_args.py
+@@ -2192,12 +2192,29 @@ def _handle_model_specific_adjustments(self):
+-            if is_sm100_supported():
+-                self.attention_backend = "trtllm_mha"
++            default_attention_backend = (
++                "trtllm_mha" if is_sm100_supported() else "triton"
++            )
++            if self.is_attention_backend_not_set():
++                self.attention_backend = default_attention_backend
++                logger.info(
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/server_args.py` modified +22/-5
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/server_args.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.

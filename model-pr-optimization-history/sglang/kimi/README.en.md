@@ -1,8 +1,8 @@
 # sglang Kimi K2/K2.5/Linear/VL Model PR Optimization History
 
-## 2026-05-15 Source Refresh Addendum
+## 2026-05-19 PR Backfill Audit
 
-SGLang `origin/main` was rechecked at `50f405816`. The Kimi history should now include `#23848` Kimi-K2.6 AMD MI30x/MI35x nightly validation, `#24826` Kimi-K2.5 MLA-based EAGLE3 source path, and `#25033` MLA EAGLE + DP attention fix.
+Rechecked sglang upstream `origin/main@78cb38ed5` and the GitHub Pull Request files API; this pass adds timeline entries and per-PR diff audit cards for `#23848`, `#24826`, `#25033`, `#25265`, `#25269`, `#25390`, `#25740`.
 
 ## Implementation File Coverage
 
@@ -50,8 +50,8 @@ SGLang `origin/main` was rechecked at `50f405816`. The Kimi history should now i
 ## PR Coverage Summary
 
 - Git-traced PRs: 41
-- Extra PRs preserved from existing docs: 43
-- Total PRs in this document: 84
+- Extra PRs preserved from existing docs: 49
+- Total PRs in this document: 90
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -143,6 +143,12 @@ SGLang `origin/main` was rechecked at `50f405816`. The Kimi history should now i
 | 2026-04-27 | [#23848](https://github.com/sgl-project/sglang/pull/23848) | open | [AMD] Add Kimi-K2.6 in nightly tests for MI30x and MI35x | `test/registered/amd/perf/mi35x/test_kimi_k26_perf_mi35x.py`, `test/registered/amd/perf/mi30x/test_kimi_k26_perf_amd.py`, `test/registered/amd/accuracy/mi35x/test_kimi_k26_eval_mi35x.py` |
 | 2026-04-27 | [#23501](https://github.com/sgl-project/sglang/pull/23501) | merged | [VLM] Fix Kimi-K2.5 CPU path: rename grid_thws -> image_grid_thw | `python/sglang/srt/multimodal/processors/kimi_k25.py` |
 | 2026-04-30 | [#22964](https://github.com/sgl-project/sglang/pull/22964) | closed | [fix][Kimi] fix KimiGPUProcessorWrapper _cpu_call output | `python/sglang/srt/multimodal/processors/kimi_k25.py` |
+| 2026-05-10 | [#24826](https://github.com/sgl-project/sglang/pull/24826) | merged | [spec decoding] support kimi-k2.5-eagle3-mla | `python/sglang/srt/models/kimi_k25_eagle3.py`, `python/sglang/srt/utils/hf_transformers/common.py`, `python/sglang/srt/configs/model_config.py` |
+| 2026-05-12 | [#25033](https://github.com/sgl-project/sglang/pull/25033) | merged | Fix kimi k2.5 mla eagle + dp attention | `python/sglang/srt/models/kimi_k25_eagle3.py` |
+| 2026-05-15 | [#25265](https://github.com/sgl-project/sglang/pull/25265) | merged | [perf] fix kimi tokenizer to improve ttft | `python/sglang/srt/managers/tokenizer_manager.py` |
+| 2026-05-18 | [#25390](https://github.com/sgl-project/sglang/pull/25390) | merged | [AMD] Enable shared-experts fusion with new KIMI-K2.5-MXFP4 model. | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/quantization/quark/quark.py` |
+| 2026-05-19 | [#25269](https://github.com/sgl-project/sglang/pull/25269) | merged | [NPU][Docs] Add Kimi-K2.5-W4A8 instance doc on NPU | `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_kimi_k2.5_examples.mdx` |
+| 2026-05-19 | [#25740](https://github.com/sgl-project/sglang/pull/25740) | merged | [AMD] Bump amd/Kimi-K2.5-MXFP4 revision to align with shared-experts fusion | `test/registered/amd/test_kimi_k25_mxfp4.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -2819,3 +2825,201 @@ diff -- python/sglang/srt/multimodal/processors/kimi_k25.py
 
 - Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
 - If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.
+
+### PR #24826 - [spec decoding] support kimi-k2.5-eagle3-mla
+
+- Link: https://github.com/sgl-project/sglang/pull/24826
+- Status/date: merged / 2026-05-10
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@78cb38ed5` history, and the GitHub Pull Request files API; associated commit `a87fb399deaa`.
+- Diff scope read: GitHub Pull Request files API returned 3 files, +465/-0, 480 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[spec decoding] support kimi-k2.5-eagle3-mla"; model line: Kimi K2/K2.5/Linear/VL; category: performance/backend optimization; main diff: `python/sglang/srt/models/kimi_k25_eagle3.py`, `python/sglang/srt/utils/hf_transformers/common.py`, `python/sglang/srt/configs/model_config.py`; technical summary: Covers "[spec decoding] support kimi-k2.5-eagle3-mla" with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `python/sglang/srt/models/kimi_k25_eagle3.py` added +458/-0 (458 lines); hunks: -0,0 +1,458  @@ +"""EAGLE3 draft model with MLA attention for Kimi-K2.5.；`python/sglang/srt/utils/hf_transformers/common.py` modified +6/-0 (6 lines); hunks: -119,6 +119,12  @@ class _DeepseekV4ConfigAlias(_HFDeepseekV3Config):; symbols: _DeepseekV4ConfigAlias, touching `_DeepseekV4ConfigAlias`；`python/sglang/srt/configs/model_config.py` modified +1/-0 (1 lines); hunks: -608,6 +608,7  @@ def _derive_model_shapes(self):; symbols: _derive_model_shapes, touching `_derive_model_shapes`.
+- Code diff details:
+  - `python/sglang/srt/models/kimi_k25_eagle3.py` added +458/-0 (458 lines); hunks: -0,0 +1,458  @@ +"""EAGLE3 draft model with MLA attention for Kimi-K2.5.
+  - `python/sglang/srt/utils/hf_transformers/common.py` modified +6/-0 (6 lines); hunks: -119,6 +119,12  @@ class _DeepseekV4ConfigAlias(_HFDeepseekV3Config):; symbols: _DeepseekV4ConfigAlias, touching `_DeepseekV4ConfigAlias`
+  - `python/sglang/srt/configs/model_config.py` modified +1/-0 (1 lines); hunks: -608,6 +608,7  @@ def _derive_model_shapes(self):; symbols: _derive_model_shapes, touching `_derive_model_shapes`
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/kimi_k25_eagle3.py
+@@ -0,0 +1,458 @@
++"""EAGLE3 draft model with MLA attention for Kimi-K2.5.
++
++The ``kimi-k2.5-eagle3-mla`` checkpoint pairs an EAGLE3 layout
++(concatenated [embed_norm, hidden_norm] pre-attention input, fc projection
++over the concatenated multi-layer aux hidden states, single decoder layer,
++dense MLP) with DeepSeek-V2 multi-latent attention. Sharing the MLA layout
++with the Kimi-K2.5 target keeps the draft KV cache small.
++"""
+diff -- python/sglang/srt/utils/hf_transformers/common.py
+@@ -119,6 +119,12 @@ class _DeepseekV4ConfigAlias(_HFDeepseekV3Config):
++
++    # For kimi_k25_eagle3
++    class _KimiK2ConfigAlias(_HFDeepseekV3Config):
++        model_type = "kimi_k2"
++
++    _CONFIG_REGISTRY["kimi_k2"] = _KimiK2ConfigAlias
+diff -- python/sglang/srt/configs/model_config.py
+@@ -608,6 +608,7 @@ def _derive_model_shapes(self):
++            or "Eagle3DeepseekV2ForCausalLM" in self.hf_config.architectures
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/kimi_k25_eagle3.py` added +458/-0; `python/sglang/srt/utils/hf_transformers/common.py` modified +6/-0; `python/sglang/srt/configs/model_config.py` modified +1/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/kimi_k25_eagle3.py`, `python/sglang/srt/utils/hf_transformers/common.py`, `python/sglang/srt/configs/model_config.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.
+
+### PR #25033 - Fix kimi k2.5 mla eagle + dp attention
+
+- Link: https://github.com/sgl-project/sglang/pull/25033
+- Status/date: merged / 2026-05-12
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@78cb38ed5` history, and the GitHub Pull Request files API; associated commit `cfc41d5b15fe`.
+- Diff scope read: GitHub Pull Request files API returned 1 files, +15/-1, 23 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Fix kimi k2.5 mla eagle + dp attention"; model line: Kimi K2/K2.5/Linear/VL; category: performance/backend optimization; main diff: `python/sglang/srt/models/kimi_k25_eagle3.py`; technical summary: Covers "Fix kimi k2.5 mla eagle + dp attention" with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `python/sglang/srt/models/kimi_k25_eagle3.py` modified +15/-1 (16 lines); hunks: -223,7 +223,21  @@ def forward(; symbols: forward, touching `forward`.
+- Code diff details:
+  - `python/sglang/srt/models/kimi_k25_eagle3.py` modified +15/-1 (16 lines); hunks: -223,7 +223,21  @@ def forward(; symbols: forward, touching `forward`
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/kimi_k25_eagle3.py
+@@ -223,7 +223,21 @@ def forward(
+-            embeds = self.embed_tokens(input_ids)
++            # MM positions in input_ids hold MM_PAD_SHIFT_VALUE+hash sentinels (far above
++            # vocab_size). Use target-produced mm_input_embeds for these positions and
++            # only call embed_tokens on the appended next-token to avoid embed OOB.
++            embeds = forward_batch.mm_input_embeds
++            if (
++                forward_batch.forward_mode.is_extend()
++                and forward_batch.contains_mm_inputs()
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/kimi_k25_eagle3.py` modified +15/-1
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/kimi_k25_eagle3.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.
+
+### PR #25265 - [perf] fix kimi tokenizer to improve ttft
+
+- Link: https://github.com/sgl-project/sglang/pull/25265
+- Status/date: merged / 2026-05-15
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@78cb38ed5` history, and the GitHub Pull Request files API; associated commit `7af4320d67a3`.
+- Diff scope read: GitHub Pull Request files API returned 1 files, +10/-3, 20 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[perf] fix kimi tokenizer to improve ttft"; model line: Kimi K2/K2.5/Linear/VL; category: performance/backend optimization; main diff: `python/sglang/srt/managers/tokenizer_manager.py`; technical summary: Covers "[perf] fix kimi tokenizer to improve ttft" with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `python/sglang/srt/managers/tokenizer_manager.py` modified +10/-3 (13 lines); hunks: -689,9 +689,16  @@ async def _tokenize_texts(; symbols: _tokenize_texts, touching `_tokenize_texts`.
+- Code diff details:
+  - `python/sglang/srt/managers/tokenizer_manager.py` modified +10/-3 (13 lines); hunks: -689,9 +689,16  @@ async def _tokenize_texts(; symbols: _tokenize_texts, touching `_tokenize_texts`
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/managers/tokenizer_manager.py
+@@ -689,9 +689,16 @@ async def _tokenize_texts(
+-            encoded = self.tokenizer(tokenizer_input, **tokenizer_kwargs)
+-            input_ids = encoded["input_ids"]
+-            token_type_ids = encoded.get("token_type_ids") if is_cross_encoder else None
++
++            if not is_cross_encoder and (not getattr(self.tokenizer, "is_fast", False)):
++                input_ids = [self.tokenizer.encode(t) for t in tokenizer_input]
++                token_type_ids = None
++            else:
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/managers/tokenizer_manager.py` modified +10/-3
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/managers/tokenizer_manager.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.
+
+### PR #25390 - [AMD] Enable shared-experts fusion with new KIMI-K2.5-MXFP4 model.
+
+- Link: https://github.com/sgl-project/sglang/pull/25390
+- Status/date: merged / 2026-05-18
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@78cb38ed5` history, and the GitHub Pull Request files API; associated commit `abe2ec2aff6f`.
+- Diff scope read: GitHub Pull Request files API returned 2 files, +18/-2, 41 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[AMD] Enable shared-experts fusion with new KIMI-K2.5-MXFP4 model."; model line: Kimi K2/K2.5/Linear/VL; category: performance/backend optimization; main diff: `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/quantization/quark/quark.py`; technical summary: Covers "[AMD] Enable shared-experts fusion with new KIMI-K2.5-MXFP4 model." with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `python/sglang/srt/models/deepseek_v2.py` modified +11/-1 (12 lines); hunks: -2355,6 +2355,12  @@ def __init__(; -2422,7 +2428,11  @@ def determine_num_fused_shared_experts(; symbols: __init__, determine_num_fused_shared_experts, touching `__init__, determine_num_fused_shared_experts`；`python/sglang/srt/layers/quantization/quark/quark.py` modified +7/-1 (8 lines); hunks: -71,7 +71,13  @@ def get_name(self) -> str:; symbols: get_name, touching `get_name`.
+- Code diff details:
+  - `python/sglang/srt/models/deepseek_v2.py` modified +11/-1 (12 lines); hunks: -2355,6 +2355,12  @@ def __init__(; -2422,7 +2428,11  @@ def determine_num_fused_shared_experts(; symbols: __init__, determine_num_fused_shared_experts, touching `__init__, determine_num_fused_shared_experts`
+  - `python/sglang/srt/layers/quantization/quark/quark.py` modified +7/-1 (8 lines); hunks: -71,7 +71,13  @@ def get_name(self) -> str:; symbols: get_name, touching `get_name`
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -2355,6 +2355,12 @@ def __init__(
++        # Quant configs like Quark may rely on the model to provide fused-module
++        # mappings so exclusion checks can unfuse derived names back to the
++        # checkpoint's source layer names.
++        if quant_config is not None and hasattr(quant_config, "packed_modules_mapping"):
++            quant_config.packed_modules_mapping = self.packed_modules_mapping
++
+@@ -2422,7 +2428,11 @@ def determine_num_fused_shared_experts(
+-            or self.config.n_routed_experts != 256
+diff -- python/sglang/srt/layers/quantization/quark/quark.py
+@@ -71,7 +71,13 @@ def get_name(self) -> str:
+-        self.exclude_layers = hf_to_sglang_mapper.apply_list(self.exclude_layers)
++        mapped = hf_to_sglang_mapper.apply_list(self.exclude_layers)
++        expanded = []
++        for name in mapped:
++            expanded.append(name)
++            if name.startswith("language_model."):
++                expanded.append(name.removeprefix("language_model."))
++        self.exclude_layers = list(dict.fromkeys(expanded))
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +11/-1; `python/sglang/srt/layers/quantization/quark/quark.py` modified +7/-1
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/quantization/quark/quark.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.
+
+### PR #25269 - [NPU][Docs] Add Kimi-K2.5-W4A8 instance doc on NPU
+
+- Link: https://github.com/sgl-project/sglang/pull/25269
+- Status/date: merged / 2026-05-19
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@78cb38ed5` history, and the GitHub Pull Request files API; associated commit `d028697d17b3`.
+- Diff scope read: GitHub Pull Request files API returned 1 files, +314/-0, 315 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[NPU][Docs] Add Kimi-K2.5-W4A8 instance doc on NPU"; model line: Kimi K2/K2.5/Linear/VL; category: docs/tests/CI; main diff: `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_kimi_k2.5_examples.mdx`; technical summary: Covers "[NPU][Docs] Add Kimi-K2.5-W4A8 instance doc on NPU" with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_kimi_k2.5_examples.mdx` added +314/-0 (314 lines); hunks: -0,0 +1,314  @@ +---.
+- Code diff details:
+  - `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_kimi_k2.5_examples.mdx` added +314/-0 (314 lines); hunks: -0,0 +1,314  @@ +---
+- Key code excerpts:
+
+```diff
+diff -- docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_kimi_k2.5_examples.mdx
+@@ -0,0 +1,314 @@
++---
++title: "Kimi K2.5 examples"
++metatags:
++  description: "Documentation for Kimi K2.5 examples"
++---
++## Introduction
++
++Kimi K2.5 is an open-source, native multimodal agentic model built through continual pretraining on approximately 15 trillion mixed visual and text tokens atop Kimi-K2-Base. It se
+```
+
+- Reviewed files:
+  - docs: `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_kimi_k2.5_examples.mdx` added +314/-0
+- Risk and verification: This PR mainly changes docs/tests/CI ``docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_kimi_k2.5_examples.mdx``; verify commands, CI selectors, and model repo names still map to the current implementation.
+
+### PR #25740 - [AMD] Bump amd/Kimi-K2.5-MXFP4 revision to align with shared-experts fusion
+
+- Link: https://github.com/sgl-project/sglang/pull/25740
+- Status/date: merged / 2026-05-19
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@78cb38ed5` history, and the GitHub Pull Request files API; associated commit `7c3f614e2352`.
+- Diff scope read: GitHub Pull Request files API returned 1 files, +7/-1, 15 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[AMD] Bump amd/Kimi-K2.5-MXFP4 revision to align with shared-experts fusion"; model line: Kimi K2/K2.5/Linear/VL; category: performance/backend optimization; main diff: `test/registered/amd/test_kimi_k25_mxfp4.py`; technical summary: Covers "[AMD] Bump amd/Kimi-K2.5-MXFP4 revision to align with shared-experts fusion" with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `test/registered/amd/test_kimi_k25_mxfp4.py` modified +7/-1 (8 lines); hunks: -27,7 +27,13  @@ register_amd_ci(est_time=3600, suite="stage-c-test-large-8-gpu-amd-mi35x"); symbols: est_time, touching `est_time`.
+- Code diff details:
+  - `test/registered/amd/test_kimi_k25_mxfp4.py` modified +7/-1 (8 lines); hunks: -27,7 +27,13  @@ register_amd_ci(est_time=3600, suite="stage-c-test-large-8-gpu-amd-mi35x"); symbols: est_time, touching `est_time`
+- Key code excerpts:
+
+```diff
+diff -- test/registered/amd/test_kimi_k25_mxfp4.py
+@@ -27,7 +27,13 @@
+-KIMI_K25_MXFP4_REVISION = "b071bc6f8eb042e093e14f3b8bdbad71c18e09d3"
++# Bumped from b071bc6f -> 419004c8 (HF main HEAD as of 2026-05-18). The pinned
++# b071bc6f revision keeps shared_experts unquantized (bf16), which is
++# incompatible with the shared-experts fusion path enabled for Kimi-K2.5
++# (n_routed_experts=384) in #25390. Revisions from 94d8c1bd onward quantize
++# shared_experts to MXFP4 so the fusion can copy weights between routed and
++# shared experts without a dtype/shape mismatch.
++KIMI_K25_MXFP4_REVISION = "419004c8716cf22c929aa15d39b85e09a8a2091a"
+```
+
+- Reviewed files:
+  - tests: `test/registered/amd/test_kimi_k25_mxfp4.py` modified +7/-1
+- Risk and verification: The diff mainly expands test coverage ``test/registered/amd/test_kimi_k25_mxfp4.py``; rerun the related tests before changing the same area.

@@ -1,5 +1,9 @@
 # sglang Qwen3.5 模型 PR 优化历史
 
+## 2026-05-19 PR 补漏复核
+
+已按 sglang 上游 `origin/main@78cb38ed5` 和 GitHub Pull Request files API 复核；本轮补齐 `#21668`, `#24906` 的时间线与逐 PR diff 审计卡。
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
@@ -32,8 +36,8 @@
 ## PR 覆盖总览
 
 - git 追溯 PR 数: 33
-- 原文档显式引用补充 PR 数: 17
-- 当前文档总 PR 数: 50
+- 原文档显式引用补充 PR 数: 19
+- 当前文档总 PR 数: 52
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -91,6 +95,8 @@
 | 2026-04-29 | [#23815](https://github.com/sgl-project/sglang/pull/23815) | merged | [NPU] Fix DeepEP LL dispatch BF16 flag and skip triton kernel on NPU for Qwen3.5 | `python/sglang/srt/models/qwen3_5.py` |
 | 2026-04-30 | [#23594](https://github.com/sgl-project/sglang/pull/23594) | merged | LoRA support for qwen3.5 and nemotron3 | `python/sglang/srt/models/qwen3_5.py`, `test/registered/lora/test_lora_qwen3_5_35b_a3b_logprob_diff.py`, `test/registered/lora/test_lora_qwen3_5_4b_logprob_diff.py` |
 | 2026-04-30 | [#23062](https://github.com/sgl-project/sglang/pull/23062) | merged | [bugfix]fix(qwen3_5): broadcast per-tensor scale in _make_packed_weight_loader for FP8 models | `test/registered/unit/models/test_qwen3_5_packed_weight_loader.py`, `python/sglang/srt/models/qwen3_5.py` |
+| 2026-05-15 | [#24906](https://github.com/sgl-project/sglang/pull/24906) | merged | Support Qwen3.5 NVFP4 MTP DeepEP | `python/sglang/srt/layers/moe/ep_moe/layer.py`, `python/sglang/srt/layers/attention/linear/gdn_backend.py`, `python/sglang/srt/layers/moe/token_dispatcher/deepep.py` |
+| 2026-05-18 | [#21668](https://github.com/sgl-project/sglang/pull/21668) | merged | [XPU] Enable qwen3.5 on XPU | `python/sglang/srt/hardware_backend/xpu/kernels/fla/chunk_fwd.py`, `python/sglang/srt/hardware_backend/xpu/kernels/fla/chunk_delta_h.py`, `python/sglang/srt/hardware_backend/xpu/kernels/fla/fused_sigmoid_gating_recurrent.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -1654,6 +1660,109 @@ diff -- python/sglang/srt/models/qwen3_5.py
   - tests: `test/registered/unit/models/test_qwen3_5_packed_weight_loader.py` added +216/-0
   - runtime: `python/sglang/srt/models/qwen3_5.py` modified +4/-7
 - 验证与风险: diff 自带测试面 `test/registered/unit/models/test_qwen3_5_packed_weight_loader.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #24906 - Support Qwen3.5 NVFP4 MTP DeepEP
+
+- 链接: https://github.com/sgl-project/sglang/pull/24906
+- 状态/时间: merged / 2026-05-15
+- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@78cb38ed5` 提交历史和 GitHub Pull Request files API 反查；关联提交 `8d5b347edd9b`。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+58/-5，可读 patch 137 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Support Qwen3.5 NVFP4 MTP DeepEP」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/moe/ep_moe/layer.py`, `python/sglang/srt/layers/attention/linear/gdn_backend.py`, `python/sglang/srt/layers/moe/token_dispatcher/deepep.py`；技术摘要: 覆盖「Support Qwen3.5 NVFP4 MTP DeepEP」，下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/moe/ep_moe/layer.py` modified +47/-2 (49 lines); hunks: -4,6 +4,7  @@ from typing import TYPE_CHECKING, Any, Dict, Optional, Union; -137,17 +138,23  @@ def __init__(; symbols: __init__, run_moe_core, forward_aiter，涉及 `__init__, run_moe_core, forward_aiter`；`python/sglang/srt/layers/attention/linear/gdn_backend.py` modified +6/-2 (8 lines); hunks: -105,8 +105,12  @@ def __init__(; symbols: __init__，涉及 `__init__`；`python/sglang/srt/layers/moe/token_dispatcher/deepep.py` modified +4/-1 (5 lines); hunks: -625,16 +625,19  @@ def _dispatch_core(; symbols: _dispatch_core，涉及 `_dispatch_core`；`python/sglang/srt/layers/attention/linear/kernels/gdn_flashinfer.py` modified +1/-0 (1 lines); hunks: -98,6 +98,7  @@ def __init__(self):; symbols: __init__，涉及 `__init__`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/moe/ep_moe/layer.py` modified +47/-2 (49 lines); hunks: -4,6 +4,7  @@ from typing import TYPE_CHECKING, Any, Dict, Optional, Union; -137,17 +138,23  @@ def __init__(; symbols: __init__, run_moe_core, forward_aiter，涉及 `__init__, run_moe_core, forward_aiter`
+  - `python/sglang/srt/layers/attention/linear/gdn_backend.py` modified +6/-2 (8 lines); hunks: -105,8 +105,12  @@ def __init__(; symbols: __init__，涉及 `__init__`
+  - `python/sglang/srt/layers/moe/token_dispatcher/deepep.py` modified +4/-1 (5 lines); hunks: -625,16 +625,19  @@ def _dispatch_core(; symbols: _dispatch_core，涉及 `_dispatch_core`
+  - `python/sglang/srt/layers/attention/linear/kernels/gdn_flashinfer.py` modified +1/-0 (1 lines); hunks: -98,6 +98,7  @@ def __init__(self):; symbols: __init__，涉及 `__init__`
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/moe/ep_moe/layer.py
+@@ -4,6 +4,7 @@
++import torch.nn.functional as F
+@@ -137,17 +138,23 @@ def __init__(
++        if quant_config is None and hasattr(self.dispatcher, "set_quant_config"):
++            self.dispatcher.set_quant_config({"bf16_dispatch": True})
++
++                and self.quant_config is not None
++            and quant_config is not None
++            # Unquantized draft MoE uses BF16 DeepEP dispatch and a local fallback.
+diff -- python/sglang/srt/layers/attention/linear/gdn_backend.py
+@@ -105,8 +105,12 @@ def __init__(
+-        # Verify kernel: use FlashInfer if either decode or prefill selected it
+-        if decode_backend.is_flashinfer() or prefill_backend.is_flashinfer():
++        # Verify kernel: use FlashInfer only when the selected FlashInfer kernel
++        # supports MTP verify. On SM100+ FlashInfer GDN decode is supported, but
++        # its MTP verify path is not, so keep Triton as the verify fallback.
++        if (
++            decode_backend.is_flashinfer() or prefill_backend.is_flashinfer()
++        ) and flashinfer_kernel.supports_target_verify:
+diff -- python/sglang/srt/layers/moe/token_dispatcher/deepep.py
+@@ -625,16 +625,19 @@ def _dispatch_core(
++        bf16_dispatch = self.quant_config.get("bf16_dispatch", False)
++            #   - quant_config requests BF16 dispatch explicitly
+-                backend.is_flashinfer_cutedsl()
++                bf16_dispatch
++                or backend.is_flashinfer_cutedsl()
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/moe/ep_moe/layer.py` modified +47/-2; `python/sglang/srt/layers/attention/linear/gdn_backend.py` modified +6/-2; `python/sglang/srt/layers/moe/token_dispatcher/deepep.py` modified +4/-1; `python/sglang/srt/layers/attention/linear/kernels/gdn_flashinfer.py` modified +1/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/moe/ep_moe/layer.py`, `python/sglang/srt/layers/attention/linear/gdn_backend.py`, `python/sglang/srt/layers/moe/token_dispatcher/deepep.py`；风险点是权重加载、并行切分、attention/MoE 后端选择、量化 dtype 和 parser 输出，需要至少做一次真实 checkpoint 或等价 smoke。
+
+### PR #21668 - [XPU] Enable qwen3.5 on XPU
+
+- 链接: https://github.com/sgl-project/sglang/pull/21668
+- 状态/时间: merged / 2026-05-18
+- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@78cb38ed5` 提交历史和 GitHub Pull Request files API 反查；关联提交 `8d5ed330cc99`。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 14 个文件，+757/-13，可读 patch 895 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[XPU] Enable qwen3.5 on XPU」；模型线: Qwen3.5；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/hardware_backend/xpu/kernels/fla/chunk_fwd.py`, `python/sglang/srt/hardware_backend/xpu/kernels/fla/chunk_delta_h.py`, `python/sglang/srt/hardware_backend/xpu/kernels/fla/fused_sigmoid_gating_recurrent.py`；技术摘要: 覆盖「[XPU] Enable qwen3.5 on XPU」，下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/hardware_backend/xpu/kernels/fla/chunk_fwd.py` added +315/-0 (315 lines); hunks: -0,0 +1,315  @@ +import torch；`python/sglang/srt/hardware_backend/xpu/kernels/fla/chunk_delta_h.py` added +240/-0 (240 lines); hunks: -0,0 +1,240  @@ +from typing import Optional, Tuple；`python/sglang/srt/hardware_backend/xpu/kernels/fla/fused_sigmoid_gating_recurrent.py` added +128/-0 (128 lines); hunks: -0,0 +1,128  @@ +from typing import Optional；`python/sglang/srt/layers/attention/fla/chunk.py` modified +9/-0 (9 lines); hunks: -19,8 +19,17  @@ SUPPRESS_LEVEL,。
+- 代码 diff 细节:
+  - `python/sglang/srt/hardware_backend/xpu/kernels/fla/chunk_fwd.py` added +315/-0 (315 lines); hunks: -0,0 +1,315  @@ +import torch
+  - `python/sglang/srt/hardware_backend/xpu/kernels/fla/chunk_delta_h.py` added +240/-0 (240 lines); hunks: -0,0 +1,240  @@ +from typing import Optional, Tuple
+  - `python/sglang/srt/hardware_backend/xpu/kernels/fla/fused_sigmoid_gating_recurrent.py` added +128/-0 (128 lines); hunks: -0,0 +1,128  @@ +from typing import Optional
+  - `python/sglang/srt/layers/attention/fla/chunk.py` modified +9/-0 (9 lines); hunks: -19,8 +19,17  @@ SUPPRESS_LEVEL,
+  - `python/sglang/srt/layers/attention/fla/kda.py` modified +7/-0 (7 lines); hunks: -26,8 +26,15  @@ from sglang.srt.layers.attention.fla.op import exp, log
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/hardware_backend/xpu/kernels/fla/chunk_fwd.py
+@@ -0,0 +1,315 @@
++import torch
++import triton
++import triton.language as tl
++
++from sglang.srt.layers.attention.fla.index import prepare_chunk_indices
++from sglang.srt.layers.attention.fla.op import safe_exp
++from sglang.srt.layers.attention.fla.utils import (
++    autotune_cache_kwargs,
+diff -- python/sglang/srt/hardware_backend/xpu/kernels/fla/chunk_delta_h.py
+@@ -0,0 +1,240 @@
++from typing import Optional, Tuple
++
++import torch
++import triton
++import triton.language as tl
++
++from sglang.srt.layers.attention.fla.index import (
++    prepare_chunk_indices,
+diff -- python/sglang/srt/hardware_backend/xpu/kernels/fla/fused_sigmoid_gating_recurrent.py
+@@ -0,0 +1,128 @@
++from typing import Optional
++
++import torch
++import triton
++
++from sglang.srt.layers.attention.fla.fused_sigmoid_gating_recurrent import (
++    fused_sigmoid_gating_delta_rule_update_kernel,
++)
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/hardware_backend/xpu/kernels/fla/chunk_fwd.py` added +315/-0; `python/sglang/srt/hardware_backend/xpu/kernels/fla/chunk_delta_h.py` added +240/-0; `python/sglang/srt/hardware_backend/xpu/kernels/fla/fused_sigmoid_gating_recurrent.py` added +128/-0; `python/sglang/srt/layers/attention/fla/chunk.py` modified +9/-0
+  - tests: `test/registered/attention/test_chunk_gated_delta_rule.py` modified +8/-3
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/hardware_backend/xpu/kernels/fla/chunk_fwd.py`, `python/sglang/srt/hardware_backend/xpu/kernels/fla/chunk_delta_h.py`, `python/sglang/srt/hardware_backend/xpu/kernels/fla/fused_sigmoid_gating_recurrent.py`；风险点是权重加载、并行切分、attention/MoE 后端选择、量化 dtype 和 parser 输出，需要至少做一次真实 checkpoint 或等价 smoke。
 
 ## 补漏结论
 

@@ -1,5 +1,9 @@
 # vllm MiniMax M2 Series Model PR Optimization History
 
+## 2026-05-19 PR Backfill Audit
+
+Rechecked vllm upstream `origin/main@07beaed84` and the GitHub Pull Request files API; this pass adds timeline entries and per-PR diff audit cards for `#42497`, `#43006`.
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |
@@ -23,8 +27,8 @@
 ## PR Coverage Summary
 
 - Git-traced PRs: 31
-- Extra PRs preserved from existing docs: 2
-- Total PRs in this document: 33
+- Extra PRs preserved from existing docs: 4
+- Total PRs in this document: 35
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -65,6 +69,8 @@
 | 2026-04-14 | [#39683](https://github.com/vllm-project/vllm/pull/39683) | merged | [Bugfix]: Fix MinimaxM2ToolParser missing tools parameter | `vllm/parser/minimax_m2_parser.py` |
 | 2026-04-16 | [#39861](https://github.com/vllm-project/vllm/pull/39861) | merged | [Bugfix] Accept **kwargs in MiniMaxM2Parser.__init__() | `vllm/parser/minimax_m2_parser.py` |
 | 2026-04-27 | [#38191](https://github.com/vllm-project/vllm/pull/38191) | merged | [Bugfix] Fix k_norm weight sharding in MiniMaxM2Attention when total_num_kv_heads < tp_size | `vllm/model_executor/models/minimax_m2.py` |
+| 2026-05-18 | [#42497](https://github.com/vllm-project/vllm/pull/42497) | merged | [Perf] Wire silu_and_mul_per_block_quant into TritonFP8MoE (MiniMax-M2) | `vllm/model_executor/layers/fused_moe/experts/triton_moe.py` |
+| 2026-05-18 | [#43006](https://github.com/vllm-project/vllm/pull/43006) | merged | [Refactor] Extract shared coerce_to_schema_type utility from Minimax M2 tool parser | `vllm/tool_parsers/utils.py`, `vllm/tool_parsers/minimax_m2_tool_parser.py`, `tests/tool_parsers/test_utils.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -1045,3 +1051,84 @@ diff -- vllm/model_executor/models/minimax_m2.py
 
 - Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
 - If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.
+
+### PR #42497 - [Perf] Wire silu_and_mul_per_block_quant into TritonFP8MoE (MiniMax-M2)
+
+- Link: https://github.com/vllm-project/vllm/pull/42497
+- Status/date: merged / 2026-05-18
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@07beaed84` history, and the GitHub Pull Request files API; associated commit `03ddc1c9bc5e`.
+- Diff scope read: GitHub Pull Request files API returned 1 files, +31/-12, 59 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Perf] Wire silu_and_mul_per_block_quant into TritonFP8MoE (MiniMax-M2)"; model line: MiniMax M2 Series; category: performance/backend optimization; main diff: `vllm/model_executor/layers/fused_moe/experts/triton_moe.py`; technical summary: Covers "[Perf] Wire silu_and_mul_per_block_quant into TritonFP8MoE (MiniMax-M2)" with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `vllm/model_executor/layers/fused_moe/experts/triton_moe.py` modified +31/-12 (43 lines); hunks: -31,6 +31,9  @@ _resize_cache,; -283,20 +286,36  @@ def apply(; symbols: apply, touching `apply`.
+- Code diff details:
+  - `vllm/model_executor/layers/fused_moe/experts/triton_moe.py` modified +31/-12 (43 lines); hunks: -31,6 +31,9  @@ _resize_cache,; -283,20 +286,36  @@ def apply(; symbols: apply, touching `apply`
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/layers/fused_moe/experts/triton_moe.py
+@@ -31,6 +31,9 @@
++from vllm.model_executor.layers.quantization.utils.fp8_utils import (
++    is_deep_gemm_e8m0_used,
++)
+@@ -283,20 +286,36 @@ def apply(
+-        self.activation(
+-            activation, intermediate_cache2, intermediate_cache1.view(-1, N)
+-        )
+-
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/layers/fused_moe/experts/triton_moe.py` modified +31/-12
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/fused_moe/experts/triton_moe.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.
+
+### PR #43006 - [Refactor] Extract shared coerce_to_schema_type utility from Minimax M2 tool parser
+
+- Link: https://github.com/vllm-project/vllm/pull/43006
+- Status/date: merged / 2026-05-18
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@07beaed84` history, and the GitHub Pull Request files API; associated commit `57fef4e0bf0b`.
+- Diff scope read: GitHub Pull Request files API returned 3 files, +247/-77, 353 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Refactor] Extract shared coerce_to_schema_type utility from Minimax M2 tool parser"; model line: MiniMax M2 Series; category: model support/runtime entry; main diff: `vllm/tool_parsers/utils.py`, `vllm/tool_parsers/minimax_m2_tool_parser.py`, `tests/tool_parsers/test_utils.py`; technical summary: Covers "[Refactor] Extract shared coerce_to_schema_type utility from Minimax M2 tool parser" with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `vllm/tool_parsers/utils.py` modified +97/-0 (97 lines); hunks: -450,6 +450,103  @@ def make_valid_python(text: str) -> tuple[str, str] | None:; symbols: make_valid_python, touching `make_valid_python`；`vllm/tool_parsers/minimax_m2_tool_parser.py` modified +2/-77 (79 lines); hunks: -25,6 +25,7  @@ Tool,; -146,80 +147,6  @@ def _extract_types_from_schema(self, schema: Any) -> list[str]:; symbols: _extract_types_from_schema, _parse_single_invoke, touching `_extract_types_from_schema, _parse_single_invoke`；`tests/tool_parsers/test_utils.py` added +148/-0 (148 lines); hunks: -0,0 +1,148  @@ +# SPDX-License-Identifier: Apache-2.0.
+- Code diff details:
+  - `vllm/tool_parsers/utils.py` modified +97/-0 (97 lines); hunks: -450,6 +450,103  @@ def make_valid_python(text: str) -> tuple[str, str] | None:; symbols: make_valid_python, touching `make_valid_python`
+  - `vllm/tool_parsers/minimax_m2_tool_parser.py` modified +2/-77 (79 lines); hunks: -25,6 +25,7  @@ Tool,; -146,80 +147,6  @@ def _extract_types_from_schema(self, schema: Any) -> list[str]:; symbols: _extract_types_from_schema, _parse_single_invoke, touching `_extract_types_from_schema, _parse_single_invoke`
+  - `tests/tool_parsers/test_utils.py` added +148/-0 (148 lines); hunks: -0,0 +1,148  @@ +# SPDX-License-Identifier: Apache-2.0
+- Key code excerpts:
+
+```diff
+diff -- vllm/tool_parsers/utils.py
+@@ -450,6 +450,103 @@ def make_valid_python(text: str) -> tuple[str, str] | None:
++_TYPE_ALIASES: dict[str, str] = {
++    "str": "string",
++    "text": "string",
++    "varchar": "string",
++    "char": "string",
++    "enum": "string",
++    "int": "integer",
++    "int32": "integer",
+diff -- vllm/tool_parsers/minimax_m2_tool_parser.py
+@@ -25,6 +25,7 @@
++from vllm.tool_parsers.utils import coerce_to_schema_type
+@@ -146,80 +147,6 @@ def _extract_types_from_schema(self, schema: Any) -> list[str]:
+-    def _convert_param_value_with_types(
+-        self, value: str, param_types: list[str]
+-    ) -> Any:
+-        """
+-        Convert parameter value to the correct type based on a list of possible types.
+-        Tries each type in order until one succeeds.
+diff -- tests/tool_parsers/test_utils.py
+@@ -0,0 +1,148 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++
++import pytest
++
++from vllm.tool_parsers.utils import coerce_to_schema_type
++
++
+```
+
+- Reviewed files:
+  - runtime: `vllm/tool_parsers/utils.py` modified +97/-0; `vllm/tool_parsers/minimax_m2_tool_parser.py` modified +2/-77
+  - tests: `tests/tool_parsers/test_utils.py` added +148/-0
+- Risk and verification: Runtime changes concentrate in `vllm/tool_parsers/utils.py`, `vllm/tool_parsers/minimax_m2_tool_parser.py`, `tests/tool_parsers/test_utils.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.

@@ -1,8 +1,8 @@
 # vllm DeepSeek V3.2 Model PR Optimization History
 
-## 2026-05-15 Source Refresh Addendum
+## 2026-05-19 PR Backfill Audit
 
-vLLM `origin/main` was rechecked at `f3d536059`. The DeepSeek-V3.2 history should add `#41217` ROCm sparse-MLA/indexer optimization, `#41835` TP4 AITER MLA enablement, and `#42062`: `vllm/v1/attention/ops/rocm_aiter_mla_sparse.py` enables ROCm AITER/Gluon paged-MQA logits on `gfx950`/MI355X sparse MLA.
+Rechecked vllm upstream `origin/main@07beaed84` and the GitHub Pull Request files API; this pass adds timeline entries and per-PR diff audit cards for `#41217`, `#41835`, `#42062`.
 
 ## Implementation File Coverage
 
@@ -24,8 +24,8 @@ vLLM `origin/main` was rechecked at `f3d536059`. The DeepSeek-V3.2 history shoul
 ## PR Coverage Summary
 
 - Git-traced PRs: 29
-- Extra PRs preserved from existing docs: 6
-- Total PRs in this document: 35
+- Extra PRs preserved from existing docs: 9
+- Total PRs in this document: 38
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -68,6 +68,9 @@ vLLM `origin/main` was rechecked at `f3d536059`. The DeepSeek-V3.2 history shoul
 | 2026-04-08 | [#37421](https://github.com/vllm-project/vllm/pull/37421) | merged | [Perf][Kernel] Persistent TopK scheduler: unified CUDAGraph-safe kernel with dynamic per-row dispatch - DeepSeek-V3.2 DSA decode | `vllm/model_executor/models/deepseek_v2.py` |
 | 2026-04-27 | [#35968](https://github.com/vllm-project/vllm/pull/35968) | closed | [Performance] DeepSeek V3.2 multi-stream indexer overlap | `vllm/model_executor/models/deepseek_v2.py`, `vllm/model_executor/layers/layernorm.py`, `tests/utils_/test_indexer_dual_stream.py` |
 | 2026-04-29 | [#41198](https://github.com/vllm-project/vllm/pull/41198) | merged | [Bugfix] DSV32/V4 add missing type conversion for non-streaming tool calls | `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `vllm/tool_parsers/deepseekv32_tool_parser.py` |
+| 2026-05-01 | [#41217](https://github.com/vllm-project/vllm/pull/41217) | merged | [ROCm][Deepseek] dsv3.2 further optimization | `vllm/v1/attention/backends/mla/rocm_aiter_mla_sparse.py`, `vllm/model_executor/models/deepseek_v2.py`, `vllm/v1/attention/ops/rocm_aiter_mla_sparse.py` |
+| 2026-05-07 | [#41835](https://github.com/vllm-project/vllm/pull/41835) | merged | [ROCm][DeepSeek] Enable V3.2 TP4 AITER MLA | `vllm/model_executor/models/deepseek_v2.py`, `vllm/v1/attention/backends/mla/rocm_aiter_mla.py` |
+| 2026-05-14 | [#42062](https://github.com/vllm-project/vllm/pull/42062) | merged | [ROCm] Enable gluon paged MQA logits on gfx950 (MI355X) | `vllm/v1/attention/ops/rocm_aiter_mla_sparse.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -1122,3 +1125,118 @@ diff -- vllm/tool_parsers/deepseekv32_tool_parser.py
 
 - Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
 - If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.
+
+### PR #41217 - [ROCm][Deepseek] dsv3.2 further optimization
+
+- Link: https://github.com/vllm-project/vllm/pull/41217
+- Status/date: merged / 2026-05-01
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@07beaed84` history, and the GitHub Pull Request files API; associated commit `bc635fad2389`.
+- Diff scope read: GitHub Pull Request files API returned 6 files, +293/-73, 605 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[ROCm][Deepseek] dsv3.2 further optimization"; model line: DeepSeek V3.2; category: performance/backend optimization; main diff: `vllm/v1/attention/backends/mla/rocm_aiter_mla_sparse.py`, `vllm/model_executor/models/deepseek_v2.py`, `vllm/v1/attention/ops/rocm_aiter_mla_sparse.py`; technical summary: Covers "[ROCm][Deepseek] dsv3.2 further optimization" with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `vllm/v1/attention/backends/mla/rocm_aiter_mla_sparse.py` modified +227/-29 (256 lines); hunks: -7,13 +7,15  @@ import numpy as np; -25,9 +27,6  @@ MultipleOf,; symbols: logger, ROCMAiterMLASparseBackend, ROCMAiterMLASparseMetadata, __init__, touching `logger, ROCMAiterMLASparseBackend, ROCMAiterMLASparseMetadata`；`vllm/model_executor/models/deepseek_v2.py` modified +38/-23 (61 lines); hunks: -674,30 +674,45  @@ def forward(; symbols: forward, touching `forward`；`vllm/v1/attention/ops/rocm_aiter_mla_sparse.py` modified +22/-19 (41 lines); hunks: -13,9 +13,6  @@ from vllm.v1.attention.backends.mla.indexer import DeepseekV32IndexerMetadata; -97,7 +94,8  @@ def indexer_k_quant_and_cache_triton(; symbols: indexer_k_quant_and_cache_triton, cp_gather_indexer_k_quant_cache_triton, rocm_fp8_paged_mqa_logits, rocm_aiter_sparse_attn_indexer, touching `indexer_k_quant_and_cache_triton, cp_gather_indexer_k_quant_cache_triton, rocm_fp8_paged_mqa_logits`；`vllm/v1/attention/backends/mla/rocm_aiter_mla.py` modified +4/-0 (4 lines); hunks: -396,6 +396,7  @@ class AiterMLAHelper:; -419,6 +420,9  @@ def get_actual_mla_num_heads(num_heads: int) -> int:; symbols: AiterMLAHelper, get_actual_mla_num_heads, touching `AiterMLAHelper, get_actual_mla_num_heads`.
+- Code diff details:
+  - `vllm/v1/attention/backends/mla/rocm_aiter_mla_sparse.py` modified +227/-29 (256 lines); hunks: -7,13 +7,15  @@ import numpy as np; -25,9 +27,6  @@ MultipleOf,; symbols: logger, ROCMAiterMLASparseBackend, ROCMAiterMLASparseMetadata, __init__, touching `logger, ROCMAiterMLASparseBackend, ROCMAiterMLASparseMetadata`
+  - `vllm/model_executor/models/deepseek_v2.py` modified +38/-23 (61 lines); hunks: -674,30 +674,45  @@ def forward(; symbols: forward, touching `forward`
+  - `vllm/v1/attention/ops/rocm_aiter_mla_sparse.py` modified +22/-19 (41 lines); hunks: -13,9 +13,6  @@ from vllm.v1.attention.backends.mla.indexer import DeepseekV32IndexerMetadata; -97,7 +94,8  @@ def indexer_k_quant_and_cache_triton(; symbols: indexer_k_quant_and_cache_triton, cp_gather_indexer_k_quant_cache_triton, rocm_fp8_paged_mqa_logits, rocm_aiter_sparse_attn_indexer, touching `indexer_k_quant_and_cache_triton, cp_gather_indexer_k_quant_cache_triton, rocm_fp8_paged_mqa_logits`
+  - `vllm/v1/attention/backends/mla/rocm_aiter_mla.py` modified +4/-0 (4 lines); hunks: -396,6 +396,7  @@ class AiterMLAHelper:; -419,6 +420,9  @@ def get_actual_mla_num_heads(num_heads: int) -> int:; symbols: AiterMLAHelper, get_actual_mla_num_heads, touching `AiterMLAHelper, get_actual_mla_num_heads`
+  - `vllm/v1/attention/backends/mla/indexer.py` modified +1/-1 (2 lines); hunks: -122,7 +122,7  @@ def get_name() -> str:; symbols: get_name, touching `get_name`
+- Key code excerpts:
+
+```diff
+diff -- vllm/v1/attention/backends/mla/rocm_aiter_mla_sparse.py
+@@ -7,13 +7,15 @@
++from vllm import _custom_ops as ops
++from vllm.platforms import current_platform
+@@ -25,9 +27,6 @@
+-from vllm.v1.attention.backends.mla.flashmla_sparse import (
+-    triton_convert_req_index_to_global_index,
+-)
+@@ -38,6 +37,188 @@
++@triton.jit
+diff -- vllm/model_executor/models/deepseek_v2.py
+@@ -674,30 +674,45 @@ def forward(
+-        q_pe, q_nope = torch.split(
+-            q, [self.rope_dim, self.head_dim - self.rope_dim], dim=-1
+-        )
+-        # Fused wk + weights_proj: one GEMM, then split
+-        kw, _ = self.wk_weights_proj(hidden_states)
+-        k = kw[:, : self.head_dim]
+-        weights = kw[:, self.head_dim :]
+-
+diff -- vllm/v1/attention/ops/rocm_aiter_mla_sparse.py
+@@ -13,9 +13,6 @@
+-if current_platform.is_cuda_alike():
+-    from vllm import _custom_ops as ops
+-
+@@ -97,7 +94,8 @@ def indexer_k_quant_and_cache_triton(
+-    kv_cache_value = kv_cache[:, : block_size * head_dim]
++    fp8_dtype = current_platform.fp8_dtype()
++    kv_cache_value = kv_cache[:, : block_size * head_dim].view(fp8_dtype)
+@@ -111,7 +109,7 @@ def indexer_k_quant_and_cache_triton(
+```
+
+- Reviewed files:
+  - runtime: `vllm/v1/attention/backends/mla/rocm_aiter_mla_sparse.py` modified +227/-29; `vllm/model_executor/models/deepseek_v2.py` modified +38/-23; `vllm/v1/attention/ops/rocm_aiter_mla_sparse.py` modified +22/-19; `vllm/v1/attention/backends/mla/rocm_aiter_mla.py` modified +4/-0
+  - docs: `docs/design/attention_backends.md` modified +1/-1
+- Risk and verification: Runtime changes concentrate in `vllm/v1/attention/backends/mla/rocm_aiter_mla_sparse.py`, `vllm/model_executor/models/deepseek_v2.py`, `vllm/v1/attention/ops/rocm_aiter_mla_sparse.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.
+
+### PR #41835 - [ROCm][DeepSeek] Enable V3.2 TP4 AITER MLA
+
+- Link: https://github.com/vllm-project/vllm/pull/41835
+- Status/date: merged / 2026-05-07
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@07beaed84` history, and the GitHub Pull Request files API; associated commit `c936548ce6b0`.
+- Diff scope read: GitHub Pull Request files API returned 2 files, +12/-10, 50 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[ROCm][DeepSeek] Enable V3.2 TP4 AITER MLA"; model line: DeepSeek V3.2; category: performance/backend optimization; main diff: `vllm/model_executor/models/deepseek_v2.py`, `vllm/v1/attention/backends/mla/rocm_aiter_mla.py`; technical summary: Covers "[ROCm][DeepSeek] Enable V3.2 TP4 AITER MLA" with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `vllm/model_executor/models/deepseek_v2.py` modified +11/-9 (20 lines); hunks: -299,6 +299,15  @@ def __init__(; -338,22 +347,15  @@ def __init__(; symbols: __init__, touching `__init__`；`vllm/v1/attention/backends/mla/rocm_aiter_mla.py` modified +1/-1 (2 lines); hunks: -396,7 +396,7  @@ class AiterMLAHelper:; symbols: AiterMLAHelper, touching `AiterMLAHelper`.
+- Code diff details:
+  - `vllm/model_executor/models/deepseek_v2.py` modified +11/-9 (20 lines); hunks: -299,6 +299,15  @@ def __init__(; -338,22 +347,15  @@ def __init__(; symbols: __init__, touching `__init__`
+  - `vllm/v1/attention/backends/mla/rocm_aiter_mla.py` modified +1/-1 (2 lines); hunks: -396,7 +396,7  @@ class AiterMLAHelper:; symbols: AiterMLAHelper, touching `AiterMLAHelper`
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/deepseek_v2.py
+@@ -299,6 +299,15 @@ def __init__(
++        if (
++            self.is_rocm_aiter_moe_enabled
++            and self.gate.e_score_correction_bias is not None
++        ):
++            # AITER biased_grouped_topk requires the correction bias dtype to
++            # match the router logits. Keep DeepSeek's correction bias in fp32
++            # by requesting fp32 router logits for this routing path.
++            self.gate.set_out_dtype(torch.float32)
+diff -- vllm/v1/attention/backends/mla/rocm_aiter_mla.py
+@@ -396,7 +396,7 @@ class AiterMLAHelper:
+-    _AITER_UNSUPPORTED_HEADS = [32]
++    _AITER_UNSUPPORTED_HEADS: ClassVar[tuple[int, ...]] = ()
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/deepseek_v2.py` modified +11/-9; `vllm/v1/attention/backends/mla/rocm_aiter_mla.py` modified +1/-1
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/deepseek_v2.py`, `vllm/v1/attention/backends/mla/rocm_aiter_mla.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.
+
+### PR #42062 - [ROCm] Enable gluon paged MQA logits on gfx950 (MI355X)
+
+- Link: https://github.com/vllm-project/vllm/pull/42062
+- Status/date: merged / 2026-05-14
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@07beaed84` history, and the GitHub Pull Request files API; associated commit `f07b1da797cc`.
+- Diff scope read: GitHub Pull Request files API returned 1 files, +3/-2, 21 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[ROCm] Enable gluon paged MQA logits on gfx950 (MI355X)"; model line: DeepSeek V3.2; category: model support/runtime entry; main diff: `vllm/v1/attention/ops/rocm_aiter_mla_sparse.py`; technical summary: Covers "[ROCm] Enable gluon paged MQA logits on gfx950 (MI355X)" with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `vllm/v1/attention/ops/rocm_aiter_mla_sparse.py` modified +3/-2 (5 lines); hunks: -16,9 +16,10  @@ from vllm.v1.attention.ops.common import pack_seq_triton, unpack_seq_triton; -385,7 +386,7  @@ def rocm_fp8_paged_mqa_logits(; symbols: rocm_fp8_paged_mqa_logits, touching `rocm_fp8_paged_mqa_logits`.
+- Code diff details:
+  - `vllm/v1/attention/ops/rocm_aiter_mla_sparse.py` modified +3/-2 (5 lines); hunks: -16,9 +16,10  @@ from vllm.v1.attention.ops.common import pack_seq_triton, unpack_seq_triton; -385,7 +386,7  @@ def rocm_fp8_paged_mqa_logits(; symbols: rocm_fp8_paged_mqa_logits, touching `rocm_fp8_paged_mqa_logits`
+- Key code excerpts:
+
+```diff
+diff -- vllm/v1/attention/ops/rocm_aiter_mla_sparse.py
+@@ -16,9 +16,10 @@
+-    from vllm.platforms.rocm import _ON_GFX942
++    from vllm.platforms.rocm import _ON_GFX942, _ON_GFX950
++    _ON_GFX950 = False
+@@ -385,7 +386,7 @@ def rocm_fp8_paged_mqa_logits(
+-        if _ON_GFX942:
++        if _ON_GFX942 or _ON_GFX950:
+```
+
+- Reviewed files:
+  - runtime: `vllm/v1/attention/ops/rocm_aiter_mla_sparse.py` modified +3/-2
+- Risk and verification: Runtime changes concentrate in `vllm/v1/attention/ops/rocm_aiter_mla_sparse.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.

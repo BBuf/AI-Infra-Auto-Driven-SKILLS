@@ -1,8 +1,8 @@
 # vllm Kimi K2/K2.5/Linear/VL Model PR Optimization History
 
-## 2026-05-15 Source Refresh Addendum
+## 2026-05-19 PR Backfill Audit
 
-vLLM `origin/main` was rechecked at `f3d536059`. The Kimi history should add `#41068` Kimi-K2 reasoning streaming end-token guard, `#41778` TokenSpeed MLA for DSR1/Kimi-K2.5 on Blackwell FP8-KV paths, and `#42081` Kimi-K2.5 ViT projector dtype handling.
+Rechecked vllm upstream `origin/main@07beaed84` and the GitHub Pull Request files API; this pass adds timeline entries and per-PR diff audit cards for `#41068`, `#41778`, `#42081`, `#42869`.
 
 ## Implementation File Coverage
 
@@ -30,8 +30,8 @@ vLLM `origin/main` was rechecked at `f3d536059`. The Kimi history should add `#4
 ## PR Coverage Summary
 
 - Git-traced PRs: 29
-- Extra PRs preserved from existing docs: 1
-- Total PRs in this document: 30
+- Extra PRs preserved from existing docs: 5
+- Total PRs in this document: 34
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -69,6 +69,10 @@ vLLM `origin/main` was rechecked at `f3d536059`. The Kimi history should add `#4
 | 2026-03-20 | [#37693](https://github.com/vllm-project/vllm/pull/37693) | merged | [Model] Update Kimi-K25 and Isaac processors to fit HF-style | `vllm/transformers_utils/processors/kimi_k25.py`, `vllm/model_executor/models/kimi_k25.py` |
 | 2026-04-12 | [#39344](https://github.com/vllm-project/vllm/pull/39344) | merged | fix(kimi_k25): resolve media_placeholder_token_id from tokenizer | `vllm/model_executor/models/kimi_k25.py` |
 | 2026-04-19 | [#38579](https://github.com/vllm-project/vllm/pull/38579) | merged | [Bugfix] Kimi-K2 tool parser streaming - fix token leakage, argument truncation, and content dropping | `tests/tool_parsers/test_kimi_k2_tool_parser.py`, `vllm/tool_parsers/kimi_k2_tool_parser.py` |
+| 2026-05-04 | [#41068](https://github.com/vllm-project/vllm/pull/41068) | merged | [Bugfix] KimiK2ReasoningParser: guard against buffered end-token in streaming | `vllm/reasoning/kimi_k2_reasoning_parser.py`, `tests/reasoning/test_kimi_k2_reasoning_parser.py` |
+| 2026-05-11 | [#42081](https://github.com/vllm-project/vllm/pull/42081) | merged | [Bug] Fix kimi dtype issue with `mm_projector_forward` | `vllm/model_executor/models/kimi_k25_vit.py` |
+| 2026-05-14 | [#41778](https://github.com/vllm-project/vllm/pull/41778) | merged | [MLA Attention Backend] Add TOKENSPEED_MLA backend for DSR1/Kimi K25 prefill + decode on Blackwell | `vllm/v1/attention/backends/mla/tokenspeed_mla.py`, `vllm/v1/attention/backends/mla/prefill/tokenspeed_mla.py`, `benchmarks/attention_benchmarks/mla_runner.py` |
+| 2026-05-18 | [#42869](https://github.com/vllm-project/vllm/pull/42869) | merged | [BugFix] Kimi-K2.5: skip vision tower dtype conversion when using quantization | `vllm/model_executor/models/kimi_k25.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -997,3 +1001,150 @@ diff -- vllm/tool_parsers/kimi_k2_tool_parser.py
 
 - Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
 - If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.
+
+### PR #41068 - [Bugfix] KimiK2ReasoningParser: guard against buffered end-token in streaming
+
+- Link: https://github.com/vllm-project/vllm/pull/41068
+- Status/date: merged / 2026-05-04
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@07beaed84` history, and the GitHub Pull Request files API; associated commit `712ad0286c9a`.
+- Diff scope read: GitHub Pull Request files API returned 2 files, +70/-0, 102 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Bugfix] KimiK2ReasoningParser: guard against buffered end-token in streaming"; model line: Kimi K2/K2.5/Linear/VL; category: bug fix; main diff: `vllm/reasoning/kimi_k2_reasoning_parser.py`, `tests/reasoning/test_kimi_k2_reasoning_parser.py`; technical summary: Covers "[Bugfix] KimiK2ReasoningParser: guard against buffered end-token in streaming" with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `vllm/reasoning/kimi_k2_reasoning_parser.py` modified +7/-0 (7 lines); hunks: -221,6 +221,10  @@ def extract_reasoning_streaming(; -229,6 +233,9  @@ def extract_reasoning_streaming(; symbols: extract_reasoning_streaming, touching `extract_reasoning_streaming`；`tests/reasoning/test_kimi_k2_reasoning_parser.py` modified +63/-0 (63 lines); hunks: -1,6 +1,8  @@ # SPDX-License-Identifier: Apache-2.0; -12,6 +14,20  @@ REASONING_MODEL_NAME = "moonshotai/Kimi-K2.5"; symbols: REASONING_MODEL_NAME, test_streaming_tool_section_ends_reasoning, touching `REASONING_MODEL_NAME, test_streaming_tool_section_ends_reasoning`.
+- Code diff details:
+  - `vllm/reasoning/kimi_k2_reasoning_parser.py` modified +7/-0 (7 lines); hunks: -221,6 +221,10  @@ def extract_reasoning_streaming(; -229,6 +233,9  @@ def extract_reasoning_streaming(; symbols: extract_reasoning_streaming, touching `extract_reasoning_streaming`
+  - `tests/reasoning/test_kimi_k2_reasoning_parser.py` modified +63/-0 (63 lines); hunks: -1,6 +1,8  @@ # SPDX-License-Identifier: Apache-2.0; -12,6 +14,20  @@ REASONING_MODEL_NAME = "moonshotai/Kimi-K2.5"; symbols: REASONING_MODEL_NAME, test_streaming_tool_section_ends_reasoning, touching `REASONING_MODEL_NAME, test_streaming_tool_section_ends_reasoning`
+- Key code excerpts:
+
+```diff
+diff -- vllm/reasoning/kimi_k2_reasoning_parser.py
+@@ -221,6 +221,10 @@ def extract_reasoning_streaming(
++            if self._end_token not in delta_text:
++                # Token ID arrived before text was flushed (stop-sequence buffering).
++                # Wait for the next delta when the text becomes visible.
++                return None
+@@ -229,6 +233,9 @@ def extract_reasoning_streaming(
++            if self._tool_section_start_token not in delta_text:
++                # Token ID arrived before text was flushed (stop-sequence buffering).
++                return None
+diff -- tests/reasoning/test_kimi_k2_reasoning_parser.py
+@@ -1,6 +1,8 @@
++from unittest.mock import MagicMock
++
+@@ -12,6 +14,20 @@
++@pytest.fixture
++def mock_kimi_k2_tokenizer():
++    tokenizer = MagicMock()
++    tokenizer.get_vocab.return_value = {
++        "<think>": 100,
+```
+
+- Reviewed files:
+  - runtime: `vllm/reasoning/kimi_k2_reasoning_parser.py` modified +7/-0
+  - tests: `tests/reasoning/test_kimi_k2_reasoning_parser.py` modified +63/-0
+- Risk and verification: Runtime changes concentrate in `vllm/reasoning/kimi_k2_reasoning_parser.py`, `tests/reasoning/test_kimi_k2_reasoning_parser.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.
+
+### PR #42081 - [Bug] Fix kimi dtype issue with `mm_projector_forward`
+
+- Link: https://github.com/vllm-project/vllm/pull/42081
+- Status/date: merged / 2026-05-11
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@07beaed84` history, and the GitHub Pull Request files API; associated commit `3f9c0c25b331`.
+- Diff scope read: GitHub Pull Request files API returned 1 files, +3/-0, 10 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Bug] Fix kimi dtype issue with `mm_projector_forward`"; model line: Kimi K2/K2.5/Linear/VL; category: bug fix; main diff: `vllm/model_executor/models/kimi_k25_vit.py`; technical summary: Covers "[Bug] Fix kimi dtype issue with `mm_projector_forward`" with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `vllm/model_executor/models/kimi_k25_vit.py` modified +3/-0 (3 lines); hunks: -618,6 +618,9  @@ def mm_projector_forward(mm_projector: torch.nn.Module, vt_output: list[torch.Te; symbols: mm_projector_forward, touching `mm_projector_forward`.
+- Code diff details:
+  - `vllm/model_executor/models/kimi_k25_vit.py` modified +3/-0 (3 lines); hunks: -618,6 +618,9  @@ def mm_projector_forward(mm_projector: torch.nn.Module, vt_output: list[torch.Te; symbols: mm_projector_forward, touching `mm_projector_forward`
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/kimi_k25_vit.py
+@@ -618,6 +618,9 @@ def mm_projector_forward(mm_projector: torch.nn.Module, vt_output: list[torch.Te
++    projector_dtype = mm_projector.pre_norm.weight.dtype
++    if batched.dtype != projector_dtype:
++        batched = batched.to(projector_dtype)
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/kimi_k25_vit.py` modified +3/-0
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/kimi_k25_vit.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.
+
+### PR #41778 - [MLA Attention Backend] Add TOKENSPEED_MLA backend for DSR1/Kimi K25 prefill + decode on Blackwell
+
+- Link: https://github.com/vllm-project/vllm/pull/41778
+- Status/date: merged / 2026-05-14
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@07beaed84` history, and the GitHub Pull Request files API; associated commit `0d2732dd919b`.
+- Diff scope read: GitHub Pull Request files API returned 14 files, +640/-89, 975 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[MLA Attention Backend] Add TOKENSPEED_MLA backend for DSR1/Kimi K25 prefill + decode on Blackwell"; model line: Kimi K2/K2.5/Linear/VL; category: performance/backend optimization; main diff: `vllm/v1/attention/backends/mla/tokenspeed_mla.py`, `vllm/v1/attention/backends/mla/prefill/tokenspeed_mla.py`, `benchmarks/attention_benchmarks/mla_runner.py`; technical summary: Covers "[MLA Attention Backend] Add TOKENSPEED_MLA backend for DSR1/Kimi K25 prefill + decode on Blackwell" with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `vllm/v1/attention/backends/mla/tokenspeed_mla.py` added +277/-0 (277 lines); hunks: -0,0 +1,277  @@ +# SPDX-License-Identifier: Apache-2.0；`vllm/v1/attention/backends/mla/prefill/tokenspeed_mla.py` added +180/-0 (180 lines); hunks: -0,0 +1,180  @@ +# SPDX-License-Identifier: Apache-2.0；`benchmarks/attention_benchmarks/mla_runner.py` modified +67/-63 (130 lines); hunks: -179,19 +179,27  @@ def create_minimal_vllm_config(; -223,22 +231,17  @@ def create_minimal_vllm_config(; symbols: create_minimal_vllm_config, _create_backend_impl, _run_mla_benchmark_batched, touching `create_minimal_vllm_config, _create_backend_impl, _run_mla_benchmark_batched`；`vllm/v1/attention/backends/mla/prefill/registry.py` modified +4/-0 (4 lines); hunks: -43,6 +43,10  @@ class MLAPrefillBackendEnum(Enum, metaclass=_MLAPrefillBackendEnumMeta):; symbols: MLAPrefillBackendEnum, metaclass, touching `MLAPrefillBackendEnum, metaclass`.
+- Code diff details:
+  - `vllm/v1/attention/backends/mla/tokenspeed_mla.py` added +277/-0 (277 lines); hunks: -0,0 +1,277  @@ +# SPDX-License-Identifier: Apache-2.0
+  - `vllm/v1/attention/backends/mla/prefill/tokenspeed_mla.py` added +180/-0 (180 lines); hunks: -0,0 +1,180  @@ +# SPDX-License-Identifier: Apache-2.0
+  - `benchmarks/attention_benchmarks/mla_runner.py` modified +67/-63 (130 lines); hunks: -179,19 +179,27  @@ def create_minimal_vllm_config(; -223,22 +231,17  @@ def create_minimal_vllm_config(; symbols: create_minimal_vllm_config, _create_backend_impl, _run_mla_benchmark_batched, touching `create_minimal_vllm_config, _create_backend_impl, _run_mla_benchmark_batched`
+  - `vllm/v1/attention/backends/mla/prefill/registry.py` modified +4/-0 (4 lines); hunks: -43,6 +43,10  @@ class MLAPrefillBackendEnum(Enum, metaclass=_MLAPrefillBackendEnumMeta):; symbols: MLAPrefillBackendEnum, metaclass, touching `MLAPrefillBackendEnum, metaclass`
+  - `vllm/v1/attention/backends/registry.py` modified +3/-0 (3 lines); hunks: -63,6 +63,9  @@ class AttentionBackendEnum(Enum, metaclass=_AttentionBackendEnumMeta):; symbols: AttentionBackendEnum, metaclass, touching `AttentionBackendEnum, metaclass`
+- Key code excerpts:
+
+```diff
+diff -- vllm/v1/attention/backends/mla/tokenspeed_mla.py
+@@ -0,0 +1,277 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++"""TokenSpeed CuTe DSL MLA decode backend (Blackwell, FP8 KV cache only)."""
++
++from typing import ClassVar
++
++import torch
++
+diff -- vllm/v1/attention/backends/mla/prefill/tokenspeed_mla.py
+@@ -0,0 +1,180 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++"""TokenSpeed CuTe DSL backend for MLA prefill."""
++
++from typing import TYPE_CHECKING
++
++import torch
++
+diff -- benchmarks/attention_benchmarks/mla_runner.py
+@@ -179,19 +179,27 @@ def create_minimal_vllm_config(
+-        if prefill_cfg["flash_attn_version"] is not None:
+-            vllm_config.attention_config.flash_attn_version = prefill_cfg[
+-                "flash_attn_version"
++        if prefill_cfg.get("mla_prefill_backend_enum") is not None:
++            # Registry-based backends bypass the deprecated boolean flags.
++            from vllm.v1.attention.backends.mla.prefill import MLAPrefillBackendEnum
++
++            vllm_config.attention_config.mla_prefill_backend = MLAPrefillBackendEnum[
+```
+
+- Reviewed files:
+  - runtime: `vllm/v1/attention/backends/mla/tokenspeed_mla.py` added +277/-0; `vllm/v1/attention/backends/mla/prefill/tokenspeed_mla.py` added +180/-0; `benchmarks/attention_benchmarks/mla_runner.py` modified +67/-63; `vllm/v1/attention/backends/mla/prefill/registry.py` modified +4/-0
+- Risk and verification: Runtime changes concentrate in `vllm/v1/attention/backends/mla/tokenspeed_mla.py`, `vllm/v1/attention/backends/mla/prefill/tokenspeed_mla.py`, `benchmarks/attention_benchmarks/mla_runner.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.
+
+### PR #42869 - [BugFix] Kimi-K2.5: skip vision tower dtype conversion when using quantization
+
+- Link: https://github.com/vllm-project/vllm/pull/42869
+- Status/date: merged / 2026-05-18
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@07beaed84` history, and the GitHub Pull Request files API; associated commit `23c15acd770c`.
+- Diff scope read: GitHub Pull Request files API returned 1 files, +6/-3, 16 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[BugFix] Kimi-K2.5: skip vision tower dtype conversion when using quantization"; model line: Kimi K2/K2.5/Linear/VL; category: performance/backend optimization; main diff: `vllm/model_executor/models/kimi_k25.py`; technical summary: Covers "[BugFix] Kimi-K2.5: skip vision tower dtype conversion when using quantization" with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `vllm/model_executor/models/kimi_k25.py` modified +6/-3 (9 lines); hunks: -339,9 +339,12  @@ def __init__(; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `vllm/model_executor/models/kimi_k25.py` modified +6/-3 (9 lines); hunks: -339,9 +339,12  @@ def __init__(; symbols: __init__, touching `__init__`
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/kimi_k25.py
+@@ -339,9 +339,12 @@ def __init__(
+-            self.vision_tower = self.vision_tower.to(
+-                device=self.device, dtype=model_config.dtype
+-            )
++            if self._maybe_ignore_quant_config(quant_config) is not None:
++                self.vision_tower = self.vision_tower.to(device=self.device)
++            else:
++                self.vision_tower = self.vision_tower.to(
++                    device=self.device, dtype=model_config.dtype
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/kimi_k25.py` modified +6/-3
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/kimi_k25.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.
