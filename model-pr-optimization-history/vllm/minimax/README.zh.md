@@ -1,5 +1,9 @@
 # vllm MiniMax M2 Series 模型 PR 优化历史
 
+## 2026-05-19 PR 补漏复核
+
+已按 vllm 上游 `origin/main@07beaed84` 和 GitHub Pull Request files API 复核；本轮补齐 `#42497`, `#43006` 的时间线与逐 PR diff 审计卡。
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
@@ -23,8 +27,8 @@
 ## PR 覆盖总览
 
 - git 追溯 PR 数: 31
-- 原文档显式引用补充 PR 数: 2
-- 当前文档总 PR 数: 33
+- 原文档显式引用补充 PR 数: 4
+- 当前文档总 PR 数: 35
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -65,6 +69,8 @@
 | 2026-04-14 | [#39683](https://github.com/vllm-project/vllm/pull/39683) | merged | [Bugfix]: Fix MinimaxM2ToolParser missing tools parameter | `vllm/parser/minimax_m2_parser.py` |
 | 2026-04-16 | [#39861](https://github.com/vllm-project/vllm/pull/39861) | merged | [Bugfix] Accept **kwargs in MiniMaxM2Parser.__init__() | `vllm/parser/minimax_m2_parser.py` |
 | 2026-04-27 | [#38191](https://github.com/vllm-project/vllm/pull/38191) | merged | [Bugfix] Fix k_norm weight sharding in MiniMaxM2Attention when total_num_kv_heads < tp_size | `vllm/model_executor/models/minimax_m2.py` |
+| 2026-05-18 | [#42497](https://github.com/vllm-project/vllm/pull/42497) | merged | [Perf] Wire silu_and_mul_per_block_quant into TritonFP8MoE (MiniMax-M2) | `vllm/model_executor/layers/fused_moe/experts/triton_moe.py` |
+| 2026-05-18 | [#43006](https://github.com/vllm-project/vllm/pull/43006) | merged | [Refactor] Extract shared coerce_to_schema_type utility from Minimax M2 tool parser | `vllm/tool_parsers/utils.py`, `vllm/tool_parsers/minimax_m2_tool_parser.py`, `tests/tool_parsers/test_utils.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -1040,6 +1046,87 @@ diff -- vllm/model_executor/models/minimax_m2.py
 - 已读文件:
   - runtime: `vllm/model_executor/models/minimax_m2.py` modified +16/-3
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/layers/mamba/linear_attn.py`, `vllm/model_executor/models/minimax_m2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #42497 - [Perf] Wire silu_and_mul_per_block_quant into TritonFP8MoE (MiniMax-M2)
+
+- 链接: https://github.com/vllm-project/vllm/pull/42497
+- 状态/时间: merged / 2026-05-18
+- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@07beaed84` 提交历史和 GitHub Pull Request files API 反查；关联提交 `03ddc1c9bc5e`。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+31/-12，可读 patch 59 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Perf] Wire silu_and_mul_per_block_quant into TritonFP8MoE (MiniMax-M2)」；模型线: MiniMax M2 Series；类别: 性能/后端优化；主要 diff: `vllm/model_executor/layers/fused_moe/experts/triton_moe.py`；技术摘要: 覆盖「[Perf] Wire silu_and_mul_per_block_quant into TritonFP8MoE (MiniMax-M2)」，下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/layers/fused_moe/experts/triton_moe.py` modified +31/-12 (43 lines); hunks: -31,6 +31,9  @@ _resize_cache,; -283,20 +286,36  @@ def apply(; symbols: apply，涉及 `apply`。
+- 代码 diff 细节:
+  - `vllm/model_executor/layers/fused_moe/experts/triton_moe.py` modified +31/-12 (43 lines); hunks: -31,6 +31,9  @@ _resize_cache,; -283,20 +286,36  @@ def apply(; symbols: apply，涉及 `apply`
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/layers/fused_moe/experts/triton_moe.py
+@@ -31,6 +31,9 @@
++from vllm.model_executor.layers.quantization.utils.fp8_utils import (
++    is_deep_gemm_e8m0_used,
++)
+@@ -283,20 +286,36 @@ def apply(
+-        self.activation(
+-            activation, intermediate_cache2, intermediate_cache1.view(-1, N)
+-        )
+-
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/layers/fused_moe/experts/triton_moe.py` modified +31/-12
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/layers/fused_moe/experts/triton_moe.py`；风险点是权重加载、并行切分、attention/MoE 后端选择、量化 dtype 和 parser 输出，需要至少做一次真实 checkpoint 或等价 smoke。
+
+### PR #43006 - [Refactor] Extract shared coerce_to_schema_type utility from Minimax M2 tool parser
+
+- 链接: https://github.com/vllm-project/vllm/pull/43006
+- 状态/时间: merged / 2026-05-18
+- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@07beaed84` 提交历史和 GitHub Pull Request files API 反查；关联提交 `57fef4e0bf0b`。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+247/-77，可读 patch 353 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Refactor] Extract shared coerce_to_schema_type utility from Minimax M2 tool parser」；模型线: MiniMax M2 Series；类别: 模型支持/运行时入口；主要 diff: `vllm/tool_parsers/utils.py`, `vllm/tool_parsers/minimax_m2_tool_parser.py`, `tests/tool_parsers/test_utils.py`；技术摘要: 覆盖「[Refactor] Extract shared coerce_to_schema_type utility from Minimax M2 tool parser」，下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/tool_parsers/utils.py` modified +97/-0 (97 lines); hunks: -450,6 +450,103  @@ def make_valid_python(text: str) -> tuple[str, str] | None:; symbols: make_valid_python，涉及 `make_valid_python`；`vllm/tool_parsers/minimax_m2_tool_parser.py` modified +2/-77 (79 lines); hunks: -25,6 +25,7  @@ Tool,; -146,80 +147,6  @@ def _extract_types_from_schema(self, schema: Any) -> list[str]:; symbols: _extract_types_from_schema, _parse_single_invoke，涉及 `_extract_types_from_schema, _parse_single_invoke`；`tests/tool_parsers/test_utils.py` added +148/-0 (148 lines); hunks: -0,0 +1,148  @@ +# SPDX-License-Identifier: Apache-2.0。
+- 代码 diff 细节:
+  - `vllm/tool_parsers/utils.py` modified +97/-0 (97 lines); hunks: -450,6 +450,103  @@ def make_valid_python(text: str) -> tuple[str, str] | None:; symbols: make_valid_python，涉及 `make_valid_python`
+  - `vllm/tool_parsers/minimax_m2_tool_parser.py` modified +2/-77 (79 lines); hunks: -25,6 +25,7  @@ Tool,; -146,80 +147,6  @@ def _extract_types_from_schema(self, schema: Any) -> list[str]:; symbols: _extract_types_from_schema, _parse_single_invoke，涉及 `_extract_types_from_schema, _parse_single_invoke`
+  - `tests/tool_parsers/test_utils.py` added +148/-0 (148 lines); hunks: -0,0 +1,148  @@ +# SPDX-License-Identifier: Apache-2.0
+- 关键代码摘录:
+
+```diff
+diff -- vllm/tool_parsers/utils.py
+@@ -450,6 +450,103 @@ def make_valid_python(text: str) -> tuple[str, str] | None:
++_TYPE_ALIASES: dict[str, str] = {
++    "str": "string",
++    "text": "string",
++    "varchar": "string",
++    "char": "string",
++    "enum": "string",
++    "int": "integer",
++    "int32": "integer",
+diff -- vllm/tool_parsers/minimax_m2_tool_parser.py
+@@ -25,6 +25,7 @@
++from vllm.tool_parsers.utils import coerce_to_schema_type
+@@ -146,80 +147,6 @@ def _extract_types_from_schema(self, schema: Any) -> list[str]:
+-    def _convert_param_value_with_types(
+-        self, value: str, param_types: list[str]
+-    ) -> Any:
+-        """
+-        Convert parameter value to the correct type based on a list of possible types.
+-        Tries each type in order until one succeeds.
+diff -- tests/tool_parsers/test_utils.py
+@@ -0,0 +1,148 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++
++import pytest
++
++from vllm.tool_parsers.utils import coerce_to_schema_type
++
++
+```
+
+- 已读文件:
+  - runtime: `vllm/tool_parsers/utils.py` modified +97/-0; `vllm/tool_parsers/minimax_m2_tool_parser.py` modified +2/-77
+  - tests: `tests/tool_parsers/test_utils.py` added +148/-0
+- 验证与风险: runtime 路径改动集中在 `vllm/tool_parsers/utils.py`, `vllm/tool_parsers/minimax_m2_tool_parser.py`, `tests/tool_parsers/test_utils.py`；风险点是权重加载、并行切分、attention/MoE 后端选择、量化 dtype 和 parser 输出，需要至少做一次真实 checkpoint 或等价 smoke。
 
 ## 补漏结论
 

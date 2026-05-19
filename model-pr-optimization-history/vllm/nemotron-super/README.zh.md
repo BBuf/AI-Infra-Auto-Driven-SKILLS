@@ -1,5 +1,9 @@
 # vllm Nemotron Super 模型 PR 优化历史
 
+## 2026-05-19 PR 补漏复核
+
+已按 vllm 上游 `origin/main@07beaed84` 和 GitHub Pull Request files API 复核；本轮补齐 `#41233` 的时间线与逐 PR diff 审计卡。
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
@@ -34,8 +38,8 @@
 ## PR 覆盖总览
 
 - git 追溯 PR 数: 60
-- 原文档显式引用补充 PR 数: 2
-- 当前文档总 PR 数: 62
+- 原文档显式引用补充 PR 数: 3
+- 当前文档总 PR 数: 63
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -105,6 +109,7 @@
 | 2026-04-15 | [#39901](https://github.com/vllm-project/vllm/pull/39901) | merged | FIX: support language_model.backbone naming in NemotronH Nano VL quantization config | `vllm/model_executor/models/nano_nemotron_vl.py` |
 | 2026-04-19 | [#40283](https://github.com/vllm-project/vllm/pull/40283) | merged | Optimize nemotron VL image/video preprocessing | `vllm/transformers_utils/processors/nano_nemotron_vl.py` |
 | 2026-04-24 | [#40724](https://github.com/vllm-project/vllm/pull/40724) | merged | Fix Nano Nemotron VL static image inputs | `vllm/model_executor/models/nano_nemotron_vl.py` |
+| 2026-05-18 | [#41233](https://github.com/vllm-project/vllm/pull/41233) | merged | [Bugfix][Hybrid][NemotronH] Fix mamba_cache_mode=all + speculative decoding crash | `vllm/v1/attention/backends/mamba_attn.py`, `vllm/model_executor/models/config.py`, `vllm/v1/attention/backends/utils.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -1997,6 +2002,58 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 - 已读文件:
   - runtime: `vllm/model_executor/models/nano_nemotron_vl.py` modified +3/-1
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/nano_nemotron_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #41233 - [Bugfix][Hybrid][NemotronH] Fix mamba_cache_mode=all + speculative decoding crash
+
+- 链接: https://github.com/vllm-project/vllm/pull/41233
+- 状态/时间: merged / 2026-05-18
+- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@07beaed84` 提交历史和 GitHub Pull Request files API 反查；关联提交 `737bfa3a43ce`。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 10 个文件，+568/-117，可读 patch 960 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix][Hybrid][NemotronH] Fix mamba_cache_mode=all + speculative decoding crash」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `vllm/v1/attention/backends/mamba_attn.py`, `vllm/model_executor/models/config.py`, `vllm/v1/attention/backends/utils.py`；技术摘要: 覆盖「[Bugfix][Hybrid][NemotronH] Fix mamba_cache_mode=all + speculative decoding crash」，下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/v1/attention/backends/mamba_attn.py` modified +77/-9 (86 lines); hunks: -56,6 +56,7  @@ class BaseMambaAttentionMetadata:; -108,12 +109,13  @@ def __init__(; symbols: BaseMambaAttentionMetadata, __init__, build_for_cudagraph_capture, build，涉及 `BaseMambaAttentionMetadata, __init__, build_for_cudagraph_capture`；`vllm/model_executor/models/config.py` modified +9/-20 (29 lines); hunks: -350,26 +350,15  @@ def verify_and_update_config(cls, vllm_config: "VllmConfig") -> None:; symbols: verify_and_update_config，涉及 `verify_and_update_config`；`vllm/v1/attention/backends/utils.py` modified +4/-2 (6 lines); hunks: -878,8 +878,10  @@ def mamba_get_block_table_tensor(; symbols: mamba_get_block_table_tensor，涉及 `mamba_get_block_table_tensor`；`vllm/v1/attention/backends/mamba2_attn.py` modified +3/-1 (4 lines); hunks: -137,7 +137,9  @@ def build(; symbols: build，涉及 `build`。
+- 代码 diff 细节:
+  - `vllm/v1/attention/backends/mamba_attn.py` modified +77/-9 (86 lines); hunks: -56,6 +56,7  @@ class BaseMambaAttentionMetadata:; -108,12 +109,13  @@ def __init__(; symbols: BaseMambaAttentionMetadata, __init__, build_for_cudagraph_capture, build，涉及 `BaseMambaAttentionMetadata, __init__, build_for_cudagraph_capture`
+  - `vllm/model_executor/models/config.py` modified +9/-20 (29 lines); hunks: -350,26 +350,15  @@ def verify_and_update_config(cls, vllm_config: "VllmConfig") -> None:; symbols: verify_and_update_config，涉及 `verify_and_update_config`
+  - `vllm/v1/attention/backends/utils.py` modified +4/-2 (6 lines); hunks: -878,8 +878,10  @@ def mamba_get_block_table_tensor(; symbols: mamba_get_block_table_tensor，涉及 `mamba_get_block_table_tensor`
+  - `vllm/v1/attention/backends/mamba2_attn.py` modified +3/-1 (4 lines); hunks: -137,7 +137,9  @@ def build(; symbols: build，涉及 `build`
+  - `tests/v1/attention/test_mamba_update_block_table.py` modified +271/-4 (275 lines); hunks: -32,17 +32,25  @@ class _ConcreteMambaBuilder(; -59,7 +67,7  @@ def test_update_block_table_copies_block_idx_to_persistent_buffers():; symbols: _ConcreteMambaBuilder, test_update_block_table_copies_block_idx_to_persistent_buffers, shares_storage，涉及 `_ConcreteMambaBuilder, test_update_block_table_copies_block_idx_to_persistent_buffers, shares_storage`
+- 关键代码摘录:
+
+```diff
+diff -- vllm/v1/attention/backends/mamba_attn.py
+@@ -56,6 +56,7 @@ class BaseMambaAttentionMetadata:
++    block_idx_last_scheduled_token_prev_step: torch.Tensor | None
+@@ -108,12 +109,13 @@ def __init__(
+-            max_num_blocks = cdiv(
+-                self.vllm_config.model_config.max_model_len,
+-                self.kv_cache_spec.block_size,
++            max_num_blocks = (
++                cdiv(
++                    self.vllm_config.model_config.max_model_len,
+diff -- vllm/model_executor/models/config.py
+@@ -350,26 +350,15 @@ def verify_and_update_config(cls, vllm_config: "VllmConfig") -> None:
+-                if (
+-                    model_config.supports_mamba_prefix_caching
+-                    and vllm_config.speculative_config is not None
+-                ):
+-                    cache_config.mamba_cache_mode = "align"
+-                    logger.warning(
+-                        "Mamba cache mode is set to 'align' for %s by default "
+-                        "when prefix caching and speculative decoding are enabled",
+diff -- vllm/v1/attention/backends/utils.py
+@@ -878,8 +878,10 @@ def mamba_get_block_table_tensor(
+-    - "all":   input  (#requests, cdiv(max_model_len, block_size));
+-               output (#requests, cdiv(max_model_len, block_size)).
++    - "all":   input  (#requests, cdiv(max_model_len, block_size)
++                        + num_speculative_blocks);
++               output (#requests, cdiv(max_model_len, block_size)
++                        + num_speculative_blocks).
+```
+
+- 已读文件:
+  - runtime: `vllm/v1/attention/backends/mamba_attn.py` modified +77/-9; `vllm/model_executor/models/config.py` modified +9/-20; `vllm/v1/attention/backends/utils.py` modified +4/-2; `vllm/v1/attention/backends/mamba2_attn.py` modified +3/-1
+  - tests: `tests/v1/attention/test_mamba_update_block_table.py` modified +271/-4
+- 验证与风险: runtime 路径改动集中在 `vllm/v1/attention/backends/mamba_attn.py`, `vllm/model_executor/models/config.py`, `vllm/v1/attention/backends/utils.py`；风险点是权重加载、并行切分、attention/MoE 后端选择、量化 dtype 和 parser 输出，需要至少做一次真实 checkpoint 或等价 smoke。
 
 ## 补漏结论
 

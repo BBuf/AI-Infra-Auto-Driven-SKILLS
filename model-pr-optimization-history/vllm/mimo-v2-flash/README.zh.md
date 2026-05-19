@@ -1,8 +1,8 @@
 # vllm MiMo V2 Flash 模型 PR 优化历史
 
-## 2026-05-15 源码复核补记
+## 2026-05-19 PR 补漏复核
 
-已按 vLLM `origin/main` 的 `f3d536059` 复核 MiMo 相关代码。`#41905` 在 `vllm/model_executor/models/mimo_v2_mtp.py` 中扩展 MiMo-V2.5 MTP support；需要和既有 `#40967` / `#41029` MiMo-V2.5 历史一起看。
+已按 vllm 上游 `origin/main@07beaed84` 和 GitHub Pull Request files API 复核；本轮补齐 `#41905` 的时间线与逐 PR diff 审计卡。
 
 ## 模型实现文件覆盖
 
@@ -20,8 +20,8 @@
 ## PR 覆盖总览
 
 - git 追溯 PR 数: 4
-- 原文档显式引用补充 PR 数: 3
-- 当前文档总 PR 数: 7
+- 原文档显式引用补充 PR 数: 4
+- 当前文档总 PR 数: 8
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -36,6 +36,7 @@
 | 2026-04-24 | [#40045](https://github.com/vllm-project/vllm/pull/40045) | merged | [Attention] use diff kv backend for mimo v2 flash | `vllm/model_executor/models/mimo_v2_flash.py`, `vllm/model_executor/layers/attention/attention.py`, `tools/pre_commit/generate_attention_backend_docs.py` |
 | 2026-04-27 | [#40967](https://github.com/vllm-project/vllm/pull/40967) | merged | [Model] Add MiMo-V2.5 support | `vllm/model_executor/models/mimo_v2_omni.py`, `vllm/model_executor/models/mimo_audio.py`, `vllm/transformers_utils/processors/mimo_v2_omni.py` |
 | 2026-04-28 | [#41029](https://github.com/vllm-project/vllm/pull/41029) | merged | [Model] update for mimo v25 | `vllm/model_executor/models/mimo_v2.py` |
+| 2026-05-09 | [#41905](https://github.com/vllm-project/vllm/pull/41905) | merged | [SpecDecoding] extend mtp support for mimo 2.5 | `vllm/model_executor/models/mimo_v2_mtp.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -278,6 +279,35 @@ diff -- vllm/model_executor/models/mimo_v2.py
 - 已读文件:
   - runtime: `vllm/model_executor/models/mimo_v2.py` modified +1/-1
 - 验证与风险: diff 自带测试面 `tests/models/registry.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #41905 - [SpecDecoding] extend mtp support for mimo 2.5
+
+- 链接: https://github.com/vllm-project/vllm/pull/41905
+- 状态/时间: merged / 2026-05-09
+- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@07beaed84` 提交历史和 GitHub Pull Request files API 反查；关联提交 `2ee8c2a56e41`。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+3/-10，可读 patch 57 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[SpecDecoding] extend mtp support for mimo 2.5」；模型线: MiMo V2 Flash；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mimo_v2_mtp.py`；技术摘要: 覆盖「[SpecDecoding] extend mtp support for mimo 2.5」，下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/mimo_v2_mtp.py` modified +3/-10 (13 lines); hunks: -49,7 +49,7  @@ from .utils import _merge_multimodal_embeddings, maybe_prefix; -170,10 +170,6  @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = "") -> None:; symbols: __init__, str, forward, compute_logits，涉及 `__init__, str, forward`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/mimo_v2_mtp.py` modified +3/-10 (13 lines); hunks: -49,7 +49,7  @@ from .utils import _merge_multimodal_embeddings, maybe_prefix; -170,10 +170,6  @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = "") -> None:; symbols: __init__, str, forward, compute_logits，涉及 `__init__, str, forward`
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/mimo_v2_mtp.py
+@@ -49,7 +49,7 @@
+-# only the first layer and only one speculative token.
++# only the first layer
+@@ -170,10 +170,6 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = "") -> None:
+-        if spec_cfg.num_speculative_tokens != 1:
+-            raise ValueError(
+-                "MiMo-V2 MTP in vLLM only supports num_speculative_tokens=1."
+-            )
+@@ -203,10 +199,10 @@ def forward(
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/mimo_v2_mtp.py` modified +3/-10
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/mimo_v2_mtp.py`；风险点是权重加载、并行切分、attention/MoE 后端选择、量化 dtype 和 parser 输出，需要至少做一次真实 checkpoint 或等价 smoke。
 
 ## 补漏结论
 

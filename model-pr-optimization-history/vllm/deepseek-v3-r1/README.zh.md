@@ -1,5 +1,9 @@
 # vllm DeepSeek V3/R1 模型 PR 优化历史
 
+## 2026-05-19 PR 补漏复核
+
+已按 vllm 上游 `origin/main@07beaed84` 和 GitHub Pull Request files API 复核；本轮补齐 `#41778` 的时间线与逐 PR diff 审计卡。
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
@@ -25,8 +29,8 @@
 ## PR 覆盖总览
 
 - git 追溯 PR 数: 35
-- 原文档显式引用补充 PR 数: 4
-- 当前文档总 PR 数: 39
+- 原文档显式引用补充 PR 数: 5
+- 当前文档总 PR 数: 40
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -73,6 +77,7 @@
 | 2026-04-08 | [#37421](https://github.com/vllm-project/vllm/pull/37421) | merged | [Perf][Kernel] Persistent TopK scheduler: unified CUDAGraph-safe kernel with dynamic per-row dispatch - DeepSeek-V3.2 DSA decode | `vllm/model_executor/models/deepseek_v2.py` |
 | 2026-04-27 | [#35968](https://github.com/vllm-project/vllm/pull/35968) | closed | [Performance] DeepSeek V3.2 multi-stream indexer overlap | `vllm/model_executor/models/deepseek_v2.py`, `vllm/model_executor/layers/layernorm.py`, `tests/utils_/test_indexer_dual_stream.py` |
 | 2026-04-29 | [#41198](https://github.com/vllm-project/vllm/pull/41198) | merged | [Bugfix] DSV32/V4 add missing type conversion for non-streaming tool calls | `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `vllm/tool_parsers/deepseekv32_tool_parser.py` |
+| 2026-05-14 | [#41778](https://github.com/vllm-project/vllm/pull/41778) | merged | [MLA Attention Backend] Add TOKENSPEED_MLA backend for DSR1/Kimi K25 prefill + decode on Blackwell | `vllm/v1/attention/backends/mla/tokenspeed_mla.py`, `vllm/v1/attention/backends/mla/prefill/tokenspeed_mla.py`, `benchmarks/attention_benchmarks/mla_runner.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -1226,6 +1231,59 @@ diff -- vllm/tool_parsers/deepseekv32_tool_parser.py
   - tests: `tests/tool_parsers/test_deepseekv32_tool_parser.py` modified +24/-0
   - runtime: `vllm/tool_parsers/deepseekv32_tool_parser.py` modified +2/-1
 - 验证与风险: diff 自带测试面 `tests/tool_parsers/test_deepseekv32_tool_parser.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #41778 - [MLA Attention Backend] Add TOKENSPEED_MLA backend for DSR1/Kimi K25 prefill + decode on Blackwell
+
+- 链接: https://github.com/vllm-project/vllm/pull/41778
+- 状态/时间: merged / 2026-05-14
+- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@07beaed84` 提交历史和 GitHub Pull Request files API 反查；关联提交 `0d2732dd919b`。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 14 个文件，+640/-89，可读 patch 975 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[MLA Attention Backend] Add TOKENSPEED_MLA backend for DSR1/Kimi K25 prefill + decode on Blackwell」；模型线: DeepSeek V3/R1；类别: 性能/后端优化；主要 diff: `vllm/v1/attention/backends/mla/tokenspeed_mla.py`, `vllm/v1/attention/backends/mla/prefill/tokenspeed_mla.py`, `benchmarks/attention_benchmarks/mla_runner.py`；技术摘要: 覆盖「[MLA Attention Backend] Add TOKENSPEED_MLA backend for DSR1/Kimi K25 prefill + decode on Blackwell」，下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/v1/attention/backends/mla/tokenspeed_mla.py` added +277/-0 (277 lines); hunks: -0,0 +1,277  @@ +# SPDX-License-Identifier: Apache-2.0；`vllm/v1/attention/backends/mla/prefill/tokenspeed_mla.py` added +180/-0 (180 lines); hunks: -0,0 +1,180  @@ +# SPDX-License-Identifier: Apache-2.0；`benchmarks/attention_benchmarks/mla_runner.py` modified +67/-63 (130 lines); hunks: -179,19 +179,27  @@ def create_minimal_vllm_config(; -223,22 +231,17  @@ def create_minimal_vllm_config(; symbols: create_minimal_vllm_config, _create_backend_impl, _run_mla_benchmark_batched，涉及 `create_minimal_vllm_config, _create_backend_impl, _run_mla_benchmark_batched`；`vllm/v1/attention/backends/mla/prefill/registry.py` modified +4/-0 (4 lines); hunks: -43,6 +43,10  @@ class MLAPrefillBackendEnum(Enum, metaclass=_MLAPrefillBackendEnumMeta):; symbols: MLAPrefillBackendEnum, metaclass，涉及 `MLAPrefillBackendEnum, metaclass`。
+- 代码 diff 细节:
+  - `vllm/v1/attention/backends/mla/tokenspeed_mla.py` added +277/-0 (277 lines); hunks: -0,0 +1,277  @@ +# SPDX-License-Identifier: Apache-2.0
+  - `vllm/v1/attention/backends/mla/prefill/tokenspeed_mla.py` added +180/-0 (180 lines); hunks: -0,0 +1,180  @@ +# SPDX-License-Identifier: Apache-2.0
+  - `benchmarks/attention_benchmarks/mla_runner.py` modified +67/-63 (130 lines); hunks: -179,19 +179,27  @@ def create_minimal_vllm_config(; -223,22 +231,17  @@ def create_minimal_vllm_config(; symbols: create_minimal_vllm_config, _create_backend_impl, _run_mla_benchmark_batched，涉及 `create_minimal_vllm_config, _create_backend_impl, _run_mla_benchmark_batched`
+  - `vllm/v1/attention/backends/mla/prefill/registry.py` modified +4/-0 (4 lines); hunks: -43,6 +43,10  @@ class MLAPrefillBackendEnum(Enum, metaclass=_MLAPrefillBackendEnumMeta):; symbols: MLAPrefillBackendEnum, metaclass，涉及 `MLAPrefillBackendEnum, metaclass`
+  - `vllm/v1/attention/backends/registry.py` modified +3/-0 (3 lines); hunks: -63,6 +63,9  @@ class AttentionBackendEnum(Enum, metaclass=_AttentionBackendEnumMeta):; symbols: AttentionBackendEnum, metaclass，涉及 `AttentionBackendEnum, metaclass`
+- 关键代码摘录:
+
+```diff
+diff -- vllm/v1/attention/backends/mla/tokenspeed_mla.py
+@@ -0,0 +1,277 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++"""TokenSpeed CuTe DSL MLA decode backend (Blackwell, FP8 KV cache only)."""
++
++from typing import ClassVar
++
++import torch
++
+diff -- vllm/v1/attention/backends/mla/prefill/tokenspeed_mla.py
+@@ -0,0 +1,180 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++"""TokenSpeed CuTe DSL backend for MLA prefill."""
++
++from typing import TYPE_CHECKING
++
++import torch
++
+diff -- benchmarks/attention_benchmarks/mla_runner.py
+@@ -179,19 +179,27 @@ def create_minimal_vllm_config(
+-        if prefill_cfg["flash_attn_version"] is not None:
+-            vllm_config.attention_config.flash_attn_version = prefill_cfg[
+-                "flash_attn_version"
++        if prefill_cfg.get("mla_prefill_backend_enum") is not None:
++            # Registry-based backends bypass the deprecated boolean flags.
++            from vllm.v1.attention.backends.mla.prefill import MLAPrefillBackendEnum
++
++            vllm_config.attention_config.mla_prefill_backend = MLAPrefillBackendEnum[
+```
+
+- 已读文件:
+  - runtime: `vllm/v1/attention/backends/mla/tokenspeed_mla.py` added +277/-0; `vllm/v1/attention/backends/mla/prefill/tokenspeed_mla.py` added +180/-0; `benchmarks/attention_benchmarks/mla_runner.py` modified +67/-63; `vllm/v1/attention/backends/mla/prefill/registry.py` modified +4/-0
+- 验证与风险: runtime 路径改动集中在 `vllm/v1/attention/backends/mla/tokenspeed_mla.py`, `vllm/v1/attention/backends/mla/prefill/tokenspeed_mla.py`, `benchmarks/attention_benchmarks/mla_runner.py`；风险点是权重加载、并行切分、attention/MoE 后端选择、量化 dtype 和 parser 输出，需要至少做一次真实 checkpoint 或等价 smoke。
 
 ## 补漏结论
 

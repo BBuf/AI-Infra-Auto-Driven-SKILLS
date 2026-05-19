@@ -1,8 +1,8 @@
 # vllm DeepSeek V3.2 模型 PR 优化历史
 
-## 2026-05-15 源码复核补记
+## 2026-05-19 PR 补漏复核
 
-已按 vLLM `origin/main` 的 `f3d536059` 复核 DeepSeek-V3.2 相关代码。当前历史需要补充 `#41217` ROCm sparse-MLA/indexer 优化、`#41835` TP4 AITER MLA 启用，以及 `#42062`：`vllm/v1/attention/ops/rocm_aiter_mla_sparse.py` 在 `gfx950`/MI355X sparse MLA 上启用 ROCm AITER/Gluon paged-MQA logits。
+已按 vllm 上游 `origin/main@07beaed84` 和 GitHub Pull Request files API 复核；本轮补齐 `#41217`, `#41835`, `#42062` 的时间线与逐 PR diff 审计卡。
 
 ## 模型实现文件覆盖
 
@@ -24,8 +24,8 @@
 ## PR 覆盖总览
 
 - git 追溯 PR 数: 29
-- 原文档显式引用补充 PR 数: 6
-- 当前文档总 PR 数: 35
+- 原文档显式引用补充 PR 数: 9
+- 当前文档总 PR 数: 38
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -68,6 +68,9 @@
 | 2026-04-08 | [#37421](https://github.com/vllm-project/vllm/pull/37421) | merged | [Perf][Kernel] Persistent TopK scheduler: unified CUDAGraph-safe kernel with dynamic per-row dispatch - DeepSeek-V3.2 DSA decode | `vllm/model_executor/models/deepseek_v2.py` |
 | 2026-04-27 | [#35968](https://github.com/vllm-project/vllm/pull/35968) | closed | [Performance] DeepSeek V3.2 multi-stream indexer overlap | `vllm/model_executor/models/deepseek_v2.py`, `vllm/model_executor/layers/layernorm.py`, `tests/utils_/test_indexer_dual_stream.py` |
 | 2026-04-29 | [#41198](https://github.com/vllm-project/vllm/pull/41198) | merged | [Bugfix] DSV32/V4 add missing type conversion for non-streaming tool calls | `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `vllm/tool_parsers/deepseekv32_tool_parser.py` |
+| 2026-05-01 | [#41217](https://github.com/vllm-project/vllm/pull/41217) | merged | [ROCm][Deepseek] dsv3.2 further optimization | `vllm/v1/attention/backends/mla/rocm_aiter_mla_sparse.py`, `vllm/model_executor/models/deepseek_v2.py`, `vllm/v1/attention/ops/rocm_aiter_mla_sparse.py` |
+| 2026-05-07 | [#41835](https://github.com/vllm-project/vllm/pull/41835) | merged | [ROCm][DeepSeek] Enable V3.2 TP4 AITER MLA | `vllm/model_executor/models/deepseek_v2.py`, `vllm/v1/attention/backends/mla/rocm_aiter_mla.py` |
+| 2026-05-14 | [#42062](https://github.com/vllm-project/vllm/pull/42062) | merged | [ROCm] Enable gluon paged MQA logits on gfx950 (MI355X) | `vllm/v1/attention/ops/rocm_aiter_mla_sparse.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -1117,6 +1120,121 @@ diff -- vllm/tool_parsers/deepseekv32_tool_parser.py
   - tests: `tests/tool_parsers/test_deepseekv32_tool_parser.py` modified +24/-0
   - runtime: `vllm/tool_parsers/deepseekv32_tool_parser.py` modified +2/-1
 - 验证与风险: diff 自带测试面 `tests/tool_parsers/test_deepseekv32_tool_parser.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #41217 - [ROCm][Deepseek] dsv3.2 further optimization
+
+- 链接: https://github.com/vllm-project/vllm/pull/41217
+- 状态/时间: merged / 2026-05-01
+- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@07beaed84` 提交历史和 GitHub Pull Request files API 反查；关联提交 `bc635fad2389`。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+293/-73，可读 patch 605 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[ROCm][Deepseek] dsv3.2 further optimization」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `vllm/v1/attention/backends/mla/rocm_aiter_mla_sparse.py`, `vllm/model_executor/models/deepseek_v2.py`, `vllm/v1/attention/ops/rocm_aiter_mla_sparse.py`；技术摘要: 覆盖「[ROCm][Deepseek] dsv3.2 further optimization」，下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/v1/attention/backends/mla/rocm_aiter_mla_sparse.py` modified +227/-29 (256 lines); hunks: -7,13 +7,15  @@ import numpy as np; -25,9 +27,6  @@ MultipleOf,; symbols: logger, ROCMAiterMLASparseBackend, ROCMAiterMLASparseMetadata, __init__，涉及 `logger, ROCMAiterMLASparseBackend, ROCMAiterMLASparseMetadata`；`vllm/model_executor/models/deepseek_v2.py` modified +38/-23 (61 lines); hunks: -674,30 +674,45  @@ def forward(; symbols: forward，涉及 `forward`；`vllm/v1/attention/ops/rocm_aiter_mla_sparse.py` modified +22/-19 (41 lines); hunks: -13,9 +13,6  @@ from vllm.v1.attention.backends.mla.indexer import DeepseekV32IndexerMetadata; -97,7 +94,8  @@ def indexer_k_quant_and_cache_triton(; symbols: indexer_k_quant_and_cache_triton, cp_gather_indexer_k_quant_cache_triton, rocm_fp8_paged_mqa_logits, rocm_aiter_sparse_attn_indexer，涉及 `indexer_k_quant_and_cache_triton, cp_gather_indexer_k_quant_cache_triton, rocm_fp8_paged_mqa_logits`；`vllm/v1/attention/backends/mla/rocm_aiter_mla.py` modified +4/-0 (4 lines); hunks: -396,6 +396,7  @@ class AiterMLAHelper:; -419,6 +420,9  @@ def get_actual_mla_num_heads(num_heads: int) -> int:; symbols: AiterMLAHelper, get_actual_mla_num_heads，涉及 `AiterMLAHelper, get_actual_mla_num_heads`。
+- 代码 diff 细节:
+  - `vllm/v1/attention/backends/mla/rocm_aiter_mla_sparse.py` modified +227/-29 (256 lines); hunks: -7,13 +7,15  @@ import numpy as np; -25,9 +27,6  @@ MultipleOf,; symbols: logger, ROCMAiterMLASparseBackend, ROCMAiterMLASparseMetadata, __init__，涉及 `logger, ROCMAiterMLASparseBackend, ROCMAiterMLASparseMetadata`
+  - `vllm/model_executor/models/deepseek_v2.py` modified +38/-23 (61 lines); hunks: -674,30 +674,45  @@ def forward(; symbols: forward，涉及 `forward`
+  - `vllm/v1/attention/ops/rocm_aiter_mla_sparse.py` modified +22/-19 (41 lines); hunks: -13,9 +13,6  @@ from vllm.v1.attention.backends.mla.indexer import DeepseekV32IndexerMetadata; -97,7 +94,8  @@ def indexer_k_quant_and_cache_triton(; symbols: indexer_k_quant_and_cache_triton, cp_gather_indexer_k_quant_cache_triton, rocm_fp8_paged_mqa_logits, rocm_aiter_sparse_attn_indexer，涉及 `indexer_k_quant_and_cache_triton, cp_gather_indexer_k_quant_cache_triton, rocm_fp8_paged_mqa_logits`
+  - `vllm/v1/attention/backends/mla/rocm_aiter_mla.py` modified +4/-0 (4 lines); hunks: -396,6 +396,7  @@ class AiterMLAHelper:; -419,6 +420,9  @@ def get_actual_mla_num_heads(num_heads: int) -> int:; symbols: AiterMLAHelper, get_actual_mla_num_heads，涉及 `AiterMLAHelper, get_actual_mla_num_heads`
+  - `vllm/v1/attention/backends/mla/indexer.py` modified +1/-1 (2 lines); hunks: -122,7 +122,7  @@ def get_name() -> str:; symbols: get_name，涉及 `get_name`
+- 关键代码摘录:
+
+```diff
+diff -- vllm/v1/attention/backends/mla/rocm_aiter_mla_sparse.py
+@@ -7,13 +7,15 @@
++from vllm import _custom_ops as ops
++from vllm.platforms import current_platform
+@@ -25,9 +27,6 @@
+-from vllm.v1.attention.backends.mla.flashmla_sparse import (
+-    triton_convert_req_index_to_global_index,
+-)
+@@ -38,6 +37,188 @@
++@triton.jit
+diff -- vllm/model_executor/models/deepseek_v2.py
+@@ -674,30 +674,45 @@ def forward(
+-        q_pe, q_nope = torch.split(
+-            q, [self.rope_dim, self.head_dim - self.rope_dim], dim=-1
+-        )
+-        # Fused wk + weights_proj: one GEMM, then split
+-        kw, _ = self.wk_weights_proj(hidden_states)
+-        k = kw[:, : self.head_dim]
+-        weights = kw[:, self.head_dim :]
+-
+diff -- vllm/v1/attention/ops/rocm_aiter_mla_sparse.py
+@@ -13,9 +13,6 @@
+-if current_platform.is_cuda_alike():
+-    from vllm import _custom_ops as ops
+-
+@@ -97,7 +94,8 @@ def indexer_k_quant_and_cache_triton(
+-    kv_cache_value = kv_cache[:, : block_size * head_dim]
++    fp8_dtype = current_platform.fp8_dtype()
++    kv_cache_value = kv_cache[:, : block_size * head_dim].view(fp8_dtype)
+@@ -111,7 +109,7 @@ def indexer_k_quant_and_cache_triton(
+```
+
+- 已读文件:
+  - runtime: `vllm/v1/attention/backends/mla/rocm_aiter_mla_sparse.py` modified +227/-29; `vllm/model_executor/models/deepseek_v2.py` modified +38/-23; `vllm/v1/attention/ops/rocm_aiter_mla_sparse.py` modified +22/-19; `vllm/v1/attention/backends/mla/rocm_aiter_mla.py` modified +4/-0
+  - docs: `docs/design/attention_backends.md` modified +1/-1
+- 验证与风险: runtime 路径改动集中在 `vllm/v1/attention/backends/mla/rocm_aiter_mla_sparse.py`, `vllm/model_executor/models/deepseek_v2.py`, `vllm/v1/attention/ops/rocm_aiter_mla_sparse.py`；风险点是权重加载、并行切分、attention/MoE 后端选择、量化 dtype 和 parser 输出，需要至少做一次真实 checkpoint 或等价 smoke。
+
+### PR #41835 - [ROCm][DeepSeek] Enable V3.2 TP4 AITER MLA
+
+- 链接: https://github.com/vllm-project/vllm/pull/41835
+- 状态/时间: merged / 2026-05-07
+- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@07beaed84` 提交历史和 GitHub Pull Request files API 反查；关联提交 `c936548ce6b0`。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+12/-10，可读 patch 50 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[ROCm][DeepSeek] Enable V3.2 TP4 AITER MLA」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/deepseek_v2.py`, `vllm/v1/attention/backends/mla/rocm_aiter_mla.py`；技术摘要: 覆盖「[ROCm][DeepSeek] Enable V3.2 TP4 AITER MLA」，下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/deepseek_v2.py` modified +11/-9 (20 lines); hunks: -299,6 +299,15  @@ def __init__(; -338,22 +347,15  @@ def __init__(; symbols: __init__，涉及 `__init__`；`vllm/v1/attention/backends/mla/rocm_aiter_mla.py` modified +1/-1 (2 lines); hunks: -396,7 +396,7  @@ class AiterMLAHelper:; symbols: AiterMLAHelper，涉及 `AiterMLAHelper`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/deepseek_v2.py` modified +11/-9 (20 lines); hunks: -299,6 +299,15  @@ def __init__(; -338,22 +347,15  @@ def __init__(; symbols: __init__，涉及 `__init__`
+  - `vllm/v1/attention/backends/mla/rocm_aiter_mla.py` modified +1/-1 (2 lines); hunks: -396,7 +396,7  @@ class AiterMLAHelper:; symbols: AiterMLAHelper，涉及 `AiterMLAHelper`
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/deepseek_v2.py
+@@ -299,6 +299,15 @@ def __init__(
++        if (
++            self.is_rocm_aiter_moe_enabled
++            and self.gate.e_score_correction_bias is not None
++        ):
++            # AITER biased_grouped_topk requires the correction bias dtype to
++            # match the router logits. Keep DeepSeek's correction bias in fp32
++            # by requesting fp32 router logits for this routing path.
++            self.gate.set_out_dtype(torch.float32)
+diff -- vllm/v1/attention/backends/mla/rocm_aiter_mla.py
+@@ -396,7 +396,7 @@ class AiterMLAHelper:
+-    _AITER_UNSUPPORTED_HEADS = [32]
++    _AITER_UNSUPPORTED_HEADS: ClassVar[tuple[int, ...]] = ()
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/deepseek_v2.py` modified +11/-9; `vllm/v1/attention/backends/mla/rocm_aiter_mla.py` modified +1/-1
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/deepseek_v2.py`, `vllm/v1/attention/backends/mla/rocm_aiter_mla.py`；风险点是权重加载、并行切分、attention/MoE 后端选择、量化 dtype 和 parser 输出，需要至少做一次真实 checkpoint 或等价 smoke。
+
+### PR #42062 - [ROCm] Enable gluon paged MQA logits on gfx950 (MI355X)
+
+- 链接: https://github.com/vllm-project/vllm/pull/42062
+- 状态/时间: merged / 2026-05-14
+- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@07beaed84` 提交历史和 GitHub Pull Request files API 反查；关联提交 `f07b1da797cc`。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+3/-2，可读 patch 21 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[ROCm] Enable gluon paged MQA logits on gfx950 (MI355X)」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `vllm/v1/attention/ops/rocm_aiter_mla_sparse.py`；技术摘要: 覆盖「[ROCm] Enable gluon paged MQA logits on gfx950 (MI355X)」，下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/v1/attention/ops/rocm_aiter_mla_sparse.py` modified +3/-2 (5 lines); hunks: -16,9 +16,10  @@ from vllm.v1.attention.ops.common import pack_seq_triton, unpack_seq_triton; -385,7 +386,7  @@ def rocm_fp8_paged_mqa_logits(; symbols: rocm_fp8_paged_mqa_logits，涉及 `rocm_fp8_paged_mqa_logits`。
+- 代码 diff 细节:
+  - `vllm/v1/attention/ops/rocm_aiter_mla_sparse.py` modified +3/-2 (5 lines); hunks: -16,9 +16,10  @@ from vllm.v1.attention.ops.common import pack_seq_triton, unpack_seq_triton; -385,7 +386,7  @@ def rocm_fp8_paged_mqa_logits(; symbols: rocm_fp8_paged_mqa_logits，涉及 `rocm_fp8_paged_mqa_logits`
+- 关键代码摘录:
+
+```diff
+diff -- vllm/v1/attention/ops/rocm_aiter_mla_sparse.py
+@@ -16,9 +16,10 @@
+-    from vllm.platforms.rocm import _ON_GFX942
++    from vllm.platforms.rocm import _ON_GFX942, _ON_GFX950
++    _ON_GFX950 = False
+@@ -385,7 +386,7 @@ def rocm_fp8_paged_mqa_logits(
+-        if _ON_GFX942:
++        if _ON_GFX942 or _ON_GFX950:
+```
+
+- 已读文件:
+  - runtime: `vllm/v1/attention/ops/rocm_aiter_mla_sparse.py` modified +3/-2
+- 验证与风险: runtime 路径改动集中在 `vllm/v1/attention/ops/rocm_aiter_mla_sparse.py`；风险点是权重加载、并行切分、attention/MoE 后端选择、量化 dtype 和 parser 输出，需要至少做一次真实 checkpoint 或等价 smoke。
 
 ## 补漏结论
 

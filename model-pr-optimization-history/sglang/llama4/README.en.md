@@ -1,5 +1,9 @@
 # sglang Llama 4 Model PR Optimization History
 
+## 2026-05-19 PR Backfill Audit
+
+Rechecked sglang upstream `origin/main@78cb38ed5` and the GitHub Pull Request files API; this pass adds timeline entries and per-PR diff audit cards for `#25089`.
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |
@@ -21,8 +25,8 @@
 ## PR Coverage Summary
 
 - Git-traced PRs: 28
-- Extra PRs preserved from existing docs: 1
-- Total PRs in this document: 29
+- Extra PRs preserved from existing docs: 2
+- Total PRs in this document: 30
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -59,6 +63,7 @@
 | 2026-01-14 | [#16971](https://github.com/sgl-project/sglang/pull/16971) | merged | fix: renaming test file and job names + skip blocking llama4 nightly | `test/registered/8-gpu-models/test_llama4.py` |
 | 2026-01-30 | [#12813](https://github.com/sgl-project/sglang/pull/12813) | merged | add weightless qk norm to RMSNorm interface for Llama 4 | `python/sglang/srt/models/llama4.py` |
 | 2026-02-27 | [#17123](https://github.com/sgl-project/sglang/pull/17123) | merged | llama4 npu adapt | `python/sglang/srt/models/llama4.py` |
+| 2026-05-15 | [#25089](https://github.com/sgl-project/sglang/pull/25089) | merged | [Llama4] Use strided in-place fused QK RMSNorm to drop a redundant copy | `python/sglang/srt/models/llama4.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -870,3 +875,32 @@ diff -- python/sglang/srt/models/llama4.py
 
 - Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
 - If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.
+
+### PR #25089 - [Llama4] Use strided in-place fused QK RMSNorm to drop a redundant copy
+
+- Link: https://github.com/sgl-project/sglang/pull/25089
+- Status/date: merged / 2026-05-15
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@78cb38ed5` history, and the GitHub Pull Request files API; associated commit `17c8a2fa5339`.
+- Diff scope read: GitHub Pull Request files API returned 1 files, +22/-7, 43 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Llama4] Use strided in-place fused QK RMSNorm to drop a redundant copy"; model line: Llama 4; category: performance/backend optimization; main diff: `python/sglang/srt/models/llama4.py`; technical summary: Covers "[Llama4] Use strided in-place fused QK RMSNorm to drop a redundant copy" with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `python/sglang/srt/models/llama4.py` modified +22/-7 (29 lines); hunks: -54,6 +54,7  @@ PPProxyTensors,; -341,13 +342,27  @@ def forward(; symbols: forward, touching `forward`.
+- Code diff details:
+  - `python/sglang/srt/models/llama4.py` modified +22/-7 (29 lines); hunks: -54,6 +54,7  @@ PPProxyTensors,; -341,13 +342,27  @@ def forward(; symbols: forward, touching `forward`
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/llama4.py
+@@ -54,6 +54,7 @@
++from sglang.srt.models.utils import apply_qk_norm
+@@ -341,13 +342,27 @@ def forward(
+-        if self.qk_norm is not None:
+-            # TODO there are still 2 redundant direct_copy_kernel_cuda for this `reshape` and (in attn backend) q.contiguous(), maybe we can fuse them later
+-            qk = qk.reshape(-1, self.head_dim).contiguous().bfloat16()
+-            qk = self.qk_norm(qk).to(torch.bfloat16)
+-            qk = qk.reshape(-1, self.q_size + self.kv_size)
+-
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/llama4.py` modified +22/-7
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/llama4.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.

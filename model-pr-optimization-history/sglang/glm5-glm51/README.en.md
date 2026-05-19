@@ -1,5 +1,9 @@
 # sglang GLM-5/5.1 Model PR Optimization History
 
+## 2026-05-19 PR Backfill Audit
+
+Rechecked sglang upstream `origin/main@78cb38ed5` and the GitHub Pull Request files API; this pass adds timeline entries and per-PR diff audit cards for `#25453`.
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |
@@ -26,8 +30,8 @@
 ## PR Coverage Summary
 
 - Git-traced PRs: 7
-- Extra PRs preserved from existing docs: 11
-- Total PRs in this document: 18
+- Extra PRs preserved from existing docs: 12
+- Total PRs in this document: 19
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -53,6 +57,7 @@
 | 2026-04-20 | [#23219](https://github.com/sgl-project/sglang/pull/23219) | merged | [AMD] Enable MTP for GLM-5-mxfp4 model | `python/sglang/srt/models/deepseek_nextn.py` |
 | 2026-04-23 | [#23060](https://github.com/sgl-project/sglang/pull/23060) | merged | [fix] Fix dynamic chunking profiling crash on GLM-5 models | `python/sglang/srt/managers/scheduler_pp_mixin.py` |
 | 2026-04-23 | [#23540](https://github.com/sgl-project/sglang/pull/23540) | merged | docs: split MI300X and MI325X options in GLM-5.1 generator | `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx` |
+| 2026-05-16 | [#25453](https://github.com/sgl-project/sglang/pull/25453) | merged | [CI] Lower mem-fraction-static for GLM-5.1 FP8 8-GPU test to 0.85 | `test/registered/8-gpu-models/test_glm_51_fp8.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -638,3 +643,26 @@ diff -- docs_new/src/snippets/autoregressive/glm-51-deployment.jsx
 
 - Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
 - If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.
+
+### PR #25453 - [CI] Lower mem-fraction-static for GLM-5.1 FP8 8-GPU test to 0.85
+
+- Link: https://github.com/sgl-project/sglang/pull/25453
+- Status/date: merged / 2026-05-16
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@78cb38ed5` history, and the GitHub Pull Request files API; associated commit `a741d0cc56b9`.
+- Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[CI] Lower mem-fraction-static for GLM-5.1 FP8 8-GPU test to 0.85"; model line: GLM-5/5.1; category: docs/tests/CI; main diff: `test/registered/8-gpu-models/test_glm_51_fp8.py`; technical summary: Covers "[CI] Lower mem-fraction-static for GLM-5.1 FP8 8-GPU test to 0.85" with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `test/registered/8-gpu-models/test_glm_51_fp8.py` modified +1/-1 (2 lines); hunks: -15,7 +15,7  @@ "--trust-remote-code",.
+- Code diff details:
+  - `test/registered/8-gpu-models/test_glm_51_fp8.py` modified +1/-1 (2 lines); hunks: -15,7 +15,7  @@ "--trust-remote-code",
+- Key code excerpts:
+
+```diff
+diff -- test/registered/8-gpu-models/test_glm_51_fp8.py
+@@ -15,7 +15,7 @@
+-    "--mem-fraction-static=0.9",
++    "--mem-fraction-static=0.85",
+```
+
+- Reviewed files:
+  - tests: `test/registered/8-gpu-models/test_glm_51_fp8.py` modified +1/-1
+- Risk and verification: The diff mainly expands test coverage ``test/registered/8-gpu-models/test_glm_51_fp8.py``; rerun the related tests before changing the same area.

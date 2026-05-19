@@ -1,5 +1,9 @@
 # sglang Gemma 4 模型 PR 优化历史
 
+## 2026-05-19 PR 补漏复核
+
+已按 sglang 上游 `origin/main@78cb38ed5` 和 GitHub Pull Request files API 复核；本轮补齐 `#25006`, `#25547` 的时间线与逐 PR diff 审计卡。
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
@@ -17,8 +21,8 @@
 ## PR 覆盖总览
 
 - git 追溯 PR 数: 1
-- 原文档显式引用补充 PR 数: 3
-- 当前文档总 PR 数: 4
+- 原文档显式引用补充 PR 数: 5
+- 当前文档总 PR 数: 6
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -30,6 +34,8 @@
 | 2026-04-10 | [#22079](https://github.com/sgl-project/sglang/pull/22079) | merged | [nvidia] Gemma4 nvfp4 fix | `python/sglang/srt/layers/attention/triton_ops/extend_attention.py` |
 | 2026-04-16 | [#21569](https://github.com/sgl-project/sglang/pull/21569) | merged | Upgrade transformers to 5.5.3 and refactor hf_transformers_utils into subpackage | `python/sglang/srt/utils/hf_transformers/tokenizer.py`, `python/sglang/srt/configs/qwen3_5.py`, `python/sglang/srt/configs/step3p5.py` |
 | 2026-04-17 | [#22408](https://github.com/sgl-project/sglang/pull/22408) | merged | [CI] Adding Gemma 4 to Nightly CI | `test/registered/eval/test_vlms_mmmu_eval.py` |
+| 2026-05-17 | [#25006](https://github.com/sgl-project/sglang/pull/25006) | merged | Enable trtllm_mha as gemma4 default attn backend. | `python/sglang/srt/server_args.py` |
+| 2026-05-18 | [#25547](https://github.com/sgl-project/sglang/pull/25547) | merged | Respect user override for Gemma4 attention backend | `python/sglang/srt/server_args.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -169,6 +175,64 @@ diff -- test/registered/eval/test_vlms_mmmu_eval.py
 - 已读文件:
   - tests: `test/registered/eval/test_vlms_mmmu_eval.py` modified +6/-3
 - 验证与风险: diff 自带测试面 `test/registered/eval/test_vlms_mmmu_eval.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #25006 - Enable trtllm_mha as gemma4 default attn backend.
+
+- 链接: https://github.com/sgl-project/sglang/pull/25006
+- 状态/时间: merged / 2026-05-17
+- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@78cb38ed5` 提交历史和 GitHub Pull Request files API 反查；关联提交 `c67b2870569a`。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+6/-2，可读 patch 16 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Enable trtllm_mha as gemma4 default attn backend.」；模型线: Gemma 4；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/server_args.py`；技术摘要: 覆盖「Enable trtllm_mha as gemma4 default attn backend.」，下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/server_args.py` modified +6/-2 (8 lines); hunks: -2192,9 +2192,13  @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments，涉及 `_handle_model_specific_adjustments`。
+- 代码 diff 细节:
+  - `python/sglang/srt/server_args.py` modified +6/-2 (8 lines); hunks: -2192,9 +2192,13  @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments，涉及 `_handle_model_specific_adjustments`
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/server_args.py
+@@ -2192,9 +2192,13 @@ def _handle_model_specific_adjustments(self):
+-            if self.is_attention_backend_not_set():
++            if is_sm100_supported():
++                self.attention_backend = "trtllm_mha"
++            else:
+-                logger.info("Use triton as default attention backend for Gemma4")
++            logger.info(
++                f"Use {self.attention_backend} as default attention backend for Gemma4"
++            )
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/server_args.py` modified +6/-2
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/server_args.py`；风险点是权重加载、并行切分、attention/MoE 后端选择、量化 dtype 和 parser 输出，需要至少做一次真实 checkpoint 或等价 smoke。
+
+### PR #25547 - Respect user override for Gemma4 attention backend
+
+- 链接: https://github.com/sgl-project/sglang/pull/25547
+- 状态/时间: merged / 2026-05-18
+- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@78cb38ed5` 提交历史和 GitHub Pull Request files API 反查；关联提交 `b29e41e8b3f1`。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+22/-5，可读 patch 35 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Respect user override for Gemma4 attention backend」；模型线: Gemma 4；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/server_args.py`；技术摘要: 覆盖「Respect user override for Gemma4 attention backend」，下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/server_args.py` modified +22/-5 (27 lines); hunks: -2192,12 +2192,29  @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments，涉及 `_handle_model_specific_adjustments`。
+- 代码 diff 细节:
+  - `python/sglang/srt/server_args.py` modified +22/-5 (27 lines); hunks: -2192,12 +2192,29  @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments，涉及 `_handle_model_specific_adjustments`
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/server_args.py
+@@ -2192,12 +2192,29 @@ def _handle_model_specific_adjustments(self):
+-            if is_sm100_supported():
+-                self.attention_backend = "trtllm_mha"
++            default_attention_backend = (
++                "trtllm_mha" if is_sm100_supported() else "triton"
++            )
++            if self.is_attention_backend_not_set():
++                self.attention_backend = default_attention_backend
++                logger.info(
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/server_args.py` modified +22/-5
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/server_args.py`；风险点是权重加载、并行切分、attention/MoE 后端选择、量化 dtype 和 parser 输出，需要至少做一次真实 checkpoint 或等价 smoke。
 
 ## 补漏结论
 

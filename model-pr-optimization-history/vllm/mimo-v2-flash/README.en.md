@@ -1,8 +1,8 @@
 # vllm MiMo V2 Flash Model PR Optimization History
 
-## 2026-05-15 Source Refresh Addendum
+## 2026-05-19 PR Backfill Audit
 
-vLLM `origin/main` was rechecked at `f3d536059`. `#41905` extends MiMo-V2.5 MTP support in `vllm/model_executor/models/mimo_v2_mtp.py`; include it with the existing `#40967` / `#41029` MiMo-V2.5 history.
+Rechecked vllm upstream `origin/main@07beaed84` and the GitHub Pull Request files API; this pass adds timeline entries and per-PR diff audit cards for `#41905`.
 
 ## Implementation File Coverage
 
@@ -20,8 +20,8 @@ vLLM `origin/main` was rechecked at `f3d536059`. `#41905` extends MiMo-V2.5 MTP 
 ## PR Coverage Summary
 
 - Git-traced PRs: 4
-- Extra PRs preserved from existing docs: 3
-- Total PRs in this document: 7
+- Extra PRs preserved from existing docs: 4
+- Total PRs in this document: 8
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -36,6 +36,7 @@ vLLM `origin/main` was rechecked at `f3d536059`. `#41905` extends MiMo-V2.5 MTP 
 | 2026-04-24 | [#40045](https://github.com/vllm-project/vllm/pull/40045) | merged | [Attention] use diff kv backend for mimo v2 flash | `vllm/model_executor/models/mimo_v2_flash.py`, `vllm/model_executor/layers/attention/attention.py`, `tools/pre_commit/generate_attention_backend_docs.py` |
 | 2026-04-27 | [#40967](https://github.com/vllm-project/vllm/pull/40967) | merged | [Model] Add MiMo-V2.5 support | `vllm/model_executor/models/mimo_v2_omni.py`, `vllm/model_executor/models/mimo_audio.py`, `vllm/transformers_utils/processors/mimo_v2_omni.py` |
 | 2026-04-28 | [#41029](https://github.com/vllm-project/vllm/pull/41029) | merged | [Model] update for mimo v25 | `vllm/model_executor/models/mimo_v2.py` |
+| 2026-05-09 | [#41905](https://github.com/vllm-project/vllm/pull/41905) | merged | [SpecDecoding] extend mtp support for mimo 2.5 | `vllm/model_executor/models/mimo_v2_mtp.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -283,3 +284,32 @@ diff -- vllm/model_executor/models/mimo_v2.py
 
 - Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
 - If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.
+
+### PR #41905 - [SpecDecoding] extend mtp support for mimo 2.5
+
+- Link: https://github.com/vllm-project/vllm/pull/41905
+- Status/date: merged / 2026-05-09
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@07beaed84` history, and the GitHub Pull Request files API; associated commit `2ee8c2a56e41`.
+- Diff scope read: GitHub Pull Request files API returned 1 files, +3/-10, 57 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[SpecDecoding] extend mtp support for mimo 2.5"; model line: MiMo V2 Flash; category: model support/runtime entry; main diff: `vllm/model_executor/models/mimo_v2_mtp.py`; technical summary: Covers "[SpecDecoding] extend mtp support for mimo 2.5" with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `vllm/model_executor/models/mimo_v2_mtp.py` modified +3/-10 (13 lines); hunks: -49,7 +49,7  @@ from .utils import _merge_multimodal_embeddings, maybe_prefix; -170,10 +170,6  @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = "") -> None:; symbols: __init__, str, forward, compute_logits, touching `__init__, str, forward`.
+- Code diff details:
+  - `vllm/model_executor/models/mimo_v2_mtp.py` modified +3/-10 (13 lines); hunks: -49,7 +49,7  @@ from .utils import _merge_multimodal_embeddings, maybe_prefix; -170,10 +170,6  @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = "") -> None:; symbols: __init__, str, forward, compute_logits, touching `__init__, str, forward`
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/mimo_v2_mtp.py
+@@ -49,7 +49,7 @@
+-# only the first layer and only one speculative token.
++# only the first layer
+@@ -170,10 +170,6 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = "") -> None:
+-        if spec_cfg.num_speculative_tokens != 1:
+-            raise ValueError(
+-                "MiMo-V2 MTP in vLLM only supports num_speculative_tokens=1."
+-            )
+@@ -203,10 +199,10 @@ def forward(
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/mimo_v2_mtp.py` modified +3/-10
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/mimo_v2_mtp.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.

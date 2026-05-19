@@ -1,5 +1,9 @@
 # vllm Step 3.5 模型 PR 优化历史
 
+## 2026-05-19 PR 补漏复核
+
+已按 vllm 上游 `origin/main@07beaed84` 和 GitHub Pull Request files API 复核；本轮补齐 `#42224` 的时间线与逐 PR diff 审计卡。
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
@@ -19,8 +23,8 @@
 ## PR 覆盖总览
 
 - git 追溯 PR 数: 5
-- 原文档显式引用补充 PR 数: 1
-- 当前文档总 PR 数: 6
+- 原文档显式引用补充 PR 数: 2
+- 当前文档总 PR 数: 7
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -34,6 +38,7 @@
 | 2026-02-22 | [#34478](https://github.com/vllm-project/vllm/pull/34478) | merged | [Model] Add NVFP4 quantization support for Step3.5-Flash | `vllm/model_executor/models/step3p5.py` |
 | 2026-02-25 | [#34211](https://github.com/vllm-project/vllm/pull/34211) | merged | [Bugfix] Fix step3p5 reasoning with interleaved thinking | `tests/reasoning/test_step3p5_reasoning_parser.py`, `vllm/reasoning/step3p5_reasoning_parser.py` |
 | 2026-03-20 | [#37579](https://github.com/vllm-project/vllm/pull/37579) | merged | [Model] Refactor Step3-VL processor to HF style | `vllm/transformers_utils/processors/step3_vl.py`, `vllm/model_executor/models/step3_vl.py`, `vllm/transformers_utils/processors/internvl.py` |
+| 2026-05-18 | [#42224](https://github.com/vllm-project/vllm/pull/42224) | merged | [MM][CG] Enable encoder Cudagraph for Step3VL | `vllm/model_executor/models/step3_vl.py`, `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/utils.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -245,6 +250,61 @@ diff -- vllm/transformers_utils/processors/internvl.py
 - 已读文件:
   - runtime: `vllm/transformers_utils/processors/step3_vl.py` modified +197/-127; `vllm/model_executor/models/step3_vl.py` modified +27/-29; `vllm/transformers_utils/processors/internvl.py` modified +4/-3; `vllm/transformers_utils/processors/kimi_k25.py` modified +0/-1
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/step3_vl.py`, `vllm/transformers_utils/processors/internvl.py`, `vllm/transformers_utils/processors/kimi_k25.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #42224 - [MM][CG] Enable encoder Cudagraph for Step3VL
+
+- 链接: https://github.com/vllm-project/vllm/pull/42224
+- 状态/时间: merged / 2026-05-18
+- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@07beaed84` 提交历史和 GitHub Pull Request files API 反查；关联提交 `990f49bdcb8f`。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+384/-22，可读 patch 534 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[MM][CG] Enable encoder Cudagraph for Step3VL」；模型线: Step 3.5；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/step3_vl.py`, `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/utils.py`；技术摘要: 覆盖「[MM][CG] Enable encoder Cudagraph for Step3VL」，下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/step3_vl.py` modified +323/-2 (325 lines); hunks: -46,7 +46,12  @@ ); -487,7 +492,9  @@ def forward(; symbols: forward, __init__, str, device，涉及 `forward, __init__, str`；`vllm/model_executor/models/interfaces.py` modified +21/-0 (21 lines); hunks: -1594,6 +1594,27  @@ def select_encoder_cudagraph_items(; symbols: select_encoder_cudagraph_items，涉及 `select_encoder_cudagraph_items`；`vllm/model_executor/models/utils.py` modified +16/-0 (16 lines); hunks: -884,3 +884,19  @@ def get_layer_index(feature_layer_index: int, num_hidden_layers: int) -> int:; symbols: get_layer_index，涉及 `get_layer_index`；`vllm/model_executor/models/step_vl.py` modified +1/-0 (1 lines); hunks: -500,6 +500,7  @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = "") -> None:; symbols: __init__, str，涉及 `__init__, str`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/step3_vl.py` modified +323/-2 (325 lines); hunks: -46,7 +46,12  @@ ); -487,7 +492,9  @@ def forward(; symbols: forward, __init__, str, device，涉及 `forward, __init__, str`
+  - `vllm/model_executor/models/interfaces.py` modified +21/-0 (21 lines); hunks: -1594,6 +1594,27  @@ def select_encoder_cudagraph_items(; symbols: select_encoder_cudagraph_items，涉及 `select_encoder_cudagraph_items`
+  - `vllm/model_executor/models/utils.py` modified +16/-0 (16 lines); hunks: -884,3 +884,19  @@ def get_layer_index(feature_layer_index: int, num_hidden_layers: int) -> int:; symbols: get_layer_index，涉及 `get_layer_index`
+  - `vllm/model_executor/models/step_vl.py` modified +1/-0 (1 lines); hunks: -500,6 +500,7  @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = "") -> None:; symbols: __init__, str，涉及 `__init__, str`
+  - `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +12/-0 (12 lines); hunks: -41,6 +41,13  @@ def qwen_vl_chat_template(content: str) -> str:; -90,6 +97,11  @@ def qwen_vl_chat_template(content: str) -> str:; symbols: qwen_vl_chat_template，涉及 `qwen_vl_chat_template`
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/step3_vl.py
+@@ -46,7 +46,12 @@
+-from .interfaces import MultiModalEmbeddings, SupportsMultiModal, SupportsPP
++from .interfaces import (
++    MultiModalEmbeddings,
++    SupportsEncoderCudaGraph,
++    SupportsMultiModal,
++    SupportsPP,
++)
+@@ -487,7 +492,9 @@ def forward(
+diff -- vllm/model_executor/models/interfaces.py
+@@ -1594,6 +1594,27 @@ def select_encoder_cudagraph_items(
++    def postprocess_encoder_output(
++        self,
++        output: torch.Tensor,
++        indices: list[int],
++        per_item_out_tokens: list[int],
++        dest: dict[int, torch.Tensor] | list[torch.Tensor | None],
++        clone: bool = False,
++        batch_mm_kwargs: dict[str, Any] | None = None,
+diff -- vllm/model_executor/models/utils.py
+@@ -884,3 +884,19 @@ def get_layer_index(feature_layer_index: int, num_hidden_layers: int) -> int:
++
++
++def scatter_output_slices(
++    output: torch.Tensor,
++    indices: list[int],
++    per_item_out_tokens: list[int],
++    dest: dict[int, torch.Tensor] | list[torch.Tensor | None],
++    clone: bool = False,
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/step3_vl.py` modified +323/-2; `vllm/model_executor/models/interfaces.py` modified +21/-0; `vllm/model_executor/models/utils.py` modified +16/-0; `vllm/model_executor/models/step_vl.py` modified +1/-0
+  - tests: `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +12/-0
+  - docs: `docs/design/cuda_graphs_multimodal.md` modified +2/-0; `examples/generate/multimodal/vision_language_offline.py` modified +1/-0
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/step3_vl.py`, `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/utils.py`；风险点是权重加载、并行切分、attention/MoE 后端选择、量化 dtype 和 parser 输出，需要至少做一次真实 checkpoint 或等价 smoke。
 
 ## 补漏结论
 

@@ -1,5 +1,9 @@
 # vllm Nemotron Super Model PR Optimization History
 
+## 2026-05-19 PR Backfill Audit
+
+Rechecked vllm upstream `origin/main@07beaed84` and the GitHub Pull Request files API; this pass adds timeline entries and per-PR diff audit cards for `#41233`.
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |
@@ -34,8 +38,8 @@
 ## PR Coverage Summary
 
 - Git-traced PRs: 60
-- Extra PRs preserved from existing docs: 2
-- Total PRs in this document: 62
+- Extra PRs preserved from existing docs: 3
+- Total PRs in this document: 63
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -105,6 +109,7 @@
 | 2026-04-15 | [#39901](https://github.com/vllm-project/vllm/pull/39901) | merged | FIX: support language_model.backbone naming in NemotronH Nano VL quantization config | `vllm/model_executor/models/nano_nemotron_vl.py` |
 | 2026-04-19 | [#40283](https://github.com/vllm-project/vllm/pull/40283) | merged | Optimize nemotron VL image/video preprocessing | `vllm/transformers_utils/processors/nano_nemotron_vl.py` |
 | 2026-04-24 | [#40724](https://github.com/vllm-project/vllm/pull/40724) | merged | Fix Nano Nemotron VL static image inputs | `vllm/model_executor/models/nano_nemotron_vl.py` |
+| 2026-05-18 | [#41233](https://github.com/vllm-project/vllm/pull/41233) | merged | [Bugfix][Hybrid][NemotronH] Fix mamba_cache_mode=all + speculative decoding crash | `vllm/v1/attention/backends/mamba_attn.py`, `vllm/model_executor/models/config.py`, `vllm/v1/attention/backends/utils.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -2002,3 +2007,55 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
 - If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.
+
+### PR #41233 - [Bugfix][Hybrid][NemotronH] Fix mamba_cache_mode=all + speculative decoding crash
+
+- Link: https://github.com/vllm-project/vllm/pull/41233
+- Status/date: merged / 2026-05-18
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@07beaed84` history, and the GitHub Pull Request files API; associated commit `737bfa3a43ce`.
+- Diff scope read: GitHub Pull Request files API returned 10 files, +568/-117, 960 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Bugfix][Hybrid][NemotronH] Fix mamba_cache_mode=all + speculative decoding crash"; model line: Nemotron Super; category: bug fix; main diff: `vllm/v1/attention/backends/mamba_attn.py`, `vllm/model_executor/models/config.py`, `vllm/v1/attention/backends/utils.py`; technical summary: Covers "[Bugfix][Hybrid][NemotronH] Fix mamba_cache_mode=all + speculative decoding crash" with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `vllm/v1/attention/backends/mamba_attn.py` modified +77/-9 (86 lines); hunks: -56,6 +56,7  @@ class BaseMambaAttentionMetadata:; -108,12 +109,13  @@ def __init__(; symbols: BaseMambaAttentionMetadata, __init__, build_for_cudagraph_capture, build, touching `BaseMambaAttentionMetadata, __init__, build_for_cudagraph_capture`；`vllm/model_executor/models/config.py` modified +9/-20 (29 lines); hunks: -350,26 +350,15  @@ def verify_and_update_config(cls, vllm_config: "VllmConfig") -> None:; symbols: verify_and_update_config, touching `verify_and_update_config`；`vllm/v1/attention/backends/utils.py` modified +4/-2 (6 lines); hunks: -878,8 +878,10  @@ def mamba_get_block_table_tensor(; symbols: mamba_get_block_table_tensor, touching `mamba_get_block_table_tensor`；`vllm/v1/attention/backends/mamba2_attn.py` modified +3/-1 (4 lines); hunks: -137,7 +137,9  @@ def build(; symbols: build, touching `build`.
+- Code diff details:
+  - `vllm/v1/attention/backends/mamba_attn.py` modified +77/-9 (86 lines); hunks: -56,6 +56,7  @@ class BaseMambaAttentionMetadata:; -108,12 +109,13  @@ def __init__(; symbols: BaseMambaAttentionMetadata, __init__, build_for_cudagraph_capture, build, touching `BaseMambaAttentionMetadata, __init__, build_for_cudagraph_capture`
+  - `vllm/model_executor/models/config.py` modified +9/-20 (29 lines); hunks: -350,26 +350,15  @@ def verify_and_update_config(cls, vllm_config: "VllmConfig") -> None:; symbols: verify_and_update_config, touching `verify_and_update_config`
+  - `vllm/v1/attention/backends/utils.py` modified +4/-2 (6 lines); hunks: -878,8 +878,10  @@ def mamba_get_block_table_tensor(; symbols: mamba_get_block_table_tensor, touching `mamba_get_block_table_tensor`
+  - `vllm/v1/attention/backends/mamba2_attn.py` modified +3/-1 (4 lines); hunks: -137,7 +137,9  @@ def build(; symbols: build, touching `build`
+  - `tests/v1/attention/test_mamba_update_block_table.py` modified +271/-4 (275 lines); hunks: -32,17 +32,25  @@ class _ConcreteMambaBuilder(; -59,7 +67,7  @@ def test_update_block_table_copies_block_idx_to_persistent_buffers():; symbols: _ConcreteMambaBuilder, test_update_block_table_copies_block_idx_to_persistent_buffers, shares_storage, touching `_ConcreteMambaBuilder, test_update_block_table_copies_block_idx_to_persistent_buffers, shares_storage`
+- Key code excerpts:
+
+```diff
+diff -- vllm/v1/attention/backends/mamba_attn.py
+@@ -56,6 +56,7 @@ class BaseMambaAttentionMetadata:
++    block_idx_last_scheduled_token_prev_step: torch.Tensor | None
+@@ -108,12 +109,13 @@ def __init__(
+-            max_num_blocks = cdiv(
+-                self.vllm_config.model_config.max_model_len,
+-                self.kv_cache_spec.block_size,
++            max_num_blocks = (
++                cdiv(
++                    self.vllm_config.model_config.max_model_len,
+diff -- vllm/model_executor/models/config.py
+@@ -350,26 +350,15 @@ def verify_and_update_config(cls, vllm_config: "VllmConfig") -> None:
+-                if (
+-                    model_config.supports_mamba_prefix_caching
+-                    and vllm_config.speculative_config is not None
+-                ):
+-                    cache_config.mamba_cache_mode = "align"
+-                    logger.warning(
+-                        "Mamba cache mode is set to 'align' for %s by default "
+-                        "when prefix caching and speculative decoding are enabled",
+diff -- vllm/v1/attention/backends/utils.py
+@@ -878,8 +878,10 @@ def mamba_get_block_table_tensor(
+-    - "all":   input  (#requests, cdiv(max_model_len, block_size));
+-               output (#requests, cdiv(max_model_len, block_size)).
++    - "all":   input  (#requests, cdiv(max_model_len, block_size)
++                        + num_speculative_blocks);
++               output (#requests, cdiv(max_model_len, block_size)
++                        + num_speculative_blocks).
+```
+
+- Reviewed files:
+  - runtime: `vllm/v1/attention/backends/mamba_attn.py` modified +77/-9; `vllm/model_executor/models/config.py` modified +9/-20; `vllm/v1/attention/backends/utils.py` modified +4/-2; `vllm/v1/attention/backends/mamba2_attn.py` modified +3/-1
+  - tests: `tests/v1/attention/test_mamba_update_block_table.py` modified +271/-4
+- Risk and verification: Runtime changes concentrate in `vllm/v1/attention/backends/mamba_attn.py`, `vllm/model_executor/models/config.py`, `vllm/v1/attention/backends/utils.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.

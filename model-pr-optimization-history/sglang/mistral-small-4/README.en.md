@@ -1,5 +1,9 @@
 # sglang Mistral Small 4 Model PR Optimization History
 
+## 2026-05-19 PR Backfill Audit
+
+Rechecked sglang upstream `origin/main@78cb38ed5` and the GitHub Pull Request files API; this pass adds timeline entries and per-PR diff audit cards for `#24611`, `#25407`.
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |
@@ -29,8 +33,8 @@
 ## PR Coverage Summary
 
 - Git-traced PRs: 14
-- Extra PRs preserved from existing docs: 1
-- Total PRs in this document: 15
+- Extra PRs preserved from existing docs: 3
+- Total PRs in this document: 17
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -53,6 +57,8 @@
 | 2026-03-18 | [#20708](https://github.com/sgl-project/sglang/pull/20708) | merged | Add Mistral Small 4 (Pixtral) support | `python/sglang/srt/function_call/mistral_detector.py`, `python/sglang/srt/models/mistral_large_3_eagle.py` |
 | 2026-03-30 | [#21620](https://github.com/sgl-project/sglang/pull/21620) | merged | fix: Mistral Small 4 fails to start due to config/weight format mismatch | `test/registered/models/test_ministral4_models.py` |
 | 2026-04-06 | [#21399](https://github.com/sgl-project/sglang/pull/21399) | merged | [CI] Add unit tests for function_call detectors (hermes, llama32, mistral) | `test/registered/unit/function_call/test_mistral_detector.py` |
+| 2026-05-16 | [#25407](https://github.com/sgl-project/sglang/pull/25407) | merged | Fix Mistral Large 3 nightly test | `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py` |
+| 2026-05-19 | [#24611](https://github.com/sgl-project/sglang/pull/24611) | merged | [Codex] Opt Mistral Large performace | `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json`, `python/sglang/srt/server_args.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -490,3 +496,75 @@ diff -- test/registered/unit/function_call/test_mistral_detector.py
 
 - Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
 - If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.
+
+### PR #25407 - Fix Mistral Large 3 nightly test
+
+- Link: https://github.com/sgl-project/sglang/pull/25407
+- Status/date: merged / 2026-05-16
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@78cb38ed5` history, and the GitHub Pull Request files API; associated commit `d523ae127f3c`.
+- Diff scope read: GitHub Pull Request files API returned 1 files, +2/-2, 13 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Fix Mistral Large 3 nightly test"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py`; technical summary: Covers "Fix Mistral Large 3 nightly test" with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py` modified +2/-2 (4 lines); hunks: -311,10 +311,10  @@ def apply_weights(; symbols: apply_weights, touching `apply_weights`.
+- Code diff details:
+  - `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py` modified +2/-2 (4 lines); hunks: -311,10 +311,10  @@ def apply_weights(; symbols: apply_weights, touching `apply_weights`
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py
+@@ -311,10 +311,10 @@ def apply_weights(
+-            # Quantize input hidden states using fp4_quantize
++            # global_scale must be shape [1] (strict in cute-dsl backend).
+-                layer.w13_input_scale_quant,
++                layer.w13_input_scale_quant[:1],
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py` modified +2/-2
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.
+
+### PR #24611 - [Codex] Opt Mistral Large performace
+
+- Link: https://github.com/sgl-project/sglang/pull/24611
+- Status/date: merged / 2026-05-19
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@78cb38ed5` history, and the GitHub Pull Request files API; associated commit `31e324391bbc`.
+- Diff scope read: GitHub Pull Request files API returned 3 files, +294/-1, 311 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Codex] Opt Mistral Large performace"; model line: Mistral Small 4; category: performance/backend optimization; main diff: `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json`, `python/sglang/srt/server_args.py`; technical summary: Covers "[Codex] Opt Mistral Large performace" with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json` added +146/-0 (146 lines); hunks: -0,0 +1,146  @@ +{；`python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json` added +146/-0 (146 lines); hunks: -0,0 +1,146  @@ +{；`python/sglang/srt/server_args.py` modified +2/-1 (3 lines); hunks: -2404,7 +2404,7  @@ def _handle_model_specific_adjustments(self):; -2421,6 +2421,7  @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments, touching `_handle_model_specific_adjustments`.
+- Code diff details:
+  - `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json` added +146/-0 (146 lines); hunks: -0,0 +1,146  @@ +{
+  - `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json` added +146/-0 (146 lines); hunks: -0,0 +1,146  @@ +{
+  - `python/sglang/srt/server_args.py` modified +2/-1 (3 lines); hunks: -2404,7 +2404,7  @@ def _handle_model_specific_adjustments(self):; -2421,6 +2421,7  @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments, touching `_handle_model_specific_adjustments`
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json
+@@ -0,0 +1,146 @@
++{
++    "1": {
++        "BLOCK_SIZE_M": 16,
++        "BLOCK_SIZE_N": 64,
++        "BLOCK_SIZE_K": 128,
++        "GROUP_SIZE_M": 1,
++        "num_warps": 4,
++        "num_stages": 5
+diff -- python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json
+@@ -0,0 +1,146 @@
++{
++    "1": {
++        "BLOCK_SIZE_M": 16,
++        "BLOCK_SIZE_N": 64,
++        "BLOCK_SIZE_K": 128,
++        "GROUP_SIZE_M": 1,
++        "num_warps": 4,
++        "num_stages": 5
+diff -- python/sglang/srt/server_args.py
+@@ -2404,7 +2404,7 @@ def _handle_model_specific_adjustments(self):
+-        # Qwen3/Qwen3Next/Qwen3.5 MoE families)
++        # MistralLarge3, Qwen3/Qwen3Next/Qwen3.5 MoE families)
+@@ -2421,6 +2421,7 @@ def _handle_model_specific_adjustments(self):
++                "MistralLarge3ForCausalLM",
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json` added +146/-0; `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json` added +146/-0; `python/sglang/srt/server_args.py` modified +2/-1
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json`, `python/sglang/srt/server_args.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.

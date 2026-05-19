@@ -1,5 +1,9 @@
 # sglang Qwen3 Next 模型 PR 优化历史
 
+## 2026-05-19 PR 补漏复核
+
+已按 sglang 上游 `origin/main@78cb38ed5` 和 GitHub Pull Request files API 复核；本轮补齐 `#25401` 的时间线与逐 PR diff 审计卡。
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
@@ -17,8 +21,8 @@
 ## PR 覆盖总览
 
 - git 追溯 PR 数: 23
-- 原文档显式引用补充 PR 数: 37
-- 当前文档总 PR 数: 60
+- 原文档显式引用补充 PR 数: 38
+- 当前文档总 PR 数: 61
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -86,6 +90,7 @@
 | 2026-04-22 | [#23474](https://github.com/sgl-project/sglang/pull/23474) | open | [Bugfix] Try to fix --cpu-offload-gb on hybrid linear-attn models | `test/registered/unit/utils/test_offloader_tied_params.py`, `python/sglang/srt/utils/offloader.py` |
 | 2026-04-27 | [#21698](https://github.com/sgl-project/sglang/pull/21698) | merged | [npu]fix: qwen3-next w8a8 precision bugs | `python/sglang/srt/models/qwen3_next.py` |
 | 2026-04-29 | [#23619](https://github.com/sgl-project/sglang/pull/23619) | merged | Enable Qwen3-Next MoE all-reduce fusion | `python/sglang/srt/models/qwen3_next.py` |
+| 2026-05-18 | [#25401](https://github.com/sgl-project/sglang/pull/25401) | merged | Add output_gate_type to Qwen3NextConfig and update models to utilize it | `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/configs/qwen3_next.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -2095,6 +2100,54 @@ diff -- python/sglang/srt/models/qwen3_next.py
 - 已读文件:
   - runtime: `python/sglang/srt/models/qwen3_next.py` modified +46/-23
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen3_next.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #25401 - Add output_gate_type to Qwen3NextConfig and update models to utilize it
+
+- 链接: https://github.com/sgl-project/sglang/pull/25401
+- 状态/时间: merged / 2026-05-18
+- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@78cb38ed5` 提交历史和 GitHub Pull Request files API 反查；关联提交 `3e2a1096369f`。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+21/-1，可读 patch 76 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Add output_gate_type to Qwen3NextConfig and update models to utilize it」；模型线: Qwen3 Next；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/configs/qwen3_next.py`；技术摘要: 覆盖「Add output_gate_type to Qwen3NextConfig and update models to utilize it」，下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/qwen3_next.py` modified +11/-1 (12 lines); hunks: -106,6 +106,7  @@ def __init__(; -186,12 +187,21  @@ def __init__(; symbols: __init__，涉及 `__init__`；`python/sglang/srt/models/qwen3_5.py` modified +6/-0 (6 lines); hunks: -143,6 +143,7  @@ def __init__(; -237,6 +238,11  @@ def __init__(; symbols: __init__，涉及 `__init__`；`python/sglang/srt/configs/qwen3_next.py` modified +4/-0 (4 lines); hunks: -68,6 +68,8  @@ class Qwen3NextConfig(PretrainedConfig):; -186,6 +188,7  @@ def __init__(; symbols: Qwen3NextConfig, __init__，涉及 `Qwen3NextConfig, __init__`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/qwen3_next.py` modified +11/-1 (12 lines); hunks: -106,6 +106,7  @@ def __init__(; -186,12 +187,21  @@ def __init__(; symbols: __init__，涉及 `__init__`
+  - `python/sglang/srt/models/qwen3_5.py` modified +6/-0 (6 lines); hunks: -143,6 +143,7  @@ def __init__(; -237,6 +238,11  @@ def __init__(; symbols: __init__，涉及 `__init__`
+  - `python/sglang/srt/configs/qwen3_next.py` modified +4/-0 (4 lines); hunks: -68,6 +68,8  @@ class Qwen3NextConfig(PretrainedConfig):; -186,6 +188,7  @@ def __init__(; symbols: Qwen3NextConfig, __init__，涉及 `Qwen3NextConfig, __init__`
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_next.py
+@@ -106,6 +106,7 @@ def __init__(
++        self.output_gate_type = config.output_gate_type
+@@ -186,12 +187,21 @@ def __init__(
++                **(
++                    {"activation": self.output_gate_type}
++                    if self.output_gate_type is not None
++                    else {}
++                ),
+-                activation=self.activation,
+diff -- python/sglang/srt/models/qwen3_5.py
+@@ -143,6 +143,7 @@ def __init__(
++        self.output_gate_type = config.output_gate_type
+@@ -237,6 +238,11 @@ def __init__(
++            **(
++                {"activation": self.output_gate_type}
++                if self.output_gate_type is not None
++                else {}
++            ),
+diff -- python/sglang/srt/configs/qwen3_next.py
+@@ -68,6 +68,8 @@ class Qwen3NextConfig(PretrainedConfig):
++        output_gate_type (`str`, *optional*, defaults to `None`):
++            The gate activation function used by the linear attention output norm.
+@@ -186,6 +188,7 @@ def __init__(
++        output_gate_type=None,
+@@ -223,6 +226,7 @@ def __init__(
++        self.output_gate_type = output_gate_type
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/qwen3_next.py` modified +11/-1; `python/sglang/srt/models/qwen3_5.py` modified +6/-0; `python/sglang/srt/configs/qwen3_next.py` modified +4/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/configs/qwen3_next.py`；风险点是权重加载、并行切分、attention/MoE 后端选择、量化 dtype 和 parser 输出，需要至少做一次真实 checkpoint 或等价 smoke。
 
 ## 补漏结论
 

@@ -1,5 +1,9 @@
 # vllm Qwen3.5 模型 PR 优化历史
 
+## 2026-05-19 PR 补漏复核
+
+已按 vllm 上游 `origin/main@07beaed84` 和 GitHub Pull Request files API 复核；本轮补齐 `#42311`, `#42716` 的时间线与逐 PR diff 审计卡。
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
@@ -22,8 +26,8 @@
 ## PR 覆盖总览
 
 - git 追溯 PR 数: 29
-- 原文档显式引用补充 PR 数: 6
-- 当前文档总 PR 数: 34
+- 原文档显式引用补充 PR 数: 7
+- 当前文档总 PR 数: 36
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -65,6 +69,8 @@
 | 2026-04-03 | [#38927](https://github.com/vllm-project/vllm/pull/38927) | merged | [Bugfix][LoRA] Fix missing in_proj_z in Qwen3_5ForConditionalGenerati… | `vllm/model_executor/models/qwen3_5.py` |
 | 2026-04-08 | [#39181](https://github.com/vllm-project/vllm/pull/39181) | merged | [Bugfix]Fix EP precision for Qwen3.5, Qwen3-Next | `vllm/model_executor/models/qwen2_moe.py`, `vllm/model_executor/models/qwen3_next.py` |
 | 2026-04-21 | [#37114](https://github.com/vllm-project/vllm/pull/37114) | merged | [Bugfix] LoRA: extend expert base_layer loading to Qwen3.5 and Step3.x | `vllm/model_executor/models/qwen3_5.py`, `vllm/model_executor/models/qwen3_5_mtp.py` |
+| 2026-05-17 | [#42716](https://github.com/vllm-project/vllm/pull/42716) | merged | Fix Weight loading for  Qwen3.5-MTP and Qwen3-VL using runai_streamer | `vllm/model_executor/models/qwen3_5_mtp.py`, `vllm/model_executor/models/qwen3_vl_moe.py` |
+| 2026-05-18 | [#42311](https://github.com/vllm-project/vllm/pull/42311) | merged | [Model] [Perf] Use flatten for Qwen3.5's GDN output projection | `vllm/model_executor/layers/mamba/gdn_linear_attn.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -1047,6 +1053,67 @@ diff -- vllm/model_executor/models/qwen3_5_mtp.py
 - 已读文件:
   - runtime: `vllm/model_executor/models/qwen3_5.py` modified +5/-2; `vllm/model_executor/models/qwen3_5_mtp.py` modified +5/-2
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen3_5.py`, `vllm/model_executor/models/qwen3_5_mtp.py`, `vllm/model_executor/models/qwen3_vl_moe.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #42716 - Fix Weight loading for  Qwen3.5-MTP and Qwen3-VL using runai_streamer
+
+- 链接: https://github.com/vllm-project/vllm/pull/42716
+- 状态/时间: merged / 2026-05-17
+- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@07beaed84` 提交历史和 GitHub Pull Request files API 反查；关联提交 `a94189295b8b`。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+4/-4，可读 patch 22 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Fix Weight loading for  Qwen3.5-MTP and Qwen3-VL using runai_streamer」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_5_mtp.py`, `vllm/model_executor/models/qwen3_vl_moe.py`；技术摘要: 覆盖「Fix Weight loading for  Qwen3.5-MTP and Qwen3-VL using runai_streamer」，下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen3_5_mtp.py` modified +2/-2 (4 lines); hunks: -175,8 +175,8  @@ def load_fused_expert_weights(; symbols: load_fused_expert_weights，涉及 `load_fused_expert_weights`；`vllm/model_executor/models/qwen3_vl_moe.py` modified +2/-2 (4 lines); hunks: -152,8 +152,8  @@ def load_fused_expert_weights(; symbols: load_fused_expert_weights，涉及 `load_fused_expert_weights`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen3_5_mtp.py` modified +2/-2 (4 lines); hunks: -175,8 +175,8  @@ def load_fused_expert_weights(; symbols: load_fused_expert_weights，涉及 `load_fused_expert_weights`
+  - `vllm/model_executor/models/qwen3_vl_moe.py` modified +2/-2 (4 lines); hunks: -152,8 +152,8  @@ def load_fused_expert_weights(; symbols: load_fused_expert_weights，涉及 `load_fused_expert_weights`
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_5_mtp.py
+@@ -175,8 +175,8 @@ def load_fused_expert_weights(
+-                shard_id,
+-                expert_id,
++                shard_id=shard_id,
++                expert_id=expert_id,
+diff -- vllm/model_executor/models/qwen3_vl_moe.py
+@@ -152,8 +152,8 @@ def load_fused_expert_weights(
+-                shard_id,
+-                expert_id,
++                shard_id=shard_id,
++                expert_id=expert_id,
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen3_5_mtp.py` modified +2/-2; `vllm/model_executor/models/qwen3_vl_moe.py` modified +2/-2
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen3_5_mtp.py`, `vllm/model_executor/models/qwen3_vl_moe.py`；风险点是权重加载、并行切分、attention/MoE 后端选择、量化 dtype 和 parser 输出，需要至少做一次真实 checkpoint 或等价 smoke。
+
+### PR #42311 - [Model] [Perf] Use flatten for Qwen3.5's GDN output projection
+
+- 链接: https://github.com/vllm-project/vllm/pull/42311
+- 状态/时间: merged / 2026-05-18
+- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@07beaed84` 提交历史和 GitHub Pull Request files API 反查；关联提交 `5ab6d1b3fd40`。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+3/-3，可读 patch 27 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Model] [Perf] Use flatten for Qwen3.5's GDN output projection」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `vllm/model_executor/layers/mamba/gdn_linear_attn.py`；技术摘要: 覆盖「[Model] [Perf] Use flatten for Qwen3.5's GDN output projection」，下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/layers/mamba/gdn_linear_attn.py` modified +3/-3 (6 lines); hunks: -697,7 +697,7  @@ def _output_projection(; -857,7 +857,7  @@ def forward_xpu(; symbols: _output_projection, forward_xpu, forward_cpu，涉及 `_output_projection, forward_xpu, forward_cpu`。
+- 代码 diff 细节:
+  - `vllm/model_executor/layers/mamba/gdn_linear_attn.py` modified +3/-3 (6 lines); hunks: -697,7 +697,7  @@ def _output_projection(; -857,7 +857,7  @@ def forward_xpu(; symbols: _output_projection, forward_xpu, forward_cpu，涉及 `_output_projection, forward_xpu, forward_cpu`
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/layers/mamba/gdn_linear_attn.py
+@@ -697,7 +697,7 @@ def _output_projection(
+-        core_attn_out = rearrange(core_attn_out, "... h d -> ... (h d)")
++        core_attn_out = core_attn_out.flatten(-2)  # ... h d -> ... (h d)
+@@ -857,7 +857,7 @@ def forward_xpu(
+-        core_attn_out = rearrange(core_attn_out, "... h d -> ... (h d)")
++        core_attn_out = core_attn_out.flatten(-2)  # ... h d -> ... (h d)
+@@ -907,7 +907,7 @@ def forward_cpu(
+-        core_attn_out = rearrange(core_attn_out, "... h d -> ... (h d)")
++        core_attn_out = core_attn_out.flatten(-2)  # ... h d -> ... (h d)
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/layers/mamba/gdn_linear_attn.py` modified +3/-3
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/layers/mamba/gdn_linear_attn.py`；风险点是权重加载、并行切分、attention/MoE 后端选择、量化 dtype 和 parser 输出，需要至少做一次真实 checkpoint 或等价 smoke。
 
 ## 补漏结论
 

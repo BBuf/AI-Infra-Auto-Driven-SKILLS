@@ -1,5 +1,9 @@
 # vllm Step 3.5 Model PR Optimization History
 
+## 2026-05-19 PR Backfill Audit
+
+Rechecked vllm upstream `origin/main@07beaed84` and the GitHub Pull Request files API; this pass adds timeline entries and per-PR diff audit cards for `#42224`.
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |
@@ -19,8 +23,8 @@
 ## PR Coverage Summary
 
 - Git-traced PRs: 5
-- Extra PRs preserved from existing docs: 1
-- Total PRs in this document: 6
+- Extra PRs preserved from existing docs: 2
+- Total PRs in this document: 7
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -34,6 +38,7 @@
 | 2026-02-22 | [#34478](https://github.com/vllm-project/vllm/pull/34478) | merged | [Model] Add NVFP4 quantization support for Step3.5-Flash | `vllm/model_executor/models/step3p5.py` |
 | 2026-02-25 | [#34211](https://github.com/vllm-project/vllm/pull/34211) | merged | [Bugfix] Fix step3p5 reasoning with interleaved thinking | `tests/reasoning/test_step3p5_reasoning_parser.py`, `vllm/reasoning/step3p5_reasoning_parser.py` |
 | 2026-03-20 | [#37579](https://github.com/vllm-project/vllm/pull/37579) | merged | [Model] Refactor Step3-VL processor to HF style | `vllm/transformers_utils/processors/step3_vl.py`, `vllm/model_executor/models/step3_vl.py`, `vllm/transformers_utils/processors/internvl.py` |
+| 2026-05-18 | [#42224](https://github.com/vllm-project/vllm/pull/42224) | merged | [MM][CG] Enable encoder Cudagraph for Step3VL | `vllm/model_executor/models/step3_vl.py`, `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/utils.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -250,3 +255,58 @@ diff -- vllm/transformers_utils/processors/internvl.py
 
 - Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
 - If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.
+
+### PR #42224 - [MM][CG] Enable encoder Cudagraph for Step3VL
+
+- Link: https://github.com/vllm-project/vllm/pull/42224
+- Status/date: merged / 2026-05-18
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@07beaed84` history, and the GitHub Pull Request files API; associated commit `990f49bdcb8f`.
+- Diff scope read: GitHub Pull Request files API returned 8 files, +384/-22, 534 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[MM][CG] Enable encoder Cudagraph for Step3VL"; model line: Step 3.5; category: model support/runtime entry; main diff: `vllm/model_executor/models/step3_vl.py`, `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/utils.py`; technical summary: Covers "[MM][CG] Enable encoder Cudagraph for Step3VL" with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `vllm/model_executor/models/step3_vl.py` modified +323/-2 (325 lines); hunks: -46,7 +46,12  @@ ); -487,7 +492,9  @@ def forward(; symbols: forward, __init__, str, device, touching `forward, __init__, str`；`vllm/model_executor/models/interfaces.py` modified +21/-0 (21 lines); hunks: -1594,6 +1594,27  @@ def select_encoder_cudagraph_items(; symbols: select_encoder_cudagraph_items, touching `select_encoder_cudagraph_items`；`vllm/model_executor/models/utils.py` modified +16/-0 (16 lines); hunks: -884,3 +884,19  @@ def get_layer_index(feature_layer_index: int, num_hidden_layers: int) -> int:; symbols: get_layer_index, touching `get_layer_index`；`vllm/model_executor/models/step_vl.py` modified +1/-0 (1 lines); hunks: -500,6 +500,7  @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = "") -> None:; symbols: __init__, str, touching `__init__, str`.
+- Code diff details:
+  - `vllm/model_executor/models/step3_vl.py` modified +323/-2 (325 lines); hunks: -46,7 +46,12  @@ ); -487,7 +492,9  @@ def forward(; symbols: forward, __init__, str, device, touching `forward, __init__, str`
+  - `vllm/model_executor/models/interfaces.py` modified +21/-0 (21 lines); hunks: -1594,6 +1594,27  @@ def select_encoder_cudagraph_items(; symbols: select_encoder_cudagraph_items, touching `select_encoder_cudagraph_items`
+  - `vllm/model_executor/models/utils.py` modified +16/-0 (16 lines); hunks: -884,3 +884,19  @@ def get_layer_index(feature_layer_index: int, num_hidden_layers: int) -> int:; symbols: get_layer_index, touching `get_layer_index`
+  - `vllm/model_executor/models/step_vl.py` modified +1/-0 (1 lines); hunks: -500,6 +500,7  @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = "") -> None:; symbols: __init__, str, touching `__init__, str`
+  - `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +12/-0 (12 lines); hunks: -41,6 +41,13  @@ def qwen_vl_chat_template(content: str) -> str:; -90,6 +97,11  @@ def qwen_vl_chat_template(content: str) -> str:; symbols: qwen_vl_chat_template, touching `qwen_vl_chat_template`
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/step3_vl.py
+@@ -46,7 +46,12 @@
+-from .interfaces import MultiModalEmbeddings, SupportsMultiModal, SupportsPP
++from .interfaces import (
++    MultiModalEmbeddings,
++    SupportsEncoderCudaGraph,
++    SupportsMultiModal,
++    SupportsPP,
++)
+@@ -487,7 +492,9 @@ def forward(
+diff -- vllm/model_executor/models/interfaces.py
+@@ -1594,6 +1594,27 @@ def select_encoder_cudagraph_items(
++    def postprocess_encoder_output(
++        self,
++        output: torch.Tensor,
++        indices: list[int],
++        per_item_out_tokens: list[int],
++        dest: dict[int, torch.Tensor] | list[torch.Tensor | None],
++        clone: bool = False,
++        batch_mm_kwargs: dict[str, Any] | None = None,
+diff -- vllm/model_executor/models/utils.py
+@@ -884,3 +884,19 @@ def get_layer_index(feature_layer_index: int, num_hidden_layers: int) -> int:
++
++
++def scatter_output_slices(
++    output: torch.Tensor,
++    indices: list[int],
++    per_item_out_tokens: list[int],
++    dest: dict[int, torch.Tensor] | list[torch.Tensor | None],
++    clone: bool = False,
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/step3_vl.py` modified +323/-2; `vllm/model_executor/models/interfaces.py` modified +21/-0; `vllm/model_executor/models/utils.py` modified +16/-0; `vllm/model_executor/models/step_vl.py` modified +1/-0
+  - tests: `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +12/-0
+  - docs: `docs/design/cuda_graphs_multimodal.md` modified +2/-0; `examples/generate/multimodal/vision_language_offline.py` modified +1/-0
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/step3_vl.py`, `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/utils.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.

@@ -1,8 +1,8 @@
 # sglang DeepSeek V3.2 Model PR Optimization History
 
-## 2026-05-15 Source Refresh Addendum
+## 2026-05-19 PR Backfill Audit
 
-SGLang `origin/main` was rechecked at `50f405816`. The DeepSeek-V3.2 NSA/indexer history should now include `#23562` AMD page-size-sensitive pre-shuffle/index-buffer behavior, `#23856` indexer GEMM moving to `torch.mm`, and `#25205` AMD NSA indexer auto-fallback to `page_size=1`.
+Rechecked sglang upstream `origin/main@78cb38ed5` and the GitHub Pull Request files API; this pass adds timeline entries and per-PR diff audit cards for `#23562`, `#23856`, `#25205`, `#25233`.
 
 ## Implementation File Coverage
 
@@ -71,8 +71,8 @@ SGLang `origin/main` was rechecked at `50f405816`. The DeepSeek-V3.2 NSA/indexer
 ## PR Coverage Summary
 
 - Git-traced PRs: 120
-- Extra PRs preserved from existing docs: 120
-- Total PRs in this document: 240
+- Extra PRs preserved from existing docs: 124
+- Total PRs in this document: 244
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -87,8 +87,8 @@ SGLang `origin/main` was rechecked at `50f405816`. The DeepSeek-V3.2 NSA/indexer
 | 2025-10-06 | [#11061](https://github.com/sgl-project/sglang/pull/11061) | merged | Support DeepSeek V3.2 Exp | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2025-10-09 | [#11309](https://github.com/sgl-project/sglang/pull/11309) | merged | [DeepSeek-V3.2] Include indexer kv cache when estimating kv cache size | `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/mem_cache/memory_pool.py`, `python/sglang/srt/server_args.py` |
 | 2025-10-11 | [#11450](https://github.com/sgl-project/sglang/pull/11450) | merged | [DPSKv3.2] Rewrite nsa tilelang act_quant kernel to triton | `python/sglang/srt/layers/attention/nsa/triton_kernel.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
-| 2025-10-13 | [#11557](https://github.com/sgl-project/sglang/pull/11557) | merged | Fix DeepSeek-v3.2 default config (ValueError: not enough values to unpack (expected 4, got 3)) | `python/sglang/srt/server_args.py` |
 | 2025-10-13 | [#11308](https://github.com/sgl-project/sglang/pull/11308) | merged | [CI] Add Basic Test for DeepSeek V3.2 | `test/srt/test_deepseek_v32_basic.py`, `.github/workflows/pr-test.yml`, `scripts/ci/ci_install_dependency.sh` |
+| 2025-10-13 | [#11557](https://github.com/sgl-project/sglang/pull/11557) | merged | Fix DeepSeek-v3.2 default config (ValueError: not enough values to unpack (expected 4, got 3)) | `python/sglang/srt/server_args.py` |
 | 2025-10-14 | [#11565](https://github.com/sgl-project/sglang/pull/11565) | merged | [DSv32] Use torch.compile for _get_logits_head_gate | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2025-10-15 | [#11596](https://github.com/sgl-project/sglang/pull/11596) | closed | [Spec Decoding] Support MTP for dsv3.2 | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/configs/model_config.py` |
 | 2025-10-16 | [#10912](https://github.com/sgl-project/sglang/pull/10912) | merged | [PD] Add PD support for hybrid model (Qwen3-Next, DeepSeek V3.2 Exp) | `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/mem_cache/memory_pool.py`, `python/sglang/srt/disaggregation/mooncake/conn.py` |
@@ -96,8 +96,8 @@ SGLang `origin/main` was rechecked at `50f405816`. The DeepSeek-V3.2 NSA/indexer
 | 2025-10-17 | [#11109](https://github.com/sgl-project/sglang/pull/11109) | closed | [Draft] Support MTP for DeepSeek-V3.2 | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/configs/model_config.py` |
 | 2025-10-17 | [#11682](https://github.com/sgl-project/sglang/pull/11682) | merged | Cleaning indexer for DeepSeek V3.2 | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py` |
 | 2025-10-19 | [#11652](https://github.com/sgl-project/sglang/pull/11652) | merged | [Spec Decoding] Support MTP for dsv3.2 | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
-| 2025-10-20 | [#11835](https://github.com/sgl-project/sglang/pull/11835) | merged | [CI] Add CI test for DeepSeek V3.2 MTP | `test/srt/test_deepseek_v32_mtp.py`, `test/srt/test_deepseek_v32_basic.py`, `python/sglang/srt/server_args.py` |
 | 2025-10-20 | [#11815](https://github.com/sgl-project/sglang/pull/11815) | merged | [DeepseekV32] Add fast_topk_transform_ragged_fused kernel | `sgl-kernel/csrc/elementwise/topk.cu`, `sgl-kernel/tests/test_topk.py`, `sgl-kernel/python/sgl_kernel/top_k.py` |
+| 2025-10-20 | [#11835](https://github.com/sgl-project/sglang/pull/11835) | merged | [CI] Add CI test for DeepSeek V3.2 MTP | `test/srt/test_deepseek_v32_mtp.py`, `test/srt/test_deepseek_v32_basic.py`, `python/sglang/srt/server_args.py` |
 | 2025-10-21 | [#11876](https://github.com/sgl-project/sglang/pull/11876) | merged | Rename flashmla kernel options of nsa backend for better readability | `python/sglang/srt/layers/attention/nsa_backend.py` |
 | 2025-10-23 | [#11761](https://github.com/sgl-project/sglang/pull/11761) | closed | (beta)support context parallel with deepseekv3.2-DSA |  |
 | 2025-10-24 | [#12017](https://github.com/sgl-project/sglang/pull/12017) | closed | (beta)support context parallel with deepseekv3.2-DSA | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_nextn.py` |
@@ -115,14 +115,14 @@ SGLang `origin/main` was rechecked at `50f405816`. The DeepSeek-V3.2 NSA/indexer
 | 2025-11-04 | [#12044](https://github.com/sgl-project/sglang/pull/12044) | merged | Enable mixed type LayerNorm kernel for NSA indexer | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2025-11-04 | [#12645](https://github.com/sgl-project/sglang/pull/12645) | merged | [Bug] Fix NSA Backend KV-Buffer Shape Mismatch in DeepSeek-V3.2 | `python/sglang/srt/mem_cache/memory_pool.py` |
 | 2025-11-06 | [#11892](https://github.com/sgl-project/sglang/pull/11892) | merged | DeepSeek-V3.2: Add Adaptive MHA Attention Pathway for Short-Sequence Prefill | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/models/deepseek_v2.py` |
-| 2025-11-07 | [#12788](https://github.com/sgl-project/sglang/pull/12788) | merged | [DeepSeek-V3.2][NSA] Enable MHA Pathway for Short Sequence Prefill on B200 (SM100) | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/models/deepseek_v2.py` |
 | 2025-11-07 | [#12520](https://github.com/sgl-project/sglang/pull/12520) | merged | [Test] Add DeepSeekV3.2 NSA Indexer Test Suite | `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` |
-| 2025-11-07 | [#12820](https://github.com/sgl-project/sglang/pull/12820) | open | [WIP][Feature] support tp-sp on qwen2/3 & deepseek v2/3/3.2 | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/models/qwen3.py` |
+| 2025-11-07 | [#12788](https://github.com/sgl-project/sglang/pull/12788) | merged | [DeepSeek-V3.2][NSA] Enable MHA Pathway for Short Sequence Prefill on B200 (SM100) | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/models/deepseek_v2.py` |
 | 2025-11-07 | [#12816](https://github.com/sgl-project/sglang/pull/12816) | merged | [Deepseek V3.2] Only skip Indexer logits computation when is_extend_without_speculative | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
+| 2025-11-07 | [#12820](https://github.com/sgl-project/sglang/pull/12820) | open | [WIP][Feature] support tp-sp on qwen2/3 & deepseek v2/3/3.2 | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/models/qwen3.py` |
 | 2025-11-08 | [#12582](https://github.com/sgl-project/sglang/pull/12582) | merged | [sgl-kernel][Deepseek V3.2] Add row_starts to topk kernel | `sgl-kernel/tests/test_topk.py`, `sgl-kernel/csrc/elementwise/topk.cu`, `sgl-kernel/python/sgl_kernel/top_k.py` |
 | 2025-11-08 | [#12868](https://github.com/sgl-project/sglang/pull/12868) | merged | [Docs][DeepseekV3.2] Update deepseekv3.2 docs for mha short seq prefill | `docs/basic_usage/deepseek_v32.md` |
-| 2025-11-12 | [#12583](https://github.com/sgl-project/sglang/pull/12583) | merged | [Deepseek V3.2] Fix accuracy bug in the Indexer | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py` |
 | 2025-11-12 | [#12215](https://github.com/sgl-project/sglang/pull/12215) | merged | [DeepseekV32]: use `_concat_mla_absorb_q_general` to replace `torch.cat` | `python/sglang/srt/layers/attention/nsa_backend.py` |
+| 2025-11-12 | [#12583](https://github.com/sgl-project/sglang/pull/12583) | merged | [Deepseek V3.2] Fix accuracy bug in the Indexer | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py` |
 | 2025-11-14 | [#13236](https://github.com/sgl-project/sglang/pull/13236) | merged | [Deepseek V3.2] Clean up MTP | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2025-11-17 | [#12065](https://github.com/sgl-project/sglang/pull/12065) | merged | (1/n)support context parallel with deepseekv3.2-DSA | `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/communicator_nsa_cp.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2025-11-17 | [#13022](https://github.com/sgl-project/sglang/pull/13022) | merged | [Deepseek V3.2] Use torch.compile to speed up torch.cat in nsa | `python/sglang/srt/layers/attention/nsa_backend.py` |
@@ -135,17 +135,17 @@ SGLang `origin/main` was rechecked at `50f405816`. The DeepSeek-V3.2 NSA/indexer
 | 2025-11-30 | [#13646](https://github.com/sgl-project/sglang/pull/13646) | merged | [DeepSeekV3.2] Enable pure TP & Partial DP Attention | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `test/manual/nightly/test_deepseek_v32_perf.py` |
 | 2025-12-01 | [#14245](https://github.com/sgl-project/sglang/pull/14245) | merged | Fix NSA Bug in Centralize NSA Dispatch Logic | `python/sglang/srt/layers/attention/nsa_backend.py` |
 | 2025-12-02 | [#14249](https://github.com/sgl-project/sglang/pull/14249) | merged | feat: DeepSeek new v3.2 encoding | `python/sglang/srt/entrypoints/openai/encoding_dsv32.py`, `python/sglang/srt/function_call/deepseekv32_detector.py` |
-| 2025-12-03 | [#14321](https://github.com/sgl-project/sglang/pull/14321) | merged | [Doc] Update DeepSeek-V3.2 document | `docs/basic_usage/deepseek_v32.md` |
 | 2025-12-03 | [#13812](https://github.com/sgl-project/sglang/pull/13812) | merged | [Performance] Optimize NSA Indexer K/S Buffer Access with Fused Triton Kernels | `test/manual/layers/attention/nsa/test_index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
+| 2025-12-03 | [#14321](https://github.com/sgl-project/sglang/pull/14321) | merged | [Doc] Update DeepSeek-V3.2 document | `docs/basic_usage/deepseek_v32.md` |
 | 2025-12-03 | [#14332](https://github.com/sgl-project/sglang/pull/14332) | open | feat: V32 tool call parsing for no-dsml tag | `test/registered/function_call/test_function_call_parser.py`, `python/sglang/srt/function_call/deepseekv32_detector.py` |
 | 2025-12-03 | [#14336](https://github.com/sgl-project/sglang/pull/14336) | merged | [Doc] Fix DeepSeek V32 Doc | `docs/basic_usage/deepseek_v32.md` |
 | 2025-12-03 | [#14372](https://github.com/sgl-project/sglang/pull/14372) | merged | [Tiny]Small fixes in deepseek v32 doc | `docs/basic_usage/deepseek_v32.md` |
 | 2025-12-04 | [#14325](https://github.com/sgl-project/sglang/pull/14325) | merged | [DeepseekV3.2][NSA][Indexer] Fix PAGED top-k transform for NSA indexer chunked execution on H200 | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2025-12-06 | [#14524](https://github.com/sgl-project/sglang/pull/14524) | open | [Test] Add test suite for NSA backend | `python/sglang/test/attention/test_nsa_backend.py` |
 | 2025-12-08 | [#14573](https://github.com/sgl-project/sglang/pull/14573) | merged | [Tool Call] Fix DeepSeekV32Detector skipping functions with no params in streaming mode | `python/sglang/srt/function_call/deepseekv32_detector.py` |
-| 2025-12-11 | [#14541](https://github.com/sgl-project/sglang/pull/14541) | merged | [NPU]dsv3.2 cp for npu | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/communicator_nsa_cp.py` |
-| 2025-12-11 | [#14307](https://github.com/sgl-project/sglang/pull/14307) | merged | [SMG][DS32][fix] support dsv32, add role developer | `sgl-model-gateway/src/protocols/chat.rs`, `sgl-model-gateway/src/routers/grpc/harmony/builder.rs`, `sgl-model-gateway/src/routers/http/pd_router.rs` |
 | 2025-12-11 | [#14304](https://github.com/sgl-project/sglang/pull/14304) | merged | [FIX][DS32]openai protocol: support openai message role: developer | `python/sglang/srt/entrypoints/openai/protocol.py` |
+| 2025-12-11 | [#14307](https://github.com/sgl-project/sglang/pull/14307) | merged | [SMG][DS32][fix] support dsv32, add role developer | `sgl-model-gateway/src/protocols/chat.rs`, `sgl-model-gateway/src/routers/grpc/harmony/builder.rs`, `sgl-model-gateway/src/routers/http/pd_router.rs` |
+| 2025-12-11 | [#14541](https://github.com/sgl-project/sglang/pull/14541) | merged | [NPU]dsv3.2 cp for npu | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/communicator_nsa_cp.py` |
 | 2025-12-12 | [#14572](https://github.com/sgl-project/sglang/pull/14572) | merged | [NPU] optimization for dsv3.2 | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` |
 | 2025-12-12 | [#14982](https://github.com/sgl-project/sglang/pull/14982) | open | [Feature] Add DCP support for GQA with flashinfer | `python/sglang/srt/layers/attention/utils.py`, `python/sglang/srt/layers/attention/flashinfer_backend.py`, `python/sglang/srt/model_executor/input_buffers.py` |
 | 2025-12-13 | [#14904](https://github.com/sgl-project/sglang/pull/14904) | closed | [DeepSeek V3.2] Proper drop_thinking logic | `python/sglang/srt/entrypoints/openai/serving_chat.py` |
@@ -155,13 +155,13 @@ SGLang `origin/main` was rechecked at `50f405816`. The DeepSeek-V3.2 NSA/indexer
 | 2025-12-16 | [#15217](https://github.com/sgl-project/sglang/pull/15217) | closed | fix(DeepSeek-V3.2 function_call): fix streaming content loss in DeepSeekV32Detector | `python/sglang/srt/function_call/deepseekv32_detector.py` |
 | 2025-12-16 | [#15242](https://github.com/sgl-project/sglang/pull/15242) | merged | [sgl-kernel] Update flashmla to include fp8 sparse_mla optimizations | `sgl-kernel/cmake/flashmla.cmake` |
 | 2025-12-17 | [#15088](https://github.com/sgl-project/sglang/pull/15088) | merged | [DeepSeekV3.2] Add pure TP+MTP test | `docs/basic_usage/deepseek_v32.md` |
-| 2025-12-17 | [#15322](https://github.com/sgl-project/sglang/pull/15322) | open | dsv32 support o_proj tp | `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/linear.py` |
 | 2025-12-17 | [#15307](https://github.com/sgl-project/sglang/pull/15307) | merged | [Deepseek V3.2] Support Overlap Spec + NSA | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `docs/basic_usage/deepseek_v32.md` |
-| 2025-12-18 | [#15278](https://github.com/sgl-project/sglang/pull/15278) | merged | feat: DeepSeek-V3.2 Streaming tool call output | `python/sglang/srt/function_call/deepseekv32_detector.py` |
+| 2025-12-17 | [#15322](https://github.com/sgl-project/sglang/pull/15322) | open | dsv32 support o_proj tp | `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/linear.py` |
 | 2025-12-18 | [#14781](https://github.com/sgl-project/sglang/pull/14781) | merged | [Performance] optimize NSA backend metadata computation for multi-step speculative decoding | `python/sglang/srt/layers/attention/nsa/nsa_backend_mtp_precompute.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/utils.py` |
+| 2025-12-18 | [#15278](https://github.com/sgl-project/sglang/pull/15278) | merged | feat: DeepSeek-V3.2 Streaming tool call output | `python/sglang/srt/function_call/deepseekv32_detector.py` |
 | 2025-12-19 | [#14353](https://github.com/sgl-project/sglang/pull/14353) | merged | feat(dsv32): better error handling for DeepSeek-v3.2 encoder | `python/sglang/srt/entrypoints/openai/encoding_dsv32.py` |
-| 2025-12-19 | [#15429](https://github.com/sgl-project/sglang/pull/15429) | merged | [Deepseek V3.2] Fix Deepseek MTP in V1 mode | `python/sglang/srt/layers/attention/nsa_backend.py` |
 | 2025-12-19 | [#15040](https://github.com/sgl-project/sglang/pull/15040) | merged | [DSv32] Move deep_gemm.get_paged_mqa_logits_metadata to init time as metadata | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
+| 2025-12-19 | [#15429](https://github.com/sgl-project/sglang/pull/15429) | merged | [Deepseek V3.2] Fix Deepseek MTP in V1 mode | `python/sglang/srt/layers/attention/nsa_backend.py` |
 | 2025-12-21 | [#12162](https://github.com/sgl-project/sglang/pull/12162) | merged | [Feature] Enable return routed experts | `python/sglang/srt/layers/moe/routed_experts_capturer.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/managers/detokenizer_manager.py` |
 | 2025-12-21 | [#14901](https://github.com/sgl-project/sglang/pull/14901) | merged | fix ds3.2 nsa backend prefill TBO | `python/sglang/srt/models/deepseek_v2.py` |
 | 2025-12-25 | [#14741](https://github.com/sgl-project/sglang/pull/14741) | merged | [1/N][Sparse With Hicache]: Add Sparse Interface | `python/sglang/srt/mem_cache/sparsity/algorithms/base_algorithm.py`, `python/sglang/srt/mem_cache/sparsity/algorithms/quest_algorithm.py`, `python/sglang/srt/mem_cache/sparsity/algorithms/deepseek_nsa.py` |
@@ -182,38 +182,38 @@ SGLang `origin/main` was rechecked at `50f405816`. The DeepSeek-V3.2 NSA/indexer
 | 2026-01-13 | [#16990](https://github.com/sgl-project/sglang/pull/16990) | merged | [Ascend] fix dsv3.2 weight cast bug | `python/sglang/srt/layers/quantization/unquant.py` |
 | 2026-01-14 | [#16841](https://github.com/sgl-project/sglang/pull/16841) | merged | [AMD] enable CUDA graph for NSA backend and fix NSA FP8 fused RMSNorm group quant | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` |
 | 2026-01-14 | [#17054](https://github.com/sgl-project/sglang/pull/17054) | merged | Update deepseekV32 Cp doc | `docs/basic_usage/deepseek_v32.md` |
-| 2026-01-16 | [#17185](https://github.com/sgl-project/sglang/pull/17185) | open | [DeepSeek V3.2] [Feat] add tensor parallel o_proj linear in context parallel nsa | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/server_args.py` |
 | 2026-01-16 | [#16934](https://github.com/sgl-project/sglang/pull/16934) | merged | [AMD] Enable DeepseekV3.2 test for AMD CI | `test/registered/amd/test_deepseek_v32_mtp.py`, `test/registered/amd/test_deepseek_v32_basic.py` |
 | 2026-01-16 | [#17133](https://github.com/sgl-project/sglang/pull/17133) | merged | [DeepSeek V3.1/V3.2] Optimize fused moe configs for H20 & H20-3E based on swapab | `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=257,N=256,device_name=NVIDIA_H20,dtype=fp8_w8a8,block_shape=[128, 128]_down.json`, `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=257,N=256,device_name=NVIDIA_H20-3e,dtype=fp8_w8a8,block_shape=[128, 128]_down.json`, `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=257,N=256,device_name=NVIDIA_H20,dtype=fp8_w8a8,block_shape=[128, 128].json` |
+| 2026-01-16 | [#17185](https://github.com/sgl-project/sglang/pull/17185) | open | [DeepSeek V3.2] [Feat] add tensor parallel o_proj linear in context parallel nsa | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/server_args.py` |
 | 2026-01-19 | [#16961](https://github.com/sgl-project/sglang/pull/16961) | merged | [DeepSeek v3.2] Opt MTP decode cuda batch sizes and nsa implementation | `python/sglang/srt/layers/attention/nsa_backend.py` |
 | 2026-01-20 | [#17179](https://github.com/sgl-project/sglang/pull/17179) | merged | [AMD] Add DeepSeek-V3.2 and VLMs model in nightly tests | `test/registered/amd/accuracy/mi35x/test_deepseek_v32_eval_mi35x.py`, `test/registered/amd/perf/mi35x/test_deepseek_v32_mtp_perf_mi35x.py`, `test/registered/amd/perf/mi35x/test_deepseek_v32_basic_perf_mi35x.py` |
-| 2026-01-20 | [#17409](https://github.com/sgl-project/sglang/pull/17409) | merged | [Fix]: correctly fetch ds32 config in tuning_fused_moe_triton | `benchmark/kernels/fused_moe_triton/common_utils.py` |
 | 2026-01-20 | [#17205](https://github.com/sgl-project/sglang/pull/17205) | merged | [OPT] DeepSeekV3.2: optimize indexer weight_proj-mma performance | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
+| 2026-01-20 | [#17409](https://github.com/sgl-project/sglang/pull/17409) | merged | [Fix]: correctly fetch ds32 config in tuning_fused_moe_triton | `benchmark/kernels/fused_moe_triton/common_utils.py` |
 | 2026-01-21 | [#17452](https://github.com/sgl-project/sglang/pull/17452) | merged | Fix NSA indexer in the nightly test | `test/registered/kernels/test_nsa_indexer.py` |
-| 2026-01-22 | [#17518](https://github.com/sgl-project/sglang/pull/17518) | merged | [HotFix]Fix dtype mismatch in nsa indexer on AMD device | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2026-01-22 | [#17432](https://github.com/sgl-project/sglang/pull/17432) | merged | [AMD] fix amd ci dpskv32 | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `test/registered/amd/test_deepseek_v32_basic.py`, `test/registered/amd/test_deepseek_v32_mtp.py` |
-| 2026-01-23 | [#17007](https://github.com/sgl-project/sglang/pull/17007) | merged | [NPU]bugfix: fix for dsv3.2 and dsvl2 | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` |
+| 2026-01-22 | [#17518](https://github.com/sgl-project/sglang/pull/17518) | merged | [HotFix]Fix dtype mismatch in nsa indexer on AMD device | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2026-01-23 | [#16758](https://github.com/sgl-project/sglang/pull/16758) | merged | [DeepSeek V3.2] Enable trtllm NSA with bf16 kvcache | `python/sglang/srt/layers/attention/nsa_backend.py` |
+| 2026-01-23 | [#17007](https://github.com/sgl-project/sglang/pull/17007) | merged | [NPU]bugfix: fix for dsv3.2 and dsvl2 | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` |
 | 2026-01-24 | [#17682](https://github.com/sgl-project/sglang/pull/17682) | merged | Fix NSA indexer test and move it to pre commit test | `test/registered/kernels/test_nsa_indexer.py` |
-| 2026-01-25 | [#17662](https://github.com/sgl-project/sglang/pull/17662) | merged | [DeepSeek-V3.2] Fix TRT-LLM NSA in target_verify/draft_extend | `python/sglang/srt/layers/attention/nsa_backend.py` |
 | 2026-01-25 | [#17310](https://github.com/sgl-project/sglang/pull/17310) | closed | [TileLang] Align TileLang NSA kernel with current TileLang and stabilize output | `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` |
+| 2026-01-25 | [#17662](https://github.com/sgl-project/sglang/pull/17662) | merged | [DeepSeek-V3.2] Fix TRT-LLM NSA in target_verify/draft_extend | `python/sglang/srt/layers/attention/nsa_backend.py` |
+| 2026-01-26 | [#15381](https://github.com/sgl-project/sglang/pull/15381) | merged | [NPU]DeepSeek-V3.2 support npu mlaprolog | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` |
 | 2026-01-26 | [#17609](https://github.com/sgl-project/sglang/pull/17609) | merged | Merge performance/accuracy test suites into regular stage-b suites | `.github/workflows/pr-test.yml`, `python/sglang/test/test_utils.py`, `test/run_suite.py` |
 | 2026-01-26 | [#17761](https://github.com/sgl-project/sglang/pull/17761) | open | fix: missing Assistant token after tool output in DeepSeek v3.1/v3.2 chat templates | `test/manual/test_deepseek_chat_templates.py`, `examples/chat_template/tool_chat_template_deepseekv31.jinja`, `examples/chat_template/tool_chat_template_deepseekv32.jinja` |
-| 2026-01-26 | [#15381](https://github.com/sgl-project/sglang/pull/15381) | merged | [NPU]DeepSeek-V3.2 support npu mlaprolog | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` |
-| 2026-01-27 | [#17783](https://github.com/sgl-project/sglang/pull/17783) | merged | [AMD] Update dsv3.2 AMD GPU docs and unify ROCm TileLang build | `docs/basic_usage/deepseek_v32.md` |
 | 2026-01-27 | [#17657](https://github.com/sgl-project/sglang/pull/17657) | merged | [DeepSeek] Update tests and document for DeepSeek V3.2 NVFP4 checkpoint | `docs/basic_usage/deepseek_v32.md` |
+| 2026-01-27 | [#17783](https://github.com/sgl-project/sglang/pull/17783) | merged | [AMD] Update dsv3.2 AMD GPU docs and unify ROCm TileLang build | `docs/basic_usage/deepseek_v32.md` |
+| 2026-01-28 | [#17523](https://github.com/sgl-project/sglang/pull/17523) | merged | [AMD] Add Kimi-K2, DeepSeek-V3.2 tests to nightly CI | `test/registered/amd/accuracy/mi35x/test_deepseek_v32_mtp_eval_mi35x.py`, `test/registered/amd/accuracy/mi35x/test_deepseek_v32_dp_eval_mi35x.py`, `test/registered/amd/perf/mi35x/test_deepseek_v32_mtp_perf_mi35x.py` |
 | 2026-01-28 | [#17633](https://github.com/sgl-project/sglang/pull/17633) | merged | [AMD] CI - enable deepseekv3.2 on MI325-8gpu and merge perf/accuracy test suites into stage-b suites | `test/registered/amd/test_deepseek_v32_basic.py`, `test/registered/amd/test_deepseek_v32_mtp.py` |
 | 2026-01-28 | [#17688](https://github.com/sgl-project/sglang/pull/17688) | merged | [DSv32] Overlap indexer qk projection and activation quant | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
-| 2026-01-28 | [#17523](https://github.com/sgl-project/sglang/pull/17523) | merged | [AMD] Add Kimi-K2, DeepSeek-V3.2 tests to nightly CI | `test/registered/amd/accuracy/mi35x/test_deepseek_v32_mtp_eval_mi35x.py`, `test/registered/amd/accuracy/mi35x/test_deepseek_v32_dp_eval_mi35x.py`, `test/registered/amd/perf/mi35x/test_deepseek_v32_mtp_perf_mi35x.py` |
 | 2026-01-29 | [#17951](https://github.com/sgl-project/sglang/pull/17951) | merged | Add tool call tests for DeepSeek V3.2 in nightly CI | `test/registered/8-gpu-models/test_deepseek_v32.py` |
-| 2026-02-02 | [#18094](https://github.com/sgl-project/sglang/pull/18094) | open | support deepseekv3.2-piecewise-cuda-graph | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/radix_attention.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` |
 | 2026-02-02 | [#17076](https://github.com/sgl-project/sglang/pull/17076) | merged | [DeepSeek V3.2] [Bugfix] slice indexer and padding fa3 when can not run cuda graph | `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py` |
 | 2026-02-02 | [#17964](https://github.com/sgl-project/sglang/pull/17964) | merged | [NPU] support dsv32 radixcache on ascend | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
+| 2026-02-02 | [#18094](https://github.com/sgl-project/sglang/pull/18094) | open | support deepseekv3.2-piecewise-cuda-graph | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/radix_attention.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` |
 | 2026-02-03 | [#18167](https://github.com/sgl-project/sglang/pull/18167) | open | [Feature] Add DCP support for DeepSeek v3.2 | `python/sglang/srt/layers/attention/utils.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/models/deepseek_v2.py` |
 | 2026-02-05 | [#18275](https://github.com/sgl-project/sglang/pull/18275) | open | [NPU] allgather after qlora for dsv3.2 | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/models/deepseek_v2.py` |
 | 2026-02-10 | [#18297](https://github.com/sgl-project/sglang/pull/18297) | merged | Deepseekv32 compatibility with transformers v5 | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
-| 2026-02-10 | [#18542](https://github.com/sgl-project/sglang/pull/18542) | open | fix: fixed aux hidden state index out of range when using eagle3 with nsa cp | `python/sglang/srt/models/deepseek_v2.py` |
 | 2026-02-10 | [#18488](https://github.com/sgl-project/sglang/pull/18488) | merged | Tilelang sparse decode fwd for dsv32 mi355 | `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` |
+| 2026-02-10 | [#18542](https://github.com/sgl-project/sglang/pull/18542) | open | fix: fixed aux hidden state index out of range when using eagle3 with nsa cp | `python/sglang/srt/models/deepseek_v2.py` |
 | 2026-02-11 | [#18553](https://github.com/sgl-project/sglang/pull/18553) | merged | Fix Bug on dsv3.2 | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2026-02-11 | [#18613](https://github.com/sgl-project/sglang/pull/18613) | merged | [V3.2] Change default CP token split method to `--round-robin-split` | `docs/basic_usage/deepseek_v32.md` |
 | 2026-02-12 | [#18733](https://github.com/sgl-project/sglang/pull/18733) | open | Add DeepSeek V32 PD disaggregation test | `test/registered/distributed/test_disaggregation_deepseek_v32.py` |
@@ -225,21 +225,21 @@ SGLang `origin/main` was rechecked at `50f405816`. The DeepSeek-V3.2 NSA/indexer
 | 2026-02-19 | [#18978](https://github.com/sgl-project/sglang/pull/18978) | merged | [AMD] Fix mi35x dsv32 mtp nightly | `python/sglang/srt/layers/attention/nsa_backend.py` |
 | 2026-02-20 | [#18931](https://github.com/sgl-project/sglang/pull/18931) | merged | Fix NSA FP8 KV cache path for both-trtllm MHA one-shot | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py` |
 | 2026-02-21 | [#19062](https://github.com/sgl-project/sglang/pull/19062) | merged | [DSv32] Fix MTP and CP compatability | `python/sglang/srt/models/deepseek_nextn.py` |
-| 2026-02-22 | [#19134](https://github.com/sgl-project/sglang/pull/19134) | merged | Fix spec v2+dp attention in nsa backend | `python/sglang/srt/layers/attention/nsa/utils.py` |
 | 2026-02-22 | [#19041](https://github.com/sgl-project/sglang/pull/19041) | merged | [DSv32] [GLM5] Improve Model Quality by Avoiding FP32 Precision Loss in `weights_proj` | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `test/registered/kernels/test_nsa_indexer.py` |
+| 2026-02-22 | [#19134](https://github.com/sgl-project/sglang/pull/19134) | merged | Fix spec v2+dp attention in nsa backend | `python/sglang/srt/layers/attention/nsa/utils.py` |
 | 2026-02-24 | [#19211](https://github.com/sgl-project/sglang/pull/19211) | open | [Refactor][DeepSeek-V3.2] Extract V3.2/NSA logic into `DeepseekV32Mixin` | `python/sglang/srt/models/deepseek_common/v32_mixin.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_nextn.py` |
 | 2026-02-25 | [#19299](https://github.com/sgl-project/sglang/pull/19299) | open | [Perf] O(1) expert weight matching in DeepSeek weight loader | `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`, `test/unit/test_deepseek_weight_loader.py` |
+| 2026-02-26 | [#17199](https://github.com/sgl-project/sglang/pull/17199) | closed | [Feature] add feature mla_ag_after_qlora for dsv3.2 | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/communicator.py` |
 | 2026-02-26 | [#19148](https://github.com/sgl-project/sglang/pull/19148) | merged | [DeepSeek-V3.2][JIT-kernel] Support nsa fuse store indexer k cache | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/jit_kernel/csrc/nsa/fused_store_index_cache.cuh` |
 | 2026-02-26 | [#19367](https://github.com/sgl-project/sglang/pull/19367) | merged | Fix NSA CP positions mismatch in eagle NextN model | `python/sglang/srt/models/deepseek_nextn.py` |
-| 2026-02-26 | [#17199](https://github.com/sgl-project/sglang/pull/17199) | closed | [Feature] add feature mla_ag_after_qlora for dsv3.2 | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/communicator.py` |
 | 2026-02-27 | [#18319](https://github.com/sgl-project/sglang/pull/18319) | merged | [AMD] Use `tilelang` as default NSA attention backend dispatch on AMD Instinct | `python/sglang/srt/layers/attention/nsa_backend.py` |
 | 2026-02-27 | [#18526](https://github.com/sgl-project/sglang/pull/18526) | merged | [AMD] Enable cudagraph for aiter nsa backend and add aiter impl for nsa pr… | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/triton_kernel.py` |
 | 2026-02-27 | [#19122](https://github.com/sgl-project/sglang/pull/19122) | merged | [3/n] deepseek_v2.py Refactor: Migrate MLA forward method in deepseek_v2.py | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_rocm.py` |
-| 2026-03-01 | [#19536](https://github.com/sgl-project/sglang/pull/19536) | merged | [Perf] Optimize NSA backend metadata under MTP | `python/sglang/srt/layers/attention/nsa_backend.py` |
 | 2026-03-01 | [#17647](https://github.com/sgl-project/sglang/pull/17647) | closed | [Perf] opt nsa backend init forward metada | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/utils.py` |
+| 2026-03-01 | [#19536](https://github.com/sgl-project/sglang/pull/19536) | merged | [Perf] Optimize NSA backend metadata under MTP | `python/sglang/srt/layers/attention/nsa_backend.py` |
 | 2026-03-02 | [#19428](https://github.com/sgl-project/sglang/pull/19428) | merged | [Feature] add feature mla_ag_after_qlora for dsv3.2 | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` |
-| 2026-03-03 | [#18174](https://github.com/sgl-project/sglang/pull/18174) | merged | [Bugfix] Catch errors when DeepSeek-V3.2 generates malformed JSON | `python/sglang/srt/function_call/deepseekv32_detector.py` |
 | 2026-03-03 | [#16091](https://github.com/sgl-project/sglang/pull/16091) | merged | [Tool Call] Stream DeepSeek-V3.2 function call parameters in JSON format. | `python/sglang/srt/function_call/deepseekv32_detector.py` |
+| 2026-03-03 | [#18174](https://github.com/sgl-project/sglang/pull/18174) | merged | [Bugfix] Catch errors when DeepSeek-V3.2 generates malformed JSON | `python/sglang/srt/function_call/deepseekv32_detector.py` |
 | 2026-03-04 | [#19829](https://github.com/sgl-project/sglang/pull/19829) | merged | [NSA] Fix line-too-long lint in `can_nsa_prefill_cp_round_robin_split` | `python/sglang/srt/layers/attention/nsa/utils.py` |
 | 2026-03-05 | [#19975](https://github.com/sgl-project/sglang/pull/19975) | open | [AMD] Support context parallel for DeepSeek-V3.2 on AMD GPUs and add its test to nightly CI | `test/registered/8-gpu-models/test_deepseek_v32_cp_single_node.py`, `python/sglang/srt/server_args.py`, `.github/workflows/nightly-test-amd-rocm720.yml` |
 | 2026-03-05 | [#19987](https://github.com/sgl-project/sglang/pull/19987) | closed | [AMD] Fix nightly GLM-5 failures: Fix NSA indexer tensor aliasing on ROCm during CUDA graph capture | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
@@ -248,29 +248,29 @@ SGLang `origin/main` was rechecked at `50f405816`. The DeepSeek-V3.2 NSA/indexer
 | 2026-03-07 | [#20086](https://github.com/sgl-project/sglang/pull/20086) | merged | [V32/GLM5] Change default setting of V32 nvfp4 on TP4 | `python/sglang/srt/server_args.py` |
 | 2026-03-09 | [#20062](https://github.com/sgl-project/sglang/pull/20062) | merged | [V32/GLM5] Control the threshold of applying dense attention with an environ | `python/sglang/srt/layers/attention/nsa_backend.py`, `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`, `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py` |
 | 2026-03-10 | [#18876](https://github.com/sgl-project/sglang/pull/18876) | merged | Add DeepSeek3.2 and GlmMoeDsa into moe tune | `benchmark/kernels/fused_moe_triton/common_utils.py` |
-| 2026-03-11 | [#20360](https://github.com/sgl-project/sglang/pull/20360) | open | [AMD][Bug fix] Fix NSA context parallelism (round-robin-split) producing garbage output | `python/sglang/srt/layers/communicator_nsa_cp.py` |
-| 2026-03-11 | [#20326](https://github.com/sgl-project/sglang/pull/20326) | merged | [Doc] Add DSA/NSA attention backend to support matrix | `docs/advanced_features/attention_backend.md` |
 | 2026-03-11 | [#19319](https://github.com/sgl-project/sglang/pull/19319) | merged | [deepseekv3.2] fix get_k_and_s_triton kenel for 128K seqlen case bug | `test/manual/layers/attention/nsa/test_get_k_scale_triton_kernel.py`, `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `test/manual/layers/attention/nsa/test_index_buf_accessor.py` |
+| 2026-03-11 | [#20326](https://github.com/sgl-project/sglang/pull/20326) | merged | [Doc] Add DSA/NSA attention backend to support matrix | `docs/advanced_features/attention_backend.md` |
+| 2026-03-11 | [#20360](https://github.com/sgl-project/sglang/pull/20360) | open | [AMD][Bug fix] Fix NSA context parallelism (round-robin-split) producing garbage output | `python/sglang/srt/layers/communicator_nsa_cp.py` |
 | 2026-03-13 | [#20531](https://github.com/sgl-project/sglang/pull/20531) | open | [bugfix] Fix NSA indexer ragged gather batch-view mismatch in CP round-robin split | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2026-03-13 | [#20534](https://github.com/sgl-project/sglang/pull/20534) | open | Transfer FP8 K/K_scale for CP indexer prefill gather | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2026-03-17 | [#18280](https://github.com/sgl-project/sglang/pull/18280) | merged | [DeepSeek v3.2][Bugfix] get_index_k_scale_buffer support cp | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` |
 | 2026-03-18 | [#20809](https://github.com/sgl-project/sglang/pull/20809) | open | [Bugfix] Add DeepseekV32ForCausalLM to MTP draft model mapping | `python/sglang/srt/configs/model_config.py` |
 | 2026-03-18 | [#20840](https://github.com/sgl-project/sglang/pull/20840) | merged | [AMD] Fix dpsk-v32 accuracy issue on mi355 | `python/sglang/srt/layers/quantization/fp8_utils.py` |
 | 2026-03-18 | [#20880](https://github.com/sgl-project/sglang/pull/20880) | open | Reject HiCache L3 storage backend for NSA models at init time | `python/sglang/srt/mem_cache/hiradix_cache.py` |
-| 2026-03-19 | [#20492](https://github.com/sgl-project/sglang/pull/20492) | merged | [BugFix] bug fix for DeepSeek eagle3 in Attn-DP mode | `python/sglang/srt/models/deepseek_v2.py` |
 | 2026-03-19 | [#17024](https://github.com/sgl-project/sglang/pull/17024) | closed | [PD] Fix DeepSeek V3.2 indexer cache transfer | `python/sglang/srt/disaggregation/prefill.py` |
+| 2026-03-19 | [#20492](https://github.com/sgl-project/sglang/pull/20492) | merged | [BugFix] bug fix for DeepSeek eagle3 in Attn-DP mode | `python/sglang/srt/models/deepseek_v2.py` |
 | 2026-03-20 | [#20984](https://github.com/sgl-project/sglang/pull/20984) | merged | Fix DeepSeek V32 FP4 test | `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`, `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py` |
 | 2026-03-20 | [#21003](https://github.com/sgl-project/sglang/pull/21003) | merged | Revert "Fix DeepSeek V32 FP4 test" | `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`, `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py` |
-| 2026-03-23 | [#21179](https://github.com/sgl-project/sglang/pull/21179) | open | [Bug] Preserve DeepSeek-V3.2 tool-call markers in reasoning parsing | `test/registered/unit/parser/test_reasoning_parser.py`, `python/sglang/srt/parser/reasoning_parser.py` |
-| 2026-03-23 | [#20343](https://github.com/sgl-project/sglang/pull/20343) | merged | HiSparse for Sparse Attention | `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/attention/nsa_backend.py` |
-| 2026-03-23 | [#21194](https://github.com/sgl-project/sglang/pull/21194) | open | [bugfix][AMD] Fix PPMissingLayer AttributeError for deepseek v2/v3 in aiter_gfx95 code path | `python/sglang/srt/models/deepseek_v2.py` |
-| 2026-03-23 | [#15807](https://github.com/sgl-project/sglang/pull/15807) | closed | [2/N][Sparse With Hicache]: Support separating nsa memory management for KV cache and index_k in decode side. | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2026-03-23 | [#14619](https://github.com/sgl-project/sglang/pull/14619) | closed | [Sparse & HICache]: Enables hierarchical sparse KV cache management and scheduling for DeepSeek V32. | `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/flashattention_backend.py` |
+| 2026-03-23 | [#15807](https://github.com/sgl-project/sglang/pull/15807) | closed | [2/N][Sparse With Hicache]: Support separating nsa memory management for KV cache and index_k in decode side. | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
+| 2026-03-23 | [#20343](https://github.com/sgl-project/sglang/pull/20343) | merged | HiSparse for Sparse Attention | `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/attention/nsa_backend.py` |
+| 2026-03-23 | [#21179](https://github.com/sgl-project/sglang/pull/21179) | open | [Bug] Preserve DeepSeek-V3.2 tool-call markers in reasoning parsing | `test/registered/unit/parser/test_reasoning_parser.py`, `python/sglang/srt/parser/reasoning_parser.py` |
 | 2026-03-23 | [#21192](https://github.com/sgl-project/sglang/pull/21192) | merged | Fix CP in-seq-split method for DeepSeek V32 and update related tests | `test/registered/cp/test_deepseek_v32_cp_single_node.py`, `test/registered/8-gpu-models/test_deepseek_v32_cp_single_node.py`, `test/manual/nightly/test_deepseek_v32_perf.py` |
-| 2026-03-24 | [#20438](https://github.com/sgl-project/sglang/pull/20438) | merged | [Perf] Overlap NSA-CP key all-gather with query computation for DeepSeek-V3.2 | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
+| 2026-03-23 | [#21194](https://github.com/sgl-project/sglang/pull/21194) | open | [bugfix][AMD] Fix PPMissingLayer AttributeError for deepseek v2/v3 in aiter_gfx95 code path | `python/sglang/srt/models/deepseek_v2.py` |
 | 2026-03-24 | [#19945](https://github.com/sgl-project/sglang/pull/19945) | merged | [AMD] Tilelang sparse fwd for dsv32 mi355/mi300 | `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` |
-| 2026-03-25 | [#21337](https://github.com/sgl-project/sglang/pull/21337) | merged | Workaround of DSA performance drop on B200 + DP | `python/sglang/srt/server_args.py` |
+| 2026-03-24 | [#20438](https://github.com/sgl-project/sglang/pull/20438) | merged | [Perf] Overlap NSA-CP key all-gather with query computation for DeepSeek-V3.2 | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2026-03-25 | [#16079](https://github.com/sgl-project/sglang/pull/16079) | closed | [Performance] Change sparse MLA and dense MHA switching threshold DSv3.2 | `python/sglang/srt/layers/attention/nsa_backend.py` |
+| 2026-03-25 | [#21337](https://github.com/sgl-project/sglang/pull/21337) | merged | Workaround of DSA performance drop on B200 + DP | `python/sglang/srt/server_args.py` |
 | 2026-03-26 | [#20606](https://github.com/sgl-project/sglang/pull/20606) | merged | FIX: (NSA) Compute topk_indices_offset when NSA prefill flashmla_sparse is used with FP8 KV cache | `python/sglang/srt/layers/attention/nsa_backend.py` |
 | 2026-03-27 | [#21506](https://github.com/sgl-project/sglang/pull/21506) | open | [WIP][NPU] DeepSeek-V3.2 adapt enable-torch-compile | `python/sglang/srt/layers/moe/token_dispatcher/fuseep.py`, `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w8a8_int8_moe.py`, `python/sglang/srt/models/deepseek_v2.py` |
 | 2026-03-27 | [#21529](https://github.com/sgl-project/sglang/pull/21529) | open | Add MXFP4 (including Quark W4A4) quantization support for DeepSeek-architecture on ROCm | `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py`, `python/sglang/srt/models/deepseek_v2.py` |
@@ -286,13 +286,13 @@ SGLang `origin/main` was rechecked at `50f405816`. The DeepSeek-V3.2 NSA/indexer
 | 2026-04-03 | [#22065](https://github.com/sgl-project/sglang/pull/22065) | merged | [HiSparse]: Optimize server args checking-HiSparse is temporarily only available for DSA models. | `python/sglang/srt/server_args.py` |
 | 2026-04-05 | [#21405](https://github.com/sgl-project/sglang/pull/21405) | merged | Enable IndexCache for DeepSeek V3.2 | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `test/registered/8-gpu-models/test_deepseek_v32_indexcache.py` |
 | 2026-04-06 | [#22179](https://github.com/sgl-project/sglang/pull/22179) | merged | [Doc] Fix and improve DeepSeek V3.2/GLM-5 documentation | `docs/basic_usage/deepseek_v32.md` |
-| 2026-04-07 | [#22238](https://github.com/sgl-project/sglang/pull/22238) | merged | [HiSparse]: Add readme docs for HiSparse Feature | `docs/advanced_features/hisparse_guide.md`, `docs/basic_usage/deepseek_v32.md` |
-| 2026-04-07 | [#22268](https://github.com/sgl-project/sglang/pull/22268) | open | [Bugfix] Fix prepare_qkv_latent bypassing LoRA adapters in DeepSeek V2/V3 | `python/sglang/srt/models/deepseek_v2.py` |
 | 2026-04-07 | [#21932](https://github.com/sgl-project/sglang/pull/21932) | merged | [HiSparse] Optimize the scheduling of decode backup. | `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/managers/hisparse_coordinator.py` |
 | 2026-04-07 | [#22232](https://github.com/sgl-project/sglang/pull/22232) | merged | Reduce unnecessary kernels and copies in the NSA indexer | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
-| 2026-04-09 | [#22425](https://github.com/sgl-project/sglang/pull/22425) | merged | [HiSparse]: Add HiSpares-DSA Model's nightly CI | `test/registered/8-gpu-models/test_dsa_models_hisparse.py` |
-| 2026-04-09 | [#22424](https://github.com/sgl-project/sglang/pull/22424) | merged | [AMD] Use aiter CK layernorm2d for LayerNorm to reduce NSA indexer kernel launches | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
+| 2026-04-07 | [#22238](https://github.com/sgl-project/sglang/pull/22238) | merged | [HiSparse]: Add readme docs for HiSparse Feature | `docs/advanced_features/hisparse_guide.md`, `docs/basic_usage/deepseek_v32.md` |
+| 2026-04-07 | [#22268](https://github.com/sgl-project/sglang/pull/22268) | open | [Bugfix] Fix prepare_qkv_latent bypassing LoRA adapters in DeepSeek V2/V3 | `python/sglang/srt/models/deepseek_v2.py` |
 | 2026-04-09 | [#22390](https://github.com/sgl-project/sglang/pull/22390) | merged | [DSA] Enable all reduce fusion for DSA models | `python/sglang/srt/server_args.py` |
+| 2026-04-09 | [#22424](https://github.com/sgl-project/sglang/pull/22424) | merged | [AMD] Use aiter CK layernorm2d for LayerNorm to reduce NSA indexer kernel launches | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
+| 2026-04-09 | [#22425](https://github.com/sgl-project/sglang/pull/22425) | merged | [HiSparse]: Add HiSpares-DSA Model's nightly CI | `test/registered/8-gpu-models/test_dsa_models_hisparse.py` |
 | 2026-04-09 | [#22430](https://github.com/sgl-project/sglang/pull/22430) | merged | [Fix] Fix several bugs on DSA models | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/server_args.py` |
 | 2026-04-09 | [#22473](https://github.com/sgl-project/sglang/pull/22473) | open | [DSA] Add dense MLA decode fallback for short sequences | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/server_args.py` |
 | 2026-04-10 | [#13546](https://github.com/sgl-project/sglang/pull/13546) | closed | [Deepseek V3.2] Optimize use of dual_stream in nsa_indexer/attention | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/models/deepseek_v2.py` |
@@ -305,21 +305,25 @@ SGLang `origin/main` was rechecked at `50f405816`. The DeepSeek-V3.2 NSA/indexer
 | 2026-04-16 | [#22938](https://github.com/sgl-project/sglang/pull/22938) | open | [AMD][MI30X] Restore DeepSeek MLA MI300X paths after MLA refactor (#19122) | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/models/deepseek_v2.py` |
 | 2026-04-17 | [#22128](https://github.com/sgl-project/sglang/pull/22128) | merged | Allow piecewise CUDA graph with speculative decoding | `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`, `python/sglang/srt/model_executor/model_runner.py`, `test/registered/piecewise_cuda_graph/test_pcg_with_speculative_decoding.py` |
 | 2026-04-19 | [#22850](https://github.com/sgl-project/sglang/pull/22850) | merged | [AMD] Reduce NSA indexer kernels (weights_proj, k-cache store kernel fusion) | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
-| 2026-04-20 | [#23195](https://github.com/sgl-project/sglang/pull/23195) | open | [Bugfix] Guard .weight access in DeepseekV2AttentionMLA for AWQ / compressed-tensors | `test/registered/unit/models/test_deepseek_v2_attention_mla.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py` |
 | 2026-04-20 | [#21249](https://github.com/sgl-project/sglang/pull/21249) | merged | Support allreduce fusion with cp | `python/sglang/srt/layers/flashinfer_comm_fusion.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/communicator.py` |
-| 2026-04-20 | [#22914](https://github.com/sgl-project/sglang/pull/22914) | merged | [Refactor] Deduplicate NSA utils.py into cp_utils.py for context parallel | `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/utils/cp_utils.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
-| 2026-04-20 | [#23257](https://github.com/sgl-project/sglang/pull/23257) | open | Fix double-reduce in DeepseekV2MoE with flashinfer_cutedsl + EP + DP-attention | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/moe/moe_runner/flashinfer_cutedsl.py` |
-| 2026-04-20 | [#22003](https://github.com/sgl-project/sglang/pull/22003) | merged | Support moe_dp_size = 1 for various attention_cp_size | `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/layers/dp_attention.py`, `python/sglang/srt/models/qwen3_moe.py` |
 | 2026-04-20 | [#21599](https://github.com/sgl-project/sglang/pull/21599) | merged | [SPEC][1/N] feat: add adaptive speculative_num_steps for EAGLE topk=1 | `python/sglang/srt/model_executor/cuda_graph_runner.py`, `benchmark/bench_adaptive_speculative.py`, `test/registered/unit/spec/test_adaptive_spec_params.py` |
+| 2026-04-20 | [#22003](https://github.com/sgl-project/sglang/pull/22003) | merged | Support moe_dp_size = 1 for various attention_cp_size | `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/layers/dp_attention.py`, `python/sglang/srt/models/qwen3_moe.py` |
+| 2026-04-20 | [#22914](https://github.com/sgl-project/sglang/pull/22914) | merged | [Refactor] Deduplicate NSA utils.py into cp_utils.py for context parallel | `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/utils/cp_utils.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
+| 2026-04-20 | [#23195](https://github.com/sgl-project/sglang/pull/23195) | open | [Bugfix] Guard .weight access in DeepseekV2AttentionMLA for AWQ / compressed-tensors | `test/registered/unit/models/test_deepseek_v2_attention_mla.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py` |
 | 2026-04-20 | [#23219](https://github.com/sgl-project/sglang/pull/23219) | merged | [AMD] Enable MTP for GLM-5-mxfp4 model | `python/sglang/srt/models/deepseek_nextn.py` |
-| 2026-04-21 | [#23315](https://github.com/sgl-project/sglang/pull/23315) | merged | Opt-in strip of thinking tokens from radix cache | `test/registered/unit/mem_cache/test_unified_radix_cache_unittest.py`, `python/sglang/srt/managers/schedule_batch.py`, `python/sglang/srt/server_args.py` |
+| 2026-04-20 | [#23257](https://github.com/sgl-project/sglang/pull/23257) | open | Fix double-reduce in DeepseekV2MoE with flashinfer_cutedsl + EP + DP-attention | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/moe/moe_runner/flashinfer_cutedsl.py` |
 | 2026-04-21 | [#22950](https://github.com/sgl-project/sglang/pull/22950) | closed | [fix] Parser-gated two-phase cache stripping for reasoning radix caches (fixes #22373) | `python/sglang/srt/parser/reasoning_parser.py`, `python/sglang/srt/configs/model_config.py`, `test/registered/unit/mem_cache/test_radix_cache_thinking.py` |
+| 2026-04-21 | [#23315](https://github.com/sgl-project/sglang/pull/23315) | merged | Opt-in strip of thinking tokens from radix cache | `test/registered/unit/mem_cache/test_unified_radix_cache_unittest.py`, `python/sglang/srt/managers/schedule_batch.py`, `python/sglang/srt/server_args.py` |
 | 2026-04-21 | [#23336](https://github.com/sgl-project/sglang/pull/23336) | open | [SPEC V2][2/N] feat: adaptive spec support spec v2 | `python/sglang/srt/speculative/eagle_worker_v2.py`, `python/sglang/srt/speculative/eagle_info_v2.py`, `python/sglang/srt/managers/scheduler_output_processor_mixin.py` |
 | 2026-04-21 | [#23351](https://github.com/sgl-project/sglang/pull/23351) | open | Support piecewise CUDA graph with NSA | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/layernorm.py`, `python/sglang/srt/layers/radix_attention.py` |
 | 2026-04-24 | [#22774](https://github.com/sgl-project/sglang/pull/22774) | merged | [MUSA][16/N] Add MUSA backend support for layers and DeepSeek models (V2/V3/R1) | `python/sglang/srt/layers/layernorm.py`, `python/sglang/srt/layers/moe/topk.py`, `python/sglang/srt/layers/deep_gemm_wrapper/compile_utils.py` |
 | 2026-04-24 | [#23241](https://github.com/sgl-project/sglang/pull/23241) | merged | [HiCache & HybridModel] 3FS backend support DSA & mamba model | `python/sglang/srt/mem_cache/storage/hf3fs/storage_hf3fs.py`, `python/sglang/srt/mem_cache/storage/hf3fs/mini_3fs_metadata_server.py`, `python/sglang/srt/mem_cache/hi_mamba_radix_cache.py` |
 | 2026-04-28 | [#23268](https://github.com/sgl-project/sglang/pull/23268) | merged | 【NPU】【bugfix】accuracy fix when enable both nsa cp and prefixcache | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` |
 | 2026-04-30 | [#19609](https://github.com/sgl-project/sglang/pull/19609) | closed | TP indexer weight in NSA attention | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
+| 2026-05-11 | [#23856](https://github.com/sgl-project/sglang/pull/23856) | merged | Use Torch `torch.mm` for Deepseek V3.2 Indexer GEMM | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
+| 2026-05-13 | [#23562](https://github.com/sgl-project/sglang/pull/23562) | merged | [AMD] Enable preshuffle paged MQA and page_size=64 for NSA indexer | `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/server_args.py` |
+| 2026-05-14 | [#25205](https://github.com/sgl-project/sglang/pull/25205) | merged | [AMD]  Auto-fallback NSA indexer to page_size=1 when aiter preshuffle gluon kernel is unavailable (Deepseek v3.2) | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` |
+| 2026-05-15 | [#25233](https://github.com/sgl-project/sglang/pull/25233) | merged | [Fix] DeepSeek-V3.2: build structural tag locally to encode both wrapper and invoke layers | `python/sglang/srt/function_call/deepseekv32_detector.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -8203,3 +8207,166 @@ diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
 
 - Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
 - If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.
+
+### PR #23856 - Use Torch `torch.mm` for Deepseek V3.2 Indexer GEMM
+
+- Link: https://github.com/sgl-project/sglang/pull/23856
+- Status/date: merged / 2026-05-11
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@78cb38ed5` history, and the GitHub Pull Request files API; associated commit `1df9edcd015d`.
+- Diff scope read: GitHub Pull Request files API returned 1 files, +2/-9, 18 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Use Torch `torch.mm` for Deepseek V3.2 Indexer GEMM"; model line: DeepSeek V3.2; category: model support/runtime entry; main diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`; technical summary: Covers "Use Torch `torch.mm` for Deepseek V3.2 Indexer GEMM" with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +2/-9 (11 lines); hunks: -266,15 +266,8  @@ def _weights_proj_bf16_in_fp32_out(; symbols: _weights_proj_bf16_in_fp32_out, touching `_weights_proj_bf16_in_fp32_out`.
+- Code diff details:
+  - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +2/-9 (11 lines); hunks: -266,15 +266,8  @@ def _weights_proj_bf16_in_fp32_out(; symbols: _weights_proj_bf16_in_fp32_out, touching `_weights_proj_bf16_in_fp32_out`
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
+@@ -266,15 +266,8 @@ def _weights_proj_bf16_in_fp32_out(
+-        if deep_gemm_wrapper.ENABLE_JIT_DEEPGEMM:
+-            weight = self.weights_proj.weight
+-            out = torch.empty(
+-                (x.shape[0], weight.shape[0]),
+-                dtype=torch.float32,
+-                device=x.device,
+-            )
+-            deep_gemm_wrapper.gemm_nt_bf16bf16f32(x, weight, out)
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +2/-9
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.
+
+### PR #23562 - [AMD] Enable preshuffle paged MQA and page_size=64 for NSA indexer
+
+- Link: https://github.com/sgl-project/sglang/pull/23562
+- Status/date: merged / 2026-05-13
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@78cb38ed5` history, and the GitHub Pull Request files API; associated commit `a9359707c18d`.
+- Diff scope read: GitHub Pull Request files API returned 4 files, +83/-42, 231 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[AMD] Enable preshuffle paged MQA and page_size=64 for NSA indexer"; model line: DeepSeek V3.2; category: model support/runtime entry; main diff: `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/server_args.py`; technical summary: Covers "[AMD] Enable preshuffle paged MQA and page_size=64 for NSA indexer" with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` modified +53/-6 (59 lines); hunks: -5,10 +5,14  @@ import triton.language as tl; -163,8 +167,52  @@ def triton(; symbols: triton, _set_k_and_s_triton, touching `triton, _set_k_and_s_triton`; `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +25/-26 (51 lines); hunks: -431,12 +431,13  @@ def _get_topk_paged(; -471,17 +472,12  @@ def _get_topk_paged(; symbols: _get_topk_paged, _get_topk_ragged, _store_index_k_cache, touching `_get_topk_paged, _get_topk_ragged, _store_index_k_cache`; `python/sglang/srt/server_args.py` modified +2/-9 (11 lines); hunks: -1836,15 +1836,8  @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments, touching `_handle_model_specific_adjustments`; `python/sglang/srt/mem_cache/memory_pool.py` modified +3/-1 (4 lines); hunks: -2023,7 +2023,9  @@ def __init__(; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` modified +53/-6 (59 lines); hunks: -5,10 +5,14  @@ import triton.language as tl; -163,8 +167,52  @@ def triton(; symbols: triton, _set_k_and_s_triton, touching `triton, _set_k_and_s_triton`
+  - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +25/-26 (51 lines); hunks: -431,12 +431,13  @@ def _get_topk_paged(; -471,17 +472,12  @@ def _get_topk_paged(; symbols: _get_topk_paged, _get_topk_ragged, _store_index_k_cache, touching `_get_topk_paged, _get_topk_ragged, _store_index_k_cache`
+  - `python/sglang/srt/server_args.py` modified +2/-9 (11 lines); hunks: -1836,15 +1836,8  @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments, touching `_handle_model_specific_adjustments`
+  - `python/sglang/srt/mem_cache/memory_pool.py` modified +3/-1 (4 lines); hunks: -2023,7 +2023,9  @@ def __init__(; symbols: __init__, touching `__init__`
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/attention/nsa/index_buf_accessor.py
+@@ -5,10 +5,14 @@
+-from sglang.srt.utils import is_hip
++from sglang.srt.utils import get_bool_env_var, is_hip
++_use_aiter = get_bool_env_var("SGLANG_USE_AITER") and _is_hip
++
++if _use_aiter:
++    from aiter.ops.cache import cp_gather_indexer_k_quant_cache
+@@ -163,8 +167,52 @@ def triton(
++        if _use_aiter:
+diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
+@@ -431,12 +431,13 @@ def _get_topk_paged(
+-            assert page_size == 1, "only support page size 1"
+-            block_tables = metadata.get_page_table_1()
++            assert (
++                page_size % 16 == 0
++            ), f"HIP preshuffle requires page_size to be a multiple of 16, got {page_size}"
+-            # NOTE(dark): this support extend/decode/decode+graph
+-            block_tables = metadata.get_page_table_64()
++        # NOTE(dark): this support extend/decode/decode+graph
+diff -- python/sglang/srt/server_args.py
+@@ -1836,15 +1836,8 @@ def _handle_model_specific_adjustments(self):
+-                    if is_hip():
+-                        self.page_size = 1
+-                        logger.warning(
+-                            "Setting page size to 1 for DeepSeek DSA on ROCm."
+-                        )
+-                    else:
+-                        # For CUDA GPU
+-                        self.page_size = 64
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` modified +53/-6; `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +25/-26; `python/sglang/srt/server_args.py` modified +2/-9; `python/sglang/srt/mem_cache/memory_pool.py` modified +3/-1
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/server_args.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.
+
+### PR #25205 - [AMD]  Auto-fallback NSA indexer to page_size=1 when aiter preshuffle gluon kernel is unavailable (Deepseek v3.2)
+
+- Link: https://github.com/sgl-project/sglang/pull/25205
+- Status/date: merged / 2026-05-14
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@78cb38ed5` history, and the GitHub Pull Request files API; associated commit `22bfae0d1de4`.
+- Diff scope read: GitHub Pull Request files API returned 5 files, +137/-26, 310 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[AMD]  Auto-fallback NSA indexer to page_size=1 when aiter preshuffle gluon kernel is unavailable (Deepseek v3.2)"; model line: DeepSeek V3.2; category: performance/backend optimization; main diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`; technical summary: Covers "[AMD]  Auto-fallback NSA indexer to page_size=1 when aiter preshuffle gluon kernel is unavailable (Deepseek v3.2)" with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +49/-16 (65 lines); hunks: -1,6 +1,7  @@ from __future__ import annotations; -12,6 +13,11  @@ fused_store_index_k_cache,; symbols: _get_topk_paged, _get_topk_ragged, _store_index_k_cache, touching `_get_topk_paged, _get_topk_ragged, _store_index_k_cache`; `python/sglang/srt/layers/attention/nsa/utils.py` modified +41/-0 (41 lines); hunks: -1,3 +1,4  @@ +from functools import lru_cache; -11,8 +12,48  @@ get_attention_dp_rank,; `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` modified +19/-5 (24 lines); hunks: -4,14 +4,19  @@ import triton; -167,7 +172,11  @@ def triton(; symbols: triton, _set_k_and_s_triton, touching `triton, _set_k_and_s_triton`; `python/sglang/srt/server_args.py` modified +19/-2 (21 lines); hunks: -1840,8 +1840,25  @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments, touching `_handle_model_specific_adjustments`.
+- Code diff details:
+  - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +49/-16 (65 lines); hunks: -1,6 +1,7  @@ from __future__ import annotations; -12,6 +13,11  @@ fused_store_index_k_cache,; symbols: _get_topk_paged, _get_topk_ragged, _store_index_k_cache, touching `_get_topk_paged, _get_topk_ragged, _store_index_k_cache`
+  - `python/sglang/srt/layers/attention/nsa/utils.py` modified +41/-0 (41 lines); hunks: -1,3 +1,4  @@ +from functools import lru_cache; -11,8 +12,48  @@ get_attention_dp_rank,
+  - `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` modified +19/-5 (24 lines); hunks: -4,14 +4,19  @@ import triton; -167,7 +172,11  @@ def triton(; symbols: triton, _set_k_and_s_triton, touching `triton, _set_k_and_s_triton`
+  - `python/sglang/srt/server_args.py` modified +19/-2 (21 lines); hunks: -1840,8 +1840,25  @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments, touching `_handle_model_specific_adjustments`
+  - `python/sglang/srt/mem_cache/memory_pool.py` modified +9/-3 (12 lines); hunks: -45,6 +45,7  @@ quantize_k_cache,; -2026,9 +2027,14  @@ def __init__(; symbols: __init__, touching `__init__`
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
+@@ -1,6 +1,7 @@
++import logging
+@@ -12,6 +13,11 @@
++from sglang.srt.layers.attention.nsa.utils import (
++    aiter_can_use_preshuffle_paged_mqa,
++    is_nsa_enable_prefill_cp,
++    is_nsa_prefill_cp_in_seq_split,
++)
+@@ -29,13 +35,25 @@
+diff -- python/sglang/srt/layers/attention/nsa/utils.py
+@@ -1,3 +1,4 @@
++from functools import lru_cache
+@@ -11,8 +12,48 @@
++from sglang.srt.utils import get_bool_env_var, is_hip
++
++@lru_cache(maxsize=1)
++def aiter_can_use_preshuffle_paged_mqa() -> bool:
++    """Whether aiter's preshuffle paged MQA / cache kernels can be used on this runtime.
++
+diff -- python/sglang/srt/layers/attention/nsa/index_buf_accessor.py
+@@ -4,14 +4,19 @@
++from sglang.srt.layers.attention.nsa.utils import aiter_can_use_preshuffle_paged_mqa
++# aiter cp_gather kernel with preshuffle=True is only valid when the indexer
++# uses the page_size=64 preshuffle layout (i.e. when the matching MQA gluon path
++# is also enabled).
++_use_aiter_preshuffle = aiter_can_use_preshuffle_paged_mqa()
+-if _use_aiter:
++if _use_aiter_preshuffle:
+@@ -167,7 +172,11 @@ def triton(
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +49/-16; `python/sglang/srt/layers/attention/nsa/utils.py` modified +41/-0; `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` modified +19/-5; `python/sglang/srt/server_args.py` modified +19/-2
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.
+
+### PR #25233 - [Fix] DeepSeek-V3.2: build structural tag locally to encode both wrapper and invoke layers
+
+- Link: https://github.com/sgl-project/sglang/pull/25233
+- Status/date: merged / 2026-05-15
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@78cb38ed5` history, and the GitHub Pull Request files API; associated commit `7cb4669a049a`.
+- Diff scope read: GitHub Pull Request files API returned 1 files, +115/-3, 141 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Fix] DeepSeek-V3.2: build structural tag locally to encode both wrapper and invoke layers"; model line: DeepSeek V3.2; category: bug fix; main diff: `python/sglang/srt/function_call/deepseekv32_detector.py`; technical summary: Covers "[Fix] DeepSeek-V3.2: build structural tag locally to encode both wrapper and invoke layers" with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `python/sglang/srt/function_call/deepseekv32_detector.py` modified +115/-3 (118 lines); hunks: -1,10 +1,11  @@ import json; -14,8 +15,30  @@ ); symbols: structure_info, touching `structure_info`.
+- Code diff details:
+  - `python/sglang/srt/function_call/deepseekv32_detector.py` modified +115/-3 (118 lines); hunks: -1,10 +1,11  @@ import json; -14,8 +15,30  @@ ); symbols: structure_info, touching `structure_info`
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/function_call/deepseekv32_detector.py
+@@ -1,10 +1,11 @@
++from typing import List, Literal, Optional, Union
+-from sglang.srt.entrypoints.openai.protocol import Tool
++from sglang.srt.entrypoints.openai.protocol import Tool, ToolChoice
+@@ -14,8 +15,30 @@
++try:
++    from xgrammar import StructuralTag
++    from xgrammar.structural_tag import (
++        AnyTextFormat,
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/function_call/deepseekv32_detector.py` modified +115/-3
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/function_call/deepseekv32_detector.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.

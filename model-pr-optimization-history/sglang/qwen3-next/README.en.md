@@ -1,5 +1,9 @@
 # sglang Qwen3 Next Model PR Optimization History
 
+## 2026-05-19 PR Backfill Audit
+
+Rechecked sglang upstream `origin/main@78cb38ed5` and the GitHub Pull Request files API; this pass adds timeline entries and per-PR diff audit cards for `#25401`.
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |
@@ -17,8 +21,8 @@
 ## PR Coverage Summary
 
 - Git-traced PRs: 23
-- Extra PRs preserved from existing docs: 37
-- Total PRs in this document: 60
+- Extra PRs preserved from existing docs: 38
+- Total PRs in this document: 61
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -86,6 +90,7 @@
 | 2026-04-22 | [#23474](https://github.com/sgl-project/sglang/pull/23474) | open | [Bugfix] Try to fix --cpu-offload-gb on hybrid linear-attn models | `test/registered/unit/utils/test_offloader_tied_params.py`, `python/sglang/srt/utils/offloader.py` |
 | 2026-04-27 | [#21698](https://github.com/sgl-project/sglang/pull/21698) | merged | [npu]fix: qwen3-next w8a8 precision bugs | `python/sglang/srt/models/qwen3_next.py` |
 | 2026-04-29 | [#23619](https://github.com/sgl-project/sglang/pull/23619) | merged | Enable Qwen3-Next MoE all-reduce fusion | `python/sglang/srt/models/qwen3_next.py` |
+| 2026-05-18 | [#25401](https://github.com/sgl-project/sglang/pull/25401) | merged | Add output_gate_type to Qwen3NextConfig and update models to utilize it | `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/configs/qwen3_next.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -2100,3 +2105,51 @@ diff -- python/sglang/srt/models/qwen3_next.py
 
 - Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
 - If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.
+
+### PR #25401 - Add output_gate_type to Qwen3NextConfig and update models to utilize it
+
+- Link: https://github.com/sgl-project/sglang/pull/25401
+- Status/date: merged / 2026-05-18
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@78cb38ed5` history, and the GitHub Pull Request files API; associated commit `3e2a1096369f`.
+- Diff scope read: GitHub Pull Request files API returned 3 files, +21/-1, 76 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Add output_gate_type to Qwen3NextConfig and update models to utilize it"; model line: Qwen3 Next; category: model support/runtime entry; main diff: `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/configs/qwen3_next.py`; technical summary: Covers "Add output_gate_type to Qwen3NextConfig and update models to utilize it" with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `python/sglang/srt/models/qwen3_next.py` modified +11/-1 (12 lines); hunks: -106,6 +106,7  @@ def __init__(; -186,12 +187,21  @@ def __init__(; symbols: __init__, touching `__init__`；`python/sglang/srt/models/qwen3_5.py` modified +6/-0 (6 lines); hunks: -143,6 +143,7  @@ def __init__(; -237,6 +238,11  @@ def __init__(; symbols: __init__, touching `__init__`；`python/sglang/srt/configs/qwen3_next.py` modified +4/-0 (4 lines); hunks: -68,6 +68,8  @@ class Qwen3NextConfig(PretrainedConfig):; -186,6 +188,7  @@ def __init__(; symbols: Qwen3NextConfig, __init__, touching `Qwen3NextConfig, __init__`.
+- Code diff details:
+  - `python/sglang/srt/models/qwen3_next.py` modified +11/-1 (12 lines); hunks: -106,6 +106,7  @@ def __init__(; -186,12 +187,21  @@ def __init__(; symbols: __init__, touching `__init__`
+  - `python/sglang/srt/models/qwen3_5.py` modified +6/-0 (6 lines); hunks: -143,6 +143,7  @@ def __init__(; -237,6 +238,11  @@ def __init__(; symbols: __init__, touching `__init__`
+  - `python/sglang/srt/configs/qwen3_next.py` modified +4/-0 (4 lines); hunks: -68,6 +68,8  @@ class Qwen3NextConfig(PretrainedConfig):; -186,6 +188,7  @@ def __init__(; symbols: Qwen3NextConfig, __init__, touching `Qwen3NextConfig, __init__`
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_next.py
+@@ -106,6 +106,7 @@ def __init__(
++        self.output_gate_type = config.output_gate_type
+@@ -186,12 +187,21 @@ def __init__(
++                **(
++                    {"activation": self.output_gate_type}
++                    if self.output_gate_type is not None
++                    else {}
++                ),
+-                activation=self.activation,
+diff -- python/sglang/srt/models/qwen3_5.py
+@@ -143,6 +143,7 @@ def __init__(
++        self.output_gate_type = config.output_gate_type
+@@ -237,6 +238,11 @@ def __init__(
++            **(
++                {"activation": self.output_gate_type}
++                if self.output_gate_type is not None
++                else {}
++            ),
+diff -- python/sglang/srt/configs/qwen3_next.py
+@@ -68,6 +68,8 @@ class Qwen3NextConfig(PretrainedConfig):
++        output_gate_type (`str`, *optional*, defaults to `None`):
++            The gate activation function used by the linear attention output norm.
+@@ -186,6 +188,7 @@ def __init__(
++        output_gate_type=None,
+@@ -223,6 +226,7 @@ def __init__(
++        self.output_gate_type = output_gate_type
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_next.py` modified +11/-1; `python/sglang/srt/models/qwen3_5.py` modified +6/-0; `python/sglang/srt/configs/qwen3_next.py` modified +4/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/configs/qwen3_next.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.

@@ -1,5 +1,9 @@
 # sglang Llama 4 模型 PR 优化历史
 
+## 2026-05-19 PR 补漏复核
+
+已按 sglang 上游 `origin/main@78cb38ed5` 和 GitHub Pull Request files API 复核；本轮补齐 `#25089` 的时间线与逐 PR diff 审计卡。
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
@@ -21,8 +25,8 @@
 ## PR 覆盖总览
 
 - git 追溯 PR 数: 28
-- 原文档显式引用补充 PR 数: 1
-- 当前文档总 PR 数: 29
+- 原文档显式引用补充 PR 数: 2
+- 当前文档总 PR 数: 30
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -59,6 +63,7 @@
 | 2026-01-14 | [#16971](https://github.com/sgl-project/sglang/pull/16971) | merged | fix: renaming test file and job names + skip blocking llama4 nightly | `test/registered/8-gpu-models/test_llama4.py` |
 | 2026-01-30 | [#12813](https://github.com/sgl-project/sglang/pull/12813) | merged | add weightless qk norm to RMSNorm interface for Llama 4 | `python/sglang/srt/models/llama4.py` |
 | 2026-02-27 | [#17123](https://github.com/sgl-project/sglang/pull/17123) | merged | llama4 npu adapt | `python/sglang/srt/models/llama4.py` |
+| 2026-05-15 | [#25089](https://github.com/sgl-project/sglang/pull/25089) | merged | [Llama4] Use strided in-place fused QK RMSNorm to drop a redundant copy | `python/sglang/srt/models/llama4.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -865,6 +870,35 @@ diff -- python/sglang/srt/models/llama4.py
 - 已读文件:
   - runtime: `python/sglang/srt/models/llama4.py` modified +4/-0
 - 验证与风险: diff 自带测试面 `test/registered/ascend/llm_models/test_ascend_llama4_scount_17b_16e.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #25089 - [Llama4] Use strided in-place fused QK RMSNorm to drop a redundant copy
+
+- 链接: https://github.com/sgl-project/sglang/pull/25089
+- 状态/时间: merged / 2026-05-15
+- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@78cb38ed5` 提交历史和 GitHub Pull Request files API 反查；关联提交 `17c8a2fa5339`。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+22/-7，可读 patch 43 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Llama4] Use strided in-place fused QK RMSNorm to drop a redundant copy」；模型线: Llama 4；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/llama4.py`；技术摘要: 覆盖「[Llama4] Use strided in-place fused QK RMSNorm to drop a redundant copy」，下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/llama4.py` modified +22/-7 (29 lines); hunks: -54,6 +54,7  @@ PPProxyTensors,; -341,13 +342,27  @@ def forward(; symbols: forward，涉及 `forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/llama4.py` modified +22/-7 (29 lines); hunks: -54,6 +54,7  @@ PPProxyTensors,; -341,13 +342,27  @@ def forward(; symbols: forward，涉及 `forward`
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/llama4.py
+@@ -54,6 +54,7 @@
++from sglang.srt.models.utils import apply_qk_norm
+@@ -341,13 +342,27 @@ def forward(
+-        if self.qk_norm is not None:
+-            # TODO there are still 2 redundant direct_copy_kernel_cuda for this `reshape` and (in attn backend) q.contiguous(), maybe we can fuse them later
+-            qk = qk.reshape(-1, self.head_dim).contiguous().bfloat16()
+-            qk = self.qk_norm(qk).to(torch.bfloat16)
+-            qk = qk.reshape(-1, self.q_size + self.kv_size)
+-
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/llama4.py` modified +22/-7
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/llama4.py`；风险点是权重加载、并行切分、attention/MoE 后端选择、量化 dtype 和 parser 输出，需要至少做一次真实 checkpoint 或等价 smoke。
 
 ## 补漏结论
 

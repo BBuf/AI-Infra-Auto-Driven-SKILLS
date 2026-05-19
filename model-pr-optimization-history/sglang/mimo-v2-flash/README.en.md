@@ -1,8 +1,8 @@
 # sglang MiMo V2 Flash Model PR Optimization History
 
-## 2026-05-15 Source Refresh Addendum
+## 2026-05-19 PR Backfill Audit
 
-SGLang `origin/main` was rechecked at `50f405816`. No newer MiMo runtime PR was found after `#23811`/`#23945`; however, the current MiMo-V2.5 cookbook/snippet now distinguishes Pro H100/H200 TP=16 multi-node Hopper, B200 TP=8 Blackwell, GB300 TP=8 multi-node, and base MiMo-V2.5 TP=4/TP=8 DP=2 paths. EAGLE still requires `SGLANG_ENABLE_SPEC_V2=1`.
+Rechecked sglang upstream `origin/main@78cb38ed5` and the GitHub Pull Request files API; this pass adds timeline entries and per-PR diff audit cards for `#24931`, `#25588`.
 
 ## Implementation File Coverage
 
@@ -27,8 +27,8 @@ SGLang `origin/main` was rechecked at `50f405816`. No newer MiMo runtime PR was 
 ## PR Coverage Summary
 
 - Git-traced PRs: 9
-- Extra PRs preserved from existing docs: 5
-- Total PRs in this document: 14
+- Extra PRs preserved from existing docs: 7
+- Total PRs in this document: 16
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -50,6 +50,8 @@ SGLang `origin/main` was rechecked at `50f405816`. No newer MiMo runtime PR was 
 | 2026-04-29 | [#23936](https://github.com/sgl-project/sglang/pull/23936) | merged | mimo v2.5 pro sglang-jax cookbook | `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx`, `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx` |
 | 2026-04-30 | [#24118](https://github.com/sgl-project/sglang/pull/24118) | merged | fix: rename mimo spec threshold attr to num_accepted_drafts_thres | `test/registered/8-gpu-models/test_mimo_models.py` |
 | 2026-04-30 | [#23811](https://github.com/sgl-project/sglang/pull/23811) | merged | [Feature] Xiaomi MiMo-V2.5 day0 support | `python/sglang/srt/multimodal/processors/mimo_v2.py`, `python/sglang/srt/models/mimo_audio.py`, `python/sglang/srt/models/mimo_vl.py` |
+| 2026-05-18 | [#24931](https://github.com/sgl-project/sglang/pull/24931) | merged | feat(mimo-v2): add EPD disaggregation support | `python/sglang/srt/multimodal/processors/mimo_v2.py`, `python/sglang/srt/models/mimo_v2.py`, `python/sglang/srt/managers/tokenizer_manager.py` |
+| 2026-05-19 | [#25588](https://github.com/sgl-project/sglang/pull/25588) | merged | perf(mimo-v2-epd): enable GPU image preprocess and parallel video decode | `python/sglang/srt/multimodal/processors/mimo_v2.py`, `python/sglang/srt/managers/tokenizer_manager.py`, `python/sglang/srt/utils/video_decoder.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -505,3 +507,97 @@ diff -- python/sglang/srt/models/mimo_vl.py
 
 - Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
 - If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.
+
+### PR #24931 - feat(mimo-v2): add EPD disaggregation support
+
+- Link: https://github.com/sgl-project/sglang/pull/24931
+- Status/date: merged / 2026-05-18
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@78cb38ed5` history, and the GitHub Pull Request files API; associated commit `784fe7e99b80`.
+- Diff scope read: GitHub Pull Request files API returned 7 files, +961/-289, 1710 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "feat(mimo-v2): add EPD disaggregation support"; model line: MiMo V2 Flash; category: model support/runtime entry; main diff: `python/sglang/srt/multimodal/processors/mimo_v2.py`, `python/sglang/srt/models/mimo_v2.py`, `python/sglang/srt/managers/tokenizer_manager.py`; technical summary: Covers "feat(mimo-v2): add EPD disaggregation support" with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `python/sglang/srt/multimodal/processors/mimo_v2.py` modified +559/-110 (669 lines); hunks: -268,6 +268,49  @@ def __post_init__(self):; -445,6 +488,207  @@ def __init__(; symbols: __post_init__, __init__, _process_audio_content, _process_video_audio_content, touching `__post_init__, __init__, _process_audio_content`；`python/sglang/srt/models/mimo_v2.py` modified +148/-28 (176 lines); hunks: -68,7 +68,11  @@ MultiModalityDataPaddingPatternMultimodalTokens,; -1007,6 +1011,11  @@ class MiMoV2ForCausalLM(nn.Module):; symbols: MiMoV2ForCausalLM, __init__, get_video_feature, forward, touching `MiMoV2ForCausalLM, __init__, get_video_feature`；`python/sglang/srt/managers/tokenizer_manager.py` modified +5/-0 (5 lines); hunks: -773,6 +773,11  @@ async def _tokenize_one_request(; symbols: _tokenize_one_request, touching `_tokenize_one_request`；`python/sglang/srt/disaggregation/encode_server.py` modified +136/-102 (238 lines); hunks: -24,7 +24,10  @@ from sglang.srt.configs.load_config import LoadConfig; -45,6 +48,7  @@ set_global_server_args_for_scheduler,; symbols: _get_mm_feature, _background_insert, wrap_one, _encode, touching `_get_mm_feature, _background_insert, wrap_one`.
+- Code diff details:
+  - `python/sglang/srt/multimodal/processors/mimo_v2.py` modified +559/-110 (669 lines); hunks: -268,6 +268,49  @@ def __post_init__(self):; -445,6 +488,207  @@ def __init__(; symbols: __post_init__, __init__, _process_audio_content, _process_video_audio_content, touching `__post_init__, __init__, _process_audio_content`
+  - `python/sglang/srt/models/mimo_v2.py` modified +148/-28 (176 lines); hunks: -68,7 +68,11  @@ MultiModalityDataPaddingPatternMultimodalTokens,; -1007,6 +1011,11  @@ class MiMoV2ForCausalLM(nn.Module):; symbols: MiMoV2ForCausalLM, __init__, get_video_feature, forward, touching `MiMoV2ForCausalLM, __init__, get_video_feature`
+  - `python/sglang/srt/managers/tokenizer_manager.py` modified +5/-0 (5 lines); hunks: -773,6 +773,11  @@ async def _tokenize_one_request(; symbols: _tokenize_one_request, touching `_tokenize_one_request`
+  - `python/sglang/srt/disaggregation/encode_server.py` modified +136/-102 (238 lines); hunks: -24,7 +24,10  @@ from sglang.srt.configs.load_config import LoadConfig; -45,6 +48,7  @@ set_global_server_args_for_scheduler,; symbols: _get_mm_feature, _background_insert, wrap_one, _encode, touching `_get_mm_feature, _background_insert, wrap_one`
+  - `python/sglang/srt/disaggregation/encode_receiver.py` modified +64/-18 (82 lines); hunks: -193,7 +193,29  @@ def copy_without_embedding(self):; -231,6 +253,7  @@ def __init__(; symbols: copy_without_embedding, __init__, _set_part_grid, _set_video_meta_for_part, touching `copy_without_embedding, __init__, _set_part_grid`
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/multimodal/processors/mimo_v2.py
+@@ -268,6 +268,49 @@ def __post_init__(self):
++def _decode_frames_and_timestamps(vdw, ele):
++    # Shared E/D frame-sampling recipe: smart_nframes + linspace + permute.
++    total_frames, video_fps = len(vdw), vdw.avg_fps
++    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
++    idx = list(np.unique(np.linspace(0, total_frames - 1, num=nframes, dtype=np.int64)))
++    video_tensor = vdw.get_frames_as_tensor(idx).permute(0, 3, 1, 2).float()
++    timestamps = torch.as_tensor(idx, dtype=torch.float32) / video_fps
++    return video_tensor, timestamps
+diff -- python/sglang/srt/models/mimo_v2.py
+@@ -68,7 +68,11 @@
+-from sglang.srt.managers.schedule_batch import MultimodalDataItem, MultimodalInputs
++from sglang.srt.managers.schedule_batch import (
++    Modality,
++    MultimodalDataItem,
++    MultimodalInputs,
++)
+@@ -1007,6 +1011,11 @@ class MiMoV2ForCausalLM(nn.Module):
++    # Prefixes for weight routing in encoder_only/language_only modes
+diff -- python/sglang/srt/managers/tokenizer_manager.py
+@@ -773,6 +773,11 @@ async def _tokenize_one_request(
++                    if self.server_args.language_only:
++                        logger.warning(
++                            "Encoder embedding not available, "
++                            "falling back to local mm processing"
++                        )
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/multimodal/processors/mimo_v2.py` modified +559/-110; `python/sglang/srt/models/mimo_v2.py` modified +148/-28; `python/sglang/srt/managers/tokenizer_manager.py` modified +5/-0; `python/sglang/srt/disaggregation/encode_server.py` modified +136/-102
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/multimodal/processors/mimo_v2.py`, `python/sglang/srt/models/mimo_v2.py`, `python/sglang/srt/managers/tokenizer_manager.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.
+
+### PR #25588 - perf(mimo-v2-epd): enable GPU image preprocess and parallel video decode
+
+- Link: https://github.com/sgl-project/sglang/pull/25588
+- Status/date: merged / 2026-05-19
+- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@78cb38ed5` history, and the GitHub Pull Request files API; associated commit `f0763859edbb`.
+- Diff scope read: GitHub Pull Request files API returned 3 files, +75/-8, 188 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "perf(mimo-v2-epd): enable GPU image preprocess and parallel video decode"; model line: MiMo V2 Flash; category: performance/backend optimization; main diff: `python/sglang/srt/multimodal/processors/mimo_v2.py`, `python/sglang/srt/managers/tokenizer_manager.py`, `python/sglang/srt/utils/video_decoder.py`; technical summary: Covers "perf(mimo-v2-epd): enable GPU image preprocess and parallel video decode" with file-level evidence, code excerpts, and validation risks below.
+- Key implementation: `python/sglang/srt/multimodal/processors/mimo_v2.py` modified +26/-2 (28 lines); hunks: -359,11 +359,13  @@ def __init__(; -546,6 +548,20  @@ def _as_dict(obj):; symbols: __init__, _as_dict, _load_video_for_encoder, preprocess_for_encoder, touching `__init__, _as_dict, _load_video_for_encoder`；`python/sglang/srt/managers/tokenizer_manager.py` modified +1/-0 (1 lines); hunks: -453,6 +453,7  @@ def init_disaggregation(self):; symbols: init_disaggregation, touching `init_disaggregation`；`python/sglang/srt/utils/video_decoder.py` modified +48/-6 (54 lines); hunks: -1,6 +1,7  @@ """Unified video decoder: torchcodec preferred, decord as fallback."""; -38,31 +39,38  @@ class VideoDecoderWrapper:; symbols: VideoDecoderWrapper, get_frames_as_tensor, source_bytes, touching `VideoDecoderWrapper, get_frames_as_tensor, source_bytes`.
+- Code diff details:
+  - `python/sglang/srt/multimodal/processors/mimo_v2.py` modified +26/-2 (28 lines); hunks: -359,11 +359,13  @@ def __init__(; -546,6 +548,20  @@ def _as_dict(obj):; symbols: __init__, _as_dict, _load_video_for_encoder, preprocess_for_encoder, touching `__init__, _as_dict, _load_video_for_encoder`
+  - `python/sglang/srt/managers/tokenizer_manager.py` modified +1/-0 (1 lines); hunks: -453,6 +453,7  @@ def init_disaggregation(self):; symbols: init_disaggregation, touching `init_disaggregation`
+  - `python/sglang/srt/utils/video_decoder.py` modified +48/-6 (54 lines); hunks: -1,6 +1,7  @@ """Unified video decoder: torchcodec preferred, decord as fallback."""; -38,31 +39,38  @@ class VideoDecoderWrapper:; symbols: VideoDecoderWrapper, get_frames_as_tensor, source_bytes, touching `VideoDecoderWrapper, get_frames_as_tensor, source_bytes`
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/multimodal/processors/mimo_v2.py
+@@ -359,11 +359,13 @@ def __init__(
++        video_decode_num_threads=0,
++        self.video_decode_num_threads = video_decode_num_threads
+@@ -546,6 +548,20 @@ def _as_dict(obj):
++        image_cfg = (mm_config or {}).get("image", {})
++        if "device" in image_cfg:
++            kwargs["device"] = image_cfg["device"]
++
++        video_cfg = (mm_config or {}).get("video", {})
+diff -- python/sglang/srt/managers/tokenizer_manager.py
+@@ -453,6 +453,7 @@ def init_disaggregation(self):
++                hf_config=self.model_config.hf_config,
+diff -- python/sglang/srt/utils/video_decoder.py
+@@ -1,6 +1,7 @@
++import os
+@@ -38,31 +39,38 @@ class VideoDecoderWrapper:
+-    def __init__(self, source, device: str = "cpu"):
++    def __init__(self, source, device: str = "cpu", num_decode_threads: int = 0):
++        num_decode_threads: number of parallel decoder instances for frame
++            extraction (torchcodec only). 0 = auto (capped at 16),
++            1 = single decoder. Set > 1 to split frame indices across
++            multiple decoders in parallel threads.
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/multimodal/processors/mimo_v2.py` modified +26/-2; `python/sglang/srt/managers/tokenizer_manager.py` modified +1/-0; `python/sglang/srt/utils/video_decoder.py` modified +48/-6
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/multimodal/processors/mimo_v2.py`, `python/sglang/srt/managers/tokenizer_manager.py`, `python/sglang/srt/utils/video_decoder.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.
