@@ -48,11 +48,17 @@ counter digests, but no separate KernelPilot or kernel RLCR loop is started.
       analyses exist.
     - Every analysis contains kernel, overlap-opportunity, and fuse-pattern
       tables with prefill/decode evidence when available.
+    - When optional capacity, layer-pipeline, or compute-simulation gates were
+      triggered, the matching `analysis/capacity.md`,
+      `analysis/layer-pipeline.md`, or `analysis/compute-simulation.md` report
+      exists and is cited by the patch choice.
   - Negative Tests (expected to FAIL):
     - A code patch is proposed without citing a profiler table row and source
       path or kernel family.
     - A model-specific source patch is proposed without checking matching model
       PR history for prior SGLang changes and relevant competitor evidence.
+    - The loop ignores a triggered optional analysis gate and patches without
+      preserving the resulting evidence.
 
 - AC-3: SGLang patches are evidence-driven and minimal
   - Positive Tests (expected to PASS):
@@ -148,6 +154,7 @@ revalidation, unless the initial evidence proves no patch is needed.
 - Can use: SGLang source patches, guarded heuristics, existing fast-path
   selection, fusion or overlap fixes, model-specific runtime fixes, PR-driven
   model history knowledge for SGLang/vLLM source-path selection,
+  optional capacity/layer-pipeline/compute-simulation reports,
   KernelPilot knowledge/source evidence for eligible hot kernels,
   `ncu-report` digests, focused tests, microbenchmarks, torch-profiler, Nsight
   Compute, and Nsight Systems.

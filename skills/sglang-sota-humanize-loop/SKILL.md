@@ -73,6 +73,15 @@ Read these before a real run:
 - the matching host or operator skill for SSH, container, GPU, and artifact
   conventions
 
+Read these only when the optional analysis gates below trigger:
+
+- `../llm-serving-capacity-planner/SKILL.md` for serving-log memory and request
+  capacity analysis
+- `../llm-pipeline-analysis/SKILL.md` for layer/pass/kernel breakdown inside a
+  profiled SGLang trace
+- `../model-compute-simulation/SKILL.md` for operator shapes, FLOPs, and MFU
+  estimates before a kernel or operator patch
+
 Read KernelPilot knowledge files only after profiler evidence identifies a
 specific slow kernel family or candidate kernel path. Use them for source ideas,
 PR references, implementation patterns, and provenance checks, not for starting a
@@ -119,6 +128,9 @@ runs/YYYYMMDD_<model_slug>_sota_humanize/
   benchmark/
   profiles/
   analysis/
+    capacity.md
+    layer-pipeline.md
+    compute-simulation.md
   history/
     model-pr-history-notes.md
   kernel/
@@ -236,6 +248,64 @@ paths or kernel families are plausible patch targets.
 
 Do not patch SGLang until this report exists.
 
+## Optional Analysis Gates
+
+These gates are optional, evidence-driven additions to Phase 2 and Phase 3.
+Do not run them as a substitute for the fixed fair benchmark or required
+profiler comparison.
+
+### Capacity Gate
+
+Run `llm-serving-capacity-planner` after Phase 1 or during Phase 2 only when
+memory or request capacity is part of the gap:
+
+- SGLang fails to serve a candidate because of OOM, KV pool exhaustion, or a
+  low `max_running_requests` limit.
+- SGLang passes the workload but uses materially more memory than the leading
+  framework under the same model, GPU count, precision, and workload.
+- The next candidate changes `--mem-fraction-static`, KV cache dtype, TP/EP/PP,
+  CUDA graph settings, or max token capacity and needs an explanation before it
+  enters the fair benchmark table.
+
+Use the serving startup log, optional `nvidia-smi` snapshot, GPU type, and
+model `config.json` when available. Write the result to `analysis/capacity.md`
+and cite the log paths used. The output should explain memory categories, KV
+pool size, remaining HBM, and max concurrent request estimates for the fixed
+benchmark scenario.
+
+### Layer Pipeline Gate
+
+Run `llm-pipeline-analysis` after Phase 3 only when the profiler's three tables
+are too coarse to choose a patch target:
+
+- the hot SGLang row is a repeated kernel family but the slow layer type is not
+  clear
+- the model has heterogeneous layers, such as MoE, hash layers, or
+  `compress_ratios`, and the gap may come from one layer class
+- a Perfetto time range is needed for a specific forward pass or representative
+  layer
+
+Use the profiled SGLang trace and the served model config. Write
+`analysis/layer-pipeline.md` with the chosen forward pass, layer-type timing
+table, representative layers, and any Perfetto ranges used for inspection.
+
+### Compute Simulation Gate
+
+Run `model-compute-simulation` after Phase 3 and before Phase 4 when a proposed
+patch needs operator-level compute evidence:
+
+- the root cause points at a kernel or operator family and the plan needs
+  concrete shapes, FLOPs, theoretical time, or MFU
+- the team needs to decide whether the target is compute-bound,
+  memory/scheduling-bound, overlap-bound, or mostly launch overhead
+- a kernel target is about to enter Kernel Evidence Assist and needs
+  model-derived shapes/dtypes/layouts for a microbench or NCU comparison
+
+Use the same model config, TP/DP/EP, GPU type, dtype, sequence shape, and
+measured latency from the benchmark/profile artifact. Write
+`analysis/compute-simulation.md` with the operator table, total FLOPs, MFU
+interpretation, and the exact assumptions used.
+
 ## Phase 4: Build The Humanize Plan
 
 Create a Humanize plan inside the SGLang checkout that will be patched:
@@ -253,6 +323,8 @@ The plan must require:
 - preserving the fixed benchmark workload and SLA throughout the loop
 - preserving and consulting `history/model-pr-history-notes.md` before choosing
   model-specific SGLang source paths
+- preserving any optional capacity, layer-pipeline, or compute-simulation
+  reports that influenced the patch target
 - patching SGLang code, not just benchmark parameters
 - re-running real model benchmark/profile after each accepted patch
 - continuing through multiple minimal patches when one patch only closes part
