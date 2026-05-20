@@ -1,0 +1,31 @@
+{
+  "h20": {
+    "display_name": "NVIDIA H20",
+    "bf16_tflops": 148,
+    "fp8_tflops": 296,
+    "memory_bw_tb_s": 4.00,
+    "hbm_gb": 96
+  },
+  "h100-sxm-80gb": {
+    "display_name": "NVIDIA H100 SXM 80GB",
+    "bf16_tflops": 989,
+    "fp8_tflops": 1979,
+    "memory_bw_tb_s": 3.35,
+    "hbm_gb": 80
+  },
+  "h200-sxm-141gb": {
+    "display_name": "NVIDIA H200 SXM 141GB",
+    "bf16_tflops": 989,
+    "fp8_tflops": 1979,
+    "memory_bw_tb_s": 4.80,
+    "hbm_gb": 141
+  },
+  "b200-sxm-180gb": {
+    "display_name": "NVIDIA B200 SXM 180GB",
+    "bf16_tflops": 2250,
+    "fp8_tflops": 4500,
+    "fp4_tflops": 9000,
+    "memory_bw_tb_s": 7.70,
+    "hbm_gb": 180
+  }
+}

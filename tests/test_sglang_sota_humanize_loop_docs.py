@@ -92,6 +92,41 @@ class SglangSotaHumanizeLoopDocsTest(unittest.TestCase):
         self.assertNotIn("sglang-continuation-plan.md", text)
         self.assertNotIn("Cap the KernelPilot Humanize loop", text)
 
+    def test_optional_analysis_gates_are_conditional(self) -> None:
+        text = read_skill_file("SKILL.md")
+        template = read_skill_file("references", "refined-plan-template.md")
+        normalized = " ".join(text.split())
+        template_normalized = " ".join(template.split())
+
+        self.assertIn("Read these only when the optional analysis gates below trigger", text)
+        self.assertIn("Optional Analysis Gates", text)
+        self.assertIn("Do not run them as a substitute", text)
+
+        self.assertIn("Capacity Gate", text)
+        self.assertIn("../llm-serving-capacity-planner/SKILL.md", text)
+        self.assertIn("analysis/capacity.md", text)
+        self.assertIn("OOM, KV pool exhaustion", text)
+
+        self.assertIn("Layer Pipeline Gate", text)
+        self.assertIn("../llm-pipeline-analysis/SKILL.md", text)
+        self.assertIn("analysis/layer-pipeline.md", text)
+        self.assertIn("Perfetto time range", text)
+
+        self.assertIn("Compute Simulation Gate", text)
+        self.assertIn("../model-compute-simulation/SKILL.md", text)
+        self.assertIn("analysis/compute-simulation.md", text)
+        self.assertIn("shapes, FLOPs, theoretical time, or MFU", text)
+
+        self.assertIn(
+            "preserving any optional capacity, layer-pipeline, or compute-simulation reports",
+            normalized,
+        )
+        self.assertIn(
+            "optional capacity/layer-pipeline/compute-simulation reports",
+            template_normalized,
+        )
+        self.assertIn("analysis/compute-simulation.md", template_normalized)
+
 
 if __name__ == "__main__":
     unittest.main()
