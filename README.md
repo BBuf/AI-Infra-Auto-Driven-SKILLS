@@ -3,12 +3,13 @@
 # AI-Infra-Auto-Driven-SKILLS
 
 **Agent-ready playbooks for LLM serving benchmarks, torch-profiler triage,
-SGLang optimization, production incidents, and model PR intelligence.**
+SGLang optimization, human code review, production incidents, and model PR
+intelligence.**
 
 [![GitHub stars](https://img.shields.io/github/stars/BBuf/AI-Infra-Auto-Driven-SKILLS?style=social)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/BBuf/AI-Infra-Auto-Driven-SKILLS?style=social)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/forks)
 [![Last commit](https://img.shields.io/github/last-commit/BBuf/AI-Infra-Auto-Driven-SKILLS?style=flat-square)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/commits/main)
-[![Core skills](https://img.shields.io/badge/core_skills-5-2f80ed?style=flat-square)](#core-skills)
+[![Core skills](https://img.shields.io/badge/core_skills-6-2f80ed?style=flat-square)](#core-skills)
 [![PR histories](https://img.shields.io/badge/pr_histories-58-2ea44f?style=flat-square)](#model-pr-history-catalog)
 [![KernelPilot](https://img.shields.io/badge/sibling-KernelPilot-ff7b72?style=flat-square)](https://github.com/BBuf/kernel-pilot)
 
@@ -19,7 +20,8 @@ real work, not recite generic prompts.
 
 It gives an agent the operational memory needed to benchmark SGLang, vLLM, and
 TensorRT-LLM fairly; split prefill and decode profiler evidence; turn traces
-into kernel and fusion opportunities; triage SGLang production incidents from a
+into kernel and fusion opportunities; review SGLang patches against real
+maintainer discussion patterns; triage SGLang production incidents from a
 replay; and keep model-family optimization history close to the code that
 actually changed.
 
@@ -34,7 +36,7 @@ find it.
 
 | Signal | What makes it useful |
 | --- | --- |
-| **5 core operational skills** | Small, focused playbooks for benchmark search, profiler analysis, Humanize-governed SOTA loops, incidents, architecture diagrams, and PR history. |
+| **6 core operational skills** | Small, focused playbooks for benchmark search, profiler analysis, Humanize-governed SOTA loops, incidents, architecture diagrams, and PR history. |
 | **58 PR history dossiers** | A queryable, PR-driven model history knowledge base that records what changed, where it changed, and what risks remain. |
 | **Stage-separated profiler workflow** | Prefill and decode are profiled as separate workloads so hot kernels do not get misattributed. |
 | **Framework-neutral benchmark schema** | Compare SGLang, vLLM, and TensorRT-LLM with the same workload, SLA, artifact layout, and result table. |
@@ -156,7 +158,6 @@ ln -s "$PWD/model-pr-optimization-history" ~/.claude/skills/model-pr-history-kno
 
 Restart Claude Code after installing. The skills can then be invoked by name,
 for example `[$llm-serving-auto-benchmark]`, `[$llm-torch-profiler-analysis]`,
-or `[$sglang-sota-humanize-loop]`.
 
 If you prefer copies instead of symlinks, replace `ln -s` with `cp -R`. Copy
 `model-pr-optimization-history` only when you want the agent to query the
