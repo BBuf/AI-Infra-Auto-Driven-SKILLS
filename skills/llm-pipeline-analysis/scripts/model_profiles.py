@@ -18,13 +18,13 @@ Profiles can be auto-inferred from a model's config.json via
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Callable, Dict, List, Optional, Tuple
-
 
 # ---------------------------------------------------------------------------
 # Core data structure
 # ---------------------------------------------------------------------------
+
 
 @dataclass
 class ModelProfile:
@@ -60,6 +60,7 @@ class ModelProfile:
 # Helper: build classification functions
 # ---------------------------------------------------------------------------
 
+
 def _any_sub(*substrings: str) -> Callable[[str], bool]:
     """Return a rule that matches if *any* substring is found in the name."""
     return lambda n: any(s in n for s in substrings)
@@ -75,15 +76,19 @@ def _sub(s: str) -> Callable[[str], bool]:
 # ---------------------------------------------------------------------------
 
 _UNIVERSAL_CATEGORY_RULES: List[Tuple[str, str, Callable[[str], bool]]] = [
-    ("● NCCL AllReduce", "allreduce",     _sub("AllReduce")),
-    ("  RMSNorm",        "rmsnorm",       _any_sub("RMSNorm", "rms_normalize")),
-    ("  FP8 Quant",      "quant",         lambda n: "quant" in n.lower() or "Quant" in n),
-    ("  TopK",           "topk",          lambda n: "topk" in n.lower()),
-    ("  GEMM fp8",       "gemm_fp8",      _sub("deep_gemm")),
-    ("  GEMM bf16",      "gemm_bf16",     _sub("nvjet")),
-    ("  GEMM f32",       "gemm_f32",      _sub("sm80_xmma")),
-    ("  Activation",     "activation",    _any_sub("silu_mul_clamp", "act_and_mul")),
-    ("  RadixSort",      "radixsort",     lambda n: "radix_sort" in n.lower() or "RadixSort" in n),
+    ("● NCCL AllReduce", "allreduce", _sub("AllReduce")),
+    ("  RMSNorm", "rmsnorm", _any_sub("RMSNorm", "rms_normalize")),
+    ("  FP8 Quant", "quant", lambda n: "quant" in n.lower() or "Quant" in n),
+    ("  TopK", "topk", lambda n: "topk" in n.lower()),
+    ("  GEMM fp8", "gemm_fp8", _sub("deep_gemm")),
+    ("  GEMM bf16", "gemm_bf16", _sub("nvjet")),
+    ("  GEMM f32", "gemm_f32", _sub("sm80_xmma")),
+    ("  Activation", "activation", _any_sub("silu_mul_clamp", "act_and_mul")),
+    (
+        "  RadixSort",
+        "radixsort",
+        lambda n: "radix_sort" in n.lower() or "RadixSort" in n,
+    ),
 ]
 
 _UNIVERSAL_SIMPLIFY_RULES: List[Tuple[str, str]] = [
@@ -93,7 +98,10 @@ _UNIVERSAL_SIMPLIFY_RULES: List[Tuple[str, str]] = [
     ("void deep_gemm::sm90_fp8_gemm_1d2d_impl", "deep_gemm::sm90_fp8_gemm_1d2d"),
     ("void fast_hadamard_transform_kernel", "fast_hadamard_transform_kernel"),
     ("void per_token_group_quant_8bit_kernel", "per_token_group_quant_8bit_kernel"),
-    ("ncclDevKernel_AllReduce_Sum_bf16_RING_LL(ncclDevKernelArgsStorage<4096ul>)", "ncclAllReduce_bf16_RING_LL"),
+    (
+        "ncclDevKernel_AllReduce_Sum_bf16_RING_LL(ncclDevKernelArgsStorage<4096ul>)",
+        "ncclAllReduce_bf16_RING_LL",
+    ),
     ("norm::RMSNormKernel", "RMSNormKernel"),
 ]
 
@@ -104,29 +112,38 @@ _UNIVERSAL_SIMPLIFY_RULES: List[Tuple[str, str]] = [
 
 _DSV4_CATEGORY_RULES: List[Tuple[str, str, Callable[[str], bool]]] = [
     # Model-specific rules (evaluated before universal rules)
-    ("★ MLA Attention",  "mla",           _sub("flash_fwd_splitkv_mla")),
-    ("★ MoE Fused",      "moe",           _sub("fused_moe_kernel")),
-    ("  Hadamard Xform", "hadamard",      lambda n: "hadamard" in n.lower()),
-    ("  Indexer Cache",  "indexer",       lambda n: "indexer" in n.lower()),
-    ("  Paged MQA",      "paged_mqa",     _sub("paged_mqa_logits")),
-    ("  MLA Metadata",   "mla_metadata",  _sub("get_mla_metadata")),
-    ("  C4 Prefill",     "c4_prefill",    _sub("c4_prefill")),
-    ("  C128 Prefill",   "c128_prefill",  _sub("c128_prefill")),
-    ("  RoPE",           "rope",          _any_sub("deepseek_rope", "fused_norm_rope")),
-    ("  MHC Pre GEMM",   "mhc_pre_gemm",  _sub("mhc_pre_gemm_sqrsum")),
-    ("  MHC Pre Fuse",   "mhc_pre_fuse",  _sub("mhc_pre_big_fuse")),
-    ("  MHC Post",       "mhc_post",      _sub("mhc_post_tilelang")),
-    ("  MoE Gate",       "moe_gate",      _sub("moe_fused_gate")),
-    ("  MoE Align",      "moe_align",     _sub("moe_align_block")),
-    ("  MoE Sort",       "moe_sort",      _sub("count_and_sort")),
+    ("★ MLA Attention", "mla", _sub("flash_fwd_splitkv_mla")),
+    ("★ MoE Fused", "moe", _sub("fused_moe_kernel")),
+    ("  Hadamard Xform", "hadamard", lambda n: "hadamard" in n.lower()),
+    ("  Indexer Cache", "indexer", lambda n: "indexer" in n.lower()),
+    ("  Paged MQA", "paged_mqa", _sub("paged_mqa_logits")),
+    ("  MLA Metadata", "mla_metadata", _sub("get_mla_metadata")),
+    ("  C4 Prefill", "c4_prefill", _sub("c4_prefill")),
+    ("  C128 Prefill", "c128_prefill", _sub("c128_prefill")),
+    ("  RoPE", "rope", _any_sub("deepseek_rope", "fused_norm_rope")),
+    ("  MHC Pre GEMM", "mhc_pre_gemm", _sub("mhc_pre_gemm_sqrsum")),
+    ("  MHC Pre Fuse", "mhc_pre_fuse", _sub("mhc_pre_big_fuse")),
+    ("  MHC Post", "mhc_post", _sub("mhc_post_tilelang")),
+    ("  MoE Gate", "moe_gate", _sub("moe_fused_gate")),
+    ("  MoE Align", "moe_align", _sub("moe_align_block")),
+    ("  MoE Sort", "moe_sort", _sub("count_and_sort")),
     ("  MLA Cache Store", "mla_cache_store", _sub("fused_store_flashmla_cache")),
-    ("  Indexer Store",  "indexer_store", _sub("fused_store_indexer_cache")),
+    ("  Indexer Store", "indexer_store", _sub("fused_store_indexer_cache")),
 ]
 
 _DSV4_SIMPLIFY_RULES: List[Tuple[str, str]] = [
-    ("void deep_gemm::sm90_fp8_paged_mqa_logits", "deep_gemm::sm90_fp8_paged_mqa_logits"),
-    ("void deep_gemm::sched::smxx_paged_mqa_logits_metadata", "deep_gemm::paged_mqa_logits_metadata"),
-    ("void sm90::decode::sparse_fp8::flash_fwd_splitkv_mla_fp8_sparse_kernel", "flash_fwd_splitkv_mla_fp8_sparse"),
+    (
+        "void deep_gemm::sm90_fp8_paged_mqa_logits",
+        "deep_gemm::sm90_fp8_paged_mqa_logits",
+    ),
+    (
+        "void deep_gemm::sched::smxx_paged_mqa_logits_metadata",
+        "deep_gemm::paged_mqa_logits_metadata",
+    ),
+    (
+        "void sm90::decode::sparse_fp8::flash_fwd_splitkv_mla_fp8_sparse_kernel",
+        "flash_fwd_splitkv_mla_fp8_sparse",
+    ),
     ("void smxx::decode::flash_fwd_mla_combine_kernel", "flash_fwd_mla_combine"),
     ("void smxx::decode::get_mla_metadata_kernel", "get_mla_metadata"),
     ("mhc_pre_gemm_sqrsum_tilelang_kernel", "mhc_pre_gemm_sqrsum"),
@@ -141,19 +158,22 @@ _DSV4_SIMPLIFY_RULES: List[Tuple[str, str]] = [
 # ---------------------------------------------------------------------------
 
 _DSV3_CATEGORY_RULES: List[Tuple[str, str, Callable[[str], bool]]] = [
-    ("★ MLA Attention",  "mla",           _sub("flash_fwd_splitkv_mla")),
-    ("★ MoE Fused",      "moe",           _sub("fused_moe_kernel")),
-    ("  MLA Metadata",   "mla_metadata",  _sub("get_mla_metadata")),
-    ("  MLA Combine",    "mla_combine",   _sub("flash_fwd_mla_combine")),
-    ("  RoPE",           "rope",          _any_sub("deepseek_rope", "fused_norm_rope")),
-    ("  MoE Gate",       "moe_gate",      _sub("moe_fused_gate")),
-    ("  MoE Align",      "moe_align",     _sub("moe_align_block")),
-    ("  MoE Sort",       "moe_sort",      _sub("count_and_sort")),
+    ("★ MLA Attention", "mla", _sub("flash_fwd_splitkv_mla")),
+    ("★ MoE Fused", "moe", _sub("fused_moe_kernel")),
+    ("  MLA Metadata", "mla_metadata", _sub("get_mla_metadata")),
+    ("  MLA Combine", "mla_combine", _sub("flash_fwd_mla_combine")),
+    ("  RoPE", "rope", _any_sub("deepseek_rope", "fused_norm_rope")),
+    ("  MoE Gate", "moe_gate", _sub("moe_fused_gate")),
+    ("  MoE Align", "moe_align", _sub("moe_align_block")),
+    ("  MoE Sort", "moe_sort", _sub("count_and_sort")),
     ("  MLA Cache Store", "mla_cache_store", _sub("fused_store_flashmla_cache")),
 ]
 
 _DSV3_SIMPLIFY_RULES: List[Tuple[str, str]] = [
-    ("void sm90::decode::sparse_fp8::flash_fwd_splitkv_mla_fp8_sparse_kernel", "flash_fwd_splitkv_mla_fp8_sparse"),
+    (
+        "void sm90::decode::sparse_fp8::flash_fwd_splitkv_mla_fp8_sparse_kernel",
+        "flash_fwd_splitkv_mla_fp8_sparse",
+    ),
     ("void smxx::decode::flash_fwd_mla_combine_kernel", "flash_fwd_mla_combine"),
     ("void smxx::decode::get_mla_metadata_kernel", "get_mla_metadata"),
     ("fused_moe_kernel", "fused_moe_kernel"),
@@ -215,7 +235,9 @@ def get_profile(name: str) -> ModelProfile:
     return BUILTIN_PROFILES[name]
 
 
-def normalize_compress_ratios(config: dict, num_layers: Optional[int] = None) -> List[int]:
+def normalize_compress_ratios(
+    config: dict, num_layers: Optional[int] = None
+) -> List[int]:
     """Return per-hidden-layer compress ratios, validating known config shapes.
 
     Some DeepSeek-V4 configs publish one extra ratio for next-token-prediction

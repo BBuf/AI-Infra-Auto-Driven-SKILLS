@@ -8,7 +8,7 @@
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
-| `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/llada2-1-mini.yaml` | [#24250](https://github.com/sgl-project/sglang/pull/24250) |
+| `skills/llm-serving-auto-benchmark/configs/cookbook-llm/llada2-1-mini.yaml` | [#24250](https://github.com/sgl-project/sglang/pull/24250) |
 | `docs_new/cookbook/autoregressive/InclusionAI/LLaDA-2.1.mdx` | [#23337](https://github.com/sgl-project/sglang/pull/23337), [#23001](https://github.com/sgl-project/sglang/pull/23001) |
 | `docs_new/src/snippets/autoregressive/llada-21-deployment.jsx` | [#23001](https://github.com/sgl-project/sglang/pull/23001) |
 | `python/sglang/srt/models/llada2.py` | [#23748](https://github.com/sgl-project/sglang/pull/23748), [#23732](https://github.com/sgl-project/sglang/pull/23732), [#21135](https://github.com/sgl-project/sglang/pull/21135), [#17784](https://github.com/sgl-project/sglang/pull/17784), [#18485](https://github.com/sgl-project/sglang/pull/18485), [#18844](https://github.com/sgl-project/sglang/pull/18844), [#18860](https://github.com/sgl-project/sglang/pull/18860), [#17570](https://github.com/sgl-project/sglang/pull/17570), [#15835](https://github.com/sgl-project/sglang/pull/15835), [#13730](https://github.com/sgl-project/sglang/pull/13730), [#14337](https://github.com/sgl-project/sglang/pull/14337), [#12588](https://github.com/sgl-project/sglang/pull/12588) |
@@ -45,7 +45,7 @@
 | 2026-03-05 | [#18724](https://github.com/sgl-project/sglang/pull/18724) | merged | [DLLM] Add initial radix cache support | `python/sglang/srt/dllm/mixin/req.py`, `python/sglang/srt/dllm/mixin/scheduler.py`, `python/sglang/srt/managers/schedule_batch.py` |
 | 2026-03-09 | [#18485](https://github.com/sgl-project/sglang/pull/18485) | merged | [NPU] [DLLM]DLLM LLaDA2.x graph mode support with NPU speedup modifications | `python/sglang/srt/hardware_backend/npu/attention/ascend_backend.py`, `python/sglang/srt/hardware_backend/npu/graph_runner/npu_graph_runner.py`, `python/sglang/srt/managers/scheduler.py` |
 | 2026-03-18 | [#17784](https://github.com/sgl-project/sglang/pull/17784) | merged | Upgrade transformers==5.3.0 | `docs/advanced_features/vlm_query.ipynb`, `python/pyproject.toml`, `python/pyproject_cpu.toml` |
-| 2026-03-23 | [#21187](https://github.com/sgl-project/sglang/pull/21187) | merged | ci: unify PR test suite naming | `.claude/skills/write-sglang-test/SKILL.md`, `.github/actions/wait-for-jobs/action.yml`, `.github/workflows/pr-test-amd-rocm720.yml` |
+| 2026-03-23 | [#21187](https://github.com/sgl-project/sglang/pull/21187) | merged | ci: unify PR test suite naming | `agent-skills/write-sglang-test/SKILL.md`, `.github/actions/wait-for-jobs/action.yml`, `.github/workflows/pr-test-amd-rocm720.yml` |
 | 2026-03-26 | [#21135](https://github.com/sgl-project/sglang/pull/21135) | merged | fix: use get_rope_config() to support models without rope_parameters | `python/sglang/srt/models/baichuan.py`, `python/sglang/srt/models/deepseek.py`, `python/sglang/srt/models/ernie4.py` |
 | 2026-04-01 | [#20751](https://github.com/sgl-project/sglang/pull/20751) | merged | [NPU]Add a full test pipeline on NPU, resolve issues in the NPU test architecture | `.github/workflows/full-test-npu.yml`, `.github/workflows/nightly-test-npu.yml`, `.github/workflows/pr-test-npu.yml` |
 | 2026-04-02 | [#21667](https://github.com/sgl-project/sglang/pull/21667) | merged | Unify GSM8K eval path to Chat API for regression CI readiness | `python/sglang/test/accuracy_test_runner.py`, `python/sglang/test/few_shot_gsm8k.py`, `python/sglang/test/few_shot_gsm8k_engine.py` |
@@ -57,9 +57,9 @@
 | 2026-04-27 | [#23748](https://github.com/sgl-project/sglang/pull/23748) | merged | refactor(moe): centralize post-experts all-reduce skip predicate | `python/sglang/srt/layers/moe/__init__.py`, `python/sglang/srt/layers/moe/utils.py`, `python/sglang/srt/models/bailing_moe.py` |
 | 2026-04-27 | [#23785](https://github.com/sgl-project/sglang/pull/23785) | merged | chore: update CI test est_time values | `test/registered/4-gpu-models/test_gpt_oss_4gpu.py`, `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py`, `test/registered/4-gpu-models/test_qwen35_fp4_triton.py` |
 | 2026-05-02 | [#23835](https://github.com/sgl-project/sglang/pull/23835) | merged | [NPU] Add GitHub test summary and deduplicate test code. Part 1 | `python/sglang/test/ascend/gsm8k_ascend_mixin.py`, `python/sglang/test/ascend/test_ascend_utils.py`, `python/sglang/test/ascend/test_mmlu.py` |
-| 2026-05-02 | [#24250](https://github.com/sgl-project/sglang/pull/24250) | merged | [SKILL] Upgrade sglang profile and auto_benchmark skills | `.claude/skills/llm-serving-auto-benchmark/SKILL.md`, `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md`, `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` |
+| 2026-05-02 | [#24250](https://github.com/sgl-project/sglang/pull/24250) | merged | [SKILL] Upgrade sglang profile and auto_benchmark skills | `agent-skills/llm-serving-auto-benchmark/SKILL.md`, `skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md`, `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` |
 | 2026-05-14 | [#25197](https://github.com/sgl-project/sglang/pull/25197) | merged | ci: decouple stage and runner for cuda registry | `python/sglang/test/ci/ci_register.py`, `scripts/ci/utils/ci_coverage_report.py`, `scripts/ci/utils/compute_partitions.py` |
-| 2026-05-16 | [#25420](https://github.com/sgl-project/sglang/pull/25420) | merged | [CI] Rename basic CI `stage-a/b/c` -> `base-a/b/c` for symmetry with extra CI | `.claude/skills/add-jit-kernel/SKILL.md`, `.claude/skills/ci-workflow-guide/SKILL.md`, `.claude/skills/write-sglang-test/SKILL.md` |
+| 2026-05-16 | [#25420](https://github.com/sgl-project/sglang/pull/25420) | merged | [CI] Rename basic CI `stage-a/b/c` -> `base-a/b/c` for symmetry with extra CI | `agent-skills/add-jit-kernel/SKILL.md`, `agent-skills/ci-workflow-guide/SKILL.md`, `agent-skills/write-sglang-test/SKILL.md` |
 
 ## 逐 PR diff 审计卡
 
@@ -960,21 +960,21 @@ diff -- python/pyproject.toml
 - 状态/时间: merged / 2026-03-23
 - 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 100 个文件，+267/-267，可读 patch 1675 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「ci: unify PR test suite naming」；模型线: LLaDA 2.1；类别: 文档/测试/CI；主要 diff: `.claude/skills/write-sglang-test/SKILL.md`, `.github/actions/wait-for-jobs/action.yml`, `.github/workflows/pr-test-amd-rocm720.yml`。
+- 动机: 标题「ci: unify PR test suite naming」；模型线: LLaDA 2.1；类别: 文档/测试/CI；主要 diff: `agent-skills/write-sglang-test/SKILL.md`, `.github/actions/wait-for-jobs/action.yml`, `.github/workflows/pr-test-amd-rocm720.yml`。
 - 实现要点:
-  - `.claude/skills/write-sglang-test/SKILL.md` modified +12/-12
+  - `agent-skills/write-sglang-test/SKILL.md` modified +12/-12
   - `.github/actions/wait-for-jobs/action.yml` modified +1/-1
   - `.github/workflows/pr-test-amd-rocm720.yml` modified +30/-30
   - `.github/workflows/pr-test-amd.yml` modified +38/-38
 - 代码 diff 细节:
-  - `.claude/skills/write-sglang-test/SKILL.md` modified +12/-12
+  - `agent-skills/write-sglang-test/SKILL.md` modified +12/-12
   - `.github/actions/wait-for-jobs/action.yml` modified +1/-1
   - `.github/workflows/pr-test-amd-rocm720.yml` modified +30/-30
   - `.github/workflows/pr-test-amd.yml` modified +38/-38
 - 关键代码摘录:
 
 ```diff
-diff -- .claude/skills/write-sglang-test/SKILL.md
+diff -- agent-skills/write-sglang-test/SKILL.md
 @@ -18,10 +18,10 @@ description: Guide for writing SGLang CI/UT tests following project conventions.
 
  | Scenario | Model | CI Registration | Suite |
@@ -1003,7 +1003,7 @@ diff -- .github/actions/wait-for-jobs/action.yml
 - 已读文件:
   - runtime: `python/sglang/jit_kernel/tests/test_moe_lora_align_block_size.py` modified +1/-1
   - tests: `test/README.md` modified +19/-19; `test/registered/amd/disaggregation/test_disaggregation_basic.py` modified +2/-2; `test/registered/attention/test_chunk_gated_delta_rule.py` modified +1/-1; `test/registered/attention/test_create_kvindices.py` modified +2/-2; `test/registered/attention/test_fa3.py` modified +1/-1; `test/registered/attention/test_hybrid_attn_backend.py` modified +1/-1; `test/registered/attention/test_kda_kernels.py` modified +1/-1; `test/registered/attention/test_normal_decode_set_metadata.py` modified +1/-1
-  - other: `.claude/skills/write-sglang-test/SKILL.md` modified +12/-12; `.github/actions/wait-for-jobs/action.yml` modified +1/-1; `.github/workflows/pr-test-amd-rocm720.yml` modified +30/-30; `.github/workflows/pr-test-amd.yml` modified +38/-38; `.github/workflows/pr-test.yml` modified +28/-28; `scripts/ci/utils/slash_command_handler.py` modified +19/-19
+  - other: `agent-skills/write-sglang-test/SKILL.md` modified +12/-12; `.github/actions/wait-for-jobs/action.yml` modified +1/-1; `.github/workflows/pr-test-amd-rocm720.yml` modified +30/-30; `.github/workflows/pr-test-amd.yml` modified +38/-38; `.github/workflows/pr-test.yml` modified +28/-28; `scripts/ci/utils/slash_command_handler.py` modified +19/-19
 - 验证与风险: diff 自带测试/基准路径，后续改同一模型优先复跑相关测试并补一个最小 launch/accuracy smoke。
 
 ### PR #21135 - fix: use get_rope_config() to support models without rope_parameters
@@ -1586,21 +1586,21 @@ diff -- python/sglang/test/ascend/test_ascend_utils.py
 - 状态/时间: merged / 2026-05-02
 - 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 100 个文件，+9334/-3813，可读 patch 13573 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[SKILL] Upgrade sglang profile and auto_benchmark skills」；模型线: LLaDA 2.1；类别: 文档/测试/CI；主要 diff: `.claude/skills/llm-serving-auto-benchmark/SKILL.md`, `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md`, `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml`。
+- 动机: 标题「[SKILL] Upgrade sglang profile and auto_benchmark skills」；模型线: LLaDA 2.1；类别: 文档/测试/CI；主要 diff: `agent-skills/llm-serving-auto-benchmark/SKILL.md`, `skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md`, `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml`。
 - 实现要点:
-  - `.claude/skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
-  - `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0
-  - `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0
-  - `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0
+  - `agent-skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
+  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0
+  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0
+  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0
 - 代码 diff 细节:
-  - `.claude/skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
-  - `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0
-  - `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0
-  - `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0
+  - `agent-skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
+  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0
+  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0
+  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0
 - 关键代码摘录:
 
 ```diff
-diff -- .claude/skills/llm-serving-auto-benchmark/SKILL.md
+diff -- agent-skills/llm-serving-auto-benchmark/SKILL.md
 @@ -0,0 +1,527 @@
 +---
 +name: llm-serving-auto-benchmark
@@ -1615,7 +1615,7 @@ diff -- .claude/skills/llm-serving-auto-benchmark/SKILL.md
 +TensorRT-LLM for the same model and workload.
 +
 +Use a config-driven workflow:
-diff -- .claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md
+diff -- skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md
 @@ -0,0 +1,17 @@
 +# Cookbook LLM Configs
 +
@@ -1632,8 +1632,8 @@ diff -- .claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md
 +```bash
 ```
 - 已读文件:
-  - docs/bench: `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.1.yaml` added +132/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.2.yaml` added +132/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.yaml` added +133/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/devstral-small-2-24b-instruct-2512.yaml` added +123/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/ernie-4.5-21b-a3b-pt.yaml` added +117/-0
-  - other: `.claude/skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
+  - docs/bench: `skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.1.yaml` added +132/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.2.yaml` added +132/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.yaml` added +133/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/devstral-small-2-24b-instruct-2512.yaml` added +123/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/ernie-4.5-21b-a3b-pt.yaml` added +117/-0
+  - other: `agent-skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
 - 验证与风险: diff 未直接暴露测试文件，后续改同一模型时应补最小 launch、tokenizer/MM processor 或 accuracy smoke。
 
 ### PR #25197 - ci: decouple stage and runner for cuda registry
@@ -1699,21 +1699,21 @@ diff -- scripts/ci/utils/ci_coverage_report.py
 - 状态/时间: merged / 2026-05-16
 - 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 100 个文件，+327/-329，可读 patch 2091 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[CI] Rename basic CI `stage-a/b/c` -> `base-a/b/c` for symmetry with extra CI」；模型线: LLaDA 2.1；类别: 文档/测试/CI；主要 diff: `.claude/skills/add-jit-kernel/SKILL.md`, `.claude/skills/ci-workflow-guide/SKILL.md`, `.claude/skills/write-sglang-test/SKILL.md`。
+- 动机: 标题「[CI] Rename basic CI `stage-a/b/c` -> `base-a/b/c` for symmetry with extra CI」；模型线: LLaDA 2.1；类别: 文档/测试/CI；主要 diff: `agent-skills/add-jit-kernel/SKILL.md`, `agent-skills/ci-workflow-guide/SKILL.md`, `agent-skills/write-sglang-test/SKILL.md`。
 - 实现要点:
-  - `.claude/skills/add-jit-kernel/SKILL.md` modified +9/-9
-  - `.claude/skills/ci-workflow-guide/SKILL.md` modified +63/-64
-  - `.claude/skills/write-sglang-test/SKILL.md` modified +40/-41
+  - `agent-skills/add-jit-kernel/SKILL.md` modified +9/-9
+  - `agent-skills/ci-workflow-guide/SKILL.md` modified +63/-64
+  - `agent-skills/write-sglang-test/SKILL.md` modified +40/-41
   - `.github/actions/check-pr-test-health/action.yml` renamed +7/-7
 - 代码 diff 细节:
-  - `.claude/skills/add-jit-kernel/SKILL.md` modified +9/-9
-  - `.claude/skills/ci-workflow-guide/SKILL.md` modified +63/-64
-  - `.claude/skills/write-sglang-test/SKILL.md` modified +40/-41
+  - `agent-skills/add-jit-kernel/SKILL.md` modified +9/-9
+  - `agent-skills/ci-workflow-guide/SKILL.md` modified +63/-64
+  - `agent-skills/write-sglang-test/SKILL.md` modified +40/-41
   - `.github/actions/check-pr-test-health/action.yml` renamed +7/-7
 - 关键代码摘录:
 
 ```diff
-diff -- .claude/skills/add-jit-kernel/SKILL.md
+diff -- agent-skills/add-jit-kernel/SKILL.md
 @@ -435,17 +435,17 @@ if torch.cuda.get_device_capability()[0] < 9:
 
  JIT kernel tests live under `python/sglang/jit_kernel/tests/`. **CI does not run `pytest` in that directory directly.** The unified runner `test/run_suite.py` discovers every `test_*.py` there (and every `bench_*.py` under `benchmark/`), collects `register_*_ci(...)` calls by **statically parsing each file's AST**, and executes the selected suite. Every test file must register at least one CUDA entry or the collector fails its sanity check.
@@ -1728,7 +1728,7 @@ diff -- .claude/skills/add-jit-kernel/SKILL.md
  from sglang.test.ci.ci_register import register_cuda_ci
 
 -register_cuda_ci(est_time=30, suite="stage-b-kernel-unit-1-gpu-large")
-diff -- .claude/skills/ci-workflow-guide/SKILL.md
+diff -- agent-skills/ci-workflow-guide/SKILL.md
 @@ -11,7 +11,7 @@ This skill covers the CI **infrastructure** layer — how tests are dispatched,
 
  ## Naming Conventions
@@ -1746,5 +1746,5 @@ diff -- .claude/skills/ci-workflow-guide/SKILL.md
 ```
 - 已读文件:
   - runtime: `python/sglang/jit_kernel/benchmark/bench_activation.py` modified +1/-1; `python/sglang/jit_kernel/benchmark/bench_awq_dequantize.py` modified +1/-1; `python/sglang/jit_kernel/benchmark/bench_cast.py` modified +1/-1; `python/sglang/jit_kernel/benchmark/bench_clamp_position.py` modified +1/-1; `python/sglang/jit_kernel/benchmark/bench_concat_mla.py` modified +1/-1; `python/sglang/jit_kernel/benchmark/bench_custom_all_reduce.py` modified +1/-1; `python/sglang/jit_kernel/benchmark/bench_fused_qknorm_rope.py` modified +1/-1; `python/sglang/jit_kernel/benchmark/bench_hadamard.py` modified +1/-1
-  - other: `.claude/skills/add-jit-kernel/SKILL.md` modified +9/-9; `.claude/skills/ci-workflow-guide/SKILL.md` modified +63/-64; `.claude/skills/write-sglang-test/SKILL.md` modified +40/-41; `.github/actions/check-pr-test-health/action.yml` renamed +7/-7; `.github/actions/wait-for-jobs/action.yml` modified +2/-2; `.github/workflows/_pr-test-sgl-kernel-build.yml` modified +2/-2; `.github/workflows/_pr-test-stage.yml` modified +4/-4; `.github/workflows/ci-auto-bisect.yml` modified +1/-1
+  - other: `agent-skills/add-jit-kernel/SKILL.md` modified +9/-9; `agent-skills/ci-workflow-guide/SKILL.md` modified +63/-64; `agent-skills/write-sglang-test/SKILL.md` modified +40/-41; `.github/actions/check-pr-test-health/action.yml` renamed +7/-7; `.github/actions/wait-for-jobs/action.yml` modified +2/-2; `.github/workflows/_pr-test-sgl-kernel-build.yml` modified +2/-2; `.github/workflows/_pr-test-stage.yml` modified +4/-4; `.github/workflows/ci-auto-bisect.yml` modified +1/-1
 - 验证与风险: diff 未直接暴露测试文件，后续改同一模型时应补最小 launch、tokenizer/MM processor 或 accuracy smoke。

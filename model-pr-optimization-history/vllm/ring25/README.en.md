@@ -6,14 +6,14 @@ Generated from vllm upstream `origin/main@ef54a4d604`, `git log --name-only -- <
 
 > vLLM serves Ling/Ring through the Bailing MoE implementation. `docs/models/supported_models.md` is treated as a capability table and is not used for PR-card generation to avoid broad supported-models noise.
 
-## Model Implementation File Coverage
+## Implementation File Coverage
 
 | File | PRs traced by git |
 | --- | --- |
 | `vllm/model_executor/models/bailing_moe.py` | [#40671](https://github.com/vllm-project/vllm/pull/40671), [#35782](https://github.com/vllm-project/vllm/pull/35782), [#35949](https://github.com/vllm-project/vllm/pull/35949), [#33737](https://github.com/vllm-project/vllm/pull/33737), [#32064](https://github.com/vllm-project/vllm/pull/32064), [#33063](https://github.com/vllm-project/vllm/pull/33063), [#31104](https://github.com/vllm-project/vllm/pull/31104), [#30389](https://github.com/vllm-project/vllm/pull/30389), [#29966](https://github.com/vllm-project/vllm/pull/29966), [#29342](https://github.com/vllm-project/vllm/pull/29342), [#28542](https://github.com/vllm-project/vllm/pull/28542), [#28777](https://github.com/vllm-project/vllm/pull/28777), ... (28 total) |
 | `vllm/model_executor/models/bailing_moe_linear.py` | [#41188](https://github.com/vllm-project/vllm/pull/41188), [#41185](https://github.com/vllm-project/vllm/pull/41185), [#40859](https://github.com/vllm-project/vllm/pull/40859), [#40671](https://github.com/vllm-project/vllm/pull/40671), [#35782](https://github.com/vllm-project/vllm/pull/35782), [#35949](https://github.com/vllm-project/vllm/pull/35949), [#37487](https://github.com/vllm-project/vllm/pull/37487), [#37195](https://github.com/vllm-project/vllm/pull/37195), [#35102](https://github.com/vllm-project/vllm/pull/35102) |
 
-## PR Coverage Overview
+## PR Coverage Summary
 
 - git-traced PR count: 34
 - keyword/supplemental PR count: 0
@@ -79,7 +79,7 @@ Generated from vllm upstream `origin/main@ef54a4d604`, `git log --name-only -- <
   - `tests/models/registry.py` modified +2/-0
   - `vllm/model_executor/models/bailing_moe.py` added +530/-0
   - `vllm/model_executor/models/registry.py` modified +1/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/models/supported_models.md
@@ -102,11 +102,11 @@ diff -- tests/models/registry.py
                                          extras={"tiny": "hmellor/tiny-random-BambaForCausalLM"}),  # noqa: E501
      "BloomForCausalLM": _HfExamplesInfo("bigscience/bloom-560m",
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/bailing_moe.py` added +530/-0; `vllm/model_executor/models/registry.py` modified +1/-0
   - tests: `tests/models/registry.py` modified +2/-0
   - docs/bench: `docs/models/supported_models.md` modified +1/-0
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #21059 - [Model] Remove model sampler
 
@@ -125,7 +125,7 @@ diff -- tests/models/registry.py
   - `vllm/model_executor/models/granite_speech.py` modified +0/-2
   - `vllm/model_executor/models/hunyuan_v1_moe.py` modified +0/-10
   - `vllm/model_executor/models/mimo.py` modified +0/-2
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- vllm/model_executor/models/bailing_moe.py
@@ -159,9 +159,9 @@ diff -- vllm/model_executor/models/granite_speech.py
 -        self.sampler = get_sampler()
 
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/bailing_moe.py` modified +0/-10; `vllm/model_executor/models/granite_speech.py` modified +0/-2; `vllm/model_executor/models/hunyuan_v1_moe.py` modified +0/-10; `vllm/model_executor/models/mimo.py` modified +0/-2; `vllm/model_executor/models/mimo_mtp.py` modified +0/-11; `vllm/model_executor/models/phi4flash.py` modified +0/-10
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #21100 - [Quantization] Enable BNB support for more MoE models
 
@@ -180,7 +180,7 @@ diff -- vllm/model_executor/models/granite_speech.py
   - `vllm/model_executor/models/bailing_moe.py` modified +14/-7
   - `vllm/model_executor/models/ernie45_moe.py` modified +84/-69
   - `vllm/model_executor/models/grok1.py` modified +14/-10
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/models/supported_models.md
@@ -214,10 +214,10 @@ diff -- vllm/model_executor/models/bailing_moe.py
 
 +    def get_expert_mapping(self) -> list[tuple[str, str, int, str]]:
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/bailing_moe.py` modified +14/-7; `vllm/model_executor/models/ernie45_moe.py` modified +84/-69; `vllm/model_executor/models/grok1.py` modified +14/-10; `vllm/model_executor/models/hunyuan_v1_moe.py` modified +107/-91
   - docs/bench: `docs/models/supported_models.md` modified +4/-4
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #21664 - support `torch.compile` for bailing moe
 
@@ -230,7 +230,7 @@ diff -- vllm/model_executor/models/bailing_moe.py
   - `vllm/model_executor/models/bailing_moe.py` modified +2/-0
 - Code diff details:
   - `vllm/model_executor/models/bailing_moe.py` modified +2/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- vllm/model_executor/models/bailing_moe.py
@@ -249,9 +249,9 @@ diff -- vllm/model_executor/models/bailing_moe.py
 +@support_torch_compile
  class BailingMoeModel(nn.Module):
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/bailing_moe.py` modified +2/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #19497 - [Models] Improve iteration over layers
 
@@ -270,7 +270,7 @@ diff -- vllm/model_executor/models/bailing_moe.py
   - `vllm/model_executor/models/arctic.py` modified +2/-1
   - `vllm/model_executor/models/baichuan.py` modified +2/-1
   - `vllm/model_executor/models/bailing_moe.py` modified +2/-2
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- vllm/model_executor/models/arcee.py
@@ -304,9 +304,9 @@ diff -- vllm/model_executor/models/arctic.py
 -        for layer in self.layers[self.start_layer:self.end_layer]:
 +        for layer in islice(self.layers, self.start_layer, self.end_layer):
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/arcee.py` modified +2/-1; `vllm/model_executor/models/arctic.py` modified +2/-1; `vllm/model_executor/models/baichuan.py` modified +2/-1; `vllm/model_executor/models/bailing_moe.py` modified +2/-2; `vllm/model_executor/models/bamba.py` modified +1/-2; `vllm/model_executor/models/bloom.py` modified +2/-1; `vllm/model_executor/models/chameleon.py` modified +2/-1; `vllm/model_executor/models/chatglm.py` modified +2/-1
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #24627 - [Model]: support Ling2.0
 
@@ -325,7 +325,7 @@ diff -- vllm/model_executor/models/arctic.py
   - `tests/models/registry.py` modified +2/-0
   - `vllm/model_executor/models/bailing_moe.py` modified +166/-50
   - `vllm/model_executor/models/registry.py` modified +1/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/models/supported_models.md
@@ -348,11 +348,11 @@ diff -- tests/models/registry.py
                                          min_transformers_version="4.55.3",
                                          extras={"tiny": "hmellor/tiny-random-BambaForCausalLM"}),  # noqa: E501
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/bailing_moe.py` modified +166/-50; `vllm/model_executor/models/registry.py` modified +1/-0
   - tests: `tests/models/registry.py` modified +2/-0
   - docs/bench: `docs/models/supported_models.md` modified +1/-0
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #25345 - [V0 Deprecation] Remove V0 sampling metadata
 
@@ -371,7 +371,7 @@ diff -- tests/models/registry.py
   - `tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_opt.py` modified +3/-5
   - `vllm/model_executor/__init__.py` modified +0/-2
   - `vllm/model_executor/layers/logits_processor.py` modified +0/-2
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_llava.py
@@ -405,10 +405,10 @@ diff -- tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_opt.py
 +    def compute_logits(self,
 +                       hidden_states: torch.Tensor) -> Optional[torch.Tensor]:
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/__init__.py` modified +0/-2; `vllm/model_executor/layers/logits_processor.py` modified +0/-2; `vllm/model_executor/models/apertus.py` modified +1/-4; `vllm/model_executor/models/arcee.py` modified +3/-4; `vllm/model_executor/models/arctic.py` modified +1/-4; `vllm/model_executor/models/aria.py` modified +2/-5; `vllm/model_executor/models/aya_vision.py` modified +1/-4; `vllm/model_executor/models/baichuan.py` modified +1/-4
   - tests: `tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_llava.py` modified +3/-5; `tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_opt.py` modified +3/-5
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #25271 - Move`VllmConfig` from `config/__init__.py` to `config/vllm.py`
 
@@ -427,7 +427,7 @@ diff -- tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_opt.py
   - `vllm/attention/layers/chunked_local_attention.py` modified +2/-1
   - `vllm/config/__init__.py` modified +79/-826
   - `vllm/config/utils.py` modified +36/-6
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- vllm/attention/layer.py
@@ -453,9 +453,9 @@ diff -- vllm/attention/layers/chunked_local_attention.py
      CommonAttentionMetadata, make_local_attention_virtual_batches,
      subclass_attention_backend)
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/attention/layer.py` modified +1/-2; `vllm/attention/layers/chunked_local_attention.py` modified +2/-1; `vllm/config/__init__.py` modified +79/-826; `vllm/config/utils.py` modified +36/-6; `vllm/config/vllm.py` added +789/-0; `vllm/model_executor/layers/mamba/linear_attn.py` modified +1/-2; `vllm/model_executor/layers/quantization/auto_round.py` modified +2/-3; `vllm/model_executor/layers/quantization/bitblas.py` modified +2/-3
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #26247 - Convert formatting to use `ruff` instead of `yapf` + `isort`
 
@@ -474,7 +474,7 @@ diff -- vllm/attention/layers/chunked_local_attention.py
   - `.pre-commit-config.yaml` modified +0/-12
   - `benchmarks/benchmark_block_pool.py` modified +1/-1
   - `benchmarks/benchmark_ngram_proposer.py` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .buildkite/pyproject.toml
@@ -508,12 +508,12 @@ diff -- .pre-commit-config.yaml
    rev: v0.11.7
    hooks:
 ```
-- Files read:
+- Reviewed files:
   - runtime: `csrc/cutlass_extensions/vllm_cutlass_library_extension.py` modified +13/-15; `csrc/moe/marlin_moe_wna16/generate_kernels.py` modified +24/-18; `csrc/quantization/gptq_marlin/generate_kernels.py` modified +26/-22; `csrc/quantization/machete/generate.py` modified +100/-66
   - tests: `tests/basic_correctness/test_basic_correctness.py` modified +60/-62; `tests/basic_correctness/test_cpu_offload.py` modified +3/-2; `tests/basic_correctness/test_cumem.py` modified +12/-11; `tests/benchmarks/test_latency_cli.py` modified +12/-2; `tests/benchmarks/test_random_dataset.py` modified +69/-52; `tests/benchmarks/test_serve_cli.py` modified +2/-3; `tests/benchmarks/test_throughput_cli.py` modified +12/-2; `tests/compile/backend.py` modified +7/-11
   - docs/bench: `.buildkite/pyproject.toml` removed +0/-46; `benchmarks/benchmark_block_pool.py` modified +1/-1; `benchmarks/benchmark_ngram_proposer.py` modified +1/-1; `benchmarks/benchmark_serving_structured_output.py` modified +2/-3; `benchmarks/pyproject.toml` removed +0/-49; `docs/mkdocs/hooks/generate_argparse.py` modified +27/-36; `docs/mkdocs/hooks/generate_examples.py` modified +18/-16; `docs/mkdocs/hooks/remove_announcement.py` modified +1/-1
   - other: `.pre-commit-config.yaml` modified +0/-12; `cmake/hipify.py` modified +24/-19; `pyproject.toml` modified +100/-27; `setup.py` modified +151/-104
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #26262 - Fix per file ruff ignores related to line length
 
@@ -532,7 +532,7 @@ diff -- .pre-commit-config.yaml
   - `benchmarks/benchmark_serving_structured_output.py` modified +2/-2
   - `csrc/cutlass_extensions/vllm_cutlass_library_extension.py` modified +3/-3
   - `examples/offline_inference/vision_language_pooling.py` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- benchmarks/benchmark_ngram_proposer.py
@@ -561,12 +561,12 @@ diff -- benchmarks/benchmark_serving_structured_output.py
 +        help="Name or path of the tokenizer, if not using the default tokenizer.",
      )
 ```
-- Files read:
+- Reviewed files:
   - runtime: `csrc/cutlass_extensions/vllm_cutlass_library_extension.py` modified +3/-3
   - tests: `tests/compile/piecewise/test_simple.py` modified +17/-11; `tests/compile/piecewise/test_toy_llama.py` modified +9/-5; `tests/compile/test_functionalization.py` modified +1/-1; `tests/compile/test_fusion_attn.py` modified +1/-1; `tests/compile/test_sequence_parallelism.py` modified +2/-2; `tests/distributed/test_pipeline_parallel.py` modified +4/-4; `tests/entrypoints/conftest.py` modified +2/-1; `tests/entrypoints/openai/test_audio.py` modified +1/-1
   - docs/bench: `benchmarks/benchmark_ngram_proposer.py` modified +1/-1; `benchmarks/benchmark_serving_structured_output.py` modified +2/-2; `examples/offline_inference/vision_language_pooling.py` modified +1/-1; `examples/online_serving/disaggregated_serving/disagg_proxy_demo.py` modified +2/-2
   - other: `pyproject.toml` modified +0/-46
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #26145 - [Model] Apply shared experts overlap optimization to all models with shared experts
 
@@ -585,7 +585,7 @@ diff -- benchmarks/benchmark_serving_structured_output.py
   - `vllm/model_executor/layers/fused_moe/shared_fused_moe.py` renamed +23/-12
   - `vllm/model_executor/layers/quantization/fp8.py` modified +2/-0
   - `vllm/model_executor/layers/shared_fused_moe/__init__.py` removed +0/-5
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- vllm/model_executor/layers/fused_moe/__init__.py
@@ -619,9 +619,9 @@ diff -- vllm/model_executor/layers/fused_moe/shared_fused_moe.py
 +        # Disable shared expert overlap if EP is disabled or we are not using
 +        # flashinfer + DP since there is nothing to be gained in this case.
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/layers/fused_moe/__init__.py` modified +2/-0; `vllm/model_executor/layers/fused_moe/shared_fused_moe.py` renamed +23/-12; `vllm/model_executor/layers/quantization/fp8.py` modified +2/-0; `vllm/model_executor/layers/shared_fused_moe/__init__.py` removed +0/-5; `vllm/model_executor/models/aria.py` modified +15/-13; `vllm/model_executor/models/bailing_moe.py` modified +26/-21; `vllm/model_executor/models/deepseek_v2.py` modified +24/-45; `vllm/model_executor/models/dots1.py` modified +22/-18
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #26633 - Update `Optional[x]` -> `x | None` and `Union[x, y]` to `x | y`
 
@@ -640,7 +640,7 @@ diff -- vllm/model_executor/layers/fused_moe/shared_fused_moe.py
   - `benchmarks/benchmark_prefix_caching.py` modified +2/-3
   - `benchmarks/benchmark_prioritization.py` modified +1/-2
   - `benchmarks/benchmark_serving_structured_output.py` modified +3/-4
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- benchmarks/backend_request_func.py
@@ -674,10 +674,10 @@ diff -- benchmarks/benchmark_prefix_caching.py
 -    fixed_output_len: Optional[int],
 +    fixed_output_len: int | None,
 ```
-- Files read:
+- Reviewed files:
   - runtime: `csrc/cutlass_extensions/vllm_cutlass_library_extension.py` modified +6/-9; `csrc/quantization/machete/generate.py` modified +2/-3
   - docs/bench: `benchmarks/backend_request_func.py` modified +13/-14; `benchmarks/benchmark_prefix_caching.py` modified +2/-3; `benchmarks/benchmark_prioritization.py` modified +1/-2; `benchmarks/benchmark_serving_structured_output.py` modified +3/-4; `benchmarks/benchmark_utils.py` modified +8/-8; `benchmarks/cutlass_benchmarks/sparse_benchmarks.py` modified +1/-2; `benchmarks/cutlass_benchmarks/w8a8_benchmarks.py` modified +5/-6; `benchmarks/fused_kernels/layernorm_rms_benchmarks.py` modified +4/-5
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #26876 - [Fix] Remove divisibility requirement between num_kv_heads and tp_size in bailing_moe
 
@@ -690,7 +690,7 @@ diff -- benchmarks/benchmark_prefix_caching.py
   - `vllm/model_executor/models/bailing_moe.py` modified +1/-2
 - Code diff details:
   - `vllm/model_executor/models/bailing_moe.py` modified +1/-2
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- vllm/model_executor/models/bailing_moe.py
@@ -709,9 +709,9 @@ diff -- vllm/model_executor/models/bailing_moe.py
          self.kv_size_per_rank = self.num_kv_heads * self.head_dim
          self.scale = self.head_dim**-0.5
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/bailing_moe.py` modified +1/-2
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #28382 - [LoRA][1/N]Remove LoRA extra vocab
 
@@ -730,7 +730,7 @@ diff -- vllm/model_executor/models/bailing_moe.py
   - `vllm/model_executor/models/arcee.py` modified +2/-8
   - `vllm/model_executor/models/arctic.py` modified +2/-4
   - `vllm/model_executor/models/aria.py` modified +2/-6
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- vllm/model_executor/models/apertus.py
@@ -764,9 +764,9 @@ diff -- vllm/model_executor/models/arcee.py
 -        self.org_vocab_size = config.vocab_size
 
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/apertus.py` modified +5/-25; `vllm/model_executor/models/arcee.py` modified +2/-8; `vllm/model_executor/models/arctic.py` modified +2/-4; `vllm/model_executor/models/aria.py` modified +2/-6; `vllm/model_executor/models/baichuan.py` modified +2/-2; `vllm/model_executor/models/bailing_moe.py` modified +0/-2; `vllm/model_executor/models/bamba.py` modified +6/-24; `vllm/model_executor/models/chameleon.py` modified +3/-5
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #27583 - Rename clashing method names for vLLM model protocol
 
@@ -785,7 +785,7 @@ diff -- vllm/model_executor/models/arcee.py
   - `docs/contributing/model/multimodal.md` modified +3/-3
   - `vllm/model_executor/models/apertus.py` modified +4/-4
   - `vllm/model_executor/models/arcee.py` modified +4/-4
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/contributing/model/basic.md
@@ -819,10 +819,10 @@ diff -- docs/contributing/model/multimodal.md
 
 -            def get_multimodal_embeddings(
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/apertus.py` modified +4/-4; `vllm/model_executor/models/arcee.py` modified +4/-4; `vllm/model_executor/models/arctic.py` modified +4/-4; `vllm/model_executor/models/aria.py` modified +3/-3; `vllm/model_executor/models/aya_vision.py` modified +1/-1; `vllm/model_executor/models/baichuan.py` modified +4/-4; `vllm/model_executor/models/bailing_moe.py` modified +4/-4; `vllm/model_executor/models/bamba.py` modified +4/-4
   - docs/bench: `docs/contributing/model/basic.md` modified +2/-2; `docs/contributing/model/multimodal.md` modified +3/-3
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #28277 - [Model] Fix bailing_moe accuracy problem
 
@@ -835,7 +835,7 @@ diff -- docs/contributing/model/multimodal.md
   - `vllm/model_executor/models/bailing_moe.py` modified +3/-2
 - Code diff details:
   - `vllm/model_executor/models/bailing_moe.py` modified +3/-2
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- vllm/model_executor/models/bailing_moe.py
@@ -854,9 +854,9 @@ diff -- vllm/model_executor/models/bailing_moe.py
 -            final_hidden_states = tensor_model_parallel_all_reduce(final_hidden_states)
 +            final_hidden_states = self.experts.maybe_all_reduce_tensor_model_parallel(
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/bailing_moe.py` modified +3/-2
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #28777 - [Model] Fix lmhead init bug of bailing_moe
 
@@ -869,7 +869,7 @@ diff -- vllm/model_executor/models/bailing_moe.py
   - `vllm/model_executor/models/bailing_moe.py` modified +1/-1
 - Code diff details:
   - `vllm/model_executor/models/bailing_moe.py` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- vllm/model_executor/models/bailing_moe.py
@@ -883,9 +883,9 @@ diff -- vllm/model_executor/models/bailing_moe.py
              self.logits_processor = LogitsProcessor(config.vocab_size)
          else:
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/bailing_moe.py` modified +1/-1
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #28542 - Update `rope_scaling` to `rope_parameters` in preparation for Transformers v5
 
@@ -904,7 +904,7 @@ diff -- vllm/model_executor/models/bailing_moe.py
   - `benchmarks/kernels/benchmark_mrope.py` modified +7/-12
   - `examples/offline_inference/context_extension.py` modified +3/-3
   - `tests/compile/test_functionalization.py` modified +2/-2
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .buildkite/test-pipeline.yaml
@@ -938,11 +938,11 @@ diff -- benchmarks/kernels/benchmark_mrope.py
      max_position: int = 8192,
 -    rope_theta: float = 10000,
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/config/model.py` modified +29/-34; `vllm/model_executor/layers/rotary_embedding/__init__.py` modified +38/-38; `vllm/model_executor/models/afmoe.py` modified +1/-16; `vllm/model_executor/models/apertus.py` modified +2/-20; `vllm/model_executor/models/arcee.py` modified +0/-11; `vllm/model_executor/models/arctic.py` modified +1/-2; `vllm/model_executor/models/baichuan.py` modified +3/-5; `vllm/model_executor/models/bailing_moe.py` modified +1/-2
   - tests: `tests/compile/test_functionalization.py` modified +2/-2; `tests/kernels/core/test_mrope.py` modified +5/-11; `tests/kernels/core/test_pos_encoding.py` modified +20/-19; `tests/kernels/moe/test_gpt_oss_triton_kernels.py` modified +1/-1; `tests/models/language/pooling/test_nomic_max_model_len.py` modified +9/-7; `tests/test_config.py` modified +20/-17
   - docs/bench: `.buildkite/test-pipeline.yaml` modified +3/-3; `benchmarks/kernels/benchmark_mrope.py` modified +7/-12; `examples/offline_inference/context_extension.py` modified +3/-3
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #29342 - [Attention] Remove imports from `vllm/attention/__init__.py`
 
@@ -961,7 +961,7 @@ diff -- benchmarks/kernels/benchmark_mrope.py
   - `tests/compile/test_fusion_attn.py` modified +2/-1
   - `tests/compile/test_qk_norm_rope_fusion.py` modified +2/-1
   - `tests/kernels/utils.py` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/contributing/model/basic.md
@@ -987,11 +987,11 @@ diff -- tests/compile/test_fusion_attn.py
  from vllm.compilation.fusion_attn import ATTN_OP, AttnFusionPass
  from vllm.compilation.fx_utils import find_op_nodes
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/attention/__init__.py` modified +0/-19; `vllm/attention/backends/abstract.py` modified +1/-1; `vllm/attention/layer.py` modified +5/-2; `vllm/compilation/fusion_attn.py` modified +1/-1; `vllm/compilation/qk_norm_rope_fusion.py` modified +1/-1; `vllm/distributed/kv_transfer/kv_connector/v1/nixl_connector.py` modified +1/-1; `vllm/distributed/kv_transfer/kv_connector/v1/offloading_connector.py` modified +2/-1; `vllm/model_executor/layers/mamba/linear_attn.py` modified +1/-1
   - tests: `tests/compile/test_fusion_attn.py` modified +2/-1; `tests/compile/test_qk_norm_rope_fusion.py` modified +2/-1; `tests/kernels/utils.py` modified +1/-1; `tests/v1/worker/test_gpu_model_runner.py` modified +1/-1; `tests/v1/worker/test_utils.py` modified +2/-2
   - docs/bench: `docs/contributing/model/basic.md` modified +1/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #29966 - Access `partial_rotary_factor` from `rope_parameters`
 
@@ -1010,7 +1010,7 @@ diff -- tests/compile/test_fusion_attn.py
   - `vllm/model_executor/layers/rotary_embedding/__init__.py` modified +4/-1
   - `vllm/model_executor/models/apertus.py` modified +1/-4
   - `vllm/model_executor/models/bailing_moe.py` modified +0/-3
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- tests/kernels/core/test_mrope.py
@@ -1044,10 +1044,10 @@ diff -- vllm/model_executor/layers/rotary_embedding/__init__.py
 +    partial_rotary_factor = 1.0
 +    if rope_parameters is not None:
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/layers/rotary_embedding/__init__.py` modified +4/-1; `vllm/model_executor/models/apertus.py` modified +1/-4; `vllm/model_executor/models/bailing_moe.py` modified +0/-3; `vllm/model_executor/models/bamba.py` modified +1/-3; `vllm/model_executor/models/config.py` modified +0/-5; `vllm/model_executor/models/falcon_h1.py` modified +1/-3; `vllm/model_executor/models/glm.py` modified +2/-1; `vllm/model_executor/models/glm4.py` modified +1/-2
   - tests: `tests/kernels/core/test_mrope.py` modified +2/-6
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #30389 - Standardise `get_rope` to use `rope_parameters["partial_rotary_factor"]`, not `rotary_dim`
 
@@ -1066,7 +1066,7 @@ diff -- vllm/model_executor/layers/rotary_embedding/__init__.py
   - `benchmarks/kernels/benchmark_rope.py` modified +2/-2
   - `tests/compile/test_functionalization.py` modified +1/-4
   - `tests/kernels/core/test_mrope.py` modified +0/-2
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- benchmarks/kernels/benchmark_mrope.py
@@ -1091,11 +1091,11 @@ diff -- benchmarks/kernels/benchmark_rope.py
          cos_sin_cache = rope.cos_sin_cache.to(dtype=torch.float, device=device)
 
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/config/utils.py` modified +16/-2; `vllm/model_executor/layers/rotary_embedding/__init__.py` modified +160/-166; `vllm/model_executor/models/afmoe.py` modified +0/-1; `vllm/model_executor/models/apertus.py` modified +0/-1; `vllm/model_executor/models/arctic.py` modified +0/-1; `vllm/model_executor/models/baichuan.py` modified +0/-1; `vllm/model_executor/models/bailing_moe.py` modified +2/-2; `vllm/model_executor/models/bamba.py` modified +2/-5
   - tests: `tests/compile/test_functionalization.py` modified +1/-4; `tests/kernels/core/test_mrope.py` modified +0/-2; `tests/kernels/core/test_pos_encoding.py` modified +8/-4
   - docs/bench: `benchmarks/kernels/benchmark_mrope.py` modified +0/-1; `benchmarks/kernels/benchmark_rope.py` modified +2/-2
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #31104 - [BugFix] LoRA: Support loading base_layer of experts
 
@@ -1114,7 +1114,7 @@ diff -- benchmarks/kernels/benchmark_rope.py
   - `vllm/model_executor/models/afmoe.py` modified +1/-0
   - `vllm/model_executor/models/bailing_moe.py` modified +1/-0
   - `vllm/model_executor/models/deepseek_eagle.py` modified +1/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- vllm/model_executor/layers/fused_moe/layer.py
@@ -1142,9 +1142,9 @@ diff -- vllm/model_executor/models/afmoe.py
              ckpt_down_proj_name="down_proj",
              ckpt_up_proj_name="up_proj",
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/layers/fused_moe/layer.py` modified +10/-3; `vllm/model_executor/models/afmoe.py` modified +1/-0; `vllm/model_executor/models/bailing_moe.py` modified +1/-0; `vllm/model_executor/models/deepseek_eagle.py` modified +1/-0; `vllm/model_executor/models/deepseek_mtp.py` modified +1/-0; `vllm/model_executor/models/deepseek_v2.py` modified +2/-0; `vllm/model_executor/models/dots1.py` modified +1/-0; `vllm/model_executor/models/ernie45_moe.py` modified +1/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #33063 - [Chore] Update type annotation of `input_ids` in model forward
 
@@ -1163,7 +1163,7 @@ diff -- vllm/model_executor/models/afmoe.py
   - `tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_gemma_embedding.py` modified +1/-1
   - `vllm/model_executor/models/afmoe.py` modified +2/-2
   - `vllm/model_executor/models/apertus.py` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/contributing/model/basic.md
@@ -1187,11 +1187,11 @@ diff -- tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_gemma_embeddi
          intermediate_tensors: IntermediateTensors | None = None,
          inputs_embeds: torch.Tensor | None = None,
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/afmoe.py` modified +2/-2; `vllm/model_executor/models/apertus.py` modified +1/-1; `vllm/model_executor/models/arcee.py` modified +1/-1; `vllm/model_executor/models/arctic.py` modified +2/-2; `vllm/model_executor/models/aria.py` modified +1/-1; `vllm/model_executor/models/audioflamingo3.py` modified +1/-1; `vllm/model_executor/models/aya_vision.py` modified +1/-1; `vllm/model_executor/models/bagel.py` modified +1/-1
   - tests: `tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_gemma_embedding.py` modified +1/-1
   - docs/bench: `docs/contributing/model/basic.md` modified +1/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #32064 - [5/N][Attention] Finish eliminating `vllm/attention` folder
 
@@ -1210,7 +1210,7 @@ diff -- tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_gemma_embeddi
   - `.buildkite/test-pipeline.yaml` modified +2/-1
   - `.buildkite/test_areas/kernels.yaml` modified +2/-1
   - `.github/CODEOWNERS` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .buildkite/test-amd.yaml
@@ -1238,12 +1238,12 @@ diff -- .buildkite/test-pipeline.yaml
    commands:
      - pytest -v -s kernels/attention --shard-id=$$BUILDKITE_PARALLEL_JOB --num-shards=$$BUILDKITE_PARALLEL_JOB_COUNT
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/attention/__init__.py` removed +0/-0; `vllm/attention/utils/__init__.py` removed +0/-0; `vllm/attention/utils/kv_sharing_utils.py` removed +0/-33; `vllm/compilation/fusion_attn.py` modified +1/-1; `vllm/compilation/qk_norm_rope_fusion.py` modified +1/-1; `vllm/distributed/kv_transfer/kv_connector/v1/offloading_connector.py` modified +1/-1; `vllm/model_executor/layers/attention/__init__.py` modified +26/-0; `vllm/model_executor/layers/attention/attention.py` renamed +42/-315
   - tests: `tests/compile/test_fusion_attn.py` modified +1/-1; `tests/compile/test_qk_norm_rope_fusion.py` modified +1/-1; `tests/kernels/attention/test_attention.py` modified +1/-2; `tests/kernels/attention/test_mha_attn.py` modified +1/-1; `tests/v1/worker/test_gpu_model_runner.py` modified +1/-1; `tests/v1/worker/test_utils.py` modified +3/-3
   - docs/bench: `.buildkite/test-amd.yaml` modified +2/-1; `.buildkite/test-pipeline.yaml` modified +2/-1; `.buildkite/test_areas/kernels.yaml` modified +2/-1; `docs/contributing/model/basic.md` modified +1/-1; `docs/design/custom_op.md` modified +1/-1
   - other: `.github/CODEOWNERS` modified +1/-1; `tools/pre_commit/mypy.py` modified +0/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #33737 - [Bugfix] Define router_logits_dtype for remaining MoE models
 
@@ -1262,7 +1262,7 @@ diff -- .buildkite/test-pipeline.yaml
   - `vllm/model_executor/models/bailing_moe.py` modified +1/-0
   - `vllm/model_executor/models/flex_olmo.py` modified +1/-1
   - `vllm/model_executor/models/longcat_flash.py` modified +4/-3
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- vllm/model_executor/models/afmoe.py
@@ -1284,9 +1284,9 @@ diff -- vllm/model_executor/models/bailing_moe.py
 
      def forward(self, hidden_states: torch.Tensor) -> torch.Tensor:
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/afmoe.py` modified +1/-0; `vllm/model_executor/models/bailing_moe.py` modified +1/-0; `vllm/model_executor/models/flex_olmo.py` modified +1/-1; `vllm/model_executor/models/longcat_flash.py` modified +4/-3; `vllm/model_executor/models/mimo_v2_flash.py` modified +1/-0; `vllm/model_executor/models/step3p5.py` modified +1/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #35102 - [Model] Ring 2.5
 
@@ -1305,7 +1305,7 @@ diff -- vllm/model_executor/models/bailing_moe.py
   - `tests/models/registry.py` modified +3/-0
   - `vllm/model_executor/layers/fla/ops/layernorm_guard.py` modified +30/-5
   - `vllm/model_executor/layers/layernorm.py` modified +1/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/models/supported_models.md
@@ -1329,11 +1329,11 @@ diff -- tests/models/registry.py
          "ibm-ai-platform/Bamba-9B-v1",
          extras={"tiny": "hmellor/tiny-random-BambaForCausalLM"},
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/layers/fla/ops/layernorm_guard.py` modified +30/-5; `vllm/model_executor/layers/layernorm.py` modified +1/-0; `vllm/model_executor/layers/mamba/linear_attn.py` modified +124/-65; `vllm/model_executor/models/bailing_moe_linear.py` added +1246/-0; `vllm/model_executor/models/registry.py` modified +1/-0; `vllm/transformers_utils/model_arch_config_convertor.py` modified +1/-0
   - tests: `tests/models/registry.py` modified +3/-0
   - docs/bench: `docs/models/supported_models.md` modified +1/-0
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #37195 - [V0 Deprecation] Deprecate virtual engine
 
@@ -1352,7 +1352,7 @@ diff -- tests/models/registry.py
   - `tests/v1/kv_connector/unit/test_decode_bench_connector.py` modified +1/-1
   - `tests/v1/kv_connector/unit/test_lmcache_integration.py` modified +0/-1
   - `tests/v1/kv_connector/unit/test_nixl_connector.py` modified +0/-8
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- tests/compile/passes/test_rope_kvcache_fusion.py
@@ -1381,10 +1381,10 @@ diff -- tests/v1/kv_connector/unit/test_decode_bench_connector.py
 
      def new_request(self, token_ids: list[int]) -> Request:
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/distributed/kv_transfer/kv_connector/v1/example_connector.py` modified +1/-1; `vllm/distributed/kv_transfer/kv_connector/v1/lmcache_integration/vllm_v1_adapter.py` modified +1/-3; `vllm/distributed/kv_transfer/kv_connector/v1/p2p/p2p_nccl_connector.py` modified +1/-1; `vllm/forward_context.py` modified +0/-7; `vllm/model_executor/layers/attention/attention.py` modified +2/-2; `vllm/model_executor/layers/attention/mla_attention.py` modified +2/-2; `vllm/model_executor/layers/attention/static_sink_attention.py` modified +1/-2; `vllm/model_executor/layers/kda.py` modified +1/-1
   - tests: `tests/compile/passes/test_rope_kvcache_fusion.py` modified +2/-2; `tests/v1/kv_connector/unit/test_decode_bench_connector.py` modified +1/-1; `tests/v1/kv_connector/unit/test_lmcache_integration.py` modified +0/-1; `tests/v1/kv_connector/unit/test_nixl_connector.py` modified +0/-8; `tests/v1/kv_connector/unit/test_offloading_connector.py` modified +0/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #37487 - [V0 Deprecation] Refactor kv cache from list to element
 
@@ -1403,7 +1403,7 @@ diff -- tests/v1/kv_connector/unit/test_decode_bench_connector.py
   - `tests/compile/passes/test_rope_kvcache_fusion.py` modified +3/-3
   - `tests/v1/e2e/general/test_mamba_prefix_cache.py` modified +3/-3
   - `tests/v1/worker/test_gpu_model_runner.py` modified +17/-17
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- tests/compile/passes/test_fusion_attn.py
@@ -1432,10 +1432,10 @@ diff -- tests/compile/passes/test_rope_kvcache_fusion.py
              attn_layer = forward_context.no_compile_layers[model.layer_name]
 -            kv_cache_unfused = attn_layer.kv_cache[0]
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/distributed/kv_transfer/kv_connector/v1/example_connector.py` modified +2/-4; `vllm/distributed/kv_transfer/kv_connector/v1/lmcache_integration/vllm_v1_adapter.py` modified +1/-1; `vllm/distributed/kv_transfer/kv_connector/v1/p2p/p2p_nccl_connector.py` modified +1/-1; `vllm/model_executor/layers/attention/attention.py` modified +2/-5; `vllm/model_executor/layers/attention/mla_attention.py` modified +3/-8; `vllm/model_executor/layers/attention/static_sink_attention.py` modified +1/-1; `vllm/model_executor/layers/kda.py` modified +1/-1; `vllm/model_executor/layers/mamba/linear_attn.py` modified +1/-1
   - tests: `tests/compile/passes/test_fusion_attn.py` modified +1/-1; `tests/compile/passes/test_rope_kvcache_fusion.py` modified +3/-3; `tests/v1/e2e/general/test_mamba_prefix_cache.py` modified +3/-3; `tests/v1/worker/test_gpu_model_runner.py` modified +17/-17; `tests/v1/worker/test_utils.py` modified +10/-10
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #35949 - [MoE Refactor] Move the shared/fused expert output sum into MoERunnerBase
 
@@ -1454,7 +1454,7 @@ diff -- tests/compile/passes/test_rope_kvcache_fusion.py
   - `tests/kernels/moe/test_moe_layer.py` modified +17/-76
   - `tests/kernels/moe/test_shared_fused_moe_routed_transform.py` modified +10/-26
   - `vllm/lora/layers/fused_moe.py` modified +0/-3
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- tests/compile/passes/test_vllm_fusion_pattern_matcher_pass.py
@@ -1488,10 +1488,10 @@ diff -- tests/kernels/moe/test_moe_layer.py
 -        reduce_results,
      ) in product(
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/lora/layers/fused_moe.py` modified +0/-3; `vllm/model_executor/layers/fused_moe/fused_marlin_moe.py` modified +1/-1; `vllm/model_executor/layers/fused_moe/layer.py` modified +28/-32; `vllm/model_executor/layers/fused_moe/modular_kernel.py` modified +1/-1; `vllm/model_executor/layers/fused_moe/runner/default_moe_runner.py` modified +0/-4; `vllm/model_executor/layers/fused_moe/runner/moe_runner.py` modified +1/-12; `vllm/model_executor/layers/fused_moe/runner/moe_runner_base.py` modified +175/-86; `vllm/model_executor/layers/fused_moe/runner/moe_runner_factory.py` modified +4/-2
   - tests: `tests/compile/passes/test_vllm_fusion_pattern_matcher_pass.py` modified +3/-5; `tests/kernels/moe/test_moe_layer.py` modified +17/-76; `tests/kernels/moe/test_shared_fused_moe_routed_transform.py` modified +10/-26
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #35782 - [MoE Refactor] Remove SharedFusedMoE class
 
@@ -1510,7 +1510,7 @@ diff -- tests/kernels/moe/test_moe_layer.py
   - `tests/kernels/moe/test_shared_fused_moe_routed_transform.py` modified +10/-10
   - `vllm/distributed/device_communicators/base_device_communicator.py` modified +3/-10
   - `vllm/distributed/elastic_ep/elastic_execute.py` modified +2/-4
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- tests/kernels/moe/test_moe_layer.py
@@ -1544,10 +1544,10 @@ diff -- tests/kernels/moe/test_shared_fused_moe_routed_transform.py
 @@ -13,7 +13,7 @@
 
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/distributed/device_communicators/base_device_communicator.py` modified +3/-10; `vllm/distributed/elastic_ep/elastic_execute.py` modified +2/-4; `vllm/lora/layers/fused_moe.py` modified +2/-2; `vllm/model_executor/layers/fused_moe/__init__.py` modified +0/-2; `vllm/model_executor/layers/fused_moe/shared_fused_moe.py` removed +0/-25; `vllm/model_executor/models/AXK1.py` modified +4/-4; `vllm/model_executor/models/afmoe.py` modified +5/-5; `vllm/model_executor/models/aria.py` modified +2/-2
   - tests: `tests/kernels/moe/test_moe_layer.py` modified +3/-7; `tests/kernels/moe/test_shared_fused_moe_routed_transform.py` modified +10/-10
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #40671 - [MoE Refactor] Rename FusedMoE.make_expert_params_mapping to fused_moe_make_expert_params_mapping
 
@@ -1566,7 +1566,7 @@ diff -- tests/kernels/moe/test_shared_fused_moe_routed_transform.py
   - `vllm/model_executor/layers/fused_moe/layer.py` modified +19/-0
   - `vllm/model_executor/models/AXK1.py` modified +6/-3
   - `vllm/model_executor/models/afmoe.py` modified +5/-2
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- vllm/model_executor/layers/fused_moe/__init__.py
@@ -1600,9 +1600,9 @@ diff -- vllm/model_executor/layers/fused_moe/layer.py
 +) -> list[tuple[str, str, int, str]]:
 +    return FusedMoE.make_expert_params_mapping(
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/layers/fused_moe/__init__.py` modified +2/-0; `vllm/model_executor/layers/fused_moe/layer.py` modified +19/-0; `vllm/model_executor/models/AXK1.py` modified +6/-3; `vllm/model_executor/models/afmoe.py` modified +5/-2; `vllm/model_executor/models/arctic.py` modified +4/-1; `vllm/model_executor/models/aria.py` modified +3/-1; `vllm/model_executor/models/bailing_moe.py` modified +5/-2; `vllm/model_executor/models/bailing_moe_linear.py` modified +5/-2
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #40859 - [Bugfix ] fix bailing_moe_linear
 
@@ -1617,7 +1617,7 @@ diff -- vllm/model_executor/layers/fused_moe/layer.py
 - Code diff details:
   - `vllm/model_executor/layers/mamba/mamba_utils.py` modified +0/-3
   - `vllm/model_executor/models/bailing_moe_linear.py` modified +15/-13
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- vllm/model_executor/layers/mamba/mamba_utils.py
@@ -1647,9 +1647,9 @@ diff -- vllm/model_executor/models/bailing_moe_linear.py
 -            dtype=torch.float32,
          )
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/layers/mamba/mamba_utils.py` modified +0/-3; `vllm/model_executor/models/bailing_moe_linear.py` modified +15/-13
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #41185 - [Bugfix] BailingMoeV2.5: rotate full qk_rope_head_dim in MLA RoPE
 
@@ -1662,7 +1662,7 @@ diff -- vllm/model_executor/models/bailing_moe_linear.py
   - `vllm/model_executor/models/bailing_moe_linear.py` modified +8/-2
 - Code diff details:
   - `vllm/model_executor/models/bailing_moe_linear.py` modified +8/-2
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- vllm/model_executor/models/bailing_moe_linear.py
@@ -1681,9 +1681,9 @@ diff -- vllm/model_executor/models/bailing_moe_linear.py
          max_position = getattr(config, "max_position_embeddings", 8192)
          self.rotary_emb = get_rope(
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/bailing_moe_linear.py` modified +8/-2
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #41188 - [Misc] Replace mamba_type string literals with MambaAttentionBackendEnum
 
@@ -1702,7 +1702,7 @@ diff -- vllm/model_executor/models/bailing_moe_linear.py
   - `tests/kernels/mamba/test_ssu_dispatch.py` modified +10/-2
   - `tests/v1/attention/test_attention_backends_selection.py` modified +13/-8
   - `vllm/distributed/kv_transfer/kv_connector/v1/ssm_conv_transfer_utils.py` modified +2/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/contributing/model/basic.md
@@ -1731,8 +1731,8 @@ diff -- tests/kernels/mamba/test_ssu_dispatch.py
 -def _kv_cache_config_with_ssu(mamba_type: str = "mamba2") -> KVCacheConfig:
 +def _kv_cache_config_with_ssu(
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/distributed/kv_transfer/kv_connector/v1/ssm_conv_transfer_utils.py` modified +2/-1; `vllm/model_executor/layers/kda.py` modified +3/-2; `vllm/model_executor/layers/mamba/abstract.py` modified +2/-1; `vllm/model_executor/layers/mamba/gdn_linear_attn.py` modified +3/-2; `vllm/model_executor/layers/mamba/linear_attn.py` modified +3/-2; `vllm/model_executor/layers/mamba/mamba_mixer.py` modified +3/-2; `vllm/model_executor/layers/mamba/mamba_mixer2.py` modified +3/-2; `vllm/model_executor/layers/mamba/ops/ssu_dispatch.py` modified +3/-1
   - tests: `tests/kernels/mamba/test_ssu_dispatch.py` modified +10/-2; `tests/v1/attention/test_attention_backends_selection.py` modified +13/-8
   - docs/bench: `docs/contributing/model/basic.md` modified +1/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.

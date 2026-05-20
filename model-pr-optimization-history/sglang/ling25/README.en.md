@@ -4,11 +4,11 @@
 
 Generated from sglang upstream `origin/main@5073c82a37`, `git log --name-only -- <model-files>` over model-related paths, and the GitHub Pull Request files API. This page fills the missing `Ling 2.5 1T` history entry found from sgl-cookbook coverage.
 
-## Model Implementation File Coverage
+## Implementation File Coverage
 
 | File | PRs traced by git |
 | --- | --- |
-| `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/ling-2.5-1t.yaml` | [#24250](https://github.com/sgl-project/sglang/pull/24250) |
+| `skills/llm-serving-auto-benchmark/configs/cookbook-llm/ling-2.5-1t.yaml` | [#24250](https://github.com/sgl-project/sglang/pull/24250) |
 | `docs_new/cookbook/autoregressive/InclusionAI/Ling-2.5-1T.mdx` | [#23337](https://github.com/sgl-project/sglang/pull/23337), [#23001](https://github.com/sgl-project/sglang/pull/23001) |
 | `docs_new/src/snippets/autoregressive/ling-25-1t-deployment.jsx` | [#24977](https://github.com/sgl-project/sglang/pull/24977), [#23001](https://github.com/sgl-project/sglang/pull/23001) |
 | `python/sglang/srt/configs/bailing_hybrid.py` | [#18598](https://github.com/sgl-project/sglang/pull/18598) |
@@ -17,7 +17,7 @@ Generated from sglang upstream `origin/main@5073c82a37`, `git log --name-only --
 | `python/sglang/srt/models/bailing_moe_nextn.py` | [#24333](https://github.com/sgl-project/sglang/pull/24333), [#18860](https://github.com/sgl-project/sglang/pull/18860), [#18598](https://github.com/sgl-project/sglang/pull/18598), [#17808](https://github.com/sgl-project/sglang/pull/17808), [#17570](https://github.com/sgl-project/sglang/pull/17570), [#11528](https://github.com/sgl-project/sglang/pull/11528), [#11520](https://github.com/sgl-project/sglang/pull/11520), [#11331](https://github.com/sgl-project/sglang/pull/11331), [#10359](https://github.com/sgl-project/sglang/pull/10359) |
 | `test/registered/ascend/llm_models/test_npu_ling_lite.py` | [#20751](https://github.com/sgl-project/sglang/pull/20751), [#19382](https://github.com/sgl-project/sglang/pull/19382) |
 
-## PR Coverage Overview
+## PR Coverage Summary
 
 - git-traced PR count: 37
 - keyword/supplemental PR count: 0
@@ -63,7 +63,7 @@ Generated from sglang upstream `origin/main@5073c82a37`, `git log --name-only --
 | 2026-04-26 | [#23732](https://github.com/sgl-project/sglang/pull/23732) | merged | Apply should_use_dp_reduce_scatterv guard to remaining MoE models (follow-up to #23731) | `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/models/bailing_moe_linear.py`, `python/sglang/srt/models/deepseek_v2.py` |
 | 2026-04-27 | [#23748](https://github.com/sgl-project/sglang/pull/23748) | merged | refactor(moe): centralize post-experts all-reduce skip predicate | `python/sglang/srt/layers/moe/__init__.py`, `python/sglang/srt/layers/moe/utils.py`, `python/sglang/srt/models/bailing_moe.py` |
 | 2026-04-30 | [#21126](https://github.com/sgl-project/sglang/pull/21126) | merged | [4/N] Quantization Refactor: AWQ schemes and Kernel call and weight init split | `python/sglang/srt/hardware_backend/gpu/quantization/awq_kernels.py`, `python/sglang/srt/hardware_backend/npu/quantization/awq_kernels.py`, `python/sglang/srt/layers/linear.py` |
-| 2026-05-02 | [#24250](https://github.com/sgl-project/sglang/pull/24250) | merged | [SKILL] Upgrade sglang profile and auto_benchmark skills | `.claude/skills/llm-serving-auto-benchmark/SKILL.md`, `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md`, `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` |
+| 2026-05-02 | [#24250](https://github.com/sgl-project/sglang/pull/24250) | merged | [SKILL] Upgrade sglang profile and auto_benchmark skills | `agent-skills/llm-serving-auto-benchmark/SKILL.md`, `skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md`, `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` |
 | 2026-05-04 | [#24333](https://github.com/sgl-project/sglang/pull/24333) | merged | nextn subclass owns post_load_weights is_nextn | `python/sglang/srt/model_loader/loader.py`, `python/sglang/srt/model_loader/utils.py`, `python/sglang/srt/models/bailing_moe_nextn.py` |
 | 2026-05-11 | [#24977](https://github.com/sgl-project/sglang/pull/24977) | merged | fix gb envs in deployment guide | `docs_new/src/snippets/autoregressive/ling-25-1t-deployment.jsx` |
 
@@ -84,7 +84,7 @@ Generated from sglang upstream `origin/main@5073c82a37`, `git log --name-only --
   - `docs/supported_models/generative_models.md` modified +1/-0
   - `python/sglang/srt/models/bailing_moe.py` added +425/-0
   - `test/srt/models/test_generation_models.py` modified +1/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/supported_models/generative_models.md
@@ -111,11 +111,11 @@ diff -- python/sglang/srt/models/bailing_moe.py
 +from sglang.srt.distributed import (
 +    get_tensor_model_parallel_world_size,
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/models/bailing_moe.py` added +425/-0
   - tests: `test/srt/models/test_generation_models.py` modified +1/-0
   - docs/bench: `docs/supported_models/generative_models.md` modified +1/-0
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #10359 - Support LingV2 model
 
@@ -134,7 +134,7 @@ diff -- python/sglang/srt/models/bailing_moe.py
   - `python/sglang/srt/configs/model_config.py` modified +5/-0
   - `python/sglang/srt/layers/linear.py` modified +32/-0
   - `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=256,N=512,device_name=NVIDIA_H20.json` added +146/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py
@@ -166,10 +166,10 @@ diff -- python/sglang/srt/configs/model_config.py
              is_draft_model
              and self.hf_config.architectures[0] == "Ernie4_5_MoeForCausalLM"
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/configs/model_config.py` modified +5/-0; `python/sglang/srt/layers/linear.py` modified +32/-0; `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=256,N=512,device_name=NVIDIA_H20.json` added +146/-0; `python/sglang/srt/models/bailing_moe.py` modified +795/-218; `python/sglang/srt/models/bailing_moe_nextn.py` added +168/-0; `python/sglang/srt/server_args.py` modified +8/-1
   - docs/bench: `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py` modified +11/-2
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #10362 - Fix Bailing MoE model bugs
 
@@ -184,7 +184,7 @@ diff -- python/sglang/srt/configs/model_config.py
 - Code diff details:
   - `python/sglang/srt/models/bailing_moe.py` modified +7/-4
   - `python/sglang/srt/server_args.py` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/bailing_moe.py
@@ -213,9 +213,9 @@ diff -- python/sglang/srt/server_args.py
              ]:
                  # Auto set draft_model_path DeepSeek-V3/R1
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/models/bailing_moe.py` modified +7/-4; `python/sglang/srt/server_args.py` modified +1/-1
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #9338 - Refactor TopK to ensure readability and extensibility
 
@@ -234,7 +234,7 @@ diff -- python/sglang/srt/server_args.py
   - `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` modified +0/-10
   - `python/sglang/srt/layers/moe/topk.py` modified +30/-9
   - `python/sglang/srt/managers/schedule_batch.py` modified +0/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/layers/moe/ep_moe/layer.py
@@ -268,9 +268,9 @@ diff -- python/sglang/srt/layers/moe/fused_moe_triton/layer.py
 -
 -
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/layers/moe/ep_moe/layer.py` modified +4/-4; `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` modified +0/-10; `python/sglang/srt/layers/moe/topk.py` modified +30/-9; `python/sglang/srt/managers/schedule_batch.py` modified +0/-1; `python/sglang/srt/models/bailing_moe.py` modified +1/-1; `python/sglang/srt/models/deepseek_v2.py` modified +7/-12; `python/sglang/srt/models/ernie4.py` modified +1/-1; `python/sglang/srt/models/glm4_moe.py` modified +1/-1
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #10860 - fix bailing_moe with enable_dp_attention
 
@@ -283,7 +283,7 @@ diff -- python/sglang/srt/layers/moe/fused_moe_triton/layer.py
   - `python/sglang/srt/models/bailing_moe.py` modified +2/-2
 - Code diff details:
   - `python/sglang/srt/models/bailing_moe.py` modified +2/-2
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/bailing_moe.py
@@ -302,9 +302,9 @@ diff -- python/sglang/srt/models/bailing_moe.py
  )
  from sglang.srt.layers.logits_processor import LogitsProcessor
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/models/bailing_moe.py` modified +2/-2
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #10749 - Fuse write kv buffer into rope for qwen3 moe & bailing moe
 
@@ -323,7 +323,7 @@ diff -- python/sglang/srt/models/bailing_moe.py
   - `python/sglang/srt/models/gpt_oss.py` modified +7/-30
   - `python/sglang/srt/models/qwen3_moe.py` modified +22/-2
   - `python/sglang/srt/models/utils.py` added +51/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/bailing_moe.py
@@ -357,9 +357,9 @@ diff -- python/sglang/srt/models/gpt_oss.py
          return ans
 
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/models/bailing_moe.py` modified +25/-2; `python/sglang/srt/models/gpt_oss.py` modified +7/-30; `python/sglang/srt/models/qwen3_moe.py` modified +22/-2; `python/sglang/srt/models/utils.py` added +51/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #11331 - Deprecate `global_server_args_dict`
 
@@ -378,7 +378,7 @@ diff -- python/sglang/srt/models/gpt_oss.py
   - `python/sglang/srt/distributed/device_communicators/pynccl_allocator.py` modified +2/-2
   - `python/sglang/srt/eplb/expert_location_dispatch.py` modified +2/-2
   - `python/sglang/srt/eplb/expert_location_updater.py` modified +2/-2
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/global_config.py
@@ -408,9 +408,9 @@ diff -- python/sglang/srt/distributed/device_communicators/pynccl_allocator.py
  def is_symmetric_memory_enabled():
 -    return global_server_args_dict["enable_symm_mem"]
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/global_config.py` modified +0/-3; `python/sglang/srt/distributed/device_communicators/pynccl_allocator.py` modified +2/-2; `python/sglang/srt/eplb/expert_location_dispatch.py` modified +2/-2; `python/sglang/srt/eplb/expert_location_updater.py` modified +2/-2; `python/sglang/srt/layers/attention/double_sparsity_backend.py` modified +2/-2; `python/sglang/srt/layers/attention/flashattention_backend.py` modified +2/-2; `python/sglang/srt/layers/attention/flashinfer_mla_backend.py` modified +5/-5; `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +2/-2
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #11465 - bailingMoE: Fix Key error of deepep_mode
 
@@ -423,7 +423,7 @@ diff -- python/sglang/srt/distributed/device_communicators/pynccl_allocator.py
   - `python/sglang/srt/models/bailing_moe.py` modified +2/-2
 - Code diff details:
   - `python/sglang/srt/models/bailing_moe.py` modified +2/-2
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/bailing_moe.py
@@ -442,9 +442,9 @@ diff -- python/sglang/srt/models/bailing_moe.py
                  params_dtype=config.torch_dtype,
 -                deepep_mode=DeepEPMode[global_server_args_dict["deepep_mode"]],
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/models/bailing_moe.py` modified +2/-2
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #11520 - Revert "Deprecate `global_server_args_dict`"
 
@@ -463,7 +463,7 @@ diff -- python/sglang/srt/models/bailing_moe.py
   - `python/sglang/srt/distributed/device_communicators/pynccl_allocator.py` modified +2/-2
   - `python/sglang/srt/eplb/expert_location_dispatch.py` modified +2/-2
   - `python/sglang/srt/eplb/expert_location_updater.py` modified +2/-2
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/global_config.py
@@ -493,9 +493,9 @@ diff -- python/sglang/srt/distributed/device_communicators/pynccl_allocator.py
  def is_symmetric_memory_enabled():
 -    return get_global_server_args().enable_symm_mem
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/global_config.py` modified +3/-0; `python/sglang/srt/distributed/device_communicators/pynccl_allocator.py` modified +2/-2; `python/sglang/srt/eplb/expert_location_dispatch.py` modified +2/-2; `python/sglang/srt/eplb/expert_location_updater.py` modified +2/-2; `python/sglang/srt/layers/attention/double_sparsity_backend.py` modified +2/-2; `python/sglang/srt/layers/attention/flashattention_backend.py` modified +2/-2; `python/sglang/srt/layers/attention/flashinfer_mla_backend.py` modified +5/-5; `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +2/-2
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #11528 - Depreate `global_server_args_dict`
 
@@ -514,7 +514,7 @@ diff -- python/sglang/srt/distributed/device_communicators/pynccl_allocator.py
   - `python/sglang/srt/distributed/device_communicators/pynccl_allocator.py` modified +2/-2
   - `python/sglang/srt/eplb/expert_location_dispatch.py` modified +2/-2
   - `python/sglang/srt/eplb/expert_location_updater.py` modified +2/-2
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/global_config.py
@@ -544,9 +544,9 @@ diff -- python/sglang/srt/distributed/device_communicators/pynccl_allocator.py
  def is_symmetric_memory_enabled():
 -    return global_server_args_dict["enable_symm_mem"]
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/global_config.py` modified +0/-3; `python/sglang/srt/distributed/device_communicators/pynccl_allocator.py` modified +2/-2; `python/sglang/srt/eplb/expert_location_dispatch.py` modified +2/-2; `python/sglang/srt/eplb/expert_location_updater.py` modified +2/-2; `python/sglang/srt/layers/attention/double_sparsity_backend.py` modified +2/-2; `python/sglang/srt/layers/attention/flashattention_backend.py` modified +2/-2; `python/sglang/srt/layers/attention/flashinfer_mla_backend.py` modified +5/-5; `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +2/-2
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #11685 - [Lint] Add `python/sglang` to ruff F401 checks and remove unused imports in files
 
@@ -565,7 +565,7 @@ diff -- python/sglang/srt/distributed/device_communicators/pynccl_allocator.py
   - `python/sglang/srt/_custom_ops.py` modified +1/-1
   - `python/sglang/srt/compilation/cuda_piecewise_backend.py` modified +0/-1
   - `python/sglang/srt/configs/deepseekvl2.py` modified +0/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .pre-commit-config.yaml
@@ -593,10 +593,10 @@ diff -- python/sglang/srt/_custom_ops.py
              logger.warning("Failed to import from vllm._C with %r", e)
      else:
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/_custom_ops.py` modified +1/-1; `python/sglang/srt/compilation/cuda_piecewise_backend.py` modified +0/-1; `python/sglang/srt/configs/deepseekvl2.py` modified +0/-1; `python/sglang/srt/configs/dots_vlm.py` modified +2/-7; `python/sglang/srt/configs/falcon_h1.py` modified +1/-6; `python/sglang/srt/configs/qwen3_next.py` modified +0/-1; `python/sglang/srt/connector/remote_instance.py` modified +1/-1; `python/sglang/srt/disaggregation/ascend/transfer_engine.py` modified +1/-1
   - other: `.pre-commit-config.yaml` modified +3/-3
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #11847 - [9/N] MoE Refactor: cleanup dispatcher interfaces
 
@@ -615,7 +615,7 @@ diff -- python/sglang/srt/_custom_ops.py
   - `python/sglang/srt/layers/moe/ep_moe/kernels.py` modified +3/-1
   - `python/sglang/srt/layers/moe/ep_moe/layer.py` modified +69/-99
   - `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` modified +44/-35
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/layers/dp_attention.py
@@ -646,9 +646,9 @@ diff -- python/sglang/srt/layers/moe/ep_moe/kernels.py
 
      _fwd_kernel_ep_scatter_1[(grid,)](
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/layers/dp_attention.py` modified +17/-0; `python/sglang/srt/layers/moe/ep_moe/kernels.py` modified +3/-1; `python/sglang/srt/layers/moe/ep_moe/layer.py` modified +69/-99; `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` modified +44/-35; `python/sglang/srt/layers/moe/token_dispatcher/__init__.py` modified +2/-0; `python/sglang/srt/layers/moe/token_dispatcher/base.py` modified +1/-1; `python/sglang/srt/layers/moe/token_dispatcher/deepep.py` modified +86/-91; `python/sglang/srt/layers/moe/token_dispatcher/mooncake.py` modified +37/-39
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #12369 - Enable bailing_moe to support TP=16
 
@@ -661,7 +661,7 @@ diff -- python/sglang/srt/layers/moe/ep_moe/kernels.py
   - `python/sglang/srt/models/bailing_moe.py` modified +9/-2
 - Code diff details:
   - `python/sglang/srt/models/bailing_moe.py` modified +9/-2
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/bailing_moe.py
@@ -680,9 +680,9 @@ diff -- python/sglang/srt/models/bailing_moe.py
 +            assert attn_tp_size % self.total_kv_heads == 0
          assert self.total_num_heads >= self.total_kv_heads
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/models/bailing_moe.py` modified +9/-2
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #14337 - remove unecessary dual stream token threshold from the rest of models (qwen moe, kimi linear, etc.)
 
@@ -701,7 +701,7 @@ diff -- python/sglang/srt/models/bailing_moe.py
   - `python/sglang/srt/models/kimi_linear.py` modified +0/-2
   - `python/sglang/srt/models/llada2.py` modified +0/-2
   - `python/sglang/srt/models/qwen2_moe.py` modified +0/-2
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/bailing_moe.py
@@ -733,9 +733,9 @@ diff -- python/sglang/srt/models/kimi_linear.py
          ):
              current_stream = torch.cuda.current_stream()
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/models/bailing_moe.py` modified +0/-2; `python/sglang/srt/models/kimi_linear.py` modified +0/-2; `python/sglang/srt/models/llada2.py` modified +0/-2; `python/sglang/srt/models/qwen2_moe.py` modified +0/-2
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #13730 - [bugfix] fix TBO crashes when attn_tp_size > 1
 
@@ -754,7 +754,7 @@ diff -- python/sglang/srt/models/kimi_linear.py
   - `python/sglang/srt/batch_overlap/two_batch_overlap.py` modified +39/-6
   - `python/sglang/srt/layers/communicator.py` modified +14/-1
   - `python/sglang/srt/model_executor/forward_batch_info.py` modified +9/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/batch_overlap/operations.py
@@ -788,10 +788,10 @@ diff -- python/sglang/srt/batch_overlap/two_batch_overlap.py
 +        attention_tp_size = get_attention_tp_size()
 +        output_dict["tbo_padded_len"] = (
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/batch_overlap/operations.py` modified +10/-8; `python/sglang/srt/batch_overlap/two_batch_overlap.py` modified +39/-6; `python/sglang/srt/layers/communicator.py` modified +14/-1; `python/sglang/srt/model_executor/forward_batch_info.py` modified +9/-0; `python/sglang/srt/models/bailing_moe.py` modified +4/-0; `python/sglang/srt/models/deepseek_v2.py` modified +2/-0; `python/sglang/srt/models/falcon_h1.py` modified +3/-1; `python/sglang/srt/models/glm4_moe.py` modified +2/-0
   - tests: `test/srt/ep/test_deepep_small.py` modified +178/-0
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #15526 - Optimize Bailing-MoE with FlashInfer Fused All-Reduce
 
@@ -804,7 +804,7 @@ diff -- python/sglang/srt/batch_overlap/two_batch_overlap.py
   - `python/sglang/srt/models/bailing_moe.py` modified +58/-20
 - Code diff details:
   - `python/sglang/srt/models/bailing_moe.py` modified +58/-20
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/bailing_moe.py
@@ -823,9 +823,9 @@ diff -- python/sglang/srt/models/bailing_moe.py
  from sglang.srt.layers.logits_processor import LogitsProcessor
 -from sglang.srt.layers.moe import get_deepep_mode, get_moe_a2a_backend
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/models/bailing_moe.py` modified +58/-20
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #15835 - [Feature] JIT Fused QK norm + qk norm clean up
 
@@ -844,7 +844,7 @@ diff -- python/sglang/srt/models/bailing_moe.py
   - `python/sglang/jit_kernel/csrc/norm.cuh` added +202/-0
   - `python/sglang/jit_kernel/include/sgl_kernel/runtime.cuh` added +26/-0
   - `python/sglang/jit_kernel/include/sgl_kernel/tensor.h` modified +10/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/jit_kernel/benchmark/bench_qknorm.py
@@ -878,9 +878,9 @@ diff -- python/sglang/jit_kernel/csrc/norm.cuh
 +#include <cstdint>
 +#include <type_traits>
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/jit_kernel/benchmark/bench_qknorm.py` added +130/-0; `python/sglang/jit_kernel/csrc/norm.cuh` added +202/-0; `python/sglang/jit_kernel/include/sgl_kernel/runtime.cuh` added +26/-0; `python/sglang/jit_kernel/include/sgl_kernel/tensor.h` modified +10/-0; `python/sglang/jit_kernel/include/sgl_kernel/utils.cuh` modified +31/-1; `python/sglang/jit_kernel/include/sgl_kernel/warp.cuh` added +14/-0; `python/sglang/jit_kernel/norm.py` added +55/-0; `python/sglang/jit_kernel/tests/test_qknorm.py` added +85/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #13715 - Fix EPLB + FP4 Quantization Compatibility Issue
 
@@ -899,7 +899,7 @@ diff -- python/sglang/jit_kernel/csrc/norm.cuh
   - `python/sglang/srt/models/bailing_moe.py` modified +4/-0
   - `python/sglang/srt/models/deepseek_v2.py` modified +7/-1
   - `python/sglang/srt/models/glm4_moe.py` modified +4/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/layers/moe/utils.py
@@ -933,9 +933,9 @@ diff -- python/sglang/srt/models/bailing_moe.py
 +            and filter_moe_weight_param_global_expert(
 +                name, x, self.experts.num_local_experts
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/layers/moe/utils.py` modified +12/-0; `python/sglang/srt/models/bailing_moe.py` modified +4/-0; `python/sglang/srt/models/deepseek_v2.py` modified +7/-1; `python/sglang/srt/models/glm4_moe.py` modified +4/-0; `python/sglang/srt/models/gpt_oss.py` modified +4/-0; `python/sglang/srt/models/longcat_flash.py` modified +4/-0; `python/sglang/srt/models/qwen2_moe.py` modified +7/-1; `python/sglang/srt/models/qwen3_moe.py` modified +7/-1
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #17570 - Use attn tp group in embedding for more models
 
@@ -954,7 +954,7 @@ diff -- python/sglang/srt/models/bailing_moe.py
   - `python/sglang/srt/models/bailing_moe_nextn.py` modified +1/-1
   - `python/sglang/srt/models/falcon_h1.py` modified +1/-1
   - `python/sglang/srt/models/glm4.py` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/bailing_moe.py
@@ -978,9 +978,9 @@ diff -- python/sglang/srt/models/bailing_moe_nextn.py
          )
 
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/models/bailing_moe.py` modified +1/-1; `python/sglang/srt/models/bailing_moe_nextn.py` modified +1/-1; `python/sglang/srt/models/falcon_h1.py` modified +1/-1; `python/sglang/srt/models/glm4.py` modified +1/-1; `python/sglang/srt/models/glm4_moe.py` modified +1/-1; `python/sglang/srt/models/glm4_moe_lite.py` modified +1/-1; `python/sglang/srt/models/glm4_moe_nextn.py` modified +1/-1; `python/sglang/srt/models/gpt_oss.py` modified +1/-1
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #17808 - Fix the scenario where eh_proj is quantized in the bailing moe nextn weights
 
@@ -993,7 +993,7 @@ diff -- python/sglang/srt/models/bailing_moe_nextn.py
   - `python/sglang/srt/models/bailing_moe_nextn.py` modified +9/-2
 - Code diff details:
   - `python/sglang/srt/models/bailing_moe_nextn.py` modified +9/-2
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/bailing_moe_nextn.py
@@ -1012,9 +1012,9 @@ diff -- python/sglang/srt/models/bailing_moe_nextn.py
 -        self.eh_proj = nn.Linear(2 * config.hidden_size, config.hidden_size, bias=False)
 +        self.eh_proj = ReplicatedLinear(
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/models/bailing_moe_nextn.py` modified +9/-2
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #15119 - feat: Add Ling Flash v2.0 support for Eagle3
 
@@ -1027,7 +1027,7 @@ diff -- python/sglang/srt/models/bailing_moe_nextn.py
   - `python/sglang/srt/models/bailing_moe.py` modified +30/-1; symbols: set_eagle3_layers_to_capture
 - Code diff details:
   - `python/sglang/srt/models/bailing_moe.py` modified +30/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/bailing_moe.py
@@ -1046,9 +1046,9 @@ diff -- python/sglang/srt/models/bailing_moe.py
              with get_global_expert_distribution_recorder().with_current_layer(i):
 +                if i in self.layers_to_capture:
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/models/bailing_moe.py` modified +30/-1
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #18598 - Support LingV2_5 model
 
@@ -1067,7 +1067,7 @@ diff -- python/sglang/srt/models/bailing_moe.py
   - `python/sglang/srt/configs/bailing_hybrid.py` added +188/-0
   - `python/sglang/srt/configs/model_config.py` modified +20/-0
   - `python/sglang/srt/layers/attention/attention_registry.py` modified +3/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/configs/__init__.py
@@ -1101,9 +1101,9 @@ diff -- python/sglang/srt/configs/bailing_hybrid.py
 +# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 +# See the License for the specific language governing permissions and
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/configs/__init__.py` modified +2/-0; `python/sglang/srt/configs/bailing_hybrid.py` added +188/-0; `python/sglang/srt/configs/model_config.py` modified +20/-0; `python/sglang/srt/layers/attention/attention_registry.py` modified +3/-0; `python/sglang/srt/layers/attention/fla/layernorm_gated.py` modified +26/-5; `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +369/-0; `python/sglang/srt/layers/attention/linear/lightning_attn.py` added +767/-0; `python/sglang/srt/layers/attention/linear/linear_metadata.py` added +70/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #18793 - Cleanup debug log for Ring model
 
@@ -1118,7 +1118,7 @@ diff -- python/sglang/srt/configs/bailing_hybrid.py
 - Code diff details:
   - `python/sglang/srt/configs/mamba_utils.py` modified +1/-1
   - `python/sglang/srt/models/bailing_moe_linear.py` modified +8/-10
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/configs/mamba_utils.py
@@ -1147,9 +1147,9 @@ diff -- python/sglang/srt/models/bailing_moe_linear.py
 -        logger.info(f"linear_backend in bailing_moe_linear: {self.linear_backend}")
 +        logger.debug(f"linear_backend in bailing_moe_linear: {self.linear_backend}")
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/configs/mamba_utils.py` modified +1/-1; `python/sglang/srt/models/bailing_moe_linear.py` modified +8/-10
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #18860 - update pre-commit config
 
@@ -1168,7 +1168,7 @@ diff -- python/sglang/srt/models/bailing_moe_linear.py
   - `.pre-commit-config.yaml` modified +6/-6
   - `3rdparty/amd/tuning/benchmark_moe_rocm.py` modified +2/-4
   - `benchmark/fla/benchmark_layernorm_gated.py` modified +3/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .github/workflows/lint.yml
@@ -1200,11 +1200,11 @@ diff -- .pre-commit-config.yaml
    - repo: https://github.com/PyCQA/isort
 -    rev: 5.13.2
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/jit_kernel/include/sgl_kernel/type.cuh` modified +16/-15; `python/sglang/multimodal_gen/apps/webui/main.py` modified +2/-4; `python/sglang/multimodal_gen/configs/models/encoders/qwen3.py` modified +1/-0; `python/sglang/multimodal_gen/runtime/cache/__init__.py` modified +1/-0; `python/sglang/multimodal_gen/runtime/distributed/parallel_state.py` modified +2/-1; `python/sglang/multimodal_gen/runtime/layers/activation.py` modified +1/-0; `python/sglang/multimodal_gen/runtime/layers/layernorm.py` modified +1/-0; `python/sglang/multimodal_gen/runtime/layers/rotary_embedding.py` modified +1/-0
   - docs/bench: `benchmark/fla/benchmark_layernorm_gated.py` modified +3/-1; `benchmark/tip_suggestion/bench_other.py` modified +2/-8; `benchmark/tip_suggestion/bench_sglang.py` modified +2/-8; `benchmark/tip_suggestion/lmql_funcs.py` modified +2/-8; `docs/advanced_features/lora.ipynb` modified +10/-20; `docs/advanced_features/structured_outputs.ipynb` modified +0/-1; `docs/advanced_features/structured_outputs_for_reasoning_models.ipynb` modified +0/-1; `docs/advanced_features/vlm_query.ipynb` modified +0/-1
   - other: `.github/workflows/lint.yml` modified +2/-2; `.pre-commit-config.yaml` modified +6/-6; `3rdparty/amd/tuning/benchmark_moe_rocm.py` modified +2/-4
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #19382 - Add NPU basic function testcases
 
@@ -1223,7 +1223,7 @@ diff -- .pre-commit-config.yaml
   - `python/sglang/test/ascend/disaggregation_utils.py` added +153/-0
   - `python/sglang/test/ascend/test_ascend_utils.py` modified +495/-54
   - `test/registered/ascend/basic_function/HiCache/test_npu_hierarchical_cache.py` added +127/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .github/workflows/nightly-test-npu.yml
@@ -1257,11 +1257,11 @@ diff -- python/sglang/test/ascend/disaggregation_utils.py
 +    DEFAULT_TIMEOUT_FOR_SERVER_LAUNCH,
 +    DEFAULT_URL_FOR_TEST,
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/test/ascend/disaggregation_utils.py` added +153/-0; `python/sglang/test/ascend/test_ascend_utils.py` modified +495/-54
   - tests: `test/registered/ascend/basic_function/HiCache/test_npu_hierarchical_cache.py` added +127/-0; `test/registered/ascend/basic_function/HiCache/test_npu_hierarchical_cache_mla.py` added +97/-0; `test/registered/ascend/basic_function/HiCache/test_npu_hierarchical_cache_mutually_exclusive.py` added +68/-0; `test/registered/ascend/basic_function/HiCache/test_npu_hierarchical_cache_ttft_mha.py` added +89/-0; `test/registered/ascend/basic_function/HiCache/test_npu_radix_cache.py` added +132/-0; `test/registered/ascend/basic_function/parallel_strategy/expert_parallelism/test_npu_deepep_auto_deepseek_v3_2_w8a8.py` added +108/-0; `test/registered/ascend/basic_function/parallel_strategy/expert_parallelism/test_npu_deepep_auto_qwen3_480b.py` added +128/-0; `test/registered/ascend/basic_function/parallel_strategy/expert_parallelism/test_npu_deepep_auto_qwen3_next.py` added +118/-0
   - other: `.github/workflows/nightly-test-npu.yml` modified +37/-17
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #17784 - Upgrade transformers==5.3.0
 
@@ -1280,7 +1280,7 @@ diff -- python/sglang/test/ascend/disaggregation_utils.py
   - `python/pyproject.toml` modified +4/-4
   - `python/pyproject_cpu.toml` modified +3/-4
   - `python/pyproject_npu.toml` modified +3/-4
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/advanced_features/vlm_query.ipynb
@@ -1314,10 +1314,10 @@ diff -- python/pyproject.toml
    "tqdm",
 -  "transformers==4.57.1",
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/pyproject.toml` modified +4/-4; `python/pyproject_cpu.toml` modified +3/-4; `python/pyproject_npu.toml` modified +3/-4; `python/pyproject_other.toml` modified +3/-4; `python/pyproject_xpu.toml` modified +3/-4; `python/sglang/check_env.py` modified +0/-1; `python/sglang/multimodal_gen/runtime/loader/weight_utils.py` modified +0/-16; `python/sglang/multimodal_gen/runtime/models/encoders/llama.py` modified +2/-2
   - docs/bench: `docs/advanced_features/vlm_query.ipynb` modified +3/-3
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #9744 - [CPU] Add FP8 Bmm support
 
@@ -1336,7 +1336,7 @@ diff -- python/pyproject.toml
   - `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +44/-28
   - `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py` modified +2/-1
   - `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` modified +0/-10
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/bailing_moe_linear.py
@@ -1370,10 +1370,10 @@ diff -- python/sglang/srt/models/deepseek_common/attention_forward_methods/forwa
 -            # fix bmm_fp8 error under cublas12.9 caused by bumpallocator, detail in pr#11612
 -            q_nope_val, q_nope_scale = per_tensor_quant_mla_fp8(
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/models/bailing_moe_linear.py` modified +0/-8; `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +44/-28; `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py` modified +2/-1; `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` modified +0/-10; `python/sglang/srt/models/longcat_flash.py` modified +0/-12; `python/sglang/srt/models/longcat_flash_nextn.py` modified +0/-4; `sgl-kernel/csrc/cpu/bmm.cpp` modified +93/-11; `sgl-kernel/csrc/cpu/gemm.h` modified +18/-0
   - tests: `test/srt/cpu/test_bmm.py` added +95/-0; `test/srt/cpu/test_qkv_proj_with_rope.py` modified +13/-4; `test/srt/run_suite.py` modified +1/-0
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #20316 - fix fused_set_kv_buffer for rope with Ling-v2
 
@@ -1386,7 +1386,7 @@ diff -- python/sglang/srt/models/deepseek_common/attention_forward_methods/forwa
   - `python/sglang/srt/models/bailing_moe.py` modified +6/-2
 - Code diff details:
   - `python/sglang/srt/models/bailing_moe.py` modified +6/-2
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/bailing_moe.py
@@ -1405,9 +1405,9 @@ diff -- python/sglang/srt/models/bailing_moe.py
                      layer=self.attn,
                      forward_batch=forward_batch,
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/models/bailing_moe.py` modified +6/-2
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #20751 - [NPU]Add a full test pipeline on NPU, resolve issues in the NPU test architecture
 
@@ -1426,7 +1426,7 @@ diff -- python/sglang/srt/models/bailing_moe.py
   - `.github/workflows/nightly-test-npu.yml` modified +124/-36
   - `.github/workflows/pr-test-npu.yml` modified +70/-40
   - `.github/workflows/release-docker-npu-nightly.yml` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .github/workflows/full-test-npu.yml
@@ -1460,11 +1460,11 @@ diff -- .github/workflows/nightly-test-npu.yml
          default: 'all'
 +      image_a3:
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/pyproject_npu.toml` modified +2/-0; `python/sglang/test/ascend/test_ascend_utils.py` modified +9/-9
   - tests: `test/registered/ascend/basic_function/HiCache/test_npu_hicache_mha.py` renamed +4/-0; `test/registered/ascend/basic_function/HiCache/test_npu_hicache_mla.py` renamed +4/-0; `test/registered/ascend/basic_function/backends/test_npu_sampling_backend.py` renamed +4/-0; `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py` renamed +4/-0; `test/registered/ascend/basic_function/optimization_debug/test_npu_compile_graph_tp1_bf16.py` renamed +4/-0; `test/registered/ascend/basic_function/optimization_debug/test_npu_graph_tp1_bf16.py` renamed +4/-0; `test/registered/ascend/basic_function/optimization_debug/test_npu_graph_tp2_bf16.py` renamed +4/-0; `test/registered/ascend/basic_function/optimization_debug/test_npu_piecewise_graph_prefill.py` renamed +4/-0
   - other: `.github/workflows/full-test-npu.yml` added +355/-0; `.github/workflows/nightly-test-npu.yml` modified +124/-36; `.github/workflows/pr-test-npu.yml` modified +70/-40; `.github/workflows/release-docker-npu-nightly.yml` modified +1/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #23001 - Add new Mintlify documentation site (docs_new/)
 
@@ -1483,7 +1483,7 @@ diff -- .github/workflows/nightly-test-npu.yml
   - `docs_new/.github/workflows/sync-lmsys-sglang-blogs.yml` added +39/-0
   - `docs_new/.gitignore` added +30/-0
   - `docs_new/.mintignore` added +7/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .gitignore
@@ -1511,10 +1511,10 @@ diff -- docs_new/.github/workflows/sync-lmsys-sglang-blogs.yml
 +  sync:
 +    runs-on: ubuntu-latest
 ```
-- Files read:
+- Reviewed files:
   - docs/bench: `docs_new/.github/workflows/sync-lmsys-sglang-blogs.yml` added +39/-0; `docs_new/.gitignore` added +30/-0; `docs_new/.mintignore` added +7/-0; `docs_new/AGENTS.md` added +381/-0; `docs_new/CONTRIBUTING.md` added +34/-0; `docs_new/LICENSE` added +201/-0; `docs_new/README.md` added +126/-0; `docs_new/cards/Autoregressive-benchmark-card.png` added +0/-0
   - other: `.gitignore` modified +1/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #23337 - [Docs] Sync docs_new with legacy docs and update migration redirects
 
@@ -1533,7 +1533,7 @@ diff -- docs_new/.github/workflows/sync-lmsys-sglang-blogs.yml
   - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-Math-V2.mdx` modified +1/-1
   - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR-2.mdx` modified +1/-1
   - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR.mdx` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .pre-commit-config.yaml
@@ -1562,10 +1562,10 @@ diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-Math-V2.mdx
  ## 3. Model Deployment
 
 ```
-- Files read:
+- Reviewed files:
   - docs/bench: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-Math-V2.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR-2.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-R1.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_1.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/Ernie/Ernie4.5.mdx` modified +1/-1
   - other: `.pre-commit-config.yaml` modified +7/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #23732 - Apply should_use_dp_reduce_scatterv guard to remaining MoE models (follow-up to #23731)
 
@@ -1584,7 +1584,7 @@ diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-Math-V2.mdx
   - `python/sglang/srt/models/bailing_moe_linear.py` modified +7/-1
   - `python/sglang/srt/models/deepseek_v2.py` modified +3/-0
   - `python/sglang/srt/models/exaone_moe.py` modified +6/-2
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/bailing_moe.py
@@ -1618,9 +1618,9 @@ diff -- python/sglang/srt/models/bailing_moe_linear.py
 -        if self.tp_size > 1 and not use_reduce_scatter and not should_allreduce_fusion:
 +        if (
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/models/bailing_moe.py` modified +2/-0; `python/sglang/srt/models/bailing_moe_linear.py` modified +7/-1; `python/sglang/srt/models/deepseek_v2.py` modified +3/-0; `python/sglang/srt/models/exaone_moe.py` modified +6/-2; `python/sglang/srt/models/glm4_moe.py` modified +3/-0; `python/sglang/srt/models/hunyuan_v3.py` modified +7/-4; `python/sglang/srt/models/llada2.py` modified +10/-2; `python/sglang/srt/models/llama4.py` modified +6/-1
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #23748 - refactor(moe): centralize post-experts all-reduce skip predicate
 
@@ -1639,7 +1639,7 @@ diff -- python/sglang/srt/models/bailing_moe_linear.py
   - `python/sglang/srt/layers/moe/utils.py` modified +33/-0
   - `python/sglang/srt/models/bailing_moe.py` modified +5/-8
   - `python/sglang/srt/models/bailing_moe_linear.py` modified +5/-6
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/layers/moe/__init__.py
@@ -1673,9 +1673,9 @@ diff -- python/sglang/srt/layers/moe/utils.py
 +
 +    Skip reasons, in order:
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/layers/moe/__init__.py` modified +2/-0; `python/sglang/srt/layers/moe/utils.py` modified +33/-0; `python/sglang/srt/models/bailing_moe.py` modified +5/-8; `python/sglang/srt/models/bailing_moe_linear.py` modified +5/-6; `python/sglang/srt/models/deepseek_v2.py` modified +9/-13; `python/sglang/srt/models/exaone_moe.py` modified +7/-5; `python/sglang/srt/models/glm4_moe.py` modified +9/-13; `python/sglang/srt/models/hunyuan_v3.py` modified +13/-7
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #21126 - [4/N] Quantization Refactor: AWQ schemes and Kernel call and weight init split
 
@@ -1694,7 +1694,7 @@ diff -- python/sglang/srt/layers/moe/utils.py
   - `python/sglang/srt/hardware_backend/npu/quantization/awq_kernels.py` added +156/-0
   - `python/sglang/srt/layers/linear.py` modified +0/-3
   - `python/sglang/srt/layers/quantization/__init__.py` modified +2/-3
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/hardware_backend/gpu/quantization/awq_kernels.py
@@ -1728,10 +1728,10 @@ diff -- python/sglang/srt/hardware_backend/npu/quantization/awq_kernels.py
 +if TYPE_CHECKING:
 +    from sglang.srt.layers.moe.token_dispatcher import StandardDispatchOutput
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/hardware_backend/gpu/quantization/awq_kernels.py` added +255/-0; `python/sglang/srt/hardware_backend/npu/quantization/awq_kernels.py` added +156/-0; `python/sglang/srt/layers/linear.py` modified +0/-3; `python/sglang/srt/layers/quantization/__init__.py` modified +2/-3; `python/sglang/srt/layers/quantization/auto_round.py` modified +5/-2; `python/sglang/srt/layers/quantization/awq.py` removed +0/-966; `python/sglang/srt/layers/quantization/awq/__init__.py` added +32/-0; `python/sglang/srt/layers/quantization/awq/awq.py` added +484/-0
   - tests: `test/registered/quant/test_awq_dequant.py` modified +1/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #24250 - [SKILL] Upgrade sglang profile and auto_benchmark skills
 
@@ -1739,21 +1739,21 @@ diff -- python/sglang/srt/hardware_backend/npu/quantization/awq_kernels.py
 - Status/date: merged / 2026-05-02
 - Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
 - Diff scope read: GitHub Pull Request files API returned 100 files, +9334/-3813, with 13573 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[SKILL] Upgrade sglang profile and auto_benchmark skills"; model line: Ling 2.5 1T; category: docs/tests/CI; main diff: `.claude/skills/llm-serving-auto-benchmark/SKILL.md`, `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md`, `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml`.
+- Motivation: Title: "[SKILL] Upgrade sglang profile and auto_benchmark skills"; model line: Ling 2.5 1T; category: docs/tests/CI; main diff: `agent-skills/llm-serving-auto-benchmark/SKILL.md`, `skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md`, `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml`.
 - Key implementation:
-  - `.claude/skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
-  - `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0
-  - `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0
-  - `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0
+  - `agent-skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
+  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0
+  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0
+  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0
 - Code diff details:
-  - `.claude/skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
-  - `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0
-  - `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0
-  - `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0
-- Code excerpt:
+  - `agent-skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
+  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0
+  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0
+  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0
+- Key code excerpts:
 
 ```diff
-diff -- .claude/skills/llm-serving-auto-benchmark/SKILL.md
+diff -- agent-skills/llm-serving-auto-benchmark/SKILL.md
 @@ -0,0 +1,527 @@
 +---
 +name: llm-serving-auto-benchmark
@@ -1768,7 +1768,7 @@ diff -- .claude/skills/llm-serving-auto-benchmark/SKILL.md
 +TensorRT-LLM for the same model and workload.
 +
 +Use a config-driven workflow:
-diff -- .claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md
+diff -- skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md
 @@ -0,0 +1,17 @@
 +# Cookbook LLM Configs
 +
@@ -1784,10 +1784,10 @@ diff -- .claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md
 +
 +```bash
 ```
-- Files read:
-  - docs/bench: `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.1.yaml` added +132/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.2.yaml` added +132/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.yaml` added +133/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/devstral-small-2-24b-instruct-2512.yaml` added +123/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/ernie-4.5-21b-a3b-pt.yaml` added +117/-0
-  - other: `.claude/skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Reviewed files:
+  - docs/bench: `skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.1.yaml` added +132/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.2.yaml` added +132/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.yaml` added +133/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/devstral-small-2-24b-instruct-2512.yaml` added +123/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/ernie-4.5-21b-a3b-pt.yaml` added +117/-0
+  - other: `agent-skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #24333 - nextn subclass owns post_load_weights is_nextn
 
@@ -1806,7 +1806,7 @@ diff -- .claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md
   - `python/sglang/srt/model_loader/utils.py` modified +0/-12
   - `python/sglang/srt/models/bailing_moe_nextn.py` modified +9/-3
   - `python/sglang/srt/models/deepseek_nextn.py` modified +6/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/model_loader/loader.py
@@ -1840,9 +1840,9 @@ diff -- python/sglang/srt/model_loader/utils.py
 -        else:
 -            model.post_load_weights()
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/model_loader/loader.py` modified +15/-10; `python/sglang/srt/model_loader/utils.py` modified +0/-12; `python/sglang/srt/models/bailing_moe_nextn.py` modified +9/-3; `python/sglang/srt/models/deepseek_nextn.py` modified +6/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #24977 - fix gb envs in deployment guide
 
@@ -1855,7 +1855,7 @@ diff -- python/sglang/srt/model_loader/utils.py
   - `docs_new/src/snippets/autoregressive/ling-25-1t-deployment.jsx` modified +1/-1; symbols: envPrefix
 - Code diff details:
   - `docs_new/src/snippets/autoregressive/ling-25-1t-deployment.jsx` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs_new/src/snippets/autoregressive/ling-25-1t-deployment.jsx
@@ -1869,6 +1869,6 @@ diff -- docs_new/src/snippets/autoregressive/ling-25-1t-deployment.jsx
      let tp, pp;
      if (isGB && parallelism === 'tp8') {
 ```
-- Files read:
+- Reviewed files:
   - docs/bench: `docs_new/src/snippets/autoregressive/ling-25-1t-deployment.jsx` modified +1/-1
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.

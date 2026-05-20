@@ -4,11 +4,11 @@
 
 Generated from sglang upstream `origin/main@5073c82a37`, `git log --name-only -- <model-files>` over model-related paths, and the GitHub Pull Request files API. This page fills the missing `LLaDA 2.1` history entry found from sgl-cookbook coverage.
 
-## Model Implementation File Coverage
+## Implementation File Coverage
 
 | File | PRs traced by git |
 | --- | --- |
-| `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/llada2-1-mini.yaml` | [#24250](https://github.com/sgl-project/sglang/pull/24250) |
+| `skills/llm-serving-auto-benchmark/configs/cookbook-llm/llada2-1-mini.yaml` | [#24250](https://github.com/sgl-project/sglang/pull/24250) |
 | `docs_new/cookbook/autoregressive/InclusionAI/LLaDA-2.1.mdx` | [#23337](https://github.com/sgl-project/sglang/pull/23337), [#23001](https://github.com/sgl-project/sglang/pull/23001) |
 | `docs_new/src/snippets/autoregressive/llada-21-deployment.jsx` | [#23001](https://github.com/sgl-project/sglang/pull/23001) |
 | `python/sglang/srt/models/llada2.py` | [#23748](https://github.com/sgl-project/sglang/pull/23748), [#23732](https://github.com/sgl-project/sglang/pull/23732), [#21135](https://github.com/sgl-project/sglang/pull/21135), [#17784](https://github.com/sgl-project/sglang/pull/17784), [#18485](https://github.com/sgl-project/sglang/pull/18485), [#18844](https://github.com/sgl-project/sglang/pull/18844), [#18860](https://github.com/sgl-project/sglang/pull/18860), [#17570](https://github.com/sgl-project/sglang/pull/17570), [#15835](https://github.com/sgl-project/sglang/pull/15835), [#13730](https://github.com/sgl-project/sglang/pull/13730), [#14337](https://github.com/sgl-project/sglang/pull/14337), [#12588](https://github.com/sgl-project/sglang/pull/12588) |
@@ -16,7 +16,7 @@ Generated from sglang upstream `origin/main@5073c82a37`, `git log --name-only --
 | `test/registered/dllm/test_llada2_mini_amd.py` | [#21667](https://github.com/sgl-project/sglang/pull/21667), [#21187](https://github.com/sgl-project/sglang/pull/21187), [#18423](https://github.com/sgl-project/sglang/pull/18423), [#16826](https://github.com/sgl-project/sglang/pull/16826), [#16675](https://github.com/sgl-project/sglang/pull/16675), [#16420](https://github.com/sgl-project/sglang/pull/16420) |
 | `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py` | [#23835](https://github.com/sgl-project/sglang/pull/23835), [#20751](https://github.com/sgl-project/sglang/pull/20751) |
 
-## PR Coverage Overview
+## PR Coverage Summary
 
 - git-traced PR count: 32
 - keyword/supplemental PR count: 0
@@ -45,7 +45,7 @@ Generated from sglang upstream `origin/main@5073c82a37`, `git log --name-only --
 | 2026-03-05 | [#18724](https://github.com/sgl-project/sglang/pull/18724) | merged | [DLLM] Add initial radix cache support | `python/sglang/srt/dllm/mixin/req.py`, `python/sglang/srt/dllm/mixin/scheduler.py`, `python/sglang/srt/managers/schedule_batch.py` |
 | 2026-03-09 | [#18485](https://github.com/sgl-project/sglang/pull/18485) | merged | [NPU] [DLLM]DLLM LLaDA2.x graph mode support with NPU speedup modifications | `python/sglang/srt/hardware_backend/npu/attention/ascend_backend.py`, `python/sglang/srt/hardware_backend/npu/graph_runner/npu_graph_runner.py`, `python/sglang/srt/managers/scheduler.py` |
 | 2026-03-18 | [#17784](https://github.com/sgl-project/sglang/pull/17784) | merged | Upgrade transformers==5.3.0 | `docs/advanced_features/vlm_query.ipynb`, `python/pyproject.toml`, `python/pyproject_cpu.toml` |
-| 2026-03-23 | [#21187](https://github.com/sgl-project/sglang/pull/21187) | merged | ci: unify PR test suite naming | `.claude/skills/write-sglang-test/SKILL.md`, `.github/actions/wait-for-jobs/action.yml`, `.github/workflows/pr-test-amd-rocm720.yml` |
+| 2026-03-23 | [#21187](https://github.com/sgl-project/sglang/pull/21187) | merged | ci: unify PR test suite naming | `agent-skills/write-sglang-test/SKILL.md`, `.github/actions/wait-for-jobs/action.yml`, `.github/workflows/pr-test-amd-rocm720.yml` |
 | 2026-03-26 | [#21135](https://github.com/sgl-project/sglang/pull/21135) | merged | fix: use get_rope_config() to support models without rope_parameters | `python/sglang/srt/models/baichuan.py`, `python/sglang/srt/models/deepseek.py`, `python/sglang/srt/models/ernie4.py` |
 | 2026-04-01 | [#20751](https://github.com/sgl-project/sglang/pull/20751) | merged | [NPU]Add a full test pipeline on NPU, resolve issues in the NPU test architecture | `.github/workflows/full-test-npu.yml`, `.github/workflows/nightly-test-npu.yml`, `.github/workflows/pr-test-npu.yml` |
 | 2026-04-02 | [#21667](https://github.com/sgl-project/sglang/pull/21667) | merged | Unify GSM8K eval path to Chat API for regression CI readiness | `python/sglang/test/accuracy_test_runner.py`, `python/sglang/test/few_shot_gsm8k.py`, `python/sglang/test/few_shot_gsm8k_engine.py` |
@@ -57,9 +57,9 @@ Generated from sglang upstream `origin/main@5073c82a37`, `git log --name-only --
 | 2026-04-27 | [#23748](https://github.com/sgl-project/sglang/pull/23748) | merged | refactor(moe): centralize post-experts all-reduce skip predicate | `python/sglang/srt/layers/moe/__init__.py`, `python/sglang/srt/layers/moe/utils.py`, `python/sglang/srt/models/bailing_moe.py` |
 | 2026-04-27 | [#23785](https://github.com/sgl-project/sglang/pull/23785) | merged | chore: update CI test est_time values | `test/registered/4-gpu-models/test_gpt_oss_4gpu.py`, `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py`, `test/registered/4-gpu-models/test_qwen35_fp4_triton.py` |
 | 2026-05-02 | [#23835](https://github.com/sgl-project/sglang/pull/23835) | merged | [NPU] Add GitHub test summary and deduplicate test code. Part 1 | `python/sglang/test/ascend/gsm8k_ascend_mixin.py`, `python/sglang/test/ascend/test_ascend_utils.py`, `python/sglang/test/ascend/test_mmlu.py` |
-| 2026-05-02 | [#24250](https://github.com/sgl-project/sglang/pull/24250) | merged | [SKILL] Upgrade sglang profile and auto_benchmark skills | `.claude/skills/llm-serving-auto-benchmark/SKILL.md`, `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md`, `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` |
+| 2026-05-02 | [#24250](https://github.com/sgl-project/sglang/pull/24250) | merged | [SKILL] Upgrade sglang profile and auto_benchmark skills | `agent-skills/llm-serving-auto-benchmark/SKILL.md`, `skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md`, `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` |
 | 2026-05-14 | [#25197](https://github.com/sgl-project/sglang/pull/25197) | merged | ci: decouple stage and runner for cuda registry | `python/sglang/test/ci/ci_register.py`, `scripts/ci/utils/ci_coverage_report.py`, `scripts/ci/utils/compute_partitions.py` |
-| 2026-05-16 | [#25420](https://github.com/sgl-project/sglang/pull/25420) | merged | [CI] Rename basic CI `stage-a/b/c` -> `base-a/b/c` for symmetry with extra CI | `.claude/skills/add-jit-kernel/SKILL.md`, `.claude/skills/ci-workflow-guide/SKILL.md`, `.claude/skills/write-sglang-test/SKILL.md` |
+| 2026-05-16 | [#25420](https://github.com/sgl-project/sglang/pull/25420) | merged | [CI] Rename basic CI `stage-a/b/c` -> `base-a/b/c` for symmetry with extra CI | `agent-skills/add-jit-kernel/SKILL.md`, `agent-skills/ci-workflow-guide/SKILL.md`, `agent-skills/write-sglang-test/SKILL.md` |
 
 ## Per-PR Diff Audit Cards
 
@@ -80,7 +80,7 @@ Generated from sglang upstream `origin/main@5073c82a37`, `git log --name-only --
   - `python/sglang/srt/dllm/algorithm/base.py` added +18/-0
   - `python/sglang/srt/dllm/algorithm/low_confidence.py` added +59/-0
   - `python/sglang/srt/dllm/config.py` added +40/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/dllm/algorithm/__init__.py
@@ -114,9 +114,9 @@ diff -- python/sglang/srt/dllm/algorithm/base.py
 +        self.block_size = config.block_size
 +        self.mask_id = config.mask_id
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/dllm/algorithm/__init__.py` added +39/-0; `python/sglang/srt/dllm/algorithm/base.py` added +18/-0; `python/sglang/srt/dllm/algorithm/low_confidence.py` added +59/-0; `python/sglang/srt/dllm/config.py` added +40/-0; `python/sglang/srt/layers/attention/flashinfer_backend.py` modified +8/-1; `python/sglang/srt/layers/logits_processor.py` modified +18/-1; `python/sglang/srt/managers/schedule_batch.py` modified +42/-1; `python/sglang/srt/managers/scheduler.py` modified +18/-1
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #14337 - remove unecessary dual stream token threshold from the rest of models (qwen moe, kimi linear, etc.)
 
@@ -135,7 +135,7 @@ diff -- python/sglang/srt/dllm/algorithm/base.py
   - `python/sglang/srt/models/kimi_linear.py` modified +0/-2
   - `python/sglang/srt/models/llada2.py` modified +0/-2
   - `python/sglang/srt/models/qwen2_moe.py` modified +0/-2
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/bailing_moe.py
@@ -167,9 +167,9 @@ diff -- python/sglang/srt/models/kimi_linear.py
          ):
              current_stream = torch.cuda.current_stream()
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/models/bailing_moe.py` modified +0/-2; `python/sglang/srt/models/kimi_linear.py` modified +0/-2; `python/sglang/srt/models/llada2.py` modified +0/-2; `python/sglang/srt/models/qwen2_moe.py` modified +0/-2
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #13730 - [bugfix] fix TBO crashes when attn_tp_size > 1
 
@@ -188,7 +188,7 @@ diff -- python/sglang/srt/models/kimi_linear.py
   - `python/sglang/srt/batch_overlap/two_batch_overlap.py` modified +39/-6
   - `python/sglang/srt/layers/communicator.py` modified +14/-1
   - `python/sglang/srt/model_executor/forward_batch_info.py` modified +9/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/batch_overlap/operations.py
@@ -222,10 +222,10 @@ diff -- python/sglang/srt/batch_overlap/two_batch_overlap.py
 +        attention_tp_size = get_attention_tp_size()
 +        output_dict["tbo_padded_len"] = (
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/batch_overlap/operations.py` modified +10/-8; `python/sglang/srt/batch_overlap/two_batch_overlap.py` modified +39/-6; `python/sglang/srt/layers/communicator.py` modified +14/-1; `python/sglang/srt/model_executor/forward_batch_info.py` modified +9/-0; `python/sglang/srt/models/bailing_moe.py` modified +4/-0; `python/sglang/srt/models/deepseek_v2.py` modified +2/-0; `python/sglang/srt/models/falcon_h1.py` modified +3/-1; `python/sglang/srt/models/glm4_moe.py` modified +2/-0
   - tests: `test/srt/ep/test_deepep_small.py` modified +178/-0
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #15835 - [Feature] JIT Fused QK norm + qk norm clean up
 
@@ -244,7 +244,7 @@ diff -- python/sglang/srt/batch_overlap/two_batch_overlap.py
   - `python/sglang/jit_kernel/csrc/norm.cuh` added +202/-0
   - `python/sglang/jit_kernel/include/sgl_kernel/runtime.cuh` added +26/-0
   - `python/sglang/jit_kernel/include/sgl_kernel/tensor.h` modified +10/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/jit_kernel/benchmark/bench_qknorm.py
@@ -278,9 +278,9 @@ diff -- python/sglang/jit_kernel/csrc/norm.cuh
 +#include <cstdint>
 +#include <type_traits>
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/jit_kernel/benchmark/bench_qknorm.py` added +130/-0; `python/sglang/jit_kernel/csrc/norm.cuh` added +202/-0; `python/sglang/jit_kernel/include/sgl_kernel/runtime.cuh` added +26/-0; `python/sglang/jit_kernel/include/sgl_kernel/tensor.h` modified +10/-0; `python/sglang/jit_kernel/include/sgl_kernel/utils.cuh` modified +31/-1; `python/sglang/jit_kernel/include/sgl_kernel/warp.cuh` added +14/-0; `python/sglang/jit_kernel/norm.py` added +55/-0; `python/sglang/jit_kernel/tests/test_qknorm.py` added +85/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #16420 - ci: migrate DLLM tests to test/registered/dllm/
 
@@ -297,7 +297,7 @@ diff -- python/sglang/jit_kernel/csrc/norm.cuh
   - `test/registered/dllm/test_llada2_mini.py` renamed +4/-0
   - `test/registered/dllm/test_llada2_mini_amd.py` renamed +4/-0
   - `test/srt/run_suite.py` modified +0/-2
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- test/registered/dllm/test_llada2_mini.py
@@ -319,9 +319,9 @@ diff -- test/registered/dllm/test_llada2_mini_amd.py
  Test LLaDA2 (Diffusion Language Model) on AMD GPUs.
 
 ```
-- Files read:
+- Reviewed files:
   - tests: `test/registered/dllm/test_llada2_mini.py` renamed +4/-0; `test/registered/dllm/test_llada2_mini_amd.py` renamed +4/-0; `test/srt/run_suite.py` modified +0/-2
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #16675 - [AMD] Fix CI - unit-test-backend-1-gpu-amd-mi35x and unit-test-backend-2-gpu-amd, stage-b-test-small-1-gpu-amd
 
@@ -340,7 +340,7 @@ diff -- test/registered/dllm/test_llada2_mini_amd.py
   - `scripts/ci/slash_command_handler.py` modified +1/-0
   - `test/registered/attention/test_create_kvindices.py` modified +1/-1
   - `test/registered/attention/test_radix_attention.py` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .github/workflows/pr-test-amd.yml
@@ -368,10 +368,10 @@ diff -- scripts/ci/slash_command_handler.py
          "unit-test-backend-1-gpu-amd",
          "unit-test-backend-2-gpu-amd",
 ```
-- Files read:
+- Reviewed files:
   - tests: `test/registered/attention/test_create_kvindices.py` modified +1/-1; `test/registered/attention/test_radix_attention.py` modified +1/-1; `test/registered/attention/test_swa_unittest.py` modified +1/-1; `test/registered/attention/test_torch_native_attention_backend.py` modified +1/-1; `test/registered/attention/test_triton_attention_backend.py` modified +1/-1; `test/registered/attention/test_triton_attention_kernels.py` modified +1/-1; `test/registered/attention/test_triton_sliding_window.py` modified +1/-1; `test/registered/backends/test_torch_compile.py` modified +1/-1
   - other: `.github/workflows/pr-test-amd.yml` modified +44/-85; `scripts/ci/slash_command_handler.py` modified +1/-0
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #16835 - Update est_time for stage-b-test-small-1-gpu tests
 
@@ -390,7 +390,7 @@ diff -- scripts/ci/slash_command_handler.py
   - `test/registered/backends/test_torch_compile.py` modified +1/-1
   - `test/registered/core/test_deterministic.py` modified +1/-1
   - `test/registered/core/test_gpt_oss_1gpu.py` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- test/registered/attention/test_torch_native_attention_backend.py
@@ -414,9 +414,9 @@ diff -- test/registered/backends/test_torch_compile.py
 
 
 ```
-- Files read:
+- Reviewed files:
   - tests: `test/registered/attention/test_torch_native_attention_backend.py` modified +1/-1; `test/registered/backends/test_torch_compile.py` modified +1/-1; `test/registered/core/test_deterministic.py` modified +1/-1; `test/registered/core/test_gpt_oss_1gpu.py` modified +1/-1; `test/registered/cuda_graph/test_piecewise_cuda_graph_small_1_gpu.py` modified +1/-1; `test/registered/dllm/test_llada2_mini.py` modified +1/-1; `test/registered/hicache/test_hicache_variants.py` modified +1/-1; `test/registered/lora/test_lora_update.py` modified +1/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #16826 - [CI] Reorganize stage-b 1-GPU tests for 5090 compatibility
 
@@ -435,7 +435,7 @@ diff -- test/registered/backends/test_torch_compile.py
   - `scripts/ci/slash_command_handler.py` modified +0/-1
   - `test/registered/attention/test_create_kvindices.py` modified +0/-1
   - `test/registered/attention/test_mamba_unittest.py` modified +0/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .github/workflows/pr-test.yml
@@ -463,10 +463,10 @@ diff -- scripts/ci/slash_command_handler.py
          "stage-c-test-large-4-gpu",
          "stage-c-test-large-4-gpu-b200",
 ```
-- Files read:
+- Reviewed files:
   - tests: `test/registered/attention/test_create_kvindices.py` modified +0/-1; `test/registered/attention/test_mamba_unittest.py` modified +0/-1; `test/registered/attention/test_radix_attention.py` modified +0/-1; `test/registered/attention/test_radix_cache_unit.py` modified +0/-1; `test/registered/attention/test_swa_unittest.py` modified +1/-1; `test/registered/attention/test_torch_native_attention_backend.py` modified +0/-1; `test/registered/attention/test_triton_attention_backend.py` modified +1/-1; `test/registered/attention/test_triton_attention_kernels.py` modified +1/-1
   - other: `.github/workflows/pr-test.yml` modified +15/-58; `scripts/ci/slash_command_handler.py` modified +0/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #16949 - [AMD CI] migrate and re-enable CI tests to new CI registry
 
@@ -485,7 +485,7 @@ diff -- scripts/ci/slash_command_handler.py
   - `scripts/ci/slash_command_handler.py` modified +1/-0
   - `test/registered/amd/test_deepseek_r1_mxfp4_8gpu.py` renamed +3/-0
   - `test/registered/attention/test_mamba_unittest.py` modified +2/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .github/workflows/pr-test-amd.yml
@@ -513,10 +513,10 @@ diff -- scripts/ci/slash_command_handler.py
          "unit-test-backend-2-gpu-amd",
          "unit-test-backend-8-gpu-amd",
 ```
-- Files read:
+- Reviewed files:
   - tests: `test/registered/amd/test_deepseek_r1_mxfp4_8gpu.py` renamed +3/-0; `test/registered/attention/test_mamba_unittest.py` modified +2/-1; `test/registered/attention/test_radix_cache_unit.py` modified +2/-1; `test/registered/core/test_hidden_states.py` modified +9/-1; `test/registered/dllm/test_llada2_mini.py` modified +6/-2; `test/registered/hicache/test_hicache_storage.py` modified +2/-1; `test/registered/hicache/test_hicache_variants.py` modified +3/-2; `test/registered/layers/mamba/test_causal_conv1d.py` modified +2/-1
   - other: `.github/workflows/pr-test-amd.yml` modified +16/-6; `scripts/ci/slash_command_handler.py` modified +1/-0
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #17570 - Use attn tp group in embedding for more models
 
@@ -535,7 +535,7 @@ diff -- scripts/ci/slash_command_handler.py
   - `python/sglang/srt/models/bailing_moe_nextn.py` modified +1/-1
   - `python/sglang/srt/models/falcon_h1.py` modified +1/-1
   - `python/sglang/srt/models/glm4.py` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/bailing_moe.py
@@ -559,9 +559,9 @@ diff -- python/sglang/srt/models/bailing_moe_nextn.py
          )
 
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/models/bailing_moe.py` modified +1/-1; `python/sglang/srt/models/bailing_moe_nextn.py` modified +1/-1; `python/sglang/srt/models/falcon_h1.py` modified +1/-1; `python/sglang/srt/models/glm4.py` modified +1/-1; `python/sglang/srt/models/glm4_moe.py` modified +1/-1; `python/sglang/srt/models/glm4_moe_lite.py` modified +1/-1; `python/sglang/srt/models/glm4_moe_nextn.py` modified +1/-1; `python/sglang/srt/models/gpt_oss.py` modified +1/-1
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #18423 - [AMD] Update aiter to v0.1.10.post2
 
@@ -580,7 +580,7 @@ diff -- python/sglang/srt/models/bailing_moe_nextn.py
   - `docker/rocm.Dockerfile` modified +2/-2
   - `python/sglang/srt/layers/attention/aiter_backend.py` modified +19/-8
   - `scripts/ci/amd/amd_ci_install_dependency.sh` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .github/workflows/pr-test-amd.yml
@@ -614,11 +614,11 @@ diff -- docker/rocm.Dockerfile
  ENV BUILD_MOONCAKE="1"
 -ENV AITER_COMMIT="v0.1.9.post1"
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/layers/attention/aiter_backend.py` modified +19/-8
   - tests: `test/registered/attention/test_triton_attention_backend.py` modified +1/-1; `test/registered/dllm/test_llada2_mini_amd.py` modified +1/-1; `test/registered/eval/test_eval_accuracy_large.py` modified +1/-1; `test/registered/mla/test_mla_fp8.py` modified +1/-1; `test/registered/models/test_vlm_models.py` modified +1/-1; `test/registered/perf/test_bench_serving_2gpu.py` modified +1/-1; `test/registered/quant/test_eval_fp8_accuracy.py` modified +1/-1; `test/registered/quant/test_torchao.py` modified +1/-1
   - other: `.github/workflows/pr-test-amd.yml` modified +3/-3; `docker/rocm.Dockerfile` modified +2/-2; `scripts/ci/amd/amd_ci_install_dependency.sh` modified +1/-1; `scripts/ci/amd/amd_ci_warmup_aiter.py` modified +44/-17
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #17484 - [DLLM] Basic dLLM scheduling strategy and implementation
 
@@ -637,7 +637,7 @@ diff -- docker/rocm.Dockerfile
   - `python/sglang/srt/dllm/mixin/scheduler.py` added +313/-0
   - `python/sglang/srt/managers/schedule_batch.py` modified +4/-77
   - `python/sglang/srt/managers/schedule_policy.py` modified +29/-3
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/dllm/mixin/req.py
@@ -671,10 +671,10 @@ diff -- python/sglang/srt/dllm/mixin/scheduler.py
 +
 +logger = logging.getLogger(__name__)
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/dllm/mixin/req.py` added +67/-0; `python/sglang/srt/dllm/mixin/scheduler.py` added +313/-0; `python/sglang/srt/managers/schedule_batch.py` modified +4/-77; `python/sglang/srt/managers/schedule_policy.py` modified +29/-3; `python/sglang/srt/managers/scheduler.py` modified +19/-55; `python/sglang/srt/model_executor/forward_batch_info.py` modified +1/-1; `python/sglang/srt/server_args.py` modified +18/-0
   - tests: `test/registered/dllm/test_dllm_batching.py` removed +0/-71; `test/registered/dllm/test_llada2_mini.py` modified +10/-3
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #18860 - update pre-commit config
 
@@ -693,7 +693,7 @@ diff -- python/sglang/srt/dllm/mixin/scheduler.py
   - `.pre-commit-config.yaml` modified +6/-6
   - `3rdparty/amd/tuning/benchmark_moe_rocm.py` modified +2/-4
   - `benchmark/fla/benchmark_layernorm_gated.py` modified +3/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .github/workflows/lint.yml
@@ -725,11 +725,11 @@ diff -- .pre-commit-config.yaml
    - repo: https://github.com/PyCQA/isort
 -    rev: 5.13.2
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/jit_kernel/include/sgl_kernel/type.cuh` modified +16/-15; `python/sglang/multimodal_gen/apps/webui/main.py` modified +2/-4; `python/sglang/multimodal_gen/configs/models/encoders/qwen3.py` modified +1/-0; `python/sglang/multimodal_gen/runtime/cache/__init__.py` modified +1/-0; `python/sglang/multimodal_gen/runtime/distributed/parallel_state.py` modified +2/-1; `python/sglang/multimodal_gen/runtime/layers/activation.py` modified +1/-0; `python/sglang/multimodal_gen/runtime/layers/layernorm.py` modified +1/-0; `python/sglang/multimodal_gen/runtime/layers/rotary_embedding.py` modified +1/-0
   - docs/bench: `benchmark/fla/benchmark_layernorm_gated.py` modified +3/-1; `benchmark/tip_suggestion/bench_other.py` modified +2/-8; `benchmark/tip_suggestion/bench_sglang.py` modified +2/-8; `benchmark/tip_suggestion/lmql_funcs.py` modified +2/-8; `docs/advanced_features/lora.ipynb` modified +10/-20; `docs/advanced_features/structured_outputs.ipynb` modified +0/-1; `docs/advanced_features/structured_outputs_for_reasoning_models.ipynb` modified +0/-1; `docs/advanced_features/vlm_query.ipynb` modified +0/-1
   - other: `.github/workflows/lint.yml` modified +2/-2; `.pre-commit-config.yaml` modified +6/-6; `3rdparty/amd/tuning/benchmark_moe_rocm.py` modified +2/-4
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #18844 - [Feature] rewrite rope kernel; remove flashinfer dependencies
 
@@ -748,7 +748,7 @@ diff -- .pre-commit-config.yaml
   - `python/sglang/jit_kernel/csrc/elementwise/rope.cuh` modified +424/-616
   - `python/sglang/jit_kernel/include/sgl_kernel/utils.cuh` modified +26/-0
   - `python/sglang/jit_kernel/rope.py` modified +112/-186
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/jit_kernel/benchmark/bench_rope.py
@@ -782,9 +782,9 @@ diff -- python/sglang/jit_kernel/csrc/elementwise/rope.cuh
 - * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 - * See the License for the specific language governing permissions and
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/jit_kernel/benchmark/bench_rope.py` added +350/-0; `python/sglang/jit_kernel/csrc/elementwise/rope.cuh` modified +424/-616; `python/sglang/jit_kernel/include/sgl_kernel/utils.cuh` modified +26/-0; `python/sglang/jit_kernel/rope.py` modified +112/-186; `python/sglang/jit_kernel/tests/test_rope.py` modified +212/-269; `python/sglang/srt/layers/rotary_embedding.py` modified +14/-16; `python/sglang/srt/models/gpt_oss.py` modified +1/-6; `python/sglang/srt/models/llada2.py` modified +6/-2
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #18724 - [DLLM] Add initial radix cache support
 
@@ -803,7 +803,7 @@ diff -- python/sglang/jit_kernel/csrc/elementwise/rope.cuh
   - `python/sglang/srt/dllm/mixin/scheduler.py` modified +42/-1
   - `python/sglang/srt/managers/schedule_batch.py` modified +3/-0
   - `python/sglang/srt/managers/scheduler_output_processor_mixin.py` modified +0/-40
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/dllm/mixin/req.py
@@ -837,10 +837,10 @@ diff -- python/sglang/srt/dllm/mixin/scheduler.py
 +    from sglang.srt.managers.scheduler import GenerationBatchResult, Scheduler
 
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/dllm/mixin/req.py` modified +18/-11; `python/sglang/srt/dllm/mixin/scheduler.py` modified +42/-1; `python/sglang/srt/managers/schedule_batch.py` modified +3/-0; `python/sglang/srt/managers/scheduler_output_processor_mixin.py` modified +0/-40; `python/sglang/srt/server_args.py` modified +20/-4
   - tests: `test/registered/dllm/test_llada2_mini.py` modified +1/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #18485 - [NPU] [DLLM]DLLM LLaDA2.x graph mode support with NPU speedup modifications
 
@@ -859,7 +859,7 @@ diff -- python/sglang/srt/dllm/mixin/scheduler.py
   - `python/sglang/srt/hardware_backend/npu/graph_runner/npu_graph_runner.py` modified +18/-5
   - `python/sglang/srt/managers/scheduler.py` modified +21/-0
   - `python/sglang/srt/model_executor/forward_batch_info.py` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/hardware_backend/npu/attention/ascend_backend.py
@@ -893,10 +893,10 @@ diff -- python/sglang/srt/hardware_backend/npu/graph_runner/npu_graph_runner.py
 +            }
 +        else:
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/hardware_backend/npu/attention/ascend_backend.py` modified +103/-2; `python/sglang/srt/hardware_backend/npu/graph_runner/npu_graph_runner.py` modified +18/-5; `python/sglang/srt/managers/scheduler.py` modified +21/-0; `python/sglang/srt/model_executor/forward_batch_info.py` modified +1/-1; `python/sglang/srt/models/llada2.py` modified +13/-1; `python/sglang/srt/server_args.py` modified +6/-0
   - tests: `test/srt/ascend/test_llada2_mini_ascend.py` added +87/-0; `test/srt/run_suite.py` modified +1/-0
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #17784 - Upgrade transformers==5.3.0
 
@@ -915,7 +915,7 @@ diff -- python/sglang/srt/hardware_backend/npu/graph_runner/npu_graph_runner.py
   - `python/pyproject.toml` modified +4/-4
   - `python/pyproject_cpu.toml` modified +3/-4
   - `python/pyproject_npu.toml` modified +3/-4
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/advanced_features/vlm_query.ipynb
@@ -949,10 +949,10 @@ diff -- python/pyproject.toml
    "tqdm",
 -  "transformers==4.57.1",
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/pyproject.toml` modified +4/-4; `python/pyproject_cpu.toml` modified +3/-4; `python/pyproject_npu.toml` modified +3/-4; `python/pyproject_other.toml` modified +3/-4; `python/pyproject_xpu.toml` modified +3/-4; `python/sglang/check_env.py` modified +0/-1; `python/sglang/multimodal_gen/runtime/loader/weight_utils.py` modified +0/-16; `python/sglang/multimodal_gen/runtime/models/encoders/llama.py` modified +2/-2
   - docs/bench: `docs/advanced_features/vlm_query.ipynb` modified +3/-3
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #21187 - ci: unify PR test suite naming
 
@@ -960,21 +960,21 @@ diff -- python/pyproject.toml
 - Status/date: merged / 2026-03-23
 - Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
 - Diff scope read: GitHub Pull Request files API returned 100 files, +267/-267, with 1675 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "ci: unify PR test suite naming"; model line: LLaDA 2.1; category: docs/tests/CI; main diff: `.claude/skills/write-sglang-test/SKILL.md`, `.github/actions/wait-for-jobs/action.yml`, `.github/workflows/pr-test-amd-rocm720.yml`.
+- Motivation: Title: "ci: unify PR test suite naming"; model line: LLaDA 2.1; category: docs/tests/CI; main diff: `agent-skills/write-sglang-test/SKILL.md`, `.github/actions/wait-for-jobs/action.yml`, `.github/workflows/pr-test-amd-rocm720.yml`.
 - Key implementation:
-  - `.claude/skills/write-sglang-test/SKILL.md` modified +12/-12
+  - `agent-skills/write-sglang-test/SKILL.md` modified +12/-12
   - `.github/actions/wait-for-jobs/action.yml` modified +1/-1
   - `.github/workflows/pr-test-amd-rocm720.yml` modified +30/-30
   - `.github/workflows/pr-test-amd.yml` modified +38/-38
 - Code diff details:
-  - `.claude/skills/write-sglang-test/SKILL.md` modified +12/-12
+  - `agent-skills/write-sglang-test/SKILL.md` modified +12/-12
   - `.github/actions/wait-for-jobs/action.yml` modified +1/-1
   - `.github/workflows/pr-test-amd-rocm720.yml` modified +30/-30
   - `.github/workflows/pr-test-amd.yml` modified +38/-38
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
-diff -- .claude/skills/write-sglang-test/SKILL.md
+diff -- agent-skills/write-sglang-test/SKILL.md
 @@ -18,10 +18,10 @@ description: Guide for writing SGLang CI/UT tests following project conventions.
 
  | Scenario | Model | CI Registration | Suite |
@@ -1000,11 +1000,11 @@ diff -- .github/actions/wait-for-jobs/action.yml
      required: true
    max-wait-minutes:
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/jit_kernel/tests/test_moe_lora_align_block_size.py` modified +1/-1
   - tests: `test/README.md` modified +19/-19; `test/registered/amd/disaggregation/test_disaggregation_basic.py` modified +2/-2; `test/registered/attention/test_chunk_gated_delta_rule.py` modified +1/-1; `test/registered/attention/test_create_kvindices.py` modified +2/-2; `test/registered/attention/test_fa3.py` modified +1/-1; `test/registered/attention/test_hybrid_attn_backend.py` modified +1/-1; `test/registered/attention/test_kda_kernels.py` modified +1/-1; `test/registered/attention/test_normal_decode_set_metadata.py` modified +1/-1
-  - other: `.claude/skills/write-sglang-test/SKILL.md` modified +12/-12; `.github/actions/wait-for-jobs/action.yml` modified +1/-1; `.github/workflows/pr-test-amd-rocm720.yml` modified +30/-30; `.github/workflows/pr-test-amd.yml` modified +38/-38; `.github/workflows/pr-test.yml` modified +28/-28; `scripts/ci/utils/slash_command_handler.py` modified +19/-19
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+  - other: `agent-skills/write-sglang-test/SKILL.md` modified +12/-12; `.github/actions/wait-for-jobs/action.yml` modified +1/-1; `.github/workflows/pr-test-amd-rocm720.yml` modified +30/-30; `.github/workflows/pr-test-amd.yml` modified +38/-38; `.github/workflows/pr-test.yml` modified +28/-28; `scripts/ci/utils/slash_command_handler.py` modified +19/-19
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #21135 - fix: use get_rope_config() to support models without rope_parameters
 
@@ -1023,7 +1023,7 @@ diff -- .github/actions/wait-for-jobs/action.yml
   - `python/sglang/srt/models/deepseek.py` modified +2/-2
   - `python/sglang/srt/models/ernie4.py` modified +2/-2
   - `python/sglang/srt/models/exaone.py` modified +2/-2
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/baichuan.py
@@ -1057,9 +1057,9 @@ diff -- python/sglang/srt/models/deepseek.py
 -        rope_theta = config.rope_parameters["rope_theta"]
 -        rope_scaling = config.rope_parameters
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/models/baichuan.py` modified +2/-1; `python/sglang/srt/models/deepseek.py` modified +2/-2; `python/sglang/srt/models/ernie4.py` modified +2/-2; `python/sglang/srt/models/exaone.py` modified +2/-2; `python/sglang/srt/models/glm4.py` modified +5/-3; `python/sglang/srt/models/glm4_moe.py` modified +5/-5; `python/sglang/srt/models/grok.py` modified +2/-5; `python/sglang/srt/models/hunyuan.py` modified +2/-2
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #20751 - [NPU]Add a full test pipeline on NPU, resolve issues in the NPU test architecture
 
@@ -1078,7 +1078,7 @@ diff -- python/sglang/srt/models/deepseek.py
   - `.github/workflows/nightly-test-npu.yml` modified +124/-36
   - `.github/workflows/pr-test-npu.yml` modified +70/-40
   - `.github/workflows/release-docker-npu-nightly.yml` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .github/workflows/full-test-npu.yml
@@ -1112,11 +1112,11 @@ diff -- .github/workflows/nightly-test-npu.yml
          default: 'all'
 +      image_a3:
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/pyproject_npu.toml` modified +2/-0; `python/sglang/test/ascend/test_ascend_utils.py` modified +9/-9
   - tests: `test/registered/ascend/basic_function/HiCache/test_npu_hicache_mha.py` renamed +4/-0; `test/registered/ascend/basic_function/HiCache/test_npu_hicache_mla.py` renamed +4/-0; `test/registered/ascend/basic_function/backends/test_npu_sampling_backend.py` renamed +4/-0; `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py` renamed +4/-0; `test/registered/ascend/basic_function/optimization_debug/test_npu_compile_graph_tp1_bf16.py` renamed +4/-0; `test/registered/ascend/basic_function/optimization_debug/test_npu_graph_tp1_bf16.py` renamed +4/-0; `test/registered/ascend/basic_function/optimization_debug/test_npu_graph_tp2_bf16.py` renamed +4/-0; `test/registered/ascend/basic_function/optimization_debug/test_npu_piecewise_graph_prefill.py` renamed +4/-0
   - other: `.github/workflows/full-test-npu.yml` added +355/-0; `.github/workflows/nightly-test-npu.yml` modified +124/-36; `.github/workflows/pr-test-npu.yml` modified +70/-40; `.github/workflows/release-docker-npu-nightly.yml` modified +1/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #21667 - Unify GSM8K eval path to Chat API for regression CI readiness
 
@@ -1135,7 +1135,7 @@ diff -- .github/workflows/nightly-test-npu.yml
   - `python/sglang/test/few_shot_gsm8k.py` modified +12/-0
   - `python/sglang/test/few_shot_gsm8k_engine.py` modified +14/-0
   - `python/sglang/test/kits/eval_accuracy_kit.py` modified +18/-12
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/test/accuracy_test_runner.py
@@ -1169,10 +1169,10 @@ diff -- python/sglang/test/few_shot_gsm8k.py
 @@ -9,6 +14,7 @@
  import ast
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/test/accuracy_test_runner.py` modified +1/-63; `python/sglang/test/few_shot_gsm8k.py` modified +12/-0; `python/sglang/test/few_shot_gsm8k_engine.py` modified +14/-0; `python/sglang/test/kits/eval_accuracy_kit.py` modified +18/-12; `python/sglang/test/run_eval.py` modified +8/-3; `python/sglang/test/server_fixtures/disaggregation_fixture.py` modified +1/-0; `python/sglang/test/simple_eval_common.py` modified +4/-1
   - tests: `test/manual/ep/test_moe_deepep_eval_accuracy_large.py` modified +9/-9; `test/manual/ep/test_mooncake_expert_backup.py` modified +11/-10; `test/manual/ep/test_nixl_ep.py` modified +11/-11; `test/manual/hicache/test_pp_with_hicache.py` modified +13/-13; `test/manual/models/test_falcon_h1_models.py` modified +33/-33; `test/manual/models/test_grok_models.py` modified +8/-8; `test/manual/models/test_kimi_k2_models.py` modified +11/-11; `test/manual/models/test_llama4_models.py` modified +8/-9
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #22305 - [CI] Update est_time for 64 tests based on actual elapsed times
 
@@ -1191,7 +1191,7 @@ diff -- python/sglang/test/few_shot_gsm8k.py
   - `test/registered/4-gpu-models/test_qwen35_hicache.py` modified +1/-1
   - `test/registered/4-gpu-models/test_qwen3_30b.py` modified +1/-1
   - `test/registered/4-gpu-models/test_qwen3_next_models.py` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py
@@ -1215,9 +1215,9 @@ diff -- test/registered/4-gpu-models/test_qwen35_hicache.py
  QWEN35_27B_MODEL = "Qwen/Qwen3.5-27B"
  ACC_THRESHOLDS = {QWEN35_27B_MODEL: {"gsm8k": 0.8}}
 ```
-- Files read:
+- Reviewed files:
   - tests: `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py` modified +1/-1; `test/registered/4-gpu-models/test_qwen35_hicache.py` modified +1/-1; `test/registered/4-gpu-models/test_qwen3_30b.py` modified +1/-1; `test/registered/4-gpu-models/test_qwen3_next_models.py` modified +1/-1; `test/registered/4-gpu-models/test_qwen3_next_models_mtp.py` modified +1/-1; `test/registered/8-gpu-models/test_deepseek_v3_mtp.py` modified +1/-1; `test/registered/8-gpu-models/test_dsa_models_basic.py` modified +1/-1; `test/registered/8-gpu-models/test_dsa_models_mtp.py` modified +1/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #22565 - chore: update CI test est_time values
 
@@ -1236,7 +1236,7 @@ diff -- test/registered/4-gpu-models/test_qwen35_hicache.py
   - `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py` modified +1/-1
   - `test/registered/4-gpu-models/test_qwen35_hicache.py` modified +1/-1
   - `test/registered/4-gpu-models/test_qwen35_models.py` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- test/registered/4-gpu-models/test_gpt_oss_4gpu.py
@@ -1262,9 +1262,9 @@ diff -- test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py
  NEMOTRON_3_SUPER_NVFP4_MODEL = "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-NVFP4"
 
 ```
-- Files read:
+- Reviewed files:
   - tests: `test/registered/4-gpu-models/test_gpt_oss_4gpu.py` modified +2/-2; `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py` modified +1/-1; `test/registered/4-gpu-models/test_qwen35_hicache.py` modified +1/-1; `test/registered/4-gpu-models/test_qwen35_models.py` modified +1/-1; `test/registered/4-gpu-models/test_qwen3_30b.py` modified +1/-1; `test/registered/4-gpu-models/test_qwen3_next_models.py` modified +1/-1; `test/registered/4-gpu-models/test_qwen3_next_models_mtp.py` modified +1/-1; `test/registered/8-gpu-models/test_deepseek_v32_indexcache.py` modified +1/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #23001 - Add new Mintlify documentation site (docs_new/)
 
@@ -1283,7 +1283,7 @@ diff -- test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py
   - `docs_new/.github/workflows/sync-lmsys-sglang-blogs.yml` added +39/-0
   - `docs_new/.gitignore` added +30/-0
   - `docs_new/.mintignore` added +7/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .gitignore
@@ -1311,10 +1311,10 @@ diff -- docs_new/.github/workflows/sync-lmsys-sglang-blogs.yml
 +  sync:
 +    runs-on: ubuntu-latest
 ```
-- Files read:
+- Reviewed files:
   - docs/bench: `docs_new/.github/workflows/sync-lmsys-sglang-blogs.yml` added +39/-0; `docs_new/.gitignore` added +30/-0; `docs_new/.mintignore` added +7/-0; `docs_new/AGENTS.md` added +381/-0; `docs_new/CONTRIBUTING.md` added +34/-0; `docs_new/LICENSE` added +201/-0; `docs_new/README.md` added +126/-0; `docs_new/cards/Autoregressive-benchmark-card.png` added +0/-0
   - other: `.gitignore` modified +1/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #23337 - [Docs] Sync docs_new with legacy docs and update migration redirects
 
@@ -1333,7 +1333,7 @@ diff -- docs_new/.github/workflows/sync-lmsys-sglang-blogs.yml
   - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-Math-V2.mdx` modified +1/-1
   - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR-2.mdx` modified +1/-1
   - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR.mdx` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .pre-commit-config.yaml
@@ -1362,10 +1362,10 @@ diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-Math-V2.mdx
  ## 3. Model Deployment
 
 ```
-- Files read:
+- Reviewed files:
   - docs/bench: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-Math-V2.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR-2.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-R1.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_1.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/Ernie/Ernie4.5.mdx` modified +1/-1
   - other: `.pre-commit-config.yaml` modified +7/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #23732 - Apply should_use_dp_reduce_scatterv guard to remaining MoE models (follow-up to #23731)
 
@@ -1384,7 +1384,7 @@ diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-Math-V2.mdx
   - `python/sglang/srt/models/bailing_moe_linear.py` modified +7/-1
   - `python/sglang/srt/models/deepseek_v2.py` modified +3/-0
   - `python/sglang/srt/models/exaone_moe.py` modified +6/-2
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/bailing_moe.py
@@ -1418,9 +1418,9 @@ diff -- python/sglang/srt/models/bailing_moe_linear.py
 -        if self.tp_size > 1 and not use_reduce_scatter and not should_allreduce_fusion:
 +        if (
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/models/bailing_moe.py` modified +2/-0; `python/sglang/srt/models/bailing_moe_linear.py` modified +7/-1; `python/sglang/srt/models/deepseek_v2.py` modified +3/-0; `python/sglang/srt/models/exaone_moe.py` modified +6/-2; `python/sglang/srt/models/glm4_moe.py` modified +3/-0; `python/sglang/srt/models/hunyuan_v3.py` modified +7/-4; `python/sglang/srt/models/llada2.py` modified +10/-2; `python/sglang/srt/models/llama4.py` modified +6/-1
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #23748 - refactor(moe): centralize post-experts all-reduce skip predicate
 
@@ -1439,7 +1439,7 @@ diff -- python/sglang/srt/models/bailing_moe_linear.py
   - `python/sglang/srt/layers/moe/utils.py` modified +33/-0
   - `python/sglang/srt/models/bailing_moe.py` modified +5/-8
   - `python/sglang/srt/models/bailing_moe_linear.py` modified +5/-6
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/layers/moe/__init__.py
@@ -1473,9 +1473,9 @@ diff -- python/sglang/srt/layers/moe/utils.py
 +
 +    Skip reasons, in order:
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/layers/moe/__init__.py` modified +2/-0; `python/sglang/srt/layers/moe/utils.py` modified +33/-0; `python/sglang/srt/models/bailing_moe.py` modified +5/-8; `python/sglang/srt/models/bailing_moe_linear.py` modified +5/-6; `python/sglang/srt/models/deepseek_v2.py` modified +9/-13; `python/sglang/srt/models/exaone_moe.py` modified +7/-5; `python/sglang/srt/models/glm4_moe.py` modified +9/-13; `python/sglang/srt/models/hunyuan_v3.py` modified +13/-7
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #23785 - chore: update CI test est_time values
 
@@ -1494,7 +1494,7 @@ diff -- python/sglang/srt/layers/moe/utils.py
   - `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py` modified +1/-1
   - `test/registered/4-gpu-models/test_qwen35_fp4_triton.py` modified +1/-1
   - `test/registered/4-gpu-models/test_qwen3_30b.py` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- test/registered/4-gpu-models/test_gpt_oss_4gpu.py
@@ -1520,9 +1520,9 @@ diff -- test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py
  QWEN35_FP4_MODEL = "nvidia/Qwen3.5-397B-A17B-NVFP4"
  ACC_THRESHOLDS = {QWEN35_FP4_MODEL: {"gsm8k": 0.95}}
 ```
-- Files read:
+- Reviewed files:
   - tests: `test/registered/4-gpu-models/test_gpt_oss_4gpu.py` modified +2/-2; `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py` modified +1/-1; `test/registered/4-gpu-models/test_qwen35_fp4_triton.py` modified +1/-1; `test/registered/4-gpu-models/test_qwen3_30b.py` modified +1/-1; `test/registered/4-gpu-models/test_qwen3_next_models.py` modified +1/-1; `test/registered/8-gpu-models/test_deepseek_v32_indexcache.py` modified +1/-1; `test/registered/8-gpu-models/test_deepseek_v3_basic.py` modified +1/-1; `test/registered/8-gpu-models/test_deepseek_v3_mtp.py` modified +1/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #23835 - [NPU] Add GitHub test summary and deduplicate test code. Part 1
 
@@ -1541,7 +1541,7 @@ diff -- test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py
   - `python/sglang/test/ascend/test_ascend_utils.py` modified +48/-0
   - `python/sglang/test/ascend/test_mmlu.py` added +37/-0
   - `python/sglang/test/ascend/vlm_utils.py` modified +18/-2
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/test/ascend/gsm8k_ascend_mixin.py
@@ -1575,10 +1575,10 @@ diff -- python/sglang/test/ascend/test_ascend_utils.py
      MODEL_WEIGHTS_DIR, "meta-llama/Llama-4-Scout-17B-16E-Instruct"
  )
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/test/ascend/gsm8k_ascend_mixin.py` modified +70/-35; `python/sglang/test/ascend/test_ascend_utils.py` modified +48/-0; `python/sglang/test/ascend/test_mmlu.py` added +37/-0; `python/sglang/test/ascend/vlm_utils.py` modified +18/-2
   - tests: `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py` modified +23/-59; `test/registered/ascend/basic_function/optimization_debug/test_npu_piecewise_graph_prefill.py` modified +54/-70; `test/registered/ascend/basic_function/parallel_strategy/expert_parallelism/test_npu_deepep_auto_deepseek_v3_2_w8a8.py` modified +43/-88; `test/registered/ascend/basic_function/speculative_inference/test_npu_eagle3.py` modified +40/-78
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #24250 - [SKILL] Upgrade sglang profile and auto_benchmark skills
 
@@ -1586,21 +1586,21 @@ diff -- python/sglang/test/ascend/test_ascend_utils.py
 - Status/date: merged / 2026-05-02
 - Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
 - Diff scope read: GitHub Pull Request files API returned 100 files, +9334/-3813, with 13573 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[SKILL] Upgrade sglang profile and auto_benchmark skills"; model line: LLaDA 2.1; category: docs/tests/CI; main diff: `.claude/skills/llm-serving-auto-benchmark/SKILL.md`, `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md`, `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml`.
+- Motivation: Title: "[SKILL] Upgrade sglang profile and auto_benchmark skills"; model line: LLaDA 2.1; category: docs/tests/CI; main diff: `agent-skills/llm-serving-auto-benchmark/SKILL.md`, `skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md`, `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml`.
 - Key implementation:
-  - `.claude/skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
-  - `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0
-  - `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0
-  - `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0
+  - `agent-skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
+  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0
+  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0
+  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0
 - Code diff details:
-  - `.claude/skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
-  - `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0
-  - `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0
-  - `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0
-- Code excerpt:
+  - `agent-skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
+  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0
+  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0
+  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0
+- Key code excerpts:
 
 ```diff
-diff -- .claude/skills/llm-serving-auto-benchmark/SKILL.md
+diff -- agent-skills/llm-serving-auto-benchmark/SKILL.md
 @@ -0,0 +1,527 @@
 +---
 +name: llm-serving-auto-benchmark
@@ -1615,7 +1615,7 @@ diff -- .claude/skills/llm-serving-auto-benchmark/SKILL.md
 +TensorRT-LLM for the same model and workload.
 +
 +Use a config-driven workflow:
-diff -- .claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md
+diff -- skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md
 @@ -0,0 +1,17 @@
 +# Cookbook LLM Configs
 +
@@ -1631,10 +1631,10 @@ diff -- .claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md
 +
 +```bash
 ```
-- Files read:
-  - docs/bench: `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.1.yaml` added +132/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.2.yaml` added +132/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.yaml` added +133/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/devstral-small-2-24b-instruct-2512.yaml` added +123/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/ernie-4.5-21b-a3b-pt.yaml` added +117/-0
-  - other: `.claude/skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Reviewed files:
+  - docs/bench: `skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.1.yaml` added +132/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.2.yaml` added +132/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.yaml` added +133/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/devstral-small-2-24b-instruct-2512.yaml` added +123/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/ernie-4.5-21b-a3b-pt.yaml` added +117/-0
+  - other: `agent-skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #25197 - ci: decouple stage and runner for cuda registry
 
@@ -1653,7 +1653,7 @@ diff -- .claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md
   - `scripts/ci/utils/ci_coverage_report.py` modified +8/-6
   - `scripts/ci/utils/compute_partitions.py` modified +1/-1
   - `test/registered/4-gpu-models/test_deepseek_v3_cutedsl_4gpu.py` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/test/ci/ci_register.py
@@ -1687,11 +1687,11 @@ diff -- scripts/ci/utils/ci_coverage_report.py
                      else ("Nightly" if t.nightly else "Per-Commit")
                  )
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/test/ci/ci_register.py` modified +81/-24
   - tests: `test/registered/4-gpu-models/test_deepseek_v3_cutedsl_4gpu.py` modified +1/-1; `test/registered/4-gpu-models/test_gpt_oss_4gpu.py` modified +2/-2; `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py` modified +1/-1; `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py` modified +1/-1; `test/registered/4-gpu-models/test_qwen35_hicache.py` modified +1/-1; `test/registered/4-gpu-models/test_qwen35_models.py` modified +1/-1; `test/registered/4-gpu-models/test_qwen3_30b.py` modified +1/-1; `test/registered/4-gpu-models/test_qwen3_next_models_mtp.py` modified +1/-1
   - other: `scripts/ci/utils/ci_coverage_report.py` modified +8/-6; `scripts/ci/utils/compute_partitions.py` modified +1/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #25420 - [CI] Rename basic CI `stage-a/b/c` -> `base-a/b/c` for symmetry with extra CI
 
@@ -1699,21 +1699,21 @@ diff -- scripts/ci/utils/ci_coverage_report.py
 - Status/date: merged / 2026-05-16
 - Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
 - Diff scope read: GitHub Pull Request files API returned 100 files, +327/-329, with 2091 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[CI] Rename basic CI `stage-a/b/c` -> `base-a/b/c` for symmetry with extra CI"; model line: LLaDA 2.1; category: docs/tests/CI; main diff: `.claude/skills/add-jit-kernel/SKILL.md`, `.claude/skills/ci-workflow-guide/SKILL.md`, `.claude/skills/write-sglang-test/SKILL.md`.
+- Motivation: Title: "[CI] Rename basic CI `stage-a/b/c` -> `base-a/b/c` for symmetry with extra CI"; model line: LLaDA 2.1; category: docs/tests/CI; main diff: `agent-skills/add-jit-kernel/SKILL.md`, `agent-skills/ci-workflow-guide/SKILL.md`, `agent-skills/write-sglang-test/SKILL.md`.
 - Key implementation:
-  - `.claude/skills/add-jit-kernel/SKILL.md` modified +9/-9
-  - `.claude/skills/ci-workflow-guide/SKILL.md` modified +63/-64
-  - `.claude/skills/write-sglang-test/SKILL.md` modified +40/-41
+  - `agent-skills/add-jit-kernel/SKILL.md` modified +9/-9
+  - `agent-skills/ci-workflow-guide/SKILL.md` modified +63/-64
+  - `agent-skills/write-sglang-test/SKILL.md` modified +40/-41
   - `.github/actions/check-pr-test-health/action.yml` renamed +7/-7
 - Code diff details:
-  - `.claude/skills/add-jit-kernel/SKILL.md` modified +9/-9
-  - `.claude/skills/ci-workflow-guide/SKILL.md` modified +63/-64
-  - `.claude/skills/write-sglang-test/SKILL.md` modified +40/-41
+  - `agent-skills/add-jit-kernel/SKILL.md` modified +9/-9
+  - `agent-skills/ci-workflow-guide/SKILL.md` modified +63/-64
+  - `agent-skills/write-sglang-test/SKILL.md` modified +40/-41
   - `.github/actions/check-pr-test-health/action.yml` renamed +7/-7
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
-diff -- .claude/skills/add-jit-kernel/SKILL.md
+diff -- agent-skills/add-jit-kernel/SKILL.md
 @@ -435,17 +435,17 @@ if torch.cuda.get_device_capability()[0] < 9:
 
  JIT kernel tests live under `python/sglang/jit_kernel/tests/`. **CI does not run `pytest` in that directory directly.** The unified runner `test/run_suite.py` discovers every `test_*.py` there (and every `bench_*.py` under `benchmark/`), collects `register_*_ci(...)` calls by **statically parsing each file's AST**, and executes the selected suite. Every test file must register at least one CUDA entry or the collector fails its sanity check.
@@ -1728,7 +1728,7 @@ diff -- .claude/skills/add-jit-kernel/SKILL.md
  from sglang.test.ci.ci_register import register_cuda_ci
 
 -register_cuda_ci(est_time=30, suite="stage-b-kernel-unit-1-gpu-large")
-diff -- .claude/skills/ci-workflow-guide/SKILL.md
+diff -- agent-skills/ci-workflow-guide/SKILL.md
 @@ -11,7 +11,7 @@ This skill covers the CI **infrastructure** layer — how tests are dispatched,
 
  ## Naming Conventions
@@ -1744,7 +1744,7 @@ diff -- .claude/skills/ci-workflow-guide/SKILL.md
  | `.github/workflows/pr-gate.yml` | PR gating: draft check, `run-ci` label, per-user rate limiting |
 -| `.github/actions/check-stage-health/action.yml` | Cross-job fast-fail: queries API for any failed job |
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/jit_kernel/benchmark/bench_activation.py` modified +1/-1; `python/sglang/jit_kernel/benchmark/bench_awq_dequantize.py` modified +1/-1; `python/sglang/jit_kernel/benchmark/bench_cast.py` modified +1/-1; `python/sglang/jit_kernel/benchmark/bench_clamp_position.py` modified +1/-1; `python/sglang/jit_kernel/benchmark/bench_concat_mla.py` modified +1/-1; `python/sglang/jit_kernel/benchmark/bench_custom_all_reduce.py` modified +1/-1; `python/sglang/jit_kernel/benchmark/bench_fused_qknorm_rope.py` modified +1/-1; `python/sglang/jit_kernel/benchmark/bench_hadamard.py` modified +1/-1
-  - other: `.claude/skills/add-jit-kernel/SKILL.md` modified +9/-9; `.claude/skills/ci-workflow-guide/SKILL.md` modified +63/-64; `.claude/skills/write-sglang-test/SKILL.md` modified +40/-41; `.github/actions/check-pr-test-health/action.yml` renamed +7/-7; `.github/actions/wait-for-jobs/action.yml` modified +2/-2; `.github/workflows/_pr-test-sgl-kernel-build.yml` modified +2/-2; `.github/workflows/_pr-test-stage.yml` modified +4/-4; `.github/workflows/ci-auto-bisect.yml` modified +1/-1
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+  - other: `agent-skills/add-jit-kernel/SKILL.md` modified +9/-9; `agent-skills/ci-workflow-guide/SKILL.md` modified +63/-64; `agent-skills/write-sglang-test/SKILL.md` modified +40/-41; `.github/actions/check-pr-test-health/action.yml` renamed +7/-7; `.github/actions/wait-for-jobs/action.yml` modified +2/-2; `.github/workflows/_pr-test-sgl-kernel-build.yml` modified +2/-2; `.github/workflows/_pr-test-stage.yml` modified +4/-4; `.github/workflows/ci-auto-bisect.yml` modified +1/-1
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.

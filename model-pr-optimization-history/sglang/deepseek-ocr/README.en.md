@@ -4,7 +4,7 @@
 
 Generated from sglang upstream `origin/main@5073c82a37`, `git log --name-only -- <model-files>` over model-related paths, and the GitHub Pull Request files API. This page fills the missing `DeepSeek OCR` history entry found from sgl-cookbook coverage.
 
-## Model Implementation File Coverage
+## Implementation File Coverage
 
 | File | PRs traced by git |
 | --- | --- |
@@ -18,7 +18,7 @@ Generated from sglang upstream `origin/main@5073c82a37`, `git log --name-only --
 | `test/srt/xpu/test_deepseek_ocr.py` | [#23820](https://github.com/sgl-project/sglang/pull/23820), [#23044](https://github.com/sgl-project/sglang/pull/23044), [#21735](https://github.com/sgl-project/sglang/pull/21735), [#13561](https://github.com/sgl-project/sglang/pull/13561) |
 | `test/srt/xpu/test_deepseek_ocr_triton.py` | [#23820](https://github.com/sgl-project/sglang/pull/23820), [#23044](https://github.com/sgl-project/sglang/pull/23044), [#21735](https://github.com/sgl-project/sglang/pull/21735) |
 
-## PR Coverage Overview
+## PR Coverage Summary
 
 - git-traced PR count: 18
 - keyword/supplemental PR count: 7
@@ -75,7 +75,7 @@ Generated from sglang upstream `origin/main@5073c82a37`, `git log --name-only --
   - `python/sglang/srt/configs/deepseekvl2.py` modified +194/-95
   - `python/sglang/srt/configs/model_config.py` modified +1/-0
   - `python/sglang/srt/model_loader/utils.py` modified +0/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/configs/deepseek_ocr.py
@@ -109,10 +109,10 @@ diff -- python/sglang/srt/configs/deepseekvl2.py
      target_ids: torch.LongTensor
 +    images_crop: torch.LongTensor
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/configs/deepseek_ocr.py` added +262/-0; `python/sglang/srt/configs/deepseekvl2.py` modified +194/-95; `python/sglang/srt/configs/model_config.py` modified +1/-0; `python/sglang/srt/model_loader/utils.py` modified +0/-1; `python/sglang/srt/models/deepseek_ocr.py` added +1516/-0; `python/sglang/srt/models/deepseek_v2.py` modified +0/-1; `python/sglang/srt/multimodal/processors/base_processor.py` modified +1/-0; `python/sglang/srt/multimodal/processors/deepseek_ocr.py` added +37/-0
   - tests: `test/srt/test_vision_openai_server_a.py` modified +56/-0; `test/srt/test_vision_openai_server_common.py` modified +6/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #12384 - [Bugfix]: distinguish processors for deepseek_vl2 and deepseek_ocr to p…
 
@@ -131,7 +131,7 @@ diff -- python/sglang/srt/configs/deepseekvl2.py
   - `python/sglang/srt/configs/deepseekvl2.py` modified +95/-194
   - `python/sglang/srt/multimodal/customized_mm_processor_utils.py` added +35/-0
   - `python/sglang/srt/utils/hf_transformers_utils.py` modified +32/-12
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/configs/deepseek_ocr.py
@@ -165,9 +165,9 @@ diff -- python/sglang/srt/configs/deepseekvl2.py
      target_ids: torch.LongTensor
 -    images_crop: torch.LongTensor
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/configs/deepseek_ocr.py` modified +521/-10; `python/sglang/srt/configs/deepseekvl2.py` modified +95/-194; `python/sglang/srt/multimodal/customized_mm_processor_utils.py` added +35/-0; `python/sglang/srt/utils/hf_transformers_utils.py` modified +32/-12
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #12415 - Feat: deepseek-ocr logits processor
 
@@ -182,7 +182,7 @@ diff -- python/sglang/srt/configs/deepseekvl2.py
 - Code diff details:
   - `python/sglang/srt/configs/deepseek_ocr.py` modified +22/-0
   - `python/sglang/srt/sampling/custom_logit_processor.py` modified +67/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/configs/deepseek_ocr.py
@@ -216,9 +216,9 @@ diff -- python/sglang/srt/sampling/custom_logit_processor.py
      NEW_LINE_TOKEN_ID: int = 201
 +
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/configs/deepseek_ocr.py` modified +22/-0; `python/sglang/srt/sampling/custom_logit_processor.py` modified +67/-1
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #12470 - Fix lint in deepseek-ocr
 
@@ -231,7 +231,7 @@ diff -- python/sglang/srt/sampling/custom_logit_processor.py
   - `python/sglang/srt/configs/deepseek_ocr.py` modified +0/-1
 - Code diff details:
   - `python/sglang/srt/configs/deepseek_ocr.py` modified +0/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/configs/deepseek_ocr.py
@@ -244,9 +244,9 @@ diff -- python/sglang/srt/configs/deepseek_ocr.py
      DeepseekOCRNoRepeatNGramLogitProcessor,
  )
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/configs/deepseek_ocr.py` modified +0/-1
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #12619 - [NPU] supports ds-ocr model on ascend
 
@@ -261,7 +261,7 @@ diff -- python/sglang/srt/configs/deepseek_ocr.py
 - Code diff details:
   - `python/sglang/srt/models/deepseek.py` modified +142/-49
   - `python/sglang/srt/models/deepseek_ocr.py` modified +58/-11
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/deepseek.py
@@ -295,9 +295,9 @@ diff -- python/sglang/srt/models/deepseek_ocr.py
 +        expert_params_mapping = FusedMoE.make_expert_params_mapping(
 +            ckpt_gate_proj_name="gate_proj",
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/models/deepseek.py` modified +142/-49; `python/sglang/srt/models/deepseek_ocr.py` modified +58/-11
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #17897 - Support DeepSeek-OCR-2 in SGLang (OCR2 vision pipeline, tokenization alignment, and weight loading fixes)#17833
 
@@ -316,7 +316,7 @@ diff -- python/sglang/srt/models/deepseek_ocr.py
   - `docs/index.rst` modified +1/-0
   - `docs/supported_models/multimodal_language_models.md` modified +1/-0
   - `python/sglang/srt/configs/deepseek_ocr.py` modified +32/-9
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/basic_usage/deepseek_ocr.md
@@ -344,10 +344,10 @@ diff -- docs/index.rst
     basic_usage/popular_model_usage.rst
 
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/configs/deepseek_ocr.py` modified +32/-9; `python/sglang/srt/configs/model_config.py` modified +9/-4; `python/sglang/srt/model_loader/utils.py` modified +6/-2; `python/sglang/srt/models/deepseek_ocr.py` modified +446/-116; `python/sglang/srt/multimodal/processors/deepseek_ocr.py` modified +8/-0; `python/sglang/srt/utils/hf_transformers_utils.py` modified +61/-9
   - docs/bench: `docs/basic_usage/deepseek_ocr.md` added +54/-0; `docs/index.rst` modified +1/-0; `docs/supported_models/multimodal_language_models.md` modified +1/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #13561 - [XPU] Integrate MoE and minor improvements in XPU attention backend
 
@@ -366,7 +366,7 @@ diff -- docs/index.rst
   - `python/sglang/srt/layers/moe/fused_moe_triton/moe_align_block_size.py` modified +3/-2
   - `python/sglang/srt/layers/moe/moe_runner/triton.py` modified +13/-3
   - `python/sglang/srt/layers/moe/topk.py` modified +1/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/layers/moe/fused_moe_triton/fused_moe.py
@@ -400,10 +400,10 @@ diff -- python/sglang/srt/layers/moe/fused_moe_triton/moe_align_block_size.py
 +if _is_cuda or _is_hip or _is_xpu:
      from sgl_kernel import moe_align_block_size as sgl_moe_align_block_size
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/layers/moe/fused_moe_triton/fused_moe.py` modified +34/-1; `python/sglang/srt/layers/moe/fused_moe_triton/moe_align_block_size.py` modified +3/-2; `python/sglang/srt/layers/moe/moe_runner/triton.py` modified +13/-3; `python/sglang/srt/layers/moe/topk.py` modified +1/-0; `python/sglang/srt/layers/quantization/unquant.py` modified +49/-0; `python/sglang/srt/utils/common.py` modified +11/-1
   - tests: `test/srt/run_suite.py` modified +1/-0; `test/srt/xpu/test_deepseek_ocr.py` added +121/-0
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #18860 - update pre-commit config
 
@@ -422,7 +422,7 @@ diff -- python/sglang/srt/layers/moe/fused_moe_triton/moe_align_block_size.py
   - `.pre-commit-config.yaml` modified +6/-6
   - `3rdparty/amd/tuning/benchmark_moe_rocm.py` modified +2/-4
   - `benchmark/fla/benchmark_layernorm_gated.py` modified +3/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .github/workflows/lint.yml
@@ -454,11 +454,11 @@ diff -- .pre-commit-config.yaml
    - repo: https://github.com/PyCQA/isort
 -    rev: 5.13.2
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/jit_kernel/include/sgl_kernel/type.cuh` modified +16/-15; `python/sglang/multimodal_gen/apps/webui/main.py` modified +2/-4; `python/sglang/multimodal_gen/configs/models/encoders/qwen3.py` modified +1/-0; `python/sglang/multimodal_gen/runtime/cache/__init__.py` modified +1/-0; `python/sglang/multimodal_gen/runtime/distributed/parallel_state.py` modified +2/-1; `python/sglang/multimodal_gen/runtime/layers/activation.py` modified +1/-0; `python/sglang/multimodal_gen/runtime/layers/layernorm.py` modified +1/-0; `python/sglang/multimodal_gen/runtime/layers/rotary_embedding.py` modified +1/-0
   - docs/bench: `benchmark/fla/benchmark_layernorm_gated.py` modified +3/-1; `benchmark/tip_suggestion/bench_other.py` modified +2/-8; `benchmark/tip_suggestion/bench_sglang.py` modified +2/-8; `benchmark/tip_suggestion/lmql_funcs.py` modified +2/-8; `docs/advanced_features/lora.ipynb` modified +10/-20; `docs/advanced_features/structured_outputs.ipynb` modified +0/-1; `docs/advanced_features/structured_outputs_for_reasoning_models.ipynb` modified +0/-1; `docs/advanced_features/vlm_query.ipynb` modified +0/-1
   - other: `.github/workflows/lint.yml` modified +2/-2; `.pre-commit-config.yaml` modified +6/-6; `3rdparty/amd/tuning/benchmark_moe_rocm.py` modified +2/-4
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #18774 - Adapt the Qwen2Model._update_causal_mask for transformers==4.57.1
 
@@ -471,7 +471,7 @@ diff -- .pre-commit-config.yaml
   - `python/sglang/srt/models/deepseek_ocr.py` modified +10/-1
 - Code diff details:
   - `python/sglang/srt/models/deepseek_ocr.py` modified +10/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/deepseek_ocr.py
@@ -490,9 +490,9 @@ diff -- python/sglang/srt/models/deepseek_ocr.py
 +                }
                  return super().forward(
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/models/deepseek_ocr.py` modified +10/-1
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #19722 - fix: align DeepSeek OCR vision dtypes
 
@@ -505,7 +505,7 @@ diff -- python/sglang/srt/models/deepseek_ocr.py
   - `python/sglang/srt/models/deepseek_ocr.py` modified +14/-6
 - Code diff details:
   - `python/sglang/srt/models/deepseek_ocr.py` modified +14/-6
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/deepseek_ocr.py
@@ -524,9 +524,9 @@ diff -- python/sglang/srt/models/deepseek_ocr.py
 
      def _encode_ocr1_features(self, images: torch.Tensor) -> torch.Tensor:
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/models/deepseek_ocr.py` modified +14/-6
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #19732 - [AMD] [DeepSeek-OCR-2 Day 0] Enable DeepSeek-OCR-2 on AMD GPUs and add nightly test
 
@@ -543,7 +543,7 @@ diff -- python/sglang/srt/models/deepseek_ocr.py
   - `python/sglang/srt/models/deepseek_ocr.py` modified +4/-3
   - `python/sglang/srt/multimodal/processors/base_processor.py` modified +2/-0
   - `test/registered/amd/accuracy/mi30x/test_vlms_mmmu_eval_amd.py` modified +17/-2
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/deepseek_ocr.py
@@ -572,10 +572,10 @@ diff -- python/sglang/srt/multimodal/processors/base_processor.py
              "image_grid_hws": Modality.IMAGE,
              "aspect_ratio_ids": Modality.IMAGE,
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/models/deepseek_ocr.py` modified +4/-3; `python/sglang/srt/multimodal/processors/base_processor.py` modified +2/-0
   - tests: `test/registered/amd/accuracy/mi30x/test_vlms_mmmu_eval_amd.py` modified +17/-2
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #20708 - Add Mistral Small 4 (Pixtral) support
 
@@ -594,7 +594,7 @@ diff -- python/sglang/srt/multimodal/processors/base_processor.py
   - `benchmark/mmmu/eval_utils.py` modified +8/-0
   - `python/sglang/srt/configs/deepseek_ocr.py` modified +2/-2
   - `python/sglang/srt/configs/deepseekvl2.py` modified +3/-3
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- benchmark/mmmu/bench_sglang.py
@@ -628,10 +628,10 @@ diff -- benchmark/mmmu/eval_utils.py
 +        parser.add_argument(
 +            "--reasoning-effort",
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/configs/deepseek_ocr.py` modified +2/-2; `python/sglang/srt/configs/deepseekvl2.py` modified +3/-3; `python/sglang/srt/configs/janus_pro.py` modified +12/-12; `python/sglang/srt/configs/jet_nemotron.py` modified +12/-12; `python/sglang/srt/entrypoints/openai/protocol.py` modified +1/-1; `python/sglang/srt/entrypoints/openai/serving_chat.py` modified +32/-13; `python/sglang/srt/function_call/mistral_detector.py` modified +17/-9; `python/sglang/srt/layers/moe/moe_runner/flashinfer_trtllm.py` modified +1/-1
   - docs/bench: `benchmark/mmmu/bench_sglang.py` modified +49/-10; `benchmark/mmmu/eval_utils.py` modified +8/-0
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #12555 - [CPU] Fix MoE layer support for DeepSeek-OCR models
 
@@ -646,7 +646,7 @@ diff -- benchmark/mmmu/eval_utils.py
 - Code diff details:
   - `python/sglang/srt/models/deepseek.py` modified +31/-9
   - `python/sglang/srt/models/deepseek_ocr.py` modified +34/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/deepseek.py
@@ -680,9 +680,9 @@ diff -- python/sglang/srt/models/deepseek_ocr.py
 
          params_dict = dict(self.named_parameters())
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/models/deepseek.py` modified +31/-9; `python/sglang/srt/models/deepseek_ocr.py` modified +34/-1
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #21738 - refactor: replace mm_inputs dict with MultimodalProcessorOutput
 
@@ -701,7 +701,7 @@ diff -- python/sglang/srt/models/deepseek_ocr.py
   - `python/sglang/srt/disaggregation/encode_server.py` modified +1/-3
   - `python/sglang/srt/managers/io_struct.py` modified +1/-1
   - `python/sglang/srt/managers/mm_utils.py` modified +3/-4
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/disaggregation/encode_receiver.py
@@ -730,9 +730,9 @@ diff -- python/sglang/srt/disaggregation/encode_server.py
 -            feature = processor_input["pixel_values"]
              if hasattr(self.model, "thinker"):  # for omni models
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/disaggregation/encode_receiver.py` modified +1/-1; `python/sglang/srt/disaggregation/encode_server.py` modified +1/-3; `python/sglang/srt/managers/io_struct.py` modified +1/-1; `python/sglang/srt/managers/mm_utils.py` modified +3/-4; `python/sglang/srt/managers/schedule_batch.py` modified +58/-4; `python/sglang/srt/managers/scheduler.py` modified +7/-7; `python/sglang/srt/managers/session_controller.py` modified +1/-1; `python/sglang/srt/managers/tokenizer_manager.py` modified +9/-9
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #21735 - fix ut test_moe
 
@@ -751,7 +751,7 @@ diff -- python/sglang/srt/disaggregation/encode_server.py
   - `test/srt/xpu/test_deepseek_ocr.py` modified +28/-26
   - `test/srt/xpu/test_deepseek_ocr_triton.py` added +51/-0
   - `test/srt/xpu/test_intel_xpu_backend.py` modified +24/-5
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- test/srt/run_suite.py
@@ -781,9 +781,9 @@ diff -- test/srt/xpu/test_deepseek_ocr.py
 @@ -19,11 +21,32 @@
 
 ```
-- Files read:
+- Reviewed files:
   - tests: `test/srt/run_suite.py` modified +2/-1; `test/srt/xpu/test_deepseek_ocr.py` modified +28/-26; `test/srt/xpu/test_deepseek_ocr_triton.py` added +51/-0; `test/srt/xpu/test_intel_xpu_backend.py` modified +24/-5
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #23001 - Add new Mintlify documentation site (docs_new/)
 
@@ -802,7 +802,7 @@ diff -- test/srt/xpu/test_deepseek_ocr.py
   - `docs_new/.github/workflows/sync-lmsys-sglang-blogs.yml` added +39/-0
   - `docs_new/.gitignore` added +30/-0
   - `docs_new/.mintignore` added +7/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .gitignore
@@ -830,10 +830,10 @@ diff -- docs_new/.github/workflows/sync-lmsys-sglang-blogs.yml
 +  sync:
 +    runs-on: ubuntu-latest
 ```
-- Files read:
+- Reviewed files:
   - docs/bench: `docs_new/.github/workflows/sync-lmsys-sglang-blogs.yml` added +39/-0; `docs_new/.gitignore` added +30/-0; `docs_new/.mintignore` added +7/-0; `docs_new/AGENTS.md` added +381/-0; `docs_new/CONTRIBUTING.md` added +34/-0; `docs_new/LICENSE` added +201/-0; `docs_new/README.md` added +126/-0; `docs_new/cards/Autoregressive-benchmark-card.png` added +0/-0
   - other: `.gitignore` modified +1/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #23044 - [XPU] Fix DeepSeek-OCR tests under transformers 5.x
 
@@ -848,7 +848,7 @@ diff -- docs_new/.github/workflows/sync-lmsys-sglang-blogs.yml
 - Code diff details:
   - `test/srt/xpu/test_deepseek_ocr.py` modified +2/-4
   - `test/srt/xpu/test_deepseek_ocr_triton.py` modified +2/-4
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- test/srt/xpu/test_deepseek_ocr.py
@@ -882,9 +882,9 @@ diff -- test/srt/xpu/test_deepseek_ocr_triton.py
          cls._cleanup_xpu_memory()
          cls.model = "deepseek-ai/DeepSeek-OCR"
 ```
-- Files read:
+- Reviewed files:
   - tests: `test/srt/xpu/test_deepseek_ocr.py` modified +2/-4; `test/srt/xpu/test_deepseek_ocr_triton.py` modified +2/-4
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #23337 - [Docs] Sync docs_new with legacy docs and update migration redirects
 
@@ -903,7 +903,7 @@ diff -- test/srt/xpu/test_deepseek_ocr_triton.py
   - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-Math-V2.mdx` modified +1/-1
   - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR-2.mdx` modified +1/-1
   - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR.mdx` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .pre-commit-config.yaml
@@ -932,10 +932,10 @@ diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-Math-V2.mdx
  ## 3. Model Deployment
 
 ```
-- Files read:
+- Reviewed files:
   - docs/bench: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-Math-V2.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR-2.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-R1.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_1.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/Ernie/Ernie4.5.mdx` modified +1/-1
   - other: `.pre-commit-config.yaml` modified +7/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #23820 - Update XPU Docker runtime stack & hf_home config
 
@@ -954,7 +954,7 @@ diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-Math-V2.mdx
   - `docker/xpu.Dockerfile` modified +10/-6
   - `test/srt/xpu/test_deepseek_ocr.py` modified +6/-17
   - `test/srt/xpu/test_deepseek_ocr_triton.py` modified +7/-3
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .github/workflows/pr-test-xpu.yml
@@ -988,10 +988,10 @@ diff -- docker/xpu.Dockerfile
 +    apt-get install -y libze-dev intel-ocloc
 +
 ```
-- Files read:
+- Reviewed files:
   - tests: `test/srt/xpu/test_deepseek_ocr.py` modified +6/-17; `test/srt/xpu/test_deepseek_ocr_triton.py` modified +7/-3; `test/srt/xpu/test_intel_xpu_backend.py` modified +12/-25
   - other: `.github/workflows/pr-test-xpu.yml` modified +3/-3; `docker/xpu.Dockerfile` modified +10/-6
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #24701 - [FIX][1/2] fix step3-vl/deepseek-ocr image processor error
 
@@ -1004,7 +1004,7 @@ diff -- docker/xpu.Dockerfile
   - `python/sglang/srt/multimodal/processors/step3_vl.py` modified +67/-20; symbols: forward, get_image_size, square_pad, resize
 - Code diff details:
   - `python/sglang/srt/multimodal/processors/step3_vl.py` modified +67/-20
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/multimodal/processors/step3_vl.py
@@ -1023,9 +1023,9 @@ diff -- python/sglang/srt/multimodal/processors/step3_vl.py
 -ImageWithPatches = tuple[Image.Image, list[Image.Image], list[int] | None]
 +Step3Image = Union[Image.Image, torch.Tensor]
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/multimodal/processors/step3_vl.py` modified +67/-20
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #25182 - chore: add vLLM SPDX copyright headers to ported files
 
@@ -1044,7 +1044,7 @@ diff -- python/sglang/srt/multimodal/processors/step3_vl.py
   - `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py` modified +2/-0
   - `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton_sep.py` modified +2/-0
   - `python/sglang/bench_serving.py` modified +2/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- benchmark/hicache/bench_serving.py
@@ -1062,10 +1062,10 @@ diff -- benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py
  import argparse
  import time
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/bench_serving.py` modified +2/-0; `python/sglang/multimodal_gen/runtime/distributed/communication_op.py` modified +1/-0; `python/sglang/multimodal_gen/runtime/distributed/device_communicators/base_device_communicator.py` modified +1/-0; `python/sglang/multimodal_gen/runtime/distributed/device_communicators/cpu_communicator.py` modified +1/-0; `python/sglang/multimodal_gen/runtime/distributed/device_communicators/cuda_communicator.py` modified +1/-0; `python/sglang/multimodal_gen/runtime/distributed/device_communicators/pynccl.py` modified +1/-0; `python/sglang/multimodal_gen/runtime/distributed/device_communicators/pynccl_wrapper.py` modified +1/-0; `python/sglang/multimodal_gen/runtime/distributed/group_coordinator.py` modified +2/-0
   - docs/bench: `benchmark/hicache/bench_serving.py` modified +2/-0; `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py` modified +2/-0; `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton_sep.py` modified +2/-0
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #25257 - [NPU] Support model DeepSeek-OCR and DeepSeek-OCR-2
 
@@ -1078,7 +1078,7 @@ diff -- benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py
   - `python/sglang/srt/models/deepseek.py` modified +11/-3
 - Code diff details:
   - `python/sglang/srt/models/deepseek.py` modified +11/-3
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/deepseek.py
@@ -1097,9 +1097,9 @@ diff -- python/sglang/srt/models/deepseek.py
 -from sglang.srt.utils import add_prefix, cpu_has_amx_support, is_cpu
 +from sglang.srt.utils import add_prefix, cpu_has_amx_support, is_cpu, is_npu
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/models/deepseek.py` modified +11/-3
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #25364 - Add Accuracy Benchmark for OCR models
 
@@ -1118,7 +1118,7 @@ diff -- python/sglang/srt/models/deepseek.py
   - `benchmark/ocr/README.md` added +179/-0
   - `benchmark/ocr/bench_sglang.py` added +735/-0
   - `benchmark/ocr/eval_utils.py` added +631/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .codespellrc
@@ -1143,11 +1143,11 @@ diff -- benchmark/ocr/README.md
 +
 +---
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/pyproject.toml` modified +1/-0; `python/pyproject_xpu.toml` modified +1/-0; `python/sglang/srt/configs/deepseekvl2.py` modified +15/-1; `python/sglang/srt/multimodal/processors/deepseek_ocr.py` modified +16/-0
   - docs/bench: `benchmark/ocr/README.md` added +179/-0; `benchmark/ocr/bench_sglang.py` added +735/-0; `benchmark/ocr/eval_utils.py` added +631/-0; `benchmark/ocr/generate_report.py` added +382/-0
   - other: `.codespellrc` modified +1/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #25403 - [FIX][2/2] fix step3-vl/deepseek-ocr image processor error
 
@@ -1160,7 +1160,7 @@ diff -- benchmark/ocr/README.md
   - `python/sglang/srt/configs/deepseek_ocr.py` modified +99/-12; symbols: get_image_size, resize_image, crop_image, pad_image
 - Code diff details:
   - `python/sglang/srt/configs/deepseek_ocr.py` modified +99/-12
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/configs/deepseek_ocr.py
@@ -1179,9 +1179,9 @@ diff -- python/sglang/srt/configs/deepseek_ocr.py
      LlamaTokenizerFast,
 @@ -18,6 +20,8 @@
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/configs/deepseek_ocr.py` modified +99/-12
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #25589 - Use hf_transformers_utils.get_processor to load model
 
@@ -1194,7 +1194,7 @@ diff -- python/sglang/srt/configs/deepseek_ocr.py
   - `python/sglang/benchmark/utils.py` modified +8/-13
 - Code diff details:
   - `python/sglang/benchmark/utils.py` modified +8/-13
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/benchmark/utils.py
@@ -1213,6 +1213,6 @@ diff -- python/sglang/benchmark/utils.py
 -) -> AutoProcessor:
 +):
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/benchmark/utils.py` modified +8/-13
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.

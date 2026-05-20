@@ -31,26 +31,45 @@ def main():
     ap = argparse.ArgumentParser(description="Perfetto UI time mapper")
     ap.add_argument("--trace", required=True, help="Path to .trace.json(.gz)")
     ap.add_argument("--config", default=None, help="Path to model config.json")
-    ap.add_argument("--profile", default=None,
-                     help="Model profile name (dsv4_csa_hca, dsv3_mla, generic). "
-                          "Auto-inferred from config if not specified.")
-    ap.add_argument("--anchor-kernel", default=None,
-                     help="Override anchor kernel substring for layer boundary detection")
-    ap.add_argument("--fwd-pass", type=int, default=None,
-                     help="Forward pass index to show layer detail")
-    ap.add_argument("--layers", default=None,
-                     help="Comma-separated layer IDs to highlight (e.g. 2,3,38,42)")
-    ap.add_argument("--num-layers", type=int, default=None,
-                     help="Override number of layers")
+    ap.add_argument(
+        "--profile",
+        default=None,
+        help="Model profile name (dsv4_csa_hca, dsv3_mla, generic). "
+        "Auto-inferred from config if not specified.",
+    )
+    ap.add_argument(
+        "--anchor-kernel",
+        default=None,
+        help="Override anchor kernel substring for layer boundary detection",
+    )
+    ap.add_argument(
+        "--fwd-pass",
+        type=int,
+        default=None,
+        help="Forward pass index to show layer detail",
+    )
+    ap.add_argument(
+        "--layers",
+        default=None,
+        help="Comma-separated layer IDs to highlight (e.g. 2,3,38,42)",
+    )
+    ap.add_argument(
+        "--num-layers", type=int, default=None, help="Override number of layers"
+    )
     args = ap.parse_args()
 
     events = load_trace(args.trace)
-    gpu = sorted([e for e in events if e.get("cat") == "kernel"], key=lambda e: e.get("ts", 0))
+    gpu = sorted(
+        [e for e in events if e.get("cat") == "kernel"], key=lambda e: e.get("ts", 0)
+    )
 
     all_ts = [e.get("ts", float("inf")) for e in events if e.get("ts") is not None]
     trace_start = min(all_ts)
-    trace_end = max(e.get("ts", 0) + e.get("dur", 0)
-                     for e in events if e.get("ts") is not None and e.get("dur") is not None)
+    trace_end = max(
+        e.get("ts", 0) + e.get("dur", 0)
+        for e in events
+        if e.get("ts") is not None and e.get("dur") is not None
+    )
     trace_dur_s = (trace_end - trace_start) / 1e6
 
     # Resolve profile
@@ -70,19 +89,29 @@ def main():
         if profile.anchor_kernel:
             anchor_kernel = profile.anchor_kernel
         else:
-            for candidate in ["mhc_post_tilelang", "flash_fwd_mla_combine", "AllReduce"]:
+            for candidate in [
+                "mhc_post_tilelang",
+                "flash_fwd_mla_combine",
+                "AllReduce",
+            ]:
                 if sum(1 for e in gpu if candidate in e.get("name", "")) >= 4:
                     anchor_kernel = candidate
                     break
             if not anchor_kernel:
-                print("ERROR: cannot auto-detect anchor kernel. Use --profile or --anchor-kernel.",
-                      file=sys.stderr)
+                print(
+                    "ERROR: cannot auto-detect anchor kernel. Use --profile or --anchor-kernel.",
+                    file=sys.stderr,
+                )
                 sys.exit(1)
 
-    anchor_indices = [i for i, e in enumerate(gpu) if anchor_kernel in e.get("name", "")]
+    anchor_indices = [
+        i for i, e in enumerate(gpu) if anchor_kernel in e.get("name", "")
+    ]
     compress_ratios = normalize_compress_ratios(config, args.num_layers)
     num_hash_layers = config.get("num_hash_layers", 0)
-    num_layers = args.num_layers or config.get("num_hidden_layers", profile.default_num_layers)
+    num_layers = args.num_layers or config.get(
+        "num_hidden_layers", profile.default_num_layers
+    )
     bpl = profile.blocks_per_layer
     blocks_per_pass = num_layers * bpl
     n_passes = (len(anchor_indices) - 1) // blocks_per_pass
@@ -94,7 +123,9 @@ def main():
     print(f"Forward passes: {n_passes}")
 
     # All forward passes
-    print(f"\n{'Fwd#':>5s}  {'Perfetto Start':>15s}  {'Perfetto End':>13s}  {'Duration':>10s}")
+    print(
+        f"\n{'Fwd#':>5s}  {'Perfetto Start':>15s}  {'Perfetto End':>13s}  {'Duration':>10s}"
+    )
     print("-" * 50)
     for p in range(n_passes):
         base = p * blocks_per_pass
@@ -120,8 +151,10 @@ def main():
             highlight = {int(x) for x in args.layers.split(",")}
 
         print(f"\nForward Pass #{p} — Perfetto 相对时间:")
-        print(f"{'L':>3s} {'c_r':>4s} {'Perfetto Start':>15s} {'Perfetto End':>13s} "
-              f"{'Wall(ms)':>9s} {'SumDur(ms)':>10s} {'Note'}")
+        print(
+            f"{'L':>3s} {'c_r':>4s} {'Perfetto Start':>15s} {'Perfetto End':>13s} "
+            f"{'Wall(ms)':>9s} {'SumDur(ms)':>10s} {'Note'}"
+        )
         print("-" * 75)
 
         for layer_id in range(num_layers):
@@ -137,8 +170,10 @@ def main():
             end_s = (last_k.get("ts", 0) + last_k.get("dur", 0) - trace_start) / 1e6
             wall_ms = (end_s - start_s) * 1000
 
-            sum_dur = sum(gpu[j].get("dur", 0)
-                         for j in range(anchor_indices[b1], anchor_indices[b2_end]))
+            sum_dur = sum(
+                gpu[j].get("dur", 0)
+                for j in range(anchor_indices[b1], anchor_indices[b2_end])
+            )
             sum_ms = sum_dur / 1000
 
             cr = compress_ratios[layer_id] if layer_id < len(compress_ratios) else -1
@@ -154,8 +189,10 @@ def main():
             elif layer_id == num_layers - 1:
                 note += " FINAL"
 
-            print(f"  {layer_id:>2d}  {cr:>3d}  {start_s:>13.3f}s  {end_s:>11.3f}s  "
-                  f"{wall_ms:>8.2f}  {sum_ms:>9.2f}  {note}")
+            print(
+                f"  {layer_id:>2d}  {cr:>3d}  {start_s:>13.3f}s  {end_s:>11.3f}s  "
+                f"{wall_ms:>8.2f}  {sum_ms:>9.2f}  {note}"
+            )
 
     print(f"\n提示: 在 Perfetto UI 中拖到对应时间范围即可查看")
 
