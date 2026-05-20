@@ -7,13 +7,10 @@ description: "Build an operator-level compute template for an LLM and estimate F
 
 ## Overview
 
-Use this when the question is about compute, not just model structure. The
-simulator loads a model config, builds the representative operator sequence,
-prints tensor shapes and FLOPs, and can estimate MFU from measured latency.
-
-Use `model-architecture-diagram` first only when a visual architecture diagram
-would help. Switch here for operator order, tensor dimensions, FLOPs, MFU, and
-parallelism checks.
+Use this when the question is about operator order, tensor dimensions, FLOPs,
+MFU, or parallelism checks. The simulator loads a model config, builds the
+representative operator sequence, prints tensor shapes and FLOPs, and can
+estimate MFU from measured latency.
 
 ## Confirmation Required
 
@@ -34,8 +31,6 @@ If the model is not in `model-config-index.json`, ask the user for a
 
 ## Related Skills
 
-- `model-architecture-diagram`: useful when the user needs the model family
-  or a visual diagram before compute analysis.
 - `llm-pipeline-analysis`: provides **compute flow** (per-kernel sequence from
   trace) and measured latency for per-operator MFU. Use
   `layer_kernel_breakdown.py --format compute-flow` for a readable table and
@@ -43,17 +38,7 @@ If the model is not in `model-config-index.json`, ask the user for a
 
 ## Workflow
 
-### Step 1: Identify the model
-
-If the model name is ambiguous, resolve it before simulation:
-
-```bash
-python3 skills/model-architecture-diagram/scripts/model_architecture_diagram.py "<model name>"
-```
-
-Then continue with compute simulation using the same model name.
-
-### Step 2: Construct model architecture from config
+### Step 1: Load model config
 
 Resolve the model name and load its configuration parameters:
 
@@ -65,7 +50,7 @@ The script resolves the model name against `references/model-config-index.json`,
 
 If the model is not indexed, tell the user to provide a `config.json` path or request an index update.
 
-### Step 3: Generate execution flow and tensor dimensions
+### Step 2: Generate execution flow and tensor dimensions
 
 Run the simulator with batch size, sequence length, and parallelism configuration:
 
@@ -84,7 +69,7 @@ The simulator prints:
 For **decode**: use `--seq-len 1`.
 For **prefill**: use `--seq-len <prompt_length>`.
 
-### Step 4: Estimate MFU with measured latency
+### Step 3: Estimate MFU with measured latency
 
 Provide the measured forward-pass latency to compute MFU:
 
@@ -108,7 +93,7 @@ hardware table includes H20, H100 SXM 80GB, H200 SXM 141GB, and B200 SXM
 180GB. Use aliases such as `--gpu h100`, `--gpu h200`, or `--gpu b200` when
 running on those local boxes.
 
-### Step 5: Per-operator MFU with kernel-level latency (via llm-pipeline-analysis)
+### Step 4: Per-operator MFU with kernel-level latency (via llm-pipeline-analysis)
 
 When you have per-kernel measured latency from `llm-pipeline-analysis`,
 compute per-operator MFU by mapping kernel durations to the compute flow.
@@ -120,14 +105,14 @@ then feed it to the simulator for kernel-level MFU analysis.
 This preserves every kernel row from the compute flow and adds FLOPs/MFU columns.
 
 ```bash
-# Step 5a: Extract per-kernel detail from trace (via llm-pipeline-analysis)
+# Step 4a: Extract per-kernel detail from trace (via llm-pipeline-analysis)
 python3 skills/llm-pipeline-analysis/scripts/layer_kernel_breakdown.py \
   --trace /path/to/TP-0.trace.json.gz \
   --config /path/to/config.json \
   --fwd-pass 5 --layer 3 \
   --format json > /tmp/layer3_detail.json
 
-# Step 5b: Run simulator with kernel-flow
+# Step 4b: Run simulator with kernel-flow
 python3 skills/model-compute-simulation/scripts/model_compute_simulator.py "Qwen3-235B-A22B" \
   --batch-size 1 --seq-len 8192 \
   --tp 8 --dp 1 --ep 8 \
@@ -194,7 +179,7 @@ Output includes:
 
 ## When To Use It
 
-- after viewing a model architecture diagram, when you need compute-level detail
+- when you need compute-level detail for a known model or config
 - when the user asks about execution flow, tensor dimensions, or FLOPs for a specific serving shape
 - when the user asks about MFU and can provide measured forward-pass latency
 - when comparing compute profiles across different parallelism configurations
