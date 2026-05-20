@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 import importlib.util
+import io
+import json
 import sys
 import unittest
+from contextlib import redirect_stdout
 from pathlib import Path
-from types import SimpleNamespace
 
 
 SCRIPT_DIR = (
@@ -15,10 +17,23 @@ SCRIPT_DIR = (
     / "llm-pipeline-analysis"
     / "scripts"
 )
+SIM_SCRIPT_DIR = (
+    Path(__file__).resolve().parents[1]
+    / "skills"
+    / "model-compute-simulation"
+    / "scripts"
+)
+CONFIG_INDEX = (
+    Path(__file__).resolve().parents[1]
+    / "skills"
+    / "model-compute-simulation"
+    / "references"
+    / "model-config-index.json"
+)
 
 
 def _load_module(name, script_path):
-    sys.path.insert(0, str(SCRIPT_DIR))
+    sys.path.insert(0, str(script_path.parent))
     try:
         spec = importlib.util.spec_from_file_location(name, script_path)
         assert spec and spec.loader
@@ -27,7 +42,7 @@ def _load_module(name, script_path):
         spec.loader.exec_module(module)
         return module
     finally:
-        sys.path.remove(str(SCRIPT_DIR))
+        sys.path.remove(str(script_path.parent))
 
 
 def load_profiles():
@@ -40,6 +55,10 @@ def load_timeline():
 
 def load_breakdown():
     return _load_module("layer_kernel_breakdown", SCRIPT_DIR / "layer_kernel_breakdown.py")
+
+
+def load_simulator():
+    return _load_module("model_compute_simulator", SIM_SCRIPT_DIR / "model_compute_simulator.py")
 
 
 # ---------------------------------------------------------------------------
@@ -112,6 +131,23 @@ class TestInferProfile(unittest.TestCase):
         config = {}
         p = self.mod.infer_profile(config)
         self.assertEqual(p.name, "generic")
+
+    def test_normalize_compress_ratios_matches_hidden_layers(self):
+        config = {"num_hidden_layers": 4, "compress_ratios": [0, 0, 4, 128]}
+        self.assertEqual(self.mod.normalize_compress_ratios(config), [0, 0, 4, 128])
+
+    def test_normalize_compress_ratios_allows_nextn_trailing_ratio(self):
+        config = {
+            "num_hidden_layers": 4,
+            "num_nextn_predict_layers": 1,
+            "compress_ratios": [0, 0, 4, 128, 0],
+        }
+        self.assertEqual(self.mod.normalize_compress_ratios(config), [0, 0, 4, 128])
+
+    def test_normalize_compress_ratios_rejects_unexplained_mismatch(self):
+        config = {"num_hidden_layers": 4, "compress_ratios": [0, 0, 4]}
+        with self.assertRaises(ValueError):
+            self.mod.normalize_compress_ratios(config)
 
     def test_compress_ratios_takes_priority_over_kv_lora_rank(self):
         config = {"compress_ratios": [0, 4], "kv_lora_rank": 512}
@@ -233,6 +269,7 @@ class TestGetLayerKernels(unittest.TestCase):
         # This should not crash
         kernels = self.mod.get_layer_kernels(gpu, anchor_indices, 0, 0, 2, profile)
         self.assertTrue(len(kernels) > 0)
+        self.assertEqual([k["idx"] for k in kernels], list(range(10)))
         # Should have both "attn" and "ffn" halves
         halves = set(k["half"] for k in kernels)
         self.assertIn("attn", halves)
@@ -244,9 +281,88 @@ class TestGetLayerKernels(unittest.TestCase):
                for i in range(20)]
         anchor_indices = [0, 10, 20]
         kernels = self.mod.get_layer_kernels(gpu, anchor_indices, 0, 0, 2, profile)
+        self.assertEqual([k["idx"] for k in kernels], list(range(10)))
         # Should have only "full" halves
         halves = set(k["half"] for k in kernels)
         self.assertEqual(halves, {"full"})
+
+
+# ---------------------------------------------------------------------------
+# Test: layer timeline classification and half-open boundaries
+# ---------------------------------------------------------------------------
+
+class TestLayerTimelineInfo(unittest.TestCase):
+    def setUp(self):
+        self.mod = load_timeline()
+        self.profiles = load_profiles()
+        self.profile = self.profiles.get_profile("dsv4_csa_hca")
+
+    def test_get_layer_info_uses_machine_keys_and_half_open_blocks(self):
+        gpu = [{"name": f"k{i}", "dur": 10, "ts": i * 10, "args": {}}
+               for i in range(20)]
+        gpu[1]["name"] = "flash_fwd_splitkv_mla_kernel"
+        gpu[2]["name"] = "mhc_post_tilelang_kernel"
+        gpu[9]["name"] = "ncclAllReduce_bf16_RING_LL"
+        gpu[10]["name"] = "ncclAllReduce_bf16_RING_LL"
+        anchor_indices = [0, 5, 10, 15, 20]
+
+        info = self.mod.get_layer_info(gpu, anchor_indices, 0, 0, 2, self.profile)
+
+        self.assertEqual(info["kernels"], 10)
+        self.assertEqual(info["total"], 100)
+        self.assertEqual(info["mla"], 10)
+        self.assertEqual(info["mhc_post"], 10)
+        self.assertEqual(self.mod.prefix_total(info, "mhc"), 10)
+        self.assertEqual(info["ar_count"], 1)
+        self.assertEqual(info["allreduce"], 10)
+
+    def test_print_layer_detail_smoke(self):
+        gpu = [{"name": f"k{i}", "dur": 10, "ts": i * 10, "args": {}}
+               for i in range(20)]
+        gpu[1]["name"] = "flash_fwd_splitkv_mla_kernel"
+        anchor_indices = [0, 5, 10, 15, 20]
+
+        out = io.StringIO()
+        with redirect_stdout(out):
+            self.mod.print_layer_detail(
+                gpu, anchor_indices, 0, 2, [0, 4], 0, 0, self.profile,
+            )
+
+        output = out.getvalue()
+        self.assertIn("Forward Pass #0", output)
+        self.assertIn("FIRST", output)
+
+
+# ---------------------------------------------------------------------------
+# Test: model config consistency for compress_ratios
+# ---------------------------------------------------------------------------
+
+class TestModelConfigIndex(unittest.TestCase):
+    def test_compress_ratios_lengths_are_explained(self):
+        configs = json.loads(CONFIG_INDEX.read_text())
+        for key, cfg in configs.items():
+            ratios = cfg.get("compress_ratios")
+            if not ratios:
+                continue
+            n_layers = cfg["num_hidden_layers"]
+            nextn_layers = cfg.get("num_nextn_predict_layers", 0)
+            allowed_lengths = {n_layers}
+            if nextn_layers:
+                allowed_lengths.add(n_layers + nextn_layers)
+            self.assertIn(
+                len(ratios),
+                allowed_lengths,
+                f"{key}: compress_ratios length is not explained by hidden/nextn layers",
+            )
+
+    def test_simulator_normalizes_nextn_trailing_ratio(self):
+        sim = load_simulator()
+        cfg = {
+            "num_hidden_layers": 4,
+            "num_nextn_predict_layers": 1,
+            "compress_ratios": [0, 0, 4, 128, 0],
+        }
+        self.assertEqual(sim.normalize_compress_ratios(cfg), [0, 0, 4, 128])
 
 
 # ---------------------------------------------------------------------------

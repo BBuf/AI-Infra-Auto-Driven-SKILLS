@@ -17,7 +17,7 @@ import gzip
 import json
 import sys
 
-from model_profiles import get_profile, infer_profile
+from model_profiles import get_profile, infer_profile, normalize_compress_ratios
 
 
 def load_trace(path):
@@ -80,7 +80,7 @@ def main():
                 sys.exit(1)
 
     anchor_indices = [i for i, e in enumerate(gpu) if anchor_kernel in e.get("name", "")]
-    compress_ratios = config.get("compress_ratios", [])[:config.get("num_hidden_layers", profile.default_num_layers)]
+    compress_ratios = normalize_compress_ratios(config, args.num_layers)
     num_hash_layers = config.get("num_hash_layers", 0)
     num_layers = args.num_layers or config.get("num_hidden_layers", profile.default_num_layers)
     bpl = profile.blocks_per_layer

@@ -24,7 +24,7 @@ import json
 import sys
 from collections import defaultdict
 
-from model_profiles import ModelProfile, get_profile, infer_profile
+from model_profiles import ModelProfile, get_profile, infer_profile, normalize_compress_ratios
 
 
 # ── trace loading ──────────────────────────────────────────────────────────
@@ -86,7 +86,7 @@ def detect_num_layers(anchor_indices, gpu_kernels, blocks_per_layer: int,
     durs = []
     for i in range(n):
         d = sum(gpu_kernels[j].get("dur", 0)
-                for j in range(anchor_indices[i], anchor_indices[i + 1] + 1))
+                for j in range(anchor_indices[i], anchor_indices[i + 1]))
         durs.append(d)
 
     # Find the first strong pattern repeat (correlation with offset)
@@ -113,9 +113,9 @@ def detect_num_layers(anchor_indices, gpu_kernels, blocks_per_layer: int,
 
 def classify_kernel(name, profile: ModelProfile):
     """Classify a kernel name using the profile's category rules."""
-    for cat, rule in profile.category_rules:
+    for _label, key, rule in profile.category_rules:
         if rule(name):
-            return cat
+            return key
     return "other"
 
 
@@ -144,7 +144,7 @@ def get_layer_info(gpu_kernels, anchor_indices, fwd_pass, layer_id, num_layers,
     for bi in layer_blocks:
         s = anchor_indices[bi]
         e = anchor_indices[bi + 1]
-        for j in range(s, e + 1):
+        for j in range(s, e):
             name = gpu_kernels[j].get("name", "")
             dur = gpu_kernels[j].get("dur", 0)
             cat = classify_kernel(name, profile)
@@ -162,7 +162,7 @@ def get_layer_info(gpu_kernels, anchor_indices, fwd_pass, layer_id, num_layers,
     # Count AllReduce kernels
     info["ar_count"] = sum(
         1 for bi in layer_blocks
-        for j in range(anchor_indices[bi], anchor_indices[bi + 1] + 1)
+        for j in range(anchor_indices[bi], anchor_indices[bi + 1])
         if "AllReduce" in gpu_kernels[j].get("name", "")
     )
 
@@ -179,8 +179,7 @@ def load_config(path):
 
 
 def get_compress_ratios(config):
-    cr = config.get("compress_ratios", [])
-    return cr[:config.get("num_hidden_layers", 43)] if cr else []
+    return normalize_compress_ratios(config)
 
 
 def layer_type_label(layer_id, compress_ratios, num_layers, num_hash_layers):
@@ -204,6 +203,10 @@ def layer_type_label(layer_id, compress_ratios, num_layers, num_hash_layers):
         return "C128_HEAVY", cr
     else:
         return f"CR{cr}", cr
+
+
+def prefix_total(info, prefix):
+    return sum(v for k, v in info.items() if k == prefix or k.startswith(prefix + "_"))
 
 
 # ── main output routines ──────────────────────────────────────────────────
@@ -269,11 +272,12 @@ def print_layer_detail(gpu_kernels, anchor_indices, fwd_pass, num_layers,
 
         ltype, cr = layer_type_label(layer_id, compress_ratios, num_layers, num_hash_layers)
         gemm = info.get("gemm_fp8", 0) + info.get("gemm_bf16", 0) + info.get("gemm_f32", 0)
+        mhc = prefix_total(info, "mhc")
 
         print(f"  {layer_id:>2d}  {cr:>3d} {ltype:<12s} {info['wall_us']/1000:>8.2f} "
               f"{info['total']/1000:>9.2f} {info.get('mla',0)/1000:>6.1f} "
               f"{info.get('moe',0)/1000:>6.1f} {gemm/1000:>6.1f} "
-              f"{info.get('allreduce',0)/1000:>5.1f} {info.get('mhc',0)/1000:>5.1f} "
+              f"{info.get('allreduce',0)/1000:>5.1f} {mhc/1000:>5.1f} "
               f"{info.get('hadamard',0)/1000:>5.1f} {info.get('ar_count',0):>3d} "
               f"{info.get('kernels',0):>3d}")
 
@@ -306,12 +310,15 @@ def print_cluster_stats(gpu_kernels, anchor_indices, fwd_pass, num_layers,
         def pct(key):
             return sum(i.get(key, 0) for i in infos) / total_sum * 100 if total_sum else 0
 
+        def pct_prefix(prefix):
+            return sum(prefix_total(i, prefix) for i in infos) / total_sum * 100 if total_sum else 0
+
         gemm_sum = sum(i.get("gemm_fp8", 0) + i.get("gemm_bf16", 0) + i.get("gemm_f32", 0) for i in infos)
         gemm_pct = gemm_sum / total_sum * 100 if total_sum else 0
 
         print(f"  {name:<14s} {n:>3d} {avg_wall:>11.2f} {avg_sum:>10.2f} "
               f"{pct('mla'):>5.1f}% {pct('moe'):>5.1f}% {gemm_pct:>5.1f}% "
-              f"{pct('allreduce'):>5.1f}% {pct('mhc'):>5.1f}% {pct('hadamard'):>6.1f}%")
+              f"{pct('allreduce'):>5.1f}% {pct_prefix('mhc'):>5.1f}% {pct('hadamard'):>6.1f}%")
 
 
 # ── entry point ───────────────────────────────────────────────────────────

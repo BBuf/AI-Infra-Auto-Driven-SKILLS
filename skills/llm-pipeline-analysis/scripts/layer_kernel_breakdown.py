@@ -35,7 +35,7 @@ import json
 import sys
 from collections import defaultdict
 
-from model_profiles import ModelProfile, get_profile, infer_profile
+from model_profiles import ModelProfile, get_profile, infer_profile, normalize_compress_ratios
 
 
 # ── trace loading ──────────────────────────────────────────────────────────
@@ -99,7 +99,7 @@ def get_layer_kernels(gpu_kernels, anchor_indices, fwd_pass, layer_id, num_layer
     for bi, half_label in zip(layer_blocks, profile.half_labels):
         s = anchor_indices[bi]
         e = anchor_indices[bi + 1]
-        for j in range(s, e + 1):
+        for j in range(s, e):
             k = gpu_kernels[j]
             args = k.get("args", {})
             result.append({
@@ -124,8 +124,7 @@ def load_config(path):
 
 
 def get_compress_ratios(config):
-    cr = config.get("compress_ratios", [])
-    return cr[:config.get("num_hidden_layers", 43)] if cr else []
+    return normalize_compress_ratios(config)
 
 
 # ── output ─────────────────────────────────────────────────────────────────

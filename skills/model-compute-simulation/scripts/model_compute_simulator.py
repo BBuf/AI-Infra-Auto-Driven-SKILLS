@@ -118,6 +118,30 @@ def resolve_gpu(name: str, gpu_specs: dict) -> Optional[dict]:
     return gpu_specs.get(key)
 
 
+def normalize_compress_ratios(cfg: dict, n_layers: Optional[int] = None) -> List[int]:
+    """Return per-hidden-layer compress ratios with explicit shape checks."""
+    ratios = list(cfg.get("compress_ratios") or [])
+    if not ratios:
+        return []
+
+    n_layers = n_layers or cfg.get("num_hidden_layers")
+    if not n_layers:
+        return ratios
+
+    if len(ratios) == n_layers:
+        return ratios
+
+    nextn_layers = cfg.get("num_nextn_predict_layers", 0) or 0
+    if nextn_layers and len(ratios) == n_layers + nextn_layers:
+        return ratios[:n_layers]
+
+    raise ValueError(
+        "compress_ratios length mismatch: "
+        f"got {len(ratios)}, expected num_hidden_layers={n_layers}"
+        + (f" or + num_nextn_predict_layers={nextn_layers}" if nextn_layers else "")
+    )
+
+
 def matmul_flops(m, n, k):
     """FLOPs for C = A @ B where A:[m,k], B:[k,n] => 2*m*n*k."""
     return 2 * m * n * k
@@ -440,7 +464,7 @@ def simulate(cfg: dict, model_name: str, B: int, S: int, tp: int, dp: int, ep: i
     embed_flops = matmul_flops(B * S, H, V) if V > 0 else 0
 
     # Per-layer (with per-layer compress_ratio)
-    compress_ratios = cfg.get("compress_ratios", None)
+    compress_ratios = normalize_compress_ratios(cfg, n_layers)
     layer_ops_cache = {}  # compress_ratio → ops list (cache identical layers)
 
     total_layer_flops = 0

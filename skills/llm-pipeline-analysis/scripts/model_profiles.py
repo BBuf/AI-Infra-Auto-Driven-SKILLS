@@ -215,6 +215,36 @@ def get_profile(name: str) -> ModelProfile:
     return BUILTIN_PROFILES[name]
 
 
+def normalize_compress_ratios(config: dict, num_layers: Optional[int] = None) -> List[int]:
+    """Return per-hidden-layer compress ratios, validating known config shapes.
+
+    Some DeepSeek-V4 configs publish one extra ratio for next-token-prediction
+    layers. The pipeline analyzers operate on transformer hidden layers only,
+    so that trailing nextn ratio is intentionally excluded instead of being
+    silently sliced by callers.
+    """
+    ratios = list(config.get("compress_ratios") or [])
+    if not ratios:
+        return []
+
+    n_layers = num_layers or config.get("num_hidden_layers")
+    if not n_layers:
+        return ratios
+
+    if len(ratios) == n_layers:
+        return ratios
+
+    nextn_layers = config.get("num_nextn_predict_layers", 0) or 0
+    if nextn_layers and len(ratios) == n_layers + nextn_layers:
+        return ratios[:n_layers]
+
+    raise ValueError(
+        "compress_ratios length mismatch: "
+        f"got {len(ratios)}, expected num_hidden_layers={n_layers}"
+        + (f" or + num_nextn_predict_layers={nextn_layers}" if nextn_layers else "")
+    )
+
+
 def infer_profile(config: dict) -> ModelProfile:
     """Auto-detect the model profile from a config.json dict.
 

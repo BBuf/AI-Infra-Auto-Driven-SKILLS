@@ -149,6 +149,7 @@
     "mhc": true,
     "mhc_bottleneck_dim": 512,
     "num_hash_layers": 3,
+    "num_nextn_predict_layers": 1,
     "compress_ratios": [0, 0, 4, 128, 4, 128, 4, 128, 4, 128, 4, 128, 4, 128, 4, 128, 4, 128, 4, 128, 4, 128, 4, 128, 4, 128, 4, 128, 4, 128, 4, 128, 4, 128, 4, 128, 4, 128, 4, 128, 4, 128, 4, 0],
     "index_n_heads": 64,
     "index_head_dim": 128,
