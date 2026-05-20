@@ -25,7 +25,7 @@ Before running any analysis, **ask the user to confirm** the following informati
 
 ## Dependency
 
-- `model-compute-simulation/references/gpu-specs.json`: GPU HBM specifications (read-only, shared reference).
+- `model-compute-simulation/references/gpu-specs.json`: GPU HBM specifications (read-only, shared reference). Known aliases include `h20`, `h100`, `h200`, and `b200`.
 - `llm-serving-auto-benchmark`: can capture startup logs and nvidia-smi data as part of benchmark setup.
 
 ## Workflow
@@ -58,7 +58,7 @@ docker exec <container> nvidia-smi --query-gpu=index,memory.used,memory.free --f
 python3 skills/llm-serving-capacity-planner/scripts/capacity_analyzer.py \
   --log-file /path/to/sglang.log \
   --nvidia-smi-file /path/to/smi.txt \
-  --gpu h20 \
+  --gpu h200 \
   --config-json /path/to/config.json
 ```
 

@@ -94,7 +94,10 @@ Output includes:
 - Per-layer MFU (uniform layer-time assumption)
 - Per-operator FLOPs proportion (for identifying which ops dominate)
 
-GPU peak FLOPS are loaded from `references/gpu-specs.json`.
+GPU peak FLOPS are loaded from `references/gpu-specs.json`. The bundled
+hardware table includes H20, H100 SXM 80GB, H200 SXM 141GB, and B200 SXM
+180GB. Use aliases such as `--gpu h100`, `--gpu h200`, or `--gpu b200` when
+running on those local boxes.
 
 ### Step 5: Per-operator MFU with kernel-level latency (via llm-pipeline-analysis)
 

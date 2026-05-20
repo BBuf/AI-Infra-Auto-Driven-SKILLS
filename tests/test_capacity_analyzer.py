@@ -14,6 +14,7 @@ sys.path.insert(0, str(SCRIPT_DIR))
 
 from capacity_analyzer import (
     CudaGraphInfo,
+    GPU_ALIAS,
     SwKvMemoryCalc,
     FinalInfo,
     MemoryBreakdown,
@@ -26,6 +27,7 @@ from capacity_analyzer import (
     decompose_memory,
     estimate_concurrency,
     kv_dtype_bytes,
+    load_gpu_specs,
     parse_sw_kv_memory_calc,
     parse_cuda_graph_end,
     parse_load_weight_begin,
@@ -357,6 +359,23 @@ class TestKVBytesCalculation:
         )
         per_token = calc_kv_bytes_per_token(mc, tp_size=8, kv_dtype_bytes=2)
         assert per_token == 0.0  # Should return 0, indicating log data should be used
+
+
+# ---------------------------------------------------------------------------
+# Test: GPU spec aliases
+# ---------------------------------------------------------------------------
+
+class TestGpuSpecs:
+    def test_local_gpu_aliases_resolve_to_specs(self):
+        specs = load_gpu_specs()
+        for alias, canonical in {
+            "h100": "h100-sxm-80gb",
+            "h200": "h200-sxm-141gb",
+            "b200": "b200-sxm-180gb",
+        }.items():
+            assert GPU_ALIAS[alias] == canonical
+            assert canonical in specs
+            assert specs[canonical]["hbm_gb"] > 0
 
 
 # ---------------------------------------------------------------------------

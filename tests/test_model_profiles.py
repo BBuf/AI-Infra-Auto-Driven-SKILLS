@@ -30,6 +30,13 @@ CONFIG_INDEX = (
     / "references"
     / "model-config-index.json"
 )
+GPU_SPECS = (
+    Path(__file__).resolve().parents[1]
+    / "skills"
+    / "model-compute-simulation"
+    / "references"
+    / "gpu-specs.json"
+)
 
 
 def _load_module(name, script_path):
@@ -363,6 +370,22 @@ class TestModelConfigIndex(unittest.TestCase):
             "compress_ratios": [0, 0, 4, 128, 0],
         }
         self.assertEqual(sim.normalize_compress_ratios(cfg), [0, 0, 4, 128])
+
+    def test_gpu_specs_include_local_accelerators(self):
+        specs = json.loads(GPU_SPECS.read_text())
+        for key in ["h20", "h100-sxm-80gb", "h200-sxm-141gb", "b200-sxm-180gb"]:
+            self.assertIn(key, specs)
+            self.assertGreater(specs[key]["bf16_tflops"], 0)
+            self.assertGreater(specs[key]["fp8_tflops"], 0)
+            self.assertGreater(specs[key]["memory_bw_tb_s"], 0)
+            self.assertGreater(specs[key]["hbm_gb"], 0)
+
+    def test_gpu_aliases_resolve_local_short_names(self):
+        sim = load_simulator()
+        specs = json.loads(GPU_SPECS.read_text())
+        self.assertEqual(sim.resolve_gpu("h100", specs)["display_name"], "NVIDIA H100 SXM 80GB")
+        self.assertEqual(sim.resolve_gpu("h200", specs)["display_name"], "NVIDIA H200 SXM 141GB")
+        self.assertEqual(sim.resolve_gpu("b200", specs)["display_name"], "NVIDIA B200 SXM 180GB")
 
 
 # ---------------------------------------------------------------------------

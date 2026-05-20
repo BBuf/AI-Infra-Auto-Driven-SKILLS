@@ -54,6 +54,22 @@ GPU_ALIAS = {
     "h20-sxm": "h20",
     "l20n": "l20n",
     "l20": "l20n",
+    "h100": "h100-sxm-80gb",
+    "h100-sxm": "h100-sxm-80gb",
+    "h100-sxm5": "h100-sxm-80gb",
+    "h100-80gb": "h100-sxm-80gb",
+    "h100-sxm-80gb": "h100-sxm-80gb",
+    "nvidia-h100": "h100-sxm-80gb",
+    "h200": "h200-sxm-141gb",
+    "h200-sxm": "h200-sxm-141gb",
+    "h200-141gb": "h200-sxm-141gb",
+    "h200-sxm-141gb": "h200-sxm-141gb",
+    "nvidia-h200": "h200-sxm-141gb",
+    "b200": "b200-sxm-180gb",
+    "b200-sxm": "b200-sxm-180gb",
+    "b200-180gb": "b200-sxm-180gb",
+    "b200-sxm-180gb": "b200-sxm-180gb",
+    "nvidia-b200": "b200-sxm-180gb",
 }
 
 # ---------------------------------------------------------------------------
@@ -1078,7 +1094,7 @@ def main():
     )
     parser.add_argument("--log-file", required=True, help="Path to SGLang/vLLM startup log file")
     parser.add_argument("--nvidia-smi-file", default=None, help="Path to nvidia-smi CSV output file (optional)")
-    parser.add_argument("--gpu", default=None, help="GPU type (e.g. h20, l20n). Auto-detected if omitted.")
+    parser.add_argument("--gpu", default=None, help="GPU type (e.g. h20, h100, h200, b200). Auto-detected if omitted.")
     parser.add_argument("--config-json", default=None, help="Path to model config.json for KV cache byte estimation")
     parser.add_argument("--request-tokens", default=None, help="Comma-separated request token lengths for concurrency estimate (default: 4096,6144,8192)")
     parser.add_argument("--format", choices=["text", "json"], default="text", help="Output format (default: text)")
