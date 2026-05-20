@@ -8,7 +8,7 @@
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
-| `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/llama-3.1-70b-instruct.yaml` | [#24250](https://github.com/sgl-project/sglang/pull/24250) |
+| `skills/llm-serving-auto-benchmark/configs/cookbook-llm/llama-3.1-70b-instruct.yaml` | [#24250](https://github.com/sgl-project/sglang/pull/24250) |
 | `docs_new/cookbook/autoregressive/Llama/Llama3.1.mdx` | [#23337](https://github.com/sgl-project/sglang/pull/23337), [#23001](https://github.com/sgl-project/sglang/pull/23001) |
 | `docs_new/src/snippets/autoregressive/llama31-deployment.jsx` | [#23001](https://github.com/sgl-project/sglang/pull/23001) |
 | `examples/chat_template/tool_chat_template_llama3.1_json.jinja` | [#13938](https://github.com/sgl-project/sglang/pull/13938), [#13935](https://github.com/sgl-project/sglang/pull/13935) |
@@ -42,7 +42,7 @@
 | 2026-04-07 | [#21931](https://github.com/sgl-project/sglang/pull/21931) | merged | [CI] Migrate mgsm_en eval to gsm8k to remove openaipublic dependency | `test/registered/amd/accuracy/mi30x/test_gsm8k_eval_amd.py`, `test/registered/distributed/test_dp_attention_large.py`, `test/registered/distributed/test_pp_single_node.py` |
 | 2026-04-20 | [#23001](https://github.com/sgl-project/sglang/pull/23001) | merged | Add new Mintlify documentation site (docs_new/) | `.gitignore`, `docs_new/.github/workflows/sync-lmsys-sglang-blogs.yml`, `docs_new/.gitignore` |
 | 2026-04-21 | [#23337](https://github.com/sgl-project/sglang/pull/23337) | merged | [Docs] Sync docs_new with legacy docs and update migration redirects | `.pre-commit-config.yaml`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-Math-V2.mdx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR-2.mdx` |
-| 2026-05-02 | [#24250](https://github.com/sgl-project/sglang/pull/24250) | merged | [SKILL] Upgrade sglang profile and auto_benchmark skills | `.claude/skills/llm-serving-auto-benchmark/SKILL.md`, `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md`, `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` |
+| 2026-05-02 | [#24250](https://github.com/sgl-project/sglang/pull/24250) | merged | [SKILL] Upgrade sglang profile and auto_benchmark skills | `agent-skills/llm-serving-auto-benchmark/SKILL.md`, `skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md`, `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` |
 
 ## 逐 PR diff 审计卡
 
@@ -634,21 +634,21 @@ diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-Math-V2.mdx
 - 状态/时间: merged / 2026-05-02
 - 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 100 个文件，+9334/-3813，可读 patch 13573 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[SKILL] Upgrade sglang profile and auto_benchmark skills」；模型线: Llama 3.1；类别: 文档/测试/CI；主要 diff: `.claude/skills/llm-serving-auto-benchmark/SKILL.md`, `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md`, `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml`。
+- 动机: 标题「[SKILL] Upgrade sglang profile and auto_benchmark skills」；模型线: Llama 3.1；类别: 文档/测试/CI；主要 diff: `agent-skills/llm-serving-auto-benchmark/SKILL.md`, `skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md`, `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml`。
 - 实现要点:
-  - `.claude/skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
-  - `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0
-  - `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0
-  - `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0
+  - `agent-skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
+  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0
+  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0
+  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0
 - 代码 diff 细节:
-  - `.claude/skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
-  - `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0
-  - `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0
-  - `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0
+  - `agent-skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
+  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0
+  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0
+  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0
 - 关键代码摘录:
 
 ```diff
-diff -- .claude/skills/llm-serving-auto-benchmark/SKILL.md
+diff -- agent-skills/llm-serving-auto-benchmark/SKILL.md
 @@ -0,0 +1,527 @@
 +---
 +name: llm-serving-auto-benchmark
@@ -663,7 +663,7 @@ diff -- .claude/skills/llm-serving-auto-benchmark/SKILL.md
 +TensorRT-LLM for the same model and workload.
 +
 +Use a config-driven workflow:
-diff -- .claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md
+diff -- skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md
 @@ -0,0 +1,17 @@
 +# Cookbook LLM Configs
 +
@@ -680,6 +680,6 @@ diff -- .claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md
 +```bash
 ```
 - 已读文件:
-  - docs/bench: `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.1.yaml` added +132/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.2.yaml` added +132/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.yaml` added +133/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/devstral-small-2-24b-instruct-2512.yaml` added +123/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/ernie-4.5-21b-a3b-pt.yaml` added +117/-0
-  - other: `.claude/skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
+  - docs/bench: `skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.1.yaml` added +132/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.2.yaml` added +132/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.yaml` added +133/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/devstral-small-2-24b-instruct-2512.yaml` added +123/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/ernie-4.5-21b-a3b-pt.yaml` added +117/-0
+  - other: `agent-skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
 - 验证与风险: diff 未直接暴露测试文件，后续改同一模型时应补最小 launch、tokenizer/MM processor 或 accuracy smoke。

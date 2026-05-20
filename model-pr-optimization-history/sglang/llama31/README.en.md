@@ -4,11 +4,11 @@
 
 Generated from sglang upstream `origin/main@5073c82a37`, `git log --name-only -- <model-files>` over model-related paths, and the GitHub Pull Request files API. This page fills the missing `Llama 3.1` history entry found from sgl-cookbook coverage.
 
-## Model Implementation File Coverage
+## Implementation File Coverage
 
 | File | PRs traced by git |
 | --- | --- |
-| `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/llama-3.1-70b-instruct.yaml` | [#24250](https://github.com/sgl-project/sglang/pull/24250) |
+| `skills/llm-serving-auto-benchmark/configs/cookbook-llm/llama-3.1-70b-instruct.yaml` | [#24250](https://github.com/sgl-project/sglang/pull/24250) |
 | `docs_new/cookbook/autoregressive/Llama/Llama3.1.mdx` | [#23337](https://github.com/sgl-project/sglang/pull/23337), [#23001](https://github.com/sgl-project/sglang/pull/23001) |
 | `docs_new/src/snippets/autoregressive/llama31-deployment.jsx` | [#23001](https://github.com/sgl-project/sglang/pull/23001) |
 | `examples/chat_template/tool_chat_template_llama3.1_json.jinja` | [#13938](https://github.com/sgl-project/sglang/pull/13938), [#13935](https://github.com/sgl-project/sglang/pull/13935) |
@@ -18,7 +18,7 @@ Generated from sglang upstream `origin/main@5073c82a37`, `git log --name-only --
 | `test/manual/nightly/test_text_models_gsm8k_eval.py` | [#13610](https://github.com/sgl-project/sglang/pull/13610) |
 | `test/manual/nightly/test_text_models_perf.py` | [#19778](https://github.com/sgl-project/sglang/pull/19778), [#13610](https://github.com/sgl-project/sglang/pull/13610) |
 
-## PR Coverage Overview
+## PR Coverage Summary
 
 - git-traced PR count: 13
 - keyword/supplemental PR count: 0
@@ -42,7 +42,7 @@ Generated from sglang upstream `origin/main@5073c82a37`, `git log --name-only --
 | 2026-04-07 | [#21931](https://github.com/sgl-project/sglang/pull/21931) | merged | [CI] Migrate mgsm_en eval to gsm8k to remove openaipublic dependency | `test/registered/amd/accuracy/mi30x/test_gsm8k_eval_amd.py`, `test/registered/distributed/test_dp_attention_large.py`, `test/registered/distributed/test_pp_single_node.py` |
 | 2026-04-20 | [#23001](https://github.com/sgl-project/sglang/pull/23001) | merged | Add new Mintlify documentation site (docs_new/) | `.gitignore`, `docs_new/.github/workflows/sync-lmsys-sglang-blogs.yml`, `docs_new/.gitignore` |
 | 2026-04-21 | [#23337](https://github.com/sgl-project/sglang/pull/23337) | merged | [Docs] Sync docs_new with legacy docs and update migration redirects | `.pre-commit-config.yaml`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-Math-V2.mdx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR-2.mdx` |
-| 2026-05-02 | [#24250](https://github.com/sgl-project/sglang/pull/24250) | merged | [SKILL] Upgrade sglang profile and auto_benchmark skills | `.claude/skills/llm-serving-auto-benchmark/SKILL.md`, `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md`, `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` |
+| 2026-05-02 | [#24250](https://github.com/sgl-project/sglang/pull/24250) | merged | [SKILL] Upgrade sglang profile and auto_benchmark skills | `agent-skills/llm-serving-auto-benchmark/SKILL.md`, `skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md`, `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` |
 
 ## Per-PR Diff Audit Cards
 
@@ -63,7 +63,7 @@ Generated from sglang upstream `origin/main@5073c82a37`, `git log --name-only --
   - `test/manual/ascend/test_mindspore_models.py` renamed +0/-0
   - `test/manual/cpu/test_comm.py` renamed +0/-0
   - `test/manual/debug_utils/test_log_parser.py` renamed +0/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- test/srt/run_suite.py
@@ -82,9 +82,9 @@ diff -- test/srt/run_suite.py
 -        TestFile("layers/moe/test_moe_runners.py"),
 -        TestFile("lora/test_chunked_sgmv_backend.py"),
 ```
-- Files read:
+- Reviewed files:
   - tests: `test/manual/ascend/test_ascend_w8a8_quantization.py` renamed +0/-0; `test/manual/ascend/test_mindspore_models.py` renamed +0/-0; `test/manual/cpu/test_comm.py` renamed +0/-0; `test/manual/debug_utils/test_log_parser.py` renamed +0/-0; `test/manual/entrypoints/http_server/test_abort_request.py` renamed +0/-0; `test/manual/hicache/test_disaggregation_hicache.py` renamed +0/-0; `test/manual/layers/attention/nsa/test_act_quant_triton.py` renamed +0/-0; `test/manual/layers/moe/test_moe_runners.py` renamed +0/-0
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #13935 - [misc] add llama3.1 chat template
 
@@ -97,7 +97,7 @@ diff -- test/srt/run_suite.py
   - `examples/chat_template/tool_chat_template_llama3.1_json.jinja` added +121/-0
 - Code diff details:
   - `examples/chat_template/tool_chat_template_llama3.1_json.jinja` added +121/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- examples/chat_template/tool_chat_template_llama3.1_json.jinja
@@ -116,9 +116,9 @@ diff -- examples/chat_template/tool_chat_template_llama3.1_json.jinja
 +        {%- set date_string = strftime_now("%d %b %Y") %}
 +    {%- else %}
 ```
-- Files read:
+- Reviewed files:
   - docs/bench: `examples/chat_template/tool_chat_template_llama3.1_json.jinja` added +121/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #13938 - [Minor] Fix lint
 
@@ -131,7 +131,7 @@ diff -- examples/chat_template/tool_chat_template_llama3.1_json.jinja
   - `examples/chat_template/tool_chat_template_llama3.1_json.jinja` modified +1/-1
 - Code diff details:
   - `examples/chat_template/tool_chat_template_llama3.1_json.jinja` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- examples/chat_template/tool_chat_template_llama3.1_json.jinja
@@ -143,9 +143,9 @@ diff -- examples/chat_template/tool_chat_template_llama3.1_json.jinja
 \ No newline at end of file
 +{%- endif %}
 ```
-- Files read:
+- Reviewed files:
   - docs/bench: `examples/chat_template/tool_chat_template_llama3.1_json.jinja` modified +1/-1
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #15582 - [CI] Migrate nightly tests to test/registered/
 
@@ -164,7 +164,7 @@ diff -- examples/chat_template/tool_chat_template_llama3.1_json.jinja
   - `python/sglang/test/accuracy_test_runner.py` renamed +0/-0
   - `python/sglang/test/ascend/__init__.py` added +0/-0
   - `python/sglang/test/ascend/gsm8k_ascend_mixin.py` renamed +0/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .github/workflows/nightly-test-nvidia.yml
@@ -193,11 +193,11 @@ diff -- python/sglang/test/ascend/vlm_utils.py
 
          subprocess.run(
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/test/accuracy_test_runner.py` renamed +0/-0; `python/sglang/test/ascend/__init__.py` added +0/-0; `python/sglang/test/ascend/gsm8k_ascend_mixin.py` renamed +0/-0; `python/sglang/test/ascend/vlm_utils.py` renamed +1/-1; `python/sglang/test/nightly_utils.py` renamed +0/-0; `python/sglang/test/performance_test_runner.py` renamed +1/-2; `python/sglang/test/run_combined_tests.py` renamed +3/-4
   - tests: `test/registered/8-gpu-models/test_deepseek_v31.py` modified +3/-9; `test/registered/8-gpu-models/test_deepseek_v32.py` modified +3/-9; `test/registered/8-gpu-models/test_glm_46.py` modified +3/-9; `test/registered/8-gpu-models/test_kimi_k2.py` modified +3/-9; `test/registered/8-gpu-models/test_minimax_m2.py` modified +3/-9; `test/registered/8-gpu-models/test_mistral_large3.py` modified +3/-9; `test/registered/8-gpu-models/test_qwen3_235b.py` modified +3/-9; `test/registered/ascend/embedding_models/test_ascend_embedding_models.py` renamed +0/-0
   - other: `.github/workflows/nightly-test-nvidia.yml` modified +4/-4
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #17895 - [AMD] Add kimi mi35x nightly test, folder organization and several stability fixes
 
@@ -216,7 +216,7 @@ diff -- python/sglang/test/ascend/vlm_utils.py
   - `python/sglang/test/nightly_utils.py` modified +16/-4
   - `test/registered/amd/accuracy/mi30x/test_deepseek_r1_eval_amd.py` renamed +0/-0
   - `test/registered/amd/accuracy/mi30x/test_deepseek_v31_eval_amd.py` renamed +0/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .github/workflows/nightly-test-amd.yml
@@ -250,11 +250,11 @@ diff -- python/sglang/test/nightly_utils.py
 +            enable_profile: Whether to enable profiling (default True for NVIDIA)
 
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/test/nightly_utils.py` modified +16/-4
   - tests: `test/registered/amd/accuracy/mi30x/test_deepseek_r1_eval_amd.py` renamed +0/-0; `test/registered/amd/accuracy/mi30x/test_deepseek_v31_eval_amd.py` renamed +0/-0; `test/registered/amd/accuracy/mi30x/test_deepseek_v32_dp_eval_amd.py` renamed +0/-0; `test/registered/amd/accuracy/mi30x/test_deepseek_v32_eval_amd.py` renamed +0/-0; `test/registered/amd/accuracy/mi30x/test_deepseek_v32_mtp_eval_amd.py` renamed +0/-0; `test/registered/amd/accuracy/mi30x/test_deepseek_v32_tc_eval_amd.py` renamed +0/-0; `test/registered/amd/accuracy/mi30x/test_gpt_oss_eval_amd.py` renamed +0/-0; `test/registered/amd/accuracy/mi30x/test_grok1_fp8_eval_amd.py` renamed +0/-0
   - other: `.github/workflows/nightly-test-amd.yml` modified +40/-5
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #17799 - [AMD] rocm 7.2 image release, PR test, Nightly Test
 
@@ -273,7 +273,7 @@ diff -- python/sglang/test/nightly_utils.py
   - `.github/workflows/pr-test-amd-rocm720.yml` added +793/-0
   - `.github/workflows/pr-test-amd.yml` modified +20/-2
   - `.github/workflows/release-docker-amd-rocm720-nightly-preview.yml` added +82/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .github/workflows/nightly-test-amd-rocm720.yml
@@ -307,11 +307,11 @@ diff -- .github/workflows/pr-test-amd-rocm720.yml
 +  #   paths:
 +  #     - "python/**"
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/layers/layernorm.py` modified +14/-1; `python/sglang/srt/layers/moe/fused_moe_triton/fused_moe.py` modified +43/-12; `python/sglang/srt/layers/moe/moe_runner/triton.py` modified +16/-2; `python/sglang/srt/layers/quantization/fp8_kernel.py` modified +45/-4; `python/sglang/srt/layers/quantization/unquant.py` modified +8/-2; `python/sglang/srt/models/deepseek_janus_pro.py` modified +1/-1; `python/sglang/srt/server_args.py` modified +7/-0; `python/sglang/test/gpt_oss_common.py` modified +2/-1
   - tests: `test/registered/amd/accuracy/mi30x/test_gpt_oss_eval_amd.py` modified +2/-2; `test/registered/amd/accuracy/mi30x/test_gsm8k_eval_amd.py` modified +4/-4; `test/registered/amd/accuracy/mi30x/test_vlms_mmmu_eval_amd.py` modified +3/-3; `test/registered/amd/accuracy/mi35x/test_deepseek_v32_eval_mi35x.py` modified +3/-3; `test/registered/amd/accuracy/mi35x/test_deepseek_v32_mtp_eval_mi35x.py` modified +12/-10; `test/registered/amd/accuracy/mi35x/test_gpt_oss_eval_mi35x.py` modified +2/-6; `test/registered/amd/perf/mi35x/test_deepseek_v32_basic_perf_mi35x.py` modified +1/-0; `test/registered/layers/mamba/test_mamba_ssm_ssd.py` modified +5/-0
   - other: `.github/workflows/nightly-test-amd-rocm720.yml` added +868/-0; `.github/workflows/pr-test-amd-rocm720.yml` added +793/-0; `.github/workflows/pr-test-amd.yml` modified +20/-2; `.github/workflows/release-docker-amd-rocm720-nightly-preview.yml` added +82/-0; `docker/rocm720.Dockerfile` added +502/-0; `scripts/ci/amd/amd_ci_install_dependency.sh` modified +109/-89; `scripts/ci/amd/amd_ci_start_container.sh` modified +86/-11
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #18886 - Fix eval tests not capturing server launch failures
 
@@ -330,7 +330,7 @@ diff -- .github/workflows/pr-test-amd-rocm720.yml
   - `python/sglang/test/nightly_utils.py` modified +16/-12
   - `test/registered/eval/test_text_models_gsm8k_eval.py` modified +15/-14
   - `test/registered/eval/test_vlms_mmmu_eval.py` modified +15/-12
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/model_loader/ci_weight_validation.py
@@ -364,10 +364,10 @@ diff -- python/sglang/test/nightly_utils.py
 -            env=env,
 -        )
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/srt/model_loader/ci_weight_validation.py` modified +91/-57; `python/sglang/test/nightly_utils.py` modified +16/-12
   - tests: `test/registered/eval/test_text_models_gsm8k_eval.py` modified +15/-14; `test/registered/eval/test_vlms_mmmu_eval.py` modified +15/-12
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #18911 - [AMD] [GLM-5 Day 0] Add GLM-5 nightly test
 
@@ -386,7 +386,7 @@ diff -- python/sglang/test/nightly_utils.py
   - `.github/workflows/nightly-test-amd.yml` modified +70/-0
   - `test/registered/amd/accuracy/mi30x/test_glm5_eval_amd.py` added +244/-0
   - `test/registered/amd/accuracy/mi30x/test_gsm8k_eval_amd.py` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .github/workflows/nightly-test-amd-rocm720.yml
@@ -420,10 +420,10 @@ diff -- .github/workflows/nightly-test-amd.yml
 @@ -494,6 +496,38 @@ jobs:
            echo "$(<github_summary.md )" >> $GITHUB_STEP_SUMMARY || true
 ```
-- Files read:
+- Reviewed files:
   - tests: `test/registered/amd/accuracy/mi30x/test_glm5_eval_amd.py` added +244/-0; `test/registered/amd/accuracy/mi30x/test_gsm8k_eval_amd.py` modified +1/-1; `test/registered/amd/accuracy/mi35x/test_glm5_eval_mi35x.py` added +249/-0
   - other: `.github/workflows/nightly-test-amd-rocm720.yml` modified +71/-0; `.github/workflows/nightly-test-amd.yml` modified +70/-0
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #19778 - Adding correct path for module not found error while collecting test
 
@@ -442,7 +442,7 @@ diff -- .github/workflows/nightly-test-amd.yml
   - `test/manual/nightly/test_deepseek_v31_perf.py` modified +1/-2
   - `test/manual/nightly/test_deepseek_v32_perf.py` modified +1/-2
   - `test/manual/nightly/test_text_models_perf.py` modified +1/-2
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- python/sglang/multimodal_gen/csrc/attn/vmoba_attn/tests/test_vmoba_attn.py
@@ -467,10 +467,10 @@ diff -- test/manual/nightly/test_deepseek_v31_perf.py
 
  DEEPSEEK_V31_MODEL_PATH = "deepseek-ai/DeepSeek-V3.1"
 ```
-- Files read:
+- Reviewed files:
   - runtime: `python/sglang/multimodal_gen/csrc/attn/vmoba_attn/tests/test_vmoba_attn.py` modified +1/-2
   - tests: `test/manual/nightly/test_deepseek_v31_perf.py` modified +1/-2; `test/manual/nightly/test_deepseek_v32_perf.py` modified +1/-2; `test/manual/nightly/test_text_models_perf.py` modified +1/-2; `test/manual/nightly/test_vlms_perf.py` modified +1/-2; `test/manual/test_two_batch_overlap.py` modified +3/-3
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #21931 - [CI] Migrate mgsm_en eval to gsm8k to remove openaipublic dependency
 
@@ -489,7 +489,7 @@ diff -- test/manual/nightly/test_deepseek_v31_perf.py
   - `test/registered/distributed/test_dp_attention_large.py` modified +2/-2
   - `test/registered/distributed/test_pp_single_node.py` modified +2/-2
   - `test/registered/eval/test_text_models_gsm8k_eval.py` modified +22/-21
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- test/registered/amd/accuracy/mi30x/test_gsm8k_eval_amd.py
@@ -523,9 +523,9 @@ diff -- test/registered/distributed/test_dp_attention_large.py
              num_threads=1024,
          )
 ```
-- Files read:
+- Reviewed files:
   - tests: `test/registered/amd/accuracy/mi30x/test_gsm8k_eval_amd.py` modified +27/-26; `test/registered/distributed/test_dp_attention_large.py` modified +2/-2; `test/registered/distributed/test_pp_single_node.py` modified +2/-2; `test/registered/eval/test_text_models_gsm8k_eval.py` modified +22/-21; `test/registered/piecewise_cuda_graph/test_piecewise_cuda_graph_support_1_gpu.py` modified +16/-16; `test/registered/quant/test_quantization.py` modified +8/-5; `test/registered/scheduler/test_prefill_delayer.py` modified +5/-5
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #23001 - Add new Mintlify documentation site (docs_new/)
 
@@ -544,7 +544,7 @@ diff -- test/registered/distributed/test_dp_attention_large.py
   - `docs_new/.github/workflows/sync-lmsys-sglang-blogs.yml` added +39/-0
   - `docs_new/.gitignore` added +30/-0
   - `docs_new/.mintignore` added +7/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .gitignore
@@ -572,10 +572,10 @@ diff -- docs_new/.github/workflows/sync-lmsys-sglang-blogs.yml
 +  sync:
 +    runs-on: ubuntu-latest
 ```
-- Files read:
+- Reviewed files:
   - docs/bench: `docs_new/.github/workflows/sync-lmsys-sglang-blogs.yml` added +39/-0; `docs_new/.gitignore` added +30/-0; `docs_new/.mintignore` added +7/-0; `docs_new/AGENTS.md` added +381/-0; `docs_new/CONTRIBUTING.md` added +34/-0; `docs_new/LICENSE` added +201/-0; `docs_new/README.md` added +126/-0; `docs_new/cards/Autoregressive-benchmark-card.png` added +0/-0
   - other: `.gitignore` modified +1/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #23337 - [Docs] Sync docs_new with legacy docs and update migration redirects
 
@@ -594,7 +594,7 @@ diff -- docs_new/.github/workflows/sync-lmsys-sglang-blogs.yml
   - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-Math-V2.mdx` modified +1/-1
   - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR-2.mdx` modified +1/-1
   - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR.mdx` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .pre-commit-config.yaml
@@ -623,10 +623,10 @@ diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-Math-V2.mdx
  ## 3. Model Deployment
 
 ```
-- Files read:
+- Reviewed files:
   - docs/bench: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-Math-V2.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR-2.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-R1.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_1.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/Ernie/Ernie4.5.mdx` modified +1/-1
   - other: `.pre-commit-config.yaml` modified +7/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #24250 - [SKILL] Upgrade sglang profile and auto_benchmark skills
 
@@ -634,21 +634,21 @@ diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-Math-V2.mdx
 - Status/date: merged / 2026-05-02
 - Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
 - Diff scope read: GitHub Pull Request files API returned 100 files, +9334/-3813, with 13573 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[SKILL] Upgrade sglang profile and auto_benchmark skills"; model line: Llama 3.1; category: docs/tests/CI; main diff: `.claude/skills/llm-serving-auto-benchmark/SKILL.md`, `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md`, `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml`.
+- Motivation: Title: "[SKILL] Upgrade sglang profile and auto_benchmark skills"; model line: Llama 3.1; category: docs/tests/CI; main diff: `agent-skills/llm-serving-auto-benchmark/SKILL.md`, `skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md`, `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml`.
 - Key implementation:
-  - `.claude/skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
-  - `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0
-  - `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0
-  - `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0
+  - `agent-skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
+  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0
+  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0
+  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0
 - Code diff details:
-  - `.claude/skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
-  - `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0
-  - `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0
-  - `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0
-- Code excerpt:
+  - `agent-skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
+  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0
+  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0
+  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0
+- Key code excerpts:
 
 ```diff
-diff -- .claude/skills/llm-serving-auto-benchmark/SKILL.md
+diff -- agent-skills/llm-serving-auto-benchmark/SKILL.md
 @@ -0,0 +1,527 @@
 +---
 +name: llm-serving-auto-benchmark
@@ -663,7 +663,7 @@ diff -- .claude/skills/llm-serving-auto-benchmark/SKILL.md
 +TensorRT-LLM for the same model and workload.
 +
 +Use a config-driven workflow:
-diff -- .claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md
+diff -- skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md
 @@ -0,0 +1,17 @@
 +# Cookbook LLM Configs
 +
@@ -679,7 +679,7 @@ diff -- .claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md
 +
 +```bash
 ```
-- Files read:
-  - docs/bench: `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.1.yaml` added +132/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.2.yaml` added +132/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.yaml` added +133/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/devstral-small-2-24b-instruct-2512.yaml` added +123/-0; `.claude/skills/llm-serving-auto-benchmark/configs/cookbook-llm/ernie-4.5-21b-a3b-pt.yaml` added +117/-0
-  - other: `.claude/skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Reviewed files:
+  - docs/bench: `skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.1.yaml` added +132/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.2.yaml` added +132/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.yaml` added +133/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/devstral-small-2-24b-instruct-2512.yaml` added +123/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/ernie-4.5-21b-a3b-pt.yaml` added +117/-0
+  - other: `agent-skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.

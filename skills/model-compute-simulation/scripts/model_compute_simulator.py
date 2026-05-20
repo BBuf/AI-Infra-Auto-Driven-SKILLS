@@ -170,8 +170,15 @@ def fmt_shape(*dims):
 # ---------------------------------------------------------------------------
 # Build per-layer ops
 # ---------------------------------------------------------------------------
-def build_layer_ops(cfg: dict, B: int, S: int, tp: int, ep: int,
-                    compress_ratio: int = 0, layer_idx: int = 0) -> List[Op]:
+def build_layer_ops(
+    cfg: dict,
+    B: int,
+    S: int,
+    tp: int,
+    ep: int,
+    compress_ratio: int = 0,
+    layer_idx: int = 0,
+) -> List[Op]:
     """Build operator list for one transformer layer.
 
     Args:
@@ -195,8 +202,15 @@ def build_layer_ops(cfg: dict, B: int, S: int, tp: int, ep: int,
     is_hash = n_hash_layers > 0 and layer_idx >= n_layers - n_hash_layers
 
     # ---- Input Layernorm (RMSNorm) ----
-    ops.append(Op("rmsnorm", 2 * H * 3,  # mean + (x-mean)*rsqrt(var+eps) + *gamma
-                  fmt_shape(B, S, H), fmt_shape(B, S, H), "norm"))
+    ops.append(
+        Op(
+            "rmsnorm",
+            2 * H * 3,  # mean + (x-mean)*rsqrt(var+eps) + *gamma
+            fmt_shape(B, S, H),
+            fmt_shape(B, S, H),
+            "norm",
+        )
+    )
 
     # ---- Attention ----
     if attn_type == "mla":
@@ -204,29 +218,75 @@ def build_layer_ops(cfg: dict, B: int, S: int, tp: int, ep: int,
         compress_dim = cfg.get("mla_compress_dim", 512)
         # Q projection
         q_flops = matmul_flops(B * S, n_heads * d_head, H)
-        ops.append(Op("q_proj", q_flops,
-                      fmt_shape(B, S, H), fmt_shape(B, S, n_heads, d_head), "attention"))
+        ops.append(
+            Op(
+                "q_proj",
+                q_flops,
+                fmt_shape(B, S, H),
+                fmt_shape(B, S, n_heads, d_head),
+                "attention",
+            )
+        )
         # KV compress
         kv_comp_flops = matmul_flops(B * S, 2 * compress_dim, H)
-        ops.append(Op("kv_compress", kv_comp_flops,
-                      fmt_shape(B, S, H), fmt_shape(B, S, 2, compress_dim), "attention"))
+        ops.append(
+            Op(
+                "kv_compress",
+                kv_comp_flops,
+                fmt_shape(B, S, H),
+                fmt_shape(B, S, 2, compress_dim),
+                "attention",
+            )
+        )
         # Attention score: Q @ K^T
         attn_score_flops = matmul_flops(B * n_heads, S, d_head) if S > 1 else 0
         if attn_score_flops > 0:
-            ops.append(Op("attn_score", attn_score_flops,
-                          fmt_shape(B, n_heads, S, d_head), fmt_shape(B, n_heads, S, S), "attention"))
+            ops.append(
+                Op(
+                    "attn_score",
+                    attn_score_flops,
+                    fmt_shape(B, n_heads, S, d_head),
+                    fmt_shape(B, n_heads, S, S),
+                    "attention",
+                )
+            )
         # Attn @ V
-        attn_v_flops = matmul_flops(B * n_heads, S, compress_dim // n_heads) if S > 1 else matmul_flops(B * n_heads, 1, compress_dim // n_heads)
-        ops.append(Op("attn_v", attn_v_flops,
-                      fmt_shape(B, n_heads, S, compress_dim // n_heads), fmt_shape(B, n_heads, S, d_head), "attention"))
+        attn_v_flops = (
+            matmul_flops(B * n_heads, S, compress_dim // n_heads)
+            if S > 1
+            else matmul_flops(B * n_heads, 1, compress_dim // n_heads)
+        )
+        ops.append(
+            Op(
+                "attn_v",
+                attn_v_flops,
+                fmt_shape(B, n_heads, S, compress_dim // n_heads),
+                fmt_shape(B, n_heads, S, d_head),
+                "attention",
+            )
+        )
         # O projection
         o_flops = matmul_flops(B * S, H, n_heads * d_head)
-        ops.append(Op("o_proj", o_flops,
-                      fmt_shape(B, S, n_heads, d_head), fmt_shape(B, S, H), "attention"))
+        ops.append(
+            Op(
+                "o_proj",
+                o_flops,
+                fmt_shape(B, S, n_heads, d_head),
+                fmt_shape(B, S, H),
+                "attention",
+            )
+        )
         # KV upcast (decompress)
         kv_decomp_flops = matmul_flops(B * S, 2 * H, compress_dim)
-        ops.append(Op("kv_decompress", kv_decomp_flops,
-                      fmt_shape(B, S, compress_dim), fmt_shape(B, S, 2 * H), "attention"))
+        ops.append(
+            Op(
+                "kv_decompress",
+                kv_decomp_flops,
+                fmt_shape(B, S, compress_dim),
+                fmt_shape(B, S, 2 * H),
+                "attention",
+            )
+        )
 
     elif attn_type == "csa_hca":
         # CSA/HCA: Compressed Sparse Attention + Heavily Compressed Attention
@@ -239,32 +299,68 @@ def build_layer_ops(cfg: dict, B: int, S: int, tp: int, ep: int,
         if q_lora_rank > 0:
             # MLA-style Q: H → q_lora_rank → n_heads * d_head
             q_down_flops = matmul_flops(B * S, q_lora_rank, H)
-            ops.append(Op("q_lora_down", q_down_flops,
-                          fmt_shape(B, S, H), fmt_shape(B, S, q_lora_rank), "attention"))
+            ops.append(
+                Op(
+                    "q_lora_down",
+                    q_down_flops,
+                    fmt_shape(B, S, H),
+                    fmt_shape(B, S, q_lora_rank),
+                    "attention",
+                )
+            )
             q_up_flops = matmul_flops(B * S, n_heads * d_head, q_lora_rank)
-            ops.append(Op("q_lora_up", q_up_flops,
-                          fmt_shape(B, S, q_lora_rank), fmt_shape(B, S, n_heads, d_head), "attention"))
+            ops.append(
+                Op(
+                    "q_lora_up",
+                    q_up_flops,
+                    fmt_shape(B, S, q_lora_rank),
+                    fmt_shape(B, S, n_heads, d_head),
+                    "attention",
+                )
+            )
             # KV compress (MLA): H → n_kv_heads * d_head
             kv_dim = n_kv_heads * d_head
             kv_comp_flops = matmul_flops(B * S, kv_dim, H)
-            ops.append(Op("kv_compress", kv_comp_flops,
-                          fmt_shape(B, S, H), fmt_shape(B, S, kv_dim), "attention"))
+            ops.append(
+                Op(
+                    "kv_compress",
+                    kv_comp_flops,
+                    fmt_shape(B, S, H),
+                    fmt_shape(B, S, kv_dim),
+                    "attention",
+                )
+            )
         else:
             # Standard QKV projection
             qkv_flops = matmul_flops(B * S, (n_heads + 2 * n_kv_heads) * d_head, H)
-            ops.append(Op("qkv_proj", qkv_flops,
-                          fmt_shape(B, S, H), fmt_shape(B, S, (n_heads + 2 * n_kv_heads) * d_head), "attention"))
+            ops.append(
+                Op(
+                    "qkv_proj",
+                    qkv_flops,
+                    fmt_shape(B, S, H),
+                    fmt_shape(B, S, (n_heads + 2 * n_kv_heads) * d_head),
+                    "attention",
+                )
+            )
 
         # FP8 quantization (before attention)
         quant_flops = 2 * B * S * H  # scale + quantize per element
-        ops.append(Op("quant", quant_flops,
-                      fmt_shape(B, S, H), fmt_shape(B, S, H), "quant"))
+        ops.append(
+            Op("quant", quant_flops, fmt_shape(B, S, H), fmt_shape(B, S, H), "quant")
+        )
 
         # RoPE (rotary position embedding)
         if rope_dim > 0:
             rope_flops = 2 * B * S * rope_dim * 4  # cos/sin multiply for Q and K
-            ops.append(Op("rope", rope_flops,
-                          fmt_shape(B, S, rope_dim), fmt_shape(B, S, rope_dim), "attention"))
+            ops.append(
+                Op(
+                    "rope",
+                    rope_flops,
+                    fmt_shape(B, S, rope_dim),
+                    fmt_shape(B, S, rope_dim),
+                    "attention",
+                )
+            )
 
         # ---- NSA-specific ops for C128 layers ----
         index_n_heads = cfg.get("index_n_heads", 0)
@@ -276,126 +372,301 @@ def build_layer_ops(cfg: dict, B: int, S: int, tp: int, ep: int,
             # Hadamard transform (before indexer)
             hadamard_dim = n_heads * d_head  # transform dimension
             hadamard_flops = B * S * hadamard_dim * 14  # ~N*log2(N)/N=14 for 16K
-            ops.append(Op("hadamard", hadamard_flops,
-                          fmt_shape(B, S, hadamard_dim), fmt_shape(B, S, hadamard_dim), "attention"))
+            ops.append(
+                Op(
+                    "hadamard",
+                    hadamard_flops,
+                    fmt_shape(B, S, hadamard_dim),
+                    fmt_shape(B, S, hadamard_dim),
+                    "attention",
+                )
+            )
 
             # Indexer Q/K projection
-            indexer_q_flops = matmul_flops(B * S, index_n_heads * index_head_dim, q_lora_rank)
-            ops.append(Op("indexer_proj", indexer_q_flops,
-                          fmt_shape(B, S, q_lora_rank), fmt_shape(B, S, index_n_heads, index_head_dim), "attention"))
+            indexer_q_flops = matmul_flops(
+                B * S, index_n_heads * index_head_dim, q_lora_rank
+            )
+            ops.append(
+                Op(
+                    "indexer_proj",
+                    indexer_q_flops,
+                    fmt_shape(B, S, q_lora_rank),
+                    fmt_shape(B, S, index_n_heads, index_head_dim),
+                    "attention",
+                )
+            )
 
             # Paged MQA (indexer attention: index_n_heads Q, 1 KV head, topk blocks)
             n_blocks = (S + sliding_window - 1) // sliding_window
             paged_mqa_kv_len = min(index_topk * sliding_window, S)
-            paged_mqa_flops = matmul_flops(B * index_n_heads, S, index_head_dim) if S > 1 else 0
-            paged_mqa_flops += matmul_flops(B * index_n_heads, S if S > 1 else 1, index_head_dim)
+            paged_mqa_flops = (
+                matmul_flops(B * index_n_heads, S, index_head_dim) if S > 1 else 0
+            )
+            paged_mqa_flops += matmul_flops(
+                B * index_n_heads, S if S > 1 else 1, index_head_dim
+            )
             if paged_mqa_flops > 0:
-                ops.append(Op("paged_mqa", paged_mqa_flops,
-                              fmt_shape(B, index_n_heads, S, index_head_dim),
-                              fmt_shape(B, index_n_heads, S, index_head_dim), "attention"))
+                ops.append(
+                    Op(
+                        "paged_mqa",
+                        paged_mqa_flops,
+                        fmt_shape(B, index_n_heads, S, index_head_dim),
+                        fmt_shape(B, index_n_heads, S, index_head_dim),
+                        "attention",
+                    )
+                )
 
         # C4 sparse attention (for layers with compress_ratio > 0)
         if compress_ratio > 0 and S > 1:
             c4_kv_len = max(S // compress_ratio, sliding_window)
-            c4_attn = matmul_flops(B * n_heads, S * c4_kv_len, d_head) // S  # per-query-token
+            c4_attn = (
+                matmul_flops(B * n_heads, S * c4_kv_len, d_head) // S
+            )  # per-query-token
             c4_attn_total = matmul_flops(B * n_heads, S, d_head)  # score: Q @ K^T
-            ops.append(Op("c4_attn", c4_attn_total,
-                          fmt_shape(B, n_heads, S, d_head), fmt_shape(B, n_heads, S, c4_kv_len), "attention"))
+            ops.append(
+                Op(
+                    "c4_attn",
+                    c4_attn_total,
+                    fmt_shape(B, n_heads, S, d_head),
+                    fmt_shape(B, n_heads, S, c4_kv_len),
+                    "attention",
+                )
+            )
             c4_v = matmul_flops(B * n_heads, S, d_head)
-            ops.append(Op("c4_attn_v", c4_v,
-                          fmt_shape(B, n_heads, S, d_head), fmt_shape(B, n_heads, S, d_head), "attention"))
+            ops.append(
+                Op(
+                    "c4_attn_v",
+                    c4_v,
+                    fmt_shape(B, n_heads, S, d_head),
+                    fmt_shape(B, n_heads, S, d_head),
+                    "attention",
+                )
+            )
         elif S > 1:
             # Full attention (compress_ratio == 0)
             csa_attn = matmul_flops(B * n_heads, S, d_head)
-            ops.append(Op("csa_attn_score", csa_attn,
-                          fmt_shape(B, n_heads, S, d_head), fmt_shape(B, n_heads, S, S), "attention"))
+            ops.append(
+                Op(
+                    "csa_attn_score",
+                    csa_attn,
+                    fmt_shape(B, n_heads, S, d_head),
+                    fmt_shape(B, n_heads, S, S),
+                    "attention",
+                )
+            )
             csa_v = matmul_flops(B * n_heads, S, d_head)
-            ops.append(Op("csa_attn_v", csa_v,
-                          fmt_shape(B, n_heads, S, d_head), fmt_shape(B, n_heads, S, d_head), "attention"))
+            ops.append(
+                Op(
+                    "csa_attn_v",
+                    csa_v,
+                    fmt_shape(B, n_heads, S, d_head),
+                    fmt_shape(B, n_heads, S, d_head),
+                    "attention",
+                )
+            )
 
         # HCA attention (heavily compressed, always present for csa_hca)
         hca_attn = matmul_flops(B * n_kv_heads, S, d_head) if S > 1 else 0
         if hca_attn > 0:
-            ops.append(Op("hca_attn_score", hca_attn,
-                          fmt_shape(B, n_kv_heads, S, d_head), fmt_shape(B, n_kv_heads, S, S), "attention"))
+            ops.append(
+                Op(
+                    "hca_attn_score",
+                    hca_attn,
+                    fmt_shape(B, n_kv_heads, S, d_head),
+                    fmt_shape(B, n_kv_heads, S, S),
+                    "attention",
+                )
+            )
         hca_v = matmul_flops(B * n_kv_heads, S if S > 1 else 1, d_head)
-        ops.append(Op("hca_attn_v", hca_v,
-                      fmt_shape(B, n_kv_heads, S, d_head), fmt_shape(B, n_kv_heads, S, d_head), "attention"))
+        ops.append(
+            Op(
+                "hca_attn_v",
+                hca_v,
+                fmt_shape(B, n_kv_heads, S, d_head),
+                fmt_shape(B, n_kv_heads, S, d_head),
+                "attention",
+            )
+        )
 
         # MLA cache store
         mla_cache_flops = 2 * B * S * (n_kv_heads * d_head + rope_dim)  # write KV cache
-        ops.append(Op("mla_cache_store", mla_cache_flops,
-                      fmt_shape(B, S, n_kv_heads * d_head), fmt_shape(B, S, n_kv_heads * d_head), "attention"))
+        ops.append(
+            Op(
+                "mla_cache_store",
+                mla_cache_flops,
+                fmt_shape(B, S, n_kv_heads * d_head),
+                fmt_shape(B, S, n_kv_heads * d_head),
+                "attention",
+            )
+        )
 
         # O projection
         if o_lora_rank > 0:
             # Grouped O-LoRA: each group d_head → o_lora_rank/o_groups, then up → H
             per_group_down = o_lora_rank // o_groups
             o_down_flops = matmul_flops(B * S * o_groups, per_group_down, d_head)
-            ops.append(Op("o_lora_down", o_down_flops,
-                          fmt_shape(B, S, o_groups, d_head), fmt_shape(B, S, o_groups, per_group_down), "attention"))
+            ops.append(
+                Op(
+                    "o_lora_down",
+                    o_down_flops,
+                    fmt_shape(B, S, o_groups, d_head),
+                    fmt_shape(B, S, o_groups, per_group_down),
+                    "attention",
+                )
+            )
             o_up_flops = matmul_flops(B * S, H, o_lora_rank)
-            ops.append(Op("o_lora_up", o_up_flops,
-                          fmt_shape(B, S, o_lora_rank), fmt_shape(B, S, H), "attention"))
+            ops.append(
+                Op(
+                    "o_lora_up",
+                    o_up_flops,
+                    fmt_shape(B, S, o_lora_rank),
+                    fmt_shape(B, S, H),
+                    "attention",
+                )
+            )
         else:
             o_flops = matmul_flops(B * S, H, n_heads * d_head)
-            ops.append(Op("o_proj", o_flops,
-                          fmt_shape(B, S, n_heads * d_head), fmt_shape(B, S, H), "attention"))
+            ops.append(
+                Op(
+                    "o_proj",
+                    o_flops,
+                    fmt_shape(B, S, n_heads * d_head),
+                    fmt_shape(B, S, H),
+                    "attention",
+                )
+            )
 
     elif attn_type == "gqa" or attn_type == "gqa_qk_norm":
         # GQA: grouped-query attention
         q_flops = matmul_flops(B * S, n_heads * d_head, H)
-        ops.append(Op("q_proj", q_flops,
-                      fmt_shape(B, S, H), fmt_shape(B, S, n_heads, d_head), "attention"))
+        ops.append(
+            Op(
+                "q_proj",
+                q_flops,
+                fmt_shape(B, S, H),
+                fmt_shape(B, S, n_heads, d_head),
+                "attention",
+            )
+        )
         kv_flops = matmul_flops(B * S, 2 * n_kv_heads * d_head, H)
-        ops.append(Op("kv_proj", kv_flops,
-                      fmt_shape(B, S, H), fmt_shape(B, S, 2, n_kv_heads, d_head), "attention"))
+        ops.append(
+            Op(
+                "kv_proj",
+                kv_flops,
+                fmt_shape(B, S, H),
+                fmt_shape(B, S, 2, n_kv_heads, d_head),
+                "attention",
+            )
+        )
         # QK norm (optional)
         if attn_type == "gqa_qk_norm":
-            ops.append(Op("qk_norm", 2 * (n_heads + n_kv_heads) * d_head * 3,
-                          fmt_shape(B, n_heads, d_head), fmt_shape(B, n_heads, d_head), "attention"))
+            ops.append(
+                Op(
+                    "qk_norm",
+                    2 * (n_heads + n_kv_heads) * d_head * 3,
+                    fmt_shape(B, n_heads, d_head),
+                    fmt_shape(B, n_heads, d_head),
+                    "attention",
+                )
+            )
         # Attention
         n_groups = n_heads // n_kv_heads
         attn_score_flops = matmul_flops(B * n_heads, S, d_head) if S > 1 else 0
         if attn_score_flops > 0:
-            ops.append(Op("attn_score", attn_score_flops,
-                          fmt_shape(B, n_heads, S, d_head), fmt_shape(B, n_heads, S, S), "attention"))
+            ops.append(
+                Op(
+                    "attn_score",
+                    attn_score_flops,
+                    fmt_shape(B, n_heads, S, d_head),
+                    fmt_shape(B, n_heads, S, S),
+                    "attention",
+                )
+            )
         attn_v_flops = matmul_flops(B * n_heads, S if S > 1 else 1, d_head)
-        ops.append(Op("attn_v", attn_v_flops,
-                      fmt_shape(B, n_heads, S, d_head), fmt_shape(B, n_heads, S, d_head), "attention"))
+        ops.append(
+            Op(
+                "attn_v",
+                attn_v_flops,
+                fmt_shape(B, n_heads, S, d_head),
+                fmt_shape(B, n_heads, S, d_head),
+                "attention",
+            )
+        )
         # O projection
         o_flops = matmul_flops(B * S, H, n_heads * d_head)
-        ops.append(Op("o_proj", o_flops,
-                      fmt_shape(B, S, n_heads, d_head), fmt_shape(B, S, H), "attention"))
+        ops.append(
+            Op(
+                "o_proj",
+                o_flops,
+                fmt_shape(B, S, n_heads, d_head),
+                fmt_shape(B, S, H),
+                "attention",
+            )
+        )
 
     elif attn_type == "dsa":
         # DSA: DeepSeek-style sparse attention (similar to GQA for FLOPs)
         q_flops = matmul_flops(B * S, n_heads * d_head, H)
-        ops.append(Op("q_proj", q_flops,
-                      fmt_shape(B, S, H), fmt_shape(B, S, n_heads, d_head), "attention"))
+        ops.append(
+            Op(
+                "q_proj",
+                q_flops,
+                fmt_shape(B, S, H),
+                fmt_shape(B, S, n_heads, d_head),
+                "attention",
+            )
+        )
         kv_flops = matmul_flops(B * S, 2 * n_kv_heads * d_head, H)
-        ops.append(Op("kv_proj", kv_flops,
-                      fmt_shape(B, S, H), fmt_shape(B, S, 2, n_kv_heads, d_head), "attention"))
+        ops.append(
+            Op(
+                "kv_proj",
+                kv_flops,
+                fmt_shape(B, S, H),
+                fmt_shape(B, S, 2, n_kv_heads, d_head),
+                "attention",
+            )
+        )
         attn_score_flops = matmul_flops(B * n_heads, S, d_head) if S > 1 else 0
         if attn_score_flops > 0:
-            ops.append(Op("attn_score", attn_score_flops,
-                          fmt_shape(B, n_heads, S, d_head), fmt_shape(B, n_heads, S, S), "attention"))
+            ops.append(
+                Op(
+                    "attn_score",
+                    attn_score_flops,
+                    fmt_shape(B, n_heads, S, d_head),
+                    fmt_shape(B, n_heads, S, S),
+                    "attention",
+                )
+            )
         attn_v_flops = matmul_flops(B * n_heads, S if S > 1 else 1, d_head)
-        ops.append(Op("attn_v", attn_v_flops,
-                      fmt_shape(B, n_heads, S, d_head), fmt_shape(B, n_heads, S, d_head), "attention"))
+        ops.append(
+            Op(
+                "attn_v",
+                attn_v_flops,
+                fmt_shape(B, n_heads, S, d_head),
+                fmt_shape(B, n_heads, S, d_head),
+                "attention",
+            )
+        )
         o_flops = matmul_flops(B * S, H, n_heads * d_head)
-        ops.append(Op("o_proj", o_flops,
-                      fmt_shape(B, S, n_heads, d_head), fmt_shape(B, S, H), "attention"))
+        ops.append(
+            Op(
+                "o_proj",
+                o_flops,
+                fmt_shape(B, S, n_heads, d_head),
+                fmt_shape(B, S, H),
+                "attention",
+            )
+        )
     else:
         raise ValueError(f"Unknown attention_type: {attn_type}")
 
     # ---- Post-attention RMSNorm ----
-    ops.append(Op("rmsnorm", 2 * H * 3,
-                  fmt_shape(B, S, H), fmt_shape(B, S, H), "norm"))
+    ops.append(Op("rmsnorm", 2 * H * 3, fmt_shape(B, S, H), fmt_shape(B, S, H), "norm"))
 
     # ---- Residual add ----
-    ops.append(Op("residual_add", H,
-                  fmt_shape(B, S, H), fmt_shape(B, S, H), "residual"))
+    ops.append(
+        Op("residual_add", H, fmt_shape(B, S, H), fmt_shape(B, S, H), "residual")
+    )
 
     # ---- MoE / FFN ----
     if is_moe:
@@ -407,13 +678,27 @@ def build_layer_ops(cfg: dict, B: int, S: int, tp: int, ep: int,
 
         # Router
         router_flops = matmul_flops(B * S, n_experts, H)
-        ops.append(Op("router", router_flops,
-                      fmt_shape(B, S, H), fmt_shape(B, S, n_experts), "moe"))
+        ops.append(
+            Op(
+                "router",
+                router_flops,
+                fmt_shape(B, S, H),
+                fmt_shape(B, S, n_experts),
+                "moe",
+            )
+        )
 
         # TopK selection
         topk_flops = B * S * n_experts * 4  # comparison + selection per token
-        ops.append(Op("topk", topk_flops,
-                      fmt_shape(B, S, n_experts), fmt_shape(B, S, topk), "moe"))
+        ops.append(
+            Op(
+                "topk",
+                topk_flops,
+                fmt_shape(B, S, n_experts),
+                fmt_shape(B, S, topk),
+                "moe",
+            )
+        )
 
         # Routed experts (top-k selected per token, SwiGLU)
         # Per expert: gate(H→inter) + up(H→inter) + silu_mul + down(inter→H)
@@ -421,13 +706,27 @@ def build_layer_ops(cfg: dict, B: int, S: int, tp: int, ep: int,
         routed_up = matmul_flops(B * S * topk, routed_inter, H)
         routed_down = matmul_flops(B * S * topk, H, routed_inter)
         routed_total = routed_gate + routed_up + routed_down
-        ops.append(Op("routed_experts_swiglu", routed_total,
-                      fmt_shape(B, S, topk, H), fmt_shape(B, S, topk, H), "moe"))
+        ops.append(
+            Op(
+                "routed_experts_swiglu",
+                routed_total,
+                fmt_shape(B, S, topk, H),
+                fmt_shape(B, S, topk, H),
+                "moe",
+            )
+        )
 
         # Activation (silu_mul in MoE)
         act_flops = 3 * B * S * topk * routed_inter  # silu(x)*gate(x)
-        ops.append(Op("activation", act_flops,
-                      fmt_shape(B, S, topk, routed_inter), fmt_shape(B, S, topk, routed_inter), "moe"))
+        ops.append(
+            Op(
+                "activation",
+                act_flops,
+                fmt_shape(B, S, topk, routed_inter),
+                fmt_shape(B, S, topk, routed_inter),
+                "moe",
+            )
+        )
 
         # Shared experts (if any)
         if n_shared > 0 and shared_inter > 0:
@@ -435,8 +734,15 @@ def build_layer_ops(cfg: dict, B: int, S: int, tp: int, ep: int,
             shared_up = matmul_flops(B * S, shared_inter, H)
             shared_down = matmul_flops(B * S, H, shared_inter)
             shared_total = shared_gate + shared_up + shared_down
-            ops.append(Op("shared_experts_swiglu", shared_total,
-                          fmt_shape(B, S, H), fmt_shape(B, S, H), "moe"))
+            ops.append(
+                Op(
+                    "shared_experts_swiglu",
+                    shared_total,
+                    fmt_shape(B, S, H),
+                    fmt_shape(B, S, H),
+                    "moe",
+                )
+            )
     else:
         # Dense FFN (SwiGLU)
         inter = cfg.get("intermediate_size", 4 * H)
@@ -444,12 +750,14 @@ def build_layer_ops(cfg: dict, B: int, S: int, tp: int, ep: int,
         up_flops = matmul_flops(B * S, inter, H)
         down_flops = matmul_flops(B * S, H, inter)
         ffn_total = gate_flops + up_flops + down_flops
-        ops.append(Op("ffn_swiglu", ffn_total,
-                      fmt_shape(B, S, H), fmt_shape(B, S, H), "ffn"))
+        ops.append(
+            Op("ffn_swiglu", ffn_total, fmt_shape(B, S, H), fmt_shape(B, S, H), "ffn")
+        )
 
     # ---- Residual add ----
-    ops.append(Op("residual_add", H,
-                  fmt_shape(B, S, H), fmt_shape(B, S, H), "residual"))
+    ops.append(
+        Op("residual_add", H, fmt_shape(B, S, H), fmt_shape(B, S, H), "residual")
+    )
 
     # ---- MHC (Manifold-Constrained Hyper-Connections) ----
     if cfg.get("mhc", False):
@@ -457,8 +765,15 @@ def build_layer_ops(cfg: dict, B: int, S: int, tp: int, ep: int,
         mhc_down = matmul_flops(B * S, mhc_dim, H)
         mhc_up = matmul_flops(B * S, H, mhc_dim)
         mhc_total = mhc_down + mhc_up
-        ops.append(Op("mhc_post_tilelang", mhc_total,
-                      fmt_shape(B, S, H), fmt_shape(B, S, H), "mhc"))
+        ops.append(
+            Op(
+                "mhc_post_tilelang",
+                mhc_total,
+                fmt_shape(B, S, H),
+                fmt_shape(B, S, H),
+                "mhc",
+            )
+        )
 
     return ops
 
@@ -466,8 +781,18 @@ def build_layer_ops(cfg: dict, B: int, S: int, tp: int, ep: int,
 # ---------------------------------------------------------------------------
 # Simulate
 # ---------------------------------------------------------------------------
-def simulate(cfg: dict, model_name: str, B: int, S: int, tp: int, dp: int, ep: int,
-             gpu_name: str, dtype: str, measured_ms: Optional[float] = None) -> SimResult:
+def simulate(
+    cfg: dict,
+    model_name: str,
+    B: int,
+    S: int,
+    tp: int,
+    dp: int,
+    ep: int,
+    gpu_name: str,
+    dtype: str,
+    measured_ms: Optional[float] = None,
+) -> SimResult:
     """Run the full simulation."""
     gpu_specs = load_json(GPU_SPECS)
     gpu_info = resolve_gpu(gpu_name, gpu_specs) if gpu_name else None
@@ -488,8 +813,9 @@ def simulate(cfg: dict, model_name: str, B: int, S: int, tp: int, dp: int, ep: i
     for i in range(n_layers):
         cr = compress_ratios[i] if compress_ratios and i < len(compress_ratios) else 0
         if cr not in layer_ops_cache:
-            layer_ops_cache[cr] = build_layer_ops(cfg, B, S, tp, ep,
-                                                   compress_ratio=cr, layer_idx=i)
+            layer_ops_cache[cr] = build_layer_ops(
+                cfg, B, S, tp, ep, compress_ratio=cr, layer_idx=i
+            )
         layer_ops = layer_ops_cache[cr]
 
         lr = LayerResult(layer_idx=i)
@@ -516,8 +842,12 @@ def simulate(cfg: dict, model_name: str, B: int, S: int, tp: int, dp: int, ep: i
         "attention_type": cfg.get("attention_type", "unknown"),
         "moe": cfg.get("moe", False),
         "num_experts": cfg.get("num_experts", 0) if cfg.get("moe", False) else 0,
-        "num_experts_per_tok": cfg.get("num_experts_per_tok", 0) if cfg.get("moe", False) else 0,
-        "num_shared_experts": cfg.get("num_shared_experts", 0) if cfg.get("moe", False) else 0,
+        "num_experts_per_tok": (
+            cfg.get("num_experts_per_tok", 0) if cfg.get("moe", False) else 0
+        ),
+        "num_shared_experts": (
+            cfg.get("num_shared_experts", 0) if cfg.get("moe", False) else 0
+        ),
         "mhc": cfg.get("mhc", False),
         "vocab_size": V,
         "q_lora_rank": cfg.get("q_lora_rank", 0),
@@ -555,7 +885,11 @@ def simulate(cfg: dict, model_name: str, B: int, S: int, tp: int, dp: int, ep: i
             # Per-layer MFU (uniform layer-time assumption)
             avg_layer_per_gpu = total_per_gpu / n_layers if n_layers > 0 else 0
             per_layer_ms = measured_ms / n_layers
-            per_layer_mfu_pct = (avg_layer_per_gpu / (peak_tflops * 1e12)) / (per_layer_ms / 1000.0) * 100.0
+            per_layer_mfu_pct = (
+                (avg_layer_per_gpu / (peak_tflops * 1e12))
+                / (per_layer_ms / 1000.0)
+                * 100.0
+            )
 
             # Per-operator FLOPs proportion — show a representative C128_HEAVY layer if available
             # otherwise show layer 0
@@ -575,15 +909,21 @@ def simulate(cfg: dict, model_name: str, B: int, S: int, tp: int, dp: int, ep: i
                         per_gpu = op.flops / ep if ep > 0 else op.flops
                     else:
                         per_gpu = op.flops / tp if tp > 0 else op.flops
-                    per_op_mfu.append({
-                        "name": op.name,
-                        "flops": op.flops,
-                        "flops_per_gpu": per_gpu,
-                        "theo_us": per_gpu / (peak_tflops * 1e6),
-                        "pct_of_layer": op.flops / layer_total_flops * 100 if layer_total_flops > 0 else 0,
-                        "category": op.category,
-                        "measured_us": None,  # filled later from --kernel-ms
-                    })
+                    per_op_mfu.append(
+                        {
+                            "name": op.name,
+                            "flops": op.flops,
+                            "flops_per_gpu": per_gpu,
+                            "theo_us": per_gpu / (peak_tflops * 1e6),
+                            "pct_of_layer": (
+                                op.flops / layer_total_flops * 100
+                                if layer_total_flops > 0
+                                else 0
+                            ),
+                            "category": op.category,
+                            "measured_us": None,  # filled later from --kernel-ms
+                        }
+                    )
 
     return SimResult(
         model=model_name,
@@ -614,34 +954,34 @@ def simulate(cfg: dict, model_name: str, B: int, S: int, tp: int, dp: int, ep: i
 # Used to map kernel durations to per-operator MFU.
 
 KERNEL_TO_OP_CATEGORY = {
-    "mla":           ["attention"],           # flash_fwd_splitkv_mla
-    "moe":           ["moe"],                 # fused_moe_kernel
-    "allreduce":     [],                       # NCCL — no compute FLOPs
-    "hadamard":      ["attention"],           # Hadamard transform (part of C128 attention)
-    "indexer":       ["attention"],           # Indexer cache (part of C128 attention)
-    "paged_mqa":     ["attention"],           # Paged MQA (hash layer attention)
-    "mhc":           ["mhc"],                 # MHC pre/post
-    "gemm_fp8":      ["attention", "moe", "mhc", "norm"],  # GEMM spans multiple categories
-    "gemm_bf16":     ["attention", "moe", "mhc"],
-    "rmsnorm":       ["norm"],
-    "quant":         ["norm"],                # FP8 quantization
-    "topk":          ["moe"],                 # TopK routing
-    "rope":          ["attention"],
-    "activation":    ["moe"],                 # silu_mul in MoE
-    "other":         [],
+    "mla": ["attention"],  # flash_fwd_splitkv_mla
+    "moe": ["moe"],  # fused_moe_kernel
+    "allreduce": [],  # NCCL — no compute FLOPs
+    "hadamard": ["attention"],  # Hadamard transform (part of C128 attention)
+    "indexer": ["attention"],  # Indexer cache (part of C128 attention)
+    "paged_mqa": ["attention"],  # Paged MQA (hash layer attention)
+    "mhc": ["mhc"],  # MHC pre/post
+    "gemm_fp8": ["attention", "moe", "mhc", "norm"],  # GEMM spans multiple categories
+    "gemm_bf16": ["attention", "moe", "mhc"],
+    "rmsnorm": ["norm"],
+    "quant": ["norm"],  # FP8 quantization
+    "topk": ["moe"],  # TopK routing
+    "rope": ["attention"],
+    "activation": ["moe"],  # silu_mul in MoE
+    "other": [],
     # Aliases from layer_kernel_breakdown.py
-    "mla_metadata":  ["attention"],
-    "mhc_pre_gemm":  ["mhc"],
-    "mhc_pre_fuse":  ["mhc"],
-    "mhc_post":      ["mhc"],
-    "c4_prefill":    ["attention"],
-    "c128_prefill":  ["attention"],
-    "moe_gate":      ["moe"],
-    "moe_align":     ["moe"],
-    "moe_sort":      ["moe"],
+    "mla_metadata": ["attention"],
+    "mhc_pre_gemm": ["mhc"],
+    "mhc_pre_fuse": ["mhc"],
+    "mhc_post": ["mhc"],
+    "c4_prefill": ["attention"],
+    "c128_prefill": ["attention"],
+    "moe_gate": ["moe"],
+    "moe_align": ["moe"],
+    "moe_sort": ["moe"],
     "mla_cache_store": ["attention"],
     "indexer_store": ["attention"],
-    "gemm_f32":      [],
+    "gemm_f32": [],
 }
 
 
@@ -700,38 +1040,46 @@ FP8_INTERNAL_KERNEL_CATEGORIES = {"moe", "gemm_fp8"}
 
 KERNEL_DETAIL_DIRECT_MAP = {
     # Fused kernels: directly map to specific operator groups
-    "mla":           ["csa_attn_score", "csa_attn_v", "hca_attn_score", "hca_attn_v",
-                      "c4_attn", "c4_attn_v", "attn_score", "attn_v"],  # flash attention compute
-    "moe":           ["routed_experts_swiglu"],  # fused MoE: gate+up+silu+down
-    "mhc_post":      ["mhc_post_tilelang"],
-    "mhc_pre_gemm":  ["mhc_pre"],
-    "mhc_pre_fuse":  ["mhc_pre"],
-    "mhc":           ["mhc_post_tilelang", "mhc_pre"],  # fallback
-    "rmsnorm":       ["rmsnorm"],
-    "topk":          ["topk"],
-    "moe_gate":      ["router"],
+    "mla": [
+        "csa_attn_score",
+        "csa_attn_v",
+        "hca_attn_score",
+        "hca_attn_v",
+        "c4_attn",
+        "c4_attn_v",
+        "attn_score",
+        "attn_v",
+    ],  # flash attention compute
+    "moe": ["routed_experts_swiglu"],  # fused MoE: gate+up+silu+down
+    "mhc_post": ["mhc_post_tilelang"],
+    "mhc_pre_gemm": ["mhc_pre"],
+    "mhc_pre_fuse": ["mhc_pre"],
+    "mhc": ["mhc_post_tilelang", "mhc_pre"],  # fallback
+    "rmsnorm": ["rmsnorm"],
+    "topk": ["topk"],
+    "moe_gate": ["router"],
     # Direct-match operators (have FLOPs in template)
-    "hadamard":      ["hadamard"],
-    "indexer":       [],        # trace kernel is fused_store_indexer_cache only; proj compute is in gemm_bf16
-    "paged_mqa":     ["paged_mqa"],
-    "c4_prefill":    ["c4_attn", "c4_attn_v"],
-    "c128_prefill":  ["c4_attn", "c4_attn_v"],
-    "rope":          ["rope"],
-    "quant":         ["quant"],
-    "activation":    ["activation"],
+    "hadamard": ["hadamard"],
+    "indexer": [],  # trace kernel is fused_store_indexer_cache only; proj compute is in gemm_bf16
+    "paged_mqa": ["paged_mqa"],
+    "c4_prefill": ["c4_attn", "c4_attn_v"],
+    "c128_prefill": ["c4_attn", "c4_attn_v"],
+    "rope": ["rope"],
+    "quant": ["quant"],
+    "activation": ["activation"],
     "mla_cache_store": ["mla_cache_store"],
     # Generic GEMM: distribute by FLOPs to remaining ops
-    "gemm_fp8":      None,
-    "gemm_bf16":     None,
+    "gemm_fp8": None,
+    "gemm_bf16": None,
     # No compute FLOPs (overhead)
-    "allreduce":     [],
-    "mla_metadata":  [],
-    "moe_align":     [],
-    "moe_sort":      [],
+    "allreduce": [],
+    "mla_metadata": [],
+    "moe_align": [],
+    "moe_sort": [],
     "indexer_store": [],
-    "gemm_f32":      [],
-    "radixsort":     [],
-    "other":         [],
+    "gemm_f32": [],
+    "radixsort": [],
+    "other": [],
 }
 
 
@@ -767,8 +1115,8 @@ def map_kernel_detail_to_ops(kernel_detail: dict, ops: list, tp: int, ep: int) -
         op_name_to_indices.setdefault(op.name, []).append(i)
 
     # Step 1: Direct-match assignment
-    op_measured_us = {}       # op_index → measured_us
-    direct_matched = {}       # kernel_cat → [op_names]  (for reporting)
+    op_measured_us = {}  # op_index → measured_us
+    direct_matched = {}  # kernel_cat → [op_names]  (for reporting)
     assigned_op_indices = set()  # ops that already got measured time
     overhead_us = 0.0
 
@@ -790,8 +1138,11 @@ def map_kernel_detail_to_ops(kernel_detail: dict, ops: list, tp: int, ep: int) -
         matched_names = []
         for op_name in mapping:
             if op_name in op_name_to_indices:
-                indices = [idx for idx in op_name_to_indices[op_name]
-                           if idx not in assigned_op_indices]
+                indices = [
+                    idx
+                    for idx in op_name_to_indices[op_name]
+                    if idx not in assigned_op_indices
+                ]
                 for idx in indices:
                     matched_indices.append(idx)
                 if indices:
@@ -803,7 +1154,9 @@ def map_kernel_detail_to_ops(kernel_detail: dict, ops: list, tp: int, ep: int) -
             if total_matched_flops > 0:
                 for idx in matched_indices:
                     share = ops[idx].flops / total_matched_flops
-                    op_measured_us[idx] = op_measured_us.get(idx, 0) + cat_dur_us * share
+                    op_measured_us[idx] = (
+                        op_measured_us.get(idx, 0) + cat_dur_us * share
+                    )
                     assigned_op_indices.add(idx)
             else:
                 # Equal distribution as fallback
@@ -891,15 +1244,19 @@ def format_text(result: SimResult, skip_compute_flow: bool = False) -> str:
     lines.append(f"  Config source:   {result.config_source}")
     lines.append(f"  Layers:          {arch.get('num_hidden_layers', '?')}")
     lines.append(f"  Hidden size:     {arch.get('hidden_size', '?')}")
-    lines.append(f"  Attention heads: {arch.get('num_attention_heads', '?')} (KV: {arch.get('num_key_value_heads', '?')})")
+    lines.append(
+        f"  Attention heads: {arch.get('num_attention_heads', '?')} (KV: {arch.get('num_key_value_heads', '?')})"
+    )
     lines.append(f"  Head dim:        {arch.get('head_dim', '?')}")
     lines.append(f"  Attention type:  {arch.get('attention_type', '?')}")
-    if arch.get('q_lora_rank', 0) > 0:
+    if arch.get("q_lora_rank", 0) > 0:
         lines.append(f"  Q LoRA rank:     {arch.get('q_lora_rank')}")
         lines.append(f"  O LoRA rank:     {arch.get('o_lora_rank')}")
-    if arch.get('moe', False):
-        lines.append(f"  MoE:             {arch.get('num_experts')} experts, top-{arch.get('num_experts_per_tok')}, {arch.get('num_shared_experts')} shared")
-    if arch.get('mhc', False):
+    if arch.get("moe", False):
+        lines.append(
+            f"  MoE:             {arch.get('num_experts')} experts, top-{arch.get('num_experts_per_tok')}, {arch.get('num_shared_experts')} shared"
+        )
+    if arch.get("mhc", False):
         lines.append(f"  MHC:             enabled")
     lines.append(f"  Vocab size:      {arch.get('vocab_size', '?')}")
 
@@ -907,7 +1264,9 @@ def format_text(result: SimResult, skip_compute_flow: bool = False) -> str:
     lines.append(f"\n{'=' * 70}")
     lines.append(f"  SERVING CONFIGURATION")
     lines.append(f"{'=' * 70}")
-    lines.append(f"  B={result.batch_size}  S={result.seq_len}  TP={result.tp}  DP={result.dp}  EP={result.ep}")
+    lines.append(
+        f"  B={result.batch_size}  S={result.seq_len}  TP={result.tp}  DP={result.dp}  EP={result.ep}"
+    )
     lines.append(f"  GPU={result.gpu}  dtype={result.dtype}")
 
     # Embedding
@@ -919,22 +1278,30 @@ def format_text(result: SimResult, skip_compute_flow: bool = False) -> str:
         # Find the representative layer that per_op_mfu is based on
         repr_idx = 0
         for i, lr in enumerate(result.layers):
-            if getattr(lr, 'compress_ratio', 0) == 128:
+            if getattr(lr, "compress_ratio", 0) == 128:
                 repr_idx = i
                 break
         l0 = result.layers[repr_idx]
-        cr_val = getattr(l0, 'compress_ratio', 0)
+        cr_val = getattr(l0, "compress_ratio", 0)
         cr_label = f" (compress_ratio={cr_val})" if cr_val else ""
         type_label = {0: "FULL_ATTN", 4: "C4_LIGHT", 128: "C128_HEAVY"}.get(cr_val, "")
-        layer_type_str = f' [{type_label}]' if type_label else ''
+        layer_type_str = f" [{type_label}]" if type_label else ""
         lines.append(f"\n--- Layer {repr_idx} (detail){layer_type_str}{cr_label} ---")
-        attn_pct = l0.attention_flops / max(1, l0.attention_flops + l0.moe_ffn_flops) * 100
+        attn_pct = (
+            l0.attention_flops / max(1, l0.attention_flops + l0.moe_ffn_flops) * 100
+        )
         moe_pct = l0.moe_ffn_flops / max(1, l0.attention_flops + l0.moe_ffn_flops) * 100
-        lines.append(f"  Attention FLOPs: {fmt_flops(l0.attention_flops)}  ({attn_pct:.1f}%)")
-        lines.append(f"  MoE/FFN FLOPs:   {fmt_flops(l0.moe_ffn_flops)}  ({moe_pct:.1f}%)")
+        lines.append(
+            f"  Attention FLOPs: {fmt_flops(l0.attention_flops)}  ({attn_pct:.1f}%)"
+        )
+        lines.append(
+            f"  MoE/FFN FLOPs:   {fmt_flops(l0.moe_ffn_flops)}  ({moe_pct:.1f}%)"
+        )
         lines.append(f"  Per-op sequence:")
         for op in l0.ops:
-            lines.append(f"    {op.name:30s}  FLOPs: {fmt_flops(op.flops):>16s}  {op.shape_in} -> {op.shape_out}")
+            lines.append(
+                f"    {op.name:30s}  FLOPs: {fmt_flops(op.flops):>16s}  {op.shape_in} -> {op.shape_out}"
+            )
 
         # Summary for remaining layers
         n_layers = len(result.layers)
@@ -966,63 +1333,106 @@ def format_text(result: SimResult, skip_compute_flow: bool = False) -> str:
         if result.layers:
             l0 = result.layers[0]
             if l0.moe_ffn_flops > l0.attention_flops:
-                lines.append(f"  Dominant: MoE/FFN ({l0.moe_ffn_flops / max(1, l0.attention_flops + l0.moe_ffn_flops) * 100:.1f}%)")
+                lines.append(
+                    f"  Dominant: MoE/FFN ({l0.moe_ffn_flops / max(1, l0.attention_flops + l0.moe_ffn_flops) * 100:.1f}%)"
+                )
             else:
-                lines.append(f"  Dominant: Attention ({l0.attention_flops / max(1, l0.attention_flops + l0.moe_ffn_flops) * 100:.1f}%)")
+                lines.append(
+                    f"  Dominant: Attention ({l0.attention_flops / max(1, l0.attention_flops + l0.moe_ffn_flops) * 100:.1f}%)"
+                )
         if result.mfu_pct < 5:
             lines.append(f"  Note: decode B=1 is memory-bound; low MFU is expected.")
 
         # Per-operator MFU breakdown with kernel-measured times
         if result.per_op_mfu:
-            has_kernel = result.kernel_ms is not None or getattr(result, '_kernel_detail_meta', None) is not None
-            lines.append(f"\n  Per-operator MFU detail (TP={result.tp}, EP={result.ep}):")
+            has_kernel = (
+                result.kernel_ms is not None
+                or getattr(result, "_kernel_detail_meta", None) is not None
+            )
+            lines.append(
+                f"\n  Per-operator MFU detail (TP={result.tp}, EP={result.ep}):"
+            )
             if has_kernel:
-                lines.append(f"  {'Op':28s} {'Cat':>6s} {'FLOPs':>14s} {'Per-GPU':>14s} {'Theo(μs)':>10s} {'Meas(μs)':>10s} {'MFU%':>7s} {'Layer%':>8s}")
+                lines.append(
+                    f"  {'Op':28s} {'Cat':>6s} {'FLOPs':>14s} {'Per-GPU':>14s} {'Theo(μs)':>10s} {'Meas(μs)':>10s} {'MFU%':>7s} {'Layer%':>8s}"
+                )
             else:
-                lines.append(f"  {'Op':28s} {'Cat':>6s} {'FLOPs':>14s} {'Per-GPU':>14s} {'Theo(μs)':>10s} {'Layer%':>8s}")
+                lines.append(
+                    f"  {'Op':28s} {'Cat':>6s} {'FLOPs':>14s} {'Per-GPU':>14s} {'Theo(μs)':>10s} {'Layer%':>8s}"
+                )
             lines.append(f"  {'-'*90}")
             for op in result.per_op_mfu:
-                if has_kernel and op.get('measured_us') is not None and op['measured_us'] > 0:
-                    mfu_op = op['theo_us'] / op['measured_us'] * 100
-                    lines.append(f"  {op['name']:28s} {op['category']:>6s} {fmt_flops(op['flops']):>14s} {fmt_flops(op['flops_per_gpu']):>14s} {op['theo_us']:>9.1f} {op['measured_us']:>9.1f} {mfu_op:>6.1f}% {op['pct_of_layer']:>7.1f}%")
+                if (
+                    has_kernel
+                    and op.get("measured_us") is not None
+                    and op["measured_us"] > 0
+                ):
+                    mfu_op = op["theo_us"] / op["measured_us"] * 100
+                    lines.append(
+                        f"  {op['name']:28s} {op['category']:>6s} {fmt_flops(op['flops']):>14s} {fmt_flops(op['flops_per_gpu']):>14s} {op['theo_us']:>9.1f} {op['measured_us']:>9.1f} {mfu_op:>6.1f}% {op['pct_of_layer']:>7.1f}%"
+                    )
                 else:
-                    lines.append(f"  {op['name']:28s} {op['category']:>6s} {fmt_flops(op['flops']):>14s} {fmt_flops(op['flops_per_gpu']):>14s} {op['theo_us']:>9.1f} {op['pct_of_layer']:>7.1f}%")
+                    lines.append(
+                        f"  {op['name']:28s} {op['category']:>6s} {fmt_flops(op['flops']):>14s} {fmt_flops(op['flops_per_gpu']):>14s} {op['theo_us']:>9.1f} {op['pct_of_layer']:>7.1f}%"
+                    )
 
         # Kernel category mapping explanation
-        kdm = getattr(result, '_kernel_detail_meta', None)
+        kdm = getattr(result, "_kernel_detail_meta", None)
         if kdm is not None:
             # Precise kernel-detail mapping
-            lines.append(f"\n  Kernel-detail → operator mapping (precise, from --kernel-detail):")
+            lines.append(
+                f"\n  Kernel-detail → operator mapping (precise, from --kernel-detail):"
+            )
             for kcat, op_names in kdm.get("direct_matched", {}).items():
                 lines.append(f"    {kcat:20s} → {', '.join(op_names)} (direct)")
             if kdm.get("gemm_distributed"):
-                lines.append(f"    {'gemm_fp8/bf16':20s} → {', '.join(kdm['gemm_distributed'])} (FLOPs-proportional)")
+                lines.append(
+                    f"    {'gemm_fp8/bf16':20s} → {', '.join(kdm['gemm_distributed'])} (FLOPs-proportional)"
+                )
             overhead = kdm.get("overhead_us", 0)
             if overhead > 0:
-                lines.append(f"    {'overhead':20s} {overhead/1000:8.3f} ms (allreduce/quant/rope/etc.)")
+                lines.append(
+                    f"    {'overhead':20s} {overhead/1000:8.3f} ms (allreduce/quant/rope/etc.)"
+                )
             # Unassigned ops
             if result.per_op_mfu:
-                unassigned = [op['name'] for op in result.per_op_mfu if op.get('measured_us') is None]
+                unassigned = [
+                    op["name"]
+                    for op in result.per_op_mfu
+                    if op.get("measured_us") is None
+                ]
                 if unassigned:
-                    lines.append(f"    {'unassigned':20s} {', '.join(unassigned)} (no kernel match)")
+                    lines.append(
+                        f"    {'unassigned':20s} {', '.join(unassigned)} (no kernel match)"
+                    )
         elif result.kernel_ms:
             lines.append(f"\n  Kernel category → operator mapping:")
             for kcat, dur_ms in sorted(result.kernel_ms.items(), key=lambda x: -x[1]):
                 mapped = KERNEL_TO_OP_CATEGORY.get(kcat, [])
-                lines.append(f"    {kcat:20s} {dur_ms:8.3f} ms → {', '.join(mapped) if mapped else '(no compute FLOPs)'}")
+                lines.append(
+                    f"    {kcat:20s} {dur_ms:8.3f} ms → {', '.join(mapped) if mapped else '(no compute FLOPs)'}"
+                )
 
     # One-line summary
     if result.mfu_pct is not None and result.layers:
         l0 = result.layers[0]
-        dom = 'MoE' if l0.moe_ffn_flops > l0.attention_flops else 'Attn'
-        lines.append(f"\n  ▸ Summary: MFU={result.mfu_pct:.1f}% | {dom}-dominant | {result.gpu} | TP={result.tp} EP={result.ep}")
+        dom = "MoE" if l0.moe_ffn_flops > l0.attention_flops else "Attn"
+        lines.append(
+            f"\n  ▸ Summary: MFU={result.mfu_pct:.1f}% | {dom}-dominant | {result.gpu} | TP={result.tp} EP={result.ep}"
+        )
 
     return "\n".join(lines)
 
 
-def format_kernel_flow(kernel_detail: dict, ops: list, peak_tflops: float,
-                       tp: int, ep: int, compress_ratio: int = 0,
-                       fp8_peak_tflops: float = 0) -> str:
+def format_kernel_flow(
+    kernel_detail: dict,
+    ops: list,
+    peak_tflops: float,
+    tp: int,
+    ep: int,
+    compress_ratio: int = 0,
+    fp8_peak_tflops: float = 0,
+) -> str:
     """Format kernel-level MFU table that preserves every kernel row.
 
     This uses per-kernel timing rows and adds:
@@ -1046,10 +1456,18 @@ def format_kernel_flow(kernel_detail: dict, ops: list, peak_tflops: float,
     op_info = {}
     op_idx_by_name = {}
     for i, op in enumerate(ops):
-        per_gpu = op.flops / ep if (op.category == "moe" and "routed" in op.name and ep > 0) else op.flops / tp if tp > 0 else op.flops
+        per_gpu = (
+            op.flops / ep
+            if (op.category == "moe" and "routed" in op.name and ep > 0)
+            else op.flops / tp if tp > 0 else op.flops
+        )
         theo_us = per_gpu / (peak_tflops * 1e6) if peak_tflops > 0 else 0
         meas_us = op_measured_us.get(i, None)
-        mfu = (theo_us / meas_us * 100) if (meas_us and meas_us > 0 and theo_us > 0) else None
+        mfu = (
+            (theo_us / meas_us * 100)
+            if (meas_us and meas_us > 0 and theo_us > 0)
+            else None
+        )
         op_info[i] = {
             "name": op.name,
             "flops": op.flops,
@@ -1096,10 +1514,15 @@ def format_kernel_flow(kernel_detail: dict, ops: list, peak_tflops: float,
             continue
         gemm_categories = ["attention", "moe", "mhc", "norm", "ffn"]
 
-        eligible_indices = [i for i in range(len(ops))
-                          if i not in assigned_op_indices and ops[i].category in gemm_categories]
+        eligible_indices = [
+            i
+            for i in range(len(ops))
+            if i not in assigned_op_indices and ops[i].category in gemm_categories
+        ]
         if not eligible_indices:
-            eligible_indices = [i for i in range(len(ops)) if i not in assigned_op_indices]
+            eligible_indices = [
+                i for i in range(len(ops)) if i not in assigned_op_indices
+            ]
         cat_to_op_indices[cat_key] = eligible_indices
         gemm_eligible_indices.extend(eligible_indices)
     # Deduplicate
@@ -1148,14 +1571,18 @@ def format_kernel_flow(kernel_detail: dict, ops: list, peak_tflops: float,
     type_str = f" [{type_label}]" if type_label else ""
 
     lines.append(f"\n{'=' * 140}")
-    lines.append(f"  Kernel-Level MFU: Layer {layer_id}{type_str}{cr_label}"
-                 f"  —  {total_dur:.0f}us ({total_dur/1000:.2f}ms), {len(kernels)} kernels")
+    lines.append(
+        f"  Kernel-Level MFU: Layer {layer_id}{type_str}{cr_label}"
+        f"  —  {total_dur:.0f}us ({total_dur/1000:.2f}ms), {len(kernels)} kernels"
+    )
     lines.append(f"{'=' * 140}")
 
     # Header
-    lines.append(f"  {'#':>3s} {'Half':>4s} {'Category':<16s} {'Simplified Name':<42s}"
-                 f" {'dur(us)':>8s} {'%':>5s} {'Mapped Op':<24s}"
-                 f" {'FLOPs':>10s} {'Theo(us)':>9s} {'MFU%':>7s} {'shape_in→out':<22s}")
+    lines.append(
+        f"  {'#':>3s} {'Half':>4s} {'Category':<16s} {'Simplified Name':<42s}"
+        f" {'dur(us)':>8s} {'%':>5s} {'Mapped Op':<24s}"
+        f" {'FLOPs':>10s} {'Theo(us)':>9s} {'MFU%':>7s} {'shape_in→out':<22s}"
+    )
     lines.append(f"  {'-' * 138}")
 
     for i, k in enumerate(kernels):
@@ -1175,7 +1602,11 @@ def format_kernel_flow(kernel_detail: dict, ops: list, peak_tflops: float,
             # Determine the reference duration for proportional FLOPs splitting
             # For GEMM categories, use combined gemm duration since they share the pool
             if cat_key in ("gemm_fp8", "gemm_bf16"):
-                ref_dur = gemm_total_dur if gemm_total_dur > 0 else cat_total_dur.get(cat_key, dur_us)
+                ref_dur = (
+                    gemm_total_dur
+                    if gemm_total_dur > 0
+                    else cat_total_dur.get(cat_key, dur_us)
+                )
             else:
                 ref_dur = cat_total_dur.get(cat_key, dur_us)
             kernel_share = dur_us / ref_dur if ref_dur > 0 else 1.0
@@ -1198,9 +1629,19 @@ def format_kernel_flow(kernel_detail: dict, ops: list, peak_tflops: float,
             # Per-kernel FLOPs: operator's FLOPs * this kernel's share of the category
             kernel_flops = oi["per_gpu"] * kernel_share
             # Use fp8 peak for kernels known to compute internally in fp8
-            effective_peak = fp8_peak_tflops if cat_key in FP8_INTERNAL_KERNEL_CATEGORIES and fp8_peak_tflops > 0 else peak_tflops
-            kernel_theo_us = kernel_flops / (effective_peak * 1e6) if effective_peak > 0 else 0
-            mfu = (kernel_theo_us / dur_us * 100) if (dur_us > 0 and kernel_theo_us > 0) else None
+            effective_peak = (
+                fp8_peak_tflops
+                if cat_key in FP8_INTERNAL_KERNEL_CATEGORIES and fp8_peak_tflops > 0
+                else peak_tflops
+            )
+            kernel_theo_us = (
+                kernel_flops / (effective_peak * 1e6) if effective_peak > 0 else 0
+            )
+            mfu = (
+                (kernel_theo_us / dur_us * 100)
+                if (dur_us > 0 and kernel_theo_us > 0)
+                else None
+            )
             flops_str = fmt_flops_short(int(kernel_flops))
             theo_str = f"{kernel_theo_us:.1f}"
             mfu_str = f"{mfu:.1f}%" if mfu is not None else "N/A"
@@ -1217,9 +1658,11 @@ def format_kernel_flow(kernel_detail: dict, ops: list, peak_tflops: float,
             mfu_str = "N/A"
             shape_str = "—"
 
-        lines.append(f"  {i:>3d} {half:>4s} {cat_key:<16s} {name:<42s}"
-                     f" {dur_us:>7.1f} {pct:>4.1f}% {mapped_name:<24s}"
-                     f" {flops_str:>10s} {theo_str:>9s} {mfu_str:>7s} {shape_str:<22s}")
+        lines.append(
+            f"  {i:>3d} {half:>4s} {cat_key:<16s} {name:<42s}"
+            f" {dur_us:>7.1f} {pct:>4.1f}% {mapped_name:<24s}"
+            f" {flops_str:>10s} {theo_str:>9s} {mfu_str:>7s} {shape_str:<22s}"
+        )
 
     return "\n".join(lines)
 
@@ -1250,16 +1693,20 @@ def format_json(result: SimResult) -> str:
         "dtype": result.dtype,
         "total_flops": result.total_flops,
         "embed_flops": result.embed_flops,
-        "layer_template": [
-            {
-                "name": op.name,
-                "flops": op.flops,
-                "shape_in": op.shape_in,
-                "shape_out": op.shape_out,
-                "category": op.category,
-            }
-            for op in result.layers[0].ops
-        ] if result.layers else [],
+        "layer_template": (
+            [
+                {
+                    "name": op.name,
+                    "flops": op.flops,
+                    "shape_in": op.shape_in,
+                    "shape_out": op.shape_out,
+                    "category": op.category,
+                }
+                for op in result.layers[0].ops
+            ]
+            if result.layers
+            else []
+        ),
         "num_layers": len(result.layers),
         "measured_ms": result.measured_ms,
         "mfu_pct": result.mfu_pct,
@@ -1276,23 +1723,55 @@ def format_json(result: SimResult) -> str:
 def main():
     parser = argparse.ArgumentParser(description="Model Compute Simulator")
     parser.add_argument("model", nargs="?", help="Model name (e.g. DeepSeek-V4-Flash)")
-    parser.add_argument("--list-models", action="store_true", help="List known model IDs")
+    parser.add_argument(
+        "--list-models", action="store_true", help="List known model IDs"
+    )
     parser.add_argument("--list-gpus", action="store_true", help="List known GPU types")
     parser.add_argument("--batch-size", type=int, default=1, help="Batch size")
-    parser.add_argument("--seq-len", type=int, default=1, help="Sequence length (1 for decode)")
+    parser.add_argument(
+        "--seq-len", type=int, default=1, help="Sequence length (1 for decode)"
+    )
     parser.add_argument("--tp", type=int, default=8, help="Tensor parallelism")
     parser.add_argument("--dp", type=int, default=1, help="Data parallelism")
     parser.add_argument("--ep", type=int, default=8, help="Expert parallelism")
     parser.add_argument("--gpu", default="h20", help="GPU type")
-    parser.add_argument("--dtype", default="bf16", choices=["bf16", "fp8"], help="Data type")
-    parser.add_argument("--measured-ms", type=float, default=None, help="Measured forward-pass latency (ms)")
-    parser.add_argument("--per-layer-ms", type=float, default=None, help="Measured per-layer latency (ms); overrides --measured-ms for per-layer MFU")
-    parser.add_argument("--kernel-ms", default=None, help="JSON object mapping kernel categories to measured ms")
-    parser.add_argument("--kernel-detail", default=None,
-                        help="JSON string or @file path with per-kernel detail for precise per-operator MFU")
-    parser.add_argument("--kernel-flow", default=None,
-                        help="JSON string or @file path with per-kernel detail; produces kernel-level MFU table preserving all kernel rows")
-    parser.add_argument("--format", dest="fmt", default="text", choices=["text", "json"], help="Output format")
+    parser.add_argument(
+        "--dtype", default="bf16", choices=["bf16", "fp8"], help="Data type"
+    )
+    parser.add_argument(
+        "--measured-ms",
+        type=float,
+        default=None,
+        help="Measured forward-pass latency (ms)",
+    )
+    parser.add_argument(
+        "--per-layer-ms",
+        type=float,
+        default=None,
+        help="Measured per-layer latency (ms); overrides --measured-ms for per-layer MFU",
+    )
+    parser.add_argument(
+        "--kernel-ms",
+        default=None,
+        help="JSON object mapping kernel categories to measured ms",
+    )
+    parser.add_argument(
+        "--kernel-detail",
+        default=None,
+        help="JSON string or @file path with per-kernel detail for precise per-operator MFU",
+    )
+    parser.add_argument(
+        "--kernel-flow",
+        default=None,
+        help="JSON string or @file path with per-kernel detail; produces kernel-level MFU table preserving all kernel rows",
+    )
+    parser.add_argument(
+        "--format",
+        dest="fmt",
+        default="text",
+        choices=["text", "json"],
+        help="Output format",
+    )
 
     args = parser.parse_args()
 
@@ -1312,15 +1791,21 @@ def main():
         for key, val in gpu_specs.items():
             aliases = [k for k, v in GPU_ALIAS.items() if v == key and k != key]
             alias_str = f"  (aliases: {', '.join(aliases)})" if aliases else ""
-            print(f"  {key}: {val['display_name']}  BF16={val['bf16_tflops']} TFLOPS{alias_str}")
+            print(
+                f"  {key}: {val['display_name']}  BF16={val['bf16_tflops']} TFLOPS{alias_str}"
+            )
         return
 
     if not args.model:
-        parser.error("model name is required (use --list-models to see available models)")
+        parser.error(
+            "model name is required (use --list-models to see available models)"
+        )
 
     cfg = resolve_model(args.model, config_index)
     if cfg is None:
-        print(f"Error: model '{args.model}' not found in config index.", file=sys.stderr)
+        print(
+            f"Error: model '{args.model}' not found in config index.", file=sys.stderr
+        )
         print(f"Use --list-models to see available models.", file=sys.stderr)
         sys.exit(1)
 
@@ -1353,8 +1838,16 @@ def main():
         measured_ms = args.per_layer_ms * n_layers
 
     result = simulate(
-        cfg, args.model, args.batch_size, args.seq_len,
-        args.tp, args.dp, args.ep, args.gpu, args.dtype, measured_ms,
+        cfg,
+        args.model,
+        args.batch_size,
+        args.seq_len,
+        args.tp,
+        args.dp,
+        args.ep,
+        args.gpu,
+        args.dtype,
+        measured_ms,
     )
     # If per-layer-ms was used, show the per-layer measured time in output
     if args.per_layer_ms is not None:
@@ -1363,7 +1856,7 @@ def main():
 
     # If kernel-detail was provided, map measured durations to per-operator (precise)
     kernel_flow_detail = None  # for --kernel-flow output
-    if getattr(args, 'kernel_flow', None) is not None:
+    if getattr(args, "kernel_flow", None) is not None:
         # Load kernel flow JSON (same format as kernel-detail)
         kf_input = args.kernel_flow
         if kf_input.startswith("@"):
@@ -1382,14 +1875,15 @@ def main():
             # Use the same representative layer that per_op_mfu is based on
             repr_layer = None
             for lr in result.layers:
-                if getattr(lr, 'compress_ratio', 0) == 128:
+                if getattr(lr, "compress_ratio", 0) == 128:
                     repr_layer = lr
                     break
             if repr_layer is None and result.layers:
                 repr_layer = result.layers[0]
             if repr_layer is not None:
                 kernel_detail_result = map_kernel_detail_to_ops(
-                    kernel_detail, repr_layer.ops, args.tp, args.ep)
+                    kernel_detail, repr_layer.ops, args.tp, args.ep
+                )
                 for i, measured_us in kernel_detail_result["op_measured_us"].items():
                     if i < len(result.per_op_mfu):
                         result.per_op_mfu[i]["measured_us"] = measured_us
@@ -1399,13 +1893,15 @@ def main():
         if result.layers and result.per_op_mfu:
             repr_layer = None
             for lr in result.layers:
-                if getattr(lr, 'compress_ratio', 0) == 128:
+                if getattr(lr, "compress_ratio", 0) == 128:
                     repr_layer = lr
                     break
             if repr_layer is None and result.layers:
                 repr_layer = result.layers[0]
             if repr_layer is not None:
-                op_measured = map_kernel_ms_to_ops(kernel_ms, repr_layer.ops, args.tp, args.ep)
+                op_measured = map_kernel_ms_to_ops(
+                    kernel_ms, repr_layer.ops, args.tp, args.ep
+                )
                 for i, measured_us in op_measured.items():
                     if i < len(result.per_op_mfu):
                         result.per_op_mfu[i]["measured_us"] = measured_us
@@ -1422,7 +1918,7 @@ def main():
         cr_meta = kernel_flow_detail.get("metadata", {}).get("compress_ratio", 0)
         repr_layer = None
         for lr in result.layers:
-            if getattr(lr, 'compress_ratio', 0) == cr_meta:
+            if getattr(lr, "compress_ratio", 0) == cr_meta:
                 repr_layer = lr
                 break
         if repr_layer is None and result.layers:
@@ -1437,10 +1933,17 @@ def main():
                 peak_tflops = gpu_info.get(dtype_key, 0)
                 fp8_peak_tflops = gpu_info.get("fp8_tflops", 0)
 
-            print(format_kernel_flow(
-                kernel_flow_detail, repr_layer.ops, peak_tflops,
-                args.tp, args.ep, compress_ratio=cr_meta,
-                fp8_peak_tflops=fp8_peak_tflops))
+            print(
+                format_kernel_flow(
+                    kernel_flow_detail,
+                    repr_layer.ops,
+                    peak_tflops,
+                    args.tp,
+                    args.ep,
+                    compress_ratio=cr_meta,
+                    fp8_peak_tflops=fp8_peak_tflops,
+                )
+            )
 
 
 if __name__ == "__main__":

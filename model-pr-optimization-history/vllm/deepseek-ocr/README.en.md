@@ -4,7 +4,7 @@
 
 Generated from vllm upstream `origin/main@ef54a4d604`, `git log --name-only -- <model-files>` over model-related paths, and the GitHub Pull Request files API. This page fills the missing `DeepSeek OCR` history entry found from sgl-cookbook coverage.
 
-## Model Implementation File Coverage
+## Implementation File Coverage
 
 | File | PRs traced by git |
 | --- | --- |
@@ -15,7 +15,7 @@ Generated from vllm upstream `origin/main@ef54a4d604`, `git log --name-only -- <
 | `examples/generate/multimodal/vision_language_offline.py` | [#42224](https://github.com/vllm-project/vllm/pull/42224), [#41736](https://github.com/vllm-project/vllm/pull/41736), [#42151](https://github.com/vllm-project/vllm/pull/42151), [#40830](https://github.com/vllm-project/vllm/pull/40830), [#36464](https://github.com/vllm-project/vllm/pull/36464) |
 | `examples/generate/multimodal/vision_language_multi_image_offline.py` | [#36464](https://github.com/vllm-project/vllm/pull/36464) |
 
-## PR Coverage Overview
+## PR Coverage Summary
 
 - git-traced PR count: 31
 - keyword/supplemental PR count: 0
@@ -78,7 +78,7 @@ Generated from vllm upstream `origin/main@ef54a4d604`, `git log --name-only -- <
   - `examples/offline_inference/vision_language.py` modified +69/-20
   - `tests/models/registry.py` modified +3/-0
   - `vllm/model_executor/models/deepencoder.py` added +673/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/models/supported_models.md
@@ -106,11 +106,11 @@ diff -- examples/offline_inference/vision_language.py
 -# Dots-OCR
 -def run_dots_ocr(questions: list[str], modality: str) -> ModelRequestData:
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/deepencoder.py` added +673/-0; `vllm/model_executor/models/deepseek_ocr.py` added +594/-0; `vllm/model_executor/models/deepseek_vl2.py` modified +23/-20; `vllm/model_executor/models/registry.py` modified +1/-0; `vllm/transformers_utils/chat_templates/registry.py` modified +1/-0; `vllm/transformers_utils/chat_templates/template_deepseek_ocr.jinja` added +14/-0; `vllm/transformers_utils/processors/deepseek_ocr.py` added +442/-0
   - tests: `tests/models/registry.py` modified +3/-0
   - docs/bench: `docs/models/supported_models.md` modified +1/-0; `examples/offline_inference/vision_language.py` modified +69/-20
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #27361 - [Bugfix] Fix deepseek-ocr multi-image inference and add `merge_by_field_config=True` with tensor schema support
 
@@ -129,7 +129,7 @@ diff -- examples/offline_inference/vision_language.py
   - `tests/models/multimodal/processing/test_common.py` modified +1/-0
   - `vllm/model_executor/models/deepseek_ocr.py` modified +58/-55
   - `vllm/transformers_utils/processors/deepseek_ocr.py` modified +5/-9
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- examples/offline_inference/vision_language_multi_image.py
@@ -157,11 +157,11 @@ diff -- tests/models/multimodal/processing/test_common.py
          "adept/fuyu-8b",
          "google/gemma-3-4b-it",
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/deepseek_ocr.py` modified +58/-55; `vllm/transformers_utils/processors/deepseek_ocr.py` modified +5/-9
   - tests: `tests/models/multimodal/processing/test_common.py` modified +1/-0
   - docs/bench: `examples/offline_inference/vision_language_multi_image.py` modified +48/-2
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #27560 - [Bugfix] Validate custom logits processor xargs for online serving
 
@@ -180,7 +180,7 @@ diff -- tests/models/multimodal/processing/test_common.py
   - `docs/features/custom_arguments.md` modified +3/-0
   - `docs/features/custom_logitsprocs.md` modified +33/-9
   - `examples/offline_inference/logits_processor/custom.py` modified +17/-2
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/design/logits_processors.md
@@ -210,11 +210,11 @@ diff -- docs/features/custom_arguments.md
 
  Custom arguments passed to `SamplingParams.extra_args` as a `dict` will be visible to any code which has access to `SamplingParams`:
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/entrypoints/openai/protocol.py` modified +2/-2; `vllm/entrypoints/openai/serving_chat.py` modified +8/-0; `vllm/entrypoints/openai/serving_completion.py` modified +9/-0; `vllm/model_executor/models/deepseek_ocr.py` modified +23/-17; `vllm/transformers_utils/configs/deepseek_vl2.py` modified +6/-0; `vllm/utils/torch_utils.py` modified +28/-0; `vllm/v1/sample/logits_processor/__init__.py` modified +20/-2; `vllm/v1/sample/logits_processor/interface.py` modified +8/-0
   - tests: `tests/entrypoints/openai/test_lora_resolvers.py` modified +1/-0; `tests/entrypoints/openai/test_serving_chat.py` modified +1/-0; `tests/v1/logits_processors/test_custom_online.py` modified +29/-0; `tests/v1/logits_processors/utils.py` modified +15/-2
   - docs/bench: `docs/design/logits_processors.md` modified +13/-1; `docs/features/custom_arguments.md` modified +3/-0; `docs/features/custom_logitsprocs.md` modified +33/-9; `examples/offline_inference/logits_processor/custom.py` modified +17/-2; `examples/offline_inference/logits_processor/custom_req.py` modified +8/-7; `examples/offline_inference/logits_processor/custom_req_init.py` modified +8/-7
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #28101 - [Model] Consolidate Deepseek-MoE implementation with DeepSeek-v2
 
@@ -233,7 +233,7 @@ diff -- docs/features/custom_arguments.md
   - `vllm/model_executor/models/deepseek.py` removed +0/-517
   - `vllm/model_executor/models/deepseek_ocr.py` modified +0/-8
   - `vllm/model_executor/models/deepseek_v2.py` modified +139/-13
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- tests/models/registry.py
@@ -265,10 +265,10 @@ diff -- vllm/model_executor/models/deepseek.py
 -# to GPT-NeoX and OPT used by the Meta AI team that trained the model.
 -#
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/deepseek.py` removed +0/-517; `vllm/model_executor/models/deepseek_ocr.py` modified +0/-8; `vllm/model_executor/models/deepseek_v2.py` modified +139/-13; `vllm/model_executor/models/deepseek_vl2.py` modified +0/-8; `vllm/model_executor/models/registry.py` modified +1/-1
   - tests: `tests/models/registry.py` modified +4/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #27583 - Rename clashing method names for vLLM model protocol
 
@@ -287,7 +287,7 @@ diff -- vllm/model_executor/models/deepseek.py
   - `docs/contributing/model/multimodal.md` modified +3/-3
   - `vllm/model_executor/models/apertus.py` modified +4/-4
   - `vllm/model_executor/models/arcee.py` modified +4/-4
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/contributing/model/basic.md
@@ -321,10 +321,10 @@ diff -- docs/contributing/model/multimodal.md
 
 -            def get_multimodal_embeddings(
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/apertus.py` modified +4/-4; `vllm/model_executor/models/arcee.py` modified +4/-4; `vllm/model_executor/models/arctic.py` modified +4/-4; `vllm/model_executor/models/aria.py` modified +3/-3; `vllm/model_executor/models/aya_vision.py` modified +1/-1; `vllm/model_executor/models/baichuan.py` modified +4/-4; `vllm/model_executor/models/bailing_moe.py` modified +4/-4; `vllm/model_executor/models/bamba.py` modified +4/-4
   - docs/bench: `docs/contributing/model/basic.md` modified +2/-2; `docs/contributing/model/multimodal.md` modified +3/-3
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #28617 - [BugFix] DeepSeek-OCR: apply NoRepeatNGramLogitsProcessor to greedy path
 
@@ -337,7 +337,7 @@ diff -- docs/contributing/model/multimodal.md
   - `vllm/model_executor/models/deepseek_ocr.py` modified +1/-1
 - Code diff details:
   - `vllm/model_executor/models/deepseek_ocr.py` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- vllm/model_executor/models/deepseek_ocr.py
@@ -351,9 +351,9 @@ diff -- vllm/model_executor/models/deepseek_ocr.py
      def new_req_logits_processor(
          self,
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/deepseek_ocr.py` modified +1/-1
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #29793 - [Chore] Move tokenizer initialization methods
 
@@ -372,7 +372,7 @@ diff -- vllm/model_executor/models/deepseek_ocr.py
   - `benchmarks/benchmark_serving_structured_output.py` modified +1/-1
   - `tests/compile/test_dynamic_shapes_compilation.py` modified +1/-1
   - `tests/entrypoints/openai/test_chat_template.py` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- benchmarks/benchmark_prefix_caching.py
@@ -396,10 +396,10 @@ diff -- benchmarks/benchmark_serving_structured_output.py
      from backend_request_func import get_tokenizer
 
 ```
-- Files read:
+- Reviewed files:
   - tests: `tests/compile/test_dynamic_shapes_compilation.py` modified +1/-1; `tests/entrypoints/openai/test_chat_template.py` modified +1/-1; `tests/entrypoints/openai/test_lora_resolvers.py` modified +1/-1; `tests/entrypoints/openai/test_return_token_ids.py` modified +1/-1; `tests/entrypoints/openai/test_return_tokens_as_ids.py` modified +1/-1; `tests/entrypoints/openai/test_serving_chat.py` modified +1/-1; `tests/entrypoints/openai/test_token_in_token_out.py` modified +1/-1; `tests/entrypoints/openai/test_tokenization.py` modified +1/-1
   - docs/bench: `benchmarks/benchmark_prefix_caching.py` modified +1/-1; `benchmarks/benchmark_serving_structured_output.py` modified +1/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #30035 - [Chore] Deprecate `merge_by_field_config` arg
 
@@ -418,7 +418,7 @@ diff -- benchmarks/benchmark_serving_structured_output.py
   - `tests/models/multimodal/processing/test_glm4_1v.py` modified +4/-3
   - `tests/models/multimodal/processing/test_tensor_schema.py` modified +2/-3
   - `tests/multimodal/test_cache.py` modified +3/-6
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- tests/models/multimodal/processing/test_common.py
@@ -452,10 +452,10 @@ diff -- tests/models/multimodal/processing/test_glm4_1v.py
 -    assert (
 -        static_outputs["mm_kwargs"].get_data()
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/deepseek_ocr.py` modified +2/-2; `vllm/model_executor/models/interfaces.py` modified +1/-1; `vllm/model_executor/models/lightonocr.py` modified +2/-2; `vllm/model_executor/models/nano_nemotron_vl.py` modified +6/-6; `vllm/model_executor/models/opencua.py` modified +2/-2; `vllm/model_executor/models/paddleocr_vl.py` modified +2/-2; `vllm/model_executor/models/paligemma.py` modified +3/-5; `vllm/model_executor/models/qwen2_5_vl.py` modified +2/-2
   - tests: `tests/models/multimodal/processing/test_common.py` modified +2/-2; `tests/models/multimodal/processing/test_glm4_1v.py` modified +4/-3; `tests/models/multimodal/processing/test_tensor_schema.py` modified +2/-3; `tests/multimodal/test_cache.py` modified +3/-6; `tests/multimodal/test_inputs.py` removed +0/-91
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #30170 - [Chore] Deprecate `SupportsMultiModal.merge_by_field_config`
 
@@ -474,7 +474,7 @@ diff -- tests/models/multimodal/processing/test_glm4_1v.py
   - `vllm/model_executor/models/aya_vision.py` modified +0/-2
   - `vllm/model_executor/models/blip2.py` modified +0/-2
   - `vllm/model_executor/models/chameleon.py` modified +0/-2
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- vllm/model_executor/models/aria.py
@@ -498,9 +498,9 @@ diff -- vllm/model_executor/models/aya_vision.py
          orig_to_new_prefix={
              # mapping for new names in checkpoint saved after transformers v4.52
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/aria.py` modified +0/-2; `vllm/model_executor/models/aya_vision.py` modified +0/-2; `vllm/model_executor/models/blip2.py` modified +0/-2; `vllm/model_executor/models/chameleon.py` modified +0/-2; `vllm/model_executor/models/clip.py` modified +0/-1; `vllm/model_executor/models/cohere2_vision.py` modified +0/-2; `vllm/model_executor/models/deepseek_ocr.py` modified +0/-2; `vllm/model_executor/models/deepseek_vl2.py` modified +0/-2
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #30145 - [Renderer] Separate out `RendererConfig` from `ModelConfig`
 
@@ -519,7 +519,7 @@ diff -- vllm/model_executor/models/aya_vision.py
   - `tests/compile/distributed/test_sequence_parallelism.py` modified +2/-0
   - `tests/compile/test_functionalization.py` modified +5/-1
   - `tests/compile/test_fusion.py` modified +5/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/contributing/model/transcription.md
@@ -553,10 +553,10 @@ diff -- tests/compile/distributed/test_sequence_parallelism.py
 +        renderer_config=RendererConfig(model_config=model_config),
          device_config=device_config,
 ```
-- Files read:
+- Reviewed files:
   - tests: `tests/compile/distributed/test_sequence_parallelism.py` modified +2/-0; `tests/compile/test_functionalization.py` modified +5/-1; `tests/compile/test_fusion.py` modified +5/-1; `tests/compile/test_fusion_attn.py` modified +2/-0; `tests/compile/test_pass_manager.py` modified +6/-2; `tests/compile/test_qk_norm_rope_fusion.py` modified +4/-1; `tests/distributed/test_kvlayout.py` modified +3/-0; `tests/entrypoints/openai/test_chat_template.py` modified +4/-18
   - docs/bench: `docs/contributing/model/transcription.md` modified +6/-6
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #30199 - Revert "[Renderer] Separate out `RendererConfig` from `ModelConfig` (#30145)"
 
@@ -575,7 +575,7 @@ diff -- tests/compile/distributed/test_sequence_parallelism.py
   - `tests/compile/distributed/test_sequence_parallelism.py` modified +0/-2
   - `tests/compile/test_functionalization.py` modified +1/-5
   - `tests/compile/test_fusion.py` modified +1/-5
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/contributing/model/transcription.md
@@ -609,10 +609,10 @@ diff -- tests/compile/distributed/test_sequence_parallelism.py
 -        renderer_config=RendererConfig(model_config=model_config),
          device_config=device_config,
 ```
-- Files read:
+- Reviewed files:
   - tests: `tests/compile/distributed/test_sequence_parallelism.py` modified +0/-2; `tests/compile/test_functionalization.py` modified +1/-5; `tests/compile/test_fusion.py` modified +1/-5; `tests/compile/test_fusion_attn.py` modified +0/-2; `tests/compile/test_pass_manager.py` modified +2/-6; `tests/compile/test_qk_norm_rope_fusion.py` modified +1/-4; `tests/distributed/test_kvlayout.py` modified +0/-3; `tests/entrypoints/openai/test_chat_template.py` modified +18/-4
   - docs/bench: `docs/contributing/model/transcription.md` modified +6/-6
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #31569 - feat: support LoRA for DeepSeek-OCR(Language Model part)
 
@@ -627,7 +627,7 @@ diff -- tests/compile/distributed/test_sequence_parallelism.py
 - Code diff details:
   - `docs/models/supported_models.md` modified +1/-1
   - `vllm/model_executor/models/deepseek_ocr.py` modified +13/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/models/supported_models.md
@@ -656,10 +656,10 @@ diff -- vllm/model_executor/models/deepseek_ocr.py
 @@ -343,7 +345,7 @@ def get_replacement_deepseek_vl2(item_idx: int):
      info=DeepseekOCRProcessingInfo,
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/deepseek_ocr.py` modified +13/-1
   - docs/bench: `docs/models/supported_models.md` modified +1/-1
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #31947 - [Model] Standardize common vision encoders
 
@@ -678,7 +678,7 @@ diff -- vllm/model_executor/models/deepseek_ocr.py
   - `vllm/model_executor/models/deepencoder.py` modified +3/-0
   - `vllm/model_executor/models/deepseek_ocr.py` modified +1/-0
   - `vllm/model_executor/models/hyperclovax_vision.py` modified +9/-10
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- vllm/model_executor/models/clip.py
@@ -712,9 +712,9 @@ diff -- vllm/model_executor/models/deepencoder.py
 +        multimodal_config: MultiModalConfig | None = None,
          *,
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/clip.py` modified +57/-12; `vllm/model_executor/models/deepencoder.py` modified +3/-0; `vllm/model_executor/models/deepseek_ocr.py` modified +1/-0; `vllm/model_executor/models/hyperclovax_vision.py` modified +9/-10; `vllm/model_executor/models/isaac.py` modified +1/-1; `vllm/model_executor/models/keye.py` modified +2/-0; `vllm/model_executor/models/lightonocr.py` modified +3/-1; `vllm/model_executor/models/llava.py` modified +7/-2
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #32016 - [Model] Remove redundant None check in DeepSeekOCR image input processing
 
@@ -727,7 +727,7 @@ diff -- vllm/model_executor/models/deepencoder.py
   - `vllm/model_executor/models/deepseek_ocr.py` modified +10/-13
 - Code diff details:
   - `vllm/model_executor/models/deepseek_ocr.py` modified +10/-13
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- vllm/model_executor/models/deepseek_ocr.py
@@ -746,9 +746,9 @@ diff -- vllm/model_executor/models/deepseek_ocr.py
 -                    "base_size": base_size,
 -                },
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/deepseek_ocr.py` modified +10/-13
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #32327 - [1/N] Reorganize multimodal processing code
 
@@ -767,7 +767,7 @@ diff -- vllm/model_executor/models/deepseek_ocr.py
   - `docs/contributing/model/multimodal.md` modified +4/-6
   - `docs/design/mm_processing.md` modified +1/-1
   - `tests/multimodal/test_processing.py` modified +2/-2
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/api/README.md
@@ -798,11 +798,11 @@ diff -- docs/contributing/model/multimodal.md
 +Override the abstract methods [get_dummy_text][vllm.multimodal.processing.BaseDummyInputsBuilder.get_dummy_text] and [get_dummy_mm_data][vllm.multimodal.processing.BaseDummyInputsBuilder.get_dummy_mm_data] to construct dummy inputs. These dummy inputs should result in the worst-case memory usage of the model so that vLLM can reserve the correct amount of memory for it.
 
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/benchmarks/mm_processor.py` modified +1/-1; `vllm/model_executor/models/aria.py` modified +1/-1; `vllm/model_executor/models/audioflamingo3.py` modified +1/-1; `vllm/model_executor/models/aya_vision.py` modified +6/-3; `vllm/model_executor/models/bagel.py` modified +1/-1; `vllm/model_executor/models/blip2.py` modified +1/-1; `vllm/model_executor/models/chameleon.py` modified +1/-1; `vllm/model_executor/models/clip.py` modified +1/-1
   - tests: `tests/multimodal/test_processing.py` modified +2/-2
   - docs/bench: `docs/api/README.md` modified +0/-4; `docs/contributing/model/multimodal.md` modified +4/-6; `docs/design/mm_processing.md` modified +1/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #32632 - [1/N] Initialize MM components in context managers (A-D)
 
@@ -821,7 +821,7 @@ diff -- docs/contributing/model/multimodal.md
   - `vllm/model_executor/models/audioflamingo3.py` modified +13/-15
   - `vllm/model_executor/models/aya_vision.py` modified +17/-18
   - `vllm/model_executor/models/bagel.py` modified +36/-43
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- vllm/model_executor/models/aria.py
@@ -855,9 +855,9 @@ diff -- vllm/model_executor/models/audioflamingo3.py
 -        self.language_model = init_vllm_registered_model(
 -            vllm_config=vllm_config,
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/aria.py` modified +21/-32; `vllm/model_executor/models/audioflamingo3.py` modified +13/-15; `vllm/model_executor/models/aya_vision.py` modified +17/-18; `vllm/model_executor/models/bagel.py` modified +36/-43; `vllm/model_executor/models/blip2.py` modified +24/-30; `vllm/model_executor/models/clip.py` modified +23/-24; `vllm/model_executor/models/cohere2_vision.py` modified +17/-18; `vllm/model_executor/models/deepseek_ocr.py` modified +40/-41
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #31972 - [Models]: Make Multimodal config implicit in ViT implementation
 
@@ -876,7 +876,7 @@ diff -- vllm/model_executor/models/audioflamingo3.py
   - `vllm/model_executor/models/clip.py` modified +4/-24
   - `vllm/model_executor/models/deepencoder.py` modified +0/-3
   - `vllm/model_executor/models/deepseek_ocr.py` modified +0/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- vllm/model_executor/layers/attention/mm_encoder_attention.py
@@ -910,9 +910,9 @@ diff -- vllm/model_executor/models/clip.py
      get_num_selected_vision_tokens,
 +    is_vit_use_data_parallel,
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/layers/attention/mm_encoder_attention.py` modified +0/-9; `vllm/model_executor/models/clip.py` modified +4/-24; `vllm/model_executor/models/deepencoder.py` modified +0/-3; `vllm/model_executor/models/deepseek_ocr.py` modified +0/-1; `vllm/model_executor/models/dots_ocr.py` modified +5/-34; `vllm/model_executor/models/eagle2_5_vl.py` modified +0/-1; `vllm/model_executor/models/ernie45_vl.py` modified +1/-12; `vllm/model_executor/models/glm4_1v.py` modified +5/-30
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #33063 - [Chore] Update type annotation of `input_ids` in model forward
 
@@ -931,7 +931,7 @@ diff -- vllm/model_executor/models/clip.py
   - `tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_gemma_embedding.py` modified +1/-1
   - `vllm/model_executor/models/afmoe.py` modified +2/-2
   - `vllm/model_executor/models/apertus.py` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/contributing/model/basic.md
@@ -955,11 +955,11 @@ diff -- tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_gemma_embeddi
          intermediate_tensors: IntermediateTensors | None = None,
          inputs_embeds: torch.Tensor | None = None,
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/afmoe.py` modified +2/-2; `vllm/model_executor/models/apertus.py` modified +1/-1; `vllm/model_executor/models/arcee.py` modified +1/-1; `vllm/model_executor/models/arctic.py` modified +2/-2; `vllm/model_executor/models/aria.py` modified +1/-1; `vllm/model_executor/models/audioflamingo3.py` modified +1/-1; `vllm/model_executor/models/aya_vision.py` modified +1/-1; `vllm/model_executor/models/bagel.py` modified +1/-1
   - tests: `tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_gemma_embedding.py` modified +1/-1
   - docs/bench: `docs/contributing/model/basic.md` modified +1/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #33909 - [Models] Consolidate Deepseek-OCR2 processor
 
@@ -978,7 +978,7 @@ diff -- tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_gemma_embeddi
   - `vllm/model_executor/models/deepseek_ocr.py` modified +10/-2
   - `vllm/model_executor/models/deepseek_ocr2.py` modified +12/-4
   - `vllm/transformers_utils/processors/deepseek_ocr.py` modified +29/-9
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- vllm/model_executor/models/deepencoder2.py
@@ -1007,9 +1007,9 @@ diff -- vllm/model_executor/models/deepseek_ocr.py
 +IMAGE_SIZE = 640
  _IMAGE_TOKEN = "<image>"
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/deepencoder2.py` modified +1/-1; `vllm/model_executor/models/deepseek_ocr.py` modified +10/-2; `vllm/model_executor/models/deepseek_ocr2.py` modified +12/-4; `vllm/transformers_utils/processors/deepseek_ocr.py` modified +29/-9; `vllm/transformers_utils/processors/deepseek_ocr2.py` removed +0/-320
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #34330 - [Multimodal] Expose `mm_processor_kwargs` for `DummyInputsBuilder`
 
@@ -1028,7 +1028,7 @@ diff -- vllm/model_executor/models/deepseek_ocr.py
   - `vllm/model_executor/models/audioflamingo3.py` modified +4/-1
   - `vllm/model_executor/models/aya_vision.py` modified +1/-0
   - `vllm/model_executor/models/bagel.py` modified +1/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- vllm/model_executor/models/aria.py
@@ -1055,9 +1055,9 @@ diff -- vllm/model_executor/models/audioflamingo3.py
          audio_len = MAX_AUDIO_LEN * sampling_rate
          num_audios = mm_counts.get("audio", 0)
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/aria.py` modified +1/-0; `vllm/model_executor/models/audioflamingo3.py` modified +4/-1; `vllm/model_executor/models/aya_vision.py` modified +1/-0; `vllm/model_executor/models/bagel.py` modified +1/-0; `vllm/model_executor/models/bee.py` modified +1/-0; `vllm/model_executor/models/blip2.py` modified +1/-0; `vllm/model_executor/models/chameleon.py` modified +1/-0; `vllm/model_executor/models/clip.py` modified +1/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #34085 - Fix DeepSeek-OCR tensor validation for all size variants
 
@@ -1070,7 +1070,7 @@ diff -- vllm/model_executor/models/audioflamingo3.py
   - `vllm/model_executor/models/deepseek_ocr.py` modified +11/-1
 - Code diff details:
   - `vllm/model_executor/models/deepseek_ocr.py` modified +11/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- vllm/model_executor/models/deepseek_ocr.py
@@ -1089,9 +1089,9 @@ diff -- vllm/model_executor/models/deepseek_ocr.py
 +        else:
 +            image_size = base_size
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/deepseek_ocr.py` modified +11/-1
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #35025 - [Refactor] Simplify dummy data generation
 
@@ -1110,7 +1110,7 @@ diff -- vllm/model_executor/models/deepseek_ocr.py
   - `tests/models/multimodal/processing/test_audioflamingo3.py` modified +1/-1
   - `tests/models/multimodal/processing/test_common.py` modified +2/-0
   - `tests/models/multimodal/processing/test_tensor_schema.py` modified +1/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/contributing/model/multimodal.md
@@ -1139,11 +1139,11 @@ diff -- tests/models/multimodal/processing/test_audioflamingo3.py
      assert "audio" in dummy_data
      assert len(dummy_data["audio"]) == 2
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/config/multimodal.py` modified +36/-20; `vllm/model_executor/models/aria.py` modified +2/-3; `vllm/model_executor/models/audioflamingo3.py` modified +3/-6; `vllm/model_executor/models/aya_vision.py` modified +2/-3; `vllm/model_executor/models/bagel.py` modified +2/-3; `vllm/model_executor/models/bee.py` modified +2/-3; `vllm/model_executor/models/blip2.py` modified +2/-3; `vllm/model_executor/models/chameleon.py` modified +2/-3
   - tests: `tests/models/multimodal/processing/test_audioflamingo3.py` modified +1/-1; `tests/models/multimodal/processing/test_common.py` modified +2/-0; `tests/models/multimodal/processing/test_tensor_schema.py` modified +1/-0
   - docs/bench: `docs/contributing/model/multimodal.md` modified +11/-11
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #36024 - [Misc] Lazy import registered processors
 
@@ -1162,7 +1162,7 @@ diff -- tests/models/multimodal/processing/test_audioflamingo3.py
   - `vllm/model_executor/models/deepseek_vl2.py` modified +1/-2
   - `vllm/model_executor/models/fireredasr2.py` modified +1/-1
   - `vllm/model_executor/models/funasr.py` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- tests/models/registry.py
@@ -1196,10 +1196,10 @@ diff -- vllm/model_executor/models/deepseek_vl2.py
 -        return self.ctx.get_hf_processor(DeepseekVLV2Processor, **kwargs)
 +        return self.ctx.get_hf_processor(**kwargs)
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/deepseek_vl2.py` modified +1/-2; `vllm/model_executor/models/fireredasr2.py` modified +1/-1; `vllm/model_executor/models/funasr.py` modified +1/-1; `vllm/transformers_utils/processor.py` modified +31/-1; `vllm/transformers_utils/processors/__init__.py` modified +28/-10; `vllm/transformers_utils/processors/bagel.py` modified +0/-4; `vllm/transformers_utils/processors/deepseek_ocr.py` modified +1/-4; `vllm/transformers_utils/processors/deepseek_vl2.py` modified +1/-4
   - tests: `tests/models/registry.py` modified +2/-5
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #36670 - [Bugfix][Model] Fix DeepSeek-OCR TensorSchema crash on empty images_crop
 
@@ -1214,7 +1214,7 @@ diff -- vllm/model_executor/models/deepseek_vl2.py
 - Code diff details:
   - `tests/models/multimodal/processing/test_deepseek_ocr.py` added +134/-0
   - `vllm/model_executor/models/deepseek_ocr.py` modified +1/-4
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- tests/models/multimodal/processing/test_deepseek_ocr.py
@@ -1246,10 +1246,10 @@ diff -- vllm/model_executor/models/deepseek_ocr.py
          return DeepseekOCRImagePixelInputs(
              type="pixel_values",
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/deepseek_ocr.py` modified +1/-4
   - tests: `tests/models/multimodal/processing/test_deepseek_ocr.py` added +134/-0
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #37289 - [Bugfix] Standardize custom HF Processor init
 
@@ -1268,7 +1268,7 @@ diff -- vllm/model_executor/models/deepseek_ocr.py
   - `vllm/model_executor/models/deepseek_ocr2.py` modified +3/-1
   - `vllm/model_executor/models/glm4v.py` modified +11/-3
   - `vllm/model_executor/models/qwen_vl.py` modified +11/-3
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- vllm/model_executor/models/deepseek_ocr.py
@@ -1298,9 +1298,9 @@ diff -- vllm/model_executor/models/deepseek_ocr2.py
 
      def get_supported_mm_limits(self) -> Mapping[str, int | None]:
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/deepseek_ocr.py` modified +3/-1; `vllm/model_executor/models/deepseek_ocr2.py` modified +3/-1; `vllm/model_executor/models/glm4v.py` modified +11/-3; `vllm/model_executor/models/qwen_vl.py` modified +11/-3; `vllm/tokenizers/qwen_vl.py` modified +4/-0; `vllm/transformers_utils/processors/glm4v.py` modified +2/-7; `vllm/transformers_utils/processors/qwen_vl.py` modified +5/-18
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #35182 - [Misc] Reorganize inputs
 
@@ -1319,7 +1319,7 @@ diff -- vllm/model_executor/models/deepseek_ocr2.py
   - `docs/contributing/model/transcription.md` modified +2/-2
   - `docs/features/multimodal_inputs.md` modified +1/-1
   - `examples/pooling/token_embed/jina_embeddings_v4_offline.py` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/api/README.md
@@ -1353,11 +1353,11 @@ diff -- docs/contributing/model/transcription.md
 
 -Implement the prompt construction via [get_generation_prompt][vllm.model_executor.models.interfaces.SupportsTranscription.get_generation_prompt]. The server passes you the resampled waveform and task parameters; you return a valid [PromptType][vllm.inputs.data.PromptType]. There are two common patterns:
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/beam_search.py` modified +18/-13; `vllm/benchmarks/datasets.py` modified +1/-1; `vllm/engine/protocol.py` modified +4/-4; `vllm/entrypoints/anthropic/serving.py` modified +4/-4; `vllm/entrypoints/chat_utils.py` modified +2/-1; `vllm/entrypoints/llm.py` modified +22/-22; `vllm/entrypoints/openai/chat_completion/serving.py` modified +11/-11; `vllm/entrypoints/openai/completion/serving.py` modified +15/-17
   - tests: `tests/entrypoints/openai/chat_completion/test_chat_error.py` modified +1/-1; `tests/entrypoints/openai/chat_completion/test_serving_chat.py` modified +8/-8; `tests/entrypoints/openai/responses/test_serving_responses.py` modified +5/-5; `tests/entrypoints/serve/render/test_launch_render.py` modified +0/-14; `tests/entrypoints/test_chat_utils.py` modified +1/-1; `tests/models/multimodal/generation/test_pixtral.py` modified +1/-1; `tests/models/multimodal/processing/test_common.py` modified +6/-8; `tests/plugins/bge_m3_sparse_plugin/bge_m3_sparse_processor/sparse_embeddings_processor.py` modified +2/-4
   - docs/bench: `docs/api/README.md` modified +3/-12; `docs/contributing/model/transcription.md` modified +2/-2; `docs/features/multimodal_inputs.md` modified +1/-1; `examples/pooling/token_embed/jina_embeddings_v4_offline.py` modified +1/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #36464 - [Examples] Resettle generate examples.
 
@@ -1376,7 +1376,7 @@ diff -- docs/contributing/model/transcription.md
   - `.buildkite/test_areas/misc.yaml` modified +4/-4
   - `.buildkite/test_areas/model_runner_v2.yaml` modified +4/-4
   - `.buildkite/test_areas/models_basic.yaml` modified +5/-5
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .buildkite/test-amd.yaml
@@ -1410,10 +1410,10 @@ diff -- .buildkite/test_areas/misc.yaml
       # for pooling models
      - python3 pooling/embed/vision_embedding_offline.py --seed 0
 ```
-- Files read:
+- Reviewed files:
   - docs/bench: `.buildkite/test-amd.yaml` modified +14/-14; `.buildkite/test_areas/misc.yaml` modified +4/-4; `.buildkite/test_areas/model_runner_v2.yaml` modified +4/-4; `.buildkite/test_areas/models_basic.yaml` modified +5/-5; `docs/features/multimodal_inputs.md` modified +7/-7; `docs/features/reasoning_outputs.md` modified +1/-1; `docs/serving/openai_compatible_server.md` modified +3/-3; `examples/generate/batched_chat_completions_online.py` renamed +0/-0
   - other: `.github/mergify.yml` modified +1/-5
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #40830 - [MM][CG] Support ViT CG for Qwen2.5-VL
 
@@ -1432,7 +1432,7 @@ diff -- .buildkite/test_areas/misc.yaml
   - `examples/generate/multimodal/vision_language_offline.py` modified +1/-0
   - `tests/models/multimodal/generation/test_qwen2_5_vl.py` modified +95/-0
   - `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +12/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/design/cuda_graphs_multimodal.md
@@ -1458,11 +1458,11 @@ diff -- examples/generate/multimodal/vision_language_offline.py
 
 
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/qwen2_5_vl.py` modified +429/-21
   - tests: `tests/models/multimodal/generation/test_qwen2_5_vl.py` modified +95/-0; `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +12/-1
   - docs/bench: `docs/design/cuda_graphs_multimodal.md` modified +2/-0; `examples/generate/multimodal/vision_language_offline.py` modified +1/-0
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #41736 - [MM][CG] Support ViT CG for Qwen2-VL
 
@@ -1481,7 +1481,7 @@ diff -- examples/generate/multimodal/vision_language_offline.py
   - `examples/generate/multimodal/vision_language_offline.py` modified +1/-0
   - `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +12/-0
   - `vllm/model_executor/models/qwen2_vl.py` modified +300/-20
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/design/cuda_graphs_multimodal.md
@@ -1509,11 +1509,11 @@ diff -- examples/generate/multimodal/vision_language_offline.py
      "qwen3_5_moe",
  ]
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/qwen2_vl.py` modified +300/-20
   - tests: `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +12/-0
   - docs/bench: `docs/design/cuda_graphs_multimodal.md` modified +2/-1; `examples/generate/multimodal/vision_language_offline.py` modified +1/-0
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #42151 - [MM][Perf][CG] Support ViT full CUDA graph for Qwen3.5
 
@@ -1532,7 +1532,7 @@ diff -- examples/generate/multimodal/vision_language_offline.py
   - `examples/generate/multimodal/vision_language_offline.py` modified +93/-1
   - `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +15/-3
   - `vllm/model_executor/models/qwen3_5.py` modified +2/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/design/cuda_graphs_multimodal.md
@@ -1563,11 +1563,11 @@ diff -- examples/generate/multimodal/vision_language_offline.py
 +        max_num_seqs=5,
 +        mm_processor_kwargs={
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/qwen3_5.py` modified +2/-0
   - tests: `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +15/-3
   - docs/bench: `docs/design/cuda_graphs_multimodal.md` modified +2/-1; `examples/generate/multimodal/vision_language_offline.py` modified +93/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #42224 - [MM][CG] Enable encoder Cudagraph for Step3VL
 
@@ -1586,7 +1586,7 @@ diff -- examples/generate/multimodal/vision_language_offline.py
   - `examples/generate/multimodal/vision_language_offline.py` modified +1/-0
   - `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +12/-0
   - `vllm/model_executor/models/interfaces.py` modified +21/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/design/cuda_graphs_multimodal.md
@@ -1614,8 +1614,8 @@ diff -- examples/generate/multimodal/vision_language_offline.py
 
 
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/interfaces.py` modified +21/-0; `vllm/model_executor/models/step3_vl.py` modified +323/-2; `vllm/model_executor/models/step_vl.py` modified +1/-0; `vllm/model_executor/models/utils.py` modified +16/-0; `vllm/v1/worker/encoder_cudagraph.py` modified +8/-20
   - tests: `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +12/-0
   - docs/bench: `docs/design/cuda_graphs_multimodal.md` modified +2/-0; `examples/generate/multimodal/vision_language_offline.py` modified +1/-0
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.

@@ -22,12 +22,11 @@ from __future__ import annotations
 
 import argparse
 import json
-import math
 import os
 import re
 import sys
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 
 # ---------------------------------------------------------------------------
 # Paths
@@ -40,6 +39,7 @@ GPU_SPECS_PATH = os.path.join(REF_DIR, "gpu-specs.json")
 # ---------------------------------------------------------------------------
 # GPU specs loader
 # ---------------------------------------------------------------------------
+
 
 def load_gpu_specs() -> Dict:
     """Load bundled GPU specs."""
@@ -76,9 +76,11 @@ GPU_ALIAS = {
 # Data classes
 # ---------------------------------------------------------------------------
 
+
 @dataclass
 class ServerArgs:
     """Key serving parameters extracted from server_args line."""
+
     model_path: str = ""
     tp_size: int = 1
     pp_size: int = 1
@@ -96,8 +98,9 @@ class ServerArgs:
 @dataclass
 class MemCheckpoint:
     """A memory data point extracted from the log."""
+
     rank: int
-    label: str          # e.g. "load_weight_begin", "memory_pool_end", "cuda_graph_end"
+    label: str  # e.g. "load_weight_begin", "memory_pool_end", "cuda_graph_end"
     avail_gb: float
     extra: Dict = field(default_factory=dict)
 
@@ -105,6 +108,7 @@ class MemCheckpoint:
 @dataclass
 class MemoryProfiling:
     """Parsed from 'Memory profiling:' line (newer sglang versions)."""
+
     rank: int
     available_gpu_memory_gb: float
     total_gpu_memory_gb: float
@@ -115,6 +119,7 @@ class MemoryProfiling:
 @dataclass
 class SwKvMemoryCalc:
     """Parsed from 'SW KV memory calculation:' line (SWA models)."""
+
     rank: int
     bytes_per_full_token: float
     available_bytes_gb: float
@@ -124,6 +129,7 @@ class SwKvMemoryCalc:
 @dataclass
 class CudaGraphInfo:
     """Parsed from 'Capture cuda graph end.' line."""
+
     rank: int
     mem_usage_gb: float
     avail_gb: float
@@ -133,6 +139,7 @@ class CudaGraphInfo:
 @dataclass
 class FinalInfo:
     """Parsed from the final 'max_total_num_tokens=' line."""
+
     max_total_num_tokens: int = 0
     chunked_prefill_size: int = 0
     max_prefill_tokens: int = 0
@@ -144,6 +151,7 @@ class FinalInfo:
 @dataclass
 class NvidiaSmiEntry:
     """One row from nvidia-smi query output."""
+
     index: int
     memory_used_mib: int
     memory_free_mib: int
@@ -152,6 +160,7 @@ class NvidiaSmiEntry:
 @dataclass
 class ModelConfig:
     """Key model parameters from config.json for KV cache calculation."""
+
     num_hidden_layers: int = 0
     hidden_size: int = 0
     num_attention_heads: int = 0
@@ -159,7 +168,7 @@ class ModelConfig:
     head_dim: int = 0
     attention_type: str = "gqa"  # "gqa", "mla", "csa_hca"
     # MLA specific
-    kv_lora_rank: int = 0        # aka compress_dim / q_lora_rank for MLA
+    kv_lora_rank: int = 0  # aka compress_dim / q_lora_rank for MLA
     # SWA/CSA/HCA specific
     compress_ratios: List = field(default_factory=list)
     mhc_bottleneck_dim: int = 0
@@ -172,6 +181,7 @@ class ModelConfig:
 # ---------------------------------------------------------------------------
 # Log parsing
 # ---------------------------------------------------------------------------
+
 
 def parse_server_args(line: str) -> ServerArgs:
     """Extract key serving parameters from the server_args= line."""
@@ -211,9 +221,13 @@ def parse_server_args(line: str) -> ServerArgs:
 
 def parse_load_weight_begin(line: str) -> Optional[MemCheckpoint]:
     """Parse: [timestamp TP0] Load weight begin. avail mem=93.61 GB"""
-    m = re.search(r"\[.*TP(\d+)\]\s+Load weight begin\.\s+avail mem=([\d.]+)\s+GB", line)
+    m = re.search(
+        r"\[.*TP(\d+)\]\s+Load weight begin\.\s+avail mem=([\d.]+)\s+GB", line
+    )
     if m:
-        return MemCheckpoint(rank=int(m.group(1)), label="load_weight_begin", avail_gb=float(m.group(2)))
+        return MemCheckpoint(
+            rank=int(m.group(1)), label="load_weight_begin", avail_gb=float(m.group(2))
+        )
     return None
 
 
@@ -264,7 +278,9 @@ def parse_memory_pool_end(line: str) -> Optional[MemCheckpoint]:
     """Parse: [timestamp TP0] Memory pool end. avail mem=10.18 GB"""
     m = re.search(r"\[.*TP(\d+)\]\s+Memory pool end\.\s+avail mem=([\d.]+)\s+GB", line)
     if m:
-        return MemCheckpoint(rank=int(m.group(1)), label="memory_pool_end", avail_gb=float(m.group(2)))
+        return MemCheckpoint(
+            rank=int(m.group(1)), label="memory_pool_end", avail_gb=float(m.group(2))
+        )
     return None
 
 
@@ -323,7 +339,11 @@ def parse_nvidia_smi(text: str) -> List[NvidiaSmiEntry]:
                 idx = int(parts[0])
                 used = int(re.sub(r"\s*MiB", "", parts[1]))
                 free = int(re.sub(r"\s*MiB", "", parts[2]))
-                entries.append(NvidiaSmiEntry(index=idx, memory_used_mib=used, memory_free_mib=free))
+                entries.append(
+                    NvidiaSmiEntry(
+                        index=idx, memory_used_mib=used, memory_free_mib=free
+                    )
+                )
             except (ValueError, IndexError):
                 continue
     return entries
@@ -333,9 +353,11 @@ def parse_nvidia_smi(text: str) -> List[NvidiaSmiEntry]:
 # Log processing
 # ---------------------------------------------------------------------------
 
+
 @dataclass
 class ParsedLog:
     """All extracted data from a serving log."""
+
     server_args: Optional[ServerArgs] = None
     checkpoints: List[MemCheckpoint] = field(default_factory=list)
     memory_profilings: List[MemoryProfiling] = field(default_factory=list)
@@ -399,6 +421,7 @@ def parse_log(text: str) -> ParsedLog:
 # Model config loader
 # ---------------------------------------------------------------------------
 
+
 def load_model_config(config_json_path: str) -> ModelConfig:
     """Load model parameters from a HuggingFace config.json."""
     with open(config_json_path) as f:
@@ -409,10 +432,14 @@ def load_model_config(config_json_path: str) -> ModelConfig:
     mc.hidden_size = cfg.get("hidden_size", 0)
     mc.num_attention_heads = cfg.get("num_attention_heads", 0)
     mc.num_key_value_heads = cfg.get("num_key_value_heads", mc.num_attention_heads)
-    mc.head_dim = cfg.get("head_dim", cfg.get("hidden_size", 0) // cfg.get("num_attention_heads", 1))
+    mc.head_dim = cfg.get(
+        "head_dim", cfg.get("hidden_size", 0) // cfg.get("num_attention_heads", 1)
+    )
     mc.moe = cfg.get("is_moe", False) or "num_experts" in cfg
     mc.num_experts = cfg.get("num_experts", 0)
-    mc.num_experts_per_tok = cfg.get("num_experts_per_tok", cfg.get("num_selected_experts", 0))
+    mc.num_experts_per_tok = cfg.get(
+        "num_experts_per_tok", cfg.get("num_selected_experts", 0)
+    )
 
     # MLA (DeepSeek-V3 style)
     mc.kv_lora_rank = cfg.get("kv_lora_rank", 0)
@@ -432,12 +459,18 @@ def load_model_config(config_json_path: str) -> ModelConfig:
 # KV cache byte calculation
 # ---------------------------------------------------------------------------
 
+
 def kv_dtype_bytes(dtype_str: str) -> int:
     """Return bytes per element for a KV cache dtype string."""
     dtype_str = dtype_str.lower().strip("'\"")
     if "fp8" in dtype_str or "e4m3" in dtype_str or "e5m2" in dtype_str:
         return 1
-    if "fp16" in dtype_str or "bf16" in dtype_str or "float16" in dtype_str or "bfloat16" in dtype_str:
+    if (
+        "fp16" in dtype_str
+        or "bf16" in dtype_str
+        or "float16" in dtype_str
+        or "bfloat16" in dtype_str
+    ):
         return 2
     if "fp32" in dtype_str or "float32" in dtype_str:
         return 4
@@ -485,14 +518,16 @@ def calc_kv_bytes_per_token(
 # Memory decomposition
 # ---------------------------------------------------------------------------
 
+
 @dataclass
 class MemoryBreakdown:
     """Decomposed GPU memory for a single rank."""
+
     rank: int = 0
 
     # Source data
-    gpu_hbm_gib: float = 0.0      # total GPU HBM from spec
-    gpu_hbm_mib: float = 0.0      # total GPU HBM in MiB
+    gpu_hbm_gib: float = 0.0  # total GPU HBM from spec
+    gpu_hbm_mib: float = 0.0  # total GPU HBM in MiB
 
     # Decomposed categories (GiB)
     framework_overhead_gib: float = 0.0
@@ -577,7 +612,9 @@ def decompose_memory(
     # Framework overhead
     if avail_before_weight is not None:
         bd.framework_overhead_gib = gpu_hbm_gib - avail_before_weight
-        bd.derivation["framework_overhead"] = f"{gpu_hbm_gib:.2f} - {avail_before_weight:.2f} (HBM - avail_before_weight)"
+        bd.derivation["framework_overhead"] = (
+            f"{gpu_hbm_gib:.2f} - {avail_before_weight:.2f} (HBM - avail_before_weight)"
+        )
     else:
         bd.derivation["framework_overhead"] = "avail_before_weight not found in log"
 
@@ -595,7 +632,9 @@ def decompose_memory(
 
     if mp_info:
         kv_pool_gb = mp_info.rest_memory_gb
-        bd.derivation["kv_pool"] = f"rest_memory from Memory profiling line (rank {mp_info.rank})"
+        bd.derivation["kv_pool"] = (
+            f"rest_memory from Memory profiling line (rank {mp_info.rank})"
+        )
 
     # Method 2: from SW KV memory calculation
     if kv_pool_gb is None:
@@ -608,13 +647,19 @@ def decompose_memory(
             sw_info = parsed.sw_kv_calcs[0]
         if sw_info:
             kv_pool_gb = sw_info.available_bytes_gb
-            bd.derivation["kv_pool"] = f"available_bytes from SW KV memory calculation (rank {sw_info.rank})"
+            bd.derivation["kv_pool"] = (
+                f"available_bytes from SW KV memory calculation (rank {sw_info.rank})"
+            )
 
     if kv_pool_gb is not None:
         bd.kv_pool_gib = kv_pool_gb
 
     # Model weights
-    if avail_before_weight is not None and avail_after_pool is not None and kv_pool_gb is not None:
+    if (
+        avail_before_weight is not None
+        and avail_after_pool is not None
+        and kv_pool_gb is not None
+    ):
         # weight + kv_pool = avail_before_weight - avail_after_pool
         # weight = (avail_before_weight - avail_after_pool) - kv_pool
         bd.model_weights_gib = (avail_before_weight - avail_after_pool) - kv_pool_gb
@@ -638,7 +683,9 @@ def decompose_memory(
     # CUDA Graph
     if cg_info:
         bd.cuda_graph_gib = cg_info.mem_usage_gb
-        bd.derivation["cuda_graph"] = f"reported mem_usage from Capture cuda graph end (rank {cg_info.rank})"
+        bd.derivation["cuda_graph"] = (
+            f"reported mem_usage from Capture cuda graph end (rank {cg_info.rank})"
+        )
 
     # Total used
     bd.total_used_gib = (
@@ -655,7 +702,9 @@ def decompose_memory(
         if bd.other_gib < 0:
             bd.other_gib = 0.0
         bd.total_used_gib = smi_used_gib
-        bd.derivation["other"] = f"{smi_used_gib:.2f} - {bd.total_used_gib - bd.other_gib:.2f} (smi_used - sum_of_known)"
+        bd.derivation["other"] = (
+            f"{smi_used_gib:.2f} - {bd.total_used_gib - bd.other_gib:.2f} (smi_used - sum_of_known)"
+        )
     else:
         bd.derivation["other"] = "nvidia-smi data not available"
 
@@ -674,13 +723,17 @@ def decompose_memory(
 # Concurrency estimation
 # ---------------------------------------------------------------------------
 
+
 @dataclass
 class ConcurrencyEstimate:
     """Max concurrent request estimates under different scenarios."""
+
     request_tokens: int
     max_total_num_tokens: int
     max_running_requests: int
-    max_concurrent: int        # min(max_total_num_tokens / request_tokens, max_running_requests)
+    max_concurrent: (
+        int  # min(max_total_num_tokens / request_tokens, max_running_requests)
+    )
     kv_pool_gib: float
     bytes_per_full_token: float
     kv_dtype: str
@@ -701,21 +754,24 @@ def estimate_concurrency(
     for rt in request_tokens_list:
         token_limit = final_info.max_total_num_tokens // rt if rt > 0 else 0
         max_conc = min(token_limit, final_info.max_running_requests)
-        results.append(ConcurrencyEstimate(
-            request_tokens=rt,
-            max_total_num_tokens=final_info.max_total_num_tokens,
-            max_running_requests=final_info.max_running_requests,
-            max_concurrent=max_conc,
-            kv_pool_gib=kv_pool_gib,
-            bytes_per_full_token=bytes_per_full_token,
-            kv_dtype=kv_dtype,
-        ))
+        results.append(
+            ConcurrencyEstimate(
+                request_tokens=rt,
+                max_total_num_tokens=final_info.max_total_num_tokens,
+                max_running_requests=final_info.max_running_requests,
+                max_concurrent=max_conc,
+                kv_pool_gib=kv_pool_gib,
+                bytes_per_full_token=bytes_per_full_token,
+                kv_dtype=kv_dtype,
+            )
+        )
     return results
 
 
 # ---------------------------------------------------------------------------
 # GPU identification
 # ---------------------------------------------------------------------------
+
 
 def infer_gpu_from_log(parsed: ParsedLog, gpu_specs: Dict) -> Optional[str]:
     """Try to infer the GPU model from the log content."""
@@ -744,6 +800,7 @@ def infer_gpu_from_log(parsed: ParsedLog, gpu_specs: Dict) -> Optional[str]:
 # Output formatting
 # ---------------------------------------------------------------------------
 
+
 def format_breakdown_table(bd: MemoryBreakdown) -> str:
     """Format memory breakdown as a text table."""
     lines = []
@@ -758,7 +815,11 @@ def format_breakdown_table(bd: MemoryBreakdown) -> str:
         ("Model Weights", bd.model_weights_gib, bd.derivation.get("model_weights", "")),
         ("KV Cache Pool", bd.kv_pool_gib, bd.derivation.get("kv_pool", "")),
         ("CUDA Graph", bd.cuda_graph_gib, bd.derivation.get("cuda_graph", "")),
-        ("Framework/NCCL/Driver", bd.framework_overhead_gib, bd.derivation.get("framework_overhead", "")),
+        (
+            "Framework/NCCL/Driver",
+            bd.framework_overhead_gib,
+            bd.derivation.get("framework_overhead", ""),
+        ),
         ("Other (DeepGEMM etc.)", bd.other_gib, bd.derivation.get("other", "")),
     ]
 
@@ -770,11 +831,19 @@ def format_breakdown_table(bd: MemoryBreakdown) -> str:
         lines.append(f"{name:<28} {gib:>8.2f} {mib:>10.0f} {pct:>6.1f}%  {deriv}")
 
     lines.append("-" * 90)
-    lines.append(f"{'TOTAL':<28} {bd.total_used_gib:>8.2f} {bd.total_used_gib * 1024:>10.0f} {'100.0%':>7}")
+    lines.append(
+        f"{'TOTAL':<28} {bd.total_used_gib:>8.2f} {bd.total_used_gib * 1024:>10.0f} {'100.0%':>7}"
+    )
     if bd.smi_used_mib > 0:
-        lines.append(f"  nvidia-smi used: {bd.smi_used_mib} MiB = {bd.smi_used_mib / 1024:.2f} GiB")
+        lines.append(
+            f"  nvidia-smi used: {bd.smi_used_mib} MiB = {bd.smi_used_mib / 1024:.2f} GiB"
+        )
     lines.append(f"  GPU HBM total:   {bd.gpu_hbm_gib:.2f} GiB")
-    lines.append(f"  GPU HBM free:    {bd.smi_free_mib / 1024:.2f} GiB" if bd.smi_free_mib > 0 else "")
+    lines.append(
+        f"  GPU HBM free:    {bd.smi_free_mib / 1024:.2f} GiB"
+        if bd.smi_free_mib > 0
+        else ""
+    )
     lines.append("")
     return "\n".join(lines)
 
@@ -789,11 +858,15 @@ def format_smi_table(smi_entries: List[NvidiaSmiEntry]) -> str:
     lines.append("nvidia-smi Per-Rank Comparison")
     lines.append("=" * 60)
     lines.append("")
-    lines.append(f"{'Rank':>4}  {'Used (MiB)':>12}  {'Used (GiB)':>12}  {'Free (MiB)':>12}")
+    lines.append(
+        f"{'Rank':>4}  {'Used (MiB)':>12}  {'Used (GiB)':>12}  {'Free (MiB)':>12}"
+    )
     lines.append("-" * 60)
 
     for e in smi_entries:
-        lines.append(f"{e.index:>4}  {e.memory_used_mib:>12}  {e.memory_used_mib / 1024:>12.2f}  {e.memory_free_mib:>12}")
+        lines.append(
+            f"{e.index:>4}  {e.memory_used_mib:>12}  {e.memory_used_mib / 1024:>12.2f}  {e.memory_free_mib:>12}"
+        )
 
     lines.append("-" * 60)
     avg = sum(e.memory_used_mib for e in smi_entries) / len(smi_entries)
@@ -802,18 +875,26 @@ def format_smi_table(smi_entries: List[NvidiaSmiEntry]) -> str:
     return "\n".join(lines)
 
 
-def format_concurrency_table(estimates: List[ConcurrencyEstimate], kv_dtype: str) -> str:
+def format_concurrency_table(
+    estimates: List[ConcurrencyEstimate], kv_dtype: str
+) -> str:
     """Format concurrency estimates as a text table."""
     lines = []
     lines.append("=" * 80)
     lines.append(f"Max Concurrent Requests Estimate (KV dtype: {kv_dtype})")
     lines.append("=" * 80)
     lines.append("")
-    lines.append(f"{'Req Tokens':>12}  {'Token Limit':>12}  {'Req Limit':>12}  {'Max Concurrent':>15}")
+    lines.append(
+        f"{'Req Tokens':>12}  {'Token Limit':>12}  {'Req Limit':>12}  {'Max Concurrent':>15}"
+    )
     lines.append("-" * 60)
 
     for est in estimates:
-        token_limit = est.max_total_num_tokens // est.request_tokens if est.request_tokens > 0 else 0
+        token_limit = (
+            est.max_total_num_tokens // est.request_tokens
+            if est.request_tokens > 0
+            else 0
+        )
         lines.append(
             f"{est.request_tokens:>12}  {token_limit:>12}  {est.max_running_requests:>12}  {est.max_concurrent:>15}"
         )
@@ -824,7 +905,9 @@ def format_concurrency_table(estimates: List[ConcurrencyEstimate], kv_dtype: str
         lines.append(f"  max_total_num_tokens = {e0.max_total_num_tokens}")
         lines.append(f"  max_running_requests = {e0.max_running_requests}")
         if e0.bytes_per_full_token > 0:
-            lines.append(f"  bytes_per_full_token = {e0.bytes_per_full_token:.2f} ({e0.bytes_per_full_token / 1024:.2f} KB)")
+            lines.append(
+                f"  bytes_per_full_token = {e0.bytes_per_full_token:.2f} ({e0.bytes_per_full_token / 1024:.2f} KB)"
+            )
         lines.append(f"  KV pool size         = {e0.kv_pool_gib:.2f} GiB")
     lines.append("")
     return "\n".join(lines)
@@ -847,20 +930,28 @@ def format_kv_pool_detail(
     if parsed.sw_kv_calcs:
         dc = parsed.sw_kv_calcs[0]
         lines.append(f"  Framework:          SGLang (SWA mode)")
-        lines.append(f"  bytes_per_full_token: {dc.bytes_per_full_token:.2f} bytes ({dc.bytes_per_full_token / 1024:.2f} KB)")
+        lines.append(
+            f"  bytes_per_full_token: {dc.bytes_per_full_token:.2f} bytes ({dc.bytes_per_full_token / 1024:.2f} KB)"
+        )
         lines.append(f"  KV Pool capacity:   {dc.available_bytes_gb:.2f} GiB")
         lines.append(f"  full_token count:   {dc.full_token}")
         lines.append(f"  KV dtype:           {kv_dtype}")
         if mc:
             lines.append(f"  Attention type:     {mc.attention_type}")
             if mc.compress_ratios:
-                lines.append(f"  compress_ratios:    {mc.compress_ratios[:10]}{'...' if len(mc.compress_ratios) > 10 else ''}")
-                lines.append(f"  (SWA compression: theoretical KV >> actual due to sliding window)")
+                lines.append(
+                    f"  compress_ratios:    {mc.compress_ratios[:10]}{'...' if len(mc.compress_ratios) > 10 else ''}"
+                )
+                lines.append(
+                    f"  (SWA compression: theoretical KV >> actual due to sliding window)"
+                )
     elif parsed.memory_profilings:
         mp = parsed.memory_profilings[0]
         lines.append(f"  Framework:          SGLang")
         lines.append(f"  mem_fraction_static: {mp.mem_fraction_static}")
-        lines.append(f"  available_gpu_mem:  {mp.available_gpu_memory_gb:.2f} GiB (after weight loading)")
+        lines.append(
+            f"  available_gpu_mem:  {mp.available_gpu_memory_gb:.2f} GiB (after weight loading)"
+        )
         lines.append(f"  rest_memory (KV):   {mp.rest_memory_gb:.2f} GiB")
         lines.append(f"  KV dtype:           {kv_dtype}")
     else:
@@ -874,7 +965,9 @@ def format_kv_pool_detail(
         lines.append(f"  tp_size:            {tp_size}")
         if mc.num_key_value_heads < tp_size:
             replication = tp_size // mc.num_key_value_heads
-            lines.append(f"  Replication factor: {replication}x (kv_heads < tp_size, KV replicated across all TP ranks)")
+            lines.append(
+                f"  Replication factor: {replication}x (kv_heads < tp_size, KV replicated across all TP ranks)"
+            )
         else:
             lines.append(f"  KV split across TP ranks (kv_heads >= tp_size)")
 
@@ -884,8 +977,12 @@ def format_kv_pool_detail(
         per_token = calc_kv_bytes_per_token(mc, tp_size, kv_bytes)
         if per_token > 0:
             lines.append("")
-            lines.append(f"  Theoretical per-token KV: {per_token:.0f} bytes ({per_token / 1024:.2f} KB)")
-            lines.append(f"    = 2 x {mc.num_hidden_layers} layers x kv_heads_per_gpu x {mc.head_dim} head_dim x {kv_bytes} bytes")
+            lines.append(
+                f"  Theoretical per-token KV: {per_token:.0f} bytes ({per_token / 1024:.2f} KB)"
+            )
+            lines.append(
+                f"    = 2 x {mc.num_hidden_layers} layers x kv_heads_per_gpu x {mc.head_dim} head_dim x {kv_bytes} bytes"
+            )
 
     lines.append("")
     return "\n".join(lines)
@@ -921,7 +1018,9 @@ def format_tuning_suggestions(
 
     # FP8 KV suggestion
     if "fp8" not in kv_dtype.lower():
-        est_tokens = parsed.final_info.max_total_num_tokens * 2 if parsed.final_info else "N/A"
+        est_tokens = (
+            parsed.final_info.max_total_num_tokens * 2 if parsed.final_info else "N/A"
+        )
         suggestions.append(
             f"2. Switch to fp8 KV cache (--kv-cache-dtype fp8_e4m3)\n"
             f"   Current KV dtype: {kv_dtype}\n"
@@ -952,6 +1051,7 @@ def format_tuning_suggestions(
 # Main report
 # ---------------------------------------------------------------------------
 
+
 def generate_report(
     parsed: ParsedLog,
     bd: MemoryBreakdown,
@@ -974,7 +1074,9 @@ def generate_report(
     header.append(f"  Framework:          {parsed.framework}")
     header.append(f"  Model:              {sa.model_path if sa else 'N/A'}")
     header.append(f"  GPU:                {gpu_key} ({gpu_hbm_gib:.0f} GiB HBM)")
-    header.append(f"  TP / PP / EP:       {sa.tp_size if sa else '?'}/{sa.pp_size if sa else '?'}/{sa.ep_size if sa else '?'}")
+    header.append(
+        f"  TP / PP / EP:       {sa.tp_size if sa else '?'}/{sa.pp_size if sa else '?'}/{sa.ep_size if sa else '?'}"
+    )
     header.append(f"  mem-fraction-static: {sa.mem_fraction_static if sa else '?'}")
     header.append(f"  kv-cache-dtype:     {sa.kv_cache_dtype if sa else '?'}")
     if sa and sa.disable_radix_cache:
@@ -992,18 +1094,35 @@ def generate_report(
 
     # KV pool detail
     if sa:
-        sections.append(format_kv_pool_detail(
-            parsed, bd, mc,
-            kv_dtype=sa.kv_cache_dtype,
-            tp_size=sa.tp_size,
-        ))
+        sections.append(
+            format_kv_pool_detail(
+                parsed,
+                bd,
+                mc,
+                kv_dtype=sa.kv_cache_dtype,
+                tp_size=sa.tp_size,
+            )
+        )
 
     # Concurrency
     if concurrency:
-        sections.append(format_concurrency_table(concurrency, kv_dtype=sa.kv_cache_dtype if sa else "unknown"))
+        sections.append(
+            format_concurrency_table(
+                concurrency, kv_dtype=sa.kv_cache_dtype if sa else "unknown"
+            )
+        )
 
     # Tuning suggestions
-    sections.append(format_tuning_suggestions(bd, parsed, sa.kv_cache_dtype if sa else "unknown", gpu_hbm_gib, mc, sa.tp_size if sa else 1))
+    sections.append(
+        format_tuning_suggestions(
+            bd,
+            parsed,
+            sa.kv_cache_dtype if sa else "unknown",
+            gpu_hbm_gib,
+            mc,
+            sa.tp_size if sa else 1,
+        )
+    )
 
     return "\n".join(sections)
 
@@ -1026,8 +1145,12 @@ def generate_json_report(
         "tp_size": parsed.server_args.tp_size if parsed.server_args else None,
         "pp_size": parsed.server_args.pp_size if parsed.server_args else None,
         "ep_size": parsed.server_args.ep_size if parsed.server_args else None,
-        "mem_fraction_static": parsed.server_args.mem_fraction_static if parsed.server_args else None,
-        "kv_cache_dtype": parsed.server_args.kv_cache_dtype if parsed.server_args else None,
+        "mem_fraction_static": (
+            parsed.server_args.mem_fraction_static if parsed.server_args else None
+        ),
+        "kv_cache_dtype": (
+            parsed.server_args.kv_cache_dtype if parsed.server_args else None
+        ),
         "memory_breakdown": {
             "rank": bd.rank,
             "model_weights_gib": round(bd.model_weights_gib, 2),
@@ -1040,7 +1163,11 @@ def generate_json_report(
             "kv_pool_pct": round(bd.kv_pool_pct, 1),
         },
         "nvidia_smi": [
-            {"rank": e.index, "used_mib": e.memory_used_mib, "free_mib": e.memory_free_mib}
+            {
+                "rank": e.index,
+                "used_mib": e.memory_used_mib,
+                "free_mib": e.memory_free_mib,
+            }
             for e in smi_entries
         ],
         "kv_pool": {},
@@ -1067,10 +1194,12 @@ def generate_json_report(
         report["max_running_requests"] = parsed.final_info.max_running_requests
 
     for est in concurrency:
-        report["concurrency"].append({
-            "request_tokens": est.request_tokens,
-            "max_concurrent": est.max_concurrent,
-        })
+        report["concurrency"].append(
+            {
+                "request_tokens": est.request_tokens,
+                "max_concurrent": est.max_concurrent,
+            }
+        )
 
     if mc:
         report["model_config"] = {
@@ -1088,17 +1217,46 @@ def generate_json_report(
 # CLI
 # ---------------------------------------------------------------------------
 
+
 def main():
     parser = argparse.ArgumentParser(
         description="LLM Serving Capacity Analyzer — parse serving logs, decompose GPU memory, estimate max concurrency",
     )
-    parser.add_argument("--log-file", required=True, help="Path to SGLang/vLLM startup log file")
-    parser.add_argument("--nvidia-smi-file", default=None, help="Path to nvidia-smi CSV output file (optional)")
-    parser.add_argument("--gpu", default=None, help="GPU type (e.g. h20, h100, h200, b200). Auto-detected if omitted.")
-    parser.add_argument("--config-json", default=None, help="Path to model config.json for KV cache byte estimation")
-    parser.add_argument("--request-tokens", default=None, help="Comma-separated request token lengths for concurrency estimate (default: 4096,6144,8192)")
-    parser.add_argument("--format", choices=["text", "json"], default="text", help="Output format (default: text)")
-    parser.add_argument("--target-rank", type=int, default=0, help="Target TP rank for breakdown (default: 0)")
+    parser.add_argument(
+        "--log-file", required=True, help="Path to SGLang/vLLM startup log file"
+    )
+    parser.add_argument(
+        "--nvidia-smi-file",
+        default=None,
+        help="Path to nvidia-smi CSV output file (optional)",
+    )
+    parser.add_argument(
+        "--gpu",
+        default=None,
+        help="GPU type (e.g. h20, h100, h200, b200). Auto-detected if omitted.",
+    )
+    parser.add_argument(
+        "--config-json",
+        default=None,
+        help="Path to model config.json for KV cache byte estimation",
+    )
+    parser.add_argument(
+        "--request-tokens",
+        default=None,
+        help="Comma-separated request token lengths for concurrency estimate (default: 4096,6144,8192)",
+    )
+    parser.add_argument(
+        "--format",
+        choices=["text", "json"],
+        default="text",
+        help="Output format (default: text)",
+    )
+    parser.add_argument(
+        "--target-rank",
+        type=int,
+        default=0,
+        help="Target TP rank for breakdown (default: 0)",
+    )
 
     args = parser.parse_args()
 
@@ -1149,7 +1307,10 @@ def main():
                     break
 
     if gpu_hbm_gib == 0:
-        print("Warning: Could not determine GPU HBM size. Use --gpu flag.", file=sys.stderr)
+        print(
+            "Warning: Could not determine GPU HBM size. Use --gpu flag.",
+            file=sys.stderr,
+        )
         gpu_hbm_gib = 96  # fallback
 
     # Load model config
@@ -1172,17 +1333,43 @@ def main():
 
         request_tokens_list = [4096, 6144, 8192]
         if args.request_tokens:
-            request_tokens_list = [int(x.strip()) for x in args.request_tokens.split(",")]
+            request_tokens_list = [
+                int(x.strip()) for x in args.request_tokens.split(",")
+            ]
 
         concurrency = estimate_concurrency(
-            parsed.final_info, kv_pool_gib, bytes_per_full_token, kv_dtype, request_tokens_list
+            parsed.final_info,
+            kv_pool_gib,
+            bytes_per_full_token,
+            kv_dtype,
+            request_tokens_list,
         )
 
     # Output
     if args.format == "json":
-        print(generate_json_report(parsed, bd, smi_entries, mc, concurrency, gpu_key or "unknown", gpu_hbm_gib))
+        print(
+            generate_json_report(
+                parsed,
+                bd,
+                smi_entries,
+                mc,
+                concurrency,
+                gpu_key or "unknown",
+                gpu_hbm_gib,
+            )
+        )
     else:
-        print(generate_report(parsed, bd, smi_entries, mc, concurrency, gpu_key or "unknown", gpu_hbm_gib))
+        print(
+            generate_report(
+                parsed,
+                bd,
+                smi_entries,
+                mc,
+                concurrency,
+                gpu_key or "unknown",
+                gpu_hbm_gib,
+            )
+        )
 
 
 if __name__ == "__main__":

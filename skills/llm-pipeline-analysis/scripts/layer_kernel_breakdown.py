@@ -35,10 +35,15 @@ import json
 import sys
 from collections import defaultdict
 
-from model_profiles import ModelProfile, get_profile, infer_profile, normalize_compress_ratios
-
+from model_profiles import (
+    ModelProfile,
+    get_profile,
+    infer_profile,
+    normalize_compress_ratios,
+)
 
 # ── trace loading ──────────────────────────────────────────────────────────
+
 
 def load_trace(path):
     with gzip.open(path, "rt") if path.endswith(".gz") else open(path) as f:
@@ -82,8 +87,10 @@ def simplify_name(name, profile: ModelProfile):
 
 # ── layer kernel extraction ────────────────────────────────────────────────
 
-def get_layer_kernels(gpu_kernels, anchor_indices, fwd_pass, layer_id, num_layers,
-                      profile: ModelProfile):
+
+def get_layer_kernels(
+    gpu_kernels, anchor_indices, fwd_pass, layer_id, num_layers, profile: ModelProfile
+):
     """Return ordered list of kernel dicts for a specific layer."""
     bpl = profile.blocks_per_layer
     blocks_per_pass = num_layers * bpl
@@ -102,19 +109,22 @@ def get_layer_kernels(gpu_kernels, anchor_indices, fwd_pass, layer_id, num_layer
         for j in range(s, e):
             k = gpu_kernels[j]
             args = k.get("args", {})
-            result.append({
-                "idx": j,
-                "half": half_label,
-                "name": k.get("name", ""),
-                "ts": k.get("ts", 0),
-                "dur": k.get("dur", 0),
-                "input_dims": args.get("Input Dims", None),
-                "output_dims": args.get("Output Dims", None),
-            })
+            result.append(
+                {
+                    "idx": j,
+                    "half": half_label,
+                    "name": k.get("name", ""),
+                    "ts": k.get("ts", 0),
+                    "dur": k.get("dur", 0),
+                    "input_dims": args.get("Input Dims", None),
+                    "output_dims": args.get("Output Dims", None),
+                }
+            )
     return result
 
 
 # ── config helpers ─────────────────────────────────────────────────────────
+
 
 def load_config(path):
     if path is None:
@@ -129,8 +139,16 @@ def get_compress_ratios(config):
 
 # ── output ─────────────────────────────────────────────────────────────────
 
-def print_layer_breakdown(kernels, layer_id, compress_ratios, num_hash_layers,
-                           num_layers, profile: ModelProfile, label=None):
+
+def print_layer_breakdown(
+    kernels,
+    layer_id,
+    compress_ratios,
+    num_hash_layers,
+    num_layers,
+    profile: ModelProfile,
+    label=None,
+):
     total = sum(k["dur"] for k in kernels)
     cr = compress_ratios[layer_id] if layer_id < len(compress_ratios) else -1
 
@@ -153,10 +171,14 @@ def print_layer_breakdown(kernels, layer_id, compress_ratios, num_hash_layers,
             continue
         pct = info["dur"] / total * 100
         bar = "▓" * int(pct / 2)
-        print(f"  {cat:<30s} {info['dur']:>8.1f} {pct:>5.1f}% {info['count']:>5d}  {bar}")
+        print(
+            f"  {cat:<30s} {info['dur']:>8.1f} {pct:>5.1f}% {info['count']:>5d}  {bar}"
+        )
 
     # Detailed kernel list
-    print(f"\n  {'#':>4s} {'Half':>4s} {'Simplified Name':<70s} {'dur(us)':>8s} {'%':>5s}")
+    print(
+        f"\n  {'#':>4s} {'Half':>4s} {'Simplified Name':<70s} {'dur(us)':>8s} {'%':>5s}"
+    )
     print(f"  {'-'*95}")
     for i, k in enumerate(kernels):
         name = simplify_name(k["name"], profile)
@@ -184,6 +206,7 @@ def print_diff(kernels_a, kernels_b, label_a, label_b, profile: ModelProfile):
 
 
 # ── model architecture summary ───────────────────────────────────────────
+
 
 def _layer_type_label(cr, layer_id, num_layers, num_hash_layers):
     """Return human-readable layer type label."""
@@ -235,8 +258,10 @@ def print_model_architecture(config, compress_ratios, num_hash_layers, num_layer
         nse = config.get("num_shared_experts", 0)
         r_int = config.get("routed_expert_intermediate_size", "?")
         s_int = config.get("shared_expert_intermediate_size", "?")
-        print(f"  MoE: {ne} experts, top-{topk}, {nse} shared"
-              f" (routed_int={r_int}, shared_int={s_int})")
+        print(
+            f"  MoE: {ne} experts, top-{topk}, {nse} shared"
+            f" (routed_int={r_int}, shared_int={s_int})"
+        )
     else:
         int_size = config.get("intermediate_size", "?")
         print(f"  FFN: intermediate_size={int_size}")
@@ -259,6 +284,7 @@ def print_model_architecture(config, compress_ratios, num_hash_layers, num_layer
     # compress_ratios distribution
     if compress_ratios:
         from collections import Counter
+
         type_counts = Counter()
         for i, cr in enumerate(compress_ratios):
             lbl = _layer_type_label(cr, i, num_layers, num_hash_layers)
@@ -271,8 +297,17 @@ def print_model_architecture(config, compress_ratios, num_hash_layers, num_layer
 
 # ── compute-flow output ────────────────────────────────────────────────────
 
-def print_compute_flow(kernels, layer_id, compress_ratios, num_hash_layers,
-                       num_layers, profile: ModelProfile, config=None, trace_start_ts=0):
+
+def print_compute_flow(
+    kernels,
+    layer_id,
+    compress_ratios,
+    num_hash_layers,
+    num_layers,
+    profile: ModelProfile,
+    config=None,
+    trace_start_ts=0,
+):
     """Print compute flow table with model architecture summary.
 
     Columns: # | Half | Category | Simplified Name | dur(us) | % | ts_rel(ms) | Input Dims
@@ -292,14 +327,18 @@ def print_compute_flow(kernels, layer_id, compress_ratios, num_hash_layers,
     layer_offset_ms = (layer_start_ts - trace_start_ts) / 1000.0
 
     print(f"\n{'=' * 120}")
-    print(f"  Compute Flow: Layer {layer_id} [{type_label}]{cr_label}"
-          f"  —  {total:.0f}us ({total/1000:.2f}ms), {len(kernels)} kernels"
-          f"  | offset={layer_offset_ms:.3f}ms")
+    print(
+        f"  Compute Flow: Layer {layer_id} [{type_label}]{cr_label}"
+        f"  —  {total:.0f}us ({total/1000:.2f}ms), {len(kernels)} kernels"
+        f"  | offset={layer_offset_ms:.3f}ms"
+    )
     print(f"{'=' * 120}")
 
     # Per-kernel table with Category, ts_rel, Input Dims columns
-    print(f"\n  {'#':>3s} {'Half':>4s} {'Category':<16s} {'Simplified Name':<48s}"
-          f" {'dur(us)':>8s} {'%':>5s} {'ts_rel(ms)':>11s} {'Input Dims':<20s}")
+    print(
+        f"\n  {'#':>3s} {'Half':>4s} {'Category':<16s} {'Simplified Name':<48s}"
+        f" {'dur(us)':>8s} {'%':>5s} {'ts_rel(ms)':>11s} {'Input Dims':<20s}"
+    )
     print(f"  {'-' * 118}")
     for i, k in enumerate(kernels):
         _, cat_key = classify_kernel(k["name"], profile)
@@ -313,16 +352,20 @@ def print_compute_flow(kernels, layer_id, compress_ratios, num_hash_layers,
             name = name[:45] + "..."
         if len(input_dims_str) > 20:
             input_dims_str = input_dims_str[:17] + "..."
-        print(f"  {i:>3d} {k['half']:>4s} {cat_key:<16s} {name:<48s}"
-              f" {k['dur']:>7.1f} {pct:>4.1f}% {ts_rel_ms:>10.3f} {input_dims_str:<20s}")
+        print(
+            f"  {i:>3d} {k['half']:>4s} {cat_key:<16s} {name:<48s}"
+            f" {k['dur']:>7.1f} {pct:>4.1f}% {ts_rel_ms:>10.3f} {input_dims_str:<20s}"
+        )
 
     return set(simplify_name(k["name"], profile) for k in kernels)
 
 
 # ── JSON output ──────────────────────────────────────────────────────────
 
-def format_json_output(kernels, layer_id, fwd_pass, compress_ratios, num_layers,
-                       profile: ModelProfile):
+
+def format_json_output(
+    kernels, layer_id, fwd_pass, compress_ratios, num_layers, profile: ModelProfile
+):
     """Format per-kernel detail as JSON.
 
     Returns a JSON string with:
@@ -342,16 +385,18 @@ def format_json_output(kernels, layer_id, fwd_pass, compress_ratios, num_layers,
         cat_key = classify_kernel_key(k["name"], profile)
         cat_summary[cat_key]["dur_us"] += k["dur"]
         cat_summary[cat_key]["count"] += 1
-        kernel_list.append({
-            "name": k["name"],
-            "simplified_name": simplify_name(k["name"], profile),
-            "dur_us": k["dur"],
-            "category": cat_key,
-            "half": k["half"],
-            "ts": k["ts"],
-            "input_dims": k.get("input_dims"),
-            "output_dims": k.get("output_dims"),
-        })
+        kernel_list.append(
+            {
+                "name": k["name"],
+                "simplified_name": simplify_name(k["name"], profile),
+                "dur_us": k["dur"],
+                "category": cat_key,
+                "half": k["half"],
+                "ts": k["ts"],
+                "input_dims": k.get("input_dims"),
+                "output_dims": k.get("output_dims"),
+            }
+        )
 
     result = {
         "metadata": {
@@ -371,28 +416,49 @@ def format_json_output(kernels, layer_id, fwd_pass, compress_ratios, num_layers,
 
 # ── entry point ───────────────────────────────────────────────────────────
 
+
 def main():
     ap = argparse.ArgumentParser(description="Per-layer kernel breakdown")
     ap.add_argument("--trace", required=True, help="Path to .trace.json(.gz)")
     ap.add_argument("--config", default=None, help="Path to model config.json")
-    ap.add_argument("--profile", default=None,
-                     help="Model profile name (dsv4_csa_hca, dsv3_mla, generic). "
-                          "Auto-inferred from config if not specified.")
-    ap.add_argument("--anchor-kernel", default=None,
-                     help="Override anchor kernel substring for layer boundary detection")
+    ap.add_argument(
+        "--profile",
+        default=None,
+        help="Model profile name (dsv4_csa_hca, dsv3_mla, generic). "
+        "Auto-inferred from config if not specified.",
+    )
+    ap.add_argument(
+        "--anchor-kernel",
+        default=None,
+        help="Override anchor kernel substring for layer boundary detection",
+    )
     ap.add_argument("--fwd-pass", type=int, required=True, help="Forward pass index")
     ap.add_argument("--layer", type=int, required=True, help="Layer ID (0-based)")
-    ap.add_argument("--compare-layer", type=int, default=None,
-                     help="Second layer for side-by-side comparison")
-    ap.add_argument("--num-layers", type=int, default=None,
-                     help="Override number of layers")
-    ap.add_argument("--format", choices=["text", "json", "compute-flow"], default="text",
-                     help="Output format: text (human-readable), compute-flow (per-kernel table), or json (machine-readable per-kernel detail)")
+    ap.add_argument(
+        "--compare-layer",
+        type=int,
+        default=None,
+        help="Second layer for side-by-side comparison",
+    )
+    ap.add_argument(
+        "--num-layers", type=int, default=None, help="Override number of layers"
+    )
+    ap.add_argument(
+        "--format",
+        choices=["text", "json", "compute-flow"],
+        default="text",
+        help="Output format: text (human-readable), compute-flow (per-kernel table), or json (machine-readable per-kernel detail)",
+    )
     args = ap.parse_args()
 
     events = load_trace(args.trace)
-    gpu = sorted([e for e in events if e.get("cat") == "kernel"], key=lambda e: e.get("ts", 0))
-    trace_start_ts = min((e.get("ts", float("inf")) for e in events if e.get("ts") is not None), default=0)
+    gpu = sorted(
+        [e for e in events if e.get("cat") == "kernel"], key=lambda e: e.get("ts", 0)
+    )
+    trace_start_ts = min(
+        (e.get("ts", float("inf")) for e in events if e.get("ts") is not None),
+        default=0,
+    )
 
     config = load_config(args.config)
 
@@ -409,55 +475,96 @@ def main():
             anchor_kernel = profile.anchor_kernel
         else:
             # Scan trace for common anchors
-            for candidate in ["mhc_post_tilelang", "flash_fwd_mla_combine", "AllReduce"]:
+            for candidate in [
+                "mhc_post_tilelang",
+                "flash_fwd_mla_combine",
+                "AllReduce",
+            ]:
                 if sum(1 for e in gpu if candidate in e.get("name", "")) >= 4:
                     anchor_kernel = candidate
                     break
             if not anchor_kernel:
-                print("ERROR: cannot auto-detect anchor kernel. Use --profile or --anchor-kernel.",
-                      file=sys.stderr)
+                print(
+                    "ERROR: cannot auto-detect anchor kernel. Use --profile or --anchor-kernel.",
+                    file=sys.stderr,
+                )
                 sys.exit(1)
 
-    anchor_indices = [i for i, e in enumerate(gpu) if anchor_kernel in e.get("name", "")]
+    anchor_indices = [
+        i for i, e in enumerate(gpu) if anchor_kernel in e.get("name", "")
+    ]
 
     compress_ratios = get_compress_ratios(config)
     num_hash_layers = config.get("num_hash_layers", 0)
-    num_layers = args.num_layers or config.get("num_hidden_layers", profile.default_num_layers)
+    num_layers = args.num_layers or config.get(
+        "num_hidden_layers", profile.default_num_layers
+    )
 
     cr = compress_ratios[args.layer] if args.layer < len(compress_ratios) else -1
 
-    kernels = get_layer_kernels(gpu, anchor_indices, args.fwd_pass, args.layer, num_layers, profile)
+    kernels = get_layer_kernels(
+        gpu, anchor_indices, args.fwd_pass, args.layer, num_layers, profile
+    )
     if not kernels:
-        print(f"ERROR: no kernels found for fwd_pass={args.fwd_pass}, layer={args.layer}",
-              file=sys.stderr)
+        print(
+            f"ERROR: no kernels found for fwd_pass={args.fwd_pass}, layer={args.layer}",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     if args.format == "json":
-        print(format_json_output(kernels, args.layer, args.fwd_pass,
-                                 compress_ratios, num_layers, profile))
+        print(
+            format_json_output(
+                kernels, args.layer, args.fwd_pass, compress_ratios, num_layers, profile
+            )
+        )
     elif args.format == "compute-flow":
-        print_compute_flow(kernels, args.layer, compress_ratios,
-                           num_hash_layers, num_layers, profile, config=config,
-                           trace_start_ts=trace_start_ts)
+        print_compute_flow(
+            kernels,
+            args.layer,
+            compress_ratios,
+            num_hash_layers,
+            num_layers,
+            profile,
+            config=config,
+            trace_start_ts=trace_start_ts,
+        )
     else:
-        names_a = print_layer_breakdown(kernels, args.layer, compress_ratios,
-                                          num_hash_layers, num_layers, profile)
+        names_a = print_layer_breakdown(
+            kernels, args.layer, compress_ratios, num_hash_layers, num_layers, profile
+        )
 
     if args.compare_layer is not None:
-        kernels_b = get_layer_kernels(gpu, anchor_indices, args.fwd_pass,
-                                        args.compare_layer, num_layers, profile)
+        kernels_b = get_layer_kernels(
+            gpu, anchor_indices, args.fwd_pass, args.compare_layer, num_layers, profile
+        )
         if not kernels_b:
-            print(f"WARNING: no kernels for compare-layer {args.compare_layer}", file=sys.stderr)
+            print(
+                f"WARNING: no kernels for compare-layer {args.compare_layer}",
+                file=sys.stderr,
+            )
         else:
-            cr_b = compress_ratios[args.compare_layer] if args.compare_layer < len(compress_ratios) else -1
+            cr_b = (
+                compress_ratios[args.compare_layer]
+                if args.compare_layer < len(compress_ratios)
+                else -1
+            )
             names_b = print_layer_breakdown(
-                kernels_b, args.compare_layer, compress_ratios,
-                num_hash_layers, num_layers, profile,
-                label=f"Layer {args.compare_layer} (c_ratio={cr_b})")
-            print_diff(kernels, kernels_b,
-                       f"Layer {args.layer} (c={cr})",
-                       f"Layer {args.compare_layer} (c={cr_b})",
-                       profile)
+                kernels_b,
+                args.compare_layer,
+                compress_ratios,
+                num_hash_layers,
+                num_layers,
+                profile,
+                label=f"Layer {args.compare_layer} (c_ratio={cr_b})",
+            )
+            print_diff(
+                kernels,
+                kernels_b,
+                f"Layer {args.layer} (c={cr})",
+                f"Layer {args.compare_layer} (c={cr_b})",
+                profile,
+            )
 
 
 if __name__ == "__main__":

@@ -58,7 +58,7 @@
 | 2026-03-30 | [#21620](https://github.com/sgl-project/sglang/pull/21620) | merged | fix: Mistral Small 4 fails to start due to config/weight format mismatch | `test/registered/models/test_ministral4_models.py` |
 | 2026-04-06 | [#21399](https://github.com/sgl-project/sglang/pull/21399) | merged | [CI] Add unit tests for function_call detectors (hermes, llama32, mistral) | `test/registered/unit/function_call/test_mistral_detector.py` |
 | 2026-05-16 | [#25407](https://github.com/sgl-project/sglang/pull/25407) | merged | Fix Mistral Large 3 nightly test | `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py` |
-| 2026-05-19 | [#24611](https://github.com/sgl-project/sglang/pull/24611) | merged | [Codex] Opt Mistral Large performace | `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json`, `python/sglang/srt/server_args.py` |
+| 2026-05-19 | [#24611](https://github.com/sgl-project/sglang/pull/24611) | merged | Opt Mistral Large performace | `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json`, `python/sglang/srt/server_args.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -517,13 +517,13 @@ diff -- python/sglang/srt/layers/quantization/compressed_tensors/schemes/compres
   - runtime: `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py` modified +2/-2
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py`；风险点是权重加载、并行切分、attention/MoE 后端选择、量化 dtype 和 parser 输出，需要至少做一次真实 checkpoint 或等价 smoke。
 
-### PR #24611 - [Codex] Opt Mistral Large performace
+### PR #24611 - Opt Mistral Large performace
 
 - 链接: https://github.com/sgl-project/sglang/pull/24611
 - 状态/时间: merged / 2026-05-19
 - 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@78cb38ed5` 提交历史和 GitHub Pull Request files API 反查；关联提交 `31e324391bbc`。
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+294/-1，可读 patch 311 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Codex] Opt Mistral Large performace」；模型线: Mistral Small 4；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json`, `python/sglang/srt/server_args.py`；技术摘要: 覆盖「[Codex] Opt Mistral Large performace」，下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「Opt Mistral Large performace」；模型线: Mistral Small 4；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json`, `python/sglang/srt/server_args.py`；技术摘要: 覆盖「Opt Mistral Large performace」，下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json` added +146/-0 (146 lines); hunks: -0,0 +1,146  @@ +{；`python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json` added +146/-0 (146 lines); hunks: -0,0 +1,146  @@ +{；`python/sglang/srt/server_args.py` modified +2/-1 (3 lines); hunks: -2404,7 +2404,7  @@ def _handle_model_specific_adjustments(self):; -2421,6 +2421,7  @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments，涉及 `_handle_model_specific_adjustments`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json` added +146/-0 (146 lines); hunks: -0,0 +1,146  @@ +{

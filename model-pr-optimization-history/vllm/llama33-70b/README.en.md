@@ -4,14 +4,14 @@
 
 Generated from vllm upstream `origin/main@ef54a4d604`, `git log --name-only -- <model-files>` over model-related paths, and the GitHub Pull Request files API. This page fills the missing `Llama 3.3 70B` history entry found from sgl-cookbook coverage.
 
-## Model Implementation File Coverage
+## Implementation File Coverage
 
 | File | PRs traced by git |
 | --- | --- |
 | `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` | [#42607](https://github.com/vllm-project/vllm/pull/42607), [#38576](https://github.com/vllm-project/vllm/pull/38576), [#35086](https://github.com/vllm-project/vllm/pull/35086), [#34128](https://github.com/vllm-project/vllm/pull/34128) |
 | `docs/models/hardware_supported_models/cpu.md` | [#42607](https://github.com/vllm-project/vllm/pull/42607), [#36398](https://github.com/vllm-project/vllm/pull/36398), [#32963](https://github.com/vllm-project/vllm/pull/32963), [#29380](https://github.com/vllm-project/vllm/pull/29380), [#28697](https://github.com/vllm-project/vllm/pull/28697) |
 
-## PR Coverage Overview
+## PR Coverage Summary
 
 - git-traced PR count: 8
 - keyword/supplemental PR count: 0
@@ -45,7 +45,7 @@ Generated from vllm upstream `origin/main@ef54a4d604`, `git log --name-only -- <
   - `docs/models/hardware_supported_models/cpu.md` added +26/-0
 - Code diff details:
   - `docs/models/hardware_supported_models/cpu.md` added +26/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/models/hardware_supported_models/cpu.md
@@ -64,9 +64,9 @@ diff -- docs/models/hardware_supported_models/cpu.md
 +| ibm-granite/granite (Granite-MOE)    | GraniteMoeForCausalLM                     | ✅        |
 +| Qwen/Qwen3                           | Qwen3ForCausalLM                          | ✅        |
 ```
-- Files read:
+- Reviewed files:
   - docs/bench: `docs/models/hardware_supported_models/cpu.md` added +26/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #29380 - add xpu supported model and model id for cpu
 
@@ -81,7 +81,7 @@ diff -- docs/models/hardware_supported_models/cpu.md
 - Code diff details:
   - `docs/models/hardware_supported_models/cpu.md` modified +17/-9
   - `docs/models/hardware_supported_models/xpu.md` added +65/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/models/hardware_supported_models/cpu.md
@@ -115,9 +115,9 @@ diff -- docs/models/hardware_supported_models/xpu.md
 +
 +| Model                                     | Architecture                                         | FP16 | Dynamic FP8 | MXFP4 |
 ```
-- Files read:
+- Reviewed files:
   - docs/bench: `docs/models/hardware_supported_models/cpu.md` modified +17/-9; `docs/models/hardware_supported_models/xpu.md` added +65/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #32963 - Update CPU doc according to feedback
 
@@ -134,7 +134,7 @@ diff -- docs/models/hardware_supported_models/xpu.md
   - `docs/benchmarking/dashboard.md` modified +2/-2
   - `docs/models/hardware_supported_models/cpu.md` modified +1/-1
   - `docs/models/hardware_supported_models/xpu.md` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/benchmarking/dashboard.md
@@ -163,9 +163,9 @@ diff -- docs/models/hardware_supported_models/cpu.md
  ### Text-only Language Models
 
 ```
-- Files read:
+- Reviewed files:
   - docs/bench: `docs/benchmarking/dashboard.md` modified +2/-2; `docs/models/hardware_supported_models/cpu.md` modified +1/-1; `docs/models/hardware_supported_models/xpu.md` modified +1/-1
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #34128 - Vllm CPU benchmark suite improvement
 
@@ -184,7 +184,7 @@ diff -- docs/models/hardware_supported_models/cpu.md
   - `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh` modified +87/-46
   - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-embed.json` added +41/-0
   - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` added +283/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .buildkite/performance-benchmarks/scripts/compare-json-results.py
@@ -218,9 +218,9 @@ diff -- .buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh
 +DRY_RUN="${DRY_RUN:-0}"
 +MODEL_FILTER="${MODEL_FILTER:-}"
 ```
-- Files read:
+- Reviewed files:
   - docs/bench: `.buildkite/performance-benchmarks/scripts/compare-json-results.py` modified +368/-77; `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh` modified +87/-46; `.buildkite/performance-benchmarks/tests/serving-tests-cpu-embed.json` added +41/-0; `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` added +283/-0; `.buildkite/performance-benchmarks/tests/serving-tests-cpu.json` modified +0/-130; `docs/getting_started/installation/cpu.md` modified +23/-1
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #36398 - Allow `markdownlint` to run locally
 
@@ -239,7 +239,7 @@ diff -- .buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh
   - `.pre-commit-config.yaml` modified +5/-5
   - `benchmarks/attention_benchmarks/README.md` modified +1/-1
   - `benchmarks/auto_tune/README.md` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .github/mergify.yml
@@ -273,10 +273,10 @@ diff -- .pre-commit-config.yaml
 +  - id: markdownlint-cli2
 +    language_version: lts
 ```
-- Files read:
+- Reviewed files:
   - docs/bench: `benchmarks/attention_benchmarks/README.md` modified +1/-1; `benchmarks/auto_tune/README.md` modified +1/-1; `docs/benchmarking/cli.md` modified +9/-9; `docs/benchmarking/dashboard.md` modified +6/-6; `docs/cli/bench/mm_processor.md` modified +1/-1; `docs/cli/json_tip.inc.md` modified +2/-1; `docs/configuration/optimization.md` modified +1/-1; `docs/contributing/README.md` modified +0/-1
   - other: `.github/mergify.yml` modified +2/-4; `.pre-commit-config.yaml` modified +5/-5
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #35086 - more models for vLLM Benchmark Suite
 
@@ -295,7 +295,7 @@ diff -- .pre-commit-config.yaml
   - `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh` modified +361/-4
   - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json` added +37/-0
   - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` modified +72/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .buildkite/performance-benchmarks/scripts/compare-json-results.py
@@ -329,10 +329,10 @@ diff -- .buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh
    if command -v nvidia-smi; then
      # check the number of GPUs and GPU type.
 ```
-- Files read:
+- Reviewed files:
   - docs/bench: `.buildkite/performance-benchmarks/scripts/compare-json-results.py` modified +301/-90; `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh` modified +361/-4; `.buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json` added +37/-0; `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` modified +72/-0; `.buildkite/performance-benchmarks/tests/serving-tests-cpu.json` modified +12/-23; `docs/benchmarking/dashboard.md` modified +6/-0
   - other: `requirements/test.in` modified +4/-1; `requirements/test.txt` modified +7/-1
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #38576 - vLLM Benchmark Suite perf regression after PR#32723
 
@@ -351,7 +351,7 @@ diff -- .buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh
   - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json` modified +1/-0
   - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` modified +1/-0
   - `.buildkite/performance-benchmarks/tests/serving-tests-cpu.json` modified +1/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json
@@ -379,9 +379,9 @@ diff -- .buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json
      }
    },
 ```
-- Files read:
+- Reviewed files:
   - docs/bench: `.buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json` modified +2/-1; `.buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json` modified +1/-0; `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` modified +1/-0; `.buildkite/performance-benchmarks/tests/serving-tests-cpu.json` modified +1/-0; `.buildkite/performance-benchmarks/tests/serving-tests-hpu.json` modified +6/-0; `.buildkite/performance-benchmarks/tests/serving-tests.json` modified +4/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #42607 - Update Intel Xeon model list and vLLM Benchmark Suite BKMs
 
@@ -396,7 +396,7 @@ diff -- .buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json
 - Code diff details:
   - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` modified +76/-143
   - `docs/models/hardware_supported_models/cpu.md` modified +42/-16
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json
@@ -430,6 +430,6 @@ diff -- docs/models/hardware_supported_models/cpu.md
 -| Qwen/Qwen3-8B                        | Qwen3ForCausalLM                         | ✅        |
 -| zai-org/glm-4-9b-hf                  | GLMForCausalLM                           | ✅        |
 ```
-- Files read:
+- Reviewed files:
   - docs/bench: `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` modified +76/-143; `docs/models/hardware_supported_models/cpu.md` modified +42/-16
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.

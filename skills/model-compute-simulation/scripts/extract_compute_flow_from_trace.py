@@ -43,7 +43,7 @@ import os
 import re
 import sys
 from collections import defaultdict
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 
 # ---------------------------------------------------------------------------
 # Path setup — import from sibling model_compute_simulator.py
@@ -53,7 +53,6 @@ sys.path.insert(0, SCRIPT_DIR)
 
 try:
     from model_compute_simulator import (
-        ALIAS_MAP,
         CONFIG_INDEX,
         build_layer_ops,
         fmt_flops,
@@ -61,6 +60,7 @@ try:
         matmul_flops,
         resolve_model,
     )
+
     _HAS_SIMULATOR = True
 except ImportError:
     _HAS_SIMULATOR = False
@@ -68,70 +68,98 @@ except ImportError:
 # ---------------------------------------------------------------------------
 # Compute operators we care about
 # ---------------------------------------------------------------------------
-COMPUTE_OPS = frozenset({
-    "aten::mm",
-    "aten::bmm",
-    "aten::matmul",
-    "aten::linear",
-    "aten::addmm",
-    "aten::baddbmm",
-    "aten::scaled_dot_product_attention",
-    "aten::_scaled_dot_product_flash_attention",
-    "aten::_scaled_dot_product_math_attention",
-    "aten::mv",
-    # Elementwise / reduce that contribute to FLOPs accounting
-    "aten::silu",
-    "aten::mul",
-    "aten::add",
-    "aten::rms_norm",
-    "aten::layer_norm",
-    "aten::softmax",
-    "aten::_softmax",
-    "aten::sigmoid",
-    "aten::gelu",
-    "aten::relu",
-    "aten::topk",
-    "aten::scatter",
-    "aten::index_add",
-    "aten::embedding",
-})
+COMPUTE_OPS = frozenset(
+    {
+        "aten::mm",
+        "aten::bmm",
+        "aten::matmul",
+        "aten::linear",
+        "aten::addmm",
+        "aten::baddbmm",
+        "aten::scaled_dot_product_attention",
+        "aten::_scaled_dot_product_flash_attention",
+        "aten::_scaled_dot_product_math_attention",
+        "aten::mv",
+        # Elementwise / reduce that contribute to FLOPs accounting
+        "aten::silu",
+        "aten::mul",
+        "aten::add",
+        "aten::rms_norm",
+        "aten::layer_norm",
+        "aten::softmax",
+        "aten::_softmax",
+        "aten::sigmoid",
+        "aten::gelu",
+        "aten::relu",
+        "aten::topk",
+        "aten::scatter",
+        "aten::index_add",
+        "aten::embedding",
+    }
+)
 
 # Subset that are matmul-like and have 2*M*N*K FLOPs
-MATMUL_OPS = frozenset({
-    "aten::mm",
-    "aten::bmm",
-    "aten::matmul",
-    "aten::linear",
-    "aten::addmm",
-    "aten::baddbmm",
-})
+MATMUL_OPS = frozenset(
+    {
+        "aten::mm",
+        "aten::bmm",
+        "aten::matmul",
+        "aten::linear",
+        "aten::addmm",
+        "aten::baddbmm",
+    }
+)
 
 # ---------------------------------------------------------------------------
 # Scope → Category mapping
 # ---------------------------------------------------------------------------
 ATTENTION_KEYWORDS = (
-    "self_attn", "q_proj", "k_proj", "v_proj", "o_proj",
-    "kv_compress", "attention", "q_lora", "o_lora", "qkv_proj",
-    "kv_proj", "attn_score", "attn_v", "csa_attn", "hca_attn",
+    "self_attn",
+    "q_proj",
+    "k_proj",
+    "v_proj",
+    "o_proj",
+    "kv_compress",
+    "attention",
+    "q_lora",
+    "o_lora",
+    "qkv_proj",
+    "kv_proj",
+    "attn_score",
+    "attn_v",
+    "csa_attn",
+    "hca_attn",
     "kv_decompress",
 )
 
 MOE_FFN_KEYWORDS = (
-    "mlp", "gate_proj", "up_proj", "down_proj", "experts",
-    "shared_expert", "routed_expert", "ffn",
+    "mlp",
+    "gate_proj",
+    "up_proj",
+    "down_proj",
+    "experts",
+    "shared_expert",
+    "routed_expert",
+    "ffn",
 )
 
 NORM_KEYWORDS = (
-    "norm", "rmsnorm", "layernorm", "input_layernorm",
+    "norm",
+    "rmsnorm",
+    "layernorm",
+    "input_layernorm",
     "post_attention_layernorm",
 )
 
 EMBED_KEYWORDS = (
-    "embed", "lm_head", "embed_tokens",
+    "embed",
+    "lm_head",
+    "embed_tokens",
 )
 
 MOE_ROUTER_KEYWORDS = (
-    "router", "gate",
+    "router",
+    "gate",
 )
 
 
@@ -212,8 +240,11 @@ def extract_layer_idx(scope: str) -> int:
 # ---------------------------------------------------------------------------
 # FLOPs calculation
 # ---------------------------------------------------------------------------
-def compute_op_flops(op_name: str, input_dims: List[List[int]],
-                     output_dims: Optional[List[List[int]]] = None) -> int:
+def compute_op_flops(
+    op_name: str,
+    input_dims: List[List[int]],
+    output_dims: Optional[List[List[int]]] = None,
+) -> int:
     """Compute FLOPs for a given operator and its tensor dimensions.
 
     Args:
@@ -430,7 +461,7 @@ def parse_nn_module_scope(scope_name: str) -> str:
 
     # Format 1: nn.Module prefix
     if scope_name.startswith("nn.Module:"):
-        module_path = scope_name[len("nn.Module:"):].strip()
+        module_path = scope_name[len("nn.Module:") :].strip()
 
         # Strategy: split the module path into the model-name prefix and the
         # hierarchical suffix.  The model name (e.g. "Qwen2MoeForCausalLM")
@@ -442,32 +473,51 @@ def parse_nn_module_scope(scope_name: str) -> str:
         #   <ModelName>_model_layers_N_<submodule>
         #   <ModelName>_model_embed_tokens
         #   <ModelName>_model_lm_head
-        model_match = re.match(r'^(.+?)(_model)(.*)', module_path)
+        model_match = re.match(r"^(.+?)(_model)(.*)", module_path)
         if model_match:
             model_name = model_match.group(1)
             rest = model_match.group(3)  # starts with _
             # Strategy: protect compound names by replacing their internal
             # underscores with a sentinel, then replace path-separator
             # underscores with dots, then restore the sentinels.
-            sentinel = '\x00'
+            sentinel = "\x00"
             compound_names = [
-                'self_attn', 'post_attention_layernorm',
-                'input_layernorm', 'q_proj', 'k_proj', 'v_proj', 'o_proj',
-                'gate_proj', 'up_proj', 'down_proj', 'kv_compress',
-                'shared_expert', 'routed_expert', 'embed_tokens',
-                'lm_head', 'kv_proj', 'qkv_proj', 'attn_score', 'attn_v',
-                'csa_attn', 'hca_attn', 'kv_decompress',
-                'q_lora_down', 'q_lora_up', 'o_lora_down', 'o_lora_up',
+                "self_attn",
+                "post_attention_layernorm",
+                "input_layernorm",
+                "q_proj",
+                "k_proj",
+                "v_proj",
+                "o_proj",
+                "gate_proj",
+                "up_proj",
+                "down_proj",
+                "kv_compress",
+                "shared_expert",
+                "routed_expert",
+                "embed_tokens",
+                "lm_head",
+                "kv_proj",
+                "qkv_proj",
+                "attn_score",
+                "attn_v",
+                "csa_attn",
+                "hca_attn",
+                "kv_decompress",
+                "q_lora_down",
+                "q_lora_up",
+                "o_lora_down",
+                "o_lora_up",
             ]
             # Step 1: protect compound names (longer first to avoid partial matches)
             for name in sorted(compound_names, key=len, reverse=True):
-                rest = rest.replace(name, name.replace('_', sentinel))
+                rest = rest.replace(name, name.replace("_", sentinel))
             # Step 2: replace layer index
-            rest = re.sub(r'_layers_(\d+)', r'.layers.\1', rest)
+            rest = re.sub(r"_layers_(\d+)", r".layers.\1", rest)
             # Step 3: replace remaining underscores (path separators) with dots
-            rest = rest.replace('_', '.')
+            rest = rest.replace("_", ".")
             # Step 4: restore compound names
-            rest = rest.replace(sentinel, '_')
+            rest = rest.replace(sentinel, "_")
             return f"{model_name}.model{rest}"
 
         # Fallback: replace known hierarchical separators
@@ -694,8 +744,10 @@ def format_text(ops: List[dict]) -> str:
 
     lines = []
     # Header
-    lines.append(f"{'Op':36s} {'Scope':50s} {'Cat':>8s} {'Layer':>5s} "
-                 f"{'FLOPs':>16s} {'Dur(μs)':>9s} {'Input Dims':30s} {'Stage':8s} {'CG':3s}")
+    lines.append(
+        f"{'Op':36s} {'Scope':50s} {'Cat':>8s} {'Layer':>5s} "
+        f"{'FLOPs':>16s} {'Dur(μs)':>9s} {'Input Dims':30s} {'Stage':8s} {'CG':3s}"
+    )
     lines.append("-" * 170)
 
     for op in ops:
@@ -706,7 +758,7 @@ def format_text(ops: List[dict]) -> str:
         if len(input_dims_str) > 28:
             input_dims_str = input_dims_str[:25] + "..."
         flops_str = fmt_flops(op["flops"]) if op["flops"] > 0 else "—"
-        dur_str = f"{op['dur_us']:.1f}" if op.get('dur_us', 0) > 0 else "—"
+        dur_str = f"{op['dur_us']:.1f}" if op.get("dur_us", 0) > 0 else "—"
         cg_mark = "✓" if op.get("cuda_graph_capture") else ""
         stage = op.get("stage", "")
 
@@ -756,14 +808,20 @@ def _format_summary(ops: List[dict]) -> str:
     lines.append(f"  {'-' * 48}")
     for cat in sorted(cat_flops.keys(), key=lambda c: -cat_flops[c]):
         pct = cat_flops[cat] / total_flops * 100 if total_flops > 0 else 0
-        lines.append(f"  {cat:12s} {cat_count[cat]:>8d} {fmt_flops(cat_flops[cat]):>16s} {pct:>7.1f}%")
+        lines.append(
+            f"  {cat:12s} {cat_count[cat]:>8d} {fmt_flops(cat_flops[cat]):>16s} {pct:>7.1f}%"
+        )
 
     # Per-layer breakdown (sample a few layers)
     if layer_flops:
         lines.append("")
         lines.append("  Per-layer FLOPs (sample):")
         sorted_layers = sorted(layer_flops.keys())
-        sample_layers = sorted_layers[:5] + sorted_layers[-2:] if len(sorted_layers) > 7 else sorted_layers
+        sample_layers = (
+            sorted_layers[:5] + sorted_layers[-2:]
+            if len(sorted_layers) > 7
+            else sorted_layers
+        )
         # Remove duplicates while preserving order
         seen = set()
         unique_sample = []
@@ -786,8 +844,10 @@ def _format_summary(ops: List[dict]) -> str:
     if cg_ops:
         lines.append("")
         lines.append(f"  CUDA Graph capture ops: {len(cg_ops)}")
-        lines.append(f"  Note: These ops appear only during graph capture; "
-                     f"replay executes on GPU without CPU traces.")
+        lines.append(
+            f"  Note: These ops appear only during graph capture; "
+            f"replay executes on GPU without CPU traces."
+        )
 
     # Stage breakdown
     stages: Dict[str, int] = defaultdict(int)
@@ -805,8 +865,10 @@ def _format_summary(ops: List[dict]) -> str:
     missing_dims = [op for op in ops if not op["input_dims"] and op["flops"] == 0]
     if missing_dims:
         lines.append("")
-        lines.append(f"  Warning: {len(missing_dims)} ops have missing Input Dims "
-                     f"(FLOPs could not be computed)")
+        lines.append(
+            f"  Warning: {len(missing_dims)} ops have missing Input Dims "
+            f"(FLOPs could not be computed)"
+        )
 
     return "\n".join(lines)
 
@@ -836,8 +898,10 @@ def compare_with_template(
         Formatted comparison table string.
     """
     if not _HAS_SIMULATOR:
-        return ("Error: Cannot compare — model_compute_simulator.py not importable.\n"
-                "Ensure it is in the same directory as this script.")
+        return (
+            "Error: Cannot compare — model_compute_simulator.py not importable.\n"
+            "Ensure it is in the same directory as this script."
+        )
 
     # Load config and build template
     config_index = load_json(CONFIG_INDEX)
@@ -894,7 +958,9 @@ def compare_with_template(
     all_cats = sorted(set(list(trace_cat_flops.keys()) + list(tmpl_cat_flops.keys())))
 
     lines.append("")
-    lines.append(f"  {'Category':12s} {'Trace FLOPs':>18s} {'Template FLOPs':>18s} {'Diff':>12s} {'Pct':>8s}")
+    lines.append(
+        f"  {'Category':12s} {'Trace FLOPs':>18s} {'Template FLOPs':>18s} {'Diff':>12s} {'Pct':>8s}"
+    )
     lines.append(f"  {'-' * 72}")
 
     for cat in all_cats:
@@ -913,7 +979,9 @@ def compare_with_template(
         diff_str = f"{diff:+d}" if diff != 0 else "0"
         pct_str = f"{pct:+.1f}%" if abs(pct) != float("inf") else "+∞"
 
-        lines.append(f"  {cat:12s} {trace_str:>18s} {tmpl_str:>18s} {diff_str:>12s} {pct_str:>8s}")
+        lines.append(
+            f"  {cat:12s} {trace_str:>18s} {tmpl_str:>18s} {diff_str:>12s} {pct_str:>8s}"
+        )
 
     # Missing categories
     trace_only_cats = set(trace_cat_flops.keys()) - set(tmpl_cat_flops.keys())
@@ -921,10 +989,14 @@ def compare_with_template(
 
     if trace_only_cats:
         lines.append("")
-        lines.append(f"  Categories in trace but NOT in template: {', '.join(sorted(trace_only_cats))}")
+        lines.append(
+            f"  Categories in trace but NOT in template: {', '.join(sorted(trace_only_cats))}"
+        )
     if tmpl_only_cats:
         lines.append("")
-        lines.append(f"  Categories in template but NOT in trace: {', '.join(sorted(tmpl_only_cats))}")
+        lines.append(
+            f"  Categories in template but NOT in trace: {', '.join(sorted(tmpl_only_cats))}"
+        )
 
     # Per-layer comparison (first layer detail)
     lines.append("")
@@ -936,7 +1008,9 @@ def compare_with_template(
             l0_tmpl[top.category] += top.flops
 
         l0_cats = sorted(set(list(l0_trace.keys()) + list(l0_tmpl.keys())))
-        lines.append(f"    {'Category':12s} {'Trace':>16s} {'Template':>16s} {'Diff%':>10s}")
+        lines.append(
+            f"    {'Category':12s} {'Trace':>16s} {'Template':>16s} {'Diff%':>10s}"
+        )
         lines.append(f"    {'-' * 56}")
         for cat in l0_cats:
             tf = l0_trace.get(cat, 0)
@@ -948,7 +1022,9 @@ def compare_with_template(
                 diff_str = "+∞"
             else:
                 diff_str = "—"
-            lines.append(f"    {cat:12s} {fmt_flops(tf):>16s} {fmt_flops(ttf):>16s} {diff_str:>10s}")
+            lines.append(
+                f"    {cat:12s} {fmt_flops(tf):>16s} {fmt_flops(ttf):>16s} {diff_str:>10s}"
+            )
     else:
         lines.append("    (No Layer 0 ops found in trace)")
 
@@ -989,32 +1065,52 @@ Examples:
 """,
     )
     parser.add_argument(
-        "--input", required=True,
-        help="Path to torch profiler trace file (.json or .json.gz)")
+        "--input",
+        required=True,
+        help="Path to torch profiler trace file (.json or .json.gz)",
+    )
     parser.add_argument(
-        "--format", choices=["jsonl", "text", "summary"], default="jsonl",
-        help="Output format (default: jsonl)")
+        "--format",
+        choices=["jsonl", "text", "summary"],
+        default="jsonl",
+        help="Output format (default: jsonl)",
+    )
     parser.add_argument(
-        "--compare", default=None, metavar="MODEL_KEY",
-        help="Compare with static template for MODEL_KEY (from model-config-index.json)")
+        "--compare",
+        default=None,
+        metavar="MODEL_KEY",
+        help="Compare with static template for MODEL_KEY (from model-config-index.json)",
+    )
     parser.add_argument(
-        "--batch-size", type=int, default=1,
-        help="Batch size for template comparison (default: 1)")
+        "--batch-size",
+        type=int,
+        default=1,
+        help="Batch size for template comparison (default: 1)",
+    )
     parser.add_argument(
-        "--seq-len", type=int, default=1,
-        help="Sequence length for template comparison (default: 1)")
+        "--seq-len",
+        type=int,
+        default=1,
+        help="Sequence length for template comparison (default: 1)",
+    )
     parser.add_argument(
-        "--tp", type=int, default=1,
-        help="Tensor parallelism degree (default: 1)")
+        "--tp", type=int, default=1, help="Tensor parallelism degree (default: 1)"
+    )
     parser.add_argument(
-        "--ep", type=int, default=1,
-        help="Expert parallelism degree (default: 1)")
+        "--ep", type=int, default=1, help="Expert parallelism degree (default: 1)"
+    )
     parser.add_argument(
-        "--min-flops", type=int, default=0,
-        help="Filter ops with FLOPs below this threshold (default: 0, no filter)")
+        "--min-flops",
+        type=int,
+        default=0,
+        help="Filter ops with FLOPs below this threshold (default: 0, no filter)",
+    )
     parser.add_argument(
-        "--layer-limit", type=int, default=0,
-        help="Only output ops from the first N layers (default: 0, all layers)")
+        "--layer-limit",
+        type=int,
+        default=0,
+        help="Only output ops from the first N layers (default: 0, all layers)",
+    )
 
     args = parser.parse_args()
 
@@ -1040,7 +1136,8 @@ Examples:
     # Compare mode
     if args.compare:
         comparison = compare_with_template(
-            ops, args.compare,
+            ops,
+            args.compare,
             batch_size=args.batch_size,
             seq_len=args.seq_len,
             tp=args.tp,

@@ -4,7 +4,7 @@
 
 Generated from vllm upstream `origin/main@ef54a4d604`, `git log --name-only -- <model-files>` over model-related paths, and the GitHub Pull Request files API. This page fills the missing `Llama 3.1` history entry found from sgl-cookbook coverage.
 
-## Model Implementation File Coverage
+## Implementation File Coverage
 
 | File | PRs traced by git |
 | --- | --- |
@@ -14,7 +14,7 @@ Generated from vllm upstream `origin/main@ef54a4d604`, `git log --name-only -- <
 | `tests/compile/correctness_e2e/test_sequence_parallel.py` | [#42197](https://github.com/vllm-project/vllm/pull/42197), [#33322](https://github.com/vllm-project/vllm/pull/33322), [#41882](https://github.com/vllm-project/vllm/pull/41882), [#38373](https://github.com/vllm-project/vllm/pull/38373), [#34716](https://github.com/vllm-project/vllm/pull/34716), [#33731](https://github.com/vllm-project/vllm/pull/33731) |
 | `tests/compile/correctness_e2e/test_async_tp.py` | [#41882](https://github.com/vllm-project/vllm/pull/41882), [#35871](https://github.com/vllm-project/vllm/pull/35871), [#33731](https://github.com/vllm-project/vllm/pull/33731) |
 
-## PR Coverage Overview
+## PR Coverage Summary
 
 - git-traced PR count: 15
 - keyword/supplemental PR count: 0
@@ -61,7 +61,7 @@ Generated from vllm upstream `origin/main@ef54a4d604`, `git log --name-only -- <
   - `examples/tool_chat_template_llama3.1_json.jinja` added +94/-0
   - `examples/tool_chat_template_llama3.2_json.jinja` added +93/-0
   - `tests/tool_use/test_chat_completions.py` modified +10/-7
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/source/serving/openai_compatible_server.md
@@ -95,11 +95,11 @@ diff -- examples/tool_chat_template_llama3.1_json.jinja
 +    {%- else %}
 +        {%- set date_string = "26 Jul 2024" %}
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/entrypoints/openai/cli_args.py` modified +1/-1; `vllm/entrypoints/openai/serving_chat.py` modified +3/-0; `vllm/entrypoints/openai/tool_parsers/__init__.py` modified +5/-1; `vllm/entrypoints/openai/tool_parsers/llama_tool_parser.py` added +273/-0
   - tests: `tests/tool_use/test_chat_completions.py` modified +10/-7; `tests/tool_use/test_parallel_tool_calls.py` modified +15/-3; `tests/tool_use/utils.py` modified +58/-13
   - docs/bench: `docs/source/serving/openai_compatible_server.md` modified +24/-2; `examples/tool_chat_template_llama3.1_json.jinja` added +94/-0; `examples/tool_chat_template_llama3.2_json.jinja` added +93/-0
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #10164 - [Bugfix][Frontend] Update Llama Chat Templates to also support Non-Tool use
 
@@ -116,7 +116,7 @@ diff -- examples/tool_chat_template_llama3.1_json.jinja
   - `examples/tool_chat_template_llama3.1_json.jinja` modified +36/-10
   - `examples/tool_chat_template_llama3.2_json.jinja` modified +72/-24
   - `tests/entrypoints/test_chat_utils.py` modified +2/-2
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- examples/tool_chat_template_llama3.1_json.jinja
@@ -150,10 +150,10 @@ diff -- examples/tool_chat_template_llama3.2_json.jinja
 +{%- endfor %}
 +
 ```
-- Files read:
+- Reviewed files:
   - tests: `tests/entrypoints/test_chat_utils.py` modified +2/-2
   - docs/bench: `examples/tool_chat_template_llama3.1_json.jinja` modified +36/-10; `examples/tool_chat_template_llama3.2_json.jinja` modified +72/-24
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #25786 - [Benchmark] Cleanup deprecated nightly benchmark and adjust the docstring for performance benchmark
 
@@ -172,7 +172,7 @@ diff -- examples/tool_chat_template_llama3.2_json.jinja
   - `.buildkite/nightly-benchmarks/nightly-annotation.md` removed +0/-28
   - `.buildkite/nightly-benchmarks/nightly-descriptions.md` removed +0/-39
   - `.buildkite/nightly-benchmarks/nightly-pipeline.yaml` removed +0/-196
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .buildkite/nightly-benchmarks/benchmark-pipeline.yaml
@@ -206,10 +206,10 @@ diff -- .buildkite/nightly-benchmarks/nightly-annotation.md
 -
 -## Results reproduction
 ```
-- Files read:
+- Reviewed files:
   - docs/bench: `.buildkite/nightly-benchmarks/benchmark-pipeline.yaml` removed +0/-184; `.buildkite/nightly-benchmarks/nightly-annotation.md` removed +0/-28; `.buildkite/nightly-benchmarks/nightly-descriptions.md` removed +0/-39; `.buildkite/nightly-benchmarks/nightly-pipeline.yaml` removed +0/-196; `.buildkite/nightly-benchmarks/scripts/download-tokenizer.py` removed +0/-26; `.buildkite/nightly-benchmarks/scripts/generate-nightly-markdown.py` removed +0/-97; `.buildkite/nightly-benchmarks/scripts/get-lmdeploy-modelname.py` removed +0/-9; `.buildkite/nightly-benchmarks/scripts/nightly-annotate.sh` removed +0/-78
   - other: `.github/mergify.yml` modified +1/-1
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #33731 - [torch.compile] Reorganize vllm/compilation and tests/compile (0/N for vLLM IR)
 
@@ -228,7 +228,7 @@ diff -- .buildkite/nightly-benchmarks/nightly-annotation.md
   - `.buildkite/test-pipeline.yaml` modified +6/-5
   - `.buildkite/test_areas/compile.yaml` modified +24/-18
   - `.buildkite/test_areas/pytorch.yaml` modified +9/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .buildkite/test-amd.yaml
@@ -262,11 +262,11 @@ diff -- .buildkite/test-pipeline.yaml
 -  - tests/compile/distributed/test_fusion_all_reduce.py
 +  - tests/compile/passes/distributed/test_fusion_all_reduce.py
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/compilation/backends.py` modified +6/-7; `vllm/compilation/passes/__init__.py` added +0/-0; `vllm/compilation/passes/fusion/__init__.py` added +0/-0; `vllm/compilation/passes/fusion/act_quant_fusion.py` renamed +3/-3; `vllm/compilation/passes/fusion/allreduce_rms_fusion.py` renamed +13/-403
   - tests: `tests/compile/backend.py` modified +4/-4; `tests/compile/correctness_e2e/__init__.py` renamed +0/-0; `tests/compile/correctness_e2e/test_async_tp.py` added +79/-0; `tests/compile/correctness_e2e/test_sequence_parallel.py` renamed +2/-2; `tests/compile/fusions_e2e/common.py` modified +6/-8; `tests/compile/passes/__init__.py` added +0/-0; `tests/compile/passes/distributed/__init__.py` added +0/-0; `tests/compile/passes/distributed/test_async_tp.py` renamed +5/-75
   - docs/bench: `.buildkite/test-amd.yaml` modified +19/-19; `.buildkite/test-pipeline.yaml` modified +6/-5; `.buildkite/test_areas/compile.yaml` modified +24/-18; `.buildkite/test_areas/pytorch.yaml` modified +9/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #34128 - Vllm CPU benchmark suite improvement
 
@@ -285,7 +285,7 @@ diff -- .buildkite/test-pipeline.yaml
   - `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh` modified +87/-46
   - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-embed.json` added +41/-0
   - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` added +283/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .buildkite/performance-benchmarks/scripts/compare-json-results.py
@@ -319,9 +319,9 @@ diff -- .buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh
 +DRY_RUN="${DRY_RUN:-0}"
 +MODEL_FILTER="${MODEL_FILTER:-}"
 ```
-- Files read:
+- Reviewed files:
   - docs/bench: `.buildkite/performance-benchmarks/scripts/compare-json-results.py` modified +368/-77; `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh` modified +87/-46; `.buildkite/performance-benchmarks/tests/serving-tests-cpu-embed.json` added +41/-0; `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` added +283/-0; `.buildkite/performance-benchmarks/tests/serving-tests-cpu.json` modified +0/-130; `docs/getting_started/installation/cpu.md` modified +23/-1
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #34716 - [BugFix] Fix sp tests
 
@@ -334,7 +334,7 @@ diff -- .buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh
   - `tests/compile/correctness_e2e/test_sequence_parallel.py` modified +1/-1
 - Code diff details:
   - `tests/compile/correctness_e2e/test_sequence_parallel.py` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- tests/compile/correctness_e2e/test_sequence_parallel.py
@@ -348,9 +348,9 @@ diff -- tests/compile/correctness_e2e/test_sequence_parallel.py
          common_args.extend(["--runner", runner])
      if trust_remote_code:
 ```
-- Files read:
+- Reviewed files:
   - tests: `tests/compile/correctness_e2e/test_sequence_parallel.py` modified +1/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #35871 - [CI] Add Blackwell AsyncTP correctness test
 
@@ -365,7 +365,7 @@ diff -- tests/compile/correctness_e2e/test_sequence_parallel.py
 - Code diff details:
   - `.buildkite/test_areas/compile.yaml` modified +10/-0
   - `tests/compile/correctness_e2e/test_async_tp.py` modified +5/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .buildkite/test_areas/compile.yaml
@@ -398,10 +398,10 @@ diff -- tests/compile/correctness_e2e/test_async_tp.py
      model_info.check_transformers_version(on_fail="skip")
      model_info.check_available_online(on_fail="skip")
 ```
-- Files read:
+- Reviewed files:
   - tests: `tests/compile/correctness_e2e/test_async_tp.py` modified +5/-0
   - docs/bench: `.buildkite/test_areas/compile.yaml` modified +10/-0
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #36216 - [V0 Deprecation] Remove unused swap_space parameter
 
@@ -420,7 +420,7 @@ diff -- tests/compile/correctness_e2e/test_async_tp.py
   - `.buildkite/performance-benchmarks/tests/serving-tests-hpu.json` modified +0/-4
   - `.buildkite/performance-benchmarks/tests/serving-tests.json` modified +0/-4
   - `benchmarks/attention_benchmarks/mla_runner.py` modified +0/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .buildkite/performance-benchmarks/README.md
@@ -448,11 +448,11 @@ diff -- .buildkite/performance-benchmarks/tests/serving-tests-hpu.json
 -            "swap_space": 16,
              "disable_log_stats": "",
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/config/cache.py` modified +1/-33; `vllm/config/vllm.py` modified +0/-2; `vllm/engine/arg_utils.py` modified +0/-3; `vllm/entrypoints/llm.py` modified +11/-8
   - tests: `tests/conftest.py` modified +0/-2; `tests/distributed/test_torchrun_example.py` modified +1/-2; `tests/distributed/test_torchrun_example_moe.py` modified +1/-2; `tests/lora/test_worker.py` modified +0/-1; `tests/v1/attention/utils.py` modified +0/-1; `tests/v1/core/test_scheduler.py` modified +0/-2; `tests/v1/core/utils.py` modified +0/-1; `tests/v1/engine/test_engine_core.py` modified +0/-1
   - docs/bench: `.buildkite/performance-benchmarks/README.md` modified +0/-1; `.buildkite/performance-benchmarks/tests/serving-tests-hpu.json` modified +0/-4; `.buildkite/performance-benchmarks/tests/serving-tests.json` modified +0/-4; `benchmarks/attention_benchmarks/mla_runner.py` modified +0/-1; `benchmarks/attention_benchmarks/runner.py` modified +0/-1; `docs/design/metrics.md` modified +4/-4; `docs/serving/integrations/llamaindex.md` modified +1/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #35086 - more models for vLLM Benchmark Suite
 
@@ -471,7 +471,7 @@ diff -- .buildkite/performance-benchmarks/tests/serving-tests-hpu.json
   - `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh` modified +361/-4
   - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json` added +37/-0
   - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` modified +72/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .buildkite/performance-benchmarks/scripts/compare-json-results.py
@@ -505,10 +505,10 @@ diff -- .buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh
    if command -v nvidia-smi; then
      # check the number of GPUs and GPU type.
 ```
-- Files read:
+- Reviewed files:
   - docs/bench: `.buildkite/performance-benchmarks/scripts/compare-json-results.py` modified +301/-90; `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh` modified +361/-4; `.buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json` added +37/-0; `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` modified +72/-0; `.buildkite/performance-benchmarks/tests/serving-tests-cpu.json` modified +12/-23; `docs/benchmarking/dashboard.md` modified +6/-0
   - other: `requirements/test.in` modified +4/-1; `requirements/test.txt` modified +7/-1
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #38576 - vLLM Benchmark Suite perf regression after PR#32723
 
@@ -527,7 +527,7 @@ diff -- .buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh
   - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json` modified +1/-0
   - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` modified +1/-0
   - `.buildkite/performance-benchmarks/tests/serving-tests-cpu.json` modified +1/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json
@@ -555,9 +555,9 @@ diff -- .buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json
      }
    },
 ```
-- Files read:
+- Reviewed files:
   - docs/bench: `.buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json` modified +2/-1; `.buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json` modified +1/-0; `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` modified +1/-0; `.buildkite/performance-benchmarks/tests/serving-tests-cpu.json` modified +1/-0; `.buildkite/performance-benchmarks/tests/serving-tests-hpu.json` modified +6/-0; `.buildkite/performance-benchmarks/tests/serving-tests.json` modified +4/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #38373 - [torch.compile]: Disable Sequence Parallelism (SP) for piecewise compilation
 
@@ -576,7 +576,7 @@ diff -- .buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json
   - `tests/compile/passes/distributed/test_async_tp.py` modified +17/-0
   - `tests/compile/passes/distributed/test_sequence_parallelism.py` modified +19/-0
   - `tests/compile/test_config.py` modified +118/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- tests/compile/correctness_e2e/test_sequence_parallel.py
@@ -605,10 +605,10 @@ diff -- tests/compile/passes/distributed/test_async_tp.py
 +def test_async_tp_pass_requires_full_graph_compilation():
 +    vllm_config = VllmConfig()
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/compilation/passes/fusion/collective_fusion.py` modified +7/-10; `vllm/compilation/passes/fusion/sequence_parallelism.py` modified +16/-26; `vllm/config/compilation.py` modified +19/-0; `vllm/config/vllm.py` modified +17/-28; `vllm/v1/worker/utils.py` modified +8/-15
   - tests: `tests/compile/correctness_e2e/test_sequence_parallel.py` modified +2/-0; `tests/compile/passes/distributed/test_async_tp.py` modified +17/-0; `tests/compile/passes/distributed/test_sequence_parallelism.py` modified +19/-0; `tests/compile/test_config.py` modified +118/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #33322 - [Bugfix] Fix SP pass for multimodal models and PP+SP residual handling
 
@@ -625,7 +625,7 @@ diff -- tests/compile/passes/distributed/test_async_tp.py
   - `tests/compile/correctness_e2e/test_sequence_parallel.py` modified +48/-0
   - `vllm/compilation/passes/fusion/sequence_parallelism.py` modified +55/-20
   - `vllm/v1/worker/gpu_model_runner.py` modified +13/-14
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- tests/compile/correctness_e2e/test_sequence_parallel.py
@@ -659,10 +659,10 @@ diff -- vllm/compilation/passes/fusion/sequence_parallelism.py
 @@ -117,6 +120,7 @@ def __init__(
          self.device = device
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/compilation/passes/fusion/sequence_parallelism.py` modified +55/-20; `vllm/v1/worker/gpu_model_runner.py` modified +13/-14
   - tests: `tests/compile/correctness_e2e/test_sequence_parallel.py` modified +48/-0
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #41882 - Add NVFP4 all-gather GEMM fusion for AsyncTP
 
@@ -681,7 +681,7 @@ diff -- vllm/compilation/passes/fusion/sequence_parallelism.py
   - `tests/compile/correctness_e2e/test_sequence_parallel.py` modified +44/-5
   - `tests/compile/fullgraph/test_toy_llama.py` modified +2/-1
   - `tests/compile/fusions_e2e/test_tp2_async_tp.py` modified +65/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- tests/compile/correctness_e2e/test_async_tp.py
@@ -715,10 +715,10 @@ diff -- tests/compile/correctness_e2e/test_sequence_parallel.py
 +NVFP4_MODEL_INFO = _HfExamplesInfo(NVFP4_MODEL_ID)
 
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/compilation/passes/fusion/collective_fusion.py` modified +243/-0; `vllm/compilation/passes/fusion/sequence_parallelism.py` modified +136/-0; `vllm/utils/flashinfer.py` modified +42/-0
   - tests: `tests/compile/correctness_e2e/test_async_tp.py` modified +73/-0; `tests/compile/correctness_e2e/test_sequence_parallel.py` modified +44/-5; `tests/compile/fullgraph/test_toy_llama.py` modified +2/-1; `tests/compile/fusions_e2e/test_tp2_async_tp.py` modified +65/-0
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #42197 - Fix mypy failure on main
 
@@ -731,7 +731,7 @@ diff -- tests/compile/correctness_e2e/test_sequence_parallel.py
   - `tests/compile/correctness_e2e/test_sequence_parallel.py` modified +1/-0
 - Code diff details:
   - `tests/compile/correctness_e2e/test_sequence_parallel.py` modified +1/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- tests/compile/correctness_e2e/test_sequence_parallel.py
@@ -744,9 +744,9 @@ diff -- tests/compile/correctness_e2e/test_sequence_parallel.py
          is_multimodal=False,
          dtype="bfloat16",
 ```
-- Files read:
+- Reviewed files:
   - tests: `tests/compile/correctness_e2e/test_sequence_parallel.py` modified +1/-0
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #42607 - Update Intel Xeon model list and vLLM Benchmark Suite BKMs
 
@@ -761,7 +761,7 @@ diff -- tests/compile/correctness_e2e/test_sequence_parallel.py
 - Code diff details:
   - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` modified +76/-143
   - `docs/models/hardware_supported_models/cpu.md` modified +42/-16
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json
@@ -795,6 +795,6 @@ diff -- docs/models/hardware_supported_models/cpu.md
 -| Qwen/Qwen3-8B                        | Qwen3ForCausalLM                         | ✅        |
 -| zai-org/glm-4-9b-hf                  | GLMForCausalLM                           | ✅        |
 ```
-- Files read:
+- Reviewed files:
   - docs/bench: `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` modified +76/-143; `docs/models/hardware_supported_models/cpu.md` modified +42/-16
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.

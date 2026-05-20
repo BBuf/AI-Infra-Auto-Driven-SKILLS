@@ -4,7 +4,7 @@
 
 Generated from vllm upstream `origin/main@ef54a4d604`, `git log --name-only -- <model-files>` over model-related paths, and the GitHub Pull Request files API. This page fills the missing `Jina Reranker M0` history entry found from sgl-cookbook coverage.
 
-## Model Implementation File Coverage
+## Implementation File Coverage
 
 | File | PRs traced by git |
 | --- | --- |
@@ -16,7 +16,7 @@ Generated from vllm upstream `origin/main@ef54a4d604`, `git log --name-only -- <
 | `tests/models/multimodal/pooling/test_jinavl_reranker.py` | [#30566](https://github.com/vllm-project/vllm/pull/30566), [#28631](https://github.com/vllm-project/vllm/pull/28631), [#33837](https://github.com/vllm-project/vllm/pull/33837), [#32287](https://github.com/vllm-project/vllm/pull/32287), [#32395](https://github.com/vllm-project/vllm/pull/32395), [#31445](https://github.com/vllm-project/vllm/pull/31445), [#26633](https://github.com/vllm-project/vllm/pull/26633), [#26247](https://github.com/vllm-project/vllm/pull/26247), [#21470](https://github.com/vllm-project/vllm/pull/21470), [#20996](https://github.com/vllm-project/vllm/pull/20996), [#20907](https://github.com/vllm-project/vllm/pull/20907), [#20260](https://github.com/vllm-project/vllm/pull/20260) |
 | `docs/models/pooling_models/scoring.md` | [#41907](https://github.com/vllm-project/vllm/pull/41907), [#42626](https://github.com/vllm-project/vllm/pull/42626), [#42267](https://github.com/vllm-project/vllm/pull/42267), [#41832](https://github.com/vllm-project/vllm/pull/41832), [#39675](https://github.com/vllm-project/vllm/pull/39675), [#37537](https://github.com/vllm-project/vllm/pull/37537), [#35592](https://github.com/vllm-project/vllm/pull/35592) |
 
-## PR Coverage Overview
+## PR Coverage Summary
 
 - git-traced PR count: 37
 - keyword/supplemental PR count: 0
@@ -85,7 +85,7 @@ Generated from vllm upstream `origin/main@ef54a4d604`, `git log --name-only -- <
   - `docs/models/supported_models.md` modified +8/-0
   - `docs/serving/openai_compatible_server.md` modified +51/-3
   - `examples/offline_inference/vision_language_pooling.py` renamed +89/-7
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .buildkite/test-pipeline.yaml
@@ -114,11 +114,11 @@ diff -- docs/models/supported_models.md
  ## Model Support Policy
 
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/entrypoints/llm.py` modified +122/-61; `vllm/entrypoints/openai/protocol.py` modified +19/-5; `vllm/entrypoints/openai/serving_score.py` modified +110/-48; `vllm/entrypoints/score_utils.py` modified +152/-8; `vllm/model_executor/models/config.py` modified +10/-0; `vllm/model_executor/models/interfaces.py` modified +57/-0; `vllm/model_executor/models/jina_vl.py` added +150/-0; `vllm/model_executor/models/registry.py` modified +1/-0
   - tests: `tests/models/multimodal/pooling/test_jinavl_reranker.py` added +160/-0; `tests/models/registry.py` modified +3/-0
   - docs/bench: `.buildkite/test-pipeline.yaml` modified +1/-1; `docs/models/supported_models.md` modified +8/-0; `docs/serving/openai_compatible_server.md` modified +51/-3; `examples/offline_inference/vision_language_pooling.py` renamed +89/-7; `examples/online_serving/openai_cross_encoder_score_for_multimodal.py` added +60/-0
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #20907 - [CI/Build] Fix OOM issue in Jina-VL test
 
@@ -131,7 +131,7 @@ diff -- docs/models/supported_models.md
   - `tests/models/multimodal/pooling/test_jinavl_reranker.py` modified +85/-58; symbols: vllm_reranker, create_image_param, hf_reranker, test_model_text_image
 - Code diff details:
   - `tests/models/multimodal/pooling/test_jinavl_reranker.py` modified +85/-58
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- tests/models/multimodal/pooling/test_jinavl_reranker.py
@@ -150,9 +150,9 @@ diff -- tests/models/multimodal/pooling/test_jinavl_reranker.py
 +
  model_name = "jinaai/jina-reranker-m0"
 ```
-- Files read:
+- Reviewed files:
   - tests: `tests/models/multimodal/pooling/test_jinavl_reranker.py` modified +85/-58
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #21058 - [Model] Update pooling model interface
 
@@ -171,7 +171,7 @@ diff -- tests/models/multimodal/pooling/test_jinavl_reranker.py
   - `vllm/entrypoints/openai/protocol.py` modified +5/-29
   - `vllm/model_executor/layers/pooler.py` modified +112/-64
   - `vllm/model_executor/models/adapters.py` modified +8/-23
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_gemma_embedding.py
@@ -205,10 +205,10 @@ diff -- vllm/entrypoints/openai/protocol.py
      # --8<-- [end:embedding-extra-params]
 
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/entrypoints/openai/protocol.py` modified +5/-29; `vllm/model_executor/layers/pooler.py` modified +112/-64; `vllm/model_executor/models/adapters.py` modified +8/-23; `vllm/model_executor/models/bert.py` modified +18/-19; `vllm/model_executor/models/gpt2.py` modified +4/-10; `vllm/model_executor/models/gritlm.py` modified +3/-9; `vllm/model_executor/models/interfaces.py` modified +12/-74; `vllm/model_executor/models/interfaces_base.py` modified +16/-17
   - tests: `tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_gemma_embedding.py` modified +5/-10
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #20996 - [Misc] unify variable for LLM instance
 
@@ -227,7 +227,7 @@ diff -- vllm/entrypoints/openai/protocol.py
   - `docs/features/lora.md` modified +2/-2
   - `docs/features/quantization/fp8.md` modified +6/-4
   - `docs/features/quantization/int4.md` modified +2/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/configuration/model_resolution.md
@@ -256,10 +256,10 @@ diff -- docs/features/lora.md
 
 -    outputs = model.generate(
 ```
-- Files read:
+- Reviewed files:
   - tests: `tests/basic_correctness/test_basic_correctness.py` modified +2/-2; `tests/basic_correctness/test_preemption.py` modified +5/-5; `tests/conftest.py` modified +16/-16; `tests/core/test_num_computed_tokens_update.py` modified +1/-1; `tests/detokenizer/test_stop_reason.py` modified +1/-1; `tests/detokenizer/test_stop_strings.py` modified +21/-21; `tests/lora/test_llama_tp.py` modified +10/-10; `tests/metrics/test_metrics.py` modified +7/-7
   - docs/bench: `docs/configuration/model_resolution.md` modified +1/-1; `docs/features/lora.md` modified +2/-2; `docs/features/quantization/fp8.md` modified +6/-4; `docs/features/quantization/int4.md` modified +2/-1; `docs/features/quantization/int8.md` modified +2/-1; `docs/models/pooling_models.md` modified +5/-5; `examples/offline_inference/basic/classify.py` modified +2/-2; `examples/offline_inference/basic/embed.py` modified +2/-2
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #21227 - [Model][1/N] Support multiple poolers at model level
 
@@ -278,7 +278,7 @@ diff -- docs/features/lora.md
   - `tests/models/test_transformers.py` modified +1/-1
   - `tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_gemma_embedding.py` modified +8/-7
   - `vllm/config.py` modified +4/-4
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/models/pooling_models.md
@@ -307,11 +307,11 @@ diff -- tests/models/test_transformers.py
      hf_runner,
      vllm_runner,
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/config.py` modified +4/-4; `vllm/entrypoints/openai/api_server.py` modified +1/-1; `vllm/model_executor/layers/pooler.py` modified +175/-171; `vllm/model_executor/models/adapters.py` modified +51/-57; `vllm/model_executor/models/bert.py` modified +99/-33; `vllm/model_executor/models/gpt2.py` modified +10/-6; `vllm/model_executor/models/gritlm.py` modified +19/-20; `vllm/model_executor/models/internlm2.py` modified +5/-7
   - tests: `tests/models/test_transformers.py` modified +1/-1; `tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_gemma_embedding.py` modified +8/-7
   - docs/bench: `docs/models/pooling_models.md` modified +39/-14
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #21470 - [Deprecation][2/N] Replace `--task` with `--runner` and `--convert`
 
@@ -330,7 +330,7 @@ diff -- tests/models/test_transformers.py
   - `docs/features/prompt_embeds.md` modified +1/-1
   - `docs/models/generative_models.md` modified +10/-3
   - `docs/models/pooling_models.md` modified +49/-28
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/features/multimodal_inputs.md
@@ -359,10 +359,10 @@ diff -- docs/features/prompt_embeds.md
  ```
 
 ```
-- Files read:
+- Reviewed files:
   - tests: `tests/compile/test_async_tp.py` modified +0/-3; `tests/compile/test_basic_correctness.py` modified +3/-3; `tests/compile/test_fusion_all_reduce.py` modified +0/-3; `tests/compile/test_sequence_parallelism.py` modified +0/-3; `tests/conftest.py` modified +5/-3; `tests/distributed/test_expert_parallel.py` modified +13/-13; `tests/distributed/test_pipeline_parallel.py` modified +22/-22; `tests/distributed/test_sequence_parallel.py` modified +15/-15
   - docs/bench: `docs/features/multimodal_inputs.md` modified +2/-2; `docs/features/prompt_embeds.md` modified +1/-1; `docs/models/generative_models.md` modified +10/-3; `docs/models/pooling_models.md` modified +49/-28; `docs/models/supported_models.md` modified +51/-50; `docs/serving/openai_compatible_server.md` modified +12/-12; `examples/offline_inference/basic/classify.py` modified +4/-2; `examples/offline_inference/basic/embed.py` modified +2/-2
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #20538 - [Model] Pooling model activation supports per request control by PoolingParams
 
@@ -381,7 +381,7 @@ diff -- docs/features/prompt_embeds.md
   - `tests/entrypoints/llm/test_embedding.py` added +56/-0
   - `tests/entrypoints/llm/test_reward.py` added +66/-0
   - `tests/entrypoints/llm/test_score.py` added +69/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- tests/entrypoints/llm/test_classify.py
@@ -415,10 +415,10 @@ diff -- tests/entrypoints/llm/test_embedding.py
 +
 +MODEL_NAME = "intfloat/multilingual-e5-small"
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/config.py` modified +15/-15; `vllm/entrypoints/llm.py` modified +19/-3; `vllm/entrypoints/openai/protocol.py` modified +15/-5; `vllm/model_executor/layers/pooler.py` modified +106/-116; `vllm/model_executor/models/config.py` modified +32/-0; `vllm/model_executor/models/jamba.py` modified +0/-2; `vllm/model_executor/models/jina_vl.py` modified +1/-4; `vllm/model_executor/models/qwen2_rm.py` modified +0/-3
   - tests: `tests/entrypoints/llm/test_classify.py` added +67/-0; `tests/entrypoints/llm/test_embedding.py` added +56/-0; `tests/entrypoints/llm/test_reward.py` added +66/-0; `tests/entrypoints/llm/test_score.py` added +69/-0; `tests/entrypoints/openai/test_classification.py` modified +31/-0; `tests/entrypoints/openai/test_embedding.py` modified +34/-0; `tests/entrypoints/openai/test_rerank.py` modified +38/-0; `tests/entrypoints/openai/test_score.py` modified +41/-0
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #24031 - [Model] Classification models support logit_bias / sigmoid_normalize
 
@@ -437,7 +437,7 @@ diff -- tests/entrypoints/llm/test_embedding.py
   - `vllm/model_executor/layers/pooler.py` modified +8/-0
   - `vllm/model_executor/models/config.py` modified +3/-1
   - `vllm/model_executor/models/jina_vl.py` modified +3/-8
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- vllm/config/__init__.py
@@ -471,9 +471,9 @@ diff -- vllm/model_executor/layers/pooler.py
 
      def get_supported_tasks(self) -> Set[PoolingTask]:
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/config/__init__.py` modified +24/-21; `vllm/model_executor/layers/pooler.py` modified +8/-0; `vllm/model_executor/models/config.py` modified +3/-1; `vllm/model_executor/models/jina_vl.py` modified +3/-8
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #23810 - [Model] Systematic support for fp32 head, pooling models part
 
@@ -492,7 +492,7 @@ diff -- vllm/model_executor/layers/pooler.py
   - `tests/models/language/pooling/test_bge_reranker_v2_gemma.py` modified +1/-0
   - `vllm/config/__init__.py` modified +52/-1
   - `vllm/model_executor/layers/pooler.py` modified +23/-15
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- tests/models/language/pooling/mteb_utils.py
@@ -520,10 +520,10 @@ diff -- tests/models/language/pooling/test_bge_reranker_v2_gemma.py
                                     "architectures":
                                     ["GemmaForSequenceClassification"],
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/config/__init__.py` modified +52/-1; `vllm/model_executor/layers/pooler.py` modified +23/-15; `vllm/model_executor/models/adapters.py` modified +4/-6; `vllm/model_executor/models/bert.py` modified +3/-1; `vllm/model_executor/models/bert_with_rope.py` modified +8/-8; `vllm/model_executor/models/gpt2.py` modified +6/-4; `vllm/model_executor/models/internlm2.py` modified +11/-8; `vllm/model_executor/models/jamba.py` modified +1/-1
   - tests: `tests/models/language/pooling/mteb_utils.py` modified +31/-6; `tests/models/language/pooling/test_bge_reranker_v2_gemma.py` modified +1/-0
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #26247 - Convert formatting to use `ruff` instead of `yapf` + `isort`
 
@@ -542,7 +542,7 @@ diff -- tests/models/language/pooling/test_bge_reranker_v2_gemma.py
   - `.pre-commit-config.yaml` modified +0/-12
   - `benchmarks/benchmark_block_pool.py` modified +1/-1
   - `benchmarks/benchmark_ngram_proposer.py` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .buildkite/pyproject.toml
@@ -576,12 +576,12 @@ diff -- .pre-commit-config.yaml
    rev: v0.11.7
    hooks:
 ```
-- Files read:
+- Reviewed files:
   - runtime: `csrc/cutlass_extensions/vllm_cutlass_library_extension.py` modified +13/-15; `csrc/moe/marlin_moe_wna16/generate_kernels.py` modified +24/-18; `csrc/quantization/gptq_marlin/generate_kernels.py` modified +26/-22; `csrc/quantization/machete/generate.py` modified +100/-66
   - tests: `tests/basic_correctness/test_basic_correctness.py` modified +60/-62; `tests/basic_correctness/test_cpu_offload.py` modified +3/-2; `tests/basic_correctness/test_cumem.py` modified +12/-11; `tests/benchmarks/test_latency_cli.py` modified +12/-2; `tests/benchmarks/test_random_dataset.py` modified +69/-52; `tests/benchmarks/test_serve_cli.py` modified +2/-3; `tests/benchmarks/test_throughput_cli.py` modified +12/-2; `tests/compile/backend.py` modified +7/-11
   - docs/bench: `.buildkite/pyproject.toml` removed +0/-46; `benchmarks/benchmark_block_pool.py` modified +1/-1; `benchmarks/benchmark_ngram_proposer.py` modified +1/-1; `benchmarks/benchmark_serving_structured_output.py` modified +2/-3; `benchmarks/pyproject.toml` removed +0/-49; `docs/mkdocs/hooks/generate_argparse.py` modified +27/-36; `docs/mkdocs/hooks/generate_examples.py` modified +18/-16; `docs/mkdocs/hooks/remove_announcement.py` modified +1/-1
   - other: `.pre-commit-config.yaml` modified +0/-12; `cmake/hipify.py` modified +24/-19; `pyproject.toml` modified +100/-27; `setup.py` modified +151/-104
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #26633 - Update `Optional[x]` -> `x | None` and `Union[x, y]` to `x | y`
 
@@ -600,7 +600,7 @@ diff -- .pre-commit-config.yaml
   - `benchmarks/benchmark_prefix_caching.py` modified +2/-3
   - `benchmarks/benchmark_prioritization.py` modified +1/-2
   - `benchmarks/benchmark_serving_structured_output.py` modified +3/-4
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- benchmarks/backend_request_func.py
@@ -634,10 +634,10 @@ diff -- benchmarks/benchmark_prefix_caching.py
 -    fixed_output_len: Optional[int],
 +    fixed_output_len: int | None,
 ```
-- Files read:
+- Reviewed files:
   - runtime: `csrc/cutlass_extensions/vllm_cutlass_library_extension.py` modified +6/-9; `csrc/quantization/machete/generate.py` modified +2/-3
   - docs/bench: `benchmarks/backend_request_func.py` modified +13/-14; `benchmarks/benchmark_prefix_caching.py` modified +2/-3; `benchmarks/benchmark_prioritization.py` modified +1/-2; `benchmarks/benchmark_serving_structured_output.py` modified +3/-4; `benchmarks/benchmark_utils.py` modified +8/-8; `benchmarks/cutlass_benchmarks/sparse_benchmarks.py` modified +1/-2; `benchmarks/cutlass_benchmarks/w8a8_benchmarks.py` modified +5/-6; `benchmarks/fused_kernels/layernorm_rms_benchmarks.py` modified +4/-5
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #25370 - [Model][2/N] Improve all pooling task | Support multi-vector retrieval
 
@@ -656,7 +656,7 @@ diff -- benchmarks/benchmark_prefix_caching.py
   - `examples/offline_inference/pooling/multi_vector_retrieval.py` added +56/-0
   - `examples/offline_inference/prithvi_geospatial_mae_io_processor.py` modified +1/-1
   - `examples/online_serving/pooling/README.md` modified +6/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- examples/offline_inference/pooling/README.md
@@ -689,11 +689,11 @@ diff -- examples/offline_inference/pooling/multi_vector_retrieval.py
 +    parser = EngineArgs.add_cli_args(parser)
 +    # Set example specific arguments
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/entrypoints/llm.py` modified +18/-19; `vllm/entrypoints/openai/api_server.py` modified +12/-9; `vllm/entrypoints/openai/protocol.py` modified +2/-2; `vllm/entrypoints/openai/serving_pooling.py` modified +13/-1; `vllm/model_executor/layers/pooler.py` modified +251/-171; `vllm/model_executor/models/adapters.py` modified +15/-27; `vllm/model_executor/models/bert.py` modified +10/-12; `vllm/model_executor/models/bert_with_rope.py` modified +5/-9
   - tests: `tests/conftest.py` modified +6/-2; `tests/entrypoints/pooling/llm/test_classify.py` modified +1/-1; `tests/entrypoints/pooling/llm/test_embedding.py` modified +7/-0; `tests/entrypoints/pooling/llm/test_encode.py` modified +8/-4; `tests/entrypoints/pooling/llm/test_reward.py` modified +12/-11; `tests/entrypoints/pooling/openai/test_embedding.py` modified +18/-0; `tests/entrypoints/pooling/openai/test_rerank.py` modified +18/-1; `tests/models/language/pooling/test_multi_vector_retrieval.py` added +45/-0
   - docs/bench: `examples/offline_inference/pooling/README.md` modified +6/-0; `examples/offline_inference/pooling/multi_vector_retrieval.py` added +56/-0; `examples/offline_inference/prithvi_geospatial_mae_io_processor.py` modified +1/-1; `examples/online_serving/pooling/README.md` modified +6/-0; `examples/online_serving/pooling/multi_vector_retrieval_client.py` added +54/-0
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #29802 - Fix some Transformers nightly tests
 
@@ -710,7 +710,7 @@ diff -- examples/offline_inference/pooling/multi_vector_retrieval.py
   - `vllm/model_executor/models/jina_vl.py` modified +1/-1
   - `vllm/model_executor/models/modernbert.py` modified +27/-26
   - `vllm/model_executor/models/qwen2.py` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- vllm/model_executor/models/jina_vl.py
@@ -739,9 +739,9 @@ diff -- vllm/model_executor/models/modernbert.py
 
 -class ModernBertRotaryEmbedding(RotaryEmbedding):
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/jina_vl.py` modified +1/-1; `vllm/model_executor/models/modernbert.py` modified +27/-26; `vllm/model_executor/models/qwen2.py` modified +1/-1
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #31445 - [Bugfix][Frontend] Fix Jina reranker multimodal input compatibility
 
@@ -756,7 +756,7 @@ diff -- vllm/model_executor/models/modernbert.py
 - Code diff details:
   - `tests/models/multimodal/pooling/test_jinavl_reranker.py` modified +313/-137
   - `vllm/entrypoints/score_utils.py` modified +3/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- tests/models/multimodal/pooling/test_jinavl_reranker.py
@@ -787,10 +787,10 @@ diff -- vllm/entrypoints/score_utils.py
 
 
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/entrypoints/score_utils.py` modified +3/-1
   - tests: `tests/models/multimodal/pooling/test_jinavl_reranker.py` modified +313/-137
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #31669 - [Misc][Model][Refactor] Pass the prefix into Linear layers
 
@@ -809,7 +809,7 @@ diff -- vllm/entrypoints/score_utils.py
   - `vllm/model_executor/models/aria.py` modified +15/-5
   - `vllm/model_executor/models/gpt_neox.py` modified +1/-1
   - `vllm/model_executor/models/hunyuan_v1.py` modified +1/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- vllm/model_executor/layers/mamba/mamba_mixer.py
@@ -843,9 +843,9 @@ diff -- vllm/model_executor/models/aria.py
 +        )
 +        self.linear_out = RowParallelLinear(
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/layers/mamba/mamba_mixer.py` modified +12/-2; `vllm/model_executor/models/aria.py` modified +15/-5; `vllm/model_executor/models/gpt_neox.py` modified +1/-1; `vllm/model_executor/models/hunyuan_v1.py` modified +1/-0; `vllm/model_executor/models/jamba.py` modified +1/-0; `vllm/model_executor/models/jina_vl.py` modified +14/-4; `vllm/model_executor/models/minicpm.py` modified +4/-0; `vllm/model_executor/models/minicpm_eagle.py` modified +1/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #31973 - [Model] Reorganize pooling layers
 
@@ -864,7 +864,7 @@ diff -- vllm/model_executor/models/aria.py
   - `tests/model_executor/test_model_load_with_params.py` modified +2/-1
   - `tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_gemma_embedding.py` modified +2/-7
   - `vllm/config/pooler.py` modified +4/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .github/CODEOWNERS
@@ -889,11 +889,11 @@ diff -- tests/model_executor/test_model_load_with_params.py
  from vllm.model_executor.models.roberta import RobertaEmbeddingModel
  from vllm.platforms import current_platform
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/config/pooler.py` modified +4/-0; `vllm/model_executor/layers/pooler.py` removed +0/-845; `vllm/model_executor/layers/pooler/__init__.py` added +5/-0; `vllm/model_executor/layers/pooler/abstract.py` added +39/-0; `vllm/model_executor/layers/pooler/activations.py` added +162/-0; `vllm/model_executor/layers/pooler/common.py` added +27/-0; `vllm/model_executor/layers/pooler/seqwise/__init__.py` added +45/-0; `vllm/model_executor/layers/pooler/seqwise/heads.py` added +157/-0
   - tests: `tests/model_executor/test_model_load_with_params.py` modified +2/-1; `tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_gemma_embedding.py` modified +2/-7
   - other: `.github/CODEOWNERS` modified +1/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #32085 - [Model] Improve multimodal pooling examples
 
@@ -912,7 +912,7 @@ diff -- tests/model_executor/test_model_load_with_params.py
   - `examples/pooling/embed/vision_embedding_offline.py` added +93/-0
   - `examples/pooling/embed/vision_embedding_online.py` renamed +130/-5
   - `examples/pooling/score/cohere_rerank_online.py` renamed +0/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/serving/openai_compatible_server.md
@@ -946,9 +946,9 @@ diff -- examples/pooling/embed/vision_embedding_offline.py
 +import argparse
 +from dataclasses import asdict
 ```
-- Files read:
+- Reviewed files:
   - docs/bench: `docs/serving/openai_compatible_server.md` modified +7/-4; `examples/pooling/embed/vision_embedding_offline.py` added +93/-0; `examples/pooling/embed/vision_embedding_online.py` renamed +130/-5; `examples/pooling/score/cohere_rerank_online.py` renamed +0/-0; `examples/pooling/score/openai_cross_encoder_score_for_multimodal.py` removed +0/-60; `examples/pooling/score/rerank_api_online.py` renamed +0/-0; `examples/pooling/score/score_api_online.py` renamed +0/-0; `examples/pooling/score/vision_rerank_api_online.py` added +80/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #32395 - [Frontend][1/n] Make pooling entrypoints request schema consensus | CompletionRequest
 
@@ -967,7 +967,7 @@ diff -- examples/pooling/embed/vision_embedding_offline.py
   - `examples/pooling/classify/classification_online.py` added +67/-0
   - `examples/pooling/classify/openai_classification_client.py` removed +0/-53
   - `examples/pooling/pooling/vision_language_pooling.py` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/serving/openai_compatible_server.md
@@ -996,11 +996,11 @@ diff -- examples/pooling/classify/classification_online.py
 +import requests
 +
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/entrypoints/llm.py` modified +1/-1; `vllm/entrypoints/openai/api_server.py` modified +4/-58; `vllm/entrypoints/pooling/__init__.py` modified +88/-0; `vllm/entrypoints/pooling/base/__init__.py` added +0/-0; `vllm/entrypoints/pooling/base/protocol.py` added +46/-0; `vllm/entrypoints/pooling/classify/protocol.py` modified +7/-51; `vllm/entrypoints/pooling/embed/protocol.py` modified +9/-50; `vllm/entrypoints/pooling/pooling/protocol.py` modified +2/-10
   - tests: `tests/entrypoints/pooling/classify/test_online.py` modified +86/-49; `tests/entrypoints/pooling/embed/test_online.py` modified +233/-221; `tests/entrypoints/pooling/pooling/test_online.py` modified +49/-57; `tests/entrypoints/pooling/score/test_online_rerank.py` modified +19/-5; `tests/entrypoints/pooling/score/test_utils.py` modified +5/-5; `tests/models/multimodal/pooling/test_jinavl_reranker.py` modified +1/-1
   - docs/bench: `docs/serving/openai_compatible_server.md` modified +1/-1; `examples/pooling/classify/classification_online.py` added +67/-0; `examples/pooling/classify/openai_classification_client.py` removed +0/-53; `examples/pooling/pooling/vision_language_pooling.py` modified +1/-1; `examples/pooling/score/vision_reranker_offline.py` modified +1/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #32577 - [Frontend] Score entrypoint support data_1 & data_2 and queries & documents as inputs
 
@@ -1019,7 +1019,7 @@ diff -- examples/pooling/classify/classification_online.py
   - `examples/offline_inference/basic/score.py` modified +5/-5
   - `examples/offline_inference/openai_batch/README.md` modified +2/-2
   - `examples/pooling/score/cohere_rerank_client.py` renamed +0/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/serving/openai_compatible_server.md
@@ -1053,11 +1053,11 @@ diff -- examples/offline_inference/basic/score.py
      llm = LLM(**vars(args))
 
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/entrypoints/openai/engine/serving.py` modified +9/-2; `vllm/entrypoints/openai/run_batch.py` modified +1/-1; `vllm/entrypoints/pooling/score/protocol.py` modified +38/-5; `vllm/entrypoints/pooling/score/serving.py` modified +16/-16
   - tests: `tests/entrypoints/openai/test_run_batch.py` modified +2/-2; `tests/entrypoints/pooling/classify/test_online.py` modified +2/-2; `tests/entrypoints/pooling/score/test_offline.py` modified +4/-4; `tests/entrypoints/pooling/score/test_online_score.py` modified +95/-37; `tests/models/language/pooling_mteb_test/mteb_score_utils.py` modified +2/-2
   - docs/bench: `docs/serving/openai_compatible_server.md` modified +15/-15; `examples/offline_inference/basic/score.py` modified +5/-5; `examples/offline_inference/openai_batch/README.md` modified +2/-2; `examples/pooling/score/cohere_rerank_client.py` renamed +0/-0; `examples/pooling/score/qwen3_reranker_online.py` modified +2/-2; `examples/pooling/score/score_api_online.py` modified +18/-12; `examples/pooling/score/vision_rerank_api_online.py` modified +20/-2; `examples/pooling/score/vision_score_api_online.py` modified +22/-4
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #32287 - Upgrade transformers-4.57.5
 
@@ -1076,7 +1076,7 @@ diff -- examples/offline_inference/basic/score.py
   - `requirements/test.in` modified +1/-1
   - `requirements/test.txt` modified +1/-1
   - `tests/models/multimodal/pooling/test_jinavl_reranker.py` modified +22/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- requirements/nightly_torch_test.txt
@@ -1100,10 +1100,10 @@ diff -- requirements/test.in
  schemathesis>=3.39.15 # Required for openai schema test.
  # quantization
 ```
-- Files read:
+- Reviewed files:
   - tests: `tests/models/multimodal/pooling/test_jinavl_reranker.py` modified +22/-0
   - other: `requirements/nightly_torch_test.txt` modified +1/-1; `requirements/test.in` modified +1/-1; `requirements/test.txt` modified +1/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #33063 - [Chore] Update type annotation of `input_ids` in model forward
 
@@ -1122,7 +1122,7 @@ diff -- requirements/test.in
   - `tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_gemma_embedding.py` modified +1/-1
   - `vllm/model_executor/models/afmoe.py` modified +2/-2
   - `vllm/model_executor/models/apertus.py` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/contributing/model/basic.md
@@ -1146,11 +1146,11 @@ diff -- tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_gemma_embeddi
          intermediate_tensors: IntermediateTensors | None = None,
          inputs_embeds: torch.Tensor | None = None,
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/afmoe.py` modified +2/-2; `vllm/model_executor/models/apertus.py` modified +1/-1; `vllm/model_executor/models/arcee.py` modified +1/-1; `vllm/model_executor/models/arctic.py` modified +2/-2; `vllm/model_executor/models/aria.py` modified +1/-1; `vllm/model_executor/models/audioflamingo3.py` modified +1/-1; `vllm/model_executor/models/aya_vision.py` modified +1/-1; `vllm/model_executor/models/bagel.py` modified +1/-1
   - tests: `tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_gemma_embedding.py` modified +1/-1
   - docs/bench: `docs/contributing/model/basic.md` modified +1/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #33298 - [Bugfix] Fix Qwen3-VL-Reranker load.
 
@@ -1169,7 +1169,7 @@ diff -- tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_gemma_embeddi
   - `examples/pooling/score/vision_score_api_online.py` modified +54/-45
   - `tests/entrypoints/pooling/classify/test_online_vision.py` modified +2/-2
   - `tests/entrypoints/pooling/score/test_online_score_vision.py` added +122/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- examples/pooling/score/vision_rerank_api_online.py
@@ -1203,11 +1203,11 @@ diff -- examples/pooling/score/vision_score_api_online.py
 -    """Encode a content retrieved from a remote url to base64 format."""
 -
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/adapters.py` modified +10/-4
   - tests: `tests/entrypoints/pooling/classify/test_online_vision.py` modified +2/-2; `tests/entrypoints/pooling/score/test_online_score_vision.py` added +122/-0; `tests/entrypoints/test_utils.py` modified +0/-12
   - docs/bench: `examples/pooling/score/vision_rerank_api_online.py` modified +46/-49; `examples/pooling/score/vision_score_api_online.py` modified +54/-45
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #33060 - [Frontend][4/n] Make pooling entrypoints request schema consensus | ScoreRequest
 
@@ -1226,7 +1226,7 @@ diff -- examples/pooling/score/vision_score_api_online.py
   - `examples/pooling/score/vision_score_api_online.py` modified +38/-0
   - `tests/entrypoints/pooling/score/test_online_score.py` modified +29/-0
   - `tests/entrypoints/pooling/score/test_online_score_vision.py` modified +124/-7
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- examples/pooling/score/vision_rerank_api_online.py
@@ -1260,11 +1260,11 @@ diff -- examples/pooling/score/vision_score_api_online.py
 +
 +    print("Query: string & Document: list")
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/entrypoints/llm.py` modified +37/-73; `vllm/entrypoints/pooling/score/protocol.py` modified +28/-11; `vllm/entrypoints/pooling/score/serving.py` modified +84/-94; `vllm/entrypoints/pooling/score/utils.py` modified +69/-20
   - tests: `tests/entrypoints/pooling/score/test_online_score.py` modified +29/-0; `tests/entrypoints/pooling/score/test_online_score_vision.py` modified +124/-7
   - docs/bench: `examples/pooling/score/vision_rerank_api_online.py` modified +23/-0; `examples/pooling/score/vision_score_api_online.py` modified +38/-0
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #33837 - [Bugfix] Fix ScoreMultiModalParam multi-document scoring returning single result
 
@@ -1277,7 +1277,7 @@ diff -- examples/pooling/score/vision_score_api_online.py
   - `tests/models/multimodal/pooling/test_jinavl_reranker.py` modified +21/-44
 - Code diff details:
   - `tests/models/multimodal/pooling/test_jinavl_reranker.py` modified +21/-44
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- tests/models/multimodal/pooling/test_jinavl_reranker.py
@@ -1296,9 +1296,9 @@ diff -- tests/models/multimodal/pooling/test_jinavl_reranker.py
 +) -> list[ScoreMultiModalParam]:
      """
 ```
-- Files read:
+- Reviewed files:
   - tests: `tests/models/multimodal/pooling/test_jinavl_reranker.py` modified +21/-44
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #31127 - [Frontend][last/5] Make pooling entrypoints request schema consensus.
 
@@ -1317,7 +1317,7 @@ diff -- tests/models/multimodal/pooling/test_jinavl_reranker.py
   - `.buildkite/test-pipeline.yaml` modified +1/-1
   - `.buildkite/test_areas/misc.yaml` modified +1/-1
   - `docs/features/multimodal_inputs.md` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .buildkite/test-amd.yaml
@@ -1341,11 +1341,11 @@ diff -- .buildkite/test-pipeline.yaml
      - python3 offline_inference/prefix_caching.py
      - python3 offline_inference/llm_engine_example.py
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/entrypoints/pooling/base/protocol.py` modified +15/-0; `vllm/entrypoints/pooling/classify/protocol.py` modified +1/-7; `vllm/entrypoints/pooling/embed/protocol.py` modified +1/-6; `vllm/entrypoints/pooling/pooling/protocol.py` modified +1/-6; `vllm/entrypoints/pooling/score/protocol.py` modified +1/-15; `vllm/utils/print_utils.py` added +7/-0
   - tests: `tests/entrypoints/pooling/classify/test_offline.py` modified +50/-7; `tests/entrypoints/pooling/embed/test_online_vision.py` modified +81/-2; `tests/renderers/test_hf.py` modified +3/-3
   - docs/bench: `.buildkite/test-amd.yaml` modified +1/-1; `.buildkite/test-pipeline.yaml` modified +1/-1; `.buildkite/test_areas/misc.yaml` modified +1/-1; `docs/features/multimodal_inputs.md` modified +1/-1; `docs/serving/openai_compatible_server.md` modified +31/-29; `examples/pooling/classify/vision_classification_online.py` added +110/-0; `examples/pooling/embed/template/dse_qwen2_vl.jinja` renamed +0/-0; `examples/pooling/embed/template/vlm2vec_phi3v.jinja` renamed +0/-0
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #35592 - [Docs] Reorganize pooling docs.
 
@@ -1364,7 +1364,7 @@ diff -- .buildkite/test-pipeline.yaml
   - `docs/.nav.yml` modified +1/-1
   - `docs/contributing/model/tests.md` modified +1/-1
   - `docs/features/README.md` modified +3/-3
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .github/CODEOWNERS
@@ -1387,10 +1387,10 @@ diff -- docs/.nav.yml
        - Hardware Supported Models:
          - models/hardware_supported_models/*
 ```
-- Files read:
+- Reviewed files:
   - docs/bench: `docs/.nav.yml` modified +1/-1; `docs/contributing/model/tests.md` modified +1/-1; `docs/features/README.md` modified +3/-3; `docs/mkdocs/hooks/url_schemes.py` modified +91/-43; `docs/models/pooling_models.md` removed +0/-716; `docs/models/pooling_models/README.md` added +253/-0; `docs/models/pooling_models/classify.md` added +276/-0; `docs/models/pooling_models/embed.md` added +546/-0
   - other: `.github/CODEOWNERS` modified +1/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #37537 - [Model] Deprecate the score task (this will not affect users).
 
@@ -1409,7 +1409,7 @@ diff -- docs/.nav.yml
   - `docs/models/pooling_models/classify.md` modified +3/-1
   - `docs/models/pooling_models/scoring.md` modified +10/-7
   - `tests/test_pooling_params.py` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/models/pooling_models/README.md
@@ -1443,11 +1443,11 @@ diff -- docs/models/pooling_models/classify.md
 
 ---8<-- "docs/models/pooling_models/scoring.md:supported-score-models"
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/config/model.py` modified +4/-4; `vllm/entrypoints/llm.py` modified +2/-2; `vllm/entrypoints/openai/api_server.py` modified +9/-5; `vllm/entrypoints/pooling/__init__.py` modified +29/-11; `vllm/entrypoints/pooling/score/protocol.py` modified +2/-2; `vllm/entrypoints/pooling/score/serving.py` modified +1/-1; `vllm/entrypoints/sagemaker/api_router.py` modified +13/-5; `vllm/model_executor/layers/pooler/activations.py` modified +10/-22
   - tests: `tests/test_pooling_params.py` modified +1/-1
   - docs/bench: `docs/models/pooling_models/README.md` modified +35/-28; `docs/models/pooling_models/classify.md` modified +3/-1; `docs/models/pooling_models/scoring.md` modified +10/-7
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #37902 - [Mypy] Better fixes for the `mypy` issues in `vllm/config`
 
@@ -1466,7 +1466,7 @@ diff -- docs/models/pooling_models/classify.md
   - `benchmarks/benchmark_prefix_caching.py` modified +1/-2
   - `benchmarks/benchmark_prioritization.py` modified +1/-2
   - `examples/offline_inference/audio_language.py` modified +1/-2
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- benchmarks/benchmark_long_document_qa_throughput.py
@@ -1500,11 +1500,11 @@ diff -- benchmarks/benchmark_prefix_caching.py
 -    llm = LLM(**{f.name: getattr(engine_args, f.name) for f in fields(engine_args)})
 +    llm = LLM.from_engine_args(engine_args)
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/benchmarks/latency.py` modified +1/-2; `vllm/benchmarks/mm_processor.py` modified +1/-2; `vllm/benchmarks/startup.py` modified +1/-2; `vllm/benchmarks/throughput.py` modified +2/-3; `vllm/config/compilation.py` modified +15/-20; `vllm/config/device.py` modified +2/-2; `vllm/config/kernel.py` modified +2/-2; `vllm/config/kv_events.py` modified +1/-3
   - tests: `tests/compile/test_config.py` modified +6/-2; `tests/entrypoints/offline_mode/test_offline_mode.py` modified +1/-4; `tests/models/multimodal/generation/test_keye.py` modified +8/-11; `tests/models/multimodal/generation/test_vit_backend_functionality.py` modified +5/-10; `tests/models/multimodal/generation/test_voxtral_realtime.py` modified +1/-2; `tests/v1/kv_connector/unit/test_example_connector.py` modified +15/-22
   - docs/bench: `benchmarks/benchmark_long_document_qa_throughput.py` modified +1/-2; `benchmarks/benchmark_prefix_caching.py` modified +1/-2; `benchmarks/benchmark_prioritization.py` modified +1/-2; `examples/offline_inference/audio_language.py` modified +1/-2; `examples/offline_inference/encoder_decoder_multimodal.py` modified +5/-7; `examples/offline_inference/load_sharded_state.py` modified +1/-3; `examples/offline_inference/save_sharded_state.py` modified +1/-2; `examples/offline_inference/vision_language.py` modified +6/-7
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #28631 - [Frontend][3/n] Improve pooling entrypoints | scoring.
 
@@ -1523,7 +1523,7 @@ diff -- benchmarks/benchmark_prefix_caching.py
   - `tests/entrypoints/pooling/classify/test_offline.py` modified +1/-1
   - `tests/entrypoints/pooling/classify/test_online.py` modified +2/-2
   - `tests/entrypoints/pooling/scoring/test_bi_encoder_online.py` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- tests/entrypoints/openai/utils.py
@@ -1549,10 +1549,10 @@ diff -- tests/entrypoints/pooling/classify/test_offline.py
          llm.score("ping", "pong", use_tqdm=False)
 
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/entrypoints/llm.py` modified +60/-252; `vllm/entrypoints/openai/engine/serving.py` modified +4/-104; `vllm/entrypoints/openai/run_batch.py` modified +27/-27; `vllm/entrypoints/pooling/__init__.py` modified +6/-21; `vllm/entrypoints/pooling/base/io_processor.py` modified +21/-25; `vllm/entrypoints/pooling/base/serving.py` modified +18/-4; `vllm/entrypoints/pooling/io_processor_factories.py` modified +7/-0; `vllm/entrypoints/pooling/score/serving.py` removed +0/-667
   - tests: `tests/entrypoints/openai/utils.py` modified +1/-3; `tests/entrypoints/pooling/classify/test_offline.py` modified +1/-1; `tests/entrypoints/pooling/classify/test_online.py` modified +2/-2; `tests/entrypoints/pooling/scoring/test_bi_encoder_online.py` modified +1/-1; `tests/entrypoints/pooling/scoring/test_cross_encoder_online.py` modified +1/-1; `tests/entrypoints/pooling/scoring/test_cross_encoder_online_vision.py` modified +1/-1; `tests/entrypoints/pooling/scoring/test_late_interaction_offline_vision.py` added +93/-0; `tests/entrypoints/pooling/scoring/test_late_interaction_online.py` modified +1/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #38800 - [New Model]: jinaai/jina-reranker-v3
 
@@ -1571,7 +1571,7 @@ diff -- tests/entrypoints/pooling/classify/test_offline.py
   - `examples/pooling/token_embed/jina_reranker_v3_offline.py` added +56/-0
   - `pyproject.toml` modified +2/-1
   - `tests/models/language/pooling/test_jina_reranker_v3.py` added +275/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/models/pooling_models/token_embed.md
@@ -1605,12 +1605,12 @@ diff -- examples/pooling/token_embed/jina_reranker_v3_offline.py
 +    "El precio del café ha aumentado un 20% este año debido a problemas en la cadena de suministro.",
 +    "Studies show that drinking green tea regularly can improve brain function and boost metabolism.",
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/entrypoints/pooling/embed/io_processor.py` modified +52/-1; `vllm/entrypoints/pooling/io_processor_factories.py` modified +7/-0; `vllm/entrypoints/pooling/scoring/io_processor.py` modified +126/-0; `vllm/entrypoints/pooling/scoring/serving.py` modified +11/-14; `vllm/model_executor/layers/pooler/tokwise/methods.py` modified +1/-1; `vllm/model_executor/layers/pooler/tokwise/poolers.py` modified +3/-2; `vllm/model_executor/models/config.py` modified +7/-0; `vllm/model_executor/models/jina.py` added +110/-0
   - tests: `tests/models/language/pooling/test_jina_reranker_v3.py` added +275/-0; `tests/models/registry.py` modified +1/-0
   - docs/bench: `docs/models/pooling_models/token_embed.md` modified +8/-0; `examples/pooling/token_embed/jina_reranker_v3_offline.py` added +56/-0
   - other: `pyproject.toml` modified +2/-1
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #30566 - Update to transformers v5
 
@@ -1629,7 +1629,7 @@ diff -- examples/pooling/token_embed/jina_reranker_v3_offline.py
   - `.buildkite/test_areas/models_basic.yaml` modified +15/-1
   - `docker/Dockerfile` modified +5/-4
   - `docker/Dockerfile.cpu` modified +6/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- .buildkite/scripts/hardware_ci/run-cpu-test.sh
@@ -1656,11 +1656,11 @@ diff -- .buildkite/test_areas/models_basic.yaml
 +
 +- label: Transformers Backward Compatibility Models Test
 ```
-- Files read:
+- Reviewed files:
   - tests: `tests/conftest.py` modified +9/-0; `tests/lora/conftest.py` modified +6/-0; `tests/lora/test_minicpmv_tp.py` modified +11/-0; `tests/model_executor/test_weight_utils.py` modified +0/-18; `tests/models/language/generation/test_common.py` modified +5/-0; `tests/models/language/pooling_mteb_test/test_baai.py` modified +4/-1; `tests/models/language/pooling_mteb_test/test_gte.py` modified +2/-1; `tests/models/language/pooling_mteb_test/test_jina.py` modified +4/-0
   - docs/bench: `.buildkite/scripts/hardware_ci/run-cpu-test.sh` modified +1/-1; `.buildkite/test_areas/models_basic.yaml` modified +15/-1; `docs/getting_started/installation/gpu.rocm.inc.md` modified +1/-1
   - other: `docker/Dockerfile` modified +5/-4; `docker/Dockerfile.cpu` modified +6/-0; `docker/Dockerfile.nightly_torch` modified +4/-3; `docker/Dockerfile.rocm` modified +4/-3; `requirements/common.txt` modified +2/-2; `requirements/test/cuda.in` modified +3/-3; `requirements/test/cuda.txt` modified +10/-10; `requirements/test/nightly-torch.txt` modified +2/-2
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #39575 - Add Jina Embeddings v5 model support (fixes #38633)
 
@@ -1679,7 +1679,7 @@ diff -- .buildkite/test_areas/models_basic.yaml
   - `tests/conftest.py` modified +6/-0
   - `tests/models/language/pooling_mteb_test/mteb_embed_utils.py` modified +26/-4
   - `tests/models/language/pooling_mteb_test/test_jina.py` modified +25/-5
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/models/pooling_models/embed.md
@@ -1713,11 +1713,11 @@ diff -- tests/conftest.py
 +                revision=revision,
                  model_kwargs=model_kwargs,
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/model_executor/models/jina.py` modified +149/-1; `vllm/model_executor/models/registry.py` modified +1/-0
   - tests: `tests/conftest.py` modified +6/-0; `tests/models/language/pooling_mteb_test/mteb_embed_utils.py` modified +26/-4; `tests/models/language/pooling_mteb_test/test_jina.py` modified +25/-5; `tests/models/registry.py` modified +4/-0
   - docs/bench: `docs/models/pooling_models/embed.md` modified +7/-0
-- Validation and risk: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
 
 ### PR #39675 - [Frontend][last/5] Improve pooling entrypoints | clean up.
 
@@ -1736,7 +1736,7 @@ diff -- tests/conftest.py
   - `docs/models/pooling_models/scoring.md` modified +4/-0
   - `docs/models/pooling_models/token_classify.md` modified +1/-1
   - `docs/serving/openai_compatible_server.md` modified +1/-18
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/models/pooling_models/README.md
@@ -1770,10 +1770,10 @@ diff -- docs/models/pooling_models/scoring.md
  --8<-- "vllm/entrypoints/pooling/base/protocol.py:classify-extra-params"
 +--8<-- "vllm/entrypoints/pooling/scoring/protocol.py:scoring-common-params"
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/entrypoints/llm.py` modified +1/-1; `vllm/entrypoints/openai/api_server.py` modified +14/-16; `vllm/entrypoints/openai/generate/factories.py` added +42/-0; `vllm/entrypoints/pooling/__init__.py` modified +0/-130; `vllm/entrypoints/pooling/base/io_processor.py` modified +15/-8; `vllm/entrypoints/pooling/base/serving.py` modified +1/-1; `vllm/entrypoints/pooling/classify/api_router.py` modified +3/-2; `vllm/entrypoints/pooling/classify/io_processor.py` modified +1/-1
   - docs/bench: `docs/models/pooling_models/README.md` modified +10/-0; `docs/models/pooling_models/scoring.md` modified +4/-0; `docs/models/pooling_models/token_classify.md` modified +1/-1; `docs/serving/openai_compatible_server.md` modified +1/-18
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #41832 - [Doc] Add ModernBertForSequenceClassification to scoring.md cross-en…
 
@@ -1786,7 +1786,7 @@ diff -- docs/models/pooling_models/scoring.md
   - `docs/models/pooling_models/scoring.md` modified +1/-0
 - Code diff details:
   - `docs/models/pooling_models/scoring.md` modified +1/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/models/pooling_models/scoring.md
@@ -1799,9 +1799,9 @@ diff -- docs/models/pooling_models/scoring.md
  | `Qwen3ForSequenceClassification`<sup>C</sup> | Qwen3-based | `tomaarsen/Qwen3-Reranker-0.6B-seq-cls`, `Qwen/Qwen3-Reranker-0.6B`(see note), etc. | [qwen3_reranker.jinja](../../../examples/pooling/score/template/qwen3_reranker.jinja) | ✅︎ | ✅︎ |
  | `RobertaForSequenceClassification` | RoBERTa-based | `cross-encoder/quora-roberta-base`, etc. | N/A | | |
 ```
-- Files read:
+- Reviewed files:
   - docs/bench: `docs/models/pooling_models/scoring.md` modified +1/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #42267 - [Entrypoints] Split the pooling offline API into PoolingOfflineMixin.
 
@@ -1820,7 +1820,7 @@ diff -- docs/models/pooling_models/scoring.md
   - `docs/models/pooling_models/classify.md` modified +2/-2
   - `docs/models/pooling_models/embed.md` modified +3/-3
   - `docs/models/pooling_models/reward.md` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/models/pooling_models/README.md
@@ -1854,10 +1854,10 @@ diff -- docs/models/pooling_models/classify.md
 
 -The [encode][vllm.LLM.encode] method is available to all pooling models in vLLM.
 ```
-- Files read:
+- Reviewed files:
   - runtime: `vllm/entrypoints/llm.py` modified +7/-425; `vllm/entrypoints/pooling/offline.py` added +510/-0
   - docs/bench: `docs/models/pooling_models/README.md` modified +4/-4; `docs/models/pooling_models/classify.md` modified +2/-2; `docs/models/pooling_models/embed.md` modified +3/-3; `docs/models/pooling_models/reward.md` modified +1/-1; `docs/models/pooling_models/scoring.md` modified +1/-1; `docs/models/pooling_models/token_classify.md` modified +1/-1; `docs/models/pooling_models/token_embed.md` modified +2/-2
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #41907 - [Docs] Reorganize online serving docs.
 
@@ -1876,7 +1876,7 @@ diff -- docs/models/pooling_models/classify.md
   - `docs/assets/models/pooling_models/cheat_sheet.svg` modified +671/-660
   - `docs/configuration/README.md` modified +1/-1
   - `docs/configuration/engine_args.md` modified +1/-1
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/.nav.yml
@@ -1899,10 +1899,10 @@ diff -- docs/configuration/README.md
  - [Engine arguments](./engine_args.md)
  - [Environment variables](./env_vars.md)
 ```
-- Files read:
+- Reviewed files:
   - docs/bench: `docs/.nav.yml` modified +1/-1; `docs/assets/models/pooling_models/cheat_sheet.svg` modified +671/-660; `docs/configuration/README.md` modified +1/-1; `docs/configuration/engine_args.md` modified +1/-1; `docs/design/arch_overview.md` modified +3/-3; `docs/features/structured_outputs.md` modified +1/-1; `docs/getting_started/installation/gpu.apple.inc.md` modified +1/-1; `docs/getting_started/quickstart.md` modified +3/-3
   - other: `mkdocs.yaml` modified +1/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
 
 ### PR #42626 - [Docs] Add SVG images for pooling models.
 
@@ -1921,7 +1921,7 @@ diff -- docs/configuration/README.md
   - `docs/assets/models/pooling_models/pooling_types.svg` added +633/-0
   - `docs/assets/models/pooling_models/score_types.svg` added +902/-0
   - `docs/models/pooling_models/README.md` modified +10/-0
-- Code excerpt:
+- Key code excerpts:
 
 ```diff
 diff -- docs/models/pooling_models/README.md
@@ -1954,6 +1954,6 @@ diff -- docs/models/pooling_models/scoring.md
 
  ### Cross-encoder models
 ```
-- Files read:
+- Reviewed files:
   - docs/bench: `docs/assets/models/pooling_models/cheat_sheet.svg` added +785/-0; `docs/assets/models/pooling_models/pooling_types.svg` added +633/-0; `docs/assets/models/pooling_models/score_types.svg` added +902/-0; `docs/models/pooling_models/README.md` modified +10/-0; `docs/models/pooling_models/scoring.md` modified +6/-0
-- Validation and risk: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
