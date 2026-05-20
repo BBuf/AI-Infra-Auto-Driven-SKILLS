@@ -1,19 +1,24 @@
 ---
 name: llm-serving-capacity-planner
-description: "Analyze GPU memory decomposition and estimate max concurrent requests from LLM serving logs. Use when the user asks about GPU memory decomposition, memory analysis, KV cache capacity, max concurrency, capacity planning, mem-fraction-static, or memory budget for LLM inference."
+description: "Parse SGLang/vLLM startup logs to explain GPU memory use and request capacity. Use for KV cache budget, mem-fraction-static comparisons, OOM triage, and max-concurrency estimates."
 ---
 
 # LLM Serving Capacity Planner
 
 ## Overview
 
-This skill parses LLM serving framework (SGLang/vLLM) startup logs, automatically extracts memory-related data points, decomposes GPU memory into categories (weights, KV cache pool, CUDA graph, framework overhead), and estimates max concurrent requests under different token-length scenarios.
+Use this when a serving log has enough memory lines to explain where GPU HBM
+went. The analyzer reads SGLang/vLLM startup logs, extracts weight load, KV
+pool, CUDA graph, framework overhead, and token-capacity lines, then estimates
+concurrent requests for common token lengths.
 
-It complements `model-compute-simulation` (which focuses on FLOPs/MFU) by addressing the **capacity planning** dimension: how much GPU memory each component consumes and how many requests can be served concurrently.
+`model-compute-simulation` covers FLOPs/MFU. This document covers the memory
+side: how much each component consumes and how many requests the current
+configuration can keep resident.
 
 ## Confirmation Required
 
-Before running any analysis, **ask the user to confirm** the following information. Do NOT guess or assume:
+Before running analysis, collect or verify these inputs:
 
 | Item | Why it matters | How to obtain | Default if user skips |
 |---|---|---|---|
@@ -72,13 +77,13 @@ python3 skills/llm-serving-capacity-planner/scripts/capacity_analyzer.py \
 
 ### Step 4: Review and interpret results
 
-The analyzer outputs:
+The analyzer prints:
 
 1. **Memory breakdown table**: each category (weights, KV pool, CUDA graph, framework, other) with GiB, MiB, percentage, and derivation
 2. **Per-rank comparison**: nvidia-smi data across all TP ranks
 3. **KV pool detail**: pool configuration, KV dtype, replication factor, per-token byte calculation
 4. **Concurrency estimate**: max concurrent requests for different token lengths
-5. **Tuning suggestions**: actionable recommendations for increasing capacity
+5. **Tuning notes**: configuration changes that may increase capacity
 
 ## When To Use It
 
@@ -103,18 +108,22 @@ When `num_key_value_heads < tp_size`, KV cache is **replicated** across all TP r
 
 ### SWA (Sliding Window Attention) Compression
 
-Models like DeepSeek-V4 use CSA (Compressed Sliding Attention) and HCA (Hierarchical Context Attention) with sliding windows. This dramatically reduces per-token KV cache bytes compared to the theoretical full-attention calculation. The `bytes_per_full_token` reported in the log already accounts for this compression.
+Models like DeepSeek-V4 use CSA (Compressed Sliding Attention) and HCA
+(Hierarchical Context Attention) with sliding windows. This reduces per-token
+KV cache bytes compared to the theoretical full-attention calculation. The
+`bytes_per_full_token` reported in the log already accounts for this
+compression.
 
-## Output Contract
+## Reporting Checklist
 
-Return:
+Include:
 
 1. **Serving configuration**: model, GPU, TP/PP/EP, mem-fraction-static, kv-cache-dtype
 2. **Memory breakdown table**: category / GiB / MiB / percentage / derivation source
 3. **Per-rank nvidia-smi comparison**: used and free memory per TP rank
 4. **KV pool detail**: pool size, bytes_per_full_token, KV dtype, replication factor, theoretical per-token KV calculation (when config.json provided)
 5. **Concurrency estimate table**: request token length / token-limit / request-limit / max concurrent
-6. **Tuning suggestions**: actionable recommendations based on free memory and configuration
+6. **Tuning notes** based on free memory and configuration
 
 ## Known Limitations
 

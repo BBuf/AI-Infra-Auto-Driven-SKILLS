@@ -1,22 +1,21 @@
 ---
 name: llm-pipeline-analysis
-description: "Layer-level pipeline analysis for LLM torch profiler traces. Decomposes a forward pass into per-layer wall-clock and sum-duration, classifies layers by model architecture (compress_ratio, hash layers), identifies bottleneck layers, and maps kernels to computation categories. Use after triage to drill into per-layer and per-kernel detail."
+description: "Inspect LLM torch profiler traces at forward-pass, layer, and kernel level. Use after whole-trace triage when you need layer timings, anchor-kernel boundaries, representative kernel flows, or Perfetto time ranges."
 ---
 
 # LLM Pipeline Analysis
 
 ## Overview
 
-This skill decomposes an LLM `torch.profiler` trace into **per-layer** and **per-kernel** detail, answering:
+Use this when a whole-trace profiler summary is too coarse. The scripts read a
+Chrome-trace JSON file, find layer-boundary anchor kernels, group kernels into
+forward passes and layers, and print timing tables you can use for Perfetto
+navigation or later MFU work.
 
-- Which layers dominate the forward pass?
-- How do layer types (C4 LIGHT, C128 HEAVY, HASH, FULL_ATTN) differ?
-- What is the kernel-level breakdown inside a specific layer?
-- Where in the Perfetto UI timeline does each layer sit?
-
-It is a **complement** to `llm-torch-profiler-analysis` (triage):
-triage gives the whole-trace top-k kernel table; this skill drills into
-per-layer structure and identifies which layer types are the bottleneck.
+`llm-torch-profiler-analysis` is still the better first pass for whole-trace
+top-k kernels. Come here after that when the question is about layer structure:
+which layer type is slow, which kernels make up one layer, or which time range
+to inspect in Perfetto.
 
 ## When To Use It
 
@@ -29,7 +28,7 @@ per-layer structure and identifies which layer types are the bottleneck.
 
 ## Confirmation Required
 
-Before running any script, **ask the user to confirm** the following information. Do NOT guess or assume:
+Before running scripts, collect or verify these inputs:
 
 | Item | Why it matters | How to obtain | Default if user skips |
 |---|---|---|---|
@@ -40,7 +39,9 @@ Before running any script, **ask the user to confirm** the following information
 | TP / EP | Parallelism config affects kernel naming and AllReduce count | Ask user or infer from trace filename (e.g. `TP-0`) | TP=8, EP=8 |
 | Serving mode | Decode vs prefill changes kernel mix and FLOPs profile | Ask user | decode B=1 |
 
-If the user cannot provide `config.json`, search for it in common locations (`/root/workspace/*/config.json`, HuggingFace cache). If still not found, the user must specify `--profile` explicitly.
+If the user cannot provide `config.json`, search common locations such as
+`/root/workspace/*/config.json` and the HuggingFace cache. If it is still not
+available, require an explicit `--profile`.
 
 ## Model Profiles
 
@@ -108,7 +109,7 @@ python3 scripts/layer_timeline_analyzer.py \
   --config /path/to/config.json
 ```
 
-Output includes:
+The script prints:
 - Per-layer wall-clock time, sum-duration, and category breakdown (MLA, MoE, GEMM, NCCL, MHC, Hadamard)
 - Layer cluster statistics grouped by type (C4_LIGHT, C128_HEAVY, HASH, etc.)
 - All-passes summary showing cold-start → steady-state growth
@@ -162,7 +163,7 @@ python3 scripts/perfetto_time_mapper.py \
   --fwd-pass 5 --layers 2,3,38,42
 ```
 
-Output includes:
+The script prints:
 - Forward pass time ranges in Perfetto-relative seconds
 - Per-layer start/end times with compress_ratio labels
 
@@ -188,7 +189,7 @@ python3 scripts/layer_timeline_analyzer.py \
 Identify:
 - Which layer type dominates (C4_LIGHT vs C128_HEAVY vs HASH)
 - The MLA / MoE / GEMM / NCCL proportion per layer type
-- Which layer type has the most optimization headroom
+- Which layer type is the best next target
 
 ### Step 3: Compute flow for representative layer(s)
 
@@ -271,9 +272,9 @@ the universal categories.
 | Activation | `silu_mul_clamp`, `act_and_mul` | universal | 0-0.5% |
 | Other | — | universal | 2-5% |
 
-## Output Contract
+## Reporting Checklist
 
-Return:
+Include:
 
 1. **Trace metadata**: trace path, model config path, GPU type, TP/EP
 2. **Model Architecture Summary** (from `config.json`):
@@ -292,11 +293,11 @@ Return:
    - Each row is one layer, with layer type label
 6. **Layer cluster statistics table** grouped by type:
    - Columns: Cluster, #, Avg Wall(ms), Avg Sum(ms), MLA%, MoE%, GEMM%, NCCL%, MHC%, Hadam%
-   - Identifies bottleneck layer type and optimization headroom
+   - Identifies bottleneck layer type and likely next target
 7. **Compute Flow Table** for selected representative layer(s) — this is the bridge to `model-compute-simulation`:
    - Produced by `layer_kernel_breakdown.py --format compute-flow`
    - Columns: `# | Half | Category | Simplified Name | dur(us) | %`
    - Category-level summary above the table
    - Also export as JSON (`--format json`) for `model-compute-simulation` consumption
 8. **Perfetto UI time ranges** when requested
-9. **One-line summary**: bottleneck layer type and top optimization target
+9. **One-line summary**: bottleneck layer type and likely next target

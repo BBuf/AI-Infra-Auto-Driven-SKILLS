@@ -1,19 +1,23 @@
 ---
 name: model-compute-simulation
-description: "Construct model compute flow, tensor dimensions, and MFU estimation for LLM inference. Depends on model-architecture-diagram for model identification. Use when the user asks about execution flow, tensor shapes, FLOPs, MFU, operator sequence, tensor dimensions, or compute simulation for a specific model and parallelism configuration."
+description: "Build an operator-level compute template for an LLM and estimate FLOPs/MFU for a serving shape. Use when you need tensor shapes, per-op FLOPs, kernel-to-op MFU mapping, or parallelism what-if analysis."
 ---
 
 # Model Compute Simulation
 
 ## Overview
 
-This skill constructs the model architecture, generates the operator execution sequence with tensor dimensions, and estimates MFU for LLM inference.
+Use this when the question is about compute, not just model structure. The
+simulator loads a model config, builds the representative operator sequence,
+prints tensor shapes and FLOPs, and can estimate MFU from measured latency.
 
-It depends on `model-architecture-diagram` for model name resolution and architecture diagrams. Use `model-architecture-diagram` first when the user only needs a visual architecture diagram; switch to this skill when the user needs compute-level detail.
+Use `model-architecture-diagram` first only when a visual architecture diagram
+would help. Switch here for operator order, tensor dimensions, FLOPs, MFU, and
+parallelism checks.
 
 ## Confirmation Required
 
-Before running any simulation, **ask the user to confirm** the following information. Do NOT guess or assume:
+Before running a simulation, collect or verify these inputs:
 
 | Item | Why it matters | How to obtain | Default if user skips |
 |---|---|---|---|
@@ -25,18 +29,23 @@ Before running any simulation, **ask the user to confirm** the following informa
 | TP / DP / EP | TP splits GEMM FLOPs across GPUs; EP splits expert FLOPs | Ask user | TP=8, DP=1, EP=8 |
 | Measured latency (ms) | Required for MFU numerator; must be per-GPU forward-pass wall-clock | Ask user or extract from trace via `llm-pipeline-analysis` | — (optional, no MFU without it) |
 
-If the model is not in `model-config-index.json`, ask the user to provide a `config.json` path. Do NOT fabricate architecture parameters.
+If the model is not in `model-config-index.json`, ask the user for a
+`config.json` path or add an indexed config before running estimates.
 
-## Dependency
+## Related Skills
 
-- `model-architecture-diagram`: resolve the model name and show the architecture diagram before drilling into compute detail.
-- `llm-pipeline-analysis`: provides **compute flow** (per-kernel sequence from trace) and measured latency, which are required for per-operator MFU calculation. Use `layer_kernel_breakdown.py --format compute-flow` for human-readable compute flow and `--format json` for machine-readable export to `--kernel-flow`.
+- `model-architecture-diagram`: useful when the user needs the model family
+  or a visual diagram before compute analysis.
+- `llm-pipeline-analysis`: provides **compute flow** (per-kernel sequence from
+  trace) and measured latency for per-operator MFU. Use
+  `layer_kernel_breakdown.py --format compute-flow` for a readable table and
+  `--format json` for `--kernel-flow`.
 
 ## Workflow
 
-### Step 1: Identify the model (via model-architecture-diagram)
+### Step 1: Identify the model
 
-If the user has not already seen the architecture diagram, resolve the model name first:
+If the model name is ambiguous, resolve it before simulation:
 
 ```bash
 python3 skills/model-architecture-diagram/scripts/model_architecture_diagram.py "<model name>"
@@ -67,7 +76,7 @@ python3 skills/model-compute-simulation/scripts/model_compute_simulator.py "Qwen
   --gpu h20 --dtype bf16
 ```
 
-Output includes:
+The simulator prints:
 - Per-layer operator sequence with FLOPs and tensor shapes (shape_in → shape_out)
 - Attention vs MoE/FFN FLOPs proportion per layer
 - Total model FLOPs for a single forward pass
@@ -89,7 +98,7 @@ python3 skills/model-compute-simulation/scripts/model_compute_simulator.py "Qwen
 
 MFU = theoretical_min_time / measured_time × 100%
 
-Output includes:
+The simulator prints:
 - Overall MFU
 - Per-layer MFU (uniform layer-time assumption)
 - Per-operator FLOPs proportion (for identifying which ops dominate)
@@ -135,14 +144,22 @@ that preserves all kernel rows from the compute flow and adds:
 - `MFU%`: measured FLOPs utilization
 - `shape_in→shape_out`: operator tensor dimensions
 
-When `--kernel-flow` is provided, the per-operator static template (compute flow with per-op FLOPs/shapes) is **automatically suppressed** because the kernel-level MFU table already contains per-kernel shape and FLOPs information, making the static template redundant. Only the model architecture summary, serving configuration, total model FLOPs, and kernel-level MFU table are output.
+When `--kernel-flow` is provided, the static per-operator template is omitted
+because the kernel-level MFU table already carries per-kernel shape and FLOPs
+information. The output keeps the model summary, serving configuration, total
+FLOPs, and kernel-level MFU table.
 
 Mapping rules:
 - **Direct-match kernels** (mla, moe, mhc, rmsnorm, hadamard, rope, quant, topk, etc.): time is assigned directly to the corresponding operators
 - **Generic GEMM kernels** (gemm_fp8, gemm_bf16): time is distributed to remaining unassigned projection GEMM operators by FLOPs share
 - **Overhead kernels** (allreduce, moe_align, moe_sort, other): rows preserved, FLOPs/MFU marked as N/A
 
-**FP8 kernel MFU correction**: Kernels in categories `moe` (fused_moe_kernel) and `gemm_fp8` internally use fp8 precision even when `--dtype bf16` is specified. For these kernels, the MFU denominator uses the GPU's fp8 peak FLOPS (2× bf16 peak) instead of bf16 peak. The resulting MFU reflects **fp8 arithmetic utilization**, marked with a superscript `⁸` (e.g. `63.7%⁸`). This eliminates the misleading MFU > 100% that previously appeared for fused_moe kernels, and gives a true fp8 compute efficiency metric. For `gemm_bf16` kernels, the bf16 peak FLOPS is used as denominator (no superscript).
+**FP8 kernel MFU correction**: Kernels in categories `moe` (fused_moe_kernel)
+and `gemm_fp8` use fp8 math internally even when `--dtype bf16` is specified.
+For these kernels, the MFU denominator uses the GPU's fp8 peak FLOPS
+(2x bf16 peak) instead of bf16 peak. The resulting MFU is marked with a
+superscript `⁸` (for example, `63.7%⁸`) to show that the fp8 denominator was
+used. `gemm_bf16` kernels still use the bf16 peak FLOPS denominator.
 
 #### Method B: `--kernel-detail` (operator-level MFU, legacy)
 
@@ -202,9 +219,9 @@ Emit JSON for automation:
 python3 skills/model-compute-simulation/scripts/model_compute_simulator.py "GLM-5" --format json
 ```
 
-## Output Contract
+## Reporting Checklist
 
-Return:
+Include:
 
 1. **Model architecture summary**: model name, config source, num_layers, hidden_size, attention_type, MoE config (num_experts, topk, shared_experts), MHC, head_dim
 2. **Serving configuration**: batch_size, seq_len, TP, DP, EP, GPU, dtype
