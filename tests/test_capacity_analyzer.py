@@ -15,6 +15,7 @@ sys.path.insert(0, str(SCRIPT_DIR))
 from capacity_analyzer import (
     CudaGraphInfo,
     GPU_ALIAS,
+    GPU_SPECS_PATH,
     SwKvMemoryCalc,
     FinalInfo,
     MemoryBreakdown,
@@ -368,6 +369,7 @@ class TestKVBytesCalculation:
 class TestGpuSpecs:
     def test_local_gpu_aliases_resolve_to_specs(self):
         specs = load_gpu_specs()
+        assert "llm-serving-capacity-planner" in GPU_SPECS_PATH
         for alias, canonical in {
             "h100": "h100-sxm-80gb",
             "h200": "h200-sxm-141gb",

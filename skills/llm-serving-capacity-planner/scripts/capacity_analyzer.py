@@ -30,19 +30,19 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple
 
 # ---------------------------------------------------------------------------
-# Paths — reuse model-compute-simulation references as read-only
+# Paths
 # ---------------------------------------------------------------------------
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 SKILL_DIR = os.path.join(SCRIPT_DIR, "..")
-SHARED_REF = os.path.join(SCRIPT_DIR, "..", "..", "model-compute-simulation", "references")
-GPU_SPECS_PATH = os.path.join(SHARED_REF, "gpu-specs.json")
+REF_DIR = os.path.join(SKILL_DIR, "references")
+GPU_SPECS_PATH = os.path.join(REF_DIR, "gpu-specs.json")
 
 # ---------------------------------------------------------------------------
 # GPU specs loader
 # ---------------------------------------------------------------------------
 
 def load_gpu_specs() -> Dict:
-    """Load GPU specs from model-compute-simulation references."""
+    """Load bundled GPU specs."""
     if os.path.exists(GPU_SPECS_PATH):
         with open(GPU_SPECS_PATH) as f:
             return json.load(f)

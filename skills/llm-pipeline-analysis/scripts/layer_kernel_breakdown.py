@@ -10,13 +10,13 @@ Usage:
     --config /path/to/config.json \
     --fwd-pass 5 --layer 3
 
-  # Compute flow format (bridge to model-compute-simulation)
+  # Compute flow format
   python3 layer_kernel_breakdown.py \
     --trace /path/to/TP-0.trace.json.gz \
     --config /path/to/config.json \
     --fwd-pass 5 --layer 3 --format compute-flow
 
-  # JSON export for model-compute-simulation
+  # JSON export
   python3 layer_kernel_breakdown.py \
     --trace /path/to/TP-0.trace.json.gz \
     --config /path/to/config.json \
@@ -275,7 +275,6 @@ def print_compute_flow(kernels, layer_id, compress_ratios, num_hash_layers,
                        num_layers, profile: ModelProfile, config=None, trace_start_ts=0):
     """Print compute flow table with model architecture summary.
 
-    This is the bridge format for model-compute-simulation.
     Columns: # | Half | Category | Simplified Name | dur(us) | % | ts_rel(ms) | Input Dims
     No category-level summary — every kernel is shown individually.
     """
@@ -324,7 +323,7 @@ def print_compute_flow(kernels, layer_id, compress_ratios, num_hash_layers,
 
 def format_json_output(kernels, layer_id, fwd_pass, compress_ratios, num_layers,
                        profile: ModelProfile):
-    """Format per-kernel detail as JSON for downstream consumption.
+    """Format per-kernel detail as JSON.
 
     Returns a JSON string with:
     - kernels: per-kernel list with name, simplified_name, dur_us, category (machine key), half, ts
@@ -388,7 +387,7 @@ def main():
     ap.add_argument("--num-layers", type=int, default=None,
                      help="Override number of layers")
     ap.add_argument("--format", choices=["text", "json", "compute-flow"], default="text",
-                     help="Output format: text (human-readable), compute-flow (bridge format for model-compute-simulation), or json (machine-readable per-kernel detail)")
+                     help="Output format: text (human-readable), compute-flow (per-kernel table), or json (machine-readable per-kernel detail)")
     args = ap.parse_args()
 
     events = load_trace(args.trace)

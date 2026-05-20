@@ -12,10 +12,6 @@ went. The analyzer reads SGLang/vLLM startup logs, extracts weight load, KV
 pool, CUDA graph, framework overhead, and token-capacity lines, then estimates
 concurrent requests for common token lengths.
 
-`model-compute-simulation` covers FLOPs/MFU. This document covers the memory
-side: how much each component consumes and how many requests the current
-configuration can keep resident.
-
 ## Confirmation Required
 
 Before running analysis, collect or verify these inputs:
@@ -27,11 +23,6 @@ Before running analysis, collect or verify these inputs:
 | nvidia-smi output | Provides per-rank actual memory for cross-validation | Capture with `nvidia-smi --query-gpu=index,memory.used,memory.free --format=csv,noheader > smi.txt` | — (optional, but recommended) |
 | Model config.json | Enables theoretical KV cache byte calculation and replication factor analysis | Ask user for the model's config.json path | — (optional, log data used instead) |
 | Request token length | Determines concurrency estimate denominator | Ask user | 4096, 6144, 8192 |
-
-## Dependency
-
-- `model-compute-simulation/references/gpu-specs.json`: GPU HBM specifications (read-only, shared reference). Known aliases include `h20`, `h100`, `h200`, and `b200`.
-- `llm-serving-auto-benchmark`: can capture startup logs and nvidia-smi data as part of benchmark setup.
 
 ## Workflow
 
@@ -138,5 +129,5 @@ Include:
 ## References
 
 - `references/log-patterns.md`: log line patterns and their semantics for memory analysis.
+- `references/gpu-specs.json`: GPU HBM specifications for `h20`, `h100`, `h200`, and `b200` aliases.
 - `scripts/capacity_analyzer.py`: the core analysis script.
-- `../model-compute-simulation/references/gpu-specs.json`: GPU HBM specifications (shared reference).

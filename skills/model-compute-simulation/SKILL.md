@@ -24,17 +24,10 @@ Before running a simulation, collect or verify these inputs:
 | dtype (bf16 / fp8) | Affects peak FLOPS selection; fp8 doubles peak | Ask user | bf16 |
 | Batch size & seq len | Directly affects FLOPs and tensor shapes | Ask user | B=1, S=1 (decode) |
 | TP / DP / EP | TP splits GEMM FLOPs across GPUs; EP splits expert FLOPs | Ask user | TP=8, DP=1, EP=8 |
-| Measured latency (ms) | Required for MFU numerator; must be per-GPU forward-pass wall-clock | Ask user or extract from trace via `llm-pipeline-analysis` | — (optional, no MFU without it) |
+| Measured latency (ms) | Required for MFU numerator; must be per-GPU forward-pass wall-clock | Ask user or extract from a profiler trace | — (optional, no MFU without it) |
 
 If the model is not in `model-config-index.json`, ask the user for a
 `config.json` path or add an indexed config before running estimates.
-
-## Related Skills
-
-- `llm-pipeline-analysis`: provides **compute flow** (per-kernel sequence from
-  trace) and measured latency for per-operator MFU. Use
-  `layer_kernel_breakdown.py --format compute-flow` for a readable table and
-  `--format json` for `--kernel-flow`.
 
 ## Workflow
 
@@ -93,26 +86,18 @@ hardware table includes H20, H100 SXM 80GB, H200 SXM 141GB, and B200 SXM
 180GB. Use aliases such as `--gpu h100`, `--gpu h200`, or `--gpu b200` when
 running on those local boxes.
 
-### Step 4: Per-operator MFU with kernel-level latency (via llm-pipeline-analysis)
+### Step 4: Per-operator MFU with kernel-level latency
 
-When you have per-kernel measured latency from `llm-pipeline-analysis`,
-compute per-operator MFU by mapping kernel durations to the compute flow.
+When you have per-kernel measured latency, compute per-operator MFU by mapping
+kernel durations to the compute flow.
 
 #### Method A: `--kernel-flow` (kernel-level MFU, recommended)
 
-Use `layer_kernel_breakdown.py --format json` to produce per-kernel detail,
-then feed it to the simulator for kernel-level MFU analysis.
-This preserves every kernel row from the compute flow and adds FLOPs/MFU columns.
+Provide per-kernel detail as JSON, then feed it to the simulator for
+kernel-level MFU analysis. This preserves every kernel row from the compute
+flow and adds FLOPs/MFU columns.
 
 ```bash
-# Step 4a: Extract per-kernel detail from trace (via llm-pipeline-analysis)
-python3 skills/llm-pipeline-analysis/scripts/layer_kernel_breakdown.py \
-  --trace /path/to/TP-0.trace.json.gz \
-  --config /path/to/config.json \
-  --fwd-pass 5 --layer 3 \
-  --format json > /tmp/layer3_detail.json
-
-# Step 4b: Run simulator with kernel-flow
 python3 skills/model-compute-simulation/scripts/model_compute_simulator.py "Qwen3-235B-A22B" \
   --batch-size 1 --seq-len 8192 \
   --tp 8 --dp 1 --ep 8 \
@@ -120,9 +105,9 @@ python3 skills/model-compute-simulation/scripts/model_compute_simulator.py "Qwen
   --kernel-flow @/tmp/layer3_detail.json
 ```
 
-The `--kernel-flow` parameter accepts a JSON string or `@file` path from
-`layer_kernel_breakdown --format json`. It produces a **kernel-level MFU table**
-that preserves all kernel rows from the compute flow and adds:
+The `--kernel-flow` parameter accepts a JSON string or `@file` path. It produces
+a **kernel-level MFU table** that preserves all kernel rows from the compute
+flow and adds:
 - `Mapped Op`: which operator this kernel maps to
 - `FLOPs`: operator's total FLOPs
 - `Theo(us)`: theoretical minimum time
@@ -214,7 +199,7 @@ Include:
    - Operator sequence table: name, category, FLOPs, shape_in → shape_out
    - Attention vs MoE/FFN FLOPs proportion
 4. **Total model FLOPs** for a single forward pass
-5. **Kernel-level MFU table** (when `--kernel-flow` provided) — builds on `llm-pipeline-analysis` compute flow:
+5. **Kernel-level MFU table** (when `--kernel-flow` provided):
    - Preserves ALL kernel rows from the compute flow (never deleted)
    - Per-kernel columns: `# | Half | Category | Simplified Name | dur(us) | % | Mapped Op | FLOPs | Theo(us) | MFU% | shape_in→shape_out`
    - Direct-match kernels: show mapped operator FLOPs/MFU

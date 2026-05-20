@@ -610,8 +610,8 @@ def simulate(cfg: dict, model_name: str, B: int, S: int, tp: int, dp: int, ep: i
 # ---------------------------------------------------------------------------
 # Kernel category → operator mapping
 # ---------------------------------------------------------------------------
-# Maps llm-pipeline-analysis kernel categories to model-compute-simulation
-# operator categories. Used to map measured kernel durations to per-operator MFU.
+# Maps measured kernel categories to simulator operator categories.
+# Used to map kernel durations to per-operator MFU.
 
 KERNEL_TO_OP_CATEGORY = {
     "mla":           ["attention"],           # flash_fwd_splitkv_mla
@@ -1006,7 +1006,7 @@ def format_text(result: SimResult, skip_compute_flow: bool = False) -> str:
                 if unassigned:
                     lines.append(f"    {'unassigned':20s} {', '.join(unassigned)} (no kernel match)")
         elif result.kernel_ms:
-            lines.append(f"\n  Kernel category → operator mapping (from llm-pipeline-analysis):")
+            lines.append(f"\n  Kernel category → operator mapping:")
             for kcat, dur_ms in sorted(result.kernel_ms.items(), key=lambda x: -x[1]):
                 mapped = KERNEL_TO_OP_CATEGORY.get(kcat, [])
                 lines.append(f"    {kcat:20s} {dur_ms:8.3f} ms → {', '.join(mapped) if mapped else '(no compute FLOPs)'}")
@@ -1025,7 +1025,7 @@ def format_kernel_flow(kernel_detail: dict, ops: list, peak_tflops: float,
                        fp8_peak_tflops: float = 0) -> str:
     """Format kernel-level MFU table that preserves every kernel row.
 
-    This builds on the compute flow from llm-pipeline-analysis and adds:
+    This uses per-kernel timing rows and adds:
     - Mapped Op: which operator this kernel maps to
     - FLOPs: operator's total FLOPs
     - Theo(us): theoretical minimum time
@@ -1287,11 +1287,11 @@ def main():
     parser.add_argument("--dtype", default="bf16", choices=["bf16", "fp8"], help="Data type")
     parser.add_argument("--measured-ms", type=float, default=None, help="Measured forward-pass latency (ms)")
     parser.add_argument("--per-layer-ms", type=float, default=None, help="Measured per-layer latency (ms); overrides --measured-ms for per-layer MFU")
-    parser.add_argument("--kernel-ms", default=None, help="JSON object mapping kernel categories to measured ms (from llm-pipeline-analysis)")
+    parser.add_argument("--kernel-ms", default=None, help="JSON object mapping kernel categories to measured ms")
     parser.add_argument("--kernel-detail", default=None,
-                        help="JSON string or @file path from layer_kernel_breakdown --format json; provides per-kernel detail for precise per-operator MFU")
+                        help="JSON string or @file path with per-kernel detail for precise per-operator MFU")
     parser.add_argument("--kernel-flow", default=None,
-                        help="JSON string or @file path from layer_kernel_breakdown --format json; produces kernel-level MFU table preserving all kernel rows")
+                        help="JSON string or @file path with per-kernel detail; produces kernel-level MFU table preserving all kernel rows")
     parser.add_argument("--format", dest="fmt", default="text", choices=["text", "json"], help="Output format")
 
     args = parser.parse_args()

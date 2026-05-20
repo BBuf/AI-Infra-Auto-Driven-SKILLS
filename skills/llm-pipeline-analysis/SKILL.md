@@ -1,6 +1,6 @@
 ---
 name: llm-pipeline-analysis
-description: "Inspect LLM torch profiler traces at forward-pass, layer, and kernel level. Use after whole-trace triage when you need layer timings, anchor-kernel boundaries, representative kernel flows, or Perfetto time ranges."
+description: "Inspect LLM torch profiler traces at forward-pass, layer, and kernel level. Use when you need layer timings, anchor-kernel boundaries, representative kernel flows, or Perfetto time ranges."
 ---
 
 # LLM Pipeline Analysis
@@ -10,16 +10,11 @@ description: "Inspect LLM torch profiler traces at forward-pass, layer, and kern
 Use this when a whole-trace profiler summary is too coarse. The scripts read a
 Chrome-trace JSON file, find layer-boundary anchor kernels, group kernels into
 forward passes and layers, and print timing tables you can use for Perfetto
-navigation or later MFU work.
-
-`llm-torch-profiler-analysis` is still the better first pass for whole-trace
-top-k kernels. Come here after that when the question is about layer structure:
-which layer type is slow, which kernels make up one layer, or which time range
-to inspect in Perfetto.
+navigation or detailed timing analysis.
 
 ## When To Use It
 
-- after triage, when you need to know **which layers** contribute most
+- when you need to know **which layers** contribute most
 - when the model has alternating layer types (e.g. models with
   `compress_ratios` like DeepSeek-V4 NSA)
 - when you need to compare cold-start vs steady-state forward passes
@@ -35,7 +30,7 @@ Before running scripts, collect or verify these inputs:
 | Model name | Determines which `config.json` to use; affects layer classification | Ask user | — (required) |
 | Model profile | Determines anchor kernel, blocks-per-layer, and kernel classification rules | Ask user or auto-infer from config | Auto-inferred from config |
 | `config.json` path | Provides `compress_ratios`, `num_hidden_layers`, `num_hash_layers` etc. | Ask user or search filesystem | — (required) |
-| GPU type | Needed for MFU cross-reference with `model-compute-simulation` | Ask user | — |
+| GPU type | Optional context for reports and hardware notes | Ask user | — |
 | TP / EP | Parallelism config affects kernel naming and AllReduce count | Ask user or infer from trace filename (e.g. `TP-0`) | TP=8, EP=8 |
 | Serving mode | Decode vs prefill changes kernel mix and FLOPs profile | Ask user | decode B=1 |
 
@@ -129,7 +124,7 @@ python3 scripts/layer_kernel_breakdown.py \
   --config /path/to/config.json \
   --fwd-pass 5 --layer 3 --format compute-flow
 
-# JSON export for model-compute-simulation
+# JSON export
 python3 scripts/layer_kernel_breakdown.py \
   --trace /path/to/TP-0.trace.json.gz \
   --config /path/to/config.json \
@@ -144,8 +139,8 @@ python3 scripts/layer_kernel_breakdown.py \
 
 Output formats:
 - `--format text` (default): grouped summary + ordered kernel list with simplified names and durations
-- `--format compute-flow`: model architecture summary + category-level timing + per-kernel table with `Category` column; this is the bridge format for `model-compute-simulation`
-- `--format json`: machine-readable per-kernel detail for `model-compute-simulation --kernel-flow`
+- `--format compute-flow`: model architecture summary + category-level timing + per-kernel table with `Category` column
+- `--format json`: machine-readable per-kernel detail
 - Kernel diff when comparing two layers (unique kernels in each)
 
 ### 3. `perfetto_time_mapper.py` — Perfetto UI time navigation
@@ -201,7 +196,7 @@ python3 scripts/layer_kernel_breakdown.py \
   --trace $TRACE --config $CONFIG \
   --fwd-pass 5 --layer 3 --format compute-flow
 
-# JSON export for model-compute-simulation
+# JSON export
 python3 scripts/layer_kernel_breakdown.py \
   --trace $TRACE --config $CONFIG \
   --fwd-pass 5 --layer 3 --format json > /tmp/layer3_detail.json
@@ -211,8 +206,6 @@ The `--format compute-flow` output includes:
 - Model architecture summary at the top
 - Category-level timing summary
 - Per-kernel table with `# | Half | Category | Simplified Name | dur(us) | %`
-
-Pass the JSON export to `model-compute-simulation` via `--kernel-flow` for per-operator MFU analysis.
 
 ### Step 4: Compare layer types (optional)
 
@@ -294,10 +287,10 @@ Include:
 6. **Layer cluster statistics table** grouped by type:
    - Columns: Cluster, #, Avg Wall(ms), Avg Sum(ms), MLA%, MoE%, GEMM%, NCCL%, MHC%, Hadam%
    - Identifies bottleneck layer type and likely next target
-7. **Compute Flow Table** for selected representative layer(s) — this is the bridge to `model-compute-simulation`:
+7. **Compute Flow Table** for selected representative layer(s):
    - Produced by `layer_kernel_breakdown.py --format compute-flow`
    - Columns: `# | Half | Category | Simplified Name | dur(us) | %`
    - Category-level summary above the table
-   - Also export as JSON (`--format json`) for `model-compute-simulation` consumption
+   - Optional JSON export (`--format json`)
 8. **Perfetto UI time ranges** when requested
 9. **One-line summary**: bottleneck layer type and likely next target
