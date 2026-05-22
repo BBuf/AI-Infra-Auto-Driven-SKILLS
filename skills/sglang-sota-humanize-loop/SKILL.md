@@ -18,13 +18,10 @@ into two phases:
 2. A Humanize RLCR phase that iterates on SGLang patches using benchmark and
    profiler evidence until the stop criteria are met.
 
-Run exactly one Humanize RLCR loop for the model campaign. Do not start a
-KernelPilot Humanize loop, `humanize-kernel-agent-loop`, or any second
-`setup-rlcr-loop.sh` session from this skill. KernelPilot is used only as a
-knowledge and source-evidence repository, while `ncu-report` supplies measured
-kernel diagnostics. All SGLang patches, including kernel patches, stay inside
-the same model-level RLCR loop and are accepted only after real-model
-benchmark/profile revalidation.
+The campaign loop is the Humanize RLCR phase for the target model. KernelPilot
+is used as a knowledge and source-evidence repository, while `ncu-report`
+supplies measured kernel diagnostics. All SGLang patches, including kernel
+patches, are accepted only after real-model benchmark/profile revalidation.
 
 ## Runtime Roots
 
@@ -84,8 +81,7 @@ Read these only when the optional analysis gates below trigger:
 
 Read KernelPilot knowledge files only after profiler evidence identifies a
 specific slow kernel family or candidate kernel path. Use them for source ideas,
-PR references, implementation patterns, and provenance checks, not for starting a
-separate optimization loop.
+PR references, implementation patterns, and provenance checks.
 
 ## Contract
 
@@ -332,10 +328,8 @@ The plan must require:
 - using KernelPilot knowledge and `ncu-report` only as assists when the profiler
   root cause is an optimizable CUDA, Triton, CuTe, CUTLASS, TileLang, or
   torch.compile kernel path
-- never starting a KernelPilot RLCR, `humanize-kernel-agent-loop`, or second
-  `.humanize/rlcr` tree for kernel work
 - keeping kernel edits, microbench harnesses, NCU digests, integration, and
-  real-model revalidation inside the single SGLang model loop
+  real-model revalidation as ordinary SGLang patch work in the model loop
 - recording every attempt, failed idea, partial win, rejected source idea, and
   final selected patch in artifacts
 
@@ -402,11 +396,10 @@ Examples:
 - The gap survives SGLang scheduling and overlap patches and the remaining hot
   row is kernel-local.
 
-### Single-Loop Kernel Workflow
+### Kernel Evidence Workflow
 
-Do not start KernelPilot's `setup-rlcr-loop.sh`, `humanize-kernel-agent-loop`, or
-any standalone `.humanize/rlcr` session. A kernel candidate is just another
-SGLang patch candidate in the active model RLCR round.
+A kernel candidate is another SGLang patch candidate in the active model RLCR
+round.
 
 For each eligible kernel target:
 
@@ -447,7 +440,8 @@ After every accepted round, update `humanize/model-loop-checkpoint.md` with:
   digest paths, rejected source ideas, and the next planned SGLang patch
 
 This checkpoint is for campaign recovery inside the same model-level workflow.
-It is not a handoff to another RLCR loop.
+It records enough context to resume the campaign without losing
+benchmark/profile lineage.
 
 ## Loop Ledgers
 

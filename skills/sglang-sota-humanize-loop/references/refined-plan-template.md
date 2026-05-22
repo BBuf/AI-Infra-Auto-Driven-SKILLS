@@ -18,9 +18,10 @@ continue through minimal patches until SGLang reaches the stop criteria.
 The matching PR-driven model history has been read from
 `model-pr-optimization-history`, and `history/model-pr-history-notes.md`
 records the SGLang/vLLM PR evidence that influenced source-path selection.
-Kernel-local work stays inside this same model-level RLCR loop: KernelPilot may
+Kernel-local work follows the model-level RLCR evidence path: KernelPilot may
 provide knowledge and source evidence, and `ncu-report` may provide measured
-counter digests, but no separate KernelPilot or kernel RLCR loop is started.
+counter digests. Kernel candidates are accepted through the same real-model
+benchmark/profile revalidation path as other SGLang patches.
 
 ## Acceptance Criteria
 
@@ -70,7 +71,7 @@ counter digests, but no separate KernelPilot or kernel RLCR loop is started.
     - A patch disables correctness checks, weakens output quality, or changes
       only launch parameters after the winner table is known.
 
-- AC-4: Kernel-level bottlenecks stay inside the model RLCR loop
+- AC-4: Kernel-level bottlenecks use the model RLCR evidence path
   - Positive Tests (expected to PASS):
     - For a specific slow CUDA/Triton/CuTe/CUTLASS/TileLang/torch.compile
       kernel, the profiler evidence shows SGLang is more than 1% behind and the
@@ -87,8 +88,6 @@ counter digests, but no separate KernelPilot or kernel RLCR loop is started.
       into the active model-serving path, and validated with focused correctness
       checks plus the same real-model benchmark/profile.
   - Negative Tests (expected to FAIL):
-    - A KernelPilot `setup-rlcr-loop.sh`, `humanize-kernel-agent-loop`, or
-      second `.humanize/rlcr` session is launched for kernel work.
     - Kernel-specialist effort is spent on a lone SGLang kernel below 1%
       cumulative GPU-time share with no aggregated family above 1%.
     - Upstream or competitor kernel code is copied without recording
@@ -121,18 +120,16 @@ counter digests, but no separate KernelPilot or kernel RLCR loop is started.
     - The loop stops while SGLang remains more than 1% behind and there is an
       uninvestigated profiler table row with plausible SGLang source impact.
 
-- AC-8: Single-loop continuity is preserved
+- AC-8: Model-loop continuity is preserved
   - Positive Tests (expected to PASS):
     - `humanize/model-loop-checkpoint.md` records the original benchmark
       winners, workload/SLA, SGLang commit, applied patches, current best
       SGLang result, remaining gap, model PR history notes, profiler rows,
       kernel-assist notes, NCU digest paths, rejected source ideas, and the
       next planned SGLang patch.
-    - The campaign can resume from the same model-loop artifacts without
-      relying on a KernelPilot result directory or a second Humanize session.
+    - The campaign can resume from the same model-loop artifacts with benchmark,
+      profile, source-evidence, and patch lineage intact.
   - Negative Tests (expected to FAIL):
-    - The loop suspends the model RLCR to wait for a KernelPilot or kernel RLCR
-      loop.
     - Kernel changes are accepted without updating the checkpoint, ledgers, NCU
       digest links when applicable, and real-model benchmark/profile results.
 
@@ -160,9 +157,8 @@ revalidation, unless the initial evidence proves no patch is needed.
   Compute, and Nsight Systems.
 - Cannot use: changing the fixed workload/SLA after seeing results, removing a
   competitor from comparison without a recorded unsupported reason, disabling
-  correctness or tokenizer behavior, launching KernelPilot or any second RLCR
-  loop for kernel work, spending kernel-specialist effort on sub-1% lone
-  kernels, or claiming SOTA from smoke-only runs.
+  correctness or tokenizer behavior, spending kernel-specialist effort on
+  sub-1% lone kernels, or claiming SOTA from smoke-only runs.
 
 ## Dependencies and Sequence
 
