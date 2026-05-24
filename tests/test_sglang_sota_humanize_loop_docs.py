@@ -63,6 +63,9 @@ class SglangSotaHumanizeLoopDocsTest(unittest.TestCase):
         template = read_skill_file("references", "refined-plan-template.md")
 
         self.assertIn("setup-rlcr-loop.sh", text)
+        self.assertIn("--yolo --strict-success", text)
+        self.assertIn("strict_success: true", text)
+        self.assertIn("clean working tree", text)
         self.assertIn(".humanize/sglang-sota-agent/refined-plan.md", text)
         self.assertIn("Kernel Evidence Assist", text)
         self.assertIn("Single-Loop Kernel Workflow", text)
@@ -70,7 +73,7 @@ class SglangSotaHumanizeLoopDocsTest(unittest.TestCase):
         self.assertIn("kernel/ncu-digests/<version>/", text)
         self.assertIn("ncu-report", text)
         self.assertIn("humanize/model-loop-checkpoint.md", text)
-        self.assertIn("Do not start KernelPilot's `setup-rlcr-loop.sh`", text)
+        self.assertIn("Do not start a second `setup-rlcr-loop.sh`", text)
         self.assertIn("any standalone `.humanize/rlcr` session", text)
         self.assertIn("knowledge and source-evidence repository", text)
         self.assertIn("patching SGLang code, not just benchmark parameters", text)
@@ -79,6 +82,7 @@ class SglangSotaHumanizeLoopDocsTest(unittest.TestCase):
             template,
         )
         self.assertIn("AC-8: Single-loop continuity is preserved", template)
+        self.assertIn("strict_success: true", template)
         self.assertIn("KernelPilot is used only as a knowledge/source-evidence", template)
         self.assertIn("second `.humanize/rlcr` session is launched", template)
         self.assertIn("each digest under `kernel/ncu-digests/<version>/`", template)

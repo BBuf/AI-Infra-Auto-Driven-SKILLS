@@ -335,11 +335,22 @@ The plan must require:
 
 ## Phase 5: Start RLCR
 
+Before starting Humanize from the SGLang checkout:
+
+- Ensure the SGLang checkout is a git repository with at least one commit and a
+  clean working tree, excluding only gitignored Humanize runtime state.
+- Ensure `.humanize*` is gitignored so RLCR state, round summaries, and local
+  checkpoints cannot be staged accidentally.
+- Ensure the intended review base branch is present locally. Pass
+  `--base-branch <branch>` if Humanize's auto-detection would be ambiguous.
+- Do not start a new loop if any existing `.humanize/rlcr/*/state.md` is active
+  in the SGLang checkout. Resume, finish, or cancel the old model loop first.
+
 From the SGLang checkout, run:
 
 ```bash
 "$HUMANIZE_RUNTIME_ROOT/scripts/setup-rlcr-loop.sh" \
-  .humanize/sglang-sota-agent/refined-plan.md --yolo
+  .humanize/sglang-sota-agent/refined-plan.md --yolo --strict-success
 ```
 
 If `HUMANIZE_RUNTIME_ROOT` is not already set by the client/plugin environment,
@@ -350,13 +361,19 @@ stop and report the error. Do not bypass the gate.
 
 After setup succeeds:
 
-1. Read `.humanize/rlcr/<timestamp>/round-0-prompt.md`.
-2. Execute the current round.
-3. Commit SGLang changes.
-4. Write the required Humanize round summary.
-5. Stop normally so the native Humanize Stop hook can review.
+1. Find the active state file with
+   `find .humanize/rlcr -maxdepth 2 -name state.md -print`.
+2. Verify the state file exists and contains `strict_success: true`.
+3. Read `.humanize/rlcr/<timestamp>/round-0-prompt.md`.
+4. Execute the current round.
+5. Commit SGLang changes.
+6. Write the required Humanize round summary.
+7. Stop normally so the native Humanize Stop hook can review.
 
-If the hook blocks exit, follow the generated next-round prompt exactly.
+If no active state file exists, or if `strict_success: true` is missing, stop
+and report that RLCR did not start correctly. Do not continue into SGLang patch
+work outside the Humanize loop. If the hook blocks exit, follow the generated
+next-round prompt exactly.
 
 ## Kernel Evidence Assist
 
@@ -364,6 +381,16 @@ Use KernelPilot knowledge and `ncu-report` only when the cross-framework
 profiler evidence points at a specific kernel or small kernel family. Keep
 generic scheduling, overlap, batching, memory residency, and benchmark-command
 issues in the normal SGLang patch path.
+
+### Single-Loop Kernel Workflow
+
+Kernel-local optimization stays inside the active model-level RLCR session.
+Do not start a second `setup-rlcr-loop.sh` for kernel work.
+Do not launch any standalone `.humanize/rlcr` session.
+Do not move the SGLang kernel candidate into a separate optimization
+repository.
+Kernel evidence tools are support for the active model loop, not a second
+campaign owner.
 
 ### Eligibility Gate
 

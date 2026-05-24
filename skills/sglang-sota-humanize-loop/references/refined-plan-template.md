@@ -71,7 +71,7 @@ benchmark/profile revalidation path as other SGLang patches.
     - A patch disables correctness checks, weakens output quality, or changes
       only launch parameters after the winner table is known.
 
-- AC-4: Kernel-level bottlenecks use the model RLCR evidence path
+- AC-4: Kernel-level bottlenecks stay inside the model RLCR loop
   - Positive Tests (expected to PASS):
     - For a specific slow CUDA/Triton/CuTe/CUTLASS/TileLang/torch.compile
       kernel, the profiler evidence shows SGLang is more than 1% behind and the
@@ -92,6 +92,8 @@ benchmark/profile revalidation path as other SGLang patches.
       cumulative GPU-time share with no aggregated family above 1%.
     - Upstream or competitor kernel code is copied without recording
       provenance, license/notice obligations, and the local delta.
+    - A second `.humanize/rlcr` session is launched for a kernel candidate
+      instead of keeping the work inside the active model-level RLCR loop.
     - The loop declares success from a microbench or NCU win without rerunning
       the same model-level benchmark/profile.
 
@@ -120,7 +122,7 @@ benchmark/profile revalidation path as other SGLang patches.
     - The loop stops while SGLang remains more than 1% behind and there is an
       uninvestigated profiler table row with plausible SGLang source impact.
 
-- AC-8: Model-loop continuity is preserved
+- AC-8: Single-loop continuity is preserved
   - Positive Tests (expected to PASS):
     - `humanize/model-loop-checkpoint.md` records the original benchmark
       winners, workload/SLA, SGLang commit, applied patches, current best
@@ -129,9 +131,13 @@ benchmark/profile revalidation path as other SGLang patches.
       next planned SGLang patch.
     - The campaign can resume from the same model-loop artifacts with benchmark,
       profile, source-evidence, and patch lineage intact.
+    - The active `.humanize/rlcr/<timestamp>/state.md` exists and records
+      `strict_success: true` for the model-level SGLang loop.
   - Negative Tests (expected to FAIL):
     - Kernel changes are accepted without updating the checkpoint, ledgers, NCU
       digest links when applicable, and real-model benchmark/profile results.
+    - The SGLang checkout starts RLCR from a dirty working tree, an ambiguous
+      review base branch, or a tracked `.humanize/` runtime state file.
 
 ## Path Boundaries
 
@@ -190,6 +196,8 @@ revalidation, unless the initial evidence proves no patch is needed.
 ## Implementation Notes
 
 - Keep Humanize local state under `.humanize/`.
+- Start RLCR with `--strict-success` and verify the active `state.md` contains
+  `strict_success: true` before any SGLang patch work.
 - Keep benchmark/profile artifacts under `<artifact-root>`.
 - Keep model PR history notes under `<artifact-root>/history/`.
 - Keep KernelPilot knowledge notes and NCU digests under `<artifact-root>/kernel/`.
