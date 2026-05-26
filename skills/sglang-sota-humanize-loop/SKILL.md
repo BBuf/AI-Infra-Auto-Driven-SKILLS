@@ -57,9 +57,6 @@ kernel edits may still proceed from torch-profiler/source evidence, but record
 the missing NCU evidence path as a blocker when a kernel change would normally
 need Nsight Compute diagnostics.
 
-Pinned upstream reference for the NCU skill:
-https://github.com/mit-han-lab/ncu-report-skill/tree/d1887948c7d53690cfe6605f59c1329b8a1c6bb5
-
 ## Companion Skills
 
 Read these before a real run:

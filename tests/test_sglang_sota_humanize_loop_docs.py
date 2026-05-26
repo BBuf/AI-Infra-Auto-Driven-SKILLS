@@ -70,7 +70,7 @@ class SglangSotaHumanizeLoopDocsTest(unittest.TestCase):
         self.assertIn(".humanize/sglang-sota-agent/refined-plan.md", text)
         self.assertIn("Kernel Evidence Assist", text)
         self.assertIn("ncu-report-skill", text)
-        self.assertIn("mit-han-lab/ncu-report-skill", text)
+        self.assertNotIn("mit-han-lab/ncu-report-skill", text)
         self.assertIn("kernel/ncu-digests/<version>/", text)
         self.assertIn("humanize/model-loop-checkpoint.md", text)
         self.assertIn("any standalone `.humanize/rlcr` session", text)
@@ -117,6 +117,18 @@ class SglangSotaHumanizeLoopDocsTest(unittest.TestCase):
         self.assertNotIn("analysis/compute-simulation.md", text)
         self.assertNotIn("llm-serving-capacity-planner", template)
         self.assertNotIn("model-compute-simulation", template)
+
+    def test_readme_links_sglang_sota_flowchart_asset(self) -> None:
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        asset = ROOT / "docs" / "assets" / "sglang-sota-performance-loop.svg"
+        svg = asset.read_text(encoding="utf-8")
+
+        self.assertIn("SGLang SOTA Performance Loop", readme)
+        self.assertIn("docs/assets/sglang-sota-performance-loop.svg", readme)
+        self.assertIn("<svg", svg)
+        self.assertIn("SGLang SOTA Performance Loop", svg)
+        self.assertIn("ncu-report-skill", svg)
+        self.assertNotIn("KernelPilot", svg)
 
 
 if __name__ == "__main__":

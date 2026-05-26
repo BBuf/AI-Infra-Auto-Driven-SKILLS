@@ -46,6 +46,12 @@ find it.
 | [`sglang-prod-incident-triage`](skills/sglang-prod-incident-triage/) | You need to turn queue growth, timeouts, wrong outputs, crashes, or distributed stalls into a replay and next debug step. |
 | [`model-architecture-diagram`](skills/model-architecture-diagram/) | You need original public architecture diagrams for popular LLM, VLM, MoE, OCR, and diffusion model families. |
 
+## SGLang SOTA Performance Loop
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/BBuf/AI-Infra-Auto-Driven-SKILLS/main/docs/assets/sglang-sota-performance-loop.svg" alt="SGLang SOTA Performance Loop" width="620">
+</p>
+
 ## Model PR History Catalog
 
 The model optimization layer is now one knowledge base:
