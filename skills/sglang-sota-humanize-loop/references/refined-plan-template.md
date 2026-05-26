@@ -105,6 +105,8 @@ records the SGLang/vLLM PR evidence that influenced source-path selection.
       aggregated family above 1%.
     - Upstream or competitor kernel code is copied without recording
       provenance, license/notice obligations, and the local delta.
+    - A second `.humanize/rlcr` session is launched for a kernel candidate
+      instead of keeping the work inside the active model-level RLCR loop.
     - The loop declares success from a microbench or NCU win without rerunning
       the same model-level benchmark/profile.
 
@@ -128,9 +130,13 @@ records the SGLang/vLLM PR evidence that influenced source-path selection.
       next planned SGLang patch.
     - The campaign can resume from the same model-loop artifacts with benchmark,
       profile, source-evidence, and patch lineage intact.
+    - The active `.humanize/rlcr/<timestamp>/state.md` exists and records
+      `strict_success: true` for the model-level SGLang loop.
   - Negative Tests (expected to FAIL):
     - A second `.humanize/rlcr` session is launched for kernel work instead of
       keeping the work in the model loop.
+    - The SGLang checkout starts RLCR from a dirty working tree, an ambiguous
+      review base branch, or a tracked `.humanize/` runtime state file.
 
 - AC-9: Stop criteria are satisfied
   - Positive Tests (expected to PASS):
@@ -200,6 +206,8 @@ revalidation, unless the current in-loop evidence proves no patch is needed.
 ## Implementation Notes
 
 - Keep Humanize local state under `.humanize/`.
+- Start RLCR with `--strict-success` and verify the active `state.md` contains
+  `strict_success: true` before any SGLang patch work.
 - Keep benchmark/profile artifacts under `<artifact-root>`.
 - Keep model PR history notes under `<artifact-root>/history/`.
 - Keep layer-pipeline reports under `<artifact-root>/analysis/`.
