@@ -123,6 +123,11 @@ def get_layer_kernels(
     return result
 
 
+def hot_kernel_order(kernels):
+    """Return kernels sorted by descending duration, with trace order as tie-breaker."""
+    return sorted(kernels, key=lambda k: (-k["dur"], k["ts"], k["idx"]))
+
+
 # ── config helpers ─────────────────────────────────────────────────────────
 
 
@@ -175,12 +180,12 @@ def print_layer_breakdown(
             f"  {cat:<30s} {info['dur']:>8.1f} {pct:>5.1f}% {info['count']:>5d}  {bar}"
         )
 
-    # Detailed kernel list
+    # Detailed kernel list, ranked by hotness.
     print(
         f"\n  {'#':>4s} {'Half':>4s} {'Simplified Name':<70s} {'dur(us)':>8s} {'%':>5s}"
     )
     print(f"  {'-'*95}")
-    for i, k in enumerate(kernels):
+    for i, k in enumerate(hot_kernel_order(kernels)):
         name = simplify_name(k["name"], profile)
         pct = k["dur"] / total * 100
         print(f"  {i:>4d} {k['half']:>4s} {name:<70s} {k['dur']:>7.1f} {pct:>4.1f}%")
@@ -308,10 +313,10 @@ def print_compute_flow(
     config=None,
     trace_start_ts=0,
 ):
-    """Print compute flow table with model architecture summary.
+    """Print hot-kernel table with model architecture summary.
 
     Columns: # | Half | Category | Simplified Name | dur(us) | % | ts_rel(ms) | Input Dims
-    No category-level summary — every kernel is shown individually.
+    Every kernel is shown individually, ranked by descending duration.
     """
     # Model architecture summary
     if config:
@@ -334,13 +339,13 @@ def print_compute_flow(
     )
     print(f"{'=' * 120}")
 
-    # Per-kernel table with Category, ts_rel, Input Dims columns
+    # Per-kernel hotness table with Category, ts_rel, Input Dims columns.
     print(
         f"\n  {'#':>3s} {'Half':>4s} {'Category':<16s} {'Simplified Name':<48s}"
         f" {'dur(us)':>8s} {'%':>5s} {'ts_rel(ms)':>11s} {'Input Dims':<20s}"
     )
     print(f"  {'-' * 118}")
-    for i, k in enumerate(kernels):
+    for i, k in enumerate(hot_kernel_order(kernels)):
         _, cat_key = classify_kernel(k["name"], profile)
         name = simplify_name(k["name"], profile)
         pct = k["dur"] / total * 100
@@ -378,13 +383,16 @@ def format_json_output(
     wall_start = kernels[0]["ts"] if kernels else 0
     wall_end = (kernels[-1]["ts"] + kernels[-1]["dur"]) if kernels else 0
 
-    # Per-kernel detail
+    # Per-kernel detail, ranked by hotness.
     kernel_list = []
     cat_summary = defaultdict(lambda: {"dur_us": 0, "count": 0})
     for k in kernels:
         cat_key = classify_kernel_key(k["name"], profile)
         cat_summary[cat_key]["dur_us"] += k["dur"]
         cat_summary[cat_key]["count"] += 1
+
+    for k in hot_kernel_order(kernels):
+        cat_key = classify_kernel_key(k["name"], profile)
         kernel_list.append(
             {
                 "name": k["name"],

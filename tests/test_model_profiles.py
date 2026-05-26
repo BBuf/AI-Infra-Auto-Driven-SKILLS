@@ -294,6 +294,43 @@ class TestGetLayerKernels(unittest.TestCase):
         self.assertEqual(halves, {"full"})
 
 
+class TestHotKernelOutput(unittest.TestCase):
+    def setUp(self):
+        self.mod = load_breakdown()
+        self.profiles = load_profiles()
+        self.profile = self.profiles.get_profile("generic")
+
+    def _kernels(self):
+        return [
+            {"idx": 0, "half": "full", "name": "short", "ts": 0, "dur": 10},
+            {"idx": 1, "half": "full", "name": "hot_a", "ts": 10, "dur": 50},
+            {"idx": 2, "half": "full", "name": "hot_b", "ts": 20, "dur": 50},
+            {"idx": 3, "half": "full", "name": "tiny", "ts": 30, "dur": 5},
+        ]
+
+    def test_hot_kernel_order_sorts_by_duration_then_trace_order(self):
+        ordered = self.mod.hot_kernel_order(self._kernels())
+        self.assertEqual([k["name"] for k in ordered], ["hot_a", "hot_b", "short", "tiny"])
+
+    def test_json_kernel_list_is_hotness_sorted_without_changing_wall_time(self):
+        payload = json.loads(
+            self.mod.format_json_output(
+                self._kernels(),
+                layer_id=0,
+                fwd_pass=0,
+                compress_ratios=[],
+                num_layers=1,
+                profile=self.profile,
+            )
+        )
+
+        self.assertEqual(
+            [k["name"] for k in payload["kernels"]],
+            ["hot_a", "hot_b", "short", "tiny"],
+        )
+        self.assertEqual(payload["metadata"]["wall_us"], 35)
+
+
 # ---------------------------------------------------------------------------
 # Test: layer timeline classification and half-open boundaries
 # ---------------------------------------------------------------------------
