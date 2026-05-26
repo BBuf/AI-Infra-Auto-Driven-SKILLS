@@ -138,9 +138,9 @@ Rechecked sglang upstream `origin/main@78cb38ed5` and the GitHub Pull Request fi
 | 2026-04-21 | [#23186](https://github.com/sgl-project/sglang/pull/23186) | merged | [AMD] Fused qk rmsnorm bf16 for amd/Kimi-K2.5-MXFP4 | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` |
 | 2026-04-21 | [#23381](https://github.com/sgl-project/sglang/pull/23381) | open | [AMD] Add MI355X Kimi-K2.6 tuning artifacts | `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_6_0/E=384,N=256,device_name=AMD_Instinct_MI355X,dtype=int4_w4a16.json`, `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`, `python/sglang/srt/environ.py` |
 | 2026-04-21 | [#23394](https://github.com/sgl-project/sglang/pull/23394) | merged | [docs] sync kimi-k2.6 from sgl-cookbook | `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.6.mdx` |
-| 2026-04-23 | [#23563](https://github.com/sgl-project/sglang/pull/23563) | open | [Cookbook] Add Kimi K2.6 speculative decoding + fix draft attention backend | `docs_new/src/snippets/autoregressive/kimi-k26-deployment.jsx`, `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.6.mdx`, `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.5.mdx` |
+| 2026-04-23 | [#23563](https://github.com/sgl-project/sglang/pull/23563) | closed | [Cookbook] Add Kimi K2.6 speculative decoding + fix draft attention backend | `docs_new/src/snippets/autoregressive/kimi-k26-deployment.jsx`, `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.6.mdx`, `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.5.mdx` |
 | 2026-04-27 | [#23408](https://github.com/sgl-project/sglang/pull/23408) | merged | [AMD] Fix Kimi-K2.6 Quark MXFP4 loading prefix and packed module mapping | `python/sglang/srt/models/kimi_k25.py` |
-| 2026-04-27 | [#23848](https://github.com/sgl-project/sglang/pull/23848) | open | [AMD] Add Kimi-K2.6 in nightly tests for MI30x and MI35x | `test/registered/amd/perf/mi35x/test_kimi_k26_perf_mi35x.py`, `test/registered/amd/perf/mi30x/test_kimi_k26_perf_amd.py`, `test/registered/amd/accuracy/mi35x/test_kimi_k26_eval_mi35x.py` |
+| 2026-04-27 | [#23848](https://github.com/sgl-project/sglang/pull/23848) | merged | [AMD] Add Kimi-K2.6 in nightly tests for MI30x and MI35x | `test/registered/amd/perf/mi35x/test_kimi_k26_perf_mi35x.py`, `test/registered/amd/perf/mi30x/test_kimi_k26_perf_amd.py`, `test/registered/amd/accuracy/mi35x/test_kimi_k26_eval_mi35x.py` |
 | 2026-04-27 | [#23501](https://github.com/sgl-project/sglang/pull/23501) | merged | [VLM] Fix Kimi-K2.5 CPU path: rename grid_thws -> image_grid_thw | `python/sglang/srt/multimodal/processors/kimi_k25.py` |
 | 2026-04-30 | [#22964](https://github.com/sgl-project/sglang/pull/22964) | closed | [fix][Kimi] fix KimiGPUProcessorWrapper _cpu_call output | `python/sglang/srt/multimodal/processors/kimi_k25.py` |
 | 2026-05-10 | [#24826](https://github.com/sgl-project/sglang/pull/24826) | merged | [spec decoding] support kimi-k2.5-eagle3-mla | `python/sglang/srt/models/kimi_k25_eagle3.py`, `python/sglang/srt/utils/hf_transformers/common.py`, `python/sglang/srt/configs/model_config.py` |
@@ -2663,7 +2663,7 @@ diff -- docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.6.mdx
 ### PR #23563 - [Cookbook] Add Kimi K2.6 speculative decoding + fix draft attention backend
 
 - Link: https://github.com/sgl-project/sglang/pull/23563
-- Status/date: open / 2026-04-23
+- Status/date: closed / 2026-04-23
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +60/-3, 139 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Cookbook] Add Kimi K2.6 speculative decoding + fix draft attention backend"; model line: Kimi K2/K2.5/Linear/VL; category: bug fix; main diff: `docs_new/src/snippets/autoregressive/kimi-k26-deployment.jsx`, `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.6.mdx`, `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.5.mdx`; technical summary: Covers "[Cookbook] Add Kimi K2.6 speculative decoding + fix draft attention backend"; the main implementation surface is `docs_new/src/snippets/autoregressive/kimi-k26-deployment.jsx`, `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.6.mdx`, `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.5.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2728,7 +2728,7 @@ diff -- python/sglang/srt/models/kimi_k25.py
 ### PR #23848 - [AMD] Add Kimi-K2.6 in nightly tests for MI30x and MI35x
 
 - Link: https://github.com/sgl-project/sglang/pull/23848
-- Status/date: open / 2026-04-27
+- Status/date: merged / 2026-04-27
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +546/-28, 710 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[AMD] Add Kimi-K2.6 in nightly tests for MI30x and MI35x"; model line: Kimi K2/K2.5/Linear/VL; category: performance/backend optimization; main diff: `test/registered/amd/perf/mi35x/test_kimi_k26_perf_mi35x.py`, `test/registered/amd/perf/mi30x/test_kimi_k26_perf_amd.py`, `test/registered/amd/accuracy/mi35x/test_kimi_k26_eval_mi35x.py`; technical summary: Covers "[AMD] Add Kimi-K2.6 in nightly tests for MI30x and MI35x"; the main implementation surface is `test/registered/amd/perf/mi35x/test_kimi_k26_perf_mi35x.py`, `test/registered/amd/perf/mi30x/test_kimi_k26_perf_amd.py`, `test/registered/amd/accuracy/mi35x/test_kimi_k26_eval_mi35x.py`. File-level evidence, code excerpts, and validation risks are preserved below.
