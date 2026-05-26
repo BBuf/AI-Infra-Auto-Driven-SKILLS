@@ -2,14 +2,15 @@
 
 # AI-Infra-Auto-Driven-SKILLS
 
-**Agent-ready playbooks for LLM serving benchmarks, torch-profiler triage,
-SGLang optimization, human code review, production incidents, and model PR
+**Agent-ready playbooks for LLM serving benchmarks, capacity planning,
+torch-profiler triage, pipeline analysis, compute simulation, SGLang
+optimization, human code review, production incidents, and model PR
 intelligence.**
 
 [![GitHub stars](https://img.shields.io/github/stars/BBuf/AI-Infra-Auto-Driven-SKILLS?style=social)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/BBuf/AI-Infra-Auto-Driven-SKILLS?style=social)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/forks)
 [![Last commit](https://img.shields.io/github/last-commit/BBuf/AI-Infra-Auto-Driven-SKILLS?style=flat-square)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/commits/main)
-[![Core skills](https://img.shields.io/badge/core_skills-6-2f80ed?style=flat-square)](#core-skills)
+[![Core skills](https://img.shields.io/badge/core_skills-9-2f80ed?style=flat-square)](#core-skills)
 [![PR histories](https://img.shields.io/badge/pr_histories-58-2ea44f?style=flat-square)](#model-pr-history-catalog)
 [![KernelPilot](https://img.shields.io/badge/sibling-KernelPilot-ff7b72?style=flat-square)](https://github.com/BBuf/kernel-pilot)
 
@@ -19,11 +20,11 @@ This repository is built for AI infrastructure engineers who want agents to do
 real work, not recite generic prompts.
 
 It gives an agent the operational memory needed to benchmark SGLang, vLLM, and
-TensorRT-LLM fairly; split prefill and decode profiler evidence; turn traces
-into kernel and fusion opportunities; review SGLang patches against real
-maintainer discussion patterns; triage SGLang production incidents from a
-replay; and keep model-family optimization history close to the code that
-actually changed.
+TensorRT-LLM fairly; explain serving capacity from startup logs; split prefill
+and decode profiler evidence; inspect traces at layer and kernel level; estimate
+operator FLOPs and MFU; review SGLang patches against real maintainer discussion
+patterns; triage SGLang production incidents from a replay; and keep
+model-family optimization history close to the code that actually changed.
 
 For standalone kernel campaigns and kernel evidence tools, see the sibling
 project **[KernelPilot](https://github.com/BBuf/kernel-pilot)**.
@@ -32,38 +33,15 @@ If this saves you one stale model-support assumption, one misleading profiler
 trace, or one late-night benchmark loop, a star helps more AI-infra engineers
 find it.
 
-## Why Star It
-
-| Signal | What makes it useful |
-| --- | --- |
-| **6 core operational skills** | Small, focused playbooks for benchmark search, profiler analysis, Humanize-governed SOTA loops, human review, incidents, architecture diagrams, and PR history. |
-| **10,959 SGLang review threads** | A compressed 2024-2025 human review corpus links inline code hunks to original comments and discussions across all preserved comment languages. |
-| **58 PR history dossiers** | A queryable, PR-driven model history knowledge base that records what changed, where it changed, and what risks remain. |
-| **Stage-separated profiler workflow** | Prefill and decode are profiled as separate workloads so hot kernels do not get misattributed. |
-| **Framework-neutral benchmark schema** | Compare SGLang, vLLM, and TensorRT-LLM with the same workload, SLA, artifact layout, and result table. |
-| **Profiler-to-action fusion catalog** | Connect torch-profiler rows to known SGLang/vLLM fusion, overlap, and torch.compile patterns. |
-| **Replay-first incident triage** | Preserve evidence, reproduce the request path, and choose the next debug tool before patching. |
-| **KernelPilot sibling project** | Link out to [KernelPilot](https://github.com/BBuf/kernel-pilot) for standalone kernel loops, kernel knowledge, and NCU report workflows. |
-
-## What You Can Do
-
-| Goal | Start here |
-| --- | --- |
-| Search the best serving command across frameworks | [`llm-serving-auto-benchmark`](skills/llm-serving-auto-benchmark/) |
-| Explain a torch-profiler trace with kernel, overlap, and fusion tables | [`llm-torch-profiler-analysis`](skills/llm-torch-profiler-analysis/) |
-| Review an SGLang patch like a human maintainer | [`sglang-humanize-review`](skills/sglang-humanize-review/) |
-| Turn the SGLang SOTA loop into one Humanize-governed model patch loop | [`sglang-sota-humanize-loop`](skills/sglang-sota-humanize-loop/) |
-| Debug a live or recent SGLang serving incident from evidence | [`sglang-prod-incident-triage`](skills/sglang-prod-incident-triage/) |
-| Run standalone kernel optimization loops or query kernel evidence | [`KernelPilot`](https://github.com/BBuf/kernel-pilot) |
-| Find original public model architecture diagrams | [`model-architecture-diagram`](skills/model-architecture-diagram/) |
-| Query PR-driven model optimization history by framework | [`model-pr-optimization-history`](model-pr-optimization-history/) |
-
 ## Core Skills
 
 | Skill | Use it when |
 | --- | --- |
 | [`llm-serving-auto-benchmark`](skills/llm-serving-auto-benchmark/) | You need a fair, bounded serving benchmark search for SGLang, vLLM, TensorRT-LLM, or another OpenAI-compatible stack. |
+| [`llm-serving-capacity-planner`](skills/llm-serving-capacity-planner/) | You need to explain SGLang or vLLM startup memory, KV cache budget, request capacity, or OOM pressure from logs. |
 | [`llm-torch-profiler-analysis`](skills/llm-torch-profiler-analysis/) | You need a three-table profiler report that keeps `extend/prefill` and `decode` evidence separate. |
+| [`llm-pipeline-analysis`](skills/llm-pipeline-analysis/) | You need forward-pass, layer, and kernel-level timing from a torch profiler trace, including anchor boundaries and Perfetto ranges. |
+| [`model-compute-simulation`](skills/model-compute-simulation/) | You need operator shapes, FLOPs, MFU estimates, kernel-to-op mapping, or parallelism what-if analysis for an LLM serving shape. |
 | [`sglang-humanize-review`](skills/sglang-humanize-review/) | You need SGLang code-review findings grounded in 2024-2025 human review threads, including inline code context, comments, and discussions. |
 | [`sglang-sota-humanize-loop`](skills/sglang-sota-humanize-loop/) | You want the SGLang SOTA workflow to run as one model-level Humanize RLCR loop after the fixed fair benchmark and profiler gate, with KernelPilot knowledge and `ncu-report` as kernel assists only. |
 | [`sglang-prod-incident-triage`](skills/sglang-prod-incident-triage/) | You need to turn queue growth, timeouts, wrong outputs, crashes, or distributed stalls into a replay and next debug step. |
@@ -152,7 +130,10 @@ cd AI-Infra-Auto-Driven-SKILLS
 
 mkdir -p ~/.claude/skills
 ln -s "$PWD/skills/llm-serving-auto-benchmark" ~/.claude/skills/llm-serving-auto-benchmark
+ln -s "$PWD/skills/llm-serving-capacity-planner" ~/.claude/skills/llm-serving-capacity-planner
 ln -s "$PWD/skills/llm-torch-profiler-analysis" ~/.claude/skills/llm-torch-profiler-analysis
+ln -s "$PWD/skills/llm-pipeline-analysis" ~/.claude/skills/llm-pipeline-analysis
+ln -s "$PWD/skills/model-compute-simulation" ~/.claude/skills/model-compute-simulation
 ln -s "$PWD/skills/sglang-humanize-review" ~/.claude/skills/sglang-humanize-review
 ln -s "$PWD/skills/sglang-sota-humanize-loop" ~/.claude/skills/sglang-sota-humanize-loop
 ln -s "$PWD/skills/sglang-prod-incident-triage" ~/.claude/skills/sglang-prod-incident-triage
@@ -161,7 +142,9 @@ ln -s "$PWD/model-pr-optimization-history" ~/.claude/skills/model-pr-history-kno
 ```
 
 Restart Claude Code after installing. The skills can then be invoked by name,
-for example `[$llm-serving-auto-benchmark]`, `[$llm-torch-profiler-analysis]`,
+for example `[$llm-serving-auto-benchmark]`,
+`[$llm-serving-capacity-planner]`, `[$llm-torch-profiler-analysis]`,
+`[$llm-pipeline-analysis]`, `[$model-compute-simulation]`,
 `[$sglang-humanize-review]`, or `[$sglang-sota-humanize-loop]`.
 
 If you prefer copies instead of symlinks, replace `ln -s` with `cp -R`. Copy
@@ -176,7 +159,10 @@ directories into that runtime's skill directory:
 
 ```bash
 cp -R skills/llm-serving-auto-benchmark <agent-skill-dir>/llm-serving-auto-benchmark
+cp -R skills/llm-serving-capacity-planner <agent-skill-dir>/llm-serving-capacity-planner
 cp -R skills/llm-torch-profiler-analysis <agent-skill-dir>/llm-torch-profiler-analysis
+cp -R skills/llm-pipeline-analysis <agent-skill-dir>/llm-pipeline-analysis
+cp -R skills/model-compute-simulation <agent-skill-dir>/model-compute-simulation
 cp -R skills/sglang-humanize-review <agent-skill-dir>/sglang-humanize-review
 cp -R skills/sglang-sota-humanize-loop <agent-skill-dir>/sglang-sota-humanize-loop
 cp -R skills/sglang-prod-incident-triage <agent-skill-dir>/sglang-prod-incident-triage
@@ -189,7 +175,10 @@ cp -R model-pr-optimization-history <agent-skill-dir>/model-pr-history-knowledge
 ```text
 skills/
 ├── llm-serving-auto-benchmark/      # serving benchmark search and comparison
+├── llm-serving-capacity-planner/     # startup memory and request capacity analysis
 ├── llm-torch-profiler-analysis/     # profiler capture and trace triage
+├── llm-pipeline-analysis/           # forward/layer/kernel trace analysis
+├── model-compute-simulation/        # operator FLOPs, tensor shapes, and MFU
 ├── sglang-humanize-review/          # human SGLang PR review corpus and workflow
 ├── sglang-sota-humanize-loop/       # Humanize-governed SGLang SOTA loop
 ├── sglang-prod-incident-triage/     # replay-first serving incident workflow

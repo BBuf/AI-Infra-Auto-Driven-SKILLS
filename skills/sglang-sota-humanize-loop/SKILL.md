@@ -365,6 +365,11 @@ profiler evidence points at a specific kernel or small kernel family. Keep
 generic scheduling, overlap, batching, memory residency, and benchmark-command
 issues in the normal SGLang patch path.
 
+Do not start KernelPilot's `setup-rlcr-loop.sh`.
+Do not start any standalone `.humanize/rlcr` session for a kernel target.
+Kernel work stays inside the active model RLCR loop, using KernelPilot only as a
+knowledge and source-evidence repository.
+
 ### Eligibility Gate
 
 Kernel-level assistance is allowed only when all of these are true:
@@ -396,7 +401,7 @@ Examples:
 - The gap survives SGLang scheduling and overlap patches and the remaining hot
   row is kernel-local.
 
-### Kernel Evidence Workflow
+### Single-Loop Kernel Workflow
 
 A kernel candidate is another SGLang patch candidate in the active model RLCR
 round.
