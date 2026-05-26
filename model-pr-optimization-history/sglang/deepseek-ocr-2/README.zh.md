@@ -47,12 +47,12 @@
 | 2026-04-21 | [#23044](https://github.com/sgl-project/sglang/pull/23044) | merged | [XPU] Fix DeepSeek-OCR tests under transformers 5.x | `test/srt/xpu/test_deepseek_ocr.py`, `test/srt/xpu/test_deepseek_ocr_triton.py` |
 | 2026-04-21 | [#23337](https://github.com/sgl-project/sglang/pull/23337) | merged | [Docs] Sync docs_new with legacy docs and update migration redirects | `.pre-commit-config.yaml`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-Math-V2.mdx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR-2.mdx` |
 | 2026-04-29 | [#23820](https://github.com/sgl-project/sglang/pull/23820) | merged | Update XPU Docker runtime stack & hf_home config | `.github/workflows/pr-test-xpu.yml`, `docker/xpu.Dockerfile`, `test/srt/xpu/test_deepseek_ocr.py` |
-| 2026-05-08 | [#24701](https://github.com/sgl-project/sglang/pull/24701) | open | [FIX][1/2] fix step3-vl/deepseek-ocr image processor error | `python/sglang/srt/multimodal/processors/step3_vl.py` |
+| 2026-05-08 | [#24701](https://github.com/sgl-project/sglang/pull/24701) | merged | [FIX][1/2] fix step3-vl/deepseek-ocr image processor error | `python/sglang/srt/multimodal/processors/step3_vl.py` |
 | 2026-05-13 | [#25182](https://github.com/sgl-project/sglang/pull/25182) | merged | chore: add vLLM SPDX copyright headers to ported files | `benchmark/hicache/bench_serving.py`, `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py`, `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton_sep.py` |
-| 2026-05-14 | [#25257](https://github.com/sgl-project/sglang/pull/25257) | open | [NPU] Support model DeepSeek-OCR and DeepSeek-OCR-2 | `python/sglang/srt/models/deepseek.py` |
+| 2026-05-14 | [#25257](https://github.com/sgl-project/sglang/pull/25257) | merged | [NPU] Support model DeepSeek-OCR and DeepSeek-OCR-2 | `python/sglang/srt/models/deepseek.py` |
 | 2026-05-15 | [#25364](https://github.com/sgl-project/sglang/pull/25364) | open | Add Accuracy Benchmark for OCR models | `.codespellrc`, `benchmark/ocr/README.md`, `benchmark/ocr/bench_sglang.py` |
-| 2026-05-15 | [#25403](https://github.com/sgl-project/sglang/pull/25403) | open | [FIX][2/2] fix step3-vl/deepseek-ocr image processor error | `python/sglang/srt/configs/deepseek_ocr.py` |
-| 2026-05-18 | [#25589](https://github.com/sgl-project/sglang/pull/25589) | open | Use hf_transformers_utils.get_processor to load model | `python/sglang/benchmark/utils.py` |
+| 2026-05-15 | [#25403](https://github.com/sgl-project/sglang/pull/25403) | merged | [FIX][2/2] fix step3-vl/deepseek-ocr image processor error | `python/sglang/srt/configs/deepseek_ocr.py` |
+| 2026-05-18 | [#25589](https://github.com/sgl-project/sglang/pull/25589) | closed | Use hf_transformers_utils.get_processor to load model | `python/sglang/benchmark/utils.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -994,7 +994,7 @@ diff -- docker/xpu.Dockerfile
 ### PR #24701 - [FIX][1/2] fix step3-vl/deepseek-ocr image processor error
 
 - 链接: https://github.com/sgl-project/sglang/pull/24701
-- 状态/时间: open / 2026-05-08
+- 状态/时间: merged / 2026-05-08
 - 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+67/-20，可读 patch 160 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[FIX][1/2] fix step3-vl/deepseek-ocr image processor error」；模型线: DeepSeek OCR 2；类别: 缺陷修复；主要 diff: `python/sglang/srt/multimodal/processors/step3_vl.py`。
@@ -1068,7 +1068,7 @@ diff -- benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py
 ### PR #25257 - [NPU] Support model DeepSeek-OCR and DeepSeek-OCR-2
 
 - 链接: https://github.com/sgl-project/sglang/pull/25257
-- 状态/时间: open / 2026-05-14
+- 状态/时间: merged / 2026-05-14
 - 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+11/-3，可读 patch 42 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[NPU] Support model DeepSeek-OCR and DeepSeek-OCR-2」；模型线: DeepSeek OCR 2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/deepseek.py`。
@@ -1150,7 +1150,7 @@ diff -- benchmark/ocr/README.md
 ### PR #25403 - [FIX][2/2] fix step3-vl/deepseek-ocr image processor error
 
 - 链接: https://github.com/sgl-project/sglang/pull/25403
-- 状态/时间: open / 2026-05-15
+- 状态/时间: merged / 2026-05-15
 - 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+99/-12，可读 patch 183 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[FIX][2/2] fix step3-vl/deepseek-ocr image processor error」；模型线: DeepSeek OCR 2；类别: 缺陷修复；主要 diff: `python/sglang/srt/configs/deepseek_ocr.py`。
@@ -1184,7 +1184,7 @@ diff -- python/sglang/srt/configs/deepseek_ocr.py
 ### PR #25589 - Use hf_transformers_utils.get_processor to load model
 
 - 链接: https://github.com/sgl-project/sglang/pull/25589
-- 状态/时间: open / 2026-05-18
+- 状态/时间: closed / 2026-05-18
 - 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+8/-13，可读 patch 42 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Use hf_transformers_utils.get_processor to load model」；模型线: DeepSeek OCR 2；类别: 文档/测试/CI；主要 diff: `python/sglang/benchmark/utils.py`。

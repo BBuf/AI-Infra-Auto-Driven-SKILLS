@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import importlib.util
 import re
 import subprocess
 import sys
@@ -160,6 +161,27 @@ def test_model_runbook_skill_directories_are_removed() -> None:
     assert (SKILL_ROOT / "model-pr-diff-dossier" / "SKILL.md").exists()
     assert not list(SKILL_ROOT.glob("*/*/SKILL.md"))
     assert not list(SKILL_ROOT.glob("*/*/references/pr-history.md"))
+
+
+def test_rebuild_history_dry_run_does_not_update_indexes(tmp_path) -> None:
+    script = ROOT / "tools" / "rebuild_model_pr_history_from_git.py"
+    spec = importlib.util.spec_from_file_location(
+        "rebuild_model_pr_history_from_git", script
+    )
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    sys.modules["rebuild_model_pr_history_from_git"] = module
+    spec.loader.exec_module(module)
+
+    module.HISTORY_ROOT = tmp_path
+    module.MODEL_ORDER = ["qwen3-core"]
+    (tmp_path / "sglang").mkdir()
+    (tmp_path / "vllm").mkdir()
+
+    module.update_indexes(dry_run=True)
+
+    assert not (tmp_path / "sglang" / "README.md").exists()
+    assert not (tmp_path / "vllm" / "README.md").exists()
 
 
 def test_model_pr_history_is_queryable_knowledge_base() -> None:

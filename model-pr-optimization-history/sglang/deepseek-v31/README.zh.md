@@ -65,7 +65,7 @@
 | 2026-04-20 | [#21599](https://github.com/sgl-project/sglang/pull/21599) | merged | [SPEC][1/N] feat: add adaptive speculative_num_steps for EAGLE topk=1 | `python/sglang/srt/model_executor/cuda_graph_runner.py`, `benchmark/bench_adaptive_speculative.py`, `test/registered/unit/spec/test_adaptive_spec_params.py` |
 | 2026-04-21 | [#23315](https://github.com/sgl-project/sglang/pull/23315) | merged | Opt-in strip of thinking tokens from radix cache | `test/registered/unit/mem_cache/test_unified_radix_cache_unittest.py`, `python/sglang/srt/managers/schedule_batch.py`, `python/sglang/srt/server_args.py` |
 | 2026-04-21 | [#22950](https://github.com/sgl-project/sglang/pull/22950) | closed | [fix] Parser-gated two-phase cache stripping for reasoning radix caches (fixes #22373) | `python/sglang/srt/parser/reasoning_parser.py`, `python/sglang/srt/configs/model_config.py`, `test/registered/unit/mem_cache/test_radix_cache_thinking.py` |
-| 2026-04-21 | [#23336](https://github.com/sgl-project/sglang/pull/23336) | open | [SPEC V2][2/N] feat: adaptive spec support spec v2 | `python/sglang/srt/speculative/eagle_worker_v2.py`, `python/sglang/srt/speculative/eagle_info_v2.py`, `python/sglang/srt/managers/scheduler_output_processor_mixin.py` |
+| 2026-04-21 | [#23336](https://github.com/sgl-project/sglang/pull/23336) | merged | [SPEC V2][2/N] feat: adaptive spec support spec v2 | `python/sglang/srt/speculative/eagle_worker_v2.py`, `python/sglang/srt/speculative/eagle_info_v2.py`, `python/sglang/srt/managers/scheduler_output_processor_mixin.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -1091,7 +1091,7 @@ diff -- test/registered/unit/mem_cache/test_radix_cache_thinking.py
 ### PR #23336 - [SPEC V2][2/N] feat: adaptive spec support spec v2
 
 - 链接: https://github.com/sgl-project/sglang/pull/23336
-- 状态/时间: open / 2026-04-21
+- 状态/时间: merged / 2026-04-21
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+193/-10，可读 patch 290 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[SPEC V2][2/N] feat: adaptive spec support spec v2」；模型线: DeepSeek V3.1；类别: 性能/后端优化；主要 diff: `python/sglang/srt/speculative/eagle_worker_v2.py`, `python/sglang/srt/speculative/eagle_info_v2.py`, `python/sglang/srt/managers/scheduler_output_processor_mixin.py`；技术摘要: 覆盖「[SPEC V2][2/N] feat: adaptive spec support spec v2」；主要实现面是 `python/sglang/srt/speculative/eagle_worker_v2.py`, `python/sglang/srt/speculative/eagle_info_v2.py`, `python/sglang/srt/managers/scheduler_output_processor_mixin.py`。下方保留文件级证据、代码摘录和验证风险。

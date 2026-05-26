@@ -83,7 +83,7 @@
 | 2026-04-07 | [#22073](https://github.com/sgl-project/sglang/pull/22073) | merged | [Feature] Adding Qwen3-asr Model Support | `python/sglang/srt/models/qwen3_asr.py`, `python/sglang/srt/configs/qwen3_asr.py`, `python/sglang/srt/multimodal/processors/qwen3_asr.py` |
 | 2026-04-09 | [#22358](https://github.com/sgl-project/sglang/pull/22358) | merged | Enable DFLASH support for additional model backends | `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/kimi_k25.py`, `python/sglang/srt/models/qwen3_next.py` |
 | 2026-04-10 | [#22458](https://github.com/sgl-project/sglang/pull/22458) | merged | Fix NCCL AllGather hanging issue for Qwen3 Next MTP | `python/sglang/srt/speculative/eagle_info.py`, `python/sglang/srt/speculative/eagle_info_v2.py` |
-| 2026-04-15 | [#22876](https://github.com/sgl-project/sglang/pull/22876) | open | Fix: Raise ValueError when --enable-mixed-chunk and --mamba-scheduler-strategy extra_buffer cause ac | `test/registered/unit/server_args/test_server_args.py`, `python/sglang/srt/server_args.py` |
+| 2026-04-15 | [#22876](https://github.com/sgl-project/sglang/pull/22876) | closed | Fix: Raise ValueError when --enable-mixed-chunk and --mamba-scheduler-strategy extra_buffer cause ac | `test/registered/unit/server_args/test_server_args.py`, `python/sglang/srt/server_args.py` |
 | 2026-04-17 | [#23075](https://github.com/sgl-project/sglang/pull/23075) | open | [Fix] Mixed chunk query_start_loc and mamba_cache_indices to the prefill-only prefix so that the tracking helpers see a consistent, prefill-only view. | `python/sglang/srt/layers/attention/mamba/mamba2_metadata.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/managers/schedule_batch.py` |
 | 2026-04-18 | [#22664](https://github.com/sgl-project/sglang/pull/22664) | merged | Qwen3next flashinfer allreduce auto enable | `python/sglang/srt/server_args.py` |
 | 2026-04-20 | [#23273](https://github.com/sgl-project/sglang/pull/23273) | open | [NVIDIA] [GDN] Enable FlashInfer MTP verify on SM100+ (Blackwell) | `python/sglang/srt/layers/attention/linear/kernels/gdn_flashinfer.py`, `python/sglang/srt/server_args.py` |
@@ -1875,7 +1875,7 @@ diff -- python/sglang/srt/speculative/eagle_info_v2.py
 ### PR #22876 - Fix: Raise ValueError when --enable-mixed-chunk and --mamba-scheduler-strategy extra_buffer cause ac
 
 - 链接: https://github.com/sgl-project/sglang/pull/22876
-- 状态/时间: open / 2026-04-15
+- 状态/时间: closed / 2026-04-15
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+42/-0，可读 patch 55 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Fix: Raise ValueError when --enable-mixed-chunk and --mamba-scheduler-strategy extra_buffer cause ac」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `test/registered/unit/server_args/test_server_args.py`, `python/sglang/srt/server_args.py`；技术摘要: 覆盖「Fix: Raise ValueError when --enable-mixed-chunk and --mamba-scheduler-strategy extra_buffer cause ac」；主要实现面是 `test/registered/unit/server_args/test_server_args.py`, `python/sglang/srt/server_args.py`。下方保留文件级证据、代码摘录和验证风险。

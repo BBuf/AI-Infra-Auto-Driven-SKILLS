@@ -227,7 +227,7 @@ Rechecked sglang upstream `origin/main@78cb38ed5` and the GitHub Pull Request fi
 | 2026-02-21 | [#19062](https://github.com/sgl-project/sglang/pull/19062) | merged | [DSv32] Fix MTP and CP compatability | `python/sglang/srt/models/deepseek_nextn.py` |
 | 2026-02-22 | [#19041](https://github.com/sgl-project/sglang/pull/19041) | merged | [DSv32] [GLM5] Improve Model Quality by Avoiding FP32 Precision Loss in `weights_proj` | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `test/registered/kernels/test_nsa_indexer.py` |
 | 2026-02-22 | [#19134](https://github.com/sgl-project/sglang/pull/19134) | merged | Fix spec v2+dp attention in nsa backend | `python/sglang/srt/layers/attention/nsa/utils.py` |
-| 2026-02-24 | [#19211](https://github.com/sgl-project/sglang/pull/19211) | open | [Refactor][DeepSeek-V3.2] Extract V3.2/NSA logic into `DeepseekV32Mixin` | `python/sglang/srt/models/deepseek_common/v32_mixin.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_nextn.py` |
+| 2026-02-24 | [#19211](https://github.com/sgl-project/sglang/pull/19211) | closed | [Refactor][DeepSeek-V3.2] Extract V3.2/NSA logic into `DeepseekV32Mixin` | `python/sglang/srt/models/deepseek_common/v32_mixin.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_nextn.py` |
 | 2026-02-25 | [#19299](https://github.com/sgl-project/sglang/pull/19299) | open | [Perf] O(1) expert weight matching in DeepSeek weight loader | `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`, `test/unit/test_deepseek_weight_loader.py` |
 | 2026-02-26 | [#17199](https://github.com/sgl-project/sglang/pull/17199) | closed | [Feature] add feature mla_ag_after_qlora for dsv3.2 | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/communicator.py` |
 | 2026-02-26 | [#19148](https://github.com/sgl-project/sglang/pull/19148) | merged | [DeepSeek-V3.2][JIT-kernel] Support nsa fuse store indexer k cache | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/jit_kernel/csrc/nsa/fused_store_index_cache.cuh` |
@@ -300,7 +300,7 @@ Rechecked sglang upstream `origin/main@78cb38ed5` and the GitHub Pull Request fi
 | 2026-04-12 | [#22372](https://github.com/sgl-project/sglang/pull/22372) | merged | [DSA] Hopper FP8 FlashMLA KV padding | `python/sglang/srt/layers/attention/nsa_backend.py`, `docs/basic_usage/deepseek_v32.md`, `python/sglang/srt/server_args.py` |
 | 2026-04-14 | [#21259](https://github.com/sgl-project/sglang/pull/21259) | merged | [HiCache & HybridModel] mooncake backend support DSA & mamba model | `python/sglang/srt/mem_cache/memory_pool_host.py`, `python/sglang/srt/mem_cache/storage/mooncake_store/mooncake_store.py`, `python/sglang/srt/mem_cache/hybrid_cache/hybrid_pool_assembler.py` |
 | 2026-04-14 | [#22792](https://github.com/sgl-project/sglang/pull/22792) | open | nsa indexer: use aiter indexer_k_quant_and_cache | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
-| 2026-04-15 | [#22851](https://github.com/sgl-project/sglang/pull/22851) | open | [RL] [DSv32] [GLM-5] Add `--nsa-topk-backend` and integrate FlashInfer and pytorch topk | `python/sglang/srt/layers/attention/nsa_backend.py`, `test/registered/kernels/test_nsa_indexer.py`, `python/sglang/srt/server_args.py` |
+| 2026-04-15 | [#22851](https://github.com/sgl-project/sglang/pull/22851) | merged | [RL] [DSv32] [GLM-5] Add `--nsa-topk-backend` and integrate FlashInfer and pytorch topk | `python/sglang/srt/layers/attention/nsa_backend.py`, `test/registered/kernels/test_nsa_indexer.py`, `python/sglang/srt/server_args.py` |
 | 2026-04-15 | [#22865](https://github.com/sgl-project/sglang/pull/22865) | open | [sparsity] extend framework to support non-NSA sparse algorithms | `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/attention/flashattention_backend.py`, `python/sglang/srt/model_executor/forward_batch_info.py` |
 | 2026-04-16 | [#22938](https://github.com/sgl-project/sglang/pull/22938) | open | [AMD][MI30X] Restore DeepSeek MLA MI300X paths after MLA refactor (#19122) | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/models/deepseek_v2.py` |
 | 2026-04-17 | [#22128](https://github.com/sgl-project/sglang/pull/22128) | merged | Allow piecewise CUDA graph with speculative decoding | `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`, `python/sglang/srt/model_executor/model_runner.py`, `test/registered/piecewise_cuda_graph/test_pcg_with_speculative_decoding.py` |
@@ -309,13 +309,13 @@ Rechecked sglang upstream `origin/main@78cb38ed5` and the GitHub Pull Request fi
 | 2026-04-20 | [#21599](https://github.com/sgl-project/sglang/pull/21599) | merged | [SPEC][1/N] feat: add adaptive speculative_num_steps for EAGLE topk=1 | `python/sglang/srt/model_executor/cuda_graph_runner.py`, `benchmark/bench_adaptive_speculative.py`, `test/registered/unit/spec/test_adaptive_spec_params.py` |
 | 2026-04-20 | [#22003](https://github.com/sgl-project/sglang/pull/22003) | merged | Support moe_dp_size = 1 for various attention_cp_size | `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/layers/dp_attention.py`, `python/sglang/srt/models/qwen3_moe.py` |
 | 2026-04-20 | [#22914](https://github.com/sgl-project/sglang/pull/22914) | merged | [Refactor] Deduplicate NSA utils.py into cp_utils.py for context parallel | `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/utils/cp_utils.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
-| 2026-04-20 | [#23195](https://github.com/sgl-project/sglang/pull/23195) | open | [Bugfix] Guard .weight access in DeepseekV2AttentionMLA for AWQ / compressed-tensors | `test/registered/unit/models/test_deepseek_v2_attention_mla.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py` |
+| 2026-04-20 | [#23195](https://github.com/sgl-project/sglang/pull/23195) | closed | [Bugfix] Guard .weight access in DeepseekV2AttentionMLA for AWQ / compressed-tensors | `test/registered/unit/models/test_deepseek_v2_attention_mla.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py` |
 | 2026-04-20 | [#23219](https://github.com/sgl-project/sglang/pull/23219) | merged | [AMD] Enable MTP for GLM-5-mxfp4 model | `python/sglang/srt/models/deepseek_nextn.py` |
 | 2026-04-20 | [#23257](https://github.com/sgl-project/sglang/pull/23257) | open | Fix double-reduce in DeepseekV2MoE with flashinfer_cutedsl + EP + DP-attention | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/moe/moe_runner/flashinfer_cutedsl.py` |
 | 2026-04-21 | [#22950](https://github.com/sgl-project/sglang/pull/22950) | closed | [fix] Parser-gated two-phase cache stripping for reasoning radix caches (fixes #22373) | `python/sglang/srt/parser/reasoning_parser.py`, `python/sglang/srt/configs/model_config.py`, `test/registered/unit/mem_cache/test_radix_cache_thinking.py` |
 | 2026-04-21 | [#23315](https://github.com/sgl-project/sglang/pull/23315) | merged | Opt-in strip of thinking tokens from radix cache | `test/registered/unit/mem_cache/test_unified_radix_cache_unittest.py`, `python/sglang/srt/managers/schedule_batch.py`, `python/sglang/srt/server_args.py` |
-| 2026-04-21 | [#23336](https://github.com/sgl-project/sglang/pull/23336) | open | [SPEC V2][2/N] feat: adaptive spec support spec v2 | `python/sglang/srt/speculative/eagle_worker_v2.py`, `python/sglang/srt/speculative/eagle_info_v2.py`, `python/sglang/srt/managers/scheduler_output_processor_mixin.py` |
-| 2026-04-21 | [#23351](https://github.com/sgl-project/sglang/pull/23351) | open | Support piecewise CUDA graph with NSA | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/layernorm.py`, `python/sglang/srt/layers/radix_attention.py` |
+| 2026-04-21 | [#23336](https://github.com/sgl-project/sglang/pull/23336) | merged | [SPEC V2][2/N] feat: adaptive spec support spec v2 | `python/sglang/srt/speculative/eagle_worker_v2.py`, `python/sglang/srt/speculative/eagle_info_v2.py`, `python/sglang/srt/managers/scheduler_output_processor_mixin.py` |
+| 2026-04-21 | [#23351](https://github.com/sgl-project/sglang/pull/23351) | merged | Support piecewise CUDA graph with NSA | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/layernorm.py`, `python/sglang/srt/layers/radix_attention.py` |
 | 2026-04-24 | [#22774](https://github.com/sgl-project/sglang/pull/22774) | merged | [MUSA][16/N] Add MUSA backend support for layers and DeepSeek models (V2/V3/R1) | `python/sglang/srt/layers/layernorm.py`, `python/sglang/srt/layers/moe/topk.py`, `python/sglang/srt/layers/deep_gemm_wrapper/compile_utils.py` |
 | 2026-04-24 | [#23241](https://github.com/sgl-project/sglang/pull/23241) | merged | [HiCache & HybridModel] 3FS backend support DSA & mamba model | `python/sglang/srt/mem_cache/storage/hf3fs/storage_hf3fs.py`, `python/sglang/srt/mem_cache/storage/hf3fs/mini_3fs_metadata_server.py`, `python/sglang/srt/mem_cache/hi_mamba_radix_cache.py` |
 | 2026-04-28 | [#23268](https://github.com/sgl-project/sglang/pull/23268) | merged | 【NPU】【bugfix】accuracy fix when enable both nsa cp and prefixcache | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` |
@@ -5093,7 +5093,7 @@ diff -- test/registered/kernels/test_nsa_indexer.py
 ### PR #19211 - [Refactor][DeepSeek-V3.2] Extract V3.2/NSA logic into `DeepseekV32Mixin`
 
 - Link: https://github.com/sgl-project/sglang/pull/19211
-- Status/date: open / 2026-02-24
+- Status/date: closed / 2026-02-24
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +298/-169, 669 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Refactor][DeepSeek-V3.2] Extract V3.2/NSA logic into `DeepseekV32Mixin`"; model line: DeepSeek V3.2; category: model implementation change; main diff: `python/sglang/srt/models/deepseek_common/v32_mixin.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_nextn.py`; technical summary: Covers "[Refactor][DeepSeek-V3.2] Extract V3.2/NSA logic into `DeepseekV32Mixin`"; the main implementation surface is `python/sglang/srt/models/deepseek_common/v32_mixin.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_nextn.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -7450,7 +7450,7 @@ diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
 ### PR #22851 - [RL] [DSv32] [GLM-5] Add `--nsa-topk-backend` and integrate FlashInfer and pytorch topk
 
 - Link: https://github.com/sgl-project/sglang/pull/22851
-- Status/date: open / 2026-04-15
+- Status/date: merged / 2026-04-15
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +584/-36, 776 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[RL] [DSv32] [GLM-5] Add `--nsa-topk-backend` and integrate FlashInfer and pytorch topk"; model line: DeepSeek V3.2; category: performance/backend optimization; main diff: `python/sglang/srt/layers/attention/nsa_backend.py`, `test/registered/kernels/test_nsa_indexer.py`, `python/sglang/srt/server_args.py`; technical summary: Covers "[RL] [DSv32] [GLM-5] Add `--nsa-topk-backend` and integrate FlashInfer and pytorch topk"; the main implementation surface is `python/sglang/srt/layers/attention/nsa_backend.py`, `test/registered/kernels/test_nsa_indexer.py`, `python/sglang/srt/server_args.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -7634,7 +7634,7 @@ diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
 ### PR #23195 - [Bugfix] Guard .weight access in DeepseekV2AttentionMLA for AWQ / compressed-tensors
 
 - Link: https://github.com/sgl-project/sglang/pull/23195
-- Status/date: open / 2026-04-20
+- Status/date: closed / 2026-04-20
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +138/-14, 186 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Guard .weight access in DeepseekV2AttentionMLA for AWQ / compressed-tensors"; model line: DeepSeek V3.2; category: bug fix; main diff: `test/registered/unit/models/test_deepseek_v2_attention_mla.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py`; technical summary: Covers "[Bugfix] Guard .weight access in DeepseekV2AttentionMLA for AWQ / compressed-tensors"; the main implementation surface is `test/registered/unit/models/test_deepseek_v2_attention_mla.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -7982,7 +7982,7 @@ diff -- test/registered/unit/mem_cache/test_radix_cache_thinking.py
 ### PR #23336 - [SPEC V2][2/N] feat: adaptive spec support spec v2
 
 - Link: https://github.com/sgl-project/sglang/pull/23336
-- Status/date: open / 2026-04-21
+- Status/date: merged / 2026-04-21
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +193/-10, 290 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[SPEC V2][2/N] feat: adaptive spec support spec v2"; model line: DeepSeek V3.2; category: performance/backend optimization; main diff: `python/sglang/srt/speculative/eagle_worker_v2.py`, `python/sglang/srt/speculative/eagle_info_v2.py`, `python/sglang/srt/managers/scheduler_output_processor_mixin.py`; technical summary: Covers "[SPEC V2][2/N] feat: adaptive spec support spec v2"; the main implementation surface is `python/sglang/srt/speculative/eagle_worker_v2.py`, `python/sglang/srt/speculative/eagle_info_v2.py`, `python/sglang/srt/managers/scheduler_output_processor_mixin.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -8023,7 +8023,7 @@ diff -- python/sglang/srt/managers/scheduler_output_processor_mixin.py
 ### PR #23351 - Support piecewise CUDA graph with NSA
 
 - Link: https://github.com/sgl-project/sglang/pull/23351
-- Status/date: open / 2026-04-21
+- Status/date: merged / 2026-04-21
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 11 files, +302/-56, 646 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Support piecewise CUDA graph with NSA"; model line: DeepSeek V3.2; category: bug fix; main diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/layernorm.py`, `python/sglang/srt/layers/radix_attention.py`; technical summary: Covers "Support piecewise CUDA graph with NSA"; the main implementation surface is `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/layernorm.py`, `python/sglang/srt/layers/radix_attention.py`. File-level evidence, code excerpts, and validation risks are preserved below.

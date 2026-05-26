@@ -100,7 +100,7 @@
 | 2026-02-05 | [#16781](https://github.com/sgl-project/sglang/pull/16781) | merged | Refactor(qwen3-vl) optimize position encoding interpolation | `python/sglang/srt/models/qwen3_vl.py` |
 | 2026-02-12 | [#18721](https://github.com/sgl-project/sglang/pull/18721) | open | [BUG] fix mm_enable_dp_encoder hang for Qwen3-VL models | `python/sglang/srt/layers/vocab_parallel_embedding.py`, `python/sglang/srt/models/qwen3_vl.py` |
 | 2026-02-13 | [#18771](https://github.com/sgl-project/sglang/pull/18771) | open | Add Qwen3-Omni to Qwen MoE architecture handling in fused_moe_triton | `benchmark/kernels/fused_moe_triton/common_utils.py` |
-| 2026-02-24 | [#19242](https://github.com/sgl-project/sglang/pull/19242) | open | [feat] feat: add Qwen3-ASR support like whisper | `python/sglang/srt/multimodal/processors/qwen3_asr.py`, `python/sglang/srt/configs/qwen3_asr.py`, `python/sglang/srt/configs/__init__.py` |
+| 2026-02-24 | [#19242](https://github.com/sgl-project/sglang/pull/19242) | closed | [feat] feat: add Qwen3-ASR support like whisper | `python/sglang/srt/multimodal/processors/qwen3_asr.py`, `python/sglang/srt/configs/qwen3_asr.py`, `python/sglang/srt/configs/__init__.py` |
 | 2026-02-24 | [#19003](https://github.com/sgl-project/sglang/pull/19003) | merged | [VLM] Introduce FlashInfer CUDNN Prefill as ViT Backend | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/layers/attention/vision.py`, `test/manual/nightly/test_vlms_vit_flashinfer_cudnn.py` |
 | 2026-02-27 | [#19333](https://github.com/sgl-project/sglang/pull/19333) | merged | fix qwen3_vl visual module loading | `python/sglang/srt/models/qwen3_vl.py` |
 | 2026-03-02 | [#19693](https://github.com/sgl-project/sglang/pull/19693) | open | [NPU] Fix Qwen3-VL-8B Accuracy for NPU | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/llama.py`, `python/sglang/srt/layers/rotary_embedding.py` |
@@ -124,9 +124,9 @@
 | 2026-04-15 | [#22848](https://github.com/sgl-project/sglang/pull/22848) | open | [Feature] WebSocket streaming audio input for ASR | `test/manual/models/test_qwen3_asr.py`, `python/sglang/srt/entrypoints/openai/serving_transcription_websocket.py`, `python/sglang/srt/entrypoints/openai/streaming_asr.py` |
 | 2026-04-18 | [#23115](https://github.com/sgl-project/sglang/pull/23115) | open | fix: guard self.model access in Qwen3VLMoeForConditionalGeneration.load_weights | `python/sglang/srt/models/qwen3_vl_moe.py` |
 | 2026-04-18 | [#22431](https://github.com/sgl-project/sglang/pull/22431) | merged | Fix Qwen3.5 video processing when passing video_data in "processor_output" format | `python/sglang/srt/multimodal/processors/qwen_vl.py` |
-| 2026-04-20 | [#23220](https://github.com/sgl-project/sglang/pull/23220) | open | Bugfix: Qwen3-VL-MoE adapt encoder_only | `python/sglang/srt/models/qwen3_vl_moe.py` |
+| 2026-04-20 | [#23220](https://github.com/sgl-project/sglang/pull/23220) | merged | Bugfix: Qwen3-VL-MoE adapt encoder_only | `python/sglang/srt/models/qwen3_vl_moe.py` |
 | 2026-04-21 | [#23304](https://github.com/sgl-project/sglang/pull/23304) | closed | [Bugfix] Fix Qwen3-VL rope config compatibility | `python/sglang/srt/models/qwen3.py` |
-| 2026-04-22 | [#23469](https://github.com/sgl-project/sglang/pull/23469) | open | [NPU] adapt the Qwen3-ASR model for deployment on NPU | `python/sglang/srt/utils/common.py` |
+| 2026-04-22 | [#23469](https://github.com/sgl-project/sglang/pull/23469) | closed | [NPU] adapt the Qwen3-ASR model for deployment on NPU | `python/sglang/srt/utils/common.py` |
 | 2026-04-28 | [#23907](https://github.com/sgl-project/sglang/pull/23907) | merged | [Docs] add Nemotron 3 Nano Omni cookbook | `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx` |
 | 2026-04-28 | [#23968](https://github.com/sgl-project/sglang/pull/23968) | merged | [Docs] update Docker image for Nemotron 3 Nano Omni | `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` |
 
@@ -1736,7 +1736,7 @@ diff -- benchmark/kernels/fused_moe_triton/common_utils.py
 ### PR #19242 - [feat] feat: add Qwen3-ASR support like whisper
 
 - Link: https://github.com/sgl-project/sglang/pull/19242
-- Status/date: open / 2026-02-24
+- Status/date: closed / 2026-02-24
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +475/-0, 519 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[feat] feat: add Qwen3-ASR support like whisper"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/multimodal/processors/qwen3_asr.py`, `python/sglang/srt/configs/qwen3_asr.py`, `python/sglang/srt/configs/__init__.py`; technical summary: Covers "[feat] feat: add Qwen3-ASR support like whisper"; the main implementation surface is `python/sglang/srt/multimodal/processors/qwen3_asr.py`, `python/sglang/srt/configs/qwen3_asr.py`, `python/sglang/srt/configs/__init__.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2526,7 +2526,7 @@ diff -- python/sglang/srt/multimodal/processors/qwen_vl.py
 ### PR #23220 - Bugfix: Qwen3-VL-MoE adapt encoder_only
 
 - Link: https://github.com/sgl-project/sglang/pull/23220
-- Status/date: open / 2026-04-20
+- Status/date: merged / 2026-04-20
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-0, 8 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Bugfix: Qwen3-VL-MoE adapt encoder_only"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/models/qwen3_vl_moe.py`; technical summary: Covers "Bugfix: Qwen3-VL-MoE adapt encoder_only"; the main implementation surface is `python/sglang/srt/models/qwen3_vl_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2575,7 +2575,7 @@ diff -- python/sglang/srt/models/qwen3.py
 ### PR #23469 - [NPU] adapt the Qwen3-ASR model for deployment on NPU
 
 - Link: https://github.com/sgl-project/sglang/pull/23469
-- Status/date: open / 2026-04-22
+- Status/date: closed / 2026-04-22
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +18/-0, 25 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[NPU] adapt the Qwen3-ASR model for deployment on NPU"; model line: Qwen VLM/Omni/ASR; category: performance/backend optimization; main diff: `python/sglang/srt/utils/common.py`; technical summary: Covers "[NPU] adapt the Qwen3-ASR model for deployment on NPU"; the main implementation surface is `python/sglang/srt/utils/common.py`. File-level evidence, code excerpts, and validation risks are preserved below.

@@ -90,7 +90,7 @@
 | 2026-03-03 | [#19532](https://github.com/sgl-project/sglang/pull/19532) | merged | [NPU] bugs fix: fix a condition bug when using speculative inference on Qwen3 and Qwen3 moe | `python/sglang/srt/models/qwen3.py`, `python/sglang/srt/models/qwen3_moe.py` |
 | 2026-03-08 | [#20127](https://github.com/sgl-project/sglang/pull/20127) | open | [Qwen] Handle tie_word_embeddings for Qwen MoE and Qwen3Next | `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/models/qwen3_next.py` |
 | 2026-03-12 | [#20474](https://github.com/sgl-project/sglang/pull/20474) | open | Intel XPU: Qwen3 support (layernorm/MRoPE) + test_qwen3 | `python/sglang/srt/layers/rotary_embedding/mrope.py`, `python/sglang/srt/layers/attention/fla/layernorm_gated.py`, `test/srt/xpu/test_qwen3.py` |
-| 2026-03-13 | [#20520](https://github.com/sgl-project/sglang/pull/20520) | open | [NPU]TP Communications compression For Qwen3 models for NPU | `python/sglang/srt/layers/linear.py`, `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/models/qwen2.py` |
+| 2026-03-13 | [#20520](https://github.com/sgl-project/sglang/pull/20520) | merged | [NPU]TP Communications compression For Qwen3 models for NPU | `python/sglang/srt/layers/linear.py`, `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/models/qwen2.py` |
 | 2026-03-18 | [#17784](https://github.com/sgl-project/sglang/pull/17784) | merged | Upgrade transformers==5.3.0 | `python/sglang/srt/models/gemma3_causal.py`, `python/sglang/srt/layers/rotary_embedding/factory.py`, `python/sglang/srt/configs/model_config.py` |
 | 2026-03-20 | [#20931](https://github.com/sgl-project/sglang/pull/20931) | merged | [Bugifx] qwen3 rope parameter compatibility | `python/sglang/srt/models/qwen3_moe.py` |
 | 2026-03-22 | [#18233](https://github.com/sgl-project/sglang/pull/18233) | merged | Support Qwen3 MoE context parallel | `python/sglang/srt/models/qwen3_moe.py` |
@@ -105,7 +105,7 @@
 | 2026-04-09 | [#22358](https://github.com/sgl-project/sglang/pull/22358) | merged | Enable DFLASH support for additional model backends | `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/kimi_k25.py`, `python/sglang/srt/models/qwen3_next.py` |
 | 2026-04-10 | [#22529](https://github.com/sgl-project/sglang/pull/22529) | open | [Model] Support sliding window attention for Qwen3 | `python/sglang/srt/models/qwen3.py` |
 | 2026-04-11 | [#22446](https://github.com/sgl-project/sglang/pull/22446) | merged | [NPU] add qwen3-30b-a3b low latency example | `docs/platforms/ascend/ascend_npu_best_practice.md` |
-| 2026-04-13 | [#22674](https://github.com/sgl-project/sglang/pull/22674) | open | [NPU] Support Qwen3.5-MoE and Qwen3-Next quantization | `python/sglang/srt/model_loader/loader.py` |
+| 2026-04-13 | [#22674](https://github.com/sgl-project/sglang/pull/22674) | closed | [NPU] Support Qwen3.5-MoE and Qwen3-Next quantization | `python/sglang/srt/model_loader/loader.py` |
 | 2026-04-13 | [#22687](https://github.com/sgl-project/sglang/pull/22687) | merged | [NPU]qwen3-8b and 32b md bugfix | `docs/platforms/ascend/ascend_npu_best_practice.md` |
 | 2026-04-14 | [#22739](https://github.com/sgl-project/sglang/pull/22739) | merged | Restore Qwen3 rope config fallback | `python/sglang/srt/models/qwen3.py` |
 | 2026-04-15 | [#22837](https://github.com/sgl-project/sglang/pull/22837) | open | [Bug] Qwen3 reasoning detector silently swallows tool_call when is missing | `test/registered/unit/parser/test_reasoning_parser.py`, `python/sglang/srt/parser/reasoning_parser.py` |
@@ -2425,7 +2425,7 @@ diff -- test/srt/xpu/test_qwen3.py
 ### PR #20520 - [NPU]TP Communications compression For Qwen3 models for NPU
 
 - Link: https://github.com/sgl-project/sglang/pull/20520
-- Status/date: open / 2026-03-13
+- Status/date: merged / 2026-03-13
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 13 files, +191/-10, 346 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[NPU]TP Communications compression For Qwen3 models for NPU"; model line: Qwen3 Core; category: performance/backend optimization; main diff: `python/sglang/srt/layers/linear.py`, `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/models/qwen2.py`; technical summary: Covers "[NPU]TP Communications compression For Qwen3 models for NPU"; the main implementation surface is `python/sglang/srt/layers/linear.py`, `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/models/qwen2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2909,7 +2909,7 @@ diff -- docs/platforms/ascend/ascend_npu_best_practice.md
 ### PR #22674 - [NPU] Support Qwen3.5-MoE and Qwen3-Next quantization
 
 - Link: https://github.com/sgl-project/sglang/pull/22674
-- Status/date: open / 2026-04-13
+- Status/date: closed / 2026-04-13
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +2/-0, 9 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[NPU] Support Qwen3.5-MoE and Qwen3-Next quantization"; model line: Qwen3 Core; category: performance/backend optimization; main diff: `python/sglang/srt/model_loader/loader.py`; technical summary: Covers "[NPU] Support Qwen3.5-MoE and Qwen3-Next quantization"; the main implementation surface is `python/sglang/srt/model_loader/loader.py`. File-level evidence, code excerpts, and validation risks are preserved below.

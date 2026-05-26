@@ -1106,8 +1106,11 @@ def render_history_en(framework: str, model: str, files: list[str], traces: dict
     return body.strip() + "\n"
 
 
-def update_indexes() -> None:
+def update_indexes(dry_run: bool = False) -> None:
     model_lines = "\n".join(f"- `{model}`" for model in MODEL_ORDER)
+    if dry_run:
+        print("dry-run: would update framework index READMEs", flush=True)
+        return
     (HISTORY_ROOT / "sglang" / "README.md").write_text(
         f"# SGLang Model PR Optimization History\n\nCurrent model families:\n\n{model_lines}\n",
         encoding="utf-8",
@@ -1121,7 +1124,7 @@ def update_indexes() -> None:
 def rebuild(dry_run: bool = False) -> None:
     cache = load_cache()
     all_files = {framework: git_files(framework) for framework in REPOS}
-    update_indexes()
+    update_indexes(dry_run=dry_run)
     for framework in ("sglang", "vllm"):
         print(f"== {framework} ==")
         for model in MODEL_ORDER:
