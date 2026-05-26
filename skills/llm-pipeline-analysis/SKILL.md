@@ -138,9 +138,9 @@ python3 scripts/layer_kernel_breakdown.py \
 ```
 
 Output formats:
-- `--format text` (default): grouped summary + ordered kernel list with simplified names and durations
-- `--format compute-flow`: model architecture summary + category-level timing + per-kernel table with `Category` column
-- `--format json`: machine-readable per-kernel detail
+- `--format text` (default): grouped summary + top hot kernels ranked by duration, with simplified names and percentages
+- `--format compute-flow`: model architecture summary + per-kernel hotness table with `Category`, `%`, and `ts_rel(ms)` columns
+- `--format json`: machine-readable per-kernel detail ranked by duration
 - Kernel diff when comparing two layers (unique kernels in each)
 
 ### 3. `perfetto_time_mapper.py` — Perfetto UI time navigation
@@ -204,8 +204,8 @@ python3 scripts/layer_kernel_breakdown.py \
 
 The `--format compute-flow` output includes:
 - Model architecture summary at the top
-- Category-level timing summary
-- Per-kernel table with `# | Half | Category | Simplified Name | dur(us) | %`
+- Per-kernel hotness table with `# | Half | Category | Simplified Name | dur(us) | % | ts_rel(ms) | Input Dims`
+- Rows are ranked by `dur(us)` descending by default; use `ts_rel(ms)` to jump back to the kernel's trace location.
 
 ### Step 4: Compare layer types (optional)
 
@@ -289,8 +289,8 @@ Include:
    - Identifies bottleneck layer type and likely next target
 7. **Compute Flow Table** for selected representative layer(s):
    - Produced by `layer_kernel_breakdown.py --format compute-flow`
-   - Columns: `# | Half | Category | Simplified Name | dur(us) | %`
-   - Category-level summary above the table
+   - Columns: `# | Half | Category | Simplified Name | dur(us) | % | ts_rel(ms) | Input Dims`
+   - Rows are sorted by top hot kernels (`dur(us)` descending) by default
    - Optional JSON export (`--format json`)
 8. **Perfetto UI time ranges** when requested
 9. **One-line summary**: bottleneck layer type and likely next target
