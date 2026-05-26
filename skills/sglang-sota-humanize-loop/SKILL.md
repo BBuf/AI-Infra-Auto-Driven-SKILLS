@@ -1,6 +1,6 @@
 ---
 name: sglang-sota-humanize-loop
-description: "Run an autonomous Humanize-governed SGLang SOTA performance loop for one LLM model: first perform the fixed fair SGLang/vLLM/TensorRT-LLM deployment search and benchmark, then start one RLCR loop that repeatedly decides the gap, profiles the current bottleneck, optionally drills into layer/kernel flow, patches SGLang code, optionally uses ncu-report-skill for kernel evidence, and revalidates until SGLang matches or beats the best observed framework under the same workload and SLA."
+description: "Run an autonomous Humanize-governed SGLang SOTA performance loop for one LLM model: first perform the fixed fair SGLang/vLLM/TensorRT-LLM deployment search and benchmark, then start one RLCR loop that repeatedly decides the gap, profiles the current bottleneck, runs layer/kernel pipeline analysis, patches SGLang code, optionally uses ncu-report-skill for kernel evidence, and revalidates until SGLang matches or beats the best observed framework under the same workload and SLA."
 ---
 
 # SGLang SOTA Humanize Loop
@@ -14,7 +14,7 @@ vLLM or TensorRT-LLM result in the same target environment.
 This workflow has two durable parts:
 
 1. A fixed baseline phase that must be completed once before any code patching.
-2. One Humanize RLCR loop that owns gap decision, profiling, optional
+2. One Humanize RLCR loop that owns gap decision, profiling, required
    layer/kernel deep dive, SGLang patching, optional NCU evidence, and
    real-model revalidation.
 
@@ -85,8 +85,7 @@ skill.
 Keep only the fixed benchmark phase outside the RLCR patch loop. Once the fixed
 cross-framework benchmark and model PR history notes exist, start Humanize. The
 RLCR loop itself must decide whether a gap still exists, collect current
-profiler evidence, optionally run layer pipeline analysis, patch SGLang, and
-revalidate.
+profiler evidence, run layer pipeline analysis, patch SGLang, and revalidate.
 
 Treat the model optimization campaign as the durable unit, not one terminal
 session. The campaign is recoverable from the run artifact root, checkpoint
@@ -210,8 +209,8 @@ The plan must require every RLCR round to:
 - run the gap decision inside the loop before patching
 - run `llm-torch-profiler-analysis` inside the loop when SGLang is behind or
   when the previous patch changed the profiled path
-- run `llm-pipeline-analysis` inside the loop when the profiler's three tables
-  are too coarse to choose a source path, representative layer, or kernel target
+- run `llm-pipeline-analysis` inside the loop after profiler triage and before
+  choosing a source path, representative layer, or kernel target
 - patch SGLang code, not just benchmark parameters
 - use `ncu-report-skill` inside the same loop when a kernel edit needs Nsight
   Compute evidence
@@ -297,22 +296,23 @@ Do not patch SGLang until this report exists for the current gap.
 
 ### Layer Pipeline Deep Dive
 
-Run `llm-pipeline-analysis` inside the RLCR round when the profiler's three
-tables are too coarse to choose a patch target:
+Run `llm-pipeline-analysis` inside every RLCR round after profiler triage and
+before choosing a patch target.
 
-- the hot SGLang row is a repeated kernel family but the slow layer type is not
-  clear
-- the model has heterogeneous layers, such as MoE, hash layers, or
-  `compress_ratios`, and the gap may come from one layer class
-- a Perfetto time range is needed for a specific forward pass or representative
-  layer
-- a kernel target needs representative layer-level hot-kernel ordering before
-  writing or profiling the patch
+The report must identify:
+
+- the chosen forward pass and why it is representative
+- the relevant layer types, especially for heterogeneous layers such as MoE,
+  hash layers, or `compress_ratios`
+- representative layers for the patch target
+- top hot kernels in those representative layers
+- any Perfetto time ranges needed for inspection
 
 Use the profiled SGLang trace and the served model config. Write
 `analysis/layer-pipeline.md` with the chosen forward pass, layer-type timing
 table, representative layers, top hot kernels, and any Perfetto ranges used for
-inspection.
+inspection. Do not choose a SGLang patch before this report exists for the
+current round.
 
 ### Kernel Evidence Assist
 
@@ -329,7 +329,7 @@ Eligibility gate:
   kernel-specialist effort on a lone kernel below `1%` share unless a shared
   implementation affects an aggregated family above `1%`.
 - `llm-pipeline-analysis` has identified the representative layer/forward pass
-  when layer structure matters.
+  and top hot kernels for the current round.
 - The proposed kernel target has a clear correctness reference,
   representative shapes/dtypes/layouts from the model run, and a path to wire
   the candidate into the active SGLang serving code.
@@ -387,7 +387,7 @@ humanize/profile-digests/
 
 Every patch attempt gets an attempt row. Only correct patches with measured
 improvement get optimization rows. Source ideas must include profiler rows,
-layer-pipeline evidence when used, NCU report paths when used, and code
+layer-pipeline evidence, NCU report paths when used, and code
 provenance so later rounds can avoid re-reading the same source. Model PR
 history evidence should be recorded beside SGLang, vLLM, TensorRT-LLM, and NCU
 source ideas when it influenced the patch.

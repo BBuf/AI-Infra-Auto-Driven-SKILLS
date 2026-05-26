@@ -13,10 +13,10 @@ performance for `<model>` on `<hardware>` under the fixed workload, precision,
 quantization, and SLA captured in `<artifact-root>`.
 
 The fixed benchmark phase is complete. The RLCR loop must perform the current
-gap decision, collect profiler evidence, optionally run layer-pipeline deep
-dives, patch SGLang code, optionally use `ncu-report-skill` for kernel evidence,
-re-run the same model-level benchmark/profile, and continue through minimal
-patches until SGLang reaches the stop criteria.
+gap decision, collect profiler evidence, run layer-pipeline deep dives, patch
+SGLang code, optionally use `ncu-report-skill` for kernel evidence, re-run the
+same model-level benchmark/profile, and continue through minimal patches until
+SGLang reaches the stop criteria.
 
 The matching PR-driven model history has been read from
 `model-pr-optimization-history`, and `history/model-pr-history-notes.md`
@@ -65,20 +65,20 @@ records the SGLang/vLLM PR evidence that influenced source-path selection.
     - Profiling is treated as a one-time pre-loop gate and not refreshed after
       a patch changes the profiled path or leaves a gap.
 
-- AC-4: Layer-pipeline evidence is inside the RLCR loop when needed
+- AC-4: Layer-pipeline evidence is required inside each RLCR round
   - Positive Tests (expected to PASS):
-    - `llm-pipeline-analysis` is run when the three profiler tables are too
-      coarse to choose a patch target.
+    - `llm-pipeline-analysis` is run after profiler triage and before choosing
+      a patch target.
     - `analysis/layer-pipeline.md` records the chosen forward pass,
       representative layers, layer-type timing, top hot kernels, and Perfetto
       ranges when used.
   - Negative Tests (expected to FAIL):
-    - The loop patches a heterogeneous layer path while ignoring ambiguous layer
-      timing or representative-layer evidence.
+    - The loop chooses a SGLang patch without a current
+      `analysis/layer-pipeline.md` report.
 
 - AC-5: SGLang patches are evidence-driven and minimal
   - Positive Tests (expected to PASS):
-    - Each accepted patch cites the benchmark symptom, profiler row, optional
+    - Each accepted patch cites the benchmark symptom, profiler row,
       layer-pipeline row, source path, and expected impact.
     - Changes are local to the SGLang bottleneck path unless a broader change
       is required and justified.
@@ -179,7 +179,8 @@ revalidation, unless the current in-loop evidence proves no patch is needed.
    - Compare current SGLang to the fixed winner table.
    - Run `llm-torch-profiler-analysis` for current SGLang and the leading
      competitor when SGLang is behind.
-   - Run `llm-pipeline-analysis` when the profiler tables are too coarse.
+   - Run `llm-pipeline-analysis` after profiler triage and before patch
+     selection.
 3. Patch the highest-confidence SGLang bottleneck
    - Choose one minimal code change from the current evidence.
    - Use `ncu-report-skill` inside the same model loop when writing a kernel

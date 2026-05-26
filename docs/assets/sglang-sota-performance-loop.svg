@@ -90,8 +90,8 @@
 
   <path d="M 493 734 L 493 774" class="line"/>
   <rect x="392" y="774" width="202" height="64" rx="15" class="purple"/>
-  <text x="493" y="800" text-anchor="middle" class="label">Pipeline deep dive</text>
-  <text x="493" y="820" text-anchor="middle" class="small">layers, hot kernels, Perfetto</text>
+  <text x="493" y="800" text-anchor="middle" class="label">Pipeline analysis</text>
+  <text x="493" y="820" text-anchor="middle" class="small">required layer + kernel drilldown</text>
 
   <path d="M 392 806 L 328 806" class="lineSoft"/>
   <rect x="126" y="774" width="202" height="64" rx="15" class="amber"/>

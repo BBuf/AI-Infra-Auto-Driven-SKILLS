@@ -43,7 +43,7 @@ find it.
 | [`llm-pipeline-analysis`](skills/llm-pipeline-analysis/) | You need forward-pass, layer, and kernel-level timing from a torch profiler trace, including anchor boundaries and Perfetto ranges. |
 | [`model-compute-simulation`](skills/model-compute-simulation/) | You need operator shapes, FLOPs, MFU estimates, kernel-to-op mapping, or parallelism what-if analysis for an LLM serving shape. |
 | [`sglang-humanize-review`](skills/sglang-humanize-review/) | You need SGLang code-review findings grounded in 2024-2025 human review threads, including inline code context, comments, and discussions. |
-| [`sglang-sota-humanize-loop`](skills/sglang-sota-humanize-loop/) | You want one model-level Humanize RLCR loop that owns gap decisions, profiler triage, layer-pipeline deep dives, SGLang patches, optional `ncu-report-skill` evidence, and real-model revalidation after the fixed fair benchmark. |
+| [`sglang-sota-humanize-loop`](skills/sglang-sota-humanize-loop/) | You want one model-level Humanize RLCR loop that owns gap decisions, profiler triage, required layer-pipeline deep dives, SGLang patches, optional `ncu-report-skill` evidence, and real-model revalidation after the fixed fair benchmark. |
 | [`sglang-prod-incident-triage`](skills/sglang-prod-incident-triage/) | You need to turn queue growth, timeouts, wrong outputs, crashes, or distributed stalls into a replay and next debug step. |
 | [`model-architecture-diagram`](skills/model-architecture-diagram/) | You need original public architecture diagrams for popular LLM, VLM, MoE, OCR, and diffusion model families. |
 
@@ -107,9 +107,9 @@ The repo is opinionated about evidence because performance work gets noisy fast.
 - SOTA claims should be scoped to the exact model, hardware, framework commits,
   precision, workload, and SLA used in the run.
 - Humanize SGLang SOTA loops should keep only the fixed fair benchmark outside
-  the patch loop; gap decisions, profiler triage, layer-pipeline deep dives,
-  kernel evidence, SGLang code changes, and revalidation all stay inside one
-  model-level RLCR loop.
+  the patch loop; gap decisions, profiler triage, required layer-pipeline deep
+  dives, kernel evidence, SGLang code changes, and revalidation all stay inside
+  one model-level RLCR loop.
 - Kernel-local SGLang fixes inside that loop should use `ncu-report-skill` when
   Nsight Compute counter evidence is needed, store NCU digests, and still pass
   the same real-model benchmark/profile gate.
