@@ -14,6 +14,7 @@ initial_deployment: SGLang TP=1
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
+要求: 做当前模型 benchmark/profile/patch 前，必须先查询 sgl-project/sglang 和 BBuf/sglang 的 open PR，确认是否已有针对当前 model_id 或同模型家族的性能/正确性优化；如果有，优先在独立分支或临时工作树把这些相关 PR 合入或逐个试跑，记录 PR、commit/patch、命令和结果，用包含相关 open PR 的最佳可复现结果作为 SGLang 候选 baseline；不要把未包含这些 open PR 的 main 分支性能直接当作 baseline。
 要求: 启动 Humanize/RLCR loop 时，必须在本地 Codex 会话里启动；远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 loop。启动前仍必须先在本地 cd 到当前任务创建出的工程目录，也就是包含 .humanize 的目录，再启动 loop。
 要求: 每次 benchmark/profile 前必须确认这 1 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
@@ -38,6 +39,7 @@ initial_deployment: SGLang TP=1
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
+要求: 做当前模型 benchmark/profile/patch 前，必须先查询 sgl-project/sglang 和 BBuf/sglang 的 open PR，确认是否已有针对当前 model_id 或同模型家族的性能/正确性优化；如果有，优先在独立分支或临时工作树把这些相关 PR 合入或逐个试跑，记录 PR、commit/patch、命令和结果，用包含相关 open PR 的最佳可复现结果作为 SGLang 候选 baseline；不要把未包含这些 open PR 的 main 分支性能直接当作 baseline。
 要求: 启动 Humanize/RLCR loop 时，必须在本地 Codex 会话里启动；远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 loop。启动前仍必须先在本地 cd 到当前任务创建出的工程目录，也就是包含 .humanize 的目录，再启动 loop。
 要求: 每次 benchmark/profile 前必须确认这 1 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
@@ -62,6 +64,7 @@ initial_deployment: SGLang TP=1
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
+要求: 做当前模型 benchmark/profile/patch 前，必须先查询 sgl-project/sglang 和 BBuf/sglang 的 open PR，确认是否已有针对当前 model_id 或同模型家族的性能/正确性优化；如果有，优先在独立分支或临时工作树把这些相关 PR 合入或逐个试跑，记录 PR、commit/patch、命令和结果，用包含相关 open PR 的最佳可复现结果作为 SGLang 候选 baseline；不要把未包含这些 open PR 的 main 分支性能直接当作 baseline。
 要求: 启动 Humanize/RLCR loop 时，必须在本地 Codex 会话里启动；远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 loop。启动前仍必须先在本地 cd 到当前任务创建出的工程目录，也就是包含 .humanize 的目录，再启动 loop。
 要求: 每次 benchmark/profile 前必须确认这 1 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
@@ -88,6 +91,7 @@ initial_deployment: SGLang TP=2
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
+要求: 做当前模型 benchmark/profile/patch 前，必须先查询 sgl-project/sglang 和 BBuf/sglang 的 open PR，确认是否已有针对当前 model_id 或同模型家族的性能/正确性优化；如果有，优先在独立分支或临时工作树把这些相关 PR 合入或逐个试跑，记录 PR、commit/patch、命令和结果，用包含相关 open PR 的最佳可复现结果作为 SGLang 候选 baseline；不要把未包含这些 open PR 的 main 分支性能直接当作 baseline。
 要求: 启动 Humanize/RLCR loop 时，必须在本地 Codex 会话里启动；远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 loop。启动前仍必须先在本地 cd 到当前任务创建出的工程目录，也就是包含 .humanize 的目录，再启动 loop。
 要求: 每次 benchmark/profile 前必须确认这 2 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
@@ -112,6 +116,7 @@ initial_deployment: SGLang TP=2
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
+要求: 做当前模型 benchmark/profile/patch 前，必须先查询 sgl-project/sglang 和 BBuf/sglang 的 open PR，确认是否已有针对当前 model_id 或同模型家族的性能/正确性优化；如果有，优先在独立分支或临时工作树把这些相关 PR 合入或逐个试跑，记录 PR、commit/patch、命令和结果，用包含相关 open PR 的最佳可复现结果作为 SGLang 候选 baseline；不要把未包含这些 open PR 的 main 分支性能直接当作 baseline。
 要求: 启动 Humanize/RLCR loop 时，必须在本地 Codex 会话里启动；远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 loop。启动前仍必须先在本地 cd 到当前任务创建出的工程目录，也就是包含 .humanize 的目录，再启动 loop。
 要求: 每次 benchmark/profile 前必须确认这 2 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
@@ -138,6 +143,7 @@ initial_deployment: SGLang TP=4；DP/EP/MTP 只能在同样 4 卡预算内搜索
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
+要求: 做当前模型 benchmark/profile/patch 前，必须先查询 sgl-project/sglang 和 BBuf/sglang 的 open PR，确认是否已有针对当前 model_id 或同模型家族的性能/正确性优化；如果有，优先在独立分支或临时工作树把这些相关 PR 合入或逐个试跑，记录 PR、commit/patch、命令和结果，用包含相关 open PR 的最佳可复现结果作为 SGLang 候选 baseline；不要把未包含这些 open PR 的 main 分支性能直接当作 baseline。
 要求: 启动 Humanize/RLCR loop 时，必须在本地 Codex 会话里启动；远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 loop。启动前仍必须先在本地 cd 到当前任务创建出的工程目录，也就是包含 .humanize 的目录，再启动 loop。
 要求: 每次 benchmark/profile 前必须确认这 4 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
@@ -162,6 +168,7 @@ initial_deployment: SGLang TP=4；MTP 只能在同样 4 卡预算内搜索
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
+要求: 做当前模型 benchmark/profile/patch 前，必须先查询 sgl-project/sglang 和 BBuf/sglang 的 open PR，确认是否已有针对当前 model_id 或同模型家族的性能/正确性优化；如果有，优先在独立分支或临时工作树把这些相关 PR 合入或逐个试跑，记录 PR、commit/patch、命令和结果，用包含相关 open PR 的最佳可复现结果作为 SGLang 候选 baseline；不要把未包含这些 open PR 的 main 分支性能直接当作 baseline。
 要求: 启动 Humanize/RLCR loop 时，必须在本地 Codex 会话里启动；远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 loop。启动前仍必须先在本地 cd 到当前任务创建出的工程目录，也就是包含 .humanize 的目录，再启动 loop。
 要求: 每次 benchmark/profile 前必须确认这 4 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
@@ -186,6 +193,7 @@ initial_deployment: SGLang TP=4；MTP 只能在同样 4 卡预算内搜索
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
+要求: 做当前模型 benchmark/profile/patch 前，必须先查询 sgl-project/sglang 和 BBuf/sglang 的 open PR，确认是否已有针对当前 model_id 或同模型家族的性能/正确性优化；如果有，优先在独立分支或临时工作树把这些相关 PR 合入或逐个试跑，记录 PR、commit/patch、命令和结果，用包含相关 open PR 的最佳可复现结果作为 SGLang 候选 baseline；不要把未包含这些 open PR 的 main 分支性能直接当作 baseline。
 要求: 启动 Humanize/RLCR loop 时，必须在本地 Codex 会话里启动；远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 loop。启动前仍必须先在本地 cd 到当前任务创建出的工程目录，也就是包含 .humanize 的目录，再启动 loop。
 要求: 每次 benchmark/profile 前必须确认这 4 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
@@ -210,6 +218,7 @@ initial_deployment: SGLang TP=4；DP/MTP 只能在同样 4 卡预算内搜索
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
+要求: 做当前模型 benchmark/profile/patch 前，必须先查询 sgl-project/sglang 和 BBuf/sglang 的 open PR，确认是否已有针对当前 model_id 或同模型家族的性能/正确性优化；如果有，优先在独立分支或临时工作树把这些相关 PR 合入或逐个试跑，记录 PR、commit/patch、命令和结果，用包含相关 open PR 的最佳可复现结果作为 SGLang 候选 baseline；不要把未包含这些 open PR 的 main 分支性能直接当作 baseline。
 要求: 启动 Humanize/RLCR loop 时，必须在本地 Codex 会话里启动；远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 loop。启动前仍必须先在本地 cd 到当前任务创建出的工程目录，也就是包含 .humanize 的目录，再启动 loop。
 要求: 每次 benchmark/profile 前必须确认这 4 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
@@ -234,6 +243,7 @@ initial_deployment: SGLang TP=4
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
+要求: 做当前模型 benchmark/profile/patch 前，必须先查询 sgl-project/sglang 和 BBuf/sglang 的 open PR，确认是否已有针对当前 model_id 或同模型家族的性能/正确性优化；如果有，优先在独立分支或临时工作树把这些相关 PR 合入或逐个试跑，记录 PR、commit/patch、命令和结果，用包含相关 open PR 的最佳可复现结果作为 SGLang 候选 baseline；不要把未包含这些 open PR 的 main 分支性能直接当作 baseline。
 要求: 启动 Humanize/RLCR loop 时，必须在本地 Codex 会话里启动；远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 loop。启动前仍必须先在本地 cd 到当前任务创建出的工程目录，也就是包含 .humanize 的目录，再启动 loop。
 要求: 每次 benchmark/profile 前必须确认这 4 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
@@ -260,6 +270,7 @@ initial_deployment: SGLang TP=8；DP/EP/MTP 只能在同样 8 卡预算内搜索
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
+要求: 做当前模型 benchmark/profile/patch 前，必须先查询 sgl-project/sglang 和 BBuf/sglang 的 open PR，确认是否已有针对当前 model_id 或同模型家族的性能/正确性优化；如果有，优先在独立分支或临时工作树把这些相关 PR 合入或逐个试跑，记录 PR、commit/patch、命令和结果，用包含相关 open PR 的最佳可复现结果作为 SGLang 候选 baseline；不要把未包含这些 open PR 的 main 分支性能直接当作 baseline。
 要求: 启动 Humanize/RLCR loop 时，必须在本地 Codex 会话里启动；远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 loop。启动前仍必须先在本地 cd 到当前任务创建出的工程目录，也就是包含 .humanize 的目录，再启动 loop。
 要求: 每次 benchmark/profile 前必须确认这 8 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
@@ -284,6 +295,7 @@ initial_deployment: SGLang TP=8；DP/EP/MTP 只能在同样 8 卡预算内搜索
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
+要求: 做当前模型 benchmark/profile/patch 前，必须先查询 sgl-project/sglang 和 BBuf/sglang 的 open PR，确认是否已有针对当前 model_id 或同模型家族的性能/正确性优化；如果有，优先在独立分支或临时工作树把这些相关 PR 合入或逐个试跑，记录 PR、commit/patch、命令和结果，用包含相关 open PR 的最佳可复现结果作为 SGLang 候选 baseline；不要把未包含这些 open PR 的 main 分支性能直接当作 baseline。
 要求: 启动 Humanize/RLCR loop 时，必须在本地 Codex 会话里启动；远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 loop。启动前仍必须先在本地 cd 到当前任务创建出的工程目录，也就是包含 .humanize 的目录，再启动 loop。
 要求: 每次 benchmark/profile 前必须确认这 8 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
@@ -308,6 +320,7 @@ initial_deployment: SGLang TP=8；DP/EP 只能在同样 8 卡预算内搜索
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
+要求: 做当前模型 benchmark/profile/patch 前，必须先查询 sgl-project/sglang 和 BBuf/sglang 的 open PR，确认是否已有针对当前 model_id 或同模型家族的性能/正确性优化；如果有，优先在独立分支或临时工作树把这些相关 PR 合入或逐个试跑，记录 PR、commit/patch、命令和结果，用包含相关 open PR 的最佳可复现结果作为 SGLang 候选 baseline；不要把未包含这些 open PR 的 main 分支性能直接当作 baseline。
 要求: 启动 Humanize/RLCR loop 时，必须在本地 Codex 会话里启动；远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 loop。启动前仍必须先在本地 cd 到当前任务创建出的工程目录，也就是包含 .humanize 的目录，再启动 loop。
 要求: 每次 benchmark/profile 前必须确认这 8 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
@@ -332,6 +345,7 @@ initial_deployment: SGLang TP=8
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
+要求: 做当前模型 benchmark/profile/patch 前，必须先查询 sgl-project/sglang 和 BBuf/sglang 的 open PR，确认是否已有针对当前 model_id 或同模型家族的性能/正确性优化；如果有，优先在独立分支或临时工作树把这些相关 PR 合入或逐个试跑，记录 PR、commit/patch、命令和结果，用包含相关 open PR 的最佳可复现结果作为 SGLang 候选 baseline；不要把未包含这些 open PR 的 main 分支性能直接当作 baseline。
 要求: 启动 Humanize/RLCR loop 时，必须在本地 Codex 会话里启动；远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 loop。启动前仍必须先在本地 cd 到当前任务创建出的工程目录，也就是包含 .humanize 的目录，再启动 loop。
 要求: 每次 benchmark/profile 前必须确认这 8 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
@@ -356,6 +370,7 @@ initial_deployment: SGLang TP=8
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
+要求: 做当前模型 benchmark/profile/patch 前，必须先查询 sgl-project/sglang 和 BBuf/sglang 的 open PR，确认是否已有针对当前 model_id 或同模型家族的性能/正确性优化；如果有，优先在独立分支或临时工作树把这些相关 PR 合入或逐个试跑，记录 PR、commit/patch、命令和结果，用包含相关 open PR 的最佳可复现结果作为 SGLang 候选 baseline；不要把未包含这些 open PR 的 main 分支性能直接当作 baseline。
 要求: 启动 Humanize/RLCR loop 时，必须在本地 Codex 会话里启动；远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 loop。启动前仍必须先在本地 cd 到当前任务创建出的工程目录，也就是包含 .humanize 的目录，再启动 loop。
 要求: 每次 benchmark/profile 前必须确认这 8 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
@@ -380,6 +395,7 @@ initial_deployment: SGLang TP=8；DP 只能在同样 8 卡预算内搜索
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
+要求: 做当前模型 benchmark/profile/patch 前，必须先查询 sgl-project/sglang 和 BBuf/sglang 的 open PR，确认是否已有针对当前 model_id 或同模型家族的性能/正确性优化；如果有，优先在独立分支或临时工作树把这些相关 PR 合入或逐个试跑，记录 PR、commit/patch、命令和结果，用包含相关 open PR 的最佳可复现结果作为 SGLang 候选 baseline；不要把未包含这些 open PR 的 main 分支性能直接当作 baseline。
 要求: 启动 Humanize/RLCR loop 时，必须在本地 Codex 会话里启动；远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 loop。启动前仍必须先在本地 cd 到当前任务创建出的工程目录，也就是包含 .humanize 的目录，再启动 loop。
 要求: 每次 benchmark/profile 前必须确认这 8 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
@@ -404,6 +420,7 @@ initial_deployment: SGLang TP=8；DP/MTP 只能在同样 8 卡预算内搜索
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
+要求: 做当前模型 benchmark/profile/patch 前，必须先查询 sgl-project/sglang 和 BBuf/sglang 的 open PR，确认是否已有针对当前 model_id 或同模型家族的性能/正确性优化；如果有，优先在独立分支或临时工作树把这些相关 PR 合入或逐个试跑，记录 PR、commit/patch、命令和结果，用包含相关 open PR 的最佳可复现结果作为 SGLang 候选 baseline；不要把未包含这些 open PR 的 main 分支性能直接当作 baseline。
 要求: 启动 Humanize/RLCR loop 时，必须在本地 Codex 会话里启动；远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 loop。启动前仍必须先在本地 cd 到当前任务创建出的工程目录，也就是包含 .humanize 的目录，再启动 loop。
 要求: 每次 benchmark/profile 前必须确认这 8 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
@@ -428,6 +445,7 @@ initial_deployment: SGLang TP=8；DP/EP/MTP 只能在同样 8 卡预算内搜索
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
+要求: 做当前模型 benchmark/profile/patch 前，必须先查询 sgl-project/sglang 和 BBuf/sglang 的 open PR，确认是否已有针对当前 model_id 或同模型家族的性能/正确性优化；如果有，优先在独立分支或临时工作树把这些相关 PR 合入或逐个试跑，记录 PR、commit/patch、命令和结果，用包含相关 open PR 的最佳可复现结果作为 SGLang 候选 baseline；不要把未包含这些 open PR 的 main 分支性能直接当作 baseline。
 要求: 启动 Humanize/RLCR loop 时，必须在本地 Codex 会话里启动；远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 loop。启动前仍必须先在本地 cd 到当前任务创建出的工程目录，也就是包含 .humanize 的目录，再启动 loop。
 要求: 每次 benchmark/profile 前必须确认这 8 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
@@ -452,6 +470,7 @@ initial_deployment: SGLang TP=8
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
+要求: 做当前模型 benchmark/profile/patch 前，必须先查询 sgl-project/sglang 和 BBuf/sglang 的 open PR，确认是否已有针对当前 model_id 或同模型家族的性能/正确性优化；如果有，优先在独立分支或临时工作树把这些相关 PR 合入或逐个试跑，记录 PR、commit/patch、命令和结果，用包含相关 open PR 的最佳可复现结果作为 SGLang 候选 baseline；不要把未包含这些 open PR 的 main 分支性能直接当作 baseline。
 要求: 启动 Humanize/RLCR loop 时，必须在本地 Codex 会话里启动；远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 loop。启动前仍必须先在本地 cd 到当前任务创建出的工程目录，也就是包含 .humanize 的目录，再启动 loop。
 要求: 每次 benchmark/profile 前必须确认这 8 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
@@ -476,6 +495,7 @@ initial_deployment: SGLang TP=8, EP=2
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
+要求: 做当前模型 benchmark/profile/patch 前，必须先查询 sgl-project/sglang 和 BBuf/sglang 的 open PR，确认是否已有针对当前 model_id 或同模型家族的性能/正确性优化；如果有，优先在独立分支或临时工作树把这些相关 PR 合入或逐个试跑，记录 PR、commit/patch、命令和结果，用包含相关 open PR 的最佳可复现结果作为 SGLang 候选 baseline；不要把未包含这些 open PR 的 main 分支性能直接当作 baseline。
 要求: 启动 Humanize/RLCR loop 时，必须在本地 Codex 会话里启动；远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 loop。启动前仍必须先在本地 cd 到当前任务创建出的工程目录，也就是包含 .humanize 的目录，再启动 loop。
 要求: 每次 benchmark/profile 前必须确认这 8 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
@@ -500,6 +520,7 @@ initial_deployment: SGLang TP=8, EP=2
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
+要求: 做当前模型 benchmark/profile/patch 前，必须先查询 sgl-project/sglang 和 BBuf/sglang 的 open PR，确认是否已有针对当前 model_id 或同模型家族的性能/正确性优化；如果有，优先在独立分支或临时工作树把这些相关 PR 合入或逐个试跑，记录 PR、commit/patch、命令和结果，用包含相关 open PR 的最佳可复现结果作为 SGLang 候选 baseline；不要把未包含这些 open PR 的 main 分支性能直接当作 baseline。
 要求: 启动 Humanize/RLCR loop 时，必须在本地 Codex 会话里启动；远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 loop。启动前仍必须先在本地 cd 到当前任务创建出的工程目录，也就是包含 .humanize 的目录，再启动 loop。
 要求: 每次 benchmark/profile 前必须确认这 8 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
@@ -524,6 +545,7 @@ initial_deployment: SGLang TP=8, EP=2
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
+要求: 做当前模型 benchmark/profile/patch 前，必须先查询 sgl-project/sglang 和 BBuf/sglang 的 open PR，确认是否已有针对当前 model_id 或同模型家族的性能/正确性优化；如果有，优先在独立分支或临时工作树把这些相关 PR 合入或逐个试跑，记录 PR、commit/patch、命令和结果，用包含相关 open PR 的最佳可复现结果作为 SGLang 候选 baseline；不要把未包含这些 open PR 的 main 分支性能直接当作 baseline。
 要求: 启动 Humanize/RLCR loop 时，必须在本地 Codex 会话里启动；远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 loop。启动前仍必须先在本地 cd 到当前任务创建出的工程目录，也就是包含 .humanize 的目录，再启动 loop。
 要求: 每次 benchmark/profile 前必须确认这 8 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
@@ -548,6 +570,7 @@ initial_deployment: SGLang TP=8
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
+要求: 做当前模型 benchmark/profile/patch 前，必须先查询 sgl-project/sglang 和 BBuf/sglang 的 open PR，确认是否已有针对当前 model_id 或同模型家族的性能/正确性优化；如果有，优先在独立分支或临时工作树把这些相关 PR 合入或逐个试跑，记录 PR、commit/patch、命令和结果，用包含相关 open PR 的最佳可复现结果作为 SGLang 候选 baseline；不要把未包含这些 open PR 的 main 分支性能直接当作 baseline。
 要求: 启动 Humanize/RLCR loop 时，必须在本地 Codex 会话里启动；远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 loop。启动前仍必须先在本地 cd 到当前任务创建出的工程目录，也就是包含 .humanize 的目录，再启动 loop。
 要求: 每次 benchmark/profile 前必须确认这 8 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
