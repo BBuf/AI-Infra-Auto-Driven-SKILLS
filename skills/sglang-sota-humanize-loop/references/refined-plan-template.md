@@ -71,7 +71,7 @@ benchmark/profile revalidation path as other SGLang patches.
     - A patch disables correctness checks, weakens output quality, or changes
       only launch parameters after the winner table is known.
 
-- AC-4: Kernel-level bottlenecks use the model RLCR evidence path
+- AC-4: Kernel-level bottlenecks stay inside the model RLCR loop
   - Positive Tests (expected to PASS):
     - For a specific slow CUDA/Triton/CuTe/CUTLASS/TileLang/torch.compile
       kernel, the profiler evidence shows SGLang is more than 1% behind and the
@@ -120,7 +120,7 @@ benchmark/profile revalidation path as other SGLang patches.
     - The loop stops while SGLang remains more than 1% behind and there is an
       uninvestigated profiler table row with plausible SGLang source impact.
 
-- AC-8: Model-loop continuity is preserved
+- AC-8: Single-loop continuity is preserved
   - Positive Tests (expected to PASS):
     - `humanize/model-loop-checkpoint.md` records the original benchmark
       winners, workload/SLA, SGLang commit, applied patches, current best
@@ -132,6 +132,8 @@ benchmark/profile revalidation path as other SGLang patches.
   - Negative Tests (expected to FAIL):
     - Kernel changes are accepted without updating the checkpoint, ledgers, NCU
       digest links when applicable, and real-model benchmark/profile results.
+    - A second `.humanize/rlcr` session is launched for KernelPilot or any
+      kernel-local subloop instead of keeping the work in the model loop.
 
 ## Path Boundaries
 
