@@ -199,6 +199,12 @@ model-pr-optimization-history/
 ├── scripts/query.py                 # local model/keyword query helper
 ├── sglang/                          # 29 PR-driven SGLang model histories
 └── vllm/                            # 29 PR-driven vLLM model histories
+
+prompts/
+├── sglang-sota-b200-prompts.md       # B200 SGLang SOTA task prompts
+├── sglang-sota-b200-codex-goal-prompts.md
+├── sglang-sota-h200-prompts.md       # H200 SGLang SOTA task prompts
+└── sglang-sota-h200-codex-goal-prompts.md
 ```
 
 ## Related Projects
