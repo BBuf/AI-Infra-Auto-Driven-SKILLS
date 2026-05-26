@@ -25,9 +25,13 @@ class SglangSotaHumanizeLoopDocsTest(unittest.TestCase):
         self.assertIn("Do not replace those scenarios with an easier smoke dataset", text)
         self.assertIn("`trtllm-serve serve --backend pytorch`", text)
 
-    def test_profiler_gate_requires_competitor_profiles_and_three_tables(self) -> None:
+    def test_profiler_gate_lives_inside_rlcr_and_requires_three_tables(self) -> None:
         text = read_skill_file("SKILL.md")
 
+        self.assertIn("Inside Each RLCR Round", text)
+        self.assertIn("Gap Decision", text)
+        self.assertIn("Required Profiling", text)
+        self.assertIn("When SGLang is behind", text)
         self.assertIn("Always profile at least the current best framework", text)
         self.assertIn(
             "If both vLLM and TensorRT-LLM are more than `1%` ahead",
@@ -36,7 +40,7 @@ class SglangSotaHumanizeLoopDocsTest(unittest.TestCase):
         self.assertIn("kernel table", text)
         self.assertIn("overlap-opportunity table", text)
         self.assertIn("fuse-pattern table", text)
-        self.assertIn("Do not patch SGLang until this report exists", text)
+        self.assertIn("Do not patch SGLang until this report exists for the current gap", text)
 
     def test_model_pr_history_knowledge_gate_is_explicit(self) -> None:
         text = read_skill_file("SKILL.md")
@@ -47,10 +51,10 @@ class SglangSotaHumanizeLoopDocsTest(unittest.TestCase):
         self.assertIn("Phase 0.5: Model PR History Knowledge Gate", text)
         self.assertIn("history/model-pr-history-notes.md", text)
         self.assertIn("model-pr-optimization-history", text)
-        self.assertIn("Treat these notes like KernelPilot knowledge", text)
-        self.assertIn("preserving and consulting `history/model-pr-history-notes.md`", text)
+        self.assertIn("Treat these notes as source and PR memory", text)
+        self.assertIn("preserve and consult `history/model-pr-history-notes.md`", text)
         self.assertIn(
-            "AC-2: Required model PR history and profiler evidence exists before patching",
+            "AC-2: Required model PR history evidence exists before Humanize starts",
             template,
         )
         self.assertIn("matching SGLang model history", template)
@@ -58,74 +62,61 @@ class SglangSotaHumanizeLoopDocsTest(unittest.TestCase):
         self.assertIn("model-specific source patch", template)
         self.assertIn("<artifact-root>/history/", template)
 
-    def test_humanize_and_kernel_assist_contract_is_explicit(self) -> None:
+    def test_humanize_and_ncu_kernel_contract_is_explicit(self) -> None:
         text = read_skill_file("SKILL.md")
         template = read_skill_file("references", "refined-plan-template.md")
 
         self.assertIn("setup-rlcr-loop.sh", text)
         self.assertIn(".humanize/sglang-sota-agent/refined-plan.md", text)
         self.assertIn("Kernel Evidence Assist", text)
-        self.assertIn("Single-Loop Kernel Workflow", text)
-        self.assertIn("kernel/kernelpilot-knowledge-notes.md", text)
+        self.assertIn("ncu-report-skill", text)
+        self.assertIn("mit-han-lab/ncu-report-skill", text)
         self.assertIn("kernel/ncu-digests/<version>/", text)
-        self.assertIn("ncu-report", text)
         self.assertIn("humanize/model-loop-checkpoint.md", text)
-        self.assertIn("Do not start KernelPilot's `setup-rlcr-loop.sh`", text)
         self.assertIn("any standalone `.humanize/rlcr` session", text)
-        self.assertIn("knowledge and source-evidence repository", text)
-        self.assertIn("patching SGLang code, not just benchmark parameters", text)
+        self.assertIn("patch SGLang code, not just benchmark parameters", text)
         self.assertIn(
-            "AC-4: Kernel-level bottlenecks stay inside the model RLCR loop",
+            "AC-6: Kernel-level work uses ncu-report-skill inside the same model loop",
             template,
         )
-        self.assertIn("AC-8: Single-loop continuity is preserved", template)
-        self.assertIn("KernelPilot is used only as a knowledge/source-evidence", template)
+        self.assertIn("AC-8: Iteration ledgers and single-loop continuity are preserved", template)
+        self.assertIn("ncu-report-skill", template)
         self.assertIn("second `.humanize/rlcr` session is launched", template)
         self.assertIn("each digest under `kernel/ncu-digests/<version>/`", template)
-        self.assertIn("Eligibility Gate", text)
+        self.assertIn("Eligibility gate", text)
         self.assertIn("at least `1%` cumulative GPU-time share", text)
         self.assertIn("The kernel candidate is patched directly", template)
         self.assertIn("the active model-serving path", template)
         self.assertIn("sub-1% lone", template)
-        self.assertIn("AC-7: Stop criteria are satisfied", template)
-        self.assertNotIn("KernelPilot Handoff", text)
-        self.assertNotIn("sglang-continuation-plan.md", text)
-        self.assertNotIn("Cap the KernelPilot Humanize loop", text)
+        self.assertIn("AC-9: Stop criteria are satisfied", template)
+        self.assertNotIn("KernelPilot", text)
+        self.assertNotIn("KernelPilot", template)
 
-    def test_optional_analysis_gates_are_conditional(self) -> None:
+    def test_layer_pipeline_is_in_loop_and_capacity_compute_are_absent(self) -> None:
         text = read_skill_file("SKILL.md")
         template = read_skill_file("references", "refined-plan-template.md")
         normalized = " ".join(text.split())
         template_normalized = " ".join(template.split())
 
-        self.assertIn("Read these only when the optional analysis gates below trigger", text)
-        self.assertIn("Optional Analysis Gates", text)
-        self.assertIn("Do not run them as a substitute", text)
-
-        self.assertIn("Capacity Gate", text)
-        self.assertIn("../llm-serving-capacity-planner/SKILL.md", text)
-        self.assertIn("analysis/capacity.md", text)
-        self.assertIn("OOM, KV pool exhaustion", text)
-
-        self.assertIn("Layer Pipeline Gate", text)
+        self.assertIn("Layer Pipeline Deep Dive", text)
         self.assertIn("../llm-pipeline-analysis/SKILL.md", text)
         self.assertIn("analysis/layer-pipeline.md", text)
         self.assertIn("Perfetto time range", text)
-
-        self.assertIn("Compute Simulation Gate", text)
-        self.assertIn("../model-compute-simulation/SKILL.md", text)
-        self.assertIn("analysis/compute-simulation.md", text)
-        self.assertIn("shapes, FLOPs, theoretical time, or MFU", text)
-
         self.assertIn(
-            "preserving any optional capacity, layer-pipeline, or compute-simulation reports",
+            "run `llm-pipeline-analysis` inside the loop",
             normalized,
         )
         self.assertIn(
-            "optional capacity/layer-pipeline/compute-simulation reports",
+            "`llm-pipeline-analysis` is run when the three profiler tables are too coarse",
             template_normalized,
         )
-        self.assertIn("analysis/compute-simulation.md", template_normalized)
+        self.assertIn("top hot kernels", template_normalized)
+        self.assertNotIn("llm-serving-capacity-planner", text)
+        self.assertNotIn("model-compute-simulation", text)
+        self.assertNotIn("analysis/capacity.md", text)
+        self.assertNotIn("analysis/compute-simulation.md", text)
+        self.assertNotIn("llm-serving-capacity-planner", template)
+        self.assertNotIn("model-compute-simulation", template)
 
 
 if __name__ == "__main__":

@@ -42,7 +42,7 @@ find it.
 | [`llm-torch-profiler-analysis`](skills/llm-torch-profiler-analysis/) | You need a three-table profiler report that keeps `extend/prefill` and `decode` evidence separate. |
 | [`llm-pipeline-analysis`](skills/llm-pipeline-analysis/) | You need forward-pass, layer, and kernel-level timing from a torch profiler trace, including anchor boundaries and Perfetto ranges. |
 | [`model-compute-simulation`](skills/model-compute-simulation/) | You need operator shapes, FLOPs, MFU estimates, kernel-to-op mapping, or parallelism what-if analysis for an LLM serving shape. |
-| [`sglang-sota-humanize-loop`](skills/sglang-sota-humanize-loop/) | You want the SGLang SOTA workflow to run as one model-level Humanize RLCR loop after the fixed fair benchmark and profiler gate, with KernelPilot knowledge and `ncu-report` as kernel assists only. |
+| [`sglang-sota-humanize-loop`](skills/sglang-sota-humanize-loop/) | You want one model-level Humanize RLCR loop that owns gap decisions, profiler triage, layer-pipeline deep dives, SGLang patches, optional `ncu-report-skill` evidence, and real-model revalidation after the fixed fair benchmark. |
 | [`sglang-prod-incident-triage`](skills/sglang-prod-incident-triage/) | You need to turn queue growth, timeouts, wrong outputs, crashes, or distributed stalls into a replay and next debug step. |
 | [`model-architecture-diagram`](skills/model-architecture-diagram/) | You need original public architecture diagrams for popular LLM, VLM, MoE, OCR, and diffusion model families. |
 
@@ -99,12 +99,13 @@ The repo is opinionated about evidence because performance work gets noisy fast.
   table.
 - SOTA claims should be scoped to the exact model, hardware, framework commits,
   precision, workload, and SLA used in the run.
-- Humanize SGLang SOTA loops should keep the fair benchmark and required
-  profiler evidence outside the patch loop, then use one model-level RLCR loop
-  for SGLang code changes.
-- Kernel-local SGLang fixes inside that loop should cite KernelPilot knowledge
-  pages or PR bundles when they influence code, store NCU digests when counter
-  evidence is needed, and still pass the same real-model benchmark/profile gate.
+- Humanize SGLang SOTA loops should keep only the fixed fair benchmark outside
+  the patch loop; gap decisions, profiler triage, layer-pipeline deep dives,
+  kernel evidence, SGLang code changes, and revalidation all stay inside one
+  model-level RLCR loop.
+- Kernel-local SGLang fixes inside that loop should use `ncu-report-skill` when
+  Nsight Compute counter evidence is needed, store NCU digests, and still pass
+  the same real-model benchmark/profile gate.
 - Incident triage should start from replayable evidence instead of changing code
   from symptoms alone.
 - Model optimization histories should point back to PRs, files, diffs, and risk
