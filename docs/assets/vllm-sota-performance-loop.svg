@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="1420" viewBox="0 0 720 1420" role="img" aria-labelledby="title desc">
+  <title id="title">vLLM SOTA Performance Loop</title>
+  <desc id="desc">A vertical workflow diagram for the vLLM SOTA Humanize loop, with fixed baseline setup followed by one RLCR loop that owns gap decisions, profiling, layer deep dives, patches, NCU evidence, and revalidation.</desc>
+  <defs>
+    <linearGradient id="hero" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </linearGradient>
+    <linearGradient id="green" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#065f46"/>
+      <stop offset="100%" stop-color="#0f766e"/>
+    </linearGradient>
+    <filter id="shadow" x="-8%" y="-8%" width="116%" height="124%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#0f172a" flood-opacity="0.10"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#059669"/>
+    </marker>
+    <style>
+      text { font-family: Arial, Helvetica, sans-serif; }
+      .bg { fill: #f8fafc; }
+      .panel { fill: #ffffff; stroke: #d8e0ea; stroke-width: 1.4; filter: url(#shadow); }
+      .card { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.3; filter: url(#shadow); }
+      .soft { fill: #f8fafc; stroke: #d8e0ea; stroke-width: 1.2; }
+      .blue { fill: #eff6ff; stroke: #3b82f6; stroke-width: 1.4; }
+      .amber { fill: #fff7ed; stroke: #f97316; stroke-width: 1.4; }
+      .purple { fill: #faf5ff; stroke: #a855f7; stroke-width: 1.4; }
+      .mint { fill: #ecfdf5; stroke: #10b981; stroke-width: 1.4; }
+      .rose { fill: #fff1f2; stroke: #f43f5e; stroke-width: 1.4; }
+      .title { font-size: 30px; font-weight: 800; fill: #0f172a; letter-spacing: 0; }
+      .subtitle { font-size: 14px; font-weight: 500; fill: #64748b; }
+      .section { font-size: 12px; font-weight: 800; fill: #475569; letter-spacing: 0.08em; }
+      .label { font-size: 16px; font-weight: 800; fill: #0f172a; letter-spacing: 0; }
+      .small { font-size: 12px; font-weight: 500; fill: #64748b; }
+      .white { fill: #ffffff; }
+      .whiteSub { fill: #dbeafe; }
+      .line { fill: none; stroke: #64748b; stroke-width: 2; marker-end: url(#arrow); }
+      .lineSoft { fill: none; stroke: #94a3b8; stroke-width: 1.5; marker-end: url(#arrow); }
+      .loop { fill: none; stroke: #059669; stroke-width: 2.4; marker-end: url(#arrowGreen); }
+      .dash { fill: none; stroke: #94a3b8; stroke-width: 1.6; stroke-dasharray: 6 7; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect width="720" height="1420" class="bg"/>
+  <rect x="38" y="34" width="644" height="1352" rx="30" fill="#ffffff" stroke="#e2e8f0"/>
+
+  <text x="360" y="86" text-anchor="middle" class="title">vLLM SOTA Performance Loop</text>
+  <text x="360" y="114" text-anchor="middle" class="subtitle">Fixed benchmark first; every decision, profile, patch, and revalidation stays in one RLCR loop.</text>
+
+  <rect x="84" y="152" width="552" height="286" rx="22" class="panel"/>
+  <text x="112" y="188" class="section">FIXED BASELINE OUTSIDE RLCR</text>
+  <rect x="122" y="214" width="476" height="62" rx="14" fill="url(#hero)" filter="url(#shadow)"/>
+  <text x="360" y="239" text-anchor="middle" class="label white">Model SOTA request</text>
+  <text x="360" y="260" text-anchor="middle" class="small whiteSub">model, hardware, precision, workload, SLA</text>
+
+  <path d="M 360 276 L 360 302" class="lineSoft"/>
+  <rect x="122" y="302" width="216" height="62" rx="14" class="purple"/>
+  <text x="230" y="327" text-anchor="middle" class="label">PR history</text>
+  <text x="230" y="347" text-anchor="middle" class="small">model source memory</text>
+  <rect x="382" y="302" width="216" height="62" rx="14" class="blue"/>
+  <text x="490" y="327" text-anchor="middle" class="label">Fair benchmark</text>
+  <text x="490" y="347" text-anchor="middle" class="small">vLLM / SGLang / TRT-LLM</text>
+
+  <path d="M 230 364 C 238 402 304 402 360 402" class="lineSoft"/>
+  <path d="M 490 364 C 482 402 416 402 360 402" class="lineSoft"/>
+  <rect x="170" y="390" width="380" height="48" rx="14" class="soft"/>
+  <text x="360" y="420" text-anchor="middle" class="small">winner table, fixed workload, benchmark artifacts</text>
+
+  <path d="M 360 438 L 360 482" class="line"/>
+
+  <rect x="114" y="482" width="492" height="82" rx="20" class="amber" filter="url(#shadow)"/>
+  <text x="360" y="514" text-anchor="middle" class="label">Start Humanize RLCR</text>
+  <text x="360" y="538" text-anchor="middle" class="small">refined plan owns gap, profiling, patching, and revalidation</text>
+  <path d="M 360 564 L 360 604" class="line"/>
+
+  <rect x="84" y="604" width="552" height="548" rx="22" class="panel"/>
+  <text x="112" y="640" class="section">ONE MODEL-LEVEL RLCR LOOP</text>
+
+  <rect x="126" y="670" width="202" height="64" rx="15" class="mint"/>
+  <text x="227" y="696" text-anchor="middle" class="label">Gap decision</text>
+  <text x="227" y="716" text-anchor="middle" class="small">current vLLM vs winner</text>
+
+  <path d="M 328 702 L 392 702" class="lineSoft"/>
+  <rect x="392" y="670" width="202" height="64" rx="15" class="blue"/>
+  <text x="493" y="696" text-anchor="middle" class="label">Profiler triage</text>
+  <text x="493" y="716" text-anchor="middle" class="small">kernel / overlap / fuse</text>
+
+  <path d="M 493 734 L 493 774" class="line"/>
+  <rect x="392" y="774" width="202" height="64" rx="15" class="purple"/>
+  <text x="493" y="800" text-anchor="middle" class="label">Pipeline analysis</text>
+  <text x="493" y="820" text-anchor="middle" class="small">required layer + kernel drilldown</text>
+
+  <path d="M 392 806 L 328 806" class="lineSoft"/>
+  <rect x="126" y="774" width="202" height="64" rx="15" class="amber"/>
+  <text x="227" y="800" text-anchor="middle" class="label">Patch vLLM</text>
+  <text x="227" y="820" text-anchor="middle" class="small">minimal source change</text>
+
+  <path d="M 227 838 L 227 884" class="line"/>
+  <rect x="126" y="884" width="202" height="64" rx="15" class="mint"/>
+  <text x="227" y="910" text-anchor="middle" class="label">Revalidate</text>
+  <text x="227" y="930" text-anchor="middle" class="small">same real-model workload</text>
+
+  <path d="M 328 916 L 392 916" class="lineSoft"/>
+  <rect x="392" y="884" width="202" height="64" rx="15" class="rose"/>
+  <text x="493" y="910" text-anchor="middle" class="label">Stop hook review</text>
+  <text x="493" y="930" text-anchor="middle" class="small">accept, revise, continue</text>
+
+  <path d="M 493 948 C 594 1025 510 1102 360 1088 C 210 1074 130 1010 227 948" class="loop"/>
+
+  <rect x="392" y="996" width="202" height="104" rx="16" class="soft"/>
+  <text x="493" y="1021" text-anchor="middle" class="section">ON DEMAND</text>
+  <text x="493" y="1050" text-anchor="middle" class="small">ncu-report-skill</text>
+  <text x="493" y="1075" text-anchor="middle" class="small">only for kernel evidence</text>
+  <path d="M 328 806 C 376 842 374 934 392 1014" class="dash"/>
+  <path d="M 392 1080 C 310 1112 214 1034 227 948" class="dash"/>
+
+  <text x="360" y="1130" text-anchor="middle" class="small">All evidence and code changes remain in the same model loop.</text>
+  <path d="M 360 1152 L 360 1194" class="line"/>
+
+  <rect x="84" y="1194" width="552" height="166" rx="22" fill="url(#green)" stroke="#0f766e" filter="url(#shadow)"/>
+  <text x="360" y="1234" text-anchor="middle" class="label white">Final SOTA report</text>
+  <rect x="126" y="1260" width="138" height="54" rx="14" fill="#ecfeff" opacity="0.94"/>
+  <text x="195" y="1282" text-anchor="middle" class="label">Compare</text>
+  <text x="195" y="1301" text-anchor="middle" class="small">before / after</text>
+  <rect x="291" y="1260" width="138" height="54" rx="14" fill="#ecfeff" opacity="0.94"/>
+  <text x="360" y="1282" text-anchor="middle" class="label">Record</text>
+  <text x="360" y="1301" text-anchor="middle" class="small">profiles + digests</text>
+  <rect x="456" y="1260" width="138" height="54" rx="14" fill="#ecfeff" opacity="0.94"/>
+  <text x="525" y="1282" text-anchor="middle" class="label">Ship</text>
+  <text x="525" y="1301" text-anchor="middle" class="small">vLLM patch</text>
+  <text x="360" y="1342" text-anchor="middle" class="small whiteSub">winner commands / changed files / tests / residual risks</text>
+</svg>
