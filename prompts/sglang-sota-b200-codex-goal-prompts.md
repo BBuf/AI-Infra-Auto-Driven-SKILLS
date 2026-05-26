@@ -6,8 +6,7 @@ Codex 线程里。Goal 写法参考
 [在 Codex 中使用 Goals：长时间工作的持久目标](https://github.com/BBuf/how-to-optim-algorithm-in-cuda/blob/master/large-language-model/codex/%E3%80%90%E7%BF%BB%E8%AF%91%E3%80%91%E5%9C%A8%20Codex%20%E4%B8%AD%E4%BD%BF%E7%94%A8%20Goals%EF%BC%9A%E9%95%BF%E6%97%B6%E9%97%B4%E5%B7%A5%E4%BD%9C%E7%9A%84%E6%8C%81%E4%B9%85%E7%9B%AE%E6%A0%87.md)
 里的结果、验证面、约束、边界、迭代策略和阻塞停止条件。
 
-Goal mode 本身就是持久循环。这里不要再启动 `sglang-sota-humanize-loop`、
-Humanize 或 RLCR。流程约束仍尽量贴近原始 B200 SOTA prompt：先完成固定公平
+Goal mode 本身就是持久循环，本文档是独立的 Codex Goal prompt 集合。流程约束仍尽量贴近原始 B200 SOTA prompt：先完成固定公平
 benchmark，再做 profile-driven gap analysis，源码改动前必须做 pipeline
 analysis，真实模型重测，最后用证据支撑 PR。
 
@@ -42,7 +41,7 @@ analysis，真实模型重测，最后用证据支撑 PR。
 
 ### mistralai/Mistral-Small-4-119B-2603
 ```text
-/goal 持续推进 `mistralai/Mistral-Small-4-119B-2603` 在 single-node 1x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 1 张 B200、FP8、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环；不要启动 `sglang-sota-humanize-loop`、Humanize 或 RLCR loop。
+/goal 持续推进 `mistralai/Mistral-Small-4-119B-2603` 在 single-node 1x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 1 张 B200、FP8、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环，所有迭代都在当前 Goal 中推进。
 model_id: mistralai/Mistral-Small-4-119B-2603
 root_dir: /Users/bbuf/工作目录/Common
 target_hardware: single-node 1x NVIDIA B200
@@ -52,7 +51,7 @@ initial_deployment: SGLang TP=1
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
-要求: 使用当前 Codex Goal 作为唯一持久循环；不要启动 sglang-sota-humanize-loop、Humanize 或 RLCR loop。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
+要求: 使用当前 Codex Goal 作为唯一持久循环。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
 要求: 每次 benchmark/profile 前必须确认这 1 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
 要求: 只使用 1 张 B200；不要测试更多卡。
@@ -69,7 +68,7 @@ artifact_root: /Users/bbuf/工作目录/Common/opt_model/b200_mistral_small4_119
 
 ### Qwen/Qwen3-30B-A3B-FP8
 ```text
-/goal 持续推进 `Qwen/Qwen3-30B-A3B-FP8` 在 single-node 1x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 1 张 B200、FP8、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环；不要启动 `sglang-sota-humanize-loop`、Humanize 或 RLCR loop。
+/goal 持续推进 `Qwen/Qwen3-30B-A3B-FP8` 在 single-node 1x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 1 张 B200、FP8、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环，所有迭代都在当前 Goal 中推进。
 model_id: Qwen/Qwen3-30B-A3B-FP8
 root_dir: /Users/bbuf/工作目录/Common
 target_hardware: single-node 1x NVIDIA B200
@@ -79,7 +78,7 @@ initial_deployment: SGLang TP=1
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
-要求: 使用当前 Codex Goal 作为唯一持久循环；不要启动 sglang-sota-humanize-loop、Humanize 或 RLCR loop。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
+要求: 使用当前 Codex Goal 作为唯一持久循环。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
 要求: 每次 benchmark/profile 前必须确认这 1 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
 要求: 只使用 1 张 B200；不要测试更多卡。
@@ -96,7 +95,7 @@ artifact_root: /Users/bbuf/工作目录/Common/opt_model/b200_qwen3_30b_a3b_fp8_
 
 ### google/gemma-4-31B-it
 ```text
-/goal 持续推进 `google/gemma-4-31B-it` 在 single-node 1x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 1 张 B200、BF16、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环；不要启动 `sglang-sota-humanize-loop`、Humanize 或 RLCR loop。
+/goal 持续推进 `google/gemma-4-31B-it` 在 single-node 1x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 1 张 B200、BF16、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环，所有迭代都在当前 Goal 中推进。
 model_id: google/gemma-4-31B-it
 root_dir: /Users/bbuf/工作目录/Common
 target_hardware: single-node 1x NVIDIA B200
@@ -106,7 +105,7 @@ initial_deployment: SGLang TP=1
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
-要求: 使用当前 Codex Goal 作为唯一持久循环；不要启动 sglang-sota-humanize-loop、Humanize 或 RLCR loop。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
+要求: 使用当前 Codex Goal 作为唯一持久循环。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
 要求: 每次 benchmark/profile 前必须确认这 1 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
 要求: 只使用 1 张 B200；不要测试更多卡。
@@ -125,7 +124,7 @@ artifact_root: /Users/bbuf/工作目录/Common/opt_model/b200_gemma4_31b_it_sota
 
 ### Qwen/Qwen3-Next-80B-A3B-Instruct-FP8
 ```text
-/goal 持续推进 `Qwen/Qwen3-Next-80B-A3B-Instruct-FP8` 在 single-node 2x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 2 张 B200、FP8、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环；不要启动 `sglang-sota-humanize-loop`、Humanize 或 RLCR loop。
+/goal 持续推进 `Qwen/Qwen3-Next-80B-A3B-Instruct-FP8` 在 single-node 2x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 2 张 B200、FP8、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环，所有迭代都在当前 Goal 中推进。
 model_id: Qwen/Qwen3-Next-80B-A3B-Instruct-FP8
 root_dir: /Users/bbuf/工作目录/Common
 target_hardware: single-node 2x NVIDIA B200
@@ -135,7 +134,7 @@ initial_deployment: SGLang TP=2
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
-要求: 使用当前 Codex Goal 作为唯一持久循环；不要启动 sglang-sota-humanize-loop、Humanize 或 RLCR loop。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
+要求: 使用当前 Codex Goal 作为唯一持久循环。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
 要求: 每次 benchmark/profile 前必须确认这 2 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
 要求: 只使用 2 张 B200；不要测试 4 卡或 8 卡部署。
@@ -152,7 +151,7 @@ artifact_root: /Users/bbuf/工作目录/Common/opt_model/b200_qwen3_next_80b_a3b
 
 ### Qwen/Qwen3-Next-80B-A3B-Thinking-FP8
 ```text
-/goal 持续推进 `Qwen/Qwen3-Next-80B-A3B-Thinking-FP8` 在 single-node 2x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 2 张 B200、FP8、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环；不要启动 `sglang-sota-humanize-loop`、Humanize 或 RLCR loop。
+/goal 持续推进 `Qwen/Qwen3-Next-80B-A3B-Thinking-FP8` 在 single-node 2x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 2 张 B200、FP8、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环，所有迭代都在当前 Goal 中推进。
 model_id: Qwen/Qwen3-Next-80B-A3B-Thinking-FP8
 root_dir: /Users/bbuf/工作目录/Common
 target_hardware: single-node 2x NVIDIA B200
@@ -162,7 +161,7 @@ initial_deployment: SGLang TP=2
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
-要求: 使用当前 Codex Goal 作为唯一持久循环；不要启动 sglang-sota-humanize-loop、Humanize 或 RLCR loop。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
+要求: 使用当前 Codex Goal 作为唯一持久循环。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
 要求: 每次 benchmark/profile 前必须确认这 2 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
 要求: 只使用 2 张 B200；不要测试 4 卡或 8 卡部署。
@@ -181,7 +180,7 @@ artifact_root: /Users/bbuf/工作目录/Common/opt_model/b200_qwen3_next_80b_a3b
 
 ### nvidia/DeepSeek-V3.2-NVFP4
 ```text
-/goal 持续推进 `nvidia/DeepSeek-V3.2-NVFP4` 在 single-node 4x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 4 张 B200、NVFP4、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环；不要启动 `sglang-sota-humanize-loop`、Humanize 或 RLCR loop。
+/goal 持续推进 `nvidia/DeepSeek-V3.2-NVFP4` 在 single-node 4x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 4 张 B200、NVFP4、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环，所有迭代都在当前 Goal 中推进。
 model_id: nvidia/DeepSeek-V3.2-NVFP4
 root_dir: /Users/bbuf/工作目录/Common
 target_hardware: single-node 4x NVIDIA B200
@@ -191,7 +190,7 @@ initial_deployment: SGLang TP=4；DP/EP/MTP 只能在同样 4 卡预算内搜索
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
-要求: 使用当前 Codex Goal 作为唯一持久循环；不要启动 sglang-sota-humanize-loop、Humanize 或 RLCR loop。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
+要求: 使用当前 Codex Goal 作为唯一持久循环。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
 要求: 每次 benchmark/profile 前必须确认这 4 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
 要求: 只使用 4 张 B200；不要测试 8 卡，除非 4 卡实测 OOM 并记录 artifact。
@@ -208,7 +207,7 @@ artifact_root: /Users/bbuf/工作目录/Common/opt_model/b200_deepseek_v32_nvfp4
 
 ### Qwen/Qwen3.5-397B-A17B-FP8
 ```text
-/goal 持续推进 `Qwen/Qwen3.5-397B-A17B-FP8` 在 single-node 4x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 4 张 B200、FP8、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环；不要启动 `sglang-sota-humanize-loop`、Humanize 或 RLCR loop。
+/goal 持续推进 `Qwen/Qwen3.5-397B-A17B-FP8` 在 single-node 4x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 4 张 B200、FP8、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环，所有迭代都在当前 Goal 中推进。
 model_id: Qwen/Qwen3.5-397B-A17B-FP8
 root_dir: /Users/bbuf/工作目录/Common
 target_hardware: single-node 4x NVIDIA B200
@@ -218,7 +217,7 @@ initial_deployment: SGLang TP=4；MTP 只能在同样 4 卡预算内搜索
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
-要求: 使用当前 Codex Goal 作为唯一持久循环；不要启动 sglang-sota-humanize-loop、Humanize 或 RLCR loop。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
+要求: 使用当前 Codex Goal 作为唯一持久循环。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
 要求: 每次 benchmark/profile 前必须确认这 4 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
 要求: 只使用 4 张 B200；不要测试 8 卡。
@@ -235,7 +234,7 @@ artifact_root: /Users/bbuf/工作目录/Common/opt_model/b200_qwen35_397b_a17b_f
 
 ### nvidia/Qwen3.5-397B-A17B-NVFP4
 ```text
-/goal 持续推进 `nvidia/Qwen3.5-397B-A17B-NVFP4` 在 single-node 4x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 4 张 B200、NVFP4/FP4、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环；不要启动 `sglang-sota-humanize-loop`、Humanize 或 RLCR loop。
+/goal 持续推进 `nvidia/Qwen3.5-397B-A17B-NVFP4` 在 single-node 4x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 4 张 B200、NVFP4/FP4、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环，所有迭代都在当前 Goal 中推进。
 model_id: nvidia/Qwen3.5-397B-A17B-NVFP4
 root_dir: /Users/bbuf/工作目录/Common
 target_hardware: single-node 4x NVIDIA B200
@@ -245,7 +244,7 @@ initial_deployment: SGLang TP=4；MTP 只能在同样 4 卡预算内搜索
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
-要求: 使用当前 Codex Goal 作为唯一持久循环；不要启动 sglang-sota-humanize-loop、Humanize 或 RLCR loop。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
+要求: 使用当前 Codex Goal 作为唯一持久循环。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
 要求: 每次 benchmark/profile 前必须确认这 4 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
 要求: 只使用 4 张 B200；不要测试 8 卡。
@@ -262,7 +261,7 @@ artifact_root: /Users/bbuf/工作目录/Common/opt_model/b200_qwen35_397b_a17b_n
 
 ### nvidia/GLM-5-NVFP4
 ```text
-/goal 持续推进 `nvidia/GLM-5-NVFP4` 在 single-node 4x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 4 张 B200、NVFP4、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环；不要启动 `sglang-sota-humanize-loop`、Humanize 或 RLCR loop。
+/goal 持续推进 `nvidia/GLM-5-NVFP4` 在 single-node 4x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 4 张 B200、NVFP4、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环，所有迭代都在当前 Goal 中推进。
 model_id: nvidia/GLM-5-NVFP4
 root_dir: /Users/bbuf/工作目录/Common
 target_hardware: single-node 4x NVIDIA B200
@@ -272,7 +271,7 @@ initial_deployment: SGLang TP=4；DP/MTP 只能在同样 4 卡预算内搜索
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
-要求: 使用当前 Codex Goal 作为唯一持久循环；不要启动 sglang-sota-humanize-loop、Humanize 或 RLCR loop。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
+要求: 使用当前 Codex Goal 作为唯一持久循环。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
 要求: 每次 benchmark/profile 前必须确认这 4 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
 要求: 只使用 4 张 B200；不要测试 8 卡。
@@ -289,7 +288,7 @@ artifact_root: /Users/bbuf/工作目录/Common/opt_model/b200_glm5_nvfp4_sota_go
 
 ### nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16
 ```text
-/goal 持续推进 `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16` 在 single-node 4x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 4 张 B200、BF16、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环；不要启动 `sglang-sota-humanize-loop`、Humanize 或 RLCR loop。
+/goal 持续推进 `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16` 在 single-node 4x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 4 张 B200、BF16、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环，所有迭代都在当前 Goal 中推进。
 model_id: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16
 root_dir: /Users/bbuf/工作目录/Common
 target_hardware: single-node 4x NVIDIA B200
@@ -299,7 +298,7 @@ initial_deployment: SGLang TP=4
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
-要求: 使用当前 Codex Goal 作为唯一持久循环；不要启动 sglang-sota-humanize-loop、Humanize 或 RLCR loop。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
+要求: 使用当前 Codex Goal 作为唯一持久循环。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
 要求: 每次 benchmark/profile 前必须确认这 4 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
 要求: 只使用 4 张 B200；不要测试 8 卡。
@@ -318,7 +317,7 @@ artifact_root: /Users/bbuf/工作目录/Common/opt_model/b200_nemotron3_super_12
 
 ### deepseek-ai/DeepSeek-V3.2
 ```text
-/goal 持续推进 `deepseek-ai/DeepSeek-V3.2` 在 single-node 8x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 8 张 B200、FP8、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环；不要启动 `sglang-sota-humanize-loop`、Humanize 或 RLCR loop。
+/goal 持续推进 `deepseek-ai/DeepSeek-V3.2` 在 single-node 8x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 8 张 B200、FP8、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环，所有迭代都在当前 Goal 中推进。
 model_id: deepseek-ai/DeepSeek-V3.2
 root_dir: /Users/bbuf/工作目录/Common
 target_hardware: single-node 8x NVIDIA B200
@@ -328,7 +327,7 @@ initial_deployment: SGLang TP=8；DP/EP/MTP 只能在同样 8 卡预算内搜索
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
-要求: 使用当前 Codex Goal 作为唯一持久循环；不要启动 sglang-sota-humanize-loop、Humanize 或 RLCR loop。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
+要求: 使用当前 Codex Goal 作为唯一持久循环。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
 要求: 每次 benchmark/profile 前必须确认这 8 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
 要求: 只使用 8 张 B200；不要测试多机或更多卡。
@@ -345,7 +344,7 @@ artifact_root: /Users/bbuf/工作目录/Common/opt_model/b200_deepseek_v32_fp8_s
 
 ### nvidia/DeepSeek-R1-0528-FP4-v2
 ```text
-/goal 持续推进 `nvidia/DeepSeek-R1-0528-FP4-v2` 在 single-node 8x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 8 张 B200、FP4、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环；不要启动 `sglang-sota-humanize-loop`、Humanize 或 RLCR loop。
+/goal 持续推进 `nvidia/DeepSeek-R1-0528-FP4-v2` 在 single-node 8x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 8 张 B200、FP4、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环，所有迭代都在当前 Goal 中推进。
 model_id: nvidia/DeepSeek-R1-0528-FP4-v2
 root_dir: /Users/bbuf/工作目录/Common
 target_hardware: single-node 8x NVIDIA B200
@@ -355,7 +354,7 @@ initial_deployment: SGLang TP=8；DP/EP/MTP 只能在同样 8 卡预算内搜索
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
-要求: 使用当前 Codex Goal 作为唯一持久循环；不要启动 sglang-sota-humanize-loop、Humanize 或 RLCR loop。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
+要求: 使用当前 Codex Goal 作为唯一持久循环。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
 要求: 每次 benchmark/profile 前必须确认这 8 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
 要求: 只使用 8 张 B200；不要测试多机或更多卡。
@@ -372,7 +371,7 @@ artifact_root: /Users/bbuf/工作目录/Common/opt_model/b200_deepseek_r1_0528_f
 
 ### moonshotai/Kimi-K2-Instruct
 ```text
-/goal 持续推进 `moonshotai/Kimi-K2-Instruct` 在 single-node 8x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 8 张 B200、FP8、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环；不要启动 `sglang-sota-humanize-loop`、Humanize 或 RLCR loop。
+/goal 持续推进 `moonshotai/Kimi-K2-Instruct` 在 single-node 8x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 8 张 B200、FP8、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环，所有迭代都在当前 Goal 中推进。
 model_id: moonshotai/Kimi-K2-Instruct
 root_dir: /Users/bbuf/工作目录/Common
 target_hardware: single-node 8x NVIDIA B200
@@ -382,7 +381,7 @@ initial_deployment: SGLang TP=8；DP/EP 只能在同样 8 卡预算内搜索
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
-要求: 使用当前 Codex Goal 作为唯一持久循环；不要启动 sglang-sota-humanize-loop、Humanize 或 RLCR loop。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
+要求: 使用当前 Codex Goal 作为唯一持久循环。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
 要求: 每次 benchmark/profile 前必须确认这 8 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
 要求: 只使用 8 张 B200；不要测试更多卡。
@@ -399,7 +398,7 @@ artifact_root: /Users/bbuf/工作目录/Common/opt_model/b200_kimi_k2_instruct_s
 
 ### MiniMaxAI/MiniMax-M2.7
 ```text
-/goal 持续推进 `MiniMaxAI/MiniMax-M2.7` 在 single-node 8x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 8 张 B200、FP8、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环；不要启动 `sglang-sota-humanize-loop`、Humanize 或 RLCR loop。
+/goal 持续推进 `MiniMaxAI/MiniMax-M2.7` 在 single-node 8x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 8 张 B200、FP8、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环，所有迭代都在当前 Goal 中推进。
 model_id: MiniMaxAI/MiniMax-M2.7
 root_dir: /Users/bbuf/工作目录/Common
 target_hardware: single-node 8x NVIDIA B200
@@ -409,7 +408,7 @@ initial_deployment: SGLang TP=8
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
-要求: 使用当前 Codex Goal 作为唯一持久循环；不要启动 sglang-sota-humanize-loop、Humanize 或 RLCR loop。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
+要求: 使用当前 Codex Goal 作为唯一持久循环。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
 要求: 每次 benchmark/profile 前必须确认这 8 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
 要求: 只使用 8 张 B200；不要测试更多卡。
@@ -426,7 +425,7 @@ artifact_root: /Users/bbuf/工作目录/Common/opt_model/b200_minimax_m27_sota_g
 
 ### inclusionAI/Ring-2.5-1T
 ```text
-/goal 持续推进 `inclusionAI/Ring-2.5-1T` 在 single-node 8x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 8 张 B200、FP8、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环；不要启动 `sglang-sota-humanize-loop`、Humanize 或 RLCR loop。
+/goal 持续推进 `inclusionAI/Ring-2.5-1T` 在 single-node 8x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 8 张 B200、FP8、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环，所有迭代都在当前 Goal 中推进。
 model_id: inclusionAI/Ring-2.5-1T
 root_dir: /Users/bbuf/工作目录/Common
 target_hardware: single-node 8x NVIDIA B200
@@ -436,7 +435,7 @@ initial_deployment: SGLang TP=8
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
-要求: 使用当前 Codex Goal 作为唯一持久循环；不要启动 sglang-sota-humanize-loop、Humanize 或 RLCR loop。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
+要求: 使用当前 Codex Goal 作为唯一持久循环。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
 要求: 每次 benchmark/profile 前必须确认这 8 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
 要求: 只使用 8 张 B200；不要测试更多卡。
@@ -453,7 +452,7 @@ artifact_root: /Users/bbuf/工作目录/Common/opt_model/b200_ring25_1t_sota_goa
 
 ### deepseek-ai/DeepSeek-Math-V2
 ```text
-/goal 持续推进 `deepseek-ai/DeepSeek-Math-V2` 在 single-node 8x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 8 张 B200、BF16、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环；不要启动 `sglang-sota-humanize-loop`、Humanize 或 RLCR loop。
+/goal 持续推进 `deepseek-ai/DeepSeek-Math-V2` 在 single-node 8x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 8 张 B200、BF16、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环，所有迭代都在当前 Goal 中推进。
 model_id: deepseek-ai/DeepSeek-Math-V2
 root_dir: /Users/bbuf/工作目录/Common
 target_hardware: single-node 8x NVIDIA B200
@@ -463,7 +462,7 @@ initial_deployment: SGLang TP=8；DP 只能在同样 8 卡预算内搜索
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
-要求: 使用当前 Codex Goal 作为唯一持久循环；不要启动 sglang-sota-humanize-loop、Humanize 或 RLCR loop。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
+要求: 使用当前 Codex Goal 作为唯一持久循环。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
 要求: 每次 benchmark/profile 前必须确认这 8 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
 要求: 只使用 8 张 B200；不要测试更多卡。
@@ -480,7 +479,7 @@ artifact_root: /Users/bbuf/工作目录/Common/opt_model/b200_deepseek_math_v2_s
 
 ### zai-org/GLM-5-FP8
 ```text
-/goal 持续推进 `zai-org/GLM-5-FP8` 在 single-node 8x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 8 张 B200、FP8、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环；不要启动 `sglang-sota-humanize-loop`、Humanize 或 RLCR loop。
+/goal 持续推进 `zai-org/GLM-5-FP8` 在 single-node 8x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 8 张 B200、FP8、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环，所有迭代都在当前 Goal 中推进。
 model_id: zai-org/GLM-5-FP8
 root_dir: /Users/bbuf/工作目录/Common
 target_hardware: single-node 8x NVIDIA B200
@@ -490,7 +489,7 @@ initial_deployment: SGLang TP=8；DP/MTP 只能在同样 8 卡预算内搜索
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
-要求: 使用当前 Codex Goal 作为唯一持久循环；不要启动 sglang-sota-humanize-loop、Humanize 或 RLCR loop。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
+要求: 使用当前 Codex Goal 作为唯一持久循环。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
 要求: 每次 benchmark/profile 前必须确认这 8 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
 要求: 只使用 8 张 B200；不要测试更多卡。
@@ -507,7 +506,7 @@ artifact_root: /Users/bbuf/工作目录/Common/opt_model/b200_glm5_fp8_sota_goal
 
 ### zai-org/GLM-4.6-FP8
 ```text
-/goal 持续推进 `zai-org/GLM-4.6-FP8` 在 single-node 8x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 8 张 B200、FP8、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环；不要启动 `sglang-sota-humanize-loop`、Humanize 或 RLCR loop。
+/goal 持续推进 `zai-org/GLM-4.6-FP8` 在 single-node 8x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 8 张 B200、FP8、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环，所有迭代都在当前 Goal 中推进。
 model_id: zai-org/GLM-4.6-FP8
 root_dir: /Users/bbuf/工作目录/Common
 target_hardware: single-node 8x NVIDIA B200
@@ -517,7 +516,7 @@ initial_deployment: SGLang TP=8；DP/EP/MTP 只能在同样 8 卡预算内搜索
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
-要求: 使用当前 Codex Goal 作为唯一持久循环；不要启动 sglang-sota-humanize-loop、Humanize 或 RLCR loop。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
+要求: 使用当前 Codex Goal 作为唯一持久循环。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
 要求: 每次 benchmark/profile 前必须确认这 8 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
 要求: 只使用 8 张 B200；不要测试更多卡。
@@ -534,7 +533,7 @@ artifact_root: /Users/bbuf/工作目录/Common/opt_model/b200_glm46_fp8_sota_goa
 
 ### openai/gpt-oss-120b
 ```text
-/goal 持续推进 `openai/gpt-oss-120b` 在 single-node 8x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 8 张 B200、MXFP4、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环；不要启动 `sglang-sota-humanize-loop`、Humanize 或 RLCR loop。
+/goal 持续推进 `openai/gpt-oss-120b` 在 single-node 8x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 8 张 B200、MXFP4、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环，所有迭代都在当前 Goal 中推进。
 model_id: openai/gpt-oss-120b
 root_dir: /Users/bbuf/工作目录/Common
 target_hardware: single-node 8x NVIDIA B200
@@ -544,7 +543,7 @@ initial_deployment: SGLang TP=8
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
-要求: 使用当前 Codex Goal 作为唯一持久循环；不要启动 sglang-sota-humanize-loop、Humanize 或 RLCR loop。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
+要求: 使用当前 Codex Goal 作为唯一持久循环。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
 要求: 每次 benchmark/profile 前必须确认这 8 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
 要求: 只使用 8 张 B200；不要测试更多卡。
@@ -561,7 +560,7 @@ artifact_root: /Users/bbuf/工作目录/Common/opt_model/b200_gpt_oss_120b_sota_
 
 ### internlm/Intern-S1-FP8
 ```text
-/goal 持续推进 `internlm/Intern-S1-FP8` 在 single-node 8x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 8 张 B200、FP8、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环；不要启动 `sglang-sota-humanize-loop`、Humanize 或 RLCR loop。
+/goal 持续推进 `internlm/Intern-S1-FP8` 在 single-node 8x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 8 张 B200、FP8、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环，所有迭代都在当前 Goal 中推进。
 model_id: internlm/Intern-S1-FP8
 root_dir: /Users/bbuf/工作目录/Common
 target_hardware: single-node 8x NVIDIA B200
@@ -571,7 +570,7 @@ initial_deployment: SGLang TP=8, EP=2
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
-要求: 使用当前 Codex Goal 作为唯一持久循环；不要启动 sglang-sota-humanize-loop、Humanize 或 RLCR loop。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
+要求: 使用当前 Codex Goal 作为唯一持久循环。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
 要求: 每次 benchmark/profile 前必须确认这 8 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
 要求: 只使用 8 张 B200；不要测试更多卡。
@@ -588,7 +587,7 @@ artifact_root: /Users/bbuf/工作目录/Common/opt_model/b200_intern_s1_fp8_sota
 
 ### Qwen/Qwen3-235B-A22B-FP8
 ```text
-/goal 持续推进 `Qwen/Qwen3-235B-A22B-FP8` 在 single-node 8x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 8 张 B200、FP8、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环；不要启动 `sglang-sota-humanize-loop`、Humanize 或 RLCR loop。
+/goal 持续推进 `Qwen/Qwen3-235B-A22B-FP8` 在 single-node 8x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 8 张 B200、FP8、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环，所有迭代都在当前 Goal 中推进。
 model_id: Qwen/Qwen3-235B-A22B-FP8
 root_dir: /Users/bbuf/工作目录/Common
 target_hardware: single-node 8x NVIDIA B200
@@ -598,7 +597,7 @@ initial_deployment: SGLang TP=8, EP=2
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
-要求: 使用当前 Codex Goal 作为唯一持久循环；不要启动 sglang-sota-humanize-loop、Humanize 或 RLCR loop。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
+要求: 使用当前 Codex Goal 作为唯一持久循环。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
 要求: 每次 benchmark/profile 前必须确认这 8 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
 要求: 只使用 8 张 B200；不要测试更多卡。
@@ -615,7 +614,7 @@ artifact_root: /Users/bbuf/工作目录/Common/opt_model/b200_qwen3_235b_a22b_fp
 
 ### Qwen/Qwen3-VL-235B-A22B-Instruct-FP8
 ```text
-/goal 持续推进 `Qwen/Qwen3-VL-235B-A22B-Instruct-FP8` 在 single-node 8x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 8 张 B200、FP8、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环；不要启动 `sglang-sota-humanize-loop`、Humanize 或 RLCR loop。
+/goal 持续推进 `Qwen/Qwen3-VL-235B-A22B-Instruct-FP8` 在 single-node 8x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 8 张 B200、FP8、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环，所有迭代都在当前 Goal 中推进。
 model_id: Qwen/Qwen3-VL-235B-A22B-Instruct-FP8
 root_dir: /Users/bbuf/工作目录/Common
 target_hardware: single-node 8x NVIDIA B200
@@ -625,7 +624,7 @@ initial_deployment: SGLang TP=8, EP=2
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
-要求: 使用当前 Codex Goal 作为唯一持久循环；不要启动 sglang-sota-humanize-loop、Humanize 或 RLCR loop。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
+要求: 使用当前 Codex Goal 作为唯一持久循环。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
 要求: 每次 benchmark/profile 前必须确认这 8 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
 要求: 只使用 8 张 B200；不要测试更多卡。
@@ -642,7 +641,7 @@ artifact_root: /Users/bbuf/工作目录/Common/opt_model/b200_qwen3_vl_235b_a22b
 
 ### meta-llama/Llama-4-Scout-17B-16E-Instruct
 ```text
-/goal 持续推进 `meta-llama/Llama-4-Scout-17B-16E-Instruct` 在 single-node 8x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 8 张 B200、BF16、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环；不要启动 `sglang-sota-humanize-loop`、Humanize 或 RLCR loop。
+/goal 持续推进 `meta-llama/Llama-4-Scout-17B-16E-Instruct` 在 single-node 8x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 8 张 B200、BF16、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环，所有迭代都在当前 Goal 中推进。
 model_id: meta-llama/Llama-4-Scout-17B-16E-Instruct
 root_dir: /Users/bbuf/工作目录/Common
 target_hardware: single-node 8x NVIDIA B200
@@ -652,7 +651,7 @@ initial_deployment: SGLang TP=8
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
 要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
-要求: 使用当前 Codex Goal 作为唯一持久循环；不要启动 sglang-sota-humanize-loop、Humanize 或 RLCR loop。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
+要求: 使用当前 Codex Goal 作为唯一持久循环。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
 要求: 每次 benchmark/profile 前必须确认这 8 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
 要求: 只使用 8 张 B200；不要测试更多卡。
