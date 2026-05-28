@@ -1,0 +1,17 @@
+{
+  "name": "ai-infra-auto-driven-skills",
+  "owner": {
+    "name": "BBuf",
+    "url": "https://github.com/BBuf"
+  },
+  "plugins": [
+    {
+      "name": "ai-infra-skills",
+      "source": "./",
+      "description": "LLM serving benchmarks, capacity planning, torch-profiler triage, pipeline analysis, compute simulation, SGLang/vLLM SOTA Humanize loops, code review, prod incident triage, and PR-history dossiers.",
+      "version": "0.1.0",
+      "category": "ai-infra",
+      "tags": ["sglang", "vllm", "tensorrt-llm", "benchmarks", "profiler", "kernel", "moe", "llm-serving"]
+    }
+  ]
+}

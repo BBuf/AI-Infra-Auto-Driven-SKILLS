@@ -1,0 +1,12 @@
+{
+  "name": "ai-infra-skills",
+  "version": "0.1.0",
+  "description": "Agent-ready playbooks for LLM serving benchmarks, capacity planning, torch-profiler triage, pipeline analysis, compute simulation, SGLang/vLLM SOTA Humanize loops, human code review, production incident triage, and model PR-history dossiers.",
+  "author": {
+    "name": "BBuf",
+    "url": "https://github.com/BBuf"
+  },
+  "homepage": "https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS",
+  "repository": "https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS",
+  "license": "see LICENSE"
+}

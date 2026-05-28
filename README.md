@@ -127,11 +127,27 @@ This repository is not Codex-only. The skills are plain `SKILL.md` directories
 and can be installed into Claude Code, Codex, Kimi, or another compatible agent
 runtime.
 
-### Claude Code
+### Claude Code (one-shot plugin install)
 
-Install only the skills you want into Claude Code's user skill directory. Symlink
-is recommended for local development because updates to this checkout are picked
-up immediately:
+The repository ships a `.claude-plugin/` manifest so the whole skill set can be
+installed as a single Claude Code plugin via the built-in marketplace flow:
+
+```text
+/plugin marketplace add BBuf/AI-Infra-Auto-Driven-SKILLS
+/plugin install ai-infra-skills@ai-infra-auto-driven-skills
+/reload-plugins
+```
+
+After reload, the 11 skills appear namespaced as
+`ai-infra-skills:<skill-name>` (for example
+`ai-infra-skills:sglang-sota-humanize-loop`). Update later with
+`/plugin marketplace update ai-infra-auto-driven-skills`.
+
+### Claude Code (per-skill symlink, legacy)
+
+Prefer this when you only want a subset of the skills, or when developing
+against a local checkout. Symlink is recommended for local development because
+updates to this checkout are picked up immediately:
 
 ```bash
 git clone https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS.git
