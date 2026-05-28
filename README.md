@@ -134,13 +134,13 @@ installed as a single Claude Code plugin via the built-in marketplace flow:
 
 ```text
 /plugin marketplace add BBuf/AI-Infra-Auto-Driven-SKILLS
-/plugin install ai-infra-skills@ai-infra-auto-driven-skills
+/plugin install ai-infra-auto-driven-skills@ai-infra-auto-driven-skills
 /reload-plugins
 ```
 
 After reload, the 11 skills appear namespaced as
-`ai-infra-skills:<skill-name>` (for example
-`ai-infra-skills:sglang-sota-humanize-loop`). Update later with
+`ai-infra-auto-driven-skills:<skill-name>` (for example
+`ai-infra-auto-driven-skills:sglang-sota-humanize-loop`). Update later with
 `/plugin marketplace update ai-infra-auto-driven-skills`.
 
 ### Claude Code (per-skill symlink, legacy)
