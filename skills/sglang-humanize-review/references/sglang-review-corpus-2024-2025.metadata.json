@@ -3,39 +3,47 @@
   "code_languages": [
     [
       "python",
-      8525
+      8150
+    ],
+    [
+      "conversation",
+      5422
+    ],
+    [
+      "review",
+      1961
     ],
     [
       "markdown",
-      747
+      743
     ],
     [
       "rust",
-      391
+      390
     ],
     [
       "cuda",
-      300
+      282
     ],
     [
       "cpp",
-      220
+      213
     ],
     [
       "yaml",
-      189
+      184
     ],
     [
       "notebook",
-      179
+      177
     ],
     [
       "toml",
-      108
+      102
     ],
     [
       "shell",
-      80
+      78
     ],
     [
       "extensionless",
@@ -43,7 +51,7 @@
     ],
     [
       "text",
-      47
+      45
     ],
     [
       "rst",
@@ -52,10 +60,6 @@
     [
       "unknown",
       14
-    ],
-    [
-      "dockerfile",
-      13
     ],
     [
       "json",
@@ -72,6 +76,10 @@
     [
       "proto",
       9
+    ],
+    [
+      "dockerfile",
+      8
     ],
     [
       "npu",
@@ -144,42 +152,70 @@
     [
       "png",
       1
-    ],
-    [
-      "py‎",
-      1
     ]
   ],
   "collection_policy": {
     "agent_reviewers_included": false,
     "comment_text_policy": "Original comment bodies are preserved as UTF-8; no natural-language filter is applied.",
+    "event_window": "Inline comments, PR conversation comments, and review submissions are also capped at end-year 12-31 23:59:59 UTC.",
+    "inline_review_comments": "GitHub pull review comments grouped by in_reply_to_id thread.",
+    "pr_conversation_comments": "Top-level PR conversation comments from GitHub PullRequest comments, grouped by PR.",
     "pull_requests": "PR created_at within inclusive year range; bot and coding-agent PR authors excluded.",
-    "review_comments": "GitHub pull review comments grouped by in_reply_to_id thread."
+    "review_submissions": "Pull request review submission bodies, grouped by PR. Empty approvals are skipped unless the review requested changes."
   },
-  "comment_count": 18266,
+  "comment_count": 39511,
   "comment_language_hints": [
     [
       "en_or_ascii",
-      17748
+      37061
     ],
     [
       "non_ascii_other",
-      492
+      2237
     ],
     [
       "zh_or_cjk",
-      26
+      212
+    ],
+    [
+      "ja",
+      1
     ]
   ],
   "comment_stats": {
-    "agent_reviewer_comments_on_target_prs": 11858,
-    "all_review_comments_seen": 48023,
-    "human_reviewer_comments_on_target_prs": 18266,
-    "threads": 10959
+    "conversation_agent_pr_conversation_comments_on_target_prs": 4937,
+    "conversation_all_pr_conversation_comments_seen": 25732,
+    "conversation_human_pr_conversation_comments_on_target_prs": 19236,
+    "conversation_pr_conversation_comments_after_window_skipped": 1559,
+    "conversation_threads": 5422,
+    "inline_agent_reviewer_comments_on_target_prs": 11760,
+    "inline_all_review_comments_seen": 29332,
+    "inline_human_reviewer_comments_on_target_prs": 17558,
+    "inline_threads": 10531,
+    "submission_agent_review_submissions_on_target_prs": 8243,
+    "submission_all_review_submissions_seen": 28428,
+    "submission_empty_review_submissions_skipped": 16677,
+    "submission_human_review_submissions_on_target_prs": 2717,
+    "submission_review_submissions_after_window_skipped": 791,
+    "submission_threads": 1961
   },
-  "generated_at": "2026-05-20T11:16:22+00:00",
-  "human_reviewer_comment_count": 18266,
-  "max_comments_per_thread": 18,
+  "events_by_kind": [
+    [
+      "pr_conversation",
+      19236
+    ],
+    [
+      "inline_review_comment",
+      17558
+    ],
+    [
+      "review_submission",
+      2717
+    ]
+  ],
+  "generated_at": "2026-06-04T11:31:44+00:00",
+  "human_reviewer_comment_count": 39511,
+  "max_comments_per_thread": 77,
   "pull_request_stats": {
     "excluded_agent_prs": 8,
     "included_human_prs": 11573,
@@ -189,216 +225,252 @@
     "window_prs": 11581
   },
   "repo": "sgl-project/sglang",
-  "schema_version": 1,
+  "review_states": [
+    [
+      "APPROVED",
+      1161
+    ],
+    [
+      "CHANGES_REQUESTED",
+      925
+    ],
+    [
+      "COMMENTED",
+      628
+    ],
+    [
+      "DISMISSED",
+      3
+    ]
+  ],
+  "schema_version": 2,
   "source_years": [
     2024,
     2025
   ],
-  "thread_count": 10959,
+  "thread_count": 17914,
   "threads_by_pr_year": {
-    "2024": 1325,
-    "2025": 9634
+    "2024": 2081,
+    "2025": 15833
   },
+  "threads_by_type": [
+    [
+      "inline_review_thread",
+      10531
+    ],
+    [
+      "pr_conversation",
+      5422
+    ],
+    [
+      "review_submission",
+      1961
+    ]
+  ],
   "top_categories": [
     [
       "models-quant",
-      5478
+      7552
     ],
     [
       "correctness",
-      3483
-    ],
-    [
-      "gpu-kernel",
-      3409
-    ],
-    [
-      "api-compat",
-      3213
+      6582
     ],
     [
       "tests-ci",
-      2566
+      6014
+    ],
+    [
+      "gpu-kernel",
+      4894
+    ],
+    [
+      "api-compat",
+      4200
     ],
     [
       "performance",
-      2419
-    ],
-    [
-      "memory-cache",
-      2250
+      3821
     ],
     [
       "docs-examples",
-      2237
+      3561
+    ],
+    [
+      "memory-cache",
+      3205
     ],
     [
       "style-maintainability",
-      2054
+      2933
     ],
     [
       "build-deps",
-      1766
+      2664
     ],
     [
       "distributed-concurrency",
-      1655
+      2487
     ],
     [
       "observability",
-      1457
+      2083
     ],
     [
       "general-review",
-      491
+      1125
     ]
   ],
   "top_human_reviewers": [
     [
-      "merrymercy",
-      1200
-    ],
-    [
       "zhyncs",
-      1001
+      2687
     ],
     [
-      "fzyzcjy",
-      754
-    ],
-    [
-      "Fridge003",
-      730
+      "merrymercy",
+      2100
     ],
     [
       "zhaochenyang20",
-      654
+      1716
     ],
     [
-      "CatherineSue",
-      601
+      "Fridge003",
+      1531
+    ],
+    [
+      "fzyzcjy",
+      1448
     ],
     [
       "mickqian",
-      509
-    ],
-    [
-      "BBuf",
-      496
-    ],
-    [
-      "yizhang2077",
-      475
+      988
     ],
     [
       "ShangmingCai",
-      377
+      876
     ],
     [
-      "ispobock",
-      358
+      "CatherineSue",
+      862
     ],
     [
-      "mingfeima",
-      355
+      "BBuf",
+      834
     ],
     [
       "JustinTong0323",
-      340
+      811
     ],
     [
       "yuan-luo",
-      327
-    ],
-    [
-      "ch-wan",
-      311
-    ],
-    [
-      "Alcanderian",
-      295
-    ],
-    [
-      "hebiao064",
-      255
-    ],
-    [
-      "HaiShaw",
-      233
-    ],
-    [
-      "slin1237",
-      220
+      770
     ],
     [
       "hnyls2002",
-      218
+      736
     ],
     [
-      "Ying1123",
-      188
+      "yizhang2077",
+      660
     ],
     [
-      "iforgetmyname",
-      180
+      "ispobock",
+      651
     ],
     [
-      "xiezhq-hermann",
-      171
+      "HaiShaw",
+      611
     ],
     [
-      "lifuhuang",
-      142
+      "mingfeima",
+      537
     ],
     [
-      "key4ng",
-      129
+      "ch-wan",
+      509
     ],
     [
-      "ping1jing2",
-      129
+      "Alcanderian",
+      441
     ],
     [
-      "Qiaolin-Yu",
-      122
+      "slin1237",
+      431
     ],
     [
-      "ByronHsu",
-      115
+      "hebiao064",
+      410
     ],
     [
       "b8zhong",
-      115
+      340
+    ],
+    [
+      "xiezhq-hermann",
+      313
+    ],
+    [
+      "FlamingoPg",
+      286
+    ],
+    [
+      "Qiaolin-Yu",
+      286
+    ],
+    [
+      "Ying1123",
+      271
+    ],
+    [
+      "yhyang201",
+      268
+    ],
+    [
+      "ByronHsu",
+      249
+    ],
+    [
+      "iforgetmyname",
+      249
+    ],
+    [
+      "key4ng",
+      230
     ],
     [
       "trevor-m",
-      103
+      222
     ]
   ],
   "top_paths": [
     [
+      "<conversation>",
+      7383
+    ],
+    [
       "python/sglang/srt/server_args.py",
-      340
+      318
     ],
     [
       "python/sglang/srt/models/deepseek_v2.py",
-      252
+      250
     ],
     [
       "python/sglang/srt/managers/scheduler.py",
-      221
+      206
     ],
     [
       "python/sglang/srt/model_executor/model_runner.py",
-      188
+      175
     ],
     [
       "python/sglang/srt/managers/schedule_batch.py",
-      152
+      145
     ],
     [
       "python/sglang/srt/managers/tokenizer_manager.py",
-      127
+      124
     ],
     [
       "python/sglang/srt/utils.py",
@@ -418,11 +490,11 @@
     ],
     [
       "python/pyproject.toml",
-      85
+      80
     ],
     [
       "python/sglang/srt/mem_cache/memory_pool.py",
-      85
+      80
     ],
     [
       "test/srt/run_suite.py",
@@ -433,14 +505,6 @@
       68
     ],
     [
-      "python/sglang/srt/managers/cache_controller.py",
-      66
-    ],
-    [
-      "python/sglang/srt/managers/io_struct.py",
-      65
-    ],
-    [
       "python/sglang/srt/model_executor/cuda_graph_runner.py",
       65
     ],
@@ -449,15 +513,19 @@
       65
     ],
     [
-      "python/sglang/srt/entrypoints/http_server.py",
+      "python/sglang/srt/managers/cache_controller.py",
       63
     ],
     [
-      "python/sglang/srt/layers/moe/fused_moe_triton/layer.py",
+      "python/sglang/srt/managers/io_struct.py",
       62
     ],
     [
       "python/sglang/srt/openai_api/adapter.py",
+      61
+    ],
+    [
+      "python/sglang/srt/layers/moe/fused_moe_triton/layer.py",
       61
     ],
     [
@@ -471,6 +539,10 @@
     [
       "python/sglang/srt/layers/attention/flashattention_backend.py",
       58
+    ],
+    [
+      "python/sglang/srt/entrypoints/http_server.py",
+      57
     ],
     [
       "python/sglang/srt/layers/attention/flashinfer_backend.py",
@@ -489,11 +561,7 @@
       50
     ],
     [
-      "python/sglang/srt/layers/communicator.py",
-      50
-    ],
-    [
-      "python/sglang/srt/model_executor/forward_batch_info.py",
+      "python/sglang/srt/layers/moe/topk.py",
       49
     ]
   ]
