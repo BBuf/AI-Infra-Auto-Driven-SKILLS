@@ -1,5 +1,20 @@
 # sglang GPT-OSS 模型 PR 优化历史
 
+## 2026-06-05 PR 补漏复核
+
+已于 2026-06-05 按 sglang 上游 `origin/main@6cfdc1858` 复核；自上次时效基准（2026-05-19）以来，共有 7 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
+
+| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
+| --- | --- | --- | --- |
+| 2026-06-03 | [#27001](https://github.com/sgl-project/sglang/pull/27001) | [AMD] [CI] Remove hardcoded model/cache paths from MI35x nightly tests | `test_gpt_oss_eval_mi35x.py` |
+| 2026-06-01 | [#26884](https://github.com/sgl-project/sglang/pull/26884) | [AMD] Fix GPT-OSS MXFP4 accuracy on ROCm AITER path | `test_gpt_oss_eval_mi35x.py` |
+| 2026-06-01 | [#25813](https://github.com/sgl-project/sglang/pull/25813) | docs(cookbook): port popular model usage guides into cookbook pages | `GPT-OSS.mdx`, `gpt_oss.mdx` |
+| 2026-05-29 | [#16775](https://github.com/sgl-project/sglang/pull/16775) | [CPU] Add GPT-OSS model optimization for CPU | `gpt_oss.py` |
+| 2026-05-28 | [#26610](https://github.com/sgl-project/sglang/pull/26610) | test/registered: cleanup pure model e2e tests (moves, splits, dedup, kit) | `test_gpt_oss_4gpu.py` |
+| 2026-05-24 | [#26205](https://github.com/sgl-project/sglang/pull/26205) | Clean up server startup log noise | `gpt_oss.py` |
+| 2026-05-20 | [#25831](https://github.com/sgl-project/sglang/pull/25831) | [Test] Stage-a sanity kits; consolidate core/ + models_e2e/ tests | `test_gpt_oss_sm120.py` |
+
+
 ## 2026-05-19 PR 补漏复核
 
 已按 sglang 上游 `origin/main@78cb38ed5` 和 GitHub Pull Request files API 复核；本轮补齐 `#25335` 的时间线与逐 PR diff 审计卡。

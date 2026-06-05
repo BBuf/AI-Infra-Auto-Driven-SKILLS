@@ -1,5 +1,19 @@
 # sglang GLM-5/5.1 模型 PR 优化历史
 
+## 2026-06-05 PR 补漏复核
+
+已于 2026-06-05 按 sglang 上游 `origin/main@6cfdc1858` 复核；自上次时效基准（2026-05-19）以来，共有 6 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
+
+| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
+| --- | --- | --- | --- |
+| 2026-06-03 | [#27001](https://github.com/sgl-project/sglang/pull/27001) | [AMD] [CI] Remove hardcoded model/cache paths from MI35x nightly tests | `test_glm51_eval_mi35x.py`, `test_glm5_eval_mi35x.py`, `test_glm5_mxfp4_eval_mi35x.py`, … (+3) |
+| 2026-06-01 | [#25813](https://github.com/sgl-project/sglang/pull/25813) | docs(cookbook): port popular model usage guides into cookbook pages | `GLM-5.1.mdx`, `GLM-5.mdx` |
+| 2026-05-20 | [#25821](https://github.com/sgl-project/sglang/pull/25821) | [Refactor] Rename NSA → DSA: user-facing aliases, file/class/import rename | `GLM-5.1.mdx`, `GLM-5.mdx`, `glm-5-deployment.jsx`, … (+9) |
+| 2026-05-20 | [#25814](https://github.com/sgl-project/sglang/pull/25814) | Update GLM-5 H200 FP8 | `GLM-5.mdx`, `glm-5-deployment.jsx` |
+| 2026-05-20 | [#25266](https://github.com/sgl-project/sglang/pull/25266) | [AMD][CI] Clean up AMD nightly + pr-test workflows | `test_glm51_eval_amd.py`, `test_glm51_eval_mi35x.py`, `test_glm5_mxfp4_eval_mi35x.py` |
+| 2026-05-19 | [#25735](https://github.com/sgl-project/sglang/pull/25735) | [NPU] [DOCS] Improved the usability of Ascend NPU documents | `ascend_npu_glm5_examples.mdx` |
+
+
 ## 2026-05-19 PR 补漏复核
 
 已按 sglang 上游 `origin/main@78cb38ed5` 和 GitHub Pull Request files API 复核；本轮补齐 `#25453` 的时间线与逐 PR diff 审计卡。

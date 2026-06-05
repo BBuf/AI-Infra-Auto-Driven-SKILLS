@@ -1,5 +1,22 @@
 # sglang InternVL 3.5 Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 9 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-03-15). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-05-22 | [#24751](https://github.com/sgl-project/sglang/pull/24751) | fix(mm): make multimodal data loading non-blocking to prevent health check stalls | `internvl.py` |
+| 2026-05-13 | [#25182](https://github.com/sgl-project/sglang/pull/25182) | chore: add vLLM SPDX copyright headers to ported files | `internvl.py` |
+| 2026-04-25 | [#23568](https://github.com/sgl-project/sglang/pull/23568) | model: support parakeet nemotron encoder | `internvl.py`, `internvl_utils.py` |
+| 2026-04-20 | [#23001](https://github.com/sgl-project/sglang/pull/23001) | Add new Mintlify documentation site (docs_new/) | `InternVL3.5.mdx` |
+| 2026-04-03 | [#21899](https://github.com/sgl-project/sglang/pull/21899) | [VLM] Enable per-image MM splitting by default and remove MULTI_IMAGES modality | `internvl.py` |
+| 2026-04-03 | [#21738](https://github.com/sgl-project/sglang/pull/21738) | refactor: replace mm_inputs dict with MultimodalProcessorOutput | `internvl.py` |
+| 2026-03-30 | [#19749](https://github.com/sgl-project/sglang/pull/19749) | [Feature] Optimizations for JPEG input on NVIDIA GPU | `internvl.py` |
+| 2026-03-18 | [#17784](https://github.com/sgl-project/sglang/pull/17784) | Upgrade transformers==5.3.0 | `internvl.py` |
+| 2026-03-15 | [#20282](https://github.com/sgl-project/sglang/pull/20282) | VLM: add Conv2dLayer/Conv3dLayer to fix PyTorch 2.9.1 CuDNN Conv3d | `internvl.py` |
+
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

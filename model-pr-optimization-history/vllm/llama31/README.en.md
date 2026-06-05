@@ -1,5 +1,16 @@
 # vllm Llama 3.1 Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 3 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-03 | [#44128](https://github.com/vllm-project/vllm/pull/44128) | [Misc] Remove dead VLLM_RPC_TIMEOUT env var and fix profiling doc that references it | `serving-tests-cpu-text.json` |
+| 2026-05-23 | [#43233](https://github.com/vllm-project/vllm/pull/43233) | [Model Runner v2] Force v1 runner for tests | `test_async_tp.py`, `test_sequence_parallel.py` |
+| 2026-05-21 | [#43262](https://github.com/vllm-project/vllm/pull/43262) | update GPU json file based on h200 recipes | `serving-tests.json` |
+
+
 ## 2026-05-19 Coverage Addition
 
 Generated from vllm upstream `origin/main@ef54a4d604`, `git log --name-only -- <model-files>` over model-related paths, and the GitHub Pull Request files API. This page fills the missing `Llama 3.1` history entry found from sgl-cookbook coverage.

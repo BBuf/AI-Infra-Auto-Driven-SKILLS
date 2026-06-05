@@ -1,5 +1,28 @@
 # sglang GLM-4.6/4.7 模型 PR 优化历史
 
+## 2026-06-05 PR 补漏复核
+
+已于 2026-06-05 按 sglang 上游 `origin/main@6cfdc1858` 复核；自上次时效基准（2026-04-22）以来，共有 15 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
+
+| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
+| --- | --- | --- | --- |
+| 2026-06-03 | [#27001](https://github.com/sgl-project/sglang/pull/27001) | [AMD] [CI] Remove hardcoded model/cache paths from MI35x nightly tests | `test_glm47_fp8_eval_mi35x.py` |
+| 2026-06-01 | [#26384](https://github.com/sgl-project/sglang/pull/26384) | [Docs] GLM-4.7 cookbook: add NVIDIA Blackwell (B200, GB200) + NVFP4 sections | `GLM-4.7.mdx` |
+| 2026-06-01 | [#25813](https://github.com/sgl-project/sglang/pull/25813) | docs(cookbook): port popular model usage guides into cookbook pages | `GLM-4.6.mdx`, `GLM-4.6V.mdx`, `GLM-4.7-Flash.mdx`, … (+1) |
+| 2026-05-29 | [#26673](https://github.com/sgl-project/sglang/pull/26673) | [refactor] remove unused op_mlp | `glm4_moe.py`, `glm4_moe_lite.py` |
+| 2026-05-26 | [#26088](https://github.com/sgl-project/sglang/pull/26088) | GLM-4.7-Flash: standalone MLA impl and MLA NextN/MTP | `glm4_moe_lite.py` |
+| 2026-05-20 | [#25821](https://github.com/sgl-project/sglang/pull/25821) | [Refactor] Rename NSA → DSA: user-facing aliases, file/class/import rename | `glm4_moe_lite.py` |
+| 2026-05-19 | [#25825](https://github.com/sgl-project/sglang/pull/25825) | [Refactor] Pass PP start_layer via model constructor instead of forward_batch.token_to_kv_pool | `glm4_moe.py` |
+| 2026-05-19 | [#25524](https://github.com/sgl-project/sglang/pull/25524) | [Bug Fix] Align glm4_moe_nextn NPU MTP loading with qwen3 MTP | `glm4_moe_nextn.py` |
+| 2026-05-18 | [#22822](https://github.com/sgl-project/sglang/pull/22822) | [Refactor] Refactor DeepEP dispatcher | `glm4_moe_nextn.py` |
+| 2026-05-15 | [#25420](https://github.com/sgl-project/sglang/pull/25420) | [CI] Rename basic CI `stage-a/b/c` -> `base-a/b/c` for symmetry with extra CI | `test_glm4_moe_models.py` |
+| 2026-05-13 | [#25197](https://github.com/sgl-project/sglang/pull/25197) | ci: decouple stage and runner for cuda registry | `test_glm4_moe_models.py` |
+| 2026-04-28 | [#22961](https://github.com/sgl-project/sglang/pull/22961) | [NPU] Support GLM-4.5V | `glm4_moe.py` |
+| 2026-04-26 | [#23785](https://github.com/sgl-project/sglang/pull/23785) | chore: update CI test est_time values | `test_glm4_moe_models.py` |
+| 2026-04-26 | [#23748](https://github.com/sgl-project/sglang/pull/23748) | refactor(moe): centralize post-experts all-reduce skip predicate | `glm4_moe.py` |
+| 2026-04-25 | [#23732](https://github.com/sgl-project/sglang/pull/23732) | Apply should_use_dp_reduce_scatterv guard to remaining MoE models (follow-up to #23731) | `glm4_moe.py` |
+
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |

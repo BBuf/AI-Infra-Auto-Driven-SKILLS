@@ -1,5 +1,25 @@
 # sglang Qwen3.5 模型 PR 优化历史
 
+## 2026-06-05 PR 补漏复核
+
+已于 2026-06-05 按 sglang 上游 `origin/main@6cfdc1858` 复核；自上次时效基准（2026-05-19）以来，共有 12 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
+
+| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
+| --- | --- | --- | --- |
+| 2026-06-05 | [#25885](https://github.com/sgl-project/sglang/pull/25885) | [AMD] Support alt stream for Qwen3.5 on AMD platform | `qwen3_5.py` |
+| 2026-06-04 | [#27296](https://github.com/sgl-project/sglang/pull/27296) | Add --enable-symm-mem for Qwen3.5 | `Qwen3.5.mdx`, `qwen35-deployment.jsx` |
+| 2026-06-03 | [#27001](https://github.com/sgl-project/sglang/pull/27001) | [AMD] [CI] Remove hardcoded model/cache paths from MI35x nightly tests | `test_qwen35_fp8_perf_mi35x.py` |
+| 2026-06-01 | [#25813](https://github.com/sgl-project/sglang/pull/25813) | docs(cookbook): port popular model usage guides into cookbook pages | `Qwen3.5.mdx`, `qwen3_5.mdx` |
+| 2026-05-30 | [#26389](https://github.com/sgl-project/sglang/pull/26389) | 【NPU】【bugfix】fix server error when mtp unquant | `qwen3_5_mtp.py` |
+| 2026-05-29 | [#26695](https://github.com/sgl-project/sglang/pull/26695) | [docs] Qwen3.5 cookbook: multi-node, MTP TP overrides, dense mamba flag | `Qwen3.5.mdx`, `qwen35-deployment.jsx` |
+| 2026-05-28 | [#26610](https://github.com/sgl-project/sglang/pull/26610) | test/registered: cleanup pure model e2e tests (moves, splits, dedup, kit) | `test_qwen35_fp4_mtp_v2.py`, `test_qwen35_hicache.py`, `test_qwen35_models.py` |
+| 2026-05-23 | [#26069](https://github.com/sgl-project/sglang/pull/26069) | [NPU]Ascend NPU Performance Profiling Guide and Ascend NPU Operator Development Guide | `ascend_npu_qwen3_5_examples.mdx` |
+| 2026-05-20 | [#23925](https://github.com/sgl-project/sglang/pull/23925) | [NPU]use triton split_qkvgate_gemma_rmsnorm_rope for Qwen3.5 and Qwen3_next | `qwen3_5.py` |
+| 2026-05-19 | [#25735](https://github.com/sgl-project/sglang/pull/25735) | [NPU] [DOCS] Improved the usability of Ascend NPU documents | `ascend_npu_qwen3_5_examples.mdx` |
+| 2026-05-19 | [#25401](https://github.com/sgl-project/sglang/pull/25401) | Add output_gate_type to Qwen3NextConfig and update models to utilize it | `qwen3_5.py` |
+| 2026-05-19 | [#23331](https://github.com/sgl-project/sglang/pull/23331) | [BugFix] Resolve adaptive speculative decoding conflicts for Qwen3.5 (hybrid GDN) | `qwen3_5_mtp.py` |
+
+
 ## 2026-05-19 PR 补漏复核
 
 已按 sglang 上游 `origin/main@78cb38ed5` 和 GitHub Pull Request files API 复核；本轮补齐 `#21668`, `#24906` 的时间线与逐 PR diff 审计卡。

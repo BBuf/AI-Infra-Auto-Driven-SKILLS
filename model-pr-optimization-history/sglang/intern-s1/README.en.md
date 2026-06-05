@@ -1,5 +1,16 @@
 # sglang Intern-S1 Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 3 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-02-04). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-05-22 | [#24751](https://github.com/sgl-project/sglang/pull/24751) | fix(mm): make multimodal data loading non-blocking to prevent health check stalls | `interns1pro.py` |
+| 2026-04-20 | [#23001](https://github.com/sgl-project/sglang/pull/23001) | Add new Mintlify documentation site (docs_new/) | `Intern-S1.mdx` |
+| 2026-04-03 | [#21738](https://github.com/sgl-project/sglang/pull/21738) | refactor: replace mm_inputs dict with MultimodalProcessorOutput | `interns1pro.py` |
+
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

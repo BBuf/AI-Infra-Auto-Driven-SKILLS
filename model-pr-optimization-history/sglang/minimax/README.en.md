@@ -1,5 +1,23 @@
 # sglang MiniMax M2 Series Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 10 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-04-30). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-03 | [#27001](https://github.com/sgl-project/sglang/pull/27001) | [AMD] [CI] Remove hardcoded model/cache paths from MI35x nightly tests | `test_minimax_m25_eval_mi35x.py`, `test_minimax_m27_eval_mi35x.py`, `test_minimax_m25_perf_mi35x.py`, … (+1) |
+| 2026-06-01 | [#26714](https://github.com/sgl-project/sglang/pull/26714) | fix test cases failed in nightly pipeline | `test_ascend_minimax_m2.py` |
+| 2026-06-01 | [#25813](https://github.com/sgl-project/sglang/pull/25813) | docs(cookbook): port popular model usage guides into cookbook pages | `MiniMax-M2.mdx`, `minimax_m2.mdx` |
+| 2026-05-29 | [#26673](https://github.com/sgl-project/sglang/pull/26673) | [refactor] remove unused op_mlp | `minimax_m2.py` |
+| 2026-05-28 | [#26610](https://github.com/sgl-project/sglang/pull/26610) | test/registered: cleanup pure model e2e tests (moves, splits, dedup, kit) | `test_minimax_m25_basic.py` |
+| 2026-05-28 | [#25061](https://github.com/sgl-project/sglang/pull/25061) | Fix MiniMax-M2.7 on CPU | `minimax_m2.py` |
+| 2026-05-18 | [#25684](https://github.com/sgl-project/sglang/pull/25684) | [CI] Enable weight prefetch for 8-gpu-h200 basic tests | `test_minimax_m25_basic.py` |
+| 2026-05-15 | [#25420](https://github.com/sgl-project/sglang/pull/25420) | [CI] Rename basic CI `stage-a/b/c` -> `base-a/b/c` for symmetry with extra CI | `test_minimax_m25_basic.py` |
+| 2026-05-13 | [#25236](https://github.com/sgl-project/sglang/pull/25236) | ci: H200 conditional split + dsv4 est_time recalibration (h200 partition 6→2) | `test_minimax_m25_basic.py` |
+| 2026-05-13 | [#25197](https://github.com/sgl-project/sglang/pull/25197) | ci: decouple stage and runner for cuda registry | `test_minimax_m25_basic.py` |
+
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

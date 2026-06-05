@@ -1,5 +1,18 @@
 # vllm GLM VLM/OCR Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 5 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-03-26). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-05 | [#43167](https://github.com/vllm-project/vllm/pull/43167) | Remove KV cache scale boilerplate from model weight loading methods | `glm_ocr_mtp.py` |
+| 2026-05-29 | [#43575](https://github.com/vllm-project/vllm/pull/43575) | [feat] add GlmgaProcessor specific logits in `glm4_1v.py` | `glm4_1v.py` |
+| 2026-05-19 | [#42347](https://github.com/vllm-project/vllm/pull/42347) | [Perf][4/n] Eliminate various GPU<->CPU syncs | `glm4_1v.py` |
+| 2026-04-21 | [#39986](https://github.com/vllm-project/vllm/pull/39986) | [Multimodal] Add PyAV video backend for concurrent video decoding | `test_glm4_1v.py` |
+| 2026-03-25 | [#35182](https://github.com/vllm-project/vllm/pull/35182) | [Misc] Reorganize inputs | `glm4_1v.py`, `glm4v.py` |
+
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

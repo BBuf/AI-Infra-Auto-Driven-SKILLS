@@ -1,5 +1,17 @@
 # vllm Kimi K2/K2.5/Linear/VL 模型 PR 优化历史
 
+## 2026-06-05 PR 补漏复核
+
+已于 2026-06-05 按 vllm 上游 `origin/main@c66b19800` 复核；自上次时效基准（2026-05-19）以来，共有 4 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
+
+| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
+| --- | --- | --- | --- |
+| 2026-06-04 | [#44539](https://github.com/vllm-project/vllm/pull/44539) | [mamba] unify KDA conv states into one cache to match 2-state SSM layout | `kimi_linear.py` |
+| 2026-06-04 | [#44493](https://github.com/vllm-project/vllm/pull/44493) | Fix Kimi-K2.5 FlashInfer ViT metadata | `kimi_k25.py`, `kimi_k25_vit.py` |
+| 2026-05-29 | [#43857](https://github.com/vllm-project/vllm/pull/43857) | Add vLLM library info to Hugging Face Hub requests | `kimi_audio.py` |
+| 2026-05-22 | [#41126](https://github.com/vllm-project/vllm/pull/41126) | [Attention] Mamba attention module refactor | `kimi_linear.py` |
+
+
 ## 2026-05-19 PR 补漏复核
 
 已按 vllm 上游 `origin/main@07beaed84` 和 GitHub Pull Request files API 复核；本轮补齐 `#41068`, `#41778`, `#42081`, `#42869` 的时间线与逐 PR diff 审计卡。

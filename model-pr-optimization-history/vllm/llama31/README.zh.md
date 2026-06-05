@@ -1,5 +1,16 @@
 # vllm Llama 3.1 模型 PR 优化历史
 
+## 2026-06-05 PR 补漏复核
+
+已于 2026-06-05 按 vllm 上游 `origin/main@c66b19800` 复核；自上次时效基准（2026-05-19）以来，共有 3 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
+
+| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
+| --- | --- | --- | --- |
+| 2026-06-03 | [#44128](https://github.com/vllm-project/vllm/pull/44128) | [Misc] Remove dead VLLM_RPC_TIMEOUT env var and fix profiling doc that references it | `serving-tests-cpu-text.json` |
+| 2026-05-23 | [#43233](https://github.com/vllm-project/vllm/pull/43233) | [Model Runner v2] Force v1 runner for tests | `test_async_tp.py`, `test_sequence_parallel.py` |
+| 2026-05-21 | [#43262](https://github.com/vllm-project/vllm/pull/43262) | update GPU json file based on h200 recipes | `serving-tests.json` |
+
+
 ## 2026-05-19 新增覆盖
 
 按 vllm 上游 `origin/main@ef54a4d604`、模型相关文件的 `git log --name-only -- <model-files>` 以及 GitHub Pull Request files API 生成。本页用于补齐 sgl-cookbook 中 `Llama 3.1` 缺失的历史 PR 优化文档。

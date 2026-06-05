@@ -1,5 +1,29 @@
 # sglang Qwen3 Coder Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 16 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-04-01). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-03 | [#27001](https://github.com/sgl-project/sglang/pull/27001) | [AMD] [CI] Remove hardcoded model/cache paths from MI35x nightly tests | `test_qwen3_coder_next_eval_mi35x.py` |
+| 2026-06-01 | [#24435](https://github.com/sgl-project/sglang/pull/24435) | Update Qwen3-Coder docs_new NVIDIA guidance | `Qwen3-Coder.mdx`, `qwen3-coder-deployment.jsx` |
+| 2026-05-31 | [#26798](https://github.com/sgl-project/sglang/pull/26798) | Make qwen3's set_embed_and_head idempotent | `qwen3.py` |
+| 2026-05-21 | [#25983](https://github.com/sgl-project/sglang/pull/25983) | feat(model_runner): remove pool/backend refs from ForwardBatch via ForwardContext | `qwen3.py` |
+| 2026-05-19 | [#25825](https://github.com/sgl-project/sglang/pull/25825) | [Refactor] Pass PP start_layer via model constructor instead of forward_batch.token_to_kv_pool | `qwen3.py` |
+| 2026-05-04 | [#21722](https://github.com/sgl-project/sglang/pull/21722) | feat: use structural tags to enable strict tool calling and reasoning for more models | `qwen3_coder_detector.py` |
+| 2026-05-02 | [#20520](https://github.com/sgl-project/sglang/pull/20520) | [NPU]TP Communications compression For Qwen3 models for NPU | `qwen3.py` |
+| 2026-04-26 | [#19484](https://github.com/sgl-project/sglang/pull/19484) | [CPU] Add Qwen3.5 model optimization for CPU | `test_qwen3.py` |
+| 2026-04-21 | [#23337](https://github.com/sgl-project/sglang/pull/23337) | [Docs] Sync docs_new with legacy docs and update migration redirects | `Qwen3-Coder-Next.mdx`, `Qwen3-Coder.mdx` |
+| 2026-04-20 | [#23001](https://github.com/sgl-project/sglang/pull/23001) | Add new Mintlify documentation site (docs_new/) | `Qwen3-Coder-Next.mdx`, `Qwen3-Coder.mdx`, `qwen3-coder-480b-a35b-deployment.jsx`, … (+2) |
+| 2026-04-13 | [#22739](https://github.com/sgl-project/sglang/pull/22739) | Restore Qwen3 rope config fallback | `qwen3.py` |
+| 2026-04-09 | [#22358](https://github.com/sgl-project/sglang/pull/22358) | Enable DFLASH support for additional model backends | `qwen3.py` |
+| 2026-04-05 | [#22140](https://github.com/sgl-project/sglang/pull/22140) | [Fix] Fix nightly tests | `test_lora_qwen3.py` |
+| 2026-04-01 | [#21463](https://github.com/sgl-project/sglang/pull/21463) | Migrate all callers from /get_server_info to /server_info | `test_qwen3_coder_next_8gpu.py` |
+| 2026-03-31 | [#21818](https://github.com/sgl-project/sglang/pull/21818) | [CI] Fix lint that was not applied in #21458 | `qwen3.py` |
+| 2026-03-31 | [#21458](https://github.com/sgl-project/sglang/pull/21458) | [AMD] Optimize Qwen3-VL decode - fuse QK-norm + 3D mRoPE + KV cache write | `qwen3.py` |
+
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

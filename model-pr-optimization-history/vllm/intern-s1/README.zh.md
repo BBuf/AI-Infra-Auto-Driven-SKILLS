@@ -1,5 +1,28 @@
 # vllm Intern-S1 模型 PR 优化历史
 
+## 2026-06-05 PR 补漏复核
+
+已于 2026-06-05 按 vllm 上游 `origin/main@c66b19800` 复核；自上次时效基准（2026-02-04）以来，共有 15 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
+
+| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
+| --- | --- | --- | --- |
+| 2026-05-26 | [#38278](https://github.com/vllm-project/vllm/pull/38278) | [Model] Use AutoWeightsLoader for InternLM2 | `internlm2.py` |
+| 2026-04-23 | [#40671](https://github.com/vllm-project/vllm/pull/40671) | [MoE Refactor] Rename FusedMoE.make_expert_params_mapping to fused_moe_make_expert_params_mapping | `interns1_pro.py` |
+| 2026-04-20 | [#35949](https://github.com/vllm-project/vllm/pull/35949) | [MoE Refactor] Move the shared/fused expert output sum into MoERunnerBase | `interns1_pro.py` |
+| 2026-03-31 | [#38264](https://github.com/vllm-project/vllm/pull/38264) | [Mypy] Fix adjust_request typing | `internlm2_tool_parser.py` |
+| 2026-03-31 | [#38189](https://github.com/vllm-project/vllm/pull/38189) | [Tool Parser][2/3] Use self.tools instead of request.tools in tool parsers | `internlm2_tool_parser.py` |
+| 2026-03-26 | [#38029](https://github.com/vllm-project/vllm/pull/38029) | [Tool Parser][1/3] Pass tools to ToolParser constructor | `internlm2_tool_parser.py` |
+| 2026-03-25 | [#35182](https://github.com/vllm-project/vllm/pull/35182) | [Misc] Reorganize inputs | `interns1.py` |
+| 2026-03-19 | [#37545](https://github.com/vllm-project/vllm/pull/37545) | [Model] Remove unnecessary `get_language_model` | `interns1_pro.py` |
+| 2026-03-16 | [#27599](https://github.com/vllm-project/vllm/pull/27599) | [CI/Build] Add common tool call parser test suite | `test_internlm2_tool_parser.py` |
+| 2026-03-08 | [#34858](https://github.com/vllm-project/vllm/pull/34858) | Increase Flexibility for OOV Multimodal Token Handling | `interns1.py` |
+| 2026-02-22 | [#35025](https://github.com/vllm-project/vllm/pull/35025) | [Refactor] Simplify dummy data generation | `interns1.py` |
+| 2026-02-15 | [#34585](https://github.com/vllm-project/vllm/pull/34585) | [CI/Build] Enable tests for recent day-0 new models | `interns1_pro.py` |
+| 2026-02-12 | [#34358](https://github.com/vllm-project/vllm/pull/34358) | [Bugfix] Standardize getting number of image patches/tokens | `interns1.py` |
+| 2026-02-11 | [#34330](https://github.com/vllm-project/vllm/pull/34330) | [Multimodal] Expose `mm_processor_kwargs` for `DummyInputsBuilder` | `interns1.py` |
+| 2026-02-04 | [#33750](https://github.com/vllm-project/vllm/pull/33750) | [MM] Align the prefix of MMEncoderAttention with Attention | `interns1_vit.py` |
+
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |

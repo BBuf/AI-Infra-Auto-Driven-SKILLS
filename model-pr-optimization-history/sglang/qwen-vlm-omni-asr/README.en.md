@@ -1,5 +1,32 @@
 # sglang Qwen VLM/Omni/ASR Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 19 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-04-28). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-04 | [#27240](https://github.com/sgl-project/sglang/pull/27240) | [Docs] re-organize nemotron cookbook | `Nemotron3-Nano-Omni.mdx` |
+| 2026-06-03 | [#25198](https://github.com/sgl-project/sglang/pull/25198) | [Docs] Update Nemotron3-Nano-Omni cookbook to reflect new model paths | `Nemotron3-Nano-Omni.mdx`, `nemotron3-nano-omni-deployment.jsx` |
+| 2026-06-01 | [#25813](https://github.com/sgl-project/sglang/pull/25813) | docs(cookbook): port popular model usage guides into cookbook pages | `qwen3_vl.mdx` |
+| 2026-05-25 | [#26094](https://github.com/sgl-project/sglang/pull/26094) | [VLM] fix: fix only the grids from last split mm item is collected for qwen-vl | `qwen_vl.py` |
+| 2026-05-24 | [#26167](https://github.com/sgl-project/sglang/pull/26167) | [VLM] feat: replace small H2D calls with a single one for qwen-vl | `qwen3_vl.py`, `qwen_vl.py` |
+| 2026-05-24 | [#26101](https://github.com/sgl-project/sglang/pull/26101) | [VLM] accept precomputed multimodal metadata | `qwen_vl.py` |
+| 2026-05-24 | [#26100](https://github.com/sgl-project/sglang/pull/26100) | [VLM] adopt simplified get_rope_index for image-only requests | `qwen_vl.py` |
+| 2026-05-23 | [#26116](https://github.com/sgl-project/sglang/pull/26116) | [VLM] reuse pretokenized ids from preprocessed input for qwen-vl | `qwen_vl.py` |
+| 2026-05-23 | [#24144](https://github.com/sgl-project/sglang/pull/24144) | [BugFix][EPD] adapt for qwen3.5-mtp & del duplicated logs | `qwen_vl.py` |
+| 2026-05-22 | [#24751](https://github.com/sgl-project/sglang/pull/24751) | fix(mm): make multimodal data loading non-blocking to prevent health check stalls | `glmasr.py`, `qwen3_asr.py`, `qwen_vl.py` |
+| 2026-05-21 | [#25759](https://github.com/sgl-project/sglang/pull/25759) | [BugFix][EPD]Fix Qwen3VLMoe encoder-only AttributeError | `qwen3_vl_moe.py` |
+| 2026-05-15 | [#25420](https://github.com/sgl-project/sglang/pull/25420) | [CI] Rename basic CI `stage-a/b/c` -> `base-a/b/c` for symmetry with extra CI | `test_lora_qwen3_vl_30b_a3b_instruct_logprob_diff.py` |
+| 2026-05-14 | [#25130](https://github.com/sgl-project/sglang/pull/25130) | [NPU]Bugfix:Set default values for npu_wrapper_preprocess parameters | `qwen_vl_processor.py` |
+| 2026-05-13 | [#25203](https://github.com/sgl-project/sglang/pull/25203) | ci: B200 conditional split + LPT_SLOP removal (stage-c partition 8→3) | `test_lora_qwen3_vl_30b_a3b_instruct_logprob_diff.py` |
+| 2026-05-13 | [#25197](https://github.com/sgl-project/sglang/pull/25197) | ci: decouple stage and runner for cuda registry | `test_lora_qwen3_vl_30b_a3b_instruct_logprob_diff.py` |
+| 2026-05-12 | [#24187](https://github.com/sgl-project/sglang/pull/24187) | [Fix] Qwen3-ASR config: set thinker_config before super().__init__ | `qwen3_asr.py` |
+| 2026-05-10 | [#24875](https://github.com/sgl-project/sglang/pull/24875) | Support Intern-S2-Preview | `qwen_vl.py` |
+| 2026-05-05 | [#23998](https://github.com/sgl-project/sglang/pull/23998) | update Nemotron3 Nano Omni cookbook benchmarks | `Nemotron3-Nano-Omni.mdx` |
+| 2026-04-30 | [#24163](https://github.com/sgl-project/sglang/pull/24163) | Revert "[ci] split stage-c-test-4-gpu-b200 to enable a low-disk runner pool" | `test_lora_qwen3_vl_30b_a3b_instruct_logprob_diff.py` |
+
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

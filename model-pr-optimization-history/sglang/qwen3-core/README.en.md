@@ -1,5 +1,22 @@
 # sglang Qwen3 Core Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 9 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-04-29). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-01 | [#25813](https://github.com/sgl-project/sglang/pull/25813) | docs(cookbook): port popular model usage guides into cookbook pages | `qwen3.mdx` |
+| 2026-05-31 | [#26798](https://github.com/sgl-project/sglang/pull/26798) | Make qwen3's set_embed_and_head idempotent | `qwen3.py` |
+| 2026-05-29 | [#26673](https://github.com/sgl-project/sglang/pull/26673) | [refactor] remove unused op_mlp | `qwen3_moe.py` |
+| 2026-05-29 | [#26468](https://github.com/sgl-project/sglang/pull/26468) | [Model] Add Qwen3-MoE MTP | `qwen3_moe.py` |
+| 2026-05-27 | [#23269](https://github.com/sgl-project/sglang/pull/23269) | Support batch size > 1 when enable CP | `qwen3_moe.py` |
+| 2026-05-26 | [#25971](https://github.com/sgl-project/sglang/pull/25971) | [CPU Doc]Add Xeon CPU info in Qwen3 Cookbook | `Qwen3.mdx`, `qwen3-deployment.jsx` |
+| 2026-05-23 | [#23292](https://github.com/sgl-project/sglang/pull/23292) | [CP] 1/N: Support MLA Prefill Context Parallel | `qwen3_moe.py` |
+| 2026-05-21 | [#25983](https://github.com/sgl-project/sglang/pull/25983) | feat(model_runner): remove pool/backend refs from ForwardBatch via ForwardContext | `qwen3.py` |
+| 2026-05-19 | [#25825](https://github.com/sgl-project/sglang/pull/25825) | [Refactor] Pass PP start_layer via model constructor instead of forward_batch.token_to_kv_pool | `qwen3.py`, `qwen3_moe.py` |
+
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

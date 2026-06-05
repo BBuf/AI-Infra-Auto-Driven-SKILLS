@@ -1,5 +1,10 @@
 # sglang LLaDA 2.1 模型 PR 优化历史
 
+## 2026-06-05 PR 补漏复核
+
+已于 2026-06-05 按 sglang 上游 `origin/main@6cfdc1858` 复核；自上次时效基准（2026-05-19）以来，没有新的带 PR 编号的合并改动到所跟踪的实现文件，上方覆盖信息保持最新。
+
+
 ## 2026-05-19 新增覆盖
 
 按 sglang 上游 `origin/main@5073c82a37`、模型相关文件的 `git log --name-only -- <model-files>` 以及 GitHub Pull Request files API 生成。本页用于补齐 sgl-cookbook 中 `LLaDA 2.1` 缺失的历史 PR 优化文档。

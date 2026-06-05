@@ -1,5 +1,56 @@
 # vllm DeepSeek V3.1 模型 PR 优化历史
 
+## 2026-06-05 PR 补漏复核
+
+已于 2026-06-05 按 vllm 上游 `origin/main@c66b19800` 复核；自上次时效基准（2026-01-15）以来，共有 43 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
+
+| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
+| --- | --- | --- | --- |
+| 2026-06-01 | [#42944](https://github.com/vllm-project/vllm/pull/42944) | fix: glm5.1 pp model loading | `deepseek_mtp.py`, `deepseek_v2.py` |
+| 2026-05-29 | [#42982](https://github.com/vllm-project/vllm/pull/42982) | [ROCm][Perf] DSv3.2 MI355X TP4 decode-step orchestration cleanup (3 micro-opts) | `deepseek_v2.py` |
+| 2026-05-28 | [#43781](https://github.com/vllm-project/vllm/pull/43781) | [Bugfix][ROCm] Fix Accuracy Drop in Sparse Indexer on gfx950 | `deepseek_v2.py` |
+| 2026-05-10 | [#41706](https://github.com/vllm-project/vllm/pull/41706) | [Model] use AutoWeightsLoader for DeepSeekV2 | `deepseek_v2.py` |
+| 2026-05-07 | [#41835](https://github.com/vllm-project/vllm/pull/41835) | [ROCm][DeepSeek] Enable V3.2 TP4 AITER MLA | `deepseek_v2.py` |
+| 2026-05-06 | [#40759](https://github.com/vllm-project/vllm/pull/40759) | [Examples] Resettle Disaggregated examples. | `serve_deepseek_v2.sh` |
+| 2026-05-02 | [#41405](https://github.com/vllm-project/vllm/pull/41405) | [ROCm][Bugfix] Fix init-time bias dtype cast when gate.out_dtype is None | `deepseek_v2.py` |
+| 2026-05-01 | [#41217](https://github.com/vllm-project/vllm/pull/41217) | [ROCm][Deepseek] dsv3.2 further optimization | `deepseek_v2.py` |
+| 2026-04-29 | [#37735](https://github.com/vllm-project/vllm/pull/37735) | [Feature]: IndexCache support for DSA models | `deepseek_v2.py` |
+| 2026-04-27 | [#39141](https://github.com/vllm-project/vllm/pull/39141) | [Perf] Update TRTLLM supported MoE routing methods | `deepseek_v2.py` |
+| 2026-04-24 | [#39999](https://github.com/vllm-project/vllm/pull/39999) | [ROCm] Cast score correction bias tensor during model construction for DeepSeek/Kimi-K2 | `deepseek_v2.py` |
+| 2026-04-23 | [#40671](https://github.com/vllm-project/vllm/pull/40671) | [MoE Refactor] Rename FusedMoE.make_expert_params_mapping to fused_moe_make_expert_params_mapping | `deepseek_mtp.py`, `deepseek_v2.py` |
+| 2026-04-21 | [#35782](https://github.com/vllm-project/vllm/pull/35782) | [MoE Refactor] Remove SharedFusedMoE class | `deepseek_mtp.py`, `deepseek_v2.py` |
+| 2026-04-20 | [#35949](https://github.com/vllm-project/vllm/pull/35949) | [MoE Refactor] Move the shared/fused expert output sum into MoERunnerBase | `deepseek_v2.py` |
+| 2026-04-15 | [#38928](https://github.com/vllm-project/vllm/pull/38928) | [Bugfix][Perf] Indexer upcast WK to BF16 for fusion | `deepseek_mtp.py`, `deepseek_v2.py` |
+| 2026-04-08 | [#37421](https://github.com/vllm-project/vllm/pull/37421) | [Perf][Kernel] Persistent TopK scheduler: unified CUDAGraph-safe kernel with dynamic per-row dispatch - DeepSeek-V3.2 DSA decode | `deepseek_v2.py` |
+| 2026-04-03 | [#38870](https://github.com/vllm-project/vllm/pull/38870) | [Bugfix] Fix DSV32 weight loading | `deepseek_mtp.py`, `deepseek_v2.py` |
+| 2026-04-02 | [#38684](https://github.com/vllm-project/vllm/pull/38684) | [Perf] DSV3.2 Indexer Fused Weights Projection | `deepseek_mtp.py`, `deepseek_v2.py` |
+| 2026-03-26 | [#38029](https://github.com/vllm-project/vllm/pull/38029) | [Tool Parser][1/3] Pass tools to ToolParser constructor | `deepseekv31_tool_parser.py` |
+| 2026-03-23 | [#37487](https://github.com/vllm-project/vllm/pull/37487) | [V0 Deprecation] Refactor kv cache from list to element | `deepseek_v2.py` |
+| 2026-03-13 | [#36931](https://github.com/vllm-project/vllm/pull/36931) | [Feat][Bugfix] Enable additional dimension for Flashinfer MLA and fix routing dtype | `deepseek_v2.py` |
+| 2026-03-11 | [#36361](https://github.com/vllm-project/vllm/pull/36361) | Kimi k2.5 MLA based eagle3 | `deepseek_v2.py` |
+| 2026-03-07 | [#36247](https://github.com/vllm-project/vllm/pull/36247) | [Bugfix] Fix compressed-tensors quantization failure for DeepSeek-R1 on MI300x | `deepseek_v2.py` |
+| 2026-03-02 | [#35751](https://github.com/vllm-project/vllm/pull/35751) | [MoE][Perf] Wrap DSV3 QKVAProj GEMM in custom op for torch.compile | `deepseek_v2.py` |
+| 2026-02-28 | [#35548](https://github.com/vllm-project/vllm/pull/35548) | [MTP] Validate that MTP weights are actually loaded | `deepseek_mtp.py` |
+| 2026-02-26 | [#35121](https://github.com/vllm-project/vllm/pull/35121) | [Performance] Cublas Bf16 Gate with Fp32 Output | `deepseek_v2.py` |
+| 2026-02-26 | [#33724](https://github.com/vllm-project/vllm/pull/33724) | [WideEP] Remove pplx all2all backend | `serve_deepseek_v2.sh` |
+| 2026-02-23 | [#34302](https://github.com/vllm-project/vllm/pull/34302) | [ModelBash][DSV3] Add TRTLLM DSV3 Router GEMM kernel (6% B1 Speedup) | `deepseek_v2.py` |
+| 2026-02-18 | [#34876](https://github.com/vllm-project/vllm/pull/34876) | [Bug] Fix DeepSeek V3 weight loading caused by incorrect prefix | `deepseek_v2.py` |
+| 2026-02-18 | [#34758](https://github.com/vllm-project/vllm/pull/34758) | [Model Bash] DeepSeek R1 BF16 Min Latency QKV A GEMM (0.5% E2E Speedup) | `deepseek_v2.py` |
+| 2026-02-17 | [#34514](https://github.com/vllm-project/vllm/pull/34514) | [CI][BugFix] ShellCheck cleanup to remove baseline and preserve runtime behavior | `serve_deepseek_v2.sh` |
+| 2026-02-11 | [#34353](https://github.com/vllm-project/vllm/pull/34353) | [Bugfix] fix default is_neox_style is True for deepseek | `deepseek_v2.py` |
+| 2026-02-09 | [#34124](https://github.com/vllm-project/vllm/pull/34124) | [Model] GLM adaptation | `deepseek_v2.py` |
+| 2026-02-05 | [#33876](https://github.com/vllm-project/vllm/pull/33876) | [Bugfix] Fix Kimi-K2.5 NVFP4 checkpoints weight loading | `deepseek_v2.py` |
+| 2026-02-05 | [#33858](https://github.com/vllm-project/vllm/pull/33858) | [Bugfix] Kimi-K2 grouped_topk usage for Flashinfer monolithic kernels. | `deepseek_v2.py` |
+| 2026-01-30 | [#33174](https://github.com/vllm-project/vllm/pull/33174) | Add support for Mistral Large 3 inference with Flashinfer MoE | `deepseek_v2.py` |
+| 2026-01-28 | [#33191](https://github.com/vllm-project/vllm/pull/33191) | Add flake8-implicit-str-concat rules to Ruff | `test_deepseekv31_tool_parser.py` |
+| 2026-01-27 | [#32064](https://github.com/vllm-project/vllm/pull/32064) | [5/N][Attention] Finish eliminating `vllm/attention` folder | `deepseek_v2.py` |
+| 2026-01-26 | [#33063](https://github.com/vllm-project/vllm/pull/33063) | [Chore] Update type annotation of `input_ids` in model forward | `deepseek_mtp.py`, `deepseek_v2.py` |
+| 2026-01-26 | [#33018](https://github.com/vllm-project/vllm/pull/33018) | [ROCm][Bugfix] Fix ptpc scale load issue for fused shared expert path in deepseek mtp | `deepseek_mtp.py` |
+| 2026-01-21 | [#29287](https://github.com/vllm-project/vllm/pull/29287) | [ROCm][Deepseekv3.2] Refactor Sparse Indexer as CustomOp | `deepseek_v2.py` |
+| 2026-01-20 | [#32652](https://github.com/vllm-project/vllm/pull/32652) | [Bugfix] Fix the  fp8_mqa_logits dim mismatch | `deepseek_v2.py` |
+| 2026-01-16 | [#32175](https://github.com/vllm-project/vllm/pull/32175) | [Bugfix] [DeepSeek-V3.2] fix sparse_attn_indexer padding | `deepseek_v2.py` |
+
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |

@@ -1,5 +1,27 @@
 # vllm Mixtral Quark INT4/FP8 MoE Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 14 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-04-29). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-05 | [#43167](https://github.com/vllm-project/vllm/pull/43167) | Remove KV cache scale boilerplate from model weight loading methods | `quark.py`, `mixtral.py` |
+| 2026-05-27 | [#43727](https://github.com/vllm-project/vllm/pull/43727) | [MoE] Remove inplace fused experts mechanism | `quark_moe.py` |
+| 2026-05-18 | [#41436](https://github.com/vllm-project/vllm/pull/41436) | [ROCm][Quantization][3/N] Refactor quark_moe w4a4 w/ oracle | `quark_moe.py` |
+| 2026-05-15 | [#35024](https://github.com/vllm-project/vllm/pull/35024) | [Deprecation] Remove old locations of `get_tokenizer` and `resolve_hf_chat_template` | `quark.md` |
+| 2026-05-14 | [#41986](https://github.com/vllm-project/vllm/pull/41986) | [Bugfix] Add swiglu limits to deepgemm fp8 methods | `quark_moe.py` |
+| 2026-05-13 | [#42563](https://github.com/vllm-project/vllm/pull/42563) | [CI] Fix pre-commit issue | `quark_moe.py` |
+| 2026-05-13 | [#41892](https://github.com/vllm-project/vllm/pull/41892) | [Bugfix][Quark] Fix W8A8 INT8 garbage outputs on Step-3.5-Flash (and other 3-key fused-MoE Quark exports) | `quark_moe.py`, `quark_w8a8_int8.py` |
+| 2026-05-13 | [#35859](https://github.com/vllm-project/vllm/pull/35859) | [Quark] Support loading Quark NVFP4 checkpoints in vLLM | `test_quark.py`, `quark.py`, `quark_moe.py`, … (+2) |
+| 2026-05-12 | [#41046](https://github.com/vllm-project/vllm/pull/41046) | [MoE Refactor] Move expert map related code into ExpertMapManager class | `quark_moe.py` |
+| 2026-05-12 | [#40735](https://github.com/vllm-project/vllm/pull/40735) | [MoE Refactor] Introduce RoutedExperts alias for FusedMoE and don't store SharedExperts in MK | `quark.py`, `quark_moe.py` |
+| 2026-05-11 | [#41979](https://github.com/vllm-project/vllm/pull/41979) | [MoE] Move various experts classes to fused_moe/experts/ | `quark_moe.py` |
+| 2026-05-04 | [#39136](https://github.com/vllm-project/vllm/pull/39136) | [ROCm][Quantization][2/N] Refactor quark_moe w4a8 w/ oracle | `quark_moe.py` |
+| 2026-04-29 | [#40754](https://github.com/vllm-project/vllm/pull/40754) | [Bugfix][ROCm] Fix gemm_a4w4 call to use updated AITER API signature | `quark_ocp_mx.py` |
+| 2026-04-29 | [#39987](https://github.com/vllm-project/vllm/pull/39987) | [ROCm] Add env flags to disable dynamic MXFP4 quant and enable AITER tuned GEMMs for Attention Projection Layers | `quark.py` |
+
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

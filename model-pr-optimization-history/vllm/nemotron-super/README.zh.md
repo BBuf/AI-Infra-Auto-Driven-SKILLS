@@ -1,5 +1,17 @@
 # vllm Nemotron Super 模型 PR 优化历史
 
+## 2026-06-05 PR 补漏复核
+
+已于 2026-06-05 按 vllm 上游 `origin/main@c66b19800` 复核；自上次时效基准（2026-05-19）以来，共有 4 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
+
+| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
+| --- | --- | --- | --- |
+| 2026-06-05 | [#43167](https://github.com/vllm-project/vllm/pull/43167) | Remove KV cache scale boilerplate from model weight loading methods | `nemotron.py`, `nemotron_nas.py` |
+| 2026-05-28 | [#43581](https://github.com/vllm-project/vllm/pull/43581) | [Model][Bugfix] Rename weight_mapper to hf_to_vllm_mapper in LlamaNemotronVL pooling models | `nemotron_vl.py` |
+| 2026-05-26 | [#42124](https://github.com/vllm-project/vllm/pull/42124) | Add LM head quantization support for ModelOpt | `nemotron_h.py` |
+| 2026-05-20 | [#43130](https://github.com/vllm-project/vllm/pull/43130) | [Spec Decode] Support non-MTP speculation for NemotronH | `nemotron_h.py` |
+
+
 ## 2026-05-19 PR 补漏复核
 
 已按 vllm 上游 `origin/main@07beaed84` 和 GitHub Pull Request files API 复核；本轮补齐 `#41233` 的时间线与逐 PR diff 审计卡。
