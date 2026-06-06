@@ -1,5 +1,14 @@
 # sglang GLM VLM/OCR Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 1 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-04-28). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-05-22 | [#24751](https://github.com/sgl-project/sglang/pull/24751) | fix(mm): make multimodal data loading non-blocking to prevent health check stalls | `glm4v.py` |
+
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

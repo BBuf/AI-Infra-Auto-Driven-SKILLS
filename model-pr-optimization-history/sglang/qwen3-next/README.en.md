@@ -1,5 +1,20 @@
 # sglang Qwen3 Next Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 7 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-04 | [#26775](https://github.com/sgl-project/sglang/pull/26775) | fix test cases failed on 5/30 in nightly pipeline | `test_npu_deepep_auto_qwen3_next.py`, `test_npu_deepep_low_latency_qwen3_next.py` |
+| 2026-05-30 | [#26389](https://github.com/sgl-project/sglang/pull/26389) | 【NPU】【bugfix】fix server error when mtp unquant | `qwen3_next_mtp.py` |
+| 2026-05-29 | [#26353](https://github.com/sgl-project/sglang/pull/26353) | NPU Nightly Pipeline Skip Test Case Adaptation and Recovery Testing | `test_npu_deepep_auto_qwen3_next.py`, `test_npu_deepep_low_latency_qwen3_next.py` |
+| 2026-05-28 | [#26610](https://github.com/sgl-project/sglang/pull/26610) | test/registered: cleanup pure model e2e tests (moves, splits, dedup, kit) | `test_qwen3_next_models_mtp.py` |
+| 2026-05-20 | [#25831](https://github.com/sgl-project/sglang/pull/25831) | [Test] Stage-a sanity kits; consolidate core/ + models_e2e/ tests | `test_qwen3_next_deterministic.py`, `test_qwen3_next_models_fp4.py` |
+| 2026-05-20 | [#23925](https://github.com/sgl-project/sglang/pull/23925) | [NPU]use triton split_qkvgate_gemma_rmsnorm_rope for Qwen3.5 and Qwen3_next | `qwen3_next.py` |
+| 2026-05-19 | [#23331](https://github.com/sgl-project/sglang/pull/23331) | [BugFix] Resolve adaptive speculative decoding conflicts for Qwen3.5 (hybrid GDN) | `qwen3_next_mtp.py` |
+
+
 ## 2026-05-19 PR Backfill Audit
 
 Rechecked sglang upstream `origin/main@78cb38ed5` and the GitHub Pull Request files API; this pass adds timeline entries and per-PR diff audit cards for `#25401`.

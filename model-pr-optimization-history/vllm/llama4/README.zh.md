@@ -1,5 +1,27 @@
 # vllm Llama 4 模型 PR 优化历史
 
+## 2026-06-05 PR 补漏复核
+
+已于 2026-06-05 按 vllm 上游 `origin/main@c66b19800` 复核；自上次时效基准（2026-02-24）以来，共有 14 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
+
+| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
+| --- | --- | --- | --- |
+| 2026-06-05 | [#43167](https://github.com/vllm-project/vllm/pull/43167) | Remove KV cache scale boilerplate from model weight loading methods | `llama4.py` |
+| 2026-05-11 | [#42280](https://github.com/vllm-project/vllm/pull/42280) | [Model] Fix missing `maybe_prefix` | `llama4_eagle.py` |
+| 2026-04-23 | [#40671](https://github.com/vllm-project/vllm/pull/40671) | [MoE Refactor] Rename FusedMoE.make_expert_params_mapping to fused_moe_make_expert_params_mapping | `llama4.py`, `mllama4.py` |
+| 2026-04-21 | [#35782](https://github.com/vllm-project/vllm/pull/35782) | [MoE Refactor] Remove SharedFusedMoE class | `llama4.py` |
+| 2026-04-20 | [#35949](https://github.com/vllm-project/vllm/pull/35949) | [MoE Refactor] Move the shared/fused expert output sum into MoERunnerBase | `llama4.py` |
+| 2026-03-26 | [#38029](https://github.com/vllm-project/vllm/pull/38029) | [Tool Parser][1/3] Pass tools to ToolParser constructor | `llama4_pythonic_tool_parser.py` |
+| 2026-03-25 | [#35182](https://github.com/vllm-project/vllm/pull/35182) | [Misc] Reorganize inputs | `mllama4.py` |
+| 2026-03-23 | [#37834](https://github.com/vllm-project/vllm/pull/37834) | [Test] Consolidate tool parser unit tests to tests/tool_parsers | `test_llama4_pythonic_tool_parser.py` |
+| 2026-03-19 | [#37345](https://github.com/vllm-project/vllm/pull/37345) | [torch.compile][BE][Multimodal] Remove requirement to set_model_tag to avoid cache conflict | `mllama4.py` |
+| 2026-03-16 | [#36288](https://github.com/vllm-project/vllm/pull/36288) | [torch.compile][BE] Modify cudagraph callable to check for is_forward_context_set | `mllama4.py` |
+| 2026-03-13 | [#36063](https://github.com/vllm-project/vllm/pull/36063) | [Refactor] Consolidate SupportsEagle | `mllama4.py` |
+| 2026-03-11 | [#36770](https://github.com/vllm-project/vllm/pull/36770) | [Misc] Clean up renderers | `mllama4.py` |
+| 2026-03-09 | [#36436](https://github.com/vllm-project/vllm/pull/36436) | [Misc] Refactored 5 duplicate helper functions that were copied-pasted across multiple parsers | `llama4_pythonic_tool_parser.py` |
+| 2026-03-09 | [#36281](https://github.com/vllm-project/vllm/pull/36281) | [BE] Rename `should_torch_compile_mm_vit` to `should_torch_compile_mm_encoder` | `mllama4.py` |
+
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |

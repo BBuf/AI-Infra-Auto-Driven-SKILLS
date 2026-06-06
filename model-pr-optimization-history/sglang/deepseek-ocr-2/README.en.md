@@ -1,5 +1,16 @@
 # sglang DeepSeek OCR 2 Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 3 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-01 | [#25813](https://github.com/sgl-project/sglang/pull/25813) | docs(cookbook): port popular model usage guides into cookbook pages | `DeepSeek-OCR-2.mdx` |
+| 2026-05-27 | [#25405](https://github.com/sgl-project/sglang/pull/25405) | [XPU] Add registry mechanism for XPU CI tests | `test_deepseek_ocr.py`, `test_deepseek_ocr_triton.py` |
+| 2026-05-22 | [#24751](https://github.com/sgl-project/sglang/pull/24751) | fix(mm): make multimodal data loading non-blocking to prevent health check stalls | `deepseek_ocr.py` |
+
+
 ## 2026-05-19 Coverage Addition
 
 Generated from sglang upstream `origin/main@5073c82a37`, `git log --name-only -- <model-files>` over model-related paths, and the GitHub Pull Request files API. This page fills the missing `DeepSeek OCR 2` history entry found from sgl-cookbook coverage.

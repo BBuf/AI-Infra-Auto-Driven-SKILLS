@@ -1,5 +1,10 @@
 # sglang LLaDA 2.1 Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; no new PR-numbered merge touched the tracked implementation files between 2026-05-19 and 2026-06-05. The coverage above is current.
+
+
 ## 2026-05-19 Coverage Addition
 
 Generated from sglang upstream `origin/main@5073c82a37`, `git log --name-only -- <model-files>` over model-related paths, and the GitHub Pull Request files API. This page fills the missing `LLaDA 2.1` history entry found from sgl-cookbook coverage.

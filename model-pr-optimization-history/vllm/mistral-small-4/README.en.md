@@ -1,5 +1,18 @@
 # vllm Mistral Small 4 Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 5 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-04-28). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-05 | [#44622](https://github.com/vllm-project/vllm/pull/44622) | [Bugfix] Update mistral tokenizer test for continue_final_message fix | `test_mistral.py` |
+| 2026-06-01 | [#44131](https://github.com/vllm-project/vllm/pull/44131) | [CI] Stabilize OpenAI schema fuzzing for malformed structural tags | `test_mistral_tool_parser.py` |
+| 2026-05-11 | [#42280](https://github.com/vllm-project/vllm/pull/42280) | [Model] Fix missing `maybe_prefix` | `mistral_eagle.py` |
+| 2026-05-05 | [#41730](https://github.com/vllm-project/vllm/pull/41730) | [BUGFIX] Support streamed_args_for_tool in MistralToolParser | `test_mistral_tool_parser.py`, `mistral_tool_parser.py` |
+| 2026-05-05 | [#41658](https://github.com/vllm-project/vllm/pull/41658) | [Mistral Tokenizer] allow more leniency in apply_chat_template | `test_mistral.py`, `mistral.py`, `mistral_tool_parser.py` |
+
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

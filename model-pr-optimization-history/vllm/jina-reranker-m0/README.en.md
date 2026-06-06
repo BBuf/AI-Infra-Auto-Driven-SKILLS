@@ -1,5 +1,14 @@
 # vllm Jina Reranker M0 Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 1 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-05-22 | [#43393](https://github.com/vllm-project/vllm/pull/43393) | [Docs] Note image preprocessing difference between qwen_vl_utils and vllm. | `scoring.md` |
+
+
 ## 2026-05-19 Coverage Addition
 
 Generated from vllm upstream `origin/main@ef54a4d604`, `git log --name-only -- <model-files>` over model-related paths, and the GitHub Pull Request files API. This page fills the missing `Jina Reranker M0` history entry found from sgl-cookbook coverage.

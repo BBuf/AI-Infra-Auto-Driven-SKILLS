@@ -1,19 +1,22 @@
 # SGLang Human Review Corpus Summary
 
 - Repo: `sgl-project/sglang`
-- Source PR years: `2024` to `2025` inclusive
-- Generated at: `2026-05-20T11:16:22+00:00`
-- Corpus file: `sglang-review-corpus-2024-2025.jsonl.gz`
-- Threads: `10959`
-- Comments in corpus: `18266`
-- Human reviewer comments: `18266`
+- Source PR years: `2024` to `2026` inclusive
+- Generated at: `2026-06-05T19:56:20+00:00`
+- Corpus file: `sglang-review-corpus.jsonl.gz`
+- Threads: `32639`
+- Comments in corpus: `76516`
+- Human reviewer comments: `76516`
 - Agent reviewer comments: `0`
 
 ## Collection Policy
 
 - Pull requests are selected by PR `created_at` in the requested year range.
+- Review/comment events are also capped at the requested end date.
 - Pull requests authored by GitHub bots or obvious coding-agent accounts are excluded.
-- Review comments are GitHub inline pull-review comments grouped by thread.
+- Inline review comments are GitHub pull-review comments grouped by thread.
+- Top-level PR conversation comments are included from GitHub PR comments and grouped by PR.
+- Review submission bodies are included for COMMENT / REQUEST_CHANGES style review summaries; empty approvals are skipped.
 - Comment bodies are kept in their original language; the corpus does not translate or drop non-English text.
 - `diff_hunk` stores the code context that produced each review thread.
 
@@ -21,69 +24,116 @@
 
 | Metric | Count |
 | --- | ---: |
-| `excluded_agent_prs` | 8 |
-| `included_human_prs` | 11573 |
+| `excluded_agent_prs` | 16 |
+| `included_human_prs` | 20897 |
 | `included_human_prs_2024` | 1772 |
 | `included_human_prs_2025` | 9801 |
-| `seen_after_window` | 119 |
-| `window_prs` | 11581 |
+| `included_human_prs_2026` | 9324 |
+| `window_prs` | 20913 |
 
 ## Comment Stats
 
 | Metric | Count |
 | --- | ---: |
-| `agent_reviewer_comments_on_target_prs` | 11858 |
-| `all_review_comments_seen` | 48023 |
-| `human_reviewer_comments_on_target_prs` | 18266 |
-| `threads` | 10959 |
+| `conversation_agent_pr_conversation_comments_on_target_prs` | 15465 |
+| `conversation_all_pr_conversation_comments_seen` | 57495 |
+| `conversation_human_pr_conversation_comments_on_target_prs` | 42028 |
+| `conversation_pr_conversation_comments_after_window_skipped` | 2 |
+| `conversation_pr_conversation_paginated_prs` | 8 |
+| `conversation_threads` | 11164 |
+| `inline_agent_reviewer_comments_on_target_prs` | 21170 |
+| `inline_all_review_comments_seen` | 51114 |
+| `inline_human_reviewer_comments_on_target_prs` | 29928 |
+| `inline_threads` | 18178 |
+| `submission_agent_review_submissions_on_target_prs` | 13328 |
+| `submission_all_review_submissions_seen` | 46902 |
+| `submission_empty_review_submissions_skipped` | 29007 |
+| `submission_human_review_submissions_on_target_prs` | 4560 |
+| `submission_review_submission_paginated_prs` | 2 |
+| `submission_review_submissions_after_window_skipped` | 7 |
+| `submission_threads` | 3297 |
+
+## Episode Types
+
+| Type | Threads |
+| --- | ---: |
+| `inline_review_thread` | 18178 |
+| `pr_conversation` | 11164 |
+| `review_submission` | 3297 |
+
+## Event Kinds
+
+| Kind | Events |
+| --- | ---: |
+| `pr_conversation` | 42028 |
+| `inline_review_comment` | 29928 |
+| `review_submission` | 4560 |
+
+## Review States
+
+| State | Events |
+| --- | ---: |
+| `APPROVED` | 1984 |
+| `CHANGES_REQUESTED` | 1335 |
+| `COMMENTED` | 1230 |
+| `DISMISSED` | 11 |
 
 ## Top Categories
 
 | Category | Threads |
 | --- | ---: |
-| `models-quant` | 5478 |
-| `correctness` | 3483 |
-| `gpu-kernel` | 3409 |
-| `api-compat` | 3213 |
-| `tests-ci` | 2566 |
-| `performance` | 2419 |
-| `memory-cache` | 2250 |
-| `docs-examples` | 2237 |
-| `style-maintainability` | 2054 |
-| `build-deps` | 1766 |
-| `distributed-concurrency` | 1655 |
-| `observability` | 1457 |
-| `general-review` | 491 |
+| `models-quant` | 13325 |
+| `tests-ci` | 13238 |
+| `correctness` | 13037 |
+| `gpu-kernel` | 8639 |
+| `api-compat` | 7321 |
+| `performance` | 6890 |
+| `memory-cache` | 6312 |
+| `docs-examples` | 5926 |
+| `style-maintainability` | 5261 |
+| `distributed-concurrency` | 4859 |
+| `build-deps` | 4334 |
+| `observability` | 3810 |
+| `general-review` | 1786 |
 
 ## Code Languages
 
 | Language | Threads |
 | --- | ---: |
-| `python` | 8525 |
-| `markdown` | 747 |
-| `rust` | 391 |
-| `cuda` | 300 |
-| `cpp` | 220 |
-| `yaml` | 189 |
-| `notebook` | 179 |
-| `toml` | 108 |
-| `shell` | 80 |
-| `extensionless` | 57 |
-| `text` | 47 |
-| `rst` | 16 |
-| `unknown` | 14 |
-| `dockerfile` | 13 |
-| `json` | 11 |
+| `python` | 14729 |
+| `conversation` | 11164 |
+| `review` | 3297 |
+| `markdown` | 1031 |
+| `cuda` | 497 |
+| `rust` | 447 |
+| `yaml` | 271 |
+| `cpp` | 264 |
+| `notebook` | 183 |
+| `toml` | 162 |
+| `mdx` | 112 |
+| `shell` | 104 |
+| `extensionless` | 78 |
+| `text` | 58 |
+| `dockerfile` | 54 |
+| `unknown` | 28 |
+| `mu` | 27 |
+| `json` | 22 |
+| `rst` | 17 |
+| `jsx` | 14 |
+| `proto` | 13 |
 | `rocm` | 10 |
 | `gb200` | 10 |
-| `proto` | 9 |
+| `jinja` | 5 |
 | `npu` | 5 |
-| `jinja` | 4 |
+| `jpg` | 4 |
 | `jpeg` | 3 |
-| `jpg` | 3 |
+| `hip` | 3 |
+| `png` | 3 |
 | `sycl` | 2 |
 | `xeon` | 2 |
 | `musa` | 2 |
+| `sample` | 2 |
+| `muh` | 2 |
 | `gif` | 1 |
 | `mp4` | 1 |
 | `jsonconfig` | 1 |
@@ -91,89 +141,92 @@
 | `dev` | 1 |
 | `in` | 1 |
 | `sagemaker` | 1 |
-| `hip` | 1 |
 | `blackwell` | 1 |
 | `router` | 1 |
-| `png` | 1 |
 | `py‎` | 1 |
+| `jinja2` | 1 |
+| `cmake` | 1 |
+| `patch` | 1 |
+| `metal` | 1 |
 
 ## Comment Language Hints
 
 | Hint | Comments |
 | --- | ---: |
-| `en_or_ascii` | 17748 |
-| `non_ascii_other` | 492 |
-| `zh_or_cjk` | 26 |
+| `en_or_ascii` | 71019 |
+| `non_ascii_other` | 5188 |
+| `zh_or_cjk` | 308 |
+| `ja` | 1 |
 
 ## Top Paths
 
 | Path | Threads |
 | --- | ---: |
-| `python/sglang/srt/server_args.py` | 340 |
-| `python/sglang/srt/models/deepseek_v2.py` | 252 |
-| `python/sglang/srt/managers/scheduler.py` | 221 |
-| `python/sglang/srt/model_executor/model_runner.py` | 188 |
-| `python/sglang/srt/managers/schedule_batch.py` | 152 |
-| `python/sglang/srt/managers/tokenizer_manager.py` | 127 |
+| `<conversation>` | 14461 |
+| `python/sglang/srt/server_args.py` | 573 |
+| `python/sglang/srt/models/deepseek_v2.py` | 310 |
+| `python/sglang/srt/managers/scheduler.py` | 306 |
+| `python/sglang/srt/model_executor/model_runner.py` | 267 |
+| `python/sglang/srt/managers/schedule_batch.py` | 204 |
+| `python/sglang/srt/managers/tokenizer_manager.py` | 161 |
+| `python/sglang/srt/disaggregation/mooncake/conn.py` | 124 |
+| `python/sglang/srt/entrypoints/openai/serving_chat.py` | 124 |
+| `python/pyproject.toml` | 111 |
 | `python/sglang/srt/utils.py` | 109 |
+| `python/sglang/srt/mem_cache/memory_pool.py` | 109 |
 | `docs/backend/server_arguments.md` | 106 |
-| `python/sglang/srt/layers/moe/ep_moe/layer.py` | 90 |
-| `python/sglang/srt/entrypoints/openai/serving_chat.py` | 86 |
-| `python/pyproject.toml` | 85 |
-| `python/sglang/srt/mem_cache/memory_pool.py` | 85 |
-| `test/srt/run_suite.py` | 73 |
-| `python/sglang/srt/layers/quantization/modelopt_quant.py` | 68 |
-| `python/sglang/srt/managers/cache_controller.py` | 66 |
-| `python/sglang/srt/managers/io_struct.py` | 65 |
-| `python/sglang/srt/model_executor/cuda_graph_runner.py` | 65 |
-| `python/sglang/srt/disaggregation/mooncake/conn.py` | 65 |
-| `python/sglang/srt/entrypoints/http_server.py` | 63 |
-| `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` | 62 |
-| `python/sglang/srt/openai_api/adapter.py` | 61 |
-| `python/sglang/srt/layers/rotary_embedding.py` | 61 |
-| `python/sglang/srt/server.py` | 59 |
-| `python/sglang/srt/layers/attention/flashattention_backend.py` | 58 |
-| `python/sglang/srt/layers/attention/flashinfer_backend.py` | 55 |
-| `python/sglang/bench_serving.py` | 51 |
-| `python/sglang/srt/configs/model_config.py` | 50 |
-| `python/sglang/srt/layers/quantization/fp8.py` | 50 |
-| `python/sglang/srt/layers/communicator.py` | 50 |
-| `python/sglang/srt/model_executor/forward_batch_info.py` | 49 |
+| `python/sglang/srt/layers/moe/ep_moe/layer.py` | 100 |
+| `python/sglang/srt/layers/quantization/modelopt_quant.py` | 98 |
+| `python/sglang/srt/entrypoints/http_server.py` | 95 |
+| `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` | 94 |
+| `python/sglang/srt/model_executor/cuda_graph_runner.py` | 92 |
+| `python/sglang/srt/disaggregation/decode.py` | 90 |
+| `python/sglang/srt/managers/io_struct.py` | 88 |
+| `python/sglang/srt/utils/common.py` | 85 |
+| `test/srt/run_suite.py` | 84 |
+| `python/sglang/multimodal_gen/runtime/managers/gpu_worker.py` | 84 |
+| `python/sglang/srt/entrypoints/engine.py` | 81 |
+| `python/sglang/srt/managers/cache_controller.py` | 80 |
+| `python/sglang/srt/layers/attention/flashattention_backend.py` | 78 |
+| `python/sglang/srt/disaggregation/encode_server.py` | 78 |
+| `python/sglang/srt/layers/moe/topk.py` | 76 |
+| `python/sglang/srt/hardware_backend/npu/attention/ascend_backend.py` | 76 |
+| `python/sglang/srt/layers/rotary_embedding.py` | 74 |
 
 ## Top Human Reviewers
 
 | Reviewer | Comments |
 | --- | ---: |
-| `merrymercy` | 1200 |
-| `zhyncs` | 1001 |
-| `fzyzcjy` | 754 |
-| `Fridge003` | 730 |
-| `zhaochenyang20` | 654 |
-| `CatherineSue` | 601 |
-| `mickqian` | 509 |
-| `BBuf` | 496 |
-| `yizhang2077` | 475 |
-| `ShangmingCai` | 377 |
-| `ispobock` | 358 |
-| `mingfeima` | 355 |
-| `JustinTong0323` | 340 |
-| `yuan-luo` | 327 |
-| `ch-wan` | 311 |
-| `Alcanderian` | 295 |
-| `hebiao064` | 255 |
-| `HaiShaw` | 233 |
-| `slin1237` | 220 |
-| `hnyls2002` | 218 |
-| `Ying1123` | 188 |
-| `iforgetmyname` | 180 |
-| `xiezhq-hermann` | 171 |
-| `lifuhuang` | 142 |
-| `key4ng` | 129 |
-| `ping1jing2` | 129 |
-| `Qiaolin-Yu` | 122 |
-| `ByronHsu` | 115 |
-| `b8zhong` | 115 |
-| `trevor-m` | 103 |
+| `Fridge003` | 2868 |
+| `zhyncs` | 2665 |
+| `BBuf` | 2557 |
+| `mickqian` | 2527 |
+| `ShangmingCai` | 2497 |
+| `merrymercy` | 2407 |
+| `zhaochenyang20` | 2264 |
+| `fzyzcjy` | 2010 |
+| `JustinTong0323` | 2002 |
+| `hnyls2002` | 1727 |
+| `yuan-luo` | 1570 |
+| `yhyang201` | 1401 |
+| `ispobock` | 1296 |
+| `HaiShaw` | 1121 |
+| `ch-wan` | 927 |
+| `ping1jing2` | 904 |
+| `alisonshao` | 885 |
+| `CatherineSue` | 884 |
+| `b8zhong` | 870 |
+| `mingfeima` | 854 |
+| `yizhang2077` | 755 |
+| `Qiaolin-Yu` | 633 |
+| `DarkSharpness` | 606 |
+| `hzh0425` | 551 |
+| `Kangyan-Zhou` | 506 |
+| `slin1237` | 492 |
+| `iforgetmyname` | 468 |
+| `hebiao064` | 459 |
+| `alexnails` | 446 |
+| `kpham-sgl` | 439 |
 
 ## Query Examples
 

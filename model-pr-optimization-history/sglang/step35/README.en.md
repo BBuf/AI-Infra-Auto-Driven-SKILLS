@@ -1,5 +1,19 @@
 # sglang Step 3.5 Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 6 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-04-29). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-05-29 | [#26565](https://github.com/sgl-project/sglang/pull/26565) | model: support Step-3.7-Flash | `step3p5.py`, `step3p5.py` |
+| 2026-05-28 | [#26610](https://github.com/sgl-project/sglang/pull/26610) | test/registered: cleanup pure model e2e tests (moves, splits, dedup, kit) | `test_step3p5_flash_chain_mtp.py` |
+| 2026-05-14 | [#24725](https://github.com/sgl-project/sglang/pull/24725) | ci: tag-gated nightly migration — foundation + 40 whole-file moves | `test_step3p5_flash_chain_mtp.py` |
+| 2026-05-13 | [#25236](https://github.com/sgl-project/sglang/pull/25236) | ci: H200 conditional split + dsv4 est_time recalibration (h200 partition 6→2) | `test_step3p5_flash_chain_mtp.py` |
+| 2026-05-13 | [#25197](https://github.com/sgl-project/sglang/pull/25197) | ci: decouple stage and runner for cuda registry | `test_step3p5_flash_chain_mtp.py` |
+| 2026-05-01 | [#24192](https://github.com/sgl-project/sglang/pull/24192) | [spec decoding] add tests for chain-style multi layer eagle + return_logprob | `test_step3p5_flash_chain_mtp.py` |
+
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

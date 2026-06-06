@@ -10,9 +10,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 DEFAULT_CORPUS = (
-    Path(__file__).resolve().parents[1]
-    / "references"
-    / "sglang-review-corpus-2024-2025.jsonl.gz"
+    Path(__file__).resolve().parents[1] / "references" / "sglang-review-corpus.jsonl.gz"
 )
 
 
@@ -24,6 +22,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--query", default="", help="Case-insensitive text query.")
     parser.add_argument("--path", default="", help="Path substring filter.")
     parser.add_argument("--category", default="", help="Category label filter.")
+    parser.add_argument(
+        "--kind",
+        default="",
+        help=(
+            "Thread/comment kind filter, for example inline_review_thread, "
+            "pr_conversation, or review_submission."
+        ),
+    )
+    parser.add_argument("--pr", type=int, default=0, help="Pull request number filter.")
     parser.add_argument("--reviewer", default="", help="Reviewer login filter.")
     parser.add_argument("--limit", type=int, default=10)
     parser.add_argument(
@@ -60,13 +67,31 @@ def iter_rows(path: Path) -> Iterable[dict[str, Any]]:
 
 def thread_text(thread: dict[str, Any]) -> str:
     parts = [
+        thread.get("row_type", ""),
         thread.get("path", ""),
         thread.get("diff_hunk", ""),
         thread.get("pull_request", {}).get("title", ""),
         " ".join(thread.get("categories", [])),
     ]
-    parts.extend(comment.get("body", "") for comment in thread.get("comments", []))
+    for comment in thread.get("comments", []):
+        parts.extend(
+            [
+                comment.get("kind", ""),
+                comment.get("state", ""),
+                comment.get("body", ""),
+            ]
+        )
     return "\n".join(parts)
+
+
+def row_type_for_thread(thread: dict[str, Any]) -> str:
+    row_type = thread.get("row_type")
+    if row_type:
+        return str(row_type)
+    collection = str(thread.get("source", {}).get("collection", ""))
+    if collection == "github_pull_review_comments":
+        return "inline_review_thread"
+    return collection or "inline_review_thread"
 
 
 def matches(thread: dict[str, Any], args: argparse.Namespace) -> bool:
@@ -78,6 +103,18 @@ def matches(thread: dict[str, Any], args: argparse.Namespace) -> bool:
     if args.path and args.path.lower() not in thread.get("path", "").lower():
         return False
     if args.category and args.category not in thread.get("categories", []):
+        return False
+    if args.kind:
+        kind = args.kind.lower()
+        row_type = row_type_for_thread(thread)
+        comment_kinds = [
+            str(comment.get("kind", "")) for comment in thread.get("comments", [])
+        ]
+        if kind != row_type.lower() and kind not in {
+            item.lower() for item in comment_kinds
+        }:
+            return False
+    if args.pr and args.pr != int(thread.get("pull_request", {}).get("number", 0)):
         return False
     if args.reviewer:
         reviewer = args.reviewer.lower()
@@ -117,24 +154,33 @@ def render_markdown(thread: dict[str, Any], show_discussion: bool) -> str:
     lines = [
         f"### PR #{pr['number']}: {pr['title']}",
         "",
-        f"- Path: `{thread.get('path', '')}`",
+        f"- Type: `{row_type_for_thread(thread)}`",
+        f"- Path: `{thread.get('path', '') or '<conversation>'}`",
         f"- Categories: `{', '.join(thread.get('categories', []))}`",
         f"- Link: {url}",
         "",
-        "```diff",
-        clip(thread.get("diff_hunk", ""), 1200),
-        "```",
-        "",
     ]
+    diff_hunk = thread.get("diff_hunk", "")
+    if diff_hunk:
+        lines.extend(
+            [
+                "```diff",
+                clip(diff_hunk, 1200),
+                "```",
+                "",
+            ]
+        )
     for comment in comments:
         author = comment.get("author", {})
         marker = "agent" if author.get("is_agent") else "human"
+        kind = comment.get("kind") or thread.get("row_type") or "inline_review_comment"
+        state = f", {comment.get('state')}" if comment.get("state") else ""
         body = textwrap.indent(clip(comment.get("body", ""), 900), "> ")
         lines.extend(
             [
-                f"**{author.get('login', 'unknown')}** ({marker}, {comment.get('created_at', '')})",
+                f"**{author.get('login', 'unknown')}** ({marker}, {kind}{state}, {comment.get('created_at', '')})",
                 "",
-                body,
+                body or "> <empty body>",
                 "",
             ]
         )

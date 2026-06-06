@@ -1,5 +1,17 @@
 # vllm Nemotron Super Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 4 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-05 | [#43167](https://github.com/vllm-project/vllm/pull/43167) | Remove KV cache scale boilerplate from model weight loading methods | `nemotron.py`, `nemotron_nas.py` |
+| 2026-05-28 | [#43581](https://github.com/vllm-project/vllm/pull/43581) | [Model][Bugfix] Rename weight_mapper to hf_to_vllm_mapper in LlamaNemotronVL pooling models | `nemotron_vl.py` |
+| 2026-05-26 | [#42124](https://github.com/vllm-project/vllm/pull/42124) | Add LM head quantization support for ModelOpt | `nemotron_h.py` |
+| 2026-05-20 | [#43130](https://github.com/vllm-project/vllm/pull/43130) | [Spec Decode] Support non-MTP speculation for NemotronH | `nemotron_h.py` |
+
+
 ## 2026-05-19 PR Backfill Audit
 
 Rechecked vllm upstream `origin/main@07beaed84` and the GitHub Pull Request files API; this pass adds timeline entries and per-PR diff audit cards for `#41233`.

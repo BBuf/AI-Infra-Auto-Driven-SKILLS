@@ -38,7 +38,9 @@ Useful options:
    SGLang source path. If unsure, run `scripts/query.py "<model name>"`.
 2. Read the matching SGLang history first for SGLang patch work. Read the vLLM
    history too when vLLM is the leading competitor or its trace suggests a
-   missing SGLang fast path.
+   missing SGLang fast path. If the doc opens with a dated `PR Backfill Audit`
+   section, read it first: it lists the most recent PR-numbered merges that are
+   not yet folded into the older timeline / diff-audit cards.
 3. Extract only actionable evidence:
    - model implementation files and symbols
    - PRs that changed the hot source path

@@ -1,5 +1,25 @@
 # sglang Qwen3.5 Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 12 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-05 | [#25885](https://github.com/sgl-project/sglang/pull/25885) | [AMD] Support alt stream for Qwen3.5 on AMD platform | `qwen3_5.py` |
+| 2026-06-04 | [#27296](https://github.com/sgl-project/sglang/pull/27296) | Add --enable-symm-mem for Qwen3.5 | `Qwen3.5.mdx`, `qwen35-deployment.jsx` |
+| 2026-06-03 | [#27001](https://github.com/sgl-project/sglang/pull/27001) | [AMD] [CI] Remove hardcoded model/cache paths from MI35x nightly tests | `test_qwen35_fp8_perf_mi35x.py` |
+| 2026-06-01 | [#25813](https://github.com/sgl-project/sglang/pull/25813) | docs(cookbook): port popular model usage guides into cookbook pages | `Qwen3.5.mdx`, `qwen3_5.mdx` |
+| 2026-05-30 | [#26389](https://github.com/sgl-project/sglang/pull/26389) | 【NPU】【bugfix】fix server error when mtp unquant | `qwen3_5_mtp.py` |
+| 2026-05-29 | [#26695](https://github.com/sgl-project/sglang/pull/26695) | [docs] Qwen3.5 cookbook: multi-node, MTP TP overrides, dense mamba flag | `Qwen3.5.mdx`, `qwen35-deployment.jsx` |
+| 2026-05-28 | [#26610](https://github.com/sgl-project/sglang/pull/26610) | test/registered: cleanup pure model e2e tests (moves, splits, dedup, kit) | `test_qwen35_fp4_mtp_v2.py`, `test_qwen35_hicache.py`, `test_qwen35_models.py` |
+| 2026-05-23 | [#26069](https://github.com/sgl-project/sglang/pull/26069) | [NPU]Ascend NPU Performance Profiling Guide and Ascend NPU Operator Development Guide | `ascend_npu_qwen3_5_examples.mdx` |
+| 2026-05-20 | [#23925](https://github.com/sgl-project/sglang/pull/23925) | [NPU]use triton split_qkvgate_gemma_rmsnorm_rope for Qwen3.5 and Qwen3_next | `qwen3_5.py` |
+| 2026-05-19 | [#25735](https://github.com/sgl-project/sglang/pull/25735) | [NPU] [DOCS] Improved the usability of Ascend NPU documents | `ascend_npu_qwen3_5_examples.mdx` |
+| 2026-05-19 | [#25401](https://github.com/sgl-project/sglang/pull/25401) | Add output_gate_type to Qwen3NextConfig and update models to utilize it | `qwen3_5.py` |
+| 2026-05-19 | [#23331](https://github.com/sgl-project/sglang/pull/23331) | [BugFix] Resolve adaptive speculative decoding conflicts for Qwen3.5 (hybrid GDN) | `qwen3_5_mtp.py` |
+
+
 ## 2026-05-19 PR Backfill Audit
 
 Rechecked sglang upstream `origin/main@78cb38ed5` and the GitHub Pull Request files API; this pass adds timeline entries and per-PR diff audit cards for `#21668`, `#24906`.

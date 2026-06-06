@@ -1,5 +1,18 @@
 # vllm InternVL 3.5 Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 5 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-03-26). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-04 | [#41759](https://github.com/vllm-project/vllm/pull/41759) | [MM][Perf][CG] Support ViT full CUDA graph for InternVL | `internvl.py` |
+| 2026-05-19 | [#42347](https://github.com/vllm-project/vllm/pull/42347) | [Perf][4/n] Eliminate various GPU<->CPU syncs | `internvl.py` |
+| 2026-04-15 | [#38901](https://github.com/vllm-project/vllm/pull/38901) | [Test] Refactor hard coded device string in test files under compile/quantization/models/model_executor folders | `test_intern_vit.py` |
+| 2026-04-15 | [#30566](https://github.com/vllm-project/vllm/pull/30566) | Update to transformers v5 | `test_intern_vit.py` |
+| 2026-03-25 | [#35182](https://github.com/vllm-project/vllm/pull/35182) | [Misc] Reorganize inputs | `internvl.py` |
+
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

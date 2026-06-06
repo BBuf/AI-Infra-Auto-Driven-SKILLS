@@ -1,5 +1,18 @@
 # vllm Qwen3 Core Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 5 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-04-23). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-05 | [#43167](https://github.com/vllm-project/vllm/pull/43167) | Remove KV cache scale boilerplate from model weight loading methods | `qwen3_dflash.py`, `qwen3_moe.py` |
+| 2026-05-29 | [#43234](https://github.com/vllm-project/vllm/pull/43234) | [Refactor] Remove dead code | `qwen3_dflash.py` |
+| 2026-05-15 | [#42692](https://github.com/vllm-project/vllm/pull/42692) | [Bugfix] DFlash FP8 KV-Cache | `qwen3_dflash.py` |
+| 2026-05-11 | [#42280](https://github.com/vllm-project/vllm/pull/42280) | [Model] Fix missing `maybe_prefix` | `qwen3_dflash.py` |
+| 2026-04-23 | [#40671](https://github.com/vllm-project/vllm/pull/40671) | [MoE Refactor] Rename FusedMoE.make_expert_params_mapping to fused_moe_make_expert_params_mapping | `qwen3_moe.py` |
+
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

@@ -1,5 +1,16 @@
 # vllm Qwen3.5 Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 3 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-05-26 | [#42124](https://github.com/vllm-project/vllm/pull/42124) | Add LM head quantization support for ModelOpt | `qwen3_5.py`, `qwen3_5_mtp.py` |
+| 2026-05-22 | [#41126](https://github.com/vllm-project/vllm/pull/41126) | [Attention] Mamba attention module refactor | `qwen3_5.py` |
+| 2026-05-18 | [#41436](https://github.com/vllm-project/vllm/pull/41436) | [ROCm][Quantization][3/N] Refactor quark_moe w4a4 w/ oracle | `Qwen3.5-35B-A3B-MXFP4-TP2.yaml`, `models-qwen35-mi355.txt` |
+
+
 ## 2026-05-19 PR Backfill Audit
 
 Rechecked vllm upstream `origin/main@07beaed84` and the GitHub Pull Request files API; this pass adds timeline entries and per-PR diff audit cards for `#42311`, `#42716`.

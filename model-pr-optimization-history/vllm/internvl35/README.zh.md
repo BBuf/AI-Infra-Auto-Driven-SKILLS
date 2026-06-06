@@ -1,5 +1,18 @@
 # vllm InternVL 3.5 模型 PR 优化历史
 
+## 2026-06-05 PR 补漏复核
+
+已于 2026-06-05 按 vllm 上游 `origin/main@c66b19800` 复核；自上次时效基准（2026-03-26）以来，共有 5 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
+
+| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
+| --- | --- | --- | --- |
+| 2026-06-04 | [#41759](https://github.com/vllm-project/vllm/pull/41759) | [MM][Perf][CG] Support ViT full CUDA graph for InternVL | `internvl.py` |
+| 2026-05-19 | [#42347](https://github.com/vllm-project/vllm/pull/42347) | [Perf][4/n] Eliminate various GPU<->CPU syncs | `internvl.py` |
+| 2026-04-15 | [#38901](https://github.com/vllm-project/vllm/pull/38901) | [Test] Refactor hard coded device string in test files under compile/quantization/models/model_executor folders | `test_intern_vit.py` |
+| 2026-04-15 | [#30566](https://github.com/vllm-project/vllm/pull/30566) | Update to transformers v5 | `test_intern_vit.py` |
+| 2026-03-25 | [#35182](https://github.com/vllm-project/vllm/pull/35182) | [Misc] Reorganize inputs | `internvl.py` |
+
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |

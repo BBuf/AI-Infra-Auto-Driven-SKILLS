@@ -1,5 +1,27 @@
 # sglang Kimi K2/K2.5/Linear/VL 模型 PR 优化历史
 
+## 2026-06-05 PR 补漏复核
+
+已于 2026-06-05 按 sglang 上游 `origin/main@6cfdc1858` 复核；自上次时效基准（2026-05-19）以来，共有 14 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
+
+| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
+| --- | --- | --- | --- |
+| 2026-06-03 | [#27001](https://github.com/sgl-project/sglang/pull/27001) | [AMD] [CI] Remove hardcoded model/cache paths from MI35x nightly tests | `test_kimi_k25_aiter_mla_eval_mi35x.py`, `test_kimi_k25_mxfp4_eval_mi35x.py` |
+| 2026-06-03 | [#24762](https://github.com/sgl-project/sglang/pull/24762) | [AMD] fix(triton-mla): cap max_kv_splits at 256 on gfx942 (Kimi-K2.6 hang) | `test_kimi_k2_instruct.py` |
+| 2026-06-01 | [#26555](https://github.com/sgl-project/sglang/pull/26555) | [RL+VLM] Avoid retokenization drift for pre-tokenized (token-id) VLM requests | `kimi_common.py` |
+| 2026-06-01 | [#25813](https://github.com/sgl-project/sglang/pull/25813) | docs(cookbook): port popular model usage guides into cookbook pages | `kimi_k2_5.mdx` |
+| 2026-05-29 | [#26744](https://github.com/sgl-project/sglang/pull/26744) | [RL] Forward Kimi K2.5 weight hooks to language model | `kimi_k25.py` |
+| 2026-05-29 | [#26353](https://github.com/sgl-project/sglang/pull/26353) | NPU Nightly Pipeline Skip Test Case Adaptation and Recovery Testing | `test_npu_kimi_vl_a3b_instruct.py` |
+| 2026-05-29 | [#26257](https://github.com/sgl-project/sglang/pull/26257) | [XPU] Fix Device Assignment | `kimi_vl_moonvit.py` |
+| 2026-05-29 | [#25676](https://github.com/sgl-project/sglang/pull/25676) | Upgrade xgrammar to 0.2.1 | `kimik2_detector.py` |
+| 2026-05-28 | [#24649](https://github.com/sgl-project/sglang/pull/24649) | [Xeon] CPU CI enhancement for Intel Xeon platforms | `test_kimik2_detector.py` |
+| 2026-05-27 | [#26511](https://github.com/sgl-project/sglang/pull/26511) | Update kimi k25 launch command in cookbook | `kimi-k25-deployment.jsx` |
+| 2026-05-27 | [#26382](https://github.com/sgl-project/sglang/pull/26382) | Enable Kimi-K2.5 piecewise CUDA graph | `kimi_k25.py` |
+| 2026-05-25 | [#26149](https://github.com/sgl-project/sglang/pull/26149) | [VLM] feat: accept grid_thws from preprocessed metadata for kimi | `kimi_k25.py` |
+| 2026-05-22 | [#24751](https://github.com/sgl-project/sglang/pull/24751) | fix(mm): make multimodal data loading non-blocking to prevent health check stalls | `kimi_k25.py`, `kimi_vl.py` |
+| 2026-05-20 | [#25831](https://github.com/sgl-project/sglang/pull/25831) | [Test] Stage-a sanity kits; consolidate core/ + models_e2e/ tests | `test_kimi_linear_models.py` |
+
+
 ## 2026-05-19 PR 补漏复核
 
 已按 sglang 上游 `origin/main@78cb38ed5` 和 GitHub Pull Request files API 复核；本轮补齐 `#23848`, `#24826`, `#25033`, `#25265`, `#25269`, `#25390`, `#25740` 的时间线与逐 PR diff 审计卡。

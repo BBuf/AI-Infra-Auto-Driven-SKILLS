@@ -1,5 +1,18 @@
 # sglang Mixtral Quark INT4/FP8 MoE 模型 PR 优化历史
 
+## 2026-06-05 PR 补漏复核
+
+已于 2026-06-05 按 sglang 上游 `origin/main@6cfdc1858` 复核；自上次时效基准（2026-05-01）以来，共有 5 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
+
+| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
+| --- | --- | --- | --- |
+| 2026-06-03 | [#18005](https://github.com/sgl-project/sglang/pull/18005) | [AMD][MXFP4] Online MXFP4 quantization 1/N - dense and MOE models w. original BF16 weight | `quark.py`, `quark_w4a4_mxfp4.py`, `quark_w4a4_mxfp4_moe.py` |
+| 2026-05-18 | [#25390](https://github.com/sgl-project/sglang/pull/25390) | [AMD] Enable shared-experts fusion with new KIMI-K2.5-MXFP4 model. | `quark.py` |
+| 2026-05-17 | [#23760](https://github.com/sgl-project/sglang/pull/23760) | [MoE] Unify DeepEPMoE+MoriEPMoE through AITER MoeRunner pre/post-permute | `quark_w4a4_mxfp4_moe.py`, `quark_int4fp8_moe.py` |
+| 2026-05-14 | [#24491](https://github.com/sgl-project/sglang/pull/24491) | [diffusion] feat: add performance mode server args | `quark_w4a4_mxfp4.py` |
+| 2026-05-13 | [#25182](https://github.com/sgl-project/sglang/pull/25182) | chore: add vLLM SPDX copyright headers to ported files | `mixtral.py`, `mixtral_quant.py` |
+
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |

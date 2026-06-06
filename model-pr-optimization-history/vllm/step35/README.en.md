@@ -1,5 +1,18 @@
 # vllm Step 3.5 Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 5 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-03 | [#44346](https://github.com/vllm-project/vllm/pull/44346) | [Refactor] Suppress SyntaxWarning from ast.literal_eval in tool parsers | `step3p5_tool_parser.py` |
+| 2026-05-29 | [#42288](https://github.com/vllm-project/vllm/pull/42288) | Adjust design around encoder_cudagraph_forward | `step3_vl.py` |
+| 2026-05-29 | [#37622](https://github.com/vllm-project/vllm/pull/37622) | [Bugfix] Fix Step3 pipeline parallel KeyError for residual tensor | `step3_text.py` |
+| 2026-05-28 | [#43859](https://github.com/vllm-project/vllm/pull/43859) | [Model]Support Step-3.7-Flash | `step3p5.py` |
+| 2026-05-22 | [#41234](https://github.com/vllm-project/vllm/pull/41234) | [Multimodal] Simplify ViT CUDA graph interfaces | `step3_vl.py` |
+
+
 ## 2026-05-19 PR Backfill Audit
 
 Rechecked vllm upstream `origin/main@07beaed84` and the GitHub Pull Request files API; this pass adds timeline entries and per-PR diff audit cards for `#42224`.

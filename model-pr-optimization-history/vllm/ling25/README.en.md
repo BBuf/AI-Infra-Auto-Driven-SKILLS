@@ -1,5 +1,16 @@
 # vllm Ling 2.5 1T Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 3 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-04 | [#43556](https://github.com/vllm-project/vllm/pull/43556) | [Attention] Mamba attention module refactor - LINEAR | `bailing_moe_linear.py` |
+| 2026-06-01 | [#43770](https://github.com/vllm-project/vllm/pull/43770) | [Bugfix] fix wrong partial_rotary_factor calculation for bailing_moe model. | `bailing_moe.py` |
+| 2026-05-26 | [#43410](https://github.com/vllm-project/vllm/pull/43410) | [Kernel] Porting  fuse_minimax_qk_norm  to manual fusion | `bailing_moe_linear.py` |
+
+
 ## 2026-05-19 Coverage Addition
 
 Generated from vllm upstream `origin/main@ef54a4d604`, `git log --name-only -- <model-files>` over model-related paths, and the GitHub Pull Request files API. This page fills the missing `Ling 2.5 1T` history entry found from sgl-cookbook coverage.

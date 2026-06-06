@@ -14,6 +14,13 @@ Each model history is bilingual when practical (`README.zh.md` and
 `README.en.md`) and should be grounded in inspected PR diffs, source files, and
 validation/risk notes.
 
+When a doc is rechecked for timeliness, a dated `## <YYYY-MM-DD> PR Backfill
+Audit` section is prepended right after the title. It lists PR-numbered merges
+that touched the tracked implementation files after the doc's previous freshness
+cutoff and are not yet folded into the timeline / diff-audit cards below. Read
+that section first to see what changed most recently before trusting the older
+cards.
+
 Quick queries:
 
 ```bash

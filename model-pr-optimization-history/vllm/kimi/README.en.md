@@ -1,5 +1,17 @@
 # vllm Kimi K2/K2.5/Linear/VL Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 4 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-04 | [#44539](https://github.com/vllm-project/vllm/pull/44539) | [mamba] unify KDA conv states into one cache to match 2-state SSM layout | `kimi_linear.py` |
+| 2026-06-04 | [#44493](https://github.com/vllm-project/vllm/pull/44493) | Fix Kimi-K2.5 FlashInfer ViT metadata | `kimi_k25.py`, `kimi_k25_vit.py` |
+| 2026-05-29 | [#43857](https://github.com/vllm-project/vllm/pull/43857) | Add vLLM library info to Hugging Face Hub requests | `kimi_audio.py` |
+| 2026-05-22 | [#41126](https://github.com/vllm-project/vllm/pull/41126) | [Attention] Mamba attention module refactor | `kimi_linear.py` |
+
+
 ## 2026-05-19 PR Backfill Audit
 
 Rechecked vllm upstream `origin/main@07beaed84` and the GitHub Pull Request files API; this pass adds timeline entries and per-PR diff audit cards for `#41068`, `#41778`, `#42081`, `#42869`.

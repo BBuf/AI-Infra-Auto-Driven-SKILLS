@@ -43,7 +43,7 @@ find it.
 | [`llm-torch-profiler-analysis`](skills/llm-torch-profiler-analysis/) | You need a three-table profiler report that keeps `extend/prefill` and `decode` evidence separate. |
 | [`llm-pipeline-analysis`](skills/llm-pipeline-analysis/) | You need forward-pass, layer, and kernel-level timing from a torch profiler trace, including anchor boundaries and Perfetto ranges. |
 | [`model-compute-simulation`](skills/model-compute-simulation/) | You need operator shapes, FLOPs, MFU estimates, kernel-to-op mapping, or parallelism what-if analysis for an LLM serving shape. |
-| [`sglang-humanize-review`](skills/sglang-humanize-review/) | You need SGLang code-review findings grounded in 2024-2025 human review threads, including inline code context, comments, and discussions. |
+| [`sglang-humanize-review`](skills/sglang-humanize-review/) | You need SGLang code-review findings grounded in full human PR review episodes from project start through the latest refresh (June 2026), including inline code context, top-level discussion, review summaries, and multi-round replies. |
 | [`sglang-sota-humanize-loop`](skills/sglang-sota-humanize-loop/) | You want one model-level Humanize RLCR loop that owns gap decisions, profiler triage, required layer-pipeline deep dives, SGLang patches, optional `ncu-report-skill` evidence, and real-model revalidation after the fixed fair benchmark. |
 | [`vllm-sota-humanize-loop`](skills/vllm-sota-humanize-loop/) | You want one model-level Humanize RLCR loop that owns gap decisions, profiler triage, required layer-pipeline deep dives, vLLM patches, optional `ncu-report-skill` evidence, and real-model revalidation after the fixed fair benchmark. |
 | [`sglang-prod-incident-triage`](skills/sglang-prod-incident-triage/) | You need to turn queue growth, timeouts, wrong outputs, crashes, or distributed stalls into a replay and next debug step. |
@@ -108,6 +108,9 @@ The repo is opinionated about evidence because performance work gets noisy fast.
   table.
 - SOTA claims should be scoped to the exact model, hardware, framework commits,
   precision, workload, and SLA used in the run.
+- SGLang human review should use the full PR episode corpus: inline review
+  threads for line-local findings, PR conversations for design/test/repro
+  negotiation, and review submissions for blocking maintainer summaries.
 - Humanize SOTA loops should keep only the fixed fair benchmark outside the
   patch loop; gap decisions, profiler triage, required layer-pipeline deep
   dives, kernel evidence, target-framework code changes, and revalidation all

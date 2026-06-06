@@ -1,5 +1,19 @@
 # vllm DeepSeek V3.2 模型 PR 优化历史
 
+## 2026-06-05 PR 补漏复核
+
+已于 2026-06-05 按 vllm 上游 `origin/main@c66b19800` 复核；自上次时效基准（2026-05-19）以来，共有 6 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
+
+| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
+| --- | --- | --- | --- |
+| 2026-06-01 | [#42944](https://github.com/vllm-project/vllm/pull/42944) | fix: glm5.1 pp model loading | `deepseek_mtp.py`, `deepseek_v2.py` |
+| 2026-05-29 | [#42982](https://github.com/vllm-project/vllm/pull/42982) | [ROCm][Perf] DSv3.2 MI355X TP4 decode-step orchestration cleanup (3 micro-opts) | `deepseek_v2.py` |
+| 2026-05-28 | [#43781](https://github.com/vllm-project/vllm/pull/43781) | [Bugfix][ROCm] Fix Accuracy Drop in Sparse Indexer on gfx950 | `deepseek_v2.py` |
+| 2026-05-28 | [#42879](https://github.com/vllm-project/vllm/pull/42879) | [Bugfix] Stream DeepSeek DSML tool-call argument deltas incrementally | `test_deepseekv32_tool_parser.py`, `deepseekv32_tool_parser.py` |
+| 2026-05-21 | [#43255](https://github.com/vllm-project/vllm/pull/43255) | [CI] Add composed-schema regression tests for DeepSeek V3.2/V4 parsers | `test_deepseekv32_tool_parser.py` |
+| 2026-05-20 | [#43019](https://github.com/vllm-project/vllm/pull/43019) | [Bugfix] Use shared coerce_to_schema_type in DeepSeekV32 tool parser | `test_deepseekv32_tool_parser.py`, `deepseekv32_tool_parser.py` |
+
+
 ## 2026-05-19 PR 补漏复核
 
 已按 vllm 上游 `origin/main@07beaed84` 和 GitHub Pull Request files API 复核；本轮补齐 `#41217`, `#41835`, `#42062` 的时间线与逐 PR diff 审计卡。

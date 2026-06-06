@@ -1,5 +1,31 @@
 # vllm Qwen VLM/Omni/ASR 模型 PR 优化历史
 
+## 2026-06-05 PR 补漏复核
+
+已于 2026-06-05 按 vllm 上游 `origin/main@c66b19800` 复核；自上次时效基准（2026-04-27）以来，共有 18 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
+
+| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
+| --- | --- | --- | --- |
+| 2026-06-04 | [#44205](https://github.com/vllm-project/vllm/pull/44205) | [Bugfix] fix EVS for qwen3-vl | `qwen3_vl.py` |
+| 2026-05-29 | [#42288](https://github.com/vllm-project/vllm/pull/42288) | Adjust design around encoder_cudagraph_forward | `qwen2_5_vl.py`, `qwen2_vl.py`, `qwen3_vl.py` |
+| 2026-05-28 | [#42796](https://github.com/vllm-project/vllm/pull/42796) | [MM][CG] Avoid over-padding Qwen2.5-VL encoder cudagraph window metadata | `qwen2_5_vl.py` |
+| 2026-05-27 | [#43617](https://github.com/vllm-project/vllm/pull/43617) | Fix Qwen3-VL and Qwen3-omni-thinker accuracy degradation from deepstack inputs under torch.compile | `qwen3_omni_moe_thinker.py`, `qwen3_vl.py` |
+| 2026-05-26 | [#43647](https://github.com/vllm-project/vllm/pull/43647) | [ROCm][CI] Fix ROCm multimodal Qwen2.5-VL activation compile and Phi4MM ragged image mask handling | `qwen2_5_vl.py` |
+| 2026-05-23 | [#42787](https://github.com/vllm-project/vllm/pull/42787) | [MM] Enable FlashInfer metadata support for Qwen2.5-VL vision attention | `qwen2_5_vl.py` |
+| 2026-05-22 | [#41234](https://github.com/vllm-project/vllm/pull/41234) | [Multimodal] Simplify ViT CUDA graph interfaces | `qwen2_5_vl.py`, `qwen2_vl.py`, `qwen3_vl.py` |
+| 2026-05-19 | [#42347](https://github.com/vllm-project/vllm/pull/42347) | [Perf][4/n] Eliminate various GPU<->CPU syncs | `qwen2_5_omni_thinker.py`, `qwen2_5_vl.py`, `qwen2_audio.py`, … (+3) |
+| 2026-05-18 | [#42909](https://github.com/vllm-project/vllm/pull/42909) | [ROCm][CI] Stabilize ROCm pooling and multimodal CI | `test_qwen2_5_vl.py` |
+| 2026-05-16 | [#42716](https://github.com/vllm-project/vllm/pull/42716) | Fix Weight loading for  Qwen3.5-MTP and Qwen3-VL using runai_streamer | `qwen3_vl_moe.py` |
+| 2026-05-14 | [#42412](https://github.com/vllm-project/vllm/pull/42412) | [Feature] Add instruction support for score/rerank chat templates | `qwen3_vl_reranker.jinja` |
+| 2026-05-14 | [#41736](https://github.com/vllm-project/vllm/pull/41736) | [MM][CG] Support ViT CG for Qwen2-VL | `qwen2_vl.py` |
+| 2026-05-14 | [#38040](https://github.com/vllm-project/vllm/pull/38040) | [Fix] Misc Fixes in ViT CUDA Graph | `qwen3_vl.py` |
+| 2026-05-13 | [#42394](https://github.com/vllm-project/vllm/pull/42394) | [Bugfix][Qwen3-VL] Fix pipeline-parallel deepstack initialization | `qwen3_vl.py`, `qwen3_vl_moe.py` |
+| 2026-05-02 | [#40830](https://github.com/vllm-project/vllm/pull/40830) | [MM][CG] Support ViT CG for Qwen2.5-VL | `test_qwen2_5_vl.py`, `qwen2_5_vl.py` |
+| 2026-04-27 | [#40967](https://github.com/vllm-project/vllm/pull/40967) | [Model] Add MiMo-V2.5 support | `mimo_v2_omni.py`, `mimo_v2_omni.py`, `mimo_v2_omni.py` |
+| 2026-04-27 | [#38065](https://github.com/vllm-project/vllm/pull/38065) | [Perf] FP8 FlashInfer Attn for ViT | `qwen3_vl.py` |
+| 2026-04-27 | [#36464](https://github.com/vllm-project/vllm/pull/36464) | [Examples] Resettle generate examples. | `README.md`, `only_thinker.py`, `only_thinker.py` |
+
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |

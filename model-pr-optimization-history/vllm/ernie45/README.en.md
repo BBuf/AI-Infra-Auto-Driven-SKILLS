@@ -1,5 +1,18 @@
 # vllm ERNIE 4.5 Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 5 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-04-14). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-05-29 | [#43997](https://github.com/vllm-project/vllm/pull/43997) | [Refactor] Remove dead current_tool_name_sent assignments from tool parsers | `ernie45_tool_parser.py` |
+| 2026-04-23 | [#40671](https://github.com/vllm-project/vllm/pull/40671) | [MoE Refactor] Rename FusedMoE.make_expert_params_mapping to fused_moe_make_expert_params_mapping | `ernie45_moe.py`, `ernie45_vl_moe.py` |
+| 2026-04-21 | [#35782](https://github.com/vllm-project/vllm/pull/35782) | [MoE Refactor] Remove SharedFusedMoE class | `ernie45_moe.py`, `ernie45_vl_moe.py` |
+| 2026-04-20 | [#35949](https://github.com/vllm-project/vllm/pull/35949) | [MoE Refactor] Move the shared/fused expert output sum into MoERunnerBase | `ernie45_moe.py`, `ernie45_vl_moe.py` |
+| 2026-04-16 | [#39780](https://github.com/vllm-project/vllm/pull/39780) | [Bugfix] Reject empty tools array with HTTP 400 | `test_ernie45_moe_tool_parser.py` |
+
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

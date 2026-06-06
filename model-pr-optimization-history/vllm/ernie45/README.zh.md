@@ -1,5 +1,18 @@
 # vllm ERNIE 4.5 模型 PR 优化历史
 
+## 2026-06-05 PR 补漏复核
+
+已于 2026-06-05 按 vllm 上游 `origin/main@c66b19800` 复核；自上次时效基准（2026-04-14）以来，共有 5 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
+
+| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
+| --- | --- | --- | --- |
+| 2026-05-29 | [#43997](https://github.com/vllm-project/vllm/pull/43997) | [Refactor] Remove dead current_tool_name_sent assignments from tool parsers | `ernie45_tool_parser.py` |
+| 2026-04-23 | [#40671](https://github.com/vllm-project/vllm/pull/40671) | [MoE Refactor] Rename FusedMoE.make_expert_params_mapping to fused_moe_make_expert_params_mapping | `ernie45_moe.py`, `ernie45_vl_moe.py` |
+| 2026-04-21 | [#35782](https://github.com/vllm-project/vllm/pull/35782) | [MoE Refactor] Remove SharedFusedMoE class | `ernie45_moe.py`, `ernie45_vl_moe.py` |
+| 2026-04-20 | [#35949](https://github.com/vllm-project/vllm/pull/35949) | [MoE Refactor] Move the shared/fused expert output sum into MoERunnerBase | `ernie45_moe.py`, `ernie45_vl_moe.py` |
+| 2026-04-16 | [#39780](https://github.com/vllm-project/vllm/pull/39780) | [Bugfix] Reject empty tools array with HTTP 400 | `test_ernie45_moe_tool_parser.py` |
+
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |

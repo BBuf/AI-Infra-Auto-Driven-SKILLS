@@ -1,5 +1,25 @@
 # sglang DeepSeek V4 Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 12 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-04 | [#27035](https://github.com/sgl-project/sglang/pull/27035) | docs: add DeepSeek V4 FP4 indexer usage | `DeepSeek-V4.mdx` |
+| 2026-06-03 | [#27049](https://github.com/sgl-project/sglang/pull/27049) | docs: add DeepSeek-V4 EPLB Waterfill tips | `DeepSeek-V4.mdx` |
+| 2026-06-01 | [#26968](https://github.com/sgl-project/sglang/pull/26968) | docs: update RTX PRO 6000 deployment snippet | `deepseek-v4-deployment.jsx` |
+| 2026-06-01 | [#24692](https://github.com/sgl-project/sglang/pull/24692) | feat: SM120 (Blackwell Desktop) support for DeepSeek-V4 inference | `deepseek-v4-deployment.jsx` |
+| 2026-05-28 | [#26668](https://github.com/sgl-project/sglang/pull/26668) | [Doc] Update benchmark instruction for dsv4 | `DeepSeek-V4.mdx` |
+| 2026-05-26 | [#26451](https://github.com/sgl-project/sglang/pull/26451) | [docs] Fix V4 Pro balanced recipe | `DeepSeek-V4.mdx`, `deepseek-v4-deployment.jsx` |
+| 2026-05-26 | [#26413](https://github.com/sgl-project/sglang/pull/26413) | [docs] DeepSeek-V4 cookbook: note cu129 image for GB200 Pro DeepEP backend | `deepseek-v4-deployment.jsx` |
+| 2026-05-23 | [#26164](https://github.com/sgl-project/sglang/pull/26164) | [docs] DeepSeek-V4 cookbook: balanced MegaMoE cap, H200 Pro FP4 mem-frac, nsa-* compat, PD-disagg fixes | `deepseek-v4-deployment.jsx` |
+| 2026-05-22 | [#26057](https://github.com/sgl-project/sglang/pull/26057) | [docs] DeepSeek-V4 cookbook: split Quantization axis, add H100 SGLang FP8 | `DeepSeek-V4.mdx`, `deepseek-v4-deployment.jsx` |
+| 2026-05-21 | [#26004](https://github.com/sgl-project/sglang/pull/26004) | Default MegaMoE to W4A8 for Max-Throughput recipe | `deepseek-v4-deployment.jsx` |
+| 2026-05-21 | [#25923](https://github.com/sgl-project/sglang/pull/25923) | [Docs] DeepSeek-V4: switch H200 FP4 Pro to flashinfer_mxfp4, Flash Balanced too | `DeepSeek-V4.mdx`, `deepseek-v4-deployment.jsx` |
+| 2026-05-20 | [#25821](https://github.com/sgl-project/sglang/pull/25821) | [Refactor] Rename NSA → DSA: user-facing aliases, file/class/import rename | `deepseek-v4-deployment.jsx` |
+
+
 ## 2026-05-19 PR Backfill Audit
 
 Rechecked sglang upstream `origin/main@78cb38ed5` and the GitHub Pull Request files API; this pass adds timeline entries and per-PR diff audit cards for `#24367`, `#24691`, `#24704`, `#24775`, `#24793`, `#24816`, `#24890`, `#24897`, `#24925`, `#24933`, `#24949`, `#24986`, `#25001`, `#25052`, `#25152`, `#25243`, `#25282`, `#25369`, `#25410`, `#25412`, `#25419`, `#25477`, `#25506`, `#25569`, `#25733`.

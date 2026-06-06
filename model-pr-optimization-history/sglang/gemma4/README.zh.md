@@ -1,5 +1,25 @@
 # sglang Gemma 4 模型 PR 优化历史
 
+## 2026-06-05 PR 补漏复核
+
+已于 2026-06-05 按 sglang 上游 `origin/main@6cfdc1858` 复核；自上次时效基准（2026-05-19）以来，共有 12 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
+
+| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
+| --- | --- | --- | --- |
+| 2026-06-05 | [#23280](https://github.com/sgl-project/sglang/pull/23280) | [XPU] Enable Gemma 4 E2B / E4B / 31B/ 26B-A4B on Intel XPU | `gemma4_fused_ops.py`, `gemma4_causal.py` |
+| 2026-06-04 | [#27321](https://github.com/sgl-project/sglang/pull/27321) | docs(cookbook): restore Gemma 4 transformers commit pin | `Gemma4.mdx` |
+| 2026-06-04 | [#27287](https://github.com/sgl-project/sglang/pull/27287) | docs(cookbook): add Docker install option for Gemma 4 | `Gemma4.mdx` |
+| 2026-06-03 | [#27171](https://github.com/sgl-project/sglang/pull/27171) | [Docs] Update unified Text/Vision/Audio model cookbook: install + sgl-eval accuracy | `Gemma4.mdx` |
+| 2026-06-03 | [#27167](https://github.com/sgl-project/sglang/pull/27167) | [model] support encoder-free unified Text/Vision/Audio model | `Gemma4.mdx`, `gemma4-deployment.jsx` |
+| 2026-06-02 | [#26502](https://github.com/sgl-project/sglang/pull/26502) | perf(gemma4): single-launch fused router (topk + softmax + scale) | `gemma4_fused_ops.py`, `gemma4_causal.py` |
+| 2026-05-31 | [#26799](https://github.com/sgl-project/sglang/pull/26799) | Apply gemma's position offset out-of-place instead of in-place | `gemma4_mm.py` |
+| 2026-05-23 | [#26026](https://github.com/sgl-project/sglang/pull/26026) | [bug fix] Fix 3 issues when using Gemma4 MTP | `gemma4_causal.py` |
+| 2026-05-22 | [#24751](https://github.com/sgl-project/sglang/pull/24751) | fix(mm): make multimodal data loading non-blocking to prevent health check stalls | `gemma4.py` |
+| 2026-05-21 | [#25983](https://github.com/sgl-project/sglang/pull/25983) | feat(model_runner): remove pool/backend refs from ForwardBatch via ForwardContext | `gemma4_mm.py` |
+| 2026-05-20 | [#25054](https://github.com/sgl-project/sglang/pull/25054) | Support Gemma4 MoE NVFP4 | `gemma4_causal.py`, `gemma4_mm.py` |
+| 2026-05-19 | [#25284](https://github.com/sgl-project/sglang/pull/25284) | Support Gemma4 Pipeline Parallelism | `gemma4_causal.py`, `gemma4_mm.py` |
+
+
 ## 2026-05-19 PR 补漏复核
 
 已按 sglang 上游 `origin/main@78cb38ed5` 和 GitHub Pull Request files API 复核；本轮补齐 `#25006`, `#25547` 的时间线与逐 PR diff 审计卡。

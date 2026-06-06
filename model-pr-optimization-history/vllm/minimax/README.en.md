@@ -1,5 +1,18 @@
 # vllm MiniMax M2 Series Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 5 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-04 | [#43556](https://github.com/vllm-project/vllm/pull/43556) | [Attention] Mamba attention module refactor - LINEAR | `minimax_text_01.py` |
+| 2026-06-02 | [#44279](https://github.com/vllm-project/vllm/pull/44279) | [Refactor] Remove dead code from parser infrastructure | `minimax_m2_parser.py` |
+| 2026-05-29 | [#38445](https://github.com/vllm-project/vllm/pull/38445) | [PERF]MiniMax-M2 gate kernel | `minimax_m2.py` |
+| 2026-05-26 | [#43410](https://github.com/vllm-project/vllm/pull/43410) | [Kernel] Porting  fuse_minimax_qk_norm  to manual fusion | `test_minimax_reduce_rms.py`, `minimax_qk_norm_fusion.py`, `minimax_m2.py` |
+| 2026-05-19 | [#43025](https://github.com/vllm-project/vllm/pull/43025) | [Refactor] Extract extract_types_from_schema utility from Minimax M2 tool parser | `minimax_m2_tool_parser.py` |
+
+
 ## 2026-05-19 PR Backfill Audit
 
 Rechecked vllm upstream `origin/main@07beaed84` and the GitHub Pull Request files API; this pass adds timeline entries and per-PR diff audit cards for `#42497`, `#43006`.

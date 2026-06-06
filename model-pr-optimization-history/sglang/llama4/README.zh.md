@@ -1,5 +1,16 @@
 # sglang Llama 4 模型 PR 优化历史
 
+## 2026-06-05 PR 补漏复核
+
+已于 2026-06-05 按 sglang 上游 `origin/main@6cfdc1858` 复核；自上次时效基准（2026-05-19）以来，共有 3 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
+
+| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
+| --- | --- | --- | --- |
+| 2026-06-01 | [#25813](https://github.com/sgl-project/sglang/pull/25813) | docs(cookbook): port popular model usage guides into cookbook pages | `Llama4.mdx`, `llama4.mdx`, `llama4-maverick-deployment.jsx` |
+| 2026-05-29 | [#26353](https://github.com/sgl-project/sglang/pull/26353) | NPU Nightly Pipeline Skip Test Case Adaptation and Recovery Testing | `test_npu_llama4_scount_17b_16e.py` |
+| 2026-05-22 | [#24751](https://github.com/sgl-project/sglang/pull/24751) | fix(mm): make multimodal data loading non-blocking to prevent health check stalls | `mllama4.py` |
+
+
 ## 2026-05-19 PR 补漏复核
 
 已按 sglang 上游 `origin/main@78cb38ed5` 和 GitHub Pull Request files API 复核；本轮补齐 `#25089` 的时间线与逐 PR diff 审计卡。

@@ -1,5 +1,18 @@
 # sglang Ring 2.5 1T 模型 PR 优化历史
 
+## 2026-06-05 PR 补漏复核
+
+已于 2026-06-05 按 sglang 上游 `origin/main@6cfdc1858` 复核；自上次时效基准（2026-05-19）以来，共有 5 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
+
+| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
+| --- | --- | --- | --- |
+| 2026-06-03 | [#27120](https://github.com/sgl-project/sglang/pull/27120) | Fix hybrid linear attention dispatch by layer id with draft-worker awareness | `bailing_moe_linear.py` |
+| 2026-06-02 | [#27116](https://github.com/sgl-project/sglang/pull/27116) | Revert "Fix hybrid linear attention misrouting plain-RadixAttention linear layers to the full backend (Ring-2.5-1T)" | `bailing_moe_linear.py` |
+| 2026-06-02 | [#26623](https://github.com/sgl-project/sglang/pull/26623) | Fix hybrid linear attention misrouting plain-RadixAttention linear layers to the full backend (Ring-2.5-1T) | `bailing_moe_linear.py` |
+| 2026-05-29 | [#26474](https://github.com/sgl-project/sglang/pull/26474) | [HotFix][Ling 2.6] Fix HybridLinearAttn dispatcher for Ling-2.6 | `bailing_moe_linear.py` |
+| 2026-05-27 | [#23837](https://github.com/sgl-project/sglang/pull/23837) | Add Ling_2_6 | `bailing_moe_linear.py` |
+
+
 ## 2026-05-19 新增覆盖
 
 按 sglang 上游 `origin/main@5073c82a37`、模型相关文件的 `git log --name-only -- <model-files>` 以及 GitHub Pull Request files API 生成。本页用于补齐 sgl-cookbook 中 `Ring 2.5 1T` 缺失的历史 PR 优化文档。
