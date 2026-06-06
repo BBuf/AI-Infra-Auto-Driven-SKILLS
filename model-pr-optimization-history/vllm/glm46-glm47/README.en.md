@@ -1,5 +1,26 @@
 # vllm GLM-4.6/4.7 Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 13 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-03-18). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-03 | [#44346](https://github.com/vllm-project/vllm/pull/44346) | [Refactor] Suppress SyntaxWarning from ast.literal_eval in tool parsers | `glm4_moe_tool_parser.py` |
+| 2026-05-20 | [#39601](https://github.com/vllm-project/vllm/pull/39601) | [Bugfix] Fix glm4_moe_tool_parser._is_string_type for /v1/responses FunctionTool format | `test_glm4_moe_tool_parser.py`, `glm4_moe_tool_parser.py` |
+| 2026-05-08 | [#42026](https://github.com/vllm-project/vllm/pull/42026) | [Bugfix] Preserve leading/trailing whitespace in GLM non-streaming tool parser | `test_glm47_moe_tool_parser.py`, `test_glm4_moe_tool_parser.py`, `glm4_moe_tool_parser.py` |
+| 2026-05-07 | [#41755](https://github.com/vllm-project/vllm/pull/41755) | [Bugfix] Fix GLM4-MoE weight loading for NVFP4 quantized checkpoints | `glm4_moe.py` |
+| 2026-04-23 | [#40671](https://github.com/vllm-project/vllm/pull/40671) | [MoE Refactor] Rename FusedMoE.make_expert_params_mapping to fused_moe_make_expert_params_mapping | `glm4_moe.py`, `glm4_moe_lite.py`, `glm4_moe_lite_mtp.py`, … (+1) |
+| 2026-04-21 | [#35782](https://github.com/vllm-project/vllm/pull/35782) | [MoE Refactor] Remove SharedFusedMoE class | `glm4_moe.py`, `glm4_moe_lite.py`, `glm4_moe_lite_mtp.py` |
+| 2026-04-20 | [#35949](https://github.com/vllm-project/vllm/pull/35949) | [MoE Refactor] Move the shared/fused expert output sum into MoERunnerBase | `glm4_moe.py` |
+| 2026-04-17 | [#39870](https://github.com/vllm-project/vllm/pull/39870) | [BugFix] Support custom tool parsers when tool_choice is `required` and named function | `glm47_moe_tool_parser.py`, `glm4_moe_tool_parser.py` |
+| 2026-04-13 | [#39253](https://github.com/vllm-project/vllm/pull/39253) | [Bugfix] Fix GLM tool parser streaming with MTP or stream interval | `test_glm47_moe_tool_parser.py`, `test_glm4_moe_tool_parser.py`, `glm4_moe_tool_parser.py` |
+| 2026-04-01 | [#38172](https://github.com/vllm-project/vllm/pull/38172) | [Misc] Add 20 regression tests for 11 tool parser bug fixes | `test_glm4_moe_tool_parser.py` |
+| 2026-03-31 | [#38264](https://github.com/vllm-project/vllm/pull/38264) | [Mypy] Fix adjust_request typing | `glm4_moe_tool_parser.py` |
+| 2026-03-31 | [#38189](https://github.com/vllm-project/vllm/pull/38189) | [Tool Parser][2/3] Use self.tools instead of request.tools in tool parsers | `test_glm47_moe_tool_parser.py`, `test_glm4_moe_tool_parser.py`, `glm4_moe_tool_parser.py` |
+| 2026-03-26 | [#38029](https://github.com/vllm-project/vllm/pull/38029) | [Tool Parser][1/3] Pass tools to ToolParser constructor | `glm47_moe_tool_parser.py`, `glm4_moe_tool_parser.py` |
+
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

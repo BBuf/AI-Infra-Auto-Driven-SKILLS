@@ -1,5 +1,64 @@
 # sglang DeepSeek V3.1 Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 52 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-04-21). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-02 | [#26970](https://github.com/sgl-project/sglang/pull/26970) | [perf] Replicate embed_tokens to drop the post-embed all-reduce | `deepseek_v2.py` |
+| 2026-05-29 | [#26673](https://github.com/sgl-project/sglang/pull/26673) | [refactor] remove unused op_mlp | `deepseek_v2.py` |
+| 2026-05-29 | [#26626](https://github.com/sgl-project/sglang/pull/26626) | [perf] Fuse NVFP4 gate_up_gemm + swiglu + output FP4 quant | `deepseek_v2.py` |
+| 2026-05-29 | [#25755](https://github.com/sgl-project/sglang/pull/25755) | [Fix][NPU] Preserve existing packed_modules_mapping when merging model-level fused module mappings | `deepseek_v2.py` |
+| 2026-05-29 | [#25463](https://github.com/sgl-project/sglang/pull/25463) | [ROCm] Eliminate redundant contiguous copy in MLA attention on ROCm MXFP4 | `forward_mla.py` |
+| 2026-05-28 | [#24737](https://github.com/sgl-project/sglang/pull/24737) | Support Flashinfer Cute-DSL MLA attention | `forward_mla.py`, `utils.py` |
+| 2026-05-27 | [#23269](https://github.com/sgl-project/sglang/pull/23269) | Support batch size > 1 when enable CP | `deepseek_v2.py` |
+| 2026-05-25 | [#26208](https://github.com/sgl-project/sglang/pull/26208) | [AMD] Dsv4/pr2 compressor opt | `deepseek_v2.py` |
+| 2026-05-23 | [#25898](https://github.com/sgl-project/sglang/pull/25898) | [AMD] Dsv4/pr1 fix run time issue | `deepseek_v2.py` |
+| 2026-05-23 | [#25843](https://github.com/sgl-project/sglang/pull/25843) | Route concat MLA to JIT and remove unused downcast | `forward_mha.py` |
+| 2026-05-23 | [#23292](https://github.com/sgl-project/sglang/pull/23292) | [CP] 1/N: Support MLA Prefill Context Parallel | `attention_backend_handler.py`, `forward_mla.py`, `deepseek_v2.py` |
+| 2026-05-22 | [#25189](https://github.com/sgl-project/sglang/pull/25189) | [perf] DeepSeekV3: drop redundant FP32 upcasts in trtllm MoE paths | `deepseek_v2.py` |
+| 2026-05-22 | [#23351](https://github.com/sgl-project/sglang/pull/23351) | Support piecewise CUDA graph with NSA | `deepseek_v2.py` |
+| 2026-05-21 | [#25983](https://github.com/sgl-project/sglang/pull/25983) | feat(model_runner): remove pool/backend refs from ForwardBatch via ForwardContext | `deepseek_v2_attention_mla_npu.py`, `attention_backend_handler.py`, `forward_mha.py`, … (+2) |
+| 2026-05-21 | [#25974](https://github.com/sgl-project/sglang/pull/25974) | [Fix]: Restrict Kimi-K2.5 shared-experts fusion to Quark MXFP4 checkpoints | `deepseek_v2.py` |
+| 2026-05-21 | [#25884](https://github.com/sgl-project/sglang/pull/25884) | [Refactor] major JIT kernel clean up for dsv4 | `deepseek_v2.py` |
+| 2026-05-20 | [#25821](https://github.com/sgl-project/sglang/pull/25821) | [Refactor] Rename NSA → DSA: user-facing aliases, file/class/import rename | `deepseek_v2_attention_mla_npu.py`, `attention_backend_handler.py`, `forward_mha.py`, … (+3) |
+| 2026-05-20 | [#25460](https://github.com/sgl-project/sglang/pull/25460) | [perf] prepare_prefill_qkv hook + fp8 quantize jit kernel | `forward_mha.py` |
+| 2026-05-19 | [#24640](https://github.com/sgl-project/sglang/pull/24640) | Support spec v2 for FlashMLA speculative decoding | `deepseek_v2.py` |
+| 2026-05-18 | [#25454](https://github.com/sgl-project/sglang/pull/25454) | fix(eagle3): drop +1 offset on aux layer ids when first id != 1 | `deepseek_v2.py` |
+| 2026-05-18 | [#25390](https://github.com/sgl-project/sglang/pull/25390) | [AMD] Enable shared-experts fusion with new KIMI-K2.5-MXFP4 model. | `deepseek_v2.py` |
+| 2026-05-18 | [#24933](https://github.com/sgl-project/sglang/pull/24933) | Amd/deepseek v4 rebase main 0509 | `deepseek_v2.py` |
+| 2026-05-16 | [#25406](https://github.com/sgl-project/sglang/pull/25406) | [MoE] Decouple Mega MoE from DeepEP backend | `deepseek_v2.py` |
+| 2026-05-15 | [#25379](https://github.com/sgl-project/sglang/pull/25379) | feat(moe): reuse prev-layer output as symm_output for FP4 routed MoE | `deepseek_v2.py` |
+| 2026-05-15 | [#25333](https://github.com/sgl-project/sglang/pull/25333) | perf(mla): hybrid Triton fused cat+FP8-quantize for MLA chunked-prefill K/V | `forward_mha.py` |
+| 2026-05-14 | [#25279](https://github.com/sgl-project/sglang/pull/25279) | DeepseekV2MoE: defer shared experts when routed kernel is non-mutating | `deepseek_v2.py` |
+| 2026-05-13 | [#25182](https://github.com/sgl-project/sglang/pull/25182) | chore: add vLLM SPDX copyright headers to ported files | `deepseek_v2.py` |
+| 2026-05-13 | [#25001](https://github.com/sgl-project/sglang/pull/25001) | [LoRA] MLA attention LoRA: q_b_proj / kv_b_proj support | `forward_mla.py`, `deepseek_v2.py` |
+| 2026-05-13 | [#24925](https://github.com/sgl-project/sglang/pull/24925) | [attn backend] Integrate tokenspeed_mla prefill/decode kernels (fp8 kv cache, blackwell) | `attention_backend_handler.py`, `forward_mla.py`, `utils.py` |
+| 2026-05-13 | [#24897](https://github.com/sgl-project/sglang/pull/24897) | Port fused SiLU+clamp+FP8 quant from DSV4 dev branch | `deepseek_v2.py` |
+| 2026-05-13 | [#24148](https://github.com/sgl-project/sglang/pull/24148) | [AMD] Add _skip_rope_for_aiter_fused_mla method and check to avoid double rotating with gfx950 and Aiter backend | `forward_mla.py` |
+| 2026-05-13 | [#24125](https://github.com/sgl-project/sglang/pull/24125) | [AMD] Skip redundant CatArrayBatchedCopy in GLM-5 NSA TileLang decode | `forward_mla.py` |
+| 2026-05-13 | [#19290](https://github.com/sgl-project/sglang/pull/19290) | feat: [2/2][DeepEP] Add waterfill load balancing for shared expert dispatch | `deepseek_v2.py` |
+| 2026-05-12 | [#25120](https://github.com/sgl-project/sglang/pull/25120) | [env] Make max KV chunk capacity configurable via `SGLANG_MAX_KV_CHUNK_CAPACITY` | `forward_mha.py` |
+| 2026-05-11 | [#24949](https://github.com/sgl-project/sglang/pull/24949) | Deepseek-v4-Pro share expert tp1 | `deepseek_v2.py` |
+| 2026-05-10 | [#24799](https://github.com/sgl-project/sglang/pull/24799) | [AMD] Fix DeepSeek import cascade by supporting both pre- and post-#2958 aiter `fused_qk_rmsnorm` APIs | `forward_mla.py` |
+| 2026-05-07 | [#24005](https://github.com/sgl-project/sglang/pull/24005) | [AMD] Enable dual-stream MoE on ROCm | `deepseek_v2.py` |
+| 2026-05-07 | [#23882](https://github.com/sgl-project/sglang/pull/23882) | Deepseek V4 | `deepseek_v2.py` |
+| 2026-05-05 | [#24450](https://github.com/sgl-project/sglang/pull/24450) | move topk capturers to srt/state_capturer/ | `forward_mla.py` |
+| 2026-05-05 | [#24392](https://github.com/sgl-project/sglang/pull/24392) | add indexer-topk capture (V3.2 NSA + infra) | `forward_mla.py` |
+| 2026-05-02 | [#23850](https://github.com/sgl-project/sglang/pull/23850) | Support RunAI loading for quantized checkpoints | `deepseek_weight_loader.py` |
+| 2026-05-02 | [#21247](https://github.com/sgl-project/sglang/pull/21247) | [Dependency] Upgrade to Torch 2.11.0 | `deepseek_v2.py` |
+| 2026-05-01 | [#23557](https://github.com/sgl-project/sglang/pull/23557) | [Intel GPU] Integrate flash_mla_decode in Intel XPU attention backend | `attention_backend_handler.py`, `utils.py` |
+| 2026-04-30 | [#21126](https://github.com/sgl-project/sglang/pull/21126) | [4/N] Quantization Refactor: AWQ schemes and Kernel call and weight init split | `utils.py` |
+| 2026-04-29 | [#21062](https://github.com/sgl-project/sglang/pull/21062) | Use spec v2 by default | `test_deepseek_v31.py` |
+| 2026-04-28 | [#23268](https://github.com/sgl-project/sglang/pull/23268) | 【NPU】【bugfix】accuracy fix when enable both nsa cp and prefixcache | `deepseek_v2_attention_mla_npu.py` |
+| 2026-04-27 | [#23285](https://github.com/sgl-project/sglang/pull/23285) | [Flashinfer] Integrate flashinfer router gemm for sm103 | `deepseek_v2.py` |
+| 2026-04-26 | [#23748](https://github.com/sgl-project/sglang/pull/23748) | refactor(moe): centralize post-experts all-reduce skip predicate | `deepseek_v2.py` |
+| 2026-04-25 | [#23732](https://github.com/sgl-project/sglang/pull/23732) | Apply should_use_dp_reduce_scatterv guard to remaining MoE models (follow-up to #23731) | `deepseek_v2.py` |
+| 2026-04-23 | [#22774](https://github.com/sgl-project/sglang/pull/22774) | [MUSA][16/N] Add MUSA backend support for layers and DeepSeek models (V2/V3/R1) | `forward_mha.py`, `forward_mla.py`, `deepseek_weight_loader.py`, … (+2) |
+| … | | _2 more PR(s) after 2026-04-21 omitted_ | |
+
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

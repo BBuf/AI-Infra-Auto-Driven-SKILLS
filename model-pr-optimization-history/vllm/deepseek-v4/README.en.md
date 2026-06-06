@@ -1,5 +1,17 @@
 # vllm DeepSeek V4 Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 4 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-04 | [#43827](https://github.com/vllm-project/vllm/pull/43827) | [DSv4] Adding TRTLLM gen attention kernel | `test_fused_deepseek_v4_qnorm_rope_kv_insert.py` |
+| 2026-05-26 | [#43162](https://github.com/vllm-project/vllm/pull/43162) | [Feat][DSV4] Fuse q pad into deepseek v4 fused kernel | `test_fused_deepseek_v4_qnorm_rope_kv_insert.py` |
+| 2026-05-25 | [#43632](https://github.com/vllm-project/vllm/pull/43632) | [DeepSeek V4] Move MegaMoE input prep kernel to nvidia/ops | `test_deepseek_v4_mega_moe.py` |
+| 2026-05-22 | [#42353](https://github.com/vllm-project/vllm/pull/42353) | DSv4 fused Q-norm kernel grid refactor | `test_fused_deepseek_v4_qnorm_rope_kv_insert.py` |
+
+
 ## 2026-05-19 PR Backfill Audit
 
 Rechecked vllm upstream `origin/main@07beaed84` and the GitHub Pull Request files API; this pass adds timeline entries and per-PR diff audit cards for `#40392`, `#40871`, `#41255`, `#41263`, `#41428`, `#41443`, `#41522`, `#41536`, `#41694`, `#41710`, `#41778`, `#41801`, `#41812`, `#41946`, `#41957`, `#42112`, `#42169`, `#42236`, `#42320`, `#42342`, `#42541`, `#42604`, `#42810`, `#42828`, `#42899`, `#42930`, `#43004`, `#43039`, `#43073`, `#43077`.

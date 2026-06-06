@@ -1,5 +1,33 @@
 # sglang Nemotron Super 模型 PR 优化历史
 
+## 2026-06-05 PR 补漏复核
+
+已于 2026-06-05 按 sglang 上游 `origin/main@6cfdc1858` 复核；自上次时效基准（2026-04-30）以来，共有 20 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
+
+| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
+| --- | --- | --- | --- |
+| 2026-06-04 | [#27240](https://github.com/sgl-project/sglang/pull/27240) | [Docs] re-organize nemotron cookbook | `Nemotron3-Nano-Omni.mdx` |
+| 2026-06-03 | [#27184](https://github.com/sgl-project/sglang/pull/27184) | docs: fix Nemotron Super MTP deployment command (spec-v2 + B200) | `nemotron3-super-deployment.jsx` |
+| 2026-06-03 | [#25198](https://github.com/sgl-project/sglang/pull/25198) | [Docs] Update Nemotron3-Nano-Omni cookbook to reflect new model paths | `Nemotron3-Nano-Omni.mdx`, `nemotron3-nano-omni-deployment.jsx` |
+| 2026-05-28 | [#26610](https://github.com/sgl-project/sglang/pull/26610) | test/registered: cleanup pure model e2e tests (moves, splits, dedup, kit) | `test_nvidia_nemotron_3_super_bf16.py` |
+| 2026-05-27 | [#24429](https://github.com/sgl-project/sglang/pull/24429) | Support NemotronHPuzzleForCausalLM | `nemotron_h.py`, `nemotron_h.py`, `nemotron_h_mtp.py` |
+| 2026-05-26 | [#25023](https://github.com/sgl-project/sglang/pull/25023) | [NemotronH] V3 Omni wrapper: WeightsMapper + config round-trip | `nano_nemotron_vl.py`, `nano_nemotron_vl.py` |
+| 2026-05-26 | [#15829](https://github.com/sgl-project/sglang/pull/15829) | [feat] Support `extra_buffer` in Mamba2-based models | `nemotron_h.py` |
+| 2026-05-22 | [#24751](https://github.com/sgl-project/sglang/pull/24751) | fix(mm): make multimodal data loading non-blocking to prevent health check stalls | `nano_nemotron_vl.py` |
+| 2026-05-21 | [#25983](https://github.com/sgl-project/sglang/pull/25983) | feat(model_runner): remove pool/backend refs from ForwardBatch via ForwardContext | `jet_nemotron.py`, `nemotron_h.py` |
+| 2026-05-20 | [#25831](https://github.com/sgl-project/sglang/pull/25831) | [Test] Stage-a sanity kits; consolidate core/ + models_e2e/ tests | `test_nvidia_nemotron_3_nano.py` |
+| 2026-05-15 | [#25420](https://github.com/sgl-project/sglang/pull/25420) | [CI] Rename basic CI `stage-a/b/c` -> `base-a/b/c` for symmetry with extra CI | `test_nvidia_nemotron_3_nano.py` |
+| 2026-05-14 | [#24725](https://github.com/sgl-project/sglang/pull/24725) | ci: tag-gated nightly migration — foundation + 40 whole-file moves | `test_nvidia_nemotron_3_super_bf16.py`, `test_lora_nemotron_3_super_120b_a12b_logprob_diff.py` |
+| 2026-05-13 | [#25236](https://github.com/sgl-project/sglang/pull/25236) | ci: H200 conditional split + dsv4 est_time recalibration (h200 partition 6→2) | `test_nvidia_nemotron_3_super_bf16.py` |
+| 2026-05-13 | [#25203](https://github.com/sgl-project/sglang/pull/25203) | ci: B200 conditional split + LPT_SLOP removal (stage-c partition 8→3) | `test_nvidia_nemotron_3_super_nvfp4.py`, `test_lora_nemotron_3_super_120b_a12b_logprob_diff.py` |
+| 2026-05-13 | [#25197](https://github.com/sgl-project/sglang/pull/25197) | ci: decouple stage and runner for cuda registry | `test_nvidia_nemotron_3_super_nvfp4.py`, `test_nvidia_nemotron_3_super_bf16.py`, `test_lora_nemotron_3_super_120b_a12b_logprob_diff.py`, … (+1) |
+| 2026-05-13 | [#25182](https://github.com/sgl-project/sglang/pull/25182) | chore: add vLLM SPDX copyright headers to ported files | `nemotron_h.py`, `nano_nemotron_vl.py`, `nemotron_h.py`, … (+1) |
+| 2026-05-08 | [#24721](https://github.com/sgl-project/sglang/pull/24721) | ci: prune per-commit CUDA tests — move 25 files + 13 testcases to test/manual/ | `test_nvidia_nemotron_3_nano.py`, `test_nvidia_nemotron_nano_v2.py`, `test_nvidia_nemotron_nano_v2_vl.py` |
+| 2026-05-08 | [#24434](https://github.com/sgl-project/sglang/pull/24434) | [NemotronH] Fix expert scale weight loading | `nemotron_h.py` |
+| 2026-05-05 | [#23998](https://github.com/sgl-project/sglang/pull/23998) | update Nemotron3 Nano Omni cookbook benchmarks | `Nemotron3-Nano-Omni.mdx` |
+| 2026-04-30 | [#24163](https://github.com/sgl-project/sglang/pull/24163) | Revert "[ci] split stage-c-test-4-gpu-b200 to enable a low-disk runner pool" | `test_nvidia_nemotron_3_super_nvfp4.py`, `test_lora_nemotron_3_super_120b_a12b_logprob_diff.py` |
+
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |

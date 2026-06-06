@@ -1,5 +1,14 @@
 # vllm DeepSeek OCR 模型 PR 优化历史
 
+## 2026-06-05 PR 补漏复核
+
+已于 2026-06-05 按 vllm 上游 `origin/main@c66b19800` 复核；自上次时效基准（2026-05-19）以来，共有 1 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
+
+| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
+| --- | --- | --- | --- |
+| 2026-06-04 | [#41759](https://github.com/vllm-project/vllm/pull/41759) | [MM][Perf][CG] Support ViT full CUDA graph for InternVL | `vision_language_offline.py` |
+
+
 ## 2026-05-19 新增覆盖
 
 按 vllm 上游 `origin/main@ef54a4d604`、模型相关文件的 `git log --name-only -- <model-files>` 以及 GitHub Pull Request files API 生成。本页用于补齐 sgl-cookbook 中 `DeepSeek OCR` 缺失的历史 PR 优化文档。

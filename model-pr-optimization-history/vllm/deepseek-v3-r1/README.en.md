@@ -1,5 +1,19 @@
 # vllm DeepSeek V3/R1 Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 6 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-01 | [#42944](https://github.com/vllm-project/vllm/pull/42944) | fix: glm5.1 pp model loading | `deepseek_mtp.py`, `deepseek_v2.py` |
+| 2026-05-29 | [#42982](https://github.com/vllm-project/vllm/pull/42982) | [ROCm][Perf] DSv3.2 MI355X TP4 decode-step orchestration cleanup (3 micro-opts) | `deepseek_v2.py` |
+| 2026-05-28 | [#43781](https://github.com/vllm-project/vllm/pull/43781) | [Bugfix][ROCm] Fix Accuracy Drop in Sparse Indexer on gfx950 | `deepseek_v2.py` |
+| 2026-05-28 | [#42879](https://github.com/vllm-project/vllm/pull/42879) | [Bugfix] Stream DeepSeek DSML tool-call argument deltas incrementally | `test_deepseekv32_tool_parser.py`, `deepseekv32_tool_parser.py` |
+| 2026-05-21 | [#43255](https://github.com/vllm-project/vllm/pull/43255) | [CI] Add composed-schema regression tests for DeepSeek V3.2/V4 parsers | `test_deepseekv32_tool_parser.py` |
+| 2026-05-20 | [#43019](https://github.com/vllm-project/vllm/pull/43019) | [Bugfix] Use shared coerce_to_schema_type in DeepSeekV32 tool parser | `test_deepseekv32_tool_parser.py`, `deepseekv32_tool_parser.py` |
+
+
 ## 2026-05-19 PR Backfill Audit
 
 Rechecked vllm upstream `origin/main@07beaed84` and the GitHub Pull Request files API; this pass adds timeline entries and per-PR diff audit cards for `#41778`.

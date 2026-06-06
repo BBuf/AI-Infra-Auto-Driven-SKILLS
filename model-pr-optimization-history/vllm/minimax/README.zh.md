@@ -1,5 +1,18 @@
 # vllm MiniMax M2 Series 模型 PR 优化历史
 
+## 2026-06-05 PR 补漏复核
+
+已于 2026-06-05 按 vllm 上游 `origin/main@c66b19800` 复核；自上次时效基准（2026-05-19）以来，共有 5 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
+
+| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
+| --- | --- | --- | --- |
+| 2026-06-04 | [#43556](https://github.com/vllm-project/vllm/pull/43556) | [Attention] Mamba attention module refactor - LINEAR | `minimax_text_01.py` |
+| 2026-06-02 | [#44279](https://github.com/vllm-project/vllm/pull/44279) | [Refactor] Remove dead code from parser infrastructure | `minimax_m2_parser.py` |
+| 2026-05-29 | [#38445](https://github.com/vllm-project/vllm/pull/38445) | [PERF]MiniMax-M2 gate kernel | `minimax_m2.py` |
+| 2026-05-26 | [#43410](https://github.com/vllm-project/vllm/pull/43410) | [Kernel] Porting  fuse_minimax_qk_norm  to manual fusion | `test_minimax_reduce_rms.py`, `minimax_qk_norm_fusion.py`, `minimax_m2.py` |
+| 2026-05-19 | [#43025](https://github.com/vllm-project/vllm/pull/43025) | [Refactor] Extract extract_types_from_schema utility from Minimax M2 tool parser | `minimax_m2_tool_parser.py` |
+
+
 ## 2026-05-19 PR 补漏复核
 
 已按 vllm 上游 `origin/main@07beaed84` 和 GitHub Pull Request files API 复核；本轮补齐 `#42497`, `#43006` 的时间线与逐 PR diff 审计卡。

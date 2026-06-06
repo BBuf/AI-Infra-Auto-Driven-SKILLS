@@ -1,5 +1,33 @@
 # vllm Gemma 4 Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 20 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-04-30). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-05 | [#43167](https://github.com/vllm-project/vllm/pull/43167) | Remove KV cache scale boilerplate from model weight loading methods | `gemma4.py` |
+| 2026-06-04 | [#44340](https://github.com/vllm-project/vllm/pull/44340) | [Quant] Support compressed-tensors WNA8O8Int linears and WNInt embeddings | `gemma4.py`, `gemma4_mm.py` |
+| 2026-06-03 | [#44429](https://github.com/vllm-project/vllm/pull/44429) | [Model] Add Gemma4 Unified (encoder-free)  support | `gemma4.py`, `gemma4_mm.py` |
+| 2026-06-02 | [#44232](https://github.com/vllm-project/vllm/pull/44232) | [Bugfix] Fix Gemma4 startup crash with recent transformers multimodal processor | `gemma4_mm.py` |
+| 2026-06-01 | [#43798](https://github.com/vllm-project/vllm/pull/43798) | [Bugfix] Convert Gemma4-MM ViT linear layers to vllm native impl | `gemma4_mm.py` |
+| 2026-05-28 | [#41459](https://github.com/vllm-project/vllm/pull/41459) | fix(frontend): Add multimodal placeholders to Gemma4 tool message template | `tool_chat_template_gemma4.jinja`, `test_gemma4_chat_template.py` |
+| 2026-05-22 | [#43296](https://github.com/vllm-project/vllm/pull/43296) | [CI] Fix "test_awq_load[gemma4-moe-*]" failure | `test_gemma4.py`, `gemma4_mm.py` |
+| 2026-05-20 | [#43169](https://github.com/vllm-project/vllm/pull/43169) | [Perf][Gemma4] Batch vision encoder calls for image and video processing | `gemma4_mm.py` |
+| 2026-05-13 | [#42250](https://github.com/vllm-project/vllm/pull/42250) | [Bugfix][Model] Gemma4 MoE routing closure captures per_expert_scale, breaking functional_call substitution | `gemma4.py` |
+| 2026-05-13 | [#42128](https://github.com/vllm-project/vllm/pull/42128) | [Bugfix] Fix Gemma4ToolParser streaming float corruption | `test_gemma4_tool_parser.py`, `gemma4_tool_parser.py` |
+| 2026-05-12 | [#42217](https://github.com/vllm-project/vllm/pull/42217) | [Fix] Gemma4 Mixed-Resolution Image Co-Batching Crash | `test_gemma4.py`, `gemma4_mm.py` |
+| 2026-05-11 | [#42188](https://github.com/vllm-project/vllm/pull/42188) | [Bugfix] Gemma 4 chat template crash with missing tool name and tool id | `tool_chat_template_gemma4.jinja` |
+| 2026-05-09 | [#40708](https://github.com/vllm-project/vllm/pull/40708) | [BugFix] Fix Gemma4 'layers.0.moe.experts.0.down_proj_packed' KeyError issue | `gemma4.py` |
+| 2026-05-08 | [#41991](https://github.com/vllm-project/vllm/pull/41991) | [Bugfix][Gemma4] Fix infinite loop and array boundary issues in tool parser | `test_gemma4_tool_parser.py`, `gemma4_tool_parser.py` |
+| 2026-05-08 | [#40588](https://github.com/vllm-project/vllm/pull/40588) | [Models][Gemma3/Gemma4] Support hidden_act variants in gated MLP | `gemma4.py` |
+| 2026-05-07 | [#41837](https://github.com/vllm-project/vllm/pull/41837) | [MM][Gemma4] Use video profiling hints in encoder budget | `test_gemma4.py`, `gemma4_mm.py` |
+| 2026-05-06 | [#41799](https://github.com/vllm-project/vllm/pull/41799) | [MM][Gemma4] Respect max_soft_tokens in encoder budget | `test_gemma4.py`, `gemma4_mm.py` |
+| 2026-05-05 | [#41574](https://github.com/vllm-project/vllm/pull/41574) | [Model] Fix Gemma4 MoE activation mismatch | `gemma4.py` |
+| 2026-05-02 | [#40796](https://github.com/vllm-project/vllm/pull/40796) | [Bugfix][Gemma 4] Clamp soft-token estimate to max_soft_tokens | `test_gemma4.py`, `gemma4_mm.py` |
+| 2026-05-02 | [#39570](https://github.com/vllm-project/vllm/pull/39570) | [Fix] Sync gemma4 chat template from hf | `tool_chat_template_gemma4.jinja` |
+
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

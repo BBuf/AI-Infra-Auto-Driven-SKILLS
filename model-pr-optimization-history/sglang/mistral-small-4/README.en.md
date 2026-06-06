@@ -1,5 +1,16 @@
 # sglang Mistral Small 4 Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 3 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-05-23 | [#23292](https://github.com/sgl-project/sglang/pull/23292) | [CP] 1/N: Support MLA Prefill Context Parallel | `mistral_large_3_eagle.py` |
+| 2026-05-20 | [#25831](https://github.com/sgl-project/sglang/pull/25831) | [Test] Stage-a sanity kits; consolidate core/ + models_e2e/ tests | `test_ministral3_models.py`, `test_ministral4_models.py` |
+| 2026-05-20 | [#25821](https://github.com/sgl-project/sglang/pull/25821) | [Refactor] Rename NSA → DSA: user-facing aliases, file/class/import rename | `mistral_large_3_eagle.py` |
+
+
 ## 2026-05-19 PR Backfill Audit
 
 Rechecked sglang upstream `origin/main@78cb38ed5` and the GitHub Pull Request files API; this pass adds timeline entries and per-PR diff audit cards for `#24611`, `#25407`.

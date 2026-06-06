@@ -1,5 +1,20 @@
 # sglang GPT-OSS Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 7 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-03 | [#27001](https://github.com/sgl-project/sglang/pull/27001) | [AMD] [CI] Remove hardcoded model/cache paths from MI35x nightly tests | `test_gpt_oss_eval_mi35x.py` |
+| 2026-06-01 | [#26884](https://github.com/sgl-project/sglang/pull/26884) | [AMD] Fix GPT-OSS MXFP4 accuracy on ROCm AITER path | `test_gpt_oss_eval_mi35x.py` |
+| 2026-06-01 | [#25813](https://github.com/sgl-project/sglang/pull/25813) | docs(cookbook): port popular model usage guides into cookbook pages | `GPT-OSS.mdx`, `gpt_oss.mdx` |
+| 2026-05-29 | [#16775](https://github.com/sgl-project/sglang/pull/16775) | [CPU] Add GPT-OSS model optimization for CPU | `gpt_oss.py` |
+| 2026-05-28 | [#26610](https://github.com/sgl-project/sglang/pull/26610) | test/registered: cleanup pure model e2e tests (moves, splits, dedup, kit) | `test_gpt_oss_4gpu.py` |
+| 2026-05-24 | [#26205](https://github.com/sgl-project/sglang/pull/26205) | Clean up server startup log noise | `gpt_oss.py` |
+| 2026-05-20 | [#25831](https://github.com/sgl-project/sglang/pull/25831) | [Test] Stage-a sanity kits; consolidate core/ + models_e2e/ tests | `test_gpt_oss_sm120.py` |
+
+
 ## 2026-05-19 PR Backfill Audit
 
 Rechecked sglang upstream `origin/main@78cb38ed5` and the GitHub Pull Request files API; this pass adds timeline entries and per-PR diff audit cards for `#25335`.

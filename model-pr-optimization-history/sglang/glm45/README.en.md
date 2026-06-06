@@ -1,5 +1,22 @@
 # sglang GLM-4.5 Model PR Optimization History
 
+## 2026-06-05 PR Backfill Audit
+
+Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 9 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-04-28). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-01 | [#25813](https://github.com/sgl-project/sglang/pull/25813) | docs(cookbook): port popular model usage guides into cookbook pages | `GLM-4.5.mdx`, `GLM-4.5V.mdx`, `glm45.mdx` |
+| 2026-05-29 | [#26673](https://github.com/sgl-project/sglang/pull/26673) | [refactor] remove unused op_mlp | `glm4_moe.py`, `glm4_moe_lite.py` |
+| 2026-05-26 | [#26088](https://github.com/sgl-project/sglang/pull/26088) | GLM-4.7-Flash: standalone MLA impl and MLA NextN/MTP | `glm4_moe_lite.py` |
+| 2026-05-20 | [#25821](https://github.com/sgl-project/sglang/pull/25821) | [Refactor] Rename NSA → DSA: user-facing aliases, file/class/import rename | `glm4_moe_lite.py` |
+| 2026-05-19 | [#25825](https://github.com/sgl-project/sglang/pull/25825) | [Refactor] Pass PP start_layer via model constructor instead of forward_batch.token_to_kv_pool | `glm4_moe.py` |
+| 2026-05-19 | [#25524](https://github.com/sgl-project/sglang/pull/25524) | [Bug Fix] Align glm4_moe_nextn NPU MTP loading with qwen3 MTP | `glm4_moe_nextn.py` |
+| 2026-05-18 | [#22822](https://github.com/sgl-project/sglang/pull/22822) | [Refactor] Refactor DeepEP dispatcher | `glm4_moe_nextn.py` |
+| 2026-05-15 | [#25420](https://github.com/sgl-project/sglang/pull/25420) | [CI] Rename basic CI `stage-a/b/c` -> `base-a/b/c` for symmetry with extra CI | `test_glm4_moe_models.py` |
+| 2026-05-13 | [#25197](https://github.com/sgl-project/sglang/pull/25197) | ci: decouple stage and runner for cuda registry | `test_glm4_moe_models.py` |
+
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

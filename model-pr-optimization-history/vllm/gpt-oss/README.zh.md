@@ -1,5 +1,27 @@
 # vllm GPT-OSS 模型 PR 优化历史
 
+## 2026-06-05 PR 补漏复核
+
+已于 2026-06-05 按 vllm 上游 `origin/main@c66b19800` 复核；自上次时效基准（2026-04-14）以来，共有 14 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
+
+| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
+| --- | --- | --- | --- |
+| 2026-06-05 | [#43167](https://github.com/vllm-project/vllm/pull/43167) | Remove KV cache scale boilerplate from model weight loading methods | `gpt_oss.py` |
+| 2026-05-29 | [#43571](https://github.com/vllm-project/vllm/pull/43571) | [BugFix][Platform] Fix import vllm.platforms.rocm error on non-CUDA test_gpt_oss.py | `test_gpt_oss.py` |
+| 2026-05-29 | [#43108](https://github.com/vllm-project/vllm/pull/43108) | [MoE Refactor] Remove supports_expert_map | `gpt_oss_triton_kernels_moe.py` |
+| 2026-05-24 | [#43385](https://github.com/vllm-project/vllm/pull/43385) | [ROCm] [DSv4] [Perf] Support DeepSeek v4 MTP | `gpt_oss_triton_kernels_moe.py` |
+| 2026-05-20 | [#43135](https://github.com/vllm-project/vllm/pull/43135) | [Perf][gpt-oss] Downgrade triton_kernels to v3.5.1 | `gpt_oss_triton_kernels_moe.py` |
+| 2026-05-15 | [#37826](https://github.com/vllm-project/vllm/pull/37826) | [ROCm] Widen OAI Triton MoE capability range to include gfx12 (RDNA4) | `gpt_oss_triton_kernels_moe.py` |
+| 2026-05-13 | [#41566](https://github.com/vllm-project/vllm/pull/41566) | [Quantization] Rework quantization_config to use QuantKey and allow for activation override | `gpt-oss-20b-flashinfer-mxfp4-mxfp8-cutlass.yaml`, `gpt-oss-20b-sm100-fi-mxfp4-mxfp8-trtllm.yaml` |
+| 2026-05-12 | [#42334](https://github.com/vllm-project/vllm/pull/42334) | [MoE Refactor] Move remaining experts classes to experts directory | `gpt_oss_triton_kernels_moe.py` |
+| 2026-05-04 | [#39136](https://github.com/vllm-project/vllm/pull/39136) | [ROCm][Quantization][2/N] Refactor quark_moe w4a8 w/ oracle | `gpt_oss_triton_kernels_moe.py` |
+| 2026-04-26 | [#40860](https://github.com/vllm-project/vllm/pull/40860) | [Feat] DeepSeek V4 Rebased | `gpt_oss_triton_kernels_moe.py` |
+| 2026-04-26 | [#40338](https://github.com/vllm-project/vllm/pull/40338) | [LoRA] MoE LoRA Refactor | `gpt_oss_triton_kernels_moe.py` |
+| 2026-04-23 | [#40671](https://github.com/vllm-project/vllm/pull/40671) | [MoE Refactor] Rename FusedMoE.make_expert_params_mapping to fused_moe_make_expert_params_mapping | `gpt_oss.py` |
+| 2026-04-20 | [#35949](https://github.com/vllm-project/vllm/pull/35949) | [MoE Refactor] Move the shared/fused expert output sum into MoERunnerBase | `gpt_oss.py` |
+| 2026-04-13 | [#39604](https://github.com/vllm-project/vllm/pull/39604) | [Quantization] [Refactor] Create special "GptOssMxfp4MoeMethod" | `gpt_oss.py` |
+
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |

@@ -1,5 +1,20 @@
 # sglang Qwen3 Next 模型 PR 优化历史
 
+## 2026-06-05 PR 补漏复核
+
+已于 2026-06-05 按 sglang 上游 `origin/main@6cfdc1858` 复核；自上次时效基准（2026-05-19）以来，共有 7 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
+
+| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
+| --- | --- | --- | --- |
+| 2026-06-04 | [#26775](https://github.com/sgl-project/sglang/pull/26775) | fix test cases failed on 5/30 in nightly pipeline | `test_npu_deepep_auto_qwen3_next.py`, `test_npu_deepep_low_latency_qwen3_next.py` |
+| 2026-05-30 | [#26389](https://github.com/sgl-project/sglang/pull/26389) | 【NPU】【bugfix】fix server error when mtp unquant | `qwen3_next_mtp.py` |
+| 2026-05-29 | [#26353](https://github.com/sgl-project/sglang/pull/26353) | NPU Nightly Pipeline Skip Test Case Adaptation and Recovery Testing | `test_npu_deepep_auto_qwen3_next.py`, `test_npu_deepep_low_latency_qwen3_next.py` |
+| 2026-05-28 | [#26610](https://github.com/sgl-project/sglang/pull/26610) | test/registered: cleanup pure model e2e tests (moves, splits, dedup, kit) | `test_qwen3_next_models_mtp.py` |
+| 2026-05-20 | [#25831](https://github.com/sgl-project/sglang/pull/25831) | [Test] Stage-a sanity kits; consolidate core/ + models_e2e/ tests | `test_qwen3_next_deterministic.py`, `test_qwen3_next_models_fp4.py` |
+| 2026-05-20 | [#23925](https://github.com/sgl-project/sglang/pull/23925) | [NPU]use triton split_qkvgate_gemma_rmsnorm_rope for Qwen3.5 and Qwen3_next | `qwen3_next.py` |
+| 2026-05-19 | [#23331](https://github.com/sgl-project/sglang/pull/23331) | [BugFix] Resolve adaptive speculative decoding conflicts for Qwen3.5 (hybrid GDN) | `qwen3_next_mtp.py` |
+
+
 ## 2026-05-19 PR 补漏复核
 
 已按 sglang 上游 `origin/main@78cb38ed5` 和 GitHub Pull Request files API 复核；本轮补齐 `#25401` 的时间线与逐 PR diff 审计卡。
