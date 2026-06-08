@@ -12,7 +12,7 @@ intelligence.**
 [![Last commit](https://img.shields.io/github/last-commit/BBuf/AI-Infra-Auto-Driven-SKILLS?style=flat-square)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/commits/main)
 [![Core skills](https://img.shields.io/badge/core_skills-10-2f80ed?style=flat-square)](#core-skills)
 [![PR histories](https://img.shields.io/badge/pr_histories-58-2ea44f?style=flat-square)](#model-pr-history-catalog)
-[![KernelPilot](https://img.shields.io/badge/sibling-KernelPilot-ff7b72?style=flat-square)](https://github.com/BBuf/kernel-pilot)
+[![KDA-Pilot](https://img.shields.io/badge/sibling-KDA--Pilot-ff7b72?style=flat-square)](https://github.com/BBuf/KDA-Pilot)
 
 </div>
 
@@ -28,7 +28,7 @@ production incidents from a replay; and keep model-family optimization history
 close to the code that actually changed.
 
 For standalone kernel campaigns and kernel evidence tools, see the sibling
-project **[KernelPilot](https://github.com/BBuf/kernel-pilot)**.
+project **[KDA-Pilot](https://github.com/BBuf/KDA-Pilot)**.
 
 If this saves you one stale model-support assumption, one misleading profiler
 trace, or one late-night benchmark loop, a star helps more AI-infra engineers
@@ -235,9 +235,13 @@ prompts/
 
 - **[Humanize](https://github.com/PolyArch/humanize)** provides the RLCR
   workflow that powers the Humanize-governed SGLang and vLLM SOTA loops.
-- **[KernelPilot](https://github.com/BBuf/kernel-pilot)** is the sibling home
+- **[KDA-Pilot](https://github.com/BBuf/KDA-Pilot)** is the sibling home
   for standalone kernel loops, kernel knowledge, and NCU report workflows.
 
 ## Star History
 
+<div align="center">
+
 [![Star History Chart](https://api.star-history.com/svg?repos=BBuf/AI-Infra-Auto-Driven-SKILLS&type=Date)](https://star-history.com/#BBuf/AI-Infra-Auto-Driven-SKILLS&Date)
+
+</div>
