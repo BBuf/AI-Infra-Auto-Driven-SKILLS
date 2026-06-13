@@ -10,6 +10,7 @@ SKILL_ROOT = ROOT / "skills" / "sglang-humanize-review"
 CORPUS = SKILL_ROOT / "references" / "sglang-review-corpus.jsonl.gz"
 METADATA = SKILL_ROOT / "references" / "sglang-review-corpus.metadata.json"
 QUERY_SCRIPT = SKILL_ROOT / "scripts" / "query_sglang_review_corpus.py"
+SUMMARIZE_SCRIPT = SKILL_ROOT / "scripts" / "summarize_sglang_review_corpus.py"
 
 
 def test_skill_points_to_corpus_and_review_workflow() -> None:
@@ -24,8 +25,25 @@ def test_skill_points_to_corpus_and_review_workflow() -> None:
     assert "pr_conversation" in text
     assert "review_submission" in text
     assert "model-pr-optimization-history" in text
-    assert "Findings first" in text
+    assert "Findings next, ordered by severity" in text
     assert "SGLang Review Heuristics" in text
+
+
+def test_skill_requires_pr_comprehension_flowchart_before_findings() -> None:
+    text = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
+
+    # The comprehension pass and its Mermaid flowchart must be documented.
+    assert "PR Comprehension Diagram" in text
+    assert "PR comprehension pass" in text
+    assert "```mermaid" in text
+    assert "flowchart TD" in text
+    assert "classDef changed" in text
+
+    # The comprehension block must be ordered before the findings in the
+    # normal-review output contract.
+    comprehension_idx = text.index("A PR comprehension block first")
+    findings_idx = text.index("Findings next, ordered by severity")
+    assert comprehension_idx < findings_idx
 
 
 def test_metadata_covers_full_human_review_episode_corpus() -> None:
@@ -92,6 +110,45 @@ def test_query_script_returns_markdown_with_diff_context() -> None:
     assert "### PR #" in result.stdout
     assert "```diff" in result.stdout
     assert "**" in result.stdout
+
+
+def test_skill_mandates_exhaustive_sweep_before_findings() -> None:
+    text = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
+
+    assert "summarize_sglang_review_corpus.py" in text
+    assert "mandatory and must finish before you write any" in text
+    assert "historical review synthesis" in text
+    # The synthesis must be ordered before the findings in the output contract.
+    synthesis_idx = text.index("historical review synthesis")
+    findings_idx = text.index("Findings next, ordered by severity")
+    assert synthesis_idx < findings_idx
+
+
+def test_summarize_script_scans_whole_corpus_and_aggregates() -> None:
+    result = subprocess.run(
+        [
+            "python3",
+            str(SUMMARIZE_SCRIPT),
+            "--path",
+            "python/sglang/srt/speculative",
+            "--query",
+            "eagle",
+            "--top",
+            "2",
+        ],
+        cwd=ROOT,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=True,
+    )
+
+    # Exhaustive coverage line over the full corpus, plus the aggregate and the
+    # ranked excerpts that the review synthesis is built from.
+    assert "Scanned" in result.stdout and "matched" in result.stdout
+    assert "## Aggregate over ALL matches" in result.stdout
+    assert "most relevant review threads" in result.stdout
+    assert "_relevance:" in result.stdout
 
 
 def test_query_script_can_filter_conversation_and_review_submission() -> None:
