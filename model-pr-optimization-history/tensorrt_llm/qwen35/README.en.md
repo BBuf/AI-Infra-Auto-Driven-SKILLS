@@ -2,7 +2,11 @@
 
 ## 2026-06-26 PR Backfill Audit
 
-Checked against TensorRT-LLM upstream `HEAD@4164b932c6c8a14d1be85d0fd62e44b7d0171980`. This page provides model implementation coverage, a PR timeline, and per-PR diff audit cards.
+The per-PR diff audit cards on this page were generated from TensorRT-LLM
+upstream `HEAD@4164b932c6c8a14d1be85d0fd62e44b7d0171980`. The root
+TensorRT-LLM history index tracks the latest 2026-06-26 runtime refresh at
+`0722c5f47d2cae69ac1a237da51e550dd214532c`. This page provides model
+implementation coverage, a PR timeline, and per-PR diff audit cards.
 
 Filter used in this pass: merged PRs whose titles or files matched `Qwen3.5`, `Qwen3_5`, `qwen3_5`, `AutoDeploy`, `NVFP4`, `FP8`, `DFlash`, `reasoning_parser`, `EPLB`, `MoE backend`, or `model_registry`. Pure reshuffling and unrelated infrastructure PRs were excluded.
 

@@ -2,7 +2,11 @@
 
 ## 2026-06-26 PR 补漏复核
 
-已按 TensorRT-LLM 上游 `HEAD@4164b932c6c8a14d1be85d0fd62e44b7d0171980` 复核。本文覆盖 Qwen3.5 相关 merged PR，并采用 SGLang 风格的模型实现覆盖、PR 时间线和逐 PR diff 审计卡。
+本文的逐 PR diff 审计卡基于 TensorRT-LLM 上游
+`HEAD@4164b932c6c8a14d1be85d0fd62e44b7d0171980` 生成；根目录 TensorRT-LLM
+history index 已跟踪 2026-06-26 最新 runtime refresh
+`0722c5f47d2cae69ac1a237da51e550dd214532c`。本文覆盖 Qwen3.5 相关 merged
+PR，并采用 SGLang 风格的模型实现覆盖、PR 时间线和逐 PR diff 审计卡。
 
 本轮筛选规则：标题/文件命中 `Qwen3.5`、`Qwen3_5`、`qwen3_5`、`AutoDeploy`、`NVFP4`、`FP8`、`DFlash`、`reasoning_parser`、`EPLB`、`MoE backend`、`model_registry` 的 merged PR；过滤纯重排和不触碰模型/loader/test lane 的基础设施 PR。
 

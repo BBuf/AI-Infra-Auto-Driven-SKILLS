@@ -37,7 +37,7 @@ Current model families:
 ## Current Watch / Landed Items
 
 Refresh: `2026-06-26`. Source head:
-`vllm-project/vllm@c2507fb2937aa8c8e74bea15719d04fb6090befe`.
+`vllm-project/vllm@37ce34922f7f5e58241369511130cd99c1c50bfe`.
 
 Keep watch rows close to the relevant model histories;
 landed rows that are already mirrored in per-model docs remain here as
@@ -45,6 +45,7 @@ cross-model navigation hints.
 
 | PR | Model / area | Status | Current signal | Why it matters |
 | --- | --- | --- | --- | --- |
+| [#46735](https://github.com/vllm-project/vllm/pull/46735) | Triton / NVFP4 MoE | merged | CUDA graph capture fix | A stale vLLM image can fail graph capture or fall back around Triton MoE; record this before treating the row as a true SGLang-vs-vLLM performance delta. |
 | [#41455](https://github.com/vllm-project/vllm/pull/41455) | ROCm attention | closed | WMMA paged prefill and split-K decode | New AMD attention kernel family for prefill/decode split traces. |
 | [#41263](https://github.com/vllm-project/vllm/pull/41263) | DeepSeek-V4 | merged | fuse norm/router low latency | Mirrored in `vllm/deepseek-v4`; concrete DSV4 norm-router fusion precedent. |
 | [#41428](https://github.com/vllm-project/vllm/pull/41428) | DeepSeek-V4 | merged | fused indexer Q quant | Mirrored in `vllm/deepseek-v4`; relevant to FP4 indexer-Q quant ladders. |

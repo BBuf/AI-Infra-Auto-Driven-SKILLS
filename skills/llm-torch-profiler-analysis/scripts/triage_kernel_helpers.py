@@ -856,6 +856,151 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
         priority=90,
     ),
     FusionPatternSpec(
+        pattern="SGLang LTX2 fused Ada values",
+        candidate_path=(
+            "PR #29390"
+            "<br>python/sglang/jit_kernel/diffusion/triton/ltx2_ada_values.py"
+            "<br>python/sglang/multimodal_gen/runtime/models/dits/ltx_2.py"
+        ),
+        active_keywords=(
+            "ltx2_ada_values9",
+            "ltx2_ada_values",
+            "LTX2TransformerBlock",
+        ),
+        split_groups=(
+            ("scale_shift_table", "timestep", "reshape"),
+            ("get_ada_values", "ada", "adaln"),
+            ("slice", "split", "unbind"),
+        ),
+        rationale_hint=(
+            "SGLang mainline fuses LTX-2.3 Ada value materialization for"
+            " video/audio streams; split Ada table add/reshape/slice ladders"
+            " should be checked against this diffusion Triton kernel first."
+        ),
+        origin="upstream",
+        model_include=("ltx", "ltx-2", "ltx2"),
+        min_share=0.2,
+        likely_share=1.0,
+    ),
+    FusionPatternSpec(
+        pattern="TokenSpeed CuTe DSL MLA prefill / decode",
+        candidate_path=(
+            "python/tokenspeed/runtime/layers/attention/backends/tokenspeed_mla.py"
+            "<br>tokenspeed-mla/python/tokenspeed_mla/mla_decode.py"
+            "<br>tokenspeed-mla/python/tokenspeed_mla/mla_prefill.py"
+            "<br>tokenspeed-kernel/python/tokenspeed_kernel/ops/attention/"
+            "tokenspeed_mla/__init__.py"
+        ),
+        active_keywords=(
+            "tokenspeed_mla_decode",
+            "tokenspeed_mla_prefill",
+            "BlackwellMultiHeadLatentAttentionForward",
+        ),
+        split_groups=(
+            ("mla", "flashmla", "attention", "fmha"),
+            ("prefill", "decode", "verify"),
+            ("fp8", "kv_cache", "page_table"),
+        ),
+        rationale_hint=(
+            "TokenSpeed ships Blackwell CuTe DSL MLA prefill/decode kernels;"
+            " split MLA support kernels should be checked against backend"
+            " selection before being called novel."
+        ),
+        origin="upstream",
+        model_include=("deepseek", "kimi", "qwen3.5", "qwen3_5"),
+        min_share=0.4,
+        likely_share=2.0,
+    ),
+    FusionPatternSpec(
+        pattern="TokenSpeed MLA KV pack + FP8 quantize",
+        candidate_path=(
+            "tokenspeed-mla/python/tokenspeed_mla/mla_kv_pack_quantize_fp8.py"
+            "<br>tokenspeed-kernel/python/tokenspeed_kernel/ops/attention/"
+            "tokenspeed_mla/__init__.py"
+        ),
+        active_keywords=(
+            "_mla_kv_pack_quantize_fp8_kernel",
+            "mla_kv_pack_quantize_fp8",
+        ),
+        split_groups=(
+            ("k_nope", "k_pe", "cat", "concat", "pack"),
+            ("quant", "fp8", "float8"),
+            ("v", "kv", "cache"),
+        ),
+        rationale_hint=(
+            "TokenSpeed fuses MLA K/V pack, concat, and FP8 quantization into"
+            " one Triton kernel for chunked prefill."
+        ),
+        origin="upstream",
+        model_include=("deepseek", "kimi", "qwen3.5", "qwen3_5"),
+        min_share=0.2,
+        likely_share=1.0,
+    ),
+    FusionPatternSpec(
+        pattern="TokenSpeed fused top-k + top-p sampling",
+        candidate_path=(
+            "tokenspeed-kernel/python/tokenspeed_kernel/thirdparty/cuda/"
+            "fused_topk_topp.py"
+            "<br>tokenspeed-kernel/python/tokenspeed_kernel/thirdparty/cuda/"
+            "csrc/fused_topk_topp/fused_topk_topp.cu"
+        ),
+        active_keywords=("fused_topk_topp", "fused_topk_topp_renorm"),
+        split_groups=(
+            ("topk", "top_k"),
+            ("topp", "top_p"),
+            ("sampling", "renorm", "softmax"),
+        ),
+        rationale_hint=(
+            "TokenSpeed has a fused top-k/top-p renormalization path for"
+            " decode sampling."
+        ),
+        origin="upstream",
+        min_share=0.1,
+        likely_share=0.8,
+    ),
+    FusionPatternSpec(
+        pattern="TokenSpeed persistent lm_head GEMM",
+        candidate_path=(
+            "tokenspeed-kernel/python/tokenspeed_kernel/thirdparty/cuda/"
+            "lm_head_gemm.py"
+            "<br>tokenspeed-kernel/python/tokenspeed_kernel/thirdparty/cuda/"
+            "csrc/lm_head_gemm.cu"
+        ),
+        active_keywords=("lm_head_gemm",),
+        split_groups=(
+            ("lm_head", "logits", "vocab"),
+            ("gemm", "matmul", "linear"),
+        ),
+        rationale_hint=(
+            "TokenSpeed has a shape-gated persistent lm_head GEMM path; visible"
+            " lm_head matmul ladders should be compared against it."
+        ),
+        origin="upstream",
+        model_include=("kimi", "qwen"),
+        min_share=0.2,
+        likely_share=1.0,
+    ),
+    FusionPatternSpec(
+        pattern="TokenSpeed NVFP4 GEMM + SwiGLU + quant",
+        candidate_path=(
+            "tokenspeed-kernel/python/tokenspeed_kernel/thirdparty/cute_dsl/"
+            "nvfp4_gemm_swiglu_nvfp4_quant.py"
+        ),
+        active_keywords=("nvfp4_gemm_swiglu_nvfp4_quant",),
+        split_groups=(
+            ("gemm", "nvfp4", "fp4"),
+            ("swiglu", "silu", "activation", "mul"),
+            ("quant", "scale", "sfc"),
+        ),
+        rationale_hint=(
+            "TokenSpeed's CuTe DSL kernel fuses NVFP4 GEMM, SwiGLU, and"
+            " optional output quantization in one expert-style path."
+        ),
+        origin="upstream",
+        min_share=0.3,
+        likely_share=1.5,
+    ),
+    FusionPatternSpec(
         pattern="vLLM-origin Attention + Quantization",
         candidate_path=(
             "vllm/compilation/passes/fusion/attn_quant_fusion.py"
@@ -2452,7 +2597,7 @@ def fusion_framework_hints(spec: FusionPatternSpec) -> set[str]:
     hints: set[str] = set()
     if "vllm/" in text:
         hints.add("vllm")
-    if "tokenspeed/" in text:
+    if any(token in text for token in ("tokenspeed/", "tokenspeed-", "tokenspeed_")):
         hints.add("tokenspeed")
     if "tensorrt_llm/" in text:
         hints.add("trtllm")

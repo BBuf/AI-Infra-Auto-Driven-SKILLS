@@ -165,10 +165,19 @@ before starting a long sweep.
   the operator has verified the image.
 - vLLM `--max-num-partial-prefills > 1` is model- and runtime-gated. Keep `1`
   in the default pass; raise only after a preflight with the actual model.
+- vLLM current mainline was refreshed on 2026-06-26 at
+  `37ce34922f7f5e58241369511130cd99c1c50bfe` and includes PR `#46735`
+  fixing CUDA graph capture in Triton / NVFP4-emulation MoE. If a target image
+  predates it, treat Triton-MoE graph-capture failures or eager fallback as an
+  image/runtime issue before scoring it against SGLang.
 - TensorRT-LLM mainline was refreshed on 2026-06-26 at
-  `4164b932c6c8a14d1be85d0fd62e44b7d0171980`. Keep
+  `0722c5f47d2cae69ac1a237da51e550dd214532c`. Keep
   `kv_cache_free_gpu_memory_fraction` in shipped configs until the target
   `trtllm-serve serve --help` proves a shorter alias is accepted.
+- TensorRT-LLM current mainline includes PR `#11685` and PR `#15546`, which
+  affect KV block eviction and KV block-offset host staging. If a target image
+  predates them, record stale-runtime risk when cache pressure, block-offset
+  races, or prefix/KV residency affect benchmark rows.
 - The historical TensorRT-LLM 1.0.0 multi-GPU PyTorch-backend validation used
   `--ipc=host`, `--ulimit memlock=-1`, `--ulimit stack=67108864`,
   `--shm-size=16g`, and `NCCL_IB_DISABLE=1` (for single-node) or an equivalent
@@ -482,7 +491,7 @@ TensorRT-LLM flag names are especially version-sensitive. In the validated
 TensorRT-LLM 1.0.0 image, the KV-cache memory flag accepted by
 `trtllm-serve serve` was `--kv_cache_free_gpu_memory_fraction`, not
 `--free_gpu_memory_fraction`. Current mainline was rechecked at
-`4164b932c6c8a14d1be85d0fd62e44b7d0171980` on 2026-06-26. Always verify flags
+`0722c5f47d2cae69ac1a237da51e550dd214532c` on 2026-06-26. Always verify flags
 with `trtllm-serve serve --help` before running a search on any GPU target.
 
 TensorRT-LLM backend policy for this skill:
