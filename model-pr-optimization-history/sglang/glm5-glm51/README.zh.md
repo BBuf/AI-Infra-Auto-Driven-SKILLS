@@ -1,5 +1,24 @@
 # sglang GLM-5/5.1 模型 PR 优化历史
 
+## 2026-06-26 最新源码扫描
+
+已按 SGLang 上游 `sgl-project/sglang@8524678889485801e7a4a12d62015be0c68f7a90` 重新扫描本文下方列出的 tracked files。
+文件级匹配使用 GitHub mirror 的 `git log --name-only`；PR 标题、链接和合并时间通过 GitHub GraphQL Pull Request API 批量复核。上一时效锚点：`2026-06-05`。
+
+结果：发现 9 个额外 PR-numbered merge 触及 tracked files，但尚未提升为下方完整逐 PR diff audit card。此节只作为 freshness index；需要引用实现细节时，仍应先人工阅读 PR diff 再补完整卡片。
+
+| 合并日期 | PR | 标题 | 命中的 tracked files |
+| --- | --- | --- | --- |
+| 2026-06-26 | [#29313](https://github.com/sgl-project/sglang/pull/29313) | [AMD] [GLM5] Mark EAGLE verified on MI300X/MI325X (gfx942) in GLM-5.1 cookbook | `GLM-5.1.mdx`, `glm-51-deployment.jsx` |
+| 2026-06-25 | [#29194](https://github.com/sgl-project/sglang/pull/29194) | [AMD] [GLM5] GLM-5.1 MXFP4 (MI355X) + enable EAGLE for gfx950 in cookbook | `GLM-5.1.mdx`, `glm-51-deployment.jsx` |
+| 2026-06-25 | [#28103](https://github.com/sgl-project/sglang/pull/28103) | Add DeepSeek V4 Pro GB300 nightly and expand Kimi K25 nightly test | `test_glm5_fp8.py`, `test_glm5_nvfp4.py` |
+| 2026-06-22 | [#27893](https://github.com/sgl-project/sglang/pull/27893) | [NPU] [DOC] Create deployment tutorials for mainstream models on Ascend NPU | `ascend_npu_glm5_examples.mdx` |
+| 2026-06-19 | [#28536](https://github.com/sgl-project/sglang/pull/28536) | ci: run GB300 nightly suite in the standard Nvidia nightly workflow | `test_glm5_fp8.py`, `test_glm5_nvfp4.py` |
+| 2026-06-19 | [#28697](https://github.com/sgl-project/sglang/pull/28697) | [docs] Add B300 cookbook deployment options | `glm-5-deployment.jsx` |
+| 2026-06-16 | [#28437](https://github.com/sgl-project/sglang/pull/28437) | docs(cookbook): add GLM-5.2 deployment cookbook | `GLM-5.1.mdx` |
+| 2026-06-11 | [#27964](https://github.com/sgl-project/sglang/pull/27964) | [Spec] Retire Spec V1 | `ascend_npu_glm5_examples.mdx`, `test_glm5_fp8.py`, `test_glm5_nvfp4.py` |
+| 2026-06-10 | [#27708](https://github.com/sgl-project/sglang/pull/27708) | [Docs] Add GLM-5.1 NVFP4 to cookbook | `GLM-5.1.mdx`, `glm-51-deployment.jsx` |
+
 ## 2026-06-05 PR 补漏复核
 
 已于 2026-06-05 按 sglang 上游 `origin/main@6cfdc1858` 复核；自上次时效基准（2026-05-19）以来，共有 6 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。

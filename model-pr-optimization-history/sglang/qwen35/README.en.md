@@ -1,5 +1,36 @@
 # sglang Qwen3.5 Model PR Optimization History
 
+## 2026-06-26 Latest Source Scan
+
+Rechecked SGLang upstream `sgl-project/sglang@8524678889485801e7a4a12d62015be0c68f7a90` against the tracked files listed below.
+The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-05`.
+
+Result: 21 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-25 | [#29267](https://github.com/sgl-project/sglang/pull/29267) | [CPU] add indices in chunk_gated_delta_rule | `qwen3_5.py` |
+| 2026-06-25 | [#28320](https://github.com/sgl-project/sglang/pull/28320) | Fused QK GemmaRMSNorm + RoPE + gate kernel for Qwen3.5 | `qwen3_5.py` |
+| 2026-06-25 | [#28103](https://github.com/sgl-project/sglang/pull/28103) | Add DeepSeek V4 Pro GB300 nightly and expand Kimi K25 nightly test | `test_qwen35_fp8.py`, `test_qwen35_nvfp4.py` |
+| 2026-06-24 | [#27870](https://github.com/sgl-project/sglang/pull/27870) | [qwen3.5][XPU]Add XPU support for set_embed_and_head and fused QK RMSNorm kernel | `qwen3_5.py` |
+| 2026-06-22 | [#27893](https://github.com/sgl-project/sglang/pull/27893) | [NPU] [DOC] Create deployment tutorials for mainstream models on Ascend NPU | `ascend_npu_qwen3_5_examples.mdx` |
+| 2026-06-19 | [#28536](https://github.com/sgl-project/sglang/pull/28536) | ci: run GB300 nightly suite in the standard Nvidia nightly workflow | `test_qwen35_fp8.py`, `test_qwen35_nvfp4.py` |
+| 2026-06-19 | [#28697](https://github.com/sgl-project/sglang/pull/28697) | [docs] Add B300 cookbook deployment options | `qwen35-deployment.jsx` |
+| 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | Add get_parallel(): a structured accessor for parallel-topology state | `qwen3_5.py`, `qwen3_5_mtp.py` |
+| 2026-06-16 | [#28293](https://github.com/sgl-project/sglang/pull/28293) | [NPU] Add NPU fallback for fused Triton gating kernels | `qwen3_5.py` |
+| 2026-06-15 | [#27868](https://github.com/sgl-project/sglang/pull/27868) | fix(qwen3.5): keep CUDA dual-stream overlap (regressed by #25885) | `qwen3_5.py` |
+| 2026-06-13 | [#28129](https://github.com/sgl-project/sglang/pull/28129) | [Spec] Remove deprecated EAGLE v1 DRAFT_EXTEND forward mode | `qwen3_5_mtp.py` |
+| 2026-06-13 | [#26924](https://github.com/sgl-project/sglang/pull/26924) | [4/N] Qwen3.5Opt: Overlap mamba verify update with draft extend | `qwen3_5.py` |
+| 2026-06-13 | [#27057](https://github.com/sgl-project/sglang/pull/27057) | [AMD] move shared expert check function to quark | `qwen3_5.py` |
+| 2026-06-12 | [#23862](https://github.com/sgl-project/sglang/pull/23862) | Fix --mem-fraction-static not accounting for EAGLE draft model KV cache | `qwen3_5_mtp.py` |
+| 2026-06-11 | [#27964](https://github.com/sgl-project/sglang/pull/27964) | [Spec] Retire Spec V1 | `ascend_npu_qwen3_5_examples.mdx`, `test_qwen35_fp8.py`, `test_qwen35_nvfp4.py` |
+| 2026-06-11 | [#27846](https://github.com/sgl-project/sglang/pull/27846) | fix: per-sequence last-token embedding in EAGLE3/MTP draft for batched multimodal spec decoding | `qwen3_5_mtp.py` |
+| 2026-06-11 | [#27630](https://github.com/sgl-project/sglang/pull/27630) | [AMD] Fuse sigmoid + mul attention output gate into single Triton kernel | `qwen3_5.py` |
+| 2026-06-10 | [#27656](https://github.com/sgl-project/sglang/pull/27656) | [AMD][Perf] Fuse QK RMSNorm + gate extraction Triton kernel for Qwen3.5 on HIP | `qwen3_5.py` |
+| 2026-06-09 | [#27660](https://github.com/sgl-project/sglang/pull/27660) | [AMD] Update amd qwen3.5 cookbook | `Qwen3.5.mdx`, `qwen35-deployment.jsx` |
+| 2026-06-10 | [#23906](https://github.com/sgl-project/sglang/pull/23906) | [Refactor] Cuda Graph Runner/Backend Refactor | `qwen3_5.py` |
+| 2026-06-06 | [#27248](https://github.com/sgl-project/sglang/pull/27248) | [Doc][CPU]Update Cookbook with Xeon support info | `Qwen3.5.mdx`, `qwen35-deployment.jsx` |
+
 ## 2026-06-05 PR Backfill Audit
 
 Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 12 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.

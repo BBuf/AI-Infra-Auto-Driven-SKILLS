@@ -1,5 +1,44 @@
 # sglang DeepSeek V3.2 模型 PR 优化历史
 
+## 2026-06-26 最新源码扫描
+
+已按 SGLang 上游 `sgl-project/sglang@8524678889485801e7a4a12d62015be0c68f7a90` 重新扫描本文下方列出的 tracked files。
+文件级匹配使用 GitHub mirror 的 `git log --name-only`；PR 标题、链接和合并时间通过 GitHub GraphQL Pull Request API 批量复核。上一时效锚点：`2026-06-05`。
+
+结果：发现 29 个额外 PR-numbered merge 触及 tracked files，但尚未提升为下方完整逐 PR diff audit card。此节只作为 freshness index；需要引用实现细节时，仍应先人工阅读 PR diff 再补完整卡片。
+
+| 合并日期 | PR | 标题 | 命中的 tracked files |
+| --- | --- | --- | --- |
+| 2026-06-26 | [#29142](https://github.com/sgl-project/sglang/pull/29142) | [DeepSeek V3] Run routed experts on main stream in dual-stream MoE | `deepseek_v2.py` |
+| 2026-06-25 | [#29042](https://github.com/sgl-project/sglang/pull/29042) | [NPU] Fix the DeepSeek-V2-Coder model accuracy issue | `deepseek_v2.py` |
+| 2026-06-25 | [#14194](https://github.com/sgl-project/sglang/pull/14194) | [feature] implement dcp for deepseek_v2 | `forward_mha.py`, `forward_mla.py`, `deepseek_v2.py` |
+| 2026-06-24 | [#27053](https://github.com/sgl-project/sglang/pull/27053) | [BCG][GLM5] perf: BCG support and prefill enhancements | `forward_mla.py`, `deepseek_v2.py` |
+| 2026-06-23 | [#28938](https://github.com/sgl-project/sglang/pull/28938) | [AMD] Improve performance of dsv4 in high concurrency | `deepseek_v2.py` |
+| 2026-06-24 | [#27833](https://github.com/sgl-project/sglang/pull/27833) | [AMD] Enable BCG on ROCm + route aiter prefill via MHA during PCG/BCG capture for Kimi-2.5 | `attention_backend_handler.py` |
+| 2026-06-22 | [#28855](https://github.com/sgl-project/sglang/pull/28855) | [Spec] Redo: split init_backends; account draft weights in --mem-fraction-static | `test_deepseek_v32.py`, `test_deepseek_v32_cp_single_node.py` |
+| 2026-06-21 | [#28785](https://github.com/sgl-project/sglang/pull/28785) | Pass DSA topk through PP warmup proxy buffers | `deepseek_v2.py` |
+| 2026-06-19 | [#28536](https://github.com/sgl-project/sglang/pull/28536) | ci: run GB300 nightly suite in the standard Nvidia nightly workflow | `test_deepseek_v32.py`, `test_deepseek_v32_nvfp4.py` |
+| 2026-06-19 | [#28532](https://github.com/sgl-project/sglang/pull/28532) | Fix IndexCache PP topk handoff | `deepseek_v2.py` |
+| 2026-06-18 | [#28559](https://github.com/sgl-project/sglang/pull/28559) | fix: speculative draft worker clobbering target attention backend | `deepseek_v2.py` |
+| 2026-06-18 | [#25144](https://github.com/sgl-project/sglang/pull/25144) | [NPU] Add Ascend NPU support for DeepSeek-V4 | `deepseek_v2.py` |
+| 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | Add get_parallel(): a structured accessor for parallel-topology state | `deepseek_v2.py` |
+| 2026-06-17 | [#28436](https://github.com/sgl-project/sglang/pull/28436) | [NPU] Use use_dsa to dispatch Ascend DSA attention | `attention_backend_handler.py` |
+| 2026-06-17 | [#28343](https://github.com/sgl-project/sglang/pull/28343) | [Kimi K2.5] Fix eagle3 aux capture for tp>1 when AR fusion is enabled | `deepseek_v2.py` |
+| 2026-06-17 | [#27798](https://github.com/sgl-project/sglang/pull/27798) | [AMD] Add transpose_scale arg for o_proj to fix GLM accuracy issue | `forward_mla.py` |
+| 2026-06-16 | [#28035](https://github.com/sgl-project/sglang/pull/28035) | fix(openai): validate assistant tool call arguments before chat template | `encoding_dsv32.py` |
+| 2026-06-16 | [#24515](https://github.com/sgl-project/sglang/pull/24515) | LPLB: linear-programming load balancer for MoE expert parallelism | `deepseek_v2.py` |
+| 2026-06-15 | [#28118](https://github.com/sgl-project/sglang/pull/28118) | 【bugfix】The NPU's forward_dsa_prepare_npu also needs special handling for is_nextn | `deepseek_v2_attention_mla_npu.py` |
+| 2026-06-13 | [#28129](https://github.com/sgl-project/sglang/pull/28129) | [Spec] Remove deprecated EAGLE v1 DRAFT_EXTEND forward mode | `deepseek_v2_attention_mla_npu.py`, `attention_backend_handler.py`, `deepseek_v2.py` |
+| 2026-06-13 | [#27720](https://github.com/sgl-project/sglang/pull/27720) | [DeepSeek V3] Defer moe finalize and fused it with main stream add | `deepseek_v2.py` |
+| 2026-06-11 | [#27964](https://github.com/sgl-project/sglang/pull/27964) | [Spec] Retire Spec V1 | `test_deepseek_v32.py`, `test_deepseek_v32_nvfp4.py` |
+| 2026-06-12 | [#27956](https://github.com/sgl-project/sglang/pull/27956) | Use the correct wrapper for `fp4_quantize` | `deepseek_v2.py` |
+| 2026-06-10 | [#27510](https://github.com/sgl-project/sglang/pull/27510) | [deepseek] Enable DP attention + TBO + shared experts fusion | `deepseek_v2.py` |
+| 2026-06-10 | [#23906](https://github.com/sgl-project/sglang/pull/23906) | [Refactor] Cuda Graph Runner/Backend Refactor | `attention_backend_handler.py`, `forward_mla.py`, `deepseek_v2.py` |
+| 2026-06-08 | [#27289](https://github.com/sgl-project/sglang/pull/27289) | [ROCm] dsv4: remove the redundant fp8 scale transpose-copy on decode | `forward_mha.py`, `forward_mla.py`, `utils.py`, `deepseek_v2.py` |
+| 2026-06-06 | [#27114](https://github.com/sgl-project/sglang/pull/27114) | [Bugfix] Restore overridden HF config fields and support index_skip_topk_offset for DSA topk sharing | `forward_mla.py`, `deepseek_v2.py` |
+| 2026-06-05 | [#27329](https://github.com/sgl-project/sglang/pull/27329) | [LoRA] Experimental fast LoRA path with `experimental_sgl_trtllm` MoE backend for FP8 and NVFP4 models | `forward_mla.py` |
+| 2026-06-05 | [#27150](https://github.com/sgl-project/sglang/pull/27150) | Support Waterfill with dynamic EPLB | `deepseek_v2.py` |
+
 ## 2026-06-05 PR 补漏复核
 
 已于 2026-06-05 按 sglang 上游 `origin/main@6cfdc1858` 复核；自上次时效基准（2026-05-19）以来，共有 26 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。

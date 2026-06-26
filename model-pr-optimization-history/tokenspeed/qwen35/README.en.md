@@ -1,5 +1,12 @@
 # TokenSpeed Qwen3.5 Model PR Optimization History
 
+## 2026-06-26 Latest Source Scan
+
+Rechecked TokenSpeed upstream `lightseekorg/tokenspeed@5aedf69d6b476baa65571011de6ea60fd5a238a8` against the tracked files listed below.
+The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-26`.
+
+Result: no additional PR-numbered merges touched the tracked files beyond the existing timeline/backfill rows.
+
 ## 2026-06-26 PR Backfill Audit
 
 Checked against TokenSpeed upstream `HEAD@5aedf69d6b476baa65571011de6ea60fd5a238a8`. This page follows the same structure as the SGLang/vLLM histories: model-relevant PR timeline, reviewed diffs, implementation files, short code excerpts, and validation risks.

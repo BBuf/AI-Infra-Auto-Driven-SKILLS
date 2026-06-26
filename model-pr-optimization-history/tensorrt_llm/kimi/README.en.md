@@ -1,5 +1,12 @@
 # TensorRT-LLM Kimi Model PR Optimization History
 
+## 2026-06-26 Latest Source Scan
+
+Rechecked TensorRT-LLM upstream `NVIDIA/TensorRT-LLM@0722c5f47d2cae69ac1a237da51e550dd214532c` against the tracked files listed below.
+The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-26`.
+
+Result: no additional PR-numbered merges touched the tracked files beyond the existing timeline/backfill rows.
+
 ## 2026-06-26 PR Backfill Audit
 
 The per-PR diff audit cards on this page were generated from TensorRT-LLM

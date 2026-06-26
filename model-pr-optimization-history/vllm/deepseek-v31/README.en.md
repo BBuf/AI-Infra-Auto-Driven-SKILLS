@@ -1,5 +1,20 @@
 # vllm DeepSeek V3.1 Model PR Optimization History
 
+## 2026-06-26 Latest Source Scan
+
+Rechecked vLLM upstream `vllm-project/vllm@abc71548ef029132c3316b902207f254a246d593` against the tracked files listed below.
+The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-05`.
+
+Result: 5 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-25 | [#46651](https://github.com/vllm-project/vllm/pull/46651) | [Perf] Remove redundant clone for GLM, Deepseek etc | `deepseek_v2.py` |
+| 2026-06-20 | [#46199](https://github.com/vllm-project/vllm/pull/46199) | [Bugfix] Move extract_layer_index back inside is_v32 guard | `deepseek_v2.py` |
+| 2026-06-19 | [#45895](https://github.com/vllm-project/vllm/pull/45895) | [bugfix]Indexer init skip and MTP TopK share for iteration | `deepseek_mtp.py`, `deepseek_v2.py` |
+| 2026-06-12 | [#45003](https://github.com/vllm-project/vllm/pull/45003) | [Frontend]  Support strict mode for tool calling | `deepseekv31_tool_parser.py` |
+| 2026-06-07 | [#44420](https://github.com/vllm-project/vllm/pull/44420) | [feature] add index share feature for DSA MTP | `deepseek_mtp.py`, `deepseek_v2.py` |
+
 ## 2026-06-05 PR Backfill Audit
 
 Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 43 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-01-15). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.

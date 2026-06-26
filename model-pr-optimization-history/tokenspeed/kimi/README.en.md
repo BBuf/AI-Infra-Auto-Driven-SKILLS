@@ -1,5 +1,17 @@
 # TokenSpeed Kimi Model PR Optimization History
 
+## 2026-06-26 Latest Source Scan
+
+Rechecked TokenSpeed upstream `lightseekorg/tokenspeed@5aedf69d6b476baa65571011de6ea60fd5a238a8` against the tracked files listed below.
+The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-26`.
+
+Result: 2 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-26 | [#519](https://github.com/lightseekorg/tokenspeed/pull/519) | feat: distributed argmax for EAGLE greedy sampling | `logits_processor.py` |
+| 2026-06-25 | [#456](https://github.com/lightseekorg/tokenspeed/pull/456) | perf(kernel): optimize Qwen vision QKV rotary layout | `qkv_rotary.py` |
+
 ## 2026-06-26 PR Backfill Audit
 
 Checked against TokenSpeed upstream `HEAD@5aedf69d6b476baa65571011de6ea60fd5a238a8`. This uses a SGLang-style timeline plus per-PR diff audit cards for Kimi K2.5/K2.x.

@@ -1,5 +1,21 @@
 # vllm Nemotron Super Model PR Optimization History
 
+## 2026-06-26 Latest Source Scan
+
+Rechecked vLLM upstream `vllm-project/vllm@abc71548ef029132c3316b902207f254a246d593` against the tracked files listed below.
+The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-05`.
+
+Result: 6 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-24 | [#46495](https://github.com/vllm-project/vllm/pull/46495) | [Bugfix] Fix NemotronLayerNorm1P hardcoded cuda device type | `nemotron.py` |
+| 2026-06-18 | [#42727](https://github.com/vllm-project/vllm/pull/42727) | fix(quantization): Fix AWQ dequantize on Intel XPU and refactor AutoAWQ config | `nemotron_vl.py` |
+| 2026-06-16 | [#45755](https://github.com/vllm-project/vllm/pull/45755) | [Frontend] [Parser] Migrate Nemotron V3 to streaming parser engine | `test_nemotron_v3_reasoning_parser.py`, `nemotron_v3_reasoning_parser.py` |
+| 2026-06-11 | [#45128](https://github.com/vllm-project/vllm/pull/45128) | [Model] Remove InternLMForCausalLM registry alias | `nemotron.py`, `nemotron_nas.py` |
+| 2026-06-10 | [#39091](https://github.com/vllm-project/vllm/pull/39091) | [Bugfix][Reasoning] Nemotron V3: surface reasoning as content when thinking is unterminated | `test_nemotron_v3_reasoning_parser.py`, `nemotron_v3_reasoning_parser.py` |
+| 2026-06-08 | [#41184](https://github.com/vllm-project/vllm/pull/41184) | [MoE Refactor] FusedMoE/MoERunner inversion refactor | `nemotron_h.py` |
+
 ## 2026-06-05 PR Backfill Audit
 
 Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 4 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.

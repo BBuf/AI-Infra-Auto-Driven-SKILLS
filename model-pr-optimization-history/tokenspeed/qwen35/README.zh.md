@@ -1,5 +1,12 @@
 # TokenSpeed Qwen3.5 模型 PR 优化历史
 
+## 2026-06-26 最新源码扫描
+
+已按 TokenSpeed 上游 `lightseekorg/tokenspeed@5aedf69d6b476baa65571011de6ea60fd5a238a8` 重新扫描本文下方列出的 tracked files。
+文件级匹配使用 GitHub mirror 的 `git log --name-only`；PR 标题、链接和合并时间通过 GitHub GraphQL Pull Request API 批量复核。上一时效锚点：`2026-06-26`。
+
+结果：除了本文已有 timeline/backfill 行之外，没有额外 PR-numbered merge 命中 tracked files。
+
 ## 2026-06-26 PR 补漏复核
 
 已按 TokenSpeed 上游 `HEAD@5aedf69d6b476baa65571011de6ea60fd5a238a8` 复核。这个文件按 SGLang/vLLM 同样的格式记录模型相关 PR、已读 diff、实现文件、代码摘录与验证风险。

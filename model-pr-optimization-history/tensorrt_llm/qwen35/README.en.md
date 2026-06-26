@@ -1,5 +1,18 @@
 # TensorRT-LLM Qwen3.5 Model PR Optimization History
 
+## 2026-06-26 Latest Source Scan
+
+Rechecked TensorRT-LLM upstream `NVIDIA/TensorRT-LLM@0722c5f47d2cae69ac1a237da51e550dd214532c` against the tracked files listed below.
+The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-26`.
+
+Result: 3 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-26 | [#15481](https://github.com/NVIDIA/TensorRT-LLM/pull/15481) | [https://nvbugs/6239637][fix] Unwaive Qwen3.5 cases on A100 platform | `test_llm_api_pytorch.py` |
+| 2026-06-26 | [#15361](https://github.com/NVIDIA/TensorRT-LLM/pull/15361) | [TRTLLM-12762][test] Add Test coverage for MiniMax Model with multi-node, M2.5 checkpoints eval | `test_llm_api_pytorch.py` |
+| 2026-06-26 | [#14837](https://github.com/NVIDIA/TensorRT-LLM/pull/14837) | [TRTLLM-13712][feat] Add Qwen-Image-Bench evaluator | `qwen3_5_weight_mapper.py` |
+
 ## 2026-06-26 PR Backfill Audit
 
 The per-PR diff audit cards on this page were generated from TensorRT-LLM

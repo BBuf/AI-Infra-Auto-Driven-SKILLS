@@ -1,5 +1,25 @@
 # sglang DeepSeek V4 模型 PR 优化历史
 
+## 2026-06-26 最新源码扫描
+
+已按 SGLang 上游 `sgl-project/sglang@8524678889485801e7a4a12d62015be0c68f7a90` 重新扫描本文下方列出的 tracked files。
+文件级匹配使用 GitHub mirror 的 `git log --name-only`；PR 标题、链接和合并时间通过 GitHub GraphQL Pull Request API 批量复核。上一时效锚点：`2026-06-05`。
+
+结果：发现 10 个额外 PR-numbered merge 触及 tracked files，但尚未提升为下方完整逐 PR diff audit card。此节只作为 freshness index；需要引用实现细节时，仍应先人工阅读 PR diff 再补完整卡片。
+
+| 合并日期 | PR | 标题 | 命中的 tracked files |
+| --- | --- | --- | --- |
+| 2026-06-25 | [#29261](https://github.com/sgl-project/sglang/pull/29261) | [Docs] Fix broken links in cookbook | `DeepSeek-V4.mdx` |
+| 2026-06-24 | [#28952](https://github.com/sgl-project/sglang/pull/28952) | Add DeepSeek V4 Flash demo notebook | `DeepSeek-V4.mdx` |
+| 2026-06-23 | [#28981](https://github.com/sgl-project/sglang/pull/28981) | [AMD] Update v4 cookbook to clean env vars | `DeepSeek-V4.mdx` |
+| 2026-06-22 | [#25820](https://github.com/sgl-project/sglang/pull/25820) | [NVIDIA] Support NVFP4 MoE for DeepSeek-V4 | `DeepSeek-V4.mdx` |
+| 2026-06-18 | [#28613](https://github.com/sgl-project/sglang/pull/28613) | docs: add DeepSeek-V4 compressed state dtype tip | `DeepSeek-V4.mdx` |
+| 2026-06-17 | [#28423](https://github.com/sgl-project/sglang/pull/28423) | [AMD] Update v4 amd cookbook | `DeepSeek-V4.mdx` |
+| 2026-06-11 | [#27964](https://github.com/sgl-project/sglang/pull/27964) | [Spec] Retire Spec V1 | `DeepSeek-V4.mdx` |
+| 2026-06-10 | [#27830](https://github.com/sgl-project/sglang/pull/27830) | [Docs] Restore right-hand ToC on the DeepSeek-V4 cookbook page | `DeepSeek-V4.mdx` |
+| 2026-06-08 | [#26885](https://github.com/sgl-project/sglang/pull/26885) | Cookbook renovation | `DeepSeek-V4.mdx`, `deepseek-v4-deployment.jsx` |
+| 2026-06-05 | [#27404](https://github.com/sgl-project/sglang/pull/27404) | Remove DeepSeek V4 release Docker workflow | `release-docker-deepseek-v4.yml` |
+
 ## 2026-06-05 PR 补漏复核
 
 已于 2026-06-05 按 sglang 上游 `origin/main@6cfdc1858` 复核；自上次时效基准（2026-05-19）以来，共有 12 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。

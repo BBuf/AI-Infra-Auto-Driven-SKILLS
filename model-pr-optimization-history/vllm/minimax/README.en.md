@@ -1,5 +1,20 @@
 # vllm MiniMax M2 Series Model PR Optimization History
 
+## 2026-06-26 Latest Source Scan
+
+Rechecked vLLM upstream `vllm-project/vllm@abc71548ef029132c3316b902207f254a246d593` against the tracked files listed below.
+The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-05`.
+
+Result: 5 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-22 | [#45993](https://github.com/vllm-project/vllm/pull/45993) | [Model] Remove MiniMaxText01, MiniMaxVL01, MiniMaxForCausalLM | `tool_chat_template_minimax_m1.jinja`, `test_minimax_vl_01.py`, `test_minimax_tool_parser.py`, `minimax_text_01.py`, ... (+2) |
+| 2026-06-21 | [#45935](https://github.com/vllm-project/vllm/pull/45935) | [Model]Fix MiniMaxM2ForCausalLM perf  regression | `test_minimax_reduce_rms.py` |
+| 2026-06-18 | [#45988](https://github.com/vllm-project/vllm/pull/45988) | [Perf] Remove unused loggers in `reasoning/` | `minimax_m2_reasoning_parser.py` |
+| 2026-06-16 | [#45701](https://github.com/vllm-project/vllm/pull/45701) | [Frontend] Add Streaming Parser Engine and new MinimaxM2 Parser | `test_minimax_m2_reasoning_parser.py`, `test_minimax_m2_tool_parser.py`, `minimax_m2_reasoning_parser.py`, `minimax_m2_tool_parser.py` |
+| 2026-06-12 | [#45003](https://github.com/vllm-project/vllm/pull/45003) | [Frontend]  Support strict mode for tool calling | `minimax_m2_tool_parser.py` |
+
 ## 2026-06-05 PR Backfill Audit
 
 Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 5 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.

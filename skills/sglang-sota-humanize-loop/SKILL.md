@@ -189,7 +189,7 @@ Hard requirements:
   for SGLang and every selected comparison framework. The 2026-06-26
   source-refresh anchors are SGLang
   `8524678889485801e7a4a12d62015be0c68f7a90`, vLLM
-  `37ce34922f7f5e58241369511130cd99c1c50bfe`, TensorRT-LLM
+  `abc71548ef029132c3316b902207f254a246d593`, TensorRT-LLM
   `0722c5f47d2cae69ac1a237da51e550dd214532c`, and TokenSpeed
   `5aedf69d6b476baa65571011de6ea60fd5a238a8`; still prefer target-image
   `--help` over these source notes.
