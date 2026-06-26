@@ -36,7 +36,10 @@ Current model families:
 
 ## Current Optimization Items
 
-Refresh: `2026-05-26`. Keep active rows close to the relevant model histories;
+Refresh: `2026-06-26`. Source head:
+`sgl-project/sglang@b91348071e6ca21f9357fd8b1adc83a18781df30`.
+
+Keep active rows close to the relevant model histories;
 landed or closed rows remain here only as cross-model navigation hints until
 they are mirrored in a per-model PR history.
 

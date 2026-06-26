@@ -33,6 +33,12 @@ version_manifest:
     git_commit: null
     server_help: artifacts/help/trtllm_serve.txt
     benchmark_help: artifacts/help/trtllm_benchmark_serving.txt
+  tokenspeed:
+    container_image: <tokenspeed-image-with-current-source>
+    package_version: null
+    git_commit: null
+    server_help: artifacts/help/tokenspeed_serve.txt
+    benchmark_help: artifacts/help/tokenspeed_bench_serve.txt
 
 hardware:
   # Example values; replace with the actual target GPU (A100, H100, H200,
@@ -53,6 +59,10 @@ dataset:
 benchmark:
   endpoint: /v1/chat/completions
   backend: auto
+  # Caller-controlled set. For an SGLang-vs-vLLM-only SOTA loop, keep only
+  # [sglang, vllm] enabled and mark TensorRT-LLM/TokenSpeed as user-excluded in
+  # fairness diagnostics.
+  framework_set: [sglang, vllm, tensorrt_llm, tokenspeed]
   request_rates: null
   max_concurrency: [null, 16, 32]
   qps:
@@ -131,3 +141,21 @@ frameworks:
       # options via --extra_llm_api_options. A single [null] value contributes
       # no dimension to the search.
       # extra_llm_api_options: [null, /path/to/trt_llm_config_A.yaml]
+
+  tokenspeed:
+    enabled: true
+    base_server_flags:
+      tensor_parallel_size: 4
+      trust_remote_code: true
+      gpu_memory_utilization: 0.90
+      max_model_len: 12288
+      dtype: auto
+      kv_cache_dtype: auto
+    search_space:
+      # Verify these names against `tokenspeed serve --help`.
+      max_num_seqs: [64, 128]
+      chunked_prefill_size: [8192, 16384]
+      max_prefill_tokens: [8192, 16384]
+      enable_prefix_caching: [true]
+      # Add backend/speculative/communication-fusion choices only after a
+      # target-image smoke run confirms the concrete TokenSpeed CLI values.

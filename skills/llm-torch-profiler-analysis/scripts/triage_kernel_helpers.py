@@ -1235,6 +1235,8 @@ def source_location_priority(location: str) -> int:
         return 290 - penalty
     if text.startswith("vllm/"):
         return 285 - penalty
+    if text.startswith("python/tokenspeed/") or text.startswith("tokenspeed/"):
+        return 283 - penalty
     if text.startswith("tensorrt_llm/"):
         return 280 - penalty
     if text.startswith("sgl_kernel/"):
@@ -1254,6 +1256,8 @@ def is_preferred_source_location(location: str) -> bool:
         text.startswith("python/sglang/")
         or text.startswith("sglang/")
         or text.startswith("vllm/")
+        or text.startswith("python/tokenspeed/")
+        or text.startswith("tokenspeed/")
         or text.startswith("tensorrt_llm/")
         or text.startswith("sgl_kernel/")
     )
@@ -1316,6 +1320,10 @@ def frame_priority(frame_name: str) -> int:
         return 290 - penalty
     if normalized_text.startswith("vllm/"):
         return 285 - penalty
+    if normalized_text.startswith("python/tokenspeed/") or normalized_text.startswith(
+        "tokenspeed/"
+    ):
+        return 283 - penalty
     if normalized_text.startswith("tensorrt_llm/"):
         return 280 - penalty
     if normalized_text.startswith("sgl_kernel/"):
@@ -1329,6 +1337,8 @@ def frame_priority(frame_name: str) -> int:
             return 120
         if "/vllm/" in raw_text:
             return 118
+        if "/tokenspeed/" in raw_text or "/TokenSpeed/" in raw_text:
+            return 117
         if "/TensorRT-LLM/" in raw_text or "/tensorrt_llm/" in raw_text:
             return 116
         return 100
@@ -1336,6 +1346,10 @@ def frame_priority(frame_name: str) -> int:
         return 110
     if ".py(" in raw_text and "/vllm/" in raw_text:
         return 108
+    if ".py(" in raw_text and (
+        "/tokenspeed/" in raw_text or "/TokenSpeed/" in raw_text
+    ):
+        return 107
     if ".py(" in raw_text and (
         "/TensorRT-LLM/" in raw_text or "/tensorrt_llm/" in raw_text
     ):
@@ -2438,6 +2452,8 @@ def fusion_framework_hints(spec: FusionPatternSpec) -> set[str]:
     hints: set[str] = set()
     if "vllm/" in text:
         hints.add("vllm")
+    if "tokenspeed/" in text:
+        hints.add("tokenspeed")
     if "tensorrt_llm/" in text:
         hints.add("trtllm")
     if any(token in text for token in ("python/sglang/", "sgl-kernel/", "sgl_kernel/")):

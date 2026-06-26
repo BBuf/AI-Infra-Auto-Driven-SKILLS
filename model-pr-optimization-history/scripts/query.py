@@ -10,7 +10,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-FRAMEWORKS = ("sglang", "vllm")
+FRAMEWORKS = ("sglang", "vllm", "tensorrt_llm", "tokenspeed")
 LANG_TO_FILES = {
     "en": ("README.en.md",),
     "zh": ("README.zh.md",),
@@ -43,6 +43,8 @@ def _frameworks(selected: str | None) -> list[str]:
 
 def _model_dirs(framework: str, selected: str | None) -> list[Path]:
     root = ROOT / framework
+    if not root.exists():
+        return []
     if selected:
         target = root / _slugify(selected)
         if target.exists():
@@ -77,6 +79,8 @@ def _docs(framework: str | None, model: str | None, lang: str) -> list[Doc]:
 def _list_models(framework: str | None) -> None:
     for fw in _frameworks(framework):
         root = ROOT / fw
+        if not root.exists():
+            continue
         for model_dir in sorted(path for path in root.iterdir() if path.is_dir()):
             print(f"{fw}/{model_dir.name}")
 

@@ -79,6 +79,40 @@ values; this schema is not tied to H100.
     "p99_e2e_ms": 19000.0,
     "success_rate": 0.995
   },
+  "spec_decode": {
+    "enabled": false,
+    "algorithm": null,
+    "num_steps": null,
+    "num_draft_tokens": null,
+    "mean_accept_length": null,
+    "acceptance_rate": null
+  },
+  "phase_metrics": {
+    "pre_scheduler_ms": null,
+    "scheduler_ms": null,
+    "tokenizer_ms": null,
+    "detokenizer_ms": null,
+    "queue_ms": null
+  },
+  "cache": {
+    "prefix_cache_enabled": null,
+    "prefix_cache_hit_rate": null,
+    "kv_cache_tokens": null,
+    "kv_cache_utilization": null
+  },
+  "memory": {
+    "gpu_memory_utilization": null,
+    "kv_cache_dtype": null,
+    "cpu_offload_gb": null,
+    "gpu_resident_weight_gb": null
+  },
+  "normalization": {
+    "same_gpu_count": true,
+    "same_model_weights": true,
+    "same_tokenizer": true,
+    "same_endpoint": true,
+    "notes": ""
+  },
   "server_command": "python -m sglang.launch_server ...",
   "benchmark_command": "python -m sglang.bench_serving ...",
   "validated_cli_flags": {
@@ -104,6 +138,18 @@ also include p50/p95 buckets when available. These fields let the
   `--prefill-output-len 1`
 - decode profile: `--decode-input-len 1` and
   `--decode-output-len <slow output len>`
+
+Optional blocks:
+
+- `spec_decode`: speculative decoding settings and observed accept length. Use
+  this for SGLang, vLLM, TensorRT-LLM, and TokenSpeed when a candidate enables a
+  drafter/MTP/EAGLE-style path.
+- `phase_metrics`: non-kernel overheads that may explain a gap even when kernel
+  tables look similar, especially pre-scheduler and queue time.
+- `cache`: prefix/KV cache state that can bias repeated workload results.
+- `memory`: memory-residency settings that affect capacity and offload.
+- `normalization`: explicit fairness checks for same model, tokenizer, endpoint,
+  and GPU count.
 
 ## Status Values
 
@@ -157,8 +203,8 @@ The markdown summary must include these sections:
    per workload scenario and includes the best candidate, SLA result, throughput,
    latency metrics, GPU count, exact server command, and artifacts.
 2. `Cross-Framework Best Comparison`: one table that compares the best SGLang,
-   vLLM, and TensorRT-LLM command for each scenario. Sort each scenario by the
-   ranking rule above so the best deployment choice is first.
+   vLLM, TensorRT-LLM, and TokenSpeed command for each scenario. Sort each
+   scenario by the ranking rule above so the best deployment choice is first.
 3. `Failed Or SLA-Failing Candidates`: include this table when any candidate
    failed, was skipped, or completed without passing SLA. This table records
    tried configs that were not selected. Keep each reason concrete enough to

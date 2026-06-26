@@ -1,6 +1,6 @@
 ---
 name: sglang-sota-humanize-loop
-description: "Run an autonomous Humanize-governed SGLang SOTA performance loop for one LLM model: first perform the fixed fair SGLang/vLLM/TensorRT-LLM deployment search and benchmark, then start one RLCR loop that repeatedly decides the gap, profiles the current bottleneck, runs layer/kernel pipeline analysis, patches SGLang code, optionally uses ncu-report-skill for kernel evidence, and revalidates until SGLang matches or beats the best observed framework under the same workload and SLA."
+description: "Run an autonomous Humanize-governed SGLang SOTA performance loop for one LLM model: first perform a fixed fair SGLang benchmark against the requested comparison framework set, then start one RLCR loop that repeatedly decides the gap, profiles the current bottleneck, runs layer/kernel pipeline analysis, patches SGLang code, optionally uses ncu-report-skill for kernel evidence, and revalidates until SGLang matches or beats the best observed requested framework under the same workload and SLA."
 ---
 
 # SGLang SOTA Humanize Loop
@@ -9,7 +9,8 @@ description: "Run an autonomous Humanize-governed SGLang SOTA performance loop f
 
 Use this skill when the user names a model and wants the SGLang serving path to
 autonomously keep improving until it matches or beats the best reproducible
-vLLM or TensorRT-LLM result in the same target environment.
+result from the requested comparison framework set in the same target
+environment.
 
 This workflow has two durable parts:
 
@@ -100,9 +101,12 @@ Collect or infer:
 - target SGLang checkout to patch
 - GPU type/count, visible GPU ids, container or remote shell, CUDA/NCCL versions,
   and whether multi-node is allowed
-- framework set, defaulting to SGLang, vLLM, and TensorRT-LLM when available
+- target framework: always SGLang
+- comparison framework set: if the user explicitly names or excludes comparison
+  frameworks, honor that exact set; otherwise default to vLLM, TensorRT-LLM, and
+  TokenSpeed when available
 - model-family history slug inferred from the model id, checkpoint, or hot
-  SGLang/vLLM source path when possible
+  framework source path when possible
 - artifact root
 
 Create one run directory:
@@ -112,10 +116,12 @@ runs/YYYYMMDD_<model_slug>_sota_humanize/
   manifest.md
   help/
   benchmark/
+    fairness/
   profiles/
   analysis/
     root-cause.md
     layer-pipeline.md
+    fairness-diagnostics.md
   history/
     model-pr-history-notes.md
   kernel/
@@ -128,6 +134,21 @@ runs/YYYYMMDD_<model_slug>_sota_humanize/
 
 Never save Hugging Face tokens or other secrets in artifacts.
 
+## Framework Selection
+
+Treat SGLang and the comparison frameworks as separate concepts:
+
+- SGLang is always the target framework because this loop patches SGLang.
+- `comparison_frameworks` contains only competitors, using canonical names
+  `vllm`, `tensorrt_llm`, and `tokenspeed`.
+- If the user says "only compare with vLLM", "comparison_frameworks: [vllm]",
+  or "do not consider TensorRT-LLM/TokenSpeed", run only SGLang plus vLLM.
+- Do not silently add TensorRT-LLM or TokenSpeed because a config or doc exists.
+- Record selected comparison frameworks and user-excluded frameworks in
+  `manifest.md` and `benchmark/fairness/diagnostics.md`.
+- Only read competitor history, launch competitor benchmarks, and profile
+  competitor traces for the selected comparison framework set.
+
 ## Phase 0.5: Model PR History Knowledge Gate
 
 Before the fixed benchmark and before any patch planning, query and read
@@ -138,9 +159,8 @@ Rules:
 - If the slug is unclear, run `scripts/query.py "<model id or family>"` from
   the knowledge root and choose the closest model-family history.
 - Read the SGLang history for that family whenever it exists.
-- Read the vLLM history too when vLLM is in the comparison set, later becomes
-  the leading competitor, or its source/trace suggests a missing SGLang fast
-  path.
+- Read competitor history too when a selected comparison framework later becomes
+  the leading competitor or its source/trace suggests a missing SGLang fast path.
 - Write `history/model-pr-history-notes.md` with the paths read, PR numbers,
   source files, symbols, validation risks, and the concrete decision each item
   influences.
@@ -159,12 +179,20 @@ result schema, workload, and comparison.
 
 Hard requirements:
 
-- Search SGLang, vLLM, and TensorRT-LLM best deployment commands when each
-  framework is supported in the target environment.
+- Search SGLang and every selected comparison framework's best deployment
+  command when that framework is supported in the target environment.
 - Do not compare tuned SGLang against competitor defaults. Every framework gets
   its own bounded search.
 - Use the same model weights, tokenizer, precision, quantization, GPU type/count,
   GPU ids, endpoint path, sampling settings, and SLA.
+- Record package version or git commit plus server/benchmark `--help` snapshots
+  for SGLang and every selected comparison framework. The 2026-06-26
+  source-refresh anchors are SGLang
+  `b91348071e6ca21f9357fd8b1adc83a18781df30`, vLLM
+  `c2507fb2937aa8c8e74bea15719d04fb6090befe`, TensorRT-LLM
+  `4164b932c6c8a14d1be85d0fd62e44b7d0171980`, and TokenSpeed
+  `5aedf69d6b476baa65571011de6ea60fd5a238a8`; still prefer target-image
+  `--help` over these source notes.
 - Use the default two dataset scenarios from `llm-serving-auto-benchmark` unless
   the user explicitly provides a production workload:
   - dataset kind `random`, `num_prompts: 80`
@@ -174,15 +202,27 @@ Hard requirements:
     product
 - Do not replace those scenarios with an easier smoke dataset for the real SOTA
   decision. Smoke runs are allowed only when labeled as flow checks.
-- For TensorRT-LLM, keep `trtllm-serve serve --backend pytorch`; reject
-  non-PyTorch TensorRT-LLM server backends for this skill.
+- For selected TensorRT-LLM comparisons, keep
+  `trtllm-serve serve --backend pytorch`; reject non-PyTorch TensorRT-LLM server
+  backends for this skill.
+- For selected TokenSpeed comparisons, use `tokenspeed serve <model>` or the
+  target image's exact alias such as `ts serve`; record the exact binary spelling
+  and validate `tokenspeed serve --help` plus `tokenspeed bench serve --help`.
+- If TokenSpeed is selected and a TokenSpeed-native agentic workload exists for
+  the model family, run it as an additional lane beside the common
+  cross-framework workload. Do not let it replace the common scenario unless the
+  user explicitly chose that workload as the SOTA target before benchmarking.
 - Keep failed, skipped, and SLA-failing candidates in the benchmark artifact.
+- Record optional fairness fields in normalized rows whenever available:
+  speculative accept length, pre-scheduler/scheduler time, cache hit rate,
+  offload or memory residency, endpoint, and request-shape notes.
 
 Write:
 
 - `benchmark/candidates.jsonl`
 - `benchmark/summary.md`
 - `benchmark/winning-commands.md`
+- `benchmark/fairness/diagnostics.md`
 - framework help outputs under `help/`
 - the exact launch and benchmark commands for every winner
 
@@ -206,6 +246,8 @@ The plan must require every RLCR round to:
 - preserve the fixed benchmark workload and SLA
 - preserve and consult `history/model-pr-history-notes.md` before choosing
   model-specific SGLang source paths
+- preserve and consult `benchmark/fairness/diagnostics.md` before treating a
+  gap as a code bottleneck
 - run the gap decision inside the loop before patching
 - run `llm-torch-profiler-analysis` inside the loop when SGLang is behind or
   when the previous patch changed the profiled path
@@ -267,15 +309,36 @@ next-round prompt exactly.
 ### Gap Decision
 
 At the start of every round, compute current SGLang's gap against the best
-SLA-passing framework for each fixed scenario.
+SLA-passing selected comparison framework for each fixed scenario.
 
 Use `1%` as the default stable noise threshold. If the current result is within
 `+/-1%`, rerun the winning commands enough times to decide whether the gap is
 stable before choosing a patch.
 
-Patch only when SGLang is slower than the best framework by more than `1%`,
-fails SLA while another framework passes, or has a profiled bottleneck that
-explains the remaining gap under the fixed workload.
+Patch only when SGLang is slower than the best selected comparison framework by
+more than `1%`, fails SLA while a selected competitor passes, or has a profiled
+bottleneck that explains the remaining gap under the fixed workload.
+
+Before patching, update `analysis/fairness-diagnostics.md` from the current
+benchmark rows and the fixed `benchmark/fairness/diagnostics.md`. Check:
+
+- same GPU count, visible GPU ids, model weights, tokenizer, precision,
+  quantization, endpoint, sampling settings, and request shape
+- speculative decoding status, algorithm, number of steps, and mean accept
+  length for every framework that enables a drafter/MTP/EAGLE-style path
+- pre-scheduler, scheduler, queue, tokenizer, and detokenizer time when exposed
+  by server logs or benchmark output
+- prefix/KV cache status and hit rate, especially for repeated prompts or
+  multi-turn workloads
+- GPU memory utilization, KV dtype, offload, and model weight residency
+- TokenSpeed-specific serving knobs, when TokenSpeed is selected, such as
+  `attn_tp_size`, `moe_tp_size`, `enable_expert_parallel`, backend choices, and
+  communication-fusion flags
+
+If the current leader wins because it used a non-equivalent workload,
+non-equivalent cache/speculative setting, different resident weights, or a
+framework-specific endpoint shortcut, fix the benchmark normalization first and
+rerun. Do not patch SGLang code until the gap survives this fairness gate.
 
 If SGLang is already best or tied within the stable threshold, write the final
 report and stop under the normal Humanize review path.
@@ -288,9 +351,12 @@ competitor command with `llm-torch-profiler-analysis`.
 Rules:
 
 - Always profile SGLang when it is behind.
-- Always profile at least the current best framework.
-- If both vLLM and TensorRT-LLM are more than `1%` ahead of SGLang in a stable
-  result, profile both.
+- Always profile at least the current best selected comparison framework.
+- If multiple competitors are more than `1%` ahead of SGLang in a stable
+  result, profile each ahead competitor that can produce a trace. For
+  TokenSpeed, analyze an existing torch-profiler trace or run-directory trace
+  emitted by the deployment; do not fabricate a live profiler endpoint when the
+  target image only supports offline traces.
 - Use the slow benchmark scenario lengths, not the profiler defaults:
   - prefill profile: slow input length -> `1` output token
   - decode profile: `1` input token -> slow output length
@@ -339,8 +405,8 @@ choose or validate the next edit.
 
 Eligibility gate:
 
-- SGLang is still more than `1%` behind the best framework for the fixed
-  benchmark scenario after the required repeat/profiler checks.
+- SGLang is still more than `1%` behind the best selected comparison framework
+  for the fixed benchmark scenario after the required repeat/profiler checks.
 - The slow stage has a concrete SGLang kernel or tightly scoped kernel family
   in the kernel table with at least `1%` cumulative GPU-time share. Do not spend
   kernel-specialist effort on a lone kernel below `1%` share unless a shared
@@ -406,24 +472,25 @@ Every patch attempt gets an attempt row. Only correct patches with measured
 improvement get optimization rows. Source ideas must include profiler rows,
 layer-pipeline evidence, NCU report paths when used, and code
 provenance so later rounds can avoid re-reading the same source. Model PR
-history evidence should be recorded beside SGLang, vLLM, TensorRT-LLM, and NCU
-source ideas when it influenced the patch.
+history evidence should be recorded beside SGLang, selected comparison
+frameworks, and NCU source ideas when it influenced the patch.
 
 After two consecutive rounds with less than `1%` geomean improvement over the
 prior best SGLang result, expand code-first research before editing again.
-Prefer code and PR evidence from SGLang, vLLM, TensorRT-LLM, and relevant kernel
-source guides before prose-only articles.
+Prefer code and PR evidence from SGLang, selected comparison frameworks, and
+relevant kernel source guides before prose-only articles.
 
 ## Stop Conditions
 
 Stop only when one of these is true:
 
-- SGLang beats the best SLA-passing vLLM/TensorRT-LLM result on the fixed
-  workload.
+- SGLang beats the best SLA-passing selected comparison framework result on the
+  fixed workload.
 - SGLang is tied within the stable `1%` threshold after repeat runs.
 - The remaining gap is proven external to SGLang, such as unavailable hardware
   support, missing framework dependency, unsupported TensorRT-LLM PyTorch
-  backend, or model weights that cannot be loaded fairly.
+  backend, unsupported TokenSpeed build, or model weights that cannot be loaded
+  fairly.
 - Profile evidence shows the remaining hot path is already near the relevant
   hardware or algorithmic limit and no low-risk SGLang patch remains.
 
