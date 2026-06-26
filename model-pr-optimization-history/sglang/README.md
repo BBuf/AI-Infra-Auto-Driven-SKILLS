@@ -37,7 +37,7 @@ Current model families:
 ## Current Optimization Items
 
 Refresh: `2026-06-26`. Source head:
-`sgl-project/sglang@b91348071e6ca21f9357fd8b1adc83a18781df30`.
+`sgl-project/sglang@8524678889485801e7a4a12d62015be0c68f7a90`.
 
 Keep active rows close to the relevant model histories;
 landed or closed rows remain here only as cross-model navigation hints until
@@ -45,6 +45,8 @@ they are mirrored in a per-model PR history.
 
 | PR | Model / area | Status | Current signal | Why it matters |
 | --- | --- | --- | --- | --- |
+| [#29390](https://github.com/sgl-project/sglang/pull/29390) | LTX-2.3 diffusion | merged | fused Ada values | Adds a Triton `ltx2_ada_values9` path that removes repeated Ada table materialization; profiler loops should classify split Ada add/reshape/slice ladders as a missing shipped fusion. |
+| [#29250](https://github.com/sgl-project/sglang/pull/29250) | MiniMax / MSA | merged | optional `fmha_sm100` fallback | Converts missing/incompatible MSA plan API into Triton sparse-attention fallback; benchmark comparisons should not count an image with broken optional MSA as a model-level SGLang regression without this fix. |
 | [#23882](https://github.com/sgl-project/sglang/pull/23882) | DeepSeek-V4 | merged | rebase tracking | Keeps DSV4 branch integration moving; check before assuming local DeepSeek-V4 support is final. |
 | [#24047](https://github.com/sgl-project/sglang/pull/24047) | DeepSeek-V4 / SM120 | closed | Blackwell-lite support | Affects FP4, MoE, and attention kernel eligibility on SM120 hardware. |
 | [#18612](https://github.com/sgl-project/sglang/pull/18612) | NVFP4 CUTLASS MoE | open | fused SiLU+Mul into expert quant | Covers a concrete activation-plus-quant MoE fuse opportunity. |

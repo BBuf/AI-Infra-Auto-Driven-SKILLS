@@ -188,9 +188,9 @@ Hard requirements:
 - Record package version or git commit plus server/benchmark `--help` snapshots
   for SGLang and every selected comparison framework. The 2026-06-26
   source-refresh anchors are SGLang
-  `b91348071e6ca21f9357fd8b1adc83a18781df30`, vLLM
-  `c2507fb2937aa8c8e74bea15719d04fb6090befe`, TensorRT-LLM
-  `4164b932c6c8a14d1be85d0fd62e44b7d0171980`, and TokenSpeed
+  `8524678889485801e7a4a12d62015be0c68f7a90`, vLLM
+  `37ce34922f7f5e58241369511130cd99c1c50bfe`, TensorRT-LLM
+  `0722c5f47d2cae69ac1a237da51e550dd214532c`, and TokenSpeed
   `5aedf69d6b476baa65571011de6ea60fd5a238a8`; still prefer target-image
   `--help` over these source notes.
 - Use the default two dataset scenarios from `llm-serving-auto-benchmark` unless

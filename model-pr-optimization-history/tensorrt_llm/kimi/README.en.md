@@ -2,7 +2,12 @@
 
 ## 2026-06-26 PR Backfill Audit
 
-Checked against TensorRT-LLM upstream `HEAD@4164b932c6c8a14d1be85d0fd62e44b7d0171980`. This page provides model implementation coverage, a timeline, and per-PR diff audit cards for Kimi K2 Thinking / Kimi K2.5.
+The per-PR diff audit cards on this page were generated from TensorRT-LLM
+upstream `HEAD@4164b932c6c8a14d1be85d0fd62e44b7d0171980`. The root
+TensorRT-LLM history index tracks the latest 2026-06-26 runtime refresh at
+`0722c5f47d2cae69ac1a237da51e550dd214532c`. This page provides model
+implementation coverage, a timeline, and per-PR diff audit cards for Kimi K2
+Thinking / Kimi K2.5.
 
 Filter used in this pass: merged PRs whose titles or files matched `Kimi`, `kimi_k25`, `KimiK25`, `K2.5`, `K2 Thinking`, `NVFP4`, `multimodal`, `tool_parser`, `reasoning_parser`, `guided decoding`, `spec dec`, `rejection sampling`, or `NIXL`. Formatting-only and unrelated infrastructure PRs were excluded.
 

@@ -28,13 +28,18 @@ overlap opportunity as novel.
 
 The catalog is grouped by reusable optimization family, not by one specific model.
 
-Refresh note `2026-05-15`: rescanned current `sglang`, vLLM, and TensorRT-LLM
-mainline snapshots. The vLLM torch.compile pass inventory is split out in
+Refresh note `2026-06-26`: rechecked official main heads for SGLang
+`8524678889485801e7a4a12d62015be0c68f7a90`, vLLM
+`37ce34922f7f5e58241369511130cd99c1c50bfe`, TensorRT-LLM
+`0722c5f47d2cae69ac1a237da51e550dd214532c`, and TokenSpeed
+`5aedf69d6b476baa65571011de6ea60fd5a238a8`. The vLLM torch.compile pass
+inventory is split out in
 [`vllm-torch-compile-fusions.md`](vllm-torch-compile-fusions.md). Stable
-current-code families remain folded into the mainline rows below. New rows were
-added for vLLM MLA RoPE+KV-cache cat fusion, DSV4 norm/router, TokenSpeed MLA,
-and ROCm/gfx950 paged-MQA logits. Recheck PR state before treating an in-flight
-row as shipped.
+current-code families remain folded into the mainline rows below. This refresh
+adds first-class TokenSpeed-origin rows for CuTe DSL MLA, MLA KV pack+FP8
+quantize, sampling, lm_head GEMM, and NVFP4 GEMM+SwiGLU+quant, plus the latest
+SGLang LTX2 Ada-value diffusion fusion. Recheck PR state before treating an
+in-flight row as shipped.
 
 ## 1. LLM / SRT fused-kernel families
 
@@ -113,6 +118,7 @@ row as shipped.
 | Fused diffusion QK norm + RoPE | split QK norm and RoPE in diffusion attention blocks | `python/sglang/jit_kernel/diffusion/qknorm_rope.py`<br>`python/sglang/multimodal_gen/runtime/layers/layernorm.py::apply_qk_norm_rope` | `fused_inplace_qknorm_rope(...)`, with fallback to QK norm plus `apply_flashinfer_rope_qk_inplace(...)` | Distinguish between missing fused qknorm + rope and the existing FlashInfer RoPE fallback. |
 | Z-Image fused `norm(x) * tanh(scale) + shift` | `fused_norm_tanh_mul_add`<br>`tanh(gate) * rmsnorm(x)` | `python/sglang/jit_kernel/diffusion/cutedsl/norm_tanh_mul_add_norm_scale.py`<br>`python/sglang/multimodal_gen/runtime/layers/layernorm.py` | CuTeDSL kernel plus runtime helper for Z-Image residual-form modulation | Treat split Z-Image residual-form modulation as a missing existing diffusion fusion, not a novel idea. |
 | Z-Image fused residual modulation + next norm-scale | `fused_norm_tanh_mul_add_norm_scale`<br>`residual + tanh(gate) * rmsnorm(x)`<br>`ffn_norm1(x) * scale_mlp` | `python/sglang/jit_kernel/diffusion/cutedsl/norm_tanh_mul_add_norm_scale.py`<br>`python/sglang/multimodal_gen/runtime/models/dits/zimage.py` | One CuTeDSL kernel fuses the first residual-form modulation and the next normalization / scale stage | If you see this chain split in Z-Image traces, report it as a missing existing mainline fusion family. |
+| LTX2 fused Ada values | `ltx2_ada_values9`<br>`get_ada_values`<br>`scale_shift_table + timestep.reshape` | `python/sglang/jit_kernel/diffusion/triton/ltx2_ada_values.py`<br>`python/sglang/multimodal_gen/runtime/models/dits/ltx_2.py` | PR `#29390` fuses LTX-2.3 Ada value materialization for video/audio streams and reuses the 9 Ada tensors across self-attention, MLP, and prompt-cross-attention blocks | Treat repeated Ada add/reshape/slice ladders in LTX2 traces as a missing shipped SGLang fusion first. |
 | Nunchaku fused GELU MLP | `_fused_gelu_mlp`<br>`fused_gelu_mlp` | `python/sglang/multimodal_gen/runtime/models/dits/flux.py` | Nunchaku path fuses `fc1 GEMM + GELU + shift + re-quant + fc2.lora_down` before the second GEMM | Treat split GELU-MLP on Nunchaku checkpoints as an existing fused family, not a new discovery. |
 
 ## 5. Diffusion kernel-overlap and async-communication families
@@ -259,7 +265,20 @@ contain the same implementation.
 | vLLM-origin fused MoE LoRA | `fused_moe_lora`<br>`fused_moe_lora_fp8`<br>`w13_shrink`<br>`w2_expand` | `vllm/lora/ops/triton_ops/fused_moe_lora_op.py`<br>`vllm/lora/ops/triton_ops/fused_moe_lora_fp8_op.py`<br>`vllm/lora/layers/fused_moe.py` | Triton kernels fuse LoRA shrink / expand work into MoE expert execution, including FP8 variants | Treat MoE-LoRA adapter work as an upstream fused family before proposing a brand new kernel. |
 | vLLM-origin ViT fused bilinear position-embedding interpolation | `triton_pos_embed_interpolate`<br>`bilinear_pos_embed`<br>`pos_embed_interpolate_native` | `vllm/model_executor/models/qwen3_vl.py` | Triton kernel fuses bilinear interpolation and spatial-merge reorder for Qwen3-VL ViT position embeddings, replacing many tiny eager kernels | Treat VLM position-embedding ladders as an existing vLLM-origin Triton fusion family. |
 
-## 15. vLLM-origin kernel-overlap families
+## 15. TokenSpeed-origin fused-kernel families
+
+These rows are direct TokenSpeed families from `lightseekorg/tokenspeed`, not
+only vLLM references to the TokenSpeed package.
+
+| Pattern | Trace keywords | Primary code | Existing path | Skill should conclude |
+| --- | --- | --- | --- | --- |
+| TokenSpeed CuTe DSL MLA prefill / decode | `tokenspeed_mla_decode`<br>`tokenspeed_mla_prefill`<br>`BlackwellMultiHeadLatentAttentionForward` | `python/tokenspeed/runtime/layers/attention/backends/tokenspeed_mla.py`<br>`tokenspeed-mla/python/tokenspeed_mla/mla_decode.py`<br>`tokenspeed-mla/python/tokenspeed_mla/mla_prefill.py`<br>`tokenspeed-kernel/python/tokenspeed_kernel/ops/attention/tokenspeed_mla/__init__.py` | Blackwell SM100 CuTe DSL MLA kernels cover FP8-KV prefill/decode/verify paths through the `tokenspeed_mla` backend | On TokenSpeed or vLLM+TokenSpeed MLA traces, compare backend selection before proposing a new MLA attention kernel. |
+| TokenSpeed MLA KV pack + FP8 quantize | `_mla_kv_pack_quantize_fp8_kernel`<br>`mla_kv_pack_quantize_fp8`<br>`k_nope` / `k_pe` | `tokenspeed-mla/python/tokenspeed_mla/mla_kv_pack_quantize_fp8.py`<br>`tokenspeed-kernel/python/tokenspeed_kernel/ops/attention/tokenspeed_mla/__init__.py` | One Triton kernel packs `k_nope`, broadcast `k_pe`, and `v`, then writes FP8 K/V for MLA chunked prefill | Treat split K/V concat + FP8 cast ladders as a known TokenSpeed fusion family. |
+| TokenSpeed fused top-k + top-p sampling | `fused_topk_topp`<br>`fused_topk_topp_renorm` | `tokenspeed-kernel/python/tokenspeed_kernel/thirdparty/cuda/fused_topk_topp.py`<br>`tokenspeed-kernel/python/tokenspeed_kernel/thirdparty/cuda/csrc/fused_topk_topp/fused_topk_topp.cu` | CUDA extension fuses top-k, top-p, and renormalization for decode sampling | Treat top-k/top-p/renorm chains in TokenSpeed traces as an existing sampling fusion first. |
+| TokenSpeed persistent lm_head GEMM | `lm_head_gemm`<br>`should_use_fused`<br>`persistent` | `tokenspeed-kernel/python/tokenspeed_kernel/thirdparty/cuda/lm_head_gemm.py`<br>`tokenspeed-kernel/python/tokenspeed_kernel/thirdparty/cuda/csrc/lm_head_gemm.cu` | Shape-gated persistent GEMM replaces `torch.matmul` for selected lm_head / router-like projection shapes | Treat visible lm_head matmul ladders as a candidate for this existing TokenSpeed path before inventing a new logits GEMM. |
+| TokenSpeed NVFP4 GEMM + SwiGLU + quant | `nvfp4_gemm_swiglu_nvfp4_quant`<br>`SwiGLU`<br>`SFC` | `tokenspeed-kernel/python/tokenspeed_kernel/thirdparty/cute_dsl/nvfp4_gemm_swiglu_nvfp4_quant.py` | CuTe DSL kernel fuses block-scaled NVFP4 GEMM, SwiGLU, and optional output quantization | Treat split expert GEMM + activation + FP4 quant chains as matching an upstream TokenSpeed kernel family. |
+
+## 16. vLLM-origin kernel-overlap families
 
 | Pattern | Trace keywords | Primary code | Existing path | Skill should conclude |
 | --- | --- | --- | --- | --- |
@@ -268,7 +287,7 @@ contain the same implementation.
 | vLLM-origin shared-expert aux-stream overlap | `aux_stream`<br>`shared_experts_stream`<br>shared expert near router | `vllm/model_executor/layers/fused_moe/runner/shared_experts.py`<br>`vllm/model_executor/layers/fused_moe/runner/moe_runner_base.py` | MoE shared experts can record the cloned input on `shared_experts_stream`, wait on the caller stream, run in parallel with router-side work, and rejoin before merge | Treat shared-expert vs router overlap as an existing upstream sparse-model family. |
 | vLLM-origin DCP async all-to-all overlap | `dcp_alltoall`<br>`all_to_all_single`<br>`async_op=True` | `vllm/v1/attention/ops/dcp_alltoall.py` | Output / LSE exchange uses async all-to-all handles instead of serializing collective completion on the main path | Treat DCP all-to-all windows as an upstream async-collective family. |
 
-## 16. vLLM-origin PR-backed / in-flight fused-kernel and kernel-overlap families
+## 17. vLLM-origin PR-backed / in-flight fused-kernel and kernel-overlap families
 
 | Pattern | Trace keywords | Primary code | Existing path | Skill should conclude |
 | --- | --- | --- | --- | --- |
@@ -289,7 +308,7 @@ contain the same implementation.
 | PRs `#41433` / `#41434` / `#41429` / `#40561` GPU/CPU sync removal | `GPU->CPU sync`<br>`cpu sync`<br>`item()`<br>`non_blocking` | `PR #41433`<br>`PR #41434`<br>`PR #41429`<br>`PR #40561` | Removes or gates accidental GPU-to-CPU synchronization points and adds sync-detection coverage | Treat CPU gaps next to small GPU kernels as an upstream vLLM sync-removal family before proposing a kernel-only fix. |
 | PR `#36823` vLLM IR `fused_add_rms_norm` overload | `vllm_ir`<br>`fused_add_rms_norm`<br>`maybe_inplace` | `PR #36823`<br>`vllm/compilation/passes/ir`<br>`vllm/compilation/passes/fusion/rms_quant_fusion.py` | Extends vLLM IR lowering so fused-add-RMSNorm variants remain visible to later compile-time fusions | Treat missing norm/quant compile fusion as potentially an IR-lowering visibility issue. |
 
-## 17. Important toggles and caveats
+## 18. Important toggles and caveats
 
 | Toggle / env | Location | Effect on trace interpretation |
 | --- | --- | --- |
@@ -332,9 +351,13 @@ contain the same implementation.
 | `PassConfig.fuse_act_padding` | `vllm/config/compilation.py` | Enables the ROCm AITER add-RMSNorm-plus-pad fusion family when AITER is available. |
 | `PassConfig.enable_sp` | `vllm/config/compilation.py` | Rewrites all-reduce into sequence-parallel staging; this is often a prerequisite for the overlap family, not just a pure fuse toggle. |
 | `PassConfig.fuse_gemm_comms` | `vllm/config/compilation.py` | Enables AsyncTP GEMM + collective overlap and auto-enables `enable_sp` when valid. |
+| vLLM PR `#46735` Triton MoE CUDA graph capture fix | `vllm/model_executor/layers/fused_moe/experts/triton_moe.py`<br>`vllm/model_executor/layers/fused_moe/experts/nvfp4_emulation_moe.py` | Latest vLLM mainline fixes CUDA graph capture around Triton / NVFP4-emulation MoE; stale target images may show graph-capture failures or eager fallbacks that are not SGLang kernel wins. |
 | `TRTLLM_ENABLE_PDL` | `csrc/libtorch_stable/dsv3_fused_a_gemm.cu`<br>`csrc/moe/dsv3_router_gemm_utils.h` | Enables programmatic dependent launch for the DSV3 specialized CUDA kernels, which can change launch grouping and trace shape for router / QKV-A paths. |
+| TokenSpeed `--attention-backend tokenspeed_mla` | `python/tokenspeed/runtime/layers/attention/backends/tokenspeed_mla.py` | Selects TokenSpeed's native CuTe DSL MLA backend; requires compatible Blackwell FP8-KV MLA shapes, so split MLA support kernels may indicate backend gating rather than a missing kernel. |
+| TokenSpeed `TOKENSPEED_MLA_PREFILL_BACKEND` | `tokenspeed-mla/python/tokenspeed_mla/mla_prefill.py` | Chooses CuTe DSL JIT vs binary prefill backend; trace kernel names can differ even when the same MLA fused family applies. |
+| TokenSpeed `--comm-fusion-max-num-tokens` / `--enable-allreduce-fusion` | `docs/configuration/server.md`<br>`python/tokenspeed/runtime/distributed/comm_backend` | Gates TokenSpeed communication-fusion behavior; inspect these before treating all-reduce + compute separation as a novel overlap gap. |
 
-## 18. Suggested refresh commands
+## 19. Suggested refresh commands
 
 These commands are only for maintainers refreshing this catalog by rescanning
 the local source trees. They are not used by the triage scripts at runtime.
