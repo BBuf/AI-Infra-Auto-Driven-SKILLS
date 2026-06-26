@@ -42,19 +42,23 @@ class LlmServingCookbookConfigsTest(unittest.TestCase):
             with self.subTest(path=path.name):
                 self.assertEqual(self.mod.validate_config(path), [])
 
-    def test_every_config_has_three_framework_sections(self) -> None:
+    def test_every_config_has_four_framework_sections(self) -> None:
         for path in self.config_paths():
             with self.subTest(path=path.name):
                 config = self.load_config(path)
                 self.assertEqual(
                     set(config["frameworks"]),
-                    {"sglang", "vllm", "tensorrt_llm"},
+                    {"sglang", "vllm", "tensorrt_llm", "tokenspeed"},
                 )
 
                 trt = config["frameworks"]["tensorrt_llm"]
                 self.assertEqual(trt["backend_policy"], "fixed_pytorch")
                 self.assertEqual(trt["base_server_flags"]["backend"], "pytorch")
                 self.assertNotIn("backend", trt["search_space"])
+
+                tokenspeed = config["frameworks"]["tokenspeed"]
+                self.assertTrue(tokenspeed["enabled"])
+                self.assertEqual(tokenspeed["server_command"], "tokenspeed serve")
 
     def test_rendered_commands_use_framework_native_flags(self) -> None:
         config = self.load_config(CONFIG_ROOT / "qwen3-235b-a22b.yaml")
@@ -83,6 +87,15 @@ class LlmServingCookbookConfigsTest(unittest.TestCase):
         self.assertIn("--tp_size 8", trt_command)
         self.assertNotIn("--tp-size", trt_command)
 
+        tokenspeed = config["frameworks"]["tokenspeed"]
+        tokenspeed_command = self.mod.render_command(
+            "tokenspeed", config, tokenspeed["base_server_flags"]
+        )
+        self.assertIn("tokenspeed serve Qwen/Qwen3-235B-A22B", tokenspeed_command)
+        self.assertIn("--tensor-parallel-size 8", tokenspeed_command)
+        self.assertIn("--max-model-len", tokenspeed_command)
+        self.assertNotIn("--tp_size", tokenspeed_command)
+
     def test_glm_configs_explicitly_enable_trust_remote_code(self) -> None:
         glm_configs = (
             "glm-4.5.yaml",
@@ -110,8 +123,10 @@ class LlmServingCookbookConfigsTest(unittest.TestCase):
                     name = "sglang_launch_server.txt"
                 elif framework == "vllm":
                     name = "vllm_serve_all.txt"
-                else:
+                elif framework == "tensorrt_llm":
                     name = "trtllm_serve.txt"
+                else:
+                    name = "tokenspeed_serve.txt"
                 (help_dir / name).write_text(flag_text, encoding="utf-8")
 
             help_flags = self.mod.load_help_flags(help_dir)
@@ -135,6 +150,7 @@ class LlmServingCookbookConfigsTest(unittest.TestCase):
                 },
                 "vllm": {"enabled": False},
                 "tensorrt_llm": {"enabled": False},
+                "tokenspeed": {"enabled": False},
             },
         }
 

@@ -1,6 +1,6 @@
 ---
 name: llm-torch-profiler-analysis
-description: "Unified LLM torch-profiler triage skill for `sglang`, `vllm`, and `TensorRT-LLM`. Use it to inspect an existing `trace.json(.gz)` or profile directory, or to drive live profiling against a running server and return one three-table report with kernel, overlap-opportunity, and fuse-pattern tables."
+description: "Unified LLM torch-profiler triage skill for `sglang`, `vllm`, `TensorRT-LLM`, and `TokenSpeed`. Use it to inspect an existing `trace.json(.gz)` or profile directory, or to drive live profiling against a running server when supported and return one three-table report with kernel, overlap-opportunity, and fuse-pattern tables."
 ---
 
 # Unified LLM Torch Profiler Analysis
@@ -12,6 +12,7 @@ Use this skill for `torch.profiler` analysis across:
 - `sglang`
 - `vllm`
 - `TensorRT-LLM`
+- `TokenSpeed`
 
 There is only one public workflow:
 
@@ -50,18 +51,26 @@ add one short note after the tables with exactly one of:
 
 ## Capability Matrix
 
-| Capability | SGLang | vLLM | TensorRT-LLM |
-| --- | --- | --- | --- |
-| Existing trace triage | yes | yes | yes |
-| Single-trace live capture | yes | yes, if torch profiler is enabled on server | requires profiler control endpoints |
-| Two-trace mapping+formal triage | yes | yes | yes |
-| Stage-separated live workload | yes | yes | yes, with a writable shared trace dir or per-stage host runner |
-| `--profile-by-stage` capture | yes | no | no |
-| `--profile-prefix` control | yes | usually ignored on HTTP profiler route | usually ignored on HTTP profiler route |
+| Capability | SGLang | vLLM | TensorRT-LLM | TokenSpeed |
+| --- | --- | --- | --- | --- |
+| Existing trace triage | yes | yes | yes | yes |
+| Single-trace live capture | yes | yes, if torch profiler is enabled on server | requires profiler control endpoints | yes, if `/start_profile` and `/stop_profile` are exposed |
+| Two-trace mapping+formal triage | yes | yes | yes | yes |
+| Stage-separated live workload | yes | yes | yes, with a writable shared trace dir or per-stage host runner | yes, via workload-separated HTTP capture |
+| `--profile-by-stage` capture | yes | no | no | no |
+| `--profile-prefix` control | yes | usually ignored on HTTP profiler route | usually ignored on HTTP profiler route | yes, mapped to `profile_id` |
 
 For TensorRT-LLM, live capture only works when the server exposes `/start_profile` and
 `/stop_profile`, and when the deployment already provides a shared trace path plus the
 required env vars.
+
+For TokenSpeed, this skill supports both existing trace triage and live capture
+against current servers that expose `/start_profile` and `/stop_profile`.
+The live helper sends `output_dir`, `activities`, `with_stack`,
+`record_shapes`, and `profile_id` in the start payload. TokenSpeed also has its
+own native `profile_by_stage` field for manual capture, but the unified helper
+uses workload-separated `prefill/` and `decode/` directories by default so the
+tables stay comparable across frameworks.
 
 ## Real H100 Validation
 
@@ -98,6 +107,9 @@ Validated matrix:
 Use this run as the main H100 reference.
 The older `2026-04-22` single-card Qwen3 matrix is still useful for bring-up, but it is
 not the default reference anymore.
+TokenSpeed support was added later and is covered by existing-trace triage and
+HTTP profiler-control support, but it is not part of this older H100 validation
+matrix yet.
 
 Stage-separated workload validation captured on `2026-05-01` on `h100_sglang`:
 
@@ -150,7 +162,8 @@ H100 notes:
 
 ## When To Use It
 
-- inspect a `torch.profiler` trace or profile directory from `sglang`, `vllm`, or `TensorRT-LLM`
+- inspect a `torch.profiler` trace or profile directory from `sglang`, `vllm`,
+  `TensorRT-LLM`, or `TokenSpeed`
 - profile a live serving endpoint and analyze the result
 - summarize which kernel families dominate prefill or decode
 - map kernels back to Python code paths
@@ -322,7 +335,97 @@ This is the validated TensorRT-LLM flow on `h100_sglang`:
 2. run a few benchmark requests
 3. analyze the emitted trace with `--input /data/.../trace.json`
 
-### 5. Two-trace triage from existing profile dirs or traces
+### 5. Single-trace live capture or triage from TokenSpeed
+
+For a running TokenSpeed server that exposes the profiler routes, the unified
+helper can drive live capture:
+
+```bash
+python3 scripts/analyze_llm_torch_profile.py \
+  --framework tokenspeed \
+  --url http://127.0.0.1:8000 \
+  --output-dir /data/bbuf/validate/unified_llm_profiler_skill/runs/example/tokenspeed_profile \
+  --num-steps 5 \
+  --warmup-steps 10 \
+  --no-profile-by-stage \
+  --profile-workload both \
+  --profile-prefix ts-triage
+```
+
+The helper sends `POST /start_profile` with:
+
+- `output_dir`: the `--output-dir` path
+- `activities`: `["CPU", "GPU"]`
+- `with_stack`: `true`
+- `record_shapes`: `false`
+- `profile_id`: `--profile-prefix`, with `-prefill` or `-decode` appended during workload-separated capture
+
+It then sends OpenAI-compatible probe requests and calls `POST /stop_profile`.
+TokenSpeed writes files such as `ts-triage-prefill-TP-0.trace.json.gz` under the
+output directory. If the server was launched with multiple TP ranks, expect one
+trace per rank.
+
+Existing TokenSpeed torch-profiler traces can still be analyzed directly:
+
+```bash
+python3 scripts/analyze_llm_torch_profile.py \
+  --framework tokenspeed \
+  --input /path/to/tokenspeed_profile_dir_or_trace.json.gz
+```
+
+TokenSpeed's own manual profiler control surface can also be used:
+
+```bash
+curl -X POST http://127.0.0.1:8000/start_profile \
+  -H 'Content-Type: application/json' \
+  -d '{"output_dir":"/data/bbuf/profiles/tokenspeed","activities":["CPU","GPU"],"with_stack":true,"record_shapes":false,"profile_id":"ts-manual"}'
+
+# send representative workload here
+
+curl -X POST http://127.0.0.1:8000/stop_profile
+```
+
+For server-side automatic stop, pass `num_steps`. For TokenSpeed-native
+EXTEND/DECODE split, pass `profile_by_stage: true`; this produces files with
+stage suffixes such as `-EXTEND` and `-DECODE`.
+
+TokenSpeed's benchmark driver can capture traces too:
+
+```bash
+tokenspeed bench serve \
+  --base-url http://127.0.0.1:8000 \
+  --model <model> \
+  --dataset-name random \
+  --random-input-len 4090 \
+  --random-output-len 1 \
+  --num-prompts 64 \
+  --profile \
+  --profile-num-steps 5 \
+  --extra-body '{"output_dir":"/data/bbuf/profiles/tokenspeed","activities":["CPU","GPU"],"with_stack":true,"profile_id":"ts-bench"}'
+```
+
+If `output_dir` is omitted, TokenSpeed falls back to `TOKENSPEED_PROFILER_DIR`
+and then `/tmp`.
+
+Use [scripts/probe_llm_server.py](scripts/probe_llm_server.py) with
+`--framework tokenspeed` for a small OpenAI-compatible endpoint probe before or
+after trace collection:
+
+```bash
+python3 scripts/probe_llm_server.py \
+  --framework tokenspeed \
+  --url http://127.0.0.1:8000 \
+  --requests 6 \
+  --max-tokens 48
+```
+
+For `sglang-sota-humanize-loop`, keep TokenSpeed profiler evidence aligned to
+the same slow scenario bucket as the benchmark result. Prefer the unified
+workload-separated live capture when possible; if only a mixed agentic trace is
+available, label that limitation in `analysis/root-cause.md` before comparing
+it to SGLang prefill/decode traces.
+
+### 6. Two-trace triage from existing profile dirs or traces
 
 ```bash
 python3 scripts/analyze_llm_torch_profile.py \
@@ -332,7 +435,7 @@ python3 scripts/analyze_llm_torch_profile.py \
 
 Use this when you need stronger overlap attribution and kernel-to-source mapping.
 
-### 6. Two-trace triage from running servers
+### 7. Two-trace triage from running servers
 
 ```bash
 python3 scripts/analyze_llm_torch_profile.py \
@@ -350,6 +453,10 @@ For `vllm` or `TensorRT-LLM`, use the same shape but pass:
 - `--formal-output-dir ...`
 - `--no-profile-by-stage`
 
+For TokenSpeed, either use `--mapping-url` and `--formal-url` against servers
+that expose `/start_profile` and `/stop_profile`, or pass two existing trace
+directories with `--mapping-input` and `--formal-input`.
+
 ## `profile_by_stage`
 
 `--profile-by-stage` is only meaningful on the SGLang live-capture path.
@@ -363,7 +470,8 @@ For `vllm` or `TensorRT-LLM`, use the same shape but pass:
   bottlenecks.
 - On the current profile-v2 path inside SGLang, stage-based profiling is effectively the normal path.
 - PD-disaggregated serving adds one extra rule: prefill workers and decode workers must be profiled separately. That is stricter than ordinary `profile_by_stage`.
-- For `vllm` and `TensorRT-LLM`, disable it with `--no-profile-by-stage`.
+- For `vllm`, `TensorRT-LLM`, and `TokenSpeed`, disable it with
+  `--no-profile-by-stage`.
 
 ## How To Choose The Triage Shape
 

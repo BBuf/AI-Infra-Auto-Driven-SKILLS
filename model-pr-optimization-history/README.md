@@ -6,13 +6,17 @@ the directory acts as one queryable knowledge base for model-family PR evidence.
 
 - `sglang/`: SGLang model histories and audits.
 - `vllm/`: vLLM model histories and audits.
+- `tensorrt_llm/`: TensorRT-LLM model histories and audits.
+- `tokenspeed/`: TokenSpeed model histories and audits.
 - `SKILL.md`: agent instructions for using this directory as knowledge.
 - `scripts/query.py`: small local search helper for model slugs, doc paths, and
   keyword snippets.
 
 Each model history is bilingual when practical (`README.zh.md` and
 `README.en.md`) and should be grounded in inspected PR diffs, source files, and
-validation/risk notes.
+validation/risk notes. SGLang, vLLM, TensorRT-LLM, and TokenSpeed entries use
+the same timeline plus per-PR diff-card format whenever a model family has
+upstream PR evidence.
 
 When a doc is rechecked for timeliness, a dated `## <YYYY-MM-DD> PR Backfill
 Audit` section is prepended right after the title. It lists PR-numbered merges
@@ -30,5 +34,6 @@ python3 scripts/query.py --framework vllm "qwen3 fused qk norm"
 ```
 
 SGLang SOTA and Humanize loops should read the matching SGLang history before
-patch planning, read vLLM history when vLLM is the leading competitor, and save
-the short extracted evidence under `history/model-pr-history-notes.md`.
+patch planning, read competitor history when vLLM, TensorRT-LLM, or TokenSpeed
+is the leading competitor, and save the short extracted evidence under
+`history/model-pr-history-notes.md`.

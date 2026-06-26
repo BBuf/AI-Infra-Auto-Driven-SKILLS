@@ -1,6 +1,6 @@
 ---
 name: model-pr-history-knowledge
-description: Use when an SGLang, vLLM, or TensorRT-LLM serving/model optimization task needs prior model-family PR evidence. Query and read the PR-driven history docs under model-pr-optimization-history before choosing source paths, fast paths, kernel/fusion ideas, regression risks, or validation lanes.
+description: Use when an SGLang, vLLM, TensorRT-LLM, or TokenSpeed serving/model optimization task needs prior model-family PR evidence. Query and read the PR-driven history docs under model-pr-optimization-history before choosing source paths, fast paths, kernel/fusion ideas, regression risks, or validation lanes.
 ---
 
 # Model PR History Knowledge
@@ -22,11 +22,13 @@ python3 scripts/query.py --list
 python3 scripts/query.py --framework sglang --model qwen3-core --paths-only
 python3 scripts/query.py --framework sglang --model qwen3-core "fused qk norm rope"
 python3 scripts/query.py --framework vllm "DeepSeek-V4 fused norm router" --limit 5
+python3 scripts/query.py --framework tokenspeed qwen35 --paths-only
 ```
 
 Useful options:
 
-- `--framework sglang|vllm`: restrict to one serving framework.
+- `--framework sglang|vllm|tensorrt_llm|tokenspeed`: restrict to one serving
+  framework.
 - `--model <slug>`: restrict to one model family directory.
 - `--lang en|zh|both`: select English, Chinese, or both docs.
 - `--paths-only`: print the exact docs to read without snippets.
@@ -36,11 +38,12 @@ Useful options:
 
 1. Infer the model-family slug from the user's model id, checkpoint path, or
    SGLang source path. If unsure, run `scripts/query.py "<model name>"`.
-2. Read the matching SGLang history first for SGLang patch work. Read the vLLM
-   history too when vLLM is the leading competitor or its trace suggests a
-   missing SGLang fast path. If the doc opens with a dated `PR Backfill Audit`
-   section, read it first: it lists the most recent PR-numbered merges that are
-   not yet folded into the older timeline / diff-audit cards.
+2. Read the matching SGLang history first for SGLang patch work. Read competitor
+   history too when vLLM, TensorRT-LLM, or TokenSpeed is the leading competitor
+   or its trace suggests a missing SGLang fast path. If the doc opens with a
+   dated `PR Backfill Audit` section, read it first: it lists the most recent
+   PR-numbered merges that are not yet folded into the older timeline /
+   diff-audit cards.
 3. Extract only actionable evidence:
    - model implementation files and symbols
    - PRs that changed the hot source path
@@ -60,6 +63,8 @@ Current frameworks:
 
 - `sglang`
 - `vllm`
+- `tensorrt_llm`
+- `tokenspeed`
 
 Current model-family slugs include:
 
@@ -83,4 +88,6 @@ source:
 - If the profiler points at a known model path, check whether the history has
   prior changes on that file before writing a new patch.
 - If a competitor is faster, search that competitor's model history for the
-  same model family and stage before assuming the gap is kernel-local.
+  same model family and stage before assuming the gap is kernel-local. Refresh
+  live source/PRs for the exact target commit before patch planning when the
+  comparison depends on latest upstream behavior.

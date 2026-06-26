@@ -36,7 +36,10 @@ Current model families:
 
 ## Current Watch / Landed Items
 
-Refresh: `2026-05-26`. Keep watch rows close to the relevant model histories;
+Refresh: `2026-06-26`. Source head:
+`vllm-project/vllm@c2507fb2937aa8c8e74bea15719d04fb6090befe`.
+
+Keep watch rows close to the relevant model histories;
 landed rows that are already mirrored in per-model docs remain here as
 cross-model navigation hints.
 

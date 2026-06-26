@@ -2,7 +2,9 @@ schema_version: 1
 source:
   kind: llm_serving_cookbook
   source_recipe_file: kimi-k2.6.yaml
-  translation: SGLang flags follow the current Kimi-K2.6 cookbook command generator; vLLM and TensorRT-LLM use framework-native generic translations for the same model and synthetic dataset shape.
+  translation: SGLang flags follow the current Kimi-K2.6 cookbook command generator;
+    vLLM and TensorRT-LLM use framework-native generic translations for the same model
+    and synthetic dataset shape.
 model:
   name: moonshotai/Kimi-K2.6
   tokenizer: moonshotai/Kimi-K2.6
@@ -127,3 +129,24 @@ frameworks:
       max_seq_len:
       - 12288
       - 16384
+  tokenspeed:
+    enabled: true
+    server_command: tokenspeed serve
+    config_source: tokenspeed_latest_generic_translation
+    base_server_flags:
+      tensor_parallel_size: 8
+      gpu_memory_utilization: 0.9
+      max_model_len: 12288
+      dtype: auto
+      kv_cache_dtype: auto
+      trust_remote_code: true
+    search_space:
+      max_num_seqs:
+      - 32
+      - 48
+      - 64
+      chunked_prefill_size:
+      - 8192
+      - 16384
+      enable_prefix_caching:
+      - true

@@ -115,6 +115,14 @@ def _artifact_summary(row: dict[str, Any]) -> str:
     return "<br>".join(parts)
 
 
+def _optional_metric(row: dict[str, Any], *paths: str) -> Any:
+    for path in paths:
+        value = _get(row, path)
+        if value is not None:
+            return value
+    return None
+
+
 def load_rows(path: Path) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     with path.open(encoding="utf-8") as f:
@@ -160,6 +168,9 @@ def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         "mean_tpot_ms",
         "p99_ttft_ms",
         "p99_tpot_ms",
+        "mean_accept_length",
+        "pre_scheduler_ms",
+        "prefix_cache_hit_rate",
         "gpu_count",
         "server_command",
         "failure_reason",
@@ -185,6 +196,24 @@ def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
                     "mean_tpot_ms": _get(row, "metrics.mean_tpot_ms", ""),
                     "p99_ttft_ms": _get(row, "metrics.p99_ttft_ms", ""),
                     "p99_tpot_ms": _get(row, "metrics.p99_tpot_ms", ""),
+                    "mean_accept_length": _optional_metric(
+                        row,
+                        "spec_decode.mean_accept_length",
+                        "metrics.mean_accept_length",
+                    )
+                    or "",
+                    "pre_scheduler_ms": _optional_metric(
+                        row,
+                        "phase_metrics.pre_scheduler_ms",
+                        "metrics.pre_scheduler_ms",
+                    )
+                    or "",
+                    "prefix_cache_hit_rate": _optional_metric(
+                        row,
+                        "cache.prefix_cache_hit_rate",
+                        "metrics.prefix_cache_hit_rate",
+                    )
+                    or "",
                     "gpu_count": _get(row, "hardware.gpu_count", ""),
                     "server_command": _server_command(row),
                     "failure_reason": _get(row, "failure_reason", ""),
@@ -204,14 +233,14 @@ def _append_best_commands_by_framework(
             [
                 f"### `{framework}`",
                 "",
-                "| Scenario | Candidate | Status | SLA | Req/s | Output tok/s | Total tok/s | P50 TTFT ms | P50 TPOT ms | Success rate | GPUs | Server command | Artifacts |",
-                "| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |",
+                "| Scenario | Candidate | Status | SLA | Req/s | Output tok/s | Total tok/s | P50 TTFT ms | P50 TPOT ms | Success rate | Accept len | Pre-scheduler ms | Cache hit | GPUs | Server command | Artifacts |",
+                "| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |",
             ]
         )
         rows = [row for row in scenario_winners if _get(row, "framework") == framework]
         for row in sorted(rows, key=_scenario):
             lines.append(
-                "| {scenario} | {candidate} | {status} | {sla} | {rps} | {otps} | {ttps} | {ttft} | {tpot} | {success} | {gpus} | {command} | {artifacts} |".format(
+                "| {scenario} | {candidate} | {status} | {sla} | {rps} | {otps} | {ttps} | {ttft} | {tpot} | {success} | {accept} | {sched} | {cache} | {gpus} | {command} | {artifacts} |".format(
                     scenario=_cell(_scenario(row)),
                     candidate=_cell(_get(row, "candidate_id", "")),
                     status=_cell(_get(row, "status", "")),
@@ -222,6 +251,27 @@ def _append_best_commands_by_framework(
                     ttft=_cell(_p50_or_mean_value(row, "ttft")),
                     tpot=_cell(_p50_or_mean_value(row, "tpot")),
                     success=_cell(_get(row, "metrics.success_rate")),
+                    accept=_cell(
+                        _optional_metric(
+                            row,
+                            "spec_decode.mean_accept_length",
+                            "metrics.mean_accept_length",
+                        )
+                    ),
+                    sched=_cell(
+                        _optional_metric(
+                            row,
+                            "phase_metrics.pre_scheduler_ms",
+                            "metrics.pre_scheduler_ms",
+                        )
+                    ),
+                    cache=_cell(
+                        _optional_metric(
+                            row,
+                            "cache.prefix_cache_hit_rate",
+                            "metrics.prefix_cache_hit_rate",
+                        )
+                    ),
                     gpus=_cell(_get(row, "hardware.gpu_count")),
                     command=_cell(_server_command(row)),
                     artifacts=_cell(_artifact_summary(row)),
@@ -237,8 +287,8 @@ def _append_cross_framework_table(
         [
             "## Cross-Framework Best Comparison",
             "",
-            "| Scenario | Rank | Framework | Candidate | SLA | Req/s | Output tok/s | P50 TTFT ms | P50 TPOT ms | GPUs | Server command |",
-            "| --- | ---: | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | --- |",
+            "| Scenario | Rank | Framework | Candidate | SLA | Req/s | Output tok/s | P50 TTFT ms | P50 TPOT ms | Accept len | Pre-scheduler ms | Cache hit | GPUs | Server command |",
+            "| --- | ---: | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |",
         ]
     )
     scenario_names = sorted({_scenario(row) for row in scenario_winners})
@@ -246,7 +296,7 @@ def _append_cross_framework_table(
         rows = [row for row in scenario_winners if _scenario(row) == scenario_name]
         for rank, row in enumerate(sorted(rows, key=_rank_key, reverse=True), 1):
             lines.append(
-                "| {scenario} | {rank} | {framework} | {candidate} | {sla} | {rps} | {otps} | {ttft} | {tpot} | {gpus} | {command} |".format(
+                "| {scenario} | {rank} | {framework} | {candidate} | {sla} | {rps} | {otps} | {ttft} | {tpot} | {accept} | {sched} | {cache} | {gpus} | {command} |".format(
                     scenario=_cell(scenario_name),
                     rank=rank,
                     framework=_cell(_get(row, "framework", "")),
@@ -256,6 +306,27 @@ def _append_cross_framework_table(
                     otps=_cell(_get(row, "metrics.output_token_throughput")),
                     ttft=_cell(_p50_or_mean_value(row, "ttft")),
                     tpot=_cell(_p50_or_mean_value(row, "tpot")),
+                    accept=_cell(
+                        _optional_metric(
+                            row,
+                            "spec_decode.mean_accept_length",
+                            "metrics.mean_accept_length",
+                        )
+                    ),
+                    sched=_cell(
+                        _optional_metric(
+                            row,
+                            "phase_metrics.pre_scheduler_ms",
+                            "metrics.pre_scheduler_ms",
+                        )
+                    ),
+                    cache=_cell(
+                        _optional_metric(
+                            row,
+                            "cache.prefix_cache_hit_rate",
+                            "metrics.prefix_cache_hit_rate",
+                        )
+                    ),
                     gpus=_cell(_get(row, "hardware.gpu_count")),
                     command=_cell(_server_command(row)),
                 )

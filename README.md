@@ -11,7 +11,7 @@ intelligence.**
 [![GitHub forks](https://img.shields.io/github/forks/BBuf/AI-Infra-Auto-Driven-SKILLS?style=social)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/forks)
 [![Last commit](https://img.shields.io/github/last-commit/BBuf/AI-Infra-Auto-Driven-SKILLS?style=flat-square)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/commits/main)
 [![Core skills](https://img.shields.io/badge/core_skills-10-2f80ed?style=flat-square)](#core-skills)
-[![PR histories](https://img.shields.io/badge/pr_histories-58-2ea44f?style=flat-square)](#model-pr-history-catalog)
+[![PR histories](https://img.shields.io/badge/pr_histories-66-2ea44f?style=flat-square)](#model-pr-history-catalog)
 [![KDA-Pilot](https://img.shields.io/badge/sibling-KDA--Pilot-ff7b72?style=flat-square)](https://github.com/BBuf/KDA-Pilot)
 
 </div>
@@ -19,13 +19,13 @@ intelligence.**
 This repository is built for AI infrastructure engineers who want agents to do
 real work, not recite generic prompts.
 
-It gives an agent the operational memory needed to benchmark SGLang, vLLM, and
-TensorRT-LLM fairly; explain serving capacity from startup logs; split prefill
-and decode profiler evidence; inspect traces at layer and kernel level; estimate
-operator FLOPs and MFU; review SGLang patches against real maintainer discussion
-patterns; run Humanize-governed SGLang and vLLM SOTA loops; triage SGLang
-production incidents from a replay; and keep model-family optimization history
-close to the code that actually changed.
+It gives an agent the operational memory needed to benchmark SGLang, vLLM,
+TensorRT-LLM, and TokenSpeed fairly; explain serving capacity from startup logs;
+split prefill and decode profiler evidence; inspect traces at layer and kernel
+level; estimate operator FLOPs and MFU; review SGLang patches against real
+maintainer discussion patterns; run Humanize-governed SGLang and vLLM SOTA
+loops; triage SGLang production incidents from a replay; and keep model-family
+optimization history close to the code that actually changed.
 
 For standalone kernel campaigns and kernel evidence tools, see the sibling
 project **[KDA-Pilot](https://github.com/BBuf/KDA-Pilot)**.
@@ -38,13 +38,13 @@ find it.
 
 | Skill | Use it when |
 | --- | --- |
-| [`llm-serving-auto-benchmark`](skills/llm-serving-auto-benchmark/) | You need a fair, bounded serving benchmark search for SGLang, vLLM, TensorRT-LLM, or another OpenAI-compatible stack. |
+| [`llm-serving-auto-benchmark`](skills/llm-serving-auto-benchmark/) | You need a fair, bounded serving benchmark search for SGLang, vLLM, TensorRT-LLM, TokenSpeed, or another OpenAI-compatible stack. |
 | [`llm-serving-capacity-planner`](skills/llm-serving-capacity-planner/) | You need to explain SGLang or vLLM startup memory, KV cache budget, request capacity, or OOM pressure from logs. |
 | [`llm-torch-profiler-analysis`](skills/llm-torch-profiler-analysis/) | You need a three-table profiler report that keeps `extend/prefill` and `decode` evidence separate. |
 | [`llm-pipeline-analysis`](skills/llm-pipeline-analysis/) | You need forward-pass, layer, and kernel-level timing from a torch profiler trace, including anchor boundaries and Perfetto ranges. |
 | [`model-compute-simulation`](skills/model-compute-simulation/) | You need operator shapes, FLOPs, MFU estimates, kernel-to-op mapping, or parallelism what-if analysis for an LLM serving shape. |
 | [`sglang-humanize-review`](skills/sglang-humanize-review/) | You need SGLang code-review findings grounded in full human PR review episodes from project start through the latest refresh (June 2026), including inline code context, top-level discussion, review summaries, and multi-round replies. Every review opens with a PR comprehension pass — a change summary plus a Mermaid execution flowchart with the diff's modified steps marked — so the reviewer sees how the PR runs before the findings. |
-| [`sglang-sota-humanize-loop`](skills/sglang-sota-humanize-loop/) | You want one model-level Humanize RLCR loop that owns gap decisions, profiler triage, required layer-pipeline deep dives, SGLang patches, optional `ncu-report-skill` evidence, and real-model revalidation after the fixed fair benchmark. |
+| [`sglang-sota-humanize-loop`](skills/sglang-sota-humanize-loop/) | You want one model-level Humanize RLCR loop that owns SGLang gap decisions against a selected comparison framework set, profiler triage, required layer-pipeline deep dives, SGLang patches, optional `ncu-report-skill` evidence, and real-model revalidation after the fixed fair benchmark. |
 | [`vllm-sota-humanize-loop`](skills/vllm-sota-humanize-loop/) | You want one model-level Humanize RLCR loop that owns gap decisions, profiler triage, required layer-pipeline deep dives, vLLM patches, optional `ncu-report-skill` evidence, and real-model revalidation after the fixed fair benchmark. |
 | [`sglang-prod-incident-triage`](skills/sglang-prod-incident-triage/) | You need to turn queue growth, timeouts, wrong outputs, crashes, or distributed stalls into a replay and next debug step. |
 | [`model-architecture-diagram`](skills/model-architecture-diagram/) | You need original public architecture diagrams for popular LLM, VLM, MoE, OCR, and diffusion model families. |
@@ -55,19 +55,31 @@ find it.
   <img src="https://raw.githubusercontent.com/BBuf/AI-Infra-Auto-Driven-SKILLS/main/docs/assets/sglang-sota-performance-loop.svg" alt="SGLang SOTA Performance Loop" width="620">
 </p>
 
+`sglang-sota-humanize-loop` always patches SGLang, while the competitor set is
+caller-controlled. By default the comparison framework set can include vLLM,
+TensorRT-LLM, and TokenSpeed; a prompt can also narrow it, for example:
+
+```text
+Use sglang-sota-humanize-loop for <model>.
+comparison_frameworks: [vllm]
+Do not consider TensorRT-LLM or TokenSpeed; record them as user-excluded.
+```
+
 ## Model PR History Catalog
 
 The model optimization layer is now one knowledge base:
 [`model-pr-optimization-history`](model-pr-optimization-history/). It contains
-58 PR-driven history dossiers and a small query helper. These are not
+66 PR-driven history dossiers and a small query helper. These are not
 per-model runbook skills; they preserve diff-backed model evolution records for
-SGLang and vLLM so SOTA loops can read prior source and PR evidence before
-patching.
+SGLang, vLLM, TensorRT-LLM, and TokenSpeed so SOTA loops can read prior source
+and PR evidence before patching.
 
 | Framework | PR histories |
 | --- | ---: |
-| [SGLang](model-pr-optimization-history/sglang/) | 29 |
-| [vLLM](model-pr-optimization-history/vllm/) | 29 |
+| [SGLang](model-pr-optimization-history/sglang/) | 31 |
+| [vLLM](model-pr-optimization-history/vllm/) | 31 |
+| [TensorRT-LLM](model-pr-optimization-history/tensorrt_llm/) | 2 |
+| [TokenSpeed](model-pr-optimization-history/tokenspeed/) | 2 |
 
 Covered families include:
 
@@ -94,6 +106,7 @@ cd model-pr-optimization-history
 python3 scripts/query.py --list
 python3 scripts/query.py --framework sglang --model qwen3-core --paths-only
 python3 scripts/query.py --framework vllm "qwen3 fused qk norm"
+python3 scripts/query.py --framework tokenspeed --model qwen35 qk rmsnorm
 ```
 
 ## Evidence Standards
@@ -265,8 +278,10 @@ skills/
 model-pr-optimization-history/
 ├── SKILL.md                         # knowledge-base usage instructions
 ├── scripts/query.py                 # local model/keyword query helper
-├── sglang/                          # 29 PR-driven SGLang model histories
-└── vllm/                            # 29 PR-driven vLLM model histories
+├── sglang/                          # 31 PR-driven SGLang model histories
+├── vllm/                            # 31 PR-driven vLLM model histories
+├── tensorrt_llm/                    # TensorRT-LLM competitor histories
+└── tokenspeed/                      # TokenSpeed competitor histories
 
 prompts/
 ├── sglang-sota-b200-prompts.md       # B200 SGLang SOTA task prompts

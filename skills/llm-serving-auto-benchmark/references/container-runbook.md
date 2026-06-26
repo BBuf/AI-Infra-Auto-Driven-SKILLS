@@ -19,6 +19,10 @@ Pull the images that will be used:
 docker pull lmsysorg/sglang:dev
 docker pull vllm/vllm-openai:latest
 docker pull nvcr.io/nvidia/tensorrt-llm/release:latest
+# TokenSpeed images are environment-specific; set this to the image or local
+# build that contains the target TokenSpeed commit.
+export TOKENSPEED_IMAGE=<tokenspeed-image-with-current-source>
+docker pull "$TOKENSPEED_IMAGE"
 ```
 
 Use quoted Docker GPU device lists:
@@ -83,6 +87,8 @@ vllm bench sweep serve --help=all > artifacts/help/vllm_bench_sweep_serve_all.tx
 trtllm-serve serve --help > artifacts/help/trtllm_serve.txt
 python -m tensorrt_llm.serve.scripts.benchmark_serving --help \
   > artifacts/help/trtllm_benchmark_serving.txt
+tokenspeed serve --help > artifacts/help/tokenspeed_serve.txt
+tokenspeed bench serve --help > artifacts/help/tokenspeed_bench_serve.txt
 ```
 
 ## SGLang
@@ -216,6 +222,83 @@ vllm bench serve \
 
 Use `vllm bench sweep serve` when the target image supports it and the search
 can be described with serve/bench parameter JSON files.
+
+## TokenSpeed
+
+Server template:
+
+```bash
+docker run -d --name llmbench-tokenspeed \
+  --gpus "$GPU_ARG" \
+  --network host \
+  --ipc=host \
+  -v /data/.cache:/root/.cache \
+  -e MODEL \
+  -e TP \
+  -e PORT \
+  -e HF_TOKEN \
+  -e HUGGINGFACE_HUB_TOKEN \
+  --entrypoint bash \
+  "$TOKENSPEED_IMAGE" -lc '
+tokenspeed serve "$MODEL" \
+  --host 0.0.0.0 \
+  --port "$PORT" \
+  --tensor-parallel-size "$TP" \
+  --dtype auto \
+  --gpu-memory-utilization 0.90 \
+  --max-model-len 4096 \
+  --max-num-seqs 64 \
+  --chunked-prefill-size 8192 \
+  --kv-cache-dtype auto \
+  --enable-prefix-caching \
+  --trust-remote-code
+'
+```
+
+Benchmark template:
+
+```bash
+docker run --rm \
+  --network host \
+  -v /data/.cache:/root/.cache \
+  -v "$RUN_DIR:/artifacts" \
+  -e MODEL \
+  -e PORT \
+  --entrypoint bash \
+  "$TOKENSPEED_IMAGE" -lc '
+tokenspeed bench serve \
+  --base-url "http://127.0.0.1:$PORT" \
+  --model "$MODEL" \
+  --dataset-name random \
+  --random-input-len 1024 \
+  --random-output-len 256 \
+  --num-prompts 80 \
+  --request-rate 8 \
+  --max-concurrency 64 \
+  --save-result \
+  --result-dir /artifacts/tokenspeed
+'
+```
+
+For a profiler handoff run after the plain benchmark is complete, add a writable
+profile mount and pass TokenSpeed's profile payload through `--extra-body`:
+
+```bash
+tokenspeed bench serve \
+  --base-url "http://127.0.0.1:$PORT" \
+  --model "$MODEL" \
+  --dataset-name random \
+  --random-input-len 1024 \
+  --random-output-len 256 \
+  --num-prompts 80 \
+  --profile \
+  --profile-num-steps 5 \
+  --extra-body '{"output_dir":"/artifacts/tokenspeed_profile","activities":["CPU","GPU"],"with_stack":true,"profile_id":"ts-bench"}'
+```
+
+Some TokenSpeed images expose the binary as `ts`. If so, use `ts serve` and
+`ts bench serve`, then record that exact spelling in the normalized
+`server_command` and `benchmark_command`.
 
 ## TensorRT-LLM
 
