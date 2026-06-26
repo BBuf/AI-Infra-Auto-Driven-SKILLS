@@ -321,6 +321,45 @@ class LlmTorchProfilerAnalysisTest(unittest.TestCase):
             ],
         )
 
+    def test_tokenspeed_fusion_registry_has_native_patterns(self) -> None:
+        registry = self.mod.kernel_helpers.FUSION_PATTERN_REGISTRY
+        patterns = {spec.pattern: spec for spec in registry}
+
+        expected = {
+            "TokenSpeed CuTe DSL MLA prefill / decode",
+            "TokenSpeed MLA KV pack + FP8 quantize",
+            "TokenSpeed fused top-k + top-p sampling",
+            "TokenSpeed persistent lm_head GEMM",
+            "TokenSpeed NVFP4 GEMM + SwiGLU + quant",
+        }
+        self.assertTrue(expected.issubset(patterns))
+
+        for name in expected:
+            self.assertTrue(
+                self.mod.kernel_helpers.pattern_supports_framework(
+                    patterns[name], "tokenspeed"
+                ),
+                msg=name,
+            )
+            self.assertFalse(
+                self.mod.kernel_helpers.pattern_supports_framework(
+                    patterns[name], "sglang"
+                ),
+                msg=name,
+            )
+
+    def test_sglang_fusion_registry_has_latest_ltx2_pattern(self) -> None:
+        registry = self.mod.kernel_helpers.FUSION_PATTERN_REGISTRY
+        patterns = {spec.pattern: spec for spec in registry}
+
+        spec = patterns["SGLang LTX2 fused Ada values"]
+        self.assertTrue(
+            self.mod.kernel_helpers.pattern_supports_framework(spec, "sglang")
+        )
+        self.assertFalse(
+            self.mod.kernel_helpers.pattern_supports_framework(spec, "tokenspeed")
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

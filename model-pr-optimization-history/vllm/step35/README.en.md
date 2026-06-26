@@ -1,5 +1,19 @@
 # vllm Step 3.5 Model PR Optimization History
 
+## 2026-06-26 Latest Source Scan
+
+Rechecked vLLM upstream `vllm-project/vllm@abc71548ef029132c3316b902207f254a246d593` against the tracked files listed below.
+The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-05`.
+
+Result: 4 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-16 | [#43586](https://github.com/vllm-project/vllm/pull/43586) | [MM][Perf][CG] Support dual-path ViT full CUDA graph for DeepSeek-OCR | `step3_vl.py` |
+| 2026-06-10 | [#45054](https://github.com/vllm-project/vllm/pull/45054) | [Bugfix] Fix weight loading issues caused by #41184 | `step3_text.py`, `step3p5.py` |
+| 2026-06-08 | [#44484](https://github.com/vllm-project/vllm/pull/44484) | [MM][CG] Simplify ViT CUDA graph interfaces | `step3_vl.py` |
+| 2026-06-08 | [#41184](https://github.com/vllm-project/vllm/pull/41184) | [MoE Refactor] FusedMoE/MoERunner inversion refactor | `step3p5.py` |
+
 ## 2026-06-05 PR Backfill Audit
 
 Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 5 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.

@@ -1,5 +1,20 @@
 # sglang Mixtral Quark INT4/FP8 MoE Model PR Optimization History
 
+## 2026-06-26 Latest Source Scan
+
+Rechecked SGLang upstream `sgl-project/sglang@8524678889485801e7a4a12d62015be0c68f7a90` against the tracked files listed below.
+The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-05`.
+
+Result: 5 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | Add get_parallel(): a structured accessor for parallel-topology state | `quark_int4fp8_moe.py`, `mixtral.py`, `mixtral_quant.py` |
+| 2026-06-14 | [#28213](https://github.com/sgl-project/sglang/pull/28213) | Revert "[AMD][Quantization] Online MXFP4 quantization 2/N - FP8 to MXFP4 requantization on AMD GPUs" | `quark.py`, `quark_w4a4_mxfp4.py`, `quark_w4a4_mxfp4_moe.py`, `utils.py` |
+| 2026-06-13 | [#18182](https://github.com/sgl-project/sglang/pull/18182) | [AMD][Quantization] Online MXFP4 quantization 2/N - FP8 to MXFP4 requantization on AMD GPUs | `quark.py`, `quark_w4a4_mxfp4.py`, `quark_w4a4_mxfp4_moe.py`, `utils.py` |
+| 2026-06-13 | [#27057](https://github.com/sgl-project/sglang/pull/27057) | [AMD] move shared expert check function to quark | `quark.py` |
+| 2026-06-07 | [#22299](https://github.com/sgl-project/sglang/pull/22299) | [AMD] Enable Piecewise CUDA Graph for AMD GPUs | `quark_w4a4_mxfp4.py` |
+
 ## 2026-06-05 PR Backfill Audit
 
 Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 5 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-01). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.

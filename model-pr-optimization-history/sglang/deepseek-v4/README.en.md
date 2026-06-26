@@ -1,5 +1,25 @@
 # sglang DeepSeek V4 Model PR Optimization History
 
+## 2026-06-26 Latest Source Scan
+
+Rechecked SGLang upstream `sgl-project/sglang@8524678889485801e7a4a12d62015be0c68f7a90` against the tracked files listed below.
+The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-05`.
+
+Result: 10 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-25 | [#29261](https://github.com/sgl-project/sglang/pull/29261) | [Docs] Fix broken links in cookbook | `DeepSeek-V4.mdx` |
+| 2026-06-24 | [#28952](https://github.com/sgl-project/sglang/pull/28952) | Add DeepSeek V4 Flash demo notebook | `DeepSeek-V4.mdx` |
+| 2026-06-23 | [#28981](https://github.com/sgl-project/sglang/pull/28981) | [AMD] Update v4 cookbook to clean env vars | `DeepSeek-V4.mdx` |
+| 2026-06-22 | [#25820](https://github.com/sgl-project/sglang/pull/25820) | [NVIDIA] Support NVFP4 MoE for DeepSeek-V4 | `DeepSeek-V4.mdx` |
+| 2026-06-18 | [#28613](https://github.com/sgl-project/sglang/pull/28613) | docs: add DeepSeek-V4 compressed state dtype tip | `DeepSeek-V4.mdx` |
+| 2026-06-17 | [#28423](https://github.com/sgl-project/sglang/pull/28423) | [AMD] Update v4 amd cookbook | `DeepSeek-V4.mdx` |
+| 2026-06-11 | [#27964](https://github.com/sgl-project/sglang/pull/27964) | [Spec] Retire Spec V1 | `DeepSeek-V4.mdx` |
+| 2026-06-10 | [#27830](https://github.com/sgl-project/sglang/pull/27830) | [Docs] Restore right-hand ToC on the DeepSeek-V4 cookbook page | `DeepSeek-V4.mdx` |
+| 2026-06-08 | [#26885](https://github.com/sgl-project/sglang/pull/26885) | Cookbook renovation | `DeepSeek-V4.mdx`, `deepseek-v4-deployment.jsx` |
+| 2026-06-05 | [#27404](https://github.com/sgl-project/sglang/pull/27404) | Remove DeepSeek V4 release Docker workflow | `release-docker-deepseek-v4.yml` |
+
 ## 2026-06-05 PR Backfill Audit
 
 Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 12 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.

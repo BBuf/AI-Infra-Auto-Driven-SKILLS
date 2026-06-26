@@ -1,5 +1,24 @@
 # sglang GLM-5/5.1 Model PR Optimization History
 
+## 2026-06-26 Latest Source Scan
+
+Rechecked SGLang upstream `sgl-project/sglang@8524678889485801e7a4a12d62015be0c68f7a90` against the tracked files listed below.
+The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-05`.
+
+Result: 9 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-26 | [#29313](https://github.com/sgl-project/sglang/pull/29313) | [AMD] [GLM5] Mark EAGLE verified on MI300X/MI325X (gfx942) in GLM-5.1 cookbook | `GLM-5.1.mdx`, `glm-51-deployment.jsx` |
+| 2026-06-25 | [#29194](https://github.com/sgl-project/sglang/pull/29194) | [AMD] [GLM5] GLM-5.1 MXFP4 (MI355X) + enable EAGLE for gfx950 in cookbook | `GLM-5.1.mdx`, `glm-51-deployment.jsx` |
+| 2026-06-25 | [#28103](https://github.com/sgl-project/sglang/pull/28103) | Add DeepSeek V4 Pro GB300 nightly and expand Kimi K25 nightly test | `test_glm5_fp8.py`, `test_glm5_nvfp4.py` |
+| 2026-06-22 | [#27893](https://github.com/sgl-project/sglang/pull/27893) | [NPU] [DOC] Create deployment tutorials for mainstream models on Ascend NPU | `ascend_npu_glm5_examples.mdx` |
+| 2026-06-19 | [#28536](https://github.com/sgl-project/sglang/pull/28536) | ci: run GB300 nightly suite in the standard Nvidia nightly workflow | `test_glm5_fp8.py`, `test_glm5_nvfp4.py` |
+| 2026-06-19 | [#28697](https://github.com/sgl-project/sglang/pull/28697) | [docs] Add B300 cookbook deployment options | `glm-5-deployment.jsx` |
+| 2026-06-16 | [#28437](https://github.com/sgl-project/sglang/pull/28437) | docs(cookbook): add GLM-5.2 deployment cookbook | `GLM-5.1.mdx` |
+| 2026-06-11 | [#27964](https://github.com/sgl-project/sglang/pull/27964) | [Spec] Retire Spec V1 | `ascend_npu_glm5_examples.mdx`, `test_glm5_fp8.py`, `test_glm5_nvfp4.py` |
+| 2026-06-10 | [#27708](https://github.com/sgl-project/sglang/pull/27708) | [Docs] Add GLM-5.1 NVFP4 to cookbook | `GLM-5.1.mdx`, `glm-51-deployment.jsx` |
+
 ## 2026-06-05 PR Backfill Audit
 
 Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 6 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.

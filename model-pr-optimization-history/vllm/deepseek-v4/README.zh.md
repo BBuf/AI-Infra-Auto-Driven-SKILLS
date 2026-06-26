@@ -1,5 +1,17 @@
 # vllm DeepSeek V4 模型 PR 优化历史
 
+## 2026-06-26 最新源码扫描
+
+已按 vLLM 上游 `vllm-project/vllm@abc71548ef029132c3316b902207f254a246d593` 重新扫描本文下方列出的 tracked files。
+文件级匹配使用 GitHub mirror 的 `git log --name-only`；PR 标题、链接和合并时间通过 GitHub GraphQL Pull Request API 批量复核。上一时效锚点：`2026-06-05`。
+
+结果：发现 2 个额外 PR-numbered merge 触及 tracked files，但尚未提升为下方完整逐 PR diff audit card。此节只作为 freshness index；需要引用实现细节时，仍应先人工阅读 PR diff 再补完整卡片。
+
+| 合并日期 | PR | 标题 | 命中的 tracked files |
+| --- | --- | --- | --- |
+| 2026-06-23 | [#46428](https://github.com/vllm-project/vllm/pull/46428) | [Optimization] Skip DP padding tokens in MoE | `test_deepseek_v4_mega_moe.py` |
+| 2026-06-18 | [#45681](https://github.com/vllm-project/vllm/pull/45681) | [ROCm][DSv4] Functional fixes for DeepSeek V4 on MI300X/MI325X | `test_fused_deepseek_v4_qnorm_rope_kv_insert.py` |
+
 ## 2026-06-05 PR 补漏复核
 
 已于 2026-06-05 按 vllm 上游 `origin/main@c66b19800` 复核；自上次时效基准（2026-05-19）以来，共有 4 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。

@@ -1,5 +1,23 @@
 # sglang GPT-OSS Model PR Optimization History
 
+## 2026-06-26 Latest Source Scan
+
+Rechecked SGLang upstream `sgl-project/sglang@8524678889485801e7a4a12d62015be0c68f7a90` against the tracked files listed below.
+The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-05`.
+
+Result: 8 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-19 | [#28697](https://github.com/sgl-project/sglang/pull/28697) | [docs] Add B300 cookbook deployment options | `gpt-oss-deployment.jsx` |
+| 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | Add get_parallel(): a structured accessor for parallel-topology state | `gpt_oss.py` |
+| 2026-06-12 | [#27941](https://github.com/sgl-project/sglang/pull/27941) | Enable PDL for GPT-OSS tinygemm router | `gpt_oss.py` |
+| 2026-06-11 | [#27964](https://github.com/sgl-project/sglang/pull/27964) | [Spec] Retire Spec V1 | `GPT-OSS.mdx` |
+| 2026-06-10 | [#23906](https://github.com/sgl-project/sglang/pull/23906) | [Refactor] Cuda Graph Runner/Backend Refactor | `gpt_oss.py` |
+| 2026-06-08 | [#27528](https://github.com/sgl-project/sglang/pull/27528) | Fix GPT-OSS MXFP4 hidden size reshape on SM10X | `gpt_oss.py` |
+| 2026-06-08 | [#27063](https://github.com/sgl-project/sglang/pull/27063) | [AMD] Optimize gpt-oss-120B performance | `gpt_oss.py` |
+| 2026-06-06 | [#27201](https://github.com/sgl-project/sglang/pull/27201) | [AMD][WA] force to use gate_mode interleaved to fix tp2/tp4/tp8 acc issue | `test_gpt_oss_eval_mi35x.py` |
+
 ## 2026-06-05 PR Backfill Audit
 
 Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 7 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.

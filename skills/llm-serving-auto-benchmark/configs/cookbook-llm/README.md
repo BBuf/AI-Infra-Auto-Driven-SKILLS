@@ -1,11 +1,12 @@
 # Cookbook LLM Configs
 
-These configs define a framework-neutral LLM serving cookbook model set and translate each model into a three-framework run plan for SGLang, vLLM, and TensorRT-LLM.
+These configs define a framework-neutral LLM serving cookbook model set and translate each model into a four-framework run plan for SGLang, vLLM, TensorRT-LLM, and TokenSpeed.
 
 Scope:
 - SGLang can preserve source-recipe `base_flags` and `search_space` where applicable; if a sequence limit is smaller than the default synthetic scenario, the config raises that limit so the shipped workload can run.
 - vLLM uses framework-native `vllm serve` flags. The translation keeps the same model, tokenizer, dataset shape, GPU count, and high-impact batching/prefix-cache knobs; it does not copy SGLang-only parser or scheduler flags.
 - TensorRT-LLM uses `trtllm-serve serve` with `backend: pytorch` fixed in `base_server_flags`. Backend choice is never searched.
+- TokenSpeed uses `tokenspeed serve <model>` with framework-native TP, memory, max sequence, batching, chunked-prefill, and prefix-cache knobs. Treat these sections as first-pass candidates and validate them against the target `tokenspeed serve --help`.
 - The two default random scenarios remain aligned pairs: `chat` uses `1000 -> 1000`, and `summarization` uses `8000 -> 1000`.
 
 Before a real run, capture the target framework `--help` output and validate the configs:

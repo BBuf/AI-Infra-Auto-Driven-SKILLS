@@ -1,5 +1,23 @@
 # sglang GPT-OSS 模型 PR 优化历史
 
+## 2026-06-26 最新源码扫描
+
+已按 SGLang 上游 `sgl-project/sglang@8524678889485801e7a4a12d62015be0c68f7a90` 重新扫描本文下方列出的 tracked files。
+文件级匹配使用 GitHub mirror 的 `git log --name-only`；PR 标题、链接和合并时间通过 GitHub GraphQL Pull Request API 批量复核。上一时效锚点：`2026-06-05`。
+
+结果：发现 8 个额外 PR-numbered merge 触及 tracked files，但尚未提升为下方完整逐 PR diff audit card。此节只作为 freshness index；需要引用实现细节时，仍应先人工阅读 PR diff 再补完整卡片。
+
+| 合并日期 | PR | 标题 | 命中的 tracked files |
+| --- | --- | --- | --- |
+| 2026-06-19 | [#28697](https://github.com/sgl-project/sglang/pull/28697) | [docs] Add B300 cookbook deployment options | `gpt-oss-deployment.jsx` |
+| 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | Add get_parallel(): a structured accessor for parallel-topology state | `gpt_oss.py` |
+| 2026-06-12 | [#27941](https://github.com/sgl-project/sglang/pull/27941) | Enable PDL for GPT-OSS tinygemm router | `gpt_oss.py` |
+| 2026-06-11 | [#27964](https://github.com/sgl-project/sglang/pull/27964) | [Spec] Retire Spec V1 | `GPT-OSS.mdx` |
+| 2026-06-10 | [#23906](https://github.com/sgl-project/sglang/pull/23906) | [Refactor] Cuda Graph Runner/Backend Refactor | `gpt_oss.py` |
+| 2026-06-08 | [#27528](https://github.com/sgl-project/sglang/pull/27528) | Fix GPT-OSS MXFP4 hidden size reshape on SM10X | `gpt_oss.py` |
+| 2026-06-08 | [#27063](https://github.com/sgl-project/sglang/pull/27063) | [AMD] Optimize gpt-oss-120B performance | `gpt_oss.py` |
+| 2026-06-06 | [#27201](https://github.com/sgl-project/sglang/pull/27201) | [AMD][WA] force to use gate_mode interleaved to fix tp2/tp4/tp8 acc issue | `test_gpt_oss_eval_mi35x.py` |
+
 ## 2026-06-05 PR 补漏复核
 
 已于 2026-06-05 按 sglang 上游 `origin/main@6cfdc1858` 复核；自上次时效基准（2026-05-19）以来，共有 7 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。

@@ -1,5 +1,21 @@
 # vllm Qwen3 Next Model PR Optimization History
 
+## 2026-06-26 Latest Source Scan
+
+Rechecked vLLM upstream `vllm-project/vllm@abc71548ef029132c3316b902207f254a246d593` against the tracked files listed below.
+The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-05`.
+
+Result: 6 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-25 | [#46316](https://github.com/vllm-project/vllm/pull/46316) | [Bugfix] Fix NVFP4+MTP crash: force unquantized mtp.fc for Qwen3Next | `qwen3_next_mtp.py` |
+| 2026-06-23 | [#44434](https://github.com/vllm-project/vllm/pull/44434) | [ROCm][Bugfix][Perf] enable shared expert fusion for Qwen3.5 | `qwen3_next.py` |
+| 2026-06-22 | [#46108](https://github.com/vllm-project/vllm/pull/46108) | [Model] ColQwen3.5: fix retrieval correctness (bias + bidirectional) | `qwen3_next.py` |
+| 2026-06-12 | [#45319](https://github.com/vllm-project/vllm/pull/45319) | [Model][Dflash] Enable Dflash support for Qwen3NextForCausalLM targets | `qwen3_next.py` |
+| 2026-06-11 | [#45161](https://github.com/vllm-project/vllm/pull/45161) | Deprecate Transformers v4 support | `qwen3_next.py` |
+| 2026-06-09 | [#44176](https://github.com/vllm-project/vllm/pull/44176) | [Perf] fuse qk rmsnorm rope gate for qwen3.5 | `qwen3_next.py` |
+
 ## 2026-06-05 PR Backfill Audit
 
 Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 5 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-04-08). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.

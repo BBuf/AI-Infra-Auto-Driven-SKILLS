@@ -2,7 +2,9 @@ schema_version: 1
 source:
   kind: llm_serving_cookbook
   source_recipe_file: qwen35-397b-a17b-fp8.yaml
-  translation: SGLang flags preserve the source recipe where applicable, with sequence limits raised when needed for the default dataset; vLLM and TensorRT-LLM use framework-native serving flags for the same model and dataset shape.
+  translation: SGLang flags preserve the source recipe where applicable, with sequence
+    limits raised when needed for the default dataset; vLLM and TensorRT-LLM use framework-native
+    serving flags for the same model and dataset shape.
 model:
   name: Qwen/Qwen3.5-397B-A17B-FP8
   tokenizer: Qwen/Qwen3.5-397B-A17B-FP8
@@ -130,3 +132,23 @@ frameworks:
       - 1
       - 4
       - 8
+  tokenspeed:
+    enabled: true
+    server_command: tokenspeed serve
+    config_source: tokenspeed_latest_generic_translation
+    base_server_flags:
+      tensor_parallel_size: 4
+      gpu_memory_utilization: 0.9
+      max_model_len: 12288
+      dtype: auto
+      kv_cache_dtype: auto
+    search_space:
+      max_num_seqs:
+      - 32
+      - 48
+      - 64
+      chunked_prefill_size:
+      - 8192
+      - 16384
+      enable_prefix_caching:
+      - true

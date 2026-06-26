@@ -1,5 +1,18 @@
 # vllm Qwen3 Core Model PR Optimization History
 
+## 2026-06-26 Latest Source Scan
+
+Rechecked vLLM upstream `vllm-project/vllm@abc71548ef029132c3316b902207f254a246d593` against the tracked files listed below.
+The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-05`.
+
+Result: 3 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-26 | [#46761](https://github.com/vllm-project/vllm/pull/46761) | [DFlash] Fuse precompute kv per-layer rmsnorms | `qwen3_dflash.py` |
+| 2026-06-25 | [#44029](https://github.com/vllm-project/vllm/pull/44029) | [CPU][Spec Decode] Enable DFlash SD for CPU | `qwen3_dflash.py` |
+| 2026-06-10 | [#39419](https://github.com/vllm-project/vllm/pull/39419) | [SpecDecode] Reduce TP communication for large-vocab draft models speculative decoding | `qwen3.py` |
+
 ## 2026-06-05 PR Backfill Audit
 
 Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 5 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-04-23). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.

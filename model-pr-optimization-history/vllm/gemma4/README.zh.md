@@ -1,5 +1,23 @@
 # vllm Gemma 4 模型 PR 优化历史
 
+## 2026-06-26 最新源码扫描
+
+已按 vLLM 上游 `vllm-project/vllm@abc71548ef029132c3316b902207f254a246d593` 重新扫描本文下方列出的 tracked files。
+文件级匹配使用 GitHub mirror 的 `git log --name-only`；PR 标题、链接和合并时间通过 GitHub GraphQL Pull Request API 批量复核。上一时效锚点：`2026-06-05`。
+
+结果：发现 8 个额外 PR-numbered merge 触及 tracked files，但尚未提升为下方完整逐 PR diff audit card。此节只作为 freshness index；需要引用实现细节时，仍应先人工阅读 PR diff 再补完整卡片。
+
+| 合并日期 | PR | 标题 | 命中的 tracked files |
+| --- | --- | --- | --- |
+| 2026-06-17 | [#45867](https://github.com/vllm-project/vllm/pull/45867) | [Bugfix][Gemma4] Render reasoning on assistant turns without tool_calls | `tool_chat_template_gemma4.jinja` |
+| 2026-06-17 | [#45832](https://github.com/vllm-project/vllm/pull/45832) | [Bugfix][Gemma4] Fix parsing when thinking is disabled | `test_gemma4_responses_adjust_request.py` |
+| 2026-06-16 | [#45795](https://github.com/vllm-project/vllm/pull/45795) | [Bugfix] Gemma4: skip forced JSON for required/named tool choice | `test_gemma4_responses_adjust_request.py` |
+| 2026-06-16 | [#45553](https://github.com/vllm-project/vllm/pull/45553) | [Bugfix][Gemma4] Fix offline parser truncation, adjust_request token leak, and chat template sync | `tool_chat_template_gemma4.jinja`, `test_gemma4_reasoning_parser.py`, `test_gemma4_chat_template.py`, `gemma4_utils.py` |
+| 2026-06-15 | [#45588](https://github.com/vllm-project/vllm/pull/45588) | [Frontend] Replace legacy Gemma4 parsers with engine-based implementation | `test_gemma4_reasoning_parser.py`, `test_gemma4_tool_parser.py`, `test_gemma4_responses_adjust_request.py`, `gemma4_reasoning_parser.py`, ... (+1) |
+| 2026-06-12 | [#45163](https://github.com/vllm-project/vllm/pull/45163) | [Model] Add DiffusionGemma Support | `test_gemma4_tool_parser.py`, `gemma4.py`, `gemma4_tool_parser.py` |
+| 2026-06-08 | [#44828](https://github.com/vllm-project/vllm/pull/44828) | [BugFix] Use served model name in gemma4 audio-tower error message | `gemma4_mm.py` |
+| 2026-06-08 | [#41184](https://github.com/vllm-project/vllm/pull/41184) | [MoE Refactor] FusedMoE/MoERunner inversion refactor | `gemma4.py` |
+
 ## 2026-06-05 PR 补漏复核
 
 已于 2026-06-05 按 vllm 上游 `origin/main@c66b19800` 复核；自上次时效基准（2026-04-30）以来，共有 20 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。

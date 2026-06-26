@@ -1,5 +1,23 @@
 # vllm Gemma 4 Model PR Optimization History
 
+## 2026-06-26 Latest Source Scan
+
+Rechecked vLLM upstream `vllm-project/vllm@abc71548ef029132c3316b902207f254a246d593` against the tracked files listed below.
+The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-05`.
+
+Result: 8 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-17 | [#45867](https://github.com/vllm-project/vllm/pull/45867) | [Bugfix][Gemma4] Render reasoning on assistant turns without tool_calls | `tool_chat_template_gemma4.jinja` |
+| 2026-06-17 | [#45832](https://github.com/vllm-project/vllm/pull/45832) | [Bugfix][Gemma4] Fix parsing when thinking is disabled | `test_gemma4_responses_adjust_request.py` |
+| 2026-06-16 | [#45795](https://github.com/vllm-project/vllm/pull/45795) | [Bugfix] Gemma4: skip forced JSON for required/named tool choice | `test_gemma4_responses_adjust_request.py` |
+| 2026-06-16 | [#45553](https://github.com/vllm-project/vllm/pull/45553) | [Bugfix][Gemma4] Fix offline parser truncation, adjust_request token leak, and chat template sync | `tool_chat_template_gemma4.jinja`, `test_gemma4_reasoning_parser.py`, `test_gemma4_chat_template.py`, `gemma4_utils.py` |
+| 2026-06-15 | [#45588](https://github.com/vllm-project/vllm/pull/45588) | [Frontend] Replace legacy Gemma4 parsers with engine-based implementation | `test_gemma4_reasoning_parser.py`, `test_gemma4_tool_parser.py`, `test_gemma4_responses_adjust_request.py`, `gemma4_reasoning_parser.py`, ... (+1) |
+| 2026-06-12 | [#45163](https://github.com/vllm-project/vllm/pull/45163) | [Model] Add DiffusionGemma Support | `test_gemma4_tool_parser.py`, `gemma4.py`, `gemma4_tool_parser.py` |
+| 2026-06-08 | [#44828](https://github.com/vllm-project/vllm/pull/44828) | [BugFix] Use served model name in gemma4 audio-tower error message | `gemma4_mm.py` |
+| 2026-06-08 | [#41184](https://github.com/vllm-project/vllm/pull/41184) | [MoE Refactor] FusedMoE/MoERunner inversion refactor | `gemma4.py` |
+
 ## 2026-06-05 PR Backfill Audit
 
 Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 20 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-04-30). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.

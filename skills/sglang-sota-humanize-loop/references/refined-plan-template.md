@@ -8,9 +8,16 @@ fixed fair benchmark and model PR history notes have already been captured.
 
 ## Goal Description
 
-Make SGLang match or beat the best observed vLLM/TensorRT-LLM serving
-performance for `<model>` on `<hardware>` under the fixed workload, precision,
-quantization, and SLA captured in `<artifact-root>`.
+Target framework: SGLang.
+
+Comparison framework set: `<comparison-frameworks>`.
+
+Make SGLang match or beat the best observed SLA-passing result among the
+selected comparison frameworks for `<model>` on `<hardware>` under the fixed
+workload, precision, quantization, and SLA captured in `<artifact-root>`.
+
+User-excluded or unsupported frameworks and reasons:
+`<skipped-frameworks-and-reasons>`.
 
 The fixed benchmark phase is complete. The RLCR loop must perform the current
 gap decision, collect profiler evidence, run layer-pipeline deep dives, patch
@@ -20,7 +27,8 @@ SGLang reaches the stop criteria.
 
 The matching PR-driven model history has been read from
 `model-pr-optimization-history`, and `history/model-pr-history-notes.md`
-records the SGLang/vLLM PR evidence that influenced source-path selection.
+records the SGLang and selected competitor PR evidence that influenced
+source-path selection.
 
 ## Acceptance Criteria
 
@@ -28,6 +36,13 @@ records the SGLang/vLLM PR evidence that influenced source-path selection.
   - Positive Tests (expected to PASS):
     - `benchmark/candidates.jsonl`, `benchmark/summary.md`, and
       `benchmark/winning-commands.md` exist under `<artifact-root>`.
+    - `manifest.md` exists and records `target_framework: sglang`,
+      `comparison_frameworks`, and user-excluded or unsupported frameworks with
+      reasons.
+    - `benchmark/fairness/diagnostics.md` exists and records framework version,
+      commit/help snapshots, endpoint, cache/speculative/memory normalization,
+      selected comparison frameworks, user-excluded frameworks, and any
+      unsupported framework reason.
     - The workload uses the fixed scenario set or a user-provided production
       workload recorded before RLCR began.
   - Negative Tests (expected to FAIL):
@@ -38,8 +53,9 @@ records the SGLang/vLLM PR evidence that influenced source-path selection.
   - Positive Tests (expected to PASS):
     - `history/model-pr-history-notes.md` exists under `<artifact-root>`.
     - The notes cite the matching SGLang model history when available.
-    - The notes cite matching vLLM history when vLLM is the leading competitor
-      or when vLLM evidence influenced a suspected missing SGLang fast path.
+    - The notes cite matching competitor history when a selected comparison
+      framework is the leading competitor or when competitor evidence influenced
+      a suspected missing SGLang fast path.
     - The notes include docs read, PR numbers, source files, symbols,
       validation risks, and the decision each item influenced.
   - Negative Tests (expected to FAIL):
@@ -48,13 +64,19 @@ records the SGLang/vLLM PR evidence that influenced source-path selection.
 
 - AC-3: Gap decision and profiler triage happen inside each RLCR round
   - Positive Tests (expected to PASS):
-    - The round computes the current SGLang gap against the fixed benchmark
-      winner table before choosing a patch.
+    - The round computes the current SGLang gap against the best selected
+      comparison row in the fixed benchmark winner table before choosing a
+      patch.
+    - `analysis/fairness-diagnostics.md` is updated from the latest benchmark
+      rows before treating the gap as a code bottleneck.
     - SGLang profile analysis exists for the current slow scenario when SGLang
       is more than 1% behind.
-    - At least the best framework profile analysis exists when SGLang is behind.
-    - If both vLLM and TensorRT-LLM are more than 1% ahead, both competitor
-      analyses exist.
+    - At least the leading selected comparison framework profile analysis
+      exists when SGLang is behind.
+    - If multiple selected competitors are more than 1% ahead, every ahead
+      competitor with a valid trace path has analysis. TokenSpeed uses an existing
+      torch-profiler trace or target-deployment trace directory, not a
+      fabricated live profiler endpoint.
     - Every analysis contains kernel, overlap-opportunity, and fuse-pattern
       tables with prefill/decode evidence when available.
     - `analysis/root-cause.md` maps the current gap to profiler rows and SGLang
@@ -62,6 +84,8 @@ records the SGLang/vLLM PR evidence that influenced source-path selection.
   - Negative Tests (expected to FAIL):
     - A code patch is proposed without citing a profiler table row and source
       path or kernel family for the current gap.
+    - A code patch is proposed while a non-equivalent workload, cache,
+      speculative, memory, or endpoint setting explains the current leader.
     - Profiling is treated as a one-time pre-loop gate and not refreshed after
       a patch changes the profiled path or leaves a gap.
 
@@ -124,10 +148,11 @@ records the SGLang/vLLM PR evidence that influenced source-path selection.
     - Attempt, optimization, source-idea, lineage, and profile-digest artifacts
       are updated after each round.
     - `humanize/model-loop-checkpoint.md` records the original benchmark
-      winners, workload/SLA, SGLang commit, applied patches, current best
-      SGLang result, remaining gap, model PR history notes, profiler rows,
-      layer-pipeline notes, NCU digest paths, rejected source ideas, and the
-      next planned SGLang patch.
+      winners, selected comparison frameworks, user-excluded or unsupported
+      frameworks, workload/SLA, SGLang commit, applied patches, current best
+      SGLang result, current leading selected comparison result, remaining gap,
+      model PR history notes, profiler rows, layer-pipeline notes, NCU digest
+      paths, rejected source ideas, and the next planned SGLang patch.
     - The campaign can resume from the same model-loop artifacts with benchmark,
       profile, source-evidence, and patch lineage intact.
     - The active `.humanize/rlcr/<timestamp>/state.md` exists and records
@@ -140,8 +165,9 @@ records the SGLang/vLLM PR evidence that influenced source-path selection.
 
 - AC-9: Stop criteria are satisfied
   - Positive Tests (expected to PASS):
-    - SGLang beats the best framework, or is within the stable 1% threshold
-      after repeat runs, or the remaining gap is proven external/not patchable.
+    - SGLang beats the best SLA-passing result among selected comparison
+      frameworks, or is within the stable 1% threshold after repeat runs, or
+      the remaining gap is proven external/not patchable.
   - Negative Tests (expected to FAIL):
     - The loop stops while SGLang remains more than 1% behind and there is an
       uninvestigated profiler table row with plausible SGLang source impact.
@@ -164,27 +190,38 @@ revalidation, unless the current in-loop evidence proves no patch is needed.
 
 - Can use: SGLang source patches, guarded heuristics, existing fast-path
   selection, fusion or overlap fixes, model-specific runtime fixes, PR-driven
-  model history knowledge for SGLang/vLLM source-path selection,
+  model history knowledge for SGLang and the selected comparison framework set
+  when choosing source paths,
   `llm-torch-profiler-analysis`, `llm-pipeline-analysis`, `ncu-report-skill`
   digests, focused tests, microbenchmarks, torch-profiler, Nsight Compute, and
   Nsight Systems.
-- Cannot use: changing the fixed workload/SLA after seeing results, removing a
-  competitor from comparison without a recorded unsupported reason, disabling
-  correctness or tokenizer behavior, spending kernel-specialist effort on
-  sub-1% lone kernels, or claiming SOTA from smoke-only runs.
+- Cannot use: changing the fixed workload/SLA after seeing results, dropping a
+  requested competitor without a recorded unsupported reason, silently adding a
+  user-excluded competitor, treating a user-excluded competitor as unsupported
+  without the user's instruction, disabling correctness or tokenizer behavior,
+  spending kernel-specialist effort on sub-1% lone kernels, or claiming SOTA from
+  smoke-only runs.
 
 ## Dependencies and Sequence
 
 ### Milestones
 
 1. Preserve fixed baseline artifacts
+   - Confirm `manifest.md` records `target_framework: sglang`, the selected
+     comparison framework set, and user-excluded or unsupported frameworks with
+     reasons.
    - Confirm `history/model-pr-history-notes.md` has matching SGLang history
-     and, when applicable, leading-competitor vLLM history.
+     and, when applicable, leading-competitor history for selected comparison
+     frameworks.
    - Confirm winner commands, workload, and SLA.
+   - Confirm `benchmark/fairness/diagnostics.md` records version/help,
+     endpoint, cache/speculative/memory, request-shape normalization, and the
+     selected comparison framework set.
 2. Run in-loop gap decision and profiling
-   - Compare current SGLang to the fixed winner table.
+   - Compare current SGLang to the best selected comparison row in the fixed
+     winner table.
    - Run `llm-torch-profiler-analysis` for current SGLang and the leading
-     competitor when SGLang is behind.
+     selected competitor when SGLang is behind.
    - Run `llm-pipeline-analysis` after profiler triage and before patch
      selection.
 3. Patch the highest-confidence SGLang bottleneck
@@ -197,8 +234,8 @@ revalidation, unless the current in-loop evidence proves no patch is needed.
    - Re-run profiler triage when the gap remains or the patch changes the
      profiled path.
 5. Continue or stop
-   - If SGLang is still more than 1% behind, pick the next profiler-backed
-     patch.
+   - If SGLang is still more than 1% behind the best selected comparison
+     result, pick the next profiler-backed patch.
    - After two weak rounds below 1% geomean improvement over the prior best,
      expand code-first research before editing again.
    - Stop only under AC-9.
@@ -209,6 +246,8 @@ revalidation, unless the current in-loop evidence proves no patch is needed.
 - Start RLCR with `--strict-success` and verify the active `state.md` contains
   `strict_success: true` before any SGLang patch work.
 - Keep benchmark/profile artifacts under `<artifact-root>`.
+- Keep the framework-selection contract in `<artifact-root>/manifest.md`, and
+  update it only when the user changes the target/comparison framework set.
 - Keep model PR history notes under `<artifact-root>/history/`.
 - Keep layer-pipeline reports under `<artifact-root>/analysis/`.
 - Keep NCU digests under `<artifact-root>/kernel/ncu-digests/`.

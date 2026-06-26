@@ -1,5 +1,26 @@
 # sglang Kimi K2/K2.5/Linear/VL Model PR Optimization History
 
+## 2026-06-26 Latest Source Scan
+
+Rechecked SGLang upstream `sgl-project/sglang@8524678889485801e7a4a12d62015be0c68f7a90` against the tracked files listed below.
+The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-05`.
+
+Result: 11 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-25 | [#28103](https://github.com/sgl-project/sglang/pull/28103) | Add DeepSeek V4 Pro GB300 nightly and expand Kimi K25 nightly test | `test_kimi_k25.py`, `test_kimi_k25_nvfp4.py` |
+| 2026-06-24 | [#28623](https://github.com/sgl-project/sglang/pull/28623) | [CI] reduce CPU CI scope with base-c suite | `test_kimik2_detector.py` |
+| 2026-06-24 | [#25071](https://github.com/sgl-project/sglang/pull/25071) | kimik2_detector fix the normal text detection before tool call. | `kimik2_detector.py`, `test_kimik2_detector.py` |
+| 2026-06-22 | [#28647](https://github.com/sgl-project/sglang/pull/28647) | Fix Kimi-VL GPU image preprocessing crash on non-RGB images | `kimi_k25.py` |
+| 2026-06-19 | [#28536](https://github.com/sgl-project/sglang/pull/28536) | ci: run GB300 nightly suite in the standard Nvidia nightly workflow | `test_kimi_k25.py`, `test_kimi_k25_nvfp4.py` |
+| 2026-06-19 | [#28697](https://github.com/sgl-project/sglang/pull/28697) | [docs] Add B300 cookbook deployment options | `kimi-k2-deployment.jsx` |
+| 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | Add get_parallel(): a structured accessor for parallel-topology state | `kimi_linear.py` |
+| 2026-06-18 | [#28201](https://github.com/sgl-project/sglang/pull/28201) | [Docs] Add fp8 kv cache for tokenspeed mla docs | `kimi-k25-deployment.jsx`, `kimi-k26-deployment.jsx` |
+| 2026-06-12 | [#28064](https://github.com/sgl-project/sglang/pull/28064) | [Docs] Add Kimi K2.7 Code cookbook | `Kimi-K2.6.mdx` |
+| 2026-06-10 | [#27714](https://github.com/sgl-project/sglang/pull/27714) | [Docs] Add Kimi-K2.6 NVFP4 and update Kimi-K2.5 cookbook guidance | `Kimi-K2.5.mdx`, `Kimi-K2.6.mdx`, `kimi-k25-deployment.jsx`, `kimi-k26-deployment.jsx` |
+| 2026-06-10 | [#23906](https://github.com/sgl-project/sglang/pull/23906) | [Refactor] Cuda Graph Runner/Backend Refactor | `kimi_linear.py` |
+
 ## 2026-06-05 PR Backfill Audit
 
 Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 14 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.

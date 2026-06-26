@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="720" height="1420" viewBox="0 0 720 1420" role="img" aria-labelledby="title desc">
   <title id="title">SGLang SOTA Performance Loop</title>
-  <desc id="desc">A vertical workflow diagram for the SGLang SOTA Humanize loop, with fixed baseline setup followed by one RLCR loop that owns gap decisions, profiling, layer deep dives, patches, NCU evidence, and revalidation.</desc>
+  <desc id="desc">A vertical workflow diagram for the SGLang SOTA Humanize loop, with a fixed fair benchmark against selected comparison frameworks followed by one RLCR loop that owns gap decisions, profiling, layer deep dives, patches, NCU evidence, and revalidation.</desc>
   <defs>
     <linearGradient id="hero" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#111827"/>
@@ -62,7 +62,8 @@
   <text x="230" y="347" text-anchor="middle" class="small">model source memory</text>
   <rect x="382" y="302" width="216" height="62" rx="14" class="blue"/>
   <text x="490" y="327" text-anchor="middle" class="label">Fair benchmark</text>
-  <text x="490" y="347" text-anchor="middle" class="small">SGLang / vLLM / TRT-LLM</text>
+  <text x="490" y="344" text-anchor="middle" class="small">SGLang vs comparison set</text>
+  <text x="490" y="360" text-anchor="middle" class="small">vLLM / TRT-LLM / TokenSpeed</text>
 
   <path d="M 230 364 C 238 402 304 402 360 402" class="lineSoft"/>
   <path d="M 490 364 C 482 402 416 402 360 402" class="lineSoft"/>
