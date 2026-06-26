@@ -166,10 +166,13 @@ before starting a long sweep.
 - vLLM `--max-num-partial-prefills > 1` is model- and runtime-gated. Keep `1`
   in the default pass; raise only after a preflight with the actual model.
 - vLLM current mainline was refreshed on 2026-06-26 at
-  `37ce34922f7f5e58241369511130cd99c1c50bfe` and includes PR `#46735`
+  `abc71548ef029132c3316b902207f254a246d593` and includes PR `#46735`
   fixing CUDA graph capture in Triton / NVFP4-emulation MoE. If a target image
   predates it, treat Triton-MoE graph-capture failures or eager fallback as an
   image/runtime issue before scoring it against SGLang.
+- The same vLLM refresh includes PR `#44800` (`VLLM_GPU_SYNC_CHECK`). For
+  sync-heavy profiler rows, record whether the target image exposes this debug
+  knob before labeling the gap as kernel-local.
 - TensorRT-LLM mainline was refreshed on 2026-06-26 at
   `0722c5f47d2cae69ac1a237da51e550dd214532c`. Keep
   `kv_cache_free_gpu_memory_fraction` in shipped configs until the target

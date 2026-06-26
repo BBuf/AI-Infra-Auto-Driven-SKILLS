@@ -1,5 +1,17 @@
 # TokenSpeed Kimi 模型 PR 优化历史
 
+## 2026-06-26 最新源码扫描
+
+已按 TokenSpeed 上游 `lightseekorg/tokenspeed@5aedf69d6b476baa65571011de6ea60fd5a238a8` 重新扫描本文下方列出的 tracked files。
+文件级匹配使用 GitHub mirror 的 `git log --name-only`；PR 标题、链接和合并时间通过 GitHub GraphQL Pull Request API 批量复核。上一时效锚点：`2026-06-26`。
+
+结果：发现 2 个额外 PR-numbered merge 触及 tracked files，但尚未提升为下方完整逐 PR diff audit card。此节只作为 freshness index；需要引用实现细节时，仍应先人工阅读 PR diff 再补完整卡片。
+
+| 合并日期 | PR | 标题 | 命中的 tracked files |
+| --- | --- | --- | --- |
+| 2026-06-26 | [#519](https://github.com/lightseekorg/tokenspeed/pull/519) | feat: distributed argmax for EAGLE greedy sampling | `logits_processor.py` |
+| 2026-06-25 | [#456](https://github.com/lightseekorg/tokenspeed/pull/456) | perf(kernel): optimize Qwen vision QKV rotary layout | `qkv_rotary.py` |
+
 ## 2026-06-26 PR 补漏复核
 
 已按 TokenSpeed 上游 `HEAD@5aedf69d6b476baa65571011de6ea60fd5a238a8` 复核。本文覆盖 Kimi K2.5/K2.x 相关的 merged PR，并采用 SGLang 风格的时间线和逐 PR diff 审计卡。

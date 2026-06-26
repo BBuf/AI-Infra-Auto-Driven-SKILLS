@@ -1,5 +1,22 @@
 # sglang MiMo V2 Flash Model PR Optimization History
 
+## 2026-06-26 Latest Source Scan
+
+Rechecked SGLang upstream `sgl-project/sglang@8524678889485801e7a4a12d62015be0c68f7a90` against the tracked files listed below.
+The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-05`.
+
+Result: 7 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-25 | [#29253](https://github.com/sgl-project/sglang/pull/29253) | Add MiMo V2.5 Blackwell vision FA4 recipe | `MiMo-V2.5.mdx`, `mimo-v25-deployment.jsx` |
+| 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | Add get_parallel(): a structured accessor for parallel-topology state | `mimo_mtp.py`, `mimo_v2.py`, `mimo_v2_nextn.py` |
+| 2026-06-11 | [#27964](https://github.com/sgl-project/sglang/pull/27964) | [Spec] Retire Spec V1 | `MiMo-V2.5.mdx` |
+| 2026-06-11 | [#26278](https://github.com/sgl-project/sglang/pull/26278) | Support MiMo v2 ASR | `mimo_audio.py`, `mimo_v2.py` |
+| 2026-06-10 | [#27668](https://github.com/sgl-project/sglang/pull/27668) | Fix MiMo-V2.5-Pro DP-attention dp size in cookbook deployment snippet | `mimo-v25-deployment.jsx` |
+| 2026-06-10 | [#25455](https://github.com/sgl-project/sglang/pull/25455) | [NPU] MiMo-V2-Flash Adaptation | `mimo_v2.py` |
+| 2026-06-08 | [#27512](https://github.com/sgl-project/sglang/pull/27512) | [Spec] Clamp multimodal pad sentinels in spec-v2 draft prefill embedding | `mimo_v2_nextn.py` |
+
 ## 2026-06-05 PR Backfill Audit
 
 Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 5 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.

@@ -1,5 +1,26 @@
 # vllm Qwen VLM/Omni/ASR 模型 PR 优化历史
 
+## 2026-06-26 最新源码扫描
+
+已按 vLLM 上游 `vllm-project/vllm@abc71548ef029132c3316b902207f254a246d593` 重新扫描本文下方列出的 tracked files。
+文件级匹配使用 GitHub mirror 的 `git log --name-only`；PR 标题、链接和合并时间通过 GitHub GraphQL Pull Request API 批量复核。上一时效锚点：`2026-06-05`。
+
+结果：发现 11 个额外 PR-numbered merge 触及 tracked files，但尚未提升为下方完整逐 PR diff audit card。此节只作为 freshness index；需要引用实现细节时，仍应先人工阅读 PR diff 再补完整卡片。
+
+| 合并日期 | PR | 标题 | 命中的 tracked files |
+| --- | --- | --- | --- |
+| 2026-06-24 | [#46535](https://github.com/vllm-project/vllm/pull/46535) | [Model Runner V2][MM] Support EVS | `qwen2_5_vl.py`, `qwen3_vl.py` |
+| 2026-06-21 | [#46305](https://github.com/vllm-project/vllm/pull/46305) | [Bugfix][Qwen3-VL] Fix multi-video crash with list-valued fps/num_frames | `test_qwen3_vl.py`, `qwen3_vl.py` |
+| 2026-06-20 | [#46026](https://github.com/vllm-project/vllm/pull/46026) | [Perf] Optimize Qwen3-VL multi-video prompt processing | `test_qwen3_vl.py`, `qwen3_vl.py` |
+| 2026-06-21 | [#45424](https://github.com/vllm-project/vllm/pull/45424) | [Core] Ensure memory is pinned prior to async h2d copy | `qwen2_5_vl.py` |
+| 2026-06-16 | [#43586](https://github.com/vllm-project/vllm/pull/43586) | [MM][Perf][CG] Support dual-path ViT full CUDA graph for DeepSeek-OCR | `qwen2_5_vl.py`, `qwen2_vl.py`, `qwen3_vl.py` |
+| 2026-06-13 | [#42700](https://github.com/vllm-project/vllm/pull/42700) | [Bugfix] Replace deprecated Qwen2VLImageProcessorFast with Qwen2VLImageProcessor | `qwen3_vl.py` |
+| 2026-06-11 | [#45161](https://github.com/vllm-project/vllm/pull/45161) | Deprecate Transformers v4 support | `qwen3_omni_moe_thinker.py` |
+| 2026-06-10 | [#45131](https://github.com/vllm-project/vllm/pull/45131) | Deprecated 1st generation Qwen and QwenVL models | `qwen_vl.py` |
+| 2026-06-10 | [#45054](https://github.com/vllm-project/vllm/pull/45054) | [Bugfix] Fix weight loading issues caused by #41184 | `qwen3_vl_moe.py` |
+| 2026-06-10 | [#35415](https://github.com/vllm-project/vllm/pull/35415) | feat(qwen3-asr): support prompt parameter in v1/audio/transcriptions | `qwen3_asr.py` |
+| 2026-06-09 | [#44264](https://github.com/vllm-project/vllm/pull/44264) | [Bugfix][Model] Qwen3-Omni: move cu_seqlens to GPU before VIT attention | `qwen3_omni_moe_thinker.py` |
+
 ## 2026-06-05 PR 补漏复核
 
 已于 2026-06-05 按 vllm 上游 `origin/main@c66b19800` 复核；自上次时效基准（2026-04-27）以来，共有 18 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。

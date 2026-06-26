@@ -1,5 +1,18 @@
 # sglang DeepSeek OCR 2 Model PR Optimization History
 
+## 2026-06-26 Latest Source Scan
+
+Rechecked SGLang upstream `sgl-project/sglang@8524678889485801e7a4a12d62015be0c68f7a90` against the tracked files listed below.
+The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-05`.
+
+Result: 3 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-23 | [#27527](https://github.com/sgl-project/sglang/pull/27527) | Vectorize _create_custom_4d_mask in CustomQwen2Decoder | `deepseek_ocr.py` |
+| 2026-06-23 | [#28988](https://github.com/sgl-project/sglang/pull/28988) | [CI] Fix lint brought by #27527 | `deepseek_ocr.py` |
+| 2026-06-06 | [#27248](https://github.com/sgl-project/sglang/pull/27248) | [Doc][CPU]Update Cookbook with Xeon support info | `DeepSeek-OCR-2.mdx`, `deepseek-ocr-v2-deployment.jsx` |
+
 ## 2026-06-05 PR Backfill Audit
 
 Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 3 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.

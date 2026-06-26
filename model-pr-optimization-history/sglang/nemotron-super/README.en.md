@@ -1,5 +1,24 @@
 # sglang Nemotron Super Model PR Optimization History
 
+## 2026-06-26 Latest Source Scan
+
+Rechecked SGLang upstream `sgl-project/sglang@8524678889485801e7a4a12d62015be0c68f7a90` against the tracked files listed below.
+The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-05`.
+
+Result: 9 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-25 | [#29261](https://github.com/sgl-project/sglang/pull/29261) | [Docs] Fix broken links in cookbook | `Nemotron3-Nano-Omni.mdx` |
+| 2026-06-19 | [#28697](https://github.com/sgl-project/sglang/pull/28697) | [docs] Add B300 cookbook deployment options | `nemotron3-nano-deployment.jsx`, `nemotron3-super-deployment.jsx` |
+| 2026-06-19 | [#28346](https://github.com/sgl-project/sglang/pull/28346) | Use Flashinfer allreduce fusion for MNNVL allreduce for Nemotron | `nemotron_h.py`, `nemotron_h_mtp.py` |
+| 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | Add get_parallel(): a structured accessor for parallel-topology state | `nemotron_h.py`, `nemotron_h_mtp.py` |
+| 2026-06-13 | [#28102](https://github.com/sgl-project/sglang/pull/28102) | Fix DP attention + EP mode of Nemotron | `nemotron_h.py` |
+| 2026-06-12 | [#24955](https://github.com/sgl-project/sglang/pull/24955) | Support Nemotron DP attention and MTP | `nemotron_h.py`, `nemotron_h_mtp.py` |
+| 2026-06-10 | [#27838](https://github.com/sgl-project/sglang/pull/27838) | Disable async assert in Nemotron nightly tests | `test_nvidia_nemotron_3_super_nvfp4.py`, `test_nvidia_nemotron_3_super_nightly.py` |
+| 2026-06-10 | [#23906](https://github.com/sgl-project/sglang/pull/23906) | [Refactor] Cuda Graph Runner/Backend Refactor | `nemotron_h.py` |
+| 2026-06-06 | [#26733](https://github.com/sgl-project/sglang/pull/26733) | Nemotron perf changes | `nemotron_h.py` |
+
 ## 2026-06-05 PR Backfill Audit
 
 Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 20 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-04-30). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.

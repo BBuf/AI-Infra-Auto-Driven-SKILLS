@@ -1,5 +1,24 @@
 # sglang Gemma 4 Model PR Optimization History
 
+## 2026-06-26 Latest Source Scan
+
+Rechecked SGLang upstream `sgl-project/sglang@8524678889485801e7a4a12d62015be0c68f7a90` against the tracked files listed below.
+The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-05`.
+
+Result: 9 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-25 | [#29266](https://github.com/sgl-project/sglang/pull/29266) | Sync Gemma4 hardware table with Blackwell recipes | `Gemma4.mdx` |
+| 2026-06-25 | [#29252](https://github.com/sgl-project/sglang/pull/29252) | Tune Gemma4 26B-A4B B200 memory recipe | `Gemma4.mdx`, `gemma4-deployment.jsx` |
+| 2026-06-19 | [#28697](https://github.com/sgl-project/sglang/pull/28697) | [docs] Add B300 cookbook deployment options | `gemma4-deployment.jsx` |
+| 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | Add get_parallel(): a structured accessor for parallel-topology state | `gemma4_audio.py`, `gemma4_causal.py`, `gemma4_vision.py` |
+| 2026-06-17 | [#27471](https://github.com/sgl-project/sglang/pull/27471) | add dflash gemma4 support | `gemma4_causal.py`, `gemma4_mm.py` |
+| 2026-06-12 | [#26147](https://github.com/sgl-project/sglang/pull/26147) | [NPU] Add Gemma4 Sliding Window Attention support on Ascend backend | `gemma4_causal.py`, `gemma4_mm.py` |
+| 2026-06-09 | [#26320](https://github.com/sgl-project/sglang/pull/26320) | fix(gemma4): register image/video/audio token_regex for HF-expanded prompts | `gemma4.py` |
+| 2026-06-06 | [#26588](https://github.com/sgl-project/sglang/pull/26588) | Optimize Gemma4 H200 MoE and extend attention | `gemma4_fused_ops.py` |
+| 2026-06-05 | [#27396](https://github.com/sgl-project/sglang/pull/27396) | Cookbook for QAT | `Gemma4.mdx`, `gemma4-deployment.jsx` |
+
 ## 2026-06-05 PR Backfill Audit
 
 Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 12 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.

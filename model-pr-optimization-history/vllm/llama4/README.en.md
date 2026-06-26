@@ -1,5 +1,21 @@
 # vllm Llama 4 Model PR Optimization History
 
+## 2026-06-26 Latest Source Scan
+
+Rechecked vLLM upstream `vllm-project/vllm@abc71548ef029132c3316b902207f254a246d593` against the tracked files listed below.
+The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-05`.
+
+Result: 6 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-16 | [#43586](https://github.com/vllm-project/vllm/pull/43586) | [MM][Perf][CG] Support dual-path ViT full CUDA graph for DeepSeek-OCR | `mllama4.py` |
+| 2026-06-15 | [#44645](https://github.com/vllm-project/vllm/pull/44645) | [Bugfix] Stream Llama4 weight loading to avoid host-OOM with copy-returning loaders | `llama4.py`, `mllama4.py` |
+| 2026-06-12 | [#39612](https://github.com/vllm-project/vllm/pull/39612) | [Migration] Migrate GGUF quantization support to plugin | `llama4.py` |
+| 2026-06-12 | [#40660](https://github.com/vllm-project/vllm/pull/40660) | [MM][Perf][CG] Support ViT full cudagraphs for mllama4 | `mllama4.py` |
+| 2026-06-10 | [#45047](https://github.com/vllm-project/vllm/pull/45047) | [Bugfix] Fix Llama4 weight loading | `llama4.py`, `mllama4.py` |
+| 2026-06-10 | [#39419](https://github.com/vllm-project/vllm/pull/39419) | [SpecDecode] Reduce TP communication for large-vocab draft models speculative decoding | `llama4_eagle.py` |
+
 ## 2026-06-05 PR Backfill Audit
 
 Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 14 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-02-24). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.

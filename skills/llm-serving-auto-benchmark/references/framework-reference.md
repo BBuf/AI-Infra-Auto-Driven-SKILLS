@@ -164,7 +164,7 @@ Framework CLIs move quickly. For every real run:
 Historical validation from April 2026 used SGLang `0.5.10rc0`, vLLM `0.19.1`,
 and TensorRT-LLM `1.0.0`. A source refresh on 2026-06-26 checked SGLang
 `8524678889485801e7a4a12d62015be0c68f7a90`, vLLM
-`37ce34922f7f5e58241369511130cd99c1c50bfe`, TensorRT-LLM
+`abc71548ef029132c3316b902207f254a246d593`, TensorRT-LLM
 `0722c5f47d2cae69ac1a237da51e550dd214532c`, and TokenSpeed
 `5aedf69d6b476baa65571011de6ea60fd5a238a8`. Treat these as source evidence,
 not as a substitute for target-image `--help`. Since the prior refresh, vLLM PR

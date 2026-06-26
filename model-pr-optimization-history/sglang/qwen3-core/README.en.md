@@ -1,5 +1,20 @@
 # sglang Qwen3 Core Model PR Optimization History
 
+## 2026-06-26 Latest Source Scan
+
+Rechecked SGLang upstream `sgl-project/sglang@8524678889485801e7a4a12d62015be0c68f7a90` against the tracked files listed below.
+The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-05`.
+
+Result: 5 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-20 | [#28810](https://github.com/sgl-project/sglang/pull/28810) | [CI] Remove deprecated test/srt legacy CI setup | `test_qwen3.py` |
+| 2026-06-19 | [#28697](https://github.com/sgl-project/sglang/pull/28697) | [docs] Add B300 cookbook deployment options | `qwen3-deployment.jsx` |
+| 2026-06-18 | [#28421](https://github.com/sgl-project/sglang/pull/28421) | [3/N][CP] Implement zigzag CP strategy | `qwen3_moe.py` |
+| 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | Add get_parallel(): a structured accessor for parallel-topology state | `qwen3.py`, `qwen3_moe.py` |
+| 2026-06-10 | [#23906](https://github.com/sgl-project/sglang/pull/23906) | [Refactor] Cuda Graph Runner/Backend Refactor | `qwen3.py` |
+
 ## 2026-06-05 PR Backfill Audit
 
 Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 9 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-04-29). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.

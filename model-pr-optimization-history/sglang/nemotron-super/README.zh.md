@@ -1,5 +1,24 @@
 # sglang Nemotron Super 模型 PR 优化历史
 
+## 2026-06-26 最新源码扫描
+
+已按 SGLang 上游 `sgl-project/sglang@8524678889485801e7a4a12d62015be0c68f7a90` 重新扫描本文下方列出的 tracked files。
+文件级匹配使用 GitHub mirror 的 `git log --name-only`；PR 标题、链接和合并时间通过 GitHub GraphQL Pull Request API 批量复核。上一时效锚点：`2026-06-05`。
+
+结果：发现 9 个额外 PR-numbered merge 触及 tracked files，但尚未提升为下方完整逐 PR diff audit card。此节只作为 freshness index；需要引用实现细节时，仍应先人工阅读 PR diff 再补完整卡片。
+
+| 合并日期 | PR | 标题 | 命中的 tracked files |
+| --- | --- | --- | --- |
+| 2026-06-25 | [#29261](https://github.com/sgl-project/sglang/pull/29261) | [Docs] Fix broken links in cookbook | `Nemotron3-Nano-Omni.mdx` |
+| 2026-06-19 | [#28697](https://github.com/sgl-project/sglang/pull/28697) | [docs] Add B300 cookbook deployment options | `nemotron3-nano-deployment.jsx`, `nemotron3-super-deployment.jsx` |
+| 2026-06-19 | [#28346](https://github.com/sgl-project/sglang/pull/28346) | Use Flashinfer allreduce fusion for MNNVL allreduce for Nemotron | `nemotron_h.py`, `nemotron_h_mtp.py` |
+| 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | Add get_parallel(): a structured accessor for parallel-topology state | `nemotron_h.py`, `nemotron_h_mtp.py` |
+| 2026-06-13 | [#28102](https://github.com/sgl-project/sglang/pull/28102) | Fix DP attention + EP mode of Nemotron | `nemotron_h.py` |
+| 2026-06-12 | [#24955](https://github.com/sgl-project/sglang/pull/24955) | Support Nemotron DP attention and MTP | `nemotron_h.py`, `nemotron_h_mtp.py` |
+| 2026-06-10 | [#27838](https://github.com/sgl-project/sglang/pull/27838) | Disable async assert in Nemotron nightly tests | `test_nvidia_nemotron_3_super_nvfp4.py`, `test_nvidia_nemotron_3_super_nightly.py` |
+| 2026-06-10 | [#23906](https://github.com/sgl-project/sglang/pull/23906) | [Refactor] Cuda Graph Runner/Backend Refactor | `nemotron_h.py` |
+| 2026-06-06 | [#26733](https://github.com/sgl-project/sglang/pull/26733) | Nemotron perf changes | `nemotron_h.py` |
+
 ## 2026-06-05 PR 补漏复核
 
 已于 2026-06-05 按 sglang 上游 `origin/main@6cfdc1858` 复核；自上次时效基准（2026-04-30）以来，共有 20 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。

@@ -1,5 +1,25 @@
 # vllm GPT-OSS Model PR Optimization History
 
+## 2026-06-26 Latest Source Scan
+
+Rechecked vLLM upstream `vllm-project/vllm@abc71548ef029132c3316b902207f254a246d593` against the tracked files listed below.
+The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-05`.
+
+Result: 10 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
+
+| Merged | PR | Title | Tracked files touched |
+| --- | --- | --- | --- |
+| 2026-06-24 | [#46408](https://github.com/vllm-project/vllm/pull/46408) | [Bugfix] Support -1 (invalid/non-local) slots in topk_ids for Triton MoE | `gpt_oss_triton_kernels_moe.py` |
+| 2026-06-24 | [#46406](https://github.com/vllm-project/vllm/pull/46406) | [Bugfix] Support non-power-of-2 top_k in legacy triton_kernels routing | `gpt_oss_triton_kernels_moe.py` |
+| 2026-06-23 | [#46441](https://github.com/vllm-project/vllm/pull/46441) | fix gpt_oss pp>1 with ep | `gpt_oss.py` |
+| 2026-06-23 | [#46142](https://github.com/vllm-project/vllm/pull/46142) | [AMD][OCP MX][CI] Fix tests to not dispatch on `UNFUSED_TRITON` backend on MI300, improve w_mxfp4_a_fp8 emulation support | `test_gpt_oss.py` |
+| 2026-06-23 | [#45818](https://github.com/vllm-project/vllm/pull/45818) | [Bugfix]: Fix unquantized gpt-oss weight loading broken by FusedMoE r… | `gpt_oss.py` |
+| 2026-06-17 | [#45896](https://github.com/vllm-project/vllm/pull/45896) | [feature] MiniMax-M3-MXFP4 support added | `gpt_oss_triton_kernels_moe.py` |
+| 2026-06-15 | [#45381](https://github.com/vllm-project/vllm/pull/45381) | [Model] Add MiniMax M3 support | `gpt_oss_triton_kernels_moe.py` |
+| 2026-06-11 | [#44992](https://github.com/vllm-project/vllm/pull/44992) | Deprecations for v0.23 and v0.24 | `gpt-oss-20b-marlin.yaml`, `models-b200.txt`, `models-h100.txt` |
+| 2026-06-11 | [#45067](https://github.com/vllm-project/vllm/pull/45067) | [Bugfix]: Fix Quark gpt-oss weight loading broken by FusedMoe refactor | `gpt_oss.py` |
+| 2026-06-08 | [#41184](https://github.com/vllm-project/vllm/pull/41184) | [MoE Refactor] FusedMoE/MoERunner inversion refactor | `gpt_oss.py` |
+
 ## 2026-06-05 PR Backfill Audit
 
 Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 14 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-04-14). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.

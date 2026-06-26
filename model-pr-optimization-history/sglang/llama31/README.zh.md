@@ -1,5 +1,16 @@
 # sglang Llama 3.1 模型 PR 优化历史
 
+## 2026-06-26 最新源码扫描
+
+已按 SGLang 上游 `sgl-project/sglang@8524678889485801e7a4a12d62015be0c68f7a90` 重新扫描本文下方列出的 tracked files。
+文件级匹配使用 GitHub mirror 的 `git log --name-only`；PR 标题、链接和合并时间通过 GitHub GraphQL Pull Request API 批量复核。上一时效锚点：`2026-06-05`。
+
+结果：发现 1 个额外 PR-numbered merge 触及 tracked files，但尚未提升为下方完整逐 PR diff audit card。此节只作为 freshness index；需要引用实现细节时，仍应先人工阅读 PR diff 再补完整卡片。
+
+| 合并日期 | PR | 标题 | 命中的 tracked files |
+| --- | --- | --- | --- |
+| 2026-06-09 | [#27342](https://github.com/sgl-project/sglang/pull/27342) | test: fix gemma GSM8K thresholds in nightly text eval | `test_text_models_gsm8k_eval.py` |
+
 ## 2026-06-05 PR 补漏复核
 
 已于 2026-06-05 按 sglang 上游 `origin/main@6cfdc1858` 复核；自上次时效基准（2026-05-19）以来，没有新的带 PR 编号的合并改动到所跟踪的实现文件，上方覆盖信息保持最新。
