@@ -1,30 +1,5 @@
 # vllm ERNIE 4.5 模型 PR 优化历史
 
-## 2026-06-26 最新源码扫描
-
-已按 vLLM 上游 `vllm-project/vllm@abc71548ef029132c3316b902207f254a246d593` 重新扫描本文下方列出的 tracked files。
-文件级匹配使用 GitHub mirror 的 `git log --name-only`；PR 标题、链接和合并时间通过 GitHub GraphQL Pull Request API 批量复核。上一时效锚点：`2026-06-05`。
-
-结果：发现 2 个额外 PR-numbered merge 触及 tracked files，但尚未提升为下方完整逐 PR diff audit card。此节只作为 freshness index；需要引用实现细节时，仍应先人工阅读 PR diff 再补完整卡片。
-
-| 合并日期 | PR | 标题 | 命中的 tracked files |
-| --- | --- | --- | --- |
-| 2026-06-18 | [#45988](https://github.com/vllm-project/vllm/pull/45988) | [Perf] Remove unused loggers in `reasoning/` | `ernie45_reasoning_parser.py` |
-| 2026-06-08 | [#41184](https://github.com/vllm-project/vllm/pull/41184) | [MoE Refactor] FusedMoE/MoERunner inversion refactor | `ernie45_moe.py`, `ernie45_vl_moe.py` |
-
-## 2026-06-05 PR 补漏复核
-
-已于 2026-06-05 按 vllm 上游 `origin/main@c66b19800` 复核；自上次时效基准（2026-04-14）以来，共有 5 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
-
-| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
-| --- | --- | --- | --- |
-| 2026-05-29 | [#43997](https://github.com/vllm-project/vllm/pull/43997) | [Refactor] Remove dead current_tool_name_sent assignments from tool parsers | `ernie45_tool_parser.py` |
-| 2026-04-23 | [#40671](https://github.com/vllm-project/vllm/pull/40671) | [MoE Refactor] Rename FusedMoE.make_expert_params_mapping to fused_moe_make_expert_params_mapping | `ernie45_moe.py`, `ernie45_vl_moe.py` |
-| 2026-04-21 | [#35782](https://github.com/vllm-project/vllm/pull/35782) | [MoE Refactor] Remove SharedFusedMoE class | `ernie45_moe.py`, `ernie45_vl_moe.py` |
-| 2026-04-20 | [#35949](https://github.com/vllm-project/vllm/pull/35949) | [MoE Refactor] Move the shared/fused expert output sum into MoERunnerBase | `ernie45_moe.py`, `ernie45_vl_moe.py` |
-| 2026-04-16 | [#39780](https://github.com/vllm-project/vllm/pull/39780) | [Bugfix] Reject empty tools array with HTTP 400 | `test_ernie45_moe_tool_parser.py` |
-
-
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
@@ -44,8 +19,8 @@
 ## PR 覆盖总览
 
 - git 追溯 PR 数: 8
-- 原文档显式引用补充 PR 数: 6
-- 当前文档总 PR 数: 14
+- 原文档显式引用补充 PR 数: 13
+- 当前文档总 PR 数: 21
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -67,6 +42,13 @@
 | 2025-11-04 | [#27973](https://github.com/vllm-project/vllm/pull/27973) | merged | [Model] fix ernie45 reasoning_parser | `vllm/reasoning/ernie45_reasoning_parser.py` |
 | 2025-12-25 | [#31274](https://github.com/vllm-project/vllm/pull/31274) | merged | [Model][Ernie4.5-VL] Support video metadata for timestamp rendering | `vllm/model_executor/models/ernie45_vl.py`, `tests/models/multimodal/processing/test_common.py` |
 | 2026-04-14 | [#39753](https://github.com/vllm-project/vllm/pull/39753) | merged | [Model] Use mm_features for Ernie-4.5 VL M-RoPE | `vllm/model_executor/models/ernie45_vl.py`, `tests/model_executor/test_ernie45_vl_mrope.py` |
+| 2026-04-16 | [#39780](https://github.com/vllm-project/vllm/pull/39780) | merged | [Bugfix] Reject empty tools array with HTTP 400 | `vllm/entrypoints/openai/chat_completion/protocol.py`, `tests/tool_parsers/test_ernie45_moe_tool_parser.py`, `tests/tool_parsers/test_xlam_tool_parser.py` |
+| 2026-04-20 | [#35949](https://github.com/vllm-project/vllm/pull/35949) | merged | [MoE Refactor] Move the shared/fused expert output sum into MoERunnerBase | `vllm/model_executor/layers/fused_moe/runner/moe_runner_base.py`, `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/models/exaone_moe.py` |
+| 2026-04-21 | [#35782](https://github.com/vllm-project/vllm/pull/35782) | merged | [MoE Refactor] Remove SharedFusedMoE class | `vllm/model_executor/layers/fused_moe/shared_fused_moe.py`, `vllm/model_executor/models/afmoe.py`, `vllm/model_executor/models/llama4.py` |
+| 2026-04-23 | [#40671](https://github.com/vllm-project/vllm/pull/40671) | merged | [MoE Refactor] Rename FusedMoE.make_expert_params_mapping to fused_moe_make_expert_params_mapping | `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/models/llama4.py`, `vllm/model_executor/models/glm4_moe_lite.py` |
+| 2026-05-30 | [#43997](https://github.com/vllm-project/vllm/pull/43997) | merged | [Refactor] Remove dead current_tool_name_sent assignments from tool parsers | `vllm/tool_parsers/hunyuan_a13b_tool_parser.py`, `vllm/tool_parsers/ernie45_tool_parser.py`, `vllm/tool_parsers/hy_v3_tool_parser.py` |
+| 2026-06-08 | [#41184](https://github.com/vllm-project/vllm/pull/41184) | merged | [MoE Refactor] FusedMoE/MoERunner inversion refactor | `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/routed_experts.py`, `vllm/model_executor/layers/fused_moe/runner/moe_runner.py` |
+| 2026-06-18 | [#45988](https://github.com/vllm-project/vllm/pull/45988) | merged | [Perf] Remove unused loggers in `reasoning/` | `vllm/reasoning/deepseek_v3_reasoning_parser.py`, `vllm/reasoning/ernie45_reasoning_parser.py`, `vllm/reasoning/granite_reasoning_parser.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -76,7 +58,7 @@
 - 状态/时间: merged / 2025-07-02
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+634/-0，可读 patch 657 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Model] Add Ernie4.5 and Ernie4.5MoE Model Support」；模型线: ERNIE 4.5；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/ernie45_moe.py`, `vllm/model_executor/models/ernie45.py`, `tests/models/registry.py`；技术摘要: 覆盖「[Model] Add Ernie4.5 and Ernie4.5MoE Model Support」；主要实现面是 `vllm/model_executor/models/ernie45_moe.py`, `vllm/model_executor/models/ernie45.py`, `tests/models/registry.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[Model] Add Ernie4.5 and Ernie4.5MoE Model Support」；模型线: ERNIE 4.5；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/ernie45_moe.py`, `vllm/model_executor/models/ernie45.py`, `tests/models/registry.py`；技术摘要: 覆盖「[Model] Add Ernie4.5 and Ernie4.5MoE Model Support」；主要实现面是 `vllm/model_executor/models/ernie45_moe.py`, `vllm/model_executor/models/ernie45.py`, `tests/models/registry.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/ernie45_moe.py` added +583/-0 (583 lines); hunks: -0,0 +1,583; symbols: Ernie4_5_MoeMLP, __init__, forward, Ernie4_5_MoeMoE，涉及 `Ernie4_5_MoeMLP, __init__, forward`；`vllm/model_executor/models/ernie45.py` added +43/-0 (43 lines); hunks: -0,0 +1,43; symbols: Ernie4_5_ForCausalLM, __init__，涉及 `Ernie4_5_ForCausalLM, __init__`；`tests/models/registry.py` modified +4/-0 (4 lines); hunks: -162,6 +162,10 @@ def check_available_online(; symbols: check_available_online，涉及 `check_available_online`；`docs/models/supported_models.md` modified +2/-0 (2 lines); hunks: -330,6 +330,8 @@ Specified using `--task generate`.。
 - 代码 diff 细节:
   - `vllm/model_executor/models/ernie45_moe.py` added +583/-0 (583 lines); hunks: -0,0 +1,583; symbols: Ernie4_5_MoeMLP, __init__, forward, Ernie4_5_MoeMoE
@@ -119,7 +101,7 @@ diff -- tests/models/registry.py
 - 状态/时间: merged / 2025-07-28
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+6/-5，可读 patch 39 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix] Fix Ernie4_5_MoeForCausalLM shared experts」；模型线: ERNIE 4.5；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/ernie45_moe.py`；未提供可用技术摘要。
+- 动机: 标题「[Bugfix] Fix Ernie4_5_MoeForCausalLM shared experts」；模型线: ERNIE 4.5；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/ernie45_moe.py`；技术摘要: 覆盖「[Bugfix] Fix Ernie4_5_MoeForCausalLM shared experts」；主要实现面是 `vllm/model_executor/models/ernie45_moe.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/ernie45_moe.py` modified +6/-5 (11 lines); hunks: -109,8 +109,8 @@ def __init__(; -137,7 +137,7 @@ def __init__(; symbols: __init__, forward，涉及 `__init__, forward`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/ernie45_moe.py` modified +6/-5 (11 lines); hunks: -109,8 +109,8 @@ def __init__(; -137,7 +137,7 @@ def __init__(; symbols: __init__, forward
@@ -284,7 +266,7 @@ diff -- vllm/model_executor/models/ernie45_moe.py
 - 状态/时间: merged / 2025-10-12
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+132/-7，可读 patch 243 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[EPLB] Support ernie4.5-moe」；模型线: ERNIE 4.5；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/ernie45_moe.py`；未提供可用技术摘要。
+- 动机: 标题「[EPLB] Support ernie4.5-moe」；模型线: ERNIE 4.5；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/ernie45_moe.py`；技术摘要: 覆盖「[EPLB] Support ernie4.5-moe」；主要实现面是 `vllm/model_executor/models/ernie45_moe.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/ernie45_moe.py` modified +132/-7 (139 lines); hunks: -33,8 +33,12; -58,7 +62,7; symbols: __init__, forward，涉及 `__init__, forward`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/ernie45_moe.py` modified +132/-7 (139 lines); hunks: -33,8 +33,12; -58,7 +62,7; symbols: __init__, forward
@@ -450,7 +432,7 @@ diff -- vllm/reasoning/ernie45_reasoning_parser.py
 - 状态/时间: merged / 2025-12-25
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+82/-5，可读 patch 137 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Model][Ernie4.5-VL] Support video metadata for timestamp rendering」；模型线: ERNIE 4.5；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/ernie45_vl.py`, `tests/models/multimodal/processing/test_common.py`；技术摘要: 覆盖「[Model][Ernie4.5-VL] Support video metadata for timestamp rendering」；主要实现面是 `vllm/model_executor/models/ernie45_vl.py`, `tests/models/multimodal/processing/test_common.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[Model][Ernie4.5-VL] Support video metadata for timestamp rendering」；模型线: ERNIE 4.5；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/ernie45_vl.py`, `tests/models/multimodal/processing/test_common.py`；技术摘要: 覆盖「[Model][Ernie4.5-VL] Support video metadata for timestamp rendering」；主要实现面是 `vllm/model_executor/models/ernie45_vl.py`, `tests/models/multimodal/processing/test_common.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/ernie45_vl.py` modified +80/-4 (84 lines); hunks: -21,7 +21,7; -41,7 +41,7; symbols: get_max_video_tokens, Ernie4_5VLMultiModalProcessor, _get_data_parser, _pixel_values_norm，涉及 `get_max_video_tokens, Ernie4_5VLMultiModalProcessor, _get_data_parser`；`tests/models/multimodal/processing/test_common.py` modified +2/-1 (3 lines); hunks: -104,7 +104,8 @@ def create_metadata(frames: np.ndarray):; symbols: create_metadata，涉及 `create_metadata`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/ernie45_vl.py` modified +80/-4 (84 lines); hunks: -21,7 +21,7; -41,7 +41,7; symbols: get_max_video_tokens, Ernie4_5VLMultiModalProcessor, _get_data_parser, _pixel_values_norm
@@ -484,7 +466,7 @@ diff -- tests/models/multimodal/processing/test_common.py
 - 状态/时间: merged / 2026-04-14
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/model_executor/test_ernie45_vl_mrope.py`, `vllm/model_executor/models/ernie45_vl.py`；关联提交 `0008729abfbd`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+196/-123，可读 patch 339 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Model] Use mm_features for Ernie-4.5 VL M-RoPE」；模型线: ERNIE 4.5；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/ernie45_vl.py`, `tests/model_executor/test_ernie45_vl_mrope.py`；技术摘要: 覆盖「[Model] Use mm_features for Ernie-4.5 VL M-RoPE」；主要实现面是 `vllm/model_executor/models/ernie45_vl.py`, `tests/model_executor/test_ernie45_vl_mrope.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[Model] Use mm_features for Ernie-4.5 VL M-RoPE」；模型线: ERNIE 4.5；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/ernie45_vl.py`, `tests/model_executor/test_ernie45_vl_mrope.py`；技术摘要: 覆盖「[Model] Use mm_features for Ernie-4.5 VL M-RoPE」；主要实现面是 `vllm/model_executor/models/ernie45_vl.py`, `tests/model_executor/test_ernie45_vl_mrope.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/ernie45_vl.py` modified +53/-123 (176 lines); hunks: -23,9 +23,8; -1401,131 +1400,62 @@ def get_mrope_input_positions(; symbols: get_mrope_input_positions, iter_mm_grid_thw, _parse_and_validate_image_input，涉及 `get_mrope_input_positions, iter_mm_grid_thw, _parse_and_validate_image_input`；`tests/model_executor/test_ernie45_vl_mrope.py` added +143/-0 (143 lines); hunks: -0,0 +1,143; symbols: _force_cpu_default_device, DummyConfig, make_model, make_mm_feature，涉及 `_force_cpu_default_device, DummyConfig, make_model`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/ernie45_vl.py` modified +53/-123 (176 lines); hunks: -23,9 +23,8; -1401,131 +1400,62 @@ def get_mrope_input_positions(; symbols: get_mrope_input_positions, iter_mm_grid_thw, _parse_and_validate_image_input
@@ -514,6 +496,290 @@ diff -- tests/model_executor/test_ernie45_vl_mrope.py
   - runtime: `vllm/model_executor/models/ernie45_vl.py` modified +53/-123
   - tests: `tests/model_executor/test_ernie45_vl_mrope.py` added +143/-0
 - 验证与风险: diff 自带测试面 `tests/model_executor/test_ernie45_vl_mrope.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #39780 - [Bugfix] Reject empty tools array with HTTP 400
+
+- 链接: https://github.com/vllm-project/vllm/pull/39780
+- 状态/时间: merged / 2026-04-16
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+23/-23，可读 patch 81 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] Reject empty tools array with HTTP 400」；模型线: ERNIE 4.5；类别: 缺陷修复；主要 diff: `vllm/entrypoints/openai/chat_completion/protocol.py`, `tests/tool_parsers/test_ernie45_moe_tool_parser.py`, `tests/tool_parsers/test_xlam_tool_parser.py`；技术摘要: 覆盖「[Bugfix] Reject empty tools array with HTTP 400」；主要实现面是 `vllm/entrypoints/openai/chat_completion/protocol.py`, `tests/tool_parsers/test_ernie45_moe_tool_parser.py`, `tests/tool_parsers/test_xlam_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/entrypoints/openai/chat_completion/protocol.py` modified +12/-12 (24 lines); hunks: -678,6 +678,18 @@ def check_structured_outputs_count(cls, data):; -704,18 +716,6 @@ def check_tool_usage(cls, data):; symbols: check_structured_outputs_count, check_tool_usage，涉及 `check_structured_outputs_count, check_tool_usage`；`tests/tool_parsers/test_ernie45_moe_tool_parser.py` modified +1/-1 (2 lines); hunks: -328,7 +328,7 @@ def test_extract_tool_calls_streaming_incremental(; symbols: test_extract_tool_calls_streaming_incremental，涉及 `test_extract_tool_calls_streaming_incremental`；`tests/tool_parsers/test_xlam_tool_parser.py` modified +1/-1 (2 lines); hunks: -484,7 +484,7 @@ def test_extract_tool_calls_streaming_incremental(; symbols: test_extract_tool_calls_streaming_incremental，涉及 `test_extract_tool_calls_streaming_incremental`；`tests/tool_use/test_chat_completion_request_validations.py` modified +9/-9 (18 lines); hunks: -26,15 +26,15 @@ def test_chat_completion_request_with_no_tools():; symbols: test_chat_completion_request_with_no_tools，涉及 `test_chat_completion_request_with_no_tools`。
+- 代码 diff 细节:
+  - `vllm/entrypoints/openai/chat_completion/protocol.py` modified +12/-12 (24 lines); hunks: -678,6 +678,18 @@ def check_structured_outputs_count(cls, data):; -704,18 +716,6 @@ def check_tool_usage(cls, data):; symbols: check_structured_outputs_count, check_tool_usage
+  - `tests/tool_parsers/test_ernie45_moe_tool_parser.py` modified +1/-1 (2 lines); hunks: -328,7 +328,7 @@ def test_extract_tool_calls_streaming_incremental(; symbols: test_extract_tool_calls_streaming_incremental
+  - `tests/tool_parsers/test_xlam_tool_parser.py` modified +1/-1 (2 lines); hunks: -484,7 +484,7 @@ def test_extract_tool_calls_streaming_incremental(; symbols: test_extract_tool_calls_streaming_incremental
+  - `tests/tool_use/test_chat_completion_request_validations.py` modified +9/-9 (18 lines); hunks: -26,15 +26,15 @@ def test_chat_completion_request_with_no_tools():; symbols: test_chat_completion_request_with_no_tools
+- 关键代码摘录:
+
+```diff
+diff -- vllm/entrypoints/openai/chat_completion/protocol.py
+@@ -678,6 +678,18 @@ def check_structured_outputs_count(cls, data):
++        if isinstance(data, ValueError):
++            raise data
++        if not isinstance(data, dict):
++            return data
++        # Reject empty tools array, matching OpenAI API behavior
++        if data.get("tools") == []:
+diff -- tests/tool_parsers/test_ernie45_moe_tool_parser.py
+@@ -328,7 +328,7 @@ def test_extract_tool_calls_streaming_incremental(
+-    request = ChatCompletionRequest(model=MODEL, messages=[], tools=[])
++    request = ChatCompletionRequest(model=MODEL, messages=[])
+diff -- tests/tool_parsers/test_xlam_tool_parser.py
+@@ -484,7 +484,7 @@ def test_extract_tool_calls_streaming_incremental(
+-    request = ChatCompletionRequest(model=MODEL, messages=[], tools=[])
++    request = ChatCompletionRequest(model=MODEL, messages=[])
+diff -- tests/tool_use/test_chat_completion_request_validations.py
+@@ -26,15 +26,15 @@ def test_chat_completion_request_with_no_tools():
+```
+
+- 已读文件:
+  - runtime: `vllm/entrypoints/openai/chat_completion/protocol.py` modified +12/-12
+  - tests: `tests/tool_parsers/test_ernie45_moe_tool_parser.py` modified +1/-1; `tests/tool_parsers/test_xlam_tool_parser.py` modified +1/-1; `tests/tool_use/test_chat_completion_request_validations.py` modified +9/-9
+- 验证与风险: diff 自带测试面 `tests/tool_parsers/test_ernie45_moe_tool_parser.py`, `tests/tool_parsers/test_xlam_tool_parser.py`, `tests/tool_use/test_chat_completion_request_validations.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #35949 - [MoE Refactor] Move the shared/fused expert output sum into MoERunnerBase
+
+- 链接: https://github.com/vllm-project/vllm/pull/35949
+- 状态/时间: merged / 2026-04-20
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 53 个文件，+325/-702，可读 patch 2430 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[MoE Refactor] Move the shared/fused expert output sum into MoERunnerBase」；模型线: ERNIE 4.5；类别: 性能/后端优化；主要 diff: `vllm/model_executor/layers/fused_moe/runner/moe_runner_base.py`, `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/models/exaone_moe.py`；技术摘要: 覆盖「[MoE Refactor] Move the shared/fused expert output sum into MoERunnerBase」；主要实现面是 `vllm/model_executor/layers/fused_moe/runner/moe_runner_base.py`, `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/models/exaone_moe.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/layers/fused_moe/runner/moe_runner_base.py` modified +175/-86 (261 lines); hunks: -81,15 +81,17 @@ def _resolve_layer_name(layer_name: str | LayerName) -> str:; -113,7 +115,7 @@ def _moe_forward_shared(; symbols: _resolve_layer_name, _moe_forward, _moe_forward_shared, _moe_forward_shared_fake，涉及 `_resolve_layer_name, _moe_forward, _moe_forward_shared`；`vllm/model_executor/layers/fused_moe/layer.py` modified +28/-32 (60 lines); hunks: -230,11 +230,18 @@ class FusedMoE(PluggableLayer):; -246,7 +253,6 @@ def __init__(; symbols: FusedMoE, __init__，涉及 `FusedMoE, __init__`；`vllm/model_executor/models/exaone_moe.py` modified +18/-28 (46 lines); hunks: -31,6 +31,7; -116,12 +117,26 @@ def __init__(; symbols: __init__, forward，涉及 `__init__, forward`；`vllm/model_executor/models/kimi_linear.py` modified +20/-26 (46 lines); hunks: -11,11 +11,10; -132,12 +131,25 @@ def __init__(; symbols: __init__, forward, load_weights，涉及 `__init__, forward, load_weights`。
+- 代码 diff 细节:
+  - `vllm/model_executor/layers/fused_moe/runner/moe_runner_base.py` modified +175/-86 (261 lines); hunks: -81,15 +81,17 @@ def _resolve_layer_name(layer_name: str | LayerName) -> str:; -113,7 +115,7 @@ def _moe_forward_shared(; symbols: _resolve_layer_name, _moe_forward, _moe_forward_shared, _moe_forward_shared_fake
+  - `vllm/model_executor/layers/fused_moe/layer.py` modified +28/-32 (60 lines); hunks: -230,11 +230,18 @@ class FusedMoE(PluggableLayer):; -246,7 +253,6 @@ def __init__(; symbols: FusedMoE, __init__
+  - `vllm/model_executor/models/exaone_moe.py` modified +18/-28 (46 lines); hunks: -31,6 +31,7; -116,12 +117,26 @@ def __init__(; symbols: __init__, forward
+  - `vllm/model_executor/models/kimi_linear.py` modified +20/-26 (46 lines); hunks: -11,11 +11,10; -132,12 +131,25 @@ def __init__(; symbols: __init__, forward, load_weights
+  - `vllm/model_executor/models/AXK1.py` modified +5/-30 (35 lines); hunks: -100,7 +100,7 @@ def __init__(; -170,7 +170,6 @@ def __init__(; symbols: __init__, forward
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/layers/fused_moe/runner/moe_runner_base.py
+@@ -81,15 +81,17 @@ def _resolve_layer_name(layer_name: str | LayerName) -> str:
+-# the runner's 'forward_dispatch' method.
++# the runner's '_forward_dispatch' method.
++# These functions should never be called directly since they do not
++# include all the functionality of the MoE layer.
+-    return layer.runner.forward_dispatch(
++    return layer.runner._forward_dispatch(
+diff -- vllm/model_executor/layers/fused_moe/layer.py
+@@ -230,11 +230,18 @@ class FusedMoE(PluggableLayer):
+-        reduce_results: Whether to all_reduce on the output of the layer
++        routed_scaling_factor: A scaling factor that is applied to the topk_weights
++                               by the router or the output of the layer depending
++                               on the value of `apply_routed_scale_to_output`
++        apply_routed_scale_to_output: Determine whether or not `routed_scaling_factor`
++                                      is applied to the topk_weights or to the experts
+diff -- vllm/model_executor/models/exaone_moe.py
+@@ -31,6 +31,7 @@
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/layers/fused_moe/runner/moe_runner_base.py` modified +175/-86; `vllm/model_executor/layers/fused_moe/layer.py` modified +28/-32; `vllm/model_executor/models/exaone_moe.py` modified +18/-28; `vllm/model_executor/models/kimi_linear.py` modified +20/-26; `vllm/model_executor/models/AXK1.py` modified +5/-30; `vllm/model_executor/models/ernie45_vl_moe.py` modified +5/-30
+- 验证与风险: diff 自带测试面 `tests/compile/passes/test_vllm_fusion_pattern_matcher_pass.py`, `tests/kernels/moe/test_moe_layer.py`, `tests/kernels/moe/test_shared_fused_moe_routed_transform.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #35782 - [MoE Refactor] Remove SharedFusedMoE class
+
+- 链接: https://github.com/vllm-project/vllm/pull/35782
+- 状态/时间: merged / 2026-04-21
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 33 个文件，+112/-141，可读 patch 926 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[MoE Refactor] Remove SharedFusedMoE class」；模型线: ERNIE 4.5；类别: 性能/后端优化；主要 diff: `vllm/model_executor/layers/fused_moe/shared_fused_moe.py`, `vllm/model_executor/models/afmoe.py`, `vllm/model_executor/models/llama4.py`；技术摘要: 覆盖「[MoE Refactor] Remove SharedFusedMoE class」；主要实现面是 `vllm/model_executor/layers/fused_moe/shared_fused_moe.py`, `vllm/model_executor/models/afmoe.py`, `vllm/model_executor/models/llama4.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/layers/fused_moe/shared_fused_moe.py` removed +0/-25 (25 lines); hunks: -1,25 +0,0; symbols: SharedFusedMoE, forward，涉及 `SharedFusedMoE, forward`；`vllm/model_executor/models/afmoe.py` modified +5/-5 (10 lines); hunks: -18,7 +18,7; -124,8 +124,8 @@ def __init__(; symbols: __init__, make_empty_intermediate_tensors, get_expert_mapping，涉及 `__init__, make_empty_intermediate_tensors, get_expert_mapping`；`vllm/model_executor/models/llama4.py` modified +5/-5 (10 lines); hunks: -36,7 +36,7; -127,7 +127,7 @@ def __init__(self, vllm_config: VllmConfig, prefix: str = ""):; symbols: __init__, load_moe_expert_weights, load_weights，涉及 `__init__, load_moe_expert_weights, load_weights`；`vllm/model_executor/models/AXK1.py` modified +4/-4 (8 lines); hunks: -42,7 +42,7; -163,7 +163,7 @@ def __init__(; symbols: __init__, compute_logits, get_expert_mapping, load_weights，涉及 `__init__, compute_logits, get_expert_mapping`。
+- 代码 diff 细节:
+  - `vllm/model_executor/layers/fused_moe/shared_fused_moe.py` removed +0/-25 (25 lines); hunks: -1,25 +0,0; symbols: SharedFusedMoE, forward
+  - `vllm/model_executor/models/afmoe.py` modified +5/-5 (10 lines); hunks: -18,7 +18,7; -124,8 +124,8 @@ def __init__(; symbols: __init__, make_empty_intermediate_tensors, get_expert_mapping
+  - `vllm/model_executor/models/llama4.py` modified +5/-5 (10 lines); hunks: -36,7 +36,7; -127,7 +127,7 @@ def __init__(self, vllm_config: VllmConfig, prefix: str = ""):; symbols: __init__, load_moe_expert_weights, load_weights
+  - `vllm/model_executor/models/AXK1.py` modified +4/-4 (8 lines); hunks: -42,7 +42,7; -163,7 +163,7 @@ def __init__(; symbols: __init__, compute_logits, get_expert_mapping, load_weights
+  - `vllm/model_executor/models/deepseek_v2.py` modified +4/-4 (8 lines); hunks: -48,9 +48,9; -311,7 +311,7 @@ def __init__(; symbols: __init__, compute_logits, get_expert_mapping, load_weights
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/layers/fused_moe/shared_fused_moe.py
+@@ -1,25 +0,0 @@
+-# SPDX-License-Identifier: Apache-2.0
+-# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
+-import torch
+-from vllm.model_executor.layers.fused_moe.layer import FusedMoE
+-# TODO(bnell): Remove this entirely
+-class SharedFusedMoE(FusedMoE):
+diff -- vllm/model_executor/models/afmoe.py
+@@ -18,7 +18,7 @@
+-from vllm.model_executor.layers.fused_moe.shared_fused_moe import SharedFusedMoE
++from vllm.model_executor.layers.fused_moe import FusedMoE
+@@ -124,8 +124,8 @@ def __init__(
+-        # Routed experts using SharedFusedMoE
+-        self.experts = SharedFusedMoE(
++        # Routed experts using FusedMoE
+diff -- vllm/model_executor/models/llama4.py
+@@ -36,7 +36,7 @@
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/layers/fused_moe/shared_fused_moe.py` removed +0/-25; `vllm/model_executor/models/afmoe.py` modified +5/-5; `vllm/model_executor/models/llama4.py` modified +5/-5; `vllm/model_executor/models/AXK1.py` modified +4/-4; `vllm/model_executor/models/deepseek_v2.py` modified +4/-4; `vllm/model_executor/models/ernie45_moe.py` modified +4/-4
+- 验证与风险: diff 自带测试面 `tests/kernels/moe/test_moe_layer.py`, `tests/kernels/moe/test_shared_fused_moe_routed_transform.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #40671 - [MoE Refactor] Rename FusedMoE.make_expert_params_mapping to fused_moe_make_expert_params_mapping
+
+- 链接: https://github.com/vllm-project/vllm/pull/40671
+- 状态/时间: merged / 2026-04-23
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 53 个文件，+254/-98，可读 patch 1073 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[MoE Refactor] Rename FusedMoE.make_expert_params_mapping to fused_moe_make_expert_params_mapping」；模型线: ERNIE 4.5；类别: 性能/后端优化；主要 diff: `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/models/llama4.py`, `vllm/model_executor/models/glm4_moe_lite.py`；技术摘要: 覆盖「[MoE Refactor] Rename FusedMoE.make_expert_params_mapping to fused_moe_make_expert_params_mapping」；主要实现面是 `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/models/llama4.py`, `vllm/model_executor/models/glm4_moe_lite.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/layers/fused_moe/layer.py` modified +19/-0 (19 lines); hunks: -1618,6 +1618,25 @@ def extra_repr(self) -> str:; symbols: extra_repr, fused_moe_make_expert_params_mapping，涉及 `extra_repr, fused_moe_make_expert_params_mapping`；`vllm/model_executor/models/llama4.py` modified +7/-4 (11 lines); hunks: -36,7 +36,10; -414,7 +417,7 @@ def load_moe_expert_weights(; symbols: load_moe_expert_weights, load_weights，涉及 `load_moe_expert_weights, load_weights`；`vllm/model_executor/models/glm4_moe_lite.py` modified +6/-4 (10 lines); hunks: -41,7 +41,9; -308,7 +310,7 @@ def make_empty_intermediate_tensors(; symbols: make_empty_intermediate_tensors, get_expert_mapping, load_weights, compute_logits，涉及 `make_empty_intermediate_tensors, get_expert_mapping, load_weights`；`vllm/model_executor/models/AXK1.py` modified +6/-3 (9 lines); hunks: -42,7 +42,10; -916,7 +919,7 @@ def compute_logits(; symbols: compute_logits, get_expert_mapping, load_weights，涉及 `compute_logits, get_expert_mapping, load_weights`。
+- 代码 diff 细节:
+  - `vllm/model_executor/layers/fused_moe/layer.py` modified +19/-0 (19 lines); hunks: -1618,6 +1618,25 @@ def extra_repr(self) -> str:; symbols: extra_repr, fused_moe_make_expert_params_mapping
+  - `vllm/model_executor/models/llama4.py` modified +7/-4 (11 lines); hunks: -36,7 +36,10; -414,7 +417,7 @@ def load_moe_expert_weights(; symbols: load_moe_expert_weights, load_weights
+  - `vllm/model_executor/models/glm4_moe_lite.py` modified +6/-4 (10 lines); hunks: -41,7 +41,9; -308,7 +310,7 @@ def make_empty_intermediate_tensors(; symbols: make_empty_intermediate_tensors, get_expert_mapping, load_weights, compute_logits
+  - `vllm/model_executor/models/AXK1.py` modified +6/-3 (9 lines); hunks: -42,7 +42,10; -916,7 +919,7 @@ def compute_logits(; symbols: compute_logits, get_expert_mapping, load_weights
+  - `vllm/model_executor/models/afmoe.py` modified +5/-2 (7 lines); hunks: -18,7 +18,10; -479,7 +482,7 @@ def make_empty_intermediate_tensors(; symbols: make_empty_intermediate_tensors, get_expert_mapping
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/layers/fused_moe/layer.py
+@@ -1618,6 +1618,25 @@ def extra_repr(self) -> str:
++# This is a temporary forwarding method which will be removed/modified layer.
++def fused_moe_make_expert_params_mapping(
++    model: torch.nn.Module,
++    ckpt_gate_proj_name: str,
++    ckpt_down_proj_name: str,
++    ckpt_up_proj_name: str,
+diff -- vllm/model_executor/models/llama4.py
+@@ -36,7 +36,10 @@
+-from vllm.model_executor.layers.fused_moe import FusedMoE
++from vllm.model_executor.layers.fused_moe import (
++    FusedMoE,
++    fused_moe_make_expert_params_mapping,
++)
+@@ -414,7 +417,7 @@ def load_moe_expert_weights(
+diff -- vllm/model_executor/models/glm4_moe_lite.py
+@@ -41,7 +41,9 @@
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/layers/fused_moe/layer.py` modified +19/-0; `vllm/model_executor/models/llama4.py` modified +7/-4; `vllm/model_executor/models/glm4_moe_lite.py` modified +6/-4; `vllm/model_executor/models/AXK1.py` modified +6/-3; `vllm/model_executor/models/afmoe.py` modified +5/-2; `vllm/model_executor/models/bailing_moe.py` modified +5/-2
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/layers/fused_moe/__init__.py`, `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/models/AXK1.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #43997 - [Refactor] Remove dead current_tool_name_sent assignments from tool parsers
+
+- 链接: https://github.com/vllm-project/vllm/pull/43997
+- 状态/时间: merged / 2026-05-30
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+0/-6，可读 patch 48 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Refactor] Remove dead current_tool_name_sent assignments from tool parsers」；模型线: ERNIE 4.5；类别: 模型实现调整；主要 diff: `vllm/tool_parsers/hunyuan_a13b_tool_parser.py`, `vllm/tool_parsers/ernie45_tool_parser.py`, `vllm/tool_parsers/hy_v3_tool_parser.py`；技术摘要: 覆盖「[Refactor] Remove dead current_tool_name_sent assignments from tool parsers」；主要实现面是 `vllm/tool_parsers/hunyuan_a13b_tool_parser.py`, `vllm/tool_parsers/ernie45_tool_parser.py`, `vllm/tool_parsers/hy_v3_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/tool_parsers/hunyuan_a13b_tool_parser.py` modified +0/-3 (3 lines); hunks: -38,7 +38,6 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[Tool]...; -262,7 +261,6 @@ def _handle_test_compatibility(self, current_text: str):; symbols: __init__, _handle_test_compatibility, _handle_tool_name_streaming，涉及 `__init__, _handle_test_compatibility, _handle_tool_name_streaming`；`vllm/tool_parsers/ernie45_tool_parser.py` modified +0/-1 (1 lines); hunks: -34,7 +34,6 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[Tool]...; symbols: __init__，涉及 `__init__`；`vllm/tool_parsers/hy_v3_tool_parser.py` modified +0/-1 (1 lines); hunks: -246,7 +246,6 @@ def _parse_value(; symbols: _parse_value, __init__，涉及 `_parse_value, __init__`；`vllm/tool_parsers/phi4mini_tool_parser.py` modified +0/-1 (1 lines); hunks: -47,7 +47,6 @@ def __init__(; symbols: __init__，涉及 `__init__`。
+- 代码 diff 细节:
+  - `vllm/tool_parsers/hunyuan_a13b_tool_parser.py` modified +0/-3 (3 lines); hunks: -38,7 +38,6 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[Tool]...; -262,7 +261,6 @@ def _handle_test_compatibility(self, current_text: str):; symbols: __init__, _handle_test_compatibility, _handle_tool_name_streaming
+  - `vllm/tool_parsers/ernie45_tool_parser.py` modified +0/-1 (1 lines); hunks: -34,7 +34,6 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[Tool]...; symbols: __init__
+  - `vllm/tool_parsers/hy_v3_tool_parser.py` modified +0/-1 (1 lines); hunks: -246,7 +246,6 @@ def _parse_value(; symbols: _parse_value, __init__
+  - `vllm/tool_parsers/phi4mini_tool_parser.py` modified +0/-1 (1 lines); hunks: -47,7 +47,6 @@ def __init__(; symbols: __init__
+- 关键代码摘录:
+
+```diff
+diff -- vllm/tool_parsers/hunyuan_a13b_tool_parser.py
+@@ -38,7 +38,6 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[Tool] | None = None):
+-        self.current_tool_name_sent = False
+@@ -262,7 +261,6 @@ def _handle_test_compatibility(self, current_text: str):
+-                    self.current_tool_name_sent = True
+@@ -306,7 +304,6 @@ def _handle_tool_name_streaming(
+-                self.current_tool_name_sent = True
+diff -- vllm/tool_parsers/ernie45_tool_parser.py
+@@ -34,7 +34,6 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[Tool] | None = None):
+-        self.current_tool_name_sent = False
+diff -- vllm/tool_parsers/hy_v3_tool_parser.py
+@@ -246,7 +246,6 @@ def _parse_value(
+-        self.current_tool_name_sent: bool = False
+diff -- vllm/tool_parsers/phi4mini_tool_parser.py
+@@ -47,7 +47,6 @@ def __init__(
+-        self.current_tool_name_sent: bool = False
+```
+
+- 已读文件:
+  - runtime: `vllm/tool_parsers/hunyuan_a13b_tool_parser.py` modified +0/-3; `vllm/tool_parsers/ernie45_tool_parser.py` modified +0/-1; `vllm/tool_parsers/hy_v3_tool_parser.py` modified +0/-1; `vllm/tool_parsers/phi4mini_tool_parser.py` modified +0/-1
+- 验证与风险: runtime 路径改动集中在 `vllm/tool_parsers/ernie45_tool_parser.py`, `vllm/tool_parsers/hunyuan_a13b_tool_parser.py`, `vllm/tool_parsers/hy_v3_tool_parser.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #41184 - [MoE Refactor] FusedMoE/MoERunner inversion refactor
+
+- 链接: https://github.com/vllm-project/vllm/pull/41184
+- 状态/时间: merged / 2026-06-08
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 90 个文件，+2734/-2027，可读 patch 7329 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[MoE Refactor] FusedMoE/MoERunner inversion refactor」；模型线: ERNIE 4.5；类别: 性能/后端优化；主要 diff: `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/routed_experts.py`, `vllm/model_executor/layers/fused_moe/runner/moe_runner.py`；技术摘要: 覆盖「[MoE Refactor] FusedMoE/MoERunner inversion refactor」；主要实现面是 `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/routed_experts.py`, `vllm/model_executor/layers/fused_moe/runner/moe_runner.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/layers/fused_moe/layer.py` modified +314/-1334 (1648 lines); hunks: -1,1424 +1,404; symbols: FusedMoeWeightScaleSupported, make_parallel_config, FusedMoE, determine_expert_counts，涉及 `FusedMoeWeightScaleSupported, make_parallel_config, FusedMoE`；`vllm/model_executor/layers/fused_moe/routed_experts.py` added +1144/-0 (1144 lines); hunks: -0,0 +1,1144; symbols: FusedMoeWeightScaleSupported, RoutedExperts, __init__, _replace_quant_method，涉及 `FusedMoeWeightScaleSupported, RoutedExperts, __init__`；`vllm/model_executor/layers/fused_moe/runner/moe_runner.py` modified +257/-82 (339 lines); hunks: -1,28 +1,39; -43,8 +54,23; symbols: register_layer_for_moe_forward_op, get_layer_from_name, _moe_forward，涉及 `register_layer_for_moe_forward_op, get_layer_from_name, _moe_forward`；`vllm/lora/layers/fused_moe.py` modified +76/-43 (119 lines); hunks: -10,7 +10,7; -25,15 +25,24; symbols: FusedMoEWithLoRA, __init__，涉及 `FusedMoEWithLoRA, __init__`。
+- 代码 diff 细节:
+  - `vllm/model_executor/layers/fused_moe/layer.py` modified +314/-1334 (1648 lines); hunks: -1,1424 +1,404; symbols: FusedMoeWeightScaleSupported, make_parallel_config, FusedMoE, determine_expert_counts
+  - `vllm/model_executor/layers/fused_moe/routed_experts.py` added +1144/-0 (1144 lines); hunks: -0,0 +1,1144; symbols: FusedMoeWeightScaleSupported, RoutedExperts, __init__, _replace_quant_method
+  - `vllm/model_executor/layers/fused_moe/runner/moe_runner.py` modified +257/-82 (339 lines); hunks: -1,28 +1,39; -43,8 +54,23; symbols: register_layer_for_moe_forward_op, get_layer_from_name, _moe_forward
+  - `vllm/lora/layers/fused_moe.py` modified +76/-43 (119 lines); hunks: -10,7 +10,7; -25,15 +25,24; symbols: FusedMoEWithLoRA, __init__
+  - `vllm/model_executor/model_loader/weight_utils.py` modified +106/-1 (107 lines); hunks: -13,7 +13,7; -1633,3 +1633,108 @@ def maybe_remap_kv_scale_name(name: str, params_dict: di...; symbols: maybe_remap_kv_scale_name, maybe_remap_moe_expert_param_name, remap_moe_expert_weights
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/layers/fused_moe/layer.py
+@@ -1,1424 +1,404 @@
+-from collections.abc import Callable, Iterable
+-from enum import Enum
+-from typing import Literal, cast, overload
++from collections.abc import Callable
++from typing import Any
+-from torch.nn.parameter import UninitializedParameter
+diff -- vllm/model_executor/layers/fused_moe/routed_experts.py
+@@ -0,0 +1,1144 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++from collections.abc import Callable, Iterable
++from enum import Enum
++from typing import TYPE_CHECKING, Any, Literal, cast, overload
++import torch
+diff -- vllm/model_executor/layers/fused_moe/runner/moe_runner.py
+@@ -1,28 +1,39 @@
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/layers/fused_moe/layer.py` modified +314/-1334; `vllm/model_executor/layers/fused_moe/routed_experts.py` added +1144/-0; `vllm/model_executor/layers/fused_moe/runner/moe_runner.py` modified +257/-82; `vllm/lora/layers/fused_moe.py` modified +76/-43; `vllm/model_executor/model_loader/weight_utils.py` modified +106/-1; `vllm/model_executor/layers/fused_moe/runner/moe_runner_interface.py` modified +102/-2
+- 验证与风险: diff 自带测试面 `tests/distributed/test_eplb_fused_moe_layer.py`, `tests/distributed/test_eplb_fused_moe_layer_dep_nvfp4.py`, `tests/kernels/moe/modular_kernel_tools/common.py`, `tests/kernels/moe/modular_kernel_tools/parallel_utils.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #45988 - [Perf] Remove unused loggers in `reasoning/`
+
+- 链接: https://github.com/vllm-project/vllm/pull/45988
+- 状态/时间: merged / 2026-06-18
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 9 个文件，+0/-27，可读 patch 148 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Perf] Remove unused loggers in `reasoning/`」；模型线: ERNIE 4.5；类别: 性能/后端优化；主要 diff: `vllm/reasoning/deepseek_v3_reasoning_parser.py`, `vllm/reasoning/ernie45_reasoning_parser.py`, `vllm/reasoning/granite_reasoning_parser.py`；技术摘要: 覆盖「[Perf] Remove unused loggers in `reasoning/`」；主要实现面是 `vllm/reasoning/deepseek_v3_reasoning_parser.py`, `vllm/reasoning/ernie45_reasoning_parser.py`, `vllm/reasoning/granite_reasoning_parser.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/reasoning/deepseek_v3_reasoning_parser.py` modified +0/-3 (3 lines); hunks: -6,7 +6,6; -17,8 +16,6; symbols: DeepSeekV3ReasoningParser，涉及 `DeepSeekV3ReasoningParser`；`vllm/reasoning/ernie45_reasoning_parser.py` modified +0/-3 (3 lines); hunks: -7,15 +7,12; symbols: Ernie45ReasoningParser，涉及 `Ernie45ReasoningParser`；`vllm/reasoning/granite_reasoning_parser.py` modified +0/-3 (3 lines); hunks: -8,15 +8,12; symbols: GraniteReasoningParser，涉及 `GraniteReasoningParser`；`vllm/reasoning/hunyuan_a13b_reasoning_parser.py` modified +0/-3 (3 lines); hunks: -8,15 +8,12; symbols: HunyuanA13BReasoningParser，涉及 `HunyuanA13BReasoningParser`。
+- 代码 diff 细节:
+  - `vllm/reasoning/deepseek_v3_reasoning_parser.py` modified +0/-3 (3 lines); hunks: -6,7 +6,6; -17,8 +16,6; symbols: DeepSeekV3ReasoningParser
+  - `vllm/reasoning/ernie45_reasoning_parser.py` modified +0/-3 (3 lines); hunks: -7,15 +7,12; symbols: Ernie45ReasoningParser
+  - `vllm/reasoning/granite_reasoning_parser.py` modified +0/-3 (3 lines); hunks: -8,15 +8,12; symbols: GraniteReasoningParser
+  - `vllm/reasoning/hunyuan_a13b_reasoning_parser.py` modified +0/-3 (3 lines); hunks: -8,15 +8,12; symbols: HunyuanA13BReasoningParser
+  - `vllm/reasoning/identity_reasoning_parser.py` modified +0/-3 (3 lines); hunks: -7,15 +7,12; symbols: IdentityReasoningParser
+- 关键代码摘录:
+
+```diff
+diff -- vllm/reasoning/deepseek_v3_reasoning_parser.py
+@@ -6,7 +6,6 @@
+-from vllm.logger import init_logger
+@@ -17,8 +16,6 @@
+-logger = init_logger(__name__)
+diff -- vllm/reasoning/ernie45_reasoning_parser.py
+@@ -7,15 +7,12 @@
+-from vllm.logger import init_logger
+-logger = init_logger(__name__)
+diff -- vllm/reasoning/granite_reasoning_parser.py
+@@ -8,15 +8,12 @@
+-from vllm.logger import init_logger
+-logger = init_logger(__name__)
+diff -- vllm/reasoning/hunyuan_a13b_reasoning_parser.py
+@@ -8,15 +8,12 @@
+-from vllm.logger import init_logger
+-logger = init_logger(__name__)
+diff -- vllm/reasoning/identity_reasoning_parser.py
+```
+
+- 已读文件:
+  - runtime: `vllm/reasoning/deepseek_v3_reasoning_parser.py` modified +0/-3; `vllm/reasoning/ernie45_reasoning_parser.py` modified +0/-3; `vllm/reasoning/granite_reasoning_parser.py` modified +0/-3; `vllm/reasoning/hunyuan_a13b_reasoning_parser.py` modified +0/-3; `vllm/reasoning/identity_reasoning_parser.py` modified +0/-3; `vllm/reasoning/minimax_m2_reasoning_parser.py` modified +0/-3
+- 验证与风险: runtime 路径改动集中在 `vllm/reasoning/deepseek_v3_reasoning_parser.py`, `vllm/reasoning/ernie45_reasoning_parser.py`, `vllm/reasoning/granite_reasoning_parser.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ## 补漏结论
 

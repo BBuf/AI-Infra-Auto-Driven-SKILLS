@@ -1,30 +1,5 @@
 # vllm MiMo V2 Flash 模型 PR 优化历史
 
-## 2026-06-26 最新源码扫描
-
-已按 vLLM 上游 `vllm-project/vllm@abc71548ef029132c3316b902207f254a246d593` 重新扫描本文下方列出的 tracked files。
-文件级匹配使用 GitHub mirror 的 `git log --name-only`；PR 标题、链接和合并时间通过 GitHub GraphQL Pull Request API 批量复核。上一时效锚点：`2026-06-05`。
-
-结果：发现 2 个额外 PR-numbered merge 触及 tracked files，但尚未提升为下方完整逐 PR diff audit card。此节只作为 freshness index；需要引用实现细节时，仍应先人工阅读 PR diff 再补完整卡片。
-
-| 合并日期 | PR | 标题 | 命中的 tracked files |
-| --- | --- | --- | --- |
-| 2026-06-15 | [#45200](https://github.com/vllm-project/vllm/pull/45200) | [Models] Fix MiMo v2.x QKV TP sharding + FP4 support | `mimo_v2.py` |
-| 2026-06-11 | [#41797](https://github.com/vllm-project/vllm/pull/41797) | [Attention] add triton diff-kv backend for mimo | `mimo_v2.py` |
-
-## 2026-06-05 PR 补漏复核
-
-已于 2026-06-05 按 vllm 上游 `origin/main@c66b19800` 复核；自上次时效基准（2026-05-19）以来，共有 1 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
-
-| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
-| --- | --- | --- | --- |
-| 2026-06-05 | [#43167](https://github.com/vllm-project/vllm/pull/43167) | Remove KV cache scale boilerplate from model weight loading methods | `mimo.py`, `mimo_v2.py` |
-
-
-## 2026-05-19 PR 补漏复核
-
-已按 vllm 上游 `origin/main@07beaed84` 和 GitHub Pull Request files API 复核；本轮补齐 `#41905` 的时间线与逐 PR diff 审计卡。
-
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
@@ -32,17 +7,17 @@
 | `vllm/model_executor/models/mimo.py` | [#17433](https://github.com/vllm-project/vllm/pull/17433) |
 | `vllm/model_executor/models/mimo_audio.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
 | `vllm/model_executor/models/mimo_mtp.py` | [#17433](https://github.com/vllm-project/vllm/pull/17433), [#25136](https://github.com/vllm-project/vllm/pull/25136) |
-| `vllm/model_executor/models/mimo_v2.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967), [#41029](https://github.com/vllm-project/vllm/pull/41029) |
-| `vllm/model_executor/models/mimo_v2_mtp.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
+| `vllm/model_executor/models/mimo_v2.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967), [#41029](https://github.com/vllm-project/vllm/pull/41029), [#41797](https://github.com/vllm-project/vllm/pull/41797), [#45200](https://github.com/vllm-project/vllm/pull/45200) |
+| `vllm/model_executor/models/mimo_v2_mtp.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967), [#41905](https://github.com/vllm-project/vllm/pull/41905) |
 | `vllm/model_executor/models/mimo_v2_omni.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
 | `vllm/transformers_utils/configs/mimo_v2_omni.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
 | `vllm/transformers_utils/processors/mimo_v2_omni.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 4
+- git 追溯 PR 数: 7
 - 原文档显式引用补充 PR 数: 4
-- 当前文档总 PR 数: 8
+- 当前文档总 PR 数: 11
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -58,6 +33,9 @@
 | 2026-04-27 | [#40967](https://github.com/vllm-project/vllm/pull/40967) | merged | [Model] Add MiMo-V2.5 support | `vllm/model_executor/models/mimo_v2_omni.py`, `vllm/model_executor/models/mimo_audio.py`, `vllm/transformers_utils/processors/mimo_v2_omni.py` |
 | 2026-04-28 | [#41029](https://github.com/vllm-project/vllm/pull/41029) | merged | [Model] update for mimo v25 | `vllm/model_executor/models/mimo_v2.py` |
 | 2026-05-09 | [#41905](https://github.com/vllm-project/vllm/pull/41905) | merged | [SpecDecoding] extend mtp support for mimo 2.5 | `vllm/model_executor/models/mimo_v2_mtp.py` |
+| 2026-06-05 | [#43167](https://github.com/vllm-project/vllm/pull/43167) | merged | Remove KV cache scale boilerplate from model weight loading methods | `tests/model_executor/test_eagle_quantization.py`, `vllm/model_executor/models/gpt_oss.py`, `vllm/model_executor/layers/quantization/kv_cache.py` |
+| 2026-06-11 | [#41797](https://github.com/vllm-project/vllm/pull/41797) | merged | [Attention] add triton diff-kv backend for mimo | `vllm/model_executor/models/mimo_v2.py` |
+| 2026-06-15 | [#45200](https://github.com/vllm-project/vllm/pull/45200) | merged | [Models] Fix MiMo v2.x QKV TP sharding + FP4 support | `vllm/model_executor/models/mimo_v2.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -243,7 +221,7 @@ diff -- tools/pre_commit/generate_attention_backend_docs.py
 - 状态/时间: merged / 2026-04-27
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mimo_audio.py`, `vllm/model_executor/models/mimo_v2.py`, `vllm/model_executor/models/mimo_v2_mtp.py`, `vllm/model_executor/models/mimo_v2_omni.py`, `vllm/transformers_utils/configs/mimo_v2_omni.py` 等 6 个文件；关联提交 `c245d35ff467`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 16 个文件，+4737/-5，可读 patch 4920 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Model] Add MiMo-V2.5 support」；模型线: MiMo V2 Flash；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mimo_v2_omni.py`, `vllm/model_executor/models/mimo_audio.py`, `vllm/transformers_utils/processors/mimo_v2_omni.py`；未提供可用技术摘要。
+- 动机: 标题「[Model] Add MiMo-V2.5 support」；模型线: MiMo V2 Flash；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mimo_v2_omni.py`, `vllm/model_executor/models/mimo_audio.py`, `vllm/transformers_utils/processors/mimo_v2_omni.py`；技术摘要: 覆盖「[Model] Add MiMo-V2.5 support」；主要实现面是 `vllm/model_executor/models/mimo_v2_omni.py`, `vllm/model_executor/models/mimo_audio.py`, `vllm/transformers_utils/processors/mimo_v2_omni.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/mimo_v2_omni.py` added +1488/-0 (1488 lines); hunks: -0,0 +1,1488; symbols: MiMoVisionMLP, MiMoVisionPatchEmbed, MiMoVisionPatchMerger, __init__，涉及 `MiMoVisionMLP, MiMoVisionPatchEmbed, MiMoVisionPatchMerger`；`vllm/model_executor/models/mimo_audio.py` added +1389/-0 (1389 lines); hunks: -0,0 +1,1389; symbols: _vq_default, _ema_inplace, _laplace_smoothing, _uniform_init，涉及 `_vq_default, _ema_inplace, _laplace_smoothing`；`vllm/transformers_utils/processors/mimo_v2_omni.py` added +1285/-0 (1285 lines); hunks: -0,0 +1,1285; symbols: ImageInput, VideoInput, AudioInput, VideoAudioInput，涉及 `ImageInput, VideoInput, AudioInput`；`vllm/model_executor/models/mimo_v2_mtp.py` added +373/-0 (373 lines); hunks: -0,0 +1,373; symbols: MiMoV2MTPLayer, __init__, forward, _MiMoV2MTPLayers，涉及 `MiMoV2MTPLayer, __init__, forward`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/mimo_v2_omni.py` added +1488/-0 (1488 lines); hunks: -0,0 +1,1488; symbols: MiMoVisionMLP, MiMoVisionPatchEmbed, MiMoVisionPatchMerger, __init__
@@ -282,9 +260,9 @@ diff -- vllm/transformers_utils/processors/mimo_v2_omni.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/41029
 - 状态/时间: merged / 2026-04-28
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mimo_v2.py`；关联提交 `7a1eb8ac2ec4`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mimo_v2.py`；关联提交 `7a1eb8ac2ec4`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+10/-8，可读 patch 74 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Model] update for mimo v25」；模型线: MiMo V2 Flash；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/mimo_v2.py`；未提供可用技术摘要。
+- 动机: 标题「[Model] update for mimo v25」；模型线: MiMo V2 Flash；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/mimo_v2.py`；技术摘要: 覆盖「[Model] update for mimo v25」；主要实现面是 `vllm/model_executor/models/mimo_v2.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/mimo_v2.py` modified +1/-1 (2 lines); hunks: -733,7 +733,7 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Te...; symbols: load_weights, MiMoV2ProForCausalLM, MiMoV2ForCausalLM，涉及 `load_weights, MiMoV2ProForCausalLM, MiMoV2ForCausalLM`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/mimo_v2.py` modified +1/-1 (2 lines); hunks: -733,7 +733,7 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Te...; symbols: load_weights, MiMoV2ProForCausalLM, MiMoV2ForCausalLM
@@ -305,12 +283,12 @@ diff -- vllm/model_executor/models/mimo_v2.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/41905
 - 状态/时间: merged / 2026-05-09
-- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@07beaed84` 提交历史和 GitHub Pull Request files API 反查；关联提交 `2ee8c2a56e41`。
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mimo_v2_mtp.py`；关联提交 `2ee8c2a56e41`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+3/-10，可读 patch 57 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[SpecDecoding] extend mtp support for mimo 2.5」；模型线: MiMo V2 Flash；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mimo_v2_mtp.py`；技术摘要: 覆盖「[SpecDecoding] extend mtp support for mimo 2.5」，下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `vllm/model_executor/models/mimo_v2_mtp.py` modified +3/-10 (13 lines); hunks: -49,7 +49,7  @@ from .utils import _merge_multimodal_embeddings, maybe_prefix; -170,10 +170,6  @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = "") -> None:; symbols: __init__, str, forward, compute_logits，涉及 `__init__, str, forward`。
+- 动机: 标题「[SpecDecoding] extend mtp support for mimo 2.5」；模型线: MiMo V2 Flash；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mimo_v2_mtp.py`；技术摘要: 覆盖「[SpecDecoding] extend mtp support for mimo 2.5」；主要实现面是 `vllm/model_executor/models/mimo_v2_mtp.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/mimo_v2_mtp.py` modified +3/-10 (13 lines); hunks: -49,7 +49,7; -170,10 +170,6 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__, forward, compute_logits，涉及 `__init__, forward, compute_logits`。
 - 代码 diff 细节:
-  - `vllm/model_executor/models/mimo_v2_mtp.py` modified +3/-10 (13 lines); hunks: -49,7 +49,7  @@ from .utils import _merge_multimodal_embeddings, maybe_prefix; -170,10 +170,6  @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = "") -> None:; symbols: __init__, str, forward, compute_logits，涉及 `__init__, str, forward`
+  - `vllm/model_executor/models/mimo_v2_mtp.py` modified +3/-10 (13 lines); hunks: -49,7 +49,7; -170,10 +170,6 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__, forward, compute_logits
 - 关键代码摘录:
 
 ```diff
@@ -322,13 +300,107 @@ diff -- vllm/model_executor/models/mimo_v2_mtp.py
 -        if spec_cfg.num_speculative_tokens != 1:
 -            raise ValueError(
 -                "MiMo-V2 MTP in vLLM only supports num_speculative_tokens=1."
--            )
-@@ -203,10 +199,10 @@ def forward(
 ```
 
 - 已读文件:
   - runtime: `vllm/model_executor/models/mimo_v2_mtp.py` modified +3/-10
-- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/mimo_v2_mtp.py`；风险点是权重加载、并行切分、attention/MoE 后端选择、量化 dtype 和 parser 输出，需要至少做一次真实 checkpoint 或等价 smoke。
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/mimo_v2_mtp.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #43167 - Remove KV cache scale boilerplate from model weight loading methods
+
+- 链接: https://github.com/vllm-project/vllm/pull/43167
+- 状态/时间: merged / 2026-06-05
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 56 个文件，+88/-731，可读 patch 1251 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Remove KV cache scale boilerplate from model weight loading methods」；模型线: MiMo V2 Flash；类别: 文档/测试/CI；主要 diff: `tests/model_executor/test_eagle_quantization.py`, `vllm/model_executor/models/gpt_oss.py`, `vllm/model_executor/layers/quantization/kv_cache.py`；技术摘要: 覆盖「Remove KV cache scale boilerplate from model weight loading methods」；主要实现面是 `tests/model_executor/test_eagle_quantization.py`, `vllm/model_executor/models/gpt_oss.py`, `vllm/model_executor/layers/quantization/kv_cache.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `tests/model_executor/test_eagle_quantization.py` modified +0/-56 (56 lines); hunks: -100,32 +100,6 @@ def test_fc_layer_quant_config_usage(default_vllm_config, d...; -183,33 +157,3 @@ def test_eagle3_lm_head_receives_quant_config():; symbols: test_fc_layer_quant_config_usage, test_kv_cache_scale_name_handling, test_kv_cache_scale_name_no_scale, test_maybe_remap_kv_scale_name，涉及 `test_fc_layer_quant_config_usage, test_kv_cache_scale_name_handling, test_kv_cache_scale_name_no_scale`；`vllm/model_executor/models/gpt_oss.py` modified +0/-46 (46 lines); hunks: -635,52 +635,6 @@ def _get_moe_weight_dtype(layer_id: int = 0) -> str | None:; symbols: _get_moe_weight_dtype, kv_cache_scale_loader，涉及 `_get_moe_weight_dtype, kv_cache_scale_loader`；`vllm/model_executor/layers/quantization/kv_cache.py` modified +28/-4 (32 lines); hunks: -15,6 +15,30; -37,11 +61,11 @@ def create_weights(self, layer: torch.nn.Module):; symbols: KVCacheScaleParameter, __new__, weight_loader, BaseKVCacheMethod，涉及 `KVCacheScaleParameter, __new__, weight_loader`；`vllm/model_executor/layers/quantization/fp8.py` modified +12/-19 (31 lines); hunks: -207,25 +207,18 @@ def get_quant_method(; symbols: get_quant_method, get_cache_scale, get_cache_scale_mapper, CopyNumelCounter，涉及 `get_quant_method, get_cache_scale, get_cache_scale_mapper`。
+- 代码 diff 细节:
+  - `tests/model_executor/test_eagle_quantization.py` modified +0/-56 (56 lines); hunks: -100,32 +100,6 @@ def test_fc_layer_quant_config_usage(default_vllm_config, d...; -183,33 +157,3 @@ def test_eagle3_lm_head_receives_quant_config():; symbols: test_fc_layer_quant_config_usage, test_kv_cache_scale_name_handling, test_kv_cache_scale_name_no_scale, test_maybe_remap_kv_scale_name
+  - `vllm/model_executor/models/gpt_oss.py` modified +0/-46 (46 lines); hunks: -635,52 +635,6 @@ def _get_moe_weight_dtype(layer_id: int = 0) -> str | None:; symbols: _get_moe_weight_dtype, kv_cache_scale_loader
+  - `vllm/model_executor/layers/quantization/kv_cache.py` modified +28/-4 (32 lines); hunks: -15,6 +15,30; -37,11 +61,11 @@ def create_weights(self, layer: torch.nn.Module):; symbols: KVCacheScaleParameter, __new__, weight_loader, BaseKVCacheMethod
+  - `vllm/model_executor/layers/quantization/fp8.py` modified +12/-19 (31 lines); hunks: -207,25 +207,18 @@ def get_quant_method(; symbols: get_quant_method, get_cache_scale, get_cache_scale_mapper, CopyNumelCounter
+  - `vllm/model_executor/layers/quantization/quark/quark.py` modified +10/-20 (30 lines); hunks: -646,26 +646,16 @@ def get_scheme(; symbols: get_scheme, get_cache_scale, get_cache_scale_mapper, QuarkLinearMethod
+- 关键代码摘录:
+
+```diff
+diff -- tests/model_executor/test_eagle_quantization.py
+@@ -100,32 +100,6 @@ def test_fc_layer_quant_config_usage(default_vllm_config, dist_init, device) ->
+-def test_kv_cache_scale_name_handling():
+-    # Mock a quant config that supports cache scales
+-    mock_quant_config = Mock()
+-    mock_quant_config.get_cache_scale = Mock(return_value="layers.0.self_attn.kv_scale")
+-    # Condition check in load_weights
+-    name = "layers.0.self_attn.k_proj.weight"
+diff -- vllm/model_executor/models/gpt_oss.py
+@@ -635,52 +635,6 @@ def _get_moe_weight_dtype(layer_id: int = 0) -> str | None:
+-            def kv_cache_scale_loader(
+-                quant_config: QuantizationConfig,
+-                name: str,
+-                params_dict: dict[str, typing.Any],
+-                weight: torch.Tensor,
+-                default_weight_loader: Callable[..., None],
+diff -- vllm/model_executor/layers/quantization/kv_cache.py
+@@ -15,6 +15,30 @@
+```
+
+- 已读文件:
+  - tests: `tests/model_executor/test_eagle_quantization.py` modified +0/-56
+  - runtime: `vllm/model_executor/models/gpt_oss.py` modified +0/-46; `vllm/model_executor/layers/quantization/kv_cache.py` modified +28/-4; `vllm/model_executor/layers/quantization/fp8.py` modified +12/-19; `vllm/model_executor/layers/quantization/quark/quark.py` modified +10/-20; `vllm/model_executor/models/llama4.py` modified +3/-18; `vllm/model_executor/models/glm_ocr_mtp.py` modified +4/-13
+- 验证与风险: diff 自带测试面 `tests/model_executor/test_eagle_quantization.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #41797 - [Attention] add triton diff-kv backend for mimo
+
+- 链接: https://github.com/vllm-project/vllm/pull/41797
+- 状态/时间: merged / 2026-06-11
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mimo_v2.py`；关联提交 `f81daf888063`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+1041/-9，可读 patch 1103 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Attention] add triton diff-kv backend for mimo」；模型线: MiMo V2 Flash；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/mimo_v2.py`；技术摘要: 覆盖「[Attention] add triton diff-kv backend for mimo」；主要实现面是 `vllm/model_executor/models/mimo_v2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/mimo_v2.py` modified +21/-7 (28 lines); hunks: -47,9 +47,7; -292,11 +290,27 @@ def __init__(; symbols: __init__，涉及 `__init__`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/mimo_v2.py` modified +21/-7 (28 lines); hunks: -47,9 +47,7; -292,11 +290,27 @@ def __init__(; symbols: __init__
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/mimo_v2.py
+@@ -47,9 +47,7 @@
+-from vllm.v1.attention.backends.flash_attn_diffkv import (
+-    FlashAttentionDiffKVBackend,
+-)
++from vllm.v1.attention.backends.registry import AttentionBackendEnum
+@@ -292,11 +290,27 @@ def __init__(
+-        # Use DiffKV backend when V has a different head dim than K
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/mimo_v2.py` modified +21/-7
+- 验证与风险: diff 自带测试面 `tests/kernels/attention/test_triton_unified_attention_diffkv.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #45200 - [Models] Fix MiMo v2.x QKV TP sharding + FP4 support
+
+- 链接: https://github.com/vllm-project/vllm/pull/45200
+- 状态/时间: merged / 2026-06-15
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mimo_v2.py`；关联提交 `b5adb027ad03`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+170/-5，可读 patch 245 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Models] Fix MiMo v2.x QKV TP sharding + FP4 support」；模型线: MiMo V2 Flash；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/mimo_v2.py`；技术摘要: 覆盖「[Models] Fix MiMo v2.x QKV TP sharding + FP4 support」；主要实现面是 `vllm/model_executor/models/mimo_v2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/mimo_v2.py` modified +160/-5 (165 lines); hunks: -35,6 +35,10; -455,6 +459,85 @@ def is_compressed_softmax_layer(self) -> bool:; symbols: is_compressed_softmax_layer, _shard_fp8_qkv_proj, MiMoV2Model, __init__，涉及 `is_compressed_softmax_layer, _shard_fp8_qkv_proj, MiMoV2Model`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/mimo_v2.py` modified +160/-5 (165 lines); hunks: -35,6 +35,10; -455,6 +459,85 @@ def is_compressed_softmax_layer(self) -> bool:; symbols: is_compressed_softmax_layer, _shard_fp8_qkv_proj, MiMoV2Model, __init__
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/mimo_v2.py
+@@ -35,6 +35,10 @@
++from vllm.model_executor.layers.quantization.utils.quant_utils import (
++    GroupShape,
++    scaled_quantize,
++)
+@@ -455,6 +459,85 @@ def is_compressed_softmax_layer(self) -> bool:
++def _shard_fp8_qkv_proj(
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/mimo_v2.py` modified +160/-5
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/layers/quantization/fp8.py`, `vllm/model_executor/models/mimo_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ## 补漏结论
 

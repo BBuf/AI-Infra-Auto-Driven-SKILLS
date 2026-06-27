@@ -28,17 +28,18 @@ overlap opportunity as novel.
 
 The catalog is grouped by reusable optimization family, not by one specific model.
 
-Refresh note `2026-06-26`: rechecked official main heads for SGLang
-`8524678889485801e7a4a12d62015be0c68f7a90`, vLLM
-`abc71548ef029132c3316b902207f254a246d593`, TensorRT-LLM
-`0722c5f47d2cae69ac1a237da51e550dd214532c`, and TokenSpeed
-`5aedf69d6b476baa65571011de6ea60fd5a238a8`. The vLLM torch.compile pass
+Refresh note `2026-06-27`: rechecked official main heads for SGLang
+`e0c0c0a45cb1bda90392bfa2bba4184f5b0638a0`, vLLM
+`091d13976c1c246714bb2112dd2e208561dda6a3`, TensorRT-LLM
+`aaffa2f9fef3025e0f698d978385a73460344e0b`, and TokenSpeed
+`d0a7faddb5ec0d4c6d037c4c3e6a781d2c5164a8`. The vLLM torch.compile pass
 inventory is split out in
 [`vllm-torch-compile-fusions.md`](vllm-torch-compile-fusions.md). Stable
-current-code families remain folded into the mainline rows below. This refresh
-adds first-class TokenSpeed-origin rows for CuTe DSL MLA, MLA KV pack+FP8
+current-code families remain folded into the mainline rows below. The prior refresh
+added first-class TokenSpeed-origin rows for CuTe DSL MLA, MLA KV pack+FP8
 quantize, sampling, lm_head GEMM, and NVFP4 GEMM+SwiGLU+quant, plus the latest
-SGLang LTX2 Ada-value diffusion fusion. Recheck PR state before treating an
+SGLang LTX2 Ada-value diffusion fusion; the SGLang `#29486` GLM-5.2 cookbook
+refresh does not add a new profiler-visible fusion family. Recheck PR state before treating an
 in-flight row as shipped.
 
 ## 1. LLM / SRT fused-kernel families
@@ -119,6 +120,7 @@ in-flight row as shipped.
 | Z-Image fused `norm(x) * tanh(scale) + shift` | `fused_norm_tanh_mul_add`<br>`tanh(gate) * rmsnorm(x)` | `python/sglang/jit_kernel/diffusion/cutedsl/norm_tanh_mul_add_norm_scale.py`<br>`python/sglang/multimodal_gen/runtime/layers/layernorm.py` | CuTeDSL kernel plus runtime helper for Z-Image residual-form modulation | Treat split Z-Image residual-form modulation as a missing existing diffusion fusion, not a novel idea. |
 | Z-Image fused residual modulation + next norm-scale | `fused_norm_tanh_mul_add_norm_scale`<br>`residual + tanh(gate) * rmsnorm(x)`<br>`ffn_norm1(x) * scale_mlp` | `python/sglang/jit_kernel/diffusion/cutedsl/norm_tanh_mul_add_norm_scale.py`<br>`python/sglang/multimodal_gen/runtime/models/dits/zimage.py` | One CuTeDSL kernel fuses the first residual-form modulation and the next normalization / scale stage | If you see this chain split in Z-Image traces, report it as a missing existing mainline fusion family. |
 | LTX2 fused Ada values | `ltx2_ada_values9`<br>`get_ada_values`<br>`scale_shift_table + timestep.reshape` | `python/sglang/jit_kernel/diffusion/triton/ltx2_ada_values.py`<br>`python/sglang/multimodal_gen/runtime/models/dits/ltx_2.py` | PR `#29390` fuses LTX-2.3 Ada value materialization for video/audio streams and reuses the 9 Ada tensors across self-attention, MLP, and prompt-cross-attention blocks | Treat repeated Ada add/reshape/slice ladders in LTX2 traces as a missing shipped SGLang fusion first. |
+| LTX2 residual-gate add | `diffusion_residual_gate_add`<br>`residual_gate_add`<br>`residual + update * gate` | `python/sglang/jit_kernel/diffusion/residual_gate_add.py`<br>`python/sglang/jit_kernel/csrc/diffusion/residual_gate_add.cuh`<br>`python/sglang/multimodal_gen/runtime/models/dits/ltx_2.py` | PR `#29361` fuses LTX2 `residual + update * gate` sites for attention, cross-attention, and feed-forward updates into one CUDA custom op when dtype, shape, device, and contiguity guards pass | Treat split add/mul gate ladders in LTX2 traces as a missing shipped SGLang fusion first. |
 | Nunchaku fused GELU MLP | `_fused_gelu_mlp`<br>`fused_gelu_mlp` | `python/sglang/multimodal_gen/runtime/models/dits/flux.py` | Nunchaku path fuses `fc1 GEMM + GELU + shift + re-quant + fc2.lora_down` before the second GEMM | Treat split GELU-MLP on Nunchaku checkpoints as an existing fused family, not a new discovery. |
 
 ## 5. Diffusion kernel-overlap and async-communication families

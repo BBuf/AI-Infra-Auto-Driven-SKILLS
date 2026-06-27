@@ -1,56 +1,33 @@
 # vllm Llama 3.3 70B Model PR Optimization History
 
-## 2026-06-26 Latest Source Scan
-
-Rechecked vLLM upstream `vllm-project/vllm@abc71548ef029132c3316b902207f254a246d593` against the tracked files listed below.
-The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-05`.
-
-Result: 1 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
-
-| Merged | PR | Title | Tracked files touched |
-| --- | --- | --- | --- |
-| 2026-06-16 | [#42726](https://github.com/vllm-project/vllm/pull/42726) | [ZenCPU] Add zencpu Platform Runtime Logging and Docs | `cpu.md` |
-
-## 2026-06-05 PR Backfill Audit
-
-Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 1 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
-
-| Merged | PR | Title | Tracked files touched |
-| --- | --- | --- | --- |
-| 2026-06-03 | [#44128](https://github.com/vllm-project/vllm/pull/44128) | [Misc] Remove dead VLLM_RPC_TIMEOUT env var and fix profiling doc that references it | `serving-tests-cpu-text.json` |
-
-
-## 2026-05-19 Coverage Addition
-
-Generated from vllm upstream `origin/main@ef54a4d604`, `git log --name-only -- <model-files>` over model-related paths, and the GitHub Pull Request files API. This page fills the missing `Llama 3.3 70B` history entry found from sgl-cookbook coverage.
-
 ## Implementation File Coverage
 
-| File | PRs traced by git |
+| File | Git-traced PRs |
 | --- | --- |
-| `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` | [#42607](https://github.com/vllm-project/vllm/pull/42607), [#38576](https://github.com/vllm-project/vllm/pull/38576), [#35086](https://github.com/vllm-project/vllm/pull/35086), [#34128](https://github.com/vllm-project/vllm/pull/34128) |
-| `docs/models/hardware_supported_models/cpu.md` | [#42607](https://github.com/vllm-project/vllm/pull/42607), [#36398](https://github.com/vllm-project/vllm/pull/36398), [#32963](https://github.com/vllm-project/vllm/pull/32963), [#29380](https://github.com/vllm-project/vllm/pull/29380), [#28697](https://github.com/vllm-project/vllm/pull/28697) |
+| - | No matching implementation file on current main |
 
 ## PR Coverage Summary
 
-- git-traced PR count: 8
-- keyword/supplemental PR count: 0
-- total PR count in this document: 8
-- file trace command: `git log --name-only -- <model-files>`
-- diff audit source: GitHub Pull Request files API
+- Git-traced PRs: 0
+- Extra PRs preserved from existing docs: 10
+- Total PRs in this document: 10
+- File trace command: `git log --name-only -- <model-files>`
+- Diff audit source: GitHub Pull Request files API
 
 ## Timeline
 
-| Date | PR | Status | Title | Main files |
+| Date | PR | State | Title | Main files |
 | --- | --- | --- | --- | --- |
 | 2025-11-19 | [#28697](https://github.com/vllm-project/vllm/pull/28697) | merged | Add CPU support model | `docs/models/hardware_supported_models/cpu.md` |
-| 2025-11-27 | [#29380](https://github.com/vllm-project/vllm/pull/29380) | merged | add xpu supported model and model id for cpu | `docs/models/hardware_supported_models/cpu.md`, `docs/models/hardware_supported_models/xpu.md` |
-| 2026-01-24 | [#32963](https://github.com/vllm-project/vllm/pull/32963) | merged | Update CPU doc according to feedback | `docs/benchmarking/dashboard.md`, `docs/models/hardware_supported_models/cpu.md`, `docs/models/hardware_supported_models/xpu.md` |
-| 2026-02-12 | [#34128](https://github.com/vllm-project/vllm/pull/34128) | merged | Vllm CPU benchmark suite improvement | `.buildkite/performance-benchmarks/scripts/compare-json-results.py`, `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-embed.json` |
-| 2026-03-09 | [#36398](https://github.com/vllm-project/vllm/pull/36398) | merged | Allow `markdownlint` to run locally | `.github/mergify.yml`, `.pre-commit-config.yaml`, `benchmarks/attention_benchmarks/README.md` |
-| 2026-03-12 | [#35086](https://github.com/vllm-project/vllm/pull/35086) | merged | more models for vLLM Benchmark Suite | `.buildkite/performance-benchmarks/scripts/compare-json-results.py`, `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json` |
-| 2026-03-31 | [#38576](https://github.com/vllm-project/vllm/pull/38576) | merged | vLLM Benchmark Suite perf regression after PR#32723 | `.buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` |
-| 2026-05-15 | [#42607](https://github.com/vllm-project/vllm/pull/42607) | merged | Update Intel Xeon model list and vLLM Benchmark Suite BKMs | `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`, `docs/models/hardware_supported_models/cpu.md` |
+| 2025-11-27 | [#29380](https://github.com/vllm-project/vllm/pull/29380) | merged | add xpu supported model and model id for cpu | `docs/models/hardware_supported_models/xpu.md`, `docs/models/hardware_supported_models/cpu.md` |
+| 2026-01-24 | [#32963](https://github.com/vllm-project/vllm/pull/32963) | merged | Update CPU doc according to feedback | `docs/models/hardware_supported_models/cpu.md`, `docs/models/hardware_supported_models/xpu.md`, `docs/benchmarking/dashboard.md` |
+| 2026-02-12 | [#34128](https://github.com/vllm-project/vllm/pull/34128) | merged | Vllm CPU benchmark suite improvement | `.buildkite/performance-benchmarks/scripts/compare-json-results.py`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`, `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh` |
+| 2026-03-09 | [#36398](https://github.com/vllm-project/vllm/pull/36398) | merged | Allow `markdownlint` to run locally | `docs/models/hardware_supported_models/xpu.md`, `docs/models/supported_models.md`, `docs/models/hardware_supported_models/cpu.md` |
+| 2026-03-12 | [#35086](https://github.com/vllm-project/vllm/pull/35086) | merged | more models for vLLM Benchmark Suite | `.buildkite/performance-benchmarks/scripts/compare-json-results.py`, `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` |
+| 2026-03-31 | [#38576](https://github.com/vllm-project/vllm/pull/38576) | merged | vLLM Benchmark Suite perf regression after PR#32723 | `.buildkite/performance-benchmarks/tests/serving-tests-hpu.json`, `.buildkite/performance-benchmarks/tests/serving-tests.json`, `.buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json` |
+| 2026-05-15 | [#42607](https://github.com/vllm-project/vllm/pull/42607) | merged | Update Intel Xeon model list and vLLM Benchmark Suite BKMs | `docs/models/hardware_supported_models/cpu.md`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` |
+| 2026-06-03 | [#44128](https://github.com/vllm-project/vllm/pull/44128) | merged | [Misc] Remove dead VLLM_RPC_TIMEOUT env var and fix profiling doc that references it | `vllm/envs.py`, `docs/contributing/profiling.md`, `.buildkite/performance-benchmarks/tests/latency-tests-arm64-cpu.json` |
+| 2026-06-16 | [#42726](https://github.com/vllm-project/vllm/pull/42726) | merged | [ZenCPU] Add zencpu Platform Runtime Logging and Docs | `tests/model_executor/test_cpu_unquantized_gemm_dispatch.py`, `vllm/model_executor/layers/utils.py`, `docs/models/hardware_supported_models/cpu.md` |
 
 ## Per-PR Diff Audit Cards
 
@@ -58,398 +35,392 @@ Generated from vllm upstream `origin/main@ef54a4d604`, `git log --name-only -- <
 
 - Link: https://github.com/vllm-project/vllm/pull/28697
 - Status/date: merged / 2025-11-19
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 1 files, +26/-0, with 27 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Add CPU support model"; model line: Llama 3.3 70B; category: model support/runtime entry; main diff: `docs/models/hardware_supported_models/cpu.md`.
-- Key implementation:
-  - `docs/models/hardware_supported_models/cpu.md` added +26/-0
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +26/-0, 27 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Add CPU support model"; model line: Llama 3.3 70B; category: docs/tests/CI; main diff: `docs/models/hardware_supported_models/cpu.md`; technical summary: Covers "Add CPU support model"; the main implementation surface is `docs/models/hardware_supported_models/cpu.md`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs/models/hardware_supported_models/cpu.md` added +26/-0 (26 lines); hunks: -0,0 +1,26.
 - Code diff details:
-  - `docs/models/hardware_supported_models/cpu.md` added +26/-0
+  - `docs/models/hardware_supported_models/cpu.md` added +26/-0 (26 lines); hunks: -0,0 +1,26
 - Key code excerpts:
 
 ```diff
 diff -- docs/models/hardware_supported_models/cpu.md
 @@ -0,0 +1,26 @@
 +# CPU - Intel® Xeon®
-+
 +## Supported Models
-+
 +### Text-only Language Models
-+
 +| Model                                | Architecture                             | Supported |
 +|--------------------------------------|-------------------------------------------|-----------|
 +| meta-llama/Llama-3.1 / 3.3           | LlamaForCausalLM                          | ✅        |
-+| meta-llama/Llama-4-Scout             | Llama4ForConditionalGeneration            | ✅        |
-+| meta-llama/Llama-4-Maverick          | Llama4ForConditionalGeneration            | ✅        |
-+| ibm-granite/granite (Granite-MOE)    | GraniteMoeForCausalLM                     | ✅        |
-+| Qwen/Qwen3                           | Qwen3ForCausalLM                          | ✅        |
 ```
+
 - Reviewed files:
-  - docs/bench: `docs/models/hardware_supported_models/cpu.md` added +26/-0
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+  - docs: `docs/models/hardware_supported_models/cpu.md` added +26/-0
+- Risk and verification: This is mostly docs/examples in `docs/models/hardware_supported_models/cpu.md`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #29380 - add xpu supported model and model id for cpu
 
 - Link: https://github.com/vllm-project/vllm/pull/29380
 - Status/date: merged / 2025-11-27
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 2 files, +82/-9, with 109 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "add xpu supported model and model id for cpu"; model line: Llama 3.3 70B; category: model support/runtime entry; main diff: `docs/models/hardware_supported_models/cpu.md`, `docs/models/hardware_supported_models/xpu.md`.
-- Key implementation:
-  - `docs/models/hardware_supported_models/cpu.md` modified +17/-9
-  - `docs/models/hardware_supported_models/xpu.md` added +65/-0
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +82/-9, 109 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "add xpu supported model and model id for cpu"; model line: Llama 3.3 70B; category: docs/tests/CI; main diff: `docs/models/hardware_supported_models/xpu.md`, `docs/models/hardware_supported_models/cpu.md`; technical summary: Covers "add xpu supported model and model id for cpu"; the main implementation surface is `docs/models/hardware_supported_models/xpu.md`, `docs/models/hardware_supported_models/cpu.md`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs/models/hardware_supported_models/xpu.md` added +65/-0 (65 lines); hunks: -0,0 +1,65; `docs/models/hardware_supported_models/cpu.md` modified +17/-9 (26 lines); hunks: -1,25 +1,33.
 - Code diff details:
-  - `docs/models/hardware_supported_models/cpu.md` modified +17/-9
-  - `docs/models/hardware_supported_models/xpu.md` added +65/-0
+  - `docs/models/hardware_supported_models/xpu.md` added +65/-0 (65 lines); hunks: -0,0 +1,65
+  - `docs/models/hardware_supported_models/cpu.md` modified +17/-9 (26 lines); hunks: -1,25 +1,33
 - Key code excerpts:
 
 ```diff
+diff -- docs/models/hardware_supported_models/xpu.md
+@@ -0,0 +1,65 @@
++# XPU - Intel® GPUs
++## Validated Hardware
++| Hardware                                 |
++| ----------------------------------------- |
++| [Intel® Arc™ Pro B-Series Graphics](https://www.intel.com/content/www/us/en/products/docs/discrete-gpus/arc/workstations/b-series/overview.html)                   |
++## Supported Models
 diff -- docs/models/hardware_supported_models/cpu.md
 @@ -1,25 +1,33 @@
- # CPU - Intel® Xeon®
-
 +## Validated Hardware
-+
 +| Hardware                                 |
 +| ----------------------------------------- |
 +| [Intel® Xeon® 6 Processors](https://www.intel.com/content/www/us/en/products/details/processors/xeon.html)                   |
 +| [Intel® Xeon® 5 Processors](https://www.intel.com/content/www/us/en/products/docs/processors/xeon/5th-gen-xeon-scalable-processors.html)              |
-+
- ## Supported Models
-
- ### Text-only Language Models
-
-diff -- docs/models/hardware_supported_models/xpu.md
-@@ -0,0 +1,65 @@
-+# XPU - Intel® GPUs
-+
-+## Validated Hardware
-+
-+| Hardware                                 |
-+| ----------------------------------------- |
-+| [Intel® Arc™ Pro B-Series Graphics](https://www.intel.com/content/www/us/en/products/docs/discrete-gpus/arc/workstations/b-series/overview.html)                   |
-+
-+## Supported Models
-+
-+### Text-only Language Models
-+
-+| Model                                     | Architecture                                         | FP16 | Dynamic FP8 | MXFP4 |
+-| meta-llama/Llama-3.1 / 3.3           | LlamaForCausalLM                          | ✅        |
 ```
+
 - Reviewed files:
-  - docs/bench: `docs/models/hardware_supported_models/cpu.md` modified +17/-9; `docs/models/hardware_supported_models/xpu.md` added +65/-0
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+  - docs: `docs/models/hardware_supported_models/xpu.md` added +65/-0; `docs/models/hardware_supported_models/cpu.md` modified +17/-9
+- Risk and verification: This is mostly docs/examples in `docs/models/hardware_supported_models/cpu.md`, `docs/models/hardware_supported_models/xpu.md`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #32963 - Update CPU doc according to feedback
 
 - Link: https://github.com/vllm-project/vllm/pull/32963
 - Status/date: merged / 2026-01-24
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 3 files, +4/-4, with 35 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Update CPU doc according to feedback"; model line: Llama 3.3 70B; category: docs/tests/CI; main diff: `docs/benchmarking/dashboard.md`, `docs/models/hardware_supported_models/cpu.md`, `docs/models/hardware_supported_models/xpu.md`.
-- Key implementation:
-  - `docs/benchmarking/dashboard.md` modified +2/-2
-  - `docs/models/hardware_supported_models/cpu.md` modified +1/-1
-  - `docs/models/hardware_supported_models/xpu.md` modified +1/-1
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +4/-4, 35 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Update CPU doc according to feedback"; model line: Llama 3.3 70B; category: docs/tests/CI; main diff: `docs/models/hardware_supported_models/cpu.md`, `docs/models/hardware_supported_models/xpu.md`, `docs/benchmarking/dashboard.md`; technical summary: Covers "Update CPU doc according to feedback"; the main implementation surface is `docs/models/hardware_supported_models/cpu.md`, `docs/models/hardware_supported_models/xpu.md`, `docs/benchmarking/dashboard.md`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs/models/hardware_supported_models/cpu.md` modified +1/-1 (2 lines); hunks: -7,7 +7,7; `docs/models/hardware_supported_models/xpu.md` modified +1/-1 (2 lines); hunks: -6,7 +6,7; `docs/benchmarking/dashboard.md` modified +2/-2 (4 lines); hunks: -13,14 +13,14 @@ For x86 CPU environment, please use the image with "-cpu" po....
 - Code diff details:
-  - `docs/benchmarking/dashboard.md` modified +2/-2
-  - `docs/models/hardware_supported_models/cpu.md` modified +1/-1
-  - `docs/models/hardware_supported_models/xpu.md` modified +1/-1
+  - `docs/models/hardware_supported_models/cpu.md` modified +1/-1 (2 lines); hunks: -7,7 +7,7
+  - `docs/models/hardware_supported_models/xpu.md` modified +1/-1 (2 lines); hunks: -6,7 +6,7
+  - `docs/benchmarking/dashboard.md` modified +2/-2 (4 lines); hunks: -13,14 +13,14 @@ For x86 CPU environment, please use the image with "-cpu" po...
 - Key code excerpts:
 
 ```diff
-diff -- docs/benchmarking/dashboard.md
-@@ -13,14 +13,14 @@ For x86 CPU environment, please use the image with "-cpu" postfix. For AArch64 C
- Here is an example for docker run command for CPU. For GPUs skip setting the `ON_CPU` env var.
-
- ```bash
--export VLLM_COMMIT=1da94e673c257373280026f75ceb4effac80e892 # use full commit hash from the main branch
-+export VLLM_COMMIT=7f42dc20bb2800d09faa72b26f25d54e26f1b694 # use full commit hash from the main branch
- export HF_TOKEN=<valid Hugging Face token>
- if [[ "$(uname -m)" == aarch64 || "$(uname -m)" == arm64 ]]; then
-   IMG_SUFFIX="arm64-cpu"
- else
-   IMG_SUFFIX="cpu"
- fi
--docker run -it --entrypoint /bin/bash -v /data/huggingface:/root/.cache/huggingface -e HF_TOKEN=$HF_TOKEN -e ON_ARM64_CPU=1 --shm-size=16g --name vllm-cpu-ci public.ecr.aws/q9t5s3a7/vllm-ci-test-repo:${VLLM_COMMIT}-${IMG_SUFFIX}
-+docker run -it --entrypoint /bin/bash -v /data/huggingface:/root/.cache/huggingface -e HF_TOKEN=$HF_TOKEN -e ON_CPU=1 --shm-size=16g --name vllm-cpu-ci public.ecr.aws/q9t5s3a7/vllm-ci-test-repo:${VLLM_COMMIT}-${IMG_SUFFIX}
 diff -- docs/models/hardware_supported_models/cpu.md
 @@ -7,7 +7,7 @@
- | [Intel® Xeon® 6 Processors](https://www.intel.com/content/www/us/en/products/details/processors/xeon.html)                   |
- | [Intel® Xeon® 5 Processors](https://www.intel.com/content/www/us/en/products/docs/processors/xeon/5th-gen-xeon-scalable-processors.html)              |
-
 -## Supported Models
 +## Recommended Models
-
- ### Text-only Language Models
-
+diff -- docs/models/hardware_supported_models/xpu.md
+@@ -6,7 +6,7 @@
+-## Supported Models
++## Recommended Models
+diff -- docs/benchmarking/dashboard.md
+@@ -13,14 +13,14 @@ For x86 CPU environment, please use the image with "-cpu" postfix. For AArch64 C
+-export VLLM_COMMIT=1da94e673c257373280026f75ceb4effac80e892 # use full commit hash from the main branch
++export VLLM_COMMIT=7f42dc20bb2800d09faa72b26f25d54e26f1b694 # use full commit hash from the main branch
+-docker run -it --entrypoint /bin/bash -v /data/huggingface:/root/.cache/huggingface -e HF_TOKEN=$HF_TOKEN -e ON_ARM64_CPU=1 --shm-size=16g --name vllm-cpu-ci public.ecr.aws/q9t5s3
++docker run -it --entrypoint /bin/bash -v /data/huggingface:/root/.cache/huggingface -e HF_TOKEN=$HF_TOKEN -e ON_CPU=1 --shm-size=16g --name vllm-cpu-ci public.ecr.aws/q9t5s3a7/vll
 ```
+
 - Reviewed files:
-  - docs/bench: `docs/benchmarking/dashboard.md` modified +2/-2; `docs/models/hardware_supported_models/cpu.md` modified +1/-1; `docs/models/hardware_supported_models/xpu.md` modified +1/-1
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+  - docs: `docs/models/hardware_supported_models/cpu.md` modified +1/-1; `docs/models/hardware_supported_models/xpu.md` modified +1/-1; `docs/benchmarking/dashboard.md` modified +2/-2
+- Risk and verification: This is mostly docs/examples in `docs/benchmarking/dashboard.md`, `docs/models/hardware_supported_models/cpu.md`, `docs/models/hardware_supported_models/xpu.md`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #34128 - Vllm CPU benchmark suite improvement
 
 - Link: https://github.com/vllm-project/vllm/pull/34128
 - Status/date: merged / 2026-02-12
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 6 files, +802/-254, with 1243 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Vllm CPU benchmark suite improvement"; model line: Llama 3.3 70B; category: docs/tests/CI; main diff: `.buildkite/performance-benchmarks/scripts/compare-json-results.py`, `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-embed.json`.
-- Key implementation:
-  - `.buildkite/performance-benchmarks/scripts/compare-json-results.py` modified +368/-77; symbols: _sanitize_sheet_name, _group_to_sheet_base, _write_tables_to_excel_sheet, _safe_filename
-  - `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh` modified +87/-46
-  - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-embed.json` added +41/-0
-  - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` added +283/-0
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 6 files, +802/-254, 1243 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Vllm CPU benchmark suite improvement"; model line: Llama 3.3 70B; category: performance/backend optimization; main diff: `.buildkite/performance-benchmarks/scripts/compare-json-results.py`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`, `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh`; technical summary: Covers "Vllm CPU benchmark suite improvement"; the main implementation surface is `.buildkite/performance-benchmarks/scripts/compare-json-results.py`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`, `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `.buildkite/performance-benchmarks/scripts/compare-json-results.py` modified +368/-77 (445 lines); hunks: -9,8 +9,10; -275,6 +277,131 @@ def _apply_two_decimals(; symbols: _apply_two_decimals, _sanitize_sheet_name, _group_to_sheet_base, _write_tables_to_excel_sheet, touching `_apply_two_decimals, _sanitize_sheet_name, _group_to_sheet_base`; `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` added +283/-0 (283 lines); hunks: -0,0 +1,283; `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh` modified +87/-46 (133 lines); hunks: -1,6 +1,4; -9,6 +7,11; `.buildkite/performance-benchmarks/tests/serving-tests-cpu.json` modified +0/-130 (130 lines); hunks: -148,136 +148,6.
 - Code diff details:
-  - `.buildkite/performance-benchmarks/scripts/compare-json-results.py` modified +368/-77
-  - `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh` modified +87/-46
-  - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-embed.json` added +41/-0
-  - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` added +283/-0
+  - `.buildkite/performance-benchmarks/scripts/compare-json-results.py` modified +368/-77 (445 lines); hunks: -9,8 +9,10; -275,6 +277,131 @@ def _apply_two_decimals(; symbols: _apply_two_decimals, _sanitize_sheet_name, _group_to_sheet_base, _write_tables_to_excel_sheet
+  - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` added +283/-0 (283 lines); hunks: -0,0 +1,283
+  - `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh` modified +87/-46 (133 lines); hunks: -1,6 +1,4; -9,6 +7,11
+  - `.buildkite/performance-benchmarks/tests/serving-tests-cpu.json` modified +0/-130 (130 lines); hunks: -148,136 +148,6
+  - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-embed.json` added +41/-0 (41 lines); hunks: -0,0 +1,41
 - Key code excerpts:
 
 ```diff
 diff -- .buildkite/performance-benchmarks/scripts/compare-json-results.py
 @@ -9,8 +9,10 @@
- import os
- from dataclasses import dataclass
- from importlib import util
 +from pathlib import Path
-
- import pandas as pd
 +import regex as re
-
- pd.options.display.float_format = "{:.2f}".format
- plotly_found = util.find_spec("plotly.express") is not None
 @@ -275,6 +277,131 @@ def _apply_two_decimals(
-     return styler.format({c: "{:.2f}" for c in num_cols}, na_rep="")
-
++# -----------------------------
++# Export helpers (Excel + CSV)
++# -----------------------------
+diff -- .buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json
+@@ -0,0 +1,283 @@
++{
++  "defaults": {
++    "qps_list": [
++      "inf"
++    ],
++    "max_concurrency_list": [12, 16, 24, 32, 64, 128, 200],
 diff -- .buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh
 @@ -1,6 +1,4 @@
- #!/bin/bash
--
--# This script should be run inside the CI process
- # This script assumes that we are already inside the vllm/ directory
- # Benchmarking results will be available inside vllm/benchmarks/results/
-
-@@ -9,6 +7,11 @@
- set -x
- set -o pipefail
-
-+# Environment-driven debug controls (like ON_CPU=1)
-+DRY_RUN="${DRY_RUN:-0}"
-+MODEL_FILTER="${MODEL_FILTER:-}"
 ```
+
 - Reviewed files:
-  - docs/bench: `.buildkite/performance-benchmarks/scripts/compare-json-results.py` modified +368/-77; `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh` modified +87/-46; `.buildkite/performance-benchmarks/tests/serving-tests-cpu-embed.json` added +41/-0; `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` added +283/-0; `.buildkite/performance-benchmarks/tests/serving-tests-cpu.json` modified +0/-130; `docs/getting_started/installation/cpu.md` modified +23/-1
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+  - other: `.buildkite/performance-benchmarks/scripts/compare-json-results.py` modified +368/-77; `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh` modified +87/-46
+  - tests: `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` added +283/-0; `.buildkite/performance-benchmarks/tests/serving-tests-cpu.json` modified +0/-130; `.buildkite/performance-benchmarks/tests/serving-tests-cpu-embed.json` added +41/-0
+  - docs: `docs/getting_started/installation/cpu.md` modified +23/-1
+- Risk and verification: The diff ships test coverage in `.buildkite/performance-benchmarks/tests/serving-tests-cpu-embed.json`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu.json`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #36398 - Allow `markdownlint` to run locally
 
 - Link: https://github.com/vllm-project/vllm/pull/36398
 - Status/date: merged / 2026-03-09
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 47 files, +394/-392, with 1933 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Allow `markdownlint` to run locally"; model line: Llama 3.3 70B; category: docs/tests/CI; main diff: `.github/mergify.yml`, `.pre-commit-config.yaml`, `benchmarks/attention_benchmarks/README.md`.
-- Key implementation:
-  - `.github/mergify.yml` modified +2/-4
-  - `.pre-commit-config.yaml` modified +5/-5
-  - `benchmarks/attention_benchmarks/README.md` modified +1/-1
-  - `benchmarks/auto_tune/README.md` modified +1/-1
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 47 files, +394/-392, 1933 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Allow `markdownlint` to run locally"; model line: Llama 3.3 70B; category: docs/tests/CI; main diff: `docs/models/hardware_supported_models/xpu.md`, `docs/models/supported_models.md`, `docs/models/hardware_supported_models/cpu.md`; technical summary: Covers "Allow `markdownlint` to run locally"; the main implementation surface is `docs/models/hardware_supported_models/xpu.md`, `docs/models/supported_models.md`, `docs/models/hardware_supported_models/cpu.md`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs/models/hardware_supported_models/xpu.md` modified +40/-40 (80 lines); hunks: -2,63 +2,63; `docs/models/supported_models.md` modified +31/-31 (62 lines); hunks: -179,7 +179,7 @@ class MyConfig(PretrainedConfig):; -363,7 +363,7 @@ th {; symbols: MyConfig, touching `MyConfig`; `docs/models/hardware_supported_models/cpu.md` modified +16/-16 (32 lines); hunks: -2,32 +2,32; `docs/models/pooling_models.md` modified +7/-7 (14 lines); hunks: -31,7 +31,7 @@ vLLM will attempt to automatically convert the model according...; -46,7 +46,7 @@ Each pooling model in vLLM supports one or more of these tasks....
 - Code diff details:
-  - `.github/mergify.yml` modified +2/-4
-  - `.pre-commit-config.yaml` modified +5/-5
-  - `benchmarks/attention_benchmarks/README.md` modified +1/-1
-  - `benchmarks/auto_tune/README.md` modified +1/-1
+  - `docs/models/hardware_supported_models/xpu.md` modified +40/-40 (80 lines); hunks: -2,63 +2,63
+  - `docs/models/supported_models.md` modified +31/-31 (62 lines); hunks: -179,7 +179,7 @@ class MyConfig(PretrainedConfig):; -363,7 +363,7 @@ th {; symbols: MyConfig
+  - `docs/models/hardware_supported_models/cpu.md` modified +16/-16 (32 lines); hunks: -2,32 +2,32
+  - `docs/models/pooling_models.md` modified +7/-7 (14 lines); hunks: -31,7 +31,7 @@ vLLM will attempt to automatically convert the model according...; -46,7 +46,7 @@ Each pooling model in vLLM supports one or more of these tasks...
+  - `docs/features/reasoning_outputs.md` modified +1/-1 (2 lines); hunks: -12,7 +12,7 @@ Reasoning models return an additional `reasoning` field in the...
 - Key code excerpts:
 
 ```diff
-diff -- .github/mergify.yml
-@@ -38,15 +38,13 @@ pull_request_rules:
-
-         > [!TIP]
-         > <details>
--        > <summary>Is <code>mypy</code> or <code>markdownlint</code> failing?</summary>
-+        > <summary>Is <code>mypy</code> failing?</summary>
-         > <br/>
--        > <code>mypy</code> and <code>markdownlint</code> are run differently in CI. If the failure is related to either of these checks, please use the following commands to run them locally:
-+        > <code>mypy</code> is run differently in CI. If the failure is related to this check, please use the following command to run it locally:
-         >
-         > ```bash
-         > # For mypy (substitute "3.10" with the failing version if needed)
-         > pre-commit run --hook-stage manual mypy-3.10
--        > # For markdownlint
-diff -- .pre-commit-config.yaml
-@@ -24,12 +24,12 @@ repos:
-     exclude: 'csrc/(moe/topk_softmax_kernels.cu|quantization/gguf/(ggml-common.h|dequantize.cuh|vecdotq.cuh|mmq.cuh|mmvq.cuh))|vllm/third_party/.*'
-     types_or: [c++, cuda]
-     args: [--style=file, --verbose]
--- repo: https://github.com/igorshubovych/markdownlint-cli
--  rev: v0.45.0
-+- repo: https://github.com/DavidAnson/markdownlint-cli2
-+  rev: v0.21.0
-   hooks:
--  - id: markdownlint
--    exclude: '.*\.inc\.md'
--    stages: [manual] # Only run in CI
-+  - id: markdownlint-cli2
-+    language_version: lts
+diff -- docs/models/hardware_supported_models/xpu.md
+@@ -2,63 +2,63 @@
+-| Hardware                                 |
+-| ----------------------------------------- |
+-| [Intel® Arc™ Pro B-Series Graphics](https://www.intel.com/content/www/us/en/products/docs/discrete-gpus/arc/workstations/b-series/overview.html)                   |
++| Hardware |
++| -------- |
++| [Intel® Arc™ Pro B-Series Graphics](https://www.intel.com/content/www/us/en/products/docs/discrete-gpus/arc/workstations/b-series/overview.html) |
+diff -- docs/models/supported_models.md
+@@ -179,7 +179,7 @@ class MyConfig(PretrainedConfig):
+-|--------------|--------|-------------------|
++| ------------ | ------ | ----------------- |
+@@ -363,7 +363,7 @@ th {
+-|--------------|--------|-------------------|----------------------|---------------------------|
++| ------------ | ------ | ----------------- | -------------------- | ------------------------- |
+@@ -387,7 +387,7 @@ th {
+diff -- docs/models/hardware_supported_models/cpu.md
+@@ -2,32 +2,32 @@
 ```
+
 - Reviewed files:
-  - docs/bench: `benchmarks/attention_benchmarks/README.md` modified +1/-1; `benchmarks/auto_tune/README.md` modified +1/-1; `docs/benchmarking/cli.md` modified +9/-9; `docs/benchmarking/dashboard.md` modified +6/-6; `docs/cli/bench/mm_processor.md` modified +1/-1; `docs/cli/json_tip.inc.md` modified +2/-1; `docs/configuration/optimization.md` modified +1/-1; `docs/contributing/README.md` modified +0/-1
-  - other: `.github/mergify.yml` modified +2/-4; `.pre-commit-config.yaml` modified +5/-5
-- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+  - docs: `docs/models/hardware_supported_models/xpu.md` modified +40/-40; `docs/models/supported_models.md` modified +31/-31; `docs/models/hardware_supported_models/cpu.md` modified +16/-16; `docs/models/pooling_models.md` modified +7/-7; `docs/features/reasoning_outputs.md` modified +1/-1; `docs/getting_started/installation/cpu.arm.inc.md` modified +27/-25
+- Risk and verification: Runtime changes concentrate in `vllm/lora/ops/triton_ops/README_TUNING.md`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #35086 - more models for vLLM Benchmark Suite
 
 - Link: https://github.com/vllm-project/vllm/pull/35086
 - Status/date: merged / 2026-03-12
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 8 files, +800/-119, with 1301 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "more models for vLLM Benchmark Suite"; model line: Llama 3.3 70B; category: docs/tests/CI; main diff: `.buildkite/performance-benchmarks/scripts/compare-json-results.py`, `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json`.
-- Key implementation:
-  - `.buildkite/performance-benchmarks/scripts/compare-json-results.py` modified +301/-90; symbols: _find_concurrency_col, _normalize_concurrency_in_df, _cell
-  - `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh` modified +361/-4
-  - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json` added +37/-0
-  - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` modified +72/-0
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 8 files, +800/-119, 1301 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "more models for vLLM Benchmark Suite"; model line: Llama 3.3 70B; category: performance/backend optimization; main diff: `.buildkite/performance-benchmarks/scripts/compare-json-results.py`, `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`; technical summary: Covers "more models for vLLM Benchmark Suite"; the main implementation surface is `.buildkite/performance-benchmarks/scripts/compare-json-results.py`, `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `.buildkite/performance-benchmarks/scripts/compare-json-results.py` modified +301/-90 (391 lines); hunks: -7,12 +7,12; -33,6 +33,45; symbols: _find_concurrency_col, _normalize_concurrency_in_df, compare_data_columns, touching `_find_concurrency_col, _normalize_concurrency_in_df, compare_data_columns`; `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh` modified +361/-4 (365 lines); hunks: -12,6 +12,13 @@ DRY_RUN="${DRY_RUN:-0}"; -183,6 +190,304 @@ upload_to_buildkite() {; `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` modified +72/-0 (72 lines); hunks: -149,6 +149,39; -188,6 +221,45; `.buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json` added +37/-0 (37 lines); hunks: -0,0 +1,37.
 - Code diff details:
-  - `.buildkite/performance-benchmarks/scripts/compare-json-results.py` modified +301/-90
-  - `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh` modified +361/-4
-  - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json` added +37/-0
-  - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` modified +72/-0
+  - `.buildkite/performance-benchmarks/scripts/compare-json-results.py` modified +301/-90 (391 lines); hunks: -7,12 +7,12; -33,6 +33,45; symbols: _find_concurrency_col, _normalize_concurrency_in_df, compare_data_columns
+  - `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh` modified +361/-4 (365 lines); hunks: -12,6 +12,13 @@ DRY_RUN="${DRY_RUN:-0}"; -183,6 +190,304 @@ upload_to_buildkite() {
+  - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` modified +72/-0 (72 lines); hunks: -149,6 +149,39; -188,6 +221,45
+  - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json` added +37/-0 (37 lines); hunks: -0,0 +1,37
+  - `.buildkite/performance-benchmarks/tests/serving-tests-cpu.json` modified +12/-23 (35 lines); hunks: -72,17 +72,6; -106,20 +95,20
 - Key code excerpts:
 
 ```diff
 diff -- .buildkite/performance-benchmarks/scripts/compare-json-results.py
 @@ -7,12 +7,12 @@
- import html as _html
- import json
- import os
 +from contextlib import nullcontext
- from dataclasses import dataclass
- from importlib import util
- from pathlib import Path
-
- import pandas as pd
 -import regex as re
-
- pd.options.display.float_format = "{:.2f}".format
- plotly_found = util.find_spec("plotly.express") is not None
+@@ -33,6 +33,45 @@
++# -----------------------------
++# Concurrency normalization (NEW, small)
++# -----------------------------
 diff -- .buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh
 @@ -12,6 +12,13 @@ DRY_RUN="${DRY_RUN:-0}"
- MODEL_FILTER="${MODEL_FILTER:-}"
- DTYPE_FILTER="${DTYPE_FILTER:-}"
-
 +# Adaptive search controls
 +ENABLE_ADAPTIVE_CONCURRENCY="${ENABLE_ADAPTIVE_CONCURRENCY:-0}"
 +SLA_TTFT_MS="${SLA_TTFT_MS:-3000}"
 +SLA_TPOT_MS="${SLA_TPOT_MS:-100}"
 +ADAPTIVE_MAX_PROBES="${ADAPTIVE_MAX_PROBES:-8}"
 +ADAPTIVE_MAX_CONCURRENCY="${ADAPTIVE_MAX_CONCURRENCY:-1024}"
-+
- check_gpus() {
-   if command -v nvidia-smi; then
-     # check the number of GPUs and GPU type.
+diff -- .buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json
+@@ -149,6 +149,39 @@
 ```
+
 - Reviewed files:
-  - docs/bench: `.buildkite/performance-benchmarks/scripts/compare-json-results.py` modified +301/-90; `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh` modified +361/-4; `.buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json` added +37/-0; `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` modified +72/-0; `.buildkite/performance-benchmarks/tests/serving-tests-cpu.json` modified +12/-23; `docs/benchmarking/dashboard.md` modified +6/-0
-  - other: `requirements/test.in` modified +4/-1; `requirements/test.txt` modified +7/-1
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+  - other: `.buildkite/performance-benchmarks/scripts/compare-json-results.py` modified +301/-90; `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh` modified +361/-4; `requirements/test.txt` modified +7/-1; `requirements/test.in` modified +4/-1
+  - tests: `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` modified +72/-0; `.buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json` added +37/-0; `.buildkite/performance-benchmarks/tests/serving-tests-cpu.json` modified +12/-23
+  - docs: `docs/benchmarking/dashboard.md` modified +6/-0
+- Risk and verification: The diff ships test coverage in `.buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu.json`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #38576 - vLLM Benchmark Suite perf regression after PR#32723
 
 - Link: https://github.com/vllm-project/vllm/pull/38576
 - Status/date: merged / 2026-03-31
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 6 files, +15/-1, with 119 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "vLLM Benchmark Suite perf regression after PR#32723"; model line: Llama 3.3 70B; category: performance/backend optimization; main diff: `.buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`.
-- Key implementation:
-  - `.buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json` modified +2/-1
-  - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json` modified +1/-0
-  - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` modified +1/-0
-  - `.buildkite/performance-benchmarks/tests/serving-tests-cpu.json` modified +1/-0
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 6 files, +15/-1, 119 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "vLLM Benchmark Suite perf regression after PR#32723"; model line: Llama 3.3 70B; category: bug fix; main diff: `.buildkite/performance-benchmarks/tests/serving-tests-hpu.json`, `.buildkite/performance-benchmarks/tests/serving-tests.json`, `.buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json`; technical summary: Covers "vLLM Benchmark Suite perf regression after PR#32723"; the main implementation surface is `.buildkite/performance-benchmarks/tests/serving-tests-hpu.json`, `.buildkite/performance-benchmarks/tests/serving-tests.json`, `.buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `.buildkite/performance-benchmarks/tests/serving-tests-hpu.json` modified +6/-0 (6 lines); hunks: -21,6 +21,7; -47,6 +48,7; `.buildkite/performance-benchmarks/tests/serving-tests.json` modified +4/-0 (4 lines); hunks: -13,6 +13,7; -30,6 +31,7; `.buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json` modified +2/-1 (3 lines); hunks: -36,6 +36,7; -127,4 +128,4; `.buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json` modified +1/-0 (1 lines); hunks: -22,6 +22,7.
 - Code diff details:
-  - `.buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json` modified +2/-1
-  - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json` modified +1/-0
-  - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` modified +1/-0
-  - `.buildkite/performance-benchmarks/tests/serving-tests-cpu.json` modified +1/-0
+  - `.buildkite/performance-benchmarks/tests/serving-tests-hpu.json` modified +6/-0 (6 lines); hunks: -21,6 +21,7; -47,6 +48,7
+  - `.buildkite/performance-benchmarks/tests/serving-tests.json` modified +4/-0 (4 lines); hunks: -13,6 +13,7; -30,6 +31,7
+  - `.buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json` modified +2/-1 (3 lines); hunks: -36,6 +36,7; -127,4 +128,4
+  - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json` modified +1/-0 (1 lines); hunks: -22,6 +22,7
+  - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` modified +1/-0 (1 lines); hunks: -26,6 +26,7
 - Key code excerpts:
 
 ```diff
+diff -- .buildkite/performance-benchmarks/tests/serving-tests-hpu.json
+@@ -21,6 +21,7 @@
++            "temperature": 0,
+@@ -47,6 +48,7 @@
++            "temperature": 0,
+@@ -73,6 +75,7 @@
++            "temperature": 0,
+@@ -100,6 +103,7 @@
+diff -- .buildkite/performance-benchmarks/tests/serving-tests.json
+@@ -13,6 +13,7 @@
++            "temperature": 0,
+@@ -30,6 +31,7 @@
++            "temperature": 0,
+@@ -47,6 +49,7 @@
++            "temperature": 0,
+@@ -67,6 +70,7 @@
 diff -- .buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json
 @@ -36,6 +36,7 @@
-       "model": "meta-llama/Llama-3.1-8B-Instruct",
-       "backend": "vllm",
-       "ignore-eos": "",
-+      "temperature": 0,
-       "num_prompts": 200
-     }
-   },
-@@ -127,4 +128,4 @@
-       }
-     }
-   ]
--}
-\ No newline at end of file
-diff -- .buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json
-@@ -22,6 +22,7 @@
-       "hf_split": "test",
-       "no_stream": "",
-       "no_oversample": "",
-+      "temperature": 0,
-       "num_prompts": 200
-     }
-   },
 ```
+
 - Reviewed files:
-  - docs/bench: `.buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json` modified +2/-1; `.buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json` modified +1/-0; `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` modified +1/-0; `.buildkite/performance-benchmarks/tests/serving-tests-cpu.json` modified +1/-0; `.buildkite/performance-benchmarks/tests/serving-tests-hpu.json` modified +6/-0; `.buildkite/performance-benchmarks/tests/serving-tests.json` modified +4/-0
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+  - tests: `.buildkite/performance-benchmarks/tests/serving-tests-hpu.json` modified +6/-0; `.buildkite/performance-benchmarks/tests/serving-tests.json` modified +4/-0; `.buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json` modified +2/-1; `.buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json` modified +1/-0; `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` modified +1/-0; `.buildkite/performance-benchmarks/tests/serving-tests-cpu.json` modified +1/-0
+- Risk and verification: The diff ships test coverage in `.buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu.json`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #42607 - Update Intel Xeon model list and vLLM Benchmark Suite BKMs
 
 - Link: https://github.com/vllm-project/vllm/pull/42607
 - Status/date: merged / 2026-05-15
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 2 files, +118/-159, with 465 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Update Intel Xeon model list and vLLM Benchmark Suite BKMs"; model line: Llama 3.3 70B; category: docs/tests/CI; main diff: `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`, `docs/models/hardware_supported_models/cpu.md`.
-- Key implementation:
-  - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` modified +76/-143
-  - `docs/models/hardware_supported_models/cpu.md` modified +42/-16
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +118/-159, 465 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Update Intel Xeon model list and vLLM Benchmark Suite BKMs"; model line: Llama 3.3 70B; category: performance/backend optimization; main diff: `docs/models/hardware_supported_models/cpu.md`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`; technical summary: Covers "Update Intel Xeon model list and vLLM Benchmark Suite BKMs"; the main implementation surface is `docs/models/hardware_supported_models/cpu.md`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs/models/hardware_supported_models/cpu.md` modified +42/-16 (58 lines); hunks: -11,24 +11,50; `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` modified +76/-143 (219 lines); hunks: -31,30 +31,9; -63,290 +42,244.
 - Code diff details:
-  - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` modified +76/-143
-  - `docs/models/hardware_supported_models/cpu.md` modified +42/-16
+  - `docs/models/hardware_supported_models/cpu.md` modified +42/-16 (58 lines); hunks: -11,24 +11,50
+  - `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` modified +76/-143 (219 lines); hunks: -31,30 +31,9; -63,290 +42,244
 - Key code excerpts:
 
 ```diff
+diff -- docs/models/hardware_supported_models/cpu.md
+@@ -11,24 +11,50 @@
+-| Model                                | Architecture                             | Supported |
++| Model | Architecture | Supported |
+-| meta-llama/Llama-3.1-8B-Instruct     | LlamaForCausalLM                         | ✅        |
+-| meta-llama/Llama-3.2-3B-Instruct     | LlamaForCausalLM                         | ✅        |
+-| ibm-granite/granite-3.2-2b-instruct  | GraniteForCausalLM                       | ✅        |
+-| Qwen/Qwen3-1.7B                      | Qwen3ForCausalLM                         | ✅        |
 diff -- .buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json
 @@ -31,30 +31,9 @@
-     }
-   },
-   "tests": [
 -    {
 -      "test_name": "serving_llama8B_tp1_sharegpt",
 -      "server_parameters": {
 -        "tensor_parallel_size": 1
 -      },
 -      "client_parameters": {
--        "dataset_name": "sharegpt",
--        "dataset_path": "./ShareGPT_V3_unfiltered_cleaned_split.json"
--      }
--    },
-diff -- docs/models/hardware_supported_models/cpu.md
-@@ -11,24 +11,50 @@
-
- ### Text-only Language Models
-
--| Model                                | Architecture                             | Supported |
-+| Model | Architecture | Supported |
- | ------------------------------------ | ---------------------------------------- | --------- |
--| meta-llama/Llama-3.1-8B-Instruct     | LlamaForCausalLM                         | ✅        |
--| meta-llama/Llama-3.2-3B-Instruct     | LlamaForCausalLM                         | ✅        |
--| ibm-granite/granite-3.2-2b-instruct  | GraniteForCausalLM                       | ✅        |
--| Qwen/Qwen3-1.7B                      | Qwen3ForCausalLM                         | ✅        |
--| Qwen/Qwen3-4B                        | Qwen3ForCausalLM                         | ✅        |
--| Qwen/Qwen3-8B                        | Qwen3ForCausalLM                         | ✅        |
--| zai-org/glm-4-9b-hf                  | GLMForCausalLM                           | ✅        |
 ```
+
 - Reviewed files:
-  - docs/bench: `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` modified +76/-143; `docs/models/hardware_supported_models/cpu.md` modified +42/-16
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+  - docs: `docs/models/hardware_supported_models/cpu.md` modified +42/-16
+  - tests: `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` modified +76/-143
+- Risk and verification: The diff ships test coverage in `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #44128 - [Misc] Remove dead VLLM_RPC_TIMEOUT env var and fix profiling doc that references it
+
+- Link: https://github.com/vllm-project/vllm/pull/44128
+- Status/date: merged / 2026-06-03
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 11 files, +1/-15, 100 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Misc] Remove dead VLLM_RPC_TIMEOUT env var and fix profiling doc that references it"; model line: Llama 3.3 70B; category: bug fix; main diff: `vllm/envs.py`, `docs/contributing/profiling.md`, `.buildkite/performance-benchmarks/tests/latency-tests-arm64-cpu.json`; technical summary: Covers "[Misc] Remove dead VLLM_RPC_TIMEOUT env var and fix profiling doc that references it"; the main implementation surface is `vllm/envs.py`, `docs/contributing/profiling.md`, `.buildkite/performance-benchmarks/tests/latency-tests-arm64-cpu.json`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/envs.py` modified +0/-4 (4 lines); hunks: -95,7 +95,6; -1015,9 +1014,6 @@ def _resolve_rust_frontend_path() -> str | None:; symbols: _resolve_rust_frontend_path, touching `_resolve_rust_frontend_path`; `docs/contributing/profiling.md` modified +1/-2 (3 lines); hunks: -35,8 +35,7 @@ Traces can be visualized using .; `.buildkite/performance-benchmarks/tests/latency-tests-arm64-cpu.json` modified +0/-1 (1 lines); hunks: -2,7 +2,6; `.buildkite/performance-benchmarks/tests/latency-tests-cpu.json` modified +0/-1 (1 lines); hunks: -2,7 +2,6.
+- Code diff details:
+  - `vllm/envs.py` modified +0/-4 (4 lines); hunks: -95,7 +95,6; -1015,9 +1014,6 @@ def _resolve_rust_frontend_path() -> str | None:; symbols: _resolve_rust_frontend_path
+  - `docs/contributing/profiling.md` modified +1/-2 (3 lines); hunks: -35,8 +35,7 @@ Traces can be visualized using .
+  - `.buildkite/performance-benchmarks/tests/latency-tests-arm64-cpu.json` modified +0/-1 (1 lines); hunks: -2,7 +2,6
+  - `.buildkite/performance-benchmarks/tests/latency-tests-cpu.json` modified +0/-1 (1 lines); hunks: -2,7 +2,6
+  - `.buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json` modified +0/-1 (1 lines); hunks: -13,7 +13,6
+- Key code excerpts:
+
+```diff
+diff -- vllm/envs.py
+@@ -95,7 +95,6 @@
+-    VLLM_RPC_TIMEOUT: int = 10000  # ms
+@@ -1015,9 +1014,6 @@ def _resolve_rust_frontend_path() -> str | None:
+-    # Time in ms for the zmq client to wait for a response from the backend
+-    # server for simple data operations
+-    "VLLM_RPC_TIMEOUT": lambda: int(os.getenv("VLLM_RPC_TIMEOUT", "10000")),
+diff -- docs/contributing/profiling.md
+@@ -35,8 +35,7 @@ Traces can be visualized using <https://ui.perfetto.dev/>.
+-    Set the env variable VLLM_RPC_TIMEOUT to a big number before you start the server. Say something like 30 minutes.
+-    `export VLLM_RPC_TIMEOUT=1800000`
++    The engine client waits for this flush to complete without timing out, so simply allow the stop call to run to completion.
+diff -- .buildkite/performance-benchmarks/tests/latency-tests-arm64-cpu.json
+@@ -2,7 +2,6 @@
+-            "VLLM_RPC_TIMEOUT": 100000,
+diff -- .buildkite/performance-benchmarks/tests/latency-tests-cpu.json
+@@ -2,7 +2,6 @@
+-            "VLLM_RPC_TIMEOUT": 100000,
+```
+
+- Reviewed files:
+  - runtime: `vllm/envs.py` modified +0/-4
+  - docs: `docs/contributing/profiling.md` modified +1/-2
+  - tests: `.buildkite/performance-benchmarks/tests/latency-tests-arm64-cpu.json` modified +0/-1; `.buildkite/performance-benchmarks/tests/latency-tests-cpu.json` modified +0/-1; `.buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json` modified +0/-1; `.buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json` modified +0/-1; `.buildkite/performance-benchmarks/tests/serving-tests-cpu-embed.json` modified +0/-1; `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` modified +0/-1
+- Risk and verification: The diff ships test coverage in `.buildkite/performance-benchmarks/tests/latency-tests-arm64-cpu.json`, `.buildkite/performance-benchmarks/tests/latency-tests-cpu.json`, `.buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-asr.json`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #42726 - [ZenCPU] Add zencpu Platform Runtime Logging and Docs
+
+- Link: https://github.com/vllm-project/vllm/pull/42726
+- Status/date: merged / 2026-06-16
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 6 files, +108/-3, 200 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[ZenCPU] Add zencpu Platform Runtime Logging and Docs"; model line: Llama 3.3 70B; category: docs/tests/CI; main diff: `tests/model_executor/test_cpu_unquantized_gemm_dispatch.py`, `vllm/model_executor/layers/utils.py`, `docs/models/hardware_supported_models/cpu.md`; technical summary: Covers "[ZenCPU] Add zencpu Platform Runtime Logging and Docs"; the main implementation surface is `tests/model_executor/test_cpu_unquantized_gemm_dispatch.py`, `vllm/model_executor/layers/utils.py`, `docs/models/hardware_supported_models/cpu.md`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/model_executor/test_cpu_unquantized_gemm_dispatch.py` modified +23/-0 (23 lines); hunks: -66,3 +66,26 @@ def test_dispatch_cpu_unquantized_gemm_zen_remove_weight(monk...; symbols: test_dispatch_cpu_unquantized_gemm_zen_remove_weight, test_dispatch_cpu_unquantized_gemm_logs_zentorch_dispatch, touching `test_dispatch_cpu_unquantized_gemm_zen_remove_weight, test_dispatch_cpu_unquantized_gemm_logs_zentorch_dispatch`; `vllm/model_executor/layers/utils.py` modified +11/-0 (11 lines); hunks: -272,6 +272,10 @@ def dispatch_cpu_unquantized_gemm(; -285,6 +289,9 @@ def dispatch_cpu_unquantized_gemm(; symbols: dispatch_cpu_unquantized_gemm, cpu_unquantized_gemm, touching `dispatch_cpu_unquantized_gemm, cpu_unquantized_gemm`; `docs/models/hardware_supported_models/cpu.md` modified +3/-0 (3 lines); hunks: -1,5 +1,8; `docs/getting_started/installation/cpu.x86.inc.md` modified +45/-2 (47 lines); hunks: -1,4 +1,4; -200,7 +200,19 @@ docker build -f docker/Dockerfile.cpu \.
+- Code diff details:
+  - `tests/model_executor/test_cpu_unquantized_gemm_dispatch.py` modified +23/-0 (23 lines); hunks: -66,3 +66,26 @@ def test_dispatch_cpu_unquantized_gemm_zen_remove_weight(monk...; symbols: test_dispatch_cpu_unquantized_gemm_zen_remove_weight, test_dispatch_cpu_unquantized_gemm_logs_zentorch_dispatch
+  - `vllm/model_executor/layers/utils.py` modified +11/-0 (11 lines); hunks: -272,6 +272,10 @@ def dispatch_cpu_unquantized_gemm(; -285,6 +289,9 @@ def dispatch_cpu_unquantized_gemm(; symbols: dispatch_cpu_unquantized_gemm, cpu_unquantized_gemm
+  - `docs/models/hardware_supported_models/cpu.md` modified +3/-0 (3 lines); hunks: -1,5 +1,8
+  - `docs/getting_started/installation/cpu.x86.inc.md` modified +45/-2 (47 lines); hunks: -1,4 +1,4; -200,7 +200,19 @@ docker build -f docker/Dockerfile.cpu \
+  - `docs/getting_started/installation/cpu.md` modified +25/-0 (25 lines); hunks: -142,19 +142,25 @@ VLLM_USE_PRECOMPILED=1 VLLM_PRECOMPILED_WHEEL_VARIANT=cpu...; -227,6 +233,25 @@ By providing MODEL_FILTER and DTYPE_FILTER, only commands f...
+- Key code excerpts:
+
+```diff
+diff -- tests/model_executor/test_cpu_unquantized_gemm_dispatch.py
+@@ -66,3 +66,26 @@ def test_dispatch_cpu_unquantized_gemm_zen_remove_weight(monkeypatch):
++@pytest.mark.usefixtures("_mock_zentorch_linear_unary")
++def test_dispatch_cpu_unquantized_gemm_logs_zentorch_dispatch(monkeypatch):
++    monkeypatch.setattr(current_platform, "is_zen_cpu", lambda: True)
++    expected_prepacked = bool(utils.envs.VLLM_ZENTORCH_WEIGHT_PREPACK) and hasattr(
++        torch.ops.zentorch, "zentorch_weight_prepack_for_linear"
++    )
+diff -- vllm/model_executor/layers/utils.py
+@@ -272,6 +272,10 @@ def dispatch_cpu_unquantized_gemm(
++        logger.debug_once(
++            "CPU unquantized GEMM dispatch: using zentorch_linear_unary (prepacked=%s)",
++            is_prepacked,
++        )
+@@ -285,6 +289,9 @@ def dispatch_cpu_unquantized_gemm(
++        logger.debug_once(
+diff -- docs/models/hardware_supported_models/cpu.md
+@@ -1,5 +1,8 @@
+```
+
+- Reviewed files:
+  - tests: `tests/model_executor/test_cpu_unquantized_gemm_dispatch.py` modified +23/-0
+  - runtime: `vllm/model_executor/layers/utils.py` modified +11/-0; `vllm/platforms/__init__.py` modified +1/-1
+  - docs: `docs/models/hardware_supported_models/cpu.md` modified +3/-0; `docs/getting_started/installation/cpu.x86.inc.md` modified +45/-2; `docs/getting_started/installation/cpu.md` modified +25/-0
+- Risk and verification: The diff ships test coverage in `tests/model_executor/test_cpu_unquantized_gemm_dispatch.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+## Gap-Closure Notes
+
+- Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
+- If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.

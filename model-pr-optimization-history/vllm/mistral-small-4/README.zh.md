@@ -1,32 +1,5 @@
 # vllm Mistral Small 4 模型 PR 优化历史
 
-## 2026-06-26 最新源码扫描
-
-已按 vLLM 上游 `vllm-project/vllm@abc71548ef029132c3316b902207f254a246d593` 重新扫描本文下方列出的 tracked files。
-文件级匹配使用 GitHub mirror 的 `git log --name-only`；PR 标题、链接和合并时间通过 GitHub GraphQL Pull Request API 批量复核。上一时效锚点：`2026-06-05`。
-
-结果：发现 4 个额外 PR-numbered merge 触及 tracked files，但尚未提升为下方完整逐 PR diff audit card。此节只作为 freshness index；需要引用实现细节时，仍应先人工阅读 PR diff 再补完整卡片。
-
-| 合并日期 | PR | 标题 | 命中的 tracked files |
-| --- | --- | --- | --- |
-| 2026-06-18 | [#45988](https://github.com/vllm-project/vllm/pull/45988) | [Perf] Remove unused loggers in `reasoning/` | `mistral_reasoning_parser.py` |
-| 2026-06-12 | [#45217](https://github.com/vllm-project/vllm/pull/45217) | [Bugfix] Initialize missing attributes in mistral eagle | `mistral_large_3_eagle.py` |
-| 2026-06-11 | [#45161](https://github.com/vllm-project/vllm/pull/45161) | Deprecate Transformers v4 support | `mistral.py` |
-| 2026-06-10 | [#44596](https://github.com/vllm-project/vllm/pull/44596) | [Refactor][Mistral] Extract parsing logic into MistralParser | `test_mistral_tool_parser.py`, `mistral_reasoning_parser.py`, `mistral_tool_parser.py` |
-
-## 2026-06-05 PR 补漏复核
-
-已于 2026-06-05 按 vllm 上游 `origin/main@c66b19800` 复核；自上次时效基准（2026-04-28）以来，共有 5 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
-
-| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
-| --- | --- | --- | --- |
-| 2026-06-05 | [#44622](https://github.com/vllm-project/vllm/pull/44622) | [Bugfix] Update mistral tokenizer test for continue_final_message fix | `test_mistral.py` |
-| 2026-06-01 | [#44131](https://github.com/vllm-project/vllm/pull/44131) | [CI] Stabilize OpenAI schema fuzzing for malformed structural tags | `test_mistral_tool_parser.py` |
-| 2026-05-11 | [#42280](https://github.com/vllm-project/vllm/pull/42280) | [Model] Fix missing `maybe_prefix` | `mistral_eagle.py` |
-| 2026-05-05 | [#41730](https://github.com/vllm-project/vllm/pull/41730) | [BUGFIX] Support streamed_args_for_tool in MistralToolParser | `test_mistral_tool_parser.py`, `mistral_tool_parser.py` |
-| 2026-05-05 | [#41658](https://github.com/vllm-project/vllm/pull/41658) | [Mistral Tokenizer] allow more leniency in apply_chat_template | `test_mistral.py`, `mistral.py`, `mistral_tool_parser.py` |
-
-
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
@@ -35,13 +8,14 @@
 | `examples/tool_chat_template_mistral.jinja` | [#5649](https://github.com/vllm-project/vllm/pull/5649) |
 | `examples/tool_chat_template_mistral3.jinja` | [#17195](https://github.com/vllm-project/vllm/pull/17195), [#17644](https://github.com/vllm-project/vllm/pull/17644) |
 | `examples/tool_chat_template_mistral_parallel.jinja` | [#5649](https://github.com/vllm-project/vllm/pull/5649) |
+| `tests/model_executor/test_mistral_large_3_eagle.py` | [#45217](https://github.com/vllm-project/vllm/pull/45217) |
 | `tests/models/fixtures/ministral_3b_chat.json` | 无直接 PR 号提交 |
 | `tests/models/fixtures/mistral_small_3_chat.json` | [#14977](https://github.com/vllm-project/vllm/pull/14977) |
 | `tests/models/language/generation/test_mistral.py` | [#20093](https://github.com/vllm-project/vllm/pull/20093), [#28659](https://github.com/vllm-project/vllm/pull/28659), [#29918](https://github.com/vllm-project/vllm/pull/29918) |
 | `tests/reasoning/test_mistral_reasoning_parser.py` | [#26358](https://github.com/vllm-project/vllm/pull/26358), [#30391](https://github.com/vllm-project/vllm/pull/30391) |
 | `tests/renderers/test_mistral.py` | 无直接 PR 号提交 |
-| `tests/tokenizers_/test_mistral.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757), [#38150](https://github.com/vllm-project/vllm/pull/38150) |
-| `tests/tool_parsers/test_mistral_tool_parser.py` | [#30724](https://github.com/vllm-project/vllm/pull/30724), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#39217](https://github.com/vllm-project/vllm/pull/39217), [#40531](https://github.com/vllm-project/vllm/pull/40531) |
+| `tests/tokenizers_/test_mistral.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#41658](https://github.com/vllm-project/vllm/pull/41658), [#44622](https://github.com/vllm-project/vllm/pull/44622) |
+| `tests/tool_parsers/test_mistral_tool_parser.py` | [#30724](https://github.com/vllm-project/vllm/pull/30724), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#39217](https://github.com/vllm-project/vllm/pull/39217), [#40531](https://github.com/vllm-project/vllm/pull/40531), [#41730](https://github.com/vllm-project/vllm/pull/41730), [#44596](https://github.com/vllm-project/vllm/pull/44596) |
 | `tests/tool_use/mistral/__init__.py` | 无直接 PR 号提交 |
 | `tests/tool_use/mistral/conftest.py` | 无直接 PR 号提交 |
 | `tests/tool_use/mistral/test_mistral_tool_calls.py` | [#39217](https://github.com/vllm-project/vllm/pull/39217) |
@@ -50,19 +24,20 @@
 | `vllm/model_executor/models/mistral3.py` | [#15505](https://github.com/vllm-project/vllm/pull/15505), [#15950](https://github.com/vllm-project/vllm/pull/15950), [#17270](https://github.com/vllm-project/vllm/pull/17270), [#17428](https://github.com/vllm-project/vllm/pull/17428), [#21945](https://github.com/vllm-project/vllm/pull/21945), [#33939](https://github.com/vllm-project/vllm/pull/33939), [#36928](https://github.com/vllm-project/vllm/pull/36928) |
 | `vllm/model_executor/models/mistral_eagle.py` | [#41024](https://github.com/vllm-project/vllm/pull/41024) |
 | `vllm/model_executor/models/mistral_large_3.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757) |
-| `vllm/model_executor/models/mistral_large_3_eagle.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757), [#36163](https://github.com/vllm-project/vllm/pull/36163), [#37232](https://github.com/vllm-project/vllm/pull/37232) |
-| `vllm/reasoning/mistral_reasoning_parser.py` | [#30391](https://github.com/vllm-project/vllm/pull/30391) |
+| `vllm/model_executor/models/mistral_large_3_eagle.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757), [#36163](https://github.com/vllm-project/vllm/pull/36163), [#37232](https://github.com/vllm-project/vllm/pull/37232), [#45217](https://github.com/vllm-project/vllm/pull/45217) |
+| `vllm/parser/mistral.py` | [#44596](https://github.com/vllm-project/vllm/pull/44596) |
+| `vllm/reasoning/mistral_reasoning_parser.py` | [#30391](https://github.com/vllm-project/vllm/pull/30391), [#44596](https://github.com/vllm-project/vllm/pull/44596) |
 | `vllm/renderers/mistral.py` | 无直接 PR 号提交 |
-| `vllm/tokenizers/mistral.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757), [#31138](https://github.com/vllm-project/vllm/pull/31138), [#34651](https://github.com/vllm-project/vllm/pull/34651), [#36971](https://github.com/vllm-project/vllm/pull/36971), [#37209](https://github.com/vllm-project/vllm/pull/37209), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#39217](https://github.com/vllm-project/vllm/pull/39217) |
-| `vllm/tool_parsers/mistral_tool_parser.py` | [#30724](https://github.com/vllm-project/vllm/pull/30724), [#34651](https://github.com/vllm-project/vllm/pull/34651), [#37209](https://github.com/vllm-project/vllm/pull/37209), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#39217](https://github.com/vllm-project/vllm/pull/39217), [#39294](https://github.com/vllm-project/vllm/pull/39294), [#40043](https://github.com/vllm-project/vllm/pull/40043), [#40531](https://github.com/vllm-project/vllm/pull/40531) |
+| `vllm/tokenizers/mistral.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757), [#31138](https://github.com/vllm-project/vllm/pull/31138), [#34651](https://github.com/vllm-project/vllm/pull/34651), [#36971](https://github.com/vllm-project/vllm/pull/36971), [#37209](https://github.com/vllm-project/vllm/pull/37209), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#39217](https://github.com/vllm-project/vllm/pull/39217), [#41658](https://github.com/vllm-project/vllm/pull/41658) |
+| `vllm/tool_parsers/mistral_tool_parser.py` | [#30724](https://github.com/vllm-project/vllm/pull/30724), [#34651](https://github.com/vllm-project/vllm/pull/34651), [#37209](https://github.com/vllm-project/vllm/pull/37209), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#39217](https://github.com/vllm-project/vllm/pull/39217), [#39294](https://github.com/vllm-project/vllm/pull/39294), [#40043](https://github.com/vllm-project/vllm/pull/40043), [#40531](https://github.com/vllm-project/vllm/pull/40531), [#41658](https://github.com/vllm-project/vllm/pull/41658), [#41730](https://github.com/vllm-project/vllm/pull/41730), [#44596](https://github.com/vllm-project/vllm/pull/44596) |
 | `vllm/transformers_utils/configs/mistral.py` | [#1196](https://github.com/vllm-project/vllm/pull/1196), [#1254](https://github.com/vllm-project/vllm/pull/1254), [#20570](https://github.com/vllm-project/vllm/pull/20570), [#28659](https://github.com/vllm-project/vllm/pull/28659), [#29172](https://github.com/vllm-project/vllm/pull/29172), [#29239](https://github.com/vllm-project/vllm/pull/29239), [#29757](https://github.com/vllm-project/vllm/pull/29757), [#33521](https://github.com/vllm-project/vllm/pull/33521), [#34028](https://github.com/vllm-project/vllm/pull/34028), [#34104](https://github.com/vllm-project/vllm/pull/34104), [#36163](https://github.com/vllm-project/vllm/pull/36163), [#37104](https://github.com/vllm-project/vllm/pull/37104), ... (13 total) |
 | `vllm/utils/mistral.py` | [#34651](https://github.com/vllm-project/vllm/pull/34651), [#40043](https://github.com/vllm-project/vllm/pull/40043) |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 44
-- 原文档显式引用补充 PR 数: 8
-- 当前文档总 PR 数: 52
+- git 追溯 PR 数: 49
+- 原文档显式引用补充 PR 数: 12
+- 当前文档总 PR 数: 61
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -122,6 +97,15 @@
 | 2026-04-24 | [#40043](https://github.com/vllm-project/vllm/pull/40043) | merged | [Feature] Avoid eager import of the "mistral_common" package. | `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/utils/mistral.py` |
 | 2026-04-24 | [#39294](https://github.com/vllm-project/vllm/pull/39294) | merged | [Bugfix][Parser] Fix Mistral tool parser for HF tokenizers | `vllm/tool_parsers/mistral_tool_parser.py` |
 | 2026-04-28 | [#41024](https://github.com/vllm-project/vllm/pull/41024) | merged | [FEATURE] Add EagleMistralForCausalLM | `vllm/model_executor/models/mistral_eagle.py` |
+| 2026-05-05 | [#41730](https://github.com/vllm-project/vllm/pull/41730) | merged | [BUGFIX] Support streamed_args_for_tool in MistralToolParser | `vllm/tool_parsers/mistral_tool_parser.py`, `tests/tool_parsers/test_mistral_tool_parser.py` |
+| 2026-05-06 | [#41658](https://github.com/vllm-project/vllm/pull/41658) | merged | [Mistral Tokenizer] allow more leniency in apply_chat_template | `tests/tokenizers_/test_mistral.py`, `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py` |
+| 2026-05-11 | [#42280](https://github.com/vllm-project/vllm/pull/42280) | merged | [Model] Fix missing `maybe_prefix` | `vllm/model_executor/models/arcee.py`, `vllm/model_executor/models/cohere_asr.py`, `vllm/model_executor/models/hunyuan_v1.py` |
+| 2026-06-02 | [#44131](https://github.com/vllm-project/vllm/pull/44131) | merged | [CI] Stabilize OpenAI schema fuzzing for malformed structural tags | `vllm/entrypoints/openai/engine/protocol.py`, `tests/entrypoints/openai/chat_completion/test_chat_error.py`, `tests/entrypoints/openai/completion/test_completion_error.py` |
+| 2026-06-05 | [#44622](https://github.com/vllm-project/vllm/pull/44622) | merged | [Bugfix] Update mistral tokenizer test for continue_final_message fix | `tests/tokenizers_/test_mistral.py` |
+| 2026-06-10 | [#44596](https://github.com/vllm-project/vllm/pull/44596) | merged | [Refactor][Mistral] Extract parsing logic into MistralParser | `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/reasoning/mistral_reasoning_parser.py` |
+| 2026-06-11 | [#45161](https://github.com/vllm-project/vllm/pull/45161) | merged | Deprecate Transformers v4 support | `vllm/model_executor/models/transformers/base.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`, `vllm/model_executor/model_loader/weight_utils.py` |
+| 2026-06-12 | [#45217](https://github.com/vllm-project/vllm/pull/45217) | merged | [Bugfix] Initialize missing attributes in mistral eagle | `tests/model_executor/test_mistral_large_3_eagle.py`, `vllm/model_executor/models/mistral_large_3_eagle.py` |
+| 2026-06-18 | [#45988](https://github.com/vllm-project/vllm/pull/45988) | merged | [Perf] Remove unused loggers in `reasoning/` | `vllm/reasoning/deepseek_v3_reasoning_parser.py`, `vllm/reasoning/ernie45_reasoning_parser.py`, `vllm/reasoning/granite_reasoning_parser.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -131,7 +115,7 @@
 - 状态/时间: merged / 2023-09-28
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mistral.py`, `vllm/transformers_utils/configs/mistral.py`；关联提交 `bb1ba58f0647`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 13 个文件，+571/-25，可读 patch 795 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Mistral] Mistral-7B-v0.1 support」；模型线: Mistral Small 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mistral.py`, `vllm/transformers_utils/configs/mistral.py`；未提供可用技术摘要。
+- 动机: 标题「[Mistral] Mistral-7B-v0.1 support」；模型线: Mistral Small 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mistral.py`, `vllm/transformers_utils/configs/mistral.py`；技术摘要: 覆盖「[Mistral] Mistral-7B-v0.1 support」；主要实现面是 `vllm/model_executor/models/mistral.py`, `vllm/transformers_utils/configs/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/mistral.py` added +404/-0 (404 lines); hunks: -0,0 +1,404; symbols: MistralMLP, __init__, forward, MistralAttention，涉及 `MistralMLP, __init__, forward`；`vllm/transformers_utils/configs/mistral.py` added +66/-0 (66 lines); hunks: -0,0 +1,66; symbols: MistralConfig, __init__，涉及 `MistralConfig, __init__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/mistral.py` added +404/-0 (404 lines); hunks: -0,0 +1,404; symbols: MistralMLP, __init__, forward, MistralAttention
@@ -191,7 +175,7 @@ diff -- vllm/model_executor/models/mistral.py
 - 状态/时间: merged / 2023-10-10
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mistral.py`；关联提交 `b95ee898fe1c`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Minor] Fix comment in mistral.py」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/mistral.py`；未提供可用技术摘要。
+- 动机: 标题「[Minor] Fix comment in mistral.py」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/mistral.py`；技术摘要: 覆盖「[Minor] Fix comment in mistral.py」；主要实现面是 `vllm/model_executor/models/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/mistral.py` modified +1/-1 (2 lines); hunks: -20,7 +20,7。
 - 代码 diff 细节:
   - `vllm/model_executor/models/mistral.py` modified +1/-1 (2 lines); hunks: -20,7 +20,7
@@ -214,7 +198,7 @@ diff -- vllm/model_executor/models/mistral.py
 - 状态/时间: merged / 2023-10-13
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mistral.py`, `vllm/transformers_utils/configs/mistral.py`；关联提交 `e7c8555d0652`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+4/-81，可读 patch 136 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Bump up transformers version & Remove MistralConfig」；模型线: Mistral Small 4；类别: 文档/测试/CI；主要 diff: `vllm/transformers_utils/configs/mistral.py`, `vllm/model_executor/models/mistral.py`；技术摘要: 覆盖「Bump up transformers version & Remove MistralConfig」；主要实现面是 `vllm/transformers_utils/configs/mistral.py`, `vllm/model_executor/models/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「Bump up transformers version & Remove MistralConfig」；模型线: Mistral Small 4；类别: 模型实现调整；主要 diff: `vllm/transformers_utils/configs/mistral.py`, `vllm/model_executor/models/mistral.py`；技术摘要: 覆盖「Bump up transformers version & Remove MistralConfig」；主要实现面是 `vllm/transformers_utils/configs/mistral.py`, `vllm/model_executor/models/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/transformers_utils/configs/mistral.py` removed +0/-66 (66 lines); hunks: -1,66 +0,0; symbols: MistralConfig, __init__，涉及 `MistralConfig, __init__`；`vllm/model_executor/models/mistral.py` modified +1/-1 (2 lines); hunks: -29,6 +29,7; -44,7 +45,6。
 - 代码 diff 细节:
   - `vllm/transformers_utils/configs/mistral.py` removed +0/-66 (66 lines); hunks: -1,66 +0,0; symbols: MistralConfig, __init__
@@ -274,7 +258,7 @@ diff -- vllm/model_executor/models/mistral.py
 - 状态/时间: merged / 2024-09-04
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `examples/tool_chat_template_mistral.jinja`, `examples/tool_chat_template_mistral_parallel.jinja`；关联提交 `e02ce498be2e`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 26 个文件，+2588/-83，可读 patch 3136 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Feature] OpenAI-Compatible Tools API + Streaming for Hermes & Mistral models」；模型线: Mistral Small 4；类别: 模型支持/运行时入口；主要 diff: `examples/tool_chat_template_mistral_parallel.jinja`, `examples/tool_chat_template_mistral.jinja`；技术摘要: 覆盖「[Feature] OpenAI-Compatible Tools API + Streaming for Hermes & Mistral models」；主要实现面是 `examples/tool_chat_template_mistral_parallel.jinja`, `examples/tool_chat_template_mistral.jinja`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[Feature] OpenAI-Compatible Tools API + Streaming for Hermes & Mistral models」；模型线: Mistral Small 4；类别: 模型实现调整；主要 diff: `examples/tool_chat_template_mistral_parallel.jinja`, `examples/tool_chat_template_mistral.jinja`；技术摘要: 覆盖「[Feature] OpenAI-Compatible Tools API + Streaming for Hermes & Mistral models」；主要实现面是 `examples/tool_chat_template_mistral_parallel.jinja`, `examples/tool_chat_template_mistral.jinja`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `examples/tool_chat_template_mistral_parallel.jinja` added +94/-0 (94 lines); hunks: -0,0 +1,94；`examples/tool_chat_template_mistral.jinja` added +86/-0 (86 lines); hunks: -0,0 +1,86。
 - 代码 diff 细节:
   - `examples/tool_chat_template_mistral_parallel.jinja` added +94/-0 (94 lines); hunks: -0,0 +1,94
@@ -310,7 +294,7 @@ diff -- examples/tool_chat_template_mistral.jinja
 - 状态/时间: merged / 2025-03-18
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/fixtures/mistral_small_3_chat.json`；关联提交 `f863ffc96532`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+34/-60，可读 patch 204 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Mistral-Small 3.1] Update docs and tests」；模型线: Mistral Small 4；类别: 文档/测试/CI；主要 diff: `tests/models/fixtures/mistral_small_3_chat.json`；技术摘要: 覆盖「[Mistral-Small 3.1] Update docs and tests」；主要实现面是 `tests/models/fixtures/mistral_small_3_chat.json`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[Mistral-Small 3.1] Update docs and tests」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `tests/models/fixtures/mistral_small_3_chat.json`；技术摘要: 覆盖「[Mistral-Small 3.1] Update docs and tests」；主要实现面是 `tests/models/fixtures/mistral_small_3_chat.json`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `tests/models/fixtures/mistral_small_3_chat.json` added +1/-0 (1 lines); hunks: -0,0 +1。
 - 代码 diff 细节:
   - `tests/models/fixtures/mistral_small_3_chat.json` added +1/-0 (1 lines); hunks: -0,0 +1
@@ -359,7 +343,7 @@ diff -- examples/offline_inference/mistral-small.py
 - 状态/时间: merged / 2025-04-01
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mistral3.py`；关联提交 `51d7c6a2b23e`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 9 个文件，+723/-4，可读 patch 805 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Model] Support Mistral3 in the HF Transformers format」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/mistral3.py`；技术摘要: 覆盖「[Model] Support Mistral3 in the HF Transformers format」；主要实现面是 `vllm/model_executor/models/mistral3.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[Model] Support Mistral3 in the HF Transformers format」；模型线: Mistral Small 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mistral3.py`；技术摘要: 覆盖「[Model] Support Mistral3 in the HF Transformers format」；主要实现面是 `vllm/model_executor/models/mistral3.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/mistral3.py` added +656/-0 (656 lines); hunks: -0,0 +1,656; symbols: Mistral3ImagePixelInputs, Mistral3PatchMerger, __init__, forward，涉及 `Mistral3ImagePixelInputs, Mistral3PatchMerger, __init__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/mistral3.py` added +656/-0 (656 lines); hunks: -0,0 +1,656; symbols: Mistral3ImagePixelInputs, Mistral3PatchMerger, __init__, forward
@@ -386,7 +370,7 @@ diff -- vllm/model_executor/models/mistral3.py
 - 状态/时间: merged / 2025-04-02
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mistral3.py`；关联提交 `f021b9799386`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+10/-7，可读 patch 55 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[V1] Support Mistral3 in V1」；模型线: Mistral Small 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mistral3.py`；未提供可用技术摘要。
+- 动机: 标题「[V1] Support Mistral3 in V1」；模型线: Mistral Small 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mistral3.py`；技术摘要: 覆盖「[V1] Support Mistral3 in V1」；主要实现面是 `vllm/model_executor/models/mistral3.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/mistral3.py` modified +9/-6 (15 lines); hunks: -31,12 +31,12; -425,7 +425,7 @@ def init_vision_tower_for_llava(; symbols: Mistral3ImagePixelInputs, init_vision_tower_for_llava, Mistral3ForConditionalGeneration, _parse_and_validate_image_input，涉及 `Mistral3ImagePixelInputs, init_vision_tower_for_llava, Mistral3ForConditionalGeneration`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/mistral3.py` modified +9/-6 (15 lines); hunks: -31,12 +31,12; -425,7 +425,7 @@ def init_vision_tower_for_llava(; symbols: Mistral3ImagePixelInputs, init_vision_tower_for_llava, Mistral3ForConditionalGeneration, _parse_and_validate_image_input
@@ -464,7 +448,7 @@ diff -- vllm/model_executor/models/mistral3.py
 - 状态/时间: merged / 2025-04-29
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `examples/tool_chat_template_mistral3.jinja`；关联提交 `96e06e3cb73f`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+119/-0，可读 patch 121 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Misc] Add a Jinja template to support Mistral3 function calling」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `examples/tool_chat_template_mistral3.jinja`；技术摘要: 覆盖「[Misc] Add a Jinja template to support Mistral3 function calling」；主要实现面是 `examples/tool_chat_template_mistral3.jinja`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[Misc] Add a Jinja template to support Mistral3 function calling」；模型线: Mistral Small 4；类别: 模型支持/运行时入口；主要 diff: `examples/tool_chat_template_mistral3.jinja`；技术摘要: 覆盖「[Misc] Add a Jinja template to support Mistral3 function calling」；主要实现面是 `examples/tool_chat_template_mistral3.jinja`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `examples/tool_chat_template_mistral3.jinja` added +119/-0 (119 lines); hunks: -0,0 +1,119。
 - 代码 diff 细节:
   - `examples/tool_chat_template_mistral3.jinja` added +119/-0 (119 lines); hunks: -0,0 +1,119
@@ -491,7 +475,7 @@ diff -- examples/tool_chat_template_mistral3.jinja
 - 状态/时间: merged / 2025-04-30
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mistral3.py`；关联提交 `a44c4f1d2f7c`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+15/-4，可读 patch 51 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Support LoRA for Mistral3」；模型线: Mistral Small 4；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/mistral3.py`；技术摘要: 覆盖「Support LoRA for Mistral3」；主要实现面是 `vllm/model_executor/models/mistral3.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「Support LoRA for Mistral3」；模型线: Mistral Small 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mistral3.py`；技术摘要: 覆盖「Support LoRA for Mistral3」；主要实现面是 `vllm/model_executor/models/mistral3.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/mistral3.py` modified +14/-3 (17 lines); hunks: -18,6 +18,7; -31,7 +32,8; symbols: init_vision_tower_for_llava, Mistral3ForConditionalGeneration, load_weights, get_mm_mapping，涉及 `init_vision_tower_for_llava, Mistral3ForConditionalGeneration, load_weights`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/mistral3.py` modified +14/-3 (17 lines); hunks: -18,6 +18,7; -31,7 +32,8; symbols: init_vision_tower_for_llava, Mistral3ForConditionalGeneration, load_weights, get_mm_mapping
@@ -658,7 +642,7 @@ diff -- vllm/model_executor/models/mistral3.py
 - 状态/时间: merged / 2025-10-09
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/reasoning/test_mistral_reasoning_parser.py`；关联提交 `c6187f55f7c4`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 18 个文件，+2349/-461，可读 patch 3215 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Refactor MistralTokenizer」；模型线: Mistral Small 4；类别: 模型实现调整；主要 diff: `tests/reasoning/test_mistral_reasoning_parser.py`；技术摘要: 覆盖「Refactor MistralTokenizer」；主要实现面是 `tests/reasoning/test_mistral_reasoning_parser.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「Refactor MistralTokenizer」；模型线: Mistral Small 4；类别: 文档/测试/CI；主要 diff: `tests/reasoning/test_mistral_reasoning_parser.py`；技术摘要: 覆盖「Refactor MistralTokenizer」；主要实现面是 `tests/reasoning/test_mistral_reasoning_parser.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `tests/reasoning/test_mistral_reasoning_parser.py` modified +1/-27 (28 lines); hunks: -2,8 +2,6; -14,33 +12,9; symbols: mistral_tokenizer，涉及 `mistral_tokenizer`。
 - 代码 diff 细节:
   - `tests/reasoning/test_mistral_reasoning_parser.py` modified +1/-27 (28 lines); hunks: -2,8 +2,6; -14,33 +12,9; symbols: mistral_tokenizer
@@ -749,7 +733,7 @@ diff -- vllm/transformers_utils/configs/mistral.py
 - 状态/时间: merged / 2025-11-21
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/language/generation/test_mistral.py`, `vllm/transformers_utils/configs/mistral.py`；关联提交 `57430fc95c8a`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 15 个文件，+230/-34，可读 patch 497 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Default model load/config/tokenizer to `mistral` format if relevant files exist」；模型线: Mistral Small 4；类别: 模型实现调整；主要 diff: `tests/models/language/generation/test_mistral.py`, `vllm/transformers_utils/configs/mistral.py`；技术摘要: 覆盖「Default model load/config/tokenizer to `mistral` format if relevant files exist」；主要实现面是 `tests/models/language/generation/test_mistral.py`, `vllm/transformers_utils/configs/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「Default model load/config/tokenizer to `mistral` format if relevant files exist」；模型线: Mistral Small 4；类别: 文档/测试/CI；主要 diff: `tests/models/language/generation/test_mistral.py`, `vllm/transformers_utils/configs/mistral.py`；技术摘要: 覆盖「Default model load/config/tokenizer to `mistral` format if relevant files exist」；主要实现面是 `tests/models/language/generation/test_mistral.py`, `vllm/transformers_utils/configs/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `tests/models/language/generation/test_mistral.py` modified +1/-1 (2 lines); hunks: -208,7 +208,7 @@ def test_mistral_format(; symbols: test_mistral_format，涉及 `test_mistral_format`；`vllm/transformers_utils/configs/mistral.py` modified +1/-1 (2 lines); hunks: -118,7 +118,7 @@ def _remap_general_mistral_args(config: dict) -> dict:; symbols: _remap_general_mistral_args，涉及 `_remap_general_mistral_args`。
 - 代码 diff 细节:
   - `tests/models/language/generation/test_mistral.py` modified +1/-1 (2 lines); hunks: -208,7 +208,7 @@ def test_mistral_format(; symbols: test_mistral_format
@@ -805,7 +789,7 @@ diff -- vllm/transformers_utils/configs/mistral.py
 - 状态/时间: merged / 2025-12-02
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tokenizers_/test_mistral.py`, `vllm/model_executor/models/mistral_large_3.py`, `vllm/model_executor/models/mistral_large_3_eagle.py`, `vllm/tokenizers/mistral.py`, `vllm/transformers_utils/configs/mistral.py`；关联提交 `d8c6210eeaa7`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 16 个文件，+724/-30，可读 patch 1015 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Add Mistral Large 3 and Ministral 3」；模型线: Mistral Small 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mistral_large_3_eagle.py`, `tests/tokenizers_/test_mistral.py`, `vllm/transformers_utils/configs/mistral.py`；技术摘要: 覆盖「Add Mistral Large 3 and Ministral 3」；主要实现面是 `vllm/model_executor/models/mistral_large_3_eagle.py`, `tests/tokenizers_/test_mistral.py`, `vllm/transformers_utils/configs/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「Add Mistral Large 3 and Ministral 3」；模型线: Mistral Small 4；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/mistral_large_3_eagle.py`, `tests/tokenizers_/test_mistral.py`, `vllm/transformers_utils/configs/mistral.py`；技术摘要: 覆盖「Add Mistral Large 3 and Ministral 3」；主要实现面是 `vllm/model_executor/models/mistral_large_3_eagle.py`, `tests/tokenizers_/test_mistral.py`, `vllm/transformers_utils/configs/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/mistral_large_3_eagle.py` added +165/-0 (165 lines); hunks: -0,0 +1,165; symbols: EagleMistralLarge3Model, __init__, forward, EagleMistralLarge3ForCausalLM，涉及 `EagleMistralLarge3Model, __init__, forward`；`tests/tokenizers_/test_mistral.py` modified +151/-7 (158 lines); hunks: -91,6 +91,118; -1108,13 +1220,6 @@ def test_decode(; symbols: test_prepare_apply_chat_template_tools_and_messages, test_decode, test_decode_empty, test_decode_int，涉及 `test_prepare_apply_chat_template_tools_and_messages, test_decode, test_decode_empty`；`vllm/transformers_utils/configs/mistral.py` modified +62/-12 (74 lines); hunks: -18,9 +18,31 @@ def adapt_config_dict(; -140,17 +162,20 @@ def _remap_general_mistral_args(config: dict) -> dict:; symbols: adapt_config_dict, _remap_general_mistral_args, _remap_mistral_quantization_args, _remap_mistral_audio_args，涉及 `adapt_config_dict, _remap_general_mistral_args, _remap_mistral_quantization_args`；`vllm/model_executor/models/mistral_large_3.py` added +63/-0 (63 lines); hunks: -0,0 +1,63; symbols: MistralLarge3ForCausalLM, load_weights, _remap_mistral_to_ds，涉及 `MistralLarge3ForCausalLM, load_weights, _remap_mistral_to_ds`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/mistral_large_3_eagle.py` added +165/-0 (165 lines); hunks: -0,0 +1,165; symbols: EagleMistralLarge3Model, __init__, forward, EagleMistralLarge3ForCausalLM
@@ -874,7 +858,7 @@ diff -- tests/models/language/generation/test_mistral.py
 - 状态/时间: merged / 2025-12-11
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/reasoning/test_mistral_reasoning_parser.py`, `vllm/reasoning/mistral_reasoning_parser.py`；关联提交 `aa3c250c487e`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+186/-64，可读 patch 383 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[IMPROVEMENT] Change MistralReasoningParser behavior」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `tests/reasoning/test_mistral_reasoning_parser.py`, `vllm/reasoning/mistral_reasoning_parser.py`；技术摘要: 覆盖「[IMPROVEMENT] Change MistralReasoningParser behavior」；主要实现面是 `tests/reasoning/test_mistral_reasoning_parser.py`, `vllm/reasoning/mistral_reasoning_parser.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[IMPROVEMENT] Change MistralReasoningParser behavior」；模型线: Mistral Small 4；类别: 文档/测试/CI；主要 diff: `tests/reasoning/test_mistral_reasoning_parser.py`, `vllm/reasoning/mistral_reasoning_parser.py`；技术摘要: 覆盖「[IMPROVEMENT] Change MistralReasoningParser behavior」；主要实现面是 `tests/reasoning/test_mistral_reasoning_parser.py`, `vllm/reasoning/mistral_reasoning_parser.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `tests/reasoning/test_mistral_reasoning_parser.py` modified +84/-61 (145 lines); hunks: -18,47 +18,53 @@ def mistral_tokenizer():; -78,17 +84,17 @@ def mistral_tokenizer():; symbols: mistral_tokenizer，涉及 `mistral_tokenizer`；`vllm/reasoning/mistral_reasoning_parser.py` modified +102/-3 (105 lines); hunks: -3,20 +3,29; -53,3 +62,93 @@ def end_token(self) -> str:; symbols: MistralReasoningParser, __init__, end_token, is_reasoning_end，涉及 `MistralReasoningParser, __init__, end_token`。
 - 代码 diff 细节:
   - `tests/reasoning/test_mistral_reasoning_parser.py` modified +84/-61 (145 lines); hunks: -18,47 +18,53 @@ def mistral_tokenizer():; -78,17 +84,17 @@ def mistral_tokenizer():; symbols: mistral_tokenizer
@@ -1017,7 +1001,7 @@ diff -- vllm/tokenizers/mistral.py
 - 状态/时间: merged / 2026-01-22
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mistral.py`；关联提交 `1579c9b5fd0f`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+248/-115，可读 patch 426 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Llama.py -> mistral.py] Extract mistral-only relevant code into separate file」；模型线: Mistral Small 4；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/mistral.py`；技术摘要: 覆盖「[Llama.py -> mistral.py] Extract mistral-only relevant code into separate file」；主要实现面是 `vllm/model_executor/models/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[Llama.py -> mistral.py] Extract mistral-only relevant code into separate file」；模型线: Mistral Small 4；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/mistral.py`；技术摘要: 覆盖「[Llama.py -> mistral.py] Extract mistral-only relevant code into separate file」；主要实现面是 `vllm/model_executor/models/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/mistral.py` added +242/-0 (242 lines); hunks: -0,0 +1,242; symbols: MistralAttention, __init__, _get_llama_4_attn_scale, forward，涉及 `MistralAttention, __init__, _get_llama_4_attn_scale`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/mistral.py` added +242/-0 (242 lines); hunks: -0,0 +1,242; symbols: MistralAttention, __init__, _get_llama_4_attn_scale, forward
@@ -1071,7 +1055,7 @@ diff -- vllm/model_executor/models/mistral.py
 - 状态/时间: merged / 2026-01-31
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 16 个文件，+1104/-31，可读 patch 1278 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Add support for Mistral Large 3 inference with Flashinfer MoE」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_B200,dtype=fp8_w8a8.json`, `vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_B200.json`, `vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_GB200,dtype=fp8_w8a8.json`；技术摘要: 覆盖「Add support for Mistral Large 3 inference with Flashinfer MoE」；主要实现面是 `vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_B200,dtype=fp8_w8a8.json`, `vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_B200.json`, `vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_GB200,dtype=fp8_w8a8.json`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「Add support for Mistral Large 3 inference with Flashinfer MoE」；模型线: Mistral Small 4；类别: 性能/后端优化；主要 diff: `vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_B200,dtype=fp8_w8a8.json`, `vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_B200.json`, `vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_GB200,dtype=fp8_w8a8.json`；技术摘要: 覆盖「Add support for Mistral Large 3 inference with Flashinfer MoE」；主要实现面是 `vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_B200,dtype=fp8_w8a8.json`, `vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_B200.json`, `vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_GB200,dtype=fp8_w8a8.json`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_B200,dtype=fp8_w8a8.json` added +147/-0 (147 lines); hunks: -0,0 +1,147；`vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_B200.json` added +147/-0 (147 lines); hunks: -0,0 +1,147；`vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_GB200,dtype=fp8_w8a8.json` added +147/-0 (147 lines); hunks: -0,0 +1,147；`vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_H200,dtype=fp8_w8a8,block_shape=[128,128].json` added +147/-0 (147 lines); hunks: -0,0 +1,147。
 - 代码 diff 细节:
   - `vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_B200,dtype=fp8_w8a8.json` added +147/-0 (147 lines); hunks: -0,0 +1,147
@@ -1139,7 +1123,7 @@ diff -- vllm/transformers_utils/configs/mistral.py
 - 状态/时间: merged / 2026-02-07
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mistral3.py`；关联提交 `4df44c16ba8c`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+9/-1，可读 patch 31 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Enable Eagle3 speculative decoding for Mistral3ForConditionalGeneration to support eagle3」；模型线: Mistral Small 4；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/mistral3.py`；技术摘要: 覆盖「Enable Eagle3 speculative decoding for Mistral3ForConditionalGeneration to support eagle3」；主要实现面是 `vllm/model_executor/models/mistral3.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「Enable Eagle3 speculative decoding for Mistral3ForConditionalGeneration to support eagle3」；模型线: Mistral Small 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mistral3.py`；技术摘要: 覆盖「Enable Eagle3 speculative decoding for Mistral3ForConditionalGeneration to support eagle3」；主要实现面是 `vllm/model_executor/models/mistral3.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/mistral3.py` modified +9/-1 (10 lines); hunks: -44,6 +44,7; -408,7 +409,7 @@ def init_vision_tower_for_llava(; symbols: init_vision_tower_for_llava, Mistral3ForConditionalGeneration, get_placeholder_str, set_aux_hidden_state_layers，涉及 `init_vision_tower_for_llava, Mistral3ForConditionalGeneration, get_placeholder_str`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/mistral3.py` modified +9/-1 (10 lines); hunks: -44,6 +44,7; -408,7 +409,7 @@ def init_vision_tower_for_llava(; symbols: init_vision_tower_for_llava, Mistral3ForConditionalGeneration, get_placeholder_str, set_aux_hidden_state_layers
@@ -1322,7 +1306,7 @@ diff -- vllm/model_executor/models/mistral_large_3_eagle.py
 - 状态/时间: merged / 2026-03-14
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/tokenizers/mistral.py`；关联提交 `e42b49bd69d4`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+22/-3，可读 patch 74 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Mistral common v10」；模型线: Mistral Small 4；类别: 模型支持/运行时入口；主要 diff: `vllm/tokenizers/mistral.py`；技术摘要: 覆盖「Mistral common v10」；主要实现面是 `vllm/tokenizers/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「Mistral common v10」；模型线: Mistral Small 4；类别: 模型实现调整；主要 diff: `vllm/tokenizers/mistral.py`；技术摘要: 覆盖「Mistral common v10」；主要实现面是 `vllm/tokenizers/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/tokenizers/mistral.py` modified +19/-0 (19 lines); hunks: -7,6 +7,9; -192,6 +195,15 @@ def validate_request_params(request: "ChatCompletionRequest"):; symbols: validate_request_params, _tekken_token_to_id, apply_chat_template, decode，涉及 `validate_request_params, _tekken_token_to_id, apply_chat_template`。
 - 代码 diff 细节:
   - `vllm/tokenizers/mistral.py` modified +19/-0 (19 lines); hunks: -7,6 +7,9; -192,6 +195,15 @@ def validate_request_params(request: "ChatCompletionRequest"):; symbols: validate_request_params, _tekken_token_to_id, apply_chat_template, decode
@@ -1458,7 +1442,7 @@ diff -- vllm/model_executor/models/mistral3.py
 - 状态/时间: merged / 2026-04-06
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tokenizers_/test_mistral.py`, `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py`；关联提交 `fef56c18555e`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 10 个文件，+601/-29，可读 patch 816 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Mistral Grammar] Support Grammar Factory」；模型线: Mistral Small 4；类别: 模型支持/运行时入口；主要 diff: `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`, `tests/tokenizers_/test_mistral.py`；技术摘要: 覆盖「[Mistral Grammar] Support Grammar Factory」；主要实现面是 `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`, `tests/tokenizers_/test_mistral.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[Mistral Grammar] Support Grammar Factory」；模型线: Mistral Small 4；类别: 文档/测试/CI；主要 diff: `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`, `tests/tokenizers_/test_mistral.py`；技术摘要: 覆盖「[Mistral Grammar] Support Grammar Factory」；主要实现面是 `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`, `tests/tokenizers_/test_mistral.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `tests/tool_parsers/test_mistral_tool_parser.py` modified +344/-3 (347 lines); hunks: -3,19 +3,43; -40,6 +64,13 @@ def mistral_tool_parser(mistral_tokenizer):; symbols: mistral_tool_parser, non_mistral_parser, assert_tool_calls, test_fast_detokenization_text_detection_pre_v11，涉及 `mistral_tool_parser, non_mistral_parser, assert_tool_calls`；`vllm/tool_parsers/mistral_tool_parser.py` modified +133/-9 (142 lines); hunks: -10,6 +10,18; -25,6 +37,7; symbols: StreamingState, MistralToolParser, __init__, adjust_request，涉及 `StreamingState, MistralToolParser, __init__`；`tests/tokenizers_/test_mistral.py` modified +28/-0 (28 lines); hunks: -3,8 +3,10; -2407,3 +2409,29 @@ def test_convert_ids_to_tokens(; symbols: test_convert_ids_to_tokens, test_grammar_factory, test_llg_tokenizer，涉及 `test_convert_ids_to_tokens, test_grammar_factory, test_llg_tokenizer`；`vllm/tokenizers/mistral.py` modified +25/-0 (25 lines); hunks: -1,9 +1,12; -45,6 +48,7; symbols: convert_ids_to_tokens, supports_grammar, grammar_factory, llg_tokenizer，涉及 `convert_ids_to_tokens, supports_grammar, grammar_factory`。
 - 代码 diff 细节:
   - `tests/tool_parsers/test_mistral_tool_parser.py` modified +344/-3 (347 lines); hunks: -3,19 +3,43; -40,6 +64,13 @@ def mistral_tool_parser(mistral_tokenizer):; symbols: mistral_tool_parser, non_mistral_parser, assert_tool_calls, test_fast_detokenization_text_detection_pre_v11
@@ -1661,7 +1645,7 @@ diff -- vllm/tool_parsers/mistral_tool_parser.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/41024
 - 状态/时间: merged / 2026-04-28
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mistral_eagle.py`；关联提交 `e9f8f31e9a4c`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mistral_eagle.py`；关联提交 `e9f8f31e9a4c`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+172/-0，可读 patch 187 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[FEATURE] Add EagleMistralForCausalLM」；模型线: Mistral Small 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mistral_eagle.py`；技术摘要: 覆盖「[FEATURE] Add EagleMistralForCausalLM」；主要实现面是 `vllm/model_executor/models/mistral_eagle.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/mistral_eagle.py` added +166/-0 (166 lines); hunks: -0,0 +1,166; symbols: EagleMistralDecoderLayer, __init__, get_quant_config, EagleMistralModel，涉及 `EagleMistralDecoderLayer, __init__, get_quant_config`。
@@ -1683,6 +1667,351 @@ diff -- vllm/model_executor/models/mistral_eagle.py
 - 已读文件:
   - runtime: `vllm/model_executor/models/mistral_eagle.py` added +166/-0
 - 验证与风险: diff 自带测试面 `tests/models/registry.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #41730 - [BUGFIX] Support streamed_args_for_tool in MistralToolParser
+
+- 链接: https://github.com/vllm-project/vllm/pull/41730
+- 状态/时间: merged / 2026-05-05
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`；关联提交 `c6235ed1803e`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+55/-15，可读 patch 145 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[BUGFIX] Support streamed_args_for_tool in MistralToolParser」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `vllm/tool_parsers/mistral_tool_parser.py`, `tests/tool_parsers/test_mistral_tool_parser.py`；技术摘要: 覆盖「[BUGFIX] Support streamed_args_for_tool in MistralToolParser」；主要实现面是 `vllm/tool_parsers/mistral_tool_parser.py`, `tests/tool_parsers/test_mistral_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/tool_parsers/mistral_tool_parser.py` modified +26/-15 (41 lines); hunks: -623,13 +623,6 @@ def _extract_tool_calls_streaming(; -642,6 +635,8 @@ def _generate_delta_tool_call(self, delta_text: str) -> list...; symbols: _extract_tool_calls_streaming, _generate_delta_tool_call，涉及 `_extract_tool_calls_streaming, _generate_delta_tool_call`；`tests/tool_parsers/test_mistral_tool_parser.py` modified +29/-0 (29 lines); hunks: -590,6 +590,33 @@ def _test_extract_tool_calls_streaming(; -855,6 +882,8 @@ def test_extract_tool_calls_streaming_v11_no_tools(; symbols: _test_extract_tool_calls_streaming, test_extract_tool_calls_streaming_v11_no_tools，涉及 `_test_extract_tool_calls_streaming, test_extract_tool_calls_streaming_v11_no_tools`。
+- 代码 diff 细节:
+  - `vllm/tool_parsers/mistral_tool_parser.py` modified +26/-15 (41 lines); hunks: -623,13 +623,6 @@ def _extract_tool_calls_streaming(; -642,6 +635,8 @@ def _generate_delta_tool_call(self, delta_text: str) -> list...; symbols: _extract_tool_calls_streaming, _generate_delta_tool_call
+  - `tests/tool_parsers/test_mistral_tool_parser.py` modified +29/-0 (29 lines); hunks: -590,6 +590,33 @@ def _test_extract_tool_calls_streaming(; -855,6 +882,8 @@ def test_extract_tool_calls_streaming_v11_no_tools(; symbols: _test_extract_tool_calls_streaming, test_extract_tool_calls_streaming_v11_no_tools
+- 关键代码摘录:
+
+```diff
+diff -- vllm/tool_parsers/mistral_tool_parser.py
+@@ -623,13 +623,6 @@ def _extract_tool_calls_streaming(
+-        # HACK: serving_chat.py inspects the internal state of tool parsers
+-        # when determining its final streaming delta, automatically
+-        # adding autocompleted JSON.
+-        # These two lines avoid that nonsense while ensuring finish_reason
+-        # is set to tool_calls when at least one tool is called.
+-        if delta_tool_calls and not self.prev_tool_call_arr:
+diff -- tests/tool_parsers/test_mistral_tool_parser.py
+@@ -590,6 +590,33 @@ def _test_extract_tool_calls_streaming(
++    if expected_tool_calls:
++        assert len(tool_parser.streamed_args_for_tool) == len(expected_tool_calls)
++        assert len(tool_parser.prev_tool_call_arr) == len(expected_tool_calls)
++        for i in range(len(expected_tool_calls)):
++            assert (
++                tool_parser.prev_tool_call_arr[i]["arguments"]
+```
+
+- 已读文件:
+  - runtime: `vllm/tool_parsers/mistral_tool_parser.py` modified +26/-15
+  - tests: `tests/tool_parsers/test_mistral_tool_parser.py` modified +29/-0
+- 验证与风险: diff 自带测试面 `tests/tool_parsers/test_mistral_tool_parser.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #41658 - [Mistral Tokenizer] allow more leniency in apply_chat_template
+
+- 链接: https://github.com/vllm-project/vllm/pull/41658
+- 状态/时间: merged / 2026-05-06
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tokenizers_/test_mistral.py`, `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py`；关联提交 `16e336491e96`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 10 个文件，+144/-397，可读 patch 675 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Mistral Tokenizer] allow more leniency in apply_chat_template」；模型线: Mistral Small 4；类别: 文档/测试/CI；主要 diff: `tests/tokenizers_/test_mistral.py`, `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py`；技术摘要: 覆盖「[Mistral Tokenizer] allow more leniency in apply_chat_template」；主要实现面是 `tests/tokenizers_/test_mistral.py`, `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `tests/tokenizers_/test_mistral.py` modified +131/-332 (463 lines); hunks: -1,6 +1,7; -11,353 +12,34; symbols: test_prepare_apply_chat_template_tools_and_messages, test_prepare_apply_chat_template_tools_and_messages_list_content, test_prepare_apply_chat_template_generation_prompt_and_continue, test_validate_apply_chat_template_args，涉及 `test_prepare_apply_chat_template_tools_and_messages, test_prepare_apply_chat_template_tools_and_messages_list_content, test_prepare_apply_chat_template_generation_prompt_and_continue`；`vllm/tokenizers/mistral.py` modified +4/-51 (55 lines); hunks: -13,7 +13,6; -68,36 +67,6 @@ def _pop_unallowed_keys_and_warn(; symbols: _pop_unallowed_keys_and_warn, adapt_inplace_to_mistral_tool, maybe_serialize_tool_calls, truncate_tool_call_ids，涉及 `_pop_unallowed_keys_and_warn, adapt_inplace_to_mistral_tool, maybe_serialize_tool_calls`；`vllm/tool_parsers/mistral_tool_parser.py` modified +2/-7 (9 lines); hunks: -43,7 +43,7; -241,12 +241,7 @@ def adjust_request(; symbols: adjust_request，涉及 `adjust_request`。
+- 代码 diff 细节:
+  - `tests/tokenizers_/test_mistral.py` modified +131/-332 (463 lines); hunks: -1,6 +1,7; -11,353 +12,34; symbols: test_prepare_apply_chat_template_tools_and_messages, test_prepare_apply_chat_template_tools_and_messages_list_content, test_prepare_apply_chat_template_generation_prompt_and_continue, test_validate_apply_chat_template_args
+  - `vllm/tokenizers/mistral.py` modified +4/-51 (55 lines); hunks: -13,7 +13,6; -68,36 +67,6 @@ def _pop_unallowed_keys_and_warn(; symbols: _pop_unallowed_keys_and_warn, adapt_inplace_to_mistral_tool, maybe_serialize_tool_calls, truncate_tool_call_ids
+  - `vllm/tool_parsers/mistral_tool_parser.py` modified +2/-7 (9 lines); hunks: -43,7 +43,7; -241,12 +241,7 @@ def adjust_request(; symbols: adjust_request
+- 关键代码摘录:
+
+```diff
+diff -- tests/tokenizers_/test_mistral.py
+@@ -1,6 +1,7 @@
++import copy
+@@ -11,353 +12,34 @@
+-    _prepare_apply_chat_template_tools_and_messages,
++    _validate_apply_chat_template_args,
+-@pytest.mark.parametrize(
+-    "openai_request,expected_mistral_output",
+diff -- vllm/tokenizers/mistral.py
+@@ -13,7 +13,6 @@
+-from mistral_common.protocol.instruct.tool_calls import Function, Tool
+@@ -68,36 +67,6 @@ def _pop_unallowed_keys_and_warn(
+-# TODO(juliendenize): remove this once OpenAI API is better supported by
+-# `mistral-common`.
+-def adapt_inplace_to_mistral_tool(
+-    tool: dict[str, Any],
+diff -- vllm/tool_parsers/mistral_tool_parser.py
+@@ -43,7 +43,7 @@
+```
+
+- 已读文件:
+  - tests: `tests/tokenizers_/test_mistral.py` modified +131/-332
+  - runtime: `vllm/tokenizers/mistral.py` modified +4/-51; `vllm/tool_parsers/mistral_tool_parser.py` modified +2/-7
+- 验证与风险: diff 自带测试面 `requirements/test/cuda.in`, `requirements/test/cuda.txt`, `requirements/test/nightly-torch.txt`, `requirements/test/rocm.in`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #42280 - [Model] Fix missing `maybe_prefix`
+
+- 链接: https://github.com/vllm-project/vllm/pull/42280
+- 状态/时间: merged / 2026-05-11
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 25 个文件，+49/-29，可读 patch 302 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Model] Fix missing `maybe_prefix`」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/arcee.py`, `vllm/model_executor/models/cohere_asr.py`, `vllm/model_executor/models/hunyuan_v1.py`；技术摘要: 覆盖「[Model] Fix missing `maybe_prefix`」；主要实现面是 `vllm/model_executor/models/arcee.py`, `vllm/model_executor/models/cohere_asr.py`, `vllm/model_executor/models/hunyuan_v1.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/arcee.py` modified +6/-2 (8 lines); hunks: -45,6 +45,7; -367,7 +368,10 @@ def __init__(self, *, vllm_config, prefix: str = "") -> None:; symbols: __init__，涉及 `__init__`；`vllm/model_executor/models/cohere_asr.py` modified +3/-2 (5 lines); hunks: -64,7 +64,7; -1717,7 +1717,8 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__，涉及 `__init__`；`vllm/model_executor/models/hunyuan_v1.py` modified +4/-1 (5 lines); hunks: -930,7 +930,10 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__，涉及 `__init__`；`vllm/model_executor/models/deepseek_eagle.py` modified +3/-1 (4 lines); hunks: -198,7 +198,9 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__，涉及 `__init__`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/arcee.py` modified +6/-2 (8 lines); hunks: -45,6 +45,7; -367,7 +368,10 @@ def __init__(self, *, vllm_config, prefix: str = "") -> None:; symbols: __init__
+  - `vllm/model_executor/models/cohere_asr.py` modified +3/-2 (5 lines); hunks: -64,7 +64,7; -1717,7 +1717,8 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__
+  - `vllm/model_executor/models/hunyuan_v1.py` modified +4/-1 (5 lines); hunks: -930,7 +930,10 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__
+  - `vllm/model_executor/models/deepseek_eagle.py` modified +3/-1 (4 lines); hunks: -198,7 +198,9 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__
+  - `vllm/model_executor/models/deepseek_eagle3.py` modified +3/-1 (4 lines); hunks: -318,7 +318,9 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/arcee.py
+@@ -45,6 +45,7 @@
++    maybe_prefix,
+@@ -367,7 +368,10 @@ def __init__(self, *, vllm_config, prefix: str = "") -> None:
+-        self.model = ArceeModel(vllm_config=vllm_config, prefix=f"{prefix}.model")
++        self.model = ArceeModel(
++            vllm_config=vllm_config,
++            prefix=maybe_prefix(prefix, "model"),
+diff -- vllm/model_executor/models/cohere_asr.py
+@@ -64,7 +64,7 @@
+-from .utils import AutoWeightsLoader, WeightsMapper, make_layers
++from .utils import AutoWeightsLoader, WeightsMapper, make_layers, maybe_prefix
+@@ -1717,7 +1717,8 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = ""):
+-            vllm_config=vllm_config, prefix=f"{prefix}.decoder"
++            vllm_config=vllm_config,
++            prefix=maybe_prefix(prefix, "decoder"),
+diff -- vllm/model_executor/models/hunyuan_v1.py
+@@ -930,7 +930,10 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = ""):
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/arcee.py` modified +6/-2; `vllm/model_executor/models/cohere_asr.py` modified +3/-2; `vllm/model_executor/models/hunyuan_v1.py` modified +4/-1; `vllm/model_executor/models/deepseek_eagle.py` modified +3/-1; `vllm/model_executor/models/deepseek_eagle3.py` modified +3/-1; `vllm/model_executor/models/granite_speech.py` modified +2/-2
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/arcee.py`, `vllm/model_executor/models/aria.py`, `vllm/model_executor/models/blip2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #44131 - [CI] Stabilize OpenAI schema fuzzing for malformed structural tags
+
+- 链接: https://github.com/vllm-project/vllm/pull/44131
+- 状态/时间: merged / 2026-06-02
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+201/-3，可读 patch 308 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[CI] Stabilize OpenAI schema fuzzing for malformed structural tags」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `vllm/entrypoints/openai/engine/protocol.py`, `tests/entrypoints/openai/chat_completion/test_chat_error.py`, `tests/entrypoints/openai/completion/test_completion_error.py`；技术摘要: 覆盖「[CI] Stabilize OpenAI schema fuzzing for malformed structural tags」；主要实现面是 `vllm/entrypoints/openai/engine/protocol.py`, `tests/entrypoints/openai/chat_completion/test_chat_error.py`, `tests/entrypoints/openai/completion/test_completion_error.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/entrypoints/openai/engine/protocol.py` modified +75/-0 (75 lines); hunks: -17,6 +17,7; -158,6 +159,80 @@ class ResponseFormat(OpenAIBaseModel):; symbols: ResponseFormat, validate_structural_tag_response_format, validate_structural_tag_payload, validate_structured_outputs_structural_tag，涉及 `ResponseFormat, validate_structural_tag_response_format, validate_structural_tag_payload`；`tests/entrypoints/openai/chat_completion/test_chat_error.py` modified +47/-1 (48 lines); hunks: -6,9 +6,13; -444,3 +448,45 @@ def test_json_schema_response_format_missing_schema():; symbols: test_json_schema_response_format_missing_schema, test_structural_tag_response_format_invalid, test_batch_structural_tag_response_format_invalid, test_structured_outputs_structural_tag_invalid，涉及 `test_json_schema_response_format_missing_schema, test_structural_tag_response_format_invalid, test_batch_structural_tag_response_format_invalid`；`tests/entrypoints/openai/completion/test_completion_error.py` modified +31/-0 (31 lines); hunks: -6,6 +6,7; -302,6 +303,36 @@ def test_json_schema_response_format_missing_schema():; symbols: test_json_schema_response_format_missing_schema, test_structural_tag_response_format_invalid, test_structured_outputs_structural_tag_invalid, test_negative_prompt_token_ids_nested，涉及 `test_json_schema_response_format_missing_schema, test_structural_tag_response_format_invalid, test_structured_outputs_structural_tag_invalid`；`tests/tool_parsers/test_mistral_tool_parser.py` modified +26/-2 (28 lines); hunks: -1382,7 +1382,20 @@ def test_adjust_request_non_mistral_tokenizer(; -1404,7 +1417,18 @@ def test_adjust_request_unsupported_response_format(; symbols: test_adjust_request_non_mistral_tokenizer, test_adjust_request_unsupported_response_format，涉及 `test_adjust_request_non_mistral_tokenizer, test_adjust_request_unsupported_response_format`。
+- 代码 diff 细节:
+  - `vllm/entrypoints/openai/engine/protocol.py` modified +75/-0 (75 lines); hunks: -17,6 +17,7; -158,6 +159,80 @@ class ResponseFormat(OpenAIBaseModel):; symbols: ResponseFormat, validate_structural_tag_response_format, validate_structural_tag_payload, validate_structured_outputs_structural_tag
+  - `tests/entrypoints/openai/chat_completion/test_chat_error.py` modified +47/-1 (48 lines); hunks: -6,9 +6,13; -444,3 +448,45 @@ def test_json_schema_response_format_missing_schema():; symbols: test_json_schema_response_format_missing_schema, test_structural_tag_response_format_invalid, test_batch_structural_tag_response_format_invalid, test_structured_outputs_structural_tag_invalid
+  - `tests/entrypoints/openai/completion/test_completion_error.py` modified +31/-0 (31 lines); hunks: -6,6 +6,7; -302,6 +303,36 @@ def test_json_schema_response_format_missing_schema():; symbols: test_json_schema_response_format_missing_schema, test_structural_tag_response_format_invalid, test_structured_outputs_structural_tag_invalid, test_negative_prompt_token_ids_nested
+  - `tests/tool_parsers/test_mistral_tool_parser.py` modified +26/-2 (28 lines); hunks: -1382,7 +1382,20 @@ def test_adjust_request_non_mistral_tokenizer(; -1404,7 +1417,18 @@ def test_adjust_request_unsupported_response_format(; symbols: test_adjust_request_non_mistral_tokenizer, test_adjust_request_unsupported_response_format
+  - `vllm/entrypoints/openai/chat_completion/protocol.py` modified +16/-0 (16 lines); hunks: -30,6 +30,8; -671,6 +673,9 @@ def validate_response_format(cls, data):; symbols: validate_response_format, check_structured_outputs_count, check_batch_mode
+- 关键代码摘录:
+
+```diff
+diff -- vllm/entrypoints/openai/engine/protocol.py
+@@ -17,6 +17,7 @@
++from vllm.exceptions import VLLMValidationError
+@@ -158,6 +159,80 @@ class ResponseFormat(OpenAIBaseModel):
++def validate_structural_tag_response_format(
++    response_format: AnyStructuralTagResponseFormat | dict[str, Any],
++) -> None:
++    """Validate structural tags before they are sent to the engine.
+diff -- tests/entrypoints/openai/chat_completion/test_chat_error.py
+@@ -6,9 +6,13 @@
++from pydantic import ValidationError
+-from vllm.entrypoints.openai.chat_completion.protocol import ChatCompletionRequest
++from vllm.entrypoints.openai.chat_completion.protocol import (
++    BatchChatCompletionRequest,
++    ChatCompletionRequest,
++)
+diff -- tests/entrypoints/openai/completion/test_completion_error.py
+@@ -6,6 +6,7 @@
+```
+
+- 已读文件:
+  - runtime: `vllm/entrypoints/openai/engine/protocol.py` modified +75/-0; `vllm/entrypoints/openai/chat_completion/protocol.py` modified +16/-0; `vllm/entrypoints/openai/completion/protocol.py` modified +6/-0
+  - tests: `tests/entrypoints/openai/chat_completion/test_chat_error.py` modified +47/-1; `tests/entrypoints/openai/completion/test_completion_error.py` modified +31/-0; `tests/tool_parsers/test_mistral_tool_parser.py` modified +26/-2
+- 验证与风险: diff 自带测试面 `tests/entrypoints/openai/chat_completion/test_chat_error.py`, `tests/entrypoints/openai/completion/test_completion_error.py`, `tests/tool_parsers/test_mistral_tool_parser.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #44622 - [Bugfix] Update mistral tokenizer test for continue_final_message fix
+
+- 链接: https://github.com/vllm-project/vllm/pull/44622
+- 状态/时间: merged / 2026-06-05
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tokenizers_/test_mistral.py`；关联提交 `d61d8566ec30`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+2/-2，可读 patch 14 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] Update mistral tokenizer test for continue_final_message fix」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `tests/tokenizers_/test_mistral.py`；技术摘要: 覆盖「[Bugfix] Update mistral tokenizer test for continue_final_message fix」；主要实现面是 `tests/tokenizers_/test_mistral.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `tests/tokenizers_/test_mistral.py` modified +2/-2 (4 lines); hunks: -797,11 +797,11 @@ def test_call(self, mistral_tokenizer: MistralTokenizer):; symbols: test_call，涉及 `test_call`。
+- 代码 diff 细节:
+  - `tests/tokenizers_/test_mistral.py` modified +2/-2 (4 lines); hunks: -797,11 +797,11 @@ def test_call(self, mistral_tokenizer: MistralTokenizer):; symbols: test_call
+- 关键代码摘录:
+
+```diff
+diff -- tests/tokenizers_/test_mistral.py
+@@ -797,11 +797,11 @@ def test_call(self, mistral_tokenizer: MistralTokenizer):
+-                    [1, 3, 22177, 4304, 2662, 4, 22177, 2],
++                    [1, 3, 22177, 4304, 2662, 4, 22177],
+-                    ("<s>[INST]Hello world ![/INST]Hello</s>"),
++                    "<s>[INST]Hello world ![/INST]Hello",
+```
+
+- 已读文件:
+  - tests: `tests/tokenizers_/test_mistral.py` modified +2/-2
+- 验证与风险: diff 自带测试面 `tests/tokenizers_/test_mistral.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #44596 - [Refactor][Mistral] Extract parsing logic into MistralParser
+
+- 链接: https://github.com/vllm-project/vllm/pull/44596
+- 状态/时间: merged / 2026-06-10
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/parser/mistral.py`, `vllm/reasoning/mistral_reasoning_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`；关联提交 `d82ac0092392`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+136/-729，可读 patch 1101 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Refactor][Mistral] Extract parsing logic into MistralParser」；模型线: Mistral Small 4；类别: 文档/测试/CI；主要 diff: `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/reasoning/mistral_reasoning_parser.py`；技术摘要: 覆盖「[Refactor][Mistral] Extract parsing logic into MistralParser」；主要实现面是 `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/reasoning/mistral_reasoning_parser.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `tests/tool_parsers/test_mistral_tool_parser.py` modified +0/-385 (385 lines); hunks: -3,7 +3,6; -29,22 +28,17; symbols: test_grammar_from_tool_parser_set_by_adjust_request, test_build_non_streaming_tool_calls, TestExtractMaybeReasoningAndToolStreaming, parser，涉及 `test_grammar_from_tool_parser_set_by_adjust_request, test_build_non_streaming_tool_calls, TestExtractMaybeReasoningAndToolStreaming`；`vllm/tool_parsers/mistral_tool_parser.py` modified +2/-163 (165 lines); hunks: -5,11 +5,10; -40,19 +39,14; symbols: _is_pre_v11_tokeniser, MistralStreamingResult, MistralToolParser, adjust_request，涉及 `_is_pre_v11_tokeniser, MistralStreamingResult, MistralToolParser`；`vllm/reasoning/mistral_reasoning_parser.py` modified +10/-1 (11 lines); hunks: -1,7 +1,7; -76,6 +76,15 @@ def is_reasoning_end(self, input_ids: Sequence[int]) -> bool:; symbols: is_reasoning_end, is_reasoning_end_streaming, extract_content_ids，涉及 `is_reasoning_end, is_reasoning_end_streaming, extract_content_ids`；`vllm/parser/mistral.py` added +77/-0 (77 lines); hunks: -0,0 +1,77; symbols: MistralParser, __init__, _maybe_force_auto_tool_parsing, parse，涉及 `MistralParser, __init__, _maybe_force_auto_tool_parsing`。
+- 代码 diff 细节:
+  - `tests/tool_parsers/test_mistral_tool_parser.py` modified +0/-385 (385 lines); hunks: -3,7 +3,6; -29,22 +28,17; symbols: test_grammar_from_tool_parser_set_by_adjust_request, test_build_non_streaming_tool_calls, TestExtractMaybeReasoningAndToolStreaming, parser
+  - `vllm/tool_parsers/mistral_tool_parser.py` modified +2/-163 (165 lines); hunks: -5,11 +5,10; -40,19 +39,14; symbols: _is_pre_v11_tokeniser, MistralStreamingResult, MistralToolParser, adjust_request
+  - `vllm/reasoning/mistral_reasoning_parser.py` modified +10/-1 (11 lines); hunks: -1,7 +1,7; -76,6 +76,15 @@ def is_reasoning_end(self, input_ids: Sequence[int]) -> bool:; symbols: is_reasoning_end, is_reasoning_end_streaming, extract_content_ids
+  - `vllm/parser/mistral.py` added +77/-0 (77 lines); hunks: -0,0 +1,77; symbols: MistralParser, __init__, _maybe_force_auto_tool_parsing, parse
+- 关键代码摘录:
+
+```diff
+diff -- tests/tool_parsers/test_mistral_tool_parser.py
+@@ -3,7 +3,6 @@
+-from typing import Any
+@@ -29,22 +28,17 @@
+-    DeltaFunctionCall,
+-from vllm.entrypoints.openai.engine.protocol import FunctionCall as VllmFunctionCall
+-from vllm.reasoning.mistral_reasoning_parser import MistralReasoningParser
+-    MistralStreamingResult,
+diff -- vllm/tool_parsers/mistral_tool_parser.py
+@@ -5,11 +5,10 @@
+-from dataclasses import dataclass
+-from typing import TYPE_CHECKING, Any
++from typing import Any
+@@ -40,19 +39,14 @@
+-from vllm.reasoning.mistral_reasoning_parser import MistralReasoningParser
+-from vllm.tokenizers.mistral import MistralTokenizer
+diff -- vllm/reasoning/mistral_reasoning_parser.py
+@@ -1,7 +1,7 @@
+```
+
+- 已读文件:
+  - tests: `tests/tool_parsers/test_mistral_tool_parser.py` modified +0/-385
+  - runtime: `vllm/tool_parsers/mistral_tool_parser.py` modified +2/-163; `vllm/reasoning/mistral_reasoning_parser.py` modified +10/-1; `vllm/parser/mistral.py` added +77/-0
+- 验证与风险: diff 自带测试面 `tests/tool_parsers/test_mistral_tool_parser.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #45161 - Deprecate Transformers v4 support
+
+- 链接: https://github.com/vllm-project/vllm/pull/45161
+- 状态/时间: merged / 2026-06-11
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 19 个文件，+62/-268，可读 patch 612 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Deprecate Transformers v4 support」；模型线: Mistral Small 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/transformers/base.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`, `vllm/model_executor/model_loader/weight_utils.py`；技术摘要: 覆盖「Deprecate Transformers v4 support」；主要实现面是 `vllm/model_executor/models/transformers/base.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`, `vllm/model_executor/model_loader/weight_utils.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/transformers/base.py` modified +16/-42 (58 lines); hunks: -27,6 +27,10; -212,16 +216,9 @@ def _patch_config(self):; symbols: _patch_config, _get_decoder_cls, _create_hf_to_vllm_mapper, _get_tie_word_embeddings，涉及 `_patch_config, _get_decoder_cls, _create_hf_to_vllm_mapper`；`vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +0/-36 (36 lines); hunks: -30,9 +30,7; -1261,40 +1259,6 @@ def pad_to_hop_length(x: np.ndarray, hop_length: int) ->...; symbols: pad_to_hop_length，涉及 `pad_to_hop_length`；`vllm/model_executor/model_loader/weight_utils.py` modified +1/-18 (19 lines); hunks: -77,30 +77,13; symbols: enable_hf_transfer, enable_xet_high_performance, DisabledTqdm，涉及 `enable_hf_transfer, enable_xet_high_performance, DisabledTqdm`；`vllm/transformers_utils/configs/qwen3_5.py` modified +5/-12 (17 lines); hunks: -94,18 +94,11 @@ def __init__(; symbols: __init__，涉及 `__init__`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/transformers/base.py` modified +16/-42 (58 lines); hunks: -27,6 +27,10; -212,16 +216,9 @@ def _patch_config(self):; symbols: _patch_config, _get_decoder_cls, _create_hf_to_vllm_mapper, _get_tie_word_embeddings
+  - `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +0/-36 (36 lines); hunks: -30,9 +30,7; -1261,40 +1259,6 @@ def pad_to_hop_length(x: np.ndarray, hop_length: int) ->...; symbols: pad_to_hop_length
+  - `vllm/model_executor/model_loader/weight_utils.py` modified +1/-18 (19 lines); hunks: -77,30 +77,13; symbols: enable_hf_transfer, enable_xet_high_performance, DisabledTqdm
+  - `vllm/transformers_utils/configs/qwen3_5.py` modified +5/-12 (17 lines); hunks: -94,18 +94,11 @@ def __init__(; symbols: __init__
+  - `vllm/transformers_utils/configs/qwen3_5_moe.py` modified +5/-12 (17 lines); hunks: -100,18 +100,11 @@ def __init__(; symbols: __init__
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/transformers/base.py
+@@ -27,6 +27,10 @@
++from transformers.conversion_mapping import (
++    WeightRenaming,
++    get_model_conversion_mapping,
++)
+@@ -212,16 +216,9 @@ def _patch_config(self):
+-        - Propagates this dtype to any sub-configs because Transformers model
+diff -- vllm/model_executor/models/qwen3_omni_moe_thinker.py
+@@ -30,9 +30,7 @@
+-from packaging.version import Version
+-from transformers import __version__ as TRANSFORMERS_VERSION
+@@ -1261,40 +1259,6 @@ def pad_to_hop_length(x: np.ndarray, hop_length: int) -> np.ndarray:
+-            if Version(TRANSFORMERS_VERSION) < Version("4.58.0"):
+-                # Extract audio_sample_rate before restructuring
+-                audio_sample_rate = mm_kwargs.pop("audio_sample_rate", None)
+diff -- vllm/model_executor/model_loader/weight_utils.py
+@@ -77,30 +77,13 @@
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/transformers/base.py` modified +16/-42; `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +0/-36; `vllm/model_executor/model_loader/weight_utils.py` modified +1/-18; `vllm/transformers_utils/configs/qwen3_5.py` modified +5/-12; `vllm/transformers_utils/configs/qwen3_5_moe.py` modified +5/-12; `vllm/model_executor/models/ultravox.py` modified +0/-15
+- 验证与风险: runtime 路径改动集中在 `vllm/config/vllm.py`, `vllm/model_executor/model_loader/weight_utils.py`, `vllm/model_executor/models/gemma3n_mm.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #45217 - [Bugfix] Initialize missing attributes in mistral eagle
+
+- 链接: https://github.com/vllm-project/vllm/pull/45217
+- 状态/时间: merged / 2026-06-12
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/model_executor/test_mistral_large_3_eagle.py`, `vllm/model_executor/models/mistral_large_3_eagle.py`；关联提交 `6f573f486bc6`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+156/-0，可读 patch 164 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] Initialize missing attributes in mistral eagle」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `tests/model_executor/test_mistral_large_3_eagle.py`, `vllm/model_executor/models/mistral_large_3_eagle.py`；技术摘要: 覆盖「[Bugfix] Initialize missing attributes in mistral eagle」；主要实现面是 `tests/model_executor/test_mistral_large_3_eagle.py`, `vllm/model_executor/models/mistral_large_3_eagle.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `tests/model_executor/test_mistral_large_3_eagle.py` added +146/-0 (146 lines); hunks: -0,0 +1,146; symbols: DummyPPGroup, DummyEmbedding, __init__, forward，涉及 `DummyPPGroup, DummyEmbedding, __init__`；`vllm/model_executor/models/mistral_large_3_eagle.py` modified +10/-0 (10 lines); hunks: -75,6 +75,16 @@ def __init__(; symbols: __init__，涉及 `__init__`。
+- 代码 diff 细节:
+  - `tests/model_executor/test_mistral_large_3_eagle.py` added +146/-0 (146 lines); hunks: -0,0 +1,146; symbols: DummyPPGroup, DummyEmbedding, __init__, forward
+  - `vllm/model_executor/models/mistral_large_3_eagle.py` modified +10/-0 (10 lines); hunks: -75,6 +75,16 @@ def __init__(; symbols: __init__
+- 关键代码摘录:
+
+```diff
+diff -- tests/model_executor/test_mistral_large_3_eagle.py
+@@ -0,0 +1,146 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++from types import SimpleNamespace
++import pytest
++import torch
++import torch.nn as nn
+diff -- vllm/model_executor/models/mistral_large_3_eagle.py
+@@ -75,6 +75,16 @@ def __init__(
++        # Needed by load_weights
++        qk_nope_head_dim = getattr(config, "qk_nope_head_dim", 0)
++        qk_rope_head_dim = getattr(config, "qk_rope_head_dim", 0)
++        self.use_mha = config.model_type == "deepseek" or all(
++            dim == 0 for dim in (qk_nope_head_dim, qk_rope_head_dim)
++        )
+```
+
+- 已读文件:
+  - tests: `tests/model_executor/test_mistral_large_3_eagle.py` added +146/-0
+  - runtime: `vllm/model_executor/models/mistral_large_3_eagle.py` modified +10/-0
+- 验证与风险: diff 自带测试面 `tests/model_executor/test_mistral_large_3_eagle.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #45988 - [Perf] Remove unused loggers in `reasoning/`
+
+- 链接: https://github.com/vllm-project/vllm/pull/45988
+- 状态/时间: merged / 2026-06-18
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 9 个文件，+0/-27，可读 patch 148 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Perf] Remove unused loggers in `reasoning/`」；模型线: Mistral Small 4；类别: 性能/后端优化；主要 diff: `vllm/reasoning/deepseek_v3_reasoning_parser.py`, `vllm/reasoning/ernie45_reasoning_parser.py`, `vllm/reasoning/granite_reasoning_parser.py`；技术摘要: 覆盖「[Perf] Remove unused loggers in `reasoning/`」；主要实现面是 `vllm/reasoning/deepseek_v3_reasoning_parser.py`, `vllm/reasoning/ernie45_reasoning_parser.py`, `vllm/reasoning/granite_reasoning_parser.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/reasoning/deepseek_v3_reasoning_parser.py` modified +0/-3 (3 lines); hunks: -6,7 +6,6; -17,8 +16,6; symbols: DeepSeekV3ReasoningParser，涉及 `DeepSeekV3ReasoningParser`；`vllm/reasoning/ernie45_reasoning_parser.py` modified +0/-3 (3 lines); hunks: -7,15 +7,12; symbols: Ernie45ReasoningParser，涉及 `Ernie45ReasoningParser`；`vllm/reasoning/granite_reasoning_parser.py` modified +0/-3 (3 lines); hunks: -8,15 +8,12; symbols: GraniteReasoningParser，涉及 `GraniteReasoningParser`；`vllm/reasoning/hunyuan_a13b_reasoning_parser.py` modified +0/-3 (3 lines); hunks: -8,15 +8,12; symbols: HunyuanA13BReasoningParser，涉及 `HunyuanA13BReasoningParser`。
+- 代码 diff 细节:
+  - `vllm/reasoning/deepseek_v3_reasoning_parser.py` modified +0/-3 (3 lines); hunks: -6,7 +6,6; -17,8 +16,6; symbols: DeepSeekV3ReasoningParser
+  - `vllm/reasoning/ernie45_reasoning_parser.py` modified +0/-3 (3 lines); hunks: -7,15 +7,12; symbols: Ernie45ReasoningParser
+  - `vllm/reasoning/granite_reasoning_parser.py` modified +0/-3 (3 lines); hunks: -8,15 +8,12; symbols: GraniteReasoningParser
+  - `vllm/reasoning/hunyuan_a13b_reasoning_parser.py` modified +0/-3 (3 lines); hunks: -8,15 +8,12; symbols: HunyuanA13BReasoningParser
+  - `vllm/reasoning/identity_reasoning_parser.py` modified +0/-3 (3 lines); hunks: -7,15 +7,12; symbols: IdentityReasoningParser
+- 关键代码摘录:
+
+```diff
+diff -- vllm/reasoning/deepseek_v3_reasoning_parser.py
+@@ -6,7 +6,6 @@
+-from vllm.logger import init_logger
+@@ -17,8 +16,6 @@
+-logger = init_logger(__name__)
+diff -- vllm/reasoning/ernie45_reasoning_parser.py
+@@ -7,15 +7,12 @@
+-from vllm.logger import init_logger
+-logger = init_logger(__name__)
+diff -- vllm/reasoning/granite_reasoning_parser.py
+@@ -8,15 +8,12 @@
+-from vllm.logger import init_logger
+-logger = init_logger(__name__)
+diff -- vllm/reasoning/hunyuan_a13b_reasoning_parser.py
+@@ -8,15 +8,12 @@
+-from vllm.logger import init_logger
+-logger = init_logger(__name__)
+diff -- vllm/reasoning/identity_reasoning_parser.py
+```
+
+- 已读文件:
+  - runtime: `vllm/reasoning/deepseek_v3_reasoning_parser.py` modified +0/-3; `vllm/reasoning/ernie45_reasoning_parser.py` modified +0/-3; `vllm/reasoning/granite_reasoning_parser.py` modified +0/-3; `vllm/reasoning/hunyuan_a13b_reasoning_parser.py` modified +0/-3; `vllm/reasoning/identity_reasoning_parser.py` modified +0/-3; `vllm/reasoning/minimax_m2_reasoning_parser.py` modified +0/-3
+- 验证与风险: runtime 路径改动集中在 `vllm/reasoning/deepseek_v3_reasoning_parser.py`, `vllm/reasoning/ernie45_reasoning_parser.py`, `vllm/reasoning/granite_reasoning_parser.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ## 补漏结论
 

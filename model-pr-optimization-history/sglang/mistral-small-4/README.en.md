@@ -1,32 +1,5 @@
 # sglang Mistral Small 4 Model PR Optimization History
 
-## 2026-06-26 Latest Source Scan
-
-Rechecked SGLang upstream `sgl-project/sglang@8524678889485801e7a4a12d62015be0c68f7a90` against the tracked files listed below.
-The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-05`.
-
-Result: 2 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
-
-| Merged | PR | Title | Tracked files touched |
-| --- | --- | --- | --- |
-| 2026-06-25 | [#29111](https://github.com/sgl-project/sglang/pull/29111) | [Bugfix] Fix Ministral3 init argument forwarding | `ministral3.py` |
-| 2026-06-19 | [#28697](https://github.com/sgl-project/sglang/pull/28697) | [docs] Add B300 cookbook deployment options | `mistral-small-4-deployment.jsx` |
-
-## 2026-06-05 PR Backfill Audit
-
-Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 3 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
-
-| Merged | PR | Title | Tracked files touched |
-| --- | --- | --- | --- |
-| 2026-05-23 | [#23292](https://github.com/sgl-project/sglang/pull/23292) | [CP] 1/N: Support MLA Prefill Context Parallel | `mistral_large_3_eagle.py` |
-| 2026-05-20 | [#25831](https://github.com/sgl-project/sglang/pull/25831) | [Test] Stage-a sanity kits; consolidate core/ + models_e2e/ tests | `test_ministral3_models.py`, `test_ministral4_models.py` |
-| 2026-05-20 | [#25821](https://github.com/sgl-project/sglang/pull/25821) | [Refactor] Rename NSA → DSA: user-facing aliases, file/class/import rename | `mistral_large_3_eagle.py` |
-
-
-## 2026-05-19 PR Backfill Audit
-
-Rechecked sglang upstream `origin/main@78cb38ed5` and the GitHub Pull Request files API; this pass adds timeline entries and per-PR diff audit cards for `#24611`, `#25407`.
-
 ## Implementation File Coverage
 
 | File | Git-traced PRs |
@@ -39,7 +12,7 @@ Rechecked sglang upstream `origin/main@78cb38ed5` and the GitHub Pull Request fi
 | `docs_new/src/snippets/autoregressive/mistral-medium-3-5-deployment.jsx` | no direct PR-number commit |
 | `docs_new/src/snippets/autoregressive/mistral-small-4-deployment.jsx` | no direct PR-number commit |
 | `python/sglang/srt/function_call/mistral_detector.py` | [#6597](https://github.com/sgl-project/sglang/pull/6597), [#14921](https://github.com/sgl-project/sglang/pull/14921), [#20708](https://github.com/sgl-project/sglang/pull/20708) |
-| `python/sglang/srt/models/ministral3.py` | [#14251](https://github.com/sgl-project/sglang/pull/14251) |
+| `python/sglang/srt/models/ministral3.py` | [#14251](https://github.com/sgl-project/sglang/pull/14251), [#29111](https://github.com/sgl-project/sglang/pull/29111) |
 | `python/sglang/srt/models/mistral.py` | [#108](https://github.com/sgl-project/sglang/pull/108), [#5099](https://github.com/sgl-project/sglang/pull/5099) |
 | `python/sglang/srt/models/mistral_eagle.py` | no direct PR-number commit |
 | `python/sglang/srt/models/mistral_large_3.py` | [#14213](https://github.com/sgl-project/sglang/pull/14213), [#14466](https://github.com/sgl-project/sglang/pull/14466), [#14485](https://github.com/sgl-project/sglang/pull/14485) |
@@ -49,15 +22,15 @@ Rechecked sglang upstream `origin/main@78cb38ed5` and the GitHub Pull Request fi
 | `test/registered/8-gpu-models/test_mistral_large3.py` | [#15422](https://github.com/sgl-project/sglang/pull/15422), [#18065](https://github.com/sgl-project/sglang/pull/18065), [#19402](https://github.com/sgl-project/sglang/pull/19402) |
 | `test/registered/ascend/llm_models/test_npu_mistral_7b.py` | no direct PR-number commit |
 | `test/registered/ascend/vlm_models/test_npu_mistral_small_3_1_24b_instruct_2503.py` | no direct PR-number commit |
-| `test/registered/models/test_ministral3_models.py` | no direct PR-number commit |
-| `test/registered/models/test_ministral4_models.py` | [#21620](https://github.com/sgl-project/sglang/pull/21620) |
+| `test/registered/models_e2e/test_ministral3_models.py` | no direct PR-number commit |
+| `test/registered/models_e2e/test_ministral4_models.py` | no direct PR-number commit |
 | `test/registered/unit/function_call/test_mistral_detector.py` | [#21399](https://github.com/sgl-project/sglang/pull/21399) |
 
 ## PR Coverage Summary
 
 - Git-traced PRs: 14
-- Extra PRs preserved from existing docs: 3
-- Total PRs in this document: 17
+- Extra PRs preserved from existing docs: 8
+- Total PRs in this document: 22
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -78,10 +51,15 @@ Rechecked sglang upstream `origin/main@78cb38ed5` and the GitHub Pull Request fi
 | 2026-02-25 | [#15422](https://github.com/sgl-project/sglang/pull/15422) | merged | Flashinfer MOE FP8 support for Mistral Large 3. | `test/registered/8-gpu-models/test_mistral_large3.py` |
 | 2026-02-26 | [#19402](https://github.com/sgl-project/sglang/pull/19402) | merged | Fix nightly Mistral-Large-3 NVFP4 accuracy threshold | `test/registered/8-gpu-models/test_mistral_large3.py` |
 | 2026-03-18 | [#20708](https://github.com/sgl-project/sglang/pull/20708) | merged | Add Mistral Small 4 (Pixtral) support | `python/sglang/srt/function_call/mistral_detector.py`, `python/sglang/srt/models/mistral_large_3_eagle.py` |
-| 2026-03-30 | [#21620](https://github.com/sgl-project/sglang/pull/21620) | merged | fix: Mistral Small 4 fails to start due to config/weight format mismatch | `test/registered/models/test_ministral4_models.py` |
+| 2026-03-30 | [#21620](https://github.com/sgl-project/sglang/pull/21620) | merged | fix: Mistral Small 4 fails to start due to config/weight format mismatch | `test/registered/models/test_ministral4_models.py`, `python/sglang/srt/server_args.py` |
 | 2026-04-06 | [#21399](https://github.com/sgl-project/sglang/pull/21399) | merged | [CI] Add unit tests for function_call detectors (hermes, llama32, mistral) | `test/registered/unit/function_call/test_mistral_detector.py` |
 | 2026-05-16 | [#25407](https://github.com/sgl-project/sglang/pull/25407) | merged | Fix Mistral Large 3 nightly test | `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py` |
 | 2026-05-19 | [#24611](https://github.com/sgl-project/sglang/pull/24611) | merged | Opt Mistral Large performace | `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json`, `python/sglang/srt/server_args.py` |
+| 2026-05-20 | [#25821](https://github.com/sgl-project/sglang/pull/25821) | merged | [Refactor] Rename NSA → DSA: user-facing aliases, file/class/import rename | `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py`, `python/sglang/srt/layers/attention/dsa/tilelang_kernel.py`, `python/sglang/srt/layers/attention/nsa_backend.py` |
+| 2026-05-20 | [#25831](https://github.com/sgl-project/sglang/pull/25831) | merged | [Test] Stage-a sanity kits; consolidate core/ + models_e2e/ tests | `test/manual/models/test_nvidia_nemotron_3_nano_archived.py`, `python/sglang/test/kits/server_sanity_kit.py`, `python/sglang/test/kits/basic_scheduler_stress_kit.py` |
+| 2026-05-23 | [#23292](https://github.com/sgl-project/sglang/pull/23292) | merged | [CP] 1/N: Support MLA Prefill Context Parallel | `python/sglang/srt/layers/attention/flashattention_backend.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/utils/cp_utils.py` |
+| 2026-06-19 | [#28697](https://github.com/sgl-project/sglang/pull/28697) | merged | [docs] Add B300 cookbook deployment options | `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` |
+| 2026-06-25 | [#29111](https://github.com/sgl-project/sglang/pull/29111) | merged | [Bugfix] Fix Ministral3 init argument forwarding | `python/sglang/srt/models/ministral3.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -118,7 +96,7 @@ diff -- python/sglang/srt/models/mistral.py
 - Status/date: merged / 2025-05-17
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mistral.py`; associated commits `64825b839521`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +152/-21, 272 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "model(vlm): mistral 3.1"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `python/sglang/srt/models/mistral.py`; technical summary: Covers "model(vlm): mistral 3.1"; the main implementation surface is `python/sglang/srt/models/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "model(vlm): mistral 3.1"; model line: Mistral Small 4; category: model implementation change; main diff: `python/sglang/srt/models/mistral.py`; technical summary: Covers "model(vlm): mistral 3.1"; the main implementation surface is `python/sglang/srt/models/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/mistral.py` modified +71/-1 (72 lines); hunks: -13,11 +13,81; symbols: MistralForCausalLM, Mistral3ForConditionalGeneration, __init__, get_image_feature, touching `MistralForCausalLM, Mistral3ForConditionalGeneration, __init__`.
 - Code diff details:
   - `python/sglang/srt/models/mistral.py` modified +71/-1 (72 lines); hunks: -13,11 +13,81; symbols: MistralForCausalLM, Mistral3ForConditionalGeneration, __init__, get_image_feature
@@ -145,7 +123,7 @@ diff -- python/sglang/srt/models/mistral.py
 - Status/date: merged / 2025-05-26
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/function_call/mistral_detector.py`; associated commits `16f69b1f65c6`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +318/-61, 529 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "feat: Improve Mistral and Qwen25 function call parsing"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `python/sglang/srt/function_call/mistral_detector.py`; technical summary: Covers "feat: Improve Mistral and Qwen25 function call parsing"; the main implementation surface is `python/sglang/srt/function_call/mistral_detector.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "feat: Improve Mistral and Qwen25 function call parsing"; model line: Mistral Small 4; category: model implementation change; main diff: `python/sglang/srt/function_call/mistral_detector.py`; technical summary: Covers "feat: Improve Mistral and Qwen25 function call parsing"; the main implementation surface is `python/sglang/srt/function_call/mistral_detector.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/function_call/mistral_detector.py` modified +72/-26 (98 lines); hunks: -1,4 +1,5; -11,12 +12,14; symbols: MistralDetector, __init__, has_tool_call, _clean_text, touching `MistralDetector, __init__, has_tool_call`.
 - Code diff details:
   - `python/sglang/srt/function_call/mistral_detector.py` modified +72/-26 (98 lines); hunks: -1,4 +1,5; -11,12 +12,14; symbols: MistralDetector, __init__, has_tool_call, _clean_text
@@ -199,7 +177,7 @@ diff -- python/sglang/srt/models/mistral_large_3.py
 - Status/date: merged / 2025-12-04
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/ministral3.py`; associated commits `6d37e7088337`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 14 files, +245/-26, 405 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "ministral3"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `python/sglang/srt/models/ministral3.py`; technical summary: Covers "ministral3"; the main implementation surface is `python/sglang/srt/models/ministral3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "ministral3"; model line: Mistral Small 4; category: model implementation change; main diff: `python/sglang/srt/models/ministral3.py`; technical summary: Covers "ministral3"; the main implementation surface is `python/sglang/srt/models/ministral3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/ministral3.py` added +157/-0 (157 lines); hunks: -0,0 +1,157; symbols: _get_llama_4_attn_scale, Ministral3Attention, __init__, forward, touching `_get_llama_4_attn_scale, Ministral3Attention, __init__`.
 - Code diff details:
   - `python/sglang/srt/models/ministral3.py` added +157/-0 (157 lines); hunks: -0,0 +1,157; symbols: _get_llama_4_attn_scale, Ministral3Attention, __init__, forward
@@ -226,7 +204,7 @@ diff -- python/sglang/srt/models/ministral3.py
 - Status/date: merged / 2025-12-05
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mistral_large_3.py`, `python/sglang/srt/models/mistral_large_3_eagle.py`; associated commits `205f041e9619`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 9 files, +313/-62, 550 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Add Mistral Large 3 Eagle Support"; model line: Mistral Small 4; category: performance/backend optimization; main diff: `python/sglang/srt/models/mistral_large_3_eagle.py`, `python/sglang/srt/models/mistral_large_3.py`; technical summary: Covers "Add Mistral Large 3 Eagle Support"; the main implementation surface is `python/sglang/srt/models/mistral_large_3_eagle.py`, `python/sglang/srt/models/mistral_large_3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "Add Mistral Large 3 Eagle Support"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `python/sglang/srt/models/mistral_large_3_eagle.py`, `python/sglang/srt/models/mistral_large_3.py`; technical summary: Covers "Add Mistral Large 3 Eagle Support"; the main implementation surface is `python/sglang/srt/models/mistral_large_3_eagle.py`, `python/sglang/srt/models/mistral_large_3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/mistral_large_3_eagle.py` added +105/-0 (105 lines); hunks: -0,0 +1,105; symbols: MistralLarge3Model, __init__, forward, MistralLarge3ForCausalLMEagle, touching `MistralLarge3Model, __init__, forward`; `python/sglang/srt/models/mistral_large_3.py` modified +0/-3 (3 lines); hunks: -72,9 +72,6 @@ def _iterable_remap_mistral_to_ds(; symbols: _iterable_remap_mistral_to_ds, touching `_iterable_remap_mistral_to_ds`.
 - Code diff details:
   - `python/sglang/srt/models/mistral_large_3_eagle.py` added +105/-0 (105 lines); hunks: -0,0 +1,105; symbols: MistralLarge3Model, __init__, forward, MistralLarge3ForCausalLMEagle
@@ -258,7 +236,7 @@ diff -- python/sglang/srt/models/mistral_large_3.py
 - Status/date: merged / 2025-12-12
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/function_call/mistral_detector.py`; associated commits `fd1ebbb0d614`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +274/-34, 361 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "update mistral detector"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `python/sglang/srt/function_call/mistral_detector.py`; technical summary: Covers "update mistral detector"; the main implementation surface is `python/sglang/srt/function_call/mistral_detector.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "update mistral detector"; model line: Mistral Small 4; category: model implementation change; main diff: `python/sglang/srt/function_call/mistral_detector.py`; technical summary: Covers "update mistral detector"; the main implementation surface is `python/sglang/srt/function_call/mistral_detector.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/function_call/mistral_detector.py` modified +240/-34 (274 lines); hunks: -1,47 +1,49; -51,31 +53,235 @@ def detect_and_parse(self, text: str, tools: List[Tool]) ->...; symbols: MistralDetector, __init__, has_tool_call, detect_and_parse, touching `MistralDetector, __init__, has_tool_call`.
 - Code diff details:
   - `python/sglang/srt/function_call/mistral_detector.py` modified +240/-34 (274 lines); hunks: -1,47 +1,49; -51,31 +53,235 @@ def detect_and_parse(self, text: str, tools: List[Tool]) ->...; symbols: MistralDetector, __init__, has_tool_call, detect_and_parse
@@ -465,12 +443,13 @@ diff -- python/sglang/srt/models/mistral_large_3_eagle.py
 
 - Link: https://github.com/sgl-project/sglang/pull/21620
 - Status/date: merged / 2026-03-30
-- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/models/test_ministral4_models.py`; associated commits `1d6424d5ad2d`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +59/-7, 83 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "fix: Mistral Small 4 fails to start due to config/weight format mismatch"; model line: Mistral Small 4; category: bug fix; main diff: `test/registered/models/test_ministral4_models.py`; technical summary: Covers "fix: Mistral Small 4 fails to start due to config/weight format mismatch"; the main implementation surface is `test/registered/models/test_ministral4_models.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `test/registered/models/test_ministral4_models.py` added +32/-0 (32 lines); hunks: -0,0 +1,32; symbols: TestMistralSmall4TextOnly, TestMistralSmall4MMMU, touching `TestMistralSmall4TextOnly, TestMistralSmall4MMMU`.
+- Motivation: Title: "fix: Mistral Small 4 fails to start due to config/weight format mismatch"; model line: Mistral Small 4; category: bug fix; main diff: `test/registered/models/test_ministral4_models.py`, `python/sglang/srt/server_args.py`; technical summary: Covers "fix: Mistral Small 4 fails to start due to config/weight format mismatch"; the main implementation surface is `test/registered/models/test_ministral4_models.py`, `python/sglang/srt/server_args.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/models/test_ministral4_models.py` added +32/-0 (32 lines); hunks: -0,0 +1,32; symbols: TestMistralSmall4TextOnly, TestMistralSmall4MMMU, touching `TestMistralSmall4TextOnly, TestMistralSmall4MMMU`; `python/sglang/srt/server_args.py` modified +27/-7 (34 lines); hunks: -3159,22 +3159,42 @@ def _handle_load_format(self):; symbols: _handle_load_format, _is_mistral_native_format, _check_format, touching `_handle_load_format, _is_mistral_native_format, _check_format`.
 - Code diff details:
   - `test/registered/models/test_ministral4_models.py` added +32/-0 (32 lines); hunks: -0,0 +1,32; symbols: TestMistralSmall4TextOnly, TestMistralSmall4MMMU
+  - `python/sglang/srt/server_args.py` modified +27/-7 (34 lines); hunks: -3159,22 +3159,42 @@ def _handle_load_format(self):; symbols: _handle_load_format, _is_mistral_native_format, _check_format
 - Key code excerpts:
 
 ```diff
@@ -482,10 +461,19 @@ diff -- test/registered/models/test_ministral4_models.py
 +from sglang.test.kits.mmmu_vlm_kit import MMMUMixin
 +from sglang.test.server_fixtures.default_fixture import DefaultServerBase
 +from sglang.test.server_fixtures.mmmu_fixture import MMMUServerBase
+diff -- python/sglang/srt/server_args.py
+@@ -3159,22 +3159,42 @@ def _handle_load_format(self):
+-        Models like Mistral-7B-Instruct-v0.3 have BOTH params.json (native) and
+-        config.json (HF standard). When both exist, prefer the HF format to avoid
+-        parameter name mismatches between consolidated.safetensors (native names
+-        like layers.0.attention.wk.weight) and HuggingFace model classes (names
+-        like model.layers.0.self_attn.k_proj.weight).
++        When both params.json and config.json exist, default to HF format to
 ```
 
 - Reviewed files:
   - tests: `test/registered/models/test_ministral4_models.py` added +32/-0
+  - runtime: `python/sglang/srt/server_args.py` modified +27/-7
 - Risk and verification: The diff ships test coverage in `test/registered/models/test_ministral4_models.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #21399 - [CI] Add unit tests for function_call detectors (hermes, llama32, mistral)
@@ -515,21 +503,16 @@ diff -- test/registered/unit/function_call/test_mistral_detector.py
   - tests: `test/registered/unit/function_call/test_mistral_detector.py` added +224/-0
 - Risk and verification: The diff ships test coverage in `test/registered/unit/function_call/test_hermes_detector.py`, `test/registered/unit/function_call/test_llama32_detector.py`, `test/registered/unit/function_call/test_mistral_detector.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
-## Gap-Closure Notes
-
-- Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
-- If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.
-
 ### PR #25407 - Fix Mistral Large 3 nightly test
 
 - Link: https://github.com/sgl-project/sglang/pull/25407
 - Status/date: merged / 2026-05-16
-- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@78cb38ed5` history, and the GitHub Pull Request files API; associated commit `d523ae127f3c`.
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +2/-2, 13 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix Mistral Large 3 nightly test"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py`; technical summary: Covers "Fix Mistral Large 3 nightly test" with file-level evidence, code excerpts, and validation risks below.
-- Key implementation: `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py` modified +2/-2 (4 lines); hunks: -311,10 +311,10  @@ def apply_weights(; symbols: apply_weights, touching `apply_weights`.
+- Motivation: Title: "Fix Mistral Large 3 nightly test"; model line: Mistral Small 4; category: bug fix; main diff: `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py`; technical summary: Covers "Fix Mistral Large 3 nightly test"; the main implementation surface is `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py` modified +2/-2 (4 lines); hunks: -311,10 +311,10 @@ def apply_weights(; symbols: apply_weights, touching `apply_weights`.
 - Code diff details:
-  - `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py` modified +2/-2 (4 lines); hunks: -311,10 +311,10  @@ def apply_weights(; symbols: apply_weights, touching `apply_weights`
+  - `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py` modified +2/-2 (4 lines); hunks: -311,10 +311,10 @@ def apply_weights(; symbols: apply_weights
 - Key code excerpts:
 
 ```diff
@@ -543,20 +526,20 @@ diff -- python/sglang/srt/layers/quantization/compressed_tensors/schemes/compres
 
 - Reviewed files:
   - runtime: `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py` modified +2/-2
-- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #24611 - Opt Mistral Large performace
 
 - Link: https://github.com/sgl-project/sglang/pull/24611
 - Status/date: merged / 2026-05-19
-- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@78cb38ed5` history, and the GitHub Pull Request files API; associated commit `31e324391bbc`.
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +294/-1, 311 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Opt Mistral Large performace"; model line: Mistral Small 4; category: performance/backend optimization; main diff: `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json`, `python/sglang/srt/server_args.py`; technical summary: Covers "Opt Mistral Large performace" with file-level evidence, code excerpts, and validation risks below.
-- Key implementation: `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json` added +146/-0 (146 lines); hunks: -0,0 +1,146  @@ +{；`python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json` added +146/-0 (146 lines); hunks: -0,0 +1,146  @@ +{；`python/sglang/srt/server_args.py` modified +2/-1 (3 lines); hunks: -2404,7 +2404,7  @@ def _handle_model_specific_adjustments(self):; -2421,6 +2421,7  @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments, touching `_handle_model_specific_adjustments`.
+- Motivation: Title: "Opt Mistral Large performace"; model line: Mistral Small 4; category: performance/backend optimization; main diff: `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json`, `python/sglang/srt/server_args.py`; technical summary: Covers "Opt Mistral Large performace"; the main implementation surface is `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json`, `python/sglang/srt/server_args.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json` added +146/-0 (146 lines); hunks: -0,0 +1,146; `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json` added +146/-0 (146 lines); hunks: -0,0 +1,146; `python/sglang/srt/server_args.py` modified +2/-1 (3 lines); hunks: -2404,7 +2404,7 @@ def _handle_model_specific_adjustments(self):; -2421,6 +2421,7 @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments, touching `_handle_model_specific_adjustments`.
 - Code diff details:
-  - `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json` added +146/-0 (146 lines); hunks: -0,0 +1,146  @@ +{
-  - `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json` added +146/-0 (146 lines); hunks: -0,0 +1,146  @@ +{
-  - `python/sglang/srt/server_args.py` modified +2/-1 (3 lines); hunks: -2404,7 +2404,7  @@ def _handle_model_specific_adjustments(self):; -2421,6 +2421,7  @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments, touching `_handle_model_specific_adjustments`
+  - `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json` added +146/-0 (146 lines); hunks: -0,0 +1,146
+  - `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json` added +146/-0 (146 lines); hunks: -0,0 +1,146
+  - `python/sglang/srt/server_args.py` modified +2/-1 (3 lines); hunks: -2404,7 +2404,7 @@ def _handle_model_specific_adjustments(self):; -2421,6 +2421,7 @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments
 - Key code excerpts:
 
 ```diff
@@ -568,8 +551,6 @@ diff -- python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_
 +        "BLOCK_SIZE_N": 64,
 +        "BLOCK_SIZE_K": 128,
 +        "GROUP_SIZE_M": 1,
-+        "num_warps": 4,
-+        "num_stages": 5
 diff -- python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json
 @@ -0,0 +1,146 @@
 +{
@@ -578,16 +559,206 @@ diff -- python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_
 +        "BLOCK_SIZE_N": 64,
 +        "BLOCK_SIZE_K": 128,
 +        "GROUP_SIZE_M": 1,
-+        "num_warps": 4,
-+        "num_stages": 5
 diff -- python/sglang/srt/server_args.py
 @@ -2404,7 +2404,7 @@ def _handle_model_specific_adjustments(self):
--        # Qwen3/Qwen3Next/Qwen3.5 MoE families)
-+        # MistralLarge3, Qwen3/Qwen3Next/Qwen3.5 MoE families)
-@@ -2421,6 +2421,7 @@ def _handle_model_specific_adjustments(self):
-+                "MistralLarge3ForCausalLM",
 ```
 
 - Reviewed files:
   - runtime: `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json` added +146/-0; `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json` added +146/-0; `python/sglang/srt/server_args.py` modified +2/-1
-- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json`, `python/sglang/srt/server_args.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json`, `python/sglang/srt/server_args.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #25821 - [Refactor] Rename NSA → DSA: user-facing aliases, file/class/import rename
+
+- Link: https://github.com/sgl-project/sglang/pull/25821
+- Status/date: merged / 2026-05-20
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 162 files, +11303/-10745, 15980 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Refactor] Rename NSA → DSA: user-facing aliases, file/class/import rename"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py`, `python/sglang/srt/layers/attention/dsa/tilelang_kernel.py`, `python/sglang/srt/layers/attention/nsa_backend.py`; technical summary: Covers "[Refactor] Rename NSA → DSA: user-facing aliases, file/class/import rename"; the main implementation surface is `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py`, `python/sglang/srt/layers/attention/dsa/tilelang_kernel.py`, `python/sglang/srt/layers/attention/nsa_backend.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` modified +8/-2587 (2595 lines); `python/sglang/srt/layers/attention/dsa/tilelang_kernel.py` added +2589/-0 (2589 lines); `python/sglang/srt/layers/attention/nsa_backend.py` modified +21/-2518 (2539 lines); `python/sglang/srt/layers/attention/dsa_backend.py` added +2528/-0 (2528 lines).
+- Code diff details:
+  - `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` modified +8/-2587 (2595 lines)
+  - `python/sglang/srt/layers/attention/dsa/tilelang_kernel.py` added +2589/-0 (2589 lines)
+  - `python/sglang/srt/layers/attention/nsa_backend.py` modified +21/-2518 (2539 lines)
+  - `python/sglang/srt/layers/attention/dsa_backend.py` added +2528/-0 (2528 lines)
+  - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +8/-1744 (1752 lines); hunks: -1,1746 +1,10; symbols: BaseIndexerMetadata, get_seqlens_int32, get_page_table_64, get_page_table_1
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
+@@ -1,1746 +1,10 @@
+-from __future__ import annotations
++# [Deprecated] Re-export shim for backward compatibility. Use dsa.dsa_indexer instead.
++import warnings
+-import contextlib
+-import logging
+-from abc import ABC, abstractmethod
+diff -- python/sglang/srt/layers/attention/dsa/dsa_indexer.py
+@@ -0,0 +1,1746 @@
++from __future__ import annotations
++import contextlib
++import logging
++from abc import ABC, abstractmethod
++from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple, Union
++import torch
+diff -- python/sglang/srt/layers/attention/nsa/index_buf_accessor.py
+@@ -1,814 +1,10 @@
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` modified +8/-2587; `python/sglang/srt/layers/attention/dsa/tilelang_kernel.py` added +2589/-0; `python/sglang/srt/layers/attention/nsa_backend.py` modified +21/-2518; `python/sglang/srt/layers/attention/dsa_backend.py` added +2528/-0; `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +8/-1744; `python/sglang/srt/layers/attention/dsa/dsa_indexer.py` added +1746/-0
+- Risk and verification: The diff ships test coverage in `python/sglang/jit_kernel/tests/test_fused_metadata_copy.py`, `python/sglang/jit_kernel/tests/test_fused_store_index_cache.py`, `python/sglang/jit_kernel/tests/test_set_mla_kv_buffer.py`, `python/sglang/test/nightly_utils.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #25831 - [Test] Stage-a sanity kits; consolidate core/ + models_e2e/ tests
+
+- Link: https://github.com/sgl-project/sglang/pull/25831
+- Status/date: merged / 2026-05-20
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 36 files, +572/-639, 1504 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Test] Stage-a sanity kits; consolidate core/ + models_e2e/ tests"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `test/manual/models/test_nvidia_nemotron_3_nano_archived.py`, `python/sglang/test/kits/server_sanity_kit.py`, `python/sglang/test/kits/basic_scheduler_stress_kit.py`; technical summary: Covers "[Test] Stage-a sanity kits; consolidate core/ + models_e2e/ tests"; the main implementation surface is `test/manual/models/test_nvidia_nemotron_3_nano_archived.py`, `python/sglang/test/kits/server_sanity_kit.py`, `python/sglang/test/kits/basic_scheduler_stress_kit.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/manual/models/test_nvidia_nemotron_3_nano_archived.py` modified +1/-1 (2 lines); hunks: -1,4 +1,4; `python/sglang/test/kits/server_sanity_kit.py` removed +0/-228 (228 lines); hunks: -1,228 +0,0; symbols: ServerSanityMixin, _sanity_generate, test_health, test_health_generate, touching `ServerSanityMixin, _sanity_generate, test_health`; `python/sglang/test/kits/basic_scheduler_stress_kit.py` added +135/-0 (135 lines); hunks: -0,0 +1,135; symbols: BasicSchedulerStressMixin, _stress_generate, test_streaming_response, test_concurrent_requests, touching `BasicSchedulerStressMixin, _stress_generate, test_streaming_response`; `python/sglang/test/kits/basic_decode_correctness_kit.py` added +114/-0 (114 lines); hunks: -0,0 +1,114; symbols: BasicDecodeCorrectnessMixin, _decode_generate, test_capital_france, test_basic_math, touching `BasicDecodeCorrectnessMixin, _decode_generate, test_capital_france`.
+- Code diff details:
+  - `test/manual/models/test_nvidia_nemotron_3_nano_archived.py` modified +1/-1 (2 lines); hunks: -1,4 +1,4
+  - `python/sglang/test/kits/server_sanity_kit.py` removed +0/-228 (228 lines); hunks: -1,228 +0,0; symbols: ServerSanityMixin, _sanity_generate, test_health, test_health_generate
+  - `python/sglang/test/kits/basic_scheduler_stress_kit.py` added +135/-0 (135 lines); hunks: -0,0 +1,135; symbols: BasicSchedulerStressMixin, _stress_generate, test_streaming_response, test_concurrent_requests
+  - `python/sglang/test/kits/basic_decode_correctness_kit.py` added +114/-0 (114 lines); hunks: -0,0 +1,114; symbols: BasicDecodeCorrectnessMixin, _decode_generate, test_capital_france, test_basic_math
+  - `test/registered/language/test_srt_backend.py` removed +0/-94 (94 lines); hunks: -1,94 +0,0; symbols: TestSRTBackend, setUpClass, tearDownClass, test_few_shot_qa
+- Key code excerpts:
+
+```diff
+diff -- test/manual/models/test_nvidia_nemotron_3_nano_archived.py
+@@ -1,4 +1,4 @@
+-"""Archived test classes split out of test/registered/models/test_nvidia_nemotron_3_nano.py.
++"""Archived test classes split out of test/registered/models_e2e/test_nvidia_nemotron_3_nano.py.
+diff -- python/sglang/test/kits/server_sanity_kit.py
+@@ -1,228 +0,0 @@
+-"""Black-box server sanity prompts: cheap checks that catch silent
+-correctness regressions (gibberish / repetition collapse / encoding),
+-streaming/concurrent path bugs, and endpoint health.
+-Mix into any ``CustomTestCase`` subclass that exposes ``self.base_url``
+-and ``self.process``. Each test is independent and fast (≤ 5 s after
+-warmup); the whole kit completes in < 1 min."""
+diff -- python/sglang/test/kits/basic_scheduler_stress_kit.py
+@@ -0,0 +1,135 @@
++"""Basic scheduler / cache / streaming stress sanity kit.
++Probes that catch bugs which only fire under multi-request or large-
++prompt conditions: scheduler hangs, radix prefix-cache cross-
++contamination, chunked-prefill multi-chunk kernel crashes, and SSE
+```
+
+- Reviewed files:
+  - tests: `test/manual/models/test_nvidia_nemotron_3_nano_archived.py` modified +1/-1; `python/sglang/test/kits/server_sanity_kit.py` removed +0/-228; `python/sglang/test/kits/basic_scheduler_stress_kit.py` added +135/-0; `python/sglang/test/kits/basic_decode_correctness_kit.py` added +114/-0; `test/registered/language/test_srt_backend.py` removed +0/-94; `test/registered/core/test_engine_child_pids.py` modified +40/-51
+- Risk and verification: The diff ships test coverage in `python/sglang/test/kits/basic_api_contract_kit.py`, `python/sglang/test/kits/basic_decode_correctness_kit.py`, `python/sglang/test/kits/basic_scheduler_stress_kit.py`, `python/sglang/test/kits/server_sanity_kit.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #23292 - [CP] 1/N: Support MLA Prefill Context Parallel
+
+- Link: https://github.com/sgl-project/sglang/pull/23292
+- Status/date: merged / 2026-05-23
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 21 files, +900/-161, 1566 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[CP] 1/N: Support MLA Prefill Context Parallel"; model line: Mistral Small 4; category: performance/backend optimization; main diff: `python/sglang/srt/layers/attention/flashattention_backend.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/utils/cp_utils.py`; technical summary: Covers "[CP] 1/N: Support MLA Prefill Context Parallel"; the main implementation surface is `python/sglang/srt/layers/attention/flashattention_backend.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/utils/cp_utils.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/attention/flashattention_backend.py` modified +128/-56 (184 lines); hunks: -508,6 +508,25 @@ def init_forward_metadata(self, forward_batch: ForwardBatch):; -627,36 +646,43 @@ def forward_extend(; symbols: init_forward_metadata, forward_extend, _fa_cp_attn, _mla_cp_attn, touching `init_forward_metadata, forward_extend, _fa_cp_attn`; `python/sglang/srt/models/deepseek_v2.py` modified +73/-14 (87 lines); hunks: -123,9 +123,12; -339,6 +342,8 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`; `python/sglang/srt/layers/utils/cp_utils.py` modified +36/-19 (55 lines); hunks: -51,19 +51,41 @@ def is_prefill_cp_in_seq_split():; -395,6 +417,7 @@ def prepare_context_parallel_metadata(; symbols: is_prefill_cp_in_seq_split, is_mla_prefill_cp_enabled, mla_use_prefill_cp, can_cp_split, touching `is_prefill_cp_in_seq_split, is_mla_prefill_cp_enabled, mla_use_prefill_cp`; `python/sglang/srt/models/deepseek_nextn.py` modified +31/-8 (39 lines); hunks: -43,9 +43,12; -136,6 +139,14 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
+- Code diff details:
+  - `python/sglang/srt/layers/attention/flashattention_backend.py` modified +128/-56 (184 lines); hunks: -508,6 +508,25 @@ def init_forward_metadata(self, forward_batch: ForwardBatch):; -627,36 +646,43 @@ def forward_extend(; symbols: init_forward_metadata, forward_extend, _fa_cp_attn, _mla_cp_attn
+  - `python/sglang/srt/models/deepseek_v2.py` modified +73/-14 (87 lines); hunks: -123,9 +123,12; -339,6 +342,8 @@ def __init__(; symbols: __init__, forward
+  - `python/sglang/srt/layers/utils/cp_utils.py` modified +36/-19 (55 lines); hunks: -51,19 +51,41 @@ def is_prefill_cp_in_seq_split():; -395,6 +417,7 @@ def prepare_context_parallel_metadata(; symbols: is_prefill_cp_in_seq_split, is_mla_prefill_cp_enabled, mla_use_prefill_cp, can_cp_split
+  - `python/sglang/srt/models/deepseek_nextn.py` modified +31/-8 (39 lines); hunks: -43,9 +43,12; -136,6 +139,14 @@ def __init__(; symbols: __init__, forward
+  - `python/sglang/srt/model_executor/cuda_graph_runner.py` modified +14/-3 (17 lines); hunks: -56,6 +56,7; -567,7 +568,15 @@ def __init__(; symbols: __init__, capture_one_batch_size, replay_prepare
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/attention/flashattention_backend.py
+@@ -508,6 +508,25 @@ def init_forward_metadata(self, forward_batch: ForwardBatch):
++            # MLA/MHA CP: prepare_mlp_sync_batch pads extend tokens up to
++            # lcm(attn_tp_size, attn_cp_size), so cache_seqlens_cp can exceed
++            # seq_lens_cpu.max(). Widen page_table by the pad delta to keep
++            # FA3's causal reads in-bounds; widened columns index KV slot 0
++            # (req_to_token is zero-init) and outputs for padding queries are
++            # discarded downstream.
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -123,9 +123,12 @@
++    can_cp_split,
++    is_prefill_context_parallel_enabled,
++    mla_use_prefill_cp,
+@@ -339,6 +342,8 @@ def __init__(
++        dsa_enable_prefill_cp: bool = False,
++        mla_enable_prefill_cp: bool = False,
+diff -- python/sglang/srt/layers/utils/cp_utils.py
+@@ -51,19 +51,41 @@ def is_prefill_cp_in_seq_split():
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/attention/flashattention_backend.py` modified +128/-56; `python/sglang/srt/models/deepseek_v2.py` modified +73/-14; `python/sglang/srt/layers/utils/cp_utils.py` modified +36/-19; `python/sglang/srt/models/deepseek_nextn.py` modified +31/-8; `python/sglang/srt/model_executor/cuda_graph_runner.py` modified +14/-3; `python/sglang/srt/layers/communicator.py` modified +10/-4
+- Risk and verification: The diff ships test coverage in `test/registered/cp/test_deepseek_v3_cp_single_node.py`, `test/registered/cp/test_deepseek_v4_flash_fp4_b200_cp.py`, `test/registered/cp/test_qwen3_30b.py`, `test/registered/kernels/test_cp_prefix_len_fa3_parity.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #28697 - [docs] Add B300 cookbook deployment options
+
+- Link: https://github.com/sgl-project/sglang/pull/28697
+- Status/date: merged / 2026-06-19
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 27 files, +503/-69, 1291 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[docs] Add B300 cookbook deployment options"; model line: Mistral Small 4; category: performance/backend optimization; main diff: `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx`; technical summary: Covers "[docs] Add B300 cookbook deployment options"; the main implementation surface is `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx` added +167/-0 (167 lines); hunks: -0,0 +1,167; `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx` modified +68/-2 (70 lines); hunks: -9,6 +9,11 @@ const lookupData = {; -182,6 +187,66 @@ const lookupData = {; `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` modified +40/-16 (56 lines); hunks: -4,6 +4,7 @@ export const GLM5Deployment = () => {; -13,6 +14,7 @@ export const GLM5Deployment = () => {; `docs_new/src/snippets/autoregressive/deepseek-v32-deployment.jsx` modified +29/-10 (39 lines); hunks: -3,7 +3,7 @@ export const DeepSeekV32Deployment = () => {; -12,6 +12,7 @@ export const DeepSeekV32Deployment = () => {.
+- Code diff details:
+  - `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx` added +167/-0 (167 lines); hunks: -0,0 +1,167
+  - `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx` modified +68/-2 (70 lines); hunks: -9,6 +9,11 @@ const lookupData = {; -182,6 +187,66 @@ const lookupData = {
+  - `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` modified +40/-16 (56 lines); hunks: -4,6 +4,7 @@ export const GLM5Deployment = () => {; -13,6 +14,7 @@ export const GLM5Deployment = () => {
+  - `docs_new/src/snippets/autoregressive/deepseek-v32-deployment.jsx` modified +29/-10 (39 lines); hunks: -3,7 +3,7 @@ export const DeepSeekV32Deployment = () => {; -12,6 +12,7 @@ export const DeepSeekV32Deployment = () => {
+  - `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx` modified +23/-15 (38 lines); hunks: -8,19 +8,19 @@ export const Qwen35Deployment = () => {; -149,7 +149,7 @@ export const Qwen35Deployment = () => {
+- Key code excerpts:
+
+```diff
+diff -- docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx
+@@ -0,0 +1,167 @@
++export const InternS1Deployment = () => {
++  const options = {
++    hardware: {
++      name: 'hardware',
++      title: 'Hardware Platform',
++      items: [
+diff -- docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx
+@@ -9,6 +9,11 @@ const lookupData = {
++      {
++        "id": "b300",
++        "label": "B300",
++        "default": false
++      },
+@@ -182,6 +187,66 @@ const lookupData = {
+diff -- docs_new/src/snippets/autoregressive/glm-5-deployment.jsx
+@@ -4,6 +4,7 @@ export const GLM5Deployment = () => {
+```
+
+- Reviewed files:
+  - docs: `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx` added +167/-0; `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx` modified +68/-2; `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` modified +40/-16; `docs_new/src/snippets/autoregressive/deepseek-v32-deployment.jsx` modified +29/-10; `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx` modified +23/-15; `docs_new/cookbook/autoregressive/InternLM/Intern-S1.mdx` modified +16/-13
+- Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/InternLM/Intern-S1.mdx`, `docs_new/src/snippets/autoregressive/deepseek-math-v2-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #29111 - [Bugfix] Fix Ministral3 init argument forwarding
+
+- Link: https://github.com/sgl-project/sglang/pull/29111
+- Status/date: merged / 2026-06-25
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/ministral3.py`; associated commits `ddda4f90288b`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +37/-17, 99 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Bugfix] Fix Ministral3 init argument forwarding"; model line: Mistral Small 4; category: bug fix; main diff: `python/sglang/srt/models/ministral3.py`; technical summary: Covers "[Bugfix] Fix Ministral3 init argument forwarding"; the main implementation surface is `python/sglang/srt/models/ministral3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/ministral3.py` modified +37/-17 (54 lines); hunks: -31,6 +31,7 @@ def __init__(; -40,18 +41,19 @@ def __init__(; symbols: __init__, forward, Ministral3DecoderLayer, touching `__init__, forward, Ministral3DecoderLayer`.
+- Code diff details:
+  - `python/sglang/srt/models/ministral3.py` modified +37/-17 (54 lines); hunks: -31,6 +31,7 @@ def __init__(; -40,18 +41,19 @@ def __init__(; symbols: __init__, forward, Ministral3DecoderLayer
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/ministral3.py
+@@ -31,6 +31,7 @@ def __init__(
++        start_layer: int = 0,
+@@ -40,18 +41,19 @@ def __init__(
+-            config,
+-            hidden_size,
+-            num_heads,
+-            num_kv_heads,
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/ministral3.py` modified +37/-17
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/ministral3.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+## Gap-Closure Notes
+
+- Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
+- If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.
