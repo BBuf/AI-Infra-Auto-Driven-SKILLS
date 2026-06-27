@@ -1,32 +1,5 @@
 # sglang Mistral Small 4 模型 PR 优化历史
 
-## 2026-06-26 最新源码扫描
-
-已按 SGLang 上游 `sgl-project/sglang@8524678889485801e7a4a12d62015be0c68f7a90` 重新扫描本文下方列出的 tracked files。
-文件级匹配使用 GitHub mirror 的 `git log --name-only`；PR 标题、链接和合并时间通过 GitHub GraphQL Pull Request API 批量复核。上一时效锚点：`2026-06-05`。
-
-结果：发现 2 个额外 PR-numbered merge 触及 tracked files，但尚未提升为下方完整逐 PR diff audit card。此节只作为 freshness index；需要引用实现细节时，仍应先人工阅读 PR diff 再补完整卡片。
-
-| 合并日期 | PR | 标题 | 命中的 tracked files |
-| --- | --- | --- | --- |
-| 2026-06-25 | [#29111](https://github.com/sgl-project/sglang/pull/29111) | [Bugfix] Fix Ministral3 init argument forwarding | `ministral3.py` |
-| 2026-06-19 | [#28697](https://github.com/sgl-project/sglang/pull/28697) | [docs] Add B300 cookbook deployment options | `mistral-small-4-deployment.jsx` |
-
-## 2026-06-05 PR 补漏复核
-
-已于 2026-06-05 按 sglang 上游 `origin/main@6cfdc1858` 复核；自上次时效基准（2026-05-19）以来，共有 3 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
-
-| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
-| --- | --- | --- | --- |
-| 2026-05-23 | [#23292](https://github.com/sgl-project/sglang/pull/23292) | [CP] 1/N: Support MLA Prefill Context Parallel | `mistral_large_3_eagle.py` |
-| 2026-05-20 | [#25831](https://github.com/sgl-project/sglang/pull/25831) | [Test] Stage-a sanity kits; consolidate core/ + models_e2e/ tests | `test_ministral3_models.py`, `test_ministral4_models.py` |
-| 2026-05-20 | [#25821](https://github.com/sgl-project/sglang/pull/25821) | [Refactor] Rename NSA → DSA: user-facing aliases, file/class/import rename | `mistral_large_3_eagle.py` |
-
-
-## 2026-05-19 PR 补漏复核
-
-已按 sglang 上游 `origin/main@78cb38ed5` 和 GitHub Pull Request files API 复核；本轮补齐 `#24611`, `#25407` 的时间线与逐 PR diff 审计卡。
-
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
@@ -39,7 +12,7 @@
 | `docs_new/src/snippets/autoregressive/mistral-medium-3-5-deployment.jsx` | 无直接 PR 号提交 |
 | `docs_new/src/snippets/autoregressive/mistral-small-4-deployment.jsx` | 无直接 PR 号提交 |
 | `python/sglang/srt/function_call/mistral_detector.py` | [#6597](https://github.com/sgl-project/sglang/pull/6597), [#14921](https://github.com/sgl-project/sglang/pull/14921), [#20708](https://github.com/sgl-project/sglang/pull/20708) |
-| `python/sglang/srt/models/ministral3.py` | [#14251](https://github.com/sgl-project/sglang/pull/14251) |
+| `python/sglang/srt/models/ministral3.py` | [#14251](https://github.com/sgl-project/sglang/pull/14251), [#29111](https://github.com/sgl-project/sglang/pull/29111) |
 | `python/sglang/srt/models/mistral.py` | [#108](https://github.com/sgl-project/sglang/pull/108), [#5099](https://github.com/sgl-project/sglang/pull/5099) |
 | `python/sglang/srt/models/mistral_eagle.py` | 无直接 PR 号提交 |
 | `python/sglang/srt/models/mistral_large_3.py` | [#14213](https://github.com/sgl-project/sglang/pull/14213), [#14466](https://github.com/sgl-project/sglang/pull/14466), [#14485](https://github.com/sgl-project/sglang/pull/14485) |
@@ -49,15 +22,15 @@
 | `test/registered/8-gpu-models/test_mistral_large3.py` | [#15422](https://github.com/sgl-project/sglang/pull/15422), [#18065](https://github.com/sgl-project/sglang/pull/18065), [#19402](https://github.com/sgl-project/sglang/pull/19402) |
 | `test/registered/ascend/llm_models/test_npu_mistral_7b.py` | 无直接 PR 号提交 |
 | `test/registered/ascend/vlm_models/test_npu_mistral_small_3_1_24b_instruct_2503.py` | 无直接 PR 号提交 |
-| `test/registered/models/test_ministral3_models.py` | 无直接 PR 号提交 |
-| `test/registered/models/test_ministral4_models.py` | [#21620](https://github.com/sgl-project/sglang/pull/21620) |
+| `test/registered/models_e2e/test_ministral3_models.py` | 无直接 PR 号提交 |
+| `test/registered/models_e2e/test_ministral4_models.py` | 无直接 PR 号提交 |
 | `test/registered/unit/function_call/test_mistral_detector.py` | [#21399](https://github.com/sgl-project/sglang/pull/21399) |
 
 ## PR 覆盖总览
 
 - git 追溯 PR 数: 14
-- 原文档显式引用补充 PR 数: 3
-- 当前文档总 PR 数: 17
+- 原文档显式引用补充 PR 数: 8
+- 当前文档总 PR 数: 22
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -78,10 +51,15 @@
 | 2026-02-25 | [#15422](https://github.com/sgl-project/sglang/pull/15422) | merged | Flashinfer MOE FP8 support for Mistral Large 3. | `test/registered/8-gpu-models/test_mistral_large3.py` |
 | 2026-02-26 | [#19402](https://github.com/sgl-project/sglang/pull/19402) | merged | Fix nightly Mistral-Large-3 NVFP4 accuracy threshold | `test/registered/8-gpu-models/test_mistral_large3.py` |
 | 2026-03-18 | [#20708](https://github.com/sgl-project/sglang/pull/20708) | merged | Add Mistral Small 4 (Pixtral) support | `python/sglang/srt/function_call/mistral_detector.py`, `python/sglang/srt/models/mistral_large_3_eagle.py` |
-| 2026-03-30 | [#21620](https://github.com/sgl-project/sglang/pull/21620) | merged | fix: Mistral Small 4 fails to start due to config/weight format mismatch | `test/registered/models/test_ministral4_models.py` |
+| 2026-03-30 | [#21620](https://github.com/sgl-project/sglang/pull/21620) | merged | fix: Mistral Small 4 fails to start due to config/weight format mismatch | `test/registered/models/test_ministral4_models.py`, `python/sglang/srt/server_args.py` |
 | 2026-04-06 | [#21399](https://github.com/sgl-project/sglang/pull/21399) | merged | [CI] Add unit tests for function_call detectors (hermes, llama32, mistral) | `test/registered/unit/function_call/test_mistral_detector.py` |
 | 2026-05-16 | [#25407](https://github.com/sgl-project/sglang/pull/25407) | merged | Fix Mistral Large 3 nightly test | `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py` |
 | 2026-05-19 | [#24611](https://github.com/sgl-project/sglang/pull/24611) | merged | Opt Mistral Large performace | `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json`, `python/sglang/srt/server_args.py` |
+| 2026-05-20 | [#25821](https://github.com/sgl-project/sglang/pull/25821) | merged | [Refactor] Rename NSA → DSA: user-facing aliases, file/class/import rename | `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py`, `python/sglang/srt/layers/attention/dsa/tilelang_kernel.py`, `python/sglang/srt/layers/attention/nsa_backend.py` |
+| 2026-05-20 | [#25831](https://github.com/sgl-project/sglang/pull/25831) | merged | [Test] Stage-a sanity kits; consolidate core/ + models_e2e/ tests | `test/manual/models/test_nvidia_nemotron_3_nano_archived.py`, `python/sglang/test/kits/server_sanity_kit.py`, `python/sglang/test/kits/basic_scheduler_stress_kit.py` |
+| 2026-05-23 | [#23292](https://github.com/sgl-project/sglang/pull/23292) | merged | [CP] 1/N: Support MLA Prefill Context Parallel | `python/sglang/srt/layers/attention/flashattention_backend.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/utils/cp_utils.py` |
+| 2026-06-19 | [#28697](https://github.com/sgl-project/sglang/pull/28697) | merged | [docs] Add B300 cookbook deployment options | `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` |
+| 2026-06-25 | [#29111](https://github.com/sgl-project/sglang/pull/29111) | merged | [Bugfix] Fix Ministral3 init argument forwarding | `python/sglang/srt/models/ministral3.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -118,7 +96,7 @@ diff -- python/sglang/srt/models/mistral.py
 - 状态/时间: merged / 2025-05-17
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/mistral.py`；关联提交 `64825b839521`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+152/-21，可读 patch 272 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「model(vlm): mistral 3.1」；模型线: Mistral Small 4；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/mistral.py`；技术摘要: 覆盖「model(vlm): mistral 3.1」；主要实现面是 `python/sglang/srt/models/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「model(vlm): mistral 3.1」；模型线: Mistral Small 4；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/mistral.py`；技术摘要: 覆盖「model(vlm): mistral 3.1」；主要实现面是 `python/sglang/srt/models/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/mistral.py` modified +71/-1 (72 lines); hunks: -13,11 +13,81; symbols: MistralForCausalLM, Mistral3ForConditionalGeneration, __init__, get_image_feature，涉及 `MistralForCausalLM, Mistral3ForConditionalGeneration, __init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/mistral.py` modified +71/-1 (72 lines); hunks: -13,11 +13,81; symbols: MistralForCausalLM, Mistral3ForConditionalGeneration, __init__, get_image_feature
@@ -145,7 +123,7 @@ diff -- python/sglang/srt/models/mistral.py
 - 状态/时间: merged / 2025-05-26
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/function_call/mistral_detector.py`；关联提交 `16f69b1f65c6`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+318/-61，可读 patch 529 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「feat: Improve Mistral and Qwen25 function call parsing」；模型线: Mistral Small 4；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/function_call/mistral_detector.py`；技术摘要: 覆盖「feat: Improve Mistral and Qwen25 function call parsing」；主要实现面是 `python/sglang/srt/function_call/mistral_detector.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「feat: Improve Mistral and Qwen25 function call parsing」；模型线: Mistral Small 4；类别: 模型实现调整；主要 diff: `python/sglang/srt/function_call/mistral_detector.py`；技术摘要: 覆盖「feat: Improve Mistral and Qwen25 function call parsing」；主要实现面是 `python/sglang/srt/function_call/mistral_detector.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/function_call/mistral_detector.py` modified +72/-26 (98 lines); hunks: -1,4 +1,5; -11,12 +12,14; symbols: MistralDetector, __init__, has_tool_call, _clean_text，涉及 `MistralDetector, __init__, has_tool_call`。
 - 代码 diff 细节:
   - `python/sglang/srt/function_call/mistral_detector.py` modified +72/-26 (98 lines); hunks: -1,4 +1,5; -11,12 +12,14; symbols: MistralDetector, __init__, has_tool_call, _clean_text
@@ -199,7 +177,7 @@ diff -- python/sglang/srt/models/mistral_large_3.py
 - 状态/时间: merged / 2025-12-04
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/ministral3.py`；关联提交 `6d37e7088337`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 14 个文件，+245/-26，可读 patch 405 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「ministral3」；模型线: Mistral Small 4；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/models/ministral3.py`；技术摘要: 覆盖「ministral3」；主要实现面是 `python/sglang/srt/models/ministral3.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「ministral3」；模型线: Mistral Small 4；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/ministral3.py`；技术摘要: 覆盖「ministral3」；主要实现面是 `python/sglang/srt/models/ministral3.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/ministral3.py` added +157/-0 (157 lines); hunks: -0,0 +1,157; symbols: _get_llama_4_attn_scale, Ministral3Attention, __init__, forward，涉及 `_get_llama_4_attn_scale, Ministral3Attention, __init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/ministral3.py` added +157/-0 (157 lines); hunks: -0,0 +1,157; symbols: _get_llama_4_attn_scale, Ministral3Attention, __init__, forward
@@ -226,7 +204,7 @@ diff -- python/sglang/srt/models/ministral3.py
 - 状态/时间: merged / 2025-12-05
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/mistral_large_3.py`, `python/sglang/srt/models/mistral_large_3_eagle.py`；关联提交 `205f041e9619`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 9 个文件，+313/-62，可读 patch 550 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Add Mistral Large 3 Eagle Support」；模型线: Mistral Small 4；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/mistral_large_3_eagle.py`, `python/sglang/srt/models/mistral_large_3.py`；技术摘要: 覆盖「Add Mistral Large 3 Eagle Support」；主要实现面是 `python/sglang/srt/models/mistral_large_3_eagle.py`, `python/sglang/srt/models/mistral_large_3.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「Add Mistral Large 3 Eagle Support」；模型线: Mistral Small 4；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/mistral_large_3_eagle.py`, `python/sglang/srt/models/mistral_large_3.py`；技术摘要: 覆盖「Add Mistral Large 3 Eagle Support」；主要实现面是 `python/sglang/srt/models/mistral_large_3_eagle.py`, `python/sglang/srt/models/mistral_large_3.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/mistral_large_3_eagle.py` added +105/-0 (105 lines); hunks: -0,0 +1,105; symbols: MistralLarge3Model, __init__, forward, MistralLarge3ForCausalLMEagle，涉及 `MistralLarge3Model, __init__, forward`；`python/sglang/srt/models/mistral_large_3.py` modified +0/-3 (3 lines); hunks: -72,9 +72,6 @@ def _iterable_remap_mistral_to_ds(; symbols: _iterable_remap_mistral_to_ds，涉及 `_iterable_remap_mistral_to_ds`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/mistral_large_3_eagle.py` added +105/-0 (105 lines); hunks: -0,0 +1,105; symbols: MistralLarge3Model, __init__, forward, MistralLarge3ForCausalLMEagle
@@ -258,7 +236,7 @@ diff -- python/sglang/srt/models/mistral_large_3.py
 - 状态/时间: merged / 2025-12-12
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/function_call/mistral_detector.py`；关联提交 `fd1ebbb0d614`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+274/-34，可读 patch 361 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「update mistral detector」；模型线: Mistral Small 4；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/function_call/mistral_detector.py`；技术摘要: 覆盖「update mistral detector」；主要实现面是 `python/sglang/srt/function_call/mistral_detector.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「update mistral detector」；模型线: Mistral Small 4；类别: 模型实现调整；主要 diff: `python/sglang/srt/function_call/mistral_detector.py`；技术摘要: 覆盖「update mistral detector」；主要实现面是 `python/sglang/srt/function_call/mistral_detector.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/function_call/mistral_detector.py` modified +240/-34 (274 lines); hunks: -1,47 +1,49; -51,31 +53,235 @@ def detect_and_parse(self, text: str, tools: List[Tool]) ->...; symbols: MistralDetector, __init__, has_tool_call, detect_and_parse，涉及 `MistralDetector, __init__, has_tool_call`。
 - 代码 diff 细节:
   - `python/sglang/srt/function_call/mistral_detector.py` modified +240/-34 (274 lines); hunks: -1,47 +1,49; -51,31 +53,235 @@ def detect_and_parse(self, text: str, tools: List[Tool]) ->...; symbols: MistralDetector, __init__, has_tool_call, detect_and_parse
@@ -465,12 +443,13 @@ diff -- python/sglang/srt/models/mistral_large_3_eagle.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/21620
 - 状态/时间: merged / 2026-03-30
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/models/test_ministral4_models.py`；关联提交 `1d6424d5ad2d`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+59/-7，可读 patch 83 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「fix: Mistral Small 4 fails to start due to config/weight format mismatch」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `test/registered/models/test_ministral4_models.py`；技术摘要: 覆盖「fix: Mistral Small 4 fails to start due to config/weight format mismatch」；主要实现面是 `test/registered/models/test_ministral4_models.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `test/registered/models/test_ministral4_models.py` added +32/-0 (32 lines); hunks: -0,0 +1,32; symbols: TestMistralSmall4TextOnly, TestMistralSmall4MMMU，涉及 `TestMistralSmall4TextOnly, TestMistralSmall4MMMU`。
+- 动机: 标题「fix: Mistral Small 4 fails to start due to config/weight format mismatch」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `test/registered/models/test_ministral4_models.py`, `python/sglang/srt/server_args.py`；技术摘要: 覆盖「fix: Mistral Small 4 fails to start due to config/weight format mismatch」；主要实现面是 `test/registered/models/test_ministral4_models.py`, `python/sglang/srt/server_args.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/models/test_ministral4_models.py` added +32/-0 (32 lines); hunks: -0,0 +1,32; symbols: TestMistralSmall4TextOnly, TestMistralSmall4MMMU，涉及 `TestMistralSmall4TextOnly, TestMistralSmall4MMMU`；`python/sglang/srt/server_args.py` modified +27/-7 (34 lines); hunks: -3159,22 +3159,42 @@ def _handle_load_format(self):; symbols: _handle_load_format, _is_mistral_native_format, _check_format，涉及 `_handle_load_format, _is_mistral_native_format, _check_format`。
 - 代码 diff 细节:
   - `test/registered/models/test_ministral4_models.py` added +32/-0 (32 lines); hunks: -0,0 +1,32; symbols: TestMistralSmall4TextOnly, TestMistralSmall4MMMU
+  - `python/sglang/srt/server_args.py` modified +27/-7 (34 lines); hunks: -3159,22 +3159,42 @@ def _handle_load_format(self):; symbols: _handle_load_format, _is_mistral_native_format, _check_format
 - 关键代码摘录:
 
 ```diff
@@ -482,10 +461,19 @@ diff -- test/registered/models/test_ministral4_models.py
 +from sglang.test.kits.mmmu_vlm_kit import MMMUMixin
 +from sglang.test.server_fixtures.default_fixture import DefaultServerBase
 +from sglang.test.server_fixtures.mmmu_fixture import MMMUServerBase
+diff -- python/sglang/srt/server_args.py
+@@ -3159,22 +3159,42 @@ def _handle_load_format(self):
+-        Models like Mistral-7B-Instruct-v0.3 have BOTH params.json (native) and
+-        config.json (HF standard). When both exist, prefer the HF format to avoid
+-        parameter name mismatches between consolidated.safetensors (native names
+-        like layers.0.attention.wk.weight) and HuggingFace model classes (names
+-        like model.layers.0.self_attn.k_proj.weight).
++        When both params.json and config.json exist, default to HF format to
 ```
 
 - 已读文件:
   - tests: `test/registered/models/test_ministral4_models.py` added +32/-0
+  - runtime: `python/sglang/srt/server_args.py` modified +27/-7
 - 验证与风险: diff 自带测试面 `test/registered/models/test_ministral4_models.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #21399 - [CI] Add unit tests for function_call detectors (hermes, llama32, mistral)
@@ -519,12 +507,12 @@ diff -- test/registered/unit/function_call/test_mistral_detector.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/25407
 - 状态/时间: merged / 2026-05-16
-- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@78cb38ed5` 提交历史和 GitHub Pull Request files API 反查；关联提交 `d523ae127f3c`。
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+2/-2，可读 patch 13 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Fix Mistral Large 3 nightly test」；模型线: Mistral Small 4；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py`；技术摘要: 覆盖「Fix Mistral Large 3 nightly test」，下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py` modified +2/-2 (4 lines); hunks: -311,10 +311,10  @@ def apply_weights(; symbols: apply_weights，涉及 `apply_weights`。
+- 动机: 标题「Fix Mistral Large 3 nightly test」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py`；技术摘要: 覆盖「Fix Mistral Large 3 nightly test」；主要实现面是 `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py` modified +2/-2 (4 lines); hunks: -311,10 +311,10 @@ def apply_weights(; symbols: apply_weights，涉及 `apply_weights`。
 - 代码 diff 细节:
-  - `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py` modified +2/-2 (4 lines); hunks: -311,10 +311,10  @@ def apply_weights(; symbols: apply_weights，涉及 `apply_weights`
+  - `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py` modified +2/-2 (4 lines); hunks: -311,10 +311,10 @@ def apply_weights(; symbols: apply_weights
 - 关键代码摘录:
 
 ```diff
@@ -538,20 +526,20 @@ diff -- python/sglang/srt/layers/quantization/compressed_tensors/schemes/compres
 
 - 已读文件:
   - runtime: `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py` modified +2/-2
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py`；风险点是权重加载、并行切分、attention/MoE 后端选择、量化 dtype 和 parser 输出，需要至少做一次真实 checkpoint 或等价 smoke。
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #24611 - Opt Mistral Large performace
 
 - 链接: https://github.com/sgl-project/sglang/pull/24611
 - 状态/时间: merged / 2026-05-19
-- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@78cb38ed5` 提交历史和 GitHub Pull Request files API 反查；关联提交 `31e324391bbc`。
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+294/-1，可读 patch 311 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Opt Mistral Large performace」；模型线: Mistral Small 4；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json`, `python/sglang/srt/server_args.py`；技术摘要: 覆盖「Opt Mistral Large performace」，下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json` added +146/-0 (146 lines); hunks: -0,0 +1,146  @@ +{；`python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json` added +146/-0 (146 lines); hunks: -0,0 +1,146  @@ +{；`python/sglang/srt/server_args.py` modified +2/-1 (3 lines); hunks: -2404,7 +2404,7  @@ def _handle_model_specific_adjustments(self):; -2421,6 +2421,7  @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments，涉及 `_handle_model_specific_adjustments`。
+- 动机: 标题「Opt Mistral Large performace」；模型线: Mistral Small 4；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json`, `python/sglang/srt/server_args.py`；技术摘要: 覆盖「Opt Mistral Large performace」；主要实现面是 `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json`, `python/sglang/srt/server_args.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json` added +146/-0 (146 lines); hunks: -0,0 +1,146；`python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json` added +146/-0 (146 lines); hunks: -0,0 +1,146；`python/sglang/srt/server_args.py` modified +2/-1 (3 lines); hunks: -2404,7 +2404,7 @@ def _handle_model_specific_adjustments(self):; -2421,6 +2421,7 @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments，涉及 `_handle_model_specific_adjustments`。
 - 代码 diff 细节:
-  - `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json` added +146/-0 (146 lines); hunks: -0,0 +1,146  @@ +{
-  - `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json` added +146/-0 (146 lines); hunks: -0,0 +1,146  @@ +{
-  - `python/sglang/srt/server_args.py` modified +2/-1 (3 lines); hunks: -2404,7 +2404,7  @@ def _handle_model_specific_adjustments(self):; -2421,6 +2421,7  @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments，涉及 `_handle_model_specific_adjustments`
+  - `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json` added +146/-0 (146 lines); hunks: -0,0 +1,146
+  - `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json` added +146/-0 (146 lines); hunks: -0,0 +1,146
+  - `python/sglang/srt/server_args.py` modified +2/-1 (3 lines); hunks: -2404,7 +2404,7 @@ def _handle_model_specific_adjustments(self):; -2421,6 +2421,7 @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments
 - 关键代码摘录:
 
 ```diff
@@ -563,8 +551,6 @@ diff -- python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_
 +        "BLOCK_SIZE_N": 64,
 +        "BLOCK_SIZE_K": 128,
 +        "GROUP_SIZE_M": 1,
-+        "num_warps": 4,
-+        "num_stages": 5
 diff -- python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json
 @@ -0,0 +1,146 @@
 +{
@@ -573,19 +559,204 @@ diff -- python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_
 +        "BLOCK_SIZE_N": 64,
 +        "BLOCK_SIZE_K": 128,
 +        "GROUP_SIZE_M": 1,
-+        "num_warps": 4,
-+        "num_stages": 5
 diff -- python/sglang/srt/server_args.py
 @@ -2404,7 +2404,7 @@ def _handle_model_specific_adjustments(self):
--        # Qwen3/Qwen3Next/Qwen3.5 MoE families)
-+        # MistralLarge3, Qwen3/Qwen3Next/Qwen3.5 MoE families)
-@@ -2421,6 +2421,7 @@ def _handle_model_specific_adjustments(self):
-+                "MistralLarge3ForCausalLM",
 ```
 
 - 已读文件:
   - runtime: `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json` added +146/-0; `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json` added +146/-0; `python/sglang/srt/server_args.py` modified +2/-1
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json`, `python/sglang/srt/server_args.py`；风险点是权重加载、并行切分、attention/MoE 后端选择、量化 dtype 和 parser 输出，需要至少做一次真实 checkpoint 或等价 smoke。
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8.json`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=128,N=1024,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8_down.json`, `python/sglang/srt/server_args.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #25821 - [Refactor] Rename NSA → DSA: user-facing aliases, file/class/import rename
+
+- 链接: https://github.com/sgl-project/sglang/pull/25821
+- 状态/时间: merged / 2026-05-20
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 162 个文件，+11303/-10745，可读 patch 15980 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Refactor] Rename NSA → DSA: user-facing aliases, file/class/import rename」；模型线: Mistral Small 4；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py`, `python/sglang/srt/layers/attention/dsa/tilelang_kernel.py`, `python/sglang/srt/layers/attention/nsa_backend.py`；技术摘要: 覆盖「[Refactor] Rename NSA → DSA: user-facing aliases, file/class/import rename」；主要实现面是 `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py`, `python/sglang/srt/layers/attention/dsa/tilelang_kernel.py`, `python/sglang/srt/layers/attention/nsa_backend.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` modified +8/-2587 (2595 lines)；`python/sglang/srt/layers/attention/dsa/tilelang_kernel.py` added +2589/-0 (2589 lines)；`python/sglang/srt/layers/attention/nsa_backend.py` modified +21/-2518 (2539 lines)；`python/sglang/srt/layers/attention/dsa_backend.py` added +2528/-0 (2528 lines)。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` modified +8/-2587 (2595 lines)
+  - `python/sglang/srt/layers/attention/dsa/tilelang_kernel.py` added +2589/-0 (2589 lines)
+  - `python/sglang/srt/layers/attention/nsa_backend.py` modified +21/-2518 (2539 lines)
+  - `python/sglang/srt/layers/attention/dsa_backend.py` added +2528/-0 (2528 lines)
+  - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +8/-1744 (1752 lines); hunks: -1,1746 +1,10; symbols: BaseIndexerMetadata, get_seqlens_int32, get_page_table_64, get_page_table_1
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
+@@ -1,1746 +1,10 @@
+-from __future__ import annotations
++# [Deprecated] Re-export shim for backward compatibility. Use dsa.dsa_indexer instead.
++import warnings
+-import contextlib
+-import logging
+-from abc import ABC, abstractmethod
+diff -- python/sglang/srt/layers/attention/dsa/dsa_indexer.py
+@@ -0,0 +1,1746 @@
++from __future__ import annotations
++import contextlib
++import logging
++from abc import ABC, abstractmethod
++from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple, Union
++import torch
+diff -- python/sglang/srt/layers/attention/nsa/index_buf_accessor.py
+@@ -1,814 +1,10 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` modified +8/-2587; `python/sglang/srt/layers/attention/dsa/tilelang_kernel.py` added +2589/-0; `python/sglang/srt/layers/attention/nsa_backend.py` modified +21/-2518; `python/sglang/srt/layers/attention/dsa_backend.py` added +2528/-0; `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +8/-1744; `python/sglang/srt/layers/attention/dsa/dsa_indexer.py` added +1746/-0
+- 验证与风险: diff 自带测试面 `python/sglang/jit_kernel/tests/test_fused_metadata_copy.py`, `python/sglang/jit_kernel/tests/test_fused_store_index_cache.py`, `python/sglang/jit_kernel/tests/test_set_mla_kv_buffer.py`, `python/sglang/test/nightly_utils.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #25831 - [Test] Stage-a sanity kits; consolidate core/ + models_e2e/ tests
+
+- 链接: https://github.com/sgl-project/sglang/pull/25831
+- 状态/时间: merged / 2026-05-20
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 36 个文件，+572/-639，可读 patch 1504 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Test] Stage-a sanity kits; consolidate core/ + models_e2e/ tests」；模型线: Mistral Small 4；类别: 文档/测试/CI；主要 diff: `test/manual/models/test_nvidia_nemotron_3_nano_archived.py`, `python/sglang/test/kits/server_sanity_kit.py`, `python/sglang/test/kits/basic_scheduler_stress_kit.py`；技术摘要: 覆盖「[Test] Stage-a sanity kits; consolidate core/ + models_e2e/ tests」；主要实现面是 `test/manual/models/test_nvidia_nemotron_3_nano_archived.py`, `python/sglang/test/kits/server_sanity_kit.py`, `python/sglang/test/kits/basic_scheduler_stress_kit.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/manual/models/test_nvidia_nemotron_3_nano_archived.py` modified +1/-1 (2 lines); hunks: -1,4 +1,4；`python/sglang/test/kits/server_sanity_kit.py` removed +0/-228 (228 lines); hunks: -1,228 +0,0; symbols: ServerSanityMixin, _sanity_generate, test_health, test_health_generate，涉及 `ServerSanityMixin, _sanity_generate, test_health`；`python/sglang/test/kits/basic_scheduler_stress_kit.py` added +135/-0 (135 lines); hunks: -0,0 +1,135; symbols: BasicSchedulerStressMixin, _stress_generate, test_streaming_response, test_concurrent_requests，涉及 `BasicSchedulerStressMixin, _stress_generate, test_streaming_response`；`python/sglang/test/kits/basic_decode_correctness_kit.py` added +114/-0 (114 lines); hunks: -0,0 +1,114; symbols: BasicDecodeCorrectnessMixin, _decode_generate, test_capital_france, test_basic_math，涉及 `BasicDecodeCorrectnessMixin, _decode_generate, test_capital_france`。
+- 代码 diff 细节:
+  - `test/manual/models/test_nvidia_nemotron_3_nano_archived.py` modified +1/-1 (2 lines); hunks: -1,4 +1,4
+  - `python/sglang/test/kits/server_sanity_kit.py` removed +0/-228 (228 lines); hunks: -1,228 +0,0; symbols: ServerSanityMixin, _sanity_generate, test_health, test_health_generate
+  - `python/sglang/test/kits/basic_scheduler_stress_kit.py` added +135/-0 (135 lines); hunks: -0,0 +1,135; symbols: BasicSchedulerStressMixin, _stress_generate, test_streaming_response, test_concurrent_requests
+  - `python/sglang/test/kits/basic_decode_correctness_kit.py` added +114/-0 (114 lines); hunks: -0,0 +1,114; symbols: BasicDecodeCorrectnessMixin, _decode_generate, test_capital_france, test_basic_math
+  - `test/registered/language/test_srt_backend.py` removed +0/-94 (94 lines); hunks: -1,94 +0,0; symbols: TestSRTBackend, setUpClass, tearDownClass, test_few_shot_qa
+- 关键代码摘录:
+
+```diff
+diff -- test/manual/models/test_nvidia_nemotron_3_nano_archived.py
+@@ -1,4 +1,4 @@
+-"""Archived test classes split out of test/registered/models/test_nvidia_nemotron_3_nano.py.
++"""Archived test classes split out of test/registered/models_e2e/test_nvidia_nemotron_3_nano.py.
+diff -- python/sglang/test/kits/server_sanity_kit.py
+@@ -1,228 +0,0 @@
+-"""Black-box server sanity prompts: cheap checks that catch silent
+-correctness regressions (gibberish / repetition collapse / encoding),
+-streaming/concurrent path bugs, and endpoint health.
+-Mix into any ``CustomTestCase`` subclass that exposes ``self.base_url``
+-and ``self.process``. Each test is independent and fast (≤ 5 s after
+-warmup); the whole kit completes in < 1 min."""
+diff -- python/sglang/test/kits/basic_scheduler_stress_kit.py
+@@ -0,0 +1,135 @@
++"""Basic scheduler / cache / streaming stress sanity kit.
++Probes that catch bugs which only fire under multi-request or large-
++prompt conditions: scheduler hangs, radix prefix-cache cross-
++contamination, chunked-prefill multi-chunk kernel crashes, and SSE
+```
+
+- 已读文件:
+  - tests: `test/manual/models/test_nvidia_nemotron_3_nano_archived.py` modified +1/-1; `python/sglang/test/kits/server_sanity_kit.py` removed +0/-228; `python/sglang/test/kits/basic_scheduler_stress_kit.py` added +135/-0; `python/sglang/test/kits/basic_decode_correctness_kit.py` added +114/-0; `test/registered/language/test_srt_backend.py` removed +0/-94; `test/registered/core/test_engine_child_pids.py` modified +40/-51
+- 验证与风险: diff 自带测试面 `python/sglang/test/kits/basic_api_contract_kit.py`, `python/sglang/test/kits/basic_decode_correctness_kit.py`, `python/sglang/test/kits/basic_scheduler_stress_kit.py`, `python/sglang/test/kits/server_sanity_kit.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #23292 - [CP] 1/N: Support MLA Prefill Context Parallel
+
+- 链接: https://github.com/sgl-project/sglang/pull/23292
+- 状态/时间: merged / 2026-05-23
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 21 个文件，+900/-161，可读 patch 1566 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[CP] 1/N: Support MLA Prefill Context Parallel」；模型线: Mistral Small 4；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/flashattention_backend.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/utils/cp_utils.py`；技术摘要: 覆盖「[CP] 1/N: Support MLA Prefill Context Parallel」；主要实现面是 `python/sglang/srt/layers/attention/flashattention_backend.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/utils/cp_utils.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/flashattention_backend.py` modified +128/-56 (184 lines); hunks: -508,6 +508,25 @@ def init_forward_metadata(self, forward_batch: ForwardBatch):; -627,36 +646,43 @@ def forward_extend(; symbols: init_forward_metadata, forward_extend, _fa_cp_attn, _mla_cp_attn，涉及 `init_forward_metadata, forward_extend, _fa_cp_attn`；`python/sglang/srt/models/deepseek_v2.py` modified +73/-14 (87 lines); hunks: -123,9 +123,12; -339,6 +342,8 @@ def __init__(; symbols: __init__, forward，涉及 `__init__, forward`；`python/sglang/srt/layers/utils/cp_utils.py` modified +36/-19 (55 lines); hunks: -51,19 +51,41 @@ def is_prefill_cp_in_seq_split():; -395,6 +417,7 @@ def prepare_context_parallel_metadata(; symbols: is_prefill_cp_in_seq_split, is_mla_prefill_cp_enabled, mla_use_prefill_cp, can_cp_split，涉及 `is_prefill_cp_in_seq_split, is_mla_prefill_cp_enabled, mla_use_prefill_cp`；`python/sglang/srt/models/deepseek_nextn.py` modified +31/-8 (39 lines); hunks: -43,9 +43,12; -136,6 +139,14 @@ def __init__(; symbols: __init__, forward，涉及 `__init__, forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/attention/flashattention_backend.py` modified +128/-56 (184 lines); hunks: -508,6 +508,25 @@ def init_forward_metadata(self, forward_batch: ForwardBatch):; -627,36 +646,43 @@ def forward_extend(; symbols: init_forward_metadata, forward_extend, _fa_cp_attn, _mla_cp_attn
+  - `python/sglang/srt/models/deepseek_v2.py` modified +73/-14 (87 lines); hunks: -123,9 +123,12; -339,6 +342,8 @@ def __init__(; symbols: __init__, forward
+  - `python/sglang/srt/layers/utils/cp_utils.py` modified +36/-19 (55 lines); hunks: -51,19 +51,41 @@ def is_prefill_cp_in_seq_split():; -395,6 +417,7 @@ def prepare_context_parallel_metadata(; symbols: is_prefill_cp_in_seq_split, is_mla_prefill_cp_enabled, mla_use_prefill_cp, can_cp_split
+  - `python/sglang/srt/models/deepseek_nextn.py` modified +31/-8 (39 lines); hunks: -43,9 +43,12; -136,6 +139,14 @@ def __init__(; symbols: __init__, forward
+  - `python/sglang/srt/model_executor/cuda_graph_runner.py` modified +14/-3 (17 lines); hunks: -56,6 +56,7; -567,7 +568,15 @@ def __init__(; symbols: __init__, capture_one_batch_size, replay_prepare
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/attention/flashattention_backend.py
+@@ -508,6 +508,25 @@ def init_forward_metadata(self, forward_batch: ForwardBatch):
++            # MLA/MHA CP: prepare_mlp_sync_batch pads extend tokens up to
++            # lcm(attn_tp_size, attn_cp_size), so cache_seqlens_cp can exceed
++            # seq_lens_cpu.max(). Widen page_table by the pad delta to keep
++            # FA3's causal reads in-bounds; widened columns index KV slot 0
++            # (req_to_token is zero-init) and outputs for padding queries are
++            # discarded downstream.
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -123,9 +123,12 @@
++    can_cp_split,
++    is_prefill_context_parallel_enabled,
++    mla_use_prefill_cp,
+@@ -339,6 +342,8 @@ def __init__(
++        dsa_enable_prefill_cp: bool = False,
++        mla_enable_prefill_cp: bool = False,
+diff -- python/sglang/srt/layers/utils/cp_utils.py
+@@ -51,19 +51,41 @@ def is_prefill_cp_in_seq_split():
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/attention/flashattention_backend.py` modified +128/-56; `python/sglang/srt/models/deepseek_v2.py` modified +73/-14; `python/sglang/srt/layers/utils/cp_utils.py` modified +36/-19; `python/sglang/srt/models/deepseek_nextn.py` modified +31/-8; `python/sglang/srt/model_executor/cuda_graph_runner.py` modified +14/-3; `python/sglang/srt/layers/communicator.py` modified +10/-4
+- 验证与风险: diff 自带测试面 `test/registered/cp/test_deepseek_v3_cp_single_node.py`, `test/registered/cp/test_deepseek_v4_flash_fp4_b200_cp.py`, `test/registered/cp/test_qwen3_30b.py`, `test/registered/kernels/test_cp_prefix_len_fa3_parity.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #28697 - [docs] Add B300 cookbook deployment options
+
+- 链接: https://github.com/sgl-project/sglang/pull/28697
+- 状态/时间: merged / 2026-06-19
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 27 个文件，+503/-69，可读 patch 1291 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[docs] Add B300 cookbook deployment options」；模型线: Mistral Small 4；类别: 性能/后端优化；主要 diff: `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx`；技术摘要: 覆盖「[docs] Add B300 cookbook deployment options」；主要实现面是 `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx` added +167/-0 (167 lines); hunks: -0,0 +1,167；`docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx` modified +68/-2 (70 lines); hunks: -9,6 +9,11 @@ const lookupData = {; -182,6 +187,66 @@ const lookupData = {；`docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` modified +40/-16 (56 lines); hunks: -4,6 +4,7 @@ export const GLM5Deployment = () => {; -13,6 +14,7 @@ export const GLM5Deployment = () => {；`docs_new/src/snippets/autoregressive/deepseek-v32-deployment.jsx` modified +29/-10 (39 lines); hunks: -3,7 +3,7 @@ export const DeepSeekV32Deployment = () => {; -12,6 +12,7 @@ export const DeepSeekV32Deployment = () => {。
+- 代码 diff 细节:
+  - `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx` added +167/-0 (167 lines); hunks: -0,0 +1,167
+  - `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx` modified +68/-2 (70 lines); hunks: -9,6 +9,11 @@ const lookupData = {; -182,6 +187,66 @@ const lookupData = {
+  - `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` modified +40/-16 (56 lines); hunks: -4,6 +4,7 @@ export const GLM5Deployment = () => {; -13,6 +14,7 @@ export const GLM5Deployment = () => {
+  - `docs_new/src/snippets/autoregressive/deepseek-v32-deployment.jsx` modified +29/-10 (39 lines); hunks: -3,7 +3,7 @@ export const DeepSeekV32Deployment = () => {; -12,6 +12,7 @@ export const DeepSeekV32Deployment = () => {
+  - `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx` modified +23/-15 (38 lines); hunks: -8,19 +8,19 @@ export const Qwen35Deployment = () => {; -149,7 +149,7 @@ export const Qwen35Deployment = () => {
+- 关键代码摘录:
+
+```diff
+diff -- docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx
+@@ -0,0 +1,167 @@
++export const InternS1Deployment = () => {
++  const options = {
++    hardware: {
++      name: 'hardware',
++      title: 'Hardware Platform',
++      items: [
+diff -- docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx
+@@ -9,6 +9,11 @@ const lookupData = {
++      {
++        "id": "b300",
++        "label": "B300",
++        "default": false
++      },
+@@ -182,6 +187,66 @@ const lookupData = {
+diff -- docs_new/src/snippets/autoregressive/glm-5-deployment.jsx
+@@ -4,6 +4,7 @@ export const GLM5Deployment = () => {
+```
+
+- 已读文件:
+  - docs: `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx` added +167/-0; `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx` modified +68/-2; `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` modified +40/-16; `docs_new/src/snippets/autoregressive/deepseek-v32-deployment.jsx` modified +29/-10; `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx` modified +23/-15; `docs_new/cookbook/autoregressive/InternLM/Intern-S1.mdx` modified +16/-13
+- 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/InternLM/Intern-S1.mdx`, `docs_new/src/snippets/autoregressive/deepseek-math-v2-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #29111 - [Bugfix] Fix Ministral3 init argument forwarding
+
+- 链接: https://github.com/sgl-project/sglang/pull/29111
+- 状态/时间: merged / 2026-06-25
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/ministral3.py`；关联提交 `ddda4f90288b`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+37/-17，可读 patch 99 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] Fix Ministral3 init argument forwarding」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/ministral3.py`；技术摘要: 覆盖「[Bugfix] Fix Ministral3 init argument forwarding」；主要实现面是 `python/sglang/srt/models/ministral3.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/ministral3.py` modified +37/-17 (54 lines); hunks: -31,6 +31,7 @@ def __init__(; -40,18 +41,19 @@ def __init__(; symbols: __init__, forward, Ministral3DecoderLayer，涉及 `__init__, forward, Ministral3DecoderLayer`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/ministral3.py` modified +37/-17 (54 lines); hunks: -31,6 +31,7 @@ def __init__(; -40,18 +41,19 @@ def __init__(; symbols: __init__, forward, Ministral3DecoderLayer
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/ministral3.py
+@@ -31,6 +31,7 @@ def __init__(
++        start_layer: int = 0,
+@@ -40,18 +41,19 @@ def __init__(
+-            config,
+-            hidden_size,
+-            num_heads,
+-            num_kv_heads,
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/ministral3.py` modified +37/-17
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/ministral3.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ## 补漏结论
 

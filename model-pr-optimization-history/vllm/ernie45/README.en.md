@@ -1,30 +1,5 @@
 # vllm ERNIE 4.5 Model PR Optimization History
 
-## 2026-06-26 Latest Source Scan
-
-Rechecked vLLM upstream `vllm-project/vllm@abc71548ef029132c3316b902207f254a246d593` against the tracked files listed below.
-The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-05`.
-
-Result: 2 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
-
-| Merged | PR | Title | Tracked files touched |
-| --- | --- | --- | --- |
-| 2026-06-18 | [#45988](https://github.com/vllm-project/vllm/pull/45988) | [Perf] Remove unused loggers in `reasoning/` | `ernie45_reasoning_parser.py` |
-| 2026-06-08 | [#41184](https://github.com/vllm-project/vllm/pull/41184) | [MoE Refactor] FusedMoE/MoERunner inversion refactor | `ernie45_moe.py`, `ernie45_vl_moe.py` |
-
-## 2026-06-05 PR Backfill Audit
-
-Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 5 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-04-14). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
-
-| Merged | PR | Title | Tracked files touched |
-| --- | --- | --- | --- |
-| 2026-05-29 | [#43997](https://github.com/vllm-project/vllm/pull/43997) | [Refactor] Remove dead current_tool_name_sent assignments from tool parsers | `ernie45_tool_parser.py` |
-| 2026-04-23 | [#40671](https://github.com/vllm-project/vllm/pull/40671) | [MoE Refactor] Rename FusedMoE.make_expert_params_mapping to fused_moe_make_expert_params_mapping | `ernie45_moe.py`, `ernie45_vl_moe.py` |
-| 2026-04-21 | [#35782](https://github.com/vllm-project/vllm/pull/35782) | [MoE Refactor] Remove SharedFusedMoE class | `ernie45_moe.py`, `ernie45_vl_moe.py` |
-| 2026-04-20 | [#35949](https://github.com/vllm-project/vllm/pull/35949) | [MoE Refactor] Move the shared/fused expert output sum into MoERunnerBase | `ernie45_moe.py`, `ernie45_vl_moe.py` |
-| 2026-04-16 | [#39780](https://github.com/vllm-project/vllm/pull/39780) | [Bugfix] Reject empty tools array with HTTP 400 | `test_ernie45_moe_tool_parser.py` |
-
-
 ## Implementation File Coverage
 
 | File | Git-traced PRs |
@@ -44,8 +19,8 @@ Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 5 additional PR-n
 ## PR Coverage Summary
 
 - Git-traced PRs: 8
-- Extra PRs preserved from existing docs: 6
-- Total PRs in this document: 14
+- Extra PRs preserved from existing docs: 13
+- Total PRs in this document: 21
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -67,6 +42,13 @@ Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 5 additional PR-n
 | 2025-11-04 | [#27973](https://github.com/vllm-project/vllm/pull/27973) | merged | [Model] fix ernie45 reasoning_parser | `vllm/reasoning/ernie45_reasoning_parser.py` |
 | 2025-12-25 | [#31274](https://github.com/vllm-project/vllm/pull/31274) | merged | [Model][Ernie4.5-VL] Support video metadata for timestamp rendering | `vllm/model_executor/models/ernie45_vl.py`, `tests/models/multimodal/processing/test_common.py` |
 | 2026-04-14 | [#39753](https://github.com/vllm-project/vllm/pull/39753) | merged | [Model] Use mm_features for Ernie-4.5 VL M-RoPE | `vllm/model_executor/models/ernie45_vl.py`, `tests/model_executor/test_ernie45_vl_mrope.py` |
+| 2026-04-16 | [#39780](https://github.com/vllm-project/vllm/pull/39780) | merged | [Bugfix] Reject empty tools array with HTTP 400 | `vllm/entrypoints/openai/chat_completion/protocol.py`, `tests/tool_parsers/test_ernie45_moe_tool_parser.py`, `tests/tool_parsers/test_xlam_tool_parser.py` |
+| 2026-04-20 | [#35949](https://github.com/vllm-project/vllm/pull/35949) | merged | [MoE Refactor] Move the shared/fused expert output sum into MoERunnerBase | `vllm/model_executor/layers/fused_moe/runner/moe_runner_base.py`, `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/models/exaone_moe.py` |
+| 2026-04-21 | [#35782](https://github.com/vllm-project/vllm/pull/35782) | merged | [MoE Refactor] Remove SharedFusedMoE class | `vllm/model_executor/layers/fused_moe/shared_fused_moe.py`, `vllm/model_executor/models/afmoe.py`, `vllm/model_executor/models/llama4.py` |
+| 2026-04-23 | [#40671](https://github.com/vllm-project/vllm/pull/40671) | merged | [MoE Refactor] Rename FusedMoE.make_expert_params_mapping to fused_moe_make_expert_params_mapping | `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/models/llama4.py`, `vllm/model_executor/models/glm4_moe_lite.py` |
+| 2026-05-30 | [#43997](https://github.com/vllm-project/vllm/pull/43997) | merged | [Refactor] Remove dead current_tool_name_sent assignments from tool parsers | `vllm/tool_parsers/hunyuan_a13b_tool_parser.py`, `vllm/tool_parsers/ernie45_tool_parser.py`, `vllm/tool_parsers/hy_v3_tool_parser.py` |
+| 2026-06-08 | [#41184](https://github.com/vllm-project/vllm/pull/41184) | merged | [MoE Refactor] FusedMoE/MoERunner inversion refactor | `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/routed_experts.py`, `vllm/model_executor/layers/fused_moe/runner/moe_runner.py` |
+| 2026-06-18 | [#45988](https://github.com/vllm-project/vllm/pull/45988) | merged | [Perf] Remove unused loggers in `reasoning/` | `vllm/reasoning/deepseek_v3_reasoning_parser.py`, `vllm/reasoning/ernie45_reasoning_parser.py`, `vllm/reasoning/granite_reasoning_parser.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -76,7 +58,7 @@ Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 5 additional PR-n
 - Status/date: merged / 2025-07-02
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +634/-0, 657 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model] Add Ernie4.5 and Ernie4.5MoE Model Support"; model line: ERNIE 4.5; category: model support/runtime entry; main diff: `vllm/model_executor/models/ernie45_moe.py`, `vllm/model_executor/models/ernie45.py`, `tests/models/registry.py`; technical summary: Covers "[Model] Add Ernie4.5 and Ernie4.5MoE Model Support"; the main implementation surface is `vllm/model_executor/models/ernie45_moe.py`, `vllm/model_executor/models/ernie45.py`, `tests/models/registry.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "[Model] Add Ernie4.5 and Ernie4.5MoE Model Support"; model line: ERNIE 4.5; category: docs/tests/CI; main diff: `vllm/model_executor/models/ernie45_moe.py`, `vllm/model_executor/models/ernie45.py`, `tests/models/registry.py`; technical summary: Covers "[Model] Add Ernie4.5 and Ernie4.5MoE Model Support"; the main implementation surface is `vllm/model_executor/models/ernie45_moe.py`, `vllm/model_executor/models/ernie45.py`, `tests/models/registry.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/ernie45_moe.py` added +583/-0 (583 lines); hunks: -0,0 +1,583; symbols: Ernie4_5_MoeMLP, __init__, forward, Ernie4_5_MoeMoE, touching `Ernie4_5_MoeMLP, __init__, forward`; `vllm/model_executor/models/ernie45.py` added +43/-0 (43 lines); hunks: -0,0 +1,43; symbols: Ernie4_5_ForCausalLM, __init__, touching `Ernie4_5_ForCausalLM, __init__`; `tests/models/registry.py` modified +4/-0 (4 lines); hunks: -162,6 +162,10 @@ def check_available_online(; symbols: check_available_online, touching `check_available_online`; `docs/models/supported_models.md` modified +2/-0 (2 lines); hunks: -330,6 +330,8 @@ Specified using `--task generate`..
 - Code diff details:
   - `vllm/model_executor/models/ernie45_moe.py` added +583/-0 (583 lines); hunks: -0,0 +1,583; symbols: Ernie4_5_MoeMLP, __init__, forward, Ernie4_5_MoeMoE
@@ -450,7 +432,7 @@ diff -- vllm/reasoning/ernie45_reasoning_parser.py
 - Status/date: merged / 2025-12-25
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +82/-5, 137 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model][Ernie4.5-VL] Support video metadata for timestamp rendering"; model line: ERNIE 4.5; category: model support/runtime entry; main diff: `vllm/model_executor/models/ernie45_vl.py`, `tests/models/multimodal/processing/test_common.py`; technical summary: Covers "[Model][Ernie4.5-VL] Support video metadata for timestamp rendering"; the main implementation surface is `vllm/model_executor/models/ernie45_vl.py`, `tests/models/multimodal/processing/test_common.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "[Model][Ernie4.5-VL] Support video metadata for timestamp rendering"; model line: ERNIE 4.5; category: docs/tests/CI; main diff: `vllm/model_executor/models/ernie45_vl.py`, `tests/models/multimodal/processing/test_common.py`; technical summary: Covers "[Model][Ernie4.5-VL] Support video metadata for timestamp rendering"; the main implementation surface is `vllm/model_executor/models/ernie45_vl.py`, `tests/models/multimodal/processing/test_common.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/ernie45_vl.py` modified +80/-4 (84 lines); hunks: -21,7 +21,7; -41,7 +41,7; symbols: get_max_video_tokens, Ernie4_5VLMultiModalProcessor, _get_data_parser, _pixel_values_norm, touching `get_max_video_tokens, Ernie4_5VLMultiModalProcessor, _get_data_parser`; `tests/models/multimodal/processing/test_common.py` modified +2/-1 (3 lines); hunks: -104,7 +104,8 @@ def create_metadata(frames: np.ndarray):; symbols: create_metadata, touching `create_metadata`.
 - Code diff details:
   - `vllm/model_executor/models/ernie45_vl.py` modified +80/-4 (84 lines); hunks: -21,7 +21,7; -41,7 +41,7; symbols: get_max_video_tokens, Ernie4_5VLMultiModalProcessor, _get_data_parser, _pixel_values_norm
@@ -484,7 +466,7 @@ diff -- tests/models/multimodal/processing/test_common.py
 - Status/date: merged / 2026-04-14
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/model_executor/test_ernie45_vl_mrope.py`, `vllm/model_executor/models/ernie45_vl.py`; associated commits `0008729abfbd`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +196/-123, 339 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model] Use mm_features for Ernie-4.5 VL M-RoPE"; model line: ERNIE 4.5; category: model implementation change; main diff: `vllm/model_executor/models/ernie45_vl.py`, `tests/model_executor/test_ernie45_vl_mrope.py`; technical summary: Covers "[Model] Use mm_features for Ernie-4.5 VL M-RoPE"; the main implementation surface is `vllm/model_executor/models/ernie45_vl.py`, `tests/model_executor/test_ernie45_vl_mrope.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "[Model] Use mm_features for Ernie-4.5 VL M-RoPE"; model line: ERNIE 4.5; category: docs/tests/CI; main diff: `vllm/model_executor/models/ernie45_vl.py`, `tests/model_executor/test_ernie45_vl_mrope.py`; technical summary: Covers "[Model] Use mm_features for Ernie-4.5 VL M-RoPE"; the main implementation surface is `vllm/model_executor/models/ernie45_vl.py`, `tests/model_executor/test_ernie45_vl_mrope.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/ernie45_vl.py` modified +53/-123 (176 lines); hunks: -23,9 +23,8; -1401,131 +1400,62 @@ def get_mrope_input_positions(; symbols: get_mrope_input_positions, iter_mm_grid_thw, _parse_and_validate_image_input, touching `get_mrope_input_positions, iter_mm_grid_thw, _parse_and_validate_image_input`; `tests/model_executor/test_ernie45_vl_mrope.py` added +143/-0 (143 lines); hunks: -0,0 +1,143; symbols: _force_cpu_default_device, DummyConfig, make_model, make_mm_feature, touching `_force_cpu_default_device, DummyConfig, make_model`.
 - Code diff details:
   - `vllm/model_executor/models/ernie45_vl.py` modified +53/-123 (176 lines); hunks: -23,9 +23,8; -1401,131 +1400,62 @@ def get_mrope_input_positions(; symbols: get_mrope_input_positions, iter_mm_grid_thw, _parse_and_validate_image_input
@@ -514,6 +496,290 @@ diff -- tests/model_executor/test_ernie45_vl_mrope.py
   - runtime: `vllm/model_executor/models/ernie45_vl.py` modified +53/-123
   - tests: `tests/model_executor/test_ernie45_vl_mrope.py` added +143/-0
 - Risk and verification: The diff ships test coverage in `tests/model_executor/test_ernie45_vl_mrope.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #39780 - [Bugfix] Reject empty tools array with HTTP 400
+
+- Link: https://github.com/vllm-project/vllm/pull/39780
+- Status/date: merged / 2026-04-16
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 4 files, +23/-23, 81 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Bugfix] Reject empty tools array with HTTP 400"; model line: ERNIE 4.5; category: bug fix; main diff: `vllm/entrypoints/openai/chat_completion/protocol.py`, `tests/tool_parsers/test_ernie45_moe_tool_parser.py`, `tests/tool_parsers/test_xlam_tool_parser.py`; technical summary: Covers "[Bugfix] Reject empty tools array with HTTP 400"; the main implementation surface is `vllm/entrypoints/openai/chat_completion/protocol.py`, `tests/tool_parsers/test_ernie45_moe_tool_parser.py`, `tests/tool_parsers/test_xlam_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/entrypoints/openai/chat_completion/protocol.py` modified +12/-12 (24 lines); hunks: -678,6 +678,18 @@ def check_structured_outputs_count(cls, data):; -704,18 +716,6 @@ def check_tool_usage(cls, data):; symbols: check_structured_outputs_count, check_tool_usage, touching `check_structured_outputs_count, check_tool_usage`; `tests/tool_parsers/test_ernie45_moe_tool_parser.py` modified +1/-1 (2 lines); hunks: -328,7 +328,7 @@ def test_extract_tool_calls_streaming_incremental(; symbols: test_extract_tool_calls_streaming_incremental, touching `test_extract_tool_calls_streaming_incremental`; `tests/tool_parsers/test_xlam_tool_parser.py` modified +1/-1 (2 lines); hunks: -484,7 +484,7 @@ def test_extract_tool_calls_streaming_incremental(; symbols: test_extract_tool_calls_streaming_incremental, touching `test_extract_tool_calls_streaming_incremental`; `tests/tool_use/test_chat_completion_request_validations.py` modified +9/-9 (18 lines); hunks: -26,15 +26,15 @@ def test_chat_completion_request_with_no_tools():; symbols: test_chat_completion_request_with_no_tools, touching `test_chat_completion_request_with_no_tools`.
+- Code diff details:
+  - `vllm/entrypoints/openai/chat_completion/protocol.py` modified +12/-12 (24 lines); hunks: -678,6 +678,18 @@ def check_structured_outputs_count(cls, data):; -704,18 +716,6 @@ def check_tool_usage(cls, data):; symbols: check_structured_outputs_count, check_tool_usage
+  - `tests/tool_parsers/test_ernie45_moe_tool_parser.py` modified +1/-1 (2 lines); hunks: -328,7 +328,7 @@ def test_extract_tool_calls_streaming_incremental(; symbols: test_extract_tool_calls_streaming_incremental
+  - `tests/tool_parsers/test_xlam_tool_parser.py` modified +1/-1 (2 lines); hunks: -484,7 +484,7 @@ def test_extract_tool_calls_streaming_incremental(; symbols: test_extract_tool_calls_streaming_incremental
+  - `tests/tool_use/test_chat_completion_request_validations.py` modified +9/-9 (18 lines); hunks: -26,15 +26,15 @@ def test_chat_completion_request_with_no_tools():; symbols: test_chat_completion_request_with_no_tools
+- Key code excerpts:
+
+```diff
+diff -- vllm/entrypoints/openai/chat_completion/protocol.py
+@@ -678,6 +678,18 @@ def check_structured_outputs_count(cls, data):
++        if isinstance(data, ValueError):
++            raise data
++        if not isinstance(data, dict):
++            return data
++        # Reject empty tools array, matching OpenAI API behavior
++        if data.get("tools") == []:
+diff -- tests/tool_parsers/test_ernie45_moe_tool_parser.py
+@@ -328,7 +328,7 @@ def test_extract_tool_calls_streaming_incremental(
+-    request = ChatCompletionRequest(model=MODEL, messages=[], tools=[])
++    request = ChatCompletionRequest(model=MODEL, messages=[])
+diff -- tests/tool_parsers/test_xlam_tool_parser.py
+@@ -484,7 +484,7 @@ def test_extract_tool_calls_streaming_incremental(
+-    request = ChatCompletionRequest(model=MODEL, messages=[], tools=[])
++    request = ChatCompletionRequest(model=MODEL, messages=[])
+diff -- tests/tool_use/test_chat_completion_request_validations.py
+@@ -26,15 +26,15 @@ def test_chat_completion_request_with_no_tools():
+```
+
+- Reviewed files:
+  - runtime: `vllm/entrypoints/openai/chat_completion/protocol.py` modified +12/-12
+  - tests: `tests/tool_parsers/test_ernie45_moe_tool_parser.py` modified +1/-1; `tests/tool_parsers/test_xlam_tool_parser.py` modified +1/-1; `tests/tool_use/test_chat_completion_request_validations.py` modified +9/-9
+- Risk and verification: The diff ships test coverage in `tests/tool_parsers/test_ernie45_moe_tool_parser.py`, `tests/tool_parsers/test_xlam_tool_parser.py`, `tests/tool_use/test_chat_completion_request_validations.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #35949 - [MoE Refactor] Move the shared/fused expert output sum into MoERunnerBase
+
+- Link: https://github.com/vllm-project/vllm/pull/35949
+- Status/date: merged / 2026-04-20
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 53 files, +325/-702, 2430 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[MoE Refactor] Move the shared/fused expert output sum into MoERunnerBase"; model line: ERNIE 4.5; category: performance/backend optimization; main diff: `vllm/model_executor/layers/fused_moe/runner/moe_runner_base.py`, `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/models/exaone_moe.py`; technical summary: Covers "[MoE Refactor] Move the shared/fused expert output sum into MoERunnerBase"; the main implementation surface is `vllm/model_executor/layers/fused_moe/runner/moe_runner_base.py`, `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/models/exaone_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/layers/fused_moe/runner/moe_runner_base.py` modified +175/-86 (261 lines); hunks: -81,15 +81,17 @@ def _resolve_layer_name(layer_name: str | LayerName) -> str:; -113,7 +115,7 @@ def _moe_forward_shared(; symbols: _resolve_layer_name, _moe_forward, _moe_forward_shared, _moe_forward_shared_fake, touching `_resolve_layer_name, _moe_forward, _moe_forward_shared`; `vllm/model_executor/layers/fused_moe/layer.py` modified +28/-32 (60 lines); hunks: -230,11 +230,18 @@ class FusedMoE(PluggableLayer):; -246,7 +253,6 @@ def __init__(; symbols: FusedMoE, __init__, touching `FusedMoE, __init__`; `vllm/model_executor/models/exaone_moe.py` modified +18/-28 (46 lines); hunks: -31,6 +31,7; -116,12 +117,26 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`; `vllm/model_executor/models/kimi_linear.py` modified +20/-26 (46 lines); hunks: -11,11 +11,10; -132,12 +131,25 @@ def __init__(; symbols: __init__, forward, load_weights, touching `__init__, forward, load_weights`.
+- Code diff details:
+  - `vllm/model_executor/layers/fused_moe/runner/moe_runner_base.py` modified +175/-86 (261 lines); hunks: -81,15 +81,17 @@ def _resolve_layer_name(layer_name: str | LayerName) -> str:; -113,7 +115,7 @@ def _moe_forward_shared(; symbols: _resolve_layer_name, _moe_forward, _moe_forward_shared, _moe_forward_shared_fake
+  - `vllm/model_executor/layers/fused_moe/layer.py` modified +28/-32 (60 lines); hunks: -230,11 +230,18 @@ class FusedMoE(PluggableLayer):; -246,7 +253,6 @@ def __init__(; symbols: FusedMoE, __init__
+  - `vllm/model_executor/models/exaone_moe.py` modified +18/-28 (46 lines); hunks: -31,6 +31,7; -116,12 +117,26 @@ def __init__(; symbols: __init__, forward
+  - `vllm/model_executor/models/kimi_linear.py` modified +20/-26 (46 lines); hunks: -11,11 +11,10; -132,12 +131,25 @@ def __init__(; symbols: __init__, forward, load_weights
+  - `vllm/model_executor/models/AXK1.py` modified +5/-30 (35 lines); hunks: -100,7 +100,7 @@ def __init__(; -170,7 +170,6 @@ def __init__(; symbols: __init__, forward
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/layers/fused_moe/runner/moe_runner_base.py
+@@ -81,15 +81,17 @@ def _resolve_layer_name(layer_name: str | LayerName) -> str:
+-# the runner's 'forward_dispatch' method.
++# the runner's '_forward_dispatch' method.
++# These functions should never be called directly since they do not
++# include all the functionality of the MoE layer.
+-    return layer.runner.forward_dispatch(
++    return layer.runner._forward_dispatch(
+diff -- vllm/model_executor/layers/fused_moe/layer.py
+@@ -230,11 +230,18 @@ class FusedMoE(PluggableLayer):
+-        reduce_results: Whether to all_reduce on the output of the layer
++        routed_scaling_factor: A scaling factor that is applied to the topk_weights
++                               by the router or the output of the layer depending
++                               on the value of `apply_routed_scale_to_output`
++        apply_routed_scale_to_output: Determine whether or not `routed_scaling_factor`
++                                      is applied to the topk_weights or to the experts
+diff -- vllm/model_executor/models/exaone_moe.py
+@@ -31,6 +31,7 @@
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/layers/fused_moe/runner/moe_runner_base.py` modified +175/-86; `vllm/model_executor/layers/fused_moe/layer.py` modified +28/-32; `vllm/model_executor/models/exaone_moe.py` modified +18/-28; `vllm/model_executor/models/kimi_linear.py` modified +20/-26; `vllm/model_executor/models/AXK1.py` modified +5/-30; `vllm/model_executor/models/ernie45_vl_moe.py` modified +5/-30
+- Risk and verification: The diff ships test coverage in `tests/compile/passes/test_vllm_fusion_pattern_matcher_pass.py`, `tests/kernels/moe/test_moe_layer.py`, `tests/kernels/moe/test_shared_fused_moe_routed_transform.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #35782 - [MoE Refactor] Remove SharedFusedMoE class
+
+- Link: https://github.com/vllm-project/vllm/pull/35782
+- Status/date: merged / 2026-04-21
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 33 files, +112/-141, 926 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[MoE Refactor] Remove SharedFusedMoE class"; model line: ERNIE 4.5; category: performance/backend optimization; main diff: `vllm/model_executor/layers/fused_moe/shared_fused_moe.py`, `vllm/model_executor/models/afmoe.py`, `vllm/model_executor/models/llama4.py`; technical summary: Covers "[MoE Refactor] Remove SharedFusedMoE class"; the main implementation surface is `vllm/model_executor/layers/fused_moe/shared_fused_moe.py`, `vllm/model_executor/models/afmoe.py`, `vllm/model_executor/models/llama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/layers/fused_moe/shared_fused_moe.py` removed +0/-25 (25 lines); hunks: -1,25 +0,0; symbols: SharedFusedMoE, forward, touching `SharedFusedMoE, forward`; `vllm/model_executor/models/afmoe.py` modified +5/-5 (10 lines); hunks: -18,7 +18,7; -124,8 +124,8 @@ def __init__(; symbols: __init__, make_empty_intermediate_tensors, get_expert_mapping, touching `__init__, make_empty_intermediate_tensors, get_expert_mapping`; `vllm/model_executor/models/llama4.py` modified +5/-5 (10 lines); hunks: -36,7 +36,7; -127,7 +127,7 @@ def __init__(self, vllm_config: VllmConfig, prefix: str = ""):; symbols: __init__, load_moe_expert_weights, load_weights, touching `__init__, load_moe_expert_weights, load_weights`; `vllm/model_executor/models/AXK1.py` modified +4/-4 (8 lines); hunks: -42,7 +42,7; -163,7 +163,7 @@ def __init__(; symbols: __init__, compute_logits, get_expert_mapping, load_weights, touching `__init__, compute_logits, get_expert_mapping`.
+- Code diff details:
+  - `vllm/model_executor/layers/fused_moe/shared_fused_moe.py` removed +0/-25 (25 lines); hunks: -1,25 +0,0; symbols: SharedFusedMoE, forward
+  - `vllm/model_executor/models/afmoe.py` modified +5/-5 (10 lines); hunks: -18,7 +18,7; -124,8 +124,8 @@ def __init__(; symbols: __init__, make_empty_intermediate_tensors, get_expert_mapping
+  - `vllm/model_executor/models/llama4.py` modified +5/-5 (10 lines); hunks: -36,7 +36,7; -127,7 +127,7 @@ def __init__(self, vllm_config: VllmConfig, prefix: str = ""):; symbols: __init__, load_moe_expert_weights, load_weights
+  - `vllm/model_executor/models/AXK1.py` modified +4/-4 (8 lines); hunks: -42,7 +42,7; -163,7 +163,7 @@ def __init__(; symbols: __init__, compute_logits, get_expert_mapping, load_weights
+  - `vllm/model_executor/models/deepseek_v2.py` modified +4/-4 (8 lines); hunks: -48,9 +48,9; -311,7 +311,7 @@ def __init__(; symbols: __init__, compute_logits, get_expert_mapping, load_weights
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/layers/fused_moe/shared_fused_moe.py
+@@ -1,25 +0,0 @@
+-# SPDX-License-Identifier: Apache-2.0
+-# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
+-import torch
+-from vllm.model_executor.layers.fused_moe.layer import FusedMoE
+-# TODO(bnell): Remove this entirely
+-class SharedFusedMoE(FusedMoE):
+diff -- vllm/model_executor/models/afmoe.py
+@@ -18,7 +18,7 @@
+-from vllm.model_executor.layers.fused_moe.shared_fused_moe import SharedFusedMoE
++from vllm.model_executor.layers.fused_moe import FusedMoE
+@@ -124,8 +124,8 @@ def __init__(
+-        # Routed experts using SharedFusedMoE
+-        self.experts = SharedFusedMoE(
++        # Routed experts using FusedMoE
+diff -- vllm/model_executor/models/llama4.py
+@@ -36,7 +36,7 @@
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/layers/fused_moe/shared_fused_moe.py` removed +0/-25; `vllm/model_executor/models/afmoe.py` modified +5/-5; `vllm/model_executor/models/llama4.py` modified +5/-5; `vllm/model_executor/models/AXK1.py` modified +4/-4; `vllm/model_executor/models/deepseek_v2.py` modified +4/-4; `vllm/model_executor/models/ernie45_moe.py` modified +4/-4
+- Risk and verification: The diff ships test coverage in `tests/kernels/moe/test_moe_layer.py`, `tests/kernels/moe/test_shared_fused_moe_routed_transform.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #40671 - [MoE Refactor] Rename FusedMoE.make_expert_params_mapping to fused_moe_make_expert_params_mapping
+
+- Link: https://github.com/vllm-project/vllm/pull/40671
+- Status/date: merged / 2026-04-23
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 53 files, +254/-98, 1073 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[MoE Refactor] Rename FusedMoE.make_expert_params_mapping to fused_moe_make_expert_params_mapping"; model line: ERNIE 4.5; category: performance/backend optimization; main diff: `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/models/llama4.py`, `vllm/model_executor/models/glm4_moe_lite.py`; technical summary: Covers "[MoE Refactor] Rename FusedMoE.make_expert_params_mapping to fused_moe_make_expert_params_mapping"; the main implementation surface is `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/models/llama4.py`, `vllm/model_executor/models/glm4_moe_lite.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/layers/fused_moe/layer.py` modified +19/-0 (19 lines); hunks: -1618,6 +1618,25 @@ def extra_repr(self) -> str:; symbols: extra_repr, fused_moe_make_expert_params_mapping, touching `extra_repr, fused_moe_make_expert_params_mapping`; `vllm/model_executor/models/llama4.py` modified +7/-4 (11 lines); hunks: -36,7 +36,10; -414,7 +417,7 @@ def load_moe_expert_weights(; symbols: load_moe_expert_weights, load_weights, touching `load_moe_expert_weights, load_weights`; `vllm/model_executor/models/glm4_moe_lite.py` modified +6/-4 (10 lines); hunks: -41,7 +41,9; -308,7 +310,7 @@ def make_empty_intermediate_tensors(; symbols: make_empty_intermediate_tensors, get_expert_mapping, load_weights, compute_logits, touching `make_empty_intermediate_tensors, get_expert_mapping, load_weights`; `vllm/model_executor/models/AXK1.py` modified +6/-3 (9 lines); hunks: -42,7 +42,10; -916,7 +919,7 @@ def compute_logits(; symbols: compute_logits, get_expert_mapping, load_weights, touching `compute_logits, get_expert_mapping, load_weights`.
+- Code diff details:
+  - `vllm/model_executor/layers/fused_moe/layer.py` modified +19/-0 (19 lines); hunks: -1618,6 +1618,25 @@ def extra_repr(self) -> str:; symbols: extra_repr, fused_moe_make_expert_params_mapping
+  - `vllm/model_executor/models/llama4.py` modified +7/-4 (11 lines); hunks: -36,7 +36,10; -414,7 +417,7 @@ def load_moe_expert_weights(; symbols: load_moe_expert_weights, load_weights
+  - `vllm/model_executor/models/glm4_moe_lite.py` modified +6/-4 (10 lines); hunks: -41,7 +41,9; -308,7 +310,7 @@ def make_empty_intermediate_tensors(; symbols: make_empty_intermediate_tensors, get_expert_mapping, load_weights, compute_logits
+  - `vllm/model_executor/models/AXK1.py` modified +6/-3 (9 lines); hunks: -42,7 +42,10; -916,7 +919,7 @@ def compute_logits(; symbols: compute_logits, get_expert_mapping, load_weights
+  - `vllm/model_executor/models/afmoe.py` modified +5/-2 (7 lines); hunks: -18,7 +18,10; -479,7 +482,7 @@ def make_empty_intermediate_tensors(; symbols: make_empty_intermediate_tensors, get_expert_mapping
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/layers/fused_moe/layer.py
+@@ -1618,6 +1618,25 @@ def extra_repr(self) -> str:
++# This is a temporary forwarding method which will be removed/modified layer.
++def fused_moe_make_expert_params_mapping(
++    model: torch.nn.Module,
++    ckpt_gate_proj_name: str,
++    ckpt_down_proj_name: str,
++    ckpt_up_proj_name: str,
+diff -- vllm/model_executor/models/llama4.py
+@@ -36,7 +36,10 @@
+-from vllm.model_executor.layers.fused_moe import FusedMoE
++from vllm.model_executor.layers.fused_moe import (
++    FusedMoE,
++    fused_moe_make_expert_params_mapping,
++)
+@@ -414,7 +417,7 @@ def load_moe_expert_weights(
+diff -- vllm/model_executor/models/glm4_moe_lite.py
+@@ -41,7 +41,9 @@
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/layers/fused_moe/layer.py` modified +19/-0; `vllm/model_executor/models/llama4.py` modified +7/-4; `vllm/model_executor/models/glm4_moe_lite.py` modified +6/-4; `vllm/model_executor/models/AXK1.py` modified +6/-3; `vllm/model_executor/models/afmoe.py` modified +5/-2; `vllm/model_executor/models/bailing_moe.py` modified +5/-2
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/fused_moe/__init__.py`, `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/models/AXK1.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #43997 - [Refactor] Remove dead current_tool_name_sent assignments from tool parsers
+
+- Link: https://github.com/vllm-project/vllm/pull/43997
+- Status/date: merged / 2026-05-30
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 4 files, +0/-6, 48 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Refactor] Remove dead current_tool_name_sent assignments from tool parsers"; model line: ERNIE 4.5; category: model implementation change; main diff: `vllm/tool_parsers/hunyuan_a13b_tool_parser.py`, `vllm/tool_parsers/ernie45_tool_parser.py`, `vllm/tool_parsers/hy_v3_tool_parser.py`; technical summary: Covers "[Refactor] Remove dead current_tool_name_sent assignments from tool parsers"; the main implementation surface is `vllm/tool_parsers/hunyuan_a13b_tool_parser.py`, `vllm/tool_parsers/ernie45_tool_parser.py`, `vllm/tool_parsers/hy_v3_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/tool_parsers/hunyuan_a13b_tool_parser.py` modified +0/-3 (3 lines); hunks: -38,7 +38,6 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[Tool]...; -262,7 +261,6 @@ def _handle_test_compatibility(self, current_text: str):; symbols: __init__, _handle_test_compatibility, _handle_tool_name_streaming, touching `__init__, _handle_test_compatibility, _handle_tool_name_streaming`; `vllm/tool_parsers/ernie45_tool_parser.py` modified +0/-1 (1 lines); hunks: -34,7 +34,6 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[Tool]...; symbols: __init__, touching `__init__`; `vllm/tool_parsers/hy_v3_tool_parser.py` modified +0/-1 (1 lines); hunks: -246,7 +246,6 @@ def _parse_value(; symbols: _parse_value, __init__, touching `_parse_value, __init__`; `vllm/tool_parsers/phi4mini_tool_parser.py` modified +0/-1 (1 lines); hunks: -47,7 +47,6 @@ def __init__(; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `vllm/tool_parsers/hunyuan_a13b_tool_parser.py` modified +0/-3 (3 lines); hunks: -38,7 +38,6 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[Tool]...; -262,7 +261,6 @@ def _handle_test_compatibility(self, current_text: str):; symbols: __init__, _handle_test_compatibility, _handle_tool_name_streaming
+  - `vllm/tool_parsers/ernie45_tool_parser.py` modified +0/-1 (1 lines); hunks: -34,7 +34,6 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[Tool]...; symbols: __init__
+  - `vllm/tool_parsers/hy_v3_tool_parser.py` modified +0/-1 (1 lines); hunks: -246,7 +246,6 @@ def _parse_value(; symbols: _parse_value, __init__
+  - `vllm/tool_parsers/phi4mini_tool_parser.py` modified +0/-1 (1 lines); hunks: -47,7 +47,6 @@ def __init__(; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- vllm/tool_parsers/hunyuan_a13b_tool_parser.py
+@@ -38,7 +38,6 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[Tool] | None = None):
+-        self.current_tool_name_sent = False
+@@ -262,7 +261,6 @@ def _handle_test_compatibility(self, current_text: str):
+-                    self.current_tool_name_sent = True
+@@ -306,7 +304,6 @@ def _handle_tool_name_streaming(
+-                self.current_tool_name_sent = True
+diff -- vllm/tool_parsers/ernie45_tool_parser.py
+@@ -34,7 +34,6 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[Tool] | None = None):
+-        self.current_tool_name_sent = False
+diff -- vllm/tool_parsers/hy_v3_tool_parser.py
+@@ -246,7 +246,6 @@ def _parse_value(
+-        self.current_tool_name_sent: bool = False
+diff -- vllm/tool_parsers/phi4mini_tool_parser.py
+@@ -47,7 +47,6 @@ def __init__(
+-        self.current_tool_name_sent: bool = False
+```
+
+- Reviewed files:
+  - runtime: `vllm/tool_parsers/hunyuan_a13b_tool_parser.py` modified +0/-3; `vllm/tool_parsers/ernie45_tool_parser.py` modified +0/-1; `vllm/tool_parsers/hy_v3_tool_parser.py` modified +0/-1; `vllm/tool_parsers/phi4mini_tool_parser.py` modified +0/-1
+- Risk and verification: Runtime changes concentrate in `vllm/tool_parsers/ernie45_tool_parser.py`, `vllm/tool_parsers/hunyuan_a13b_tool_parser.py`, `vllm/tool_parsers/hy_v3_tool_parser.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #41184 - [MoE Refactor] FusedMoE/MoERunner inversion refactor
+
+- Link: https://github.com/vllm-project/vllm/pull/41184
+- Status/date: merged / 2026-06-08
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 90 files, +2734/-2027, 7329 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[MoE Refactor] FusedMoE/MoERunner inversion refactor"; model line: ERNIE 4.5; category: performance/backend optimization; main diff: `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/routed_experts.py`, `vllm/model_executor/layers/fused_moe/runner/moe_runner.py`; technical summary: Covers "[MoE Refactor] FusedMoE/MoERunner inversion refactor"; the main implementation surface is `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/routed_experts.py`, `vllm/model_executor/layers/fused_moe/runner/moe_runner.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/layers/fused_moe/layer.py` modified +314/-1334 (1648 lines); hunks: -1,1424 +1,404; symbols: FusedMoeWeightScaleSupported, make_parallel_config, FusedMoE, determine_expert_counts, touching `FusedMoeWeightScaleSupported, make_parallel_config, FusedMoE`; `vllm/model_executor/layers/fused_moe/routed_experts.py` added +1144/-0 (1144 lines); hunks: -0,0 +1,1144; symbols: FusedMoeWeightScaleSupported, RoutedExperts, __init__, _replace_quant_method, touching `FusedMoeWeightScaleSupported, RoutedExperts, __init__`; `vllm/model_executor/layers/fused_moe/runner/moe_runner.py` modified +257/-82 (339 lines); hunks: -1,28 +1,39; -43,8 +54,23; symbols: register_layer_for_moe_forward_op, get_layer_from_name, _moe_forward, touching `register_layer_for_moe_forward_op, get_layer_from_name, _moe_forward`; `vllm/lora/layers/fused_moe.py` modified +76/-43 (119 lines); hunks: -10,7 +10,7; -25,15 +25,24; symbols: FusedMoEWithLoRA, __init__, touching `FusedMoEWithLoRA, __init__`.
+- Code diff details:
+  - `vllm/model_executor/layers/fused_moe/layer.py` modified +314/-1334 (1648 lines); hunks: -1,1424 +1,404; symbols: FusedMoeWeightScaleSupported, make_parallel_config, FusedMoE, determine_expert_counts
+  - `vllm/model_executor/layers/fused_moe/routed_experts.py` added +1144/-0 (1144 lines); hunks: -0,0 +1,1144; symbols: FusedMoeWeightScaleSupported, RoutedExperts, __init__, _replace_quant_method
+  - `vllm/model_executor/layers/fused_moe/runner/moe_runner.py` modified +257/-82 (339 lines); hunks: -1,28 +1,39; -43,8 +54,23; symbols: register_layer_for_moe_forward_op, get_layer_from_name, _moe_forward
+  - `vllm/lora/layers/fused_moe.py` modified +76/-43 (119 lines); hunks: -10,7 +10,7; -25,15 +25,24; symbols: FusedMoEWithLoRA, __init__
+  - `vllm/model_executor/model_loader/weight_utils.py` modified +106/-1 (107 lines); hunks: -13,7 +13,7; -1633,3 +1633,108 @@ def maybe_remap_kv_scale_name(name: str, params_dict: di...; symbols: maybe_remap_kv_scale_name, maybe_remap_moe_expert_param_name, remap_moe_expert_weights
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/layers/fused_moe/layer.py
+@@ -1,1424 +1,404 @@
+-from collections.abc import Callable, Iterable
+-from enum import Enum
+-from typing import Literal, cast, overload
++from collections.abc import Callable
++from typing import Any
+-from torch.nn.parameter import UninitializedParameter
+diff -- vllm/model_executor/layers/fused_moe/routed_experts.py
+@@ -0,0 +1,1144 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++from collections.abc import Callable, Iterable
++from enum import Enum
++from typing import TYPE_CHECKING, Any, Literal, cast, overload
++import torch
+diff -- vllm/model_executor/layers/fused_moe/runner/moe_runner.py
+@@ -1,28 +1,39 @@
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/layers/fused_moe/layer.py` modified +314/-1334; `vllm/model_executor/layers/fused_moe/routed_experts.py` added +1144/-0; `vllm/model_executor/layers/fused_moe/runner/moe_runner.py` modified +257/-82; `vllm/lora/layers/fused_moe.py` modified +76/-43; `vllm/model_executor/model_loader/weight_utils.py` modified +106/-1; `vllm/model_executor/layers/fused_moe/runner/moe_runner_interface.py` modified +102/-2
+- Risk and verification: The diff ships test coverage in `tests/distributed/test_eplb_fused_moe_layer.py`, `tests/distributed/test_eplb_fused_moe_layer_dep_nvfp4.py`, `tests/kernels/moe/modular_kernel_tools/common.py`, `tests/kernels/moe/modular_kernel_tools/parallel_utils.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #45988 - [Perf] Remove unused loggers in `reasoning/`
+
+- Link: https://github.com/vllm-project/vllm/pull/45988
+- Status/date: merged / 2026-06-18
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 9 files, +0/-27, 148 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Perf] Remove unused loggers in `reasoning/`"; model line: ERNIE 4.5; category: performance/backend optimization; main diff: `vllm/reasoning/deepseek_v3_reasoning_parser.py`, `vllm/reasoning/ernie45_reasoning_parser.py`, `vllm/reasoning/granite_reasoning_parser.py`; technical summary: Covers "[Perf] Remove unused loggers in `reasoning/`"; the main implementation surface is `vllm/reasoning/deepseek_v3_reasoning_parser.py`, `vllm/reasoning/ernie45_reasoning_parser.py`, `vllm/reasoning/granite_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/reasoning/deepseek_v3_reasoning_parser.py` modified +0/-3 (3 lines); hunks: -6,7 +6,6; -17,8 +16,6; symbols: DeepSeekV3ReasoningParser, touching `DeepSeekV3ReasoningParser`; `vllm/reasoning/ernie45_reasoning_parser.py` modified +0/-3 (3 lines); hunks: -7,15 +7,12; symbols: Ernie45ReasoningParser, touching `Ernie45ReasoningParser`; `vllm/reasoning/granite_reasoning_parser.py` modified +0/-3 (3 lines); hunks: -8,15 +8,12; symbols: GraniteReasoningParser, touching `GraniteReasoningParser`; `vllm/reasoning/hunyuan_a13b_reasoning_parser.py` modified +0/-3 (3 lines); hunks: -8,15 +8,12; symbols: HunyuanA13BReasoningParser, touching `HunyuanA13BReasoningParser`.
+- Code diff details:
+  - `vllm/reasoning/deepseek_v3_reasoning_parser.py` modified +0/-3 (3 lines); hunks: -6,7 +6,6; -17,8 +16,6; symbols: DeepSeekV3ReasoningParser
+  - `vllm/reasoning/ernie45_reasoning_parser.py` modified +0/-3 (3 lines); hunks: -7,15 +7,12; symbols: Ernie45ReasoningParser
+  - `vllm/reasoning/granite_reasoning_parser.py` modified +0/-3 (3 lines); hunks: -8,15 +8,12; symbols: GraniteReasoningParser
+  - `vllm/reasoning/hunyuan_a13b_reasoning_parser.py` modified +0/-3 (3 lines); hunks: -8,15 +8,12; symbols: HunyuanA13BReasoningParser
+  - `vllm/reasoning/identity_reasoning_parser.py` modified +0/-3 (3 lines); hunks: -7,15 +7,12; symbols: IdentityReasoningParser
+- Key code excerpts:
+
+```diff
+diff -- vllm/reasoning/deepseek_v3_reasoning_parser.py
+@@ -6,7 +6,6 @@
+-from vllm.logger import init_logger
+@@ -17,8 +16,6 @@
+-logger = init_logger(__name__)
+diff -- vllm/reasoning/ernie45_reasoning_parser.py
+@@ -7,15 +7,12 @@
+-from vllm.logger import init_logger
+-logger = init_logger(__name__)
+diff -- vllm/reasoning/granite_reasoning_parser.py
+@@ -8,15 +8,12 @@
+-from vllm.logger import init_logger
+-logger = init_logger(__name__)
+diff -- vllm/reasoning/hunyuan_a13b_reasoning_parser.py
+@@ -8,15 +8,12 @@
+-from vllm.logger import init_logger
+-logger = init_logger(__name__)
+diff -- vllm/reasoning/identity_reasoning_parser.py
+```
+
+- Reviewed files:
+  - runtime: `vllm/reasoning/deepseek_v3_reasoning_parser.py` modified +0/-3; `vllm/reasoning/ernie45_reasoning_parser.py` modified +0/-3; `vllm/reasoning/granite_reasoning_parser.py` modified +0/-3; `vllm/reasoning/hunyuan_a13b_reasoning_parser.py` modified +0/-3; `vllm/reasoning/identity_reasoning_parser.py` modified +0/-3; `vllm/reasoning/minimax_m2_reasoning_parser.py` modified +0/-3
+- Risk and verification: Runtime changes concentrate in `vllm/reasoning/deepseek_v3_reasoning_parser.py`, `vllm/reasoning/ernie45_reasoning_parser.py`, `vllm/reasoning/granite_reasoning_parser.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ## Gap-Closure Notes
 

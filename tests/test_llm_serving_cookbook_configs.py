@@ -136,6 +136,19 @@ class LlmServingCookbookConfigsTest(unittest.TestCase):
                 with self.subTest(path=path.name):
                     self.assertEqual(self.mod.validate_config(path, help_flags), [])
 
+    def test_missing_help_snapshot_does_not_restrict_static_flags(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            help_dir = Path(tmp)
+            (help_dir / "trtllm_serve_missing.txt").write_text(
+                "bash: trtllm-serve: command not found\n", encoding="utf-8"
+            )
+
+            help_flags = self.mod.load_help_flags(help_dir)
+            self.assertNotIn("tensorrt_llm", help_flags)
+            for path in self.config_paths():
+                with self.subTest(path=path.name):
+                    self.assertEqual(self.mod.validate_config(path, help_flags), [])
+
     def test_invalid_config_reports_errors_without_crashing(self) -> None:
         config = {
             "schema_version": 1,

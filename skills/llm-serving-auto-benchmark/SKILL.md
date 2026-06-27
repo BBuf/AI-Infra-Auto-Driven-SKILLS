@@ -28,7 +28,7 @@ run:
 
 ```bash
 python skills/llm-serving-auto-benchmark/scripts/validate_cookbook_configs.py \
-  skills/llm-serving-auto-benchmark/configs/cookbook-llm
+  skills/llm-serving-auto-benchmark/configs/cookbook-llm/*.yaml
 ```
 
 If you have captured target-environment `--help` files, add
@@ -105,6 +105,27 @@ path can finish quickly.
 | `Qwen/Qwen3-8B` | 2x H100, TP=2 | `sglang_mem086`, 21.64 req/s, 1385.05 output tok/s, mean TTFT 70.54 ms | `vllm_mem080`, 22.88 req/s, 1464.25 output tok/s, mean TTFT 60.56 ms | `/data/bbuf/validate/core_skill_validation_20260501/qwen3_8b/auto_benchmark` |
 | `mistralai/Mistral-7B-Instruct-v0.3` | 2x H100, TP=2 | `sglang_mem080`, 24.09 req/s, 1541.92 output tok/s, mean TTFT 61.47 ms | `vllm_mem090`, 24.76 req/s, 1584.54 output tok/s, mean TTFT 58.63 ms | `/data/bbuf/validate/core_skill_validation_20260501/mistral_7b_instruct_v03/auto_benchmark` |
 
+Additional B200 smoke validation on `2026-06-27` used `GPUC5A6`
+(`cirrascale-gpuc5a6`) in container `sglang_bbuf`, artifact root
+`/data/bbuf/ai_infra_skills_pr72_20260627`. The target image had SGLang
+`0.5.13.post1` installed, but no `vllm`, `trtllm-serve`, or `tokenspeed`
+CLI in that container, so only SGLang was model-smoked and the missing
+frameworks were recorded as environment gaps, not as unsupported frameworks.
+
+| Model | GPU | Result |
+| --- | --- | --- |
+| `Qwen/Qwen2.5-0.5B-Instruct` | 1x B200 | 5 random prompts completed; GPU memory returned to 0 MiB |
+| `Qwen/Qwen2.5-1.5B-Instruct` | 1x B200 | 5 random prompts completed; GPU memory returned to 0 MiB |
+| `Qwen/Qwen2.5-3B-Instruct` | 1x B200 | 5 random prompts completed; GPU memory returned to 0 MiB |
+| `Qwen/Qwen2.5-7B-Instruct` | 1x B200 | 5 random prompts completed; GPU memory returned to 0 MiB |
+| `Qwen/Qwen3-8B` | 1x B200 | 5 random prompts completed; GPU memory returned to 0 MiB |
+
+The same B200 refresh ran the cookbook validator against captured help
+snapshots. Missing-command help captures such as `trtllm-serve_missing.txt`
+are now ignored unless at least one real `--flag` is present, preventing a
+missing framework binary from being misreported as hundreds of unsupported
+framework flags.
+
 ## Skill Scope
 
 This skill is a playbook plus a config+validator toolchain, not a turn-key
@@ -165,16 +186,16 @@ before starting a long sweep.
   the operator has verified the image.
 - vLLM `--max-num-partial-prefills > 1` is model- and runtime-gated. Keep `1`
   in the default pass; raise only after a preflight with the actual model.
-- vLLM current mainline was refreshed on 2026-06-26 at
-  `abc71548ef029132c3316b902207f254a246d593` and includes PR `#46735`
+- vLLM current mainline was checked on 2026-06-27 at
+  `091d13976c1c246714bb2112dd2e208561dda6a3` and includes PR `#46735`
   fixing CUDA graph capture in Triton / NVFP4-emulation MoE. If a target image
   predates it, treat Triton-MoE graph-capture failures or eager fallback as an
   image/runtime issue before scoring it against SGLang.
 - The same vLLM refresh includes PR `#44800` (`VLLM_GPU_SYNC_CHECK`). For
   sync-heavy profiler rows, record whether the target image exposes this debug
   knob before labeling the gap as kernel-local.
-- TensorRT-LLM mainline was refreshed on 2026-06-26 at
-  `0722c5f47d2cae69ac1a237da51e550dd214532c`. Keep
+- TensorRT-LLM mainline was checked on 2026-06-27 at
+  `aaffa2f9fef3025e0f698d978385a73460344e0b`. Keep
   `kv_cache_free_gpu_memory_fraction` in shipped configs until the target
   `trtllm-serve serve --help` proves a shorter alias is accepted.
 - TensorRT-LLM current mainline includes PR `#11685` and PR `#15546`, which
@@ -191,8 +212,8 @@ before starting a long sweep.
   backend, which is pinned to `pytorch` by this skill.
 - `trtllm` `benchmark_serving --dataset-name random` silently falls back to
   ShareGPT sampling without `--random-ids` (or `--download-path`).
-- TokenSpeed is a fast-moving engine. Current mainline checked on 2026-06-26 at
-  `5aedf69d6b476baa65571011de6ea60fd5a238a8` exposes `tokenspeed serve`,
+- TokenSpeed is a fast-moving engine. Current mainline checked on 2026-06-27 at
+  `lightseekorg/tokenspeed@d0a7faddb5ec0d4c6d037c4c3e6a781d2c5164a8` exposes `tokenspeed serve`,
   `tokenspeed bench`, `tokenspeed env`, and `tokenspeed version`. Its server
   command is `tokenspeed serve <model>`, not a `python -m tokenspeed`
   entrypoint.
@@ -494,7 +515,7 @@ TensorRT-LLM flag names are especially version-sensitive. In the validated
 TensorRT-LLM 1.0.0 image, the KV-cache memory flag accepted by
 `trtllm-serve serve` was `--kv_cache_free_gpu_memory_fraction`, not
 `--free_gpu_memory_fraction`. Current mainline was rechecked at
-`0722c5f47d2cae69ac1a237da51e550dd214532c` on 2026-06-26. Always verify flags
+`aaffa2f9fef3025e0f698d978385a73460344e0b` on 2026-06-27. Always verify flags
 with `trtllm-serve serve --help` before running a search on any GPU target.
 
 TensorRT-LLM backend policy for this skill:

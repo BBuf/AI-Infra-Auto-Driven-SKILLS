@@ -10,7 +10,7 @@ intelligence.**
 [![GitHub stars](https://img.shields.io/github/stars/BBuf/AI-Infra-Auto-Driven-SKILLS?style=social)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/BBuf/AI-Infra-Auto-Driven-SKILLS?style=social)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/forks)
 [![Last commit](https://img.shields.io/github/last-commit/BBuf/AI-Infra-Auto-Driven-SKILLS?style=flat-square)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/commits/main)
-[![Core skills](https://img.shields.io/badge/core_skills-10-2f80ed?style=flat-square)](#core-skills)
+[![Core skills](https://img.shields.io/badge/core_skills-11-2f80ed?style=flat-square)](#core-skills)
 [![PR histories](https://img.shields.io/badge/pr_histories-66-2ea44f?style=flat-square)](#model-pr-history-catalog)
 [![KDA-Pilot](https://img.shields.io/badge/sibling-KDA--Pilot-ff7b72?style=flat-square)](https://github.com/BBuf/KDA-Pilot)
 
@@ -43,6 +43,7 @@ find it.
 | [`llm-torch-profiler-analysis`](skills/llm-torch-profiler-analysis/) | You need a three-table profiler report that keeps `extend/prefill` and `decode` evidence separate. |
 | [`llm-pipeline-analysis`](skills/llm-pipeline-analysis/) | You need forward-pass, layer, and kernel-level timing from a torch profiler trace, including anchor boundaries and Perfetto ranges. |
 | [`model-compute-simulation`](skills/model-compute-simulation/) | You need operator shapes, FLOPs, MFU estimates, kernel-to-op mapping, or parallelism what-if analysis for an LLM serving shape. |
+| [`model-pr-diff-dossier`](skills/model-optimization/model-pr-diff-dossier/) | You need to create or revise model PR history docs with manual diff-reviewed cards instead of shallow PR-title summaries. |
 | [`sglang-humanize-review`](skills/sglang-humanize-review/) | You need SGLang code-review findings grounded in full human PR review episodes from project start through the latest refresh (June 2026), including inline code context, top-level discussion, review summaries, and multi-round replies. Every review opens with a PR comprehension pass — a change summary plus a Mermaid execution flowchart with the diff's modified steps marked — so the reviewer sees how the PR runs before the findings. |
 | [`sglang-sota-humanize-loop`](skills/sglang-sota-humanize-loop/) | You want one model-level Humanize RLCR loop that owns SGLang gap decisions against a selected comparison framework set, profiler triage, required layer-pipeline deep dives, SGLang patches, optional `ncu-report-skill` evidence, and real-model revalidation after the fixed fair benchmark. |
 | [`vllm-sota-humanize-loop`](skills/vllm-sota-humanize-loop/) | You want one model-level Humanize RLCR loop that owns gap decisions, profiler triage, required layer-pipeline deep dives, vLLM patches, optional `ncu-report-skill` evidence, and real-model revalidation after the fixed fair benchmark. |
@@ -109,6 +110,17 @@ python3 scripts/query.py --framework vllm "qwen3 fused qk norm"
 python3 scripts/query.py --framework tokenspeed --model qwen35 qk rmsnorm
 ```
 
+Open PR freshness is tracked separately from merged history cards:
+
+```bash
+python3 tools/check_open_pr_watch.py --format markdown \
+  --output model-pr-optimization-history/open-pr-watch.md
+```
+
+This report uses the GitHub pulls API with an anonymous REST fallback when
+`gh api` is rate-limited. If every repo fetch fails, the tool exits non-zero
+instead of writing a misleading empty report.
+
 ## Evidence Standards
 
 The repo is opinionated about evidence because performance work gets noisy fast.
@@ -136,6 +148,9 @@ The repo is opinionated about evidence because performance work gets noisy fast.
 - Model optimization histories should point back to PRs, files, diffs, and risk
   surfaces rather than vague summary text; they live as one PR-driven knowledge
   base, not per-model skills.
+- Root-level [`update_prompt.md`](update_prompt.md) captures the full refresh
+  and validation workflow for updating this repo again without relying on
+  memory from a previous run.
 
 ## Install
 
@@ -154,7 +169,7 @@ installed as a single Claude Code plugin via the built-in marketplace flow:
 /reload-plugins
 ```
 
-After reload, the 11 skills appear namespaced as
+After reload, the 12 skills appear namespaced as
 `ai-infra-auto-driven-skills:<skill-name>` (for example
 `ai-infra-auto-driven-skills:sglang-sota-humanize-loop`). Update later with
 `/plugin marketplace update ai-infra-auto-driven-skills`.
@@ -175,6 +190,7 @@ ln -s "$PWD/skills/llm-serving-capacity-planner" ~/.claude/skills/llm-serving-ca
 ln -s "$PWD/skills/llm-torch-profiler-analysis" ~/.claude/skills/llm-torch-profiler-analysis
 ln -s "$PWD/skills/llm-pipeline-analysis" ~/.claude/skills/llm-pipeline-analysis
 ln -s "$PWD/skills/model-compute-simulation" ~/.claude/skills/model-compute-simulation
+ln -s "$PWD/skills/model-optimization/model-pr-diff-dossier" ~/.claude/skills/model-pr-diff-dossier
 ln -s "$PWD/skills/sglang-humanize-review" ~/.claude/skills/sglang-humanize-review
 ln -s "$PWD/skills/sglang-sota-humanize-loop" ~/.claude/skills/sglang-sota-humanize-loop
 ln -s "$PWD/skills/vllm-sota-humanize-loop" ~/.claude/skills/vllm-sota-humanize-loop
@@ -187,8 +203,8 @@ Restart Claude Code after installing. The skills can then be invoked by name,
 for example `[$llm-serving-auto-benchmark]`,
 `[$llm-serving-capacity-planner]`, `[$llm-torch-profiler-analysis]`,
 `[$llm-pipeline-analysis]`, `[$model-compute-simulation]`,
-`[$sglang-humanize-review]`, `[$sglang-sota-humanize-loop]`, or
-`[$vllm-sota-humanize-loop]`.
+`[$model-pr-diff-dossier]`, `[$sglang-humanize-review]`,
+`[$sglang-sota-humanize-loop]`, or `[$vllm-sota-humanize-loop]`.
 
 If you prefer copies instead of symlinks, replace `ln -s` with `cp -R`. Copy
 `model-pr-optimization-history` only when you want the agent to query the
@@ -206,6 +222,7 @@ cp -R skills/llm-serving-capacity-planner <agent-skill-dir>/llm-serving-capacity
 cp -R skills/llm-torch-profiler-analysis <agent-skill-dir>/llm-torch-profiler-analysis
 cp -R skills/llm-pipeline-analysis <agent-skill-dir>/llm-pipeline-analysis
 cp -R skills/model-compute-simulation <agent-skill-dir>/model-compute-simulation
+cp -R skills/model-optimization/model-pr-diff-dossier <agent-skill-dir>/model-pr-diff-dossier
 cp -R skills/sglang-humanize-review <agent-skill-dir>/sglang-humanize-review
 cp -R skills/sglang-sota-humanize-loop <agent-skill-dir>/sglang-sota-humanize-loop
 cp -R skills/vllm-sota-humanize-loop <agent-skill-dir>/vllm-sota-humanize-loop

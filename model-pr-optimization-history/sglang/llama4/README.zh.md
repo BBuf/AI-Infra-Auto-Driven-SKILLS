@@ -1,42 +1,15 @@
 # sglang Llama 4 模型 PR 优化历史
 
-## 2026-06-26 最新源码扫描
-
-已按 SGLang 上游 `sgl-project/sglang@8524678889485801e7a4a12d62015be0c68f7a90` 重新扫描本文下方列出的 tracked files。
-文件级匹配使用 GitHub mirror 的 `git log --name-only`；PR 标题、链接和合并时间通过 GitHub GraphQL Pull Request API 批量复核。上一时效锚点：`2026-06-05`。
-
-结果：发现 1 个额外 PR-numbered merge 触及 tracked files，但尚未提升为下方完整逐 PR diff audit card。此节只作为 freshness index；需要引用实现细节时，仍应先人工阅读 PR diff 再补完整卡片。
-
-| 合并日期 | PR | 标题 | 命中的 tracked files |
-| --- | --- | --- | --- |
-| 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | Add get_parallel(): a structured accessor for parallel-topology state | `llama4.py` |
-
-## 2026-06-05 PR 补漏复核
-
-已于 2026-06-05 按 sglang 上游 `origin/main@6cfdc1858` 复核；自上次时效基准（2026-05-19）以来，共有 3 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
-
-| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
-| --- | --- | --- | --- |
-| 2026-06-01 | [#25813](https://github.com/sgl-project/sglang/pull/25813) | docs(cookbook): port popular model usage guides into cookbook pages | `Llama4.mdx`, `llama4.mdx`, `llama4-maverick-deployment.jsx` |
-| 2026-05-29 | [#26353](https://github.com/sgl-project/sglang/pull/26353) | NPU Nightly Pipeline Skip Test Case Adaptation and Recovery Testing | `test_npu_llama4_scount_17b_16e.py` |
-| 2026-05-22 | [#24751](https://github.com/sgl-project/sglang/pull/24751) | fix(mm): make multimodal data loading non-blocking to prevent health check stalls | `mllama4.py` |
-
-
-## 2026-05-19 PR 补漏复核
-
-已按 sglang 上游 `origin/main@78cb38ed5` 和 GitHub Pull Request files API 复核；本轮补齐 `#25089` 的时间线与逐 PR diff 审计卡。
-
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
 | `docs/basic_usage/llama4.md` | [#13421](https://github.com/sgl-project/sglang/pull/13421) |
 | `docs_new/cookbook/autoregressive/Llama/Llama4.mdx` | 无直接 PR 号提交 |
-| `docs_new/docs/basic_usage/llama4.mdx` | 无直接 PR 号提交 |
 | `docs_new/src/snippets/autoregressive/llama4-maverick-deployment.jsx` | 无直接 PR 号提交 |
 | `docs_new/src/snippets/autoregressive/llama4-scout-deployment.jsx` | 无直接 PR 号提交 |
 | `examples/chat_template/tool_chat_template_llama4_pythonic.jinja` | [#6679](https://github.com/sgl-project/sglang/pull/6679) |
-| `python/sglang/srt/models/llama4.py` | [#5092](https://github.com/sgl-project/sglang/pull/5092), [#5127](https://github.com/sgl-project/sglang/pull/5127), [#5128](https://github.com/sgl-project/sglang/pull/5128), [#5144](https://github.com/sgl-project/sglang/pull/5144), [#5159](https://github.com/sgl-project/sglang/pull/5159), [#5194](https://github.com/sgl-project/sglang/pull/5194), [#6752](https://github.com/sgl-project/sglang/pull/6752), [#7729](https://github.com/sgl-project/sglang/pull/7729), [#8512](https://github.com/sgl-project/sglang/pull/8512), [#8683](https://github.com/sgl-project/sglang/pull/8683), [#9101](https://github.com/sgl-project/sglang/pull/9101), [#10047](https://github.com/sgl-project/sglang/pull/10047), ... (16 total) |
+| `python/sglang/srt/models/llama4.py` | [#5092](https://github.com/sgl-project/sglang/pull/5092), [#5127](https://github.com/sgl-project/sglang/pull/5127), [#5128](https://github.com/sgl-project/sglang/pull/5128), [#5144](https://github.com/sgl-project/sglang/pull/5144), [#5159](https://github.com/sgl-project/sglang/pull/5159), [#5194](https://github.com/sgl-project/sglang/pull/5194), [#6752](https://github.com/sgl-project/sglang/pull/6752), [#7729](https://github.com/sgl-project/sglang/pull/7729), [#8512](https://github.com/sgl-project/sglang/pull/8512), [#8683](https://github.com/sgl-project/sglang/pull/8683), [#9101](https://github.com/sgl-project/sglang/pull/9101), [#10047](https://github.com/sgl-project/sglang/pull/10047), ... (17 total) |
 | `python/sglang/srt/models/mllama4.py` | [#5092](https://github.com/sgl-project/sglang/pull/5092), [#5144](https://github.com/sgl-project/sglang/pull/5144), [#5194](https://github.com/sgl-project/sglang/pull/5194), [#6985](https://github.com/sgl-project/sglang/pull/6985), [#7129](https://github.com/sgl-project/sglang/pull/7129), [#8272](https://github.com/sgl-project/sglang/pull/8272), [#8512](https://github.com/sgl-project/sglang/pull/8512), [#10042](https://github.com/sgl-project/sglang/pull/10042), [#10047](https://github.com/sgl-project/sglang/pull/10047), [#10611](https://github.com/sgl-project/sglang/pull/10611), [#11282](https://github.com/sgl-project/sglang/pull/11282) |
 | `python/sglang/srt/multimodal/processors/mllama4.py` | [#7840](https://github.com/sgl-project/sglang/pull/7840), [#8156](https://github.com/sgl-project/sglang/pull/8156) |
 | `test/manual/lora/test_lora_llama4.py` | 无直接 PR 号提交 |
@@ -46,9 +19,9 @@
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 28
-- 原文档显式引用补充 PR 数: 2
-- 当前文档总 PR 数: 30
+- git 追溯 PR 数: 29
+- 原文档显式引用补充 PR 数: 5
+- 当前文档总 PR 数: 34
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -86,6 +59,10 @@
 | 2026-01-30 | [#12813](https://github.com/sgl-project/sglang/pull/12813) | merged | add weightless qk norm to RMSNorm interface for Llama 4 | `python/sglang/srt/models/llama4.py` |
 | 2026-02-27 | [#17123](https://github.com/sgl-project/sglang/pull/17123) | merged | llama4 npu adapt | `python/sglang/srt/models/llama4.py` |
 | 2026-05-15 | [#25089](https://github.com/sgl-project/sglang/pull/25089) | merged | [Llama4] Use strided in-place fused QK RMSNorm to drop a redundant copy | `python/sglang/srt/models/llama4.py` |
+| 2026-05-22 | [#24751](https://github.com/sgl-project/sglang/pull/24751) | merged | fix(mm): make multimodal data loading non-blocking to prevent health check stalls | `python/sglang/srt/multimodal/processors/base_processor.py`, `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/multimodal/processors/minicpm.py` |
+| 2026-05-29 | [#26353](https://github.com/sgl-project/sglang/pull/26353) | merged | NPU Nightly Pipeline Skip Test Case Adaptation and Recovery Testing | `test/registered/ascend/interface/test_npu_openai_function_calling.py`, `test/registered/ascend/basic_function/memory_and_scheduling/test_npu_no_chunked_prefill.py`, `test/registered/ascend/basic_function/parameter/test_npu_no_chunked_prefill.py` |
+| 2026-06-02 | [#25813](https://github.com/sgl-project/sglang/pull/25813) | merged | docs(cookbook): port popular model usage guides into cookbook pages | `docs_new/docs/basic_usage/deepseek_v32.mdx`, `docs_new/docs/basic_usage/deepseek_v3.mdx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` |
+| 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | merged | Add get_parallel(): a structured accessor for parallel-topology state | `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -134,7 +111,7 @@ diff -- python/sglang/srt/models/mllama4.py
 - 状态/时间: merged / 2025-04-08
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/llama4.py`；关联提交 `5039d547724c`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+77/-19，可读 patch 178 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Support 2x8xH100 for Llama 4」；模型线: Llama 4；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/models/llama4.py`；技术摘要: 覆盖「Support 2x8xH100 for Llama 4」；主要实现面是 `python/sglang/srt/models/llama4.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「Support 2x8xH100 for Llama 4」；模型线: Llama 4；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/llama4.py`；技术摘要: 覆盖「Support 2x8xH100 for Llama 4」；主要实现面是 `python/sglang/srt/models/llama4.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/llama4.py` modified +77/-19 (96 lines); hunks: -27,6 +27,13; -38,6 +45,7; symbols: __init__, forward，涉及 `__init__, forward`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/llama4.py` modified +77/-19 (96 lines); hunks: -27,6 +27,13; -38,6 +45,7; symbols: __init__, forward
@@ -219,7 +196,7 @@ diff -- python/sglang/srt/models/llama4.py
 - 状态/时间: merged / 2025-04-09
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/llama4.py`, `python/sglang/srt/models/mllama4.py`；关联提交 `fbebcb7aa4aa`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+145/-65，可读 patch 403 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「model: support mllama4」；模型线: Llama 4；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/mllama4.py`, `python/sglang/srt/managers/multimodal_processors/mllama4.py`, `python/sglang/srt/models/llama4.py`；未提供可用技术摘要。
+- 动机: 标题「model: support mllama4」；模型线: Llama 4；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/mllama4.py`, `python/sglang/srt/managers/multimodal_processors/mllama4.py`, `python/sglang/srt/models/llama4.py`；技术摘要: 覆盖「model: support mllama4」；主要实现面是 `python/sglang/srt/models/mllama4.py`, `python/sglang/srt/managers/multimodal_processors/mllama4.py`, `python/sglang/srt/models/llama4.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/mllama4.py` modified +50/-11 (61 lines); hunks: -1,14 +1,19; -30,6 +35,9 @@ def __init__(; symbols: __init__, pad_input_ids, get_image_feature, forward，涉及 `__init__, pad_input_ids, get_image_feature`；`python/sglang/srt/managers/multimodal_processors/mllama4.py` modified +21/-36 (57 lines); hunks: -1,10 +1,8; -15,7 +13,6; symbols: Mllama4ImageProcessor, __init__, process_mm_data_async，涉及 `Mllama4ImageProcessor, __init__, process_mm_data_async`；`python/sglang/srt/models/llama4.py` modified +3/-0 (3 lines); hunks: -466,6 +466,9 @@ def __init__(; symbols: __init__, get_input_embeddings, _init_model，涉及 `__init__, get_input_embeddings, _init_model`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/mllama4.py` modified +50/-11 (61 lines); hunks: -1,14 +1,19; -30,6 +35,9 @@ def __init__(; symbols: __init__, pad_input_ids, get_image_feature, forward
@@ -312,7 +289,7 @@ diff -- python/sglang/srt/layers/attention/flashattention_backend.py
 - 状态/时间: merged / 2025-05-31
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `examples/chat_template/tool_chat_template_llama4_pythonic.jinja`；关联提交 `4fac524b14a0`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+165/-73，可读 patch 350 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「update llama4 chat template and pythonic parser」；模型线: Llama 4；类别: 文档/测试/CI；主要 diff: `examples/chat_template/tool_chat_template_llama4_pythonic.jinja`；技术摘要: 覆盖「update llama4 chat template and pythonic parser」；主要实现面是 `examples/chat_template/tool_chat_template_llama4_pythonic.jinja`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「update llama4 chat template and pythonic parser」；模型线: Llama 4；类别: 模型实现调整；主要 diff: `examples/chat_template/tool_chat_template_llama4_pythonic.jinja`；技术摘要: 覆盖「update llama4 chat template and pythonic parser」；主要实现面是 `examples/chat_template/tool_chat_template_llama4_pythonic.jinja`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `examples/chat_template/tool_chat_template_llama4_pythonic.jinja` modified +35/-63 (98 lines); hunks: -1,86 +1,52; -92,10 +58,12。
 - 代码 diff 细节:
   - `examples/chat_template/tool_chat_template_llama4_pythonic.jinja` modified +35/-63 (98 lines); hunks: -1,86 +1,52; -92,10 +58,12
@@ -339,7 +316,7 @@ diff -- examples/chat_template/tool_chat_template_llama4_pythonic.jinja
 - 状态/时间: merged / 2025-07-01
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/mllama4.py`；关联提交 `886d34496475`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+139/-19，可读 patch 237 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「support llama4 eagle3」；模型线: Llama 4；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/mllama4.py`；技术摘要: 覆盖「support llama4 eagle3」；主要实现面是 `python/sglang/srt/models/mllama4.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「support llama4 eagle3」；模型线: Llama 4；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/mllama4.py`；技术摘要: 覆盖「support llama4 eagle3」；主要实现面是 `python/sglang/srt/models/mllama4.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/mllama4.py` modified +29/-0 (29 lines); hunks: -223,5 +223,34 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: load_weights, set_eagle3_layers_to_capture, get_embed_and_head, set_embed_and_head，涉及 `load_weights, set_eagle3_layers_to_capture, get_embed_and_head`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/mllama4.py` modified +29/-0 (29 lines); hunks: -223,5 +223,34 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: load_weights, set_eagle3_layers_to_capture, get_embed_and_head, set_embed_and_head
@@ -501,7 +478,7 @@ diff -- python/sglang/srt/multimodal/processors/mllama4.py
 - 状态/时间: merged / 2025-08-02
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/llama4.py`, `python/sglang/srt/models/mllama4.py`；关联提交 `ea93079b3038`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+518/-52，可读 patch 903 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「model: adapt mllama4 to VisionAttention」；模型线: Llama 4；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/models/mllama4.py`, `python/sglang/srt/models/llama4.py`；技术摘要: 覆盖「model: adapt mllama4 to VisionAttention」；主要实现面是 `python/sglang/srt/models/mllama4.py`, `python/sglang/srt/models/llama4.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「model: adapt mllama4 to VisionAttention」；模型线: Llama 4；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/mllama4.py`, `python/sglang/srt/models/llama4.py`；技术摘要: 覆盖「model: adapt mllama4 to VisionAttention」；主要实现面是 `python/sglang/srt/models/mllama4.py`, `python/sglang/srt/models/llama4.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/mllama4.py` modified +428/-19 (447 lines); hunks: -1,17 +1,24; -26,10 +33,10; symbols: Llama4VisionMLP, __init__, forward, pixel_shuffle，涉及 `Llama4VisionMLP, __init__, forward`；`python/sglang/srt/models/llama4.py` modified +11/-2 (13 lines); hunks: -241,13 +241,22 @@ def __init__(; -257,7 +266,7 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/mllama4.py` modified +428/-19 (447 lines); hunks: -1,17 +1,24; -26,10 +33,10; symbols: Llama4VisionMLP, __init__, forward, pixel_shuffle
@@ -610,7 +587,7 @@ diff -- python/sglang/srt/models/llama4.py
 - 状态/时间: merged / 2025-09-06
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/llama4.py`, `python/sglang/srt/models/mllama4.py`；关联提交 `ab62b135c18a`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+123/-13，可读 patch 220 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「support Llama4 with non uniformed intermediate size across layers for…」；模型线: Llama 4；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/mllama4.py`, `python/sglang/srt/models/llama4.py`, `test/srt/lora/test_lora_llama4.py`；技术摘要: 覆盖「support Llama4 with non uniformed intermediate size across layers for…」；主要实现面是 `python/sglang/srt/models/mllama4.py`, `python/sglang/srt/models/llama4.py`, `test/srt/lora/test_lora_llama4.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「support Llama4 with non uniformed intermediate size across layers for…」；模型线: Llama 4；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/models/mllama4.py`, `python/sglang/srt/models/llama4.py`, `test/srt/lora/test_lora_llama4.py`；技术摘要: 覆盖「support Llama4 with non uniformed intermediate size across layers for…」；主要实现面是 `python/sglang/srt/models/mllama4.py`, `python/sglang/srt/models/llama4.py`, `test/srt/lora/test_lora_llama4.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/mllama4.py` modified +25/-0 (25 lines); hunks: -961,5 +961,30 @@ def get_embed(self):; symbols: get_embed, set_embed, get_hidden_dim，涉及 `get_embed, set_embed, get_hidden_dim`；`python/sglang/srt/models/llama4.py` modified +9/-0 (9 lines); hunks: -423,6 +423,12 @@ def _is_moe_layer(self, layer_id: int) -> bool:; -540,6 +546,9 @@ def __init__(; symbols: _is_moe_layer, get_intermediate_size, forward, __init__，涉及 `_is_moe_layer, get_intermediate_size, forward`；`test/srt/lora/test_lora_llama4.py` added +61/-0 (61 lines); hunks: -0,0 +1,61; symbols: TestLlama4LoRA, setUpClass, test_bringup，涉及 `TestLlama4LoRA, setUpClass, test_bringup`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/mllama4.py` modified +25/-0 (25 lines); hunks: -961,5 +961,30 @@ def get_embed(self):; symbols: get_embed, set_embed, get_hidden_dim
@@ -773,7 +750,7 @@ diff -- python/sglang/srt/models/llama4.py
 - 状态/时间: merged / 2025-11-25
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/basic_usage/llama4.md`；关联提交 `fcccaf9001ab`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+24/-5，可读 patch 50 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Add Llama4 attention backend auto-selection」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `docs/basic_usage/llama4.md`；技术摘要: 覆盖「Add Llama4 attention backend auto-selection」；主要实现面是 `docs/basic_usage/llama4.md`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「Add Llama4 attention backend auto-selection」；模型线: Llama 4；类别: 文档/测试/CI；主要 diff: `docs/basic_usage/llama4.md`；技术摘要: 覆盖「Add Llama4 attention backend auto-selection」；主要实现面是 `docs/basic_usage/llama4.md`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs/basic_usage/llama4.md` modified +9/-0 (9 lines); hunks: -21,6 +21,15 @@ python3 -m sglang.launch_server \。
 - 代码 diff 细节:
   - `docs/basic_usage/llama4.md` modified +9/-0 (9 lines); hunks: -21,6 +21,15 @@ python3 -m sglang.launch_server \
@@ -873,7 +850,7 @@ diff -- python/sglang/srt/models/llama4.py
 - 状态/时间: merged / 2026-02-27
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/llama4.py`；关联提交 `bc9190435b3f`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+37/-1，可读 patch 67 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「llama4 npu adapt」；模型线: Llama 4；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/llama4.py`；技术摘要: 覆盖「llama4 npu adapt」；主要实现面是 `python/sglang/srt/models/llama4.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「llama4 npu adapt」；模型线: Llama 4；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/llama4.py`；技术摘要: 覆盖「llama4 npu adapt」；主要实现面是 `python/sglang/srt/models/llama4.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/llama4.py` modified +4/-0 (4 lines); hunks: -56,11 +56,13; -329,6 +331,8 @@ def forward(; symbols: forward，涉及 `forward`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/llama4.py` modified +4/-0 (4 lines); hunks: -56,11 +56,13; -329,6 +331,8 @@ def forward(; symbols: forward
@@ -897,12 +874,12 @@ diff -- python/sglang/srt/models/llama4.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/25089
 - 状态/时间: merged / 2026-05-15
-- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@78cb38ed5` 提交历史和 GitHub Pull Request files API 反查；关联提交 `17c8a2fa5339`。
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/llama4.py`；关联提交 `17c8a2fa5339`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+22/-7，可读 patch 43 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Llama4] Use strided in-place fused QK RMSNorm to drop a redundant copy」；模型线: Llama 4；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/llama4.py`；技术摘要: 覆盖「[Llama4] Use strided in-place fused QK RMSNorm to drop a redundant copy」，下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/llama4.py` modified +22/-7 (29 lines); hunks: -54,6 +54,7  @@ PPProxyTensors,; -341,13 +342,27  @@ def forward(; symbols: forward，涉及 `forward`。
+- 动机: 标题「[Llama4] Use strided in-place fused QK RMSNorm to drop a redundant copy」；模型线: Llama 4；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/llama4.py`；技术摘要: 覆盖「[Llama4] Use strided in-place fused QK RMSNorm to drop a redundant copy」；主要实现面是 `python/sglang/srt/models/llama4.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/llama4.py` modified +22/-7 (29 lines); hunks: -54,6 +54,7; -341,13 +342,27 @@ def forward(; symbols: forward，涉及 `forward`。
 - 代码 diff 细节:
-  - `python/sglang/srt/models/llama4.py` modified +22/-7 (29 lines); hunks: -54,6 +54,7  @@ PPProxyTensors,; -341,13 +342,27  @@ def forward(; symbols: forward，涉及 `forward`
+  - `python/sglang/srt/models/llama4.py` modified +22/-7 (29 lines); hunks: -54,6 +54,7; -341,13 +342,27 @@ def forward(; symbols: forward
 - 关键代码摘录:
 
 ```diff
@@ -914,13 +891,175 @@ diff -- python/sglang/srt/models/llama4.py
 -            # TODO there are still 2 redundant direct_copy_kernel_cuda for this `reshape` and (in attn backend) q.contiguous(), maybe we can fuse them later
 -            qk = qk.reshape(-1, self.head_dim).contiguous().bfloat16()
 -            qk = self.qk_norm(qk).to(torch.bfloat16)
--            qk = qk.reshape(-1, self.q_size + self.kv_size)
--
 ```
 
 - 已读文件:
   - runtime: `python/sglang/srt/models/llama4.py` modified +22/-7
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/llama4.py`；风险点是权重加载、并行切分、attention/MoE 后端选择、量化 dtype 和 parser 输出，需要至少做一次真实 checkpoint 或等价 smoke。
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/llama4.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #24751 - fix(mm): make multimodal data loading non-blocking to prevent health check stalls
+
+- 链接: https://github.com/sgl-project/sglang/pull/24751
+- 状态/时间: merged / 2026-05-22
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 35 个文件，+45/-44，可读 patch 401 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「fix(mm): make multimodal data loading non-blocking to prevent health check stalls」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `python/sglang/srt/multimodal/processors/base_processor.py`, `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/multimodal/processors/minicpm.py`；技术摘要: 覆盖「fix(mm): make multimodal data loading non-blocking to prevent health check stalls」；主要实现面是 `python/sglang/srt/multimodal/processors/base_processor.py`, `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/multimodal/processors/minicpm.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/multimodal/processors/base_processor.py` modified +8/-7 (15 lines); hunks: -1,3 +1,4; -729,7 +730,7 @@ def _process_loaded_mm_data(self, modality, raw_data, result):; symbols: _process_loaded_mm_data, load_mm_data，涉及 `_process_loaded_mm_data, load_mm_data`；`python/sglang/srt/multimodal/processors/internvl.py` modified +3/-3 (6 lines); hunks: -310,7 +310,7 @@ async def _process_special_format(; -423,7 +423,7 @@ async def process_qwen_mm_data_async(; symbols: _process_special_format, process_qwen_mm_data_async, process_internlm2_mm_data_async，涉及 `_process_special_format, process_qwen_mm_data_async, process_internlm2_mm_data_async`；`python/sglang/srt/multimodal/processors/minicpm.py` modified +2/-2 (4 lines); hunks: -118,7 +118,7 @@ async def _process_special_format(; -190,7 +190,7 @@ async def process_mm_data_async(; symbols: _process_special_format, process_mm_data_async，涉及 `_process_special_format, process_mm_data_async`；`python/sglang/srt/multimodal/processors/clip.py` modified +1/-1 (2 lines); hunks: -20,7 +20,7 @@ def __init__(self, hf_config, server_args, _processor, *args,...; symbols: __init__, process_mm_data_async，涉及 `__init__, process_mm_data_async`。
+- 代码 diff 细节:
+  - `python/sglang/srt/multimodal/processors/base_processor.py` modified +8/-7 (15 lines); hunks: -1,3 +1,4; -729,7 +730,7 @@ def _process_loaded_mm_data(self, modality, raw_data, result):; symbols: _process_loaded_mm_data, load_mm_data
+  - `python/sglang/srt/multimodal/processors/internvl.py` modified +3/-3 (6 lines); hunks: -310,7 +310,7 @@ async def _process_special_format(; -423,7 +423,7 @@ async def process_qwen_mm_data_async(; symbols: _process_special_format, process_qwen_mm_data_async, process_internlm2_mm_data_async
+  - `python/sglang/srt/multimodal/processors/minicpm.py` modified +2/-2 (4 lines); hunks: -118,7 +118,7 @@ async def _process_special_format(; -190,7 +190,7 @@ async def process_mm_data_async(; symbols: _process_special_format, process_mm_data_async
+  - `python/sglang/srt/multimodal/processors/clip.py` modified +1/-1 (2 lines); hunks: -20,7 +20,7 @@ def __init__(self, hf_config, server_args, _processor, *args,...; symbols: __init__, process_mm_data_async
+  - `python/sglang/srt/multimodal/processors/deepseek_ocr.py` modified +1/-1 (2 lines); hunks: -29,7 +29,7 @@ def __init__(self, hf_config, server_args, _processor, *args,...; symbols: __init__, process_mm_data_async
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/multimodal/processors/base_processor.py
+@@ -1,3 +1,4 @@
++import asyncio
+@@ -729,7 +730,7 @@ def _process_loaded_mm_data(self, modality, raw_data, result):
+-    def load_mm_data(
++    async def load_mm_data(
+@@ -772,7 +773,7 @@ def load_mm_data(
+-            return self.legacy_load_mm_data(
+diff -- python/sglang/srt/multimodal/processors/internvl.py
+@@ -310,7 +310,7 @@ async def _process_special_format(
+-            base_output = self.load_mm_data(
++            base_output = await self.load_mm_data(
+@@ -423,7 +423,7 @@ async def process_qwen_mm_data_async(
+-        base_output = self.load_mm_data(
++        base_output = await self.load_mm_data(
+@@ -644,7 +644,7 @@ async def process_internlm2_mm_data_async(
+diff -- python/sglang/srt/multimodal/processors/minicpm.py
+@@ -118,7 +118,7 @@ async def _process_special_format(
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/multimodal/processors/base_processor.py` modified +8/-7; `python/sglang/srt/multimodal/processors/internvl.py` modified +3/-3; `python/sglang/srt/multimodal/processors/minicpm.py` modified +2/-2; `python/sglang/srt/multimodal/processors/clip.py` modified +1/-1; `python/sglang/srt/multimodal/processors/deepseek_ocr.py` modified +1/-1; `python/sglang/srt/multimodal/processors/deepseek_vl_v2.py` modified +1/-1
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/multimodal/processors/base_processor.py`, `python/sglang/srt/multimodal/processors/clip.py`, `python/sglang/srt/multimodal/processors/deepseek_ocr.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #26353 - NPU Nightly Pipeline Skip Test Case Adaptation and Recovery Testing
+
+- 链接: https://github.com/sgl-project/sglang/pull/26353
+- 状态/时间: merged / 2026-05-29
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 17 个文件，+151/-118，可读 patch 487 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「NPU Nightly Pipeline Skip Test Case Adaptation and Recovery Testing」；模型线: Llama 4；类别: 文档/测试/CI；主要 diff: `test/registered/ascend/interface/test_npu_openai_function_calling.py`, `test/registered/ascend/basic_function/memory_and_scheduling/test_npu_no_chunked_prefill.py`, `test/registered/ascend/basic_function/parameter/test_npu_no_chunked_prefill.py`；技术摘要: 覆盖「NPU Nightly Pipeline Skip Test Case Adaptation and Recovery Testing」；主要实现面是 `test/registered/ascend/interface/test_npu_openai_function_calling.py`, `test/registered/ascend/basic_function/memory_and_scheduling/test_npu_no_chunked_prefill.py`, `test/registered/ascend/basic_function/parameter/test_npu_no_chunked_prefill.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/ascend/interface/test_npu_openai_function_calling.py` modified +22/-25 (47 lines); hunks: -18,7 +18,6; -429,8 +428,10 @@ def test_function_call_strict(self):; symbols: test_function_call_strict, test_function_call_required, test_function_call_specific，涉及 `test_function_call_strict, test_function_call_required, test_function_call_specific`；`test/registered/ascend/basic_function/memory_and_scheduling/test_npu_no_chunked_prefill.py` added +74/-0 (74 lines); hunks: -0,0 +1,74; symbols: TestNoChunkedPrefill, setUpClass, tearDownClass, test_mmlu，涉及 `TestNoChunkedPrefill, setUpClass, tearDownClass`；`test/registered/ascend/basic_function/parameter/test_npu_no_chunked_prefill.py` removed +0/-39 (39 lines); hunks: -1,39 +0,0; symbols: TestNoChunkedPrefill, test_no_chunked_prefill, test_no_chunked_prefill_without_radix_cache，涉及 `TestNoChunkedPrefill, test_no_chunked_prefill, test_no_chunked_prefill_without_radix_cache`；`test/registered/ascend/vlm_models/test_npu_kimi_vl_a3b_instruct.py` modified +14/-18 (32 lines); hunks: -1,32 +1,28; symbols: TestKimiVLA3BInstruct, test_vlm_mmmu_benchmark，涉及 `TestKimiVLA3BInstruct, test_vlm_mmmu_benchmark`。
+- 代码 diff 细节:
+  - `test/registered/ascend/interface/test_npu_openai_function_calling.py` modified +22/-25 (47 lines); hunks: -18,7 +18,6; -429,8 +428,10 @@ def test_function_call_strict(self):; symbols: test_function_call_strict, test_function_call_required, test_function_call_specific
+  - `test/registered/ascend/basic_function/memory_and_scheduling/test_npu_no_chunked_prefill.py` added +74/-0 (74 lines); hunks: -0,0 +1,74; symbols: TestNoChunkedPrefill, setUpClass, tearDownClass, test_mmlu
+  - `test/registered/ascend/basic_function/parameter/test_npu_no_chunked_prefill.py` removed +0/-39 (39 lines); hunks: -1,39 +0,0; symbols: TestNoChunkedPrefill, test_no_chunked_prefill, test_no_chunked_prefill_without_radix_cache
+  - `test/registered/ascend/vlm_models/test_npu_kimi_vl_a3b_instruct.py` modified +14/-18 (32 lines); hunks: -1,32 +1,28; symbols: TestKimiVLA3BInstruct, test_vlm_mmmu_benchmark
+  - `test/registered/ascend/vlm_models/test_npu_llama_3_2_11b_vision_instruct.py` modified +11/-9 (20 lines); hunks: -1,20 +1,22; symbols: TestLlama3211BVisionInstruct
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/ascend/interface/test_npu_openai_function_calling.py
+@@ -18,7 +18,6 @@
+-    disabled="https://github.com/Ascend/sglang/issues/39",
+@@ -429,8 +428,10 @@ def test_function_call_strict(self):
+-        Test: Whether tool_choice: "required" works as expected
+-        - When tool_choice == "required", the model should return one or more tool_calls.
++        Test: Whether tool_choice: "required" works as expected.
++        - When tool_choice == "required", the model MUST return one or more tool_calls.
+diff -- test/registered/ascend/basic_function/memory_and_scheduling/test_npu_no_chunked_prefill.py
+@@ -0,0 +1,74 @@
++import unittest
++from types import SimpleNamespace
++from sglang.srt.utils import kill_process_tree
++from sglang.test.ascend.test_ascend_utils import LLAMA_3_1_8B_INSTRUCT_WEIGHTS_PATH
++from sglang.test.ci.ci_register import register_npu_ci
++from sglang.test.run_eval import run_eval
+diff -- test/registered/ascend/basic_function/parameter/test_npu_no_chunked_prefill.py
+@@ -1,39 +0,0 @@
+```
+
+- 已读文件:
+  - tests: `test/registered/ascend/interface/test_npu_openai_function_calling.py` modified +22/-25; `test/registered/ascend/basic_function/memory_and_scheduling/test_npu_no_chunked_prefill.py` added +74/-0; `test/registered/ascend/basic_function/parameter/test_npu_no_chunked_prefill.py` removed +0/-39; `test/registered/ascend/vlm_models/test_npu_kimi_vl_a3b_instruct.py` modified +14/-18; `test/registered/ascend/vlm_models/test_npu_llama_3_2_11b_vision_instruct.py` modified +11/-9; `test/registered/ascend/basic_function/parallel_strategy/expert_parallelism/test_npu_deepep_low_latency_qwen3_next.py` modified +13/-3
+- 验证与风险: diff 自带测试面 `test/registered/ascend/basic_function/HiCache/test_npu_hierarchical_cache_mla.py`, `test/registered/ascend/basic_function/HiCache/test_npu_hierarchical_cache_ttft_mha.py`, `test/registered/ascend/basic_function/memory_and_scheduling/test_npu_no_chunked_prefill.py`, `test/registered/ascend/basic_function/parallel_strategy/expert_parallelism/test_npu_deepep_auto_qwen3_next.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #25813 - docs(cookbook): port popular model usage guides into cookbook pages
+
+- 链接: https://github.com/sgl-project/sglang/pull/25813
+- 状态/时间: merged / 2026-06-02
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 47 个文件，+1262/-2154，可读 patch 4187 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「docs(cookbook): port popular model usage guides into cookbook pages」；模型线: Llama 4；类别: 文档/测试/CI；主要 diff: `docs_new/docs/basic_usage/deepseek_v32.mdx`, `docs_new/docs/basic_usage/deepseek_v3.mdx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx`；技术摘要: 覆盖「docs(cookbook): port popular model usage guides into cookbook pages」；主要实现面是 `docs_new/docs/basic_usage/deepseek_v32.mdx`, `docs_new/docs/basic_usage/deepseek_v3.mdx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs_new/docs/basic_usage/deepseek_v32.mdx` removed +0/-601 (601 lines); hunks: -1,601 +0,0；`docs_new/docs/basic_usage/deepseek_v3.mdx` removed +0/-375 (375 lines); hunks: -1,375 +0,0；`docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` modified +244/-3 (247 lines); hunks: -24,6 +24,27 @@ SGLang offers multiple installation methods. You can choose t...; -37,7 +58,18 @@ import { DeepSeekV32Deployment } from "/src/snippets/autoregr...；`docs_new/cookbook/autoregressive/GLM/GLM-4.6V.mdx` modified +156/-26 (182 lines); hunks: -10,7 +10,7 @@ GLM-4.6V series model includes two versions: GLM-4.6V (106B),...; -70,14 +70,56 @@ import { GLM46VDeployment } from "/src/snippets/autoregressi...; symbols: image_to_base64，涉及 `image_to_base64`。
+- 代码 diff 细节:
+  - `docs_new/docs/basic_usage/deepseek_v32.mdx` removed +0/-601 (601 lines); hunks: -1,601 +0,0
+  - `docs_new/docs/basic_usage/deepseek_v3.mdx` removed +0/-375 (375 lines); hunks: -1,375 +0,0
+  - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` modified +244/-3 (247 lines); hunks: -24,6 +24,27 @@ SGLang offers multiple installation methods. You can choose t...; -37,7 +58,18 @@ import { DeepSeekV32Deployment } from "/src/snippets/autoregr...
+  - `docs_new/cookbook/autoregressive/GLM/GLM-4.6V.mdx` modified +156/-26 (182 lines); hunks: -10,7 +10,7 @@ GLM-4.6V series model includes two versions: GLM-4.6V (106B),...; -70,14 +70,56 @@ import { GLM46VDeployment } from "/src/snippets/autoregressi...; symbols: image_to_base64
+  - `docs_new/docs/basic_usage/gpt_oss.mdx` removed +0/-181 (181 lines); hunks: -1,181 +0,0
+- 关键代码摘录:
+
+```diff
+diff -- docs_new/docs/basic_usage/deepseek_v32.mdx
+@@ -1,601 +0,0 @@
+-title: "DeepSeek V3.2/GLM-5 Usage"
+-metatags:
+-    description: "Deploy DeepSeek V3.2/GLM-5 with SGLang: DeepSeek Sparse Attention (DSA), long-context optimization, MTP speculative decoding, function calling. Supports H200, B2
+-DeepSeek-V3.2 model family equips DeepSeek-V3.1-Terminus with DeepSeek Sparse Attention (DSA) through continued training. With DSA, a fine-grained sparse attention mechanism power
+-Note: This document is originally written for the usage of [DeepSeek-V3.2-Exp](https://huggingface.co/deepseek-ai/DeepSeek-V3.2-Exp) model. The usage of [DeepSeek-V3.2](https://hu
+-## Installation
+diff -- docs_new/docs/basic_usage/deepseek_v3.mdx
+@@ -1,375 +0,0 @@
+-title: "DeepSeek V3/V3.1/R1 Usage"
+-metatags:
+-    description: "Deploy DeepSeek V3/R1 with SGLang: MLA optimization, FP8 quantization, multi-node TP, DP attention, MTP speculative decoding. Supports H200, B200, MI300X, A100."
+-SGLang provides many optimizations specifically designed for the DeepSeek models, making it the inference engine recommended by the official [DeepSeek team](https://github.com/dee
+-This document outlines current optimizations for DeepSeek.
+-For an overview of the implemented features see the completed [Roadmap](https://github.com/sgl-project/sglang/issues/2591).
+diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx
+@@ -24,6 +24,27 @@ SGLang offers multiple installation methods. You can choose the most suitable in
+```
+
+- 已读文件:
+  - docs: `docs_new/docs/basic_usage/deepseek_v32.mdx` removed +0/-601; `docs_new/docs/basic_usage/deepseek_v3.mdx` removed +0/-375; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` modified +244/-3; `docs_new/cookbook/autoregressive/GLM/GLM-4.6V.mdx` modified +156/-26; `docs_new/docs/basic_usage/gpt_oss.mdx` removed +0/-181; `docs_new/docs/basic_usage/glmv.mdx` removed +0/-139
+- 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR-2.mdx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR.mdx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-R1.mdx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #28567 - Add get_parallel(): a structured accessor for parallel-topology state
+
+- 链接: https://github.com/sgl-project/sglang/pull/28567
+- 状态/时间: merged / 2026-06-18
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 184 个文件，+1865/-1727，可读 patch 8932 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Add get_parallel(): a structured accessor for parallel-topology state」；模型线: Llama 4；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py`；技术摘要: 覆盖「Add get_parallel(): a structured accessor for parallel-topology state」；主要实现面是 `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/apertus.py` modified +686/-687 (1373 lines); hunks: -1,687 +1,686; symbols: ApertusMLP, __init__, forward, ApertusAttention，涉及 `ApertusMLP, __init__, forward`；`python/sglang/srt/models/solar.py` modified +28/-27 (55 lines); hunks: -1,37 +1,14; -54,6 +31,30; symbols: __init__, forward, load_kv_cache_scales，涉及 `__init__, forward, load_kv_cache_scales`；`python/sglang/srt/models/gpt_oss.py` modified +17/-24 (41 lines); hunks: -28,21 +28,13; -76,6 +68,7; symbols: _resolve_moe_input_pad_multiple, __init__，涉及 `_resolve_moe_input_pad_multiple, __init__`；`python/sglang/srt/models/deepseek_v2.py` modified +14/-23 (37 lines); hunks: -47,9 +47,7; -72,12 +70,6; symbols: __init__，涉及 `__init__`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/apertus.py` modified +686/-687 (1373 lines); hunks: -1,687 +1,686; symbols: ApertusMLP, __init__, forward, ApertusAttention
+  - `python/sglang/srt/models/solar.py` modified +28/-27 (55 lines); hunks: -1,37 +1,14; -54,6 +31,30; symbols: __init__, forward, load_kv_cache_scales
+  - `python/sglang/srt/models/gpt_oss.py` modified +17/-24 (41 lines); hunks: -28,21 +28,13; -76,6 +68,7; symbols: _resolve_moe_input_pad_multiple, __init__
+  - `python/sglang/srt/models/deepseek_v2.py` modified +14/-23 (37 lines); hunks: -47,9 +47,7; -72,12 +70,6; symbols: __init__
+  - `python/sglang/srt/layers/communicator.py` modified +13/-19 (32 lines); hunks: -23,8 +23,6; -44,12 +42,7; symbols: apply_aiter_all_reduce_fusion, init_context, should_fuse_mlp_allreduce_with_next_layer, is_same_group_size
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/apertus.py
+@@ -1,687 +1,686 @@
+-# SPDX-License-Identifier: Apache-2.0
+-# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
+-# Copyright 2025 The SwissAI Initiative
+-# Copyright 2023-2024 SGLang Team
+-# Licensed under the Apache License, Version 2.0 (the "License");
+-# you may not use this file except in compliance with the License.
+diff -- python/sglang/srt/models/solar.py
+@@ -1,37 +1,14 @@
+-# Adapted from
+-# https://github.com/huggingface/transformers/blob/v4.28.0/src/transformers/models/llama/modeling_llama.py
+-# Copyright 2023 The vLLM team.
+-# Copyright 2022 EleutherAI and the HuggingFace Inc. team. All rights reserved.
+-#
+-# This code is based on EleutherAI's GPT-NeoX library and the GPT-NeoX
+diff -- python/sglang/srt/models/gpt_oss.py
+@@ -28,21 +28,13 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/apertus.py` modified +686/-687; `python/sglang/srt/models/solar.py` modified +28/-27; `python/sglang/srt/models/gpt_oss.py` modified +17/-24; `python/sglang/srt/models/deepseek_v2.py` modified +14/-23; `python/sglang/srt/layers/communicator.py` modified +13/-19; `python/sglang/srt/models/qwen3_moe.py` modified +12/-18
+- 验证与风险: diff 自带测试面 `python/sglang/test/kits/attention_unittest/attention_methods/dense_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsa_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsv4_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dual_chunk_attention.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论
 

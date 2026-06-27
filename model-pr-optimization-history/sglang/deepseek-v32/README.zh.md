@@ -1,151 +1,69 @@
 # sglang DeepSeek V3.2 模型 PR 优化历史
 
-## 2026-06-26 最新源码扫描
-
-已按 SGLang 上游 `sgl-project/sglang@8524678889485801e7a4a12d62015be0c68f7a90` 重新扫描本文下方列出的 tracked files。
-文件级匹配使用 GitHub mirror 的 `git log --name-only`；PR 标题、链接和合并时间通过 GitHub GraphQL Pull Request API 批量复核。上一时效锚点：`2026-06-05`。
-
-结果：发现 29 个额外 PR-numbered merge 触及 tracked files，但尚未提升为下方完整逐 PR diff audit card。此节只作为 freshness index；需要引用实现细节时，仍应先人工阅读 PR diff 再补完整卡片。
-
-| 合并日期 | PR | 标题 | 命中的 tracked files |
-| --- | --- | --- | --- |
-| 2026-06-26 | [#29142](https://github.com/sgl-project/sglang/pull/29142) | [DeepSeek V3] Run routed experts on main stream in dual-stream MoE | `deepseek_v2.py` |
-| 2026-06-25 | [#29042](https://github.com/sgl-project/sglang/pull/29042) | [NPU] Fix the DeepSeek-V2-Coder model accuracy issue | `deepseek_v2.py` |
-| 2026-06-25 | [#14194](https://github.com/sgl-project/sglang/pull/14194) | [feature] implement dcp for deepseek_v2 | `forward_mha.py`, `forward_mla.py`, `deepseek_v2.py` |
-| 2026-06-24 | [#27053](https://github.com/sgl-project/sglang/pull/27053) | [BCG][GLM5] perf: BCG support and prefill enhancements | `forward_mla.py`, `deepseek_v2.py` |
-| 2026-06-23 | [#28938](https://github.com/sgl-project/sglang/pull/28938) | [AMD] Improve performance of dsv4 in high concurrency | `deepseek_v2.py` |
-| 2026-06-24 | [#27833](https://github.com/sgl-project/sglang/pull/27833) | [AMD] Enable BCG on ROCm + route aiter prefill via MHA during PCG/BCG capture for Kimi-2.5 | `attention_backend_handler.py` |
-| 2026-06-22 | [#28855](https://github.com/sgl-project/sglang/pull/28855) | [Spec] Redo: split init_backends; account draft weights in --mem-fraction-static | `test_deepseek_v32.py`, `test_deepseek_v32_cp_single_node.py` |
-| 2026-06-21 | [#28785](https://github.com/sgl-project/sglang/pull/28785) | Pass DSA topk through PP warmup proxy buffers | `deepseek_v2.py` |
-| 2026-06-19 | [#28536](https://github.com/sgl-project/sglang/pull/28536) | ci: run GB300 nightly suite in the standard Nvidia nightly workflow | `test_deepseek_v32.py`, `test_deepseek_v32_nvfp4.py` |
-| 2026-06-19 | [#28532](https://github.com/sgl-project/sglang/pull/28532) | Fix IndexCache PP topk handoff | `deepseek_v2.py` |
-| 2026-06-18 | [#28559](https://github.com/sgl-project/sglang/pull/28559) | fix: speculative draft worker clobbering target attention backend | `deepseek_v2.py` |
-| 2026-06-18 | [#25144](https://github.com/sgl-project/sglang/pull/25144) | [NPU] Add Ascend NPU support for DeepSeek-V4 | `deepseek_v2.py` |
-| 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | Add get_parallel(): a structured accessor for parallel-topology state | `deepseek_v2.py` |
-| 2026-06-17 | [#28436](https://github.com/sgl-project/sglang/pull/28436) | [NPU] Use use_dsa to dispatch Ascend DSA attention | `attention_backend_handler.py` |
-| 2026-06-17 | [#28343](https://github.com/sgl-project/sglang/pull/28343) | [Kimi K2.5] Fix eagle3 aux capture for tp>1 when AR fusion is enabled | `deepseek_v2.py` |
-| 2026-06-17 | [#27798](https://github.com/sgl-project/sglang/pull/27798) | [AMD] Add transpose_scale arg for o_proj to fix GLM accuracy issue | `forward_mla.py` |
-| 2026-06-16 | [#28035](https://github.com/sgl-project/sglang/pull/28035) | fix(openai): validate assistant tool call arguments before chat template | `encoding_dsv32.py` |
-| 2026-06-16 | [#24515](https://github.com/sgl-project/sglang/pull/24515) | LPLB: linear-programming load balancer for MoE expert parallelism | `deepseek_v2.py` |
-| 2026-06-15 | [#28118](https://github.com/sgl-project/sglang/pull/28118) | 【bugfix】The NPU's forward_dsa_prepare_npu also needs special handling for is_nextn | `deepseek_v2_attention_mla_npu.py` |
-| 2026-06-13 | [#28129](https://github.com/sgl-project/sglang/pull/28129) | [Spec] Remove deprecated EAGLE v1 DRAFT_EXTEND forward mode | `deepseek_v2_attention_mla_npu.py`, `attention_backend_handler.py`, `deepseek_v2.py` |
-| 2026-06-13 | [#27720](https://github.com/sgl-project/sglang/pull/27720) | [DeepSeek V3] Defer moe finalize and fused it with main stream add | `deepseek_v2.py` |
-| 2026-06-11 | [#27964](https://github.com/sgl-project/sglang/pull/27964) | [Spec] Retire Spec V1 | `test_deepseek_v32.py`, `test_deepseek_v32_nvfp4.py` |
-| 2026-06-12 | [#27956](https://github.com/sgl-project/sglang/pull/27956) | Use the correct wrapper for `fp4_quantize` | `deepseek_v2.py` |
-| 2026-06-10 | [#27510](https://github.com/sgl-project/sglang/pull/27510) | [deepseek] Enable DP attention + TBO + shared experts fusion | `deepseek_v2.py` |
-| 2026-06-10 | [#23906](https://github.com/sgl-project/sglang/pull/23906) | [Refactor] Cuda Graph Runner/Backend Refactor | `attention_backend_handler.py`, `forward_mla.py`, `deepseek_v2.py` |
-| 2026-06-08 | [#27289](https://github.com/sgl-project/sglang/pull/27289) | [ROCm] dsv4: remove the redundant fp8 scale transpose-copy on decode | `forward_mha.py`, `forward_mla.py`, `utils.py`, `deepseek_v2.py` |
-| 2026-06-06 | [#27114](https://github.com/sgl-project/sglang/pull/27114) | [Bugfix] Restore overridden HF config fields and support index_skip_topk_offset for DSA topk sharing | `forward_mla.py`, `deepseek_v2.py` |
-| 2026-06-05 | [#27329](https://github.com/sgl-project/sglang/pull/27329) | [LoRA] Experimental fast LoRA path with `experimental_sgl_trtllm` MoE backend for FP8 and NVFP4 models | `forward_mla.py` |
-| 2026-06-05 | [#27150](https://github.com/sgl-project/sglang/pull/27150) | Support Waterfill with dynamic EPLB | `deepseek_v2.py` |
-
-## 2026-06-05 PR 补漏复核
-
-已于 2026-06-05 按 sglang 上游 `origin/main@6cfdc1858` 复核；自上次时效基准（2026-05-19）以来，共有 26 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
-
-| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
-| --- | --- | --- | --- |
-| 2026-06-03 | [#27001](https://github.com/sgl-project/sglang/pull/27001) | [AMD] [CI] Remove hardcoded model/cache paths from MI35x nightly tests | `test_deepseek_v32_dp_eval_mi35x.py`, `test_deepseek_v32_eval_mi35x.py`, `test_deepseek_v32_mtp_eval_mi35x.py` |
-| 2026-06-02 | [#26970](https://github.com/sgl-project/sglang/pull/26970) | [perf] Replicate embed_tokens to drop the post-embed all-reduce | `deepseek_v2.py` |
-| 2026-06-01 | [#25813](https://github.com/sgl-project/sglang/pull/25813) | docs(cookbook): port popular model usage guides into cookbook pages | `deepseek_v32.mdx` |
-| 2026-05-29 | [#26673](https://github.com/sgl-project/sglang/pull/26673) | [refactor] remove unused op_mlp | `deepseek_v2.py` |
-| 2026-05-29 | [#26626](https://github.com/sgl-project/sglang/pull/26626) | [perf] Fuse NVFP4 gate_up_gemm + swiglu + output FP4 quant | `deepseek_v2.py` |
-| 2026-05-29 | [#25755](https://github.com/sgl-project/sglang/pull/25755) | [Fix][NPU] Preserve existing packed_modules_mapping when merging model-level fused module mappings | `deepseek_v2.py` |
-| 2026-05-29 | [#25676](https://github.com/sgl-project/sglang/pull/25676) | Upgrade xgrammar to 0.2.1 | `deepseekv32_detector.py` |
-| 2026-05-29 | [#25463](https://github.com/sgl-project/sglang/pull/25463) | [ROCm] Eliminate redundant contiguous copy in MLA attention on ROCm MXFP4 | `forward_mla.py` |
-| 2026-05-28 | [#26610](https://github.com/sgl-project/sglang/pull/26610) | test/registered: cleanup pure model e2e tests (moves, splits, dedup, kit) | `test_deepseek_v32_fp4_mtp_4gpu.py` |
-| 2026-05-28 | [#24737](https://github.com/sgl-project/sglang/pull/24737) | Support Flashinfer Cute-DSL MLA attention | `forward_mla.py`, `utils.py` |
-| 2026-05-27 | [#23269](https://github.com/sgl-project/sglang/pull/23269) | Support batch size > 1 when enable CP | `deepseek_v2.py` |
-| 2026-05-25 | [#26208](https://github.com/sgl-project/sglang/pull/26208) | [AMD] Dsv4/pr2 compressor opt | `deepseek_v2.py` |
-| 2026-05-23 | [#25898](https://github.com/sgl-project/sglang/pull/25898) | [AMD] Dsv4/pr1 fix run time issue | `deepseek_v2.py` |
-| 2026-05-23 | [#25843](https://github.com/sgl-project/sglang/pull/25843) | Route concat MLA to JIT and remove unused downcast | `forward_mha.py` |
-| 2026-05-23 | [#23292](https://github.com/sgl-project/sglang/pull/23292) | [CP] 1/N: Support MLA Prefill Context Parallel | `attention_backend_handler.py`, `forward_mla.py`, `deepseek_v2.py` |
-| 2026-05-22 | [#25189](https://github.com/sgl-project/sglang/pull/25189) | [perf] DeepSeekV3: drop redundant FP32 upcasts in trtllm MoE paths | `deepseek_v2.py` |
-| 2026-05-21 | [#25983](https://github.com/sgl-project/sglang/pull/25983) | feat(model_runner): remove pool/backend refs from ForwardBatch via ForwardContext | `deepseek_v2_attention_mla_npu.py`, `attention_backend_handler.py`, `forward_mha.py`, … (+2) |
-| 2026-05-21 | [#25974](https://github.com/sgl-project/sglang/pull/25974) | [Fix]: Restrict Kimi-K2.5 shared-experts fusion to Quark MXFP4 checkpoints | `deepseek_v2.py` |
-| 2026-05-21 | [#25884](https://github.com/sgl-project/sglang/pull/25884) | [Refactor] major JIT kernel clean up for dsv4 | `deepseek_v2.py` |
-| 2026-05-20 | [#25821](https://github.com/sgl-project/sglang/pull/25821) | [Refactor] Rename NSA → DSA: user-facing aliases, file/class/import rename | `deepseek_v32.md`, `deepseek_v32.mdx`, `fused_store_index_cache.cuh`, … (+35) |
-| 2026-05-20 | [#25460](https://github.com/sgl-project/sglang/pull/25460) | [perf] prepare_prefill_qkv hook + fp8 quantize jit kernel | `forward_mha.py` |
-| 2026-05-20 | [#24251](https://github.com/sgl-project/sglang/pull/24251) | [RL][TITO] Preserve whitespace in reasoning parser outputs | `deepseekv32_detector.py` |
-| 2026-05-19 | [#25299](https://github.com/sgl-project/sglang/pull/25299) | [NSA] Avoid repeated NSA MQA logits memory queries | `nsa_indexer.py` |
-| 2026-05-19 | [#24640](https://github.com/sgl-project/sglang/pull/24640) | Support spec v2 for FlashMLA speculative decoding | `deepseek_v2.py` |
-| 2026-05-18 | [#25454](https://github.com/sgl-project/sglang/pull/25454) | fix(eagle3): drop +1 offset on aux layer ids when first id != 1 | `deepseek_v2.py` |
-| 2026-05-18 | [#24933](https://github.com/sgl-project/sglang/pull/24933) | Amd/deepseek v4 rebase main 0509 | `index_buf_accessor.py`, `tilelang_kernel.py`, `deepseek_v2.py` |
-
-
-## 2026-05-19 PR 补漏复核
-
-已按 sglang 上游 `origin/main@78cb38ed5` 和 GitHub Pull Request files API 复核；本轮补齐 `#23562`, `#23856`, `#25205`, `#25233` 的时间线与逐 PR diff 审计卡。
-
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
-| `docs/basic_usage/deepseek_v32.md` | [#11877](https://github.com/sgl-project/sglang/pull/11877), [#12065](https://github.com/sgl-project/sglang/pull/12065), [#12130](https://github.com/sgl-project/sglang/pull/12130), [#12138](https://github.com/sgl-project/sglang/pull/12138), [#12296](https://github.com/sgl-project/sglang/pull/12296), [#12868](https://github.com/sgl-project/sglang/pull/12868), [#13459](https://github.com/sgl-project/sglang/pull/13459), [#13646](https://github.com/sgl-project/sglang/pull/13646), [#13959](https://github.com/sgl-project/sglang/pull/13959), [#14321](https://github.com/sgl-project/sglang/pull/14321), [#14336](https://github.com/sgl-project/sglang/pull/14336), [#14372](https://github.com/sgl-project/sglang/pull/14372), ... (22 total) |
+| `docs/basic_usage/deepseek_v32.md` | [#11877](https://github.com/sgl-project/sglang/pull/11877), [#12065](https://github.com/sgl-project/sglang/pull/12065), [#12130](https://github.com/sgl-project/sglang/pull/12130), [#12138](https://github.com/sgl-project/sglang/pull/12138), [#12296](https://github.com/sgl-project/sglang/pull/12296), [#12868](https://github.com/sgl-project/sglang/pull/12868), [#13459](https://github.com/sgl-project/sglang/pull/13459), [#13646](https://github.com/sgl-project/sglang/pull/13646), [#13959](https://github.com/sgl-project/sglang/pull/13959), [#14321](https://github.com/sgl-project/sglang/pull/14321), [#14336](https://github.com/sgl-project/sglang/pull/14336), [#14372](https://github.com/sgl-project/sglang/pull/14372), ... (23 total) |
 | `docs/references/multi_node_deployment/rbg_pd/deepseekv32_pd.md` | [#11877](https://github.com/sgl-project/sglang/pull/11877) |
-| `docs_new/docs/basic_usage/deepseek_v32.mdx` | 无直接 PR 号提交 |
 | `docs_new/docs/references/multi_node_deployment/rbg_pd/deepseekv32_pd.mdx` | 无直接 PR 号提交 |
 | `examples/chat_template/tool_chat_template_deepseekv32.jinja` | [#11063](https://github.com/sgl-project/sglang/pull/11063) |
-| `python/sglang/jit_kernel/csrc/nsa/fused_store_index_cache.cuh` | [#19148](https://github.com/sgl-project/sglang/pull/19148) |
 | `python/sglang/srt/entrypoints/openai/encoding_dsv32.py` | [#14249](https://github.com/sgl-project/sglang/pull/14249), [#14353](https://github.com/sgl-project/sglang/pull/14353) |
-| `python/sglang/srt/function_call/deepseekv32_detector.py` | [#14249](https://github.com/sgl-project/sglang/pull/14249), [#14573](https://github.com/sgl-project/sglang/pull/14573), [#14750](https://github.com/sgl-project/sglang/pull/14750), [#15278](https://github.com/sgl-project/sglang/pull/15278), [#16091](https://github.com/sgl-project/sglang/pull/16091), [#18174](https://github.com/sgl-project/sglang/pull/18174) |
-| `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` | [#13959](https://github.com/sgl-project/sglang/pull/13959), [#14541](https://github.com/sgl-project/sglang/pull/14541), [#14572](https://github.com/sgl-project/sglang/pull/14572), [#15381](https://github.com/sgl-project/sglang/pull/15381), [#17007](https://github.com/sgl-project/sglang/pull/17007), [#19428](https://github.com/sgl-project/sglang/pull/19428), [#23268](https://github.com/sgl-project/sglang/pull/23268) |
-| `python/sglang/srt/layers/attention/nsa/dequant_k_cache.py` | [#11061](https://github.com/sgl-project/sglang/pull/11061), [#11655](https://github.com/sgl-project/sglang/pull/11655), [#15086](https://github.com/sgl-project/sglang/pull/15086), [#15938](https://github.com/sgl-project/sglang/pull/15938) |
-| `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` | [#11061](https://github.com/sgl-project/sglang/pull/11061), [#12520](https://github.com/sgl-project/sglang/pull/12520), [#13812](https://github.com/sgl-project/sglang/pull/13812), [#16841](https://github.com/sgl-project/sglang/pull/16841), [#18280](https://github.com/sgl-project/sglang/pull/18280), [#19319](https://github.com/sgl-project/sglang/pull/19319) |
-| `python/sglang/srt/layers/attention/nsa/nsa_backend_mtp_precompute.py` | [#14781](https://github.com/sgl-project/sglang/pull/14781), [#17554](https://github.com/sgl-project/sglang/pull/17554) |
-| `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` | [#11061](https://github.com/sgl-project/sglang/pull/11061), [#11450](https://github.com/sgl-project/sglang/pull/11450), [#11565](https://github.com/sgl-project/sglang/pull/11565), [#11652](https://github.com/sgl-project/sglang/pull/11652), [#11682](https://github.com/sgl-project/sglang/pull/11682), [#11892](https://github.com/sgl-project/sglang/pull/11892), [#12044](https://github.com/sgl-project/sglang/pull/12044), [#12065](https://github.com/sgl-project/sglang/pull/12065), [#12094](https://github.com/sgl-project/sglang/pull/12094), [#12583](https://github.com/sgl-project/sglang/pull/12583), [#12816](https://github.com/sgl-project/sglang/pull/12816), [#13236](https://github.com/sgl-project/sglang/pull/13236), ... (47 total) |
-| `python/sglang/srt/layers/attention/nsa/nsa_mtp_verification.py` | [#17554](https://github.com/sgl-project/sglang/pull/17554) |
-| `python/sglang/srt/layers/attention/nsa/quant_k_cache.py` | [#11061](https://github.com/sgl-project/sglang/pull/11061), [#11655](https://github.com/sgl-project/sglang/pull/11655), [#15938](https://github.com/sgl-project/sglang/pull/15938) |
-| `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` | [#11061](https://github.com/sgl-project/sglang/pull/11061), [#16841](https://github.com/sgl-project/sglang/pull/16841), [#18488](https://github.com/sgl-project/sglang/pull/18488), [#19945](https://github.com/sgl-project/sglang/pull/19945), [#21511](https://github.com/sgl-project/sglang/pull/21511) |
-| `python/sglang/srt/layers/attention/nsa/transform_index.py` | [#11061](https://github.com/sgl-project/sglang/pull/11061), [#12300](https://github.com/sgl-project/sglang/pull/12300) |
-| `python/sglang/srt/layers/attention/nsa/triton_kernel.py` | [#11450](https://github.com/sgl-project/sglang/pull/11450), [#18526](https://github.com/sgl-project/sglang/pull/18526) |
-| `python/sglang/srt/layers/attention/nsa/utils.py` | [#11061](https://github.com/sgl-project/sglang/pull/11061), [#11682](https://github.com/sgl-project/sglang/pull/11682), [#12065](https://github.com/sgl-project/sglang/pull/12065), [#13959](https://github.com/sgl-project/sglang/pull/13959), [#14541](https://github.com/sgl-project/sglang/pull/14541), [#14781](https://github.com/sgl-project/sglang/pull/14781), [#15938](https://github.com/sgl-project/sglang/pull/15938), [#17076](https://github.com/sgl-project/sglang/pull/17076), [#19134](https://github.com/sgl-project/sglang/pull/19134), [#19829](https://github.com/sgl-project/sglang/pull/19829), [#22914](https://github.com/sgl-project/sglang/pull/22914) |
-| `python/sglang/srt/layers/attention/nsa_backend.py` | [#11061](https://github.com/sgl-project/sglang/pull/11061), [#11652](https://github.com/sgl-project/sglang/pull/11652), [#11655](https://github.com/sgl-project/sglang/pull/11655), [#11876](https://github.com/sgl-project/sglang/pull/11876), [#11892](https://github.com/sgl-project/sglang/pull/11892), [#12065](https://github.com/sgl-project/sglang/pull/12065), [#12215](https://github.com/sgl-project/sglang/pull/12215), [#12294](https://github.com/sgl-project/sglang/pull/12294), [#12583](https://github.com/sgl-project/sglang/pull/12583), [#12788](https://github.com/sgl-project/sglang/pull/12788), [#12964](https://github.com/sgl-project/sglang/pull/12964), [#13022](https://github.com/sgl-project/sglang/pull/13022), ... (39 total) |
-| `python/sglang/srt/layers/communicator_nsa_cp.py` | [#12065](https://github.com/sgl-project/sglang/pull/12065), [#13959](https://github.com/sgl-project/sglang/pull/13959), [#14541](https://github.com/sgl-project/sglang/pull/14541) |
-| `python/sglang/srt/mem_cache/sparsity/algorithms/deepseek_nsa.py` | 无直接 PR 号提交 |
+| `python/sglang/srt/function_call/deepseekv32_detector.py` | [#14249](https://github.com/sgl-project/sglang/pull/14249), [#14573](https://github.com/sgl-project/sglang/pull/14573), [#14750](https://github.com/sgl-project/sglang/pull/14750), [#15278](https://github.com/sgl-project/sglang/pull/15278), [#16091](https://github.com/sgl-project/sglang/pull/16091), [#18174](https://github.com/sgl-project/sglang/pull/18174), [#25233](https://github.com/sgl-project/sglang/pull/25233) |
+| `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` | [#13959](https://github.com/sgl-project/sglang/pull/13959), [#14541](https://github.com/sgl-project/sglang/pull/14541), [#14572](https://github.com/sgl-project/sglang/pull/14572), [#15381](https://github.com/sgl-project/sglang/pull/15381), [#17007](https://github.com/sgl-project/sglang/pull/17007), [#19428](https://github.com/sgl-project/sglang/pull/19428), [#23268](https://github.com/sgl-project/sglang/pull/23268), [#25821](https://github.com/sgl-project/sglang/pull/25821) |
+| `python/sglang/srt/layers/attention/nsa/__init__.py` | [#25821](https://github.com/sgl-project/sglang/pull/25821) |
+| `python/sglang/srt/layers/attention/nsa/dequant_k_cache.py` | [#11061](https://github.com/sgl-project/sglang/pull/11061), [#11655](https://github.com/sgl-project/sglang/pull/11655), [#15086](https://github.com/sgl-project/sglang/pull/15086), [#15938](https://github.com/sgl-project/sglang/pull/15938), [#25821](https://github.com/sgl-project/sglang/pull/25821) |
+| `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` | [#11061](https://github.com/sgl-project/sglang/pull/11061), [#12520](https://github.com/sgl-project/sglang/pull/12520), [#13812](https://github.com/sgl-project/sglang/pull/13812), [#16841](https://github.com/sgl-project/sglang/pull/16841), [#18280](https://github.com/sgl-project/sglang/pull/18280), [#19319](https://github.com/sgl-project/sglang/pull/19319), [#23562](https://github.com/sgl-project/sglang/pull/23562), [#25205](https://github.com/sgl-project/sglang/pull/25205), [#25821](https://github.com/sgl-project/sglang/pull/25821) |
+| `python/sglang/srt/layers/attention/nsa/nsa_backend_mtp_precompute.py` | [#14781](https://github.com/sgl-project/sglang/pull/14781), [#17554](https://github.com/sgl-project/sglang/pull/17554), [#25821](https://github.com/sgl-project/sglang/pull/25821) |
+| `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` | [#11061](https://github.com/sgl-project/sglang/pull/11061), [#11450](https://github.com/sgl-project/sglang/pull/11450), [#11565](https://github.com/sgl-project/sglang/pull/11565), [#11652](https://github.com/sgl-project/sglang/pull/11652), [#11682](https://github.com/sgl-project/sglang/pull/11682), [#11892](https://github.com/sgl-project/sglang/pull/11892), [#12044](https://github.com/sgl-project/sglang/pull/12044), [#12065](https://github.com/sgl-project/sglang/pull/12065), [#12094](https://github.com/sgl-project/sglang/pull/12094), [#12583](https://github.com/sgl-project/sglang/pull/12583), [#12816](https://github.com/sgl-project/sglang/pull/12816), [#13236](https://github.com/sgl-project/sglang/pull/13236), ... (55 total) |
+| `python/sglang/srt/layers/attention/nsa/nsa_mtp_verification.py` | [#17554](https://github.com/sgl-project/sglang/pull/17554), [#25821](https://github.com/sgl-project/sglang/pull/25821) |
+| `python/sglang/srt/layers/attention/nsa/quant_k_cache.py` | [#11061](https://github.com/sgl-project/sglang/pull/11061), [#11655](https://github.com/sgl-project/sglang/pull/11655), [#15938](https://github.com/sgl-project/sglang/pull/15938), [#25821](https://github.com/sgl-project/sglang/pull/25821) |
+| `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` | [#11061](https://github.com/sgl-project/sglang/pull/11061), [#16841](https://github.com/sgl-project/sglang/pull/16841), [#18488](https://github.com/sgl-project/sglang/pull/18488), [#19945](https://github.com/sgl-project/sglang/pull/19945), [#21511](https://github.com/sgl-project/sglang/pull/21511), [#25821](https://github.com/sgl-project/sglang/pull/25821) |
+| `python/sglang/srt/layers/attention/nsa/transform_index.py` | [#11061](https://github.com/sgl-project/sglang/pull/11061), [#12300](https://github.com/sgl-project/sglang/pull/12300), [#25821](https://github.com/sgl-project/sglang/pull/25821) |
+| `python/sglang/srt/layers/attention/nsa/triton_decode/__init__.py` | 无直接 PR 号提交 |
+| `python/sglang/srt/layers/attention/nsa/triton_decode/triton_mla_kernels_decode_fused.py` | 无直接 PR 号提交 |
+| `python/sglang/srt/layers/attention/nsa/triton_decode/triton_mla_kernels_decode_optimized.py` | 无直接 PR 号提交 |
+| `python/sglang/srt/layers/attention/nsa/triton_kernel.py` | [#11450](https://github.com/sgl-project/sglang/pull/11450), [#18526](https://github.com/sgl-project/sglang/pull/18526), [#25821](https://github.com/sgl-project/sglang/pull/25821) |
+| `python/sglang/srt/layers/attention/nsa/utils.py` | [#11061](https://github.com/sgl-project/sglang/pull/11061), [#11682](https://github.com/sgl-project/sglang/pull/11682), [#12065](https://github.com/sgl-project/sglang/pull/12065), [#13959](https://github.com/sgl-project/sglang/pull/13959), [#14541](https://github.com/sgl-project/sglang/pull/14541), [#14781](https://github.com/sgl-project/sglang/pull/14781), [#15938](https://github.com/sgl-project/sglang/pull/15938), [#17076](https://github.com/sgl-project/sglang/pull/17076), [#19134](https://github.com/sgl-project/sglang/pull/19134), [#19829](https://github.com/sgl-project/sglang/pull/19829), [#22914](https://github.com/sgl-project/sglang/pull/22914), [#25205](https://github.com/sgl-project/sglang/pull/25205), ... (13 total) |
+| `python/sglang/srt/layers/attention/nsa_backend.py` | [#11061](https://github.com/sgl-project/sglang/pull/11061), [#11652](https://github.com/sgl-project/sglang/pull/11652), [#11655](https://github.com/sgl-project/sglang/pull/11655), [#11876](https://github.com/sgl-project/sglang/pull/11876), [#11892](https://github.com/sgl-project/sglang/pull/11892), [#12065](https://github.com/sgl-project/sglang/pull/12065), [#12215](https://github.com/sgl-project/sglang/pull/12215), [#12294](https://github.com/sgl-project/sglang/pull/12294), [#12583](https://github.com/sgl-project/sglang/pull/12583), [#12788](https://github.com/sgl-project/sglang/pull/12788), [#12964](https://github.com/sgl-project/sglang/pull/12964), [#13022](https://github.com/sgl-project/sglang/pull/13022), ... (41 total) |
 | `python/sglang/srt/models/deepseek_common/__init__.py` | 无直接 PR 号提交 |
-| `python/sglang/srt/models/deepseek_common/attention_backend_handler.py` | 无直接 PR 号提交 |
+| `python/sglang/srt/models/deepseek_common/amd/__init__.py` | 无直接 PR 号提交 |
+| `python/sglang/srt/models/deepseek_common/attention_backend_handler.py` | [#25821](https://github.com/sgl-project/sglang/pull/25821) |
 | `python/sglang/srt/models/deepseek_common/attention_forward_methods/__init__.py` | 无直接 PR 号提交 |
 | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_methods.py` | 无直接 PR 号提交 |
-| `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py` | [#18931](https://github.com/sgl-project/sglang/pull/18931) |
-| `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` | [#21405](https://github.com/sgl-project/sglang/pull/21405), [#21511](https://github.com/sgl-project/sglang/pull/21511) |
+| `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py` | [#18931](https://github.com/sgl-project/sglang/pull/18931), [#25821](https://github.com/sgl-project/sglang/pull/25821) |
+| `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` | [#21405](https://github.com/sgl-project/sglang/pull/21405), [#21511](https://github.com/sgl-project/sglang/pull/21511), [#24125](https://github.com/sgl-project/sglang/pull/24125), [#24392](https://github.com/sgl-project/sglang/pull/24392), [#25821](https://github.com/sgl-project/sglang/pull/25821) |
 | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py` | 无直接 PR 号提交 |
 | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_rocm.py` | 无直接 PR 号提交 |
 | `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` | 无直接 PR 号提交 |
-| `python/sglang/srt/models/deepseek_common/utils.py` | 无直接 PR 号提交 |
-| `python/sglang/srt/models/deepseek_v2.py` | [#11061](https://github.com/sgl-project/sglang/pull/11061), [#11510](https://github.com/sgl-project/sglang/pull/11510), [#11892](https://github.com/sgl-project/sglang/pull/11892), [#12065](https://github.com/sgl-project/sglang/pull/12065), [#12094](https://github.com/sgl-project/sglang/pull/12094), [#12788](https://github.com/sgl-project/sglang/pull/12788), [#12816](https://github.com/sgl-project/sglang/pull/12816), [#12964](https://github.com/sgl-project/sglang/pull/12964), [#13459](https://github.com/sgl-project/sglang/pull/13459), [#13544](https://github.com/sgl-project/sglang/pull/13544), [#13959](https://github.com/sgl-project/sglang/pull/13959), [#14572](https://github.com/sgl-project/sglang/pull/14572), ... (22 total) |
-| `test/manual/layers/attention/nsa/test_act_quant_triton.py` | 无直接 PR 号提交 |
-| `test/manual/layers/attention/nsa/test_get_k_scale_triton_kernel.py` | [#19319](https://github.com/sgl-project/sglang/pull/19319) |
-| `test/manual/layers/attention/nsa/test_index_buf_accessor.py` | [#13812](https://github.com/sgl-project/sglang/pull/13812), [#19319](https://github.com/sgl-project/sglang/pull/19319) |
-| `test/manual/nightly/test_deepseek_v32_perf.py` | [#13646](https://github.com/sgl-project/sglang/pull/13646), [#21192](https://github.com/sgl-project/sglang/pull/21192) |
-| `test/registered/8-gpu-models/test_deepseek_v32.py` | [#17951](https://github.com/sgl-project/sglang/pull/17951) |
+| `python/sglang/srt/models/deepseek_common/utils.py` | [#25821](https://github.com/sgl-project/sglang/pull/25821) |
+| `python/sglang/srt/models/deepseek_v2.py` | [#11061](https://github.com/sgl-project/sglang/pull/11061), [#11510](https://github.com/sgl-project/sglang/pull/11510), [#11892](https://github.com/sgl-project/sglang/pull/11892), [#12065](https://github.com/sgl-project/sglang/pull/12065), [#12094](https://github.com/sgl-project/sglang/pull/12094), [#12788](https://github.com/sgl-project/sglang/pull/12788), [#12816](https://github.com/sgl-project/sglang/pull/12816), [#12964](https://github.com/sgl-project/sglang/pull/12964), [#13459](https://github.com/sgl-project/sglang/pull/13459), [#13544](https://github.com/sgl-project/sglang/pull/13544), [#13959](https://github.com/sgl-project/sglang/pull/13959), [#14572](https://github.com/sgl-project/sglang/pull/14572), ... (24 total) |
+| `test/manual/nightly/test_deepseek_v32_perf.py` | [#13646](https://github.com/sgl-project/sglang/pull/13646), [#21192](https://github.com/sgl-project/sglang/pull/21192), [#25821](https://github.com/sgl-project/sglang/pull/25821) |
+| `test/manual/quant/test_deepseek_v32_fp4_4gpu.py` | 无直接 PR 号提交 |
+| `test/registered/8-gpu-models/test_deepseek_v32.py` | [#17951](https://github.com/sgl-project/sglang/pull/17951), [#25821](https://github.com/sgl-project/sglang/pull/25821) |
 | `test/registered/8-gpu-models/test_deepseek_v32_indexcache.py` | [#21405](https://github.com/sgl-project/sglang/pull/21405) |
 | `test/registered/amd/accuracy/mi30x/test_deepseek_v32_dp_eval_amd.py` | 无直接 PR 号提交 |
 | `test/registered/amd/accuracy/mi30x/test_deepseek_v32_eval_amd.py` | 无直接 PR 号提交 |
 | `test/registered/amd/accuracy/mi30x/test_deepseek_v32_mtp_eval_amd.py` | 无直接 PR 号提交 |
 | `test/registered/amd/accuracy/mi30x/test_deepseek_v32_tc_eval_amd.py` | 无直接 PR 号提交 |
-| `test/registered/amd/accuracy/mi35x/test_deepseek_v32_dp_eval_mi35x.py` | [#17523](https://github.com/sgl-project/sglang/pull/17523) |
-| `test/registered/amd/accuracy/mi35x/test_deepseek_v32_eval_mi35x.py` | [#17179](https://github.com/sgl-project/sglang/pull/17179), [#17523](https://github.com/sgl-project/sglang/pull/17523) |
-| `test/registered/amd/accuracy/mi35x/test_deepseek_v32_mtp_eval_mi35x.py` | [#17523](https://github.com/sgl-project/sglang/pull/17523) |
+| `test/registered/amd/accuracy/mi35x/test_deepseek_v32_dp_eval_mi35x.py` | [#17523](https://github.com/sgl-project/sglang/pull/17523), [#25821](https://github.com/sgl-project/sglang/pull/25821) |
+| `test/registered/amd/accuracy/mi35x/test_deepseek_v32_eval_mi35x.py` | [#17179](https://github.com/sgl-project/sglang/pull/17179), [#17523](https://github.com/sgl-project/sglang/pull/17523), [#25821](https://github.com/sgl-project/sglang/pull/25821) |
+| `test/registered/amd/accuracy/mi35x/test_deepseek_v32_mtp_eval_mi35x.py` | [#17523](https://github.com/sgl-project/sglang/pull/17523), [#25821](https://github.com/sgl-project/sglang/pull/25821) |
 | `test/registered/amd/perf/mi30x/test_deepseek_v32_basic_perf_amd.py` | 无直接 PR 号提交 |
 | `test/registered/amd/perf/mi30x/test_deepseek_v32_mtp_perf_amd.py` | 无直接 PR 号提交 |
-| `test/registered/amd/perf/mi35x/test_deepseek_v32_basic_perf_mi35x.py` | [#17179](https://github.com/sgl-project/sglang/pull/17179), [#17523](https://github.com/sgl-project/sglang/pull/17523) |
-| `test/registered/amd/perf/mi35x/test_deepseek_v32_mtp_perf_mi35x.py` | [#17179](https://github.com/sgl-project/sglang/pull/17179), [#17523](https://github.com/sgl-project/sglang/pull/17523) |
-| `test/registered/amd/test_deepseek_v32_basic.py` | [#16934](https://github.com/sgl-project/sglang/pull/16934), [#17179](https://github.com/sgl-project/sglang/pull/17179), [#17432](https://github.com/sgl-project/sglang/pull/17432), [#17633](https://github.com/sgl-project/sglang/pull/17633) |
-| `test/registered/amd/test_deepseek_v32_mtp.py` | [#16934](https://github.com/sgl-project/sglang/pull/16934), [#17179](https://github.com/sgl-project/sglang/pull/17179), [#17432](https://github.com/sgl-project/sglang/pull/17432), [#17633](https://github.com/sgl-project/sglang/pull/17633) |
-| `test/registered/cp/test_deepseek_v32_cp_single_node.py` | [#21192](https://github.com/sgl-project/sglang/pull/21192), [#21585](https://github.com/sgl-project/sglang/pull/21585) |
-| `test/registered/gb300/test_deepseek_v32.py` | 无直接 PR 号提交 |
-| `test/registered/gb300/test_deepseek_v32_nvfp4.py` | 无直接 PR 号提交 |
-| `test/registered/kernels/test_nsa_indexer.py` | [#17076](https://github.com/sgl-project/sglang/pull/17076), [#17452](https://github.com/sgl-project/sglang/pull/17452), [#17682](https://github.com/sgl-project/sglang/pull/17682), [#18280](https://github.com/sgl-project/sglang/pull/18280), [#18389](https://github.com/sgl-project/sglang/pull/18389), [#19041](https://github.com/sgl-project/sglang/pull/19041) |
-| `test/registered/quant/test_deepseek_v32_fp4_4gpu.py` | [#19985](https://github.com/sgl-project/sglang/pull/19985), [#20062](https://github.com/sgl-project/sglang/pull/20062), [#20984](https://github.com/sgl-project/sglang/pull/20984), [#21003](https://github.com/sgl-project/sglang/pull/21003) |
-| `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py` | [#19985](https://github.com/sgl-project/sglang/pull/19985), [#20062](https://github.com/sgl-project/sglang/pull/20062), [#20984](https://github.com/sgl-project/sglang/pull/20984), [#21003](https://github.com/sgl-project/sglang/pull/21003) |
-| `test/registered/unit/mem_cache/test_nsa_pool_host_unit.py` | 无直接 PR 号提交 |
+| `test/registered/amd/perf/mi35x/test_deepseek_v32_basic_perf_mi35x.py` | [#17179](https://github.com/sgl-project/sglang/pull/17179), [#17523](https://github.com/sgl-project/sglang/pull/17523), [#25821](https://github.com/sgl-project/sglang/pull/25821) |
+| `test/registered/amd/perf/mi35x/test_deepseek_v32_mtp_perf_mi35x.py` | [#17179](https://github.com/sgl-project/sglang/pull/17179), [#17523](https://github.com/sgl-project/sglang/pull/17523), [#25821](https://github.com/sgl-project/sglang/pull/25821) |
+| `test/registered/amd/test_deepseek_v32_basic.py` | [#16934](https://github.com/sgl-project/sglang/pull/16934), [#17179](https://github.com/sgl-project/sglang/pull/17179), [#17432](https://github.com/sgl-project/sglang/pull/17432), [#17633](https://github.com/sgl-project/sglang/pull/17633), [#25821](https://github.com/sgl-project/sglang/pull/25821) |
+| `test/registered/amd/test_deepseek_v32_mtp.py` | [#16934](https://github.com/sgl-project/sglang/pull/16934), [#17179](https://github.com/sgl-project/sglang/pull/17179), [#17432](https://github.com/sgl-project/sglang/pull/17432), [#17633](https://github.com/sgl-project/sglang/pull/17633), [#25821](https://github.com/sgl-project/sglang/pull/25821) |
+| `test/registered/cp/test_deepseek_v32_cp_single_node.py` | [#21192](https://github.com/sgl-project/sglang/pull/21192), [#21585](https://github.com/sgl-project/sglang/pull/21585), [#25821](https://github.com/sgl-project/sglang/pull/25821) |
+| `test/registered/models_e2e/test_deepseek_v32_fp4_mtp_dp.py` | 无直接 PR 号提交 |
+| `test/registered/models_e2e/test_deepseek_v32_fp4_mtp_tp.py` | 无直接 PR 号提交 |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 120
-- 原文档显式引用补充 PR 数: 124
-- 当前文档总 PR 数: 244
+- git 追溯 PR 数: 126
+- 原文档显式引用补充 PR 数: 177
+- 当前文档总 PR 数: 303
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -160,8 +78,8 @@
 | 2025-10-06 | [#11061](https://github.com/sgl-project/sglang/pull/11061) | merged | Support DeepSeek V3.2 Exp | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2025-10-09 | [#11309](https://github.com/sgl-project/sglang/pull/11309) | merged | [DeepSeek-V3.2] Include indexer kv cache when estimating kv cache size | `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/mem_cache/memory_pool.py`, `python/sglang/srt/server_args.py` |
 | 2025-10-11 | [#11450](https://github.com/sgl-project/sglang/pull/11450) | merged | [DPSKv3.2] Rewrite nsa tilelang act_quant kernel to triton | `python/sglang/srt/layers/attention/nsa/triton_kernel.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
-| 2025-10-13 | [#11308](https://github.com/sgl-project/sglang/pull/11308) | merged | [CI] Add Basic Test for DeepSeek V3.2 | `test/srt/test_deepseek_v32_basic.py`, `.github/workflows/pr-test.yml`, `scripts/ci/ci_install_dependency.sh` |
 | 2025-10-13 | [#11557](https://github.com/sgl-project/sglang/pull/11557) | merged | Fix DeepSeek-v3.2 default config (ValueError: not enough values to unpack (expected 4, got 3)) | `python/sglang/srt/server_args.py` |
+| 2025-10-13 | [#11308](https://github.com/sgl-project/sglang/pull/11308) | merged | [CI] Add Basic Test for DeepSeek V3.2 | `test/srt/test_deepseek_v32_basic.py`, `.github/workflows/pr-test.yml`, `scripts/ci/ci_install_dependency.sh` |
 | 2025-10-14 | [#11565](https://github.com/sgl-project/sglang/pull/11565) | merged | [DSv32] Use torch.compile for _get_logits_head_gate | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2025-10-15 | [#11596](https://github.com/sgl-project/sglang/pull/11596) | closed | [Spec Decoding] Support MTP for dsv3.2 | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/configs/model_config.py` |
 | 2025-10-16 | [#10912](https://github.com/sgl-project/sglang/pull/10912) | merged | [PD] Add PD support for hybrid model (Qwen3-Next, DeepSeek V3.2 Exp) | `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/mem_cache/memory_pool.py`, `python/sglang/srt/disaggregation/mooncake/conn.py` |
@@ -169,8 +87,8 @@
 | 2025-10-17 | [#11109](https://github.com/sgl-project/sglang/pull/11109) | closed | [Draft] Support MTP for DeepSeek-V3.2 | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/configs/model_config.py` |
 | 2025-10-17 | [#11682](https://github.com/sgl-project/sglang/pull/11682) | merged | Cleaning indexer for DeepSeek V3.2 | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py` |
 | 2025-10-19 | [#11652](https://github.com/sgl-project/sglang/pull/11652) | merged | [Spec Decoding] Support MTP for dsv3.2 | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
-| 2025-10-20 | [#11815](https://github.com/sgl-project/sglang/pull/11815) | merged | [DeepseekV32] Add fast_topk_transform_ragged_fused kernel | `sgl-kernel/csrc/elementwise/topk.cu`, `sgl-kernel/tests/test_topk.py`, `sgl-kernel/python/sgl_kernel/top_k.py` |
 | 2025-10-20 | [#11835](https://github.com/sgl-project/sglang/pull/11835) | merged | [CI] Add CI test for DeepSeek V3.2 MTP | `test/srt/test_deepseek_v32_mtp.py`, `test/srt/test_deepseek_v32_basic.py`, `python/sglang/srt/server_args.py` |
+| 2025-10-20 | [#11815](https://github.com/sgl-project/sglang/pull/11815) | merged | [DeepseekV32] Add fast_topk_transform_ragged_fused kernel | `sgl-kernel/csrc/elementwise/topk.cu`, `sgl-kernel/tests/test_topk.py`, `sgl-kernel/python/sgl_kernel/top_k.py` |
 | 2025-10-21 | [#11876](https://github.com/sgl-project/sglang/pull/11876) | merged | Rename flashmla kernel options of nsa backend for better readability | `python/sglang/srt/layers/attention/nsa_backend.py` |
 | 2025-10-23 | [#11761](https://github.com/sgl-project/sglang/pull/11761) | closed | (beta)support context parallel with deepseekv3.2-DSA |  |
 | 2025-10-24 | [#12017](https://github.com/sgl-project/sglang/pull/12017) | closed | (beta)support context parallel with deepseekv3.2-DSA | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_nextn.py` |
@@ -188,16 +106,16 @@
 | 2025-11-04 | [#12044](https://github.com/sgl-project/sglang/pull/12044) | merged | Enable mixed type LayerNorm kernel for NSA indexer | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2025-11-04 | [#12645](https://github.com/sgl-project/sglang/pull/12645) | merged | [Bug] Fix NSA Backend KV-Buffer Shape Mismatch in DeepSeek-V3.2 | `python/sglang/srt/mem_cache/memory_pool.py` |
 | 2025-11-06 | [#11892](https://github.com/sgl-project/sglang/pull/11892) | merged | DeepSeek-V3.2: Add Adaptive MHA Attention Pathway for Short-Sequence Prefill | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/models/deepseek_v2.py` |
-| 2025-11-07 | [#12520](https://github.com/sgl-project/sglang/pull/12520) | merged | [Test] Add DeepSeekV3.2 NSA Indexer Test Suite | `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` |
 | 2025-11-07 | [#12788](https://github.com/sgl-project/sglang/pull/12788) | merged | [DeepSeek-V3.2][NSA] Enable MHA Pathway for Short Sequence Prefill on B200 (SM100) | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/models/deepseek_v2.py` |
-| 2025-11-07 | [#12816](https://github.com/sgl-project/sglang/pull/12816) | merged | [Deepseek V3.2] Only skip Indexer logits computation when is_extend_without_speculative | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
+| 2025-11-07 | [#12520](https://github.com/sgl-project/sglang/pull/12520) | merged | [Test] Add DeepSeekV3.2 NSA Indexer Test Suite | `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` |
 | 2025-11-07 | [#12820](https://github.com/sgl-project/sglang/pull/12820) | open | [WIP][Feature] support tp-sp on qwen2/3 & deepseek v2/3/3.2 | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/models/qwen3.py` |
+| 2025-11-07 | [#12816](https://github.com/sgl-project/sglang/pull/12816) | merged | [Deepseek V3.2] Only skip Indexer logits computation when is_extend_without_speculative | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2025-11-08 | [#12582](https://github.com/sgl-project/sglang/pull/12582) | merged | [sgl-kernel][Deepseek V3.2] Add row_starts to topk kernel | `sgl-kernel/tests/test_topk.py`, `sgl-kernel/csrc/elementwise/topk.cu`, `sgl-kernel/python/sgl_kernel/top_k.py` |
 | 2025-11-08 | [#12868](https://github.com/sgl-project/sglang/pull/12868) | merged | [Docs][DeepseekV3.2] Update deepseekv3.2 docs for mha short seq prefill | `docs/basic_usage/deepseek_v32.md` |
-| 2025-11-12 | [#12215](https://github.com/sgl-project/sglang/pull/12215) | merged | [DeepseekV32]: use `_concat_mla_absorb_q_general` to replace `torch.cat` | `python/sglang/srt/layers/attention/nsa_backend.py` |
 | 2025-11-12 | [#12583](https://github.com/sgl-project/sglang/pull/12583) | merged | [Deepseek V3.2] Fix accuracy bug in the Indexer | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py` |
+| 2025-11-12 | [#12215](https://github.com/sgl-project/sglang/pull/12215) | merged | [DeepseekV32]: use `_concat_mla_absorb_q_general` to replace `torch.cat` | `python/sglang/srt/layers/attention/nsa_backend.py` |
 | 2025-11-14 | [#13236](https://github.com/sgl-project/sglang/pull/13236) | merged | [Deepseek V3.2] Clean up MTP | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
-| 2025-11-17 | [#12065](https://github.com/sgl-project/sglang/pull/12065) | merged | (1/n)support context parallel with deepseekv3.2-DSA | `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/communicator_nsa_cp.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
+| 2025-11-17 | [#12065](https://github.com/sgl-project/sglang/pull/12065) | merged | (1/n)support context parallel with deepseekv3.2-DSA | `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_v2.py` |
 | 2025-11-17 | [#13022](https://github.com/sgl-project/sglang/pull/13022) | merged | [Deepseek V3.2] Use torch.compile to speed up torch.cat in nsa | `python/sglang/srt/layers/attention/nsa_backend.py` |
 | 2025-11-18 | [#13531](https://github.com/sgl-project/sglang/pull/13531) | closed | DeepSeek V3.2 indexer RoPE fix | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2025-11-20 | [#12964](https://github.com/sgl-project/sglang/pull/12964) | merged | [DeepseekV3.2] Deepseek fp8 support for MHA path | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/attention/nsa_backend.py` |
@@ -208,17 +126,17 @@
 | 2025-11-30 | [#13646](https://github.com/sgl-project/sglang/pull/13646) | merged | [DeepSeekV3.2] Enable pure TP & Partial DP Attention | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `test/manual/nightly/test_deepseek_v32_perf.py` |
 | 2025-12-01 | [#14245](https://github.com/sgl-project/sglang/pull/14245) | merged | Fix NSA Bug in Centralize NSA Dispatch Logic | `python/sglang/srt/layers/attention/nsa_backend.py` |
 | 2025-12-02 | [#14249](https://github.com/sgl-project/sglang/pull/14249) | merged | feat: DeepSeek new v3.2 encoding | `python/sglang/srt/entrypoints/openai/encoding_dsv32.py`, `python/sglang/srt/function_call/deepseekv32_detector.py` |
-| 2025-12-03 | [#13812](https://github.com/sgl-project/sglang/pull/13812) | merged | [Performance] Optimize NSA Indexer K/S Buffer Access with Fused Triton Kernels | `test/manual/layers/attention/nsa/test_index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2025-12-03 | [#14321](https://github.com/sgl-project/sglang/pull/14321) | merged | [Doc] Update DeepSeek-V3.2 document | `docs/basic_usage/deepseek_v32.md` |
+| 2025-12-03 | [#13812](https://github.com/sgl-project/sglang/pull/13812) | merged | [Performance] Optimize NSA Indexer K/S Buffer Access with Fused Triton Kernels | `test/manual/layers/attention/nsa/test_index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2025-12-03 | [#14332](https://github.com/sgl-project/sglang/pull/14332) | open | feat: V32 tool call parsing for no-dsml tag | `test/registered/function_call/test_function_call_parser.py`, `python/sglang/srt/function_call/deepseekv32_detector.py` |
 | 2025-12-03 | [#14336](https://github.com/sgl-project/sglang/pull/14336) | merged | [Doc] Fix DeepSeek V32 Doc | `docs/basic_usage/deepseek_v32.md` |
 | 2025-12-03 | [#14372](https://github.com/sgl-project/sglang/pull/14372) | merged | [Tiny]Small fixes in deepseek v32 doc | `docs/basic_usage/deepseek_v32.md` |
 | 2025-12-04 | [#14325](https://github.com/sgl-project/sglang/pull/14325) | merged | [DeepseekV3.2][NSA][Indexer] Fix PAGED top-k transform for NSA indexer chunked execution on H200 | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2025-12-06 | [#14524](https://github.com/sgl-project/sglang/pull/14524) | open | [Test] Add test suite for NSA backend | `python/sglang/test/attention/test_nsa_backend.py` |
 | 2025-12-08 | [#14573](https://github.com/sgl-project/sglang/pull/14573) | merged | [Tool Call] Fix DeepSeekV32Detector skipping functions with no params in streaming mode | `python/sglang/srt/function_call/deepseekv32_detector.py` |
-| 2025-12-11 | [#14304](https://github.com/sgl-project/sglang/pull/14304) | merged | [FIX][DS32]openai protocol: support openai message role: developer | `python/sglang/srt/entrypoints/openai/protocol.py` |
+| 2025-12-11 | [#14541](https://github.com/sgl-project/sglang/pull/14541) | merged | [NPU]dsv3.2 cp for npu | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` |
 | 2025-12-11 | [#14307](https://github.com/sgl-project/sglang/pull/14307) | merged | [SMG][DS32][fix] support dsv32, add role developer | `sgl-model-gateway/src/protocols/chat.rs`, `sgl-model-gateway/src/routers/grpc/harmony/builder.rs`, `sgl-model-gateway/src/routers/http/pd_router.rs` |
-| 2025-12-11 | [#14541](https://github.com/sgl-project/sglang/pull/14541) | merged | [NPU]dsv3.2 cp for npu | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/communicator_nsa_cp.py` |
+| 2025-12-11 | [#14304](https://github.com/sgl-project/sglang/pull/14304) | merged | [FIX][DS32]openai protocol: support openai message role: developer | `python/sglang/srt/entrypoints/openai/protocol.py` |
 | 2025-12-12 | [#14572](https://github.com/sgl-project/sglang/pull/14572) | merged | [NPU] optimization for dsv3.2 | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` |
 | 2025-12-12 | [#14982](https://github.com/sgl-project/sglang/pull/14982) | open | [Feature] Add DCP support for GQA with flashinfer | `python/sglang/srt/layers/attention/utils.py`, `python/sglang/srt/layers/attention/flashinfer_backend.py`, `python/sglang/srt/model_executor/input_buffers.py` |
 | 2025-12-13 | [#14904](https://github.com/sgl-project/sglang/pull/14904) | closed | [DeepSeek V3.2] Proper drop_thinking logic | `python/sglang/srt/entrypoints/openai/serving_chat.py` |
@@ -228,21 +146,20 @@
 | 2025-12-16 | [#15217](https://github.com/sgl-project/sglang/pull/15217) | closed | fix(DeepSeek-V3.2 function_call): fix streaming content loss in DeepSeekV32Detector | `python/sglang/srt/function_call/deepseekv32_detector.py` |
 | 2025-12-16 | [#15242](https://github.com/sgl-project/sglang/pull/15242) | merged | [sgl-kernel] Update flashmla to include fp8 sparse_mla optimizations | `sgl-kernel/cmake/flashmla.cmake` |
 | 2025-12-17 | [#15088](https://github.com/sgl-project/sglang/pull/15088) | merged | [DeepSeekV3.2] Add pure TP+MTP test | `docs/basic_usage/deepseek_v32.md` |
-| 2025-12-17 | [#15307](https://github.com/sgl-project/sglang/pull/15307) | merged | [Deepseek V3.2] Support Overlap Spec + NSA | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `docs/basic_usage/deepseek_v32.md` |
 | 2025-12-17 | [#15322](https://github.com/sgl-project/sglang/pull/15322) | open | dsv32 support o_proj tp | `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/linear.py` |
-| 2025-12-18 | [#14781](https://github.com/sgl-project/sglang/pull/14781) | merged | [Performance] optimize NSA backend metadata computation for multi-step speculative decoding | `python/sglang/srt/layers/attention/nsa/nsa_backend_mtp_precompute.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/utils.py` |
+| 2025-12-17 | [#15307](https://github.com/sgl-project/sglang/pull/15307) | merged | [Deepseek V3.2] Support Overlap Spec + NSA | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `docs/basic_usage/deepseek_v32.md` |
 | 2025-12-18 | [#15278](https://github.com/sgl-project/sglang/pull/15278) | merged | feat: DeepSeek-V3.2 Streaming tool call output | `python/sglang/srt/function_call/deepseekv32_detector.py` |
+| 2025-12-18 | [#14781](https://github.com/sgl-project/sglang/pull/14781) | merged | [Performance] optimize NSA backend metadata computation for multi-step speculative decoding | `python/sglang/srt/layers/attention/nsa/nsa_backend_mtp_precompute.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/utils.py` |
 | 2025-12-19 | [#14353](https://github.com/sgl-project/sglang/pull/14353) | merged | feat(dsv32): better error handling for DeepSeek-v3.2 encoder | `python/sglang/srt/entrypoints/openai/encoding_dsv32.py` |
-| 2025-12-19 | [#15040](https://github.com/sgl-project/sglang/pull/15040) | merged | [DSv32] Move deep_gemm.get_paged_mqa_logits_metadata to init time as metadata | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2025-12-19 | [#15429](https://github.com/sgl-project/sglang/pull/15429) | merged | [Deepseek V3.2] Fix Deepseek MTP in V1 mode | `python/sglang/srt/layers/attention/nsa_backend.py` |
+| 2025-12-19 | [#15040](https://github.com/sgl-project/sglang/pull/15040) | merged | [DSv32] Move deep_gemm.get_paged_mqa_logits_metadata to init time as metadata | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2025-12-21 | [#12162](https://github.com/sgl-project/sglang/pull/12162) | merged | [Feature] Enable return routed experts | `python/sglang/srt/layers/moe/routed_experts_capturer.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/managers/detokenizer_manager.py` |
 | 2025-12-21 | [#14901](https://github.com/sgl-project/sglang/pull/14901) | merged | fix ds3.2 nsa backend prefill TBO | `python/sglang/srt/models/deepseek_v2.py` |
 | 2025-12-25 | [#14741](https://github.com/sgl-project/sglang/pull/14741) | merged | [1/N][Sparse With Hicache]: Add Sparse Interface | `python/sglang/srt/mem_cache/sparsity/algorithms/base_algorithm.py`, `python/sglang/srt/mem_cache/sparsity/algorithms/quest_algorithm.py`, `python/sglang/srt/mem_cache/sparsity/algorithms/deepseek_nsa.py` |
 | 2025-12-26 | [#14750](https://github.com/sgl-project/sglang/pull/14750) | merged | [Tool Call][DSV32] Streamline function call parameters | `python/sglang/srt/function_call/deepseekv32_detector.py` |
 | 2025-12-30 | [#16119](https://github.com/sgl-project/sglang/pull/16119) | merged | [cp] bug fix for dsv3.2 cp | `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` |
-| 2025-12-30 | [#16148](https://github.com/sgl-project/sglang/pull/16148) | open | [Fix] DSV3.2 W4AFP8 MTP use FP8 draft model | `python/sglang/srt/layers/moe/token_dispatcher/deepep.py`, `python/sglang/srt/layers/quantization/w4afp8.py` |
 | 2025-12-31 | [#16156](https://github.com/sgl-project/sglang/pull/16156) | merged | [cp] assert dsv3.2 cp in pd decode mode | `python/sglang/srt/server_args.py` |
-| 2026-01-02 | [#13959](https://github.com/sgl-project/sglang/pull/13959) | merged | [DeepSeek v3.2] opt Context Parallelism: support fused moe, multi batch and fp8 kvcache | `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/communicator_nsa_cp.py`, `python/sglang/srt/layers/attention/nsa_backend.py` |
+| 2026-01-02 | [#13959](https://github.com/sgl-project/sglang/pull/13959) | merged | [DeepSeek v3.2] opt Context Parallelism: support fused moe, multi batch and fp8 kvcache | `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2026-01-02 | [#16305](https://github.com/sgl-project/sglang/pull/16305) | merged | Multiple updates of DeepSeek V32 and context parallel | `docs/basic_usage/deepseek_v32.md` |
 | 2026-01-06 | [#15310](https://github.com/sgl-project/sglang/pull/15310) | closed | [Deepseek V3.2] Enable TRTLLM Allreduce Fusion | `python/sglang/srt/server_args.py` |
 | 2026-01-06 | [#16520](https://github.com/sgl-project/sglang/pull/16520) | merged | fix: unimplemented methods in BaseIndexerMetadata | `test/registered/kernels/test_nsa_indexer.py` |
@@ -255,38 +172,36 @@
 | 2026-01-13 | [#16990](https://github.com/sgl-project/sglang/pull/16990) | merged | [Ascend] fix dsv3.2 weight cast bug | `python/sglang/srt/layers/quantization/unquant.py` |
 | 2026-01-14 | [#16841](https://github.com/sgl-project/sglang/pull/16841) | merged | [AMD] enable CUDA graph for NSA backend and fix NSA FP8 fused RMSNorm group quant | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` |
 | 2026-01-14 | [#17054](https://github.com/sgl-project/sglang/pull/17054) | merged | Update deepseekV32 Cp doc | `docs/basic_usage/deepseek_v32.md` |
+| 2026-01-16 | [#17185](https://github.com/sgl-project/sglang/pull/17185) | open | [DeepSeek V3.2] [Feat] add tensor parallel o_proj linear in context parallel nsa | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/server_args.py` |
 | 2026-01-16 | [#16934](https://github.com/sgl-project/sglang/pull/16934) | merged | [AMD] Enable DeepseekV3.2 test for AMD CI | `test/registered/amd/test_deepseek_v32_mtp.py`, `test/registered/amd/test_deepseek_v32_basic.py` |
 | 2026-01-16 | [#17133](https://github.com/sgl-project/sglang/pull/17133) | merged | [DeepSeek V3.1/V3.2] Optimize fused moe configs for H20 & H20-3E based on swapab | `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=257,N=256,device_name=NVIDIA_H20,dtype=fp8_w8a8,block_shape=[128, 128]_down.json`, `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=257,N=256,device_name=NVIDIA_H20-3e,dtype=fp8_w8a8,block_shape=[128, 128]_down.json`, `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=257,N=256,device_name=NVIDIA_H20,dtype=fp8_w8a8,block_shape=[128, 128].json` |
-| 2026-01-16 | [#17185](https://github.com/sgl-project/sglang/pull/17185) | open | [DeepSeek V3.2] [Feat] add tensor parallel o_proj linear in context parallel nsa | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/server_args.py` |
 | 2026-01-19 | [#16961](https://github.com/sgl-project/sglang/pull/16961) | merged | [DeepSeek v3.2] Opt MTP decode cuda batch sizes and nsa implementation | `python/sglang/srt/layers/attention/nsa_backend.py` |
 | 2026-01-20 | [#17179](https://github.com/sgl-project/sglang/pull/17179) | merged | [AMD] Add DeepSeek-V3.2 and VLMs model in nightly tests | `test/registered/amd/accuracy/mi35x/test_deepseek_v32_eval_mi35x.py`, `test/registered/amd/perf/mi35x/test_deepseek_v32_mtp_perf_mi35x.py`, `test/registered/amd/perf/mi35x/test_deepseek_v32_basic_perf_mi35x.py` |
-| 2026-01-20 | [#17205](https://github.com/sgl-project/sglang/pull/17205) | merged | [OPT] DeepSeekV3.2: optimize indexer weight_proj-mma performance | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2026-01-20 | [#17409](https://github.com/sgl-project/sglang/pull/17409) | merged | [Fix]: correctly fetch ds32 config in tuning_fused_moe_triton | `benchmark/kernels/fused_moe_triton/common_utils.py` |
+| 2026-01-20 | [#17205](https://github.com/sgl-project/sglang/pull/17205) | merged | [OPT] DeepSeekV3.2: optimize indexer weight_proj-mma performance | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2026-01-21 | [#17452](https://github.com/sgl-project/sglang/pull/17452) | merged | Fix NSA indexer in the nightly test | `test/registered/kernels/test_nsa_indexer.py` |
-| 2026-01-22 | [#17432](https://github.com/sgl-project/sglang/pull/17432) | merged | [AMD] fix amd ci dpskv32 | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `test/registered/amd/test_deepseek_v32_basic.py`, `test/registered/amd/test_deepseek_v32_mtp.py` |
 | 2026-01-22 | [#17518](https://github.com/sgl-project/sglang/pull/17518) | merged | [HotFix]Fix dtype mismatch in nsa indexer on AMD device | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
-| 2026-01-23 | [#16758](https://github.com/sgl-project/sglang/pull/16758) | merged | [DeepSeek V3.2] Enable trtllm NSA with bf16 kvcache | `python/sglang/srt/layers/attention/nsa_backend.py` |
+| 2026-01-22 | [#17432](https://github.com/sgl-project/sglang/pull/17432) | merged | [AMD] fix amd ci dpskv32 | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `test/registered/amd/test_deepseek_v32_basic.py`, `test/registered/amd/test_deepseek_v32_mtp.py` |
 | 2026-01-23 | [#17007](https://github.com/sgl-project/sglang/pull/17007) | merged | [NPU]bugfix: fix for dsv3.2 and dsvl2 | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` |
+| 2026-01-23 | [#16758](https://github.com/sgl-project/sglang/pull/16758) | merged | [DeepSeek V3.2] Enable trtllm NSA with bf16 kvcache | `python/sglang/srt/layers/attention/nsa_backend.py` |
 | 2026-01-24 | [#17682](https://github.com/sgl-project/sglang/pull/17682) | merged | Fix NSA indexer test and move it to pre commit test | `test/registered/kernels/test_nsa_indexer.py` |
-| 2026-01-25 | [#17310](https://github.com/sgl-project/sglang/pull/17310) | closed | [TileLang] Align TileLang NSA kernel with current TileLang and stabilize output | `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` |
 | 2026-01-25 | [#17662](https://github.com/sgl-project/sglang/pull/17662) | merged | [DeepSeek-V3.2] Fix TRT-LLM NSA in target_verify/draft_extend | `python/sglang/srt/layers/attention/nsa_backend.py` |
-| 2026-01-26 | [#15381](https://github.com/sgl-project/sglang/pull/15381) | merged | [NPU]DeepSeek-V3.2 support npu mlaprolog | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` |
+| 2026-01-25 | [#17310](https://github.com/sgl-project/sglang/pull/17310) | closed | [TileLang] Align TileLang NSA kernel with current TileLang and stabilize output | `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` |
 | 2026-01-26 | [#17609](https://github.com/sgl-project/sglang/pull/17609) | merged | Merge performance/accuracy test suites into regular stage-b suites | `.github/workflows/pr-test.yml`, `python/sglang/test/test_utils.py`, `test/run_suite.py` |
 | 2026-01-26 | [#17761](https://github.com/sgl-project/sglang/pull/17761) | open | fix: missing Assistant token after tool output in DeepSeek v3.1/v3.2 chat templates | `test/manual/test_deepseek_chat_templates.py`, `examples/chat_template/tool_chat_template_deepseekv31.jinja`, `examples/chat_template/tool_chat_template_deepseekv32.jinja` |
-| 2026-01-27 | [#17657](https://github.com/sgl-project/sglang/pull/17657) | merged | [DeepSeek] Update tests and document for DeepSeek V3.2 NVFP4 checkpoint | `docs/basic_usage/deepseek_v32.md` |
+| 2026-01-26 | [#15381](https://github.com/sgl-project/sglang/pull/15381) | merged | [NPU]DeepSeek-V3.2 support npu mlaprolog | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` |
 | 2026-01-27 | [#17783](https://github.com/sgl-project/sglang/pull/17783) | merged | [AMD] Update dsv3.2 AMD GPU docs and unify ROCm TileLang build | `docs/basic_usage/deepseek_v32.md` |
-| 2026-01-28 | [#17523](https://github.com/sgl-project/sglang/pull/17523) | merged | [AMD] Add Kimi-K2, DeepSeek-V3.2 tests to nightly CI | `test/registered/amd/accuracy/mi35x/test_deepseek_v32_mtp_eval_mi35x.py`, `test/registered/amd/accuracy/mi35x/test_deepseek_v32_dp_eval_mi35x.py`, `test/registered/amd/perf/mi35x/test_deepseek_v32_mtp_perf_mi35x.py` |
+| 2026-01-27 | [#17657](https://github.com/sgl-project/sglang/pull/17657) | merged | [DeepSeek] Update tests and document for DeepSeek V3.2 NVFP4 checkpoint | `docs/basic_usage/deepseek_v32.md` |
 | 2026-01-28 | [#17633](https://github.com/sgl-project/sglang/pull/17633) | merged | [AMD] CI - enable deepseekv3.2 on MI325-8gpu and merge perf/accuracy test suites into stage-b suites | `test/registered/amd/test_deepseek_v32_basic.py`, `test/registered/amd/test_deepseek_v32_mtp.py` |
 | 2026-01-28 | [#17688](https://github.com/sgl-project/sglang/pull/17688) | merged | [DSv32] Overlap indexer qk projection and activation quant | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
+| 2026-01-28 | [#17523](https://github.com/sgl-project/sglang/pull/17523) | merged | [AMD] Add Kimi-K2, DeepSeek-V3.2 tests to nightly CI | `test/registered/amd/accuracy/mi35x/test_deepseek_v32_mtp_eval_mi35x.py`, `test/registered/amd/accuracy/mi35x/test_deepseek_v32_dp_eval_mi35x.py`, `test/registered/amd/perf/mi35x/test_deepseek_v32_mtp_perf_mi35x.py` |
 | 2026-01-29 | [#17951](https://github.com/sgl-project/sglang/pull/17951) | merged | Add tool call tests for DeepSeek V3.2 in nightly CI | `test/registered/8-gpu-models/test_deepseek_v32.py` |
 | 2026-02-02 | [#17076](https://github.com/sgl-project/sglang/pull/17076) | merged | [DeepSeek V3.2] [Bugfix] slice indexer and padding fa3 when can not run cuda graph | `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py` |
 | 2026-02-02 | [#17964](https://github.com/sgl-project/sglang/pull/17964) | merged | [NPU] support dsv32 radixcache on ascend | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
-| 2026-02-02 | [#18094](https://github.com/sgl-project/sglang/pull/18094) | open | support deepseekv3.2-piecewise-cuda-graph | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/radix_attention.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` |
 | 2026-02-03 | [#18167](https://github.com/sgl-project/sglang/pull/18167) | open | [Feature] Add DCP support for DeepSeek v3.2 | `python/sglang/srt/layers/attention/utils.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/models/deepseek_v2.py` |
 | 2026-02-05 | [#18275](https://github.com/sgl-project/sglang/pull/18275) | open | [NPU] allgather after qlora for dsv3.2 | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/models/deepseek_v2.py` |
 | 2026-02-10 | [#18297](https://github.com/sgl-project/sglang/pull/18297) | merged | Deepseekv32 compatibility with transformers v5 | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2026-02-10 | [#18488](https://github.com/sgl-project/sglang/pull/18488) | merged | Tilelang sparse decode fwd for dsv32 mi355 | `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` |
-| 2026-02-10 | [#18542](https://github.com/sgl-project/sglang/pull/18542) | open | fix: fixed aux hidden state index out of range when using eagle3 with nsa cp | `python/sglang/srt/models/deepseek_v2.py` |
 | 2026-02-11 | [#18553](https://github.com/sgl-project/sglang/pull/18553) | merged | Fix Bug on dsv3.2 | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2026-02-11 | [#18613](https://github.com/sgl-project/sglang/pull/18613) | merged | [V3.2] Change default CP token split method to `--round-robin-split` | `docs/basic_usage/deepseek_v32.md` |
 | 2026-02-12 | [#18733](https://github.com/sgl-project/sglang/pull/18733) | open | Add DeepSeek V32 PD disaggregation test | `test/registered/distributed/test_disaggregation_deepseek_v32.py` |
@@ -298,52 +213,46 @@
 | 2026-02-19 | [#18978](https://github.com/sgl-project/sglang/pull/18978) | merged | [AMD] Fix mi35x dsv32 mtp nightly | `python/sglang/srt/layers/attention/nsa_backend.py` |
 | 2026-02-20 | [#18931](https://github.com/sgl-project/sglang/pull/18931) | merged | Fix NSA FP8 KV cache path for both-trtllm MHA one-shot | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py` |
 | 2026-02-21 | [#19062](https://github.com/sgl-project/sglang/pull/19062) | merged | [DSv32] Fix MTP and CP compatability | `python/sglang/srt/models/deepseek_nextn.py` |
-| 2026-02-22 | [#19041](https://github.com/sgl-project/sglang/pull/19041) | merged | [DSv32] [GLM5] Improve Model Quality by Avoiding FP32 Precision Loss in `weights_proj` | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `test/registered/kernels/test_nsa_indexer.py` |
 | 2026-02-22 | [#19134](https://github.com/sgl-project/sglang/pull/19134) | merged | Fix spec v2+dp attention in nsa backend | `python/sglang/srt/layers/attention/nsa/utils.py` |
-| 2026-02-24 | [#19211](https://github.com/sgl-project/sglang/pull/19211) | closed | [Refactor][DeepSeek-V3.2] Extract V3.2/NSA logic into `DeepseekV32Mixin` | `python/sglang/srt/models/deepseek_common/v32_mixin.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_nextn.py` |
+| 2026-02-22 | [#19041](https://github.com/sgl-project/sglang/pull/19041) | merged | [DSv32] [GLM5] Improve Model Quality by Avoiding FP32 Precision Loss in `weights_proj` | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `test/registered/kernels/test_nsa_indexer.py` |
 | 2026-02-25 | [#19299](https://github.com/sgl-project/sglang/pull/19299) | open | [Perf] O(1) expert weight matching in DeepSeek weight loader | `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`, `test/unit/test_deepseek_weight_loader.py` |
-| 2026-02-26 | [#17199](https://github.com/sgl-project/sglang/pull/17199) | closed | [Feature] add feature mla_ag_after_qlora for dsv3.2 | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/communicator.py` |
-| 2026-02-26 | [#19148](https://github.com/sgl-project/sglang/pull/19148) | merged | [DeepSeek-V3.2][JIT-kernel] Support nsa fuse store indexer k cache | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/jit_kernel/csrc/nsa/fused_store_index_cache.cuh` |
+| 2026-02-26 | [#19148](https://github.com/sgl-project/sglang/pull/19148) | merged | [DeepSeek-V3.2][JIT-kernel] Support nsa fuse store indexer k cache | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2026-02-26 | [#19367](https://github.com/sgl-project/sglang/pull/19367) | merged | Fix NSA CP positions mismatch in eagle NextN model | `python/sglang/srt/models/deepseek_nextn.py` |
+| 2026-02-26 | [#17199](https://github.com/sgl-project/sglang/pull/17199) | closed | [Feature] add feature mla_ag_after_qlora for dsv3.2 | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/communicator.py` |
 | 2026-02-27 | [#18319](https://github.com/sgl-project/sglang/pull/18319) | merged | [AMD] Use `tilelang` as default NSA attention backend dispatch on AMD Instinct | `python/sglang/srt/layers/attention/nsa_backend.py` |
 | 2026-02-27 | [#18526](https://github.com/sgl-project/sglang/pull/18526) | merged | [AMD] Enable cudagraph for aiter nsa backend and add aiter impl for nsa pr… | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/triton_kernel.py` |
 | 2026-02-27 | [#19122](https://github.com/sgl-project/sglang/pull/19122) | merged | [3/n] deepseek_v2.py Refactor: Migrate MLA forward method in deepseek_v2.py | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_rocm.py` |
-| 2026-03-01 | [#17647](https://github.com/sgl-project/sglang/pull/17647) | closed | [Perf] opt nsa backend init forward metada | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/utils.py` |
 | 2026-03-01 | [#19536](https://github.com/sgl-project/sglang/pull/19536) | merged | [Perf] Optimize NSA backend metadata under MTP | `python/sglang/srt/layers/attention/nsa_backend.py` |
+| 2026-03-01 | [#17647](https://github.com/sgl-project/sglang/pull/17647) | closed | [Perf] opt nsa backend init forward metada | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/utils.py` |
 | 2026-03-02 | [#19428](https://github.com/sgl-project/sglang/pull/19428) | merged | [Feature] add feature mla_ag_after_qlora for dsv3.2 | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` |
-| 2026-03-03 | [#16091](https://github.com/sgl-project/sglang/pull/16091) | merged | [Tool Call] Stream DeepSeek-V3.2 function call parameters in JSON format. | `python/sglang/srt/function_call/deepseekv32_detector.py` |
 | 2026-03-03 | [#18174](https://github.com/sgl-project/sglang/pull/18174) | merged | [Bugfix] Catch errors when DeepSeek-V3.2 generates malformed JSON | `python/sglang/srt/function_call/deepseekv32_detector.py` |
+| 2026-03-03 | [#16091](https://github.com/sgl-project/sglang/pull/16091) | merged | [Tool Call] Stream DeepSeek-V3.2 function call parameters in JSON format. | `python/sglang/srt/function_call/deepseekv32_detector.py` |
 | 2026-03-04 | [#19829](https://github.com/sgl-project/sglang/pull/19829) | merged | [NSA] Fix line-too-long lint in `can_nsa_prefill_cp_round_robin_split` | `python/sglang/srt/layers/attention/nsa/utils.py` |
 | 2026-03-05 | [#19975](https://github.com/sgl-project/sglang/pull/19975) | open | [AMD] Support context parallel for DeepSeek-V3.2 on AMD GPUs and add its test to nightly CI | `test/registered/8-gpu-models/test_deepseek_v32_cp_single_node.py`, `python/sglang/srt/server_args.py`, `.github/workflows/nightly-test-amd-rocm720.yml` |
 | 2026-03-05 | [#19987](https://github.com/sgl-project/sglang/pull/19987) | closed | [AMD] Fix nightly GLM-5 failures: Fix NSA indexer tensor aliasing on ROCm during CUDA graph capture | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2026-03-06 | [#19016](https://github.com/sgl-project/sglang/pull/19016) | merged | [FIX] NSA backend page_table overflow in speculative decoding target_verify | `python/sglang/srt/layers/attention/nsa_backend.py` |
-| 2026-03-06 | [#19985](https://github.com/sgl-project/sglang/pull/19985) | merged | [V32] Enhance deepseek v32 related tests | `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`, `test/registered/quant/test_deepseek_v32_fp4_4gpu.py` |
+| 2026-03-06 | [#19985](https://github.com/sgl-project/sglang/pull/19985) | merged | [V32] Enhance deepseek v32 related tests | `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`, `test/registered/8-gpu-models/test_deepseek_v32_mtp.py`, `test/registered/quant/test_deepseek_v32_fp4_4gpu.py` |
 | 2026-03-07 | [#20086](https://github.com/sgl-project/sglang/pull/20086) | merged | [V32/GLM5] Change default setting of V32 nvfp4 on TP4 | `python/sglang/srt/server_args.py` |
-| 2026-03-09 | [#20062](https://github.com/sgl-project/sglang/pull/20062) | merged | [V32/GLM5] Control the threshold of applying dense attention with an environ | `python/sglang/srt/layers/attention/nsa_backend.py`, `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`, `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py` |
+| 2026-03-09 | [#20062](https://github.com/sgl-project/sglang/pull/20062) | merged | [V32/GLM5] Control the threshold of applying dense attention with an environ | `python/sglang/srt/layers/attention/nsa_backend.py` |
 | 2026-03-10 | [#18876](https://github.com/sgl-project/sglang/pull/18876) | merged | Add DeepSeek3.2 and GlmMoeDsa into moe tune | `benchmark/kernels/fused_moe_triton/common_utils.py` |
-| 2026-03-11 | [#19319](https://github.com/sgl-project/sglang/pull/19319) | merged | [deepseekv3.2] fix get_k_and_s_triton kenel for 128K seqlen case bug | `test/manual/layers/attention/nsa/test_get_k_scale_triton_kernel.py`, `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `test/manual/layers/attention/nsa/test_index_buf_accessor.py` |
 | 2026-03-11 | [#20326](https://github.com/sgl-project/sglang/pull/20326) | merged | [Doc] Add DSA/NSA attention backend to support matrix | `docs/advanced_features/attention_backend.md` |
-| 2026-03-11 | [#20360](https://github.com/sgl-project/sglang/pull/20360) | open | [AMD][Bug fix] Fix NSA context parallelism (round-robin-split) producing garbage output | `python/sglang/srt/layers/communicator_nsa_cp.py` |
-| 2026-03-13 | [#20531](https://github.com/sgl-project/sglang/pull/20531) | open | [bugfix] Fix NSA indexer ragged gather batch-view mismatch in CP round-robin split | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
-| 2026-03-13 | [#20534](https://github.com/sgl-project/sglang/pull/20534) | open | Transfer FP8 K/K_scale for CP indexer prefill gather | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
+| 2026-03-11 | [#19319](https://github.com/sgl-project/sglang/pull/19319) | merged | [deepseekv3.2] fix get_k_and_s_triton kenel for 128K seqlen case bug | `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `test/manual/layers/attention/nsa/test_index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2026-03-17 | [#18280](https://github.com/sgl-project/sglang/pull/18280) | merged | [DeepSeek v3.2][Bugfix] get_index_k_scale_buffer support cp | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` |
-| 2026-03-18 | [#20809](https://github.com/sgl-project/sglang/pull/20809) | open | [Bugfix] Add DeepseekV32ForCausalLM to MTP draft model mapping | `python/sglang/srt/configs/model_config.py` |
 | 2026-03-18 | [#20840](https://github.com/sgl-project/sglang/pull/20840) | merged | [AMD] Fix dpsk-v32 accuracy issue on mi355 | `python/sglang/srt/layers/quantization/fp8_utils.py` |
-| 2026-03-18 | [#20880](https://github.com/sgl-project/sglang/pull/20880) | open | Reject HiCache L3 storage backend for NSA models at init time | `python/sglang/srt/mem_cache/hiradix_cache.py` |
-| 2026-03-19 | [#17024](https://github.com/sgl-project/sglang/pull/17024) | closed | [PD] Fix DeepSeek V3.2 indexer cache transfer | `python/sglang/srt/disaggregation/prefill.py` |
 | 2026-03-19 | [#20492](https://github.com/sgl-project/sglang/pull/20492) | merged | [BugFix] bug fix for DeepSeek eagle3 in Attn-DP mode | `python/sglang/srt/models/deepseek_v2.py` |
-| 2026-03-20 | [#20984](https://github.com/sgl-project/sglang/pull/20984) | merged | Fix DeepSeek V32 FP4 test | `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`, `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py` |
-| 2026-03-20 | [#21003](https://github.com/sgl-project/sglang/pull/21003) | merged | Revert "Fix DeepSeek V32 FP4 test" | `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`, `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py` |
-| 2026-03-23 | [#14619](https://github.com/sgl-project/sglang/pull/14619) | closed | [Sparse & HICache]: Enables hierarchical sparse KV cache management and scheduling for DeepSeek V32. | `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/flashattention_backend.py` |
-| 2026-03-23 | [#15807](https://github.com/sgl-project/sglang/pull/15807) | closed | [2/N][Sparse With Hicache]: Support separating nsa memory management for KV cache and index_k in decode side. | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
-| 2026-03-23 | [#20343](https://github.com/sgl-project/sglang/pull/20343) | merged | HiSparse for Sparse Attention | `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/attention/nsa_backend.py` |
+| 2026-03-19 | [#17024](https://github.com/sgl-project/sglang/pull/17024) | closed | [PD] Fix DeepSeek V3.2 indexer cache transfer | `python/sglang/srt/disaggregation/prefill.py` |
+| 2026-03-20 | [#20984](https://github.com/sgl-project/sglang/pull/20984) | merged | Fix DeepSeek V32 FP4 test | `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`, `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`, `python/sglang/test/test_utils.py` |
+| 2026-03-20 | [#21003](https://github.com/sgl-project/sglang/pull/21003) | merged | Revert "Fix DeepSeek V32 FP4 test" | `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`, `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`, `python/sglang/test/test_utils.py` |
 | 2026-03-23 | [#21179](https://github.com/sgl-project/sglang/pull/21179) | open | [Bug] Preserve DeepSeek-V3.2 tool-call markers in reasoning parsing | `test/registered/unit/parser/test_reasoning_parser.py`, `python/sglang/srt/parser/reasoning_parser.py` |
-| 2026-03-23 | [#21192](https://github.com/sgl-project/sglang/pull/21192) | merged | Fix CP in-seq-split method for DeepSeek V32 and update related tests | `test/registered/cp/test_deepseek_v32_cp_single_node.py`, `test/registered/8-gpu-models/test_deepseek_v32_cp_single_node.py`, `test/manual/nightly/test_deepseek_v32_perf.py` |
+| 2026-03-23 | [#20343](https://github.com/sgl-project/sglang/pull/20343) | merged | HiSparse for Sparse Attention | `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/attention/nsa_backend.py` |
 | 2026-03-23 | [#21194](https://github.com/sgl-project/sglang/pull/21194) | open | [bugfix][AMD] Fix PPMissingLayer AttributeError for deepseek v2/v3 in aiter_gfx95 code path | `python/sglang/srt/models/deepseek_v2.py` |
-| 2026-03-24 | [#19945](https://github.com/sgl-project/sglang/pull/19945) | merged | [AMD] Tilelang sparse fwd for dsv32 mi355/mi300 | `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` |
+| 2026-03-23 | [#15807](https://github.com/sgl-project/sglang/pull/15807) | closed | [2/N][Sparse With Hicache]: Support separating nsa memory management for KV cache and index_k in decode side. | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
+| 2026-03-23 | [#14619](https://github.com/sgl-project/sglang/pull/14619) | closed | [Sparse & HICache]: Enables hierarchical sparse KV cache management and scheduling for DeepSeek V32. | `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/flashattention_backend.py` |
+| 2026-03-23 | [#21192](https://github.com/sgl-project/sglang/pull/21192) | merged | Fix CP in-seq-split method for DeepSeek V32 and update related tests | `test/registered/cp/test_deepseek_v32_cp_single_node.py`, `test/registered/8-gpu-models/test_deepseek_v32_cp_single_node.py`, `test/manual/nightly/test_deepseek_v32_perf.py` |
 | 2026-03-24 | [#20438](https://github.com/sgl-project/sglang/pull/20438) | merged | [Perf] Overlap NSA-CP key all-gather with query computation for DeepSeek-V3.2 | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
-| 2026-03-25 | [#16079](https://github.com/sgl-project/sglang/pull/16079) | closed | [Performance] Change sparse MLA and dense MHA switching threshold DSv3.2 | `python/sglang/srt/layers/attention/nsa_backend.py` |
+| 2026-03-24 | [#19945](https://github.com/sgl-project/sglang/pull/19945) | merged | [AMD] Tilelang sparse fwd for dsv32 mi355/mi300 | `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` |
 | 2026-03-25 | [#21337](https://github.com/sgl-project/sglang/pull/21337) | merged | Workaround of DSA performance drop on B200 + DP | `python/sglang/srt/server_args.py` |
+| 2026-03-25 | [#16079](https://github.com/sgl-project/sglang/pull/16079) | closed | [Performance] Change sparse MLA and dense MHA switching threshold DSv3.2 | `python/sglang/srt/layers/attention/nsa_backend.py` |
 | 2026-03-26 | [#20606](https://github.com/sgl-project/sglang/pull/20606) | merged | FIX: (NSA) Compute topk_indices_offset when NSA prefill flashmla_sparse is used with FP8 KV cache | `python/sglang/srt/layers/attention/nsa_backend.py` |
 | 2026-03-27 | [#21506](https://github.com/sgl-project/sglang/pull/21506) | open | [WIP][NPU] DeepSeek-V3.2 adapt enable-torch-compile | `python/sglang/srt/layers/moe/token_dispatcher/fuseep.py`, `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w8a8_int8_moe.py`, `python/sglang/srt/models/deepseek_v2.py` |
 | 2026-03-27 | [#21529](https://github.com/sgl-project/sglang/pull/21529) | open | Add MXFP4 (including Quark W4A4) quantization support for DeepSeek-architecture on ROCm | `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py`, `python/sglang/srt/models/deepseek_v2.py` |
@@ -359,44 +268,112 @@
 | 2026-04-03 | [#22065](https://github.com/sgl-project/sglang/pull/22065) | merged | [HiSparse]: Optimize server args checking-HiSparse is temporarily only available for DSA models. | `python/sglang/srt/server_args.py` |
 | 2026-04-05 | [#21405](https://github.com/sgl-project/sglang/pull/21405) | merged | Enable IndexCache for DeepSeek V3.2 | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `test/registered/8-gpu-models/test_deepseek_v32_indexcache.py` |
 | 2026-04-06 | [#22179](https://github.com/sgl-project/sglang/pull/22179) | merged | [Doc] Fix and improve DeepSeek V3.2/GLM-5 documentation | `docs/basic_usage/deepseek_v32.md` |
+| 2026-04-07 | [#22238](https://github.com/sgl-project/sglang/pull/22238) | merged | [HiSparse]: Add readme docs for HiSparse Feature | `docs/advanced_features/hisparse_guide.md`, `docs/basic_usage/deepseek_v32.md` |
 | 2026-04-07 | [#21932](https://github.com/sgl-project/sglang/pull/21932) | merged | [HiSparse] Optimize the scheduling of decode backup. | `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/managers/hisparse_coordinator.py` |
 | 2026-04-07 | [#22232](https://github.com/sgl-project/sglang/pull/22232) | merged | Reduce unnecessary kernels and copies in the NSA indexer | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
-| 2026-04-07 | [#22238](https://github.com/sgl-project/sglang/pull/22238) | merged | [HiSparse]: Add readme docs for HiSparse Feature | `docs/advanced_features/hisparse_guide.md`, `docs/basic_usage/deepseek_v32.md` |
-| 2026-04-07 | [#22268](https://github.com/sgl-project/sglang/pull/22268) | open | [Bugfix] Fix prepare_qkv_latent bypassing LoRA adapters in DeepSeek V2/V3 | `python/sglang/srt/models/deepseek_v2.py` |
-| 2026-04-09 | [#22390](https://github.com/sgl-project/sglang/pull/22390) | merged | [DSA] Enable all reduce fusion for DSA models | `python/sglang/srt/server_args.py` |
-| 2026-04-09 | [#22424](https://github.com/sgl-project/sglang/pull/22424) | merged | [AMD] Use aiter CK layernorm2d for LayerNorm to reduce NSA indexer kernel launches | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2026-04-09 | [#22425](https://github.com/sgl-project/sglang/pull/22425) | merged | [HiSparse]: Add HiSpares-DSA Model's nightly CI | `test/registered/8-gpu-models/test_dsa_models_hisparse.py` |
+| 2026-04-09 | [#22424](https://github.com/sgl-project/sglang/pull/22424) | merged | [AMD] Use aiter CK layernorm2d for LayerNorm to reduce NSA indexer kernel launches | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
+| 2026-04-09 | [#22390](https://github.com/sgl-project/sglang/pull/22390) | merged | [DSA] Enable all reduce fusion for DSA models | `python/sglang/srt/server_args.py` |
 | 2026-04-09 | [#22430](https://github.com/sgl-project/sglang/pull/22430) | merged | [Fix] Fix several bugs on DSA models | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/server_args.py` |
-| 2026-04-09 | [#22473](https://github.com/sgl-project/sglang/pull/22473) | open | [DSA] Add dense MLA decode fallback for short sequences | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/server_args.py` |
 | 2026-04-10 | [#13546](https://github.com/sgl-project/sglang/pull/13546) | closed | [Deepseek V3.2] Optimize use of dual_stream in nsa_indexer/attention | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/models/deepseek_v2.py` |
 | 2026-04-10 | [#22258](https://github.com/sgl-project/sglang/pull/22258) | merged | [AMD][HIP] NSA: bf16 passthrough from RMSNorm to eliminate FP8 dequantization | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2026-04-12 | [#22372](https://github.com/sgl-project/sglang/pull/22372) | merged | [DSA] Hopper FP8 FlashMLA KV padding | `python/sglang/srt/layers/attention/nsa_backend.py`, `docs/basic_usage/deepseek_v32.md`, `python/sglang/srt/server_args.py` |
 | 2026-04-14 | [#21259](https://github.com/sgl-project/sglang/pull/21259) | merged | [HiCache & HybridModel] mooncake backend support DSA & mamba model | `python/sglang/srt/mem_cache/memory_pool_host.py`, `python/sglang/srt/mem_cache/storage/mooncake_store/mooncake_store.py`, `python/sglang/srt/mem_cache/hybrid_cache/hybrid_pool_assembler.py` |
 | 2026-04-14 | [#22792](https://github.com/sgl-project/sglang/pull/22792) | open | nsa indexer: use aiter indexer_k_quant_and_cache | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
-| 2026-04-15 | [#22851](https://github.com/sgl-project/sglang/pull/22851) | merged | [RL] [DSv32] [GLM-5] Add `--nsa-topk-backend` and integrate FlashInfer and pytorch topk | `python/sglang/srt/layers/attention/nsa_backend.py`, `test/registered/kernels/test_nsa_indexer.py`, `python/sglang/srt/server_args.py` |
 | 2026-04-15 | [#22865](https://github.com/sgl-project/sglang/pull/22865) | open | [sparsity] extend framework to support non-NSA sparse algorithms | `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/attention/flashattention_backend.py`, `python/sglang/srt/model_executor/forward_batch_info.py` |
 | 2026-04-16 | [#22938](https://github.com/sgl-project/sglang/pull/22938) | open | [AMD][MI30X] Restore DeepSeek MLA MI300X paths after MLA refactor (#19122) | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/models/deepseek_v2.py` |
 | 2026-04-17 | [#22128](https://github.com/sgl-project/sglang/pull/22128) | merged | Allow piecewise CUDA graph with speculative decoding | `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`, `python/sglang/srt/model_executor/model_runner.py`, `test/registered/piecewise_cuda_graph/test_pcg_with_speculative_decoding.py` |
 | 2026-04-19 | [#22850](https://github.com/sgl-project/sglang/pull/22850) | merged | [AMD] Reduce NSA indexer kernels (weights_proj, k-cache store kernel fusion) | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2026-04-20 | [#21249](https://github.com/sgl-project/sglang/pull/21249) | merged | Support allreduce fusion with cp | `python/sglang/srt/layers/flashinfer_comm_fusion.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/communicator.py` |
-| 2026-04-20 | [#21599](https://github.com/sgl-project/sglang/pull/21599) | merged | [SPEC][1/N] feat: add adaptive speculative_num_steps for EAGLE topk=1 | `python/sglang/srt/model_executor/cuda_graph_runner.py`, `benchmark/bench_adaptive_speculative.py`, `test/registered/unit/spec/test_adaptive_spec_params.py` |
-| 2026-04-20 | [#22003](https://github.com/sgl-project/sglang/pull/22003) | merged | Support moe_dp_size = 1 for various attention_cp_size | `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/layers/dp_attention.py`, `python/sglang/srt/models/qwen3_moe.py` |
 | 2026-04-20 | [#22914](https://github.com/sgl-project/sglang/pull/22914) | merged | [Refactor] Deduplicate NSA utils.py into cp_utils.py for context parallel | `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/utils/cp_utils.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
-| 2026-04-20 | [#23195](https://github.com/sgl-project/sglang/pull/23195) | closed | [Bugfix] Guard .weight access in DeepseekV2AttentionMLA for AWQ / compressed-tensors | `test/registered/unit/models/test_deepseek_v2_attention_mla.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py` |
-| 2026-04-20 | [#23219](https://github.com/sgl-project/sglang/pull/23219) | merged | [AMD] Enable MTP for GLM-5-mxfp4 model | `python/sglang/srt/models/deepseek_nextn.py` |
 | 2026-04-20 | [#23257](https://github.com/sgl-project/sglang/pull/23257) | open | Fix double-reduce in DeepseekV2MoE with flashinfer_cutedsl + EP + DP-attention | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/moe/moe_runner/flashinfer_cutedsl.py` |
-| 2026-04-21 | [#22950](https://github.com/sgl-project/sglang/pull/22950) | closed | [fix] Parser-gated two-phase cache stripping for reasoning radix caches (fixes #22373) | `python/sglang/srt/parser/reasoning_parser.py`, `python/sglang/srt/configs/model_config.py`, `test/registered/unit/mem_cache/test_radix_cache_thinking.py` |
+| 2026-04-20 | [#22003](https://github.com/sgl-project/sglang/pull/22003) | merged | Support moe_dp_size = 1 for various attention_cp_size | `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/layers/dp_attention.py`, `python/sglang/srt/models/qwen3_moe.py` |
+| 2026-04-20 | [#21599](https://github.com/sgl-project/sglang/pull/21599) | merged | [SPEC][1/N] feat: add adaptive speculative_num_steps for EAGLE topk=1 | `python/sglang/srt/model_executor/cuda_graph_runner.py`, `benchmark/bench_adaptive_speculative.py`, `test/registered/unit/spec/test_adaptive_spec_params.py` |
+| 2026-04-20 | [#23219](https://github.com/sgl-project/sglang/pull/23219) | merged | [AMD] Enable MTP for GLM-5-mxfp4 model | `python/sglang/srt/models/deepseek_nextn.py` |
 | 2026-04-21 | [#23315](https://github.com/sgl-project/sglang/pull/23315) | merged | Opt-in strip of thinking tokens from radix cache | `test/registered/unit/mem_cache/test_unified_radix_cache_unittest.py`, `python/sglang/srt/managers/schedule_batch.py`, `python/sglang/srt/server_args.py` |
-| 2026-04-21 | [#23336](https://github.com/sgl-project/sglang/pull/23336) | merged | [SPEC V2][2/N] feat: adaptive spec support spec v2 | `python/sglang/srt/speculative/eagle_worker_v2.py`, `python/sglang/srt/speculative/eagle_info_v2.py`, `python/sglang/srt/managers/scheduler_output_processor_mixin.py` |
-| 2026-04-21 | [#23351](https://github.com/sgl-project/sglang/pull/23351) | merged | Support piecewise CUDA graph with NSA | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/layernorm.py`, `python/sglang/srt/layers/radix_attention.py` |
+| 2026-04-21 | [#22950](https://github.com/sgl-project/sglang/pull/22950) | closed | [fix] Parser-gated two-phase cache stripping for reasoning radix caches (fixes #22373) | `python/sglang/srt/parser/reasoning_parser.py`, `python/sglang/srt/configs/model_config.py`, `test/registered/unit/mem_cache/test_radix_cache_thinking.py` |
 | 2026-04-24 | [#22774](https://github.com/sgl-project/sglang/pull/22774) | merged | [MUSA][16/N] Add MUSA backend support for layers and DeepSeek models (V2/V3/R1) | `python/sglang/srt/layers/layernorm.py`, `python/sglang/srt/layers/moe/topk.py`, `python/sglang/srt/layers/deep_gemm_wrapper/compile_utils.py` |
 | 2026-04-24 | [#23241](https://github.com/sgl-project/sglang/pull/23241) | merged | [HiCache & HybridModel] 3FS backend support DSA & mamba model | `python/sglang/srt/mem_cache/storage/hf3fs/storage_hf3fs.py`, `python/sglang/srt/mem_cache/storage/hf3fs/mini_3fs_metadata_server.py`, `python/sglang/srt/mem_cache/hi_mamba_radix_cache.py` |
 | 2026-04-28 | [#23268](https://github.com/sgl-project/sglang/pull/23268) | merged | 【NPU】【bugfix】accuracy fix when enable both nsa cp and prefixcache | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` |
 | 2026-04-30 | [#19609](https://github.com/sgl-project/sglang/pull/19609) | closed | TP indexer weight in NSA attention | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
+| 2026-05-02 | [#23195](https://github.com/sgl-project/sglang/pull/23195) | closed | [Bugfix] Guard .weight access in DeepseekV2AttentionMLA for AWQ / compressed-tensors | `test/registered/unit/models/test_deepseek_v2_attention_mla.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py` |
+| 2026-05-05 | [#24356](https://github.com/sgl-project/sglang/pull/24356) | merged | [Intel GPU] Enable DeepSeek V3.2 inference on XPU | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
+| 2026-05-05 | [#24392](https://github.com/sgl-project/sglang/pull/24392) | merged | add indexer-topk capture (V3.2 NSA + infra) | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` |
+| 2026-05-08 | [#23336](https://github.com/sgl-project/sglang/pull/23336) | merged | [SPEC V2][2/N] feat: adaptive spec support spec v2 | `python/sglang/srt/speculative/eagle_worker_v2.py`, `test/registered/spec/eagle/test_adaptive_speculative.py`, `python/sglang/srt/speculative/eagle_worker.py` |
+| 2026-05-09 | [#23965](https://github.com/sgl-project/sglang/pull/23965) | merged | Enable PDL for various kernels in DSV32/GLM5 | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2026-05-11 | [#23856](https://github.com/sgl-project/sglang/pull/23856) | merged | Use Torch `torch.mm` for Deepseek V3.2 Indexer GEMM | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
-| 2026-05-13 | [#23562](https://github.com/sgl-project/sglang/pull/23562) | merged | [AMD] Enable preshuffle paged MQA and page_size=64 for NSA indexer | `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/server_args.py` |
-| 2026-05-14 | [#25205](https://github.com/sgl-project/sglang/pull/25205) | merged | [AMD]  Auto-fallback NSA indexer to page_size=1 when aiter preshuffle gluon kernel is unavailable (Deepseek v3.2) | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` |
+| 2026-05-13 | [#23562](https://github.com/sgl-project/sglang/pull/23562) | merged | [AMD] Enable preshuffle paged MQA and page_size=64 for NSA indexer | `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
+| 2026-05-13 | [#24125](https://github.com/sgl-project/sglang/pull/24125) | merged | [AMD] Skip redundant CatArrayBatchedCopy in GLM-5 NSA TileLang decode | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/layers/attention/nsa_backend.py` |
+| 2026-05-14 | [#25205](https://github.com/sgl-project/sglang/pull/25205) | merged | [AMD] Auto-fallback NSA indexer to page_size=1 when aiter preshuffle gluon kernel is unavailable (Deepseek v3.2) | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` |
+| 2026-05-15 | [#19211](https://github.com/sgl-project/sglang/pull/19211) | closed | [Refactor][DeepSeek-V3.2] Extract V3.2/NSA logic into `DeepseekV32Mixin` | `python/sglang/srt/models/deepseek_common/v32_mixin.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_nextn.py` |
 | 2026-05-15 | [#25233](https://github.com/sgl-project/sglang/pull/25233) | merged | [Fix] DeepSeek-V3.2: build structural tag locally to encode both wrapper and invoke layers | `python/sglang/srt/function_call/deepseekv32_detector.py` |
+| 2026-05-18 | [#24933](https://github.com/sgl-project/sglang/pull/24933) | merged | Amd/deepseek v4 rebase main 0509 | `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py`, `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py`, `python/sglang/srt/layers/attention/dsv4/compress_hip.py` |
+| 2026-05-18 | [#25454](https://github.com/sgl-project/sglang/pull/25454) | merged | fix(eagle3): drop +1 offset on aux layer ids when first id != 1 | `python/sglang/srt/models/deepseek_v2.py` |
+| 2026-05-19 | [#24640](https://github.com/sgl-project/sglang/pull/24640) | merged | Support spec v2 for FlashMLA speculative decoding | `python/sglang/srt/layers/attention/flashmla_backend.py`, `python/sglang/srt/models/deepseek_v2.py`, `test/registered/mla/test_flashmla.py` |
+| 2026-05-19 | [#25299](https://github.com/sgl-project/sglang/pull/25299) | merged | [NSA] Avoid repeated NSA MQA logits memory queries | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
+| 2026-05-20 | [#25821](https://github.com/sgl-project/sglang/pull/25821) | merged | [Refactor] Rename NSA → DSA: user-facing aliases, file/class/import rename | `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py`, `python/sglang/srt/layers/attention/dsa/tilelang_kernel.py`, `python/sglang/srt/layers/attention/nsa_backend.py` |
+| 2026-05-20 | [#24251](https://github.com/sgl-project/sglang/pull/24251) | merged | [RL][TITO] Preserve whitespace in reasoning parser outputs | `test/registered/unit/entrypoints/openai/test_serving_chat.py`, `test/registered/unit/parser/test_reasoning_parser.py`, `python/sglang/srt/parser/reasoning_parser.py` |
+| 2026-05-20 | [#25460](https://github.com/sgl-project/sglang/pull/25460) | merged | [perf] prepare_prefill_qkv hook + fp8 quantize jit kernel | `python/sglang/srt/layers/attention/tokenspeed_mla_backend.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py`, `python/sglang/srt/layers/attention/trtllm_mla_backend.py` |
+| 2026-05-21 | [#25884](https://github.com/sgl-project/sglang/pull/25884) | merged | [Refactor] major JIT kernel clean up for dsv4 | `python/sglang/srt/layers/attention/dsv4/compressor.py`, `python/sglang/srt/layers/attention/dsv4/metadata.py`, `python/sglang/srt/layers/moe/moe_runner/deep_gemm.py` |
+| 2026-05-21 | [#25974](https://github.com/sgl-project/sglang/pull/25974) | merged | [Fix]: Restrict Kimi-K2.5 shared-experts fusion to Quark MXFP4 checkpoints | `python/sglang/srt/models/deepseek_v2.py` |
+| 2026-05-21 | [#25983](https://github.com/sgl-project/sglang/pull/25983) | merged | feat(model_runner): remove pool/backend refs from ForwardBatch via ForwardContext | `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/model_executor/cuda_graph_runner.py`, `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` |
+| 2026-05-22 | [#25189](https://github.com/sgl-project/sglang/pull/25189) | merged | [perf] DeepSeekV3: drop redundant FP32 upcasts in trtllm MoE paths | `python/sglang/srt/layers/moe/moe_runner/flashinfer_trtllm.py`, `python/sglang/srt/models/deepseek_v2.py` |
+| 2026-05-22 | [#23351](https://github.com/sgl-project/sglang/pull/23351) | merged | Support piecewise CUDA graph with NSA | `python/sglang/srt/models/deepseek_v2.py` |
+| 2026-05-23 | [#25843](https://github.com/sgl-project/sglang/pull/25843) | merged | Route concat MLA to JIT and remove unused downcast | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py`, `python/sglang/srt/models/sarvam_moe.py`, `python/sglang/srt/layers/attention/utils.py` |
+| 2026-05-23 | [#23292](https://github.com/sgl-project/sglang/pull/23292) | merged | [CP] 1/N: Support MLA Prefill Context Parallel | `python/sglang/srt/layers/attention/flashattention_backend.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/utils/cp_utils.py` |
+| 2026-05-23 | [#25898](https://github.com/sgl-project/sglang/pull/25898) | merged | [AMD] Dsv4/pr1 fix run time issue | `python/sglang/srt/layers/fused_qk_norm_rope_store.py`, `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/layers/attention/dsv4/compress_hip.py` |
+| 2026-05-25 | [#22851](https://github.com/sgl-project/sglang/pull/22851) | merged | [FlashInfer v0.6.10] [RL] [DSv32] [GLM-5] Add `--dsa-topk-backend` and integrate FlashInfer and pytorch topk | `python/sglang/srt/layers/attention/dsa/dsa_topk_backend.py`, `python/sglang/srt/layers/attention/dsa_backend.py`, `test/registered/kernels/test_dsa_indexer.py` |
+| 2026-05-26 | [#26208](https://github.com/sgl-project/sglang/pull/26208) | merged | [AMD] Dsv4/pr2 compressor opt | `python/sglang/srt/layers/attention/nsa/triton_decode/triton_mla_kernels_decode_fused.py`, `python/sglang/srt/layers/attention/nsa/triton_decode/triton_mla_kernels_decode_dsv4.py`, `python/sglang/srt/layers/attention/dsv4/fused_compress_triton.py` |
+| 2026-05-27 | [#22473](https://github.com/sgl-project/sglang/pull/22473) | closed | [DSA] Add dense MLA decode fallback for short sequences | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/server_args.py` |
+| 2026-05-27 | [#23269](https://github.com/sgl-project/sglang/pull/23269) | merged | Support batch size > 1 when enable CP | `python/sglang/srt/layers/utils/cp_utils.py`, `python/sglang/srt/layers/attention/dsa/dsa_indexer.py`, `python/sglang/srt/model_executor/forward_batch_info.py` |
+| 2026-05-28 | [#24737](https://github.com/sgl-project/sglang/pull/24737) | merged | Support Flashinfer Cute-DSL MLA attention | `python/sglang/srt/layers/attention/trtllm_mla_backend.py`, `python/sglang/srt/layers/attention/attention_registry.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` |
+| 2026-05-28 | [#26610](https://github.com/sgl-project/sglang/pull/26610) | merged | test/registered: cleanup pure model e2e tests (moves, splits, dedup, kit) | `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`, `python/sglang/test/kits/unified_radix_cache_kit.py`, `test/registered/models_e2e/test_step3p5_flash_chain_mtp.py` |
+| 2026-05-29 | [#25755](https://github.com/sgl-project/sglang/pull/25755) | merged | [Fix][NPU] Preserve existing packed_modules_mapping when merging model-level fused module mappings | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/quantization/base_config.py`, `python/sglang/srt/layers/quantization/modelslim/modelslim.py` |
+| 2026-05-29 | [#25676](https://github.com/sgl-project/sglang/pull/25676) | merged | Upgrade xgrammar to 0.2.1 | `test/registered/unit/entrypoints/openai/test_serving_chat.py`, `python/sglang/srt/function_call/deepseekv32_detector.py`, `test/registered/unit/function_call/test_function_call_parser.py` |
+| 2026-05-29 | [#25463](https://github.com/sgl-project/sglang/pull/25463) | merged | [ROCm] Eliminate redundant contiguous copy in MLA attention on ROCm MXFP4 | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` |
+| 2026-05-29 | [#26673](https://github.com/sgl-project/sglang/pull/26673) | merged | [refactor] remove unused op_mlp | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/models/glm4_moe_lite.py` |
+| 2026-05-29 | [#26626](https://github.com/sgl-project/sglang/pull/26626) | merged | [perf] Fuse NVFP4 gate_up_gemm + swiglu + output FP4 quant | `python/sglang/srt/layers/quantization/nvfp4_gemm_swiglu_nvfp4_quant.py`, `python/sglang/srt/layers/quantization/modelopt_quant.py`, `python/sglang/srt/models/deepseek_v2.py` |
+| 2026-06-02 | [#25813](https://github.com/sgl-project/sglang/pull/25813) | merged | docs(cookbook): port popular model usage guides into cookbook pages | `docs_new/docs/basic_usage/deepseek_v32.mdx`, `docs_new/docs/basic_usage/deepseek_v3.mdx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` |
+| 2026-06-02 | [#26970](https://github.com/sgl-project/sglang/pull/26970) | merged | [perf] Replicate embed_tokens to drop the post-embed all-reduce | `python/sglang/srt/layers/vocab_parallel_embedding.py`, `python/sglang/srt/models/deepseek_nextn.py`, `python/sglang/srt/models/deepseek_v2.py` |
+| 2026-06-03 | [#27001](https://github.com/sgl-project/sglang/pull/27001) | merged | [AMD] [CI] Remove hardcoded model/cache paths from MI35x nightly tests | `test/registered/amd/perf/mi35x/test_deepseek_r1_mxfp4_perf_mi35x.py`, `test/registered/amd/perf/mi35x/test_deepseek_r1_mxfp4_ar_fusion_perf_mi35x.py`, `test/registered/amd/perf/mi35x/test_deepseek_r1_mxfp4_kv_fp8_perf_mi35x.py` |
+| 2026-06-05 | [#27329](https://github.com/sgl-project/sglang/pull/27329) | merged | [LoRA] Experimental fast LoRA path with `experimental_sgl_trtllm` MoE backend for FP8 and NVFP4 models | `python/sglang/srt/layers/moe/topk.py`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/moe_align_block_size.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` |
+| 2026-06-05 | [#27150](https://github.com/sgl-project/sglang/pull/27150) | merged | Support Waterfill with dynamic EPLB | `python/sglang/srt/layers/moe/topk.py`, `python/sglang/srt/models/deepseek_v2.py`, `test/registered/unit/eplb/test_deepep_waterfill_eplb.py` |
+| 2026-06-06 | [#27114](https://github.com/sgl-project/sglang/pull/27114) | merged | [Bugfix] Restore overridden HF config fields and support index_skip_topk_offset for DSA topk sharing | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/models/deepseek_nextn.py` |
+| 2026-06-08 | [#27289](https://github.com/sgl-project/sglang/pull/27289) | merged | [ROCm] dsv4: remove the redundant fp8 scale transpose-copy on decode | `python/sglang/srt/layers/quantization/fp8_utils.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py`, `python/sglang/srt/layers/communicator.py` |
+| 2026-06-10 | [#23906](https://github.com/sgl-project/sglang/pull/23906) | merged | [Refactor] Cuda Graph Runner/Backend Refactor | `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py` |
+| 2026-06-10 | [#27510](https://github.com/sgl-project/sglang/pull/27510) | merged | [deepseek] Enable DP attention + TBO + shared experts fusion | `python/sglang/srt/models/deepseek_v2.py`, `test/registered/ep/test_tbo_shared_experts_fusion.py`, `python/sglang/srt/batch_overlap/two_batch_overlap.py` |
+| 2026-06-11 | [#16148](https://github.com/sgl-project/sglang/pull/16148) | closed | [Fix] DSV3.2 W4AFP8 MTP use FP8 draft model | `python/sglang/srt/layers/moe/token_dispatcher/deepep.py`, `python/sglang/srt/layers/quantization/w4afp8.py` |
+| 2026-06-11 | [#27964](https://github.com/sgl-project/sglang/pull/27964) | merged | [Spec] Retire Spec V1 | `test/registered/ep/test_deepep_large.py`, `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_best_practice.mdx`, `python/sglang/srt/arg_groups/speculative_hook.py` |
+| 2026-06-12 | [#18542](https://github.com/sgl-project/sglang/pull/18542) | closed | fix: fixed aux hidden state index out of range when using eagle3 with nsa cp | `python/sglang/srt/models/deepseek_v2.py` |
+| 2026-06-12 | [#27956](https://github.com/sgl-project/sglang/pull/27956) | merged | Use the correct wrapper for `fp4_quantize` | `python/sglang/srt/models/deepseek_v2.py` |
+| 2026-06-13 | [#27720](https://github.com/sgl-project/sglang/pull/27720) | merged | [DeepSeek V3] Defer moe finalize and fused it with main stream add | `python/sglang/srt/layers/moe/moe_runner/flashinfer_trtllm.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` |
+| 2026-06-13 | [#28129](https://github.com/sgl-project/sglang/pull/28129) | merged | [Spec] Remove deprecated EAGLE v1 DRAFT_EXTEND forward mode | `python/sglang/srt/layers/attention/aiter_backend.py`, `python/sglang/srt/model_executor/forward_batch_info.py`, `python/sglang/srt/layers/attention/triton_backend.py` |
+| 2026-06-15 | [#28118](https://github.com/sgl-project/sglang/pull/28118) | merged | 【bugfix】The NPU's forward_dsa_prepare_npu also needs special handling for is_nextn | `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` |
+| 2026-06-16 | [#28035](https://github.com/sgl-project/sglang/pull/28035) | merged | fix(openai): validate assistant tool call arguments before chat template | `test/registered/unit/entrypoints/openai/test_serving_chat.py`, `python/sglang/srt/entrypoints/openai/serving_chat.py`, `python/sglang/srt/entrypoints/openai/encoding_dsv4.py` |
+| 2026-06-16 | [#24515](https://github.com/sgl-project/sglang/pull/24515) | merged | LPLB: linear-programming load balancer for MoE expert parallelism | `python/sglang/srt/layers/moe/topk.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/moe/hash_topk.py` |
+| 2026-06-17 | [#28436](https://github.com/sgl-project/sglang/pull/28436) | merged | [NPU] Use use_dsa to dispatch Ascend DSA attention | `python/sglang/srt/models/deepseek_common/attention_backend_handler.py` |
+| 2026-06-17 | [#27798](https://github.com/sgl-project/sglang/pull/27798) | merged | [AMD] Add transpose_scale arg for o_proj to fix GLM accuracy issue | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` |
+| 2026-06-17 | [#28343](https://github.com/sgl-project/sglang/pull/28343) | merged | [Kimi K2.5] Fix eagle3 aux capture for tp>1 when AR fusion is enabled | `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/models/deepseek_v2.py` |
+| 2026-06-18 | [#20534](https://github.com/sgl-project/sglang/pull/20534) | closed | Transfer FP8 K/K_scale for CP indexer prefill gather | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
+| 2026-06-18 | [#20360](https://github.com/sgl-project/sglang/pull/20360) | closed | [AMD][Bug fix] Fix NSA context parallelism (round-robin-split) producing garbage output | `python/sglang/srt/layers/communicator_nsa_cp.py` |
+| 2026-06-18 | [#20531](https://github.com/sgl-project/sglang/pull/20531) | closed | [bugfix] Fix NSA indexer ragged gather batch-view mismatch in CP round-robin split | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
+| 2026-06-18 | [#20809](https://github.com/sgl-project/sglang/pull/20809) | closed | [Bugfix] Add DeepseekV32ForCausalLM to MTP draft model mapping | `python/sglang/srt/configs/model_config.py` |
+| 2026-06-18 | [#20880](https://github.com/sgl-project/sglang/pull/20880) | closed | Reject HiCache L3 storage backend for NSA models at init time | `python/sglang/srt/mem_cache/hiradix_cache.py` |
+| 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | merged | Add get_parallel(): a structured accessor for parallel-topology state | `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py` |
+| 2026-06-18 | [#25144](https://github.com/sgl-project/sglang/pull/25144) | merged | [NPU] Add Ascend NPU support for DeepSeek-V4 | `python/sglang/srt/layers/deepseek_v4_rope.py`, `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/layers/mhc.py` |
+| 2026-06-18 | [#28559](https://github.com/sgl-project/sglang/pull/28559) | merged | fix: speculative draft worker clobbering target attention backend | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/attention/base_attn_backend.py` |
+| 2026-06-18 | [#18094](https://github.com/sgl-project/sglang/pull/18094) | closed | support deepseekv3.2-piecewise-cuda-graph | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/radix_attention.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` |
+| 2026-06-19 | [#28532](https://github.com/sgl-project/sglang/pull/28532) | merged | Fix IndexCache PP topk handoff | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/model_executor/model_runner.py` |
+| 2026-06-19 | [#28536](https://github.com/sgl-project/sglang/pull/28536) | merged | ci: run GB300 nightly suite in the standard Nvidia nightly workflow | `test/registered/gb300/test_deepseek_v32_nvfp4.py`, `test/registered/gb300/test_deepseek_v32.py`, `test/registered/gb300/test_qwen35_fp8.py` |
+| 2026-06-21 | [#28785](https://github.com/sgl-project/sglang/pull/28785) | merged | Pass DSA topk through PP warmup proxy buffers | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/model_executor/runner/base_runner.py`, `python/sglang/srt/model_executor/runner/eager_runner.py` |
+| 2026-06-22 | [#28855](https://github.com/sgl-project/sglang/pull/28855) | merged | [Spec] Redo: split init_backends; account draft weights in --mem-fraction-static | `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py`, `python/sglang/srt/speculative/eagle_worker_v2.py` |
+| 2026-06-23 | [#28938](https://github.com/sgl-project/sglang/pull/28938) | merged | [AMD] Improve performance of dsv4 in high concurrency | `python/sglang/srt/layers/deepseek_v4_rope.py`, `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/models/deepseek_v2.py` |
+| 2026-06-24 | [#27833](https://github.com/sgl-project/sglang/pull/27833) | merged | [AMD] Enable BCG on ROCm + route aiter prefill via MHA during PCG/BCG capture for Kimi-2.5 | `python/sglang/srt/models/deepseek_common/attention_backend_handler.py`, `test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py` |
+| 2026-06-24 | [#27053](https://github.com/sgl-project/sglang/pull/27053) | merged | [BCG][GLM5] perf: BCG support and prefill enhancements | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/layers/attention/dsa/dsa_indexer.py`, `python/sglang/srt/models/deepseek_v2.py` |
+| 2026-06-25 | [#29042](https://github.com/sgl-project/sglang/pull/29042) | merged | [NPU] Fix the DeepSeek-V2-Coder model accuracy issue | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/llada2.py`, `python/sglang/srt/hardware_backend/npu/moe/topk.py` |
+| 2026-06-25 | [#14194](https://github.com/sgl-project/sglang/pull/14194) | merged | [feature] implement dcp for deepseek_v2 | `python/sglang/srt/layers/utils/dcp_utils.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/layers/attention/flashinfer_mla_backend.py` |
+| 2026-06-26 | [#29142](https://github.com/sgl-project/sglang/pull/29142) | merged | [DeepSeek V3] Run routed experts on main stream in dual-stream MoE | `python/sglang/srt/models/deepseek_v2.py` |
+| 2026-06-27 | [#22268](https://github.com/sgl-project/sglang/pull/22268) | closed | [Bugfix] Fix prepare_qkv_latent bypassing LoRA adapters in DeepSeek V2/V3 | `python/sglang/srt/models/deepseek_v2.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -406,7 +383,7 @@
 - 状态/时间: merged / 2024-01-08
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+2/-1，可读 patch 8 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Add flashinfer && Oultines」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `README.md`, `3rdparty/flashinfer`；未提供可用技术摘要。
+- 动机: 标题「Add flashinfer && Oultines」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `README.md`, `3rdparty/flashinfer`；技术摘要: 覆盖「Add flashinfer && Oultines」；主要实现面是 `README.md`, `3rdparty/flashinfer`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `README.md` modified +1/-1 (2 lines); hunks: -164,4 +164,4 @@ python -m sglang.launch_server --model-path meta-llama/Llama...；`3rdparty/flashinfer` added +1/-0 (1 lines); hunks: -0,0 +1。
 - 代码 diff 细节:
   - `README.md` modified +1/-1 (2 lines); hunks: -164,4 +164,4 @@ python -m sglang.launch_server --model-path meta-llama/Llama...
@@ -433,7 +410,7 @@ diff -- 3rdparty/flashinfer
 - 状态/时间: open / 2025-10-03
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 52 个文件，+18474/-70，可读 patch 16143 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Feature] Support Sparse Attention and KV cache scheduling between CPU and GPU for GQA/DSA.」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/attention/flashattention_backend.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/sparse_attention/kernels/attention/flash_fwd_sm100.py`；技术摘要: 覆盖「[Feature] Support Sparse Attention and KV cache scheduling between CPU and GPU for GQA/DSA.」；主要实现面是 `python/sglang/srt/layers/attention/flashattention_backend.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/sparse_attention/kernels/attention/flash_fwd_sm100.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[Feature] Support Sparse Attention and KV cache scheduling between CPU and GPU for GQA/DSA.」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/flashattention_backend.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/sparse_attention/kernels/attention/flash_fwd_sm100.py`；技术摘要: 覆盖「[Feature] Support Sparse Attention and KV cache scheduling between CPU and GPU for GQA/DSA.」；主要实现面是 `python/sglang/srt/layers/attention/flashattention_backend.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/sparse_attention/kernels/attention/flash_fwd_sm100.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/flashattention_backend.py` modified +148/-70 (218 lines); hunks: -22,6 +22,14; -340,6 +348,32 @@ def __init__(; symbols: FlashAttentionMetadata, __init__, init_forward_metadata，涉及 `FlashAttentionMetadata, __init__, init_forward_metadata`；`python/sglang/srt/model_executor/model_runner.py` modified +2/-0 (2 lines); hunks: -533,6 +533,8 @@ def initialize(self, min_per_gpu_memory: float):; symbols: initialize，涉及 `initialize`；`python/sglang/srt/sparse_attention/kernels/attention/flash_fwd_sm100.py` added +2560/-0 (2560 lines)；`python/sglang/srt/sparse_attention/kernels/attention/flash_bwd.py` added +1547/-0 (1547 lines); hunks: -0,0 +1,1547; symbols: FlashAttentionBackwardSm80, __init__, can_implement, _check_type，涉及 `FlashAttentionBackwardSm80, __init__, can_implement`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/flashattention_backend.py` modified +148/-70 (218 lines); hunks: -22,6 +22,14; -340,6 +348,32 @@ def __init__(; symbols: FlashAttentionMetadata, __init__, init_forward_metadata
@@ -474,7 +451,7 @@ diff -- python/sglang/srt/sparse_attention/kernels/attention/flash_bwd.py
 - 状态/时间: merged / 2025-10-05
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `examples/chat_template/tool_chat_template_deepseekv32.jinja`；关联提交 `85c1f7937781`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+100/-0，可读 patch 101 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Add DeepSeek-V3.2 Tool Call Template」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `examples/chat_template/tool_chat_template_deepseekv32.jinja`；未提供可用技术摘要。
+- 动机: 标题「Add DeepSeek-V3.2 Tool Call Template」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `examples/chat_template/tool_chat_template_deepseekv32.jinja`；技术摘要: 覆盖「Add DeepSeek-V3.2 Tool Call Template」；主要实现面是 `examples/chat_template/tool_chat_template_deepseekv32.jinja`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `examples/chat_template/tool_chat_template_deepseekv32.jinja` added +100/-0 (100 lines); hunks: -0,0 +1,100。
 - 代码 diff 细节:
   - `examples/chat_template/tool_chat_template_deepseekv32.jinja` added +100/-0 (100 lines); hunks: -0,0 +1,100
@@ -680,7 +657,7 @@ diff -- python/sglang/srt/server_args.py
 - 状态/时间: merged / 2025-10-13
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+137/-4，可读 patch 187 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[CI] Add Basic Test for DeepSeek V3.2」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `test/srt/test_deepseek_v32_basic.py`, `.github/workflows/pr-test.yml`, `scripts/ci/ci_install_dependency.sh`；未提供可用技术摘要。
+- 动机: 标题「[CI] Add Basic Test for DeepSeek V3.2」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `test/srt/test_deepseek_v32_basic.py`, `.github/workflows/pr-test.yml`, `scripts/ci/ci_install_dependency.sh`；技术摘要: 覆盖「[CI] Add Basic Test for DeepSeek V3.2」；主要实现面是 `test/srt/test_deepseek_v32_basic.py`, `.github/workflows/pr-test.yml`, `scripts/ci/ci_install_dependency.sh`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/srt/test_deepseek_v32_basic.py` added +78/-0 (78 lines); hunks: -0,0 +1,78; symbols: TestDeepseekV3Basic, setUpClass, tearDownClass, test_a_gsm8k，涉及 `TestDeepseekV3Basic, setUpClass, tearDownClass`；`.github/workflows/pr-test.yml` modified +30/-3 (33 lines); hunks: -664,6 +664,33 @@ jobs:; -674,19 +701,19 @@ jobs:；`scripts/ci/ci_install_dependency.sh` modified +26/-1 (27 lines); hunks: -3,6 +3,7; -68,7 +69,31 @@ if [ "$IS_BLACKWELL" != "1" ]; then；`test/srt/run_suite.py` modified +3/-0 (3 lines); hunks: -169,6 +169,9 @@ class TestFile:; symbols: TestFile，涉及 `TestFile`。
 - 代码 diff 细节:
   - `test/srt/test_deepseek_v32_basic.py` added +78/-0 (78 lines); hunks: -0,0 +1,78; symbols: TestDeepseekV3Basic, setUpClass, tearDownClass, test_a_gsm8k
@@ -722,7 +699,7 @@ diff -- scripts/ci/ci_install_dependency.sh
 - 状态/时间: merged / 2025-10-14
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；关联提交 `384733639a91`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-0，可读 patch 8 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[DSv32] Use torch.compile for _get_logits_head_gate」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「[DSv32] Use torch.compile for _get_logits_head_gate」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[DSv32] Use torch.compile for _get_logits_head_gate」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「[DSv32] Use torch.compile for _get_logits_head_gate」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +1/-0 (1 lines); hunks: -205,6 +205,7 @@ def _forward_fake(; symbols: _forward_fake, _get_logits_head_gate，涉及 `_forward_fake, _get_logits_head_gate`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +1/-0 (1 lines); hunks: -205,6 +205,7 @@ def _forward_fake(; symbols: _forward_fake, _get_logits_head_gate
@@ -744,7 +721,7 @@ diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
 - 状态/时间: closed / 2025-10-15
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+515/-534，可读 patch 1349 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Spec Decoding] Support MTP for dsv3.2」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/configs/model_config.py`；技术摘要: 覆盖「[Spec Decoding] Support MTP for dsv3.2」；主要实现面是 `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/configs/model_config.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[Spec Decoding] Support MTP for dsv3.2」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/configs/model_config.py`；技术摘要: 覆盖「[Spec Decoding] Support MTP for dsv3.2」；主要实现面是 `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/configs/model_config.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/nsa_backend.py` modified +396/-65 (461 lines); hunks: -30,6 +30,10; -149,7 +153,14 @@ def compute_cu_seqlens(seqlens: torch.Tensor) -> torch.Tensor:; symbols: compute_cu_seqlens, NativeSparseAttnBackend, __init__，涉及 `compute_cu_seqlens, NativeSparseAttnBackend, __init__`；`python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +82/-8 (90 lines); hunks: -17,6 +17,8; -27,6 +29,8; symbols: _get_topk_paged, _get_verify_topk_paged, _get_topk_ragged，涉及 `_get_topk_paged, _get_verify_topk_paged, _get_topk_ragged`；`python/sglang/srt/configs/model_config.py` modified +5/-1 (6 lines); hunks: -53,7 +53,11 @@ def is_deepseek_nsa(config: PretrainedConfig) -> bool:; symbols: is_deepseek_nsa，涉及 `is_deepseek_nsa`；`.github/workflows/pr-test-amd.yml` removed +0/-352 (352 lines); hunks: -1,352 +0,0。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa_backend.py` modified +396/-65 (461 lines); hunks: -30,6 +30,10; -149,7 +153,14 @@ def compute_cu_seqlens(seqlens: torch.Tensor) -> torch.Tensor:; symbols: compute_cu_seqlens, NativeSparseAttnBackend, __init__
@@ -850,7 +827,7 @@ diff -- python/sglang/srt/models/deepseek_v2.py
 - 状态/时间: closed / 2025-10-17
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+180/-25，可读 patch 309 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Draft] Support MTP for DeepSeek-V3.2」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/configs/model_config.py`；未提供可用技术摘要。
+- 动机: 标题「[Draft] Support MTP for DeepSeek-V3.2」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/configs/model_config.py`；技术摘要: 覆盖「[Draft] Support MTP for DeepSeek-V3.2」；主要实现面是 `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/configs/model_config.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/nsa_backend.py` modified +146/-21 (167 lines); hunks: -149,7 +149,14 @@ def compute_cu_seqlens(seqlens: torch.Tensor) -> torch.Tensor:; -186,6 +193,14 @@ def __init__(self, model_runner: ModelRunner):; symbols: compute_cu_seqlens, NativeSparseAttnBackend, __init__，涉及 `compute_cu_seqlens, NativeSparseAttnBackend, __init__`；`python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +11/-3 (14 lines); hunks: -373,6 +373,9 @@ def _get_topk_ragged(; -385,7 +388,9 @@ def _get_topk_ragged(; symbols: _get_topk_ragged, _forward，涉及 `_get_topk_ragged, _forward`；`python/sglang/srt/configs/model_config.py` modified +5/-1 (6 lines); hunks: -53,7 +53,11 @@ def is_deepseek_nsa(config: PretrainedConfig) -> bool:; symbols: is_deepseek_nsa，涉及 `is_deepseek_nsa`；`python/sglang/srt/speculative/eagle_worker.py` modified +18/-0 (18 lines); hunks: -225,6 +225,7 @@ def _create_decode_backend(self):; -247,6 +248,7 @@ def _create_draft_extend_backend(self):; symbols: _create_decode_backend, _create_draft_extend_backend, _create_flashmla_decode_backend, _create_nsa_decode_backend，涉及 `_create_decode_backend, _create_draft_extend_backend, _create_flashmla_decode_backend`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa_backend.py` modified +146/-21 (167 lines); hunks: -149,7 +149,14 @@ def compute_cu_seqlens(seqlens: torch.Tensor) -> torch.Tensor:; -186,6 +193,14 @@ def __init__(self, model_runner: ModelRunner):; symbols: compute_cu_seqlens, NativeSparseAttnBackend, __init__
@@ -890,7 +867,7 @@ diff -- python/sglang/srt/configs/model_config.py
 - 状态/时间: merged / 2025-10-17
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`；关联提交 `20b8d2306c3d`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+3/-66，可读 patch 122 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Cleaning indexer for DeepSeek V3.2」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`；技术摘要: 覆盖「Cleaning indexer for DeepSeek V3.2」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「Cleaning indexer for DeepSeek V3.2」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`；技术摘要: 覆盖「Cleaning indexer for DeepSeek V3.2」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +3/-65 (68 lines); hunks: -17,7 +17,7; -168,43 +168,6 @@ def __init__(; symbols: __init__, _forward_fake, _get_logits_head_gate, _get_topk_ragged，涉及 `__init__, _forward_fake, _get_logits_head_gate`；`python/sglang/srt/layers/attention/nsa/utils.py` modified +0/-1 (1 lines); hunks: -1,7 +1,6。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +3/-65 (68 lines); hunks: -17,7 +17,7; -168,43 +168,6 @@ def __init__(; symbols: __init__, _forward_fake, _get_logits_head_gate, _get_topk_ragged
@@ -921,7 +898,7 @@ diff -- python/sglang/srt/layers/attention/nsa/utils.py
 - 状态/时间: merged / 2025-10-19
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py`；关联提交 `efa473348bc9`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+445/-79，可读 patch 814 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Spec Decoding] Support MTP for dsv3.2」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「[Spec Decoding] Support MTP for dsv3.2」；主要实现面是 `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[Spec Decoding] Support MTP for dsv3.2」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「[Spec Decoding] Support MTP for dsv3.2」；主要实现面是 `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/nsa_backend.py` modified +385/-68 (453 lines); hunks: -29,6 +29,7; -148,7 +149,14 @@ def compute_cu_seqlens(seqlens: torch.Tensor) -> torch.Tensor:; symbols: compute_cu_seqlens, NativeSparseAttnBackend, __init__，涉及 `compute_cu_seqlens, NativeSparseAttnBackend, __init__`；`python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +23/-10 (33 lines); hunks: -266,7 +266,10 @@ def _get_topk_paged(; -317,8 +320,9 @@ def _get_topk_ragged(; symbols: _get_topk_paged, _get_topk_ragged, forward_indexer, forward_cuda，涉及 `_get_topk_paged, _get_topk_ragged, forward_indexer`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa_backend.py` modified +385/-68 (453 lines); hunks: -29,6 +29,7; -148,7 +149,14 @@ def compute_cu_seqlens(seqlens: torch.Tensor) -> torch.Tensor:; symbols: compute_cu_seqlens, NativeSparseAttnBackend, __init__
@@ -957,7 +934,7 @@ diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
 - 状态/时间: merged / 2025-10-20
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+112/-3，可读 patch 151 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[CI] Add CI test for DeepSeek V3.2 MTP」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `test/srt/test_deepseek_v32_mtp.py`, `test/srt/test_deepseek_v32_basic.py`, `python/sglang/srt/server_args.py`；未提供可用技术摘要。
+- 动机: 标题「[CI] Add CI test for DeepSeek V3.2 MTP」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `test/srt/test_deepseek_v32_mtp.py`, `test/srt/test_deepseek_v32_basic.py`, `python/sglang/srt/server_args.py`；技术摘要: 覆盖「[CI] Add CI test for DeepSeek V3.2 MTP」；主要实现面是 `test/srt/test_deepseek_v32_mtp.py`, `test/srt/test_deepseek_v32_basic.py`, `python/sglang/srt/server_args.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/srt/test_deepseek_v32_mtp.py` added +105/-0 (105 lines); hunks: -0,0 +1,105; symbols: TestDeepseekV32MTP, setUpClass, tearDownClass, test_a_gsm8k，涉及 `TestDeepseekV32MTP, setUpClass, tearDownClass`；`test/srt/test_deepseek_v32_basic.py` modified +3/-3 (6 lines); hunks: -16,7 +16,7; -57,7 +57,7 @@ def test_a_gsm8k(; symbols: TestDeepseekV3Basic, TestDeepseekV32Basic, setUpClass, test_a_gsm8k，涉及 `TestDeepseekV3Basic, TestDeepseekV32Basic, setUpClass`；`python/sglang/srt/server_args.py` modified +3/-0 (3 lines); hunks: -1201,6 +1201,9 @@ def _handle_speculative_decoding(self):; symbols: _handle_speculative_decoding，涉及 `_handle_speculative_decoding`；`test/srt/run_suite.py` modified +1/-0 (1 lines); hunks: -181,6 +181,7 @@ class TestFile:; symbols: TestFile，涉及 `TestFile`。
 - 代码 diff 细节:
   - `test/srt/test_deepseek_v32_mtp.py` added +105/-0 (105 lines); hunks: -0,0 +1,105; symbols: TestDeepseekV32MTP, setUpClass, tearDownClass, test_a_gsm8k
@@ -1067,7 +1044,7 @@ diff -- python/sglang/srt/layers/attention/nsa_backend.py
 - 状态/时间: closed / 2025-10-23
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 0 个文件，+0/-0，可读 patch 0 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「(beta)support context parallel with deepseekv3.2-DSA」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: 仅元数据 PR 卡片；技术摘要: GitHub 文件列表为空，本卡保留「(beta)support context parallel with deepseekv3.2-DSA」的 PR 元数据、缺失 patch 状态和验证风险，不编造文件级证据。
+- 动机: 标题「(beta)support context parallel with deepseekv3.2-DSA」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: 仅元数据 PR 卡片；技术摘要: 覆盖「(beta)support context parallel with deepseekv3.2-DSA」；GitHub 文件列表为空，本卡保留 PR 元数据、缺失 patch 的状态和验证风险，不编造文件级证据。
 - 实现要点: GitHub 没有返回文件级 patch；本卡仅保留 PR 元数据，后续审计应重新打开 PR 页面确认最终 diff。
 - 代码 diff 细节:
   - GitHub 未返回文件级 patch。
@@ -1087,7 +1064,7 @@ No textual patch was returned by GitHub for the selected changed files.
 - 状态/时间: closed / 2025-10-24
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 11 个文件，+595/-81，可读 patch 1173 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「(beta)support context parallel with deepseekv3.2-DSA」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_nextn.py`；技术摘要: 覆盖「(beta)support context parallel with deepseekv3.2-DSA」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_nextn.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「(beta)support context parallel with deepseekv3.2-DSA」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_nextn.py`；技术摘要: 覆盖「(beta)support context parallel with deepseekv3.2-DSA」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_nextn.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +133/-50 (183 lines); hunks: -66,6 +66,7; -113,7 +114,10; symbols: forward, __init__, forward_deepep，涉及 `forward, __init__, forward_deepep`；`python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +174/-5 (179 lines); hunks: -17,9 +17,15; -32,6 +38,8; symbols: BaseIndexerMetadata, __init__, _get_q_k_bf16, _get_topk_ragged，涉及 `BaseIndexerMetadata, __init__, _get_q_k_bf16`；`python/sglang/srt/models/deepseek_nextn.py` modified +50/-9 (59 lines); hunks: -14,15 +14,18; -38,7 +41,13; symbols: __init__, forward，涉及 `__init__, forward`；`python/sglang/srt/layers/communicator.py` modified +25/-9 (34 lines); hunks: -53,6 +53,8; -415,6 +417,8 @@ def _scattered_to_tp_attn_full(; symbols: _scattered_to_tp_attn_full, _scatter_hidden_states_and_residual, _scatter_hidden_states, _gather，涉及 `_scattered_to_tp_attn_full, _scatter_hidden_states_and_residual, _scatter_hidden_states`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/deepseek_v2.py` modified +133/-50 (183 lines); hunks: -66,6 +66,7; -113,7 +114,10; symbols: forward, __init__, forward_deepep
@@ -1156,7 +1133,7 @@ diff -- docs/basic_usage/deepseek_v32.md
 
 - 已读文件:
   - docs: `docs/references/multi_node_deployment/rbg_pd/deepseekv32_pd.md` added +570/-0; `docs/basic_usage/deepseek_v32.md` added +150/-0
-- 验证与风险: 该 PR 主要落在文档/示例 `docs/advanced_features/separate_reasoning.ipynb`, `docs/basic_usage/deepseek.md`, `docs/basic_usage/deepseek_v32.md`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/basic_usage/deepseek.md`, `docs/basic_usage/deepseek_v32.md`, `docs/references/multi_node_deployment/rbg_pd/deepseekv32_pd.md`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
 ### PR #12052 - Fix Illegal Instruction/IMA errors when using DP attention with DeepSeek-V3.2 models
 
@@ -1191,7 +1168,7 @@ diff -- python/sglang/srt/layers/dp_attention.py
 - 状态/时间: merged / 2025-10-25
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/basic_usage/deepseek_v32.md`；关联提交 `bcecf27e7ca2`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+3/-3，可读 patch 22 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Doc] Fix format for deepseek v3.2 document」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `docs/basic_usage/deepseek_v32.md`；未提供可用技术摘要。
+- 动机: 标题「[Doc] Fix format for deepseek v3.2 document」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `docs/basic_usage/deepseek_v32.md`；技术摘要: 覆盖「[Doc] Fix format for deepseek v3.2 document」；主要实现面是 `docs/basic_usage/deepseek_v32.md`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs/basic_usage/deepseek_v32.md` modified +3/-3 (6 lines); hunks: -60,7 +60,7 @@ python -m sglang.launch_server --model deepseek-ai/DeepSeek-V3...; -71,10 +71,10 @@ python -m sglang.launch_server --model deepseek-ai/DeepSeek-...。
 - 代码 diff 细节:
   - `docs/basic_usage/deepseek_v32.md` modified +3/-3 (6 lines); hunks: -60,7 +60,7 @@ python -m sglang.launch_server --model deepseek-ai/DeepSeek-V3...; -71,10 +71,10 @@ python -m sglang.launch_server --model deepseek-ai/DeepSeek-...
@@ -1218,7 +1195,7 @@ diff -- docs/basic_usage/deepseek_v32.md
 - 状态/时间: merged / 2025-10-26
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+125/-0，可读 patch 133 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Test] Add dsv3.2 nsa backend testing」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `test/srt/test_deepseek_v32_nsabackend.py`, `test/srt/run_suite.py`；未提供可用技术摘要。
+- 动机: 标题「[Test] Add dsv3.2 nsa backend testing」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `test/srt/test_deepseek_v32_nsabackend.py`, `test/srt/run_suite.py`；技术摘要: 覆盖「[Test] Add dsv3.2 nsa backend testing」；主要实现面是 `test/srt/test_deepseek_v32_nsabackend.py`, `test/srt/run_suite.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/srt/test_deepseek_v32_nsabackend.py` added +124/-0 (124 lines); hunks: -0,0 +1,124; symbols: TestDeepseekV32NasBackend_flashmla, setUpClass, tearDownClass, test_a_gsm8k，涉及 `TestDeepseekV32NasBackend_flashmla, setUpClass, tearDownClass`；`test/srt/run_suite.py` modified +1/-0 (1 lines); hunks: -191,6 +191,7 @@ class TestFile:; symbols: TestFile，涉及 `TestFile`。
 - 代码 diff 细节:
   - `test/srt/test_deepseek_v32_nsabackend.py` added +124/-0 (124 lines); hunks: -0,0 +1,124; symbols: TestDeepseekV32NasBackend_flashmla, setUpClass, tearDownClass, test_a_gsm8k
@@ -1249,7 +1226,7 @@ diff -- test/srt/run_suite.py
 - 状态/时间: merged / 2025-10-26
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/basic_usage/deepseek_v32.md`；关联提交 `97828878d833`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Doc] Small update of DeepSeek v3.2 document」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `docs/basic_usage/deepseek_v32.md`；技术摘要: 覆盖「[Doc] Small update of DeepSeek v3.2 document」；主要实现面是 `docs/basic_usage/deepseek_v32.md`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[Doc] Small update of DeepSeek v3.2 document」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `docs/basic_usage/deepseek_v32.md`；技术摘要: 覆盖「[Doc] Small update of DeepSeek v3.2 document」；主要实现面是 `docs/basic_usage/deepseek_v32.md`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs/basic_usage/deepseek_v32.md` modified +1/-1 (2 lines); hunks: -48,7 +48,7 @@ python -m sglang.launch_server --model deepseek-ai/DeepSeek-V3...。
 - 代码 diff 细节:
   - `docs/basic_usage/deepseek_v32.md` modified +1/-1 (2 lines); hunks: -48,7 +48,7 @@ python -m sglang.launch_server --model deepseek-ai/DeepSeek-V3...
@@ -1311,7 +1288,7 @@ diff -- python/sglang/srt/layers/attention/nsa/quant_k_cache.py
 - 状态/时间: merged / 2025-10-28
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/basic_usage/deepseek_v32.md`；关联提交 `0ee831dee0a6`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+4/-5，可读 patch 20 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Update deepseek_v32.md」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `docs/basic_usage/deepseek_v32.md`；技术摘要: 覆盖「Update deepseek_v32.md」；主要实现面是 `docs/basic_usage/deepseek_v32.md`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「Update deepseek_v32.md」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `docs/basic_usage/deepseek_v32.md`；技术摘要: 覆盖「Update deepseek_v32.md」；主要实现面是 `docs/basic_usage/deepseek_v32.md`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs/basic_usage/deepseek_v32.md` modified +4/-5 (9 lines); hunks: -50,15 +50,14 @@ python -m sglang.launch_server --model deepseek-ai/DeepSeek-...。
 - 代码 diff 细节:
   - `docs/basic_usage/deepseek_v32.md` modified +4/-5 (9 lines); hunks: -50,15 +50,14 @@ python -m sglang.launch_server --model deepseek-ai/DeepSeek-...
@@ -1463,7 +1440,7 @@ diff -- python/sglang/srt/layers/attention/nsa/transform_index.py
 - 状态/时间: merged / 2025-11-04
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；关联提交 `e607850fcfe8`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+166/-25，可读 patch 251 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Enable mixed type LayerNorm kernel for NSA indexer」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「Enable mixed type LayerNorm kernel for NSA indexer」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「Enable mixed type LayerNorm kernel for NSA indexer」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「Enable mixed type LayerNorm kernel for NSA indexer」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +2/-21 (23 lines); hunks: -4,11 +4,10; -83,24 +82,6 @@ def rotate_activation(x: torch.Tensor) -> torch.Tensor:; symbols: rotate_activation, V32LayerNorm, __init__, forward，涉及 `rotate_activation, V32LayerNorm, __init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +2/-21 (23 lines); hunks: -4,11 +4,10; -83,24 +82,6 @@ def rotate_activation(x: torch.Tensor) -> torch.Tensor:; symbols: rotate_activation, V32LayerNorm, __init__, forward
@@ -1516,7 +1493,7 @@ diff -- python/sglang/srt/mem_cache/memory_pool.py
 - 状态/时间: merged / 2025-11-06
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/models/deepseek_v2.py`；关联提交 `f235498eca7a`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+188/-4，可读 patch 255 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「DeepSeek-V3.2: Add Adaptive MHA Attention Pathway for Short-Sequence Prefill」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「DeepSeek-V3.2: Add Adaptive MHA Attention Pathway for Short-Sequence Prefill」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「DeepSeek-V3.2: Add Adaptive MHA Attention Pathway for Short-Sequence Prefill」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「DeepSeek-V3.2: Add Adaptive MHA Attention Pathway for Short-Sequence Prefill」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +84/-0 (84 lines); hunks: -261,6 +261,30 @@ def _get_q_k_bf16(; -394,6 +418,45 @@ def _get_topk_ragged(; symbols: _get_q_k_bf16, _get_k_bf16, _get_topk_paged, _get_topk_ragged，涉及 `_get_q_k_bf16, _get_k_bf16, _get_topk_paged`；`python/sglang/srt/layers/attention/nsa_backend.py` modified +61/-2 (63 lines); hunks: -47,7 +47,7; -823,7 +823,23 @@ def forward_extend(; symbols: forward_extend, _forward_flashmla_kv, _forward_standard_mha, _forward_tilelang，涉及 `forward_extend, _forward_flashmla_kv, _forward_standard_mha`；`python/sglang/srt/models/deepseek_v2.py` modified +43/-2 (45 lines); hunks: -402,6 +402,34 @@ def handle_attention_aiter(attn, forward_batch):; -1478,8 +1506,21 @@ def forward_normal_prepare(; symbols: handle_attention_aiter, handle_attention_nsa, forward_normal_prepare，涉及 `handle_attention_aiter, handle_attention_nsa, forward_normal_prepare`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +84/-0 (84 lines); hunks: -261,6 +261,30 @@ def _get_q_k_bf16(; -394,6 +418,45 @@ def _get_topk_ragged(; symbols: _get_q_k_bf16, _get_k_bf16, _get_topk_paged, _get_topk_ragged
@@ -1555,7 +1532,7 @@ diff -- python/sglang/srt/models/deepseek_v2.py
 - 状态/时间: merged / 2025-11-07
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/models/deepseek_v2.py`；关联提交 `7257525ccea6`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+53/-6，可读 patch 96 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[DeepSeek-V3.2][NSA] Enable MHA Pathway for Short Sequence Prefill on B200 (SM100)」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「[DeepSeek-V3.2][NSA] Enable MHA Pathway for Short Sequence Prefill on B200 (SM100)」；主要实现面是 `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[DeepSeek-V3.2][NSA] Enable MHA Pathway for Short Sequence Prefill on B200 (SM100)」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「[DeepSeek-V3.2][NSA] Enable MHA Pathway for Short Sequence Prefill on B200 (SM100)」；主要实现面是 `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/nsa_backend.py` modified +46/-2 (48 lines); hunks: -7,6 +7,7; -50,6 +51,10; symbols: NSAFlashMLAMetadata, __init__, get_device_int32_arange, _forward_standard_mha，涉及 `NSAFlashMLAMetadata, __init__, get_device_int32_arange`；`python/sglang/srt/models/deepseek_v2.py` modified +7/-4 (11 lines); hunks: -415,11 +415,14 @@ def handle_attention_nsa(attn, forward_batch):; symbols: handle_attention_nsa，涉及 `handle_attention_nsa`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa_backend.py` modified +46/-2 (48 lines); hunks: -7,6 +7,7; -50,6 +51,10; symbols: NSAFlashMLAMetadata, __init__, get_device_int32_arange, _forward_standard_mha
@@ -1659,7 +1636,7 @@ diff -- python/sglang/srt/models/qwen3.py
 - 状态/时间: merged / 2025-11-07
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_v2.py`；关联提交 `bef37d6de86a`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+20/-18，可读 patch 112 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Deepseek V3.2] Only skip Indexer logits computation when is_extend_without_speculative」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「[Deepseek V3.2] Only skip Indexer logits computation when is_extend_without_speculative」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[Deepseek V3.2] Only skip Indexer logits computation when is_extend_without_speculative」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「[Deepseek V3.2] Only skip Indexer logits computation when is_extend_without_speculative」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +6/-14 (20 lines); hunks: -308,14 +308,6 @@ def _get_sum_extend_prefix_lens(forward_batch):; -334,7 +326,7 @@ def _handle_attention_backend(; symbols: _get_sum_extend_prefix_lens, _is_extend_without_speculative, _support_mha_one_shot, _handle_attention_backend，涉及 `_get_sum_extend_prefix_lens, _is_extend_without_speculative, _support_mha_one_shot`；`python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +7/-4 (11 lines); hunks: -410,6 +410,8 @@ def _forward_cuda_k_only(; -555,14 +557,15 @@ def forward_cuda(; symbols: _forward_cuda_k_only, forward_cuda，涉及 `_forward_cuda_k_only, forward_cuda`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/deepseek_v2.py` modified +6/-14 (20 lines); hunks: -308,14 +308,6 @@ def _get_sum_extend_prefix_lens(forward_batch):; -334,7 +326,7 @@ def _handle_attention_backend(; symbols: _get_sum_extend_prefix_lens, _is_extend_without_speculative, _support_mha_one_shot, _handle_attention_backend
@@ -1695,7 +1672,7 @@ diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
 - 状态/时间: merged / 2025-11-08
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+209/-61，可读 patch 659 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[sgl-kernel][Deepseek V3.2] Add row_starts to topk kernel」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `sgl-kernel/tests/test_topk.py`, `sgl-kernel/csrc/elementwise/topk.cu`, `sgl-kernel/python/sgl_kernel/top_k.py`；技术摘要: 覆盖「[sgl-kernel][Deepseek V3.2] Add row_starts to topk kernel」；主要实现面是 `sgl-kernel/tests/test_topk.py`, `sgl-kernel/csrc/elementwise/topk.cu`, `sgl-kernel/python/sgl_kernel/top_k.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[sgl-kernel][Deepseek V3.2] Add row_starts to topk kernel」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `sgl-kernel/tests/test_topk.py`, `sgl-kernel/csrc/elementwise/topk.cu`, `sgl-kernel/python/sgl_kernel/top_k.py`；技术摘要: 覆盖「[sgl-kernel][Deepseek V3.2] Add row_starts to topk kernel」；主要实现面是 `sgl-kernel/tests/test_topk.py`, `sgl-kernel/csrc/elementwise/topk.cu`, `sgl-kernel/python/sgl_kernel/top_k.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `sgl-kernel/tests/test_topk.py` modified +85/-24 (109 lines); hunks: -1,4 +1,4; -9,21 +9,36; symbols: _ref_torch_impl, _ref_torch_transform_decode_impl, _ref_torch_transform_ragged_impl, assert_equal，涉及 `_ref_torch_impl, _ref_torch_transform_decode_impl, _ref_torch_transform_ragged_impl`；`sgl-kernel/csrc/elementwise/topk.cu` modified +51/-24 (75 lines); hunks: -25,9 +25,10 @@ constexpr int kThreadsPerBlock = 1024;; -72,7 +73,7 @@ __device__ __forceinline__ auto convert_to_uint32(float x) ->...；`sgl-kernel/python/sgl_kernel/top_k.py` modified +61/-7 (68 lines); hunks: -1,3 +1,5; -11,13 +13,32 @@ def fast_topk(values, topk, dim):; symbols: fast_topk, fast_topk_v2, fast_topk_transform_fused，涉及 `fast_topk, fast_topk_v2, fast_topk_transform_fused`；`sgl-kernel/include/sgl_kernel_ops.h` modified +9/-3 (12 lines); hunks: -172,18 +172,24 @@ void copy_to_gpu_no_ce(const at::Tensor& input, at::Tensor...。
 - 代码 diff 细节:
   - `sgl-kernel/tests/test_topk.py` modified +85/-24 (109 lines); hunks: -1,4 +1,4; -9,21 +9,36; symbols: _ref_torch_impl, _ref_torch_transform_decode_impl, _ref_torch_transform_ragged_impl, assert_equal
@@ -1799,7 +1776,7 @@ diff -- python/sglang/srt/layers/attention/nsa_backend.py
 - 状态/时间: merged / 2025-11-12
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa_backend.py`；关联提交 `4eda9969e8b9`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+7/-6，可读 patch 62 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[DeepseekV32]: use `_concat_mla_absorb_q_general` to replace `torch.cat`」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/layers/attention/nsa_backend.py`；技术摘要: 覆盖「[DeepseekV32]: use `_concat_mla_absorb_q_general` to replace `torch.cat`」；主要实现面是 `python/sglang/srt/layers/attention/nsa_backend.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[DeepseekV32]: use `_concat_mla_absorb_q_general` to replace `torch.cat`」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/layers/attention/nsa_backend.py`；技术摘要: 覆盖「[DeepseekV32]: use `_concat_mla_absorb_q_general` to replace `torch.cat`」；主要实现面是 `python/sglang/srt/layers/attention/nsa_backend.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/nsa_backend.py` modified +7/-6 (13 lines); hunks: -21,6 +21,7; -911,7 +912,7 @@ def forward_extend(; symbols: forward_extend, forward_decode，涉及 `forward_extend, forward_decode`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa_backend.py` modified +7/-6 (13 lines); hunks: -21,6 +21,7; -911,7 +912,7 @@ def forward_extend(; symbols: forward_extend, forward_decode
@@ -1826,7 +1803,7 @@ diff -- python/sglang/srt/layers/attention/nsa_backend.py
 - 状态/时间: merged / 2025-11-14
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py`；关联提交 `a7002e614bbd`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+68/-76，可读 patch 248 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Deepseek V3.2] Clean up MTP」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「[Deepseek V3.2] Clean up MTP」；主要实现面是 `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[Deepseek V3.2] Clean up MTP」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「[Deepseek V3.2] Clean up MTP」；主要实现面是 `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/nsa_backend.py` modified +59/-73 (132 lines); hunks: -137,6 +137,9 @@ def get_page_table_64(self) -> torch.Tensor:; -304,8 +307,7 @@ def init_forward_metadata(self, forward_batch: ForwardBatch):; symbols: get_page_table_64, get_seqlens_expanded, get_cu_seqlens_k, topk_transform，涉及 `get_page_table_64, get_seqlens_expanded, get_cu_seqlens_k`；`python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +7/-1 (8 lines); hunks: -290,7 +290,10 @@ def _get_topk_paged(; -337,6 +340,8 @@ def _get_topk_ragged(; symbols: _get_topk_paged, _get_topk_ragged, forward_cuda，涉及 `_get_topk_paged, _get_topk_ragged, forward_cuda`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa_backend.py` modified +59/-73 (132 lines); hunks: -137,6 +137,9 @@ def get_page_table_64(self) -> torch.Tensor:; -304,8 +307,7 @@ def init_forward_metadata(self, forward_batch: ForwardBatch):; symbols: get_page_table_64, get_seqlens_expanded, get_cu_seqlens_k, topk_transform
@@ -1860,16 +1837,16 @@ diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/12065
 - 状态/时间: merged / 2025-11-17
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/basic_usage/deepseek_v32.md`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/communicator_nsa_cp.py` 等 6 个文件；关联提交 `d368c7451a48`；保留自原 history/skill 显式引用
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/basic_usage/deepseek_v32.md`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/models/deepseek_v2.py`；关联提交 `d368c7451a48`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 17 个文件，+1247/-54，可读 patch 1729 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「(1/n)support context parallel with deepseekv3.2-DSA」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/communicator_nsa_cp.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「(1/n)support context parallel with deepseekv3.2-DSA」；主要实现面是 `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/communicator_nsa_cp.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/layers/attention/nsa/utils.py` modified +305/-0 (305 lines); hunks: -1,4 +1,13; -21,3 +30,299 @@ def print_nsa_bool_env_vars():; symbols: print_nsa_bool_env_vars, compute_nsa_seqlens, is_nsa_enable_prefill_cp, NSAContextParallelMetadata，涉及 `print_nsa_bool_env_vars, compute_nsa_seqlens, is_nsa_enable_prefill_cp`；`python/sglang/srt/layers/communicator_nsa_cp.py` added +284/-0 (284 lines); hunks: -0,0 +1,284; symbols: nsa_enable_prefill_cp, NSACPLayerCommunicator, __init__, NSACPCommunicateSimpleFn，涉及 `nsa_enable_prefill_cp, NSACPLayerCommunicator, __init__`；`python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +221/-8 (229 lines); hunks: -1,7 +1,7; -16,9 +16,18; symbols: __init__, _get_q_k_bf16, _forward_cuda_k_only, _get_topk_ragged_with_cp，涉及 `__init__, _get_q_k_bf16, _forward_cuda_k_only`；`python/sglang/srt/models/deepseek_v2.py` modified +134/-32 (166 lines); hunks: -54,13 +54,23; -412,7 +422,9 @@ def handle_attention_nsa(attn, forward_batch):; symbols: handle_attention_nsa, __init__, forward，涉及 `handle_attention_nsa, __init__, forward`。
+- 动机: 标题「(1/n)support context parallel with deepseekv3.2-DSA」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「(1/n)support context parallel with deepseekv3.2-DSA」；主要实现面是 `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/nsa/utils.py` modified +305/-0 (305 lines); hunks: -1,4 +1,13; -21,3 +30,299 @@ def print_nsa_bool_env_vars():; symbols: print_nsa_bool_env_vars, compute_nsa_seqlens, is_nsa_enable_prefill_cp, NSAContextParallelMetadata，涉及 `print_nsa_bool_env_vars, compute_nsa_seqlens, is_nsa_enable_prefill_cp`；`python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +221/-8 (229 lines); hunks: -1,7 +1,7; -16,9 +16,18; symbols: __init__, _get_q_k_bf16, _forward_cuda_k_only, _get_topk_ragged_with_cp，涉及 `__init__, _get_q_k_bf16, _forward_cuda_k_only`；`python/sglang/srt/models/deepseek_v2.py` modified +134/-32 (166 lines); hunks: -54,13 +54,23; -412,7 +422,9 @@ def handle_attention_nsa(attn, forward_batch):; symbols: handle_attention_nsa, __init__, forward，涉及 `handle_attention_nsa, __init__, forward`；`python/sglang/srt/layers/attention/nsa_backend.py` modified +28/-8 (36 lines); hunks: -145,32 +145,52 @@ def topk_transform(; symbols: topk_transform，涉及 `topk_transform`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa/utils.py` modified +305/-0 (305 lines); hunks: -1,4 +1,13; -21,3 +30,299 @@ def print_nsa_bool_env_vars():; symbols: print_nsa_bool_env_vars, compute_nsa_seqlens, is_nsa_enable_prefill_cp, NSAContextParallelMetadata
-  - `python/sglang/srt/layers/communicator_nsa_cp.py` added +284/-0 (284 lines); hunks: -0,0 +1,284; symbols: nsa_enable_prefill_cp, NSACPLayerCommunicator, __init__, NSACPCommunicateSimpleFn
   - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +221/-8 (229 lines); hunks: -1,7 +1,7; -16,9 +16,18; symbols: __init__, _get_q_k_bf16, _forward_cuda_k_only, _get_topk_ragged_with_cp
   - `python/sglang/srt/models/deepseek_v2.py` modified +134/-32 (166 lines); hunks: -54,13 +54,23; -412,7 +422,9 @@ def handle_attention_nsa(attn, forward_batch):; symbols: handle_attention_nsa, __init__, forward
   - `python/sglang/srt/layers/attention/nsa_backend.py` modified +28/-8 (36 lines); hunks: -145,32 +145,52 @@ def topk_transform(; symbols: topk_transform
+  - `docs/basic_usage/deepseek_v32.md` modified +20/-0 (20 lines); hunks: -142,3 +142,23 @@ The mean accuracy over 8 runs shows 0.797, which matches th...
 - 关键代码摘录:
 
 ```diff
@@ -1881,20 +1858,20 @@ diff -- python/sglang/srt/layers/attention/nsa/utils.py
 +import torch
 +import torch.nn.functional as F
 +from sglang.srt.layers.dp_attention import get_attention_tp_group
-diff -- python/sglang/srt/layers/communicator_nsa_cp.py
-@@ -0,0 +1,284 @@
-+# Copyright 2023-2024 SGLang Team
-+# Licensed under the Apache License, Version 2.0 (the "License");
-+# you may not use this file except in compliance with the License.
-+# You may obtain a copy of the License at
-+#
-+#     http://www.apache.org/licenses/LICENSE-2.0
 diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
 @@ -1,7 +1,7 @@
+-from typing import TYPE_CHECKING, Any, Dict, Optional
++from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple
+@@ -16,9 +16,18 @@
+-from sglang.srt.layers.attention.nsa.utils import NSA_DUAL_STREAM
+-from sglang.srt.layers.dp_attention import get_attention_tp_group
++from sglang.srt.layers.attention.nsa.utils import (
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -54,13 +54,23 @@
 ```
 
 - 已读文件:
-  - runtime: `python/sglang/srt/layers/attention/nsa/utils.py` modified +305/-0; `python/sglang/srt/layers/communicator_nsa_cp.py` added +284/-0; `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +221/-8; `python/sglang/srt/models/deepseek_v2.py` modified +134/-32; `python/sglang/srt/layers/attention/nsa_backend.py` modified +28/-8
+  - runtime: `python/sglang/srt/layers/attention/nsa/utils.py` modified +305/-0; `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +221/-8; `python/sglang/srt/models/deepseek_v2.py` modified +134/-32; `python/sglang/srt/layers/attention/nsa_backend.py` modified +28/-8
   - docs: `docs/basic_usage/deepseek_v32.md` modified +20/-0
 - 验证与风险: diff 自带测试面 `test/srt/run_suite.py`, `test/srt/test_deepseek_v32_cp_single_node.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
@@ -2189,7 +2166,7 @@ diff -- python/sglang/srt/layers/attention/nsa_backend.py
 - 状态/时间: merged / 2025-12-02
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/entrypoints/openai/encoding_dsv32.py`, `python/sglang/srt/function_call/deepseekv32_detector.py`；关联提交 `7c38eca1e4a7`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+1153/-89，可读 patch 1359 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「feat: DeepSeek new v3.2 encoding」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/entrypoints/openai/encoding_dsv32.py`, `python/sglang/srt/function_call/deepseekv32_detector.py`；技术摘要: 覆盖「feat: DeepSeek new v3.2 encoding」；主要实现面是 `python/sglang/srt/entrypoints/openai/encoding_dsv32.py`, `python/sglang/srt/function_call/deepseekv32_detector.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「feat: DeepSeek new v3.2 encoding」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/entrypoints/openai/encoding_dsv32.py`, `python/sglang/srt/function_call/deepseekv32_detector.py`；技术摘要: 覆盖「feat: DeepSeek new v3.2 encoding」；主要实现面是 `python/sglang/srt/entrypoints/openai/encoding_dsv32.py`, `python/sglang/srt/function_call/deepseekv32_detector.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/entrypoints/openai/encoding_dsv32.py` added +451/-0 (451 lines); hunks: -0,0 +1,451; symbols: to_json, tools_from_openai_format, tool_calls_from_openai_format, tool_calls_to_openai_format，涉及 `to_json, tools_from_openai_format, tool_calls_from_openai_format`；`python/sglang/srt/function_call/deepseekv32_detector.py` added +321/-0 (321 lines); hunks: -0,0 +1,321; symbols: DeepSeekV32Detector, __init__, has_tool_call, _parse_parameters_from_xml，涉及 `DeepSeekV32Detector, __init__, has_tool_call`。
 - 代码 diff 细节:
   - `python/sglang/srt/entrypoints/openai/encoding_dsv32.py` added +451/-0 (451 lines); hunks: -0,0 +1,451; symbols: to_json, tools_from_openai_format, tool_calls_from_openai_format, tool_calls_to_openai_format
@@ -2244,13 +2221,13 @@ diff -- docs/basic_usage/deepseek_v32.md
 
 - 已读文件:
   - docs: `docs/basic_usage/deepseek_v32.md` modified +74/-12
-- 验证与风险: 该 PR 主要落在文档/示例 `docs/advanced_features/tool_parser.ipynb`, `docs/basic_usage/deepseek_v32.md`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/basic_usage/deepseek_v32.md`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
 ### PR #13812 - [Performance] Optimize NSA Indexer K/S Buffer Access with Fused Triton Kernels
 
 - 链接: https://github.com/sgl-project/sglang/pull/13812
 - 状态/时间: merged / 2025-12-03
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `test/manual/layers/attention/nsa/test_index_buf_accessor.py`；关联提交 `043f13171fb9`；保留自原 history/skill 显式引用
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；关联提交 `043f13171fb9`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+896/-8，可读 patch 948 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Performance] Optimize NSA Indexer K/S Buffer Access with Fused Triton Kernels」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `test/manual/layers/attention/nsa/test_index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「[Performance] Optimize NSA Indexer K/S Buffer Access with Fused Triton Kernels」；主要实现面是 `test/manual/layers/attention/nsa/test_index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/manual/layers/attention/nsa/test_index_buf_accessor.py` added +554/-0 (554 lines); hunks: -0,0 +1,554; symbols: MockNSATokenToKVPool, __init__, create_test_buffer, TestGetK，涉及 `MockNSATokenToKVPool, __init__, create_test_buffer`；`python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` modified +318/-2 (320 lines); hunks: -16,7 +16,7; -67,11 +67,28 @@ def torch_fast(; symbols: GetK, execute, slow, torch_fast，涉及 `GetK, execute, slow`；`python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +2/-6 (8 lines); hunks: -385,12 +385,8 @@ def _get_topk_ragged(; symbols: _get_topk_ragged，涉及 `_get_topk_ragged`。
@@ -2292,7 +2269,7 @@ diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
 - 状态/时间: open / 2025-12-03
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+481/-44，可读 patch 660 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「feat: V32 tool call parsing for no-dsml tag」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `test/registered/function_call/test_function_call_parser.py`, `python/sglang/srt/function_call/deepseekv32_detector.py`；技术摘要: 覆盖「feat: V32 tool call parsing for no-dsml tag」；主要实现面是 `test/registered/function_call/test_function_call_parser.py`, `python/sglang/srt/function_call/deepseekv32_detector.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「feat: V32 tool call parsing for no-dsml tag」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `test/registered/function_call/test_function_call_parser.py`, `python/sglang/srt/function_call/deepseekv32_detector.py`；技术摘要: 覆盖「feat: V32 tool call parsing for no-dsml tag」；主要实现面是 `test/registered/function_call/test_function_call_parser.py`, `python/sglang/srt/function_call/deepseekv32_detector.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/function_call/test_function_call_parser.py` modified +334/-0 (334 lines); hunks: -1122,6 +1122,28 @@ def setUp(self):; -1277,6 +1299,318 @@ def test_streaming_json_format(self):; symbols: setUp, test_streaming_json_format, test_detect_and_parse_xml_format_without_dsml, test_detect_and_parse_json_format_without_dsml，涉及 `setUp, test_streaming_json_format, test_detect_and_parse_xml_format_without_dsml`；`python/sglang/srt/function_call/deepseekv32_detector.py` modified +147/-44 (191 lines); hunks: -20,9 +20,9 @@ class DeepSeekV32Detector(BaseFormatDetector):; -32,7 +32,7 @@ class DeepSeekV32Detector(BaseFormatDetector):; symbols: DeepSeekV32Detector，涉及 `DeepSeekV32Detector`。
 - 代码 diff 细节:
   - `test/registered/function_call/test_function_call_parser.py` modified +334/-0 (334 lines); hunks: -1122,6 +1122,28 @@ def setUp(self):; -1277,6 +1299,318 @@ def test_streaming_json_format(self):; symbols: setUp, test_streaming_json_format, test_detect_and_parse_xml_format_without_dsml, test_detect_and_parse_json_format_without_dsml
@@ -2329,7 +2306,7 @@ diff -- python/sglang/srt/function_call/deepseekv32_detector.py
 - 状态/时间: merged / 2025-12-03
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/basic_usage/deepseek_v32.md`；关联提交 `4bcc5879af61`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+2/-2，可读 patch 18 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Doc] Fix DeepSeek V32 Doc」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `docs/basic_usage/deepseek_v32.md`；未提供可用技术摘要。
+- 动机: 标题「[Doc] Fix DeepSeek V32 Doc」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `docs/basic_usage/deepseek_v32.md`；技术摘要: 覆盖「[Doc] Fix DeepSeek V32 Doc」；主要实现面是 `docs/basic_usage/deepseek_v32.md`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs/basic_usage/deepseek_v32.md` modified +2/-2 (4 lines); hunks: -183,7 +183,7 @@ python3 -m sglang.test.run_eval --port 30000 --eval-name gpq...; -217,7 +217,7 @@ python -m sglang.launch_server --model deepseek-ai/DeepSeek-...。
 - 代码 diff 细节:
   - `docs/basic_usage/deepseek_v32.md` modified +2/-2 (4 lines); hunks: -183,7 +183,7 @@ python3 -m sglang.test.run_eval --port 30000 --eval-name gpq...; -217,7 +217,7 @@ python -m sglang.launch_server --model deepseek-ai/DeepSeek-...
@@ -2355,7 +2332,7 @@ diff -- docs/basic_usage/deepseek_v32.md
 - 状态/时间: merged / 2025-12-03
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/basic_usage/deepseek_v32.md`；关联提交 `7e78825d5af5`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+4/-2，可读 patch 18 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Tiny]Small fixes in deepseek v32 doc」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `docs/basic_usage/deepseek_v32.md`；未提供可用技术摘要。
+- 动机: 标题「[Tiny]Small fixes in deepseek v32 doc」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `docs/basic_usage/deepseek_v32.md`；技术摘要: 覆盖「[Tiny]Small fixes in deepseek v32 doc」；主要实现面是 `docs/basic_usage/deepseek_v32.md`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs/basic_usage/deepseek_v32.md` modified +4/-2 (6 lines); hunks: -76,13 +76,15 @@ python -m sglang.launch_server --model deepseek-ai/DeepSeek-...。
 - 代码 diff 细节:
   - `docs/basic_usage/deepseek_v32.md` modified +4/-2 (6 lines); hunks: -76,13 +76,15 @@ python -m sglang.launch_server --model deepseek-ai/DeepSeek-...
@@ -2461,14 +2438,13 @@ diff -- python/sglang/srt/function_call/deepseekv32_detector.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/14541
 - 状态/时间: merged / 2025-12-11
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/communicator_nsa_cp.py`；关联提交 `388018a5bd41`；保留自原 history/skill 显式引用
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`；关联提交 `388018a5bd41`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+281/-134，可读 patch 587 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[NPU]dsv3.2 cp for npu」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/communicator_nsa_cp.py`；技术摘要: 覆盖「[NPU]dsv3.2 cp for npu」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/communicator_nsa_cp.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +117/-94 (211 lines); hunks: -23,11 +23,7; -965,56 +961,25 @@ def forward_npu(; symbols: forward_npu, do_npu_cp_balance_indexer，涉及 `forward_npu, do_npu_cp_balance_indexer`；`python/sglang/srt/layers/attention/nsa/utils.py` modified +25/-4 (29 lines); hunks: -49,6 +49,10 @@ class NSAContextParallelMetadata:; -312,17 +316,34 @@ def prepare_input_dp_with_cp_dsa(; symbols: NSAContextParallelMetadata, prepare_input_dp_with_cp_dsa，涉及 `NSAContextParallelMetadata, prepare_input_dp_with_cp_dsa`；`python/sglang/srt/layers/communicator_nsa_cp.py` modified +7/-8 (15 lines); hunks: -176,14 +176,13 @@ def _gather_hidden_states_and_residual(; symbols: _gather_hidden_states_and_residual, _scatter_hidden_states_and_residual，涉及 `_gather_hidden_states_and_residual, _scatter_hidden_states_and_residual`；`python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` modified +9/-0 (9 lines); hunks: -311,8 +311,17 @@ def forward_dsa_prepare_npu(; symbols: forward_dsa_prepare_npu，涉及 `forward_dsa_prepare_npu`。
+- 动机: 标题「[NPU]dsv3.2 cp for npu」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py`；技术摘要: 覆盖「[NPU]dsv3.2 cp for npu」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +117/-94 (211 lines); hunks: -23,11 +23,7; -965,56 +961,25 @@ def forward_npu(; symbols: forward_npu, do_npu_cp_balance_indexer，涉及 `forward_npu, do_npu_cp_balance_indexer`；`python/sglang/srt/layers/attention/nsa/utils.py` modified +25/-4 (29 lines); hunks: -49,6 +49,10 @@ class NSAContextParallelMetadata:; -312,17 +316,34 @@ def prepare_input_dp_with_cp_dsa(; symbols: NSAContextParallelMetadata, prepare_input_dp_with_cp_dsa，涉及 `NSAContextParallelMetadata, prepare_input_dp_with_cp_dsa`；`python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` modified +9/-0 (9 lines); hunks: -311,8 +311,17 @@ def forward_dsa_prepare_npu(; symbols: forward_dsa_prepare_npu，涉及 `forward_dsa_prepare_npu`；`python/sglang/srt/hardware_backend/npu/utils.py` modified +8/-0 (8 lines); hunks: -68,6 +68,14 @@ def init_npu_backend():; symbols: init_npu_backend，涉及 `init_npu_backend`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +117/-94 (211 lines); hunks: -23,11 +23,7; -965,56 +961,25 @@ def forward_npu(; symbols: forward_npu, do_npu_cp_balance_indexer
   - `python/sglang/srt/layers/attention/nsa/utils.py` modified +25/-4 (29 lines); hunks: -49,6 +49,10 @@ class NSAContextParallelMetadata:; -312,17 +316,34 @@ def prepare_input_dp_with_cp_dsa(; symbols: NSAContextParallelMetadata, prepare_input_dp_with_cp_dsa
-  - `python/sglang/srt/layers/communicator_nsa_cp.py` modified +7/-8 (15 lines); hunks: -176,14 +176,13 @@ def _gather_hidden_states_and_residual(; symbols: _gather_hidden_states_and_residual, _scatter_hidden_states_and_residual
   - `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` modified +9/-0 (9 lines); hunks: -311,8 +311,17 @@ def forward_dsa_prepare_npu(; symbols: forward_dsa_prepare_npu
   - `python/sglang/srt/hardware_backend/npu/utils.py` modified +8/-0 (8 lines); hunks: -68,6 +68,14 @@ def init_npu_backend():; symbols: init_npu_backend
 - 关键代码摘录:
@@ -2490,12 +2466,12 @@ diff -- python/sglang/srt/layers/attention/nsa/utils.py
 +    actual_seq_q_next_tensor: torch.Tensor = None
 @@ -312,17 +316,34 @@ def prepare_input_dp_with_cp_dsa(
 +    kv_len_prev = prefix_sum_list[cp_rank]
-diff -- python/sglang/srt/layers/communicator_nsa_cp.py
-@@ -176,14 +176,13 @@ def _gather_hidden_states_and_residual(
+diff -- python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py
+@@ -311,8 +311,17 @@ def forward_dsa_prepare_npu(
 ```
 
 - 已读文件:
-  - runtime: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +117/-94; `python/sglang/srt/layers/attention/nsa/utils.py` modified +25/-4; `python/sglang/srt/layers/communicator_nsa_cp.py` modified +7/-8; `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` modified +9/-0; `python/sglang/srt/hardware_backend/npu/utils.py` modified +8/-0
+  - runtime: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +117/-94; `python/sglang/srt/layers/attention/nsa/utils.py` modified +25/-4; `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` modified +9/-0; `python/sglang/srt/hardware_backend/npu/utils.py` modified +8/-0
 - 验证与风险: diff 自带测试面 `test/srt/ascend/test_ascend_tp4_bf16.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #14307 - [SMG][DS32][fix] support dsv32, add role developer
@@ -2838,7 +2814,7 @@ diff -- docs/basic_usage/deepseek_v32.md
 - 状态/时间: open / 2025-12-17
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 14 个文件，+472/-23，可读 patch 804 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「dsv32 support o_proj tp」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/linear.py`；技术摘要: 覆盖「dsv32 support o_proj tp」；主要实现面是 `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/linear.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「dsv32 support o_proj tp」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/linear.py`；技术摘要: 覆盖「dsv32 support o_proj tp」；主要实现面是 `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/linear.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/communicator.py` modified +179/-5 (184 lines); hunks: -21,20 +21,32; -47,6 +59,7; symbols: enable_moe_dense_fully_dp, get_max_bs_across_dp, LayerCommunicator, __init__，涉及 `enable_moe_dense_fully_dp, get_max_bs_across_dp, LayerCommunicator`；`python/sglang/srt/models/deepseek_v2.py` modified +74/-14 (88 lines); hunks: -45,6 +45,9; -70,6 +73,7; symbols: forward_deepep, __init__, dispatch_attn_forward_method，涉及 `forward_deepep, __init__, dispatch_attn_forward_method`；`python/sglang/srt/layers/linear.py` modified +73/-1 (74 lines); hunks: -11,6 +11,7; -1326,6 +1327,7 @@ def weight_loader(self, param: Parameter, loaded_weight: t...; symbols: weight_loader, extra_repr, TP2DPandTPRowParallelLinear, __init__，涉及 `weight_loader, extra_repr, TP2DPandTPRowParallelLinear`；`python/sglang/srt/layers/rotary_embedding.py` modified +8/-0 (8 lines); hunks: -949,6 +949,14 @@ def forward_npu(; symbols: forward_npu，涉及 `forward_npu`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/communicator.py` modified +179/-5 (184 lines); hunks: -21,20 +21,32; -47,6 +59,7; symbols: enable_moe_dense_fully_dp, get_max_bs_across_dp, LayerCommunicator, __init__
@@ -2919,7 +2895,7 @@ diff -- docs/basic_usage/deepseek_v32.md
 - 状态/时间: merged / 2025-12-18
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/function_call/deepseekv32_detector.py`；关联提交 `41683536d394`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+111/-69，可读 patch 328 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「feat: DeepSeek-V3.2 Streaming tool call output」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/function_call/deepseekv32_detector.py`；技术摘要: 覆盖「feat: DeepSeek-V3.2 Streaming tool call output」；主要实现面是 `python/sglang/srt/function_call/deepseekv32_detector.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「feat: DeepSeek-V3.2 Streaming tool call output」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/function_call/deepseekv32_detector.py`；技术摘要: 覆盖「feat: DeepSeek-V3.2 Streaming tool call output」；主要实现面是 `python/sglang/srt/function_call/deepseekv32_detector.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/function_call/deepseekv32_detector.py` modified +95/-65 (160 lines); hunks: -1,7 +1,6; -11,6 +10,7; symbols: __init__, has_tool_call, _parse_parameters_from_xml，涉及 `__init__, has_tool_call, _parse_parameters_from_xml`。
 - 代码 diff 细节:
   - `python/sglang/srt/function_call/deepseekv32_detector.py` modified +95/-65 (160 lines); hunks: -1,7 +1,6; -11,6 +10,7; symbols: __init__, has_tool_call, _parse_parameters_from_xml
@@ -3035,7 +3011,7 @@ diff -- python/sglang/srt/layers/attention/nsa_backend.py
 - 状态/时间: merged / 2025-12-19
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py`；关联提交 `6afc5d497bb3`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+91/-5，可读 patch 166 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[DSv32] Move deep_gemm.get_paged_mqa_logits_metadata to init time as metadata」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「[DSv32] Move deep_gemm.get_paged_mqa_logits_metadata to init time as metadata」；主要实现面是 `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[DSv32] Move deep_gemm.get_paged_mqa_logits_metadata to init time as metadata」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「[DSv32] Move deep_gemm.get_paged_mqa_logits_metadata to init time as metadata」；主要实现面是 `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/nsa_backend.py` modified +84/-1 (85 lines); hunks: -31,7 +31,7; -113,6 +113,9 @@ class NSAMetadata:; symbols: NSAMetadata, _cat, NSAIndexerMetadata, get_seqlens_int32，涉及 `NSAMetadata, _cat, NSAIndexerMetadata`；`python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +7/-4 (11 lines); hunks: -300,10 +300,13 @@ def _get_topk_paged(; symbols: _get_topk_paged，涉及 `_get_topk_paged`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa_backend.py` modified +84/-1 (85 lines); hunks: -31,7 +31,7; -113,6 +113,9 @@ class NSAMetadata:; symbols: NSAMetadata, _cat, NSAIndexerMetadata, get_seqlens_int32
@@ -3179,7 +3155,7 @@ diff -- python/sglang/srt/mem_cache/sparsity/algorithms/deepseek_nsa.py
 - 状态/时间: merged / 2025-12-26
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/function_call/deepseekv32_detector.py`；关联提交 `01bd0d3e8b8c`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+60/-29，可读 patch 200 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Tool Call][DSV32] Streamline function call parameters」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/function_call/deepseekv32_detector.py`；技术摘要: 覆盖「[Tool Call][DSV32] Streamline function call parameters」；主要实现面是 `python/sglang/srt/function_call/deepseekv32_detector.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[Tool Call][DSV32] Streamline function call parameters」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/function_call/deepseekv32_detector.py`；技术摘要: 覆盖「[Tool Call][DSV32] Streamline function call parameters」；主要实现面是 `python/sglang/srt/function_call/deepseekv32_detector.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/function_call/deepseekv32_detector.py` modified +23/-15 (38 lines); hunks: -2,6 +2,8; -10,7 +12,7; symbols: __init__, has_tool_call, _parse_parameters_from_xml, parse_streaming_increment，涉及 `__init__, has_tool_call, _parse_parameters_from_xml`。
 - 代码 diff 细节:
   - `python/sglang/srt/function_call/deepseekv32_detector.py` modified +23/-15 (38 lines); hunks: -2,6 +2,8; -10,7 +12,7; symbols: __init__, has_tool_call, _parse_parameters_from_xml, parse_streaming_increment
@@ -3206,7 +3182,7 @@ diff -- python/sglang/srt/function_call/deepseekv32_detector.py
 - 状态/时间: merged / 2025-12-30
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[cp] bug fix for dsv3.2 cp」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py`；未提供可用技术摘要。
+- 动机: 标题「[cp] bug fix for dsv3.2 cp」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py`；技术摘要: 覆盖「[cp] bug fix for dsv3.2 cp」；主要实现面是 `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` modified +1/-1 (2 lines); hunks: -338,7 +338,7 @@ def forward_dsa_prepare_npu(; symbols: forward_dsa_prepare_npu，涉及 `forward_dsa_prepare_npu`。
 - 代码 diff 细节:
   - `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` modified +1/-1 (2 lines); hunks: -338,7 +338,7 @@ def forward_dsa_prepare_npu(; symbols: forward_dsa_prepare_npu
@@ -3223,41 +3199,13 @@ diff -- python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla
   - runtime: `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` modified +1/-1
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #16148 - [Fix] DSV3.2 W4AFP8 MTP use FP8 draft model
-
-- 链接: https://github.com/sgl-project/sglang/pull/16148
-- 状态/时间: open / 2025-12-30
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+3/-1，可读 patch 25 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Fix] DSV3.2 W4AFP8 MTP use FP8 draft model」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/layers/moe/token_dispatcher/deepep.py`, `python/sglang/srt/layers/quantization/w4afp8.py`；技术摘要: 覆盖「[Fix] DSV3.2 W4AFP8 MTP use FP8 draft model」；主要实现面是 `python/sglang/srt/layers/moe/token_dispatcher/deepep.py`, `python/sglang/srt/layers/quantization/w4afp8.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/layers/moe/token_dispatcher/deepep.py` modified +2/-1 (3 lines); hunks: -609,7 +609,7 @@ def _dispatch_core(; -634,6 +634,7 @@ def _dispatch_core(; symbols: _dispatch_core, combine_a，涉及 `_dispatch_core, combine_a`；`python/sglang/srt/layers/quantization/w4afp8.py` modified +1/-0 (1 lines); hunks: -283,6 +283,7 @@ def process_weights_after_loading(self, layer: Module) -> None:; symbols: process_weights_after_loading, create_moe_runner，涉及 `process_weights_after_loading, create_moe_runner`。
-- 代码 diff 细节:
-  - `python/sglang/srt/layers/moe/token_dispatcher/deepep.py` modified +2/-1 (3 lines); hunks: -609,7 +609,7 @@ def _dispatch_core(; -634,6 +634,7 @@ def _dispatch_core(; symbols: _dispatch_core, combine_a
-  - `python/sglang/srt/layers/quantization/w4afp8.py` modified +1/-0 (1 lines); hunks: -283,6 +283,7 @@ def process_weights_after_loading(self, layer: Module) -> None:; symbols: process_weights_after_loading, create_moe_runner
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/layers/moe/token_dispatcher/deepep.py
-@@ -609,7 +609,7 @@ def _dispatch_core(
--        elif not envs.SGLANG_DEEPEP_BF16_DISPATCH.get():
-+        elif not envs.SGLANG_DEEPEP_BF16_DISPATCH.get() or self.quant_config.get("dispatch_weight_scale") is None:
-@@ -634,6 +634,7 @@ def _dispatch_core(
-diff -- python/sglang/srt/layers/quantization/w4afp8.py
-@@ -283,6 +283,7 @@ def process_weights_after_loading(self, layer: Module) -> None:
-+        layer.dispatcher.set_quant_config({"dispatch_weight_scale", (layer.w13_weight_scale_inv)})
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/layers/moe/token_dispatcher/deepep.py` modified +2/-1; `python/sglang/srt/layers/quantization/w4afp8.py` modified +1/-0
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/moe/token_dispatcher/deepep.py`, `python/sglang/srt/layers/quantization/w4afp8.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #16156 - [cp] assert dsv3.2 cp in pd decode mode
 
 - 链接: https://github.com/sgl-project/sglang/pull/16156
 - 状态/时间: merged / 2025-12-31
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+4/-0，可读 patch 11 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[cp] assert dsv3.2 cp in pd decode mode」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/server_args.py`；未提供可用技术摘要。
+- 动机: 标题「[cp] assert dsv3.2 cp in pd decode mode」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/server_args.py`；技术摘要: 覆盖「[cp] assert dsv3.2 cp in pd decode mode」；主要实现面是 `python/sglang/srt/server_args.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/server_args.py` modified +4/-0 (4 lines); hunks: -1093,6 +1093,10 @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments，涉及 `_handle_model_specific_adjustments`。
 - 代码 diff 细节:
   - `python/sglang/srt/server_args.py` modified +4/-0 (4 lines); hunks: -1093,6 +1093,10 @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments
@@ -3280,16 +3228,16 @@ diff -- python/sglang/srt/server_args.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/13959
 - 状态/时间: merged / 2026-01-02
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/basic_usage/deepseek_v32.md`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/attention/nsa_backend.py` 等 7 个文件；关联提交 `0d244116d28a`；保留自原 history/skill 显式引用
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/basic_usage/deepseek_v32.md`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/attention/nsa_backend.py` 等 6 个文件；关联提交 `0d244116d28a`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 14 个文件，+603/-264，可读 patch 1414 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[DeepSeek v3.2] opt Context Parallelism: support fused moe, multi batch and fp8 kvcache」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/communicator_nsa_cp.py`, `python/sglang/srt/layers/attention/nsa_backend.py`；技术摘要: 覆盖「[DeepSeek v3.2] opt Context Parallelism: support fused moe, multi batch and fp8 kvcache」；主要实现面是 `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/communicator_nsa_cp.py`, `python/sglang/srt/layers/attention/nsa_backend.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/layers/attention/nsa/utils.py` modified +209/-5 (214 lines); hunks: -1,15 +1,26; -41,6 +52,75 @@ def is_nsa_enable_prefill_cp():; symbols: is_nsa_enable_prefill_cp, is_nsa_prefill_cp_in_seq_split, is_nsa_prefill_cp_round_robin_split, can_nsa_prefill_cp_round_robin_split，涉及 `is_nsa_enable_prefill_cp, is_nsa_prefill_cp_in_seq_split, is_nsa_prefill_cp_round_robin_split`；`python/sglang/srt/layers/communicator_nsa_cp.py` modified +60/-133 (193 lines); hunks: -18,7 +18,10; -28,6 +31,11; symbols: __init__, _post_init_communicate, get_fn, _scattered_to_tp_attn_full，涉及 `__init__, _post_init_communicate, get_fn`；`python/sglang/srt/layers/attention/nsa_backend.py` modified +149/-20 (169 lines); hunks: -2,7 +2,7; -25,8 +25,12; symbols: NSAMetadata, TopkTransformMethod, get_seqlens_expanded, get_cu_seqlens_k，涉及 `NSAMetadata, TopkTransformMethod, get_seqlens_expanded`；`python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +45/-68 (113 lines); hunks: -28,6 +28,7; -63,6 +64,21 @@ def get_seqlens_expanded(self) -> torch.Tensor:; symbols: get_seqlens_expanded, get_indexer_kvcache_range, get_indexer_seq_len_cpu, get_token_to_batch_idx，涉及 `get_seqlens_expanded, get_indexer_kvcache_range, get_indexer_seq_len_cpu`。
+- 动机: 标题「[DeepSeek v3.2] opt Context Parallelism: support fused moe, multi batch and fp8 kvcache」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「[DeepSeek v3.2] opt Context Parallelism: support fused moe, multi batch and fp8 kvcache」；主要实现面是 `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/nsa/utils.py` modified +209/-5 (214 lines); hunks: -1,15 +1,26; -41,6 +52,75 @@ def is_nsa_enable_prefill_cp():; symbols: is_nsa_enable_prefill_cp, is_nsa_prefill_cp_in_seq_split, is_nsa_prefill_cp_round_robin_split, can_nsa_prefill_cp_round_robin_split，涉及 `is_nsa_enable_prefill_cp, is_nsa_prefill_cp_in_seq_split, is_nsa_prefill_cp_round_robin_split`；`python/sglang/srt/layers/attention/nsa_backend.py` modified +149/-20 (169 lines); hunks: -2,7 +2,7; -25,8 +25,12; symbols: NSAMetadata, TopkTransformMethod, get_seqlens_expanded, get_cu_seqlens_k，涉及 `NSAMetadata, TopkTransformMethod, get_seqlens_expanded`；`python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +45/-68 (113 lines); hunks: -28,6 +28,7; -63,6 +64,21 @@ def get_seqlens_expanded(self) -> torch.Tensor:; symbols: get_seqlens_expanded, get_indexer_kvcache_range, get_indexer_seq_len_cpu, get_token_to_batch_idx，涉及 `get_seqlens_expanded, get_indexer_kvcache_range, get_indexer_seq_len_cpu`；`python/sglang/srt/models/deepseek_v2.py` modified +10/-16 (26 lines); hunks: -64,8 +64,8; -578,9 +578,7 @@ def forward(; symbols: forward, forward_absorb_prepare，涉及 `forward, forward_absorb_prepare`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa/utils.py` modified +209/-5 (214 lines); hunks: -1,15 +1,26; -41,6 +52,75 @@ def is_nsa_enable_prefill_cp():; symbols: is_nsa_enable_prefill_cp, is_nsa_prefill_cp_in_seq_split, is_nsa_prefill_cp_round_robin_split, can_nsa_prefill_cp_round_robin_split
-  - `python/sglang/srt/layers/communicator_nsa_cp.py` modified +60/-133 (193 lines); hunks: -18,7 +18,10; -28,6 +31,11; symbols: __init__, _post_init_communicate, get_fn, _scattered_to_tp_attn_full
   - `python/sglang/srt/layers/attention/nsa_backend.py` modified +149/-20 (169 lines); hunks: -2,7 +2,7; -25,8 +25,12; symbols: NSAMetadata, TopkTransformMethod, get_seqlens_expanded, get_cu_seqlens_k
   - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +45/-68 (113 lines); hunks: -28,6 +28,7; -63,6 +64,21 @@ def get_seqlens_expanded(self) -> torch.Tensor:; symbols: get_seqlens_expanded, get_indexer_kvcache_range, get_indexer_seq_len_cpu, get_token_to_batch_idx
   - `python/sglang/srt/models/deepseek_v2.py` modified +10/-16 (26 lines); hunks: -64,8 +64,8; -578,9 +578,7 @@ def forward(; symbols: forward, forward_absorb_prepare
+  - `docs/basic_usage/deepseek_v32.md` modified +12/-0 (12 lines); hunks: -290,3 +290,15 @@ Some features are still not supported at present.
 - 关键代码摘录:
 
 ```diff
@@ -3301,20 +3249,20 @@ diff -- python/sglang/srt/layers/attention/nsa/utils.py
 +import triton
 +import triton.language as tl
 +from sglang.srt.layers.dp_attention import (
-diff -- python/sglang/srt/layers/communicator_nsa_cp.py
-@@ -18,7 +18,10 @@
--from sglang.srt.layers.attention.nsa.utils import is_nsa_enable_prefill_cp
-+from sglang.srt.layers.attention.nsa.utils import (
-+    is_nsa_enable_prefill_cp,
-+    nsa_use_prefill_cp,
-+)
-@@ -28,6 +31,11 @@
 diff -- python/sglang/srt/layers/attention/nsa_backend.py
 @@ -2,7 +2,7 @@
+-from typing import TYPE_CHECKING, Dict, List, Literal, Optional, TypeAlias
++from typing import TYPE_CHECKING, Dict, List, Literal, Optional, Tuple, TypeAlias
+@@ -25,8 +25,12 @@
++    can_nsa_prefill_cp_round_robin_split,
++    nsa_cp_round_robin_split_data,
++    nsa_cp_round_robin_split_q_seqs,
+diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
+@@ -28,6 +28,7 @@
 ```
 
 - 已读文件:
-  - runtime: `python/sglang/srt/layers/attention/nsa/utils.py` modified +209/-5; `python/sglang/srt/layers/communicator_nsa_cp.py` modified +60/-133; `python/sglang/srt/layers/attention/nsa_backend.py` modified +149/-20; `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +45/-68; `python/sglang/srt/models/deepseek_v2.py` modified +10/-16; `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` modified +5/-5
+  - runtime: `python/sglang/srt/layers/attention/nsa/utils.py` modified +209/-5; `python/sglang/srt/layers/attention/nsa_backend.py` modified +149/-20; `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +45/-68; `python/sglang/srt/models/deepseek_v2.py` modified +10/-16; `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` modified +5/-5
   - docs: `docs/basic_usage/deepseek_v32.md` modified +12/-0
 - 验证与风险: diff 自带测试面 `test/manual/test_deepseek_v32_cp_single_node.py`, `test/srt/test_prefill_adder.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
@@ -3400,7 +3348,7 @@ diff -- test/registered/kernels/test_nsa_indexer.py
 - 状态/时间: merged / 2026-01-07
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/dequant_k_cache.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/quant_k_cache.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/attention/nsa_backend.py`；关联提交 `7d757d6f17ef`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+39/-108，可读 patch 344 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Clean Some Environment Variables for DeepSeek V32」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa/quant_k_cache.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/utils.py`；技术摘要: 覆盖「Clean Some Environment Variables for DeepSeek V32」；主要实现面是 `python/sglang/srt/layers/attention/nsa/quant_k_cache.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/utils.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「Clean Some Environment Variables for DeepSeek V32」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/layers/attention/nsa/quant_k_cache.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/utils.py`；技术摘要: 覆盖「Clean Some Environment Variables for DeepSeek V32」；主要实现面是 `python/sglang/srt/layers/attention/nsa/quant_k_cache.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/utils.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/nsa/quant_k_cache.py` modified +6/-42 (48 lines); hunks: -2,15 +2,9; -56,43 +50,13 @@ def quantize_k_cache_separate(; symbols: quantize_k_cache, quantize_k_cache_separate, _quantize_k_cache_slow, _quantize_k_cache_ref，涉及 `quantize_k_cache, quantize_k_cache_separate, _quantize_k_cache_slow`；`python/sglang/srt/layers/attention/nsa_backend.py` modified +8/-19 (27 lines); hunks: -22,9 +22,6; -230,7 +227,7 @@ def topk_transform(; symbols: topk_transform, forward_extend, forward_decode，涉及 `topk_transform, forward_extend, forward_decode`；`python/sglang/srt/layers/attention/nsa/utils.py` modified +0/-24 (24 lines); hunks: -15,35 +15,11; symbols: print_nsa_bool_env_vars, compute_nsa_seqlens，涉及 `print_nsa_bool_env_vars, compute_nsa_seqlens`；`python/sglang/srt/layers/attention/nsa/dequant_k_cache.py` modified +2/-7 (9 lines); hunks: -2,17 +2,12; symbols: dequantize_k_cache, _dequantize_k_cache_slow, _dequantize_k_cache_ref，涉及 `dequantize_k_cache, _dequantize_k_cache_slow, _dequantize_k_cache_ref`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa/quant_k_cache.py` modified +6/-42 (48 lines); hunks: -2,15 +2,9; -56,43 +50,13 @@ def quantize_k_cache_separate(; symbols: quantize_k_cache, quantize_k_cache_separate, _quantize_k_cache_slow, _quantize_k_cache_ref
@@ -3441,7 +3389,7 @@ diff -- python/sglang/srt/layers/attention/nsa/utils.py
 - 状态/时间: merged / 2026-01-08
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+255/-228，可读 patch 536 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[1/n]deepseek_v2.py Refactor: attention backend handlers and forward method definition」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_backend_handler.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_methods.py`；未提供可用技术摘要。
+- 动机: 标题「[1/n]deepseek_v2.py Refactor: attention backend handlers and forward method definition」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_backend_handler.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_methods.py`；技术摘要: 覆盖「[1/n]deepseek_v2.py Refactor: attention backend handlers and forward method definition」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_backend_handler.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_methods.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +18/-228 (246 lines); hunks: -21,7 +21,6; -109,7 +108,6; symbols: add_forward_absorb_core_attention_backend, AttnForwardMethod, _dispatch_mla_subtype, AttentionBackendRegistry，涉及 `add_forward_absorb_core_attention_backend, AttnForwardMethod, _dispatch_mla_subtype`；`python/sglang/srt/models/deepseek_common/attention_backend_handler.py` added +182/-0 (182 lines); hunks: -0,0 +1,182; symbols: AttentionBackendRegistry, register, get_handler, _dispatch_mla_subtype，涉及 `AttentionBackendRegistry, register, get_handler`；`python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_methods.py` added +32/-0 (32 lines); hunks: -0,0 +1,32; symbols: AttnForwardMethod，涉及 `AttnForwardMethod`；`python/sglang/srt/models/deepseek_common/utils.py` added +23/-0 (23 lines); hunks: -0,0 +1,23。
 - 代码 diff 细节:
   - `python/sglang/srt/models/deepseek_v2.py` modified +18/-228 (246 lines); hunks: -21,7 +21,6; -109,7 +108,6; symbols: add_forward_absorb_core_attention_backend, AttnForwardMethod, _dispatch_mla_subtype, AttentionBackendRegistry
@@ -3690,7 +3638,7 @@ diff -- python/sglang/srt/layers/attention/nsa/index_buf_accessor.py
 - 状态/时间: merged / 2026-01-14
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/basic_usage/deepseek_v32.md`；关联提交 `2122fea3c408`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+2/-2，可读 patch 18 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Update deepseekV32 Cp doc」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `docs/basic_usage/deepseek_v32.md`；技术摘要: 覆盖「Update deepseekV32 Cp doc」；主要实现面是 `docs/basic_usage/deepseek_v32.md`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「Update deepseekV32 Cp doc」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `docs/basic_usage/deepseek_v32.md`；技术摘要: 覆盖「Update deepseekV32 Cp doc」；主要实现面是 `docs/basic_usage/deepseek_v32.md`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs/basic_usage/deepseek_v32.md` modified +2/-2 (4 lines); hunks: -394,7 +394,7 @@ python -m sglang.launch_server \; -419,7 +419,7 @@ python -m sglang.launch_server \。
 - 代码 diff 细节:
   - `docs/basic_usage/deepseek_v32.md` modified +2/-2 (4 lines); hunks: -394,7 +394,7 @@ python -m sglang.launch_server \; -419,7 +419,7 @@ python -m sglang.launch_server \
@@ -3952,7 +3900,7 @@ diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/17452
 - 状态/时间: merged / 2026-01-21
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/kernels/test_nsa_indexer.py`；关联提交 `be5121b45219`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+16/-0，可读 patch 23 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Fix NSA indexer in the nightly test」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `test/registered/kernels/test_nsa_indexer.py`；技术摘要: 覆盖「Fix NSA indexer in the nightly test」；主要实现面是 `test/registered/kernels/test_nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/kernels/test_nsa_indexer.py` modified +16/-0 (16 lines); hunks: -79,6 +79,22 @@ def get_page_table_64(self) -> torch.Tensor:; symbols: get_page_table_64, get_page_table_1, get_seqlens_expanded，涉及 `get_page_table_64, get_page_table_1, get_seqlens_expanded`。
@@ -4075,7 +4023,7 @@ diff -- python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla
 - 状态/时间: merged / 2026-01-23
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa_backend.py`；关联提交 `2fb328109fb9`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+118/-31，可读 patch 228 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[DeepSeek V3.2] Enable trtllm NSA with bf16 kvcache」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa_backend.py`；技术摘要: 覆盖「[DeepSeek V3.2] Enable trtllm NSA with bf16 kvcache」；主要实现面是 `python/sglang/srt/layers/attention/nsa_backend.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[DeepSeek V3.2] Enable trtllm NSA with bf16 kvcache」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/attention/nsa_backend.py`；技术摘要: 覆盖「[DeepSeek V3.2] Enable trtllm NSA with bf16 kvcache」；主要实现面是 `python/sglang/srt/layers/attention/nsa_backend.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/nsa_backend.py` modified +54/-3 (57 lines); hunks: -254,7 +254,9 @@ def topk_transform(; -287,6 +289,9 @@ def __init__(; symbols: topk_transform, NativeSparseAttnBackend, __init__, forward_decode，涉及 `topk_transform, NativeSparseAttnBackend, __init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa_backend.py` modified +54/-3 (57 lines); hunks: -254,7 +254,9 @@ def topk_transform(; -287,6 +289,9 @@ def __init__(; symbols: topk_transform, NativeSparseAttnBackend, __init__, forward_decode
@@ -4100,9 +4048,9 @@ diff -- python/sglang/srt/layers/attention/nsa_backend.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/17682
 - 状态/时间: merged / 2026-01-24
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/kernels/test_nsa_indexer.py`；关联提交 `137eb5b95cb1`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+3/-1，可读 patch 25 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Fix NSA indexer test and move it to pre commit test」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `test/registered/kernels/test_nsa_indexer.py`；未提供可用技术摘要。
+- 动机: 标题「Fix NSA indexer test and move it to pre commit test」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `test/registered/kernels/test_nsa_indexer.py`；技术摘要: 覆盖「Fix NSA indexer test and move it to pre commit test」；主要实现面是 `test/registered/kernels/test_nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/kernels/test_nsa_indexer.py` modified +3/-1 (4 lines); hunks: -24,7 +24,7; -41,6 +41,7; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `test/registered/kernels/test_nsa_indexer.py` modified +3/-1 (4 lines); hunks: -24,7 +24,7; -41,6 +41,7; symbols: __init__
@@ -4156,7 +4104,7 @@ diff -- python/sglang/srt/layers/attention/nsa_backend.py
 - 状态/时间: closed / 2026-01-25
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+56/-60，可读 patch 341 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[TileLang] Align TileLang NSA kernel with current TileLang and stabilize output」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py`；技术摘要: 覆盖「[TileLang] Align TileLang NSA kernel with current TileLang and stabilize output」；主要实现面是 `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[TileLang] Align TileLang NSA kernel with current TileLang and stabilize output」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py`；技术摘要: 覆盖「[TileLang] Align TileLang NSA kernel with current TileLang and stabilize output」；主要实现面是 `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` modified +56/-60 (116 lines); hunks: -11,26 +11,27; -41,7 +42,7 @@ def fast_round_scale(amax, fp8_max_inv):; symbols: fast_log2_ceil, fast_pow2, fast_round_scale, act_quant_kernel，涉及 `fast_log2_ceil, fast_pow2, fast_round_scale`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` modified +56/-60 (116 lines); hunks: -11,26 +11,27; -41,7 +42,7 @@ def fast_round_scale(amax, fp8_max_inv):; symbols: fast_log2_ceil, fast_pow2, fast_round_scale, act_quant_kernel
@@ -4263,7 +4211,7 @@ diff -- examples/chat_template/tool_chat_template_deepseekv32.jinja
 - 状态/时间: merged / 2026-01-26
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；关联提交 `b56366f8275a`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+195/-61，可读 patch 364 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[NPU]DeepSeek-V3.2 support npu mlaprolog」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py`；技术摘要: 覆盖「[NPU]DeepSeek-V3.2 support npu mlaprolog」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[NPU]DeepSeek-V3.2 support npu mlaprolog」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py`；技术摘要: 覆盖「[NPU]DeepSeek-V3.2 support npu mlaprolog」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +5/-0 (5 lines); hunks: -1113,6 +1113,7 @@ def forward_npu(; -1136,6 +1137,9 @@ def forward_npu(; symbols: forward_npu，涉及 `forward_npu`；`python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` modified +116/-55 (171 lines); hunks: -1,3 +1,4; -281,61 +282,25 @@ def forward_dsa_prepare_npu(; symbols: forward_dsa_prepare_npu, forward_dsa_core_npu, npu_mla_preprocess，涉及 `forward_dsa_prepare_npu, forward_dsa_core_npu, npu_mla_preprocess`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +5/-0 (5 lines); hunks: -1113,6 +1113,7 @@ def forward_npu(; -1136,6 +1137,9 @@ def forward_npu(; symbols: forward_npu
@@ -4416,7 +4364,7 @@ diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
 - 状态/时间: merged / 2026-01-28
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/amd/accuracy/mi35x/test_deepseek_v32_dp_eval_mi35x.py`, `test/registered/amd/accuracy/mi35x/test_deepseek_v32_eval_mi35x.py`, `test/registered/amd/accuracy/mi35x/test_deepseek_v32_mtp_eval_mi35x.py`, `test/registered/amd/perf/mi35x/test_deepseek_v32_basic_perf_mi35x.py`, `test/registered/amd/perf/mi35x/test_deepseek_v32_mtp_perf_mi35x.py`；关联提交 `f8636fbb253a`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 27 个文件，+1540/-43，可读 patch 1823 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[AMD] Add Kimi-K2, DeepSeek-V3.2 tests to nightly CI」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `test/registered/amd/accuracy/mi35x/test_deepseek_v32_mtp_eval_mi35x.py`, `test/registered/amd/accuracy/mi35x/test_deepseek_v32_dp_eval_mi35x.py`, `test/registered/amd/perf/mi35x/test_deepseek_v32_mtp_perf_mi35x.py`；技术摘要: 覆盖「[AMD] Add Kimi-K2, DeepSeek-V3.2 tests to nightly CI」；主要实现面是 `test/registered/amd/accuracy/mi35x/test_deepseek_v32_mtp_eval_mi35x.py`, `test/registered/amd/accuracy/mi35x/test_deepseek_v32_dp_eval_mi35x.py`, `test/registered/amd/perf/mi35x/test_deepseek_v32_mtp_perf_mi35x.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[AMD] Add Kimi-K2, DeepSeek-V3.2 tests to nightly CI」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `test/registered/amd/accuracy/mi35x/test_deepseek_v32_mtp_eval_mi35x.py`, `test/registered/amd/accuracy/mi35x/test_deepseek_v32_dp_eval_mi35x.py`, `test/registered/amd/perf/mi35x/test_deepseek_v32_mtp_perf_mi35x.py`；技术摘要: 覆盖「[AMD] Add Kimi-K2, DeepSeek-V3.2 tests to nightly CI」；主要实现面是 `test/registered/amd/accuracy/mi35x/test_deepseek_v32_mtp_eval_mi35x.py`, `test/registered/amd/accuracy/mi35x/test_deepseek_v32_dp_eval_mi35x.py`, `test/registered/amd/perf/mi35x/test_deepseek_v32_mtp_perf_mi35x.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/amd/accuracy/mi35x/test_deepseek_v32_mtp_eval_mi35x.py` added +142/-0 (142 lines); hunks: -0,0 +1,142; symbols: TestDeepseekV32TPMTP, setUpClass, tearDownClass, test_a_gsm8k，涉及 `TestDeepseekV32TPMTP, setUpClass, tearDownClass`；`test/registered/amd/accuracy/mi35x/test_deepseek_v32_dp_eval_mi35x.py` added +119/-0 (119 lines); hunks: -0,0 +1,119; symbols: TestDeepseekV32DP, setUpClass, tearDownClass, test_a_gsm8k，涉及 `TestDeepseekV32DP, setUpClass, tearDownClass`；`test/registered/amd/perf/mi35x/test_deepseek_v32_mtp_perf_mi35x.py` modified +59/-3 (62 lines); hunks: -13,12 +13,17; -57,11 +62,58 @@ def generate_simple_markdown_report(results: List[BenchmarkR...; symbols: generate_simple_markdown_report, _run_benchmark_with_timeout, TestNightlyDeepseekV32MTPPerformance, setUpClass，涉及 `generate_simple_markdown_report, _run_benchmark_with_timeout, TestNightlyDeepseekV32MTPPerformance`；`test/registered/amd/accuracy/mi35x/test_deepseek_v32_eval_mi35x.py` modified +3/-0 (3 lines); hunks: -215,6 +215,9 @@ def test_deepseek_v32_accuracy(self):; symbols: test_deepseek_v32_accuracy，涉及 `test_deepseek_v32_accuracy`。
 - 代码 diff 细节:
   - `test/registered/amd/accuracy/mi35x/test_deepseek_v32_mtp_eval_mi35x.py` added +142/-0 (142 lines); hunks: -0,0 +1,142; symbols: TestDeepseekV32TPMTP, setUpClass, tearDownClass, test_a_gsm8k
@@ -4478,52 +4426,11 @@ diff -- test/registered/8-gpu-models/test_deepseek_v32.py
   - tests: `test/registered/8-gpu-models/test_deepseek_v32.py` modified +11/-4
 - 验证与风险: diff 自带测试面 `python/sglang/test/run_combined_tests.py`, `python/sglang/test/tool_call_test_runner.py`, `test/registered/8-gpu-models/test_deepseek_v32.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
-### PR #18094 - support deepseekv3.2-piecewise-cuda-graph
-
-- 链接: https://github.com/sgl-project/sglang/pull/18094
-- 状态/时间: open / 2026-02-02
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 15 个文件，+243/-91，可读 patch 656 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「support deepseekv3.2-piecewise-cuda-graph」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/radix_attention.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py`；技术摘要: 覆盖「support deepseekv3.2-piecewise-cuda-graph」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/radix_attention.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +148/-48 (196 lines); hunks: -32,6 +32,10; -64,6 +68,7; symbols: forward, forward_deepep, _post_combine_hook, __init__，涉及 `forward, forward_deepep, _post_combine_hook`；`python/sglang/srt/layers/radix_attention.py` modified +19/-19 (38 lines); hunks: -114,25 +114,25 @@ def forward(; symbols: forward，涉及 `forward`；`python/sglang/srt/layers/moe/fused_moe_triton/layer.py` modified +12/-3 (15 lines); hunks: -1405,21 +1405,30 @@ def forward_impl(self, hidden_states: torch.Tensor, topk...; symbols: forward_impl, moe_forward_piecewise_cuda_graph_impl，涉及 `forward_impl, moe_forward_piecewise_cuda_graph_impl`；`python/sglang/srt/layers/moe/topk.py` modified +12/-3 (15 lines); hunks: -740,15 +740,20 @@ def is_power_of_two(n):; -775,6 +780,11 @@ def biased_grouped_topk_gpu(; symbols: is_power_of_two, _mask_topk_ids_padded_region, _biased_grouped_topk_postprocess, biased_grouped_topk_gpu，涉及 `is_power_of_two, _mask_topk_ids_padded_region, _biased_grouped_topk_postprocess`。
-- 代码 diff 细节:
-  - `python/sglang/srt/models/deepseek_v2.py` modified +148/-48 (196 lines); hunks: -32,6 +32,10; -64,6 +68,7; symbols: forward, forward_deepep, _post_combine_hook, __init__
-  - `python/sglang/srt/layers/radix_attention.py` modified +19/-19 (38 lines); hunks: -114,25 +114,25 @@ def forward(; symbols: forward
-  - `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` modified +12/-3 (15 lines); hunks: -1405,21 +1405,30 @@ def forward_impl(self, hidden_states: torch.Tensor, topk...; symbols: forward_impl, moe_forward_piecewise_cuda_graph_impl
-  - `python/sglang/srt/layers/moe/topk.py` modified +12/-3 (15 lines); hunks: -740,15 +740,20 @@ def is_power_of_two(n):; -775,6 +780,11 @@ def biased_grouped_topk_gpu(; symbols: is_power_of_two, _mask_topk_ids_padded_region, _biased_grouped_topk_postprocess, biased_grouped_topk_gpu
-  - `python/sglang/srt/layers/communicator.py` modified +7/-5 (12 lines); hunks: -534,11 +534,13 @@ def prepare_attn(; symbols: prepare_attn, _tp_reduce_scatter
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/models/deepseek_v2.py
-@@ -32,6 +32,10 @@
-+from sglang.srt.compilation.compilation_config import register_split_op
-+from sglang.srt.compilation.piecewise_context_manager import (
-+    get_forward_context,
-+)
-@@ -64,6 +68,7 @@
-+    AttentionInputs,
-diff -- python/sglang/srt/layers/radix_attention.py
-@@ -114,25 +114,25 @@ def forward(
--        if forward_batch.forward_mode.is_extend() and get_forward_context() is not None:
--            if self.qk_head_dim != self.v_head_dim:
--                output = q.new_empty((q.shape[0], self.tp_q_head_num * self.v_head_dim))
--            else:
--                output = torch.empty_like(q)
--            unified_attention_with_output(
-diff -- python/sglang/srt/layers/moe/fused_moe_triton/layer.py
-@@ -1405,21 +1405,30 @@ def forward_impl(self, hidden_states: torch.Tensor, topk_output: TopKOutput):
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +148/-48; `python/sglang/srt/layers/radix_attention.py` modified +19/-19; `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` modified +12/-3; `python/sglang/srt/layers/moe/topk.py` modified +12/-3; `python/sglang/srt/layers/communicator.py` modified +7/-5; `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` modified +7/-2
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/compilation/compilation_config.py`, `python/sglang/srt/distributed/parallel_state.py`, `python/sglang/srt/eplb/expert_distribution.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #17076 - [DeepSeek V3.2] [Bugfix] slice indexer and padding fa3 when can not run cuda graph
 
 - 链接: https://github.com/sgl-project/sglang/pull/17076
 - 状态/时间: merged / 2026-02-02
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `test/registered/kernels/test_nsa_indexer.py`；关联提交 `677f3c49dabf`；保留自原 history/skill 显式引用
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/attention/nsa_backend.py`；关联提交 `677f3c49dabf`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+58/-7，可读 patch 135 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[DeepSeek V3.2] [Bugfix] slice indexer and padding fa3 when can not run cuda graph」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py`；技术摘要: 覆盖「[DeepSeek V3.2] [Bugfix] slice indexer and padding fa3 when can not run cuda graph」；主要实现面是 `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/nsa/utils.py` modified +28/-4 (32 lines); hunks: -9,12 +9,15; -81,12 +84,33 @@ def nsa_cp_round_robin_split_data(input_: Union[torch.Tensor...; symbols: nsa_cp_round_robin_split_data, pad_nsa_cache_seqlens, cal_padded_tokens，涉及 `nsa_cp_round_robin_split_data, pad_nsa_cache_seqlens, cal_padded_tokens`；`python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +20/-2 (22 lines); hunks: -86,6 +86,11 @@ def get_indexer_seq_len_cpu(self) -> torch.Tensor:; -390,6 +395,9 @@ def _get_topk_paged(; symbols: get_indexer_seq_len_cpu, get_nsa_extend_len_cpu, get_token_to_batch_idx, _get_topk_paged，涉及 `get_indexer_seq_len_cpu, get_nsa_extend_len_cpu, get_token_to_batch_idx`；`python/sglang/srt/layers/attention/nsa_backend.py` modified +3/-0 (3 lines); hunks: -189,6 +189,9 @@ def get_indexer_kvcache_range(self) -> Tuple[torch.Tensor, t...; symbols: get_indexer_kvcache_range, get_indexer_seq_len_cpu, get_nsa_extend_len_cpu, get_token_to_batch_idx，涉及 `get_indexer_kvcache_range, get_indexer_seq_len_cpu, get_nsa_extend_len_cpu`；`test/registered/kernels/test_nsa_indexer.py` modified +7/-1 (8 lines); hunks: -1,5 +1,5; -132,6 +132,12 @@ def get_indexer_seq_len_cpu(self) -> torch.Tensor:; symbols: get_indexer_seq_len_cpu, get_nsa_extend_len_cpu, get_token_to_batch_idx，涉及 `get_indexer_seq_len_cpu, get_nsa_extend_len_cpu, get_token_to_batch_idx`。
@@ -4566,7 +4473,7 @@ diff -- python/sglang/srt/layers/attention/nsa_backend.py
 - 状态/时间: merged / 2026-02-02
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；关联提交 `b0a6d5244cef`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+16/-2，可读 patch 60 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[NPU] support dsv32 radixcache on ascend」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「[NPU] support dsv32 radixcache on ascend」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[NPU] support dsv32 radixcache on ascend」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「[NPU] support dsv32 radixcache on ascend」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +1/-1 (2 lines); hunks: -1226,7 +1226,7 @@ def forward_npu(; symbols: forward_npu，涉及 `forward_npu`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +1/-1 (2 lines); hunks: -1226,7 +1226,7 @@ def forward_npu(; symbols: forward_npu
@@ -4630,7 +4537,7 @@ diff -- python/sglang/srt/models/deepseek_v2.py
 - 状态/时间: open / 2026-02-05
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+98/-10，可读 patch 267 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[NPU] allgather after qlora for dsv3.2」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「[NPU] allgather after qlora for dsv3.2」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[NPU] allgather after qlora for dsv3.2」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「[NPU] allgather after qlora for dsv3.2」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +28/-3 (31 lines); hunks: -28,12 +28,21; -1137,6 +1146,7 @@ def forward_npu(; symbols: forward_npu，涉及 `forward_npu`；`python/sglang/srt/layers/communicator.py` modified +28/-2 (30 lines); hunks: -168,14 +168,15 @@ class AttnTpContext:; -233,6 +234,29 @@ def get_attn_tp_context():; symbols: AttnTpContext, __init__, init_context, get_attn_tp_context，涉及 `AttnTpContext, __init__, init_context`；`python/sglang/srt/models/deepseek_v2.py` modified +10/-1 (11 lines); hunks: -1353,13 +1353,15 @@ def forward(; -1370,6 +1372,7 @@ def forward_prepare(; symbols: forward, forward_prepare，涉及 `forward, forward_prepare`；`python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` modified +27/-3 (30 lines); hunks: -13,7 +13,12; -285,6 +290,7 @@ def forward_dsa_prepare_npu(; symbols: forward_dsa_prepare_npu，涉及 `forward_dsa_prepare_npu`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +28/-3 (31 lines); hunks: -28,12 +28,21; -1137,6 +1146,7 @@ def forward_npu(; symbols: forward_npu
@@ -4671,7 +4578,7 @@ diff -- python/sglang/srt/models/deepseek_v2.py
 - 状态/时间: merged / 2026-02-10
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/models/deepseek_v2.py`；关联提交 `e8a2c133807c`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+33/-19，可读 patch 131 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Deepseekv32 compatibility with transformers v5」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「Deepseekv32 compatibility with transformers v5」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「Deepseekv32 compatibility with transformers v5」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「Deepseekv32 compatibility with transformers v5」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +13/-4 (17 lines); hunks: -1150,6 +1150,7 @@ def __init__(; -1162,6 +1163,7 @@ def __init__(; symbols: __init__，涉及 `__init__`；`python/sglang/srt/layers/attention/nsa_backend.py` modified +4/-0 (4 lines); hunks: -300,6 +300,8 @@ def __init__(; -1837,6 +1839,8 @@ def set_nsa_prefill_impl(self, forward_batch: Optional[For...; symbols: __init__, set_nsa_prefill_impl，涉及 `__init__, set_nsa_prefill_impl`；`python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +2/-1 (3 lines); hunks: -145,6 +145,7 @@ def __init__(; -202,7 +203,7 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/deepseek_v2.py` modified +13/-4 (17 lines); hunks: -1150,6 +1150,7 @@ def __init__(; -1162,6 +1163,7 @@ def __init__(; symbols: __init__
@@ -4704,40 +4611,13 @@ diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
   - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +13/-4; `python/sglang/srt/layers/attention/nsa_backend.py` modified +4/-0; `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +2/-1
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/environ.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #18542 - fix: fixed aux hidden state index out of range when using eagle3 with nsa cp
-
-- 链接: https://github.com/sgl-project/sglang/pull/18542
-- 状态/时间: open / 2026-02-10
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+9/-1，可读 patch 17 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「fix: fixed aux hidden state index out of range when using eagle3 with nsa cp」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「fix: fixed aux hidden state index out of range when using eagle3 with nsa cp」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +9/-1 (10 lines); hunks: -2708,7 +2708,15 @@ def forward(; symbols: forward，涉及 `forward`。
-- 代码 diff 细节:
-  - `python/sglang/srt/models/deepseek_v2.py` modified +9/-1 (10 lines); hunks: -2708,7 +2708,15 @@ def forward(; symbols: forward
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/models/deepseek_v2.py
-@@ -2708,7 +2708,15 @@ def forward(
--                    if self.enable_a2a_moe and i > self.first_k_dense_replace:
-+                    if nsa_use_prefill_cp(forward_batch):
-+                        aux_hidden_state = cp_all_gather_rerange_output(
-+                            hidden_states + residual,
-+                            self.cp_size,
-+                            forward_batch,
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +9/-1
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/deepseek_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #18488 - Tilelang sparse decode fwd for dsv32 mi355
 
 - 链接: https://github.com/sgl-project/sglang/pull/18488
 - 状态/时间: merged / 2026-02-10
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py`；关联提交 `4262f5259b94`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+257/-0，可读 patch 271 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Tilelang sparse decode fwd for dsv32 mi355」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py`；技术摘要: 覆盖「Tilelang sparse decode fwd for dsv32 mi355」；主要实现面是 `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「Tilelang sparse decode fwd for dsv32 mi355」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py`；技术摘要: 覆盖「Tilelang sparse decode fwd for dsv32 mi355」；主要实现面是 `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` modified +257/-0 (257 lines); hunks: -773,6 +773,242 @@ def main(; -788,6 +1024,27 @@ def tilelang_sparse_fwd(; symbols: main, sparse_mla_fwd_decode_partial, sparse_mla_fwd_decode_combine，涉及 `main, sparse_mla_fwd_decode_partial, sparse_mla_fwd_decode_combine`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` modified +257/-0 (257 lines); hunks: -773,6 +773,242 @@ def main(; -788,6 +1024,27 @@ def tilelang_sparse_fwd(; symbols: main, sparse_mla_fwd_decode_partial, sparse_mla_fwd_decode_combine
@@ -4791,7 +4671,7 @@ diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
 - 状态/时间: merged / 2026-02-11
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/basic_usage/deepseek_v32.md`；关联提交 `947927bdb55a`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+5/-5，可读 patch 45 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[V3.2] Change default CP token split method to `--round-robin-split`」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `docs/basic_usage/deepseek_v32.md`；技术摘要: 覆盖「[V3.2] Change default CP token split method to `--round-robin-split`」；主要实现面是 `docs/basic_usage/deepseek_v32.md`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[V3.2] Change default CP token split method to `--round-robin-split`」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `docs/basic_usage/deepseek_v32.md`；技术摘要: 覆盖「[V3.2] Change default CP token split method to `--round-robin-split`」；主要实现面是 `docs/basic_usage/deepseek_v32.md`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs/basic_usage/deepseek_v32.md` modified +2/-2 (4 lines); hunks: -306,7 +306,7 @@ DeepSeek-V3.2-Speciale:; -326,7 +326,7 @@ Example:。
 - 代码 diff 细节:
   - `docs/basic_usage/deepseek_v32.md` modified +2/-2 (4 lines); hunks: -306,7 +306,7 @@ DeepSeek-V3.2-Speciale:; -326,7 +326,7 @@ Example:
@@ -4817,7 +4697,7 @@ diff -- docs/basic_usage/deepseek_v32.md
 - 状态/时间: open / 2026-02-12
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+100/-0，可读 patch 101 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Add DeepSeek V32 PD disaggregation test」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `test/registered/distributed/test_disaggregation_deepseek_v32.py`；未提供可用技术摘要。
+- 动机: 标题「Add DeepSeek V32 PD disaggregation test」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `test/registered/distributed/test_disaggregation_deepseek_v32.py`；技术摘要: 覆盖「Add DeepSeek V32 PD disaggregation test」；主要实现面是 `test/registered/distributed/test_disaggregation_deepseek_v32.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/distributed/test_disaggregation_deepseek_v32.py` added +100/-0 (100 lines); hunks: -0,0 +1,100; symbols: TestDisaggregationDeepseekV32, setUpClass, start_prefill, start_decode，涉及 `TestDisaggregationDeepseekV32, setUpClass, start_prefill`。
 - 代码 diff 细节:
   - `test/registered/distributed/test_disaggregation_deepseek_v32.py` added +100/-0 (100 lines); hunks: -0,0 +1,100; symbols: TestDisaggregationDeepseekV32, setUpClass, start_prefill, start_decode
@@ -4844,7 +4724,7 @@ diff -- test/registered/distributed/test_disaggregation_deepseek_v32.py
 - 状态/时间: merged / 2026-02-13
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 27 个文件，+847/-118，可读 patch 1862 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「refactor context parallel state」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/layers/dp_attention.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/entrypoints/engine.py`；技术摘要: 覆盖「refactor context parallel state」；主要实现面是 `python/sglang/srt/layers/dp_attention.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/entrypoints/engine.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「refactor context parallel state」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/layers/dp_attention.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/entrypoints/engine.py`；技术摘要: 覆盖「refactor context parallel state」；主要实现面是 `python/sglang/srt/layers/dp_attention.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/entrypoints/engine.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/dp_attention.py` modified +48/-47 (95 lines); hunks: -12,6 +12,12; -31,9 +37,6; symbols: is_dp_max_padding, compute_dp_attention_world_info, initialize_dp_attention，涉及 `is_dp_max_padding, compute_dp_attention_world_info, initialize_dp_attention`；`python/sglang/srt/layers/attention/nsa/utils.py` modified +22/-21 (43 lines); hunks: -13,11 +13,11; -52,7 +52,7 @@ def is_nsa_prefill_cp_round_robin_split():; symbols: is_nsa_prefill_cp_round_robin_split, can_nsa_prefill_cp_round_robin_split, nsa_cp_round_robin_split_data, cal_padded_tokens，涉及 `is_nsa_prefill_cp_round_robin_split, can_nsa_prefill_cp_round_robin_split, nsa_cp_round_robin_split_data`；`python/sglang/srt/entrypoints/engine.py` modified +25/-1 (26 lines); hunks: -938,7 +938,29 @@ def _launch_scheduler_processes(; -948,6 +970,8 @@ def _launch_scheduler_processes(; symbols: _launch_scheduler_processes，涉及 `_launch_scheduler_processes`；`python/sglang/srt/model_executor/model_runner.py` modified +11/-3 (14 lines); hunks: -290,6 +290,8 @@ def __init__(; -303,9 +305,13 @@ def __init__(; symbols: __init__, initialize, _，涉及 `__init__, initialize, _`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/dp_attention.py` modified +48/-47 (95 lines); hunks: -12,6 +12,12; -31,9 +37,6; symbols: is_dp_max_padding, compute_dp_attention_world_info, initialize_dp_attention
@@ -4985,15 +4865,14 @@ diff -- python/sglang/srt/models/deepseek_v2.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/18389
 - 状态/时间: merged / 2026-02-16
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/basic_usage/deepseek_v32.md`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/models/deepseek_v2.py`, `test/registered/kernels/test_nsa_indexer.py`；关联提交 `0ffd0a3995e5`；保留自原 history/skill 显式引用
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/basic_usage/deepseek_v32.md`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/models/deepseek_v2.py`；关联提交 `0ffd0a3995e5`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 10 个文件，+352/-183，可读 patch 914 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Nsa trtllm mla sparse fp8 support with Deepseek v3.2 NVFP4」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/models/deepseek_v2.py`, `docs/basic_usage/deepseek_v32.md`；技术摘要: 覆盖「Nsa trtllm mla sparse fp8 support with Deepseek v3.2 NVFP4」；主要实现面是 `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/models/deepseek_v2.py`, `docs/basic_usage/deepseek_v32.md`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/layers/attention/nsa_backend.py` modified +172/-66 (238 lines); hunks: -33,7 +33,10; -340,6 +343,7 @@ def __init__(; symbols: __init__, forward_extend，涉及 `__init__, forward_extend`；`python/sglang/srt/models/deepseek_v2.py` modified +6/-0 (6 lines); hunks: -1488,6 +1488,12 @@ def _fuse_rope_for_trtllm_mla(self, forward_batch: Forwar...; symbols: _fuse_rope_for_trtllm_mla，涉及 `_fuse_rope_for_trtllm_mla`；`docs/basic_usage/deepseek_v32.md` modified +4/-0 (4 lines); hunks: -66,9 +66,13 @@ python3 -m sglang.launch_server --model deepseek-ai/DeepSeek-...；`test/registered/kernels/test_nsa_indexer.py` modified +1/-0 (1 lines); hunks: -232,6 +232,7 @@ def __init__(self, config=None):; symbols: __init__，涉及 `__init__`。
+- 实现要点: `python/sglang/srt/layers/attention/nsa_backend.py` modified +172/-66 (238 lines); hunks: -33,7 +33,10; -340,6 +343,7 @@ def __init__(; symbols: __init__, forward_extend，涉及 `__init__, forward_extend`；`python/sglang/srt/models/deepseek_v2.py` modified +6/-0 (6 lines); hunks: -1488,6 +1488,12 @@ def _fuse_rope_for_trtllm_mla(self, forward_batch: Forwar...; symbols: _fuse_rope_for_trtllm_mla，涉及 `_fuse_rope_for_trtllm_mla`；`docs/basic_usage/deepseek_v32.md` modified +4/-0 (4 lines); hunks: -66,9 +66,13 @@ python3 -m sglang.launch_server --model deepseek-ai/DeepSeek-...。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa_backend.py` modified +172/-66 (238 lines); hunks: -33,7 +33,10; -340,6 +343,7 @@ def __init__(; symbols: __init__, forward_extend
   - `python/sglang/srt/models/deepseek_v2.py` modified +6/-0 (6 lines); hunks: -1488,6 +1488,12 @@ def _fuse_rope_for_trtllm_mla(self, forward_batch: Forwar...; symbols: _fuse_rope_for_trtllm_mla
   - `docs/basic_usage/deepseek_v32.md` modified +4/-0 (4 lines); hunks: -66,9 +66,13 @@ python3 -m sglang.launch_server --model deepseek-ai/DeepSeek-...
-  - `test/registered/kernels/test_nsa_indexer.py` modified +1/-0 (1 lines); hunks: -232,6 +232,7 @@ def __init__(self, config=None):; symbols: __init__
 - 关键代码摘录:
 
 ```diff
@@ -5020,7 +4899,6 @@ diff -- docs/basic_usage/deepseek_v32.md
 - 已读文件:
   - runtime: `python/sglang/srt/layers/attention/nsa_backend.py` modified +172/-66; `python/sglang/srt/models/deepseek_v2.py` modified +6/-0
   - docs: `docs/basic_usage/deepseek_v32.md` modified +4/-0
-  - tests: `test/registered/kernels/test_nsa_indexer.py` modified +1/-0
 - 验证与风险: diff 自带测试面 `test/registered/hicache/test_nsa_pool_host_unit.py`, `test/registered/kernels/test_nsa_indexer.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #18978 - [AMD] Fix mi35x dsv32 mtp nightly
@@ -5131,9 +5009,9 @@ diff -- python/sglang/srt/layers/attention/nsa/utils.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/19041
 - 状态/时间: merged / 2026-02-22
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `test/registered/kernels/test_nsa_indexer.py`；关联提交 `eddf193292d3`；保留自原 history/skill 显式引用
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；关联提交 `eddf193292d3`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+48/-9，可读 patch 121 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[DSv32] [GLM5] Improve Model Quality by Avoiding FP32 Precision Loss in `weights_proj`」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `test/registered/kernels/test_nsa_indexer.py`；技术摘要: 覆盖「[DSv32] [GLM5] Improve Model Quality by Avoiding FP32 Precision Loss in `weights_proj`」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `test/registered/kernels/test_nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[DSv32] [GLM5] Improve Model Quality by Avoiding FP32 Precision Loss in `weights_proj`」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `test/registered/kernels/test_nsa_indexer.py`；技术摘要: 覆盖「[DSv32] [GLM5] Improve Model Quality by Avoiding FP32 Precision Loss in `weights_proj`」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `test/registered/kernels/test_nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +17/-7 (24 lines); hunks: -229,21 +229,31 @@ def _with_real_sm_count(self):; symbols: _with_real_sm_count, _project_and_scale_head_gates, _weights_proj_bf16_in_fp32_out, _get_logits_head_gate，涉及 `_with_real_sm_count, _project_and_scale_head_gates, _weights_proj_bf16_in_fp32_out`；`test/registered/kernels/test_nsa_indexer.py` modified +2/-2 (4 lines); hunks: -24,7 +24,7; -34,7 +34,7。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +17/-7 (24 lines); hunks: -229,21 +229,31 @@ def _with_real_sm_count(self):; symbols: _with_real_sm_count, _project_and_scale_head_gates, _weights_proj_bf16_in_fp32_out, _get_logits_head_gate
@@ -5162,45 +5040,6 @@ diff -- test/registered/kernels/test_nsa_indexer.py
   - runtime: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +17/-7
   - tests: `test/registered/kernels/test_nsa_indexer.py` modified +2/-2
 - 验证与风险: diff 自带测试面 `test/registered/kernels/test_nsa_indexer.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
-
-### PR #19211 - [Refactor][DeepSeek-V3.2] Extract V3.2/NSA logic into `DeepseekV32Mixin`
-
-- 链接: https://github.com/sgl-project/sglang/pull/19211
-- 状态/时间: closed / 2026-02-24
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+298/-169，可读 patch 669 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Refactor][DeepSeek-V3.2] Extract V3.2/NSA logic into `DeepseekV32Mixin`」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/deepseek_common/v32_mixin.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_nextn.py`；技术摘要: 覆盖「[Refactor][DeepSeek-V3.2] Extract V3.2/NSA logic into `DeepseekV32Mixin`」；主要实现面是 `python/sglang/srt/models/deepseek_common/v32_mixin.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_nextn.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/deepseek_common/v32_mixin.py` added +241/-0 (241 lines); hunks: -0,0 +1,241; symbols: DeepseekV32Mixin, init_v32_attention, _init_nsa_indexer, _fuse_rope_for_trtllm_mla，涉及 `DeepseekV32Mixin, init_v32_attention, _init_nsa_indexer`；`python/sglang/srt/models/deepseek_v2.py` modified +42/-120 (162 lines); hunks: -32,12 +32,6; -53,26 +47,16; symbols: DeepseekV2AttentionMLA, __init__，涉及 `DeepseekV2AttentionMLA, __init__`；`python/sglang/srt/models/deepseek_nextn.py` modified +15/-49 (64 lines); hunks: -21,24 +21,10; -49,6 +35,7; symbols: DeepseekModelNextN, __init__, forward，涉及 `DeepseekModelNextN, __init__, forward`。
-- 代码 diff 细节:
-  - `python/sglang/srt/models/deepseek_common/v32_mixin.py` added +241/-0 (241 lines); hunks: -0,0 +1,241; symbols: DeepseekV32Mixin, init_v32_attention, _init_nsa_indexer, _fuse_rope_for_trtllm_mla
-  - `python/sglang/srt/models/deepseek_v2.py` modified +42/-120 (162 lines); hunks: -32,12 +32,6; -53,26 +47,16; symbols: DeepseekV2AttentionMLA, __init__
-  - `python/sglang/srt/models/deepseek_nextn.py` modified +15/-49 (64 lines); hunks: -21,24 +21,10; -49,6 +35,7; symbols: DeepseekModelNextN, __init__, forward
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/models/deepseek_common/v32_mixin.py
-@@ -0,0 +1,241 @@
-+# Copyright 2026 SGLang Team
-+# Licensed under the Apache License, Version 2.0 (the "License");
-+# you may not use this file except in compliance with the License.
-+# You may obtain a copy of the License at
-+#
-+#     http://www.apache.org/licenses/LICENSE-2.0
-diff -- python/sglang/srt/models/deepseek_v2.py
-@@ -32,12 +32,6 @@
--from sglang.srt.configs.model_config import (
--    get_nsa_index_head_dim,
--    get_nsa_index_n_heads,
--    get_nsa_index_topk,
--    is_deepseek_nsa,
--)
-diff -- python/sglang/srt/models/deepseek_nextn.py
-@@ -21,24 +21,10 @@
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/models/deepseek_common/v32_mixin.py` added +241/-0; `python/sglang/srt/models/deepseek_v2.py` modified +42/-120; `python/sglang/srt/models/deepseek_nextn.py` modified +15/-49
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/deepseek_common/v32_mixin.py`, `python/sglang/srt/models/deepseek_nextn.py`, `python/sglang/srt/models/deepseek_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #19299 - [Perf] O(1) expert weight matching in DeepSeek weight loader
 
@@ -5243,13 +5082,12 @@ diff -- test/unit/test_deepseek_weight_loader.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/19148
 - 状态/时间: merged / 2026-02-26
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/jit_kernel/csrc/nsa/fused_store_index_cache.cuh`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；关联提交 `4e843f121657`；保留自原 history/skill 显式引用
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；关联提交 `4e843f121657`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+307/-21，可读 patch 386 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[DeepSeek-V3.2][JIT-kernel] Support nsa fuse store indexer k cache」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/jit_kernel/csrc/nsa/fused_store_index_cache.cuh`；技术摘要: 覆盖「[DeepSeek-V3.2][JIT-kernel] Support nsa fuse store indexer k cache」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/jit_kernel/csrc/nsa/fused_store_index_cache.cuh`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +79/-21 (100 lines); hunks: -7,6 +7,10; -670,15 +674,15 @@ def _forward_cuda_k_only(; symbols: _forward_cuda_k_only, forward_indexer, _store_index_k_cache, forward_cuda，涉及 `_forward_cuda_k_only, forward_indexer, _store_index_k_cache`；`python/sglang/jit_kernel/csrc/nsa/fused_store_index_cache.cuh` added +124/-0 (124 lines); hunks: -0,0 +1,124。
+- 动机: 标题「[DeepSeek-V3.2][JIT-kernel] Support nsa fuse store indexer k cache」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「[DeepSeek-V3.2][JIT-kernel] Support nsa fuse store indexer k cache」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +79/-21 (100 lines); hunks: -7,6 +7,10; -670,15 +674,15 @@ def _forward_cuda_k_only(; symbols: _forward_cuda_k_only, forward_indexer, _store_index_k_cache, forward_cuda，涉及 `_forward_cuda_k_only, forward_indexer, _store_index_k_cache`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +79/-21 (100 lines); hunks: -7,6 +7,10; -670,15 +674,15 @@ def _forward_cuda_k_only(; symbols: _forward_cuda_k_only, forward_indexer, _store_index_k_cache, forward_cuda
-  - `python/sglang/jit_kernel/csrc/nsa/fused_store_index_cache.cuh` added +124/-0 (124 lines); hunks: -0,0 +1,124
 - 关键代码摘录:
 
 ```diff
@@ -5261,18 +5099,10 @@ diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
 +)
 @@ -670,15 +674,15 @@ def _forward_cuda_k_only(
 -        k_fp8, k_scale = act_quant(key, self.block_size, self.scale_fmt)
-diff -- python/sglang/jit_kernel/csrc/nsa/fused_store_index_cache.cuh
-@@ -0,0 +1,124 @@
-+#include <sgl_kernel/tensor.h>
-+#include <sgl_kernel/utils.h>
-+#include <sgl_kernel/math.cuh>
-+#include <sgl_kernel/type.cuh>
-+#include <sgl_kernel/utils.cuh>
-+#include <sgl_kernel/vec.cuh>
 ```
 
 - 已读文件:
-  - runtime: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +79/-21; `python/sglang/jit_kernel/csrc/nsa/fused_store_index_cache.cuh` added +124/-0
+  - runtime: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +79/-21
 - 验证与风险: runtime 路径改动集中在 `python/sglang/jit_kernel/csrc/nsa/fused_store_index_cache.cuh`, `python/sglang/jit_kernel/fused_store_index_cache.py`, `python/sglang/jit_kernel/utils.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #19367 - Fix NSA CP positions mismatch in eagle NextN model
@@ -5305,7 +5135,7 @@ diff -- python/sglang/srt/models/deepseek_nextn.py
 - 状态/时间: closed / 2026-02-26
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+191/-82，可读 patch 650 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Feature] add feature mla_ag_after_qlora for dsv3.2」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/communicator.py`；技术摘要: 覆盖「[Feature] add feature mla_ag_after_qlora for dsv3.2」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/communicator.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[Feature] add feature mla_ag_after_qlora for dsv3.2」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/communicator.py`；技术摘要: 覆盖「[Feature] add feature mla_ag_after_qlora for dsv3.2」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/communicator.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +19/-3 (22 lines); hunks: -35,7 +35,11; -968,6 +972,7 @@ def forward_npu(; symbols: forward_npu，涉及 `forward_npu`；`python/sglang/srt/models/deepseek_v2.py` modified +15/-2 (17 lines); hunks: -170,7 +170,7; -1566,6 +1566,7 @@ def forward(; symbols: forward, forward_prepare, __init__，涉及 `forward, forward_prepare, __init__`；`python/sglang/srt/layers/communicator.py` modified +4/-1 (5 lines); hunks: -68,6 +68,7; -151,7 +152,7 @@ def __init__(self):; symbols: __init__, init_context, get_fn，涉及 `__init__, init_context, get_fn`；`python/sglang/srt/hardware_backend/npu/attention/ascend_backend.py` modified +119/-70 (189 lines); hunks: -7,18 +7,17; -240,12 +239,17 @@ def __init__(self, model_runner: ModelRunner):; symbols: __init__, init_forward_metadata, _generate_alibi_bias, generate_alibi_bias，涉及 `__init__, init_forward_metadata, _generate_alibi_bias`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +19/-3 (22 lines); hunks: -35,7 +35,11; -968,6 +972,7 @@ def forward_npu(; symbols: forward_npu
@@ -5346,7 +5176,7 @@ diff -- python/sglang/srt/layers/communicator.py
 - 状态/时间: merged / 2026-02-27
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa_backend.py`；关联提交 `9496bbd7b11c`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+7/-2，可读 patch 23 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[AMD] Use `tilelang` as default NSA attention backend dispatch on AMD Instinct」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa_backend.py`；技术摘要: 覆盖「[AMD] Use `tilelang` as default NSA attention backend dispatch on AMD Instinct」；主要实现面是 `python/sglang/srt/layers/attention/nsa_backend.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[AMD] Use `tilelang` as default NSA attention backend dispatch on AMD Instinct」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/layers/attention/nsa_backend.py`；技术摘要: 覆盖「[AMD] Use `tilelang` as default NSA attention backend dispatch on AMD Instinct」；主要实现面是 `python/sglang/srt/layers/attention/nsa_backend.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/nsa_backend.py` modified +3/-1 (4 lines); hunks: -1477,7 +1477,9 @@ def forward_extend(; symbols: forward_extend, forward_decode，涉及 `forward_extend, forward_decode`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa_backend.py` modified +3/-1 (4 lines); hunks: -1477,7 +1477,9 @@ def forward_extend(; symbols: forward_extend, forward_decode
@@ -5512,7 +5342,7 @@ diff -- python/sglang/srt/layers/attention/utils.py
 - 状态/时间: merged / 2026-03-02
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_v2.py`；关联提交 `b3718982a1b4`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+101/-9，可读 patch 316 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Feature] add feature mla_ag_after_qlora for dsv3.2」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py`；技术摘要: 覆盖「[Feature] add feature mla_ag_after_qlora for dsv3.2」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[Feature] add feature mla_ag_after_qlora for dsv3.2」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py`；技术摘要: 覆盖「[Feature] add feature mla_ag_after_qlora for dsv3.2」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +33/-2 (35 lines); hunks: -12,6 +12,7; -43,13 +44,15; symbols: forward_npu, do_npu_cp_balance_indexer，涉及 `forward_npu, do_npu_cp_balance_indexer`；`python/sglang/srt/models/deepseek_v2.py` modified +26/-3 (29 lines); hunks: -1301,13 +1301,15 @@ def forward(; -1318,6 +1320,7 @@ def forward_prepare(; symbols: forward, forward_prepare, __init__，涉及 `forward, forward_prepare, __init__`；`python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` modified +35/-3 (38 lines); hunks: -4,21 +4,24; -28,6 +31,7 @@ def forward_mha_prepare_npu(; symbols: forward_mha_prepare_npu, forward_mla_prepare_npu, forward_dsa_prepare_npu，涉及 `forward_mha_prepare_npu, forward_mla_prepare_npu, forward_dsa_prepare_npu`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +33/-2 (35 lines); hunks: -12,6 +12,7; -43,13 +44,15; symbols: forward_npu, do_npu_cp_balance_indexer
@@ -5578,7 +5408,7 @@ diff -- python/sglang/srt/function_call/deepseekv32_detector.py
 - 状态/时间: merged / 2026-03-03
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/function_call/deepseekv32_detector.py`；关联提交 `666caaf9ce76`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+31/-22，可读 patch 151 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Tool Call] Stream DeepSeek-V3.2 function call parameters in JSON format.」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/function_call/deepseekv32_detector.py`；技术摘要: 覆盖「[Tool Call] Stream DeepSeek-V3.2 function call parameters in JSON format.」；主要实现面是 `python/sglang/srt/function_call/deepseekv32_detector.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[Tool Call] Stream DeepSeek-V3.2 function call parameters in JSON format.」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/function_call/deepseekv32_detector.py`；技术摘要: 覆盖「[Tool Call] Stream DeepSeek-V3.2 function call parameters in JSON format.」；主要实现面是 `python/sglang/srt/function_call/deepseekv32_detector.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/function_call/deepseekv32_detector.py` modified +17/-21 (38 lines); hunks: -85,6 +85,7 @@ def __init__(self):; -93,27 +94,24 @@ def has_tool_call(self, text: str) -> bool:; symbols: __init__, has_tool_call, _parse_parameters_from_xml，涉及 `__init__, has_tool_call, _parse_parameters_from_xml`。
 - 代码 diff 细节:
   - `python/sglang/srt/function_call/deepseekv32_detector.py` modified +17/-21 (38 lines); hunks: -85,6 +85,7 @@ def __init__(self):; -93,27 +94,24 @@ def has_tool_call(self, text: str) -> bool:; symbols: __init__, has_tool_call, _parse_parameters_from_xml
@@ -5632,7 +5462,7 @@ diff -- python/sglang/srt/layers/attention/nsa/utils.py
 - 状态/时间: open / 2026-03-05
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+119/-38，可读 patch 232 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[AMD] Support context parallel for DeepSeek-V3.2 on AMD GPUs and add its test to nightly CI」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `test/registered/8-gpu-models/test_deepseek_v32_cp_single_node.py`, `python/sglang/srt/server_args.py`, `.github/workflows/nightly-test-amd-rocm720.yml`；技术摘要: 覆盖「[AMD] Support context parallel for DeepSeek-V3.2 on AMD GPUs and add its test to nightly CI」；主要实现面是 `test/registered/8-gpu-models/test_deepseek_v32_cp_single_node.py`, `python/sglang/srt/server_args.py`, `.github/workflows/nightly-test-amd-rocm720.yml`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[AMD] Support context parallel for DeepSeek-V3.2 on AMD GPUs and add its test to nightly CI」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `test/registered/8-gpu-models/test_deepseek_v32_cp_single_node.py`, `python/sglang/srt/server_args.py`, `.github/workflows/nightly-test-amd-rocm720.yml`；技术摘要: 覆盖「[AMD] Support context parallel for DeepSeek-V3.2 on AMD GPUs and add its test to nightly CI」；主要实现面是 `test/registered/8-gpu-models/test_deepseek_v32_cp_single_node.py`, `python/sglang/srt/server_args.py`, `.github/workflows/nightly-test-amd-rocm720.yml`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/8-gpu-models/test_deepseek_v32_cp_single_node.py` modified +49/-21 (70 lines); hunks: -1,12 +1,15; -32,6 +35,19; symbols: TestDeepseekV32CPSingleNode, test_deepseek_v32_cp_variants，涉及 `TestDeepseekV32CPSingleNode, test_deepseek_v32_cp_variants`；`python/sglang/srt/server_args.py` modified +26/-16 (42 lines); hunks: -1453,24 +1453,34 @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments，涉及 `_handle_model_specific_adjustments`；`.github/workflows/nightly-test-amd-rocm720.yml` modified +31/-0 (31 lines); hunks: -457,6 +457,37 @@ jobs:；`docs/basic_usage/deepseek_v32.md` modified +13/-1 (14 lines); hunks: -54,6 +54,8 @@ python -m sglang.launch_server --model deepseek-ai/DeepSeek-V3...; -306,7 +308,7 @@ DeepSeek-V3.2-Speciale:。
 - 代码 diff 细节:
   - `test/registered/8-gpu-models/test_deepseek_v32_cp_single_node.py` modified +49/-21 (70 lines); hunks: -1,12 +1,15; -32,6 +35,19; symbols: TestDeepseekV32CPSingleNode, test_deepseek_v32_cp_variants
@@ -5725,13 +5555,15 @@ diff -- python/sglang/srt/layers/attention/nsa_backend.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/19985
 - 状态/时间: merged / 2026-03-06
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`, `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`；关联提交 `04e364d538bb`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+477/-12，可读 patch 572 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[V32] Enhance deepseek v32 related tests」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`, `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`；技术摘要: 覆盖「[V32] Enhance deepseek v32 related tests」；主要实现面是 `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`, `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py` added +213/-0 (213 lines); hunks: -0,0 +1,213; symbols: TestDeepseekV32FP4DPSpecV2, setUpClass, tearDownClass, test_a_gsm8k，涉及 `TestDeepseekV32FP4DPSpecV2, setUpClass, tearDownClass`；`test/registered/quant/test_deepseek_v32_fp4_4gpu.py` modified +86/-4 (90 lines); hunks: -4,6 +4,7; -12,13 +13,13; symbols: TestDeepseekV32FP4, TestDeepseekV32FP4DP, setUpClass, test_a_gsm8k，涉及 `TestDeepseekV32FP4, TestDeepseekV32FP4DP, setUpClass`。
+- 动机: 标题「[V32] Enhance deepseek v32 related tests」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`, `test/registered/8-gpu-models/test_deepseek_v32_mtp.py`, `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`；技术摘要: 覆盖「[V32] Enhance deepseek v32 related tests」；主要实现面是 `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`, `test/registered/8-gpu-models/test_deepseek_v32_mtp.py`, `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py` added +213/-0 (213 lines); hunks: -0,0 +1,213; symbols: TestDeepseekV32FP4DPSpecV2, setUpClass, tearDownClass, test_a_gsm8k，涉及 `TestDeepseekV32FP4DPSpecV2, setUpClass, tearDownClass`；`test/registered/8-gpu-models/test_deepseek_v32_mtp.py` modified +177/-7 (184 lines); hunks: -3,6 +3,7; -16,7 +17,7; symbols: test_a_gsm8k, test_bs_1_speed, TestDeepseekV32DPMTPV2, setUpClass，涉及 `test_a_gsm8k, test_bs_1_speed, TestDeepseekV32DPMTPV2`；`test/registered/quant/test_deepseek_v32_fp4_4gpu.py` modified +86/-4 (90 lines); hunks: -4,6 +4,7; -12,13 +13,13; symbols: TestDeepseekV32FP4, TestDeepseekV32FP4DP, setUpClass, test_a_gsm8k，涉及 `TestDeepseekV32FP4, TestDeepseekV32FP4DP, setUpClass`；`test/registered/8-gpu-models/test_deepseek_v32_basic.py` modified +1/-1 (2 lines); hunks: -133,7 +133,7 @@ def test_bs_1_speed(self):; symbols: test_bs_1_speed，涉及 `test_bs_1_speed`。
 - 代码 diff 细节:
   - `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py` added +213/-0 (213 lines); hunks: -0,0 +1,213; symbols: TestDeepseekV32FP4DPSpecV2, setUpClass, tearDownClass, test_a_gsm8k
+  - `test/registered/8-gpu-models/test_deepseek_v32_mtp.py` modified +177/-7 (184 lines); hunks: -3,6 +3,7; -16,7 +17,7; symbols: test_a_gsm8k, test_bs_1_speed, TestDeepseekV32DPMTPV2, setUpClass
   - `test/registered/quant/test_deepseek_v32_fp4_4gpu.py` modified +86/-4 (90 lines); hunks: -4,6 +4,7; -12,13 +13,13; symbols: TestDeepseekV32FP4, TestDeepseekV32FP4DP, setUpClass, test_a_gsm8k
+  - `test/registered/8-gpu-models/test_deepseek_v32_basic.py` modified +1/-1 (2 lines); hunks: -133,7 +133,7 @@ def test_bs_1_speed(self):; symbols: test_bs_1_speed
 - 关键代码摘录:
 
 ```diff
@@ -5743,18 +5575,20 @@ diff -- test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py
 +from sglang.srt.environ import envs
 +from sglang.srt.utils import kill_process_tree
 +from sglang.test.ci.ci_register import register_cuda_ci
+diff -- test/registered/8-gpu-models/test_deepseek_v32_mtp.py
+@@ -3,6 +3,7 @@
++from sglang.srt.environ import envs
+@@ -16,7 +17,7 @@
+-register_cuda_ci(est_time=360, suite="stage-c-test-8-gpu-h200")
++register_cuda_ci(est_time=720, suite="stage-c-test-8-gpu-h200")
+@@ -65,8 +66,8 @@ def test_a_gsm8k(
+-            num_questions=1400,
 diff -- test/registered/quant/test_deepseek_v32_fp4_4gpu.py
 @@ -4,6 +4,7 @@
-+from sglang.test.send_one import BenchArgs, send_one_prompt
-@@ -12,13 +13,13 @@
--register_cuda_ci(est_time=600, suite="stage-c-test-4-gpu-b200")
-+register_cuda_ci(est_time=1200, suite="stage-c-test-4-gpu-b200")
--class TestDeepseekV32FP4(CustomTestCase):
-+class TestDeepseekV32FP4DP(CustomTestCase):
 ```
 
 - 已读文件:
-  - tests: `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py` added +213/-0; `test/registered/quant/test_deepseek_v32_fp4_4gpu.py` modified +86/-4
+  - tests: `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py` added +213/-0; `test/registered/8-gpu-models/test_deepseek_v32_mtp.py` modified +177/-7; `test/registered/quant/test_deepseek_v32_fp4_4gpu.py` modified +86/-4; `test/registered/8-gpu-models/test_deepseek_v32_basic.py` modified +1/-1
 - 验证与风险: diff 自带测试面 `test/registered/8-gpu-models/test_deepseek_v32_basic.py`, `test/registered/8-gpu-models/test_deepseek_v32_mtp.py`, `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`, `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #20086 - [V32/GLM5] Change default setting of V32 nvfp4 on TP4
@@ -5763,7 +5597,7 @@ diff -- test/registered/quant/test_deepseek_v32_fp4_4gpu.py
 - 状态/时间: merged / 2026-03-07
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+15/-6，可读 patch 35 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[V32/GLM5] Change default setting of V32 nvfp4 on TP4」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/server_args.py`；技术摘要: 覆盖「[V32/GLM5] Change default setting of V32 nvfp4 on TP4」；主要实现面是 `python/sglang/srt/server_args.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[V32/GLM5] Change default setting of V32 nvfp4 on TP4」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/server_args.py`；技术摘要: 覆盖「[V32/GLM5] Change default setting of V32 nvfp4 on TP4」；主要实现面是 `python/sglang/srt/server_args.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/server_args.py` modified +15/-6 (21 lines); hunks: -1271,7 +1271,9 @@ def _set_default_nsa_kv_cache_dtype(self, major: int) -> str:; -1290,11 +1292,18 @@ def _set_default_nsa_backends(self, kv_cache_dtype: str,...; symbols: _set_default_nsa_kv_cache_dtype, _set_default_nsa_backends，涉及 `_set_default_nsa_kv_cache_dtype, _set_default_nsa_backends`。
 - 代码 diff 细节:
   - `python/sglang/srt/server_args.py` modified +15/-6 (21 lines); hunks: -1271,7 +1271,9 @@ def _set_default_nsa_kv_cache_dtype(self, major: int) -> str:; -1290,11 +1292,18 @@ def _set_default_nsa_backends(self, kv_cache_dtype: str,...; symbols: _set_default_nsa_kv_cache_dtype, _set_default_nsa_backends
@@ -5788,14 +5622,12 @@ diff -- python/sglang/srt/server_args.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/20062
 - 状态/时间: merged / 2026-03-09
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa_backend.py`, `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`, `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`；关联提交 `be63f982b7b7`；保留自原 history/skill 显式引用
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa_backend.py`；关联提交 `be63f982b7b7`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+32/-59，可读 patch 200 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[V32/GLM5] Control the threshold of applying dense attention with an environ」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/attention/nsa_backend.py`, `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`, `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`；技术摘要: 覆盖「[V32/GLM5] Control the threshold of applying dense attention with an environ」；主要实现面是 `python/sglang/srt/layers/attention/nsa_backend.py`, `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`, `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/layers/attention/nsa_backend.py` modified +3/-46 (49 lines); hunks: -16,10 +16,6; -71,15 +67,10; symbols: NSAFlashMLAMetadata, __init__, init_forward_metadata_replay_cuda_graph_from_precomputed, set_nsa_prefill_impl，涉及 `NSAFlashMLAMetadata, __init__, init_forward_metadata_replay_cuda_graph_from_precomputed`；`test/registered/quant/test_deepseek_v32_fp4_4gpu.py` modified +0/-4 (4 lines); hunks: -34,8 +34,6 @@ def setUpClass(cls):; -103,8 +101,6 @@ def setUpClass(cls):; symbols: setUpClass，涉及 `setUpClass`；`test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py` modified +0/-4 (4 lines); hunks: -39,8 +39,6 @@ def setUpClass(cls):; -131,8 +129,6 @@ def setUpClass(cls):; symbols: setUpClass，涉及 `setUpClass`。
+- 动机: 标题「[V32/GLM5] Control the threshold of applying dense attention with an environ」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/layers/attention/nsa_backend.py`；技术摘要: 覆盖「[V32/GLM5] Control the threshold of applying dense attention with an environ」；主要实现面是 `python/sglang/srt/layers/attention/nsa_backend.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/nsa_backend.py` modified +3/-46 (49 lines); hunks: -16,10 +16,6; -71,15 +67,10; symbols: NSAFlashMLAMetadata, __init__, init_forward_metadata_replay_cuda_graph_from_precomputed, set_nsa_prefill_impl，涉及 `NSAFlashMLAMetadata, __init__, init_forward_metadata_replay_cuda_graph_from_precomputed`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa_backend.py` modified +3/-46 (49 lines); hunks: -16,10 +16,6; -71,15 +67,10; symbols: NSAFlashMLAMetadata, __init__, init_forward_metadata_replay_cuda_graph_from_precomputed, set_nsa_prefill_impl
-  - `test/registered/quant/test_deepseek_v32_fp4_4gpu.py` modified +0/-4 (4 lines); hunks: -34,8 +34,6 @@ def setUpClass(cls):; -103,8 +101,6 @@ def setUpClass(cls):; symbols: setUpClass
-  - `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py` modified +0/-4 (4 lines); hunks: -39,8 +39,6 @@ def setUpClass(cls):; -131,8 +129,6 @@ def setUpClass(cls):; symbols: setUpClass
 - 关键代码摘录:
 
 ```diff
@@ -5807,21 +5639,10 @@ diff -- python/sglang/srt/layers/attention/nsa_backend.py
 -)
 @@ -71,15 +67,10 @@
 -# Control whether to use fused metadata copy kernel (default: enabled)
-diff -- test/registered/quant/test_deepseek_v32_fp4_4gpu.py
-@@ -34,8 +34,6 @@ def setUpClass(cls):
--            "--kv-cache-dtype",
--            "fp8_e4m3",
-@@ -103,8 +101,6 @@ def setUpClass(cls):
--            "--kv-cache-dtype",
--            "fp8_e4m3",
-diff -- test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py
-@@ -39,8 +39,6 @@ def setUpClass(cls):
--            "--kv-cache-dtype",
 ```
 
 - 已读文件:
   - runtime: `python/sglang/srt/layers/attention/nsa_backend.py` modified +3/-46
-  - tests: `test/registered/quant/test_deepseek_v32_fp4_4gpu.py` modified +0/-4; `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py` modified +0/-4
 - 验证与风险: diff 自带测试面 `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`, `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #18876 - Add DeepSeek3.2 and GlmMoeDsa into moe tune
@@ -5850,40 +5671,13 @@ diff -- benchmark/kernels/fused_moe_triton/common_utils.py
   - other: `benchmark/kernels/fused_moe_triton/common_utils.py` modified +4/-0
 - 验证与风险: 未看到显式测试文件；下一次修改同一区域时需要补足模型加载、短文本生成和 parser/多模态输入的回归验证。
 
-### PR #20360 - [AMD][Bug fix] Fix NSA context parallelism (round-robin-split) producing garbage output
-
-- 链接: https://github.com/sgl-project/sglang/pull/20360
-- 状态/时间: open / 2026-03-11
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+31/-5，可读 patch 76 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[AMD][Bug fix] Fix NSA context parallelism (round-robin-split) producing garbage output」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/layers/communicator_nsa_cp.py`；技术摘要: 覆盖「[AMD][Bug fix] Fix NSA context parallelism (round-robin-split) producing garbage output」；主要实现面是 `python/sglang/srt/layers/communicator_nsa_cp.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/layers/communicator_nsa_cp.py` modified +31/-5 (36 lines); hunks: -20,6 +20,7; -34,6 +35,7; symbols: __init__, should_use_reduce_scatter, _post_init_communicate, get_fn，涉及 `__init__, should_use_reduce_scatter, _post_init_communicate`。
-- 代码 diff 细节:
-  - `python/sglang/srt/layers/communicator_nsa_cp.py` modified +31/-5 (36 lines); hunks: -20,6 +20,7; -34,6 +35,7; symbols: __init__, should_use_reduce_scatter, _post_init_communicate, get_fn
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/layers/communicator_nsa_cp.py
-@@ -20,6 +20,7 @@
-+    is_nsa_prefill_cp_round_robin_split,
-@@ -34,6 +35,7 @@
-+    attn_tp_all_reduce,
-@@ -66,6 +68,11 @@ def __init__(
-+    def should_use_reduce_scatter(self, forward_batch) -> bool:
-+        if is_nsa_prefill_cp_round_robin_split():
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/layers/communicator_nsa_cp.py` modified +31/-5
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/communicator_nsa_cp.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #20326 - [Doc] Add DSA/NSA attention backend to support matrix
 
 - 链接: https://github.com/sgl-project/sglang/pull/20326
 - 状态/时间: merged / 2026-03-11
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+19/-1，可读 patch 34 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Doc] Add DSA/NSA attention backend to support matrix」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `docs/advanced_features/attention_backend.md`；技术摘要: 覆盖「[Doc] Add DSA/NSA attention backend to support matrix」；主要实现面是 `docs/advanced_features/attention_backend.md`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[Doc] Add DSA/NSA attention backend to support matrix」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `docs/advanced_features/attention_backend.md`；技术摘要: 覆盖「[Doc] Add DSA/NSA attention backend to support matrix」；主要实现面是 `docs/advanced_features/attention_backend.md`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs/advanced_features/attention_backend.md` modified +19/-1 (20 lines); hunks: -50,7 +50,7 @@ Multimodal attention is selected by `--mm-attention-backend`....; -107,6 +107,24 @@ GDN models are hybrid: the full-attention layers still requ...。
 - 代码 diff 细节:
   - `docs/advanced_features/attention_backend.md` modified +19/-1 (20 lines); hunks: -50,7 +50,7 @@ Multimodal attention is selected by `--mm-attention-backend`....; -107,6 +107,24 @@ GDN models are hybrid: the full-attention layers still requ...
@@ -5908,26 +5702,17 @@ diff -- docs/advanced_features/attention_backend.md
 
 - 链接: https://github.com/sgl-project/sglang/pull/19319
 - 状态/时间: merged / 2026-03-11
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `test/manual/layers/attention/nsa/test_get_k_scale_triton_kernel.py`, `test/manual/layers/attention/nsa/test_index_buf_accessor.py`；关联提交 `006bd44cf920`；保留自原 history/skill 显式引用
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；关联提交 `006bd44cf920`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+380/-81，可读 patch 740 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[deepseekv3.2] fix get_k_and_s_triton kenel for 128K seqlen case bug」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `test/manual/layers/attention/nsa/test_get_k_scale_triton_kernel.py`, `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `test/manual/layers/attention/nsa/test_index_buf_accessor.py`；技术摘要: 覆盖「[deepseekv3.2] fix get_k_and_s_triton kenel for 128K seqlen case bug」；主要实现面是 `test/manual/layers/attention/nsa/test_get_k_scale_triton_kernel.py`, `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `test/manual/layers/attention/nsa/test_index_buf_accessor.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `test/manual/layers/attention/nsa/test_get_k_scale_triton_kernel.py` added +191/-0 (191 lines); hunks: -0,0 +1,191; symbols: golden_torch_gen, get_k_and_s_triton，涉及 `golden_torch_gen, get_k_and_s_triton`；`python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` modified +105/-48 (153 lines); hunks: -167,19 +167,30 @@ def execute(cls, *args, **kwargs):; -599,7 +610,9 @@ def _get_s_triton_kernel(; symbols: execute, triton, _get_s_triton_kernel, _get_k_and_s_triton，涉及 `execute, triton, _get_s_triton_kernel`；`test/manual/layers/attention/nsa/test_index_buf_accessor.py` modified +46/-9 (55 lines); hunks: -264,6 +264,7 @@ def test_get_k_and_s_correctness(; -283,13 +284,16 @@ def test_get_k_and_s_correctness(; symbols: test_get_k_and_s_correctness, test_get_k_and_s_sequential_pages, test_get_k_and_s_repeated_pages，涉及 `test_get_k_and_s_correctness, test_get_k_and_s_sequential_pages, test_get_k_and_s_repeated_pages`；`python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +29/-22 (51 lines); hunks: -491,6 +491,7 @@ def _should_chunk_mqa_logits(; -509,9 +510,11 @@ def _get_topk_ragged(; symbols: _should_chunk_mqa_logits, _get_topk_ragged, forward_cuda，涉及 `_should_chunk_mqa_logits, _get_topk_ragged, forward_cuda`。
+- 动机: 标题「[deepseekv3.2] fix get_k_and_s_triton kenel for 128K seqlen case bug」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `test/manual/layers/attention/nsa/test_index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「[deepseekv3.2] fix get_k_and_s_triton kenel for 128K seqlen case bug」；主要实现面是 `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `test/manual/layers/attention/nsa/test_index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` modified +105/-48 (153 lines); hunks: -167,19 +167,30 @@ def execute(cls, *args, **kwargs):; -599,7 +610,9 @@ def _get_s_triton_kernel(; symbols: execute, triton, _get_s_triton_kernel, _get_k_and_s_triton，涉及 `execute, triton, _get_s_triton_kernel`；`test/manual/layers/attention/nsa/test_index_buf_accessor.py` modified +46/-9 (55 lines); hunks: -264,6 +264,7 @@ def test_get_k_and_s_correctness(; -283,13 +284,16 @@ def test_get_k_and_s_correctness(; symbols: test_get_k_and_s_correctness, test_get_k_and_s_sequential_pages, test_get_k_and_s_repeated_pages，涉及 `test_get_k_and_s_correctness, test_get_k_and_s_sequential_pages, test_get_k_and_s_repeated_pages`；`python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +29/-22 (51 lines); hunks: -491,6 +491,7 @@ def _should_chunk_mqa_logits(; -509,9 +510,11 @@ def _get_topk_ragged(; symbols: _should_chunk_mqa_logits, _get_topk_ragged, forward_cuda，涉及 `_should_chunk_mqa_logits, _get_topk_ragged, forward_cuda`。
 - 代码 diff 细节:
-  - `test/manual/layers/attention/nsa/test_get_k_scale_triton_kernel.py` added +191/-0 (191 lines); hunks: -0,0 +1,191; symbols: golden_torch_gen, get_k_and_s_triton
   - `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` modified +105/-48 (153 lines); hunks: -167,19 +167,30 @@ def execute(cls, *args, **kwargs):; -599,7 +610,9 @@ def _get_s_triton_kernel(; symbols: execute, triton, _get_s_triton_kernel, _get_k_and_s_triton
   - `test/manual/layers/attention/nsa/test_index_buf_accessor.py` modified +46/-9 (55 lines); hunks: -264,6 +264,7 @@ def test_get_k_and_s_correctness(; -283,13 +284,16 @@ def test_get_k_and_s_correctness(; symbols: test_get_k_and_s_correctness, test_get_k_and_s_sequential_pages, test_get_k_and_s_repeated_pages
   - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +29/-22 (51 lines); hunks: -491,6 +491,7 @@ def _should_chunk_mqa_logits(; -509,9 +510,11 @@ def _get_topk_ragged(; symbols: _should_chunk_mqa_logits, _get_topk_ragged, forward_cuda
 - 关键代码摘录:
 
 ```diff
-diff -- test/manual/layers/attention/nsa/test_get_k_scale_triton_kernel.py
-@@ -0,0 +1,191 @@
-+import torch
-+from sglang.srt.layers.attention.nsa.index_buf_accessor import (
-+    _get_k_and_s_triton_kernel,
-+)
-+def golden_torch_gen(
-+    seq_len_tensor: torch.Tensor,
 diff -- python/sglang/srt/layers/attention/nsa/index_buf_accessor.py
 @@ -167,19 +167,30 @@ def execute(cls, *args, **kwargs):
 -        cls, pool: "NSATokenToKVPool", buf, seq_len: int, page_indices: torch.Tensor
@@ -5938,72 +5723,26 @@ diff -- python/sglang/srt/layers/attention/nsa/index_buf_accessor.py
 +        seq_len_tensor: torch.Tensor,
 diff -- test/manual/layers/attention/nsa/test_index_buf_accessor.py
 @@ -264,6 +264,7 @@ def test_get_k_and_s_correctness(
++        seq_len_tensor = torch.tensor([seq_len], dtype=torch.int64, device=device)
+@@ -283,13 +284,16 @@ def test_get_k_and_s_correctness(
++        page_indices_ = page_indices.unsqueeze(0)
+-        k_triton, s_triton = GetKAndS.triton(pool, buf, seq_len, page_indices)
++        k_triton, s_triton = GetKAndS.triton(
++            pool, buf, page_indices_, seq_len_tensor, seq_len, seq_len
+diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
+@@ -491,6 +491,7 @@ def _should_chunk_mqa_logits(
 ```
 
 - 已读文件:
-  - tests: `test/manual/layers/attention/nsa/test_get_k_scale_triton_kernel.py` added +191/-0; `test/manual/layers/attention/nsa/test_index_buf_accessor.py` modified +46/-9
   - runtime: `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` modified +105/-48; `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +29/-22
+  - tests: `test/manual/layers/attention/nsa/test_index_buf_accessor.py` modified +46/-9
 - 验证与风险: diff 自带测试面 `test/manual/layers/attention/nsa/test_get_k_scale_triton_kernel.py`, `test/manual/layers/attention/nsa/test_index_buf_accessor.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
-
-### PR #20531 - [bugfix] Fix NSA indexer ragged gather batch-view mismatch in CP round-robin split
-
-- 链接: https://github.com/sgl-project/sglang/pull/20531
-- 状态/时间: open / 2026-03-13
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+7/-3，可读 patch 19 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[bugfix] Fix NSA indexer ragged gather batch-view mismatch in CP round-robin split」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「[bugfix] Fix NSA indexer ragged gather batch-view mismatch in CP round-robin split」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +7/-3 (10 lines); hunks: -538,11 +538,15 @@ def _get_topk_ragged(; symbols: _get_topk_ragged，涉及 `_get_topk_ragged`。
-- 代码 diff 细节:
-  - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +7/-3 (10 lines); hunks: -538,11 +538,15 @@ def _get_topk_ragged(; symbols: _get_topk_ragged
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
-@@ -538,11 +538,15 @@ def _get_topk_ragged(
--        seq_len_sum = forward_batch.seq_lens_sum
--        max_seq_len = torch.max(forward_batch.seq_lens_cpu).item()
-+        # In CP round-robin-split, page tables may be filtered by metadata. The KV
-+        # gather inputs must use the same filtered batch view to stay aligned.
-+        seq_lens = metadata.get_seqlens_int32()
-+        seq_lens_cpu = metadata.get_indexer_seq_len_cpu()
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +7/-3
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
-### PR #20534 - Transfer FP8 K/K_scale for CP indexer prefill gather
-
-- 链接: https://github.com/sgl-project/sglang/pull/20534
-- 状态/时间: open / 2026-03-13
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+35/-8，可读 patch 57 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Transfer FP8 K/K_scale for CP indexer prefill gather」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「Transfer FP8 K/K_scale for CP indexer prefill gather」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +35/-8 (43 lines); hunks: -333,14 +333,6 @@ def _get_q_k_bf16(; -958,6 +950,41 @@ def _store_index_k_cache(; symbols: _get_q_k_bf16, _get_k_bf16, _store_index_k_cache，涉及 `_get_q_k_bf16, _get_k_bf16, _store_index_k_cache`。
-- 代码 diff 细节:
-  - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +35/-8 (43 lines); hunks: -333,14 +333,6 @@ def _get_q_k_bf16(; -958,6 +950,41 @@ def _store_index_k_cache(; symbols: _get_q_k_bf16, _get_k_bf16, _store_index_k_cache
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
-@@ -333,14 +333,6 @@ def _get_q_k_bf16(
--        # allgather+rerrange
--        if forward_batch.nsa_cp_metadata is not None and self.nsa_enable_prefill_cp:
--            key = cp_all_gather_rerange_output(
--                key.contiguous(),
--                self.cp_size,
--                forward_batch,
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +35/-8
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #18280 - [DeepSeek v3.2][Bugfix] get_index_k_scale_buffer support cp
 
 - 链接: https://github.com/sgl-project/sglang/pull/18280
 - 状态/时间: merged / 2026-03-17
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `test/registered/kernels/test_nsa_indexer.py`；关联提交 `17031120b8f6`；保留自原 history/skill 显式引用
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py`；关联提交 `17031120b8f6`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+22/-4，可读 patch 91 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[DeepSeek v3.2][Bugfix] get_index_k_scale_buffer support cp」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`；技术摘要: 覆盖「[DeepSeek v3.2][Bugfix] get_index_k_scale_buffer support cp」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +9/-3 (12 lines); hunks: -97,6 +97,11 @@ def get_indexer_seq_len_cpu(self) -> torch.Tensor:; -538,11 +543,12 @@ def _get_topk_ragged(; symbols: get_indexer_seq_len_cpu, get_indexer_seq_len, get_nsa_extend_len_cpu, _get_topk_ragged，涉及 `get_indexer_seq_len_cpu, get_indexer_seq_len, get_nsa_extend_len_cpu`；`python/sglang/srt/layers/attention/nsa_backend.py` modified +8/-0 (8 lines); hunks: -138,6 +138,8 @@ class NSAMetadata:; -194,6 +196,9 @@ def get_cu_seqlens_k(self) -> torch.Tensor:; symbols: NSAMetadata, get_cu_seqlens_k, get_indexer_kvcache_range, get_indexer_seq_len，涉及 `NSAMetadata, get_cu_seqlens_k, get_indexer_kvcache_range`；`python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` modified +1/-1 (2 lines); hunks: -624,7 +624,7 @@ def _get_k_and_s_triton(; symbols: _get_k_and_s_triton，涉及 `_get_k_and_s_triton`；`test/registered/kernels/test_nsa_indexer.py` modified +4/-0 (4 lines); hunks: -132,6 +132,10 @@ def get_indexer_seq_len_cpu(self) -> torch.Tensor:; symbols: get_indexer_seq_len_cpu, get_indexer_seq_len, get_nsa_extend_len_cpu，涉及 `get_indexer_seq_len_cpu, get_indexer_seq_len, get_nsa_extend_len_cpu`。
@@ -6040,28 +5779,6 @@ diff -- python/sglang/srt/layers/attention/nsa/index_buf_accessor.py
   - tests: `test/registered/kernels/test_nsa_indexer.py` modified +4/-0
 - 验证与风险: diff 自带测试面 `test/registered/kernels/test_nsa_indexer.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
-### PR #20809 - [Bugfix] Add DeepseekV32ForCausalLM to MTP draft model mapping
-
-- 链接: https://github.com/sgl-project/sglang/pull/20809
-- 状态/时间: open / 2026-03-18
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-0，可读 patch 8 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix] Add DeepseekV32ForCausalLM to MTP draft model mapping」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/configs/model_config.py`；技术摘要: 覆盖「[Bugfix] Add DeepseekV32ForCausalLM to MTP draft model mapping」；主要实现面是 `python/sglang/srt/configs/model_config.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/configs/model_config.py` modified +1/-0 (1 lines); hunks: -279,6 +279,7 @@ def _config_draft_model(self):; symbols: _config_draft_model，涉及 `_config_draft_model`。
-- 代码 diff 细节:
-  - `python/sglang/srt/configs/model_config.py` modified +1/-0 (1 lines); hunks: -279,6 +279,7 @@ def _config_draft_model(self):; symbols: _config_draft_model
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/configs/model_config.py
-@@ -279,6 +279,7 @@ def _config_draft_model(self):
-+            "DeepseekV32ForCausalLM",
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/configs/model_config.py` modified +1/-0
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/configs/model_config.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #20840 - [AMD] Fix dpsk-v32 accuracy issue on mi355
 
 - 链接: https://github.com/sgl-project/sglang/pull/20840
@@ -6083,33 +5800,6 @@ diff -- python/sglang/srt/layers/quantization/fp8_utils.py
 - 已读文件:
   - runtime: `python/sglang/srt/layers/quantization/fp8_utils.py` modified +1/-0
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/quantization/fp8_utils.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
-### PR #20880 - Reject HiCache L3 storage backend for NSA models at init time
-
-- 链接: https://github.com/sgl-project/sglang/pull/20880
-- 状态/时间: open / 2026-03-18
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+13/-1，可读 patch 28 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Reject HiCache L3 storage backend for NSA models at init time」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/mem_cache/hiradix_cache.py`；技术摘要: 覆盖「Reject HiCache L3 storage backend for NSA models at init time」；主要实现面是 `python/sglang/srt/mem_cache/hiradix_cache.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/mem_cache/hiradix_cache.py` modified +13/-1 (14 lines); hunks: -82,6 +82,15 @@ def __init__(self, params: CacheInitParams, server_args: Serv...; -100,7 +109,10 @@ def __init__(self, params: CacheInitParams, server_args: Se...; symbols: __init__，涉及 `__init__`。
-- 代码 diff 细节:
-  - `python/sglang/srt/mem_cache/hiradix_cache.py` modified +13/-1 (14 lines); hunks: -82,6 +82,15 @@ def __init__(self, params: CacheInitParams, server_args: Serv...; -100,7 +109,10 @@ def __init__(self, params: CacheInitParams, server_args: Se...; symbols: __init__
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/mem_cache/hiradix_cache.py
-@@ -82,6 +82,15 @@ def __init__(self, params: CacheInitParams, server_args: ServerArgs):
-+            if server_args.hicache_storage_backend is not None:
-+                raise ValueError(
-+                    "HiCache L3 storage backend (e.g. mooncake) is not yet supported "
-+                    "for models with NSA (Native Sparse Attention). The L3 storage "
-+                    "layer does not handle the NSA indexer cache "
-+                    "(index_k_with_scale_buffer). Please remove "
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/mem_cache/hiradix_cache.py` modified +13/-1
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/mem_cache/hiradix_cache.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #20492 - [BugFix] bug fix for DeepSeek eagle3 in Attn-DP mode
 
@@ -6169,13 +5859,14 @@ diff -- python/sglang/srt/disaggregation/prefill.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/20984
 - 状态/时间: merged / 2026-03-20
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`, `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`；关联提交 `c82d20d48ecc`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+20/-1，可读 patch 71 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Fix DeepSeek V32 FP4 test」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`, `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`；未提供可用技术摘要。
-- 实现要点: `test/registered/quant/test_deepseek_v32_fp4_4gpu.py` modified +9/-0 (9 lines); hunks: -1,3 +1,4; -46,6 +47,10 @@ def setUpClass(cls):; symbols: setUpClass，涉及 `setUpClass`；`test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py` modified +9/-0 (9 lines); hunks: -1,3 +1,4; -60,6 +61,10 @@ def setUpClass(cls):; symbols: setUpClass，涉及 `setUpClass`。
+- 动机: 标题「Fix DeepSeek V32 FP4 test」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`, `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`, `python/sglang/test/test_utils.py`；技术摘要: 覆盖「Fix DeepSeek V32 FP4 test」；主要实现面是 `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`, `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`, `python/sglang/test/test_utils.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/quant/test_deepseek_v32_fp4_4gpu.py` modified +9/-0 (9 lines); hunks: -1,3 +1,4; -46,6 +47,10 @@ def setUpClass(cls):; symbols: setUpClass，涉及 `setUpClass`；`test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py` modified +9/-0 (9 lines); hunks: -1,3 +1,4; -60,6 +61,10 @@ def setUpClass(cls):; symbols: setUpClass，涉及 `setUpClass`；`python/sglang/test/test_utils.py` modified +2/-1 (3 lines); hunks: -865,6 +865,7 @@ def popen_launch_server(; -885,7 +886,7 @@ def popen_launch_server(; symbols: popen_launch_server，涉及 `popen_launch_server`。
 - 代码 diff 细节:
   - `test/registered/quant/test_deepseek_v32_fp4_4gpu.py` modified +9/-0 (9 lines); hunks: -1,3 +1,4; -46,6 +47,10 @@ def setUpClass(cls):; symbols: setUpClass
   - `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py` modified +9/-0 (9 lines); hunks: -1,3 +1,4; -60,6 +61,10 @@ def setUpClass(cls):; symbols: setUpClass
+  - `python/sglang/test/test_utils.py` modified +2/-1 (3 lines); hunks: -865,6 +865,7 @@ def popen_launch_server(; -885,7 +886,7 @@ def popen_launch_server(; symbols: popen_launch_server
 - 关键代码摘录:
 
 ```diff
@@ -6195,23 +5886,26 @@ diff -- test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py
 +                    **os.environ,
 +                    "HF_HUB_OFFLINE": "0",
 +                },
+diff -- python/sglang/test/test_utils.py
+@@ -865,6 +865,7 @@ def popen_launch_server(
 ```
 
 - 已读文件:
-  - tests: `test/registered/quant/test_deepseek_v32_fp4_4gpu.py` modified +9/-0; `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py` modified +9/-0
+  - tests: `test/registered/quant/test_deepseek_v32_fp4_4gpu.py` modified +9/-0; `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py` modified +9/-0; `python/sglang/test/test_utils.py` modified +2/-1
 - 验证与风险: diff 自带测试面 `python/sglang/test/test_utils.py`, `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`, `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #21003 - Revert "Fix DeepSeek V32 FP4 test"
 
 - 链接: https://github.com/sgl-project/sglang/pull/21003
 - 状态/时间: merged / 2026-03-20
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`, `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`；关联提交 `a0a4dae67f5f`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+1/-20，可读 patch 71 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Revert "Fix DeepSeek V32 FP4 test"」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`, `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`；技术摘要: 覆盖「Revert "Fix DeepSeek V32 FP4 test"」；主要实现面是 `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`, `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `test/registered/quant/test_deepseek_v32_fp4_4gpu.py` modified +0/-9 (9 lines); hunks: -1,4 +1,3; -47,10 +46,6 @@ def setUpClass(cls):; symbols: setUpClass，涉及 `setUpClass`；`test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py` modified +0/-9 (9 lines); hunks: -1,4 +1,3; -61,10 +60,6 @@ def setUpClass(cls):; symbols: setUpClass，涉及 `setUpClass`。
+- 动机: 标题「Revert "Fix DeepSeek V32 FP4 test"」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`, `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`, `python/sglang/test/test_utils.py`；技术摘要: 覆盖「Revert "Fix DeepSeek V32 FP4 test"」；主要实现面是 `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`, `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`, `python/sglang/test/test_utils.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/quant/test_deepseek_v32_fp4_4gpu.py` modified +0/-9 (9 lines); hunks: -1,4 +1,3; -47,10 +46,6 @@ def setUpClass(cls):; symbols: setUpClass，涉及 `setUpClass`；`test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py` modified +0/-9 (9 lines); hunks: -1,4 +1,3; -61,10 +60,6 @@ def setUpClass(cls):; symbols: setUpClass，涉及 `setUpClass`；`python/sglang/test/test_utils.py` modified +1/-2 (3 lines); hunks: -865,7 +865,6 @@ def popen_launch_server(; -886,7 +885,7 @@ def popen_launch_server(; symbols: popen_launch_server，涉及 `popen_launch_server`。
 - 代码 diff 细节:
   - `test/registered/quant/test_deepseek_v32_fp4_4gpu.py` modified +0/-9 (9 lines); hunks: -1,4 +1,3; -47,10 +46,6 @@ def setUpClass(cls):; symbols: setUpClass
   - `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py` modified +0/-9 (9 lines); hunks: -1,4 +1,3; -61,10 +60,6 @@ def setUpClass(cls):; symbols: setUpClass
+  - `python/sglang/test/test_utils.py` modified +1/-2 (3 lines); hunks: -865,7 +865,6 @@ def popen_launch_server(; -886,7 +885,7 @@ def popen_launch_server(; symbols: popen_launch_server
 - 关键代码摘录:
 
 ```diff
@@ -6231,10 +5925,12 @@ diff -- test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py
 -                    **os.environ,
 -                    "HF_HUB_OFFLINE": "0",
 -                },
+diff -- python/sglang/test/test_utils.py
+@@ -865,7 +865,6 @@ def popen_launch_server(
 ```
 
 - 已读文件:
-  - tests: `test/registered/quant/test_deepseek_v32_fp4_4gpu.py` modified +0/-9; `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py` modified +0/-9
+  - tests: `test/registered/quant/test_deepseek_v32_fp4_4gpu.py` modified +0/-9; `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py` modified +0/-9; `python/sglang/test/test_utils.py` modified +1/-2
 - 验证与风险: diff 自带测试面 `python/sglang/test/test_utils.py`, `test/registered/quant/test_deepseek_v32_fp4_4gpu.py`, `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #21179 - [Bug] Preserve DeepSeek-V3.2 tool-call markers in reasoning parsing
@@ -6280,7 +5976,7 @@ diff -- python/sglang/srt/parser/reasoning_parser.py
 - 状态/时间: merged / 2026-03-23
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 20 个文件，+1692/-59，可读 patch 2094 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「HiSparse for Sparse Attention」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/attention/nsa_backend.py`；技术摘要: 覆盖「HiSparse for Sparse Attention」；主要实现面是 `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/attention/nsa_backend.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「HiSparse for Sparse Attention」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/attention/nsa_backend.py`；技术摘要: 覆盖「HiSparse for Sparse Attention」；主要实现面是 `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/attention/nsa_backend.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py` modified +34/-3 (37 lines); hunks: -13,6 +13,10; -481,8 +485,8 @@ def _init_pools(self: ModelRunner):; symbols: _init_pools，涉及 `_init_pools`；`python/sglang/srt/model_executor/model_runner.py` modified +28/-0 (28 lines); hunks: -345,6 +345,7 @@ def __init__(; -418,6 +419,9 @@ def __init__(; symbols: __init__, initialize, _forward_raw，涉及 `__init__, initialize, _forward_raw`；`python/sglang/srt/layers/attention/nsa_backend.py` modified +24/-2 (26 lines); hunks: -177,6 +177,7 @@ class NSAIndexerMetadata(BaseIndexerMetadata):; -246,7 +247,7 @@ def topk_transform(; symbols: NSAIndexerMetadata, get_seqlens_int32, topk_transform, forward_extend，涉及 `NSAIndexerMetadata, get_seqlens_int32, topk_transform`；`python/sglang/srt/model_executor/cuda_graph_runner.py` modified +9/-0 (9 lines); hunks: -953,6 +953,12 @@ def capture_one_batch_size(; -1119,6 +1125,9 @@ def replay_prepare(; symbols: capture_one_batch_size, replay_prepare, replay，涉及 `capture_one_batch_size, replay_prepare, replay`。
 - 代码 diff 细节:
   - `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py` modified +34/-3 (37 lines); hunks: -13,6 +13,10; -481,8 +485,8 @@ def _init_pools(self: ModelRunner):; symbols: _init_pools
@@ -6389,7 +6085,7 @@ diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
 - 状态/时间: closed / 2026-03-23
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 31 个文件，+3077/-118，可读 patch 3804 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Sparse & HICache]: Enables hierarchical sparse KV cache management and scheduling for DeepSeek V32.」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/flashattention_backend.py`；技术摘要: 覆盖「[Sparse & HICache]: Enables hierarchical sparse KV cache management and scheduling for DeepSeek V32.」；主要实现面是 `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/flashattention_backend.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[Sparse & HICache]: Enables hierarchical sparse KV cache management and scheduling for DeepSeek V32.」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/flashattention_backend.py`；技术摘要: 覆盖「[Sparse & HICache]: Enables hierarchical sparse KV cache management and scheduling for DeepSeek V32.」；主要实现面是 `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/flashattention_backend.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/model_executor/model_runner.py` modified +98/-8 (106 lines); hunks: -92,6 +92,7; -486,6 +487,7 @@ def initialize(self, min_per_gpu_memory: float):; symbols: initialize, init_memory_pool，涉及 `initialize, init_memory_pool`；`python/sglang/srt/layers/attention/nsa_backend.py` modified +55/-5 (60 lines); hunks: -7,6 +7,7; -22,6 +23,7; symbols: NSAMetadata, get_seqlens_int32, get_page_table_64, get_seqlens_expanded，涉及 `NSAMetadata, get_seqlens_int32, get_page_table_64`；`python/sglang/srt/layers/attention/flashattention_backend.py` modified +33/-0 (33 lines); hunks: -11,6 +11,7; -362,6 +363,12 @@ def __init__(; symbols: __init__, init_forward_metadata, forward_extend, forward_decode，涉及 `__init__, init_forward_metadata, forward_extend`；`python/sglang/srt/models/deepseek_v2.py` modified +26/-7 (33 lines); hunks: -109,6 +109,7; -1768,13 +1769,31 @@ def forward_absorb_prepare(; symbols: forward_absorb_prepare，涉及 `forward_absorb_prepare`。
 - 代码 diff 细节:
   - `python/sglang/srt/model_executor/model_runner.py` modified +98/-8 (106 lines); hunks: -92,6 +92,7; -486,6 +487,7 @@ def initialize(self, min_per_gpu_memory: float):; symbols: initialize, init_memory_pool
@@ -6496,7 +6192,7 @@ diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
 - 状态/时间: merged / 2026-03-24
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py`；关联提交 `855d15adf657`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+141/-95，可读 patch 314 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[AMD] Tilelang sparse fwd for dsv32 mi355/mi300」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py`；技术摘要: 覆盖「[AMD] Tilelang sparse fwd for dsv32 mi355/mi300」；主要实现面是 `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[AMD] Tilelang sparse fwd for dsv32 mi355/mi300」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py`；技术摘要: 覆盖「[AMD] Tilelang sparse fwd for dsv32 mi355/mi300」；主要实现面是 `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` modified +141/-95 (236 lines); hunks: -790,16 +790,22 @@ def sparse_mla_fwd_decode_partial(; -815,20 +821,22 @@ def sparse_mla_fwd_decode_partial(; symbols: sparse_mla_fwd_decode_partial, main, tilelang_sparse_fwd，涉及 `sparse_mla_fwd_decode_partial, main, tilelang_sparse_fwd`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` modified +141/-95 (236 lines); hunks: -790,16 +790,22 @@ def sparse_mla_fwd_decode_partial(; -815,20 +821,22 @@ def sparse_mla_fwd_decode_partial(; symbols: sparse_mla_fwd_decode_partial, main, tilelang_sparse_fwd
@@ -6523,7 +6219,7 @@ diff -- python/sglang/srt/layers/attention/nsa/tilelang_kernel.py
 - 状态/时间: merged / 2026-03-25
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+11/-5，可读 patch 37 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Workaround of DSA performance drop on B200 + DP」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/server_args.py`；技术摘要: 覆盖「Workaround of DSA performance drop on B200 + DP」；主要实现面是 `python/sglang/srt/server_args.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「Workaround of DSA performance drop on B200 + DP」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/server_args.py`；技术摘要: 覆盖「Workaround of DSA performance drop on B200 + DP」；主要实现面是 `python/sglang/srt/server_args.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/server_args.py` modified +11/-5 (16 lines); hunks: -1386,7 +1386,7 @@ def _generate_piecewise_cuda_graph_tokens(self):; -1400,9 +1400,15 @@ def _set_default_nsa_kv_cache_dtype(self, major: int) ->...; symbols: _generate_piecewise_cuda_graph_tokens, _set_default_nsa_kv_cache_dtype, _handle_model_specific_adjustments，涉及 `_generate_piecewise_cuda_graph_tokens, _set_default_nsa_kv_cache_dtype, _handle_model_specific_adjustments`。
 - 代码 diff 细节:
   - `python/sglang/srt/server_args.py` modified +11/-5 (16 lines); hunks: -1386,7 +1386,7 @@ def _generate_piecewise_cuda_graph_tokens(self):; -1400,9 +1400,15 @@ def _set_default_nsa_kv_cache_dtype(self, major: int) ->...; symbols: _generate_piecewise_cuda_graph_tokens, _set_default_nsa_kv_cache_dtype, _handle_model_specific_adjustments
@@ -6604,7 +6300,7 @@ diff -- python/sglang/srt/layers/attention/nsa_backend.py
 - 状态/时间: open / 2026-03-27
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+70/-17，可读 patch 164 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[WIP][NPU] DeepSeek-V3.2 adapt enable-torch-compile」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/moe/token_dispatcher/fuseep.py`, `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w8a8_int8_moe.py`, `python/sglang/srt/models/deepseek_v2.py`；未提供可用技术摘要。
+- 动机: 标题「[WIP][NPU] DeepSeek-V3.2 adapt enable-torch-compile」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/moe/token_dispatcher/fuseep.py`, `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w8a8_int8_moe.py`, `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「[WIP][NPU] DeepSeek-V3.2 adapt enable-torch-compile」；主要实现面是 `python/sglang/srt/layers/moe/token_dispatcher/fuseep.py`, `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w8a8_int8_moe.py`, `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/moe/token_dispatcher/fuseep.py` modified +37/-12 (49 lines); hunks: -16,6 +16,7; -66,21 +67,45 @@ def __init__(; symbols: __init__, dispatch, combine，涉及 `__init__, dispatch, combine`；`python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w8a8_int8_moe.py` modified +18/-0 (18 lines); hunks: -132,3 +132,21 @@ def apply_weights(; symbols: apply_weights, apply_without_routing_weights，涉及 `apply_weights, apply_without_routing_weights`；`python/sglang/srt/models/deepseek_v2.py` modified +8/-5 (13 lines); hunks: -1348,9 +1348,6 @@ def forward_prepare(; -1992,7 +1989,8 @@ def forward(; symbols: forward_prepare, forward，涉及 `forward_prepare, forward`；`python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py` modified +1/-0 (1 lines); hunks: -202,6 +202,7 @@ def _add_fused_moe_to_target_scheme_map(self):; symbols: _add_fused_moe_to_target_scheme_map, weight_block_size，涉及 `_add_fused_moe_to_target_scheme_map, weight_block_size`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/moe/token_dispatcher/fuseep.py` modified +37/-12 (49 lines); hunks: -16,6 +16,7; -66,21 +67,45 @@ def __init__(; symbols: __init__, dispatch, combine
@@ -6747,7 +6443,7 @@ diff -- python/sglang/srt/function_call/deepseekv32_detector.py
 - 状态/时间: merged / 2026-03-28
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/cp/test_deepseek_v32_cp_single_node.py`；关联提交 `6ef4318ec07b`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[CI] Move v32 cp test to deepep running suite」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `test/registered/cp/test_deepseek_v32_cp_single_node.py`；未提供可用技术摘要。
+- 动机: 标题「[CI] Move v32 cp test to deepep running suite」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `test/registered/cp/test_deepseek_v32_cp_single_node.py`；技术摘要: 覆盖「[CI] Move v32 cp test to deepep running suite」；主要实现面是 `test/registered/cp/test_deepseek_v32_cp_single_node.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/cp/test_deepseek_v32_cp_single_node.py` modified +1/-1 (2 lines); hunks: -14,7 +14,7。
 - 代码 diff 细节:
   - `test/registered/cp/test_deepseek_v32_cp_single_node.py` modified +1/-1 (2 lines); hunks: -14,7 +14,7
@@ -6824,7 +6520,7 @@ diff -- docs/platforms/ascend/ascend_npu_best_practice.md
 - 状态/时间: merged / 2026-04-01
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+12/-14，可读 patch 77 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[DSA] Support trtllm sparse mla kernel for prefill batches」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/server_args.py`, `python/sglang/test/run_eval.py`；技术摘要: 覆盖「[DSA] Support trtllm sparse mla kernel for prefill batches」；主要实现面是 `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/server_args.py`, `python/sglang/test/run_eval.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[DSA] Support trtllm sparse mla kernel for prefill batches」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/server_args.py`, `python/sglang/test/run_eval.py`；技术摘要: 覆盖「[DSA] Support trtllm sparse mla kernel for prefill batches」；主要实现面是 `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/server_args.py`, `python/sglang/test/run_eval.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/nsa_backend.py` modified +9/-0 (9 lines); hunks: -1297,6 +1297,7 @@ def forward_extend(; -1929,6 +1930,7 @@ def _forward_trtllm(; symbols: forward_extend, _forward_trtllm，涉及 `forward_extend, _forward_trtllm`；`python/sglang/srt/server_args.py` modified +0/-11 (11 lines); hunks: -1455,9 +1455,6 @@ def _set_default_nsa_backends(self, kv_cache_dtype: str, m...; -1526,14 +1523,6 @@ def _handle_model_specific_adjustments(self):; symbols: _set_default_nsa_backends, _handle_model_specific_adjustments，涉及 `_set_default_nsa_backends, _handle_model_specific_adjustments`；`python/sglang/test/run_eval.py` modified +3/-3 (6 lines); hunks: -20,10 +20,10; -267,7 +267,7 @@ def run_eval(args):; symbols: get_thinking_kwargs, run_eval，涉及 `get_thinking_kwargs, run_eval`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa_backend.py` modified +9/-0 (9 lines); hunks: -1297,6 +1297,7 @@ def forward_extend(; -1929,6 +1930,7 @@ def _forward_trtllm(; symbols: forward_extend, _forward_trtllm
@@ -6905,7 +6601,7 @@ diff -- python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py
 - 状态/时间: merged / 2026-04-02
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+2/-7，可读 patch 26 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[DSA] Set trtllm kernels as default for Blackwell」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/server_args.py`；未提供可用技术摘要。
+- 动机: 标题「[DSA] Set trtllm kernels as default for Blackwell」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/server_args.py`；技术摘要: 覆盖「[DSA] Set trtllm kernels as default for Blackwell」；主要实现面是 `python/sglang/srt/server_args.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/server_args.py` modified +2/-7 (9 lines); hunks: -1411,15 +1411,10 @@ def _set_default_nsa_kv_cache_dtype(self, major: int, qu...; -1450,7 +1445,7 @@ def _set_default_nsa_backends(self, kv_cache_dtype: str, m...; symbols: _set_default_nsa_kv_cache_dtype, _set_default_nsa_backends，涉及 `_set_default_nsa_kv_cache_dtype, _set_default_nsa_backends`。
 - 代码 diff 细节:
   - `python/sglang/srt/server_args.py` modified +2/-7 (9 lines); hunks: -1411,15 +1411,10 @@ def _set_default_nsa_kv_cache_dtype(self, major: int, qu...; -1450,7 +1445,7 @@ def _set_default_nsa_backends(self, kv_cache_dtype: str, m...; symbols: _set_default_nsa_kv_cache_dtype, _set_default_nsa_backends
@@ -6968,7 +6664,7 @@ diff -- python/sglang/srt/models/deepseek_common/attention_forward_methods/forwa
 - 状态/时间: merged / 2026-04-03
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+8/-0，可读 patch 15 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[HiSparse]: Optimize server args checking-HiSparse is temporarily only available for DSA models.」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/server_args.py`；未提供可用技术摘要。
+- 动机: 标题「[HiSparse]: Optimize server args checking-HiSparse is temporarily only available for DSA models.」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/server_args.py`；技术摘要: 覆盖「[HiSparse]: Optimize server args checking-HiSparse is temporarily only available for DSA models.」；主要实现面是 `python/sglang/srt/server_args.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/server_args.py` modified +8/-0 (8 lines); hunks: -6170,6 +6170,14 @@ def check_server_args(self):; symbols: check_server_args，涉及 `check_server_args`。
 - 代码 diff 细节:
   - `python/sglang/srt/server_args.py` modified +8/-0 (8 lines); hunks: -6170,6 +6170,14 @@ def check_server_args(self):; symbols: check_server_args
@@ -6995,7 +6691,7 @@ diff -- python/sglang/srt/server_args.py
 - 状态/时间: merged / 2026-04-05
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/models/deepseek_v2.py`, `test/registered/8-gpu-models/test_deepseek_v32_indexcache.py`；关联提交 `5a3531641735`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+196/-20，可读 patch 358 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Enable IndexCache for DeepSeek V3.2」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `test/registered/8-gpu-models/test_deepseek_v32_indexcache.py`；技术摘要: 覆盖「Enable IndexCache for DeepSeek V3.2」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `test/registered/8-gpu-models/test_deepseek_v32_indexcache.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「Enable IndexCache for DeepSeek V3.2」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `test/registered/8-gpu-models/test_deepseek_v32_indexcache.py`；技术摘要: 覆盖「Enable IndexCache for DeepSeek V3.2」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `test/registered/8-gpu-models/test_deepseek_v32_indexcache.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +51/-6 (57 lines); hunks: -1106,6 +1106,7 @@ def __init__(; -1175,6 +1176,8 @@ def __init__(; symbols: __init__, op_prepare, op_core，涉及 `__init__, op_prepare, op_core`；`python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +27/-13 (40 lines); hunks: -91,6 +91,7 @@ def forward_absorb_prepare(; -182,25 +183,31 @@ def forward_absorb_prepare(; symbols: forward_absorb_prepare, forward_absorb_core, _fuse_rope_for_trtllm_mla，涉及 `forward_absorb_prepare, forward_absorb_core, _fuse_rope_for_trtllm_mla`；`test/registered/8-gpu-models/test_deepseek_v32_indexcache.py` added +117/-0 (117 lines); hunks: -0,0 +1,117; symbols: TestDeepseekV32IndexTopkPattern, setUpClass, tearDownClass, test_a_gsm8k，涉及 `TestDeepseekV32IndexTopkPattern, setUpClass, tearDownClass`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/deepseek_v2.py` modified +51/-6 (57 lines); hunks: -1106,6 +1106,7 @@ def __init__(; -1175,6 +1176,8 @@ def __init__(; symbols: __init__, op_prepare, op_core
@@ -7062,7 +6758,7 @@ diff -- docs/basic_usage/deepseek_v32.md
 - 状态/时间: merged / 2026-04-07
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+117/-0，可读 patch 122 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[HiSparse]: Add readme docs for HiSparse Feature」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `docs/advanced_features/hisparse_guide.md`, `docs/basic_usage/deepseek_v32.md`；未提供可用技术摘要。
+- 动机: 标题「[HiSparse]: Add readme docs for HiSparse Feature」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `docs/advanced_features/hisparse_guide.md`, `docs/basic_usage/deepseek_v32.md`；技术摘要: 覆盖「[HiSparse]: Add readme docs for HiSparse Feature」；主要实现面是 `docs/advanced_features/hisparse_guide.md`, `docs/basic_usage/deepseek_v32.md`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs/advanced_features/hisparse_guide.md` added +111/-0 (111 lines); hunks: -0,0 +1,111；`docs/basic_usage/deepseek_v32.md` modified +6/-0 (6 lines); hunks: -468,3 +468,9 @@ python -m sglang.launch_server \。
 - 代码 diff 细节:
   - `docs/advanced_features/hisparse_guide.md` added +111/-0 (111 lines); hunks: -0,0 +1,111
@@ -7088,32 +6784,6 @@ diff -- docs/basic_usage/deepseek_v32.md
 - 已读文件:
   - docs: `docs/advanced_features/hisparse_guide.md` added +111/-0; `docs/basic_usage/deepseek_v32.md` modified +6/-0
 - 验证与风险: 该 PR 主要落在文档/示例 `docs/advanced_features/hisparse_guide.md`, `docs/basic_usage/deepseek_v32.md`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
-
-### PR #22268 - [Bugfix] Fix prepare_qkv_latent bypassing LoRA adapters in DeepSeek V2/V3
-
-- 链接: https://github.com/sgl-project/sglang/pull/22268
-- 状态/时间: open / 2026-04-07
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+5/-0，可读 patch 17 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix] Fix prepare_qkv_latent bypassing LoRA adapters in DeepSeek V2/V3」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「[Bugfix] Fix prepare_qkv_latent bypassing LoRA adapters in DeepSeek V2/V3」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +5/-0 (5 lines); hunks: -1562,11 +1562,16 @@ def prepare_qkv_latent(; symbols: prepare_qkv_latent，涉及 `prepare_qkv_latent`。
-- 代码 diff 细节:
-  - `python/sglang/srt/models/deepseek_v2.py` modified +5/-0 (5 lines); hunks: -1562,11 +1562,16 @@ def prepare_qkv_latent(; symbols: prepare_qkv_latent
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/models/deepseek_v2.py
-@@ -1562,11 +1562,16 @@ def prepare_qkv_latent(
-+        # When LoRA adapters wrap the projection, the fused GEMM path reads
-+        # .weight directly and would bypass the LoRA delta.  Detect this by
-+        # checking for the ``base_layer`` attribute that all LoRA wrappers add.
-+        is_lora_wrapped = hasattr(self.fused_qkv_a_proj_with_mqa, "base_layer")
-+            and not is_lora_wrapped
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +5/-0
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/deepseek_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #21932 - [HiSparse] Optimize the scheduling of decode backup.
 
@@ -7183,7 +6853,7 @@ diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
 - 状态/时间: merged / 2026-04-09
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+84/-0，可读 patch 85 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[HiSparse]: Add HiSpares-DSA Model's nightly CI」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `test/registered/8-gpu-models/test_dsa_models_hisparse.py`；未提供可用技术摘要。
+- 动机: 标题「[HiSparse]: Add HiSpares-DSA Model's nightly CI」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `test/registered/8-gpu-models/test_dsa_models_hisparse.py`；技术摘要: 覆盖「[HiSparse]: Add HiSpares-DSA Model's nightly CI」；主要实现面是 `test/registered/8-gpu-models/test_dsa_models_hisparse.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/8-gpu-models/test_dsa_models_hisparse.py` added +84/-0 (84 lines); hunks: -0,0 +1,84; symbols: TestGLM5DPHiSparse, setUpClass, tearDownClass, test_a_gsm8k，涉及 `TestGLM5DPHiSparse, setUpClass, tearDownClass`。
 - 代码 diff 细节:
   - `test/registered/8-gpu-models/test_dsa_models_hisparse.py` added +84/-0 (84 lines); hunks: -0,0 +1,84; symbols: TestGLM5DPHiSparse, setUpClass, tearDownClass, test_a_gsm8k
@@ -7287,55 +6957,13 @@ diff -- python/sglang/srt/server_args.py
   - runtime: `python/sglang/srt/layers/attention/nsa_backend.py` modified +1/-3; `python/sglang/srt/server_args.py` modified +4/-2
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/server_args.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #22473 - [DSA] Add dense MLA decode fallback for short sequences
-
-- 链接: https://github.com/sgl-project/sglang/pull/22473
-- 状态/时间: open / 2026-04-09
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+196/-3，可读 patch 290 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[DSA] Add dense MLA decode fallback for short sequences」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/server_args.py`；技术摘要: 覆盖「[DSA] Add dense MLA decode fallback for short sequences」；主要实现面是 `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/server_args.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/layers/attention/nsa_backend.py` modified +143/-2 (145 lines); hunks: -322,6 +322,7 @@ def __init__(; -355,8 +356,13 @@ def __init__(; symbols: __init__, init_forward_metadata, forward_decode, _forward_aiter_extend，涉及 `__init__, init_forward_metadata, forward_decode`；`python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +44/-1 (45 lines); hunks: -748,6 +748,33 @@ def _forward_cuda_k_only(; -1076,7 +1103,7 @@ def forward_cuda(; symbols: _forward_cuda_k_only, _forward_decode_k_only, _get_topk_ragged_with_cp, forward_cuda，涉及 `_forward_cuda_k_only, _forward_decode_k_only, _get_topk_ragged_with_cp`；`python/sglang/srt/server_args.py` modified +7/-0 (7 lines); hunks: -1571,6 +1571,13 @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments，涉及 `_handle_model_specific_adjustments`；`docs/references/environment_variables.md` modified +1/-0 (1 lines); hunks: -97,6 +97,7 @@ SGLang supports various environment variables that can be used...。
-- 代码 diff 细节:
-  - `python/sglang/srt/layers/attention/nsa_backend.py` modified +143/-2 (145 lines); hunks: -322,6 +322,7 @@ def __init__(; -355,8 +356,13 @@ def __init__(; symbols: __init__, init_forward_metadata, forward_decode, _forward_aiter_extend
-  - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +44/-1 (45 lines); hunks: -748,6 +748,33 @@ def _forward_cuda_k_only(; -1076,7 +1103,7 @@ def forward_cuda(; symbols: _forward_cuda_k_only, _forward_decode_k_only, _get_topk_ragged_with_cp, forward_cuda
-  - `python/sglang/srt/server_args.py` modified +7/-0 (7 lines); hunks: -1571,6 +1571,13 @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments
-  - `docs/references/environment_variables.md` modified +1/-0 (1 lines); hunks: -97,6 +97,7 @@ SGLang supports various environment variables that can be used...
-  - `python/sglang/srt/environ.py` modified +1/-0 (1 lines); hunks: -402,6 +402,7 @@ class Envs:; symbols: Envs
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/layers/attention/nsa_backend.py
-@@ -322,6 +322,7 @@ def __init__(
-+        self.use_dense_decode: bool = False
-@@ -355,8 +356,13 @@ def __init__(
--        # Allocate global workspace buffer for TRT-LLM kernels (ragged attention on SM100/B200, or trtllm decode)
--        if self.device_sm_major >= 10 or self.nsa_decode_impl == "trtllm":
-+        # Allocate global workspace buffer for TRT-LLM kernels
-+        # (ragged attention on SM100/B200, trtllm decode, or dense decode fallback)
-diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
-@@ -748,6 +748,33 @@ def _forward_cuda_k_only(
-+    def _forward_decode_k_only(
-+        self,
-+        x: torch.Tensor,
-+        positions: torch.Tensor,
-+        forward_batch: ForwardBatch,
-+        layer_id: int,
-diff -- python/sglang/srt/server_args.py
-@@ -1571,6 +1571,13 @@ def _handle_model_specific_adjustments(self):
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/layers/attention/nsa_backend.py` modified +143/-2; `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +44/-1; `python/sglang/srt/server_args.py` modified +7/-0; `python/sglang/srt/environ.py` modified +1/-0
-  - docs: `docs/references/environment_variables.md` modified +1/-0
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/environ.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #13546 - [Deepseek V3.2] Optimize use of dual_stream in nsa_indexer/attention
 
 - 链接: https://github.com/sgl-project/sglang/pull/13546
 - 状态/时间: closed / 2026-04-10
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+254/-161，可读 patch 634 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Deepseek V3.2] Optimize use of dual_stream in nsa_indexer/attention」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/models/deepseek_v2.py`；未提供可用技术摘要。
+- 动机: 标题「[Deepseek V3.2] Optimize use of dual_stream in nsa_indexer/attention」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「[Deepseek V3.2] Optimize use of dual_stream in nsa_indexer/attention」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +191/-130 (321 lines); hunks: -4,10 +4,11; -20,7 +21,7; symbols: rotate_activation, V32LayerNorm, __init__, _forward_compiled，涉及 `rotate_activation, V32LayerNorm, __init__`；`python/sglang/srt/layers/attention/nsa_backend.py` modified +57/-25 (82 lines); hunks: -10,21 +10,26; -244,6 +249,7 @@ def __init__(; symbols: __init__, forward_decode, _prepare_kv_cache, _prepare_qkv，涉及 `__init__, forward_decode, _prepare_kv_cache`；`python/sglang/srt/models/deepseek_v2.py` modified +3/-3 (6 lines); hunks: -56,7 +56,7; -1688,7 +1688,7 @@ def rebuild_cp_kv_cache(self, latent_cache, forward_batch,...; symbols: rebuild_cp_kv_cache, forward，涉及 `rebuild_cp_kv_cache, forward`；`python/sglang/srt/models/deepseek_nextn.py` modified +2/-2 (4 lines); hunks: -25,7 +25,7; -175,7 +175,7 @@ def forward(; symbols: forward，涉及 `forward`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +191/-130 (321 lines); hunks: -4,10 +4,11; -20,7 +21,7; symbols: rotate_activation, V32LayerNorm, __init__, _forward_compiled
@@ -7485,7 +7113,7 @@ diff -- python/sglang/srt/mem_cache/hybrid_cache/hybrid_pool_assembler.py
 - 状态/时间: open / 2026-04-14
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 32 个文件，+701/-165，可读 patch 1403 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「nsa indexer: use aiter indexer_k_quant_and_cache」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；未提供可用技术摘要。
+- 动机: 标题「nsa indexer: use aiter indexer_k_quant_and_cache」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「nsa indexer: use aiter indexer_k_quant_and_cache」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +53/-9 (62 lines); hunks: -152,6 +152,7; -167,8 +168,6; symbols: forward, __init__, op_prepare，涉及 `forward, __init__, op_prepare`；`python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +27/-13 (40 lines); hunks: -91,6 +91,7 @@ def forward_absorb_prepare(; -182,25 +183,31 @@ def forward_absorb_prepare(; symbols: forward_absorb_prepare, forward_absorb_core, _fuse_rope_for_trtllm_mla，涉及 `forward_absorb_prepare, forward_absorb_core, _fuse_rope_for_trtllm_mla`；`python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +29/-0 (29 lines); hunks: -23,6 +23,7; -999,7 +1000,35 @@ def _store_index_k_cache(; symbols: _store_index_k_cache，涉及 `_store_index_k_cache`；`python/sglang/srt/multimodal/processors/lfm2_vl.py` modified +8/-8 (16 lines); hunks: -12,9 +12,9; -56,7 +56,7 @@ async def process_mm_data_async(; symbols: process_mm_data_async，涉及 `process_mm_data_async`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/deepseek_v2.py` modified +53/-9 (62 lines); hunks: -152,6 +152,7; -167,8 +168,6; symbols: forward, __init__, op_prepare
@@ -7518,50 +7146,7 @@ diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
 
 - 已读文件:
   - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +53/-9; `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +27/-13; `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +29/-0; `python/sglang/srt/multimodal/processors/lfm2_vl.py` modified +8/-8; `python/sglang/srt/entrypoints/engine.py` modified +1/-1; `python/sglang/srt/layers/attention/trtllm_mha_backend.py` modified +1/-1
-- 验证与风险: diff 自带测试面 `python/sglang/multimodal_gen/test/run_suite.py`, `python/sglang/multimodal_gen/test/server/test_server_common.py`, `python/sglang/multimodal_gen/test/server/test_server_utils.py`, `test/registered/8-gpu-models/test_deepseek_v32_indexcache.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
-
-### PR #22851 - [RL] [DSv32] [GLM-5] Add `--nsa-topk-backend` and integrate FlashInfer and pytorch topk
-
-- 链接: https://github.com/sgl-project/sglang/pull/22851
-- 状态/时间: merged / 2026-04-15
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+584/-36，可读 patch 776 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[RL] [DSv32] [GLM-5] Add `--nsa-topk-backend` and integrate FlashInfer and pytorch topk」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa_backend.py`, `test/registered/kernels/test_nsa_indexer.py`, `python/sglang/srt/server_args.py`；技术摘要: 覆盖「[RL] [DSv32] [GLM-5] Add `--nsa-topk-backend` and integrate FlashInfer and pytorch topk」；主要实现面是 `python/sglang/srt/layers/attention/nsa_backend.py`, `test/registered/kernels/test_nsa_indexer.py`, `python/sglang/srt/server_args.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/layers/attention/nsa_backend.py` modified +245/-35 (280 lines); hunks: -1,8 +1,17; -75,6 +84,46; symbols: _nsa_topk_unfused, NSAFlashMLAMetadata, TopkTransformMethod, NSATopKBackend，涉及 `_nsa_topk_unfused, NSAFlashMLAMetadata, TopkTransformMethod`；`test/registered/kernels/test_nsa_indexer.py` modified +324/-1 (325 lines); hunks: -4,6 +4,7; -16,7 +17,13; symbols: __init__, _verify_topk_output, _run_unfused_topk_backend_validity_test, _run_fused_topk_backend_equivalence_test，涉及 `__init__, _verify_topk_output, _run_unfused_topk_backend_validity_test`；`python/sglang/srt/server_args.py` modified +12/-0 (12 lines); hunks: -227,6 +227,8; -490,6 +492,7 @@ class ServerArgs:; symbols: ServerArgs, add_cli_args，涉及 `ServerArgs, add_cli_args`；`python/sglang/srt/environ.py` modified +2/-0 (2 lines); hunks: -402,6 +402,8 @@ class Envs:; symbols: Envs，涉及 `Envs`。
-- 代码 diff 细节:
-  - `python/sglang/srt/layers/attention/nsa_backend.py` modified +245/-35 (280 lines); hunks: -1,8 +1,17; -75,6 +84,46; symbols: _nsa_topk_unfused, NSAFlashMLAMetadata, TopkTransformMethod, NSATopKBackend
-  - `test/registered/kernels/test_nsa_indexer.py` modified +324/-1 (325 lines); hunks: -4,6 +4,7; -16,7 +17,13; symbols: __init__, _verify_topk_output, _run_unfused_topk_backend_validity_test, _run_fused_topk_backend_equivalence_test
-  - `python/sglang/srt/server_args.py` modified +12/-0 (12 lines); hunks: -227,6 +227,8; -490,6 +492,7 @@ class ServerArgs:; symbols: ServerArgs, add_cli_args
-  - `python/sglang/srt/environ.py` modified +2/-0 (2 lines); hunks: -402,6 +402,8 @@ class Envs:; symbols: Envs
-  - `docs/advanced_features/server_arguments.md` modified +1/-0 (1 lines); hunks: -269,6 +269,7 @@ Please consult the documentation below and [server_args.py](...
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/layers/attention/nsa_backend.py
-@@ -1,8 +1,17 @@
--from enum import IntEnum, auto
--from typing import TYPE_CHECKING, Dict, List, Literal, Optional, Tuple, TypeAlias
-+from enum import Enum, IntEnum, auto
-+from typing import (
-+    TYPE_CHECKING,
-+    Callable,
-diff -- test/registered/kernels/test_nsa_indexer.py
-@@ -4,6 +4,7 @@
-+from sglang.srt.environ import envs
-@@ -16,7 +17,13 @@
--from sglang.srt.layers.attention.nsa_backend import NativeSparseAttnBackend
-+from sglang.srt.layers.attention.nsa_backend import (
-+    NativeSparseAttnBackend,
-+    NSAIndexerMetadata,
-diff -- python/sglang/srt/server_args.py
-@@ -227,6 +227,8 @@
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/layers/attention/nsa_backend.py` modified +245/-35; `python/sglang/srt/server_args.py` modified +12/-0; `python/sglang/srt/environ.py` modified +2/-0
-  - tests: `test/registered/kernels/test_nsa_indexer.py` modified +324/-1
-  - docs: `docs/advanced_features/server_arguments.md` modified +1/-0
-- 验证与风险: diff 自带测试面 `test/registered/kernels/test_nsa_indexer.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+- 验证与风险: diff 自带测试面 `test/registered/8-gpu-models/test_deepseek_v32_indexcache.py`, `test/registered/8-gpu-models/test_nvidia_nemotron_3_super_nightly.py`, `test/registered/8-gpu-models/test_qwen3_235b.py`, `test/registered/lora/test_lora_qwen3.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #22865 - [sparsity] extend framework to support non-NSA sparse algorithms
 
@@ -7569,7 +7154,7 @@ diff -- python/sglang/srt/server_args.py
 - 状态/时间: open / 2026-04-15
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 9 个文件，+135/-30，可读 patch 326 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[sparsity] extend framework to support non-NSA sparse algorithms」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/attention/flashattention_backend.py`, `python/sglang/srt/model_executor/forward_batch_info.py`；技术摘要: 覆盖「[sparsity] extend framework to support non-NSA sparse algorithms」；主要实现面是 `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/attention/flashattention_backend.py`, `python/sglang/srt/model_executor/forward_batch_info.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[sparsity] extend framework to support non-NSA sparse algorithms」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/attention/flashattention_backend.py`, `python/sglang/srt/model_executor/forward_batch_info.py`；技术摘要: 覆盖「[sparsity] extend framework to support non-NSA sparse algorithms」；主要实现面是 `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/attention/flashattention_backend.py`, `python/sglang/srt/model_executor/forward_batch_info.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/model_executor/model_runner.py` modified +41/-1 (42 lines); hunks: -475,6 +475,8 @@ def __init__(; -689,7 +691,11 @@ def initialize(self, pre_model_load_memory: float):; symbols: __init__, initialize, _forward_raw，涉及 `__init__, initialize, _forward_raw`；`python/sglang/srt/layers/attention/flashattention_backend.py` modified +32/-1 (33 lines); hunks: -998,6 +998,16 @@ def _fa_cp_attn(; -1033,7 +1043,20 @@ def forward_decode(; symbols: _fa_cp_attn, forward_decode, init_cuda_graph_state，涉及 `_fa_cp_attn, forward_decode, init_cuda_graph_state`；`python/sglang/srt/model_executor/forward_batch_info.py` modified +4/-0 (4 lines); hunks: -71,6 +71,7; -430,6 +431,9 @@ class ForwardBatch(ForwardBatchDeepSeekMHAMixin):; symbols: ForwardBatch，涉及 `ForwardBatch`；`python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py` modified +3/-1 (4 lines); hunks: -567,7 +567,9 @@ def _init_pools(self: ModelRunner):; symbols: _init_pools，涉及 `_init_pools`。
 - 代码 diff 细节:
   - `python/sglang/srt/model_executor/model_runner.py` modified +41/-1 (42 lines); hunks: -475,6 +475,8 @@ def __init__(; -689,7 +691,11 @@ def initialize(self, pre_model_load_memory: float):; symbols: __init__, initialize, _forward_raw
@@ -7610,7 +7195,7 @@ diff -- python/sglang/srt/model_executor/forward_batch_info.py
 - 状态/时间: open / 2026-04-16
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+12/-8，可读 patch 76 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[AMD][MI30X] Restore DeepSeek MLA MI300X paths after MLA refactor (#19122)」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「[AMD][MI30X] Restore DeepSeek MLA MI300X paths after MLA refactor (#19122)」；主要实现面是 `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[AMD][MI30X] Restore DeepSeek MLA MI300X paths after MLA refactor (#19122)」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「[AMD][MI30X] Restore DeepSeek MLA MI300X paths after MLA refactor (#19122)」；主要实现面是 `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +12/-5 (17 lines); hunks: -19,7 +19,6; -67,6 +66,9 @@ def bmm_fp8(A, B, A_scale, B_scale, dtype, out=None):; symbols: bmm_fp8, DeepseekMLAForwardMixin, forward_absorb_prepare, forward_absorb_core，涉及 `bmm_fp8, DeepseekMLAForwardMixin, forward_absorb_prepare`；`python/sglang/srt/models/deepseek_v2.py` modified +0/-3 (3 lines); hunks: -169,9 +169,6。
 - 代码 diff 细节:
   - `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +12/-5 (17 lines); hunks: -19,7 +19,6; -67,6 +66,9 @@ def bmm_fp8(A, B, A_scale, B_scale, dtype, out=None):; symbols: bmm_fp8, DeepseekMLAForwardMixin, forward_absorb_prepare, forward_absorb_core
@@ -7683,7 +7268,7 @@ diff -- test/registered/piecewise_cuda_graph/test_pcg_with_speculative_decoding.
 - 状态/时间: merged / 2026-04-19
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；关联提交 `03828f420547`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+24/-5，可读 patch 72 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[AMD] Reduce NSA indexer kernels (weights_proj, k-cache store kernel fusion)」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「[AMD] Reduce NSA indexer kernels (weights_proj, k-cache store kernel fusion)」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[AMD] Reduce NSA indexer kernels (weights_proj, k-cache store kernel fusion)」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「[AMD] Reduce NSA indexer kernels (weights_proj, k-cache store kernel fusion)」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +24/-5 (29 lines); hunks: -14,7 +14,7; -32,14 +32,16; symbols: __init__, _weights_proj_bf16_in_fp32_out, _store_index_k_cache，涉及 `__init__, _weights_proj_bf16_in_fp32_out, _store_index_k_cache`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +24/-5 (29 lines); hunks: -14,7 +14,7; -32,14 +32,16; symbols: __init__, _weights_proj_bf16_in_fp32_out, _store_index_k_cache
@@ -7703,47 +7288,6 @@ diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
 - 已读文件:
   - runtime: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +24/-5
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
-### PR #23195 - [Bugfix] Guard .weight access in DeepseekV2AttentionMLA for AWQ / compressed-tensors
-
-- 链接: https://github.com/sgl-project/sglang/pull/23195
-- 状态/时间: closed / 2026-04-20
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+138/-14，可读 patch 186 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix] Guard .weight access in DeepseekV2AttentionMLA for AWQ / compressed-tensors」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `test/registered/unit/models/test_deepseek_v2_attention_mla.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py`；技术摘要: 覆盖「[Bugfix] Guard .weight access in DeepseekV2AttentionMLA for AWQ / compressed-tensors」；主要实现面是 `test/registered/unit/models/test_deepseek_v2_attention_mla.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `test/registered/unit/models/test_deepseek_v2_attention_mla.py` added +111/-0 (111 lines); hunks: -0,0 +1,111; symbols: TestDeepseekV2AttentionMLA, _make_attn, test_get_fused_qkv_a_proj_weight_returns_none_when_missing, test_can_use_min_latency_fused_a_gemm_preserves_bf16_path，涉及 `TestDeepseekV2AttentionMLA, _make_attn, test_get_fused_qkv_a_proj_weight_returns_none_when_missing`；`python/sglang/srt/models/deepseek_v2.py` modified +18/-9 (27 lines); hunks: -1135,6 +1135,23 @@ class DeepseekV2AttentionMLA(; -1351,15 +1368,7 @@ def __init__(; symbols: DeepseekV2AttentionMLA, _get_fused_qkv_a_proj_weight, _can_use_min_latency_fused_a_gemm, __init__，涉及 `DeepseekV2AttentionMLA, _get_fused_qkv_a_proj_weight, _can_use_min_latency_fused_a_gemm`；`python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py` modified +5/-4 (9 lines); hunks: -29,15 +29,16 @@ def init_mla_fused_rope_cpu_forward(self: DeepseekV2Attentio...; symbols: init_mla_fused_rope_cpu_forward，涉及 `init_mla_fused_rope_cpu_forward`；`python/sglang/srt/models/deepseek_common/attention_backend_handler.py` modified +4/-1 (5 lines); hunks: -29,7 +29,10 @@ def _dispatch_mla_subtype(attn, forward_batch):; symbols: _dispatch_mla_subtype，涉及 `_dispatch_mla_subtype`。
-- 代码 diff 细节:
-  - `test/registered/unit/models/test_deepseek_v2_attention_mla.py` added +111/-0 (111 lines); hunks: -0,0 +1,111; symbols: TestDeepseekV2AttentionMLA, _make_attn, test_get_fused_qkv_a_proj_weight_returns_none_when_missing, test_can_use_min_latency_fused_a_gemm_preserves_bf16_path
-  - `python/sglang/srt/models/deepseek_v2.py` modified +18/-9 (27 lines); hunks: -1135,6 +1135,23 @@ class DeepseekV2AttentionMLA(; -1351,15 +1368,7 @@ def __init__(; symbols: DeepseekV2AttentionMLA, _get_fused_qkv_a_proj_weight, _can_use_min_latency_fused_a_gemm, __init__
-  - `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py` modified +5/-4 (9 lines); hunks: -29,15 +29,16 @@ def init_mla_fused_rope_cpu_forward(self: DeepseekV2Attentio...; symbols: init_mla_fused_rope_cpu_forward
-  - `python/sglang/srt/models/deepseek_common/attention_backend_handler.py` modified +4/-1 (5 lines); hunks: -29,7 +29,10 @@ def _dispatch_mla_subtype(attn, forward_batch):; symbols: _dispatch_mla_subtype
-- 关键代码摘录:
-
-```diff
-diff -- test/registered/unit/models/test_deepseek_v2_attention_mla.py
-@@ -0,0 +1,111 @@
-+import unittest
-+from types import SimpleNamespace
-+from unittest.mock import patch
-+import torch
-+import torch.nn as nn
-+from sglang.srt.models.deepseek_common.attention_backend_handler import (
-diff -- python/sglang/srt/models/deepseek_v2.py
-@@ -1135,6 +1135,23 @@ class DeepseekV2AttentionMLA(
-+    def _get_fused_qkv_a_proj_weight(self):
-+        if not getattr(self, "has_fused_proj", False):
-+            return None
-+        return getattr(self.fused_qkv_a_proj_with_mqa, "weight", None)
-+    def _can_use_min_latency_fused_a_gemm(self) -> bool:
-+        fused_weight = self._get_fused_qkv_a_proj_weight()
-diff -- python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py
-@@ -29,15 +29,16 @@ def init_mla_fused_rope_cpu_forward(self: DeepseekV2AttentionMLA):
-```
-
-- 已读文件:
-  - tests: `test/registered/unit/models/test_deepseek_v2_attention_mla.py` added +111/-0
-  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +18/-9; `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py` modified +5/-4; `python/sglang/srt/models/deepseek_common/attention_backend_handler.py` modified +4/-1
-- 验证与风险: diff 自带测试面 `test/registered/unit/models/test_deepseek_v2_attention_mla.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #21249 - Support allreduce fusion with cp
 
@@ -7904,7 +7448,7 @@ diff -- python/sglang/srt/models/qwen3_moe.py
 - 状态/时间: merged / 2026-04-20
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 13 个文件，+1296/-33，可读 patch 1579 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[SPEC][1/N] feat: add adaptive speculative_num_steps for EAGLE topk=1」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/model_executor/cuda_graph_runner.py`, `benchmark/bench_adaptive_speculative.py`, `test/registered/unit/spec/test_adaptive_spec_params.py`；技术摘要: 覆盖「[SPEC][1/N] feat: add adaptive speculative_num_steps for EAGLE topk=1」；主要实现面是 `python/sglang/srt/model_executor/cuda_graph_runner.py`, `benchmark/bench_adaptive_speculative.py`, `test/registered/unit/spec/test_adaptive_spec_params.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[SPEC][1/N] feat: add adaptive speculative_num_steps for EAGLE topk=1」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/model_executor/cuda_graph_runner.py`, `benchmark/bench_adaptive_speculative.py`, `test/registered/unit/spec/test_adaptive_spec_params.py`；技术摘要: 覆盖「[SPEC][1/N] feat: add adaptive speculative_num_steps for EAGLE topk=1」；主要实现面是 `python/sglang/srt/model_executor/cuda_graph_runner.py`, `benchmark/bench_adaptive_speculative.py`, `test/registered/unit/spec/test_adaptive_spec_params.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/model_executor/cuda_graph_runner.py` modified +26/-12 (38 lines); hunks: -512,7 +512,14 @@ def set_global_graph_memory_pool(val):; -551,6 +558,17 @@ def __init__(self, model_runner: ModelRunner):; symbols: set_global_graph_memory_pool, CudaGraphRunner, __init__，涉及 `set_global_graph_memory_pool, CudaGraphRunner, __init__`；`benchmark/bench_adaptive_speculative.py` added +263/-0 (263 lines); hunks: -0,0 +1,263; symbols: build_phase_plan, send_request, run_phase, summarize_phases，涉及 `build_phase_plan, send_request, run_phase`；`test/registered/unit/spec/test_adaptive_spec_params.py` added +195/-0 (195 lines); hunks: -0,0 +1,195; symbols: TestAdaptiveSpeculativeParams, test_initial_steps_snap_to_nearest_candidate_preferring_larger_step, test_update_respects_warmup_and_interval, test_empty_batches_do_not_consume_warmup_or_shift_steps，涉及 `TestAdaptiveSpeculativeParams, test_initial_steps_snap_to_nearest_candidate_preferring_larger_step, test_update_respects_warmup_and_interval`；`test/registered/spec/eagle/test_adaptive_speculative.py` added +170/-0 (170 lines); hunks: -0,0 +1,170; symbols: TestAdaptiveSpeculativeServer, setUpClass, tearDownClass, _get_internal_state，涉及 `TestAdaptiveSpeculativeServer, setUpClass, tearDownClass`。
 - 代码 diff 细节:
   - `python/sglang/srt/model_executor/cuda_graph_runner.py` modified +26/-12 (38 lines); hunks: -512,7 +512,14 @@ def set_global_graph_memory_pool(val):; -551,6 +558,17 @@ def __init__(self, model_runner: ModelRunner):; symbols: set_global_graph_memory_pool, CudaGraphRunner, __init__
@@ -7948,7 +7492,7 @@ diff -- test/registered/unit/spec/test_adaptive_spec_params.py
 - 状态/时间: merged / 2026-04-20
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+41/-15，可读 patch 87 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[AMD] Enable MTP for GLM-5-mxfp4 model」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/deepseek_nextn.py`；技术摘要: 覆盖「[AMD] Enable MTP for GLM-5-mxfp4 model」；主要实现面是 `python/sglang/srt/models/deepseek_nextn.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[AMD] Enable MTP for GLM-5-mxfp4 model」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/deepseek_nextn.py`；技术摘要: 覆盖「[AMD] Enable MTP for GLM-5-mxfp4 model」；主要实现面是 `python/sglang/srt/models/deepseek_nextn.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/deepseek_nextn.py` modified +41/-15 (56 lines); hunks: -42,6 +42,7; -99,7 +100,18 @@ def __init__(; symbols: __init__, forward，涉及 `__init__, forward`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/deepseek_nextn.py` modified +41/-15 (56 lines); hunks: -42,6 +42,7; -99,7 +100,18 @@ def __init__(; symbols: __init__, forward
@@ -7975,7 +7519,7 @@ diff -- python/sglang/srt/models/deepseek_nextn.py
 - 状态/时间: merged / 2026-04-21
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+72/-4，可读 patch 131 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Opt-in strip of thinking tokens from radix cache」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `test/registered/unit/mem_cache/test_unified_radix_cache_unittest.py`, `python/sglang/srt/managers/schedule_batch.py`, `python/sglang/srt/server_args.py`；技术摘要: 覆盖「Opt-in strip of thinking tokens from radix cache」；主要实现面是 `test/registered/unit/mem_cache/test_unified_radix_cache_unittest.py`, `python/sglang/srt/managers/schedule_batch.py`, `python/sglang/srt/server_args.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「Opt-in strip of thinking tokens from radix cache」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `test/registered/unit/mem_cache/test_unified_radix_cache_unittest.py`, `python/sglang/srt/managers/schedule_batch.py`, `python/sglang/srt/server_args.py`；技术摘要: 覆盖「Opt-in strip of thinking tokens from radix cache」；主要实现面是 `test/registered/unit/mem_cache/test_unified_radix_cache_unittest.py`, `python/sglang/srt/managers/schedule_batch.py`, `python/sglang/srt/server_args.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/unit/mem_cache/test_unified_radix_cache_unittest.py` modified +52/-1 (53 lines); hunks: -30,7 +30,11; -485,6 +489,53 @@ def test_cache_finished_req_insert(self):; symbols: test_cache_finished_req_insert, test_cache_finished_req_strips_thinking, test_cache_finished_req_no_insert，涉及 `test_cache_finished_req_insert, test_cache_finished_req_strips_thinking, test_cache_finished_req_no_insert`；`python/sglang/srt/managers/schedule_batch.py` modified +9/-2 (11 lines); hunks: -903,13 +903,20 @@ def output_ids_through_stop(self) -> List[int]:; -921,7 +928,7 @@ def pop_overallocated_kv_cache(self) -> Tuple[int, int]:; symbols: output_ids_through_stop, _cache_commit_len, pop_committed_kv_cache, pop_overallocated_kv_cache，涉及 `output_ids_through_stop, _cache_commit_len, pop_committed_kv_cache`；`python/sglang/srt/server_args.py` modified +8/-0 (8 lines); hunks: -436,6 +436,7 @@ class ServerArgs:; -4879,6 +4880,13 @@ def add_cli_args(parser: argparse.ArgumentParser):; symbols: ServerArgs, add_cli_args，涉及 `ServerArgs, add_cli_args`；`python/sglang/srt/mem_cache/common.py` modified +3/-1 (4 lines); hunks: -489,7 +489,9 @@ def release_kv_cache(req: Req, tree_cache: BasePrefixCache,...; symbols: release_kv_cache，涉及 `release_kv_cache`。
 - 代码 diff 细节:
   - `test/registered/unit/mem_cache/test_unified_radix_cache_unittest.py` modified +52/-1 (53 lines); hunks: -30,7 +30,11; -485,6 +489,53 @@ def test_cache_finished_req_insert(self):; symbols: test_cache_finished_req_insert, test_cache_finished_req_strips_thinking, test_cache_finished_req_no_insert
@@ -8051,89 +7595,6 @@ diff -- test/registered/unit/mem_cache/test_radix_cache_thinking.py
   - runtime: `python/sglang/srt/parser/reasoning_parser.py` modified +8/-0; `python/sglang/srt/configs/model_config.py` modified +1/-0; `python/sglang/srt/mem_cache/mamba_radix_cache.py` modified +62/-50; `python/sglang/srt/mem_cache/radix_cache_cpp.py` modified +27/-14; `python/sglang/srt/mem_cache/common.py` modified +22/-0; `python/sglang/srt/mem_cache/radix_cache.py` modified +7/-0
   - tests: `test/registered/unit/mem_cache/test_radix_cache_thinking.py` added +238/-0; `test/registered/unit/mem_cache/test_radix_cache_thinking_gated.py` added +220/-0
 - 验证与风险: diff 自带测试面 `test/registered/unit/mem_cache/test_radix_cache_thinking.py`, `test/registered/unit/mem_cache/test_radix_cache_thinking_gated.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
-
-### PR #23336 - [SPEC V2][2/N] feat: adaptive spec support spec v2
-
-- 链接: https://github.com/sgl-project/sglang/pull/23336
-- 状态/时间: merged / 2026-04-21
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+193/-10，可读 patch 290 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[SPEC V2][2/N] feat: adaptive spec support spec v2」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/speculative/eagle_worker_v2.py`, `python/sglang/srt/speculative/eagle_info_v2.py`, `python/sglang/srt/managers/scheduler_output_processor_mixin.py`；技术摘要: 覆盖「[SPEC V2][2/N] feat: adaptive spec support spec v2」；主要实现面是 `python/sglang/srt/speculative/eagle_worker_v2.py`, `python/sglang/srt/speculative/eagle_info_v2.py`, `python/sglang/srt/managers/scheduler_output_processor_mixin.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/speculative/eagle_worker_v2.py` modified +173/-0 (173 lines); hunks: -30,8 +30,13; -671,6 +676,13 @@ def __init__(; symbols: __init__, target_worker, forward_batch_generation, on_verify_complete_cpu，涉及 `__init__, target_worker, forward_batch_generation`；`python/sglang/srt/speculative/eagle_info_v2.py` modified +8/-4 (12 lines); hunks: -114,14 +114,18 @@ def prepare_for_decode(self: EagleDraftInput, batch: Sched...; -163,7 +167,7 @@ def prepare_for_decode(self: EagleDraftInput, batch: Schedul...; symbols: prepare_for_decode, prepare_for_v2_draft，涉及 `prepare_for_decode, prepare_for_v2_draft`；`python/sglang/srt/managers/scheduler_output_processor_mixin.py` modified +10/-1 (11 lines); hunks: -360,8 +360,17 @@ def _resolve_spec_overlap_token_ids(; symbols: _resolve_spec_overlap_token_ids，涉及 `_resolve_spec_overlap_token_ids`；`python/sglang/srt/speculative/adaptive_spec_params.py` modified +0/-5 (5 lines); hunks: -32,11 +32,6 @@ def adaptive_unsupported_reason(server_args: ServerArgs) -> s...; symbols: adaptive_unsupported_reason，涉及 `adaptive_unsupported_reason`。
-- 代码 diff 细节:
-  - `python/sglang/srt/speculative/eagle_worker_v2.py` modified +173/-0 (173 lines); hunks: -30,8 +30,13; -671,6 +676,13 @@ def __init__(; symbols: __init__, target_worker, forward_batch_generation, on_verify_complete_cpu
-  - `python/sglang/srt/speculative/eagle_info_v2.py` modified +8/-4 (12 lines); hunks: -114,14 +114,18 @@ def prepare_for_decode(self: EagleDraftInput, batch: Sched...; -163,7 +167,7 @@ def prepare_for_decode(self: EagleDraftInput, batch: Schedul...; symbols: prepare_for_decode, prepare_for_v2_draft
-  - `python/sglang/srt/managers/scheduler_output_processor_mixin.py` modified +10/-1 (11 lines); hunks: -360,8 +360,17 @@ def _resolve_spec_overlap_token_ids(; symbols: _resolve_spec_overlap_token_ids
-  - `python/sglang/srt/speculative/adaptive_spec_params.py` modified +0/-5 (5 lines); hunks: -32,11 +32,6 @@ def adaptive_unsupported_reason(server_args: ServerArgs) -> s...; symbols: adaptive_unsupported_reason
-  - `python/sglang/srt/managers/utils.py` modified +1/-0 (1 lines); hunks: -27,6 +27,7 @@ class GenerationBatchResult:; symbols: GenerationBatchResult
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/speculative/eagle_worker_v2.py
-@@ -30,8 +30,13 @@
-+from sglang.srt.model_executor.cuda_graph_runner import CudaGraphRunner
-+from sglang.srt.speculative.adaptive_runtime_state import (
-+    AdaptiveController,
-+    SpecRuntimeState,
-+)
-@@ -671,6 +676,13 @@ def __init__(
-diff -- python/sglang/srt/speculative/eagle_info_v2.py
-@@ -114,14 +114,18 @@ def prepare_for_decode(self: EagleDraftInput, batch: ScheduleBatch):
-+        current_kv_lens_cpu = batch.seq_lens.to(device="cpu")
--        for r in batch.reqs:
--            # Over-allocation happens here
--            x = r.kv_committed_len + 2 * alloc_len_per_decode - r.kv_allocated_len
-+        for i, r in enumerate(batch.reqs):
-+            cur_kv_len = current_kv_lens_cpu[i].item()
-diff -- python/sglang/srt/managers/scheduler_output_processor_mixin.py
-@@ -360,8 +360,17 @@ def _resolve_spec_overlap_token_ids(
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/speculative/eagle_worker_v2.py` modified +173/-0; `python/sglang/srt/speculative/eagle_info_v2.py` modified +8/-4; `python/sglang/srt/managers/scheduler_output_processor_mixin.py` modified +10/-1; `python/sglang/srt/speculative/adaptive_spec_params.py` modified +0/-5; `python/sglang/srt/managers/utils.py` modified +1/-0; `python/sglang/srt/speculative/multi_layer_eagle_worker_v2.py` modified +1/-0
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/managers/scheduler_output_processor_mixin.py`, `python/sglang/srt/managers/utils.py`, `python/sglang/srt/speculative/adaptive_spec_params.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
-### PR #23351 - Support piecewise CUDA graph with NSA
-
-- 链接: https://github.com/sgl-project/sglang/pull/23351
-- 状态/时间: merged / 2026-04-21
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 11 个文件，+302/-56，可读 patch 646 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Support piecewise CUDA graph with NSA」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/layernorm.py`, `python/sglang/srt/layers/radix_attention.py`；技术摘要: 覆盖「Support piecewise CUDA graph with NSA」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/layernorm.py`, `python/sglang/srt/layers/radix_attention.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +163/-34 (197 lines); hunks: -11,6 +11,10; -73,6 +77,82; symbols: k_cache_and_topk_result, _logits_head_gate_pcg_fake_impl, logits_head_gate_pcg, BaseIndexerMetadata，涉及 `k_cache_and_topk_result, _logits_head_gate_pcg_fake_impl, logits_head_gate_pcg`；`python/sglang/srt/layers/layernorm.py` modified +20/-1 (21 lines); hunks: -51,7 +51,26; symbols: _layernorm_fake_impl, layernorm，涉及 `_layernorm_fake_impl, layernorm`；`python/sglang/srt/layers/radix_attention.py` modified +14/-0 (14 lines); hunks: -148,6 +148,12 @@ def unified_attention_with_output(; -166,6 +172,14 @@ def unified_attention_with_output(; symbols: unified_attention_with_output，涉及 `unified_attention_with_output`；`python/sglang/srt/layers/attention/nsa_backend.py` modified +5/-2 (7 lines); hunks: -1,12 +1,15; -2116,8 +2119,8 @@ def _forward_trtllm(; symbols: _forward_trtllm, _pad_topk_indices，涉及 `_forward_trtllm, _pad_topk_indices`。
-- 代码 diff 细节:
-  - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +163/-34 (197 lines); hunks: -11,6 +11,10; -73,6 +77,82; symbols: k_cache_and_topk_result, _logits_head_gate_pcg_fake_impl, logits_head_gate_pcg, BaseIndexerMetadata
-  - `python/sglang/srt/layers/layernorm.py` modified +20/-1 (21 lines); hunks: -51,7 +51,26; symbols: _layernorm_fake_impl, layernorm
-  - `python/sglang/srt/layers/radix_attention.py` modified +14/-0 (14 lines); hunks: -148,6 +148,12 @@ def unified_attention_with_output(; -166,6 +172,14 @@ def unified_attention_with_output(; symbols: unified_attention_with_output
-  - `python/sglang/srt/layers/attention/nsa_backend.py` modified +5/-2 (7 lines); hunks: -1,12 +1,15; -2116,8 +2119,8 @@ def _forward_trtllm(; symbols: _forward_trtllm, _pad_topk_indices
-  - `python/sglang/srt/model_executor/model_runner.py` modified +6/-0 (6 lines); hunks: -2656,6 +2656,7 @@ def init_piecewise_cuda_graphs(self):; -2708,6 +2709,11 @@ def init_piecewise_cuda_graphs(self):; symbols: init_piecewise_cuda_graphs
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
-@@ -11,6 +11,10 @@
-+from sglang.srt.compilation.piecewise_context_manager import (
-+    get_forward_context,
-+    is_in_piecewise_cuda_graph,
-+)
-@@ -73,6 +77,82 @@
-+if _is_cuda:
-diff -- python/sglang/srt/layers/layernorm.py
-@@ -51,7 +51,26 @@
--            from flashinfer.norm import layernorm
-+            import flashinfer.norm
-+            from sglang.srt.utils.custom_op import register_custom_op
-+            def _layernorm_fake_impl(
-+                input: torch.Tensor,
-+                gamma: torch.Tensor,
-diff -- python/sglang/srt/layers/radix_attention.py
-@@ -148,6 +148,12 @@ def unified_attention_with_output(
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +163/-34; `python/sglang/srt/layers/layernorm.py` modified +20/-1; `python/sglang/srt/layers/radix_attention.py` modified +14/-0; `python/sglang/srt/layers/attention/nsa_backend.py` modified +5/-2; `python/sglang/srt/model_executor/model_runner.py` modified +6/-0; `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` modified +4/-0
-  - tests: `test/registered/piecewise_cuda_graph/test_pcg_glm5_fp4.py` added +70/-0
-- 验证与风险: diff 自带测试面 `test/registered/piecewise_cuda_graph/test_pcg_glm5_fp4.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #22774 - [MUSA][16/N] Add MUSA backend support for layers and DeepSeek models (V2/V3/R1)
 
@@ -8255,7 +7716,7 @@ diff -- python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla
 - 状态/时间: closed / 2026-04-30
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+41/-9，可读 patch 96 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「TP indexer weight in NSA attention」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「TP indexer weight in NSA attention」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「TP indexer weight in NSA attention」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「TP indexer weight in NSA attention」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +41/-9 (50 lines); hunks: -36,6 +36,9; -45,7 +48,8; symbols: __init__, _with_real_sm_count, _weights_proj_bf16_in_fp32_out, _project_and_scale_head_gates，涉及 `__init__, _with_real_sm_count, _weights_proj_bf16_in_fp32_out`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +41/-9 (50 lines); hunks: -36,6 +36,9; -45,7 +48,8; symbols: __init__, _with_real_sm_count, _weights_proj_bf16_in_fp32_out, _project_and_scale_head_gates
@@ -8276,16 +7737,189 @@ diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
   - runtime: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +41/-9
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
+### PR #23195 - [Bugfix] Guard .weight access in DeepseekV2AttentionMLA for AWQ / compressed-tensors
+
+- 链接: https://github.com/sgl-project/sglang/pull/23195
+- 状态/时间: closed / 2026-05-02
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+138/-14，可读 patch 186 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] Guard .weight access in DeepseekV2AttentionMLA for AWQ / compressed-tensors」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `test/registered/unit/models/test_deepseek_v2_attention_mla.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py`；技术摘要: 覆盖「[Bugfix] Guard .weight access in DeepseekV2AttentionMLA for AWQ / compressed-tensors」；主要实现面是 `test/registered/unit/models/test_deepseek_v2_attention_mla.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/unit/models/test_deepseek_v2_attention_mla.py` added +111/-0 (111 lines); hunks: -0,0 +1,111; symbols: TestDeepseekV2AttentionMLA, _make_attn, test_get_fused_qkv_a_proj_weight_returns_none_when_missing, test_can_use_min_latency_fused_a_gemm_preserves_bf16_path，涉及 `TestDeepseekV2AttentionMLA, _make_attn, test_get_fused_qkv_a_proj_weight_returns_none_when_missing`；`python/sglang/srt/models/deepseek_v2.py` modified +18/-9 (27 lines); hunks: -1135,6 +1135,23 @@ class DeepseekV2AttentionMLA(; -1351,15 +1368,7 @@ def __init__(; symbols: DeepseekV2AttentionMLA, _get_fused_qkv_a_proj_weight, _can_use_min_latency_fused_a_gemm, __init__，涉及 `DeepseekV2AttentionMLA, _get_fused_qkv_a_proj_weight, _can_use_min_latency_fused_a_gemm`；`python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py` modified +5/-4 (9 lines); hunks: -29,15 +29,16 @@ def init_mla_fused_rope_cpu_forward(self: DeepseekV2Attentio...; symbols: init_mla_fused_rope_cpu_forward，涉及 `init_mla_fused_rope_cpu_forward`；`python/sglang/srt/models/deepseek_common/attention_backend_handler.py` modified +4/-1 (5 lines); hunks: -29,7 +29,10 @@ def _dispatch_mla_subtype(attn, forward_batch):; symbols: _dispatch_mla_subtype，涉及 `_dispatch_mla_subtype`。
+- 代码 diff 细节:
+  - `test/registered/unit/models/test_deepseek_v2_attention_mla.py` added +111/-0 (111 lines); hunks: -0,0 +1,111; symbols: TestDeepseekV2AttentionMLA, _make_attn, test_get_fused_qkv_a_proj_weight_returns_none_when_missing, test_can_use_min_latency_fused_a_gemm_preserves_bf16_path
+  - `python/sglang/srt/models/deepseek_v2.py` modified +18/-9 (27 lines); hunks: -1135,6 +1135,23 @@ class DeepseekV2AttentionMLA(; -1351,15 +1368,7 @@ def __init__(; symbols: DeepseekV2AttentionMLA, _get_fused_qkv_a_proj_weight, _can_use_min_latency_fused_a_gemm, __init__
+  - `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py` modified +5/-4 (9 lines); hunks: -29,15 +29,16 @@ def init_mla_fused_rope_cpu_forward(self: DeepseekV2Attentio...; symbols: init_mla_fused_rope_cpu_forward
+  - `python/sglang/srt/models/deepseek_common/attention_backend_handler.py` modified +4/-1 (5 lines); hunks: -29,7 +29,10 @@ def _dispatch_mla_subtype(attn, forward_batch):; symbols: _dispatch_mla_subtype
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/unit/models/test_deepseek_v2_attention_mla.py
+@@ -0,0 +1,111 @@
++import unittest
++from types import SimpleNamespace
++from unittest.mock import patch
++import torch
++import torch.nn as nn
++from sglang.srt.models.deepseek_common.attention_backend_handler import (
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -1135,6 +1135,23 @@ class DeepseekV2AttentionMLA(
++    def _get_fused_qkv_a_proj_weight(self):
++        if not getattr(self, "has_fused_proj", False):
++            return None
++        return getattr(self.fused_qkv_a_proj_with_mqa, "weight", None)
++    def _can_use_min_latency_fused_a_gemm(self) -> bool:
++        fused_weight = self._get_fused_qkv_a_proj_weight()
+diff -- python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py
+@@ -29,15 +29,16 @@ def init_mla_fused_rope_cpu_forward(self: DeepseekV2AttentionMLA):
+```
+
+- 已读文件:
+  - tests: `test/registered/unit/models/test_deepseek_v2_attention_mla.py` added +111/-0
+  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +18/-9; `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py` modified +5/-4; `python/sglang/srt/models/deepseek_common/attention_backend_handler.py` modified +4/-1
+- 验证与风险: diff 自带测试面 `test/registered/unit/models/test_deepseek_v2_attention_mla.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #24356 - [Intel GPU] Enable DeepSeek V3.2 inference on XPU
+
+- 链接: https://github.com/sgl-project/sglang/pull/24356
+- 状态/时间: merged / 2026-05-05
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；关联提交 `fdfc46f3a5b6`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+14/-1，可读 patch 29 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Intel GPU] Enable DeepSeek V3.2 inference on XPU」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「[Intel GPU] Enable DeepSeek V3.2 inference on XPU」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +13/-0 (13 lines); hunks: -1062,6 +1062,19 @@ def _store_index_k_cache(; symbols: _store_index_k_cache, forward_xpu, forward_cuda，涉及 `_store_index_k_cache, forward_xpu, forward_cuda`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +13/-0 (13 lines); hunks: -1062,6 +1062,19 @@ def _store_index_k_cache(; symbols: _store_index_k_cache, forward_xpu, forward_cuda
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
+@@ -1062,6 +1062,19 @@ def _store_index_k_cache(
++    def forward_xpu(
++        self,
++        x: torch.Tensor,
++        q_lora: torch.Tensor,
++        positions: torch.Tensor,
++        forward_batch: ForwardBatch,
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +13/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/server_args.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #24392 - add indexer-topk capture (V3.2 NSA + infra)
+
+- 链接: https://github.com/sgl-project/sglang/pull/24392
+- 状态/时间: merged / 2026-05-05
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`；关联提交 `47a416fc6272`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 19 个文件，+428/-18，可读 patch 785 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「add indexer-topk capture (V3.2 NSA + infra)」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`；技术摘要: 覆盖「add indexer-topk capture (V3.2 NSA + infra)」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +27/-15 (42 lines); hunks: -12,6 +12,9; -1121,15 +1124,18 @@ def forward_cuda(; symbols: forward_cuda, forward_npu，涉及 `forward_cuda, forward_npu`；`python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +11/-2 (13 lines); hunks: -6,6 +6,9; -205,7 +208,11 @@ def forward_absorb_prepare(; symbols: forward_absorb_prepare，涉及 `forward_absorb_prepare`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +27/-15 (42 lines); hunks: -12,6 +12,9; -1121,15 +1124,18 @@ def forward_cuda(; symbols: forward_cuda, forward_npu
+  - `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +11/-2 (13 lines); hunks: -6,6 +6,9; -205,7 +208,11 @@ def forward_absorb_prepare(; symbols: forward_absorb_prepare
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
+@@ -12,6 +12,9 @@
++from sglang.srt.layers.attention.indexer_topk_capturer import (
++    maybe_capture_indexer_topk,
++)
+@@ -1121,15 +1124,18 @@ def forward_cuda(
+-            return self._forward_cuda_k_only(
+-                x,
+diff -- python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py
+@@ -6,6 +6,9 @@
++from sglang.srt.layers.attention.indexer_topk_capturer import (
++    maybe_capture_indexer_topk,
++)
+@@ -205,7 +208,11 @@ def forward_absorb_prepare(
+-                    topk_indices = prev_topk_indices
++                    # skip_topk reuses prev layer's indices; mirror into this
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +27/-15; `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +11/-2
+- 验证与风险: diff 自带测试面 `test/registered/8-gpu-models/test_return_indexer_topk.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #23336 - [SPEC V2][2/N] feat: adaptive spec support spec v2
+
+- 链接: https://github.com/sgl-project/sglang/pull/23336
+- 状态/时间: merged / 2026-05-08
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 12 个文件，+303/-73，可读 patch 635 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[SPEC V2][2/N] feat: adaptive spec support spec v2」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/speculative/eagle_worker_v2.py`, `test/registered/spec/eagle/test_adaptive_speculative.py`, `python/sglang/srt/speculative/eagle_worker.py`；技术摘要: 覆盖「[SPEC V2][2/N] feat: adaptive spec support spec v2」；主要实现面是 `python/sglang/srt/speculative/eagle_worker_v2.py`, `test/registered/spec/eagle/test_adaptive_speculative.py`, `python/sglang/srt/speculative/eagle_worker.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/speculative/eagle_worker_v2.py` modified +187/-8 (195 lines); hunks: -30,8 +30,13; -65,6 +70,7; symbols: init_cuda_graphs, draft, __init__，涉及 `init_cuda_graphs, draft, __init__`；`test/registered/spec/eagle/test_adaptive_speculative.py` modified +26/-28 (54 lines); hunks: -6,7 +6,6; -59,33 +58,32 @@ def setUpClass(cls):; symbols: setUpClass，涉及 `setUpClass`；`python/sglang/srt/speculative/eagle_worker.py` modified +24/-18 (42 lines); hunks: -73,6 +73,7; -278,42 +279,47 @@ def init_cuda_graphs(self):; symbols: init_cuda_graphs, apply_runtime_state, build_adaptive_runtime_state, _override_worker_state，涉及 `init_cuda_graphs, apply_runtime_state, build_adaptive_runtime_state`；`python/sglang/srt/speculative/adaptive_spec_params.py` modified +25/-14 (39 lines); hunks: -9,6 +9,8; -32,11 +34,6 @@ def adaptive_unsupported_reason(server_args: ServerArgs) -> s...; symbols: adaptive_unsupported_reason, __init__, update, _recompute_params，涉及 `adaptive_unsupported_reason, __init__, update`。
+- 代码 diff 细节:
+  - `python/sglang/srt/speculative/eagle_worker_v2.py` modified +187/-8 (195 lines); hunks: -30,8 +30,13; -65,6 +70,7; symbols: init_cuda_graphs, draft, __init__
+  - `test/registered/spec/eagle/test_adaptive_speculative.py` modified +26/-28 (54 lines); hunks: -6,7 +6,6; -59,33 +58,32 @@ def setUpClass(cls):; symbols: setUpClass
+  - `python/sglang/srt/speculative/eagle_worker.py` modified +24/-18 (42 lines); hunks: -73,6 +73,7; -278,42 +279,47 @@ def init_cuda_graphs(self):; symbols: init_cuda_graphs, apply_runtime_state, build_adaptive_runtime_state, _override_worker_state
+  - `python/sglang/srt/speculative/adaptive_spec_params.py` modified +25/-14 (39 lines); hunks: -9,6 +9,8; -32,11 +34,6 @@ def adaptive_unsupported_reason(server_args: ServerArgs) -> s...; symbols: adaptive_unsupported_reason, __init__, update, _recompute_params
+  - `python/sglang/srt/managers/scheduler_output_processor_mixin.py` modified +9/-1 (10 lines); hunks: -385,8 +385,16 @@ def _resolve_spec_overlap_token_ids(; symbols: _resolve_spec_overlap_token_ids
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/speculative/eagle_worker_v2.py
+@@ -30,8 +30,13 @@
++from sglang.srt.model_executor.cuda_graph_runner import CudaGraphRunner
++from sglang.srt.speculative.adaptive_runtime_state import (
++    AdaptiveController,
++    SpecRuntimeState,
++)
+@@ -65,6 +70,7 @@
+diff -- test/registered/spec/eagle/test_adaptive_speculative.py
+@@ -6,7 +6,6 @@
+-from sglang.srt.environ import envs
+@@ -59,33 +58,32 @@ def setUpClass(cls):
+-            with envs.SGLANG_ENABLE_SPEC_V2.override(False):
+-                cls.process = popen_launch_server(
+-                    cls.model,
+-                    cls.base_url,
+diff -- python/sglang/srt/speculative/eagle_worker.py
+@@ -73,6 +73,7 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/speculative/eagle_worker_v2.py` modified +187/-8; `python/sglang/srt/speculative/eagle_worker.py` modified +24/-18; `python/sglang/srt/speculative/adaptive_spec_params.py` modified +25/-14; `python/sglang/srt/managers/scheduler_output_processor_mixin.py` modified +9/-1; `python/sglang/srt/speculative/base_spec_worker.py` modified +8/-0; `python/sglang/srt/speculative/eagle_info_v2.py` modified +6/-1
+  - tests: `test/registered/spec/eagle/test_adaptive_speculative.py` modified +26/-28; `test/registered/unit/spec/test_adaptive_spec_params.py` modified +4/-3
+- 验证与风险: diff 自带测试面 `test/registered/spec/eagle/test_adaptive_speculative.py`, `test/registered/unit/spec/test_adaptive_spec_params.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #23965 - Enable PDL for various kernels in DSV32/GLM5
+
+- 链接: https://github.com/sgl-project/sglang/pull/23965
+- 状态/时间: merged / 2026-05-09
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；关联提交 `05d1ab51e87b`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+71/-22，可读 patch 289 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Enable PDL for various kernels in DSV32/GLM5」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「Enable PDL for various kernels in DSV32/GLM5」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +7/-1 (8 lines); hunks: -297,6 +297,12 @@ def _get_logits_head_gate(; -1135,7 +1141,7 @@ def forward_cuda(; symbols: _get_logits_head_gate, _apply_q_scale_and_softmax_scale, _get_q_k_bf16, forward_cuda，涉及 `_get_logits_head_gate, _apply_q_scale_and_softmax_scale, _get_q_k_bf16`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +7/-1 (8 lines); hunks: -297,6 +297,12 @@ def _get_logits_head_gate(; -1135,7 +1141,7 @@ def forward_cuda(; symbols: _get_logits_head_gate, _apply_q_scale_and_softmax_scale, _get_q_k_bf16, forward_cuda
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
+@@ -297,6 +297,12 @@ def _get_logits_head_gate(
++    @torch.compile(dynamic=True)
++    def _apply_q_scale_and_softmax_scale(
++        self, weights: torch.Tensor, q_scale: torch.Tensor
++    ):
++        return weights.unsqueeze(-1) * q_scale * self.softmax_scale
+@@ -1135,7 +1141,7 @@ def forward_cuda(
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +7/-1
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/utils.py`, `python/sglang/srt/mem_cache/utils.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
 ### PR #23856 - Use Torch `torch.mm` for Deepseek V3.2 Indexer GEMM
 
 - 链接: https://github.com/sgl-project/sglang/pull/23856
 - 状态/时间: merged / 2026-05-11
-- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@78cb38ed5` 提交历史和 GitHub Pull Request files API 反查；关联提交 `1df9edcd015d`。
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；关联提交 `1df9edcd015d`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+2/-9，可读 patch 18 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Use Torch `torch.mm` for Deepseek V3.2 Indexer GEMM」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「Use Torch `torch.mm` for Deepseek V3.2 Indexer GEMM」，下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +2/-9 (11 lines); hunks: -266,15 +266,8  @@ def _weights_proj_bf16_in_fp32_out(; symbols: _weights_proj_bf16_in_fp32_out，涉及 `_weights_proj_bf16_in_fp32_out`。
+- 动机: 标题「Use Torch `torch.mm` for Deepseek V3.2 Indexer GEMM」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「Use Torch `torch.mm` for Deepseek V3.2 Indexer GEMM」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +2/-9 (11 lines); hunks: -266,15 +266,8 @@ def _weights_proj_bf16_in_fp32_out(; symbols: _weights_proj_bf16_in_fp32_out，涉及 `_weights_proj_bf16_in_fp32_out`。
 - 代码 diff 细节:
-  - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +2/-9 (11 lines); hunks: -266,15 +266,8  @@ def _weights_proj_bf16_in_fp32_out(; symbols: _weights_proj_bf16_in_fp32_out，涉及 `_weights_proj_bf16_in_fp32_out`
+  - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +2/-9 (11 lines); hunks: -266,15 +266,8 @@ def _weights_proj_bf16_in_fp32_out(; symbols: _weights_proj_bf16_in_fp32_out
 - 关键代码摘录:
 
 ```diff
@@ -8297,27 +7931,23 @@ diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
 -                (x.shape[0], weight.shape[0]),
 -                dtype=torch.float32,
 -                device=x.device,
--            )
--            deep_gemm_wrapper.gemm_nt_bf16bf16f32(x, weight, out)
 ```
 
 - 已读文件:
   - runtime: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +2/-9
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；风险点是权重加载、并行切分、attention/MoE 后端选择、量化 dtype 和 parser 输出，需要至少做一次真实 checkpoint 或等价 smoke。
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #23562 - [AMD] Enable preshuffle paged MQA and page_size=64 for NSA indexer
 
 - 链接: https://github.com/sgl-project/sglang/pull/23562
 - 状态/时间: merged / 2026-05-13
-- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@78cb38ed5` 提交历史和 GitHub Pull Request files API 反查；关联提交 `a9359707c18d`。
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；关联提交 `a9359707c18d`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+83/-42，可读 patch 231 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[AMD] Enable preshuffle paged MQA and page_size=64 for NSA indexer」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/server_args.py`；技术摘要: 覆盖「[AMD] Enable preshuffle paged MQA and page_size=64 for NSA indexer」，下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` modified +53/-6 (59 lines); hunks: -5,10 +5,14  @@ import triton.language as tl; -163,8 +167,52  @@ def triton(; symbols: triton, _set_k_and_s_triton，涉及 `triton, _set_k_and_s_triton`；`python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +25/-26 (51 lines); hunks: -431,12 +431,13  @@ def _get_topk_paged(; -471,17 +472,12  @@ def _get_topk_paged(; symbols: _get_topk_paged, _get_topk_ragged, _store_index_k_cache，涉及 `_get_topk_paged, _get_topk_ragged, _store_index_k_cache`；`python/sglang/srt/server_args.py` modified +2/-9 (11 lines); hunks: -1836,15 +1836,8  @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments，涉及 `_handle_model_specific_adjustments`；`python/sglang/srt/mem_cache/memory_pool.py` modified +3/-1 (4 lines); hunks: -2023,7 +2023,9  @@ def __init__(; symbols: __init__，涉及 `__init__`。
+- 动机: 标题「[AMD] Enable preshuffle paged MQA and page_size=64 for NSA indexer」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「[AMD] Enable preshuffle paged MQA and page_size=64 for NSA indexer」；主要实现面是 `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` modified +53/-6 (59 lines); hunks: -5,10 +5,14; -163,8 +167,52 @@ def triton(; symbols: triton, GetKAndS, execute, aiter，涉及 `triton, GetKAndS, execute`；`python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +25/-26 (51 lines); hunks: -431,12 +431,13 @@ def _get_topk_paged(; -471,17 +472,12 @@ def _get_topk_paged(; symbols: _get_topk_paged, _get_topk_ragged，涉及 `_get_topk_paged, _get_topk_ragged`。
 - 代码 diff 细节:
-  - `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` modified +53/-6 (59 lines); hunks: -5,10 +5,14  @@ import triton.language as tl; -163,8 +167,52  @@ def triton(; symbols: triton, _set_k_and_s_triton，涉及 `triton, _set_k_and_s_triton`
-  - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +25/-26 (51 lines); hunks: -431,12 +431,13  @@ def _get_topk_paged(; -471,17 +472,12  @@ def _get_topk_paged(; symbols: _get_topk_paged, _get_topk_ragged, _store_index_k_cache，涉及 `_get_topk_paged, _get_topk_ragged, _store_index_k_cache`
-  - `python/sglang/srt/server_args.py` modified +2/-9 (11 lines); hunks: -1836,15 +1836,8  @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments，涉及 `_handle_model_specific_adjustments`
-  - `python/sglang/srt/mem_cache/memory_pool.py` modified +3/-1 (4 lines); hunks: -2023,7 +2023,9  @@ def __init__(; symbols: __init__，涉及 `__init__`
+  - `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` modified +53/-6 (59 lines); hunks: -5,10 +5,14; -163,8 +167,52 @@ def triton(; symbols: triton, GetKAndS, execute, aiter
+  - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +25/-26 (51 lines); hunks: -431,12 +431,13 @@ def _get_topk_paged(; -471,17 +472,12 @@ def _get_topk_paged(; symbols: _get_topk_paged, _get_topk_ragged
 - 关键代码摘录:
 
 ```diff
@@ -8326,11 +7956,9 @@ diff -- python/sglang/srt/layers/attention/nsa/index_buf_accessor.py
 -from sglang.srt.utils import is_hip
 +from sglang.srt.utils import get_bool_env_var, is_hip
 +_use_aiter = get_bool_env_var("SGLANG_USE_AITER") and _is_hip
-+
 +if _use_aiter:
 +    from aiter.ops.cache import cp_gather_indexer_k_quant_cache
 @@ -163,8 +167,52 @@ def triton(
-+        if _use_aiter:
 diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
 @@ -431,12 +431,13 @@ def _get_topk_paged(
 -            assert page_size == 1, "only support page size 1"
@@ -8339,38 +7967,60 @@ diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
 +                page_size % 16 == 0
 +            ), f"HIP preshuffle requires page_size to be a multiple of 16, got {page_size}"
 -            # NOTE(dark): this support extend/decode/decode+graph
--            block_tables = metadata.get_page_table_64()
-+        # NOTE(dark): this support extend/decode/decode+graph
-diff -- python/sglang/srt/server_args.py
-@@ -1836,15 +1836,8 @@ def _handle_model_specific_adjustments(self):
--                    if is_hip():
--                        self.page_size = 1
--                        logger.warning(
--                            "Setting page size to 1 for DeepSeek DSA on ROCm."
--                        )
--                    else:
--                        # For CUDA GPU
--                        self.page_size = 64
 ```
 
 - 已读文件:
-  - runtime: `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` modified +53/-6; `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +25/-26; `python/sglang/srt/server_args.py` modified +2/-9; `python/sglang/srt/mem_cache/memory_pool.py` modified +3/-1
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/server_args.py`；风险点是权重加载、并行切分、attention/MoE 后端选择、量化 dtype 和 parser 输出，需要至少做一次真实 checkpoint 或等价 smoke。
+  - runtime: `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` modified +53/-6; `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +25/-26
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/mem_cache/memory_pool.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #25205 - [AMD]  Auto-fallback NSA indexer to page_size=1 when aiter preshuffle gluon kernel is unavailable (Deepseek v3.2)
+### PR #24125 - [AMD] Skip redundant CatArrayBatchedCopy in GLM-5 NSA TileLang decode
+
+- 链接: https://github.com/sgl-project/sglang/pull/24125
+- 状态/时间: merged / 2026-05-13
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`；关联提交 `fc20f5b114f9`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+60/-20，可读 patch 110 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[AMD] Skip redundant CatArrayBatchedCopy in GLM-5 NSA TileLang decode」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/layers/attention/nsa_backend.py`；技术摘要: 覆盖「[AMD] Skip redundant CatArrayBatchedCopy in GLM-5 NSA TileLang decode」；主要实现面是 `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/layers/attention/nsa_backend.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +48/-18 (66 lines); hunks: -415,25 +415,55 @@ def forward_absorb_core(; symbols: forward_absorb_core，涉及 `forward_absorb_core`；`python/sglang/srt/layers/attention/nsa_backend.py` modified +12/-2 (14 lines); hunks: -1594,7 +1594,13 @@ def forward_decode(; -1643,7 +1649,11 @@ def forward_decode(; symbols: forward_decode，涉及 `forward_decode`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +48/-18 (66 lines); hunks: -415,25 +415,55 @@ def forward_absorb_core(; symbols: forward_absorb_core
+  - `python/sglang/srt/layers/attention/nsa_backend.py` modified +12/-2 (14 lines); hunks: -1594,7 +1594,13 @@ def forward_decode(; -1643,7 +1649,11 @@ def forward_decode(; symbols: forward_decode
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py
+@@ -415,25 +415,55 @@ def forward_absorb_core(
+-                q_nope_fused = q_cat[..., : self.kv_lora_rank]
+-                q_pe_fused = q_cat[..., self.kv_lora_rank :]
+-                if llama_4_scaling is not None:
+-                    q_nope_fused *= llama_4_scaling
+-                attn_output = self.attn_mqa(
+-                    q_nope_fused,
+diff -- python/sglang/srt/layers/attention/nsa_backend.py
+@@ -1594,7 +1594,13 @@ def forward_decode(
++            # Caller passed split q_nope / q_rope; we'll need to concat below if
++            # the chosen impl wants q_all.
++            q_all = None
++            # Caller passed already-concatenated q (q_all = q). Reuse it directly
++            # via a zero-copy view; the impl-specific blocks below will skip the
++            # otherwise redundant concat_mla_absorb_q_general call.
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +48/-18; `python/sglang/srt/layers/attention/nsa_backend.py` modified +12/-2
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #25205 - [AMD] Auto-fallback NSA indexer to page_size=1 when aiter preshuffle gluon kernel is unavailable (Deepseek v3.2)
 
 - 链接: https://github.com/sgl-project/sglang/pull/25205
 - 状态/时间: merged / 2026-05-14
-- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@78cb38ed5` 提交历史和 GitHub Pull Request files API 反查；关联提交 `22bfae0d1de4`。
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`；关联提交 `22bfae0d1de4`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+137/-26，可读 patch 310 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[AMD]  Auto-fallback NSA indexer to page_size=1 when aiter preshuffle gluon kernel is unavailable (Deepseek v3.2)」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`；技术摘要: 覆盖「[AMD]  Auto-fallback NSA indexer to page_size=1 when aiter preshuffle gluon kernel is unavailable (Deepseek v3.2)」，下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +49/-16 (65 lines); hunks: -1,6 +1,7  @@ from __future__ import annotations; -12,6 +13,11  @@ fused_store_index_k_cache,; symbols: _get_topk_paged, _get_topk_ragged, _store_index_k_cache，涉及 `_get_topk_paged, _get_topk_ragged, _store_index_k_cache`；`python/sglang/srt/layers/attention/nsa/utils.py` modified +41/-0 (41 lines); hunks: -1,3 +1,4  @@ +from functools import lru_cache; -11,8 +12,48  @@ get_attention_dp_rank,；`python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` modified +19/-5 (24 lines); hunks: -4,14 +4,19  @@ import triton; -167,7 +172,11  @@ def triton(; symbols: triton, _set_k_and_s_triton，涉及 `triton, _set_k_and_s_triton`；`python/sglang/srt/server_args.py` modified +19/-2 (21 lines); hunks: -1840,8 +1840,25  @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments，涉及 `_handle_model_specific_adjustments`。
+- 动机: 标题「[AMD] Auto-fallback NSA indexer to page_size=1 when aiter preshuffle gluon kernel is unavailable (Deepseek v3.2)」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`；技术摘要: 覆盖「[AMD] Auto-fallback NSA indexer to page_size=1 when aiter preshuffle gluon kernel is unavailable (Deepseek v3.2)」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +49/-16 (65 lines); hunks: -1,6 +1,7; -12,6 +13,11; symbols: _get_topk_paged, _get_topk_ragged, _store_index_k_cache，涉及 `_get_topk_paged, _get_topk_ragged, _store_index_k_cache`；`python/sglang/srt/layers/attention/nsa/utils.py` modified +41/-0 (41 lines); hunks: -1,3 +1,4; -11,8 +12,48; symbols: aiter_can_use_preshuffle_paged_mqa，涉及 `aiter_can_use_preshuffle_paged_mqa`；`python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` modified +19/-5 (24 lines); hunks: -4,14 +4,19; -167,7 +172,11 @@ def triton(; symbols: triton, GetKAndS, execute, _set_k_and_s_triton，涉及 `triton, GetKAndS, execute`。
 - 代码 diff 细节:
-  - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +49/-16 (65 lines); hunks: -1,6 +1,7  @@ from __future__ import annotations; -12,6 +13,11  @@ fused_store_index_k_cache,; symbols: _get_topk_paged, _get_topk_ragged, _store_index_k_cache，涉及 `_get_topk_paged, _get_topk_ragged, _store_index_k_cache`
-  - `python/sglang/srt/layers/attention/nsa/utils.py` modified +41/-0 (41 lines); hunks: -1,3 +1,4  @@ +from functools import lru_cache; -11,8 +12,48  @@ get_attention_dp_rank,
-  - `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` modified +19/-5 (24 lines); hunks: -4,14 +4,19  @@ import triton; -167,7 +172,11  @@ def triton(; symbols: triton, _set_k_and_s_triton，涉及 `triton, _set_k_and_s_triton`
-  - `python/sglang/srt/server_args.py` modified +19/-2 (21 lines); hunks: -1840,8 +1840,25  @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments，涉及 `_handle_model_specific_adjustments`
-  - `python/sglang/srt/mem_cache/memory_pool.py` modified +9/-3 (12 lines); hunks: -45,6 +45,7  @@ quantize_k_cache,; -2026,9 +2027,14  @@ def __init__(; symbols: __init__，涉及 `__init__`
+  - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +49/-16 (65 lines); hunks: -1,6 +1,7; -12,6 +13,11; symbols: _get_topk_paged, _get_topk_ragged, _store_index_k_cache
+  - `python/sglang/srt/layers/attention/nsa/utils.py` modified +41/-0 (41 lines); hunks: -1,3 +1,4; -11,8 +12,48; symbols: aiter_can_use_preshuffle_paged_mqa
+  - `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` modified +19/-5 (24 lines); hunks: -4,14 +4,19; -167,7 +172,11 @@ def triton(; symbols: triton, GetKAndS, execute, _set_k_and_s_triton
 - 关键代码摘录:
 
 ```diff
@@ -8382,44 +8032,71 @@ diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
 +    aiter_can_use_preshuffle_paged_mqa,
 +    is_nsa_enable_prefill_cp,
 +    is_nsa_prefill_cp_in_seq_split,
-+)
-@@ -29,13 +35,25 @@
 diff -- python/sglang/srt/layers/attention/nsa/utils.py
 @@ -1,3 +1,4 @@
 +from functools import lru_cache
 @@ -11,8 +12,48 @@
 +from sglang.srt.utils import get_bool_env_var, is_hip
-+
 +@lru_cache(maxsize=1)
 +def aiter_can_use_preshuffle_paged_mqa() -> bool:
 +    """Whether aiter's preshuffle paged MQA / cache kernels can be used on this runtime.
-+
 diff -- python/sglang/srt/layers/attention/nsa/index_buf_accessor.py
 @@ -4,14 +4,19 @@
-+from sglang.srt.layers.attention.nsa.utils import aiter_can_use_preshuffle_paged_mqa
-+# aiter cp_gather kernel with preshuffle=True is only valid when the indexer
-+# uses the page_size=64 preshuffle layout (i.e. when the matching MQA gluon path
-+# is also enabled).
-+_use_aiter_preshuffle = aiter_can_use_preshuffle_paged_mqa()
--if _use_aiter:
-+if _use_aiter_preshuffle:
-@@ -167,7 +172,11 @@ def triton(
 ```
 
 - 已读文件:
-  - runtime: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +49/-16; `python/sglang/srt/layers/attention/nsa/utils.py` modified +41/-0; `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` modified +19/-5; `python/sglang/srt/server_args.py` modified +19/-2
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`, `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`；风险点是权重加载、并行切分、attention/MoE 后端选择、量化 dtype 和 parser 输出，需要至少做一次真实 checkpoint 或等价 smoke。
+  - runtime: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +49/-16; `python/sglang/srt/layers/attention/nsa/utils.py` modified +41/-0; `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` modified +19/-5
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa/utils.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #19211 - [Refactor][DeepSeek-V3.2] Extract V3.2/NSA logic into `DeepseekV32Mixin`
+
+- 链接: https://github.com/sgl-project/sglang/pull/19211
+- 状态/时间: closed / 2026-05-15
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+298/-169，可读 patch 669 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Refactor][DeepSeek-V3.2] Extract V3.2/NSA logic into `DeepseekV32Mixin`」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/deepseek_common/v32_mixin.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_nextn.py`；技术摘要: 覆盖「[Refactor][DeepSeek-V3.2] Extract V3.2/NSA logic into `DeepseekV32Mixin`」；主要实现面是 `python/sglang/srt/models/deepseek_common/v32_mixin.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_nextn.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/deepseek_common/v32_mixin.py` added +241/-0 (241 lines); hunks: -0,0 +1,241; symbols: DeepseekV32Mixin, init_v32_attention, _init_nsa_indexer, _fuse_rope_for_trtllm_mla，涉及 `DeepseekV32Mixin, init_v32_attention, _init_nsa_indexer`；`python/sglang/srt/models/deepseek_v2.py` modified +42/-120 (162 lines); hunks: -32,12 +32,6; -53,26 +47,16; symbols: DeepseekV2AttentionMLA, __init__，涉及 `DeepseekV2AttentionMLA, __init__`；`python/sglang/srt/models/deepseek_nextn.py` modified +15/-49 (64 lines); hunks: -21,24 +21,10; -49,6 +35,7; symbols: DeepseekModelNextN, __init__, forward，涉及 `DeepseekModelNextN, __init__, forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/deepseek_common/v32_mixin.py` added +241/-0 (241 lines); hunks: -0,0 +1,241; symbols: DeepseekV32Mixin, init_v32_attention, _init_nsa_indexer, _fuse_rope_for_trtllm_mla
+  - `python/sglang/srt/models/deepseek_v2.py` modified +42/-120 (162 lines); hunks: -32,12 +32,6; -53,26 +47,16; symbols: DeepseekV2AttentionMLA, __init__
+  - `python/sglang/srt/models/deepseek_nextn.py` modified +15/-49 (64 lines); hunks: -21,24 +21,10; -49,6 +35,7; symbols: DeepseekModelNextN, __init__, forward
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_common/v32_mixin.py
+@@ -0,0 +1,241 @@
++# Copyright 2026 SGLang Team
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -32,12 +32,6 @@
+-from sglang.srt.configs.model_config import (
+-    get_nsa_index_head_dim,
+-    get_nsa_index_n_heads,
+-    get_nsa_index_topk,
+-    is_deepseek_nsa,
+-)
+diff -- python/sglang/srt/models/deepseek_nextn.py
+@@ -21,24 +21,10 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/deepseek_common/v32_mixin.py` added +241/-0; `python/sglang/srt/models/deepseek_v2.py` modified +42/-120; `python/sglang/srt/models/deepseek_nextn.py` modified +15/-49
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/deepseek_common/v32_mixin.py`, `python/sglang/srt/models/deepseek_nextn.py`, `python/sglang/srt/models/deepseek_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #25233 - [Fix] DeepSeek-V3.2: build structural tag locally to encode both wrapper and invoke layers
 
 - 链接: https://github.com/sgl-project/sglang/pull/25233
 - 状态/时间: merged / 2026-05-15
-- 反查来源: 2026-05-19 PR 补漏审计；从源码复核补记、上游 `origin/main@78cb38ed5` 提交历史和 GitHub Pull Request files API 反查；关联提交 `7cb4669a049a`。
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/function_call/deepseekv32_detector.py`；关联提交 `7cb4669a049a`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+115/-3，可读 patch 141 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Fix] DeepSeek-V3.2: build structural tag locally to encode both wrapper and invoke layers」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/function_call/deepseekv32_detector.py`；技术摘要: 覆盖「[Fix] DeepSeek-V3.2: build structural tag locally to encode both wrapper and invoke layers」，下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/function_call/deepseekv32_detector.py` modified +115/-3 (118 lines); hunks: -1,10 +1,11  @@ import json; -14,8 +15,30  @@ ); symbols: structure_info，涉及 `structure_info`。
+- 动机: 标题「[Fix] DeepSeek-V3.2: build structural tag locally to encode both wrapper and invoke layers」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/function_call/deepseekv32_detector.py`；技术摘要: 覆盖「[Fix] DeepSeek-V3.2: build structural tag locally to encode both wrapper and invoke layers」；主要实现面是 `python/sglang/srt/function_call/deepseekv32_detector.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/function_call/deepseekv32_detector.py` modified +115/-3 (118 lines); hunks: -1,10 +1,11; -14,8 +15,30; symbols: DeepSeekV32Detector, structure_info, get_structural_tag_name, get_structural_tag，涉及 `DeepSeekV32Detector, structure_info, get_structural_tag_name`。
 - 代码 diff 细节:
-  - `python/sglang/srt/function_call/deepseekv32_detector.py` modified +115/-3 (118 lines); hunks: -1,10 +1,11  @@ import json; -14,8 +15,30  @@ ); symbols: structure_info，涉及 `structure_info`
+  - `python/sglang/srt/function_call/deepseekv32_detector.py` modified +115/-3 (118 lines); hunks: -1,10 +1,11; -14,8 +15,30; symbols: DeepSeekV32Detector, structure_info, get_structural_tag_name, get_structural_tag
 - 关键代码摘录:
 
 ```diff
@@ -8431,13 +8108,2463 @@ diff -- python/sglang/srt/function_call/deepseekv32_detector.py
 @@ -14,8 +15,30 @@
 +try:
 +    from xgrammar import StructuralTag
-+    from xgrammar.structural_tag import (
-+        AnyTextFormat,
 ```
 
 - 已读文件:
   - runtime: `python/sglang/srt/function_call/deepseekv32_detector.py` modified +115/-3
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/function_call/deepseekv32_detector.py`；风险点是权重加载、并行切分、attention/MoE 后端选择、量化 dtype 和 parser 输出，需要至少做一次真实 checkpoint 或等价 smoke。
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/function_call/deepseekv32_detector.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #24933 - Amd/deepseek v4 rebase main 0509
+
+- 链接: https://github.com/sgl-project/sglang/pull/24933
+- 状态/时间: merged / 2026-05-18
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 17 个文件，+3678/-70，可读 patch 4186 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Amd/deepseek v4 rebase main 0509」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py`, `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py`, `python/sglang/srt/layers/attention/dsv4/compress_hip.py`；技术摘要: 覆盖「Amd/deepseek v4 rebase main 0509」；主要实现面是 `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py`, `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py`, `python/sglang/srt/layers/attention/dsv4/compress_hip.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py` added +1265/-0 (1265 lines); hunks: -0,0 +1,1265; symbols: _pad_last_dim, _create_flashmla_metadata, _create_dummy_paged_compress_data, DSV4AttnMetadata，涉及 `_pad_last_dim, _create_flashmla_metadata, _create_dummy_paged_compress_data`；`python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` modified +1214/-2 (1216 lines); hunks: -1,5 +1,6; -10,6 +11,28; symbols: _legalize_result_idx_safe, fast_log2_ceil, tilelang_sparse_fwd, fp8_paged_mqa_logits_kernel，涉及 `_legalize_result_idx_safe, fast_log2_ceil, tilelang_sparse_fwd`；`python/sglang/srt/layers/attention/dsv4/compress_hip.py` added +455/-0 (455 lines); hunks: -0,0 +1,455; symbols: _rms_normalize_kernel, rms_normalize_triton, DeepseekRefRMSNorm, __init__，涉及 `_rms_normalize_kernel, rms_normalize_triton, DeepseekRefRMSNorm`；`python/sglang/srt/layers/attention/hip_flash_mla.py` added +197/-0 (197 lines); hunks: -0,0 +1,197; symbols: flash_mla_with_kvcache_entrypoint, flash_mla_with_kvcache_torch, _assert_close，涉及 `flash_mla_with_kvcache_entrypoint, flash_mla_with_kvcache_torch, _assert_close`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py` added +1265/-0 (1265 lines); hunks: -0,0 +1,1265; symbols: _pad_last_dim, _create_flashmla_metadata, _create_dummy_paged_compress_data, DSV4AttnMetadata
+  - `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` modified +1214/-2 (1216 lines); hunks: -1,5 +1,6; -10,6 +11,28; symbols: _legalize_result_idx_safe, fast_log2_ceil, tilelang_sparse_fwd, fp8_paged_mqa_logits_kernel
+  - `python/sglang/srt/layers/attention/dsv4/compress_hip.py` added +455/-0 (455 lines); hunks: -0,0 +1,455; symbols: _rms_normalize_kernel, rms_normalize_triton, DeepseekRefRMSNorm, __init__
+  - `python/sglang/srt/layers/attention/hip_flash_mla.py` added +197/-0 (197 lines); hunks: -0,0 +1,197; symbols: flash_mla_with_kvcache_entrypoint, flash_mla_with_kvcache_torch, _assert_close
+  - `python/sglang/srt/layers/deepseek_v4_rope.py` modified +168/-0 (168 lines); hunks: -177,3 +177,171 @@ def apply_rotary_emb_triton(; symbols: apply_rotary_emb_triton, _fused_norm_rope_kernel, fused_norm_rope_inplace_triton
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py
+@@ -0,0 +1,1265 @@
++from __future__ import annotations
++import enum
++import functools
++import logging
++from dataclasses import dataclass, field
++from typing import (
+diff -- python/sglang/srt/layers/attention/nsa/tilelang_kernel.py
+@@ -1,5 +1,6 @@
++import functools
+-from typing import Optional, Tuple
++from typing import Any, Optional, Tuple
+@@ -10,6 +11,28 @@
++# Workaround a tilelang bug: BaseKernelAdapter._legalize_result_idx mutates the
++# `out_idx` list in place when normalising negative indices to positive ones.
+diff -- python/sglang/srt/layers/attention/dsv4/compress_hip.py
+@@ -0,0 +1,455 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py` added +1265/-0; `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` modified +1214/-2; `python/sglang/srt/layers/attention/dsv4/compress_hip.py` added +455/-0; `python/sglang/srt/layers/attention/hip_flash_mla.py` added +197/-0; `python/sglang/srt/layers/deepseek_v4_rope.py` modified +168/-0; `python/sglang/srt/layers/quantization/fp8.py` modified +143/-16
+- 验证与风险: runtime 路径改动集中在 `python/sglang/jit_kernel/deepseek_v4.py`, `python/sglang/srt/environ.py`, `python/sglang/srt/layers/attention/attention_registry.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #25454 - fix(eagle3): drop +1 offset on aux layer ids when first id != 1
+
+- 链接: https://github.com/sgl-project/sglang/pull/25454
+- 状态/时间: merged / 2026-05-18
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+6/-3，可读 patch 16 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「fix(eagle3): drop +1 offset on aux layer ids when first id != 1」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「fix(eagle3): drop +1 offset on aux layer ids when first id != 1」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +6/-3 (9 lines); hunks: -2549,9 +2549,12 @@ def set_eagle3_layers_to_capture(self, layer_ids: Optiona...; symbols: set_eagle3_layers_to_capture, set_dflash_layers_to_capture，涉及 `set_eagle3_layers_to_capture, set_dflash_layers_to_capture`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/deepseek_v2.py` modified +6/-3 (9 lines); hunks: -2549,9 +2549,12 @@ def set_eagle3_layers_to_capture(self, layer_ids: Optiona...; symbols: set_eagle3_layers_to_capture, set_dflash_layers_to_capture
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -2549,9 +2549,12 @@ def set_eagle3_layers_to_capture(self, layer_ids: Optional[List[int]] = None):
+-            # we plus 1 here because in sglang, for the ith layer, it takes the output
+-            # of the (i-1)th layer as aux hidden state
+-            self.model.layers_to_capture = [val + 1 for val in layer_ids]
++            # TODO (Qiaolin-Yu): check if other draft models need similar layer id
++            # adjustment
++            if layer_ids and layer_ids[0] == 1:
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +6/-3
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/deepseek_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #24640 - Support spec v2 for FlashMLA speculative decoding
+
+- 链接: https://github.com/sgl-project/sglang/pull/24640
+- 状态/时间: merged / 2026-05-19
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+11/-12，可读 patch 51 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Support spec v2 for FlashMLA speculative decoding」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/flashmla_backend.py`, `python/sglang/srt/models/deepseek_v2.py`, `test/registered/mla/test_flashmla.py`；技术摘要: 覆盖「Support spec v2 for FlashMLA speculative decoding」；主要实现面是 `python/sglang/srt/layers/attention/flashmla_backend.py`, `python/sglang/srt/models/deepseek_v2.py`, `test/registered/mla/test_flashmla.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/flashmla_backend.py` modified +4/-3 (7 lines); hunks: -477,9 +477,10 @@ def forward_extend(; symbols: forward_extend，涉及 `forward_extend`；`python/sglang/srt/models/deepseek_v2.py` modified +1/-1 (2 lines); hunks: -1553,7 +1553,7 @@ def dispatch_attn_forward_method(; symbols: dispatch_attn_forward_method，涉及 `dispatch_attn_forward_method`；`test/registered/mla/test_flashmla.py` modified +6/-8 (14 lines); hunks: -9,7 +9,6; -54,13 +53,12 @@ def setUpClass(cls):; symbols: setUpClass, tearDownClass，涉及 `setUpClass, tearDownClass`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/attention/flashmla_backend.py` modified +4/-3 (7 lines); hunks: -477,9 +477,10 @@ def forward_extend(; symbols: forward_extend
+  - `python/sglang/srt/models/deepseek_v2.py` modified +1/-1 (2 lines); hunks: -1553,7 +1553,7 @@ def dispatch_attn_forward_method(; symbols: dispatch_attn_forward_method
+  - `test/registered/mla/test_flashmla.py` modified +6/-8 (14 lines); hunks: -9,7 +9,6; -54,13 +53,12 @@ def setUpClass(cls):; symbols: setUpClass, tearDownClass
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/attention/flashmla_backend.py
+@@ -477,9 +477,10 @@ def forward_extend(
+-        if (
+-            forward_batch.forward_mode == ForwardMode.EXTEND
+-            or forward_batch.forward_mode == ForwardMode.DRAFT_EXTEND
++        if forward_batch.forward_mode in (
++            ForwardMode.EXTEND,
++            ForwardMode.DRAFT_EXTEND,
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -1553,7 +1553,7 @@ def dispatch_attn_forward_method(
+-            or forward_batch.forward_mode.is_draft_extend()
++            or forward_batch.forward_mode.is_draft_extend(include_v2=True)
+diff -- test/registered/mla/test_flashmla.py
+@@ -9,7 +9,6 @@
+-from sglang.srt.environ import envs
+@@ -54,13 +53,12 @@ def setUpClass(cls):
+-        with envs.SGLANG_ENABLE_SPEC_V2.override(False):
+-            cls.process = popen_launch_server(
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/attention/flashmla_backend.py` modified +4/-3; `python/sglang/srt/models/deepseek_v2.py` modified +1/-1
+  - tests: `test/registered/mla/test_flashmla.py` modified +6/-8
+- 验证与风险: diff 自带测试面 `test/registered/mla/test_flashmla.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #25299 - [NSA] Avoid repeated NSA MQA logits memory queries
+
+- 链接: https://github.com/sgl-project/sglang/pull/25299
+- 状态/时间: merged / 2026-05-19
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；关联提交 `beaff003317b`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+61/-19，可读 patch 134 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[NSA] Avoid repeated NSA MQA logits memory queries」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「[NSA] Avoid repeated NSA MQA logits memory queries」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +61/-19 (80 lines); hunks: -176,6 +176,12 @@ def rotate_activation(x: torch.Tensor) -> torch.Tensor:; -552,24 +558,59 @@ def _get_topk_paged(; symbols: rotate_activation, Indexer, __init__, _get_topk_paged，涉及 `rotate_activation, Indexer, __init__`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +61/-19 (80 lines); hunks: -176,6 +176,12 @@ def rotate_activation(x: torch.Tensor) -> torch.Tensor:; -552,24 +558,59 @@ def _get_topk_paged(; symbols: rotate_activation, Indexer, __init__, _get_topk_paged
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
+@@ -176,6 +176,12 @@ def rotate_activation(x: torch.Tensor) -> torch.Tensor:
++    _MQA_LOGITS_BYTES_PER_ELEM = 4
++    _MQA_LOGITS_STATIC_SKIP_ELEMS = 8_000_000
++    _MQA_LOGITS_FREE_MEM_FRACTION = 0.5
++    _MQA_LOGITS_TOTAL_MEM_FRACTION = 0.3
++    _mqa_logits_budget_bytes: Dict[int, int] = {}
+@@ -552,24 +558,59 @@ def _get_topk_paged(
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +61/-19
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #25821 - [Refactor] Rename NSA → DSA: user-facing aliases, file/class/import rename
+
+- 链接: https://github.com/sgl-project/sglang/pull/25821
+- 状态/时间: merged / 2026-05-20
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/basic_usage/deepseek_v32.md`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py`, `python/sglang/srt/layers/attention/nsa/__init__.py`, `python/sglang/srt/layers/attention/nsa/dequant_k_cache.py`, `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` 等 29 个文件；关联提交 `8131641bc66e`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 162 个文件，+11303/-10745，可读 patch 15980 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Refactor] Rename NSA → DSA: user-facing aliases, file/class/import rename」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py`, `python/sglang/srt/layers/attention/dsa/tilelang_kernel.py`, `python/sglang/srt/layers/attention/nsa_backend.py`；技术摘要: 覆盖「[Refactor] Rename NSA → DSA: user-facing aliases, file/class/import rename」；主要实现面是 `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py`, `python/sglang/srt/layers/attention/dsa/tilelang_kernel.py`, `python/sglang/srt/layers/attention/nsa_backend.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` modified +8/-2587 (2595 lines)；`python/sglang/srt/layers/attention/dsa/tilelang_kernel.py` added +2589/-0 (2589 lines)；`python/sglang/srt/layers/attention/nsa_backend.py` modified +21/-2518 (2539 lines)；`python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +8/-1744 (1752 lines); hunks: -1,1746 +1,10; symbols: BaseIndexerMetadata, get_seqlens_int32, get_page_table_64, get_page_table_1，涉及 `BaseIndexerMetadata, get_seqlens_int32, get_page_table_64`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` modified +8/-2587 (2595 lines)
+  - `python/sglang/srt/layers/attention/dsa/tilelang_kernel.py` added +2589/-0 (2589 lines)
+  - `python/sglang/srt/layers/attention/nsa_backend.py` modified +21/-2518 (2539 lines)
+  - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +8/-1744 (1752 lines); hunks: -1,1746 +1,10; symbols: BaseIndexerMetadata, get_seqlens_int32, get_page_table_64, get_page_table_1
+  - `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` modified +10/-814 (824 lines); hunks: -1,814 +1,10; symbols: GetK, execute, slow, torch_fast
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
+@@ -1,1746 +1,10 @@
+-from __future__ import annotations
++# [Deprecated] Re-export shim for backward compatibility. Use dsa.dsa_indexer instead.
++import warnings
+-import contextlib
+-import logging
+-from abc import ABC, abstractmethod
+diff -- python/sglang/srt/layers/attention/nsa/index_buf_accessor.py
+@@ -1,814 +1,10 @@
+-from typing import TYPE_CHECKING
+-import torch
+-import triton
+-import triton.language as tl
+-from sglang.srt.layers.attention.nsa.utils import aiter_can_use_preshuffle_paged_mqa
+-from sglang.srt.layers.quantization.fp8_kernel import is_fp8_fnuz
+diff -- python/sglang/srt/layers/attention/dsa/index_buf_accessor.py
+@@ -0,0 +1,814 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` modified +8/-2587; `python/sglang/srt/layers/attention/dsa/tilelang_kernel.py` added +2589/-0; `python/sglang/srt/layers/attention/nsa_backend.py` modified +21/-2518; `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +8/-1744; `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` modified +10/-814; `python/sglang/srt/layers/attention/dsa/index_buf_accessor.py` added +814/-0
+- 验证与风险: diff 自带测试面 `python/sglang/jit_kernel/tests/test_fused_metadata_copy.py`, `python/sglang/jit_kernel/tests/test_fused_store_index_cache.py`, `python/sglang/jit_kernel/tests/test_set_mla_kv_buffer.py`, `python/sglang/test/nightly_utils.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #24251 - [RL][TITO] Preserve whitespace in reasoning parser outputs
+
+- 链接: https://github.com/sgl-project/sglang/pull/24251
+- 状态/时间: merged / 2026-05-20
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+70/-7，可读 patch 126 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[RL][TITO] Preserve whitespace in reasoning parser outputs」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `test/registered/unit/entrypoints/openai/test_serving_chat.py`, `test/registered/unit/parser/test_reasoning_parser.py`, `python/sglang/srt/parser/reasoning_parser.py`；技术摘要: 覆盖「[RL][TITO] Preserve whitespace in reasoning parser outputs」；主要实现面是 `test/registered/unit/entrypoints/openai/test_serving_chat.py`, `test/registered/unit/parser/test_reasoning_parser.py`, `python/sglang/srt/parser/reasoning_parser.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/unit/entrypoints/openai/test_serving_chat.py` modified +31/-0 (31 lines); hunks: -1228,6 +1228,37 @@ def test_hunyuan_reasoning_effort_dispatch(self):; symbols: test_hunyuan_reasoning_effort_dispatch, test_non_stream_reasoning_response_preserves_payload_whitespace, test_get_reasoning_from_request_default_true_toggle，涉及 `test_hunyuan_reasoning_effort_dispatch, test_non_stream_reasoning_response_preserves_payload_whitespace, test_get_reasoning_from_request_default_true_toggle`；`test/registered/unit/parser/test_reasoning_parser.py` modified +31/-0 (31 lines); hunks: -861,6 +861,37 @@ def test_parse_non_stream(self):; symbols: test_parse_non_stream, test_parse_non_stream_preserves_payload_whitespace, test_parse_non_stream_strips_repeated_leading_start_tokens, test_parse_stream_chunk_preserves_payload_whitespace，涉及 `test_parse_non_stream, test_parse_non_stream_preserves_payload_whitespace, test_parse_non_stream_strips_repeated_leading_start_tokens`；`python/sglang/srt/parser/reasoning_parser.py` modified +7/-6 (13 lines); hunks: -70,9 +70,10 @@ def detect_and_parse(self, text: str) -> StreamingParseResult:; -86,7 +87,7 @@ def detect_and_parse(self, text: str) -> StreamingParseResult:; symbols: detect_and_parse, parse_streaming_increment，涉及 `detect_and_parse, parse_streaming_increment`；`python/sglang/srt/function_call/deepseekv32_detector.py` modified +1/-1 (2 lines); hunks: -216,7 +216,7 @@ def detect_and_parse(self, text: str, tools: list[Tool]) ->...; symbols: detect_and_parse，涉及 `detect_and_parse`。
+- 代码 diff 细节:
+  - `test/registered/unit/entrypoints/openai/test_serving_chat.py` modified +31/-0 (31 lines); hunks: -1228,6 +1228,37 @@ def test_hunyuan_reasoning_effort_dispatch(self):; symbols: test_hunyuan_reasoning_effort_dispatch, test_non_stream_reasoning_response_preserves_payload_whitespace, test_get_reasoning_from_request_default_true_toggle
+  - `test/registered/unit/parser/test_reasoning_parser.py` modified +31/-0 (31 lines); hunks: -861,6 +861,37 @@ def test_parse_non_stream(self):; symbols: test_parse_non_stream, test_parse_non_stream_preserves_payload_whitespace, test_parse_non_stream_strips_repeated_leading_start_tokens, test_parse_stream_chunk_preserves_payload_whitespace
+  - `python/sglang/srt/parser/reasoning_parser.py` modified +7/-6 (13 lines); hunks: -70,9 +70,10 @@ def detect_and_parse(self, text: str) -> StreamingParseResult:; -86,7 +87,7 @@ def detect_and_parse(self, text: str) -> StreamingParseResult:; symbols: detect_and_parse, parse_streaming_increment
+  - `python/sglang/srt/function_call/deepseekv32_detector.py` modified +1/-1 (2 lines); hunks: -216,7 +216,7 @@ def detect_and_parse(self, text: str, tools: list[Tool]) ->...; symbols: detect_and_parse
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/unit/entrypoints/openai/test_serving_chat.py
+@@ -1228,6 +1228,37 @@ def test_hunyuan_reasoning_effort_dispatch(self):
++    def test_non_stream_reasoning_response_preserves_payload_whitespace(self):
++        self.chat.reasoning_parser = "qwen3"
++        self.template_manager.force_reasoning = False
++        req = ChatCompletionRequest(
++            model="x",
++            messages=[{"role": "user", "content": "Hi?"}],
+diff -- test/registered/unit/parser/test_reasoning_parser.py
+@@ -861,6 +861,37 @@ def test_parse_non_stream(self):
++    def test_parse_non_stream_preserves_payload_whitespace(self):
++        """Non-streaming parsing must not rewrite text inside or after reasoning."""
++        parser = ReasoningParser("qwen3")
++        reasoning, normal = parser.parse_non_stream(
++            "<think>\nLet me think\n</think>\n\nThe answer is 42.\n"
++        )
+diff -- python/sglang/srt/parser/reasoning_parser.py
+@@ -70,9 +70,10 @@ def detect_and_parse(self, text: str) -> StreamingParseResult:
+```
+
+- 已读文件:
+  - tests: `test/registered/unit/entrypoints/openai/test_serving_chat.py` modified +31/-0; `test/registered/unit/parser/test_reasoning_parser.py` modified +31/-0
+  - runtime: `python/sglang/srt/parser/reasoning_parser.py` modified +7/-6; `python/sglang/srt/function_call/deepseekv32_detector.py` modified +1/-1
+- 验证与风险: diff 自带测试面 `test/registered/unit/entrypoints/openai/test_serving_chat.py`, `test/registered/unit/parser/test_reasoning_parser.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #25460 - [perf] prepare_prefill_qkv hook + fp8 quantize jit kernel
+
+- 链接: https://github.com/sgl-project/sglang/pull/25460
+- 状态/时间: merged / 2026-05-20
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+305/-16，可读 patch 383 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[perf] prepare_prefill_qkv hook + fp8 quantize jit kernel」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/tokenspeed_mla_backend.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py`, `python/sglang/srt/layers/attention/trtllm_mla_backend.py`；技术摘要: 覆盖「[perf] prepare_prefill_qkv hook + fp8 quantize jit kernel」；主要实现面是 `python/sglang/srt/layers/attention/tokenspeed_mla_backend.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py`, `python/sglang/srt/layers/attention/trtllm_mla_backend.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/tokenspeed_mla_backend.py` modified +128/-14 (142 lines); hunks: -33,20 +33,26; -77,6 +83,9 @@ def _get_tokenspeed_workspace(; symbols: _get_tokenspeed_workspace, TokenspeedMLABackend, __init__, _fused_rope_fp8_quantize，涉及 `_get_tokenspeed_workspace, TokenspeedMLABackend, __init__`；`python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py` modified +18/-0 (18 lines); hunks: -220,6 +220,24 @@ def forward_normal_prepare(; symbols: forward_normal_prepare，涉及 `forward_normal_prepare`；`python/sglang/srt/layers/attention/trtllm_mla_backend.py` modified +2/-2 (4 lines); hunks: -1144,7 +1144,7 @@ def forward_extend(; -1187,7 +1187,7 @@ def forward_extend(; symbols: forward_extend，涉及 `forward_extend`；`python/sglang/jit_kernel/fp8_quantize.py` added +157/-0 (157 lines); hunks: -0,0 +1,157; symbols: _fp8_quantize_kernel, _flatten_to_2d, fp8_quantize，涉及 `_fp8_quantize_kernel, _flatten_to_2d, fp8_quantize`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/attention/tokenspeed_mla_backend.py` modified +128/-14 (142 lines); hunks: -33,20 +33,26; -77,6 +83,9 @@ def _get_tokenspeed_workspace(; symbols: _get_tokenspeed_workspace, TokenspeedMLABackend, __init__, _fused_rope_fp8_quantize
+  - `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py` modified +18/-0 (18 lines); hunks: -220,6 +220,24 @@ def forward_normal_prepare(; symbols: forward_normal_prepare
+  - `python/sglang/srt/layers/attention/trtllm_mla_backend.py` modified +2/-2 (4 lines); hunks: -1144,7 +1144,7 @@ def forward_extend(; -1187,7 +1187,7 @@ def forward_extend(; symbols: forward_extend
+  - `python/sglang/jit_kernel/fp8_quantize.py` added +157/-0 (157 lines); hunks: -0,0 +1,157; symbols: _fp8_quantize_kernel, _flatten_to_2d, fp8_quantize
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/attention/tokenspeed_mla_backend.py
+@@ -33,20 +33,26 @@
++from sglang.jit_kernel.fp8_quantize import fp8_quantize
++from sglang.jit_kernel.mla_kv_pack_quantize_fp8 import mla_kv_pack_quantize_fp8
+-    _quantize_fp8_qkv,
+-from sglang.srt.utils import is_tokenspeed_mla_available
++from sglang.srt.utils import is_flashinfer_available, is_tokenspeed_mla_available
++if is_flashinfer_available():
+diff -- python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py
+@@ -220,6 +220,24 @@ def forward_normal_prepare(
++        # Backend prefill hook: the backend owns the BF16->FP8 transition
++        # (fused RoPE + quantize for Q/K, direct FP8 KV-cache write) and
++        # returns FP8 tensors ready for its kernel. Backends without the
++        # hook fall through to the BF16 path below.
++        backend = _resolve_attn_backend(forward_batch)
++        if hasattr(backend, "prepare_prefill_qkv"):
+diff -- python/sglang/srt/layers/attention/trtllm_mla_backend.py
+@@ -1144,7 +1144,7 @@ def forward_extend(
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/attention/tokenspeed_mla_backend.py` modified +128/-14; `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py` modified +18/-0; `python/sglang/srt/layers/attention/trtllm_mla_backend.py` modified +2/-2; `python/sglang/jit_kernel/fp8_quantize.py` added +157/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/jit_kernel/fp8_quantize.py`, `python/sglang/srt/layers/attention/tokenspeed_mla_backend.py`, `python/sglang/srt/layers/attention/trtllm_mla_backend.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #25884 - [Refactor] major JIT kernel clean up for dsv4
+
+- 链接: https://github.com/sgl-project/sglang/pull/25884
+- 状态/时间: merged / 2026-05-21
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 23 个文件，+1093/-1399，可读 patch 2663 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Refactor] major JIT kernel clean up for dsv4」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/layers/attention/dsv4/compressor.py`, `python/sglang/srt/layers/attention/dsv4/metadata.py`, `python/sglang/srt/layers/moe/moe_runner/deep_gemm.py`；技术摘要: 覆盖「[Refactor] major JIT kernel clean up for dsv4」；主要实现面是 `python/sglang/srt/layers/attention/dsv4/compressor.py`, `python/sglang/srt/layers/attention/dsv4/metadata.py`, `python/sglang/srt/layers/moe/moe_runner/deep_gemm.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/dsv4/compressor.py` modified +2/-3 (5 lines); hunks: -5,13 +5,12；`python/sglang/srt/layers/attention/dsv4/metadata.py` modified +2/-2 (4 lines); hunks: -109,7 +109,7 @@ def __post_init__(self):; -124,7 +124,7 @@ def __post_init__(self):; symbols: __post_init__，涉及 `__post_init__`；`python/sglang/srt/layers/moe/moe_runner/deep_gemm.py` modified +2/-2 (4 lines); hunks: -6,7 +6,7; -167,7 +167,7 @@ def _run_contiguous_gemm(; symbols: _run_contiguous_gemm，涉及 `_run_contiguous_gemm`；`python/sglang/srt/models/deepseek_v2.py` modified +2/-2 (4 lines); hunks: -29,7 +29,7; -420,7 +420,7 @@ def forward(; symbols: forward，涉及 `forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/attention/dsv4/compressor.py` modified +2/-3 (5 lines); hunks: -5,13 +5,12
+  - `python/sglang/srt/layers/attention/dsv4/metadata.py` modified +2/-2 (4 lines); hunks: -109,7 +109,7 @@ def __post_init__(self):; -124,7 +124,7 @@ def __post_init__(self):; symbols: __post_init__
+  - `python/sglang/srt/layers/moe/moe_runner/deep_gemm.py` modified +2/-2 (4 lines); hunks: -6,7 +6,7; -167,7 +167,7 @@ def _run_contiguous_gemm(; symbols: _run_contiguous_gemm
+  - `python/sglang/srt/models/deepseek_v2.py` modified +2/-2 (4 lines); hunks: -29,7 +29,7; -420,7 +420,7 @@ def forward(; symbols: forward
+  - `python/sglang/srt/layers/attention/dsv4/indexer.py` modified +1/-1 (2 lines); hunks: -8,7 +8,7
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/attention/dsv4/compressor.py
+@@ -5,13 +5,12 @@
+-from sglang.jit_kernel.deepseek_v4 import (
++from sglang.jit_kernel.dsv4 import linear_bf16_fp32, triton_create_paged_compress_data
++from sglang.jit_kernel.dsv4.compress_old import (
+-    linear_bf16_fp32,
+-    triton_create_paged_compress_data,
+diff -- python/sglang/srt/layers/attention/dsv4/metadata.py
+@@ -109,7 +109,7 @@ def __post_init__(self):
+-                from sglang.jit_kernel.deepseek_v4 import get_paged_mqa_logits_metadata
++                from sglang.jit_kernel.dsv4 import get_paged_mqa_logits_metadata
+@@ -124,7 +124,7 @@ def __post_init__(self):
+-        from sglang.jit_kernel.deepseek_v4 import plan_topk_v2
++        from sglang.jit_kernel.dsv4 import plan_topk_v2
+diff -- python/sglang/srt/layers/moe/moe_runner/deep_gemm.py
+@@ -6,7 +6,7 @@
+-from sglang.jit_kernel.deepseek_v4 import silu_and_mul_masked_post_quant
++from sglang.jit_kernel.dsv4 import silu_and_mul_masked_post_quant
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/attention/dsv4/compressor.py` modified +2/-3; `python/sglang/srt/layers/attention/dsv4/metadata.py` modified +2/-2; `python/sglang/srt/layers/moe/moe_runner/deep_gemm.py` modified +2/-2; `python/sglang/srt/models/deepseek_v2.py` modified +2/-2; `python/sglang/srt/layers/attention/dsv4/indexer.py` modified +1/-1; `python/sglang/srt/layers/moe/hash_topk.py` modified +1/-1
+- 验证与风险: runtime 路径改动集中在 `python/sglang/jit_kernel/csrc/deepseek_v4/topk_1024.cuh`, `python/sglang/jit_kernel/csrc/deepseek_v4/topk_v1.cuh`, `python/sglang/jit_kernel/deepseek_v4.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #25974 - [Fix]: Restrict Kimi-K2.5 shared-experts fusion to Quark MXFP4 checkpoints
+
+- 链接: https://github.com/sgl-project/sglang/pull/25974
+- 状态/时间: merged / 2026-05-21
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+11/-1，可读 patch 21 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Fix]: Restrict Kimi-K2.5 shared-experts fusion to Quark MXFP4 checkpoints」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「[Fix]: Restrict Kimi-K2.5 shared-experts fusion to Quark MXFP4 checkpoints」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +11/-1 (12 lines); hunks: -2450,9 +2450,19 @@ def determine_num_fused_shared_experts(; symbols: determine_num_fused_shared_experts，涉及 `determine_num_fused_shared_experts`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/deepseek_v2.py` modified +11/-1 (12 lines); hunks: -2450,9 +2450,19 @@ def determine_num_fused_shared_experts(; symbols: determine_num_fused_shared_experts
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -2450,9 +2450,19 @@ def determine_num_fused_shared_experts(
+-            #   384 -> Kimi-K2.5 (text_config wraps DeepseekV3ForCausalLM)
++            #   384 -> Kimi-K2.5, only when the checkpoint is Quark MXFP4
++            #          (amd/Kimi-K2.5-MXFP4); the standard
++            #          moonshotai/Kimi-K2.5 (compressed-tensors) checkpoint
++            #          stores the shared expert loose and is NOT pre-fused,
++            #          so the fused path silently mis-loads it.
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +11/-1
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/deepseek_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #25983 - feat(model_runner): remove pool/backend refs from ForwardBatch via ForwardContext
+
+- 链接: https://github.com/sgl-project/sglang/pull/25983
+- 状态/时间: merged / 2026-05-21
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 77 个文件，+1227/-905，可读 patch 5236 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「feat(model_runner): remove pool/backend refs from ForwardBatch via ForwardContext」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/model_executor/cuda_graph_runner.py`, `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`；技术摘要: 覆盖「feat(model_runner): remove pool/backend refs from ForwardBatch via ForwardContext」；主要实现面是 `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/model_executor/cuda_graph_runner.py`, `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/model_executor/model_runner.py` modified +107/-84 (191 lines); hunks: -146,6 +146,11; -2638,9 +2643,6 @@ def get_spec_info():; symbols: get_spec_info, run_once, maybe_init_ngram_embedding, forward_decode，涉及 `get_spec_info, run_once, maybe_init_ngram_embedding`；`python/sglang/srt/model_executor/cuda_graph_runner.py` modified +70/-67 (137 lines); hunks: -65,6 +65,7; -1016,9 +1017,6 @@ def capture_one_batch_size(; symbols: capture_one_batch_size, run_once，涉及 `capture_one_batch_size, run_once`；`python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` modified +60/-58 (118 lines); hunks: -58,6 +58,7; -387,9 +388,6 @@ def warmup_compile(self, num_tokens: int):; symbols: warmup_compile, _cache_loc_dtype, capture_one_batch_size，涉及 `warmup_compile, _cache_loc_dtype, capture_one_batch_size`；`python/sglang/srt/layers/attention/dsa/dsa_indexer.py` modified +43/-44 (87 lines); hunks: -80,6 +80,11; -449,9 +454,9 @@ def _get_topk_paged(; symbols: _get_topk_paged, _get_topk_ragged, _get_topk_ragged_with_cp，涉及 `_get_topk_paged, _get_topk_ragged, _get_topk_ragged_with_cp`。
+- 代码 diff 细节:
+  - `python/sglang/srt/model_executor/model_runner.py` modified +107/-84 (191 lines); hunks: -146,6 +146,11; -2638,9 +2643,6 @@ def get_spec_info():; symbols: get_spec_info, run_once, maybe_init_ngram_embedding, forward_decode
+  - `python/sglang/srt/model_executor/cuda_graph_runner.py` modified +70/-67 (137 lines); hunks: -65,6 +65,7; -1016,9 +1017,6 @@ def capture_one_batch_size(; symbols: capture_one_batch_size, run_once
+  - `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` modified +60/-58 (118 lines); hunks: -58,6 +58,7; -387,9 +388,6 @@ def warmup_compile(self, num_tokens: int):; symbols: warmup_compile, _cache_loc_dtype, capture_one_batch_size
+  - `python/sglang/srt/layers/attention/dsa/dsa_indexer.py` modified +43/-44 (87 lines); hunks: -80,6 +80,11; -449,9 +454,9 @@ def _get_topk_paged(; symbols: _get_topk_paged, _get_topk_ragged, _get_topk_ragged_with_cp
+  - `python/sglang/srt/model_executor/forward_context.py` added +84/-0 (84 lines); hunks: -0,0 +1,84; symbols: ForwardContext, set_forward_context, has_forward_context, get_forward_context
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/model_executor/model_runner.py
+@@ -146,6 +146,11 @@
++from sglang.srt.model_executor.forward_context import (
++    ForwardContext,
++    forward_context,
++    has_forward_context,
++)
+@@ -2638,9 +2643,6 @@ def get_spec_info():
+diff -- python/sglang/srt/model_executor/cuda_graph_runner.py
+@@ -65,6 +65,7 @@
++from sglang.srt.model_executor.forward_context import ForwardContext, forward_context
+@@ -1016,9 +1017,6 @@ def capture_one_batch_size(
+-            req_to_token_pool=self.model_runner.req_to_token_pool,
+-            token_to_kv_pool=self.model_runner.token_to_kv_pool,
+-            attn_backend=attn_backend,
+@@ -1040,85 +1038,90 @@ def capture_one_batch_size(
+diff -- python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py
+@@ -58,6 +58,7 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/model_executor/model_runner.py` modified +107/-84; `python/sglang/srt/model_executor/cuda_graph_runner.py` modified +70/-67; `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` modified +60/-58; `python/sglang/srt/layers/attention/dsa/dsa_indexer.py` modified +43/-44; `python/sglang/srt/model_executor/forward_context.py` added +84/-0; `python/sglang/srt/model_executor/cpu_graph_runner.py` modified +39/-38
+- 验证与风险: diff 自带测试面 `test/manual/attention/test_flashattn_backend.py`, `test/manual/attention/test_flashattn_mla_backend.py`, `test/manual/attention/test_prefix_chunk_info.py`, `test/manual/attention/test_trtllm_mla_backend.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #25189 - [perf] DeepSeekV3: drop redundant FP32 upcasts in trtllm MoE paths
+
+- 链接: https://github.com/sgl-project/sglang/pull/25189
+- 状态/时间: merged / 2026-05-22
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+3/-14，可读 patch 45 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[perf] DeepSeekV3: drop redundant FP32 upcasts in trtllm MoE paths」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/moe/moe_runner/flashinfer_trtllm.py`, `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「[perf] DeepSeekV3: drop redundant FP32 upcasts in trtllm MoE paths」；主要实现面是 `python/sglang/srt/layers/moe/moe_runner/flashinfer_trtllm.py`, `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/moe/moe_runner/flashinfer_trtllm.py` modified +2/-14 (16 lines); hunks: -698,11 +698,7 @@ def fused_experts_none_to_flashinfer_trtllm_fp8(; -758,11 +754,7 @@ def fused_experts_none_to_flashinfer_trtllm_fp8(; symbols: fused_experts_none_to_flashinfer_trtllm_fp8, fused_experts_none_to_flashinfer_trtllm_fp4，涉及 `fused_experts_none_to_flashinfer_trtllm_fp8, fused_experts_none_to_flashinfer_trtllm_fp4`；`python/sglang/srt/models/deepseek_v2.py` modified +1/-0 (1 lines); hunks: -403,6 +403,7 @@ def forward(; symbols: forward，涉及 `forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/moe/moe_runner/flashinfer_trtllm.py` modified +2/-14 (16 lines); hunks: -698,11 +698,7 @@ def fused_experts_none_to_flashinfer_trtllm_fp8(; -758,11 +754,7 @@ def fused_experts_none_to_flashinfer_trtllm_fp8(; symbols: fused_experts_none_to_flashinfer_trtllm_fp8, fused_experts_none_to_flashinfer_trtllm_fp4
+  - `python/sglang/srt/models/deepseek_v2.py` modified +1/-0 (1 lines); hunks: -403,6 +403,7 @@ def forward(; symbols: forward
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/moe/moe_runner/flashinfer_trtllm.py
+@@ -698,11 +698,7 @@ def fused_experts_none_to_flashinfer_trtllm_fp8(
+-                routing_logits=(
+-                    router_logits.to(torch.float32)
+-                    if routing_method_type == RoutingMethodType.DeepSeekV3
+-                    else router_logits
+-                ),
++                routing_logits=router_logits,
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -403,6 +403,7 @@ def forward(
++                    # TODO: will check the dtype to be bf16
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/moe/moe_runner/flashinfer_trtllm.py` modified +2/-14; `python/sglang/srt/models/deepseek_v2.py` modified +1/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/moe/moe_runner/flashinfer_trtllm.py`, `python/sglang/srt/models/deepseek_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #23351 - Support piecewise CUDA graph with NSA
+
+- 链接: https://github.com/sgl-project/sglang/pull/23351
+- 状态/时间: merged / 2026-05-22
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/deepseek_v2.py`；关联提交 `cadfa2d025d3`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 12 个文件，+317/-58，可读 patch 682 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Support piecewise CUDA graph with NSA」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「Support piecewise CUDA graph with NSA」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +1/-0 (1 lines); hunks: -1980,6 +1980,7 @@ def forward(; symbols: forward，涉及 `forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/deepseek_v2.py` modified +1/-0 (1 lines); hunks: -1980,6 +1980,7 @@ def forward(; symbols: forward
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -1980,6 +1980,7 @@ def forward(
++            and not torch.compiler.is_compiling()
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +1/-0
+- 验证与风险: diff 自带测试面 `test/registered/piecewise_cuda_graph/test_pcg_glm5_fp4.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #25843 - Route concat MLA to JIT and remove unused downcast
+
+- 链接: https://github.com/sgl-project/sglang/pull/25843
+- 状态/时间: merged / 2026-05-23
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+8/-298，可读 patch 331 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Route concat MLA to JIT and remove unused downcast」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py`, `python/sglang/srt/models/sarvam_moe.py`, `python/sglang/srt/layers/attention/utils.py`；技术摘要: 覆盖「Route concat MLA to JIT and remove unused downcast」；主要实现面是 `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py`, `python/sglang/srt/models/sarvam_moe.py`, `python/sglang/srt/layers/attention/utils.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py` modified +5/-1 (6 lines); hunks: -28,7 +28,11；`python/sglang/srt/models/sarvam_moe.py` modified +2/-1 (3 lines); hunks: -75,8 +75,9；`python/sglang/srt/layers/attention/utils.py` modified +1/-1 (2 lines); hunks: -10,7 +10,7；`python/sglang/jit_kernel/csrc/elementwise/cast.cuh` removed +0/-137 (137 lines); hunks: -1,137 +0,0。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py` modified +5/-1 (6 lines); hunks: -28,7 +28,11
+  - `python/sglang/srt/models/sarvam_moe.py` modified +2/-1 (3 lines); hunks: -75,8 +75,9
+  - `python/sglang/srt/layers/attention/utils.py` modified +1/-1 (2 lines); hunks: -10,7 +10,7
+  - `python/sglang/jit_kernel/csrc/elementwise/cast.cuh` removed +0/-137 (137 lines); hunks: -1,137 +0,0
+  - `python/sglang/jit_kernel/benchmark/bench_cast.py` removed +0/-106 (106 lines); hunks: -1,106 +0,0; symbols: benchmark, _report_bandwidth, fmt, report_bandwidth
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py
+@@ -28,7 +28,11 @@
+-    from sgl_kernel import concat_mla_k, merge_state_v2
++    from sgl_kernel import merge_state_v2
++    from sglang.jit_kernel.concat_mla import concat_mla_k
++elif _is_musa:
++    from sgl_kernel import concat_mla_k
+diff -- python/sglang/srt/models/sarvam_moe.py
+@@ -75,8 +75,9 @@
+-        from sgl_kernel import bmm_fp8, concat_mla_k, merge_state_v2
++        from sgl_kernel import bmm_fp8, merge_state_v2
++        from sglang.jit_kernel.concat_mla import concat_mla_k
+diff -- python/sglang/srt/layers/attention/utils.py
+@@ -10,7 +10,7 @@
+-    from sgl_kernel import concat_mla_absorb_q
++    from sglang.jit_kernel.concat_mla import concat_mla_absorb_q
+diff -- python/sglang/jit_kernel/csrc/elementwise/cast.cuh
+@@ -1,137 +0,0 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py` modified +5/-1; `python/sglang/srt/models/sarvam_moe.py` modified +2/-1; `python/sglang/srt/layers/attention/utils.py` modified +1/-1; `python/sglang/jit_kernel/csrc/elementwise/cast.cuh` removed +0/-137; `python/sglang/jit_kernel/benchmark/bench_cast.py` removed +0/-106; `python/sglang/jit_kernel/cast.py` removed +0/-52
+- 验证与风险: runtime 路径改动集中在 `python/sglang/jit_kernel/benchmark/bench_cast.py`, `python/sglang/jit_kernel/cast.py`, `python/sglang/jit_kernel/csrc/elementwise/cast.cuh`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #23292 - [CP] 1/N: Support MLA Prefill Context Parallel
+
+- 链接: https://github.com/sgl-project/sglang/pull/23292
+- 状态/时间: merged / 2026-05-23
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 21 个文件，+900/-161，可读 patch 1566 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[CP] 1/N: Support MLA Prefill Context Parallel」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/flashattention_backend.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/utils/cp_utils.py`；技术摘要: 覆盖「[CP] 1/N: Support MLA Prefill Context Parallel」；主要实现面是 `python/sglang/srt/layers/attention/flashattention_backend.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/utils/cp_utils.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/flashattention_backend.py` modified +128/-56 (184 lines); hunks: -508,6 +508,25 @@ def init_forward_metadata(self, forward_batch: ForwardBatch):; -627,36 +646,43 @@ def forward_extend(; symbols: init_forward_metadata, forward_extend, _fa_cp_attn, _mla_cp_attn，涉及 `init_forward_metadata, forward_extend, _fa_cp_attn`；`python/sglang/srt/models/deepseek_v2.py` modified +73/-14 (87 lines); hunks: -123,9 +123,12; -339,6 +342,8 @@ def __init__(; symbols: __init__, forward，涉及 `__init__, forward`；`python/sglang/srt/layers/utils/cp_utils.py` modified +36/-19 (55 lines); hunks: -51,19 +51,41 @@ def is_prefill_cp_in_seq_split():; -395,6 +417,7 @@ def prepare_context_parallel_metadata(; symbols: is_prefill_cp_in_seq_split, is_mla_prefill_cp_enabled, mla_use_prefill_cp, can_cp_split，涉及 `is_prefill_cp_in_seq_split, is_mla_prefill_cp_enabled, mla_use_prefill_cp`；`python/sglang/srt/models/deepseek_nextn.py` modified +31/-8 (39 lines); hunks: -43,9 +43,12; -136,6 +139,14 @@ def __init__(; symbols: __init__, forward，涉及 `__init__, forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/attention/flashattention_backend.py` modified +128/-56 (184 lines); hunks: -508,6 +508,25 @@ def init_forward_metadata(self, forward_batch: ForwardBatch):; -627,36 +646,43 @@ def forward_extend(; symbols: init_forward_metadata, forward_extend, _fa_cp_attn, _mla_cp_attn
+  - `python/sglang/srt/models/deepseek_v2.py` modified +73/-14 (87 lines); hunks: -123,9 +123,12; -339,6 +342,8 @@ def __init__(; symbols: __init__, forward
+  - `python/sglang/srt/layers/utils/cp_utils.py` modified +36/-19 (55 lines); hunks: -51,19 +51,41 @@ def is_prefill_cp_in_seq_split():; -395,6 +417,7 @@ def prepare_context_parallel_metadata(; symbols: is_prefill_cp_in_seq_split, is_mla_prefill_cp_enabled, mla_use_prefill_cp, can_cp_split
+  - `python/sglang/srt/models/deepseek_nextn.py` modified +31/-8 (39 lines); hunks: -43,9 +43,12; -136,6 +139,14 @@ def __init__(; symbols: __init__, forward
+  - `python/sglang/srt/model_executor/cuda_graph_runner.py` modified +14/-3 (17 lines); hunks: -56,6 +56,7; -567,7 +568,15 @@ def __init__(; symbols: __init__, capture_one_batch_size, replay_prepare
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/attention/flashattention_backend.py
+@@ -508,6 +508,25 @@ def init_forward_metadata(self, forward_batch: ForwardBatch):
++            # MLA/MHA CP: prepare_mlp_sync_batch pads extend tokens up to
++            # lcm(attn_tp_size, attn_cp_size), so cache_seqlens_cp can exceed
++            # seq_lens_cpu.max(). Widen page_table by the pad delta to keep
++            # FA3's causal reads in-bounds; widened columns index KV slot 0
++            # (req_to_token is zero-init) and outputs for padding queries are
++            # discarded downstream.
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -123,9 +123,12 @@
++    can_cp_split,
++    is_prefill_context_parallel_enabled,
++    mla_use_prefill_cp,
+@@ -339,6 +342,8 @@ def __init__(
++        dsa_enable_prefill_cp: bool = False,
++        mla_enable_prefill_cp: bool = False,
+diff -- python/sglang/srt/layers/utils/cp_utils.py
+@@ -51,19 +51,41 @@ def is_prefill_cp_in_seq_split():
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/attention/flashattention_backend.py` modified +128/-56; `python/sglang/srt/models/deepseek_v2.py` modified +73/-14; `python/sglang/srt/layers/utils/cp_utils.py` modified +36/-19; `python/sglang/srt/models/deepseek_nextn.py` modified +31/-8; `python/sglang/srt/model_executor/cuda_graph_runner.py` modified +14/-3; `python/sglang/srt/layers/communicator.py` modified +10/-4
+- 验证与风险: diff 自带测试面 `test/registered/cp/test_deepseek_v3_cp_single_node.py`, `test/registered/cp/test_deepseek_v4_flash_fp4_b200_cp.py`, `test/registered/cp/test_qwen3_30b.py`, `test/registered/kernels/test_cp_prefix_len_fa3_parity.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #25898 - [AMD] Dsv4/pr1 fix run time issue
+
+- 链接: https://github.com/sgl-project/sglang/pull/25898
+- 状态/时间: merged / 2026-05-23
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 32 个文件，+2523/-129，可读 patch 3203 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[AMD] Dsv4/pr1 fix run time issue」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/layers/fused_qk_norm_rope_store.py`, `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/layers/attention/dsv4/compress_hip.py`；技术摘要: 覆盖「[AMD] Dsv4/pr1 fix run time issue」；主要实现面是 `python/sglang/srt/layers/fused_qk_norm_rope_store.py`, `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/layers/attention/dsv4/compress_hip.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/fused_qk_norm_rope_store.py` added +380/-0 (380 lines); hunks: -0,0 +1,380; symbols: _batched_rmsnorm, _gptj_rotate, _batched_rope, _fused_qk_norm_rope_store_kernel，涉及 `_batched_rmsnorm, _gptj_rotate, _batched_rope`；`python/sglang/srt/models/deepseek_v4.py` modified +153/-28 (181 lines); hunks: -96,6 +96,8; -105,6 +107,29; symbols: _fused_rmsnorm_fp8_quant, __init__, _forward_prepare_multi_stream，涉及 `_fused_rmsnorm_fp8_quant, __init__, _forward_prepare_multi_stream`；`python/sglang/srt/layers/attention/dsv4/compress_hip.py` modified +91/-20 (111 lines); hunks: -16,6 +16,11; -91,15 +96,24 @@ class CompressorHip(_CompressorBase):; symbols: CompressorHip, __init__, use_fused_compress, use_hip_fused_compress，涉及 `CompressorHip, __init__, use_fused_compress`；`python/sglang/srt/models/deepseek_v2.py` modified +39/-1 (40 lines); hunks: -255,6 +255,11 @@ def __init__(; -316,8 +321,41 @@ def forward(; symbols: __init__, forward，涉及 `__init__, forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/fused_qk_norm_rope_store.py` added +380/-0 (380 lines); hunks: -0,0 +1,380; symbols: _batched_rmsnorm, _gptj_rotate, _batched_rope, _fused_qk_norm_rope_store_kernel
+  - `python/sglang/srt/models/deepseek_v4.py` modified +153/-28 (181 lines); hunks: -96,6 +96,8; -105,6 +107,29; symbols: _fused_rmsnorm_fp8_quant, __init__, _forward_prepare_multi_stream
+  - `python/sglang/srt/layers/attention/dsv4/compress_hip.py` modified +91/-20 (111 lines); hunks: -16,6 +16,11; -91,15 +96,24 @@ class CompressorHip(_CompressorBase):; symbols: CompressorHip, __init__, use_fused_compress, use_hip_fused_compress
+  - `python/sglang/srt/models/deepseek_v2.py` modified +39/-1 (40 lines); hunks: -255,6 +255,11 @@ def __init__(; -316,8 +321,41 @@ def forward(; symbols: __init__, forward
+  - `python/sglang/srt/layers/layernorm.py` modified +6/-0 (6 lines); hunks: -303,6 +303,12 @@ def forward_aiter(; symbols: forward_aiter
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/fused_qk_norm_rope_store.py
+@@ -0,0 +1,380 @@
++"""Fused Q per-head RMSNorm + KV RMSNorm + RoPE + FP8 nope quant + paged SWA store.
++Single Triton kernel replacing the 2-kernel path:
++  1. fused_reduce_qk_norm_rope_swa_write (norm + RoPE)
++  2. store_cache -> fused_store_cache (FP8 quant + paged scatter)
++Grid: (cdiv(M, BLOCK_SIZE_M), num_local_heads + 1).
++  pid_h < num_local_heads: Q head programs (split-K reduce + norm + RoPE)
+diff -- python/sglang/srt/models/deepseek_v4.py
+@@ -96,6 +96,8 @@
++    get_bool_env_var,
++    is_gfx95_supported,
+@@ -105,6 +107,29 @@
++_use_aiter = get_bool_env_var("SGLANG_USE_AITER") and _is_hip
++_is_gfx95_supported = is_gfx95_supported()
++if _use_aiter:
+diff -- python/sglang/srt/layers/attention/dsv4/compress_hip.py
+@@ -16,6 +16,11 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/fused_qk_norm_rope_store.py` added +380/-0; `python/sglang/srt/models/deepseek_v4.py` modified +153/-28; `python/sglang/srt/layers/attention/dsv4/compress_hip.py` modified +91/-20; `python/sglang/srt/models/deepseek_v2.py` modified +39/-1; `python/sglang/srt/layers/layernorm.py` modified +6/-0; `python/sglang/jit_kernel/triton_store_cache.py` added +237/-0
+  - other: `sgl-kernel/csrc/elementwise/dsv4_norm_rope.cu` added +700/-0; `sgl-kernel/csrc/elementwise/deepseek_v4_topk.cu` added +372/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/jit_kernel/csrc/deepseek_v4/c128_v2.cuh`, `python/sglang/jit_kernel/csrc/deepseek_v4/c4_v2.cuh`, `python/sglang/jit_kernel/csrc/deepseek_v4/c_plan.cuh`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #22851 - [FlashInfer v0.6.10] [RL] [DSv32] [GLM-5] Add `--dsa-topk-backend` and integrate FlashInfer and pytorch topk
+
+- 链接: https://github.com/sgl-project/sglang/pull/22851
+- 状态/时间: merged / 2026-05-25
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 9 个文件，+706/-54，可读 patch 938 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[FlashInfer v0.6.10] [RL] [DSv32] [GLM-5] Add `--dsa-topk-backend` and integrate FlashInfer and pytorch topk」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/dsa/dsa_topk_backend.py`, `python/sglang/srt/layers/attention/dsa_backend.py`, `test/registered/kernels/test_dsa_indexer.py`；技术摘要: 覆盖「[FlashInfer v0.6.10] [RL] [DSv32] [GLM-5] Add `--dsa-topk-backend` and integrate FlashInfer and pytorch topk」；主要实现面是 `python/sglang/srt/layers/attention/dsa/dsa_topk_backend.py`, `python/sglang/srt/layers/attention/dsa_backend.py`, `test/registered/kernels/test_dsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/dsa/dsa_topk_backend.py` added +271/-0 (271 lines); hunks: -0,0 +1,271; symbols: TopkTransformMethod, DSATopKBackend, is_sgl_kernel, is_torch，涉及 `TopkTransformMethod, DSATopKBackend, is_sgl_kernel`；`python/sglang/srt/layers/attention/dsa_backend.py` modified +46/-53 (99 lines); hunks: -2,8 +2,15; -19,6 +26,10; symbols: DSAMetadata, TopkTransformMethod, _compiled_cat, _cat，涉及 `DSAMetadata, TopkTransformMethod, _compiled_cat`；`test/registered/kernels/test_dsa_indexer.py` modified +356/-1 (357 lines); hunks: -4,6 +4,7; -16,7 +17,15; symbols: __init__, _verify_topk_output, _make_tie_free_logits, _run_unfused_topk_backend_validity_test，涉及 `__init__, _verify_topk_output, _make_tie_free_logits`；`python/sglang/srt/server_args.py` modified +12/-0 (12 lines); hunks: -266,6 +266,8; -549,6 +551,7 @@ class ServerArgs:; symbols: ServerArgs, add_cli_args，涉及 `ServerArgs, add_cli_args`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/attention/dsa/dsa_topk_backend.py` added +271/-0 (271 lines); hunks: -0,0 +1,271; symbols: TopkTransformMethod, DSATopKBackend, is_sgl_kernel, is_torch
+  - `python/sglang/srt/layers/attention/dsa_backend.py` modified +46/-53 (99 lines); hunks: -2,8 +2,15; -19,6 +26,10; symbols: DSAMetadata, TopkTransformMethod, _compiled_cat, _cat
+  - `test/registered/kernels/test_dsa_indexer.py` modified +356/-1 (357 lines); hunks: -4,6 +4,7; -16,7 +17,15; symbols: __init__, _verify_topk_output, _make_tie_free_logits, _run_unfused_topk_backend_validity_test
+  - `python/sglang/srt/server_args.py` modified +12/-0 (12 lines); hunks: -266,6 +266,8; -549,6 +551,7 @@ class ServerArgs:; symbols: ServerArgs, add_cli_args
+  - `docs_new/docs/references/environment_variables.mdx` modified +10/-0 (10 lines); hunks: -416,6 +416,16 @@ SGLang supports various environment variables that can be u...
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/attention/dsa/dsa_topk_backend.py
+@@ -0,0 +1,271 @@
++from __future__ import annotations
++from enum import Enum, IntEnum, auto
++from typing import Callable, Dict, List, Optional, Tuple
++import torch
++from sglang.srt.environ import envs
++_FLASHINFER_TIE_BREAK_VALUES = {
+diff -- python/sglang/srt/layers/attention/dsa_backend.py
+@@ -2,8 +2,15 @@
+-from enum import IntEnum, auto
+-from typing import TYPE_CHECKING, Dict, List, Literal, Optional, Tuple, TypeAlias
++from typing import (
++    TYPE_CHECKING,
++    Dict,
++    List,
+diff -- test/registered/kernels/test_dsa_indexer.py
+@@ -4,6 +4,7 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/attention/dsa/dsa_topk_backend.py` added +271/-0; `python/sglang/srt/layers/attention/dsa_backend.py` modified +46/-53; `python/sglang/srt/server_args.py` modified +12/-0; `python/sglang/srt/environ.py` modified +2/-0
+  - tests: `test/registered/kernels/test_dsa_indexer.py` modified +356/-1
+  - docs: `docs_new/docs/references/environment_variables.mdx` modified +10/-0; `docs_new/docs/advanced_features/server_arguments.mdx` modified +6/-0; `docs/references/environment_variables.md` modified +2/-0
+- 验证与风险: diff 自带测试面 `test/registered/kernels/test_dsa_indexer.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #26208 - [AMD] Dsv4/pr2 compressor opt
+
+- 链接: https://github.com/sgl-project/sglang/pull/26208
+- 状态/时间: merged / 2026-05-26
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 31 个文件，+8829/-149，可读 patch 6378 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[AMD] Dsv4/pr2 compressor opt」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa/triton_decode/triton_mla_kernels_decode_fused.py`, `python/sglang/srt/layers/attention/nsa/triton_decode/triton_mla_kernels_decode_dsv4.py`, `python/sglang/srt/layers/attention/dsv4/fused_compress_triton.py`；技术摘要: 覆盖「[AMD] Dsv4/pr2 compressor opt」；主要实现面是 `python/sglang/srt/layers/attention/nsa/triton_decode/triton_mla_kernels_decode_fused.py`, `python/sglang/srt/layers/attention/nsa/triton_decode/triton_mla_kernels_decode_dsv4.py`, `python/sglang/srt/layers/attention/dsv4/fused_compress_triton.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/nsa/triton_decode/triton_mla_kernels_decode_fused.py` added +3089/-0 (3089 lines)；`python/sglang/srt/layers/attention/nsa/triton_decode/triton_mla_kernels_decode_dsv4.py` added +1355/-0 (1355 lines); hunks: -0,0 +1,1355; symbols: _gather_dequant_dsv4_kernel, _gather_dequant_dsv4_kernel_fixed_128, gather_dequant_fp8_dsv4, _gather_dequant_dsv4_1d_fused_kernel，涉及 `_gather_dequant_dsv4_kernel, _gather_dequant_dsv4_kernel_fixed_128, gather_dequant_fp8_dsv4`；`python/sglang/srt/layers/attention/dsv4/fused_compress_triton.py` added +954/-0 (954 lines); hunks: -0,0 +1,954; symbols: _fused_ape_pool_norm_rope_kernel, fused_ape_pool_norm_rope, _c4_decode_kernel, _c4_prefill_compress_kernel，涉及 `_fused_ape_pool_norm_rope_kernel, fused_ape_pool_norm_rope, _c4_decode_kernel`；`python/sglang/srt/layers/attention/nsa/triton_decode/triton_mla_kernels_decode_common.py` added +585/-0 (585 lines); hunks: -0,0 +1,585; symbols: _bucket_total_tokens, _get_workload_size_category, _unified_sparse_decode_kernel, run_unified_attention，涉及 `_bucket_total_tokens, _get_workload_size_category, _unified_sparse_decode_kernel`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/attention/nsa/triton_decode/triton_mla_kernels_decode_fused.py` added +3089/-0 (3089 lines)
+  - `python/sglang/srt/layers/attention/nsa/triton_decode/triton_mla_kernels_decode_dsv4.py` added +1355/-0 (1355 lines); hunks: -0,0 +1,1355; symbols: _gather_dequant_dsv4_kernel, _gather_dequant_dsv4_kernel_fixed_128, gather_dequant_fp8_dsv4, _gather_dequant_dsv4_1d_fused_kernel
+  - `python/sglang/srt/layers/attention/dsv4/fused_compress_triton.py` added +954/-0 (954 lines); hunks: -0,0 +1,954; symbols: _fused_ape_pool_norm_rope_kernel, fused_ape_pool_norm_rope, _c4_decode_kernel, _c4_prefill_compress_kernel
+  - `python/sglang/srt/layers/attention/nsa/triton_decode/triton_mla_kernels_decode_common.py` added +585/-0 (585 lines); hunks: -0,0 +1,585; symbols: _bucket_total_tokens, _get_workload_size_category, _unified_sparse_decode_kernel, run_unified_attention
+  - `python/sglang/srt/layers/attention/dsv4/compressor_v2.py` modified +516/-25 (541 lines); hunks: -10,6 +10,7; -24,12 +25,380; symbols: _c128_compress_decode_kernel, _c128_compress_prefill_write_kernel, _c128_compress_prefill_compress_kernel, _compress_forward_c128_triton
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/attention/nsa/triton_decode/triton_mla_kernels_decode_dsv4.py
+@@ -0,0 +1,1355 @@
++"""
++Triton MLA Decode Kernels for DSV4 (d_qk=512).
++This module contains DSV4-specific gather+dequant kernels and the main
++sparse attention decode entry point for DSV4.
++"""
++import os
+diff -- python/sglang/srt/layers/attention/dsv4/fused_compress_triton.py
+@@ -0,0 +1,954 @@
++"""HIP fused compressor kernels using the NV/main metadata contract.
++The public wrappers mirror ``compress_forward``:
++ decode: indices, seq_lens, extra_data
++ prefill: indices, compress_plan, write_plan, extra_data
++Prefill plans are the upstream 16-byte ``PrefillPlan`` structs stored as
++``uint8[:, 16]``. The wrappers reinterpret them as ``int32[:, 4]`` before
+diff -- python/sglang/srt/layers/attention/nsa/triton_decode/triton_mla_kernels_decode_common.py
+@@ -0,0 +1,585 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/attention/nsa/triton_decode/triton_mla_kernels_decode_fused.py` added +3089/-0; `python/sglang/srt/layers/attention/nsa/triton_decode/triton_mla_kernels_decode_dsv4.py` added +1355/-0; `python/sglang/srt/layers/attention/dsv4/fused_compress_triton.py` added +954/-0; `python/sglang/srt/layers/attention/nsa/triton_decode/triton_mla_kernels_decode_common.py` added +585/-0; `python/sglang/srt/layers/attention/dsv4/compressor_v2.py` modified +516/-25; `python/sglang/srt/layers/attention/nsa/triton_decode/triton_mla_kernels_decode_splitk.py` added +534/-0
+- 验证与风险: diff 自带测试面 `sgl-kernel/tests/test_dsv4_norm_rope.py`, `test/manual/dsv4/test_fused_compress_attn_hip.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #22473 - [DSA] Add dense MLA decode fallback for short sequences
+
+- 链接: https://github.com/sgl-project/sglang/pull/22473
+- 状态/时间: closed / 2026-05-27
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+196/-3，可读 patch 290 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[DSA] Add dense MLA decode fallback for short sequences」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/server_args.py`；技术摘要: 覆盖「[DSA] Add dense MLA decode fallback for short sequences」；主要实现面是 `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/server_args.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/nsa_backend.py` modified +143/-2 (145 lines); hunks: -322,6 +322,7 @@ def __init__(; -355,8 +356,13 @@ def __init__(; symbols: __init__, init_forward_metadata, forward_decode, _forward_aiter_extend，涉及 `__init__, init_forward_metadata, forward_decode`；`python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +44/-1 (45 lines); hunks: -748,6 +748,33 @@ def _forward_cuda_k_only(; -1076,7 +1103,7 @@ def forward_cuda(; symbols: _forward_cuda_k_only, _forward_decode_k_only, _get_topk_ragged_with_cp, forward_cuda，涉及 `_forward_cuda_k_only, _forward_decode_k_only, _get_topk_ragged_with_cp`；`python/sglang/srt/server_args.py` modified +7/-0 (7 lines); hunks: -1571,6 +1571,13 @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments，涉及 `_handle_model_specific_adjustments`；`docs/references/environment_variables.md` modified +1/-0 (1 lines); hunks: -97,6 +97,7 @@ SGLang supports various environment variables that can be used...。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/attention/nsa_backend.py` modified +143/-2 (145 lines); hunks: -322,6 +322,7 @@ def __init__(; -355,8 +356,13 @@ def __init__(; symbols: __init__, init_forward_metadata, forward_decode, _forward_aiter_extend
+  - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +44/-1 (45 lines); hunks: -748,6 +748,33 @@ def _forward_cuda_k_only(; -1076,7 +1103,7 @@ def forward_cuda(; symbols: _forward_cuda_k_only, _forward_decode_k_only, _get_topk_ragged_with_cp, forward_cuda
+  - `python/sglang/srt/server_args.py` modified +7/-0 (7 lines); hunks: -1571,6 +1571,13 @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments
+  - `docs/references/environment_variables.md` modified +1/-0 (1 lines); hunks: -97,6 +97,7 @@ SGLang supports various environment variables that can be used...
+  - `python/sglang/srt/environ.py` modified +1/-0 (1 lines); hunks: -402,6 +402,7 @@ class Envs:; symbols: Envs
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/attention/nsa_backend.py
+@@ -322,6 +322,7 @@ def __init__(
++        self.use_dense_decode: bool = False
+@@ -355,8 +356,13 @@ def __init__(
+-        # Allocate global workspace buffer for TRT-LLM kernels (ragged attention on SM100/B200, or trtllm decode)
+-        if self.device_sm_major >= 10 or self.nsa_decode_impl == "trtllm":
++        # Allocate global workspace buffer for TRT-LLM kernels
++        # (ragged attention on SM100/B200, trtllm decode, or dense decode fallback)
+diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
+@@ -748,6 +748,33 @@ def _forward_cuda_k_only(
++    def _forward_decode_k_only(
++        self,
++        x: torch.Tensor,
++        positions: torch.Tensor,
++        forward_batch: ForwardBatch,
++        layer_id: int,
+diff -- python/sglang/srt/server_args.py
+@@ -1571,6 +1571,13 @@ def _handle_model_specific_adjustments(self):
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/attention/nsa_backend.py` modified +143/-2; `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +44/-1; `python/sglang/srt/server_args.py` modified +7/-0; `python/sglang/srt/environ.py` modified +1/-0
+  - docs: `docs/references/environment_variables.md` modified +1/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/environ.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `python/sglang/srt/layers/attention/nsa_backend.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #23269 - Support batch size > 1 when enable CP
+
+- 链接: https://github.com/sgl-project/sglang/pull/23269
+- 状态/时间: merged / 2026-05-27
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 13 个文件，+268/-305，可读 patch 797 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Support batch size > 1 when enable CP」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/utils/cp_utils.py`, `python/sglang/srt/layers/attention/dsa/dsa_indexer.py`, `python/sglang/srt/model_executor/forward_batch_info.py`；技术摘要: 覆盖「Support batch size > 1 when enable CP」；主要实现面是 `python/sglang/srt/layers/utils/cp_utils.py`, `python/sglang/srt/layers/attention/dsa/dsa_indexer.py`, `python/sglang/srt/model_executor/forward_batch_info.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/utils/cp_utils.py` modified +236/-153 (389 lines); hunks: -20,24 +20,41; -67,25 +84,45 @@ def mla_use_prefill_cp(forward_batch, mla_enable_prefill_cp=...; symbols: ContextParallelMetadata, is_prefill_context_parallel_enabled, mla_use_prefill_cp, can_cp_split，涉及 `ContextParallelMetadata, is_prefill_context_parallel_enabled, mla_use_prefill_cp`；`python/sglang/srt/layers/attention/dsa/dsa_indexer.py` modified +8/-4 (12 lines); hunks: -1455,10 +1455,14 @@ def forward_cuda(; symbols: forward_cuda，涉及 `forward_cuda`；`python/sglang/srt/model_executor/forward_batch_info.py` modified +3/-2 (5 lines); hunks: -889,10 +889,11 @@ def prepare_mlp_sync_batch(self, model_runner: ModelRunner):; symbols: prepare_mlp_sync_batch，涉及 `prepare_mlp_sync_batch`；`python/sglang/srt/layers/attention/dsa/utils.py` modified +3/-1 (4 lines); hunks: -133,7 +133,9 @@ def cal_padded_tokens(forward_batch: "ForwardBatch"):; symbols: cal_padded_tokens，涉及 `cal_padded_tokens`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/utils/cp_utils.py` modified +236/-153 (389 lines); hunks: -20,24 +20,41; -67,25 +84,45 @@ def mla_use_prefill_cp(forward_batch, mla_enable_prefill_cp=...; symbols: ContextParallelMetadata, is_prefill_context_parallel_enabled, mla_use_prefill_cp, can_cp_split
+  - `python/sglang/srt/layers/attention/dsa/dsa_indexer.py` modified +8/-4 (12 lines); hunks: -1455,10 +1455,14 @@ def forward_cuda(; symbols: forward_cuda
+  - `python/sglang/srt/model_executor/forward_batch_info.py` modified +3/-2 (5 lines); hunks: -889,10 +889,11 @@ def prepare_mlp_sync_batch(self, model_runner: ModelRunner):; symbols: prepare_mlp_sync_batch
+  - `python/sglang/srt/layers/attention/dsa/utils.py` modified +3/-1 (4 lines); hunks: -133,7 +133,9 @@ def cal_padded_tokens(forward_batch: "ForwardBatch"):; symbols: cal_padded_tokens
+  - `python/sglang/srt/models/deepseek_nextn.py` modified +2/-2 (4 lines); hunks: -311,7 +311,7 @@ def forward(; -320,7 +320,7 @@ def forward(; symbols: forward
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/utils/cp_utils.py
+@@ -20,24 +20,41 @@
++    # Layout lists have length bs * cp_segment_num (= bs * 2 * cp_size).
+-    max_rank_len: List[int] = None
+-    per_rank_actual_token: List[int] = None
+-    reverse_split_len: List[int] = None
++    reverse_split_len: List[int] = None
++    # Per-rank-aggregate lists have length cp_size.
+diff -- python/sglang/srt/layers/attention/dsa/dsa_indexer.py
+@@ -1455,10 +1455,14 @@ def forward_cuda(
+-                    kv_len_prev = forward_batch.attn_cp_metadata.kv_len_prev
+-                    kv_len_next = forward_batch.attn_cp_metadata.kv_len_next
+-                    actual_seq_q_prev = forward_batch.attn_cp_metadata.actual_seq_q_prev
+-                    actual_seq_q_next = forward_batch.attn_cp_metadata.actual_seq_q_next
++                    kv_len_prev = forward_batch.attn_cp_metadata.kv_len_prev_list[0]
++                    kv_len_next = forward_batch.attn_cp_metadata.kv_len_next_list[0]
+diff -- python/sglang/srt/model_executor/forward_batch_info.py
+@@ -889,10 +889,11 @@ def prepare_mlp_sync_batch(self, model_runner: ModelRunner):
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/utils/cp_utils.py` modified +236/-153; `python/sglang/srt/layers/attention/dsa/dsa_indexer.py` modified +8/-4; `python/sglang/srt/model_executor/forward_batch_info.py` modified +3/-2; `python/sglang/srt/layers/attention/dsa/utils.py` modified +3/-1; `python/sglang/srt/models/deepseek_nextn.py` modified +2/-2; `python/sglang/srt/models/deepseek_v2.py` modified +2/-2
+- 验证与风险: diff 自带测试面 `test/registered/cp/test_qwen3_30b.py`, `test/registered/kernels/test_cp_prefix_len_fa3_parity.py`, `test/registered/kernels/test_mla_cp_fa3_parity.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #24737 - Support Flashinfer Cute-DSL MLA attention
+
+- 链接: https://github.com/sgl-project/sglang/pull/24737
+- 状态/时间: merged / 2026-05-28
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+101/-13，可读 patch 267 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Support Flashinfer Cute-DSL MLA attention」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/trtllm_mla_backend.py`, `python/sglang/srt/layers/attention/attention_registry.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`；技术摘要: 覆盖「Support Flashinfer Cute-DSL MLA attention」；主要实现面是 `python/sglang/srt/layers/attention/trtllm_mla_backend.py`, `python/sglang/srt/layers/attention/attention_registry.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/trtllm_mla_backend.py` modified +35/-9 (44 lines); hunks: -229,6 +229,11 @@ def _quantize_fp8_qkv(q, k, v, layer):; -263,6 +268,7 @@ def __init__(; symbols: _quantize_fp8_qkv, __init__, _run_decode_kernel，涉及 `_quantize_fp8_qkv, __init__, _run_decode_kernel`；`python/sglang/srt/layers/attention/attention_registry.py` modified +9/-0 (9 lines); hunks: -74,6 +74,15 @@ def create_tokenspeed_mla_backend(runner):; symbols: create_tokenspeed_mla_backend, create_cutedsl_mla_backend, create_aiter_backend，涉及 `create_tokenspeed_mla_backend, create_cutedsl_mla_backend, create_aiter_backend`；`python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +2/-1 (3 lines); hunks: -697,7 +697,8 @@ def _fuse_rope_for_trtllm_mla(; symbols: _fuse_rope_for_trtllm_mla，涉及 `_fuse_rope_for_trtllm_mla`；`python/sglang/srt/model_executor/model_runner.py` modified +2/-0 (2 lines); hunks: -247,6 +247,7; -261,6 +262,7。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/attention/trtllm_mla_backend.py` modified +35/-9 (44 lines); hunks: -229,6 +229,11 @@ def _quantize_fp8_qkv(q, k, v, layer):; -263,6 +268,7 @@ def __init__(; symbols: _quantize_fp8_qkv, __init__, _run_decode_kernel
+  - `python/sglang/srt/layers/attention/attention_registry.py` modified +9/-0 (9 lines); hunks: -74,6 +74,15 @@ def create_tokenspeed_mla_backend(runner):; symbols: create_tokenspeed_mla_backend, create_cutedsl_mla_backend, create_aiter_backend
+  - `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +2/-1 (3 lines); hunks: -697,7 +697,8 @@ def _fuse_rope_for_trtllm_mla(; symbols: _fuse_rope_for_trtllm_mla
+  - `python/sglang/srt/model_executor/model_runner.py` modified +2/-0 (2 lines); hunks: -247,6 +247,7; -261,6 +262,7
+  - `python/sglang/srt/models/deepseek_common/utils.py` modified +1/-0 (1 lines); hunks: -62,6 +62,7
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/attention/trtllm_mla_backend.py
+@@ -229,6 +229,11 @@ def _quantize_fp8_qkv(q, k, v, layer):
++# cute-dsl needs its own workspace: it overwrites the buffer with split-KV
++# partials, which corrupts the trtllm-gen multiCtasKv counters that rely on the
++# zero-init buffer (they share it under attention-backend=cutedsl_mla, where
++# draft-extend falls back to trtllm-gen) and deadlocks the reduction.
++global_cute_dsl_workspace_buffer = None
+@@ -263,6 +268,7 @@ def __init__(
+diff -- python/sglang/srt/layers/attention/attention_registry.py
+@@ -74,6 +74,15 @@ def create_tokenspeed_mla_backend(runner):
++@register_attention_backend("cutedsl_mla")
++def create_cutedsl_mla_backend(runner):
++    if not runner.use_mla_backend:
++        raise ValueError("cutedsl_mla backend can only be used with MLA models.")
++    from sglang.srt.layers.attention.trtllm_mla_backend import TRTLLMMLABackend
++    return TRTLLMMLABackend(runner, backend="cute-dsl")
+diff -- python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py
+@@ -697,7 +697,8 @@ def _fuse_rope_for_trtllm_mla(
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/attention/trtllm_mla_backend.py` modified +35/-9; `python/sglang/srt/layers/attention/attention_registry.py` modified +9/-0; `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +2/-1; `python/sglang/srt/model_executor/model_runner.py` modified +2/-0; `python/sglang/srt/models/deepseek_common/utils.py` modified +1/-0; `python/sglang/srt/server_args.py` modified +30/-0
+  - docs: `docs_new/docs/advanced_features/attention_backend.mdx` modified +11/-1
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/attention/attention_registry.py`, `python/sglang/srt/layers/attention/trtllm_mla_backend.py`, `python/sglang/srt/model_executor/model_runner.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #26610 - test/registered: cleanup pure model e2e tests (moves, splits, dedup, kit)
+
+- 链接: https://github.com/sgl-project/sglang/pull/26610
+- 状态/时间: merged / 2026-05-28
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 26 个文件，+611/-816，可读 patch 1566 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「test/registered: cleanup pure model e2e tests (moves, splits, dedup, kit)」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`, `python/sglang/test/kits/unified_radix_cache_kit.py`, `test/registered/models_e2e/test_step3p5_flash_chain_mtp.py`；技术摘要: 覆盖「test/registered: cleanup pure model e2e tests (moves, splits, dedup, kit)」；主要实现面是 `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`, `python/sglang/test/kits/unified_radix_cache_kit.py`, `test/registered/models_e2e/test_step3p5_flash_chain_mtp.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py` removed +0/-212 (212 lines); hunks: -1,212 +0,0; symbols: TestDeepseekV32FP4DPSpecV2, setUpClass, tearDownClass, test_a_gsm8k，涉及 `TestDeepseekV32FP4DPSpecV2, setUpClass, tearDownClass`；`python/sglang/test/kits/unified_radix_cache_kit.py` renamed +1/-133 (134 lines); hunks: -1,25 +1,12; -28,18 +15,8 @@ def _random_suffixes(n, length, seed):; symbols: _random_suffixes, UnifiedRadixTreeTestMixin, test_multiturn_decode_cache_hit_branching, TestUnifiedFullRadixCache，涉及 `_random_suffixes, UnifiedRadixTreeTestMixin, test_multiturn_decode_cache_hit_branching`；`test/registered/models_e2e/test_step3p5_flash_chain_mtp.py` renamed +33/-78 (111 lines); hunks: -1,28 +1,20; -31,75 +23,38 @@ class TestStep3p5FlashChainMTP(CustomTestCase):; symbols: TestStep3p5FlashChainMTP, setUpClass, tearDownClass，涉及 `TestStep3p5FlashChainMTP, setUpClass, tearDownClass`；`test/registered/8-gpu-models/test_deepseek_v3_mtp.py` removed +0/-110 (110 lines); hunks: -1,110 +0,0; symbols: TestDeepseekV3MTP, setUpClass, tearDownClass, test_a_gsm8k，涉及 `TestDeepseekV3MTP, setUpClass, tearDownClass`。
+- 代码 diff 细节:
+  - `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py` removed +0/-212 (212 lines); hunks: -1,212 +0,0; symbols: TestDeepseekV32FP4DPSpecV2, setUpClass, tearDownClass, test_a_gsm8k
+  - `python/sglang/test/kits/unified_radix_cache_kit.py` renamed +1/-133 (134 lines); hunks: -1,25 +1,12; -28,18 +15,8 @@ def _random_suffixes(n, length, seed):; symbols: _random_suffixes, UnifiedRadixTreeTestMixin, test_multiturn_decode_cache_hit_branching, TestUnifiedFullRadixCache
+  - `test/registered/models_e2e/test_step3p5_flash_chain_mtp.py` renamed +33/-78 (111 lines); hunks: -1,28 +1,20; -31,75 +23,38 @@ class TestStep3p5FlashChainMTP(CustomTestCase):; symbols: TestStep3p5FlashChainMTP, setUpClass, tearDownClass
+  - `test/registered/8-gpu-models/test_deepseek_v3_mtp.py` removed +0/-110 (110 lines); hunks: -1,110 +0,0; symbols: TestDeepseekV3MTP, setUpClass, tearDownClass, test_a_gsm8k
+  - `test/registered/4-gpu-models/test_qwen35_models.py` removed +0/-105 (105 lines); hunks: -1,105 +0,0; symbols: TestQwen35FP4MTPV2, setUpClass, tearDownClass, test_gsm8k
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py
+@@ -1,212 +0,0 @@
+-import unittest
+-from types import SimpleNamespace
+-import requests
+-from sglang.srt.utils import kill_process_tree
+-from sglang.test.ci.ci_register import register_cuda_ci
+-from sglang.test.run_eval import run_eval
+diff -- python/sglang/test/kits/unified_radix_cache_kit.py
+@@ -1,25 +1,12 @@
+-import unittest
+-from sglang.srt.utils import kill_process_tree
+-from sglang.test.ci.ci_register import register_cuda_ci
+-    get_input_ids,
+-    make_mamba_decode_assert,
+-    make_mamba_prefill_assert,
+diff -- test/registered/models_e2e/test_step3p5_flash_chain_mtp.py
+@@ -1,28 +1,20 @@
+```
+
+- 已读文件:
+  - tests: `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py` removed +0/-212; `python/sglang/test/kits/unified_radix_cache_kit.py` renamed +1/-133; `test/registered/models_e2e/test_step3p5_flash_chain_mtp.py` renamed +33/-78; `test/registered/8-gpu-models/test_deepseek_v3_mtp.py` removed +0/-110; `test/registered/4-gpu-models/test_qwen35_models.py` removed +0/-105; `test/registered/quant/test_deepseek_v3_fp4_4gpu.py` removed +0/-80
+- 验证与风险: diff 自带测试面 `python/sglang/test/kits/unified_radix_cache_kit.py`, `test/manual/core/test_dsv4_hicache_swa_translation_cache.py`, `test/registered/4-gpu-models/test_qwen35_models.py`, `test/registered/8-gpu-models/test_deepseek_v3_mtp.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #25755 - [Fix][NPU] Preserve existing packed_modules_mapping when merging model-level fused module mappings
+
+- 链接: https://github.com/sgl-project/sglang/pull/25755
+- 状态/时间: merged / 2026-05-29
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+8/-2，可读 patch 31 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Fix][NPU] Preserve existing packed_modules_mapping when merging model-level fused module mappings」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/quantization/base_config.py`, `python/sglang/srt/layers/quantization/modelslim/modelslim.py`；技术摘要: 覆盖「[Fix][NPU] Preserve existing packed_modules_mapping when merging model-level fused module mappings」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/quantization/base_config.py`, `python/sglang/srt/layers/quantization/modelslim/modelslim.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +2/-2 (4 lines); hunks: -2462,8 +2462,8 @@ def __init__(; symbols: __init__，涉及 `__init__`；`python/sglang/srt/layers/quantization/base_config.py` modified +3/-0 (3 lines); hunks: -131,6 +131,9 @@ def __init__(self):; symbols: __init__, update_packed_modules_mapping, get_name，涉及 `__init__, update_packed_modules_mapping, get_name`；`python/sglang/srt/layers/quantization/modelslim/modelslim.py` modified +3/-0 (3 lines); hunks: -108,6 +108,9 @@ def __init__(self, quant_config: Dict[str, Any] = {}):; symbols: __init__, update_packed_modules_mapping, get_linear_method，涉及 `__init__, update_packed_modules_mapping, get_linear_method`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/deepseek_v2.py` modified +2/-2 (4 lines); hunks: -2462,8 +2462,8 @@ def __init__(; symbols: __init__
+  - `python/sglang/srt/layers/quantization/base_config.py` modified +3/-0 (3 lines); hunks: -131,6 +131,9 @@ def __init__(self):; symbols: __init__, update_packed_modules_mapping, get_name
+  - `python/sglang/srt/layers/quantization/modelslim/modelslim.py` modified +3/-0 (3 lines); hunks: -108,6 +108,9 @@ def __init__(self, quant_config: Dict[str, Any] = {}):; symbols: __init__, update_packed_modules_mapping, get_linear_method
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -2462,8 +2462,8 @@ def __init__(
+-        if quant_config is not None and hasattr(quant_config, "packed_modules_mapping"):
+-            quant_config.packed_modules_mapping = self.packed_modules_mapping
++        if quant_config is not None:
++            quant_config.update_packed_modules_mapping(self.packed_modules_mapping)
+diff -- python/sglang/srt/layers/quantization/base_config.py
+@@ -131,6 +131,9 @@ def __init__(self):
++    def update_packed_modules_mapping(self, mapping: Dict[str, List[str]]) -> None:
++        self.packed_modules_mapping = mapping
+diff -- python/sglang/srt/layers/quantization/modelslim/modelslim.py
+@@ -108,6 +108,9 @@ def __init__(self, quant_config: Dict[str, Any] = {}):
++    def update_packed_modules_mapping(self, mapping: Dict[str, List[str]]) -> None:
++        self.packed_modules_mapping.update(mapping)
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +2/-2; `python/sglang/srt/layers/quantization/base_config.py` modified +3/-0; `python/sglang/srt/layers/quantization/modelslim/modelslim.py` modified +3/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/quantization/base_config.py`, `python/sglang/srt/layers/quantization/modelslim/modelslim.py`, `python/sglang/srt/models/deepseek_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #25676 - Upgrade xgrammar to 0.2.1
+
+- 链接: https://github.com/sgl-project/sglang/pull/25676
+- 状态/时间: merged / 2026-05-29
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 13 个文件，+409/-174，可读 patch 834 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Upgrade xgrammar to 0.2.1」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `test/registered/unit/entrypoints/openai/test_serving_chat.py`, `python/sglang/srt/function_call/deepseekv32_detector.py`, `test/registered/unit/function_call/test_function_call_parser.py`；技术摘要: 覆盖「Upgrade xgrammar to 0.2.1」；主要实现面是 `test/registered/unit/entrypoints/openai/test_serving_chat.py`, `python/sglang/srt/function_call/deepseekv32_detector.py`, `test/registered/unit/function_call/test_function_call_parser.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/unit/entrypoints/openai/test_serving_chat.py` modified +284/-0 (284 lines); hunks: -147,6 +147,241 @@ def test_convert_to_internal_request_single(self):; -225,6 +460,55 @@ def test_jinja_tool_schema_fallback_to_flat_function(self):; symbols: test_convert_to_internal_request_single, test_kimi_tool_call_keeps_default_reasoning, test_kimi_tool_call_keeps_explicit_reasoning, test_kimi_tool_call_respects_explicit_reasoning_disable，涉及 `test_convert_to_internal_request_single, test_kimi_tool_call_keeps_default_reasoning, test_kimi_tool_call_keeps_explicit_reasoning`；`python/sglang/srt/function_call/deepseekv32_detector.py` modified +3/-115 (118 lines); hunks: -1,11 +1,10; -15,30 +14,8; symbols: DeepSeekV32Detector, structure_info, get_structural_tag, _invoke_tag，涉及 `DeepSeekV32Detector, structure_info, get_structural_tag`；`test/registered/unit/function_call/test_function_call_parser.py` modified +52/-30 (82 lines); hunks: -1642,12 +1642,17 @@ def test_streaming_no_parameters_with_whitespace(self):; -2087,12 +2092,17 @@ def test_streaming_no_parameters_with_whitespace(self):; symbols: test_streaming_no_parameters_with_whitespace, test_get_model_structural_tag, _make_parser，涉及 `test_streaming_no_parameters_with_whitespace, test_get_model_structural_tag, _make_parser`；`python/sglang/srt/function_call/kimik2_detector.py` modified +51/-12 (63 lines); hunks: -1,10 +1,14; -23,6 +27,8; symbols: _strip_special_tokens, get_info, get_structural_tag, get_structural_tag_name，涉及 `_strip_special_tokens, get_info, get_structural_tag`。
+- 代码 diff 细节:
+  - `test/registered/unit/entrypoints/openai/test_serving_chat.py` modified +284/-0 (284 lines); hunks: -147,6 +147,241 @@ def test_convert_to_internal_request_single(self):; -225,6 +460,55 @@ def test_jinja_tool_schema_fallback_to_flat_function(self):; symbols: test_convert_to_internal_request_single, test_kimi_tool_call_keeps_default_reasoning, test_kimi_tool_call_keeps_explicit_reasoning, test_kimi_tool_call_respects_explicit_reasoning_disable
+  - `python/sglang/srt/function_call/deepseekv32_detector.py` modified +3/-115 (118 lines); hunks: -1,11 +1,10; -15,30 +14,8; symbols: DeepSeekV32Detector, structure_info, get_structural_tag, _invoke_tag
+  - `test/registered/unit/function_call/test_function_call_parser.py` modified +52/-30 (82 lines); hunks: -1642,12 +1642,17 @@ def test_streaming_no_parameters_with_whitespace(self):; -2087,12 +2092,17 @@ def test_streaming_no_parameters_with_whitespace(self):; symbols: test_streaming_no_parameters_with_whitespace, test_get_model_structural_tag, _make_parser
+  - `python/sglang/srt/function_call/kimik2_detector.py` modified +51/-12 (63 lines); hunks: -1,10 +1,14; -23,6 +27,8; symbols: _strip_special_tokens, get_info, get_structural_tag, get_structural_tag_name
+  - `python/sglang/srt/entrypoints/openai/serving_chat.py` modified +4/-2 (6 lines); hunks: -492,6 +492,8 @@ def _convert_to_internal_request(; -515,7 +517,7 @@ def _convert_to_internal_request(; symbols: _convert_to_internal_request, _process_messages
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/unit/entrypoints/openai/test_serving_chat.py
+@@ -147,6 +147,241 @@ def test_convert_to_internal_request_single(self):
++    def test_kimi_tool_call_keeps_default_reasoning(self):
++        self.template_manager.reasoning_config = ReasoningToggleConfig(
++            toggle_param="thinking", default_enabled=True
++        )
++        self.tm.server_args.reasoning_parser = "kimi_k2"
++        self.tm.server_args.tool_call_parser = "kimi_k2"
+diff -- python/sglang/srt/function_call/deepseekv32_detector.py
+@@ -1,11 +1,10 @@
+-from typing import List, Literal, Optional, Union
+-from sglang.srt.entrypoints.openai.protocol import Tool, ToolChoice
++from sglang.srt.entrypoints.openai.protocol import Tool
+@@ -15,30 +14,8 @@
+-try:
+-    from xgrammar import StructuralTag
+diff -- test/registered/unit/function_call/test_function_call_parser.py
+@@ -1642,12 +1642,17 @@ def test_streaming_no_parameters_with_whitespace(self):
+```
+
+- 已读文件:
+  - tests: `test/registered/unit/entrypoints/openai/test_serving_chat.py` modified +284/-0; `test/registered/unit/function_call/test_function_call_parser.py` modified +52/-30
+  - runtime: `python/sglang/srt/function_call/deepseekv32_detector.py` modified +3/-115; `python/sglang/srt/function_call/kimik2_detector.py` modified +51/-12; `python/sglang/srt/entrypoints/openai/serving_chat.py` modified +4/-2
+  - ci: `.github/workflows/nightly-test-npu.yml` modified +5/-5; `.github/workflows/full-test-npu.yml` modified +4/-4
+  - other: `3rdparty/amd/wheel/sglang/pyproject.toml` modified +1/-1
+- 验证与风险: diff 自带测试面 `test/registered/unit/entrypoints/openai/test_serving_chat.py`, `test/registered/unit/function_call/test_function_call_parser.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #25463 - [ROCm] Eliminate redundant contiguous copy in MLA attention on ROCm MXFP4
+
+- 链接: https://github.com/sgl-project/sglang/pull/25463
+- 状态/时间: merged / 2026-05-29
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+21/-5，可读 patch 50 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[ROCm] Eliminate redundant contiguous copy in MLA attention on ROCm MXFP4」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`；技术摘要: 覆盖「[ROCm] Eliminate redundant contiguous copy in MLA attention on ROCm MXFP4」；主要实现面是 `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +21/-5 (26 lines); hunks: -575,13 +575,18 @@ def forward_absorb_core(; -590,6 +595,7 @@ def forward_absorb_core(; symbols: forward_absorb_core，涉及 `forward_absorb_core`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +21/-5 (26 lines); hunks: -575,13 +575,18 @@ def forward_absorb_core(; -590,6 +595,7 @@ def forward_absorb_core(; symbols: forward_absorb_core
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py
+@@ -575,13 +575,18 @@ def forward_absorb_core(
+-                attn_bmm_output = torch.empty(
+-                    x.shape[0],
+-                    x.shape[1],
+-                    self.w_vc.shape[2],
++                B_heads, M_batch = x.shape[0], x.shape[1]
++                N_vdim = self.w_vc.shape[2]
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +21/-5
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #26673 - [refactor] remove unused op_mlp
+
+- 链接: https://github.com/sgl-project/sglang/pull/26673
+- 状态/时间: merged / 2026-05-29
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+0/-53，可读 patch 95 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[refactor] remove unused op_mlp」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/models/glm4_moe_lite.py`；技术摘要: 覆盖「[refactor] remove unused op_mlp」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/models/glm4_moe_lite.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +0/-13 (13 lines); hunks: -2114,19 +2114,6 @@ def op_comm_prepare_mlp(self, state):; symbols: op_comm_prepare_mlp, op_mlp, op_comm_postprocess_layer，涉及 `op_comm_prepare_mlp, op_mlp, op_comm_postprocess_layer`；`python/sglang/srt/models/glm4_moe.py` modified +0/-13 (13 lines); hunks: -1017,19 +1017,6 @@ def op_comm_prepare_mlp(self, state):; symbols: op_comm_prepare_mlp, op_mlp, op_comm_postprocess_layer，涉及 `op_comm_prepare_mlp, op_mlp, op_comm_postprocess_layer`；`python/sglang/srt/models/glm4_moe_lite.py` modified +0/-13 (13 lines); hunks: -737,19 +737,6 @@ def op_comm_prepare_mlp(self, state):; symbols: op_comm_prepare_mlp, op_mlp, op_comm_postprocess_layer，涉及 `op_comm_prepare_mlp, op_mlp, op_comm_postprocess_layer`；`python/sglang/srt/models/minimax_m2.py` modified +0/-6 (6 lines); hunks: -1069,12 +1069,6 @@ def op_comm_prepare_mlp(self, state):; symbols: op_comm_prepare_mlp, op_mlp, op_comm_postprocess_layer，涉及 `op_comm_prepare_mlp, op_mlp, op_comm_postprocess_layer`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/deepseek_v2.py` modified +0/-13 (13 lines); hunks: -2114,19 +2114,6 @@ def op_comm_prepare_mlp(self, state):; symbols: op_comm_prepare_mlp, op_mlp, op_comm_postprocess_layer
+  - `python/sglang/srt/models/glm4_moe.py` modified +0/-13 (13 lines); hunks: -1017,19 +1017,6 @@ def op_comm_prepare_mlp(self, state):; symbols: op_comm_prepare_mlp, op_mlp, op_comm_postprocess_layer
+  - `python/sglang/srt/models/glm4_moe_lite.py` modified +0/-13 (13 lines); hunks: -737,19 +737,6 @@ def op_comm_prepare_mlp(self, state):; symbols: op_comm_prepare_mlp, op_mlp, op_comm_postprocess_layer
+  - `python/sglang/srt/models/minimax_m2.py` modified +0/-6 (6 lines); hunks: -1069,12 +1069,6 @@ def op_comm_prepare_mlp(self, state):; symbols: op_comm_prepare_mlp, op_mlp, op_comm_postprocess_layer
+  - `python/sglang/srt/models/mimo_v2.py` modified +0/-4 (4 lines); hunks: -808,10 +808,6 @@ def op_comm_prepare_mlp(self, state):; symbols: op_comm_prepare_mlp, op_mlp, op_comm_postprocess_layer
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -2114,19 +2114,6 @@ def op_comm_prepare_mlp(self, state):
+-    def op_mlp(self, state):
+-        hidden_states = state.pop("hidden_states_mlp_input")
+-        if not (
+-            enable_moe_dense_fully_dp()
+-            and (not self.is_layer_sparse)
+-            and hidden_states.shape[0] == 0
+diff -- python/sglang/srt/models/glm4_moe.py
+@@ -1017,19 +1017,6 @@ def op_comm_prepare_mlp(self, state):
+-    def op_mlp(self, state):
+-        hidden_states = state.pop("hidden_states_mlp_input")
+-        if not (
+-            enable_moe_dense_fully_dp()
+-            and (not self.is_layer_sparse)
+-            and hidden_states.shape[0] == 0
+diff -- python/sglang/srt/models/glm4_moe_lite.py
+@@ -737,19 +737,6 @@ def op_comm_prepare_mlp(self, state):
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +0/-13; `python/sglang/srt/models/glm4_moe.py` modified +0/-13; `python/sglang/srt/models/glm4_moe_lite.py` modified +0/-13; `python/sglang/srt/models/minimax_m2.py` modified +0/-6; `python/sglang/srt/models/mimo_v2.py` modified +0/-4; `python/sglang/srt/models/qwen3_moe.py` modified +0/-4
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/models/glm4_moe_lite.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #26626 - [perf] Fuse NVFP4 gate_up_gemm + swiglu + output FP4 quant
+
+- 链接: https://github.com/sgl-project/sglang/pull/26626
+- 状态/时间: merged / 2026-05-29
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+3137/-7，可读 patch 178 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[perf] Fuse NVFP4 gate_up_gemm + swiglu + output FP4 quant」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/quantization/nvfp4_gemm_swiglu_nvfp4_quant.py`, `python/sglang/srt/layers/quantization/modelopt_quant.py`, `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「[perf] Fuse NVFP4 gate_up_gemm + swiglu + output FP4 quant」；主要实现面是 `python/sglang/srt/layers/quantization/nvfp4_gemm_swiglu_nvfp4_quant.py`, `python/sglang/srt/layers/quantization/modelopt_quant.py`, `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/quantization/nvfp4_gemm_swiglu_nvfp4_quant.py` added +3015/-0 (3015 lines)；`python/sglang/srt/layers/quantization/modelopt_quant.py` modified +65/-6 (71 lines); hunks: -1503,6 +1503,15 @@ def process_weights_after_loading(self, layer: torch.nn.M...; -1518,23 +1527,73 @@ def process_weights_after_loading(self, layer: torch.nn....; symbols: process_weights_after_loading, apply，涉及 `process_weights_after_loading, apply`；`python/sglang/srt/models/deepseek_v2.py` modified +55/-0 (55 lines); hunks: -275,6 +275,35 @@ def forward(; -673,6 +702,32 @@ def __init__(; symbols: forward, __init__，涉及 `forward, __init__`；`.codespellrc` modified +1/-1 (2 lines); hunks: -1,3 +1,3。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/quantization/nvfp4_gemm_swiglu_nvfp4_quant.py` added +3015/-0 (3015 lines)
+  - `python/sglang/srt/layers/quantization/modelopt_quant.py` modified +65/-6 (71 lines); hunks: -1503,6 +1503,15 @@ def process_weights_after_loading(self, layer: torch.nn.M...; -1518,23 +1527,73 @@ def process_weights_after_loading(self, layer: torch.nn....; symbols: process_weights_after_loading, apply
+  - `python/sglang/srt/models/deepseek_v2.py` modified +55/-0 (55 lines); hunks: -275,6 +275,35 @@ def forward(; -673,6 +702,32 @@ def __init__(; symbols: forward, __init__
+  - `.codespellrc` modified +1/-1 (2 lines); hunks: -1,3 +1,3
+  - `python/sglang/srt/environ.py` modified +1/-0 (1 lines); hunks: -638,6 +638,7 @@ class Envs:; symbols: Envs
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/quantization/modelopt_quant.py
+@@ -1503,6 +1503,15 @@ def process_weights_after_loading(self, layer: torch.nn.Module) -> None:
++        # Snapshot the raw (pre-swizzle) scale BEFORE alias_or_bind_derived_param
++        # overwrites layer.weight_scale.data in-place via .copy_() on the broadcast
++        # path. Without this, the swiglu side-channel below would read the swizzled
++        # bytes when it later re-reads layer.weight_scale.
++        raw_scale_snapshot = (
++            (scales.squeeze(0) if scale_ndim == 2 else scales).detach().clone()
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -275,6 +275,35 @@ def forward(
++        if (
++            getattr(self, "_enable_nvfp4_gemm_swiglu_fusion", False)
++            and self.swiglu_limit is None
++            and not isinstance(x, tuple)
++        ):
++            from flashinfer import fp4_quantize
+diff -- .codespellrc
+@@ -1,3 +1,3 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/quantization/nvfp4_gemm_swiglu_nvfp4_quant.py` added +3015/-0; `python/sglang/srt/layers/quantization/modelopt_quant.py` modified +65/-6; `python/sglang/srt/models/deepseek_v2.py` modified +55/-0; `python/sglang/srt/environ.py` modified +1/-0
+  - other: `.codespellrc` modified +1/-1
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/environ.py`, `python/sglang/srt/layers/quantization/modelopt_quant.py`, `python/sglang/srt/layers/quantization/nvfp4_gemm_swiglu_nvfp4_quant.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #25813 - docs(cookbook): port popular model usage guides into cookbook pages
+
+- 链接: https://github.com/sgl-project/sglang/pull/25813
+- 状态/时间: merged / 2026-06-02
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 47 个文件，+1262/-2154，可读 patch 4187 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「docs(cookbook): port popular model usage guides into cookbook pages」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `docs_new/docs/basic_usage/deepseek_v32.mdx`, `docs_new/docs/basic_usage/deepseek_v3.mdx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx`；技术摘要: 覆盖「docs(cookbook): port popular model usage guides into cookbook pages」；主要实现面是 `docs_new/docs/basic_usage/deepseek_v32.mdx`, `docs_new/docs/basic_usage/deepseek_v3.mdx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs_new/docs/basic_usage/deepseek_v32.mdx` removed +0/-601 (601 lines); hunks: -1,601 +0,0；`docs_new/docs/basic_usage/deepseek_v3.mdx` removed +0/-375 (375 lines); hunks: -1,375 +0,0；`docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` modified +244/-3 (247 lines); hunks: -24,6 +24,27 @@ SGLang offers multiple installation methods. You can choose t...; -37,7 +58,18 @@ import { DeepSeekV32Deployment } from "/src/snippets/autoregr...；`docs_new/cookbook/autoregressive/GLM/GLM-4.6V.mdx` modified +156/-26 (182 lines); hunks: -10,7 +10,7 @@ GLM-4.6V series model includes two versions: GLM-4.6V (106B),...; -70,14 +70,56 @@ import { GLM46VDeployment } from "/src/snippets/autoregressi...; symbols: image_to_base64，涉及 `image_to_base64`。
+- 代码 diff 细节:
+  - `docs_new/docs/basic_usage/deepseek_v32.mdx` removed +0/-601 (601 lines); hunks: -1,601 +0,0
+  - `docs_new/docs/basic_usage/deepseek_v3.mdx` removed +0/-375 (375 lines); hunks: -1,375 +0,0
+  - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` modified +244/-3 (247 lines); hunks: -24,6 +24,27 @@ SGLang offers multiple installation methods. You can choose t...; -37,7 +58,18 @@ import { DeepSeekV32Deployment } from "/src/snippets/autoregr...
+  - `docs_new/cookbook/autoregressive/GLM/GLM-4.6V.mdx` modified +156/-26 (182 lines); hunks: -10,7 +10,7 @@ GLM-4.6V series model includes two versions: GLM-4.6V (106B),...; -70,14 +70,56 @@ import { GLM46VDeployment } from "/src/snippets/autoregressi...; symbols: image_to_base64
+  - `docs_new/docs/basic_usage/gpt_oss.mdx` removed +0/-181 (181 lines); hunks: -1,181 +0,0
+- 关键代码摘录:
+
+```diff
+diff -- docs_new/docs/basic_usage/deepseek_v32.mdx
+@@ -1,601 +0,0 @@
+-title: "DeepSeek V3.2/GLM-5 Usage"
+-metatags:
+-    description: "Deploy DeepSeek V3.2/GLM-5 with SGLang: DeepSeek Sparse Attention (DSA), long-context optimization, MTP speculative decoding, function calling. Supports H200, B2
+-DeepSeek-V3.2 model family equips DeepSeek-V3.1-Terminus with DeepSeek Sparse Attention (DSA) through continued training. With DSA, a fine-grained sparse attention mechanism power
+-Note: This document is originally written for the usage of [DeepSeek-V3.2-Exp](https://huggingface.co/deepseek-ai/DeepSeek-V3.2-Exp) model. The usage of [DeepSeek-V3.2](https://hu
+-## Installation
+diff -- docs_new/docs/basic_usage/deepseek_v3.mdx
+@@ -1,375 +0,0 @@
+-title: "DeepSeek V3/V3.1/R1 Usage"
+-metatags:
+-    description: "Deploy DeepSeek V3/R1 with SGLang: MLA optimization, FP8 quantization, multi-node TP, DP attention, MTP speculative decoding. Supports H200, B200, MI300X, A100."
+-SGLang provides many optimizations specifically designed for the DeepSeek models, making it the inference engine recommended by the official [DeepSeek team](https://github.com/dee
+-This document outlines current optimizations for DeepSeek.
+-For an overview of the implemented features see the completed [Roadmap](https://github.com/sgl-project/sglang/issues/2591).
+diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx
+@@ -24,6 +24,27 @@ SGLang offers multiple installation methods. You can choose the most suitable in
+```
+
+- 已读文件:
+  - docs: `docs_new/docs/basic_usage/deepseek_v32.mdx` removed +0/-601; `docs_new/docs/basic_usage/deepseek_v3.mdx` removed +0/-375; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` modified +244/-3; `docs_new/cookbook/autoregressive/GLM/GLM-4.6V.mdx` modified +156/-26; `docs_new/docs/basic_usage/gpt_oss.mdx` removed +0/-181; `docs_new/docs/basic_usage/glmv.mdx` removed +0/-139
+- 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR-2.mdx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR.mdx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-R1.mdx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #26970 - [perf] Replicate embed_tokens to drop the post-embed all-reduce
+
+- 链接: https://github.com/sgl-project/sglang/pull/26970
+- 状态/时间: merged / 2026-06-02
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+37/-4，可读 patch 126 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[perf] Replicate embed_tokens to drop the post-embed all-reduce」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/vocab_parallel_embedding.py`, `python/sglang/srt/models/deepseek_nextn.py`, `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「[perf] Replicate embed_tokens to drop the post-embed all-reduce」；主要实现面是 `python/sglang/srt/layers/vocab_parallel_embedding.py`, `python/sglang/srt/models/deepseek_nextn.py`, `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/vocab_parallel_embedding.py` modified +24/-0 (24 lines); hunks: -19,13 +19,15; -160,6 +162,28 @@ def get_masked_input_and_mask(; symbols: get_masked_input_and_mask, get_embedding_tp_kwargs, VocabParallelEmbedding，涉及 `get_masked_input_and_mask, get_embedding_tp_kwargs, VocabParallelEmbedding`；`python/sglang/srt/models/deepseek_nextn.py` modified +2/-2 (4 lines); hunks: -36,7 +36,6; -55,6 +54,7; symbols: __init__，涉及 `__init__`；`python/sglang/srt/models/deepseek_v2.py` modified +2/-2 (4 lines); hunks: -78,7 +78,6; -134,6 +133,7; symbols: __init__，涉及 `__init__`；`python/sglang/srt/models/kimi_k25_eagle3.py` modified +2/-0 (2 lines); hunks: -33,6 +33,7; -199,6 +200,7 @@ def __init__(; symbols: __init__，涉及 `__init__`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/vocab_parallel_embedding.py` modified +24/-0 (24 lines); hunks: -19,13 +19,15; -160,6 +162,28 @@ def get_masked_input_and_mask(; symbols: get_masked_input_and_mask, get_embedding_tp_kwargs, VocabParallelEmbedding
+  - `python/sglang/srt/models/deepseek_nextn.py` modified +2/-2 (4 lines); hunks: -36,7 +36,6; -55,6 +54,7; symbols: __init__
+  - `python/sglang/srt/models/deepseek_v2.py` modified +2/-2 (4 lines); hunks: -78,7 +78,6; -134,6 +133,7; symbols: __init__
+  - `python/sglang/srt/models/kimi_k25_eagle3.py` modified +2/-0 (2 lines); hunks: -33,6 +33,7; -199,6 +200,7 @@ def __init__(; symbols: __init__
+  - `python/sglang/srt/environ.py` modified +7/-0 (7 lines); hunks: -735,6 +735,13 @@ class Envs:; symbols: Envs
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/vocab_parallel_embedding.py
+@@ -19,13 +19,15 @@
++from sglang.srt.environ import envs
++    is_dp_attention_enabled,
+@@ -160,6 +162,28 @@ def get_masked_input_and_mask(
++def get_embedding_tp_kwargs() -> dict:
++    """Vocab-parallel layout kwargs for the *input embedding* of models that
++    support embedding replication (the DeepSeek-V2 target family: DeepSeek
+diff -- python/sglang/srt/models/deepseek_nextn.py
+@@ -36,7 +36,6 @@
+-    is_dp_attention_enabled,
+@@ -55,6 +54,7 @@
++    get_embedding_tp_kwargs,
+@@ -99,8 +99,8 @@ def __init__(
+-            use_attn_tp_group=is_dp_attention_enabled(),
++            **get_embedding_tp_kwargs(),
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -78,7 +78,6 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/vocab_parallel_embedding.py` modified +24/-0; `python/sglang/srt/models/deepseek_nextn.py` modified +2/-2; `python/sglang/srt/models/deepseek_v2.py` modified +2/-2; `python/sglang/srt/models/kimi_k25_eagle3.py` modified +2/-0; `python/sglang/srt/environ.py` modified +7/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/environ.py`, `python/sglang/srt/layers/vocab_parallel_embedding.py`, `python/sglang/srt/models/deepseek_nextn.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #27001 - [AMD] [CI] Remove hardcoded model/cache paths from MI35x nightly tests
+
+- 链接: https://github.com/sgl-project/sglang/pull/27001
+- 状态/时间: merged / 2026-06-03
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 27 个文件，+11/-471，可读 patch 936 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[AMD] [CI] Remove hardcoded model/cache paths from MI35x nightly tests」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `test/registered/amd/perf/mi35x/test_deepseek_r1_mxfp4_perf_mi35x.py`, `test/registered/amd/perf/mi35x/test_deepseek_r1_mxfp4_ar_fusion_perf_mi35x.py`, `test/registered/amd/perf/mi35x/test_deepseek_r1_mxfp4_kv_fp8_perf_mi35x.py`；技术摘要: 覆盖「[AMD] [CI] Remove hardcoded model/cache paths from MI35x nightly tests」；主要实现面是 `test/registered/amd/perf/mi35x/test_deepseek_r1_mxfp4_perf_mi35x.py`, `test/registered/amd/perf/mi35x/test_deepseek_r1_mxfp4_ar_fusion_perf_mi35x.py`, `test/registered/amd/perf/mi35x/test_deepseek_r1_mxfp4_kv_fp8_perf_mi35x.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/amd/perf/mi35x/test_deepseek_r1_mxfp4_perf_mi35x.py` modified +1/-45 (46 lines); hunks: -2,19 +2,10; -60,26 +51,9 @@ def generate_simple_markdown_report(results: List[BenchmarkRe...; symbols: generate_simple_markdown_report, get_model_path, TestDeepseekR1MXFP4PerfMI35x, setUpClass，涉及 `generate_simple_markdown_report, get_model_path, TestDeepseekR1MXFP4PerfMI35x`；`test/registered/amd/perf/mi35x/test_deepseek_r1_mxfp4_ar_fusion_perf_mi35x.py` modified +1/-43 (44 lines); hunks: -3,19 +3,10; -63,26 +54,9 @@ def generate_simple_markdown_report(results: List[BenchmarkRe...; symbols: generate_simple_markdown_report, get_model_path, TestDeepseekR1MXFP4ArFusionPerfMI35x, setUpClass，涉及 `generate_simple_markdown_report, get_model_path, TestDeepseekR1MXFP4ArFusionPerfMI35x`；`test/registered/amd/perf/mi35x/test_deepseek_r1_mxfp4_kv_fp8_perf_mi35x.py` modified +1/-43 (44 lines); hunks: -3,19 +3,10; -63,26 +54,9 @@ def generate_simple_markdown_report(results: List[BenchmarkRe...; symbols: generate_simple_markdown_report, get_model_path, TestDeepseekR1MXFP4KvFp8PerfMI35x, setUpClass，涉及 `generate_simple_markdown_report, get_model_path, TestDeepseekR1MXFP4KvFp8PerfMI35x`；`test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_ar_fusion_eval_mi35x.py` modified +1/-35 (36 lines); hunks: -8,11 +8,6; -41,21 +36,6; symbols: get_model_path, ModelConfig, get_display_name, get_mxfp4_models，涉及 `get_model_path, ModelConfig, get_display_name`。
+- 代码 diff 细节:
+  - `test/registered/amd/perf/mi35x/test_deepseek_r1_mxfp4_perf_mi35x.py` modified +1/-45 (46 lines); hunks: -2,19 +2,10; -60,26 +51,9 @@ def generate_simple_markdown_report(results: List[BenchmarkRe...; symbols: generate_simple_markdown_report, get_model_path, TestDeepseekR1MXFP4PerfMI35x, setUpClass
+  - `test/registered/amd/perf/mi35x/test_deepseek_r1_mxfp4_ar_fusion_perf_mi35x.py` modified +1/-43 (44 lines); hunks: -3,19 +3,10; -63,26 +54,9 @@ def generate_simple_markdown_report(results: List[BenchmarkRe...; symbols: generate_simple_markdown_report, get_model_path, TestDeepseekR1MXFP4ArFusionPerfMI35x, setUpClass
+  - `test/registered/amd/perf/mi35x/test_deepseek_r1_mxfp4_kv_fp8_perf_mi35x.py` modified +1/-43 (44 lines); hunks: -3,19 +3,10; -63,26 +54,9 @@ def generate_simple_markdown_report(results: List[BenchmarkRe...; symbols: generate_simple_markdown_report, get_model_path, TestDeepseekR1MXFP4KvFp8PerfMI35x, setUpClass
+  - `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_ar_fusion_eval_mi35x.py` modified +1/-35 (36 lines); hunks: -8,11 +8,6; -41,21 +36,6; symbols: get_model_path, ModelConfig, get_display_name, get_mxfp4_models
+  - `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_eval_mi35x.py` modified +1/-35 (36 lines); hunks: -8,11 +8,6; -39,21 +34,6; symbols: get_model_path, ModelConfig, get_display_name, get_mxfp4_models
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/amd/perf/mi35x/test_deepseek_r1_mxfp4_perf_mi35x.py
+@@ -2,19 +2,10 @@
+-The model path can be configured via DEEPSEEK_R1_MXFP4_MODEL_PATH environment variable.
+-Example usage:
+-    DEEPSEEK_R1_MXFP4_MODEL_PATH=/data2/models/amd-DeepSeek-R1-MXFP4-Preview python -m pytest test_deepseek_r1_mxfp4_perf_mi35x.py -v
+-# Set HF cache to /data2/models/ for MI35x so HF models download there
+-os.environ.setdefault("HF_HOME", "/data2/models/huggingface")
+-os.environ.setdefault("HF_HUB_CACHE", "/data2/models/huggingface/hub")
+diff -- test/registered/amd/perf/mi35x/test_deepseek_r1_mxfp4_ar_fusion_perf_mi35x.py
+@@ -3,19 +3,10 @@
+-The model path can be configured via DEEPSEEK_R1_MXFP4_MODEL_PATH environment variable.
+-Example usage:
+-    DEEPSEEK_R1_MXFP4_MODEL_PATH=/data2/models/amd-DeepSeek-R1-MXFP4-Preview python -m pytest test_deepseek_r1_mxfp4_ar_fusion_perf_mi35x.py -v
+-# Set HF cache to /data2/models/ for MI35x so HF models download there
+-os.environ.setdefault("HF_HOME", "/data2/models/huggingface")
+-os.environ.setdefault("HF_HUB_CACHE", "/data2/models/huggingface/hub")
+diff -- test/registered/amd/perf/mi35x/test_deepseek_r1_mxfp4_kv_fp8_perf_mi35x.py
+@@ -3,19 +3,10 @@
+```
+
+- 已读文件:
+  - tests: `test/registered/amd/perf/mi35x/test_deepseek_r1_mxfp4_perf_mi35x.py` modified +1/-45; `test/registered/amd/perf/mi35x/test_deepseek_r1_mxfp4_ar_fusion_perf_mi35x.py` modified +1/-43; `test/registered/amd/perf/mi35x/test_deepseek_r1_mxfp4_kv_fp8_perf_mi35x.py` modified +1/-43; `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_ar_fusion_eval_mi35x.py` modified +1/-35; `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_eval_mi35x.py` modified +1/-35; `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_kv_fp8_eval_mi35x.py` modified +1/-35
+- 验证与风险: diff 自带测试面 `test/registered/amd/accuracy/mi35x/test_deepseek_r1_eval_mi35x.py`, `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_ar_fusion_eval_mi35x.py`, `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_eval_mi35x.py`, `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_kv_fp8_eval_mi35x.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #27329 - [LoRA] Experimental fast LoRA path with `experimental_sgl_trtllm` MoE backend for FP8 and NVFP4 models
+
+- 链接: https://github.com/sgl-project/sglang/pull/27329
+- 状态/时间: merged / 2026-06-05
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 52 个文件，+16548/-24，可读 patch 13041 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[LoRA] Experimental fast LoRA path with `experimental_sgl_trtllm` MoE backend for FP8 and NVFP4 models」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/moe/topk.py`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/moe_align_block_size.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`；技术摘要: 覆盖「[LoRA] Experimental fast LoRA path with `experimental_sgl_trtllm` MoE backend for FP8 and NVFP4 models」；主要实现面是 `python/sglang/srt/layers/moe/topk.py`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/moe_align_block_size.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/moe/topk.py` modified +131/-0 (131 lines); hunks: -113,6 +113,8 @@ def routing(; -220,6 +222,13 @@ class TopKOutputChecker:; symbols: routing, TopKOutputChecker, format_is_standard, format，涉及 `routing, TopKOutputChecker, format_is_standard`；`python/sglang/srt/layers/moe/moe_runner/triton_utils/moe_align_block_size.py` modified +36/-10 (46 lines); hunks: -5,8 +5,11; -74,14 +77,37 @@ def moe_align_block_size(; symbols: moe_align_block_size，涉及 `moe_align_block_size`；`python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +37/-2 (39 lines); hunks: -5,6 +5,7; -45,6 +46,8; symbols: forward_absorb_prepare, forward_absorb_core，涉及 `forward_absorb_prepare, forward_absorb_core`；`python/sglang/srt/layers/moe/moe_runner/triton_utils/fused_moe_triton_kernels.py` modified +33/-5 (38 lines); hunks: -379,7 +379,9 @@ def fused_moe_kernel(; -440,11 +442,9 @@ def fused_moe_kernel(; symbols: fused_moe_kernel, invoke_fused_moe_kernel，涉及 `fused_moe_kernel, invoke_fused_moe_kernel`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/moe/topk.py` modified +131/-0 (131 lines); hunks: -113,6 +113,8 @@ def routing(; -220,6 +222,13 @@ class TopKOutputChecker:; symbols: routing, TopKOutputChecker, format_is_standard, format
+  - `python/sglang/srt/layers/moe/moe_runner/triton_utils/moe_align_block_size.py` modified +36/-10 (46 lines); hunks: -5,8 +5,11; -74,14 +77,37 @@ def moe_align_block_size(; symbols: moe_align_block_size
+  - `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +37/-2 (39 lines); hunks: -5,6 +5,7; -45,6 +46,8; symbols: forward_absorb_prepare, forward_absorb_core
+  - `python/sglang/srt/layers/moe/moe_runner/triton_utils/fused_moe_triton_kernels.py` modified +33/-5 (38 lines); hunks: -379,7 +379,9 @@ def fused_moe_kernel(; -440,11 +442,9 @@ def fused_moe_kernel(; symbols: fused_moe_kernel, invoke_fused_moe_kernel
+  - `python/sglang/srt/models/qwen2_moe.py` modified +22/-0 (22 lines); hunks: -112,6 +112,8; -468,11 +470,31 @@ def forward_normal_dual_stream(; symbols: forward_normal_dual_stream, forward
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/moe/topk.py
+@@ -113,6 +113,8 @@ def routing(
++_SGLANG_EXPERIMENTAL_LORA_OPTI = envs.SGLANG_EXPERIMENTAL_LORA_OPTI.get()
+@@ -220,6 +222,13 @@ class TopKOutputChecker:
++        # ===== TO BE REFACTORED ====
++        # The experimental fused topk+pack carrier only exists under the master switch.
++        if _SGLANG_EXPERIMENTAL_LORA_OPTI:
++            return isinstance(
+diff -- python/sglang/srt/layers/moe/moe_runner/triton_utils/moe_align_block_size.py
+@@ -5,8 +5,11 @@
++from sglang.srt.environ import envs
++_SGLANG_EXPERIMENTAL_LORA_OPTI = envs.SGLANG_EXPERIMENTAL_LORA_OPTI.get()
+@@ -74,14 +77,37 @@ def moe_align_block_size(
+-    sgl_moe_align_block_size(
+-        topk_ids,
+-        num_experts + 1,
+diff -- python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py
+@@ -5,6 +5,7 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/moe/topk.py` modified +131/-0; `python/sglang/srt/layers/moe/moe_runner/triton_utils/moe_align_block_size.py` modified +36/-10; `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +37/-2; `python/sglang/srt/layers/moe/moe_runner/triton_utils/fused_moe_triton_kernels.py` modified +33/-5; `python/sglang/srt/models/qwen2_moe.py` modified +22/-0; `python/sglang/srt/layers/moe/utils.py` modified +10/-1
+- 验证与风险: runtime 路径改动集中在 `python/sglang/jit_kernel/csrc/trtllm_lora_temp/kimi_k2_moe_fused_gate.cuh`, `python/sglang/jit_kernel/csrc/trtllm_lora_temp/moe_lora_merged_align_kernel.cu`, `python/sglang/jit_kernel/csrc/trtllm_lora_temp/topk_softmax_pack.cuh`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #27150 - Support Waterfill with dynamic EPLB
+
+- 链接: https://github.com/sgl-project/sglang/pull/27150
+- 状态/时间: merged / 2026-06-05
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+159/-5，可读 patch 220 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Support Waterfill with dynamic EPLB」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/moe/topk.py`, `python/sglang/srt/models/deepseek_v2.py`, `test/registered/unit/eplb/test_deepep_waterfill_eplb.py`；技术摘要: 覆盖「Support Waterfill with dynamic EPLB」；主要实现面是 `python/sglang/srt/layers/moe/topk.py`, `python/sglang/srt/models/deepseek_v2.py`, `test/registered/unit/eplb/test_deepep_waterfill_eplb.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/moe/topk.py` modified +14/-4 (18 lines); hunks: -1347,7 +1347,7 @@ def _post_process_topk_ids(; -1357,6 +1357,7 @@ def _post_process_topk_ids(; symbols: _post_process_topk_ids, select_experts，涉及 `_post_process_topk_ids, select_experts`；`python/sglang/srt/models/deepseek_v2.py` modified +7/-1 (8 lines); hunks: -796,8 +796,14 @@ def __init__(; symbols: __init__, get_moe_weights，涉及 `__init__, get_moe_weights`；`test/registered/unit/eplb/test_deepep_waterfill_eplb.py` added +138/-0 (138 lines); hunks: -0,0 +1,138; symbols: _FakeExpertParam, __init__, TestDeepEPWaterfillEPLB, test_deepseek_moe_get_moe_weights_excludes_fused_shared_slot，涉及 `_FakeExpertParam, __init__, TestDeepEPWaterfillEPLB`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/moe/topk.py` modified +14/-4 (18 lines); hunks: -1347,7 +1347,7 @@ def _post_process_topk_ids(; -1357,6 +1357,7 @@ def _post_process_topk_ids(; symbols: _post_process_topk_ids, select_experts
+  - `python/sglang/srt/models/deepseek_v2.py` modified +7/-1 (8 lines); hunks: -796,8 +796,14 @@ def __init__(; symbols: __init__, get_moe_weights
+  - `test/registered/unit/eplb/test_deepep_waterfill_eplb.py` added +138/-0 (138 lines); hunks: -0,0 +1,138; symbols: _FakeExpertParam, __init__, TestDeepEPWaterfillEPLB, test_deepseek_moe_get_moe_weights_excludes_fused_shared_slot
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/moe/topk.py
+@@ -1347,7 +1347,7 @@ def _post_process_topk_ids(
+-) -> torch.Tensor:
++) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+@@ -1357,6 +1357,7 @@ def _post_process_topk_ids(
++    recorder_topk_ids = None
+@@ -1369,11 +1370,18 @@ def _post_process_topk_ids(
++            # ExpertDistributionRecorder tracks EPLB physical routed experts.
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -796,8 +796,14 @@ def __init__(
++        # EPLB only rebalances physical routed experts. Fused shared expert
++        # slots live after each rank's routed slots and must stay stable.
++        num_local_experts_for_eplb = (
++            self.experts.num_local_experts - self.num_fused_shared_experts
++        )
+-            x.data
+diff -- test/registered/unit/eplb/test_deepep_waterfill_eplb.py
+@@ -0,0 +1,138 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/moe/topk.py` modified +14/-4; `python/sglang/srt/models/deepseek_v2.py` modified +7/-1
+  - tests: `test/registered/unit/eplb/test_deepep_waterfill_eplb.py` added +138/-0
+- 验证与风险: diff 自带测试面 `test/registered/unit/eplb/test_deepep_waterfill_eplb.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #27114 - [Bugfix] Restore overridden HF config fields and support index_skip_topk_offset for DSA topk sharing
+
+- 链接: https://github.com/sgl-project/sglang/pull/27114
+- 状态/时间: merged / 2026-06-06
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+100/-5，可读 patch 186 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] Restore overridden HF config fields and support index_skip_topk_offset for DSA topk sharing」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/models/deepseek_nextn.py`；技术摘要: 覆盖「[Bugfix] Restore overridden HF config fields and support index_skip_topk_offset for DSA topk sharing」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/models/deepseek_nextn.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +25/-3 (28 lines); hunks: -1463,6 +1463,7 @@ def __init__(; -1550,12 +1551,33 @@ def __init__(; symbols: __init__，涉及 `__init__`；`python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +15/-2 (17 lines); hunks: -242,7 +242,15 @@ def forward_absorb_prepare(; -261,7 +269,12 @@ def forward_absorb_prepare(; symbols: forward_absorb_prepare，涉及 `forward_absorb_prepare`；`python/sglang/srt/models/deepseek_nextn.py` modified +7/-0 (7 lines); hunks: -230,7 +230,14 @@ def forward(; symbols: forward，涉及 `forward`；`python/sglang/srt/model_executor/forward_batch_info.py` modified +4/-0 (4 lines); hunks: -385,6 +385,10 @@ class ForwardBatch(ForwardBatchDeepSeekMHAMixin):; symbols: ForwardBatch，涉及 `ForwardBatch`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/deepseek_v2.py` modified +25/-3 (28 lines); hunks: -1463,6 +1463,7 @@ def __init__(; -1550,12 +1551,33 @@ def __init__(; symbols: __init__
+  - `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +15/-2 (17 lines); hunks: -242,7 +242,15 @@ def forward_absorb_prepare(; -261,7 +269,12 @@ def forward_absorb_prepare(; symbols: forward_absorb_prepare
+  - `python/sglang/srt/models/deepseek_nextn.py` modified +7/-0 (7 lines); hunks: -230,7 +230,14 @@ def forward(; symbols: forward
+  - `python/sglang/srt/model_executor/forward_batch_info.py` modified +4/-0 (4 lines); hunks: -385,6 +385,10 @@ class ForwardBatch(ForwardBatchDeepSeekMHAMixin):; symbols: ForwardBatch
+  - `python/sglang/srt/utils/hf_transformers/config.py` modified +20/-0 (20 lines); hunks: -67,6 +67,26 @@ def parse(; symbols: parse
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -1463,6 +1463,7 @@ def __init__(
++        self.is_nextn = is_nextn
+@@ -1550,12 +1551,33 @@ def __init__(
+-                self.skip_topk = False
+-                self.next_skip_topk = False
++                self.skip_topk = True
++                self.next_skip_topk = True
+diff -- python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py
+@@ -242,7 +242,15 @@ def forward_absorb_prepare(
+-                if not self.skip_topk or prev_topk_indices is None:
++                # skip_topk (shared) layers carry no indexer weights in the
++                # checkpoint, so they must reuse the carried topk and never run
++                # the indexer. Do NOT widen this to `or prev_topk_indices is
++                # None` (the upstream gate): that recomputes with an
++                # uninitialized indexer whenever cross-layer propagation is
+diff -- python/sglang/srt/models/deepseek_nextn.py
+@@ -230,7 +230,14 @@ def forward(
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +25/-3; `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +15/-2; `python/sglang/srt/models/deepseek_nextn.py` modified +7/-0; `python/sglang/srt/model_executor/forward_batch_info.py` modified +4/-0; `python/sglang/srt/utils/hf_transformers/config.py` modified +20/-0; `python/sglang/srt/server_args.py` modified +14/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/batch_overlap/two_batch_overlap.py`, `python/sglang/srt/model_executor/forward_batch_info.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #27289 - [ROCm] dsv4: remove the redundant fp8 scale transpose-copy on decode
+
+- 链接: https://github.com/sgl-project/sglang/pull/27289
+- 状态/时间: merged / 2026-06-08
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+20/-3，可读 patch 142 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[ROCm] dsv4: remove the redundant fp8 scale transpose-copy on decode」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/quantization/fp8_utils.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py`, `python/sglang/srt/layers/communicator.py`；技术摘要: 覆盖「[ROCm] dsv4: remove the redundant fp8 scale transpose-copy on decode」；主要实现面是 `python/sglang/srt/layers/quantization/fp8_utils.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py`, `python/sglang/srt/layers/communicator.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/quantization/fp8_utils.py` modified +4/-2 (6 lines); hunks: -786,8 +786,10 @@ def aiter_w8a8_block_fp8_linear(; symbols: aiter_w8a8_block_fp8_linear，涉及 `aiter_w8a8_block_fp8_linear`；`python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py` modified +4/-0 (4 lines); hunks: -19,6 +19,7; -152,6 +153,7 @@ def forward_normal_prepare(; symbols: forward_normal_prepare，涉及 `forward_normal_prepare`；`python/sglang/srt/layers/communicator.py` modified +3/-0 (3 lines); hunks: -65,6 +65,7; -572,6 +573,7 @@ def prepare_attn(; symbols: prepare_attn，涉及 `prepare_attn`；`python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +3/-0 (3 lines); hunks: -38,6 +38,7; -197,6 +198,7 @@ def forward_absorb_prepare(; symbols: forward_absorb_prepare，涉及 `forward_absorb_prepare`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/quantization/fp8_utils.py` modified +4/-2 (6 lines); hunks: -786,8 +786,10 @@ def aiter_w8a8_block_fp8_linear(; symbols: aiter_w8a8_block_fp8_linear
+  - `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py` modified +4/-0 (4 lines); hunks: -19,6 +19,7; -152,6 +153,7 @@ def forward_normal_prepare(; symbols: forward_normal_prepare
+  - `python/sglang/srt/layers/communicator.py` modified +3/-0 (3 lines); hunks: -65,6 +65,7; -572,6 +573,7 @@ def prepare_attn(; symbols: prepare_attn
+  - `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +3/-0 (3 lines); hunks: -38,6 +38,7; -197,6 +198,7 @@ def forward_absorb_prepare(; symbols: forward_absorb_prepare
+  - `python/sglang/srt/models/deepseek_v2.py` modified +2/-1 (3 lines); hunks: -162,6 +162,7; -376,7 +377,7 @@ def forward(; symbols: forward
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/quantization/fp8_utils.py
+@@ -786,8 +786,10 @@ def aiter_w8a8_block_fp8_linear(
+-        if _use_aiter_bpreshuffle_gfx95 and not use_triton:
+-            x_scale = x_scale.transpose(-1, -2).contiguous().view(*x_scale.shape)
++        # On ROCm >= 7.2, scale is in bpreshuffle's transposed layout.
++        # Triton needs a row-major view, so adjust strides only. No copy.
++        if use_triton and _use_aiter_bpreshuffle_gfx95:
++            x_scale = torch.as_strided(x_scale, x_scale.shape, (1, x_scale.shape[0]))
+diff -- python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py
+@@ -19,6 +19,7 @@
++    _use_aiter_bpreshuffle_gfx95,
+@@ -152,6 +153,7 @@ def forward_normal_prepare(
++                        transpose_scale=_use_aiter_bpreshuffle_gfx95,
+@@ -193,6 +195,7 @@ def forward_normal_prepare(
++                    transpose_scale=_use_aiter_bpreshuffle_gfx95,
+@@ -222,6 +225,7 @@ def forward_normal_prepare(
+diff -- python/sglang/srt/layers/communicator.py
+@@ -65,6 +65,7 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/quantization/fp8_utils.py` modified +4/-2; `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py` modified +4/-0; `python/sglang/srt/layers/communicator.py` modified +3/-0; `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +3/-0; `python/sglang/srt/models/deepseek_v2.py` modified +2/-1; `python/sglang/srt/models/deepseek_common/utils.py` modified +2/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/layers/quantization/fp8_utils.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #23906 - [Refactor] Cuda Graph Runner/Backend Refactor
+
+- 链接: https://github.com/sgl-project/sglang/pull/23906
+- 状态/时间: merged / 2026-06-10
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 160 个文件，+5197/-3068，可读 patch 12233 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Refactor] Cuda Graph Runner/Backend Refactor」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py`；技术摘要: 覆盖「[Refactor] Cuda Graph Runner/Backend Refactor」；主要实现面是 `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` removed +0/-860 (860 lines); hunks: -1,860 +0,0; symbols: freeze_gc, _to_torch, patch_model, get_global_graph_memory_pool，涉及 `freeze_gc, _to_torch, patch_model`；`python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py` added +846/-0 (846 lines); hunks: -0,0 +1,846; symbols: PrefillCudaGraphRunner, __init__, _is_mamba_track_enabled, _cache_loc_dtype，涉及 `PrefillCudaGraphRunner, __init__, _is_mamba_track_enabled`；`python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py` renamed +294/-463 (757 lines); hunks: -1,4 +1,4; -11,33 +11,36; symbols: _make_graph_key, build_replay_fb_view, _allocate_decode_buffers, get_is_capture_mode，涉及 `_make_graph_key, build_replay_fb_view, _allocate_decode_buffers`；`python/sglang/srt/model_executor/breakable_cuda_graph_runner.py` removed +0/-541 (541 lines); hunks: -1,541 +0,0; symbols: BreakableCudaGraphRunner, __init__, _has_inactive_dp_rank, _init_buffers，涉及 `BreakableCudaGraphRunner, __init__, _has_inactive_dp_rank`。
+- 代码 diff 细节:
+  - `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` removed +0/-860 (860 lines); hunks: -1,860 +0,0; symbols: freeze_gc, _to_torch, patch_model, get_global_graph_memory_pool
+  - `python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py` added +846/-0 (846 lines); hunks: -0,0 +1,846; symbols: PrefillCudaGraphRunner, __init__, _is_mamba_track_enabled, _cache_loc_dtype
+  - `python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py` renamed +294/-463 (757 lines); hunks: -1,4 +1,4; -11,33 +11,36; symbols: _make_graph_key, build_replay_fb_view, _allocate_decode_buffers, get_is_capture_mode
+  - `python/sglang/srt/model_executor/breakable_cuda_graph_runner.py` removed +0/-541 (541 lines); hunks: -1,541 +0,0; symbols: BreakableCudaGraphRunner, __init__, _has_inactive_dp_rank, _init_buffers
+  - `python/sglang/srt/model_executor/runner_utils/buffers.py` added +442/-0 (442 lines); hunks: -0,0 +1,442; symbols: _grouped_foreach_copy_, foreach_copy, DecodeInputBuffers, create
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py
+@@ -1,860 +0,0 @@
+-# Copyright 2023-2024 SGLang Team
+-# Licensed under the Apache License, Version 2.0 (the "License");
+-# you may not use this file except in compliance with the License.
+-# You may obtain a copy of the License at
+-#
+-#     http://www.apache.org/licenses/LICENSE-2.0
+diff -- python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py
+@@ -0,0 +1,846 @@
++# Copyright 2023-2026 SGLang Team
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
+diff -- python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py
+@@ -1,4 +1,4 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` removed +0/-860; `python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py` added +846/-0; `python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py` renamed +294/-463; `python/sglang/srt/model_executor/breakable_cuda_graph_runner.py` removed +0/-541; `python/sglang/srt/model_executor/runner_utils/buffers.py` added +442/-0; `python/sglang/srt/model_executor/runner_backend/tc_piecewise_cuda_graph_backend.py` added +225/-0
+- 验证与风险: diff 自带测试面 `python/sglang/test/doc_patch.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dense_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsa_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsv4_attention.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #27510 - [deepseek] Enable DP attention + TBO + shared experts fusion
+
+- 链接: https://github.com/sgl-project/sglang/pull/27510
+- 状态/时间: merged / 2026-06-10
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+79/-8，可读 patch 109 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[deepseek] Enable DP attention + TBO + shared experts fusion」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/models/deepseek_v2.py`, `test/registered/ep/test_tbo_shared_experts_fusion.py`, `python/sglang/srt/batch_overlap/two_batch_overlap.py`；技术摘要: 覆盖「[deepseek] Enable DP attention + TBO + shared experts fusion」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`, `test/registered/ep/test_tbo_shared_experts_fusion.py`, `python/sglang/srt/batch_overlap/two_batch_overlap.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +1/-3 (4 lines); hunks: -1333,9 +1333,7 @@ def _forward_shared_experts(; symbols: _forward_shared_experts, op_gate，涉及 `_forward_shared_experts, op_gate`；`test/registered/ep/test_tbo_shared_experts_fusion.py` added +73/-0 (73 lines); hunks: -0,0 +1,73; symbols: TestTBOWithSharedExpertsFusion, setUpClass, tearDownClass, test_gsm8k，涉及 `TestTBOWithSharedExpertsFusion, setUpClass, tearDownClass`；`python/sglang/srt/batch_overlap/two_batch_overlap.py` modified +5/-0 (5 lines); hunks: -672,6 +672,11 @@ def filter_batch(; symbols: filter_batch，涉及 `filter_batch`；`python/sglang/srt/server_args.py` modified +0/-5 (5 lines); hunks: -7492,11 +7492,6 @@ def check_server_args(self):; symbols: check_server_args，涉及 `check_server_args`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/deepseek_v2.py` modified +1/-3 (4 lines); hunks: -1333,9 +1333,7 @@ def _forward_shared_experts(; symbols: _forward_shared_experts, op_gate
+  - `test/registered/ep/test_tbo_shared_experts_fusion.py` added +73/-0 (73 lines); hunks: -0,0 +1,73; symbols: TestTBOWithSharedExpertsFusion, setUpClass, tearDownClass, test_gsm8k
+  - `python/sglang/srt/batch_overlap/two_batch_overlap.py` modified +5/-0 (5 lines); hunks: -672,6 +672,11 @@ def filter_batch(; symbols: filter_batch
+  - `python/sglang/srt/server_args.py` modified +0/-5 (5 lines); hunks: -7492,11 +7492,6 @@ def check_server_args(self):; symbols: check_server_args
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -1333,9 +1333,7 @@ def _forward_shared_experts(
+-        if is_non_idle_and_non_empty(
+-            state.forward_batch.forward_mode, state.hidden_states_mlp_input
+-        ):
++        if state.hidden_states_mlp_input.shape[0] > 0:
+diff -- test/registered/ep/test_tbo_shared_experts_fusion.py
+@@ -0,0 +1,73 @@
++import os
++import unittest
++from types import SimpleNamespace
++from sglang.srt.utils import kill_process_tree
++from sglang.test.ci.ci_register import register_cuda_ci
++from sglang.test.run_eval import run_eval
+diff -- python/sglang/srt/batch_overlap/two_batch_overlap.py
+@@ -672,6 +672,11 @@ def filter_batch(
++            elif key == "rids" and len(old_value) != num_seqs:
++                output_dict[key] = old_value[
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +1/-3; `python/sglang/srt/batch_overlap/two_batch_overlap.py` modified +5/-0; `python/sglang/srt/server_args.py` modified +0/-5
+  - tests: `test/registered/ep/test_tbo_shared_experts_fusion.py` added +73/-0
+- 验证与风险: diff 自带测试面 `test/registered/ep/test_tbo_shared_experts_fusion.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #16148 - [Fix] DSV3.2 W4AFP8 MTP use FP8 draft model
+
+- 链接: https://github.com/sgl-project/sglang/pull/16148
+- 状态/时间: closed / 2026-06-11
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+3/-1，可读 patch 25 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Fix] DSV3.2 W4AFP8 MTP use FP8 draft model」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/layers/moe/token_dispatcher/deepep.py`, `python/sglang/srt/layers/quantization/w4afp8.py`；技术摘要: 覆盖「[Fix] DSV3.2 W4AFP8 MTP use FP8 draft model」；主要实现面是 `python/sglang/srt/layers/moe/token_dispatcher/deepep.py`, `python/sglang/srt/layers/quantization/w4afp8.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/moe/token_dispatcher/deepep.py` modified +2/-1 (3 lines); hunks: -609,7 +609,7 @@ def _dispatch_core(; -634,6 +634,7 @@ def _dispatch_core(; symbols: _dispatch_core, combine_a，涉及 `_dispatch_core, combine_a`；`python/sglang/srt/layers/quantization/w4afp8.py` modified +1/-0 (1 lines); hunks: -283,6 +283,7 @@ def process_weights_after_loading(self, layer: Module) -> None:; symbols: process_weights_after_loading, create_moe_runner，涉及 `process_weights_after_loading, create_moe_runner`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/moe/token_dispatcher/deepep.py` modified +2/-1 (3 lines); hunks: -609,7 +609,7 @@ def _dispatch_core(; -634,6 +634,7 @@ def _dispatch_core(; symbols: _dispatch_core, combine_a
+  - `python/sglang/srt/layers/quantization/w4afp8.py` modified +1/-0 (1 lines); hunks: -283,6 +283,7 @@ def process_weights_after_loading(self, layer: Module) -> None:; symbols: process_weights_after_loading, create_moe_runner
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/moe/token_dispatcher/deepep.py
+@@ -609,7 +609,7 @@ def _dispatch_core(
+-        elif not envs.SGLANG_DEEPEP_BF16_DISPATCH.get():
++        elif not envs.SGLANG_DEEPEP_BF16_DISPATCH.get() or self.quant_config.get("dispatch_weight_scale") is None:
+@@ -634,6 +634,7 @@ def _dispatch_core(
+diff -- python/sglang/srt/layers/quantization/w4afp8.py
+@@ -283,6 +283,7 @@ def process_weights_after_loading(self, layer: Module) -> None:
++        layer.dispatcher.set_quant_config({"dispatch_weight_scale", (layer.w13_weight_scale_inv)})
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/moe/token_dispatcher/deepep.py` modified +2/-1; `python/sglang/srt/layers/quantization/w4afp8.py` modified +1/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/moe/token_dispatcher/deepep.py`, `python/sglang/srt/layers/quantization/w4afp8.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #27964 - [Spec] Retire Spec V1
+
+- 链接: https://github.com/sgl-project/sglang/pull/27964
+- 状态/时间: merged / 2026-06-11
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 46 个文件，+111/-252，可读 patch 1422 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Spec] Retire Spec V1」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `test/registered/ep/test_deepep_large.py`, `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_best_practice.mdx`, `python/sglang/srt/arg_groups/speculative_hook.py`；技术摘要: 覆盖「[Spec] Retire Spec V1」；主要实现面是 `test/registered/ep/test_deepep_large.py`, `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_best_practice.mdx`, `python/sglang/srt/arg_groups/speculative_hook.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/ep/test_deepep_large.py` modified +43/-44 (87 lines); hunks: -3,7 +3,6; -87,49 +86,49 @@ class TestDeepseekMTP(CustomTestCase):; symbols: TestDeepseekMTP, setUpClass, tearDownClass，涉及 `TestDeepseekMTP, setUpClass, tearDownClass`；`docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_best_practice.mdx` modified +0/-64 (64 lines); hunks: -1108,7 +1108,6 @@ do; -1227,7 +1226,6 @@ do；`python/sglang/srt/arg_groups/speculative_hook.py` modified +10/-26 (36 lines); hunks: -1,9 +1,8; -63,6 +62,15 @@ def handle_speculative_decoding(server_args: "ServerArgs") ->...; symbols: handle_speculative_decoding, _handle_dflash, _handle_frozen_kv_mtp, _handle_eagle_family，涉及 `handle_speculative_decoding, _handle_dflash, _handle_frozen_kv_mtp`；`docs_new/docs/advanced_features/speculative_decoding.mdx` modified +4/-21 (25 lines); hunks: -33,7 +33,6 @@ SGLang provides several speculative decoding options, includin...; -101,13 +100,6 @@ SGLang provides several speculative decoding options, inclu...。
+- 代码 diff 细节:
+  - `test/registered/ep/test_deepep_large.py` modified +43/-44 (87 lines); hunks: -3,7 +3,6; -87,49 +86,49 @@ class TestDeepseekMTP(CustomTestCase):; symbols: TestDeepseekMTP, setUpClass, tearDownClass
+  - `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_best_practice.mdx` modified +0/-64 (64 lines); hunks: -1108,7 +1108,6 @@ do; -1227,7 +1226,6 @@ do
+  - `python/sglang/srt/arg_groups/speculative_hook.py` modified +10/-26 (36 lines); hunks: -1,9 +1,8; -63,6 +62,15 @@ def handle_speculative_decoding(server_args: "ServerArgs") ->...; symbols: handle_speculative_decoding, _handle_dflash, _handle_frozen_kv_mtp, _handle_eagle_family
+  - `docs_new/docs/advanced_features/speculative_decoding.mdx` modified +4/-21 (25 lines); hunks: -33,7 +33,6 @@ SGLang provides several speculative decoding options, includin...; -101,13 +100,6 @@ SGLang provides several speculative decoding options, inclu...
+  - `test/registered/spec/eagle/test_eagle_constrained_decoding.py` modified +11/-10 (21 lines); hunks: -1,6 +1,5; -31,7 +30,8 @@ class TestEagleConstrainedDecoding(; symbols: TestEagleConstrainedDecoding, setUpClass, tearDownClass, TestEagleConstrainedDecodingV2
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/ep/test_deepep_large.py
+@@ -3,7 +3,6 @@
+-from sglang.srt.environ import envs
+@@ -87,49 +86,49 @@ class TestDeepseekMTP(CustomTestCase):
+-        with envs.SGLANG_ENABLE_SPEC_V2.override(False):
+-            cls.process = popen_launch_server(
+-                cls.model,
+-                cls.base_url,
+diff -- docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_best_practice.mdx
+@@ -1108,7 +1108,6 @@ do
+-        export SGLANG_ENABLE_SPEC_V2=1
+@@ -1227,7 +1226,6 @@ do
+-        export SGLANG_ENABLE_SPEC_V2=1
+@@ -1351,7 +1349,6 @@ do
+-        export SGLANG_ENABLE_SPEC_V2=1
+@@ -1476,7 +1473,6 @@ do
+diff -- python/sglang/srt/arg_groups/speculative_hook.py
+@@ -1,9 +1,8 @@
+```
+
+- 已读文件:
+  - tests: `test/registered/ep/test_deepep_large.py` modified +43/-44; `test/registered/spec/eagle/test_eagle_constrained_decoding.py` modified +11/-10; `python/sglang/test/server_fixtures/standalone_fixture.py` modified +7/-8; `python/sglang/test/server_fixtures/spec_eagle_fixture.py` modified +6/-6
+  - docs: `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_best_practice.mdx` modified +0/-64; `docs_new/docs/advanced_features/speculative_decoding.mdx` modified +4/-21; `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_optimization.mdx` modified +3/-8
+  - runtime: `python/sglang/srt/arg_groups/speculative_hook.py` modified +10/-26
+- 验证与风险: diff 自带测试面 `python/sglang/test/server_fixtures/spec_eagle_fixture.py`, `python/sglang/test/server_fixtures/standalone_fixture.py`, `test/manual/dsv4/test_dsv4_flash_mtp_tp8.py`, `test/manual/dsv4/test_dsv4_pro_mtp.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #18542 - fix: fixed aux hidden state index out of range when using eagle3 with nsa cp
+
+- 链接: https://github.com/sgl-project/sglang/pull/18542
+- 状态/时间: closed / 2026-06-12
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+9/-1，可读 patch 17 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「fix: fixed aux hidden state index out of range when using eagle3 with nsa cp」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「fix: fixed aux hidden state index out of range when using eagle3 with nsa cp」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +9/-1 (10 lines); hunks: -2708,7 +2708,15 @@ def forward(; symbols: forward，涉及 `forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/deepseek_v2.py` modified +9/-1 (10 lines); hunks: -2708,7 +2708,15 @@ def forward(; symbols: forward
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -2708,7 +2708,15 @@ def forward(
+-                    if self.enable_a2a_moe and i > self.first_k_dense_replace:
++                    if nsa_use_prefill_cp(forward_batch):
++                        aux_hidden_state = cp_all_gather_rerange_output(
++                            hidden_states + residual,
++                            self.cp_size,
++                            forward_batch,
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +9/-1
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/deepseek_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #27956 - Use the correct wrapper for `fp4_quantize`
+
+- 链接: https://github.com/sgl-project/sglang/pull/27956
+- 状态/时间: merged / 2026-06-12
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-2，可读 patch 10 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Use the correct wrapper for `fp4_quantize`」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「Use the correct wrapper for `fp4_quantize`」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +1/-2 (3 lines); hunks: -286,8 +286,7 @@ def forward(; symbols: forward，涉及 `forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/deepseek_v2.py` modified +1/-2 (3 lines); hunks: -286,8 +286,7 @@ def forward(; symbols: forward
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -286,8 +286,7 @@ def forward(
+-            from flashinfer import fp4_quantize
++            from sglang.srt.layers.quantization.fp4_utils import fp4_quantize
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +1/-2
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/deepseek_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #27720 - [DeepSeek V3] Defer moe finalize and fused it with main stream add
+
+- 链接: https://github.com/sgl-project/sglang/pull/27720
+- 状态/时间: merged / 2026-06-13
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+743/-36，可读 patch 865 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[DeepSeek V3] Defer moe finalize and fused it with main stream add」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/moe/moe_runner/flashinfer_trtllm.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py`；技术摘要: 覆盖「[DeepSeek V3] Defer moe finalize and fused it with main stream add」；主要实现面是 `python/sglang/srt/layers/moe/moe_runner/flashinfer_trtllm.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/moe/moe_runner/flashinfer_trtllm.py` modified +102/-29 (131 lines); hunks: -1,7 +1,9; -42,6 +44,46; symbols: FlashInferTrtllmDeferredFinalizeOutput, flashinfer_trtllm_deferred_finalize_context, finalize_flashinfer_trtllm_deferred_output, round_up_to_multiple，涉及 `FlashInferTrtllmDeferredFinalizeOutput, flashinfer_trtllm_deferred_finalize_context, finalize_flashinfer_trtllm_deferred_output`；`python/sglang/srt/models/deepseek_v2.py` modified +28/-7 (35 lines); hunks: -905,7 +905,18 @@ def forward_normal_dual_stream(; -916,12 +927,22 @@ def forward_normal_dual_stream(; symbols: forward_normal_dual_stream，涉及 `forward_normal_dual_stream`；`python/sglang/srt/layers/moe/fused_moe_triton/layer.py` modified +29/-0 (29 lines); hunks: -23,6 +23,7; -287,6 +288,17 @@ def __init__(; symbols: __init__, forward_impl, forward_deferred_finalize, run_moe_core，涉及 `__init__, forward_impl, forward_deferred_finalize`；`python/sglang/jit_kernel/csrc/moe/moe_finalize_fuse_shared.cu` added +418/-0 (418 lines); hunks: -0,0 +1,418。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/moe/moe_runner/flashinfer_trtllm.py` modified +102/-29 (131 lines); hunks: -1,7 +1,9; -42,6 +44,46; symbols: FlashInferTrtllmDeferredFinalizeOutput, flashinfer_trtllm_deferred_finalize_context, finalize_flashinfer_trtllm_deferred_output, round_up_to_multiple
+  - `python/sglang/srt/models/deepseek_v2.py` modified +28/-7 (35 lines); hunks: -905,7 +905,18 @@ def forward_normal_dual_stream(; -916,12 +927,22 @@ def forward_normal_dual_stream(; symbols: forward_normal_dual_stream
+  - `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` modified +29/-0 (29 lines); hunks: -23,6 +23,7; -287,6 +288,17 @@ def __init__(; symbols: __init__, forward_impl, forward_deferred_finalize, run_moe_core
+  - `python/sglang/jit_kernel/csrc/moe/moe_finalize_fuse_shared.cu` added +418/-0 (418 lines); hunks: -0,0 +1,418
+  - `python/sglang/jit_kernel/csrc/moe/tvm_ffi_utils.h` added +105/-0 (105 lines); hunks: -0,0 +1,105
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/moe/moe_runner/flashinfer_trtllm.py
+@@ -1,7 +1,9 @@
++import contextvars
++from contextlib import contextmanager
+-from typing import TYPE_CHECKING, cast
++from typing import TYPE_CHECKING, Generator, cast
+@@ -42,6 +44,46 @@
++_deferred_finalize_enabled: contextvars.ContextVar[bool] = contextvars.ContextVar(
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -905,7 +905,18 @@ def forward_normal_dual_stream(
+-            final_hidden_states = self.experts(hidden_states, topk_output)
++            deferred_finalize = (
++                shared_output is not None
++                and not self._shared_expert_tp1
++                and topk_output.format == TopKOutputFormat.BYPASSED
++                and self.experts.supports_deferred_finalize
+diff -- python/sglang/srt/layers/moe/fused_moe_triton/layer.py
+@@ -23,6 +23,7 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/moe/moe_runner/flashinfer_trtllm.py` modified +102/-29; `python/sglang/srt/models/deepseek_v2.py` modified +28/-7; `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` modified +29/-0; `python/sglang/jit_kernel/csrc/moe/moe_finalize_fuse_shared.cu` added +418/-0; `python/sglang/jit_kernel/csrc/moe/tvm_ffi_utils.h` added +105/-0; `python/sglang/jit_kernel/moe_finalize_fuse_shared.py` added +60/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/jit_kernel/csrc/moe/moe_finalize_fuse_shared.cu`, `python/sglang/jit_kernel/csrc/moe/tvm_ffi_utils.h`, `python/sglang/jit_kernel/moe_finalize_fuse_shared.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #28129 - [Spec] Remove deprecated EAGLE v1 DRAFT_EXTEND forward mode
+
+- 链接: https://github.com/sgl-project/sglang/pull/28129
+- 状态/时间: merged / 2026-06-13
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 56 个文件，+219/-2555，可读 patch 3937 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Spec] Remove deprecated EAGLE v1 DRAFT_EXTEND forward mode」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/aiter_backend.py`, `python/sglang/srt/model_executor/forward_batch_info.py`, `python/sglang/srt/layers/attention/triton_backend.py`；技术摘要: 覆盖「[Spec] Remove deprecated EAGLE v1 DRAFT_EXTEND forward mode」；主要实现面是 `python/sglang/srt/layers/attention/aiter_backend.py`, `python/sglang/srt/model_executor/forward_batch_info.py`, `python/sglang/srt/layers/attention/triton_backend.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/aiter_backend.py` modified +2/-157 (159 lines); hunks: -1117,88 +1117,6 @@ def init_forward_metadata(self, forward_batch: ForwardBat...; -1941,72 +1859,6 @@ def _apply_cuda_graph_metadata(; symbols: init_forward_metadata, _apply_cuda_graph_metadata, forward_extend，涉及 `init_forward_metadata, _apply_cuda_graph_metadata, forward_extend`；`python/sglang/srt/model_executor/forward_batch_info.py` modified +19/-60 (79 lines); hunks: -94,8 +94,6 @@ class ForwardMode(IntEnum):; -115,7 +113,6 @@ def is_extend(self, include_draft_extend_v2: bool = False):; symbols: ForwardMode, is_extend, is_decode_or_idle, is_target_verify，涉及 `ForwardMode, is_extend, is_decode_or_idle`；`python/sglang/srt/layers/attention/triton_backend.py` modified +20/-52 (72 lines); hunks: -454,31 +454,25 @@ def _update_draft_extend_buffers(; -693,32 +687,6 @@ def init_forward_metadata(self, forward_batch: ForwardBatch):; symbols: _update_draft_extend_buffers, init_forward_metadata, _build_cuda_graph_forward_metadata, _apply_cuda_graph_metadata，涉及 `_update_draft_extend_buffers, init_forward_metadata, _build_cuda_graph_forward_metadata`；`python/sglang/srt/layers/attention/flashattention_backend.py` modified +7/-40 (47 lines); hunks: -352,7 +352,7 @@ def init_forward_metadata_out_graph(; -645,9 +645,10 @@ def init_forward_metadata(self, forward_batch: ForwardBatch):; symbols: init_forward_metadata_out_graph, init_forward_metadata, _fa_cp_attn, _bind_metadata_buffers，涉及 `init_forward_metadata_out_graph, init_forward_metadata, _fa_cp_attn`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/attention/aiter_backend.py` modified +2/-157 (159 lines); hunks: -1117,88 +1117,6 @@ def init_forward_metadata(self, forward_batch: ForwardBat...; -1941,72 +1859,6 @@ def _apply_cuda_graph_metadata(; symbols: init_forward_metadata, _apply_cuda_graph_metadata, forward_extend
+  - `python/sglang/srt/model_executor/forward_batch_info.py` modified +19/-60 (79 lines); hunks: -94,8 +94,6 @@ class ForwardMode(IntEnum):; -115,7 +113,6 @@ def is_extend(self, include_draft_extend_v2: bool = False):; symbols: ForwardMode, is_extend, is_decode_or_idle, is_target_verify
+  - `python/sglang/srt/layers/attention/triton_backend.py` modified +20/-52 (72 lines); hunks: -454,31 +454,25 @@ def _update_draft_extend_buffers(; -693,32 +687,6 @@ def init_forward_metadata(self, forward_batch: ForwardBatch):; symbols: _update_draft_extend_buffers, init_forward_metadata, _build_cuda_graph_forward_metadata, _apply_cuda_graph_metadata
+  - `python/sglang/srt/layers/attention/flashattention_backend.py` modified +7/-40 (47 lines); hunks: -352,7 +352,7 @@ def init_forward_metadata_out_graph(; -645,9 +645,10 @@ def init_forward_metadata(self, forward_batch: ForwardBatch):; symbols: init_forward_metadata_out_graph, init_forward_metadata, _fa_cp_attn, _bind_metadata_buffers
+  - `python/sglang/srt/layers/attention/dsa_backend.py` modified +11/-33 (44 lines); hunks: -406,9 +406,7 @@ def _build_paged_mqa_schedule_2d_ctx_lens(; -488,7 +486,7 @@ def init_forward_metadata(self, forward_batch: ForwardBatch):; symbols: _build_paged_mqa_schedule_2d_ctx_lens, init_forward_metadata
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/attention/aiter_backend.py
+@@ -1117,88 +1117,6 @@ def init_forward_metadata(self, forward_batch: ForwardBatch):
+-        elif forward_batch.forward_mode.is_draft_extend():
+-            # EAGLE V1: DRAFT_EXTEND mode - uses spec_info.num_accept_tokens
+-            if self.use_mla:
+-                kv_indices, kv_indptr, qo_indptr, custom_mask = (
+-                    spec_info.generate_attn_arg_prefill(
+-                        forward_batch.req_pool_indices,
+diff -- python/sglang/srt/model_executor/forward_batch_info.py
+@@ -94,8 +94,6 @@ class ForwardMode(IntEnum):
+-    DRAFT_EXTEND = auto()
+@@ -115,7 +113,6 @@ def is_extend(self, include_draft_extend_v2: bool = False):
+-            or self == ForwardMode.DRAFT_EXTEND
+@@ -148,19 +145,13 @@ def is_decode_or_idle(self):
+-    def is_draft_extend(self, include_v2: bool = False):
+-        return self == ForwardMode.DRAFT_EXTEND or (
+diff -- python/sglang/srt/layers/attention/triton_backend.py
+@@ -454,31 +454,25 @@ def _update_draft_extend_buffers(
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/attention/aiter_backend.py` modified +2/-157; `python/sglang/srt/model_executor/forward_batch_info.py` modified +19/-60; `python/sglang/srt/layers/attention/triton_backend.py` modified +20/-52; `python/sglang/srt/layers/attention/flashattention_backend.py` modified +7/-40; `python/sglang/srt/layers/attention/dsa_backend.py` modified +11/-33; `python/sglang/srt/layers/attention/flashinfer_backend.py` modified +2/-24
+- 验证与风险: diff 自带测试面 `python/sglang/test/kits/attention_unittest/attention_methods/dense_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsa_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsv4_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/gdn_attention.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #28118 - 【bugfix】The NPU's forward_dsa_prepare_npu also needs special handling for is_nextn
+
+- 链接: https://github.com/sgl-project/sglang/pull/28118
+- 状态/时间: merged / 2026-06-15
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+3/-3，可读 patch 20 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「【bugfix】The NPU's forward_dsa_prepare_npu also needs special handling for is_nextn」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py`；技术摘要: 覆盖「【bugfix】The NPU's forward_dsa_prepare_npu also needs special handling for is_nextn」；主要实现面是 `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` modified +3/-3 (6 lines); hunks: -403,9 +403,7 @@ def forward_dsa_prepare_npu(; -415,6 +413,8 @@ def forward_dsa_prepare_npu(; symbols: forward_dsa_prepare_npu，涉及 `forward_dsa_prepare_npu`。
+- 代码 diff 细节:
+  - `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` modified +3/-3 (6 lines); hunks: -403,9 +403,7 @@ def forward_dsa_prepare_npu(; -415,6 +413,8 @@ def forward_dsa_prepare_npu(; symbols: forward_dsa_prepare_npu
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py
+@@ -403,9 +403,7 @@ def forward_dsa_prepare_npu(
+-    if m.skip_topk:
+-        topk_indices = prev_topk_indices
+-    else:
++    if not m.skip_topk or (m.is_nextn and prev_topk_indices is None):
+@@ -415,6 +413,8 @@ def forward_dsa_prepare_npu(
++    else:
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` modified +3/-3
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #28035 - fix(openai): validate assistant tool call arguments before chat template
+
+- 链接: https://github.com/sgl-project/sglang/pull/28035
+- 状态/时间: merged / 2026-06-16
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+209/-30，可读 patch 303 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「fix(openai): validate assistant tool call arguments before chat template」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `test/registered/unit/entrypoints/openai/test_serving_chat.py`, `python/sglang/srt/entrypoints/openai/serving_chat.py`, `python/sglang/srt/entrypoints/openai/encoding_dsv4.py`；技术摘要: 覆盖「fix(openai): validate assistant tool call arguments before chat template」；主要实现面是 `test/registered/unit/entrypoints/openai/test_serving_chat.py`, `python/sglang/srt/entrypoints/openai/serving_chat.py`, `python/sglang/srt/entrypoints/openai/encoding_dsv4.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/unit/entrypoints/openai/test_serving_chat.py` modified +151/-0 (151 lines); hunks: -558,6 +558,157 @@ def test_xgrammar_tag_omits_reasoning_when_parser_owns_it(...; symbols: test_xgrammar_tag_omits_reasoning_when_parser_owns_it, test_jinja_rejects_non_object_tool_call_arguments, test_jinja_accepts_object_tool_call_arguments_string, test_dsv_encoders_reject_non_object_tool_call_arguments，涉及 `test_xgrammar_tag_omits_reasoning_when_parser_owns_it, test_jinja_rejects_non_object_tool_call_arguments, test_jinja_accepts_object_tool_call_arguments_string`；`python/sglang/srt/entrypoints/openai/serving_chat.py` modified +41/-24 (65 lines); hunks: -98,6 +98,38 @@ def normalize_tool_content(role: str, content):; -651,16 +683,20 @@ def _apply_jinja_template(; symbols: normalize_tool_content, parse_tool_call_arguments, normalize_assistant_tool_call_arguments, _extract_max_dynamic_patch，涉及 `normalize_tool_content, parse_tool_call_arguments, normalize_assistant_tool_call_arguments`；`python/sglang/srt/entrypoints/openai/encoding_dsv4.py` modified +9/-5 (14 lines); hunks: -141,18 +141,22 @@ def encode_arguments_to_dsml(tool_call: Dict[str, str]) ->...; symbols: encode_arguments_to_dsml，涉及 `encode_arguments_to_dsml`；`python/sglang/srt/entrypoints/openai/encoding_dsv32.py` modified +8/-1 (9 lines); hunks: -97,7 +97,14 @@ def encode_arguments_to_dsml(tool_call: Dict[str, str]) -> str:; symbols: encode_arguments_to_dsml，涉及 `encode_arguments_to_dsml`。
+- 代码 diff 细节:
+  - `test/registered/unit/entrypoints/openai/test_serving_chat.py` modified +151/-0 (151 lines); hunks: -558,6 +558,157 @@ def test_xgrammar_tag_omits_reasoning_when_parser_owns_it(...; symbols: test_xgrammar_tag_omits_reasoning_when_parser_owns_it, test_jinja_rejects_non_object_tool_call_arguments, test_jinja_accepts_object_tool_call_arguments_string, test_dsv_encoders_reject_non_object_tool_call_arguments
+  - `python/sglang/srt/entrypoints/openai/serving_chat.py` modified +41/-24 (65 lines); hunks: -98,6 +98,38 @@ def normalize_tool_content(role: str, content):; -651,16 +683,20 @@ def _apply_jinja_template(; symbols: normalize_tool_content, parse_tool_call_arguments, normalize_assistant_tool_call_arguments, _extract_max_dynamic_patch
+  - `python/sglang/srt/entrypoints/openai/encoding_dsv4.py` modified +9/-5 (14 lines); hunks: -141,18 +141,22 @@ def encode_arguments_to_dsml(tool_call: Dict[str, str]) ->...; symbols: encode_arguments_to_dsml
+  - `python/sglang/srt/entrypoints/openai/encoding_dsv32.py` modified +8/-1 (9 lines); hunks: -97,7 +97,14 @@ def encode_arguments_to_dsml(tool_call: Dict[str, str]) -> str:; symbols: encode_arguments_to_dsml
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/unit/entrypoints/openai/test_serving_chat.py
+@@ -558,6 +558,157 @@ def test_xgrammar_tag_omits_reasoning_when_parser_owns_it(self):
++    def test_jinja_rejects_non_object_tool_call_arguments(self):
++        """History tool call arguments must parse to a JSON object."""
++        self.template_manager.chat_template_name = None
++        self.template_manager.jinja_template_content_format = "string"
++        for arguments in ['"Beijing"', '["Beijing"]']:
++            with self.subTest(arguments=arguments):
+diff -- python/sglang/srt/entrypoints/openai/serving_chat.py
+@@ -98,6 +98,38 @@ def normalize_tool_content(role: str, content):
++def parse_tool_call_arguments(arguments: str) -> Dict[str, Any]:
++    """Parse OpenAI tool call arguments for chat templates."""
++    try:
++        parsed_arguments = orjson.loads(arguments)
++    except orjson.JSONDecodeError as exc:
++        raise ValueError(
+diff -- python/sglang/srt/entrypoints/openai/encoding_dsv4.py
+@@ -141,18 +141,22 @@ def encode_arguments_to_dsml(tool_call: Dict[str, str]) -> str:
+```
+
+- 已读文件:
+  - tests: `test/registered/unit/entrypoints/openai/test_serving_chat.py` modified +151/-0
+  - runtime: `python/sglang/srt/entrypoints/openai/serving_chat.py` modified +41/-24; `python/sglang/srt/entrypoints/openai/encoding_dsv4.py` modified +9/-5; `python/sglang/srt/entrypoints/openai/encoding_dsv32.py` modified +8/-1
+- 验证与风险: diff 自带测试面 `test/registered/unit/entrypoints/openai/test_serving_chat.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #24515 - LPLB: linear-programming load balancer for MoE expert parallelism
+
+- 链接: https://github.com/sgl-project/sglang/pull/24515
+- 状态/时间: merged / 2026-06-16
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 19 个文件，+2324/-14，可读 patch 2482 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「LPLB: linear-programming load balancer for MoE expert parallelism」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/layers/moe/topk.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/moe/hash_topk.py`；技术摘要: 覆盖「LPLB: linear-programming load balancer for MoE expert parallelism」；主要实现面是 `python/sglang/srt/layers/moe/topk.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/moe/hash_topk.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/moe/topk.py` modified +47/-6 (53 lines); hunks: -552,7 +552,30 @@ def forward_npu(; -1502,11 +1525,29 @@ def _post_process_topk_ids(; symbols: forward_npu, empty_topk_output, _post_process_topk_ids，涉及 `forward_npu, empty_topk_output, _post_process_topk_ids`；`python/sglang/srt/model_executor/model_runner.py` modified +42/-0 (42 lines); hunks: -106,6 +106,12; -691,6 +697,9 @@ def initialize(self):; symbols: initialize, _prepare_moe_topk, _init_lplb_solvers, update_expert_location，涉及 `initialize, _prepare_moe_topk, _init_lplb_solvers`；`python/sglang/srt/layers/moe/hash_topk.py` modified +30/-3 (33 lines); hunks: -34,9 +34,10 @@ def __init__(; -80,8 +81,18 @@ def _init_default_tid2eid(self) -> None:; symbols: __init__, _init_default_tid2eid, empty_topk_output, forward，涉及 `__init__, _init_default_tid2eid, empty_topk_output`；`python/sglang/srt/models/deepseek_v2.py` modified +20/-3 (23 lines); hunks: -631,6 +631,7 @@ def __init__(; -996,7 +997,9 @@ def forward_normal(; symbols: __init__, forward_normal, forward_deepep, op_select_experts，涉及 `__init__, forward_normal, forward_deepep`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/moe/topk.py` modified +47/-6 (53 lines); hunks: -552,7 +552,30 @@ def forward_npu(; -1502,11 +1525,29 @@ def _post_process_topk_ids(; symbols: forward_npu, empty_topk_output, _post_process_topk_ids
+  - `python/sglang/srt/model_executor/model_runner.py` modified +42/-0 (42 lines); hunks: -106,6 +106,12; -691,6 +697,9 @@ def initialize(self):; symbols: initialize, _prepare_moe_topk, _init_lplb_solvers, update_expert_location
+  - `python/sglang/srt/layers/moe/hash_topk.py` modified +30/-3 (33 lines); hunks: -34,9 +34,10 @@ def __init__(; -80,8 +81,18 @@ def _init_default_tid2eid(self) -> None:; symbols: __init__, _init_default_tid2eid, empty_topk_output, forward
+  - `python/sglang/srt/models/deepseek_v2.py` modified +20/-3 (23 lines); hunks: -631,6 +631,7 @@ def __init__(; -996,7 +997,9 @@ def forward_normal(; symbols: __init__, forward_normal, forward_deepep, op_select_experts
+  - `test/registered/eplb/test_lplb_distributed.py` added +446/-0 (446 lines); hunks: -0,0 +1,446; symbols: _make_metadata, test_dispatch_probability_matches_torch_reference, test_solve_ipm_matches_torch_reference, test_lplb_distributed_two_rank
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/moe/topk.py
+@@ -552,7 +552,30 @@ def forward_npu(
+-    def empty_topk_output(self, device: torch.device) -> TopKOutput:
++    def empty_topk_output(
++        self, device: torch.device, *, layer_id: Optional[int] = None
++    ) -> TopKOutput:
++        """Return an empty topk output for a rank with zero tokens this forward.
++        When ``layer_id`` is provided and the active dispatch algorithm is LP,
+diff -- python/sglang/srt/model_executor/model_runner.py
+@@ -106,6 +106,12 @@
++from sglang.srt.eplb.lplb_solver import (
++    LPLBSolver,
++    assert_lplb_supported_model,
++    clear_global_lplb_solvers,
++    set_global_lplb_solver,
++)
+diff -- python/sglang/srt/layers/moe/hash_topk.py
+@@ -34,9 +34,10 @@ def __init__(
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/moe/topk.py` modified +47/-6; `python/sglang/srt/model_executor/model_runner.py` modified +42/-0; `python/sglang/srt/layers/moe/hash_topk.py` modified +30/-3; `python/sglang/srt/models/deepseek_v2.py` modified +20/-3; `python/sglang/jit_kernel/lplb/cuda_solver.py` added +324/-0; `python/sglang/srt/eplb/lplb_solver.py` added +280/-0
+  - tests: `test/registered/eplb/test_lplb_distributed.py` added +446/-0
+- 验证与风险: diff 自带测试面 `test/registered/eplb/test_lplb_distributed.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #28436 - [NPU] Use use_dsa to dispatch Ascend DSA attention
+
+- 链接: https://github.com/sgl-project/sglang/pull/28436
+- 状态/时间: merged / 2026-06-17
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+2/-2，可读 patch 15 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[NPU] Use use_dsa to dispatch Ascend DSA attention」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/deepseek_common/attention_backend_handler.py`；技术摘要: 覆盖「[NPU] Use use_dsa to dispatch Ascend DSA attention」；主要实现面是 `python/sglang/srt/models/deepseek_common/attention_backend_handler.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/deepseek_common/attention_backend_handler.py` modified +2/-2 (4 lines); hunks: -45,12 +45,12 @@ def handle_attention_ascend(attn, forward_batch):; symbols: handle_attention_ascend，涉及 `handle_attention_ascend`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/deepseek_common/attention_backend_handler.py` modified +2/-2 (4 lines); hunks: -45,12 +45,12 @@ def handle_attention_ascend(attn, forward_batch):; symbols: handle_attention_ascend
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_common/attention_backend_handler.py
+@@ -45,12 +45,12 @@ def handle_attention_ascend(attn, forward_batch):
+-        if hasattr(attn, "indexer"):
++        if hasattr(attn, "use_dsa") and attn.use_dsa:
+-        if hasattr(attn, "indexer"):
++        if hasattr(attn, "use_dsa") and attn.use_dsa:
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/deepseek_common/attention_backend_handler.py` modified +2/-2
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/deepseek_common/attention_backend_handler.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #27798 - [AMD] Add transpose_scale arg for o_proj to fix GLM accuracy issue
+
+- 链接: https://github.com/sgl-project/sglang/pull/27798
+- 状态/时间: merged / 2026-06-17
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+8/-2，可读 patch 24 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[AMD] Add transpose_scale arg for o_proj to fix GLM accuracy issue」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`；技术摘要: 覆盖「[AMD] Add transpose_scale arg for o_proj to fix GLM accuracy issue」；主要实现面是 `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +8/-2 (10 lines); hunks: -664,7 +664,10 @@ def forward_absorb_core(; -674,7 +677,10 @@ def forward_absorb_core(; symbols: forward_absorb_core，涉及 `forward_absorb_core`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +8/-2 (10 lines); hunks: -664,7 +664,10 @@ def forward_absorb_core(; -674,7 +677,10 @@ def forward_absorb_core(; symbols: forward_absorb_core
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py
+@@ -664,7 +664,10 @@ def forward_absorb_core(
+-                        _bmm_buf, group_size=128, dtype_quant=torch.float8_e4m3fn
++                        _bmm_buf,
++                        group_size=128,
++                        dtype_quant=torch.float8_e4m3fn,
++                        transpose_scale=_use_aiter_bpreshuffle_gfx95,
+@@ -674,7 +677,10 @@ def forward_absorb_core(
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +8/-2
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #28343 - [Kimi K2.5] Fix eagle3 aux capture for tp>1 when AR fusion is enabled
+
+- 链接: https://github.com/sgl-project/sglang/pull/28343
+- 状态/时间: merged / 2026-06-17
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+43/-16，可读 patch 112 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Kimi K2.5] Fix eagle3 aux capture for tp>1 when AR fusion is enabled」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「[Kimi K2.5] Fix eagle3 aux capture for tp>1 when AR fusion is enabled」；主要实现面是 `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/communicator.py` modified +31/-2 (33 lines); hunks: -498,11 +498,13 @@ def prepare_attn_and_capture_last_layer_outputs(; -511,12 +513,39 @@ def prepare_attn_and_capture_last_layer_outputs(; symbols: prepare_attn_and_capture_last_layer_outputs, _post_attn_residual_is_read_only, prepare_attn，涉及 `prepare_attn_and_capture_last_layer_outputs, _post_attn_residual_is_read_only, prepare_attn`；`python/sglang/srt/models/deepseek_v2.py` modified +12/-14 (26 lines); hunks: -75,7 +75,6; -2113,13 +2112,17 @@ def forward(; symbols: forward，涉及 `forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/communicator.py` modified +31/-2 (33 lines); hunks: -498,11 +498,13 @@ def prepare_attn_and_capture_last_layer_outputs(; -511,12 +513,39 @@ def prepare_attn_and_capture_last_layer_outputs(; symbols: prepare_attn_and_capture_last_layer_outputs, _post_attn_residual_is_read_only, prepare_attn
+  - `python/sglang/srt/models/deepseek_v2.py` modified +12/-14 (26 lines); hunks: -75,7 +75,6; -2113,13 +2112,17 @@ def forward(; symbols: forward
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/communicator.py
+@@ -498,11 +498,13 @@ def prepare_attn_and_capture_last_layer_outputs(
++        quant_format: str = "",
++            quant_format=quant_format,
+@@ -511,12 +513,39 @@ def prepare_attn_and_capture_last_layer_outputs(
+-            if gathered_last_layer_output is residual:
+-                # Clone to avoid modifying the original residual by Custom RMSNorm inplace operation
++            if (
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -75,7 +75,6 @@
+-    get_attention_tp_group,
+@@ -2113,13 +2112,17 @@ def forward(
++        captured_last_layer_outputs: Optional[List[torch.Tensor]] = None,
+-        hidden_states, residual = self.layer_communicator.prepare_attn(
+-            hidden_states,
+-            residual,
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/communicator.py` modified +31/-2; `python/sglang/srt/models/deepseek_v2.py` modified +12/-14
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/models/deepseek_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #20534 - Transfer FP8 K/K_scale for CP indexer prefill gather
+
+- 链接: https://github.com/sgl-project/sglang/pull/20534
+- 状态/时间: closed / 2026-06-18
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+35/-8，可读 patch 57 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Transfer FP8 K/K_scale for CP indexer prefill gather」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「Transfer FP8 K/K_scale for CP indexer prefill gather」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +35/-8 (43 lines); hunks: -333,14 +333,6 @@ def _get_q_k_bf16(; -958,6 +950,41 @@ def _store_index_k_cache(; symbols: _get_q_k_bf16, _get_k_bf16, _store_index_k_cache，涉及 `_get_q_k_bf16, _get_k_bf16, _store_index_k_cache`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +35/-8 (43 lines); hunks: -333,14 +333,6 @@ def _get_q_k_bf16(; -958,6 +950,41 @@ def _store_index_k_cache(; symbols: _get_q_k_bf16, _get_k_bf16, _store_index_k_cache
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
+@@ -333,14 +333,6 @@ def _get_q_k_bf16(
+-        # allgather+rerrange
+-        if forward_batch.nsa_cp_metadata is not None and self.nsa_enable_prefill_cp:
+-            key = cp_all_gather_rerange_output(
+-                key.contiguous(),
+-                self.cp_size,
+-                forward_batch,
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +35/-8
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #20360 - [AMD][Bug fix] Fix NSA context parallelism (round-robin-split) producing garbage output
+
+- 链接: https://github.com/sgl-project/sglang/pull/20360
+- 状态/时间: closed / 2026-06-18
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+31/-5，可读 patch 76 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[AMD][Bug fix] Fix NSA context parallelism (round-robin-split) producing garbage output」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/layers/communicator_nsa_cp.py`；技术摘要: 覆盖「[AMD][Bug fix] Fix NSA context parallelism (round-robin-split) producing garbage output」；主要实现面是 `python/sglang/srt/layers/communicator_nsa_cp.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/communicator_nsa_cp.py` modified +31/-5 (36 lines); hunks: -20,6 +20,7; -34,6 +35,7; symbols: __init__, should_use_reduce_scatter, _post_init_communicate, get_fn，涉及 `__init__, should_use_reduce_scatter, _post_init_communicate`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/communicator_nsa_cp.py` modified +31/-5 (36 lines); hunks: -20,6 +20,7; -34,6 +35,7; symbols: __init__, should_use_reduce_scatter, _post_init_communicate, get_fn
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/communicator_nsa_cp.py
+@@ -20,6 +20,7 @@
++    is_nsa_prefill_cp_round_robin_split,
+@@ -34,6 +35,7 @@
++    attn_tp_all_reduce,
+@@ -66,6 +68,11 @@ def __init__(
++    def should_use_reduce_scatter(self, forward_batch) -> bool:
++        if is_nsa_prefill_cp_round_robin_split():
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/communicator_nsa_cp.py` modified +31/-5
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/communicator_nsa_cp.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #20531 - [bugfix] Fix NSA indexer ragged gather batch-view mismatch in CP round-robin split
+
+- 链接: https://github.com/sgl-project/sglang/pull/20531
+- 状态/时间: closed / 2026-06-18
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+7/-3，可读 patch 19 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[bugfix] Fix NSA indexer ragged gather batch-view mismatch in CP round-robin split」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；技术摘要: 覆盖「[bugfix] Fix NSA indexer ragged gather batch-view mismatch in CP round-robin split」；主要实现面是 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +7/-3 (10 lines); hunks: -538,11 +538,15 @@ def _get_topk_ragged(; symbols: _get_topk_ragged，涉及 `_get_topk_ragged`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +7/-3 (10 lines); hunks: -538,11 +538,15 @@ def _get_topk_ragged(; symbols: _get_topk_ragged
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/attention/nsa/nsa_indexer.py
+@@ -538,11 +538,15 @@ def _get_topk_ragged(
+-        seq_len_sum = forward_batch.seq_lens_sum
+-        max_seq_len = torch.max(forward_batch.seq_lens_cpu).item()
++        # In CP round-robin-split, page tables may be filtered by metadata. The KV
++        # gather inputs must use the same filtered batch view to stay aligned.
++        seq_lens = metadata.get_seqlens_int32()
++        seq_lens_cpu = metadata.get_indexer_seq_len_cpu()
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +7/-3
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #20809 - [Bugfix] Add DeepseekV32ForCausalLM to MTP draft model mapping
+
+- 链接: https://github.com/sgl-project/sglang/pull/20809
+- 状态/时间: closed / 2026-06-18
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-0，可读 patch 8 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] Add DeepseekV32ForCausalLM to MTP draft model mapping」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/configs/model_config.py`；技术摘要: 覆盖「[Bugfix] Add DeepseekV32ForCausalLM to MTP draft model mapping」；主要实现面是 `python/sglang/srt/configs/model_config.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/configs/model_config.py` modified +1/-0 (1 lines); hunks: -279,6 +279,7 @@ def _config_draft_model(self):; symbols: _config_draft_model，涉及 `_config_draft_model`。
+- 代码 diff 细节:
+  - `python/sglang/srt/configs/model_config.py` modified +1/-0 (1 lines); hunks: -279,6 +279,7 @@ def _config_draft_model(self):; symbols: _config_draft_model
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/configs/model_config.py
+@@ -279,6 +279,7 @@ def _config_draft_model(self):
++            "DeepseekV32ForCausalLM",
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/configs/model_config.py` modified +1/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/configs/model_config.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #20880 - Reject HiCache L3 storage backend for NSA models at init time
+
+- 链接: https://github.com/sgl-project/sglang/pull/20880
+- 状态/时间: closed / 2026-06-18
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+13/-1，可读 patch 28 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Reject HiCache L3 storage backend for NSA models at init time」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/mem_cache/hiradix_cache.py`；技术摘要: 覆盖「Reject HiCache L3 storage backend for NSA models at init time」；主要实现面是 `python/sglang/srt/mem_cache/hiradix_cache.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/mem_cache/hiradix_cache.py` modified +13/-1 (14 lines); hunks: -82,6 +82,15 @@ def __init__(self, params: CacheInitParams, server_args: Serv...; -100,7 +109,10 @@ def __init__(self, params: CacheInitParams, server_args: Se...; symbols: __init__，涉及 `__init__`。
+- 代码 diff 细节:
+  - `python/sglang/srt/mem_cache/hiradix_cache.py` modified +13/-1 (14 lines); hunks: -82,6 +82,15 @@ def __init__(self, params: CacheInitParams, server_args: Serv...; -100,7 +109,10 @@ def __init__(self, params: CacheInitParams, server_args: Se...; symbols: __init__
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/mem_cache/hiradix_cache.py
+@@ -82,6 +82,15 @@ def __init__(self, params: CacheInitParams, server_args: ServerArgs):
++            if server_args.hicache_storage_backend is not None:
++                raise ValueError(
++                    "HiCache L3 storage backend (e.g. mooncake) is not yet supported "
++                    "for models with NSA (Native Sparse Attention). The L3 storage "
++                    "layer does not handle the NSA indexer cache "
++                    "(index_k_with_scale_buffer). Please remove "
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/mem_cache/hiradix_cache.py` modified +13/-1
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/mem_cache/hiradix_cache.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #28567 - Add get_parallel(): a structured accessor for parallel-topology state
+
+- 链接: https://github.com/sgl-project/sglang/pull/28567
+- 状态/时间: merged / 2026-06-18
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 184 个文件，+1865/-1727，可读 patch 8932 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Add get_parallel(): a structured accessor for parallel-topology state」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py`；技术摘要: 覆盖「Add get_parallel(): a structured accessor for parallel-topology state」；主要实现面是 `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/apertus.py` modified +686/-687 (1373 lines); hunks: -1,687 +1,686; symbols: ApertusMLP, __init__, forward, ApertusAttention，涉及 `ApertusMLP, __init__, forward`；`python/sglang/srt/models/solar.py` modified +28/-27 (55 lines); hunks: -1,37 +1,14; -54,6 +31,30; symbols: __init__, forward, load_kv_cache_scales，涉及 `__init__, forward, load_kv_cache_scales`；`python/sglang/srt/models/gpt_oss.py` modified +17/-24 (41 lines); hunks: -28,21 +28,13; -76,6 +68,7; symbols: _resolve_moe_input_pad_multiple, __init__，涉及 `_resolve_moe_input_pad_multiple, __init__`；`python/sglang/srt/models/deepseek_v2.py` modified +14/-23 (37 lines); hunks: -47,9 +47,7; -72,12 +70,6; symbols: __init__，涉及 `__init__`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/apertus.py` modified +686/-687 (1373 lines); hunks: -1,687 +1,686; symbols: ApertusMLP, __init__, forward, ApertusAttention
+  - `python/sglang/srt/models/solar.py` modified +28/-27 (55 lines); hunks: -1,37 +1,14; -54,6 +31,30; symbols: __init__, forward, load_kv_cache_scales
+  - `python/sglang/srt/models/gpt_oss.py` modified +17/-24 (41 lines); hunks: -28,21 +28,13; -76,6 +68,7; symbols: _resolve_moe_input_pad_multiple, __init__
+  - `python/sglang/srt/models/deepseek_v2.py` modified +14/-23 (37 lines); hunks: -47,9 +47,7; -72,12 +70,6; symbols: __init__
+  - `python/sglang/srt/layers/communicator.py` modified +13/-19 (32 lines); hunks: -23,8 +23,6; -44,12 +42,7; symbols: apply_aiter_all_reduce_fusion, init_context, should_fuse_mlp_allreduce_with_next_layer, is_same_group_size
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/apertus.py
+@@ -1,687 +1,686 @@
+-# SPDX-License-Identifier: Apache-2.0
+-# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
+-# Copyright 2025 The SwissAI Initiative
+-# Copyright 2023-2024 SGLang Team
+-# Licensed under the Apache License, Version 2.0 (the "License");
+-# you may not use this file except in compliance with the License.
+diff -- python/sglang/srt/models/solar.py
+@@ -1,37 +1,14 @@
+-# Adapted from
+-# https://github.com/huggingface/transformers/blob/v4.28.0/src/transformers/models/llama/modeling_llama.py
+-# Copyright 2023 The vLLM team.
+-# Copyright 2022 EleutherAI and the HuggingFace Inc. team. All rights reserved.
+-#
+-# This code is based on EleutherAI's GPT-NeoX library and the GPT-NeoX
+diff -- python/sglang/srt/models/gpt_oss.py
+@@ -28,21 +28,13 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/apertus.py` modified +686/-687; `python/sglang/srt/models/solar.py` modified +28/-27; `python/sglang/srt/models/gpt_oss.py` modified +17/-24; `python/sglang/srt/models/deepseek_v2.py` modified +14/-23; `python/sglang/srt/layers/communicator.py` modified +13/-19; `python/sglang/srt/models/qwen3_moe.py` modified +12/-18
+- 验证与风险: diff 自带测试面 `python/sglang/test/kits/attention_unittest/attention_methods/dense_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsa_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsv4_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dual_chunk_attention.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #25144 - [NPU] Add Ascend NPU support for DeepSeek-V4
+
+- 链接: https://github.com/sgl-project/sglang/pull/25144
+- 状态/时间: merged / 2026-06-18
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 28 个文件，+4145/-144，可读 patch 4984 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[NPU] Add Ascend NPU support for DeepSeek-V4」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/deepseek_v4_rope.py`, `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/layers/mhc.py`；技术摘要: 覆盖「[NPU] Add Ascend NPU support for DeepSeek-V4」；主要实现面是 `python/sglang/srt/layers/deepseek_v4_rope.py`, `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/layers/mhc.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/deepseek_v4_rope.py` modified +148/-2 (150 lines); hunks: -1,3 +1,4; -6,26 +7,51; symbols: _yarn_get_mscale, precompute_freqs_cis, find_correction_dim, fused_norm_rope_inplace_triton，涉及 `_yarn_get_mscale, precompute_freqs_cis, find_correction_dim`；`python/sglang/srt/models/deepseek_v4.py` modified +103/-24 (127 lines); hunks: -29,6 +29,7; -47,10 +48,15; symbols: __init__, _forward_prepare，涉及 `__init__, _forward_prepare`；`python/sglang/srt/layers/mhc.py` modified +104/-9 (113 lines); hunks: -3,8 +3,6; -14,15 +12,55; symbols: _TilelangMissing, __getattr__, _jit, _wrap，涉及 `_TilelangMissing, __getattr__, _jit`；`python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py` modified +68/-6 (74 lines); hunks: -389,7 +389,17 @@ def _init_pools(self: ModelRunner):; -410,7 +420,8 @@ def _init_pools(self: ModelRunner):; symbols: _init_pools，涉及 `_init_pools`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/deepseek_v4_rope.py` modified +148/-2 (150 lines); hunks: -1,3 +1,4; -6,26 +7,51; symbols: _yarn_get_mscale, precompute_freqs_cis, find_correction_dim, fused_norm_rope_inplace_triton
+  - `python/sglang/srt/models/deepseek_v4.py` modified +103/-24 (127 lines); hunks: -29,6 +29,7; -47,10 +48,15; symbols: __init__, _forward_prepare
+  - `python/sglang/srt/layers/mhc.py` modified +104/-9 (113 lines); hunks: -3,8 +3,6; -14,15 +12,55; symbols: _TilelangMissing, __getattr__, _jit, _wrap
+  - `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py` modified +68/-6 (74 lines); hunks: -389,7 +389,17 @@ def _init_pools(self: ModelRunner):; -410,7 +420,8 @@ def _init_pools(self: ModelRunner):; symbols: _init_pools
+  - `python/sglang/srt/model_executor/forward_batch_info.py` modified +63/-0 (63 lines); hunks: -217,6 +217,65 @@ def compute_local_num_token_non_padded(; -286,6 +345,9 @@ class ForwardBatch(ForwardBatchDeepSeekMHAMixin):; symbols: compute_local_num_token_non_padded, DSV4OutCacheLoc, DSV4StateLens, NgramEmbeddingInfo
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/deepseek_v4_rope.py
+@@ -1,3 +1,4 @@
++import logging
+@@ -6,26 +7,51 @@
++logger = logging.getLogger(__name__)
++# tilelang isn't shipped on every platform (e.g. Ascend NPU images) and the
++# only tilelang artifacts in this file are pass_configs that downstream
++# tilelang.jit decorators would consume — the kernels actually defined here
+diff -- python/sglang/srt/models/deepseek_v4.py
+@@ -29,6 +29,7 @@
++    get_tensor_model_parallel_world_size,
+@@ -47,10 +48,15 @@
++from sglang.srt.layers.deepseek_v4_rope import (
++    v4_rope_inplace_npu,
++)
++    attn_tp_all_reduce,
+diff -- python/sglang/srt/layers/mhc.py
+@@ -3,8 +3,6 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/deepseek_v4_rope.py` modified +148/-2; `python/sglang/srt/models/deepseek_v4.py` modified +103/-24; `python/sglang/srt/layers/mhc.py` modified +104/-9; `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py` modified +68/-6; `python/sglang/srt/model_executor/forward_batch_info.py` modified +63/-0; `python/sglang/srt/layers/attention/dsv4/compressor.py` modified +31/-4
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/arg_groups/deepseek_v4_hook.py`, `python/sglang/srt/hardware_backend/npu/attention/ascend_backend.py`, `python/sglang/srt/hardware_backend/npu/attention/ascend_dsv4_backend.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #28559 - fix: speculative draft worker clobbering target attention backend
+
+- 链接: https://github.com/sgl-project/sglang/pull/28559
+- 状态/时间: merged / 2026-06-18
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+30/-10，可读 patch 90 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「fix: speculative draft worker clobbering target attention backend」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/attention/base_attn_backend.py`；技术摘要: 覆盖「fix: speculative draft worker clobbering target attention backend」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/attention/base_attn_backend.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +15/-6 (21 lines); hunks: -140,6 +140,7; -1737,20 +1738,28 @@ def __init__(; symbols: __init__, dispatch_attn_forward_method，涉及 `__init__, dispatch_attn_forward_method`；`python/sglang/srt/model_executor/model_runner.py` modified +11/-4 (15 lines); hunks: -2415,13 +2415,24 @@ def init_attention_backend(self):; -2463,10 +2474,6 @@ def _get_attention_backend(self, init_new_workspace: bool...; symbols: init_attention_backend, _get_attention_backend, _get_attention_backend_from_str，涉及 `init_attention_backend, _get_attention_backend, _get_attention_backend_from_str`；`python/sglang/srt/layers/attention/base_attn_backend.py` modified +4/-0 (4 lines); hunks: -38,6 +38,10 @@ class AttentionBackend(ABC):; symbols: AttentionBackend, init_forward_metadata，涉及 `AttentionBackend, init_forward_metadata`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/deepseek_v2.py` modified +15/-6 (21 lines); hunks: -140,6 +140,7; -1737,20 +1738,28 @@ def __init__(; symbols: __init__, dispatch_attn_forward_method
+  - `python/sglang/srt/model_executor/model_runner.py` modified +11/-4 (15 lines); hunks: -2415,13 +2415,24 @@ def init_attention_backend(self):; -2463,10 +2474,6 @@ def _get_attention_backend(self, init_new_workspace: bool...; symbols: init_attention_backend, _get_attention_backend, _get_attention_backend_from_str
+  - `python/sglang/srt/layers/attention/base_attn_backend.py` modified +4/-0 (4 lines); hunks: -38,6 +38,10 @@ class AttentionBackend(ABC):; symbols: AttentionBackend, init_forward_metadata
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -140,6 +140,7 @@
++from sglang.srt.model_executor.forward_context import get_attn_backend
+@@ -1737,20 +1738,28 @@ def __init__(
+-        # Determine attention backend used by current forward batch
++        # Determine attention backend name for current forward batch: prefer the
++        # name stamped per-runner on the backend object, else resolve from server args.
++        backend = get_attn_backend()
+diff -- python/sglang/srt/model_executor/model_runner.py
+@@ -2415,13 +2415,24 @@ def init_attention_backend(self):
++        # Record resolved per-mode backends on the backend for model dispatch.
++        self.attn_backend.prefill_attention_backend_str = (
++            self.prefill_attention_backend_str
++        )
++        self.attn_backend.decode_attention_backend_str = (
++            self.decode_attention_backend_str
+diff -- python/sglang/srt/layers/attention/base_attn_backend.py
+@@ -38,6 +38,10 @@ class AttentionBackend(ABC):
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +15/-6; `python/sglang/srt/model_executor/model_runner.py` modified +11/-4; `python/sglang/srt/layers/attention/base_attn_backend.py` modified +4/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/attention/base_attn_backend.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/models/deepseek_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #18094 - support deepseekv3.2-piecewise-cuda-graph
+
+- 链接: https://github.com/sgl-project/sglang/pull/18094
+- 状态/时间: closed / 2026-06-18
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 15 个文件，+243/-91，可读 patch 656 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「support deepseekv3.2-piecewise-cuda-graph」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/radix_attention.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py`；技术摘要: 覆盖「support deepseekv3.2-piecewise-cuda-graph」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/radix_attention.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +148/-48 (196 lines); hunks: -32,6 +32,10; -64,6 +68,7; symbols: forward, forward_deepep, _post_combine_hook, __init__，涉及 `forward, forward_deepep, _post_combine_hook`；`python/sglang/srt/layers/radix_attention.py` modified +19/-19 (38 lines); hunks: -114,25 +114,25 @@ def forward(; symbols: forward，涉及 `forward`；`python/sglang/srt/layers/moe/fused_moe_triton/layer.py` modified +12/-3 (15 lines); hunks: -1405,21 +1405,30 @@ def forward_impl(self, hidden_states: torch.Tensor, topk...; symbols: forward_impl, moe_forward_piecewise_cuda_graph_impl，涉及 `forward_impl, moe_forward_piecewise_cuda_graph_impl`；`python/sglang/srt/layers/moe/topk.py` modified +12/-3 (15 lines); hunks: -740,15 +740,20 @@ def is_power_of_two(n):; -775,6 +780,11 @@ def biased_grouped_topk_gpu(; symbols: is_power_of_two, _mask_topk_ids_padded_region, _biased_grouped_topk_postprocess, biased_grouped_topk_gpu，涉及 `is_power_of_two, _mask_topk_ids_padded_region, _biased_grouped_topk_postprocess`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/deepseek_v2.py` modified +148/-48 (196 lines); hunks: -32,6 +32,10; -64,6 +68,7; symbols: forward, forward_deepep, _post_combine_hook, __init__
+  - `python/sglang/srt/layers/radix_attention.py` modified +19/-19 (38 lines); hunks: -114,25 +114,25 @@ def forward(; symbols: forward
+  - `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` modified +12/-3 (15 lines); hunks: -1405,21 +1405,30 @@ def forward_impl(self, hidden_states: torch.Tensor, topk...; symbols: forward_impl, moe_forward_piecewise_cuda_graph_impl
+  - `python/sglang/srt/layers/moe/topk.py` modified +12/-3 (15 lines); hunks: -740,15 +740,20 @@ def is_power_of_two(n):; -775,6 +780,11 @@ def biased_grouped_topk_gpu(; symbols: is_power_of_two, _mask_topk_ids_padded_region, _biased_grouped_topk_postprocess, biased_grouped_topk_gpu
+  - `python/sglang/srt/layers/communicator.py` modified +7/-5 (12 lines); hunks: -534,11 +534,13 @@ def prepare_attn(; symbols: prepare_attn, _tp_reduce_scatter
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -32,6 +32,10 @@
++from sglang.srt.compilation.compilation_config import register_split_op
++from sglang.srt.compilation.piecewise_context_manager import (
++    get_forward_context,
++)
+@@ -64,6 +68,7 @@
++    AttentionInputs,
+diff -- python/sglang/srt/layers/radix_attention.py
+@@ -114,25 +114,25 @@ def forward(
+-        if forward_batch.forward_mode.is_extend() and get_forward_context() is not None:
+-            if self.qk_head_dim != self.v_head_dim:
+-                output = q.new_empty((q.shape[0], self.tp_q_head_num * self.v_head_dim))
+-            else:
+-                output = torch.empty_like(q)
+-            unified_attention_with_output(
+diff -- python/sglang/srt/layers/moe/fused_moe_triton/layer.py
+@@ -1405,21 +1405,30 @@ def forward_impl(self, hidden_states: torch.Tensor, topk_output: TopKOutput):
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +148/-48; `python/sglang/srt/layers/radix_attention.py` modified +19/-19; `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` modified +12/-3; `python/sglang/srt/layers/moe/topk.py` modified +12/-3; `python/sglang/srt/layers/communicator.py` modified +7/-5; `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` modified +7/-2
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/compilation/compilation_config.py`, `python/sglang/srt/distributed/parallel_state.py`, `python/sglang/srt/eplb/expert_distribution.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #28532 - Fix IndexCache PP topk handoff
+
+- 链接: https://github.com/sgl-project/sglang/pull/28532
+- 状态/时间: merged / 2026-06-19
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+99/-43，可读 patch 268 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Fix IndexCache PP topk handoff」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/model_executor/model_runner.py`；技术摘要: 覆盖「Fix IndexCache PP topk handoff」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/model_executor/model_runner.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +43/-42 (85 lines); hunks: -40,6 +40,7; -1603,40 +1604,8 @@ def __init__(; symbols: __init__, forward，涉及 `__init__, forward`；`python/sglang/srt/configs/model_config.py` modified +23/-0 (23 lines); hunks: -132,6 +132,29 @@ def get_dsa_index_topk(config: PretrainedConfig) -> int:; symbols: get_dsa_index_topk, dsa_layer_skips_topk, get_dsa_index_n_heads，涉及 `get_dsa_index_topk, dsa_layer_skips_topk, get_dsa_index_n_heads`；`python/sglang/srt/model_executor/model_runner.py` modified +14/-0 (14 lines); hunks: -61,7 +61,9; -832,6 +834,17 @@ def initialize(self):; symbols: initialize, get_pp_proxy_topk_size, alloc_memory_pool, _dummy_run，涉及 `initialize, get_pp_proxy_topk_size, alloc_memory_pool`；`python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py` modified +6/-0 (6 lines); hunks: -180,6 +180,7 @@ def _allocate_decode_buffers(; -218,6 +219,10 @@ def _allocate_decode_buffers(; symbols: _allocate_decode_buffers, __init__，涉及 `_allocate_decode_buffers, __init__`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/deepseek_v2.py` modified +43/-42 (85 lines); hunks: -40,6 +40,7; -1603,40 +1604,8 @@ def __init__(; symbols: __init__, forward
+  - `python/sglang/srt/configs/model_config.py` modified +23/-0 (23 lines); hunks: -132,6 +132,29 @@ def get_dsa_index_topk(config: PretrainedConfig) -> int:; symbols: get_dsa_index_topk, dsa_layer_skips_topk, get_dsa_index_n_heads
+  - `python/sglang/srt/model_executor/model_runner.py` modified +14/-0 (14 lines); hunks: -61,7 +61,9; -832,6 +834,17 @@ def initialize(self):; symbols: initialize, get_pp_proxy_topk_size, alloc_memory_pool, _dummy_run
+  - `python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py` modified +6/-0 (6 lines); hunks: -180,6 +180,7 @@ def _allocate_decode_buffers(; -218,6 +219,10 @@ def _allocate_decode_buffers(; symbols: _allocate_decode_buffers, __init__
+  - `python/sglang/srt/model_executor/runner_utils/buffers.py` modified +5/-0 (5 lines); hunks: -107,6 +107,7 @@ def create(; -149,6 +150,10 @@ def create(; symbols: create
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -40,6 +40,7 @@
++    dsa_layer_skips_topk,
+@@ -1603,40 +1604,8 @@ def __init__(
+-                self.index_topk_freq = getattr(config, "index_topk_freq", 1)
+-                self.index_topk_pattern = getattr(config, "index_topk_pattern", None)
+-                self.index_skip_topk_offset = getattr(
+-                    config, "index_skip_topk_offset", None
+diff -- python/sglang/srt/configs/model_config.py
+@@ -132,6 +132,29 @@ def get_dsa_index_topk(config: PretrainedConfig) -> int:
++def dsa_layer_skips_topk(config: PretrainedConfig, layer_id: int) -> bool:
++    """Return whether a DSA layer reuses the previous layer's top-k indices."""
++    assert is_deepseek_dsa(config)
++    pattern = getattr(config, "index_topk_pattern", None)
++    if pattern is not None:
++        return layer_id < len(pattern) and pattern[layer_id] == "S"
+diff -- python/sglang/srt/model_executor/model_runner.py
+@@ -61,7 +61,9 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +43/-42; `python/sglang/srt/configs/model_config.py` modified +23/-0; `python/sglang/srt/model_executor/model_runner.py` modified +14/-0; `python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py` modified +6/-0; `python/sglang/srt/model_executor/runner_utils/buffers.py` modified +5/-0; `python/sglang/srt/managers/scheduler_pp_mixin.py` modified +7/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/managers/scheduler_pp_mixin.py`, `python/sglang/srt/model_executor/model_runner.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #28536 - ci: run GB300 nightly suite in the standard Nvidia nightly workflow
+
+- 链接: https://github.com/sgl-project/sglang/pull/28536
+- 状态/时间: merged / 2026-06-19
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 11 个文件，+72/-197，可读 patch 438 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「ci: run GB300 nightly suite in the standard Nvidia nightly workflow」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `test/registered/gb300/test_deepseek_v32_nvfp4.py`, `test/registered/gb300/test_deepseek_v32.py`, `test/registered/gb300/test_qwen35_fp8.py`；技术摘要: 覆盖「ci: run GB300 nightly suite in the standard Nvidia nightly workflow」；主要实现面是 `test/registered/gb300/test_deepseek_v32_nvfp4.py`, `test/registered/gb300/test_deepseek_v32.py`, `test/registered/gb300/test_qwen35_fp8.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/gb300/test_deepseek_v32_nvfp4.py` removed +0/-81 (81 lines); hunks: -1,81 +0,0; symbols: TestDeepseekV32Nvfp4, test_deepseek_v32_nvfp4，涉及 `TestDeepseekV32Nvfp4, test_deepseek_v32_nvfp4`；`test/registered/gb300/test_deepseek_v32.py` removed +0/-78 (78 lines); hunks: -1,78 +0,0; symbols: TestDeepseekV32, test_deepseek_v32，涉及 `TestDeepseekV32, test_deepseek_v32`；`test/registered/gb300/test_qwen35_fp8.py` modified +14/-14 (28 lines); hunks: -17,43 +17,43; -62,7 +62,7 @@ def test_qwen35_fp8(self):; symbols: TestQwen35Fp8, test_qwen35_fp8，涉及 `TestQwen35Fp8, test_qwen35_fp8`；`.github/workflows/nightly-test-nvidia.yml` modified +27/-0 (27 lines); hunks: -24,6 +24,7 @@ on:; -512,6 +513,31 @@ jobs:。
+- 代码 diff 细节:
+  - `test/registered/gb300/test_deepseek_v32_nvfp4.py` removed +0/-81 (81 lines); hunks: -1,81 +0,0; symbols: TestDeepseekV32Nvfp4, test_deepseek_v32_nvfp4
+  - `test/registered/gb300/test_deepseek_v32.py` removed +0/-78 (78 lines); hunks: -1,78 +0,0; symbols: TestDeepseekV32, test_deepseek_v32
+  - `test/registered/gb300/test_qwen35_fp8.py` modified +14/-14 (28 lines); hunks: -17,43 +17,43; -62,7 +62,7 @@ def test_qwen35_fp8(self):; symbols: TestQwen35Fp8, test_qwen35_fp8
+  - `.github/workflows/nightly-test-nvidia.yml` modified +27/-0 (27 lines); hunks: -24,6 +24,7 @@ on:; -512,6 +513,31 @@ jobs:
+  - `test/registered/gb300/test_glm5_nvfp4.py` modified +12/-12 (24 lines); hunks: -16,42 +16,42; symbols: TestGlm5Nvfp4, test_glm5_nvfp4
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/gb300/test_deepseek_v32_nvfp4.py
+@@ -1,81 +0,0 @@
+-import unittest
+-from sglang.test.accuracy_test_runner import AccuracyTestParams
+-from sglang.test.ci.ci_register import register_cuda_ci
+-from sglang.test.performance_test_runner import PerformanceTestParams
+-from sglang.test.run_combined_tests import run_combined_tests
+-from sglang.test.test_utils import ModelLaunchSettings
+diff -- test/registered/gb300/test_deepseek_v32.py
+@@ -1,78 +0,0 @@
+-import unittest
+-from sglang.test.accuracy_test_runner import AccuracyTestParams
+-from sglang.test.ci.ci_register import register_cuda_ci
+-from sglang.test.performance_test_runner import PerformanceTestParams
+-from sglang.test.run_combined_tests import run_combined_tests
+-from sglang.test.test_utils import ModelLaunchSettings
+diff -- test/registered/gb300/test_qwen35_fp8.py
+@@ -17,43 +17,43 @@
+```
+
+- 已读文件:
+  - tests: `test/registered/gb300/test_deepseek_v32_nvfp4.py` removed +0/-81; `test/registered/gb300/test_deepseek_v32.py` removed +0/-78; `test/registered/gb300/test_qwen35_fp8.py` modified +14/-14; `test/registered/gb300/test_glm5_nvfp4.py` modified +12/-12; `test/registered/gb300/test_qwen35_nvfp4.py` modified +5/-3; `test/registered/gb300/test_glm5_fp8.py` modified +4/-2
+  - ci: `.github/workflows/nightly-test-nvidia.yml` modified +27/-0
+- 验证与风险: diff 自带测试面 `python/sglang/test/performance_test_runner.py`, `test/registered/gb300/test_deepseek_v32.py`, `test/registered/gb300/test_deepseek_v32_nvfp4.py`, `test/registered/gb300/test_glm5_fp8.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #28785 - Pass DSA topk through PP warmup proxy buffers
+
+- 链接: https://github.com/sgl-project/sglang/pull/28785
+- 状态/时间: merged / 2026-06-21
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+21/-0，可读 patch 77 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Pass DSA topk through PP warmup proxy buffers」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/model_executor/runner/base_runner.py`, `python/sglang/srt/model_executor/runner/eager_runner.py`；技术摘要: 覆盖「Pass DSA topk through PP warmup proxy buffers」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/model_executor/runner/base_runner.py`, `python/sglang/srt/model_executor/runner/eager_runner.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +10/-0 (10 lines); hunks: -2387,6 +2387,13 @@ def __init__(; -2396,6 +2403,7 @@ def forward(; symbols: __init__, get_input_embeddings, _dsa_forward_uses_topk, forward，涉及 `__init__, get_input_embeddings, _dsa_forward_uses_topk`；`python/sglang/srt/model_executor/runner/base_runner.py` modified +6/-0 (6 lines); hunks: -78,6 +78,7 @@ def _allocate_decode_buffers(; -115,6 +116,10 @@ def _allocate_decode_buffers(; symbols: _allocate_decode_buffers, _alloc_dummy_decode_buffers, _dummy_run，涉及 `_allocate_decode_buffers, _alloc_dummy_decode_buffers, _dummy_run`；`python/sglang/srt/model_executor/runner/eager_runner.py` modified +5/-0 (5 lines); hunks: -190,6 +190,11 @@ def _slot(name):; symbols: _slot，涉及 `_slot`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/deepseek_v2.py` modified +10/-0 (10 lines); hunks: -2387,6 +2387,13 @@ def __init__(; -2396,6 +2403,7 @@ def forward(; symbols: __init__, get_input_embeddings, _dsa_forward_uses_topk, forward
+  - `python/sglang/srt/model_executor/runner/base_runner.py` modified +6/-0 (6 lines); hunks: -78,6 +78,7 @@ def _allocate_decode_buffers(; -115,6 +116,10 @@ def _allocate_decode_buffers(; symbols: _allocate_decode_buffers, _alloc_dummy_decode_buffers, _dummy_run
+  - `python/sglang/srt/model_executor/runner/eager_runner.py` modified +5/-0 (5 lines); hunks: -190,6 +190,11 @@ def _slot(name):; symbols: _slot
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -2387,6 +2387,13 @@ def __init__(
++    def _dsa_forward_uses_topk(self) -> bool:
++        if not self.use_dsa:
++            return False
++        backend = get_attn_backend()
++        backend = getattr(backend, "primary", backend)
++        return not getattr(backend, "use_mha", False)
+diff -- python/sglang/srt/model_executor/runner/base_runner.py
+@@ -78,6 +78,7 @@ def _allocate_decode_buffers(
++    pp_proxy_topk_size: Optional[int] = None,
+@@ -115,6 +116,10 @@ def _allocate_decode_buffers(
++            if pp_proxy_topk_size is not None:
++                pp_proxy_tensors["topk_indices"] = torch.zeros(
++                    (max_num_token, pp_proxy_topk_size), dtype=torch.int32
++                )
+diff -- python/sglang/srt/model_executor/runner/eager_runner.py
+@@ -190,6 +190,11 @@ def _slot(name):
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +10/-0; `python/sglang/srt/model_executor/runner/base_runner.py` modified +6/-0; `python/sglang/srt/model_executor/runner/eager_runner.py` modified +5/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/model_executor/runner/base_runner.py`, `python/sglang/srt/model_executor/runner/eager_runner.py`, `python/sglang/srt/models/deepseek_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #28855 - [Spec] Redo: split init_backends; account draft weights in --mem-fraction-static
+
+- 链接: https://github.com/sgl-project/sglang/pull/28855
+- 状态/时间: merged / 2026-06-22
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 18 个文件，+167/-106，可读 patch 555 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Spec] Redo: split init_backends; account draft weights in --mem-fraction-static」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py`, `python/sglang/srt/speculative/eagle_worker_v2.py`；技术摘要: 覆盖「[Spec] Redo: split init_backends; account draft weights in --mem-fraction-static」；主要实现面是 `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py`, `python/sglang/srt/speculative/eagle_worker_v2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/model_executor/model_runner.py` modified +23/-33 (56 lines); hunks: -788,18 +788,6 @@ def initialize(self):; -862,18 +850,13 @@ def alloc_memory_pool(self, memory_pool_config: Optional[M...; symbols: initialize, get_pp_proxy_topk_size, alloc_memory_pool, init_backends，涉及 `initialize, get_pp_proxy_topk_size, alloc_memory_pool`；`python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py` modified +35/-18 (53 lines); hunks: -1,6 +1,7; -82,24 +83,40 @@ def _get_dsv4_compress_state_dtypes() -> tuple[torch.dtype,...; symbols: _get_dsv4_compress_state_dtypes, ModelRunnerKVCacheMixin, _profile_available_bytes, handle_max_mamba_cache，涉及 `_get_dsv4_compress_state_dtypes, ModelRunnerKVCacheMixin, _profile_available_bytes`；`python/sglang/srt/speculative/eagle_worker_v2.py` modified +17/-8 (25 lines); hunks: -242,15 +242,21 @@ def alloc_memory_pool(; -358,8 +364,8 @@ def init_attention_backend(self):; symbols: alloc_memory_pool, init_backends, init_attention_backends, init_cuda_graphs，涉及 `alloc_memory_pool, init_backends, init_attention_backends`；`python/sglang/srt/speculative/base_spec_worker.py` modified +13/-9 (22 lines); hunks: -78,15 +78,16 @@ def draft_extend():; -295,7 +296,10 @@ def clear_cache_pool(self):; symbols: draft_extend, alloc_memory_pool, init_backends, init_attention_backends，涉及 `draft_extend, alloc_memory_pool, init_backends`。
+- 代码 diff 细节:
+  - `python/sglang/srt/model_executor/model_runner.py` modified +23/-33 (56 lines); hunks: -788,18 +788,6 @@ def initialize(self):; -862,18 +850,13 @@ def alloc_memory_pool(self, memory_pool_config: Optional[M...; symbols: initialize, get_pp_proxy_topk_size, alloc_memory_pool, init_backends
+  - `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py` modified +35/-18 (53 lines); hunks: -1,6 +1,7; -82,24 +83,40 @@ def _get_dsv4_compress_state_dtypes() -> tuple[torch.dtype,...; symbols: _get_dsv4_compress_state_dtypes, ModelRunnerKVCacheMixin, _profile_available_bytes, handle_max_mamba_cache
+  - `python/sglang/srt/speculative/eagle_worker_v2.py` modified +17/-8 (25 lines); hunks: -242,15 +242,21 @@ def alloc_memory_pool(; -358,8 +364,8 @@ def init_attention_backend(self):; symbols: alloc_memory_pool, init_backends, init_attention_backends, init_cuda_graphs
+  - `python/sglang/srt/speculative/base_spec_worker.py` modified +13/-9 (22 lines); hunks: -78,15 +78,16 @@ def draft_extend():; -295,7 +296,10 @@ def clear_cache_pool(self):; symbols: draft_extend, alloc_memory_pool, init_backends, init_attention_backends
+  - `python/sglang/srt/speculative/multi_layer_eagle_worker_v2.py` modified +14/-6 (20 lines); hunks: -200,11 +200,17 @@ def alloc_memory_pool(; -233,8 +239,7 @@ def init_attention_backend(self):; symbols: alloc_memory_pool, init_backends, init_attention_backends, init_cuda_graphs
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/model_executor/model_runner.py
+@@ -788,18 +788,6 @@ def initialize(self):
+-        # Snapshot free memory at the end of the weight-load phase. KV-pool
+-        # profiling uses this instead of measuring at alloc_memory_pool()
+-        # time: draft-model weights load between the two phases and must stay
+-        # outside the --mem-fraction-static budget (deployments tune the
+-        # fraction assuming draft weights live in the non-static slack).
+-        self.post_model_load_memory = get_available_gpu_memory(
+diff -- python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py
+@@ -1,6 +1,7 @@
++import math
+@@ -82,24 +83,40 @@ def _get_dsv4_compress_state_dtypes() -> tuple[torch.dtype, torch.dtype]:
+-        # Use the snapshot taken at the end of this runner's weight-load phase,
+-        # not the current free memory: draft-model weights loaded after that
+-        # point are charged to the non-static slack, not the static budget.
+-        post_model_load_memory = getattr(self, "post_model_load_memory", None)
+diff -- python/sglang/srt/speculative/eagle_worker_v2.py
+@@ -242,15 +242,21 @@ def alloc_memory_pool(
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/model_executor/model_runner.py` modified +23/-33; `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py` modified +35/-18; `python/sglang/srt/speculative/eagle_worker_v2.py` modified +17/-8; `python/sglang/srt/speculative/base_spec_worker.py` modified +13/-9; `python/sglang/srt/speculative/multi_layer_eagle_worker_v2.py` modified +14/-6; `python/sglang/srt/managers/scheduler.py` modified +12/-7
+- 验证与风险: diff 自带测试面 `python/sglang/test/server_fixtures/spec_eagle_fixture.py`, `test/registered/8-gpu-models/test_deepseek_v32.py`, `test/registered/cp/test_deepseek_v32_cp_single_node.py`, `test/registered/models_e2e/test_deepseek_v3_mtp.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #28938 - [AMD] Improve performance of dsv4 in high concurrency
+
+- 链接: https://github.com/sgl-project/sglang/pull/28938
+- 状态/时间: merged / 2026-06-23
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+111/-44，可读 patch 347 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[AMD] Improve performance of dsv4 in high concurrency」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/deepseek_v4_rope.py`, `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「[AMD] Improve performance of dsv4 in high concurrency」；主要实现面是 `python/sglang/srt/layers/deepseek_v4_rope.py`, `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/deepseek_v4_rope.py` modified +43/-32 (75 lines); hunks: -161,7 +161,7 @@ def apply_rotary_emb_triton_kernel_batched(; -210,66 +210,67 @@ def apply_rotary_emb_triton_kernel_batched(; symbols: apply_rotary_emb_triton_kernel_batched, apply_rotary_emb_contig_kernel, apply_rotary_emb_flat_kernel, apply_rotary_emb_triton，涉及 `apply_rotary_emb_triton_kernel_batched, apply_rotary_emb_contig_kernel, apply_rotary_emb_flat_kernel`；`python/sglang/srt/models/deepseek_v4.py` modified +29/-0 (29 lines); hunks: -157,6 +157,10 @@ def _is_fused_mhc_post_pre_enabled() -> bool:; -1580,6 +1584,22 @@ def forward(; symbols: _is_fused_mhc_post_pre_enabled, forward，涉及 `_is_fused_mhc_post_pre_enabled, forward`；`python/sglang/srt/models/deepseek_v2.py` modified +14/-2 (16 lines); hunks: -830,6 +830,7 @@ def forward(; -870,6 +871,7 @@ def forward(; symbols: forward, forward_normal，涉及 `forward, forward_normal`；`python/sglang/srt/layers/dp_attention.py` modified +5/-7 (12 lines); hunks: -580,13 +580,11 @@ def _dp_gather_via_all_gatherv(; symbols: _dp_gather_via_all_gatherv, _dp_gather，涉及 `_dp_gather_via_all_gatherv, _dp_gather`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/deepseek_v4_rope.py` modified +43/-32 (75 lines); hunks: -161,7 +161,7 @@ def apply_rotary_emb_triton_kernel_batched(; -210,66 +210,67 @@ def apply_rotary_emb_triton_kernel_batched(; symbols: apply_rotary_emb_triton_kernel_batched, apply_rotary_emb_contig_kernel, apply_rotary_emb_flat_kernel, apply_rotary_emb_triton
+  - `python/sglang/srt/models/deepseek_v4.py` modified +29/-0 (29 lines); hunks: -157,6 +157,10 @@ def _is_fused_mhc_post_pre_enabled() -> bool:; -1580,6 +1584,22 @@ def forward(; symbols: _is_fused_mhc_post_pre_enabled, forward
+  - `python/sglang/srt/models/deepseek_v2.py` modified +14/-2 (16 lines); hunks: -830,6 +830,7 @@ def forward(; -870,6 +871,7 @@ def forward(; symbols: forward, forward_normal
+  - `python/sglang/srt/layers/dp_attention.py` modified +5/-7 (12 lines); hunks: -580,13 +580,11 @@ def _dp_gather_via_all_gatherv(; symbols: _dp_gather_via_all_gatherv, _dp_gather
+  - `python/sglang/srt/distributed/parallel_state.py` modified +20/-3 (23 lines); hunks: -1013,10 +1013,14 @@ def all_gatherv(; -1027,7 +1031,9 @@ def all_gatherv(; symbols: all_gatherv, _all_gather_allocate_output
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/deepseek_v4_rope.py
+@@ -161,7 +161,7 @@ def apply_rotary_emb_triton_kernel_batched(
+-    # Batched variant: BLOCK_M tokens per program (mirrors ATOM's inverse_rope_gptj
++    # Batched variant: BLOCK_M tokens per program
+@@ -210,66 +210,67 @@ def apply_rotary_emb_triton_kernel_batched(
+-def apply_rotary_emb_contig_kernel(
++def apply_rotary_emb_flat_kernel(
+-    rope_dim,
+diff -- python/sglang/srt/models/deepseek_v4.py
+@@ -157,6 +157,10 @@ def _is_fused_mhc_post_pre_enabled() -> bool:
++# PoC: compute the (replicated TP1) shared expert on LOCAL hidden before the dp
++# gather instead of on the gathered global buffer. Requires
++# SGLANG_SHARED_EXPERT_TP1=1 (replicated shared expert). Default OFF.
++_SHARED_EXPERT_LOCAL = get_bool_env_var("SGLANG_DP_SHARED_EXPERT_LOCAL")
+@@ -1580,6 +1584,22 @@ def forward(
++        # PoC (SGLANG_DP_SHARED_EXPERT_LOCAL): compute the replicated shared expert
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -830,6 +830,7 @@ def forward(
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/deepseek_v4_rope.py` modified +43/-32; `python/sglang/srt/models/deepseek_v4.py` modified +29/-0; `python/sglang/srt/models/deepseek_v2.py` modified +14/-2; `python/sglang/srt/layers/dp_attention.py` modified +5/-7; `python/sglang/srt/distributed/parallel_state.py` modified +20/-3
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/distributed/parallel_state.py`, `python/sglang/srt/layers/deepseek_v4_rope.py`, `python/sglang/srt/layers/dp_attention.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #27833 - [AMD] Enable BCG on ROCm + route aiter prefill via MHA during PCG/BCG capture for Kimi-2.5
+
+- 链接: https://github.com/sgl-project/sglang/pull/27833
+- 状态/时间: merged / 2026-06-24
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+187/-0，可读 patch 202 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[AMD] Enable BCG on ROCm + route aiter prefill via MHA during PCG/BCG capture for Kimi-2.5」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/deepseek_common/attention_backend_handler.py`, `test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py`；技术摘要: 覆盖「[AMD] Enable BCG on ROCm + route aiter prefill via MHA during PCG/BCG capture for Kimi-2.5」；主要实现面是 `python/sglang/srt/models/deepseek_common/attention_backend_handler.py`, `test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/deepseek_common/attention_backend_handler.py` modified +8/-0 (8 lines); hunks: -1,6 +1,9; -150,6 +153,11 @@ def handle_attention_tokenspeed_mla(attn, forward_batch):; symbols: handle_attention_tokenspeed_mla, handle_attention_aiter，涉及 `handle_attention_tokenspeed_mla, handle_attention_aiter`；`test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py` added +179/-0 (179 lines); hunks: -0,0 +1,179; symbols: CaptureConfig, get_capture_configs, TestKimiK25MXFP4BcgMI35x, setUpClass，涉及 `CaptureConfig, get_capture_configs, TestKimiK25MXFP4BcgMI35x`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/deepseek_common/attention_backend_handler.py` modified +8/-0 (8 lines); hunks: -1,6 +1,9; -150,6 +153,11 @@ def handle_attention_tokenspeed_mla(attn, forward_batch):; symbols: handle_attention_tokenspeed_mla, handle_attention_aiter
+  - `test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py` added +179/-0 (179 lines); hunks: -0,0 +1,179; symbols: CaptureConfig, get_capture_configs, TestKimiK25MXFP4BcgMI35x, setUpClass
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_common/attention_backend_handler.py
+@@ -1,6 +1,9 @@
++from sglang.srt.model_executor.runner_backend_utils.breakable_cuda_graph import (
++    is_in_breakable_cuda_graph,
++)
+@@ -150,6 +153,11 @@ def handle_attention_tokenspeed_mla(attn, forward_batch):
++    # During PCG/BCG capture on ROCm, aiter fp8 MLA prefill has no capture
++    # kernels; route through the MHA path (radix_attention swaps attn_mqa for
+diff -- test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py
+@@ -0,0 +1,179 @@
++"""Kimi-K2.5-MXFP4 aiter breakable CUDA-graph (BCG) capture accuracy test
++(MI35x, PR-CI)
++Exercises the AMD breakable (BCG) CUDA-graph prefill capture path on a
++deepseek-family (Kimi-K2.5) aiter model so the code added in this PR actually
++runs in PR CI:
++  * runner_backend/breakable_cuda_graph_backend.py
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/deepseek_common/attention_backend_handler.py` modified +8/-0
+  - tests: `test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py` added +179/-0
+- 验证与风险: diff 自带测试面 `test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #27053 - [BCG][GLM5] perf: BCG support and prefill enhancements
+
+- 链接: https://github.com/sgl-project/sglang/pull/27053
+- 状态/时间: merged / 2026-06-24
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+694/-224，可读 patch 1292 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[BCG][GLM5] perf: BCG support and prefill enhancements」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/layers/attention/dsa/dsa_indexer.py`, `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「[BCG][GLM5] perf: BCG support and prefill enhancements」；主要实现面是 `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/layers/attention/dsa/dsa_indexer.py`, `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +287/-104 (391 lines); hunks: -1,18 +1,24; -28,6 +34,12; symbols: MlaBmmFusionPlan, init_mla_forward, _can_fuse_bmm_into_attention, _split_q_nope_pe，涉及 `MlaBmmFusionPlan, init_mla_forward, _can_fuse_bmm_into_attention`；`python/sglang/srt/layers/attention/dsa/dsa_indexer.py` modified +216/-101 (317 lines); hunks: -12,16 +12,24; -39,6 +47,7; symbols: _is_in_piecewise_or_breakable_cuda_graph, _uses_dsa_attention_backend, k_cache_and_topk_result, _logits_head_gate_pcg_fake_impl，涉及 `_is_in_piecewise_or_breakable_cuda_graph, _uses_dsa_attention_backend, k_cache_and_topk_result`；`python/sglang/srt/models/deepseek_v2.py` modified +89/-16 (105 lines); hunks: -94,7 +94,7; -135,6 +135,13; symbols: DeepseekV2MLP, __init__, get_moe_weights, _can_dual_stream_graph，涉及 `DeepseekV2MLP, __init__, get_moe_weights`；`python/sglang/srt/layers/attention/dsa/utils.py` modified +20/-1 (21 lines); hunks: -9,9 +9,15; -80,6 +86,19 @@ def is_dsa_prefill_cp_round_robin_split():; symbols: is_dsa_prefill_cp_round_robin_split, is_graph_dsa_split_op_surface, can_dsa_prefill_cp_round_robin_split，涉及 `is_dsa_prefill_cp_round_robin_split, is_graph_dsa_split_op_surface, can_dsa_prefill_cp_round_robin_split`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +287/-104 (391 lines); hunks: -1,18 +1,24; -28,6 +34,12; symbols: MlaBmmFusionPlan, init_mla_forward, _can_fuse_bmm_into_attention, _split_q_nope_pe
+  - `python/sglang/srt/layers/attention/dsa/dsa_indexer.py` modified +216/-101 (317 lines); hunks: -12,16 +12,24; -39,6 +47,7; symbols: _is_in_piecewise_or_breakable_cuda_graph, _uses_dsa_attention_backend, k_cache_and_topk_result, _logits_head_gate_pcg_fake_impl
+  - `python/sglang/srt/models/deepseek_v2.py` modified +89/-16 (105 lines); hunks: -94,7 +94,7; -135,6 +135,13; symbols: DeepseekV2MLP, __init__, get_moe_weights, _can_dual_stream_graph
+  - `python/sglang/srt/layers/attention/dsa/utils.py` modified +20/-1 (21 lines); hunks: -9,9 +9,15; -80,6 +86,19 @@ def is_dsa_prefill_cp_round_robin_split():; symbols: is_dsa_prefill_cp_round_robin_split, is_graph_dsa_split_op_surface, can_dsa_prefill_cp_round_robin_split
+  - `python/sglang/srt/layers/attention/dsa_backend.py` modified +6/-2 (8 lines); hunks: -2432,14 +2432,18 @@ def set_dsa_prefill_impl(self, forward_batch: Optional[F...; symbols: set_dsa_prefill_impl
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py
+@@ -1,18 +1,24 @@
++from dataclasses import dataclass
++from sglang.srt.compilation.compilation_config import register_split_op
+-from sglang.srt.layers.attention.dsa.utils import dsa_use_prefill_cp
++from sglang.srt.layers.attention.dsa.utils import (
++    dsa_use_prefill_cp,
++    is_graph_dsa_split_op_surface,
+diff -- python/sglang/srt/layers/attention/dsa/dsa_indexer.py
+@@ -12,16 +12,24 @@
++from sglang.srt.compilation.compilation_config import register_split_op
++    is_graph_dsa_split_op_surface,
++from sglang.srt.model_executor.runner_backend_utils.breakable_cuda_graph import (
++    eager_on_graph,
++)
++from sglang.srt.model_executor.runner_backend_utils.breakable_cuda_graph.context import (
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -94,7 +94,7 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +287/-104; `python/sglang/srt/layers/attention/dsa/dsa_indexer.py` modified +216/-101; `python/sglang/srt/models/deepseek_v2.py` modified +89/-16; `python/sglang/srt/layers/attention/dsa/utils.py` modified +20/-1; `python/sglang/srt/layers/attention/dsa_backend.py` modified +6/-2; `python/sglang/srt/environ.py` modified +1/-0
+  - tests: `test/registered/cuda_graph/piecewise/test_pcg_glm5_fp8_tp8.py` added +75/-0
+- 验证与风险: diff 自带测试面 `test/registered/cuda_graph/piecewise/test_pcg_glm5_fp8_tp8.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #29042 - [NPU] Fix the DeepSeek-V2-Coder model accuracy issue
+
+- 链接: https://github.com/sgl-project/sglang/pull/29042
+- 状态/时间: merged / 2026-06-25
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+4/-1，可读 patch 26 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[NPU] Fix the DeepSeek-V2-Coder model accuracy issue」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/llada2.py`, `python/sglang/srt/hardware_backend/npu/moe/topk.py`；技术摘要: 覆盖「[NPU] Fix the DeepSeek-V2-Coder model accuracy issue」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/llada2.py`, `python/sglang/srt/hardware_backend/npu/moe/topk.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +1/-0 (1 lines); hunks: -647,6 +647,7 @@ def __init__(; symbols: __init__，涉及 `__init__`；`python/sglang/srt/models/llada2.py` modified +1/-0 (1 lines); hunks: -262,6 +262,7 @@ def __init__(; symbols: __init__，涉及 `__init__`；`python/sglang/srt/hardware_backend/npu/moe/topk.py` modified +2/-1 (3 lines); hunks: -80,7 +80,8 @@ def fused_topk_npu(; symbols: fused_topk_npu，涉及 `fused_topk_npu`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/deepseek_v2.py` modified +1/-0 (1 lines); hunks: -647,6 +647,7 @@ def __init__(; symbols: __init__
+  - `python/sglang/srt/models/llada2.py` modified +1/-0 (1 lines); hunks: -262,6 +262,7 @@ def __init__(; symbols: __init__
+  - `python/sglang/srt/hardware_backend/npu/moe/topk.py` modified +2/-1 (3 lines); hunks: -80,7 +80,8 @@ def fused_topk_npu(; symbols: fused_topk_npu
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -647,6 +647,7 @@ def __init__(
++                scoring_func=config.scoring_func,
+diff -- python/sglang/srt/models/llada2.py
+@@ -262,6 +262,7 @@ def __init__(
++            scoring_func=self.score_function,
+diff -- python/sglang/srt/hardware_backend/npu/moe/topk.py
+@@ -80,7 +80,8 @@ def fused_topk_npu(
+-            norm_type=1,  # 1 for sigmoid, 0 for softmax
++            # 1 for sigmoid, 0 for softmax
++            norm_type=(0 if topk_config.scoring_func == "softmax" else 1),
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +1/-0; `python/sglang/srt/models/llada2.py` modified +1/-0; `python/sglang/srt/hardware_backend/npu/moe/topk.py` modified +2/-1
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/hardware_backend/npu/moe/topk.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/llada2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #14194 - [feature] implement dcp for deepseek_v2
+
+- 链接: https://github.com/sgl-project/sglang/pull/14194
+- 状态/时间: merged / 2026-06-25
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 20 个文件，+1770/-30，可读 patch 2258 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[feature] implement dcp for deepseek_v2」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/utils/dcp_utils.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/layers/attention/flashinfer_mla_backend.py`；技术摘要: 覆盖「[feature] implement dcp for deepseek_v2」；主要实现面是 `python/sglang/srt/layers/utils/dcp_utils.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/layers/attention/flashinfer_mla_backend.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/utils/dcp_utils.py` added +724/-0 (724 lines); hunks: -0,0 +1,724; symbols: dcp_enabled, get_attention_dcp_group, get_attention_dcp_world_size, get_attention_dcp_rank，涉及 `dcp_enabled, get_attention_dcp_group, get_attention_dcp_world_size`；`python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +62/-0 (62 lines); hunks: -1,5 +1,6; -20,6 +21,14; symbols: forward_absorb_prepare, forward_absorb_core，涉及 `forward_absorb_prepare, forward_absorb_core`；`python/sglang/srt/layers/attention/flashinfer_mla_backend.py` modified +44/-3 (47 lines); hunks: -23,6 +23,13; -410,6 +417,7 @@ def init_forward_metadata(self, forward_batch: ForwardBatch):; symbols: init_forward_metadata, _apply_cuda_graph_metadata, forward_extend, forward_decode，涉及 `init_forward_metadata, _apply_cuda_graph_metadata, forward_extend`；`python/sglang/srt/models/deepseek_v2.py` modified +45/-0 (45 lines); hunks: -122,6 +122,11; -1723,6 +1728,18 @@ def __init__(; symbols: __init__, set_dflash_layers_to_capture, prepare_context_parallel_metadata_for_dcp, DeepseekV3ForCausalLM，涉及 `__init__, set_dflash_layers_to_capture, prepare_context_parallel_metadata_for_dcp`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/utils/dcp_utils.py` added +724/-0 (724 lines); hunks: -0,0 +1,724; symbols: dcp_enabled, get_attention_dcp_group, get_attention_dcp_world_size, get_attention_dcp_rank
+  - `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +62/-0 (62 lines); hunks: -1,5 +1,6; -20,6 +21,14; symbols: forward_absorb_prepare, forward_absorb_core
+  - `python/sglang/srt/layers/attention/flashinfer_mla_backend.py` modified +44/-3 (47 lines); hunks: -23,6 +23,13; -410,6 +417,7 @@ def init_forward_metadata(self, forward_batch: ForwardBatch):; symbols: init_forward_metadata, _apply_cuda_graph_metadata, forward_extend, forward_decode
+  - `python/sglang/srt/models/deepseek_v2.py` modified +45/-0 (45 lines); hunks: -122,6 +122,11; -1723,6 +1728,18 @@ def __init__(; symbols: __init__, set_dflash_layers_to_capture, prepare_context_parallel_metadata_for_dcp, DeepseekV3ForCausalLM
+  - `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py` modified +31/-5 (36 lines); hunks: -9,6 +9,12; -271,11 +277,24 @@ def forward_normal_prepare(; symbols: forward_normal_prepare, _chunked_prefix_attn_mha, _get_mla_kv_buffer
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/utils/dcp_utils.py
+@@ -0,0 +1,724 @@
++from dataclasses import dataclass
++from typing import Optional
++import torch
++import triton
++import triton.language as tl
++from sglang.srt.distributed.device_communicators.pynccl_allocator import (
+diff -- python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py
+@@ -1,5 +1,6 @@
++import logging
+@@ -20,6 +21,14 @@
++from sglang.srt.layers.utils.dcp_utils import (
++    all_gather_kv_cache_for_mla_extend,
++    all_gather_q_for_mla_decode,
++    cp_lse_ag_out_rs,
+diff -- python/sglang/srt/layers/attention/flashinfer_mla_backend.py
+@@ -23,6 +23,13 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/utils/dcp_utils.py` added +724/-0; `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +62/-0; `python/sglang/srt/layers/attention/flashinfer_mla_backend.py` modified +44/-3; `python/sglang/srt/models/deepseek_v2.py` modified +45/-0; `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py` modified +31/-5; `python/sglang/srt/model_executor/runner/eager_runner.py` modified +26/-1
+- 验证与风险: diff 自带测试面 `test/registered/dcp/test_dsv31_dcp8_gsm8k.py`, `test/registered/dcp/test_reduce_scatter_along_dim.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #29142 - [DeepSeek V3] Run routed experts on main stream in dual-stream MoE
+
+- 链接: https://github.com/sgl-project/sglang/pull/29142
+- 状态/时间: merged / 2026-06-26
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+48/-46，可读 patch 108 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[DeepSeek V3] Run routed experts on main stream in dual-stream MoE」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「[DeepSeek V3] Run routed experts on main stream in dual-stream MoE」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +48/-46 (94 lines); hunks: -936,59 +936,61 @@ def forward_normal_dual_stream(; symbols: forward_normal_dual_stream，涉及 `forward_normal_dual_stream`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/deepseek_v2.py` modified +48/-46 (94 lines); hunks: -936,59 +936,61 @@ def forward_normal_dual_stream(; symbols: forward_normal_dual_stream
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -936,59 +936,61 @@ def forward_normal_dual_stream(
+-        shared_output = self._forward_shared_experts(
+-            hidden_states, gemm_output_zero_allocator
+-        )
++        # router_logits: (num_tokens, n_experts)
++        router_logits = self.gate(hidden_states, gemm_output_zero_allocator)
++        if use_flashinfer_trtllm_bypass:
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +48/-46
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/deepseek_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #22268 - [Bugfix] Fix prepare_qkv_latent bypassing LoRA adapters in DeepSeek V2/V3
+
+- 链接: https://github.com/sgl-project/sglang/pull/22268
+- 状态/时间: closed / 2026-06-27
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+5/-0，可读 patch 17 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] Fix prepare_qkv_latent bypassing LoRA adapters in DeepSeek V2/V3」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「[Bugfix] Fix prepare_qkv_latent bypassing LoRA adapters in DeepSeek V2/V3」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +5/-0 (5 lines); hunks: -1562,11 +1562,16 @@ def prepare_qkv_latent(; symbols: prepare_qkv_latent，涉及 `prepare_qkv_latent`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/deepseek_v2.py` modified +5/-0 (5 lines); hunks: -1562,11 +1562,16 @@ def prepare_qkv_latent(; symbols: prepare_qkv_latent
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -1562,11 +1562,16 @@ def prepare_qkv_latent(
++        # When LoRA adapters wrap the projection, the fused GEMM path reads
++        # .weight directly and would bypass the LoRA delta.  Detect this by
++        # checking for the ``base_layer`` attribute that all LoRA wrappers add.
++        is_lora_wrapped = hasattr(self.fused_qkv_a_proj_with_mqa, "base_layer")
++            and not is_lora_wrapped
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +5/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/deepseek_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ## 补漏结论
 

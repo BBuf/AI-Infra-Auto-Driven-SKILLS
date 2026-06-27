@@ -88,7 +88,9 @@ def _pr_cards(text: str) -> list[str]:
 
 def _assert_no_placeholders(path: Path, text: str) -> None:
     for pattern in PLACEHOLDER_PATTERNS:
-        assert not re.search(pattern, text, re.I), f"{path} contains placeholder pattern {pattern!r}"
+        assert not re.search(
+            pattern, text, re.I
+        ), f"{path} contains placeholder pattern {pattern!r}"
 
 
 def _assert_zh_cards(path: Path, text: str) -> None:
@@ -161,6 +163,16 @@ def test_model_runbook_skill_directories_are_removed() -> None:
     assert (SKILL_ROOT / "model-pr-diff-dossier" / "SKILL.md").exists()
     assert not list(SKILL_ROOT.glob("*/*/SKILL.md"))
     assert not list(SKILL_ROOT.glob("*/*/references/pr-history.md"))
+
+
+def test_readme_installs_model_pr_diff_dossier_skill() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    skill_path = "skills/model-optimization/model-pr-diff-dossier"
+
+    assert "[`model-pr-diff-dossier`]" in readme
+    assert f'ln -s "$PWD/{skill_path}" ~/.claude/skills/model-pr-diff-dossier' in readme
+    assert f"cp -R {skill_path} <agent-skill-dir>/model-pr-diff-dossier" in readme
+    assert "After reload, the 12 skills appear" in readme
 
 
 def test_rebuild_history_dry_run_does_not_update_indexes(tmp_path) -> None:
@@ -248,14 +260,20 @@ def test_model_pr_history_is_queryable_knowledge_base() -> None:
 
 def test_history_docs_share_the_git_traced_diff_card_format() -> None:
     history_docs = sorted(HISTORY_ROOT.glob("*/**/README.*.md"))
-    history_docs = [p for p in history_docs if p.name in {"README.zh.md", "README.en.md"}]
+    history_docs = [
+        p for p in history_docs if p.name in {"README.zh.md", "README.en.md"}
+    ]
     assert history_docs, "no model PR history docs found"
 
     for path in history_docs:
         text = path.read_text(encoding="utf-8")
         _assert_no_placeholders(path, text)
-        assert "GitHub Pull Request files API" in text, f"{path} must cite the diff source"
-        assert "git log --name-only -- <model-files>" in text, f"{path} must cite the git trace command"
+        assert (
+            "GitHub Pull Request files API" in text
+        ), f"{path} must cite the diff source"
+        assert (
+            "git log --name-only -- <model-files>" in text
+        ), f"{path} must cite the git trace command"
         if path.name == "README.zh.md":
             for required in ZH_REQUIRED_SECTIONS:
                 assert required in text, f"{path} missing {required}"

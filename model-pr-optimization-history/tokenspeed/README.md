@@ -7,11 +7,16 @@ Current model families:
 
 ## Current Watch / Landed Items
 
-Refresh: `2026-06-26`. Source head:
-`lightseekorg/tokenspeed@5aedf69d6b476baa65571011de6ea60fd5a238a8`.
+Refresh: `2026-06-27`. Source head:
+`lightseekorg/tokenspeed@d0a7faddb5ec0d4c6d037c4c3e6a781d2c5164a8`.
 
 | PR | Model / area | Status | Current signal | Why it matters |
 | --- | --- | --- | --- | --- |
+| [#520](https://github.com/lightseekorg/tokenspeed/pull/520) | Qwen3.5 / Hopper | open | Hopper support | TokenSpeed Qwen3.5 comparisons should record whether the target image includes this non-Blackwell path. |
+| [#510](https://github.com/lightseekorg/tokenspeed/pull/510) | Qwen3.5 / DFlash | open | DFlash support | Speculative or DFlash-enabled Qwen3.5 baselines may change when this branch lands. |
+| [#534](https://github.com/lightseekorg/tokenspeed/pull/534) | MXFP4 / MoE | open | gathered activation-scale fix | Affects MXFP4 MoE correctness and performance interpretation. |
+| [#528](https://github.com/lightseekorg/tokenspeed/pull/528) | GLM-5.2 / AMD | open | initial support | GLM-5.2 TokenSpeed coverage is still in flight. |
+| [#382](https://github.com/lightseekorg/tokenspeed/pull/382) | GDN prefill | open | fused causal-conv1d and QKV split | Relevant for GDN/linear-attention profiler traces and overlap opportunities. |
 | [#456](https://github.com/lightseekorg/tokenspeed/pull/456) | Qwen3.5 VLM | merged | packed QKV rotary layout | Optimizes Qwen vision FA4 rotary/QKV path and changes VLM trace shape. |
 | [#354](https://github.com/lightseekorg/tokenspeed/pull/354) | Qwen3.5 + Kimi VLM | merged | generalized multimodal runtime | Adds shared video/multimodal plumbing used by model-specific VLM paths. |
 | [#198](https://github.com/lightseekorg/tokenspeed/pull/198) | Qwen3.5 | merged | gated activation fusion | Fuses sigmoid/mul and removes a reshape copy in Qwen3.5 attention output. |

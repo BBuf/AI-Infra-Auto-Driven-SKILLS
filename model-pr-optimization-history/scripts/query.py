@@ -35,6 +35,21 @@ def _tokenize(value: str) -> list[str]:
     return list(dict.fromkeys(tokens))
 
 
+def _preferred_model_slug(query: str) -> str | None:
+    normalized = query.lower().replace("_", "-")
+    if "qwen3.5" in normalized or "qwen3-5" in normalized or "qwen35" in normalized:
+        return "qwen35"
+    if "qwen3-next" in normalized:
+        return "qwen3-next"
+    if "qwen3-coder" in normalized:
+        return "qwen3-coder"
+    if "qwen3-vl" in normalized or "qwen-vl" in normalized or "qwen3-omni" in normalized:
+        return "qwen-vlm-omni-asr"
+    if re.search(r"(?:^|[/\-\s])qwen3-\d", normalized) or "qwen/qwen3" in normalized:
+        return "qwen3-core"
+    return None
+
+
 def _frameworks(selected: str | None) -> list[str]:
     if selected:
         return [selected]
@@ -90,10 +105,12 @@ def _print_paths(docs: list[Doc]) -> None:
         print(doc.path.relative_to(ROOT))
 
 
-def _score(doc: Doc, terms: list[str]) -> int:
+def _score(doc: Doc, terms: list[str], preferred_model: str | None = None) -> int:
     haystack = f"{doc.framework} {doc.model} {doc.path.name}\n{doc.text}".lower()
     model_slug = doc.model.lower()
     score = 0
+    if preferred_model and model_slug == preferred_model:
+        score += 100000
     for term in terms:
         slug_term = _slugify(term)
         score += haystack.count(term) * 2
@@ -135,7 +152,12 @@ def _search(docs: list[Doc], query: str, limit: int) -> None:
             print(doc.path.relative_to(ROOT))
         return
 
-    scored = [(score, doc) for doc in docs if (score := _score(doc, terms)) > 0]
+    preferred_model = _preferred_model_slug(query)
+    scored = [
+        (score, doc)
+        for doc in docs
+        if (score := _score(doc, terms, preferred_model)) > 0
+    ]
     scored.sort(key=lambda item: (-item[0], str(item[1].path)))
 
     for score, doc in scored[:limit]:
