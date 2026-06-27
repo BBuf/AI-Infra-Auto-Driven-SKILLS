@@ -883,6 +883,35 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
         likely_share=1.0,
     ),
     FusionPatternSpec(
+        pattern="SGLang LTX2 residual-gate add CUDA fast path",
+        candidate_path=(
+            "PR #29361"
+            "<br>python/sglang/jit_kernel/diffusion/residual_gate_add.py"
+            "<br>python/sglang/jit_kernel/csrc/diffusion/residual_gate_add.cuh"
+            "<br>python/sglang/multimodal_gen/runtime/models/dits/ltx_2.py"
+        ),
+        active_keywords=(
+            "diffusion_residual_gate_add",
+            "residual_gate_add",
+            "_ltx2_residual_gate_add",
+        ),
+        split_groups=(
+            ("add", "mul", "gate"),
+            ("residual", "update", "gate"),
+            ("hidden_states", "attn_hidden_states", "gate"),
+        ),
+        rationale_hint=(
+            "SGLang mainline fuses LTX2 residual + update * gate sites into"
+            " a CUDA custom op; split add/mul gate ladders should be checked"
+            " against this path before proposing a new diffusion elementwise"
+            " fusion."
+        ),
+        origin="upstream",
+        model_include=("ltx", "ltx-2", "ltx2"),
+        min_share=0.2,
+        likely_share=1.0,
+    ),
+    FusionPatternSpec(
         pattern="TokenSpeed CuTe DSL MLA prefill / decode",
         candidate_path=(
             "python/tokenspeed/runtime/layers/attention/backends/tokenspeed_mla.py"

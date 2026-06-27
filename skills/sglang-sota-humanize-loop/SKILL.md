@@ -186,13 +186,14 @@ Hard requirements:
 - Use the same model weights, tokenizer, precision, quantization, GPU type/count,
   GPU ids, endpoint path, sampling settings, and SLA.
 - Record package version or git commit plus server/benchmark `--help` snapshots
-  for SGLang and every selected comparison framework. The 2026-06-26
-  source-refresh anchors are SGLang
-  `8524678889485801e7a4a12d62015be0c68f7a90`, vLLM
-  `abc71548ef029132c3316b902207f254a246d593`, TensorRT-LLM
-  `0722c5f47d2cae69ac1a237da51e550dd214532c`, and TokenSpeed
-  `5aedf69d6b476baa65571011de6ea60fd5a238a8`; still prefer target-image
-  `--help` over these source notes.
+  for SGLang and every selected comparison framework. The 2026-06-27 live
+  source anchors checked for this skill are SGLang
+  `9214b9338fcb1df5b1a9ab5835aa631539f55556`, vLLM
+  `091d13976c1c246714bb2112dd2e208561dda6a3`, TensorRT-LLM
+  `aaffa2f9fef3025e0f698d978385a73460344e0b`, and
+  `lightseekorg/tokenspeed@d0a7faddb5ec0d4c6d037c4c3e6a781d2c5164a8`;
+  still prefer target-image `--help` over these source notes and re-check
+  open PRs before every long SOTA run.
 - Use the default two dataset scenarios from `llm-serving-auto-benchmark` unless
   the user explicitly provides a production workload:
   - dataset kind `random`, `num_prompts: 80`
