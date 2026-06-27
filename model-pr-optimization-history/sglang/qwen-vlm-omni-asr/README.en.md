@@ -1,58 +1,17 @@
 # sglang Qwen VLM/Omni/ASR Model PR Optimization History
 
-## 2026-06-26 Latest Source Scan
-
-Rechecked SGLang upstream `sgl-project/sglang@8524678889485801e7a4a12d62015be0c68f7a90` against the tracked files listed below.
-The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-05`.
-
-Result: 3 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
-
-| Merged | PR | Title | Tracked files touched |
-| --- | --- | --- | --- |
-| 2026-06-25 | [#29261](https://github.com/sgl-project/sglang/pull/29261) | [Docs] Fix broken links in cookbook | `Nemotron3-Nano-Omni.mdx` |
-| 2026-06-24 | [#28940](https://github.com/sgl-project/sglang/pull/28940) | [VLM] Qwen3-VL / Moss-VL ViT preprocessing optimizations | `qwen3_vl.py` |
-| 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | Add get_parallel(): a structured accessor for parallel-topology state | `qwen2_5_vl.py`, `qwen3_omni_moe.py`, `qwen3_vl.py` |
-
-## 2026-06-05 PR Backfill Audit
-
-Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 19 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-04-28). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
-
-| Merged | PR | Title | Tracked files touched |
-| --- | --- | --- | --- |
-| 2026-06-04 | [#27240](https://github.com/sgl-project/sglang/pull/27240) | [Docs] re-organize nemotron cookbook | `Nemotron3-Nano-Omni.mdx` |
-| 2026-06-03 | [#25198](https://github.com/sgl-project/sglang/pull/25198) | [Docs] Update Nemotron3-Nano-Omni cookbook to reflect new model paths | `Nemotron3-Nano-Omni.mdx`, `nemotron3-nano-omni-deployment.jsx` |
-| 2026-06-01 | [#25813](https://github.com/sgl-project/sglang/pull/25813) | docs(cookbook): port popular model usage guides into cookbook pages | `qwen3_vl.mdx` |
-| 2026-05-25 | [#26094](https://github.com/sgl-project/sglang/pull/26094) | [VLM] fix: fix only the grids from last split mm item is collected for qwen-vl | `qwen_vl.py` |
-| 2026-05-24 | [#26167](https://github.com/sgl-project/sglang/pull/26167) | [VLM] feat: replace small H2D calls with a single one for qwen-vl | `qwen3_vl.py`, `qwen_vl.py` |
-| 2026-05-24 | [#26101](https://github.com/sgl-project/sglang/pull/26101) | [VLM] accept precomputed multimodal metadata | `qwen_vl.py` |
-| 2026-05-24 | [#26100](https://github.com/sgl-project/sglang/pull/26100) | [VLM] adopt simplified get_rope_index for image-only requests | `qwen_vl.py` |
-| 2026-05-23 | [#26116](https://github.com/sgl-project/sglang/pull/26116) | [VLM] reuse pretokenized ids from preprocessed input for qwen-vl | `qwen_vl.py` |
-| 2026-05-23 | [#24144](https://github.com/sgl-project/sglang/pull/24144) | [BugFix][EPD] adapt for qwen3.5-mtp & del duplicated logs | `qwen_vl.py` |
-| 2026-05-22 | [#24751](https://github.com/sgl-project/sglang/pull/24751) | fix(mm): make multimodal data loading non-blocking to prevent health check stalls | `glmasr.py`, `qwen3_asr.py`, `qwen_vl.py` |
-| 2026-05-21 | [#25759](https://github.com/sgl-project/sglang/pull/25759) | [BugFix][EPD]Fix Qwen3VLMoe encoder-only AttributeError | `qwen3_vl_moe.py` |
-| 2026-05-15 | [#25420](https://github.com/sgl-project/sglang/pull/25420) | [CI] Rename basic CI `stage-a/b/c` -> `base-a/b/c` for symmetry with extra CI | `test_lora_qwen3_vl_30b_a3b_instruct_logprob_diff.py` |
-| 2026-05-14 | [#25130](https://github.com/sgl-project/sglang/pull/25130) | [NPU]Bugfix:Set default values for npu_wrapper_preprocess parameters | `qwen_vl_processor.py` |
-| 2026-05-13 | [#25203](https://github.com/sgl-project/sglang/pull/25203) | ci: B200 conditional split + LPT_SLOP removal (stage-c partition 8→3) | `test_lora_qwen3_vl_30b_a3b_instruct_logprob_diff.py` |
-| 2026-05-13 | [#25197](https://github.com/sgl-project/sglang/pull/25197) | ci: decouple stage and runner for cuda registry | `test_lora_qwen3_vl_30b_a3b_instruct_logprob_diff.py` |
-| 2026-05-12 | [#24187](https://github.com/sgl-project/sglang/pull/24187) | [Fix] Qwen3-ASR config: set thinker_config before super().__init__ | `qwen3_asr.py` |
-| 2026-05-10 | [#24875](https://github.com/sgl-project/sglang/pull/24875) | Support Intern-S2-Preview | `qwen_vl.py` |
-| 2026-05-05 | [#23998](https://github.com/sgl-project/sglang/pull/23998) | update Nemotron3 Nano Omni cookbook benchmarks | `Nemotron3-Nano-Omni.mdx` |
-| 2026-04-30 | [#24163](https://github.com/sgl-project/sglang/pull/24163) | Revert "[ci] split stage-c-test-4-gpu-b200 to enable a low-disk runner pool" | `test_lora_qwen3_vl_30b_a3b_instruct_logprob_diff.py` |
-
-
 ## Implementation File Coverage
 
 | File | Git-traced PRs |
 | --- | --- |
 | `docs/basic_usage/qwen3_vl.md` | [#12554](https://github.com/sgl-project/sglang/pull/12554) |
-| `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` | [#23907](https://github.com/sgl-project/sglang/pull/23907), [#23968](https://github.com/sgl-project/sglang/pull/23968) |
+| `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` | [#23907](https://github.com/sgl-project/sglang/pull/23907), [#23968](https://github.com/sgl-project/sglang/pull/23968), [#23998](https://github.com/sgl-project/sglang/pull/23998), [#25198](https://github.com/sgl-project/sglang/pull/25198) |
 | `docs_new/cookbook/omni/FishAudio/S2-Pro.mdx` | no direct PR-number commit |
 | `docs_new/cookbook/omni/intro.mdx` | no direct PR-number commit |
-| `docs_new/docs/basic_usage/qwen3_vl.mdx` | no direct PR-number commit |
-| `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx` | [#23907](https://github.com/sgl-project/sglang/pull/23907) |
+| `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx` | [#23907](https://github.com/sgl-project/sglang/pull/23907), [#25198](https://github.com/sgl-project/sglang/pull/25198) |
 | `examples/chat_template/qwen3_vl_reranker.jinja` | no direct PR-number commit |
 | `examples/runtime/qwen3_vl_reranker.py` | no direct PR-number commit |
-| `python/sglang/srt/configs/qwen3_asr.py` | [#22073](https://github.com/sgl-project/sglang/pull/22073), [#22181](https://github.com/sgl-project/sglang/pull/22181) |
+| `python/sglang/srt/configs/qwen3_asr.py` | [#22073](https://github.com/sgl-project/sglang/pull/22073), [#22181](https://github.com/sgl-project/sglang/pull/22181), [#24187](https://github.com/sgl-project/sglang/pull/24187) |
 | `python/sglang/srt/configs/qwen3_omni.py` | [#10911](https://github.com/sgl-project/sglang/pull/10911) |
 | `python/sglang/srt/configs/qwen3_vl.py` | [#10323](https://github.com/sgl-project/sglang/pull/10323), [#10911](https://github.com/sgl-project/sglang/pull/10911) |
 | `python/sglang/srt/entrypoints/openai/transcription_adapters/qwen3_asr.py` | [#22089](https://github.com/sgl-project/sglang/pull/22089), [#22181](https://github.com/sgl-project/sglang/pull/22181) |
@@ -62,14 +21,17 @@ Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 19 additional P
 | `python/sglang/srt/models/qwen2_audio.py` | no direct PR-number commit |
 | `python/sglang/srt/models/qwen2_vl.py` | [#2055](https://github.com/sgl-project/sglang/pull/2055), [#5003](https://github.com/sgl-project/sglang/pull/5003), [#5349](https://github.com/sgl-project/sglang/pull/5349), [#5783](https://github.com/sgl-project/sglang/pull/5783), [#6136](https://github.com/sgl-project/sglang/pull/6136), [#13055](https://github.com/sgl-project/sglang/pull/13055), [#13736](https://github.com/sgl-project/sglang/pull/13736) |
 | `python/sglang/srt/models/qwen3_asr.py` | [#22073](https://github.com/sgl-project/sglang/pull/22073) |
-| `python/sglang/srt/models/qwen3_omni_moe.py` | [#10911](https://github.com/sgl-project/sglang/pull/10911), [#11791](https://github.com/sgl-project/sglang/pull/11791), [#12333](https://github.com/sgl-project/sglang/pull/12333), [#18185](https://github.com/sgl-project/sglang/pull/18185) |
-| `python/sglang/srt/models/qwen3_vl.py` | [#10323](https://github.com/sgl-project/sglang/pull/10323), [#10911](https://github.com/sgl-project/sglang/pull/10911), [#11458](https://github.com/sgl-project/sglang/pull/11458), [#11481](https://github.com/sgl-project/sglang/pull/11481), [#12333](https://github.com/sgl-project/sglang/pull/12333), [#13724](https://github.com/sgl-project/sglang/pull/13724), [#13736](https://github.com/sgl-project/sglang/pull/13736), [#14292](https://github.com/sgl-project/sglang/pull/14292), [#15205](https://github.com/sgl-project/sglang/pull/15205), [#15320](https://github.com/sgl-project/sglang/pull/15320), [#16366](https://github.com/sgl-project/sglang/pull/16366), [#16781](https://github.com/sgl-project/sglang/pull/16781), ... (15 total) |
+| `python/sglang/srt/models/qwen3_omni_moe.py` | [#10911](https://github.com/sgl-project/sglang/pull/10911), [#11791](https://github.com/sgl-project/sglang/pull/11791), [#12333](https://github.com/sgl-project/sglang/pull/12333), [#12662](https://github.com/sgl-project/sglang/pull/12662), [#18185](https://github.com/sgl-project/sglang/pull/18185) |
+| `python/sglang/srt/models/qwen3_vl.py` | [#10323](https://github.com/sgl-project/sglang/pull/10323), [#10911](https://github.com/sgl-project/sglang/pull/10911), [#11458](https://github.com/sgl-project/sglang/pull/11458), [#11481](https://github.com/sgl-project/sglang/pull/11481), [#12333](https://github.com/sgl-project/sglang/pull/12333), [#12662](https://github.com/sgl-project/sglang/pull/12662), [#13724](https://github.com/sgl-project/sglang/pull/13724), [#13736](https://github.com/sgl-project/sglang/pull/13736), [#14292](https://github.com/sgl-project/sglang/pull/14292), [#15205](https://github.com/sgl-project/sglang/pull/15205), [#15320](https://github.com/sgl-project/sglang/pull/15320), [#16366](https://github.com/sgl-project/sglang/pull/16366), ... (18 total) |
 | `python/sglang/srt/models/qwen3_vl_moe.py` | [#10323](https://github.com/sgl-project/sglang/pull/10323), [#10911](https://github.com/sgl-project/sglang/pull/10911), [#11481](https://github.com/sgl-project/sglang/pull/11481), [#13983](https://github.com/sgl-project/sglang/pull/13983), [#21469](https://github.com/sgl-project/sglang/pull/21469) |
 | `python/sglang/srt/multimodal/processors/glmasr.py` | [#15570](https://github.com/sgl-project/sglang/pull/15570), [#15772](https://github.com/sgl-project/sglang/pull/15772) |
 | `python/sglang/srt/multimodal/processors/qwen3_asr.py` | [#22073](https://github.com/sgl-project/sglang/pull/22073), [#22089](https://github.com/sgl-project/sglang/pull/22089), [#22181](https://github.com/sgl-project/sglang/pull/22181) |
-| `python/sglang/srt/multimodal/processors/qwen_vl.py` | [#10323](https://github.com/sgl-project/sglang/pull/10323), [#10911](https://github.com/sgl-project/sglang/pull/10911), [#11377](https://github.com/sgl-project/sglang/pull/11377), [#12240](https://github.com/sgl-project/sglang/pull/12240), [#12458](https://github.com/sgl-project/sglang/pull/12458) |
+| `python/sglang/srt/multimodal/processors/qwen_vl.py` | [#10323](https://github.com/sgl-project/sglang/pull/10323), [#10911](https://github.com/sgl-project/sglang/pull/10911), [#11377](https://github.com/sgl-project/sglang/pull/11377), [#12240](https://github.com/sgl-project/sglang/pull/12240), [#12458](https://github.com/sgl-project/sglang/pull/12458), [#12662](https://github.com/sgl-project/sglang/pull/12662), [#26094](https://github.com/sgl-project/sglang/pull/26094), [#26116](https://github.com/sgl-project/sglang/pull/26116), [#26167](https://github.com/sgl-project/sglang/pull/26167) |
 | `python/sglang/test/external_models/custom_qwen2_vl.py` | no direct PR-number commit |
-| `test/manual/models/test_qwen3_asr.py` | [#22181](https://github.com/sgl-project/sglang/pull/22181) |
+| `test/manual/models/test_qwen3_asr.py` | [#22181](https://github.com/sgl-project/sglang/pull/22181), [#22848](https://github.com/sgl-project/sglang/pull/22848) |
+| `test/registered/ascend/accuracy/qwen3_omni_30b_a3b_thinking/test_npu_qwen3_omni_30b_a3b_thinking_1p_mmmu.py` | no direct PR-number commit |
+| `test/registered/ascend/accuracy/qwen3_vl_30b_a3b_thinking/test_npu_qwen3_vl_30b_a3b_thinking_1p_mmmu.py` | no direct PR-number commit |
+| `test/registered/ascend/accuracy/qwen3_vl_8b_thinking/test_npu_qwen3_vl_8b_thinking_1p_mmmu.py` | no direct PR-number commit |
 | `test/registered/ascend/vlm_models/test_npu_qwen2_5_vl_3b_instruct.py` | no direct PR-number commit |
 | `test/registered/ascend/vlm_models/test_npu_qwen2_5_vl_72b_instruct.py` | no direct PR-number commit |
 | `test/registered/ascend/vlm_models/test_npu_qwen3_vl_235b_a22b_instruct.py` | no direct PR-number commit |
@@ -80,9 +42,9 @@ Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 19 additional P
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 41
-- Extra PRs preserved from existing docs: 38
-- Total PRs in this document: 79
+- Git-traced PRs: 50
+- Extra PRs preserved from existing docs: 51
+- Total PRs in this document: 101
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -105,7 +67,6 @@ Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 19 additional P
 | 2025-10-16 | [#10911](https://github.com/sgl-project/sglang/pull/10911) | merged | model: qwen3-omni (thinker-only) | `python/sglang/srt/models/qwen3_omni_moe.py`, `python/sglang/srt/configs/qwen3_omni.py`, `python/sglang/srt/models/qwen3_vl_moe.py` |
 | 2025-10-21 | [#11377](https://github.com/sgl-project/sglang/pull/11377) | merged | [BugFix][Qwen3-VL]: add metadata for video in qwen3-vl | `python/sglang/srt/multimodal/processors/qwen_vl.py` |
 | 2025-10-28 | [#12261](https://github.com/sgl-project/sglang/pull/12261) | open | [BugFix][Qwen2.5-VL]: fix cu_seqlens in qwen2.5-vl | `python/sglang/srt/models/qwen2_5_vl.py` |
-| 2025-11-05 | [#12662](https://github.com/sgl-project/sglang/pull/12662) | open | [CPU] Add support for Qwen3-vl and Qwen3-omni | `python/sglang/srt/layers/attention/vision.py`, `python/sglang/srt/configs/update_config.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py` |
 | 2025-11-05 | [#12703](https://github.com/sgl-project/sglang/pull/12703) | open | add qwen3-omni docs | `docs/basic_usage/qwen3_omni.md`, `docs/index.rst` |
 | 2025-11-06 | [#12240](https://github.com/sgl-project/sglang/pull/12240) | merged | [VLM] Optimize qwen_vl preprocess_video | `python/sglang/srt/multimodal/processors/qwen_vl.py` |
 | 2025-11-10 | [#12554](https://github.com/sgl-project/sglang/pull/12554) | merged | [Docs] Add docs for Qwen3-VL image and video support | `docs/basic_usage/qwen3_vl.md` |
@@ -114,7 +75,6 @@ Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 19 additional P
 | 2025-11-18 | [#13126](https://github.com/sgl-project/sglang/pull/13126) | merged | [VLM][feat] Support encoder DP for Qwen2.5-VL | `python/sglang/srt/models/qwen2_5_vl.py` |
 | 2025-11-20 | [#13055](https://github.com/sgl-project/sglang/pull/13055) | merged | [VLM] Support Piecewise CUDA Graph for Qwen2.5-VL | `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen2_vl.py` |
 | 2025-11-22 | [#13736](https://github.com/sgl-project/sglang/pull/13736) | merged | [VLM] Replace torch.repeat_interleave with faster np.repeat for Qwen-VL series | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen2_vl.py` |
-| 2025-11-25 | [#13918](https://github.com/sgl-project/sglang/pull/13918) | open | [VLM] support qwen3-vl eagle infer | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/llama_eagle3.py` |
 | 2025-11-26 | [#13983](https://github.com/sgl-project/sglang/pull/13983) | merged | Support KTransformers for Qwen3-VL moe | `python/sglang/srt/models/qwen3_vl_moe.py` |
 | 2025-11-28 | [#13904](https://github.com/sgl-project/sglang/pull/13904) | merged | [Bugfix] qwen2.5-vl spec decode accept_len low | `python/sglang/srt/models/qwen2_5_vl.py` |
 | 2025-11-28 | [#13724](https://github.com/sgl-project/sglang/pull/13724) | merged | support qwen3_vl vision model dp | `python/sglang/srt/models/qwen3_vl.py` |
@@ -133,14 +93,12 @@ Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 19 additional P
 | 2026-01-09 | [#16785](https://github.com/sgl-project/sglang/pull/16785) | open | [Bugfix] fix recompile in qwen3 vl | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen3_vl_moe.py`, `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` |
 | 2026-01-13 | [#16996](https://github.com/sgl-project/sglang/pull/16996) | open | feat: Support 'use_audio_in_video' option for qwen3omnimoe model | `python/sglang/srt/multimodal/processors/base_processor.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`, `python/sglang/srt/entrypoints/openai/protocol.py` |
 | 2026-01-16 | [#17202](https://github.com/sgl-project/sglang/pull/17202) | open | [Feat] Accelerate qwen3vl by remove cpu op | `python/sglang/srt/layers/attention/vision.py`, `python/sglang/srt/managers/mm_utils.py` |
-| 2026-01-18 | [#17276](https://github.com/sgl-project/sglang/pull/17276) | open | Add Qwen3VL Eagle3 Inference Support | `python/sglang/srt/models/qwen3_vl.py` |
 | 2026-01-22 | [#16366](https://github.com/sgl-project/sglang/pull/16366) | merged | Optimize Qwen3-VL video memory usage | `python/sglang/srt/models/qwen3_vl.py` |
 | 2026-01-30 | [#17624](https://github.com/sgl-project/sglang/pull/17624) | merged | [BUGFIX] Fix dp size > 1 for qwen3 vl model | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/multimodal/mm_utils.py`, `python/sglang/srt/layers/linear.py` |
 | 2026-02-02 | [#18024](https://github.com/sgl-project/sglang/pull/18024) | merged | fix: correct weight loading prefix mapping for Qwen3-VL | `python/sglang/srt/models/qwen3_vl.py` |
 | 2026-02-05 | [#16781](https://github.com/sgl-project/sglang/pull/16781) | merged | Refactor(qwen3-vl) optimize position encoding interpolation | `python/sglang/srt/models/qwen3_vl.py` |
 | 2026-02-12 | [#18721](https://github.com/sgl-project/sglang/pull/18721) | open | [BUG] fix mm_enable_dp_encoder hang for Qwen3-VL models | `python/sglang/srt/layers/vocab_parallel_embedding.py`, `python/sglang/srt/models/qwen3_vl.py` |
 | 2026-02-13 | [#18771](https://github.com/sgl-project/sglang/pull/18771) | open | Add Qwen3-Omni to Qwen MoE architecture handling in fused_moe_triton | `benchmark/kernels/fused_moe_triton/common_utils.py` |
-| 2026-02-24 | [#19242](https://github.com/sgl-project/sglang/pull/19242) | closed | [feat] feat: add Qwen3-ASR support like whisper | `python/sglang/srt/multimodal/processors/qwen3_asr.py`, `python/sglang/srt/configs/qwen3_asr.py`, `python/sglang/srt/configs/__init__.py` |
 | 2026-02-24 | [#19003](https://github.com/sgl-project/sglang/pull/19003) | merged | [VLM] Introduce FlashInfer CUDNN Prefill as ViT Backend | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/layers/attention/vision.py`, `test/manual/nightly/test_vlms_vit_flashinfer_cudnn.py` |
 | 2026-02-27 | [#19333](https://github.com/sgl-project/sglang/pull/19333) | merged | fix qwen3_vl visual module loading | `python/sglang/srt/models/qwen3_vl.py` |
 | 2026-03-02 | [#19693](https://github.com/sgl-project/sglang/pull/19693) | open | [NPU] Fix Qwen3-VL-8B Accuracy for NPU | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/llama.py`, `python/sglang/srt/layers/rotary_embedding.py` |
@@ -161,14 +119,40 @@ Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 19 additional P
 | 2026-04-09 | [#22230](https://github.com/sgl-project/sglang/pull/22230) | merged | [Feature] Support eagle3 for qwen3-vl | `python/sglang/srt/models/qwen3_vl.py` |
 | 2026-04-09 | [#22089](https://github.com/sgl-project/sglang/pull/22089) | merged | [Feature] Add chunk-based streaming ASR for Qwen3-ASR | `python/sglang/srt/entrypoints/openai/transcription_adapters/qwen3_asr.py`, `python/sglang/srt/multimodal/processors/qwen3_asr.py` |
 | 2026-04-15 | [#22839](https://github.com/sgl-project/sglang/pull/22839) | open | fix(config): Add from_dict() for Qwen3VL config classes | `test/registered/unit/configs/test_qwen3_vl_config.py`, `python/sglang/srt/configs/qwen3_5.py`, `python/sglang/srt/configs/qwen3_vl.py` |
-| 2026-04-15 | [#22848](https://github.com/sgl-project/sglang/pull/22848) | open | [Feature] WebSocket streaming audio input for ASR | `test/manual/models/test_qwen3_asr.py`, `python/sglang/srt/entrypoints/openai/serving_transcription_websocket.py`, `python/sglang/srt/entrypoints/openai/streaming_asr.py` |
 | 2026-04-18 | [#23115](https://github.com/sgl-project/sglang/pull/23115) | open | fix: guard self.model access in Qwen3VLMoeForConditionalGeneration.load_weights | `python/sglang/srt/models/qwen3_vl_moe.py` |
 | 2026-04-18 | [#22431](https://github.com/sgl-project/sglang/pull/22431) | merged | Fix Qwen3.5 video processing when passing video_data in "processor_output" format | `python/sglang/srt/multimodal/processors/qwen_vl.py` |
-| 2026-04-20 | [#23220](https://github.com/sgl-project/sglang/pull/23220) | merged | Bugfix: Qwen3-VL-MoE adapt encoder_only | `python/sglang/srt/models/qwen3_vl_moe.py` |
 | 2026-04-21 | [#23304](https://github.com/sgl-project/sglang/pull/23304) | closed | [Bugfix] Fix Qwen3-VL rope config compatibility | `python/sglang/srt/models/qwen3.py` |
-| 2026-04-22 | [#23469](https://github.com/sgl-project/sglang/pull/23469) | closed | [NPU] adapt the Qwen3-ASR model for deployment on NPU | `python/sglang/srt/utils/common.py` |
 | 2026-04-28 | [#23907](https://github.com/sgl-project/sglang/pull/23907) | merged | [Docs] add Nemotron 3 Nano Omni cookbook | `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx` |
 | 2026-04-28 | [#23968](https://github.com/sgl-project/sglang/pull/23968) | merged | [Docs] update Docker image for Nemotron 3 Nano Omni | `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` |
+| 2026-04-30 | [#24163](https://github.com/sgl-project/sglang/pull/24163) | merged | Revert "[ci] split stage-c-test-4-gpu-b200 to enable a low-disk runner pool" | `.github/workflows/pr-test.yml`, `scripts/ci/utils/slash_command_handler.py`, `test/registered/4-gpu-models/test_gpt_oss_4gpu.py` |
+| 2026-05-05 | [#23998](https://github.com/sgl-project/sglang/pull/23998) | merged | update Nemotron3 Nano Omni cookbook benchmarks | `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` |
+| 2026-05-10 | [#24875](https://github.com/sgl-project/sglang/pull/24875) | merged | Support Intern-S2-Preview | `python/sglang/srt/configs/interns2preview.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`, `python/sglang/srt/models/interns2preview.py` |
+| 2026-05-12 | [#24187](https://github.com/sgl-project/sglang/pull/24187) | merged | [Fix] Qwen3-ASR config: set thinker_config before super().__init__ | `python/sglang/srt/configs/qwen3_asr.py` |
+| 2026-05-14 | [#25197](https://github.com/sgl-project/sglang/pull/25197) | merged | ci: decouple stage and runner for cuda registry | `test/registered/layers/test_fla_layernorm_guard.py`, `test/registered/models/test_dummy_grok_models.py`, `test/registered/models/test_ministral3_models.py` |
+| 2026-05-14 | [#25203](https://github.com/sgl-project/sglang/pull/25203) | merged | ci: B200 conditional split + LPT_SLOP removal (stage-c partition 8→3) | `scripts/ci/utils/compute_partitions.py`, `test/registered/lora/test_lora_gpt_oss_20b_logprob_diff.py`, `test/registered/lora/test_lora_nemotron_3_super_120b_a12b_logprob_diff.py` |
+| 2026-05-14 | [#25130](https://github.com/sgl-project/sglang/pull/25130) | merged | [NPU]Bugfix:Set default values for npu_wrapper_preprocess parameters | `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py`, `python/sglang/srt/hardware_backend/npu/attention/ascend_gdn_backend.py` |
+| 2026-05-16 | [#25420](https://github.com/sgl-project/sglang/pull/25420) | merged | [CI] Rename basic CI `stage-a/b/c` -> `base-a/b/c` for symmetry with extra CI | `.github/workflows/pr-test-multimodal-gen.yml`, `test/registered/bench_fn/test_bench_serving_reasoning_stream.py`, `test/registered/function_call/test_kimik2_detector.py` |
+| 2026-05-21 | [#25759](https://github.com/sgl-project/sglang/pull/25759) | merged | [BugFix][EPD]Fix Qwen3VLMoe encoder-only AttributeError | `python/sglang/srt/models/qwen3_vl_moe.py` |
+| 2026-05-22 | [#24751](https://github.com/sgl-project/sglang/pull/24751) | merged | fix(mm): make multimodal data loading non-blocking to prevent health check stalls | `python/sglang/srt/multimodal/processors/base_processor.py`, `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/multimodal/processors/minicpm.py` |
+| 2026-05-22 | [#23220](https://github.com/sgl-project/sglang/pull/23220) | merged | Bugfix: Qwen3-VL-MoE adapt encoder_only | `python/sglang/srt/models/qwen3_vl_moe.py` |
+| 2026-05-23 | [#24144](https://github.com/sgl-project/sglang/pull/24144) | merged | [BugFix][EPD] adapt for qwen3.5-mtp & del duplicated logs | `python/sglang/srt/multimodal/processors/qwen_vl.py` |
+| 2026-05-23 | [#26116](https://github.com/sgl-project/sglang/pull/26116) | merged | [VLM] Reuse Qwen pretokenized ids | `python/sglang/srt/multimodal/processors/qwen_vl.py` |
+| 2026-05-24 | [#26100](https://github.com/sgl-project/sglang/pull/26100) | merged | [VLM] adopt simplified get_rope_index for image-only requests | `python/sglang/srt/multimodal/processors/qwen_vl.py` |
+| 2026-05-24 | [#26101](https://github.com/sgl-project/sglang/pull/26101) | merged | [VLM] accept precomputed multimodal metadata | `python/sglang/srt/multimodal/processors/base_processor.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py` |
+| 2026-05-24 | [#26167](https://github.com/sgl-project/sglang/pull/26167) | merged | [VLM] feat: replace small H2D calls with a single one for qwen-vl | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py` |
+| 2026-05-24 | [#23469](https://github.com/sgl-project/sglang/pull/23469) | closed | [NPU] adapt the Qwen3-ASR model for deployment on NPU | `python/sglang/srt/utils/common.py` |
+| 2026-05-25 | [#26094](https://github.com/sgl-project/sglang/pull/26094) | merged | [VLM] fix: fix only the grids from last split mm item is collected for qwen-vl | `python/sglang/srt/multimodal/processors/qwen_vl.py` |
+| 2026-05-25 | [#19242](https://github.com/sgl-project/sglang/pull/19242) | closed | [feat] feat: add Qwen3-ASR support like whisper | `python/sglang/srt/multimodal/processors/qwen3_asr.py`, `python/sglang/srt/configs/qwen3_asr.py`, `python/sglang/srt/configs/__init__.py` |
+| 2026-05-27 | [#12662](https://github.com/sgl-project/sglang/pull/12662) | merged | [CPU] Add support for Qwen3-vl and Qwen3-omni | `python/sglang/srt/models/qwen3_omni_moe.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`, `python/sglang/srt/models/qwen3_vl.py` |
+| 2026-05-27 | [#22848](https://github.com/sgl-project/sglang/pull/22848) | merged | [Feature] WebSocket streaming audio input for ASR | `test/manual/models/test_qwen3_asr.py` |
+| 2026-06-02 | [#25813](https://github.com/sgl-project/sglang/pull/25813) | merged | docs(cookbook): port popular model usage guides into cookbook pages | `docs_new/docs/basic_usage/deepseek_v32.mdx`, `docs_new/docs/basic_usage/deepseek_v3.mdx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` |
+| 2026-06-03 | [#25198](https://github.com/sgl-project/sglang/pull/25198) | merged | [Docs] Update Nemotron3-Nano-Omni cookbook to reflect new model paths | `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx` |
+| 2026-06-04 | [#27240](https://github.com/sgl-project/sglang/pull/27240) | merged | [Docs] re-organize nemotron cookbook | `docs_new/docs.json`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` |
+| 2026-06-11 | [#13918](https://github.com/sgl-project/sglang/pull/13918) | closed | [VLM] support qwen3-vl eagle infer | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/llama_eagle3.py` |
+| 2026-06-11 | [#17276](https://github.com/sgl-project/sglang/pull/17276) | closed | Add Qwen3VL Eagle3 Inference Support | `python/sglang/srt/models/qwen3_vl.py` |
+| 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | merged | Add get_parallel(): a structured accessor for parallel-topology state | `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py` |
+| 2026-06-24 | [#28940](https://github.com/sgl-project/sglang/pull/28940) | merged | [VLM] Qwen3-VL / Moss-VL ViT preprocessing optimizations | `python/sglang/srt/models/qwen3_vl.py` |
+| 2026-06-25 | [#29261](https://github.com/sgl-project/sglang/pull/29261) | merged | [Docs] Fix broken links in cookbook | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/cookbook/autoregressive/GLM/GLM-4.7.mdx`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` |
 
 ## Per-PR Diff Audit Cards
 
@@ -205,7 +189,7 @@ diff -- python/sglang/srt/models/qwen2_vl.py
 - Status/date: merged / 2025-04-14
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen2_vl.py`; associated commits `072df753546b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +375/-45, 531 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Support for Qwen2.5-VL Model in bitsandbytes Format"; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `python/sglang/srt/models/qwen2_vl.py`, `python/sglang/srt/models/qwen2_5_vl.py`; technical summary: Covers "Support for Qwen2.5-VL Model in bitsandbytes Format"; the main implementation surface is `python/sglang/srt/models/qwen2_vl.py`, `python/sglang/srt/models/qwen2_5_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "Support for Qwen2.5-VL Model in bitsandbytes Format"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/models/qwen2_vl.py`, `python/sglang/srt/models/qwen2_5_vl.py`; technical summary: Covers "Support for Qwen2.5-VL Model in bitsandbytes Format"; the main implementation surface is `python/sglang/srt/models/qwen2_vl.py`, `python/sglang/srt/models/qwen2_5_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/qwen2_vl.py` modified +24/-23 (47 lines); hunks: -152,7 +152,7 @@ def __init__(; -351,7 +351,7 @@ def __init__(; symbols: __init__, dtype, device, forward, touching `__init__, dtype, device`; `python/sglang/srt/models/qwen2_5_vl.py` modified +24/-22 (46 lines); hunks: -141,7 +141,7 @@ def __init__(; -325,7 +325,7 @@ def get_window_index(self, grid_thw):; symbols: __init__, get_window_index, dtype, device, touching `__init__, get_window_index, dtype`.
 - Code diff details:
   - `python/sglang/srt/models/qwen2_vl.py` modified +24/-23 (47 lines); hunks: -152,7 +152,7 @@ def __init__(; -351,7 +351,7 @@ def __init__(; symbols: __init__, dtype, device, forward
@@ -241,7 +225,7 @@ diff -- python/sglang/srt/models/qwen2_5_vl.py
 - Status/date: merged / 2025-04-24
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen2_vl.py`; associated commits `c998d04b4692`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 26 files, +435/-337, 1363 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "vlm: enable radix cache for qwen-vl models"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/models/qwen2_vl.py`, `python/sglang/srt/models/qwen2_5_vl.py`; technical summary: Covers "vlm: enable radix cache for qwen-vl models"; the main implementation surface is `python/sglang/srt/models/qwen2_vl.py`, `python/sglang/srt/models/qwen2_5_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "vlm: enable radix cache for qwen-vl models"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/models/qwen2_vl.py`, `python/sglang/srt/models/qwen2_5_vl.py`; technical summary: Covers "vlm: enable radix cache for qwen-vl models"; the main implementation surface is `python/sglang/srt/models/qwen2_vl.py`, `python/sglang/srt/models/qwen2_5_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/qwen2_vl.py` modified +3/-7 (10 lines); hunks: -42,7 +42,7; -490,15 +490,11 @@ def __init__(; symbols: __init__, pad_input_ids, get_image_feature, touching `__init__, pad_input_ids, get_image_feature`; `python/sglang/srt/models/qwen2_5_vl.py` modified +3/-6 (9 lines); hunks: -49,7 +49,7; -488,11 +488,8 @@ def __init__(; symbols: __init__, pad_input_ids, get_image_feature, touching `__init__, pad_input_ids, get_image_feature`.
 - Code diff details:
   - `python/sglang/srt/models/qwen2_vl.py` modified +3/-7 (10 lines); hunks: -42,7 +42,7; -490,15 +490,11 @@ def __init__(; symbols: __init__, pad_input_ids, get_image_feature
@@ -383,7 +367,7 @@ diff -- python/sglang/srt/entrypoints/engine.py
 - Status/date: merged / 2025-09-08
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen2_5_vl.py`; associated commits `37d83c6e6d8a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 9 files, +114/-5, 260 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Qwen2.5-VL eagle3 infer"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/models/qwen2_5_vl.py`; technical summary: Covers "Qwen2.5-VL eagle3 infer"; the main implementation surface is `python/sglang/srt/models/qwen2_5_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "Qwen2.5-VL eagle3 infer"; model line: Qwen VLM/Omni/ASR; category: model implementation change; main diff: `python/sglang/srt/models/qwen2_5_vl.py`; technical summary: Covers "Qwen2.5-VL eagle3 infer"; the main implementation surface is `python/sglang/srt/models/qwen2_5_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/qwen2_5_vl.py` modified +24/-1 (25 lines); hunks: -517,6 +517,9 @@ def __init__(; -587,9 +590,13 @@ def forward(; symbols: __init__, pad_input_ids, forward, load_weights, touching `__init__, pad_input_ids, forward`.
 - Code diff details:
   - `python/sglang/srt/models/qwen2_5_vl.py` modified +24/-1 (25 lines); hunks: -517,6 +517,9 @@ def __init__(; -587,9 +590,13 @@ def forward(; symbols: __init__, pad_input_ids, forward, load_weights
@@ -677,55 +661,13 @@ diff -- python/sglang/srt/models/qwen2_5_vl.py
   - runtime: `python/sglang/srt/models/qwen2_5_vl.py` modified +5/-5
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/qwen2_5_vl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-### PR #12662 - [CPU] Add support for Qwen3-vl and Qwen3-omni
-
-- Link: https://github.com/sgl-project/sglang/pull/12662
-- Status/date: open / 2025-11-05
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 12 files, +496/-55, 884 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[CPU] Add support for Qwen3-vl and Qwen3-omni"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/layers/attention/vision.py`, `python/sglang/srt/configs/update_config.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`; technical summary: Covers "[CPU] Add support for Qwen3-vl and Qwen3-omni"; the main implementation surface is `python/sglang/srt/layers/attention/vision.py`, `python/sglang/srt/configs/update_config.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/layers/attention/vision.py` modified +80/-12 (92 lines); hunks: -16,9 +16,11; -30,9 +32,11; symbols: forward, VisionAMXAttention, __init__, touching `forward, VisionAMXAttention, __init__`; `python/sglang/srt/configs/update_config.py` modified +54/-20 (74 lines); hunks: -189,28 +189,62 @@ def adjust_config_with_unaligned_cpu_tp(; symbols: adjust_config_with_unaligned_cpu_tp, touching `adjust_config_with_unaligned_cpu_tp`; `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +60/-0 (60 lines); hunks: -32,6 +32,7; -57,6 +58,65; symbols: hacked_preprocess, smart_resize, touching `hacked_preprocess, smart_resize`; `python/sglang/srt/models/qwen3_vl.py` modified +44/-6 (50 lines); hunks: -72,7 +72,14; -88,6 +95,10; symbols: Qwen3_VisionMLP, __init__, forward, touching `Qwen3_VisionMLP, __init__, forward`.
-- Code diff details:
-  - `python/sglang/srt/layers/attention/vision.py` modified +80/-12 (92 lines); hunks: -16,9 +16,11; -30,9 +32,11; symbols: forward, VisionAMXAttention, __init__
-  - `python/sglang/srt/configs/update_config.py` modified +54/-20 (74 lines); hunks: -189,28 +189,62 @@ def adjust_config_with_unaligned_cpu_tp(; symbols: adjust_config_with_unaligned_cpu_tp
-  - `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +60/-0 (60 lines); hunks: -32,6 +32,7; -57,6 +58,65; symbols: hacked_preprocess, smart_resize
-  - `python/sglang/srt/models/qwen3_vl.py` modified +44/-6 (50 lines); hunks: -72,7 +72,14; -88,6 +95,10; symbols: Qwen3_VisionMLP, __init__, forward
-  - `python/sglang/srt/models/qwen3_omni_moe.py` modified +34/-11 (45 lines); hunks: -32,7 +32,11; -43,7 +47,9; symbols: Qwen3OmniMoeAudioEncoderLayer, __init__, _get_feat_extract_output_lengths, Qwen3OmniMoeAudioEncoder
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/layers/attention/vision.py
-@@ -16,9 +16,11 @@
-+    cpu_has_amx_support,
-+    is_cpu,
-@@ -30,9 +32,11 @@
-+_is_cpu = is_cpu()
-+_is_cpu_amx_available = cpu_has_amx_support()
-@@ -42,6 +46,9 @@
-diff -- python/sglang/srt/configs/update_config.py
-@@ -189,28 +189,62 @@ def adjust_config_with_unaligned_cpu_tp(
--    if (
--        hasattr(model_config.hf_config, "vision_config")
--        and model_config.hf_config.vision_config.model_type == "siglip_vision_model"
--    ):
--        model_config.hf_config.vision_config.original_num_attention_heads = (
--            model_config.num_attention_heads
-diff -- python/sglang/srt/multimodal/processors/qwen_vl.py
-@@ -32,6 +32,7 @@
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/layers/attention/vision.py` modified +80/-12; `python/sglang/srt/configs/update_config.py` modified +54/-20; `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +60/-0; `python/sglang/srt/models/qwen3_vl.py` modified +44/-6; `python/sglang/srt/models/qwen3_omni_moe.py` modified +34/-11; `python/sglang/srt/layers/conv.py` modified +19/-0
-  - other: `sgl-kernel/csrc/cpu/gemm.cpp` modified +142/-0
-- Risk and verification: Runtime changes concentrate in `python/sglang/srt/configs/update_config.py`, `python/sglang/srt/layers/amx_utils.py`, `python/sglang/srt/layers/attention/vision.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
 ### PR #12703 - add qwen3-omni docs
 
 - Link: https://github.com/sgl-project/sglang/pull/12703
 - Status/date: open / 2025-11-05
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +150/-0, 158 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "add qwen3-omni docs"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `docs/basic_usage/qwen3_omni.md`, `docs/index.rst`; technical summary: Covers "add qwen3-omni docs"; the main implementation surface is `docs/basic_usage/qwen3_omni.md`, `docs/index.rst`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "add qwen3-omni docs"; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `docs/basic_usage/qwen3_omni.md`, `docs/index.rst`; technical summary: Covers "add qwen3-omni docs"; the main implementation surface is `docs/basic_usage/qwen3_omni.md`, `docs/index.rst`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs/basic_usage/qwen3_omni.md` added +149/-0 (149 lines); hunks: -0,0 +1,149; `docs/index.rst` modified +1/-0 (1 lines); hunks: -31,6 +31,7 @@ Its core features include:.
 - Code diff details:
   - `docs/basic_usage/qwen3_omni.md` added +149/-0 (149 lines); hunks: -0,0 +1,149
@@ -927,7 +869,7 @@ diff -- python/sglang/srt/models/qwen2_vl.py
 - Status/date: merged / 2025-11-22
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen2_vl.py`, `python/sglang/srt/models/qwen3_vl.py`; associated commits `5625e32cae12`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +169/-13, 229 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[VLM] Replace torch.repeat_interleave with faster np.repeat for Qwen-VL series"; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen2_vl.py`; technical summary: Covers "[VLM] Replace torch.repeat_interleave with faster np.repeat for Qwen-VL series"; the main implementation surface is `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen2_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "[VLM] Replace torch.repeat_interleave with faster np.repeat for Qwen-VL series"; model line: Qwen VLM/Omni/ASR; category: model implementation change; main diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen2_vl.py`; technical summary: Covers "[VLM] Replace torch.repeat_interleave with faster np.repeat for Qwen-VL series"; the main implementation surface is `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen2_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +2/-9 (11 lines); hunks: -46,6 +46,7; -434,15 +435,7 @@ def forward(; symbols: forward, touching `forward`; `python/sglang/srt/models/qwen2_vl.py` modified +2/-4 (6 lines); hunks: -44,6 +44,7; -387,10 +388,7 @@ def forward(; symbols: forward, touching `forward`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +2/-9 (11 lines); hunks: -46,6 +46,7; -434,15 +435,7 @@ def forward(; symbols: forward
@@ -956,42 +898,6 @@ diff -- python/sglang/srt/models/qwen2_vl.py
 - Reviewed files:
   - runtime: `python/sglang/srt/models/qwen3_vl.py` modified +2/-9; `python/sglang/srt/models/qwen2_vl.py` modified +2/-4
 - Risk and verification: The diff ships test coverage in `test/srt/ops/test_repeat_interleave.py`, `test/srt/run_suite.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
-### PR #13918 - [VLM] support qwen3-vl eagle infer
-
-- Link: https://github.com/sgl-project/sglang/pull/13918
-- Status/date: open / 2025-11-25
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 2 files, +30/-3, 63 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[VLM] support qwen3-vl eagle infer"; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/llama_eagle3.py`; technical summary: Covers "[VLM] support qwen3-vl eagle infer"; the main implementation surface is `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/llama_eagle3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +23/-1 (24 lines); hunks: -624,6 +624,9 @@ def __init__(; -711,9 +714,13 @@ def forward(; symbols: __init__, separate_deepstack_embeds, forward, load_weights, touching `__init__, separate_deepstack_embeds, forward`; `python/sglang/srt/models/llama_eagle3.py` modified +7/-2 (9 lines); hunks: -116,9 +116,14 @@ def __init__(; symbols: __init__, touching `__init__`.
-- Code diff details:
-  - `python/sglang/srt/models/qwen3_vl.py` modified +23/-1 (24 lines); hunks: -624,6 +624,9 @@ def __init__(; -711,9 +714,13 @@ def forward(; symbols: __init__, separate_deepstack_embeds, forward, load_weights
-  - `python/sglang/srt/models/llama_eagle3.py` modified +7/-2 (9 lines); hunks: -116,9 +116,14 @@ def __init__(; symbols: __init__
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/models/qwen3_vl.py
-@@ -624,6 +624,9 @@ def __init__(
-+        # For EAGLE3 support
-+        self.capture_aux_hidden_states = False
-@@ -711,9 +714,13 @@ def forward(
-+        aux_hidden_states = None
-+        if self.capture_aux_hidden_states:
-+            hidden_states, aux_hidden_states = hidden_states
-diff -- python/sglang/srt/models/llama_eagle3.py
-@@ -116,9 +116,14 @@ def __init__(
--        # fix rope_scaling for qwen2.5-vl
-+        # fix rope_scaling for qwen2.5-vl/qwen3-vl
--            config.rope_scaling["rope_type"] = "default"
-+            rope_scaling = config.rope_scaling
-+            self.mrope_interleaved = rope_scaling.setdefault("mrope_interleaved", False)
-+            if not self.mrope_interleaved:
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/models/qwen3_vl.py` modified +23/-1; `python/sglang/srt/models/llama_eagle3.py` modified +7/-2
-- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/llama_eagle3.py`, `python/sglang/srt/models/qwen3_vl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #13983 - Support KTransformers for Qwen3-VL moe
 
@@ -1168,7 +1074,7 @@ diff -- test/nightly/test_encoder_dp.py
 - Status/date: merged / 2025-12-15
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +363/-8, 413 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[VLM] Support chunked vit attention"; model line: Qwen VLM/Omni/ASR; category: performance/backend optimization; main diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/managers/mm_utils.py`; technical summary: Covers "[VLM] Support chunked vit attention"; the main implementation surface is `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/managers/mm_utils.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "[VLM] Support chunked vit attention"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/managers/mm_utils.py`; technical summary: Covers "[VLM] Support chunked vit attention"; the main implementation surface is `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/managers/mm_utils.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +97/-8 (105 lines); hunks: -14,6 +14,7; -53,7 +54,7; symbols: get_image_feature, get_video_feature, touching `get_image_feature, get_video_feature`; `python/sglang/srt/managers/mm_utils.py` modified +266/-0 (266 lines); hunks: -41,6 +41,9; -414,6 +417,67 @@ def _get_precomputed_embedding(; symbols: init_feature_buffer, _get_precomputed_embedding, get_embedding_items_per_chunk_with_extra_padding, _get_chunked_prefill_embedding, touching `init_feature_buffer, _get_precomputed_embedding, get_embedding_items_per_chunk_with_extra_padding`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +97/-8 (105 lines); hunks: -14,6 +14,7; -53,7 +54,7; symbols: get_image_feature, get_video_feature
@@ -1204,7 +1110,7 @@ diff -- python/sglang/srt/managers/mm_utils.py
 - Status/date: merged / 2025-12-17
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_omni_moe.py`, `python/sglang/srt/models/qwen3_vl.py`; associated commits `45a959d3e971`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +119/-20, 243 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[PP] Add pp support for Qwen3-VL"; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen3_omni_moe.py`; technical summary: Covers "[PP] Add pp support for Qwen3-VL"; the main implementation surface is `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen3_omni_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "[PP] Add pp support for Qwen3-VL"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen3_omni_moe.py`; technical summary: Covers "[PP] Add pp support for Qwen3-VL"; the main implementation surface is `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen3_omni_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +53/-19 (72 lines); hunks: -32,11 +32,13; -599,6 +601,7 @@ def __init__(; symbols: __init__, forward, load_weights, touching `__init__, forward, load_weights`; `python/sglang/srt/models/qwen3_omni_moe.py` modified +4/-1 (5 lines); hunks: -614,7 +614,10 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: load_weights, touching `load_weights`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +53/-19 (72 lines); hunks: -32,11 +32,13; -599,6 +601,7 @@ def __init__(; symbols: __init__, forward, load_weights
@@ -1266,7 +1172,7 @@ diff -- python/sglang/srt/models/qwen2_5_vl.py
 - Status/date: merged / 2025-12-18
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_vl.py`; associated commits `8fa3dc36c565`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +100/-80, 345 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[VLM] Support cos sin cache for Qwen3-VL & GLM-4.1V"; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `python/sglang/srt/models/qwen3_vl.py`; technical summary: Covers "[VLM] Support cos sin cache for Qwen3-VL & GLM-4.1V"; the main implementation surface is `python/sglang/srt/models/qwen3_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "[VLM] Support cos sin cache for Qwen3-VL & GLM-4.1V"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/models/qwen3_vl.py`; technical summary: Covers "[VLM] Support cos sin cache for Qwen3-VL & GLM-4.1V"; the main implementation surface is `python/sglang/srt/models/qwen3_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +41/-20 (61 lines); hunks: -24,9 +24,6; -39,6 +36,7; symbols: forward, __init__, dtype, device, touching `forward, __init__, dtype`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +41/-20 (61 lines); hunks: -24,9 +24,6; -39,6 +36,7; symbols: forward, __init__, dtype, device
@@ -1401,7 +1307,7 @@ diff -- python/sglang/srt/multimodal/processors/glmasr.py
 - Status/date: open / 2026-01-05
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-0, 10 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Qwen3-VL][PP] Skip loading expert weights not on this rank"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/models/qwen3_vl_moe.py`; technical summary: Covers "[Qwen3-VL][PP] Skip loading expert weights not on this rank"; the main implementation surface is `python/sglang/srt/models/qwen3_vl_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "[Qwen3-VL][PP] Skip loading expert weights not on this rank"; model line: Qwen VLM/Omni/ASR; category: model implementation change; main diff: `python/sglang/srt/models/qwen3_vl_moe.py`; technical summary: Covers "[Qwen3-VL][PP] Skip loading expert weights not on this rank"; the main implementation surface is `python/sglang/srt/models/qwen3_vl_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/qwen3_vl_moe.py` modified +3/-0 (3 lines); hunks: -274,6 +274,9 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights, touching `load_weights`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl_moe.py` modified +3/-0 (3 lines); hunks: -274,6 +274,9 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights
@@ -1574,40 +1480,13 @@ diff -- python/sglang/srt/managers/mm_utils.py
   - runtime: `python/sglang/srt/layers/attention/vision.py` modified +3/-3; `python/sglang/srt/managers/mm_utils.py` modified +24/-6
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/attention/vision.py`, `python/sglang/srt/managers/mm_utils.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-### PR #17276 - Add Qwen3VL Eagle3 Inference Support
-
-- Link: https://github.com/sgl-project/sglang/pull/17276
-- Status/date: open / 2026-01-18
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 1 files, +35/-0, 62 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Add Qwen3VL Eagle3 Inference Support"; model line: Qwen VLM/Omni/ASR; category: performance/backend optimization; main diff: `python/sglang/srt/models/qwen3_vl.py`; technical summary: Covers "Add Qwen3VL Eagle3 Inference Support"; the main implementation surface is `python/sglang/srt/models/qwen3_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +35/-0 (35 lines); hunks: -733,6 +733,9 @@ def __init__(; -920,13 +923,18 @@ def forward(; symbols: __init__, separate_deepstack_embeds, forward, load_weights, touching `__init__, separate_deepstack_embeds, forward`.
-- Code diff details:
-  - `python/sglang/srt/models/qwen3_vl.py` modified +35/-0 (35 lines); hunks: -733,6 +733,9 @@ def __init__(; -920,13 +923,18 @@ def forward(; symbols: __init__, separate_deepstack_embeds, forward, load_weights
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/models/qwen3_vl.py
-@@ -733,6 +733,9 @@ def __init__(
-+        # For EAGLE3 support
-+        self.capture_aux_hidden_states = False
-@@ -920,13 +923,18 @@ def forward(
-+        aux_hidden_states = None
-+        if self.capture_aux_hidden_states:
-+            hidden_states, aux_hidden_states = hidden_states
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/models/qwen3_vl.py` modified +35/-0
-- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/qwen3_vl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
 ### PR #16366 - Optimize Qwen3-VL video memory usage
 
 - Link: https://github.com/sgl-project/sglang/pull/16366
 - Status/date: merged / 2026-01-22
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_vl.py`; associated commits `0c2993eed03a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +8/-0, 19 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Optimize Qwen3-VL video memory usage"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/models/qwen3_vl.py`; technical summary: Covers "Optimize Qwen3-VL video memory usage"; the main implementation surface is `python/sglang/srt/models/qwen3_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "Optimize Qwen3-VL video memory usage"; model line: Qwen VLM/Omni/ASR; category: performance/backend optimization; main diff: `python/sglang/srt/models/qwen3_vl.py`; technical summary: Covers "Optimize Qwen3-VL video memory usage"; the main implementation surface is `python/sglang/srt/models/qwen3_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +8/-0 (8 lines); hunks: -852,10 +852,18 @@ def get_image_feature(self, items: List[MultimodalDataItem...; symbols: get_image_feature, get_video_feature, touching `get_image_feature, get_video_feature`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl.py` modified +8/-0 (8 lines); hunks: -852,10 +852,18 @@ def get_image_feature(self, items: List[MultimodalDataItem...; symbols: get_image_feature, get_video_feature
@@ -1772,47 +1651,6 @@ diff -- benchmark/kernels/fused_moe_triton/common_utils.py
 - Reviewed files:
   - other: `benchmark/kernels/fused_moe_triton/common_utils.py` modified +1/-0
 - Risk and verification: No explicit test file appears in the diff; future edits should add or run model loading, short generation, and parser/multimodal regression checks.
-
-### PR #19242 - [feat] feat: add Qwen3-ASR support like whisper
-
-- Link: https://github.com/sgl-project/sglang/pull/19242
-- Status/date: closed / 2026-02-24
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 5 files, +475/-0, 519 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[feat] feat: add Qwen3-ASR support like whisper"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/multimodal/processors/qwen3_asr.py`, `python/sglang/srt/configs/qwen3_asr.py`, `python/sglang/srt/configs/__init__.py`; technical summary: Covers "[feat] feat: add Qwen3-ASR support like whisper"; the main implementation surface is `python/sglang/srt/multimodal/processors/qwen3_asr.py`, `python/sglang/srt/configs/qwen3_asr.py`, `python/sglang/srt/configs/__init__.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/multimodal/processors/qwen3_asr.py` added +252/-0 (252 lines); hunks: -0,0 +1,252; symbols: Qwen3ASRMultimodalProcessor, __init__, _get_feature_extractor, _compute_audio_output_length, touching `Qwen3ASRMultimodalProcessor, __init__, _get_feature_extractor`; `python/sglang/srt/configs/qwen3_asr.py` added +217/-0 (217 lines); hunks: -0,0 +1,217; symbols: Qwen3ASRHFProcessor, __init__, from_pretrained, Qwen3ASRAudioEncoderConfig, touching `Qwen3ASRHFProcessor, __init__, from_pretrained`; `python/sglang/srt/configs/__init__.py` modified +2/-0 (2 lines); hunks: -22,6 +22,7; -47,6 +48,7; `python/sglang/srt/configs/model_config.py` modified +2/-0 (2 lines); hunks: -1259,6 +1259,7 @@ def is_generation_model(model_architectures: List[str], is...; -1299,6 +1300,7 @@ def is_image_gen_model(model_architectures: List[str]):; symbols: is_generation_model, is_image_gen_model, is_audio_model, touching `is_generation_model, is_image_gen_model, is_audio_model`.
-- Code diff details:
-  - `python/sglang/srt/multimodal/processors/qwen3_asr.py` added +252/-0 (252 lines); hunks: -0,0 +1,252; symbols: Qwen3ASRMultimodalProcessor, __init__, _get_feature_extractor, _compute_audio_output_length
-  - `python/sglang/srt/configs/qwen3_asr.py` added +217/-0 (217 lines); hunks: -0,0 +1,217; symbols: Qwen3ASRHFProcessor, __init__, from_pretrained, Qwen3ASRAudioEncoderConfig
-  - `python/sglang/srt/configs/__init__.py` modified +2/-0 (2 lines); hunks: -22,6 +22,7; -47,6 +48,7
-  - `python/sglang/srt/configs/model_config.py` modified +2/-0 (2 lines); hunks: -1259,6 +1259,7 @@ def is_generation_model(model_architectures: List[str], is...; -1299,6 +1300,7 @@ def is_image_gen_model(model_architectures: List[str]):; symbols: is_generation_model, is_image_gen_model, is_audio_model
-  - `python/sglang/srt/utils/hf_transformers_utils.py` modified +2/-0 (2 lines); hunks: -64,6 +64,7; -104,6 +105,7
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/multimodal/processors/qwen3_asr.py
-@@ -0,0 +1,252 @@
-+import logging
-+import re
-+from typing import Any, Dict, List, Optional
-+import torch
-+from sglang.srt.managers.schedule_batch import Modality, MultimodalDataItem
-+from sglang.srt.models.qwen3_asr import (
-diff -- python/sglang/srt/configs/qwen3_asr.py
-@@ -0,0 +1,217 @@
-+"""
-+Copy from [configuration_qwen3_asr.py](https://github.com/QwenLM/Qwen3-ASR/blob/main/qwen_asr/core/transformers_backend/configuration_qwen3_asr.py)
-+and add some typing.
-++ Qwen3ASRAudioEncoderConfig
-++ Qwen3ASRConfig
-++ Qwen3ASRTextConfig
-diff -- python/sglang/srt/configs/__init__.py
-@@ -22,6 +22,7 @@
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/multimodal/processors/qwen3_asr.py` added +252/-0; `python/sglang/srt/configs/qwen3_asr.py` added +217/-0; `python/sglang/srt/configs/__init__.py` modified +2/-0; `python/sglang/srt/configs/model_config.py` modified +2/-0; `python/sglang/srt/utils/hf_transformers_utils.py` modified +2/-0
-- Risk and verification: Runtime changes concentrate in `python/sglang/srt/configs/__init__.py`, `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/configs/qwen3_asr.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #19003 - [VLM] Introduce FlashInfer CUDNN Prefill as ViT Backend
 
@@ -1995,7 +1833,7 @@ diff -- python/sglang/srt/models/qwen3_vl.py
 - Status/date: open / 2026-03-18
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +151/-4, 269 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "add EVS support for Qwen3-VL"; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `python/sglang/srt/multimodal/processors/qwen_vl.py`, `python/sglang/srt/layers/rotary_embedding/mrope_rope_index.py`, `python/sglang/srt/models/qwen3_vl.py`; technical summary: Covers "add EVS support for Qwen3-VL"; the main implementation surface is `python/sglang/srt/multimodal/processors/qwen_vl.py`, `python/sglang/srt/layers/rotary_embedding/mrope_rope_index.py`, `python/sglang/srt/models/qwen3_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "add EVS support for Qwen3-VL"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/multimodal/processors/qwen_vl.py`, `python/sglang/srt/layers/rotary_embedding/mrope_rope_index.py`, `python/sglang/srt/models/qwen3_vl.py`; technical summary: Covers "add EVS support for Qwen3-VL"; the main implementation surface is `python/sglang/srt/multimodal/processors/qwen_vl.py`, `python/sglang/srt/layers/rotary_embedding/mrope_rope_index.py`, `python/sglang/srt/models/qwen3_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +109/-0 (109 lines); hunks: -10,6 +10,7; -22,6 +23,9; symbols: __init__, _maybe_apply_qwen3_evs, get_mm_data, process_mm_data_async, touching `__init__, _maybe_apply_qwen3_evs, get_mm_data`; `python/sglang/srt/layers/rotary_embedding/mrope_rope_index.py` modified +20/-2 (22 lines); hunks: -121,6 +121,7 @@ def get_rope_index(; -134,13 +135,22 @@ def get_rope_index(; symbols: get_rope_index, touching `get_rope_index`; `python/sglang/srt/models/qwen3_vl.py` modified +10/-2 (12 lines); hunks: -69,6 +69,7; -1047,7 +1048,7 @@ def forward(; symbols: forward, Qwen3VLForConditionalGeneration, __init__, touching `forward, Qwen3VLForConditionalGeneration, __init__`; `python/sglang/srt/multimodal/evs/evs_processor.py` modified +10/-0 (10 lines); hunks: -65,6 +65,16 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +109/-0 (109 lines); hunks: -10,6 +10,7; -22,6 +23,9; symbols: __init__, _maybe_apply_qwen3_evs, get_mm_data, process_mm_data_async
@@ -2061,7 +1899,7 @@ diff -- python/sglang/srt/models/qwen3_vl.py
 - Status/date: merged / 2026-04-01
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_vl_moe.py`, `test/registered/lora/test_lora_qwen3_vl_30b_a3b_instruct_logprob_diff.py`; associated commits `cffc95edf455`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +152/-235, 397 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[3/n] lora moe - Support Qwen3-VL-30B-A3B-Instruct"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/models/qwen3_vl_moe.py`, `test/registered/lora/test_lora_qwen3_vl_30b_a3b_instruct_logprob_diff.py`; technical summary: Covers "[3/n] lora moe - Support Qwen3-VL-30B-A3B-Instruct"; the main implementation surface is `python/sglang/srt/models/qwen3_vl_moe.py`, `test/registered/lora/test_lora_qwen3_vl_30b_a3b_instruct_logprob_diff.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "[3/n] lora moe - Support Qwen3-VL-30B-A3B-Instruct"; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `python/sglang/srt/models/qwen3_vl_moe.py`, `test/registered/lora/test_lora_qwen3_vl_30b_a3b_instruct_logprob_diff.py`; technical summary: Covers "[3/n] lora moe - Support Qwen3-VL-30B-A3B-Instruct"; the main implementation surface is `python/sglang/srt/models/qwen3_vl_moe.py`, `test/registered/lora/test_lora_qwen3_vl_30b_a3b_instruct_logprob_diff.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/qwen3_vl_moe.py` modified +1/-2 (3 lines); hunks: -179,9 +179,8 @@ def __init__(; symbols: __init__, should_apply_lora, touching `__init__, should_apply_lora`; `test/registered/lora/test_lora_qwen3_vl_30b_a3b_instruct_logprob_diff.py` added +151/-0 (151 lines); hunks: -0,0 +1,151; symbols: kl_v2, get_prompt_logprobs, TestLoRAQwen3VL_30B_A3B_Instruct_LogprobDiff, test_lora_qwen3_vl_30b_a3b_instruct_logprob_accuracy, touching `kl_v2, get_prompt_logprobs, TestLoRAQwen3VL_30B_A3B_Instruct_LogprobDiff`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl_moe.py` modified +1/-2 (3 lines); hunks: -179,9 +179,8 @@ def __init__(; symbols: __init__, should_apply_lora
@@ -2122,7 +1960,7 @@ diff -- python/sglang/srt/models/qwen3.py
 - Status/date: merged / 2026-04-03
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +12/-0, 26 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "qwen3 vl skip layer id for pp"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/models/qwen3_vl_moe.py`; technical summary: Covers "qwen3 vl skip layer id for pp"; the main implementation surface is `python/sglang/srt/models/qwen3_vl_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "qwen3 vl skip layer id for pp"; model line: Qwen VLM/Omni/ASR; category: model implementation change; main diff: `python/sglang/srt/models/qwen3_vl_moe.py`; technical summary: Covers "qwen3 vl skip layer id for pp"; the main implementation surface is `python/sglang/srt/models/qwen3_vl_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/qwen3_vl_moe.py` modified +12/-0 (12 lines); hunks: -26,6 +26,7; -232,6 +233,17 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: load_weights, touching `load_weights`.
 - Code diff details:
   - `python/sglang/srt/models/qwen3_vl_moe.py` modified +12/-0 (12 lines); hunks: -26,6 +26,7; -232,6 +233,17 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: load_weights
@@ -2230,7 +2068,7 @@ diff -- python/sglang/srt/models/deepseek_vl2.py
 - Status/date: merged / 2026-04-06
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +190/-3, 230 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[VLM]: allow Qwen3.5 models for encoder disaggregation"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/multimodal/processors/qwen_vl.py`, `test/registered/distributed/test_epd_disaggregation.py`, `python/sglang/srt/disaggregation/encode_server.py`; technical summary: Covers "[VLM]: allow Qwen3.5 models for encoder disaggregation"; the main implementation surface is `python/sglang/srt/multimodal/processors/qwen_vl.py`, `test/registered/distributed/test_epd_disaggregation.py`, `python/sglang/srt/disaggregation/encode_server.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "[VLM]: allow Qwen3.5 models for encoder disaggregation"; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `python/sglang/srt/multimodal/processors/qwen_vl.py`, `test/registered/distributed/test_epd_disaggregation.py`, `python/sglang/srt/disaggregation/encode_server.py`; technical summary: Covers "[VLM]: allow Qwen3.5 models for encoder disaggregation"; the main implementation surface is `python/sglang/srt/multimodal/processors/qwen_vl.py`, `test/registered/distributed/test_epd_disaggregation.py`, `python/sglang/srt/disaggregation/encode_server.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +1/-1 (2 lines); hunks: -422,7 +422,7 @@ def get_mm_data(self, prompt, embeddings, **kwargs):; symbols: get_mm_data, touching `get_mm_data`; `test/registered/distributed/test_epd_disaggregation.py` modified +184/-0 (184 lines); hunks: -33,6 +33,7; -813,6 +814,189 @@ def test_mmmu(self):; symbols: test_mmmu, TestEPDDisaggregationQwen35, setUpClass, start_encode, touching `test_mmmu, TestEPDDisaggregationQwen35, setUpClass`; `python/sglang/srt/disaggregation/encode_server.py` modified +3/-2 (5 lines); hunks: -867,10 +867,11 @@ async def _process_mm_items(self, mm_items, modality):; symbols: _process_mm_items, touching `_process_mm_items`; `python/sglang/srt/server_args.py` modified +2/-0 (2 lines); hunks: -3326,6 +3326,8 @@ def _handle_encoder_disaggregation(self):; symbols: _handle_encoder_disaggregation, touching `_handle_encoder_disaggregation`.
 - Code diff details:
   - `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +1/-1 (2 lines); hunks: -422,7 +422,7 @@ def get_mm_data(self, prompt, embeddings, **kwargs):; symbols: get_mm_data
@@ -2337,7 +2175,7 @@ diff -- python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py
 - Status/date: merged / 2026-04-08
 - Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/qwen3_asr.py`, `python/sglang/srt/entrypoints/openai/transcription_adapters/qwen3_asr.py`, `python/sglang/srt/multimodal/processors/qwen3_asr.py`, `test/manual/models/test_qwen3_asr.py`; associated commits `a5ed507a1639`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +473/-223, 809 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[refactor] [asr] Add transcription adapter for extensible ASR models support"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/configs/qwen3_asr.py`, `test/manual/models/test_qwen3_asr.py`, `python/sglang/srt/entrypoints/openai/transcription_adapters/qwen3_asr.py`; technical summary: Covers "[refactor] [asr] Add transcription adapter for extensible ASR models support"; the main implementation surface is `python/sglang/srt/configs/qwen3_asr.py`, `test/manual/models/test_qwen3_asr.py`, `python/sglang/srt/entrypoints/openai/transcription_adapters/qwen3_asr.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "[refactor] [asr] Add transcription adapter for extensible ASR models support"; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `python/sglang/srt/configs/qwen3_asr.py`, `test/manual/models/test_qwen3_asr.py`, `python/sglang/srt/entrypoints/openai/transcription_adapters/qwen3_asr.py`; technical summary: Covers "[refactor] [asr] Add transcription adapter for extensible ASR models support"; the main implementation surface is `python/sglang/srt/configs/qwen3_asr.py`, `test/manual/models/test_qwen3_asr.py`, `python/sglang/srt/entrypoints/openai/transcription_adapters/qwen3_asr.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/configs/qwen3_asr.py` modified +63/-67 (130 lines); hunks: -14,72 +14,6; -167,6 +101,68 @@ def __call__(self, text=None, audio=None, audio_kwargs=None...; symbols: Qwen3ASRThinkerConfig, __init__, Qwen3ASRConfig, get_text_config, touching `Qwen3ASRThinkerConfig, __init__, Qwen3ASRConfig`; `test/manual/models/test_qwen3_asr.py` added +118/-0 (118 lines); hunks: -0,0 +1,118; symbols: download_audio, TestQwen3ASRTranscription, setUpClass, tearDownClass, touching `download_audio, TestQwen3ASRTranscription, setUpClass`; `python/sglang/srt/entrypoints/openai/transcription_adapters/qwen3_asr.py` added +49/-0 (49 lines); hunks: -0,0 +1,49; symbols: Qwen3ASRAdapter, build_sampling_params, postprocess_text, build_verbose_response, touching `Qwen3ASRAdapter, build_sampling_params, postprocess_text`; `python/sglang/srt/multimodal/processors/qwen3_asr.py` modified +8/-5 (13 lines); hunks: -10,11 +10,13; -23,7 +25,7 @@ class Qwen3ASRMultimodalProcessor(BaseMultimodalProcessor):; symbols: Qwen3ASRMultimodalProcessor, __init__, _build_transcription_prompt, touching `Qwen3ASRMultimodalProcessor, __init__, _build_transcription_prompt`.
 - Code diff details:
   - `python/sglang/srt/configs/qwen3_asr.py` modified +63/-67 (130 lines); hunks: -14,72 +14,6; -167,6 +101,68 @@ def __call__(self, text=None, audio=None, audio_kwargs=None...; symbols: Qwen3ASRThinkerConfig, __init__, Qwen3ASRConfig, get_text_config
@@ -2476,48 +2314,6 @@ diff -- python/sglang/srt/configs/qwen3_vl.py
   - runtime: `python/sglang/srt/configs/qwen3_5.py` modified +71/-0; `python/sglang/srt/configs/qwen3_vl.py` modified +30/-0; `python/sglang/srt/configs/__init__.py` modified +3/-0; `python/sglang/srt/utils/hf_transformers_utils.py` modified +4/-0
 - Risk and verification: The diff ships test coverage in `test/registered/unit/configs/test_qwen3_vl_config.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
-### PR #22848 - [Feature] WebSocket streaming audio input for ASR
-
-- Link: https://github.com/sgl-project/sglang/pull/22848
-- Status/date: open / 2026-04-15
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 6 files, +948/-43, 1176 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Feature] WebSocket streaming audio input for ASR"; model line: Qwen VLM/Omni/ASR; category: model implementation change; main diff: `test/manual/models/test_qwen3_asr.py`, `python/sglang/srt/entrypoints/openai/serving_transcription_websocket.py`, `python/sglang/srt/entrypoints/openai/streaming_asr.py`; technical summary: Covers "[Feature] WebSocket streaming audio input for ASR"; the main implementation surface is `test/manual/models/test_qwen3_asr.py`, `python/sglang/srt/entrypoints/openai/serving_transcription_websocket.py`, `python/sglang/srt/entrypoints/openai/streaming_asr.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `test/manual/models/test_qwen3_asr.py` modified +451/-3 (454 lines); hunks: -1,17 +1,30; -29,8 +42,96; symbols: _normalize_for_wer, _wer, download_audio, _pcm16_from_audio_bytes, touching `_normalize_for_wer, _wer, download_audio`; `python/sglang/srt/entrypoints/openai/serving_transcription_websocket.py` added +377/-0 (377 lines); hunks: -0,0 +1,377; symbols: _pcm_to_wav, SessionStartEvent, SessionEndEvent, SessionStartedEvent, touching `_pcm_to_wav, SessionStartEvent, SessionEndEvent`; `python/sglang/srt/entrypoints/openai/streaming_asr.py` modified +78/-7 (85 lines); hunks: -1,9 +1,21; -22,13 +34,23 @@ class StreamingASRState:; symbols: StreamingASRState, get_prefix_text, _record_emit, update, touching `StreamingASRState, get_prefix_text, _record_emit`; `python/sglang/srt/entrypoints/openai/serving_transcription.py` modified +15/-33 (48 lines); hunks: -29,7 +29,7; -43,8 +43,12; symbols: _generate_chunked_asr_stream, handle_websocket, touching `_generate_chunked_asr_stream, handle_websocket`.
-- Code diff details:
-  - `test/manual/models/test_qwen3_asr.py` modified +451/-3 (454 lines); hunks: -1,17 +1,30; -29,8 +42,96; symbols: _normalize_for_wer, _wer, download_audio, _pcm16_from_audio_bytes
-  - `python/sglang/srt/entrypoints/openai/serving_transcription_websocket.py` added +377/-0 (377 lines); hunks: -0,0 +1,377; symbols: _pcm_to_wav, SessionStartEvent, SessionEndEvent, SessionStartedEvent
-  - `python/sglang/srt/entrypoints/openai/streaming_asr.py` modified +78/-7 (85 lines); hunks: -1,9 +1,21; -22,13 +34,23 @@ class StreamingASRState:; symbols: StreamingASRState, get_prefix_text, _record_emit, update
-  - `python/sglang/srt/entrypoints/openai/serving_transcription.py` modified +15/-33 (48 lines); hunks: -29,7 +29,7; -43,8 +43,12; symbols: _generate_chunked_asr_stream, handle_websocket
-  - `python/sglang/srt/entrypoints/http_server.py` modified +7/-0 (7 lines); hunks: -54,6 +54,7; -1597,6 +1598,12 @@ async def openai_v1_audio_transcriptions(; symbols: openai_v1_audio_transcriptions, openai_v1_audio_transcriptions_ws, available_models
-- Key code excerpts:
-
-```diff
-diff -- test/manual/models/test_qwen3_asr.py
-@@ -1,17 +1,30 @@
--Tests /v1/audio/transcriptions endpoint (OpenAI-compatible).
-+Tests /v1/audio/transcriptions (HTTP) and
-+/v1/audio/transcriptions/stream (WebSocket live audio input).
-+import asyncio
-+import json
-+import re
-diff -- python/sglang/srt/entrypoints/openai/serving_transcription_websocket.py
-@@ -0,0 +1,377 @@
-+"""WebSocket transport for OpenAI Realtime API-style transcription.
-+Protocol:
-+    Client -> Server:
-+        {"type": "session.start"}                                              # minimum
-+        {"type": "session.start", "model": "<model-name>", "language": "en"}   # with hints
-+        <binary PCM16 frame>     # 16 kHz mono LE, length must be % 2 == 0
-diff -- python/sglang/srt/entrypoints/openai/streaming_asr.py
-@@ -1,9 +1,21 @@
-```
-
-- Reviewed files:
-  - tests: `test/manual/models/test_qwen3_asr.py` modified +451/-3
-  - runtime: `python/sglang/srt/entrypoints/openai/serving_transcription_websocket.py` added +377/-0; `python/sglang/srt/entrypoints/openai/streaming_asr.py` modified +78/-7; `python/sglang/srt/entrypoints/openai/serving_transcription.py` modified +15/-33; `python/sglang/srt/entrypoints/http_server.py` modified +7/-0; `python/sglang/srt/server_args.py` modified +20/-0
-- Risk and verification: The diff ships test coverage in `test/manual/models/test_qwen3_asr.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
 ### PR #23115 - fix: guard self.model access in Qwen3VLMoeForConditionalGeneration.load_weights
 
 - Link: https://github.com/sgl-project/sglang/pull/23115
@@ -2563,28 +2359,6 @@ diff -- python/sglang/srt/multimodal/processors/qwen_vl.py
   - runtime: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +1/-1
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/multimodal/processors/qwen_vl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-### PR #23220 - Bugfix: Qwen3-VL-MoE adapt encoder_only
-
-- Link: https://github.com/sgl-project/sglang/pull/23220
-- Status/date: merged / 2026-04-20
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 1 files, +1/-0, 8 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Bugfix: Qwen3-VL-MoE adapt encoder_only"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/models/qwen3_vl_moe.py`; technical summary: Covers "Bugfix: Qwen3-VL-MoE adapt encoder_only"; the main implementation surface is `python/sglang/srt/models/qwen3_vl_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/models/qwen3_vl_moe.py` modified +1/-0 (1 lines); hunks: -235,6 +235,7 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights, touching `load_weights`.
-- Code diff details:
-  - `python/sglang/srt/models/qwen3_vl_moe.py` modified +1/-0 (1 lines); hunks: -235,6 +235,7 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/models/qwen3_vl_moe.py
-@@ -235,6 +235,7 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]]):
-+                and hasattr(self, "model")
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/models/qwen3_vl_moe.py` modified +1/-0
-- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/qwen3_vl_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
 ### PR #23304 - [Bugfix] Fix Qwen3-VL rope config compatibility
 
 - Link: https://github.com/sgl-project/sglang/pull/23304
@@ -2612,38 +2386,11 @@ diff -- python/sglang/srt/models/qwen3.py
   - runtime: `python/sglang/srt/models/qwen3.py` modified +1/-10
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/qwen3.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-### PR #23469 - [NPU] adapt the Qwen3-ASR model for deployment on NPU
-
-- Link: https://github.com/sgl-project/sglang/pull/23469
-- Status/date: closed / 2026-04-22
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 1 files, +18/-0, 25 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[NPU] adapt the Qwen3-ASR model for deployment on NPU"; model line: Qwen VLM/Omni/ASR; category: performance/backend optimization; main diff: `python/sglang/srt/utils/common.py`; technical summary: Covers "[NPU] adapt the Qwen3-ASR model for deployment on NPU"; the main implementation surface is `python/sglang/srt/utils/common.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/utils/common.py` modified +18/-0 (18 lines); hunks: -740,6 +740,24 @@ def load_audio(; symbols: load_audio, touching `load_audio`.
-- Code diff details:
-  - `python/sglang/srt/utils/common.py` modified +18/-0 (18 lines); hunks: -740,6 +740,24 @@ def load_audio(; symbols: load_audio
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/utils/common.py
-@@ -740,6 +740,24 @@ def load_audio(
-+    if is_npu():
-+        import soundfile as sf
-+        if isinstance(source, bytes):
-+            audio, original_sr = sf.read(BytesIO(source))
-+        else:
-+            audio, original_sr = sf.read(source)
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/utils/common.py` modified +18/-0
-- Risk and verification: Runtime changes concentrate in `python/sglang/srt/utils/common.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
 ### PR #23907 - [Docs] add Nemotron 3 Nano Omni cookbook
 
 - Link: https://github.com/sgl-project/sglang/pull/23907
 - Status/date: merged / 2026-04-28
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx`; associated commits `ad785a229911`
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx`; associated commits `ad785a229911`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +746/-1, 771 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Docs] add Nemotron 3 Nano Omni cookbook"; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx`; technical summary: Covers "[Docs] add Nemotron 3 Nano Omni cookbook"; the main implementation surface is `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` added +542/-0 (542 lines); hunks: -0,0 +1,542; `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx` added +200/-0 (200 lines); hunks: -0,0 +1,200.
@@ -2679,7 +2426,7 @@ diff -- docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx
 
 - Link: https://github.com/sgl-project/sglang/pull/23968
 - Status/date: merged / 2026-04-28
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`; associated commits `387c932dfc88`
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`; associated commits `387c932dfc88`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Docs] update Docker image for Nemotron 3 Nano Omni"; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`; technical summary: Covers "[Docs] update Docker image for Nemotron 3 Nano Omni"; the main implementation surface is `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` modified +1/-1 (2 lines); hunks: -52,7 +52,7 @@ pip install sglang.
@@ -2697,6 +2444,973 @@ diff -- docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx
 - Reviewed files:
   - docs: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` modified +1/-1
 - Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #24163 - Revert "[ci] split stage-c-test-4-gpu-b200 to enable a low-disk runner pool"
+
+- Link: https://github.com/sgl-project/sglang/pull/24163
+- Status/date: merged / 2026-04-30
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 17 files, +29/-99, 290 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Revert "[ci] split stage-c-test-4-gpu-b200 to enable a low-disk runner pool""; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `.github/workflows/pr-test.yml`, `scripts/ci/utils/slash_command_handler.py`, `test/registered/4-gpu-models/test_gpt_oss_4gpu.py`; technical summary: Covers "Revert "[ci] split stage-c-test-4-gpu-b200 to enable a low-disk runner pool""; the main implementation surface is `.github/workflows/pr-test.yml`, `scripts/ci/utils/slash_command_handler.py`, `test/registered/4-gpu-models/test_gpt_oss_4gpu.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `.github/workflows/pr-test.yml` modified +15/-82 (97 lines); hunks: -101,7 +101,6 @@ jobs:; -283,10 +282,8 @@ jobs:; `scripts/ci/utils/slash_command_handler.py` modified +0/-2 (2 lines); hunks: -303,7 +303,6 @@ def handle_rerun_stage(; -486,7 +485,6 @@ def handle_rerun_stage(; symbols: handle_rerun_stage, touching `handle_rerun_stage`; `test/registered/4-gpu-models/test_gpt_oss_4gpu.py` modified +1/-1 (2 lines); hunks: -4,7 +4,7; symbols: TestGptOss4Gpu, touching `TestGptOss4Gpu`; `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py` modified +1/-1 (2 lines); hunks: -11,7 +11,7.
+- Code diff details:
+  - `.github/workflows/pr-test.yml` modified +15/-82 (97 lines); hunks: -101,7 +101,6 @@ jobs:; -283,10 +282,8 @@ jobs:
+  - `scripts/ci/utils/slash_command_handler.py` modified +0/-2 (2 lines); hunks: -303,7 +303,6 @@ def handle_rerun_stage(; -486,7 +485,6 @@ def handle_rerun_stage(; symbols: handle_rerun_stage
+  - `test/registered/4-gpu-models/test_gpt_oss_4gpu.py` modified +1/-1 (2 lines); hunks: -4,7 +4,7; symbols: TestGptOss4Gpu
+  - `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py` modified +1/-1 (2 lines); hunks: -11,7 +11,7
+  - `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py` modified +1/-1 (2 lines); hunks: -15,7 +15,7
+- Key code excerpts:
+
+```diff
+diff -- .github/workflows/pr-test.yml
+@@ -101,7 +101,6 @@ jobs:
+-      b200_low_disk_runner: ${{ steps.set-runner.outputs.b200_low_disk_runner }}
+@@ -283,10 +282,8 @@ jobs:
+-            echo "b200_low_disk_runner=4-gpu-b200-kernel-low-disk" >> $GITHUB_OUTPUT
+-            echo "b200_low_disk_runner=4-gpu-b200-low-disk" >> $GITHUB_OUTPUT
+@@ -337,20 +334,19 @@ jobs:
+-            echo "| Component            | Changed |"
+diff -- scripts/ci/utils/slash_command_handler.py
+@@ -303,7 +303,6 @@ def handle_rerun_stage(
+-        "stage-c-test-4-gpu-b200-small",
+@@ -486,7 +485,6 @@ def handle_rerun_stage(
+-    "stage-c-test-4-gpu-b200-small": "4-gpu-b200-low-disk",
+diff -- test/registered/4-gpu-models/test_gpt_oss_4gpu.py
+@@ -4,7 +4,7 @@
+-register_cuda_ci(est_time=584, suite="stage-c-test-4-gpu-b200-small")
++register_cuda_ci(est_time=740, suite="stage-c-test-4-gpu-b200")
+diff -- test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py
+```
+
+- Reviewed files:
+  - ci: `.github/workflows/pr-test.yml` modified +15/-82
+  - other: `scripts/ci/utils/slash_command_handler.py` modified +0/-2
+  - tests: `test/registered/4-gpu-models/test_gpt_oss_4gpu.py` modified +1/-1; `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py` modified +1/-1; `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py` modified +1/-1; `test/registered/4-gpu-models/test_qwen35_fp4_triton.py` modified +1/-1; `test/registered/lora/test_lora_gpt_oss_20b_logprob_diff.py` modified +1/-1; `test/registered/lora/test_lora_nemotron_3_super_120b_a12b_logprob_diff.py` modified +1/-1
+- Risk and verification: The diff ships test coverage in `test/registered/4-gpu-models/test_gpt_oss_4gpu.py`, `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py`, `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py`, `test/registered/4-gpu-models/test_qwen35_fp4_triton.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #23998 - update Nemotron3 Nano Omni cookbook benchmarks
+
+- Link: https://github.com/sgl-project/sglang/pull/23998
+- Status/date: merged / 2026-05-05
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`; associated commits `83b48fd5237a`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +119/-4, 165 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "update Nemotron3 Nano Omni cookbook benchmarks"; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`; technical summary: Covers "update Nemotron3 Nano Omni cookbook benchmarks"; the main implementation surface is `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` modified +119/-4 (123 lines); hunks: -478,7 +478,7 @@ Nemotron 3 Nano Omni achieves **9x higher throughput** than...; -492,6 +492,7 @@ sglang serve \.
+- Code diff details:
+  - `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` modified +119/-4 (123 lines); hunks: -478,7 +478,7 @@ Nemotron 3 Nano Omni achieves **9x higher throughput** than...; -492,6 +492,7 @@ sglang serve \
+- Key code excerpts:
+
+```diff
+diff -- docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx
+@@ -478,7 +478,7 @@ Nemotron 3 Nano Omni achieves **9x higher throughput** than other open omni mode
+-- Hardware: H100 (4×)
++- Hardware: B200 (8×)
+@@ -492,6 +492,7 @@ sglang serve \
++  --attention-backend flashinfer \
+@@ -510,12 +511,52 @@ python3 -m sglang.bench_serving \
+-### 5.3 Accuracy Benchmark
+```
+
+- Reviewed files:
+  - docs: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` modified +119/-4
+- Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #24875 - Support Intern-S2-Preview
+
+- Link: https://github.com/sgl-project/sglang/pull/24875
+- Status/date: merged / 2026-05-10
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 11 files, +64/-2, 201 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Support Intern-S2-Preview"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/configs/interns2preview.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`, `python/sglang/srt/models/interns2preview.py`; technical summary: Covers "Support Intern-S2-Preview"; the main implementation surface is `python/sglang/srt/configs/interns2preview.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`, `python/sglang/srt/models/interns2preview.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/configs/interns2preview.py` added +23/-0 (23 lines); hunks: -0,0 +1,23; symbols: InternS2PreviewVisionConfig, __init__, InternS2PreviewConfig, touching `InternS2PreviewVisionConfig, __init__, InternS2PreviewConfig`; `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +11/-1 (12 lines); hunks: -17,6 +17,7; -246,6 +247,7 @@ class QwenVLImageProcessor(SGLangBaseProcessor):; symbols: QwenVLImageProcessor, get_mm_data, process_mm_data_async, touching `QwenVLImageProcessor, get_mm_data, process_mm_data_async`; `python/sglang/srt/models/interns2preview.py` added +9/-0 (9 lines); hunks: -0,0 +1,9; symbols: InternS2PreviewForConditionalGeneration, touching `InternS2PreviewForConditionalGeneration`; `python/sglang/srt/configs/__init__.py` modified +2/-0 (2 lines); hunks: -8,6 +8,7; -55,6 +56,7.
+- Code diff details:
+  - `python/sglang/srt/configs/interns2preview.py` added +23/-0 (23 lines); hunks: -0,0 +1,23; symbols: InternS2PreviewVisionConfig, __init__, InternS2PreviewConfig
+  - `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +11/-1 (12 lines); hunks: -17,6 +17,7; -246,6 +247,7 @@ class QwenVLImageProcessor(SGLangBaseProcessor):; symbols: QwenVLImageProcessor, get_mm_data, process_mm_data_async
+  - `python/sglang/srt/models/interns2preview.py` added +9/-0 (9 lines); hunks: -0,0 +1,9; symbols: InternS2PreviewForConditionalGeneration
+  - `python/sglang/srt/configs/__init__.py` modified +2/-0 (2 lines); hunks: -8,6 +8,7; -55,6 +56,7
+  - `python/sglang/srt/configs/model_config.py` modified +2/-0 (2 lines); hunks: -466,6 +466,7 @@ def _config_draft_model(self):; -1521,6 +1522,7 @@ def is_generation_model(model_architectures: List[str], is...; symbols: _config_draft_model, is_generation_model
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/configs/interns2preview.py
+@@ -0,0 +1,23 @@
++from sglang.srt.configs.qwen3_5 import (
++    Qwen3_5MoeConfig,
++    Qwen3_5MoeTextConfig,
++    Qwen3_5MoeVisionConfig,
++)
++class InternS2PreviewVisionConfig(Qwen3_5MoeVisionConfig):
+diff -- python/sglang/srt/multimodal/processors/qwen_vl.py
+@@ -17,6 +17,7 @@
++from sglang.srt.models.interns2preview import InternS2PreviewForConditionalGeneration
+@@ -246,6 +247,7 @@ class QwenVLImageProcessor(SGLangBaseProcessor):
++        InternS2PreviewForConditionalGeneration,
+@@ -419,7 +421,14 @@ def get_mm_data(self, prompt, embeddings, **kwargs):
+-            self.model_type in ["qwen3_vl", "qwen3_vl_moe", "qwen3_5", "qwen3_5_moe"]
++            self.model_type
+diff -- python/sglang/srt/models/interns2preview.py
+@@ -0,0 +1,9 @@
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/configs/interns2preview.py` added +23/-0; `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +11/-1; `python/sglang/srt/models/interns2preview.py` added +9/-0; `python/sglang/srt/configs/__init__.py` modified +2/-0; `python/sglang/srt/configs/model_config.py` modified +2/-0; `python/sglang/srt/model_executor/model_runner.py` modified +2/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/configs/__init__.py`, `python/sglang/srt/configs/interns2preview.py`, `python/sglang/srt/configs/model_config.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #24187 - [Fix] Qwen3-ASR config: set thinker_config before super().__init__
+
+- Link: https://github.com/sgl-project/sglang/pull/24187
+- Status/date: merged / 2026-05-12
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/qwen3_asr.py`; associated commits `0f3932c05540`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 16 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Fix] Qwen3-ASR config: set thinker_config before super().__init__"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/configs/qwen3_asr.py`; technical summary: Covers "[Fix] Qwen3-ASR config: set thinker_config before super().__init__"; the main implementation surface is `python/sglang/srt/configs/qwen3_asr.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/configs/qwen3_asr.py` modified +1/-1 (2 lines); hunks: -148,7 +148,6 @@ class Qwen3ASRConfig(PretrainedConfig):; -159,6 +158,7 @@ def __init__(self, thinker_config=None, **kwargs):; symbols: Qwen3ASRConfig, __init__, get_text_config, touching `Qwen3ASRConfig, __init__, get_text_config`.
+- Code diff details:
+  - `python/sglang/srt/configs/qwen3_asr.py` modified +1/-1 (2 lines); hunks: -148,7 +148,6 @@ class Qwen3ASRConfig(PretrainedConfig):; -159,6 +158,7 @@ def __init__(self, thinker_config=None, **kwargs):; symbols: Qwen3ASRConfig, __init__, get_text_config
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/configs/qwen3_asr.py
+@@ -148,7 +148,6 @@ class Qwen3ASRConfig(PretrainedConfig):
+-        super().__init__(**kwargs)
+@@ -159,6 +158,7 @@ def __init__(self, thinker_config=None, **kwargs):
++        super().__init__(**kwargs)
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/configs/qwen3_asr.py` modified +1/-1
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/configs/qwen3_asr.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #25197 - ci: decouple stage and runner for cuda registry
+
+- Link: https://github.com/sgl-project/sglang/pull/25197
+- Status/date: merged / 2026-05-14
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 261 files, +388/-293, 2625 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "ci: decouple stage and runner for cuda registry"; model line: Qwen VLM/Omni/ASR; category: performance/backend optimization; main diff: `test/registered/layers/test_fla_layernorm_guard.py`, `test/registered/models/test_dummy_grok_models.py`, `test/registered/models/test_ministral3_models.py`; technical summary: Covers "ci: decouple stage and runner for cuda registry"; the main implementation surface is `test/registered/layers/test_fla_layernorm_guard.py`, `test/registered/models/test_dummy_grok_models.py`, `test/registered/models/test_ministral3_models.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/layers/test_fla_layernorm_guard.py` modified +2/-1 (3 lines); hunks: -19,7 +19,8; `test/registered/models/test_dummy_grok_models.py` modified +2/-1 (3 lines); hunks: -5,7 +5,8; `test/registered/models/test_ministral3_models.py` modified +2/-1 (3 lines); hunks: -8,7 +8,8; `test/registered/models/test_ministral4_models.py` modified +2/-1 (3 lines); hunks: -8,7 +8,8.
+- Code diff details:
+  - `test/registered/layers/test_fla_layernorm_guard.py` modified +2/-1 (3 lines); hunks: -19,7 +19,8
+  - `test/registered/models/test_dummy_grok_models.py` modified +2/-1 (3 lines); hunks: -5,7 +5,8
+  - `test/registered/models/test_ministral3_models.py` modified +2/-1 (3 lines); hunks: -8,7 +8,8
+  - `test/registered/models/test_ministral4_models.py` modified +2/-1 (3 lines); hunks: -8,7 +8,8
+  - `test/registered/models/test_nvidia_nemotron_3_nano.py` modified +2/-1 (3 lines); hunks: -6,7 +6,8
+- Key code excerpts:
+
+```diff
+diff -- test/registered/layers/test_fla_layernorm_guard.py
+@@ -19,7 +19,8 @@
+-    suite="stage-b-test-2-gpu-large",
++    stage="stage-b",
++    runner_config="2-gpu-large",
+diff -- test/registered/models/test_dummy_grok_models.py
+@@ -5,7 +5,8 @@
+-    suite="stage-b-test-2-gpu-large",
++    stage="stage-b",
++    runner_config="2-gpu-large",
+diff -- test/registered/models/test_ministral3_models.py
+@@ -8,7 +8,8 @@
+-    suite="stage-b-test-1-gpu-small",
++    stage="stage-b",
++    runner_config="1-gpu-small",
+diff -- test/registered/models/test_ministral4_models.py
+@@ -8,7 +8,8 @@
+-    suite="stage-b-test-2-gpu-large",
+```
+
+- Reviewed files:
+  - tests: `test/registered/layers/test_fla_layernorm_guard.py` modified +2/-1; `test/registered/models/test_dummy_grok_models.py` modified +2/-1; `test/registered/models/test_ministral3_models.py` modified +2/-1; `test/registered/models/test_ministral4_models.py` modified +2/-1; `test/registered/models/test_nvidia_nemotron_3_nano.py` modified +2/-1; `test/registered/layers/mamba/test_causal_conv1d.py` modified +1/-1
+- Risk and verification: The diff ships test coverage in `python/sglang/test/ci/ci_register.py`, `test/registered/4-gpu-models/test_deepseek_v3_cutedsl_4gpu.py`, `test/registered/4-gpu-models/test_gpt_oss_4gpu.py`, `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #25203 - ci: B200 conditional split + LPT_SLOP removal (stage-c partition 8→3)
+
+- Link: https://github.com/sgl-project/sglang/pull/25203
+- Status/date: merged / 2026-05-14
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 19 files, +33/-34, 209 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "ci: B200 conditional split + LPT_SLOP removal (stage-c partition 8→3)"; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `scripts/ci/utils/compute_partitions.py`, `test/registered/lora/test_lora_gpt_oss_20b_logprob_diff.py`, `test/registered/lora/test_lora_nemotron_3_super_120b_a12b_logprob_diff.py`; technical summary: Covers "ci: B200 conditional split + LPT_SLOP removal (stage-c partition 8→3)"; the main implementation surface is `scripts/ci/utils/compute_partitions.py`, `test/registered/lora/test_lora_gpt_oss_20b_logprob_diff.py`, `test/registered/lora/test_lora_nemotron_3_super_120b_a12b_logprob_diff.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `scripts/ci/utils/compute_partitions.py` modified +9/-10 (19 lines); hunks: -39,15 +39,13; -97,10 +95,11 @@ def compute_partitions(tests, full_parallel=False):; symbols: compute_partitions, touching `compute_partitions`; `test/registered/lora/test_lora_gpt_oss_20b_logprob_diff.py` modified +3/-3 (6 lines); hunks: -35,9 +35,9; `test/registered/lora/test_lora_nemotron_3_super_120b_a12b_logprob_diff.py` modified +3/-3 (6 lines); hunks: -35,9 +35,9; `test/registered/lora/test_lora_qwen3_30b_a3b_instruct_2507_logprob_diff.py` modified +3/-3 (6 lines); hunks: -35,9 +35,9.
+- Code diff details:
+  - `scripts/ci/utils/compute_partitions.py` modified +9/-10 (19 lines); hunks: -39,15 +39,13; -97,10 +95,11 @@ def compute_partitions(tests, full_parallel=False):; symbols: compute_partitions
+  - `test/registered/lora/test_lora_gpt_oss_20b_logprob_diff.py` modified +3/-3 (6 lines); hunks: -35,9 +35,9
+  - `test/registered/lora/test_lora_nemotron_3_super_120b_a12b_logprob_diff.py` modified +3/-3 (6 lines); hunks: -35,9 +35,9
+  - `test/registered/lora/test_lora_qwen3_30b_a3b_instruct_2507_logprob_diff.py` modified +3/-3 (6 lines); hunks: -35,9 +35,9
+  - `test/registered/4-gpu-models/test_gpt_oss_4gpu.py` modified +1/-1 (2 lines); hunks: -4,7 +4,7; symbols: TestGptOss4Gpu
+- Key code excerpts:
+
+```diff
+diff -- scripts/ci/utils/compute_partitions.py
+@@ -39,15 +39,13 @@
+-# Per-partition wall-clock target + ceiling. Single knob for the whole
+-# pipeline. ~17 min avg under perfect LPT (TARGET / LPT_SLOP), ~22 min under
+-# worst-case LPT 4/3 imbalance, fail-fast above 30 min.
++# Per-partition wall-clock target. ~20 min avg naive; worst-case LPT 4/3
++# imbalance is ~27 min, still below the 30-min job-level timeout that acts
++# as the real safety net. No LPT slop applied — we lean on the runtime
+diff -- test/registered/lora/test_lora_gpt_oss_20b_logprob_diff.py
+@@ -35,9 +35,9 @@
+-    est_time=300,
+-    stage="stage-c",
+-    runner_config="4-gpu-b200",
++    est_time=90,
++    suite="nightly-4-gpu-b200",
++    nightly=True,
+diff -- test/registered/lora/test_lora_nemotron_3_super_120b_a12b_logprob_diff.py
+@@ -35,9 +35,9 @@
+```
+
+- Reviewed files:
+  - other: `scripts/ci/utils/compute_partitions.py` modified +9/-10
+  - tests: `test/registered/lora/test_lora_gpt_oss_20b_logprob_diff.py` modified +3/-3; `test/registered/lora/test_lora_nemotron_3_super_120b_a12b_logprob_diff.py` modified +3/-3; `test/registered/lora/test_lora_qwen3_30b_a3b_instruct_2507_logprob_diff.py` modified +3/-3; `test/registered/4-gpu-models/test_gpt_oss_4gpu.py` modified +1/-1; `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py` modified +1/-1; `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py` modified +1/-1
+- Risk and verification: The diff ships test coverage in `test/registered/4-gpu-models/test_gpt_oss_4gpu.py`, `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py`, `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py`, `test/registered/4-gpu-models/test_qwen35_models.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #25130 - [NPU]Bugfix:Set default values for npu_wrapper_preprocess parameters
+
+- Link: https://github.com/sgl-project/sglang/pull/25130
+- Status/date: merged / 2026-05-14
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +12/-17, 96 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[NPU]Bugfix:Set default values for npu_wrapper_preprocess parameters"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py`, `python/sglang/srt/hardware_backend/npu/attention/ascend_gdn_backend.py`; technical summary: Covers "[NPU]Bugfix:Set default values for npu_wrapper_preprocess parameters"; the main implementation surface is `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py`, `python/sglang/srt/hardware_backend/npu/attention/ascend_gdn_backend.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py` modified +11/-16 (27 lines); hunks: -1,12 +1,7; -63,16 +58,16 @@ def transform_patches_to_flatten(; symbols: transform_patches_to_flatten, npu_wrapper_preprocess, _preprocess, touching `transform_patches_to_flatten, npu_wrapper_preprocess, _preprocess`; `python/sglang/srt/hardware_backend/npu/attention/ascend_gdn_backend.py` modified +1/-1 (2 lines); hunks: -414,7 +414,7 @@ def fused_recurrent_gated_delta_rule_update(; symbols: fused_recurrent_gated_delta_rule_update, touching `fused_recurrent_gated_delta_rule_update`.
+- Code diff details:
+  - `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py` modified +11/-16 (27 lines); hunks: -1,12 +1,7; -63,16 +58,16 @@ def transform_patches_to_flatten(; symbols: transform_patches_to_flatten, npu_wrapper_preprocess, _preprocess
+  - `python/sglang/srt/hardware_backend/npu/attention/ascend_gdn_backend.py` modified +1/-1 (2 lines); hunks: -414,7 +414,7 @@ def fused_recurrent_gated_delta_rule_update(; symbols: fused_recurrent_gated_delta_rule_update
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py
+@@ -1,12 +1,7 @@
+-from typing import Optional
+-from transformers.image_processing_utils_fast import (
+-    group_images_by_shape,
+-    reorder_images,
+-)
++from transformers.image_transforms import group_images_by_shape, reorder_images
+diff -- python/sglang/srt/hardware_backend/npu/attention/ascend_gdn_backend.py
+@@ -414,7 +414,7 @@ def fused_recurrent_gated_delta_rule_update(
+-            num_accept_tokens=num_accept_tokens,
++            num_accepted_tokens=num_accept_tokens,
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py` modified +11/-16; `python/sglang/srt/hardware_backend/npu/attention/ascend_gdn_backend.py` modified +1/-1
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/hardware_backend/npu/attention/ascend_gdn_backend.py`, `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #25420 - [CI] Rename basic CI `stage-a/b/c` -> `base-a/b/c` for symmetry with extra CI
+
+- Link: https://github.com/sgl-project/sglang/pull/25420
+- Status/date: merged / 2026-05-16
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 473 files, +746/-747, 5614 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[CI] Rename basic CI `stage-a/b/c` -> `base-a/b/c` for symmetry with extra CI"; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `.github/workflows/pr-test-multimodal-gen.yml`, `test/registered/bench_fn/test_bench_serving_reasoning_stream.py`, `test/registered/function_call/test_kimik2_detector.py`; technical summary: Covers "[CI] Rename basic CI `stage-a/b/c` -> `base-a/b/c` for symmetry with extra CI"; the main implementation surface is `.github/workflows/pr-test-multimodal-gen.yml`, `test/registered/bench_fn/test_bench_serving_reasoning_stream.py`, `test/registered/function_call/test_kimik2_detector.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `.github/workflows/pr-test-multimodal-gen.yml` modified +7/-7 (14 lines); hunks: -31,7 +31,7 @@ on:; -42,7 +42,7 @@ env:; `test/registered/bench_fn/test_bench_serving_reasoning_stream.py` modified +1/-1 (2 lines); hunks: -24,7 +24,7; symbols: _free_port, touching `_free_port`; `test/registered/function_call/test_kimik2_detector.py` modified +1/-1 (2 lines); hunks: -11,7 +11,7; symbols: _make_tool, touching `_make_tool`; `test/registered/layers/mamba/test_causal_conv1d.py` modified +1/-1 (2 lines); hunks: -2,7 +2,7.
+- Code diff details:
+  - `.github/workflows/pr-test-multimodal-gen.yml` modified +7/-7 (14 lines); hunks: -31,7 +31,7 @@ on:; -42,7 +42,7 @@ env:
+  - `test/registered/bench_fn/test_bench_serving_reasoning_stream.py` modified +1/-1 (2 lines); hunks: -24,7 +24,7; symbols: _free_port
+  - `test/registered/function_call/test_kimik2_detector.py` modified +1/-1 (2 lines); hunks: -11,7 +11,7; symbols: _make_tool
+  - `test/registered/layers/mamba/test_causal_conv1d.py` modified +1/-1 (2 lines); hunks: -2,7 +2,7
+  - `test/registered/layers/mamba/test_mamba2_mixer.py` modified +1/-1 (2 lines); hunks: -18,7 +18,7
+- Key code excerpts:
+
+```diff
+diff -- .github/workflows/pr-test-multimodal-gen.yml
+@@ -31,7 +31,7 @@ on:
+-      skip_stage_health_check:
++      skip_pr_test_health_check:
+@@ -42,7 +42,7 @@ env:
+-  SKIP_STAGE_HEALTH_CHECK: ${{ inputs.skip_stage_health_check == 'true' }}
++  SKIP_PR_TEST_HEALTH_CHECK: ${{ inputs.skip_pr_test_health_check == 'true' }}
+@@ -90,7 +90,7 @@ jobs:
+diff -- test/registered/bench_fn/test_bench_serving_reasoning_stream.py
+@@ -24,7 +24,7 @@
+-register_cpu_ci(est_time=10, suite="stage-a-test-cpu")
++register_cpu_ci(est_time=10, suite="base-a-test-cpu")
+diff -- test/registered/function_call/test_kimik2_detector.py
+@@ -11,7 +11,7 @@
+-register_cpu_ci(5, "stage-a-test-cpu")
++register_cpu_ci(5, "base-a-test-cpu")
+diff -- test/registered/layers/mamba/test_causal_conv1d.py
+@@ -2,7 +2,7 @@
+```
+
+- Reviewed files:
+  - runtime: `.github/workflows/pr-test-multimodal-gen.yml` modified +7/-7
+  - tests: `test/registered/bench_fn/test_bench_serving_reasoning_stream.py` modified +1/-1; `test/registered/function_call/test_kimik2_detector.py` modified +1/-1; `test/registered/layers/mamba/test_causal_conv1d.py` modified +1/-1; `test/registered/layers/mamba/test_mamba2_mixer.py` modified +1/-1; `test/registered/layers/mamba/test_mamba_ssm.py` modified +1/-1; `test/registered/layers/mamba/test_mamba_ssm_ssd.py` modified +1/-1
+- Risk and verification: The diff ships test coverage in `python/sglang/jit_kernel/tests/deepseek_v4/test_c128_v2.py`, `python/sglang/jit_kernel/tests/deepseek_v4/test_c4_v2.py`, `python/sglang/jit_kernel/tests/test_activation.py`, `python/sglang/jit_kernel/tests/test_add_constant.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #25759 - [BugFix][EPD]Fix Qwen3VLMoe encoder-only AttributeError
+
+- Link: https://github.com/sgl-project/sglang/pull/25759
+- Status/date: merged / 2026-05-21
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +1/-0, 8 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[BugFix][EPD]Fix Qwen3VLMoe encoder-only AttributeError"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/models/qwen3_vl_moe.py`; technical summary: Covers "[BugFix][EPD]Fix Qwen3VLMoe encoder-only AttributeError"; the main implementation surface is `python/sglang/srt/models/qwen3_vl_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/qwen3_vl_moe.py` modified +1/-0 (1 lines); hunks: -235,6 +235,7 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights, touching `load_weights`.
+- Code diff details:
+  - `python/sglang/srt/models/qwen3_vl_moe.py` modified +1/-0 (1 lines); hunks: -235,6 +235,7 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_vl_moe.py
+@@ -235,6 +235,7 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]]):
++                and hasattr(self, "model")
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_vl_moe.py` modified +1/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/qwen3_vl_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #24751 - fix(mm): make multimodal data loading non-blocking to prevent health check stalls
+
+- Link: https://github.com/sgl-project/sglang/pull/24751
+- Status/date: merged / 2026-05-22
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 35 files, +45/-44, 401 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "fix(mm): make multimodal data loading non-blocking to prevent health check stalls"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/multimodal/processors/base_processor.py`, `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/multimodal/processors/minicpm.py`; technical summary: Covers "fix(mm): make multimodal data loading non-blocking to prevent health check stalls"; the main implementation surface is `python/sglang/srt/multimodal/processors/base_processor.py`, `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/multimodal/processors/minicpm.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/multimodal/processors/base_processor.py` modified +8/-7 (15 lines); hunks: -1,3 +1,4; -729,7 +730,7 @@ def _process_loaded_mm_data(self, modality, raw_data, result):; symbols: _process_loaded_mm_data, load_mm_data, touching `_process_loaded_mm_data, load_mm_data`; `python/sglang/srt/multimodal/processors/internvl.py` modified +3/-3 (6 lines); hunks: -310,7 +310,7 @@ async def _process_special_format(; -423,7 +423,7 @@ async def process_qwen_mm_data_async(; symbols: _process_special_format, process_qwen_mm_data_async, process_internlm2_mm_data_async, touching `_process_special_format, process_qwen_mm_data_async, process_internlm2_mm_data_async`; `python/sglang/srt/multimodal/processors/minicpm.py` modified +2/-2 (4 lines); hunks: -118,7 +118,7 @@ async def _process_special_format(; -190,7 +190,7 @@ async def process_mm_data_async(; symbols: _process_special_format, process_mm_data_async, touching `_process_special_format, process_mm_data_async`; `python/sglang/srt/multimodal/processors/clip.py` modified +1/-1 (2 lines); hunks: -20,7 +20,7 @@ def __init__(self, hf_config, server_args, _processor, *args,...; symbols: __init__, process_mm_data_async, touching `__init__, process_mm_data_async`.
+- Code diff details:
+  - `python/sglang/srt/multimodal/processors/base_processor.py` modified +8/-7 (15 lines); hunks: -1,3 +1,4; -729,7 +730,7 @@ def _process_loaded_mm_data(self, modality, raw_data, result):; symbols: _process_loaded_mm_data, load_mm_data
+  - `python/sglang/srt/multimodal/processors/internvl.py` modified +3/-3 (6 lines); hunks: -310,7 +310,7 @@ async def _process_special_format(; -423,7 +423,7 @@ async def process_qwen_mm_data_async(; symbols: _process_special_format, process_qwen_mm_data_async, process_internlm2_mm_data_async
+  - `python/sglang/srt/multimodal/processors/minicpm.py` modified +2/-2 (4 lines); hunks: -118,7 +118,7 @@ async def _process_special_format(; -190,7 +190,7 @@ async def process_mm_data_async(; symbols: _process_special_format, process_mm_data_async
+  - `python/sglang/srt/multimodal/processors/clip.py` modified +1/-1 (2 lines); hunks: -20,7 +20,7 @@ def __init__(self, hf_config, server_args, _processor, *args,...; symbols: __init__, process_mm_data_async
+  - `python/sglang/srt/multimodal/processors/deepseek_ocr.py` modified +1/-1 (2 lines); hunks: -29,7 +29,7 @@ def __init__(self, hf_config, server_args, _processor, *args,...; symbols: __init__, process_mm_data_async
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/multimodal/processors/base_processor.py
+@@ -1,3 +1,4 @@
++import asyncio
+@@ -729,7 +730,7 @@ def _process_loaded_mm_data(self, modality, raw_data, result):
+-    def load_mm_data(
++    async def load_mm_data(
+@@ -772,7 +773,7 @@ def load_mm_data(
+-            return self.legacy_load_mm_data(
+diff -- python/sglang/srt/multimodal/processors/internvl.py
+@@ -310,7 +310,7 @@ async def _process_special_format(
+-            base_output = self.load_mm_data(
++            base_output = await self.load_mm_data(
+@@ -423,7 +423,7 @@ async def process_qwen_mm_data_async(
+-        base_output = self.load_mm_data(
++        base_output = await self.load_mm_data(
+@@ -644,7 +644,7 @@ async def process_internlm2_mm_data_async(
+diff -- python/sglang/srt/multimodal/processors/minicpm.py
+@@ -118,7 +118,7 @@ async def _process_special_format(
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/multimodal/processors/base_processor.py` modified +8/-7; `python/sglang/srt/multimodal/processors/internvl.py` modified +3/-3; `python/sglang/srt/multimodal/processors/minicpm.py` modified +2/-2; `python/sglang/srt/multimodal/processors/clip.py` modified +1/-1; `python/sglang/srt/multimodal/processors/deepseek_ocr.py` modified +1/-1; `python/sglang/srt/multimodal/processors/deepseek_vl_v2.py` modified +1/-1
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/multimodal/processors/base_processor.py`, `python/sglang/srt/multimodal/processors/clip.py`, `python/sglang/srt/multimodal/processors/deepseek_ocr.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #23220 - Bugfix: Qwen3-VL-MoE adapt encoder_only
+
+- Link: https://github.com/sgl-project/sglang/pull/23220
+- Status/date: merged / 2026-05-22
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +1/-0, 8 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Bugfix: Qwen3-VL-MoE adapt encoder_only"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/models/qwen3_vl_moe.py`; technical summary: Covers "Bugfix: Qwen3-VL-MoE adapt encoder_only"; the main implementation surface is `python/sglang/srt/models/qwen3_vl_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/qwen3_vl_moe.py` modified +1/-0 (1 lines); hunks: -235,6 +235,7 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights, touching `load_weights`.
+- Code diff details:
+  - `python/sglang/srt/models/qwen3_vl_moe.py` modified +1/-0 (1 lines); hunks: -235,6 +235,7 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_vl_moe.py
+@@ -235,6 +235,7 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]]):
++                and hasattr(self, "model")
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_vl_moe.py` modified +1/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/qwen3_vl_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #24144 - [BugFix][EPD] adapt for qwen3.5-mtp & del duplicated logs
+
+- Link: https://github.com/sgl-project/sglang/pull/24144
+- Status/date: merged / 2026-05-23
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +2/-1, 24 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[BugFix][EPD] adapt for qwen3.5-mtp & del duplicated logs"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/multimodal/processors/qwen_vl.py`; technical summary: Covers "[BugFix][EPD] adapt for qwen3.5-mtp & del duplicated logs"; the main implementation surface is `python/sglang/srt/multimodal/processors/qwen_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +2/-1 (3 lines); hunks: -24,6 +24,7; -247,6 +248,7 @@ class QwenVLImageProcessor(SGLangBaseProcessor):; symbols: QwenVLImageProcessor, get_mm_data, touching `QwenVLImageProcessor, get_mm_data`.
+- Code diff details:
+  - `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +2/-1 (3 lines); hunks: -24,6 +24,7; -247,6 +248,7 @@ class QwenVLImageProcessor(SGLangBaseProcessor):; symbols: QwenVLImageProcessor, get_mm_data
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/multimodal/processors/qwen_vl.py
+@@ -24,6 +24,7 @@
++from sglang.srt.models.qwen3_5_mtp import Qwen3_5ForCausalLMMTP
+@@ -247,6 +248,7 @@ class QwenVLImageProcessor(SGLangBaseProcessor):
++        Qwen3_5ForCausalLMMTP,
+@@ -475,7 +477,6 @@ def get_mm_data(self, prompt, embeddings, **kwargs):
+-            logger.info(f"Get embedding slice for {modality}, num_tokens={num_tokens}")
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +2/-1
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/multimodal/processors/qwen_vl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #26116 - [VLM] Reuse Qwen pretokenized ids
+
+- Link: https://github.com/sgl-project/sglang/pull/26116
+- Status/date: merged / 2026-05-23
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/multimodal/processors/qwen_vl.py`; associated commits `19b60a4f9e14`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +110/-24, 197 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[VLM] Reuse Qwen pretokenized ids"; model line: Qwen VLM/Omni/ASR; category: model implementation change; main diff: `python/sglang/srt/multimodal/processors/qwen_vl.py`; technical summary: Covers "[VLM] Reuse Qwen pretokenized ids"; the main implementation surface is `python/sglang/srt/multimodal/processors/qwen_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +86/-24 (110 lines); hunks: -398,6 +398,42 @@ def compute_mrope_positions(self, input_ids, mm_items):; -560,6 +596,27 @@ async def process_mm_data_async(; symbols: compute_mrope_positions, _get_processor_output_value, _get_precomputed_mrope_from_output, get_mm_data, touching `compute_mrope_positions, _get_processor_output_value, _get_precomputed_mrope_from_output`.
+- Code diff details:
+  - `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +86/-24 (110 lines); hunks: -398,6 +398,42 @@ def compute_mrope_positions(self, input_ids, mm_items):; -560,6 +596,27 @@ async def process_mm_data_async(; symbols: compute_mrope_positions, _get_processor_output_value, _get_precomputed_mrope_from_output, get_mm_data
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/multimodal/processors/qwen_vl.py
+@@ -398,6 +398,42 @@ def compute_mrope_positions(self, input_ids, mm_items):
++    # TODO: consider moving it to SGLangBaseProcessor
++    @staticmethod
++    def _get_processor_output_value(ret, key):
++        """get value with key from returned value of processor"""
++        if ret is None:
++            return None
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +86/-24
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/managers/schedule_batch.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #26100 - [VLM] adopt simplified get_rope_index for image-only requests
+
+- Link: https://github.com/sgl-project/sglang/pull/26100
+- Status/date: merged / 2026-05-24
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +120/-3, 152 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[VLM] adopt simplified get_rope_index for image-only requests"; model line: Qwen VLM/Omni/ASR; category: performance/backend optimization; main diff: `python/sglang/srt/multimodal/processors/qwen_vl.py`; technical summary: Covers "[VLM] adopt simplified get_rope_index for image-only requests"; the main implementation surface is `python/sglang/srt/multimodal/processors/qwen_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +120/-3 (123 lines); hunks: -2,7 +2,7; -436,6 +436,110 @@ def _get_precomputed_mrope_from_output(self, ret):; symbols: _get_precomputed_mrope_from_output, _as_grid_batch, _compute_image_only_mrope_positions_from_offsets, get_mm_data, touching `_get_precomputed_mrope_from_output, _as_grid_batch, _compute_image_only_mrope_positions_from_offsets`.
+- Code diff details:
+  - `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +120/-3 (123 lines); hunks: -2,7 +2,7; -436,6 +436,110 @@ def _get_precomputed_mrope_from_output(self, ret):; symbols: _get_precomputed_mrope_from_output, _as_grid_batch, _compute_image_only_mrope_positions_from_offsets, get_mm_data
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/multimodal/processors/qwen_vl.py
+@@ -2,7 +2,7 @@
+-from typing import List, Union
++from typing import List, Optional, Union
+@@ -436,6 +436,110 @@ def _get_precomputed_mrope_from_output(self, ret):
++    @staticmethod
++    def _as_grid_batch(value):
++        if value is None:
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +120/-3
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/multimodal/processors/qwen_vl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #26101 - [VLM] accept precomputed multimodal metadata
+
+- Link: https://github.com/sgl-project/sglang/pull/26101
+- Status/date: merged / 2026-05-24
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +69/-33, 170 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[VLM] accept precomputed multimodal metadata"; model line: Qwen VLM/Omni/ASR; category: model implementation change; main diff: `python/sglang/srt/multimodal/processors/base_processor.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`; technical summary: Covers "[VLM] accept precomputed multimodal metadata"; the main implementation surface is `python/sglang/srt/multimodal/processors/base_processor.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/multimodal/processors/base_processor.py` modified +63/-12 (75 lines); hunks: -1080,28 +1080,53 @@ def collect_mm_items_from_processor_output(; -1115,6 +1140,30 @@ def collect_mm_items_from_processor_output(; symbols: collect_mm_items_from_processor_output, _process_and_collect_mm_items, process_and_combine_mm_data, touching `collect_mm_items_from_processor_output, _process_and_collect_mm_items, process_and_combine_mm_data`; `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +6/-21 (27 lines); hunks: -400,20 +400,13 @@ def compute_mrope_positions(self, input_ids, mm_items):; -430,9 +423,7 @@ def _get_precomputed_mrope_from_output(self, ret):; symbols: compute_mrope_positions, _get_processor_output_value, _get_precomputed_mrope_from_output, process_mm_data_async, touching `compute_mrope_positions, _get_processor_output_value, _get_precomputed_mrope_from_output`.
+- Code diff details:
+  - `python/sglang/srt/multimodal/processors/base_processor.py` modified +63/-12 (75 lines); hunks: -1080,28 +1080,53 @@ def collect_mm_items_from_processor_output(; -1115,6 +1140,30 @@ def collect_mm_items_from_processor_output(; symbols: collect_mm_items_from_processor_output, _process_and_collect_mm_items, process_and_combine_mm_data
+  - `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +6/-21 (27 lines); hunks: -400,20 +400,13 @@ def compute_mrope_positions(self, input_ids, mm_items):; -430,9 +423,7 @@ def _get_precomputed_mrope_from_output(self, ret):; symbols: compute_mrope_positions, _get_processor_output_value, _get_precomputed_mrope_from_output, process_mm_data_async
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/multimodal/processors/base_processor.py
+@@ -1080,28 +1080,53 @@ def collect_mm_items_from_processor_output(
+-        Create mm_items from processor output. Initially creates one item per modality;
+-        these are later split into per-image/video items by get_new_expanded_mm_items.
++        Create mm_items from processor output.
+-        Note that the data_dict can be passed via offline engine api
++        Initially creates one item per modality; these are later split into per-image/video items by get_new_expanded_mm_items.
++        Note that the data_dict can be hf processor output, or passed via offline engine api
+diff -- python/sglang/srt/multimodal/processors/qwen_vl.py
+@@ -400,20 +400,13 @@ def compute_mrope_positions(self, input_ids, mm_items):
+-    # TODO: consider moving it to SGLangBaseProcessor
+-        """get value with key from returned value of processor"""
+-        if hasattr(ret, "get"):
+-            value = ret.get(key)
+-            if value is not None:
+-                return value
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/multimodal/processors/base_processor.py` modified +63/-12; `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +6/-21
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/multimodal/processors/base_processor.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #26167 - [VLM] feat: replace small H2D calls with a single one for qwen-vl
+
+- Link: https://github.com/sgl-project/sglang/pull/26167
+- Status/date: merged / 2026-05-24
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`; associated commits `64475965015f`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +48/-44, 187 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[VLM] feat: replace small H2D calls with a single one for qwen-vl"; model line: Qwen VLM/Omni/ASR; category: model implementation change; main diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`; technical summary: Covers "[VLM] feat: replace small H2D calls with a single one for qwen-vl"; the main implementation surface is `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +2/-2 (4 lines); hunks: -756,7 +756,7 @@ def forward(; -938,7 +938,7 @@ def _prepare_graph_inputs(self, x: torch.Tensor, grid_thw: t...; symbols: forward, _prepare_graph_inputs, touching `forward, _prepare_graph_inputs`; `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +0/-2 (2 lines); hunks: -293,7 +293,6 @@ def build_input_ids_with_timestamps(; -312,7 +311,6 @@ def build_input_ids_with_timestamps(; symbols: build_input_ids_with_timestamps, touching `build_input_ids_with_timestamps`.
+- Code diff details:
+  - `python/sglang/srt/models/qwen3_vl.py` modified +2/-2 (4 lines); hunks: -756,7 +756,7 @@ def forward(; -938,7 +938,7 @@ def _prepare_graph_inputs(self, x: torch.Tensor, grid_thw: t...; symbols: forward, _prepare_graph_inputs
+  - `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +0/-2 (2 lines); hunks: -293,7 +293,6 @@ def build_input_ids_with_timestamps(; -312,7 +311,6 @@ def build_input_ids_with_timestamps(; symbols: build_input_ids_with_timestamps
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_vl.py
+@@ -756,7 +756,7 @@ def forward(
+-        x = x.to(device=self.device, dtype=self.dtype)
++        x = x.to(device=self.device, dtype=self.dtype, non_blocking=True)
+@@ -938,7 +938,7 @@ def _prepare_graph_inputs(self, x: torch.Tensor, grid_thw: torch.Tensor) -> tupl
+-        x = x.to(device=self.device, dtype=self.dtype)
++        x = x.to(device=self.device, dtype=self.dtype, non_blocking=True)
+diff -- python/sglang/srt/multimodal/processors/qwen_vl.py
+@@ -293,7 +293,6 @@ def build_input_ids_with_timestamps(
+-        audio_token_id = getattr(self, "audio_token_id", None)
+@@ -312,7 +311,6 @@ def build_input_ids_with_timestamps(
+-        model_type = getattr(self, "model_type", None)
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_vl.py` modified +2/-2; `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +0/-2
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/managers/mm_utils.py`, `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #23469 - [NPU] adapt the Qwen3-ASR model for deployment on NPU
+
+- Link: https://github.com/sgl-project/sglang/pull/23469
+- Status/date: closed / 2026-05-24
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +18/-0, 25 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[NPU] adapt the Qwen3-ASR model for deployment on NPU"; model line: Qwen VLM/Omni/ASR; category: model implementation change; main diff: `python/sglang/srt/utils/common.py`; technical summary: Covers "[NPU] adapt the Qwen3-ASR model for deployment on NPU"; the main implementation surface is `python/sglang/srt/utils/common.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/utils/common.py` modified +18/-0 (18 lines); hunks: -740,6 +740,24 @@ def load_audio(; symbols: load_audio, touching `load_audio`.
+- Code diff details:
+  - `python/sglang/srt/utils/common.py` modified +18/-0 (18 lines); hunks: -740,6 +740,24 @@ def load_audio(; symbols: load_audio
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/utils/common.py
+@@ -740,6 +740,24 @@ def load_audio(
++    if is_npu():
++        import soundfile as sf
++        if isinstance(source, bytes):
++            audio, original_sr = sf.read(BytesIO(source))
++        else:
++            audio, original_sr = sf.read(source)
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/utils/common.py` modified +18/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/utils/common.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #26094 - [VLM] fix: fix only the grids from last split mm item is collected for qwen-vl
+
+- Link: https://github.com/sgl-project/sglang/pull/26094
+- Status/date: merged / 2026-05-25
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/multimodal/processors/qwen_vl.py`; associated commits `72c1582d4ef4`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +47/-19, 102 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[VLM] fix: fix only the grids from last split mm item is collected for qwen-vl"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `python/sglang/srt/multimodal/processors/qwen_vl.py`; technical summary: Covers "[VLM] fix: fix only the grids from last split mm item is collected for qwen-vl"; the main implementation surface is `python/sglang/srt/multimodal/processors/qwen_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +47/-19 (66 lines); hunks: -374,13 +374,12 @@ def build_input_ids_with_timestamps(; -529,6 +528,32 @@ def _compute_image_only_mrope_positions_from_offsets(; symbols: build_input_ids_with_timestamps, compute_mrope_positions, _compute_image_only_mrope_positions_from_offsets, _concat_mm_item_grid, touching `build_input_ids_with_timestamps, compute_mrope_positions, _compute_image_only_mrope_positions_from_offsets`.
+- Code diff details:
+  - `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +47/-19 (66 lines); hunks: -374,13 +374,12 @@ def build_input_ids_with_timestamps(; -529,6 +528,32 @@ def _compute_image_only_mrope_positions_from_offsets(; symbols: build_input_ids_with_timestamps, compute_mrope_positions, _compute_image_only_mrope_positions_from_offsets, _concat_mm_item_grid
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/multimodal/processors/qwen_vl.py
+@@ -374,13 +374,12 @@ def build_input_ids_with_timestamps(
+-        image_grid_thw = None
+-        video_grid_thw = None
+-        for item in mm_items:
+-            if "image_grid_thw" in item.model_specific_data:
+-                image_grid_thw = item.model_specific_data["image_grid_thw"]
+-            if "video_grid_thw" in item.model_specific_data:
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +47/-19
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/multimodal/processors/qwen_vl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #19242 - [feat] feat: add Qwen3-ASR support like whisper
+
+- Link: https://github.com/sgl-project/sglang/pull/19242
+- Status/date: closed / 2026-05-25
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 5 files, +475/-0, 519 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[feat] feat: add Qwen3-ASR support like whisper"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/multimodal/processors/qwen3_asr.py`, `python/sglang/srt/configs/qwen3_asr.py`, `python/sglang/srt/configs/__init__.py`; technical summary: Covers "[feat] feat: add Qwen3-ASR support like whisper"; the main implementation surface is `python/sglang/srt/multimodal/processors/qwen3_asr.py`, `python/sglang/srt/configs/qwen3_asr.py`, `python/sglang/srt/configs/__init__.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/multimodal/processors/qwen3_asr.py` added +252/-0 (252 lines); hunks: -0,0 +1,252; symbols: Qwen3ASRMultimodalProcessor, __init__, _get_feature_extractor, _compute_audio_output_length, touching `Qwen3ASRMultimodalProcessor, __init__, _get_feature_extractor`; `python/sglang/srt/configs/qwen3_asr.py` added +217/-0 (217 lines); hunks: -0,0 +1,217; symbols: Qwen3ASRHFProcessor, __init__, from_pretrained, Qwen3ASRAudioEncoderConfig, touching `Qwen3ASRHFProcessor, __init__, from_pretrained`; `python/sglang/srt/configs/__init__.py` modified +2/-0 (2 lines); hunks: -22,6 +22,7; -47,6 +48,7; `python/sglang/srt/configs/model_config.py` modified +2/-0 (2 lines); hunks: -1259,6 +1259,7 @@ def is_generation_model(model_architectures: List[str], is...; -1299,6 +1300,7 @@ def is_image_gen_model(model_architectures: List[str]):; symbols: is_generation_model, is_image_gen_model, is_audio_model, touching `is_generation_model, is_image_gen_model, is_audio_model`.
+- Code diff details:
+  - `python/sglang/srt/multimodal/processors/qwen3_asr.py` added +252/-0 (252 lines); hunks: -0,0 +1,252; symbols: Qwen3ASRMultimodalProcessor, __init__, _get_feature_extractor, _compute_audio_output_length
+  - `python/sglang/srt/configs/qwen3_asr.py` added +217/-0 (217 lines); hunks: -0,0 +1,217; symbols: Qwen3ASRHFProcessor, __init__, from_pretrained, Qwen3ASRAudioEncoderConfig
+  - `python/sglang/srt/configs/__init__.py` modified +2/-0 (2 lines); hunks: -22,6 +22,7; -47,6 +48,7
+  - `python/sglang/srt/configs/model_config.py` modified +2/-0 (2 lines); hunks: -1259,6 +1259,7 @@ def is_generation_model(model_architectures: List[str], is...; -1299,6 +1300,7 @@ def is_image_gen_model(model_architectures: List[str]):; symbols: is_generation_model, is_image_gen_model, is_audio_model
+  - `python/sglang/srt/utils/hf_transformers_utils.py` modified +2/-0 (2 lines); hunks: -64,6 +64,7; -104,6 +105,7
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/multimodal/processors/qwen3_asr.py
+@@ -0,0 +1,252 @@
++import logging
++import re
++from typing import Any, Dict, List, Optional
++import torch
++from sglang.srt.managers.schedule_batch import Modality, MultimodalDataItem
++from sglang.srt.models.qwen3_asr import (
+diff -- python/sglang/srt/configs/qwen3_asr.py
+@@ -0,0 +1,217 @@
++"""
++Copy from [configuration_qwen3_asr.py](https://github.com/QwenLM/Qwen3-ASR/blob/main/qwen_asr/core/transformers_backend/configuration_qwen3_asr.py)
++and add some typing.
+++ Qwen3ASRAudioEncoderConfig
+++ Qwen3ASRConfig
+++ Qwen3ASRTextConfig
+diff -- python/sglang/srt/configs/__init__.py
+@@ -22,6 +22,7 @@
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/multimodal/processors/qwen3_asr.py` added +252/-0; `python/sglang/srt/configs/qwen3_asr.py` added +217/-0; `python/sglang/srt/configs/__init__.py` modified +2/-0; `python/sglang/srt/configs/model_config.py` modified +2/-0; `python/sglang/srt/utils/hf_transformers_utils.py` modified +2/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/configs/__init__.py`, `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/configs/qwen3_asr.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #12662 - [CPU] Add support for Qwen3-vl and Qwen3-omni
+
+- Link: https://github.com/sgl-project/sglang/pull/12662
+- Status/date: merged / 2026-05-27
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_omni_moe.py`, `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`; associated commits `87c3171aaa55`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 8 files, +250/-35, 545 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[CPU] Add support for Qwen3-vl and Qwen3-omni"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/models/qwen3_omni_moe.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`, `python/sglang/srt/models/qwen3_vl.py`; technical summary: Covers "[CPU] Add support for Qwen3-vl and Qwen3-omni"; the main implementation surface is `python/sglang/srt/models/qwen3_omni_moe.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`, `python/sglang/srt/models/qwen3_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/qwen3_omni_moe.py` modified +62/-13 (75 lines); hunks: -31,8 +31,15; -43,7 +50,26; symbols: get_head_dim_and_projection_size, Qwen3OmniMoeAudioEncoderLayer, __init__, _get_feat_extract_output_lengths, touching `get_head_dim_and_projection_size, Qwen3OmniMoeAudioEncoderLayer, __init__`; `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +18/-0 (18 lines); hunks: -34,6 +34,7; -59,6 +60,23; symbols: smart_resize, touching `smart_resize`; `python/sglang/srt/models/qwen3_vl.py` modified +7/-2 (9 lines); hunks: -348,8 +348,13 @@ def __init__(; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `python/sglang/srt/models/qwen3_omni_moe.py` modified +62/-13 (75 lines); hunks: -31,8 +31,15; -43,7 +50,26; symbols: get_head_dim_and_projection_size, Qwen3OmniMoeAudioEncoderLayer, __init__, _get_feat_extract_output_lengths
+  - `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +18/-0 (18 lines); hunks: -34,6 +34,7; -59,6 +60,23; symbols: smart_resize
+  - `python/sglang/srt/models/qwen3_vl.py` modified +7/-2 (9 lines); hunks: -348,8 +348,13 @@ def __init__(; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_omni_moe.py
+@@ -31,8 +31,15 @@
++from sglang.srt.distributed import (
++    get_tensor_model_parallel_world_size,
++)
+-from sglang.srt.layers.linear import ColumnParallelLinear, RowParallelLinear
++from sglang.srt.layers.linear import (
++    ColumnParallelLinear,
+diff -- python/sglang/srt/multimodal/processors/qwen_vl.py
+@@ -34,6 +34,7 @@
++from sglang.srt.utils import cpu_has_amx_support, is_cpu
+@@ -59,6 +60,23 @@
++_is_cpu_amx_available = cpu_has_amx_support()
++_is_cpu = is_cpu()
++if _is_cpu and _is_cpu_amx_available:
++    try:
+diff -- python/sglang/srt/models/qwen3_vl.py
+@@ -348,8 +348,13 @@ def __init__(
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_omni_moe.py` modified +62/-13; `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +18/-0; `python/sglang/srt/models/qwen3_vl.py` modified +7/-2
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/amx_utils.py`, `python/sglang/srt/layers/attention/vision.py`, `python/sglang/srt/layers/conv.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #22848 - [Feature] WebSocket streaming audio input for ASR
+
+- Link: https://github.com/sgl-project/sglang/pull/22848
+- Status/date: merged / 2026-05-27
+- Trace source: `git log --name-only -- <model-files>` found it through `test/manual/models/test_qwen3_asr.py`; associated commits `a95b4e2e09eb`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 11 files, +1707/-49, 1980 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Feature] WebSocket streaming audio input for ASR"; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `test/manual/models/test_qwen3_asr.py`; technical summary: Covers "[Feature] WebSocket streaming audio input for ASR"; the main implementation surface is `test/manual/models/test_qwen3_asr.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/manual/models/test_qwen3_asr.py` modified +547/-3 (550 lines); hunks: -1,17 +1,31; -29,8 +43,83; symbols: _normalize_for_wer, _wer, download_audio, _pcm16_from_audio_bytes, touching `_normalize_for_wer, _wer, download_audio`.
+- Code diff details:
+  - `test/manual/models/test_qwen3_asr.py` modified +547/-3 (550 lines); hunks: -1,17 +1,31; -29,8 +43,83; symbols: _normalize_for_wer, _wer, download_audio, _pcm16_from_audio_bytes
+- Key code excerpts:
+
+```diff
+diff -- test/manual/models/test_qwen3_asr.py
+@@ -1,17 +1,31 @@
+-Tests /v1/audio/transcriptions endpoint (OpenAI-compatible).
++Tests /v1/audio/transcriptions (HTTP) and /v1/realtime (OpenAI Realtime
++transcription WebSocket).
++import asyncio
++import base64
++import json
+```
+
+- Reviewed files:
+  - tests: `test/manual/models/test_qwen3_asr.py` modified +547/-3
+- Risk and verification: The diff ships test coverage in `test/manual/models/test_qwen3_asr.py`, `test/registered/unit/entrypoints/openai/test_serving_transcription.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #25813 - docs(cookbook): port popular model usage guides into cookbook pages
+
+- Link: https://github.com/sgl-project/sglang/pull/25813
+- Status/date: merged / 2026-06-02
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 47 files, +1262/-2154, 4187 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "docs(cookbook): port popular model usage guides into cookbook pages"; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `docs_new/docs/basic_usage/deepseek_v32.mdx`, `docs_new/docs/basic_usage/deepseek_v3.mdx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx`; technical summary: Covers "docs(cookbook): port popular model usage guides into cookbook pages"; the main implementation surface is `docs_new/docs/basic_usage/deepseek_v32.mdx`, `docs_new/docs/basic_usage/deepseek_v3.mdx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/docs/basic_usage/deepseek_v32.mdx` removed +0/-601 (601 lines); hunks: -1,601 +0,0; `docs_new/docs/basic_usage/deepseek_v3.mdx` removed +0/-375 (375 lines); hunks: -1,375 +0,0; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` modified +244/-3 (247 lines); hunks: -24,6 +24,27 @@ SGLang offers multiple installation methods. You can choose t...; -37,7 +58,18 @@ import { DeepSeekV32Deployment } from "/src/snippets/autoregr...; `docs_new/cookbook/autoregressive/GLM/GLM-4.6V.mdx` modified +156/-26 (182 lines); hunks: -10,7 +10,7 @@ GLM-4.6V series model includes two versions: GLM-4.6V (106B),...; -70,14 +70,56 @@ import { GLM46VDeployment } from "/src/snippets/autoregressi...; symbols: image_to_base64, touching `image_to_base64`.
+- Code diff details:
+  - `docs_new/docs/basic_usage/deepseek_v32.mdx` removed +0/-601 (601 lines); hunks: -1,601 +0,0
+  - `docs_new/docs/basic_usage/deepseek_v3.mdx` removed +0/-375 (375 lines); hunks: -1,375 +0,0
+  - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` modified +244/-3 (247 lines); hunks: -24,6 +24,27 @@ SGLang offers multiple installation methods. You can choose t...; -37,7 +58,18 @@ import { DeepSeekV32Deployment } from "/src/snippets/autoregr...
+  - `docs_new/cookbook/autoregressive/GLM/GLM-4.6V.mdx` modified +156/-26 (182 lines); hunks: -10,7 +10,7 @@ GLM-4.6V series model includes two versions: GLM-4.6V (106B),...; -70,14 +70,56 @@ import { GLM46VDeployment } from "/src/snippets/autoregressi...; symbols: image_to_base64
+  - `docs_new/docs/basic_usage/gpt_oss.mdx` removed +0/-181 (181 lines); hunks: -1,181 +0,0
+- Key code excerpts:
+
+```diff
+diff -- docs_new/docs/basic_usage/deepseek_v32.mdx
+@@ -1,601 +0,0 @@
+-title: "DeepSeek V3.2/GLM-5 Usage"
+-metatags:
+-    description: "Deploy DeepSeek V3.2/GLM-5 with SGLang: DeepSeek Sparse Attention (DSA), long-context optimization, MTP speculative decoding, function calling. Supports H200, B2
+-DeepSeek-V3.2 model family equips DeepSeek-V3.1-Terminus with DeepSeek Sparse Attention (DSA) through continued training. With DSA, a fine-grained sparse attention mechanism power
+-Note: This document is originally written for the usage of [DeepSeek-V3.2-Exp](https://huggingface.co/deepseek-ai/DeepSeek-V3.2-Exp) model. The usage of [DeepSeek-V3.2](https://hu
+-## Installation
+diff -- docs_new/docs/basic_usage/deepseek_v3.mdx
+@@ -1,375 +0,0 @@
+-title: "DeepSeek V3/V3.1/R1 Usage"
+-metatags:
+-    description: "Deploy DeepSeek V3/R1 with SGLang: MLA optimization, FP8 quantization, multi-node TP, DP attention, MTP speculative decoding. Supports H200, B200, MI300X, A100."
+-SGLang provides many optimizations specifically designed for the DeepSeek models, making it the inference engine recommended by the official [DeepSeek team](https://github.com/dee
+-This document outlines current optimizations for DeepSeek.
+-For an overview of the implemented features see the completed [Roadmap](https://github.com/sgl-project/sglang/issues/2591).
+diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx
+@@ -24,6 +24,27 @@ SGLang offers multiple installation methods. You can choose the most suitable in
+```
+
+- Reviewed files:
+  - docs: `docs_new/docs/basic_usage/deepseek_v32.mdx` removed +0/-601; `docs_new/docs/basic_usage/deepseek_v3.mdx` removed +0/-375; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` modified +244/-3; `docs_new/cookbook/autoregressive/GLM/GLM-4.6V.mdx` modified +156/-26; `docs_new/docs/basic_usage/gpt_oss.mdx` removed +0/-181; `docs_new/docs/basic_usage/glmv.mdx` removed +0/-139
+- Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR-2.mdx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR.mdx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-R1.mdx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #25198 - [Docs] Update Nemotron3-Nano-Omni cookbook to reflect new model paths
+
+- Link: https://github.com/sgl-project/sglang/pull/25198
+- Status/date: merged / 2026-06-03
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx`; associated commits `8980eb82de90`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +25/-28, 194 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Docs] Update Nemotron3-Nano-Omni cookbook to reflect new model paths"; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx`; technical summary: Covers "[Docs] Update Nemotron3-Nano-Omni cookbook to reflect new model paths"; the main implementation surface is `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` modified +20/-21 (41 lines); hunks: -30,10 +30,9 @@ Architecture and key features:; -76,7 +75,7 @@ This section provides a progressive guide from quick deploymen...; `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx` modified +5/-7 (12 lines); hunks: -1,18 +1,16; -77,7 +75,7 @@ export const Nemotron3NanoOmniDeployment = () => {.
+- Code diff details:
+  - `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` modified +20/-21 (41 lines); hunks: -30,10 +30,9 @@ Architecture and key features:; -76,7 +75,7 @@ This section provides a progressive guide from quick deploymen...
+  - `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx` modified +5/-7 (12 lines); hunks: -1,18 +1,16; -77,7 +75,7 @@ export const Nemotron3NanoOmniDeployment = () => {
+- Key code excerpts:
+
+```diff
+diff -- docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx
+@@ -30,10 +30,9 @@ Architecture and key features:
+-- [`nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning`](https://huggingface.co/nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning)
+-- [`nvidia/Nemotron-3-Nano-Omni-30B-A3B-BF16`](https://huggingface.co/nvidia/Nemotron-3-Nano-Omni-30B-A3B-BF16)
+-- [`nvidia/Nemotron-3-Nano-Omni-30B-A3B-FP8`](https://huggingface.co/nvidia/Nemotron-3-Nano-Omni-30B-A3B-FP8)
+-- [`nvidia/Nemotron-3-Nano-Omni-30B-A3B-NVFP4`](https://huggingface.co/nvidia/Nemotron-3-Nano-Omni-30B-A3B-NVFP4)
++- [`nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-BF16`](https://huggingface.co/nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-BF16)
++- [`nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-FP8`](https://huggingface.co/nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-FP8)
+diff -- docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx
+@@ -1,18 +1,16 @@
+-    reasoning: 'nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning',
+-    bf16: 'nvidia/Nemotron-3-Nano-Omni-30B-A3B-BF16',
+-    fp8: 'nvidia/Nemotron-3-Nano-Omni-30B-A3B-FP8',
+-    nvfp4: 'nvidia/Nemotron-3-Nano-Omni-30B-A3B-NVFP4',
++    bf16: 'nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-BF16',
++    fp8: 'nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-FP8',
+```
+
+- Reviewed files:
+  - docs: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` modified +20/-21; `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx` modified +5/-7
+- Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #27240 - [Docs] re-organize nemotron cookbook
+
+- Link: https://github.com/sgl-project/sglang/pull/27240
+- Status/date: merged / 2026-06-04
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 4 files, +4/-7, 40 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Docs] re-organize nemotron cookbook"; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `docs_new/docs.json`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`; technical summary: Covers "[Docs] re-organize nemotron cookbook"; the main implementation surface is `docs_new/docs.json`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/docs.json` modified +2/-2 (4 lines); hunks: -1005,10 +1005,10; `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx` modified +1/-2 (3 lines); hunks: -1,7 +1,6; `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` modified +0/-2 (2 lines); hunks: -2,8 +2,6; `docs_new/cookbook/autoregressive/intro.mdx` modified +1/-1 (2 lines); hunks: -58,7 +58,7 @@ metatags:.
+- Code diff details:
+  - `docs_new/docs.json` modified +2/-2 (4 lines); hunks: -1005,10 +1005,10
+  - `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx` modified +1/-2 (3 lines); hunks: -1,7 +1,6
+  - `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` modified +0/-2 (2 lines); hunks: -2,8 +2,6
+  - `docs_new/cookbook/autoregressive/intro.mdx` modified +1/-1 (2 lines); hunks: -58,7 +58,7 @@ metatags:
+- Key code excerpts:
+
+```diff
+diff -- docs_new/docs.json
+@@ -1005,10 +1005,10 @@
++                      "cookbook/autoregressive/NVIDIA/Nemotron3-Ultra",
+-                      "cookbook/autoregressive/NVIDIA/Nemotron3-Super",
+-                      "cookbook/autoregressive/NVIDIA/Nemotron3-Ultra"
++                      "cookbook/autoregressive/NVIDIA/Nemotron3-Super"
+diff -- docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx
+@@ -1,7 +1,6 @@
+-metatags:
+-    description: "Deploy NVIDIA Nemotron3-Ultra with SGLang - 550B hybrid MoE model (55B active) with 1M context window, BF16/NVFP4 support, built for long-running autonomous agen
++description: "Deploy NVIDIA Nemotron3-Ultra with SGLang - 550B hybrid MoE model (55B active) with 1M context window, BF16/NVFP4 support, built for long-running autonomous agents."
+diff -- docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx
+@@ -2,8 +2,6 @@
+-tag:
+-    NEW
+diff -- docs_new/cookbook/autoregressive/intro.mdx
+@@ -58,7 +58,7 @@ metatags:
+-    href="/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni"
+```
+
+- Reviewed files:
+  - docs: `docs_new/docs.json` modified +2/-2; `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx` modified +1/-2; `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` modified +0/-2; `docs_new/cookbook/autoregressive/intro.mdx` modified +1/-1
+- Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/cookbook/autoregressive/intro.mdx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #13918 - [VLM] support qwen3-vl eagle infer
+
+- Link: https://github.com/sgl-project/sglang/pull/13918
+- Status/date: closed / 2026-06-11
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +30/-3, 63 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[VLM] support qwen3-vl eagle infer"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/llama_eagle3.py`; technical summary: Covers "[VLM] support qwen3-vl eagle infer"; the main implementation surface is `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/llama_eagle3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +23/-1 (24 lines); hunks: -624,6 +624,9 @@ def __init__(; -711,9 +714,13 @@ def forward(; symbols: __init__, separate_deepstack_embeds, forward, load_weights, touching `__init__, separate_deepstack_embeds, forward`; `python/sglang/srt/models/llama_eagle3.py` modified +7/-2 (9 lines); hunks: -116,9 +116,14 @@ def __init__(; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `python/sglang/srt/models/qwen3_vl.py` modified +23/-1 (24 lines); hunks: -624,6 +624,9 @@ def __init__(; -711,9 +714,13 @@ def forward(; symbols: __init__, separate_deepstack_embeds, forward, load_weights
+  - `python/sglang/srt/models/llama_eagle3.py` modified +7/-2 (9 lines); hunks: -116,9 +116,14 @@ def __init__(; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_vl.py
+@@ -624,6 +624,9 @@ def __init__(
++        # For EAGLE3 support
++        self.capture_aux_hidden_states = False
+@@ -711,9 +714,13 @@ def forward(
++        aux_hidden_states = None
++        if self.capture_aux_hidden_states:
++            hidden_states, aux_hidden_states = hidden_states
+diff -- python/sglang/srt/models/llama_eagle3.py
+@@ -116,9 +116,14 @@ def __init__(
+-        # fix rope_scaling for qwen2.5-vl
++        # fix rope_scaling for qwen2.5-vl/qwen3-vl
+-            config.rope_scaling["rope_type"] = "default"
++            rope_scaling = config.rope_scaling
++            self.mrope_interleaved = rope_scaling.setdefault("mrope_interleaved", False)
++            if not self.mrope_interleaved:
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_vl.py` modified +23/-1; `python/sglang/srt/models/llama_eagle3.py` modified +7/-2
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/llama_eagle3.py`, `python/sglang/srt/models/qwen3_vl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #17276 - Add Qwen3VL Eagle3 Inference Support
+
+- Link: https://github.com/sgl-project/sglang/pull/17276
+- Status/date: closed / 2026-06-11
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +35/-0, 62 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Add Qwen3VL Eagle3 Inference Support"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/models/qwen3_vl.py`; technical summary: Covers "Add Qwen3VL Eagle3 Inference Support"; the main implementation surface is `python/sglang/srt/models/qwen3_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +35/-0 (35 lines); hunks: -733,6 +733,9 @@ def __init__(; -920,13 +923,18 @@ def forward(; symbols: __init__, separate_deepstack_embeds, forward, load_weights, touching `__init__, separate_deepstack_embeds, forward`.
+- Code diff details:
+  - `python/sglang/srt/models/qwen3_vl.py` modified +35/-0 (35 lines); hunks: -733,6 +733,9 @@ def __init__(; -920,13 +923,18 @@ def forward(; symbols: __init__, separate_deepstack_embeds, forward, load_weights
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_vl.py
+@@ -733,6 +733,9 @@ def __init__(
++        # For EAGLE3 support
++        self.capture_aux_hidden_states = False
+@@ -920,13 +923,18 @@ def forward(
++        aux_hidden_states = None
++        if self.capture_aux_hidden_states:
++            hidden_states, aux_hidden_states = hidden_states
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_vl.py` modified +35/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/qwen3_vl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #28567 - Add get_parallel(): a structured accessor for parallel-topology state
+
+- Link: https://github.com/sgl-project/sglang/pull/28567
+- Status/date: merged / 2026-06-18
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 184 files, +1865/-1727, 8932 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Add get_parallel(): a structured accessor for parallel-topology state"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py`; technical summary: Covers "Add get_parallel(): a structured accessor for parallel-topology state"; the main implementation surface is `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/apertus.py` modified +686/-687 (1373 lines); hunks: -1,687 +1,686; symbols: ApertusMLP, __init__, forward, ApertusAttention, touching `ApertusMLP, __init__, forward`; `python/sglang/srt/models/solar.py` modified +28/-27 (55 lines); hunks: -1,37 +1,14; -54,6 +31,30; symbols: __init__, forward, load_kv_cache_scales, touching `__init__, forward, load_kv_cache_scales`; `python/sglang/srt/models/gpt_oss.py` modified +17/-24 (41 lines); hunks: -28,21 +28,13; -76,6 +68,7; symbols: _resolve_moe_input_pad_multiple, __init__, touching `_resolve_moe_input_pad_multiple, __init__`; `python/sglang/srt/models/deepseek_v2.py` modified +14/-23 (37 lines); hunks: -47,9 +47,7; -72,12 +70,6; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `python/sglang/srt/models/apertus.py` modified +686/-687 (1373 lines); hunks: -1,687 +1,686; symbols: ApertusMLP, __init__, forward, ApertusAttention
+  - `python/sglang/srt/models/solar.py` modified +28/-27 (55 lines); hunks: -1,37 +1,14; -54,6 +31,30; symbols: __init__, forward, load_kv_cache_scales
+  - `python/sglang/srt/models/gpt_oss.py` modified +17/-24 (41 lines); hunks: -28,21 +28,13; -76,6 +68,7; symbols: _resolve_moe_input_pad_multiple, __init__
+  - `python/sglang/srt/models/deepseek_v2.py` modified +14/-23 (37 lines); hunks: -47,9 +47,7; -72,12 +70,6; symbols: __init__
+  - `python/sglang/srt/layers/communicator.py` modified +13/-19 (32 lines); hunks: -23,8 +23,6; -44,12 +42,7; symbols: apply_aiter_all_reduce_fusion, init_context, should_fuse_mlp_allreduce_with_next_layer, is_same_group_size
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/apertus.py
+@@ -1,687 +1,686 @@
+-# SPDX-License-Identifier: Apache-2.0
+-# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
+-# Copyright 2025 The SwissAI Initiative
+-# Copyright 2023-2024 SGLang Team
+-# Licensed under the Apache License, Version 2.0 (the "License");
+-# you may not use this file except in compliance with the License.
+diff -- python/sglang/srt/models/solar.py
+@@ -1,37 +1,14 @@
+-# Adapted from
+-# https://github.com/huggingface/transformers/blob/v4.28.0/src/transformers/models/llama/modeling_llama.py
+-# Copyright 2023 The vLLM team.
+-# Copyright 2022 EleutherAI and the HuggingFace Inc. team. All rights reserved.
+-#
+-# This code is based on EleutherAI's GPT-NeoX library and the GPT-NeoX
+diff -- python/sglang/srt/models/gpt_oss.py
+@@ -28,21 +28,13 @@
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/apertus.py` modified +686/-687; `python/sglang/srt/models/solar.py` modified +28/-27; `python/sglang/srt/models/gpt_oss.py` modified +17/-24; `python/sglang/srt/models/deepseek_v2.py` modified +14/-23; `python/sglang/srt/layers/communicator.py` modified +13/-19; `python/sglang/srt/models/qwen3_moe.py` modified +12/-18
+- Risk and verification: The diff ships test coverage in `python/sglang/test/kits/attention_unittest/attention_methods/dense_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsa_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsv4_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dual_chunk_attention.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #28940 - [VLM] Qwen3-VL / Moss-VL ViT preprocessing optimizations
+
+- Link: https://github.com/sgl-project/sglang/pull/28940
+- Status/date: merged / 2026-06-24
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_vl.py`; associated commits `0df796473b76`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 6 files, +476/-10, 558 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[VLM] Qwen3-VL / Moss-VL ViT preprocessing optimizations"; model line: Qwen VLM/Omni/ASR; category: performance/backend optimization; main diff: `python/sglang/srt/models/qwen3_vl.py`; technical summary: Covers "[VLM] Qwen3-VL / Moss-VL ViT preprocessing optimizations"; the main implementation surface is `python/sglang/srt/models/qwen3_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/qwen3_vl.py` modified +141/-2 (143 lines); hunks: -94,6 +94,10; -597,6 +601,131 @@ def fast_pos_embed_interpolate_from_list(self, grid_thw):; symbols: Qwen3_VisionMLP, fast_pos_embed_interpolate_from_list, _use_vectorized_pos_embed, fast_pos_embed_interpolate_vectorized, touching `Qwen3_VisionMLP, fast_pos_embed_interpolate_from_list, _use_vectorized_pos_embed`.
+- Code diff details:
+  - `python/sglang/srt/models/qwen3_vl.py` modified +141/-2 (143 lines); hunks: -94,6 +94,10; -597,6 +601,131 @@ def fast_pos_embed_interpolate_from_list(self, grid_thw):; symbols: Qwen3_VisionMLP, fast_pos_embed_interpolate_from_list, _use_vectorized_pos_embed, fast_pos_embed_interpolate_vectorized
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_vl.py
+@@ -94,6 +94,10 @@
++# Below this image count the per-image loop beats the vectorized path (which has a
++# fixed setup cost; measured crossover ~6 on H20); both give the same result.
++_VECTORIZED_VL_POS_EMBED_MIN_IMAGES = 6
+@@ -597,6 +601,131 @@ def fast_pos_embed_interpolate_from_list(self, grid_thw):
++    def _use_vectorized_pos_embed(self, num_images: int) -> bool:
++        """Use the vectorized path only past a few images.
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_vl.py` modified +141/-2
+- Risk and verification: The diff ships test coverage in `test/registered/models/test_vit_pos_embed_interpolate.py`, `test/registered/unit/multimodal/test_base_processor_image_decode.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #29261 - [Docs] Fix broken links in cookbook
+
+- Link: https://github.com/sgl-project/sglang/pull/29261
+- Status/date: merged / 2026-06-25
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +3/-3, 27 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Docs] Fix broken links in cookbook"; model line: Qwen VLM/Omni/ASR; category: bug fix; main diff: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/cookbook/autoregressive/GLM/GLM-4.7.mdx`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`; technical summary: Covers "[Docs] Fix broken links in cookbook"; the main implementation surface is `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/cookbook/autoregressive/GLM/GLM-4.7.mdx`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +1/-1 (2 lines); hunks: -89,7 +89,7 @@ import { benchmarks } from "/src/snippets/configs/deepseek-ai/...; `docs_new/cookbook/autoregressive/GLM/GLM-4.7.mdx` modified +1/-1 (2 lines); hunks: -127,7 +127,7 @@ Pick a weight format by hardware: **NVFP4** on NVIDIA Blackw...; `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` modified +1/-1 (2 lines); hunks: -52,7 +52,7 @@ uv pip install 'git+https://github.com/sgl-project/sglang.git#....
+- Code diff details:
+  - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +1/-1 (2 lines); hunks: -89,7 +89,7 @@ import { benchmarks } from "/src/snippets/configs/deepseek-ai/...
+  - `docs_new/cookbook/autoregressive/GLM/GLM-4.7.mdx` modified +1/-1 (2 lines); hunks: -127,7 +127,7 @@ Pick a weight format by hardware: **NVFP4** on NVIDIA Blackw...
+  - `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` modified +1/-1 (2 lines); hunks: -52,7 +52,7 @@ uv pip install 'git+https://github.com/sgl-project/sglang.git#...
+- Key code excerpts:
+
+```diff
+diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
+@@ -89,7 +89,7 @@ import { benchmarks } from "/src/snippets/configs/deepseek-ai/deepseek-v4-benchm
+-  For a runnable end-to-end example, see the [DeepSeek-V4-Flash demo notebook](/demo/deepseek_v4_flash).
++  For a runnable end-to-end example, see the [DeepSeek-V4-Flash demo notebook](https://github.com/sgl-project/sglang/blob/main/docs_new/demo/deepseek_v4_flash.ipynb).
+diff -- docs_new/cookbook/autoregressive/GLM/GLM-4.7.mdx
+@@ -127,7 +127,7 @@ Pick a weight format by hardware: **NVFP4** on NVIDIA Blackwell (B200, GB200), *
+-For general GLM-4.x family launch guidance (AMD ROCm notes and more), see [Launch GLM-4.5 / GLM-4.6 / GLM-4.7 with SGLang](../../../docs/basic_usage/glm45). Per-hardware bench com
++For general GLM-4.x family launch guidance (AMD ROCm notes and more), see [Launch GLM-4.5 / GLM-4.6 / GLM-4.7 with SGLang](/cookbook/autoregressive/GLM/GLM-4.5). Per-hardware benc
+diff -- docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx
+@@ -52,7 +52,7 @@ uv pip install 'git+https://github.com/sgl-project/sglang.git#subdirectory=pytho
+-For the full Docker setup and other installation methods, refer to the [official SGLang installation guide](../../../docs/get-started/installation).
++For the full Docker setup and other installation methods, refer to the [official SGLang installation guide](../../../docs/get-started/install).
+```
+
+- Reviewed files:
+  - docs: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/GLM/GLM-4.7.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` modified +1/-1
+- Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/cookbook/autoregressive/GLM/GLM-4.7.mdx`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ## Gap-Closure Notes
 

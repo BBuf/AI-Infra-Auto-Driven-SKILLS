@@ -57,6 +57,8 @@ TODAY = date.today().isoformat()
 DIFFUSION_MODELS = {"ltx23-hq", "qwen-image", "z-image-turbo"}
 
 MODEL_TITLES = {
+    "deepseek-ocr": "DeepSeek OCR",
+    "deepseek-ocr-2": "DeepSeek OCR 2",
     "deepseek-v3-r1": "DeepSeek V3/R1",
     "deepseek-v31": "DeepSeek V3.1",
     "deepseek-v32": "DeepSeek V3.2",
@@ -71,7 +73,12 @@ MODEL_TITLES = {
     "hunyuan3-preview": "Hunyuan3 Preview",
     "intern-s1": "Intern-S1",
     "internvl35": "InternVL 3.5",
+    "jina-reranker-m0": "Jina Reranker M0",
     "kimi": "Kimi K2/K2.5/Linear/VL",
+    "ling25": "Ling 2.5",
+    "llada21": "LLaDA 2.1",
+    "llama31": "Llama 3.1",
+    "llama33-70b": "Llama 3.3 70B",
     "llama4": "Llama 4",
     "mimo-v2-flash": "MiMo V2 Flash",
     "minimax": "MiniMax M2 Series",
@@ -85,10 +92,13 @@ MODEL_TITLES = {
     "qwen3-next": "Qwen3 Next",
     "qwen35": "Qwen3.5",
     "qwen36": "Qwen3.6",
+    "ring25": "Ring 2.5",
     "step35": "Step 3.5",
 }
 
 MODEL_ORDER = [
+    "deepseek-ocr",
+    "deepseek-ocr-2",
     "deepseek-v3-r1",
     "deepseek-v31",
     "deepseek-v32",
@@ -103,7 +113,12 @@ MODEL_ORDER = [
     "hunyuan3-preview",
     "intern-s1",
     "internvl35",
+    "jina-reranker-m0",
     "kimi",
+    "ling25",
+    "llada21",
+    "llama31",
+    "llama33-70b",
     "llama4",
     "mimo-v2-flash",
     "minimax",
@@ -117,14 +132,92 @@ MODEL_ORDER = [
     "qwen3-next",
     "qwen35",
     "qwen36",
+    "ring25",
     "step35",
 ]
+
+FRAMEWORK_MODEL_ORDER = {
+    "sglang": [
+        "deepseek-ocr",
+        "deepseek-ocr-2",
+        "deepseek-v3-r1",
+        "deepseek-v31",
+        "deepseek-v32",
+        "deepseek-v4",
+        "gemma4",
+        "glm-vlm-ocr",
+        "glm45",
+        "glm46-glm47",
+        "glm5-glm51",
+        "gpt-oss",
+        "intern-s1",
+        "internvl35",
+        "kimi",
+        "ling25",
+        "llada21",
+        "llama31",
+        "llama4",
+        "mimo-v2-flash",
+        "minimax",
+        "mistral-small-4",
+        "mixtral-quark-int4fp8-moe",
+        "nemotron-super",
+        "qwen-vlm-omni-asr",
+        "qwen3-coder",
+        "qwen3-core",
+        "qwen3-next",
+        "qwen35",
+        "ring25",
+        "step35",
+    ],
+    "vllm": [
+        "deepseek-ocr",
+        "deepseek-ocr-2",
+        "deepseek-v3-r1",
+        "deepseek-v31",
+        "deepseek-v32",
+        "deepseek-v4",
+        "ernie45",
+        "gemma4",
+        "glm-vlm-ocr",
+        "glm45",
+        "glm46-glm47",
+        "gpt-oss",
+        "intern-s1",
+        "internvl35",
+        "jina-reranker-m0",
+        "kimi",
+        "ling25",
+        "llama31",
+        "llama33-70b",
+        "llama4",
+        "mimo-v2-flash",
+        "minimax",
+        "mistral-small-4",
+        "mixtral-quark-int4fp8-moe",
+        "nemotron-super",
+        "qwen-vlm-omni-asr",
+        "qwen3-core",
+        "qwen3-next",
+        "qwen35",
+        "ring25",
+        "step35",
+    ],
+}
 
 # The filters intentionally start from implementation-adjacent files: model
 # wrappers, configs, processors, parsers, attention/kernel hooks, and the
 # model-specific docs/tests that usually ship in the same support PR.
 MODEL_FILTERS: dict[str, dict[str, dict[str, list[str]]]] = {
     "sglang": {
+        "deepseek-ocr": {
+            "include": ["*deepseek_ocr*", "*deepseek-ocr*", "*DeepSeek-OCR*"],
+            "exclude": ["*deepseek-ocr-2*", "*deepseek-ocr-v2*", "*ocr2*"],
+        },
+        "deepseek-ocr-2": {
+            "include": ["*deepseek_ocr*", "*deepseek-ocr-2*", "*deepseek-ocr-v2*", "*ocr2*"],
+            "exclude": [],
+        },
         "deepseek-v3-r1": {
             "include": [
                 "*deepseek_v2*",
@@ -174,6 +267,19 @@ MODEL_FILTERS: dict[str, dict[str, dict[str, list[str]]]] = {
         "intern-s1": {"include": ["*interns1*", "*intern-s1*", "*internlm_detector*"], "exclude": []},
         "internvl35": {"include": ["*internvl*", "*intern_vit*", "*internvl35*", "*internvl3.5*"], "exclude": ["*interns1*"]},
         "kimi": {"include": ["*kimi*", "*moonvit*"], "exclude": []},
+        "ling25": {
+            "include": ["*ling-2.5*", "*ling_2_5*", "*ling-25*", "*ling25*"],
+            "exclude": ["*lingbot*", "*diffusion*"],
+        },
+        "llada21": {"include": ["*llada2*", "*llada-2.1*", "*llada-21*"], "exclude": []},
+        "llama31": {
+            "include": ["*llama3.1*", "*llama31*", "*llama3_1*", "*llama-3.1*"],
+            "exclude": ["*llama3.3*", "*llama33*", "*llama4*", "*mllama4*"],
+        },
+        "llama33-70b": {
+            "include": ["*llama3.3*", "*llama33*", "*llama-3.3*"],
+            "exclude": ["*llama4*", "*mllama4*"],
+        },
         "llama4": {"include": ["*llama4*", "*mllama4*"], "exclude": []},
         "mimo-v2-flash": {"include": ["*mimo*", "*mimo_v2_flash*"], "exclude": []},
         "minimax": {"include": ["*minimax*"], "exclude": []},
@@ -200,9 +306,18 @@ MODEL_FILTERS: dict[str, dict[str, dict[str, list[str]]]] = {
         "qwen3-next": {"include": ["*qwen3_next*"], "exclude": []},
         "qwen35": {"include": ["*qwen3_5*", "*qwen35*", "*qwen3.5*", "*qwen3-5*"], "exclude": []},
         "qwen36": {"include": ["*qwen36*", "*qwen3.6*", "*qwen3-6*"], "exclude": []},
+        "ring25": {
+            "include": ["*ring-2.5*", "*ring_2_5*", "*ring-25*", "*ring25*"],
+            "exclude": ["*diffusion*", "*ring_sp*"],
+        },
         "step35": {"include": ["*step3p5*", "*step-3.5*", "*step35*", "*step3_5*"], "exclude": []},
     },
     "vllm": {
+        "deepseek-ocr": {
+            "include": ["*deepseek_ocr*", "*deepseek-ocr*", "*template_deepseek_ocr*"],
+            "exclude": ["*deepseek_ocr2*", "*deepseek-ocr-2*", "*ocr2*"],
+        },
+        "deepseek-ocr-2": {"include": ["*deepseek_ocr2*", "*deepseek-ocr-2*", "*ocr2*"], "exclude": []},
         "deepseek-v3-r1": {
             "include": ["*deepseek_v2*", "*deepseek_mtp*", "*deepseekv3*", "*deepseek-v3*", "*deepseek-r1*", "*deepseek_r1*"],
             "exclude": ["*deepseek-v3.1*", "*deepseek-v3.2*", "*deepseek_v4*", "*deepseek-v4*", "*deepseek_ocr*"],
@@ -226,7 +341,24 @@ MODEL_FILTERS: dict[str, dict[str, dict[str, list[str]]]] = {
         "hunyuan3-preview": {"include": ["*hy_v3*", "*hunyuan3*", "*hunyuan3-preview*"], "exclude": ["*hunyuan3d*", "*diffusion*"]},
         "intern-s1": {"include": ["*interns1*", "*intern-s1*", "*internlm2*", "*internlm*"], "exclude": ["*internvl*"]},
         "internvl35": {"include": ["*internvl*", "*intern_vit*", "*internvl35*", "*internvl3.5*"], "exclude": ["*interns1*"]},
+        "jina-reranker-m0": {
+            "include": ["*jina*", "*reranker*"],
+            "exclude": ["*qwen3_reranker*", "*bge-reranker*"],
+        },
         "kimi": {"include": ["*kimi*", "*moonvit*"], "exclude": []},
+        "ling25": {
+            "include": ["*ling-2.5*", "*ling_2_5*", "*ling-25*", "*ling25*"],
+            "exclude": [],
+        },
+        "llada21": {"include": ["*llada2*", "*llada-2.1*", "*llada-21*"], "exclude": []},
+        "llama31": {
+            "include": ["*llama3.1*", "*llama31*", "*llama3_1*", "*llama-3.1*"],
+            "exclude": ["*llama3.3*", "*llama33*", "*llama4*", "*mllama4*"],
+        },
+        "llama33-70b": {
+            "include": ["*llama3.3*", "*llama33*", "*llama-3.3*"],
+            "exclude": ["*llama4*", "*mllama4*"],
+        },
         "llama4": {"include": ["*llama4*", "*mllama4*"], "exclude": []},
         "mimo-v2-flash": {"include": ["*mimo*", "*mimo_v2_flash*"], "exclude": []},
         "minimax": {"include": ["*minimax*"], "exclude": []},
@@ -253,11 +385,17 @@ MODEL_FILTERS: dict[str, dict[str, dict[str, list[str]]]] = {
         "qwen3-next": {"include": ["*qwen3_next*"], "exclude": []},
         "qwen35": {"include": ["*qwen3_5*", "*qwen35*", "*qwen3.5*", "*qwen3-5*"], "exclude": []},
         "qwen36": {"include": ["*qwen36*", "*qwen3.6*", "*qwen3-6*"], "exclude": []},
+        "ring25": {
+            "include": ["*ring-2.5*", "*ring_2_5*", "*ring-25*", "*ring25*"],
+            "exclude": [],
+        },
         "step35": {"include": ["*step3p5*", "*step-3.5*", "*step35*", "*step3_5*", "*step3_text*", "*step3_vl*"], "exclude": []},
     },
 }
 
 SUBJECT_HINTS = {
+    "deepseek-ocr": ["deepseek-ocr", "deepseek ocr", "deepseek_ocr"],
+    "deepseek-ocr-2": ["deepseek-ocr-2", "deepseek ocr 2", "deepseek_ocr2", "ocr2"],
     "deepseek-v3-r1": ["deepseek-v3", "deepseek v3", "deepseek-r1", "deepseek r1", "deepseekv3", "r1", "dsv3"],
     "deepseek-v31": ["deepseek-v3.1", "deepseek v3.1", "deepseek-v31", "deepseekv31", "v3.1", "v31"],
     "deepseek-v32": ["deepseek-v3.2", "deepseek v3.2", "deepseek-v32", "deepseekv32", "v3.2", "v32", "dsv32", "nsa"],
@@ -272,7 +410,12 @@ SUBJECT_HINTS = {
     "hunyuan3-preview": ["hunyuan3", "hy3", "hunyuan 3"],
     "intern-s1": ["intern-s1", "intern s1", "interns1"],
     "internvl35": ["internvl", "intern-vl", "internvl3.5", "internvl35"],
+    "jina-reranker-m0": ["jina", "reranker", "rerank"],
     "kimi": ["kimi", "moonvit"],
+    "ling25": ["ling-2.5", "ling 2.5", "ling25"],
+    "llada21": ["llada", "llada-2.1", "llada 2.1"],
+    "llama31": ["llama3.1", "llama 3.1", "llama31"],
+    "llama33-70b": ["llama3.3", "llama 3.3", "llama33"],
     "llama4": ["llama4", "llama-4", "llama 4", "mllama4"],
     "mimo-v2-flash": ["mimo", "mimo-v2", "mimo v2"],
     "minimax": ["minimax", "mini max"],
@@ -286,6 +429,7 @@ SUBJECT_HINTS = {
     "qwen3-next": ["qwen3-next", "qwen3 next"],
     "qwen35": ["qwen3.5", "qwen35", "qwen3-5"],
     "qwen36": ["qwen3.6", "qwen36", "qwen3-6"],
+    "ring25": ["ring-2.5", "ring 2.5", "ring25"],
     "step35": ["step3.5", "step-3.5", "step35", "step3p5"],
 }
 
@@ -354,7 +498,7 @@ def save_cache(cache: dict[str, Any]) -> None:
 
 
 def framework_commit(framework: str) -> str:
-    return run(["git", "rev-parse", "--short=10", "HEAD"], FRAMEWORK_ROOTS[framework]).strip()
+    return run(["git", "rev-parse", "HEAD"], FRAMEWORK_ROOTS[framework]).strip()
 
 
 def git_files(framework: str) -> list[str]:
@@ -366,6 +510,8 @@ def git_files(framework: str) -> list[str]:
 def is_global_excluded(path: str) -> bool:
     lower = path.lower()
     excluded = [
+        ".claude/",
+        ".codex/",
         "/.git/",
         "node_modules/",
         "site-packages/",
@@ -800,7 +946,11 @@ def implementation_zh(bundle: PRBundle) -> str:
 
 
 def validation_zh(bundle: PRBundle) -> str:
-    files = bundle.files or []
+    files = [
+        file
+        for file in (bundle.files or [])
+        if not is_global_excluded(file.get("filename", ""))
+    ]
     tests = [f.get("filename", "") for f in files if file_category(f.get("filename", "")) == "tests"]
     docs = [f.get("filename", "") for f in files if file_category(f.get("filename", "")) == "docs"]
     runtime = [f.get("filename", "") for f in files if file_category(f.get("filename", "")) == "runtime"]
@@ -858,7 +1008,11 @@ def implementation_en(bundle: PRBundle) -> str:
 
 
 def validation_en(bundle: PRBundle) -> str:
-    files = bundle.files or []
+    files = [
+        file
+        for file in (bundle.files or [])
+        if not is_global_excluded(file.get("filename", ""))
+    ]
     tests = [f.get("filename", "") for f in files if file_category(f.get("filename", "")) == "tests"]
     docs = [f.get("filename", "") for f in files if file_category(f.get("filename", "")) == "docs"]
     runtime = [f.get("filename", "") for f in files if file_category(f.get("filename", "")) == "runtime"]
@@ -1107,16 +1261,35 @@ def render_history_en(framework: str, model: str, files: list[str], traces: dict
 
 
 def update_indexes(dry_run: bool = False) -> None:
-    model_lines = "\n".join(f"- `{model}`" for model in MODEL_ORDER)
+    sglang_model_lines = "\n".join(f"- `{model}`" for model in FRAMEWORK_MODEL_ORDER["sglang"])
+    vllm_model_lines = "\n".join(f"- `{model}`" for model in FRAMEWORK_MODEL_ORDER["vllm"])
     if dry_run:
         print("dry-run: would update framework index READMEs", flush=True)
         return
+    sglang_head = framework_commit("sglang")
+    vllm_head = framework_commit("vllm")
     (HISTORY_ROOT / "sglang" / "README.md").write_text(
-        f"# SGLang Model PR Optimization History\n\nCurrent model families:\n\n{model_lines}\n",
+        (
+            "# SGLang Model PR Optimization History\n\n"
+            f"Refresh: `{TODAY}`. Source head: `sgl-project/sglang@{sglang_head}`.\n\n"
+            "Current model families:\n\n"
+            f"{sglang_model_lines}\n\n"
+            "Open and recently landed work is tracked by `tools/check_open_pr_watch.py`; "
+            "regenerate that report before a long SOTA or model-history refresh so open PRs "
+            "are not confused with missing local support.\n"
+        ),
         encoding="utf-8",
     )
     (HISTORY_ROOT / "vllm" / "README.md").write_text(
-        f"# vLLM Model PR Optimization History\n\nCurrent model families:\n\n{model_lines}\n",
+        (
+            "# vLLM Model PR Optimization History\n\n"
+            f"Refresh: `{TODAY}`. Source head: `vllm-project/vllm@{vllm_head}`.\n\n"
+            "Current model families:\n\n"
+            f"{vllm_model_lines}\n\n"
+            "Open and recently landed work is tracked by `tools/check_open_pr_watch.py`; "
+            "regenerate that report before a long SOTA or model-history refresh so open PRs "
+            "are not confused with missing competitor support.\n"
+        ),
         encoding="utf-8",
     )
 
@@ -1127,7 +1300,7 @@ def rebuild(dry_run: bool = False) -> None:
     update_indexes(dry_run=dry_run)
     for framework in ("sglang", "vllm"):
         print(f"== {framework} ==")
-        for model in MODEL_ORDER:
+        for model in FRAMEWORK_MODEL_ORDER[framework]:
             files = selected_files(framework, model, all_files[framework])
             raw_traces = trace_model_prs(framework, files)
             traces = filter_traces_by_subject(model, raw_traces)

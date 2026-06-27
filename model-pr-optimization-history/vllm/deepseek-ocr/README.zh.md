@@ -1,50 +1,19 @@
 # vllm DeepSeek OCR 模型 PR 优化历史
 
-## 2026-06-26 最新源码扫描
-
-已按 vLLM 上游 `vllm-project/vllm@abc71548ef029132c3316b902207f254a246d593` 重新扫描本文下方列出的 tracked files。
-文件级匹配使用 GitHub mirror 的 `git log --name-only`；PR 标题、链接和合并时间通过 GitHub GraphQL Pull Request API 批量复核。上一时效锚点：`2026-06-05`。
-
-结果：发现 6 个额外 PR-numbered merge 触及 tracked files，但尚未提升为下方完整逐 PR diff audit card。此节只作为 freshness index；需要引用实现细节时，仍应先人工阅读 PR diff 再补完整卡片。
-
-| 合并日期 | PR | 标题 | 命中的 tracked files |
-| --- | --- | --- | --- |
-| 2026-06-22 | [#45993](https://github.com/vllm-project/vllm/pull/45993) | [Model] Remove MiniMaxText01, MiniMaxVL01, MiniMaxForCausalLM | `vision_language_offline.py` |
-| 2026-06-17 | [#41992](https://github.com/vllm-project/vllm/pull/41992) | [MM][Perf][CG] Support ViT full CUDA graph for Kimi-VL | `vision_language_offline.py` |
-| 2026-06-16 | [#43586](https://github.com/vllm-project/vllm/pull/43586) | [MM][Perf][CG] Support dual-path ViT full CUDA graph for DeepSeek-OCR | `vision_language_offline.py`, `deepseek_ocr.py` |
-| 2026-06-12 | [#40660](https://github.com/vllm-project/vllm/pull/40660) | [MM][Perf][CG] Support ViT full cudagraphs for mllama4 | `vision_language_offline.py` |
-| 2026-06-10 | [#45131](https://github.com/vllm-project/vllm/pull/45131) | Deprecated 1st generation Qwen and QwenVL models | `vision_language_multi_image_offline.py`, `vision_language_offline.py` |
-| 2026-06-09 | [#40576](https://github.com/vllm-project/vllm/pull/40576) | [MM][Perf][CG] Support ViT full CUDA graph for glm4_1v image and video inference | `vision_language_offline.py` |
-
-## 2026-06-05 PR 补漏复核
-
-已于 2026-06-05 按 vllm 上游 `origin/main@c66b19800` 复核；自上次时效基准（2026-05-19）以来，共有 1 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
-
-| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
-| --- | --- | --- | --- |
-| 2026-06-04 | [#41759](https://github.com/vllm-project/vllm/pull/41759) | [MM][Perf][CG] Support ViT full CUDA graph for InternVL | `vision_language_offline.py` |
-
-
-## 2026-05-19 新增覆盖
-
-按 vllm 上游 `origin/main@ef54a4d604`、模型相关文件的 `git log --name-only -- <model-files>` 以及 GitHub Pull Request files API 生成。本页用于补齐 sgl-cookbook 中 `DeepSeek OCR` 缺失的历史 PR 优化文档。
-
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
-| `vllm/model_executor/models/deepseek_ocr.py` | [#35182](https://github.com/vllm-project/vllm/pull/35182), [#37289](https://github.com/vllm-project/vllm/pull/37289), [#36670](https://github.com/vllm-project/vllm/pull/36670), [#35025](https://github.com/vllm-project/vllm/pull/35025), [#34085](https://github.com/vllm-project/vllm/pull/34085), [#34330](https://github.com/vllm-project/vllm/pull/34330), [#33909](https://github.com/vllm-project/vllm/pull/33909), [#33063](https://github.com/vllm-project/vllm/pull/33063), [#31972](https://github.com/vllm-project/vllm/pull/31972), [#32632](https://github.com/vllm-project/vllm/pull/32632), [#32327](https://github.com/vllm-project/vllm/pull/32327), [#32016](https://github.com/vllm-project/vllm/pull/32016), ... (25 total) |
-| `vllm/transformers_utils/processors/deepseek_ocr.py` | [#36024](https://github.com/vllm-project/vllm/pull/36024), [#33909](https://github.com/vllm-project/vllm/pull/33909), [#27361](https://github.com/vllm-project/vllm/pull/27361), [#27247](https://github.com/vllm-project/vllm/pull/27247) |
-| `vllm/transformers_utils/chat_templates/template_deepseek_ocr.jinja` | [#27247](https://github.com/vllm-project/vllm/pull/27247) |
 | `tests/models/multimodal/processing/test_deepseek_ocr.py` | [#36670](https://github.com/vllm-project/vllm/pull/36670) |
-| `examples/generate/multimodal/vision_language_offline.py` | [#42224](https://github.com/vllm-project/vllm/pull/42224), [#41736](https://github.com/vllm-project/vllm/pull/41736), [#42151](https://github.com/vllm-project/vllm/pull/42151), [#40830](https://github.com/vllm-project/vllm/pull/40830), [#36464](https://github.com/vllm-project/vllm/pull/36464) |
-| `examples/generate/multimodal/vision_language_multi_image_offline.py` | [#36464](https://github.com/vllm-project/vllm/pull/36464) |
+| `vllm/model_executor/models/deepseek_ocr.py` | [#27247](https://github.com/vllm-project/vllm/pull/27247), [#27361](https://github.com/vllm-project/vllm/pull/27361), [#28617](https://github.com/vllm-project/vllm/pull/28617), [#31569](https://github.com/vllm-project/vllm/pull/31569), [#33909](https://github.com/vllm-project/vllm/pull/33909), [#34085](https://github.com/vllm-project/vllm/pull/34085), [#36670](https://github.com/vllm-project/vllm/pull/36670), [#43586](https://github.com/vllm-project/vllm/pull/43586) |
+| `vllm/transformers_utils/chat_templates/template_deepseek_ocr.jinja` | [#27247](https://github.com/vllm-project/vllm/pull/27247) |
+| `vllm/transformers_utils/processors/deepseek_ocr.py` | [#27247](https://github.com/vllm-project/vllm/pull/27247), [#27361](https://github.com/vllm-project/vllm/pull/27361), [#33909](https://github.com/vllm-project/vllm/pull/33909) |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 31
-- 关键词/补充 PR 数: 0
-- 当前文档总 PR 数: 31
+- git 追溯 PR 数: 8
+- 原文档显式引用补充 PR 数: 30
+- 当前文档总 PR 数: 38
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -52,37 +21,44 @@
 
 | 日期 | PR | 状态 | 标题 | 主要文件 |
 | --- | --- | --- | --- | --- |
-| 2025-10-22 | [#27247](https://github.com/vllm-project/vllm/pull/27247) | merged | [Model] Upstream Deepseek-OCR model | `docs/models/supported_models.md`, `examples/offline_inference/vision_language.py`, `tests/models/registry.py` |
-| 2025-10-23 | [#27361](https://github.com/vllm-project/vllm/pull/27361) | merged | [Bugfix] Fix deepseek-ocr multi-image inference and add `merge_by_field_config=True` with tensor schema support | `examples/offline_inference/vision_language_multi_image.py`, `tests/models/multimodal/processing/test_common.py`, `vllm/model_executor/models/deepseek_ocr.py` |
-| 2025-11-05 | [#27560](https://github.com/vllm-project/vllm/pull/27560) | merged | [Bugfix] Validate custom logits processor xargs for online serving | `docs/design/logits_processors.md`, `docs/features/custom_arguments.md`, `docs/features/custom_logitsprocs.md` |
-| 2025-11-08 | [#28101](https://github.com/vllm-project/vllm/pull/28101) | merged | [Model] Consolidate Deepseek-MoE implementation with DeepSeek-v2 | `tests/models/registry.py`, `vllm/model_executor/models/deepseek.py`, `vllm/model_executor/models/deepseek_ocr.py` |
-| 2025-11-13 | [#27583](https://github.com/vllm-project/vllm/pull/27583) | merged | Rename clashing method names for vLLM model protocol | `docs/contributing/model/basic.md`, `docs/contributing/model/multimodal.md`, `vllm/model_executor/models/apertus.py` |
+| 2025-10-22 | [#27247](https://github.com/vllm-project/vllm/pull/27247) | merged | [Model] Upstream Deepseek-OCR model | `vllm/model_executor/models/deepseek_ocr.py`, `vllm/transformers_utils/processors/deepseek_ocr.py`, `vllm/transformers_utils/chat_templates/template_deepseek_ocr.jinja` |
+| 2025-10-23 | [#27361](https://github.com/vllm-project/vllm/pull/27361) | merged | [Bugfix] Fix deepseek-ocr multi-image inference and add `merge_by_field_config=True` with tensor schema support | `vllm/model_executor/models/deepseek_ocr.py`, `vllm/transformers_utils/processors/deepseek_ocr.py` |
+| 2025-11-05 | [#27560](https://github.com/vllm-project/vllm/pull/27560) | merged | [Bugfix] Validate custom logits processor xargs for online serving | `vllm/model_executor/models/deepseek_ocr.py`, `vllm/entrypoints/openai/serving_completion.py`, `vllm/entrypoints/openai/serving_chat.py` |
+| 2025-11-08 | [#28101](https://github.com/vllm-project/vllm/pull/28101) | merged | [Model] Consolidate Deepseek-MoE implementation with DeepSeek-v2 | `vllm/model_executor/models/deepseek.py`, `vllm/model_executor/models/deepseek_v2.py`, `vllm/model_executor/models/deepseek_ocr.py` |
+| 2025-11-13 | [#27583](https://github.com/vllm-project/vllm/pull/27583) | merged | Rename clashing method names for vLLM model protocol | `vllm/model_executor/models/interfaces_base.py`, `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/bert.py` |
 | 2025-11-13 | [#28617](https://github.com/vllm-project/vllm/pull/28617) | merged | [BugFix] DeepSeek-OCR: apply NoRepeatNGramLogitsProcessor to greedy path | `vllm/model_executor/models/deepseek_ocr.py` |
-| 2025-12-02 | [#29793](https://github.com/vllm-project/vllm/pull/29793) | merged | [Chore] Move tokenizer initialization methods | `benchmarks/benchmark_prefix_caching.py`, `benchmarks/benchmark_serving_structured_output.py`, `tests/compile/test_dynamic_shapes_compilation.py` |
-| 2025-12-04 | [#30035](https://github.com/vllm-project/vllm/pull/30035) | merged | [Chore] Deprecate `merge_by_field_config` arg | `tests/models/multimodal/processing/test_common.py`, `tests/models/multimodal/processing/test_glm4_1v.py`, `tests/models/multimodal/processing/test_tensor_schema.py` |
-| 2025-12-06 | [#30170](https://github.com/vllm-project/vllm/pull/30170) | merged | [Chore] Deprecate `SupportsMultiModal.merge_by_field_config` | `vllm/model_executor/models/aria.py`, `vllm/model_executor/models/aya_vision.py`, `vllm/model_executor/models/blip2.py` |
-| 2025-12-07 | [#30145](https://github.com/vllm-project/vllm/pull/30145) | merged | [Renderer] Separate out `RendererConfig` from `ModelConfig` | `docs/contributing/model/transcription.md`, `tests/compile/distributed/test_sequence_parallelism.py`, `tests/compile/test_functionalization.py` |
-| 2025-12-07 | [#30199](https://github.com/vllm-project/vllm/pull/30199) | merged | Revert "[Renderer] Separate out `RendererConfig` from `ModelConfig` (#30145)" | `docs/contributing/model/transcription.md`, `tests/compile/distributed/test_sequence_parallelism.py`, `tests/compile/test_functionalization.py` |
-| 2026-01-02 | [#31569](https://github.com/vllm-project/vllm/pull/31569) | merged | feat: support LoRA for DeepSeek-OCR(Language Model part) | `docs/models/supported_models.md`, `vllm/model_executor/models/deepseek_ocr.py` |
-| 2026-01-08 | [#31947](https://github.com/vllm-project/vllm/pull/31947) | merged | [Model] Standardize common vision encoders | `vllm/model_executor/models/clip.py`, `vllm/model_executor/models/deepencoder.py`, `vllm/model_executor/models/deepseek_ocr.py` |
+| 2025-12-02 | [#29793](https://github.com/vllm-project/vllm/pull/29793) | merged | [Chore] Move tokenizer initialization methods | `vllm/transformers_utils/tokenizer.py`, `vllm/tokenizers/registry.py`, `vllm/tokenizers/__init__.py` |
+| 2025-12-04 | [#30035](https://github.com/vllm-project/vllm/pull/30035) | merged | [Chore] Deprecate `merge_by_field_config` arg | `vllm/multimodal/inputs.py`, `tests/multimodal/test_inputs.py`, `vllm/multimodal/utils.py` |
+| 2025-12-06 | [#30170](https://github.com/vllm-project/vllm/pull/30170) | merged | [Chore] Deprecate `SupportsMultiModal.merge_by_field_config` | `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/aria.py`, `vllm/model_executor/models/aya_vision.py` |
+| 2025-12-07 | [#30145](https://github.com/vllm-project/vllm/pull/30145) | merged | [Renderer] Separate out `RendererConfig` from `ModelConfig` | `tests/entrypoints/test_chat_utils.py`, `vllm/entrypoints/chat_utils.py`, `vllm/multimodal/registry.py` |
+| 2025-12-07 | [#30199](https://github.com/vllm-project/vllm/pull/30199) | merged | Revert "[Renderer] Separate out `RendererConfig` from `ModelConfig` (#30145)" | `tests/entrypoints/test_chat_utils.py`, `vllm/entrypoints/chat_utils.py`, `vllm/multimodal/registry.py` |
+| 2026-01-02 | [#31569](https://github.com/vllm-project/vllm/pull/31569) | merged | feat: support LoRA for DeepSeek-OCR(Language Model part) | `vllm/model_executor/models/deepseek_ocr.py` |
+| 2026-01-08 | [#31947](https://github.com/vllm-project/vllm/pull/31947) | merged | [Model] Standardize common vision encoders | `vllm/model_executor/models/siglip.py`, `vllm/model_executor/models/clip.py`, `vllm/model_executor/models/phi3v.py` |
 | 2026-01-09 | [#32016](https://github.com/vllm-project/vllm/pull/32016) | merged | [Model] Remove redundant None check in DeepSeekOCR image input processing | `vllm/model_executor/models/deepseek_ocr.py` |
-| 2026-01-14 | [#32327](https://github.com/vllm-project/vllm/pull/32327) | merged | [1/N] Reorganize multimodal processing code | `docs/api/README.md`, `docs/contributing/model/multimodal.md`, `docs/design/mm_processing.md` |
-| 2026-01-20 | [#32632](https://github.com/vllm-project/vllm/pull/32632) | merged | [1/N] Initialize MM components in context managers (A-D) | `vllm/model_executor/models/aria.py`, `vllm/model_executor/models/audioflamingo3.py`, `vllm/model_executor/models/aya_vision.py` |
-| 2026-01-24 | [#31972](https://github.com/vllm-project/vllm/pull/31972) | merged | [Models]: Make Multimodal config implicit in ViT implementation | `vllm/model_executor/layers/attention/mm_encoder_attention.py`, `vllm/model_executor/models/clip.py`, `vllm/model_executor/models/deepencoder.py` |
-| 2026-01-26 | [#33063](https://github.com/vllm-project/vllm/pull/33063) | merged | [Chore] Update type annotation of `input_ids` in model forward | `docs/contributing/model/basic.md`, `tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_gemma_embedding.py`, `vllm/model_executor/models/afmoe.py` |
-| 2026-02-05 | [#33909](https://github.com/vllm-project/vllm/pull/33909) | merged | [Models] Consolidate Deepseek-OCR2 processor | `vllm/model_executor/models/deepencoder2.py`, `vllm/model_executor/models/deepseek_ocr.py`, `vllm/model_executor/models/deepseek_ocr2.py` |
-| 2026-02-11 | [#34330](https://github.com/vllm-project/vllm/pull/34330) | merged | [Multimodal] Expose `mm_processor_kwargs` for `DummyInputsBuilder` | `vllm/model_executor/models/aria.py`, `vllm/model_executor/models/audioflamingo3.py`, `vllm/model_executor/models/aya_vision.py` |
+| 2026-01-14 | [#32327](https://github.com/vllm-project/vllm/pull/32327) | merged | [1/N] Reorganize multimodal processing code | `vllm/multimodal/processing/processor.py`, `vllm/multimodal/processing/context.py`, `vllm/multimodal/processing/__init__.py` |
+| 2026-01-20 | [#32632](https://github.com/vllm-project/vllm/pull/32632) | merged | [1/N] Initialize MM components in context managers (A-D) | `vllm/model_executor/models/deepseek_ocr.py`, `vllm/model_executor/models/bagel.py`, `vllm/model_executor/models/deepseek_vl2.py` |
+| 2026-01-24 | [#31972](https://github.com/vllm-project/vllm/pull/31972) | merged | [Models]: Make Multimodal config implicit in ViT implementation | `vllm/model_executor/models/vision.py`, `vllm/model_executor/models/qwen2_vl.py`, `vllm/model_executor/models/dots_ocr.py` |
+| 2026-01-26 | [#33063](https://github.com/vllm-project/vllm/pull/33063) | merged | [Chore] Update type annotation of `input_ids` in model forward | `vllm/model_executor/models/modernbert.py`, `vllm/model_executor/models/gemma3n.py`, `vllm/model_executor/models/gpt2.py` |
+| 2026-02-05 | [#33909](https://github.com/vllm-project/vllm/pull/33909) | merged | [Models] Consolidate Deepseek-OCR2 processor | `vllm/transformers_utils/processors/deepseek_ocr.py`, `vllm/model_executor/models/deepseek_ocr.py` |
+| 2026-02-11 | [#34330](https://github.com/vllm-project/vllm/pull/34330) | merged | [Multimodal] Expose `mm_processor_kwargs` for `DummyInputsBuilder` | `vllm/model_executor/models/idefics3.py`, `vllm/multimodal/processing/dummy_inputs.py`, `vllm/model_executor/models/qwen2_5_omni_thinker.py` |
 | 2026-02-12 | [#34085](https://github.com/vllm-project/vllm/pull/34085) | merged | Fix DeepSeek-OCR tensor validation for all size variants | `vllm/model_executor/models/deepseek_ocr.py` |
-| 2026-02-23 | [#35025](https://github.com/vllm-project/vllm/pull/35025) | merged | [Refactor] Simplify dummy data generation | `docs/contributing/model/multimodal.md`, `tests/models/multimodal/processing/test_audioflamingo3.py`, `tests/models/multimodal/processing/test_common.py` |
-| 2026-03-06 | [#36024](https://github.com/vllm-project/vllm/pull/36024) | merged | [Misc] Lazy import registered processors | `tests/models/registry.py`, `vllm/model_executor/models/deepseek_vl2.py`, `vllm/model_executor/models/fireredasr2.py` |
+| 2026-02-23 | [#35025](https://github.com/vllm-project/vllm/pull/35025) | merged | [Refactor] Simplify dummy data generation | `vllm/config/multimodal.py`, `vllm/model_executor/models/qwen3_vl.py`, `vllm/multimodal/registry.py` |
+| 2026-03-06 | [#36024](https://github.com/vllm-project/vllm/pull/36024) | merged | [Misc] Lazy import registered processors | `vllm/transformers_utils/processors/__init__.py`, `tests/models/registry.py`, `vllm/transformers_utils/processors/deepseek_ocr.py` |
 | 2026-03-12 | [#36670](https://github.com/vllm-project/vllm/pull/36670) | merged | [Bugfix][Model] Fix DeepSeek-OCR TensorSchema crash on empty images_crop | `tests/models/multimodal/processing/test_deepseek_ocr.py`, `vllm/model_executor/models/deepseek_ocr.py` |
-| 2026-03-17 | [#37289](https://github.com/vllm-project/vllm/pull/37289) | merged | [Bugfix] Standardize custom HF Processor init | `vllm/model_executor/models/deepseek_ocr.py`, `vllm/model_executor/models/deepseek_ocr2.py`, `vllm/model_executor/models/glm4v.py` |
-| 2026-03-25 | [#35182](https://github.com/vllm-project/vllm/pull/35182) | merged | [Misc] Reorganize inputs | `docs/api/README.md`, `docs/contributing/model/transcription.md`, `docs/features/multimodal_inputs.md` |
-| 2026-04-27 | [#36464](https://github.com/vllm-project/vllm/pull/36464) | merged | [Examples] Resettle generate examples. | `.buildkite/test-amd.yaml`, `.buildkite/test_areas/misc.yaml`, `.buildkite/test_areas/model_runner_v2.yaml` |
-| 2026-05-02 | [#40830](https://github.com/vllm-project/vllm/pull/40830) | merged | [MM][CG] Support ViT CG for Qwen2.5-VL | `docs/design/cuda_graphs_multimodal.md`, `examples/generate/multimodal/vision_language_offline.py`, `tests/models/multimodal/generation/test_qwen2_5_vl.py` |
-| 2026-05-13 | [#41736](https://github.com/vllm-project/vllm/pull/41736) | merged | [MM][CG] Support ViT CG for Qwen2-VL | `docs/design/cuda_graphs_multimodal.md`, `examples/generate/multimodal/vision_language_offline.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py` |
-| 2026-05-13 | [#42151](https://github.com/vllm-project/vllm/pull/42151) | merged | [MM][Perf][CG] Support ViT full CUDA graph for Qwen3.5 | `docs/design/cuda_graphs_multimodal.md`, `examples/generate/multimodal/vision_language_offline.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py` |
-| 2026-05-18 | [#42224](https://github.com/vllm-project/vllm/pull/42224) | merged | [MM][CG] Enable encoder Cudagraph for Step3VL | `docs/design/cuda_graphs_multimodal.md`, `examples/generate/multimodal/vision_language_offline.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py` |
+| 2026-03-17 | [#37289](https://github.com/vllm-project/vllm/pull/37289) | merged | [Bugfix] Standardize custom HF Processor init | `vllm/transformers_utils/processors/qwen_vl.py`, `vllm/model_executor/models/glm4v.py`, `vllm/model_executor/models/qwen_vl.py` |
+| 2026-03-25 | [#35182](https://github.com/vllm-project/vllm/pull/35182) | merged | [Misc] Reorganize inputs | `vllm/multimodal/inputs.py`, `vllm/entrypoints/pooling/score/serving.py`, `vllm/entrypoints/serve/render/serving.py` |
+| 2026-04-27 | [#36464](https://github.com/vllm-project/vllm/pull/36464) | merged | [Examples] Resettle generate examples. | `docs/features/multimodal_inputs.md`, `examples/generate/multimodal/qwen2_5_omni/README.md`, `docs/features/reasoning_outputs.md` |
+| 2026-05-02 | [#40830](https://github.com/vllm-project/vllm/pull/40830) | merged | [MM][CG] Support ViT CG for Qwen2.5-VL | `vllm/model_executor/models/qwen2_5_vl.py`, `tests/models/multimodal/generation/test_qwen2_5_vl.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py` |
+| 2026-05-13 | [#42151](https://github.com/vllm-project/vllm/pull/42151) | merged | [MM][Perf][CG] Support ViT full CUDA graph for Qwen3.5 | `examples/generate/multimodal/vision_language_offline.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`, `docs/design/cuda_graphs_multimodal.md` |
+| 2026-05-13 | [#41736](https://github.com/vllm-project/vllm/pull/41736) | merged | [MM][CG] Support ViT CG for Qwen2-VL | `vllm/model_executor/models/qwen2_vl.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`, `docs/design/cuda_graphs_multimodal.md` |
+| 2026-05-18 | [#42224](https://github.com/vllm-project/vllm/pull/42224) | merged | [MM][CG] Enable encoder Cudagraph for Step3VL | `vllm/model_executor/models/step3_vl.py`, `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/utils.py` |
+| 2026-06-04 | [#41759](https://github.com/vllm-project/vllm/pull/41759) | merged | [MM][Perf][CG] Support ViT full CUDA graph for InternVL | `vllm/model_executor/models/internvl.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`, `docs/design/cuda_graphs_multimodal.md` |
+| 2026-06-09 | [#40576](https://github.com/vllm-project/vllm/pull/40576) | merged | [MM][Perf][CG] Support ViT full CUDA graph for glm4_1v image and video inference | `vllm/model_executor/models/glm4_1v.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`, `docs/design/cuda_graphs_multimodal.md` |
+| 2026-06-10 | [#45131](https://github.com/vllm-project/vllm/pull/45131) | merged | Deprecated 1st generation Qwen and QwenVL models | `vllm/model_executor/models/qwen_vl.py`, `vllm/model_executor/models/qwen.py`, `vllm/tokenizers/qwen_vl.py` |
+| 2026-06-12 | [#40660](https://github.com/vllm-project/vllm/pull/40660) | merged | [MM][Perf][CG] Support ViT full cudagraphs for mllama4 | `vllm/model_executor/models/mllama4.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`, `docs/design/cuda_graphs_multimodal.md` |
+| 2026-06-16 | [#43586](https://github.com/vllm-project/vllm/pull/43586) | merged | [MM][Perf][CG] Support dual-path ViT full CUDA graph for DeepSeek-OCR | `vllm/model_executor/models/deepseek_ocr.py` |
+| 2026-06-17 | [#41992](https://github.com/vllm-project/vllm/pull/41992) | merged | [MM][Perf][CG] Support ViT full CUDA graph for Kimi-VL | `vllm/model_executor/models/moonvit.py`, `vllm/model_executor/models/kimi_vl.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py` |
+| 2026-06-22 | [#45993](https://github.com/vllm-project/vllm/pull/45993) | merged | [Model] Remove MiniMaxText01, MiniMaxVL01, MiniMaxForCausalLM | `tests/tool_parsers/test_minimax_tool_parser.py`, `vllm/model_executor/models/minimax_text_01.py`, `vllm/tool_parsers/minimax_tool_parser.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -90,1155 +66,894 @@
 
 - 链接: https://github.com/vllm-project/vllm/pull/27247
 - 状态/时间: merged / 2025-10-22
-- 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/deepseek_ocr.py`, `vllm/transformers_utils/chat_templates/template_deepseek_ocr.jinja`, `vllm/transformers_utils/processors/deepseek_ocr.py`；关联提交 `675aa2ec64b2`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 10 个文件，+1821/-40，可读 patch 1953 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Model] Upstream Deepseek-OCR model」；模型线: DeepSeek OCR；类别: 文档/测试/CI；主要 diff: `docs/models/supported_models.md`, `examples/offline_inference/vision_language.py`, `tests/models/registry.py`。
-- 实现要点:
-  - `docs/models/supported_models.md` modified +1/-0
-  - `examples/offline_inference/vision_language.py` modified +69/-20；symbols: run_deepseek_ocr, run_dots_ocr
-  - `tests/models/registry.py` modified +3/-0
-  - `vllm/model_executor/models/deepencoder.py` added +673/-0；symbols: MLPBlock, __init__, forward, LayerNorm2d
+- 动机: 标题「[Model] Upstream Deepseek-OCR model」；模型线: DeepSeek OCR；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/deepseek_ocr.py`, `vllm/transformers_utils/processors/deepseek_ocr.py`, `vllm/transformers_utils/chat_templates/template_deepseek_ocr.jinja`；技术摘要: 覆盖「[Model] Upstream Deepseek-OCR model」；主要实现面是 `vllm/model_executor/models/deepseek_ocr.py`, `vllm/transformers_utils/processors/deepseek_ocr.py`, `vllm/transformers_utils/chat_templates/template_deepseek_ocr.jinja`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/deepseek_ocr.py` added +594/-0 (594 lines); hunks: -0,0 +1,594; symbols: NoRepeatNGramLogitsProcessor, __init__, __call__, NGramPerReqLogitsProcessor，涉及 `NoRepeatNGramLogitsProcessor, __init__, __call__`；`vllm/transformers_utils/processors/deepseek_ocr.py` added +442/-0 (442 lines); hunks: -0,0 +1,442; symbols: find_closest_aspect_ratio, calculate_aspect_ratios, count_tiles, dynamic_preprocess，涉及 `find_closest_aspect_ratio, calculate_aspect_ratios, count_tiles`；`vllm/transformers_utils/chat_templates/template_deepseek_ocr.jinja` added +14/-0 (14 lines); hunks: -0,0 +1,14。
 - 代码 diff 细节:
-  - `docs/models/supported_models.md` modified +1/-0
-  - `examples/offline_inference/vision_language.py` modified +69/-20
-  - `tests/models/registry.py` modified +3/-0
-  - `vllm/model_executor/models/deepencoder.py` added +673/-0
+  - `vllm/model_executor/models/deepseek_ocr.py` added +594/-0 (594 lines); hunks: -0,0 +1,594; symbols: NoRepeatNGramLogitsProcessor, __init__, __call__, NGramPerReqLogitsProcessor
+  - `vllm/transformers_utils/processors/deepseek_ocr.py` added +442/-0 (442 lines); hunks: -0,0 +1,442; symbols: find_closest_aspect_ratio, calculate_aspect_ratios, count_tiles, dynamic_preprocess
+  - `vllm/transformers_utils/chat_templates/template_deepseek_ocr.jinja` added +14/-0 (14 lines); hunks: -0,0 +1,14
 - 关键代码摘录:
 
 ```diff
-diff -- docs/models/supported_models.md
-@@ -639,6 +639,7 @@ These models primarily accept the [`LLM.generate`](./generative_models.md#llmgen
- | `ChameleonForConditionalGeneration` | Chameleon | T + I | `facebook/chameleon-7b`, etc. | | ✅︎ |
- | `Cohere2VisionForConditionalGeneration` | Command A Vision | T + I<sup>+</sup> | `CohereLabs/command-a-vision-07-2025`, etc. | | ✅︎ |
- | `DeepseekVLV2ForCausalLM`<sup>^</sup> | DeepSeek-VL2 | T + I<sup>+</sup> | `deepseek-ai/deepseek-vl2-tiny`, `deepseek-ai/deepseek-vl2-small`, `deepseek-ai/deepseek-vl2`, etc. | | ✅︎ |
-+| `DeepseekOCRForCausalLM` | DeepSeek-OCR | T + I<sup>+</sup> | `deepseek-ai/DeepSeek-OCR`, etc. | | ✅︎ |
- | `Ernie4_5_VLMoeForConditionalGeneration` | Ernie4.5-VL | T + I<sup>+</sup>/ V<sup>+</sup> | `baidu/ERNIE-4.5-VL-28B-A3B-PT`, `baidu/ERNIE-4.5-VL-424B-A47B-PT` | | ✅︎ |
- | `FuyuForCausalLM` | Fuyu | T + I | `adept/fuyu-8b`, etc. | | ✅︎ |
- | `Gemma3nForConditionalGeneration` | Gemma 3n | T + I + A | `google/gemma-3n-E2B-it`, `google/gemma-3n-E4B-it`, etc. | | |
-diff -- examples/offline_inference/vision_language.py
-@@ -30,6 +30,7 @@ class ModelRequestData(NamedTuple):
-     prompts: list[str]
-     stop_token_ids: list[int] | None = None
-     lora_requests: list[LoRARequest] | None = None
-+    sampling_params: list[SamplingParams] | None = None
-
-
- # NOTE: The default `max_num_seqs` and `max_model_len` may result in OOM on
-@@ -153,23 +154,6 @@ def run_chameleon(questions: list[str], modality: str) -> ModelRequestData:
-     )
-
-
--# Dots-OCR
--def run_dots_ocr(questions: list[str], modality: str) -> ModelRequestData:
+diff -- vllm/model_executor/models/deepseek_ocr.py
+@@ -0,0 +1,594 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++"""Inference-only Deepseek-OCR model compatible with HuggingFace weights."""
++import math
++from collections.abc import Iterable, Mapping, Sequence
++import torch
+diff -- vllm/transformers_utils/processors/deepseek_ocr.py
+@@ -0,0 +1,442 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++# adapted from https://github.com/deepseek-ai/DeepSeek-OCR/blob/main/DeepSeek-OCR-master/DeepSeek-OCR-vllm/process/image_process.py
++import math
++import torch
++import torchvision.transforms as T
+diff -- vllm/transformers_utils/chat_templates/template_deepseek_ocr.jinja
+@@ -0,0 +1,14 @@
 ```
+
 - 已读文件:
-  - runtime: `vllm/model_executor/models/deepencoder.py` added +673/-0; `vllm/model_executor/models/deepseek_ocr.py` added +594/-0; `vllm/model_executor/models/deepseek_vl2.py` modified +23/-20; `vllm/model_executor/models/registry.py` modified +1/-0; `vllm/transformers_utils/chat_templates/registry.py` modified +1/-0; `vllm/transformers_utils/chat_templates/template_deepseek_ocr.jinja` added +14/-0; `vllm/transformers_utils/processors/deepseek_ocr.py` added +442/-0
-  - tests: `tests/models/registry.py` modified +3/-0
-  - docs/bench: `docs/models/supported_models.md` modified +1/-0; `examples/offline_inference/vision_language.py` modified +69/-20
-- 验证与风险: diff 自带测试/基准路径，后续改同一模型优先复跑相关测试并补一个最小 launch/accuracy smoke。
+  - runtime: `vllm/model_executor/models/deepseek_ocr.py` added +594/-0; `vllm/transformers_utils/processors/deepseek_ocr.py` added +442/-0; `vllm/transformers_utils/chat_templates/template_deepseek_ocr.jinja` added +14/-0
+- 验证与风险: diff 自带测试面 `tests/models/registry.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #27361 - [Bugfix] Fix deepseek-ocr multi-image inference and add `merge_by_field_config=True` with tensor schema support
 
 - 链接: https://github.com/vllm-project/vllm/pull/27361
 - 状态/时间: merged / 2025-10-23
-- 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/deepseek_ocr.py`, `vllm/transformers_utils/processors/deepseek_ocr.py`；关联提交 `2566dca2a9e4`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+112/-66，可读 patch 306 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix] Fix deepseek-ocr multi-image inference and add `merge_by_field_config=True` with tensor schema support」；模型线: DeepSeek OCR；类别: 缺陷修复；主要 diff: `examples/offline_inference/vision_language_multi_image.py`, `tests/models/multimodal/processing/test_common.py`, `vllm/model_executor/models/deepseek_ocr.py`。
-- 实现要点:
-  - `examples/offline_inference/vision_language_multi_image.py` modified +48/-2；symbols: load_deepseek_ocr
-  - `tests/models/multimodal/processing/test_common.py` modified +1/-0
-  - `vllm/model_executor/models/deepseek_ocr.py` modified +58/-55；symbols: DeepseekOCRImagePixelInputs, _parse_and_validate_image_input, _process_image_input
-  - `vllm/transformers_utils/processors/deepseek_ocr.py` modified +5/-9
+- 动机: 标题「[Bugfix] Fix deepseek-ocr multi-image inference and add `merge_by_field_config=True` with tensor schema support」；模型线: DeepSeek OCR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/deepseek_ocr.py`, `vllm/transformers_utils/processors/deepseek_ocr.py`；技术摘要: 覆盖「[Bugfix] Fix deepseek-ocr multi-image inference and add `merge_by_field_config=True` with tensor schema support」；主要实现面是 `vllm/model_executor/models/deepseek_ocr.py`, `vllm/transformers_utils/processors/deepseek_ocr.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/deepseek_ocr.py` modified +58/-55 (113 lines); hunks: -4,6 +4,7; -53,6 +54,7; symbols: DeepseekOCRImagePixelInputs, NoRepeatNGramLogitsProcessor, __init__, _get_mm_fields_config，涉及 `DeepseekOCRImagePixelInputs, NoRepeatNGramLogitsProcessor, __init__`；`vllm/transformers_utils/processors/deepseek_ocr.py` modified +5/-9 (14 lines); hunks: -411,20 +411,16 @@ def tokenize_with_images(; symbols: tokenize_with_images，涉及 `tokenize_with_images`。
 - 代码 diff 细节:
-  - `examples/offline_inference/vision_language_multi_image.py` modified +48/-2
-  - `tests/models/multimodal/processing/test_common.py` modified +1/-0
-  - `vllm/model_executor/models/deepseek_ocr.py` modified +58/-55
-  - `vllm/transformers_utils/processors/deepseek_ocr.py` modified +5/-9
+  - `vllm/model_executor/models/deepseek_ocr.py` modified +58/-55 (113 lines); hunks: -4,6 +4,7; -53,6 +54,7; symbols: DeepseekOCRImagePixelInputs, NoRepeatNGramLogitsProcessor, __init__, _get_mm_fields_config
+  - `vllm/transformers_utils/processors/deepseek_ocr.py` modified +5/-9 (14 lines); hunks: -411,20 +411,16 @@ def tokenize_with_images(; symbols: tokenize_with_images
 - 关键代码摘录:
 
 ```diff
-diff -- examples/offline_inference/vision_language_multi_image.py
-@@ -44,6 +44,7 @@ class ModelRequestData(NamedTuple):
-     stop_token_ids: list[int] | None = None
-     chat_template: str | None = None
-     lora_requests: list[LoRARequest] | None = None
-+    sampling_params: SamplingParams | None = None
-
-
- # NOTE: The default `max_num_seqs` and `max_model_len` may result in OOM on
-@@ -201,6 +202,46 @@ def load_deepseek_vl2(question: str, image_urls: list[str]) -> ModelRequestData:
-     )
-
-
-+def load_deepseek_ocr(question: str, image_urls: list[str]) -> ModelRequestData:
-+    from vllm.model_executor.models.deepseek_ocr import NGramPerReqLogitsProcessor
-diff -- tests/models/multimodal/processing/test_common.py
-@@ -332,6 +332,7 @@ def _test_processing_correctness_one(
-         "facebook/chameleon-7b",
-         "CohereLabs/command-a-vision-07-2025",
-         "deepseek-ai/deepseek-vl2-tiny",
-+        "deepseek-ai/DeepSeek-OCR",
-         "baidu/ERNIE-4.5-VL-28B-A3B-PT",
-         "adept/fuyu-8b",
-         "google/gemma-3-4b-it",
+diff -- vllm/model_executor/models/deepseek_ocr.py
+@@ -4,6 +4,7 @@
++from typing import Annotated, Literal
+@@ -53,6 +54,7 @@
++from vllm.utils.tensor_schema import TensorSchema, TensorShape
+@@ -65,6 +67,28 @@
++class DeepseekOCRImagePixelInputs(TensorSchema):
++    """
+diff -- vllm/transformers_utils/processors/deepseek_ocr.py
+@@ -411,20 +411,16 @@ def tokenize_with_images(
+-            pixel_values = torch.zeros((1, 3, self.base_size, self.base_size))
+-            images_spatial_crop = torch.zeros((1, 1), dtype=torch.long)
+-            images_crop = torch.zeros(
+-                (1, 3, self.image_size, self.image_size)
+-            ).unsqueeze(0)
++            pixel_values = torch.zeros((0, 3, self.base_size, self.base_size))
 ```
+
 - 已读文件:
   - runtime: `vllm/model_executor/models/deepseek_ocr.py` modified +58/-55; `vllm/transformers_utils/processors/deepseek_ocr.py` modified +5/-9
-  - tests: `tests/models/multimodal/processing/test_common.py` modified +1/-0
-  - docs/bench: `examples/offline_inference/vision_language_multi_image.py` modified +48/-2
-- 验证与风险: diff 自带测试/基准路径，后续改同一模型优先复跑相关测试并补一个最小 launch/accuracy smoke。
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/processing/test_common.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #27560 - [Bugfix] Validate custom logits processor xargs for online serving
 
 - 链接: https://github.com/vllm-project/vllm/pull/27560
 - 状态/时间: merged / 2025-11-05
-- 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 18 个文件，+232/-49，可读 patch 574 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix] Validate custom logits processor xargs for online serving」；模型线: DeepSeek OCR；类别: 缺陷修复；主要 diff: `docs/design/logits_processors.md`, `docs/features/custom_arguments.md`, `docs/features/custom_logitsprocs.md`。
-- 实现要点:
-  - `docs/design/logits_processors.md` modified +13/-1；symbols: validate_params
-  - `docs/features/custom_arguments.md` modified +3/-0
-  - `docs/features/custom_logitsprocs.md` modified +33/-9；symbols: validate_params
-  - `examples/offline_inference/logits_processor/custom.py` modified +17/-2；symbols: validate_params, extract_extra_arg
+- 动机: 标题「[Bugfix] Validate custom logits processor xargs for online serving」；模型线: DeepSeek OCR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/deepseek_ocr.py`, `vllm/entrypoints/openai/serving_completion.py`, `vllm/entrypoints/openai/serving_chat.py`；技术摘要: 覆盖「[Bugfix] Validate custom logits processor xargs for online serving」；主要实现面是 `vllm/model_executor/models/deepseek_ocr.py`, `vllm/entrypoints/openai/serving_completion.py`, `vllm/entrypoints/openai/serving_chat.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/deepseek_ocr.py` modified +23/-17 (40 lines); hunks: -131,25 +131,18 @@ class NGramPerReqLogitsProcessor(AdapterLogitsProcessor):; -163,13 +156,26 @@ def new_req_logits_processor(; symbols: NGramPerReqLogitsProcessor, __init__, is_argmax_invariant, new_req_logits_processor，涉及 `NGramPerReqLogitsProcessor, __init__, is_argmax_invariant`；`vllm/entrypoints/openai/serving_completion.py` modified +9/-0 (9 lines); hunks: -36,6 +36,7; -59,6 +60,10 @@ def __init__(; symbols: __init__, create_completion，涉及 `__init__, create_completion`；`vllm/entrypoints/openai/serving_chat.py` modified +8/-0 (8 lines); hunks: -71,6 +71,7; -110,6 +111,9 @@ def __init__(; symbols: __init__, create_chat_completion，涉及 `__init__, create_chat_completion`；`vllm/transformers_utils/configs/deepseek_vl2.py` modified +6/-0 (6 lines); hunks: -218,3 +218,9 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
-  - `docs/design/logits_processors.md` modified +13/-1
-  - `docs/features/custom_arguments.md` modified +3/-0
-  - `docs/features/custom_logitsprocs.md` modified +33/-9
-  - `examples/offline_inference/logits_processor/custom.py` modified +17/-2
+  - `vllm/model_executor/models/deepseek_ocr.py` modified +23/-17 (40 lines); hunks: -131,25 +131,18 @@ class NGramPerReqLogitsProcessor(AdapterLogitsProcessor):; -163,13 +156,26 @@ def new_req_logits_processor(; symbols: NGramPerReqLogitsProcessor, __init__, is_argmax_invariant, new_req_logits_processor
+  - `vllm/entrypoints/openai/serving_completion.py` modified +9/-0 (9 lines); hunks: -36,6 +36,7; -59,6 +60,10 @@ def __init__(; symbols: __init__, create_completion
+  - `vllm/entrypoints/openai/serving_chat.py` modified +8/-0 (8 lines); hunks: -71,6 +71,7; -110,6 +111,9 @@ def __init__(; symbols: __init__, create_chat_completion
+  - `vllm/transformers_utils/configs/deepseek_vl2.py` modified +6/-0 (6 lines); hunks: -218,3 +218,9 @@ def __init__(; symbols: __init__
+  - `vllm/entrypoints/openai/protocol.py` modified +2/-2 (4 lines); hunks: -772,10 +772,10 @@ class ChatCompletionRequest(OpenAIBaseModel):; symbols: ChatCompletionRequest
 - 关键代码摘录:
 
 ```diff
-diff -- docs/design/logits_processors.md
-@@ -254,7 +254,15 @@ The previous sections alluded to the interfaces which vLLM logits processors mus
-                 changes to the batch makeup.
-             """
-             raise NotImplementedError
--
-+
-+        @classmethod
-+        def validate_params(cls, sampling_params: SamplingParams):
-+            """Validate sampling params for this logits processor.
-+
-+            Raise ValueError for invalid ones.
-+            """
-+            return None
-+
-diff -- docs/features/custom_arguments.md
-@@ -4,6 +4,9 @@ You can use vLLM *custom arguments* to pass in arguments which are not part of t
-
- Custom arguments can be useful if, for example, you want to use a [custom logits processor](./custom_logitsprocs.md) without modifying the vLLM source code.
-
-+!!! note
-+    Make sure your custom logits processor have implemented `validate_params` for custom arguments. Otherwise invalid custom arguments can cause unexpected behaviour.
-+
- ## Offline Custom Arguments
-
- Custom arguments passed to `SamplingParams.extra_args` as a `dict` will be visible to any code which has access to `SamplingParams`:
+diff -- vllm/model_executor/models/deepseek_ocr.py
+@@ -131,25 +131,18 @@ class NGramPerReqLogitsProcessor(AdapterLogitsProcessor):
+-    def __init__(
+-        self, vllm_config: VllmConfig, device: torch.device, is_pin_memory: bool
+-    ):
+-        super().__init__(vllm_config, device, is_pin_memory)
+-    def is_argmax_invariant(self) -> bool:
+-        return True
+diff -- vllm/entrypoints/openai/serving_completion.py
+@@ -36,6 +36,7 @@
++from vllm.v1.sample.logits_processor import validate_logits_processors_parameters
+@@ -59,6 +60,10 @@ def __init__(
++        # set up logits processors
++        self.logits_processors = self.model_config.logits_processors
+@@ -181,6 +186,10 @@ async def create_completion(
++                    validate_logits_processors_parameters(
+diff -- vllm/entrypoints/openai/serving_chat.py
+@@ -71,6 +71,7 @@
 ```
+
 - 已读文件:
-  - runtime: `vllm/entrypoints/openai/protocol.py` modified +2/-2; `vllm/entrypoints/openai/serving_chat.py` modified +8/-0; `vllm/entrypoints/openai/serving_completion.py` modified +9/-0; `vllm/model_executor/models/deepseek_ocr.py` modified +23/-17; `vllm/transformers_utils/configs/deepseek_vl2.py` modified +6/-0; `vllm/utils/torch_utils.py` modified +28/-0; `vllm/v1/sample/logits_processor/__init__.py` modified +20/-2; `vllm/v1/sample/logits_processor/interface.py` modified +8/-0
-  - tests: `tests/entrypoints/openai/test_lora_resolvers.py` modified +1/-0; `tests/entrypoints/openai/test_serving_chat.py` modified +1/-0; `tests/v1/logits_processors/test_custom_online.py` modified +29/-0; `tests/v1/logits_processors/utils.py` modified +15/-2
-  - docs/bench: `docs/design/logits_processors.md` modified +13/-1; `docs/features/custom_arguments.md` modified +3/-0; `docs/features/custom_logitsprocs.md` modified +33/-9; `examples/offline_inference/logits_processor/custom.py` modified +17/-2; `examples/offline_inference/logits_processor/custom_req.py` modified +8/-7; `examples/offline_inference/logits_processor/custom_req_init.py` modified +8/-7
-- 验证与风险: diff 自带测试/基准路径，后续改同一模型优先复跑相关测试并补一个最小 launch/accuracy smoke。
+  - runtime: `vllm/model_executor/models/deepseek_ocr.py` modified +23/-17; `vllm/entrypoints/openai/serving_completion.py` modified +9/-0; `vllm/entrypoints/openai/serving_chat.py` modified +8/-0; `vllm/transformers_utils/configs/deepseek_vl2.py` modified +6/-0; `vllm/entrypoints/openai/protocol.py` modified +2/-2
+  - tests: `tests/entrypoints/openai/test_lora_resolvers.py` modified +1/-0; `tests/entrypoints/openai/test_serving_chat.py` modified +1/-0
+  - docs: `docs/features/custom_logitsprocs.md` modified +33/-9
+- 验证与风险: diff 自带测试面 `tests/entrypoints/openai/test_lora_resolvers.py`, `tests/entrypoints/openai/test_serving_chat.py`, `tests/v1/logits_processors/test_custom_online.py`, `tests/v1/logits_processors/utils.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #28101 - [Model] Consolidate Deepseek-MoE implementation with DeepSeek-v2
 
 - 链接: https://github.com/vllm-project/vllm/pull/28101
 - 状态/时间: merged / 2025-11-08
-- 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+144/-548，可读 patch 825 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Model] Consolidate Deepseek-MoE implementation with DeepSeek-v2」；模型线: DeepSeek OCR；类别: 文档/测试/CI；主要 diff: `tests/models/registry.py`, `vllm/model_executor/models/deepseek.py`, `vllm/model_executor/models/deepseek_ocr.py`。
-- 实现要点:
-  - `tests/models/registry.py` modified +4/-1
-  - `vllm/model_executor/models/deepseek.py` removed +0/-517
-  - `vllm/model_executor/models/deepseek_ocr.py` modified +0/-8
-  - `vllm/model_executor/models/deepseek_v2.py` modified +139/-13；symbols: DeepseekAttention, __init__, forward, DeepseekForCausalLM
+- 动机: 标题「[Model] Consolidate Deepseek-MoE implementation with DeepSeek-v2」；模型线: DeepSeek OCR；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/deepseek.py`, `vllm/model_executor/models/deepseek_v2.py`, `vllm/model_executor/models/deepseek_ocr.py`；技术摘要: 覆盖「[Model] Consolidate Deepseek-MoE implementation with DeepSeek-v2」；主要实现面是 `vllm/model_executor/models/deepseek.py`, `vllm/model_executor/models/deepseek_v2.py`, `vllm/model_executor/models/deepseek_ocr.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/deepseek.py` removed +0/-517 (517 lines); hunks: -1,517 +0,0; symbols: DeepseekMLP, __init__, forward, DeepseekMoE，涉及 `DeepseekMLP, __init__, forward`；`vllm/model_executor/models/deepseek_v2.py` modified +139/-13 (152 lines); hunks: -58,6 +58,7; -104,6 +105,92; symbols: DeepseekAttention, __init__, forward, DeepseekV2MLP，涉及 `DeepseekAttention, __init__, forward`；`vllm/model_executor/models/deepseek_ocr.py` modified +0/-8 (8 lines); hunks: -417,18 +417,10 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__，涉及 `__init__`；`vllm/model_executor/models/deepseek_vl2.py` modified +0/-8 (8 lines); hunks: -403,18 +403,10 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
-  - `tests/models/registry.py` modified +4/-1
-  - `vllm/model_executor/models/deepseek.py` removed +0/-517
-  - `vllm/model_executor/models/deepseek_ocr.py` modified +0/-8
-  - `vllm/model_executor/models/deepseek_v2.py` modified +139/-13
+  - `vllm/model_executor/models/deepseek.py` removed +0/-517 (517 lines); hunks: -1,517 +0,0; symbols: DeepseekMLP, __init__, forward, DeepseekMoE
+  - `vllm/model_executor/models/deepseek_v2.py` modified +139/-13 (152 lines); hunks: -58,6 +58,7; -104,6 +105,92; symbols: DeepseekAttention, __init__, forward, DeepseekV2MLP
+  - `vllm/model_executor/models/deepseek_ocr.py` modified +0/-8 (8 lines); hunks: -417,18 +417,10 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__
+  - `vllm/model_executor/models/deepseek_vl2.py` modified +0/-8 (8 lines); hunks: -403,18 +403,10 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__
+  - `tests/models/registry.py` modified +4/-1 (5 lines); hunks: -219,7 +219,10 @@ def check_available_online(; symbols: check_available_online
 - 关键代码摘录:
 
 ```diff
-diff -- tests/models/registry.py
-@@ -219,7 +219,10 @@ def check_available_online(
-         "nvidia/Llama-3_3-Nemotron-Super-49B-v1",
-         trust_remote_code=True,
-     ),
--    "DeepseekForCausalLM": _HfExamplesInfo("deepseek-ai/deepseek-llm-7b-chat"),
-+    "DeepseekForCausalLM": _HfExamplesInfo(
-+        "deepseek-ai/deepseek-moe-16b-base",
-+        trust_remote_code=True,
-+    ),
-     "DeepseekV2ForCausalLM": _HfExamplesInfo(
-         "deepseek-ai/DeepSeek-V2-Lite-Chat",
-         trust_remote_code=True,
 diff -- vllm/model_executor/models/deepseek.py
 @@ -1,517 +0,0 @@
 -# SPDX-License-Identifier: Apache-2.0
 -# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
--
 -# Adapted from
 -# https://github.com/huggingface/transformers/blob/v4.28.0/src/transformers/models/llama/modeling_llama.py
 -# Copyright 2023 The vLLM team.
 -# Copyright 2023 DeepSeek-AI and the HuggingFace Inc. team. All rights reserved.
--#
--# This code is based on EleutherAI's GPT-NeoX library and the GPT-NeoX
--# and OPT implementations in this library. It has been modified from its
--# original forms to accommodate minor architectural differences compared
--# to GPT-NeoX and OPT used by the Meta AI team that trained the model.
--#
+diff -- vllm/model_executor/models/deepseek_v2.py
+@@ -58,6 +58,7 @@
++    QKVParallelLinear,
+@@ -104,6 +105,92 @@
++class DeepseekAttention(nn.Module):
++    """Normal MHA implementation used by Deepseek v1."""
++    def __init__(
++        self,
+diff -- vllm/model_executor/models/deepseek_ocr.py
+@@ -417,18 +417,10 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = ""):
 ```
+
 - 已读文件:
-  - runtime: `vllm/model_executor/models/deepseek.py` removed +0/-517; `vllm/model_executor/models/deepseek_ocr.py` modified +0/-8; `vllm/model_executor/models/deepseek_v2.py` modified +139/-13; `vllm/model_executor/models/deepseek_vl2.py` modified +0/-8; `vllm/model_executor/models/registry.py` modified +1/-1
+  - runtime: `vllm/model_executor/models/deepseek.py` removed +0/-517; `vllm/model_executor/models/deepseek_v2.py` modified +139/-13; `vllm/model_executor/models/deepseek_ocr.py` modified +0/-8; `vllm/model_executor/models/deepseek_vl2.py` modified +0/-8; `vllm/model_executor/models/registry.py` modified +1/-1
   - tests: `tests/models/registry.py` modified +4/-1
-- 验证与风险: diff 自带测试/基准路径，后续改同一模型优先复跑相关测试并补一个最小 launch/accuracy smoke。
+- 验证与风险: diff 自带测试面 `tests/models/registry.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #27583 - Rename clashing method names for vLLM model protocol
 
 - 链接: https://github.com/vllm-project/vllm/pull/27583
 - 状态/时间: merged / 2025-11-13
-- 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 100 个文件，+368/-367，可读 patch 2559 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Rename clashing method names for vLLM model protocol」；模型线: DeepSeek OCR；类别: 文档/测试/CI；主要 diff: `docs/contributing/model/basic.md`, `docs/contributing/model/multimodal.md`, `vllm/model_executor/models/apertus.py`。
-- 实现要点:
-  - `docs/contributing/model/basic.md` modified +2/-2；symbols: embed_input_ids
-  - `docs/contributing/model/multimodal.md` modified +3/-3；symbols: embed_multimodal
-  - `vllm/model_executor/models/apertus.py` modified +4/-4；symbols: embed_input_ids
-  - `vllm/model_executor/models/arcee.py` modified +4/-4；symbols: embed_input_ids
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 164 个文件，+574/-583，可读 patch 4116 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Rename clashing method names for vLLM model protocol」；模型线: DeepSeek OCR；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/interfaces_base.py`, `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/bert.py`；技术摘要: 覆盖「Rename clashing method names for vLLM model protocol」；主要实现面是 `vllm/model_executor/models/interfaces_base.py`, `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/bert.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/interfaces_base.py` modified +23/-20 (43 lines); hunks: -41,36 +41,39; -110,7 +113,7 @@ def is_vllm_model(; symbols: VllmModel, __init__, get_input_embeddings, embed_input_ids，涉及 `VllmModel, __init__, get_input_embeddings`；`vllm/model_executor/models/interfaces.py` modified +19/-13 (32 lines); hunks: -94,7 +94,7 @@ def get_placeholder_str(cls, modality: str, i: int) -> str | N...; -104,7 +104,13 @@ def get_multimodal_embeddings(self, **kwargs: object) -> Mu...; symbols: get_placeholder_str, get_multimodal_embeddings, embed_multimodal, get_language_model，涉及 `get_placeholder_str, get_multimodal_embeddings, embed_multimodal`；`vllm/model_executor/models/bert.py` modified +7/-7 (14 lines); hunks: -375,7 +375,7 @@ def __init__(; -486,8 +486,8 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__, get_input_embeddings, embed_input_ids, forward，涉及 `__init__, get_input_embeddings, embed_input_ids`；`vllm/model_executor/models/modernbert.py` modified +7/-7 (14 lines); hunks: -46,7 +46,7 @@ def __init__(self, config: ModernBertConfig):; -225,8 +225,8 @@ def __init__(; symbols: __init__, get_input_embeddings, embed_input_ids, forward，涉及 `__init__, get_input_embeddings, embed_input_ids`。
 - 代码 diff 细节:
-  - `docs/contributing/model/basic.md` modified +2/-2
-  - `docs/contributing/model/multimodal.md` modified +3/-3
-  - `vllm/model_executor/models/apertus.py` modified +4/-4
-  - `vllm/model_executor/models/arcee.py` modified +4/-4
+  - `vllm/model_executor/models/interfaces_base.py` modified +23/-20 (43 lines); hunks: -41,36 +41,39; -110,7 +113,7 @@ def is_vllm_model(; symbols: VllmModel, __init__, get_input_embeddings, embed_input_ids
+  - `vllm/model_executor/models/interfaces.py` modified +19/-13 (32 lines); hunks: -94,7 +94,7 @@ def get_placeholder_str(cls, modality: str, i: int) -> str | N...; -104,7 +104,13 @@ def get_multimodal_embeddings(self, **kwargs: object) -> Mu...; symbols: get_placeholder_str, get_multimodal_embeddings, embed_multimodal, get_language_model
+  - `vllm/model_executor/models/bert.py` modified +7/-7 (14 lines); hunks: -375,7 +375,7 @@ def __init__(; -486,8 +486,8 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__, get_input_embeddings, embed_input_ids, forward
+  - `vllm/model_executor/models/modernbert.py` modified +7/-7 (14 lines); hunks: -46,7 +46,7 @@ def __init__(self, config: ModernBertConfig):; -225,8 +225,8 @@ def __init__(; symbols: __init__, get_input_embeddings, embed_input_ids, forward
+  - `vllm/model_executor/models/qwen3_vl.py` modified +6/-8 (14 lines); hunks: -1100,7 +1100,7 @@ def forward(; -1493,9 +1493,7 @@ def get_mrope_input_positions(; symbols: forward, get_mrope_input_positions, get_language_model, get_multimodal_embeddings
 - 关键代码摘录:
 
 ```diff
-diff -- docs/contributing/model/basic.md
-@@ -56,13 +56,13 @@ The initialization code should look like this:
-
- ### Computation Code
-
--- Add a `get_input_embeddings` method inside `MyModel` module that returns the text embeddings given `input_ids`. This is equivalent to directly calling the text embedding layer, but provides a unified interface in case `MyModel` is used within a composite multimodal model.
-+- Add a `embed_input_ids` method inside `MyModel` module that returns the text embeddings given `input_ids`. This is equivalent to directly calling the text embedding layer, but provides a unified interface in case `MyModel` is used within a composite multimodal model.
-
- ```python
- class MyModel(nn.Module):
-         ...
-
--    def get_input_embeddings(self, input_ids: torch.Tensor) -> torch.Tensor:
-+    def embed_input_ids(self, input_ids: torch.Tensor) -> torch.Tensor:
-         ...
-diff -- docs/contributing/model/multimodal.md
-@@ -36,7 +36,7 @@ Further update the model as follows:
-
-   More conveniently, you can simply pass `**kwargs` to the [forward][torch.nn.Module.forward] method and retrieve the keyword parameters for multimodal inputs from it.
-
--- Implement [get_multimodal_embeddings][vllm.model_executor.models.interfaces.SupportsMultiModal.get_multimodal_embeddings] that returns the embeddings from running the multimodal inputs through the multimodal tokenizer of the model. Below we provide a boilerplate of a typical implementation pattern, but feel free to adjust it to your own needs.
-+- Implement [embed_multimodal][vllm.model_executor.models.interfaces.SupportsMultiModal.embed_multimodal] that returns the embeddings from running the multimodal inputs through the multimodal tokenizer of the model. Below we provide a boilerplate of a typical implementation pattern, but feel free to adjust it to your own needs.
-
-     ??? code
-
-@@ -49,7 +49,7 @@ Further update the model as follows:
-                 image_features = self.vision_encoder(image_input)
-                 return self.multi_modal_projector(image_features)
-
--            def get_multimodal_embeddings(
+diff -- vllm/model_executor/models/interfaces_base.py
+@@ -41,36 +41,39 @@
+-    def __init__(
+-        self,
+-        vllm_config: VllmConfig,
+-        prefix: str = "",
+-    ) -> None: ...
++    def __init__(self, vllm_config: VllmConfig, prefix: str = "") -> None: ...
+diff -- vllm/model_executor/models/interfaces.py
+@@ -94,7 +94,7 @@ def get_placeholder_str(cls, modality: str, i: int) -> str | None:
+-    def get_multimodal_embeddings(self, **kwargs: object) -> MultiModalEmbeddings:
++    def embed_multimodal(self, **kwargs: object) -> MultiModalEmbeddings:
+@@ -104,7 +104,13 @@ def get_multimodal_embeddings(self, **kwargs: object) -> MultiModalEmbeddings:
+-        ...
++        if hasattr(self, "get_multimodal_embeddings"):
++            logger.warning_once(
+diff -- vllm/model_executor/models/bert.py
+@@ -375,7 +375,7 @@ def __init__(
 ```
+
 - 已读文件:
-  - runtime: `vllm/model_executor/models/apertus.py` modified +4/-4; `vllm/model_executor/models/arcee.py` modified +4/-4; `vllm/model_executor/models/arctic.py` modified +4/-4; `vllm/model_executor/models/aria.py` modified +3/-3; `vllm/model_executor/models/aya_vision.py` modified +1/-1; `vllm/model_executor/models/baichuan.py` modified +4/-4; `vllm/model_executor/models/bailing_moe.py` modified +4/-4; `vllm/model_executor/models/bamba.py` modified +4/-4
-  - docs/bench: `docs/contributing/model/basic.md` modified +2/-2; `docs/contributing/model/multimodal.md` modified +3/-3
-- 验证与风险: diff 未直接暴露测试文件，后续改同一模型时应补最小 launch、tokenizer/MM processor 或 accuracy smoke。
+  - runtime: `vllm/model_executor/models/interfaces_base.py` modified +23/-20; `vllm/model_executor/models/interfaces.py` modified +19/-13; `vllm/model_executor/models/bert.py` modified +7/-7; `vllm/model_executor/models/modernbert.py` modified +7/-7; `vllm/model_executor/models/qwen3_vl.py` modified +6/-8; `vllm/model_executor/models/clip.py` modified +6/-6
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/apertus.py`, `vllm/model_executor/models/arcee.py`, `vllm/model_executor/models/arctic.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #28617 - [BugFix] DeepSeek-OCR: apply NoRepeatNGramLogitsProcessor to greedy path
 
 - 链接: https://github.com/vllm-project/vllm/pull/28617
 - 状态/时间: merged / 2025-11-13
-- 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/deepseek_ocr.py`；关联提交 `3035d1a16682`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[BugFix] DeepSeek-OCR: apply NoRepeatNGramLogitsProcessor to greedy path」；模型线: DeepSeek OCR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/deepseek_ocr.py`。
-- 实现要点:
-  - `vllm/model_executor/models/deepseek_ocr.py` modified +1/-1
+- 动机: 标题「[BugFix] DeepSeek-OCR: apply NoRepeatNGramLogitsProcessor to greedy path」；模型线: DeepSeek OCR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/deepseek_ocr.py`；技术摘要: 覆盖「[BugFix] DeepSeek-OCR: apply NoRepeatNGramLogitsProcessor to greedy path」；主要实现面是 `vllm/model_executor/models/deepseek_ocr.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/deepseek_ocr.py` modified +1/-1 (2 lines); hunks: -161,7 +161,7 @@ def validate_params(cls, params: SamplingParams):; symbols: validate_params, is_argmax_invariant, new_req_logits_processor，涉及 `validate_params, is_argmax_invariant, new_req_logits_processor`。
 - 代码 diff 细节:
-  - `vllm/model_executor/models/deepseek_ocr.py` modified +1/-1
+  - `vllm/model_executor/models/deepseek_ocr.py` modified +1/-1 (2 lines); hunks: -161,7 +161,7 @@ def validate_params(cls, params: SamplingParams):; symbols: validate_params, is_argmax_invariant, new_req_logits_processor
 - 关键代码摘录:
 
 ```diff
 diff -- vllm/model_executor/models/deepseek_ocr.py
 @@ -161,7 +161,7 @@ def validate_params(cls, params: SamplingParams):
-             )
-
-     def is_argmax_invariant(self) -> bool:
 -        return True
 +        return False
-
-     def new_req_logits_processor(
-         self,
 ```
+
 - 已读文件:
   - runtime: `vllm/model_executor/models/deepseek_ocr.py` modified +1/-1
-- 验证与风险: diff 未直接暴露测试文件，后续改同一模型时应补最小 launch、tokenizer/MM processor 或 accuracy smoke。
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/deepseek_ocr.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #29793 - [Chore] Move tokenizer initialization methods
 
 - 链接: https://github.com/vllm-project/vllm/pull/29793
 - 状态/时间: merged / 2025-12-02
-- 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 51 个文件，+150/-129，可读 patch 761 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Chore] Move tokenizer initialization methods」；模型线: DeepSeek OCR；类别: 模型支持/运行时入口；主要 diff: `benchmarks/benchmark_prefix_caching.py`, `benchmarks/benchmark_serving_structured_output.py`, `tests/compile/test_dynamic_shapes_compilation.py`。
-- 实现要点:
-  - `benchmarks/benchmark_prefix_caching.py` modified +1/-1
-  - `benchmarks/benchmark_serving_structured_output.py` modified +1/-1
-  - `tests/compile/test_dynamic_shapes_compilation.py` modified +1/-1
-  - `tests/entrypoints/openai/test_chat_template.py` modified +1/-1
+- 动机: 标题「[Chore] Move tokenizer initialization methods」；模型线: DeepSeek OCR；类别: 模型支持/运行时入口；主要 diff: `vllm/transformers_utils/tokenizer.py`, `vllm/tokenizers/registry.py`, `vllm/tokenizers/__init__.py`；技术摘要: 覆盖「[Chore] Move tokenizer initialization methods」；主要实现面是 `vllm/transformers_utils/tokenizer.py`, `vllm/tokenizers/registry.py`, `vllm/tokenizers/__init__.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/transformers_utils/tokenizer.py` modified +43/-48 (91 lines); hunks: -2,17 +2,10; -28,18 +21,54 @@ def __getattr__(name: str):; symbols: __getattr__, encode_tokens, cached_tokenizer_from_config, init_tokenizer_from_configs，涉及 `__getattr__, encode_tokens, cached_tokenizer_from_config`；`vllm/tokenizers/registry.py` modified +37/-1 (38 lines); hunks: -2,10 +2,12; -21,6 +23,9; symbols: get_tokenizer, cached_tokenizer_from_config, init_tokenizer_from_config，涉及 `get_tokenizer, cached_tokenizer_from_config, init_tokenizer_from_config`；`vllm/tokenizers/__init__.py` modified +10/-1 (11 lines); hunks: -4,12 +4,21；`vllm/model_executor/models/granite_speech.py` modified +4/-4 (8 lines); hunks: -59,8 +59,8; -862,7 +862,7 @@ def get_generation_prompt(; symbols: get_generation_prompt, get_num_audio_tokens，涉及 `get_generation_prompt, get_num_audio_tokens`。
 - 代码 diff 细节:
-  - `benchmarks/benchmark_prefix_caching.py` modified +1/-1
-  - `benchmarks/benchmark_serving_structured_output.py` modified +1/-1
-  - `tests/compile/test_dynamic_shapes_compilation.py` modified +1/-1
-  - `tests/entrypoints/openai/test_chat_template.py` modified +1/-1
+  - `vllm/transformers_utils/tokenizer.py` modified +43/-48 (91 lines); hunks: -2,17 +2,10; -28,18 +21,54 @@ def __getattr__(name: str):; symbols: __getattr__, encode_tokens, cached_tokenizer_from_config, init_tokenizer_from_configs
+  - `vllm/tokenizers/registry.py` modified +37/-1 (38 lines); hunks: -2,10 +2,12; -21,6 +23,9; symbols: get_tokenizer, cached_tokenizer_from_config, init_tokenizer_from_config
+  - `vllm/tokenizers/__init__.py` modified +10/-1 (11 lines); hunks: -4,12 +4,21
+  - `vllm/model_executor/models/granite_speech.py` modified +4/-4 (8 lines); hunks: -59,8 +59,8; -862,7 +862,7 @@ def get_generation_prompt(; symbols: get_generation_prompt, get_num_audio_tokens
+  - `tests/models/multimodal/processing/test_common.py` modified +2/-5 (7 lines); hunks: -22,11 +22,8
 - 关键代码摘录:
 
 ```diff
-diff -- benchmarks/benchmark_prefix_caching.py
-@@ -40,7 +40,7 @@
- from vllm.utils.argparse_utils import FlexibleArgumentParser
-
- try:
--    from vllm.transformers_utils.tokenizer import get_tokenizer
-+    from vllm.tokenizers import get_tokenizer
- except ImportError:
-     from backend_request_func import get_tokenizer
-
-diff -- benchmarks/benchmark_serving_structured_output.py
-@@ -46,7 +46,7 @@
- from transformers import PreTrainedTokenizerBase
-
- try:
--    from vllm.transformers_utils.tokenizer import get_tokenizer
-+    from vllm.tokenizers import get_tokenizer
- except ImportError:
-     from backend_request_func import get_tokenizer
-
+diff -- vllm/transformers_utils/tokenizer.py
+@@ -2,17 +2,10 @@
+-from functools import lru_cache
+-from typing import TYPE_CHECKING, Any
+-from typing_extensions import assert_never
++from typing import Any
+-from vllm.tokenizers import TokenizerLike, get_tokenizer
+-if TYPE_CHECKING:
+diff -- vllm/tokenizers/registry.py
+@@ -2,10 +2,12 @@
++from functools import lru_cache
+-from typing import TypeVar, overload
++from typing import TYPE_CHECKING, TypeVar, overload
++from typing_extensions import assert_never
+@@ -21,6 +23,9 @@
++if TYPE_CHECKING:
+diff -- vllm/tokenizers/__init__.py
+@@ -4,12 +4,21 @@
 ```
+
 - 已读文件:
-  - tests: `tests/compile/test_dynamic_shapes_compilation.py` modified +1/-1; `tests/entrypoints/openai/test_chat_template.py` modified +1/-1; `tests/entrypoints/openai/test_lora_resolvers.py` modified +1/-1; `tests/entrypoints/openai/test_return_token_ids.py` modified +1/-1; `tests/entrypoints/openai/test_return_tokens_as_ids.py` modified +1/-1; `tests/entrypoints/openai/test_serving_chat.py` modified +1/-1; `tests/entrypoints/openai/test_token_in_token_out.py` modified +1/-1; `tests/entrypoints/openai/test_tokenization.py` modified +1/-1
-  - docs/bench: `benchmarks/benchmark_prefix_caching.py` modified +1/-1; `benchmarks/benchmark_serving_structured_output.py` modified +1/-1
-- 验证与风险: diff 自带测试/基准路径，后续改同一模型优先复跑相关测试并补一个最小 launch/accuracy smoke。
+  - runtime: `vllm/transformers_utils/tokenizer.py` modified +43/-48; `vllm/tokenizers/registry.py` modified +37/-1; `vllm/tokenizers/__init__.py` modified +10/-1; `vllm/model_executor/models/granite_speech.py` modified +4/-4; `vllm/model_executor/models/nano_nemotron_vl.py` modified +2/-5; `vllm/model_executor/models/whisper.py` modified +3/-3
+  - tests: `tests/models/multimodal/processing/test_common.py` modified +2/-5
+- 验证与风险: diff 自带测试面 `tests/compile/test_dynamic_shapes_compilation.py`, `tests/entrypoints/openai/test_chat_template.py`, `tests/entrypoints/openai/test_lora_resolvers.py`, `tests/entrypoints/openai/test_return_token_ids.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #30035 - [Chore] Deprecate `merge_by_field_config` arg
 
 - 链接: https://github.com/vllm-project/vllm/pull/30035
 - 状态/时间: merged / 2025-12-04
-- 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 19 个文件，+90/-302，可读 patch 728 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Chore] Deprecate `merge_by_field_config` arg」；模型线: DeepSeek OCR；类别: 文档/测试/CI；主要 diff: `tests/models/multimodal/processing/test_common.py`, `tests/models/multimodal/processing/test_glm4_1v.py`, `tests/models/multimodal/processing/test_tensor_schema.py`。
-- 实现要点:
-  - `tests/models/multimodal/processing/test_common.py` modified +2/-2
-  - `tests/models/multimodal/processing/test_glm4_1v.py` modified +4/-3
-  - `tests/models/multimodal/processing/test_tensor_schema.py` modified +2/-3
-  - `tests/multimodal/test_cache.py` modified +3/-6
+- 动机: 标题「[Chore] Deprecate `merge_by_field_config` arg」；模型线: DeepSeek OCR；类别: 文档/测试/CI；主要 diff: `vllm/multimodal/inputs.py`, `tests/multimodal/test_inputs.py`, `vllm/multimodal/utils.py`；技术摘要: 覆盖「[Chore] Deprecate `merge_by_field_config` arg」；主要实现面是 `vllm/multimodal/inputs.py`, `tests/multimodal/test_inputs.py`, `vllm/multimodal/utils.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/multimodal/inputs.py` modified +46/-96 (142 lines); hunks: -3,7 +3,7; -201,8 +201,10 @@ def __eq__(self, other: object) -> bool:; symbols: __eq__, nested_tensors_equal, batched_tensors_equal, MultiModalFeatureSpec，涉及 `__eq__, nested_tensors_equal, batched_tensors_equal`；`tests/multimodal/test_inputs.py` removed +0/-91 (91 lines); hunks: -1,91 +0,0; symbols: assert_nested_tensors_equal, assert_multimodal_inputs_equal, test_multimodal_input_batch_single_tensor, test_multimodal_input_batch_multiple_tensors，涉及 `assert_nested_tensors_equal, assert_multimodal_inputs_equal, test_multimodal_input_batch_single_tensor`；`vllm/multimodal/utils.py` modified +12/-47 (59 lines); hunks: -19,7 +19,6; -427,59 +426,25 @@ def group_mm_kwargs_by_modality(; symbols: group_mm_kwargs_by_modality, fetch_audio，涉及 `group_mm_kwargs_by_modality, fetch_audio`；`vllm/model_executor/models/nano_nemotron_vl.py` modified +6/-6 (12 lines); hunks: -52,7 +52,6; -849,17 +848,18 @@ def _get_prompt_updates(; symbols: _get_prompt_updates，涉及 `_get_prompt_updates`。
 - 代码 diff 细节:
-  - `tests/models/multimodal/processing/test_common.py` modified +2/-2
-  - `tests/models/multimodal/processing/test_glm4_1v.py` modified +4/-3
-  - `tests/models/multimodal/processing/test_tensor_schema.py` modified +2/-3
-  - `tests/multimodal/test_cache.py` modified +3/-6
+  - `vllm/multimodal/inputs.py` modified +46/-96 (142 lines); hunks: -3,7 +3,7; -201,8 +201,10 @@ def __eq__(self, other: object) -> bool:; symbols: __eq__, nested_tensors_equal, batched_tensors_equal, MultiModalFeatureSpec
+  - `tests/multimodal/test_inputs.py` removed +0/-91 (91 lines); hunks: -1,91 +0,0; symbols: assert_nested_tensors_equal, assert_multimodal_inputs_equal, test_multimodal_input_batch_single_tensor, test_multimodal_input_batch_multiple_tensors
+  - `vllm/multimodal/utils.py` modified +12/-47 (59 lines); hunks: -19,7 +19,6; -427,59 +426,25 @@ def group_mm_kwargs_by_modality(; symbols: group_mm_kwargs_by_modality, fetch_audio
+  - `vllm/model_executor/models/nano_nemotron_vl.py` modified +6/-6 (12 lines); hunks: -52,7 +52,6; -849,17 +848,18 @@ def _get_prompt_updates(; symbols: _get_prompt_updates
+  - `tests/multimodal/test_cache.py` modified +3/-6 (9 lines); hunks: -85,12 +85,6 @@ def _dummy_items(; -107,6 +101,9 @@ def test_cache_item_size(item, expected_size):; symbols: _dummy_items, test_cache_item_size, _create_vllm_config
 - 关键代码摘录:
 
 ```diff
-diff -- tests/models/multimodal/processing/test_common.py
-@@ -20,7 +20,7 @@
- )
- from vllm.multimodal import MULTIMODAL_REGISTRY, MultiModalDataDict
- from vllm.multimodal.cache import MultiModalProcessorOnlyCache
--from vllm.multimodal.inputs import MultiModalInputs
-+from vllm.multimodal.inputs import MultiModalInputs, batched_tensors_equal
- from vllm.multimodal.processing import BaseMultiModalProcessor, InputProcessingContext
- from vllm.tokenizers import (
-     MistralTokenizer,
-@@ -440,4 +440,4 @@ def _assert_inputs_equal(
-         a_data.pop(key, None)
-         b_data.pop(key, None)
-
--    assert a_data == b_data, msg
-diff -- tests/models/multimodal/processing/test_glm4_1v.py
-@@ -5,6 +5,7 @@
-
- from vllm.assets.video import VideoAsset
- from vllm.multimodal import MULTIMODAL_REGISTRY
-+from vllm.multimodal.inputs import batched_tensors_equal
- from vllm.multimodal.video import OpenCVDynamicVideoBackend, OpenCVVideoBackend
-
- from ...utils import build_model_context
-@@ -103,7 +104,7 @@ def test_video_loader_consistency(
-     dynamic_outputs = processor.apply(prompt, dynamic_mm_data, hf_processor_mm_kwargs)
-
-     assert static_outputs["prompt_token_ids"] == dynamic_outputs["prompt_token_ids"]
--    assert (
--        static_outputs["mm_kwargs"].get_data()
+diff -- vllm/multimodal/inputs.py
+@@ -3,7 +3,7 @@
+-from collections.abc import Mapping, Sequence
++from collections.abc import Mapping, Sequence, Set
+@@ -201,8 +201,10 @@ def __eq__(self, other: object) -> bool:
+-    """Equality check between
+-    [`NestedTensors`][vllm.multimodal.inputs.NestedTensors] objects."""
++    """
+diff -- tests/multimodal/test_inputs.py
+@@ -1,91 +0,0 @@
+-# SPDX-License-Identifier: Apache-2.0
+-# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
+-import pytest
+-import torch
+-from vllm.multimodal.inputs import MultiModalKwargs, NestedTensors
+-pytestmark = pytest.mark.cpu_test
+diff -- vllm/multimodal/utils.py
+@@ -19,7 +19,6 @@
 ```
+
 - 已读文件:
-  - runtime: `vllm/model_executor/models/deepseek_ocr.py` modified +2/-2; `vllm/model_executor/models/interfaces.py` modified +1/-1; `vllm/model_executor/models/lightonocr.py` modified +2/-2; `vllm/model_executor/models/nano_nemotron_vl.py` modified +6/-6; `vllm/model_executor/models/opencua.py` modified +2/-2; `vllm/model_executor/models/paddleocr_vl.py` modified +2/-2; `vllm/model_executor/models/paligemma.py` modified +3/-5; `vllm/model_executor/models/qwen2_5_vl.py` modified +2/-2
-  - tests: `tests/models/multimodal/processing/test_common.py` modified +2/-2; `tests/models/multimodal/processing/test_glm4_1v.py` modified +4/-3; `tests/models/multimodal/processing/test_tensor_schema.py` modified +2/-3; `tests/multimodal/test_cache.py` modified +3/-6; `tests/multimodal/test_inputs.py` removed +0/-91
-- 验证与风险: diff 自带测试/基准路径，后续改同一模型优先复跑相关测试并补一个最小 launch/accuracy smoke。
+  - runtime: `vllm/multimodal/inputs.py` modified +46/-96; `vllm/multimodal/utils.py` modified +12/-47; `vllm/model_executor/models/nano_nemotron_vl.py` modified +6/-6; `vllm/multimodal/cache.py` modified +1/-8; `vllm/model_executor/models/paligemma.py` modified +3/-5
+  - tests: `tests/multimodal/test_inputs.py` removed +0/-91; `tests/multimodal/test_cache.py` modified +3/-6; `tests/models/multimodal/processing/test_glm4_1v.py` modified +4/-3
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/processing/test_common.py`, `tests/models/multimodal/processing/test_glm4_1v.py`, `tests/models/multimodal/processing/test_tensor_schema.py`, `tests/multimodal/test_cache.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #30170 - [Chore] Deprecate `SupportsMultiModal.merge_by_field_config`
 
 - 链接: https://github.com/vllm-project/vllm/pull/30170
 - 状态/时间: merged / 2025-12-06
-- 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 61 个文件，+23/-110，可读 patch 568 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Chore] Deprecate `SupportsMultiModal.merge_by_field_config`」；模型线: DeepSeek OCR；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/aria.py`, `vllm/model_executor/models/aya_vision.py`, `vllm/model_executor/models/blip2.py`。
-- 实现要点:
-  - `vllm/model_executor/models/aria.py` modified +0/-2
-  - `vllm/model_executor/models/aya_vision.py` modified +0/-2
-  - `vllm/model_executor/models/blip2.py` modified +0/-2
-  - `vllm/model_executor/models/chameleon.py` modified +0/-2
+- 动机: 标题「[Chore] Deprecate `SupportsMultiModal.merge_by_field_config`」；模型线: DeepSeek OCR；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/aria.py`, `vllm/model_executor/models/aya_vision.py`；技术摘要: 覆盖「[Chore] Deprecate `SupportsMultiModal.merge_by_field_config`」；主要实现面是 `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/aria.py`, `vllm/model_executor/models/aya_vision.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/interfaces.py` modified +22/-3 (25 lines); hunks: -78,9 +78,9 @@ class SupportsMultiModal(Protocol):; -260,7 +260,26 @@ def supports_multimodal(model: object) -> TypeIs[SupportsMu...; symbols: SupportsMultiModal, supports_multimodal, supports_multimodal_raw_input_only，涉及 `SupportsMultiModal, supports_multimodal, supports_multimodal_raw_input_only`；`vllm/model_executor/models/aria.py` modified +0/-2 (2 lines); hunks: -499,8 +499,6 @@ class AriaForConditionalGeneration(nn.Module, SupportsMultiM...; symbols: AriaForConditionalGeneration，涉及 `AriaForConditionalGeneration`；`vllm/model_executor/models/aya_vision.py` modified +0/-2 (2 lines); hunks: -318,8 +318,6 @@ def _get_layer_index(feature_layer_index: int, num_hidden_la...; symbols: _get_layer_index, AyaVisionForConditionalGeneration，涉及 `_get_layer_index, AyaVisionForConditionalGeneration`；`vllm/model_executor/models/blip2.py` modified +0/-2 (2 lines); hunks: -523,8 +523,6 @@ def _get_prompt_updates(; symbols: _get_prompt_updates, Blip2ForConditionalGeneration, get_placeholder_str，涉及 `_get_prompt_updates, Blip2ForConditionalGeneration, get_placeholder_str`。
 - 代码 diff 细节:
-  - `vllm/model_executor/models/aria.py` modified +0/-2
-  - `vllm/model_executor/models/aya_vision.py` modified +0/-2
-  - `vllm/model_executor/models/blip2.py` modified +0/-2
-  - `vllm/model_executor/models/chameleon.py` modified +0/-2
+  - `vllm/model_executor/models/interfaces.py` modified +22/-3 (25 lines); hunks: -78,9 +78,9 @@ class SupportsMultiModal(Protocol):; -260,7 +260,26 @@ def supports_multimodal(model: object) -> TypeIs[SupportsMu...; symbols: SupportsMultiModal, supports_multimodal, supports_multimodal_raw_input_only
+  - `vllm/model_executor/models/aria.py` modified +0/-2 (2 lines); hunks: -499,8 +499,6 @@ class AriaForConditionalGeneration(nn.Module, SupportsMultiM...; symbols: AriaForConditionalGeneration
+  - `vllm/model_executor/models/aya_vision.py` modified +0/-2 (2 lines); hunks: -318,8 +318,6 @@ def _get_layer_index(feature_layer_index: int, num_hidden_la...; symbols: _get_layer_index, AyaVisionForConditionalGeneration
+  - `vllm/model_executor/models/blip2.py` modified +0/-2 (2 lines); hunks: -523,8 +523,6 @@ def _get_prompt_updates(; symbols: _get_prompt_updates, Blip2ForConditionalGeneration, get_placeholder_str
+  - `vllm/model_executor/models/chameleon.py` modified +0/-2 (2 lines); hunks: -918,8 +918,6 @@ def forward(; symbols: forward, ChameleonForConditionalGeneration
 - 关键代码摘录:
 
 ```diff
+diff -- vllm/model_executor/models/interfaces.py
+@@ -78,9 +78,9 @@ class SupportsMultiModal(Protocol):
+-    merge_by_field_config: ClassVar[bool] = True
++    merge_by_field_config: ClassVar[bool | None] = None
+-    A flag that indicates which implementation of
++    [DEPRECATED] A flag that indicates which implementation of
+@@ -260,7 +260,26 @@ def supports_multimodal(model: object) -> TypeIs[SupportsMultiModal]: ...
+-    return getattr(model, "supports_multimodal", False)
 diff -- vllm/model_executor/models/aria.py
 @@ -499,8 +499,6 @@ class AriaForConditionalGeneration(nn.Module, SupportsMultiModal):
-     model to perform tasks that involve both image and text inputs.
-     """
-
 -    merge_by_field_config = True
--
-     hf_to_vllm_mapper = WeightsMapper(
-         orig_to_new_prefix={
-             # mapping for new names in checkpoint saved after transformers v4.52
 diff -- vllm/model_executor/models/aya_vision.py
 @@ -318,8 +318,6 @@ def _get_layer_index(feature_layer_index: int, num_hidden_layers: int) -> int:
-     dummy_inputs=AyaVisionDummyInputsBuilder,
- )
- class AyaVisionForConditionalGeneration(nn.Module, SupportsMultiModal, SupportsPP):
 -    merge_by_field_config = True
--
-     hf_to_vllm_mapper = WeightsMapper(
-         orig_to_new_prefix={
-             # mapping for new names in checkpoint saved after transformers v4.52
+diff -- vllm/model_executor/models/blip2.py
+@@ -523,8 +523,6 @@ def _get_prompt_updates(
+-    merge_by_field_config = True
+diff -- vllm/model_executor/models/chameleon.py
 ```
+
 - 已读文件:
-  - runtime: `vllm/model_executor/models/aria.py` modified +0/-2; `vllm/model_executor/models/aya_vision.py` modified +0/-2; `vllm/model_executor/models/blip2.py` modified +0/-2; `vllm/model_executor/models/chameleon.py` modified +0/-2; `vllm/model_executor/models/clip.py` modified +0/-1; `vllm/model_executor/models/cohere2_vision.py` modified +0/-2; `vllm/model_executor/models/deepseek_ocr.py` modified +0/-2; `vllm/model_executor/models/deepseek_vl2.py` modified +0/-2
-- 验证与风险: diff 未直接暴露测试文件，后续改同一模型时应补最小 launch、tokenizer/MM processor 或 accuracy smoke。
+  - runtime: `vllm/model_executor/models/interfaces.py` modified +22/-3; `vllm/model_executor/models/aria.py` modified +0/-2; `vllm/model_executor/models/aya_vision.py` modified +0/-2; `vllm/model_executor/models/blip2.py` modified +0/-2; `vllm/model_executor/models/chameleon.py` modified +0/-2; `vllm/model_executor/models/cohere2_vision.py` modified +0/-2
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/aria.py`, `vllm/model_executor/models/aya_vision.py`, `vllm/model_executor/models/blip2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #30145 - [Renderer] Separate out `RendererConfig` from `ModelConfig`
 
 - 链接: https://github.com/vllm-project/vllm/pull/30145
 - 状态/时间: merged / 2025-12-07
-- 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 100 个文件，+944/-773，可读 patch 4691 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Renderer] Separate out `RendererConfig` from `ModelConfig`」；模型线: DeepSeek OCR；类别: 文档/测试/CI；主要 diff: `docs/contributing/model/transcription.md`, `tests/compile/distributed/test_sequence_parallelism.py`, `tests/compile/test_functionalization.py`。
-- 实现要点:
-  - `docs/contributing/model/transcription.md` modified +6/-6
-  - `tests/compile/distributed/test_sequence_parallelism.py` modified +2/-0
-  - `tests/compile/test_functionalization.py` modified +5/-1
-  - `tests/compile/test_fusion.py` modified +5/-1
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 105 个文件，+971/-799，可读 patch 4859 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Renderer] Separate out `RendererConfig` from `ModelConfig`」；模型线: DeepSeek OCR；类别: 文档/测试/CI；主要 diff: `tests/entrypoints/test_chat_utils.py`, `vllm/entrypoints/chat_utils.py`, `vllm/multimodal/registry.py`；技术摘要: 覆盖「[Renderer] Separate out `RendererConfig` from `ModelConfig`」；主要实现面是 `tests/entrypoints/test_chat_utils.py`, `vllm/entrypoints/chat_utils.py`, `vllm/multimodal/registry.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `tests/entrypoints/test_chat_utils.py` modified +71/-123 (194 lines); hunks: -11,7 +11,7; -232,7 +232,7 @@ def test_parse_chat_messages_single_image(; symbols: test_parse_chat_messages_single_image, test_parse_chat_messages_single_image_with_uuid, test_parse_chat_messages_single_empty_image_with_uuid, test_parse_chat_messages_single_image_with_bad_uuid_format，涉及 `test_parse_chat_messages_single_image, test_parse_chat_messages_single_image_with_uuid, test_parse_chat_messages_single_empty_image_with_uuid`；`vllm/entrypoints/chat_utils.py` modified +45/-34 (79 lines); hunks: -44,7 +44,7; -452,9 +452,10 @@ def resolve_mistral_chat_template(; symbols: resolve_mistral_chat_template, _try_get_processor_chat_template, resolve_hf_chat_template，涉及 `resolve_mistral_chat_template, _try_get_processor_chat_template, resolve_hf_chat_template`；`vllm/multimodal/registry.py` modified +30/-34 (64 lines); hunks: -6,7 +6,7; -22,7 +22,7; symbols: _extract_mm_options, supports_multimodal_inputs, get_max_tokens_per_item_by_modality，涉及 `_extract_mm_options, supports_multimodal_inputs, get_max_tokens_per_item_by_modality`；`tests/v1/structured_output/test_reasoning_structured_output.py` modified +21/-14 (35 lines); hunks: -7,7 +7,7; -17,19 +17,26 @@ class TestReasoningStructuredOutput:; symbols: TestReasoningStructuredOutput, mock_model_config, mock_renderer_config, mock_scheduler_config，涉及 `TestReasoningStructuredOutput, mock_model_config, mock_renderer_config`。
 - 代码 diff 细节:
-  - `docs/contributing/model/transcription.md` modified +6/-6
-  - `tests/compile/distributed/test_sequence_parallelism.py` modified +2/-0
-  - `tests/compile/test_functionalization.py` modified +5/-1
-  - `tests/compile/test_fusion.py` modified +5/-1
+  - `tests/entrypoints/test_chat_utils.py` modified +71/-123 (194 lines); hunks: -11,7 +11,7; -232,7 +232,7 @@ def test_parse_chat_messages_single_image(; symbols: test_parse_chat_messages_single_image, test_parse_chat_messages_single_image_with_uuid, test_parse_chat_messages_single_empty_image_with_uuid, test_parse_chat_messages_single_image_with_bad_uuid_format
+  - `vllm/entrypoints/chat_utils.py` modified +45/-34 (79 lines); hunks: -44,7 +44,7; -452,9 +452,10 @@ def resolve_mistral_chat_template(; symbols: resolve_mistral_chat_template, _try_get_processor_chat_template, resolve_hf_chat_template
+  - `vllm/multimodal/registry.py` modified +30/-34 (64 lines); hunks: -6,7 +6,7; -22,7 +22,7; symbols: _extract_mm_options, supports_multimodal_inputs, get_max_tokens_per_item_by_modality
+  - `tests/v1/structured_output/test_reasoning_structured_output.py` modified +21/-14 (35 lines); hunks: -7,7 +7,7; -17,19 +17,26 @@ class TestReasoningStructuredOutput:; symbols: TestReasoningStructuredOutput, mock_model_config, mock_renderer_config, mock_scheduler_config
+  - `tests/models/multimodal/test_mapping.py` modified +3/-30 (33 lines); hunks: -7,7 +7,6; -50,37 +49,11 @@ def test_hf_model_weights_mapper(model_arch: str):; symbols: test_hf_model_weights_mapper
 - 关键代码摘录:
 
 ```diff
-diff -- docs/contributing/model/transcription.md
-@@ -22,7 +22,7 @@ Declare supported languages and capabilities:
-     import torch
-     from torch import nn
-
--    from vllm.config import ModelConfig, SpeechToTextConfig
-+    from vllm.config import RendererConfig, SpeechToTextConfig
-     from vllm.inputs.data import PromptType
-     from vllm.model_executor.models.interfaces import SupportsTranscription
-
-@@ -52,7 +52,7 @@ This is for controlling general behavior of the API when serving your model:
-         @classmethod
-         def get_speech_to_text_config(
-             cls,
--            model_config: ModelConfig,
-diff -- tests/compile/distributed/test_sequence_parallelism.py
-@@ -17,6 +17,7 @@
-     DeviceConfig,
-     ModelConfig,
-     PassConfig,
-+    RendererConfig,
-     VllmConfig,
-     get_current_vllm_config,
-     set_current_vllm_config,
-@@ -276,6 +277,7 @@ def sequence_parallelism_pass_on_test_model(
-
-     vllm_config = VllmConfig(
-         model_config=model_config,
-+        renderer_config=RendererConfig(model_config=model_config),
-         device_config=device_config,
+diff -- tests/entrypoints/test_chat_utils.py
+@@ -11,7 +11,7 @@
+-from vllm.config import ModelConfig
++from vllm.config import ModelConfig, RendererConfig
+@@ -232,7 +232,7 @@ def test_parse_chat_messages_single_image(
+-        phi3v_model_config,
++        RendererConfig(model_config=phi3v_model_config),
+@@ -264,7 +264,7 @@ def test_parse_chat_messages_single_image_with_uuid(
+diff -- vllm/entrypoints/chat_utils.py
+@@ -44,7 +44,7 @@
+-from vllm.config import ModelConfig
++from vllm.config import ModelConfig, RendererConfig
+@@ -452,9 +452,10 @@ def resolve_mistral_chat_template(
+-    model_config: ModelConfig,
++    *,
++    trust_remote_code: bool,
+diff -- vllm/multimodal/registry.py
+@@ -6,7 +6,7 @@
 ```
+
 - 已读文件:
-  - tests: `tests/compile/distributed/test_sequence_parallelism.py` modified +2/-0; `tests/compile/test_functionalization.py` modified +5/-1; `tests/compile/test_fusion.py` modified +5/-1; `tests/compile/test_fusion_attn.py` modified +2/-0; `tests/compile/test_pass_manager.py` modified +6/-2; `tests/compile/test_qk_norm_rope_fusion.py` modified +4/-1; `tests/distributed/test_kvlayout.py` modified +3/-0; `tests/entrypoints/openai/test_chat_template.py` modified +4/-18
-  - docs/bench: `docs/contributing/model/transcription.md` modified +6/-6
-- 验证与风险: diff 自带测试/基准路径，后续改同一模型优先复跑相关测试并补一个最小 launch/accuracy smoke。
+  - tests: `tests/entrypoints/test_chat_utils.py` modified +71/-123; `tests/v1/structured_output/test_reasoning_structured_output.py` modified +21/-14; `tests/models/multimodal/test_mapping.py` modified +3/-30; `tests/models/registry.py` modified +32/-1; `tests/entrypoints/openai/test_serving_chat.py` modified +21/-7
+  - runtime: `vllm/entrypoints/chat_utils.py` modified +45/-34; `vllm/multimodal/registry.py` modified +30/-34; `vllm/multimodal/processing.py` modified +23/-5
+- 验证与风险: diff 自带测试面 `tests/compile/distributed/test_sequence_parallelism.py`, `tests/compile/test_functionalization.py`, `tests/compile/test_fusion.py`, `tests/compile/test_fusion_attn.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #30199 - Revert "[Renderer] Separate out `RendererConfig` from `ModelConfig` (#30145)"
 
 - 链接: https://github.com/vllm-project/vllm/pull/30199
 - 状态/时间: merged / 2025-12-07
-- 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 100 个文件，+773/-944，可读 patch 4691 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Revert "[Renderer] Separate out `RendererConfig` from `ModelConfig` (#30145)"」；模型线: DeepSeek OCR；类别: 缺陷修复；主要 diff: `docs/contributing/model/transcription.md`, `tests/compile/distributed/test_sequence_parallelism.py`, `tests/compile/test_functionalization.py`。
-- 实现要点:
-  - `docs/contributing/model/transcription.md` modified +6/-6
-  - `tests/compile/distributed/test_sequence_parallelism.py` modified +0/-2
-  - `tests/compile/test_functionalization.py` modified +1/-5
-  - `tests/compile/test_fusion.py` modified +1/-5
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 105 个文件，+799/-971，可读 patch 4859 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Revert "[Renderer] Separate out `RendererConfig` from `ModelConfig` (#30145)"」；模型线: DeepSeek OCR；类别: 文档/测试/CI；主要 diff: `tests/entrypoints/test_chat_utils.py`, `vllm/entrypoints/chat_utils.py`, `vllm/multimodal/registry.py`；技术摘要: 覆盖「Revert "[Renderer] Separate out `RendererConfig` from `ModelConfig` (#30145)"」；主要实现面是 `tests/entrypoints/test_chat_utils.py`, `vllm/entrypoints/chat_utils.py`, `vllm/multimodal/registry.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `tests/entrypoints/test_chat_utils.py` modified +123/-71 (194 lines); hunks: -12,7 +12,7; -233,7 +233,7 @@ def test_parse_chat_messages_single_image(; symbols: test_parse_chat_messages_single_image, test_parse_chat_messages_single_image_with_uuid, test_parse_chat_messages_single_empty_image_with_uuid, test_parse_chat_messages_single_image_with_bad_uuid_format，涉及 `test_parse_chat_messages_single_image, test_parse_chat_messages_single_image_with_uuid, test_parse_chat_messages_single_empty_image_with_uuid`；`vllm/entrypoints/chat_utils.py` modified +34/-45 (79 lines); hunks: -44,7 +44,7; -452,10 +452,9 @@ def resolve_mistral_chat_template(; symbols: resolve_mistral_chat_template, _try_get_processor_chat_template, resolve_hf_chat_template，涉及 `resolve_mistral_chat_template, _try_get_processor_chat_template, resolve_hf_chat_template`；`vllm/multimodal/registry.py` modified +34/-30 (64 lines); hunks: -6,7 +6,7; -22,7 +22,7; symbols: _extract_mm_options, supports_multimodal_inputs, get_max_tokens_per_item_by_modality，涉及 `_extract_mm_options, supports_multimodal_inputs, get_max_tokens_per_item_by_modality`；`tests/v1/structured_output/test_reasoning_structured_output.py` modified +14/-21 (35 lines); hunks: -7,7 +7,7; -17,26 +17,19 @@ class TestReasoningStructuredOutput:; symbols: TestReasoningStructuredOutput, mock_renderer_config, mock_model_config, mock_scheduler_config，涉及 `TestReasoningStructuredOutput, mock_renderer_config, mock_model_config`。
 - 代码 diff 细节:
-  - `docs/contributing/model/transcription.md` modified +6/-6
-  - `tests/compile/distributed/test_sequence_parallelism.py` modified +0/-2
-  - `tests/compile/test_functionalization.py` modified +1/-5
-  - `tests/compile/test_fusion.py` modified +1/-5
+  - `tests/entrypoints/test_chat_utils.py` modified +123/-71 (194 lines); hunks: -12,7 +12,7; -233,7 +233,7 @@ def test_parse_chat_messages_single_image(; symbols: test_parse_chat_messages_single_image, test_parse_chat_messages_single_image_with_uuid, test_parse_chat_messages_single_empty_image_with_uuid, test_parse_chat_messages_single_image_with_bad_uuid_format
+  - `vllm/entrypoints/chat_utils.py` modified +34/-45 (79 lines); hunks: -44,7 +44,7; -452,10 +452,9 @@ def resolve_mistral_chat_template(; symbols: resolve_mistral_chat_template, _try_get_processor_chat_template, resolve_hf_chat_template
+  - `vllm/multimodal/registry.py` modified +34/-30 (64 lines); hunks: -6,7 +6,7; -22,7 +22,7; symbols: _extract_mm_options, supports_multimodal_inputs, get_max_tokens_per_item_by_modality
+  - `tests/v1/structured_output/test_reasoning_structured_output.py` modified +14/-21 (35 lines); hunks: -7,7 +7,7; -17,26 +17,19 @@ class TestReasoningStructuredOutput:; symbols: TestReasoningStructuredOutput, mock_renderer_config, mock_model_config, mock_scheduler_config
+  - `tests/models/multimodal/test_mapping.py` modified +30/-3 (33 lines); hunks: -7,6 +7,7; -49,11 +50,37 @@ def test_hf_model_weights_mapper(model_arch: str):; symbols: test_hf_model_weights_mapper
 - 关键代码摘录:
 
 ```diff
-diff -- docs/contributing/model/transcription.md
-@@ -22,7 +22,7 @@ Declare supported languages and capabilities:
-     import torch
-     from torch import nn
-
--    from vllm.config import RendererConfig, SpeechToTextConfig
-+    from vllm.config import ModelConfig, SpeechToTextConfig
-     from vllm.inputs.data import PromptType
-     from vllm.model_executor.models.interfaces import SupportsTranscription
-
-@@ -52,7 +52,7 @@ This is for controlling general behavior of the API when serving your model:
-         @classmethod
-         def get_speech_to_text_config(
-             cls,
--            renderer_config: RendererConfig,
-diff -- tests/compile/distributed/test_sequence_parallelism.py
-@@ -17,7 +17,6 @@
-     DeviceConfig,
-     ModelConfig,
-     PassConfig,
--    RendererConfig,
-     VllmConfig,
-     get_current_vllm_config,
-     set_current_vllm_config,
-@@ -277,7 +276,6 @@ def sequence_parallelism_pass_on_test_model(
-
-     vllm_config = VllmConfig(
-         model_config=model_config,
--        renderer_config=RendererConfig(model_config=model_config),
-         device_config=device_config,
+diff -- tests/entrypoints/test_chat_utils.py
+@@ -12,7 +12,7 @@
+-from vllm.config import ModelConfig, RendererConfig
++from vllm.config import ModelConfig
+@@ -233,7 +233,7 @@ def test_parse_chat_messages_single_image(
+-        RendererConfig(model_config=phi3v_model_config),
++        phi3v_model_config,
+@@ -265,7 +265,7 @@ def test_parse_chat_messages_single_image_with_uuid(
+diff -- vllm/entrypoints/chat_utils.py
+@@ -44,7 +44,7 @@
+-from vllm.config import ModelConfig, RendererConfig
++from vllm.config import ModelConfig
+@@ -452,10 +452,9 @@ def resolve_mistral_chat_template(
+-    *,
+-    trust_remote_code: bool,
++    model_config: ModelConfig,
+diff -- vllm/multimodal/registry.py
+@@ -6,7 +6,7 @@
 ```
+
 - 已读文件:
-  - tests: `tests/compile/distributed/test_sequence_parallelism.py` modified +0/-2; `tests/compile/test_functionalization.py` modified +1/-5; `tests/compile/test_fusion.py` modified +1/-5; `tests/compile/test_fusion_attn.py` modified +0/-2; `tests/compile/test_pass_manager.py` modified +2/-6; `tests/compile/test_qk_norm_rope_fusion.py` modified +1/-4; `tests/distributed/test_kvlayout.py` modified +0/-3; `tests/entrypoints/openai/test_chat_template.py` modified +18/-4
-  - docs/bench: `docs/contributing/model/transcription.md` modified +6/-6
-- 验证与风险: diff 自带测试/基准路径，后续改同一模型优先复跑相关测试并补一个最小 launch/accuracy smoke。
+  - tests: `tests/entrypoints/test_chat_utils.py` modified +123/-71; `tests/v1/structured_output/test_reasoning_structured_output.py` modified +14/-21; `tests/models/multimodal/test_mapping.py` modified +30/-3; `tests/models/registry.py` modified +1/-32; `tests/entrypoints/openai/test_serving_chat.py` modified +7/-21
+  - runtime: `vllm/entrypoints/chat_utils.py` modified +34/-45; `vllm/multimodal/registry.py` modified +34/-30; `vllm/multimodal/processing.py` modified +5/-23
+- 验证与风险: diff 自带测试面 `tests/compile/distributed/test_sequence_parallelism.py`, `tests/compile/test_functionalization.py`, `tests/compile/test_fusion.py`, `tests/compile/test_fusion_attn.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #31569 - feat: support LoRA for DeepSeek-OCR(Language Model part)
 
 - 链接: https://github.com/vllm-project/vllm/pull/31569
 - 状态/时间: merged / 2026-01-02
-- 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/deepseek_ocr.py`；关联提交 `27864a851c74`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+14/-2，可读 patch 44 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「feat: support LoRA for DeepSeek-OCR(Language Model part)」；模型线: DeepSeek OCR；类别: 模型支持/运行时入口；主要 diff: `docs/models/supported_models.md`, `vllm/model_executor/models/deepseek_ocr.py`。
-- 实现要点:
-  - `docs/models/supported_models.md` modified +1/-1
-  - `vllm/model_executor/models/deepseek_ocr.py` modified +13/-1；symbols: DeepseekOCRForCausalLM, get_mm_mapping
+- 动机: 标题「feat: support LoRA for DeepSeek-OCR(Language Model part)」；模型线: DeepSeek OCR；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/deepseek_ocr.py`；技术摘要: 覆盖「feat: support LoRA for DeepSeek-OCR(Language Model part)」；主要实现面是 `vllm/model_executor/models/deepseek_ocr.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/deepseek_ocr.py` modified +13/-1 (14 lines); hunks: -14,9 +14,11; -343,7 +345,7 @@ def get_replacement_deepseek_vl2(item_idx: int):; symbols: get_replacement_deepseek_vl2, DeepseekOCRForCausalLM, load_weights, get_mm_mapping，涉及 `get_replacement_deepseek_vl2, DeepseekOCRForCausalLM, load_weights`。
 - 代码 diff 细节:
-  - `docs/models/supported_models.md` modified +1/-1
-  - `vllm/model_executor/models/deepseek_ocr.py` modified +13/-1
+  - `vllm/model_executor/models/deepseek_ocr.py` modified +13/-1 (14 lines); hunks: -14,9 +14,11; -343,7 +345,7 @@ def get_replacement_deepseek_vl2(item_idx: int):; symbols: get_replacement_deepseek_vl2, DeepseekOCRForCausalLM, load_weights, get_mm_mapping
 - 关键代码摘录:
 
 ```diff
-diff -- docs/models/supported_models.md
-@@ -677,7 +677,7 @@ These models primarily accept the [`LLM.generate`](./generative_models.md#llmgen
- | `ChameleonForConditionalGeneration` | Chameleon | T + I | `facebook/chameleon-7b`, etc. | | ✅︎ |
- | `Cohere2VisionForConditionalGeneration` | Command A Vision | T + I<sup>+</sup> | `CohereLabs/command-a-vision-07-2025`, etc. | | ✅︎ |
- | `DeepseekVLV2ForCausalLM`<sup>^</sup> | DeepSeek-VL2 | T + I<sup>+</sup> | `deepseek-ai/deepseek-vl2-tiny`, `deepseek-ai/deepseek-vl2-small`, `deepseek-ai/deepseek-vl2`, etc. | | ✅︎ |
--| `DeepseekOCRForCausalLM` | DeepSeek-OCR | T + I<sup>+</sup> | `deepseek-ai/DeepSeek-OCR`, etc. | | ✅︎ |
-+| `DeepseekOCRForCausalLM` | DeepSeek-OCR | T + I<sup>+</sup> | `deepseek-ai/DeepSeek-OCR`, etc. | ✅︎ | ✅︎ |
- | `Ernie4_5_VLMoeForConditionalGeneration` | Ernie4.5-VL | T + I<sup>+</sup>/ V<sup>+</sup> | `baidu/ERNIE-4.5-VL-28B-A3B-PT`, `baidu/ERNIE-4.5-VL-424B-A47B-PT` | | ✅︎ |
- | `FuyuForCausalLM` | Fuyu | T + I | `adept/fuyu-8b`, etc. | | ✅︎ |
- | `Gemma3ForConditionalGeneration` | Gemma 3 | T + I<sup>E+</sup> | `google/gemma-3-4b-it`, `google/gemma-3-27b-it`, etc. | ✅︎ | ✅︎ |
 diff -- vllm/model_executor/models/deepseek_ocr.py
 @@ -14,9 +14,11 @@
- from vllm.config.multimodal import BaseDummyOptions
- from vllm.model_executor.models.interfaces import (
-     MultiModalEmbeddings,
 +    SupportsLoRA,
-     SupportsMultiModal,
-     SupportsPP,
- )
 +from vllm.model_executor.models.module_mapping import MultiModelKeys
- from vllm.model_executor.models.utils import (
-     AutoWeightsLoader,
-     WeightsMapper,
 @@ -343,7 +345,7 @@ def get_replacement_deepseek_vl2(item_idx: int):
-     info=DeepseekOCRProcessingInfo,
+-class DeepseekOCRForCausalLM(nn.Module, SupportsMultiModal, SupportsPP):
++class DeepseekOCRForCausalLM(nn.Module, SupportsMultiModal, SupportsPP, SupportsLoRA):
+@@ -589,3 +591,13 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Tensor]]) -> set[str]:
 ```
+
 - 已读文件:
   - runtime: `vllm/model_executor/models/deepseek_ocr.py` modified +13/-1
-  - docs/bench: `docs/models/supported_models.md` modified +1/-1
-- 验证与风险: diff 未直接暴露测试文件，后续改同一模型时应补最小 launch、tokenizer/MM processor 或 accuracy smoke。
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/deepseek_ocr.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #31947 - [Model] Standardize common vision encoders
 
 - 链接: https://github.com/vllm-project/vllm/pull/31947
 - 状态/时间: merged / 2026-01-08
-- 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 19 个文件，+254/-174，可读 patch 1287 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Model] Standardize common vision encoders」；模型线: DeepSeek OCR；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/clip.py`, `vllm/model_executor/models/deepencoder.py`, `vllm/model_executor/models/deepseek_ocr.py`。
-- 实现要点:
-  - `vllm/model_executor/models/clip.py` modified +57/-12
-  - `vllm/model_executor/models/deepencoder.py` modified +3/-0
-  - `vllm/model_executor/models/deepseek_ocr.py` modified +1/-0
-  - `vllm/model_executor/models/hyperclovax_vision.py` modified +9/-10；symbols: __init__
+- 动机: 标题「[Model] Standardize common vision encoders」；模型线: DeepSeek OCR；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/siglip.py`, `vllm/model_executor/models/clip.py`, `vllm/model_executor/models/phi3v.py`；技术摘要: 覆盖「[Model] Standardize common vision encoders」；主要实现面是 `vllm/model_executor/models/siglip.py`, `vllm/model_executor/models/clip.py`, `vllm/model_executor/models/phi3v.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/siglip.py` modified +73/-55 (128 lines); hunks: -1,7 +1,6; -19,7 +18,7; symbols: get_patch_grid_length, SiglipVisionEmbeddings, __init__，涉及 `get_patch_grid_length, SiglipVisionEmbeddings, __init__`；`vllm/model_executor/models/clip.py` modified +57/-12 (69 lines); hunks: -17,7 +17,7; -353,6 +353,7 @@ def __init__(; symbols: __init__, forward，涉及 `__init__, forward`；`vllm/model_executor/models/phi3v.py` modified +31/-31 (62 lines); hunks: -29,7 +29,7; -96,6 +96,7; symbols: _init_img_processor, Phi3VImageEmbeddingInputs, Phi3ImageEmbeddingBase, __init__，涉及 `_init_img_processor, Phi3VImageEmbeddingInputs, Phi3ImageEmbeddingBase`；`vllm/model_executor/models/pixtral.py` modified +38/-7 (45 lines); hunks: -28,7 +28,7; -1043,25 +1043,34 @@ def __init__(; symbols: __init__, forward，涉及 `__init__, forward`。
 - 代码 diff 细节:
-  - `vllm/model_executor/models/clip.py` modified +57/-12
-  - `vllm/model_executor/models/deepencoder.py` modified +3/-0
-  - `vllm/model_executor/models/deepseek_ocr.py` modified +1/-0
-  - `vllm/model_executor/models/hyperclovax_vision.py` modified +9/-10
+  - `vllm/model_executor/models/siglip.py` modified +73/-55 (128 lines); hunks: -1,7 +1,6; -19,7 +18,7; symbols: get_patch_grid_length, SiglipVisionEmbeddings, __init__
+  - `vllm/model_executor/models/clip.py` modified +57/-12 (69 lines); hunks: -17,7 +17,7; -353,6 +353,7 @@ def __init__(; symbols: __init__, forward
+  - `vllm/model_executor/models/phi3v.py` modified +31/-31 (62 lines); hunks: -29,7 +29,7; -96,6 +96,7; symbols: _init_img_processor, Phi3VImageEmbeddingInputs, Phi3ImageEmbeddingBase, __init__
+  - `vllm/model_executor/models/pixtral.py` modified +38/-7 (45 lines); hunks: -28,7 +28,7; -1043,25 +1043,34 @@ def __init__(; symbols: __init__, forward
+  - `vllm/model_executor/models/paddleocr_vl.py` modified +2/-42 (44 lines); hunks: -38,10 +38,8; -77,6 +75,7; symbols: forward, SiglipMLP, __init__, SiglipEncoderLayer
 - 关键代码摘录:
 
 ```diff
-diff -- vllm/model_executor/models/clip.py
-@@ -17,7 +17,7 @@
- from vllm.attention.layer import Attention
- from vllm.attention.layers.mm_encoder_attention import MMEncoderAttention
- from vllm.config import VllmConfig
+diff -- vllm/model_executor/models/siglip.py
+@@ -1,7 +1,6 @@
+-import math
+@@ -19,7 +18,7 @@
 -from vllm.config.multimodal import BaseDummyOptions
 +from vllm.config.multimodal import BaseDummyOptions, MultiModalConfig
- from vllm.distributed import divide, get_tensor_model_parallel_world_size
- from vllm.model_executor.layers.activation import get_act_fn
- from vllm.model_executor.layers.conv import Conv2dLayer
+@@ -276,7 +275,7 @@ def get_patch_grid_length(self) -> int:
+-# Adapted from https://github.com/huggingface/transformers/blob/v4.43.3/src/transformers/models/siglip/modeling_siglip.py#L249 # noqa
+diff -- vllm/model_executor/models/clip.py
+@@ -17,7 +17,7 @@
+-from vllm.config.multimodal import BaseDummyOptions
++from vllm.config.multimodal import BaseDummyOptions, MultiModalConfig
 @@ -353,6 +353,7 @@ def __init__(
-         self,
-         config: CLIPTextConfig | CLIPVisionConfig,
-         quant_config: QuantizationConfig | None = None,
 +        multimodal_config: MultiModalConfig | None = None,
-diff -- vllm/model_executor/models/deepencoder.py
-@@ -19,6 +19,7 @@
- from transformers import CLIPVisionConfig
-
- from vllm.attention.layers.mm_encoder_attention import MMEncoderAttention
-+from vllm.config import MultiModalConfig
- from vllm.model_executor.layers.conv import Conv2dLayer
- from vllm.model_executor.layers.quantization import QuantizationConfig
- from vllm.model_executor.model_loader.weight_utils import default_weight_loader
-@@ -608,6 +609,7 @@ def __init__(
-         self,
-         config: CLIPVisionConfig,
-         quant_config: QuantizationConfig | None = None,
-+        multimodal_config: MultiModalConfig | None = None,
-         *,
+@@ -365,36 +366,54 @@ def __init__(
+-                "embed_dim must be divisible by num_heads "
+diff -- vllm/model_executor/models/phi3v.py
+@@ -29,7 +29,7 @@
 ```
+
 - 已读文件:
-  - runtime: `vllm/model_executor/models/clip.py` modified +57/-12; `vllm/model_executor/models/deepencoder.py` modified +3/-0; `vllm/model_executor/models/deepseek_ocr.py` modified +1/-0; `vllm/model_executor/models/hyperclovax_vision.py` modified +9/-10; `vllm/model_executor/models/isaac.py` modified +1/-1; `vllm/model_executor/models/keye.py` modified +2/-0; `vllm/model_executor/models/lightonocr.py` modified +3/-1; `vllm/model_executor/models/llava.py` modified +7/-2
-- 验证与风险: diff 未直接暴露测试文件，后续改同一模型时应补最小 launch、tokenizer/MM processor 或 accuracy smoke。
+  - runtime: `vllm/model_executor/models/siglip.py` modified +73/-55; `vllm/model_executor/models/clip.py` modified +57/-12; `vllm/model_executor/models/phi3v.py` modified +31/-31; `vllm/model_executor/models/pixtral.py` modified +38/-7; `vllm/model_executor/models/paddleocr_vl.py` modified +2/-42; `vllm/model_executor/models/hyperclovax_vision.py` modified +9/-10
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/clip.py`, `vllm/model_executor/models/deepencoder.py`, `vllm/model_executor/models/deepseek_ocr.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #32016 - [Model] Remove redundant None check in DeepSeekOCR image input processing
 
 - 链接: https://github.com/vllm-project/vllm/pull/32016
 - 状态/时间: merged / 2026-01-09
-- 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+10/-13，可读 patch 30 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Model] Remove redundant None check in DeepSeekOCR image input processing」；模型线: DeepSeek OCR；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/deepseek_ocr.py`。
-- 实现要点:
-  - `vllm/model_executor/models/deepseek_ocr.py` modified +10/-13
+- 动机: 标题「[Model] Remove redundant None check in DeepSeekOCR image input processing」；模型线: DeepSeek OCR；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/deepseek_ocr.py`；技术摘要: 覆盖「[Model] Remove redundant None check in DeepSeekOCR image input processing」；主要实现面是 `vllm/model_executor/models/deepseek_ocr.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/deepseek_ocr.py` modified +10/-13 (23 lines); hunks: -437,19 +437,16 @@ def _parse_and_validate_image_input(; symbols: _parse_and_validate_image_input, _encode_global_features，涉及 `_parse_and_validate_image_input, _encode_global_features`。
 - 代码 diff 细节:
-  - `vllm/model_executor/models/deepseek_ocr.py` modified +10/-13
+  - `vllm/model_executor/models/deepseek_ocr.py` modified +10/-13 (23 lines); hunks: -437,19 +437,16 @@ def _parse_and_validate_image_input(; symbols: _parse_and_validate_image_input, _encode_global_features
 - 关键代码摘录:
 
 ```diff
 diff -- vllm/model_executor/models/deepseek_ocr.py
 @@ -437,19 +437,16 @@ def _parse_and_validate_image_input(
-         if pixel_values is None or torch.sum(pixel_values).item() == 0:
-             return None
-
 -        if pixel_values is not None:
 -            base_size = self.vision_config.image_size
 -            return DeepseekOCRImagePixelInputs(
 -                type="pixel_values",
 -                data=pixel_values,
 -                images_crop=images_crop,
--                images_spatial_crop=images_spatial_crop,
--                resolve_bindings={
--                    "base_size": base_size,
--                },
 ```
+
 - 已读文件:
   - runtime: `vllm/model_executor/models/deepseek_ocr.py` modified +10/-13
-- 验证与风险: diff 未直接暴露测试文件，后续改同一模型时应补最小 launch、tokenizer/MM processor 或 accuracy smoke。
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/deepseek_ocr.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #32327 - [1/N] Reorganize multimodal processing code
 
 - 链接: https://github.com/vllm-project/vllm/pull/32327
 - 状态/时间: merged / 2026-01-14
-- 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 76 个文件，+717/-670，可读 patch 2419 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[1/N] Reorganize multimodal processing code」；模型线: DeepSeek OCR；类别: 文档/测试/CI；主要 diff: `docs/api/README.md`, `docs/contributing/model/multimodal.md`, `docs/design/mm_processing.md`。
-- 实现要点:
-  - `docs/api/README.md` modified +0/-4
-  - `docs/contributing/model/multimodal.md` modified +4/-6
-  - `docs/design/mm_processing.md` modified +1/-1
-  - `tests/multimodal/test_processing.py` modified +2/-2
+- 动机: 标题「[1/N] Reorganize multimodal processing code」；模型线: DeepSeek OCR；类别: 模型实现调整；主要 diff: `vllm/multimodal/processing/processor.py`, `vllm/multimodal/processing/context.py`, `vllm/multimodal/processing/__init__.py`；技术摘要: 覆盖「[1/N] Reorganize multimodal processing code」；主要实现面是 `vllm/multimodal/processing/processor.py`, `vllm/multimodal/processing/context.py`, `vllm/multimodal/processing/__init__.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/multimodal/processing/processor.py` renamed +16/-556 (572 lines); hunks: -1,24 +1,18; -27,173 +21,43; symbols: get_current_request_id, set_request_id, MultiModalProcessorTimingStats, to_dict，涉及 `get_current_request_id, set_request_id, MultiModalProcessorTimingStats`；`vllm/multimodal/processing/context.py` added +558/-0 (558 lines); hunks: -0,0 +1,558; symbols: get_current_request_id, set_request_id, MultiModalProcessorTimingStats, to_dict，涉及 `get_current_request_id, set_request_id, MultiModalProcessorTimingStats`；`vllm/multimodal/processing/__init__.py` added +27/-0 (27 lines); hunks: -0,0 +1,27；`vllm/multimodal/inputs.py` modified +9/-5 (14 lines); hunks: -33,8 +33,6; -979,9 +977,15 @@ def get_data(; symbols: get_data, MultiModalInputs，涉及 `get_data, MultiModalInputs`。
 - 代码 diff 细节:
-  - `docs/api/README.md` modified +0/-4
-  - `docs/contributing/model/multimodal.md` modified +4/-6
-  - `docs/design/mm_processing.md` modified +1/-1
-  - `tests/multimodal/test_processing.py` modified +2/-2
+  - `vllm/multimodal/processing/processor.py` renamed +16/-556 (572 lines); hunks: -1,24 +1,18; -27,173 +21,43; symbols: get_current_request_id, set_request_id, MultiModalProcessorTimingStats, to_dict
+  - `vllm/multimodal/processing/context.py` added +558/-0 (558 lines); hunks: -0,0 +1,558; symbols: get_current_request_id, set_request_id, MultiModalProcessorTimingStats, to_dict
+  - `vllm/multimodal/processing/__init__.py` added +27/-0 (27 lines); hunks: -0,0 +1,27
+  - `vllm/multimodal/inputs.py` modified +9/-5 (14 lines); hunks: -33,8 +33,6; -979,9 +977,15 @@ def get_data(; symbols: get_data, MultiModalInputs
+  - `vllm/multimodal/processing/dummy_inputs.py` renamed +4/-8 (12 lines); hunks: -3,7 +3,7; -17,14 +17,10
 - 关键代码摘录:
 
 ```diff
-diff -- docs/api/README.md
-@@ -82,10 +82,6 @@ Internal data structures.
-
- - [vllm.multimodal.processing][]
-
--### Memory Profiling
--
--- [vllm.multimodal.profiling][]
--
- ### Registry
-
- - [vllm.multimodal.registry][]
-diff -- docs/contributing/model/multimodal.md
-@@ -116,12 +116,10 @@ def get_supported_mm_limits(self) -> Mapping[str, int | None]:
-
- ## 3. Specify dummy inputs
-
--Then, inherit [BaseDummyInputsBuilder][vllm.multimodal.profiling.BaseDummyInputsBuilder] to construct dummy inputs for
--HF processing as well as memory profiling.
-+Then, inherit [BaseDummyInputsBuilder][vllm.multimodal.processing.BaseDummyInputsBuilder] to construct dummy inputs for
-+HF processing. The processed outputs are also used for memory profiling.
-
--### For memory profiling
--
--Override the abstract methods [get_dummy_text][vllm.multimodal.profiling.BaseDummyInputsBuilder.get_dummy_text] and [get_dummy_mm_data][vllm.multimodal.profiling.BaseDummyInputsBuilder.get_dummy_mm_data] to construct dummy inputs for memory profiling. These dummy inputs should result in the worst-case memory usage of the model so that vLLM can reserve the correct amount of memory for it.
-+Override the abstract methods [get_dummy_text][vllm.multimodal.processing.BaseDummyInputsBuilder.get_dummy_text] and [get_dummy_mm_data][vllm.multimodal.processing.BaseDummyInputsBuilder.get_dummy_mm_data] to construct dummy inputs. These dummy inputs should result in the worst-case memory usage of the model so that vLLM can reserve the correct amount of memory for it.
-
+diff -- vllm/multimodal/processing/processor.py
+@@ -1,24 +1,18 @@
+-import contextvars
+-import threading
+-import time
+-from contextlib import contextmanager
+-    Any,
+-    overload,
+diff -- vllm/multimodal/processing/context.py
+@@ -0,0 +1,558 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++import contextvars
++import threading
++import time
++from abc import abstractmethod
+diff -- vllm/multimodal/processing/__init__.py
+@@ -0,0 +1,27 @@
 ```
+
 - 已读文件:
-  - runtime: `vllm/benchmarks/mm_processor.py` modified +1/-1; `vllm/model_executor/models/aria.py` modified +1/-1; `vllm/model_executor/models/audioflamingo3.py` modified +1/-1; `vllm/model_executor/models/aya_vision.py` modified +6/-3; `vllm/model_executor/models/bagel.py` modified +1/-1; `vllm/model_executor/models/blip2.py` modified +1/-1; `vllm/model_executor/models/chameleon.py` modified +1/-1; `vllm/model_executor/models/clip.py` modified +1/-1
-  - tests: `tests/multimodal/test_processing.py` modified +2/-2
-  - docs/bench: `docs/api/README.md` modified +0/-4; `docs/contributing/model/multimodal.md` modified +4/-6; `docs/design/mm_processing.md` modified +1/-1
-- 验证与风险: diff 自带测试/基准路径，后续改同一模型优先复跑相关测试并补一个最小 launch/accuracy smoke。
+  - runtime: `vllm/multimodal/processing/processor.py` renamed +16/-556; `vllm/multimodal/processing/context.py` added +558/-0; `vllm/multimodal/processing/__init__.py` added +27/-0; `vllm/multimodal/inputs.py` modified +9/-5; `vllm/multimodal/processing/dummy_inputs.py` renamed +4/-8; `vllm/model_executor/models/aya_vision.py` modified +6/-3
+  - docs: `docs/contributing/model/multimodal.md` modified +4/-6
+- 验证与风险: diff 自带测试面 `tests/multimodal/test_processing.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #32632 - [1/N] Initialize MM components in context managers (A-D)
 
 - 链接: https://github.com/vllm-project/vllm/pull/32632
 - 状态/时间: merged / 2026-01-20
-- 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 11 个文件，+239/-267，可读 patch 721 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[1/N] Initialize MM components in context managers (A-D)」；模型线: DeepSeek OCR；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/aria.py`, `vllm/model_executor/models/audioflamingo3.py`, `vllm/model_executor/models/aya_vision.py`。
-- 实现要点:
-  - `vllm/model_executor/models/aria.py` modified +21/-32；symbols: compute_logits
-  - `vllm/model_executor/models/audioflamingo3.py` modified +13/-15
-  - `vllm/model_executor/models/aya_vision.py` modified +17/-18
-  - `vllm/model_executor/models/bagel.py` modified +36/-43
+- 动机: 标题「[1/N] Initialize MM components in context managers (A-D)」；模型线: DeepSeek OCR；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/deepseek_ocr.py`, `vllm/model_executor/models/bagel.py`, `vllm/model_executor/models/deepseek_vl2.py`；技术摘要: 覆盖「[1/N] Initialize MM components in context managers (A-D)」；主要实现面是 `vllm/model_executor/models/deepseek_ocr.py`, `vllm/model_executor/models/bagel.py`, `vllm/model_executor/models/deepseek_vl2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/deepseek_ocr.py` modified +40/-41 (81 lines); hunks: -383,46 +383,48 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; -552,9 +554,6 @@ def _process_image_input(; symbols: __init__, _process_image_input, get_language_model, embed_multimodal，涉及 `__init__, _process_image_input, get_language_model`；`vllm/model_executor/models/bagel.py` modified +36/-43 (79 lines); hunks: -44,6 +44,7; -373,12 +374,13 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__, embed_multimodal, get_language_model, forward，涉及 `__init__, embed_multimodal, get_language_model`；`vllm/model_executor/models/deepseek_vl2.py` modified +29/-30 (59 lines); hunks: -374,37 +374,39 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; -603,9 +605,6 @@ def _process_image_input(; symbols: __init__, _process_image_input, get_language_model, embed_multimodal，涉及 `__init__, _process_image_input, get_language_model`；`vllm/model_executor/models/blip2.py` modified +24/-30 (54 lines); hunks: -549,31 +549,31 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; -614,8 +614,6 @@ def _image_pixels_to_features(; symbols: __init__, token, _image_pixels_to_features, _process_image_pixels，涉及 `__init__, token, _image_pixels_to_features`。
 - 代码 diff 细节:
-  - `vllm/model_executor/models/aria.py` modified +21/-32
-  - `vllm/model_executor/models/audioflamingo3.py` modified +13/-15
-  - `vllm/model_executor/models/aya_vision.py` modified +17/-18
-  - `vllm/model_executor/models/bagel.py` modified +36/-43
+  - `vllm/model_executor/models/deepseek_ocr.py` modified +40/-41 (81 lines); hunks: -383,46 +383,48 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; -552,9 +554,6 @@ def _process_image_input(; symbols: __init__, _process_image_input, get_language_model, embed_multimodal
+  - `vllm/model_executor/models/bagel.py` modified +36/-43 (79 lines); hunks: -44,6 +44,7; -373,12 +374,13 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__, embed_multimodal, get_language_model, forward
+  - `vllm/model_executor/models/deepseek_vl2.py` modified +29/-30 (59 lines); hunks: -374,37 +374,39 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; -603,9 +605,6 @@ def _process_image_input(; symbols: __init__, _process_image_input, get_language_model, embed_multimodal
+  - `vllm/model_executor/models/blip2.py` modified +24/-30 (54 lines); hunks: -549,31 +549,31 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; -614,8 +614,6 @@ def _image_pixels_to_features(; symbols: __init__, token, _image_pixels_to_features, _process_image_pixels
+  - `vllm/model_executor/models/aria.py` modified +21/-32 (53 lines); hunks: -15,9 +15,7; -539,30 +537,22 @@ def __init__(; symbols: __init__, _parse_and_validate_image_input, _process_image_input, get_language_model
 - 关键代码摘录:
 
 ```diff
-diff -- vllm/model_executor/models/aria.py
-@@ -15,9 +15,7 @@
- from vllm.model_executor.layers.activation import get_act_fn
- from vllm.model_executor.layers.fused_moe import SharedFusedMoE
- from vllm.model_executor.layers.linear import ColumnParallelLinear, RowParallelLinear
--from vllm.model_executor.layers.logits_processor import LogitsProcessor
- from vllm.model_executor.layers.quantization import QuantizationConfig
--from vllm.model_executor.layers.vocab_parallel_embedding import ParallelLMHead
- from vllm.model_executor.model_loader.weight_utils import (
-     default_weight_loader,
-     maybe_remap_kv_scale_name,
-@@ -539,30 +537,22 @@ def __init__(
-         quant_config = vllm_config.quant_config
-
-         self.config = config
-diff -- vllm/model_executor/models/audioflamingo3.py
-@@ -460,20 +460,21 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = ""):
-         multimodal_config = vllm_config.model_config.multimodal_config
-         self.config = config
-         self.multimodal_config = multimodal_config
--
--        self.audio_tower = AudioFlamingo3Encoder(
--            config.audio_config,
--        )
--        self.multi_modal_projector = AudioFlamingo3MultiModalProjector(config)
--
-         self.quant_config = quant_config
-
+diff -- vllm/model_executor/models/deepseek_ocr.py
+@@ -383,46 +383,48 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = ""):
+-        self.sam_model = build_sam_vit_b()
+-        clip_vision_config = CLIPVisionConfig(
+-            hidden_size=1024,
+-            intermediate_size=4096,
+-            num_attention_heads=16,
+-            num_hidden_layers=24,
+diff -- vllm/model_executor/models/bagel.py
+@@ -44,6 +44,7 @@
++    TowerMissingLayer,
+@@ -373,12 +374,13 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = ""):
 -        self.language_model = init_vllm_registered_model(
 -            vllm_config=vllm_config,
+-            hf_config=config.llm_config,
+-            prefix=maybe_prefix(prefix, "language_model"),
+diff -- vllm/model_executor/models/deepseek_vl2.py
+@@ -374,37 +374,39 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = ""):
 ```
+
 - 已读文件:
-  - runtime: `vllm/model_executor/models/aria.py` modified +21/-32; `vllm/model_executor/models/audioflamingo3.py` modified +13/-15; `vllm/model_executor/models/aya_vision.py` modified +17/-18; `vllm/model_executor/models/bagel.py` modified +36/-43; `vllm/model_executor/models/blip2.py` modified +24/-30; `vllm/model_executor/models/clip.py` modified +23/-24; `vllm/model_executor/models/cohere2_vision.py` modified +17/-18; `vllm/model_executor/models/deepseek_ocr.py` modified +40/-41
-- 验证与风险: diff 未直接暴露测试文件，后续改同一模型时应补最小 launch、tokenizer/MM processor 或 accuracy smoke。
+  - runtime: `vllm/model_executor/models/deepseek_ocr.py` modified +40/-41; `vllm/model_executor/models/bagel.py` modified +36/-43; `vllm/model_executor/models/deepseek_vl2.py` modified +29/-30; `vllm/model_executor/models/blip2.py` modified +24/-30; `vllm/model_executor/models/aria.py` modified +21/-32; `vllm/model_executor/models/clip.py` modified +23/-24
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/aria.py`, `vllm/model_executor/models/audioflamingo3.py`, `vllm/model_executor/models/aya_vision.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #31972 - [Models]: Make Multimodal config implicit in ViT implementation
 
 - 链接: https://github.com/vllm-project/vllm/pull/31972
 - 状态/时间: merged / 2026-01-24
-- 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 38 个文件，+118/-470，可读 patch 2781 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Models]: Make Multimodal config implicit in ViT implementation」；模型线: DeepSeek OCR；类别: 模型实现调整；主要 diff: `vllm/model_executor/layers/attention/mm_encoder_attention.py`, `vllm/model_executor/models/clip.py`, `vllm/model_executor/models/deepencoder.py`。
-- 实现要点:
-  - `vllm/model_executor/layers/attention/mm_encoder_attention.py` modified +0/-9
-  - `vllm/model_executor/models/clip.py` modified +4/-24
-  - `vllm/model_executor/models/deepencoder.py` modified +0/-3
-  - `vllm/model_executor/models/deepseek_ocr.py` modified +0/-1
+- 动机: 标题「[Models]: Make Multimodal config implicit in ViT implementation」；模型线: DeepSeek OCR；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/vision.py`, `vllm/model_executor/models/qwen2_vl.py`, `vllm/model_executor/models/dots_ocr.py`；技术摘要: 覆盖「[Models]: Make Multimodal config implicit in ViT implementation」；主要实现面是 `vllm/model_executor/models/vision.py`, `vllm/model_executor/models/qwen2_vl.py`, `vllm/model_executor/models/dots_ocr.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/vision.py` modified +48/-2 (50 lines); hunks: -10,7 +10,7; -79,7 +79,7 @@ def get_vision_encoder_info(hf_config: VisionLanguageConfig) -...; symbols: get_vision_encoder_info, get_vit_attn_backend, _get_vit_attn_backend，涉及 `get_vision_encoder_info, get_vit_attn_backend, _get_vit_attn_backend`；`vllm/model_executor/models/qwen2_vl.py` modified +6/-36 (42 lines); hunks: -43,7 +43,7; -106,6 +106,7; symbols: __init__，涉及 `__init__`；`vllm/model_executor/models/dots_ocr.py` modified +5/-34 (39 lines); hunks: -8,7 +8,7; -60,7 +60,7; symbols: __init__，涉及 `__init__`；`vllm/model_executor/models/qwen2_5_vl.py` modified +5/-33 (38 lines); hunks: -43,7 +43,7; -109,6 +109,7; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
-  - `vllm/model_executor/layers/attention/mm_encoder_attention.py` modified +0/-9
-  - `vllm/model_executor/models/clip.py` modified +4/-24
-  - `vllm/model_executor/models/deepencoder.py` modified +0/-3
-  - `vllm/model_executor/models/deepseek_ocr.py` modified +0/-1
+  - `vllm/model_executor/models/vision.py` modified +48/-2 (50 lines); hunks: -10,7 +10,7; -79,7 +79,7 @@ def get_vision_encoder_info(hf_config: VisionLanguageConfig) -...; symbols: get_vision_encoder_info, get_vit_attn_backend, _get_vit_attn_backend
+  - `vllm/model_executor/models/qwen2_vl.py` modified +6/-36 (42 lines); hunks: -43,7 +43,7; -106,6 +106,7; symbols: __init__
+  - `vllm/model_executor/models/dots_ocr.py` modified +5/-34 (39 lines); hunks: -8,7 +8,7; -60,7 +60,7; symbols: __init__
+  - `vllm/model_executor/models/qwen2_5_vl.py` modified +5/-33 (38 lines); hunks: -43,7 +43,7; -109,6 +109,7; symbols: __init__
+  - `vllm/model_executor/models/glm4_1v.py` modified +5/-30 (35 lines); hunks: -46,7 +46,7; -107,6 +107,7; symbols: __init__
 - 关键代码摘录:
 
 ```diff
-diff -- vllm/model_executor/layers/attention/mm_encoder_attention.py
-@@ -4,7 +4,6 @@
-
- import torch
-
--from vllm.config import MultiModalConfig
- from vllm.logger import init_logger
- from vllm.model_executor.custom_op import CustomOp
- from vllm.model_executor.models.vision import get_vit_attn_backend
-@@ -32,7 +31,6 @@ def __init__(
-         scale: float | None = None,
-         num_kv_heads: int | None = None,
-         prefix: str = "",
--        multimodal_config: MultiModalConfig | None = None,
-     ) -> None:
-diff -- vllm/model_executor/models/clip.py
-@@ -16,7 +16,7 @@
-
- from vllm.attention.layer import Attention
- from vllm.config import VllmConfig
--from vllm.config.multimodal import BaseDummyOptions, MultiModalConfig
-+from vllm.config.multimodal import BaseDummyOptions
- from vllm.distributed import divide, get_tensor_model_parallel_world_size
- from vllm.model_executor.layers.activation import get_act_fn
- from vllm.model_executor.layers.attention.mm_encoder_attention import MMEncoderAttention
-@@ -59,6 +59,7 @@
-     VisionFeatureSelectStrategy,
-     VisionFeatureSelectStrategyStr,
-     get_num_selected_vision_tokens,
+diff -- vllm/model_executor/models/vision.py
+@@ -10,7 +10,7 @@
+-from vllm.config import VllmConfig
++from vllm.config import MultiModalConfig, VllmConfig, get_current_vllm_config
+@@ -79,7 +79,7 @@ def get_vision_encoder_info(hf_config: VisionLanguageConfig) -> VisionEncoderInf
+-def get_vit_attn_backend(
++def _get_vit_attn_backend(
+@@ -95,6 +95,52 @@ def get_vit_attn_backend(
+diff -- vllm/model_executor/models/qwen2_vl.py
+@@ -43,7 +43,7 @@
+-from vllm.config import MultiModalConfig, VllmConfig
++from vllm.config import VllmConfig
+@@ -106,6 +106,7 @@
 +    is_vit_use_data_parallel,
+@@ -247,15 +248,10 @@ def __init__(
+-        multimodal_config: MultiModalConfig | None = None,
+diff -- vllm/model_executor/models/dots_ocr.py
+@@ -8,7 +8,7 @@
 ```
+
 - 已读文件:
-  - runtime: `vllm/model_executor/layers/attention/mm_encoder_attention.py` modified +0/-9; `vllm/model_executor/models/clip.py` modified +4/-24; `vllm/model_executor/models/deepencoder.py` modified +0/-3; `vllm/model_executor/models/deepseek_ocr.py` modified +0/-1; `vllm/model_executor/models/dots_ocr.py` modified +5/-34; `vllm/model_executor/models/eagle2_5_vl.py` modified +0/-1; `vllm/model_executor/models/ernie45_vl.py` modified +1/-12; `vllm/model_executor/models/glm4_1v.py` modified +5/-30
-- 验证与风险: diff 未直接暴露测试文件，后续改同一模型时应补最小 launch、tokenizer/MM processor 或 accuracy smoke。
+  - runtime: `vllm/model_executor/models/vision.py` modified +48/-2; `vllm/model_executor/models/qwen2_vl.py` modified +6/-36; `vllm/model_executor/models/dots_ocr.py` modified +5/-34; `vllm/model_executor/models/qwen2_5_vl.py` modified +5/-33; `vllm/model_executor/models/glm4_1v.py` modified +5/-30; `vllm/model_executor/models/siglip.py` modified +4/-29
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/layers/attention/mm_encoder_attention.py`, `vllm/model_executor/models/clip.py`, `vllm/model_executor/models/deepencoder.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #33063 - [Chore] Update type annotation of `input_ids` in model forward
 
 - 链接: https://github.com/vllm-project/vllm/pull/33063
 - 状态/时间: merged / 2026-01-26
-- 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 100 个文件，+146/-143，可读 patch 1304 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Chore] Update type annotation of `input_ids` in model forward」；模型线: DeepSeek OCR；类别: 文档/测试/CI；主要 diff: `docs/contributing/model/basic.md`, `tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_gemma_embedding.py`, `vllm/model_executor/models/afmoe.py`。
-- 实现要点:
-  - `docs/contributing/model/basic.md` modified +1/-1
-  - `tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_gemma_embedding.py` modified +1/-1
-  - `vllm/model_executor/models/afmoe.py` modified +2/-2
-  - `vllm/model_executor/models/apertus.py` modified +1/-1
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 164 个文件，+243/-241，可读 patch 2158 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Chore] Update type annotation of `input_ids` in model forward」；模型线: DeepSeek OCR；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/modernbert.py`, `vllm/model_executor/models/gemma3n.py`, `vllm/model_executor/models/gpt2.py`；技术摘要: 覆盖「[Chore] Update type annotation of `input_ids` in model forward」；主要实现面是 `vllm/model_executor/models/modernbert.py`, `vllm/model_executor/models/gemma3n.py`, `vllm/model_executor/models/gpt2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/modernbert.py` modified +4/-5 (9 lines); hunks: -54,12 +54,11 @@ def forward(; symbols: forward, ModernBertAttention，涉及 `forward, ModernBertAttention`；`vllm/model_executor/models/gemma3n.py` modified +4/-4 (8 lines); hunks: -704,7 +704,7 @@ def altup_embed(self, hidden_states_0: torch.Tensor) -> torc...; -887,7 +887,7 @@ def embed_input_ids(self, input_ids: torch.Tensor) -> torch....; symbols: altup_embed, forward, embed_input_ids, fast_prefill_forward，涉及 `altup_embed, forward, embed_input_ids`；`vllm/model_executor/models/gpt2.py` modified +3/-3 (6 lines); hunks: -218,7 +218,7 @@ def embed_input_ids(self, input_ids: torch.Tensor) -> torch....; -298,7 +298,7 @@ def embed_input_ids(self, input_ids: torch.Tensor) -> torch....; symbols: embed_input_ids, forward, load_weights，涉及 `embed_input_ids, forward, load_weights`；`vllm/model_executor/models/internlm2.py` modified +3/-3 (6 lines); hunks: -284,7 +284,7 @@ def embed_input_ids(self, input_ids: torch.Tensor) -> torch....; -350,7 +350,7 @@ def embed_input_ids(self, input_ids: torch.Tensor) -> torch....; symbols: embed_input_ids, forward, __init__，涉及 `embed_input_ids, forward, __init__`。
 - 代码 diff 细节:
-  - `docs/contributing/model/basic.md` modified +1/-1
-  - `tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_gemma_embedding.py` modified +1/-1
-  - `vllm/model_executor/models/afmoe.py` modified +2/-2
-  - `vllm/model_executor/models/apertus.py` modified +1/-1
+  - `vllm/model_executor/models/modernbert.py` modified +4/-5 (9 lines); hunks: -54,12 +54,11 @@ def forward(; symbols: forward, ModernBertAttention
+  - `vllm/model_executor/models/gemma3n.py` modified +4/-4 (8 lines); hunks: -704,7 +704,7 @@ def altup_embed(self, hidden_states_0: torch.Tensor) -> torc...; -887,7 +887,7 @@ def embed_input_ids(self, input_ids: torch.Tensor) -> torch....; symbols: altup_embed, forward, embed_input_ids, fast_prefill_forward
+  - `vllm/model_executor/models/gpt2.py` modified +3/-3 (6 lines); hunks: -218,7 +218,7 @@ def embed_input_ids(self, input_ids: torch.Tensor) -> torch....; -298,7 +298,7 @@ def embed_input_ids(self, input_ids: torch.Tensor) -> torch....; symbols: embed_input_ids, forward, load_weights
+  - `vllm/model_executor/models/internlm2.py` modified +3/-3 (6 lines); hunks: -284,7 +284,7 @@ def embed_input_ids(self, input_ids: torch.Tensor) -> torch....; -350,7 +350,7 @@ def embed_input_ids(self, input_ids: torch.Tensor) -> torch....; symbols: embed_input_ids, forward, __init__
+  - `vllm/model_executor/models/opt.py` modified +3/-3 (6 lines); hunks: -267,7 +267,7 @@ def embed_input_ids(self, input_ids: torch.Tensor) -> torch....; -316,7 +316,7 @@ def embed_input_ids(self, input_ids: torch.Tensor) -> torch....; symbols: embed_input_ids, forward
 - 关键代码摘录:
 
 ```diff
-diff -- docs/contributing/model/basic.md
-@@ -71,7 +71,7 @@ class MyModel(nn.Module):
- ```python
- def forward(
-     self,
--    input_ids: torch.Tensor,
-+    input_ids: torch.Tensor | None,
-     positions: torch.Tensor,
-     intermediate_tensors: IntermediateTensors | None = None,
-     inputs_embeds: torch.Tensor | None = None,
-diff -- tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_gemma_embedding.py
-@@ -36,7 +36,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = ""):
-
-     def forward(
-         self,
+diff -- vllm/model_executor/models/modernbert.py
+@@ -54,12 +54,11 @@ def forward(
+-        if inputs_embeds is not None:
+-            return self.norm(inputs_embeds)
+-        else:
++        if inputs_embeds is None:
+-            embeddings = self.norm(inputs_embeds)
+-            return embeddings
+diff -- vllm/model_executor/models/gemma3n.py
+@@ -704,7 +704,7 @@ def altup_embed(self, hidden_states_0: torch.Tensor) -> torch.Tensor:
 -        input_ids: torch.Tensor,
 +        input_ids: torch.Tensor | None,
-         positions: torch.Tensor,
-         intermediate_tensors: IntermediateTensors | None = None,
-         inputs_embeds: torch.Tensor | None = None,
+@@ -887,7 +887,7 @@ def embed_input_ids(self, input_ids: torch.Tensor) -> torch.Tensor:
+-        input_ids: torch.Tensor,
++        input_ids: torch.Tensor | None,
+@@ -964,7 +964,7 @@ def fast_prefill_forward(
+diff -- vllm/model_executor/models/gpt2.py
+@@ -218,7 +218,7 @@ def embed_input_ids(self, input_ids: torch.Tensor) -> torch.Tensor:
 ```
+
 - 已读文件:
-  - runtime: `vllm/model_executor/models/afmoe.py` modified +2/-2; `vllm/model_executor/models/apertus.py` modified +1/-1; `vllm/model_executor/models/arcee.py` modified +1/-1; `vllm/model_executor/models/arctic.py` modified +2/-2; `vllm/model_executor/models/aria.py` modified +1/-1; `vllm/model_executor/models/audioflamingo3.py` modified +1/-1; `vllm/model_executor/models/aya_vision.py` modified +1/-1; `vllm/model_executor/models/bagel.py` modified +1/-1
-  - tests: `tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_gemma_embedding.py` modified +1/-1
-  - docs/bench: `docs/contributing/model/basic.md` modified +1/-1
-- 验证与风险: diff 自带测试/基准路径，后续改同一模型优先复跑相关测试并补一个最小 launch/accuracy smoke。
+  - runtime: `vllm/model_executor/models/modernbert.py` modified +4/-5; `vllm/model_executor/models/gemma3n.py` modified +4/-4; `vllm/model_executor/models/gpt2.py` modified +3/-3; `vllm/model_executor/models/internlm2.py` modified +3/-3; `vllm/model_executor/models/opt.py` modified +3/-3; `vllm/model_executor/models/afmoe.py` modified +2/-2
+- 验证与风险: diff 自带测试面 `tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_gemma_embedding.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #33909 - [Models] Consolidate Deepseek-OCR2 processor
 
 - 链接: https://github.com/vllm-project/vllm/pull/33909
 - 状态/时间: merged / 2026-02-05
-- 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/deepseek_ocr.py`, `vllm/transformers_utils/processors/deepseek_ocr.py`；关联提交 `87d0d17ab583`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+52/-336，可读 patch 480 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Models] Consolidate Deepseek-OCR2 processor」；模型线: DeepSeek OCR；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/deepencoder2.py`, `vllm/model_executor/models/deepseek_ocr.py`, `vllm/model_executor/models/deepseek_ocr2.py`。
-- 实现要点:
-  - `vllm/model_executor/models/deepencoder2.py` modified +1/-1
-  - `vllm/model_executor/models/deepseek_ocr.py` modified +10/-2
-  - `vllm/model_executor/models/deepseek_ocr2.py` modified +12/-4
-  - `vllm/transformers_utils/processors/deepseek_ocr.py` modified +29/-9
+- 动机: 标题「[Models] Consolidate Deepseek-OCR2 processor」；模型线: DeepSeek OCR；类别: 模型实现调整；主要 diff: `vllm/transformers_utils/processors/deepseek_ocr.py`, `vllm/model_executor/models/deepseek_ocr.py`；技术摘要: 覆盖「[Models] Consolidate Deepseek-OCR2 processor」；主要实现面是 `vllm/transformers_utils/processors/deepseek_ocr.py`, `vllm/model_executor/models/deepseek_ocr.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/transformers_utils/processors/deepseek_ocr.py` modified +29/-9 (38 lines); hunks: -1,7 +1,9; -156,10 +158,19 @@ def __init__(; symbols: __init__, tokenize_with_images，涉及 `__init__, tokenize_with_images`；`vllm/model_executor/models/deepseek_ocr.py` modified +10/-2 (12 lines); hunks: -52,7 +52,6; -66,6 +65,7; symbols: get_hf_config, get_hf_processor, get_supported_mm_limits，涉及 `get_hf_config, get_hf_processor, get_supported_mm_limits`。
 - 代码 diff 细节:
-  - `vllm/model_executor/models/deepencoder2.py` modified +1/-1
-  - `vllm/model_executor/models/deepseek_ocr.py` modified +10/-2
-  - `vllm/model_executor/models/deepseek_ocr2.py` modified +12/-4
-  - `vllm/transformers_utils/processors/deepseek_ocr.py` modified +29/-9
+  - `vllm/transformers_utils/processors/deepseek_ocr.py` modified +29/-9 (38 lines); hunks: -1,7 +1,9; -156,10 +158,19 @@ def __init__(; symbols: __init__, tokenize_with_images
+  - `vllm/model_executor/models/deepseek_ocr.py` modified +10/-2 (12 lines); hunks: -52,7 +52,6; -66,6 +65,7; symbols: get_hf_config, get_hf_processor, get_supported_mm_limits
 - 关键代码摘录:
 
 ```diff
-diff -- vllm/model_executor/models/deepencoder2.py
-@@ -31,7 +31,7 @@ def __init__(
-         num_key_value_heads: int = 2,
-         intermediate_size: int = 4864,
-         vocab_size: int = 151936,
--        attn_implementation: str = "sdpa",  # ⭐
-+        attn_implementation: str = "sdpa",
-         rms_norm_eps: float = 1e-06,
-         rope_theta: float = 1000000.0,
-         attention_dropout: float = 0.0,
+diff -- vllm/transformers_utils/processors/deepseek_ocr.py
+@@ -1,7 +1,9 @@
++# and https://github.com/deepseek-ai/DeepSeek-OCR-2/blob/main/DeepSeek-OCR2-master/DeepSeek-OCR2-vllm/process/image_process.py
++from typing import Literal
+@@ -156,10 +158,19 @@ def __init__(
++        image_size: int = IMAGE_SIZE,
++        base_size: int = BASE_SIZE,
++        strategy: Literal["v1", "v2"] = "v1",
 diff -- vllm/model_executor/models/deepseek_ocr.py
 @@ -52,7 +52,6 @@
- from vllm.transformers_utils.processors.deepseek_ocr import (
-     BASE_SIZE,
-     CROP_MODE,
 -    IMAGE_SIZE,
-     DeepseekOCRProcessor,
-     count_tiles,
- )
 @@ -66,6 +65,7 @@
- from .deepseek_vl2 import MlpProjector
-
- # The image token id may be various
 +IMAGE_SIZE = 640
- _IMAGE_TOKEN = "<image>"
+@@ -190,7 +190,15 @@ def get_hf_config(self):
+-        return self.ctx.get_hf_processor(DeepseekOCRProcessor, **kwargs)
++        v1_processor_config = dict(
 ```
+
 - 已读文件:
-  - runtime: `vllm/model_executor/models/deepencoder2.py` modified +1/-1; `vllm/model_executor/models/deepseek_ocr.py` modified +10/-2; `vllm/model_executor/models/deepseek_ocr2.py` modified +12/-4; `vllm/transformers_utils/processors/deepseek_ocr.py` modified +29/-9; `vllm/transformers_utils/processors/deepseek_ocr2.py` removed +0/-320
-- 验证与风险: diff 未直接暴露测试文件，后续改同一模型时应补最小 launch、tokenizer/MM processor 或 accuracy smoke。
+  - runtime: `vllm/transformers_utils/processors/deepseek_ocr.py` modified +29/-9; `vllm/model_executor/models/deepseek_ocr.py` modified +10/-2
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/deepencoder2.py`, `vllm/model_executor/models/deepseek_ocr.py`, `vllm/model_executor/models/deepseek_ocr2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #34330 - [Multimodal] Expose `mm_processor_kwargs` for `DummyInputsBuilder`
 
 - 链接: https://github.com/vllm-project/vllm/pull/34330
 - 状态/时间: merged / 2026-02-11
-- 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 72 个文件，+131/-27，可读 patch 784 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Multimodal] Expose `mm_processor_kwargs` for `DummyInputsBuilder`」；模型线: DeepSeek OCR；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/aria.py`, `vllm/model_executor/models/audioflamingo3.py`, `vllm/model_executor/models/aya_vision.py`。
-- 实现要点:
-  - `vllm/model_executor/models/aria.py` modified +1/-0
-  - `vllm/model_executor/models/audioflamingo3.py` modified +4/-1
-  - `vllm/model_executor/models/aya_vision.py` modified +1/-0
-  - `vllm/model_executor/models/bagel.py` modified +1/-0
+- 动机: 标题「[Multimodal] Expose `mm_processor_kwargs` for `DummyInputsBuilder`」；模型线: DeepSeek OCR；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/idefics3.py`, `vllm/multimodal/processing/dummy_inputs.py`, `vllm/model_executor/models/qwen2_5_omni_thinker.py`；技术摘要: 覆盖「[Multimodal] Expose `mm_processor_kwargs` for `DummyInputsBuilder`」；主要实现面是 `vllm/model_executor/models/idefics3.py`, `vllm/multimodal/processing/dummy_inputs.py`, `vllm/model_executor/models/qwen2_5_omni_thinker.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/idefics3.py` modified +3/-11 (14 lines); hunks: -42,7 +42,7; -285,15 +285,6 @@ def get_num_image_tokens(; symbols: get_num_image_tokens, get_image_size_with_most_features, Idefics3DummyInputsBuilder, get_dummy_text，涉及 `get_num_image_tokens, get_image_size_with_most_features, Idefics3DummyInputsBuilder`；`vllm/multimodal/processing/dummy_inputs.py` modified +11/-1 (12 lines); hunks: -63,6 +63,7 @@ def get_dummy_mm_data(; -83,6 +84,7 @@ def get_dummy_processor_inputs(; symbols: get_dummy_mm_data, get_dummy_processor_inputs，涉及 `get_dummy_mm_data, get_dummy_processor_inputs`；`vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +7/-2 (9 lines); hunks: -358,12 +358,14 @@ def get_dummy_mm_data(; -372,7 +374,10 @@ def get_dummy_mm_data(; symbols: get_dummy_mm_data，涉及 `get_dummy_mm_data`；`vllm/model_executor/models/qwen3_vl.py` modified +6/-2 (8 lines); hunks: -796,14 +796,18 @@ def get_dummy_mm_data(; -828,7 +832,7 @@ def get_dummy_mm_data(; symbols: get_dummy_mm_data，涉及 `get_dummy_mm_data`。
 - 代码 diff 细节:
-  - `vllm/model_executor/models/aria.py` modified +1/-0
-  - `vllm/model_executor/models/audioflamingo3.py` modified +4/-1
-  - `vllm/model_executor/models/aya_vision.py` modified +1/-0
-  - `vllm/model_executor/models/bagel.py` modified +1/-0
+  - `vllm/model_executor/models/idefics3.py` modified +3/-11 (14 lines); hunks: -42,7 +42,7; -285,15 +285,6 @@ def get_num_image_tokens(; symbols: get_num_image_tokens, get_image_size_with_most_features, Idefics3DummyInputsBuilder, get_dummy_text
+  - `vllm/multimodal/processing/dummy_inputs.py` modified +11/-1 (12 lines); hunks: -63,6 +63,7 @@ def get_dummy_mm_data(; -83,6 +84,7 @@ def get_dummy_processor_inputs(; symbols: get_dummy_mm_data, get_dummy_processor_inputs
+  - `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +7/-2 (9 lines); hunks: -358,12 +358,14 @@ def get_dummy_mm_data(; -372,7 +374,10 @@ def get_dummy_mm_data(; symbols: get_dummy_mm_data
+  - `vllm/model_executor/models/qwen3_vl.py` modified +6/-2 (8 lines); hunks: -796,14 +796,18 @@ def get_dummy_mm_data(; -828,7 +832,7 @@ def get_dummy_mm_data(; symbols: get_dummy_mm_data
+  - `vllm/model_executor/models/funaudiochat.py` modified +5/-2 (7 lines); hunks: -611,8 +611,11 @@ def get_dummy_mm_data(; -656,7 +659,7 @@ def _call_hf_processor(; symbols: get_dummy_mm_data, _call_hf_processor
 - 关键代码摘录:
 
 ```diff
-diff -- vllm/model_executor/models/aria.py
-@@ -445,6 +445,7 @@ def get_dummy_mm_data(
-         seq_len: int,
-         mm_counts: Mapping[str, int],
-         mm_options: Mapping[str, BaseDummyOptions] | None = None,
+diff -- vllm/model_executor/models/idefics3.py
+@@ -42,7 +42,7 @@
+-from vllm.multimodal.parse import ImageProcessorItems, ImageSize, MultiModalDataItems
++from vllm.multimodal.parse import ImageProcessorItems, MultiModalDataItems
+@@ -285,15 +285,6 @@ def get_num_image_tokens(
+-    def get_image_size_with_most_features(self) -> ImageSize:
+-        processor = self.get_hf_processor()
+-        image_processor: Idefics3ImageProcessor = processor.image_processor
+diff -- vllm/multimodal/processing/dummy_inputs.py
+@@ -63,6 +63,7 @@ def get_dummy_mm_data(
 +        mm_processor_kwargs: Mapping[str, object] | None = None,
-     ) -> MultiModalDataDict:
-         vision_config = self.info.get_vision_config()
-
-diff -- vllm/model_executor/models/audioflamingo3.py
-@@ -253,8 +253,11 @@ def get_dummy_mm_data(
-         seq_len: int,
-         mm_counts: Mapping[str, int],
-         mm_options: Mapping[str, BaseDummyOptions] | None = None,
+@@ -83,6 +84,7 @@ def get_dummy_processor_inputs(
 +        mm_processor_kwargs: Mapping[str, object] | None = None,
-     ) -> MultiModalDataDict:
--        feature_extractor = self.info.get_feature_extractor()
-+        feature_extractor = self.info.get_feature_extractor(
-+            **(mm_processor_kwargs or {})
-+        )
-         sampling_rate = feature_extractor.sampling_rate
-         audio_len = MAX_AUDIO_LEN * sampling_rate
-         num_audios = mm_counts.get("audio", 0)
+@@ -92,16 +94,24 @@ def get_dummy_processor_inputs(
++            mm_processor_kwargs: Additional keyword arguments
++                                for hf_processor (optional)
+diff -- vllm/model_executor/models/qwen2_5_omni_thinker.py
+@@ -358,12 +358,14 @@ def get_dummy_mm_data(
 ```
+
 - 已读文件:
-  - runtime: `vllm/model_executor/models/aria.py` modified +1/-0; `vllm/model_executor/models/audioflamingo3.py` modified +4/-1; `vllm/model_executor/models/aya_vision.py` modified +1/-0; `vllm/model_executor/models/bagel.py` modified +1/-0; `vllm/model_executor/models/bee.py` modified +1/-0; `vllm/model_executor/models/blip2.py` modified +1/-0; `vllm/model_executor/models/chameleon.py` modified +1/-0; `vllm/model_executor/models/clip.py` modified +1/-0
-- 验证与风险: diff 未直接暴露测试文件，后续改同一模型时应补最小 launch、tokenizer/MM processor 或 accuracy smoke。
+  - runtime: `vllm/model_executor/models/idefics3.py` modified +3/-11; `vllm/multimodal/processing/dummy_inputs.py` modified +11/-1; `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +7/-2; `vllm/model_executor/models/qwen3_vl.py` modified +6/-2; `vllm/model_executor/models/funaudiochat.py` modified +5/-2; `vllm/model_executor/models/qwen2_vl.py` modified +5/-1
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/aria.py`, `vllm/model_executor/models/audioflamingo3.py`, `vllm/model_executor/models/aya_vision.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #34085 - Fix DeepSeek-OCR tensor validation for all size variants
 
 - 链接: https://github.com/vllm-project/vllm/pull/34085
 - 状态/时间: merged / 2026-02-12
-- 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/deepseek_ocr.py`；关联提交 `80f2ba6ea6cb`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+11/-1，可读 patch 26 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Fix DeepSeek-OCR tensor validation for all size variants」；模型线: DeepSeek OCR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/deepseek_ocr.py`。
-- 实现要点:
-  - `vllm/model_executor/models/deepseek_ocr.py` modified +11/-1
+- 动机: 标题「Fix DeepSeek-OCR tensor validation for all size variants」；模型线: DeepSeek OCR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/deepseek_ocr.py`；技术摘要: 覆盖「Fix DeepSeek-OCR tensor validation for all size variants」；主要实现面是 `vllm/model_executor/models/deepseek_ocr.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/deepseek_ocr.py` modified +11/-1 (12 lines); hunks: -448,14 +448,24 @@ def _parse_and_validate_image_input(; symbols: _parse_and_validate_image_input，涉及 `_parse_and_validate_image_input`。
 - 代码 diff 细节:
-  - `vllm/model_executor/models/deepseek_ocr.py` modified +11/-1
+  - `vllm/model_executor/models/deepseek_ocr.py` modified +11/-1 (12 lines); hunks: -448,14 +448,24 @@ def _parse_and_validate_image_input(; symbols: _parse_and_validate_image_input
 - 关键代码摘录:
 
 ```diff
 diff -- vllm/model_executor/models/deepseek_ocr.py
 @@ -448,14 +448,24 @@ def _parse_and_validate_image_input(
-         if pixel_values is None or torch.sum(pixel_values).item() == 0:
-             return None
-
 -        base_size = self.vision_config.image_size
 +        # Use actual tensor spatial dim instead of hardcoded
 +        # vision_config.image_size (1024). The vision encoders (SAM & CLIP)
 +        # support arbitrary resolutions via pos-encoding interpolation,
 +        # so Tiny/Small/Base/Large variants all work with the same weights.
 +        base_size = pixel_values.shape[-1]
-+        if images_crop is not None and images_crop.numel() > 0:
-+            image_size = images_crop.shape[-1]
-+        else:
-+            image_size = base_size
 ```
+
 - 已读文件:
   - runtime: `vllm/model_executor/models/deepseek_ocr.py` modified +11/-1
-- 验证与风险: diff 未直接暴露测试文件，后续改同一模型时应补最小 launch、tokenizer/MM processor 或 accuracy smoke。
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/deepseek_ocr.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #35025 - [Refactor] Simplify dummy data generation
 
 - 链接: https://github.com/vllm-project/vllm/pull/35025
 - 状态/时间: merged / 2026-02-23
-- 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 78 个文件，+282/-367，可读 patch 1791 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Refactor] Simplify dummy data generation」；模型线: DeepSeek OCR；类别: 文档/测试/CI；主要 diff: `docs/contributing/model/multimodal.md`, `tests/models/multimodal/processing/test_audioflamingo3.py`, `tests/models/multimodal/processing/test_common.py`。
-- 实现要点:
-  - `docs/contributing/model/multimodal.md` modified +11/-11
-  - `tests/models/multimodal/processing/test_audioflamingo3.py` modified +1/-1
-  - `tests/models/multimodal/processing/test_common.py` modified +2/-0
-  - `tests/models/multimodal/processing/test_tensor_schema.py` modified +1/-0
+- 动机: 标题「[Refactor] Simplify dummy data generation」；模型线: DeepSeek OCR；类别: 模型实现调整；主要 diff: `vllm/config/multimodal.py`, `vllm/model_executor/models/qwen3_vl.py`, `vllm/multimodal/registry.py`；技术摘要: 覆盖「[Refactor] Simplify dummy data generation」；主要实现面是 `vllm/config/multimodal.py`, `vllm/model_executor/models/qwen3_vl.py`, `vllm/multimodal/registry.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/config/multimodal.py` modified +36/-20 (56 lines); hunks: -2,7 +2,7; -43,11 +43,29 @@ class AudioDummyOptions(BaseDummyOptions):; symbols: AudioDummyOptions, MultiModalDummyOptionsBuiltins, MultiModalConfig, _validate_limit_per_prompt，涉及 `AudioDummyOptions, MultiModalDummyOptionsBuiltins, MultiModalConfig`；`vllm/model_executor/models/qwen3_vl.py` modified +23/-13 (36 lines); hunks: -703,11 +703,18 @@ def get_max_video_tokens(; -789,19 +796,15 @@ def get_dummy_mm_data(; symbols: get_max_video_tokens, get_dummy_mm_data，涉及 `get_max_video_tokens, get_dummy_mm_data`；`vllm/multimodal/registry.py` modified +1/-24 (25 lines); hunks: -5,7 +5,6; -99,27 +98,6 @@ class MultiModalRegistry:; symbols: MultiModalRegistry, _extract_mm_options, supports_multimodal_inputs, get_dummy_mm_inputs，涉及 `MultiModalRegistry, _extract_mm_options, supports_multimodal_inputs`；`docs/contributing/model/multimodal.md` modified +11/-11 (22 lines); hunks: -293,21 +293,22 @@ Assuming that the memory usage increases with the number o...; -479,17 +480,16 @@ Assuming that the memory usage increases with the number o...。
 - 代码 diff 细节:
-  - `docs/contributing/model/multimodal.md` modified +11/-11
-  - `tests/models/multimodal/processing/test_audioflamingo3.py` modified +1/-1
-  - `tests/models/multimodal/processing/test_common.py` modified +2/-0
-  - `tests/models/multimodal/processing/test_tensor_schema.py` modified +1/-0
+  - `vllm/config/multimodal.py` modified +36/-20 (56 lines); hunks: -2,7 +2,7; -43,11 +43,29 @@ class AudioDummyOptions(BaseDummyOptions):; symbols: AudioDummyOptions, MultiModalDummyOptionsBuiltins, MultiModalConfig, _validate_limit_per_prompt
+  - `vllm/model_executor/models/qwen3_vl.py` modified +23/-13 (36 lines); hunks: -703,11 +703,18 @@ def get_max_video_tokens(; -789,19 +796,15 @@ def get_dummy_mm_data(; symbols: get_max_video_tokens, get_dummy_mm_data
+  - `vllm/multimodal/registry.py` modified +1/-24 (25 lines); hunks: -5,7 +5,6; -99,27 +98,6 @@ class MultiModalRegistry:; symbols: MultiModalRegistry, _extract_mm_options, supports_multimodal_inputs, get_dummy_mm_inputs
+  - `docs/contributing/model/multimodal.md` modified +11/-11 (22 lines); hunks: -293,21 +293,22 @@ Assuming that the memory usage increases with the number o...; -479,17 +480,16 @@ Assuming that the memory usage increases with the number o...
+  - `vllm/model_executor/models/qwen2_vl.py` modified +10/-9 (19 lines); hunks: -925,9 +925,14 @@ def get_image_size_with_most_features(; -1027,22 +1032,18 @@ def get_dummy_mm_data(; symbols: get_image_size_with_most_features, get_dummy_mm_data
 - 关键代码摘录:
 
 ```diff
-diff -- docs/contributing/model/multimodal.md
-@@ -293,21 +293,22 @@ Assuming that the memory usage increases with the number of tokens, the dummy in
-             self,
-             seq_len: int,
-             mm_counts: Mapping[str, int],
--            mm_options: Mapping[str, BaseDummyOptions] | None = None,
-+            mm_options: Mapping[str, BaseDummyOptions],
-         ) -> MultiModalDataDict:
-             num_images = mm_counts.get("image", 0)
-
-             target_width, target_height = \
-                 self.info.get_image_size_with_most_features()
-
--            image_overrides = mm_options.get("image") if mm_options else None
-+            image_overrides = mm_options.get("image")
-diff -- tests/models/multimodal/processing/test_audioflamingo3.py
-@@ -116,7 +116,7 @@ def test_dummy_data_generation(mock_ctx):
-     builder = AudioFlamingo3DummyInputsBuilder(info)
-
-     mm_counts = {"audio": 2}
--    dummy_data = builder.get_dummy_mm_data(100, mm_counts, None)
-+    dummy_data = builder.get_dummy_mm_data(100, mm_counts, {})
-
-     assert "audio" in dummy_data
-     assert len(dummy_data["audio"]) == 2
+diff -- vllm/config/multimodal.py
+@@ -2,7 +2,7 @@
+-from typing import Any, Literal, TypeAlias
++from typing import Any, Literal, TypeAlias, TypedDict, final
+@@ -43,11 +43,29 @@ class AudioDummyOptions(BaseDummyOptions):
++@final
++class MultiModalDummyOptionsBuiltins(TypedDict, total=False):
++    """Type annotations for modality types predefined by vLLM."""
+diff -- vllm/model_executor/models/qwen3_vl.py
+@@ -703,11 +703,18 @@ def get_max_video_tokens(
+-        video_max_pixels = video_processor.size["longest_edge"]
++        mm_kwargs = self.ctx.get_merged_mm_kwargs({})
++        video_size = mm_kwargs.get("size", video_processor.size)
++        temporal_patch_size = mm_kwargs.get(
++            "temporal_patch_size", video_processor.temporal_patch_size
++        )
+diff -- vllm/multimodal/registry.py
+@@ -5,7 +5,6 @@
 ```
+
 - 已读文件:
-  - runtime: `vllm/config/multimodal.py` modified +36/-20; `vllm/model_executor/models/aria.py` modified +2/-3; `vllm/model_executor/models/audioflamingo3.py` modified +3/-6; `vllm/model_executor/models/aya_vision.py` modified +2/-3; `vllm/model_executor/models/bagel.py` modified +2/-3; `vllm/model_executor/models/bee.py` modified +2/-3; `vllm/model_executor/models/blip2.py` modified +2/-3; `vllm/model_executor/models/chameleon.py` modified +2/-3
-  - tests: `tests/models/multimodal/processing/test_audioflamingo3.py` modified +1/-1; `tests/models/multimodal/processing/test_common.py` modified +2/-0; `tests/models/multimodal/processing/test_tensor_schema.py` modified +1/-0
-  - docs/bench: `docs/contributing/model/multimodal.md` modified +11/-11
-- 验证与风险: diff 自带测试/基准路径，后续改同一模型优先复跑相关测试并补一个最小 launch/accuracy smoke。
+  - runtime: `vllm/config/multimodal.py` modified +36/-20; `vllm/model_executor/models/qwen3_vl.py` modified +23/-13; `vllm/multimodal/registry.py` modified +1/-24; `vllm/model_executor/models/qwen2_vl.py` modified +10/-9; `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +6/-10; `vllm/multimodal/processing/dummy_inputs.py` modified +3/-13
+  - docs: `docs/contributing/model/multimodal.md` modified +11/-11
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/processing/test_audioflamingo3.py`, `tests/models/multimodal/processing/test_common.py`, `tests/models/multimodal/processing/test_tensor_schema.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #36024 - [Misc] Lazy import registered processors
 
 - 链接: https://github.com/vllm-project/vllm/pull/36024
 - 状态/时间: merged / 2026-03-06
-- 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 15 个文件，+68/-51，可读 patch 288 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Misc] Lazy import registered processors」；模型线: DeepSeek OCR；类别: 文档/测试/CI；主要 diff: `tests/models/registry.py`, `vllm/model_executor/models/deepseek_vl2.py`, `vllm/model_executor/models/fireredasr2.py`。
-- 实现要点:
-  - `tests/models/registry.py` modified +2/-5
-  - `vllm/model_executor/models/deepseek_vl2.py` modified +1/-2
-  - `vllm/model_executor/models/fireredasr2.py` modified +1/-1
-  - `vllm/model_executor/models/funasr.py` modified +1/-1
+- 动机: 标题「[Misc] Lazy import registered processors」；模型线: DeepSeek OCR；类别: 文档/测试/CI；主要 diff: `vllm/transformers_utils/processors/__init__.py`, `tests/models/registry.py`, `vllm/transformers_utils/processors/deepseek_ocr.py`；技术摘要: 覆盖「[Misc] Lazy import registered processors」；主要实现面是 `vllm/transformers_utils/processors/__init__.py`, `tests/models/registry.py`, `vllm/transformers_utils/processors/deepseek_ocr.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/transformers_utils/processors/__init__.py` modified +28/-10 (38 lines); hunks: -8,16 +8,20; -28,4 +32,18; symbols: __getattr__, __dir__，涉及 `__getattr__, __dir__`；`tests/models/registry.py` modified +2/-5 (7 lines); hunks: -1020,18 +1020,15 @@ def check_available_online(; symbols: check_available_online，涉及 `check_available_online`；`vllm/transformers_utils/processors/deepseek_ocr.py` modified +1/-4 (5 lines); hunks: -8,7 +8,7; -453,6 +453,3 @@ def tokenize_with_images(; symbols: tokenize_with_images，涉及 `tokenize_with_images`；`vllm/transformers_utils/processors/deepseek_vl2.py` modified +1/-4 (5 lines); hunks: -29,7 +29,7; -401,6 +401,3 @@ def tokenize_with_images(; symbols: tokenize_with_images，涉及 `tokenize_with_images`。
 - 代码 diff 细节:
-  - `tests/models/registry.py` modified +2/-5
-  - `vllm/model_executor/models/deepseek_vl2.py` modified +1/-2
-  - `vllm/model_executor/models/fireredasr2.py` modified +1/-1
-  - `vllm/model_executor/models/funasr.py` modified +1/-1
+  - `vllm/transformers_utils/processors/__init__.py` modified +28/-10 (38 lines); hunks: -8,16 +8,20; -28,4 +32,18; symbols: __getattr__, __dir__
+  - `tests/models/registry.py` modified +2/-5 (7 lines); hunks: -1020,18 +1020,15 @@ def check_available_online(; symbols: check_available_online
+  - `vllm/transformers_utils/processors/deepseek_ocr.py` modified +1/-4 (5 lines); hunks: -8,7 +8,7; -453,6 +453,3 @@ def tokenize_with_images(; symbols: tokenize_with_images
+  - `vllm/transformers_utils/processors/deepseek_vl2.py` modified +1/-4 (5 lines); hunks: -29,7 +29,7; -401,6 +401,3 @@ def tokenize_with_images(; symbols: tokenize_with_images
+  - `vllm/transformers_utils/processors/ovis.py` modified +1/-4 (5 lines); hunks: -26,7 +26,7; -453,6 +453,3 @@ def model_input_names(self):; symbols: model_input_names
 - 关键代码摘录:
 
 ```diff
+diff -- vllm/transformers_utils/processors/__init__.py
+@@ -8,16 +8,20 @@
+-from vllm.transformers_utils.processors.bagel import BagelProcessor
+-from vllm.transformers_utils.processors.deepseek_vl2 import DeepseekVLV2Processor
+-from vllm.transformers_utils.processors.fireredasr2_processor import (
+-    FireRedASR2Processor,
+-)
+-from vllm.transformers_utils.processors.funasr_processor import FunASRProcessor
 diff -- tests/models/registry.py
 @@ -1020,18 +1020,15 @@ def check_available_online(
-         min_transformers_version="4.57",
-     ),
-     "Qwen3ASRForConditionalGeneration": _HfExamplesInfo(
 -        "Qwen/Qwen3-ASR-1.7B",
 +        "Qwen/Qwen3-ASR-0.6B",
-         max_model_len=4096,
-         min_transformers_version="4.57",
 -        is_available_online=False,
-     ),
-     "Qwen3ASRRealtimeGeneration": _HfExamplesInfo(
 -        "Qwen/Qwen3-ASR-1.7B",
 +        "Qwen/Qwen3-ASR-0.6B",
-         max_model_len=4096,
-diff -- vllm/model_executor/models/deepseek_vl2.py
-@@ -48,7 +48,6 @@
-     MlpProjectorConfig,
-     VisionEncoderConfig,
- )
--from vllm.transformers_utils.processors.deepseek_vl2 import DeepseekVLV2Processor
- from vllm.utils.tensor_schema import TensorSchema, TensorShape
- from vllm.utils.torch_utils import set_default_torch_dtype
-
-@@ -160,7 +159,7 @@ def get_hf_config(self):
-         return self.ctx.get_hf_config(DeepseekVLV2Config)
-
-     def get_hf_processor(self, **kwargs: object):
--        return self.ctx.get_hf_processor(DeepseekVLV2Processor, **kwargs)
-+        return self.ctx.get_hf_processor(**kwargs)
+-        enforce_eager=True,
+diff -- vllm/transformers_utils/processors/deepseek_ocr.py
+@@ -8,7 +8,7 @@
 ```
+
 - 已读文件:
-  - runtime: `vllm/model_executor/models/deepseek_vl2.py` modified +1/-2; `vllm/model_executor/models/fireredasr2.py` modified +1/-1; `vllm/model_executor/models/funasr.py` modified +1/-1; `vllm/transformers_utils/processor.py` modified +31/-1; `vllm/transformers_utils/processors/__init__.py` modified +28/-10; `vllm/transformers_utils/processors/bagel.py` modified +0/-4; `vllm/transformers_utils/processors/deepseek_ocr.py` modified +1/-4; `vllm/transformers_utils/processors/deepseek_vl2.py` modified +1/-4
+  - runtime: `vllm/transformers_utils/processors/__init__.py` modified +28/-10; `vllm/transformers_utils/processors/deepseek_ocr.py` modified +1/-4; `vllm/transformers_utils/processors/deepseek_vl2.py` modified +1/-4; `vllm/transformers_utils/processors/ovis.py` modified +1/-4; `vllm/transformers_utils/processors/ovis2_5.py` modified +1/-4; `vllm/transformers_utils/processors/bagel.py` modified +0/-4
   - tests: `tests/models/registry.py` modified +2/-5
-- 验证与风险: diff 自带测试/基准路径，后续改同一模型优先复跑相关测试并补一个最小 launch/accuracy smoke。
+- 验证与风险: diff 自带测试面 `tests/models/registry.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #36670 - [Bugfix][Model] Fix DeepSeek-OCR TensorSchema crash on empty images_crop
 
 - 链接: https://github.com/vllm-project/vllm/pull/36670
 - 状态/时间: merged / 2026-03-12
-- 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/processing/test_deepseek_ocr.py`, `vllm/model_executor/models/deepseek_ocr.py`；关联提交 `00726c74c9d9`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+135/-4，可读 patch 147 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix][Model] Fix DeepSeek-OCR TensorSchema crash on empty images_crop」；模型线: DeepSeek OCR；类别: 缺陷修复；主要 diff: `tests/models/multimodal/processing/test_deepseek_ocr.py`, `vllm/model_executor/models/deepseek_ocr.py`。
-- 实现要点:
-  - `tests/models/multimodal/processing/test_deepseek_ocr.py` added +134/-0；symbols: processor, TestDeepseekOCREmptyImagesCrop, test_empty_images_crop_small_image, test_populated_images_crop_large_image
-  - `vllm/model_executor/models/deepseek_ocr.py` modified +1/-4
+- 动机: 标题「[Bugfix][Model] Fix DeepSeek-OCR TensorSchema crash on empty images_crop」；模型线: DeepSeek OCR；类别: 缺陷修复；主要 diff: `tests/models/multimodal/processing/test_deepseek_ocr.py`, `vllm/model_executor/models/deepseek_ocr.py`；技术摘要: 覆盖「[Bugfix][Model] Fix DeepSeek-OCR TensorSchema crash on empty images_crop」；主要实现面是 `tests/models/multimodal/processing/test_deepseek_ocr.py`, `vllm/model_executor/models/deepseek_ocr.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `tests/models/multimodal/processing/test_deepseek_ocr.py` added +134/-0 (134 lines); hunks: -0,0 +1,134; symbols: processor, TestDeepseekOCREmptyImagesCrop, test_empty_images_crop_small_image, test_populated_images_crop_large_image，涉及 `processor, TestDeepseekOCREmptyImagesCrop, test_empty_images_crop_small_image`；`vllm/model_executor/models/deepseek_ocr.py` modified +1/-4 (5 lines); hunks: -452,10 +452,7 @@ def _parse_and_validate_image_input(; symbols: _parse_and_validate_image_input，涉及 `_parse_and_validate_image_input`。
 - 代码 diff 细节:
-  - `tests/models/multimodal/processing/test_deepseek_ocr.py` added +134/-0
-  - `vllm/model_executor/models/deepseek_ocr.py` modified +1/-4
+  - `tests/models/multimodal/processing/test_deepseek_ocr.py` added +134/-0 (134 lines); hunks: -0,0 +1,134; symbols: processor, TestDeepseekOCREmptyImagesCrop, test_empty_images_crop_small_image, test_populated_images_crop_large_image
+  - `vllm/model_executor/models/deepseek_ocr.py` modified +1/-4 (5 lines); hunks: -452,10 +452,7 @@ def _parse_and_validate_image_input(; symbols: _parse_and_validate_image_input
 - 关键代码摘录:
 
 ```diff
@@ -1248,399 +963,599 @@ diff -- tests/models/multimodal/processing/test_deepseek_ocr.py
 +# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
 +"""
 +Regression test for DeepSeek-OCR TensorSchema validation with empty images_crop.
-+
 +When using the Gundam preset (BASE_SIZE=1024, IMAGE_SIZE=640, CROP_MODE=True),
 +images that are small enough to not require cropping produce an empty
-+images_crop tensor with shape (0, 3, 640, 640). The _parse_and_validate_image_input
-+method must correctly read image_size from this tensor's shape rather than
-+falling back to base_size, which would cause a TensorSchema mismatch.
-+
-+Run with:
-+  pytest tests/models/multimodal/processing/test_deepseek_ocr.py -v
 diff -- vllm/model_executor/models/deepseek_ocr.py
 @@ -452,10 +452,7 @@ def _parse_and_validate_image_input(
-         # support arbitrary resolutions via pos-encoding interpolation,
-         # so Tiny/Small/Base/Large variants all work with the same weights.
-         base_size = pixel_values.shape[-1]
 -        if images_crop is not None and images_crop.numel() > 0:
 -            image_size = images_crop.shape[-1]
 -        else:
 -            image_size = base_size
 +        image_size = images_crop.shape[-1] if images_crop is not None else base_size
-
-         return DeepseekOCRImagePixelInputs(
-             type="pixel_values",
 ```
+
 - 已读文件:
-  - runtime: `vllm/model_executor/models/deepseek_ocr.py` modified +1/-4
   - tests: `tests/models/multimodal/processing/test_deepseek_ocr.py` added +134/-0
-- 验证与风险: diff 自带测试/基准路径，后续改同一模型优先复跑相关测试并补一个最小 launch/accuracy smoke。
+  - runtime: `vllm/model_executor/models/deepseek_ocr.py` modified +1/-4
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/processing/test_deepseek_ocr.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #37289 - [Bugfix] Standardize custom HF Processor init
 
 - 链接: https://github.com/vllm-project/vllm/pull/37289
 - 状态/时间: merged / 2026-03-17
-- 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+39/-33，可读 patch 152 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix] Standardize custom HF Processor init」；模型线: DeepSeek OCR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/deepseek_ocr.py`, `vllm/model_executor/models/deepseek_ocr2.py`, `vllm/model_executor/models/glm4v.py`。
-- 实现要点:
-  - `vllm/model_executor/models/deepseek_ocr.py` modified +3/-1
-  - `vllm/model_executor/models/deepseek_ocr2.py` modified +3/-1
-  - `vllm/model_executor/models/glm4v.py` modified +11/-3；symbols: get_image_processor, get_hf_processor
-  - `vllm/model_executor/models/qwen_vl.py` modified +11/-3；symbols: get_image_processor, get_hf_processor
+- 动机: 标题「[Bugfix] Standardize custom HF Processor init」；模型线: DeepSeek OCR；类别: 缺陷修复；主要 diff: `vllm/transformers_utils/processors/qwen_vl.py`, `vllm/model_executor/models/glm4v.py`, `vllm/model_executor/models/qwen_vl.py`；技术摘要: 覆盖「[Bugfix] Standardize custom HF Processor init」；主要实现面是 `vllm/transformers_utils/processors/qwen_vl.py`, `vllm/model_executor/models/glm4v.py`, `vllm/model_executor/models/qwen_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/transformers_utils/processors/qwen_vl.py` modified +5/-18 (23 lines); hunks: -31,25 +31,12 @@ class QwenVLProcessor(ProcessorMixin):; symbols: QwenVLProcessor, __init__, image_start_tag, image_end_tag，涉及 `QwenVLProcessor, __init__, image_start_tag`；`vllm/model_executor/models/glm4v.py` modified +11/-3 (14 lines); hunks: -47,7 +47,10; -387,15 +390,20 @@ class GLM4VProcessingInfo(BaseProcessingInfo):; symbols: GLM4VProcessingInfo, get_hf_config, get_hf_processor, get_image_processor，涉及 `GLM4VProcessingInfo, get_hf_config, get_hf_processor`；`vllm/model_executor/models/qwen_vl.py` modified +11/-3 (14 lines); hunks: -44,7 +44,10; -432,15 +435,20 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__, QwenVLProcessingInfo, get_hf_processor, get_image_processor，涉及 `__init__, QwenVLProcessingInfo, get_hf_processor`；`vllm/transformers_utils/processors/glm4v.py` modified +2/-7 (9 lines); hunks: -29,13 +29,8 @@ class GLM4VProcessor(ProcessorMixin):; symbols: GLM4VProcessor, __init__，涉及 `GLM4VProcessor, __init__`。
 - 代码 diff 细节:
-  - `vllm/model_executor/models/deepseek_ocr.py` modified +3/-1
-  - `vllm/model_executor/models/deepseek_ocr2.py` modified +3/-1
-  - `vllm/model_executor/models/glm4v.py` modified +11/-3
-  - `vllm/model_executor/models/qwen_vl.py` modified +11/-3
+  - `vllm/transformers_utils/processors/qwen_vl.py` modified +5/-18 (23 lines); hunks: -31,25 +31,12 @@ class QwenVLProcessor(ProcessorMixin):; symbols: QwenVLProcessor, __init__, image_start_tag, image_end_tag
+  - `vllm/model_executor/models/glm4v.py` modified +11/-3 (14 lines); hunks: -47,7 +47,10; -387,15 +390,20 @@ class GLM4VProcessingInfo(BaseProcessingInfo):; symbols: GLM4VProcessingInfo, get_hf_config, get_hf_processor, get_image_processor
+  - `vllm/model_executor/models/qwen_vl.py` modified +11/-3 (14 lines); hunks: -44,7 +44,10; -432,15 +435,20 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__, QwenVLProcessingInfo, get_hf_processor, get_image_processor
+  - `vllm/transformers_utils/processors/glm4v.py` modified +2/-7 (9 lines); hunks: -29,13 +29,8 @@ class GLM4VProcessor(ProcessorMixin):; symbols: GLM4VProcessor, __init__
+  - `vllm/model_executor/models/deepseek_ocr.py` modified +3/-1 (4 lines); hunks: -196,8 +196,10 @@ def get_hf_processor(self, **kwargs: object):; symbols: get_hf_processor, get_supported_mm_limits
 - 关键代码摘录:
 
 ```diff
-diff -- vllm/model_executor/models/deepseek_ocr.py
-@@ -196,8 +196,10 @@ def get_hf_processor(self, **kwargs: object):
-             crop_mode=CROP_MODE,
-             strategy="v1",
-         )
-+
-         return self.ctx.get_hf_processor(
--            DeepseekOCRProcessor, **{**kwargs, **v1_processor_config}
-+            DeepseekOCRProcessor,
-+            **{**v1_processor_config, **kwargs},
-         )
-
-     def get_supported_mm_limits(self) -> Mapping[str, int | None]:
-diff -- vllm/model_executor/models/deepseek_ocr2.py
-@@ -76,8 +76,10 @@ def get_hf_processor(self, **kwargs: object):
-             crop_mode=CROP_MODE,
-             strategy="v2",
-         )
-+
-         return self.ctx.get_hf_processor(
--            DeepseekOCRProcessor, **{**kwargs, **v2_processor_config}
-+            DeepseekOCRProcessor,
-+            **{**v2_processor_config, **kwargs},
-         )
-
-     def get_supported_mm_limits(self) -> Mapping[str, int | None]:
+diff -- vllm/transformers_utils/processors/qwen_vl.py
+@@ -31,25 +31,12 @@ class QwenVLProcessor(ProcessorMixin):
++        image_processor: QwenVLImageProcessorFast,
+-        image_size: int,
+-        image_processor: QwenVLImageProcessorFast | None = None,
+-        self.tokenizer = tokenizer
+-        if image_processor is None:
+-            image_processor = QwenVLImageProcessorFast(
+diff -- vllm/model_executor/models/glm4v.py
+@@ -47,7 +47,10 @@
+-from vllm.transformers_utils.processors.glm4v import GLM4VProcessor
++from vllm.transformers_utils.processors.glm4v import (
++    GLM4VImageProcessorFast,
++    GLM4VProcessor,
++)
+@@ -387,15 +390,20 @@ class GLM4VProcessingInfo(BaseProcessingInfo):
+diff -- vllm/model_executor/models/qwen_vl.py
+@@ -44,7 +44,10 @@
 ```
+
 - 已读文件:
-  - runtime: `vllm/model_executor/models/deepseek_ocr.py` modified +3/-1; `vllm/model_executor/models/deepseek_ocr2.py` modified +3/-1; `vllm/model_executor/models/glm4v.py` modified +11/-3; `vllm/model_executor/models/qwen_vl.py` modified +11/-3; `vllm/tokenizers/qwen_vl.py` modified +4/-0; `vllm/transformers_utils/processors/glm4v.py` modified +2/-7; `vllm/transformers_utils/processors/qwen_vl.py` modified +5/-18
-- 验证与风险: diff 未直接暴露测试文件，后续改同一模型时应补最小 launch、tokenizer/MM processor 或 accuracy smoke。
+  - runtime: `vllm/transformers_utils/processors/qwen_vl.py` modified +5/-18; `vllm/model_executor/models/glm4v.py` modified +11/-3; `vllm/model_executor/models/qwen_vl.py` modified +11/-3; `vllm/transformers_utils/processors/glm4v.py` modified +2/-7; `vllm/model_executor/models/deepseek_ocr.py` modified +3/-1; `vllm/model_executor/models/deepseek_ocr2.py` modified +3/-1
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/deepseek_ocr.py`, `vllm/model_executor/models/deepseek_ocr2.py`, `vllm/model_executor/models/glm4v.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #35182 - [Misc] Reorganize inputs
 
 - 链接: https://github.com/vllm-project/vllm/pull/35182
 - 状态/时间: merged / 2026-03-25
-- 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 100 个文件，+1037/-959，可读 patch 4452 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Misc] Reorganize inputs」；模型线: DeepSeek OCR；类别: 文档/测试/CI；主要 diff: `docs/api/README.md`, `docs/contributing/model/transcription.md`, `docs/features/multimodal_inputs.md`。
-- 实现要点:
-  - `docs/api/README.md` modified +3/-12
-  - `docs/contributing/model/transcription.md` modified +2/-2
-  - `docs/features/multimodal_inputs.md` modified +1/-1
-  - `examples/pooling/token_embed/jina_embeddings_v4_offline.py` modified +1/-1
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 142 个文件，+1212/-1342，可读 patch 6002 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Misc] Reorganize inputs」；模型线: DeepSeek OCR；类别: 模型实现调整；主要 diff: `vllm/multimodal/inputs.py`, `vllm/entrypoints/pooling/score/serving.py`, `vllm/entrypoints/serve/render/serving.py`；技术摘要: 覆盖「[Misc] Reorganize inputs」；主要实现面是 `vllm/multimodal/inputs.py`, `vllm/entrypoints/pooling/score/serving.py`, `vllm/entrypoints/serve/render/serving.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/multimodal/inputs.py` modified +2/-162 (164 lines); hunks: -15,12 +15,11; -32,14 +31,9; symbols: VisionChunkImage, VisionChunkVideo, MultiModalDataBuiltins, PlaceholderRange，涉及 `VisionChunkImage, VisionChunkVideo, MultiModalDataBuiltins`；`vllm/entrypoints/pooling/score/serving.py` modified +36/-45 (81 lines); hunks: -35,7 +35,7; -110,12 +110,12 @@ async def _embedding_score(; symbols: _embedding_score, _preprocess_late_interaction_item，涉及 `_embedding_score, _preprocess_late_interaction_item`；`vllm/entrypoints/serve/render/serving.py` modified +38/-37 (75 lines); hunks: -34,9 +34,15; -127,22 +133,22 @@ async def render_chat_request(; symbols: render_chat_request, render_chat，涉及 `render_chat_request, render_chat`；`vllm/entrypoints/openai/responses/serving.py` modified +22/-26 (48 lines); hunks: -110,7 +110,7; -269,10 +269,10 @@ def __init__(; symbols: __init__, _validate_generator_input, create_responses，涉及 `__init__, _validate_generator_input, create_responses`。
 - 代码 diff 细节:
-  - `docs/api/README.md` modified +3/-12
-  - `docs/contributing/model/transcription.md` modified +2/-2
-  - `docs/features/multimodal_inputs.md` modified +1/-1
-  - `examples/pooling/token_embed/jina_embeddings_v4_offline.py` modified +1/-1
+  - `vllm/multimodal/inputs.py` modified +2/-162 (164 lines); hunks: -15,12 +15,11; -32,14 +31,9; symbols: VisionChunkImage, VisionChunkVideo, MultiModalDataBuiltins, PlaceholderRange
+  - `vllm/entrypoints/pooling/score/serving.py` modified +36/-45 (81 lines); hunks: -35,7 +35,7; -110,12 +110,12 @@ async def _embedding_score(; symbols: _embedding_score, _preprocess_late_interaction_item
+  - `vllm/entrypoints/serve/render/serving.py` modified +38/-37 (75 lines); hunks: -34,9 +34,15; -127,22 +133,22 @@ async def render_chat_request(; symbols: render_chat_request, render_chat
+  - `vllm/entrypoints/openai/responses/serving.py` modified +22/-26 (48 lines); hunks: -110,7 +110,7; -269,10 +269,10 @@ def __init__(; symbols: __init__, _validate_generator_input, create_responses
+  - `vllm/entrypoints/llm.py` modified +22/-22 (44 lines); hunks: -57,9 +57,9; -584,7 +584,7 @@ def wait_for_completion(; symbols: wait_for_completion, _resolve_mm_lora, beam_search
 - 关键代码摘录:
 
 ```diff
-diff -- docs/api/README.md
-@@ -27,11 +27,9 @@ LLM Class.
-
- - [vllm.LLM][]
-
--LLM Inputs.
-+Prompt schema for LLM APIs.
-
--- [vllm.inputs.PromptType][]
--- [vllm.inputs.TextPrompt][]
--- [vllm.inputs.TokensPrompt][]
-+- [vllm.inputs.llm][]
-
- ## vLLM Engines
-
-diff -- docs/contributing/model/transcription.md
-@@ -23,7 +23,7 @@ Declare supported languages and capabilities:
-     from torch import nn
-
-     from vllm.config import ModelConfig, SpeechToTextConfig
--    from vllm.inputs.data import PromptType
-+    from vllm.inputs import PromptType
-     from vllm.model_executor.models.interfaces import SupportsTranscription
-
-     class YourASRModel(nn.Module, SupportsTranscription):
-@@ -66,7 +66,7 @@ This is for controlling general behavior of the API when serving your model:
-
- See [Audio preprocessing and chunking](#audio-preprocessing-and-chunking) for what each field controls.
-
--Implement the prompt construction via [get_generation_prompt][vllm.model_executor.models.interfaces.SupportsTranscription.get_generation_prompt]. The server passes you the resampled waveform and task parameters; you return a valid [PromptType][vllm.inputs.data.PromptType]. There are two common patterns:
+diff -- vllm/multimodal/inputs.py
+@@ -15,12 +15,11 @@
+-    final,
+-from typing_extensions import NotRequired, TypeVar
++from typing_extensions import TypeVar
+@@ -32,14 +31,9 @@
+-    from vllm.inputs.data import _InputOptions
+-    _InputOptions = dict
+diff -- vllm/entrypoints/pooling/score/serving.py
+@@ -35,7 +35,7 @@
+-from vllm.inputs.data import ProcessorInputs, TokensPrompt, token_inputs
++from vllm.inputs import EngineInput, TokensPrompt, tokens_input
+@@ -110,12 +110,12 @@ async def _embedding_score(
+-        engine_prompts: list[ProcessorInputs] = []
++        engine_inputs: list[EngineInput] = []
+-            engine_prompts.append(
+diff -- vllm/entrypoints/serve/render/serving.py
+@@ -34,9 +34,15 @@
 ```
+
 - 已读文件:
-  - runtime: `vllm/beam_search.py` modified +18/-13; `vllm/benchmarks/datasets.py` modified +1/-1; `vllm/engine/protocol.py` modified +4/-4; `vllm/entrypoints/anthropic/serving.py` modified +4/-4; `vllm/entrypoints/chat_utils.py` modified +2/-1; `vllm/entrypoints/llm.py` modified +22/-22; `vllm/entrypoints/openai/chat_completion/serving.py` modified +11/-11; `vllm/entrypoints/openai/completion/serving.py` modified +15/-17
-  - tests: `tests/entrypoints/openai/chat_completion/test_chat_error.py` modified +1/-1; `tests/entrypoints/openai/chat_completion/test_serving_chat.py` modified +8/-8; `tests/entrypoints/openai/responses/test_serving_responses.py` modified +5/-5; `tests/entrypoints/serve/render/test_launch_render.py` modified +0/-14; `tests/entrypoints/test_chat_utils.py` modified +1/-1; `tests/models/multimodal/generation/test_pixtral.py` modified +1/-1; `tests/models/multimodal/processing/test_common.py` modified +6/-8; `tests/plugins/bge_m3_sparse_plugin/bge_m3_sparse_processor/sparse_embeddings_processor.py` modified +2/-4
-  - docs/bench: `docs/api/README.md` modified +3/-12; `docs/contributing/model/transcription.md` modified +2/-2; `docs/features/multimodal_inputs.md` modified +1/-1; `examples/pooling/token_embed/jina_embeddings_v4_offline.py` modified +1/-1
-- 验证与风险: diff 自带测试/基准路径，后续改同一模型优先复跑相关测试并补一个最小 launch/accuracy smoke。
+  - runtime: `vllm/multimodal/inputs.py` modified +2/-162; `vllm/entrypoints/pooling/score/serving.py` modified +36/-45; `vllm/entrypoints/serve/render/serving.py` modified +38/-37; `vllm/entrypoints/openai/responses/serving.py` modified +22/-26; `vllm/entrypoints/llm.py` modified +22/-22; `vllm/entrypoints/pooling/embed/io_processor.py` modified +20/-20
+- 验证与风险: diff 自带测试面 `tests/entrypoints/openai/chat_completion/test_chat_error.py`, `tests/entrypoints/openai/chat_completion/test_serving_chat.py`, `tests/entrypoints/openai/responses/test_serving_responses.py`, `tests/entrypoints/serve/render/test_launch_render.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #36464 - [Examples] Resettle generate examples.
 
 - 链接: https://github.com/vllm-project/vllm/pull/36464
 - 状态/时间: merged / 2026-04-27
-- 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 36 个文件，+46/-50，可读 patch 267 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Examples] Resettle generate examples.」；模型线: DeepSeek OCR；类别: 文档/测试/CI；主要 diff: `.buildkite/test-amd.yaml`, `.buildkite/test_areas/misc.yaml`, `.buildkite/test_areas/model_runner_v2.yaml`。
-- 实现要点:
-  - `.buildkite/test-amd.yaml` modified +14/-14
-  - `.buildkite/test_areas/misc.yaml` modified +4/-4
-  - `.buildkite/test_areas/model_runner_v2.yaml` modified +4/-4
-  - `.buildkite/test_areas/models_basic.yaml` modified +5/-5
+- 动机: 标题「[Examples] Resettle generate examples.」；模型线: DeepSeek OCR；类别: 文档/测试/CI；主要 diff: `docs/features/multimodal_inputs.md`, `examples/generate/multimodal/qwen2_5_omni/README.md`, `docs/features/reasoning_outputs.md`；技术摘要: 覆盖「[Examples] Resettle generate examples.」；主要实现面是 `docs/features/multimodal_inputs.md`, `examples/generate/multimodal/qwen2_5_omni/README.md`, `docs/features/reasoning_outputs.md`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs/features/multimodal_inputs.md` modified +7/-7 (14 lines); hunks: -68,7 +68,7 @@ You can pass a single image to the `'image'` field of the mult...; -101,7 +101,7 @@ To substitute multiple images inside the same text prompt, y...；`examples/generate/multimodal/qwen2_5_omni/README.md` renamed +6/-6 (12 lines); hunks: -6,15 +6,15 @@ This folder provides several example scripts on how to inferen...; -24,16 +24,16 @@ You can also test Qwen2.5-Omni on a single modality:；`docs/features/reasoning_outputs.md` modified +1/-1 (2 lines); hunks: -202,7 +202,7 @@ The reasoning content is also available when both tool calli...；`examples/generate/multimodal/vision_language_offline.py` renamed +1/-1 (2 lines); hunks: -1402,7 +1402,7 @@ def run_mantis(questions: list[str], modality: str) -> Mod...; symbols: run_mantis, run_minicpmv_base，涉及 `run_mantis, run_minicpmv_base`。
 - 代码 diff 细节:
-  - `.buildkite/test-amd.yaml` modified +14/-14
-  - `.buildkite/test_areas/misc.yaml` modified +4/-4
-  - `.buildkite/test_areas/model_runner_v2.yaml` modified +4/-4
-  - `.buildkite/test_areas/models_basic.yaml` modified +5/-5
+  - `docs/features/multimodal_inputs.md` modified +7/-7 (14 lines); hunks: -68,7 +68,7 @@ You can pass a single image to the `'image'` field of the mult...; -101,7 +101,7 @@ To substitute multiple images inside the same text prompt, y...
+  - `examples/generate/multimodal/qwen2_5_omni/README.md` renamed +6/-6 (12 lines); hunks: -6,15 +6,15 @@ This folder provides several example scripts on how to inferen...; -24,16 +24,16 @@ You can also test Qwen2.5-Omni on a single modality:
+  - `docs/features/reasoning_outputs.md` modified +1/-1 (2 lines); hunks: -202,7 +202,7 @@ The reasoning content is also available when both tool calli...
+  - `examples/generate/multimodal/vision_language_offline.py` renamed +1/-1 (2 lines); hunks: -1402,7 +1402,7 @@ def run_mantis(questions: list[str], modality: str) -> Mod...; symbols: run_mantis, run_minicpmv_base
+  - `examples/generate/multimodal/audio_language_offline.py` renamed +0/-0 (0 lines)
 - 关键代码摘录:
 
 ```diff
-diff -- .buildkite/test-amd.yaml
-@@ -388,10 +388,10 @@ steps:
-     - python3 basic/offline_inference/embed.py
-     - python3 basic/offline_inference/score.py
-     # Multi-modal models
--    - python3 offline_inference/audio_language.py --seed 0
--    - python3 offline_inference/vision_language.py --seed 0
--    - python3 offline_inference/vision_language_multi_image.py --seed 0
--    - python3 offline_inference/encoder_decoder_multimodal.py --model-type whisper --seed 0
-+    - python3 generate/multimodal/audio_language_offline.py --seed 0
-+    - python3 generate/multimodal/vision_language_offline.py --seed 0
-+    - python3 generate/multimodal/vision_language_multi_image_offline.py --seed 0
-+    - python3 generate/multimodal/encoder_decoder_multimodal_offline.py --model-type whisper --seed 0
-     # Pooling models
-     - python3 pooling/embed/vision_embedding_offline.py --seed 0
-diff -- .buildkite/test_areas/misc.yaml
-@@ -113,10 +113,10 @@ steps:
-     - python3 basic/offline_inference/embed.py
-     - python3 basic/offline_inference/score.py
-     # for multi-modal models
--    - python3 offline_inference/audio_language.py --seed 0
--    - python3 offline_inference/vision_language.py --seed 0
--    - python3 offline_inference/vision_language_multi_image.py --seed 0
--    - python3 offline_inference/encoder_decoder_multimodal.py --model-type whisper --seed 0
-+    - python3 generate/multimodal/audio_language_offline.py --seed 0
-+    - python3 generate/multimodal/vision_language_offline.py --seed 0
-+    - python3 generate/multimodal/vision_language_multi_image_offline.py --seed 0
-+    - python3 generate/multimodal/encoder_decoder_multimodal_offline.py --model-type whisper --seed 0
-      # for pooling models
-     - python3 pooling/embed/vision_embedding_offline.py --seed 0
+diff -- docs/features/multimodal_inputs.md
+@@ -68,7 +68,7 @@ You can pass a single image to the `'image'` field of the multi-modal dictionary
+-Full example: [examples/offline_inference/vision_language.py](../../examples/offline_inference/vision_language.py)
++Full example: [examples/generate/multimodal/vision_language_offline.py](../../examples/generate/multimodal/vision_language_offline.py)
+@@ -101,7 +101,7 @@ To substitute multiple images inside the same text prompt, you can pass in a lis
+-Full example: [examples/offline_inference/vision_language_multi_image.py](../../examples/offline_inference/vision_language_multi_image.py)
++Full example: [examples/generate/multimodal/vision_language_multi_image_offline.py](../../examples/generate/multimodal/vision_language_multi_image_offline.py)
+@@ -287,13 +287,13 @@ Instead of NumPy arrays, you can also pass `'torch.Tensor'` instances, as shown
+diff -- examples/generate/multimodal/qwen2_5_omni/README.md
+@@ -6,15 +6,15 @@ This folder provides several example scripts on how to inference Qwen2.5-Omni of
+-python examples/offline_inference/qwen2_5_omni/only_thinker.py \
++python examples/generate/multimodal/qwen2_5_omni/only_thinker.py \
+-python examples/offline_inference/qwen2_5_omni/only_thinker.py \
++python examples/generate/multimodal/qwen2_5_omni/only_thinker.py \
+-python examples/offline_inference/qwen2_5_omni/only_thinker.py \
++python examples/generate/multimodal/qwen2_5_omni/only_thinker.py \
+diff -- docs/features/reasoning_outputs.md
+@@ -202,7 +202,7 @@ The reasoning content is also available when both tool calling and the reasoning
 ```
+
 - 已读文件:
-  - docs/bench: `.buildkite/test-amd.yaml` modified +14/-14; `.buildkite/test_areas/misc.yaml` modified +4/-4; `.buildkite/test_areas/model_runner_v2.yaml` modified +4/-4; `.buildkite/test_areas/models_basic.yaml` modified +5/-5; `docs/features/multimodal_inputs.md` modified +7/-7; `docs/features/reasoning_outputs.md` modified +1/-1; `docs/serving/openai_compatible_server.md` modified +3/-3; `examples/generate/batched_chat_completions_online.py` renamed +0/-0
-  - other: `.github/mergify.yml` modified +1/-5
-- 验证与风险: diff 未直接暴露测试文件，后续改同一模型时应补最小 launch、tokenizer/MM processor 或 accuracy smoke。
+  - docs: `docs/features/multimodal_inputs.md` modified +7/-7; `examples/generate/multimodal/qwen2_5_omni/README.md` renamed +6/-6; `docs/features/reasoning_outputs.md` modified +1/-1; `examples/generate/multimodal/vision_language_offline.py` renamed +1/-1; `examples/generate/multimodal/audio_language_offline.py` renamed +0/-0; `examples/generate/multimodal/encoder_decoder_multimodal_offline.py` renamed +0/-0
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/features/multimodal_inputs.md`, `docs/features/reasoning_outputs.md`, `docs/serving/openai_compatible_server.md`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
 ### PR #40830 - [MM][CG] Support ViT CG for Qwen2.5-VL
 
 - 链接: https://github.com/vllm-project/vllm/pull/40830
 - 状态/时间: merged / 2026-05-02
-- 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+539/-22，可读 patch 669 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[MM][CG] Support ViT CG for Qwen2.5-VL」；模型线: DeepSeek OCR；类别: 模型支持/运行时入口；主要 diff: `docs/design/cuda_graphs_multimodal.md`, `examples/generate/multimodal/vision_language_offline.py`, `tests/models/multimodal/generation/test_qwen2_5_vl.py`。
-- 实现要点:
-  - `docs/design/cuda_graphs_multimodal.md` modified +2/-0
-  - `examples/generate/multimodal/vision_language_offline.py` modified +1/-0
-  - `tests/models/multimodal/generation/test_qwen2_5_vl.py` modified +95/-0；symbols: _window_attention_regression_image, _encoder_cudagraph_config, test_qwen2_5_vl_window_attention_image, test_qwen2_5_vl_window_attention_image_batch
-  - `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +12/-1
+- 动机: 标题「[MM][CG] Support ViT CG for Qwen2.5-VL」；模型线: DeepSeek OCR；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen2_5_vl.py`, `tests/models/multimodal/generation/test_qwen2_5_vl.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`；技术摘要: 覆盖「[MM][CG] Support ViT CG for Qwen2.5-VL」；主要实现面是 `vllm/model_executor/models/qwen2_5_vl.py`, `tests/models/multimodal/generation/test_qwen2_5_vl.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_5_vl.py` modified +429/-21 (450 lines); hunks: -85,11 +85,13; -771,22 +773,54 @@ def invert_permutation(perm: torch.Tensor) -> torch.Tensor:; symbols: invert_permutation, forward, prepare_encoder_metadata，涉及 `invert_permutation, forward, prepare_encoder_metadata`；`tests/models/multimodal/generation/test_qwen2_5_vl.py` modified +95/-0 (95 lines); hunks: -3,6 +3,7; -11,6 +12,7; symbols: qwen2_5_vl_chat_template, _window_attention_regression_image, _encoder_cudagraph_config, test_qwen2_5_vl_evs_batched_videos，涉及 `qwen2_5_vl_chat_template, _window_attention_regression_image, _encoder_cudagraph_config`；`tests/models/multimodal/generation/test_vit_cudagraph.py` modified +12/-1 (13 lines); hunks: -54,7 +54,18 @@ def qwen_vl_chat_template(content: str) -> str:; symbols: qwen_vl_chat_template，涉及 `qwen_vl_chat_template`；`docs/design/cuda_graphs_multimodal.md` modified +2/-0 (2 lines); hunks: -86,9 +86,11 @@ Models opt-in to encoder CUDA Graphs by implementing the [Sup...。
 - 代码 diff 细节:
-  - `docs/design/cuda_graphs_multimodal.md` modified +2/-0
-  - `examples/generate/multimodal/vision_language_offline.py` modified +1/-0
-  - `tests/models/multimodal/generation/test_qwen2_5_vl.py` modified +95/-0
-  - `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +12/-1
+  - `vllm/model_executor/models/qwen2_5_vl.py` modified +429/-21 (450 lines); hunks: -85,11 +85,13; -771,22 +773,54 @@ def invert_permutation(perm: torch.Tensor) -> torch.Tensor:; symbols: invert_permutation, forward, prepare_encoder_metadata
+  - `tests/models/multimodal/generation/test_qwen2_5_vl.py` modified +95/-0 (95 lines); hunks: -3,6 +3,7; -11,6 +12,7; symbols: qwen2_5_vl_chat_template, _window_attention_regression_image, _encoder_cudagraph_config, test_qwen2_5_vl_evs_batched_videos
+  - `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +12/-1 (13 lines); hunks: -54,7 +54,18 @@ def qwen_vl_chat_template(content: str) -> str:; symbols: qwen_vl_chat_template
+  - `docs/design/cuda_graphs_multimodal.md` modified +2/-0 (2 lines); hunks: -86,9 +86,11 @@ Models opt-in to encoder CUDA Graphs by implementing the [Sup...
+  - `examples/generate/multimodal/vision_language_offline.py` modified +1/-0 (1 lines); hunks: -2466,6 +2466,7 @@ def run_tarsier2(questions: list[str], modality: str) -> M...; symbols: run_tarsier2
 - 关键代码摘录:
 
 ```diff
-diff -- docs/design/cuda_graphs_multimodal.md
-@@ -86,9 +86,11 @@ Models opt-in to encoder CUDA Graphs by implementing the [SupportsEncoderCudaGra
- | Architecture | Models | CG for Image | CG for Video |
- | ------------ | ------ | ------------ | ------------ |
- | `Qwen3VLForConditionalGeneration` | `Qwen3-VL` | ✅︎ | ✅︎ |
-+| `Qwen2_5_VLForConditionalGeneration` | `Qwen2.5-VL` | ✅︎ | ✅︎ |
-
- !!! note
-     Encoder CUDA Graphs have currently been tested with `--mm-encoder-attn-backend=FLASH_ATTN` and `--mm-encoder-attn-backend=FLASHINFER` on Blackwell GPUs.
-+    For Qwen2.5-VL only FA2 and FA3 has been tested.
-
- ## Configuration
-
-diff -- examples/generate/multimodal/vision_language_offline.py
-@@ -2466,6 +2466,7 @@ def run_tarsier2(questions: list[str], modality: str) -> ModelRequestData:
- MODELS_SUPPORT_VIT_CUDA_GRAPH = [
-     "qwen3_vl",
-     "qwen3_vl_moe",
-+    "qwen2_5_vl",
- ]
-
-
+diff -- vllm/model_executor/models/qwen2_5_vl.py
+@@ -85,11 +85,13 @@
++from vllm.v1.worker.encoder_cudagraph_defs import EncoderCudaGraphReplayBuffers
++    SupportsEncoderCudaGraph,
+@@ -771,22 +773,54 @@ def invert_permutation(perm: torch.Tensor) -> torch.Tensor:
+-    def forward(
++    def prepare_encoder_metadata(
+-        x: torch.Tensor,
+diff -- tests/models/multimodal/generation/test_qwen2_5_vl.py
+@@ -3,6 +3,7 @@
++from vllm.assets.image import ImageAsset
+@@ -11,6 +12,7 @@
++IMAGE_PLACEHOLDER = "<|vision_start|><|image_pad|><|vision_end|>"
+@@ -28,6 +30,25 @@ def qwen2_5_vl_chat_template(*query):
++WINDOW_ATTN_IMAGE_PROMPT = qwen2_5_vl_chat_template(
++    IMAGE_PLACEHOLDER,
+diff -- tests/models/multimodal/generation/test_vit_cudagraph.py
+@@ -54,7 +54,18 @@ def qwen_vl_chat_template(content: str) -> str:
 ```
+
 - 已读文件:
   - runtime: `vllm/model_executor/models/qwen2_5_vl.py` modified +429/-21
   - tests: `tests/models/multimodal/generation/test_qwen2_5_vl.py` modified +95/-0; `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +12/-1
-  - docs/bench: `docs/design/cuda_graphs_multimodal.md` modified +2/-0; `examples/generate/multimodal/vision_language_offline.py` modified +1/-0
-- 验证与风险: diff 自带测试/基准路径，后续改同一模型优先复跑相关测试并补一个最小 launch/accuracy smoke。
-
-### PR #41736 - [MM][CG] Support ViT CG for Qwen2-VL
-
-- 链接: https://github.com/vllm-project/vllm/pull/41736
-- 状态/时间: merged / 2026-05-13
-- 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+315/-21，可读 patch 415 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[MM][CG] Support ViT CG for Qwen2-VL」；模型线: DeepSeek OCR；类别: 模型支持/运行时入口；主要 diff: `docs/design/cuda_graphs_multimodal.md`, `examples/generate/multimodal/vision_language_offline.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`。
-- 实现要点:
-  - `docs/design/cuda_graphs_multimodal.md` modified +2/-1
-  - `examples/generate/multimodal/vision_language_offline.py` modified +1/-0
-  - `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +12/-0
-  - `vllm/model_executor/models/qwen2_vl.py` modified +300/-20；symbols: prepare_encoder_metadata, get_encoder_cudagraph_config, get_input_modality, get_max_frames_per_video
-- 代码 diff 细节:
-  - `docs/design/cuda_graphs_multimodal.md` modified +2/-1
-  - `examples/generate/multimodal/vision_language_offline.py` modified +1/-0
-  - `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +12/-0
-  - `vllm/model_executor/models/qwen2_vl.py` modified +300/-20
-- 关键代码摘录:
-
-```diff
-diff -- docs/design/cuda_graphs_multimodal.md
-@@ -85,13 +85,14 @@ Models opt-in to encoder CUDA Graphs by implementing the [SupportsEncoderCudaGra
-
- | Architecture | Models | CG for Image | CG for Video |
- | ------------ | ------ | ------------ | ------------ |
-+| `Qwen2VLForConditionalGeneration` | `Qwen2-VL` | ✅︎ | ✅︎ |
- | `Qwen2_5_VLForConditionalGeneration` | `Qwen2.5-VL` | ✅︎ | ✅︎ |
- | `Qwen3VLForConditionalGeneration` | `Qwen3-VL` | ✅︎ | ✅︎ |
- | `Qwen3_5ForConditionalGeneration` | `Qwen3.5` | ✅︎ | ✅︎ |
-
- !!! note
-     Encoder CUDA Graphs have currently been tested with `--mm-encoder-attn-backend=FLASH_ATTN` and `--mm-encoder-attn-backend=FLASHINFER` on Blackwell GPUs.
--    For Qwen2.5-VL only FA2 and FA3 has been tested.
-+    For Qwen2-VL and Qwen2.5-VL only FA2 and FA3 has been tested.
-
-diff -- examples/generate/multimodal/vision_language_offline.py
-@@ -2557,6 +2557,7 @@ def run_tarsier2(questions: list[str], modality: str) -> ModelRequestData:
-     "qwen2_5_vl",
-     "qwen3_vl",
-     "qwen3_vl_moe",
-+    "qwen2_vl",
-     "qwen3_5",
-     "qwen3_5_moe",
- ]
-```
-- 已读文件:
-  - runtime: `vllm/model_executor/models/qwen2_vl.py` modified +300/-20
-  - tests: `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +12/-0
-  - docs/bench: `docs/design/cuda_graphs_multimodal.md` modified +2/-1; `examples/generate/multimodal/vision_language_offline.py` modified +1/-0
-- 验证与风险: diff 自带测试/基准路径，后续改同一模型优先复跑相关测试并补一个最小 launch/accuracy smoke。
+  - docs: `docs/design/cuda_graphs_multimodal.md` modified +2/-0; `examples/generate/multimodal/vision_language_offline.py` modified +1/-0
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/generation/test_qwen2_5_vl.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #42151 - [MM][Perf][CG] Support ViT full CUDA graph for Qwen3.5
 
 - 链接: https://github.com/vllm-project/vllm/pull/42151
 - 状态/时间: merged / 2026-05-13
-- 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+112/-5，可读 patch 187 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[MM][Perf][CG] Support ViT full CUDA graph for Qwen3.5」；模型线: DeepSeek OCR；类别: 性能/后端优化；主要 diff: `docs/design/cuda_graphs_multimodal.md`, `examples/generate/multimodal/vision_language_offline.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`。
-- 实现要点:
-  - `docs/design/cuda_graphs_multimodal.md` modified +2/-1
-  - `examples/generate/multimodal/vision_language_offline.py` modified +93/-1；symbols: run_qwen3_5, run_qwen3_5_moe
-  - `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +15/-3
-  - `vllm/model_executor/models/qwen3_5.py` modified +2/-0
+- 动机: 标题「[MM][Perf][CG] Support ViT full CUDA graph for Qwen3.5」；模型线: DeepSeek OCR；类别: 性能/后端优化；主要 diff: `examples/generate/multimodal/vision_language_offline.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`, `docs/design/cuda_graphs_multimodal.md`；技术摘要: 覆盖「[MM][Perf][CG] Support ViT full CUDA graph for Qwen3.5」；主要实现面是 `examples/generate/multimodal/vision_language_offline.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`, `docs/design/cuda_graphs_multimodal.md`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `examples/generate/multimodal/vision_language_offline.py` modified +93/-1 (94 lines); hunks: -2179,6 +2179,92 @@ def run_qwen3_vl_moe(questions: list[str], modality: str)...; -2442,6 +2528,8 @@ def run_tarsier2(questions: list[str], modality: str) -> M...; symbols: run_qwen3_vl_moe, run_qwen3_5, run_qwen3_5_moe, run_r_vl，涉及 `run_qwen3_vl_moe, run_qwen3_5, run_qwen3_5_moe`；`tests/models/multimodal/generation/test_vit_cudagraph.py` modified +15/-3 (18 lines); hunks: -42,6 +42,18 @@ def qwen_vl_chat_template(content: str) -> str:; -54,16 +66,16 @@ def qwen_vl_chat_template(content: str) -> str:; symbols: qwen_vl_chat_template，涉及 `qwen_vl_chat_template`；`docs/design/cuda_graphs_multimodal.md` modified +2/-1 (3 lines); hunks: -85,8 +85,9 @@ Models opt-in to encoder CUDA Graphs by implementing the [Supp...；`vllm/model_executor/models/qwen3_5.py` modified +2/-0 (2 lines); hunks: -565,6 +565,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; -778,6 +779,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
-  - `docs/design/cuda_graphs_multimodal.md` modified +2/-1
-  - `examples/generate/multimodal/vision_language_offline.py` modified +93/-1
-  - `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +15/-3
-  - `vllm/model_executor/models/qwen3_5.py` modified +2/-0
+  - `examples/generate/multimodal/vision_language_offline.py` modified +93/-1 (94 lines); hunks: -2179,6 +2179,92 @@ def run_qwen3_vl_moe(questions: list[str], modality: str)...; -2442,6 +2528,8 @@ def run_tarsier2(questions: list[str], modality: str) -> M...; symbols: run_qwen3_vl_moe, run_qwen3_5, run_qwen3_5_moe, run_r_vl
+  - `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +15/-3 (18 lines); hunks: -42,6 +42,18 @@ def qwen_vl_chat_template(content: str) -> str:; -54,16 +66,16 @@ def qwen_vl_chat_template(content: str) -> str:; symbols: qwen_vl_chat_template
+  - `docs/design/cuda_graphs_multimodal.md` modified +2/-1 (3 lines); hunks: -85,8 +85,9 @@ Models opt-in to encoder CUDA Graphs by implementing the [Supp...
+  - `vllm/model_executor/models/qwen3_5.py` modified +2/-0 (2 lines); hunks: -565,6 +565,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; -778,6 +779,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__
 - 关键代码摘录:
 
 ```diff
-diff -- docs/design/cuda_graphs_multimodal.md
-@@ -85,8 +85,9 @@ Models opt-in to encoder CUDA Graphs by implementing the [SupportsEncoderCudaGra
-
- | Architecture | Models | CG for Image | CG for Video |
- | ------------ | ------ | ------------ | ------------ |
--| `Qwen3VLForConditionalGeneration` | `Qwen3-VL` | ✅︎ | ✅︎ |
- | `Qwen2_5_VLForConditionalGeneration` | `Qwen2.5-VL` | ✅︎ | ✅︎ |
-+| `Qwen3VLForConditionalGeneration` | `Qwen3-VL` | ✅︎ | ✅︎ |
-+| `Qwen3_5ForConditionalGeneration` | `Qwen3.5` | ✅︎ | ✅︎ |
-
- !!! note
-     Encoder CUDA Graphs have currently been tested with `--mm-encoder-attn-backend=FLASH_ATTN` and `--mm-encoder-attn-backend=FLASHINFER` on Blackwell GPUs.
 diff -- examples/generate/multimodal/vision_language_offline.py
 @@ -2179,6 +2179,92 @@ def run_qwen3_vl_moe(questions: list[str], modality: str) -> ModelRequestData:
-     )
-
-
 +# Qwen3.5-Dense
 +def run_qwen3_5(questions: list[str], modality: str) -> ModelRequestData:
 +    model_name = "Qwen/Qwen3.5-4B"
-+
 +    mm_limit = {"image": 1, "video": 1} if modality == "image+video" else {modality: 1}
 +    engine_args = EngineArgs(
 +        model=model_name,
-+        max_model_len=4096,
-+        max_num_seqs=5,
-+        mm_processor_kwargs={
+diff -- tests/models/multimodal/generation/test_vit_cudagraph.py
+@@ -42,6 +42,18 @@ def qwen_vl_chat_template(content: str) -> str:
++    "qwen2_5_vl": VitCudagraphTestConfig(
++        model="Qwen/Qwen2.5-VL-3B-Instruct",
++        image_prompt=qwen_vl_chat_template(
++            "<|vision_start|><|image_pad|><|vision_end|>What is in this image?"
++        ),
++        video_prompt=qwen_vl_chat_template(
+diff -- docs/design/cuda_graphs_multimodal.md
+@@ -85,8 +85,9 @@ Models opt-in to encoder CUDA Graphs by implementing the [SupportsEncoderCudaGra
 ```
+
 - 已读文件:
-  - runtime: `vllm/model_executor/models/qwen3_5.py` modified +2/-0
+  - docs: `examples/generate/multimodal/vision_language_offline.py` modified +93/-1; `docs/design/cuda_graphs_multimodal.md` modified +2/-1
   - tests: `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +15/-3
-  - docs/bench: `docs/design/cuda_graphs_multimodal.md` modified +2/-1; `examples/generate/multimodal/vision_language_offline.py` modified +93/-1
-- 验证与风险: diff 自带测试/基准路径，后续改同一模型优先复跑相关测试并补一个最小 launch/accuracy smoke。
+  - runtime: `vllm/model_executor/models/qwen3_5.py` modified +2/-0
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/generation/test_vit_cudagraph.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #41736 - [MM][CG] Support ViT CG for Qwen2-VL
+
+- 链接: https://github.com/vllm-project/vllm/pull/41736
+- 状态/时间: merged / 2026-05-13
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+315/-21，可读 patch 415 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[MM][CG] Support ViT CG for Qwen2-VL」；模型线: DeepSeek OCR；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen2_vl.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`, `docs/design/cuda_graphs_multimodal.md`；技术摘要: 覆盖「[MM][CG] Support ViT CG for Qwen2-VL」；主要实现面是 `vllm/model_executor/models/qwen2_vl.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`, `docs/design/cuda_graphs_multimodal.md`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_vl.py` modified +300/-20 (320 lines); hunks: -89,9 +89,11; -646,38 +648,84 @@ def compute_attn_mask_seqlen(self, cu_seqlens: torch.Tenso...; symbols: compute_attn_mask_seqlen, prepare_encoder_metadata, forward, _get_mm_fields_config，涉及 `compute_attn_mask_seqlen, prepare_encoder_metadata, forward`；`tests/models/multimodal/generation/test_vit_cudagraph.py` modified +12/-0 (12 lines); hunks: -78,6 +78,18 @@ def qwen_vl_chat_template(content: str) -> str:; symbols: qwen_vl_chat_template，涉及 `qwen_vl_chat_template`；`docs/design/cuda_graphs_multimodal.md` modified +2/-1 (3 lines); hunks: -85,13 +85,14 @@ Models opt-in to encoder CUDA Graphs by implementing the [Su...；`examples/generate/multimodal/vision_language_offline.py` modified +1/-0 (1 lines); hunks: -2557,6 +2557,7 @@ def run_tarsier2(questions: list[str], modality: str) -> M...; symbols: run_tarsier2，涉及 `run_tarsier2`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen2_vl.py` modified +300/-20 (320 lines); hunks: -89,9 +89,11; -646,38 +648,84 @@ def compute_attn_mask_seqlen(self, cu_seqlens: torch.Tenso...; symbols: compute_attn_mask_seqlen, prepare_encoder_metadata, forward, _get_mm_fields_config
+  - `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +12/-0 (12 lines); hunks: -78,6 +78,18 @@ def qwen_vl_chat_template(content: str) -> str:; symbols: qwen_vl_chat_template
+  - `docs/design/cuda_graphs_multimodal.md` modified +2/-1 (3 lines); hunks: -85,13 +85,14 @@ Models opt-in to encoder CUDA Graphs by implementing the [Su...
+  - `examples/generate/multimodal/vision_language_offline.py` modified +1/-0 (1 lines); hunks: -2557,6 +2557,7 @@ def run_tarsier2(questions: list[str], modality: str) -> M...; symbols: run_tarsier2
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_vl.py
+@@ -89,9 +89,11 @@
++from vllm.v1.worker.encoder_cudagraph_defs import EncoderCudaGraphReplayBuffers
++    SupportsEncoderCudaGraph,
+@@ -646,38 +648,84 @@ def compute_attn_mask_seqlen(self, cu_seqlens: torch.Tensor) -> int | None:
++    def prepare_encoder_metadata(
++        self,
++        grid_thw: list[list[int]],
+diff -- tests/models/multimodal/generation/test_vit_cudagraph.py
+@@ -78,6 +78,18 @@ def qwen_vl_chat_template(content: str) -> str:
++    "qwen2_vl": VitCudagraphTestConfig(
++        model="Qwen/Qwen2-VL-2B-Instruct",
++        image_prompt=qwen_vl_chat_template(
++            "<|vision_start|><|image_pad|><|vision_end|>What is in this image?"
++        ),
++        video_prompt=qwen_vl_chat_template(
+diff -- docs/design/cuda_graphs_multimodal.md
+@@ -85,13 +85,14 @@ Models opt-in to encoder CUDA Graphs by implementing the [SupportsEncoderCudaGra
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen2_vl.py` modified +300/-20
+  - tests: `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +12/-0
+  - docs: `docs/design/cuda_graphs_multimodal.md` modified +2/-1; `examples/generate/multimodal/vision_language_offline.py` modified +1/-0
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/generation/test_vit_cudagraph.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #42224 - [MM][CG] Enable encoder Cudagraph for Step3VL
 
 - 链接: https://github.com/vllm-project/vllm/pull/42224
 - 状态/时间: merged / 2026-05-18
-- 反查来源: `git log --name-only -- <model-files>` 或模型关键词补充；本卡按 GitHub Pull Request files API 审计。
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+384/-22，可读 patch 534 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[MM][CG] Enable encoder Cudagraph for Step3VL」；模型线: DeepSeek OCR；类别: 模型支持/运行时入口；主要 diff: `docs/design/cuda_graphs_multimodal.md`, `examples/generate/multimodal/vision_language_offline.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`。
-- 实现要点:
-  - `docs/design/cuda_graphs_multimodal.md` modified +2/-0
-  - `examples/generate/multimodal/vision_language_offline.py` modified +1/-0
-  - `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +12/-0；symbols: step3_vl_chat_template
-  - `vllm/model_executor/models/interfaces.py` modified +21/-0；symbols: postprocess_encoder_output
+- 动机: 标题「[MM][CG] Enable encoder Cudagraph for Step3VL」；模型线: DeepSeek OCR；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/step3_vl.py`, `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/utils.py`；技术摘要: 覆盖「[MM][CG] Enable encoder Cudagraph for Step3VL」；主要实现面是 `vllm/model_executor/models/step3_vl.py`, `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/utils.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/step3_vl.py` modified +323/-2 (325 lines); hunks: -46,7 +46,12; -487,7 +492,9 @@ def forward(; symbols: forward, Step3VLForConditionalGeneration, __init__, device，涉及 `forward, Step3VLForConditionalGeneration, __init__`；`vllm/model_executor/models/interfaces.py` modified +21/-0 (21 lines); hunks: -1594,6 +1594,27 @@ def select_encoder_cudagraph_items(; symbols: select_encoder_cudagraph_items, postprocess_encoder_output, prepare_encoder_cudagraph_capture_inputs，涉及 `select_encoder_cudagraph_items, postprocess_encoder_output, prepare_encoder_cudagraph_capture_inputs`；`vllm/model_executor/models/utils.py` modified +16/-0 (16 lines); hunks: -884,3 +884,19 @@ def get_layer_index(feature_layer_index: int, num_hidden_la...; symbols: get_layer_index, scatter_output_slices，涉及 `get_layer_index, scatter_output_slices`；`tests/models/multimodal/generation/test_vit_cudagraph.py` modified +12/-0 (12 lines); hunks: -41,6 +41,13 @@ def qwen_vl_chat_template(content: str) -> str:; -90,6 +97,11 @@ def qwen_vl_chat_template(content: str) -> str:; symbols: qwen_vl_chat_template, step3_vl_chat_template，涉及 `qwen_vl_chat_template, step3_vl_chat_template`。
 - 代码 diff 细节:
-  - `docs/design/cuda_graphs_multimodal.md` modified +2/-0
-  - `examples/generate/multimodal/vision_language_offline.py` modified +1/-0
-  - `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +12/-0
-  - `vllm/model_executor/models/interfaces.py` modified +21/-0
+  - `vllm/model_executor/models/step3_vl.py` modified +323/-2 (325 lines); hunks: -46,7 +46,12; -487,7 +492,9 @@ def forward(; symbols: forward, Step3VLForConditionalGeneration, __init__, device
+  - `vllm/model_executor/models/interfaces.py` modified +21/-0 (21 lines); hunks: -1594,6 +1594,27 @@ def select_encoder_cudagraph_items(; symbols: select_encoder_cudagraph_items, postprocess_encoder_output, prepare_encoder_cudagraph_capture_inputs
+  - `vllm/model_executor/models/utils.py` modified +16/-0 (16 lines); hunks: -884,3 +884,19 @@ def get_layer_index(feature_layer_index: int, num_hidden_la...; symbols: get_layer_index, scatter_output_slices
+  - `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +12/-0 (12 lines); hunks: -41,6 +41,13 @@ def qwen_vl_chat_template(content: str) -> str:; -90,6 +97,11 @@ def qwen_vl_chat_template(content: str) -> str:; symbols: qwen_vl_chat_template, step3_vl_chat_template
+  - `docs/design/cuda_graphs_multimodal.md` modified +2/-0 (2 lines); hunks: -77,6 +77,7 @@ Models opt-in to encoder CUDA Graphs by implementing the [Supp...; -89,6 +90,7 @@ Models opt-in to encoder CUDA Graphs by implementing the [Supp...
 - 关键代码摘录:
 
 ```diff
-diff -- docs/design/cuda_graphs_multimodal.md
-@@ -77,6 +77,7 @@ Models opt-in to encoder CUDA Graphs by implementing the [SupportsEncoderCudaGra
- * `encoder_eager_forward(...)` — fallback eager forward when no graph fits.
- * `get_input_modality(...)` - return the modality of the inputs.
- * `get_max_frames_per_video()` - return model-specific max frames per video.
-+* `postprocess_encoder_output(...)` - post process encoder output, directly call scatter_output_slices by default
-
- !!! note
-     The `SupportsEncoderCudaGraph` protocol is designed to be model-agnostic. New vision encoder models can opt-in by implementing the protocol methods without modifying the manager.
-@@ -89,6 +90,7 @@ Models opt-in to encoder CUDA Graphs by implementing the [SupportsEncoderCudaGra
- | `Qwen2_5_VLForConditionalGeneration` | `Qwen2.5-VL` | ✅︎ | ✅︎ |
- | `Qwen3VLForConditionalGeneration` | `Qwen3-VL` | ✅︎ | ✅︎ |
- | `Qwen3_5ForConditionalGeneration` | `Qwen3.5` | ✅︎ | ✅︎ |
-+| `Step3VLForConditionalGeneration` | `Step3-VL` | ✅︎ | ❌︎ |
-
-diff -- examples/generate/multimodal/vision_language_offline.py
-@@ -2560,6 +2560,7 @@ def run_tarsier2(questions: list[str], modality: str) -> ModelRequestData:
-     "qwen2_vl",
-     "qwen3_5",
-     "qwen3_5_moe",
-+    "stepvl",
- ]
-
-
+diff -- vllm/model_executor/models/step3_vl.py
+@@ -46,7 +46,12 @@
+-from .interfaces import MultiModalEmbeddings, SupportsMultiModal, SupportsPP
++from .interfaces import (
++    MultiModalEmbeddings,
++    SupportsEncoderCudaGraph,
++    SupportsMultiModal,
++    SupportsPP,
+diff -- vllm/model_executor/models/interfaces.py
+@@ -1594,6 +1594,27 @@ def select_encoder_cudagraph_items(
++    def postprocess_encoder_output(
++        self,
++        output: torch.Tensor,
++        indices: list[int],
++        per_item_out_tokens: list[int],
++        dest: dict[int, torch.Tensor] | list[torch.Tensor | None],
+diff -- vllm/model_executor/models/utils.py
+@@ -884,3 +884,19 @@ def get_layer_index(feature_layer_index: int, num_hidden_layers: int) -> int:
 ```
+
 - 已读文件:
-  - runtime: `vllm/model_executor/models/interfaces.py` modified +21/-0; `vllm/model_executor/models/step3_vl.py` modified +323/-2; `vllm/model_executor/models/step_vl.py` modified +1/-0; `vllm/model_executor/models/utils.py` modified +16/-0; `vllm/v1/worker/encoder_cudagraph.py` modified +8/-20
+  - runtime: `vllm/model_executor/models/step3_vl.py` modified +323/-2; `vllm/model_executor/models/interfaces.py` modified +21/-0; `vllm/model_executor/models/utils.py` modified +16/-0; `vllm/model_executor/models/step_vl.py` modified +1/-0; `vllm/v1/worker/encoder_cudagraph.py` modified +8/-20
   - tests: `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +12/-0
-  - docs/bench: `docs/design/cuda_graphs_multimodal.md` modified +2/-0; `examples/generate/multimodal/vision_language_offline.py` modified +1/-0
-- 验证与风险: diff 自带测试/基准路径，后续改同一模型优先复跑相关测试并补一个最小 launch/accuracy smoke。
+  - docs: `docs/design/cuda_graphs_multimodal.md` modified +2/-0; `examples/generate/multimodal/vision_language_offline.py` modified +1/-0
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/generation/test_vit_cudagraph.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #41759 - [MM][Perf][CG] Support ViT full CUDA graph for InternVL
+
+- 链接: https://github.com/vllm-project/vllm/pull/41759
+- 状态/时间: merged / 2026-06-04
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+183/-2，可读 patch 238 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[MM][Perf][CG] Support ViT full CUDA graph for InternVL」；模型线: DeepSeek OCR；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/internvl.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`, `docs/design/cuda_graphs_multimodal.md`；技术摘要: 覆盖「[MM][Perf][CG] Support ViT full CUDA graph for InternVL」；主要实现面是 `vllm/model_executor/models/internvl.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`, `docs/design/cuda_graphs_multimodal.md`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/internvl.py` modified +166/-2 (168 lines); hunks: -10,7 +10,7; -55,6 +55,7; symbols: _get_prompt_updates, InternVLChatModel, get_num_mm_connector_tokens, get_encoder_cudagraph_config，涉及 `_get_prompt_updates, InternVLChatModel, get_num_mm_connector_tokens`；`tests/models/multimodal/generation/test_vit_cudagraph.py` modified +15/-0 (15 lines); hunks: -43,6 +43,10 @@ def qwen_vl_chat_template(content: str) -> str:; -51,6 +55,17 @@ def step3_vl_chat_template(content: str) -> str:; symbols: qwen_vl_chat_template, internvl_chat_template, step3_vl_chat_template，涉及 `qwen_vl_chat_template, internvl_chat_template, step3_vl_chat_template`；`docs/design/cuda_graphs_multimodal.md` modified +1/-0 (1 lines); hunks: -82,6 +82,7 @@ Models opt-in to encoder CUDA Graphs by implementing the [Supp...；`examples/generate/multimodal/vision_language_offline.py` modified +1/-0 (1 lines); hunks: -2554,6 +2554,7 @@ def run_tarsier2(questions: list[str], modality: str) -> M...; symbols: run_tarsier2，涉及 `run_tarsier2`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/internvl.py` modified +166/-2 (168 lines); hunks: -10,7 +10,7; -55,6 +55,7; symbols: _get_prompt_updates, InternVLChatModel, get_num_mm_connector_tokens, get_encoder_cudagraph_config
+  - `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +15/-0 (15 lines); hunks: -43,6 +43,10 @@ def qwen_vl_chat_template(content: str) -> str:; -51,6 +55,17 @@ def step3_vl_chat_template(content: str) -> str:; symbols: qwen_vl_chat_template, internvl_chat_template, step3_vl_chat_template
+  - `docs/design/cuda_graphs_multimodal.md` modified +1/-0 (1 lines); hunks: -82,6 +82,7 @@ Models opt-in to encoder CUDA Graphs by implementing the [Supp...
+  - `examples/generate/multimodal/vision_language_offline.py` modified +1/-0 (1 lines); hunks: -2554,6 +2554,7 @@ def run_tarsier2(questions: list[str], modality: str) -> M...; symbols: run_tarsier2
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/internvl.py
+@@ -10,7 +10,7 @@
+-from typing import Annotated, Literal, TypeAlias, TypeVar
++from typing import Annotated, Any, Literal, TypeAlias, TypeVar
+@@ -55,6 +55,7 @@
++    SupportsEncoderCudaGraph,
+@@ -543,7 +544,13 @@ def _get_prompt_updates(
+-class InternVLChatModel(nn.Module, SupportsMultiModal, SupportsPP, SupportsLoRA):
+diff -- tests/models/multimodal/generation/test_vit_cudagraph.py
+@@ -43,6 +43,10 @@ def qwen_vl_chat_template(content: str) -> str:
++def internvl_chat_template(content: str) -> str:
++    return f"<|im_start|>user\n{content}<|im_end|>\n<|im_start|>assistant\n"
+@@ -51,6 +55,17 @@ def step3_vl_chat_template(content: str) -> str:
++    "internvl": VitCudagraphTestConfig(
++        model="OpenGVLab/InternVL3-1B",
++        num_video_frames=8,
+diff -- docs/design/cuda_graphs_multimodal.md
+@@ -82,6 +82,7 @@ Models opt-in to encoder CUDA Graphs by implementing the [SupportsEncoderCudaGra
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/internvl.py` modified +166/-2
+  - tests: `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +15/-0
+  - docs: `docs/design/cuda_graphs_multimodal.md` modified +1/-0; `examples/generate/multimodal/vision_language_offline.py` modified +1/-0
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/generation/test_vit_cudagraph.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #40576 - [MM][Perf][CG] Support ViT full CUDA graph for glm4_1v image and video inference
+
+- 链接: https://github.com/vllm-project/vllm/pull/40576
+- 状态/时间: merged / 2026-06-09
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+480/-25，可读 patch 605 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[MM][Perf][CG] Support ViT full CUDA graph for glm4_1v image and video inference」；模型线: DeepSeek OCR；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/glm4_1v.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`, `docs/design/cuda_graphs_multimodal.md`；技术摘要: 覆盖「[MM][Perf][CG] Support ViT full CUDA graph for glm4_1v image and video inference」；主要实现面是 `vllm/model_executor/models/glm4_1v.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`, `docs/design/cuda_graphs_multimodal.md`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/glm4_1v.py` modified +456/-25 (481 lines); hunks: -97,10 +97,12; -626,6 +628,11 @@ def __init__(; symbols: __init__, device, rot_pos_emb, compute_attn_mask_seqlen，涉及 `__init__, device, rot_pos_emb`；`tests/models/multimodal/generation/test_vit_cudagraph.py` modified +22/-0 (22 lines); hunks: -137,6 +137,28 @@ def step3_vl_chat_template(content: str) -> str:; symbols: step3_vl_chat_template，涉及 `step3_vl_chat_template`；`docs/design/cuda_graphs_multimodal.md` modified +1/-0 (1 lines); hunks: -88,6 +88,7 @@ Models opt-in to encoder CUDA Graphs by implementing the [Supp...；`examples/generate/multimodal/vision_language_offline.py` modified +1/-0 (1 lines); hunks: -2562,6 +2562,7 @@ def run_tarsier2(questions: list[str], modality: str) -> M...; symbols: run_tarsier2，涉及 `run_tarsier2`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/glm4_1v.py` modified +456/-25 (481 lines); hunks: -97,10 +97,12; -626,6 +628,11 @@ def __init__(; symbols: __init__, device, rot_pos_emb, compute_attn_mask_seqlen
+  - `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +22/-0 (22 lines); hunks: -137,6 +137,28 @@ def step3_vl_chat_template(content: str) -> str:; symbols: step3_vl_chat_template
+  - `docs/design/cuda_graphs_multimodal.md` modified +1/-0 (1 lines); hunks: -88,6 +88,7 @@ Models opt-in to encoder CUDA Graphs by implementing the [Supp...
+  - `examples/generate/multimodal/vision_language_offline.py` modified +1/-0 (1 lines); hunks: -2562,6 +2562,7 @@ def run_tarsier2(questions: list[str], modality: str) -> M...; symbols: run_tarsier2
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/glm4_1v.py
+@@ -97,10 +97,12 @@
++from vllm.v1.worker.encoder_cudagraph_defs import EncoderCudaGraphReplayBuffers
++    SupportsEncoderCudaGraph,
+@@ -626,6 +628,11 @@ def __init__(
++        use_data_parallel = is_vit_use_data_parallel()
++        self.tp_size = (
++            1 if use_data_parallel else get_tensor_model_parallel_world_size()
+diff -- tests/models/multimodal/generation/test_vit_cudagraph.py
+@@ -137,6 +137,28 @@ def step3_vl_chat_template(content: str) -> str:
++    "glm4_1v": VitCudagraphTestConfig(
++        model="zai-org/GLM-4.1V-9B-Thinking",
++        image_prompt=(
++            "[gMASK]<sop><|system|>\nYou are a helpful assistant.<|user|>\n"
++            "<|begin_of_image|><|image|><|end_of_image|>"
++            "What is in this image?<|assistant|>assistant\n"
+diff -- docs/design/cuda_graphs_multimodal.md
+@@ -88,6 +88,7 @@ Models opt-in to encoder CUDA Graphs by implementing the [SupportsEncoderCudaGra
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/glm4_1v.py` modified +456/-25
+  - tests: `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +22/-0
+  - docs: `docs/design/cuda_graphs_multimodal.md` modified +1/-0; `examples/generate/multimodal/vision_language_offline.py` modified +1/-0
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/generation/test_vit_cudagraph.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #45131 - Deprecated 1st generation Qwen and QwenVL models
+
+- 链接: https://github.com/vllm-project/vllm/pull/45131
+- 状态/时间: merged / 2026-06-10
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 27 个文件，+6/-1349，可读 patch 1585 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Deprecated 1st generation Qwen and QwenVL models」；模型线: DeepSeek OCR；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/qwen_vl.py`, `vllm/model_executor/models/qwen.py`, `vllm/tokenizers/qwen_vl.py`；技术摘要: 覆盖「Deprecated 1st generation Qwen and QwenVL models」；主要实现面是 `vllm/model_executor/models/qwen_vl.py`, `vllm/model_executor/models/qwen.py`, `vllm/tokenizers/qwen_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen_vl.py` removed +0/-688 (688 lines); hunks: -1,688 +0,0; symbols: QwenImagePixelInputs, QwenImageEmbeddingInputs, VisualAttention, __init__，涉及 `QwenImagePixelInputs, QwenImageEmbeddingInputs, VisualAttention`；`vllm/model_executor/models/qwen.py` removed +0/-377 (377 lines); hunks: -1,377 +0,0; symbols: QWenMLP, __init__, forward, QWenAttention，涉及 `QWenMLP, __init__, forward`；`vllm/tokenizers/qwen_vl.py` removed +0/-71 (71 lines); hunks: -1,71 +0,0; symbols: get_qwen_vl_tokenizer, TokenizerWithoutImagePad, tokenize, _decode，涉及 `get_qwen_vl_tokenizer, TokenizerWithoutImagePad, tokenize`；`examples/generate/multimodal/vision_language_multi_image_offline.py` modified +0/-44 (44 lines); hunks: -1042,49 +1042,6 @@ def load_phi4siglip(question: str, image_urls: list[str])...; -1544,7 +1501,6 @@ def load_molmo2(question: str, image_urls: list[str]) -> M...; symbols: load_phi4siglip, load_qwen_vl_chat, load_qwen2_vl, load_molmo2，涉及 `load_phi4siglip, load_qwen_vl_chat, load_qwen2_vl`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen_vl.py` removed +0/-688 (688 lines); hunks: -1,688 +0,0; symbols: QwenImagePixelInputs, QwenImageEmbeddingInputs, VisualAttention, __init__
+  - `vllm/model_executor/models/qwen.py` removed +0/-377 (377 lines); hunks: -1,377 +0,0; symbols: QWenMLP, __init__, forward, QWenAttention
+  - `vllm/tokenizers/qwen_vl.py` removed +0/-71 (71 lines); hunks: -1,71 +0,0; symbols: get_qwen_vl_tokenizer, TokenizerWithoutImagePad, tokenize, _decode
+  - `examples/generate/multimodal/vision_language_multi_image_offline.py` modified +0/-44 (44 lines); hunks: -1042,49 +1042,6 @@ def load_phi4siglip(question: str, image_urls: list[str])...; -1544,7 +1501,6 @@ def load_molmo2(question: str, image_urls: list[str]) -> M...; symbols: load_phi4siglip, load_qwen_vl_chat, load_qwen2_vl, load_molmo2
+  - `vllm/transformers_utils/processors/qwen_vl.py` removed +0/-42 (42 lines); hunks: -1,42 +0,0; symbols: QwenVLImageProcessorFast, QwenVLProcessor, __init__
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen_vl.py
+@@ -1,688 +0,0 @@
+-# SPDX-License-Identifier: Apache-2.0
+-# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
+-# Adapted from
+-# https://huggingface.co/Qwen/Qwen-VL/blob/main/modeling_qwen.py
+-# Copyright (c) Alibaba Cloud.
+-"""Inference-only Qwen-VL model compatible with HuggingFace weights."""
+diff -- vllm/model_executor/models/qwen.py
+@@ -1,377 +0,0 @@
+-# SPDX-License-Identifier: Apache-2.0
+-# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
+-# Adapted from
+-# https://huggingface.co/Qwen/Qwen-7B/blob/main/modeling_qwen.py
+-# Copyright (c) Alibaba Cloud.
+-# LICENSE: https://huggingface.co/Qwen/Qwen-7B/blob/main/LICENSE
+diff -- vllm/tokenizers/qwen_vl.py
+@@ -1,71 +0,0 @@
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen_vl.py` removed +0/-688; `vllm/model_executor/models/qwen.py` removed +0/-377; `vllm/tokenizers/qwen_vl.py` removed +0/-71; `vllm/transformers_utils/processors/qwen_vl.py` removed +0/-42
+  - docs: `examples/generate/multimodal/vision_language_multi_image_offline.py` modified +0/-44; `examples/generate/multimodal/vision_language_offline.py` modified +0/-22
+  - tests: `tests/models/registry.py` modified +0/-18; `tests/tokenizers_/conftest.py` removed +0/-14
+- 验证与风险: diff 自带测试面 `tests/distributed/test_pipeline_parallel.py`, `tests/models/multimodal/conftest.py`, `tests/models/multimodal/generation/test_common.py`, `tests/models/registry.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #40660 - [MM][Perf][CG] Support ViT full cudagraphs for mllama4
+
+- 链接: https://github.com/vllm-project/vllm/pull/40660
+- 状态/时间: merged / 2026-06-12
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+193/-14，可读 patch 291 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[MM][Perf][CG] Support ViT full cudagraphs for mllama4」；模型线: DeepSeek OCR；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/mllama4.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`, `docs/design/cuda_graphs_multimodal.md`；技术摘要: 覆盖「[MM][Perf][CG] Support ViT full cudagraphs for mllama4」；主要实现面是 `vllm/model_executor/models/mllama4.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`, `docs/design/cuda_graphs_multimodal.md`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/mllama4.py` modified +160/-12 (172 lines); hunks: -19,7 +19,7; -78,6 +78,7; symbols: Llama4ImagePatchInputs, Llama4ForConditionalGeneration, update_physical_experts_metadata, get_image_patches_per_chunk，涉及 `Llama4ImagePatchInputs, Llama4ForConditionalGeneration, update_physical_experts_metadata`；`tests/models/multimodal/generation/test_vit_cudagraph.py` modified +20/-0 (20 lines); hunks: -55,6 +55,26 @@ def step3_vl_chat_template(content: str) -> str:; symbols: step3_vl_chat_template，涉及 `step3_vl_chat_template`；`docs/design/cuda_graphs_multimodal.md` modified +9/-0 (9 lines); hunks: -82,6 +82,7 @@ Models opt-in to encoder CUDA Graphs by implementing the [Supp...; -114,6 +115,14 @@ vllm serve Qwen/Qwen3-VL-32B \；`tests/models/utils.py` modified +3/-2 (5 lines); hunks: -506,12 +506,13 @@ class DummyConfig:; symbols: DummyConfig，涉及 `DummyConfig`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/mllama4.py` modified +160/-12 (172 lines); hunks: -19,7 +19,7; -78,6 +78,7; symbols: Llama4ImagePatchInputs, Llama4ForConditionalGeneration, update_physical_experts_metadata, get_image_patches_per_chunk
+  - `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +20/-0 (20 lines); hunks: -55,6 +55,26 @@ def step3_vl_chat_template(content: str) -> str:; symbols: step3_vl_chat_template
+  - `docs/design/cuda_graphs_multimodal.md` modified +9/-0 (9 lines); hunks: -82,6 +82,7 @@ Models opt-in to encoder CUDA Graphs by implementing the [Supp...; -114,6 +115,14 @@ vllm serve Qwen/Qwen3-VL-32B \
+  - `tests/models/utils.py` modified +3/-2 (5 lines); hunks: -506,12 +506,13 @@ class DummyConfig:; symbols: DummyConfig
+  - `examples/generate/multimodal/vision_language_offline.py` modified +1/-0 (1 lines); hunks: -2532,6 +2532,7 @@ def run_tarsier2(questions: list[str], modality: str) -> M...; symbols: run_tarsier2
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/mllama4.py
+@@ -19,7 +19,7 @@
+-from typing import Annotated, Literal
++from typing import Annotated, Any, Literal
+@@ -78,6 +78,7 @@
++    SupportsEncoderCudaGraph,
+@@ -105,7 +106,7 @@ class Llama4ImagePatchInputs(TensorSchema):
+-    The number of total patches for each image in the batch.
+diff -- tests/models/multimodal/generation/test_vit_cudagraph.py
+@@ -55,6 +55,26 @@ def step3_vl_chat_template(content: str) -> str:
++    "llama4": VitCudagraphTestConfig(
++        model="meta-llama/Llama-4-Scout-17B-16E-Instruct",
++        modalities=["image"],
++        image_prompt=(
++            "<|begin_of_text|><|header_start|>user<|header_end|>\n\n"
++            "<|image|>What is in this image?<|eot|>"
+diff -- docs/design/cuda_graphs_multimodal.md
+@@ -82,6 +82,7 @@ Models opt-in to encoder CUDA Graphs by implementing the [SupportsEncoderCudaGra
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/mllama4.py` modified +160/-12
+  - tests: `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +20/-0; `tests/models/utils.py` modified +3/-2
+  - docs: `docs/design/cuda_graphs_multimodal.md` modified +9/-0; `examples/generate/multimodal/vision_language_offline.py` modified +1/-0
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/generation/test_vit_cudagraph.py`, `tests/models/utils.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #43586 - [MM][Perf][CG] Support dual-path ViT full CUDA graph for DeepSeek-OCR
+
+- 链接: https://github.com/vllm-project/vllm/pull/43586
+- 状态/时间: merged / 2026-06-16
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/deepseek_ocr.py`；关联提交 `ad32608e24c9`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 16 个文件，+809/-69，可读 patch 1559 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[MM][Perf][CG] Support dual-path ViT full CUDA graph for DeepSeek-OCR」；模型线: DeepSeek OCR；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/deepseek_ocr.py`；技术摘要: 覆盖「[MM][Perf][CG] Support dual-path ViT full CUDA graph for DeepSeek-OCR」；主要实现面是 `vllm/model_executor/models/deepseek_ocr.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/deepseek_ocr.py` modified +375/-5 (380 lines); hunks: -4,7 +4,7; -15,6 +15,7; symbols: get_replacement_deepseek_vl2, DeepseekOCRForCausalLM, __init__, _encode_local_features，涉及 `get_replacement_deepseek_vl2, DeepseekOCRForCausalLM, __init__`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/deepseek_ocr.py` modified +375/-5 (380 lines); hunks: -4,7 +4,7; -15,6 +15,7; symbols: get_replacement_deepseek_vl2, DeepseekOCRForCausalLM, __init__, _encode_local_features
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/deepseek_ocr.py
+@@ -4,7 +4,7 @@
+-from typing import Annotated, Literal
++from typing import Annotated, Any, Literal
+@@ -15,6 +15,7 @@
++    SupportsEncoderCudaGraph,
+@@ -52,6 +53,7 @@
++    IMAGE_SIZE,
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/deepseek_ocr.py` modified +375/-5
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/generation/test_vit_cudagraph.py`, `tests/v1/cudagraph/test_encoder_cudagraph.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #41992 - [MM][Perf][CG] Support ViT full CUDA graph for Kimi-VL
+
+- 链接: https://github.com/vllm-project/vllm/pull/41992
+- 状态/时间: merged / 2026-06-17
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+498/-39，可读 patch 726 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[MM][Perf][CG] Support ViT full CUDA graph for Kimi-VL」；模型线: DeepSeek OCR；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/moonvit.py`, `vllm/model_executor/models/kimi_vl.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`；技术摘要: 覆盖「[MM][Perf][CG] Support ViT full CUDA graph for Kimi-VL」；主要实现面是 `vllm/model_executor/models/moonvit.py`, `vllm/model_executor/models/kimi_vl.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/moonvit.py` modified +266/-37 (303 lines); hunks: -45,7 +45,9; -110,23 +112,42 @@ def __init__(; symbols: __init__, reset_parameters, forward, get_pos_embeds，涉及 `__init__, reset_parameters, forward`；`vllm/model_executor/models/kimi_vl.py` modified +195/-2 (197 lines); hunks: -56,7 +56,11; -79,6 +83,7; symbols: get_replacement, KimiVLForConditionalGeneration, __init__, get_encoder_cudagraph_config，涉及 `get_replacement, KimiVLForConditionalGeneration, __init__`；`tests/models/multimodal/generation/test_vit_cudagraph.py` modified +35/-0 (35 lines); hunks: -48,6 +48,13 @@ def internvl_chat_template(content: str) -> str:; -100,6 +107,34 @@ def step3_vl_chat_template(content: str) -> str:; symbols: internvl_chat_template, kimi_vl_chat_template, step3_vl_chat_template，涉及 `internvl_chat_template, kimi_vl_chat_template, step3_vl_chat_template`；`docs/design/cuda_graphs_multimodal.md` modified +1/-0 (1 lines); hunks: -129,6 +129,7 @@ Models opt-in to encoder CUDA Graphs by implementing the [Su...。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/moonvit.py` modified +266/-37 (303 lines); hunks: -45,7 +45,9; -110,23 +112,42 @@ def __init__(; symbols: __init__, reset_parameters, forward, get_pos_embeds
+  - `vllm/model_executor/models/kimi_vl.py` modified +195/-2 (197 lines); hunks: -56,7 +56,11; -79,6 +83,7; symbols: get_replacement, KimiVLForConditionalGeneration, __init__, get_encoder_cudagraph_config
+  - `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +35/-0 (35 lines); hunks: -48,6 +48,13 @@ def internvl_chat_template(content: str) -> str:; -100,6 +107,34 @@ def step3_vl_chat_template(content: str) -> str:; symbols: internvl_chat_template, kimi_vl_chat_template, step3_vl_chat_template
+  - `docs/design/cuda_graphs_multimodal.md` modified +1/-0 (1 lines); hunks: -129,6 +129,7 @@ Models opt-in to encoder CUDA Graphs by implementing the [Su...
+  - `examples/generate/multimodal/vision_language_offline.py` modified +1/-0 (1 lines); hunks: -2537,6 +2537,7 @@ def run_tarsier2(questions: list[str], modality: str) -> M...; symbols: run_tarsier2
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/moonvit.py
+@@ -45,7 +45,9 @@
++from typing import Any
++import numpy as np
+@@ -110,23 +112,42 @@ def __init__(
+-    def forward(self, x: torch.Tensor, grid_hws: torch.Tensor) -> torch.Tensor:
+-        pos_embs = []
+-        for shape in grid_hws.tolist():
+diff -- vllm/model_executor/models/kimi_vl.py
+@@ -56,7 +56,11 @@
+-from vllm.model_executor.models.interfaces import SupportsMultiModal, SupportsPP
++from vllm.model_executor.models.interfaces import (
++    SupportsEncoderCudaGraph,
++    SupportsMultiModal,
++    SupportsPP,
++)
+diff -- tests/models/multimodal/generation/test_vit_cudagraph.py
+@@ -48,6 +48,13 @@ def internvl_chat_template(content: str) -> str:
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/moonvit.py` modified +266/-37; `vllm/model_executor/models/kimi_vl.py` modified +195/-2
+  - tests: `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +35/-0
+  - docs: `docs/design/cuda_graphs_multimodal.md` modified +1/-0; `examples/generate/multimodal/vision_language_offline.py` modified +1/-0
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/generation/test_vit_cudagraph.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #45993 - [Model] Remove MiniMaxText01, MiniMaxVL01, MiniMaxForCausalLM
+
+- 链接: https://github.com/vllm-project/vllm/pull/45993
+- 状态/时间: merged / 2026-06-22
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 20 个文件，+10/-3881，可读 patch 4048 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Model] Remove MiniMaxText01, MiniMaxVL01, MiniMaxForCausalLM」；模型线: DeepSeek OCR；类别: 文档/测试/CI；主要 diff: `tests/tool_parsers/test_minimax_tool_parser.py`, `vllm/model_executor/models/minimax_text_01.py`, `vllm/tool_parsers/minimax_tool_parser.py`；技术摘要: 覆盖「[Model] Remove MiniMaxText01, MiniMaxVL01, MiniMaxForCausalLM」；主要实现面是 `tests/tool_parsers/test_minimax_tool_parser.py`, `vllm/model_executor/models/minimax_text_01.py`, `vllm/tool_parsers/minimax_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `tests/tool_parsers/test_minimax_tool_parser.py` removed +0/-1227 (1227 lines); hunks: -1,1227 +0,0; symbols: minimax_tokenizer, minimax_tool_parser, sample_tools, assert_tool_calls，涉及 `minimax_tokenizer, minimax_tool_parser, sample_tools`；`vllm/model_executor/models/minimax_text_01.py` removed +0/-1000 (1000 lines); hunks: -1,1000 +0,0; symbols: replace_weight_name, weight_loader_with_alias, wrapper, inner_func，涉及 `replace_weight_name, weight_loader_with_alias, wrapper`；`vllm/tool_parsers/minimax_tool_parser.py` removed +0/-852 (852 lines); hunks: -1,852 +0,0; symbols: MinimaxToolParser, __init__, preprocess_model_output, remove_tool_calls_from_think，涉及 `MinimaxToolParser, __init__, preprocess_model_output`；`vllm/model_executor/models/minimax_vl_01.py` removed +0/-385 (385 lines); hunks: -1,385 +0,0; symbols: MiniMaxVL01ImagePixelInputs, MiniMaxVL01ImageEmbeddingInputs, MiniMaxVL01MultiModalProjector, __init__，涉及 `MiniMaxVL01ImagePixelInputs, MiniMaxVL01ImageEmbeddingInputs, MiniMaxVL01MultiModalProjector`。
+- 代码 diff 细节:
+  - `tests/tool_parsers/test_minimax_tool_parser.py` removed +0/-1227 (1227 lines); hunks: -1,1227 +0,0; symbols: minimax_tokenizer, minimax_tool_parser, sample_tools, assert_tool_calls
+  - `vllm/model_executor/models/minimax_text_01.py` removed +0/-1000 (1000 lines); hunks: -1,1000 +0,0; symbols: replace_weight_name, weight_loader_with_alias, wrapper, inner_func
+  - `vllm/tool_parsers/minimax_tool_parser.py` removed +0/-852 (852 lines); hunks: -1,852 +0,0; symbols: MinimaxToolParser, __init__, preprocess_model_output, remove_tool_calls_from_think
+  - `vllm/model_executor/models/minimax_vl_01.py` removed +0/-385 (385 lines); hunks: -1,385 +0,0; symbols: MiniMaxVL01ImagePixelInputs, MiniMaxVL01ImageEmbeddingInputs, MiniMaxVL01MultiModalProjector, __init__
+  - `tests/models/multimodal/processing/test_minimax_vl_01.py` removed +0/-113 (113 lines); hunks: -1,113 +0,0; symbols: test_processor_override, _validate_image_prompt_replacements_one, _test_image_prompt_replacements, test_processor_prompt_replacements_regression
+- 关键代码摘录:
+
+```diff
+diff -- tests/tool_parsers/test_minimax_tool_parser.py
+@@ -1,1227 +0,0 @@
+-# SPDX-License-Identifier: Apache-2.0
+-# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
+-# ruff: noqa: E501
+-import json
+-from typing import Any
+-import pytest
+diff -- vllm/model_executor/models/minimax_text_01.py
+@@ -1,1000 +0,0 @@
+-# SPDX-License-Identifier: Apache-2.0
+-# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
+-"""Inference-only MiniMaxText01 model."""
+-from collections.abc import Iterable
+-from itertools import islice
+-from typing import TYPE_CHECKING
+diff -- vllm/tool_parsers/minimax_tool_parser.py
+@@ -1,852 +0,0 @@
+```
+
+- 已读文件:
+  - tests: `tests/tool_parsers/test_minimax_tool_parser.py` removed +0/-1227; `tests/models/multimodal/processing/test_minimax_vl_01.py` removed +0/-113; `tests/models/multimodal/generation/test_common.py` modified +0/-23; `tests/models/multimodal/generation/vlm_utils/model_utils.py` modified +0/-18
+  - runtime: `vllm/model_executor/models/minimax_text_01.py` removed +0/-1000; `vllm/tool_parsers/minimax_tool_parser.py` removed +0/-852; `vllm/model_executor/models/minimax_vl_01.py` removed +0/-385
+  - docs: `examples/generate/multimodal/vision_language_offline.py` modified +0/-34
+- 验证与风险: diff 自带测试面 `rust/src/chat/tests/templates/vllm_examples/tool_chat_template_minimax_m1.jinja`, `tests/models/multimodal/generation/test_common.py`, `tests/models/multimodal/generation/vlm_utils/model_utils.py`, `tests/models/multimodal/processing/test_minimax_vl_01.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+## 补漏结论
+
+- 验收规则: 每个 PR 卡片必须保留反查来源、diff 范围、实现要点、代码摘录、已读文件和验证风险。
+- 如果新模型文件落在当前过滤规则之外，先补文件过滤规则，再重新执行本轮 `git log --name-only -- <model-files>` 追溯。

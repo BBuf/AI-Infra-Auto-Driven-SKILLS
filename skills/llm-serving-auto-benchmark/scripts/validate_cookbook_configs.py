@@ -245,10 +245,12 @@ def load_help_flags(help_dir: Path) -> dict[str, set[str]]:
             if all(hint in name for hint in hints):
                 matches.append(path)
         if matches:
-            text = "\n".join(
-                path.read_text(encoding="utf-8", errors="replace") for path in matches
-            )
-            help_flags[framework] = _extract_help_flags(text)
+            flags: set[str] = set()
+            for path in matches:
+                text = path.read_text(encoding="utf-8", errors="replace")
+                flags.update(_extract_help_flags(text))
+            if flags:
+                help_flags[framework] = flags
     return help_flags
 
 

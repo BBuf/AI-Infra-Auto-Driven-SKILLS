@@ -1,30 +1,5 @@
 # vllm MiMo V2 Flash Model PR Optimization History
 
-## 2026-06-26 Latest Source Scan
-
-Rechecked vLLM upstream `vllm-project/vllm@abc71548ef029132c3316b902207f254a246d593` against the tracked files listed below.
-The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-05`.
-
-Result: 2 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
-
-| Merged | PR | Title | Tracked files touched |
-| --- | --- | --- | --- |
-| 2026-06-15 | [#45200](https://github.com/vllm-project/vllm/pull/45200) | [Models] Fix MiMo v2.x QKV TP sharding + FP4 support | `mimo_v2.py` |
-| 2026-06-11 | [#41797](https://github.com/vllm-project/vllm/pull/41797) | [Attention] add triton diff-kv backend for mimo | `mimo_v2.py` |
-
-## 2026-06-05 PR Backfill Audit
-
-Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 1 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
-
-| Merged | PR | Title | Tracked files touched |
-| --- | --- | --- | --- |
-| 2026-06-05 | [#43167](https://github.com/vllm-project/vllm/pull/43167) | Remove KV cache scale boilerplate from model weight loading methods | `mimo.py`, `mimo_v2.py` |
-
-
-## 2026-05-19 PR Backfill Audit
-
-Rechecked vllm upstream `origin/main@07beaed84` and the GitHub Pull Request files API; this pass adds timeline entries and per-PR diff audit cards for `#41905`.
-
 ## Implementation File Coverage
 
 | File | Git-traced PRs |
@@ -32,17 +7,17 @@ Rechecked vllm upstream `origin/main@07beaed84` and the GitHub Pull Request file
 | `vllm/model_executor/models/mimo.py` | [#17433](https://github.com/vllm-project/vllm/pull/17433) |
 | `vllm/model_executor/models/mimo_audio.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
 | `vllm/model_executor/models/mimo_mtp.py` | [#17433](https://github.com/vllm-project/vllm/pull/17433), [#25136](https://github.com/vllm-project/vllm/pull/25136) |
-| `vllm/model_executor/models/mimo_v2.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967), [#41029](https://github.com/vllm-project/vllm/pull/41029) |
-| `vllm/model_executor/models/mimo_v2_mtp.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
+| `vllm/model_executor/models/mimo_v2.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967), [#41029](https://github.com/vllm-project/vllm/pull/41029), [#41797](https://github.com/vllm-project/vllm/pull/41797), [#45200](https://github.com/vllm-project/vllm/pull/45200) |
+| `vllm/model_executor/models/mimo_v2_mtp.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967), [#41905](https://github.com/vllm-project/vllm/pull/41905) |
 | `vllm/model_executor/models/mimo_v2_omni.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
 | `vllm/transformers_utils/configs/mimo_v2_omni.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
 | `vllm/transformers_utils/processors/mimo_v2_omni.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 4
+- Git-traced PRs: 7
 - Extra PRs preserved from existing docs: 4
-- Total PRs in this document: 8
+- Total PRs in this document: 11
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -58,6 +33,9 @@ Rechecked vllm upstream `origin/main@07beaed84` and the GitHub Pull Request file
 | 2026-04-27 | [#40967](https://github.com/vllm-project/vllm/pull/40967) | merged | [Model] Add MiMo-V2.5 support | `vllm/model_executor/models/mimo_v2_omni.py`, `vllm/model_executor/models/mimo_audio.py`, `vllm/transformers_utils/processors/mimo_v2_omni.py` |
 | 2026-04-28 | [#41029](https://github.com/vllm-project/vllm/pull/41029) | merged | [Model] update for mimo v25 | `vllm/model_executor/models/mimo_v2.py` |
 | 2026-05-09 | [#41905](https://github.com/vllm-project/vllm/pull/41905) | merged | [SpecDecoding] extend mtp support for mimo 2.5 | `vllm/model_executor/models/mimo_v2_mtp.py` |
+| 2026-06-05 | [#43167](https://github.com/vllm-project/vllm/pull/43167) | merged | Remove KV cache scale boilerplate from model weight loading methods | `tests/model_executor/test_eagle_quantization.py`, `vllm/model_executor/models/gpt_oss.py`, `vllm/model_executor/layers/quantization/kv_cache.py` |
+| 2026-06-11 | [#41797](https://github.com/vllm-project/vllm/pull/41797) | merged | [Attention] add triton diff-kv backend for mimo | `vllm/model_executor/models/mimo_v2.py` |
+| 2026-06-15 | [#45200](https://github.com/vllm-project/vllm/pull/45200) | merged | [Models] Fix MiMo v2.x QKV TP sharding + FP4 support | `vllm/model_executor/models/mimo_v2.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -282,7 +260,7 @@ diff -- vllm/transformers_utils/processors/mimo_v2_omni.py
 
 - Link: https://github.com/vllm-project/vllm/pull/41029
 - Status/date: merged / 2026-04-28
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mimo_v2.py`; associated commits `7a1eb8ac2ec4`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mimo_v2.py`; associated commits `7a1eb8ac2ec4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +10/-8, 74 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] update for mimo v25"; model line: MiMo V2 Flash; category: model implementation change; main diff: `vllm/model_executor/models/mimo_v2.py`; technical summary: Covers "[Model] update for mimo v25"; the main implementation surface is `vllm/model_executor/models/mimo_v2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/mimo_v2.py` modified +1/-1 (2 lines); hunks: -733,7 +733,7 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Te...; symbols: load_weights, MiMoV2ProForCausalLM, MiMoV2ForCausalLM, touching `load_weights, MiMoV2ProForCausalLM, MiMoV2ForCausalLM`.
@@ -301,21 +279,16 @@ diff -- vllm/model_executor/models/mimo_v2.py
   - runtime: `vllm/model_executor/models/mimo_v2.py` modified +1/-1
 - Risk and verification: The diff ships test coverage in `tests/models/registry.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
-## Gap-Closure Notes
-
-- Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
-- If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.
-
 ### PR #41905 - [SpecDecoding] extend mtp support for mimo 2.5
 
 - Link: https://github.com/vllm-project/vllm/pull/41905
 - Status/date: merged / 2026-05-09
-- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@07beaed84` history, and the GitHub Pull Request files API; associated commit `2ee8c2a56e41`.
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mimo_v2_mtp.py`; associated commits `2ee8c2a56e41`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-10, 57 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[SpecDecoding] extend mtp support for mimo 2.5"; model line: MiMo V2 Flash; category: model support/runtime entry; main diff: `vllm/model_executor/models/mimo_v2_mtp.py`; technical summary: Covers "[SpecDecoding] extend mtp support for mimo 2.5" with file-level evidence, code excerpts, and validation risks below.
-- Key implementation: `vllm/model_executor/models/mimo_v2_mtp.py` modified +3/-10 (13 lines); hunks: -49,7 +49,7  @@ from .utils import _merge_multimodal_embeddings, maybe_prefix; -170,10 +170,6  @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = "") -> None:; symbols: __init__, str, forward, compute_logits, touching `__init__, str, forward`.
+- Motivation: Title: "[SpecDecoding] extend mtp support for mimo 2.5"; model line: MiMo V2 Flash; category: model support/runtime entry; main diff: `vllm/model_executor/models/mimo_v2_mtp.py`; technical summary: Covers "[SpecDecoding] extend mtp support for mimo 2.5"; the main implementation surface is `vllm/model_executor/models/mimo_v2_mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/mimo_v2_mtp.py` modified +3/-10 (13 lines); hunks: -49,7 +49,7; -170,10 +170,6 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__, forward, compute_logits, touching `__init__, forward, compute_logits`.
 - Code diff details:
-  - `vllm/model_executor/models/mimo_v2_mtp.py` modified +3/-10 (13 lines); hunks: -49,7 +49,7  @@ from .utils import _merge_multimodal_embeddings, maybe_prefix; -170,10 +170,6  @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = "") -> None:; symbols: __init__, str, forward, compute_logits, touching `__init__, str, forward`
+  - `vllm/model_executor/models/mimo_v2_mtp.py` modified +3/-10 (13 lines); hunks: -49,7 +49,7; -170,10 +170,6 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__, forward, compute_logits
 - Key code excerpts:
 
 ```diff
@@ -327,10 +300,109 @@ diff -- vllm/model_executor/models/mimo_v2_mtp.py
 -        if spec_cfg.num_speculative_tokens != 1:
 -            raise ValueError(
 -                "MiMo-V2 MTP in vLLM only supports num_speculative_tokens=1."
--            )
-@@ -203,10 +199,10 @@ def forward(
 ```
 
 - Reviewed files:
   - runtime: `vllm/model_executor/models/mimo_v2_mtp.py` modified +3/-10
-- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/mimo_v2_mtp.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/mimo_v2_mtp.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #43167 - Remove KV cache scale boilerplate from model weight loading methods
+
+- Link: https://github.com/vllm-project/vllm/pull/43167
+- Status/date: merged / 2026-06-05
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 56 files, +88/-731, 1251 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Remove KV cache scale boilerplate from model weight loading methods"; model line: MiMo V2 Flash; category: docs/tests/CI; main diff: `tests/model_executor/test_eagle_quantization.py`, `vllm/model_executor/models/gpt_oss.py`, `vllm/model_executor/layers/quantization/kv_cache.py`; technical summary: Covers "Remove KV cache scale boilerplate from model weight loading methods"; the main implementation surface is `tests/model_executor/test_eagle_quantization.py`, `vllm/model_executor/models/gpt_oss.py`, `vllm/model_executor/layers/quantization/kv_cache.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/model_executor/test_eagle_quantization.py` modified +0/-56 (56 lines); hunks: -100,32 +100,6 @@ def test_fc_layer_quant_config_usage(default_vllm_config, d...; -183,33 +157,3 @@ def test_eagle3_lm_head_receives_quant_config():; symbols: test_fc_layer_quant_config_usage, test_kv_cache_scale_name_handling, test_kv_cache_scale_name_no_scale, test_maybe_remap_kv_scale_name, touching `test_fc_layer_quant_config_usage, test_kv_cache_scale_name_handling, test_kv_cache_scale_name_no_scale`; `vllm/model_executor/models/gpt_oss.py` modified +0/-46 (46 lines); hunks: -635,52 +635,6 @@ def _get_moe_weight_dtype(layer_id: int = 0) -> str | None:; symbols: _get_moe_weight_dtype, kv_cache_scale_loader, touching `_get_moe_weight_dtype, kv_cache_scale_loader`; `vllm/model_executor/layers/quantization/kv_cache.py` modified +28/-4 (32 lines); hunks: -15,6 +15,30; -37,11 +61,11 @@ def create_weights(self, layer: torch.nn.Module):; symbols: KVCacheScaleParameter, __new__, weight_loader, BaseKVCacheMethod, touching `KVCacheScaleParameter, __new__, weight_loader`; `vllm/model_executor/layers/quantization/fp8.py` modified +12/-19 (31 lines); hunks: -207,25 +207,18 @@ def get_quant_method(; symbols: get_quant_method, get_cache_scale, get_cache_scale_mapper, CopyNumelCounter, touching `get_quant_method, get_cache_scale, get_cache_scale_mapper`.
+- Code diff details:
+  - `tests/model_executor/test_eagle_quantization.py` modified +0/-56 (56 lines); hunks: -100,32 +100,6 @@ def test_fc_layer_quant_config_usage(default_vllm_config, d...; -183,33 +157,3 @@ def test_eagle3_lm_head_receives_quant_config():; symbols: test_fc_layer_quant_config_usage, test_kv_cache_scale_name_handling, test_kv_cache_scale_name_no_scale, test_maybe_remap_kv_scale_name
+  - `vllm/model_executor/models/gpt_oss.py` modified +0/-46 (46 lines); hunks: -635,52 +635,6 @@ def _get_moe_weight_dtype(layer_id: int = 0) -> str | None:; symbols: _get_moe_weight_dtype, kv_cache_scale_loader
+  - `vllm/model_executor/layers/quantization/kv_cache.py` modified +28/-4 (32 lines); hunks: -15,6 +15,30; -37,11 +61,11 @@ def create_weights(self, layer: torch.nn.Module):; symbols: KVCacheScaleParameter, __new__, weight_loader, BaseKVCacheMethod
+  - `vllm/model_executor/layers/quantization/fp8.py` modified +12/-19 (31 lines); hunks: -207,25 +207,18 @@ def get_quant_method(; symbols: get_quant_method, get_cache_scale, get_cache_scale_mapper, CopyNumelCounter
+  - `vllm/model_executor/layers/quantization/quark/quark.py` modified +10/-20 (30 lines); hunks: -646,26 +646,16 @@ def get_scheme(; symbols: get_scheme, get_cache_scale, get_cache_scale_mapper, QuarkLinearMethod
+- Key code excerpts:
+
+```diff
+diff -- tests/model_executor/test_eagle_quantization.py
+@@ -100,32 +100,6 @@ def test_fc_layer_quant_config_usage(default_vllm_config, dist_init, device) ->
+-def test_kv_cache_scale_name_handling():
+-    # Mock a quant config that supports cache scales
+-    mock_quant_config = Mock()
+-    mock_quant_config.get_cache_scale = Mock(return_value="layers.0.self_attn.kv_scale")
+-    # Condition check in load_weights
+-    name = "layers.0.self_attn.k_proj.weight"
+diff -- vllm/model_executor/models/gpt_oss.py
+@@ -635,52 +635,6 @@ def _get_moe_weight_dtype(layer_id: int = 0) -> str | None:
+-            def kv_cache_scale_loader(
+-                quant_config: QuantizationConfig,
+-                name: str,
+-                params_dict: dict[str, typing.Any],
+-                weight: torch.Tensor,
+-                default_weight_loader: Callable[..., None],
+diff -- vllm/model_executor/layers/quantization/kv_cache.py
+@@ -15,6 +15,30 @@
+```
+
+- Reviewed files:
+  - tests: `tests/model_executor/test_eagle_quantization.py` modified +0/-56
+  - runtime: `vllm/model_executor/models/gpt_oss.py` modified +0/-46; `vllm/model_executor/layers/quantization/kv_cache.py` modified +28/-4; `vllm/model_executor/layers/quantization/fp8.py` modified +12/-19; `vllm/model_executor/layers/quantization/quark/quark.py` modified +10/-20; `vllm/model_executor/models/llama4.py` modified +3/-18; `vllm/model_executor/models/glm_ocr_mtp.py` modified +4/-13
+- Risk and verification: The diff ships test coverage in `tests/model_executor/test_eagle_quantization.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #41797 - [Attention] add triton diff-kv backend for mimo
+
+- Link: https://github.com/vllm-project/vllm/pull/41797
+- Status/date: merged / 2026-06-11
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mimo_v2.py`; associated commits `f81daf888063`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 8 files, +1041/-9, 1103 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Attention] add triton diff-kv backend for mimo"; model line: MiMo V2 Flash; category: performance/backend optimization; main diff: `vllm/model_executor/models/mimo_v2.py`; technical summary: Covers "[Attention] add triton diff-kv backend for mimo"; the main implementation surface is `vllm/model_executor/models/mimo_v2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/mimo_v2.py` modified +21/-7 (28 lines); hunks: -47,9 +47,7; -292,11 +290,27 @@ def __init__(; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `vllm/model_executor/models/mimo_v2.py` modified +21/-7 (28 lines); hunks: -47,9 +47,7; -292,11 +290,27 @@ def __init__(; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/mimo_v2.py
+@@ -47,9 +47,7 @@
+-from vllm.v1.attention.backends.flash_attn_diffkv import (
+-    FlashAttentionDiffKVBackend,
+-)
++from vllm.v1.attention.backends.registry import AttentionBackendEnum
+@@ -292,11 +290,27 @@ def __init__(
+-        # Use DiffKV backend when V has a different head dim than K
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/mimo_v2.py` modified +21/-7
+- Risk and verification: The diff ships test coverage in `tests/kernels/attention/test_triton_unified_attention_diffkv.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #45200 - [Models] Fix MiMo v2.x QKV TP sharding + FP4 support
+
+- Link: https://github.com/vllm-project/vllm/pull/45200
+- Status/date: merged / 2026-06-15
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mimo_v2.py`; associated commits `b5adb027ad03`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +170/-5, 245 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Models] Fix MiMo v2.x QKV TP sharding + FP4 support"; model line: MiMo V2 Flash; category: bug fix; main diff: `vllm/model_executor/models/mimo_v2.py`; technical summary: Covers "[Models] Fix MiMo v2.x QKV TP sharding + FP4 support"; the main implementation surface is `vllm/model_executor/models/mimo_v2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/mimo_v2.py` modified +160/-5 (165 lines); hunks: -35,6 +35,10; -455,6 +459,85 @@ def is_compressed_softmax_layer(self) -> bool:; symbols: is_compressed_softmax_layer, _shard_fp8_qkv_proj, MiMoV2Model, __init__, touching `is_compressed_softmax_layer, _shard_fp8_qkv_proj, MiMoV2Model`.
+- Code diff details:
+  - `vllm/model_executor/models/mimo_v2.py` modified +160/-5 (165 lines); hunks: -35,6 +35,10; -455,6 +459,85 @@ def is_compressed_softmax_layer(self) -> bool:; symbols: is_compressed_softmax_layer, _shard_fp8_qkv_proj, MiMoV2Model, __init__
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/mimo_v2.py
+@@ -35,6 +35,10 @@
++from vllm.model_executor.layers.quantization.utils.quant_utils import (
++    GroupShape,
++    scaled_quantize,
++)
+@@ -455,6 +459,85 @@ def is_compressed_softmax_layer(self) -> bool:
++def _shard_fp8_qkv_proj(
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/mimo_v2.py` modified +160/-5
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/quantization/fp8.py`, `vllm/model_executor/models/mimo_v2.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+## Gap-Closure Notes
+
+- Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
+- If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.

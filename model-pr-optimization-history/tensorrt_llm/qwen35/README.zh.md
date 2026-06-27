@@ -1,9 +1,10 @@
 # TensorRT-LLM Qwen3.5 模型 PR 优化历史
 
-## 2026-06-26 最新源码扫描
+## 2026-06-27 源码 head 刷新
 
-已按 TensorRT-LLM 上游 `NVIDIA/TensorRT-LLM@0722c5f47d2cae69ac1a237da51e550dd214532c` 重新扫描本文下方列出的 tracked files。
-文件级匹配使用 GitHub mirror 的 `git log --name-only`；PR 标题、链接和合并时间通过 GitHub GraphQL Pull Request API 批量复核。上一时效锚点：`2026-06-26`。
+已用 `git ls-remote` 复核 TensorRT-LLM 上游 main head：
+`NVIDIA/TensorRT-LLM@aaffa2f9fef3025e0f698d978385a73460344e0b`。
+下方文件级 source-scan 行仍是上一轮 tracked-file 审计结果；引用当前 open PR 状态前，先看 `model-pr-optimization-history/open-pr-watch.md`。
 
 结果：发现 3 个额外 PR-numbered merge 触及 tracked files，但尚未提升为下方完整逐 PR diff audit card。此节只作为 freshness index；需要引用实现细节时，仍应先人工阅读 PR diff 再补完整卡片。
 
@@ -13,12 +14,12 @@
 | 2026-06-26 | [#15361](https://github.com/NVIDIA/TensorRT-LLM/pull/15361) | [TRTLLM-12762][test] Add Test coverage for MiniMax Model with multi-node, M2.5 checkpoints eval | `test_llm_api_pytorch.py` |
 | 2026-06-26 | [#14837](https://github.com/NVIDIA/TensorRT-LLM/pull/14837) | [TRTLLM-13712][feat] Add Qwen-Image-Bench evaluator | `qwen3_5_weight_mapper.py` |
 
-## 2026-06-26 PR 补漏复核
+## 2026-06-27 PR 补漏复核
 
 本文的逐 PR diff 审计卡基于 TensorRT-LLM 上游
 `HEAD@4164b932c6c8a14d1be85d0fd62e44b7d0171980` 生成；根目录 TensorRT-LLM
-history index 已跟踪 2026-06-26 最新 runtime refresh
-`0722c5f47d2cae69ac1a237da51e550dd214532c`。本文覆盖 Qwen3.5 相关 merged
+history index 已跟踪 2026-06-27 runtime refresh
+`aaffa2f9fef3025e0f698d978385a73460344e0b`。本文覆盖 Qwen3.5 相关 merged
 PR，并采用 SGLang 风格的模型实现覆盖、PR 时间线和逐 PR diff 审计卡。
 
 本轮筛选规则：标题/文件命中 `Qwen3.5`、`Qwen3_5`、`qwen3_5`、`AutoDeploy`、`NVFP4`、`FP8`、`DFlash`、`reasoning_parser`、`EPLB`、`MoE backend`、`model_registry` 的 merged PR；过滤纯重排和不触碰模型/loader/test lane 的基础设施 PR。

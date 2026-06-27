@@ -1,37 +1,5 @@
 # vllm Nemotron Super Model PR Optimization History
 
-## 2026-06-26 Latest Source Scan
-
-Rechecked vLLM upstream `vllm-project/vllm@abc71548ef029132c3316b902207f254a246d593` against the tracked files listed below.
-The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-05`.
-
-Result: 6 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
-
-| Merged | PR | Title | Tracked files touched |
-| --- | --- | --- | --- |
-| 2026-06-24 | [#46495](https://github.com/vllm-project/vllm/pull/46495) | [Bugfix] Fix NemotronLayerNorm1P hardcoded cuda device type | `nemotron.py` |
-| 2026-06-18 | [#42727](https://github.com/vllm-project/vllm/pull/42727) | fix(quantization): Fix AWQ dequantize on Intel XPU and refactor AutoAWQ config | `nemotron_vl.py` |
-| 2026-06-16 | [#45755](https://github.com/vllm-project/vllm/pull/45755) | [Frontend] [Parser] Migrate Nemotron V3 to streaming parser engine | `test_nemotron_v3_reasoning_parser.py`, `nemotron_v3_reasoning_parser.py` |
-| 2026-06-11 | [#45128](https://github.com/vllm-project/vllm/pull/45128) | [Model] Remove InternLMForCausalLM registry alias | `nemotron.py`, `nemotron_nas.py` |
-| 2026-06-10 | [#39091](https://github.com/vllm-project/vllm/pull/39091) | [Bugfix][Reasoning] Nemotron V3: surface reasoning as content when thinking is unterminated | `test_nemotron_v3_reasoning_parser.py`, `nemotron_v3_reasoning_parser.py` |
-| 2026-06-08 | [#41184](https://github.com/vllm-project/vllm/pull/41184) | [MoE Refactor] FusedMoE/MoERunner inversion refactor | `nemotron_h.py` |
-
-## 2026-06-05 PR Backfill Audit
-
-Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 4 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
-
-| Merged | PR | Title | Tracked files touched |
-| --- | --- | --- | --- |
-| 2026-06-05 | [#43167](https://github.com/vllm-project/vllm/pull/43167) | Remove KV cache scale boilerplate from model weight loading methods | `nemotron.py`, `nemotron_nas.py` |
-| 2026-05-28 | [#43581](https://github.com/vllm-project/vllm/pull/43581) | [Model][Bugfix] Rename weight_mapper to hf_to_vllm_mapper in LlamaNemotronVL pooling models | `nemotron_vl.py` |
-| 2026-05-26 | [#42124](https://github.com/vllm-project/vllm/pull/42124) | Add LM head quantization support for ModelOpt | `nemotron_h.py` |
-| 2026-05-20 | [#43130](https://github.com/vllm-project/vllm/pull/43130) | [Spec Decode] Support non-MTP speculation for NemotronH | `nemotron_h.py` |
-
-
-## 2026-05-19 PR Backfill Audit
-
-Rechecked vllm upstream `origin/main@07beaed84` and the GitHub Pull Request files API; this pass adds timeline entries and per-PR diff audit cards for `#41233`.
-
 ## Implementation File Coverage
 
 | File | Git-traced PRs |
@@ -45,19 +13,23 @@ Rechecked vllm upstream `origin/main@07beaed84` and the GitHub Pull Request file
 | `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-Fp8-ModelOpt-fi-trtllm.yaml` | [#34725](https://github.com/vllm-project/vllm/pull/34725) |
 | `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-fi-cutlass.yaml` | [#34725](https://github.com/vllm-project/vllm/pull/34725) |
 | `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-vllm-cutlass.yaml` | no direct PR-number commit |
+| `tests/model_executor/test_nemotron_h_quantization.py` | no direct PR-number commit |
 | `tests/models/language/pooling_mteb_test/test_nemotron.py` | no direct PR-number commit |
-| `tests/models/multimodal/generation/test_nemotron_parse.py` | [#30864](https://github.com/vllm-project/vllm/pull/30864), [#37407](https://github.com/vllm-project/vllm/pull/37407) |
+| `tests/models/multimodal/generation/test_nemotron_parse.py` | [#30864](https://github.com/vllm-project/vllm/pull/30864), [#37407](https://github.com/vllm-project/vllm/pull/37407), [#42498](https://github.com/vllm-project/vllm/pull/42498) |
 | `tests/models/multimodal/pooling/test_llama_nemotron_vl.py` | [#35735](https://github.com/vllm-project/vllm/pull/35735), [#37613](https://github.com/vllm-project/vllm/pull/37613) |
 | `tests/models/multimodal/processing/test_nemotron_vl.py` | [#20349](https://github.com/vllm-project/vllm/pull/20349), [#22739](https://github.com/vllm-project/vllm/pull/22739) |
-| `tests/reasoning/test_nemotron_v3_reasoning_parser.py` | [#36393](https://github.com/vllm-project/vllm/pull/36393), [#36635](https://github.com/vllm-project/vllm/pull/36635) |
-| `vllm/model_executor/models/nano_nemotron_vl.py` | [#23644](https://github.com/vllm-project/vllm/pull/23644), [#25708](https://github.com/vllm-project/vllm/pull/25708), [#26186](https://github.com/vllm-project/vllm/pull/26186), [#26269](https://github.com/vllm-project/vllm/pull/26269), [#27107](https://github.com/vllm-project/vllm/pull/27107), [#30864](https://github.com/vllm-project/vllm/pull/30864), [#32121](https://github.com/vllm-project/vllm/pull/32121), [#32682](https://github.com/vllm-project/vllm/pull/32682), [#35100](https://github.com/vllm-project/vllm/pull/35100), [#35539](https://github.com/vllm-project/vllm/pull/35539), [#35657](https://github.com/vllm-project/vllm/pull/35657), [#36808](https://github.com/vllm-project/vllm/pull/36808), ... (21 total) |
-| `vllm/model_executor/models/nemotron.py` | [#6611](https://github.com/vllm-project/vllm/pull/6611), [#7611](https://github.com/vllm-project/vllm/pull/7611) |
-| `vllm/model_executor/models/nemotron_h.py` | [#18863](https://github.com/vllm-project/vllm/pull/18863), [#19249](https://github.com/vllm-project/vllm/pull/19249), [#22349](https://github.com/vllm-project/vllm/pull/22349), [#25863](https://github.com/vllm-project/vllm/pull/25863), [#27968](https://github.com/vllm-project/vllm/pull/27968), [#30802](https://github.com/vllm-project/vllm/pull/30802), [#31539](https://github.com/vllm-project/vllm/pull/31539), [#31807](https://github.com/vllm-project/vllm/pull/31807), [#31898](https://github.com/vllm-project/vllm/pull/31898), [#32265](https://github.com/vllm-project/vllm/pull/32265), [#32549](https://github.com/vllm-project/vllm/pull/32549), [#32669](https://github.com/vllm-project/vllm/pull/32669), ... (17 total) |
+| `tests/models/multimodal/test_nano_nemotron_vl.py` | [#41205](https://github.com/vllm-project/vllm/pull/41205), [#42244](https://github.com/vllm-project/vllm/pull/42244) |
+| `tests/parser/engine/test_nemotron_v3.py` | [#45755](https://github.com/vllm-project/vllm/pull/45755) |
+| `tests/reasoning/test_nemotron_v3_reasoning_parser.py` | [#36393](https://github.com/vllm-project/vllm/pull/36393), [#36635](https://github.com/vllm-project/vllm/pull/36635), [#39091](https://github.com/vllm-project/vllm/pull/39091), [#45755](https://github.com/vllm-project/vllm/pull/45755) |
+| `vllm/model_executor/models/nano_nemotron_vl.py` | [#23644](https://github.com/vllm-project/vllm/pull/23644), [#25708](https://github.com/vllm-project/vllm/pull/25708), [#26186](https://github.com/vllm-project/vllm/pull/26186), [#26269](https://github.com/vllm-project/vllm/pull/26269), [#27107](https://github.com/vllm-project/vllm/pull/27107), [#30864](https://github.com/vllm-project/vllm/pull/30864), [#32121](https://github.com/vllm-project/vllm/pull/32121), [#32682](https://github.com/vllm-project/vllm/pull/32682), [#35100](https://github.com/vllm-project/vllm/pull/35100), [#35539](https://github.com/vllm-project/vllm/pull/35539), [#35657](https://github.com/vllm-project/vllm/pull/35657), [#36808](https://github.com/vllm-project/vllm/pull/36808), ... (23 total) |
+| `vllm/model_executor/models/nemotron.py` | [#6611](https://github.com/vllm-project/vllm/pull/6611), [#7611](https://github.com/vllm-project/vllm/pull/7611), [#46495](https://github.com/vllm-project/vllm/pull/46495) |
+| `vllm/model_executor/models/nemotron_h.py` | [#18863](https://github.com/vllm-project/vllm/pull/18863), [#19249](https://github.com/vllm-project/vllm/pull/19249), [#22349](https://github.com/vllm-project/vllm/pull/22349), [#25863](https://github.com/vllm-project/vllm/pull/25863), [#27968](https://github.com/vllm-project/vllm/pull/27968), [#30802](https://github.com/vllm-project/vllm/pull/30802), [#31539](https://github.com/vllm-project/vllm/pull/31539), [#31807](https://github.com/vllm-project/vllm/pull/31807), [#31898](https://github.com/vllm-project/vllm/pull/31898), [#32265](https://github.com/vllm-project/vllm/pull/32265), [#32549](https://github.com/vllm-project/vllm/pull/32549), [#32669](https://github.com/vllm-project/vllm/pull/32669), ... (18 total) |
 | `vllm/model_executor/models/nemotron_h_mtp.py` | [#33726](https://github.com/vllm-project/vllm/pull/33726), [#37803](https://github.com/vllm-project/vllm/pull/37803) |
 | `vllm/model_executor/models/nemotron_nas.py` | [#15008](https://github.com/vllm-project/vllm/pull/15008), [#18427](https://github.com/vllm-project/vllm/pull/18427), [#30795](https://github.com/vllm-project/vllm/pull/30795) |
-| `vllm/model_executor/models/nemotron_parse.py` | [#30864](https://github.com/vllm-project/vllm/pull/30864), [#33189](https://github.com/vllm-project/vllm/pull/33189), [#37407](https://github.com/vllm-project/vllm/pull/37407), [#37456](https://github.com/vllm-project/vllm/pull/37456) |
-| `vllm/model_executor/models/nemotron_vl.py` | [#20349](https://github.com/vllm-project/vllm/pull/20349), [#22023](https://github.com/vllm-project/vllm/pull/22023), [#22739](https://github.com/vllm-project/vllm/pull/22739), [#35297](https://github.com/vllm-project/vllm/pull/35297), [#35735](https://github.com/vllm-project/vllm/pull/35735), [#36192](https://github.com/vllm-project/vllm/pull/36192) |
-| `vllm/reasoning/nemotron_v3_reasoning_parser.py` | [#36393](https://github.com/vllm-project/vllm/pull/36393), [#36635](https://github.com/vllm-project/vllm/pull/36635) |
+| `vllm/model_executor/models/nemotron_parse.py` | [#30864](https://github.com/vllm-project/vllm/pull/30864), [#33189](https://github.com/vllm-project/vllm/pull/33189), [#37407](https://github.com/vllm-project/vllm/pull/37407), [#37456](https://github.com/vllm-project/vllm/pull/37456), [#42641](https://github.com/vllm-project/vllm/pull/42641) |
+| `vllm/model_executor/models/nemotron_vl.py` | [#20349](https://github.com/vllm-project/vllm/pull/20349), [#22023](https://github.com/vllm-project/vllm/pull/22023), [#22739](https://github.com/vllm-project/vllm/pull/22739), [#35297](https://github.com/vllm-project/vllm/pull/35297), [#35735](https://github.com/vllm-project/vllm/pull/35735), [#36192](https://github.com/vllm-project/vllm/pull/36192), [#43581](https://github.com/vllm-project/vllm/pull/43581) |
+| `vllm/parser/nemotron_v3.py` | [#45755](https://github.com/vllm-project/vllm/pull/45755) |
+| `vllm/reasoning/nemotron_v3_engine_reasoning_parser.py` | [#45755](https://github.com/vllm-project/vllm/pull/45755) |
 | `vllm/transformers_utils/configs/nemotron.py` | [#6611](https://github.com/vllm-project/vllm/pull/6611), [#7611](https://github.com/vllm-project/vllm/pull/7611), [#20349](https://github.com/vllm-project/vllm/pull/20349) |
 | `vllm/transformers_utils/configs/nemotron_h.py` | [#18863](https://github.com/vllm-project/vllm/pull/18863), [#22349](https://github.com/vllm-project/vllm/pull/22349), [#25863](https://github.com/vllm-project/vllm/pull/25863), [#33726](https://github.com/vllm-project/vllm/pull/33726) |
 | `vllm/transformers_utils/processors/nano_nemotron_vl.py` | [#36808](https://github.com/vllm-project/vllm/pull/36808), [#37903](https://github.com/vllm-project/vllm/pull/37903), [#38538](https://github.com/vllm-project/vllm/pull/38538), [#38655](https://github.com/vllm-project/vllm/pull/38655), [#40283](https://github.com/vllm-project/vllm/pull/40283) |
@@ -65,9 +37,9 @@ Rechecked vllm upstream `origin/main@07beaed84` and the GitHub Pull Request file
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 60
-- Extra PRs preserved from existing docs: 3
-- Total PRs in this document: 63
+- Git-traced PRs: 69
+- Extra PRs preserved from existing docs: 8
+- Total PRs in this document: 77
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -118,8 +90,8 @@ Rechecked vllm upstream `origin/main@07beaed84` and the GitHub Pull Request file
 | 2026-03-04 | [#35539](https://github.com/vllm-project/vllm/pull/35539) | merged | Support Audio Extraction from MP4 Video for Nemotron Nano VL | `vllm/model_executor/models/nano_nemotron_vl.py` |
 | 2026-03-06 | [#36192](https://github.com/vllm-project/vllm/pull/36192) | merged | [Security] Respect user trust_remote_code setting in NemotronVL and KimiK25 | `vllm/model_executor/models/nemotron_vl.py` |
 | 2026-03-08 | [#35657](https://github.com/vllm-project/vllm/pull/35657) | merged | [Model] Nano Nemotron VL - fast media preprocessing | `vllm/model_executor/models/nano_nemotron_vl.py` |
-| 2026-03-09 | [#36393](https://github.com/vllm-project/vllm/pull/36393) | merged | add nemotron v3 reasoning parser | `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py` |
-| 2026-03-11 | [#36635](https://github.com/vllm-project/vllm/pull/36635) | merged | [NemotronH] Small fix reasoning parser | `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py` |
+| 2026-03-09 | [#36393](https://github.com/vllm-project/vllm/pull/36393) | merged | add nemotron v3 reasoning parser | `tests/reasoning/test_nemotron_v3_reasoning_parser.py` |
+| 2026-03-11 | [#36635](https://github.com/vllm-project/vllm/pull/36635) | merged | [NemotronH] Small fix reasoning parser | `tests/reasoning/test_nemotron_v3_reasoning_parser.py` |
 | 2026-03-18 | [#37456](https://github.com/vllm-project/vllm/pull/37456) | merged | [Model] Remove unnecessary processor definition for Nemotron Parse | `vllm/transformers_utils/processors/nemotron_parse.py`, `vllm/model_executor/models/nemotron_parse.py` |
 | 2026-03-19 | [#36808](https://github.com/vllm-project/vllm/pull/36808) | merged | Support temporal compression for Nemotron-3-VL videos | `vllm/transformers_utils/processors/nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py` |
 | 2026-03-19 | [#37407](https://github.com/vllm-project/vllm/pull/37407) | merged | [Bugfix] Fix Nemotron Parse loading | `tests/models/multimodal/generation/test_nemotron_parse.py`, `vllm/model_executor/models/nemotron_parse.py` |
@@ -137,7 +109,21 @@ Rechecked vllm upstream `origin/main@07beaed84` and the GitHub Pull Request file
 | 2026-04-15 | [#39901](https://github.com/vllm-project/vllm/pull/39901) | merged | FIX: support language_model.backbone naming in NemotronH Nano VL quantization config | `vllm/model_executor/models/nano_nemotron_vl.py` |
 | 2026-04-19 | [#40283](https://github.com/vllm-project/vllm/pull/40283) | merged | Optimize nemotron VL image/video preprocessing | `vllm/transformers_utils/processors/nano_nemotron_vl.py` |
 | 2026-04-24 | [#40724](https://github.com/vllm-project/vllm/pull/40724) | merged | Fix Nano Nemotron VL static image inputs | `vllm/model_executor/models/nano_nemotron_vl.py` |
-| 2026-05-18 | [#41233](https://github.com/vllm-project/vllm/pull/41233) | merged | [Bugfix][Hybrid][NemotronH] Fix mamba_cache_mode=all + speculative decoding crash | `vllm/v1/attention/backends/mamba_attn.py`, `vllm/model_executor/models/config.py`, `vllm/v1/attention/backends/utils.py` |
+| 2026-05-04 | [#41205](https://github.com/vllm-project/vllm/pull/41205) | merged | Fix Nano Nemotron text-only weight loading | `tests/models/multimodal/test_nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py` |
+| 2026-05-11 | [#42244](https://github.com/vllm-project/vllm/pull/42244) | merged | Avoid silent weights corruption when loading Nemotron Nano VL with reusable-buffer loaders like runai distributed streaming | `vllm/model_executor/models/nano_nemotron_vl.py`, `tests/models/multimodal/test_nano_nemotron_vl.py` |
+| 2026-05-13 | [#42498](https://github.com/vllm-project/vllm/pull/42498) | merged | [CI] Re-enable Nemotron Parse parity test and switch testing to nemotron-parse v1.2 | `tests/models/multimodal/generation/test_nemotron_parse.py` |
+| 2026-05-14 | [#42641](https://github.com/vllm-project/vllm/pull/42641) | merged | [Bugfix] Fix LM detection for Nemotron Parse | `vllm/model_executor/models/nemotron_parse.py` |
+| 2026-05-18 | [#41233](https://github.com/vllm-project/vllm/pull/41233) | merged | [Bugfix][Hybrid][NemotronH] Fix mamba_cache_mode=all + speculative decoding crash | `vllm/model_executor/layers/mamba/mamba_mixer2.py`, `vllm/model_executor/models/config.py`, `tests/v1/attention/test_mamba_update_block_table.py` |
+| 2026-05-20 | [#43130](https://github.com/vllm-project/vllm/pull/43130) | merged | [Spec Decode] Support non-MTP speculation for NemotronH | `vllm/model_executor/models/nemotron_h.py` |
+| 2026-05-26 | [#42124](https://github.com/vllm-project/vllm/pull/42124) | merged | Add LM head quantization support for ModelOpt | `tests/model_executor/test_qwen3_5_quantization.py`, `tests/model_executor/test_nemotron_h_quantization.py`, `vllm/model_executor/layers/quantization/modelopt.py` |
+| 2026-05-28 | [#43581](https://github.com/vllm-project/vllm/pull/43581) | merged | [Model][Bugfix] Rename weight_mapper to hf_to_vllm_mapper in LlamaNemotronVL pooling models | `vllm/model_executor/models/nemotron_vl.py` |
+| 2026-06-05 | [#43167](https://github.com/vllm-project/vllm/pull/43167) | merged | Remove KV cache scale boilerplate from model weight loading methods | `tests/model_executor/test_eagle_quantization.py`, `vllm/model_executor/models/gpt_oss.py`, `vllm/model_executor/layers/quantization/kv_cache.py` |
+| 2026-06-08 | [#41184](https://github.com/vllm-project/vllm/pull/41184) | merged | [MoE Refactor] FusedMoE/MoERunner inversion refactor | `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/routed_experts.py`, `vllm/model_executor/layers/fused_moe/runner/moe_runner.py` |
+| 2026-06-10 | [#39091](https://github.com/vllm-project/vllm/pull/39091) | merged | [Bugfix][Reasoning] Nemotron V3: surface reasoning as content when thinking is unterminated | `tests/reasoning/test_nemotron_v3_reasoning_parser.py` |
+| 2026-06-11 | [#45128](https://github.com/vllm-project/vllm/pull/45128) | merged | [Model] Remove InternLMForCausalLM registry alias | `tests/models/registry.py`, `vllm/model_executor/models/registry.py`, `docs/models/supported_models.md` |
+| 2026-06-16 | [#45755](https://github.com/vllm-project/vllm/pull/45755) | merged | [Frontend] [Parser] Migrate Nemotron V3 to streaming parser engine | `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_engine_reasoning_parser.py`, `tests/parser/engine/test_nemotron_v3.py` |
+| 2026-06-18 | [#42727](https://github.com/vllm-project/vllm/pull/42727) | merged | fix(quantization): Fix AWQ dequantize on Intel XPU and refactor AutoAWQ config | `vllm/model_executor/layers/quantization/auto_awq.py`, `vllm/model_executor/layers/quantization/awq.py`, `vllm/model_executor/layers/quantization/moe_wna16.py` |
+| 2026-06-24 | [#46495](https://github.com/vllm-project/vllm/pull/46495) | merged | [Bugfix] Fix NemotronLayerNorm1P hardcoded cuda device type | `vllm/model_executor/models/nemotron.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -147,7 +133,7 @@ Rechecked vllm upstream `origin/main@07beaed84` and the GitHub Pull Request file
 - Status/date: merged / 2024-07-26
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron.py`, `vllm/transformers_utils/configs/nemotron.py`; associated commits `07278c37ddd8`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 9 files, +776/-1, 847 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model] Support Nemotron models (Nemotron-3, Nemotron-4, Minitron)"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nemotron.py`, `vllm/transformers_utils/configs/nemotron.py`; technical summary: Covers "[Model] Support Nemotron models (Nemotron-3, Nemotron-4, Minitron)"; the main implementation surface is `vllm/model_executor/models/nemotron.py`, `vllm/transformers_utils/configs/nemotron.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "[Model] Support Nemotron models (Nemotron-3, Nemotron-4, Minitron)"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron.py`, `vllm/transformers_utils/configs/nemotron.py`; technical summary: Covers "[Model] Support Nemotron models (Nemotron-3, Nemotron-4, Minitron)"; the main implementation surface is `vllm/model_executor/models/nemotron.py`, `vllm/transformers_utils/configs/nemotron.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/nemotron.py` added +531/-0 (531 lines); hunks: -0,0 +1,531; symbols: _cast_if_autocast_enabled, NemotronLayerNorm1P, __init__, forward, touching `_cast_if_autocast_enabled, NemotronLayerNorm1P, __init__`; `vllm/transformers_utils/configs/nemotron.py` added +209/-0 (209 lines); hunks: -0,0 +1,209; symbols: NemotronConfig, to, __init__, _rope_scaling_validation, touching `NemotronConfig, to, __init__`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron.py` added +531/-0 (531 lines); hunks: -0,0 +1,531; symbols: _cast_if_autocast_enabled, NemotronLayerNorm1P, __init__, forward
@@ -219,7 +205,7 @@ diff -- vllm/model_executor/models/nemotron.py
 - Status/date: merged / 2025-03-31
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_nas.py`; associated commits `3aa2b6a63714`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +524/-133, 764 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model] Update support for NemotronNAS models"; model line: Nemotron Super; category: docs/tests/CI; main diff: `vllm/model_executor/models/nemotron_nas.py`; technical summary: Covers "[Model] Update support for NemotronNAS models"; the main implementation surface is `vllm/model_executor/models/nemotron_nas.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "[Model] Update support for NemotronNAS models"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_nas.py`; technical summary: Covers "[Model] Update support for NemotronNAS models"; the main implementation surface is `vllm/model_executor/models/nemotron_nas.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/nemotron_nas.py` added +454/-0 (454 lines); hunks: -0,0 +1,454; symbols: _ffn_mult_to_intermediate_size, _find_multiple, DeciLMDecoderLayer, __init__, touching `_ffn_mult_to_intermediate_size, _find_multiple, DeciLMDecoderLayer`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_nas.py` added +454/-0 (454 lines); hunks: -0,0 +1,454; symbols: _ffn_mult_to_intermediate_size, _find_multiple, DeciLMDecoderLayer, __init__
@@ -336,7 +322,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 - Status/date: merged / 2025-07-17
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/processing/test_nemotron_vl.py`, `vllm/model_executor/models/nemotron_vl.py`, `vllm/transformers_utils/configs/nemotron.py`; associated commits `4ef00b5caca4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 11 files, +701/-3, 837 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[VLM] Add Nemotron-Nano-VL-8B-V1 support"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_vl.py`, `tests/models/multimodal/processing/test_nemotron_vl.py`, `vllm/transformers_utils/configs/nemotron.py`; technical summary: Covers "[VLM] Add Nemotron-Nano-VL-8B-V1 support"; the main implementation surface is `vllm/model_executor/models/nemotron_vl.py`, `tests/models/multimodal/processing/test_nemotron_vl.py`, `vllm/transformers_utils/configs/nemotron.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "[VLM] Add Nemotron-Nano-VL-8B-V1 support"; model line: Nemotron Super; category: docs/tests/CI; main diff: `vllm/model_executor/models/nemotron_vl.py`, `tests/models/multimodal/processing/test_nemotron_vl.py`, `vllm/transformers_utils/configs/nemotron.py`; technical summary: Covers "[VLM] Add Nemotron-Nano-VL-8B-V1 support"; the main implementation surface is `vllm/model_executor/models/nemotron_vl.py`, `tests/models/multimodal/processing/test_nemotron_vl.py`, `vllm/transformers_utils/configs/nemotron.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/nemotron_vl.py` added +505/-0 (505 lines); hunks: -0,0 +1,505; symbols: NemotronVLProcessor, __init__, image_token_id, _preprocess_image, touching `NemotronVLProcessor, __init__, image_token_id`; `tests/models/multimodal/processing/test_nemotron_vl.py` added +134/-0 (134 lines); hunks: -0,0 +1,134; symbols: _get_expected_num_patches, _run_check, test_processor_override, touching `_get_expected_num_patches, _run_check, test_processor_override`; `vllm/transformers_utils/configs/nemotron.py` modified +1/-1 (2 lines); hunks: -202,4 +202,4 @@ def _rope_scaling_validation(self):; symbols: _rope_scaling_validation, touching `_rope_scaling_validation`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_vl.py` added +505/-0 (505 lines); hunks: -0,0 +1,505; symbols: NemotronVLProcessor, __init__, image_token_id, _preprocess_image
@@ -594,7 +580,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 - Status/date: merged / 2025-10-06
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `b8f603cebe39`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +224/-31, 447 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model] EVS support for nano_nemotron_vl"; model line: Nemotron Super; category: docs/tests/CI; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; technical summary: Covers "[Model] EVS support for nano_nemotron_vl"; the main implementation surface is `vllm/model_executor/models/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "[Model] EVS support for nano_nemotron_vl"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; technical summary: Covers "[Model] EVS support for nano_nemotron_vl"; the main implementation surface is `vllm/model_executor/models/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/nano_nemotron_vl.py` modified +207/-19 (226 lines); hunks: -30,6 +30,7; -44,6 +45,10; symbols: __init__, supports_video, _preprocess_video, get_image_repl, touching `__init__, supports_video, _preprocess_video`.
 - Code diff details:
   - `vllm/model_executor/models/nano_nemotron_vl.py` modified +207/-19 (226 lines); hunks: -30,6 +30,7; -44,6 +45,10; symbols: __init__, supports_video, _preprocess_video, get_image_repl
@@ -621,7 +607,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 - Status/date: merged / 2025-10-20
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `e93ff6c8b92b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +316/-105, 771 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Nemotron Nano V2 VL + EVS Video Support"; model line: Nemotron Super; category: docs/tests/CI; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; technical summary: Covers "Nemotron Nano V2 VL + EVS Video Support"; the main implementation surface is `vllm/model_executor/models/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "Nemotron Nano V2 VL + EVS Video Support"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; technical summary: Covers "Nemotron Nano V2 VL + EVS Video Support"; the main implementation surface is `vllm/model_executor/models/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/nano_nemotron_vl.py` modified +266/-49 (315 lines); hunks: -14,14 +14,15; -53,12 +54,14; symbols: NanoNemotronVLVideoPixelInputs, NanoNemotronVLVideoEmbeddingInputs, video_to_pixel_values, input_conditioner, touching `NanoNemotronVLVideoPixelInputs, NanoNemotronVLVideoEmbeddingInputs, video_to_pixel_values`.
 - Code diff details:
   - `vllm/model_executor/models/nano_nemotron_vl.py` modified +266/-49 (315 lines); hunks: -14,14 +14,15; -53,12 +54,14; symbols: NanoNemotronVLVideoPixelInputs, NanoNemotronVLVideoEmbeddingInputs, video_to_pixel_values, input_conditioner
@@ -765,7 +751,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 - Status/date: merged / 2026-01-05
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/generation/test_nemotron_parse.py`, `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/model_executor/models/nemotron_parse.py`; associated commits `ee212918250a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 13 files, +1117/-31, 1329 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model] Nemotron Parse 1.1 Support"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_parse.py`, `tests/models/multimodal/generation/test_nemotron_parse.py`, `vllm/model_executor/models/nano_nemotron_vl.py`; technical summary: Covers "[Model] Nemotron Parse 1.1 Support"; the main implementation surface is `vllm/model_executor/models/nemotron_parse.py`, `tests/models/multimodal/generation/test_nemotron_parse.py`, `vllm/model_executor/models/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "[Model] Nemotron Parse 1.1 Support"; model line: Nemotron Super; category: docs/tests/CI; main diff: `vllm/model_executor/models/nemotron_parse.py`, `tests/models/multimodal/generation/test_nemotron_parse.py`, `vllm/model_executor/models/nano_nemotron_vl.py`; technical summary: Covers "[Model] Nemotron Parse 1.1 Support"; the main implementation surface is `vllm/model_executor/models/nemotron_parse.py`, `tests/models/multimodal/generation/test_nemotron_parse.py`, `vllm/model_executor/models/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/nemotron_parse.py` added +958/-0 (958 lines); hunks: -0,0 +1,958; symbols: BartScaledWordEmbedding, __init__, forward, BartParallelLMHead, touching `BartScaledWordEmbedding, __init__, forward`; `tests/models/multimodal/generation/test_nemotron_parse.py` added +89/-0 (89 lines); hunks: -0,0 +1,89; symbols: run_test, test_models, touching `run_test, test_models`; `vllm/model_executor/models/nano_nemotron_vl.py` modified +2/-7 (9 lines); hunks: -1220,7 +1220,7 @@ def extract_feature(self, pixel_values):; -1695,12 +1695,7 @@ def get_vit_model_from_radio_config(self, hf_config):; symbols: extract_feature, get_vit_model_from_radio_config, touching `extract_feature, get_vit_model_from_radio_config`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_parse.py` added +958/-0 (958 lines); hunks: -0,0 +1,958; symbols: BartScaledWordEmbedding, __init__, forward, BartParallelLMHead
@@ -832,7 +818,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 - Status/date: merged / 2026-01-07
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `bf184a66218b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +4/-0, 18 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Enable quantized attention in NemotronH models"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nemotron_h.py`; technical summary: Covers "Enable quantized attention in NemotronH models"; the main implementation surface is `vllm/model_executor/models/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "Enable quantized attention in NemotronH models"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_h.py`; technical summary: Covers "Enable quantized attention in NemotronH models"; the main implementation surface is `vllm/model_executor/models/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/nemotron_h.py` modified +1/-0 (1 lines); hunks: -483,6 +483,7 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_h.py` modified +1/-0 (1 lines); hunks: -483,6 +483,7 @@ def __init__(; symbols: __init__
@@ -854,7 +840,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 - Status/date: merged / 2026-01-19
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `aa7f37ccfa16`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +497/-27, 717 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Add support for LoRA adapters in Nemotron-H models"; model line: Nemotron Super; category: performance/backend optimization; main diff: `vllm/model_executor/models/nemotron_h.py`; technical summary: Covers "Add support for LoRA adapters in Nemotron-H models"; the main implementation surface is `vllm/model_executor/models/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "Add support for LoRA adapters in Nemotron-H models"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_h.py`; technical summary: Covers "Add support for LoRA adapters in Nemotron-H models"; the main implementation surface is `vllm/model_executor/models/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/nemotron_h.py` modified +3/-0 (3 lines); hunks: -747,6 +747,9 @@ class NemotronHForCausalLM(; symbols: NemotronHForCausalLM, touching `NemotronHForCausalLM`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_h.py` modified +3/-0 (3 lines); hunks: -747,6 +747,9 @@ class NemotronHForCausalLM(; symbols: NemotronHForCausalLM
@@ -979,7 +965,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 - Status/date: merged / 2026-01-29
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_parse.py`; associated commits `9e138cb01d65`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +4/-1, 26 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Misc][Build] Lazy load cv2 in nemotron_parse.py"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nemotron_parse.py`; technical summary: Covers "[Misc][Build] Lazy load cv2 in nemotron_parse.py"; the main implementation surface is `vllm/model_executor/models/nemotron_parse.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "[Misc][Build] Lazy load cv2 in nemotron_parse.py"; model line: Nemotron Super; category: model implementation change; main diff: `vllm/model_executor/models/nemotron_parse.py`; technical summary: Covers "[Misc][Build] Lazy load cv2 in nemotron_parse.py"; the main implementation surface is `vllm/model_executor/models/nemotron_parse.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/nemotron_parse.py` modified +4/-1 (5 lines); hunks: -11,7 +11,6; -416,6 +415,8 @@ def _create_transforms(self):; symbols: _create_transforms, _resize_with_aspect_ratio, touching `_create_transforms, _resize_with_aspect_ratio`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_parse.py` modified +4/-1 (5 lines); hunks: -11,7 +11,6; -416,6 +415,8 @@ def _create_transforms(self):; symbols: _create_transforms, _resize_with_aspect_ratio
@@ -1031,7 +1017,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 - Status/date: merged / 2026-02-02
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `0aca8b8c628e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +303/-58, 499 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[MoE] Enable Shared/Routed Overlap For Latent MoE (Nemotron-H)"; model line: Nemotron Super; category: performance/backend optimization; main diff: `vllm/model_executor/models/nemotron_h.py`; technical summary: Covers "[MoE] Enable Shared/Routed Overlap For Latent MoE (Nemotron-H)"; the main implementation surface is `vllm/model_executor/models/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "[MoE] Enable Shared/Routed Overlap For Latent MoE (Nemotron-H)"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_h.py`; technical summary: Covers "[MoE] Enable Shared/Routed Overlap For Latent MoE (Nemotron-H)"; the main implementation surface is `vllm/model_executor/models/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/nemotron_h.py` modified +30/-42 (72 lines); hunks: -188,10 +188,29 @@ def __init__(; -211,30 +230,9 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_h.py` modified +30/-42 (72 lines); hunks: -188,10 +188,29 @@ def __init__(; -211,30 +230,9 @@ def __init__(; symbols: __init__, forward
@@ -1163,7 +1149,7 @@ diff -- tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-
 - Status/date: merged / 2026-02-19
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `3eff45d793da`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +4/-1, 30 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Revert "[NemotronH] Do not force router to run in fp32 (#34582)""; model line: Nemotron Super; category: performance/backend optimization; main diff: `vllm/model_executor/models/nemotron_h.py`; technical summary: Covers "Revert "[NemotronH] Do not force router to run in fp32 (#34582)""; the main implementation surface is `vllm/model_executor/models/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "Revert "[NemotronH] Do not force router to run in fp32 (#34582)""; model line: Nemotron Super; category: model implementation change; main diff: `vllm/model_executor/models/nemotron_h.py`; technical summary: Covers "Revert "[NemotronH] Do not force router to run in fp32 (#34582)""; the main implementation surface is `vllm/model_executor/models/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/nemotron_h.py` modified +4/-1 (5 lines); hunks: -148,10 +148,12 @@ def __init__(; -230,6 +232,7 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_h.py` modified +4/-1 (5 lines); hunks: -148,10 +148,12 @@ def __init__(; -230,6 +232,7 @@ def __init__(; symbols: __init__, forward
@@ -1190,7 +1176,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 - Status/date: merged / 2026-02-24
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`, `vllm/model_executor/models/nemotron_h_mtp.py`, `vllm/transformers_utils/configs/nemotron_h.py`; associated commits `f5972a872fa3`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 19 files, +800/-158, 1473 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model][Spec Decode] Nemotron-H MTP and Mamba Speculative Decoding Support"; model line: Nemotron Super; category: docs/tests/CI; main diff: `vllm/model_executor/models/nemotron_h_mtp.py`, `vllm/transformers_utils/configs/nemotron_h.py`, `vllm/model_executor/models/nemotron_h.py`; technical summary: Covers "[Model][Spec Decode] Nemotron-H MTP and Mamba Speculative Decoding Support"; the main implementation surface is `vllm/model_executor/models/nemotron_h_mtp.py`, `vllm/transformers_utils/configs/nemotron_h.py`, `vllm/model_executor/models/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "[Model][Spec Decode] Nemotron-H MTP and Mamba Speculative Decoding Support"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_h_mtp.py`, `vllm/transformers_utils/configs/nemotron_h.py`, `vllm/model_executor/models/nemotron_h.py`; technical summary: Covers "[Model][Spec Decode] Nemotron-H MTP and Mamba Speculative Decoding Support"; the main implementation surface is `vllm/model_executor/models/nemotron_h_mtp.py`, `vllm/transformers_utils/configs/nemotron_h.py`, `vllm/model_executor/models/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/nemotron_h_mtp.py` added +503/-0 (503 lines); hunks: -0,0 +1,503; symbols: NemotronHMTPAttentionDecoderLayer, __init__, forward, NemotronHMTPMoEDecoderLayer, touching `NemotronHMTPAttentionDecoderLayer, __init__, forward`; `vllm/transformers_utils/configs/nemotron_h.py` modified +6/-3 (9 lines); hunks: -51,6 +51,8 @@ class NemotronHConfig(PretrainedConfig):; -150,6 +152,7 @@ def __init__(; symbols: NemotronHConfig, __init__, touching `NemotronHConfig, __init__`; `vllm/model_executor/models/nemotron_h.py` modified +8/-0 (8 lines); hunks: -636,6 +636,9 @@ def forward(; -702,6 +705,10 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; symbols: forward, is_spec_layer, _get_max_n_routed_experts, load_weights, touching `forward, is_spec_layer, _get_max_n_routed_experts`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_h_mtp.py` added +503/-0 (503 lines); hunks: -0,0 +1,503; symbols: NemotronHMTPAttentionDecoderLayer, __init__, forward, NemotronHMTPMoEDecoderLayer
@@ -1266,7 +1252,7 @@ diff -- examples/pooling/embed/template/nemotron_embed_vl.jinja
 - Status/date: merged / 2026-02-26
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `832a780f3aed`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +5/-0, 12 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Nemotron: use per-layer config in NemotronHMLPDecoderLayer for heterogeneous models"; model line: Nemotron Super; category: docs/tests/CI; main diff: `vllm/model_executor/models/nemotron_h.py`; technical summary: Covers "Nemotron: use per-layer config in NemotronHMLPDecoderLayer for heterogeneous models"; the main implementation surface is `vllm/model_executor/models/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "Nemotron: use per-layer config in NemotronHMLPDecoderLayer for heterogeneous models"; model line: Nemotron Super; category: model implementation change; main diff: `vllm/model_executor/models/nemotron_h.py`; technical summary: Covers "Nemotron: use per-layer config in NemotronHMLPDecoderLayer for heterogeneous models"; the main implementation surface is `vllm/model_executor/models/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/nemotron_h.py` modified +5/-0 (5 lines); hunks: -298,6 +298,11 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/nemotron_h.py` modified +5/-0 (5 lines); hunks: -298,6 +298,11 @@ def __init__(; symbols: __init__
@@ -1438,13 +1424,12 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/36393
 - Status/date: merged / 2026-03-09
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`; associated commits `203a7f27dac2`; preserved from an explicit existing history/skill citation
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_nemotron_v3_reasoning_parser.py`; associated commits `203a7f27dac2`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +186/-0, 195 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "add nemotron v3 reasoning parser"; model line: Nemotron Super; category: docs/tests/CI; main diff: `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`; technical summary: Covers "add nemotron v3 reasoning parser"; the main implementation surface is `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `tests/reasoning/test_nemotron_v3_reasoning_parser.py` added +150/-0 (150 lines); hunks: -0,0 +1,150; symbols: ReasoningCase, FakeNemotronTokenizer, __init__, get_vocab, touching `ReasoningCase, FakeNemotronTokenizer, __init__`; `vllm/reasoning/nemotron_v3_reasoning_parser.py` added +32/-0 (32 lines); hunks: -0,0 +1,32; symbols: NemotronV3ReasoningParser, extract_reasoning, touching `NemotronV3ReasoningParser, extract_reasoning`.
+- Motivation: Title: "add nemotron v3 reasoning parser"; model line: Nemotron Super; category: docs/tests/CI; main diff: `tests/reasoning/test_nemotron_v3_reasoning_parser.py`; technical summary: Covers "add nemotron v3 reasoning parser"; the main implementation surface is `tests/reasoning/test_nemotron_v3_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/reasoning/test_nemotron_v3_reasoning_parser.py` added +150/-0 (150 lines); hunks: -0,0 +1,150; symbols: ReasoningCase, FakeNemotronTokenizer, __init__, get_vocab, touching `ReasoningCase, FakeNemotronTokenizer, __init__`.
 - Code diff details:
   - `tests/reasoning/test_nemotron_v3_reasoning_parser.py` added +150/-0 (150 lines); hunks: -0,0 +1,150; symbols: ReasoningCase, FakeNemotronTokenizer, __init__, get_vocab
-  - `vllm/reasoning/nemotron_v3_reasoning_parser.py` added +32/-0 (32 lines); hunks: -0,0 +1,32; symbols: NemotronV3ReasoningParser, extract_reasoning
 - Key code excerpts:
 
 ```diff
@@ -1456,32 +1441,22 @@ diff -- tests/reasoning/test_nemotron_v3_reasoning_parser.py
 +import pytest
 +import regex as re
 +from tests.reasoning.utils import run_reasoning_extraction
-diff -- vllm/reasoning/nemotron_v3_reasoning_parser.py
-@@ -0,0 +1,32 @@
-+# SPDX-License-Identifier: Apache-2.0
-+# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
-+from vllm.entrypoints.openai.chat_completion.protocol import (
-+    ChatCompletionRequest,
-+)
-+from vllm.entrypoints.openai.responses.protocol import (
 ```
 
 - Reviewed files:
   - tests: `tests/reasoning/test_nemotron_v3_reasoning_parser.py` added +150/-0
-  - runtime: `vllm/reasoning/nemotron_v3_reasoning_parser.py` added +32/-0
 - Risk and verification: The diff ships test coverage in `tests/reasoning/test_nemotron_v3_reasoning_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #36635 - [NemotronH] Small fix reasoning parser
 
 - Link: https://github.com/vllm-project/vllm/pull/36635
 - Status/date: merged / 2026-03-11
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`; associated commits `e661b9ee83d9`; preserved from an explicit existing history/skill citation
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_nemotron_v3_reasoning_parser.py`; associated commits `e661b9ee83d9`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +26/-1, 41 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[NemotronH] Small fix reasoning parser"; model line: Nemotron Super; category: bug fix; main diff: `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`; technical summary: Covers "[NemotronH] Small fix reasoning parser"; the main implementation surface is `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `tests/reasoning/test_nemotron_v3_reasoning_parser.py` modified +22/-0 (22 lines); hunks: -128,6 +128,28 @@ def test_nemotron_v3_without_thinking_returns_content(; symbols: test_nemotron_v3_without_thinking_returns_content, test_nemotron_v3_force_nonempty_content_returns_content, test_nemotron_v3_with_thinking_keeps_truncated_reasoning, touching `test_nemotron_v3_without_thinking_returns_content, test_nemotron_v3_force_nonempty_content_returns_content, test_nemotron_v3_with_thinking_keeps_truncated_reasoning`; `vllm/reasoning/nemotron_v3_reasoning_parser.py` modified +4/-1 (5 lines); hunks: -24,7 +24,10 @@ def extract_reasoning(; symbols: extract_reasoning, touching `extract_reasoning`.
+- Motivation: Title: "[NemotronH] Small fix reasoning parser"; model line: Nemotron Super; category: bug fix; main diff: `tests/reasoning/test_nemotron_v3_reasoning_parser.py`; technical summary: Covers "[NemotronH] Small fix reasoning parser"; the main implementation surface is `tests/reasoning/test_nemotron_v3_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/reasoning/test_nemotron_v3_reasoning_parser.py` modified +22/-0 (22 lines); hunks: -128,6 +128,28 @@ def test_nemotron_v3_without_thinking_returns_content(; symbols: test_nemotron_v3_without_thinking_returns_content, test_nemotron_v3_force_nonempty_content_returns_content, test_nemotron_v3_with_thinking_keeps_truncated_reasoning, touching `test_nemotron_v3_without_thinking_returns_content, test_nemotron_v3_force_nonempty_content_returns_content, test_nemotron_v3_with_thinking_keeps_truncated_reasoning`.
 - Code diff details:
   - `tests/reasoning/test_nemotron_v3_reasoning_parser.py` modified +22/-0 (22 lines); hunks: -128,6 +128,28 @@ def test_nemotron_v3_without_thinking_returns_content(; symbols: test_nemotron_v3_without_thinking_returns_content, test_nemotron_v3_force_nonempty_content_returns_content, test_nemotron_v3_with_thinking_keeps_truncated_reasoning
-  - `vllm/reasoning/nemotron_v3_reasoning_parser.py` modified +4/-1 (5 lines); hunks: -24,7 +24,10 @@ def extract_reasoning(; symbols: extract_reasoning
 - Key code excerpts:
 
 ```diff
@@ -1493,18 +1468,10 @@ diff -- tests/reasoning/test_nemotron_v3_reasoning_parser.py
 +    parser_cls = ReasoningParserManager.get_reasoning_parser(parser_name)
 +    parser = parser_cls(tokenizer)
 +    request = ChatCompletionRequest(
-diff -- vllm/reasoning/nemotron_v3_reasoning_parser.py
-@@ -24,7 +24,10 @@ def extract_reasoning(
--            and chat_template_kwargs.get("enable_thinking") is False
-+            and (
-+                chat_template_kwargs.get("enable_thinking") is False
-+                or chat_template_kwargs.get("force_nonempty_content") is True
-+            )
 ```
 
 - Reviewed files:
   - tests: `tests/reasoning/test_nemotron_v3_reasoning_parser.py` modified +22/-0
-  - runtime: `vllm/reasoning/nemotron_v3_reasoning_parser.py` modified +4/-1
 - Risk and verification: The diff ships test coverage in `tests/reasoning/test_nemotron_v3_reasoning_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #37456 - [Model] Remove unnecessary processor definition for Nemotron Parse
@@ -1741,7 +1708,7 @@ diff -- vllm/transformers_utils/processors/nano_nemotron_vl.py
 - Status/date: merged / 2026-03-26
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `e812bf70bd66`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 12 files, +215/-145, 595 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model] Use helper function to run MM processors with token inputs (where applicable)"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/transformers_utils/processors/pixtral.py`, `vllm/transformers_utils/processors/voxtral.py`, `vllm/multimodal/processing/processor.py`; technical summary: Covers "[Model] Use helper function to run MM processors with token inputs (where applicable)"; the main implementation surface is `vllm/transformers_utils/processors/pixtral.py`, `vllm/transformers_utils/processors/voxtral.py`, `vllm/multimodal/processing/processor.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "[Model] Use helper function to run MM processors with token inputs (where applicable)"; model line: Nemotron Super; category: model implementation change; main diff: `vllm/transformers_utils/processors/pixtral.py`, `vllm/transformers_utils/processors/voxtral.py`, `vllm/multimodal/processing/processor.py`; technical summary: Covers "[Model] Use helper function to run MM processors with token inputs (where applicable)"; the main implementation surface is `vllm/transformers_utils/processors/pixtral.py`, `vllm/transformers_utils/processors/voxtral.py`, `vllm/multimodal/processing/processor.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/transformers_utils/processors/pixtral.py` modified +9/-58 (67 lines); hunks: -5,10 +5,7; -55,62 +52,16 @@ class MistralCommonPixtralProcessor(ProcessorMixin):; symbols: MistralCommonPixtralProcessor, __init__, image_break_id, image_token_id, touching `MistralCommonPixtralProcessor, __init__, image_break_id`; `vllm/transformers_utils/processors/voxtral.py` modified +8/-54 (62 lines); hunks: -8,9 +8,6; -62,58 +59,15 @@ class MistralCommonVoxtralProcessor(ProcessorMixin):; symbols: MistralCommonVoxtralProcessor, __init__, audio_token_id, begin_audio_token_id, touching `MistralCommonVoxtralProcessor, __init__, audio_token_id`; `vllm/multimodal/processing/processor.py` modified +41/-10 (51 lines); hunks: -5,8 +5,15; -21,6 +28,7; symbols: _apply_hf_processor_text_mm, _apply_hf_processor_mm_only, _apply_hf_processor_main, touching `_apply_hf_processor_text_mm, _apply_hf_processor_mm_only, _apply_hf_processor_main`; `vllm/transformers_utils/processors/isaac.py` modified +32/-16 (48 lines); hunks: -1,16 +1,15; -308,15 +307,22 @@ def process_vision_for_patches(; symbols: process_vision_for_patches, IsaacImageProcessorKwargs, IsaacImagesKwargs, IsaacProcessorKwargs, touching `process_vision_for_patches, IsaacImageProcessorKwargs, IsaacImagesKwargs`.
 - Code diff details:
   - `vllm/transformers_utils/processors/pixtral.py` modified +9/-58 (67 lines); hunks: -5,10 +5,7; -55,62 +52,16 @@ class MistralCommonPixtralProcessor(ProcessorMixin):; symbols: MistralCommonPixtralProcessor, __init__, image_break_id, image_token_id
@@ -1898,7 +1865,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 - Status/date: merged / 2026-04-09
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/transformers_utils/processors/nano_nemotron_vl.py`; associated commits `df2503e125f3`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +74/-18, 162 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "nemotron-nano-vl: Allow `use_audio_in_video` to be passed at `vllm serve` time"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/transformers_utils/processors/nano_nemotron_vl.py`; technical summary: Covers "nemotron-nano-vl: Allow `use_audio_in_video` to be passed at `vllm serve` time"; the main implementation surface is `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/transformers_utils/processors/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "nemotron-nano-vl: Allow `use_audio_in_video` to be passed at `vllm serve` time"; model line: Nemotron Super; category: model implementation change; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/transformers_utils/processors/nano_nemotron_vl.py`; technical summary: Covers "nemotron-nano-vl: Allow `use_audio_in_video` to be passed at `vllm serve` time"; the main implementation surface is `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/transformers_utils/processors/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/nano_nemotron_vl.py` modified +72/-18 (90 lines); hunks: -597,19 +597,26 @@ def _get_prompt_updates(; -618,7 +625,16 @@ def _extract_audio_from_videos(; symbols: _get_prompt_updates, _extract_audio_from_videos, apply, touching `_get_prompt_updates, _extract_audio_from_videos, apply`; `vllm/transformers_utils/processors/nano_nemotron_vl.py` modified +2/-0 (2 lines); hunks: -771,6 +771,7 @@ def __init__(; -781,6 +782,7 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `vllm/model_executor/models/nano_nemotron_vl.py` modified +72/-18 (90 lines); hunks: -597,19 +597,26 @@ def _get_prompt_updates(; -618,7 +625,16 @@ def _extract_audio_from_videos(; symbols: _get_prompt_updates, _extract_audio_from_videos, apply
@@ -2031,38 +1998,155 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
   - runtime: `vllm/model_executor/models/nano_nemotron_vl.py` modified +3/-1
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/nano_nemotron_vl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-## Gap-Closure Notes
+### PR #41205 - Fix Nano Nemotron text-only weight loading
 
-- Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
-- If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.
+- Link: https://github.com/vllm-project/vllm/pull/41205
+- Status/date: merged / 2026-05-04
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/test_nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `8c780943b492`
+- Diff scope read: GitHub Pull Request files API returned 3 files, +130/-5, 171 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Fix Nano Nemotron text-only weight loading"; model line: Nemotron Super; category: bug fix; main diff: `tests/models/multimodal/test_nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py`; technical summary: Covers "Fix Nano Nemotron text-only weight loading"; the main implementation surface is `tests/models/multimodal/test_nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/models/multimodal/test_nano_nemotron_vl.py` added +114/-0 (114 lines); hunks: -0,0 +1,114; symbols: _TextOnlyMultiModalConfig, get_limit_per_prompt, _ImageOnlyMultiModalConfig, _ModelConfig, touching `_TextOnlyMultiModalConfig, get_limit_per_prompt, _ImageOnlyMultiModalConfig`; `vllm/model_executor/models/nano_nemotron_vl.py` modified +15/-3 (18 lines); hunks: -1499,6 +1499,11 @@ def compute_logits(; -1523,23 +1528,30 @@ def is_sound_weights(name: str) -> bool:; symbols: compute_logits, load_weights, is_llm, is_sound_weights, touching `compute_logits, load_weights, is_llm`.
+- Code diff details:
+  - `tests/models/multimodal/test_nano_nemotron_vl.py` added +114/-0 (114 lines); hunks: -0,0 +1,114; symbols: _TextOnlyMultiModalConfig, get_limit_per_prompt, _ImageOnlyMultiModalConfig, _ModelConfig
+  - `vllm/model_executor/models/nano_nemotron_vl.py` modified +15/-3 (18 lines); hunks: -1499,6 +1499,11 @@ def compute_logits(; -1523,23 +1528,30 @@ def is_sound_weights(name: str) -> bool:; symbols: compute_logits, load_weights, is_llm, is_sound_weights
+- Key code excerpts:
+
+```diff
+diff -- tests/models/multimodal/test_nano_nemotron_vl.py
+@@ -0,0 +1,114 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++import pytest
++from vllm.model_executor.models.nano_nemotron_vl import NemotronH_Nano_VL_V2
++class _TextOnlyMultiModalConfig:
++    def get_limit_per_prompt(self, modality: str) -> int:
+diff -- vllm/model_executor/models/nano_nemotron_vl.py
+@@ -1499,6 +1499,11 @@ def compute_logits(
++        mm_config = self.model_config.multimodal_config
++        load_multimodal_weights = not all(
++            mm_config.get_limit_per_prompt(modality) == 0
++            for modality in ("image", "video", "audio")
++        )
+@@ -1523,23 +1528,30 @@ def is_sound_weights(name: str) -> bool:
+```
+
+- Reviewed files:
+  - tests: `tests/models/multimodal/test_nano_nemotron_vl.py` added +114/-0
+  - runtime: `vllm/model_executor/models/nano_nemotron_vl.py` modified +15/-3
+- Risk and verification: The diff ships test coverage in `tests/models/multimodal/test_nano_nemotron_vl.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #42244 - Avoid silent weights corruption when loading Nemotron Nano VL with reusable-buffer loaders like runai distributed streaming
+
+- Link: https://github.com/vllm-project/vllm/pull/42244
+- Status/date: merged / 2026-05-11
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/test_nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `ac062147fae7`
+- Diff scope read: GitHub Pull Request files API returned 2 files, +55/-28, 108 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Avoid silent weights corruption when loading Nemotron Nano VL with reusable-buffer loaders like runai distributed streaming"; model line: Nemotron Super; category: docs/tests/CI; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`, `tests/models/multimodal/test_nano_nemotron_vl.py`; technical summary: Covers "Avoid silent weights corruption when loading Nemotron Nano VL with reusable-buffer loaders like runai distributed streaming"; the main implementation surface is `vllm/model_executor/models/nano_nemotron_vl.py`, `tests/models/multimodal/test_nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/nano_nemotron_vl.py` modified +41/-27 (68 lines); hunks: -1518,37 +1518,51 @@ def is_vision_weights(name: str) -> bool:; symbols: is_vision_weights, is_sound_weights, llm_weights_gen, touching `is_vision_weights, is_sound_weights, llm_weights_gen`; `tests/models/multimodal/test_nano_nemotron_vl.py` modified +14/-1 (15 lines); hunks: -53,6 +53,19 @@ def load_weights(self, weights):; -86,7 +99,7 @@ def test_nano_nemotron_vl_loads_vision_weights_without_sound_e...; symbols: load_weights, _FakeTensor, detach, clone, touching `load_weights, _FakeTensor, detach`.
+- Code diff details:
+  - `vllm/model_executor/models/nano_nemotron_vl.py` modified +41/-27 (68 lines); hunks: -1518,37 +1518,51 @@ def is_vision_weights(name: str) -> bool:; symbols: is_vision_weights, is_sound_weights, llm_weights_gen
+  - `tests/models/multimodal/test_nano_nemotron_vl.py` modified +14/-1 (15 lines); hunks: -53,6 +53,19 @@ def load_weights(self, weights):; -86,7 +99,7 @@ def test_nano_nemotron_vl_loads_vision_weights_without_sound_e...; symbols: load_weights, _FakeTensor, detach, clone
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/nano_nemotron_vl.py
+@@ -1518,37 +1518,51 @@ def is_vision_weights(name: str) -> bool:
+-        # Separate weights by component
+-        llm_weights = []
+-        vision_weights = []
+-        sound_weights = []
+-        for name, w in weights:
+-            if is_llm(name):
+diff -- tests/models/multimodal/test_nano_nemotron_vl.py
+@@ -53,6 +53,19 @@ def load_weights(self, weights):
++class _FakeTensor:
++    """Sentinel stand-in for torch.Tensor in load_weights tests. Supports the
++    .detach().clone() chain used by load_weights for buffered mm weights;
++    both methods return self so identity (and the existing equality
++    assertions) are preserved through cloning."""
++    def detach(self):
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/nano_nemotron_vl.py` modified +41/-27
+  - tests: `tests/models/multimodal/test_nano_nemotron_vl.py` modified +14/-1
+- Risk and verification: The diff ships test coverage in `tests/models/multimodal/test_nano_nemotron_vl.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #42498 - [CI] Re-enable Nemotron Parse parity test and switch testing to nemotron-parse v1.2
+
+- Link: https://github.com/vllm-project/vllm/pull/42498
+- Status/date: merged / 2026-05-13
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/generation/test_nemotron_parse.py`; associated commits `67671692ace7`
+- Diff scope read: GitHub Pull Request files API returned 3 files, +12/-9, 59 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[CI] Re-enable Nemotron Parse parity test and switch testing to nemotron-parse v1.2"; model line: Nemotron Super; category: docs/tests/CI; main diff: `tests/models/multimodal/generation/test_nemotron_parse.py`; technical summary: Covers "[CI] Re-enable Nemotron Parse parity test and switch testing to nemotron-parse v1.2"; the main implementation surface is `tests/models/multimodal/generation/test_nemotron_parse.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/models/multimodal/generation/test_nemotron_parse.py` modified +5/-7 (12 lines); hunks: -14,7 +14,9; -85,7 +87,7 @@ def run_test(; symbols: DummyLogprobs, run_test, test_models, touching `DummyLogprobs, run_test, test_models`.
+- Code diff details:
+  - `tests/models/multimodal/generation/test_nemotron_parse.py` modified +5/-7 (12 lines); hunks: -14,7 +14,9; -85,7 +87,7 @@ def run_test(; symbols: DummyLogprobs, run_test, test_models
+- Key code excerpts:
+
+```diff
+diff -- tests/models/multimodal/generation/test_nemotron_parse.py
+@@ -14,7 +14,9 @@
+-PROMPT = "</s><s><predict_bbox><predict_classes><output_markdown>"
++PROMPT = (
++    "</s><s><predict_bbox><predict_classes><output_markdown><predict_no_text_in_pic>"
++)
+@@ -85,7 +87,7 @@ def run_test(
+-                use_cache=False,  # HF Nemotron Parse crashes here without this
+```
+
+- Reviewed files:
+  - tests: `tests/models/multimodal/generation/test_nemotron_parse.py` modified +5/-7
+- Risk and verification: The diff ships test coverage in `tests/conftest.py`, `tests/models/multimodal/generation/test_nemotron_parse.py`, `tests/models/registry.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #42641 - [Bugfix] Fix LM detection for Nemotron Parse
+
+- Link: https://github.com/vllm-project/vllm/pull/42641
+- Status/date: merged / 2026-05-14
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_parse.py`; associated commits `b8a25d0e1216`
+- Diff scope read: GitHub Pull Request files API returned 2 files, +5/-1, 20 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Bugfix] Fix LM detection for Nemotron Parse"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nemotron_parse.py`; technical summary: Covers "[Bugfix] Fix LM detection for Nemotron Parse"; the main implementation surface is `vllm/model_executor/models/nemotron_parse.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/nemotron_parse.py` modified +3/-0 (3 lines); hunks: -281,6 +281,9 @@ def __init__(; symbols: __init__, embed_input_ids, forward, touching `__init__, embed_input_ids, forward`.
+- Code diff details:
+  - `vllm/model_executor/models/nemotron_parse.py` modified +3/-0 (3 lines); hunks: -281,6 +281,9 @@ def __init__(; symbols: __init__, embed_input_ids, forward
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/nemotron_parse.py
+@@ -281,6 +281,9 @@ def __init__(
++    def embed_input_ids(self, input_ids: torch.Tensor) -> torch.Tensor:
++        return self.embed_tokens(input_ids)
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/nemotron_parse.py` modified +3/-0
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/nemotron_parse.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #41233 - [Bugfix][Hybrid][NemotronH] Fix mamba_cache_mode=all + speculative decoding crash
 
 - Link: https://github.com/vllm-project/vllm/pull/41233
 - Status/date: merged / 2026-05-18
-- Trace source: 2026-05-19 PR backfill audit; traced from source-refresh notes, upstream `origin/main@07beaed84` history, and the GitHub Pull Request files API; associated commit `737bfa3a43ce`.
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +568/-117, 960 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix][Hybrid][NemotronH] Fix mamba_cache_mode=all + speculative decoding crash"; model line: Nemotron Super; category: bug fix; main diff: `vllm/v1/attention/backends/mamba_attn.py`, `vllm/model_executor/models/config.py`, `vllm/v1/attention/backends/utils.py`; technical summary: Covers "[Bugfix][Hybrid][NemotronH] Fix mamba_cache_mode=all + speculative decoding crash" with file-level evidence, code excerpts, and validation risks below.
-- Key implementation: `vllm/v1/attention/backends/mamba_attn.py` modified +77/-9 (86 lines); hunks: -56,6 +56,7  @@ class BaseMambaAttentionMetadata:; -108,12 +109,13  @@ def __init__(; symbols: BaseMambaAttentionMetadata, __init__, build_for_cudagraph_capture, build, touching `BaseMambaAttentionMetadata, __init__, build_for_cudagraph_capture`；`vllm/model_executor/models/config.py` modified +9/-20 (29 lines); hunks: -350,26 +350,15  @@ def verify_and_update_config(cls, vllm_config: "VllmConfig") -> None:; symbols: verify_and_update_config, touching `verify_and_update_config`；`vllm/v1/attention/backends/utils.py` modified +4/-2 (6 lines); hunks: -878,8 +878,10  @@ def mamba_get_block_table_tensor(; symbols: mamba_get_block_table_tensor, touching `mamba_get_block_table_tensor`；`vllm/v1/attention/backends/mamba2_attn.py` modified +3/-1 (4 lines); hunks: -137,7 +137,9  @@ def build(; symbols: build, touching `build`.
+- Motivation: Title: "[Bugfix][Hybrid][NemotronH] Fix mamba_cache_mode=all + speculative decoding crash"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/layers/mamba/mamba_mixer2.py`, `vllm/model_executor/models/config.py`, `tests/v1/attention/test_mamba_update_block_table.py`; technical summary: Covers "[Bugfix][Hybrid][NemotronH] Fix mamba_cache_mode=all + speculative decoding crash"; the main implementation surface is `vllm/model_executor/layers/mamba/mamba_mixer2.py`, `vllm/model_executor/models/config.py`, `tests/v1/attention/test_mamba_update_block_table.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/layers/mamba/mamba_mixer2.py` modified +38/-12 (50 lines); hunks: -502,6 +502,12 @@ def __init__(; -755,6 +761,14 @@ def conv_ssm_forward(; symbols: __init__, conv_ssm_forward, touching `__init__, conv_ssm_forward`; `vllm/model_executor/models/config.py` modified +9/-20 (29 lines); hunks: -350,26 +350,15 @@ def verify_and_update_config(cls, vllm_config: "VllmConfig...; symbols: verify_and_update_config, touching `verify_and_update_config`; `tests/v1/attention/test_mamba_update_block_table.py` modified +271/-4 (275 lines); hunks: -32,17 +32,25 @@ class _ConcreteMambaBuilder(; -59,7 +67,7 @@ def test_update_block_table_copies_block_idx_to_persistent_buf...; symbols: _ConcreteMambaBuilder, _make_vllm_config, test_update_block_table_copies_block_idx_to_persistent_buffers, touching `_ConcreteMambaBuilder, _make_vllm_config, test_update_block_table_copies_block_idx_to_persistent_buffers`; `vllm/v1/worker/mamba_utils.py` modified +108/-51 (159 lines); hunks: -144,6 +144,24 @@ def do_mamba_copy_block(copy_bufs: MambaCopyBuffers):; -165,16 +183,7 @@ def preprocess_mamba(; symbols: do_mamba_copy_block, cleanup_mamba_state_idx, preprocess_mamba, touching `do_mamba_copy_block, cleanup_mamba_state_idx, preprocess_mamba`.
 - Code diff details:
-  - `vllm/v1/attention/backends/mamba_attn.py` modified +77/-9 (86 lines); hunks: -56,6 +56,7  @@ class BaseMambaAttentionMetadata:; -108,12 +109,13  @@ def __init__(; symbols: BaseMambaAttentionMetadata, __init__, build_for_cudagraph_capture, build, touching `BaseMambaAttentionMetadata, __init__, build_for_cudagraph_capture`
-  - `vllm/model_executor/models/config.py` modified +9/-20 (29 lines); hunks: -350,26 +350,15  @@ def verify_and_update_config(cls, vllm_config: "VllmConfig") -> None:; symbols: verify_and_update_config, touching `verify_and_update_config`
-  - `vllm/v1/attention/backends/utils.py` modified +4/-2 (6 lines); hunks: -878,8 +878,10  @@ def mamba_get_block_table_tensor(; symbols: mamba_get_block_table_tensor, touching `mamba_get_block_table_tensor`
-  - `vllm/v1/attention/backends/mamba2_attn.py` modified +3/-1 (4 lines); hunks: -137,7 +137,9  @@ def build(; symbols: build, touching `build`
-  - `tests/v1/attention/test_mamba_update_block_table.py` modified +271/-4 (275 lines); hunks: -32,17 +32,25  @@ class _ConcreteMambaBuilder(; -59,7 +67,7  @@ def test_update_block_table_copies_block_idx_to_persistent_buffers():; symbols: _ConcreteMambaBuilder, test_update_block_table_copies_block_idx_to_persistent_buffers, shares_storage, touching `_ConcreteMambaBuilder, test_update_block_table_copies_block_idx_to_persistent_buffers, shares_storage`
+  - `vllm/model_executor/layers/mamba/mamba_mixer2.py` modified +38/-12 (50 lines); hunks: -502,6 +502,12 @@ def __init__(; -755,6 +761,14 @@ def conv_ssm_forward(; symbols: __init__, conv_ssm_forward
+  - `vllm/model_executor/models/config.py` modified +9/-20 (29 lines); hunks: -350,26 +350,15 @@ def verify_and_update_config(cls, vllm_config: "VllmConfig...; symbols: verify_and_update_config
+  - `tests/v1/attention/test_mamba_update_block_table.py` modified +271/-4 (275 lines); hunks: -32,17 +32,25 @@ class _ConcreteMambaBuilder(; -59,7 +67,7 @@ def test_update_block_table_copies_block_idx_to_persistent_buf...; symbols: _ConcreteMambaBuilder, _make_vllm_config, test_update_block_table_copies_block_idx_to_persistent_buffers
+  - `vllm/v1/worker/mamba_utils.py` modified +108/-51 (159 lines); hunks: -144,6 +144,24 @@ def do_mamba_copy_block(copy_bufs: MambaCopyBuffers):; -165,16 +183,7 @@ def preprocess_mamba(; symbols: do_mamba_copy_block, cleanup_mamba_state_idx, preprocess_mamba
+  - `vllm/v1/attention/backends/mamba_attn.py` modified +77/-9 (86 lines); hunks: -56,6 +56,7 @@ class BaseMambaAttentionMetadata:; -108,12 +109,13 @@ def __init__(; symbols: BaseMambaAttentionMetadata, __init__, build_for_cudagraph_capture, build
 - Key code excerpts:
 
 ```diff
-diff -- vllm/v1/attention/backends/mamba_attn.py
-@@ -56,6 +56,7 @@ class BaseMambaAttentionMetadata:
-+    block_idx_last_scheduled_token_prev_step: torch.Tensor | None
-@@ -108,12 +109,13 @@ def __init__(
--            max_num_blocks = cdiv(
--                self.vllm_config.model_config.max_model_len,
--                self.kv_cache_spec.block_size,
-+            max_num_blocks = (
-+                cdiv(
-+                    self.vllm_config.model_config.max_model_len,
+diff -- vllm/model_executor/layers/mamba/mamba_mixer2.py
+@@ -502,6 +502,12 @@ def __init__(
++        if self.num_spec > 0:
++            self.register_buffer(
++                "_decode_state_offsets",
++                torch.arange(1 + self.num_spec, dtype=torch.int32).unsqueeze(0),
++                persistent=False,
++            )
 diff -- vllm/model_executor/models/config.py
 @@ -350,26 +350,15 @@ def verify_and_update_config(cls, vllm_config: "VllmConfig") -> None:
 -                if (
@@ -2071,19 +2155,374 @@ diff -- vllm/model_executor/models/config.py
 -                ):
 -                    cache_config.mamba_cache_mode = "align"
 -                    logger.warning(
--                        "Mamba cache mode is set to 'align' for %s by default "
--                        "when prefix caching and speculative decoding are enabled",
-diff -- vllm/v1/attention/backends/utils.py
-@@ -878,8 +878,10 @@ def mamba_get_block_table_tensor(
--    - "all":   input  (#requests, cdiv(max_model_len, block_size));
--               output (#requests, cdiv(max_model_len, block_size)).
-+    - "all":   input  (#requests, cdiv(max_model_len, block_size)
-+                        + num_speculative_blocks);
-+               output (#requests, cdiv(max_model_len, block_size)
-+                        + num_speculative_blocks).
+diff -- tests/v1/attention/test_mamba_update_block_table.py
+@@ -32,17 +32,25 @@ class _ConcreteMambaBuilder(
 ```
 
 - Reviewed files:
-  - runtime: `vllm/v1/attention/backends/mamba_attn.py` modified +77/-9; `vllm/model_executor/models/config.py` modified +9/-20; `vllm/v1/attention/backends/utils.py` modified +4/-2; `vllm/v1/attention/backends/mamba2_attn.py` modified +3/-1
-  - tests: `tests/v1/attention/test_mamba_update_block_table.py` modified +271/-4
-- Risk and verification: Runtime changes concentrate in `vllm/v1/attention/backends/mamba_attn.py`, `vllm/model_executor/models/config.py`, `vllm/v1/attention/backends/utils.py`; risks are weight loading, parallel sharding, attention/MoE backend selection, quantized dtypes, and parser output, so use a real checkpoint or equivalent smoke test.
+  - runtime: `vllm/model_executor/layers/mamba/mamba_mixer2.py` modified +38/-12; `vllm/model_executor/models/config.py` modified +9/-20; `vllm/v1/worker/mamba_utils.py` modified +108/-51; `vllm/v1/attention/backends/mamba_attn.py` modified +77/-9; `vllm/v1/worker/gpu_model_runner.py` modified +41/-11; `vllm/v1/attention/backends/utils.py` modified +4/-2
+  - tests: `tests/v1/attention/test_mamba_update_block_table.py` modified +271/-4; `tests/v1/e2e/general/test_mamba_prefix_cache.py` modified +14/-6
+- Risk and verification: The diff ships test coverage in `tests/v1/attention/test_mamba_update_block_table.py`, `tests/v1/e2e/general/test_mamba_prefix_cache.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #43130 - [Spec Decode] Support non-MTP speculation for NemotronH
+
+- Link: https://github.com/vllm-project/vllm/pull/43130
+- Status/date: merged / 2026-05-20
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `0a508743d42a`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +16/-2, 60 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Spec Decode] Support non-MTP speculation for NemotronH"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_h.py`; technical summary: Covers "[Spec Decode] Support non-MTP speculation for NemotronH"; the main implementation surface is `vllm/model_executor/models/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/nemotron_h.py` modified +16/-2 (18 lines); hunks: -64,9 +64,12; -539,7 +542,7 @@ def forward(; symbols: forward, NemotronHModel, __init__, touching `forward, NemotronHModel, __init__`.
+- Code diff details:
+  - `vllm/model_executor/models/nemotron_h.py` modified +16/-2 (18 lines); hunks: -64,9 +64,12; -539,7 +542,7 @@ def forward(; symbols: forward, NemotronHModel, __init__
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/nemotron_h.py
+@@ -64,9 +64,12 @@
++    EagleModelMixin,
++    SupportsEagle,
++    SupportsEagle3,
+@@ -539,7 +542,7 @@ def forward(
+-class NemotronHModel(nn.Module):
++class NemotronHModel(nn.Module, EagleModelMixin):
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/nemotron_h.py` modified +16/-2
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/nemotron_h.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #42124 - Add LM head quantization support for ModelOpt
+
+- Link: https://github.com/vllm-project/vllm/pull/42124
+- Status/date: merged / 2026-05-26
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 8 files, +220/-5, 315 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Add LM head quantization support for ModelOpt"; model line: Nemotron Super; category: performance/backend optimization; main diff: `tests/model_executor/test_qwen3_5_quantization.py`, `tests/model_executor/test_nemotron_h_quantization.py`, `vllm/model_executor/layers/quantization/modelopt.py`; technical summary: Covers "Add LM head quantization support for ModelOpt"; the main implementation surface is `tests/model_executor/test_qwen3_5_quantization.py`, `tests/model_executor/test_nemotron_h_quantization.py`, `vllm/model_executor/layers/quantization/modelopt.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/model_executor/test_qwen3_5_quantization.py` added +78/-0 (78 lines); hunks: -0,0 +1,78; symbols: test_qwen3_5_lm_head_receives_quant_config, test_qwen3_5_mtp_lm_head_receives_quant_config, touching `test_qwen3_5_lm_head_receives_quant_config, test_qwen3_5_mtp_lm_head_receives_quant_config`; `tests/model_executor/test_nemotron_h_quantization.py` added +34/-0 (34 lines); hunks: -0,0 +1,34; symbols: test_nemotron_h_lm_head_receives_quant_config, touching `test_nemotron_h_lm_head_receives_quant_config`; `vllm/model_executor/layers/quantization/modelopt.py` modified +5/-4 (9 lines); hunks: -85,6 +85,7; -187,7 +188,7 @@ def get_quant_method(; symbols: get_quant_method, touching `get_quant_method`; `vllm/model_executor/layers/vocab_parallel_embedding.py` modified +7/-0 (7 lines); hunks: -290,6 +290,7 @@ def __init__(; -438,6 +439,12 @@ def weight_loader(self, param: Parameter, loaded_weight: to...; symbols: __init__, weight_loader, touching `__init__, weight_loader`.
+- Code diff details:
+  - `tests/model_executor/test_qwen3_5_quantization.py` added +78/-0 (78 lines); hunks: -0,0 +1,78; symbols: test_qwen3_5_lm_head_receives_quant_config, test_qwen3_5_mtp_lm_head_receives_quant_config
+  - `tests/model_executor/test_nemotron_h_quantization.py` added +34/-0 (34 lines); hunks: -0,0 +1,34; symbols: test_nemotron_h_lm_head_receives_quant_config
+  - `vllm/model_executor/layers/quantization/modelopt.py` modified +5/-4 (9 lines); hunks: -85,6 +85,7; -187,7 +188,7 @@ def get_quant_method(; symbols: get_quant_method
+  - `vllm/model_executor/layers/vocab_parallel_embedding.py` modified +7/-0 (7 lines); hunks: -290,6 +290,7 @@ def __init__(; -438,6 +439,12 @@ def weight_loader(self, param: Parameter, loaded_weight: to...; symbols: __init__, weight_loader
+  - `vllm/model_executor/models/nemotron_h.py` modified +1/-0 (1 lines); hunks: -875,6 +875,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- tests/model_executor/test_qwen3_5_quantization.py
+@@ -0,0 +1,78 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++from unittest.mock import Mock, patch
++def test_qwen3_5_lm_head_receives_quant_config():
++    from vllm.model_executor.models.qwen3_5 import Qwen3_5ForCausalLMBase
++    mock_quant_config = Mock()
+diff -- tests/model_executor/test_nemotron_h_quantization.py
+@@ -0,0 +1,34 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++from unittest.mock import Mock, patch
++def test_nemotron_h_lm_head_receives_quant_config():
++    from vllm.model_executor.models.nemotron_h import NemotronHForCausalLM
++    mock_quant_config = Mock()
+diff -- vllm/model_executor/layers/quantization/modelopt.py
+@@ -85,6 +85,7 @@
+```
+
+- Reviewed files:
+  - tests: `tests/model_executor/test_qwen3_5_quantization.py` added +78/-0; `tests/model_executor/test_nemotron_h_quantization.py` added +34/-0; `tests/quantization/test_modelopt.py` modified +93/-1
+  - runtime: `vllm/model_executor/layers/quantization/modelopt.py` modified +5/-4; `vllm/model_executor/layers/vocab_parallel_embedding.py` modified +7/-0; `vllm/model_executor/models/nemotron_h.py` modified +1/-0; `vllm/model_executor/models/qwen3_5.py` modified +1/-0; `vllm/model_executor/models/qwen3_5_mtp.py` modified +1/-0
+- Risk and verification: The diff ships test coverage in `tests/model_executor/test_nemotron_h_quantization.py`, `tests/model_executor/test_qwen3_5_quantization.py`, `tests/quantization/test_modelopt.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #43581 - [Model][Bugfix] Rename weight_mapper to hf_to_vllm_mapper in LlamaNemotronVL pooling models
+
+- Link: https://github.com/vllm-project/vllm/pull/43581
+- Status/date: merged / 2026-05-28
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_vl.py`; associated commits `4ec28173139c`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +4/-4, 29 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Model][Bugfix] Rename weight_mapper to hf_to_vllm_mapper in LlamaNemotronVL pooling models"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nemotron_vl.py`; technical summary: Covers "[Model][Bugfix] Rename weight_mapper to hf_to_vllm_mapper in LlamaNemotronVL pooling models"; the main implementation surface is `vllm/model_executor/models/nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/nemotron_vl.py` modified +4/-4 (8 lines); hunks: -477,7 +477,7 @@ class LlamaNemotronVLForEmbedding(LlamaNemotronVLChatModel,...; -533,7 +533,7 @@ def _call_vision_model(self, pixel_values: torch.Tensor) ->...; symbols: LlamaNemotronVLForEmbedding, due, _call_vision_model, load_weights, touching `LlamaNemotronVLForEmbedding, due, _call_vision_model`.
+- Code diff details:
+  - `vllm/model_executor/models/nemotron_vl.py` modified +4/-4 (8 lines); hunks: -477,7 +477,7 @@ class LlamaNemotronVLForEmbedding(LlamaNemotronVLChatModel,...; -533,7 +533,7 @@ def _call_vision_model(self, pixel_values: torch.Tensor) ->...; symbols: LlamaNemotronVLForEmbedding, due, _call_vision_model, load_weights
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/nemotron_vl.py
+@@ -477,7 +477,7 @@ class LlamaNemotronVLForEmbedding(LlamaNemotronVLChatModel, VllmModelForPooling)
+-    weight_mapper = WeightsMapper(
++    hf_to_vllm_mapper = WeightsMapper(
+@@ -533,7 +533,7 @@ def _call_vision_model(self, pixel_values: torch.Tensor) -> torch.Tensor:
+-        return loader.load_weights(weights, mapper=self.weight_mapper)
++        return loader.load_weights(weights, mapper=self.hf_to_vllm_mapper)
+@@ -543,8 +543,8 @@ class LlamaNemotronVLForSequenceClassification(
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/nemotron_vl.py` modified +4/-4
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/nemotron_vl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #43167 - Remove KV cache scale boilerplate from model weight loading methods
+
+- Link: https://github.com/vllm-project/vllm/pull/43167
+- Status/date: merged / 2026-06-05
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 56 files, +88/-731, 1251 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Remove KV cache scale boilerplate from model weight loading methods"; model line: Nemotron Super; category: docs/tests/CI; main diff: `tests/model_executor/test_eagle_quantization.py`, `vllm/model_executor/models/gpt_oss.py`, `vllm/model_executor/layers/quantization/kv_cache.py`; technical summary: Covers "Remove KV cache scale boilerplate from model weight loading methods"; the main implementation surface is `tests/model_executor/test_eagle_quantization.py`, `vllm/model_executor/models/gpt_oss.py`, `vllm/model_executor/layers/quantization/kv_cache.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/model_executor/test_eagle_quantization.py` modified +0/-56 (56 lines); hunks: -100,32 +100,6 @@ def test_fc_layer_quant_config_usage(default_vllm_config, d...; -183,33 +157,3 @@ def test_eagle3_lm_head_receives_quant_config():; symbols: test_fc_layer_quant_config_usage, test_kv_cache_scale_name_handling, test_kv_cache_scale_name_no_scale, test_maybe_remap_kv_scale_name, touching `test_fc_layer_quant_config_usage, test_kv_cache_scale_name_handling, test_kv_cache_scale_name_no_scale`; `vllm/model_executor/models/gpt_oss.py` modified +0/-46 (46 lines); hunks: -635,52 +635,6 @@ def _get_moe_weight_dtype(layer_id: int = 0) -> str | None:; symbols: _get_moe_weight_dtype, kv_cache_scale_loader, touching `_get_moe_weight_dtype, kv_cache_scale_loader`; `vllm/model_executor/layers/quantization/kv_cache.py` modified +28/-4 (32 lines); hunks: -15,6 +15,30; -37,11 +61,11 @@ def create_weights(self, layer: torch.nn.Module):; symbols: KVCacheScaleParameter, __new__, weight_loader, BaseKVCacheMethod, touching `KVCacheScaleParameter, __new__, weight_loader`; `vllm/model_executor/layers/quantization/fp8.py` modified +12/-19 (31 lines); hunks: -207,25 +207,18 @@ def get_quant_method(; symbols: get_quant_method, get_cache_scale, get_cache_scale_mapper, CopyNumelCounter, touching `get_quant_method, get_cache_scale, get_cache_scale_mapper`.
+- Code diff details:
+  - `tests/model_executor/test_eagle_quantization.py` modified +0/-56 (56 lines); hunks: -100,32 +100,6 @@ def test_fc_layer_quant_config_usage(default_vllm_config, d...; -183,33 +157,3 @@ def test_eagle3_lm_head_receives_quant_config():; symbols: test_fc_layer_quant_config_usage, test_kv_cache_scale_name_handling, test_kv_cache_scale_name_no_scale, test_maybe_remap_kv_scale_name
+  - `vllm/model_executor/models/gpt_oss.py` modified +0/-46 (46 lines); hunks: -635,52 +635,6 @@ def _get_moe_weight_dtype(layer_id: int = 0) -> str | None:; symbols: _get_moe_weight_dtype, kv_cache_scale_loader
+  - `vllm/model_executor/layers/quantization/kv_cache.py` modified +28/-4 (32 lines); hunks: -15,6 +15,30; -37,11 +61,11 @@ def create_weights(self, layer: torch.nn.Module):; symbols: KVCacheScaleParameter, __new__, weight_loader, BaseKVCacheMethod
+  - `vllm/model_executor/layers/quantization/fp8.py` modified +12/-19 (31 lines); hunks: -207,25 +207,18 @@ def get_quant_method(; symbols: get_quant_method, get_cache_scale, get_cache_scale_mapper, CopyNumelCounter
+  - `vllm/model_executor/layers/quantization/quark/quark.py` modified +10/-20 (30 lines); hunks: -646,26 +646,16 @@ def get_scheme(; symbols: get_scheme, get_cache_scale, get_cache_scale_mapper, QuarkLinearMethod
+- Key code excerpts:
+
+```diff
+diff -- tests/model_executor/test_eagle_quantization.py
+@@ -100,32 +100,6 @@ def test_fc_layer_quant_config_usage(default_vllm_config, dist_init, device) ->
+-def test_kv_cache_scale_name_handling():
+-    # Mock a quant config that supports cache scales
+-    mock_quant_config = Mock()
+-    mock_quant_config.get_cache_scale = Mock(return_value="layers.0.self_attn.kv_scale")
+-    # Condition check in load_weights
+-    name = "layers.0.self_attn.k_proj.weight"
+diff -- vllm/model_executor/models/gpt_oss.py
+@@ -635,52 +635,6 @@ def _get_moe_weight_dtype(layer_id: int = 0) -> str | None:
+-            def kv_cache_scale_loader(
+-                quant_config: QuantizationConfig,
+-                name: str,
+-                params_dict: dict[str, typing.Any],
+-                weight: torch.Tensor,
+-                default_weight_loader: Callable[..., None],
+diff -- vllm/model_executor/layers/quantization/kv_cache.py
+@@ -15,6 +15,30 @@
+```
+
+- Reviewed files:
+  - tests: `tests/model_executor/test_eagle_quantization.py` modified +0/-56
+  - runtime: `vllm/model_executor/models/gpt_oss.py` modified +0/-46; `vllm/model_executor/layers/quantization/kv_cache.py` modified +28/-4; `vllm/model_executor/layers/quantization/fp8.py` modified +12/-19; `vllm/model_executor/layers/quantization/quark/quark.py` modified +10/-20; `vllm/model_executor/models/llama4.py` modified +3/-18; `vllm/model_executor/models/glm_ocr_mtp.py` modified +4/-13
+- Risk and verification: The diff ships test coverage in `tests/model_executor/test_eagle_quantization.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #41184 - [MoE Refactor] FusedMoE/MoERunner inversion refactor
+
+- Link: https://github.com/vllm-project/vllm/pull/41184
+- Status/date: merged / 2026-06-08
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 90 files, +2734/-2027, 7329 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[MoE Refactor] FusedMoE/MoERunner inversion refactor"; model line: Nemotron Super; category: performance/backend optimization; main diff: `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/routed_experts.py`, `vllm/model_executor/layers/fused_moe/runner/moe_runner.py`; technical summary: Covers "[MoE Refactor] FusedMoE/MoERunner inversion refactor"; the main implementation surface is `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/routed_experts.py`, `vllm/model_executor/layers/fused_moe/runner/moe_runner.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/layers/fused_moe/layer.py` modified +314/-1334 (1648 lines); hunks: -1,1424 +1,404; symbols: FusedMoeWeightScaleSupported, make_parallel_config, FusedMoE, determine_expert_counts, touching `FusedMoeWeightScaleSupported, make_parallel_config, FusedMoE`; `vllm/model_executor/layers/fused_moe/routed_experts.py` added +1144/-0 (1144 lines); hunks: -0,0 +1,1144; symbols: FusedMoeWeightScaleSupported, RoutedExperts, __init__, _replace_quant_method, touching `FusedMoeWeightScaleSupported, RoutedExperts, __init__`; `vllm/model_executor/layers/fused_moe/runner/moe_runner.py` modified +257/-82 (339 lines); hunks: -1,28 +1,39; -43,8 +54,23; symbols: register_layer_for_moe_forward_op, get_layer_from_name, _moe_forward, touching `register_layer_for_moe_forward_op, get_layer_from_name, _moe_forward`; `vllm/lora/layers/fused_moe.py` modified +76/-43 (119 lines); hunks: -10,7 +10,7; -25,15 +25,24; symbols: FusedMoEWithLoRA, __init__, touching `FusedMoEWithLoRA, __init__`.
+- Code diff details:
+  - `vllm/model_executor/layers/fused_moe/layer.py` modified +314/-1334 (1648 lines); hunks: -1,1424 +1,404; symbols: FusedMoeWeightScaleSupported, make_parallel_config, FusedMoE, determine_expert_counts
+  - `vllm/model_executor/layers/fused_moe/routed_experts.py` added +1144/-0 (1144 lines); hunks: -0,0 +1,1144; symbols: FusedMoeWeightScaleSupported, RoutedExperts, __init__, _replace_quant_method
+  - `vllm/model_executor/layers/fused_moe/runner/moe_runner.py` modified +257/-82 (339 lines); hunks: -1,28 +1,39; -43,8 +54,23; symbols: register_layer_for_moe_forward_op, get_layer_from_name, _moe_forward
+  - `vllm/lora/layers/fused_moe.py` modified +76/-43 (119 lines); hunks: -10,7 +10,7; -25,15 +25,24; symbols: FusedMoEWithLoRA, __init__
+  - `vllm/model_executor/model_loader/weight_utils.py` modified +106/-1 (107 lines); hunks: -13,7 +13,7; -1633,3 +1633,108 @@ def maybe_remap_kv_scale_name(name: str, params_dict: di...; symbols: maybe_remap_kv_scale_name, maybe_remap_moe_expert_param_name, remap_moe_expert_weights
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/layers/fused_moe/layer.py
+@@ -1,1424 +1,404 @@
+-from collections.abc import Callable, Iterable
+-from enum import Enum
+-from typing import Literal, cast, overload
++from collections.abc import Callable
++from typing import Any
+-from torch.nn.parameter import UninitializedParameter
+diff -- vllm/model_executor/layers/fused_moe/routed_experts.py
+@@ -0,0 +1,1144 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++from collections.abc import Callable, Iterable
++from enum import Enum
++from typing import TYPE_CHECKING, Any, Literal, cast, overload
++import torch
+diff -- vllm/model_executor/layers/fused_moe/runner/moe_runner.py
+@@ -1,28 +1,39 @@
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/layers/fused_moe/layer.py` modified +314/-1334; `vllm/model_executor/layers/fused_moe/routed_experts.py` added +1144/-0; `vllm/model_executor/layers/fused_moe/runner/moe_runner.py` modified +257/-82; `vllm/lora/layers/fused_moe.py` modified +76/-43; `vllm/model_executor/model_loader/weight_utils.py` modified +106/-1; `vllm/model_executor/layers/fused_moe/runner/moe_runner_interface.py` modified +102/-2
+- Risk and verification: The diff ships test coverage in `tests/distributed/test_eplb_fused_moe_layer.py`, `tests/distributed/test_eplb_fused_moe_layer_dep_nvfp4.py`, `tests/kernels/moe/modular_kernel_tools/common.py`, `tests/kernels/moe/modular_kernel_tools/parallel_utils.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #39091 - [Bugfix][Reasoning] Nemotron V3: surface reasoning as content when thinking is unterminated
+
+- Link: https://github.com/vllm-project/vllm/pull/39091
+- Status/date: merged / 2026-06-10
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_nemotron_v3_reasoning_parser.py`; associated commits `4882fd763282`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +163/-10, 237 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Bugfix][Reasoning] Nemotron V3: surface reasoning as content when thinking is unterminated"; model line: Nemotron Super; category: bug fix; main diff: `tests/reasoning/test_nemotron_v3_reasoning_parser.py`; technical summary: Covers "[Bugfix][Reasoning] Nemotron V3: surface reasoning as content when thinking is unterminated"; the main implementation surface is `tests/reasoning/test_nemotron_v3_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/reasoning/test_nemotron_v3_reasoning_parser.py` modified +118/-2 (120 lines); hunks: -8,7 +8,9; -106,7 +108,7 @@ def test_nemotron_v3_reasoning(; symbols: test_nemotron_v3_reasoning, test_nemotron_v3_without_thinking_returns_content, test_nemotron_v3_without_thinking_moves_into_content, test_nemotron_v3_force_nonempty_content_returns_content, touching `test_nemotron_v3_reasoning, test_nemotron_v3_without_thinking_returns_content, test_nemotron_v3_without_thinking_moves_into_content`.
+- Code diff details:
+  - `tests/reasoning/test_nemotron_v3_reasoning_parser.py` modified +118/-2 (120 lines); hunks: -8,7 +8,9; -106,7 +108,7 @@ def test_nemotron_v3_reasoning(; symbols: test_nemotron_v3_reasoning, test_nemotron_v3_without_thinking_returns_content, test_nemotron_v3_without_thinking_moves_into_content, test_nemotron_v3_force_nonempty_content_returns_content
+- Key code excerpts:
+
+```diff
+diff -- tests/reasoning/test_nemotron_v3_reasoning_parser.py
+@@ -8,7 +8,9 @@
++from vllm.parser.abstract_parser import DelegatingParser
++from vllm.reasoning.nemotron_v3_reasoning_parser import NemotronV3ReasoningParser
+@@ -106,7 +108,7 @@ def test_nemotron_v3_reasoning(
+-def test_nemotron_v3_without_thinking_returns_content(
++def test_nemotron_v3_without_thinking_moves_into_content(
+@@ -124,11 +126,13 @@ def test_nemotron_v3_without_thinking_returns_content(
+```
+
+- Reviewed files:
+  - tests: `tests/reasoning/test_nemotron_v3_reasoning_parser.py` modified +118/-2
+- Risk and verification: The diff ships test coverage in `tests/reasoning/test_nemotron_v3_reasoning_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #45128 - [Model] Remove InternLMForCausalLM registry alias
+
+- Link: https://github.com/vllm-project/vllm/pull/45128
+- Status/date: merged / 2026-06-11
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 14 files, +1/-17, 123 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Model] Remove InternLMForCausalLM registry alias"; model line: Nemotron Super; category: docs/tests/CI; main diff: `tests/models/registry.py`, `vllm/model_executor/models/registry.py`, `docs/models/supported_models.md`; technical summary: Covers "[Model] Remove InternLMForCausalLM registry alias"; the main implementation surface is `tests/models/registry.py`, `vllm/model_executor/models/registry.py`, `docs/models/supported_models.md`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/models/registry.py` modified +0/-3 (3 lines); hunks: -338,9 +338,6 @@ def check_available_online(; symbols: check_available_online, touching `check_available_online`; `vllm/model_executor/models/registry.py` modified +1/-1 (2 lines); hunks: -140,7 +140,6; -715,6 +714,7; `docs/models/supported_models.md` modified +0/-1 (1 lines); hunks: -423,7 +423,6 @@ th {; `vllm/model_executor/models/apertus.py` modified +0/-1 (1 lines); hunks: -252,7 +252,6 @@ def __init__(; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `tests/models/registry.py` modified +0/-3 (3 lines); hunks: -338,9 +338,6 @@ def check_available_online(; symbols: check_available_online
+  - `vllm/model_executor/models/registry.py` modified +1/-1 (2 lines); hunks: -140,7 +140,6; -715,6 +714,7
+  - `docs/models/supported_models.md` modified +0/-1 (1 lines); hunks: -423,7 +423,6 @@ th {
+  - `vllm/model_executor/models/apertus.py` modified +0/-1 (1 lines); hunks: -252,7 +252,6 @@ def __init__(; symbols: __init__
+  - `vllm/model_executor/models/exaone.py` modified +0/-1 (1 lines); hunks: -243,7 +243,6 @@ def __init__(; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- tests/models/registry.py
+@@ -338,9 +338,6 @@ def check_available_online(
+-    "InternLMForCausalLM": _HfExamplesInfo(
+-        "internlm/internlm-chat-7b", trust_remote_code=True
+-    ),
+diff -- vllm/model_executor/models/registry.py
+@@ -140,7 +140,6 @@
+-    "InternLMForCausalLM": ("llama", "LlamaForCausalLM"),
+@@ -715,6 +714,7 @@
++    "InternLMForCausalLM": "0.23.0",
+diff -- docs/models/supported_models.md
+@@ -423,7 +423,6 @@ th {
+-| `InternLMForCausalLM` | InternLM | `internlm/internlm-7b`, `internlm/internlm-chat-7b`, etc. | ✅︎ | ✅︎ |
+diff -- vllm/model_executor/models/apertus.py
+@@ -252,7 +252,6 @@ def __init__(
+-        # Support internlm/internlm-7b with bias
+diff -- vllm/model_executor/models/exaone.py
+@@ -243,7 +243,6 @@ def __init__(
+```
+
+- Reviewed files:
+  - tests: `tests/models/registry.py` modified +0/-3
+  - runtime: `vllm/model_executor/models/registry.py` modified +1/-1; `vllm/model_executor/models/apertus.py` modified +0/-1; `vllm/model_executor/models/exaone.py` modified +0/-1; `vllm/model_executor/models/exaone4.py` modified +0/-1; `vllm/model_executor/models/exaone_moe.py` modified +0/-1; `vllm/model_executor/models/granite.py` modified +0/-1
+  - docs: `docs/models/supported_models.md` modified +0/-1
+- Risk and verification: The diff ships test coverage in `tests/distributed/test_pipeline_parallel.py`, `tests/models/registry.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #45755 - [Frontend] [Parser] Migrate Nemotron V3 to streaming parser engine
+
+- Link: https://github.com/vllm-project/vllm/pull/45755
+- Status/date: merged / 2026-06-16
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/parser/engine/test_nemotron_v3.py`, `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/parser/nemotron_v3.py`, `vllm/reasoning/nemotron_v3_engine_reasoning_parser.py`; associated commits `f3858d5422f0`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 12 files, +768/-169, 1174 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Frontend] [Parser] Migrate Nemotron V3 to streaming parser engine"; model line: Nemotron Super; category: docs/tests/CI; main diff: `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_engine_reasoning_parser.py`, `tests/parser/engine/test_nemotron_v3.py`; technical summary: Covers "[Frontend] [Parser] Migrate Nemotron V3 to streaming parser engine"; the main implementation surface is `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_engine_reasoning_parser.py`, `tests/parser/engine/test_nemotron_v3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/reasoning/test_nemotron_v3_reasoning_parser.py` modified +6/-2 (8 lines); hunks: -9,8 +9,8; -27,6 +27,7 @@ def __init__(self):; symbols: __init__, get_vocab, tokenize, convert_tokens_to_string, touching `__init__, get_vocab, tokenize`; `vllm/reasoning/nemotron_v3_engine_reasoning_parser.py` added +8/-0 (8 lines); hunks: -0,0 +1,8; `tests/parser/engine/test_nemotron_v3.py` added +302/-0 (302 lines); hunks: -0,0 +1,302; symbols: _make_request, parser, TestNemotronSwap, test_enable_thinking_false_swaps, touching `_make_request, parser, TestNemotronSwap`; `vllm/parser/nemotron_v3.py` added +113/-0 (113 lines); hunks: -0,0 +1,113; symbols: nemotron_v3_config, NemotronV3Parser, __init__, _reset, touching `nemotron_v3_config, NemotronV3Parser, __init__`.
+- Code diff details:
+  - `tests/reasoning/test_nemotron_v3_reasoning_parser.py` modified +6/-2 (8 lines); hunks: -9,8 +9,8; -27,6 +27,7 @@ def __init__(self):; symbols: __init__, get_vocab, tokenize, convert_tokens_to_string
+  - `vllm/reasoning/nemotron_v3_engine_reasoning_parser.py` added +8/-0 (8 lines); hunks: -0,0 +1,8
+  - `tests/parser/engine/test_nemotron_v3.py` added +302/-0 (302 lines); hunks: -0,0 +1,302; symbols: _make_request, parser, TestNemotronSwap, test_enable_thinking_false_swaps
+  - `vllm/parser/nemotron_v3.py` added +113/-0 (113 lines); hunks: -0,0 +1,113; symbols: nemotron_v3_config, NemotronV3Parser, __init__, _reset
+- Key code excerpts:
+
+```diff
+diff -- tests/reasoning/test_nemotron_v3_reasoning_parser.py
+@@ -9,8 +9,8 @@
++from vllm.parser.engine.registered_adapters import NemotronV3ParserReasoningAdapter
+-from vllm.reasoning.nemotron_v3_reasoning_parser import NemotronV3ReasoningParser
+@@ -27,6 +27,7 @@ def __init__(self):
++        self._inv_vocab = {v: k for k, v in self._vocab.items()}
+@@ -42,6 +43,9 @@ def tokenize(self, text: str) -> list[str]:
++    def decode(self, token_ids: list[int]) -> str:
+diff -- vllm/reasoning/nemotron_v3_engine_reasoning_parser.py
+@@ -0,0 +1,8 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++from vllm.parser.engine.registered_adapters import (
++    NemotronV3ParserReasoningAdapter,
++)
++__all__ = ["NemotronV3ParserReasoningAdapter"]
+diff -- tests/parser/engine/test_nemotron_v3.py
+@@ -0,0 +1,302 @@
+```
+
+- Reviewed files:
+  - tests: `tests/reasoning/test_nemotron_v3_reasoning_parser.py` modified +6/-2; `tests/parser/engine/test_nemotron_v3.py` added +302/-0
+  - runtime: `vllm/reasoning/nemotron_v3_engine_reasoning_parser.py` added +8/-0; `vllm/parser/nemotron_v3.py` added +113/-0
+- Risk and verification: The diff ships test coverage in `tests/parser/engine/test_delegating_replay.py`, `tests/parser/engine/test_nemotron_v3.py`, `tests/parser/engine/test_replay.py`, `tests/parser/engine/trace_builder.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #42727 - fix(quantization): Fix AWQ dequantize on Intel XPU and refactor AutoAWQ config
+
+- Link: https://github.com/vllm-project/vllm/pull/42727
+- Status/date: merged / 2026-06-18
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 20 files, +579/-428, 1485 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "fix(quantization): Fix AWQ dequantize on Intel XPU and refactor AutoAWQ config"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/layers/quantization/auto_awq.py`, `vllm/model_executor/layers/quantization/awq.py`, `vllm/model_executor/layers/quantization/moe_wna16.py`; technical summary: Covers "fix(quantization): Fix AWQ dequantize on Intel XPU and refactor AutoAWQ config"; the main implementation surface is `vllm/model_executor/layers/quantization/auto_awq.py`, `vllm/model_executor/layers/quantization/awq.py`, `vllm/model_executor/layers/quantization/moe_wna16.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/layers/quantization/auto_awq.py` renamed +285/-71 (356 lines); hunks: -1,14 +1,15; -36,7 +37,6; symbols: _noop_loader, AWQMarlinConfig, for, AutoAWQConfig, touching `_noop_loader, AWQMarlinConfig, for`; `vllm/model_executor/layers/quantization/awq.py` removed +0/-286 (286 lines); hunks: -1,286 +0,0; symbols: AWQConfig, for, __init__, __repr__, touching `AWQConfig, for, __init__`; `vllm/model_executor/layers/quantization/moe_wna16.py` modified +8/-24 (32 lines); hunks: -27,9 +27,6; -55,10 +52,8 @@ def __init__(; symbols: __init__, is_moe_wna16_compatible, get_quant_method, touching `__init__, is_moe_wna16_compatible, get_quant_method`; `vllm/model_executor/layers/fused_moe/oracle/int_wna16.py` modified +10/-10 (20 lines); hunks: -728,18 +728,18 @@ def _process_weights_cpu(; -753,7 +753,7 @@ def _process_weights_cpu(; symbols: _process_weights_cpu, convert_to_wna16_moe_kernel_format, touching `_process_weights_cpu, convert_to_wna16_moe_kernel_format`.
+- Code diff details:
+  - `vllm/model_executor/layers/quantization/auto_awq.py` renamed +285/-71 (356 lines); hunks: -1,14 +1,15; -36,7 +37,6; symbols: _noop_loader, AWQMarlinConfig, for, AutoAWQConfig
+  - `vllm/model_executor/layers/quantization/awq.py` removed +0/-286 (286 lines); hunks: -1,286 +0,0; symbols: AWQConfig, for, __init__, __repr__
+  - `vllm/model_executor/layers/quantization/moe_wna16.py` modified +8/-24 (32 lines); hunks: -27,9 +27,6; -55,10 +52,8 @@ def __init__(; symbols: __init__, is_moe_wna16_compatible, get_quant_method
+  - `vllm/model_executor/layers/fused_moe/oracle/int_wna16.py` modified +10/-10 (20 lines); hunks: -728,18 +728,18 @@ def _process_weights_cpu(; -753,7 +753,7 @@ def _process_weights_cpu(; symbols: _process_weights_cpu, convert_to_wna16_moe_kernel_format
+  - `vllm/model_executor/layers/quantization/inc/schemes/inc_wna16_linear.py` modified +11/-9 (20 lines); hunks: -8,9 +8,8; -125,12 +124,12 @@ def _build_awq_method(self):; symbols: _build_awq_method
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/layers/quantization/auto_awq.py
+@@ -1,14 +1,15 @@
+-from typing import TYPE_CHECKING, Any
++from typing import TYPE_CHECKING, Any, Union
++from vllm import _custom_ops as ops
+@@ -36,7 +37,6 @@
+-from vllm.model_executor.layers.quantization.awq import AWQConfig
+@@ -55,7 +55,10 @@
+diff -- vllm/model_executor/layers/quantization/awq.py
+@@ -1,286 +0,0 @@
+-# SPDX-License-Identifier: Apache-2.0
+-# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
+-from typing import TYPE_CHECKING, Any, Union
+-import torch
+-from safetensors.torch import _TYPES as _SAFETENSORS_TO_TORCH_DTYPE
+-from transformers import PretrainedConfig
+diff -- vllm/model_executor/layers/quantization/moe_wna16.py
+@@ -27,9 +27,6 @@
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/layers/quantization/auto_awq.py` renamed +285/-71; `vllm/model_executor/layers/quantization/awq.py` removed +0/-286; `vllm/model_executor/layers/quantization/moe_wna16.py` modified +8/-24; `vllm/model_executor/layers/fused_moe/oracle/int_wna16.py` modified +10/-10; `vllm/model_executor/layers/quantization/inc/schemes/inc_wna16_linear.py` modified +11/-9; `vllm/model_executor/layers/quantization/__init__.py` modified +5/-4
+- Risk and verification: The diff ships test coverage in `tests/quantization/test_auto_awq.py`, `tests/quantization/test_auto_round.py`, `tests/quantization/test_configs.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #46495 - [Bugfix] Fix NemotronLayerNorm1P hardcoded cuda device type
+
+- Link: https://github.com/vllm-project/vllm/pull/46495
+- Status/date: merged / 2026-06-24
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron.py`; associated commits `ac1fa74616fe`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +10/-8, 35 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Bugfix] Fix NemotronLayerNorm1P hardcoded cuda device type"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nemotron.py`; technical summary: Covers "[Bugfix] Fix NemotronLayerNorm1P hardcoded cuda device type"; the main implementation surface is `vllm/model_executor/models/nemotron.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/nemotron.py` modified +10/-8 (18 lines); hunks: -71,13 +71,14; -100,10 +101,11 @@ def forward(; symbols: _cast_if_autocast_enabled, NemotronLayerNorm1P, forward, touching `_cast_if_autocast_enabled, NemotronLayerNorm1P, forward`.
+- Code diff details:
+  - `vllm/model_executor/models/nemotron.py` modified +10/-8 (18 lines); hunks: -71,13 +71,14; -100,10 +101,11 @@ def forward(; symbols: _cast_if_autocast_enabled, NemotronLayerNorm1P, forward
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/nemotron.py
+@@ -71,13 +71,14 @@
+-def _cast_if_autocast_enabled(*args):
+-    if not torch.is_autocast_enabled():
++def _cast_if_autocast_enabled(device_type: str, *args):
++    if not torch.is_autocast_enabled(device_type):
+-    else:
+-        return torch.amp.autocast_mode._cast(
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/nemotron.py` modified +10/-8
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/nemotron.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+## Gap-Closure Notes
+
+- Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
+- If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.

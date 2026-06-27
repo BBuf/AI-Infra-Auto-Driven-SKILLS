@@ -188,7 +188,7 @@ Hard requirements:
 - Record package version or git commit plus server/benchmark `--help` snapshots
   for SGLang and every selected comparison framework. The 2026-06-27 live
   source anchors checked for this skill are SGLang
-  `9214b9338fcb1df5b1a9ab5835aa631539f55556`, vLLM
+  `e0c0c0a45cb1bda90392bfa2bba4184f5b0638a0`, vLLM
   `091d13976c1c246714bb2112dd2e208561dda6a3`, TensorRT-LLM
   `aaffa2f9fef3025e0f698d978385a73460344e0b`, and
   `lightseekorg/tokenspeed@d0a7faddb5ec0d4c6d037c4c3e6a781d2c5164a8`;

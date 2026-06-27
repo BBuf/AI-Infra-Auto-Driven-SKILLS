@@ -28,7 +28,7 @@ run:
 
 ```bash
 python skills/llm-serving-auto-benchmark/scripts/validate_cookbook_configs.py \
-  skills/llm-serving-auto-benchmark/configs/cookbook-llm
+  skills/llm-serving-auto-benchmark/configs/cookbook-llm/*.yaml
 ```
 
 If you have captured target-environment `--help` files, add
@@ -104,6 +104,27 @@ path can finish quickly.
 | --- | --- | --- | --- | --- |
 | `Qwen/Qwen3-8B` | 2x H100, TP=2 | `sglang_mem086`, 21.64 req/s, 1385.05 output tok/s, mean TTFT 70.54 ms | `vllm_mem080`, 22.88 req/s, 1464.25 output tok/s, mean TTFT 60.56 ms | `/data/bbuf/validate/core_skill_validation_20260501/qwen3_8b/auto_benchmark` |
 | `mistralai/Mistral-7B-Instruct-v0.3` | 2x H100, TP=2 | `sglang_mem080`, 24.09 req/s, 1541.92 output tok/s, mean TTFT 61.47 ms | `vllm_mem090`, 24.76 req/s, 1584.54 output tok/s, mean TTFT 58.63 ms | `/data/bbuf/validate/core_skill_validation_20260501/mistral_7b_instruct_v03/auto_benchmark` |
+
+Additional B200 smoke validation on `2026-06-27` used `GPUC5A6`
+(`cirrascale-gpuc5a6`) in container `sglang_bbuf`, artifact root
+`/data/bbuf/ai_infra_skills_pr72_20260627`. The target image had SGLang
+`0.5.13.post1` installed, but no `vllm`, `trtllm-serve`, or `tokenspeed`
+CLI in that container, so only SGLang was model-smoked and the missing
+frameworks were recorded as environment gaps, not as unsupported frameworks.
+
+| Model | GPU | Result |
+| --- | --- | --- |
+| `Qwen/Qwen2.5-0.5B-Instruct` | 1x B200 | 5 random prompts completed; GPU memory returned to 0 MiB |
+| `Qwen/Qwen2.5-1.5B-Instruct` | 1x B200 | 5 random prompts completed; GPU memory returned to 0 MiB |
+| `Qwen/Qwen2.5-3B-Instruct` | 1x B200 | 5 random prompts completed; GPU memory returned to 0 MiB |
+| `Qwen/Qwen2.5-7B-Instruct` | 1x B200 | 5 random prompts completed; GPU memory returned to 0 MiB |
+| `Qwen/Qwen3-8B` | 1x B200 | 5 random prompts completed; GPU memory returned to 0 MiB |
+
+The same B200 refresh ran the cookbook validator against captured help
+snapshots. Missing-command help captures such as `trtllm-serve_missing.txt`
+are now ignored unless at least one real `--flag` is present, preventing a
+missing framework binary from being misreported as hundreds of unsupported
+framework flags.
 
 ## Skill Scope
 

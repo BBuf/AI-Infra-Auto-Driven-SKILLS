@@ -1,9 +1,10 @@
 # TokenSpeed Kimi 模型 PR 优化历史
 
-## 2026-06-26 最新源码扫描
+## 2026-06-27 源码 head 刷新
 
-已按 TokenSpeed 上游 `lightseekorg/tokenspeed@5aedf69d6b476baa65571011de6ea60fd5a238a8` 重新扫描本文下方列出的 tracked files。
-文件级匹配使用 GitHub mirror 的 `git log --name-only`；PR 标题、链接和合并时间通过 GitHub GraphQL Pull Request API 批量复核。上一时效锚点：`2026-06-26`。
+已用 `git ls-remote` 复核 TokenSpeed 上游 main head：
+`lightseekorg/tokenspeed@d0a7faddb5ec0d4c6d037c4c3e6a781d2c5164a8`。
+下方文件级 source-scan 行仍是上一轮 tracked-file 审计结果；引用当前 open PR 状态前，先看 `model-pr-optimization-history/open-pr-watch.md`。
 
 结果：发现 2 个额外 PR-numbered merge 触及 tracked files，但尚未提升为下方完整逐 PR diff audit card。此节只作为 freshness index；需要引用实现细节时，仍应先人工阅读 PR diff 再补完整卡片。
 
@@ -12,9 +13,9 @@
 | 2026-06-26 | [#519](https://github.com/lightseekorg/tokenspeed/pull/519) | feat: distributed argmax for EAGLE greedy sampling | `logits_processor.py` |
 | 2026-06-25 | [#456](https://github.com/lightseekorg/tokenspeed/pull/456) | perf(kernel): optimize Qwen vision QKV rotary layout | `qkv_rotary.py` |
 
-## 2026-06-26 PR 补漏复核
+## 2026-06-27 PR 补漏复核
 
-已按 TokenSpeed 上游 `HEAD@5aedf69d6b476baa65571011de6ea60fd5a238a8` 复核。本文覆盖 Kimi K2.5/K2.x 相关的 merged PR，并采用 SGLang 风格的时间线和逐 PR diff 审计卡。
+已按 TokenSpeed 上游 `HEAD@d0a7faddb5ec0d4c6d037c4c3e6a781d2c5164a8` 复核。本文覆盖 Kimi K2.5/K2.x 相关的 merged PR，并采用 SGLang 风格的时间线和逐 PR diff 审计卡。
 
 本轮筛选规则：标题/文件命中 `Kimi`、`kimi_k25`、`K2.5`、`NVFP4`、`MXFP4`、`MXINT4`、`lm_head`、`top_k/top_p`、`InstantTensor`、`OCR`、`FA4`、`vision`、`MLA` 的 merged PR；过滤纯格式化和不影响模型/runtime/CI lane 的基础设施 PR。
 

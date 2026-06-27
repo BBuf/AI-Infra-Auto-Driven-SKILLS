@@ -1,96 +1,67 @@
-# sglang Ling 2.5 1T Model PR Optimization History
-
-## 2026-06-26 Latest Source Scan
-
-Rechecked SGLang upstream `sgl-project/sglang@8524678889485801e7a4a12d62015be0c68f7a90` against the tracked files listed below.
-The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-05`.
-
-Result: 2 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
-
-| Merged | PR | Title | Tracked files touched |
-| --- | --- | --- | --- |
-| 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | Add get_parallel(): a structured accessor for parallel-topology state | `bailing_moe.py`, `bailing_moe_linear.py`, `bailing_moe_nextn.py` |
-| 2026-06-10 | [#23906](https://github.com/sgl-project/sglang/pull/23906) | [Refactor] Cuda Graph Runner/Backend Refactor | `bailing_moe.py`, `bailing_moe_linear.py` |
-
-## 2026-06-05 PR Backfill Audit
-
-Rechecked sglang upstream `origin/main@6cfdc1858` on 2026-06-05; 5 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-05-19). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
-
-| Merged | PR | Title | Tracked files touched |
-| --- | --- | --- | --- |
-| 2026-06-03 | [#27120](https://github.com/sgl-project/sglang/pull/27120) | Fix hybrid linear attention dispatch by layer id with draft-worker awareness | `bailing_moe_linear.py` |
-| 2026-06-02 | [#27116](https://github.com/sgl-project/sglang/pull/27116) | Revert "Fix hybrid linear attention misrouting plain-RadixAttention linear layers to the full backend (Ring-2.5-1T)" | `bailing_moe_linear.py` |
-| 2026-06-02 | [#26623](https://github.com/sgl-project/sglang/pull/26623) | Fix hybrid linear attention misrouting plain-RadixAttention linear layers to the full backend (Ring-2.5-1T) | `bailing_moe_linear.py` |
-| 2026-05-29 | [#26474](https://github.com/sgl-project/sglang/pull/26474) | [HotFix][Ling 2.6] Fix HybridLinearAttn dispatcher for Ling-2.6 | `bailing_moe_linear.py` |
-| 2026-05-27 | [#23837](https://github.com/sgl-project/sglang/pull/23837) | Add Ling_2_6 | `bailing_moe_linear.py` |
-
-
-## 2026-05-19 Coverage Addition
-
-Generated from sglang upstream `origin/main@5073c82a37`, `git log --name-only -- <model-files>` over model-related paths, and the GitHub Pull Request files API. This page fills the missing `Ling 2.5 1T` history entry found from sgl-cookbook coverage.
+# sglang Ling 2.5 Model PR Optimization History
 
 ## Implementation File Coverage
 
-| File | PRs traced by git |
+| File | Git-traced PRs |
 | --- | --- |
-| `skills/llm-serving-auto-benchmark/configs/cookbook-llm/ling-2.5-1t.yaml` | [#24250](https://github.com/sgl-project/sglang/pull/24250) |
-| `docs_new/cookbook/autoregressive/InclusionAI/Ling-2.5-1T.mdx` | [#23337](https://github.com/sgl-project/sglang/pull/23337), [#23001](https://github.com/sgl-project/sglang/pull/23001) |
-| `docs_new/src/snippets/autoregressive/ling-25-1t-deployment.jsx` | [#24977](https://github.com/sgl-project/sglang/pull/24977), [#23001](https://github.com/sgl-project/sglang/pull/23001) |
-| `python/sglang/srt/configs/bailing_hybrid.py` | [#18598](https://github.com/sgl-project/sglang/pull/18598) |
-| `python/sglang/srt/models/bailing_moe.py` | [#23748](https://github.com/sgl-project/sglang/pull/23748), [#23732](https://github.com/sgl-project/sglang/pull/23732), [#20316](https://github.com/sgl-project/sglang/pull/20316), [#17784](https://github.com/sgl-project/sglang/pull/17784), [#18860](https://github.com/sgl-project/sglang/pull/18860), [#15119](https://github.com/sgl-project/sglang/pull/15119), [#17570](https://github.com/sgl-project/sglang/pull/17570), [#13715](https://github.com/sgl-project/sglang/pull/13715), [#15835](https://github.com/sgl-project/sglang/pull/15835), [#15526](https://github.com/sgl-project/sglang/pull/15526), [#13730](https://github.com/sgl-project/sglang/pull/13730), [#14337](https://github.com/sgl-project/sglang/pull/14337), ... (25 total) |
-| `python/sglang/srt/models/bailing_moe_linear.py` | [#21126](https://github.com/sgl-project/sglang/pull/21126), [#23748](https://github.com/sgl-project/sglang/pull/23748), [#23732](https://github.com/sgl-project/sglang/pull/23732), [#9744](https://github.com/sgl-project/sglang/pull/9744), [#18793](https://github.com/sgl-project/sglang/pull/18793), [#18598](https://github.com/sgl-project/sglang/pull/18598) |
-| `python/sglang/srt/models/bailing_moe_nextn.py` | [#24333](https://github.com/sgl-project/sglang/pull/24333), [#18860](https://github.com/sgl-project/sglang/pull/18860), [#18598](https://github.com/sgl-project/sglang/pull/18598), [#17808](https://github.com/sgl-project/sglang/pull/17808), [#17570](https://github.com/sgl-project/sglang/pull/17570), [#11528](https://github.com/sgl-project/sglang/pull/11528), [#11520](https://github.com/sgl-project/sglang/pull/11520), [#11331](https://github.com/sgl-project/sglang/pull/11331), [#10359](https://github.com/sgl-project/sglang/pull/10359) |
-| `test/registered/ascend/llm_models/test_npu_ling_lite.py` | [#20751](https://github.com/sgl-project/sglang/pull/20751), [#19382](https://github.com/sgl-project/sglang/pull/19382) |
+| `docs_new/cookbook/autoregressive/InclusionAI/Ling-2.5-1T.mdx` | no direct PR-number commit |
+| `docs_new/src/snippets/autoregressive/ling-25-1t-deployment.jsx` | no direct PR-number commit |
 
 ## PR Coverage Summary
 
-- git-traced PR count: 37
-- keyword/supplemental PR count: 0
-- total PR count in this document: 37
-- file trace command: `git log --name-only -- <model-files>`
-- diff audit source: GitHub Pull Request files API
+- Git-traced PRs: 0
+- Extra PRs preserved from existing docs: 44
+- Total PRs in this document: 43
+- File trace command: `git log --name-only -- <model-files>`
+- Diff audit source: GitHub Pull Request files API
 
 ## Timeline
 
-| Date | PR | Status | Title | Main files |
+| Date | PR | State | Title | Main files |
 | --- | --- | --- | --- | --- |
-| 2025-08-06 | [#8680](https://github.com/sgl-project/sglang/pull/8680) | merged | Support bailing moe | `docs/supported_models/generative_models.md`, `python/sglang/srt/models/bailing_moe.py`, `test/srt/models/test_generation_models.py` |
-| 2025-09-12 | [#10359](https://github.com/sgl-project/sglang/pull/10359) | merged | Support LingV2 model | `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py`, `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/layers/linear.py` |
+| 2025-08-06 | [#8680](https://github.com/sgl-project/sglang/pull/8680) | merged | Support bailing moe | `python/sglang/srt/models/bailing_moe.py`, `test/srt/models/test_generation_models.py`, `docs/supported_models/generative_models.md` |
+| 2025-09-12 | [#10359](https://github.com/sgl-project/sglang/pull/10359) | merged | Support LingV2 model | `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/models/bailing_moe_nextn.py`, `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=256,N=512,device_name=NVIDIA_H20.json` |
 | 2025-09-12 | [#10362](https://github.com/sgl-project/sglang/pull/10362) | merged | Fix Bailing MoE model bugs | `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/server_args.py` |
-| 2025-09-15 | [#9338](https://github.com/sgl-project/sglang/pull/9338) | merged | Refactor TopK to ensure readability and extensibility | `python/sglang/srt/layers/moe/ep_moe/layer.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py`, `python/sglang/srt/layers/moe/topk.py` |
+| 2025-09-15 | [#9338](https://github.com/sgl-project/sglang/pull/9338) | merged | Refactor TopK to ensure readability and extensibility | `python/sglang/srt/layers/moe/topk.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` |
 | 2025-09-24 | [#10860](https://github.com/sgl-project/sglang/pull/10860) | merged | fix bailing_moe with enable_dp_attention | `python/sglang/srt/models/bailing_moe.py` |
-| 2025-09-26 | [#10749](https://github.com/sgl-project/sglang/pull/10749) | merged | Fuse write kv buffer into rope for qwen3 moe & bailing moe | `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/models/gpt_oss.py`, `python/sglang/srt/models/qwen3_moe.py` |
-| 2025-10-12 | [#11331](https://github.com/sgl-project/sglang/pull/11331) | merged | Deprecate `global_server_args_dict` | `python/sglang/global_config.py`, `python/sglang/srt/distributed/device_communicators/pynccl_allocator.py`, `python/sglang/srt/eplb/expert_location_dispatch.py` |
+| 2025-09-26 | [#10749](https://github.com/sgl-project/sglang/pull/10749) | merged | Fuse write kv buffer into rope for qwen3 moe & bailing moe | `python/sglang/srt/models/utils.py`, `python/sglang/srt/models/gpt_oss.py`, `python/sglang/srt/models/bailing_moe.py` |
 | 2025-10-12 | [#11465](https://github.com/sgl-project/sglang/pull/11465) | merged | bailingMoE: Fix Key error of deepep_mode | `python/sglang/srt/models/bailing_moe.py` |
-| 2025-10-13 | [#11520](https://github.com/sgl-project/sglang/pull/11520) | merged | Revert "Deprecate `global_server_args_dict`" | `python/sglang/global_config.py`, `python/sglang/srt/distributed/device_communicators/pynccl_allocator.py`, `python/sglang/srt/eplb/expert_location_dispatch.py` |
-| 2025-10-13 | [#11528](https://github.com/sgl-project/sglang/pull/11528) | merged | Depreate `global_server_args_dict` | `python/sglang/global_config.py`, `python/sglang/srt/distributed/device_communicators/pynccl_allocator.py`, `python/sglang/srt/eplb/expert_location_dispatch.py` |
-| 2025-10-17 | [#11685](https://github.com/sgl-project/sglang/pull/11685) | merged | [Lint] Add `python/sglang` to ruff F401 checks and remove unused imports in files | `.pre-commit-config.yaml`, `python/sglang/srt/_custom_ops.py`, `python/sglang/srt/compilation/cuda_piecewise_backend.py` |
-| 2025-10-20 | [#11847](https://github.com/sgl-project/sglang/pull/11847) | merged | [9/N] MoE Refactor: cleanup dispatcher interfaces | `python/sglang/srt/layers/dp_attention.py`, `python/sglang/srt/layers/moe/ep_moe/kernels.py`, `python/sglang/srt/layers/moe/ep_moe/layer.py` |
+| 2025-10-12 | [#11331](https://github.com/sgl-project/sglang/pull/11331) | merged | Deprecate `global_server_args_dict` | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/models/glm4_moe.py` |
+| 2025-10-13 | [#11520](https://github.com/sgl-project/sglang/pull/11520) | merged | Revert "Deprecate `global_server_args_dict`" | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/models/glm4_moe.py` |
+| 2025-10-13 | [#11528](https://github.com/sgl-project/sglang/pull/11528) | merged | Depreate `global_server_args_dict` | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/models/glm4_moe.py` |
+| 2025-10-17 | [#11685](https://github.com/sgl-project/sglang/pull/11685) | merged | [Lint] Add `python/sglang` to ruff F401 checks and remove unused imports in files | `python/sglang/srt/layers/quantization/w8a8_int8.py`, `python/sglang/srt/models/qwen2_audio.py`, `python/sglang/srt/models/longcat_flash.py` |
+| 2025-10-20 | [#11847](https://github.com/sgl-project/sglang/pull/11847) | merged | [9/N] MoE Refactor: cleanup dispatcher interfaces | `python/sglang/srt/layers/moe/token_dispatcher/deepep.py`, `python/sglang/srt/layers/moe/ep_moe/layer.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` |
 | 2025-10-31 | [#12369](https://github.com/sgl-project/sglang/pull/12369) | merged | Enable bailing_moe to support TP=16 | `python/sglang/srt/models/bailing_moe.py` |
 | 2025-12-07 | [#14337](https://github.com/sgl-project/sglang/pull/14337) | merged | remove unecessary dual stream token threshold from the rest of models (qwen moe, kimi linear, etc.) | `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/models/kimi_linear.py`, `python/sglang/srt/models/llada2.py` |
-| 2025-12-12 | [#13730](https://github.com/sgl-project/sglang/pull/13730) | merged | [bugfix] fix TBO crashes when attn_tp_size > 1 | `python/sglang/srt/batch_overlap/operations.py`, `python/sglang/srt/batch_overlap/two_batch_overlap.py`, `python/sglang/srt/layers/communicator.py` |
+| 2025-12-12 | [#13730](https://github.com/sgl-project/sglang/pull/13730) | merged | [bugfix] fix TBO crashes when attn_tp_size > 1 | `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/model_executor/forward_batch_info.py`, `python/sglang/srt/models/bailing_moe.py` |
 | 2025-12-21 | [#15526](https://github.com/sgl-project/sglang/pull/15526) | merged | Optimize Bailing-MoE with FlashInfer Fused All-Reduce | `python/sglang/srt/models/bailing_moe.py` |
-| 2025-12-28 | [#15835](https://github.com/sgl-project/sglang/pull/15835) | merged | [Feature] JIT Fused QK norm + qk norm clean up | `python/sglang/jit_kernel/benchmark/bench_qknorm.py`, `python/sglang/jit_kernel/csrc/norm.cuh`, `python/sglang/jit_kernel/include/sgl_kernel/runtime.cuh` |
-| 2026-01-10 | [#13715](https://github.com/sgl-project/sglang/pull/13715) | merged | Fix EPLB + FP4 Quantization Compatibility Issue | `python/sglang/srt/layers/moe/utils.py`, `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/models/deepseek_v2.py` |
+| 2025-12-28 | [#15835](https://github.com/sgl-project/sglang/pull/15835) | merged | [Feature] JIT Fused QK norm + qk norm clean up | `python/sglang/srt/models/utils.py`, `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/srt/models/qwen3.py` |
+| 2026-01-10 | [#13715](https://github.com/sgl-project/sglang/pull/13715) | merged | Fix EPLB + FP4 Quantization Compatibility Issue | `python/sglang/srt/layers/moe/utils.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/qwen2_moe.py` |
 | 2026-01-24 | [#17570](https://github.com/sgl-project/sglang/pull/17570) | merged | Use attn tp group in embedding for more models | `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/models/bailing_moe_nextn.py`, `python/sglang/srt/models/falcon_h1.py` |
 | 2026-01-30 | [#17808](https://github.com/sgl-project/sglang/pull/17808) | merged | Fix the scenario where eh_proj is quantized in the bailing moe nextn weights | `python/sglang/srt/models/bailing_moe_nextn.py` |
 | 2026-02-01 | [#15119](https://github.com/sgl-project/sglang/pull/15119) | merged | feat: Add Ling Flash v2.0 support for Eagle3 | `python/sglang/srt/models/bailing_moe.py` |
-| 2026-02-13 | [#18598](https://github.com/sgl-project/sglang/pull/18598) | merged | Support LingV2_5 model | `python/sglang/srt/configs/__init__.py`, `python/sglang/srt/configs/bailing_hybrid.py`, `python/sglang/srt/configs/model_config.py` |
-| 2026-02-13 | [#18793](https://github.com/sgl-project/sglang/pull/18793) | merged | Cleanup debug log for Ring model | `python/sglang/srt/configs/mamba_utils.py`, `python/sglang/srt/models/bailing_moe_linear.py` |
-| 2026-02-15 | [#18860](https://github.com/sgl-project/sglang/pull/18860) | merged | update pre-commit config | `.github/workflows/lint.yml`, `.pre-commit-config.yaml`, `3rdparty/amd/tuning/benchmark_moe_rocm.py` |
-| 2026-03-16 | [#19382](https://github.com/sgl-project/sglang/pull/19382) | merged | Add NPU basic function testcases | `.github/workflows/nightly-test-npu.yml`, `python/sglang/test/ascend/disaggregation_utils.py`, `python/sglang/test/ascend/test_ascend_utils.py` |
-| 2026-03-18 | [#17784](https://github.com/sgl-project/sglang/pull/17784) | merged | Upgrade transformers==5.3.0 | `docs/advanced_features/vlm_query.ipynb`, `python/pyproject.toml`, `python/pyproject_cpu.toml` |
-| 2026-03-19 | [#9744](https://github.com/sgl-project/sglang/pull/9744) | merged | [CPU] Add FP8 Bmm support | `python/sglang/srt/models/bailing_moe_linear.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py` |
+| 2026-02-13 | [#18598](https://github.com/sgl-project/sglang/pull/18598) | merged | Support LingV2_5 model | `python/sglang/srt/models/bailing_moe_linear.py`, `python/sglang/srt/layers/attention/linear/seg_la.py`, `python/sglang/srt/layers/attention/linear/lightning_attn.py` |
+| 2026-02-13 | [#18793](https://github.com/sgl-project/sglang/pull/18793) | merged | Cleanup debug log for Ring model | `python/sglang/srt/models/bailing_moe_linear.py`, `python/sglang/srt/configs/mamba_utils.py` |
+| 2026-02-15 | [#18860](https://github.com/sgl-project/sglang/pull/18860) | merged | update pre-commit config | `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/models/pixtral.py`, `python/sglang/srt/layers/quantization/modelslim/modelslim_moe.py` |
+| 2026-03-16 | [#19382](https://github.com/sgl-project/sglang/pull/19382) | merged | Add NPU basic function testcases | `test/registered/ascend/interface/test_npu_openai_function_calling.py`, `test/registered/ascend/llm_models/test_npu_phi_4_multimodal_llm.py`, `test/registered/ascend/vlm_models/test_npu_phi4_multimodal_instruct.py` |
+| 2026-03-18 | [#17784](https://github.com/sgl-project/sglang/pull/17784) | merged | Upgrade transformers==5.3.0 | `python/sglang/srt/models/gemma3_causal.py`, `python/sglang/srt/layers/rotary_embedding/factory.py`, `python/sglang/srt/configs/model_config.py` |
+| 2026-03-19 | [#9744](https://github.com/sgl-project/sglang/pull/9744) | merged | [CPU] Add FP8 Bmm support | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/models/longcat_flash.py`, `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` |
 | 2026-03-23 | [#20316](https://github.com/sgl-project/sglang/pull/20316) | merged | fix fused_set_kv_buffer for rope with Ling-v2 | `python/sglang/srt/models/bailing_moe.py` |
 | 2026-04-01 | [#20751](https://github.com/sgl-project/sglang/pull/20751) | merged | [NPU]Add a full test pipeline on NPU, resolve issues in the NPU test architecture | `.github/workflows/full-test-npu.yml`, `.github/workflows/nightly-test-npu.yml`, `.github/workflows/pr-test-npu.yml` |
-| 2026-04-20 | [#23001](https://github.com/sgl-project/sglang/pull/23001) | merged | Add new Mintlify documentation site (docs_new/) | `.gitignore`, `docs_new/.github/workflows/sync-lmsys-sglang-blogs.yml`, `docs_new/.gitignore` |
-| 2026-04-21 | [#23337](https://github.com/sgl-project/sglang/pull/23337) | merged | [Docs] Sync docs_new with legacy docs and update migration redirects | `.pre-commit-config.yaml`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-Math-V2.mdx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR-2.mdx` |
-| 2026-04-26 | [#23732](https://github.com/sgl-project/sglang/pull/23732) | merged | Apply should_use_dp_reduce_scatterv guard to remaining MoE models (follow-up to #23731) | `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/models/bailing_moe_linear.py`, `python/sglang/srt/models/deepseek_v2.py` |
-| 2026-04-27 | [#23748](https://github.com/sgl-project/sglang/pull/23748) | merged | refactor(moe): centralize post-experts all-reduce skip predicate | `python/sglang/srt/layers/moe/__init__.py`, `python/sglang/srt/layers/moe/utils.py`, `python/sglang/srt/models/bailing_moe.py` |
-| 2026-04-30 | [#21126](https://github.com/sgl-project/sglang/pull/21126) | merged | [4/N] Quantization Refactor: AWQ schemes and Kernel call and weight init split | `python/sglang/srt/hardware_backend/gpu/quantization/awq_kernels.py`, `python/sglang/srt/hardware_backend/npu/quantization/awq_kernels.py`, `python/sglang/srt/layers/linear.py` |
-| 2026-05-02 | [#24250](https://github.com/sgl-project/sglang/pull/24250) | merged | [SKILL] Upgrade sglang profile and auto_benchmark skills | `agent-skills/llm-serving-auto-benchmark/SKILL.md`, `skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md`, `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` |
-| 2026-05-04 | [#24333](https://github.com/sgl-project/sglang/pull/24333) | merged | nextn subclass owns post_load_weights is_nextn | `python/sglang/srt/model_loader/loader.py`, `python/sglang/srt/model_loader/utils.py`, `python/sglang/srt/models/bailing_moe_nextn.py` |
+| 2026-04-20 | [#23001](https://github.com/sgl-project/sglang/pull/23001) | merged | Add new Mintlify documentation site (docs_new/) | `docs_new/docs/advanced_features/tool_parser.mdx`, `docs_new/docs/advanced_features/structured_outputs_for_reasoning_models.mdx`, `docs_new/docs/advanced_features/separate_reasoning.mdx` |
+| 2026-04-21 | [#23337](https://github.com/sgl-project/sglang/pull/23337) | merged | [Docs] Sync docs_new with legacy docs and update migration redirects | `docs_new/docs/supported-models/multimodal_language_models.mdx`, `docs_new/docs/advanced_features/structured_outputs_for_reasoning_models.mdx`, `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_best_practice.mdx` |
+| 2026-04-26 | [#23732](https://github.com/sgl-project/sglang/pull/23732) | merged | Apply should_use_dp_reduce_scatterv guard to remaining MoE models (follow-up to #23731) | `python/sglang/srt/models/llada2.py`, `python/sglang/srt/models/hunyuan_v3.py`, `python/sglang/srt/models/bailing_moe_linear.py` |
+| 2026-04-27 | [#23748](https://github.com/sgl-project/sglang/pull/23748) | merged | refactor(moe): centralize post-experts all-reduce skip predicate | `python/sglang/srt/layers/moe/utils.py`, `python/sglang/srt/models/sarvam_moe.py`, `python/sglang/srt/models/deepseek_v2.py` |
+| 2026-04-30 | [#21126](https://github.com/sgl-project/sglang/pull/21126) | merged | [4/N] Quantization Refactor: AWQ schemes and Kernel call and weight init split | `python/sglang/srt/layers/quantization/awq.py`, `python/sglang/srt/layers/quantization/awq/awq.py`, `python/sglang/srt/layers/quantization/awq/schemes/awq_moe.py` |
+| 2026-05-04 | [#24333](https://github.com/sgl-project/sglang/pull/24333) | merged | nextn subclass owns post_load_weights is_nextn | `python/sglang/srt/models/bailing_moe_nextn.py`, `python/sglang/srt/models/deepseek_nextn.py`, `python/sglang/srt/model_loader/loader.py` |
 | 2026-05-11 | [#24977](https://github.com/sgl-project/sglang/pull/24977) | merged | fix gb envs in deployment guide | `docs_new/src/snippets/autoregressive/ling-25-1t-deployment.jsx` |
+| 2026-05-27 | [#23837](https://github.com/sgl-project/sglang/pull/23837) | merged | Add Ling_2_6 | `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=256,N=512,device_name=NVIDIA_H20-3e_down.json`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=256,N=512,device_name=NVIDIA_H20_down.json`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=256,N=512,device_name=NVIDIA_H20-3e.json` |
+| 2026-05-29 | [#26474](https://github.com/sgl-project/sglang/pull/26474) | merged | [HotFix][Ling 2.6] Fix HybridLinearAttn dispatcher for Ling-2.6 | `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/models/bailing_moe_linear.py`, `test/registered/8-gpu-models/test_ling_2_6_flash.py` |
+| 2026-06-02 | [#26623](https://github.com/sgl-project/sglang/pull/26623) | merged | Fix hybrid linear attention misrouting plain-RadixAttention linear layers to the full backend (Ring-2.5-1T) | `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/models/bailing_moe_linear.py`, `test/registered/8-gpu-models/test_ling_2_6_flash.py` |
+| 2026-06-03 | [#27116](https://github.com/sgl-project/sglang/pull/27116) | merged | Revert "Fix hybrid linear attention misrouting plain-RadixAttention linear layers to the full backend (Ring-2.5-1T)" | `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/models/bailing_moe_linear.py` |
+| 2026-06-03 | [#27120](https://github.com/sgl-project/sglang/pull/27120) | merged | Fix hybrid linear attention dispatch by layer id with draft-worker awareness | `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/layers/attention/attention_registry.py`, `python/sglang/srt/models/bailing_moe_linear.py` |
+| 2026-06-10 | [#23906](https://github.com/sgl-project/sglang/pull/23906) | merged | [Refactor] Cuda Graph Runner/Backend Refactor | `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py` |
+| 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | merged | Add get_parallel(): a structured accessor for parallel-topology state | `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -98,1802 +69,1616 @@ Generated from sglang upstream `origin/main@5073c82a37`, `git log --name-only --
 
 - Link: https://github.com/sgl-project/sglang/pull/8680
 - Status/date: merged / 2025-08-06
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 3 files, +427/-0, with 441 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Support bailing moe"; model line: Ling 2.5 1T; category: model support/runtime entry; main diff: `docs/supported_models/generative_models.md`, `python/sglang/srt/models/bailing_moe.py`, `test/srt/models/test_generation_models.py`.
-- Key implementation:
-  - `docs/supported_models/generative_models.md` modified +1/-0
-  - `python/sglang/srt/models/bailing_moe.py` added +425/-0; symbols: BailingAttention, __init__, forward, BailingMLP
-  - `test/srt/models/test_generation_models.py` modified +1/-0
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +427/-0, 441 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Support bailing moe"; model line: Ling 2.5; category: docs/tests/CI; main diff: `python/sglang/srt/models/bailing_moe.py`, `test/srt/models/test_generation_models.py`, `docs/supported_models/generative_models.md`; technical summary: Covers "Support bailing moe"; the main implementation surface is `python/sglang/srt/models/bailing_moe.py`, `test/srt/models/test_generation_models.py`, `docs/supported_models/generative_models.md`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/bailing_moe.py` added +425/-0 (425 lines); hunks: -0,0 +1,425; symbols: BailingAttention, __init__, forward, BailingMLP, touching `BailingAttention, __init__, forward`; `test/srt/models/test_generation_models.py` modified +1/-0 (1 lines); hunks: -67,6 +67,7 @@ class ModelCase:; symbols: ModelCase, touching `ModelCase`; `docs/supported_models/generative_models.md` modified +1/-0 (1 lines); hunks: -47,5 +47,6 @@ in the GitHub search bar..
 - Code diff details:
-  - `docs/supported_models/generative_models.md` modified +1/-0
-  - `python/sglang/srt/models/bailing_moe.py` added +425/-0
-  - `test/srt/models/test_generation_models.py` modified +1/-0
+  - `python/sglang/srt/models/bailing_moe.py` added +425/-0 (425 lines); hunks: -0,0 +1,425; symbols: BailingAttention, __init__, forward, BailingMLP
+  - `test/srt/models/test_generation_models.py` modified +1/-0 (1 lines); hunks: -67,6 +67,7 @@ class ModelCase:; symbols: ModelCase
+  - `docs/supported_models/generative_models.md` modified +1/-0 (1 lines); hunks: -47,5 +47,6 @@ in the GitHub search bar.
 - Key code excerpts:
 
 ```diff
-diff -- docs/supported_models/generative_models.md
-@@ -47,5 +47,6 @@ in the GitHub search bar.
- | **MiMo** (7B series)               | `XiaomiMiMo/MiMo-7B-RL`                         | Xiaomi's reasoning-optimized model series, leverages Multiple-Token Prediction for faster inference. |
- | **Arcee AFM-4.5B**               | `arcee-ai/AFM-4.5B-Base`                         | Arcee's foundational model series for real world reliability and edge deployments. |
- | **Persimmon** (8B)               | `adept/persimmon-8b-chat`                         | Adept’s open 8B model with a 16K context window and fast inference; trained for broad usability and licensed under Apache 2.0. |
-+| **Ling** (16.8B–290B) | `inclusionAI/Ling-lite`, `inclusionAI/Ling-plus` | InclusionAI’s open MoE models. Ling-Lite has 16.8B total / 2.75B active parameters, and Ling-Plus has 290B total / 28.8B active parameters. They are designed for high performance on NLP and complex reasoning tasks. |
- | **Granite 3.0, 3.1** (IBM)               | `ibm-granite/granite-3.1-8b-instruct`                          | IBM's open dense foundation models optimized for reasoning, code, and business AI use cases. Integrated with Red Hat and watsonx systems. |
- | **Granite 3.0 MoE** (IBM)               | `ibm-granite/granite-3.0-3b-a800m-instruct`                          | IBM’s Mixture-of-Experts models offering strong performance with cost-efficiency. MoE expert routing designed for enterprise deployment at scale. |
 diff -- python/sglang/srt/models/bailing_moe.py
 @@ -0,0 +1,425 @@
 +# Copyright 2023-2024 SGLang Team
 +# Adapted from https://github.com/vllm-project/vllm/blob/main/vllm/model_executor/models/bailing_moe.py
-+
 +from collections.abc import Iterable
 +from typing import Optional, Tuple
-+
 +import torch
 +import torch.nn.functional as F
-+from torch import nn
-+from transformers.configuration_utils import PretrainedConfig
-+
-+from sglang.srt.distributed import (
-+    get_tensor_model_parallel_world_size,
+diff -- test/srt/models/test_generation_models.py
+@@ -67,6 +67,7 @@ class ModelCase:
++    ModelCase("inclusionAI/Ling-lite", trust_remote_code=True),
+diff -- docs/supported_models/generative_models.md
+@@ -47,5 +47,6 @@ in the GitHub search bar.
++| **Ling** (16.8B–290B) | `inclusionAI/Ling-lite`, `inclusionAI/Ling-plus` | InclusionAI’s open MoE models. Ling-Lite has 16.8B total / 2.75B active parameters, and Ling-Plus has
 ```
+
 - Reviewed files:
   - runtime: `python/sglang/srt/models/bailing_moe.py` added +425/-0
   - tests: `test/srt/models/test_generation_models.py` modified +1/-0
-  - docs/bench: `docs/supported_models/generative_models.md` modified +1/-0
-- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+  - docs: `docs/supported_models/generative_models.md` modified +1/-0
+- Risk and verification: The diff ships test coverage in `test/srt/models/test_generation_models.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #10359 - Support LingV2 model
 
 - Link: https://github.com/sgl-project/sglang/pull/10359
 - Status/date: merged / 2025-09-12
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 7 files, +1165/-221, with 1642 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Support LingV2 model"; model line: Ling 2.5 1T; category: model support/runtime entry; main diff: `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py`, `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/layers/linear.py`.
-- Key implementation:
-  - `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py` modified +11/-2
-  - `python/sglang/srt/configs/model_config.py` modified +5/-0
-  - `python/sglang/srt/layers/linear.py` modified +32/-0; symbols: _load_qkv_block_scale
-  - `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=256,N=512,device_name=NVIDIA_H20.json` added +146/-0
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 7 files, +1165/-221, 1642 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Support LingV2 model"; model line: Ling 2.5; category: performance/backend optimization; main diff: `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/models/bailing_moe_nextn.py`, `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=256,N=512,device_name=NVIDIA_H20.json`; technical summary: Covers "Support LingV2 model"; the main implementation surface is `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/models/bailing_moe_nextn.py`, `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=256,N=512,device_name=NVIDIA_H20.json`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/bailing_moe.py` modified +795/-218 (1013 lines); hunks: -1,19 +1,51; -22,356 +54,828; symbols: BailingAttention, BailingMoEMLP, __init__, forward, touching `BailingAttention, BailingMoEMLP, __init__`; `python/sglang/srt/models/bailing_moe_nextn.py` added +168/-0 (168 lines); hunks: -0,0 +1,168; symbols: BailingMoEModelNextN, __init__, forward, BailingMoeForCausalLMNextN, touching `BailingMoEModelNextN, __init__, forward`; `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=256,N=512,device_name=NVIDIA_H20.json` added +146/-0 (146 lines); hunks: -0,0 +1,146; `python/sglang/srt/layers/linear.py` modified +32/-0 (32 lines); hunks: -893,6 +893,35 @@ def _load_fused_module_from_checkpoint(; -906,6 +935,9 @@ def weight_loader_v2(; symbols: _load_fused_module_from_checkpoint, _load_qkv_block_scale, weight_loader_v2, touching `_load_fused_module_from_checkpoint, _load_qkv_block_scale, weight_loader_v2`.
 - Code diff details:
-  - `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py` modified +11/-2
-  - `python/sglang/srt/configs/model_config.py` modified +5/-0
-  - `python/sglang/srt/layers/linear.py` modified +32/-0
-  - `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=256,N=512,device_name=NVIDIA_H20.json` added +146/-0
+  - `python/sglang/srt/models/bailing_moe.py` modified +795/-218 (1013 lines); hunks: -1,19 +1,51; -22,356 +54,828; symbols: BailingAttention, BailingMoEMLP, __init__, forward
+  - `python/sglang/srt/models/bailing_moe_nextn.py` added +168/-0 (168 lines); hunks: -0,0 +1,168; symbols: BailingMoEModelNextN, __init__, forward, BailingMoeForCausalLMNextN
+  - `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=256,N=512,device_name=NVIDIA_H20.json` added +146/-0 (146 lines); hunks: -0,0 +1,146
+  - `python/sglang/srt/layers/linear.py` modified +32/-0 (32 lines); hunks: -893,6 +893,35 @@ def _load_fused_module_from_checkpoint(; -906,6 +935,9 @@ def weight_loader_v2(; symbols: _load_fused_module_from_checkpoint, _load_qkv_block_scale, weight_loader_v2
+  - `python/sglang/srt/configs/model_config.py` modified +5/-0 (5 lines); hunks: -141,6 +141,11 @@ def __init__(; symbols: __init__
 - Key code excerpts:
 
 ```diff
-diff -- benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py
-@@ -13,8 +13,8 @@
- from transformers import AutoConfig
-
- from sglang.srt.layers.moe.fused_moe_triton import override_config
--from sglang.srt.layers.moe.fused_moe_triton.fused_moe import (
--    fused_moe,
-+from sglang.srt.layers.moe.fused_moe_triton.fused_moe import fused_moe
-+from sglang.srt.layers.moe.fused_moe_triton.fused_moe_triton_config import (
-     get_config_dtype_str,
-     get_config_file_name,
-     get_default_config,
-@@ -441,6 +441,15 @@ def main(args: argparse.Namespace):
-         topk = config.num_experts_per_tok
-         intermediate_size = config.moe_intermediate_size
-diff -- python/sglang/srt/configs/model_config.py
-@@ -141,6 +141,11 @@ def __init__(
-
-         if is_draft_model and self.hf_config.architectures[0] == "MiMoForCausalLM":
-             self.hf_config.architectures[0] = "MiMoMTP"
-+        if is_draft_model and self.hf_config.architectures[0] in [
-+            "BailingMoeV2ForCausalLM",
-+            "BailingMoeForCausalLM",
-+        ]:
-+            self.hf_config.architectures[0] = "BailingMoeForCausalLMNextN"
-         if (
-             is_draft_model
-             and self.hf_config.architectures[0] == "Ernie4_5_MoeForCausalLM"
+diff -- python/sglang/srt/models/bailing_moe.py
+@@ -1,19 +1,51 @@
+-# Copyright 2023-2024 SGLang Team
+-# Adapted from https://github.com/vllm-project/vllm/blob/main/vllm/model_executor/models/bailing_moe.py
+-from collections.abc import Iterable
+-from typing import Optional, Tuple
++# coding=utf-8
++# Copyright 2023 Antgroup and The HuggingFace Inc. team. All rights reserved.
+diff -- python/sglang/srt/models/bailing_moe_nextn.py
+@@ -0,0 +1,168 @@
++# coding=utf-8
++# Copyright 2023 Antgroup and The HuggingFace Inc. team. All rights reserved.
++#
++# This code is based on EleutherAI's GPT-NeoX library and the GPT-NeoX
++# and OPT implementations in this library. It has been modified from its
++# original forms to accommodate minor architectural differences compared
+diff -- python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=256,N=512,device_name=NVIDIA_H20.json
+@@ -0,0 +1,146 @@
 ```
+
 - Reviewed files:
-  - runtime: `python/sglang/srt/configs/model_config.py` modified +5/-0; `python/sglang/srt/layers/linear.py` modified +32/-0; `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=256,N=512,device_name=NVIDIA_H20.json` added +146/-0; `python/sglang/srt/models/bailing_moe.py` modified +795/-218; `python/sglang/srt/models/bailing_moe_nextn.py` added +168/-0; `python/sglang/srt/server_args.py` modified +8/-1
-  - docs/bench: `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py` modified +11/-2
-- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+  - runtime: `python/sglang/srt/models/bailing_moe.py` modified +795/-218; `python/sglang/srt/models/bailing_moe_nextn.py` added +168/-0; `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=256,N=512,device_name=NVIDIA_H20.json` added +146/-0; `python/sglang/srt/layers/linear.py` modified +32/-0; `python/sglang/srt/configs/model_config.py` modified +5/-0; `python/sglang/srt/server_args.py` modified +8/-1
+  - other: `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py` modified +11/-2
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/layers/linear.py`, `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=256,N=512,device_name=NVIDIA_H20.json`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #10362 - Fix Bailing MoE model bugs
 
 - Link: https://github.com/sgl-project/sglang/pull/10362
 - Status/date: merged / 2025-09-12
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 2 files, +8/-5, with 41 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix Bailing MoE model bugs"; model line: Ling 2.5 1T; category: bug fix; main diff: `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/server_args.py`.
-- Key implementation:
-  - `python/sglang/srt/models/bailing_moe.py` modified +7/-4
-  - `python/sglang/srt/server_args.py` modified +1/-1
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +8/-5, 41 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Fix Bailing MoE model bugs"; model line: Ling 2.5; category: bug fix; main diff: `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/server_args.py`; technical summary: Covers "Fix Bailing MoE model bugs"; the main implementation surface is `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/server_args.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/bailing_moe.py` modified +7/-4 (11 lines); hunks: -128,7 +128,9 @@ def forward(; -328,7 +330,7 @@ def forward_normal_dual_stream(; symbols: forward, forward_normal_dual_stream, forward_normal, touching `forward, forward_normal_dual_stream, forward_normal`; `python/sglang/srt/server_args.py` modified +1/-1 (2 lines); hunks: -757,7 +757,7 @@ def __post_init__(self):; symbols: __post_init__, touching `__post_init__`.
 - Code diff details:
-  - `python/sglang/srt/models/bailing_moe.py` modified +7/-4
-  - `python/sglang/srt/server_args.py` modified +1/-1
+  - `python/sglang/srt/models/bailing_moe.py` modified +7/-4 (11 lines); hunks: -128,7 +128,9 @@ def forward(; -328,7 +330,7 @@ def forward_normal_dual_stream(; symbols: forward, forward_normal_dual_stream, forward_normal
+  - `python/sglang/srt/server_args.py` modified +1/-1 (2 lines); hunks: -757,7 +757,7 @@ def __post_init__(self):; symbols: __post_init__
 - Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/bailing_moe.py
 @@ -128,7 +128,9 @@ def forward(
-
-         gate_up, _ = self.gate_up_proj(hidden_states)
-         hidden_states = self.act_fn(gate_up)
 -        hidden_states, _ = self.down_proj(hidden_states)
 +        hidden_states, _ = self.down_proj(
 +            hidden_states, skip_all_reduce=use_reduce_scatter
 +        )
-         return hidden_states
-
-
 @@ -328,7 +330,7 @@ def forward_normal_dual_stream(
-     ) -> torch.Tensor:
-         current_stream = torch.cuda.current_stream()
+-        shared_output = self._forward_shared_experts(hidden_states)
 diff -- python/sglang/srt/server_args.py
 @@ -757,7 +757,7 @@ def __post_init__(self):
-             if model_arch in [
-                 "DeepseekV3ForCausalLM",
-                 "Glm4MoeForCausalLM",
 -                "BailingMoeV2ForCausalLM",
 +                "BailingMoeForCausalLM",
-                 "BailingMoeV2ForCausalLM",
-             ]:
-                 # Auto set draft_model_path DeepSeek-V3/R1
 ```
+
 - Reviewed files:
   - runtime: `python/sglang/srt/models/bailing_moe.py` modified +7/-4; `python/sglang/srt/server_args.py` modified +1/-1
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/server_args.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #9338 - Refactor TopK to ensure readability and extensibility
 
 - Link: https://github.com/sgl-project/sglang/pull/9338
 - Status/date: merged / 2025-09-15
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 14 files, +52/-47, with 296 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Refactor TopK to ensure readability and extensibility"; model line: Ling 2.5 1T; category: model implementation change; main diff: `python/sglang/srt/layers/moe/ep_moe/layer.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py`, `python/sglang/srt/layers/moe/topk.py`.
-- Key implementation:
-  - `python/sglang/srt/layers/moe/ep_moe/layer.py` modified +4/-4; symbols: get_moe_impl_class
-  - `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` modified +0/-10
-  - `python/sglang/srt/layers/moe/topk.py` modified +30/-9
-  - `python/sglang/srt/managers/schedule_batch.py` modified +0/-1
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 14 files, +52/-47, 296 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Refactor TopK to ensure readability and extensibility"; model line: Ling 2.5; category: performance/backend optimization; main diff: `python/sglang/srt/layers/moe/topk.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py`; technical summary: Covers "Refactor TopK to ensure readability and extensibility"; the main implementation surface is `python/sglang/srt/layers/moe/topk.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/moe/topk.py` modified +30/-9 (39 lines); hunks: -19,6 +19,7; -51,6 +52,9; symbols: TopKConfig, __init__, forward_native, touching `TopKConfig, __init__, forward_native`; `python/sglang/srt/models/deepseek_v2.py` modified +7/-12 (19 lines); hunks: -65,14 +65,10; -375,21 +371,20 @@ def __init__(; symbols: __init__, touching `__init__`; `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` modified +0/-10 (10 lines); hunks: -74,16 +74,6; symbols: _is_fp4_quantization_enabled, selection, _get_tile_tokens_dim, touching `_is_fp4_quantization_enabled, selection, _get_tile_tokens_dim`; `python/sglang/srt/layers/moe/ep_moe/layer.py` modified +4/-4 (8 lines); hunks: -888,7 +888,7 @@ def _forward_ll(dispatch_output: DeepEPLLOutput):; -901,8 +901,7 @@ def get_moe_impl_class(quant_config: Optional[QuantizationCo...; symbols: _forward_ll, get_moe_impl_class, touching `_forward_ll, get_moe_impl_class`.
 - Code diff details:
-  - `python/sglang/srt/layers/moe/ep_moe/layer.py` modified +4/-4
-  - `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` modified +0/-10
-  - `python/sglang/srt/layers/moe/topk.py` modified +30/-9
-  - `python/sglang/srt/managers/schedule_batch.py` modified +0/-1
+  - `python/sglang/srt/layers/moe/topk.py` modified +30/-9 (39 lines); hunks: -19,6 +19,7; -51,6 +52,9; symbols: TopKConfig, __init__, forward_native
+  - `python/sglang/srt/models/deepseek_v2.py` modified +7/-12 (19 lines); hunks: -65,14 +65,10; -375,21 +371,20 @@ def __init__(; symbols: __init__
+  - `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` modified +0/-10 (10 lines); hunks: -74,16 +74,6; symbols: _is_fp4_quantization_enabled, selection, _get_tile_tokens_dim
+  - `python/sglang/srt/layers/moe/ep_moe/layer.py` modified +4/-4 (8 lines); hunks: -888,7 +888,7 @@ def _forward_ll(dispatch_output: DeepEPLLOutput):; -901,8 +901,7 @@ def get_moe_impl_class(quant_config: Optional[QuantizationCo...; symbols: _forward_ll, get_moe_impl_class
+  - `python/sglang/srt/models/longcat_flash.py` modified +2/-2 (4 lines); hunks: -260,7 +260,7 @@ def __init__(; -853,7 +853,7 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: __init__, load_weights
 - Key code excerpts:
 
 ```diff
-diff -- python/sglang/srt/layers/moe/ep_moe/layer.py
-@@ -888,7 +888,7 @@ def _forward_ll(dispatch_output: DeepEPLLOutput):
-             raise ValueError(f"Not Supported DeepEP format {dispatch_output.format}")
-
-
--def get_moe_impl_class(quant_config: Optional[QuantizationConfig] = None):
-+def get_moe_impl_class(quant_config: Optional[QuantizationConfig]):
-     if get_moe_a2a_backend().is_deepep():
-         return DeepEPMoE
-
-@@ -901,8 +901,7 @@ def get_moe_impl_class(quant_config: Optional[QuantizationConfig] = None):
-             return FusedMoE
-         try:
-             # Check the quantization argument directly
--            quantization = global_server_args_dict.get("quantization")
+diff -- python/sglang/srt/layers/moe/topk.py
+@@ -19,6 +19,7 @@
++    TYPE_CHECKING,
+@@ -51,6 +52,9 @@
++if TYPE_CHECKING:
++    from sglang.srt.layers.quantization import QuantizationConfig
+@@ -94,6 +98,7 @@ class TopKConfig:
++    output_format: Optional[TopKOutputFormat] = None
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -65,14 +65,10 @@
+-    should_use_flashinfer_trtllm_moe,
+-from sglang.srt.layers.moe.fused_moe_triton.layer import (
+-    FusedMoE,
+-    _is_fp4_quantization_enabled,
+-)
+-from sglang.srt.layers.moe.topk import TopK
 diff -- python/sglang/srt/layers/moe/fused_moe_triton/layer.py
 @@ -74,16 +74,6 @@
- logger = logging.getLogger(__name__)
-
-
--def _is_fp4_quantization_enabled():
--    """Check if ModelOpt FP4 quantization is enabled."""
--    try:
--        # Use the same simple check that works for class selection
--        quantization = global_server_args_dict.get("quantization")
--        return quantization == "modelopt_fp4"
--    except:
--        return False
--
--
 ```
+
 - Reviewed files:
-  - runtime: `python/sglang/srt/layers/moe/ep_moe/layer.py` modified +4/-4; `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` modified +0/-10; `python/sglang/srt/layers/moe/topk.py` modified +30/-9; `python/sglang/srt/managers/schedule_batch.py` modified +0/-1; `python/sglang/srt/models/bailing_moe.py` modified +1/-1; `python/sglang/srt/models/deepseek_v2.py` modified +7/-12; `python/sglang/srt/models/ernie4.py` modified +1/-1; `python/sglang/srt/models/glm4_moe.py` modified +1/-1
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+  - runtime: `python/sglang/srt/layers/moe/topk.py` modified +30/-9; `python/sglang/srt/models/deepseek_v2.py` modified +7/-12; `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` modified +0/-10; `python/sglang/srt/layers/moe/ep_moe/layer.py` modified +4/-4; `python/sglang/srt/models/longcat_flash.py` modified +2/-2; `python/sglang/srt/models/qwen3_next.py` modified +2/-2
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/moe/ep_moe/layer.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py`, `python/sglang/srt/layers/moe/topk.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #10860 - fix bailing_moe with enable_dp_attention
 
 - Link: https://github.com/sgl-project/sglang/pull/10860
 - Status/date: merged / 2025-09-24
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 1 files, +2/-2, with 23 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "fix bailing_moe with enable_dp_attention"; model line: Ling 2.5 1T; category: bug fix; main diff: `python/sglang/srt/models/bailing_moe.py`.
-- Key implementation:
-  - `python/sglang/srt/models/bailing_moe.py` modified +2/-2
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +2/-2, 23 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "fix bailing_moe with enable_dp_attention"; model line: Ling 2.5; category: bug fix; main diff: `python/sglang/srt/models/bailing_moe.py`; technical summary: Covers "fix bailing_moe with enable_dp_attention"; the main implementation surface is `python/sglang/srt/models/bailing_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/bailing_moe.py` modified +2/-2 (4 lines); hunks: -45,12 +45,12; -702,7 +702,7 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
-  - `python/sglang/srt/models/bailing_moe.py` modified +2/-2
+  - `python/sglang/srt/models/bailing_moe.py` modified +2/-2 (4 lines); hunks: -45,12 +45,12; -702,7 +702,7 @@ def __init__(; symbols: __init__
 - Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/bailing_moe.py
 @@ -45,12 +45,12 @@
-     get_attention_dp_size,
-     get_attention_tp_rank,
-     get_attention_tp_size,
 +    is_dp_attention_enabled,
- )
- from sglang.srt.layers.layernorm import RMSNorm
- from sglang.srt.layers.linear import (
-     MergedColumnParallelLinear,
-     QKVParallelLinear,
 -    ReplicatedLinear,
-     RowParallelLinear,
- )
- from sglang.srt.layers.logits_processor import LogitsProcessor
+@@ -702,7 +702,7 @@ def __init__(
+-                use_attn_tp_group=global_server_args_dict["enable_dp_lm_head"],
++                enable_tp=not is_dp_attention_enabled(),
 ```
+
 - Reviewed files:
   - runtime: `python/sglang/srt/models/bailing_moe.py` modified +2/-2
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/bailing_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #10749 - Fuse write kv buffer into rope for qwen3 moe & bailing moe
 
 - Link: https://github.com/sgl-project/sglang/pull/10749
 - Status/date: merged / 2025-09-26
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 4 files, +105/-34, with 207 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fuse write kv buffer into rope for qwen3 moe & bailing moe"; model line: Ling 2.5 1T; category: performance/backend optimization; main diff: `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/models/gpt_oss.py`, `python/sglang/srt/models/qwen3_moe.py`.
-- Key implementation:
-  - `python/sglang/srt/models/bailing_moe.py` modified +25/-2
-  - `python/sglang/srt/models/gpt_oss.py` modified +7/-30
-  - `python/sglang/srt/models/qwen3_moe.py` modified +22/-2
-  - `python/sglang/srt/models/utils.py` added +51/-0; symbols: enable_fused_set_kv_buffer, create_fused_set_kv_buffer_arg
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 4 files, +105/-34, 207 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Fuse write kv buffer into rope for qwen3 moe & bailing moe"; model line: Ling 2.5; category: performance/backend optimization; main diff: `python/sglang/srt/models/utils.py`, `python/sglang/srt/models/gpt_oss.py`, `python/sglang/srt/models/bailing_moe.py`; technical summary: Covers "Fuse write kv buffer into rope for qwen3 moe & bailing moe"; the main implementation surface is `python/sglang/srt/models/utils.py`, `python/sglang/srt/models/gpt_oss.py`, `python/sglang/srt/models/bailing_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/utils.py` added +51/-0 (51 lines); hunks: -0,0 +1,51; symbols: enable_fused_set_kv_buffer, create_fused_set_kv_buffer_arg, touching `enable_fused_set_kv_buffer, create_fused_set_kv_buffer_arg`; `python/sglang/srt/models/gpt_oss.py` modified +7/-30 (37 lines); hunks: -66,6 +66,10; -193,33 +197,6 @@ def forward_normal(; symbols: forward_normal, _enable_fused_set_kv_buffer, _create_fused_set_kv_buffer_arg, GptOssAttention, touching `forward_normal, _enable_fused_set_kv_buffer, _create_fused_set_kv_buffer_arg`; `python/sglang/srt/models/bailing_moe.py` modified +25/-2 (27 lines); hunks: -72,6 +72,10; -555,8 +559,27 @@ def forward(; symbols: forward, touching `forward`; `python/sglang/srt/models/qwen3_moe.py` modified +22/-2 (24 lines); hunks: -60,6 +60,10; -412,15 +416,31 @@ def forward_prepare(; symbols: forward_prepare, forward_core, touching `forward_prepare, forward_core`.
 - Code diff details:
-  - `python/sglang/srt/models/bailing_moe.py` modified +25/-2
-  - `python/sglang/srt/models/gpt_oss.py` modified +7/-30
-  - `python/sglang/srt/models/qwen3_moe.py` modified +22/-2
-  - `python/sglang/srt/models/utils.py` added +51/-0
+  - `python/sglang/srt/models/utils.py` added +51/-0 (51 lines); hunks: -0,0 +1,51; symbols: enable_fused_set_kv_buffer, create_fused_set_kv_buffer_arg
+  - `python/sglang/srt/models/gpt_oss.py` modified +7/-30 (37 lines); hunks: -66,6 +66,10; -193,33 +197,6 @@ def forward_normal(; symbols: forward_normal, _enable_fused_set_kv_buffer, _create_fused_set_kv_buffer_arg, GptOssAttention
+  - `python/sglang/srt/models/bailing_moe.py` modified +25/-2 (27 lines); hunks: -72,6 +72,10; -555,8 +559,27 @@ def forward(; symbols: forward
+  - `python/sglang/srt/models/qwen3_moe.py` modified +22/-2 (24 lines); hunks: -60,6 +60,10; -412,15 +416,31 @@ def forward_prepare(; symbols: forward_prepare, forward_core
 - Key code excerpts:
 
 ```diff
-diff -- python/sglang/srt/models/bailing_moe.py
-@@ -72,6 +72,10 @@
- from sglang.srt.model_executor.cuda_graph_runner import get_is_capture_mode
- from sglang.srt.model_executor.forward_batch_info import ForwardBatch, PPProxyTensors
- from sglang.srt.model_loader.weight_utils import default_weight_loader
-+from sglang.srt.models.utils import (
-+    create_fused_set_kv_buffer_arg,
-+    enable_fused_set_kv_buffer,
-+)
- from sglang.srt.utils import add_prefix, is_cuda, is_non_idle_and_non_empty, make_layers
-
- LoraConfig = None
-@@ -555,8 +559,27 @@ def forward(
-         q, k, v = qkv.split([self.q_size, self.kv_size, self.kv_size], dim=-1)
-         if self.use_qk_norm:
+diff -- python/sglang/srt/models/utils.py
+@@ -0,0 +1,51 @@
++# Copyright 2023-2025 SGLang Team
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
 diff -- python/sglang/srt/models/gpt_oss.py
 @@ -66,6 +66,10 @@
- from sglang.srt.managers.schedule_batch import global_server_args_dict
- from sglang.srt.model_executor.forward_batch_info import ForwardBatch, PPProxyTensors
- from sglang.srt.model_loader.weight_utils import default_weight_loader
 +from sglang.srt.models.utils import (
 +    create_fused_set_kv_buffer_arg,
 +    enable_fused_set_kv_buffer,
 +)
- from sglang.srt.utils import (
-     LazyValue,
-     add_prefix,
 @@ -193,33 +197,6 @@ def forward_normal(
-         return ans
-
+-def _enable_fused_set_kv_buffer(forward_batch: ForwardBatch):
+diff -- python/sglang/srt/models/bailing_moe.py
+@@ -72,6 +72,10 @@
 ```
+
 - Reviewed files:
-  - runtime: `python/sglang/srt/models/bailing_moe.py` modified +25/-2; `python/sglang/srt/models/gpt_oss.py` modified +7/-30; `python/sglang/srt/models/qwen3_moe.py` modified +22/-2; `python/sglang/srt/models/utils.py` added +51/-0
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
-
-### PR #11331 - Deprecate `global_server_args_dict`
-
-- Link: https://github.com/sgl-project/sglang/pull/11331
-- Status/date: merged / 2025-10-12
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 54 files, +240/-321, with 1946 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Deprecate `global_server_args_dict`"; model line: Ling 2.5 1T; category: model implementation change; main diff: `python/sglang/global_config.py`, `python/sglang/srt/distributed/device_communicators/pynccl_allocator.py`, `python/sglang/srt/eplb/expert_location_dispatch.py`.
-- Key implementation:
-  - `python/sglang/global_config.py` modified +0/-3
-  - `python/sglang/srt/distributed/device_communicators/pynccl_allocator.py` modified +2/-2
-  - `python/sglang/srt/eplb/expert_location_dispatch.py` modified +2/-2
-  - `python/sglang/srt/eplb/expert_location_updater.py` modified +2/-2
-- Code diff details:
-  - `python/sglang/global_config.py` modified +0/-3
-  - `python/sglang/srt/distributed/device_communicators/pynccl_allocator.py` modified +2/-2
-  - `python/sglang/srt/eplb/expert_location_dispatch.py` modified +2/-2
-  - `python/sglang/srt/eplb/expert_location_updater.py` modified +2/-2
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/global_config.py
-@@ -6,9 +6,6 @@
- class GlobalConfig:
-     """
-     Store some global constants.
--
--    See also python/sglang/srt/managers/schedule_batch.py::global_server_args_dict, which stores
--    many global runtime arguments as well.
-     """
-
-     def __init__(self):
-diff -- python/sglang/srt/distributed/device_communicators/pynccl_allocator.py
-@@ -5,7 +5,7 @@
- from torch.cuda.memory import CUDAPluggableAllocator
-
- from sglang.srt.distributed.parallel_state import GroupCoordinator
--from sglang.srt.managers.schedule_batch import global_server_args_dict
-+from sglang.srt.server_args import get_global_server_args
-
- nccl_allocator_source = """
- #include <nccl.h>
-@@ -32,7 +32,7 @@
-
-
- def is_symmetric_memory_enabled():
--    return global_server_args_dict["enable_symm_mem"]
-```
-- Reviewed files:
-  - runtime: `python/sglang/global_config.py` modified +0/-3; `python/sglang/srt/distributed/device_communicators/pynccl_allocator.py` modified +2/-2; `python/sglang/srt/eplb/expert_location_dispatch.py` modified +2/-2; `python/sglang/srt/eplb/expert_location_updater.py` modified +2/-2; `python/sglang/srt/layers/attention/double_sparsity_backend.py` modified +2/-2; `python/sglang/srt/layers/attention/flashattention_backend.py` modified +2/-2; `python/sglang/srt/layers/attention/flashinfer_mla_backend.py` modified +5/-5; `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +2/-2
-- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+  - runtime: `python/sglang/srt/models/utils.py` added +51/-0; `python/sglang/srt/models/gpt_oss.py` modified +7/-30; `python/sglang/srt/models/bailing_moe.py` modified +25/-2; `python/sglang/srt/models/qwen3_moe.py` modified +22/-2
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/models/gpt_oss.py`, `python/sglang/srt/models/qwen3_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #11465 - bailingMoE: Fix Key error of deepep_mode
 
 - Link: https://github.com/sgl-project/sglang/pull/11465
 - Status/date: merged / 2025-10-12
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 1 files, +2/-2, with 18 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "bailingMoE: Fix Key error of deepep_mode"; model line: Ling 2.5 1T; category: bug fix; main diff: `python/sglang/srt/models/bailing_moe.py`.
-- Key implementation:
-  - `python/sglang/srt/models/bailing_moe.py` modified +2/-2
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +2/-2, 18 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "bailingMoE: Fix Key error of deepep_mode"; model line: Ling 2.5; category: bug fix; main diff: `python/sglang/srt/models/bailing_moe.py`; technical summary: Covers "bailingMoE: Fix Key error of deepep_mode"; the main implementation surface is `python/sglang/srt/models/bailing_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/bailing_moe.py` modified +2/-2 (4 lines); hunks: -54,7 +54,7; -293,7 +293,7 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
-  - `python/sglang/srt/models/bailing_moe.py` modified +2/-2
+  - `python/sglang/srt/models/bailing_moe.py` modified +2/-2 (4 lines); hunks: -54,7 +54,7; -293,7 +293,7 @@ def __init__(; symbols: __init__
 - Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/bailing_moe.py
 @@ -54,7 +54,7 @@
-     RowParallelLinear,
- )
- from sglang.srt.layers.logits_processor import LogitsProcessor
 -from sglang.srt.layers.moe import get_moe_a2a_backend
 +from sglang.srt.layers.moe import get_deepep_mode, get_moe_a2a_backend
- from sglang.srt.layers.moe.ep_moe.layer import get_moe_impl_class
- from sglang.srt.layers.moe.fused_moe_triton.layer import FusedMoE
- from sglang.srt.layers.moe.token_dispatcher import DeepEPDispatcher
 @@ -293,7 +293,7 @@ def __init__(
-                 num_local_experts=config.num_experts // self.tp_size,
-                 hidden_size=config.hidden_size,
-                 params_dtype=config.torch_dtype,
 -                deepep_mode=DeepEPMode[global_server_args_dict["deepep_mode"]],
++                deepep_mode=get_deepep_mode(),
 ```
+
 - Reviewed files:
   - runtime: `python/sglang/srt/models/bailing_moe.py` modified +2/-2
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/bailing_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #11331 - Deprecate `global_server_args_dict`
+
+- Link: https://github.com/sgl-project/sglang/pull/11331
+- Status/date: merged / 2025-10-12
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 54 files, +240/-321, 1946 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Deprecate `global_server_args_dict`"; model line: Ling 2.5; category: model implementation change; main diff: `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/models/glm4_moe.py`; technical summary: Covers "Deprecate `global_server_args_dict`"; the main implementation surface is `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/models/glm4_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/deepseek_v2.py` modified +23/-21 (44 lines); hunks: -35,7 +35,6; -108,10 +107,11; symbols: __init__, touching `__init__`; `python/sglang/srt/model_executor/model_runner.py` modified +16/-21 (37 lines); hunks: -83,10 +83,6; -125,7 +121,11; symbols: __init__, initialize, _get_attention_backend, _get_attention_backend_from_str, touching `__init__, initialize, _get_attention_backend`; `python/sglang/srt/models/glm4_moe.py` modified +8/-12 (20 lines); hunks: -56,18 +56,13; -77,6 +72,7; symbols: __init__, determine_num_fused_shared_experts, touching `__init__, determine_num_fused_shared_experts`; `python/sglang/srt/layers/logits_processor.py` modified +6/-10 (16 lines); hunks: -38,17 +38,15; -230,8 +228,8 @@ def __init__(; symbols: __init__, compute_logprobs_for_multi_item_scoring, forward, touching `__init__, compute_logprobs_for_multi_item_scoring, forward`.
+- Code diff details:
+  - `python/sglang/srt/models/deepseek_v2.py` modified +23/-21 (44 lines); hunks: -35,7 +35,6; -108,10 +107,11; symbols: __init__
+  - `python/sglang/srt/model_executor/model_runner.py` modified +16/-21 (37 lines); hunks: -83,10 +83,6; -125,7 +121,11; symbols: __init__, initialize, _get_attention_backend, _get_attention_backend_from_str
+  - `python/sglang/srt/models/glm4_moe.py` modified +8/-12 (20 lines); hunks: -56,18 +56,13; -77,6 +72,7; symbols: __init__, determine_num_fused_shared_experts
+  - `python/sglang/srt/layers/logits_processor.py` modified +6/-10 (16 lines); hunks: -38,17 +38,15; -230,8 +228,8 @@ def __init__(; symbols: __init__, compute_logprobs_for_multi_item_scoring, forward
+  - `python/sglang/srt/models/qwen3_vl_moe.py` modified +3/-11 (14 lines); hunks: -38,20 +38,12
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -35,7 +35,6 @@
+-from sglang.srt.debug_utils.dumper import dumper
+@@ -108,10 +107,11 @@
+-from sglang.srt.managers.schedule_batch import global_server_args_dict
++from sglang.srt.server_args import get_global_server_args
++from sglang.srt.speculative.spec_info import SpeculativeAlgorithm
+@@ -520,7 +520,7 @@ def __init__(
+diff -- python/sglang/srt/model_executor/model_runner.py
+@@ -83,10 +83,6 @@
+-from sglang.srt.managers.schedule_batch import (
+-    GLOBAL_SERVER_ARGS_KEYS,
+-    global_server_args_dict,
+-)
+@@ -125,7 +121,11 @@
+-from sglang.srt.server_args import ServerArgs
+diff -- python/sglang/srt/models/glm4_moe.py
+@@ -56,18 +56,13 @@
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +23/-21; `python/sglang/srt/model_executor/model_runner.py` modified +16/-21; `python/sglang/srt/models/glm4_moe.py` modified +8/-12; `python/sglang/srt/layers/logits_processor.py` modified +6/-10; `python/sglang/srt/models/qwen3_vl_moe.py` modified +3/-11; `python/sglang/srt/layers/communicator.py` modified +8/-5
+- Risk and verification: The diff ships test coverage in `test/srt/rl/test_fp32_lm_head.py`, `test/srt/test_gptqmodel_dynamic.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #11520 - Revert "Deprecate `global_server_args_dict`"
 
 - Link: https://github.com/sgl-project/sglang/pull/11520
 - Status/date: merged / 2025-10-13
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 54 files, +321/-240, with 1946 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Revert "Deprecate `global_server_args_dict`""; model line: Ling 2.5 1T; category: bug fix; main diff: `python/sglang/global_config.py`, `python/sglang/srt/distributed/device_communicators/pynccl_allocator.py`, `python/sglang/srt/eplb/expert_location_dispatch.py`.
-- Key implementation:
-  - `python/sglang/global_config.py` modified +3/-0
-  - `python/sglang/srt/distributed/device_communicators/pynccl_allocator.py` modified +2/-2
-  - `python/sglang/srt/eplb/expert_location_dispatch.py` modified +2/-2
-  - `python/sglang/srt/eplb/expert_location_updater.py` modified +2/-2
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 54 files, +321/-240, 1946 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Revert "Deprecate `global_server_args_dict`""; model line: Ling 2.5; category: model implementation change; main diff: `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/models/glm4_moe.py`; technical summary: Covers "Revert "Deprecate `global_server_args_dict`""; the main implementation surface is `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/models/glm4_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/deepseek_v2.py` modified +21/-23 (44 lines); hunks: -35,6 +35,7; -107,11 +108,10; symbols: __init__, touching `__init__`; `python/sglang/srt/model_executor/model_runner.py` modified +21/-16 (37 lines); hunks: -83,6 +83,10; -121,11 +125,7; symbols: __init__, initialize, _get_attention_backend, _get_attention_backend_from_str, touching `__init__, initialize, _get_attention_backend`; `python/sglang/srt/models/glm4_moe.py` modified +12/-8 (20 lines); hunks: -56,13 +56,18; -72,7 +77,6; symbols: __init__, determine_num_fused_shared_experts, touching `__init__, determine_num_fused_shared_experts`; `python/sglang/srt/layers/logits_processor.py` modified +10/-6 (16 lines); hunks: -38,15 +38,17; -228,8 +230,8 @@ def __init__(; symbols: __init__, compute_logprobs_for_multi_item_scoring, forward, touching `__init__, compute_logprobs_for_multi_item_scoring, forward`.
 - Code diff details:
-  - `python/sglang/global_config.py` modified +3/-0
-  - `python/sglang/srt/distributed/device_communicators/pynccl_allocator.py` modified +2/-2
-  - `python/sglang/srt/eplb/expert_location_dispatch.py` modified +2/-2
-  - `python/sglang/srt/eplb/expert_location_updater.py` modified +2/-2
+  - `python/sglang/srt/models/deepseek_v2.py` modified +21/-23 (44 lines); hunks: -35,6 +35,7; -107,11 +108,10; symbols: __init__
+  - `python/sglang/srt/model_executor/model_runner.py` modified +21/-16 (37 lines); hunks: -83,6 +83,10; -121,11 +125,7; symbols: __init__, initialize, _get_attention_backend, _get_attention_backend_from_str
+  - `python/sglang/srt/models/glm4_moe.py` modified +12/-8 (20 lines); hunks: -56,13 +56,18; -72,7 +77,6; symbols: __init__, determine_num_fused_shared_experts
+  - `python/sglang/srt/layers/logits_processor.py` modified +10/-6 (16 lines); hunks: -38,15 +38,17; -228,8 +230,8 @@ def __init__(; symbols: __init__, compute_logprobs_for_multi_item_scoring, forward
+  - `python/sglang/srt/models/qwen3_vl_moe.py` modified +11/-3 (14 lines); hunks: -38,12 +38,20
 - Key code excerpts:
 
 ```diff
-diff -- python/sglang/global_config.py
-@@ -6,6 +6,9 @@
- class GlobalConfig:
-     """
-     Store some global constants.
-+
-+    See also python/sglang/srt/managers/schedule_batch.py::global_server_args_dict, which stores
-+    many global runtime arguments as well.
-     """
-
-     def __init__(self):
-diff -- python/sglang/srt/distributed/device_communicators/pynccl_allocator.py
-@@ -5,7 +5,7 @@
- from torch.cuda.memory import CUDAPluggableAllocator
-
- from sglang.srt.distributed.parallel_state import GroupCoordinator
--from sglang.srt.server_args import get_global_server_args
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -35,6 +35,7 @@
++from sglang.srt.debug_utils.dumper import dumper
+@@ -107,11 +108,10 @@
 +from sglang.srt.managers.schedule_batch import global_server_args_dict
-
- nccl_allocator_source = """
- #include <nccl.h>
-@@ -32,7 +32,7 @@
-
-
- def is_symmetric_memory_enabled():
--    return get_global_server_args().enable_symm_mem
+-from sglang.srt.server_args import get_global_server_args
+-from sglang.srt.speculative.spec_info import SpeculativeAlgorithm
+@@ -520,7 +520,7 @@ def __init__(
+diff -- python/sglang/srt/model_executor/model_runner.py
+@@ -83,6 +83,10 @@
++from sglang.srt.managers.schedule_batch import (
++    GLOBAL_SERVER_ARGS_KEYS,
++    global_server_args_dict,
++)
+@@ -121,11 +125,7 @@
+-from sglang.srt.server_args import (
+diff -- python/sglang/srt/models/glm4_moe.py
+@@ -56,13 +56,18 @@
 ```
+
 - Reviewed files:
-  - runtime: `python/sglang/global_config.py` modified +3/-0; `python/sglang/srt/distributed/device_communicators/pynccl_allocator.py` modified +2/-2; `python/sglang/srt/eplb/expert_location_dispatch.py` modified +2/-2; `python/sglang/srt/eplb/expert_location_updater.py` modified +2/-2; `python/sglang/srt/layers/attention/double_sparsity_backend.py` modified +2/-2; `python/sglang/srt/layers/attention/flashattention_backend.py` modified +2/-2; `python/sglang/srt/layers/attention/flashinfer_mla_backend.py` modified +5/-5; `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +2/-2
-- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +21/-23; `python/sglang/srt/model_executor/model_runner.py` modified +21/-16; `python/sglang/srt/models/glm4_moe.py` modified +12/-8; `python/sglang/srt/layers/logits_processor.py` modified +10/-6; `python/sglang/srt/models/qwen3_vl_moe.py` modified +11/-3; `python/sglang/srt/layers/communicator.py` modified +5/-8
+- Risk and verification: The diff ships test coverage in `test/srt/rl/test_fp32_lm_head.py`, `test/srt/test_gptqmodel_dynamic.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #11528 - Depreate `global_server_args_dict`
 
 - Link: https://github.com/sgl-project/sglang/pull/11528
 - Status/date: merged / 2025-10-13
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 54 files, +240/-321, with 1946 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Depreate `global_server_args_dict`"; model line: Ling 2.5 1T; category: model implementation change; main diff: `python/sglang/global_config.py`, `python/sglang/srt/distributed/device_communicators/pynccl_allocator.py`, `python/sglang/srt/eplb/expert_location_dispatch.py`.
-- Key implementation:
-  - `python/sglang/global_config.py` modified +0/-3
-  - `python/sglang/srt/distributed/device_communicators/pynccl_allocator.py` modified +2/-2
-  - `python/sglang/srt/eplb/expert_location_dispatch.py` modified +2/-2
-  - `python/sglang/srt/eplb/expert_location_updater.py` modified +2/-2
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 54 files, +240/-321, 1946 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Depreate `global_server_args_dict`"; model line: Ling 2.5; category: model implementation change; main diff: `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/models/glm4_moe.py`; technical summary: Covers "Depreate `global_server_args_dict`"; the main implementation surface is `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/models/glm4_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/deepseek_v2.py` modified +23/-21 (44 lines); hunks: -35,7 +35,6; -108,10 +107,11; symbols: __init__, touching `__init__`; `python/sglang/srt/model_executor/model_runner.py` modified +16/-21 (37 lines); hunks: -83,10 +83,6; -125,7 +121,11; symbols: __init__, initialize, _get_attention_backend, _get_attention_backend_from_str, touching `__init__, initialize, _get_attention_backend`; `python/sglang/srt/models/glm4_moe.py` modified +8/-12 (20 lines); hunks: -56,18 +56,13; -77,6 +72,7; symbols: __init__, determine_num_fused_shared_experts, touching `__init__, determine_num_fused_shared_experts`; `python/sglang/srt/layers/logits_processor.py` modified +6/-10 (16 lines); hunks: -38,17 +38,15; -230,8 +228,8 @@ def __init__(; symbols: __init__, compute_logprobs_for_multi_item_scoring, forward, touching `__init__, compute_logprobs_for_multi_item_scoring, forward`.
 - Code diff details:
-  - `python/sglang/global_config.py` modified +0/-3
-  - `python/sglang/srt/distributed/device_communicators/pynccl_allocator.py` modified +2/-2
-  - `python/sglang/srt/eplb/expert_location_dispatch.py` modified +2/-2
-  - `python/sglang/srt/eplb/expert_location_updater.py` modified +2/-2
+  - `python/sglang/srt/models/deepseek_v2.py` modified +23/-21 (44 lines); hunks: -35,7 +35,6; -108,10 +107,11; symbols: __init__
+  - `python/sglang/srt/model_executor/model_runner.py` modified +16/-21 (37 lines); hunks: -83,10 +83,6; -125,7 +121,11; symbols: __init__, initialize, _get_attention_backend, _get_attention_backend_from_str
+  - `python/sglang/srt/models/glm4_moe.py` modified +8/-12 (20 lines); hunks: -56,18 +56,13; -77,6 +72,7; symbols: __init__, determine_num_fused_shared_experts
+  - `python/sglang/srt/layers/logits_processor.py` modified +6/-10 (16 lines); hunks: -38,17 +38,15; -230,8 +228,8 @@ def __init__(; symbols: __init__, compute_logprobs_for_multi_item_scoring, forward
+  - `python/sglang/srt/models/qwen3_vl_moe.py` modified +3/-11 (14 lines); hunks: -38,20 +38,12
 - Key code excerpts:
 
 ```diff
-diff -- python/sglang/global_config.py
-@@ -6,9 +6,6 @@
- class GlobalConfig:
-     """
-     Store some global constants.
--
--    See also python/sglang/srt/managers/schedule_batch.py::global_server_args_dict, which stores
--    many global runtime arguments as well.
-     """
-
-     def __init__(self):
-diff -- python/sglang/srt/distributed/device_communicators/pynccl_allocator.py
-@@ -5,7 +5,7 @@
- from torch.cuda.memory import CUDAPluggableAllocator
-
- from sglang.srt.distributed.parallel_state import GroupCoordinator
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -35,7 +35,6 @@
+-from sglang.srt.debug_utils.dumper import dumper
+@@ -108,10 +107,11 @@
 -from sglang.srt.managers.schedule_batch import global_server_args_dict
 +from sglang.srt.server_args import get_global_server_args
-
- nccl_allocator_source = """
- #include <nccl.h>
-@@ -32,7 +32,7 @@
-
-
- def is_symmetric_memory_enabled():
--    return global_server_args_dict["enable_symm_mem"]
++from sglang.srt.speculative.spec_info import SpeculativeAlgorithm
+@@ -520,7 +520,7 @@ def __init__(
+diff -- python/sglang/srt/model_executor/model_runner.py
+@@ -83,10 +83,6 @@
+-from sglang.srt.managers.schedule_batch import (
+-    GLOBAL_SERVER_ARGS_KEYS,
+-    global_server_args_dict,
+-)
+@@ -125,7 +121,11 @@
+-from sglang.srt.server_args import ServerArgs
+diff -- python/sglang/srt/models/glm4_moe.py
+@@ -56,18 +56,13 @@
 ```
+
 - Reviewed files:
-  - runtime: `python/sglang/global_config.py` modified +0/-3; `python/sglang/srt/distributed/device_communicators/pynccl_allocator.py` modified +2/-2; `python/sglang/srt/eplb/expert_location_dispatch.py` modified +2/-2; `python/sglang/srt/eplb/expert_location_updater.py` modified +2/-2; `python/sglang/srt/layers/attention/double_sparsity_backend.py` modified +2/-2; `python/sglang/srt/layers/attention/flashattention_backend.py` modified +2/-2; `python/sglang/srt/layers/attention/flashinfer_mla_backend.py` modified +5/-5; `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +2/-2
-- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +23/-21; `python/sglang/srt/model_executor/model_runner.py` modified +16/-21; `python/sglang/srt/models/glm4_moe.py` modified +8/-12; `python/sglang/srt/layers/logits_processor.py` modified +6/-10; `python/sglang/srt/models/qwen3_vl_moe.py` modified +3/-11; `python/sglang/srt/layers/communicator.py` modified +8/-5
+- Risk and verification: The diff ships test coverage in `test/srt/rl/test_fp32_lm_head.py`, `test/srt/test_gptqmodel_dynamic.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #11685 - [Lint] Add `python/sglang` to ruff F401 checks and remove unused imports in files
 
 - Link: https://github.com/sgl-project/sglang/pull/11685
 - Status/date: merged / 2025-10-17
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 100 files, +90/-235, with 1164 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Lint] Add `python/sglang` to ruff F401 checks and remove unused imports in files"; model line: Ling 2.5 1T; category: model support/runtime entry; main diff: `.pre-commit-config.yaml`, `python/sglang/srt/_custom_ops.py`, `python/sglang/srt/compilation/cuda_piecewise_backend.py`.
-- Key implementation:
-  - `.pre-commit-config.yaml` modified +3/-3
-  - `python/sglang/srt/_custom_ops.py` modified +1/-1
-  - `python/sglang/srt/compilation/cuda_piecewise_backend.py` modified +0/-1
-  - `python/sglang/srt/configs/deepseekvl2.py` modified +0/-1
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 151 files, +124/-406, 1915 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Lint] Add `python/sglang` to ruff F401 checks and remove unused imports in files"; model line: Ling 2.5; category: performance/backend optimization; main diff: `python/sglang/srt/layers/quantization/w8a8_int8.py`, `python/sglang/srt/models/qwen2_audio.py`, `python/sglang/srt/models/longcat_flash.py`; technical summary: Covers "[Lint] Add `python/sglang` to ruff F401 checks and remove unused imports in files"; the main implementation surface is `python/sglang/srt/layers/quantization/w8a8_int8.py`, `python/sglang/srt/models/qwen2_audio.py`, `python/sglang/srt/models/longcat_flash.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/quantization/w8a8_int8.py` modified +2/-18 (20 lines); hunks: -1,28 +1,12; `python/sglang/srt/models/qwen2_audio.py` modified +2/-15 (17 lines); hunks: -23,30 +23,18; -60,7 +48,6; `python/sglang/srt/models/longcat_flash.py` modified +1/-14 (15 lines); hunks: -44,9 +44,7; -87,20 +85,15; `python/sglang/srt/models/longcat_flash_nextn.py` modified +2/-13 (15 lines); hunks: -32,14 +32,10; -75,7 +71,6.
 - Code diff details:
-  - `.pre-commit-config.yaml` modified +3/-3
-  - `python/sglang/srt/_custom_ops.py` modified +1/-1
-  - `python/sglang/srt/compilation/cuda_piecewise_backend.py` modified +0/-1
-  - `python/sglang/srt/configs/deepseekvl2.py` modified +0/-1
+  - `python/sglang/srt/layers/quantization/w8a8_int8.py` modified +2/-18 (20 lines); hunks: -1,28 +1,12
+  - `python/sglang/srt/models/qwen2_audio.py` modified +2/-15 (17 lines); hunks: -23,30 +23,18; -60,7 +48,6
+  - `python/sglang/srt/models/longcat_flash.py` modified +1/-14 (15 lines); hunks: -44,9 +44,7; -87,20 +85,15
+  - `python/sglang/srt/models/longcat_flash_nextn.py` modified +2/-13 (15 lines); hunks: -32,14 +32,10; -75,7 +71,6
+  - `python/sglang/srt/models/mimo.py` modified +2/-13 (15 lines); hunks: -1,28 +1,17
 - Key code excerpts:
 
 ```diff
-diff -- .pre-commit-config.yaml
-@@ -27,9 +27,9 @@ repos:
-     rev: v0.11.7
-     hooks:
-       - id: ruff
--        args: [--select=F401, --fixable=F401]
--        files: ^(benchmark/|docs/|examples/)
--        exclude: \.ipynb$|^python/sglang/srt/grpc/.*_pb2\.py$|^python/sglang/srt/grpc/.*_pb2_grpc\.py$|^python/sglang/srt/grpc/.*_pb2\.pyi$|^python/sglang/srt/grpc/.*_pb2_grpc\.pyi$
-+        args: [--select=F401,F821, --fixable=F401]
-+        files: ^(benchmark/|docs/|examples/|python/sglang/)
-+        exclude: __init__\.py$|\.ipynb$|^python/sglang/srt/grpc/.*_pb2\.py$|^python/sglang/srt/grpc/.*_pb2_grpc\.py$|^python/sglang/srt/grpc/.*_pb2\.pyi$|^python/sglang/srt/grpc/.*_pb2_grpc\.pyi$
-   - repo: https://github.com/psf/black
-     rev: 24.10.0
-     hooks:
-diff -- python/sglang/srt/_custom_ops.py
-@@ -15,7 +15,7 @@
-     # ROCm does not use vllm custom allreduce
-     if use_vllm_custom_allreduce and not is_hip():
-         try:
--            import vllm._C
-+            import vllm._C  # noqa: F401
-         except ImportError as e:
-             logger.warning("Failed to import from vllm._C with %r", e)
-     else:
+diff -- python/sglang/srt/layers/quantization/w8a8_int8.py
+@@ -1,28 +1,12 @@
+-import importlib
+-import sys
+-from typing import (
+-    TYPE_CHECKING,
+-    Any,
+-    Callable,
+diff -- python/sglang/srt/models/qwen2_audio.py
+@@ -23,30 +23,18 @@
+-import math
+-from functools import lru_cache, partial
+-from typing import Any, Iterable, List, Optional, Tuple, Type, TypedDict
++from typing import Any, Iterable, List, Optional, Tuple
+-import torch.nn.functional as F
+-from einops import rearrange
+diff -- python/sglang/srt/models/longcat_flash.py
+@@ -44,9 +44,7 @@
 ```
+
 - Reviewed files:
-  - runtime: `python/sglang/srt/_custom_ops.py` modified +1/-1; `python/sglang/srt/compilation/cuda_piecewise_backend.py` modified +0/-1; `python/sglang/srt/configs/deepseekvl2.py` modified +0/-1; `python/sglang/srt/configs/dots_vlm.py` modified +2/-7; `python/sglang/srt/configs/falcon_h1.py` modified +1/-6; `python/sglang/srt/configs/qwen3_next.py` modified +0/-1; `python/sglang/srt/connector/remote_instance.py` modified +1/-1; `python/sglang/srt/disaggregation/ascend/transfer_engine.py` modified +1/-1
-  - other: `.pre-commit-config.yaml` modified +3/-3
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+  - runtime: `python/sglang/srt/layers/quantization/w8a8_int8.py` modified +2/-18; `python/sglang/srt/models/qwen2_audio.py` modified +2/-15; `python/sglang/srt/models/longcat_flash.py` modified +1/-14; `python/sglang/srt/models/longcat_flash_nextn.py` modified +2/-13; `python/sglang/srt/models/mimo.py` modified +2/-13; `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors_moe.py` modified +3/-10
+- Risk and verification: The diff ships test coverage in `python/sglang/test/attention/test_flashattn_mla_backend.py`, `python/sglang/test/attention/test_prefix_chunk_info.py`, `python/sglang/test/few_shot_gsm8k_engine.py`, `python/sglang/test/simple_eval_gpqa.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #11847 - [9/N] MoE Refactor: cleanup dispatcher interfaces
 
 - Link: https://github.com/sgl-project/sglang/pull/11847
 - Status/date: merged / 2025-10-20
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 24 files, +394/-428, with 1948 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[9/N] MoE Refactor: cleanup dispatcher interfaces"; model line: Ling 2.5 1T; category: model implementation change; main diff: `python/sglang/srt/layers/dp_attention.py`, `python/sglang/srt/layers/moe/ep_moe/kernels.py`, `python/sglang/srt/layers/moe/ep_moe/layer.py`.
-- Key implementation:
-  - `python/sglang/srt/layers/dp_attention.py` modified +17/-0; symbols: set_is_extend_in_batch, get_is_extend_in_batch
-  - `python/sglang/srt/layers/moe/ep_moe/kernels.py` modified +3/-1
-  - `python/sglang/srt/layers/moe/ep_moe/layer.py` modified +69/-99; symbols: run_moe_core
-  - `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` modified +44/-35; symbols: create_moe_dispatcher, run_moe_core
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 24 files, +394/-428, 1948 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[9/N] MoE Refactor: cleanup dispatcher interfaces"; model line: Ling 2.5; category: performance/backend optimization; main diff: `python/sglang/srt/layers/moe/token_dispatcher/deepep.py`, `python/sglang/srt/layers/moe/ep_moe/layer.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py`; technical summary: Covers "[9/N] MoE Refactor: cleanup dispatcher interfaces"; the main implementation surface is `python/sglang/srt/layers/moe/token_dispatcher/deepep.py`, `python/sglang/srt/layers/moe/ep_moe/layer.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/moe/token_dispatcher/deepep.py` modified +86/-91 (177 lines); hunks: -7,6 +7,7; -15,6 +16,7; symbols: DeepEPNormalOutput, format, DeepEPLLOutput, __init__, touching `DeepEPNormalOutput, format, DeepEPLLOutput`; `python/sglang/srt/layers/moe/ep_moe/layer.py` modified +69/-99 (168 lines); hunks: -20,18 +20,14; -109,23 +105,6 @@ def __init__(; symbols: __init__, forward, dispatch, touching `__init__, forward, dispatch`; `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` modified +44/-35 (79 lines); hunks: -11,14 +11,19; -32,6 +37,7; symbols: _get_tile_tokens_dim, create_moe_dispatcher, FusedMoeWeightScaleSupported, __init__, touching `_get_tile_tokens_dim, create_moe_dispatcher, FusedMoeWeightScaleSupported`; `python/sglang/srt/layers/moe/token_dispatcher/mooncake.py` modified +37/-39 (76 lines); hunks: -5,13 +5,15; -27,16 +29,15; symbols: MooncakeDispatchOutput, __init__, dispatch_a, dispatch_b, touching `MooncakeDispatchOutput, __init__, dispatch_a`.
 - Code diff details:
-  - `python/sglang/srt/layers/dp_attention.py` modified +17/-0
-  - `python/sglang/srt/layers/moe/ep_moe/kernels.py` modified +3/-1
-  - `python/sglang/srt/layers/moe/ep_moe/layer.py` modified +69/-99
-  - `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` modified +44/-35
+  - `python/sglang/srt/layers/moe/token_dispatcher/deepep.py` modified +86/-91 (177 lines); hunks: -7,6 +7,7; -15,6 +16,7; symbols: DeepEPNormalOutput, format, DeepEPLLOutput, __init__
+  - `python/sglang/srt/layers/moe/ep_moe/layer.py` modified +69/-99 (168 lines); hunks: -20,18 +20,14; -109,23 +105,6 @@ def __init__(; symbols: __init__, forward, dispatch
+  - `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` modified +44/-35 (79 lines); hunks: -11,14 +11,19; -32,6 +37,7; symbols: _get_tile_tokens_dim, create_moe_dispatcher, FusedMoeWeightScaleSupported, __init__
+  - `python/sglang/srt/layers/moe/token_dispatcher/mooncake.py` modified +37/-39 (76 lines); hunks: -5,13 +5,15; -27,16 +29,15; symbols: MooncakeDispatchOutput, __init__, dispatch_a, dispatch_b
+  - `python/sglang/srt/models/deepseek_v2.py` modified +14/-46 (60 lines); hunks: -74,7 +74,6; -113,10 +112,7; symbols: __init__, forward_deepep, _forward_shared_experts_and_put_results, op_select_experts
 - Key code excerpts:
 
 ```diff
-diff -- python/sglang/srt/layers/dp_attention.py
-@@ -87,6 +87,7 @@ class _DpGatheredBufferWrapper:
-     _global_dp_buffer_len: int
-     _local_dp_buffer_len: int
-     _global_num_tokens: Optional[List[int]]
-+    _is_extend_in_batch: bool
-
-     @classmethod
-     def set_metadata(cls, hidden_size: int, dtype: torch.dtype, device: torch.device):
-@@ -145,6 +146,14 @@ def get_dp_dtype(cls) -> torch.dtype:
-     def get_dp_device(cls) -> torch.device:
-         return cls._device
-
-+    @classmethod
-+    def set_is_extend_in_batch(cls, is_extend_in_batch: bool):
-diff -- python/sglang/srt/layers/moe/ep_moe/kernels.py
-@@ -566,7 +566,9 @@ def ep_scatter(
-         scale_hidden_size = ceil_div(scale_hidden_size, 4)
-
-     assert m_indices.shape[0] % BLOCK_E == 0
--    assert recv_x_scale.dtype == output_tensor_scale.dtype
-+    assert (
-+        recv_x_scale.dtype == output_tensor_scale.dtype
-+    ), f"recv_x_scale.dtype: {recv_x_scale.dtype}, output_tensor_scale.dtype: {output_tensor_scale.dtype}"
-     assert recv_x_scale.shape[1] == output_tensor_scale.shape[1] == scale_hidden_size
-
-     _fwd_kernel_ep_scatter_1[(grid,)](
+diff -- python/sglang/srt/layers/moe/token_dispatcher/deepep.py
+@@ -7,6 +7,7 @@
++from sglang.srt.layers.dp_attention import get_is_extend_in_batch
+@@ -15,6 +16,7 @@
++from sglang.srt.layers.moe.topk import TopKOutput
+@@ -51,8 +53,6 @@
+-from sglang.srt.model_executor.forward_batch_info import ForwardBatch
+@@ -61,9 +61,9 @@
+diff -- python/sglang/srt/layers/moe/ep_moe/layer.py
+@@ -20,18 +20,14 @@
++from sglang.srt.layers.moe.topk import TopKOutput
+-from sglang.srt.layers.quantization.modelopt_quant import (
+-    CUTEDSL_MOE_NVFP4_DISPATCH,
+-    ModelOptNvFp4FusedMoEMethod,
+-)
+-from sglang.srt.model_executor.forward_batch_info import ForwardBatch
+diff -- python/sglang/srt/layers/moe/fused_moe_triton/layer.py
+@@ -11,14 +11,19 @@
 ```
+
 - Reviewed files:
-  - runtime: `python/sglang/srt/layers/dp_attention.py` modified +17/-0; `python/sglang/srt/layers/moe/ep_moe/kernels.py` modified +3/-1; `python/sglang/srt/layers/moe/ep_moe/layer.py` modified +69/-99; `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` modified +44/-35; `python/sglang/srt/layers/moe/token_dispatcher/__init__.py` modified +2/-0; `python/sglang/srt/layers/moe/token_dispatcher/base.py` modified +1/-1; `python/sglang/srt/layers/moe/token_dispatcher/deepep.py` modified +86/-91; `python/sglang/srt/layers/moe/token_dispatcher/mooncake.py` modified +37/-39
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+  - runtime: `python/sglang/srt/layers/moe/token_dispatcher/deepep.py` modified +86/-91; `python/sglang/srt/layers/moe/ep_moe/layer.py` modified +69/-99; `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` modified +44/-35; `python/sglang/srt/layers/moe/token_dispatcher/mooncake.py` modified +37/-39; `python/sglang/srt/models/deepseek_v2.py` modified +14/-46; `python/sglang/srt/layers/moe/token_dispatcher/standard.py` modified +46/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/dp_attention.py`, `python/sglang/srt/layers/moe/ep_moe/kernels.py`, `python/sglang/srt/layers/moe/ep_moe/layer.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #12369 - Enable bailing_moe to support TP=16
 
 - Link: https://github.com/sgl-project/sglang/pull/12369
 - Status/date: merged / 2025-10-31
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 1 files, +9/-2, with 24 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Enable bailing_moe to support TP=16"; model line: Ling 2.5 1T; category: model support/runtime entry; main diff: `python/sglang/srt/models/bailing_moe.py`.
-- Key implementation:
-  - `python/sglang/srt/models/bailing_moe.py` modified +9/-2
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +9/-2, 24 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Enable bailing_moe to support TP=16"; model line: Ling 2.5; category: model support/runtime entry; main diff: `python/sglang/srt/models/bailing_moe.py`; technical summary: Covers "Enable bailing_moe to support TP=16"; the main implementation surface is `python/sglang/srt/models/bailing_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/bailing_moe.py` modified +9/-2 (11 lines); hunks: -420,14 +420,21 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
-  - `python/sglang/srt/models/bailing_moe.py` modified +9/-2
+  - `python/sglang/srt/models/bailing_moe.py` modified +9/-2 (11 lines); hunks: -420,14 +420,21 @@ def __init__(; symbols: __init__
 - Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/bailing_moe.py
 @@ -420,14 +420,21 @@ def __init__(
-         attn_tp_size = get_attention_tp_size()
-
-         assert self.total_num_heads % attn_tp_size == 0
 -        assert self.total_kv_heads % attn_tp_size == 0
 +        if self.total_kv_heads >= attn_tp_size:
 +            # Number of KV heads is greater than TP size, so we partition
 +            # the KV heads across multiple tensor parallel GPUs.
 +            assert self.total_kv_heads % attn_tp_size == 0
 +        else:
-+            # Number of KV heads is less than TP size, so we replicate
-+            # the KV heads across multiple tensor parallel GPUs.
-+            assert attn_tp_size % self.total_kv_heads == 0
-         assert self.total_num_heads >= self.total_kv_heads
 ```
+
 - Reviewed files:
   - runtime: `python/sglang/srt/models/bailing_moe.py` modified +9/-2
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/bailing_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #14337 - remove unecessary dual stream token threshold from the rest of models (qwen moe, kimi linear, etc.)
 
 - Link: https://github.com/sgl-project/sglang/pull/14337
 - Status/date: merged / 2025-12-07
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 4 files, +0/-8, with 50 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "remove unecessary dual stream token threshold from the rest of models (qwen moe, kimi linear, etc.)"; model line: Ling 2.5 1T; category: model implementation change; main diff: `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/models/kimi_linear.py`, `python/sglang/srt/models/llada2.py`.
-- Key implementation:
-  - `python/sglang/srt/models/bailing_moe.py` modified +0/-2
-  - `python/sglang/srt/models/kimi_linear.py` modified +0/-2
-  - `python/sglang/srt/models/llada2.py` modified +0/-2
-  - `python/sglang/srt/models/qwen2_moe.py` modified +0/-2
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 4 files, +0/-8, 50 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "remove unecessary dual stream token threshold from the rest of models (qwen moe, kimi linear, etc.)"; model line: Ling 2.5; category: model implementation change; main diff: `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/models/kimi_linear.py`, `python/sglang/srt/models/llada2.py`; technical summary: Covers "remove unecessary dual stream token threshold from the rest of models (qwen moe, kimi linear, etc.)"; the main implementation surface is `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/models/kimi_linear.py`, `python/sglang/srt/models/llada2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/bailing_moe.py` modified +0/-2 (2 lines); hunks: -349,11 +349,9 @@ def forward_normal(; symbols: forward_normal, touching `forward_normal`; `python/sglang/srt/models/kimi_linear.py` modified +0/-2 (2 lines); hunks: -125,13 +125,11 @@ def forward(self, hidden_states: torch.Tensor) -> torch.Te...; symbols: forward, touching `forward`; `python/sglang/srt/models/llada2.py` modified +0/-2 (2 lines); hunks: -349,11 +349,9 @@ def forward_normal(; symbols: forward_normal, touching `forward_normal`; `python/sglang/srt/models/qwen2_moe.py` modified +0/-2 (2 lines); hunks: -275,11 +275,9 @@ def forward(; symbols: forward, touching `forward`.
 - Code diff details:
-  - `python/sglang/srt/models/bailing_moe.py` modified +0/-2
-  - `python/sglang/srt/models/kimi_linear.py` modified +0/-2
-  - `python/sglang/srt/models/llada2.py` modified +0/-2
-  - `python/sglang/srt/models/qwen2_moe.py` modified +0/-2
+  - `python/sglang/srt/models/bailing_moe.py` modified +0/-2 (2 lines); hunks: -349,11 +349,9 @@ def forward_normal(; symbols: forward_normal
+  - `python/sglang/srt/models/kimi_linear.py` modified +0/-2 (2 lines); hunks: -125,13 +125,11 @@ def forward(self, hidden_states: torch.Tensor) -> torch.Te...; symbols: forward
+  - `python/sglang/srt/models/llada2.py` modified +0/-2 (2 lines); hunks: -349,11 +349,9 @@ def forward_normal(; symbols: forward_normal
+  - `python/sglang/srt/models/qwen2_moe.py` modified +0/-2 (2 lines); hunks: -275,11 +275,9 @@ def forward(; symbols: forward
 - Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/bailing_moe.py
 @@ -349,11 +349,9 @@ def forward_normal(
-         num_tokens, hidden_size = hidden_states.shape
-         hidden_states = hidden_states.view(-1, hidden_size)
-
 -        DUAL_STREAM_TOKEN_THRESHOLD = 1024
-         if (
-             self.alt_stream is not None
-             and hidden_states.shape[0] > 0
 -            and hidden_states.shape[0] <= DUAL_STREAM_TOKEN_THRESHOLD
-             and get_is_capture_mode()
-         ):
-             final_hidden_states, shared_output = self.forward_normal_dual_stream(
 diff -- python/sglang/srt/models/kimi_linear.py
 @@ -125,13 +125,11 @@ def forward(self, hidden_states: torch.Tensor) -> torch.Tensor:
-         hidden_states = hidden_states.view(-1, hidden_size)
-
-         shared_output = None
 -        DUAL_STREAM_TOKEN_THRESHOLD = 1024
-
-         if (
-             self.alt_stream is not None
-             and self.num_shared_experts is not None
-             and hidden_states.shape[0] > 0
 -            and hidden_states.shape[0] <= DUAL_STREAM_TOKEN_THRESHOLD
-             and get_is_capture_mode()
-         ):
-             current_stream = torch.cuda.current_stream()
+diff -- python/sglang/srt/models/llada2.py
+@@ -349,11 +349,9 @@ def forward_normal(
+-        DUAL_STREAM_TOKEN_THRESHOLD = 1024
+-            and hidden_states.shape[0] <= DUAL_STREAM_TOKEN_THRESHOLD
+diff -- python/sglang/srt/models/qwen2_moe.py
+@@ -275,11 +275,9 @@ def forward(
+-        DUAL_STREAM_TOKEN_THRESHOLD = 1024
+-            and hidden_states.shape[0] <= DUAL_STREAM_TOKEN_THRESHOLD
 ```
+
 - Reviewed files:
   - runtime: `python/sglang/srt/models/bailing_moe.py` modified +0/-2; `python/sglang/srt/models/kimi_linear.py` modified +0/-2; `python/sglang/srt/models/llada2.py` modified +0/-2; `python/sglang/srt/models/qwen2_moe.py` modified +0/-2
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/models/kimi_linear.py`, `python/sglang/srt/models/llada2.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #13730 - [bugfix] fix TBO crashes when attn_tp_size > 1
 
 - Link: https://github.com/sgl-project/sglang/pull/13730
 - Status/date: merged / 2025-12-12
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 20 files, +285/-16, with 617 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[bugfix] fix TBO crashes when attn_tp_size > 1"; model line: Ling 2.5 1T; category: bug fix; main diff: `python/sglang/srt/batch_overlap/operations.py`, `python/sglang/srt/batch_overlap/two_batch_overlap.py`, `python/sglang/srt/layers/communicator.py`.
-- Key implementation:
-  - `python/sglang/srt/batch_overlap/operations.py` modified +10/-8
-  - `python/sglang/srt/batch_overlap/two_batch_overlap.py` modified +39/-6; symbols: _pad, _model_forward_tbo_merge_outputs
-  - `python/sglang/srt/layers/communicator.py` modified +14/-1; symbols: _should_gather_for_tbo
-  - `python/sglang/srt/model_executor/forward_batch_info.py` modified +9/-0
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 20 files, +285/-16, 617 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[bugfix] fix TBO crashes when attn_tp_size > 1"; model line: Ling 2.5; category: bug fix; main diff: `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/model_executor/forward_batch_info.py`, `python/sglang/srt/models/bailing_moe.py`; technical summary: Covers "[bugfix] fix TBO crashes when attn_tp_size > 1"; the main implementation surface is `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/model_executor/forward_batch_info.py`, `python/sglang/srt/models/bailing_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/communicator.py` modified +14/-1 (15 lines); hunks: -217,14 +217,16 @@ class _LayerModeComputationContext:; -273,6 +275,15 @@ def _compute_mlp_mode(cls, context: _LayerModeComputationCo...; symbols: _LayerModeComputationContext, previous_layer, _compute_mlp_mode, _should_gather_for_tbo, touching `_LayerModeComputationContext, previous_layer, _compute_mlp_mode`; `python/sglang/srt/model_executor/forward_batch_info.py` modified +9/-0 (9 lines); hunks: -376,6 +376,7 @@ class ForwardBatch:; -852,6 +853,14 @@ def prepare_mlp_sync_batch(self, model_runner: ModelRunner):; symbols: ForwardBatch, prepare_mlp_sync_batch, _pad_inputs_to_size, touching `ForwardBatch, prepare_mlp_sync_batch, _pad_inputs_to_size`; `python/sglang/srt/models/bailing_moe.py` modified +4/-0 (4 lines); hunks: -582,12 +582,16 @@ def __init__(; symbols: __init__, touching `__init__`; `python/sglang/srt/models/falcon_h1.py` modified +3/-1 (4 lines); hunks: -198,15 +198,17 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
-  - `python/sglang/srt/batch_overlap/operations.py` modified +10/-8
-  - `python/sglang/srt/batch_overlap/two_batch_overlap.py` modified +39/-6
-  - `python/sglang/srt/layers/communicator.py` modified +14/-1
-  - `python/sglang/srt/model_executor/forward_batch_info.py` modified +9/-0
+  - `python/sglang/srt/layers/communicator.py` modified +14/-1 (15 lines); hunks: -217,14 +217,16 @@ class _LayerModeComputationContext:; -273,6 +275,15 @@ def _compute_mlp_mode(cls, context: _LayerModeComputationCo...; symbols: _LayerModeComputationContext, previous_layer, _compute_mlp_mode, _should_gather_for_tbo
+  - `python/sglang/srt/model_executor/forward_batch_info.py` modified +9/-0 (9 lines); hunks: -376,6 +376,7 @@ class ForwardBatch:; -852,6 +853,14 @@ def prepare_mlp_sync_batch(self, model_runner: ModelRunner):; symbols: ForwardBatch, prepare_mlp_sync_batch, _pad_inputs_to_size
+  - `python/sglang/srt/models/bailing_moe.py` modified +4/-0 (4 lines); hunks: -582,12 +582,16 @@ def __init__(; symbols: __init__
+  - `python/sglang/srt/models/falcon_h1.py` modified +3/-1 (4 lines); hunks: -198,15 +198,17 @@ def __init__(; symbols: __init__
+  - `python/sglang/srt/models/longcat_flash.py` modified +4/-0 (4 lines); hunks: -380,6 +380,8 @@ def __init__(; -398,6 +400,8 @@ def __init__(; symbols: __init__
 - Key code excerpts:
 
 ```diff
-diff -- python/sglang/srt/batch_overlap/operations.py
-@@ -83,7 +83,7 @@ def __init__(self, debug_name: str, stages: List[Stage], inputs: dict):
-         # handling DP attention
-         forward_batch: ForwardBatch = inputs["forward_batch"]
-         self._global_dp_buffer_len = forward_batch.global_dp_buffer_len
--        self._local_dp_buffer_len = forward_batch.input_ids.shape[0]
-+        self._local_dp_buffer_len = forward_batch.tbo_padded_len
-         self._global_num_tokens = forward_batch.global_num_tokens_cpu
-         self._is_dp_max_padding = forward_batch.dp_padding_mode.is_max_len()
-
-@@ -92,13 +92,15 @@ def next(self):
-
-         stage = self._stages[self._index]
-
--        if self._global_dp_buffer_len is not None:
-diff -- python/sglang/srt/batch_overlap/two_batch_overlap.py
-@@ -20,6 +20,7 @@
-     CommunicateSummableTensorPairFn,
-     ScatterMode,
- )
-+from sglang.srt.layers.dp_attention import get_attention_tp_size
- from sglang.srt.layers.moe import (
-     get_deepep_mode,
-     get_moe_a2a_backend,
-@@ -630,6 +631,11 @@ def filter_batch(
-             ), f"{key=} {old_value=} {num_tokens=} {batch=}"
-             output_dict[key] = old_value[start_token_index:end_token_index]
-
-+        attention_tp_size = get_attention_tp_size()
-+        output_dict["tbo_padded_len"] = (
+diff -- python/sglang/srt/layers/communicator.py
+@@ -217,14 +217,16 @@ class _LayerModeComputationContext:
++    is_next_layer_sparse: Optional[bool]
++            num_layers=self.num_layers,
+-            num_layers=self.num_layers,
++            is_next_layer_sparse=self.is_layer_sparse,
+@@ -273,6 +275,15 @@ def _compute_mlp_mode(cls, context: _LayerModeComputationContext):
++    @classmethod
+diff -- python/sglang/srt/model_executor/forward_batch_info.py
+@@ -376,6 +376,7 @@ class ForwardBatch:
++    tbo_padded_len: Optional[int] = None
+@@ -852,6 +853,14 @@ def prepare_mlp_sync_batch(self, model_runner: ModelRunner):
++        # TODO: The following is added to make sure sub-batch input_ids are padded
++        # to the multiple of attn_tp_size. It can likely be removed after this
++        # function is refactored and merged into the Scheduler.
++        if self.tbo_children:
+diff -- python/sglang/srt/models/bailing_moe.py
+@@ -582,12 +582,16 @@ def __init__(
 ```
+
 - Reviewed files:
-  - runtime: `python/sglang/srt/batch_overlap/operations.py` modified +10/-8; `python/sglang/srt/batch_overlap/two_batch_overlap.py` modified +39/-6; `python/sglang/srt/layers/communicator.py` modified +14/-1; `python/sglang/srt/model_executor/forward_batch_info.py` modified +9/-0; `python/sglang/srt/models/bailing_moe.py` modified +4/-0; `python/sglang/srt/models/deepseek_v2.py` modified +2/-0; `python/sglang/srt/models/falcon_h1.py` modified +3/-1; `python/sglang/srt/models/glm4_moe.py` modified +2/-0
-  - tests: `test/srt/ep/test_deepep_small.py` modified +178/-0
-- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+  - runtime: `python/sglang/srt/layers/communicator.py` modified +14/-1; `python/sglang/srt/model_executor/forward_batch_info.py` modified +9/-0; `python/sglang/srt/models/bailing_moe.py` modified +4/-0; `python/sglang/srt/models/falcon_h1.py` modified +3/-1; `python/sglang/srt/models/longcat_flash.py` modified +4/-0; `python/sglang/srt/models/qwen3_next.py` modified +4/-0
+- Risk and verification: The diff ships test coverage in `test/srt/ep/test_deepep_small.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #15526 - Optimize Bailing-MoE with FlashInfer Fused All-Reduce
 
 - Link: https://github.com/sgl-project/sglang/pull/15526
 - Status/date: merged / 2025-12-21
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 1 files, +58/-20, with 182 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Optimize Bailing-MoE with FlashInfer Fused All-Reduce"; model line: Ling 2.5 1T; category: performance/backend optimization; main diff: `python/sglang/srt/models/bailing_moe.py`.
-- Key implementation:
-  - `python/sglang/srt/models/bailing_moe.py` modified +58/-20
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +58/-20, 182 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Optimize Bailing-MoE with FlashInfer Fused All-Reduce"; model line: Ling 2.5; category: performance/backend optimization; main diff: `python/sglang/srt/models/bailing_moe.py`; technical summary: Covers "Optimize Bailing-MoE with FlashInfer Fused All-Reduce"; the main implementation surface is `python/sglang/srt/models/bailing_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/bailing_moe.py` modified +58/-20 (78 lines); hunks: -19,7 +19,7; -54,7 +54,11; symbols: forward, forward_normal_dual_stream, forward_normal, touching `forward, forward_normal_dual_stream, forward_normal`.
 - Code diff details:
-  - `python/sglang/srt/models/bailing_moe.py` modified +58/-20
+  - `python/sglang/srt/models/bailing_moe.py` modified +58/-20 (78 lines); hunks: -19,7 +19,7; -54,7 +54,11; symbols: forward, forward_normal_dual_stream, forward_normal
 - Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/bailing_moe.py
 @@ -19,7 +19,7 @@
- # limitations under the License.
- """SGLang BailingMoE model."""
- import logging
 -from typing import Iterable, Optional, Tuple, Union
 +from typing import Iterable, List, Optional, Tuple, Union
-
- import torch
- import torch.nn.functional as F
 @@ -54,7 +54,11 @@
-     RowParallelLinear,
- )
- from sglang.srt.layers.logits_processor import LogitsProcessor
 -from sglang.srt.layers.moe import get_deepep_mode, get_moe_a2a_backend
++from sglang.srt.layers.moe import (
++    get_deepep_mode,
 ```
+
 - Reviewed files:
   - runtime: `python/sglang/srt/models/bailing_moe.py` modified +58/-20
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/bailing_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #15835 - [Feature] JIT Fused QK norm + qk norm clean up
 
 - Link: https://github.com/sgl-project/sglang/pull/15835
 - Status/date: merged / 2025-12-28
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 15 files, +827/-127, with 1151 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Feature] JIT Fused QK norm + qk norm clean up"; model line: Ling 2.5 1T; category: performance/backend optimization; main diff: `python/sglang/jit_kernel/benchmark/bench_qknorm.py`, `python/sglang/jit_kernel/csrc/norm.cuh`, `python/sglang/jit_kernel/include/sgl_kernel/runtime.cuh`.
-- Key implementation:
-  - `python/sglang/jit_kernel/benchmark/bench_qknorm.py` added +130/-0; symbols: sglang_aot_qknorm, sglang_jit_qknorm, flashinfer_qknorm, torch_impl_qknorm
-  - `python/sglang/jit_kernel/csrc/norm.cuh` added +202/-0; symbols: void, auto, int64_t, tvm
-  - `python/sglang/jit_kernel/include/sgl_kernel/runtime.cuh` added +26/-0
-  - `python/sglang/jit_kernel/include/sgl_kernel/tensor.h` modified +10/-0
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 15 files, +827/-127, 1151 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Feature] JIT Fused QK norm + qk norm clean up"; model line: Ling 2.5; category: performance/backend optimization; main diff: `python/sglang/srt/models/utils.py`, `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/srt/models/qwen3.py`; technical summary: Covers "[Feature] JIT Fused QK norm + qk norm clean up"; the main implementation surface is `python/sglang/srt/models/utils.py`, `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/srt/models/qwen3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/utils.py` modified +80/-5 (85 lines); hunks: -11,24 +11,27; -113,6 +116,8 @@ def create_fused_set_kv_buffer_arg(; symbols: create_fused_set_kv_buffer_arg, rot_pos_ids, apply_qk_norm, touching `create_fused_set_kv_buffer_arg, rot_pos_ids, apply_qk_norm`; `python/sglang/srt/models/qwen3_moe.py` modified +9/-27 (36 lines); hunks: -57,12 +57,12; -498,31 +498,6 @@ def __init__(; symbols: __init__, _apply_qk_norm, op_prepare, apply_qk_norm_rope, touching `__init__, _apply_qk_norm, op_prepare`; `python/sglang/srt/models/qwen3.py` modified +9/-24 (33 lines); hunks: -21,14 +21,14; -138,32 +138,17 @@ def __init__(; symbols: __init__, _apply_qk_norm, forward_prepare_native, touching `__init__, _apply_qk_norm, forward_prepare_native`; `python/sglang/srt/models/bailing_moe.py` modified +9/-23 (32 lines); hunks: -75,6 +75,7; -507,28 +508,6 @@ def __init__(; symbols: __init__, _apply_qk_norm, forward, touching `__init__, _apply_qk_norm, forward`.
 - Code diff details:
-  - `python/sglang/jit_kernel/benchmark/bench_qknorm.py` added +130/-0
-  - `python/sglang/jit_kernel/csrc/norm.cuh` added +202/-0
-  - `python/sglang/jit_kernel/include/sgl_kernel/runtime.cuh` added +26/-0
-  - `python/sglang/jit_kernel/include/sgl_kernel/tensor.h` modified +10/-0
+  - `python/sglang/srt/models/utils.py` modified +80/-5 (85 lines); hunks: -11,24 +11,27; -113,6 +116,8 @@ def create_fused_set_kv_buffer_arg(; symbols: create_fused_set_kv_buffer_arg, rot_pos_ids, apply_qk_norm
+  - `python/sglang/srt/models/qwen3_moe.py` modified +9/-27 (36 lines); hunks: -57,12 +57,12; -498,31 +498,6 @@ def __init__(; symbols: __init__, _apply_qk_norm, op_prepare, apply_qk_norm_rope
+  - `python/sglang/srt/models/qwen3.py` modified +9/-24 (33 lines); hunks: -21,14 +21,14; -138,32 +138,17 @@ def __init__(; symbols: __init__, _apply_qk_norm, forward_prepare_native
+  - `python/sglang/srt/models/bailing_moe.py` modified +9/-23 (32 lines); hunks: -75,6 +75,7; -507,28 +508,6 @@ def __init__(; symbols: __init__, _apply_qk_norm, forward
+  - `python/sglang/srt/models/glm4_moe.py` modified +9/-23 (32 lines); hunks: -75,6 +75,7; -250,28 +251,6 @@ def __init__(; symbols: __init__, _apply_qk_norm, op_prepare, forward_prepare
 - Key code excerpts:
 
 ```diff
-diff -- python/sglang/jit_kernel/benchmark/bench_qknorm.py
-@@ -0,0 +1,130 @@
-+import itertools
-+import os
-+from typing import Tuple
-+
-+import torch
-+import triton
-+import triton.testing
-+
-+IS_CI = (
-+    os.getenv("CI", "false").lower() == "true"
-+    or os.getenv("GITHUB_ACTIONS", "false").lower() == "true"
-+)
-+
-diff -- python/sglang/jit_kernel/csrc/norm.cuh
-@@ -0,0 +1,202 @@
-+#include <sgl_kernel/runtime.cuh>
-+#include <sgl_kernel/tensor.h>
-+#include <sgl_kernel/utils.cuh>
-+#include <sgl_kernel/utils.h>
-+#include <sgl_kernel/warp.cuh>
-+
-+#include <cuda_bf16.h>
-+#include <cuda_fp16.h>
-+#include <dlpack/dlpack.h>
-+#include <tvm/ffi/container/tensor.h>
-+
-+#include <cstdint>
-+#include <type_traits>
+diff -- python/sglang/srt/models/utils.py
+@@ -11,24 +11,27 @@
++from __future__ import annotations
+-from typing import Any, Optional
++from typing import TYPE_CHECKING, Any, Optional, Tuple
++from sglang.jit_kernel.norm import can_use_fused_inplace_qknorm, fused_inplace_qknorm
++from sglang.jit_kernel.utils import register_jit_op
++from sglang.srt.environ import envs
+diff -- python/sglang/srt/models/qwen3_moe.py
+@@ -57,12 +57,12 @@
+-from sglang.srt.model_executor.cuda_graph_runner import get_is_capture_mode
++    apply_qk_norm,
+@@ -498,31 +498,6 @@ def __init__(
+-    def _apply_qk_norm(
+-        self, q: torch.Tensor, k: torch.Tensor
+-    ) -> Tuple[torch.Tensor, torch.Tensor]:
+diff -- python/sglang/srt/models/qwen3.py
+@@ -21,14 +21,14 @@
 ```
+
 - Reviewed files:
-  - runtime: `python/sglang/jit_kernel/benchmark/bench_qknorm.py` added +130/-0; `python/sglang/jit_kernel/csrc/norm.cuh` added +202/-0; `python/sglang/jit_kernel/include/sgl_kernel/runtime.cuh` added +26/-0; `python/sglang/jit_kernel/include/sgl_kernel/tensor.h` modified +10/-0; `python/sglang/jit_kernel/include/sgl_kernel/utils.cuh` modified +31/-1; `python/sglang/jit_kernel/include/sgl_kernel/warp.cuh` added +14/-0; `python/sglang/jit_kernel/norm.py` added +55/-0; `python/sglang/jit_kernel/tests/test_qknorm.py` added +85/-0
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+  - runtime: `python/sglang/srt/models/utils.py` modified +80/-5; `python/sglang/srt/models/qwen3_moe.py` modified +9/-27; `python/sglang/srt/models/qwen3.py` modified +9/-24; `python/sglang/srt/models/bailing_moe.py` modified +9/-23; `python/sglang/srt/models/glm4_moe.py` modified +9/-23; `python/sglang/srt/models/llada2.py` modified +9/-23
+- Risk and verification: The diff ships test coverage in `python/sglang/jit_kernel/tests/test_qknorm.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #13715 - Fix EPLB + FP4 Quantization Compatibility Issue
 
 - Link: https://github.com/sgl-project/sglang/pull/13715
 - Status/date: merged / 2026-01-10
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 8 files, +49/-3, with 157 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix EPLB + FP4 Quantization Compatibility Issue"; model line: Ling 2.5 1T; category: bug fix; main diff: `python/sglang/srt/layers/moe/utils.py`, `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/models/deepseek_v2.py`.
-- Key implementation:
-  - `python/sglang/srt/layers/moe/utils.py` modified +12/-0; symbols: filter_moe_weight_param_global_expert
-  - `python/sglang/srt/models/bailing_moe.py` modified +4/-0
-  - `python/sglang/srt/models/deepseek_v2.py` modified +7/-1
-  - `python/sglang/srt/models/glm4_moe.py` modified +4/-0
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 8 files, +49/-3, 157 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Fix EPLB + FP4 Quantization Compatibility Issue"; model line: Ling 2.5; category: bug fix; main diff: `python/sglang/srt/layers/moe/utils.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/qwen2_moe.py`; technical summary: Covers "Fix EPLB + FP4 Quantization Compatibility Issue"; the main implementation surface is `python/sglang/srt/layers/moe/utils.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/qwen2_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/moe/utils.py` modified +12/-0 (12 lines); hunks: -249,6 +249,18 @@ def get_tbo_token_distribution_threshold() -> float:; symbols: get_tbo_token_distribution_threshold, filter_moe_weight_param_global_expert, should_use_flashinfer_cutlass_moe_fp4_allgather, touching `get_tbo_token_distribution_threshold, filter_moe_weight_param_global_expert, should_use_flashinfer_cutlass_moe_fp4_allgather`; `python/sglang/srt/models/deepseek_v2.py` modified +7/-1 (8 lines); hunks: -103,7 +103,10; -587,6 +590,9 @@ def get_moe_weights(self):; symbols: get_moe_weights, forward, touching `get_moe_weights, forward`; `python/sglang/srt/models/qwen2_moe.py` modified +7/-1 (8 lines); hunks: -58,7 +58,10; -223,6 +226,9 @@ def get_moe_weights(self):; symbols: get_moe_weights, _forward_shared_experts, touching `get_moe_weights, _forward_shared_experts`; `python/sglang/srt/models/qwen3_moe.py` modified +7/-1 (8 lines); hunks: -51,7 +51,10; -281,6 +284,9 @@ def get_moe_weights(self):; symbols: get_moe_weights, forward_normal, touching `get_moe_weights, forward_normal`.
 - Code diff details:
-  - `python/sglang/srt/layers/moe/utils.py` modified +12/-0
-  - `python/sglang/srt/models/bailing_moe.py` modified +4/-0
-  - `python/sglang/srt/models/deepseek_v2.py` modified +7/-1
-  - `python/sglang/srt/models/glm4_moe.py` modified +4/-0
+  - `python/sglang/srt/layers/moe/utils.py` modified +12/-0 (12 lines); hunks: -249,6 +249,18 @@ def get_tbo_token_distribution_threshold() -> float:; symbols: get_tbo_token_distribution_threshold, filter_moe_weight_param_global_expert, should_use_flashinfer_cutlass_moe_fp4_allgather
+  - `python/sglang/srt/models/deepseek_v2.py` modified +7/-1 (8 lines); hunks: -103,7 +103,10; -587,6 +590,9 @@ def get_moe_weights(self):; symbols: get_moe_weights, forward
+  - `python/sglang/srt/models/qwen2_moe.py` modified +7/-1 (8 lines); hunks: -58,7 +58,10; -223,6 +226,9 @@ def get_moe_weights(self):; symbols: get_moe_weights, _forward_shared_experts
+  - `python/sglang/srt/models/qwen3_moe.py` modified +7/-1 (8 lines); hunks: -51,7 +51,10; -281,6 +284,9 @@ def get_moe_weights(self):; symbols: get_moe_weights, forward_normal
+  - `python/sglang/srt/models/bailing_moe.py` modified +4/-0 (4 lines); hunks: -63,6 +63,7; -324,6 +325,9 @@ def get_moe_weights(self):; symbols: get_moe_weights, _forward_shared_experts
 - Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/layers/moe/utils.py
 @@ -249,6 +249,18 @@ def get_tbo_token_distribution_threshold() -> float:
-     return TBO_TOKEN_DISTRIBUTION_THRESHOLD
-
-
 +def filter_moe_weight_param_global_expert(name, x, num_local_experts):
 +    """
 +    Filter out for MoE expert parameters that requires global expert.
 +    """
 +    return (
 +        not getattr(x, "_sglang_require_global_experts", False)
-+        and not name.endswith("_blockscale_swizzled")
-+        and x.data.ndim > 0
-+        and x.data.shape[0] == num_local_experts
-+    )
-diff -- python/sglang/srt/models/bailing_moe.py
-@@ -63,6 +63,7 @@
- from sglang.srt.layers.moe.fused_moe_triton.layer import FusedMoE
- from sglang.srt.layers.moe.token_dispatcher import DeepEPDispatcher
- from sglang.srt.layers.moe.topk import TopK
-+from sglang.srt.layers.moe.utils import filter_moe_weight_param_global_expert
- from sglang.srt.layers.quantization.base_config import QuantizationConfig
- from sglang.srt.layers.radix_attention import RadixAttention
- from sglang.srt.layers.rotary_embedding import get_rope
-@@ -324,6 +325,9 @@ def get_moe_weights(self):
-             x.data
-             for name, x in self.experts.named_parameters()
-             if name not in ["correction_bias"]
-+            and filter_moe_weight_param_global_expert(
-+                name, x, self.experts.num_local_experts
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -103,7 +103,10 @@
+-from sglang.srt.layers.moe.utils import RoutingMethodType
++from sglang.srt.layers.moe.utils import (
++    RoutingMethodType,
++    filter_moe_weight_param_global_expert,
++)
+@@ -587,6 +590,9 @@ def get_moe_weights(self):
+diff -- python/sglang/srt/models/qwen2_moe.py
+@@ -58,7 +58,10 @@
 ```
+
 - Reviewed files:
-  - runtime: `python/sglang/srt/layers/moe/utils.py` modified +12/-0; `python/sglang/srt/models/bailing_moe.py` modified +4/-0; `python/sglang/srt/models/deepseek_v2.py` modified +7/-1; `python/sglang/srt/models/glm4_moe.py` modified +4/-0; `python/sglang/srt/models/gpt_oss.py` modified +4/-0; `python/sglang/srt/models/longcat_flash.py` modified +4/-0; `python/sglang/srt/models/qwen2_moe.py` modified +7/-1; `python/sglang/srt/models/qwen3_moe.py` modified +7/-1
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+  - runtime: `python/sglang/srt/layers/moe/utils.py` modified +12/-0; `python/sglang/srt/models/deepseek_v2.py` modified +7/-1; `python/sglang/srt/models/qwen2_moe.py` modified +7/-1; `python/sglang/srt/models/qwen3_moe.py` modified +7/-1; `python/sglang/srt/models/bailing_moe.py` modified +4/-0; `python/sglang/srt/models/glm4_moe.py` modified +4/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/moe/utils.py`, `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/models/deepseek_v2.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #17570 - Use attn tp group in embedding for more models
 
 - Link: https://github.com/sgl-project/sglang/pull/17570
 - Status/date: merged / 2026-01-24
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 19 files, +19/-19, with 171 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Use attn tp group in embedding for more models"; model line: Ling 2.5 1T; category: model implementation change; main diff: `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/models/bailing_moe_nextn.py`, `python/sglang/srt/models/falcon_h1.py`.
-- Key implementation:
-  - `python/sglang/srt/models/bailing_moe.py` modified +1/-1
-  - `python/sglang/srt/models/bailing_moe_nextn.py` modified +1/-1
-  - `python/sglang/srt/models/falcon_h1.py` modified +1/-1
-  - `python/sglang/srt/models/glm4.py` modified +1/-1
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 19 files, +19/-19, 171 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Use attn tp group in embedding for more models"; model line: Ling 2.5; category: model implementation change; main diff: `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/models/bailing_moe_nextn.py`, `python/sglang/srt/models/falcon_h1.py`; technical summary: Covers "Use attn tp group in embedding for more models"; the main implementation surface is `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/models/bailing_moe_nextn.py`, `python/sglang/srt/models/falcon_h1.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/bailing_moe.py` modified +1/-1 (2 lines); hunks: -717,7 +717,7 @@ def __init__(; symbols: __init__, touching `__init__`; `python/sglang/srt/models/bailing_moe_nextn.py` modified +1/-1 (2 lines); hunks: -62,7 +62,7 @@ def __init__(; symbols: __init__, touching `__init__`; `python/sglang/srt/models/falcon_h1.py` modified +1/-1 (2 lines); hunks: -394,7 +394,7 @@ def __init__(; symbols: __init__, get_layer, touching `__init__, get_layer`; `python/sglang/srt/models/glm4.py` modified +1/-1 (2 lines); hunks: -307,7 +307,7 @@ def __init__(; symbols: __init__, touching `__init__`.
 - Code diff details:
-  - `python/sglang/srt/models/bailing_moe.py` modified +1/-1
-  - `python/sglang/srt/models/bailing_moe_nextn.py` modified +1/-1
-  - `python/sglang/srt/models/falcon_h1.py` modified +1/-1
-  - `python/sglang/srt/models/glm4.py` modified +1/-1
+  - `python/sglang/srt/models/bailing_moe.py` modified +1/-1 (2 lines); hunks: -717,7 +717,7 @@ def __init__(; symbols: __init__
+  - `python/sglang/srt/models/bailing_moe_nextn.py` modified +1/-1 (2 lines); hunks: -62,7 +62,7 @@ def __init__(; symbols: __init__
+  - `python/sglang/srt/models/falcon_h1.py` modified +1/-1 (2 lines); hunks: -394,7 +394,7 @@ def __init__(; symbols: __init__, get_layer
+  - `python/sglang/srt/models/glm4.py` modified +1/-1 (2 lines); hunks: -307,7 +307,7 @@ def __init__(; symbols: __init__
+  - `python/sglang/srt/models/glm4_moe.py` modified +1/-1 (2 lines); hunks: -895,7 +895,7 @@ def __init__(; symbols: __init__
 - Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/bailing_moe.py
 @@ -717,7 +717,7 @@ def __init__(
-                 self.embed_dim,
-                 quant_config=quant_config,
-                 prefix=add_prefix("word_embeddings", prefix),
 -                enable_tp=not is_dp_attention_enabled(),
 +                use_attn_tp_group=is_dp_attention_enabled(),
-             )
-         else:
-             self.word_embeddings = PPMissingLayer()
 diff -- python/sglang/srt/models/bailing_moe_nextn.py
 @@ -62,7 +62,7 @@ def __init__(
-         self.word_embeddings = VocabParallelEmbedding(
-             config.vocab_size,
-             config.hidden_size,
 -            enable_tp=not is_dp_attention_enabled(),
 +            use_attn_tp_group=is_dp_attention_enabled(),
-             prefix=add_prefix("word_embeddings", prefix),
-         )
-
+diff -- python/sglang/srt/models/falcon_h1.py
+@@ -394,7 +394,7 @@ def __init__(
+-            enable_tp=not is_dp_attention_enabled(),
++            use_attn_tp_group=is_dp_attention_enabled(),
+diff -- python/sglang/srt/models/glm4.py
+@@ -307,7 +307,7 @@ def __init__(
+-                enable_tp=not is_dp_attention_enabled(),
++                use_attn_tp_group=is_dp_attention_enabled(),
+diff -- python/sglang/srt/models/glm4_moe.py
+@@ -895,7 +895,7 @@ def __init__(
 ```
+
 - Reviewed files:
-  - runtime: `python/sglang/srt/models/bailing_moe.py` modified +1/-1; `python/sglang/srt/models/bailing_moe_nextn.py` modified +1/-1; `python/sglang/srt/models/falcon_h1.py` modified +1/-1; `python/sglang/srt/models/glm4.py` modified +1/-1; `python/sglang/srt/models/glm4_moe.py` modified +1/-1; `python/sglang/srt/models/glm4_moe_lite.py` modified +1/-1; `python/sglang/srt/models/glm4_moe_nextn.py` modified +1/-1; `python/sglang/srt/models/gpt_oss.py` modified +1/-1
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+  - runtime: `python/sglang/srt/models/bailing_moe.py` modified +1/-1; `python/sglang/srt/models/bailing_moe_nextn.py` modified +1/-1; `python/sglang/srt/models/falcon_h1.py` modified +1/-1; `python/sglang/srt/models/glm4.py` modified +1/-1; `python/sglang/srt/models/glm4_moe.py` modified +1/-1; `python/sglang/srt/models/glm4_moe_lite.py` modified +1/-1
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/models/bailing_moe_nextn.py`, `python/sglang/srt/models/falcon_h1.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #17808 - Fix the scenario where eh_proj is quantized in the bailing moe nextn weights
 
 - Link: https://github.com/sgl-project/sglang/pull/17808
 - Status/date: merged / 2026-01-30
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 1 files, +9/-2, with 32 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix the scenario where eh_proj is quantized in the bailing moe nextn weights"; model line: Ling 2.5 1T; category: bug fix; main diff: `python/sglang/srt/models/bailing_moe_nextn.py`.
-- Key implementation:
-  - `python/sglang/srt/models/bailing_moe_nextn.py` modified +9/-2
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +9/-2, 32 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Fix the scenario where eh_proj is quantized in the bailing moe nextn weights"; model line: Ling 2.5; category: bug fix; main diff: `python/sglang/srt/models/bailing_moe_nextn.py`; technical summary: Covers "Fix the scenario where eh_proj is quantized in the bailing moe nextn weights"; the main implementation surface is `python/sglang/srt/models/bailing_moe_nextn.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/bailing_moe_nextn.py` modified +9/-2 (11 lines); hunks: -28,6 +28,7; -69,7 +70,13 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
-  - `python/sglang/srt/models/bailing_moe_nextn.py` modified +9/-2
+  - `python/sglang/srt/models/bailing_moe_nextn.py` modified +9/-2 (11 lines); hunks: -28,6 +28,7; -69,7 +70,13 @@ def __init__(; symbols: __init__, forward
 - Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/bailing_moe_nextn.py
 @@ -28,6 +28,7 @@
- from sglang.srt.distributed import get_tensor_model_parallel_world_size
- from sglang.srt.layers.dp_attention import is_dp_attention_enabled
- from sglang.srt.layers.layernorm import RMSNorm
 +from sglang.srt.layers.linear import ReplicatedLinear
- from sglang.srt.layers.logits_processor import LogitsProcessor
- from sglang.srt.layers.quantization.base_config import QuantizationConfig
- from sglang.srt.layers.vocab_parallel_embedding import (
 @@ -69,7 +70,13 @@ def __init__(
-         self.enorm = RMSNorm(config.hidden_size, eps=config.rms_norm_eps)
-         self.hnorm = RMSNorm(config.hidden_size, eps=config.rms_norm_eps)
-
 -        self.eh_proj = nn.Linear(2 * config.hidden_size, config.hidden_size, bias=False)
 +        self.eh_proj = ReplicatedLinear(
++            2 * config.hidden_size,
++            config.hidden_size,
 ```
+
 - Reviewed files:
   - runtime: `python/sglang/srt/models/bailing_moe_nextn.py` modified +9/-2
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/bailing_moe_nextn.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #15119 - feat: Add Ling Flash v2.0 support for Eagle3
 
 - Link: https://github.com/sgl-project/sglang/pull/15119
 - Status/date: merged / 2026-02-01
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 1 files, +30/-1, with 76 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "feat: Add Ling Flash v2.0 support for Eagle3"; model line: Ling 2.5 1T; category: model support/runtime entry; main diff: `python/sglang/srt/models/bailing_moe.py`.
-- Key implementation:
-  - `python/sglang/srt/models/bailing_moe.py` modified +30/-1; symbols: set_eagle3_layers_to_capture
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +30/-1, 76 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "feat: Add Ling Flash v2.0 support for Eagle3"; model line: Ling 2.5; category: performance/backend optimization; main diff: `python/sglang/srt/models/bailing_moe.py`; technical summary: Covers "feat: Add Ling Flash v2.0 support for Eagle3"; the main implementation surface is `python/sglang/srt/models/bailing_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/bailing_moe.py` modified +30/-1 (31 lines); hunks: -738,6 +738,8 @@ def __init__(; -760,6 +762,10 @@ def forward(; symbols: __init__, forward, BailingMoEForCausalLM, touching `__init__, forward, BailingMoEForCausalLM`.
 - Code diff details:
-  - `python/sglang/srt/models/bailing_moe.py` modified +30/-1
+  - `python/sglang/srt/models/bailing_moe.py` modified +30/-1 (31 lines); hunks: -738,6 +738,8 @@ def __init__(; -760,6 +762,10 @@ def forward(; symbols: __init__, forward, BailingMoEForCausalLM
 - Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/bailing_moe.py
 @@ -738,6 +738,8 @@ def __init__(
-         else:
-             self.norm = PPMissingLayer(return_tuple=True)
-
 +        self.layers_to_capture = []
-+
-     def forward(
-         self,
-         input_ids: torch.Tensor,
 @@ -760,6 +762,10 @@ def forward(
-         aux_hidden_states = []
-         for i in range(self.start_layer, self.end_layer):
-             with get_global_expert_distribution_recorder().with_current_layer(i):
 +                if i in self.layers_to_capture:
++                    aux_hidden_states.append(
++                        hidden_states if residual is None else hidden_states + residual
++                    )
 ```
+
 - Reviewed files:
   - runtime: `python/sglang/srt/models/bailing_moe.py` modified +30/-1
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/bailing_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #18598 - Support LingV2_5 model
 
 - Link: https://github.com/sgl-project/sglang/pull/18598
 - Status/date: merged / 2026-02-13
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 16 files, +4042/-23, with 4377 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Support LingV2_5 model"; model line: Ling 2.5 1T; category: model support/runtime entry; main diff: `python/sglang/srt/configs/__init__.py`, `python/sglang/srt/configs/bailing_hybrid.py`, `python/sglang/srt/configs/model_config.py`.
-- Key implementation:
-  - `python/sglang/srt/configs/__init__.py` modified +2/-0
-  - `python/sglang/srt/configs/bailing_hybrid.py` added +188/-0; symbols: HybridLayerType, BailingHybridConfig, __init__, layers_block_type
-  - `python/sglang/srt/configs/model_config.py` modified +20/-0
-  - `python/sglang/srt/layers/attention/attention_registry.py` modified +3/-0
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 16 files, +4042/-23, 4377 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Support LingV2_5 model"; model line: Ling 2.5; category: model support/runtime entry; main diff: `python/sglang/srt/models/bailing_moe_linear.py`, `python/sglang/srt/layers/attention/linear/seg_la.py`, `python/sglang/srt/layers/attention/linear/lightning_attn.py`; technical summary: Covers "Support LingV2_5 model"; the main implementation surface is `python/sglang/srt/models/bailing_moe_linear.py`, `python/sglang/srt/layers/attention/linear/seg_la.py`, `python/sglang/srt/layers/attention/linear/lightning_attn.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/bailing_moe_linear.py` added +1571/-0 (1571 lines); hunks: -0,0 +1,1571; symbols: DsV3MLA, __init__, is_linear_layer, is_pp_missing_parameter, touching `DsV3MLA, __init__, is_linear_layer`; `python/sglang/srt/layers/attention/linear/seg_la.py` added +909/-0 (909 lines); hunks: -0,0 +1,909; symbols: SegLaMeta, seg_la_kernel, seg_la_p_kernel, seg_la_s_kernel, touching `SegLaMeta, seg_la_kernel, seg_la_p_kernel`; `python/sglang/srt/layers/attention/linear/lightning_attn.py` added +767/-0 (767 lines); hunks: -0,0 +1,767; symbols: _fwd_diag_kernel, _fwd_kv_parallel, _fwd_kv_reduce, _fwd_none_diag_kernel, touching `_fwd_diag_kernel, _fwd_kv_parallel, _fwd_kv_reduce`; `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +369/-0 (369 lines); hunks: -1,3 +1,5; -14,6 +16,12; symbols: forward_extend, LightningAttentionBackend, __init__, init_forward_metadata, touching `forward_extend, LightningAttentionBackend, __init__`.
 - Code diff details:
-  - `python/sglang/srt/configs/__init__.py` modified +2/-0
-  - `python/sglang/srt/configs/bailing_hybrid.py` added +188/-0
-  - `python/sglang/srt/configs/model_config.py` modified +20/-0
-  - `python/sglang/srt/layers/attention/attention_registry.py` modified +3/-0
+  - `python/sglang/srt/models/bailing_moe_linear.py` added +1571/-0 (1571 lines); hunks: -0,0 +1,1571; symbols: DsV3MLA, __init__, is_linear_layer, is_pp_missing_parameter
+  - `python/sglang/srt/layers/attention/linear/seg_la.py` added +909/-0 (909 lines); hunks: -0,0 +1,909; symbols: SegLaMeta, seg_la_kernel, seg_la_p_kernel, seg_la_s_kernel
+  - `python/sglang/srt/layers/attention/linear/lightning_attn.py` added +767/-0 (767 lines); hunks: -0,0 +1,767; symbols: _fwd_diag_kernel, _fwd_kv_parallel, _fwd_kv_reduce, _fwd_none_diag_kernel
+  - `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +369/-0 (369 lines); hunks: -1,3 +1,5; -14,6 +16,12; symbols: forward_extend, LightningAttentionBackend, __init__, init_forward_metadata
+  - `python/sglang/srt/configs/bailing_hybrid.py` added +188/-0 (188 lines); hunks: -0,0 +1,188; symbols: HybridLayerType, BailingHybridConfig, __init__, layers_block_type
 - Key code excerpts:
 
 ```diff
-diff -- python/sglang/srt/configs/__init__.py
-@@ -1,4 +1,5 @@
- from sglang.srt.configs.afmoe import AfmoeConfig
-+from sglang.srt.configs.bailing_hybrid import BailingHybridConfig
- from sglang.srt.configs.chatglm import ChatGLMConfig
- from sglang.srt.configs.dbrx import DbrxConfig
- from sglang.srt.configs.deepseekvl2 import DeepseekVL2Config
-@@ -30,6 +31,7 @@
-
- __all__ = [
-     "AfmoeConfig",
-+    "BailingHybridConfig",
-     "ExaoneConfig",
-     "ChatGLMConfig",
-     "DbrxConfig",
-diff -- python/sglang/srt/configs/bailing_hybrid.py
-@@ -0,0 +1,188 @@
+diff -- python/sglang/srt/models/bailing_moe_linear.py
+@@ -0,0 +1,1571 @@
 +# coding=utf-8
-+# Copyright 2024 The Qwen team, Alibaba Group and the HuggingFace Inc. team. All rights reserved.
-+#
-+# Licensed under the Apache License, Version 2.0 (the "License");
-+# you may not use this file except in compliance with the License.
-+# You may obtain a copy of the License at
-+#
-+#     http://www.apache.org/licenses/LICENSE-2.0
-+#
-+# Unless required by applicable law or agreed to in writing, software
-+# distributed under the License is distributed on an "AS IS" BASIS,
-+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-+# See the License for the specific language governing permissions and
++# Copyright 2023 Antgroup and The HuggingFace Inc. team. All rights reserved.
++import copy
++import logging
++from typing import Callable, Iterable, Optional, Set, Tuple, Union
++import torch
+diff -- python/sglang/srt/layers/attention/linear/seg_la.py
+@@ -0,0 +1,909 @@
++# -*- coding: utf-8 -*-
++"""
++Copyright (c) Ant Financial Service Group and its affiliates.
++"""
++# Copied from https://code.alipay.com/pia/PainlessInferenceAcceleration/blob/v0.0.6/flood/flood/ops/seg_la.py
++from dataclasses import dataclass
+diff -- python/sglang/srt/layers/attention/linear/lightning_attn.py
+@@ -0,0 +1,767 @@
 ```
+
 - Reviewed files:
-  - runtime: `python/sglang/srt/configs/__init__.py` modified +2/-0; `python/sglang/srt/configs/bailing_hybrid.py` added +188/-0; `python/sglang/srt/configs/model_config.py` modified +20/-0; `python/sglang/srt/layers/attention/attention_registry.py` modified +3/-0; `python/sglang/srt/layers/attention/fla/layernorm_gated.py` modified +26/-5; `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +369/-0; `python/sglang/srt/layers/attention/linear/lightning_attn.py` added +767/-0; `python/sglang/srt/layers/attention/linear/linear_metadata.py` added +70/-0
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+  - runtime: `python/sglang/srt/models/bailing_moe_linear.py` added +1571/-0; `python/sglang/srt/layers/attention/linear/seg_la.py` added +909/-0; `python/sglang/srt/layers/attention/linear/lightning_attn.py` added +767/-0; `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +369/-0; `python/sglang/srt/configs/bailing_hybrid.py` added +188/-0; `python/sglang/srt/models/bailing_moe_nextn.py` modified +90/-15
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/configs/__init__.py`, `python/sglang/srt/configs/bailing_hybrid.py`, `python/sglang/srt/configs/model_config.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #18793 - Cleanup debug log for Ring model
 
 - Link: https://github.com/sgl-project/sglang/pull/18793
 - Status/date: merged / 2026-02-13
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 2 files, +9/-11, with 69 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Cleanup debug log for Ring model"; model line: Ling 2.5 1T; category: bug fix; main diff: `python/sglang/srt/configs/mamba_utils.py`, `python/sglang/srt/models/bailing_moe_linear.py`.
-- Key implementation:
-  - `python/sglang/srt/configs/mamba_utils.py` modified +1/-1
-  - `python/sglang/srt/models/bailing_moe_linear.py` modified +8/-10
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +9/-11, 69 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Cleanup debug log for Ring model"; model line: Ling 2.5; category: bug fix; main diff: `python/sglang/srt/models/bailing_moe_linear.py`, `python/sglang/srt/configs/mamba_utils.py`; technical summary: Covers "Cleanup debug log for Ring model"; the main implementation surface is `python/sglang/srt/models/bailing_moe_linear.py`, `python/sglang/srt/configs/mamba_utils.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/bailing_moe_linear.py` modified +8/-10 (18 lines); hunks: -77,6 +77,7; -423,7 +424,7 @@ def __init__(; symbols: __init__, layer_fn, post_load_weights, touching `__init__, layer_fn, post_load_weights`; `python/sglang/srt/configs/mamba_utils.py` modified +1/-1 (2 lines); hunks: -102,7 +102,7 @@ def mamba2_state_dtype(config=None) -> Mamba2StateDType:; symbols: mamba2_state_dtype, touching `mamba2_state_dtype`.
 - Code diff details:
-  - `python/sglang/srt/configs/mamba_utils.py` modified +1/-1
-  - `python/sglang/srt/models/bailing_moe_linear.py` modified +8/-10
+  - `python/sglang/srt/models/bailing_moe_linear.py` modified +8/-10 (18 lines); hunks: -77,6 +77,7; -423,7 +424,7 @@ def __init__(; symbols: __init__, layer_fn, post_load_weights
+  - `python/sglang/srt/configs/mamba_utils.py` modified +1/-1 (2 lines); hunks: -102,7 +102,7 @@ def mamba2_state_dtype(config=None) -> Mamba2StateDType:; symbols: mamba2_state_dtype
 - Key code excerpts:
 
 ```diff
-diff -- python/sglang/srt/configs/mamba_utils.py
-@@ -102,7 +102,7 @@ def mamba2_state_dtype(config=None) -> Mamba2StateDType:
-         else:
-             ssm_dtype = dtype_map[env_ssm_dtype]
-
--    logger.info(f"Mamba2 state dtype: conv_dtype={conv_dtype}, ssm_dtype={ssm_dtype}")
-+    logger.debug(f"Mamba2 state dtype: conv_dtype={conv_dtype}, ssm_dtype={ssm_dtype}")
-
-     return Mamba2StateDType(conv=conv_dtype, temporal=ssm_dtype)
-
 diff -- python/sglang/srt/models/bailing_moe_linear.py
 @@ -77,6 +77,7 @@
-     is_sm100_supported,
-     make_layers,
- )
 +from sglang.srt.utils.common import rank0_log
-
- _is_hip = is_hip()
- _is_cuda = is_cuda()
 @@ -423,7 +424,7 @@ def __init__(
-         # minimax / seg_la / fla
-         # TODO support fla
-         self.linear_backend = getattr(config, "linear_backend", "seg_la")
 -        logger.info(f"linear_backend in bailing_moe_linear: {self.linear_backend}")
 +        logger.debug(f"linear_backend in bailing_moe_linear: {self.linear_backend}")
+@@ -740,7 +741,7 @@ def __init__(
+-                logger.info(f"==={layer_id=} use gqa")
+diff -- python/sglang/srt/configs/mamba_utils.py
+@@ -102,7 +102,7 @@ def mamba2_state_dtype(config=None) -> Mamba2StateDType:
+-    logger.info(f"Mamba2 state dtype: conv_dtype={conv_dtype}, ssm_dtype={ssm_dtype}")
++    logger.debug(f"Mamba2 state dtype: conv_dtype={conv_dtype}, ssm_dtype={ssm_dtype}")
 ```
+
 - Reviewed files:
-  - runtime: `python/sglang/srt/configs/mamba_utils.py` modified +1/-1; `python/sglang/srt/models/bailing_moe_linear.py` modified +8/-10
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+  - runtime: `python/sglang/srt/models/bailing_moe_linear.py` modified +8/-10; `python/sglang/srt/configs/mamba_utils.py` modified +1/-1
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/configs/mamba_utils.py`, `python/sglang/srt/models/bailing_moe_linear.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #18860 - update pre-commit config
 
 - Link: https://github.com/sgl-project/sglang/pull/18860
 - Status/date: merged / 2026-02-15
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 100 files, +170/-159, with 1254 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "update pre-commit config"; model line: Ling 2.5 1T; category: docs/tests/CI; main diff: `.github/workflows/lint.yml`, `.pre-commit-config.yaml`, `3rdparty/amd/tuning/benchmark_moe_rocm.py`.
-- Key implementation:
-  - `.github/workflows/lint.yml` modified +2/-2
-  - `.pre-commit-config.yaml` modified +6/-6
-  - `3rdparty/amd/tuning/benchmark_moe_rocm.py` modified +2/-4
-  - `benchmark/fla/benchmark_layernorm_gated.py` modified +3/-1
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 135 files, +239/-198, 1632 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "update pre-commit config"; model line: Ling 2.5; category: model implementation change; main diff: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/models/pixtral.py`, `python/sglang/srt/layers/quantization/modelslim/modelslim_moe.py`; technical summary: Covers "update pre-commit config"; the main implementation surface is `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/models/pixtral.py`, `python/sglang/srt/layers/quantization/modelslim/modelslim_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +6/-6 (12 lines); hunks: -670,9 +670,9 @@ def forward_decode(; -744,9 +744,9 @@ def forward_extend(; symbols: forward_decode, forward_extend, touching `forward_decode, forward_extend`; `python/sglang/srt/models/pixtral.py` modified +6/-2 (8 lines); hunks: -23,11 +23,15; `python/sglang/srt/layers/quantization/modelslim/modelslim_moe.py` modified +2/-4 (6 lines); hunks: -63,11 +63,9 @@ def get_moe_method(; symbols: get_moe_method, touching `get_moe_method`; `test/registered/layers/test_fla_layernorm_guard.py` modified +4/-1 (5 lines); hunks: -10,7 +10,10.
 - Code diff details:
-  - `.github/workflows/lint.yml` modified +2/-2
-  - `.pre-commit-config.yaml` modified +6/-6
-  - `3rdparty/amd/tuning/benchmark_moe_rocm.py` modified +2/-4
-  - `benchmark/fla/benchmark_layernorm_gated.py` modified +3/-1
+  - `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +6/-6 (12 lines); hunks: -670,9 +670,9 @@ def forward_decode(; -744,9 +744,9 @@ def forward_extend(; symbols: forward_decode, forward_extend
+  - `python/sglang/srt/models/pixtral.py` modified +6/-2 (8 lines); hunks: -23,11 +23,15
+  - `python/sglang/srt/layers/quantization/modelslim/modelslim_moe.py` modified +2/-4 (6 lines); hunks: -63,11 +63,9 @@ def get_moe_method(; symbols: get_moe_method
+  - `test/registered/layers/test_fla_layernorm_guard.py` modified +4/-1 (5 lines); hunks: -10,7 +10,10
+  - `python/sglang/srt/layers/attention/dual_chunk_flashattention_backend.py` modified +2/-2 (4 lines); hunks: -1,6 +1,6
 - Key code excerpts:
 
 ```diff
-diff -- .github/workflows/lint.yml
-@@ -26,9 +26,9 @@ jobs:
-         run: SKIP=no-commit-to-branch pre-commit run --all-files --show-diff-on-failure
-
-       - name: Run sgl-kernel clang-format checks
--        uses: DoozyX/clang-format-lint-action@v0.18.1
-+        uses: DoozyX/clang-format-lint-action@v0.20
-         with:
-           source: sgl-kernel
-           extensions: h,c,cpp,hpp,cu,cuh,cc
--          clangFormatVersion: 18
-+          clangFormatVersion: 20
-           style: file
-diff -- .pre-commit-config.yaml
-@@ -3,7 +3,7 @@ exclude: ^(python/sglang/multimodal_gen/csrc|python/sglang/jit_kernel/flash_atte
-
- repos:
-   - repo: https://github.com/pre-commit/pre-commit-hooks
--    rev: v5.0.0
-+    rev: v6.0.0
-     hooks:
-       - id: check-symlinks
-       - id: destroyed-symlinks
-@@ -21,12 +21,12 @@ repos:
-       - id: debug-statements
-       - id: no-commit-to-branch
-   - repo: https://github.com/PyCQA/isort
--    rev: 5.13.2
+diff -- python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py
+@@ -670,9 +670,9 @@ def forward_decode(
+-        (q_proj_states, k_proj_states, v_proj_states) = mixed_qkv
+-        (q_conv_weights, k_conv_weights, v_conv_weights) = layer.conv_weights
+-        (q_conv_bias, k_conv_bias, v_conv_bias) = layer.bias
++        q_proj_states, k_proj_states, v_proj_states = mixed_qkv
++        q_conv_weights, k_conv_weights, v_conv_weights = layer.conv_weights
++        q_conv_bias, k_conv_bias, v_conv_bias = layer.bias
+diff -- python/sglang/srt/models/pixtral.py
+@@ -23,11 +23,15 @@
+-from transformers.models.pixtral.modeling_pixtral import PixtralRotaryEmbedding
++from transformers.models.pixtral.modeling_pixtral import (
++    PixtralRotaryEmbedding,
++)
+-from transformers.models.pixtral.modeling_pixtral import position_ids_in_meshgrid
++from transformers.models.pixtral.modeling_pixtral import (
+diff -- python/sglang/srt/layers/quantization/modelslim/modelslim_moe.py
+@@ -63,11 +63,9 @@ def get_moe_method(
 ```
+
 - Reviewed files:
-  - runtime: `python/sglang/jit_kernel/include/sgl_kernel/type.cuh` modified +16/-15; `python/sglang/multimodal_gen/apps/webui/main.py` modified +2/-4; `python/sglang/multimodal_gen/configs/models/encoders/qwen3.py` modified +1/-0; `python/sglang/multimodal_gen/runtime/cache/__init__.py` modified +1/-0; `python/sglang/multimodal_gen/runtime/distributed/parallel_state.py` modified +2/-1; `python/sglang/multimodal_gen/runtime/layers/activation.py` modified +1/-0; `python/sglang/multimodal_gen/runtime/layers/layernorm.py` modified +1/-0; `python/sglang/multimodal_gen/runtime/layers/rotary_embedding.py` modified +1/-0
-  - docs/bench: `benchmark/fla/benchmark_layernorm_gated.py` modified +3/-1; `benchmark/tip_suggestion/bench_other.py` modified +2/-8; `benchmark/tip_suggestion/bench_sglang.py` modified +2/-8; `benchmark/tip_suggestion/lmql_funcs.py` modified +2/-8; `docs/advanced_features/lora.ipynb` modified +10/-20; `docs/advanced_features/structured_outputs.ipynb` modified +0/-1; `docs/advanced_features/structured_outputs_for_reasoning_models.ipynb` modified +0/-1; `docs/advanced_features/vlm_query.ipynb` modified +0/-1
-  - other: `.github/workflows/lint.yml` modified +2/-2; `.pre-commit-config.yaml` modified +6/-6; `3rdparty/amd/tuning/benchmark_moe_rocm.py` modified +2/-4
-- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+  - runtime: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +6/-6; `python/sglang/srt/models/pixtral.py` modified +6/-2; `python/sglang/srt/layers/quantization/modelslim/modelslim_moe.py` modified +2/-4; `python/sglang/srt/layers/attention/dual_chunk_flashattention_backend.py` modified +2/-2; `python/sglang/srt/models/qwen3_next.py` modified +2/-2; `python/sglang/srt/multimodal/processors/ernie45_vl.py` modified +3/-1
+  - tests: `test/registered/layers/test_fla_layernorm_guard.py` modified +4/-1
+- Risk and verification: The diff ships test coverage in `sgl-kernel/tests/test_per_token_group_quant_8bit.py`, `test/manual/test_vlm_accuracy.py`, `test/registered/attention/test_triton_sliding_window.py`, `test/registered/layers/test_fla_layernorm_guard.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #19382 - Add NPU basic function testcases
 
 - Link: https://github.com/sgl-project/sglang/pull/19382
 - Status/date: merged / 2026-03-16
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 87 files, +4587/-333, with 5347 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Add NPU basic function testcases"; model line: Ling 2.5 1T; category: model support/runtime entry; main diff: `.github/workflows/nightly-test-npu.yml`, `python/sglang/test/ascend/disaggregation_utils.py`, `python/sglang/test/ascend/test_ascend_utils.py`.
-- Key implementation:
-  - `.github/workflows/nightly-test-npu.yml` modified +37/-17
-  - `python/sglang/test/ascend/disaggregation_utils.py` added +153/-0; symbols: TestDisaggregationBase, setUpClass, launch_lb, wait_server_ready
-  - `python/sglang/test/ascend/test_ascend_utils.py` modified +495/-54; symbols: ModelTestConfig, run_command, get_benchmark_args, run_bench_serving
-  - `test/registered/ascend/basic_function/HiCache/test_npu_hierarchical_cache.py` added +127/-0; symbols: TestNPUHierarchicalCache, setUpClass, tearDownClass, test_hierarchical_cache_reused_long_identical
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 87 files, +4587/-333, 5347 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Add NPU basic function testcases"; model line: Ling 2.5; category: docs/tests/CI; main diff: `test/registered/ascend/interface/test_npu_openai_function_calling.py`, `test/registered/ascend/llm_models/test_npu_phi_4_multimodal_llm.py`, `test/registered/ascend/vlm_models/test_npu_phi4_multimodal_instruct.py`; technical summary: Covers "Add NPU basic function testcases"; the main implementation surface is `test/registered/ascend/interface/test_npu_openai_function_calling.py`, `test/registered/ascend/llm_models/test_npu_phi_4_multimodal_llm.py`, `test/registered/ascend/vlm_models/test_npu_phi4_multimodal_instruct.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/ascend/interface/test_npu_openai_function_calling.py` added +943/-0 (943 lines); hunks: -0,0 +1,943; symbols: TestOpenAIServerFunctionCalling, setUpClass, tearDownClass, test_function_calling_format, touching `TestOpenAIServerFunctionCalling, setUpClass, tearDownClass`; `test/registered/ascend/llm_models/test_npu_phi_4_multimodal_llm.py` renamed +0/-0 (0 lines); `test/registered/ascend/vlm_models/test_npu_phi4_multimodal_instruct.py` renamed +0/-0 (0 lines); `test/registered/ascend/interface/test_npu_api.py` added +732/-0 (732 lines); hunks: -0,0 +1,732; symbols: TestNpuApi, setUpClass, tearDownClass, does, touching `TestNpuApi, setUpClass, tearDownClass`.
 - Code diff details:
-  - `.github/workflows/nightly-test-npu.yml` modified +37/-17
-  - `python/sglang/test/ascend/disaggregation_utils.py` added +153/-0
-  - `python/sglang/test/ascend/test_ascend_utils.py` modified +495/-54
-  - `test/registered/ascend/basic_function/HiCache/test_npu_hierarchical_cache.py` added +127/-0
+  - `test/registered/ascend/interface/test_npu_openai_function_calling.py` added +943/-0 (943 lines); hunks: -0,0 +1,943; symbols: TestOpenAIServerFunctionCalling, setUpClass, tearDownClass, test_function_calling_format
+  - `test/registered/ascend/llm_models/test_npu_phi_4_multimodal_llm.py` renamed +0/-0 (0 lines)
+  - `test/registered/ascend/vlm_models/test_npu_phi4_multimodal_instruct.py` renamed +0/-0 (0 lines)
+  - `test/registered/ascend/interface/test_npu_api.py` added +732/-0 (732 lines); hunks: -0,0 +1,732; symbols: TestNpuApi, setUpClass, tearDownClass, does
+  - `python/sglang/test/ascend/test_ascend_utils.py` modified +495/-54 (549 lines); hunks: -11,99 +11,540; symbols: ModelTestConfig, run_command, get_benchmark_args, run_bench_serving
 - Key code excerpts:
 
 ```diff
-diff -- .github/workflows/nightly-test-npu.yml
-@@ -50,7 +50,6 @@ jobs:
-           pip config set global.index-url http://${CACHING_URL}/pypi/simple
-           pip config set global.extra-index-url "https://pypi.tuna.tsinghua.edu.cn/simple"
-           pip config set global.trusted-host "${CACHING_URL} pypi.tuna.tsinghua.edu.cn"
--
-           bash scripts/ci/npu/npu_ci_install_dependency.sh a3
-           # copy required file from our daily cache
-           cp ~/.cache/modelscope/hub/datasets/otavia/ShareGPT_Vicuna_unfiltered/ShareGPT_V3_unfiltered_cleaned_split.json /tmp
-@@ -71,7 +70,18 @@ jobs:
-           PYTORCH_NPU_ALLOC_CONF: "expandable_segments:True"
-           STREAMS_PER_DEVICE: 32
-         run: |
--          pip install sentence_transformers accelerate
-+          pip install sglang_router
-diff -- python/sglang/test/ascend/disaggregation_utils.py
-@@ -0,0 +1,153 @@
+diff -- test/registered/ascend/interface/test_npu_openai_function_calling.py
+@@ -0,0 +1,943 @@
++import json
++import unittest
++import openai
++from sglang.srt.utils import kill_process_tree
++from sglang.srt.utils.hf_transformers_utils import get_tokenizer
++from sglang.test.ascend.test_ascend_utils import LLAMA_3_2_1B_INSTRUCT_WEIGHTS_PATH
+diff -- test/registered/ascend/interface/test_npu_api.py
+@@ -0,0 +1,732 @@
++import json
 +import logging
 +import os
-+import time
-+import warnings
-+from urllib.parse import urlparse
-+
++import shutil
++import unittest
 +import requests
-+
-+from sglang.srt.environ import envs
-+from sglang.srt.utils import kill_process_tree
-+from sglang.test.test_utils import (
-+    DEFAULT_TIMEOUT_FOR_SERVER_LAUNCH,
-+    DEFAULT_URL_FOR_TEST,
+diff -- python/sglang/test/ascend/test_ascend_utils.py
+@@ -11,99 +11,540 @@
 ```
+
 - Reviewed files:
-  - runtime: `python/sglang/test/ascend/disaggregation_utils.py` added +153/-0; `python/sglang/test/ascend/test_ascend_utils.py` modified +495/-54
-  - tests: `test/registered/ascend/basic_function/HiCache/test_npu_hierarchical_cache.py` added +127/-0; `test/registered/ascend/basic_function/HiCache/test_npu_hierarchical_cache_mla.py` added +97/-0; `test/registered/ascend/basic_function/HiCache/test_npu_hierarchical_cache_mutually_exclusive.py` added +68/-0; `test/registered/ascend/basic_function/HiCache/test_npu_hierarchical_cache_ttft_mha.py` added +89/-0; `test/registered/ascend/basic_function/HiCache/test_npu_radix_cache.py` added +132/-0; `test/registered/ascend/basic_function/parallel_strategy/expert_parallelism/test_npu_deepep_auto_deepseek_v3_2_w8a8.py` added +108/-0; `test/registered/ascend/basic_function/parallel_strategy/expert_parallelism/test_npu_deepep_auto_qwen3_480b.py` added +128/-0; `test/registered/ascend/basic_function/parallel_strategy/expert_parallelism/test_npu_deepep_auto_qwen3_next.py` added +118/-0
-  - other: `.github/workflows/nightly-test-npu.yml` modified +37/-17
-- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+  - tests: `test/registered/ascend/interface/test_npu_openai_function_calling.py` added +943/-0; `test/registered/ascend/llm_models/test_npu_phi_4_multimodal_llm.py` renamed +0/-0; `test/registered/ascend/vlm_models/test_npu_phi4_multimodal_instruct.py` renamed +0/-0; `test/registered/ascend/interface/test_npu_api.py` added +732/-0; `python/sglang/test/ascend/test_ascend_utils.py` modified +495/-54; `test/registered/ascend/interface/test_npu_matched_stop.py` added +163/-0
+- Risk and verification: The diff ships test coverage in `python/sglang/test/ascend/disaggregation_utils.py`, `python/sglang/test/ascend/test_ascend_utils.py`, `test/registered/ascend/basic_function/HiCache/test_npu_hierarchical_cache.py`, `test/registered/ascend/basic_function/HiCache/test_npu_hierarchical_cache_mla.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #17784 - Upgrade transformers==5.3.0
 
 - Link: https://github.com/sgl-project/sglang/pull/17784
 - Status/date: merged / 2026-03-18
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 95 files, +1136/-343, with 2752 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Upgrade transformers==5.3.0"; model line: Ling 2.5 1T; category: docs/tests/CI; main diff: `docs/advanced_features/vlm_query.ipynb`, `python/pyproject.toml`, `python/pyproject_cpu.toml`.
-- Key implementation:
-  - `docs/advanced_features/vlm_query.ipynb` modified +3/-3
-  - `python/pyproject.toml` modified +4/-4
-  - `python/pyproject_cpu.toml` modified +3/-4
-  - `python/pyproject_npu.toml` modified +3/-4
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 95 files, +1136/-343, 2752 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Upgrade transformers==5.3.0"; model line: Ling 2.5; category: model implementation change; main diff: `python/sglang/srt/models/gemma3_causal.py`, `python/sglang/srt/layers/rotary_embedding/factory.py`, `python/sglang/srt/configs/model_config.py`; technical summary: Covers "Upgrade transformers==5.3.0"; the main implementation surface is `python/sglang/srt/models/gemma3_causal.py`, `python/sglang/srt/layers/rotary_embedding/factory.py`, `python/sglang/srt/configs/model_config.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/gemma3_causal.py` modified +87/-14 (101 lines); hunks: -166,18 +166,36 @@ def __init__(; -325,9 +343,10 @@ class Gemma3RotaryEmbedding(nn.Module):; symbols: __init__, Gemma3RotaryEmbedding, _dynamic_frequency_update, touching `__init__, Gemma3RotaryEmbedding, _dynamic_frequency_update`; `python/sglang/srt/layers/rotary_embedding/factory.py` modified +63/-13 (76 lines); hunks: -2,6 +2,7; -26,6 +27,29; symbols: _get_rope_param, get_rope, touching `_get_rope_param, get_rope`; `python/sglang/srt/configs/model_config.py` modified +38/-18 (56 lines); hunks: -51,10 +51,20 @@ class ModelImpl(str, Enum):; -63,7 +73,7 @@ def is_deepseek_nsa(config: PretrainedConfig) -> bool:; symbols: ModelImpl, is_deepseek_nsa, _derive_model_shapes, touching `ModelImpl, is_deepseek_nsa, _derive_model_shapes`; `python/sglang/srt/models/qwen3_moe.py` modified +14/-7 (21 lines); hunks: -115,12 +115,19 @@ def compute_yarn_parameters(; -130,7 +137,7 @@ def compute_yarn_parameters(; symbols: compute_yarn_parameters, forward_prepare_native, apply_qk_norm_rope, __init__, touching `compute_yarn_parameters, forward_prepare_native, apply_qk_norm_rope`.
 - Code diff details:
-  - `docs/advanced_features/vlm_query.ipynb` modified +3/-3
-  - `python/pyproject.toml` modified +4/-4
-  - `python/pyproject_cpu.toml` modified +3/-4
-  - `python/pyproject_npu.toml` modified +3/-4
+  - `python/sglang/srt/models/gemma3_causal.py` modified +87/-14 (101 lines); hunks: -166,18 +166,36 @@ def __init__(; -325,9 +343,10 @@ class Gemma3RotaryEmbedding(nn.Module):; symbols: __init__, Gemma3RotaryEmbedding, _dynamic_frequency_update
+  - `python/sglang/srt/layers/rotary_embedding/factory.py` modified +63/-13 (76 lines); hunks: -2,6 +2,7; -26,6 +27,29; symbols: _get_rope_param, get_rope
+  - `python/sglang/srt/configs/model_config.py` modified +38/-18 (56 lines); hunks: -51,10 +51,20 @@ class ModelImpl(str, Enum):; -63,7 +73,7 @@ def is_deepseek_nsa(config: PretrainedConfig) -> bool:; symbols: ModelImpl, is_deepseek_nsa, _derive_model_shapes
+  - `python/sglang/srt/models/qwen3_moe.py` modified +14/-7 (21 lines); hunks: -115,12 +115,19 @@ def compute_yarn_parameters(; -130,7 +137,7 @@ def compute_yarn_parameters(; symbols: compute_yarn_parameters, forward_prepare_native, apply_qk_norm_rope, __init__
+  - `python/sglang/srt/models/midashenglm.py` modified +6/-14 (20 lines); hunks: -476,20 +476,12 @@ def __init__(; symbols: __init__
 - Key code excerpts:
 
 ```diff
-diff -- docs/advanced_features/vlm_query.ipynb
-@@ -182,9 +182,8 @@
-     "from transformers import Qwen2_5_VLForConditionalGeneration\n",
-     "\n",
-     "processor = AutoProcessor.from_pretrained(model_path, use_fast=True)\n",
--    "vision = (\n",
--    "    Qwen2_5_VLForConditionalGeneration.from_pretrained(model_path).eval().visual.cuda()\n",
--    ")"
-+    "model = Qwen2_5_VLForConditionalGeneration.from_pretrained(model_path).eval()\n",
-+    "vision = model.model.visual.cuda()"
-    ]
-   },
-   {
-@@ -203,6 +202,7 @@
-     "precomputed_embeddings = vision(\n",
-diff -- python/pyproject.toml
-@@ -30,8 +30,6 @@ dependencies = [
-   "flashinfer_python==0.6.6", # keep it aligned with jit-cache version in Dockerfile
-   "flashinfer_cubin==0.6.6",
-   "gguf",
--  "hf_transfer",
--  "huggingface_hub",
-   "interegular",
-   "llguidance>=0.7.11,<0.8.0",
-   "modelscope",
-@@ -72,7 +70,8 @@ dependencies = [
-   "av ; sys_platform == 'linux' and (platform_machine == 'aarch64' or platform_machine == 'arm64' or platform_machine == 'armv7l')",
-   "torchvision",
-   "tqdm",
--  "transformers==4.57.1",
+diff -- python/sglang/srt/models/gemma3_causal.py
+@@ -166,18 +166,36 @@ def __init__(
++        # In transformers v5, rope_parameters is nested per layer type:
++        #   {"sliding_attention": {"rope_theta": 10000}, "full_attention": {"rope_theta": 1000000}}
++        # In v4 it was flat: {"rope_type": "default", "rope_theta": ...}
++        rope_params = config.rope_parameters
++        is_nested = isinstance(rope_params, dict) and "full_attention" in rope_params
+-            self.rope_theta = config.rope_local_base_freq
+diff -- python/sglang/srt/layers/rotary_embedding/factory.py
+@@ -2,6 +2,7 @@
++import logging
+@@ -26,6 +27,29 @@
++logger = logging.getLogger(__name__)
++def _get_rope_param(rope_scaling, key, default, scaling_type):
++    """Get a parameter from rope_scaling dict, warn if missing.
++    In transformers v5, config.rope_scaling is an alias for rope_parameters
+diff -- python/sglang/srt/configs/model_config.py
+@@ -51,10 +51,20 @@ class ModelImpl(str, Enum):
 ```
+
 - Reviewed files:
-  - runtime: `python/pyproject.toml` modified +4/-4; `python/pyproject_cpu.toml` modified +3/-4; `python/pyproject_npu.toml` modified +3/-4; `python/pyproject_other.toml` modified +3/-4; `python/pyproject_xpu.toml` modified +3/-4; `python/sglang/check_env.py` modified +0/-1; `python/sglang/multimodal_gen/runtime/loader/weight_utils.py` modified +0/-16; `python/sglang/multimodal_gen/runtime/models/encoders/llama.py` modified +2/-2
-  - docs/bench: `docs/advanced_features/vlm_query.ipynb` modified +3/-3
-- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+  - runtime: `python/sglang/srt/models/gemma3_causal.py` modified +87/-14; `python/sglang/srt/layers/rotary_embedding/factory.py` modified +63/-13; `python/sglang/srt/configs/model_config.py` modified +38/-18; `python/sglang/srt/models/qwen3_moe.py` modified +14/-7; `python/sglang/srt/models/midashenglm.py` modified +6/-14; `python/sglang/srt/models/glm4.py` modified +3/-14
+- Risk and verification: The diff ships test coverage in `python/sglang/test/runners.py`, `test/registered/core/test_score_api.py`, `test/registered/quant/test_awq.py`, `test/registered/rl/test_multi_instance_release_memory_occupation.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #9744 - [CPU] Add FP8 Bmm support
 
 - Link: https://github.com/sgl-project/sglang/pull/9744
 - Status/date: merged / 2026-03-19
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 14 files, +585/-84, with 1014 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[CPU] Add FP8 Bmm support"; model line: Ling 2.5 1T; category: model support/runtime entry; main diff: `python/sglang/srt/models/bailing_moe_linear.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py`.
-- Key implementation:
-  - `python/sglang/srt/models/bailing_moe_linear.py` modified +0/-8
-  - `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +44/-28
-  - `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py` modified +2/-1
-  - `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` modified +0/-10
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 14 files, +585/-84, 1014 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[CPU] Add FP8 Bmm support"; model line: Ling 2.5; category: performance/backend optimization; main diff: `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/models/longcat_flash.py`, `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`; technical summary: Covers "[CPU] Add FP8 Bmm support"; the main implementation surface is `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/models/longcat_flash.py`, `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +44/-28 (72 lines); hunks: -16,6 +16,7; -268,18 +269,24 @@ def forward_absorb_prepare(; symbols: forward_absorb_prepare, forward_absorb_core, touching `forward_absorb_prepare, forward_absorb_core`; `python/sglang/srt/models/longcat_flash.py` modified +0/-12 (12 lines); hunks: -760,18 +760,6 @@ def post_load_weights(self, weight_names=None):; symbols: post_load_weights, touching `post_load_weights`; `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` modified +0/-10 (10 lines); hunks: -46,8 +46,6; -583,14 +581,6 @@ def post_load_weights(; symbols: post_load_weights, touching `post_load_weights`; `python/sglang/srt/models/bailing_moe_linear.py` modified +0/-8 (8 lines); hunks: -1208,14 +1208,6 @@ def post_load_weights(self, is_nextn=False, weight_names=...; symbols: post_load_weights, touching `post_load_weights`.
 - Code diff details:
-  - `python/sglang/srt/models/bailing_moe_linear.py` modified +0/-8
-  - `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +44/-28
-  - `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py` modified +2/-1
-  - `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` modified +0/-10
+  - `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +44/-28 (72 lines); hunks: -16,6 +16,7; -268,18 +269,24 @@ def forward_absorb_prepare(; symbols: forward_absorb_prepare, forward_absorb_core
+  - `python/sglang/srt/models/longcat_flash.py` modified +0/-12 (12 lines); hunks: -760,18 +760,6 @@ def post_load_weights(self, weight_names=None):; symbols: post_load_weights
+  - `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` modified +0/-10 (10 lines); hunks: -46,8 +46,6; -583,14 +581,6 @@ def post_load_weights(; symbols: post_load_weights
+  - `python/sglang/srt/models/bailing_moe_linear.py` modified +0/-8 (8 lines); hunks: -1208,14 +1208,6 @@ def post_load_weights(self, is_nextn=False, weight_names=...; symbols: post_load_weights
+  - `python/sglang/srt/models/longcat_flash_nextn.py` modified +0/-4 (4 lines); hunks: -426,10 +426,6 @@ def post_load_weights(self):; symbols: post_load_weights
 - Key code excerpts:
 
 ```diff
-diff -- python/sglang/srt/models/bailing_moe_linear.py
-@@ -1208,14 +1208,6 @@ def post_load_weights(self, is_nextn=False, weight_names=None):
-                     )
-                     if _is_hip:
-                         self_attn.w_scale *= 2.0
--                # TODO: remove this after adding FP8 support in bmm cpu kernel
--                if _is_cpu and _is_cpu_amx_available and w.dtype == torch.float8_e4m3fn:
--                    self_attn.w_kc = (
--                        self_attn.w_kc.to(torch.bfloat16) * self_attn.w_scale
--                    )
--                    self_attn.w_vc = (
--                        self_attn.w_vc.to(torch.bfloat16) * self_attn.w_scale
--                    )
-             else:
-                 num_tiles_k = self_attn.qk_nope_head_dim // weight_block_size[1]
 diff -- python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py
 @@ -16,6 +16,7 @@
- from sglang.srt.model_executor.forward_batch_info import ForwardBatch
- from sglang.srt.models.deepseek_common.utils import (
-     FORWARD_ABSORB_CORE_ATTENTION_BACKENDS,
 +    _is_cpu,
-     _is_cublas_ge_129,
-     _is_cuda,
-     _is_gfx95_supported,
 @@ -268,18 +269,24 @@ def forward_absorb_prepare(
-                     )
-
-         elif self.w_kc.dtype == torch.float8_e4m3fn:
 -            # fix bmm_fp8 error under cublas12.9 caused by bumpallocator, detail in pr#11612
 -            q_nope_val, q_nope_scale = per_tensor_quant_mla_fp8(
+-                q_nope.transpose(0, 1),
+-                (
+diff -- python/sglang/srt/models/longcat_flash.py
+@@ -760,18 +760,6 @@ def post_load_weights(self, weight_names=None):
+-                    # TODO: remove this after adding FP8 support in bmm cpu kernel
+-                    if (
+-                        _is_cpu
+-                        and _is_cpu_amx_available
+-                        and w.dtype == torch.float8_e4m3fn
+-                    ):
+diff -- python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py
+@@ -46,8 +46,6 @@
 ```
+
 - Reviewed files:
-  - runtime: `python/sglang/srt/models/bailing_moe_linear.py` modified +0/-8; `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +44/-28; `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py` modified +2/-1; `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` modified +0/-10; `python/sglang/srt/models/longcat_flash.py` modified +0/-12; `python/sglang/srt/models/longcat_flash_nextn.py` modified +0/-4; `sgl-kernel/csrc/cpu/bmm.cpp` modified +93/-11; `sgl-kernel/csrc/cpu/gemm.h` modified +18/-0
-  - tests: `test/srt/cpu/test_bmm.py` added +95/-0; `test/srt/cpu/test_qkv_proj_with_rope.py` modified +13/-4; `test/srt/run_suite.py` modified +1/-0
-- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+  - runtime: `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +44/-28; `python/sglang/srt/models/longcat_flash.py` modified +0/-12; `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` modified +0/-10; `python/sglang/srt/models/bailing_moe_linear.py` modified +0/-8; `python/sglang/srt/models/longcat_flash_nextn.py` modified +0/-4; `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py` modified +2/-1
+  - other: `sgl-kernel/csrc/cpu/gemm_fp8.cpp` modified +310/-1; `sgl-kernel/csrc/cpu/bmm.cpp` modified +93/-11
+- Risk and verification: The diff ships test coverage in `test/srt/cpu/test_bmm.py`, `test/srt/cpu/test_qkv_proj_with_rope.py`, `test/srt/run_suite.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #20316 - fix fused_set_kv_buffer for rope with Ling-v2
 
 - Link: https://github.com/sgl-project/sglang/pull/20316
 - Status/date: merged / 2026-03-23
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 1 files, +6/-2, with 29 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "fix fused_set_kv_buffer for rope with Ling-v2"; model line: Ling 2.5 1T; category: performance/backend optimization; main diff: `python/sglang/srt/models/bailing_moe.py`.
-- Key implementation:
-  - `python/sglang/srt/models/bailing_moe.py` modified +6/-2
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +6/-2, 29 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "fix fused_set_kv_buffer for rope with Ling-v2"; model line: Ling 2.5; category: bug fix; main diff: `python/sglang/srt/models/bailing_moe.py`; technical summary: Covers "fix fused_set_kv_buffer for rope with Ling-v2"; the main implementation surface is `python/sglang/srt/models/bailing_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/bailing_moe.py` modified +6/-2 (8 lines); hunks: -532,6 +532,10 @@ def forward(; -542,7 +546,7 @@ def forward(; symbols: forward, touching `forward`.
 - Code diff details:
-  - `python/sglang/srt/models/bailing_moe.py` modified +6/-2
+  - `python/sglang/srt/models/bailing_moe.py` modified +6/-2 (8 lines); hunks: -532,6 +532,10 @@ def forward(; -542,7 +546,7 @@ def forward(; symbols: forward
 - Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/bailing_moe.py
 @@ -532,6 +532,10 @@ def forward(
-                 head_dim=self.head_dim,
-                 alt_stream=self.alt_stream,
-             )
 +        can_fuse_set_kv = (
 +            self.head_dim == self.rotary_emb.rotary_dim
 +            and enable_fused_set_kv_buffer(forward_batch)
 +        )
-         q, k = self.rotary_emb(
-             positions,
-             q,
 @@ -542,7 +546,7 @@ def forward(
-                     layer=self.attn,
-                     forward_batch=forward_batch,
+-                if enable_fused_set_kv_buffer(forward_batch)
 ```
+
 - Reviewed files:
   - runtime: `python/sglang/srt/models/bailing_moe.py` modified +6/-2
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/bailing_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #20751 - [NPU]Add a full test pipeline on NPU, resolve issues in the NPU test architecture
 
 - Link: https://github.com/sgl-project/sglang/pull/20751
 - Status/date: merged / 2026-04-01
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 43 files, +673/-106, with 1465 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[NPU]Add a full test pipeline on NPU, resolve issues in the NPU test architecture"; model line: Ling 2.5 1T; category: model support/runtime entry; main diff: `.github/workflows/full-test-npu.yml`, `.github/workflows/nightly-test-npu.yml`, `.github/workflows/pr-test-npu.yml`.
-- Key implementation:
-  - `.github/workflows/full-test-npu.yml` added +355/-0
-  - `.github/workflows/nightly-test-npu.yml` modified +124/-36
-  - `.github/workflows/pr-test-npu.yml` modified +70/-40
-  - `.github/workflows/release-docker-npu-nightly.yml` modified +1/-1
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 43 files, +673/-106, 1465 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[NPU]Add a full test pipeline on NPU, resolve issues in the NPU test architecture"; model line: Ling 2.5; category: docs/tests/CI; main diff: `.github/workflows/full-test-npu.yml`, `.github/workflows/nightly-test-npu.yml`, `.github/workflows/pr-test-npu.yml`; technical summary: Covers "[NPU]Add a full test pipeline on NPU, resolve issues in the NPU test architecture"; the main implementation surface is `.github/workflows/full-test-npu.yml`, `.github/workflows/nightly-test-npu.yml`, `.github/workflows/pr-test-npu.yml`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `.github/workflows/full-test-npu.yml` added +355/-0 (355 lines); hunks: -0,0 +1,355; `.github/workflows/nightly-test-npu.yml` modified +124/-36 (160 lines); hunks: -2,7 +2,7 @@ name: Nightly Test (NPU); -21,40 +21,95 @@ on:; `.github/workflows/pr-test-npu.yml` modified +70/-40 (110 lines); hunks: -76,7 +76,7 @@ jobs:; -111,21 +111,8 @@ jobs:; `python/sglang/test/ascend/test_ascend_utils.py` modified +9/-9 (18 lines); hunks: -117,9 +117,18; -133,15 +142,6.
 - Code diff details:
-  - `.github/workflows/full-test-npu.yml` added +355/-0
-  - `.github/workflows/nightly-test-npu.yml` modified +124/-36
-  - `.github/workflows/pr-test-npu.yml` modified +70/-40
-  - `.github/workflows/release-docker-npu-nightly.yml` modified +1/-1
+  - `.github/workflows/full-test-npu.yml` added +355/-0 (355 lines); hunks: -0,0 +1,355
+  - `.github/workflows/nightly-test-npu.yml` modified +124/-36 (160 lines); hunks: -2,7 +2,7 @@ name: Nightly Test (NPU); -21,40 +21,95 @@ on:
+  - `.github/workflows/pr-test-npu.yml` modified +70/-40 (110 lines); hunks: -76,7 +76,7 @@ jobs:; -111,21 +111,8 @@ jobs:
+  - `python/sglang/test/ascend/test_ascend_utils.py` modified +9/-9 (18 lines); hunks: -117,9 +117,18; -133,15 +142,6
+  - `test/registered/ascend/basic_function/quant/test_npu_autoround_moe.py` renamed +8/-1 (9 lines); hunks: -4,6 +4,10; -12,10 +16,13
 - Key code excerpts:
 
 ```diff
 diff -- .github/workflows/full-test-npu.yml
 @@ -0,0 +1,355 @@
 +name: Full Test (NPU)
-+
 +on:
 +#  pull_request:
 +#    branches:
 +#      - main
 +#    paths:
-+#      - ".github/workflows/full-test-npu.yml"
-+  workflow_dispatch:
-+    inputs:
-+      ref:
-+        description: 'Git ref (branch, tag, or SHA) to test. If not provided, uses the default branch.'
-+        required: false
 diff -- .github/workflows/nightly-test-npu.yml
 @@ -2,7 +2,7 @@ name: Nightly Test (NPU)
-
- on:
-   schedule:
 -    - cron: '0 17 * * *'  # Execute at 1:00 a.m. Beijing Time every day
 +    - cron: '0 18 * * *'  # Execute at 2:00 a.m. Beijing Time every day
-   pull_request:
-     branches:
-       - main
 @@ -21,40 +21,95 @@ on:
-         required: false
-         type: string
-         default: 'all'
 +      image_a3:
++        description: 'The a3 running docker image of the test task.'
++        required: false
+diff -- .github/workflows/pr-test-npu.yml
+@@ -76,7 +76,7 @@ jobs:
 ```
+
 - Reviewed files:
-  - runtime: `python/pyproject_npu.toml` modified +2/-0; `python/sglang/test/ascend/test_ascend_utils.py` modified +9/-9
-  - tests: `test/registered/ascend/basic_function/HiCache/test_npu_hicache_mha.py` renamed +4/-0; `test/registered/ascend/basic_function/HiCache/test_npu_hicache_mla.py` renamed +4/-0; `test/registered/ascend/basic_function/backends/test_npu_sampling_backend.py` renamed +4/-0; `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py` renamed +4/-0; `test/registered/ascend/basic_function/optimization_debug/test_npu_compile_graph_tp1_bf16.py` renamed +4/-0; `test/registered/ascend/basic_function/optimization_debug/test_npu_graph_tp1_bf16.py` renamed +4/-0; `test/registered/ascend/basic_function/optimization_debug/test_npu_graph_tp2_bf16.py` renamed +4/-0; `test/registered/ascend/basic_function/optimization_debug/test_npu_piecewise_graph_prefill.py` renamed +4/-0
-  - other: `.github/workflows/full-test-npu.yml` added +355/-0; `.github/workflows/nightly-test-npu.yml` modified +124/-36; `.github/workflows/pr-test-npu.yml` modified +70/-40; `.github/workflows/release-docker-npu-nightly.yml` modified +1/-1
-- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
+  - ci: `.github/workflows/full-test-npu.yml` added +355/-0; `.github/workflows/nightly-test-npu.yml` modified +124/-36; `.github/workflows/pr-test-npu.yml` modified +70/-40
+  - tests: `python/sglang/test/ascend/test_ascend_utils.py` modified +9/-9; `test/registered/ascend/basic_function/quant/test_npu_autoround_moe.py` renamed +8/-1; `test/registered/ascend/basic_function/quant/test_npu_gptq_moe.py` renamed +8/-1; `test/registered/ascend/basic_function/quant/test_npu_autoround_dense.py` renamed +6/-1; `test/run_suite.py` modified +5/-0
+- Risk and verification: The diff ships test coverage in `python/sglang/test/ascend/test_ascend_utils.py`, `test/registered/ascend/basic_function/HiCache/test_npu_hicache_mha.py`, `test/registered/ascend/basic_function/HiCache/test_npu_hicache_mla.py`, `test/registered/ascend/basic_function/backends/test_npu_sampling_backend.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #23001 - Add new Mintlify documentation site (docs_new/)
 
 - Link: https://github.com/sgl-project/sglang/pull/23001
 - Status/date: merged / 2026-04-20
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 100 files, +19458/-0, with 19508 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Add new Mintlify documentation site (docs_new/)"; model line: Ling 2.5 1T; category: model support/runtime entry; main diff: `.gitignore`, `docs_new/.github/workflows/sync-lmsys-sglang-blogs.yml`, `docs_new/.gitignore`.
-- Key implementation:
-  - `.gitignore` modified +1/-0
-  - `docs_new/.github/workflows/sync-lmsys-sglang-blogs.yml` added +39/-0
-  - `docs_new/.gitignore` added +30/-0
-  - `docs_new/.mintignore` added +7/-0
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 330 files, +80364/-0, 68714 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Add new Mintlify documentation site (docs_new/)"; model line: Ling 2.5; category: docs/tests/CI; main diff: `docs_new/docs/advanced_features/tool_parser.mdx`, `docs_new/docs/advanced_features/structured_outputs_for_reasoning_models.mdx`, `docs_new/docs/advanced_features/separate_reasoning.mdx`; technical summary: Covers "Add new Mintlify documentation site (docs_new/)"; the main implementation surface is `docs_new/docs/advanced_features/tool_parser.mdx`, `docs_new/docs/advanced_features/structured_outputs_for_reasoning_models.mdx`, `docs_new/docs/advanced_features/separate_reasoning.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/docs/advanced_features/tool_parser.mdx` added +740/-0 (740 lines); hunks: -0,0 +1,740; symbols: get_messages, get_current_weather, convert_dict_to_tool, in, touching `get_messages, get_current_weather, convert_dict_to_tool`; `docs_new/docs/advanced_features/structured_outputs_for_reasoning_models.mdx` added +663/-0 (663 lines); hunks: -0,0 +1,663; symbols: CapitalInfo, get_messages, touching `CapitalInfo, get_messages`; `docs_new/docs/advanced_features/separate_reasoning.mdx` added +317/-0 (317 lines); hunks: -0,0 +1,317; `docs_new/docs/hardware-platforms/ascend-npus/Support-Features-on-Ascend-NPU.mdx` added +3327/-0 (3327 lines).
 - Code diff details:
-  - `.gitignore` modified +1/-0
-  - `docs_new/.github/workflows/sync-lmsys-sglang-blogs.yml` added +39/-0
-  - `docs_new/.gitignore` added +30/-0
-  - `docs_new/.mintignore` added +7/-0
+  - `docs_new/docs/advanced_features/tool_parser.mdx` added +740/-0 (740 lines); hunks: -0,0 +1,740; symbols: get_messages, get_current_weather, convert_dict_to_tool, in
+  - `docs_new/docs/advanced_features/structured_outputs_for_reasoning_models.mdx` added +663/-0 (663 lines); hunks: -0,0 +1,663; symbols: CapitalInfo, get_messages
+  - `docs_new/docs/advanced_features/separate_reasoning.mdx` added +317/-0 (317 lines); hunks: -0,0 +1,317
+  - `docs_new/docs/hardware-platforms/ascend-npus/Support-Features-on-Ascend-NPU.mdx` added +3327/-0 (3327 lines)
+  - `docs_new/docs/hardware-platforms/ascend-npus/Best-Practice-on-Ascend-NPU.mdx` added +2911/-0 (2911 lines)
 - Key code excerpts:
 
 ```diff
-diff -- .gitignore
-@@ -192,6 +192,7 @@ work_dirs/
- *.csv
-
- !logo.png
-+!docs_new/images/*.png
-
- # Prerequisites
- *.d
-diff -- docs_new/.github/workflows/sync-lmsys-sglang-blogs.yml
-@@ -0,0 +1,39 @@
-+name: Sync LMSYS SGLang blogs
-+
-+on:
-+  workflow_dispatch:
-+  schedule:
-+    - cron: "0 */12 * * *"
-+
-+permissions:
-+  contents: write
-+
-+jobs:
-+  sync:
-+    runs-on: ubuntu-latest
+diff -- docs_new/docs/advanced_features/tool_parser.mdx
+@@ -0,0 +1,740 @@
++---
++title: "Tool Parser"
++metatags:
++    description: "SGLang function calling: tool parsers for DeepSeek, Llama, Qwen, Mistral, GLM, Kimi K2. OpenAI-compatible tool use API."
++---
++This guide demonstrates how to use SGLang’s [Function calling](https://platform.openai.com/docs/guides/function-calling) functionality.
+diff -- docs_new/docs/advanced_features/structured_outputs_for_reasoning_models.mdx
+@@ -0,0 +1,663 @@
++---
++title: "Structured Outputs For Reasoning Models"
++metatags:
++    description: "SGLang structured outputs for reasoning models: free-form thinking with constrained final output for DeepSeek R1, QwQ models."
++---
++When working with reasoning models that use special tokens like `&lt;think&gt;...&lt;/think&gt;` to denote reasoning sections, you might want to allow free-form text within these
+diff -- docs_new/docs/advanced_features/separate_reasoning.mdx
+@@ -0,0 +1,317 @@
 ```
+
 - Reviewed files:
-  - docs/bench: `docs_new/.github/workflows/sync-lmsys-sglang-blogs.yml` added +39/-0; `docs_new/.gitignore` added +30/-0; `docs_new/.mintignore` added +7/-0; `docs_new/AGENTS.md` added +381/-0; `docs_new/CONTRIBUTING.md` added +34/-0; `docs_new/LICENSE` added +201/-0; `docs_new/README.md` added +126/-0; `docs_new/cards/Autoregressive-benchmark-card.png` added +0/-0
-  - other: `.gitignore` modified +1/-0
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+  - docs: `docs_new/docs/advanced_features/tool_parser.mdx` added +740/-0; `docs_new/docs/advanced_features/structured_outputs_for_reasoning_models.mdx` added +663/-0; `docs_new/docs/advanced_features/separate_reasoning.mdx` added +317/-0; `docs_new/docs/hardware-platforms/ascend-npus/Support-Features-on-Ascend-NPU.mdx` added +3327/-0; `docs_new/docs/hardware-platforms/ascend-npus/Best-Practice-on-Ascend-NPU.mdx` added +2911/-0; `docs_new/docs/advanced_features/server_arguments.mdx` added +2871/-0
+- Risk and verification: This is mostly docs/examples in `docs_new/.github/workflows/sync-lmsys-sglang-blogs.yml`, `docs_new/.gitignore`, `docs_new/.mintignore`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #23337 - [Docs] Sync docs_new with legacy docs and update migration redirects
 
 - Link: https://github.com/sgl-project/sglang/pull/23337
 - Status/date: merged / 2026-04-21
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 100 files, +3881/-1454, with 7195 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Docs] Sync docs_new with legacy docs and update migration redirects"; model line: Ling 2.5 1T; category: docs/tests/CI; main diff: `.pre-commit-config.yaml`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-Math-V2.mdx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR-2.mdx`.
-- Key implementation:
-  - `.pre-commit-config.yaml` modified +7/-0
-  - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-Math-V2.mdx` modified +1/-1
-  - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR-2.mdx` modified +1/-1
-  - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR.mdx` modified +1/-1
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 179 files, +16004/-8152, 23604 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Docs] Sync docs_new with legacy docs and update migration redirects"; model line: Ling 2.5; category: docs/tests/CI; main diff: `docs_new/docs/supported-models/multimodal_language_models.mdx`, `docs_new/docs/advanced_features/structured_outputs_for_reasoning_models.mdx`, `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_best_practice.mdx`; technical summary: Covers "[Docs] Sync docs_new with legacy docs and update migration redirects"; the main implementation surface is `docs_new/docs/supported-models/multimodal_language_models.mdx`, `docs_new/docs/advanced_features/structured_outputs_for_reasoning_models.mdx`, `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_best_practice.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/docs/supported-models/multimodal_language_models.mdx` renamed +73/-14 (87 lines); hunks: -1,15 +1,18; -19,11 +22,9 @@ Below the supported models are summarized in a table.; `docs_new/docs/advanced_features/structured_outputs_for_reasoning_models.mdx` modified +23/-23 (46 lines); hunks: -3,17 +3,17 @@ title: "Structured Outputs For Reasoning Models"; -252,9 +252,9 @@ If a you choose to call a function ONLY reply in the followi...; `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_best_practice.mdx` renamed +1809/-463 (2272 lines); `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_support_features.mdx` renamed +671/-1418 (2089 lines).
 - Code diff details:
-  - `.pre-commit-config.yaml` modified +7/-0
-  - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-Math-V2.mdx` modified +1/-1
-  - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR-2.mdx` modified +1/-1
-  - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR.mdx` modified +1/-1
+  - `docs_new/docs/supported-models/multimodal_language_models.mdx` renamed +73/-14 (87 lines); hunks: -1,15 +1,18; -19,11 +22,9 @@ Below the supported models are summarized in a table.
+  - `docs_new/docs/advanced_features/structured_outputs_for_reasoning_models.mdx` modified +23/-23 (46 lines); hunks: -3,17 +3,17 @@ title: "Structured Outputs For Reasoning Models"; -252,9 +252,9 @@ If a you choose to call a function ONLY reply in the followi...
+  - `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_best_practice.mdx` renamed +1809/-463 (2272 lines)
+  - `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_support_features.mdx` renamed +671/-1418 (2089 lines)
+  - `docs_new/docs/advanced_features/server_arguments.mdx` modified +446/-486 (932 lines)
 - Key code excerpts:
 
 ```diff
-diff -- .pre-commit-config.yaml
-@@ -93,6 +93,13 @@ repos:
-         language: system
-         files: ^test/registered/.*\.py$
-         pass_filenames: false
-+      - id: check-no-docs-changes
-+        name: reject changes under legacy docs/
-+        entry: python3 scripts/ci/check_no_docs_changes.py
-+        language: system
-+        pass_filenames: false
-+        always_run: true
-+        stages: [pre-commit]
-   - repo: https://github.com/lycheeverse/lychee.git
-     rev: lychee-v0.22.0
-     hooks:
-diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-Math-V2.mdx
-@@ -26,7 +26,7 @@ To use DeepSeek-Math-V2, you must agree to DeepSeek's Community License. See [LI
-
- ## 2. SGLang Installation
-
--Please refer to the [official SGLang installation guide](../../../docs/get-started/installation) for installation instructions.
-+Please refer to the [official SGLang installation guide](../../../docs/get-started/install) for installation instructions.
-
- ## 3. Model Deployment
-
+diff -- docs_new/docs/supported-models/multimodal_language_models.mdx
+@@ -1,15 +1,18 @@
++---
++title: "Multimodal Language Models"
++metatags:
++  description: "Documentation for Multimodal Language Models"
++---
+-<CodeGroup>
+diff -- docs_new/docs/advanced_features/structured_outputs_for_reasoning_models.mdx
+@@ -3,17 +3,17 @@ title: "Structured Outputs For Reasoning Models"
+-When working with reasoning models that use special tokens like `&lt;think&gt;...&lt;/think&gt;` to denote reasoning sections, you might want to allow free-form text within these
++When working with reasoning models that use special tokens like `<think>...</think>` to denote reasoning sections, you might want to allow free-form text within these sections whi
+-To enable this feature, use the `--reasoning-parser` flag which decide the think_end_token, such as `&lt;/think&gt;`, when launching the server. You can also specify the reasoning
++To enable this feature, use the `--reasoning-parser` flag which decide the think_end_token, such as `</think>`, when launching the server. You can also specify the reasoning parse
+-- [DeepSeek R1 series](https://huggingface.co/collections/deepseek-ai/deepseek-r1-678e1e131c0169c0bc89728d): The reasoning content is wrapped with `&lt;think&gt;` and `&lt;/think&
+-- [QwQ](https://huggingface.co/Qwen/QwQ-32B): The reasoning content is wrapped with `&lt;think&gt;` and `&lt;/think&gt;` tags.
+diff -- docs_new/docs/hardware-platforms/tpu.mdx
+@@ -2,65 +2,67 @@
 ```
+
 - Reviewed files:
-  - docs/bench: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-Math-V2.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR-2.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-R1.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_1.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/Ernie/Ernie4.5.mdx` modified +1/-1
-  - other: `.pre-commit-config.yaml` modified +7/-0
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+  - docs: `docs_new/docs/supported-models/multimodal_language_models.mdx` renamed +73/-14; `docs_new/docs/advanced_features/structured_outputs_for_reasoning_models.mdx` modified +23/-23; `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_best_practice.mdx` renamed +1809/-463; `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_support_features.mdx` renamed +671/-1418; `docs_new/docs/advanced_features/server_arguments.mdx` modified +446/-486; `docs_new/docs/hardware-platforms/tpu.mdx` modified +425/-468
+- Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-Math-V2.mdx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR-2.mdx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR.mdx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #23732 - Apply should_use_dp_reduce_scatterv guard to remaining MoE models (follow-up to #23731)
 
 - Link: https://github.com/sgl-project/sglang/pull/23732
 - Status/date: merged / 2026-04-26
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 13 files, +59/-12, with 290 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Apply should_use_dp_reduce_scatterv guard to remaining MoE models (follow-up to #23731)"; model line: Ling 2.5 1T; category: model implementation change; main diff: `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/models/bailing_moe_linear.py`, `python/sglang/srt/models/deepseek_v2.py`.
-- Key implementation:
-  - `python/sglang/srt/models/bailing_moe.py` modified +2/-0
-  - `python/sglang/srt/models/bailing_moe_linear.py` modified +7/-1
-  - `python/sglang/srt/models/deepseek_v2.py` modified +3/-0
-  - `python/sglang/srt/models/exaone_moe.py` modified +6/-2
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 13 files, +59/-12, 290 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Apply should_use_dp_reduce_scatterv guard to remaining MoE models (follow-up to #23731)"; model line: Ling 2.5; category: model implementation change; main diff: `python/sglang/srt/models/llada2.py`, `python/sglang/srt/models/hunyuan_v3.py`, `python/sglang/srt/models/bailing_moe_linear.py`; technical summary: Covers "Apply should_use_dp_reduce_scatterv guard to remaining MoE models (follow-up to #23731)"; the main implementation surface is `python/sglang/srt/models/llada2.py`, `python/sglang/srt/models/hunyuan_v3.py`, `python/sglang/srt/models/bailing_moe_linear.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/llada2.py` modified +10/-2 (12 lines); hunks: -55,7 +55,11; -379,7 +383,11 @@ def forward_normal(; symbols: forward_normal, touching `forward_normal`; `python/sglang/srt/models/hunyuan_v3.py` modified +7/-4 (11 lines); hunks: -34,6 +34,7; -191,10 +192,11 @@ def _forward_single_stream(self, hidden_states: torch.Tens...; symbols: _forward_single_stream, _forward_dual_stream, touching `_forward_single_stream, _forward_dual_stream`; `python/sglang/srt/models/bailing_moe_linear.py` modified +7/-1 (8 lines); hunks: -34,6 +34,7; -347,7 +348,12 @@ def forward(; symbols: forward, touching `forward`; `python/sglang/srt/models/exaone_moe.py` modified +6/-2 (8 lines); hunks: -47,7 +47,7; -300,7 +300,11 @@ def forward(; symbols: forward, touching `forward`.
 - Code diff details:
-  - `python/sglang/srt/models/bailing_moe.py` modified +2/-0
-  - `python/sglang/srt/models/bailing_moe_linear.py` modified +7/-1
-  - `python/sglang/srt/models/deepseek_v2.py` modified +3/-0
-  - `python/sglang/srt/models/exaone_moe.py` modified +6/-2
+  - `python/sglang/srt/models/llada2.py` modified +10/-2 (12 lines); hunks: -55,7 +55,11; -379,7 +383,11 @@ def forward_normal(; symbols: forward_normal
+  - `python/sglang/srt/models/hunyuan_v3.py` modified +7/-4 (11 lines); hunks: -34,6 +34,7; -191,10 +192,11 @@ def _forward_single_stream(self, hidden_states: torch.Tens...; symbols: _forward_single_stream, _forward_dual_stream
+  - `python/sglang/srt/models/bailing_moe_linear.py` modified +7/-1 (8 lines); hunks: -34,6 +34,7; -347,7 +348,12 @@ def forward(; symbols: forward
+  - `python/sglang/srt/models/exaone_moe.py` modified +6/-2 (8 lines); hunks: -47,7 +47,7; -300,7 +300,11 @@ def forward(; symbols: forward
+  - `python/sglang/srt/models/llama4.py` modified +6/-1 (7 lines); hunks: -39,6 +39,7; -145,7 +146,11 @@ def forward(; symbols: forward
 - Key code excerpts:
 
 ```diff
-diff -- python/sglang/srt/models/bailing_moe.py
-@@ -58,6 +58,7 @@
- from sglang.srt.layers.moe import (
-     get_deepep_mode,
-     get_moe_a2a_backend,
+diff -- python/sglang/srt/models/llada2.py
+@@ -55,7 +55,11 @@
+-from sglang.srt.layers.moe import get_deepep_mode, get_moe_a2a_backend
++from sglang.srt.layers.moe import (
++    get_deepep_mode,
++    get_moe_a2a_backend,
 +    should_use_dp_reduce_scatterv,
-     should_use_flashinfer_cutlass_moe_fp4_allgather,
- )
- from sglang.srt.layers.moe.ep_moe.layer import get_moe_impl_class
-@@ -386,6 +387,7 @@ def forward_normal(
-             and not should_allreduce_fusion
-             and not use_reduce_scatter
-             and not should_use_flashinfer_cutlass_moe_fp4_allgather()
-+            and not should_use_dp_reduce_scatterv()
-         ):
++)
+diff -- python/sglang/srt/models/hunyuan_v3.py
+@@ -34,6 +34,7 @@
++from sglang.srt.layers.moe import should_use_dp_reduce_scatterv
+@@ -191,10 +192,11 @@ def _forward_single_stream(self, hidden_states: torch.Tensor) -> torch.Tensor:
+-        if self.ep_size > 1:
++        skip_post_reduce = should_use_dp_reduce_scatterv()
++        if self.ep_size > 1 and not skip_post_reduce:
+-        if self.tp_size > 1:
 diff -- python/sglang/srt/models/bailing_moe_linear.py
 @@ -34,6 +34,7 @@
-     RowParallelLinear,
- )
- from sglang.srt.layers.logits_processor import LogitsProcessor
-+from sglang.srt.layers.moe import should_use_dp_reduce_scatterv
- from sglang.srt.layers.moe.ep_moe.layer import DeepEPMoE, get_moe_impl_class
- from sglang.srt.layers.moe.fused_moe_triton.layer import FusedMoE
- from sglang.srt.layers.moe.topk import TopK
-@@ -347,7 +348,12 @@ def forward(
-         if self.num_shared_experts > 0:
-             final_hidden_states = final_hidden_states + shared_output
-
--        if self.tp_size > 1 and not use_reduce_scatter and not should_allreduce_fusion:
-+        if (
 ```
+
 - Reviewed files:
-  - runtime: `python/sglang/srt/models/bailing_moe.py` modified +2/-0; `python/sglang/srt/models/bailing_moe_linear.py` modified +7/-1; `python/sglang/srt/models/deepseek_v2.py` modified +3/-0; `python/sglang/srt/models/exaone_moe.py` modified +6/-2; `python/sglang/srt/models/glm4_moe.py` modified +3/-0; `python/sglang/srt/models/hunyuan_v3.py` modified +7/-4; `python/sglang/srt/models/llada2.py` modified +10/-2; `python/sglang/srt/models/llama4.py` modified +6/-1
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+  - runtime: `python/sglang/srt/models/llada2.py` modified +10/-2; `python/sglang/srt/models/hunyuan_v3.py` modified +7/-4; `python/sglang/srt/models/bailing_moe_linear.py` modified +7/-1; `python/sglang/srt/models/exaone_moe.py` modified +6/-2; `python/sglang/srt/models/llama4.py` modified +6/-1; `python/sglang/srt/models/sarvam_moe.py` modified +6/-1
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/models/bailing_moe_linear.py`, `python/sglang/srt/models/deepseek_v2.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #23748 - refactor(moe): centralize post-experts all-reduce skip predicate
 
 - Link: https://github.com/sgl-project/sglang/pull/23748
 - Status/date: merged / 2026-04-27
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 17 files, +134/-132, with 532 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "refactor(moe): centralize post-experts all-reduce skip predicate"; model line: Ling 2.5 1T; category: model implementation change; main diff: `python/sglang/srt/layers/moe/__init__.py`, `python/sglang/srt/layers/moe/utils.py`, `python/sglang/srt/models/bailing_moe.py`.
-- Key implementation:
-  - `python/sglang/srt/layers/moe/__init__.py` modified +2/-0
-  - `python/sglang/srt/layers/moe/utils.py` modified +33/-0; symbols: should_skip_post_experts_all_reduce
-  - `python/sglang/srt/models/bailing_moe.py` modified +5/-8
-  - `python/sglang/srt/models/bailing_moe_linear.py` modified +5/-6
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 17 files, +134/-132, 532 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "refactor(moe): centralize post-experts all-reduce skip predicate"; model line: Ling 2.5; category: model implementation change; main diff: `python/sglang/srt/layers/moe/utils.py`, `python/sglang/srt/models/sarvam_moe.py`, `python/sglang/srt/models/deepseek_v2.py`; technical summary: Covers "refactor(moe): centralize post-experts all-reduce skip predicate"; the main implementation surface is `python/sglang/srt/layers/moe/utils.py`, `python/sglang/srt/models/sarvam_moe.py`, `python/sglang/srt/models/deepseek_v2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/moe/utils.py` modified +33/-0 (33 lines); hunks: -346,6 +346,39 @@ def should_use_dp_reduce_scatterv():; symbols: should_use_dp_reduce_scatterv, should_skip_post_experts_all_reduce, speculative_moe_backend_context, touching `should_use_dp_reduce_scatterv, should_skip_post_experts_all_reduce, speculative_moe_backend_context`; `python/sglang/srt/models/sarvam_moe.py` modified +9/-16 (25 lines); hunks: -39,10 +39,7; -373,12 +370,10 @@ def forward_normal_dual_stream(; symbols: forward_normal_dual_stream, forward_normal, touching `forward_normal_dual_stream, forward_normal`; `python/sglang/srt/models/deepseek_v2.py` modified +9/-13 (22 lines); hunks: -85,7 +85,7; -651,12 +651,10 @@ def forward_normal_dual_stream(; symbols: forward_normal_dual_stream, _post_combine_hook, touching `forward_normal_dual_stream, _post_combine_hook`; `python/sglang/srt/models/glm4_moe.py` modified +9/-13 (22 lines); hunks: -61,7 +61,7; -594,12 +594,10 @@ def forward_normal_dual_stream(; symbols: forward_normal_dual_stream, forward_normal, touching `forward_normal_dual_stream, forward_normal`.
 - Code diff details:
-  - `python/sglang/srt/layers/moe/__init__.py` modified +2/-0
-  - `python/sglang/srt/layers/moe/utils.py` modified +33/-0
-  - `python/sglang/srt/models/bailing_moe.py` modified +5/-8
-  - `python/sglang/srt/models/bailing_moe_linear.py` modified +5/-6
+  - `python/sglang/srt/layers/moe/utils.py` modified +33/-0 (33 lines); hunks: -346,6 +346,39 @@ def should_use_dp_reduce_scatterv():; symbols: should_use_dp_reduce_scatterv, should_skip_post_experts_all_reduce, speculative_moe_backend_context
+  - `python/sglang/srt/models/sarvam_moe.py` modified +9/-16 (25 lines); hunks: -39,10 +39,7; -373,12 +370,10 @@ def forward_normal_dual_stream(; symbols: forward_normal_dual_stream, forward_normal
+  - `python/sglang/srt/models/deepseek_v2.py` modified +9/-13 (22 lines); hunks: -85,7 +85,7; -651,12 +651,10 @@ def forward_normal_dual_stream(; symbols: forward_normal_dual_stream, _post_combine_hook
+  - `python/sglang/srt/models/glm4_moe.py` modified +9/-13 (22 lines); hunks: -61,7 +61,7; -594,12 +594,10 @@ def forward_normal_dual_stream(; symbols: forward_normal_dual_stream, forward_normal
+  - `python/sglang/srt/models/qwen3_moe.py` modified +9/-13 (22 lines); hunks: -50,8 +50,7; -332,20 +331,17 @@ def forward_normal(; symbols: forward_normal
 - Key code excerpts:
 
 ```diff
-diff -- python/sglang/srt/layers/moe/__init__.py
-@@ -10,6 +10,7 @@
-     get_tbo_token_distribution_threshold,
-     initialize_moe_config,
-     is_tbo_enabled,
-+    should_skip_post_experts_all_reduce,
-     should_use_dp_reduce_scatterv,
-     should_use_flashinfer_cutlass_moe_fp4_allgather,
- )
-@@ -24,6 +25,7 @@
-     "get_moe_a2a_backend",
-     "get_moe_runner_backend",
-     "get_deepep_mode",
-+    "should_skip_post_experts_all_reduce",
-     "should_use_dp_reduce_scatterv",
 diff -- python/sglang/srt/layers/moe/utils.py
 @@ -346,6 +346,39 @@ def should_use_dp_reduce_scatterv():
-     )
-
-
 +def should_skip_post_experts_all_reduce(
 +    *,
 +    is_tp_path: bool,
 +    use_reduce_scatter: bool = False,
 +    should_allreduce_fusion: bool = False,
 +) -> bool:
-+    """Whether to skip the post-experts all-reduce (EP or TP) because a
-+    downstream component will fuse, replace, or absorb it.
-+
-+    Skip reasons, in order:
+diff -- python/sglang/srt/models/sarvam_moe.py
+@@ -39,10 +39,7 @@
+-from sglang.srt.layers.moe import (
+-    should_use_dp_reduce_scatterv,
+-    should_use_flashinfer_cutlass_moe_fp4_allgather,
+-)
++from sglang.srt.layers.moe import should_skip_post_experts_all_reduce
+@@ -373,12 +370,10 @@ def forward_normal_dual_stream(
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -85,7 +85,7 @@
 ```
+
 - Reviewed files:
-  - runtime: `python/sglang/srt/layers/moe/__init__.py` modified +2/-0; `python/sglang/srt/layers/moe/utils.py` modified +33/-0; `python/sglang/srt/models/bailing_moe.py` modified +5/-8; `python/sglang/srt/models/bailing_moe_linear.py` modified +5/-6; `python/sglang/srt/models/deepseek_v2.py` modified +9/-13; `python/sglang/srt/models/exaone_moe.py` modified +7/-5; `python/sglang/srt/models/glm4_moe.py` modified +9/-13; `python/sglang/srt/models/hunyuan_v3.py` modified +13/-7
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+  - runtime: `python/sglang/srt/layers/moe/utils.py` modified +33/-0; `python/sglang/srt/models/sarvam_moe.py` modified +9/-16; `python/sglang/srt/models/deepseek_v2.py` modified +9/-13; `python/sglang/srt/models/glm4_moe.py` modified +9/-13; `python/sglang/srt/models/qwen3_moe.py` modified +9/-13; `python/sglang/srt/models/hunyuan_v3.py` modified +13/-7
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/moe/__init__.py`, `python/sglang/srt/layers/moe/utils.py`, `python/sglang/srt/models/bailing_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #21126 - [4/N] Quantization Refactor: AWQ schemes and Kernel call and weight init split
 
 - Link: https://github.com/sgl-project/sglang/pull/21126
 - Status/date: merged / 2026-04-30
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 20 files, +1419/-1031, with 2590 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[4/N] Quantization Refactor: AWQ schemes and Kernel call and weight init split"; model line: Ling 2.5 1T; category: performance/backend optimization; main diff: `python/sglang/srt/hardware_backend/gpu/quantization/awq_kernels.py`, `python/sglang/srt/hardware_backend/npu/quantization/awq_kernels.py`, `python/sglang/srt/layers/linear.py`.
-- Key implementation:
-  - `python/sglang/srt/hardware_backend/gpu/quantization/awq_kernels.py` added +255/-0; symbols: _unsupported_awq_dequantize, AWQLinearKernel, __init__, process_weights_after_loading
-  - `python/sglang/srt/hardware_backend/npu/quantization/awq_kernels.py` added +156/-0; symbols: AWQAscendLinearKernel, __init__, process_weights_after_loading, apply
-  - `python/sglang/srt/layers/linear.py` modified +0/-3
-  - `python/sglang/srt/layers/quantization/__init__.py` modified +2/-3
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 20 files, +1419/-1031, 2590 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[4/N] Quantization Refactor: AWQ schemes and Kernel call and weight init split"; model line: Ling 2.5; category: model implementation change; main diff: `python/sglang/srt/layers/quantization/awq.py`, `python/sglang/srt/layers/quantization/awq/awq.py`, `python/sglang/srt/layers/quantization/awq/schemes/awq_moe.py`; technical summary: Covers "[4/N] Quantization Refactor: AWQ schemes and Kernel call and weight init split"; the main implementation surface is `python/sglang/srt/layers/quantization/awq.py`, `python/sglang/srt/layers/quantization/awq/awq.py`, `python/sglang/srt/layers/quantization/awq/schemes/awq_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/quantization/awq.py` removed +0/-966 (966 lines); hunks: -1,966 +0,0; symbols: is_layer_skipped_awq, AWQConfig, for, __init__, touching `is_layer_skipped_awq, AWQConfig, for`; `python/sglang/srt/layers/quantization/awq/awq.py` added +484/-0 (484 lines); hunks: -0,0 +1,484; symbols: is_layer_skipped_awq, AWQConfig, for, __init__, touching `is_layer_skipped_awq, AWQConfig, for`; `python/sglang/srt/layers/quantization/awq/schemes/awq_moe.py` added +156/-0 (156 lines); hunks: -0,0 +1,156; symbols: AWQMoEScheme, __init__, _init_kernel, create_weights, touching `AWQMoEScheme, __init__, _init_kernel`; `python/sglang/srt/layers/quantization/awq/schemes/awq_linear.py` added +110/-0 (110 lines); hunks: -0,0 +1,110; symbols: AWQLinearScheme, __init__, _init_kernel, create_weights, touching `AWQLinearScheme, __init__, _init_kernel`.
 - Code diff details:
-  - `python/sglang/srt/hardware_backend/gpu/quantization/awq_kernels.py` added +255/-0
-  - `python/sglang/srt/hardware_backend/npu/quantization/awq_kernels.py` added +156/-0
-  - `python/sglang/srt/layers/linear.py` modified +0/-3
-  - `python/sglang/srt/layers/quantization/__init__.py` modified +2/-3
+  - `python/sglang/srt/layers/quantization/awq.py` removed +0/-966 (966 lines); hunks: -1,966 +0,0; symbols: is_layer_skipped_awq, AWQConfig, for, __init__
+  - `python/sglang/srt/layers/quantization/awq/awq.py` added +484/-0 (484 lines); hunks: -0,0 +1,484; symbols: is_layer_skipped_awq, AWQConfig, for, __init__
+  - `python/sglang/srt/layers/quantization/awq/schemes/awq_moe.py` added +156/-0 (156 lines); hunks: -0,0 +1,156; symbols: AWQMoEScheme, __init__, _init_kernel, create_weights
+  - `python/sglang/srt/layers/quantization/awq/schemes/awq_linear.py` added +110/-0 (110 lines); hunks: -0,0 +1,110; symbols: AWQLinearScheme, __init__, _init_kernel, create_weights
+  - `python/sglang/srt/layers/quantization/awq/schemes/awq_marlin.py` added +105/-0 (105 lines); hunks: -0,0 +1,105; symbols: AWQMarlinLinearScheme, __init__, create_weights, process_weights_after_loading
 - Key code excerpts:
 
 ```diff
-diff -- python/sglang/srt/hardware_backend/gpu/quantization/awq_kernels.py
-@@ -0,0 +1,255 @@
+diff -- python/sglang/srt/layers/quantization/awq.py
+@@ -1,966 +0,0 @@
+-# SPDX-License-Identifier: Apache-2.0
+-from __future__ import annotations
+-import logging
+-import warnings
+-from typing import TYPE_CHECKING, Any, Dict, List, Optional
+-import torch
+diff -- python/sglang/srt/layers/quantization/awq/awq.py
+@@ -0,0 +1,484 @@
++# SPDX-License-Identifier: Apache-2.0
 +from __future__ import annotations
-+
-+from typing import TYPE_CHECKING, Optional
-+
++import logging
++import warnings
++from typing import TYPE_CHECKING, Any, Dict, List, Optional
 +import torch
-+
-+from sglang.srt.layers.moe import MoeRunner
-+from sglang.srt.layers.moe.moe_runner.marlin import MarlinMoeQuantInfo
-+from sglang.srt.layers.quantization.marlin_utils import (
-+    apply_awq_marlin_linear,
-+    awq_to_marlin_zero_points,
-+    marlin_make_empty_g_idx,
-+    marlin_make_workspace,
-diff -- python/sglang/srt/hardware_backend/npu/quantization/awq_kernels.py
+diff -- python/sglang/srt/layers/quantization/awq/schemes/awq_moe.py
 @@ -0,0 +1,156 @@
-+from __future__ import annotations
-+
-+from typing import TYPE_CHECKING, Optional
-+
-+import torch
-+
-+from sglang.srt.hardware_backend.npu.quantization.fused_moe_method_npu import (
-+    NPUW4A16Int4DynamicMoEMethod,
-+)
-+from sglang.srt.layers.quantization.utils import replace_parameter
-+
-+if TYPE_CHECKING:
-+    from sglang.srt.layers.moe.token_dispatcher import StandardDispatchOutput
 ```
+
 - Reviewed files:
-  - runtime: `python/sglang/srt/hardware_backend/gpu/quantization/awq_kernels.py` added +255/-0; `python/sglang/srt/hardware_backend/npu/quantization/awq_kernels.py` added +156/-0; `python/sglang/srt/layers/linear.py` modified +0/-3; `python/sglang/srt/layers/quantization/__init__.py` modified +2/-3; `python/sglang/srt/layers/quantization/auto_round.py` modified +5/-2; `python/sglang/srt/layers/quantization/awq.py` removed +0/-966; `python/sglang/srt/layers/quantization/awq/__init__.py` added +32/-0; `python/sglang/srt/layers/quantization/awq/awq.py` added +484/-0
-  - tests: `test/registered/quant/test_awq_dequant.py` modified +1/-1
-- Risk and verification: The diff includes test or benchmark paths; rerun those checks plus a minimal launch/accuracy smoke before changing this model again.
-
-### PR #24250 - [SKILL] Upgrade sglang profile and auto_benchmark skills
-
-- Link: https://github.com/sgl-project/sglang/pull/24250
-- Status/date: merged / 2026-05-02
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 100 files, +9334/-3813, with 13573 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[SKILL] Upgrade sglang profile and auto_benchmark skills"; model line: Ling 2.5 1T; category: docs/tests/CI; main diff: `agent-skills/llm-serving-auto-benchmark/SKILL.md`, `skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md`, `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml`.
-- Key implementation:
-  - `agent-skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
-  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0
-  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0
-  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0
-- Code diff details:
-  - `agent-skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
-  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0
-  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0
-  - `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0
-- Key code excerpts:
-
-```diff
-diff -- agent-skills/llm-serving-auto-benchmark/SKILL.md
-@@ -0,0 +1,527 @@
-+---
-+name: llm-serving-auto-benchmark
-+description: Framework-independent LLM serving benchmark skill for comparing SGLang, vLLM, TensorRT-LLM, or another serving framework. Use when a user wants to find the best deployment command for one model across multiple serving frameworks under the same workload, GPU budget, and latency SLA.
-+---
-+
-+# LLM Serving Auto Benchmark
-+
-+## Overview
-+
-+Use this skill to compare LLM serving frameworks such as SGLang, vLLM, and
-+TensorRT-LLM for the same model and workload.
-+
-+Use a config-driven workflow:
-diff -- skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md
-@@ -0,0 +1,17 @@
-+# Cookbook LLM Configs
-+
-+These configs define a framework-neutral LLM serving cookbook model set and translate each model into a three-framework run plan for SGLang, vLLM, and TensorRT-LLM.
-+
-+Scope:
-+- SGLang can preserve source-recipe `base_flags` and `search_space` where applicable; if a sequence limit is smaller than the default synthetic scenario, the config raises that limit so the shipped workload can run.
-+- vLLM uses framework-native `vllm serve` flags. The translation keeps the same model, tokenizer, dataset shape, GPU count, and high-impact batching/prefix-cache knobs; it does not copy SGLang-only parser or scheduler flags.
-+- TensorRT-LLM uses `trtllm-serve serve` with `backend: pytorch` fixed in `base_server_flags`. Backend choice is never searched.
-+- The two default random scenarios remain aligned pairs: `chat` uses `1000 -> 1000`, and `summarization` uses `8000 -> 1000`.
-+
-+Before a real run, capture the target framework `--help` output and validate the configs:
-+
-+```bash
-```
-- Reviewed files:
-  - docs/bench: `skills/llm-serving-auto-benchmark/configs/cookbook-llm/README.md` added +17/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-math-v2.yaml` added +130/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-r1-0528.yaml` added +133/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.1.yaml` added +132/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.2.yaml` added +132/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/deepseek-v3.yaml` added +133/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/devstral-small-2-24b-instruct-2512.yaml` added +123/-0; `skills/llm-serving-auto-benchmark/configs/cookbook-llm/ernie-4.5-21b-a3b-pt.yaml` added +117/-0
-  - other: `agent-skills/llm-serving-auto-benchmark/SKILL.md` added +527/-0
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+  - runtime: `python/sglang/srt/layers/quantization/awq.py` removed +0/-966; `python/sglang/srt/layers/quantization/awq/awq.py` added +484/-0; `python/sglang/srt/layers/quantization/awq/schemes/awq_moe.py` added +156/-0; `python/sglang/srt/layers/quantization/awq/schemes/awq_linear.py` added +110/-0; `python/sglang/srt/layers/quantization/awq/schemes/awq_marlin.py` added +105/-0; `python/sglang/srt/layers/quantization/awq/schemes/awq_cpu.py` renamed +35/-51
+- Risk and verification: The diff ships test coverage in `test/registered/quant/test_awq_dequant.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #24333 - nextn subclass owns post_load_weights is_nextn
 
 - Link: https://github.com/sgl-project/sglang/pull/24333
 - Status/date: merged / 2026-05-04
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 4 files, +30/-25, with 138 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "nextn subclass owns post_load_weights is_nextn"; model line: Ling 2.5 1T; category: model implementation change; main diff: `python/sglang/srt/model_loader/loader.py`, `python/sglang/srt/model_loader/utils.py`, `python/sglang/srt/models/bailing_moe_nextn.py`.
-- Key implementation:
-  - `python/sglang/srt/model_loader/loader.py` modified +15/-10; symbols: _post_load_weights
-  - `python/sglang/srt/model_loader/utils.py` modified +0/-12
-  - `python/sglang/srt/models/bailing_moe_nextn.py` modified +9/-3; symbols: post_load_weights
-  - `python/sglang/srt/models/deepseek_nextn.py` modified +6/-0; symbols: post_load_weights
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 4 files, +30/-25, 138 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "nextn subclass owns post_load_weights is_nextn"; model line: Ling 2.5; category: model implementation change; main diff: `python/sglang/srt/models/bailing_moe_nextn.py`, `python/sglang/srt/models/deepseek_nextn.py`, `python/sglang/srt/model_loader/loader.py`; technical summary: Covers "nextn subclass owns post_load_weights is_nextn"; the main implementation surface is `python/sglang/srt/models/bailing_moe_nextn.py`, `python/sglang/srt/models/deepseek_nextn.py`, `python/sglang/srt/model_loader/loader.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/bailing_moe_nextn.py` modified +9/-3 (12 lines); hunks: -217,7 +217,8 @@ def __init__(; -243,8 +244,13 @@ def set_embed_and_head(self, embed, head):; symbols: __init__, forward, set_embed_and_head, load_weights, touching `__init__, forward, set_embed_and_head`; `python/sglang/srt/models/deepseek_nextn.py` modified +6/-0 (6 lines); hunks: -313,5 +313,11 @@ def forward(; symbols: forward, load_weights, post_load_weights, touching `forward, load_weights, post_load_weights`; `python/sglang/srt/model_loader/loader.py` modified +15/-10 (25 lines); hunks: -78,7 +78,6; -286,6 +285,15 @@ def _initialize_model(; symbols: _initialize_model, _post_load_weights, BaseModelLoader, for, touching `_initialize_model, _post_load_weights, BaseModelLoader`; `python/sglang/srt/model_loader/utils.py` modified +0/-12 (12 lines); hunks: -247,18 +247,6 @@ def get_architecture_class_name(model_config: ModelConfig)...; symbols: get_architecture_class_name, post_load_weights, should_deepgemm_weight_requant_ue8m0, touching `get_architecture_class_name, post_load_weights, should_deepgemm_weight_requant_ue8m0`.
 - Code diff details:
-  - `python/sglang/srt/model_loader/loader.py` modified +15/-10
-  - `python/sglang/srt/model_loader/utils.py` modified +0/-12
-  - `python/sglang/srt/models/bailing_moe_nextn.py` modified +9/-3
-  - `python/sglang/srt/models/deepseek_nextn.py` modified +6/-0
+  - `python/sglang/srt/models/bailing_moe_nextn.py` modified +9/-3 (12 lines); hunks: -217,7 +217,8 @@ def __init__(; -243,8 +244,13 @@ def set_embed_and_head(self, embed, head):; symbols: __init__, forward, set_embed_and_head, load_weights
+  - `python/sglang/srt/models/deepseek_nextn.py` modified +6/-0 (6 lines); hunks: -313,5 +313,11 @@ def forward(; symbols: forward, load_weights, post_load_weights
+  - `python/sglang/srt/model_loader/loader.py` modified +15/-10 (25 lines); hunks: -78,7 +78,6; -286,6 +285,15 @@ def _initialize_model(; symbols: _initialize_model, _post_load_weights, BaseModelLoader, for
+  - `python/sglang/srt/model_loader/utils.py` modified +0/-12 (12 lines); hunks: -247,18 +247,6 @@ def get_architecture_class_name(model_config: ModelConfig)...; symbols: get_architecture_class_name, post_load_weights, should_deepgemm_weight_requant_ue8m0
 - Key code excerpts:
 
 ```diff
+diff -- python/sglang/srt/models/bailing_moe_nextn.py
+@@ -217,7 +217,8 @@ def __init__(
+-            self.post_load_weights_func = BailingMoEForCausalLM.post_load_weights
++            # V1 BailingMoeAttention is standard QKV (no kv_b_proj), no fixup needed.
++            self.post_load_weights_func = None
+@@ -243,8 +244,13 @@ def set_embed_and_head(self, embed, head):
+-    def post_load_weights(self, is_nextn=False, weight_names=None):
+-        self.post_load_weights_func(self, is_nextn=is_nextn, weight_names=weight_names)
+diff -- python/sglang/srt/models/deepseek_nextn.py
+@@ -313,5 +313,11 @@ def forward(
++    def post_load_weights(self, is_nextn=True, weight_names=None):
++        # `is_nextn` is pinned to True for the NextN subclass; the parameter is kept
++        # only because the mixin's `do_load_weights` calls `self.post_load_weights`
++        # with `is_nextn=...` as a kwarg.
++        super().post_load_weights(is_nextn=True, weight_names=weight_names)
 diff -- python/sglang/srt/model_loader/loader.py
 @@ -78,7 +78,6 @@
- )
- from sglang.srt.model_loader.utils import (
-     get_model_architecture,
 -    post_load_weights,
-     set_default_torch_dtype,
- )
-
-@@ -286,6 +285,15 @@ def _initialize_model(
-     return model_class(**kwargs)
-
-
-+def _post_load_weights(model: nn.Module) -> None:
-+    # Loaders that bypass `model.load_weights()` (dummy / sharded state / remote instance /
-diff -- python/sglang/srt/model_loader/utils.py
-@@ -247,18 +247,6 @@ def get_architecture_class_name(model_config: ModelConfig) -> str:
-     return get_model_architecture(model_config)[1]
-
-
--def post_load_weights(model: nn.Module, model_config: ModelConfig):
--    # Model weight loading consists of two stages:
--    # 1. Initial weight loading.
--    # 2. Post-processing of weights, including assigning specific member variables.
--    # For `dummy_init`, only the second stage is required.
--    if hasattr(model, "post_load_weights"):
--        if model_config.hf_config.architectures[0] == "DeepseekV3ForCausalLMNextN":
--            model.post_load_weights(is_nextn=True)
--        else:
--            model.post_load_weights()
 ```
+
 - Reviewed files:
-  - runtime: `python/sglang/srt/model_loader/loader.py` modified +15/-10; `python/sglang/srt/model_loader/utils.py` modified +0/-12; `python/sglang/srt/models/bailing_moe_nextn.py` modified +9/-3; `python/sglang/srt/models/deepseek_nextn.py` modified +6/-0
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+  - runtime: `python/sglang/srt/models/bailing_moe_nextn.py` modified +9/-3; `python/sglang/srt/models/deepseek_nextn.py` modified +6/-0; `python/sglang/srt/model_loader/loader.py` modified +15/-10; `python/sglang/srt/model_loader/utils.py` modified +0/-12
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/model_loader/loader.py`, `python/sglang/srt/model_loader/utils.py`, `python/sglang/srt/models/bailing_moe_nextn.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #24977 - fix gb envs in deployment guide
 
 - Link: https://github.com/sgl-project/sglang/pull/24977
 - Status/date: merged / 2026-05-11
-- Trace source: `git log --name-only -- <model-files>` or model-keyword supplement; this card was audited through the GitHub Pull Request files API.
-- Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, with 9 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "fix gb envs in deployment guide"; model line: Ling 2.5 1T; category: bug fix; main diff: `docs_new/src/snippets/autoregressive/ling-25-1t-deployment.jsx`.
-- Key implementation:
-  - `docs_new/src/snippets/autoregressive/ling-25-1t-deployment.jsx` modified +1/-1; symbols: envPrefix
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "fix gb envs in deployment guide"; model line: Ling 2.5; category: bug fix; main diff: `docs_new/src/snippets/autoregressive/ling-25-1t-deployment.jsx`; technical summary: Covers "fix gb envs in deployment guide"; the main implementation surface is `docs_new/src/snippets/autoregressive/ling-25-1t-deployment.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/src/snippets/autoregressive/ling-25-1t-deployment.jsx` modified +1/-1 (2 lines); hunks: -81,7 +81,7 @@ export const Ling251TDeployment = () => {.
 - Code diff details:
-  - `docs_new/src/snippets/autoregressive/ling-25-1t-deployment.jsx` modified +1/-1
+  - `docs_new/src/snippets/autoregressive/ling-25-1t-deployment.jsx` modified +1/-1 (2 lines); hunks: -81,7 +81,7 @@ export const Ling251TDeployment = () => {
 - Key code excerpts:
 
 ```diff
 diff -- docs_new/src/snippets/autoregressive/ling-25-1t-deployment.jsx
 @@ -81,7 +81,7 @@ export const Ling251TDeployment = () => {
-     const { hardware, parallelism, toolcall } = values;
-
-     const isGB = hardware === 'gb200' || hardware === 'gb300';
 -    const envPrefix = isGB ? 'NCCL_IB_DISABLE=1 ' : '';
 +    const envPrefix = isGB ? 'NCCL_MNNVL_ENABLE=1 NCCL_CUMEM_ENABLE=1 ' : '';
-
-     let tp, pp;
-     if (isGB && parallelism === 'tp8') {
 ```
+
 - Reviewed files:
-  - docs/bench: `docs_new/src/snippets/autoregressive/ling-25-1t-deployment.jsx` modified +1/-1
-- Risk and verification: The diff does not expose direct test files; future work should add a minimal launch, tokenizer/MM processor, or accuracy smoke.
+  - docs: `docs_new/src/snippets/autoregressive/ling-25-1t-deployment.jsx` modified +1/-1
+- Risk and verification: This is mostly docs/examples in `docs_new/src/snippets/autoregressive/ling-25-1t-deployment.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #23837 - Add Ling_2_6
+
+- Link: https://github.com/sgl-project/sglang/pull/23837
+- Status/date: merged / 2026-05-27
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 12 files, +813/-68, 1107 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Add Ling_2_6"; model line: Ling 2.5; category: performance/backend optimization; main diff: `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=256,N=512,device_name=NVIDIA_H20-3e_down.json`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=256,N=512,device_name=NVIDIA_H20_down.json`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=256,N=512,device_name=NVIDIA_H20-3e.json`; technical summary: Covers "Add Ling_2_6"; the main implementation surface is `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=256,N=512,device_name=NVIDIA_H20-3e_down.json`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=256,N=512,device_name=NVIDIA_H20_down.json`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=256,N=512,device_name=NVIDIA_H20-3e.json`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=256,N=512,device_name=NVIDIA_H20-3e_down.json` added +164/-0 (164 lines); hunks: -0,0 +1,164; `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=256,N=512,device_name=NVIDIA_H20_down.json` added +164/-0 (164 lines); hunks: -0,0 +1,164; `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=256,N=512,device_name=NVIDIA_H20-3e.json` added +146/-0 (146 lines); hunks: -0,0 +1,146; `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=256,N=512,device_name=NVIDIA_H20.json` added +146/-0 (146 lines); hunks: -0,0 +1,146.
+- Code diff details:
+  - `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=256,N=512,device_name=NVIDIA_H20-3e_down.json` added +164/-0 (164 lines); hunks: -0,0 +1,164
+  - `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=256,N=512,device_name=NVIDIA_H20_down.json` added +164/-0 (164 lines); hunks: -0,0 +1,164
+  - `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=256,N=512,device_name=NVIDIA_H20-3e.json` added +146/-0 (146 lines); hunks: -0,0 +1,146
+  - `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=256,N=512,device_name=NVIDIA_H20.json` added +146/-0 (146 lines); hunks: -0,0 +1,146
+  - `python/sglang/srt/models/bailing_moe_linear.py` modified +78/-34 (112 lines); hunks: -57,6 +57,7; -243,9 +244,11 @@ def __init__(; symbols: __init__, forward
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=256,N=512,device_name=NVIDIA_H20-3e_down.json
+@@ -0,0 +1,164 @@
++{
++    "1": {
++        "BLOCK_SIZE_M": 16,
++        "BLOCK_SIZE_N": 32,
++        "BLOCK_SIZE_K": 256,
++        "GROUP_SIZE_M": 1,
+diff -- python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=256,N=512,device_name=NVIDIA_H20_down.json
+@@ -0,0 +1,164 @@
++{
++    "1": {
++        "BLOCK_SIZE_M": 16,
++        "BLOCK_SIZE_N": 32,
++        "BLOCK_SIZE_K": 256,
++        "GROUP_SIZE_M": 1,
+diff -- python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=256,N=512,device_name=NVIDIA_H20-3e.json
+@@ -0,0 +1,146 @@
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=256,N=512,device_name=NVIDIA_H20-3e_down.json` added +164/-0; `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=256,N=512,device_name=NVIDIA_H20_down.json` added +164/-0; `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=256,N=512,device_name=NVIDIA_H20-3e.json` added +146/-0; `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=256,N=512,device_name=NVIDIA_H20.json` added +146/-0; `python/sglang/srt/models/bailing_moe_linear.py` modified +78/-34; `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py` modified +80/-24
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/layers/attention/linear/lightning_backend.py`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_5_1/E=256,N=512,device_name=NVIDIA_H20-3e.json`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #26474 - [HotFix][Ling 2.6] Fix HybridLinearAttn dispatcher for Ling-2.6
+
+- Link: https://github.com/sgl-project/sglang/pull/26474
+- Status/date: merged / 2026-05-29
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +70/-1, 88 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[HotFix][Ling 2.6] Fix HybridLinearAttn dispatcher for Ling-2.6"; model line: Ling 2.5; category: bug fix; main diff: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/models/bailing_moe_linear.py`, `test/registered/8-gpu-models/test_ling_2_6_flash.py`; technical summary: Covers "[HotFix][Ling 2.6] Fix HybridLinearAttn dispatcher for Ling-2.6"; the main implementation surface is `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/models/bailing_moe_linear.py`, `test/registered/8-gpu-models/test_ling_2_6_flash.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +10/-1 (11 lines); hunks: -811,9 +811,18 @@ def __init__(; symbols: __init__, _is_full_attn, touching `__init__, _is_full_attn`; `python/sglang/srt/models/bailing_moe_linear.py` modified +6/-0 (6 lines); hunks: -508,6 +508,12 @@ def __init__(; symbols: __init__, touching `__init__`; `test/registered/8-gpu-models/test_ling_2_6_flash.py` added +54/-0 (54 lines); hunks: -0,0 +1,54; symbols: TestLing26Flash, touching `TestLing26Flash`.
+- Code diff details:
+  - `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +10/-1 (11 lines); hunks: -811,9 +811,18 @@ def __init__(; symbols: __init__, _is_full_attn
+  - `python/sglang/srt/models/bailing_moe_linear.py` modified +6/-0 (6 lines); hunks: -508,6 +508,12 @@ def __init__(; symbols: __init__
+  - `test/registered/8-gpu-models/test_ling_2_6_flash.py` added +54/-0 (54 lines); hunks: -0,0 +1,54; symbols: TestLing26Flash
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py
+@@ -811,9 +811,18 @@ def __init__(
+-        # Dispatch by the layer's runtime type
++        # Explicit linear-attention subclass → strong linear signal (KDA, GDN,
++        # Qwen3-Next, Qwen3.5 main linear layers).
++        # Some hybrid models (Ling-2.5/2.6) wrap their linear layers in plain
++        # `RadixAttention` rather than `RadixLinearAttention`. Those wrappers
++        # set `_is_linear_attention=True` on the attn module so we can
+diff -- python/sglang/srt/models/bailing_moe_linear.py
+@@ -508,6 +508,12 @@ def __init__(
++        # Marker for HybridLinearAttnBackend._is_full_attn: Bailing wraps
++        # linear-attention layers in a plain RadixAttention, so the
++        # dispatcher can't tell from the type alone that this is a linear
++        # layer (would otherwise default to the full-attn backend, e.g. the
++        # same way MTP/NEXTN draft layers are routed).
++        self.attn._is_linear_attention = True
+diff -- test/registered/8-gpu-models/test_ling_2_6_flash.py
+@@ -0,0 +1,54 @@
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +10/-1; `python/sglang/srt/models/bailing_moe_linear.py` modified +6/-0
+  - tests: `test/registered/8-gpu-models/test_ling_2_6_flash.py` added +54/-0
+- Risk and verification: The diff ships test coverage in `test/registered/8-gpu-models/test_ling_2_6_flash.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #26623 - Fix hybrid linear attention misrouting plain-RadixAttention linear layers to the full backend (Ring-2.5-1T)
+
+- Link: https://github.com/sgl-project/sglang/pull/26623
+- Status/date: merged / 2026-06-02
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +10/-21, 62 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Fix hybrid linear attention misrouting plain-RadixAttention linear layers to the full backend (Ring-2.5-1T)"; model line: Ling 2.5; category: bug fix; main diff: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/models/bailing_moe_linear.py`, `test/registered/8-gpu-models/test_ling_2_6_flash.py`; technical summary: Covers "Fix hybrid linear attention misrouting plain-RadixAttention linear layers to the full backend (Ring-2.5-1T)"; the main implementation surface is `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/models/bailing_moe_linear.py`, `test/registered/8-gpu-models/test_ling_2_6_flash.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +8/-13 (21 lines); hunks: -825,22 +825,17 @@ def __init__(; symbols: __init__, _is_full_attn, touching `__init__, _is_full_attn`; `python/sglang/srt/models/bailing_moe_linear.py` modified +0/-6 (6 lines); hunks: -508,12 +508,6 @@ def __init__(; symbols: __init__, touching `__init__`; `test/registered/8-gpu-models/test_ling_2_6_flash.py` modified +2/-2 (4 lines); hunks: -3,7 +3,7; -12,7 +12,7; symbols: TestLing26Flash, touching `TestLing26Flash`.
+- Code diff details:
+  - `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +8/-13 (21 lines); hunks: -825,22 +825,17 @@ def __init__(; symbols: __init__, _is_full_attn
+  - `python/sglang/srt/models/bailing_moe_linear.py` modified +0/-6 (6 lines); hunks: -508,12 +508,6 @@ def __init__(; symbols: __init__
+  - `test/registered/8-gpu-models/test_ling_2_6_flash.py` modified +2/-2 (4 lines); hunks: -3,7 +3,7; -12,7 +12,7; symbols: TestLing26Flash
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py
+@@ -825,22 +825,17 @@ def __init__(
+-        self, layer: Optional[RadixAttention], layer_id: Optional[int] = None
++        self,
++        layer: Optional[Union[RadixAttention, RadixLinearAttention]],
++        layer_id: Optional[int] = None,
+-        # Explicit linear-attention subclass → strong linear signal (KDA, GDN,
+-        # Qwen3-Next, Qwen3.5 main linear layers).
+diff -- python/sglang/srt/models/bailing_moe_linear.py
+@@ -508,12 +508,6 @@ def __init__(
+-        # Marker for HybridLinearAttnBackend._is_full_attn: Bailing wraps
+-        # linear-attention layers in a plain RadixAttention, so the
+-        # dispatcher can't tell from the type alone that this is a linear
+-        # layer (would otherwise default to the full-attn backend, e.g. the
+-        # same way MTP/NEXTN draft layers are routed).
+-        self.attn._is_linear_attention = True
+diff -- test/registered/8-gpu-models/test_ling_2_6_flash.py
+@@ -3,7 +3,7 @@
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +8/-13; `python/sglang/srt/models/bailing_moe_linear.py` modified +0/-6
+  - tests: `test/registered/8-gpu-models/test_ling_2_6_flash.py` modified +2/-2
+- Risk and verification: The diff ships test coverage in `test/registered/8-gpu-models/test_ling_2_6_flash.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #27116 - Revert "Fix hybrid linear attention misrouting plain-RadixAttention linear layers to the full backend (Ring-2.5-1T)"
+
+- Link: https://github.com/sgl-project/sglang/pull/27116
+- Status/date: merged / 2026-06-03
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +19/-8, 44 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Revert "Fix hybrid linear attention misrouting plain-RadixAttention linear layers to the full backend (Ring-2.5-1T)""; model line: Ling 2.5; category: bug fix; main diff: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/models/bailing_moe_linear.py`; technical summary: Covers "Revert "Fix hybrid linear attention misrouting plain-RadixAttention linear layers to the full backend (Ring-2.5-1T)""; the main implementation surface is `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/models/bailing_moe_linear.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +13/-8 (21 lines); hunks: -782,17 +782,22 @@ def __init__(; symbols: __init__, _is_full_attn, touching `__init__, _is_full_attn`; `python/sglang/srt/models/bailing_moe_linear.py` modified +6/-0 (6 lines); hunks: -508,6 +508,12 @@ def __init__(; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +13/-8 (21 lines); hunks: -782,17 +782,22 @@ def __init__(; symbols: __init__, _is_full_attn
+  - `python/sglang/srt/models/bailing_moe_linear.py` modified +6/-0 (6 lines); hunks: -508,6 +508,12 @@ def __init__(; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py
+@@ -782,17 +782,22 @@ def __init__(
+-        self,
+-        layer: Optional[Union[RadixAttention, RadixLinearAttention]],
+-        layer_id: Optional[int] = None,
++        self, layer: Optional[RadixAttention], layer_id: Optional[int] = None
+-        # RadixLinearAttention is unambiguously a linear-attention layer.
+-        # Everything else (including plain RadixAttention) must be classified by
+diff -- python/sglang/srt/models/bailing_moe_linear.py
+@@ -508,6 +508,12 @@ def __init__(
++        # Marker for HybridLinearAttnBackend._is_full_attn: Bailing wraps
++        # linear-attention layers in a plain RadixAttention, so the
++        # dispatcher can't tell from the type alone that this is a linear
++        # layer (would otherwise default to the full-attn backend, e.g. the
++        # same way MTP/NEXTN draft layers are routed).
++        self.attn._is_linear_attention = True
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +13/-8; `python/sglang/srt/models/bailing_moe_linear.py` modified +6/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/models/bailing_moe_linear.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #27120 - Fix hybrid linear attention dispatch by layer id with draft-worker awareness
+
+- Link: https://github.com/sgl-project/sglang/pull/27120
+- Status/date: merged / 2026-06-03
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +5/-23, 56 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Fix hybrid linear attention dispatch by layer id with draft-worker awareness"; model line: Ling 2.5; category: bug fix; main diff: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/layers/attention/attention_registry.py`, `python/sglang/srt/models/bailing_moe_linear.py`; technical summary: Covers "Fix hybrid linear attention dispatch by layer id with draft-worker awareness"; the main implementation surface is `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/layers/attention/attention_registry.py`, `python/sglang/srt/models/bailing_moe_linear.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +0/-16 (16 lines); hunks: -16,7 +16,6; -784,21 +783,6 @@ def __init__(; symbols: __init__, _is_full_attn, touching `__init__, _is_full_attn`; `python/sglang/srt/layers/attention/attention_registry.py` modified +5/-1 (6 lines); hunks: -314,7 +314,11 @@ def attn_backend_wrapper(runner: "ModelRunner", full_attn_b...; symbols: attn_backend_wrapper, touching `attn_backend_wrapper`; `python/sglang/srt/models/bailing_moe_linear.py` modified +0/-6 (6 lines); hunks: -508,12 +508,6 @@ def __init__(; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +0/-16 (16 lines); hunks: -16,7 +16,6; -784,21 +783,6 @@ def __init__(; symbols: __init__, _is_full_attn
+  - `python/sglang/srt/layers/attention/attention_registry.py` modified +5/-1 (6 lines); hunks: -314,7 +314,11 @@ def attn_backend_wrapper(runner: "ModelRunner", full_attn_b...; symbols: attn_backend_wrapper
+  - `python/sglang/srt/models/bailing_moe_linear.py` modified +0/-6 (6 lines); hunks: -508,12 +508,6 @@ def __init__(; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py
+@@ -16,7 +16,6 @@
+-from sglang.srt.layers.radix_linear_attention import RadixLinearAttention
+@@ -784,21 +783,6 @@ def __init__(
+-        # Explicit linear-attention subclass → strong linear signal (KDA, GDN,
+-        # Qwen3-Next, Qwen3.5 main linear layers).
+-        if isinstance(layer, RadixLinearAttention):
+-            return False
+diff -- python/sglang/srt/layers/attention/attention_registry.py
+@@ -314,7 +314,11 @@ def attn_backend_wrapper(runner: "ModelRunner", full_attn_backend: "AttentionBac
+-        full_attn_layers = cfg.full_attention_layer_ids
++        if runner.is_draft_worker:
++            # FIXME: we assume that MTP/NEXTN always use full-attention.
++            full_attn_layers = [0]
++        else:
++            full_attn_layers = cfg.full_attention_layer_ids
+diff -- python/sglang/srt/models/bailing_moe_linear.py
+@@ -508,12 +508,6 @@ def __init__(
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +0/-16; `python/sglang/srt/layers/attention/attention_registry.py` modified +5/-1; `python/sglang/srt/models/bailing_moe_linear.py` modified +0/-6
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/attention/attention_registry.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/models/bailing_moe_linear.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #23906 - [Refactor] Cuda Graph Runner/Backend Refactor
+
+- Link: https://github.com/sgl-project/sglang/pull/23906
+- Status/date: merged / 2026-06-10
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 160 files, +5197/-3068, 12233 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Refactor] Cuda Graph Runner/Backend Refactor"; model line: Ling 2.5; category: performance/backend optimization; main diff: `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py`; technical summary: Covers "[Refactor] Cuda Graph Runner/Backend Refactor"; the main implementation surface is `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` removed +0/-860 (860 lines); hunks: -1,860 +0,0; symbols: freeze_gc, _to_torch, patch_model, get_global_graph_memory_pool, touching `freeze_gc, _to_torch, patch_model`; `python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py` added +846/-0 (846 lines); hunks: -0,0 +1,846; symbols: PrefillCudaGraphRunner, __init__, _is_mamba_track_enabled, _cache_loc_dtype, touching `PrefillCudaGraphRunner, __init__, _is_mamba_track_enabled`; `python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py` renamed +294/-463 (757 lines); hunks: -1,4 +1,4; -11,33 +11,36; symbols: _make_graph_key, build_replay_fb_view, _allocate_decode_buffers, get_is_capture_mode, touching `_make_graph_key, build_replay_fb_view, _allocate_decode_buffers`; `python/sglang/srt/model_executor/breakable_cuda_graph_runner.py` removed +0/-541 (541 lines); hunks: -1,541 +0,0; symbols: BreakableCudaGraphRunner, __init__, _has_inactive_dp_rank, _init_buffers, touching `BreakableCudaGraphRunner, __init__, _has_inactive_dp_rank`.
+- Code diff details:
+  - `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` removed +0/-860 (860 lines); hunks: -1,860 +0,0; symbols: freeze_gc, _to_torch, patch_model, get_global_graph_memory_pool
+  - `python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py` added +846/-0 (846 lines); hunks: -0,0 +1,846; symbols: PrefillCudaGraphRunner, __init__, _is_mamba_track_enabled, _cache_loc_dtype
+  - `python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py` renamed +294/-463 (757 lines); hunks: -1,4 +1,4; -11,33 +11,36; symbols: _make_graph_key, build_replay_fb_view, _allocate_decode_buffers, get_is_capture_mode
+  - `python/sglang/srt/model_executor/breakable_cuda_graph_runner.py` removed +0/-541 (541 lines); hunks: -1,541 +0,0; symbols: BreakableCudaGraphRunner, __init__, _has_inactive_dp_rank, _init_buffers
+  - `python/sglang/srt/model_executor/runner_utils/buffers.py` added +442/-0 (442 lines); hunks: -0,0 +1,442; symbols: _grouped_foreach_copy_, foreach_copy, DecodeInputBuffers, create
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py
+@@ -1,860 +0,0 @@
+-# Copyright 2023-2024 SGLang Team
+-# Licensed under the Apache License, Version 2.0 (the "License");
+-# you may not use this file except in compliance with the License.
+-# You may obtain a copy of the License at
+-#
+-#     http://www.apache.org/licenses/LICENSE-2.0
+diff -- python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py
+@@ -0,0 +1,846 @@
++# Copyright 2023-2026 SGLang Team
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
+diff -- python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py
+@@ -1,4 +1,4 @@
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` removed +0/-860; `python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py` added +846/-0; `python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py` renamed +294/-463; `python/sglang/srt/model_executor/breakable_cuda_graph_runner.py` removed +0/-541; `python/sglang/srt/model_executor/runner_utils/buffers.py` added +442/-0; `python/sglang/srt/model_executor/runner_backend/tc_piecewise_cuda_graph_backend.py` added +225/-0
+- Risk and verification: The diff ships test coverage in `python/sglang/test/doc_patch.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dense_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsa_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsv4_attention.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #28567 - Add get_parallel(): a structured accessor for parallel-topology state
+
+- Link: https://github.com/sgl-project/sglang/pull/28567
+- Status/date: merged / 2026-06-18
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 184 files, +1865/-1727, 8932 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Add get_parallel(): a structured accessor for parallel-topology state"; model line: Ling 2.5; category: model support/runtime entry; main diff: `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py`; technical summary: Covers "Add get_parallel(): a structured accessor for parallel-topology state"; the main implementation surface is `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/apertus.py` modified +686/-687 (1373 lines); hunks: -1,687 +1,686; symbols: ApertusMLP, __init__, forward, ApertusAttention, touching `ApertusMLP, __init__, forward`; `python/sglang/srt/models/solar.py` modified +28/-27 (55 lines); hunks: -1,37 +1,14; -54,6 +31,30; symbols: __init__, forward, load_kv_cache_scales, touching `__init__, forward, load_kv_cache_scales`; `python/sglang/srt/models/gpt_oss.py` modified +17/-24 (41 lines); hunks: -28,21 +28,13; -76,6 +68,7; symbols: _resolve_moe_input_pad_multiple, __init__, touching `_resolve_moe_input_pad_multiple, __init__`; `python/sglang/srt/models/deepseek_v2.py` modified +14/-23 (37 lines); hunks: -47,9 +47,7; -72,12 +70,6; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `python/sglang/srt/models/apertus.py` modified +686/-687 (1373 lines); hunks: -1,687 +1,686; symbols: ApertusMLP, __init__, forward, ApertusAttention
+  - `python/sglang/srt/models/solar.py` modified +28/-27 (55 lines); hunks: -1,37 +1,14; -54,6 +31,30; symbols: __init__, forward, load_kv_cache_scales
+  - `python/sglang/srt/models/gpt_oss.py` modified +17/-24 (41 lines); hunks: -28,21 +28,13; -76,6 +68,7; symbols: _resolve_moe_input_pad_multiple, __init__
+  - `python/sglang/srt/models/deepseek_v2.py` modified +14/-23 (37 lines); hunks: -47,9 +47,7; -72,12 +70,6; symbols: __init__
+  - `python/sglang/srt/layers/communicator.py` modified +13/-19 (32 lines); hunks: -23,8 +23,6; -44,12 +42,7; symbols: apply_aiter_all_reduce_fusion, init_context, should_fuse_mlp_allreduce_with_next_layer, is_same_group_size
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/apertus.py
+@@ -1,687 +1,686 @@
+-# SPDX-License-Identifier: Apache-2.0
+-# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
+-# Copyright 2025 The SwissAI Initiative
+-# Copyright 2023-2024 SGLang Team
+-# Licensed under the Apache License, Version 2.0 (the "License");
+-# you may not use this file except in compliance with the License.
+diff -- python/sglang/srt/models/solar.py
+@@ -1,37 +1,14 @@
+-# Adapted from
+-# https://github.com/huggingface/transformers/blob/v4.28.0/src/transformers/models/llama/modeling_llama.py
+-# Copyright 2023 The vLLM team.
+-# Copyright 2022 EleutherAI and the HuggingFace Inc. team. All rights reserved.
+-#
+-# This code is based on EleutherAI's GPT-NeoX library and the GPT-NeoX
+diff -- python/sglang/srt/models/gpt_oss.py
+@@ -28,21 +28,13 @@
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/apertus.py` modified +686/-687; `python/sglang/srt/models/solar.py` modified +28/-27; `python/sglang/srt/models/gpt_oss.py` modified +17/-24; `python/sglang/srt/models/deepseek_v2.py` modified +14/-23; `python/sglang/srt/layers/communicator.py` modified +13/-19; `python/sglang/srt/models/qwen3_moe.py` modified +12/-18
+- Risk and verification: The diff ships test coverage in `python/sglang/test/kits/attention_unittest/attention_methods/dense_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsa_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsv4_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dual_chunk_attention.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+## Gap-Closure Notes
+
+- Acceptance rule: every PR card must keep trace source, diff scope, implementation notes, code excerpts, reviewed files, and verification risk.
+- If new model files fall outside the current filters, add the file filter first and rerun the same `git log --name-only -- <model-files>` trace.

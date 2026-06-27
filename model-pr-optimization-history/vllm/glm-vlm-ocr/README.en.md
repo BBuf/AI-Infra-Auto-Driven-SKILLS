@@ -1,30 +1,5 @@
 # vllm GLM VLM/OCR Model PR Optimization History
 
-## 2026-06-26 Latest Source Scan
-
-Rechecked vLLM upstream `vllm-project/vllm@abc71548ef029132c3316b902207f254a246d593` against the tracked files listed below.
-The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-05`.
-
-Result: 2 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
-
-| Merged | PR | Title | Tracked files touched |
-| --- | --- | --- | --- |
-| 2026-06-16 | [#43586](https://github.com/vllm-project/vllm/pull/43586) | [MM][Perf][CG] Support dual-path ViT full CUDA graph for DeepSeek-OCR | `glm4_1v.py` |
-| 2026-06-09 | [#40576](https://github.com/vllm-project/vllm/pull/40576) | [MM][Perf][CG] Support ViT full CUDA graph for glm4_1v image and video inference | `glm4_1v.py` |
-
-## 2026-06-05 PR Backfill Audit
-
-Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 5 additional PR-numbered merge(s) touched the tracked implementation files after the previous freshness cutoff (2026-03-26). These are not yet reflected in the timeline / diff-audit cards below and should be folded in on the next full regeneration.
-
-| Merged | PR | Title | Tracked files touched |
-| --- | --- | --- | --- |
-| 2026-06-05 | [#43167](https://github.com/vllm-project/vllm/pull/43167) | Remove KV cache scale boilerplate from model weight loading methods | `glm_ocr_mtp.py` |
-| 2026-05-29 | [#43575](https://github.com/vllm-project/vllm/pull/43575) | [feat] add GlmgaProcessor specific logits in `glm4_1v.py` | `glm4_1v.py` |
-| 2026-05-19 | [#42347](https://github.com/vllm-project/vllm/pull/42347) | [Perf][4/n] Eliminate various GPU<->CPU syncs | `glm4_1v.py` |
-| 2026-04-21 | [#39986](https://github.com/vllm-project/vllm/pull/39986) | [Multimodal] Add PyAV video backend for concurrent video decoding | `test_glm4_1v.py` |
-| 2026-03-25 | [#35182](https://github.com/vllm-project/vllm/pull/35182) | [Misc] Reorganize inputs | `glm4_1v.py`, `glm4v.py` |
-
-
 ## Implementation File Coverage
 
 | File | Git-traced PRs |
@@ -39,8 +14,8 @@ Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 5 additional PR-n
 ## PR Coverage Summary
 
 - Git-traced PRs: 6
-- Extra PRs preserved from existing docs: 3
-- Total PRs in this document: 9
+- Extra PRs preserved from existing docs: 10
+- Total PRs in this document: 16
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -56,7 +31,14 @@ Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 5 additional PR-n
 | 2026-01-26 | [#33005](https://github.com/vllm-project/vllm/pull/33005) | merged | [GLM-OCR] GLM-OCR with MTP Support | `vllm/model_executor/models/glm_ocr.py`, `vllm/model_executor/models/glm_ocr_mtp.py`, `vllm/model_executor/models/glm4_1v.py` |
 | 2026-01-29 | [#33350](https://github.com/vllm-project/vllm/pull/33350) | merged | [Bugfix] Fix broken GLM-OCR initialization | `vllm/model_executor/models/glm_ocr.py` |
 | 2026-02-13 | [#34483](https://github.com/vllm-project/vllm/pull/34483) | merged | [Bugfix] Fix encoder cache underestimation for GLM-4V/GLM-OCR single image | `vllm/model_executor/models/glm4_1v.py` |
+| 2026-03-25 | [#35182](https://github.com/vllm-project/vllm/pull/35182) | merged | [Misc] Reorganize inputs | `vllm/multimodal/inputs.py`, `vllm/entrypoints/pooling/score/serving.py`, `vllm/entrypoints/serve/render/serving.py` |
 | 2026-03-26 | [#37962](https://github.com/vllm-project/vllm/pull/37962) | merged | [bug-fix] GLM OCR Patch Merger context_dim | `vllm/model_executor/models/glm_ocr.py`, `vllm/model_executor/models/glm4_1v.py` |
+| 2026-04-22 | [#39986](https://github.com/vllm-project/vllm/pull/39986) | merged | [Multimodal] Add PyAV video backend for concurrent video decoding | `vllm/multimodal/video.py`, `tests/multimodal/test_video.py`, `tests/models/multimodal/processing/test_glm4_1v.py` |
+| 2026-05-19 | [#42347](https://github.com/vllm-project/vllm/pull/42347) | merged | [Perf][4/n] Eliminate various GPU CPU syncs | `vllm/model_executor/models/utils.py`, `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/granite_speech.py` |
+| 2026-05-29 | [#43575](https://github.com/vllm-project/vllm/pull/43575) | merged | [feat] add GlmgaProcessor specific logits in `glm4_1v.py` | `vllm/model_executor/models/glm4_1v.py`, `vllm/multimodal/video.py`, `tests/models/registry.py` |
+| 2026-06-05 | [#43167](https://github.com/vllm-project/vllm/pull/43167) | merged | Remove KV cache scale boilerplate from model weight loading methods | `tests/model_executor/test_eagle_quantization.py`, `vllm/model_executor/models/gpt_oss.py`, `vllm/model_executor/layers/quantization/kv_cache.py` |
+| 2026-06-09 | [#40576](https://github.com/vllm-project/vllm/pull/40576) | merged | [MM][Perf][CG] Support ViT full CUDA graph for glm4_1v image and video inference | `vllm/model_executor/models/glm4_1v.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`, `docs/design/cuda_graphs_multimodal.md` |
+| 2026-06-16 | [#43586](https://github.com/vllm-project/vllm/pull/43586) | merged | [MM][Perf][CG] Support dual-path ViT full CUDA graph for DeepSeek-OCR | `vllm/model_executor/models/deepseek_ocr.py`, `docs/design/cuda_graphs_multimodal.md`, `tests/models/multimodal/generation/test_vit_cudagraph.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -66,7 +48,7 @@ Rechecked vllm upstream `origin/main@c66b19800` on 2026-06-05; 5 additional PR-n
 - Status/date: merged / 2024-10-11
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +776/-72, 1059 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Model] Add GLM-4v support and meet vllm==0.6.2"; model line: GLM VLM/OCR; category: model support/runtime entry; main diff: `vllm/model_executor/models/chatglm.py`, `vllm/model_executor/models/glm4_vision_encoder.py`, `tests/models/decoder_only/vision_language/test_glm4.py`; technical summary: Covers "[Model] Add GLM-4v support and meet vllm==0.6.2"; the main implementation surface is `vllm/model_executor/models/chatglm.py`, `vllm/model_executor/models/glm4_vision_encoder.py`, `tests/models/decoder_only/vision_language/test_glm4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "[Model] Add GLM-4v support and meet vllm==0.6.2"; model line: GLM VLM/OCR; category: docs/tests/CI; main diff: `vllm/model_executor/models/chatglm.py`, `vllm/model_executor/models/glm4_vision_encoder.py`, `tests/models/decoder_only/vision_language/test_glm4.py`; technical summary: Covers "[Model] Add GLM-4v support and meet vllm==0.6.2"; the main implementation surface is `vllm/model_executor/models/chatglm.py`, `vllm/model_executor/models/glm4_vision_encoder.py`, `tests/models/decoder_only/vision_language/test_glm4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/chatglm.py` modified +298/-52 (350 lines); hunks: -1,42 +1,229; -127,7 +314,7 @@ class GLMMLP(nn.Module):; symbols: calculate_image_placeholder, mm_input_mapper_for_glmv, merge_glm_vision_embeddings, GLMImagePixelInputs, touching `calculate_image_placeholder, mm_input_mapper_for_glmv, merge_glm_vision_embeddings`; `vllm/model_executor/models/glm4_vision_encoder.py` added +298/-0 (298 lines); hunks: -0,0 +1,298; symbols: PatchEmbedding, __init__, forward, Attention, touching `PatchEmbedding, __init__, forward`; `tests/models/decoder_only/vision_language/test_glm4.py` added +133/-0 (133 lines); hunks: -0,0 +1,133; symbols: run_test, processor, test_models, touching `run_test, processor, test_models`; `vllm/transformers_utils/tokenizer.py` modified +21/-18 (39 lines); hunks: -59,6 +59,26 @@ def __len__(self):; -143,24 +163,7 @@ def get_tokenizer(; symbols: __len__, patch_padding_side, _pad, get_tokenizer, touching `__len__, patch_padding_side, _pad`.
 - Code diff details:
   - `vllm/model_executor/models/chatglm.py` modified +298/-52 (350 lines); hunks: -1,42 +1,229; -127,7 +314,7 @@ class GLMMLP(nn.Module):; symbols: calculate_image_placeholder, mm_input_mapper_for_glmv, merge_glm_vision_embeddings, GLMImagePixelInputs
@@ -315,6 +297,47 @@ diff -- vllm/model_executor/models/glm4_1v.py
   - runtime: `vllm/model_executor/models/glm4_1v.py` modified +22/-2
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/glm4_1v.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
+### PR #35182 - [Misc] Reorganize inputs
+
+- Link: https://github.com/vllm-project/vllm/pull/35182
+- Status/date: merged / 2026-03-25
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 142 files, +1212/-1342, 6002 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Misc] Reorganize inputs"; model line: GLM VLM/OCR; category: model implementation change; main diff: `vllm/multimodal/inputs.py`, `vllm/entrypoints/pooling/score/serving.py`, `vllm/entrypoints/serve/render/serving.py`; technical summary: Covers "[Misc] Reorganize inputs"; the main implementation surface is `vllm/multimodal/inputs.py`, `vllm/entrypoints/pooling/score/serving.py`, `vllm/entrypoints/serve/render/serving.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/multimodal/inputs.py` modified +2/-162 (164 lines); hunks: -15,12 +15,11; -32,14 +31,9; symbols: VisionChunkImage, VisionChunkVideo, MultiModalDataBuiltins, PlaceholderRange, touching `VisionChunkImage, VisionChunkVideo, MultiModalDataBuiltins`; `vllm/entrypoints/pooling/score/serving.py` modified +36/-45 (81 lines); hunks: -35,7 +35,7; -110,12 +110,12 @@ async def _embedding_score(; symbols: _embedding_score, _preprocess_late_interaction_item, touching `_embedding_score, _preprocess_late_interaction_item`; `vllm/entrypoints/serve/render/serving.py` modified +38/-37 (75 lines); hunks: -34,9 +34,15; -127,22 +133,22 @@ async def render_chat_request(; symbols: render_chat_request, render_chat, touching `render_chat_request, render_chat`; `vllm/entrypoints/openai/responses/serving.py` modified +22/-26 (48 lines); hunks: -110,7 +110,7; -269,10 +269,10 @@ def __init__(; symbols: __init__, _validate_generator_input, create_responses, touching `__init__, _validate_generator_input, create_responses`.
+- Code diff details:
+  - `vllm/multimodal/inputs.py` modified +2/-162 (164 lines); hunks: -15,12 +15,11; -32,14 +31,9; symbols: VisionChunkImage, VisionChunkVideo, MultiModalDataBuiltins, PlaceholderRange
+  - `vllm/entrypoints/pooling/score/serving.py` modified +36/-45 (81 lines); hunks: -35,7 +35,7; -110,12 +110,12 @@ async def _embedding_score(; symbols: _embedding_score, _preprocess_late_interaction_item
+  - `vllm/entrypoints/serve/render/serving.py` modified +38/-37 (75 lines); hunks: -34,9 +34,15; -127,22 +133,22 @@ async def render_chat_request(; symbols: render_chat_request, render_chat
+  - `vllm/entrypoints/openai/responses/serving.py` modified +22/-26 (48 lines); hunks: -110,7 +110,7; -269,10 +269,10 @@ def __init__(; symbols: __init__, _validate_generator_input, create_responses
+  - `vllm/entrypoints/llm.py` modified +22/-22 (44 lines); hunks: -57,9 +57,9; -584,7 +584,7 @@ def wait_for_completion(; symbols: wait_for_completion, _resolve_mm_lora, beam_search
+- Key code excerpts:
+
+```diff
+diff -- vllm/multimodal/inputs.py
+@@ -15,12 +15,11 @@
+-    final,
+-from typing_extensions import NotRequired, TypeVar
++from typing_extensions import TypeVar
+@@ -32,14 +31,9 @@
+-    from vllm.inputs.data import _InputOptions
+-    _InputOptions = dict
+diff -- vllm/entrypoints/pooling/score/serving.py
+@@ -35,7 +35,7 @@
+-from vllm.inputs.data import ProcessorInputs, TokensPrompt, token_inputs
++from vllm.inputs import EngineInput, TokensPrompt, tokens_input
+@@ -110,12 +110,12 @@ async def _embedding_score(
+-        engine_prompts: list[ProcessorInputs] = []
++        engine_inputs: list[EngineInput] = []
+-            engine_prompts.append(
+diff -- vllm/entrypoints/serve/render/serving.py
+@@ -34,9 +34,15 @@
+```
+
+- Reviewed files:
+  - runtime: `vllm/multimodal/inputs.py` modified +2/-162; `vllm/entrypoints/pooling/score/serving.py` modified +36/-45; `vllm/entrypoints/serve/render/serving.py` modified +38/-37; `vllm/entrypoints/openai/responses/serving.py` modified +22/-26; `vllm/entrypoints/llm.py` modified +22/-22; `vllm/entrypoints/pooling/embed/io_processor.py` modified +20/-20
+- Risk and verification: The diff ships test coverage in `tests/entrypoints/openai/chat_completion/test_chat_error.py`, `tests/entrypoints/openai/chat_completion/test_serving_chat.py`, `tests/entrypoints/openai/responses/test_serving_responses.py`, `tests/entrypoints/serve/render/test_launch_render.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
 ### PR #37962 - [bug-fix] GLM OCR Patch Merger context_dim
 
 - Link: https://github.com/vllm-project/vllm/pull/37962
@@ -350,6 +373,255 @@ diff -- vllm/model_executor/models/glm4_1v.py
 - Reviewed files:
   - runtime: `vllm/model_executor/models/glm_ocr.py` modified +8/-3; `vllm/model_executor/models/glm4_1v.py` modified +6/-1
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/glm4_1v.py`, `vllm/model_executor/models/glm_ocr.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #39986 - [Multimodal] Add PyAV video backend for concurrent video decoding
+
+- Link: https://github.com/vllm-project/vllm/pull/39986
+- Status/date: merged / 2026-04-22
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 4 files, +290/-118, 622 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Multimodal] Add PyAV video backend for concurrent video decoding"; model line: GLM VLM/OCR; category: docs/tests/CI; main diff: `vllm/multimodal/video.py`, `tests/multimodal/test_video.py`, `tests/models/multimodal/processing/test_glm4_1v.py`; technical summary: Covers "[Multimodal] Add PyAV video backend for concurrent video decoding"; the main implementation surface is `vllm/multimodal/video.py`, `tests/multimodal/test_video.py`, `tests/models/multimodal/processing/test_glm4_1v.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/multimodal/video.py` modified +174/-94 (268 lines); hunks: -3,7 +3,7; -19,6 +19,11; symbols: read_frames, PyAVVideoBackendMixin, get_metadata, decode_frames, touching `read_frames, PyAVVideoBackendMixin, get_metadata`; `tests/multimodal/test_video.py` modified +104/-17 (121 lines); hunks: -71,7 +71,9 @@ def test_video_backend_handles_broken_frames(monkeypatch: pyte...; -158,12 +160,12 @@ def release(self):; symbols: test_video_backend_handles_broken_frames, release, test_video_recovery_with_corrupted_file, test_video_recovery_dynamic_backend, touching `test_video_backend_handles_broken_frames, release, test_video_recovery_with_corrupted_file`; `tests/models/multimodal/processing/test_glm4_1v.py` modified +8/-4 (12 lines); hunks: -6,7 +6,7; -70,9 +70,11 @@ def test_processor_override(; symbols: test_processor_override, test_video_loader_consistency, touching `test_processor_override, test_video_loader_consistency`; `vllm/envs.py` modified +4/-3 (7 lines); hunks: -829,9 +829,10 @@ def _get_or_set_default() -> str:; symbols: _get_or_set_default, touching `_get_or_set_default`.
+- Code diff details:
+  - `vllm/multimodal/video.py` modified +174/-94 (268 lines); hunks: -3,7 +3,7; -19,6 +19,11; symbols: read_frames, PyAVVideoBackendMixin, get_metadata, decode_frames
+  - `tests/multimodal/test_video.py` modified +104/-17 (121 lines); hunks: -71,7 +71,9 @@ def test_video_backend_handles_broken_frames(monkeypatch: pyte...; -158,12 +160,12 @@ def release(self):; symbols: test_video_backend_handles_broken_frames, release, test_video_recovery_with_corrupted_file, test_video_recovery_dynamic_backend
+  - `tests/models/multimodal/processing/test_glm4_1v.py` modified +8/-4 (12 lines); hunks: -6,7 +6,7; -70,9 +70,11 @@ def test_processor_override(; symbols: test_processor_override, test_video_loader_consistency
+  - `vllm/envs.py` modified +4/-3 (7 lines); hunks: -829,9 +829,10 @@ def _get_or_set_default() -> str:; symbols: _get_or_set_default
+- Key code excerpts:
+
+```diff
+diff -- vllm/multimodal/video.py
+@@ -3,7 +3,7 @@
+-from typing import Any, NamedTuple, cast
++from typing import Any, ClassVar, Literal, NamedTuple, cast
+@@ -19,6 +19,11 @@
++try:
++    import av
++except ImportError:
+diff -- tests/multimodal/test_video.py
+@@ -71,7 +71,9 @@ def test_video_backend_handles_broken_frames(monkeypatch: pytest.MonkeyPatch):
+-        frames, metadata = loader.load_bytes(video_data, num_frames=-1)
++        frames, metadata = loader.load_bytes(
++            video_data, num_frames=-1, backend="opencv"
++        )
+@@ -158,12 +160,12 @@ def release(self):
+-            video_data, num_frames=8, frame_recovery=False
+diff -- tests/models/multimodal/processing/test_glm4_1v.py
+@@ -6,7 +6,7 @@
+```
+
+- Reviewed files:
+  - runtime: `vllm/multimodal/video.py` modified +174/-94; `vllm/envs.py` modified +4/-3
+  - tests: `tests/multimodal/test_video.py` modified +104/-17; `tests/models/multimodal/processing/test_glm4_1v.py` modified +8/-4
+- Risk and verification: The diff ships test coverage in `tests/models/multimodal/processing/test_glm4_1v.py`, `tests/multimodal/test_video.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #42347 - [Perf][4/n] Eliminate various GPU CPU syncs
+
+- Link: https://github.com/vllm-project/vllm/pull/42347
+- Status/date: merged / 2026-05-19
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 23 files, +129/-108, 606 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Perf][4/n] Eliminate various GPU CPU syncs"; model line: GLM VLM/OCR; category: performance/backend optimization; main diff: `vllm/model_executor/models/utils.py`, `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/granite_speech.py`; technical summary: Covers "[Perf][4/n] Eliminate various GPU CPU syncs"; the main implementation surface is `vllm/model_executor/models/utils.py`, `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/granite_speech.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/utils.py` modified +7/-15 (22 lines); hunks: -30,10 +30,8; -498,10 +496,9 @@ def isin_list(; symbols: isin_list, extract_layer_index, cast_overflow_tensors, fast_topk, touching `isin_list, extract_layer_index, cast_overflow_tensors`; `vllm/model_executor/models/qwen2_5_vl.py` modified +12/-7 (19 lines); hunks: -84,6 +84,7; -679,6 +680,7 @@ def rotary_pos_emb_thw(self, t, h, w):; symbols: rotary_pos_emb_thw, get_rope_by_thw, _get_mm_fields_config, _call_hf_processor, touching `rotary_pos_emb_thw, get_rope_by_thw, _get_mm_fields_config`; `vllm/model_executor/models/granite_speech.py` modified +7/-7 (14 lines); hunks: -143,7 +143,7 @@ def _get_mm_fields_config(; -717,13 +717,13 @@ def _build_input_features_mask(; symbols: _get_mm_fields_config, _get_prompt_updates, _build_input_features_mask, _pad_and_stack_input_features, touching `_get_mm_fields_config, _get_prompt_updates, _build_input_features_mask`; `vllm/model_executor/models/phi4mm_audio.py` modified +9/-3 (12 lines); hunks: -586,7 +586,9 @@ def forward_embeddings(; -605,7 +607,9 @@ def forward_embeddings(; symbols: forward_embeddings, calculate_hs_mask, touching `forward_embeddings, calculate_hs_mask`.
+- Code diff details:
+  - `vllm/model_executor/models/utils.py` modified +7/-15 (22 lines); hunks: -30,10 +30,8; -498,10 +496,9 @@ def isin_list(; symbols: isin_list, extract_layer_index, cast_overflow_tensors, fast_topk
+  - `vllm/model_executor/models/qwen2_5_vl.py` modified +12/-7 (19 lines); hunks: -84,6 +84,7; -679,6 +680,7 @@ def rotary_pos_emb_thw(self, t, h, w):; symbols: rotary_pos_emb_thw, get_rope_by_thw, _get_mm_fields_config, _call_hf_processor
+  - `vllm/model_executor/models/granite_speech.py` modified +7/-7 (14 lines); hunks: -143,7 +143,7 @@ def _get_mm_fields_config(; -717,13 +717,13 @@ def _build_input_features_mask(; symbols: _get_mm_fields_config, _get_prompt_updates, _build_input_features_mask, _pad_and_stack_input_features
+  - `vllm/model_executor/models/phi4mm_audio.py` modified +9/-3 (12 lines); hunks: -586,7 +586,9 @@ def forward_embeddings(; -605,7 +607,9 @@ def forward_embeddings(; symbols: forward_embeddings, calculate_hs_mask
+  - `vllm/model_executor/models/bert.py` modified +3/-6 (9 lines); hunks: -559,13 +559,10 @@ def _encode_token_type_ids(; symbols: _encode_token_type_ids, _decode_token_type_ids
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/utils.py
+@@ -30,10 +30,8 @@
+-from vllm.utils.platform_utils import (
+-    is_pin_memory_available,
+-)
++    async_tensor_h2d,
+@@ -498,10 +496,9 @@ def isin_list(
+-    test_elements = torch.tensor(
+diff -- vllm/model_executor/models/qwen2_5_vl.py
+@@ -84,6 +84,7 @@
++from vllm.utils.torch_utils import async_tensor_h2d
+@@ -679,6 +680,7 @@ def rotary_pos_emb_thw(self, t, h, w):
++        pos_ids = pos_ids.to(cos.device, non_blocking=True)
+@@ -737,9 +739,10 @@ def get_rope_by_thw(self, t, h, w):
+-        cos_thw = cos_thw[window_index_thw, :, :]
++        window_index_thw_dev = window_index_thw.to(cos_thw.device, non_blocking=True)
+diff -- vllm/model_executor/models/granite_speech.py
+@@ -143,7 +143,7 @@ def _get_mm_fields_config(
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/utils.py` modified +7/-15; `vllm/model_executor/models/qwen2_5_vl.py` modified +12/-7; `vllm/model_executor/models/granite_speech.py` modified +7/-7; `vllm/model_executor/models/phi4mm_audio.py` modified +9/-3; `vllm/model_executor/models/bert.py` modified +3/-6; `vllm/model_executor/models/qwen3_vl.py` modified +6/-3
+- Risk and verification: The diff ships test coverage in `tests/v1/logits_processors/test_correctness.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #43575 - [feat] add GlmgaProcessor specific logits in `glm4_1v.py`
+
+- Link: https://github.com/vllm-project/vllm/pull/43575
+- Status/date: merged / 2026-05-29
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +346/-33, 500 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[feat] add GlmgaProcessor specific logits in `glm4_1v.py`"; model line: GLM VLM/OCR; category: docs/tests/CI; main diff: `vllm/model_executor/models/glm4_1v.py`, `vllm/multimodal/video.py`, `tests/models/registry.py`; technical summary: Covers "[feat] add GlmgaProcessor specific logits in `glm4_1v.py`"; the main implementation surface is `vllm/model_executor/models/glm4_1v.py`, `vllm/multimodal/video.py`, `tests/models/registry.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/glm4_1v.py` modified +241/-32 (273 lines); hunks: -36,7 +36,9; -122,6 +124,15; symbols: _to_video_metadata, get_image_processor, get_video_processor, get_mm_max_tokens_per_item, touching `_to_video_metadata, get_image_processor, get_video_processor`; `vllm/multimodal/video.py` modified +101/-0 (101 lines); hunks: -639,6 +639,107 @@ def load_bytes(; symbols: load_bytes, GLM4_6VVideoBackend, _prepare_source, compute_frames_index_to_sample, touching `load_bytes, GLM4_6VVideoBackend, _prepare_source`; `tests/models/registry.py` modified +4/-1 (5 lines); hunks: -935,7 +935,10 @@ def check_available_online(; symbols: check_available_online, touching `check_available_online`.
+- Code diff details:
+  - `vllm/model_executor/models/glm4_1v.py` modified +241/-32 (273 lines); hunks: -36,7 +36,9; -122,6 +124,15; symbols: _to_video_metadata, get_image_processor, get_video_processor, get_mm_max_tokens_per_item
+  - `vllm/multimodal/video.py` modified +101/-0 (101 lines); hunks: -639,6 +639,107 @@ def load_bytes(; symbols: load_bytes, GLM4_6VVideoBackend, _prepare_source, compute_frames_index_to_sample
+  - `tests/models/registry.py` modified +4/-1 (5 lines); hunks: -935,7 +935,10 @@ def check_available_online(; symbols: check_available_online
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/glm4_1v.py
+@@ -36,7 +36,9 @@
++import transformers
++from packaging.version import Version
+@@ -122,6 +124,15 @@
++TRANSFORMERS_WITH_GA = Version(transformers.__version__) >= Version("5.10.0.dev0")
++def _to_video_metadata(metadata: Mapping[str, Any]) -> VideoMetadata:
++    return VideoMetadata(
+diff -- vllm/multimodal/video.py
+@@ -639,6 +639,107 @@ def load_bytes(
++@VIDEO_LOADER_REGISTRY.register("glm4_6v")
++class GLM4_6VVideoBackend(VideoBackend):
++    @classmethod
++    def _prepare_source(cls, source: VideoSourceMetadata) -> VideoSourceMetadata:
++        # Estimate duration from frame count and fps when the container
++        # does not report it (common for WebM/streaming inputs).
+diff -- tests/models/registry.py
+@@ -935,7 +935,10 @@ def check_available_online(
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/glm4_1v.py` modified +241/-32; `vllm/multimodal/video.py` modified +101/-0
+  - tests: `tests/models/registry.py` modified +4/-1
+- Risk and verification: The diff ships test coverage in `tests/models/registry.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #43167 - Remove KV cache scale boilerplate from model weight loading methods
+
+- Link: https://github.com/vllm-project/vllm/pull/43167
+- Status/date: merged / 2026-06-05
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 56 files, +88/-731, 1251 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Remove KV cache scale boilerplate from model weight loading methods"; model line: GLM VLM/OCR; category: docs/tests/CI; main diff: `tests/model_executor/test_eagle_quantization.py`, `vllm/model_executor/models/gpt_oss.py`, `vllm/model_executor/layers/quantization/kv_cache.py`; technical summary: Covers "Remove KV cache scale boilerplate from model weight loading methods"; the main implementation surface is `tests/model_executor/test_eagle_quantization.py`, `vllm/model_executor/models/gpt_oss.py`, `vllm/model_executor/layers/quantization/kv_cache.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/model_executor/test_eagle_quantization.py` modified +0/-56 (56 lines); hunks: -100,32 +100,6 @@ def test_fc_layer_quant_config_usage(default_vllm_config, d...; -183,33 +157,3 @@ def test_eagle3_lm_head_receives_quant_config():; symbols: test_fc_layer_quant_config_usage, test_kv_cache_scale_name_handling, test_kv_cache_scale_name_no_scale, test_maybe_remap_kv_scale_name, touching `test_fc_layer_quant_config_usage, test_kv_cache_scale_name_handling, test_kv_cache_scale_name_no_scale`; `vllm/model_executor/models/gpt_oss.py` modified +0/-46 (46 lines); hunks: -635,52 +635,6 @@ def _get_moe_weight_dtype(layer_id: int = 0) -> str | None:; symbols: _get_moe_weight_dtype, kv_cache_scale_loader, touching `_get_moe_weight_dtype, kv_cache_scale_loader`; `vllm/model_executor/layers/quantization/kv_cache.py` modified +28/-4 (32 lines); hunks: -15,6 +15,30; -37,11 +61,11 @@ def create_weights(self, layer: torch.nn.Module):; symbols: KVCacheScaleParameter, __new__, weight_loader, BaseKVCacheMethod, touching `KVCacheScaleParameter, __new__, weight_loader`; `vllm/model_executor/layers/quantization/fp8.py` modified +12/-19 (31 lines); hunks: -207,25 +207,18 @@ def get_quant_method(; symbols: get_quant_method, get_cache_scale, get_cache_scale_mapper, CopyNumelCounter, touching `get_quant_method, get_cache_scale, get_cache_scale_mapper`.
+- Code diff details:
+  - `tests/model_executor/test_eagle_quantization.py` modified +0/-56 (56 lines); hunks: -100,32 +100,6 @@ def test_fc_layer_quant_config_usage(default_vllm_config, d...; -183,33 +157,3 @@ def test_eagle3_lm_head_receives_quant_config():; symbols: test_fc_layer_quant_config_usage, test_kv_cache_scale_name_handling, test_kv_cache_scale_name_no_scale, test_maybe_remap_kv_scale_name
+  - `vllm/model_executor/models/gpt_oss.py` modified +0/-46 (46 lines); hunks: -635,52 +635,6 @@ def _get_moe_weight_dtype(layer_id: int = 0) -> str | None:; symbols: _get_moe_weight_dtype, kv_cache_scale_loader
+  - `vllm/model_executor/layers/quantization/kv_cache.py` modified +28/-4 (32 lines); hunks: -15,6 +15,30; -37,11 +61,11 @@ def create_weights(self, layer: torch.nn.Module):; symbols: KVCacheScaleParameter, __new__, weight_loader, BaseKVCacheMethod
+  - `vllm/model_executor/layers/quantization/fp8.py` modified +12/-19 (31 lines); hunks: -207,25 +207,18 @@ def get_quant_method(; symbols: get_quant_method, get_cache_scale, get_cache_scale_mapper, CopyNumelCounter
+  - `vllm/model_executor/layers/quantization/quark/quark.py` modified +10/-20 (30 lines); hunks: -646,26 +646,16 @@ def get_scheme(; symbols: get_scheme, get_cache_scale, get_cache_scale_mapper, QuarkLinearMethod
+- Key code excerpts:
+
+```diff
+diff -- tests/model_executor/test_eagle_quantization.py
+@@ -100,32 +100,6 @@ def test_fc_layer_quant_config_usage(default_vllm_config, dist_init, device) ->
+-def test_kv_cache_scale_name_handling():
+-    # Mock a quant config that supports cache scales
+-    mock_quant_config = Mock()
+-    mock_quant_config.get_cache_scale = Mock(return_value="layers.0.self_attn.kv_scale")
+-    # Condition check in load_weights
+-    name = "layers.0.self_attn.k_proj.weight"
+diff -- vllm/model_executor/models/gpt_oss.py
+@@ -635,52 +635,6 @@ def _get_moe_weight_dtype(layer_id: int = 0) -> str | None:
+-            def kv_cache_scale_loader(
+-                quant_config: QuantizationConfig,
+-                name: str,
+-                params_dict: dict[str, typing.Any],
+-                weight: torch.Tensor,
+-                default_weight_loader: Callable[..., None],
+diff -- vllm/model_executor/layers/quantization/kv_cache.py
+@@ -15,6 +15,30 @@
+```
+
+- Reviewed files:
+  - tests: `tests/model_executor/test_eagle_quantization.py` modified +0/-56
+  - runtime: `vllm/model_executor/models/gpt_oss.py` modified +0/-46; `vllm/model_executor/layers/quantization/kv_cache.py` modified +28/-4; `vllm/model_executor/layers/quantization/fp8.py` modified +12/-19; `vllm/model_executor/layers/quantization/quark/quark.py` modified +10/-20; `vllm/model_executor/models/llama4.py` modified +3/-18; `vllm/model_executor/models/glm_ocr_mtp.py` modified +4/-13
+- Risk and verification: The diff ships test coverage in `tests/model_executor/test_eagle_quantization.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #40576 - [MM][Perf][CG] Support ViT full CUDA graph for glm4_1v image and video inference
+
+- Link: https://github.com/vllm-project/vllm/pull/40576
+- Status/date: merged / 2026-06-09
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 4 files, +480/-25, 605 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[MM][Perf][CG] Support ViT full CUDA graph for glm4_1v image and video inference"; model line: GLM VLM/OCR; category: performance/backend optimization; main diff: `vllm/model_executor/models/glm4_1v.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`, `docs/design/cuda_graphs_multimodal.md`; technical summary: Covers "[MM][Perf][CG] Support ViT full CUDA graph for glm4_1v image and video inference"; the main implementation surface is `vllm/model_executor/models/glm4_1v.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`, `docs/design/cuda_graphs_multimodal.md`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/glm4_1v.py` modified +456/-25 (481 lines); hunks: -97,10 +97,12; -626,6 +628,11 @@ def __init__(; symbols: __init__, device, rot_pos_emb, compute_attn_mask_seqlen, touching `__init__, device, rot_pos_emb`; `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +22/-0 (22 lines); hunks: -137,6 +137,28 @@ def step3_vl_chat_template(content: str) -> str:; symbols: step3_vl_chat_template, touching `step3_vl_chat_template`; `docs/design/cuda_graphs_multimodal.md` modified +1/-0 (1 lines); hunks: -88,6 +88,7 @@ Models opt-in to encoder CUDA Graphs by implementing the [Supp...; `examples/generate/multimodal/vision_language_offline.py` modified +1/-0 (1 lines); hunks: -2562,6 +2562,7 @@ def run_tarsier2(questions: list[str], modality: str) -> M...; symbols: run_tarsier2, touching `run_tarsier2`.
+- Code diff details:
+  - `vllm/model_executor/models/glm4_1v.py` modified +456/-25 (481 lines); hunks: -97,10 +97,12; -626,6 +628,11 @@ def __init__(; symbols: __init__, device, rot_pos_emb, compute_attn_mask_seqlen
+  - `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +22/-0 (22 lines); hunks: -137,6 +137,28 @@ def step3_vl_chat_template(content: str) -> str:; symbols: step3_vl_chat_template
+  - `docs/design/cuda_graphs_multimodal.md` modified +1/-0 (1 lines); hunks: -88,6 +88,7 @@ Models opt-in to encoder CUDA Graphs by implementing the [Supp...
+  - `examples/generate/multimodal/vision_language_offline.py` modified +1/-0 (1 lines); hunks: -2562,6 +2562,7 @@ def run_tarsier2(questions: list[str], modality: str) -> M...; symbols: run_tarsier2
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/glm4_1v.py
+@@ -97,10 +97,12 @@
++from vllm.v1.worker.encoder_cudagraph_defs import EncoderCudaGraphReplayBuffers
++    SupportsEncoderCudaGraph,
+@@ -626,6 +628,11 @@ def __init__(
++        use_data_parallel = is_vit_use_data_parallel()
++        self.tp_size = (
++            1 if use_data_parallel else get_tensor_model_parallel_world_size()
+diff -- tests/models/multimodal/generation/test_vit_cudagraph.py
+@@ -137,6 +137,28 @@ def step3_vl_chat_template(content: str) -> str:
++    "glm4_1v": VitCudagraphTestConfig(
++        model="zai-org/GLM-4.1V-9B-Thinking",
++        image_prompt=(
++            "[gMASK]<sop><|system|>\nYou are a helpful assistant.<|user|>\n"
++            "<|begin_of_image|><|image|><|end_of_image|>"
++            "What is in this image?<|assistant|>assistant\n"
+diff -- docs/design/cuda_graphs_multimodal.md
+@@ -88,6 +88,7 @@ Models opt-in to encoder CUDA Graphs by implementing the [SupportsEncoderCudaGra
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/glm4_1v.py` modified +456/-25
+  - tests: `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +22/-0
+  - docs: `docs/design/cuda_graphs_multimodal.md` modified +1/-0; `examples/generate/multimodal/vision_language_offline.py` modified +1/-0
+- Risk and verification: The diff ships test coverage in `tests/models/multimodal/generation/test_vit_cudagraph.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #43586 - [MM][Perf][CG] Support dual-path ViT full CUDA graph for DeepSeek-OCR
+
+- Link: https://github.com/vllm-project/vllm/pull/43586
+- Status/date: merged / 2026-06-16
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 16 files, +809/-69, 1559 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[MM][Perf][CG] Support dual-path ViT full CUDA graph for DeepSeek-OCR"; model line: GLM VLM/OCR; category: performance/backend optimization; main diff: `vllm/model_executor/models/deepseek_ocr.py`, `docs/design/cuda_graphs_multimodal.md`, `tests/models/multimodal/generation/test_vit_cudagraph.py`; technical summary: Covers "[MM][Perf][CG] Support dual-path ViT full CUDA graph for DeepSeek-OCR"; the main implementation surface is `vllm/model_executor/models/deepseek_ocr.py`, `docs/design/cuda_graphs_multimodal.md`, `tests/models/multimodal/generation/test_vit_cudagraph.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/deepseek_ocr.py` modified +375/-5 (380 lines); hunks: -4,7 +4,7; -15,6 +15,7; symbols: get_replacement_deepseek_vl2, DeepseekOCRForCausalLM, __init__, _encode_local_features, touching `get_replacement_deepseek_vl2, DeepseekOCRForCausalLM, __init__`; `docs/design/cuda_graphs_multimodal.md` modified +63/-16 (79 lines); hunks: -2,6 +2,8; -11,6 +13,8 @@ Vision encoder inference incurs CUDA kernel launch overhead on...; symbols: BudgetGraphMetadata, touching `BudgetGraphMetadata`; `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +41/-15 (56 lines); hunks: -29,6 +29,7 @@ class VitCudagraphTestConfig:; -75,15 +76,16 @@ def step3_vl_chat_template(content: str) -> str:; symbols: VitCudagraphTestConfig, params_with_marks, step3_vl_chat_template, touching `VitCudagraphTestConfig, params_with_marks, step3_vl_chat_template`; `examples/generate/multimodal/vision_language_offline.py` modified +3/-2 (5 lines); hunks: -2533,15 +2533,16 @@ def run_tarsier2(questions: list[str], modality: str) ->...; symbols: run_tarsier2, touching `run_tarsier2`.
+- Code diff details:
+  - `vllm/model_executor/models/deepseek_ocr.py` modified +375/-5 (380 lines); hunks: -4,7 +4,7; -15,6 +15,7; symbols: get_replacement_deepseek_vl2, DeepseekOCRForCausalLM, __init__, _encode_local_features
+  - `docs/design/cuda_graphs_multimodal.md` modified +63/-16 (79 lines); hunks: -2,6 +2,8; -11,6 +13,8 @@ Vision encoder inference incurs CUDA kernel launch overhead on...; symbols: BudgetGraphMetadata
+  - `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +41/-15 (56 lines); hunks: -29,6 +29,7 @@ class VitCudagraphTestConfig:; -75,15 +76,16 @@ def step3_vl_chat_template(content: str) -> str:; symbols: VitCudagraphTestConfig, params_with_marks, step3_vl_chat_template
+  - `examples/generate/multimodal/vision_language_offline.py` modified +3/-2 (5 lines); hunks: -2533,15 +2533,16 @@ def run_tarsier2(questions: list[str], modality: str) ->...; symbols: run_tarsier2
+  - `vllm/model_executor/models/interfaces.py` modified +5/-0 (5 lines); hunks: -1623,6 +1623,7 @@ def postprocess_encoder_output(; -1643,6 +1644,7 @@ def prepare_encoder_cudagraph_capture_inputs(; symbols: postprocess_encoder_output, prepare_encoder_cudagraph_capture_inputs, prepare_encoder_cudagraph_replay_buffers, encoder_cudagraph_forward
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/deepseek_ocr.py
+@@ -4,7 +4,7 @@
+-from typing import Annotated, Literal
++from typing import Annotated, Any, Literal
+@@ -15,6 +15,7 @@
++    SupportsEncoderCudaGraph,
+@@ -52,6 +53,7 @@
++    IMAGE_SIZE,
+diff -- docs/design/cuda_graphs_multimodal.md
+@@ -2,6 +2,8 @@
++For two-tower vision encoders (e.g., DeepSeek-OCR's SAM + CLIP with dynamic tiling), a **dual-path graph** mode captures two independent sets of CUDA graphs — one for the global i
+@@ -11,6 +13,8 @@ Vision encoder inference incurs CUDA kernel launch overhead on the host side. Th
++For two-tower vision encoders such as DeepSeek-OCR (SAM + CLIP with dynamic tiling), the global image path and local patch path have independent token profiles (272 tokens per glo
+@@ -37,17 +41,57 @@ class BudgetGraphMetadata:
++When `EncoderCudaGraphConfig.enable_dual_path_graph` is `True`, the manager generates two independent budget lists — `global_token_budgets` (multiples of `global_token_per_image`)
++For dual-path models, the manager routes to `_execute_local_dual_path()`, which constrains both global and local token budgets simultaneously during packing (see [Dual-Path graph
+diff -- tests/models/multimodal/generation/test_vit_cudagraph.py
+@@ -29,6 +29,7 @@ class VitCudagraphTestConfig:
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/deepseek_ocr.py` modified +375/-5; `vllm/model_executor/models/interfaces.py` modified +5/-0; `vllm/model_executor/models/step3_vl.py` modified +5/-0; `vllm/model_executor/models/glm4_1v.py` modified +4/-0; `vllm/model_executor/models/internvl.py` modified +4/-0
+  - docs: `docs/design/cuda_graphs_multimodal.md` modified +63/-16; `examples/generate/multimodal/vision_language_offline.py` modified +3/-2
+  - tests: `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +41/-15
+- Risk and verification: The diff ships test coverage in `tests/models/multimodal/generation/test_vit_cudagraph.py`, `tests/v1/cudagraph/test_encoder_cudagraph.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes
 
