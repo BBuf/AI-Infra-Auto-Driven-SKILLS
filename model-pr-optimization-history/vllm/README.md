@@ -36,8 +36,8 @@ Current model families:
 
 ## Current Watch / Landed Items
 
-Refresh: `2026-06-26`. Source head:
-`vllm-project/vllm@abc71548ef029132c3316b902207f254a246d593`.
+Refresh: `2026-06-27`. Source head:
+`vllm-project/vllm@091d13976c1c246714bb2112dd2e208561dda6a3`.
 
 Keep watch rows close to the relevant model histories;
 landed rows that are already mirrored in per-model docs remain here as
@@ -45,6 +45,11 @@ cross-model navigation hints.
 
 | PR | Model / area | Status | Current signal | Why it matters |
 | --- | --- | --- | --- | --- |
+| [#46896](https://github.com/vllm-project/vllm/pull/46896) | Qwen / GDN / KV connector | open | hybrid GDN all-mode Mamba prefix caching | Relevant for Qwen3-Next-style linear-attention runs with external KV retention. |
+| [#46889](https://github.com/vllm-project/vllm/pull/46889) | WideEP / MoE | open | NCCL EP all2all backend | MoE SOTA comparisons should record whether this EP communication path is available. |
+| [#44835](https://github.com/vllm-project/vllm/pull/44835) | MoE kernels | open | `moe_sum_kernel` topk=5-8 specializations | Can shift MoE epilogue timing on models with wider expert selection. |
+| [#44573](https://github.com/vllm-project/vllm/pull/44573) | DeepSeek-V4 | open | DCP decode support | Check before treating DeepSeek-V4 decode gaps as missing only in SGLang. |
+| [#44848](https://github.com/vllm-project/vllm/pull/44848) | KimiLinear / KDA-GDN + MLA | open | PD separation via NIXL | Relevant for KimiLinear and related hybrid attention/MLA comparisons. |
 | [#44800](https://github.com/vllm-project/vllm/pull/44800) | runtime sync debug | merged | `VLLM_GPU_SYNC_CHECK` env var | Helps distinguish real GPU gaps from accidental synchronization in profiler traces; SOTA loop should check whether a target image has this knob before comparing sync-heavy rows. |
 | [#46735](https://github.com/vllm-project/vllm/pull/46735) | Triton / NVFP4 MoE | merged | CUDA graph capture fix | A stale vLLM image can fail graph capture or fall back around Triton MoE; record this before treating the row as a true SGLang-vs-vLLM performance delta. |
 | [#41455](https://github.com/vllm-project/vllm/pull/41455) | ROCm attention | closed | WMMA paged prefill and split-K decode | New AMD attention kernel family for prefill/decode split traces. |

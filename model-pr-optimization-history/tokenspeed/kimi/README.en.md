@@ -18,7 +18,7 @@ Checked against TokenSpeed upstream `HEAD@5aedf69d6b476baa65571011de6ea60fd5a238
 
 Filter used in this pass: merged PRs whose titles or files matched `Kimi`, `kimi_k25`, `K2.5`, `NVFP4`, `MXFP4`, `MXINT4`, `lm_head`, `top_k/top_p`, `InstantTensor`, `OCR`, `FA4`, `vision`, or `MLA`. Formatting-only and unrelated infrastructure changes were excluded.
 
-## Model Implementation File Coverage
+## Implementation File Coverage
 
 | File | Related PRs |
 | --- | --- |
@@ -33,10 +33,11 @@ Filter used in this pass: merged PRs whose titles or files matched `Kimi`, `kimi
 | `tokenspeed-kernel/python/tokenspeed_kernel/ops/attention/triton/qkv_rotary.py` | [#477](https://github.com/lightseekorg/tokenspeed/pull/477), [#482](https://github.com/lightseekorg/tokenspeed/pull/482) |
 | `test/ci/eval/kimi-k2.5-*.yaml` | [#29](https://github.com/lightseekorg/tokenspeed/pull/29), [#253](https://github.com/lightseekorg/tokenspeed/pull/253), [#476](https://github.com/lightseekorg/tokenspeed/pull/476), [#482](https://github.com/lightseekorg/tokenspeed/pull/482) |
 
-## PR Coverage Overview
+## PR Coverage Summary
 
 - Reviewed PRs: 10
-- Diff source: `gh pr diff` / GitHub PR patches cached under `/tmp/model_pr_diffs/tokenspeed/pr*.diff`
+- File trace command: `git log --name-only -- <model-files>`
+- Diff source: `gh pr diff` / GitHub Pull Request files API patches cached under `/tmp/model_pr_diffs/tokenspeed/pr*.diff`
 - Reviewed patch lines: 11,975
 - Main TokenSpeed Kimi themes: K2.5 agentic/OCR eval lanes, fused lm_head GEMM, TopK+TopP renormalization, InstantTensor loader, MXINT4/MXFP4 MoE/quantization, and FA4 multimodal attention.
 
@@ -60,11 +61,13 @@ Filter used in this pass: merged PRs whose titles or files matched `Kimi`, `kimi
 ### PR #29 - Add Kimi K2.5 agentic perf CI task
 
 - Link: https://github.com/lightseekorg/tokenspeed/pull/29
-- State/time: merged / 2026-05-08
-- Diff coverage: 5 files, +387/-3, 650 cached patch lines.
+- Status/date: merged / 2026-05-08
+- Trace source: `git log --name-only -- <model-files>` plus GitHub Pull Request files API.
+- Diff scope read: 5 files, +387/-3, 650 cached patch lines.
 - Motivation: make `nvidia/Kimi-K2.5-NVFP4` agentic serving a repeatable perf CI lane.
 - Key implementation: adds a Kimi K2.5 agentic perf YAML using `tokenspeed_mla`, NVFP4, speculative draft, and EvalScope agentic workloads.
-- Code excerpt:
+- Code diff details: See the diff scope line above and the excerpt below for the audited file-level changes.
+- Key code excerpts:
 
 ```diff
 +--model nvidia/Kimi-K2.5-NVFP4
@@ -73,16 +76,18 @@ Filter used in this pass: merged PRs whose titles or files matched `Kimi`, `kimi
 ```
 
 - Reviewed files: PR workflow, `kimi-k2.5-nvfp4-evalscope-agentic.yaml`, CI pipeline helpers
-- Validation/risk: keep the agentic perf lane separate from shared synthetic serving workloads.
+- Risk and verification: keep the agentic perf lane separate from shared synthetic serving workloads.
 
 ### PR #126 - perf(K2.5): Optimize lm_head
 
 - Link: https://github.com/lightseekorg/tokenspeed/pull/126
-- State/time: merged / 2026-05-13
-- Diff coverage: 6 files, +1173/-3, 1,246 cached patch lines.
+- Status/date: merged / 2026-05-13
+- Trace source: `git log --name-only -- <model-files>` plus GitHub Pull Request files API.
+- Diff scope read: 6 files, +1173/-3, 1,246 cached patch lines.
 - Motivation: Kimi K2.5 decode spends meaningful time in the final `lm_head` GEMM.
 - Key implementation: gates a fused CUDA `lm_head_gemm` path to Kimi and falls back when shapes are unsupported.
-- Code excerpt:
+- Code diff details: See the diff scope line above and the excerpt below for the audited file-level changes.
+- Key code excerpts:
 
 ```diff
 +self._use_fused_lm_head = getattr(self.config, "model_type", None) == "kimi_k2"
@@ -90,16 +95,18 @@ Filter used in this pass: merged PRs whose titles or files matched `Kimi`, `kimi
 ```
 
 - Reviewed files: `logits_processor.py`, `lm_head_gemm.cu`, binding, Python wrapper, setup
-- Validation/risk: include `lm_head` as its own profiler bucket for Kimi-style models.
+- Risk and verification: include `lm_head` as its own profiler bucket for Kimi-style models.
 
 ### PR #184 - perf(K2.5): optimize top_k_renorm_prob + top_p_renorm_prob
 
 - Link: https://github.com/lightseekorg/tokenspeed/pull/184
-- State/time: merged / 2026-05-20
-- Diff coverage: 8 files, +3104/-12, 3,580 cached patch lines.
+- Status/date: merged / 2026-05-20
+- Trace source: `git log --name-only -- <model-files>` plus GitHub Pull Request files API.
+- Diff scope read: 8 files, +3104/-12, 3,580 cached patch lines.
 - Motivation: back-to-back top-k and deterministic top-p renormalization caused repeated scans and extra launches.
 - Key implementation: adds a fused TopK+TopP renormalization CUDA path and wires it into `flashinfer_full.py`.
-- Code excerpt:
+- Code diff details: See the diff scope line above and the excerpt below for the audited file-level changes.
+- Key code excerpts:
 
 ```diff
 -probs = top_k_renorm_prob(probs, top_ks)
@@ -108,16 +115,18 @@ Filter used in this pass: merged PRs whose titles or files matched `Kimi`, `kimi
 ```
 
 - Reviewed files: fused sampling CUDA sources, `flashinfer_full.py`, `server_args.py`, tests
-- Validation/risk: sampling can be the bottleneck; also track limits such as `top_k < 128`.
+- Risk and verification: sampling can be the bottleneck; also track limits such as `top_k < 128`.
 
 ### PR #253 - ci(eval): add Kimi-K2.5-NVFP4 ocr_bench task
 
 - Link: https://github.com/lightseekorg/tokenspeed/pull/253
-- State/time: merged / 2026-05-28
-- Diff coverage: 1 file, +48/-0, 72 cached patch lines.
+- Status/date: merged / 2026-05-28
+- Trace source: `git log --name-only -- <model-files>` plus GitHub Pull Request files API.
+- Diff scope read: 1 file, +48/-0, 72 cached patch lines.
 - Motivation: Kimi K2.5 needs a multimodal OCR regression lane.
 - Key implementation: adds an OCR EvalScope YAML using the Kimi NVFP4 server config.
-- Code excerpt:
+- Code diff details: See the diff scope line above and the excerpt below for the audited file-level changes.
+- Key code excerpts:
 
 ```diff
 +--model nvidia/Kimi-K2.5-NVFP4
@@ -125,16 +134,18 @@ Filter used in this pass: merged PRs whose titles or files matched `Kimi`, `kimi
 ```
 
 - Reviewed files: `kimi-k2.5-nvfp4-evalscope-ocr-bench.yaml`
-- Validation/risk: text-only throughput does not cover the Kimi K2.5 multimodal path.
+- Risk and verification: text-only throughput does not cover the Kimi K2.5 multimodal path.
 
 ### PR #418 - Add InstantTensor weight loader
 
 - Link: https://github.com/lightseekorg/tokenspeed/pull/418
-- State/time: merged / 2026-06-15
-- Diff coverage: 25 files, +468/-60, 1,373 cached patch lines.
+- Status/date: merged / 2026-06-15
+- Trace source: `git log --name-only -- <model-files>` plus GitHub Pull Request files API.
+- Diff scope read: 25 files, +468/-60, 1,373 cached patch lines.
 - Motivation: Kimi-scale checkpoints need a faster loader path.
 - Key implementation: adds `--load-format instanttensor`, loader utilities, Kimi model integration, and CI/doc updates.
-- Code excerpt:
+- Code diff details: See the diff scope line above and the excerpt below for the audited file-level changes.
+- Key code excerpts:
 
 ```diff
 +--load-format instanttensor
@@ -143,16 +154,18 @@ Filter used in this pass: merged PRs whose titles or files matched `Kimi`, `kimi
 ```
 
 - Reviewed files: `model_loader/loader.py`, `weight_utils.py`, `kimi_k25.py`, `server_args.py`, docs and eval configs
-- Validation/risk: separate cold-start loading evidence from steady-state throughput.
+- Risk and verification: separate cold-start loading evidence from steady-state throughput.
 
 ### PR #444 - feat(moe): add trtllm mxint4 MoE path for Kimi-K2.x
 
 - Link: https://github.com/lightseekorg/tokenspeed/pull/444
-- State/time: merged / 2026-06-14
-- Diff coverage: 8 files, +469/-6, 581 cached patch lines.
+- Status/date: merged / 2026-06-14
+- Trace source: `git log --name-only -- <model-files>` plus GitHub Pull Request files API.
+- Diff scope read: 8 files, +469/-6, 581 cached patch lines.
 - Motivation: Kimi K2.x needed an INT4 W4A16 group-32 MoE path.
 - Key implementation: adds MXINT4 weight packing, quant config detection, and FlashInfer TRT-LLM MoE process/apply ops.
-- Code excerpt:
+- Code diff details: See the diff scope line above and the excerpt below for the audited file-level changes.
+- Key code excerpts:
 
 ```diff
 +from tokenspeed.runtime.layers.moe.weights.mxint4 import create_mxint4_weight_pair
@@ -160,16 +173,18 @@ Filter used in this pass: merged PRs whose titles or files matched `Kimi`, `kimi
 ```
 
 - Reviewed files: `expert.py`, `weights/mxint4.py`, quantization configs, `trtllm_mxint4.py`
-- Validation/risk: record weight dtype, group size, activation dtype, and MoE backend in benchmark tables.
+- Risk and verification: record weight dtype, group size, activation dtype, and MoE backend in benchmark tables.
 
 ### PR #454 - [AMD] Support Kimi K2.5 MXFP4 serving
 
 - Link: https://github.com/lightseekorg/tokenspeed/pull/454
-- State/time: merged / 2026-06-16
-- Diff coverage: 33 files, +1924/-142, 3,856 cached patch lines.
+- Status/date: merged / 2026-06-16
+- Trace source: `git log --name-only -- <model-files>` plus GitHub Pull Request files API.
+- Diff scope read: 33 files, +1924/-142, 3,856 cached patch lines.
 - Motivation: serve Kimi K2.5 MXFP4 on AMD.
 - Key implementation: adds MXFP4 quantization/layers/dense support and updates MLA backend, Kimi model code, and tests.
-- Code excerpt:
+- Code diff details: See the diff scope line above and the excerpt below for the audited file-level changes.
+- Key code excerpts:
 
 ```diff
 +--quantization mxfp4
@@ -177,16 +192,18 @@ Filter used in this pass: merged PRs whose titles or files matched `Kimi`, `kimi
 ```
 
 - Reviewed files: MXFP4 layers/quantization, dense paths, attention backends, `kimi_k25.py`, tests
-- Validation/risk: this is hardware-specific and should not be merged with NVIDIA NVFP4 conclusions.
+- Risk and verification: this is hardware-specific and should not be merged with NVIDIA NVFP4 conclusions.
 
 ### PR #477 - perf(kernel): Optimize Kimi Vision FA4 QKV + RoPE
 
 - Link: https://github.com/lightseekorg/tokenspeed/pull/477
-- State/time: merged / 2026-06-19
-- Diff coverage: 3 files, +195/-7, 304 cached patch lines.
+- Status/date: merged / 2026-06-19
+- Trace source: `git log --name-only -- <model-files>` plus GitHub Pull Request files API.
+- Diff scope read: 3 files, +195/-7, 304 cached patch lines.
 - Motivation: the Kimi vision FA4 path had extra packed-QKV and complex-RoPE layout movement.
 - Key implementation: adds `packed_qkv_complex_rotary` and wires it into multimodal encoder attention.
-- Code excerpt:
+- Code diff details: See the diff scope line above and the excerpt below for the audited file-level changes.
+- Key code excerpts:
 
 ```diff
 +        if use_packed_qkv_complex_rotary:
@@ -195,32 +212,36 @@ Filter used in this pass: merged PRs whose titles or files matched `Kimi`, `kimi
 ```
 
 - Reviewed files: `mm_encoder_attention.py`, `kimi_k25.py`, `qkv_rotary.py`
-- Validation/risk: profile QKV/RoPE layout work before blaming FA4 itself.
+- Risk and verification: profile QKV/RoPE layout work before blaming FA4 itself.
 
 ### PR #482 - ci: use FA4 mm attention for Kimi OCR eval
 
 - Link: https://github.com/lightseekorg/tokenspeed/pull/482
-- State/time: merged / 2026-06-19
-- Diff coverage: 1 file, +1/-0, 22 cached patch lines.
+- Status/date: merged / 2026-06-19
+- Trace source: `git log --name-only -- <model-files>` plus GitHub Pull Request files API.
+- Diff scope read: 1 file, +1/-0, 22 cached patch lines.
 - Motivation: make OCR eval exercise the FA4 multimodal attention path.
 - Key implementation: adds `--mm-attention-backend fa4` to the Kimi OCR EvalScope YAML.
-- Code excerpt:
+- Code diff details: See the diff scope line above and the excerpt below for the audited file-level changes.
+- Key code excerpts:
 
 ```diff
 +--mm-attention-backend fa4
 ```
 
 - Reviewed files: `kimi-k2.5-nvfp4-evalscope-ocr-bench.yaml`
-- Validation/risk: always record the multimodal attention backend in Kimi OCR comparisons.
+- Risk and verification: always record the multimodal attention backend in Kimi OCR comparisons.
 
 ### PR #476 - Add AMD Kimi MXFP4 CI job
 
 - Link: https://github.com/lightseekorg/tokenspeed/pull/476
-- State/time: merged / 2026-06-26
-- Diff coverage: 3 files, +138/-4, 181 cached patch lines.
+- Status/date: merged / 2026-06-26
+- Trace source: `git log --name-only -- <model-files>` plus GitHub Pull Request files API.
+- Diff scope read: 3 files, +138/-4, 181 cached patch lines.
 - Motivation: keep AMD Kimi MXFP4 AIME25 and MLA metadata paths covered after #454.
 - Key implementation: adds an AMD MXFP4 eval YAML and `MLAAttnBackend` metadata tests.
-- Code excerpt:
+- Code diff details: See the diff scope line above and the excerpt below for the audited file-level changes.
+- Key code excerpts:
 
 ```diff
 +--model amd/Kimi-K2.5-MXFP4
@@ -228,4 +249,4 @@ Filter used in this pass: merged PRs whose titles or files matched `Kimi`, `kimi
 ```
 
 - Reviewed files: `mla.py`, AMD AIME25 YAML, `test_mla_verify_metadata.py`
-- Validation/risk: treat AMD MXFP4 as a separate lane from NVIDIA Kimi NVFP4.
+- Risk and verification: treat AMD MXFP4 as a separate lane from NVIDIA Kimi NVFP4.
