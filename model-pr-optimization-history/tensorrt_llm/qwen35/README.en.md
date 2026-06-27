@@ -1,9 +1,9 @@
 # TensorRT-LLM Qwen3.5 Model PR Optimization History
 
-## 2026-06-26 Latest Source Scan
+## 2026-06-27 Source Head Refresh
 
-Rechecked TensorRT-LLM upstream `NVIDIA/TensorRT-LLM@0722c5f47d2cae69ac1a237da51e550dd214532c` against the tracked files listed below.
-The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-26`.
+Rechecked TensorRT-LLM upstream main with `git ls-remote` at `NVIDIA/TensorRT-LLM@aaffa2f9fef3025e0f698d978385a73460344e0b`.
+The existing file-level source-scan rows below remain the last tracked-file audit; use `model-pr-optimization-history/open-pr-watch.md` before relying on current open PR state.
 
 Result: 3 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
 
@@ -13,12 +13,12 @@ Result: 3 additional PR-numbered merge(s) touched tracked files and are not yet 
 | 2026-06-26 | [#15361](https://github.com/NVIDIA/TensorRT-LLM/pull/15361) | [TRTLLM-12762][test] Add Test coverage for MiniMax Model with multi-node, M2.5 checkpoints eval | `test_llm_api_pytorch.py` |
 | 2026-06-26 | [#14837](https://github.com/NVIDIA/TensorRT-LLM/pull/14837) | [TRTLLM-13712][feat] Add Qwen-Image-Bench evaluator | `qwen3_5_weight_mapper.py` |
 
-## 2026-06-26 PR Backfill Audit
+## 2026-06-27 PR Backfill Audit
 
 The per-PR diff audit cards on this page were generated from TensorRT-LLM
 upstream `HEAD@4164b932c6c8a14d1be85d0fd62e44b7d0171980`. The root
-TensorRT-LLM history index tracks the latest 2026-06-26 runtime refresh at
-`0722c5f47d2cae69ac1a237da51e550dd214532c`. This page provides model
+TensorRT-LLM history index now tracks the 2026-06-27 runtime refresh at
+`aaffa2f9fef3025e0f698d978385a73460344e0b`. This page provides model
 implementation coverage, a PR timeline, and per-PR diff audit cards.
 
 Filter used in this pass: merged PRs whose titles or files matched `Qwen3.5`, `Qwen3_5`, `qwen3_5`, `AutoDeploy`, `NVFP4`, `FP8`, `DFlash`, `reasoning_parser`, `EPLB`, `MoE backend`, or `model_registry`. Pure reshuffling and unrelated infrastructure PRs were excluded.

@@ -163,7 +163,7 @@ Framework CLIs move quickly. For every real run:
 
 Historical validation from April 2026 used SGLang `0.5.10rc0`, vLLM `0.19.1`,
 and TensorRT-LLM `1.0.0`. A source check on 2026-06-27 saw SGLang
-`9214b9338fcb1df5b1a9ab5835aa631539f55556`, vLLM
+`e0c0c0a45cb1bda90392bfa2bba4184f5b0638a0`, vLLM
 `091d13976c1c246714bb2112dd2e208561dda6a3`, TensorRT-LLM
 `aaffa2f9fef3025e0f698d978385a73460344e0b`, and TokenSpeed
 `lightseekorg/tokenspeed@d0a7faddb5ec0d4c6d037c4c3e6a781d2c5164a8`. Treat these as source evidence,

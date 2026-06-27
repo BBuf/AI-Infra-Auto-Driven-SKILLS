@@ -1,31 +1,5 @@
 # vllm InternVL 3.5 模型 PR 优化历史
 
-## 2026-06-26 最新源码扫描
-
-已按 vLLM 上游 `vllm-project/vllm@abc71548ef029132c3316b902207f254a246d593` 重新扫描本文下方列出的 tracked files。
-文件级匹配使用 GitHub mirror 的 `git log --name-only`；PR 标题、链接和合并时间通过 GitHub GraphQL Pull Request API 批量复核。上一时效锚点：`2026-06-05`。
-
-结果：发现 3 个额外 PR-numbered merge 触及 tracked files，但尚未提升为下方完整逐 PR diff audit card。此节只作为 freshness index；需要引用实现细节时，仍应先人工阅读 PR diff 再补完整卡片。
-
-| 合并日期 | PR | 标题 | 命中的 tracked files |
-| --- | --- | --- | --- |
-| 2026-06-18 | [#42727](https://github.com/vllm-project/vllm/pull/42727) | fix(quantization): Fix AWQ dequantize on Intel XPU and refactor AutoAWQ config | `internvl.py` |
-| 2026-06-16 | [#43586](https://github.com/vllm-project/vllm/pull/43586) | [MM][Perf][CG] Support dual-path ViT full CUDA graph for DeepSeek-OCR | `internvl.py` |
-| 2026-06-12 | [#45129](https://github.com/vllm-project/vllm/pull/45129) | [Model] Remove Mono-InternVL (InternLM2VEForCausalLM) | `internvl.py` |
-
-## 2026-06-05 PR 补漏复核
-
-已于 2026-06-05 按 vllm 上游 `origin/main@c66b19800` 复核；自上次时效基准（2026-03-26）以来，共有 5 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
-
-| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
-| --- | --- | --- | --- |
-| 2026-06-04 | [#41759](https://github.com/vllm-project/vllm/pull/41759) | [MM][Perf][CG] Support ViT full CUDA graph for InternVL | `internvl.py` |
-| 2026-05-19 | [#42347](https://github.com/vllm-project/vllm/pull/42347) | [Perf][4/n] Eliminate various GPU<->CPU syncs | `internvl.py` |
-| 2026-04-15 | [#38901](https://github.com/vllm-project/vllm/pull/38901) | [Test] Refactor hard coded device string in test files under compile/quantization/models/model_executor folders | `test_intern_vit.py` |
-| 2026-04-15 | [#30566](https://github.com/vllm-project/vllm/pull/30566) | Update to transformers v5 | `test_intern_vit.py` |
-| 2026-03-25 | [#35182](https://github.com/vllm-project/vllm/pull/35182) | [Misc] Reorganize inputs | `internvl.py` |
-
-
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
@@ -33,14 +7,14 @@
 | `tests/models/multimodal/pooling/test_intern_vit.py` | 无直接 PR 号提交 |
 | `tests/models/multimodal/processing/test_internvl.py` | [#12553](https://github.com/vllm-project/vllm/pull/12553), [#37260](https://github.com/vllm-project/vllm/pull/37260) |
 | `vllm/model_executor/models/intern_vit.py` | [#6514](https://github.com/vllm-project/vllm/pull/6514), [#7067](https://github.com/vllm-project/vllm/pull/7067), [#9528](https://github.com/vllm-project/vllm/pull/9528), [#23909](https://github.com/vllm-project/vllm/pull/23909), [#38049](https://github.com/vllm-project/vllm/pull/38049) |
-| `vllm/model_executor/models/internvl.py` | [#6514](https://github.com/vllm-project/vllm/pull/6514), [#7067](https://github.com/vllm-project/vllm/pull/7067), [#7164](https://github.com/vllm-project/vllm/pull/7164), [#7860](https://github.com/vllm-project/vllm/pull/7860), [#8201](https://github.com/vllm-project/vllm/pull/8201), [#8250](https://github.com/vllm-project/vllm/pull/8250), [#8299](https://github.com/vllm-project/vllm/pull/8299), [#8375](https://github.com/vllm-project/vllm/pull/8375), [#8614](https://github.com/vllm-project/vllm/pull/8614), [#8946](https://github.com/vllm-project/vllm/pull/8946), [#9351](https://github.com/vllm-project/vllm/pull/9351), [#9528](https://github.com/vllm-project/vllm/pull/9528), ... (27 total) |
+| `vllm/model_executor/models/internvl.py` | [#6514](https://github.com/vllm-project/vllm/pull/6514), [#7067](https://github.com/vllm-project/vllm/pull/7067), [#7164](https://github.com/vllm-project/vllm/pull/7164), [#7860](https://github.com/vllm-project/vllm/pull/7860), [#8201](https://github.com/vllm-project/vllm/pull/8201), [#8250](https://github.com/vllm-project/vllm/pull/8250), [#8299](https://github.com/vllm-project/vllm/pull/8299), [#8375](https://github.com/vllm-project/vllm/pull/8375), [#8614](https://github.com/vllm-project/vllm/pull/8614), [#8946](https://github.com/vllm-project/vllm/pull/8946), [#9351](https://github.com/vllm-project/vllm/pull/9351), [#9528](https://github.com/vllm-project/vllm/pull/9528), ... (29 total) |
 | `vllm/transformers_utils/processors/internvl.py` | [#37260](https://github.com/vllm-project/vllm/pull/37260), [#37324](https://github.com/vllm-project/vllm/pull/37324) |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 28
-- 原文档显式引用补充 PR 数: 1
-- 当前文档总 PR 数: 29
+- git 追溯 PR 数: 30
+- 原文档显式引用补充 PR 数: 7
+- 当前文档总 PR 数: 37
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -76,7 +50,15 @@
 | 2026-01-23 | [#32397](https://github.com/vllm-project/vllm/pull/32397) | merged | [Model] Enable LoRA support for internvl2 | `vllm/model_executor/models/internvl.py` |
 | 2026-03-17 | [#37260](https://github.com/vllm-project/vllm/pull/37260) | merged | [1/2] Move InternVL-based processors | `vllm/transformers_utils/processors/internvl.py`, `vllm/model_executor/models/internvl.py`, `tests/models/multimodal/processing/test_internvl.py` |
 | 2026-03-18 | [#37324](https://github.com/vllm-project/vllm/pull/37324) | merged | [2/3] Refactor InternVL-based processors | `vllm/transformers_utils/processors/internvl.py`, `vllm/model_executor/models/internvl.py` |
+| 2026-03-25 | [#35182](https://github.com/vllm-project/vllm/pull/35182) | merged | [Misc] Reorganize inputs | `vllm/multimodal/inputs.py`, `vllm/entrypoints/pooling/score/serving.py`, `vllm/entrypoints/serve/render/serving.py` |
 | 2026-03-26 | [#38049](https://github.com/vllm-project/vllm/pull/38049) | merged | [Model] Add torch.compile support for InternVL vision encoder | `vllm/model_executor/models/intern_vit.py` |
+| 2026-04-15 | [#38901](https://github.com/vllm-project/vllm/pull/38901) | merged | refactor hard coded device string in test files under tests/compile tests/quantization tests/models and tests/model_executor | `tests/models/multimodal/pooling/test_intern_vit.py`, `tests/models/multimodal/pooling/test_radio.py`, `tests/models/test_utils.py` |
+| 2026-04-15 | [#30566](https://github.com/vllm-project/vllm/pull/30566) | merged | Update to transformers v5 | `tests/models/registry.py`, `vllm/model_executor/models/gemma4_mm.py`, `tests/models/multimodal/generation/test_common.py` |
+| 2026-05-19 | [#42347](https://github.com/vllm-project/vllm/pull/42347) | merged | [Perf][4/n] Eliminate various GPU CPU syncs | `vllm/model_executor/models/utils.py`, `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/granite_speech.py` |
+| 2026-06-04 | [#41759](https://github.com/vllm-project/vllm/pull/41759) | merged | [MM][Perf][CG] Support ViT full CUDA graph for InternVL | `vllm/model_executor/models/internvl.py` |
+| 2026-06-12 | [#45129](https://github.com/vllm-project/vllm/pull/45129) | merged | [Model] Remove Mono-InternVL (InternLM2VEForCausalLM) | `vllm/model_executor/models/internvl.py` |
+| 2026-06-16 | [#43586](https://github.com/vllm-project/vllm/pull/43586) | merged | [MM][Perf][CG] Support dual-path ViT full CUDA graph for DeepSeek-OCR | `vllm/model_executor/models/deepseek_ocr.py`, `docs/design/cuda_graphs_multimodal.md`, `tests/models/multimodal/generation/test_vit_cudagraph.py` |
+| 2026-06-18 | [#42727](https://github.com/vllm-project/vllm/pull/42727) | merged | fix(quantization): Fix AWQ dequantize on Intel XPU and refactor AutoAWQ config | `vllm/model_executor/layers/quantization/auto_awq.py`, `vllm/model_executor/layers/quantization/awq.py`, `vllm/model_executor/layers/quantization/moe_wna16.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -86,7 +68,7 @@
 - 状态/时间: merged / 2024-07-29
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/intern_vit.py`, `vllm/model_executor/models/internvl.py`；关联提交 `7cbd9ec7a9bf`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 14 个文件，+1042/-6，可读 patch 1164 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Model] Initialize support for InternVL2 series models」；模型线: InternVL 3.5；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/internvl.py`, `vllm/model_executor/models/intern_vit.py`, `tests/models/test_internvl.py`；技术摘要: 覆盖「[Model] Initialize support for InternVL2 series models」；主要实现面是 `vllm/model_executor/models/internvl.py`, `vllm/model_executor/models/intern_vit.py`, `tests/models/test_internvl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[Model] Initialize support for InternVL2 series models」；模型线: InternVL 3.5；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/internvl.py`, `vllm/model_executor/models/intern_vit.py`, `tests/models/test_internvl.py`；技术摘要: 覆盖「[Model] Initialize support for InternVL2 series models」；主要实现面是 `vllm/model_executor/models/internvl.py`, `vllm/model_executor/models/intern_vit.py`, `tests/models/test_internvl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/internvl.py` added +471/-0 (471 lines); hunks: -0,0 +1,471; symbols: InternVLImagePixelInputs, build_transform, find_closest_aspect_ratio, calculate_num_blocks，涉及 `InternVLImagePixelInputs, build_transform, find_closest_aspect_ratio`；`vllm/model_executor/models/intern_vit.py` added +270/-0 (270 lines); hunks: -0,0 +1,270; symbols: InternVisionEmbeddings, __init__, _get_pos_embed, forward，涉及 `InternVisionEmbeddings, __init__, _get_pos_embed`；`tests/models/test_internvl.py` added +201/-0 (201 lines); hunks: -0,0 +1,201; symbols: InternVLProcessor, __init__, __call__, generate，涉及 `InternVLProcessor, __init__, __call__`；`vllm/transformers_utils/configs/internvl.py` added +51/-0 (51 lines); hunks: -0,0 +1,51; symbols: InternVLChatConfig, __init__，涉及 `InternVLChatConfig, __init__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/internvl.py` added +471/-0 (471 lines); hunks: -0,0 +1,471; symbols: InternVLImagePixelInputs, build_transform, find_closest_aspect_ratio, calculate_num_blocks
@@ -226,7 +208,7 @@ diff -- vllm/model_executor/models/internvl.py
 - 状态/时间: merged / 2024-09-07
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/internvl.py`；关联提交 `e807125936a9`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+199/-57，可读 patch 482 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Model][VLM] Support multi-images inputs for InternVL2 models」；模型线: InternVL 3.5；类别: 缺陷修复；主要 diff: `tests/models/test_internvl.py`, `vllm/model_executor/models/internvl.py`；技术摘要: 覆盖「[Model][VLM] Support multi-images inputs for InternVL2 models」；主要实现面是 `tests/models/test_internvl.py`, `vllm/model_executor/models/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[Model][VLM] Support multi-images inputs for InternVL2 models」；模型线: InternVL 3.5；类别: 文档/测试/CI；主要 diff: `tests/models/test_internvl.py`, `vllm/model_executor/models/internvl.py`；技术摘要: 覆盖「[Model][VLM] Support multi-images inputs for InternVL2 models」；主要实现面是 `tests/models/test_internvl.py`, `vllm/model_executor/models/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `tests/models/test_internvl.py` modified +73/-19 (92 lines); hunks: -1,5 +1,5; -9,7 +9,8; symbols: generate, run_test, __init__, __call__，涉及 `generate, run_test, __init__`；`vllm/model_executor/models/internvl.py` modified +46/-14 (60 lines); hunks: -5,6 +5,7; -26,6 +27,7; symbols: find_closest_aspect_ratio, calculate_num_blocks, dynamic_preprocess, input_processor_for_internvl，涉及 `find_closest_aspect_ratio, calculate_num_blocks, dynamic_preprocess`。
 - 代码 diff 细节:
   - `tests/models/test_internvl.py` modified +73/-19 (92 lines); hunks: -1,5 +1,5; -9,7 +9,8; symbols: generate, run_test, __init__, __call__
@@ -379,7 +361,7 @@ diff -- vllm/model_executor/models/internvl.py
 - 状态/时间: merged / 2024-09-30
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/internvl.py`；关联提交 `2ae25f79cf1e`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+90/-61，可读 patch 252 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Model] Expose InternVL2 max_dynamic_patch as a mm_processor_kwarg」；模型线: InternVL 3.5；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/internvl.py`；技术摘要: 覆盖「[Model] Expose InternVL2 max_dynamic_patch as a mm_processor_kwarg」；主要实现面是 `vllm/model_executor/models/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[Model] Expose InternVL2 max_dynamic_patch as a mm_processor_kwarg」；模型线: InternVL 3.5；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/internvl.py`；技术摘要: 覆盖「[Model] Expose InternVL2 max_dynamic_patch as a mm_processor_kwarg」；主要实现面是 `vllm/model_executor/models/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/internvl.py` modified +89/-61 (150 lines); hunks: -5,8 +5,9; -122,6 +123,20 @@ def calculate_num_blocks(orig_width: int, orig_height: int,...; symbols: calculate_num_blocks, calculate_num_blocks_wrapper, dynamic_preprocess, image_to_pixel_values，涉及 `calculate_num_blocks, calculate_num_blocks_wrapper, dynamic_preprocess`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/internvl.py` modified +89/-61 (150 lines); hunks: -5,8 +5,9; -122,6 +123,20 @@ def calculate_num_blocks(orig_width: int, orig_height: int,...; symbols: calculate_num_blocks, calculate_num_blocks_wrapper, dynamic_preprocess, image_to_pixel_values
@@ -429,7 +411,7 @@ diff -- vllm/model_executor/models/internvl.py
 - 状态/时间: merged / 2024-10-22
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/intern_vit.py`, `vllm/model_executor/models/internvl.py`；关联提交 `bb392ea2d2bf`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+254/-28，可读 patch 387 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Model][VLM] Initialize support for Mono-InternVL model」；模型线: InternVL 3.5；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/internvl.py`, `vllm/model_executor/models/intern_vit.py`, `tests/models/decoder_only/vision_language/test_internvl.py`；技术摘要: 覆盖「[Model][VLM] Initialize support for Mono-InternVL model」；主要实现面是 `vllm/model_executor/models/internvl.py`, `vllm/model_executor/models/intern_vit.py`, `tests/models/decoder_only/vision_language/test_internvl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[Model][VLM] Initialize support for Mono-InternVL model」；模型线: InternVL 3.5；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/internvl.py`, `vllm/model_executor/models/intern_vit.py`, `tests/models/decoder_only/vision_language/test_internvl.py`；技术摘要: 覆盖「[Model][VLM] Initialize support for Mono-InternVL model」；主要实现面是 `vllm/model_executor/models/internvl.py`, `vllm/model_executor/models/intern_vit.py`, `tests/models/decoder_only/vision_language/test_internvl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/internvl.py` modified +42/-19 (61 lines); hunks: -21,7 +21,8; -427,13 +428,9 @@ def __init__(self,; symbols: __init__, sampler, _init_vision_model, _init_mlp1，涉及 `__init__, sampler, _init_vision_model`；`vllm/model_executor/models/intern_vit.py` modified +31/-0 (31 lines); hunks: -97,6 +97,37 @@ def forward(self, pixel_values: torch.FloatTensor) -> torch.T...; symbols: forward, InternVisionPatchModel, __init__, get_input_embeddings，涉及 `forward, InternVisionPatchModel, __init__`；`tests/models/decoder_only/vision_language/test_internvl.py` modified +13/-8 (21 lines); hunks: -7,7 +7,6; -19,15 +18,20; symbols: generate, run_awq_test，涉及 `generate, run_awq_test`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/internvl.py` modified +42/-19 (61 lines); hunks: -21,7 +21,8; -427,13 +428,9 @@ def __init__(self,; symbols: __init__, sampler, _init_vision_model, _init_mlp1
@@ -469,7 +451,7 @@ diff -- tests/models/decoder_only/vision_language/test_internvl.py
 - 状态/时间: merged / 2024-11-21
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/internvl.py`；关联提交 `d5ec121f95f5`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+255/-14，可读 patch 350 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Model] Expose `dynamic_image_size` as mm_processor_kwargs for InternVL2 models」；模型线: InternVL 3.5；类别: 缺陷修复；主要 diff: `tests/models/decoder_only/vision_language/mm_processor_kwargs/test_internvl.py`, `vllm/model_executor/models/internvl.py`；技术摘要: 覆盖「[Model] Expose `dynamic_image_size` as mm_processor_kwargs for InternVL2 models」；主要实现面是 `tests/models/decoder_only/vision_language/mm_processor_kwargs/test_internvl.py`, `vllm/model_executor/models/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[Model] Expose `dynamic_image_size` as mm_processor_kwargs for InternVL2 models」；模型线: InternVL 3.5；类别: 文档/测试/CI；主要 diff: `tests/models/decoder_only/vision_language/mm_processor_kwargs/test_internvl.py`, `vllm/model_executor/models/internvl.py`；技术摘要: 覆盖「[Model] Expose `dynamic_image_size` as mm_processor_kwargs for InternVL2 models」；主要实现面是 `tests/models/decoder_only/vision_language/mm_processor_kwargs/test_internvl.py`, `vllm/model_executor/models/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `tests/models/decoder_only/vision_language/mm_processor_kwargs/test_internvl.py` added +206/-0 (206 lines); hunks: -0,0 +1,206; symbols: input_processor_for_internvl, dummy_data_for_internvl, get_max_internvl_image_tokens, test_input_mapper_override，涉及 `input_processor_for_internvl, dummy_data_for_internvl, get_max_internvl_image_tokens`；`vllm/model_executor/models/internvl.py` modified +49/-14 (63 lines); hunks: -123,8 +123,15 @@ def calculate_num_blocks(orig_width: int, orig_height: int,...; -183,10 +190,17 @@ def image_to_pixel_values(image: Image.Image, input_size:...; symbols: calculate_num_blocks, calculate_num_blocks_wrapper, image_to_pixel_values, image_to_pixel_values_wrapper，涉及 `calculate_num_blocks, calculate_num_blocks_wrapper, image_to_pixel_values`。
 - 代码 diff 细节:
   - `tests/models/decoder_only/vision_language/mm_processor_kwargs/test_internvl.py` added +206/-0 (206 lines); hunks: -0,0 +1,206; symbols: input_processor_for_internvl, dummy_data_for_internvl, get_max_internvl_image_tokens, test_input_mapper_override
@@ -531,7 +513,7 @@ diff -- vllm/model_executor/models/internvl.py
 - 状态/时间: merged / 2025-02-04
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/processing/test_internvl.py`, `vllm/model_executor/models/internvl.py`；关联提交 `d1ca7df84d9f`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 34 个文件，+1434/-986，可读 patch 3135 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[VLM] Merged multi-modal processor for InternVL-based models」；模型线: InternVL 3.5；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/internvl.py`, `tests/models/multimodal/processing/test_internvl.py`；技术摘要: 覆盖「[VLM] Merged multi-modal processor for InternVL-based models」；主要实现面是 `vllm/model_executor/models/internvl.py`, `tests/models/multimodal/processing/test_internvl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[VLM] Merged multi-modal processor for InternVL-based models」；模型线: InternVL 3.5；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/internvl.py`, `tests/models/multimodal/processing/test_internvl.py`；技术摘要: 覆盖「[VLM] Merged multi-modal processor for InternVL-based models」；主要实现面是 `vllm/model_executor/models/internvl.py`, `tests/models/multimodal/processing/test_internvl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/internvl.py` modified +503/-320 (823 lines); hunks: -6,35 +6,37; -75,22 +77,27 @@ class InternVLImageEmbeddingInputs(TypedDict):; symbols: InternVLImageEmbeddingInputs, build_transform, find_closest_aspect_ratio，涉及 `InternVLImageEmbeddingInputs, build_transform, find_closest_aspect_ratio`；`tests/models/multimodal/processing/test_internvl.py` modified +32/-175 (207 lines); hunks: -1,207 +1,64; symbols: input_processor_for_internvl, dummy_data_for_internvl, get_max_internvl_image_tokens, test_input_mapper_override，涉及 `input_processor_for_internvl, dummy_data_for_internvl, get_max_internvl_image_tokens`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/internvl.py` modified +503/-320 (823 lines); hunks: -6,35 +6,37; -75,22 +77,27 @@ class InternVLImageEmbeddingInputs(TypedDict):; symbols: InternVLImageEmbeddingInputs, build_transform, find_closest_aspect_ratio
@@ -568,7 +550,7 @@ diff -- tests/models/multimodal/processing/test_internvl.py
 - 状态/时间: merged / 2025-03-13
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/internvl.py`；关联提交 `b1cc4dfef57a`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+10/-3，可读 patch 26 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[VLM] Support loading InternVideo2.5 models as original InternVLChatModel」；模型线: InternVL 3.5；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/internvl.py`；技术摘要: 覆盖「[VLM] Support loading InternVideo2.5 models as original InternVLChatModel」；主要实现面是 `vllm/model_executor/models/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[VLM] Support loading InternVideo2.5 models as original InternVLChatModel」；模型线: InternVL 3.5；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/internvl.py`；技术摘要: 覆盖「[VLM] Support loading InternVideo2.5 models as original InternVLChatModel」；主要实现面是 `vllm/model_executor/models/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/internvl.py` modified +8/-1 (9 lines); hunks: -981,5 +981,12 @@ def sample(; symbols: sample, load_weights，涉及 `sample, load_weights`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/internvl.py` modified +8/-1 (9 lines); hunks: -981,5 +981,12 @@ def sample(; symbols: sample, load_weights
@@ -622,7 +604,7 @@ diff -- vllm/model_executor/models/internvl.py
 - 状态/时间: merged / 2025-05-25
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/internvl.py`；关联提交 `75f81750f3a9`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 10 个文件，+596/-62，可读 patch 940 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[VLM] Initialize video input support for InternVL models」；模型线: InternVL 3.5；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/internvl.py`；技术摘要: 覆盖「[VLM] Initialize video input support for InternVL models」；主要实现面是 `vllm/model_executor/models/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[VLM] Initialize video input support for InternVL models」；模型线: InternVL 3.5；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/internvl.py`；技术摘要: 覆盖「[VLM] Initialize video input support for InternVL models」；主要实现面是 `vllm/model_executor/models/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/internvl.py` modified +485/-26 (511 lines); hunks: -8,8 +8,9; -74,6 +75,33 @@ class InternVLImageEmbeddingInputs(TypedDict):; symbols: InternVLImageEmbeddingInputs, InternVLVideoPixelInputs, InternVLVideoEmbeddingInputs, build_transform，涉及 `InternVLImageEmbeddingInputs, InternVLVideoPixelInputs, InternVLVideoEmbeddingInputs`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/internvl.py` modified +485/-26 (511 lines); hunks: -8,8 +8,9; -74,6 +75,33 @@ class InternVLImageEmbeddingInputs(TypedDict):; symbols: InternVLImageEmbeddingInputs, InternVLVideoPixelInputs, InternVLVideoEmbeddingInputs, build_transform
@@ -649,7 +631,7 @@ diff -- vllm/model_executor/models/internvl.py
 - 状态/时间: merged / 2025-05-29
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/internvl.py`；关联提交 `34d6c447c4b9`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+23/-2，可读 patch 50 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[LoRA] Add LoRA support for InternVL」；模型线: InternVL 3.5；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/internvl.py`；技术摘要: 覆盖「[LoRA] Add LoRA support for InternVL」；主要实现面是 `vllm/model_executor/models/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[LoRA] Add LoRA support for InternVL」；模型线: InternVL 3.5；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/internvl.py`；技术摘要: 覆盖「[LoRA] Add LoRA support for InternVL」；主要实现面是 `vllm/model_executor/models/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/internvl.py` modified +23/-2 (25 lines); hunks: -22,6 +22,7; -36,7 +37,8; symbols: get_video_replacement_internvl, InternVLChatModel, __init__, load_weights，涉及 `get_video_replacement_internvl, InternVLChatModel, __init__`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/internvl.py` modified +23/-2 (25 lines); hunks: -22,6 +22,7; -36,7 +37,8; symbols: get_video_replacement_internvl, InternVLChatModel, __init__, load_weights
@@ -703,7 +685,7 @@ diff -- vllm/model_executor/models/internvl.py
 - 状态/时间: merged / 2025-08-26
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/internvl.py`；关联提交 `9816b81f5f9f`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+22/-7，可读 patch 71 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Model] Enable video support for InternVL3.5 models」；模型线: InternVL 3.5；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/internvl.py`；技术摘要: 覆盖「[Model] Enable video support for InternVL3.5 models」；主要实现面是 `vllm/model_executor/models/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[Model] Enable video support for InternVL3.5 models」；模型线: InternVL 3.5；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/internvl.py`；技术摘要: 覆盖「[Model] Enable video support for InternVL3.5 models」；主要实现面是 `vllm/model_executor/models/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/internvl.py` modified +7/-3 (10 lines); hunks: -855,9 +855,13 @@ def get_supported_mm_limits(self):; symbols: get_supported_mm_limits, get_video_token, get_num_frames_with_most_features，涉及 `get_supported_mm_limits, get_video_token, get_num_frames_with_most_features`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/internvl.py` modified +7/-3 (10 lines); hunks: -855,9 +855,13 @@ def get_supported_mm_limits(self):; symbols: get_supported_mm_limits, get_video_token, get_num_frames_with_most_features
@@ -730,7 +712,7 @@ diff -- vllm/model_executor/models/internvl.py
 - 状态/时间: merged / 2025-08-27
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+18/-16，可读 patch 76 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Model] Enable native HF format InternVL support」；模型线: InternVL 3.5；类别: 缺陷修复；主要 diff: `tests/models/multimodal/generation/test_common.py`, `tests/models/registry.py`, `docs/models/supported_models.md`；技术摘要: 覆盖「[Model] Enable native HF format InternVL support」；主要实现面是 `tests/models/multimodal/generation/test_common.py`, `tests/models/registry.py`, `docs/models/supported_models.md`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[Model] Enable native HF format InternVL support」；模型线: InternVL 3.5；类别: 文档/测试/CI；主要 diff: `tests/models/multimodal/generation/test_common.py`, `tests/models/registry.py`, `docs/models/supported_models.md`；技术摘要: 覆盖「[Model] Enable native HF format InternVL support」；主要实现面是 `tests/models/multimodal/generation/test_common.py`, `tests/models/registry.py`, `docs/models/supported_models.md`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `tests/models/multimodal/generation/test_common.py` modified +14/-15 (29 lines); hunks: -222,21 +222,6; -461,6 +446,20；`tests/models/registry.py` modified +2/-1 (3 lines); hunks: -429,6 +429,7 @@ def check_available_online(; -584,7 +585,7 @@ def check_available_online(; symbols: check_available_online，涉及 `check_available_online`；`docs/models/supported_models.md` modified +1/-0 (1 lines); hunks: -629,6 +629,7 @@ These models primarily accept the [`LLM.generate`](./generat...；`vllm/model_executor/models/registry.py` modified +1/-0 (1 lines); hunks: -217,6 +217,7。
 - 代码 diff 细节:
   - `tests/models/multimodal/generation/test_common.py` modified +14/-15 (29 lines); hunks: -222,21 +222,6; -461,6 +446,20
@@ -799,7 +781,7 @@ diff -- vllm/model_executor/models/internvl.py
 - 状态/时间: merged / 2025-09-18
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/intern_vit.py`, `vllm/model_executor/models/internvl.py`；关联提交 `52bc9d5b3edb`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+80/-33，可读 patch 262 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Model] enable data parallel for InternVL vision encoder」；模型线: InternVL 3.5；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/intern_vit.py`, `vllm/model_executor/models/internvl.py`；技术摘要: 覆盖「[Model] enable data parallel for InternVL vision encoder」；主要实现面是 `vllm/model_executor/models/intern_vit.py`, `vllm/model_executor/models/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[Model] enable data parallel for InternVL vision encoder」；模型线: InternVL 3.5；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/intern_vit.py`, `vllm/model_executor/models/internvl.py`；技术摘要: 覆盖「[Model] enable data parallel for InternVL vision encoder」；主要实现面是 `vllm/model_executor/models/intern_vit.py`, `vllm/model_executor/models/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/intern_vit.py` modified +75/-32 (107 lines); hunks: -25,9 +25,11; -137,6 +139,7 @@ def __init__(; symbols: __init__, forward，涉及 `__init__, forward`；`vllm/model_executor/models/internvl.py` modified +4/-1 (5 lines); hunks: -1020,6 +1020,8 @@ def get_video_replacement_internvl(item_idx: int):; -1038,6 +1040,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: get_video_replacement_internvl, InternVLChatModel, get_placeholder_str, __init__，涉及 `get_video_replacement_internvl, InternVLChatModel, get_placeholder_str`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/intern_vit.py` modified +75/-32 (107 lines); hunks: -25,9 +25,11; -137,6 +139,7 @@ def __init__(; symbols: __init__, forward
@@ -835,7 +817,7 @@ diff -- vllm/model_executor/models/internvl.py
 - 状态/时间: merged / 2025-10-03
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/internvl.py`；关联提交 `f9a8084e4879`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 9 个文件，+84/-182，可读 patch 785 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Model] Use `merge_by_field_config` for MM models (InternVL family)」；模型线: InternVL 3.5；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/internvl.py`；技术摘要: 覆盖「[Model] Use `merge_by_field_config` for MM models (InternVL family)」；主要实现面是 `vllm/model_executor/models/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[Model] Use `merge_by_field_config` for MM models (InternVL family)」；模型线: InternVL 3.5；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/internvl.py`；技术摘要: 覆盖「[Model] Use `merge_by_field_config` for MM models (InternVL family)」；主要实现面是 `vllm/model_executor/models/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/internvl.py` modified +27/-54 (81 lines); hunks: -17,7 +17,7; -28,7 +28,7; symbols: _preprocess_image, __call__, InternVLProcessor, _preprocess_video，涉及 `_preprocess_image, __call__, InternVLProcessor`。
 - 代码 diff 细节:
   - `vllm/model_executor/models/internvl.py` modified +27/-54 (81 lines); hunks: -17,7 +17,7; -28,7 +28,7; symbols: _preprocess_image, __call__, InternVLProcessor, _preprocess_video
@@ -889,7 +871,7 @@ diff -- vllm/model_executor/models/internvl.py
 - 状态/时间: merged / 2026-03-17
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/processing/test_internvl.py`, `vllm/model_executor/models/internvl.py`, `vllm/transformers_utils/processors/internvl.py`；关联提交 `f34032433573`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 20 个文件，+3252/-3099，可读 patch 6681 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[1/2] Move InternVL-based processors」；模型线: InternVL 3.5；类别: 模型实现调整；主要 diff: `vllm/transformers_utils/processors/internvl.py`, `vllm/model_executor/models/internvl.py`, `tests/models/multimodal/processing/test_internvl.py`；技术摘要: 覆盖「[1/2] Move InternVL-based processors」；主要实现面是 `vllm/transformers_utils/processors/internvl.py`, `vllm/model_executor/models/internvl.py`, `tests/models/multimodal/processing/test_internvl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[1/2] Move InternVL-based processors」；模型线: InternVL 3.5；类别: 文档/测试/CI；主要 diff: `vllm/transformers_utils/processors/internvl.py`, `vllm/model_executor/models/internvl.py`, `tests/models/multimodal/processing/test_internvl.py`；技术摘要: 覆盖「[1/2] Move InternVL-based processors」；主要实现面是 `vllm/transformers_utils/processors/internvl.py`, `vllm/model_executor/models/internvl.py`, `tests/models/multimodal/processing/test_internvl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/transformers_utils/processors/internvl.py` added +603/-0 (603 lines); hunks: -0,0 +1,603; symbols: build_transform, find_closest_aspect_ratio, resolve_internvl_min_max_num, get_internvl_target_ratios，涉及 `build_transform, find_closest_aspect_ratio, resolve_internvl_min_max_num`；`vllm/model_executor/models/internvl.py` modified +7/-578 (585 lines); hunks: -7,16 +7,13; -28,7 +25,6; symbols: InternVLImagePixelInputs, InternVLVideoEmbeddingInputs, build_transform, find_closest_aspect_ratio，涉及 `InternVLImagePixelInputs, InternVLVideoEmbeddingInputs, build_transform`；`tests/models/multimodal/processing/test_internvl.py` modified +1/-1 (2 lines); hunks: -23,7 +23,7 @@ def _get_expected_num_patches(; symbols: _get_expected_num_patches，涉及 `_get_expected_num_patches`。
 - 代码 diff 细节:
   - `vllm/transformers_utils/processors/internvl.py` added +603/-0 (603 lines); hunks: -0,0 +1,603; symbols: build_transform, find_closest_aspect_ratio, resolve_internvl_min_max_num, get_internvl_target_ratios
@@ -959,6 +941,47 @@ diff -- vllm/model_executor/models/internvl.py
   - runtime: `vllm/transformers_utils/processors/internvl.py` modified +233/-273; `vllm/model_executor/models/internvl.py` modified +85/-46
 - 验证与风险: diff 自带测试面 `tests/models/multimodal/generation/vlm_utils/model_utils.py`, `tests/models/registry.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
+### PR #35182 - [Misc] Reorganize inputs
+
+- 链接: https://github.com/vllm-project/vllm/pull/35182
+- 状态/时间: merged / 2026-03-25
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 142 个文件，+1212/-1342，可读 patch 6002 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Misc] Reorganize inputs」；模型线: InternVL 3.5；类别: 模型实现调整；主要 diff: `vllm/multimodal/inputs.py`, `vllm/entrypoints/pooling/score/serving.py`, `vllm/entrypoints/serve/render/serving.py`；技术摘要: 覆盖「[Misc] Reorganize inputs」；主要实现面是 `vllm/multimodal/inputs.py`, `vllm/entrypoints/pooling/score/serving.py`, `vllm/entrypoints/serve/render/serving.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/multimodal/inputs.py` modified +2/-162 (164 lines); hunks: -15,12 +15,11; -32,14 +31,9; symbols: VisionChunkImage, VisionChunkVideo, MultiModalDataBuiltins, PlaceholderRange，涉及 `VisionChunkImage, VisionChunkVideo, MultiModalDataBuiltins`；`vllm/entrypoints/pooling/score/serving.py` modified +36/-45 (81 lines); hunks: -35,7 +35,7; -110,12 +110,12 @@ async def _embedding_score(; symbols: _embedding_score, _preprocess_late_interaction_item，涉及 `_embedding_score, _preprocess_late_interaction_item`；`vllm/entrypoints/serve/render/serving.py` modified +38/-37 (75 lines); hunks: -34,9 +34,15; -127,22 +133,22 @@ async def render_chat_request(; symbols: render_chat_request, render_chat，涉及 `render_chat_request, render_chat`；`vllm/entrypoints/openai/responses/serving.py` modified +22/-26 (48 lines); hunks: -110,7 +110,7; -269,10 +269,10 @@ def __init__(; symbols: __init__, _validate_generator_input, create_responses，涉及 `__init__, _validate_generator_input, create_responses`。
+- 代码 diff 细节:
+  - `vllm/multimodal/inputs.py` modified +2/-162 (164 lines); hunks: -15,12 +15,11; -32,14 +31,9; symbols: VisionChunkImage, VisionChunkVideo, MultiModalDataBuiltins, PlaceholderRange
+  - `vllm/entrypoints/pooling/score/serving.py` modified +36/-45 (81 lines); hunks: -35,7 +35,7; -110,12 +110,12 @@ async def _embedding_score(; symbols: _embedding_score, _preprocess_late_interaction_item
+  - `vllm/entrypoints/serve/render/serving.py` modified +38/-37 (75 lines); hunks: -34,9 +34,15; -127,22 +133,22 @@ async def render_chat_request(; symbols: render_chat_request, render_chat
+  - `vllm/entrypoints/openai/responses/serving.py` modified +22/-26 (48 lines); hunks: -110,7 +110,7; -269,10 +269,10 @@ def __init__(; symbols: __init__, _validate_generator_input, create_responses
+  - `vllm/entrypoints/llm.py` modified +22/-22 (44 lines); hunks: -57,9 +57,9; -584,7 +584,7 @@ def wait_for_completion(; symbols: wait_for_completion, _resolve_mm_lora, beam_search
+- 关键代码摘录:
+
+```diff
+diff -- vllm/multimodal/inputs.py
+@@ -15,12 +15,11 @@
+-    final,
+-from typing_extensions import NotRequired, TypeVar
++from typing_extensions import TypeVar
+@@ -32,14 +31,9 @@
+-    from vllm.inputs.data import _InputOptions
+-    _InputOptions = dict
+diff -- vllm/entrypoints/pooling/score/serving.py
+@@ -35,7 +35,7 @@
+-from vllm.inputs.data import ProcessorInputs, TokensPrompt, token_inputs
++from vllm.inputs import EngineInput, TokensPrompt, tokens_input
+@@ -110,12 +110,12 @@ async def _embedding_score(
+-        engine_prompts: list[ProcessorInputs] = []
++        engine_inputs: list[EngineInput] = []
+-            engine_prompts.append(
+diff -- vllm/entrypoints/serve/render/serving.py
+@@ -34,9 +34,15 @@
+```
+
+- 已读文件:
+  - runtime: `vllm/multimodal/inputs.py` modified +2/-162; `vllm/entrypoints/pooling/score/serving.py` modified +36/-45; `vllm/entrypoints/serve/render/serving.py` modified +38/-37; `vllm/entrypoints/openai/responses/serving.py` modified +22/-26; `vllm/entrypoints/llm.py` modified +22/-22; `vllm/entrypoints/pooling/embed/io_processor.py` modified +20/-20
+- 验证与风险: diff 自带测试面 `tests/entrypoints/openai/chat_completion/test_chat_error.py`, `tests/entrypoints/openai/chat_completion/test_serving_chat.py`, `tests/entrypoints/openai/responses/test_serving_responses.py`, `tests/entrypoints/serve/render/test_launch_render.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
 ### PR #38049 - [Model] Add torch.compile support for InternVL vision encoder
 
 - 链接: https://github.com/vllm-project/vllm/pull/38049
@@ -985,6 +1008,268 @@ diff -- vllm/model_executor/models/intern_vit.py
 - 已读文件:
   - runtime: `vllm/model_executor/models/intern_vit.py` modified +11/-2
 - 验证与风险: runtime 路径改动集中在 `vllm/config/utils.py`, `vllm/model_executor/models/intern_vit.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #38901 - refactor hard coded device string in test files under tests/compile tests/quantization tests/models and tests/model_executor
+
+- 链接: https://github.com/vllm-project/vllm/pull/38901
+- 状态/时间: merged / 2026-04-15
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 24 个文件，+122/-66，可读 patch 760 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「refactor hard coded device string in test files under tests/compile tests/quantization tests/models and tests/model_executor」；模型线: InternVL 3.5；类别: 文档/测试/CI；主要 diff: `tests/models/multimodal/pooling/test_intern_vit.py`, `tests/models/multimodal/pooling/test_radio.py`, `tests/models/test_utils.py`；技术摘要: 覆盖「refactor hard coded device string in test files under tests/compile tests/quantization tests/models and tests/model_executor」；主要实现面是 `tests/models/multimodal/pooling/test_intern_vit.py`, `tests/models/multimodal/pooling/test_radio.py`, `tests/models/test_utils.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `tests/models/multimodal/pooling/test_intern_vit.py` modified +8/-4 (12 lines); hunks: -7,6 +7,7; -15,6 +16,8; symbols: run_intern_vit_test，涉及 `run_intern_vit_test`；`tests/models/multimodal/pooling/test_radio.py` modified +8/-4 (12 lines); hunks: -8,6 +8,7; -17,6 +18,8; symbols: run_radio_test，涉及 `run_radio_test`；`tests/models/test_utils.py` modified +8/-2 (10 lines); hunks: -10,6 +10,8; -174,8 +176,12 @@ def __exit__(self, exception_type, exception_value, traceba...; symbols: ModuleWithBatchNorm, __init__, __exit__, test_merge_multimodal_embeddings_no_sync，涉及 `ModuleWithBatchNorm, __init__, __exit__`；`tests/model_executor/test_eagle_quantization.py` modified +3/-2 (5 lines); hunks: -10,9 +10,10。
+- 代码 diff 细节:
+  - `tests/models/multimodal/pooling/test_intern_vit.py` modified +8/-4 (12 lines); hunks: -7,6 +7,7; -15,6 +16,8; symbols: run_intern_vit_test
+  - `tests/models/multimodal/pooling/test_radio.py` modified +8/-4 (12 lines); hunks: -8,6 +8,7; -17,6 +18,8; symbols: run_radio_test
+  - `tests/models/test_utils.py` modified +8/-2 (10 lines); hunks: -10,6 +10,8; -174,8 +176,12 @@ def __exit__(self, exception_type, exception_value, traceba...; symbols: ModuleWithBatchNorm, __init__, __exit__, test_merge_multimodal_embeddings_no_sync
+  - `tests/model_executor/test_eagle_quantization.py` modified +3/-2 (5 lines); hunks: -10,9 +10,10
+  - `tests/basic_correctness/test_cumem.py` modified +10/-8 (18 lines); hunks: -13,6 +13,8; -26,13 +28,13 @@ def test_python_error():; symbols: test_python_error, test_basic_cumem
+- 关键代码摘录:
+
+```diff
+diff -- tests/models/multimodal/pooling/test_intern_vit.py
+@@ -7,6 +7,7 @@
++from vllm.platforms import current_platform
+@@ -15,6 +16,8 @@
++DEVICE_TYPE = current_platform.device_type
+@@ -39,9 +42,9 @@ def run_intern_vit_test(
+-    ).to("cuda")
++    ).to(DEVICE_TYPE)
+diff -- tests/models/multimodal/pooling/test_radio.py
+@@ -8,6 +8,7 @@
++from vllm.platforms import current_platform
+@@ -17,6 +18,8 @@
++DEVICE_TYPE = current_platform.device_type
+@@ -51,7 +54,7 @@ def run_radio_test(
+-    ).to("cuda")
++    ).to(DEVICE_TYPE)
+diff -- tests/models/test_utils.py
+@@ -10,6 +10,8 @@
+```
+
+- 已读文件:
+  - tests: `tests/models/multimodal/pooling/test_intern_vit.py` modified +8/-4; `tests/models/multimodal/pooling/test_radio.py` modified +8/-4; `tests/models/test_utils.py` modified +8/-2; `tests/model_executor/test_eagle_quantization.py` modified +3/-2; `tests/basic_correctness/test_cumem.py` modified +10/-8; `tests/quantization/test_torchao.py` modified +9/-8
+- 验证与风险: diff 自带测试面 `tests/basic_correctness/test_cumem.py`, `tests/compile/passes/distributed/test_async_tp.py`, `tests/compile/passes/distributed/test_fusion_all_reduce.py`, `tests/compile/passes/distributed/test_sequence_parallelism.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #30566 - Update to transformers v5
+
+- 链接: https://github.com/vllm-project/vllm/pull/30566
+- 状态/时间: merged / 2026-04-15
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 41 个文件，+445/-115，可读 patch 1409 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Update to transformers v5」；模型线: InternVL 3.5；类别: 文档/测试/CI；主要 diff: `tests/models/registry.py`, `vllm/model_executor/models/gemma4_mm.py`, `tests/models/multimodal/generation/test_common.py`；技术摘要: 覆盖「Update to transformers v5」；主要实现面是 `tests/models/registry.py`, `vllm/model_executor/models/gemma4_mm.py`, `tests/models/multimodal/generation/test_common.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `tests/models/registry.py` modified +130/-9 (139 lines); hunks: -335,7 +335,15 @@ def check_available_online(; -475,6 +483,13 @@ def check_available_online(; symbols: check_available_online，涉及 `check_available_online`；`vllm/model_executor/models/gemma4_mm.py` modified +36/-15 (51 lines); hunks: -125,8 +125,12 @@ class Gemma4AudioInputs(TensorSchema):; -505,6 +509,8 @@ def _call_hf_processor(; symbols: Gemma4AudioInputs, _call_hf_processor，涉及 `Gemma4AudioInputs, _call_hf_processor`；`tests/models/multimodal/generation/test_common.py` modified +38/-6 (44 lines); hunks: -186,7 +186,14; -397,14 +404,14；`vllm/tokenizers/registry.py` modified +34/-1 (35 lines); hunks: -1,5 +1,6; -10,6 +11,7; symbols: get_tokenizer，涉及 `get_tokenizer`。
+- 代码 diff 细节:
+  - `tests/models/registry.py` modified +130/-9 (139 lines); hunks: -335,7 +335,15 @@ def check_available_online(; -475,6 +483,13 @@ def check_available_online(; symbols: check_available_online
+  - `vllm/model_executor/models/gemma4_mm.py` modified +36/-15 (51 lines); hunks: -125,8 +125,12 @@ class Gemma4AudioInputs(TensorSchema):; -505,6 +509,8 @@ def _call_hf_processor(; symbols: Gemma4AudioInputs, _call_hf_processor
+  - `tests/models/multimodal/generation/test_common.py` modified +38/-6 (44 lines); hunks: -186,7 +186,14; -397,14 +404,14
+  - `vllm/tokenizers/registry.py` modified +34/-1 (35 lines); hunks: -1,5 +1,6; -10,6 +11,7; symbols: get_tokenizer
+  - `tests/model_executor/test_weight_utils.py` modified +0/-18 (18 lines); hunks: -1,7 +1,6; -10,26 +9,10; symbols: test_hf_transfer_auto_activation, test_download_weights_from_hf, test_missing_target_returns_none
+- 关键代码摘录:
+
+```diff
+diff -- tests/models/registry.py
+@@ -335,7 +335,15 @@ def check_available_online(
+-        "OpenGVLab/Mono-InternVL-2B", trust_remote_code=True
++        "OpenGVLab/Mono-InternVL-2B",
++        trust_remote_code=True,
++        max_transformers_version="4.57",
++        transformers_version_reason={
++            "vllm": (
+diff -- vllm/model_executor/models/gemma4_mm.py
+@@ -125,8 +125,12 @@ class Gemma4AudioInputs(TensorSchema):
+-    input_features_padded: Annotated[torch.Tensor, TensorShape("bn", "s", "f")]
+-    input_features_mask: Annotated[torch.Tensor, TensorShape("bn", "s")]
++    input_features_padded: Annotated[
++        torch.Tensor, TensorShape("bn", "s", "f", dynamic_dims={"s"})
++    ]
++    input_features_mask: Annotated[
+diff -- tests/models/multimodal/generation/test_common.py
+@@ -186,7 +186,14 @@
+```
+
+- 已读文件:
+  - tests: `tests/models/registry.py` modified +130/-9; `tests/models/multimodal/generation/test_common.py` modified +38/-6; `tests/model_executor/test_weight_utils.py` modified +0/-18; `tests/models/multimodal/generation/test_phi4siglip.py` modified +11/-0; `tests/models/utils.py` modified +10/-1
+  - runtime: `vllm/model_executor/models/gemma4_mm.py` modified +36/-15; `vllm/tokenizers/registry.py` modified +34/-1; `vllm/model_executor/model_loader/gguf_loader.py` modified +12/-0
+- 验证与风险: diff 自带测试面 `requirements/test/cuda.in`, `requirements/test/cuda.txt`, `requirements/test/nightly-torch.txt`, `requirements/test/rocm.in`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #42347 - [Perf][4/n] Eliminate various GPU CPU syncs
+
+- 链接: https://github.com/vllm-project/vllm/pull/42347
+- 状态/时间: merged / 2026-05-19
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 23 个文件，+129/-108，可读 patch 606 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Perf][4/n] Eliminate various GPU CPU syncs」；模型线: InternVL 3.5；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/utils.py`, `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/granite_speech.py`；技术摘要: 覆盖「[Perf][4/n] Eliminate various GPU CPU syncs」；主要实现面是 `vllm/model_executor/models/utils.py`, `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/granite_speech.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/utils.py` modified +7/-15 (22 lines); hunks: -30,10 +30,8; -498,10 +496,9 @@ def isin_list(; symbols: isin_list, extract_layer_index, cast_overflow_tensors, fast_topk，涉及 `isin_list, extract_layer_index, cast_overflow_tensors`；`vllm/model_executor/models/qwen2_5_vl.py` modified +12/-7 (19 lines); hunks: -84,6 +84,7; -679,6 +680,7 @@ def rotary_pos_emb_thw(self, t, h, w):; symbols: rotary_pos_emb_thw, get_rope_by_thw, _get_mm_fields_config, _call_hf_processor，涉及 `rotary_pos_emb_thw, get_rope_by_thw, _get_mm_fields_config`；`vllm/model_executor/models/granite_speech.py` modified +7/-7 (14 lines); hunks: -143,7 +143,7 @@ def _get_mm_fields_config(; -717,13 +717,13 @@ def _build_input_features_mask(; symbols: _get_mm_fields_config, _get_prompt_updates, _build_input_features_mask, _pad_and_stack_input_features，涉及 `_get_mm_fields_config, _get_prompt_updates, _build_input_features_mask`；`vllm/model_executor/models/phi4mm_audio.py` modified +9/-3 (12 lines); hunks: -586,7 +586,9 @@ def forward_embeddings(; -605,7 +607,9 @@ def forward_embeddings(; symbols: forward_embeddings, calculate_hs_mask，涉及 `forward_embeddings, calculate_hs_mask`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/utils.py` modified +7/-15 (22 lines); hunks: -30,10 +30,8; -498,10 +496,9 @@ def isin_list(; symbols: isin_list, extract_layer_index, cast_overflow_tensors, fast_topk
+  - `vllm/model_executor/models/qwen2_5_vl.py` modified +12/-7 (19 lines); hunks: -84,6 +84,7; -679,6 +680,7 @@ def rotary_pos_emb_thw(self, t, h, w):; symbols: rotary_pos_emb_thw, get_rope_by_thw, _get_mm_fields_config, _call_hf_processor
+  - `vllm/model_executor/models/granite_speech.py` modified +7/-7 (14 lines); hunks: -143,7 +143,7 @@ def _get_mm_fields_config(; -717,13 +717,13 @@ def _build_input_features_mask(; symbols: _get_mm_fields_config, _get_prompt_updates, _build_input_features_mask, _pad_and_stack_input_features
+  - `vllm/model_executor/models/phi4mm_audio.py` modified +9/-3 (12 lines); hunks: -586,7 +586,9 @@ def forward_embeddings(; -605,7 +607,9 @@ def forward_embeddings(; symbols: forward_embeddings, calculate_hs_mask
+  - `vllm/model_executor/models/bert.py` modified +3/-6 (9 lines); hunks: -559,13 +559,10 @@ def _encode_token_type_ids(; symbols: _encode_token_type_ids, _decode_token_type_ids
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/utils.py
+@@ -30,10 +30,8 @@
+-from vllm.utils.platform_utils import (
+-    is_pin_memory_available,
+-)
++    async_tensor_h2d,
+@@ -498,10 +496,9 @@ def isin_list(
+-    test_elements = torch.tensor(
+diff -- vllm/model_executor/models/qwen2_5_vl.py
+@@ -84,6 +84,7 @@
++from vllm.utils.torch_utils import async_tensor_h2d
+@@ -679,6 +680,7 @@ def rotary_pos_emb_thw(self, t, h, w):
++        pos_ids = pos_ids.to(cos.device, non_blocking=True)
+@@ -737,9 +739,10 @@ def get_rope_by_thw(self, t, h, w):
+-        cos_thw = cos_thw[window_index_thw, :, :]
++        window_index_thw_dev = window_index_thw.to(cos_thw.device, non_blocking=True)
+diff -- vllm/model_executor/models/granite_speech.py
+@@ -143,7 +143,7 @@ def _get_mm_fields_config(
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/utils.py` modified +7/-15; `vllm/model_executor/models/qwen2_5_vl.py` modified +12/-7; `vllm/model_executor/models/granite_speech.py` modified +7/-7; `vllm/model_executor/models/phi4mm_audio.py` modified +9/-3; `vllm/model_executor/models/bert.py` modified +3/-6; `vllm/model_executor/models/qwen3_vl.py` modified +6/-3
+- 验证与风险: diff 自带测试面 `tests/v1/logits_processors/test_correctness.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #41759 - [MM][Perf][CG] Support ViT full CUDA graph for InternVL
+
+- 链接: https://github.com/vllm-project/vllm/pull/41759
+- 状态/时间: merged / 2026-06-04
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/internvl.py`；关联提交 `f25952e59b4a`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+183/-2，可读 patch 238 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[MM][Perf][CG] Support ViT full CUDA graph for InternVL」；模型线: InternVL 3.5；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/internvl.py`；技术摘要: 覆盖「[MM][Perf][CG] Support ViT full CUDA graph for InternVL」；主要实现面是 `vllm/model_executor/models/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/internvl.py` modified +166/-2 (168 lines); hunks: -10,7 +10,7; -55,6 +55,7; symbols: _get_prompt_updates, InternVLChatModel, get_num_mm_connector_tokens, get_encoder_cudagraph_config，涉及 `_get_prompt_updates, InternVLChatModel, get_num_mm_connector_tokens`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/internvl.py` modified +166/-2 (168 lines); hunks: -10,7 +10,7; -55,6 +55,7; symbols: _get_prompt_updates, InternVLChatModel, get_num_mm_connector_tokens, get_encoder_cudagraph_config
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/internvl.py
+@@ -10,7 +10,7 @@
+-from typing import Annotated, Literal, TypeAlias, TypeVar
++from typing import Annotated, Any, Literal, TypeAlias, TypeVar
+@@ -55,6 +55,7 @@
++    SupportsEncoderCudaGraph,
+@@ -543,7 +544,13 @@ def _get_prompt_updates(
+-class InternVLChatModel(nn.Module, SupportsMultiModal, SupportsPP, SupportsLoRA):
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/internvl.py` modified +166/-2
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/generation/test_vit_cudagraph.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #45129 - [Model] Remove Mono-InternVL (InternLM2VEForCausalLM)
+
+- 链接: https://github.com/vllm-project/vllm/pull/45129
+- 状态/时间: merged / 2026-06-12
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/internvl.py`；关联提交 `f1e13f7df9ad`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 9 个文件，+53/-262，可读 patch 470 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Model] Remove Mono-InternVL (InternLM2VEForCausalLM)」；模型线: InternVL 3.5；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/internvl.py`；技术摘要: 覆盖「[Model] Remove Mono-InternVL (InternLM2VEForCausalLM)」；主要实现面是 `vllm/model_executor/models/internvl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/internvl.py` modified +12/-39 (51 lines); hunks: -23,7 +23,6; -582,14 +581,10 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__, _init_vision_model, _init_mlp1, _parse_and_validate_multimodal_inputs，涉及 `__init__, _init_vision_model, _init_mlp1`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/internvl.py` modified +12/-39 (51 lines); hunks: -23,7 +23,6; -582,14 +581,10 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__, _init_vision_model, _init_mlp1, _parse_and_validate_multimodal_inputs
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/internvl.py
+@@ -23,7 +23,6 @@
+-    InternVisionPatchModel,
+@@ -582,14 +581,10 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = "") -> None:
+-        llm_arch_name = config.text_config.architectures[0]
+-        self.is_mono = llm_arch_name == "InternLM2VEForCausalLM"
+-                is_mono=self.is_mono,
+@@ -604,7 +599,6 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = "") -> None:
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/internvl.py` modified +12/-39
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/generation/test_common.py`, `tests/models/registry.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #43586 - [MM][Perf][CG] Support dual-path ViT full CUDA graph for DeepSeek-OCR
+
+- 链接: https://github.com/vllm-project/vllm/pull/43586
+- 状态/时间: merged / 2026-06-16
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 16 个文件，+809/-69，可读 patch 1559 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[MM][Perf][CG] Support dual-path ViT full CUDA graph for DeepSeek-OCR」；模型线: InternVL 3.5；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/deepseek_ocr.py`, `docs/design/cuda_graphs_multimodal.md`, `tests/models/multimodal/generation/test_vit_cudagraph.py`；技术摘要: 覆盖「[MM][Perf][CG] Support dual-path ViT full CUDA graph for DeepSeek-OCR」；主要实现面是 `vllm/model_executor/models/deepseek_ocr.py`, `docs/design/cuda_graphs_multimodal.md`, `tests/models/multimodal/generation/test_vit_cudagraph.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/deepseek_ocr.py` modified +375/-5 (380 lines); hunks: -4,7 +4,7; -15,6 +15,7; symbols: get_replacement_deepseek_vl2, DeepseekOCRForCausalLM, __init__, _encode_local_features，涉及 `get_replacement_deepseek_vl2, DeepseekOCRForCausalLM, __init__`；`docs/design/cuda_graphs_multimodal.md` modified +63/-16 (79 lines); hunks: -2,6 +2,8; -11,6 +13,8 @@ Vision encoder inference incurs CUDA kernel launch overhead on...; symbols: BudgetGraphMetadata，涉及 `BudgetGraphMetadata`；`tests/models/multimodal/generation/test_vit_cudagraph.py` modified +41/-15 (56 lines); hunks: -29,6 +29,7 @@ class VitCudagraphTestConfig:; -75,15 +76,16 @@ def step3_vl_chat_template(content: str) -> str:; symbols: VitCudagraphTestConfig, params_with_marks, step3_vl_chat_template，涉及 `VitCudagraphTestConfig, params_with_marks, step3_vl_chat_template`；`examples/generate/multimodal/vision_language_offline.py` modified +3/-2 (5 lines); hunks: -2533,15 +2533,16 @@ def run_tarsier2(questions: list[str], modality: str) ->...; symbols: run_tarsier2，涉及 `run_tarsier2`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/deepseek_ocr.py` modified +375/-5 (380 lines); hunks: -4,7 +4,7; -15,6 +15,7; symbols: get_replacement_deepseek_vl2, DeepseekOCRForCausalLM, __init__, _encode_local_features
+  - `docs/design/cuda_graphs_multimodal.md` modified +63/-16 (79 lines); hunks: -2,6 +2,8; -11,6 +13,8 @@ Vision encoder inference incurs CUDA kernel launch overhead on...; symbols: BudgetGraphMetadata
+  - `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +41/-15 (56 lines); hunks: -29,6 +29,7 @@ class VitCudagraphTestConfig:; -75,15 +76,16 @@ def step3_vl_chat_template(content: str) -> str:; symbols: VitCudagraphTestConfig, params_with_marks, step3_vl_chat_template
+  - `examples/generate/multimodal/vision_language_offline.py` modified +3/-2 (5 lines); hunks: -2533,15 +2533,16 @@ def run_tarsier2(questions: list[str], modality: str) ->...; symbols: run_tarsier2
+  - `vllm/model_executor/models/interfaces.py` modified +5/-0 (5 lines); hunks: -1623,6 +1623,7 @@ def postprocess_encoder_output(; -1643,6 +1644,7 @@ def prepare_encoder_cudagraph_capture_inputs(; symbols: postprocess_encoder_output, prepare_encoder_cudagraph_capture_inputs, prepare_encoder_cudagraph_replay_buffers, encoder_cudagraph_forward
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/deepseek_ocr.py
+@@ -4,7 +4,7 @@
+-from typing import Annotated, Literal
++from typing import Annotated, Any, Literal
+@@ -15,6 +15,7 @@
++    SupportsEncoderCudaGraph,
+@@ -52,6 +53,7 @@
++    IMAGE_SIZE,
+diff -- docs/design/cuda_graphs_multimodal.md
+@@ -2,6 +2,8 @@
++For two-tower vision encoders (e.g., DeepSeek-OCR's SAM + CLIP with dynamic tiling), a **dual-path graph** mode captures two independent sets of CUDA graphs — one for the global i
+@@ -11,6 +13,8 @@ Vision encoder inference incurs CUDA kernel launch overhead on the host side. Th
++For two-tower vision encoders such as DeepSeek-OCR (SAM + CLIP with dynamic tiling), the global image path and local patch path have independent token profiles (272 tokens per glo
+@@ -37,17 +41,57 @@ class BudgetGraphMetadata:
++When `EncoderCudaGraphConfig.enable_dual_path_graph` is `True`, the manager generates two independent budget lists — `global_token_budgets` (multiples of `global_token_per_image`)
++For dual-path models, the manager routes to `_execute_local_dual_path()`, which constrains both global and local token budgets simultaneously during packing (see [Dual-Path graph
+diff -- tests/models/multimodal/generation/test_vit_cudagraph.py
+@@ -29,6 +29,7 @@ class VitCudagraphTestConfig:
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/deepseek_ocr.py` modified +375/-5; `vllm/model_executor/models/interfaces.py` modified +5/-0; `vllm/model_executor/models/step3_vl.py` modified +5/-0; `vllm/model_executor/models/glm4_1v.py` modified +4/-0; `vllm/model_executor/models/internvl.py` modified +4/-0
+  - docs: `docs/design/cuda_graphs_multimodal.md` modified +63/-16; `examples/generate/multimodal/vision_language_offline.py` modified +3/-2
+  - tests: `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +41/-15
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/generation/test_vit_cudagraph.py`, `tests/v1/cudagraph/test_encoder_cudagraph.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #42727 - fix(quantization): Fix AWQ dequantize on Intel XPU and refactor AutoAWQ config
+
+- 链接: https://github.com/vllm-project/vllm/pull/42727
+- 状态/时间: merged / 2026-06-18
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 20 个文件，+579/-428，可读 patch 1485 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「fix(quantization): Fix AWQ dequantize on Intel XPU and refactor AutoAWQ config」；模型线: InternVL 3.5；类别: 缺陷修复；主要 diff: `vllm/model_executor/layers/quantization/auto_awq.py`, `vllm/model_executor/layers/quantization/awq.py`, `vllm/model_executor/layers/quantization/moe_wna16.py`；技术摘要: 覆盖「fix(quantization): Fix AWQ dequantize on Intel XPU and refactor AutoAWQ config」；主要实现面是 `vllm/model_executor/layers/quantization/auto_awq.py`, `vllm/model_executor/layers/quantization/awq.py`, `vllm/model_executor/layers/quantization/moe_wna16.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/layers/quantization/auto_awq.py` renamed +285/-71 (356 lines); hunks: -1,14 +1,15; -36,7 +37,6; symbols: _noop_loader, AWQMarlinConfig, for, AutoAWQConfig，涉及 `_noop_loader, AWQMarlinConfig, for`；`vllm/model_executor/layers/quantization/awq.py` removed +0/-286 (286 lines); hunks: -1,286 +0,0; symbols: AWQConfig, for, __init__, __repr__，涉及 `AWQConfig, for, __init__`；`vllm/model_executor/layers/quantization/moe_wna16.py` modified +8/-24 (32 lines); hunks: -27,9 +27,6; -55,10 +52,8 @@ def __init__(; symbols: __init__, is_moe_wna16_compatible, get_quant_method，涉及 `__init__, is_moe_wna16_compatible, get_quant_method`；`vllm/model_executor/layers/fused_moe/oracle/int_wna16.py` modified +10/-10 (20 lines); hunks: -728,18 +728,18 @@ def _process_weights_cpu(; -753,7 +753,7 @@ def _process_weights_cpu(; symbols: _process_weights_cpu, convert_to_wna16_moe_kernel_format，涉及 `_process_weights_cpu, convert_to_wna16_moe_kernel_format`。
+- 代码 diff 细节:
+  - `vllm/model_executor/layers/quantization/auto_awq.py` renamed +285/-71 (356 lines); hunks: -1,14 +1,15; -36,7 +37,6; symbols: _noop_loader, AWQMarlinConfig, for, AutoAWQConfig
+  - `vllm/model_executor/layers/quantization/awq.py` removed +0/-286 (286 lines); hunks: -1,286 +0,0; symbols: AWQConfig, for, __init__, __repr__
+  - `vllm/model_executor/layers/quantization/moe_wna16.py` modified +8/-24 (32 lines); hunks: -27,9 +27,6; -55,10 +52,8 @@ def __init__(; symbols: __init__, is_moe_wna16_compatible, get_quant_method
+  - `vllm/model_executor/layers/fused_moe/oracle/int_wna16.py` modified +10/-10 (20 lines); hunks: -728,18 +728,18 @@ def _process_weights_cpu(; -753,7 +753,7 @@ def _process_weights_cpu(; symbols: _process_weights_cpu, convert_to_wna16_moe_kernel_format
+  - `vllm/model_executor/layers/quantization/inc/schemes/inc_wna16_linear.py` modified +11/-9 (20 lines); hunks: -8,9 +8,8; -125,12 +124,12 @@ def _build_awq_method(self):; symbols: _build_awq_method
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/layers/quantization/auto_awq.py
+@@ -1,14 +1,15 @@
+-from typing import TYPE_CHECKING, Any
++from typing import TYPE_CHECKING, Any, Union
++from vllm import _custom_ops as ops
+@@ -36,7 +37,6 @@
+-from vllm.model_executor.layers.quantization.awq import AWQConfig
+@@ -55,7 +55,10 @@
+diff -- vllm/model_executor/layers/quantization/awq.py
+@@ -1,286 +0,0 @@
+-# SPDX-License-Identifier: Apache-2.0
+-# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
+-from typing import TYPE_CHECKING, Any, Union
+-import torch
+-from safetensors.torch import _TYPES as _SAFETENSORS_TO_TORCH_DTYPE
+-from transformers import PretrainedConfig
+diff -- vllm/model_executor/layers/quantization/moe_wna16.py
+@@ -27,9 +27,6 @@
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/layers/quantization/auto_awq.py` renamed +285/-71; `vllm/model_executor/layers/quantization/awq.py` removed +0/-286; `vllm/model_executor/layers/quantization/moe_wna16.py` modified +8/-24; `vllm/model_executor/layers/fused_moe/oracle/int_wna16.py` modified +10/-10; `vllm/model_executor/layers/quantization/inc/schemes/inc_wna16_linear.py` modified +11/-9; `vllm/model_executor/layers/quantization/__init__.py` modified +5/-4
+- 验证与风险: diff 自带测试面 `tests/quantization/test_auto_awq.py`, `tests/quantization/test_auto_round.py`, `tests/quantization/test_configs.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论
 

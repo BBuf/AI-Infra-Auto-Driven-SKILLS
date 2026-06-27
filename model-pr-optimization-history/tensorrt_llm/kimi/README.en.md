@@ -1,18 +1,18 @@
 # TensorRT-LLM Kimi Model PR Optimization History
 
-## 2026-06-26 Latest Source Scan
+## 2026-06-27 Source Head Refresh
 
-Rechecked TensorRT-LLM upstream `NVIDIA/TensorRT-LLM@0722c5f47d2cae69ac1a237da51e550dd214532c` against the tracked files listed below.
-The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-26`.
+Rechecked TensorRT-LLM upstream main with `git ls-remote` at `NVIDIA/TensorRT-LLM@aaffa2f9fef3025e0f698d978385a73460344e0b`.
+The existing file-level source-scan rows below remain the last tracked-file audit; use `model-pr-optimization-history/open-pr-watch.md` before relying on current open PR state.
 
 Result: no additional PR-numbered merges touched the tracked files beyond the existing timeline/backfill rows.
 
-## 2026-06-26 PR Backfill Audit
+## 2026-06-27 PR Backfill Audit
 
 The per-PR diff audit cards on this page were generated from TensorRT-LLM
 upstream `HEAD@4164b932c6c8a14d1be85d0fd62e44b7d0171980`. The root
-TensorRT-LLM history index tracks the latest 2026-06-26 runtime refresh at
-`0722c5f47d2cae69ac1a237da51e550dd214532c`. This page provides model
+TensorRT-LLM history index now tracks the 2026-06-27 runtime refresh at
+`aaffa2f9fef3025e0f698d978385a73460344e0b`. This page provides model
 implementation coverage, a timeline, and per-PR diff audit cards for Kimi K2
 Thinking / Kimi K2.5.
 

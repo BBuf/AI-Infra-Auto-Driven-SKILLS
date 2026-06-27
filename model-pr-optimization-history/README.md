@@ -11,6 +11,8 @@ the directory acts as one queryable knowledge base for model-family PR evidence.
 - `SKILL.md`: agent instructions for using this directory as knowledge.
 - `scripts/query.py`: small local search helper for model slugs, doc paths, and
   keyword snippets.
+- `open-pr-watch.md`: generated watch list for current open PRs that may affect
+  benchmark, profiler, and model-history guidance.
 
 Each model history is bilingual when practical (`README.zh.md` and
 `README.en.md`) and should be grounded in inspected PR diffs, source files, and
@@ -24,6 +26,10 @@ that touched the tracked implementation files after the doc's previous freshness
 cutoff and are not yet folded into the timeline / diff-audit cards below. Read
 that section first to see what changed most recently before trusting the older
 cards.
+
+Open PRs are deliberately kept out of the merged-history cards until their
+diffs are manually reviewed. Regenerate `open-pr-watch.md` before long refresh
+work and treat it as a triage queue, not as a source of implemented behavior.
 
 Quick queries:
 

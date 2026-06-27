@@ -1,25 +1,5 @@
 # sglang GLM VLM/OCR 模型 PR 优化历史
 
-## 2026-06-26 最新源码扫描
-
-已按 SGLang 上游 `sgl-project/sglang@8524678889485801e7a4a12d62015be0c68f7a90` 重新扫描本文下方列出的 tracked files。
-文件级匹配使用 GitHub mirror 的 `git log --name-only`；PR 标题、链接和合并时间通过 GitHub GraphQL Pull Request API 批量复核。上一时效锚点：`2026-06-05`。
-
-结果：发现 1 个额外 PR-numbered merge 触及 tracked files，但尚未提升为下方完整逐 PR diff audit card。此节只作为 freshness index；需要引用实现细节时，仍应先人工阅读 PR diff 再补完整卡片。
-
-| 合并日期 | PR | 标题 | 命中的 tracked files |
-| --- | --- | --- | --- |
-| 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | Add get_parallel(): a structured accessor for parallel-topology state | `glm4v.py`, `glm4v_moe.py`, `glm_ocr_nextn.py` |
-
-## 2026-06-05 PR 补漏复核
-
-已于 2026-06-05 按 sglang 上游 `origin/main@6cfdc1858` 复核；自上次时效基准（2026-04-28）以来，共有 1 个带 PR 编号的合并改动到所跟踪的实现文件，这些 PR 尚未并入下方时间线 / 逐 PR diff 审计卡，应在下次完整重生成时补齐。
-
-| 合并日期 | PR | 标题 | 改动到的跟踪文件 |
-| --- | --- | --- | --- |
-| 2026-05-22 | [#24751](https://github.com/sgl-project/sglang/pull/24751) | fix(mm): make multimodal data loading non-blocking to prevent health check stalls | `glm4v.py` |
-
-
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
@@ -35,8 +15,8 @@
 ## PR 覆盖总览
 
 - git 追溯 PR 数: 8
-- 原文档显式引用补充 PR 数: 28
-- 当前文档总 PR 数: 36
+- 原文档显式引用补充 PR 数: 30
+- 当前文档总 PR 数: 38
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -80,6 +60,8 @@
 | 2026-03-30 | [#18559](https://github.com/sgl-project/sglang/pull/18559) | closed | Optimizations for Qwen3VL models | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/layers/attention/vision.py`, `python/sglang/srt/multimodal/processors/base_processor.py` |
 | 2026-04-01 | [#17122](https://github.com/sgl-project/sglang/pull/17122) | merged | [bugfix]GLM-4V model | `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/multimodal/processors/base_processor.py`, `test/registered/ascend/vlm_models/test_ascend_glm_4_5v.py` |
 | 2026-04-28 | [#22961](https://github.com/sgl-project/sglang/pull/22961) | merged | [NPU] Fix issue and support GLM-4.5V | `python/sglang/srt/models/glm4_moe.py` |
+| 2026-05-22 | [#24751](https://github.com/sgl-project/sglang/pull/24751) | merged | fix(mm): make multimodal data loading non-blocking to prevent health check stalls | `python/sglang/srt/multimodal/processors/base_processor.py`, `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/multimodal/processors/minicpm.py` |
+| 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | merged | Add get_parallel(): a structured accessor for parallel-topology state | `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -343,7 +325,7 @@ diff -- python/sglang/srt/models/glm4v.py
 - 状态/时间: merged / 2025-09-14
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+3/-0，可读 patch 10 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Add self.capture_aux_hidden_states For GLM-4.5V」；模型线: GLM VLM/OCR；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/glm4v_moe.py`；未提供可用技术摘要。
+- 动机: 标题「Add self.capture_aux_hidden_states For GLM-4.5V」；模型线: GLM VLM/OCR；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/glm4v_moe.py`；技术摘要: 覆盖「Add self.capture_aux_hidden_states For GLM-4.5V」；主要实现面是 `python/sglang/srt/models/glm4v_moe.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/glm4v_moe.py` modified +3/-0 (3 lines); hunks: -74,6 +74,9 @@ def __init__(; symbols: __init__, determine_num_fused_shared_experts，涉及 `__init__, determine_num_fused_shared_experts`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/glm4v_moe.py` modified +3/-0 (3 lines); hunks: -74,6 +74,9 @@ def __init__(; symbols: __init__, determine_num_fused_shared_experts
@@ -366,7 +348,7 @@ diff -- python/sglang/srt/models/glm4v_moe.py
 - 状态/时间: merged / 2025-10-03
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 66 个文件，+91/-79，可读 patch 794 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Tiny move files to utils folder」；模型线: GLM VLM/OCR；类别: 模型实现调整；主要 diff: `test/srt/test_tokenizer_manager.py`, `python/sglang/srt/managers/tokenizer_manager.py`, `python/sglang/srt/configs/model_config.py`；技术摘要: 覆盖「Tiny move files to utils folder」；主要实现面是 `test/srt/test_tokenizer_manager.py`, `python/sglang/srt/managers/tokenizer_manager.py`, `python/sglang/srt/configs/model_config.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「Tiny move files to utils folder」；模型线: GLM VLM/OCR；类别: 文档/测试/CI；主要 diff: `test/srt/test_tokenizer_manager.py`, `python/sglang/srt/managers/tokenizer_manager.py`, `python/sglang/srt/configs/model_config.py`；技术摘要: 覆盖「Tiny move files to utils folder」；主要实现面是 `test/srt/test_tokenizer_manager.py`, `python/sglang/srt/managers/tokenizer_manager.py`, `python/sglang/srt/configs/model_config.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/srt/test_tokenizer_manager.py` modified +12/-4 (16 lines); hunks: -31,7 +31,9 @@ def setUp(self):; -125,7 +127,9 @@ def setUp(self):; symbols: setUp，涉及 `setUp`；`python/sglang/srt/managers/tokenizer_manager.py` modified +5/-5 (10 lines); hunks: -43,11 +43,6; -99,6 +94,11；`python/sglang/srt/configs/model_config.py` modified +4/-4 (8 lines); hunks: -23,16 +23,16；`python/sglang/srt/model_executor/model_runner.py` modified +2/-2 (4 lines); hunks: -29,7 +29,6; -115,7 +114,6。
 - 代码 diff 细节:
   - `test/srt/test_tokenizer_manager.py` modified +12/-4 (16 lines); hunks: -31,7 +31,9 @@ def setUp(self):; -125,7 +127,9 @@ def setUp(self):; symbols: setUp
@@ -449,7 +431,7 @@ diff -- python/sglang/srt/models/qwen3_vl.py
 - 状态/时间: merged / 2025-10-22
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 19 个文件，+73/-31，可读 patch 354 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[lint] improve ruff check」；模型线: GLM VLM/OCR；类别: 缺陷修复；主要 diff: `python/sglang/srt/layers/moe/fused_moe_triton/triton_kernels_moe.py`, `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py`, `python/sglang/srt/layers/attention/flashinfer_mla_backend.py`；技术摘要: 覆盖「[lint] improve ruff check」；主要实现面是 `python/sglang/srt/layers/moe/fused_moe_triton/triton_kernels_moe.py`, `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py`, `python/sglang/srt/layers/attention/flashinfer_mla_backend.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[lint] improve ruff check」；模型线: GLM VLM/OCR；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/moe/fused_moe_triton/triton_kernels_moe.py`, `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py`, `python/sglang/srt/layers/attention/flashinfer_mla_backend.py`；技术摘要: 覆盖「[lint] improve ruff check」；主要实现面是 `python/sglang/srt/layers/moe/fused_moe_triton/triton_kernels_moe.py`, `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py`, `python/sglang/srt/layers/attention/flashinfer_mla_backend.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/layers/moe/fused_moe_triton/triton_kernels_moe.py` modified +20/-19 (39 lines); hunks: -13,7 +13,8; -119,14 +120,14 @@ def triton_kernel_fused_experts(; symbols: triton_kernel_fused_experts, triton_kernel_fused_experts_with_bias，涉及 `triton_kernel_fused_experts, triton_kernel_fused_experts_with_bias`；`python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py` modified +7/-0 (7 lines); hunks: -44,6 +44,13；`python/sglang/srt/layers/attention/flashinfer_mla_backend.py` modified +4/-1 (5 lines); hunks: -38,6 +38,9; -66,7 +69,7 @@ class PrefillMetadata:; symbols: PrefillMetadata, FlashInferMhaChunkKVRunner, __init__，涉及 `PrefillMetadata, FlashInferMhaChunkKVRunner, __init__`；`python/sglang/srt/models/opt.py` modified +4/-0 (4 lines); hunks: -13,6 +13,7; -46,6 +47,9; symbols: get_activation，涉及 `get_activation`。
 - 代码 diff 细节:
   - `python/sglang/srt/layers/moe/fused_moe_triton/triton_kernels_moe.py` modified +20/-19 (39 lines); hunks: -13,7 +13,8; -119,14 +120,14 @@ def triton_kernel_fused_experts(; symbols: triton_kernel_fused_experts, triton_kernel_fused_experts_with_bias
@@ -530,7 +512,7 @@ diff -- python/sglang/srt/layers/rotary_embedding.py
 - 状态/时间: merged / 2025-11-16
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 15 个文件，+4/-142，可读 patch 378 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Cleanup vision attention related codes」；模型线: GLM VLM/OCR；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen3_vl.py`；技术摘要: 覆盖「Cleanup vision attention related codes」；主要实现面是 `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen3_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「Cleanup vision attention related codes」；模型线: GLM VLM/OCR；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen3_vl.py`；技术摘要: 覆盖「Cleanup vision attention related codes」；主要实现面是 `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen3_vl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/glm4v.py` modified +1/-26 (27 lines); hunks: -104,7 +104,6 @@ def __init__(; -114,37 +113,13 @@ def __init__(; symbols: __init__，涉及 `__init__`；`python/sglang/srt/models/qwen2_5_vl.py` modified +1/-26 (27 lines); hunks: -111,7 +111,6 @@ def __init__(; -121,37 +120,13 @@ def __init__(; symbols: __init__，涉及 `__init__`；`python/sglang/srt/models/qwen3_vl.py` modified +1/-23 (24 lines); hunks: -130,7 +130,6 @@ def __init__(; -140,33 +139,13 @@ def __init__(; symbols: __init__，涉及 `__init__`；`python/sglang/srt/models/clip.py` modified +0/-13 (13 lines); hunks: -141,7 +141,6 @@ def __init__(; -150,22 +149,11 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/glm4v.py` modified +1/-26 (27 lines); hunks: -104,7 +104,6 @@ def __init__(; -114,37 +113,13 @@ def __init__(; symbols: __init__
@@ -613,7 +595,7 @@ diff -- python/sglang/srt/layers/attention/vision.py
 - 状态/时间: merged / 2025-11-28
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+50/-2，可读 patch 208 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「support qwen3_vl vision model dp」；模型线: GLM VLM/OCR；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/qwen3_vl.py`, `test/nightly/test_encoder_dp.py`；技术摘要: 覆盖「support qwen3_vl vision model dp」；主要实现面是 `python/sglang/srt/models/qwen3_vl.py`, `test/nightly/test_encoder_dp.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「support qwen3_vl vision model dp」；模型线: GLM VLM/OCR；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/models/qwen3_vl.py`, `test/nightly/test_encoder_dp.py`；技术摘要: 覆盖「support qwen3_vl vision model dp」；主要实现面是 `python/sglang/srt/models/qwen3_vl.py`, `test/nightly/test_encoder_dp.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/qwen3_vl.py` modified +49/-2 (51 lines); hunks: -28,6 +28,10; -47,6 +51,8; symbols: __init__, forward，涉及 `__init__, forward`；`test/nightly/test_encoder_dp.py` modified +1/-0 (1 lines); hunks: -19,6 +19,7。
 - 代码 diff 细节:
   - `python/sglang/srt/models/qwen3_vl.py` modified +49/-2 (51 lines); hunks: -28,6 +28,10; -47,6 +51,8; symbols: __init__, forward
@@ -713,7 +695,7 @@ diff -- python/sglang/srt/models/glm4v_moe.py
 - 状态/时间: merged / 2025-12-10
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+66/-2，可读 patch 144 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[GLM-4.6V] Support Pipeline Parallelism for GLM-4.6V & GLM-4.1V」；模型线: GLM VLM/OCR；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/glm4v.py`, `test/srt/test_pp_single_node.py`, `python/sglang/test/test_utils.py`；技术摘要: 覆盖「[GLM-4.6V] Support Pipeline Parallelism for GLM-4.6V & GLM-4.1V」；主要实现面是 `python/sglang/srt/models/glm4v.py`, `test/srt/test_pp_single_node.py`, `python/sglang/test/test_utils.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[GLM-4.6V] Support Pipeline Parallelism for GLM-4.6V & GLM-4.1V」；模型线: GLM VLM/OCR；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/models/glm4v.py`, `test/srt/test_pp_single_node.py`, `python/sglang/test/test_utils.py`；技术摘要: 覆盖「[GLM-4.6V] Support Pipeline Parallelism for GLM-4.6V & GLM-4.1V」；主要实现面是 `python/sglang/srt/models/glm4v.py`, `test/srt/test_pp_single_node.py`, `python/sglang/test/test_utils.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/glm4v.py` modified +24/-1 (25 lines); hunks: -51,7 +51,7; -659,6 +659,7 @@ def forward(; symbols: forward, load_weights，涉及 `forward, load_weights`；`test/srt/test_pp_single_node.py` modified +38/-0 (38 lines); hunks: -19,6 +19,7; -318,5 +319,42 @@ def test_chunked_prefill_with_small_bs(self):; symbols: test_chunked_prefill_with_small_bs, TestGLM41VPPAccuracy, setUpClass, tearDownClass，涉及 `test_chunked_prefill_with_small_bs, TestGLM41VPPAccuracy, setUpClass`；`python/sglang/test/test_utils.py` modified +3/-0 (3 lines); hunks: -57,6 +57,9；`test/srt/run_suite.py` modified +1/-1 (2 lines); hunks: -150,7 +150,7。
 - 代码 diff 细节:
   - `python/sglang/srt/models/glm4v.py` modified +24/-1 (25 lines); hunks: -51,7 +51,7; -659,6 +659,7 @@ def forward(; symbols: forward, load_weights
@@ -754,7 +736,7 @@ diff -- python/sglang/test/test_utils.py
 - 状态/时间: merged / 2025-12-12
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+3/-0，可读 patch 10 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[CI]add nightly CI for glm4v_moe arch model」；模型线: GLM VLM/OCR；类别: 缺陷修复；主要 diff: `test/nightly/test_vlms_mmmu_eval.py`；技术摘要: 覆盖「[CI]add nightly CI for glm4v_moe arch model」；主要实现面是 `test/nightly/test_vlms_mmmu_eval.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[CI]add nightly CI for glm4v_moe arch model」；模型线: GLM VLM/OCR；类别: 文档/测试/CI；主要 diff: `test/nightly/test_vlms_mmmu_eval.py`；技术摘要: 覆盖「[CI]add nightly CI for glm4v_moe arch model」；主要实现面是 `test/nightly/test_vlms_mmmu_eval.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/nightly/test_vlms_mmmu_eval.py` modified +3/-0 (3 lines); hunks: -46,6 +46,9。
 - 代码 diff 细节:
   - `test/nightly/test_vlms_mmmu_eval.py` modified +3/-0 (3 lines); hunks: -46,6 +46,9
@@ -805,7 +787,7 @@ diff -- python/sglang/srt/configs/model_config.py
 - 状态/时间: merged / 2025-12-18
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+100/-80，可读 patch 345 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[VLM] Support cos sin cache for Qwen3-VL & GLM-4.1V」；模型线: GLM VLM/OCR；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/layers/attention/vision.py`；技术摘要: 覆盖「[VLM] Support cos sin cache for Qwen3-VL & GLM-4.1V」；主要实现面是 `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/layers/attention/vision.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[VLM] Support cos sin cache for Qwen3-VL & GLM-4.1V」；模型线: GLM VLM/OCR；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/layers/attention/vision.py`；技术摘要: 覆盖「[VLM] Support cos sin cache for Qwen3-VL & GLM-4.1V」；主要实现面是 `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/layers/attention/vision.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/glm4v.py` modified +34/-50 (84 lines); hunks: -44,6 +44,7; -157,7 +158,8 @@ def forward(; symbols: forward, Glm4vVisionRotaryEmbedding, __init__，涉及 `forward, Glm4vVisionRotaryEmbedding, __init__`；`python/sglang/srt/models/qwen3_vl.py` modified +41/-20 (61 lines); hunks: -24,9 +24,6; -39,6 +36,7; symbols: forward, __init__, dtype, device，涉及 `forward, __init__, dtype`；`python/sglang/srt/layers/attention/vision.py` modified +20/-10 (30 lines); hunks: -675,6 +675,8 @@ def forward(; -724,26 +726,34 @@ def forward(; symbols: forward，涉及 `forward`；`python/sglang/srt/layers/rotary_embedding.py` modified +5/-0 (5 lines); hunks: -219,6 +219,11 @@ def get_cos_sin_with_position(self, positions):; symbols: get_cos_sin_with_position, get_cos_sin, forward_native，涉及 `get_cos_sin_with_position, get_cos_sin, forward_native`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/glm4v.py` modified +34/-50 (84 lines); hunks: -44,6 +44,7; -157,7 +158,8 @@ def forward(; symbols: forward, Glm4vVisionRotaryEmbedding, __init__
@@ -1031,7 +1013,7 @@ diff -- test/registered/moe/test_fused_moe.py
 - 状态/时间: merged / 2026-03-08
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/glm4v.py`；关联提交 `97a2a9be0f45`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+192/-9，可读 patch 228 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[VLM] Replace conv3d proj with linear for GLM4V」；模型线: GLM VLM/OCR；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/glm4v.py`；技术摘要: 覆盖「[VLM] Replace conv3d proj with linear for GLM4V」；主要实现面是 `python/sglang/srt/models/glm4v.py`。下方保留文件级证据、代码摘录和验证风险。
+- 动机: 标题「[VLM] Replace conv3d proj with linear for GLM4V」；模型线: GLM VLM/OCR；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/glm4v.py`；技术摘要: 覆盖「[VLM] Replace conv3d proj with linear for GLM4V」；主要实现面是 `python/sglang/srt/models/glm4v.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/glm4v.py` modified +26/-9 (35 lines); hunks: -211,16 +211,26 @@ def __init__(; -446,10 +456,16 @@ def __init__(; symbols: __init__, forward, copy_conv3d_weight_to_linear, Glm4vPatchMerger，涉及 `__init__, forward, copy_conv3d_weight_to_linear`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/glm4v.py` modified +26/-9 (35 lines); hunks: -211,16 +211,26 @@ def __init__(; -446,10 +456,16 @@ def __init__(; symbols: __init__, forward, copy_conv3d_weight_to_linear, Glm4vPatchMerger
@@ -1332,6 +1314,88 @@ diff -- python/sglang/srt/models/glm4_moe.py
 - 已读文件:
   - runtime: `python/sglang/srt/models/glm4_moe.py` modified +17/-5
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/glm4_moe.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #24751 - fix(mm): make multimodal data loading non-blocking to prevent health check stalls
+
+- 链接: https://github.com/sgl-project/sglang/pull/24751
+- 状态/时间: merged / 2026-05-22
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 35 个文件，+45/-44，可读 patch 401 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「fix(mm): make multimodal data loading non-blocking to prevent health check stalls」；模型线: GLM VLM/OCR；类别: 缺陷修复；主要 diff: `python/sglang/srt/multimodal/processors/base_processor.py`, `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/multimodal/processors/minicpm.py`；技术摘要: 覆盖「fix(mm): make multimodal data loading non-blocking to prevent health check stalls」；主要实现面是 `python/sglang/srt/multimodal/processors/base_processor.py`, `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/multimodal/processors/minicpm.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/multimodal/processors/base_processor.py` modified +8/-7 (15 lines); hunks: -1,3 +1,4; -729,7 +730,7 @@ def _process_loaded_mm_data(self, modality, raw_data, result):; symbols: _process_loaded_mm_data, load_mm_data，涉及 `_process_loaded_mm_data, load_mm_data`；`python/sglang/srt/multimodal/processors/internvl.py` modified +3/-3 (6 lines); hunks: -310,7 +310,7 @@ async def _process_special_format(; -423,7 +423,7 @@ async def process_qwen_mm_data_async(; symbols: _process_special_format, process_qwen_mm_data_async, process_internlm2_mm_data_async，涉及 `_process_special_format, process_qwen_mm_data_async, process_internlm2_mm_data_async`；`python/sglang/srt/multimodal/processors/minicpm.py` modified +2/-2 (4 lines); hunks: -118,7 +118,7 @@ async def _process_special_format(; -190,7 +190,7 @@ async def process_mm_data_async(; symbols: _process_special_format, process_mm_data_async，涉及 `_process_special_format, process_mm_data_async`；`python/sglang/srt/multimodal/processors/clip.py` modified +1/-1 (2 lines); hunks: -20,7 +20,7 @@ def __init__(self, hf_config, server_args, _processor, *args,...; symbols: __init__, process_mm_data_async，涉及 `__init__, process_mm_data_async`。
+- 代码 diff 细节:
+  - `python/sglang/srt/multimodal/processors/base_processor.py` modified +8/-7 (15 lines); hunks: -1,3 +1,4; -729,7 +730,7 @@ def _process_loaded_mm_data(self, modality, raw_data, result):; symbols: _process_loaded_mm_data, load_mm_data
+  - `python/sglang/srt/multimodal/processors/internvl.py` modified +3/-3 (6 lines); hunks: -310,7 +310,7 @@ async def _process_special_format(; -423,7 +423,7 @@ async def process_qwen_mm_data_async(; symbols: _process_special_format, process_qwen_mm_data_async, process_internlm2_mm_data_async
+  - `python/sglang/srt/multimodal/processors/minicpm.py` modified +2/-2 (4 lines); hunks: -118,7 +118,7 @@ async def _process_special_format(; -190,7 +190,7 @@ async def process_mm_data_async(; symbols: _process_special_format, process_mm_data_async
+  - `python/sglang/srt/multimodal/processors/clip.py` modified +1/-1 (2 lines); hunks: -20,7 +20,7 @@ def __init__(self, hf_config, server_args, _processor, *args,...; symbols: __init__, process_mm_data_async
+  - `python/sglang/srt/multimodal/processors/deepseek_ocr.py` modified +1/-1 (2 lines); hunks: -29,7 +29,7 @@ def __init__(self, hf_config, server_args, _processor, *args,...; symbols: __init__, process_mm_data_async
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/multimodal/processors/base_processor.py
+@@ -1,3 +1,4 @@
++import asyncio
+@@ -729,7 +730,7 @@ def _process_loaded_mm_data(self, modality, raw_data, result):
+-    def load_mm_data(
++    async def load_mm_data(
+@@ -772,7 +773,7 @@ def load_mm_data(
+-            return self.legacy_load_mm_data(
+diff -- python/sglang/srt/multimodal/processors/internvl.py
+@@ -310,7 +310,7 @@ async def _process_special_format(
+-            base_output = self.load_mm_data(
++            base_output = await self.load_mm_data(
+@@ -423,7 +423,7 @@ async def process_qwen_mm_data_async(
+-        base_output = self.load_mm_data(
++        base_output = await self.load_mm_data(
+@@ -644,7 +644,7 @@ async def process_internlm2_mm_data_async(
+diff -- python/sglang/srt/multimodal/processors/minicpm.py
+@@ -118,7 +118,7 @@ async def _process_special_format(
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/multimodal/processors/base_processor.py` modified +8/-7; `python/sglang/srt/multimodal/processors/internvl.py` modified +3/-3; `python/sglang/srt/multimodal/processors/minicpm.py` modified +2/-2; `python/sglang/srt/multimodal/processors/clip.py` modified +1/-1; `python/sglang/srt/multimodal/processors/deepseek_ocr.py` modified +1/-1; `python/sglang/srt/multimodal/processors/deepseek_vl_v2.py` modified +1/-1
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/multimodal/processors/base_processor.py`, `python/sglang/srt/multimodal/processors/clip.py`, `python/sglang/srt/multimodal/processors/deepseek_ocr.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #28567 - Add get_parallel(): a structured accessor for parallel-topology state
+
+- 链接: https://github.com/sgl-project/sglang/pull/28567
+- 状态/时间: merged / 2026-06-18
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 184 个文件，+1865/-1727，可读 patch 8932 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Add get_parallel(): a structured accessor for parallel-topology state」；模型线: GLM VLM/OCR；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py`；技术摘要: 覆盖「Add get_parallel(): a structured accessor for parallel-topology state」；主要实现面是 `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/apertus.py` modified +686/-687 (1373 lines); hunks: -1,687 +1,686; symbols: ApertusMLP, __init__, forward, ApertusAttention，涉及 `ApertusMLP, __init__, forward`；`python/sglang/srt/models/solar.py` modified +28/-27 (55 lines); hunks: -1,37 +1,14; -54,6 +31,30; symbols: __init__, forward, load_kv_cache_scales，涉及 `__init__, forward, load_kv_cache_scales`；`python/sglang/srt/models/gpt_oss.py` modified +17/-24 (41 lines); hunks: -28,21 +28,13; -76,6 +68,7; symbols: _resolve_moe_input_pad_multiple, __init__，涉及 `_resolve_moe_input_pad_multiple, __init__`；`python/sglang/srt/models/deepseek_v2.py` modified +14/-23 (37 lines); hunks: -47,9 +47,7; -72,12 +70,6; symbols: __init__，涉及 `__init__`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/apertus.py` modified +686/-687 (1373 lines); hunks: -1,687 +1,686; symbols: ApertusMLP, __init__, forward, ApertusAttention
+  - `python/sglang/srt/models/solar.py` modified +28/-27 (55 lines); hunks: -1,37 +1,14; -54,6 +31,30; symbols: __init__, forward, load_kv_cache_scales
+  - `python/sglang/srt/models/gpt_oss.py` modified +17/-24 (41 lines); hunks: -28,21 +28,13; -76,6 +68,7; symbols: _resolve_moe_input_pad_multiple, __init__
+  - `python/sglang/srt/models/deepseek_v2.py` modified +14/-23 (37 lines); hunks: -47,9 +47,7; -72,12 +70,6; symbols: __init__
+  - `python/sglang/srt/layers/communicator.py` modified +13/-19 (32 lines); hunks: -23,8 +23,6; -44,12 +42,7; symbols: apply_aiter_all_reduce_fusion, init_context, should_fuse_mlp_allreduce_with_next_layer, is_same_group_size
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/apertus.py
+@@ -1,687 +1,686 @@
+-# SPDX-License-Identifier: Apache-2.0
+-# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
+-# Copyright 2025 The SwissAI Initiative
+-# Copyright 2023-2024 SGLang Team
+-# Licensed under the Apache License, Version 2.0 (the "License");
+-# you may not use this file except in compliance with the License.
+diff -- python/sglang/srt/models/solar.py
+@@ -1,37 +1,14 @@
+-# Adapted from
+-# https://github.com/huggingface/transformers/blob/v4.28.0/src/transformers/models/llama/modeling_llama.py
+-# Copyright 2023 The vLLM team.
+-# Copyright 2022 EleutherAI and the HuggingFace Inc. team. All rights reserved.
+-#
+-# This code is based on EleutherAI's GPT-NeoX library and the GPT-NeoX
+diff -- python/sglang/srt/models/gpt_oss.py
+@@ -28,21 +28,13 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/apertus.py` modified +686/-687; `python/sglang/srt/models/solar.py` modified +28/-27; `python/sglang/srt/models/gpt_oss.py` modified +17/-24; `python/sglang/srt/models/deepseek_v2.py` modified +14/-23; `python/sglang/srt/layers/communicator.py` modified +13/-19; `python/sglang/srt/models/qwen3_moe.py` modified +12/-18
+- 验证与风险: diff 自带测试面 `python/sglang/test/kits/attention_unittest/attention_methods/dense_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsa_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsv4_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dual_chunk_attention.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论
 

@@ -110,6 +110,17 @@ python3 scripts/query.py --framework vllm "qwen3 fused qk norm"
 python3 scripts/query.py --framework tokenspeed --model qwen35 qk rmsnorm
 ```
 
+Open PR freshness is tracked separately from merged history cards:
+
+```bash
+python3 tools/check_open_pr_watch.py --format markdown \
+  --output model-pr-optimization-history/open-pr-watch.md
+```
+
+This report uses the GitHub pulls API with an anonymous REST fallback when
+`gh api` is rate-limited. If every repo fetch fails, the tool exits non-zero
+instead of writing a misleading empty report.
+
 ## Evidence Standards
 
 The repo is opinionated about evidence because performance work gets noisy fast.
@@ -137,6 +148,9 @@ The repo is opinionated about evidence because performance work gets noisy fast.
 - Model optimization histories should point back to PRs, files, diffs, and risk
   surfaces rather than vague summary text; they live as one PR-driven knowledge
   base, not per-model skills.
+- Root-level [`update_prompt.md`](update_prompt.md) captures the full refresh
+  and validation workflow for updating this repo again without relying on
+  memory from a previous run.
 
 ## Install
 

@@ -1,15 +1,15 @@
 # TokenSpeed Qwen3.5 Model PR Optimization History
 
-## 2026-06-26 Latest Source Scan
+## 2026-06-27 Source Head Refresh
 
-Rechecked TokenSpeed upstream `lightseekorg/tokenspeed@5aedf69d6b476baa65571011de6ea60fd5a238a8` against the tracked files listed below.
-The file-level match used a GitHub mirror `git log --name-only`; PR titles, links, and merge times were batch-verified through the GitHub GraphQL Pull Request API. Previous freshness anchor: `2026-06-26`.
+Rechecked TokenSpeed upstream main with `git ls-remote` at `lightseekorg/tokenspeed@d0a7faddb5ec0d4c6d037c4c3e6a781d2c5164a8`.
+The existing file-level source-scan rows below remain the last tracked-file audit; use `model-pr-optimization-history/open-pr-watch.md` before relying on current open PR state.
 
 Result: no additional PR-numbered merges touched the tracked files beyond the existing timeline/backfill rows.
 
-## 2026-06-26 PR Backfill Audit
+## 2026-06-27 PR Backfill Audit
 
-Checked against TokenSpeed upstream `HEAD@5aedf69d6b476baa65571011de6ea60fd5a238a8`. This page follows the same structure as the SGLang/vLLM histories: model-relevant PR timeline, reviewed diffs, implementation files, short code excerpts, and validation risks.
+Checked against TokenSpeed upstream `HEAD@d0a7faddb5ec0d4c6d037c4c3e6a781d2c5164a8`. This page follows the same structure as the SGLang/vLLM histories: model-relevant PR timeline, reviewed diffs, implementation files, short code excerpts, and validation risks.
 
 Filter used in this pass: merged GitHub PRs whose title or files matched `Qwen3.5`, `qwen3_5`, `Qwen3Moe`, `VLM`, `PD`, `moe`, `activation`, `rotary`, or `flashinfer_trtllm`. Pure formatting and unrelated infrastructure PRs were excluded.
 
