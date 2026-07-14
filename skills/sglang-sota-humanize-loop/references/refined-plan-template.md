@@ -155,8 +155,9 @@ source-path selection.
       paths, rejected source ideas, and the next planned SGLang patch.
     - The campaign can resume from the same model-loop artifacts with benchmark,
       profile, source-evidence, and patch lineage intact.
-    - The active `.humanize/rlcr/<timestamp>/state.md` exists and records
-      `strict_success: true` for the model-level SGLang loop.
+    - The active `.humanize/rlcr/<timestamp>/state.md` exists for the
+      model-level SGLang loop, and the matching `round-0-prompt.md` contains the
+      generated Round Contract Setup instructions.
   - Negative Tests (expected to FAIL):
     - A second `.humanize/rlcr` session is launched for kernel work instead of
       keeping the work in the model loop.
@@ -243,8 +244,9 @@ revalidation, unless the current in-loop evidence proves no patch is needed.
 ## Implementation Notes
 
 - Keep Humanize local state under `.humanize/`.
-- Start RLCR with `--strict-success` and verify the active `state.md` contains
-  `strict_success: true` before any SGLang patch work.
+- Start RLCR with `--yolo`; verify the active `state.md` contains
+  `current_round: 0` and `ask_codex_question: false`, and verify
+  `round-0-prompt.md` exists before any SGLang patch work.
 - Keep benchmark/profile artifacts under `<artifact-root>`.
 - Keep the framework-selection contract in `<artifact-root>/manifest.md`, and
   update it only when the user changes the target/comparison framework set.
