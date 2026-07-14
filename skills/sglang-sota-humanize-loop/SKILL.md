@@ -280,7 +280,7 @@ From the SGLang checkout, run:
 
 ```bash
 "$HUMANIZE_RUNTIME_ROOT/scripts/setup-rlcr-loop.sh" \
-  .humanize/sglang-sota-agent/refined-plan.md --yolo --strict-success
+  .humanize/sglang-sota-agent/refined-plan.md --yolo
 ```
 
 If `HUMANIZE_RUNTIME_ROOT` is not already set by the client/plugin environment,
@@ -293,16 +293,19 @@ After setup succeeds:
 
 1. Find the active state file with
    `find .humanize/rlcr -maxdepth 2 -name state.md -print`.
-2. Verify the state file exists and contains `strict_success: true`.
-3. Read `.humanize/rlcr/<timestamp>/round-0-prompt.md`.
-4. Execute the current round.
-5. Commit SGLang changes.
-6. Write the required Humanize round summary.
-7. Stop normally so the native Humanize Stop hook can review.
+2. Verify the state file exists, contains `current_round: 0`, and contains
+   `ask_codex_question: false` when using `--yolo`.
+3. Verify `.humanize/rlcr/<timestamp>/round-0-prompt.md` exists and includes
+   the generated Round Contract Setup instructions.
+4. Read `.humanize/rlcr/<timestamp>/round-0-prompt.md`.
+5. Execute the current round.
+6. Commit SGLang changes.
+7. Write the required Humanize round summary.
+8. Stop normally so the native Humanize Stop hook can review.
 
-If no active state file exists, or if `strict_success: true` is missing, stop
-and report that RLCR did not start correctly. Do not continue into SGLang patch
-work outside the Humanize loop. If the hook blocks exit, follow the generated
+If no active state file exists, or if `round-0-prompt.md` is missing, stop and
+report that RLCR did not start correctly. Do not continue into SGLang patch work
+outside the Humanize loop. If the hook blocks exit, follow the generated
 next-round prompt exactly.
 
 ## Inside Each RLCR Round
