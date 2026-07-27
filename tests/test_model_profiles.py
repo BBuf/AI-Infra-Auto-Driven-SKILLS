@@ -257,6 +257,59 @@ class TestDetectNumLayers(unittest.TestCase):
         self.assertEqual(result, 7)
 
 
+class TestTimelineSelection(unittest.TestCase):
+    def setUp(self):
+        self.timeline = load_timeline()
+        self.profiles = load_profiles()
+        self.breakdown = load_breakdown()
+
+    def test_final_layer_label_wins_over_hash_suffix(self):
+        self.assertEqual(
+            self.timeline.layer_type_label(3, [0, 0, 128, 128], 4, 2),
+            ("FINAL", 128),
+        )
+        self.assertEqual(
+            self.breakdown._layer_type_label(128, 3, 4, 2),
+            "FINAL",
+        )
+
+    def test_select_steady_state_pass_uses_relative_stability(self):
+        self.assertEqual(
+            self.timeline.select_steady_state_pass(
+                [1000.0, 5100.0, 5050.0, 5075.0]
+            ),
+            1,
+        )
+        self.assertIsNone(
+            self.timeline.select_steady_state_pass(
+                [1000.0, 2000.0, 4000.0, 8000.0]
+            )
+        )
+
+    def test_select_steady_state_pass_rejects_invalid_window(self):
+        with self.assertRaises(ValueError):
+            self.timeline.select_steady_state_pass([1.0, 1.0], stable_pairs=0)
+
+    def test_generic_anchor_falls_back_to_repeated_rmsnorm(self):
+        kernels = [{"name": "rms_norm_kernel"} for _ in range(8)]
+        self.assertEqual(
+            self.timeline.find_anchor_kernel(
+                kernels, self.profiles.get_profile("generic")
+            ),
+            "rms_norm",
+        )
+
+    def test_moe_topk_accepts_num_experts_per_token_alias(self):
+        fields = self.breakdown.model_architecture_fields(
+            {
+                "moe": True,
+                "num_experts": 128,
+                "num_experts_per_token": 8,
+            }
+        )
+        self.assertEqual(fields["top_k"], 8)
+
+
 # ---------------------------------------------------------------------------
 # Test: get_layer_kernels with configurable blocks_per_layer
 # ---------------------------------------------------------------------------
@@ -329,6 +382,36 @@ class TestHotKernelOutput(unittest.TestCase):
             ["hot_a", "hot_b", "short", "tiny"],
         )
         self.assertEqual(payload["metadata"]["wall_us"], 35)
+
+    def test_json_comparison_is_one_machine_readable_document(self):
+        comparison = [
+            {
+                "idx": 4,
+                "half": "full",
+                "name": "comparison_only",
+                "ts": 50,
+                "dur": 5,
+            }
+        ]
+        payload = json.loads(
+            self.mod.format_json_comparison(
+                self._kernels(),
+                0,
+                comparison,
+                1,
+                2,
+                [0, 4],
+                2,
+                self.profile,
+            )
+        )
+        self.assertEqual(payload["primary"]["metadata"]["layer_id"], 0)
+        self.assertEqual(payload["comparison"]["metadata"]["layer_id"], 1)
+        self.assertEqual(
+            payload["kernel_diff"]["only_comparison"],
+            ["comparison_only"],
+        )
+        self.assertEqual(payload["kernel_diff"]["common_count"], 0)
 
 
 # ---------------------------------------------------------------------------

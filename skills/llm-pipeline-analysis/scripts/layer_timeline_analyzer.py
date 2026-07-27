@@ -63,6 +63,9 @@ def find_anchor_kernel(gpu_kernels, profile: ModelProfile) -> str:
     candidates = [
         "mhc_post_tilelang",  # DeepSeek-V4
         "flash_fwd_mla_combine",  # DeepSeek-V3
+        "rms_norm",  # generic TP=1 traces
+        "rmsnorm",
+        "RMSNorm",
         "AllReduce",  # generic fallback (1 per layer)
     ]
     for c in candidates:
@@ -204,10 +207,10 @@ def layer_type_label(layer_id, compress_ratios, num_layers, num_hash_layers):
 
     if layer_id == 0:
         return "FIRST", cr
-    elif is_hash:
-        return "HASH", cr
     elif layer_id == num_layers - 1:
         return "FINAL", cr
+    elif is_hash:
+        return "HASH", cr
     elif cr == 0:
         return "FULL_ATTN", cr
     elif cr == 4:
@@ -216,6 +219,29 @@ def layer_type_label(layer_id, compress_ratios, num_layers, num_hash_layers):
         return "C128_HEAVY", cr
     else:
         return f"CR{cr}", cr
+
+
+def select_steady_state_pass(
+    layer_wall_us,
+    *,
+    relative_tolerance: float = 0.05,
+    stable_pairs: int = 2,
+):
+    """Return the first pass in a stable run of relative layer timings."""
+    if stable_pairs < 1:
+        raise ValueError("stable_pairs must be positive")
+    streak = 0
+    for index in range(1, len(layer_wall_us)):
+        previous = float(layer_wall_us[index - 1])
+        current = float(layer_wall_us[index])
+        scale = max(abs(previous), abs(current), 1.0)
+        if abs(current - previous) / scale <= relative_tolerance:
+            streak += 1
+            if streak >= stable_pairs:
+                return index - stable_pairs
+        else:
+            streak = 0
+    return None
 
 
 def prefix_total(info, prefix):
@@ -523,31 +549,40 @@ def main():
             num_hash_layers,
             profile,
         )
-        # Find first steady-state pass (heuristic: first pass where layer 0 > 8ms)
-        for p in range(1, n_passes):
+        layer_wall_us = []
+        for p in range(n_passes):
             info = get_layer_info(gpu, anchor_indices, p, 0, num_layers, profile)
-            if info and info["wall_us"] > 8000:
-                print(f"\nAuto-selected fwd_pass #{p} as first steady-state pass")
-                print_layer_detail(
-                    gpu,
-                    anchor_indices,
-                    p,
-                    num_layers,
-                    compress_ratios,
-                    trace_start,
-                    num_hash_layers,
-                    profile,
-                )
-                print_cluster_stats(
-                    gpu,
-                    anchor_indices,
-                    p,
-                    num_layers,
-                    compress_ratios,
-                    num_hash_layers,
-                    profile,
-                )
-                break
+            layer_wall_us.append(info["wall_us"] if info else 0)
+        selected = select_steady_state_pass(layer_wall_us)
+        if selected is None:
+            print(
+                "\nNo stable forward-pass window was detected; "
+                "use --fwd-pass to select one explicitly."
+            )
+        else:
+            print(
+                f"\nAuto-selected fwd_pass #{selected} "
+                "as first relative steady-state pass"
+            )
+            print_layer_detail(
+                gpu,
+                anchor_indices,
+                selected,
+                num_layers,
+                compress_ratios,
+                trace_start,
+                num_hash_layers,
+                profile,
+            )
+            print_cluster_stats(
+                gpu,
+                anchor_indices,
+                selected,
+                num_layers,
+                compress_ratios,
+                num_hash_layers,
+                profile,
+            )
 
 
 if __name__ == "__main__":
