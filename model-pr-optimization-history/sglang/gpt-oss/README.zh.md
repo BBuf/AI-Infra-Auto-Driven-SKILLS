@@ -71,7 +71,7 @@
 | 2026-05-28 | [#26610](https://github.com/sgl-project/sglang/pull/26610) | merged | test/registered: cleanup pure model e2e tests (moves, splits, dedup, kit) | `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`, `python/sglang/test/kits/unified_radix_cache_kit.py`, `test/registered/models_e2e/test_step3p5_flash_chain_mtp.py` |
 | 2026-05-29 | [#16775](https://github.com/sgl-project/sglang/pull/16775) | merged | [CPU] Add GPT-OSS model optimization for CPU | `python/sglang/srt/models/gpt_oss.py` |
 | 2026-06-02 | [#25813](https://github.com/sgl-project/sglang/pull/25813) | merged | docs(cookbook): port popular model usage guides into cookbook pages | `docs_new/docs/basic_usage/deepseek_v32.mdx`, `docs_new/docs/basic_usage/deepseek_v3.mdx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` |
-| 2026-06-02 | [#26884](https://github.com/sgl-project/sglang/pull/26884) | merged | [AMD] Fix GPT-OSS MXFP4 accuracy on ROCm AITER path | `test/registered/amd/accuracy/mi35x/test_gpt_oss_eval_mi35x.py` |
+| 2026-06-02 | [#26884](https://github.com/sgl-project/sglang/pull/26884) | merged | [AMD] Fix GPT-OSS MXFP4 accuracy on ROCm AITER path | `test/registered/amd/accuracy/mi35x/test_gpt_oss_eval_mi35x.py`, `python/sglang/srt/layers/quantization/mxfp4.py`, `python/sglang/srt/layers/moe/moe_runner/aiter.py` |
 | 2026-06-03 | [#27001](https://github.com/sgl-project/sglang/pull/27001) | merged | [AMD] [CI] Remove hardcoded model/cache paths from MI35x nightly tests | `test/registered/amd/perf/mi35x/test_deepseek_r1_mxfp4_perf_mi35x.py`, `test/registered/amd/perf/mi35x/test_deepseek_r1_mxfp4_ar_fusion_perf_mi35x.py`, `test/registered/amd/perf/mi35x/test_deepseek_r1_mxfp4_kv_fp8_perf_mi35x.py` |
 | 2026-06-06 | [#27201](https://github.com/sgl-project/sglang/pull/27201) | merged | [AMD][WA] force to use gate_mode interleaved to fix tp2/tp4/tp8 acc issue | `python/sglang/srt/layers/quantization/mxfp4.py`, `python/sglang/srt/layers/attention/aiter_backend.py`, `python/sglang/srt/server_args.py` |
 | 2026-06-08 | [#27063](https://github.com/sgl-project/sglang/pull/27063) | merged | [AMD] Optimize gpt-oss-120B performance | `python/sglang/srt/models/gpt_oss.py` |
@@ -83,7 +83,7 @@
 | 2026-06-19 | [#28697](https://github.com/sgl-project/sglang/pull/28697) | merged | [docs] Add B300 cookbook deployment options | `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` |
 | 2026-06-30 | [#27204](https://github.com/sgl-project/sglang/pull/27204) | merged | [AMD] Implement QuarkW4A8MXFp4MoE to support amd/gpt-oss-120b-w-mxfp4-a-fp8 | `python/sglang/srt/models/gpt_oss.py`, `test/registered/amd/accuracy/mi35x/test_gpt_oss_w4a8_mxfp4_eval_mi35x.py` |
 | 2026-07-20 | [#31649](https://github.com/sgl-project/sglang/pull/31649) | merged | Enable GPT-OSS TinyGEMM on CUDA 13 | `python/sglang/srt/models/gpt_oss.py` |
-| 2026-07-20 | [#31732](https://github.com/sgl-project/sglang/pull/31732) | merged | Support GPT-OSS zigzag CP with TRTLLM-MHA | `test/registered/cp/test_gpt_oss_4gpu_mxfp4_cp.py` |
+| 2026-07-20 | [#31732](https://github.com/sgl-project/sglang/pull/31732) | merged | Support GPT-OSS zigzag CP with TRTLLM-MHA | `test/registered/cp/test_gpt_oss_4gpu_mxfp4_cp.py`, `python/sglang/srt/layers/attention/trtllm_mha_backend.py`, `python/sglang/srt/layers/cp/zigzag.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -1119,10 +1119,14 @@ diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx
 - 状态/时间: merged / 2026-06-02
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/amd/accuracy/mi35x/test_gpt_oss_eval_mi35x.py`；关联提交 `4226a6f13aa6`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+87/-20，可读 patch 206 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[AMD] Fix GPT-OSS MXFP4 accuracy on ROCm AITER path」；模型线: GPT-OSS；类别: 缺陷修复；主要 diff: `test/registered/amd/accuracy/mi35x/test_gpt_oss_eval_mi35x.py`；技术摘要: 覆盖「[AMD] Fix GPT-OSS MXFP4 accuracy on ROCm AITER path」；主要实现面是 `test/registered/amd/accuracy/mi35x/test_gpt_oss_eval_mi35x.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `test/registered/amd/accuracy/mi35x/test_gpt_oss_eval_mi35x.py` modified +12/-2 (14 lines); hunks: -75,7 +75,14 @@ def __post_init__(self):; -93,7 +100,10 @@ def __post_init__(self):; symbols: __post_init__，涉及 `__post_init__`。
+- 动机: 标题「[AMD] Fix GPT-OSS MXFP4 accuracy on ROCm AITER path」；模型线: GPT-OSS；类别: 缺陷修复；主要 diff: `test/registered/amd/accuracy/mi35x/test_gpt_oss_eval_mi35x.py`, `python/sglang/srt/layers/quantization/mxfp4.py`, `python/sglang/srt/layers/moe/moe_runner/aiter.py`；技术摘要: 覆盖「[AMD] Fix GPT-OSS MXFP4 accuracy on ROCm AITER path」；主要实现面是 `test/registered/amd/accuracy/mi35x/test_gpt_oss_eval_mi35x.py`, `python/sglang/srt/layers/quantization/mxfp4.py`, `python/sglang/srt/layers/moe/moe_runner/aiter.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/amd/accuracy/mi35x/test_gpt_oss_eval_mi35x.py` modified +12/-2 (14 lines); hunks: -75,7 +75,14 @@ def __post_init__(self):; -93,7 +100,10 @@ def __post_init__(self):; symbols: __post_init__，涉及 `__post_init__`；`python/sglang/srt/layers/quantization/mxfp4.py` modified +51/-17 (68 lines); hunks: -154,9 +154,8 @@ def _get_flashinfer_mxfp4_device_permute_indices(; -774,13 +773,20 @@ def swap_every_two_rows(x, axis=-1):; symbols: _get_flashinfer_mxfp4_device_permute_indices, swap_every_two_rows, apply，涉及 `_get_flashinfer_mxfp4_device_permute_indices, swap_every_two_rows, apply`；`python/sglang/srt/layers/moe/moe_runner/aiter.py` modified +12/-1 (13 lines); hunks: -119,6 +119,8 @@ def run(; -131,7 +133,16 @@ def run(; symbols: run，涉及 `run`；`python/sglang/srt/server_args.py` modified +7/-0 (7 lines); hunks: -2148,6 +2148,13 @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments，涉及 `_handle_model_specific_adjustments`。
 - 代码 diff 细节:
   - `test/registered/amd/accuracy/mi35x/test_gpt_oss_eval_mi35x.py` modified +12/-2 (14 lines); hunks: -75,7 +75,14 @@ def __post_init__(self):; -93,7 +100,10 @@ def __post_init__(self):; symbols: __post_init__
+  - `python/sglang/srt/layers/quantization/mxfp4.py` modified +51/-17 (68 lines); hunks: -154,9 +154,8 @@ def _get_flashinfer_mxfp4_device_permute_indices(; -774,13 +773,20 @@ def swap_every_two_rows(x, axis=-1):; symbols: _get_flashinfer_mxfp4_device_permute_indices, swap_every_two_rows, apply
+  - `python/sglang/srt/layers/moe/moe_runner/aiter.py` modified +12/-1 (13 lines); hunks: -119,6 +119,8 @@ def run(; -131,7 +133,16 @@ def run(; symbols: run
+  - `python/sglang/srt/server_args.py` modified +7/-0 (7 lines); hunks: -2148,6 +2148,13 @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments
+  - `python/sglang/srt/environ.py` modified +5/-0 (5 lines); hunks: -376,6 +376,11 @@ class Envs:; symbols: Envs
 - 关键代码摘录:
 
 ```diff
@@ -1134,10 +1138,21 @@ diff -- test/registered/amd/accuracy/mi35x/test_gpt_oss_eval_mi35x.py
 +        # Mxfp4MoEMethod weight shuffle). Other AITER MXFP4 callers default
 +        # to INTERLEAVE, so opt out explicitly here.
 +        env_vars={
+diff -- python/sglang/srt/layers/quantization/mxfp4.py
+@@ -154,9 +154,8 @@ def _get_flashinfer_mxfp4_device_permute_indices(
+-            shuffle_scale_a16w4,
++            shuffle_scale,
+-            shuffle_weight_a16w4,
+@@ -774,13 +773,20 @@ def swap_every_two_rows(x, axis=-1):
++            # Bias must be fp32 for the AITER kernels.
++            # HF GPT-OSS stores w13 as gate/up *interleaved* row pairs
+diff -- python/sglang/srt/layers/moe/moe_runner/aiter.py
+@@ -119,6 +119,8 @@ def run(
 ```
 
 - 已读文件:
   - tests: `test/registered/amd/accuracy/mi35x/test_gpt_oss_eval_mi35x.py` modified +12/-2
+  - runtime: `python/sglang/srt/layers/quantization/mxfp4.py` modified +51/-17; `python/sglang/srt/layers/moe/moe_runner/aiter.py` modified +12/-1; `python/sglang/srt/server_args.py` modified +7/-0; `python/sglang/srt/environ.py` modified +5/-0
 - 验证与风险: diff 自带测试面 `test/registered/amd/accuracy/mi35x/test_gpt_oss_eval_mi35x.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #27001 - [AMD] [CI] Remove hardcoded model/cache paths from MI35x nightly tests
@@ -1471,7 +1486,7 @@ diff -- docs_new/src/snippets/autoregressive/glm-5-deployment.jsx
 
 - 链接: https://github.com/sgl-project/sglang/pull/27204
 - 状态/时间: merged / 2026-06-30
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/gpt_oss.py`, `test/registered/amd/accuracy/mi35x/test_gpt_oss_w4a8_mxfp4_eval_mi35x.py`；关联提交 `a5e6dd37677f`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/gpt_oss.py`, `test/registered/amd/accuracy/mi35x/test_gpt_oss_w4a8_mxfp4_eval_mi35x.py`；关联提交 `a5e6dd37677f`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+948/-3，可读 patch 998 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[AMD] Implement QuarkW4A8MXFp4MoE to support amd/gpt-oss-120b-w-mxfp4-a-fp8」；模型线: GPT-OSS；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/gpt_oss.py`, `test/registered/amd/accuracy/mi35x/test_gpt_oss_w4a8_mxfp4_eval_mi35x.py`；技术摘要: 覆盖「[AMD] Implement QuarkW4A8MXFp4MoE to support amd/gpt-oss-120b-w-mxfp4-a-fp8」；主要实现面是 `python/sglang/srt/models/gpt_oss.py`, `test/registered/amd/accuracy/mi35x/test_gpt_oss_w4a8_mxfp4_eval_mi35x.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/gpt_oss.py` modified +14/-3 (17 lines); hunks: -879,12 +879,23 @@ def load_weights(; symbols: load_weights，涉及 `load_weights`；`test/registered/amd/accuracy/mi35x/test_gpt_oss_w4a8_mxfp4_eval_mi35x.py` added +251/-0 (251 lines); hunks: -0,0 +1,251; symbols: ModelConfig, __post_init__, get_one_example, get_few_shot_examples，涉及 `ModelConfig, __post_init__, get_one_example`。
@@ -1508,7 +1523,7 @@ diff -- test/registered/amd/accuracy/mi35x/test_gpt_oss_w4a8_mxfp4_eval_mi35x.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/31649
 - 状态/时间: merged / 2026-07-20
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/gpt_oss.py`；关联提交 `8bf2ab9be931`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/gpt_oss.py`；关联提交 `8bf2ab9be931`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-2，可读 patch 17 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Enable GPT-OSS TinyGEMM on CUDA 13」；模型线: GPT-OSS；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/gpt_oss.py`；技术摘要: 覆盖「Enable GPT-OSS TinyGEMM on CUDA 13」；主要实现面是 `python/sglang/srt/models/gpt_oss.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/gpt_oss.py` modified +1/-2 (3 lines); hunks: -72,7 +72,6; -94,7 +93,7。
@@ -1533,12 +1548,16 @@ diff -- python/sglang/srt/models/gpt_oss.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/31732
 - 状态/时间: merged / 2026-07-20
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/cp/test_gpt_oss_4gpu_mxfp4_cp.py`；关联提交 `9668d9ea72ae`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/cp/test_gpt_oss_4gpu_mxfp4_cp.py`；关联提交 `9668d9ea72ae`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+143/-33，可读 patch 289 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Support GPT-OSS zigzag CP with TRTLLM-MHA」；模型线: GPT-OSS；类别: 性能/后端优化；主要 diff: `test/registered/cp/test_gpt_oss_4gpu_mxfp4_cp.py`；技术摘要: 覆盖「Support GPT-OSS zigzag CP with TRTLLM-MHA」；主要实现面是 `test/registered/cp/test_gpt_oss_4gpu_mxfp4_cp.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `test/registered/cp/test_gpt_oss_4gpu_mxfp4_cp.py` added +32/-0 (32 lines); hunks: -0,0 +1,32; symbols: TestGptOss4GpuMxfp4CP, test_mxfp4_120b，涉及 `TestGptOss4GpuMxfp4CP, test_mxfp4_120b`。
+- 动机: 标题「Support GPT-OSS zigzag CP with TRTLLM-MHA」；模型线: GPT-OSS；类别: 性能/后端优化；主要 diff: `test/registered/cp/test_gpt_oss_4gpu_mxfp4_cp.py`, `python/sglang/srt/layers/attention/trtllm_mha_backend.py`, `python/sglang/srt/layers/cp/zigzag.py`；技术摘要: 覆盖「Support GPT-OSS zigzag CP with TRTLLM-MHA」；主要实现面是 `test/registered/cp/test_gpt_oss_4gpu_mxfp4_cp.py`, `python/sglang/srt/layers/attention/trtllm_mha_backend.py`, `python/sglang/srt/layers/cp/zigzag.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/cp/test_gpt_oss_4gpu_mxfp4_cp.py` added +32/-0 (32 lines); hunks: -0,0 +1,32; symbols: TestGptOss4GpuMxfp4CP, test_mxfp4_120b，涉及 `TestGptOss4GpuMxfp4CP, test_mxfp4_120b`；`python/sglang/srt/layers/attention/trtllm_mha_backend.py` modified +84/-31 (115 lines); hunks: -25,6 +25,8; -643,9 +645,16 @@ def get_cuda_graph_seq_len_fill_value(self) -> int:; symbols: get_cuda_graph_seq_len_fill_value, _should_use_fused_fp8_path, _fused_fp8_qkv_kv_cache, forward_decode，涉及 `get_cuda_graph_seq_len_fill_value, _should_use_fused_fp8_path, _fused_fp8_qkv_kv_cache`；`python/sglang/srt/layers/cp/zigzag.py` modified +22/-1 (23 lines); hunks: -72,6 +72,8 @@ class ZigzagContextParallelMetadata(BaseContextParallelMetadata):; -214,6 +216,8 @@ def build_metadata(; symbols: ZigzagContextParallelMetadata, build_metadata, gather_kv_cache, get_supported_attention_backend，涉及 `ZigzagContextParallelMetadata, build_metadata, gather_kv_cache`；`python/sglang/srt/layers/cp/base.py` modified +4/-1 (5 lines); hunks: -67,14 +67,17 @@ class CPAttentionBackendKind(IntEnum):; symbols: CPAttentionBackendKind, from_string，涉及 `CPAttentionBackendKind, from_string`。
 - 代码 diff 细节:
   - `test/registered/cp/test_gpt_oss_4gpu_mxfp4_cp.py` added +32/-0 (32 lines); hunks: -0,0 +1,32; symbols: TestGptOss4GpuMxfp4CP, test_mxfp4_120b
+  - `python/sglang/srt/layers/attention/trtllm_mha_backend.py` modified +84/-31 (115 lines); hunks: -25,6 +25,8; -643,9 +645,16 @@ def get_cuda_graph_seq_len_fill_value(self) -> int:; symbols: get_cuda_graph_seq_len_fill_value, _should_use_fused_fp8_path, _fused_fp8_qkv_kv_cache, forward_decode
+  - `python/sglang/srt/layers/cp/zigzag.py` modified +22/-1 (23 lines); hunks: -72,6 +72,8 @@ class ZigzagContextParallelMetadata(BaseContextParallelMetadata):; -214,6 +216,8 @@ def build_metadata(; symbols: ZigzagContextParallelMetadata, build_metadata, gather_kv_cache, get_supported_attention_backend
+  - `python/sglang/srt/layers/cp/base.py` modified +4/-1 (5 lines); hunks: -67,14 +67,17 @@ class CPAttentionBackendKind(IntEnum):; symbols: CPAttentionBackendKind, from_string
+  - `python/sglang/srt/layers/cp/utils.py` modified +1/-0 (1 lines); hunks: -40,6 +40,7
 - 关键代码摘录:
 
 ```diff
@@ -1550,10 +1569,21 @@ diff -- test/registered/cp/test_gpt_oss_4gpu_mxfp4_cp.py
 +register_cuda_ci(est_time=220, stage="extra-b", runner_config="4-gpu-b200")
 +class TestGptOss4GpuMxfp4CP(BaseTestGptOss):
 +    def test_mxfp4_120b(self):
+diff -- python/sglang/srt/layers/attention/trtllm_mha_backend.py
+@@ -25,6 +25,8 @@
++from sglang.srt.layers.cp.base import CPAttentionBackendKind, get_cp_strategy
++from sglang.srt.layers.cp.utils import is_cp_v2_active
+@@ -643,9 +645,16 @@ def get_cuda_graph_seq_len_fill_value(self) -> int:
+-    def _should_use_fused_fp8_path(self, save_kv_cache: bool, k: torch.Tensor) -> bool:
++    def _should_use_fused_fp8_path(
++        self, save_kv_cache: bool, k: torch.Tensor, forward_batch: ForwardBatch
+diff -- python/sglang/srt/layers/cp/zigzag.py
+@@ -72,6 +72,8 @@ class ZigzagContextParallelMetadata(BaseContextParallelMetadata):
 ```
 
 - 已读文件:
   - tests: `test/registered/cp/test_gpt_oss_4gpu_mxfp4_cp.py` added +32/-0
+  - runtime: `python/sglang/srt/layers/attention/trtllm_mha_backend.py` modified +84/-31; `python/sglang/srt/layers/cp/zigzag.py` modified +22/-1; `python/sglang/srt/layers/cp/base.py` modified +4/-1; `python/sglang/srt/layers/cp/utils.py` modified +1/-0
 - 验证与风险: diff 自带测试面 `test/registered/cp/test_gpt_oss_4gpu_mxfp4_cp.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论

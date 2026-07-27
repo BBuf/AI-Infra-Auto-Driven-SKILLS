@@ -162,12 +162,17 @@ Framework CLIs move quickly. For every real run:
 4. Record which frameworks were model-smoked and which only passed preflight.
 
 Historical validation from April 2026 used SGLang `0.5.10rc0`, vLLM `0.19.1`,
-and TensorRT-LLM `1.0.0`. A source check on 2026-07-27 saw SGLang
-`8d6549bc4039d33635844495d86684677a4f0df8`, vLLM
-`ef9975d021448b99a5408e8c78a4c4f6b63443c7`, TensorRT-LLM
-`1b4ffc0291d75a21ad20118e8f44de6e3831f786`, and TokenSpeed
-`lightseekorg/tokenspeed@d73bf0454422092f306d5575e803a08fd35ac41c`. Treat these as source evidence,
+and TensorRT-LLM `1.0.0`. A source check on 2026-07-28 saw SGLang
+`8a311d1c889244ab1f857d7df79de7e5f0a6891c`, vLLM
+`b5bcb3ce881e1d324ff7f6176ef27606558dbd74`, TensorRT-LLM
+`9fe5853263750ade5b7dc24fb31a1215ec822d45`, and TokenSpeed
+`lightseekorg/tokenspeed@e41aa8b1609a9412d7ed26aa56d910828607950f`. Treat these as source evidence,
 not as a substitute for target-image `--help`. Since the prior refresh, vLLM PR
 `#46735` changed Triton/NVFP4 MoE CUDA graph capture behavior, and
 TensorRT-LLM PR `#11685` / `#15546` changed KV eviction and KV block-offset host
-staging behavior; record stale-image risk when these surfaces affect a row.
+staging behavior. The final increment also includes vLLM `#42669` /
+`#49982`, TensorRT-LLM `#16805` / `#16763`, and TokenSpeed `#821`; these widen
+FA4/modeling coverage, correct disaggregated speculative accounting and
+phase-1 graph cleanup, and document the Kimi K3 deployment contract
+respectively. Record stale-image risk when these surfaces affect a row, but do
+not treat source presence as benchmark validation.

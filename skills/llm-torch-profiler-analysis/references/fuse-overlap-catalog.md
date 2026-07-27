@@ -30,11 +30,11 @@ overlap opportunity as novel.
 
 The catalog is grouped by reusable optimization family, not by one specific model.
 
-Refresh note `2026-07-27`: rechecked official main heads for SGLang
-`8d6549bc4039d33635844495d86684677a4f0df8`, vLLM
-`a89015c6df8eeb37a843b717c97a5be1355de83d`, TensorRT-LLM
-`aae253ef60a9a01cf7508b69eb706adb3571f48d`, and TokenSpeed
-`d73bf0454422092f306d5575e803a08fd35ac41c`. The vLLM torch.compile pass
+Refresh note `2026-07-28`: rechecked official main heads for SGLang
+`8a311d1c889244ab1f857d7df79de7e5f0a6891c`, vLLM
+`b5bcb3ce881e1d324ff7f6176ef27606558dbd74`, TensorRT-LLM
+`9fe5853263750ade5b7dc24fb31a1215ec822d45`, and TokenSpeed
+`e41aa8b1609a9412d7ed26aa56d910828607950f`. The vLLM torch.compile pass
 inventory is split out in
 [`vllm-torch-compile-fusions.md`](vllm-torch-compile-fusions.md). Stable
 current-code families remain folded into the mainline rows below. The prior refresh
@@ -43,6 +43,9 @@ quantize, sampling, lm_head GEMM, and NVFP4 GEMM+SwiGLU+quant, plus the latest
 SGLang LTX2 Ada-value diffusion fusion; the SGLang `#29486` GLM-5.2 cookbook
 refresh does not add a new profiler-visible fusion family. Every PR evidence
 row below carries its audited open, merged, or closed-unmerged state.
+vLLM `#42669` extends the existing FlashAttention-4 SM100 family to head
+dimension 256; classify it as broader backend coverage, not a new fusion
+family.
 
 ## 1. LLM / SRT fused-kernel families
 

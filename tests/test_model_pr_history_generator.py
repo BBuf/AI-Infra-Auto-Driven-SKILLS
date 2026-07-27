@@ -173,6 +173,201 @@ class TestModelHistoryConfiguration(unittest.TestCase):
         self.assertEqual(fetched_files, files)
         self.assertEqual(cache["prs"][key], {"info": info, "files": files})
 
+    def test_existing_prs_are_preserved_from_current_head(self):
+        history = (
+            "https://github.com/sgl-project/sglang/pull/100\n"
+            "https://github.com/sgl-project/sglang/pull/101\n"
+        )
+
+        def fake_run(command, *_args, **_kwargs):
+            if command[:3] == ["git", "merge-base", "HEAD"]:
+                return "base-sha\n"
+            return history
+
+        with mock.patch.object(self.mod, "run", side_effect=fake_run) as run:
+            numbers = self.mod.extract_existing_prs("sglang", "kimi")
+
+        self.assertEqual(numbers, {100, 101})
+        show_refs = [
+            call.args[0][2]
+            for call in run.call_args_list
+            if call.args[0][:2] == ["git", "show"]
+        ]
+        self.assertTrue(any(ref.startswith("HEAD:") for ref in show_refs))
+        self.assertTrue(any(ref.startswith("base-sha:") for ref in show_refs))
+
+    def test_existing_cards_survive_unavailable_github_metadata(self):
+        card_en = """\
+### PR #36127 - Add Kimi Audio
+
+- Link: https://github.com/vllm-project/vllm/pull/36127
+- Status/date: merged / 2026-03-11
+- Trace source: immutable commit evidence
+- Key implementation: preserved implementation details.
+"""
+        card_zh = """\
+### PR #36127 - 支持 Kimi Audio
+
+- 链接: https://github.com/vllm-project/vllm/pull/36127
+- 状态/时间: merged / 2026-03-11
+- 反查来源: 不可变提交证据
+- 实现要点: 保留实现细节。
+"""
+        failed = self.mod.PRBundle(
+            framework="vllm",
+            repo="vllm-project/vllm",
+            number=36127,
+            info={
+                "number": 36127,
+                "title": "unavailable PR #36127",
+                "html_url": "https://github.com/vllm-project/vllm/pull/36127",
+                "state": "unknown",
+                "fetch_error": "gh api failed (HTTP 404)",
+            },
+            files=[],
+            trace=self.mod.TraceInfo(
+                files={"vllm/model_executor/models/kimi_audio.py"}
+            ),
+            source_tags={"git-trace", "existing-doc"},
+        )
+
+        bundles = self.mod.retain_existing_card_fallbacks(
+            "vllm", [failed], {36127: card_en}, {36127: card_zh}
+        )
+
+        self.assertEqual(len(bundles), 1)
+        fallback = bundles[0]
+        self.assertIn("existing-card-fallback", fallback.source_tags)
+        self.assertEqual(fallback.info["title"], "Add Kimi Audio")
+        self.assertEqual(fallback.info["merged_at"], "2026-03-11T00:00:00Z")
+        rendered_en = self.mod.render_history_en(
+            "vllm",
+            "kimi",
+            [],
+            fallback.trace and {36127: fallback.trace},
+            bundles,
+            0,
+            {36127: card_en},
+            {
+                36127: (
+                    "| 2026-03-11 | [#36127](https://github.com/vllm-project/"
+                    "vllm/pull/36127) | merged | Add Kimi Audio | `kimi_audio.py` |"
+                )
+            },
+        )
+        rendered_zh = self.mod.render_history_zh(
+            "vllm",
+            "kimi",
+            [],
+            {36127: fallback.trace},
+            bundles,
+            0,
+            {36127: card_zh},
+            {
+                36127: (
+                    "| 2026-03-11 | [#36127](https://github.com/vllm-project/"
+                    "vllm/pull/36127) | merged | 支持 Kimi Audio | `kimi_audio.py` |"
+                )
+            },
+        )
+
+        self.assertIn("preserved implementation details", rendered_en)
+        self.assertIn("Metadata refresh note", rendered_en)
+        self.assertIn("保留实现细节", rendered_zh)
+        self.assertIn("元数据刷新说明", rendered_zh)
+        self.assertIn("| 2026-03-11 | [#36127]", rendered_en)
+
+    def test_extract_existing_cards_and_timeline_rows(self):
+        history = """\
+## Timeline
+
+| Date | PR | State | Title | Main files |
+| --- | --- | --- | --- | --- |
+| 2026-03-11 | [#36127](https://github.com/vllm-project/vllm/pull/36127) | merged | Kimi Audio | `kimi_audio.py` |
+
+## Per-PR Diff Audit Cards
+
+### PR #36127 - Kimi Audio
+
+- Link: https://github.com/vllm-project/vllm/pull/36127
+- Status/date: merged / 2026-03-11
+- Key implementation: keep me.
+
+## Coverage Gap Review
+"""
+        def fake_run(command, *_args, **_kwargs):
+            if command[:3] == ["git", "merge-base", "HEAD"]:
+                return "base-sha\n"
+            return history
+
+        with mock.patch.object(self.mod, "run", side_effect=fake_run):
+            cards = self.mod.extract_existing_cards("vllm", "kimi", "en")
+            rows = self.mod.extract_existing_timeline_rows("vllm", "kimi", "en")
+
+        self.assertEqual(set(cards), {36127})
+        self.assertIn("Key implementation: keep me", cards[36127])
+        self.assertEqual(set(rows), {36127})
+        self.assertIn("Kimi Audio", rows[36127])
+
+    def test_top_files_keep_supporting_runtime_when_trace_hits_a_test(self):
+        bundle = self.mod.PRBundle(
+            framework="vllm",
+            repo="vllm-project/vllm",
+            number=49963,
+            info={},
+            files=[
+                {
+                    "filename": "tests/entrypoints/test_jina.py",
+                    "status": "added",
+                    "changes": 59,
+                },
+                {
+                    "filename": "vllm/entrypoints/pooling/scoring/io_processor.py",
+                    "status": "modified",
+                    "changes": 11,
+                },
+            ],
+            trace=self.mod.TraceInfo(files={"tests/entrypoints/test_jina.py"}),
+            source_tags={"git-trace"},
+        )
+
+        self.assertEqual(
+            [file["filename"] for file in self.mod.top_files(bundle)],
+            [
+                "tests/entrypoints/test_jina.py",
+                "vllm/entrypoints/pooling/scoring/io_processor.py",
+            ],
+        )
+
+    def test_top_files_stay_focused_when_trace_hits_runtime(self):
+        bundle = self.mod.PRBundle(
+            framework="vllm",
+            repo="vllm-project/vllm",
+            number=1,
+            info={},
+            files=[
+                {
+                    "filename": "vllm/model_executor/models/model.py",
+                    "status": "modified",
+                    "changes": 10,
+                },
+                {
+                    "filename": "vllm/shared/helper.py",
+                    "status": "modified",
+                    "changes": 100,
+                },
+            ],
+            trace=self.mod.TraceInfo(
+                files={"vllm/model_executor/models/model.py"}
+            ),
+            source_tags={"git-trace"},
+        )
+
+        self.assertEqual(
+            [file["filename"] for file in self.mod.top_files(bundle)],
+            ["vllm/model_executor/models/model.py"],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

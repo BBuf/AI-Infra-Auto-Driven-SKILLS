@@ -35,7 +35,7 @@
 | 2025-04-09 | [#5144](https://github.com/sgl-project/sglang/pull/5144) | merged | model: support mllama4 | `python/sglang/srt/models/mllama4.py`, `python/sglang/srt/managers/multimodal_processors/mllama4.py`, `python/sglang/srt/models/llama4.py` |
 | 2025-04-11 | [#5127](https://github.com/sgl-project/sglang/pull/5127) | merged | Optimize attention in llama4 | `python/sglang/srt/models/llama4.py` |
 | 2025-05-09 | [#6162](https://github.com/sgl-project/sglang/pull/6162) | merged | [Bugfix] Fix Llama4 gibberish output with long context and CUDA graph | `python/sglang/srt/layers/attention/flashattention_backend.py` |
-| 2025-05-31 | [#6679](https://github.com/sgl-project/sglang/pull/6679) | merged | update llama4 chat template and pythonic parser | `examples/chat_template/tool_chat_template_llama4_pythonic.jinja` |
+| 2025-05-31 | [#6679](https://github.com/sgl-project/sglang/pull/6679) | merged | update llama4 chat template and pythonic parser | `examples/chat_template/tool_chat_template_llama4_pythonic.jinja`, `python/sglang/srt/function_call/pythonic_detector.py` |
 | 2025-07-01 | [#6985](https://github.com/sgl-project/sglang/pull/6985) | merged | support llama4 eagle3 | `python/sglang/srt/models/mllama4.py` |
 | 2025-07-04 | [#7729](https://github.com/sgl-project/sglang/pull/7729) | merged | refactor llama4 dp attention logic | `python/sglang/srt/models/llama4.py` |
 | 2025-07-08 | [#7129](https://github.com/sgl-project/sglang/pull/7129) | merged | Enable ModelOpt Llama4 fp8 checkpoint deployment in SGLang | `python/sglang/srt/models/mllama4.py` |
@@ -288,10 +288,11 @@ diff -- python/sglang/srt/layers/attention/flashattention_backend.py
 - 状态/时间: merged / 2025-05-31
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `examples/chat_template/tool_chat_template_llama4_pythonic.jinja`；关联提交 `4fac524b14a0`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+165/-73，可读 patch 350 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「update llama4 chat template and pythonic parser」；模型线: Llama 4；类别: 模型实现调整；主要 diff: `examples/chat_template/tool_chat_template_llama4_pythonic.jinja`；技术摘要: 覆盖「update llama4 chat template and pythonic parser」；主要实现面是 `examples/chat_template/tool_chat_template_llama4_pythonic.jinja`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `examples/chat_template/tool_chat_template_llama4_pythonic.jinja` modified +35/-63 (98 lines); hunks: -1,86 +1,52; -92,10 +58,12。
+- 动机: 标题「update llama4 chat template and pythonic parser」；模型线: Llama 4；类别: 模型实现调整；主要 diff: `examples/chat_template/tool_chat_template_llama4_pythonic.jinja`, `python/sglang/srt/function_call/pythonic_detector.py`；技术摘要: 覆盖「update llama4 chat template and pythonic parser」；主要实现面是 `examples/chat_template/tool_chat_template_llama4_pythonic.jinja`, `python/sglang/srt/function_call/pythonic_detector.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `examples/chat_template/tool_chat_template_llama4_pythonic.jinja` modified +35/-63 (98 lines); hunks: -1,86 +1,52; -92,10 +58,12；`python/sglang/srt/function_call/pythonic_detector.py` modified +55/-10 (65 lines); hunks: -32,13 +32,24 @@ def __init__(self):; -117,6 +128,30 @@ def _find_matching_bracket(self, buffer: str, start: int) -...; symbols: __init__, _text_strip, has_tool_call, detect_and_parse，涉及 `__init__, _text_strip, has_tool_call`。
 - 代码 diff 细节:
   - `examples/chat_template/tool_chat_template_llama4_pythonic.jinja` modified +35/-63 (98 lines); hunks: -1,86 +1,52; -92,10 +58,12
+  - `python/sglang/srt/function_call/pythonic_detector.py` modified +55/-10 (65 lines); hunks: -32,13 +32,24 @@ def __init__(self):; -117,6 +128,30 @@ def _find_matching_bracket(self, buffer: str, start: int) -...; symbols: __init__, _text_strip, has_tool_call, detect_and_parse
 - 关键代码摘录:
 
 ```diff
@@ -303,10 +304,19 @@ diff -- examples/chat_template/tool_chat_template_llama4_pythonic.jinja
 +{%- if custom_tools is defined and custom_tools %}
 -{%- if not tools_in_user_message is defined %}
 -    {%- set tools_in_user_message = false %}
+diff -- python/sglang/srt/function_call/pythonic_detector.py
+@@ -32,13 +32,24 @@ def __init__(self):
++    @staticmethod
++    def _text_strip(text: str) -> str:
++        # Llama 4 model sometime will output <|python_start|> and <|python_end|> tokens
++        # remove those tokens
++        text = text.replace("<|python_start|>", "")
++        text = text.replace("<|python_end|>", "")
 ```
 
 - 已读文件:
   - docs: `examples/chat_template/tool_chat_template_llama4_pythonic.jinja` modified +35/-63
+  - runtime: `python/sglang/srt/function_call/pythonic_detector.py` modified +55/-10
 - 验证与风险: diff 自带测试面 `test/srt/test_function_call_parser.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #6985 - support llama4 eagle3

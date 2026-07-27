@@ -1,14 +1,74 @@
 # TensorRT-LLM Kimi 模型 PR 优化历史
 
-## 2026-07-27 源码 head 刷新
+## 2026-07-28 源码 head 刷新
 
 已复核 TensorRT-LLM 上游 main：
-`NVIDIA/TensorRT-LLM@1b4ffc0291d75a21ad20118e8f44de6e3831f786`。
-针对上一记录 head `aaffa2f9fef3025e0f698d978385a73460344e0b` 之后的范围执行了
-`git log --name-only -- <model-files>`，并从上游最终提交逐文件读完下方高信号 Kimi runtime 合并的源码 diff。
+`NVIDIA/TensorRT-LLM@9fe5853263750ade5b7dc24fb31a1215ec822d45`。
+针对上一记录 head `1b4ffc0291d75a21ad20118e8f44de6e3831f786`
+之后的 7 个提交执行了 `git log --name-only`，并逐文件读完本地完整源码 diff。
 
-结果：PR #14848 已提升为完整 diff 审计卡。仅调整超时或 disaggregated 测试 lane 的变化保留在
-`model-pr-optimization-history/open-pr-watch.md`，不冒充新的 runtime 优化证据。
+结果：PR #16805 修复 Kimi 类 PD 流程使用的 disaggregated speculative
+draft-token 与 sequence-length 记账，提升为完整审计卡；PR #16763 作为跨模型
+启动显存卡保留。其余 4 个提交只修改 CI、fake、Slurm 清理或 Docker 拷贝，不包装成
+模型优化证据；第 7 个提交 PR #16677 是 VisualGen/Wan 的 Attention2D + TP，
+同样不属于 Kimi LLM 范围。PR #14848 继续保留为上一轮高信号 Kimi runtime 合并。
+
+### PR #16805 - 修复 disaggregated draft-token 记账
+
+- 链接: https://github.com/NVIDIA/TensorRT-LLM/pull/16805
+- 状态/时间: merged / 2026-07-27
+- 反查来源: 合并提交
+  `93924532ff65e6dce000c1dcee604e585386781b`；已读完 6-commit 增量和该 PR
+  的 5 文件完整 diff。
+- 代码 diff 已读范围: 5 files，+164/-4。
+- 动机: generation-only request 通过 `ContextPhaseParams` 接收 first-gen 与
+  draft token，但 decode request 没有接管 draft token，sequence-length 也只统计
+  first-gen token。
+- 实现要点: `GenericLlmRequest` 在构造或后置 context 设置时接管 draft token；
+  统一 helper 统计 first-gen + draft token，decoder sequence-length 使用该总数。
+- 代码 diff 细节: `llmRequest.h` 新增 draft-token 接管和统一计数 helper；
+  `createNewDecoderRequests.cpp` 替换只统计 first token 的算式，C++/Python 测试覆盖
+  构造与后置 assignment。
+- 关键代码摘录:
+
+```diff
++        adoptContextPhaseDraftTokens();
++        auto numTokens = static_cast<SizeType32>(
++            contextPhaseParams.getFirstGenTokens().size());
++        numTokens += static_cast<SizeType32>(draftTokens->size());
+```
+
+- 已读文件: `llmRequest.h`、`createNewDecoderRequests.cpp`、C++ request 测试、
+  Python executor-request 测试和 binding 测试。
+- 验证与风险: 需覆盖有/无 draft token、后置 context assignment 和下游长度；
+  这是 correctness fix，不是吞吐实测。
+
+### PR #16763 - 统一 phase-1 CUDA graph 清理
+
+- 链接: https://github.com/NVIDIA/TensorRT-LLM/pull/16763
+- 状态/时间: merged / 2026-07-27
+- 反查来源: 最终上游提交
+  `6046f34e1ac8fc20c2c5553d00a98eb15a172555`；已读完整 2 文件 diff。
+- 代码 diff 已读范围: 2 files，+5/-8。
+- 动机: KV capacity 估算已经关闭 phase-1 executor 并释放 CUDA graph，再次显式释放
+  会重复资源所有权并干扰最终 KV-cache 分配。
+- 实现要点: 由 `configure_kv_cache_capacity` 负责 graph/resource teardown，
+  重建最终 KV manager 前只清除 profiling attention metadata。
+- 代码 diff 细节: 从 `py_executor_creator.py` 删除第二次
+  `_release_cuda_graphs()`，保留 `eng.attn_metadata = None`，并解除两个相关配置的
+  waive。
+- 关键代码摘录:
+
+```diff
+-            if eng.attn_metadata is not None:
+-                if llm_args.cuda_graph_config is not None:
+-                    eng._release_cuda_graphs()
++            if eng is not None:
+                 eng.attn_metadata = None
+```
+
+- 已读文件: `py_executor_creator.py` 与两个解除 waive 的 DeepSeek-V3Lite 集成用例。
+- 验证与风险: 比较 capacity estimation 前后启动显存，并确认 graph resource 只释放一次。
 
 ## 2026-06-27 PR 补漏复核
 

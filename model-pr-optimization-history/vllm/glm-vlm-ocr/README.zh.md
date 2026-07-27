@@ -629,7 +629,7 @@ diff -- tests/models/multimodal/generation/test_vit_cudagraph.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/47155
 - 状态/时间: merged / 2026-07-03
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/glm4_1v.py`；关联提交 `d6d39c111e60`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/glm4_1v.py`；关联提交 `d6d39c111e60`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+67/-8，可读 patch 113 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[GLM4V] Avoid GLM4V processor init during startup metadata reads」；模型线: GLM VLM/OCR；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/glm4_1v.py`；技术摘要: 覆盖「[GLM4V] Avoid GLM4V processor init during startup metadata reads」；主要实现面是 `vllm/model_executor/models/glm4_1v.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/glm4_1v.py` modified +67/-8 (75 lines); hunks: -997,23 +997,50 @@ def get_image_processor(self, **kwargs: object) -> Glm4vIm...; -1092,7 +1119,40 @@ def _get_image_max_pixels(self) -> int:; symbols: get_image_processor, get_video_processor, _get_processor_class_name, _get_longest_edge，涉及 `get_image_processor, get_video_processor, _get_processor_class_name`。
@@ -656,7 +656,7 @@ diff -- vllm/model_executor/models/glm4_1v.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/48729
 - 状态/时间: merged / 2026-07-17
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/processing/test_glm4_1v.py`, `vllm/model_executor/models/glm4_1v.py`；关联提交 `bf578e1abdff`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/processing/test_glm4_1v.py`, `vllm/model_executor/models/glm4_1v.py`；关联提交 `bf578e1abdff`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+72/-49，可读 patch 212 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix][GLM4V] Fix video dummy profiling and memory usage」；模型线: GLM VLM/OCR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/glm4_1v.py`, `tests/models/multimodal/processing/test_glm4_1v.py`；技术摘要: 覆盖「[Bugfix][GLM4V] Fix video dummy profiling and memory usage」；主要实现面是 `vllm/model_executor/models/glm4_1v.py`, `tests/models/multimodal/processing/test_glm4_1v.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/glm4_1v.py` modified +20/-49 (69 lines); hunks: -40,6 +40,7; -49,6 +50,7; symbols: get_video_processor, _get_processor_class_name, _get_image_max_pixels, _get_video_max_pixels，涉及 `get_video_processor, _get_processor_class_name, _get_image_max_pixels`；`tests/models/multimodal/processing/test_glm4_1v.py` modified +52/-0 (52 lines); hunks: -1,16 +1,68; symbols: test_get_max_video_frames_matches_glm_resize, test_encoder_cudagraph_uses_model_video_frame_limit，涉及 `test_get_max_video_frames_matches_glm_resize, test_encoder_cudagraph_uses_model_video_frame_limit`。

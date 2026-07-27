@@ -1,9 +1,13 @@
 # TensorRT-LLM Qwen3.5 Model PR Optimization History
 
-## 2026-07-27 Source Head Refresh
+## 2026-07-28 Source Head Refresh
 
-Rechecked TensorRT-LLM upstream main at `NVIDIA/TensorRT-LLM@1b4ffc0291d75a21ad20118e8f44de6e3831f786`.
-The range after the previous recorded head `aaffa2f9fef3025e0f698d978385a73460344e0b` was traced with `git log --name-only -- <model-files>`. Four runtime PRs were promoted only after their complete upstream diffs were read.
+Rechecked TensorRT-LLM upstream main at `NVIDIA/TensorRT-LLM@9fe5853263750ade5b7dc24fb31a1215ec822d45`.
+The seven-commit range after the previous recorded head
+`1b4ffc0291d75a21ad20118e8f44de6e3831f786` was read in full. It contains no
+new Qwen3.5-specific implementation commit; the latest PR #16677 is confined
+to VisualGen/Wan Attention2D plus TP, so the four previously promoted runtime
+PRs remain the current model evidence.
 
 Result: the Qwen3.5 MoE and dense VLM paths landed, followed by fused attention preprocessing and fused AllReduce + Gemma RMSNorm. Test-only unwaives remain outside the runtime evidence set.
 

@@ -629,7 +629,7 @@ diff -- tests/models/multimodal/generation/test_vit_cudagraph.py
 
 - Link: https://github.com/vllm-project/vllm/pull/47155
 - Status/date: merged / 2026-07-03
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_1v.py`; associated commits `d6d39c111e60`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_1v.py`; associated commits `d6d39c111e60`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +67/-8, 113 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[GLM4V] Avoid GLM4V processor init during startup metadata reads"; model line: GLM VLM/OCR; category: model implementation change; main diff: `vllm/model_executor/models/glm4_1v.py`; technical summary: Covers "[GLM4V] Avoid GLM4V processor init during startup metadata reads"; the main implementation surface is `vllm/model_executor/models/glm4_1v.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/glm4_1v.py` modified +67/-8 (75 lines); hunks: -997,23 +997,50 @@ def get_image_processor(self, **kwargs: object) -> Glm4vIm...; -1092,7 +1119,40 @@ def _get_image_max_pixels(self) -> int:; symbols: get_image_processor, get_video_processor, _get_processor_class_name, _get_longest_edge, touching `get_image_processor, get_video_processor, _get_processor_class_name`.
@@ -656,7 +656,7 @@ diff -- vllm/model_executor/models/glm4_1v.py
 
 - Link: https://github.com/vllm-project/vllm/pull/48729
 - Status/date: merged / 2026-07-17
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/processing/test_glm4_1v.py`, `vllm/model_executor/models/glm4_1v.py`; associated commits `bf578e1abdff`
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/processing/test_glm4_1v.py`, `vllm/model_executor/models/glm4_1v.py`; associated commits `bf578e1abdff`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +72/-49, 212 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix][GLM4V] Fix video dummy profiling and memory usage"; model line: GLM VLM/OCR; category: bug fix; main diff: `vllm/model_executor/models/glm4_1v.py`, `tests/models/multimodal/processing/test_glm4_1v.py`; technical summary: Covers "[Bugfix][GLM4V] Fix video dummy profiling and memory usage"; the main implementation surface is `vllm/model_executor/models/glm4_1v.py`, `tests/models/multimodal/processing/test_glm4_1v.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/glm4_1v.py` modified +20/-49 (69 lines); hunks: -40,6 +40,7; -49,6 +50,7; symbols: get_video_processor, _get_processor_class_name, _get_image_max_pixels, _get_video_max_pixels, touching `get_video_processor, _get_processor_class_name, _get_image_max_pixels`; `tests/models/multimodal/processing/test_glm4_1v.py` modified +52/-0 (52 lines); hunks: -1,16 +1,68; symbols: test_get_max_video_frames_matches_glm_resize, test_encoder_cudagraph_uses_model_video_frame_limit, touching `test_get_max_video_frames_matches_glm_resize, test_encoder_cudagraph_uses_model_video_frame_limit`.

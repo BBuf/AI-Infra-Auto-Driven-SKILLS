@@ -47,8 +47,8 @@
 | 2025-12-12 | [#14921](https://github.com/sgl-project/sglang/pull/14921) | merged | update mistral detector | `python/sglang/srt/function_call/mistral_detector.py` |
 | 2025-12-13 | [#14485](https://github.com/sgl-project/sglang/pull/14485) | merged | Mistral Large 3 NVFP4 support | `python/sglang/srt/models/mistral_large_3.py`, `python/sglang/srt/models/mistral_large_3_eagle.py` |
 | 2025-12-18 | [#15049](https://github.com/sgl-project/sglang/pull/15049) | merged | Mistral Large 3 NVFP4 TRTLLM MoE support | `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors_moe.py`, `python/sglang/srt/layers/quantization/utils.py`, `python/sglang/srt/layers/quantization/modelopt_quant.py` |
-| 2026-02-03 | [#18065](https://github.com/sgl-project/sglang/pull/18065) | merged | [Bugfix] Fix Mistral Large 3 NVFP4 TRTLLM MoE | `test/registered/8-gpu-models/test_mistral_large3.py` |
-| 2026-02-25 | [#15422](https://github.com/sgl-project/sglang/pull/15422) | merged | Flashinfer MOE FP8 support for Mistral Large 3. | `test/registered/8-gpu-models/test_mistral_large3.py` |
+| 2026-02-03 | [#18065](https://github.com/sgl-project/sglang/pull/18065) | merged | [Bugfix] Fix Mistral Large 3 NVFP4 TRTLLM MoE | `test/registered/8-gpu-models/test_mistral_large3.py`, `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors_moe.py` |
+| 2026-02-25 | [#15422](https://github.com/sgl-project/sglang/pull/15422) | merged | Flashinfer MOE FP8 support for Mistral Large 3. | `test/registered/8-gpu-models/test_mistral_large3.py`, `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w8a8_fp8_moe.py`, `python/sglang/srt/layers/quantization/utils.py` |
 | 2026-02-26 | [#19402](https://github.com/sgl-project/sglang/pull/19402) | merged | Fix nightly Mistral-Large-3 NVFP4 accuracy threshold | `test/registered/8-gpu-models/test_mistral_large3.py` |
 | 2026-03-18 | [#20708](https://github.com/sgl-project/sglang/pull/20708) | merged | Add Mistral Small 4 (Pixtral) support | `python/sglang/srt/function_call/mistral_detector.py`, `python/sglang/srt/models/mistral_large_3_eagle.py` |
 | 2026-03-30 | [#21620](https://github.com/sgl-project/sglang/pull/21620) | merged | fix: Mistral Small 4 fails to start due to config/weight format mismatch | `test/registered/models/test_ministral4_models.py`, `python/sglang/srt/server_args.py` |
@@ -334,10 +334,11 @@ diff -- python/sglang/srt/layers/quantization/modelopt_quant.py
 - Status/date: merged / 2026-02-03
 - Trace source: `git log --name-only -- <model-files>` found it through `test/registered/8-gpu-models/test_mistral_large3.py`; associated commits `99fab2ce673e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +115/-111, 282 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix Mistral Large 3 NVFP4 TRTLLM MoE"; model line: Mistral Small 4; category: bug fix; main diff: `test/registered/8-gpu-models/test_mistral_large3.py`; technical summary: Covers "[Bugfix] Fix Mistral Large 3 NVFP4 TRTLLM MoE"; the main implementation surface is `test/registered/8-gpu-models/test_mistral_large3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `test/registered/8-gpu-models/test_mistral_large3.py` modified +21/-8 (29 lines); hunks: -9,19 +9,21; -56,22 +58,33 @@ def test_mistral_large3_all_variants(self):; symbols: TestMistralLarge3, for, test_mistral_large3_all_variants, touching `TestMistralLarge3, for, test_mistral_large3_all_variants`.
+- Motivation: Title: "[Bugfix] Fix Mistral Large 3 NVFP4 TRTLLM MoE"; model line: Mistral Small 4; category: bug fix; main diff: `test/registered/8-gpu-models/test_mistral_large3.py`, `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors_moe.py`; technical summary: Covers "[Bugfix] Fix Mistral Large 3 NVFP4 TRTLLM MoE"; the main implementation surface is `test/registered/8-gpu-models/test_mistral_large3.py`, `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/8-gpu-models/test_mistral_large3.py` modified +21/-8 (29 lines); hunks: -9,19 +9,21; -56,22 +58,33 @@ def test_mistral_large3_all_variants(self):; symbols: TestMistralLarge3, for, test_mistral_large3_all_variants, touching `TestMistralLarge3, for, test_mistral_large3_all_variants`; `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors_moe.py` modified +94/-103 (197 lines); hunks: -461,123 +461,114 @@ def apply(; symbols: apply, apply_with_router_logits, CompressedTensorsW8A8Fp8MoEMethod, touching `apply, apply_with_router_logits, CompressedTensorsW8A8Fp8MoEMethod`.
 - Code diff details:
   - `test/registered/8-gpu-models/test_mistral_large3.py` modified +21/-8 (29 lines); hunks: -9,19 +9,21; -56,22 +58,33 @@ def test_mistral_large3_all_variants(self):; symbols: TestMistralLarge3, for, test_mistral_large3_all_variants
+  - `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors_moe.py` modified +94/-103 (197 lines); hunks: -461,123 +461,114 @@ def apply(; symbols: apply, apply_with_router_logits, CompressedTensorsW8A8Fp8MoEMethod
 - Key code excerpts:
 
 ```diff
@@ -349,10 +350,19 @@ diff -- test/registered/8-gpu-models/test_mistral_large3.py
 +MISTRAL_LARGE3_FP8_MODEL_PATH = "mistralai/Mistral-Large-3-675B-Instruct-2512"
 +MISTRAL_LARGE3_NVFP4_MODEL_PATH = "mistralai/Mistral-Large-3-675B-Instruct-2512-NVFP4"
 -    Two variants:
+diff -- python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors_moe.py
+@@ -461,123 +461,114 @@ def apply(
+-        from sglang.srt.layers.moe.cutlass_moe import cutlass_moe_fp4
+-        topk_weights, topk_ids = topk_output.topk_weights, topk_output.topk_ids
+-        output = cutlass_moe_fp4(
+-            a=x,
+-            a1_gscale=layer.w13_input_scale_quant,
+-            w1_fp4=layer.w13_weight,
 ```
 
 - Reviewed files:
   - tests: `test/registered/8-gpu-models/test_mistral_large3.py` modified +21/-8
+  - runtime: `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors_moe.py` modified +94/-103
 - Risk and verification: The diff ships test coverage in `test/registered/8-gpu-models/test_mistral_large3.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #15422 - Flashinfer MOE FP8 support for Mistral Large 3.
@@ -361,10 +371,12 @@ diff -- test/registered/8-gpu-models/test_mistral_large3.py
 - Status/date: merged / 2026-02-25
 - Trace source: `git log --name-only -- <model-files>` found it through `test/registered/8-gpu-models/test_mistral_large3.py`; associated commits `350190487be4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +60/-17, 143 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Flashinfer MOE FP8 support for Mistral Large 3."; model line: Mistral Small 4; category: performance/backend optimization; main diff: `test/registered/8-gpu-models/test_mistral_large3.py`; technical summary: Covers "Flashinfer MOE FP8 support for Mistral Large 3."; the main implementation surface is `test/registered/8-gpu-models/test_mistral_large3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `test/registered/8-gpu-models/test_mistral_large3.py` modified +2/-5 (7 lines); hunks: -46,6 +46,7 @@ def test_mistral_large3_all_variants(self):; -58,10 +59,6 @@ def test_mistral_large3_all_variants(self):; symbols: test_mistral_large3_all_variants, touching `test_mistral_large3_all_variants`.
+- Motivation: Title: "Flashinfer MOE FP8 support for Mistral Large 3."; model line: Mistral Small 4; category: performance/backend optimization; main diff: `test/registered/8-gpu-models/test_mistral_large3.py`, `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w8a8_fp8_moe.py`, `python/sglang/srt/layers/quantization/utils.py`; technical summary: Covers "Flashinfer MOE FP8 support for Mistral Large 3."; the main implementation surface is `test/registered/8-gpu-models/test_mistral_large3.py`, `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w8a8_fp8_moe.py`, `python/sglang/srt/layers/quantization/utils.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/8-gpu-models/test_mistral_large3.py` modified +2/-5 (7 lines); hunks: -46,6 +46,7 @@ def test_mistral_large3_all_variants(self):; -58,10 +59,6 @@ def test_mistral_large3_all_variants(self):; symbols: test_mistral_large3_all_variants, touching `test_mistral_large3_all_variants`; `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w8a8_fp8_moe.py` modified +52/-12 (64 lines); hunks: -8,13 +8,21; -43,6 +51,7 @@ class CompressedTensorsW8A8Fp8MoE(CompressedTensorsMoEScheme):; symbols: CompressedTensorsW8A8Fp8MoE, __init__, process_weights_after_loading, create_moe_runner, touching `CompressedTensorsW8A8Fp8MoE, __init__, process_weights_after_loading`; `python/sglang/srt/layers/quantization/utils.py` modified +6/-0 (6 lines); hunks: -594,6 +594,12 @@ def swizzle_blockscale(scale: torch.Tensor):; symbols: swizzle_blockscale, swap_w13_to_w31, reorder_w1w3_to_w3w1, touching `swizzle_blockscale, swap_w13_to_w31, reorder_w1w3_to_w3w1`.
 - Code diff details:
   - `test/registered/8-gpu-models/test_mistral_large3.py` modified +2/-5 (7 lines); hunks: -46,6 +46,7 @@ def test_mistral_large3_all_variants(self):; -58,10 +59,6 @@ def test_mistral_large3_all_variants(self):; symbols: test_mistral_large3_all_variants
+  - `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w8a8_fp8_moe.py` modified +52/-12 (64 lines); hunks: -8,13 +8,21; -43,6 +51,7 @@ class CompressedTensorsW8A8Fp8MoE(CompressedTensorsMoEScheme):; symbols: CompressedTensorsW8A8Fp8MoE, __init__, process_weights_after_loading, create_moe_runner
+  - `python/sglang/srt/layers/quantization/utils.py` modified +6/-0 (6 lines); hunks: -594,6 +594,12 @@ def swizzle_blockscale(scale: torch.Tensor):; symbols: swizzle_blockscale, swap_w13_to_w31, reorder_w1w3_to_w3w1
 - Key code excerpts:
 
 ```diff
@@ -376,10 +388,21 @@ diff -- test/registered/8-gpu-models/test_mistral_large3.py
 -        nvfp4_args = [
 -            "--moe-runner-backend=flashinfer_trtllm",
 -        ]
+diff -- python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w8a8_fp8_moe.py
+@@ -8,13 +8,21 @@
++from sglang.srt.layers.moe.moe_runner.flashinfer_trtllm import (
++    FlashInferTrtllmFp8MoeQuantInfo,
++)
++from sglang.srt.layers.moe.utils import get_moe_runner_backend
+-from sglang.srt.layers.quantization.utils import all_close_1d, per_tensor_dequantize
++from sglang.srt.layers.quantization.utils import (
+diff -- python/sglang/srt/layers/quantization/utils.py
+@@ -594,6 +594,12 @@ def swizzle_blockscale(scale: torch.Tensor):
 ```
 
 - Reviewed files:
   - tests: `test/registered/8-gpu-models/test_mistral_large3.py` modified +2/-5
+  - runtime: `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w8a8_fp8_moe.py` modified +52/-12; `python/sglang/srt/layers/quantization/utils.py` modified +6/-0
 - Risk and verification: The diff ships test coverage in `test/registered/8-gpu-models/test_mistral_large3.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #19402 - Fix nightly Mistral-Large-3 NVFP4 accuracy threshold
@@ -764,7 +787,7 @@ diff -- python/sglang/srt/models/ministral3.py
 
 - Link: https://github.com/sgl-project/sglang/pull/30396
 - Status/date: merged / 2026-07-09
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/utils/hf_transformers/mistral_utils.py`; associated commits `7132af28de0b`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/utils/hf_transformers/mistral_utils.py`; associated commits `7132af28de0b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +138/-12, 190 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Fix garbage output for bare-tekken Mistral checkpoints (e.g. Leanstral)"; model line: Mistral Small 4; category: bug fix; main diff: `python/sglang/srt/utils/hf_transformers/mistral_utils.py`; technical summary: Covers "Fix garbage output for bare-tekken Mistral checkpoints (e.g. Leanstral)"; the main implementation surface is `python/sglang/srt/utils/hf_transformers/mistral_utils.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/utils/hf_transformers/mistral_utils.py` modified +34/-1 (35 lines); hunks: -11,7 +11,12; -430,6 +435,34 @@ def wrap_as_pixtral(processor, config):; symbols: adapt_config_dict, wrap_as_pixtral, is_bare_tekken_checkpoint, retry_without_mistral_common_kwargs, touching `adapt_config_dict, wrap_as_pixtral, is_bare_tekken_checkpoint`.
@@ -791,7 +814,7 @@ diff -- python/sglang/srt/utils/hf_transformers/mistral_utils.py
 
 - Link: https://github.com/sgl-project/sglang/pull/31507
 - Status/date: merged / 2026-07-17
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx`; associated commits `40a3bd765975`
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx`; associated commits `40a3bd765975`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-8, 16 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Docs] Mistral Medium 3.5 cookbook: replace stale day-0 dev images with latest"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx`; technical summary: Covers "[Docs] Mistral Medium 3.5 cookbook: replace stale day-0 dev images with latest"; the main implementation surface is `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx` modified +1/-8 (9 lines); hunks: -41,14 +41,7 @@ The HuggingFace repo ships both the mistral native layout (`p....

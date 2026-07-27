@@ -43,15 +43,15 @@
 | 2026-04-02 | [#38826](https://github.com/vllm-project/vllm/pull/38826) | merged | feat(models): implement Google Gemma 4 architecture support (MoE, Multimodal, Reasoning, Tool-Use) | `vllm/model_executor/models/gemma4_mm.py`, `vllm/model_executor/models/gemma4.py`, `tests/tool_parsers/test_gemma4_tool_parser.py` |
 | 2026-04-02 | [#38847](https://github.com/vllm-project/vllm/pull/38847) | merged | [Bugfix]: Fix Gemma4ToolParser.__init__() missing `tools` parameter | `vllm/tool_parsers/gemma4_tool_parser.py` |
 | 2026-04-03 | [#38872](https://github.com/vllm-project/vllm/pull/38872) | merged | [Misc] Clean up Gemma4 implementation | `vllm/model_executor/models/gemma4_mm.py` |
-| 2026-04-05 | [#38992](https://github.com/vllm-project/vllm/pull/38992) | merged | [Bugfix] Fix invalid JSON in Gemma 4 streaming tool calls by stripping partial delimiters | `tests/tool_parsers/test_gemma4_tool_parser.py` |
+| 2026-04-05 | [#38992](https://github.com/vllm-project/vllm/pull/38992) | merged | [Bugfix] Fix invalid JSON in Gemma 4 streaming tool calls by stripping partial delimiters | `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py` |
 | 2026-04-06 | [#38879](https://github.com/vllm-project/vllm/pull/38879) | merged | [Gemma4] Enable Fast Prefill Optimization | `vllm/model_executor/models/gemma4.py` |
-| 2026-04-08 | [#38909](https://github.com/vllm-project/vllm/pull/38909) | merged | [Bugfix][Frontend] Fix Gemma4 streaming HTML duplication after tool calls | `tests/tool_parsers/test_gemma4_tool_parser.py` |
-| 2026-04-08 | [#39114](https://github.com/vllm-project/vllm/pull/39114) | merged | [Bugfix] Fix Gemma4 streaming tool call corruption for split boolean/number values | `tests/tool_parsers/test_gemma4_tool_parser.py` |
+| 2026-04-08 | [#38909](https://github.com/vllm-project/vllm/pull/38909) | merged | [Bugfix][Frontend] Fix Gemma4 streaming HTML duplication after tool calls | `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py` |
+| 2026-04-08 | [#39114](https://github.com/vllm-project/vllm/pull/39114) | merged | [Bugfix] Fix Gemma4 streaming tool call corruption for split boolean/number values | `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py` |
 | 2026-04-08 | [#39027](https://github.com/vllm-project/vllm/pull/39027) | merged | [Tool] `adjust_request` to reasoning parser, and Gemma4 fixes | `tests/reasoning/test_gemma4_reasoning_parser.py`, `tests/tool_parsers/test_gemma4_tool_parser.py`, `tests/renderers/test_gemma4_chat_template.py` |
 | 2026-04-09 | [#39045](https://github.com/vllm-project/vllm/pull/39045) | merged | [Gemma4] Support quantized MoE | `vllm/model_executor/models/gemma4.py` |
 | 2026-04-10 | [#39450](https://github.com/vllm-project/vllm/pull/39450) | merged | Add Gemma4 Eagle3 support | `vllm/model_executor/models/gemma4.py`, `vllm/model_executor/models/gemma4_mm.py` |
 | 2026-04-11 | [#38844](https://github.com/vllm-project/vllm/pull/38844) | merged | [Gemma4][Bugfix]: Enable Gemma4ForCasualLM to load lora adapters correctly | `vllm/model_executor/models/gemma4.py` |
-| 2026-04-14 | [#39679](https://github.com/vllm-project/vllm/pull/39679) | merged | [Bugfix] Fix Gemma4 tool parser converting bare `null` to string `"null"` | `tests/tool_parsers/test_gemma4_tool_parser.py` |
+| 2026-04-14 | [#39679](https://github.com/vllm-project/vllm/pull/39679) | merged | [Bugfix] Fix Gemma4 tool parser converting bare `null` to string `"null"` | `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py` |
 | 2026-04-15 | [#39842](https://github.com/vllm-project/vllm/pull/39842) | merged | [Model] Fix Gemma 4 token repetition by dynamic BOS injection for PT models | `vllm/model_executor/models/gemma4_mm.py` |
 | 2026-04-17 | [#39234](https://github.com/vllm-project/vllm/pull/39234) | merged | [Models][Gemma4] Prevent GPU/CPU sync in `embed_input_ids` | `vllm/model_executor/models/gemma4_mm.py` |
 | 2026-04-17 | [#39291](https://github.com/vllm-project/vllm/pull/39291) | merged | feat: Add LoRA support for Gemma4ForConditionalGeneration | `vllm/model_executor/models/gemma4_mm.py` |
@@ -67,12 +67,12 @@
 | 2026-05-06 | [#41745](https://github.com/vllm-project/vllm/pull/41745) | merged | [Spec Decode] Add Gemma4 MTP speculative decoding support | `vllm/model_executor/models/gemma4_mtp.py`, `vllm/v1/spec_decode/gemma4.py` |
 | 2026-05-07 | [#41837](https://github.com/vllm-project/vllm/pull/41837) | merged | [MM][Gemma4] Use video profiling hints in encoder budget | `tests/models/multimodal/processing/test_gemma4.py`, `vllm/model_executor/models/gemma4_mm.py` |
 | 2026-05-08 | [#40588](https://github.com/vllm-project/vllm/pull/40588) | merged | [Models][Gemma3/Gemma4] Support hidden_act variants in gated MLP | `vllm/model_executor/models/gemma4.py` |
-| 2026-05-08 | [#41991](https://github.com/vllm-project/vllm/pull/41991) | merged | [Bugfix][Gemma4] Fix infinite loop and array boundary issues in tool parser | `tests/tool_parsers/test_gemma4_tool_parser.py` |
+| 2026-05-08 | [#41991](https://github.com/vllm-project/vllm/pull/41991) | merged | [Bugfix][Gemma4] Fix infinite loop and array boundary issues in tool parser | `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py` |
 | 2026-05-09 | [#40708](https://github.com/vllm-project/vllm/pull/40708) | merged | [BugFix] Fix Gemma4 'layers.0.moe.experts.0.down_proj_packed' KeyError issue | `vllm/model_executor/models/gemma4.py` |
 | 2026-05-11 | [#42188](https://github.com/vllm-project/vllm/pull/42188) | merged | [Bugfix] Gemma 4 chat template crash with missing tool name and tool id | `examples/tool_chat_template_gemma4.jinja` |
 | 2026-05-12 | [#42217](https://github.com/vllm-project/vllm/pull/42217) | merged | [Fix] Gemma4 Mixed-Resolution Image Co-Batching Crash | `tests/models/multimodal/processing/test_gemma4.py`, `vllm/model_executor/models/gemma4_mm.py` |
 | 2026-05-13 | [#42250](https://github.com/vllm-project/vllm/pull/42250) | merged | [Bugfix][Model] Gemma4 MoE routing closure captures per_expert_scale, breaking functional_call substitution | `vllm/model_executor/models/gemma4.py` |
-| 2026-05-14 | [#42128](https://github.com/vllm-project/vllm/pull/42128) | merged | [Bugfix] Fix Gemma4ToolParser streaming float corruption | `tests/tool_parsers/test_gemma4_tool_parser.py` |
+| 2026-05-14 | [#42128](https://github.com/vllm-project/vllm/pull/42128) | merged | [Bugfix] Fix Gemma4ToolParser streaming float corruption | `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py` |
 | 2026-05-21 | [#43169](https://github.com/vllm-project/vllm/pull/43169) | merged | [Perf][Gemma4] Batch vision encoder calls for image and video processing | `vllm/model_executor/models/gemma4_mm.py` |
 | 2026-05-22 | [#43296](https://github.com/vllm-project/vllm/pull/43296) | merged | [CI] Fix "test_awq_load[gemma4-moe-*]" failure | `vllm/model_executor/models/gemma4_mm.py`, `tests/models/multimodal/processing/test_gemma4.py` |
 | 2026-05-28 | [#41459](https://github.com/vllm-project/vllm/pull/41459) | merged | fix(frontend): Add multimodal placeholders to Gemma4 tool message template | `tests/renderers/test_gemma4_chat_template.py`, `examples/tool_chat_template_gemma4.jinja` |
@@ -205,10 +205,11 @@ diff -- vllm/model_executor/models/gemma4_mm.py
 - Status/date: merged / 2026-04-05
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_gemma4_tool_parser.py`; associated commits `f53fa26e05c4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +33/-3, 48 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix invalid JSON in Gemma 4 streaming tool calls by stripping partial delimiters"; model line: Gemma 4; category: bug fix; main diff: `tests/tool_parsers/test_gemma4_tool_parser.py`; technical summary: Covers "[Bugfix] Fix invalid JSON in Gemma 4 streaming tool calls by stripping partial delimiters"; the main implementation surface is `tests/tool_parsers/test_gemma4_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `tests/tool_parsers/test_gemma4_tool_parser.py` modified +29/-0 (29 lines); hunks: -502,3 +502,32 @@ def test_streaming_empty_args(self, parser, mock_request):; symbols: test_streaming_empty_args, test_streaming_split_delimiter_no_invalid_json, touching `test_streaming_empty_args, test_streaming_split_delimiter_no_invalid_json`.
+- Motivation: Title: "[Bugfix] Fix invalid JSON in Gemma 4 streaming tool calls by stripping partial delimiters"; model line: Gemma 4; category: bug fix; main diff: `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`; technical summary: Covers "[Bugfix] Fix invalid JSON in Gemma 4 streaming tool calls by stripping partial delimiters"; the main implementation surface is `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/tool_parsers/test_gemma4_tool_parser.py` modified +29/-0 (29 lines); hunks: -502,3 +502,32 @@ def test_streaming_empty_args(self, parser, mock_request):; symbols: test_streaming_empty_args, test_streaming_split_delimiter_no_invalid_json, touching `test_streaming_empty_args, test_streaming_split_delimiter_no_invalid_json`; `vllm/tool_parsers/gemma4_tool_parser.py` modified +4/-3 (7 lines); hunks: -675,10 +675,11 @@ def _emit_argument_diff(self, raw_args_str: str) -> DeltaM...; symbols: _emit_argument_diff, touching `_emit_argument_diff`.
 - Code diff details:
   - `tests/tool_parsers/test_gemma4_tool_parser.py` modified +29/-0 (29 lines); hunks: -502,3 +502,32 @@ def test_streaming_empty_args(self, parser, mock_request):; symbols: test_streaming_empty_args, test_streaming_split_delimiter_no_invalid_json
+  - `vllm/tool_parsers/gemma4_tool_parser.py` modified +4/-3 (7 lines); hunks: -675,10 +675,11 @@ def _emit_argument_diff(self, raw_args_str: str) -> DeltaM...; symbols: _emit_argument_diff
 - Key code excerpts:
 
 ```diff
@@ -220,10 +221,19 @@ diff -- tests/tool_parsers/test_gemma4_tool_parser.py
 +        where a token boundary splits the string delimiter, leaving fragments
 +        like '<|' at the end of a parsed value which then corrupt the JSON.
 +        """
+diff -- vllm/tool_parsers/gemma4_tool_parser.py
+@@ -675,10 +675,11 @@ def _emit_argument_diff(self, raw_args_str: str) -> DeltaMessage | None:
+-        # tokens arrive. Strip trailing '}', '"', and ']' sequences
+-        # to get the "safe prefix".
++        # tokens arrive. Strip trailing '}', '"', ']' and partial
++        # STRING_DELIM fragments ('<', '|', '\\', '>') to get the
++        # "safe prefix".
+-        while safe_json and safe_json[-1] in ("}", '"', "]"):
 ```
 
 - Reviewed files:
   - tests: `tests/tool_parsers/test_gemma4_tool_parser.py` modified +29/-0
+  - runtime: `vllm/tool_parsers/gemma4_tool_parser.py` modified +4/-3
 - Risk and verification: The diff ships test coverage in `tests/tool_parsers/test_gemma4_tool_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #38879 - [Gemma4] Enable Fast Prefill Optimization
@@ -259,10 +269,11 @@ diff -- vllm/model_executor/models/gemma4.py
 - Status/date: merged / 2026-04-08
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_gemma4_tool_parser.py`; associated commits `d734445fcd79`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +64/-2, 77 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix][Frontend] Fix Gemma4 streaming HTML duplication after tool calls"; model line: Gemma 4; category: bug fix; main diff: `tests/tool_parsers/test_gemma4_tool_parser.py`; technical summary: Covers "[Bugfix][Frontend] Fix Gemma4 streaming HTML duplication after tool calls"; the main implementation surface is `tests/tool_parsers/test_gemma4_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `tests/tool_parsers/test_gemma4_tool_parser.py` modified +60/-0 (60 lines); hunks: -531,3 +531,63 @@ def test_streaming_split_delimiter_no_invalid_json(self, pa...; symbols: test_streaming_split_delimiter_no_invalid_json, test_streaming_does_not_duplicate_plain_text_after_tool_call, wrapped_extract_streaming, test_streaming_html_argument_does_not_duplicate_tag_prefixes, touching `test_streaming_split_delimiter_no_invalid_json, test_streaming_does_not_duplicate_plain_text_after_tool_call, wrapped_extract_streaming`.
+- Motivation: Title: "[Bugfix][Frontend] Fix Gemma4 streaming HTML duplication after tool calls"; model line: Gemma 4; category: bug fix; main diff: `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`; technical summary: Covers "[Bugfix][Frontend] Fix Gemma4 streaming HTML duplication after tool calls"; the main implementation surface is `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/tool_parsers/test_gemma4_tool_parser.py` modified +60/-0 (60 lines); hunks: -531,3 +531,63 @@ def test_streaming_split_delimiter_no_invalid_json(self, pa...; symbols: test_streaming_split_delimiter_no_invalid_json, test_streaming_does_not_duplicate_plain_text_after_tool_call, wrapped_extract_streaming, test_streaming_html_argument_does_not_duplicate_tag_prefixes, touching `test_streaming_split_delimiter_no_invalid_json, test_streaming_does_not_duplicate_plain_text_after_tool_call, wrapped_extract_streaming`; `vllm/tool_parsers/gemma4_tool_parser.py` modified +4/-2 (6 lines); hunks: -436,8 +436,10 @@ def extract_tool_calls_streaming(; symbols: extract_tool_calls_streaming, touching `extract_tool_calls_streaming`.
 - Code diff details:
   - `tests/tool_parsers/test_gemma4_tool_parser.py` modified +60/-0 (60 lines); hunks: -531,3 +531,63 @@ def test_streaming_split_delimiter_no_invalid_json(self, pa...; symbols: test_streaming_split_delimiter_no_invalid_json, test_streaming_does_not_duplicate_plain_text_after_tool_call, wrapped_extract_streaming, test_streaming_html_argument_does_not_duplicate_tag_prefixes
+  - `vllm/tool_parsers/gemma4_tool_parser.py` modified +4/-2 (6 lines); hunks: -436,8 +436,10 @@ def extract_tool_calls_streaming(; symbols: extract_tool_calls_streaming
 - Key code excerpts:
 
 ```diff
@@ -274,10 +285,19 @@ diff -- tests/tool_parsers/test_gemma4_tool_parser.py
 +        """Buffered plain text after a tool call must not corrupt current_text."""
 +        captured_current_texts: list[str] = []
 +        original_extract_streaming = parser._extract_streaming
+diff -- vllm/tool_parsers/gemma4_tool_parser.py
+@@ -436,8 +436,10 @@ def extract_tool_calls_streaming(
+-        # Reconstruct current_text after buffering to stay in sync
+-        current_text = previous_text + delta_text
++        # Keep current_text from the upstream stream state. The buffered delta
++        # is only for emission, and must not be stitched back into the
++        # accumulated model text or normal content like "<div>" can be
++        # duplicated into "<<div>" when a tool call just ended.
 ```
 
 - Reviewed files:
   - tests: `tests/tool_parsers/test_gemma4_tool_parser.py` modified +60/-0
+  - runtime: `vllm/tool_parsers/gemma4_tool_parser.py` modified +4/-2
 - Risk and verification: The diff ships test coverage in `tests/tool_parsers/test_gemma4_tool_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #39114 - [Bugfix] Fix Gemma4 streaming tool call corruption for split boolean/number values
@@ -286,10 +306,11 @@ diff -- tests/tool_parsers/test_gemma4_tool_parser.py
 - Status/date: merged / 2026-04-08
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_gemma4_tool_parser.py`; associated commits `13151a4df43d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +78/-8, 159 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix Gemma4 streaming tool call corruption for split boolean/number values"; model line: Gemma 4; category: bug fix; main diff: `tests/tool_parsers/test_gemma4_tool_parser.py`; technical summary: Covers "[Bugfix] Fix Gemma4 streaming tool call corruption for split boolean/number values"; the main implementation surface is `tests/tool_parsers/test_gemma4_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `tests/tool_parsers/test_gemma4_tool_parser.py` modified +45/-0 (45 lines); hunks: -491,6 +491,51 @@ def test_streaming_numeric_args(self, parser, mock_request):; symbols: test_streaming_numeric_args, test_streaming_boolean_split_across_chunks, test_streaming_false_split_across_chunks, test_streaming_number_split_across_chunks, touching `test_streaming_numeric_args, test_streaming_boolean_split_across_chunks, test_streaming_false_split_across_chunks`.
+- Motivation: Title: "[Bugfix] Fix Gemma4 streaming tool call corruption for split boolean/number values"; model line: Gemma 4; category: bug fix; main diff: `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`; technical summary: Covers "[Bugfix] Fix Gemma4 streaming tool call corruption for split boolean/number values"; the main implementation surface is `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/tool_parsers/test_gemma4_tool_parser.py` modified +45/-0 (45 lines); hunks: -491,6 +491,51 @@ def test_streaming_numeric_args(self, parser, mock_request):; symbols: test_streaming_numeric_args, test_streaming_boolean_split_across_chunks, test_streaming_false_split_across_chunks, test_streaming_number_split_across_chunks, touching `test_streaming_numeric_args, test_streaming_boolean_split_across_chunks, test_streaming_false_split_across_chunks`; `vllm/tool_parsers/gemma4_tool_parser.py` modified +33/-8 (41 lines); hunks: -78,7 +78,7 @@ def _parse_gemma4_value(value_str: str) -> object:; -89,6 +89,12 @@ def _parse_gemma4_args(args_str: str) -> dict:; symbols: _parse_gemma4_value, _parse_gemma4_args, touching `_parse_gemma4_value, _parse_gemma4_args`.
 - Code diff details:
   - `tests/tool_parsers/test_gemma4_tool_parser.py` modified +45/-0 (45 lines); hunks: -491,6 +491,51 @@ def test_streaming_numeric_args(self, parser, mock_request):; symbols: test_streaming_numeric_args, test_streaming_boolean_split_across_chunks, test_streaming_false_split_across_chunks, test_streaming_number_split_across_chunks
+  - `vllm/tool_parsers/gemma4_tool_parser.py` modified +33/-8 (41 lines); hunks: -78,7 +78,7 @@ def _parse_gemma4_value(value_str: str) -> object:; -89,6 +89,12 @@ def _parse_gemma4_args(args_str: str) -> dict:; symbols: _parse_gemma4_value, _parse_gemma4_args
 - Key code excerpts:
 
 ```diff
@@ -301,10 +322,19 @@ diff -- tests/tool_parsers/test_gemma4_tool_parser.py
 +            "<|tool_call>",
 +            "call:search{input:{all:" + "true"[:3],
 +            "e}}",
+diff -- vllm/tool_parsers/gemma4_tool_parser.py
+@@ -78,7 +78,7 @@ def _parse_gemma4_value(value_str: str) -> object:
+-def _parse_gemma4_args(args_str: str) -> dict:
++def _parse_gemma4_args(args_str: str, *, partial: bool = False) -> dict:
+@@ -89,6 +89,12 @@ def _parse_gemma4_args(args_str: str) -> dict:
++    Args:
++        args_str: The raw Gemma4 argument string.
++        partial: When True (streaming), bare values at end of string are
 ```
 
 - Reviewed files:
   - tests: `tests/tool_parsers/test_gemma4_tool_parser.py` modified +45/-0
+  - runtime: `vllm/tool_parsers/gemma4_tool_parser.py` modified +33/-8
 - Risk and verification: The diff ships test coverage in `tests/tool_parsers/test_gemma4_tool_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #39027 - [Tool] `adjust_request` to reasoning parser, and Gemma4 fixes
@@ -320,6 +350,7 @@ diff -- tests/tool_parsers/test_gemma4_tool_parser.py
   - `tests/tool_parsers/test_gemma4_tool_parser.py` modified +40/-0 (40 lines); hunks: -114,6 +114,19 @@ def test_empty_value(self):; -636,3 +649,30 @@ def test_streaming_html_argument_does_not_duplicate_tag_pre...; symbols: test_empty_value, test_empty_value_partial_withheld, test_empty_value_after_other_keys_partial_withheld, TestParseGemma4Array
   - `tests/renderers/test_gemma4_chat_template.py` added +345/-0 (345 lines); hunks: -0,0 +1,345; symbols: gemma4_template, _render, TestGemma4ChatTemplate, test_basic_multiturn_thinking_disabled
   - `examples/tool_chat_template_gemma4.jinja` added +331/-0 (331 lines); hunks: -0,0 +1,331
+  - `vllm/reasoning/gemma4_reasoning_parser.py` modified +35/-3 (38 lines); hunks: -52,6 +52,16 @@ def __init__(self, tokenizer: TokenizerLike, *args, **kwargs):; -63,6 +73,29 @@ def end_token(self) -> str:; symbols: __init__, adjust_request, start_token, end_token
 - Key code excerpts:
 
 ```diff
@@ -346,6 +377,7 @@ diff -- tests/renderers/test_gemma4_chat_template.py
 - Reviewed files:
   - tests: `tests/reasoning/test_gemma4_reasoning_parser.py` modified +87/-8; `tests/tool_parsers/test_gemma4_tool_parser.py` modified +40/-0; `tests/renderers/test_gemma4_chat_template.py` added +345/-0
   - docs: `examples/tool_chat_template_gemma4.jinja` added +331/-0
+  - runtime: `vllm/reasoning/gemma4_reasoning_parser.py` modified +35/-3; `vllm/entrypoints/serve/render/serving.py` modified +13/-0; `vllm/reasoning/abs_reasoning_parsers.py` modified +8/-2; `vllm/tool_parsers/gemma4_tool_parser.py` modified +4/-2
 - Risk and verification: The diff ships test coverage in `tests/reasoning/test_gemma4_reasoning_parser.py`, `tests/renderers/test_gemma4_chat_template.py`, `tests/tool_parsers/test_gemma4_tool_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #39045 - [Gemma4] Support quantized MoE
@@ -444,10 +476,11 @@ diff -- vllm/model_executor/models/gemma4.py
 - Status/date: merged / 2026-04-14
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_gemma4_tool_parser.py`; associated commits `b075604da10a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +12/-0, 26 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix Gemma4 tool parser converting bare `null` to string `"null"`"; model line: Gemma 4; category: bug fix; main diff: `tests/tool_parsers/test_gemma4_tool_parser.py`; technical summary: Covers "[Bugfix] Fix Gemma4 tool parser converting bare `null` to string `"null"`"; the main implementation surface is `tests/tool_parsers/test_gemma4_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `tests/tool_parsers/test_gemma4_tool_parser.py` modified +8/-0 (8 lines); hunks: -85,6 +85,14 @@ def test_boolean_false(self):; symbols: test_boolean_false, test_null_value, test_mixed_types, touching `test_boolean_false, test_null_value, test_mixed_types`.
+- Motivation: Title: "[Bugfix] Fix Gemma4 tool parser converting bare `null` to string `"null"`"; model line: Gemma 4; category: bug fix; main diff: `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`; technical summary: Covers "[Bugfix] Fix Gemma4 tool parser converting bare `null` to string `"null"`"; the main implementation surface is `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/tool_parsers/test_gemma4_tool_parser.py` modified +8/-0 (8 lines); hunks: -85,6 +85,14 @@ def test_boolean_false(self):; symbols: test_boolean_false, test_null_value, test_mixed_types, touching `test_boolean_false, test_null_value, test_mixed_types`; `vllm/tool_parsers/gemma4_tool_parser.py` modified +4/-0 (4 lines); hunks: -66,6 +66,10 @@ def _parse_gemma4_value(value_str: str) -> object:; symbols: _parse_gemma4_value, touching `_parse_gemma4_value`.
 - Code diff details:
   - `tests/tool_parsers/test_gemma4_tool_parser.py` modified +8/-0 (8 lines); hunks: -85,6 +85,14 @@ def test_boolean_false(self):; symbols: test_boolean_false, test_null_value, test_mixed_types
+  - `vllm/tool_parsers/gemma4_tool_parser.py` modified +4/-0 (4 lines); hunks: -66,6 +66,10 @@ def _parse_gemma4_value(value_str: str) -> object:; symbols: _parse_gemma4_value
 - Key code excerpts:
 
 ```diff
@@ -459,10 +492,16 @@ diff -- tests/tool_parsers/test_gemma4_tool_parser.py
 +        # instead of `{"param": null}` for nullable tool parameters.
 +        result = _parse_gemma4_args("param:null")
 +        assert result == {"param": None}
+diff -- vllm/tool_parsers/gemma4_tool_parser.py
+@@ -66,6 +66,10 @@ def _parse_gemma4_value(value_str: str) -> object:
++    # Null
++    if value_str.lower() in ("null", "none", "nil"):
++        return None
 ```
 
 - Reviewed files:
   - tests: `tests/tool_parsers/test_gemma4_tool_parser.py` modified +8/-0
+  - runtime: `vllm/tool_parsers/gemma4_tool_parser.py` modified +4/-0
 - Risk and verification: The diff ships test coverage in `tests/tool_parsers/test_gemma4_tool_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #39842 - [Model] Fix Gemma 4 token repetition by dynamic BOS injection for PT models
@@ -919,10 +958,11 @@ diff -- vllm/model_executor/models/gemma4.py
 - Status/date: merged / 2026-05-08
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_gemma4_tool_parser.py`; associated commits `dbd86a67e3ee`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +34/-0, 69 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix][Gemma4] Fix infinite loop and array boundary issues in tool parser"; model line: Gemma 4; category: bug fix; main diff: `tests/tool_parsers/test_gemma4_tool_parser.py`; technical summary: Covers "[Bugfix][Gemma4] Fix infinite loop and array boundary issues in tool parser"; the main implementation surface is `tests/tool_parsers/test_gemma4_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `tests/tool_parsers/test_gemma4_tool_parser.py` modified +15/-0 (15 lines); hunks: -135,6 +135,11 @@ def test_empty_value_after_other_keys_partial_withheld(self):; -149,6 +154,16 @@ def test_bare_values(self):; symbols: test_empty_value_after_other_keys_partial_withheld, test_malformed_partial_array, TestParseGemma4Array, test_string_array, touching `test_empty_value_after_other_keys_partial_withheld, test_malformed_partial_array, TestParseGemma4Array`.
+- Motivation: Title: "[Bugfix][Gemma4] Fix infinite loop and array boundary issues in tool parser"; model line: Gemma 4; category: bug fix; main diff: `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`; technical summary: Covers "[Bugfix][Gemma4] Fix infinite loop and array boundary issues in tool parser"; the main implementation surface is `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/tool_parsers/test_gemma4_tool_parser.py` modified +15/-0 (15 lines); hunks: -135,6 +135,11 @@ def test_empty_value_after_other_keys_partial_withheld(self):; -149,6 +154,16 @@ def test_bare_values(self):; symbols: test_empty_value_after_other_keys_partial_withheld, test_malformed_partial_array, TestParseGemma4Array, test_string_array, touching `test_empty_value_after_other_keys_partial_withheld, test_malformed_partial_array, TestParseGemma4Array`; `vllm/tool_parsers/gemma4_tool_parser.py` modified +19/-0 (19 lines); hunks: -204,6 +204,13 @@ def _parse_gemma4_args(args_str: str, *, partial: bool = Fa...; -258,6 +265,11 @@ def _parse_gemma4_array(arr_str: str, *, partial: bool = Fa...; symbols: _parse_gemma4_args, _parse_gemma4_array, touching `_parse_gemma4_args, _parse_gemma4_array`.
 - Code diff details:
   - `tests/tool_parsers/test_gemma4_tool_parser.py` modified +15/-0 (15 lines); hunks: -135,6 +135,11 @@ def test_empty_value_after_other_keys_partial_withheld(self):; -149,6 +154,16 @@ def test_bare_values(self):; symbols: test_empty_value_after_other_keys_partial_withheld, test_malformed_partial_array, TestParseGemma4Array, test_string_array
+  - `vllm/tool_parsers/gemma4_tool_parser.py` modified +19/-0 (19 lines); hunks: -204,6 +204,13 @@ def _parse_gemma4_args(args_str: str, *, partial: bool = Fa...; -258,6 +265,11 @@ def _parse_gemma4_array(arr_str: str, *, partial: bool = Fa...; symbols: _parse_gemma4_args, _parse_gemma4_array
 - Key code excerpts:
 
 ```diff
@@ -934,10 +974,19 @@ diff -- tests/tool_parsers/test_gemma4_tool_parser.py
 +        assert isinstance(result, dict)
 @@ -149,6 +154,16 @@ def test_bare_values(self):
 +    @pytest.mark.timeout(5)
+diff -- vllm/tool_parsers/gemma4_tool_parser.py
+@@ -204,6 +204,13 @@ def _parse_gemma4_args(args_str: str, *, partial: bool = False) -> dict:
++            if i == val_start:
++                logger.warning(
++                    "Gemma4 args parser made no progress at position %d; "
++                    "aborting on malformed input.",
++                    i,
++                )
 ```
 
 - Reviewed files:
   - tests: `tests/tool_parsers/test_gemma4_tool_parser.py` modified +15/-0
+  - runtime: `vllm/tool_parsers/gemma4_tool_parser.py` modified +19/-0
 - Risk and verification: The diff ships test coverage in `tests/tool_parsers/test_gemma4_tool_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #40708 - [BugFix] Fix Gemma4 'layers.0.moe.experts.0.down_proj_packed' KeyError issue
@@ -1063,10 +1112,11 @@ diff -- vllm/model_executor/models/gemma4.py
 - Status/date: merged / 2026-05-14
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_gemma4_tool_parser.py`; associated commits `665f9c42535c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +41/-0, 69 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix Gemma4ToolParser streaming float corruption"; model line: Gemma 4; category: bug fix; main diff: `tests/tool_parsers/test_gemma4_tool_parser.py`; technical summary: Covers "[Bugfix] Fix Gemma4ToolParser streaming float corruption"; the main implementation surface is `tests/tool_parsers/test_gemma4_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `tests/tool_parsers/test_gemma4_tool_parser.py` modified +29/-0 (29 lines); hunks: -135,6 +135,26 @@ def test_empty_value_after_other_keys_partial_withheld(self):; -164,6 +184,15 @@ def test_stray_closing_bracket(self):; symbols: test_empty_value_after_other_keys_partial_withheld, test_trailing_dot_float_partial_withheld, test_malformed_partial_array, test_stray_closing_bracket, touching `test_empty_value_after_other_keys_partial_withheld, test_trailing_dot_float_partial_withheld, test_malformed_partial_array`.
+- Motivation: Title: "[Bugfix] Fix Gemma4ToolParser streaming float corruption"; model line: Gemma 4; category: bug fix; main diff: `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`; technical summary: Covers "[Bugfix] Fix Gemma4ToolParser streaming float corruption"; the main implementation surface is `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/tool_parsers/test_gemma4_tool_parser.py` modified +29/-0 (29 lines); hunks: -135,6 +135,26 @@ def test_empty_value_after_other_keys_partial_withheld(self):; -164,6 +184,15 @@ def test_stray_closing_bracket(self):; symbols: test_empty_value_after_other_keys_partial_withheld, test_trailing_dot_float_partial_withheld, test_malformed_partial_array, test_stray_closing_bracket, touching `test_empty_value_after_other_keys_partial_withheld, test_trailing_dot_float_partial_withheld, test_malformed_partial_array`; `vllm/tool_parsers/gemma4_tool_parser.py` modified +12/-0 (12 lines); hunks: -211,6 +211,14 @@ def _parse_gemma4_args(args_str: str, *, partial: bool = Fa...; -294,6 +302,10 @@ def _parse_gemma4_array(arr_str: str, *, partial: bool = Fa...; symbols: _parse_gemma4_args, _parse_gemma4_array, touching `_parse_gemma4_args, _parse_gemma4_array`.
 - Code diff details:
   - `tests/tool_parsers/test_gemma4_tool_parser.py` modified +29/-0 (29 lines); hunks: -135,6 +135,26 @@ def test_empty_value_after_other_keys_partial_withheld(self):; -164,6 +184,15 @@ def test_stray_closing_bracket(self):; symbols: test_empty_value_after_other_keys_partial_withheld, test_trailing_dot_float_partial_withheld, test_malformed_partial_array, test_stray_closing_bracket
+  - `vllm/tool_parsers/gemma4_tool_parser.py` modified +12/-0 (12 lines); hunks: -211,6 +211,14 @@ def _parse_gemma4_args(args_str: str, *, partial: bool = Fa...; -294,6 +302,10 @@ def _parse_gemma4_array(arr_str: str, *, partial: bool = Fa...; symbols: _parse_gemma4_args, _parse_gemma4_array
 - Key code excerpts:
 
 ```diff
@@ -1078,10 +1128,19 @@ diff -- tests/tool_parsers/test_gemma4_tool_parser.py
 +        streaming diff corruption (108.0 → 108.2 becomes 108.02).
 +        """
 +        # Single key with trailing dot — withheld entirely
+diff -- vllm/tool_parsers/gemma4_tool_parser.py
+@@ -211,6 +211,14 @@ def _parse_gemma4_args(args_str: str, *, partial: bool = False) -> dict:
++            if partial:
++                raw_val = args_str[val_start:i].strip()
++                if raw_val.endswith("."):
++                    # Trailing dot means decimal digits may still arrive
++                    # (e.g. "108." may become "108.2"). Parsing now would
++                    # yield float("108.") == 108.0, whose json repr "108.0"
 ```
 
 - Reviewed files:
   - tests: `tests/tool_parsers/test_gemma4_tool_parser.py` modified +29/-0
+  - runtime: `vllm/tool_parsers/gemma4_tool_parser.py` modified +12/-0
 - Risk and verification: The diff ships test coverage in `tests/tool_parsers/test_gemma4_tool_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #43169 - [Perf][Gemma4] Batch vision encoder calls for image and video processing
@@ -1821,7 +1880,7 @@ diff -- examples/tool_chat_template_gemma4.jinja
 
 - Link: https://github.com/vllm-project/vllm/pull/47217
 - Status/date: merged / 2026-07-03
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gemma4.py`, `vllm/model_executor/models/gemma4_mm.py`; associated commits `979f5511d78b`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gemma4.py`, `vllm/model_executor/models/gemma4_mm.py`; associated commits `979f5511d78b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +89/-9, 227 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix][Gemma4] Keep image bidirectional attention within the sliding window"; model line: Gemma 4; category: bug fix; main diff: `vllm/model_executor/models/gemma4.py`, `vllm/model_executor/models/gemma4_mm.py`; technical summary: Covers "[Bugfix][Gemma4] Keep image bidirectional attention within the sliding window"; the main implementation surface is `vllm/model_executor/models/gemma4.py`, `vllm/model_executor/models/gemma4_mm.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/gemma4.py` modified +7/-0 (7 lines); hunks: -499,6 +499,13 @@ def __init__(; symbols: __init__, touching `__init__`; `vllm/model_executor/models/gemma4_mm.py` modified +7/-0 (7 lines); hunks: -978,6 +978,13 @@ class Gemma4ForConditionalGeneration(; symbols: Gemma4ForConditionalGeneration, touching `Gemma4ForConditionalGeneration`.
@@ -1857,7 +1916,7 @@ diff -- vllm/model_executor/models/gemma4_mm.py
 
 - Link: https://github.com/vllm-project/vllm/pull/47091
 - Status/date: merged / 2026-07-06
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gemma4_mtp.py`; associated commits `7a90eb98ab70`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gemma4_mtp.py`; associated commits `7a90eb98ab70`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +13/-4, 94 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] [Gemma4] Fix Gemma4 MTP draft model layers ignoring quant_config"; model line: Gemma 4; category: bug fix; main diff: `vllm/model_executor/models/gemma4_mtp.py`; technical summary: Covers "[Bugfix] [Gemma4] Fix Gemma4 MTP draft model layers ignoring quant_config"; the main implementation surface is `vllm/model_executor/models/gemma4_mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/gemma4_mtp.py` modified +13/-4 (17 lines); hunks: -51,6 +51,7; -182,14 +183,14 @@ def __init__(; symbols: __init__, touching `__init__`.
@@ -1884,7 +1943,7 @@ diff -- vllm/model_executor/models/gemma4_mtp.py
 
 - Link: https://github.com/vllm-project/vllm/pull/48262
 - Status/date: merged / 2026-07-14
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/parser/engine/test_gemma4_streaming_reasoning.py`, `vllm/parser/gemma4.py`; associated commits `af453e564777`
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/parser/engine/test_gemma4_streaming_reasoning.py`, `vllm/parser/gemma4.py`; associated commits `af453e564777`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +124/-25, 190 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Gemma4 parser: classify channel-less output consistently in streaming and non-streaming"; model line: Gemma 4; category: bug fix; main diff: `tests/parser/engine/test_gemma4_streaming_reasoning.py`, `vllm/parser/gemma4.py`; technical summary: Covers "[Bugfix] Gemma4 parser: classify channel-less output consistently in streaming and non-streaming"; the main implementation surface is `tests/parser/engine/test_gemma4_streaming_reasoning.py`, `vllm/parser/gemma4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `tests/parser/engine/test_gemma4_streaming_reasoning.py` modified +87/-16 (103 lines); hunks: -378,15 +378,14 @@ def test_new_turn_prompt_unchanged(self, parser, mock_toke...; -397,13 +396,12 @@ def pre_init_tokenizer(self):; symbols: test_new_turn_prompt_unchanged, TestGemma4PreInitReasoningRobustness, pre_init_tokenizer, pre_init_parser, touching `test_new_turn_prompt_unchanged, TestGemma4PreInitReasoningRobustness, pre_init_tokenizer`; `vllm/parser/gemma4.py` modified +37/-9 (46 lines); hunks: -479,19 +479,47 @@ def is_reasoning_end(self, input_ids: list[int]) -> bool:; symbols: is_reasoning_end, _prompt_ends_in_open_reasoning, adjust_initial_state_from_prompt, touching `is_reasoning_end, _prompt_ends_in_open_reasoning, adjust_initial_state_from_prompt`.
@@ -1921,7 +1980,7 @@ diff -- vllm/parser/gemma4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/47216
 - Status/date: merged / 2026-07-16
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gemma4_dspark.py`; associated commits `4a394bfcda81`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gemma4_dspark.py`; associated commits `4a394bfcda81`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +417/-4, 489 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Spec Decode][DSpark] Add Gemma4-12B DSpark draft model"; model line: Gemma 4; category: model support/runtime entry; main diff: `vllm/model_executor/models/gemma4_dspark.py`; technical summary: Covers "[Spec Decode][DSpark] Add Gemma4-12B DSpark draft model"; the main implementation surface is `vllm/model_executor/models/gemma4_dspark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/gemma4_dspark.py` added +312/-0 (312 lines); hunks: -0,0 +1,312; symbols: Gemma4DSparkAttention, __init__, _kv_proj, forward, touching `Gemma4DSparkAttention, __init__, _kv_proj`.
@@ -1948,7 +2007,7 @@ diff -- vllm/model_executor/models/gemma4_dspark.py
 
 - Link: https://github.com/vllm-project/vllm/pull/48563
 - Status/date: merged / 2026-07-20
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gemma4.py`, `vllm/model_executor/models/gemma4_mm.py`; associated commits `0a5069e4e309`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gemma4.py`, `vllm/model_executor/models/gemma4_mm.py`; associated commits `0a5069e4e309`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +45/-4, 91 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix][Gemma4] Fix ModelOpt mixed-precision MoE config mapping"; model line: Gemma 4; category: bug fix; main diff: `vllm/model_executor/models/gemma4_mm.py`, `vllm/model_executor/models/gemma4.py`; technical summary: Covers "[Bugfix][Gemma4] Fix ModelOpt mixed-precision MoE config mapping"; the main implementation surface is `vllm/model_executor/models/gemma4_mm.py`, `vllm/model_executor/models/gemma4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/gemma4_mm.py` modified +6/-3 (9 lines); hunks: -40,7 +40,10; -998,7 +1001,7 @@ class Gemma4ForConditionalGeneration(; symbols: Gemma4ForConditionalGeneration, __init__, touching `Gemma4ForConditionalGeneration, __init__`; `vllm/model_executor/models/gemma4.py` modified +7/-1 (8 lines); hunks: -84,6 +84,12; -1508,7 +1514,7 @@ def load_weights(self, weights: Iterable[tuple[str, torch....; symbols: _remap_gemma4_expert_weight_name, load_weights, Gemma4ForCausalLM, touching `_remap_gemma4_expert_weight_name, load_weights, Gemma4ForCausalLM`.
@@ -1984,7 +2043,7 @@ diff -- vllm/model_executor/models/gemma4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/46837
 - Status/date: merged / 2026-07-25
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gemma4_mm.py`; associated commits `70009fb9344d`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gemma4_mm.py`; associated commits `70009fb9344d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +476/-1, 555 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[MM][CG] Support ViT CUDA Graph for Gemma-4"; model line: Gemma 4; category: performance/backend optimization; main diff: `vllm/model_executor/models/gemma4_mm.py`; technical summary: Covers "[MM][CG] Support ViT CUDA Graph for Gemma-4"; the main implementation surface is `vllm/model_executor/models/gemma4_mm.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/gemma4_mm.py` modified +421/-1 (422 lines); hunks: -16,7 +16,7; -72,6 +72,7; symbols: Gemma4ForConditionalGeneration, __init__, embed_multimodal, get_encoder_cudagraph_config, touching `Gemma4ForConditionalGeneration, __init__, embed_multimodal`.

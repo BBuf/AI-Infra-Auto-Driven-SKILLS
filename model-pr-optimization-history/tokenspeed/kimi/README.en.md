@@ -1,14 +1,20 @@
 # TokenSpeed Kimi Model PR Optimization History
 
-## 2026-07-27 Source Head Refresh
+## 2026-07-28 Source Head Refresh
 
-Rechecked TokenSpeed upstream main at `lightseekorg/tokenspeed@d73bf0454422092f306d5575e803a08fd35ac41c`.
-The range after the previous head `d0a7faddb5ec0d4c6d037c4c3e6a781d2c5164a8` was traced with `git log --name-only -- <model-files>` and the three promoted source diffs were read in full.
+Rechecked TokenSpeed upstream main at `lightseekorg/tokenspeed@e41aa8b1609a9412d7ed26aa56d910828607950f`.
+The two-commit range after the previous head
+`d73bf0454422092f306d5575e803a08fd35ac41c` was read in full.
 
-Result: the page now covers the DP+EAGLE3 collective-size hang fix, Kimi incremental DFlash capture, and Kimi-K2.7 EAGLE3.1 model semantics. Unrelated shared-test churn was excluded.
+Result: PR #821 adds the Kimi K3 FlatKV/KDA/MLA deployment contract and is
+promoted as source guidance with its hardware and validation limitations.
+PR #823 only adds the corresponding README news link. The page continues to
+cover the DP+EAGLE3 collective-size hang fix, Kimi incremental DFlash capture,
+and Kimi-K2.7 EAGLE3.1 model semantics.
 
 | Merged | PR | Runtime signal |
 | --- | --- | --- |
+| 2026-07-27 | [#821](https://github.com/lightseekorg/tokenspeed/pull/821) | Kimi K3 deployment contract |
 | 2026-07-07 | [#596](https://github.com/lightseekorg/tokenspeed/pull/596) | DP + EAGLE3 mixed-step hang |
 | 2026-07-25 | [#795](https://github.com/lightseekorg/tokenspeed/pull/795) | Kimi-K2.7 EAGLE3.1 |
 | 2026-07-26 | [#797](https://github.com/lightseekorg/tokenspeed/pull/797) | incremental DFlash capture |
@@ -58,6 +64,39 @@ Filter used in this pass: merged PRs whose titles or files matched `Kimi`, `kimi
 | 2026-06-26 | [#476](https://github.com/lightseekorg/tokenspeed/pull/476) | merged | Add AMD Kimi MXFP4 CI job | AMD eval YAML, MLA metadata unit test |
 
 ## Per-PR Diff Audit Cards
+
+### PR #821 - Add the Kimi K3 deployment recipe
+
+- Link: https://github.com/lightseekorg/tokenspeed/pull/821
+- Status/date: merged / 2026-07-27
+- Trace source: final upstream commit
+  `55a8390007e5ace17919d76e5cfaef0c68c79e25`; complete two-commit increment
+  and full recipe diff read locally.
+- Diff scope read: 1 file, +117/-0.
+- Motivation: document the runtime and packaging constraints required to serve
+  Kimi K3 instead of treating K2.5 flags as interchangeable.
+- Key implementation: requires FlatKV, describes vendor-neutral KDA dispatch
+  with NVIDIA FLA-derived or AMD native state layouts, selects MLA backends,
+  and gives separate NVIDIA B300 and AMD gfx950 commands.
+- Code diff details: the recipe adds FlatKV build/preflight constraints,
+  flattened-checkpoint and writable-module-cache requirements, an NVIDIA
+  `tokenspeed-situ` sidecar path with Triton fallback, and an AMD Gluon path.
+- Key code excerpts:
+
+```diff
++- K3 is FlatKV-only. Build the `tokenspeed_scheduler` extension with
++  `-DTOKENSPEED_FLAT_KVCACHE=ON`
++tokenspeed serve moonshotai/Kimi-K3 \
++  --kv-cache-dtype fp8 \
++  --tensor-parallel-size 8
+```
+
+- Reviewed files: `docs/recipes/models.md`; the following README commit only
+  links the new K3 announcement.
+- Risk and verification: NVIDIA uses a B300/CUDA 13 `tokenspeed-situ` sidecar
+  or falls back to Triton on other platforms; the checkpoint must be flattened,
+  remote-code caches must be writable, and default FP8 KV scales can affect
+  accuracy. This recipe is not a measured cross-framework benchmark.
 
 ### PR #596 - Fix Kimi DP EAGLE3 mixed-step hang
 

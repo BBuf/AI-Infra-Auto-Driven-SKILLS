@@ -28,9 +28,9 @@
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 35
+- git 追溯 PR 数: 36
 - 原文档显式引用补充 PR 数: 7
-- 当前文档总 PR 数: 42
+- 当前文档总 PR 数: 43
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -60,10 +60,11 @@
 | 2026-02-13 | [#34501](https://github.com/vllm-project/vllm/pull/34501) | merged | [Bugfix] Add quant_config in ViT of Kimi-K2.5 | `vllm/model_executor/models/kimi_k25_vit.py`, `vllm/model_executor/models/kimi_k25.py` |
 | 2026-02-27 | [#33646](https://github.com/vllm-project/vllm/pull/33646) | merged | [Bugfix] Handle case when kimi ends reasoning with a tool call | `vllm/reasoning/kimi_k2_reasoning_parser.py` |
 | 2026-03-06 | [#36192](https://github.com/vllm-project/vllm/pull/36192) | merged | [Security] Respect user trust_remote_code setting in NemotronVL and KimiK25 | `vllm/model_executor/models/kimi_k25.py` |
+| 2026-03-11 | [#36127](https://github.com/vllm-project/vllm/pull/36127) | merged | [Model] Add support for moonshotai/Kimi-Audio-7B-Instruct | `vllm/model_executor/models/kimi_audio.py`, `vllm/tokenizers/kimi_audio.py`, `vllm/transformers_utils/processors/kimi_audio.py` |
 | 2026-03-11 | [#36361](https://github.com/vllm-project/vllm/pull/36361) | merged | Kimi k2.5 MLA based eagle3 | `vllm/model_executor/models/kimi_k25.py` |
 | 2026-03-14 | [#36903](https://github.com/vllm-project/vllm/pull/36903) | merged | [Misc] Clean up Kimi-audio whisper encoder loading | `vllm/model_executor/models/kimi_audio.py` |
 | 2026-03-18 | [#37371](https://github.com/vllm-project/vllm/pull/37371) | merged | standardize load_weights using AutoWeightsLoader for kimi_linear and minimax_text_01 | `vllm/model_executor/models/kimi_linear.py` |
-| 2026-03-19 | [#37438](https://github.com/vllm-project/vllm/pull/37438) | merged | [Bugfix] Add Kimi-K2.5 reasoning/tool parser aliases and tool_call_id support | `tests/reasoning/test_kimi_k2_reasoning_parser.py` |
+| 2026-03-19 | [#37438](https://github.com/vllm-project/vllm/pull/37438) | merged | [Bugfix] Add Kimi-K2.5 reasoning/tool parser aliases and tool_call_id support | `tests/reasoning/test_kimi_k2_reasoning_parser.py`, `vllm/entrypoints/chat_utils.py`, `vllm/entrypoints/openai/chat_completion/serving.py` |
 | 2026-03-20 | [#37693](https://github.com/vllm-project/vllm/pull/37693) | merged | [Model] Update Kimi-K25 and Isaac processors to fit HF-style | `vllm/transformers_utils/processors/kimi_k25.py`, `vllm/model_executor/models/kimi_k25.py` |
 | 2026-04-12 | [#39344](https://github.com/vllm-project/vllm/pull/39344) | merged | fix(kimi_k25): resolve media_placeholder_token_id from tokenizer | `vllm/model_executor/models/kimi_k25.py` |
 | 2026-04-19 | [#38579](https://github.com/vllm-project/vllm/pull/38579) | merged | [Bugfix] Kimi-K2 tool parser streaming - fix token leakage, argument truncation, and content dropping | `tests/tool_parsers/test_kimi_k2_tool_parser.py`, `vllm/tool_parsers/kimi_k2_tool_parser.py` |
@@ -755,6 +756,48 @@ diff -- vllm/model_executor/models/kimi_k25.py
   - runtime: `vllm/model_executor/models/kimi_k25.py` modified +2/-1
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/kimi_k25.py`, `vllm/model_executor/models/nemotron_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
+### PR #36127 - [Model] Add support for moonshotai/Kimi-Audio-7B-Instruct
+
+- 链接: https://github.com/vllm-project/vllm/pull/36127
+- 状态/时间: merged / 2026-03-11
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/36127 gh: Not Found (HTTP 404)`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_audio.py`, `vllm/tokenizers/kimi_audio.py`, `vllm/transformers_utils/chat_templates/template_kimi_audio.jinja`, `vllm/transformers_utils/processors/kimi_audio.py`；关联提交 `42fadebecb79`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 14 个文件，+1446/-29，可读 patch 1583 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Model] Add support for moonshotai/Kimi-Audio-7B-Instruct」；模型线: Kimi K2/K2.5/Linear/VL；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/kimi_audio.py`, `vllm/tokenizers/kimi_audio.py`, `vllm/transformers_utils/processors/kimi_audio.py`；技术摘要: 覆盖「[Model] Add support for moonshotai/Kimi-Audio-7B-Instruct」；主要实现面是 `vllm/model_executor/models/kimi_audio.py`, `vllm/tokenizers/kimi_audio.py`, `vllm/transformers_utils/processors/kimi_audio.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/kimi_audio.py` added +725/-0 (725 lines); hunks: -0,0 +1,725; symbols: _get_feat_extract_output_lengths, KimiAudioWhisperEncoder, __init__, KimiAudioProcessingInfo，涉及 `_get_feat_extract_output_lengths, KimiAudioWhisperEncoder, __init__`；`vllm/tokenizers/kimi_audio.py` added +410/-0 (410 lines); hunks: -0,0 +1,410; symbols: _load_tiktoken_encoding, KimiAudioTokenizer, from_pretrained, __init__，涉及 `_load_tiktoken_encoding, KimiAudioTokenizer, from_pretrained`；`vllm/transformers_utils/processors/kimi_audio.py` added +163/-0 (163 lines); hunks: -0,0 +1,163; symbols: _get_feat_extract_output_lengths, KimiAudioProcessor, __init__, check_argument_for_proper_class，涉及 `_get_feat_extract_output_lengths, KimiAudioProcessor, __init__`；`vllm/renderers/kimi_audio.py` added +49/-0 (49 lines); hunks: -0,0 +1,49; symbols: KimiAudioRenderer, from_config，涉及 `KimiAudioRenderer, from_config`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/kimi_audio.py` added +725/-0 (725 lines); hunks: -0,0 +1,725; symbols: _get_feat_extract_output_lengths, KimiAudioWhisperEncoder, __init__, KimiAudioProcessingInfo
+  - `vllm/tokenizers/kimi_audio.py` added +410/-0 (410 lines); hunks: -0,0 +1,410; symbols: _load_tiktoken_encoding, KimiAudioTokenizer, from_pretrained, __init__
+  - `vllm/transformers_utils/processors/kimi_audio.py` added +163/-0 (163 lines); hunks: -0,0 +1,163; symbols: _get_feat_extract_output_lengths, KimiAudioProcessor, __init__, check_argument_for_proper_class
+  - `vllm/renderers/kimi_audio.py` added +49/-0 (49 lines); hunks: -0,0 +1,49; symbols: KimiAudioRenderer, from_config
+  - `vllm/transformers_utils/chat_templates/template_kimi_audio.jinja` added +13/-0 (13 lines); hunks: -0,0 +1,13
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/kimi_audio.py
+@@ -0,0 +1,725 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++"""Inference-only Kimi-Audio model compatible with HuggingFace weights."""
++import os
++from collections.abc import Iterable, Mapping, Sequence
++from typing import Any, ClassVar, Literal
+diff -- vllm/tokenizers/kimi_audio.py
+@@ -0,0 +1,410 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++"""Tokenizer for Kimi-Audio using TikToken."""
++import contextlib
++import json
++from pathlib import Path
+diff -- vllm/transformers_utils/processors/kimi_audio.py
+@@ -0,0 +1,163 @@
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/kimi_audio.py` added +725/-0; `vllm/tokenizers/kimi_audio.py` added +410/-0; `vllm/transformers_utils/processors/kimi_audio.py` added +163/-0; `vllm/renderers/kimi_audio.py` added +49/-0; `vllm/transformers_utils/chat_templates/template_kimi_audio.jinja` added +13/-0
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/processing/test_common.py`, `tests/models/registry.py`, `tests/models/test_initialization.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
 ### PR #36361 - Kimi k2.5 MLA based eagle3
 
 - 链接: https://github.com/vllm-project/vllm/pull/36361
@@ -842,10 +885,13 @@ diff -- vllm/model_executor/models/kimi_linear.py
 - 状态/时间: merged / 2026-03-19
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/reasoning/test_kimi_k2_reasoning_parser.py`；关联提交 `c63ca2b2e696`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+173/-18，可读 patch 227 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix] Add Kimi-K2.5 reasoning/tool parser aliases and tool_call_id support」；模型线: Kimi K2/K2.5/Linear/VL；类别: 缺陷修复；主要 diff: `tests/reasoning/test_kimi_k2_reasoning_parser.py`；技术摘要: 覆盖「[Bugfix] Add Kimi-K2.5 reasoning/tool parser aliases and tool_call_id support」；主要实现面是 `tests/reasoning/test_kimi_k2_reasoning_parser.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `tests/reasoning/test_kimi_k2_reasoning_parser.py` added +155/-0 (155 lines); hunks: -0,0 +1,155; symbols: kimi_k2_tokenizer, test_parser_selection_thinking_enabled, test_parser_selection_thinking_disabled, test_extract_reasoning_with_think_tags，涉及 `kimi_k2_tokenizer, test_parser_selection_thinking_enabled, test_parser_selection_thinking_disabled`。
+- 动机: 标题「[Bugfix] Add Kimi-K2.5 reasoning/tool parser aliases and tool_call_id support」；模型线: Kimi K2/K2.5/Linear/VL；类别: 缺陷修复；主要 diff: `tests/reasoning/test_kimi_k2_reasoning_parser.py`, `vllm/entrypoints/chat_utils.py`, `vllm/entrypoints/openai/chat_completion/serving.py`；技术摘要: 覆盖「[Bugfix] Add Kimi-K2.5 reasoning/tool parser aliases and tool_call_id support」；主要实现面是 `tests/reasoning/test_kimi_k2_reasoning_parser.py`, `vllm/entrypoints/chat_utils.py`, `vllm/entrypoints/openai/chat_completion/serving.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `tests/reasoning/test_kimi_k2_reasoning_parser.py` added +155/-0 (155 lines); hunks: -0,0 +1,155; symbols: kimi_k2_tokenizer, test_parser_selection_thinking_enabled, test_parser_selection_thinking_disabled, test_extract_reasoning_with_think_tags，涉及 `kimi_k2_tokenizer, test_parser_selection_thinking_enabled, test_parser_selection_thinking_disabled`；`vllm/entrypoints/chat_utils.py` modified +14/-0 (14 lines); hunks: -1660,6 +1660,20 @@ def get_history_tool_calls_cnt(conversation: list[Convers...; symbols: get_history_tool_calls_cnt, get_tool_call_id_type, make_tool_call_id，涉及 `get_history_tool_calls_cnt, get_tool_call_id_type, make_tool_call_id`；`vllm/entrypoints/openai/chat_completion/serving.py` modified +2/-9 (11 lines); hunks: -19,6 +19,7; -152,15 +153,7 @@ def __init__(; symbols: __init__，涉及 `__init__`；`vllm/entrypoints/openai/responses/serving.py` modified +2/-9 (11 lines); hunks: -46,6 +46,7; -241,15 +242,7 @@ def __init__(; symbols: __init__，涉及 `__init__`。
 - 代码 diff 细节:
   - `tests/reasoning/test_kimi_k2_reasoning_parser.py` added +155/-0 (155 lines); hunks: -0,0 +1,155; symbols: kimi_k2_tokenizer, test_parser_selection_thinking_enabled, test_parser_selection_thinking_disabled, test_extract_reasoning_with_think_tags
+  - `vllm/entrypoints/chat_utils.py` modified +14/-0 (14 lines); hunks: -1660,6 +1660,20 @@ def get_history_tool_calls_cnt(conversation: list[Convers...; symbols: get_history_tool_calls_cnt, get_tool_call_id_type, make_tool_call_id
+  - `vllm/entrypoints/openai/chat_completion/serving.py` modified +2/-9 (11 lines); hunks: -19,6 +19,7; -152,15 +153,7 @@ def __init__(; symbols: __init__
+  - `vllm/entrypoints/openai/responses/serving.py` modified +2/-9 (11 lines); hunks: -46,6 +46,7; -241,15 +242,7 @@ def __init__(; symbols: __init__
 - 关键代码摘录:
 
 ```diff
@@ -857,10 +903,21 @@ diff -- tests/reasoning/test_kimi_k2_reasoning_parser.py
 +from vllm.entrypoints.openai.chat_completion.protocol import ChatCompletionRequest
 +from vllm.entrypoints.openai.engine.protocol import DeltaMessage
 +from vllm.reasoning.identity_reasoning_parser import IdentityReasoningParser
+diff -- vllm/entrypoints/chat_utils.py
+@@ -1660,6 +1660,20 @@ def get_history_tool_calls_cnt(conversation: list[ConversationMessage]):
++_KIMI_MODEL_TYPES = ("kimi_k2", "kimi_k25")
++def get_tool_call_id_type(model_config: ModelConfig) -> str:
++    """Return the tool-call ID type for a given model configuration."""
++    hf_overrides = getattr(model_config, "hf_overrides", None)
++    if model_config.hf_text_config.model_type in _KIMI_MODEL_TYPES or (
++        isinstance(hf_overrides, dict)
+diff -- vllm/entrypoints/openai/chat_completion/serving.py
+@@ -19,6 +19,7 @@
 ```
 
 - 已读文件:
   - tests: `tests/reasoning/test_kimi_k2_reasoning_parser.py` added +155/-0
+  - runtime: `vllm/entrypoints/chat_utils.py` modified +14/-0; `vllm/entrypoints/openai/chat_completion/serving.py` modified +2/-9; `vllm/entrypoints/openai/responses/serving.py` modified +2/-9
 - 验证与风险: diff 自带测试面 `tests/reasoning/test_kimi_k2_reasoning_parser.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #37693 - [Model] Update Kimi-K25 and Isaac processors to fit HF-style
@@ -1370,7 +1427,7 @@ diff -- vllm/multimodal/inputs.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/46610
 - 状态/时间: merged / 2026-06-30
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/reasoning/test_kimi_k2_reasoning_parser.py`, `vllm/parser/kimi_k2.py`, `vllm/reasoning/kimi_k2_reasoning_parser.py`, `vllm/tool_parsers/kimi_k2_tool_parser.py`；关联提交 `2bc20e8abaf7`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/reasoning/test_kimi_k2_reasoning_parser.py`, `vllm/parser/kimi_k2.py`, `vllm/reasoning/kimi_k2_reasoning_parser.py`, `vllm/tool_parsers/kimi_k2_tool_parser.py`；关联提交 `2bc20e8abaf7`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+397/-570，可读 patch 1069 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Frontend] Add Streaming Parser Engine and new Kimi k2.5/k2.6/k2.7 Parser」；模型线: Kimi K2/K2.5/Linear/VL；类别: 文档/测试/CI；主要 diff: `vllm/tool_parsers/kimi_k2_tool_parser.py`, `vllm/reasoning/kimi_k2_reasoning_parser.py`, `tests/reasoning/test_kimi_k2_reasoning_parser.py`；技术摘要: 覆盖「[Frontend] Add Streaming Parser Engine and new Kimi k2.5/k2.6/k2.7 Parser」；主要实现面是 `vllm/tool_parsers/kimi_k2_tool_parser.py`, `vllm/reasoning/kimi_k2_reasoning_parser.py`, `tests/reasoning/test_kimi_k2_reasoning_parser.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/tool_parsers/kimi_k2_tool_parser.py` modified +4/-262 (266 lines); hunks: -1,278 +1,20; symbols: KimiK2ToolParser, __init__, adjust_request, extract_tool_calls，涉及 `KimiK2ToolParser, __init__, adjust_request`；`vllm/reasoning/kimi_k2_reasoning_parser.py` modified +3/-240 (243 lines); hunks: -1,245 +1,8; symbols: KimiK2ReasoningParser, __init__, reasoning_start_str, reasoning_end_str，涉及 `KimiK2ReasoningParser, __init__, reasoning_start_str`；`tests/reasoning/test_kimi_k2_reasoning_parser.py` modified +5/-67 (72 lines); hunks: -7,7 +7,6; -33,20 +32,6 @@ def kimi_k2_tokenizer():; symbols: kimi_k2_tokenizer, test_parser_selection_thinking_enabled, test_parser_selection_thinking_disabled, test_extract_reasoning_with_think_tags，涉及 `kimi_k2_tokenizer, test_parser_selection_thinking_enabled, test_parser_selection_thinking_disabled`；`vllm/parser/kimi_k2.py` added +285/-0 (285 lines); hunks: -0,0 +1,285; symbols: kimi_k2_config, KimiK2Parser, __init__, _extract_tool_id_and_name，涉及 `kimi_k2_config, KimiK2Parser, __init__`。
@@ -1411,7 +1468,7 @@ diff -- tests/reasoning/test_kimi_k2_reasoning_parser.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/47416
 - 状态/时间: merged / 2026-07-06
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_k25.py`, `vllm/transformers_utils/processors/kimi_k25_vision_fused.py`；关联提交 `5ad11172b791`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_k25.py`, `vllm/transformers_utils/processors/kimi_k25_vision_fused.py`；关联提交 `5ad11172b791`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+402/-2，可读 patch 462 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[perf]Add fused Kimi image preprocessing」；模型线: Kimi K2/K2.5/Linear/VL；类别: 性能/后端优化；主要 diff: `vllm/transformers_utils/processors/kimi_k25_vision_fused.py`, `vllm/model_executor/models/kimi_k25.py`；技术摘要: 覆盖「[perf]Add fused Kimi image preprocessing」；主要实现面是 `vllm/transformers_utils/processors/kimi_k25_vision_fused.py`, `vllm/model_executor/models/kimi_k25.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/transformers_utils/processors/kimi_k25_vision_fused.py` added +352/-0 (352 lines); hunks: -0,0 +1,352; symbols: _write_fused_patches, navit_resize_image, navit_resize_video, _to_pil，涉及 `_write_fused_patches, navit_resize_image, navit_resize_video`；`vllm/model_executor/models/kimi_k25.py` modified +10/-0 (10 lines); hunks: -56,6 +56,10; -108,10 +112,16 @@ def __init__(self, ctx: InputProcessingContext) -> None:; symbols: __init__，涉及 `__init__`。

@@ -6139,11 +6139,12 @@ diff -- python/sglang/srt/layers/attention/flashattention_backend.py
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `test/manual/nightly/test_deepseek_v32_perf.py`, `test/registered/cp/test_deepseek_v32_cp_single_node.py`；关联提交 `ed316a26efa4`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+162/-97，可读 patch 296 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Fix CP in-seq-split method for DeepSeek V32 and update related tests」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `test/registered/cp/test_deepseek_v32_cp_single_node.py`, `test/registered/8-gpu-models/test_deepseek_v32_cp_single_node.py`, `test/manual/nightly/test_deepseek_v32_perf.py`；技术摘要: 覆盖「Fix CP in-seq-split method for DeepSeek V32 and update related tests」；主要实现面是 `test/registered/cp/test_deepseek_v32_cp_single_node.py`, `test/registered/8-gpu-models/test_deepseek_v32_cp_single_node.py`, `test/manual/nightly/test_deepseek_v32_perf.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `test/registered/cp/test_deepseek_v32_cp_single_node.py` added +157/-0 (157 lines); hunks: -0,0 +1,157; symbols: TestDeepseekV32CPInSeqSplit, setUpClass, tearDownClass, test_a_gsm8k，涉及 `TestDeepseekV32CPInSeqSplit, setUpClass, tearDownClass`；`test/registered/8-gpu-models/test_deepseek_v32_cp_single_node.py` removed +0/-92 (92 lines); hunks: -1,92 +0,0; symbols: TestDeepseekV32CPSingleNode, for, test_deepseek_v32_cp_variants，涉及 `TestDeepseekV32CPSingleNode, for, test_deepseek_v32_cp_variants`；`test/manual/nightly/test_deepseek_v32_perf.py` modified +1/-1 (2 lines); hunks: -3,7 +3,7。
+- 实现要点: `test/registered/cp/test_deepseek_v32_cp_single_node.py` added +157/-0 (157 lines); hunks: -0,0 +1,157; symbols: TestDeepseekV32CPInSeqSplit, setUpClass, tearDownClass, test_a_gsm8k，涉及 `TestDeepseekV32CPInSeqSplit, setUpClass, tearDownClass`；`test/registered/8-gpu-models/test_deepseek_v32_cp_single_node.py` removed +0/-92 (92 lines); hunks: -1,92 +0,0; symbols: TestDeepseekV32CPSingleNode, for, test_deepseek_v32_cp_variants，涉及 `TestDeepseekV32CPSingleNode, for, test_deepseek_v32_cp_variants`；`test/manual/nightly/test_deepseek_v32_perf.py` modified +1/-1 (2 lines); hunks: -3,7 +3,7；`python/sglang/srt/server_args.py` modified +1/-1 (2 lines); hunks: -1523,7 +1523,7 @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments，涉及 `_handle_model_specific_adjustments`。
 - 代码 diff 细节:
   - `test/registered/cp/test_deepseek_v32_cp_single_node.py` added +157/-0 (157 lines); hunks: -0,0 +1,157; symbols: TestDeepseekV32CPInSeqSplit, setUpClass, tearDownClass, test_a_gsm8k
   - `test/registered/8-gpu-models/test_deepseek_v32_cp_single_node.py` removed +0/-92 (92 lines); hunks: -1,92 +0,0; symbols: TestDeepseekV32CPSingleNode, for, test_deepseek_v32_cp_variants
   - `test/manual/nightly/test_deepseek_v32_perf.py` modified +1/-1 (2 lines); hunks: -3,7 +3,7
+  - `python/sglang/srt/server_args.py` modified +1/-1 (2 lines); hunks: -1523,7 +1523,7 @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments
 - 关键代码摘录:
 
 ```diff
@@ -6169,6 +6170,7 @@ diff -- test/manual/nightly/test_deepseek_v32_perf.py
 
 - 已读文件:
   - tests: `test/registered/cp/test_deepseek_v32_cp_single_node.py` added +157/-0; `test/registered/8-gpu-models/test_deepseek_v32_cp_single_node.py` removed +0/-92; `test/manual/nightly/test_deepseek_v32_perf.py` modified +1/-1
+  - runtime: `python/sglang/srt/server_args.py` modified +1/-1
 - 验证与风险: diff 自带测试面 `test/manual/nightly/test_deepseek_v32_perf.py`, `test/registered/8-gpu-models/test_deepseek_v32_basic.py`, `test/registered/8-gpu-models/test_deepseek_v32_cp_single_node.py`, `test/registered/8-gpu-models/test_deepseek_v32_mtp.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #20438 - [Perf] Overlap NSA-CP key all-gather with query computation for DeepSeek-V3.2
@@ -10582,7 +10584,7 @@ diff -- python/sglang/srt/models/deepseek_v2.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/27705
 - 状态/时间: merged / 2026-06-27
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`, `test/registered/8-gpu-models/test_deepseek_v32_indexcache.py`；关联提交 `073de150530a`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`, `test/registered/8-gpu-models/test_deepseek_v32_indexcache.py`；关联提交 `073de150530a`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 13 个文件，+1196/-69，可读 patch 1573 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Fuse the DSA (V3.2, GLM-5.x) indexer Q/K paths into single kernels」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`, `test/registered/8-gpu-models/test_deepseek_v32_indexcache.py`；技术摘要: 覆盖「Fuse the DSA (V3.2, GLM-5.x) indexer Q/K paths into single kernels」；主要实现面是 `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`, `test/registered/8-gpu-models/test_deepseek_v32_indexcache.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` modified +61/-0 (61 lines); hunks: -76,6 +76,52 @@ def _clone_if_runai_streamed_tensor(tensor: torch.Tensor) ->...; -147,6 +193,8 @@ def do_load_weights(; symbols: _clone_if_runai_streamed_tensor, _load_fused_indexer_wk, NextNEnabledConfig, do_load_weights，涉及 `_clone_if_runai_streamed_tensor, _load_fused_indexer_wk, NextNEnabledConfig`；`test/registered/8-gpu-models/test_deepseek_v32_indexcache.py` modified +1/-1 (2 lines); hunks: -63,7 +63,7 @@ def test_a_gsm8k(; symbols: test_a_gsm8k, TestDeepseekV32IndexFreq，涉及 `test_a_gsm8k, TestDeepseekV32IndexFreq`。

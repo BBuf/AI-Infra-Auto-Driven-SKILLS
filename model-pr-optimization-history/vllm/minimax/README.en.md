@@ -127,9 +127,9 @@
 | 2026-06-27 | [#46474](https://github.com/vllm-project/vllm/pull/46474) | merged | [ROCm][Perf] Fused shared expert for Minimax M3 | `vllm/models/minimax_m3/amd/model.py` |
 | 2026-07-01 | [#47269](https://github.com/vllm-project/vllm/pull/47269) | merged | [ROCm][MiniMax-M3] Cross-layer lightning-indexer top-k sharing | `vllm/models/minimax_m3/amd/model.py` |
 | 2026-07-08 | [#47502](https://github.com/vllm-project/vllm/pull/47502) | merged | [Minimax-M3] Using tok_sparse_select from MSA instead of triton kernels | `vllm/models/minimax_m3/nvidia/indexer_msa.py`, `vllm/models/minimax_m3/common/ops/index_topk.py`, `vllm/models/minimax_m3/common/ops/sparse_attn.py` |
-| 2026-07-08 | [#46117](https://github.com/vllm-project/vllm/pull/46117) | merged | [ROCm][Perf] MXFP8 dense-linear + grouped-MoE GEMM optimizations for MiniMax-M3 | `tests/kernels/test_minimax_m3_amd_ops.py` |
+| 2026-07-08 | [#46117](https://github.com/vllm-project/vllm/pull/46117) | merged | [ROCm][Perf] MXFP8 dense-linear + grouped-MoE GEMM optimizations for MiniMax-M3 | `tests/kernels/test_minimax_m3_amd_ops.py`, `vllm/model_executor/layers/fused_moe/experts/mxfp8_native_moe.py`, `vllm/model_executor/kernels/linear/mxfp8/rocm_native.py` |
 | 2026-07-08 | [#47631](https://github.com/vllm-project/vllm/pull/47631) | merged | [Perf] Minimax M3 - Support cross-layer allreduce-norm fusion | `vllm/models/minimax_m3/nvidia/model.py`, `vllm/models/deepseek_v32/nvidia/model.py` |
-| 2026-07-08 | [#47158](https://github.com/vllm-project/vllm/pull/47158) | merged | [ROCm] fixed aiter master flag and expert parallelism compatibility on minimax-m3-mxfp8 | `tests/kernels/test_minimax_m3_amd_ops.py` |
+| 2026-07-08 | [#47158](https://github.com/vllm-project/vllm/pull/47158) | merged | [ROCm] fixed aiter master flag and expert parallelism compatibility on minimax-m3-mxfp8 | `tests/kernels/test_minimax_m3_amd_ops.py`, `vllm/model_executor/layers/fused_moe/experts/aiter_mxfp8_moe.py` |
 | 2026-07-13 | [#47287](https://github.com/vllm-project/vllm/pull/47287) | merged | [ROCm][MiniMax-M3] Add AITER sparse paged attention | `vllm/models/minimax_m3/amd/ops/sparse_pa.py`, `vllm/models/minimax_m3/amd/model.py`, `vllm/models/minimax_m3/common/ops/sparse_attn.py` |
 | 2026-07-14 | [#44849](https://github.com/vllm-project/vllm/pull/44849) | merged | [ROCm][MiniMax-M2] Dispatch fused QK-norm + AllReduce via AITER | `vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py` |
 | 2026-07-14 | [#47984](https://github.com/vllm-project/vllm/pull/47984) | merged | [ROCm][MiniMax-M3][Spec Decode] Support speculative decode with AITER sparse PA | `vllm/models/minimax_m3/amd/ops/sparse_pa.py`, `vllm/models/minimax_m3/amd/sparse_attention_msa.py`, `tests/kernels/attention/test_minimax_m3.py` |
@@ -2044,7 +2044,7 @@ diff -- vllm/models/minimax_m3/amd/model.py
 
 - Link: https://github.com/vllm-project/vllm/pull/46474
 - Status/date: merged / 2026-06-27
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/minimax_m3/amd/model.py`; associated commits `51a99565c398`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/minimax_m3/amd/model.py`; associated commits `51a99565c398`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +46/-13, 127 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm][Perf] Fused shared expert for Minimax M3"; model line: MiniMax M2/M3 Series; category: performance/backend optimization; main diff: `vllm/models/minimax_m3/amd/model.py`; technical summary: Covers "[ROCm][Perf] Fused shared expert for Minimax M3"; the main implementation surface is `vllm/models/minimax_m3/amd/model.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/minimax_m3/amd/model.py` modified +46/-13 (59 lines); hunks: -23,8 +23,9; -96,7 +97,6; symbols: _fuse_shared_experts_enabled, forward, _aiter_moe_fused_shared_experts_enabled, MiniMaxM3MoE, touching `_fuse_shared_experts_enabled, forward, _aiter_moe_fused_shared_experts_enabled`.
@@ -2071,7 +2071,7 @@ diff -- vllm/models/minimax_m3/amd/model.py
 
 - Link: https://github.com/vllm-project/vllm/pull/47269
 - Status/date: merged / 2026-07-01
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/minimax_m3/amd/model.py`; associated commits `4e5ca89cfe98`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/minimax_m3/amd/model.py`; associated commits `4e5ca89cfe98`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +41/-1, 63 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm][MiniMax-M3] Cross-layer lightning-indexer top-k sharing"; model line: MiniMax M2/M3 Series; category: model implementation change; main diff: `vllm/models/minimax_m3/amd/model.py`; technical summary: Covers "[ROCm][MiniMax-M3] Cross-layer lightning-indexer top-k sharing"; the main implementation surface is `vllm/models/minimax_m3/amd/model.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/minimax_m3/amd/model.py` modified +41/-1 (42 lines); hunks: -135,6 +135,37 @@ def _sparse_attention_layer_ids(config: PretrainedConfig) -...; -541,6 +572,12 @@ def __init__(; symbols: _sparse_attention_layer_ids, _sparse_attention_layer_ordinals, _should_skip_index_topk, _is_moe_layer, touching `_sparse_attention_layer_ids, _sparse_attention_layer_ordinals, _should_skip_index_topk`.
@@ -2098,7 +2098,7 @@ diff -- vllm/models/minimax_m3/amd/model.py
 
 - Link: https://github.com/vllm-project/vllm/pull/47502
 - Status/date: merged / 2026-07-08
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/kernels/attention/test_minimax_m3.py`, `vllm/models/minimax_m3/common/indexer.py`, `vllm/models/minimax_m3/common/ops/__init__.py`, `vllm/models/minimax_m3/common/ops/index_topk.py`, `vllm/models/minimax_m3/common/ops/sparse_attn.py` and 8 files; associated commits `902158949803`
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/kernels/attention/test_minimax_m3.py`, `vllm/models/minimax_m3/common/indexer.py`, `vllm/models/minimax_m3/common/ops/__init__.py`, `vllm/models/minimax_m3/common/ops/index_topk.py`, `vllm/models/minimax_m3/common/ops/sparse_attn.py` and 8 files; associated commits `902158949803`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 9 files, +233/-72, 577 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Minimax-M3] Using tok_sparse_select from MSA instead of triton kernels"; model line: MiniMax M2/M3 Series; category: performance/backend optimization; main diff: `vllm/models/minimax_m3/nvidia/indexer_msa.py`, `vllm/models/minimax_m3/common/ops/index_topk.py`, `vllm/models/minimax_m3/common/ops/sparse_attn.py`; technical summary: Covers "[Minimax-M3] Using tok_sparse_select from MSA instead of triton kernels"; the main implementation surface is `vllm/models/minimax_m3/nvidia/indexer_msa.py`, `vllm/models/minimax_m3/common/ops/index_topk.py`, `vllm/models/minimax_m3/common/ops/sparse_attn.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/minimax_m3/nvidia/indexer_msa.py` modified +135/-35 (170 lines); hunks: -2,16 +2,21; -22,6 +27,7; symbols: MiniMaxM3IndexerMSABackend, MiniMaxM3IndexerMSAMetadata, MiniMaxM3IndexerMSAMetadataBuilder, __init__, touching `MiniMaxM3IndexerMSABackend, MiniMaxM3IndexerMSAMetadata, MiniMaxM3IndexerMSAMetadataBuilder`; `vllm/models/minimax_m3/common/ops/index_topk.py` modified +67/-15 (82 lines); hunks: -757,33 +757,33 @@ def minimax_m3_index_topk(; -800,13 +800,16 @@ def minimax_m3_index_decode(; symbols: minimax_m3_index_topk, minimax_m3_index_decode, minimax_m3_index_decode_score, touching `minimax_m3_index_topk, minimax_m3_index_decode, minimax_m3_index_decode_score`; `vllm/models/minimax_m3/common/ops/sparse_attn.py` modified +7/-11 (18 lines); hunks: -43,7 +43,6; -84,7 +83,6 @@ def _gqa_sparse_fwd_kernel(; symbols: _gqa_sparse_fwd_kernel, _gqa_sparse_decode_kernel, touching `_gqa_sparse_fwd_kernel, _gqa_sparse_decode_kernel`; `vllm/models/minimax_m3/nvidia/sparse_attention_msa.py` modified +6/-3 (9 lines); hunks: -39,7 +39,8 @@ def forward(; -56,7 +57,7 @@ def forward(; symbols: forward, touching `forward`.
@@ -2140,12 +2140,14 @@ diff -- vllm/models/minimax_m3/common/ops/sparse_attn.py
 
 - Link: https://github.com/vllm-project/vllm/pull/46117
 - Status/date: merged / 2026-07-08
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/kernels/test_minimax_m3_amd_ops.py`; associated commits `d9e57ea82e3e`
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/kernels/test_minimax_m3_amd_ops.py`; associated commits `d9e57ea82e3e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +226/-42, 372 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[ROCm][Perf] MXFP8 dense-linear + grouped-MoE GEMM optimizations for MiniMax-M3"; model line: MiniMax M2/M3 Series; category: performance/backend optimization; main diff: `tests/kernels/test_minimax_m3_amd_ops.py`; technical summary: Covers "[ROCm][Perf] MXFP8 dense-linear + grouped-MoE GEMM optimizations for MiniMax-M3"; the main implementation surface is `tests/kernels/test_minimax_m3_amd_ops.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `tests/kernels/test_minimax_m3_amd_ops.py` modified +87/-0 (87 lines); hunks: -284,6 +284,93 @@ def test_mxfp8_native_moe(T, H, inter, E, top_k):; symbols: test_mxfp8_native_moe, _ref_grouped_gemm, test_mxfp8_grouped_gemm_native, touching `test_mxfp8_native_moe, _ref_grouped_gemm, test_mxfp8_grouped_gemm_native`.
+- Motivation: Title: "[ROCm][Perf] MXFP8 dense-linear + grouped-MoE GEMM optimizations for MiniMax-M3"; model line: MiniMax M2/M3 Series; category: performance/backend optimization; main diff: `tests/kernels/test_minimax_m3_amd_ops.py`, `vllm/model_executor/layers/fused_moe/experts/mxfp8_native_moe.py`, `vllm/model_executor/kernels/linear/mxfp8/rocm_native.py`; technical summary: Covers "[ROCm][Perf] MXFP8 dense-linear + grouped-MoE GEMM optimizations for MiniMax-M3"; the main implementation surface is `tests/kernels/test_minimax_m3_amd_ops.py`, `vllm/model_executor/layers/fused_moe/experts/mxfp8_native_moe.py`, `vllm/model_executor/kernels/linear/mxfp8/rocm_native.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/kernels/test_minimax_m3_amd_ops.py` modified +87/-0 (87 lines); hunks: -284,6 +284,93 @@ def test_mxfp8_native_moe(T, H, inter, E, top_k):; symbols: test_mxfp8_native_moe, _ref_grouped_gemm, test_mxfp8_grouped_gemm_native, touching `test_mxfp8_native_moe, _ref_grouped_gemm, test_mxfp8_grouped_gemm_native`; `vllm/model_executor/layers/fused_moe/experts/mxfp8_native_moe.py` modified +63/-35 (98 lines); hunks: -19,7 +19,6; -32,7 +31,26; symbols: _select_cfg, _mxfp8_grouped_gemm_kernel, _grouped_gemm_mxfp8, touching `_select_cfg, _mxfp8_grouped_gemm_kernel, _grouped_gemm_mxfp8`; `vllm/model_executor/kernels/linear/mxfp8/rocm_native.py` modified +76/-7 (83 lines); hunks: -89,13 +89,7 @@ def _mxfp8_dot_scaled_linear(; -125,6 +119,81 @@ def _mxfp8_dot_scaled_linear(; symbols: _mxfp8_dot_scaled_linear, _select_cfg, local, RocmDotScaledMxfp8LinearKernel, touching `_mxfp8_dot_scaled_linear, _select_cfg, local`.
 - Code diff details:
   - `tests/kernels/test_minimax_m3_amd_ops.py` modified +87/-0 (87 lines); hunks: -284,6 +284,93 @@ def test_mxfp8_native_moe(T, H, inter, E, top_k):; symbols: test_mxfp8_native_moe, _ref_grouped_gemm, test_mxfp8_grouped_gemm_native
+  - `vllm/model_executor/layers/fused_moe/experts/mxfp8_native_moe.py` modified +63/-35 (98 lines); hunks: -19,7 +19,6; -32,7 +31,26; symbols: _select_cfg, _mxfp8_grouped_gemm_kernel, _grouped_gemm_mxfp8
+  - `vllm/model_executor/kernels/linear/mxfp8/rocm_native.py` modified +76/-7 (83 lines); hunks: -89,13 +89,7 @@ def _mxfp8_dot_scaled_linear(; -125,6 +119,81 @@ def _mxfp8_dot_scaled_linear(; symbols: _mxfp8_dot_scaled_linear, _select_cfg, local, RocmDotScaledMxfp8LinearKernel
 - Key code excerpts:
 
 ```diff
@@ -2157,17 +2159,28 @@ diff -- tests/kernels/test_minimax_m3_amd_ops.py
 +def _ref_grouped_gemm(a_deq, w_deq, topk_ids, a_div, num_valid, mul_weight=None):
 +    """Pure-PyTorch reference for ``_grouped_gemm_mxfp8``.
 +    For each routed (expanded) token ``tid in [0, num_valid)`` the kernel writes
+diff -- vllm/model_executor/layers/fused_moe/experts/mxfp8_native_moe.py
+@@ -19,7 +19,6 @@
+-from vllm.logger import init_logger
+@@ -32,7 +31,26 @@
+-logger = init_logger(__name__)
++def _select_cfg(M, N, K, block_m):
++    """Pick the launch config from host constants only (M=num_valid_tokens, N, K,
++    block_m) — graph-capture safe (no GPU-scalar branch)."""
+diff -- vllm/model_executor/kernels/linear/mxfp8/rocm_native.py
+@@ -89,13 +89,7 @@ def _mxfp8_dot_scaled_linear(
 ```
 
 - Reviewed files:
   - tests: `tests/kernels/test_minimax_m3_amd_ops.py` modified +87/-0
+  - runtime: `vllm/model_executor/layers/fused_moe/experts/mxfp8_native_moe.py` modified +63/-35; `vllm/model_executor/kernels/linear/mxfp8/rocm_native.py` modified +76/-7
 - Risk and verification: The diff ships test coverage in `tests/kernels/test_minimax_m3_amd_ops.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #47631 - [Perf] Minimax M3 - Support cross-layer allreduce-norm fusion
 
 - Link: https://github.com/vllm-project/vllm/pull/47631
 - Status/date: merged / 2026-07-08
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/minimax_m3/nvidia/model.py`; associated commits `2afa3f7e9502`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/minimax_m3/nvidia/model.py`; associated commits `2afa3f7e9502`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +65/-17, 228 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Perf] Minimax M3 - Support cross-layer allreduce-norm fusion"; model line: MiniMax M2/M3 Series; category: performance/backend optimization; main diff: `vllm/models/minimax_m3/nvidia/model.py`, `vllm/models/deepseek_v32/nvidia/model.py`; technical summary: Covers "[Perf] Minimax M3 - Support cross-layer allreduce-norm fusion"; the main implementation surface is `vllm/models/minimax_m3/nvidia/model.py`, `vllm/models/deepseek_v32/nvidia/model.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/minimax_m3/nvidia/model.py` modified +37/-10 (47 lines); hunks: -196,6 +196,7 @@ def __init__(; -261,6 +262,7 @@ def __init__(; symbols: __init__, touching `__init__`; `vllm/models/deepseek_v32/nvidia/model.py` modified +4/-4 (8 lines); hunks: -72,17 +72,17 @@ def __init__(; symbols: __init__, touching `__init__`.
@@ -2203,12 +2216,13 @@ diff -- vllm/models/deepseek_v32/nvidia/model.py
 
 - Link: https://github.com/vllm-project/vllm/pull/47158
 - Status/date: merged / 2026-07-08
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/kernels/test_minimax_m3_amd_ops.py`; associated commits `2c64b4c1cc18`
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/kernels/test_minimax_m3_amd_ops.py`; associated commits `2c64b4c1cc18`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +107/-12, 139 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[ROCm] fixed aiter master flag and expert parallelism compatibility on minimax-m3-mxfp8"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `tests/kernels/test_minimax_m3_amd_ops.py`; technical summary: Covers "[ROCm] fixed aiter master flag and expert parallelism compatibility on minimax-m3-mxfp8"; the main implementation surface is `tests/kernels/test_minimax_m3_amd_ops.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `tests/kernels/test_minimax_m3_amd_ops.py` modified +94/-0 (94 lines); hunks: -335,3 +335,97 @@ def test_mxfp8_linear_emulation_bf16_at_load(; symbols: test_mxfp8_linear_emulation_bf16_at_load, _capture_expert_mask, _fake_fused_moe, test_aiter_mxfp8_ep_expert_mask_both_master_modes, touching `test_mxfp8_linear_emulation_bf16_at_load, _capture_expert_mask, _fake_fused_moe`.
+- Motivation: Title: "[ROCm] fixed aiter master flag and expert parallelism compatibility on minimax-m3-mxfp8"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `tests/kernels/test_minimax_m3_amd_ops.py`, `vllm/model_executor/layers/fused_moe/experts/aiter_mxfp8_moe.py`; technical summary: Covers "[ROCm] fixed aiter master flag and expert parallelism compatibility on minimax-m3-mxfp8"; the main implementation surface is `tests/kernels/test_minimax_m3_amd_ops.py`, `vllm/model_executor/layers/fused_moe/experts/aiter_mxfp8_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/kernels/test_minimax_m3_amd_ops.py` modified +94/-0 (94 lines); hunks: -335,3 +335,97 @@ def test_mxfp8_linear_emulation_bf16_at_load(; symbols: test_mxfp8_linear_emulation_bf16_at_load, _capture_expert_mask, _fake_fused_moe, test_aiter_mxfp8_ep_expert_mask_both_master_modes, touching `test_mxfp8_linear_emulation_bf16_at_load, _capture_expert_mask, _fake_fused_moe`; `vllm/model_executor/layers/fused_moe/experts/aiter_mxfp8_moe.py` modified +13/-12 (25 lines); hunks: -78,9 +78,6 @@ def _supports_current_device() -> bool:; -129,17 +126,21 @@ def apply(; symbols: _supports_current_device, _supports_parallel_config, apply, touching `_supports_current_device, _supports_parallel_config, apply`.
 - Code diff details:
   - `tests/kernels/test_minimax_m3_amd_ops.py` modified +94/-0 (94 lines); hunks: -335,3 +335,97 @@ def test_mxfp8_linear_emulation_bf16_at_load(; symbols: test_mxfp8_linear_emulation_bf16_at_load, _capture_expert_mask, _fake_fused_moe, test_aiter_mxfp8_ep_expert_mask_both_master_modes
+  - `vllm/model_executor/layers/fused_moe/experts/aiter_mxfp8_moe.py` modified +13/-12 (25 lines); hunks: -78,9 +78,6 @@ def _supports_current_device() -> bool:; -129,17 +126,21 @@ def apply(; symbols: _supports_current_device, _supports_parallel_config, apply
 - Key code excerpts:
 
 ```diff
@@ -2220,17 +2234,26 @@ diff -- tests/kernels/test_minimax_m3_amd_ops.py
 +# ``expert_mask`` (aiter master ON, ``rocm_aiter_fmoe_enabled``) or vLLM's -1
 +# index map (master OFF). ``AiterMxfp8Experts.apply`` must forward the right 0/1
 +# mask to aiter in BOTH cases. The old code always rebuilt the mask via
+diff -- vllm/model_executor/layers/fused_moe/experts/aiter_mxfp8_moe.py
+@@ -78,9 +78,6 @@ def _supports_current_device() -> bool:
+-        # Both TP (expert_map=None) and EP are supported: apply() forwards the
+-        # expert_map as aiter's ``expert_mask`` (the per-rank local-expert
+-        # selection), mirroring the native rocm_aiter_moe path.
+@@ -129,17 +126,21 @@ def apply(
+-        # Under EP, aiter expects ``expert_mask`` as a 0/1 *local-expert* mask
+-        # over global ids with a trailing fake-expert sentinel slot
 ```
 
 - Reviewed files:
   - tests: `tests/kernels/test_minimax_m3_amd_ops.py` modified +94/-0
+  - runtime: `vllm/model_executor/layers/fused_moe/experts/aiter_mxfp8_moe.py` modified +13/-12
 - Risk and verification: The diff ships test coverage in `tests/kernels/test_minimax_m3_amd_ops.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #47287 - [ROCm][MiniMax-M3] Add AITER sparse paged attention
 
 - Link: https://github.com/vllm-project/vllm/pull/47287
 - Status/date: merged / 2026-07-13
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/kernels/attention/test_minimax_m3.py`, `tests/kernels/test_fused_minimax_m3_qknorm_rope_kv_insert.py`, `tests/kernels/test_minimax_m3_sparse_attn_fp8_scale.py`, `vllm/models/minimax_m3/amd/model.py`, `vllm/models/minimax_m3/amd/ops/sparse_attn.py` and 11 files; associated commits `ee5a89f4d7b8`
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/kernels/attention/test_minimax_m3.py`, `tests/kernels/test_fused_minimax_m3_qknorm_rope_kv_insert.py`, `tests/kernels/test_minimax_m3_sparse_attn_fp8_scale.py`, `vllm/models/minimax_m3/amd/model.py`, `vllm/models/minimax_m3/amd/ops/sparse_attn.py` and 11 files; associated commits `ee5a89f4d7b8`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 15 files, +1553/-127, 2389 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm][MiniMax-M3] Add AITER sparse paged attention"; model line: MiniMax M2/M3 Series; category: performance/backend optimization; main diff: `vllm/models/minimax_m3/amd/ops/sparse_pa.py`, `vllm/models/minimax_m3/amd/model.py`, `vllm/models/minimax_m3/common/ops/sparse_attn.py`; technical summary: Covers "[ROCm][MiniMax-M3] Add AITER sparse paged attention"; the main implementation surface is `vllm/models/minimax_m3/amd/ops/sparse_pa.py`, `vllm/models/minimax_m3/amd/model.py`, `vllm/models/minimax_m3/common/ops/sparse_attn.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/minimax_m3/amd/ops/sparse_pa.py` added +466/-0 (466 lines); hunks: -0,0 +1,466; symbols: _is_fp8_kv_cache_tensor, _build_sparse_block_table_kernel, minimax_m3_build_sparse_block_table, _build_sparse_block_table_prefill_kernel, touching `_is_fp8_kv_cache_tensor, _build_sparse_block_table_kernel, minimax_m3_build_sparse_block_table`; `vllm/models/minimax_m3/amd/model.py` modified +214/-25 (239 lines); hunks: -35,6 +35,7; -93,6 +94,7; symbols: __init__, get_kv_cache_spec, _ensure_aiter_sparse_pa_kv_cache, touching `__init__, get_kv_cache_spec, _ensure_aiter_sparse_pa_kv_cache`; `vllm/models/minimax_m3/common/ops/sparse_attn.py` modified +160/-0 (160 lines); hunks: -52,6 +52,8; -72,6 +74,10 @@ def _gqa_sparse_fwd_kernel(; symbols: _gqa_sparse_fwd_kernel, touching `_gqa_sparse_fwd_kernel`; `vllm/models/minimax_m3/amd/sparse_attention_msa.py` added +94/-0 (94 lines); hunks: -0,0 +1,94; symbols: MiniMaxM3SparseAiterPAImpl, forward, touching `MiniMaxM3SparseAiterPAImpl, forward`.
@@ -2271,7 +2294,7 @@ diff -- vllm/models/minimax_m3/common/ops/sparse_attn.py
 
 - Link: https://github.com/vllm-project/vllm/pull/44849
 - Status/date: merged / 2026-07-14
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py`; associated commits `b50ef9c6ed97`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py`; associated commits `b50ef9c6ed97`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +12/-0, 26 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm][MiniMax-M2] Dispatch fused QK-norm + AllReduce via AITER"; model line: MiniMax M2/M3 Series; category: performance/backend optimization; main diff: `vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py`; technical summary: Covers "[ROCm][MiniMax-M2] Dispatch fused QK-norm + AllReduce via AITER"; the main implementation surface is `vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py` modified +12/-0 (12 lines); hunks: -6,6 +6,7; -235,6 +236,17 @@ def _minimax_qk_norm_fusion(; symbols: _minimax_qk_norm_fusion, touching `_minimax_qk_norm_fusion`.
@@ -2298,7 +2321,7 @@ diff -- vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py
 
 - Link: https://github.com/vllm-project/vllm/pull/47984
 - Status/date: merged / 2026-07-14
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/kernels/attention/test_minimax_m3.py`, `vllm/models/minimax_m3/amd/ops/sparse_pa.py`, `vllm/models/minimax_m3/amd/sparse_attention_msa.py`; associated commits `95aab66e9585`
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/kernels/attention/test_minimax_m3.py`, `vllm/models/minimax_m3/amd/ops/sparse_pa.py`, `vllm/models/minimax_m3/amd/sparse_attention_msa.py`; associated commits `95aab66e9585`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +182/-15, 276 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm][MiniMax-M3][Spec Decode] Support speculative decode with AITER sparse PA"; model line: MiniMax M2/M3 Series; category: performance/backend optimization; main diff: `vllm/models/minimax_m3/amd/ops/sparse_pa.py`, `vllm/models/minimax_m3/amd/sparse_attention_msa.py`, `tests/kernels/attention/test_minimax_m3.py`; technical summary: Covers "[ROCm][MiniMax-M3][Spec Decode] Support speculative decode with AITER sparse PA"; the main implementation surface is `vllm/models/minimax_m3/amd/ops/sparse_pa.py`, `vllm/models/minimax_m3/amd/sparse_attention_msa.py`, `tests/kernels/attention/test_minimax_m3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/minimax_m3/amd/ops/sparse_pa.py` modified +41/-10 (51 lines); hunks: -49,15 +49,16 @@ def _build_sparse_block_table_kernel(; -82,7 +83,7 @@ def _build_sparse_block_table_kernel(; symbols: _build_sparse_block_table_kernel, _build_sparse_block_table_prefill_kernel, minimax_m3_build_sparse_block_table_prefill, touching `_build_sparse_block_table_kernel, _build_sparse_block_table_prefill_kernel, minimax_m3_build_sparse_block_table_prefill`; `vllm/models/minimax_m3/amd/sparse_attention_msa.py` modified +1/-5 (6 lines); hunks: -55,11 +55,6 @@ def forward(; -72,6 +67,7 @@ def forward(; symbols: forward, touching `forward`; `tests/kernels/attention/test_minimax_m3.py` modified +140/-0 (140 lines); hunks: -1010,6 +1010,146 @@ def _build_decode_inputs(; symbols: _build_decode_inputs, test_aiter_sparse_block_table_handles_padded_decode_rows, test_aiter_decode_sparse_block_table_supports_spec_decode, touching `_build_decode_inputs, test_aiter_sparse_block_table_handles_padded_decode_rows, test_aiter_decode_sparse_block_table_supports_spec_decode`.
@@ -2338,7 +2361,7 @@ diff -- tests/kernels/attention/test_minimax_m3.py
 
 - Link: https://github.com/vllm-project/vllm/pull/48523
 - Status/date: merged / 2026-07-14
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_minimax_m3_tool_parser.py`; associated commits `af1f036a70e0`
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_minimax_m3_tool_parser.py`; associated commits `af1f036a70e0`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +4/-0, 11 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Skip minimax_m3 tool parser tests when Rust extension is absent"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `tests/tool_parsers/test_minimax_m3_tool_parser.py`; technical summary: Covers "[Bugfix] Skip minimax_m3 tool parser tests when Rust extension is absent"; the main implementation surface is `tests/tool_parsers/test_minimax_m3_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `tests/tool_parsers/test_minimax_m3_tool_parser.py` modified +4/-0 (4 lines); hunks: -14,6 +14,10.
@@ -2362,7 +2385,7 @@ diff -- tests/tool_parsers/test_minimax_m3_tool_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/48846
 - Status/date: merged / 2026-07-17
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_minimax_m2_tool_parser.py`, `vllm/parser/minimax_m2.py`; associated commits `11d291511a35`
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_minimax_m2_tool_parser.py`, `vllm/parser/minimax_m2.py`; associated commits `11d291511a35`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +164/-9, 249 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix][Tool Parser] Preserve whitespace in parameter values (MiniMax M2, Qwen3, MiniCPM5 XML)"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `tests/tool_parsers/test_minimax_m2_tool_parser.py`, `vllm/parser/minimax_m2.py`; technical summary: Covers "[Bugfix][Tool Parser] Preserve whitespace in parameter values (MiniMax M2, Qwen3, MiniCPM5 XML)"; the main implementation surface is `tests/tool_parsers/test_minimax_m2_tool_parser.py`, `vllm/parser/minimax_m2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `tests/tool_parsers/test_minimax_m2_tool_parser.py` modified +34/-0 (34 lines); hunks: -567,3 +567,37 @@ def test_nil_string_preserved(self):; symbols: test_nil_string_preserved, TestParameterWhitespace, test_whitespace_preserved, test_whitespace_preserved_across_chunks, touching `test_nil_string_preserved, TestParameterWhitespace, test_whitespace_preserved`; `vllm/parser/minimax_m2.py` modified +5/-2 (7 lines); hunks: -69,7 +69,9 @@ def _minimax_m2_arg_converter(raw_args: str, partial: bool) ->...; -82,7 +84,8 @@ def _minimax_m2_arg_converter(raw_args: str, partial: bool) ->...; symbols: _minimax_m2_arg_converter, touching `_minimax_m2_arg_converter`.
@@ -2399,7 +2422,7 @@ diff -- vllm/parser/minimax_m2.py
 
 - Link: https://github.com/vllm-project/vllm/pull/49149
 - Status/date: merged / 2026-07-25
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/minimax_m3/common/indexer.py`, `vllm/models/minimax_m3/common/sparse_attention.py`; associated commits `d1a8ba63d9d2`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/minimax_m3/common/indexer.py`, `vllm/models/minimax_m3/common/sparse_attention.py`; associated commits `d1a8ba63d9d2`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +13/-3, 44 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix][MiniMax-M3] Fix token-major top-k buffer handling in Triton …"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `vllm/models/minimax_m3/common/sparse_attention.py`, `vllm/models/minimax_m3/common/indexer.py`; technical summary: Covers "[Bugfix][MiniMax-M3] Fix token-major top-k buffer handling in Triton …"; the main implementation surface is `vllm/models/minimax_m3/common/sparse_attention.py`, `vllm/models/minimax_m3/common/indexer.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/minimax_m3/common/sparse_attention.py` modified +8/-1 (9 lines); hunks: -384,7 +384,14 @@ def forward(; symbols: forward, touching `forward`; `vllm/models/minimax_m3/common/indexer.py` modified +5/-2 (7 lines); hunks: -424,6 +424,9 @@ def forward(; -441,7 +444,7 @@ def forward(; symbols: forward, touching `forward`.

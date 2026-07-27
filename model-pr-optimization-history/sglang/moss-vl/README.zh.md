@@ -29,7 +29,7 @@
 
 - 链接: https://github.com/sgl-project/sglang/pull/23454
 - 状态/时间: merged / 2026-04-24
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/moss_vl.py`, `python/sglang/srt/multimodal/processors/moss_vl.py`；关联提交 `59724e90a9b8`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/moss_vl.py`, `python/sglang/srt/multimodal/processors/moss_vl.py`；关联提交 `59724e90a9b8`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 10 个文件，+2401/-6，可读 patch 2611 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[srt] Add Moss-VL Python runtime support」；模型线: MOSS-VL；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/moss_vl.py`, `python/sglang/srt/multimodal/processors/moss_vl.py`；技术摘要: 覆盖「[srt] Add Moss-VL Python runtime support」；主要实现面是 `python/sglang/srt/models/moss_vl.py`, `python/sglang/srt/multimodal/processors/moss_vl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/moss_vl.py` added +1643/-0 (1643 lines); hunks: -0,0 +1,1643; symbols: MossVLVisionMLP, __init__, forward, MossVLVisionPatchEmbed，涉及 `MossVLVisionMLP, __init__, forward`；`python/sglang/srt/multimodal/processors/moss_vl.py` added +612/-0 (612 lines); hunks: -0,0 +1,612; symbols: MossVLImageProcessor, __init__, _build_mm_items, _build_vision_token_info，涉及 `MossVLImageProcessor, __init__, _build_mm_items`。
@@ -65,7 +65,7 @@ diff -- python/sglang/srt/multimodal/processors/moss_vl.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/23932
 - 状态/时间: merged / 2026-04-30
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/moss_vl.py`；关联提交 `4f0b44c5c666`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/moss_vl.py`；关联提交 `4f0b44c5c666`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+12/-60，可读 patch 146 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[moss-vl] use Conv3dLayer and remove no-op flat_encoder_result」；模型线: MOSS-VL；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/moss_vl.py`；技术摘要: 覆盖「[moss-vl] use Conv3dLayer and remove no-op flat_encoder_result」；主要实现面是 `python/sglang/srt/models/moss_vl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/moss_vl.py` modified +12/-60 (72 lines); hunks: -20,6 +20,7; -96,7 +97,7 @@ def __init__(self, config) -> None:; symbols: __init__, pad_input_ids, _collect_mm_data, _get_vision_features，涉及 `__init__, pad_input_ids, _collect_mm_data`。
@@ -92,7 +92,7 @@ diff -- python/sglang/srt/models/moss_vl.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/28940
 - 状态/时间: merged / 2026-06-24
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/moss_vl.py`；关联提交 `0df796473b76`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/moss_vl.py`；关联提交 `0df796473b76`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+476/-10，可读 patch 558 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[VLM] Qwen3-VL / Moss-VL ViT preprocessing optimizations」；模型线: MOSS-VL；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/moss_vl.py`；技术摘要: 覆盖「[VLM] Qwen3-VL / Moss-VL ViT preprocessing optimizations」；主要实现面是 `python/sglang/srt/models/moss_vl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/moss_vl.py` modified +126/-1 (127 lines); hunks: -15,6 +15,7; -49,6 +50,10; symbols: fast_pos_embed_interpolate, fast_pos_embed_interpolate_vectorized, _exclusive_prefix, forward，涉及 `fast_pos_embed_interpolate, fast_pos_embed_interpolate_vectorized, _exclusive_prefix`。

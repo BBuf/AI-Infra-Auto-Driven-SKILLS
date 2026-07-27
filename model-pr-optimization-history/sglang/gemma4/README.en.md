@@ -1234,7 +1234,7 @@ diff -- docs_new/cookbook/autoregressive/Google/Gemma4.mdx
 
 - Link: https://github.com/sgl-project/sglang/pull/31672
 - Status/date: merged / 2026-07-19
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/gemma4_mm.py`; associated commits `609fe1c0d1a6`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/gemma4_mm.py`; associated commits `609fe1c0d1a6`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "fix(gemma4): prevent attention mask offset overflow"; model line: Gemma 4; category: bug fix; main diff: `python/sglang/srt/models/gemma4_mm.py`; technical summary: Covers "fix(gemma4): prevent attention mask offset overflow"; the main implementation surface is `python/sglang/srt/models/gemma4_mm.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/gemma4_mm.py` modified +1/-1 (2 lines); hunks: -335,7 +335,7 @@ def prepare_attn_masks(; symbols: prepare_attn_masks, touching `prepare_attn_masks`.

@@ -112,7 +112,7 @@
 | 2026-03-18 | [#19995](https://github.com/sgl-project/sglang/pull/19995) | merged | Add packed_modules_mapping for MiniMax-M2 | `python/sglang/srt/models/minimax_m2.py` |
 | 2026-03-18 | [#20870](https://github.com/sgl-project/sglang/pull/20870) | merged | [MiniMax M2] Fix KV cache scale loading | `python/sglang/srt/models/minimax_m2.py` |
 | 2026-03-20 | [#20931](https://github.com/sgl-project/sglang/pull/20931) | merged | [Bugifx] qwen3 rope parameter compatibility | `python/sglang/srt/models/qwen3_moe.py` |
-| 2026-03-23 | [#17695](https://github.com/sgl-project/sglang/pull/17695) | merged | [NPU] enhance accuracy for model minimaxm2 from 16.5% to 95.5% | `test/registered/ascend/llm_models/test_ascend_minimax_m2.py` |
+| 2026-03-23 | [#17695](https://github.com/sgl-project/sglang/pull/17695) | merged | [NPU] enhance accuracy for model minimaxm2 from 16.5% to 95.5% | `test/registered/ascend/llm_models/test_ascend_minimax_m2.py`, `python/sglang/srt/hardware_backend/npu/moe/topk.py` |
 | 2026-03-24 | [#20905](https://github.com/sgl-project/sglang/pull/20905) | merged | [NPU][ModelSlim] adapt w2 quant layer for Minimax2.5 | `python/sglang/srt/models/minimax_m2.py` |
 | 2026-03-31 | [#21241](https://github.com/sgl-project/sglang/pull/21241) | merged | [bugfix] Fix rope theta config for MiniMax after transformers v5 update | `python/sglang/srt/models/minimax_m2.py` |
 | 2026-04-03 | [#19652](https://github.com/sgl-project/sglang/pull/19652) | merged | [Feature] NVFP4 Marlin fallback for non-Blackwell GPUs (SM75+) | `python/sglang/srt/layers/quantization/marlin_utils_fp4.py`, `python/sglang/srt/layers/quantization/modelopt_quant.py`, `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4_moe.py` |
@@ -158,8 +158,8 @@
 | 2026-06-23 | [#28777](https://github.com/sgl-project/sglang/pull/28777) | merged | docs(minimax-m3): use published AMD ROCm images | `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx`, `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx` |
 | 2026-06-23 | [#22744](https://github.com/sgl-project/sglang/pull/22744) | merged | [NVIDIA] Support TF32 matmul to improve MiniMax gate gemm performance | `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/server_args.py`, `docs_new/docs/advanced_features/server_arguments.mdx` |
 | 2026-06-26 | [#29250](https://github.com/sgl-project/sglang/pull/29250) | merged | Fix MiniMax MSA fallback when fmha plan is unavailable | `python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py`, `python/sglang/srt/layers/attention/minimax_sparse_ops/msa.py` |
-| 2026-06-27 | [#28713](https://github.com/sgl-project/sglang/pull/28713) | merged | [minimax-m3] Split 2/4: mem-cache / HiCache / sparse KV pool | `test/registered/unit/mem_cache/test_minimax_sparse_pool_host_unit.py`, `test/registered/unit/mem_cache/test_minimax_sparse_pool_pd_unit.py` |
-| 2026-06-28 | [#28714](https://github.com/sgl-project/sglang/pull/28714) | merged | [minimax-m3] Split 3/4: disagg K-only index-K transfer | `test/registered/unit/disaggregation/test_minimax_sparse_disagg_state_kv_args.py` |
+| 2026-06-27 | [#28713](https://github.com/sgl-project/sglang/pull/28713) | merged | [minimax-m3] Split 2/4: mem-cache / HiCache / sparse KV pool | `test/registered/unit/mem_cache/test_minimax_sparse_pool_host_unit.py`, `test/registered/unit/mem_cache/test_minimax_sparse_pool_pd_unit.py`, `python/sglang/srt/model_executor/pool_configurator.py` |
+| 2026-06-28 | [#28714](https://github.com/sgl-project/sglang/pull/28714) | merged | [minimax-m3] Split 3/4: disagg K-only index-K transfer | `test/registered/unit/disaggregation/test_minimax_sparse_disagg_state_kv_args.py`, `python/sglang/srt/disaggregation/mooncake/conn.py`, `python/sglang/srt/disaggregation/nixl/conn.py` |
 | 2026-07-11 | [#28715](https://github.com/sgl-project/sglang/pull/28715) | merged | [minimax-m3] Split 4/4: model + VL + glue + function-call + fp8 quant + generic infra | `python/sglang/srt/models/minimax_m3.py`, `python/sglang/srt/models/minimax_vl_common.py`, `python/sglang/srt/layers/attention/minimax_sparse_backend.py` |
 | 2026-07-15 | [#30793](https://github.com/sgl-project/sglang/pull/30793) | merged | [Kernel] Migrate linear-attention, MiniMax-sparse and diffusion kernels to sglang.kernels (RFC #29630, Phase 2.5, 6/7) | `python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py`, `python/sglang/srt/layers/attention/minimax_sparse_ops/tests/test_flash_with_topk_idx.py`, `python/sglang/srt/layers/attention/minimax_sparse_ops/tests/test_sparse_gqa.py` |
 | 2026-07-20 | [#31819](https://github.com/sgl-project/sglang/pull/31819) | merged | docs(cookbook): revert MiniMax-M3 to dev image (model not yet in a release) | `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx`, `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx` |
@@ -703,10 +703,11 @@ diff -- python/sglang/srt/models/qwen3_moe.py
 - Status/date: merged / 2026-03-23
 - Trace source: `git log --name-only -- <model-files>` found it through `test/registered/ascend/llm_models/test_ascend_minimax_m2.py`; associated commits `4641e5a3d2bb`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +45/-1, 61 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[NPU] enhance accuracy for model minimaxm2 from 16.5% to 95.5%"; model line: MiniMax M2/M3 Series; category: docs/tests/CI; main diff: `test/registered/ascend/llm_models/test_ascend_minimax_m2.py`; technical summary: Covers "[NPU] enhance accuracy for model minimaxm2 from 16.5% to 95.5%"; the main implementation surface is `test/registered/ascend/llm_models/test_ascend_minimax_m2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `test/registered/ascend/llm_models/test_ascend_minimax_m2.py` added +43/-0 (43 lines); hunks: -0,0 +1,43; symbols: TestMiniMaxM2, touching `TestMiniMaxM2`.
+- Motivation: Title: "[NPU] enhance accuracy for model minimaxm2 from 16.5% to 95.5%"; model line: MiniMax M2/M3 Series; category: docs/tests/CI; main diff: `test/registered/ascend/llm_models/test_ascend_minimax_m2.py`, `python/sglang/srt/hardware_backend/npu/moe/topk.py`; technical summary: Covers "[NPU] enhance accuracy for model minimaxm2 from 16.5% to 95.5%"; the main implementation surface is `test/registered/ascend/llm_models/test_ascend_minimax_m2.py`, `python/sglang/srt/hardware_backend/npu/moe/topk.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/ascend/llm_models/test_ascend_minimax_m2.py` added +43/-0 (43 lines); hunks: -0,0 +1,43; symbols: TestMiniMaxM2, touching `TestMiniMaxM2`; `python/sglang/srt/hardware_backend/npu/moe/topk.py` modified +1/-1 (2 lines); hunks: -26,7 +26,7 @@ def fused_topk_npu(; symbols: fused_topk_npu, touching `fused_topk_npu`.
 - Code diff details:
   - `test/registered/ascend/llm_models/test_ascend_minimax_m2.py` added +43/-0 (43 lines); hunks: -0,0 +1,43; symbols: TestMiniMaxM2
+  - `python/sglang/srt/hardware_backend/npu/moe/topk.py` modified +1/-1 (2 lines); hunks: -26,7 +26,7 @@ def fused_topk_npu(; symbols: fused_topk_npu
 - Key code excerpts:
 
 ```diff
@@ -718,10 +719,15 @@ diff -- test/registered/ascend/llm_models/test_ascend_minimax_m2.py
 +from sglang.test.ci.ci_register import register_npu_ci
 +from sglang.test.test_utils import CustomTestCase
 +register_npu_ci(
+diff -- python/sglang/srt/hardware_backend/npu/moe/topk.py
+@@ -26,7 +26,7 @@ def fused_topk_npu(
+-    if not use_grouped_topk:
++    if not use_grouped_topk and correction_bias is None:
 ```
 
 - Reviewed files:
   - tests: `test/registered/ascend/llm_models/test_ascend_minimax_m2.py` added +43/-0
+  - runtime: `python/sglang/srt/hardware_backend/npu/moe/topk.py` modified +1/-1
 - Risk and verification: The diff ships test coverage in `python/sglang/test/ascend/test_ascend_utils.py`, `test/registered/ascend/llm_models/test_ascend_minimax_m2.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #20905 - [NPU][ModelSlim] adapt w2 quant layer for Minimax2.5
@@ -2287,13 +2293,16 @@ diff -- python/sglang/srt/layers/attention/minimax_sparse_ops/msa.py
 
 - Link: https://github.com/sgl-project/sglang/pull/28713
 - Status/date: merged / 2026-06-27
-- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/unit/mem_cache/test_minimax_sparse_pool_host_unit.py`, `test/registered/unit/mem_cache/test_minimax_sparse_pool_pd_unit.py`; associated commits `592f6c849bf9`
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/unit/mem_cache/test_minimax_sparse_pool_host_unit.py`, `test/registered/unit/mem_cache/test_minimax_sparse_pool_pd_unit.py`; associated commits `592f6c849bf9`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +1715/-39, 1991 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[minimax-m3] Split 2/4: mem-cache / HiCache / sparse KV pool"; model line: MiniMax M2/M3 Series; category: docs/tests/CI; main diff: `test/registered/unit/mem_cache/test_minimax_sparse_pool_host_unit.py`, `test/registered/unit/mem_cache/test_minimax_sparse_pool_pd_unit.py`; technical summary: Covers "[minimax-m3] Split 2/4: mem-cache / HiCache / sparse KV pool"; the main implementation surface is `test/registered/unit/mem_cache/test_minimax_sparse_pool_host_unit.py`, `test/registered/unit/mem_cache/test_minimax_sparse_pool_pd_unit.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `test/registered/unit/mem_cache/test_minimax_sparse_pool_host_unit.py` added +410/-0 (410 lines); hunks: -0,0 +1,410; symbols: _cuda_major, _FakeLayerTransferCounter, __init__, wait_until, touching `_cuda_major, _FakeLayerTransferCounter, __init__`; `test/registered/unit/mem_cache/test_minimax_sparse_pool_pd_unit.py` added +58/-0 (58 lines); hunks: -0,0 +1,58; symbols: _make_k_only_pool, TestMiniMaxSparsePoolPD, test_contiguous_buf_infos_main_only, test_index_k_state_buf_infos, touching `_make_k_only_pool, TestMiniMaxSparsePoolPD, test_contiguous_buf_infos_main_only`.
+- Motivation: Title: "[minimax-m3] Split 2/4: mem-cache / HiCache / sparse KV pool"; model line: MiniMax M2/M3 Series; category: docs/tests/CI; main diff: `test/registered/unit/mem_cache/test_minimax_sparse_pool_host_unit.py`, `test/registered/unit/mem_cache/test_minimax_sparse_pool_pd_unit.py`, `python/sglang/srt/model_executor/pool_configurator.py`; technical summary: Covers "[minimax-m3] Split 2/4: mem-cache / HiCache / sparse KV pool"; the main implementation surface is `test/registered/unit/mem_cache/test_minimax_sparse_pool_host_unit.py`, `test/registered/unit/mem_cache/test_minimax_sparse_pool_pd_unit.py`, `python/sglang/srt/model_executor/pool_configurator.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/unit/mem_cache/test_minimax_sparse_pool_host_unit.py` added +410/-0 (410 lines); hunks: -0,0 +1,410; symbols: _cuda_major, _FakeLayerTransferCounter, __init__, wait_until, touching `_cuda_major, _FakeLayerTransferCounter, __init__`; `test/registered/unit/mem_cache/test_minimax_sparse_pool_pd_unit.py` added +58/-0 (58 lines); hunks: -0,0 +1,58; symbols: _make_k_only_pool, TestMiniMaxSparsePoolPD, test_contiguous_buf_infos_main_only, test_index_k_state_buf_infos, touching `_make_k_only_pool, TestMiniMaxSparsePoolPD, test_contiguous_buf_infos_main_only`; `python/sglang/srt/model_executor/pool_configurator.py` modified +42/-0 (42 lines); hunks: -21,8 +21,12; -200,6 +204,44 @@ def _compute_cell_size(self, mr: ModelRunner, num_layers: i...; symbols: _compute_cell_size, touching `_compute_cell_size`; `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py` modified +32/-0 (32 lines); hunks: -8,8 +8,12; -34,6 +38,7; symbols: _init_pools, touching `_init_pools`.
 - Code diff details:
   - `test/registered/unit/mem_cache/test_minimax_sparse_pool_host_unit.py` added +410/-0 (410 lines); hunks: -0,0 +1,410; symbols: _cuda_major, _FakeLayerTransferCounter, __init__, wait_until
   - `test/registered/unit/mem_cache/test_minimax_sparse_pool_pd_unit.py` added +58/-0 (58 lines); hunks: -0,0 +1,58; symbols: _make_k_only_pool, TestMiniMaxSparsePoolPD, test_contiguous_buf_infos_main_only, test_index_k_state_buf_infos
+  - `python/sglang/srt/model_executor/pool_configurator.py` modified +42/-0 (42 lines); hunks: -21,8 +21,12; -200,6 +204,44 @@ def _compute_cell_size(self, mr: ModelRunner, num_layers: i...; symbols: _compute_cell_size
+  - `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py` modified +32/-0 (32 lines); hunks: -8,8 +8,12; -34,6 +38,7; symbols: _init_pools
+  - `python/sglang/srt/mem_cache/memory_pool.py` modified +516/-35 (551 lines); hunks: -1243,39 +1243,42 @@ def __init__(; -1288,7 +1291,9 @@ def __init__(; symbols: __init__, _create_buffers, get_kv_size_bytes, get_contiguous_buf_infos
 - Key code excerpts:
 
 ```diff
@@ -2313,22 +2322,29 @@ diff -- test/registered/unit/mem_cache/test_minimax_sparse_pool_pd_unit.py
 +from sglang.test.ci.ci_register import register_cpu_ci
 +register_cpu_ci(est_time=5, suite="base-a-test-cpu")
 +def _make_k_only_pool(start_layer: int = 0) -> MiniMaxSparseKVPool:
+diff -- python/sglang/srt/model_executor/pool_configurator.py
+@@ -21,8 +21,12 @@
 ```
 
 - Reviewed files:
   - tests: `test/registered/unit/mem_cache/test_minimax_sparse_pool_host_unit.py` added +410/-0; `test/registered/unit/mem_cache/test_minimax_sparse_pool_pd_unit.py` added +58/-0
+  - runtime: `python/sglang/srt/model_executor/pool_configurator.py` modified +42/-0; `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py` modified +32/-0; `python/sglang/srt/mem_cache/memory_pool.py` modified +516/-35; `python/sglang/srt/mem_cache/memory_pool_host.py` modified +311/-0; `python/sglang/srt/mem_cache/hybrid_cache/hybrid_pool_assembler.py` modified +261/-1; `python/sglang/srt/mem_cache/hiradix_cache.py` modified +25/-2
 - Risk and verification: The diff ships test coverage in `test/registered/unit/mem_cache/test_minimax_sparse_pool_host_unit.py`, `test/registered/unit/mem_cache/test_minimax_sparse_pool_pd_unit.py`, `test/registered/unit/mem_cache/test_unified_radix_hicache_dispatch.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #28714 - [minimax-m3] Split 3/4: disagg K-only index-K transfer
 
 - Link: https://github.com/sgl-project/sglang/pull/28714
 - Status/date: merged / 2026-06-28
-- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/unit/disaggregation/test_minimax_sparse_disagg_state_kv_args.py`; associated commits `ddc389cf09fc`
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/unit/disaggregation/test_minimax_sparse_disagg_state_kv_args.py`; associated commits `ddc389cf09fc`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +173/-5, 263 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[minimax-m3] Split 3/4: disagg K-only index-K transfer"; model line: MiniMax M2/M3 Series; category: docs/tests/CI; main diff: `test/registered/unit/disaggregation/test_minimax_sparse_disagg_state_kv_args.py`; technical summary: Covers "[minimax-m3] Split 3/4: disagg K-only index-K transfer"; the main implementation surface is `test/registered/unit/disaggregation/test_minimax_sparse_disagg_state_kv_args.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `test/registered/unit/disaggregation/test_minimax_sparse_disagg_state_kv_args.py` added +74/-0 (74 lines); hunks: -0,0 +1,74; symbols: _make_k_only_pool, _make_kv_pool, TestMiniMaxSparseDisaggStateKvArgs, test_setup_state_kv_args_single_minimax_component, touching `_make_k_only_pool, _make_kv_pool, TestMiniMaxSparseDisaggStateKvArgs`.
+- Motivation: Title: "[minimax-m3] Split 3/4: disagg K-only index-K transfer"; model line: MiniMax M2/M3 Series; category: docs/tests/CI; main diff: `test/registered/unit/disaggregation/test_minimax_sparse_disagg_state_kv_args.py`, `python/sglang/srt/disaggregation/mooncake/conn.py`, `python/sglang/srt/disaggregation/nixl/conn.py`; technical summary: Covers "[minimax-m3] Split 3/4: disagg K-only index-K transfer"; the main implementation surface is `test/registered/unit/disaggregation/test_minimax_sparse_disagg_state_kv_args.py`, `python/sglang/srt/disaggregation/mooncake/conn.py`, `python/sglang/srt/disaggregation/nixl/conn.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/unit/disaggregation/test_minimax_sparse_disagg_state_kv_args.py` added +74/-0 (74 lines); hunks: -0,0 +1,74; symbols: _make_k_only_pool, _make_kv_pool, TestMiniMaxSparseDisaggStateKvArgs, test_setup_state_kv_args_single_minimax_component, touching `_make_k_only_pool, _make_kv_pool, TestMiniMaxSparseDisaggStateKvArgs`; `python/sglang/srt/disaggregation/mooncake/conn.py` modified +41/-1 (42 lines); hunks: -586,10 +586,15 @@ def _send_kvcache_generic(; -599,7 +604,7 @@ def _send_kvcache_generic(; symbols: _send_kvcache_generic, maybe_send_extra, _send_mamba_state, touching `_send_kvcache_generic, maybe_send_extra, _send_mamba_state`; `python/sglang/srt/disaggregation/nixl/conn.py` modified +34/-2 (36 lines); hunks: -1279,10 +1279,14 @@ def _send_kvcache_generic(; -1335,7 +1339,7 @@ def _send_kvcache_generic(; symbols: _send_kvcache_generic, maybe_send_extra, touching `_send_kvcache_generic, maybe_send_extra`; `python/sglang/srt/disaggregation/utils.py` modified +15/-2 (17 lines); hunks: -643,15 +643,28 @@ def setup_state_kv_args(; symbols: setup_state_kv_args, touching `setup_state_kv_args`.
 - Code diff details:
   - `test/registered/unit/disaggregation/test_minimax_sparse_disagg_state_kv_args.py` added +74/-0 (74 lines); hunks: -0,0 +1,74; symbols: _make_k_only_pool, _make_kv_pool, TestMiniMaxSparseDisaggStateKvArgs, test_setup_state_kv_args_single_minimax_component
+  - `python/sglang/srt/disaggregation/mooncake/conn.py` modified +41/-1 (42 lines); hunks: -586,10 +586,15 @@ def _send_kvcache_generic(; -599,7 +604,7 @@ def _send_kvcache_generic(; symbols: _send_kvcache_generic, maybe_send_extra, _send_mamba_state
+  - `python/sglang/srt/disaggregation/nixl/conn.py` modified +34/-2 (36 lines); hunks: -1279,10 +1279,14 @@ def _send_kvcache_generic(; -1335,7 +1339,7 @@ def _send_kvcache_generic(; symbols: _send_kvcache_generic, maybe_send_extra
+  - `python/sglang/srt/disaggregation/utils.py` modified +15/-2 (17 lines); hunks: -643,15 +643,28 @@ def setup_state_kv_args(; symbols: setup_state_kv_args
+  - `python/sglang/srt/disaggregation/decode.py` modified +4/-0 (4 lines); hunks: -1058,6 +1058,10 @@ def _swa_ring_payload():; symbols: _swa_ring_payload
 - Key code excerpts:
 
 ```diff
@@ -2340,17 +2356,28 @@ diff -- test/registered/unit/disaggregation/test_minimax_sparse_disagg_state_kv_
 +from sglang.srt.disaggregation.utils import setup_state_kv_args
 +from sglang.srt.mem_cache.memory_pool import MiniMaxSparseKVPool
 +from sglang.test.ci.ci_register import register_cpu_ci
+diff -- python/sglang/srt/disaggregation/mooncake/conn.py
+@@ -586,10 +586,15 @@ def _send_kvcache_generic(
++        force_flat: bool = False,
++        ``force_flat`` uses the MLA-style flat (single-buffer-per-layer) layout
++        even on a non-MLA backend, for K-only state buffers (e.g. MiniMax sparse
++        index) whose per-layer list must not be half-split into K/V.
+@@ -599,7 +604,7 @@ def _send_kvcache_generic(
+-        if self.is_mla_backend:
+diff -- python/sglang/srt/disaggregation/nixl/conn.py
+@@ -1279,10 +1279,14 @@ def _send_kvcache_generic(
 ```
 
 - Reviewed files:
   - tests: `test/registered/unit/disaggregation/test_minimax_sparse_disagg_state_kv_args.py` added +74/-0
+  - runtime: `python/sglang/srt/disaggregation/mooncake/conn.py` modified +41/-1; `python/sglang/srt/disaggregation/nixl/conn.py` modified +34/-2; `python/sglang/srt/disaggregation/utils.py` modified +15/-2; `python/sglang/srt/disaggregation/decode.py` modified +4/-0; `python/sglang/srt/disaggregation/prefill.py` modified +4/-0; `python/sglang/srt/disaggregation/base/conn.py` modified +1/-0
 - Risk and verification: The diff ships test coverage in `test/registered/unit/disaggregation/test_minimax_sparse_disagg_state_kv_args.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #28715 - [minimax-m3] Split 4/4: model + VL + glue + function-call + fp8 quant + generic infra
 
 - Link: https://github.com/sgl-project/sglang/pull/28715
 - Status/date: merged / 2026-07-11
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/minimax_vl.py`, `python/sglang/srt/function_call/minimax_m3.py`, `python/sglang/srt/layers/attention/minimax_sparse_backend.py`, `python/sglang/srt/models/minimax_m3.py`, `python/sglang/srt/models/minimax_m3_vl.py` and 8 files; associated commits `0663ebc783e6`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/minimax_vl.py`, `python/sglang/srt/function_call/minimax_m3.py`, `python/sglang/srt/layers/attention/minimax_sparse_backend.py`, `python/sglang/srt/models/minimax_m3.py`, `python/sglang/srt/models/minimax_m3_vl.py` and 8 files; associated commits `0663ebc783e6`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 46 files, +7486/-483, 9190 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[minimax-m3] Split 4/4: model + VL + glue + function-call + fp8 quant + generic infra"; model line: MiniMax M2/M3 Series; category: performance/backend optimization; main diff: `python/sglang/srt/models/minimax_m3.py`, `python/sglang/srt/models/minimax_vl_common.py`, `python/sglang/srt/layers/attention/minimax_sparse_backend.py`; technical summary: Covers "[minimax-m3] Split 4/4: model + VL + glue + function-call + fp8 quant + generic infra"; the main implementation surface is `python/sglang/srt/models/minimax_m3.py`, `python/sglang/srt/models/minimax_vl_common.py`, `python/sglang/srt/layers/attention/minimax_sparse_backend.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/minimax_m3.py` added +1690/-0 (1690 lines); hunks: -0,0 +1,1690; symbols: MultiHeadRMSNorm, __init__, weight_loader, forward, touching `MultiHeadRMSNorm, __init__, weight_loader`; `python/sglang/srt/models/minimax_vl_common.py` added +882/-0 (882 lines); hunks: -0,0 +1,882; symbols: CLIPVisionConfig, from_dict, MiniMaxVLMultiModalProjector, __init__, touching `CLIPVisionConfig, from_dict, MiniMaxVLMultiModalProjector`; `python/sglang/srt/layers/attention/minimax_sparse_backend.py` added +602/-0 (602 lines); hunks: -0,0 +1,602; symbols: MiniMaxSparseAttnBackend, __init__, init_forward_metadata_out_graph, _prepare_msa_decode_meta, touching `MiniMaxSparseAttnBackend, __init__, init_forward_metadata_out_graph`; `python/sglang/srt/function_call/minimax_m3.py` added +542/-0 (542 lines); hunks: -0,0 +1,542; symbols: MinimaxM3Detector, __init__, _normalize_tag_spacing, _flushable_prefix_length, touching `MinimaxM3Detector, __init__, _normalize_tag_spacing`.
@@ -2392,7 +2419,7 @@ diff -- python/sglang/srt/layers/attention/minimax_sparse_backend.py
 
 - Link: https://github.com/sgl-project/sglang/pull/30793
 - Status/date: merged / 2026-07-15
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/kernels/ops/attention/minimax_sparse/__init__.py`, `python/sglang/kernels/ops/attention/minimax_sparse/common/index.py`, `python/sglang/kernels/ops/attention/minimax_sparse/common/utils.py`, `python/sglang/kernels/ops/attention/minimax_sparse/decode/flash_with_topk_idx.py`, `python/sglang/kernels/ops/attention/minimax_sparse/decode/topk_sparse.py` and 10 files; associated commits `c00131ebaaeb`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/kernels/ops/attention/minimax_sparse/__init__.py`, `python/sglang/kernels/ops/attention/minimax_sparse/common/index.py`, `python/sglang/kernels/ops/attention/minimax_sparse/common/utils.py`, `python/sglang/kernels/ops/attention/minimax_sparse/decode/flash_with_topk_idx.py`, `python/sglang/kernels/ops/attention/minimax_sparse/decode/topk_sparse.py` and 10 files; associated commits `c00131ebaaeb`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 44 files, +238/-168, 621 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Kernel] Migrate linear-attention, MiniMax-sparse and diffusion kernels to sglang.kernels (RFC #29630, Phase 2.5, 6/7)"; model line: MiniMax M2/M3 Series; category: performance/backend optimization; main diff: `python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py`, `python/sglang/srt/layers/attention/minimax_sparse_ops/tests/test_flash_with_topk_idx.py`, `python/sglang/srt/layers/attention/minimax_sparse_ops/tests/test_sparse_gqa.py`; technical summary: Covers "[Kernel] Migrate linear-attention, MiniMax-sparse and diffusion kernels to sglang.kernels (RFC #29630, Phase 2.5, 6/7)"; the main implementation surface is `python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py`, `python/sglang/srt/layers/attention/minimax_sparse_ops/tests/test_flash_with_topk_idx.py`, `python/sglang/srt/layers/attention/minimax_sparse_ops/tests/test_sparse_gqa.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py` modified +14/-6 (20 lines); hunks: -5,12 +5,20; `python/sglang/srt/layers/attention/minimax_sparse_ops/tests/test_flash_with_topk_idx.py` modified +2/-2 (4 lines); hunks: -3,10 +3,10; `python/sglang/srt/layers/attention/minimax_sparse_ops/tests/test_sparse_gqa.py` modified +1/-1 (2 lines); hunks: -10,7 +10,7; `python/sglang/kernels/ops/attention/__init__.py` modified +26/-0 (26 lines); hunks: -43,6 +43,32.
@@ -2434,7 +2461,7 @@ diff -- python/sglang/srt/layers/attention/minimax_sparse_ops/tests/test_sparse_
 
 - Link: https://github.com/sgl-project/sglang/pull/31819
 - Status/date: merged / 2026-07-20
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx`, `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx`; associated commits `e149cdb33750`
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx`, `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx`; associated commits `e149cdb33750`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +14/-11, 55 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "docs(cookbook): revert MiniMax-M3 to dev image (model not yet in a release)"; model line: MiniMax M2/M3 Series; category: docs/tests/CI; main diff: `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx`, `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx`; technical summary: Covers "docs(cookbook): revert MiniMax-M3 to dev image (model not yet in a release)"; the main implementation surface is `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx`, `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx` modified +10/-8 (18 lines); hunks: -92,13 +92,15 @@ sgl-eval run mmmu_pro \\; -198,7 +200,7 @@ sgl-eval run mmmu_pro \\; `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx` modified +4/-3 (7 lines); hunks: -35,10 +35,11 @@ Then run the **Python** output of the command panel below in...; -86,7 +87,7 @@ Key characteristics as served by SGLang:.
@@ -2470,7 +2497,7 @@ diff -- docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx
 
 - Link: https://github.com/sgl-project/sglang/pull/30613
 - Status/date: merged / 2026-07-26
-- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/amd/accuracy/mi35x/test_minimax_m3_tp4_eval_mi35x.py`; associated commits `1d0cd2e473e4`
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/amd/accuracy/mi35x/test_minimax_m3_tp4_eval_mi35x.py`; associated commits `1d0cd2e473e4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +351/-0, 394 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[AMD] Nightly Test Coverage - Minimax-M3-MXFP8 Accuracy Test"; model line: MiniMax M2/M3 Series; category: performance/backend optimization; main diff: `test/registered/amd/accuracy/mi35x/test_minimax_m3_tp4_eval_mi35x.py`; technical summary: Covers "[AMD] Nightly Test Coverage - Minimax-M3-MXFP8 Accuracy Test"; the main implementation surface is `test/registered/amd/accuracy/mi35x/test_minimax_m3_tp4_eval_mi35x.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `test/registered/amd/accuracy/mi35x/test_minimax_m3_tp4_eval_mi35x.py` added +267/-0 (267 lines); hunks: -0,0 +1,267; symbols: ModelConfig, __post_init__, get_display_name, get_answer_value, touching `ModelConfig, __post_init__, get_display_name`.

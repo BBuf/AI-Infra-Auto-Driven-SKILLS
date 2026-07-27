@@ -34,7 +34,7 @@
 
 - 链接: https://github.com/sgl-project/sglang/pull/23532
 - 状态/时间: merged / 2026-04-23
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`, `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx`；关联提交 `4868e367f851`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`, `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx`；关联提交 `4868e367f851`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+707/-0，可读 patch 716 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「docs: add Hunyuan 3 Preview cookbook」；模型线: Hunyuan3 Preview；类别: 文档/测试/CI；主要 diff: `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`, `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx`；技术摘要: 覆盖「docs: add Hunyuan 3 Preview cookbook」；主要实现面是 `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`, `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` added +527/-0 (527 lines); hunks: -0,0 +1,527; symbols: GPUs，涉及 `GPUs`；`docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx` added +174/-0 (174 lines); hunks: -0,0 +1,174; symbols: GPUs，涉及 `GPUs`。
@@ -70,7 +70,7 @@ diff -- docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx
 
 - 链接: https://github.com/sgl-project/sglang/pull/23533
 - 状态/时间: merged / 2026-04-24
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/function_call/hunyuan_detector.py`, `test/registered/unit/function_call/test_hunyuan_detector.py`；关联提交 `6d038614760f`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/function_call/hunyuan_detector.py`, `test/registered/unit/function_call/test_hunyuan_detector.py`；关联提交 `6d038614760f`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 25 个文件，+4095/-3，可读 patch 4205 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「support Hy3 preview」；模型线: Hunyuan3 Preview；类别: 文档/测试/CI；主要 diff: `test/registered/unit/function_call/test_hunyuan_detector.py`, `python/sglang/srt/function_call/hunyuan_detector.py`；技术摘要: 覆盖「support Hy3 preview」；主要实现面是 `test/registered/unit/function_call/test_hunyuan_detector.py`, `python/sglang/srt/function_call/hunyuan_detector.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/unit/function_call/test_hunyuan_detector.py` added +733/-0 (733 lines); hunks: -0,0 +1,733; symbols: _make_tools, TestHunyuanDetectorHasToolCall, setUp, test_has_tool_call_true，涉及 `_make_tools, TestHunyuanDetectorHasToolCall, setUp`；`python/sglang/srt/function_call/hunyuan_detector.py` added +476/-0 (476 lines); hunks: -0,0 +1,476; symbols: HunyuanDetector, __init__, _normalize_type, _get_arg_schema，涉及 `HunyuanDetector, __init__, _normalize_type`。
@@ -107,7 +107,7 @@ diff -- python/sglang/srt/function_call/hunyuan_detector.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/30201
 - 状态/时间: merged / 2026-07-06
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`, `docs_new/cookbook/autoregressive/Tencent/Hy3.mdx`, `docs_new/src/snippets/configs/tencent/hy3-benchmarks.jsx`, `docs_new/src/snippets/configs/tencent/hy3.jsx`；关联提交 `6f22790943a8`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`, `docs_new/cookbook/autoregressive/Tencent/Hy3.mdx`, `docs_new/src/snippets/configs/tencent/hy3-benchmarks.jsx`, `docs_new/src/snippets/configs/tencent/hy3.jsx`；关联提交 `6f22790943a8`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+944/-2，可读 patch 970 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「cookbook: add Hunyuan 3 (Hy3) Day-0 page」；模型线: Hunyuan3 Preview；类别: 文档/测试/CI；主要 diff: `docs_new/src/snippets/configs/tencent/hy3.jsx`, `docs_new/src/snippets/configs/tencent/hy3-benchmarks.jsx`, `docs_new/cookbook/autoregressive/Tencent/Hy3.mdx`；技术摘要: 覆盖「cookbook: add Hunyuan 3 (Hy3) Day-0 page」；主要实现面是 `docs_new/src/snippets/configs/tencent/hy3.jsx`, `docs_new/src/snippets/configs/tencent/hy3-benchmarks.jsx`, `docs_new/cookbook/autoregressive/Tencent/Hy3.mdx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/src/snippets/configs/tencent/hy3.jsx` added +546/-0 (546 lines); hunks: -0,0 +1,546；`docs_new/src/snippets/configs/tencent/hy3-benchmarks.jsx` added +26/-0 (26 lines); hunks: -0,0 +1,26；`docs_new/cookbook/autoregressive/Tencent/Hy3.mdx` added +370/-0 (370 lines); hunks: -0,0 +1,370；`docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` modified +0/-1 (1 lines); hunks: -2,7 +2,6。

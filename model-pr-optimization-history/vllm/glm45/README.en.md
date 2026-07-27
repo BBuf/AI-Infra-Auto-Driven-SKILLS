@@ -73,7 +73,7 @@
 | 2026-04-23 | [#40671](https://github.com/vllm-project/vllm/pull/40671) | merged | [MoE Refactor] Rename FusedMoE.make_expert_params_mapping to fused_moe_make_expert_params_mapping | `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/models/llama4.py`, `vllm/model_executor/models/glm4_moe_lite.py` |
 | 2026-05-07 | [#41755](https://github.com/vllm-project/vllm/pull/41755) | merged | [Bugfix] Fix GLM4-MoE weight loading for NVFP4 quantized checkpoints | `vllm/model_executor/models/glm4_moe.py` |
 | 2026-05-09 | [#42026](https://github.com/vllm-project/vllm/pull/42026) | merged | [Bugfix] Preserve leading/trailing whitespace in GLM non-streaming tool parser | `tests/tool_parsers/test_glm4_moe_tool_parser.py`, `vllm/tool_parsers/glm4_moe_tool_parser.py`, `tests/tool_parsers/test_glm47_moe_tool_parser.py` |
-| 2026-05-21 | [#39601](https://github.com/vllm-project/vllm/pull/39601) | merged | [Bugfix] Fix glm4_moe_tool_parser._is_string_type for /v1/responses FunctionTool format | `tests/tool_parsers/test_glm4_moe_tool_parser.py` |
+| 2026-05-21 | [#39601](https://github.com/vllm-project/vllm/pull/39601) | merged | [Bugfix] Fix glm4_moe_tool_parser._is_string_type for /v1/responses FunctionTool format | `tests/tool_parsers/test_glm4_moe_tool_parser.py`, `vllm/tool_parsers/glm4_moe_tool_parser.py` |
 | 2026-06-03 | [#44346](https://github.com/vllm-project/vllm/pull/44346) | merged | [Refactor] Suppress SyntaxWarning from ast.literal_eval in tool parsers | `vllm/tool_parsers/utils.py`, `vllm/tool_parsers/hy_v3_tool_parser.py`, `vllm/tool_parsers/minicpm5xml_tool_parser.py` |
 | 2026-06-08 | [#41184](https://github.com/vllm-project/vllm/pull/41184) | merged | [MoE Refactor] FusedMoE/MoERunner inversion refactor | `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/routed_experts.py`, `vllm/model_executor/layers/fused_moe/runner/moe_runner.py` |
 | 2026-06-18 | [#45915](https://github.com/vllm-project/vllm/pull/45915) | merged | [Frontend] Add Streaming Parser Engine and new GLM4.7/GLM5.1/GLM5.2 Parser | `tests/tool_parsers/test_glm4_moe_tool_parser.py`, `vllm/tool_parsers/glm4_moe_tool_parser.py`, `tests/reasoning/test_glm4_moe_reasoning_parser.py` |
@@ -1830,10 +1830,11 @@ diff -- tests/tool_parsers/test_glm47_moe_tool_parser.py
 - Status/date: merged / 2026-05-21
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_glm4_moe_tool_parser.py`; associated commits `050611a3dd19`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +135/-25, 214 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix glm4_moe_tool_parser._is_string_type for /v1/responses FunctionTool format"; model line: GLM-4.5; category: bug fix; main diff: `tests/tool_parsers/test_glm4_moe_tool_parser.py`; technical summary: Covers "[Bugfix] Fix glm4_moe_tool_parser._is_string_type for /v1/responses FunctionTool format"; the main implementation surface is `tests/tool_parsers/test_glm4_moe_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `tests/tool_parsers/test_glm4_moe_tool_parser.py` modified +120/-0 (120 lines); hunks: -5,6 +5,7; -1363,3 +1364,122 @@ def test_stream_interval_content_between_tool_calls(; symbols: test_stream_interval_content_between_tool_calls, function_tools, glm4_moe_parser_function_tools, mock_request_function_tools, touching `test_stream_interval_content_between_tool_calls, function_tools, glm4_moe_parser_function_tools`.
+- Motivation: Title: "[Bugfix] Fix glm4_moe_tool_parser._is_string_type for /v1/responses FunctionTool format"; model line: GLM-4.5; category: bug fix; main diff: `tests/tool_parsers/test_glm4_moe_tool_parser.py`, `vllm/tool_parsers/glm4_moe_tool_parser.py`; technical summary: Covers "[Bugfix] Fix glm4_moe_tool_parser._is_string_type for /v1/responses FunctionTool format"; the main implementation surface is `tests/tool_parsers/test_glm4_moe_tool_parser.py`, `vllm/tool_parsers/glm4_moe_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/tool_parsers/test_glm4_moe_tool_parser.py` modified +120/-0 (120 lines); hunks: -5,6 +5,7; -1363,3 +1364,122 @@ def test_stream_interval_content_between_tool_calls(; symbols: test_stream_interval_content_between_tool_calls, function_tools, glm4_moe_parser_function_tools, mock_request_function_tools, touching `test_stream_interval_content_between_tool_calls, function_tools, glm4_moe_parser_function_tools`; `vllm/tool_parsers/glm4_moe_tool_parser.py` modified +15/-25 (40 lines); hunks: -38,7 +38,11; -123,27 +127,13 @@ def _json_escape_string_content(s: str) -> str:; symbols: _json_escape_string_content, _is_string_type, _tools_enabled, extract_tool_calls, touching `_json_escape_string_content, _is_string_type, _tools_enabled`.
 - Code diff details:
   - `tests/tool_parsers/test_glm4_moe_tool_parser.py` modified +120/-0 (120 lines); hunks: -5,6 +5,7; -1363,3 +1364,122 @@ def test_stream_interval_content_between_tool_calls(; symbols: test_stream_interval_content_between_tool_calls, function_tools, glm4_moe_parser_function_tools, mock_request_function_tools
+  - `vllm/tool_parsers/glm4_moe_tool_parser.py` modified +15/-25 (40 lines); hunks: -38,7 +38,11; -123,27 +127,13 @@ def _json_escape_string_content(s: str) -> str:; symbols: _json_escape_string_content, _is_string_type, _tools_enabled, extract_tool_calls
 - Key code excerpts:
 
 ```diff
@@ -1845,10 +1846,19 @@ diff -- tests/tool_parsers/test_glm4_moe_tool_parser.py
 +@pytest.fixture
 +def function_tools():
 +    return [
+diff -- vllm/tool_parsers/glm4_moe_tool_parser.py
+@@ -38,7 +38,11 @@
+-from vllm.tool_parsers.utils import partial_tag_overlap
++from vllm.tool_parsers.utils import (
++    extract_types_from_schema,
++    find_tool_properties,
++    partial_tag_overlap,
++)
 ```
 
 - Reviewed files:
   - tests: `tests/tool_parsers/test_glm4_moe_tool_parser.py` modified +120/-0
+  - runtime: `vllm/tool_parsers/glm4_moe_tool_parser.py` modified +15/-25
 - Risk and verification: The diff ships test coverage in `tests/tool_parsers/test_glm4_moe_tool_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #44346 - [Refactor] Suppress SyntaxWarning from ast.literal_eval in tool parsers
@@ -2017,7 +2027,7 @@ diff -- vllm/model_executor/models/openpangu.py
 
 - Link: https://github.com/vllm-project/vllm/pull/44313
 - Status/date: merged / 2026-06-28
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe.py`, `vllm/model_executor/models/glm4_moe_mtp.py`; associated commits `c7ca0bccae66`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe.py`, `vllm/model_executor/models/glm4_moe_mtp.py`; associated commits `c7ca0bccae66`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +254/-105, 482 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm][Perf] Add Fused Shared Expert (FSE) support for GLM-4.5/6/7"; model line: GLM-4.5; category: performance/backend optimization; main diff: `vllm/model_executor/models/glm4_moe.py`, `vllm/model_executor/models/glm4_moe_mtp.py`; technical summary: Covers "[ROCm][Perf] Add Fused Shared Expert (FSE) support for GLM-4.5/6/7"; the main implementation surface is `vllm/model_executor/models/glm4_moe.py`, `vllm/model_executor/models/glm4_moe_mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/glm4_moe.py` modified +138/-63 (201 lines); hunks: -32,6 +32,7; -168,7 +169,16 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`; `vllm/model_executor/models/glm4_moe_mtp.py` modified +116/-42 (158 lines); hunks: -24,12 +24,14; -239,6 +241,10 @@ def compute_logits(; symbols: compute_logits, load_weights, touching `compute_logits, load_weights`.

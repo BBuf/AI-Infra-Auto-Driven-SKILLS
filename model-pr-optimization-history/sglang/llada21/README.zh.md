@@ -1478,7 +1478,7 @@ diff -- python/sglang/srt/hardware_backend/npu/moe/topk.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/27127
 - 状态/时间: merged / 2026-07-20
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/llada2.py`；关联提交 `e856eae92198`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/llada2.py`；关联提交 `e856eae92198`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+60/-26，可读 patch 102 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「use sgl_kernel_npu rmsrope accelerate llada2」；模型线: LLaDA 2.1；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/llada2.py`；技术摘要: 覆盖「use sgl_kernel_npu rmsrope accelerate llada2」；主要实现面是 `python/sglang/srt/models/llada2.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/llada2.py` modified +60/-26 (86 lines); hunks: -96,6 +96,15; -521,34 +530,59 @@ def forward(; symbols: LLaDA2MoeMLP, __init__, forward，涉及 `LLaDA2MoeMLP, __init__, forward`。
@@ -1505,7 +1505,7 @@ diff -- python/sglang/srt/models/llada2.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/31772
 - 状态/时间: merged / 2026-07-21
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/llada2.py`, `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py`；关联提交 `c0ed009f5b56`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/llada2.py`, `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py`；关联提交 `c0ed009f5b56`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+12/-11，可读 patch 48 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[NPU] Fix LLaDA2 MoE OOM after the FRACTAL_NZ cast, re-enabling the NZ speedup」；模型线: LLaDA 2.1；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/llada2.py`, `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py`；技术摘要: 覆盖「[NPU] Fix LLaDA2 MoE OOM after the FRACTAL_NZ cast, re-enabling the NZ speedup」；主要实现面是 `python/sglang/srt/models/llada2.py`, `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/llada2.py` modified +12/-6 (18 lines); hunks: -83,6 +83,7; -965,12 +966,17 @@ def load_weights(self, weights: Iterable[Tuple[str, torch....; symbols: load_weights, get_model_config_for_expert_location，涉及 `load_weights, get_model_config_for_expert_location`；`test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py` modified +0/-5 (5 lines); hunks: -1,4 +1,3; -31,10 +30,6 @@ class TestLLaDA2Mini(GSM8KAscendMixin, CustomTestCase):; symbols: TestLLaDA2Mini，涉及 `TestLLaDA2Mini`。

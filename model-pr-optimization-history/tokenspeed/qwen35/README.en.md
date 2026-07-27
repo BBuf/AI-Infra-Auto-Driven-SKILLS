@@ -1,9 +1,11 @@
 # TokenSpeed Qwen3.5 Model PR Optimization History
 
-## 2026-07-27 Source Head Refresh
+## 2026-07-28 Source Head Refresh
 
-Rechecked TokenSpeed upstream main at `lightseekorg/tokenspeed@d73bf0454422092f306d5575e803a08fd35ac41c`.
-The range after the previous head `d0a7faddb5ec0d4c6d037c4c3e6a781d2c5164a8` was traced with `git log --name-only -- <model-files>` and the three promoted source diffs were read in full.
+Rechecked TokenSpeed upstream main at `lightseekorg/tokenspeed@e41aa8b1609a9412d7ed26aa56d910828607950f`.
+The two-commit range after the previous head
+`d73bf0454422092f306d5575e803a08fd35ac41c` was read in full. Both commits are
+Kimi K3 documentation-only changes, so no new Qwen3.5 card is promoted.
 
 Result: Qwen3.5 gained native optimized DFlash, corrected mixed-precision GDN/MoE FP8 loading, and topology-safe multi-node collective/staging behavior.
 
@@ -98,7 +100,7 @@ Filter used in this pass: merged GitHub PRs whose title or files matched `Qwen3.
 ### PR #780 - Harden Qwen3.5 multi-node execution
 
 - Link: https://github.com/lightseekorg/tokenspeed/pull/780
-- Status/date: merged / 2026-07-27
+- Status/date: merged / 2026-07-28
 - Trace source: `git log --name-only -- <model-files>` plus the final upstream commit and PR body.
 - Diff scope read: full 555-line diff, 8 files, +347/-35.
 - Motivation: Qwen3.5 multi-node layouts could select CUDA-IPC/symmetric-memory collectives across nodes and could reuse persistent pinned Mamba/GDN staging buffers while an overlapped H2D copy was still in flight.

@@ -143,7 +143,7 @@
 | 2026-05-25 | [#26094](https://github.com/sgl-project/sglang/pull/26094) | merged | [VLM] fix: fix only the grids from last split mm item is collected for qwen-vl | `python/sglang/srt/multimodal/processors/qwen_vl.py` |
 | 2026-05-25 | [#19242](https://github.com/sgl-project/sglang/pull/19242) | closed | [feat] feat: add Qwen3-ASR support like whisper | `python/sglang/srt/multimodal/processors/qwen3_asr.py`, `python/sglang/srt/configs/qwen3_asr.py`, `python/sglang/srt/configs/__init__.py` |
 | 2026-05-27 | [#12662](https://github.com/sgl-project/sglang/pull/12662) | merged | [CPU] Add support for Qwen3-vl and Qwen3-omni | `python/sglang/srt/models/qwen3_omni_moe.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`, `python/sglang/srt/models/qwen3_vl.py` |
-| 2026-05-27 | [#22848](https://github.com/sgl-project/sglang/pull/22848) | merged | [Feature] WebSocket streaming audio input for ASR | `test/manual/models/test_qwen3_asr.py` |
+| 2026-05-27 | [#22848](https://github.com/sgl-project/sglang/pull/22848) | merged | [Feature] WebSocket streaming audio input for ASR | `test/manual/models/test_qwen3_asr.py`, `python/sglang/srt/entrypoints/openai/realtime/session.py`, `python/sglang/srt/entrypoints/openai/streaming_asr.py` |
 | 2026-06-02 | [#25813](https://github.com/sgl-project/sglang/pull/25813) | merged | docs(cookbook): port popular model usage guides into cookbook pages | `docs_new/docs/basic_usage/deepseek_v32.mdx`, `docs_new/docs/basic_usage/deepseek_v3.mdx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` |
 | 2026-06-03 | [#25198](https://github.com/sgl-project/sglang/pull/25198) | merged | [Docs] Update Nemotron3-Nano-Omni cookbook to reflect new model paths | `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx` |
 | 2026-06-04 | [#27240](https://github.com/sgl-project/sglang/pull/27240) | merged | [Docs] re-organize nemotron cookbook | `docs_new/docs.json`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` |
@@ -3113,10 +3113,14 @@ diff -- python/sglang/srt/models/qwen3_vl.py
 - Status/date: merged / 2026-05-27
 - Trace source: `git log --name-only -- <model-files>` found it through `test/manual/models/test_qwen3_asr.py`; associated commits `a95b4e2e09eb`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 11 files, +1707/-49, 1980 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Feature] WebSocket streaming audio input for ASR"; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `test/manual/models/test_qwen3_asr.py`; technical summary: Covers "[Feature] WebSocket streaming audio input for ASR"; the main implementation surface is `test/manual/models/test_qwen3_asr.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `test/manual/models/test_qwen3_asr.py` modified +547/-3 (550 lines); hunks: -1,17 +1,31; -29,8 +43,83; symbols: _normalize_for_wer, _wer, download_audio, _pcm16_from_audio_bytes, touching `_normalize_for_wer, _wer, download_audio`.
+- Motivation: Title: "[Feature] WebSocket streaming audio input for ASR"; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `test/manual/models/test_qwen3_asr.py`, `python/sglang/srt/entrypoints/openai/realtime/session.py`, `python/sglang/srt/entrypoints/openai/streaming_asr.py`; technical summary: Covers "[Feature] WebSocket streaming audio input for ASR"; the main implementation surface is `test/manual/models/test_qwen3_asr.py`, `python/sglang/srt/entrypoints/openai/realtime/session.py`, `python/sglang/srt/entrypoints/openai/streaming_asr.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/manual/models/test_qwen3_asr.py` modified +547/-3 (550 lines); hunks: -1,17 +1,31; -29,8 +43,83; symbols: _normalize_for_wer, _wer, download_audio, _pcm16_from_audio_bytes, touching `_normalize_for_wer, _wer, download_audio`; `python/sglang/srt/entrypoints/openai/realtime/session.py` added +740/-0 (740 lines); hunks: -0,0 +1,740; symbols: _resample_to_target_rate, _pcm_to_wav, _parse_client_event, _SessionConfig, touching `_resample_to_target_rate, _pcm_to_wav, _parse_client_event`; `python/sglang/srt/entrypoints/openai/streaming_asr.py` modified +123/-7 (130 lines); hunks: -1,8 +1,26; -22,13 +40,23 @@ class StreamingASRState:; symbols: StreamingASRState, get_prefix_text, _record_emit, update, touching `StreamingASRState, get_prefix_text, _record_emit`; `python/sglang/srt/entrypoints/openai/realtime/handler.py` added +119/-0 (119 lines); hunks: -0,0 +1,119; symbols: _safe_send, _safe_close, _reject_before_session, handle_realtime_transcription, touching `_safe_send, _safe_close, _reject_before_session`.
 - Code diff details:
   - `test/manual/models/test_qwen3_asr.py` modified +547/-3 (550 lines); hunks: -1,17 +1,31; -29,8 +43,83; symbols: _normalize_for_wer, _wer, download_audio, _pcm16_from_audio_bytes
+  - `python/sglang/srt/entrypoints/openai/realtime/session.py` added +740/-0 (740 lines); hunks: -0,0 +1,740; symbols: _resample_to_target_rate, _pcm_to_wav, _parse_client_event, _SessionConfig
+  - `python/sglang/srt/entrypoints/openai/streaming_asr.py` modified +123/-7 (130 lines); hunks: -1,8 +1,26; -22,13 +40,23 @@ class StreamingASRState:; symbols: StreamingASRState, get_prefix_text, _record_emit, update
+  - `python/sglang/srt/entrypoints/openai/realtime/handler.py` added +119/-0 (119 lines); hunks: -0,0 +1,119; symbols: _safe_send, _safe_close, _reject_before_session, handle_realtime_transcription
+  - `python/sglang/srt/entrypoints/openai/realtime/protocol.py` added +78/-0 (78 lines); hunks: -0,0 +1,78; symbols: AudioPCM, AudioPCMU, AudioPCMA, AudioTranscription
 - Key code excerpts:
 
 ```diff
@@ -3128,10 +3132,21 @@ diff -- test/manual/models/test_qwen3_asr.py
 +import asyncio
 +import base64
 +import json
+diff -- python/sglang/srt/entrypoints/openai/realtime/session.py
+@@ -0,0 +1,740 @@
++"""WebSocket session for realtime ASR.
++Pre-commit deltas reference the reserved current_item_id that the
++subsequent input_audio_buffer.committed and conversation.item.created
++events will announce — sglang-specific, deviates from OpenAI's
++commit-only delta emission.
++"""
+diff -- python/sglang/srt/entrypoints/openai/streaming_asr.py
+@@ -1,8 +1,26 @@
 ```
 
 - Reviewed files:
   - tests: `test/manual/models/test_qwen3_asr.py` modified +547/-3
+  - runtime: `python/sglang/srt/entrypoints/openai/realtime/session.py` added +740/-0; `python/sglang/srt/entrypoints/openai/streaming_asr.py` modified +123/-7; `python/sglang/srt/entrypoints/openai/realtime/handler.py` added +119/-0; `python/sglang/srt/entrypoints/openai/realtime/protocol.py` added +78/-0; `python/sglang/srt/entrypoints/openai/serving_transcription.py` modified +32/-37; `python/sglang/srt/entrypoints/http_server.py` modified +12/-0
 - Risk and verification: The diff ships test coverage in `test/manual/models/test_qwen3_asr.py`, `test/registered/unit/entrypoints/openai/test_serving_transcription.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #25813 - docs(cookbook): port popular model usage guides into cookbook pages

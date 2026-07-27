@@ -786,7 +786,7 @@ diff -- vllm/reasoning/identity_reasoning_parser.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/46255
 - 状态/时间: merged / 2026-07-01
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/reasoning/ernie45_reasoning_parser.py`；关联提交 `9294dd27eb9c`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/reasoning/ernie45_reasoning_parser.py`；关联提交 `9294dd27eb9c`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+2/-1，可读 patch 10 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「fix(reasoning): guard rfind in ernie45 streaming branch」；模型线: ERNIE 4.5；类别: 缺陷修复；主要 diff: `vllm/reasoning/ernie45_reasoning_parser.py`；技术摘要: 覆盖「fix(reasoning): guard rfind in ernie45 streaming branch」；主要实现面是 `vllm/reasoning/ernie45_reasoning_parser.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/reasoning/ernie45_reasoning_parser.py` modified +2/-1 (3 lines); hunks: -114,7 +114,8 @@ def extract_reasoning_streaming(; symbols: extract_reasoning_streaming，涉及 `extract_reasoning_streaming`。

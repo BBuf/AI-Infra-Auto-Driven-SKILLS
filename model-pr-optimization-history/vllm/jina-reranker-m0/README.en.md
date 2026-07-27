@@ -10,6 +10,7 @@
 | `examples/pooling/token_embed/jina_embeddings_v4_offline.py` | no direct PR-number commit |
 | `examples/pooling/token_embed/jina_reranker_v3_offline.py` | [#38800](https://github.com/vllm-project/vllm/pull/38800) |
 | `examples/pooling/token_embed/jina_reranker_v3_online.py` | [#47590](https://github.com/vllm-project/vllm/pull/47590) |
+| `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py` | [#49963](https://github.com/vllm-project/vllm/pull/49963) |
 | `tests/models/language/pooling/test_jina_reranker_v3.py` | [#38800](https://github.com/vllm-project/vllm/pull/38800), [#47590](https://github.com/vllm-project/vllm/pull/47590) |
 | `tests/models/language/pooling_mteb_test/test_bge_reranker_v2_gemma.py` | no direct PR-number commit |
 | `tests/models/language/pooling_mteb_test/test_jina.py` | [#26687](https://github.com/vllm-project/vllm/pull/26687), [#38633](https://github.com/vllm-project/vllm/pull/38633), [#39575](https://github.com/vllm-project/vllm/pull/39575) |
@@ -19,9 +20,9 @@
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 9
+- Git-traced PRs: 10
 - Extra PRs preserved from existing docs: 35
-- Total PRs in this document: 44
+- Total PRs in this document: 45
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -40,12 +41,12 @@
 | 2025-09-09 | [#23810](https://github.com/vllm-project/vllm/pull/23810) | merged | [Model] Systematic support for fp32 head, pooling models part | `vllm/model_executor/layers/pooler.py`, `tests/models/language/pooling/mteb_utils.py`, `vllm/model_executor/models/internlm2.py` |
 | 2025-10-05 | [#26247](https://github.com/vllm-project/vllm/pull/26247) | merged | Convert formatting to use `ruff` instead of `yapf` + `isort` | `tests/entrypoints/test_chat_utils.py`, `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/fused_moe.py` |
 | 2025-10-12 | [#26633](https://github.com/vllm-project/vllm/pull/26633) | merged | Update `Optional[x]` -> `x \| None` and `Union[x, y]` to `x \| y` | `vllm/entrypoints/openai/protocol.py`, `vllm/entrypoints/llm.py`, `vllm/model_executor/layers/fused_moe/layer.py` |
-| 2025-10-13 | [#26687](https://github.com/vllm-project/vllm/pull/26687) | merged | [Bugfix] Fix out of bound index issue for Jina-embedding-v3 RoPE with cuda graph | `tests/models/language/pooling_mteb_test/test_jina.py` |
+| 2025-10-13 | [#26687](https://github.com/vllm-project/vllm/pull/26687) | merged | [Bugfix] Fix out of bound index issue for Jina-embedding-v3 RoPE with cuda graph | `tests/models/language/pooling_mteb_test/test_jina.py`, `vllm/model_executor/models/config.py` |
 | 2025-10-15 | [#25370](https://github.com/vllm-project/vllm/pull/25370) | merged | [Model][2/N] Improve all pooling task \| Support multi-vector retrieval | `vllm/model_executor/layers/pooler.py`, `tests/models/language/pooling/test_pooler_config_init_behaviour.py`, `tests/models/language/pooling/test_multi_vector_retrieval.py` |
 | 2025-12-02 | [#29802](https://github.com/vllm-project/vllm/pull/29802) | merged | Fix some Transformers nightly tests | `vllm/model_executor/models/modernbert.py`, `vllm/model_executor/models/jina_vl.py`, `vllm/model_executor/models/qwen2.py` |
-| 2025-12-29 | [#31445](https://github.com/vllm-project/vllm/pull/31445) | merged | [Bugfix][Frontend] Fix Jina reranker multimodal input compatibility | `tests/models/multimodal/pooling/test_jinavl_reranker.py` |
+| 2025-12-29 | [#31445](https://github.com/vllm-project/vllm/pull/31445) | merged | [Bugfix][Frontend] Fix Jina reranker multimodal input compatibility | `tests/models/multimodal/pooling/test_jinavl_reranker.py`, `vllm/entrypoints/score_utils.py` |
 | 2026-01-05 | [#31669](https://github.com/vllm-project/vllm/pull/31669) | merged | [Misc][Model][Refactor] Pass the prefix into Linear layers | `vllm/model_executor/models/molmo.py`, `vllm/model_executor/models/modernbert.py`, `vllm/model_executor/models/qwen_vl.py` |
-| 2026-01-08 | [#31890](https://github.com/vllm-project/vllm/pull/31890) | merged | [Models] Allow converting Qwen3-VL into Reranker model | `examples/pooling/score/template/qwen3_vl_reranker.jinja` |
+| 2026-01-08 | [#31890](https://github.com/vllm-project/vllm/pull/31890) | merged | [Models] Allow converting Qwen3-VL into Reranker model | `examples/pooling/score/template/qwen3_vl_reranker.jinja`, `vllm/model_executor/models/adapters.py`, `vllm/model_executor/models/config.py` |
 | 2026-01-09 | [#31973](https://github.com/vllm-project/vllm/pull/31973) | merged | [Model] Reorganize pooling layers | `vllm/model_executor/layers/pooler.py`, `vllm/model_executor/layers/pooler/activations.py`, `vllm/model_executor/layers/pooler/seqwise/heads.py` |
 | 2026-01-12 | [#32085](https://github.com/vllm-project/vllm/pull/32085) | merged | [Model] Improve multimodal pooling examples | `examples/pooling/score/openai_cross_encoder_score_for_multimodal.py`, `examples/pooling/embed/vision_embedding_online.py`, `examples/pooling/embed/vision_embedding_offline.py` |
 | 2026-01-16 | [#32395](https://github.com/vllm-project/vllm/pull/32395) | merged | [Frontend][1/n] Make pooling entrypoints request schema consensus \| CompletionRequest | `tests/entrypoints/pooling/embed/test_online.py`, `tests/entrypoints/pooling/classify/test_online.py`, `tests/entrypoints/pooling/pooling/test_online.py` |
@@ -65,14 +66,15 @@
 | 2026-04-16 | [#39575](https://github.com/vllm-project/vllm/pull/39575) | merged | Add Jina Embeddings v5 model support (fixes #38633) | `vllm/model_executor/models/jina.py`, `tests/models/language/pooling_mteb_test/test_jina.py` |
 | 2026-04-16 | [#39675](https://github.com/vllm-project/vllm/pull/39675) | merged | [Frontend][last/5] Improve pooling entrypoints \| clean up. | `vllm/entrypoints/pooling/factories.py`, `vllm/entrypoints/pooling/__init__.py`, `vllm/entrypoints/sagemaker/api_router.py` |
 | 2026-05-06 | [#41832](https://github.com/vllm-project/vllm/pull/41832) | merged | [Doc] Add ModernBertForSequenceClassification to scoring.md cross-en… | `docs/models/pooling_models/scoring.md` |
-| 2026-05-14 | [#42412](https://github.com/vllm-project/vllm/pull/42412) | merged | [Feature] Add instruction support for score/rerank chat templates | `examples/pooling/score/template/qwen3_vl_reranker.jinja` |
+| 2026-05-14 | [#42412](https://github.com/vllm-project/vllm/pull/42412) | merged | [Feature] Add instruction support for score/rerank chat templates | `examples/pooling/score/template/qwen3_vl_reranker.jinja`, `vllm/entrypoints/pooling/scoring/protocol.py`, `vllm/entrypoints/pooling/scoring/io_processor.py` |
 | 2026-05-15 | [#42267](https://github.com/vllm-project/vllm/pull/42267) | merged | [Entrypoints] Split the pooling offline API into PoolingOfflineMixin. | `vllm/entrypoints/pooling/offline.py`, `vllm/entrypoints/llm.py`, `docs/models/pooling_models/README.md` |
 | 2026-05-19 | [#42626](https://github.com/vllm-project/vllm/pull/42626) | merged | [Docs] Add SVG images for pooling models. | `docs/assets/models/pooling_models/score_types.svg`, `docs/assets/models/pooling_models/cheat_sheet.svg`, `docs/assets/models/pooling_models/pooling_types.svg` |
 | 2026-05-19 | [#41907](https://github.com/vllm-project/vllm/pull/41907) | merged | [Docs] Reorganize online serving docs. | `docs/assets/models/pooling_models/cheat_sheet.svg`, `docs/models/pooling_models/README.md`, `docs/models/supported_models.md` |
 | 2026-05-22 | [#43393](https://github.com/vllm-project/vllm/pull/43393) | merged | [Docs] Note image preprocessing difference between qwen_vl_utils and vllm. | `docs/models/supported_models.md`, `docs/models/pooling_models/embed.md`, `docs/models/pooling_models/scoring.md` |
 | 2026-06-15 | [#45676](https://github.com/vllm-project/vllm/pull/45676) | merged | [Docs] Update the online serving docs. | `docs/models/pooling_models/scoring.md`, `docs/models/pooling_models/README.md`, `docs/serving/online_serving/README.md` |
 | 2026-06-23 | [#46398](https://github.com/vllm-project/vllm/pull/46398) | merged | [Doc] Fix typos, grammar, and broken commands across docs | `docs/models/pooling_models/README.md`, `docs/models/pooling_models/scoring.md`, `docs/benchmarking/cli.md` |
-| 2026-07-05 | [#47590](https://github.com/vllm-project/vllm/pull/47590) | merged | [Bugfix][Pooling] Forward instruction to Jina reranker scoring prompts | `tests/models/language/pooling/test_jina_reranker_v3.py`, `examples/pooling/token_embed/jina_reranker_v3_online.py` |
+| 2026-07-05 | [#47590](https://github.com/vllm-project/vllm/pull/47590) | merged | [Bugfix][Pooling] Forward instruction to Jina reranker scoring prompts | `tests/models/language/pooling/test_jina_reranker_v3.py`, `examples/pooling/token_embed/jina_reranker_v3_online.py`, `vllm/entrypoints/pooling/scoring/io_processor.py` |
+| 2026-07-27 | [#49963](https://github.com/vllm-project/vllm/pull/49963) | merged | [Bugfix] Restore truncate_prompt_tokens for Jina rerank/score online | `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py`, `vllm/entrypoints/pooling/scoring/io_processor.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -521,10 +523,11 @@ diff -- vllm/model_executor/layers/fused_moe/layer.py
 - Status/date: merged / 2025-10-13
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/language/pooling_mteb_test/test_jina.py`; associated commits `8e67b2557aae`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +13/-7, 49 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix out of bound index issue for Jina-embedding-v3 RoPE with cuda graph"; model line: Jina Reranker M0; category: bug fix; main diff: `tests/models/language/pooling_mteb_test/test_jina.py`; technical summary: Covers "[Bugfix] Fix out of bound index issue for Jina-embedding-v3 RoPE with cuda graph"; the main implementation surface is `tests/models/language/pooling_mteb_test/test_jina.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `tests/models/language/pooling_mteb_test/test_jina.py` modified +0/-4 (4 lines); hunks: -25,10 +25,6.
+- Motivation: Title: "[Bugfix] Fix out of bound index issue for Jina-embedding-v3 RoPE with cuda graph"; model line: Jina Reranker M0; category: bug fix; main diff: `tests/models/language/pooling_mteb_test/test_jina.py`, `vllm/model_executor/models/config.py`; technical summary: Covers "[Bugfix] Fix out of bound index issue for Jina-embedding-v3 RoPE with cuda graph"; the main implementation surface is `tests/models/language/pooling_mteb_test/test_jina.py`, `vllm/model_executor/models/config.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/models/language/pooling_mteb_test/test_jina.py` modified +0/-4 (4 lines); hunks: -25,10 +25,6; `vllm/model_executor/models/config.py` modified +13/-3 (16 lines); hunks: -6,7 +6,7; -59,16 +59,26 @@ def verify_and_update_config(vllm_config: "VllmConfig") -> N...; symbols: verify_and_update_config, JinaRobertaModelConfig, touching `verify_and_update_config, JinaRobertaModelConfig`.
 - Code diff details:
   - `tests/models/language/pooling_mteb_test/test_jina.py` modified +0/-4 (4 lines); hunks: -25,10 +25,6
+  - `vllm/model_executor/models/config.py` modified +13/-3 (16 lines); hunks: -6,7 +6,7; -59,16 +59,26 @@ def verify_and_update_config(vllm_config: "VllmConfig") -> N...; symbols: verify_and_update_config, JinaRobertaModelConfig
 - Key code excerpts:
 
 ```diff
@@ -534,10 +537,19 @@ diff -- tests/models/language/pooling_mteb_test/test_jina.py
 -        # CUDAGraph due to odd length for Gemm. We set it to 8192 to avoid
 -        # avoid this issue.
 -        max_model_len=8192,
+diff -- vllm/model_executor/models/config.py
+@@ -6,7 +6,7 @@
+-from vllm.utils import STR_DTYPE_TO_TORCH_DTYPE, cdiv
++from vllm.utils import STR_DTYPE_TO_TORCH_DTYPE, cdiv, round_up
+@@ -59,16 +59,26 @@ def verify_and_update_config(vllm_config: "VllmConfig") -> None:
+-        config = vllm_config.model_config.hf_config
++        model_config = vllm_config.model_config
++        config = model_config.hf_config
 ```
 
 - Reviewed files:
   - tests: `tests/models/language/pooling_mteb_test/test_jina.py` modified +0/-4
+  - runtime: `vllm/model_executor/models/config.py` modified +13/-3
 - Risk and verification: The diff ships test coverage in `tests/models/language/pooling_mteb_test/test_jina.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #25370 - [Model][2/N] Improve all pooling task | Support multi-vector retrieval
@@ -625,10 +637,11 @@ diff -- vllm/model_executor/models/qwen2.py
 - Status/date: merged / 2025-12-29
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/pooling/test_jinavl_reranker.py`; associated commits `bf73a3e4d7e1`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +316/-138, 519 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix][Frontend] Fix Jina reranker multimodal input compatibility"; model line: Jina Reranker M0; category: bug fix; main diff: `tests/models/multimodal/pooling/test_jinavl_reranker.py`; technical summary: Covers "[Bugfix][Frontend] Fix Jina reranker multimodal input compatibility"; the main implementation surface is `tests/models/multimodal/pooling/test_jinavl_reranker.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `tests/models/multimodal/pooling/test_jinavl_reranker.py` modified +313/-137 (450 lines); hunks: -1,194 +1,370; symbols: vllm_reranker, _normalize_image, create_score_multimodal_param, _run_vllm, touching `vllm_reranker, _normalize_image, create_score_multimodal_param`.
+- Motivation: Title: "[Bugfix][Frontend] Fix Jina reranker multimodal input compatibility"; model line: Jina Reranker M0; category: bug fix; main diff: `tests/models/multimodal/pooling/test_jinavl_reranker.py`, `vllm/entrypoints/score_utils.py`; technical summary: Covers "[Bugfix][Frontend] Fix Jina reranker multimodal input compatibility"; the main implementation surface is `tests/models/multimodal/pooling/test_jinavl_reranker.py`, `vllm/entrypoints/score_utils.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/models/multimodal/pooling/test_jinavl_reranker.py` modified +313/-137 (450 lines); hunks: -1,194 +1,370; symbols: vllm_reranker, _normalize_image, create_score_multimodal_param, _run_vllm, touching `vllm_reranker, _normalize_image, create_score_multimodal_param`; `vllm/entrypoints/score_utils.py` modified +3/-1 (4 lines); hunks: -24,7 +24,9.
 - Code diff details:
   - `tests/models/multimodal/pooling/test_jinavl_reranker.py` modified +313/-137 (450 lines); hunks: -1,194 +1,370; symbols: vllm_reranker, _normalize_image, create_score_multimodal_param, _run_vllm
+  - `vllm/entrypoints/score_utils.py` modified +3/-1 (4 lines); hunks: -24,7 +24,9
 - Key code excerpts:
 
 ```diff
@@ -640,10 +653,17 @@ diff -- tests/models/multimodal/pooling/test_jinavl_reranker.py
 +    ChatCompletionContentPartImageEmbedsParam,
 +    ChatCompletionContentPartImageParam,
 +    ChatCompletionContentPartTextParam,
+diff -- vllm/entrypoints/score_utils.py
+@@ -24,7 +24,9 @@
+-    ChatCompletionContentPartImageParam | ChatCompletionContentPartImageEmbedsParam
++    ChatCompletionContentPartImageParam
++    | ChatCompletionContentPartImageEmbedsParam
++    | ChatCompletionContentPartTextParam
 ```
 
 - Reviewed files:
   - tests: `tests/models/multimodal/pooling/test_jinavl_reranker.py` modified +313/-137
+  - runtime: `vllm/entrypoints/score_utils.py` modified +3/-1
 - Risk and verification: The diff ships test coverage in `tests/models/multimodal/pooling/test_jinavl_reranker.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #31669 - [Misc][Model][Refactor] Pass the prefix into Linear layers
@@ -693,10 +713,13 @@ diff -- vllm/model_executor/models/qwen_vl.py
 - Status/date: merged / 2026-01-08
 - Trace source: `git log --name-only -- <model-files>` found it through `examples/pooling/score/template/qwen3_vl_reranker.jinja`; associated commits `eac3b96ec04d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +287/-13, 415 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Models] Allow converting Qwen3-VL into Reranker model"; model line: Jina Reranker M0; category: model implementation change; main diff: `examples/pooling/score/template/qwen3_vl_reranker.jinja`; technical summary: Covers "[Models] Allow converting Qwen3-VL into Reranker model"; the main implementation surface is `examples/pooling/score/template/qwen3_vl_reranker.jinja`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `examples/pooling/score/template/qwen3_vl_reranker.jinja` added +23/-0 (23 lines); hunks: -0,0 +1,23.
+- Motivation: Title: "[Models] Allow converting Qwen3-VL into Reranker model"; model line: Jina Reranker M0; category: model implementation change; main diff: `examples/pooling/score/template/qwen3_vl_reranker.jinja`, `vllm/model_executor/models/adapters.py`, `vllm/model_executor/models/config.py`; technical summary: Covers "[Models] Allow converting Qwen3-VL into Reranker model"; the main implementation surface is `examples/pooling/score/template/qwen3_vl_reranker.jinja`, `vllm/model_executor/models/adapters.py`, `vllm/model_executor/models/config.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `examples/pooling/score/template/qwen3_vl_reranker.jinja` added +23/-0 (23 lines); hunks: -0,0 +1,23; `vllm/model_executor/models/adapters.py` modified +36/-13 (49 lines); hunks: -333,9 +333,14 @@ def _init_pooler(self, vllm_config: "VllmConfig", prefix: s...; -366,9 +371,14 @@ def auto_set_score_bias(weights):; symbols: _init_pooler, load_weights, auto_set_score_bias, SequenceClassificationConfig, touching `_init_pooler, load_weights, auto_set_score_bias`; `vllm/model_executor/models/config.py` modified +5/-0 (5 lines); hunks: -256,6 +256,10 @@ def verify_and_update_model_config(model_config: "ModelConf...; -551,6 +555,7 @@ def verify_and_update_config(vllm_config: "VllmConfig") -> N...; symbols: verify_and_update_model_config, Qwen3VLForSequenceClassificationConfig, JinaVLForSequenceClassificationConfig, verify_and_update_config, touching `verify_and_update_model_config, Qwen3VLForSequenceClassificationConfig, JinaVLForSequenceClassificationConfig`; `vllm/entrypoints/score_utils.py` modified +2/-0 (2 lines); hunks: -11,6 +11,7; -27,6 +28,7.
 - Code diff details:
   - `examples/pooling/score/template/qwen3_vl_reranker.jinja` added +23/-0 (23 lines); hunks: -0,0 +1,23
+  - `vllm/model_executor/models/adapters.py` modified +36/-13 (49 lines); hunks: -333,9 +333,14 @@ def _init_pooler(self, vllm_config: "VllmConfig", prefix: s...; -366,9 +371,14 @@ def auto_set_score_bias(weights):; symbols: _init_pooler, load_weights, auto_set_score_bias, SequenceClassificationConfig
+  - `vllm/model_executor/models/config.py` modified +5/-0 (5 lines); hunks: -256,6 +256,10 @@ def verify_and_update_model_config(model_config: "ModelConf...; -551,6 +555,7 @@ def verify_and_update_config(vllm_config: "VllmConfig") -> N...; symbols: verify_and_update_model_config, Qwen3VLForSequenceClassificationConfig, JinaVLForSequenceClassificationConfig, verify_and_update_config
+  - `vllm/entrypoints/score_utils.py` modified +2/-0 (2 lines); hunks: -11,6 +11,7; -27,6 +28,7
 - Key code excerpts:
 
 ```diff
@@ -708,10 +731,21 @@ diff -- examples/pooling/score/template/qwen3_vl_reranker.jinja
 +<Instruct>: {{
 +    messages
 +    | selectattr("role", "eq", "system")
+diff -- vllm/model_executor/models/adapters.py
+@@ -333,9 +333,14 @@ def _init_pooler(self, vllm_config: "VllmConfig", prefix: str = ""):
+-            text_config = self.config.get_text_config()
+-            tokens = getattr(text_config, "classifier_from_token", None)
+-            method = getattr(text_config, "method", None)
++            hf_config = self.config
++            text_config = hf_config.get_text_config()
++            tokens = getattr(
+diff -- vllm/model_executor/models/config.py
+@@ -256,6 +256,10 @@ def verify_and_update_model_config(model_config: "ModelConfig") -> None:
 ```
 
 - Reviewed files:
   - docs: `examples/pooling/score/template/qwen3_vl_reranker.jinja` added +23/-0
+  - runtime: `vllm/model_executor/models/adapters.py` modified +36/-13; `vllm/model_executor/models/config.py` modified +5/-0; `vllm/entrypoints/score_utils.py` modified +2/-0
 - Risk and verification: The diff ships test coverage in `tests/models/registry.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #31973 - [Model] Reorganize pooling layers
@@ -1475,10 +1509,12 @@ diff -- docs/models/pooling_models/scoring.md
 - Status/date: merged / 2026-05-14
 - Trace source: `git log --name-only -- <model-files>` found it through `examples/pooling/score/template/qwen3_vl_reranker.jinja`; associated commits `70c00163ffa8`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +182/-12, 285 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Feature] Add instruction support for score/rerank chat templates"; model line: Jina Reranker M0; category: model support/runtime entry; main diff: `examples/pooling/score/template/qwen3_vl_reranker.jinja`; technical summary: Covers "[Feature] Add instruction support for score/rerank chat templates"; the main implementation surface is `examples/pooling/score/template/qwen3_vl_reranker.jinja`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `examples/pooling/score/template/qwen3_vl_reranker.jinja` modified +1/-7 (8 lines); hunks: -1,13 +1,7.
+- Motivation: Title: "[Feature] Add instruction support for score/rerank chat templates"; model line: Jina Reranker M0; category: model support/runtime entry; main diff: `examples/pooling/score/template/qwen3_vl_reranker.jinja`, `vllm/entrypoints/pooling/scoring/protocol.py`, `vllm/entrypoints/pooling/scoring/io_processor.py`; technical summary: Covers "[Feature] Add instruction support for score/rerank chat templates"; the main implementation surface is `examples/pooling/score/template/qwen3_vl_reranker.jinja`, `vllm/entrypoints/pooling/scoring/protocol.py`, `vllm/entrypoints/pooling/scoring/io_processor.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `examples/pooling/score/template/qwen3_vl_reranker.jinja` modified +1/-7 (8 lines); hunks: -1,13 +1,7; `vllm/entrypoints/pooling/scoring/protocol.py` modified +31/-2 (33 lines); hunks: -1,9 +1,9; -35,8 +35,37 @@ class ScoringRequestMixin(PoolingBasicRequestMixin, ClassifyR...; symbols: ScoringRequestMixin, _merge_instruction_into_kwargs, build_tok_params, touching `ScoringRequestMixin, _merge_instruction_into_kwargs, build_tok_params`; `vllm/entrypoints/pooling/scoring/io_processor.py` modified +17/-2 (19 lines); hunks: -157,7 +157,7 @@ def pre_process_online(self, ctx: ScoringServeContext):; -384,7 +384,7 @@ def pre_process_online(self, ctx: ScoringServeContext):; symbols: pre_process_online, pre_process_offline, _pre_process, get_score_prompt, touching `pre_process_online, pre_process_offline, _pre_process`.
 - Code diff details:
   - `examples/pooling/score/template/qwen3_vl_reranker.jinja` modified +1/-7 (8 lines); hunks: -1,13 +1,7
+  - `vllm/entrypoints/pooling/scoring/protocol.py` modified +31/-2 (33 lines); hunks: -1,9 +1,9; -35,8 +35,37 @@ class ScoringRequestMixin(PoolingBasicRequestMixin, ClassifyR...; symbols: ScoringRequestMixin, _merge_instruction_into_kwargs, build_tok_params
+  - `vllm/entrypoints/pooling/scoring/io_processor.py` modified +17/-2 (19 lines); hunks: -157,7 +157,7 @@ def pre_process_online(self, ctx: ScoringServeContext):; -384,7 +384,7 @@ def pre_process_online(self, ctx: ScoringServeContext):; symbols: pre_process_online, pre_process_offline, _pre_process, get_score_prompt
 - Key code excerpts:
 
 ```diff
@@ -1490,10 +1526,21 @@ diff -- examples/pooling/score/template/qwen3_vl_reranker.jinja
 -    | map(attribute="content")
 -    | first
 -    | default("Given a search query, retrieve relevant candidates that answer the query.")
+diff -- vllm/entrypoints/pooling/scoring/protocol.py
+@@ -1,9 +1,9 @@
+-from typing import TypeAlias
++from typing import Any, TypeAlias
+-from pydantic import BaseModel, Field
++from pydantic import BaseModel, Field, model_validator
+@@ -35,8 +35,37 @@ class ScoringRequestMixin(PoolingBasicRequestMixin, ClassifyRequestMixin):
++    instruction: str | None = Field(
+diff -- vllm/entrypoints/pooling/scoring/io_processor.py
+@@ -157,7 +157,7 @@ def pre_process_online(self, ctx: ScoringServeContext):
 ```
 
 - Reviewed files:
   - docs: `examples/pooling/score/template/qwen3_vl_reranker.jinja` modified +1/-7
+  - runtime: `vllm/entrypoints/pooling/scoring/protocol.py` modified +31/-2; `vllm/entrypoints/pooling/scoring/io_processor.py` modified +17/-2
 - Risk and verification: The diff ships test coverage in `tests/entrypoints/pooling/scoring/test_cross_encoder_online_vision.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #42267 - [Entrypoints] Split the pooling offline API into PoolingOfflineMixin.
@@ -1739,13 +1786,14 @@ diff -- docs/benchmarking/cli.md
 
 - Link: https://github.com/vllm-project/vllm/pull/47590
 - Status/date: merged / 2026-07-05
-- Trace source: `git log --name-only -- <model-files>` found it through `examples/pooling/token_embed/jina_reranker_v3_online.py`, `tests/models/language/pooling/test_jina_reranker_v3.py`; associated commits `922661304357`
+- Trace source: `git log --name-only -- <model-files>` found it through `examples/pooling/token_embed/jina_reranker_v3_online.py`, `tests/models/language/pooling/test_jina_reranker_v3.py`; associated commits `922661304357`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +179/-22, 281 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix][Pooling] Forward instruction to Jina reranker scoring prompts"; model line: Jina Reranker M0; category: bug fix; main diff: `tests/models/language/pooling/test_jina_reranker_v3.py`, `examples/pooling/token_embed/jina_reranker_v3_online.py`; technical summary: Covers "[Bugfix][Pooling] Forward instruction to Jina reranker scoring prompts"; the main implementation surface is `tests/models/language/pooling/test_jina_reranker_v3.py`, `examples/pooling/token_embed/jina_reranker_v3_online.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `tests/models/language/pooling/test_jina_reranker_v3.py` modified +84/-9 (93 lines); hunks: -8,7 +8,7; -39,6 +39,10; symbols: test_offline, test_online, _test_offline_token_embed_illegal_inputs, _get_scores, touching `test_offline, test_online, _test_offline_token_embed_illegal_inputs`; `examples/pooling/token_embed/jina_reranker_v3_online.py` added +73/-0 (73 lines); hunks: -0,0 +1,73; symbols: post_http_request, print_response, parse_args, main, touching `post_http_request, print_response, parse_args`.
+- Motivation: Title: "[Bugfix][Pooling] Forward instruction to Jina reranker scoring prompts"; model line: Jina Reranker M0; category: bug fix; main diff: `tests/models/language/pooling/test_jina_reranker_v3.py`, `examples/pooling/token_embed/jina_reranker_v3_online.py`, `vllm/entrypoints/pooling/scoring/io_processor.py`; technical summary: Covers "[Bugfix][Pooling] Forward instruction to Jina reranker scoring prompts"; the main implementation surface is `tests/models/language/pooling/test_jina_reranker_v3.py`, `examples/pooling/token_embed/jina_reranker_v3_online.py`, `vllm/entrypoints/pooling/scoring/io_processor.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/models/language/pooling/test_jina_reranker_v3.py` modified +84/-9 (93 lines); hunks: -8,7 +8,7; -39,6 +39,10; symbols: test_offline, test_online, _test_offline_token_embed_illegal_inputs, _get_scores, touching `test_offline, test_online, _test_offline_token_embed_illegal_inputs`; `examples/pooling/token_embed/jina_reranker_v3_online.py` added +73/-0 (73 lines); hunks: -0,0 +1,73; symbols: post_http_request, print_response, parse_args, main, touching `post_http_request, print_response, parse_args`; `vllm/entrypoints/pooling/scoring/io_processor.py` modified +22/-13 (35 lines); hunks: -618,12 +618,6 @@ def default_tokenizer_encode():; -641,11 +635,13 @@ def format_docs_prompts_func(; symbols: default_tokenizer_encode, JinaRankingIOProcessorMixin, sanitize_input, format_docs_prompts_func, touching `default_tokenizer_encode, JinaRankingIOProcessorMixin, sanitize_input`.
 - Code diff details:
   - `tests/models/language/pooling/test_jina_reranker_v3.py` modified +84/-9 (93 lines); hunks: -8,7 +8,7; -39,6 +39,10; symbols: test_offline, test_online, _test_offline_token_embed_illegal_inputs, _get_scores
   - `examples/pooling/token_embed/jina_reranker_v3_online.py` added +73/-0 (73 lines); hunks: -0,0 +1,73; symbols: post_http_request, print_response, parse_args, main
+  - `vllm/entrypoints/pooling/scoring/io_processor.py` modified +22/-13 (35 lines); hunks: -618,12 +618,6 @@ def default_tokenizer_encode():; -641,11 +635,13 @@ def format_docs_prompts_func(; symbols: default_tokenizer_encode, JinaRankingIOProcessorMixin, sanitize_input, format_docs_prompts_func
 - Key code excerpts:
 
 ```diff
@@ -1765,12 +1813,52 @@ diff -- examples/pooling/token_embed/jina_reranker_v3_online.py
 +"""
 +Example online usage of the Jina Reranker v3 score and rerank APIs with a task
 +instruction.
+diff -- vllm/entrypoints/pooling/scoring/io_processor.py
+@@ -618,12 +618,6 @@ def default_tokenizer_encode():
 ```
 
 - Reviewed files:
   - tests: `tests/models/language/pooling/test_jina_reranker_v3.py` modified +84/-9
   - docs: `examples/pooling/token_embed/jina_reranker_v3_online.py` added +73/-0
+  - runtime: `vllm/entrypoints/pooling/scoring/io_processor.py` modified +22/-13
 - Risk and verification: The diff ships test coverage in `tests/models/language/pooling/test_jina_reranker_v3.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #49963 - [Bugfix] Restore truncate_prompt_tokens for Jina rerank/score online
+
+- Link: https://github.com/vllm-project/vllm/pull/49963
+- Status/date: merged / 2026-07-27
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py`; associated commits `27d7061ef62b`
+- Diff scope read: GitHub Pull Request files API returned 2 files, +69/-1, 78 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Bugfix] Restore truncate_prompt_tokens for Jina rerank/score online"; model line: Jina Reranker M0; category: bug fix; main diff: `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py`, `vllm/entrypoints/pooling/scoring/io_processor.py`; technical summary: Covers "[Bugfix] Restore truncate_prompt_tokens for Jina rerank/score online"; the main implementation surface is `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py`, `vllm/entrypoints/pooling/scoring/io_processor.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py` added +59/-0 (59 lines); hunks: -0,0 +1,59; symbols: test_online_forwards_truncate_prompt_tokens_to_proxy, _spy_base, touching `test_online_forwards_truncate_prompt_tokens_to_proxy, _spy_base`; `vllm/entrypoints/pooling/scoring/io_processor.py` modified +10/-1 (11 lines); hunks: -820,7 +820,16 @@ def get_request_factory_online(; symbols: get_request_factory_online, touching `get_request_factory_online`.
+- Code diff details:
+  - `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py` added +59/-0 (59 lines); hunks: -0,0 +1,59; symbols: test_online_forwards_truncate_prompt_tokens_to_proxy, _spy_base
+  - `vllm/entrypoints/pooling/scoring/io_processor.py` modified +10/-1 (11 lines); hunks: -820,7 +820,16 @@ def get_request_factory_online(; symbols: get_request_factory_online
+- Key code excerpts:
+
+```diff
+diff -- tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py
+@@ -0,0 +1,59 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++"""Unit tests for JinaRankingIOProcessor online request building."""
++from unittest.mock import MagicMock
++import pytest
++from vllm.entrypoints.pooling.base.io_processor import PoolingIOProcessor
+diff -- vllm/entrypoints/pooling/scoring/io_processor.py
+@@ -820,7 +820,16 @@ def get_request_factory_online(
+-        ctx.request = PoolingCompletionRequest(task="token_embed", input=prompts)
++        # Forward truncation from the real request: the base factory reads
++        # these off ctx.request, so omitting them here silently drops
++        # truncate_prompt_tokens for Jina rerank/score (unlike the embed and
++        # bi/cross-encoder paths, which read them from the real request).
++        ctx.request = PoolingCompletionRequest(
+```
+
+- Reviewed files:
+  - tests: `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py` added +59/-0
+  - runtime: `vllm/entrypoints/pooling/scoring/io_processor.py` modified +10/-1
+- Risk and verification: The diff ships test coverage in `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes
 

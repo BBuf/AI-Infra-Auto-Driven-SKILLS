@@ -49,7 +49,7 @@
 
 - 链接: https://github.com/sgl-project/sglang/pull/23486
 - 状态/时间: merged / 2026-04-22
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`；关联提交 `de962f327432`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`；关联提交 `de962f327432`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+55/-17，可读 patch 170 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「docs(cookbook): add Qwen3.6-27B dense variant」；模型线: Qwen3.6；类别: 文档/测试/CI；主要 diff: `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`；技术摘要: 覆盖「docs(cookbook): add Qwen3.6-27B dense variant」；主要实现面是 `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx` modified +30/-10 (40 lines); hunks: -1,26 +1,29; -29,30 +32,43 @@ Qwen3.6 features a Gated Delta Networks combined with sparse...；`docs_new/src/snippets/autoregressive/qwen36-deployment.jsx` modified +25/-7 (32 lines); hunks: -10,6 +10,14 @@ export const Qwen36Deployment = () => {; -66,9 +74,18 @@ export const Qwen36Deployment = () => {。
@@ -85,7 +85,7 @@ diff -- docs_new/src/snippets/autoregressive/qwen36-deployment.jsx
 
 - 链接: https://github.com/sgl-project/sglang/pull/29905
 - 状态/时间: merged / 2026-07-02
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`；关联提交 `1c75243f5eda`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`；关联提交 `1c75243f5eda`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+50/-12，可读 patch 111 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「docs: add Qwen3.6-27B-NVFP4 variant to cookbook」；模型线: Qwen3.6；类别: 性能/后端优化；主要 diff: `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`, `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`；技术摘要: 覆盖「docs: add Qwen3.6-27B-NVFP4 variant to cookbook」；主要实现面是 `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`, `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx` modified +42/-12 (54 lines); hunks: -23,10 +23,19 @@ export const Qwen36Deployment = () => {; -93,8 +102,8 @@ export const Qwen36Deployment = () => {；`docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx` modified +8/-0 (8 lines); hunks: -57,6 +57,11 @@ Both variants share the same hybrid reasoning, tool-calling,...; -75,6 +80,9 @@ uv pip install 'git+https://github.com/sgl-project/sglang.git#...。
@@ -121,7 +121,7 @@ diff -- docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx
 
 - 链接: https://github.com/sgl-project/sglang/pull/29964
 - 状态/时间: merged / 2026-07-07
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`；关联提交 `f32b4ecd26ff`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`；关联提交 `f32b4ecd26ff`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-4，可读 patch 14 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Docs] Use trtllm_mha for Qwen3.6 B300」；模型线: Qwen3.6；类别: 文档/测试/CI；主要 diff: `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`；技术摘要: 覆盖「[Docs] Use trtllm_mha for Qwen3.6 B300」；主要实现面是 `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx` modified +1/-4 (5 lines); hunks: -222,12 +222,9 @@ export const Qwen36Deployment = () => {。
@@ -147,7 +147,7 @@ diff -- docs_new/src/snippets/autoregressive/qwen36-deployment.jsx
 
 - 链接: https://github.com/sgl-project/sglang/pull/31413
 - 状态/时间: merged / 2026-07-25
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`；关联提交 `953c587adf16`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`；关联提交 `953c587adf16`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+26/-9，可读 patch 115 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Docs] Add Qwen3.6 35B NVFP4 to cookbook」；模型线: Qwen3.6；类别: 性能/后端优化；主要 diff: `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`；技术摘要: 覆盖「[Docs] Add Qwen3.6 35B NVFP4 to cookbook」；主要实现面是 `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx` modified +21/-3 (24 lines); hunks: -47,6 +47,11 @@ Both variants share the same hybrid reasoning, tool-calling,...; -78,7 +83,7 @@ uv pip install sglang；`docs_new/src/snippets/autoregressive/qwen36-deployment.jsx` modified +5/-6 (11 lines); hunks: -23,14 +23,13 @@ export const Qwen36Deployment = () => {; -94,8 +93,8 @@ export const Qwen36Deployment = () => {。

@@ -430,7 +430,7 @@ diff -- vllm/model_executor/models/qwen3_moe.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/23490
 - 状态/时间: merged / 2025-08-25
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_moe.py`；关联提交 `a9082a4d144e`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_moe.py`；关联提交 `a9082a4d144e`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+18/-6，可读 patch 43 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Fix Qwen3 MoE GPTQ inference」；模型线: Qwen3 Core；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_moe.py`；技术摘要: 覆盖「[Bugfix] Fix Qwen3 MoE GPTQ inference」；主要实现面是 `vllm/model_executor/models/qwen3_moe.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_moe.py` modified +18/-6 (24 lines); hunks: -45,6 +45,9; -146,11 +149,20 @@ def __init__(; symbols: __init__, _maybe_ignore_quant_config, forward, load_weights，涉及 `__init__, _maybe_ignore_quant_config, forward`。
@@ -457,7 +457,7 @@ diff -- vllm/model_executor/models/qwen3_moe.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/23994
 - 状态/时间: merged / 2025-09-01
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_moe.py`；关联提交 `183a70967a90`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_moe.py`；关联提交 `183a70967a90`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+17/-4，可读 patch 57 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[BUGFIX] GPTQ quantization compatibility for Qwen3 MOE models (AutoGPTQ and AutoRound-GPTQ)」；模型线: Qwen3 Core；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_moe.py`；技术摘要: 覆盖「[BUGFIX] GPTQ quantization compatibility for Qwen3 MOE models (AutoGPTQ and AutoRound-GPTQ)」；主要实现面是 `vllm/model_executor/models/qwen3_moe.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_moe.py` modified +7/-3 (10 lines); hunks: -159,9 +159,13 @@ def __init__(; symbols: __init__, _maybe_ignore_quant_config，涉及 `__init__, _maybe_ignore_quant_config`。
@@ -507,7 +507,7 @@ diff -- vllm/model_executor/models/qwen3_moe.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/24982
 - 状态/时间: merged / 2025-09-27
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_moe.py`；关联提交 `614475401466`, `a5354b3ed247`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_moe.py`；关联提交 `614475401466`, `a5354b3ed247`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 23 个文件，+541/-376，可读 patch 1804 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix][WideEP] Apply TP Attn + EP MoE fix to other models」；模型线: Qwen3 Core；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_moe.py`；技术摘要: 覆盖「[Bugfix][WideEP] Apply TP Attn + EP MoE fix to other models」；主要实现面是 `vllm/model_executor/models/qwen3_moe.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_moe.py` modified +33/-27 (60 lines); hunks: -29,13 +29,13; -51,6 +51,7; symbols: Qwen3MoeSparseMoeBlock, __init__, forward，涉及 `Qwen3MoeSparseMoeBlock, __init__, forward`。
@@ -534,7 +534,7 @@ diff -- vllm/model_executor/models/qwen3_moe.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/25814
 - 状态/时间: merged / 2025-09-28
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_moe.py`；关联提交 `614475401466`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_moe.py`；关联提交 `614475401466`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+4/-4，可读 patch 36 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Fix Qwen3-VL regression from #24982」；模型线: Qwen3 Core；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_moe.py`；技术摘要: 覆盖「[Bugfix] Fix Qwen3-VL regression from #24982」；主要实现面是 `vllm/model_executor/models/qwen3_moe.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_moe.py` modified +4/-4 (8 lines); hunks: -107,7 +107,7 @@ def __init__(; -293,7 +293,7 @@ class Qwen3MoeDecoderLayer(nn.Module):; symbols: __init__, Qwen3MoeDecoderLayer, Qwen3MoeModel，涉及 `__init__, Qwen3MoeDecoderLayer, Qwen3MoeModel`。
@@ -561,7 +561,7 @@ diff -- vllm/model_executor/models/qwen3_moe.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/26485
 - 状态/时间: merged / 2025-10-11
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_moe.py`；关联提交 `d2a71530c159`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_moe.py`；关联提交 `d2a71530c159`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+33/-4，可读 patch 85 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Add EAGLE-3 Speculative Decoding Support for Qwen3 MoE」；模型线: Qwen3 Core；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/qwen3_moe.py`；技术摘要: 覆盖「Add EAGLE-3 Speculative Decoding Support for Qwen3 MoE」；主要实现面是 `vllm/model_executor/models/qwen3_moe.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_moe.py` modified +33/-4 (37 lines); hunks: -64,7 +64,7; -422,6 +422,8 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__, get_input_embeddings, forward, get_expert_mapping，涉及 `__init__, get_input_embeddings, forward`。
@@ -588,7 +588,7 @@ diff -- vllm/model_executor/models/qwen3_moe.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/27492
 - 状态/时间: merged / 2025-11-10
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_moe.py`；关联提交 `34553b9d2702`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_moe.py`；关联提交 `34553b9d2702`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+78/-30，可读 patch 251 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Performance] Support FP8 flashinfer TRTLLM MOE on Qwen3 and Qwen-3next」；模型线: Qwen3 Core；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen3_moe.py`；技术摘要: 覆盖「[Performance] Support FP8 flashinfer TRTLLM MOE on Qwen3 and Qwen-3next」；主要实现面是 `vllm/model_executor/models/qwen3_moe.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_moe.py` modified +2/-0 (2 lines); hunks: -43,6 +43,7; -171,6 +172,7 @@ def __init__(; symbols: __init__，涉及 `__init__`。
@@ -612,7 +612,7 @@ diff -- vllm/model_executor/models/qwen3_moe.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/30308
 - 状态/时间: merged / 2025-12-10
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_moe.py`；关联提交 `06462392e40f`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_moe.py`；关联提交 `06462392e40f`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+14/-0，可读 patch 28 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[bugfix][quantization] fix quark qwen3 kv_cache quantization」；模型线: Qwen3 Core；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_moe.py`；技术摘要: 覆盖「[bugfix][quantization] fix quark qwen3 kv_cache quantization」；主要实现面是 `vllm/model_executor/models/qwen3_moe.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_moe.py` modified +14/-0 (14 lines); hunks: -403,6 +403,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; -505,6 +506,19 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; symbols: __init__, load_weights，涉及 `__init__, load_weights`。
@@ -639,7 +639,7 @@ diff -- vllm/model_executor/models/qwen3_moe.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/32082
 - 状态/时间: merged / 2026-01-24
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_moe.py`；关联提交 `8edaf3857027`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_moe.py`；关联提交 `8edaf3857027`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+56/-16，可读 patch 143 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Models] Add `SharedFusedMoE` support to Qwen3MoE」；模型线: Qwen3 Core；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen3_moe.py`；技术摘要: 覆盖「[Models] Add `SharedFusedMoE` support to Qwen3MoE」；主要实现面是 `vllm/model_executor/models/qwen3_moe.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_moe.py` modified +56/-16 (72 lines); hunks: -29,6 +29,7; -42,7 +43,7; symbols: __init__, forward, Qwen3MoeSparseMoeBlock，涉及 `__init__, forward, Qwen3MoeSparseMoeBlock`。
@@ -775,7 +775,7 @@ diff -- vllm/model_executor/models/colqwen3.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/35656
 - 状态/时间: merged / 2026-03-04
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_moe.py`；关联提交 `c8c3935b7013`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_moe.py`；关联提交 `c8c3935b7013`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+129/-36，可读 patch 221 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix][Model] Fix FP8 k_scale/v_scale not loaded for Qwen3-MoE」；模型线: Qwen3 Core；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_moe.py`；技术摘要: 覆盖「[Bugfix][Model] Fix FP8 k_scale/v_scale not loaded for Qwen3-MoE」；主要实现面是 `vllm/model_executor/models/qwen3_moe.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_moe.py` modified +6/-18 (24 lines); hunks: -535,10 +535,6 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; -562,6 +558,10 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; symbols: load_weights，涉及 `load_weights`。
@@ -802,7 +802,7 @@ diff -- vllm/model_executor/models/qwen3_moe.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/40664
 - 状态/时间: merged / 2026-04-23
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_moe.py`；关联提交 `342c58bc548f`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_moe.py`；关联提交 `342c58bc548f`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+13/-5，可读 patch 25 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[BugFix]fix Qwen3 MoE call gate twice」；模型线: Qwen3 Core；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_moe.py`；技术摘要: 覆盖「[BugFix]fix Qwen3 MoE call gate twice」；主要实现面是 `vllm/model_executor/models/qwen3_moe.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/qwen3_moe.py` modified +13/-5 (18 lines); hunks: -231,11 +231,19 @@ def forward(self, hidden_states: torch.Tensor) -> torch.Te...; symbols: forward，涉及 `forward`。
@@ -1155,7 +1155,7 @@ diff -- vllm/parser/qwen3.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/48846
 - 状态/时间: merged / 2026-07-17
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/parser/engine/test_qwen3.py`, `vllm/parser/qwen3.py`；关联提交 `11d291511a35`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/parser/engine/test_qwen3.py`, `vllm/parser/qwen3.py`；关联提交 `11d291511a35`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+164/-9，可读 patch 249 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix][Tool Parser] Preserve whitespace in parameter values (MiniMax M2, Qwen3, MiniCPM5 XML)」；模型线: Qwen3 Core；类别: 缺陷修复；主要 diff: `vllm/parser/qwen3.py`, `tests/parser/engine/test_qwen3.py`；技术摘要: 覆盖「[Bugfix][Tool Parser] Preserve whitespace in parameter values (MiniMax M2, Qwen3, MiniCPM5 XML)」；主要实现面是 `vllm/parser/qwen3.py`, `tests/parser/engine/test_qwen3.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/parser/qwen3.py` modified +11/-2 (13 lines); hunks: -56,13 +56,22; -71,7 +80,7 @@ def _qwen3_arg_converter(raw_args: str, partial: bool) -> str:; symbols: _trim_wrapping_newlines, _qwen3_arg_converter，涉及 `_trim_wrapping_newlines, _qwen3_arg_converter`；`tests/parser/engine/test_qwen3.py` modified +2/-2 (4 lines); hunks: -454,10 +454,10 @@ def test_streaming_split_next_parameter_tag_is_buffered(se...; symbols: test_streaming_split_next_parameter_tag_is_buffered, test_streaming_numeric_values，涉及 `test_streaming_split_next_parameter_tag_is_buffered, test_streaming_numeric_values`。

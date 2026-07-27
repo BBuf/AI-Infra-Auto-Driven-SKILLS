@@ -1,6 +1,6 @@
 # SGLang Model PR Optimization History
 
-Refresh: `2026-07-27`. Source head: `sgl-project/sglang@8d6549bc4039d33635844495d86684677a4f0df8`.
+Refresh: `2026-07-28`. Source head: `sgl-project/sglang@8a311d1c889244ab1f857d7df79de7e5f0a6891c`.
 
 Current model families:
 

@@ -1478,7 +1478,7 @@ diff -- python/sglang/srt/hardware_backend/npu/moe/topk.py
 
 - Link: https://github.com/sgl-project/sglang/pull/27127
 - Status/date: merged / 2026-07-20
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llada2.py`; associated commits `e856eae92198`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llada2.py`; associated commits `e856eae92198`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +60/-26, 102 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "use sgl_kernel_npu rmsrope accelerate llada2"; model line: LLaDA 2.1; category: model implementation change; main diff: `python/sglang/srt/models/llada2.py`; technical summary: Covers "use sgl_kernel_npu rmsrope accelerate llada2"; the main implementation surface is `python/sglang/srt/models/llada2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/llada2.py` modified +60/-26 (86 lines); hunks: -96,6 +96,15; -521,34 +530,59 @@ def forward(; symbols: LLaDA2MoeMLP, __init__, forward, touching `LLaDA2MoeMLP, __init__, forward`.
@@ -1505,7 +1505,7 @@ diff -- python/sglang/srt/models/llada2.py
 
 - Link: https://github.com/sgl-project/sglang/pull/31772
 - Status/date: merged / 2026-07-21
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llada2.py`, `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py`; associated commits `c0ed009f5b56`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llada2.py`, `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py`; associated commits `c0ed009f5b56`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +12/-11, 48 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[NPU] Fix LLaDA2 MoE OOM after the FRACTAL_NZ cast, re-enabling the NZ speedup"; model line: LLaDA 2.1; category: bug fix; main diff: `python/sglang/srt/models/llada2.py`, `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py`; technical summary: Covers "[NPU] Fix LLaDA2 MoE OOM after the FRACTAL_NZ cast, re-enabling the NZ speedup"; the main implementation surface is `python/sglang/srt/models/llada2.py`, `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/llada2.py` modified +12/-6 (18 lines); hunks: -83,6 +83,7; -965,12 +966,17 @@ def load_weights(self, weights: Iterable[Tuple[str, torch....; symbols: load_weights, get_model_config_for_expert_location, touching `load_weights, get_model_config_for_expert_location`; `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py` modified +0/-5 (5 lines); hunks: -1,4 +1,3; -31,10 +30,6 @@ class TestLLaDA2Mini(GSM8KAscendMixin, CustomTestCase):; symbols: TestLLaDA2Mini, touching `TestLLaDA2Mini`.

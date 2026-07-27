@@ -169,11 +169,11 @@ Hard requirements:
 - Use the same model weights, tokenizer, precision, quantization, GPU type/count,
   GPU ids, endpoint path, sampling settings, and SLA.
 - Record package version or git commit plus server/benchmark `--help` snapshots
-  for every selected framework. The 2026-07-27 immutable source heads checked
+  for every selected framework. The 2026-07-28 immutable source heads checked
   for this skill are vLLM
-  `ef9975d021448b99a5408e8c78a4c4f6b63443c7`, SGLang
-  `8d6549bc4039d33635844495d86684677a4f0df8`, and TensorRT-LLM
-  `1b4ffc0291d75a21ad20118e8f44de6e3831f786`. Prefer the target image's
+  `b5bcb3ce881e1d324ff7f6176ef27606558dbd74`, SGLang
+  `8a311d1c889244ab1f857d7df79de7e5f0a6891c`, and TensorRT-LLM
+  `9fe5853263750ade5b7dc24fb31a1215ec822d45`. Prefer the target image's
   current `--help`, re-check open PRs, and do not add TokenSpeed to this scoped
   workflow unless its executable benchmark path is verified end to end.
 - Use the target image's current commands: `vllm serve`,

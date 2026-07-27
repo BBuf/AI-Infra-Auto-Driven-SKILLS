@@ -45,7 +45,7 @@
 | --- | --- | --- | --- | --- |
 | 2025-08-06 | [#22327](https://github.com/vllm-project/vllm/pull/22327) | merged | Add GPT-OSS model code and config [1/N] | `vllm/model_executor/models/gpt_oss.py` |
 | 2025-08-07 | [#22401](https://github.com/vllm-project/vllm/pull/22401) | merged | [gpt-oss] fix model config with hf_config | `vllm/model_executor/models/gpt_oss.py` |
-| 2025-08-08 | [#22421](https://github.com/vllm-project/vllm/pull/22421) | merged | [gpt-oss] triton kernel mxfp4 | `tests/kernels/moe/test_gpt_oss_triton_kernels.py` |
+| 2025-08-08 | [#22421](https://github.com/vllm-project/vllm/pull/22421) | merged | [gpt-oss] triton kernel mxfp4 | `tests/kernels/moe/test_gpt_oss_triton_kernels.py`, `vllm/model_executor/layers/fused_moe/gpt_oss_triton_kernels_moe.py`, `vllm/model_executor/layers/quantization/mxfp4.py` |
 | 2025-08-10 | [#22508](https://github.com/vllm-project/vllm/pull/22508) | merged | [oss] Init gpt-oss bf16 support | `vllm/model_executor/models/gpt_oss.py` |
 | 2025-08-13 | [#22678](https://github.com/vllm-project/vllm/pull/22678) | merged | Force TRTLLM attention for gpt-oss on SM100 | `vllm/model_executor/models/gpt_oss.py` |
 | 2025-08-15 | [#22538](https://github.com/vllm-project/vllm/pull/22538) | merged | [Kernel] Add cuda kernel for gpt_oss activation | `vllm/model_executor/models/gpt_oss.py` |
@@ -78,7 +78,7 @@
 | 2026-03-10 | [#36179](https://github.com/vllm-project/vllm/pull/36179) | merged | [ROCm][CI] Fix ROCm GPT-OSS Eval test group | `tests/evals/gpt_oss/configs/gpt-oss-20b-rocm-baseline.yaml`, `tests/evals/gpt_oss/configs/models-gfx942.txt`, `tests/evals/gpt_oss/configs/models-gfx950.txt` |
 | 2026-03-18 | [#30647](https://github.com/vllm-project/vllm/pull/30647) | merged | [Perf] Eliminate padding and slicing op for GPT-OSS with Flashinfer MXFP4 MXFP8 MoE | `vllm/model_executor/layers/quantization/mxfp4.py`, `vllm/model_executor/layers/fused_moe/fused_moe_method_base.py`, `vllm/model_executor/layers/fused_moe/runner/default_moe_runner.py` |
 | 2026-03-18 | [#37205](https://github.com/vllm-project/vllm/pull/37205) | merged | [Kernel] Add gpt-oss Router GEMM kernel | `vllm/model_executor/models/gpt_oss.py` |
-| 2026-03-20 | [#37683](https://github.com/vllm-project/vllm/pull/37683) | merged | [Perf] Eliminate redundant SparseMatrix creation in gpt_oss_triton_kernels | `tests/kernels/moe/test_gpt_oss_triton_kernels.py` |
+| 2026-03-20 | [#37683](https://github.com/vllm-project/vllm/pull/37683) | merged | [Perf] Eliminate redundant SparseMatrix creation in gpt_oss_triton_kernels | `tests/kernels/moe/test_gpt_oss_triton_kernels.py`, `vllm/model_executor/layers/fused_moe/gpt_oss_triton_kernels_moe.py` |
 | 2026-04-02 | [#38778](https://github.com/vllm-project/vllm/pull/38778) | merged | Revert "[Kernel] Add gpt-oss Router GEMM kernel (#37205)" | `vllm/model_executor/models/gpt_oss.py` |
 | 2026-04-02 | [#38292](https://github.com/vllm-project/vllm/pull/38292) | merged | [CI][ROCm] Add gpt-oss w4a8 in CI | `tests/evals/gpt_oss/configs/models-gfx950.txt` |
 | 2026-04-13 | [#39604](https://github.com/vllm-project/vllm/pull/39604) | merged | [Quantization] [Refactor] Create special "GptOssMxfp4MoeMethod" | `vllm/model_executor/layers/quantization/mxfp4.py`, `vllm/model_executor/models/gpt_oss.py`, `vllm/model_executor/models/config.py` |
@@ -169,10 +169,14 @@ diff -- vllm/model_executor/models/gpt_oss.py
 - Status/date: merged / 2025-08-08
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/kernels/moe/test_gpt_oss_triton_kernels.py`; associated commits `e789cad6b8b5`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +755/-9, 859 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[gpt-oss] triton kernel mxfp4"; model line: GPT-OSS; category: performance/backend optimization; main diff: `tests/kernels/moe/test_gpt_oss_triton_kernels.py`; technical summary: Covers "[gpt-oss] triton kernel mxfp4"; the main implementation surface is `tests/kernels/moe/test_gpt_oss_triton_kernels.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `tests/kernels/moe/test_gpt_oss_triton_kernels.py` added +375/-0 (375 lines); hunks: -0,0 +1,375; symbols: deshuffle, init_compute_data, ModelConfig, swiglu, touching `deshuffle, init_compute_data, ModelConfig`.
+- Motivation: Title: "[gpt-oss] triton kernel mxfp4"; model line: GPT-OSS; category: performance/backend optimization; main diff: `tests/kernels/moe/test_gpt_oss_triton_kernels.py`, `vllm/model_executor/layers/fused_moe/gpt_oss_triton_kernels_moe.py`, `vllm/model_executor/layers/quantization/mxfp4.py`; technical summary: Covers "[gpt-oss] triton kernel mxfp4"; the main implementation surface is `tests/kernels/moe/test_gpt_oss_triton_kernels.py`, `vllm/model_executor/layers/fused_moe/gpt_oss_triton_kernels_moe.py`, `vllm/model_executor/layers/quantization/mxfp4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/kernels/moe/test_gpt_oss_triton_kernels.py` added +375/-0 (375 lines); hunks: -0,0 +1,375; symbols: deshuffle, init_compute_data, ModelConfig, swiglu, touching `deshuffle, init_compute_data, ModelConfig`; `vllm/model_executor/layers/fused_moe/gpt_oss_triton_kernels_moe.py` added +230/-0 (230 lines); hunks: -0,0 +1,230; symbols: triton_kernel_moe_forward, triton_kernel_fused_experts, BatchedOAITritonExperts, __init__, touching `triton_kernel_moe_forward, triton_kernel_fused_experts, BatchedOAITritonExperts`; `vllm/model_executor/layers/quantization/mxfp4.py` modified +63/-3 (66 lines); hunks: -8,16 +8,19; -39,7 +42,7 @@ def from_config(cls, config):; symbols: from_config, get_min_capability, get_name, create_weights, touching `from_config, get_min_capability, get_name`; `vllm/model_executor/layers/quantization/utils/mxfp4_utils.py` modified +45/-1 (46 lines); hunks: -4,11 +4,55; symbols: _swizzle_mxfp4, _can_support_mxfp4, touching `_swizzle_mxfp4, _can_support_mxfp4`.
 - Code diff details:
   - `tests/kernels/moe/test_gpt_oss_triton_kernels.py` added +375/-0 (375 lines); hunks: -0,0 +1,375; symbols: deshuffle, init_compute_data, ModelConfig, swiglu
+  - `vllm/model_executor/layers/fused_moe/gpt_oss_triton_kernels_moe.py` added +230/-0 (230 lines); hunks: -0,0 +1,230; symbols: triton_kernel_moe_forward, triton_kernel_fused_experts, BatchedOAITritonExperts, __init__
+  - `vllm/model_executor/layers/quantization/mxfp4.py` modified +63/-3 (66 lines); hunks: -8,16 +8,19; -39,7 +42,7 @@ def from_config(cls, config):; symbols: from_config, get_min_capability, get_name, create_weights
+  - `vllm/model_executor/layers/quantization/utils/mxfp4_utils.py` modified +45/-1 (46 lines); hunks: -4,11 +4,55; symbols: _swizzle_mxfp4, _can_support_mxfp4
+  - `vllm/model_executor/layers/utils.py` modified +21/-0 (21 lines); hunks: -11,6 +11,27; symbols: shuffle_weight, get_token_bin_counts_and_mask
 - Key code excerpts:
 
 ```diff
@@ -184,10 +188,21 @@ diff -- tests/kernels/moe/test_gpt_oss_triton_kernels.py
 +import pytest
 +import torch
 +import torch.nn.functional as F
+diff -- vllm/model_executor/layers/fused_moe/gpt_oss_triton_kernels_moe.py
+@@ -0,0 +1,230 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++from typing import Any, Optional
++import torch
++import vllm.model_executor.layers.fused_moe.modular_kernel as mk
++from vllm.model_executor.layers.fused_moe.topk_weight_and_reduce import (
+diff -- vllm/model_executor/layers/quantization/mxfp4.py
+@@ -8,16 +8,19 @@
 ```
 
 - Reviewed files:
   - tests: `tests/kernels/moe/test_gpt_oss_triton_kernels.py` added +375/-0
+  - runtime: `vllm/model_executor/layers/fused_moe/gpt_oss_triton_kernels_moe.py` added +230/-0; `vllm/model_executor/layers/quantization/mxfp4.py` modified +63/-3; `vllm/model_executor/layers/quantization/utils/mxfp4_utils.py` modified +45/-1; `vllm/model_executor/layers/utils.py` modified +21/-0; `vllm/model_executor/layers/fused_moe/layer.py` modified +12/-5; `vllm/utils/__init__.py` modified +6/-0
 - Risk and verification: The diff ships test coverage in `tests/kernels/moe/test_gpt_oss_triton_kernels.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #22508 - [oss] Init gpt-oss bf16 support
@@ -1103,10 +1118,11 @@ diff -- vllm/model_executor/models/gpt_oss.py
 - Status/date: merged / 2026-03-20
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/kernels/moe/test_gpt_oss_triton_kernels.py`; associated commits `d0532bf38da5`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +73/-4, 108 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Perf] Eliminate redundant SparseMatrix creation in gpt_oss_triton_kernels"; model line: GPT-OSS; category: performance/backend optimization; main diff: `tests/kernels/moe/test_gpt_oss_triton_kernels.py`; technical summary: Covers "[Perf] Eliminate redundant SparseMatrix creation in gpt_oss_triton_kernels"; the main implementation surface is `tests/kernels/moe/test_gpt_oss_triton_kernels.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `tests/kernels/moe/test_gpt_oss_triton_kernels.py` modified +44/-0 (44 lines); hunks: -21,12 +21,16; -355,3 +359,43 @@ def test_unit_shuffle():; symbols: test_unit_shuffle, test_legacy_routing, touching `test_unit_shuffle, test_legacy_routing`.
+- Motivation: Title: "[Perf] Eliminate redundant SparseMatrix creation in gpt_oss_triton_kernels"; model line: GPT-OSS; category: performance/backend optimization; main diff: `tests/kernels/moe/test_gpt_oss_triton_kernels.py`, `vllm/model_executor/layers/fused_moe/gpt_oss_triton_kernels_moe.py`; technical summary: Covers "[Perf] Eliminate redundant SparseMatrix creation in gpt_oss_triton_kernels"; the main implementation surface is `tests/kernels/moe/test_gpt_oss_triton_kernels.py`, `vllm/model_executor/layers/fused_moe/gpt_oss_triton_kernels_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/kernels/moe/test_gpt_oss_triton_kernels.py` modified +44/-0 (44 lines); hunks: -21,12 +21,16; -355,3 +359,43 @@ def test_unit_shuffle():; symbols: test_unit_shuffle, test_legacy_routing, touching `test_unit_shuffle, test_legacy_routing`; `vllm/model_executor/layers/fused_moe/gpt_oss_triton_kernels_moe.py` modified +29/-4 (33 lines); hunks: -142,6 +142,33 @@ def legacy_routing_from_bitmatrix(; -158,10 +185,8 @@ def legacy_routing(; symbols: legacy_routing_from_bitmatrix, legacy_routing_from_sparsematrix, legacy_routing, touching `legacy_routing_from_bitmatrix, legacy_routing_from_sparsematrix, legacy_routing`.
 - Code diff details:
   - `tests/kernels/moe/test_gpt_oss_triton_kernels.py` modified +44/-0 (44 lines); hunks: -21,12 +21,16; -355,3 +359,43 @@ def test_unit_shuffle():; symbols: test_unit_shuffle, test_legacy_routing
+  - `vllm/model_executor/layers/fused_moe/gpt_oss_triton_kernels_moe.py` modified +29/-4 (33 lines); hunks: -142,6 +142,33 @@ def legacy_routing_from_bitmatrix(; -158,10 +185,8 @@ def legacy_routing(; symbols: legacy_routing_from_bitmatrix, legacy_routing_from_sparsematrix, legacy_routing
 - Key code excerpts:
 
 ```diff
@@ -1118,10 +1134,19 @@ diff -- tests/kernels/moe/test_gpt_oss_triton_kernels.py
 +from vllm.utils.torch_utils import set_random_seed
 @@ -355,3 +359,43 @@ def test_unit_shuffle():
 +@pytest.mark.parametrize("num_tokens", [2, 8, 64])
+diff -- vllm/model_executor/layers/fused_moe/gpt_oss_triton_kernels_moe.py
+@@ -142,6 +142,33 @@ def legacy_routing_from_bitmatrix(
++def legacy_routing_from_sparsematrix(
++    sparse_logits: "SparseMatrix",
++    n_expts_tot: int,
++    n_expts_act: int,
++) -> tuple["RoutingData", "GatherIndx", "ScatterIndx"]:
++    """
 ```
 
 - Reviewed files:
   - tests: `tests/kernels/moe/test_gpt_oss_triton_kernels.py` modified +44/-0
+  - runtime: `vllm/model_executor/layers/fused_moe/gpt_oss_triton_kernels_moe.py` modified +29/-4
 - Risk and verification: The diff ships test coverage in `tests/kernels/moe/test_gpt_oss_triton_kernels.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #38778 - Revert "[Kernel] Add gpt-oss Router GEMM kernel (#37205)"

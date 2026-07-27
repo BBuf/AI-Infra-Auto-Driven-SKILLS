@@ -120,7 +120,7 @@
 | 2026-06-13 | [#27057](https://github.com/sgl-project/sglang/pull/27057) | merged | [AMD] move shared expert check function to quark | `python/sglang/srt/layers/quantization/quark/quark.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen2_moe.py` |
 | 2026-06-13 | [#26924](https://github.com/sgl-project/sglang/pull/26924) | merged | [4/N] Qwen3.5Opt: Overlap mamba verify update with draft extend | `python/sglang/srt/models/qwen3_5.py` |
 | 2026-06-13 | [#28129](https://github.com/sgl-project/sglang/pull/28129) | merged | [Spec] Remove deprecated EAGLE v1 DRAFT_EXTEND forward mode | `python/sglang/srt/layers/attention/aiter_backend.py`, `python/sglang/srt/model_executor/forward_batch_info.py`, `python/sglang/srt/layers/attention/triton_backend.py` |
-| 2026-06-14 | [#27869](https://github.com/sgl-project/sglang/pull/27869) | merged | Fix Qwen3.5 deterministic batch-invariant logprobs | `test/registered/attention/test_qwen35_deterministic.py` |
+| 2026-06-14 | [#27869](https://github.com/sgl-project/sglang/pull/27869) | merged | Fix Qwen3.5 deterministic batch-invariant logprobs | `test/registered/attention/test_qwen35_deterministic.py`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/fused_moe.py`, `python/sglang/srt/layers/attention/fla/layernorm_gated.py` |
 | 2026-06-15 | [#27868](https://github.com/sgl-project/sglang/pull/27868) | merged | fix(qwen3.5): keep CUDA dual-stream overlap (regressed by #25885) | `python/sglang/srt/models/qwen3_5.py` |
 | 2026-06-16 | [#28293](https://github.com/sgl-project/sglang/pull/28293) | merged | [NPU] Add NPU fallback for fused Triton gating kernels | `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen2_moe.py` |
 | 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | merged | Add get_parallel(): a structured accessor for parallel-topology state | `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py` |
@@ -2666,10 +2666,12 @@ diff -- python/sglang/srt/layers/attention/triton_backend.py
 - Status/date: merged / 2026-06-14
 - Trace source: `git log --name-only -- <model-files>` found it through `test/registered/attention/test_qwen35_deterministic.py`; associated commits `171037c3e73d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +56/-5, 104 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix Qwen3.5 deterministic batch-invariant logprobs"; model line: Qwen3.5; category: bug fix; main diff: `test/registered/attention/test_qwen35_deterministic.py`; technical summary: Covers "Fix Qwen3.5 deterministic batch-invariant logprobs"; the main implementation surface is `test/registered/attention/test_qwen35_deterministic.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `test/registered/attention/test_qwen35_deterministic.py` added +44/-0 (44 lines); hunks: -0,0 +1,44; symbols: TestQwen35Fa3Deterministic, get_model, get_server_args, touching `TestQwen35Fa3Deterministic, get_model, get_server_args`.
+- Motivation: Title: "Fix Qwen3.5 deterministic batch-invariant logprobs"; model line: Qwen3.5; category: bug fix; main diff: `test/registered/attention/test_qwen35_deterministic.py`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/fused_moe.py`, `python/sglang/srt/layers/attention/fla/layernorm_gated.py`; technical summary: Covers "Fix Qwen3.5 deterministic batch-invariant logprobs"; the main implementation surface is `test/registered/attention/test_qwen35_deterministic.py`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/fused_moe.py`, `python/sglang/srt/layers/attention/fla/layernorm_gated.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/attention/test_qwen35_deterministic.py` added +44/-0 (44 lines); hunks: -0,0 +1,44; symbols: TestQwen35Fa3Deterministic, get_model, get_server_args, touching `TestQwen35Fa3Deterministic, get_model, get_server_args`; `python/sglang/srt/layers/moe/moe_runner/triton_utils/fused_moe.py` modified +7/-2 (9 lines); hunks: -13,6 +13,7; -88,6 +89,10; symbols: _use_moe_sum_reduce_torch_compile, inplace_fused_experts, _fused_moe_kernel_sequence, touching `_use_moe_sum_reduce_torch_compile, inplace_fused_experts, _fused_moe_kernel_sequence`; `python/sglang/srt/layers/attention/fla/layernorm_gated.py` modified +5/-3 (8 lines); hunks: -15,6 +15,7; -192,9 +193,10 @@ def _get_sm_count(device: torch.device) -> int:; symbols: _get_sm_count, calc_rows_per_block, touching `_get_sm_count, calc_rows_per_block`.
 - Code diff details:
   - `test/registered/attention/test_qwen35_deterministic.py` added +44/-0 (44 lines); hunks: -0,0 +1,44; symbols: TestQwen35Fa3Deterministic, get_model, get_server_args
+  - `python/sglang/srt/layers/moe/moe_runner/triton_utils/fused_moe.py` modified +7/-2 (9 lines); hunks: -13,6 +13,7; -88,6 +89,10; symbols: _use_moe_sum_reduce_torch_compile, inplace_fused_experts, _fused_moe_kernel_sequence
+  - `python/sglang/srt/layers/attention/fla/layernorm_gated.py` modified +5/-3 (8 lines); hunks: -15,6 +15,7; -192,9 +193,10 @@ def _get_sm_count(device: torch.device) -> int:; symbols: _get_sm_count, calc_rows_per_block
 - Key code excerpts:
 
 ```diff
@@ -2681,10 +2683,21 @@ diff -- test/registered/attention/test_qwen35_deterministic.py
 +python3 -m unittest test_qwen35_deterministic.TestQwen35Fa3Deterministic
 +"""
 +import unittest
+diff -- python/sglang/srt/layers/moe/moe_runner/triton_utils/fused_moe.py
+@@ -13,6 +13,7 @@
++from sglang.srt.batch_invariant_ops import is_batch_invariant_mode_enabled
+@@ -88,6 +89,10 @@
++def _use_moe_sum_reduce_torch_compile(num_tokens: int) -> bool:
++    return num_tokens <= 32 and not is_batch_invariant_mode_enabled()
+@@ -728,7 +733,7 @@ def _fused_moe_kernel_sequence(
+-            if num_tokens <= 32:
+diff -- python/sglang/srt/layers/attention/fla/layernorm_gated.py
+@@ -15,6 +15,7 @@
 ```
 
 - Reviewed files:
   - tests: `test/registered/attention/test_qwen35_deterministic.py` added +44/-0
+  - runtime: `python/sglang/srt/layers/moe/moe_runner/triton_utils/fused_moe.py` modified +7/-2; `python/sglang/srt/layers/attention/fla/layernorm_gated.py` modified +5/-3
 - Risk and verification: The diff ships test coverage in `test/registered/attention/test_qwen35_deterministic.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #27868 - fix(qwen3.5): keep CUDA dual-stream overlap (regressed by #25885)
@@ -3053,7 +3066,7 @@ diff -- sgl-kernel/csrc/cpu/mamba/fla.cpp
 
 - Link: https://github.com/sgl-project/sglang/pull/31258
 - Status/date: merged / 2026-07-15
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx`, `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx`; associated commits `aafa706f8f2d`
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx`, `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx`; associated commits `aafa706f8f2d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +8/-2, 31 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[AMD] Update qwen3.5 cookbook"; model line: Qwen3.5; category: docs/tests/CI; main diff: `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx`, `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx`; technical summary: Covers "[AMD] Update qwen3.5 cookbook"; the main implementation surface is `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx`, `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx` modified +5/-1 (6 lines); hunks: -435,7 +435,11 @@ export const Qwen35Deployment = () => {; `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx` modified +3/-1 (4 lines); hunks: -127,7 +127,7 @@ This section provides deployment configurations optimized fo...; -258,6 +258,8 @@ Deploy Qwen3.5-397B-A17B with the following command (MI300X/....
@@ -3088,7 +3101,7 @@ diff -- docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx
 
 - Link: https://github.com/sgl-project/sglang/pull/31171
 - Status/date: merged / 2026-07-15
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_5.py`; associated commits `41e0b4b3695e`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_5.py`; associated commits `41e0b4b3695e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +238/-94, 471 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[CPU] add fused input proj for qwen3.5"; model line: Qwen3.5; category: performance/backend optimization; main diff: `python/sglang/srt/models/qwen3_5.py`; technical summary: Covers "[CPU] add fused input proj for qwen3.5"; the main implementation surface is `python/sglang/srt/models/qwen3_5.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/qwen3_5.py` modified +33/-18 (51 lines); hunks: -112,6 +112,7; -152,6 +153,9 @@ def _disable_shared_experts_fusion() -> bool:; symbols: _disable_shared_experts_fusion, __init__, _forward_input_proj, forward, touching `_disable_shared_experts_fusion, __init__, _forward_input_proj`.
@@ -3115,7 +3128,7 @@ diff -- python/sglang/srt/models/qwen3_5.py
 
 - Link: https://github.com/sgl-project/sglang/pull/31454
 - Status/date: merged / 2026-07-16
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx`; associated commits `8c9833f9a991`
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx`; associated commits `8c9833f9a991`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +2/-2, 13 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "cookbook(qwen3.5): bump AMD ROCm docker images to v0.5.15.post1"; model line: Qwen3.5; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx`; technical summary: Covers "cookbook(qwen3.5): bump AMD ROCm docker images to v0.5.15.post1"; the main implementation surface is `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx` modified +2/-2 (4 lines); hunks: -103,10 +103,10 @@ uv pip install 'git+https://github.com/sgl-project/sglang.....
@@ -3140,7 +3153,7 @@ diff -- docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx
 
 - Link: https://github.com/sgl-project/sglang/pull/31174
 - Status/date: merged / 2026-07-17
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_5.py`; associated commits `302c3b97d2d0`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_5.py`; associated commits `302c3b97d2d0`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +3/-1, 18 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "fix: Qwen3.5-35B-A3B-AWQ w2_weight KeyError and related params for CPU"; model line: Qwen3.5; category: bug fix; main diff: `python/sglang/srt/models/qwen3_5.py`; technical summary: Covers "fix: Qwen3.5-35B-A3B-AWQ w2_weight KeyError and related params for CPU"; the main implementation surface is `python/sglang/srt/models/qwen3_5.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/qwen3_5.py` modified +1/-1 (2 lines); hunks: -301,7 +301,7 @@ def __init__(; symbols: __init__, touching `__init__`.
@@ -3163,7 +3176,7 @@ diff -- python/sglang/srt/models/qwen3_5.py
 
 - Link: https://github.com/sgl-project/sglang/pull/31737
 - Status/date: merged / 2026-07-20
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx`, `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx`; associated commits `17fdd8487f0f`
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx`, `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx`; associated commits `17fdd8487f0f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +13/-5, 47 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[AMD] Update qwen3.5 cookbook"; model line: Qwen3.5; category: docs/tests/CI; main diff: `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx`, `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx`; technical summary: Covers "[AMD] Update qwen3.5 cookbook"; the main implementation surface is `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx`, `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx` modified +12/-4 (16 lines); hunks: -433,16 +433,22 @@ export const Qwen35Deployment = () => {; -464,8 +470,10 @@ export const Qwen35Deployment = () => {; `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx` modified +1/-1 (2 lines); hunks: -127,7 +127,7 @@ This section provides deployment configurations optimized fo....
@@ -3195,7 +3208,7 @@ diff -- docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx
 
 - Link: https://github.com/sgl-project/sglang/pull/24651
 - Status/date: merged / 2026-07-22
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_5.py`, `test/registered/amd/perf/mi35x/test_qwen35_fp8_ar_fusion_mi35x.py`; associated commits `e8e765b9d657`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_5.py`, `test/registered/amd/perf/mi35x/test_qwen35_fp8_ar_fusion_mi35x.py`; associated commits `e8e765b9d657`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 9 files, +1192/-8, 1376 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[AMD] Add fused all-reduce RMSNorm per-group quant for Qwen3.5 FP8"; model line: Qwen3.5; category: performance/backend optimization; main diff: `python/sglang/srt/models/qwen3_5.py`, `test/registered/amd/perf/mi35x/test_qwen35_fp8_ar_fusion_mi35x.py`; technical summary: Covers "[AMD] Add fused all-reduce RMSNorm per-group quant for Qwen3.5 FP8"; the main implementation surface is `python/sglang/srt/models/qwen3_5.py`, `test/registered/amd/perf/mi35x/test_qwen35_fp8_ar_fusion_mi35x.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/qwen3_5.py` modified +115/-0 (115 lines); hunks: -157,6 +157,56 @@ def _disable_shared_experts_fusion() -> bool:; -490,6 +540,14 @@ def fix_query_key_value_ordering(; symbols: _disable_shared_experts_fusion, _enable_qwen35_fused_ar_quant, _linear_accepts_fp8_tuple, _select_fused_ar_input_for_linear, touching `_disable_shared_experts_fusion, _enable_qwen35_fused_ar_quant, _linear_accepts_fp8_tuple`; `test/registered/amd/perf/mi35x/test_qwen35_fp8_ar_fusion_mi35x.py` added +234/-0 (234 lines); hunks: -0,0 +1,234; symbols: FusionVariant, _base_url_with_port_offset, get_fusion_variants, _parse_gsm8k_metrics, touching `FusionVariant, _base_url_with_port_offset, get_fusion_variants`.

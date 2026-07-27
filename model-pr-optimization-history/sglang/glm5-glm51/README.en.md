@@ -101,9 +101,9 @@
 | 2026-06-30 | [#28471](https://github.com/sgl-project/sglang/pull/28471) | merged | docs(cookbook): add AMD MI300X/MI325X/MI355X support for GLM-5.2 | `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
 | 2026-07-02 | [#29544](https://github.com/sgl-project/sglang/pull/29544) | merged | docs: add PD disaggregation to GLM-5.2 cookbook playground | `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
 | 2026-07-03 | [#30021](https://github.com/sgl-project/sglang/pull/30021) | merged | [CI] Add GLM52 NVFP4 MTP B200 tests | `test/registered/models_e2e/test_dsa_glm52_nvfp4_dp_mtp.py`, `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py` |
-| 2026-07-09 | [#29421](https://github.com/sgl-project/sglang/pull/29421) | merged | [Feat][GLM5.2] Add DSA Cache Layer Split under Prefill CP | `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py` |
+| 2026-07-09 | [#29421](https://github.com/sgl-project/sglang/pull/29421) | merged | [Feat][GLM5.2] Add DSA Cache Layer Split under Prefill CP | `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py`, `python/sglang/srt/layers/cp/utils.py`, `python/sglang/srt/layers/attention/dsa/dsa_indexer.py` |
 | 2026-07-10 | [#30826](https://github.com/sgl-project/sglang/pull/30826) | merged | Update GLM-5.2 NVFP4 cookbook | `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
-| 2026-07-14 | [#30992](https://github.com/sgl-project/sglang/pull/30992) | merged | support GLM-5.2 MTP index sharing with prefill CP | `test/registered/cp/test_glm52_cp_index_share.py` |
+| 2026-07-14 | [#30992](https://github.com/sgl-project/sglang/pull/30992) | merged | support GLM-5.2 MTP index sharing with prefill CP | `test/registered/cp/test_glm52_cp_index_share.py`, `python/sglang/srt/layers/attention/dsa/transform_index.py`, `python/sglang/srt/models/deepseek_nextn.py` |
 | 2026-07-15 | [#31289](https://github.com/sgl-project/sglang/pull/31289) | merged | [CI] Lower GLM-5.2 NVFP4 MTP speed threshold | `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py` |
 | 2026-07-17 | [#31512](https://github.com/sgl-project/sglang/pull/31512) | merged | Add nightly test for GLM5.2 LayerSplit | `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py` |
 | 2026-07-17 | [#31577](https://github.com/sgl-project/sglang/pull/31577) | merged | [Doc] Update GLM5.2 Cookbook with LayerSplit usage | `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
@@ -1690,7 +1690,7 @@ diff -- docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx
 
 - Link: https://github.com/sgl-project/sglang/pull/28731
 - Status/date: merged / 2026-06-29
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; associated commits `38d4ffcd863b`
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; associated commits `38d4ffcd863b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +64/-193, 543 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[cookbook] drop redundant serve flags (GLM-5.2) + fix M3 page-size note"; model line: GLM-5/5.1; category: bug fix; main diff: `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`; technical summary: Covers "[cookbook] drop redundant serve flags (GLM-5.2) + fix M3 page-size note"; the main implementation surface is `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +50/-157 (207 lines); hunks: -3,164 +3,95; -171,42 +102,4 @@ export const benchmarks = [; symbols: kernels, touching `kernels`; `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +8/-30 (38 lines); hunks: -55,6 +55,7 @@ export const config = {; -185,7 +186,6 @@ sgl-eval run aime25 \\; `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +4/-0 (4 lines); hunks: -52,6 +52,10 @@ import { benchmarks } from "/src/snippets/configs/zai-org/glm....
@@ -1729,7 +1729,7 @@ diff -- docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx
 
 - Link: https://github.com/sgl-project/sglang/pull/29674
 - Status/date: merged / 2026-06-29
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; associated commits `74a197af9d27`
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; associated commits `74a197af9d27`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +97/-4, 121 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "docs: add B200 NVFP4 recipes + benchmarks to GLM-5.2 cookbook"; model line: GLM-5/5.1; category: performance/backend optimization; main diff: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`; technical summary: Covers "docs: add B200 NVFP4 recipes + benchmarks to GLM-5.2 cookbook"; the main implementation surface is `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +65/-4 (69 lines); hunks: -94,6 +94,7 @@ sgl-eval run aime25 \\; -613,11 +614,71 @@ sgl-eval run aime25 \\; `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +32/-0 (32 lines); hunks: -102,4 +102,36 @@ export const benchmarks = [.
@@ -1765,7 +1765,7 @@ diff -- docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx
 
 - Link: https://github.com/sgl-project/sglang/pull/29557
 - Status/date: merged / 2026-06-29
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; associated commits `5106b42cbd98`
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; associated commits `5106b42cbd98`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +74/-8, 117 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[cookbook] GLM-5.2 NVFP4 B300: TP8 recipe + 3 strategies"; model line: GLM-5/5.1; category: performance/backend optimization; main diff: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`; technical summary: Covers "[cookbook] GLM-5.2 NVFP4 B300: TP8 recipe + 3 strategies"; the main implementation surface is `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +39/-8 (47 lines); hunks: -614,11 +614,12 @@ sgl-eval run aime25 \\; -685,14 +686,14 @@ sgl-eval run aime25 \\; `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +35/-0 (35 lines); hunks: -134,4 +134,39 @@ export const benchmarks = [.
@@ -1801,7 +1801,7 @@ diff -- docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx
 
 - Link: https://github.com/sgl-project/sglang/pull/28471
 - Status/date: merged / 2026-06-30
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; associated commits `bb98629157e2`
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; associated commits `bb98629157e2`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +324/-5, 383 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "docs(cookbook): add AMD MI300X/MI325X/MI355X support for GLM-5.2"; model line: GLM-5/5.1; category: docs/tests/CI; main diff: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`; technical summary: Covers "docs(cookbook): add AMD MI300X/MI325X/MI355X support for GLM-5.2"; the main implementation surface is `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +284/-4 (288 lines); hunks: -6,6 +6,7 @@ export const config = {; -93,6 +94,9 @@ sgl-eval run aime25 \\; `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +31/-0 (31 lines); hunks: -169,4 +169,35 @@ export const benchmarks = [; `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +9/-1 (10 lines); hunks: -1,6 +1,6; -113,6 +113,14 @@ import { Playground } from "/src/snippets/_playground.jsx";.
@@ -1840,7 +1840,7 @@ diff -- docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx
 
 - Link: https://github.com/sgl-project/sglang/pull/29544
 - Status/date: merged / 2026-07-02
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; associated commits `cba3801f5214`
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; associated commits `cba3801f5214`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +53/-8, 91 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "docs: add PD disaggregation to GLM-5.2 cookbook playground"; model line: GLM-5/5.1; category: docs/tests/CI; main diff: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`; technical summary: Covers "docs: add PD disaggregation to GLM-5.2 cookbook playground"; the main implementation surface is `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +42/-1 (43 lines); hunks: -156,7 +156,48 @@ sgl-eval run aime25 \\; `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-0 (1 lines); hunks: -111,6 +111,7 @@ import { Playground } from "/src/snippets/_playground.jsx";.
@@ -1871,7 +1871,7 @@ diff -- docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx
 
 - Link: https://github.com/sgl-project/sglang/pull/30021
 - Status/date: merged / 2026-07-03
-- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/models_e2e/test_dsa_glm52_nvfp4_dp_mtp.py`, `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py`; associated commits `1f0f353d9218`
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/models_e2e/test_dsa_glm52_nvfp4_dp_mtp.py`, `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py`; associated commits `1f0f353d9218`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +83/-8, 134 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[CI] Add GLM52 NVFP4 MTP B200 tests"; model line: GLM-5/5.1; category: performance/backend optimization; main diff: `test/registered/models_e2e/test_dsa_glm52_nvfp4_dp_mtp.py`, `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py`; technical summary: Covers "[CI] Add GLM52 NVFP4 MTP B200 tests"; the main implementation surface is `test/registered/models_e2e/test_dsa_glm52_nvfp4_dp_mtp.py`, `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `test/registered/models_e2e/test_dsa_glm52_nvfp4_dp_mtp.py` added +36/-0 (36 lines); hunks: -0,0 +1,36; symbols: TestGLM52NVFP4DPMTP, touching `TestGLM52NVFP4DPMTP`; `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py` added +34/-0 (34 lines); hunks: -0,0 +1,34; symbols: TestGLM52NVFP4TPMTP, touching `TestGLM52NVFP4TPMTP`.
@@ -1907,12 +1907,16 @@ diff -- test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py
 
 - Link: https://github.com/sgl-project/sglang/pull/29421
 - Status/date: merged / 2026-07-09
-- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py`; associated commits `8e54517f0276`
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py`; associated commits `8e54517f0276`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 21 files, +1507/-72, 2185 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Feat][GLM5.2] Add DSA Cache Layer Split under Prefill CP"; model line: GLM-5/5.1; category: docs/tests/CI; main diff: `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py`; technical summary: Covers "[Feat][GLM5.2] Add DSA Cache Layer Split under Prefill CP"; the main implementation surface is `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py` added +83/-0 (83 lines); hunks: -0,0 +1,83; symbols: TestGLM52DSACacheLayerSplit, setUpClass, touching `TestGLM52DSACacheLayerSplit, setUpClass`.
+- Motivation: Title: "[Feat][GLM5.2] Add DSA Cache Layer Split under Prefill CP"; model line: GLM-5/5.1; category: docs/tests/CI; main diff: `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py`, `python/sglang/srt/layers/cp/utils.py`, `python/sglang/srt/layers/attention/dsa/dsa_indexer.py`; technical summary: Covers "[Feat][GLM5.2] Add DSA Cache Layer Split under Prefill CP"; the main implementation surface is `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py`, `python/sglang/srt/layers/cp/utils.py`, `python/sglang/srt/layers/attention/dsa/dsa_indexer.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py` added +83/-0 (83 lines); hunks: -0,0 +1,83; symbols: TestGLM52DSACacheLayerSplit, setUpClass, touching `TestGLM52DSACacheLayerSplit, setUpClass`; `python/sglang/srt/layers/cp/utils.py` modified +92/-1 (93 lines); hunks: -14,7 +14,7; -33,13 +33,99; symbols: is_glm_dsa_cache_layer_split_enabled, get_glm_dsa_cp_layer_shard_info, get_glm_dsa_layer_split_effective_num_layers, get_layer_shard_range, touching `is_glm_dsa_cache_layer_split_enabled, get_glm_dsa_cp_layer_shard_info, get_glm_dsa_layer_split_effective_num_layers`; `python/sglang/srt/layers/attention/dsa/dsa_indexer.py` modified +26/-13 (39 lines); hunks: -673,6 +673,10 @@ def _fused_k_prepare_and_store(; -801,6 +805,15 @@ def _update_rope_guarded(dst: torch.Tensor, src: torch.Tens...; symbols: _fused_k_prepare_and_store, _update_rope_guarded, _get_index_k_read_buffer, _pad_heads_for_deep_gemm, touching `_fused_k_prepare_and_store, _update_rope_guarded, _get_index_k_read_buffer`; `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py` modified +18/-3 (21 lines); hunks: -947,16 +947,31 @@ def _init_pools(self: ModelRunner):; symbols: _init_pools, touching `_init_pools`.
 - Code diff details:
   - `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py` added +83/-0 (83 lines); hunks: -0,0 +1,83; symbols: TestGLM52DSACacheLayerSplit, setUpClass
+  - `python/sglang/srt/layers/cp/utils.py` modified +92/-1 (93 lines); hunks: -14,7 +14,7; -33,13 +33,99; symbols: is_glm_dsa_cache_layer_split_enabled, get_glm_dsa_cp_layer_shard_info, get_glm_dsa_layer_split_effective_num_layers, get_layer_shard_range
+  - `python/sglang/srt/layers/attention/dsa/dsa_indexer.py` modified +26/-13 (39 lines); hunks: -673,6 +673,10 @@ def _fused_k_prepare_and_store(; -801,6 +805,15 @@ def _update_rope_guarded(dst: torch.Tensor, src: torch.Tens...; symbols: _fused_k_prepare_and_store, _update_rope_guarded, _get_index_k_read_buffer, _pad_heads_for_deep_gemm
+  - `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py` modified +18/-3 (21 lines); hunks: -947,16 +947,31 @@ def _init_pools(self: ModelRunner):; symbols: _init_pools
+  - `python/sglang/srt/layers/communicator_dsa_cp.py` modified +20/-0 (20 lines); hunks: -38,6 +38,7; -48,6 +49,25 @@ def dsa_enable_prefill_cp():; symbols: dsa_enable_prefill_cp, maybe_prefetch_next_full_attention_kv, dsa_cp_gather_hidden_states
 - Key code excerpts:
 
 ```diff
@@ -1924,17 +1928,28 @@ diff -- test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py
 +owner-broadcast into a small remote scratch buffer. It only applies to PD
 +prefill workers running DSA prefill-CP (a unified server would decode on the
 +same worker, where non-owner ranks lack the full cache), so this test drives a
+diff -- python/sglang/srt/layers/cp/utils.py
+@@ -14,7 +14,7 @@
+-from typing import Any, Optional, Tuple
++from typing import TYPE_CHECKING, Any, Optional, Tuple
+@@ -33,13 +33,99 @@
++if TYPE_CHECKING:
++    from sglang.srt.model_executor.model_runner import ModelRunner
++def is_glm_dsa_cache_layer_split_enabled(model_runner: "ModelRunner") -> bool:
+diff -- python/sglang/srt/layers/attention/dsa/dsa_indexer.py
+@@ -673,6 +673,10 @@ def _fused_k_prepare_and_store(
 ```
 
 - Reviewed files:
   - tests: `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py` added +83/-0
+  - runtime: `python/sglang/srt/layers/cp/utils.py` modified +92/-1; `python/sglang/srt/layers/attention/dsa/dsa_indexer.py` modified +26/-13; `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py` modified +18/-3; `python/sglang/srt/layers/communicator_dsa_cp.py` modified +20/-0; `python/sglang/srt/model_executor/pool_configurator.py` modified +14/-5; `python/sglang/srt/models/deepseek_v2.py` modified +17/-1
 - Risk and verification: The diff ships test coverage in `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py`, `test/registered/unit/mem_cache/test_dsa_layer_shard_utils.py`, `test/registered/unit/mem_cache/test_dsa_layer_split_broadcast.py`, `test/registered/unit/mem_cache/test_hicache_staged_write_back_dispatch.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #30826 - Update GLM-5.2 NVFP4 cookbook
 
 - Link: https://github.com/sgl-project/sglang/pull/30826
 - Status/date: merged / 2026-07-10
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; associated commits `e8646701c14d`
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; associated commits `e8646701c14d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +13/-18, 122 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Update GLM-5.2 NVFP4 cookbook"; model line: GLM-5/5.1; category: performance/backend optimization; main diff: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`; technical summary: Covers "Update GLM-5.2 NVFP4 cookbook"; the main implementation surface is `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +10/-5 (15 lines); hunks: -97,10 +97,6 @@ sgl-eval run aime25 \\; -668,7 +664,6 @@ sgl-eval run aime25 \\; `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +2/-8 (10 lines); hunks: -103,12 +103,11 @@ export const benchmarks = [; -118,7 +117,6 @@ export const benchmarks = [; `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-5 (6 lines); hunks: -56,10 +56,6 @@ import { benchmarks } from "/src/snippets/configs/zai-org/glm...; -107,7 +103,7 @@ import { Playground } from "/src/snippets/_playground.jsx";.
@@ -1973,12 +1988,16 @@ diff -- docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx
 
 - Link: https://github.com/sgl-project/sglang/pull/30992
 - Status/date: merged / 2026-07-14
-- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/cp/test_glm52_cp_index_share.py`; associated commits `7e229e2a817d`
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/cp/test_glm52_cp_index_share.py`; associated commits `7e229e2a817d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +529/-51, 760 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "support GLM-5.2 MTP index sharing with prefill CP"; model line: GLM-5/5.1; category: docs/tests/CI; main diff: `test/registered/cp/test_glm52_cp_index_share.py`; technical summary: Covers "support GLM-5.2 MTP index sharing with prefill CP"; the main implementation surface is `test/registered/cp/test_glm52_cp_index_share.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `test/registered/cp/test_glm52_cp_index_share.py` added +63/-0 (63 lines); hunks: -0,0 +1,63; symbols: TestGLM52CPInterleave, setUpClass, tearDownClass, touching `TestGLM52CPInterleave, setUpClass, tearDownClass`.
+- Motivation: Title: "support GLM-5.2 MTP index sharing with prefill CP"; model line: GLM-5/5.1; category: docs/tests/CI; main diff: `test/registered/cp/test_glm52_cp_index_share.py`, `python/sglang/srt/layers/attention/dsa/transform_index.py`, `python/sglang/srt/models/deepseek_nextn.py`; technical summary: Covers "support GLM-5.2 MTP index sharing with prefill CP"; the main implementation surface is `test/registered/cp/test_glm52_cp_index_share.py`, `python/sglang/srt/layers/attention/dsa/transform_index.py`, `python/sglang/srt/models/deepseek_nextn.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/cp/test_glm52_cp_index_share.py` added +63/-0 (63 lines); hunks: -0,0 +1,63; symbols: TestGLM52CPInterleave, setUpClass, tearDownClass, touching `TestGLM52CPInterleave, setUpClass, tearDownClass`; `python/sglang/srt/layers/attention/dsa/transform_index.py` modified +142/-20 (162 lines); hunks: -1,3 +1,4; -6,11 +7,39; symbols: transform_index_page_table_prefill, transform_index_page_table_decode, _allocate_prefill_result, transform_index_page_table_decode_kernel, touching `transform_index_page_table_prefill, transform_index_page_table_decode, _allocate_prefill_result`; `python/sglang/srt/models/deepseek_nextn.py` modified +61/-18 (79 lines); hunks: -33,6 +33,7; -60,6 +61,34; symbols: _gather_dsa_topk_indices_for_cp, forward, touching `_gather_dsa_topk_indices_for_cp, forward`; `python/sglang/srt/layers/attention/dsa_backend.py` modified +22/-9 (31 lines); hunks: -1898,19 +1898,20 @@ def forward_extend(; -1929,6 +1930,12 @@ def forward_extend(; symbols: forward_extend, _forward_trtllm, touching `forward_extend, _forward_trtllm`.
 - Code diff details:
   - `test/registered/cp/test_glm52_cp_index_share.py` added +63/-0 (63 lines); hunks: -0,0 +1,63; symbols: TestGLM52CPInterleave, setUpClass, tearDownClass
+  - `python/sglang/srt/layers/attention/dsa/transform_index.py` modified +142/-20 (162 lines); hunks: -1,3 +1,4; -6,11 +7,39; symbols: transform_index_page_table_prefill, transform_index_page_table_decode, _allocate_prefill_result, transform_index_page_table_decode_kernel
+  - `python/sglang/srt/models/deepseek_nextn.py` modified +61/-18 (79 lines); hunks: -33,6 +33,7; -60,6 +61,34; symbols: _gather_dsa_topk_indices_for_cp, forward
+  - `python/sglang/srt/layers/attention/dsa_backend.py` modified +22/-9 (31 lines); hunks: -1898,19 +1898,20 @@ def forward_extend(; -1929,6 +1930,12 @@ def forward_extend(; symbols: forward_extend, _forward_trtllm
+  - `python/sglang/srt/speculative/eagle_worker_v2.py` modified +0/-3 (3 lines); hunks: -15,7 +15,6; -825,11 +824,9 @@ def _draft_extend_for_prefill(; symbols: _draft_extend_for_prefill
 - Key code excerpts:
 
 ```diff
@@ -1990,17 +2009,28 @@ diff -- test/registered/cp/test_glm52_cp_index_share.py
 +from sglang.test.kits.eval_accuracy_kit import GSM8KMixin
 +from sglang.test.test_utils import (
 +    DEFAULT_TIMEOUT_FOR_SERVER_LAUNCH,
+diff -- python/sglang/srt/layers/attention/dsa/transform_index.py
+@@ -1,3 +1,4 @@
++from itertools import accumulate
+@@ -6,11 +7,39 @@
+-    return transform_index_page_table_prefill_ref(**kwargs)
++    return transform_index_page_table_prefill_fast(**kwargs)
+-    return transform_index_page_table_decode_ref(**kwargs)
++    return transform_index_page_table_decode_fast(**kwargs)
+diff -- python/sglang/srt/models/deepseek_nextn.py
+@@ -33,6 +33,7 @@
 ```
 
 - Reviewed files:
   - tests: `test/registered/cp/test_glm52_cp_index_share.py` added +63/-0
+  - runtime: `python/sglang/srt/layers/attention/dsa/transform_index.py` modified +142/-20; `python/sglang/srt/models/deepseek_nextn.py` modified +61/-18; `python/sglang/srt/layers/attention/dsa_backend.py` modified +22/-9; `python/sglang/srt/speculative/eagle_worker_v2.py` modified +0/-3; `python/sglang/srt/server_args.py` modified +1/-1
 - Risk and verification: The diff ships test coverage in `test/registered/cp/test_glm52_cp_index_share.py`, `test/registered/kernels/test_dsa_transform_index.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #31289 - [CI] Lower GLM-5.2 NVFP4 MTP speed threshold
 
 - Link: https://github.com/sgl-project/sglang/pull/31289
 - Status/date: merged / 2026-07-15
-- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py`; associated commits `5af670284e78`
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py`; associated commits `5af670284e78`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[CI] Lower GLM-5.2 NVFP4 MTP speed threshold"; model line: GLM-5/5.1; category: performance/backend optimization; main diff: `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py`; technical summary: Covers "[CI] Lower GLM-5.2 NVFP4 MTP speed threshold"; the main implementation surface is `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py` modified +1/-1 (2 lines); hunks: -21,7 +21,7 @@ class TestGLM52NVFP4TPMTP(; symbols: TestGLM52NVFP4TPMTP, touching `TestGLM52NVFP4TPMTP`.
@@ -2023,7 +2053,7 @@ diff -- test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py
 
 - Link: https://github.com/sgl-project/sglang/pull/31512
 - Status/date: merged / 2026-07-17
-- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py`; associated commits `e83551230383`
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py`; associated commits `e83551230383`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +30/-14, 85 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Add nightly test for GLM5.2 LayerSplit"; model line: GLM-5/5.1; category: docs/tests/CI; main diff: `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py`; technical summary: Covers "Add nightly test for GLM5.2 LayerSplit"; the main implementation surface is `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py` modified +30/-14 (44 lines); hunks: -9,8 +9,7; -22,10 +21,9; symbols: TestGLM52DSACacheLayerSplit, touching `TestGLM52DSACacheLayerSplit`.
@@ -2050,7 +2080,7 @@ diff -- test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py
 
 - Link: https://github.com/sgl-project/sglang/pull/31577
 - Status/date: merged / 2026-07-17
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`; associated commits `eaeb779ea4b1`
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`; associated commits `eaeb779ea4b1`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +18/-1, 30 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Doc] Update GLM5.2 Cookbook with LayerSplit usage"; model line: GLM-5/5.1; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`; technical summary: Covers "[Doc] Update GLM5.2 Cookbook with LayerSplit usage"; the main implementation surface is `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +18/-1 (19 lines); hunks: -107,7 +107,6 @@ import { Playground } from "/src/snippets/_playground.jsx";; -247,3 +246,21 @@ Two of these matter specifically for GLM-5.2:.

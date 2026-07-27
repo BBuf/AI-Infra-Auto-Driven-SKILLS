@@ -1947,7 +1947,7 @@ diff -- docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx
 
 - 链接: https://github.com/sgl-project/sglang/pull/31388
 - 状态/时间: merged / 2026-07-16
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/glm4_moe_lite.py`；关联提交 `871c6482037e`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/glm4_moe_lite.py`；关联提交 `871c6482037e`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+1/-2，可读 patch 17 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[NPU]revert add scoring func for GLM 4.7 Flash」；模型线: GLM-4.6/4.7；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/glm4_moe_lite.py`；技术摘要: 覆盖「[NPU]revert add scoring func for GLM 4.7 Flash」；主要实现面是 `python/sglang/srt/models/glm4_moe_lite.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/glm4_moe_lite.py` modified +0/-1 (1 lines); hunks: -225,7 +225,6 @@ def __init__(; symbols: __init__，涉及 `__init__`。

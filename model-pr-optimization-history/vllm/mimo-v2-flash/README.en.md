@@ -408,7 +408,7 @@ diff -- vllm/model_executor/models/mimo_v2.py
 
 - Link: https://github.com/vllm-project/vllm/pull/46104
 - Status/date: merged / 2026-07-01
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mimo_v2.py`; associated commits `9969466a5978`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mimo_v2.py`; associated commits `9969466a5978`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +243/-25, 500 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Spec Decode] Support SWA + DFlash for MiMo"; model line: MiMo V2 Flash; category: performance/backend optimization; main diff: `vllm/model_executor/models/mimo_v2.py`; technical summary: Covers "[Spec Decode] Support SWA + DFlash for MiMo"; the main implementation surface is `vllm/model_executor/models/mimo_v2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/mimo_v2.py` modified +16/-3 (19 lines); hunks: -53,7 +53,12; -539,7 +544,7 @@ def _shard_fp8_qkv_proj(; symbols: _shard_fp8_qkv_proj, MiMoV2Model, __init__, forward, touching `_shard_fp8_qkv_proj, MiMoV2Model, __init__`.
@@ -435,7 +435,7 @@ diff -- vllm/model_executor/models/mimo_v2.py
 
 - Link: https://github.com/vllm-project/vllm/pull/43117
 - Status/date: merged / 2026-07-11
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/transformers_utils/processors/mimo_v2_omni.py`; associated commits `54503ecec0f3`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/transformers_utils/processors/mimo_v2_omni.py`; associated commits `54503ecec0f3`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +22/-76, 190 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "fix(processor): route MiMo-V2-Omni media fetch through MediaConnector"; model line: MiMo V2 Flash; category: bug fix; main diff: `vllm/transformers_utils/processors/mimo_v2_omni.py`; technical summary: Covers "fix(processor): route MiMo-V2-Omni media fetch through MediaConnector"; the main implementation surface is `vllm/transformers_utils/processors/mimo_v2_omni.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/transformers_utils/processors/mimo_v2_omni.py` modified +22/-76 (98 lines); hunks: -7,33 +7,21; -62,7 +50,7; symbols: ImageInput, VideoInput, AudioInput, _smart_resize, touching `ImageInput, VideoInput, AudioInput`.

@@ -1,11 +1,13 @@
 # TensorRT-LLM Qwen3.5 模型 PR 优化历史
 
-## 2026-07-27 源码 head 刷新
+## 2026-07-28 源码 head 刷新
 
 已复核 TensorRT-LLM 上游 main：
-`NVIDIA/TensorRT-LLM@1b4ffc0291d75a21ad20118e8f44de6e3831f786`。
-针对上一记录 head `aaffa2f9fef3025e0f698d978385a73460344e0b` 之后的范围执行了
-`git log --name-only -- <model-files>`；以下 4 个 runtime PR 均在逐文件读完上游最终 diff 后才提升为审计卡。
+`NVIDIA/TensorRT-LLM@9fe5853263750ade5b7dc24fb31a1215ec822d45`。
+已读完上一记录 head `1b4ffc0291d75a21ad20118e8f44de6e3831f786`
+之后的 7-commit 完整增量；其中没有新的 Qwen3.5 专属实现提交，最新 PR #16677
+仅涉及 VisualGen/Wan 的 Attention2D + TP，以下 4 个此前提升的 runtime PR
+继续作为当前模型证据。
 
 结果：Qwen3.5 的 MoE 与 Dense VLM 路径先后落地，随后加入注意力预处理融合以及 AllReduce + Gemma RMSNorm 融合。只改 waiver 的测试 PR 不混入 runtime 证据集。
 

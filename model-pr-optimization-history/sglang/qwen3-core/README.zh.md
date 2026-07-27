@@ -132,7 +132,7 @@
 | 2026-06-29 | [#29505](https://github.com/sgl-project/sglang/pull/29505) | merged | [NPU] Qwen3-VL-30B use split_qkv_rmsnorm_rope for extend | `python/sglang/srt/models/qwen3_moe.py` |
 | 2026-06-30 | [#29627](https://github.com/sgl-project/sglang/pull/29627) | merged | [NPU] Qwen3-VL-8B use split_qkv_rmsnorm_rope for extend | `python/sglang/srt/models/qwen3.py` |
 | 2026-07-06 | [#22450](https://github.com/sgl-project/sglang/pull/22450) | closed | [NPU] Add Qwen3-14B low latency doc | `docs/platforms/ascend/ascend_npu_best_practice.md` |
-| 2026-07-15 | [#31171](https://github.com/sgl-project/sglang/pull/31171) | merged | [CPU] add fused input proj for qwen3.5 | `test/registered/cpu/test_qwen3.py` |
+| 2026-07-15 | [#31171](https://github.com/sgl-project/sglang/pull/31171) | merged | [CPU] add fused input proj for qwen3.5 | `test/registered/cpu/test_qwen3.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/model_executor/cpu_graph_runner.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -3791,7 +3791,7 @@ diff -- test/srt/cpu/test_norm.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/29505
 - 状态/时间: merged / 2026-06-29
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_moe.py`；关联提交 `f85cc94d82a5`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_moe.py`；关联提交 `f85cc94d82a5`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-4，可读 patch 12 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[NPU] Qwen3-VL-30B use split_qkv_rmsnorm_rope for extend」；模型线: Qwen3 Core；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/qwen3_moe.py`；技术摘要: 覆盖「[NPU] Qwen3-VL-30B use split_qkv_rmsnorm_rope for extend」；主要实现面是 `python/sglang/srt/models/qwen3_moe.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/qwen3_moe.py` modified +1/-4 (5 lines); hunks: -661,10 +661,7 @@ def forward_prepare(; symbols: forward_prepare，涉及 `forward_prepare`。
@@ -3817,7 +3817,7 @@ diff -- python/sglang/srt/models/qwen3_moe.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/29627
 - 状态/时间: merged / 2026-06-30
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3.py`；关联提交 `ff51acd67b22`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3.py`；关联提交 `ff51acd67b22`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-4，可读 patch 12 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[NPU] Qwen3-VL-8B use split_qkv_rmsnorm_rope for extend」；模型线: Qwen3 Core；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/qwen3.py`；技术摘要: 覆盖「[NPU] Qwen3-VL-8B use split_qkv_rmsnorm_rope for extend」；主要实现面是 `python/sglang/srt/models/qwen3.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/qwen3.py` modified +1/-4 (5 lines); hunks: -287,10 +287,7 @@ def forward(; symbols: forward，涉及 `forward`。
@@ -3870,12 +3870,14 @@ diff -- docs/platforms/ascend/ascend_npu_best_practice.md
 
 - 链接: https://github.com/sgl-project/sglang/pull/31171
 - 状态/时间: merged / 2026-07-15
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/cpu/test_qwen3.py`；关联提交 `41e0b4b3695e`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/cpu/test_qwen3.py`；关联提交 `41e0b4b3695e`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+238/-94，可读 patch 471 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[CPU] add fused input proj for qwen3.5」；模型线: Qwen3 Core；类别: 性能/后端优化；主要 diff: `test/registered/cpu/test_qwen3.py`；技术摘要: 覆盖「[CPU] add fused input proj for qwen3.5」；主要实现面是 `test/registered/cpu/test_qwen3.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `test/registered/cpu/test_qwen3.py` modified +82/-58 (140 lines); hunks: -1,10 +1,11; -85,69 +86,92 @@ def fix_query_key_value_ordering_reshape_cat_contiguous(; symbols: fix_query_key_value_ordering_reshape_cat_contiguous, TestQwen3, test_fused_qkvzba_split_reshape_cat, test_fused_input_proj，涉及 `fix_query_key_value_ordering_reshape_cat_contiguous, TestQwen3, test_fused_qkvzba_split_reshape_cat`。
+- 动机: 标题「[CPU] add fused input proj for qwen3.5」；模型线: Qwen3 Core；类别: 性能/后端优化；主要 diff: `test/registered/cpu/test_qwen3.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/model_executor/cpu_graph_runner.py`；技术摘要: 覆盖「[CPU] add fused input proj for qwen3.5」；主要实现面是 `test/registered/cpu/test_qwen3.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/model_executor/cpu_graph_runner.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/cpu/test_qwen3.py` modified +82/-58 (140 lines); hunks: -1,10 +1,11; -85,69 +86,92 @@ def fix_query_key_value_ordering_reshape_cat_contiguous(; symbols: fix_query_key_value_ordering_reshape_cat_contiguous, TestQwen3, test_fused_qkvzba_split_reshape_cat, test_fused_input_proj，涉及 `fix_query_key_value_ordering_reshape_cat_contiguous, TestQwen3, test_fused_qkvzba_split_reshape_cat`；`python/sglang/srt/models/qwen3_5.py` modified +33/-18 (51 lines); hunks: -112,6 +112,7; -152,6 +153,9 @@ def _disable_shared_experts_fusion() -> bool:; symbols: _disable_shared_experts_fusion, __init__, _forward_input_proj, forward，涉及 `_disable_shared_experts_fusion, __init__, _forward_input_proj`；`python/sglang/srt/model_executor/cpu_graph_runner.py` modified +9/-0 (9 lines); hunks: -490,6 +490,15 @@ def _(mixed_qkvz, mixed_ba, num_heads_qk, num_heads_v, head...; symbols: _，涉及 `_`。
 - 代码 diff 细节:
   - `test/registered/cpu/test_qwen3.py` modified +82/-58 (140 lines); hunks: -1,10 +1,11; -85,69 +86,92 @@ def fix_query_key_value_ordering_reshape_cat_contiguous(; symbols: fix_query_key_value_ordering_reshape_cat_contiguous, TestQwen3, test_fused_qkvzba_split_reshape_cat, test_fused_input_proj
+  - `python/sglang/srt/models/qwen3_5.py` modified +33/-18 (51 lines); hunks: -112,6 +112,7; -152,6 +153,9 @@ def _disable_shared_experts_fusion() -> bool:; symbols: _disable_shared_experts_fusion, __init__, _forward_input_proj, forward
+  - `python/sglang/srt/model_executor/cpu_graph_runner.py` modified +9/-0 (9 lines); hunks: -490,6 +490,15 @@ def _(mixed_qkvz, mixed_ba, num_heads_qk, num_heads_v, head...; symbols: _
 - 关键代码摘录:
 
 ```diff
@@ -3887,10 +3889,21 @@ diff -- test/registered/cpu/test_qwen3.py
 +from sglang.srt.utils import is_host_cpu_arm64
 -from sglang.test.test_utils import CustomTestCase
 @@ -85,69 +86,92 @@ def fix_query_key_value_ordering_reshape_cat_contiguous(
+diff -- python/sglang/srt/models/qwen3_5.py
+@@ -112,6 +112,7 @@
++    use_intel_amx_backend,
+@@ -152,6 +153,9 @@ def _disable_shared_experts_fusion() -> bool:
++    fused_qkvzba_split_reshape_cat_contiguous = (
++        torch.ops.sgl_kernel.fused_qkvzba_split_reshape_cat_contiguous_cpu
++    )
+@@ -233,6 +237,17 @@ def __init__(
+diff -- python/sglang/srt/model_executor/cpu_graph_runner.py
+@@ -490,6 +490,15 @@ def _(mixed_qkvz, mixed_ba, num_heads_qk, num_heads_v, head_qk, head_v):
 ```
 
 - 已读文件:
   - tests: `test/registered/cpu/test_qwen3.py` modified +82/-58
+  - runtime: `python/sglang/srt/models/qwen3_5.py` modified +33/-18; `python/sglang/srt/model_executor/cpu_graph_runner.py` modified +9/-0
 - 验证与风险: diff 自带测试面 `test/registered/cpu/test_qwen3.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论

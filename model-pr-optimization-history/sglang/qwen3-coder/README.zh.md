@@ -1549,7 +1549,7 @@ diff -- test/srt/cpu/test_norm.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/30832
 - 状态/时间: merged / 2026-07-22
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/function_call/qwen3_coder_detector.py`；关联提交 `c20c48b8fd94`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/function_call/qwen3_coder_detector.py`；关联提交 `c20c48b8fd94`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+159/-7，可读 patch 215 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Add 'anyOf' schema support for qwen3_coder tool call parser」；模型线: Qwen3 Coder；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/function_call/qwen3_coder_detector.py`；技术摘要: 覆盖「Add 'anyOf' schema support for qwen3_coder tool call parser」；主要实现面是 `python/sglang/srt/function_call/qwen3_coder_detector.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/function_call/qwen3_coder_detector.py` modified +9/-7 (16 lines); hunks: -11,6 +11,7; -86,6 +87,13 @@ def _get_arguments_config(; symbols: _get_arguments_config, _get_param_type, _convert_param_value，涉及 `_get_arguments_config, _get_param_type, _convert_param_value`。

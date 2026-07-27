@@ -12,7 +12,7 @@ Scope:
 
 Current narrow additions:
 
-- `MiniMaxAI/MiniMax-M3-MXFP8`: the enabled SGLang recipe follows the verified single-node 8×B200 launch (`tp=8`, FA4 sparse attention, DeepGEMM MoE, 0.65 static-memory fraction) at SGLang head `8d6549bc4039d33635844495d86684677a4f0df8`. vLLM head `ef9975d021448b99a5408e8c78a4c4f6b63443c7` lists the exact checkpoint, so its section is an enabled generic translation; TensorRT-LLM and TokenSpeed stay disabled because their recorded recipes use a different hardware or checkpoint contract.
+- `MiniMaxAI/MiniMax-M3-MXFP8`: the enabled SGLang recipe follows the verified single-node 8×B200 launch (`tp=8`, FA4 sparse attention, DeepGEMM MoE, 0.65 static-memory fraction) at SGLang head `8a311d1c889244ab1f857d7df79de7e5f0a6891c`. vLLM head `b5bcb3ce881e1d324ff7f6176ef27606558dbd74` lists the exact checkpoint, so its section is an enabled generic translation; TensorRT-LLM and TokenSpeed stay disabled because their recorded recipes use a different hardware or checkpoint contract.
 - `Qwen/Qwen3.6-35B-A3B-FP8`: the enabled SGLang recipe follows its current B200 single-GPU cookbook entry at the same recorded head. The other recorded heads do not expose this exact FP8 checkpoint contract, so those sections stay disabled.
 
 Inkling, Unlimited OCR, Kimi K3, and DeepSeek V4 are intentionally excluded

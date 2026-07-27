@@ -49,7 +49,7 @@
 
 - Link: https://github.com/sgl-project/sglang/pull/23486
 - Status/date: merged / 2026-04-22
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`; associated commits `de962f327432`
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`; associated commits `de962f327432`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +55/-17, 170 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "docs(cookbook): add Qwen3.6-27B dense variant"; model line: Qwen3.6; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`; technical summary: Covers "docs(cookbook): add Qwen3.6-27B dense variant"; the main implementation surface is `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx` modified +30/-10 (40 lines); hunks: -1,26 +1,29; -29,30 +32,43 @@ Qwen3.6 features a Gated Delta Networks combined with sparse...; `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx` modified +25/-7 (32 lines); hunks: -10,6 +10,14 @@ export const Qwen36Deployment = () => {; -66,9 +74,18 @@ export const Qwen36Deployment = () => {.
@@ -85,7 +85,7 @@ diff -- docs_new/src/snippets/autoregressive/qwen36-deployment.jsx
 
 - Link: https://github.com/sgl-project/sglang/pull/29905
 - Status/date: merged / 2026-07-02
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`; associated commits `1c75243f5eda`
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`; associated commits `1c75243f5eda`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +50/-12, 111 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "docs: add Qwen3.6-27B-NVFP4 variant to cookbook"; model line: Qwen3.6; category: performance/backend optimization; main diff: `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`, `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`; technical summary: Covers "docs: add Qwen3.6-27B-NVFP4 variant to cookbook"; the main implementation surface is `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`, `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx` modified +42/-12 (54 lines); hunks: -23,10 +23,19 @@ export const Qwen36Deployment = () => {; -93,8 +102,8 @@ export const Qwen36Deployment = () => {; `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx` modified +8/-0 (8 lines); hunks: -57,6 +57,11 @@ Both variants share the same hybrid reasoning, tool-calling,...; -75,6 +80,9 @@ uv pip install 'git+https://github.com/sgl-project/sglang.git#....
@@ -121,7 +121,7 @@ diff -- docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx
 
 - Link: https://github.com/sgl-project/sglang/pull/29964
 - Status/date: merged / 2026-07-07
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`; associated commits `f32b4ecd26ff`
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`; associated commits `f32b4ecd26ff`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-4, 14 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Docs] Use trtllm_mha for Qwen3.6 B300"; model line: Qwen3.6; category: docs/tests/CI; main diff: `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`; technical summary: Covers "[Docs] Use trtllm_mha for Qwen3.6 B300"; the main implementation surface is `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx` modified +1/-4 (5 lines); hunks: -222,12 +222,9 @@ export const Qwen36Deployment = () => {.
@@ -147,7 +147,7 @@ diff -- docs_new/src/snippets/autoregressive/qwen36-deployment.jsx
 
 - Link: https://github.com/sgl-project/sglang/pull/31413
 - Status/date: merged / 2026-07-25
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`; associated commits `953c587adf16`
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`; associated commits `953c587adf16`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +26/-9, 115 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Docs] Add Qwen3.6 35B NVFP4 to cookbook"; model line: Qwen3.6; category: performance/backend optimization; main diff: `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`; technical summary: Covers "[Docs] Add Qwen3.6 35B NVFP4 to cookbook"; the main implementation surface is `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx` modified +21/-3 (24 lines); hunks: -47,6 +47,11 @@ Both variants share the same hybrid reasoning, tool-calling,...; -78,7 +83,7 @@ uv pip install sglang; `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx` modified +5/-6 (11 lines); hunks: -23,14 +23,13 @@ export const Qwen36Deployment = () => {; -94,8 +93,8 @@ export const Qwen36Deployment = () => {.

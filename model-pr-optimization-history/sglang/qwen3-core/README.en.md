@@ -132,7 +132,7 @@
 | 2026-06-29 | [#29505](https://github.com/sgl-project/sglang/pull/29505) | merged | [NPU] Qwen3-VL-30B use split_qkv_rmsnorm_rope for extend | `python/sglang/srt/models/qwen3_moe.py` |
 | 2026-06-30 | [#29627](https://github.com/sgl-project/sglang/pull/29627) | merged | [NPU] Qwen3-VL-8B use split_qkv_rmsnorm_rope for extend | `python/sglang/srt/models/qwen3.py` |
 | 2026-07-06 | [#22450](https://github.com/sgl-project/sglang/pull/22450) | closed | [NPU] Add Qwen3-14B low latency doc | `docs/platforms/ascend/ascend_npu_best_practice.md` |
-| 2026-07-15 | [#31171](https://github.com/sgl-project/sglang/pull/31171) | merged | [CPU] add fused input proj for qwen3.5 | `test/registered/cpu/test_qwen3.py` |
+| 2026-07-15 | [#31171](https://github.com/sgl-project/sglang/pull/31171) | merged | [CPU] add fused input proj for qwen3.5 | `test/registered/cpu/test_qwen3.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/model_executor/cpu_graph_runner.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -3791,7 +3791,7 @@ diff -- test/srt/cpu/test_norm.py
 
 - Link: https://github.com/sgl-project/sglang/pull/29505
 - Status/date: merged / 2026-06-29
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_moe.py`; associated commits `f85cc94d82a5`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_moe.py`; associated commits `f85cc94d82a5`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-4, 12 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[NPU] Qwen3-VL-30B use split_qkv_rmsnorm_rope for extend"; model line: Qwen3 Core; category: model implementation change; main diff: `python/sglang/srt/models/qwen3_moe.py`; technical summary: Covers "[NPU] Qwen3-VL-30B use split_qkv_rmsnorm_rope for extend"; the main implementation surface is `python/sglang/srt/models/qwen3_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/qwen3_moe.py` modified +1/-4 (5 lines); hunks: -661,10 +661,7 @@ def forward_prepare(; symbols: forward_prepare, touching `forward_prepare`.
@@ -3817,7 +3817,7 @@ diff -- python/sglang/srt/models/qwen3_moe.py
 
 - Link: https://github.com/sgl-project/sglang/pull/29627
 - Status/date: merged / 2026-06-30
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3.py`; associated commits `ff51acd67b22`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3.py`; associated commits `ff51acd67b22`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-4, 12 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[NPU] Qwen3-VL-8B use split_qkv_rmsnorm_rope for extend"; model line: Qwen3 Core; category: model implementation change; main diff: `python/sglang/srt/models/qwen3.py`; technical summary: Covers "[NPU] Qwen3-VL-8B use split_qkv_rmsnorm_rope for extend"; the main implementation surface is `python/sglang/srt/models/qwen3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/qwen3.py` modified +1/-4 (5 lines); hunks: -287,10 +287,7 @@ def forward(; symbols: forward, touching `forward`.
@@ -3870,12 +3870,14 @@ diff -- docs/platforms/ascend/ascend_npu_best_practice.md
 
 - Link: https://github.com/sgl-project/sglang/pull/31171
 - Status/date: merged / 2026-07-15
-- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/cpu/test_qwen3.py`; associated commits `41e0b4b3695e`
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/cpu/test_qwen3.py`; associated commits `41e0b4b3695e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +238/-94, 471 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[CPU] add fused input proj for qwen3.5"; model line: Qwen3 Core; category: performance/backend optimization; main diff: `test/registered/cpu/test_qwen3.py`; technical summary: Covers "[CPU] add fused input proj for qwen3.5"; the main implementation surface is `test/registered/cpu/test_qwen3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `test/registered/cpu/test_qwen3.py` modified +82/-58 (140 lines); hunks: -1,10 +1,11; -85,69 +86,92 @@ def fix_query_key_value_ordering_reshape_cat_contiguous(; symbols: fix_query_key_value_ordering_reshape_cat_contiguous, TestQwen3, test_fused_qkvzba_split_reshape_cat, test_fused_input_proj, touching `fix_query_key_value_ordering_reshape_cat_contiguous, TestQwen3, test_fused_qkvzba_split_reshape_cat`.
+- Motivation: Title: "[CPU] add fused input proj for qwen3.5"; model line: Qwen3 Core; category: performance/backend optimization; main diff: `test/registered/cpu/test_qwen3.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/model_executor/cpu_graph_runner.py`; technical summary: Covers "[CPU] add fused input proj for qwen3.5"; the main implementation surface is `test/registered/cpu/test_qwen3.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/model_executor/cpu_graph_runner.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/cpu/test_qwen3.py` modified +82/-58 (140 lines); hunks: -1,10 +1,11; -85,69 +86,92 @@ def fix_query_key_value_ordering_reshape_cat_contiguous(; symbols: fix_query_key_value_ordering_reshape_cat_contiguous, TestQwen3, test_fused_qkvzba_split_reshape_cat, test_fused_input_proj, touching `fix_query_key_value_ordering_reshape_cat_contiguous, TestQwen3, test_fused_qkvzba_split_reshape_cat`; `python/sglang/srt/models/qwen3_5.py` modified +33/-18 (51 lines); hunks: -112,6 +112,7; -152,6 +153,9 @@ def _disable_shared_experts_fusion() -> bool:; symbols: _disable_shared_experts_fusion, __init__, _forward_input_proj, forward, touching `_disable_shared_experts_fusion, __init__, _forward_input_proj`; `python/sglang/srt/model_executor/cpu_graph_runner.py` modified +9/-0 (9 lines); hunks: -490,6 +490,15 @@ def _(mixed_qkvz, mixed_ba, num_heads_qk, num_heads_v, head...; symbols: _, touching `_`.
 - Code diff details:
   - `test/registered/cpu/test_qwen3.py` modified +82/-58 (140 lines); hunks: -1,10 +1,11; -85,69 +86,92 @@ def fix_query_key_value_ordering_reshape_cat_contiguous(; symbols: fix_query_key_value_ordering_reshape_cat_contiguous, TestQwen3, test_fused_qkvzba_split_reshape_cat, test_fused_input_proj
+  - `python/sglang/srt/models/qwen3_5.py` modified +33/-18 (51 lines); hunks: -112,6 +112,7; -152,6 +153,9 @@ def _disable_shared_experts_fusion() -> bool:; symbols: _disable_shared_experts_fusion, __init__, _forward_input_proj, forward
+  - `python/sglang/srt/model_executor/cpu_graph_runner.py` modified +9/-0 (9 lines); hunks: -490,6 +490,15 @@ def _(mixed_qkvz, mixed_ba, num_heads_qk, num_heads_v, head...; symbols: _
 - Key code excerpts:
 
 ```diff
@@ -3887,10 +3889,21 @@ diff -- test/registered/cpu/test_qwen3.py
 +from sglang.srt.utils import is_host_cpu_arm64
 -from sglang.test.test_utils import CustomTestCase
 @@ -85,69 +86,92 @@ def fix_query_key_value_ordering_reshape_cat_contiguous(
+diff -- python/sglang/srt/models/qwen3_5.py
+@@ -112,6 +112,7 @@
++    use_intel_amx_backend,
+@@ -152,6 +153,9 @@ def _disable_shared_experts_fusion() -> bool:
++    fused_qkvzba_split_reshape_cat_contiguous = (
++        torch.ops.sgl_kernel.fused_qkvzba_split_reshape_cat_contiguous_cpu
++    )
+@@ -233,6 +237,17 @@ def __init__(
+diff -- python/sglang/srt/model_executor/cpu_graph_runner.py
+@@ -490,6 +490,15 @@ def _(mixed_qkvz, mixed_ba, num_heads_qk, num_heads_v, head_qk, head_v):
 ```
 
 - Reviewed files:
   - tests: `test/registered/cpu/test_qwen3.py` modified +82/-58
+  - runtime: `python/sglang/srt/models/qwen3_5.py` modified +33/-18; `python/sglang/srt/model_executor/cpu_graph_runner.py` modified +9/-0
 - Risk and verification: The diff ships test coverage in `test/registered/cpu/test_qwen3.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes

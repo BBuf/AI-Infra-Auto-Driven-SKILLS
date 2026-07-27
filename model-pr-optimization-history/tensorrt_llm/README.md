@@ -7,11 +7,17 @@ Current model families:
 
 ## Current Watch / Landed Items
 
-Refresh: `2026-07-27`. Source head:
-`NVIDIA/TensorRT-LLM@1b4ffc0291d75a21ad20118e8f44de6e3831f786`.
+Refresh: `2026-07-28`. Source head:
+`NVIDIA/TensorRT-LLM@9fe5853263750ade5b7dc24fb31a1215ec822d45`.
+The final one-commit increment is PR
+[#16677](https://github.com/NVIDIA/TensorRT-LLM/pull/16677), which enables
+Attention2D plus tensor parallelism for VisualGen/Wan and is intentionally not
+promoted as Kimi or Qwen3.5 LLM evidence.
 
 | PR | Model / area | Status | Current signal | Why it matters |
 | --- | --- | --- | --- | --- |
+| [#16805](https://github.com/NVIDIA/TensorRT-LLM/pull/16805) | disaggregated speculative runtime | merged | draft-token and sequence-length accounting | Adopts draft tokens from context-phase handoff and counts both first-generation and draft tokens on decode. |
+| [#16763](https://github.com/NVIDIA/TensorRT-LLM/pull/16763) | PyTorch executor startup | merged | unified phase-1 CUDA graph cleanup | Avoids duplicate graph release while rebuilding the final KV cache after capacity estimation. |
 | [#16469](https://github.com/NVIDIA/TensorRT-LLM/pull/16469) | Qwen3.5/3.6 attention | merged | fused QK norm + RoPE + gate | Collapses attention preprocessing and output gating launches; compare traces only after recording this fused path. |
 | [#15194](https://github.com/NVIDIA/TensorRT-LLM/pull/15194) | Qwen3-Next / Qwen3.5 | merged | Gemma RMSNorm + AllReduce | Changes TP collective ownership and removes standalone norm work. |
 | [#14848](https://github.com/NVIDIA/TensorRT-LLM/pull/14848) | Kimi K2.5 / NVFP4 | merged | RMSNorm + FP4 quant fusion | Adds the Blackwell fused normalization/quantization edge used by Kimi-style MLA. |

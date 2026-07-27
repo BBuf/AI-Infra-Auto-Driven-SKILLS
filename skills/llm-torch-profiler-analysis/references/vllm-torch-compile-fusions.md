@@ -1,8 +1,8 @@
 # vLLM Torch Compile Fusion Patterns
 
-Refresh: `2026-07-27`.
+Refresh: `2026-07-28`.
 Source tree: vLLM `origin/main` at
-`a89015c6df8eeb37a843b717c97a5be1355de83d`. This refresh adds the
+`b5bcb3ce881e1d324ff7f6176ef27606558dbd74`. This refresh adds the
 ROCm-specific `QkNormRopeKvCacheFusionPass` introduced by merged PR `#42749`;
 it supersedes the separate QK-norm/RoPE and RoPE/KV-cache passes for supported
 attention layers and head dimensions.

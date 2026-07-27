@@ -1,16 +1,20 @@
 # TokenSpeed Kimi 模型 PR 优化历史
 
-## 2026-07-27 源码 head 刷新
+## 2026-07-28 源码 head 刷新
 
 已复核 TokenSpeed 上游 main：
-`lightseekorg/tokenspeed@d73bf0454422092f306d5575e803a08fd35ac41c`。
-针对上一 head `d0a7faddb5ec0d4c6d037c4c3e6a781d2c5164a8` 之后的范围执行了
-`git log --name-only -- <model-files>`，并完整阅读了以下 3 个提升条目的源码 diff。
+`lightseekorg/tokenspeed@e41aa8b1609a9412d7ed26aa56d910828607950f`。
+已读完上一 head `d73bf0454422092f306d5575e803a08fd35ac41c`
+之后的 2-commit 完整增量。
 
-结果：本文新增 DP+EAGLE3 collective-size hang 修复、Kimi incremental DFlash capture，以及 Kimi-K2.7 EAGLE3.1 模型语义；无关的共享测试变更已排除。
+结果：PR #821 新增 Kimi K3 FlatKV/KDA/MLA 部署契约，并在保留硬件与验证限制的
+前提下提升为源码指南；PR #823 只增加 README 新闻链接。本文继续覆盖 DP + EAGLE3
+collective-size hang、Kimi incremental DFlash capture，以及 Kimi-K2.7 EAGLE3.1
+模型语义。
 
 | 合并日期 | PR | Runtime 信号 |
 | --- | --- | --- |
+| 2026-07-27 | [#821](https://github.com/lightseekorg/tokenspeed/pull/821) | Kimi K3 部署契约 |
 | 2026-07-07 | [#596](https://github.com/lightseekorg/tokenspeed/pull/596) | DP + EAGLE3 mixed-step hang |
 | 2026-07-25 | [#795](https://github.com/lightseekorg/tokenspeed/pull/795) | Kimi-K2.7 EAGLE3.1 |
 | 2026-07-26 | [#797](https://github.com/lightseekorg/tokenspeed/pull/797) | incremental DFlash capture |
@@ -60,6 +64,34 @@
 | 2026-06-26 | [#476](https://github.com/lightseekorg/tokenspeed/pull/476) | merged | Add AMD Kimi MXFP4 CI job | AMD eval YAML, MLA metadata unit test |
 
 ## 逐 PR diff 审计卡
+
+### PR #821 - 新增 Kimi K3 部署 recipe
+
+- 链接: https://github.com/lightseekorg/tokenspeed/pull/821
+- 状态/时间: merged / 2026-07-27
+- 反查来源: 最终上游提交
+  `55a8390007e5ace17919d76e5cfaef0c68c79e25`；已读完 2-commit 增量和
+  recipe 完整 diff。
+- 代码 diff 已读范围: 1 file，+117/-0。
+- 动机: 明确 Kimi K3 的 runtime/packaging 约束，避免把 K2.5 flags 当成可互换配置。
+- 实现要点: 要求 FlatKV，记录 vendor-neutral KDA dispatch 与 NVIDIA FLA-derived /
+  AMD native state layout、MLA backend 选择，以及 NVIDIA B300、AMD gfx950 分离命令。
+- 代码 diff 细节: recipe 新增 FlatKV build/preflight、flattened checkpoint、
+  writable module cache、NVIDIA `tokenspeed-situ` + Triton fallback 和 AMD Gluon 路径。
+- 关键代码摘录:
+
+```diff
++- K3 is FlatKV-only. Build the `tokenspeed_scheduler` extension with
++  `-DTOKENSPEED_FLAT_KVCACHE=ON`
++tokenspeed serve moonshotai/Kimi-K3 \
++  --kv-cache-dtype fp8 \
++  --tensor-parallel-size 8
+```
+
+- 已读文件: `docs/recipes/models.md`；后续 README commit 只链接 K3 公告。
+- 验证与风险: NVIDIA 依赖 B300/CUDA 13 `tokenspeed-situ` sidecar，其他平台回退
+  Triton；checkpoint 需 flattened、remote-code cache 需可写，默认 FP8 KV scale
+  可能影响精度。这不是跨框架性能实测。
 
 ### PR #596 - 修复 Kimi DP EAGLE3 mixed-step hang
 

@@ -189,12 +189,12 @@ Hard requirements:
 - Use the same model weights, tokenizer, precision, quantization, GPU type/count,
   GPU ids, endpoint path, sampling settings, and SLA.
 - Record package version or git commit plus server/benchmark `--help` snapshots
-  for SGLang and every selected comparison framework. The 2026-07-27 immutable
+  for SGLang and every selected comparison framework. The 2026-07-28 immutable
   source heads checked for this skill are SGLang
-  `8d6549bc4039d33635844495d86684677a4f0df8`, vLLM
-  `ef9975d021448b99a5408e8c78a4c4f6b63443c7`, TensorRT-LLM
-  `1b4ffc0291d75a21ad20118e8f44de6e3831f786`, and
-  `lightseekorg/tokenspeed@d73bf0454422092f306d5575e803a08fd35ac41c`;
+  `8a311d1c889244ab1f857d7df79de7e5f0a6891c`, vLLM
+  `b5bcb3ce881e1d324ff7f6176ef27606558dbd74`, TensorRT-LLM
+  `9fe5853263750ade5b7dc24fb31a1215ec822d45`, and
+  `lightseekorg/tokenspeed@e41aa8b1609a9412d7ed26aa56d910828607950f`;
   still prefer target-image `--help` over these source notes and re-check
   open PRs before every long SOTA run.
 - Use the target image's current commands: `python -m sglang.launch_server`,

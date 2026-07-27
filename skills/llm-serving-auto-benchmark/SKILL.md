@@ -186,22 +186,31 @@ before starting a long sweep.
   the operator has verified the image.
 - vLLM still exposes `--long-prefill-token-threshold`; verify the exact flag
   against the target image before searching it.
-- vLLM current mainline was checked on 2026-07-27 at
-  `ef9975d021448b99a5408e8c78a4c4f6b63443c7` and includes PR `#46735`
+- vLLM current mainline was checked on 2026-07-28 at
+  `b5bcb3ce881e1d324ff7f6176ef27606558dbd74` and includes PR `#46735`
   fixing CUDA graph capture in Triton / NVFP4-emulation MoE. If a target image
   predates it, treat Triton-MoE graph-capture failures or eager fallback as an
   image/runtime issue before scoring it against SGLang.
 - The same vLLM refresh includes PR `#44800` (`VLLM_GPU_SYNC_CHECK`). For
   sync-heavy profiler rows, record whether the target image exposes this debug
   knob before labeling the gap as kernel-local.
-- TensorRT-LLM mainline was checked on 2026-07-27 at
-  `1b4ffc0291d75a21ad20118e8f44de6e3831f786`. Keep
+- vLLM PR `#42669` extends FlashAttention-4 SM100 support to head dimension
+  256, while PR `#49982` fixes MLA padding, grouped top-k routing, and routed
+  scaling in the Transformers modeling backend. Treat images predating either
+  change as stale when those exact paths affect a row; neither merge is itself
+  benchmark evidence.
+- TensorRT-LLM mainline was checked on 2026-07-28 at
+  `9fe5853263750ade5b7dc24fb31a1215ec822d45`. Keep
   `kv_cache_free_gpu_memory_fraction` in shipped configs until the target
   `trtllm-serve serve --help` proves a shorter alias is accepted.
 - TensorRT-LLM current mainline includes PR `#11685` and PR `#15546`, which
   affect KV block eviction and KV block-offset host staging. If a target image
   predates them, record stale-runtime risk when cache pressure, block-offset
   races, or prefix/KV residency affect benchmark rows.
+- TensorRT-LLM PR `#16805` fixes disaggregated draft-token adoption and
+  sequence-length accounting; PR `#16763` unifies phase-1 CUDA graph cleanup
+  before final KV-cache allocation. Record the image SHA when disaggregated
+  speculative output or startup memory differs across runs.
 - The historical TensorRT-LLM 1.0.0 multi-GPU PyTorch-backend validation used
   `--ipc=host`, `--ulimit memlock=-1`, `--ulimit stack=67108864`,
   `--shm-size=16g`, and `NCCL_IB_DISABLE=1` (for single-node) or an equivalent
@@ -212,11 +221,16 @@ before starting a long sweep.
   backend, which is pinned to `pytorch` by this skill.
 - `trtllm` `benchmark_serving --dataset-name random` silently falls back to
   ShareGPT sampling without `--random-ids` (or `--download-path`).
-- TokenSpeed is a fast-moving engine. Current mainline checked on 2026-07-27 at
-  `lightseekorg/tokenspeed@d73bf0454422092f306d5575e803a08fd35ac41c` exposes `tokenspeed serve`,
+- TokenSpeed is a fast-moving engine. Current mainline checked on 2026-07-28 at
+  `lightseekorg/tokenspeed@e41aa8b1609a9412d7ed26aa56d910828607950f` exposes `tokenspeed serve`,
   `tokenspeed bench`, `tokenspeed env`, and `tokenspeed version`. Its server
   command is `tokenspeed serve <model>`, not a `python -m tokenspeed`
   entrypoint.
+- TokenSpeed PR `#821` documents Kimi K3 FlatKV, KDA/MLA, and B300/AMD
+  deployment contracts. Keep it as source guidance only: the recipe contains
+  platform-specific sidecars, checkpoint-layout requirements, and explicit
+  output-quality and validation caveats, so it does not enable a generic benchmark lane
+  without target-image and model smoke evidence.
 - TokenSpeed's SGLang/vLLM-compatible parameter names are not always identical
   in meaning. Prefer `--max-model-len`, `--max-num-seqs`,
   `--chunked-prefill-size`, `--max-prefill-tokens`, `--max-total-tokens`,
@@ -514,7 +528,7 @@ TensorRT-LLM flag names are especially version-sensitive. In the validated
 TensorRT-LLM 1.0.0 image, the KV-cache memory flag accepted by
 `trtllm-serve serve` was `--kv_cache_free_gpu_memory_fraction`, not
 `--free_gpu_memory_fraction`. Current mainline was rechecked at
-`1b4ffc0291d75a21ad20118e8f44de6e3831f786` on 2026-07-27. Always verify flags
+`9fe5853263750ade5b7dc24fb31a1215ec822d45` on 2026-07-28. Always verify flags
 with `trtllm-serve serve --help` before running a search on any GPU target.
 
 TensorRT-LLM backend policy for this skill:

@@ -127,9 +127,9 @@
 | 2026-06-27 | [#46474](https://github.com/vllm-project/vllm/pull/46474) | merged | [ROCm][Perf] Fused shared expert for Minimax M3 | `vllm/models/minimax_m3/amd/model.py` |
 | 2026-07-01 | [#47269](https://github.com/vllm-project/vllm/pull/47269) | merged | [ROCm][MiniMax-M3] Cross-layer lightning-indexer top-k sharing | `vllm/models/minimax_m3/amd/model.py` |
 | 2026-07-08 | [#47502](https://github.com/vllm-project/vllm/pull/47502) | merged | [Minimax-M3] Using tok_sparse_select from MSA instead of triton kernels | `vllm/models/minimax_m3/nvidia/indexer_msa.py`, `vllm/models/minimax_m3/common/ops/index_topk.py`, `vllm/models/minimax_m3/common/ops/sparse_attn.py` |
-| 2026-07-08 | [#46117](https://github.com/vllm-project/vllm/pull/46117) | merged | [ROCm][Perf] MXFP8 dense-linear + grouped-MoE GEMM optimizations for MiniMax-M3 | `tests/kernels/test_minimax_m3_amd_ops.py` |
+| 2026-07-08 | [#46117](https://github.com/vllm-project/vllm/pull/46117) | merged | [ROCm][Perf] MXFP8 dense-linear + grouped-MoE GEMM optimizations for MiniMax-M3 | `tests/kernels/test_minimax_m3_amd_ops.py`, `vllm/model_executor/layers/fused_moe/experts/mxfp8_native_moe.py`, `vllm/model_executor/kernels/linear/mxfp8/rocm_native.py` |
 | 2026-07-08 | [#47631](https://github.com/vllm-project/vllm/pull/47631) | merged | [Perf] Minimax M3 - Support cross-layer allreduce-norm fusion | `vllm/models/minimax_m3/nvidia/model.py`, `vllm/models/deepseek_v32/nvidia/model.py` |
-| 2026-07-08 | [#47158](https://github.com/vllm-project/vllm/pull/47158) | merged | [ROCm] fixed aiter master flag and expert parallelism compatibility on minimax-m3-mxfp8 | `tests/kernels/test_minimax_m3_amd_ops.py` |
+| 2026-07-08 | [#47158](https://github.com/vllm-project/vllm/pull/47158) | merged | [ROCm] fixed aiter master flag and expert parallelism compatibility on minimax-m3-mxfp8 | `tests/kernels/test_minimax_m3_amd_ops.py`, `vllm/model_executor/layers/fused_moe/experts/aiter_mxfp8_moe.py` |
 | 2026-07-13 | [#47287](https://github.com/vllm-project/vllm/pull/47287) | merged | [ROCm][MiniMax-M3] Add AITER sparse paged attention | `vllm/models/minimax_m3/amd/ops/sparse_pa.py`, `vllm/models/minimax_m3/amd/model.py`, `vllm/models/minimax_m3/common/ops/sparse_attn.py` |
 | 2026-07-14 | [#44849](https://github.com/vllm-project/vllm/pull/44849) | merged | [ROCm][MiniMax-M2] Dispatch fused QK-norm + AllReduce via AITER | `vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py` |
 | 2026-07-14 | [#47984](https://github.com/vllm-project/vllm/pull/47984) | merged | [ROCm][MiniMax-M3][Spec Decode] Support speculative decode with AITER sparse PA | `vllm/models/minimax_m3/amd/ops/sparse_pa.py`, `vllm/models/minimax_m3/amd/sparse_attention_msa.py`, `tests/kernels/attention/test_minimax_m3.py` |
@@ -2044,7 +2044,7 @@ diff -- vllm/models/minimax_m3/amd/model.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/46474
 - 状态/时间: merged / 2026-06-27
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/models/minimax_m3/amd/model.py`；关联提交 `51a99565c398`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/models/minimax_m3/amd/model.py`；关联提交 `51a99565c398`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+46/-13，可读 patch 127 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[ROCm][Perf] Fused shared expert for Minimax M3」；模型线: MiniMax M2/M3 Series；类别: 性能/后端优化；主要 diff: `vllm/models/minimax_m3/amd/model.py`；技术摘要: 覆盖「[ROCm][Perf] Fused shared expert for Minimax M3」；主要实现面是 `vllm/models/minimax_m3/amd/model.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/models/minimax_m3/amd/model.py` modified +46/-13 (59 lines); hunks: -23,8 +23,9; -96,7 +97,6; symbols: _fuse_shared_experts_enabled, forward, _aiter_moe_fused_shared_experts_enabled, MiniMaxM3MoE，涉及 `_fuse_shared_experts_enabled, forward, _aiter_moe_fused_shared_experts_enabled`。
@@ -2071,7 +2071,7 @@ diff -- vllm/models/minimax_m3/amd/model.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/47269
 - 状态/时间: merged / 2026-07-01
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/models/minimax_m3/amd/model.py`；关联提交 `4e5ca89cfe98`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/models/minimax_m3/amd/model.py`；关联提交 `4e5ca89cfe98`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+41/-1，可读 patch 63 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[ROCm][MiniMax-M3] Cross-layer lightning-indexer top-k sharing」；模型线: MiniMax M2/M3 Series；类别: 模型实现调整；主要 diff: `vllm/models/minimax_m3/amd/model.py`；技术摘要: 覆盖「[ROCm][MiniMax-M3] Cross-layer lightning-indexer top-k sharing」；主要实现面是 `vllm/models/minimax_m3/amd/model.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/models/minimax_m3/amd/model.py` modified +41/-1 (42 lines); hunks: -135,6 +135,37 @@ def _sparse_attention_layer_ids(config: PretrainedConfig) -...; -541,6 +572,12 @@ def __init__(; symbols: _sparse_attention_layer_ids, _sparse_attention_layer_ordinals, _should_skip_index_topk, _is_moe_layer，涉及 `_sparse_attention_layer_ids, _sparse_attention_layer_ordinals, _should_skip_index_topk`。
@@ -2098,7 +2098,7 @@ diff -- vllm/models/minimax_m3/amd/model.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/47502
 - 状态/时间: merged / 2026-07-08
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/attention/test_minimax_m3.py`, `vllm/models/minimax_m3/common/indexer.py`, `vllm/models/minimax_m3/common/ops/__init__.py`, `vllm/models/minimax_m3/common/ops/index_topk.py`, `vllm/models/minimax_m3/common/ops/sparse_attn.py` 等 8 个文件；关联提交 `902158949803`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/attention/test_minimax_m3.py`, `vllm/models/minimax_m3/common/indexer.py`, `vllm/models/minimax_m3/common/ops/__init__.py`, `vllm/models/minimax_m3/common/ops/index_topk.py`, `vllm/models/minimax_m3/common/ops/sparse_attn.py` 等 8 个文件；关联提交 `902158949803`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 9 个文件，+233/-72，可读 patch 577 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Minimax-M3] Using tok_sparse_select from MSA instead of triton kernels」；模型线: MiniMax M2/M3 Series；类别: 性能/后端优化；主要 diff: `vllm/models/minimax_m3/nvidia/indexer_msa.py`, `vllm/models/minimax_m3/common/ops/index_topk.py`, `vllm/models/minimax_m3/common/ops/sparse_attn.py`；技术摘要: 覆盖「[Minimax-M3] Using tok_sparse_select from MSA instead of triton kernels」；主要实现面是 `vllm/models/minimax_m3/nvidia/indexer_msa.py`, `vllm/models/minimax_m3/common/ops/index_topk.py`, `vllm/models/minimax_m3/common/ops/sparse_attn.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/models/minimax_m3/nvidia/indexer_msa.py` modified +135/-35 (170 lines); hunks: -2,16 +2,21; -22,6 +27,7; symbols: MiniMaxM3IndexerMSABackend, MiniMaxM3IndexerMSAMetadata, MiniMaxM3IndexerMSAMetadataBuilder, __init__，涉及 `MiniMaxM3IndexerMSABackend, MiniMaxM3IndexerMSAMetadata, MiniMaxM3IndexerMSAMetadataBuilder`；`vllm/models/minimax_m3/common/ops/index_topk.py` modified +67/-15 (82 lines); hunks: -757,33 +757,33 @@ def minimax_m3_index_topk(; -800,13 +800,16 @@ def minimax_m3_index_decode(; symbols: minimax_m3_index_topk, minimax_m3_index_decode, minimax_m3_index_decode_score，涉及 `minimax_m3_index_topk, minimax_m3_index_decode, minimax_m3_index_decode_score`；`vllm/models/minimax_m3/common/ops/sparse_attn.py` modified +7/-11 (18 lines); hunks: -43,7 +43,6; -84,7 +83,6 @@ def _gqa_sparse_fwd_kernel(; symbols: _gqa_sparse_fwd_kernel, _gqa_sparse_decode_kernel，涉及 `_gqa_sparse_fwd_kernel, _gqa_sparse_decode_kernel`；`vllm/models/minimax_m3/nvidia/sparse_attention_msa.py` modified +6/-3 (9 lines); hunks: -39,7 +39,8 @@ def forward(; -56,7 +57,7 @@ def forward(; symbols: forward，涉及 `forward`。
@@ -2140,12 +2140,14 @@ diff -- vllm/models/minimax_m3/common/ops/sparse_attn.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/46117
 - 状态/时间: merged / 2026-07-08
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/test_minimax_m3_amd_ops.py`；关联提交 `d9e57ea82e3e`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/test_minimax_m3_amd_ops.py`；关联提交 `d9e57ea82e3e`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+226/-42，可读 patch 372 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[ROCm][Perf] MXFP8 dense-linear + grouped-MoE GEMM optimizations for MiniMax-M3」；模型线: MiniMax M2/M3 Series；类别: 性能/后端优化；主要 diff: `tests/kernels/test_minimax_m3_amd_ops.py`；技术摘要: 覆盖「[ROCm][Perf] MXFP8 dense-linear + grouped-MoE GEMM optimizations for MiniMax-M3」；主要实现面是 `tests/kernels/test_minimax_m3_amd_ops.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `tests/kernels/test_minimax_m3_amd_ops.py` modified +87/-0 (87 lines); hunks: -284,6 +284,93 @@ def test_mxfp8_native_moe(T, H, inter, E, top_k):; symbols: test_mxfp8_native_moe, _ref_grouped_gemm, test_mxfp8_grouped_gemm_native，涉及 `test_mxfp8_native_moe, _ref_grouped_gemm, test_mxfp8_grouped_gemm_native`。
+- 动机: 标题「[ROCm][Perf] MXFP8 dense-linear + grouped-MoE GEMM optimizations for MiniMax-M3」；模型线: MiniMax M2/M3 Series；类别: 性能/后端优化；主要 diff: `tests/kernels/test_minimax_m3_amd_ops.py`, `vllm/model_executor/layers/fused_moe/experts/mxfp8_native_moe.py`, `vllm/model_executor/kernels/linear/mxfp8/rocm_native.py`；技术摘要: 覆盖「[ROCm][Perf] MXFP8 dense-linear + grouped-MoE GEMM optimizations for MiniMax-M3」；主要实现面是 `tests/kernels/test_minimax_m3_amd_ops.py`, `vllm/model_executor/layers/fused_moe/experts/mxfp8_native_moe.py`, `vllm/model_executor/kernels/linear/mxfp8/rocm_native.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `tests/kernels/test_minimax_m3_amd_ops.py` modified +87/-0 (87 lines); hunks: -284,6 +284,93 @@ def test_mxfp8_native_moe(T, H, inter, E, top_k):; symbols: test_mxfp8_native_moe, _ref_grouped_gemm, test_mxfp8_grouped_gemm_native，涉及 `test_mxfp8_native_moe, _ref_grouped_gemm, test_mxfp8_grouped_gemm_native`；`vllm/model_executor/layers/fused_moe/experts/mxfp8_native_moe.py` modified +63/-35 (98 lines); hunks: -19,7 +19,6; -32,7 +31,26; symbols: _select_cfg, _mxfp8_grouped_gemm_kernel, _grouped_gemm_mxfp8，涉及 `_select_cfg, _mxfp8_grouped_gemm_kernel, _grouped_gemm_mxfp8`；`vllm/model_executor/kernels/linear/mxfp8/rocm_native.py` modified +76/-7 (83 lines); hunks: -89,13 +89,7 @@ def _mxfp8_dot_scaled_linear(; -125,6 +119,81 @@ def _mxfp8_dot_scaled_linear(; symbols: _mxfp8_dot_scaled_linear, _select_cfg, local, RocmDotScaledMxfp8LinearKernel，涉及 `_mxfp8_dot_scaled_linear, _select_cfg, local`。
 - 代码 diff 细节:
   - `tests/kernels/test_minimax_m3_amd_ops.py` modified +87/-0 (87 lines); hunks: -284,6 +284,93 @@ def test_mxfp8_native_moe(T, H, inter, E, top_k):; symbols: test_mxfp8_native_moe, _ref_grouped_gemm, test_mxfp8_grouped_gemm_native
+  - `vllm/model_executor/layers/fused_moe/experts/mxfp8_native_moe.py` modified +63/-35 (98 lines); hunks: -19,7 +19,6; -32,7 +31,26; symbols: _select_cfg, _mxfp8_grouped_gemm_kernel, _grouped_gemm_mxfp8
+  - `vllm/model_executor/kernels/linear/mxfp8/rocm_native.py` modified +76/-7 (83 lines); hunks: -89,13 +89,7 @@ def _mxfp8_dot_scaled_linear(; -125,6 +119,81 @@ def _mxfp8_dot_scaled_linear(; symbols: _mxfp8_dot_scaled_linear, _select_cfg, local, RocmDotScaledMxfp8LinearKernel
 - 关键代码摘录:
 
 ```diff
@@ -2157,17 +2159,28 @@ diff -- tests/kernels/test_minimax_m3_amd_ops.py
 +def _ref_grouped_gemm(a_deq, w_deq, topk_ids, a_div, num_valid, mul_weight=None):
 +    """Pure-PyTorch reference for ``_grouped_gemm_mxfp8``.
 +    For each routed (expanded) token ``tid in [0, num_valid)`` the kernel writes
+diff -- vllm/model_executor/layers/fused_moe/experts/mxfp8_native_moe.py
+@@ -19,7 +19,6 @@
+-from vllm.logger import init_logger
+@@ -32,7 +31,26 @@
+-logger = init_logger(__name__)
++def _select_cfg(M, N, K, block_m):
++    """Pick the launch config from host constants only (M=num_valid_tokens, N, K,
++    block_m) — graph-capture safe (no GPU-scalar branch)."""
+diff -- vllm/model_executor/kernels/linear/mxfp8/rocm_native.py
+@@ -89,13 +89,7 @@ def _mxfp8_dot_scaled_linear(
 ```
 
 - 已读文件:
   - tests: `tests/kernels/test_minimax_m3_amd_ops.py` modified +87/-0
+  - runtime: `vllm/model_executor/layers/fused_moe/experts/mxfp8_native_moe.py` modified +63/-35; `vllm/model_executor/kernels/linear/mxfp8/rocm_native.py` modified +76/-7
 - 验证与风险: diff 自带测试面 `tests/kernels/test_minimax_m3_amd_ops.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #47631 - [Perf] Minimax M3 - Support cross-layer allreduce-norm fusion
 
 - 链接: https://github.com/vllm-project/vllm/pull/47631
 - 状态/时间: merged / 2026-07-08
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/models/minimax_m3/nvidia/model.py`；关联提交 `2afa3f7e9502`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/models/minimax_m3/nvidia/model.py`；关联提交 `2afa3f7e9502`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+65/-17，可读 patch 228 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Perf] Minimax M3 - Support cross-layer allreduce-norm fusion」；模型线: MiniMax M2/M3 Series；类别: 性能/后端优化；主要 diff: `vllm/models/minimax_m3/nvidia/model.py`, `vllm/models/deepseek_v32/nvidia/model.py`；技术摘要: 覆盖「[Perf] Minimax M3 - Support cross-layer allreduce-norm fusion」；主要实现面是 `vllm/models/minimax_m3/nvidia/model.py`, `vllm/models/deepseek_v32/nvidia/model.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/models/minimax_m3/nvidia/model.py` modified +37/-10 (47 lines); hunks: -196,6 +196,7 @@ def __init__(; -261,6 +262,7 @@ def __init__(; symbols: __init__，涉及 `__init__`；`vllm/models/deepseek_v32/nvidia/model.py` modified +4/-4 (8 lines); hunks: -72,17 +72,17 @@ def __init__(; symbols: __init__，涉及 `__init__`。
@@ -2203,12 +2216,13 @@ diff -- vllm/models/deepseek_v32/nvidia/model.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/47158
 - 状态/时间: merged / 2026-07-08
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/test_minimax_m3_amd_ops.py`；关联提交 `2c64b4c1cc18`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/test_minimax_m3_amd_ops.py`；关联提交 `2c64b4c1cc18`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+107/-12，可读 patch 139 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[ROCm] fixed aiter master flag and expert parallelism compatibility on minimax-m3-mxfp8」；模型线: MiniMax M2/M3 Series；类别: 缺陷修复；主要 diff: `tests/kernels/test_minimax_m3_amd_ops.py`；技术摘要: 覆盖「[ROCm] fixed aiter master flag and expert parallelism compatibility on minimax-m3-mxfp8」；主要实现面是 `tests/kernels/test_minimax_m3_amd_ops.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `tests/kernels/test_minimax_m3_amd_ops.py` modified +94/-0 (94 lines); hunks: -335,3 +335,97 @@ def test_mxfp8_linear_emulation_bf16_at_load(; symbols: test_mxfp8_linear_emulation_bf16_at_load, _capture_expert_mask, _fake_fused_moe, test_aiter_mxfp8_ep_expert_mask_both_master_modes，涉及 `test_mxfp8_linear_emulation_bf16_at_load, _capture_expert_mask, _fake_fused_moe`。
+- 动机: 标题「[ROCm] fixed aiter master flag and expert parallelism compatibility on minimax-m3-mxfp8」；模型线: MiniMax M2/M3 Series；类别: 缺陷修复；主要 diff: `tests/kernels/test_minimax_m3_amd_ops.py`, `vllm/model_executor/layers/fused_moe/experts/aiter_mxfp8_moe.py`；技术摘要: 覆盖「[ROCm] fixed aiter master flag and expert parallelism compatibility on minimax-m3-mxfp8」；主要实现面是 `tests/kernels/test_minimax_m3_amd_ops.py`, `vllm/model_executor/layers/fused_moe/experts/aiter_mxfp8_moe.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `tests/kernels/test_minimax_m3_amd_ops.py` modified +94/-0 (94 lines); hunks: -335,3 +335,97 @@ def test_mxfp8_linear_emulation_bf16_at_load(; symbols: test_mxfp8_linear_emulation_bf16_at_load, _capture_expert_mask, _fake_fused_moe, test_aiter_mxfp8_ep_expert_mask_both_master_modes，涉及 `test_mxfp8_linear_emulation_bf16_at_load, _capture_expert_mask, _fake_fused_moe`；`vllm/model_executor/layers/fused_moe/experts/aiter_mxfp8_moe.py` modified +13/-12 (25 lines); hunks: -78,9 +78,6 @@ def _supports_current_device() -> bool:; -129,17 +126,21 @@ def apply(; symbols: _supports_current_device, _supports_parallel_config, apply，涉及 `_supports_current_device, _supports_parallel_config, apply`。
 - 代码 diff 细节:
   - `tests/kernels/test_minimax_m3_amd_ops.py` modified +94/-0 (94 lines); hunks: -335,3 +335,97 @@ def test_mxfp8_linear_emulation_bf16_at_load(; symbols: test_mxfp8_linear_emulation_bf16_at_load, _capture_expert_mask, _fake_fused_moe, test_aiter_mxfp8_ep_expert_mask_both_master_modes
+  - `vllm/model_executor/layers/fused_moe/experts/aiter_mxfp8_moe.py` modified +13/-12 (25 lines); hunks: -78,9 +78,6 @@ def _supports_current_device() -> bool:; -129,17 +126,21 @@ def apply(; symbols: _supports_current_device, _supports_parallel_config, apply
 - 关键代码摘录:
 
 ```diff
@@ -2220,17 +2234,26 @@ diff -- tests/kernels/test_minimax_m3_amd_ops.py
 +# ``expert_mask`` (aiter master ON, ``rocm_aiter_fmoe_enabled``) or vLLM's -1
 +# index map (master OFF). ``AiterMxfp8Experts.apply`` must forward the right 0/1
 +# mask to aiter in BOTH cases. The old code always rebuilt the mask via
+diff -- vllm/model_executor/layers/fused_moe/experts/aiter_mxfp8_moe.py
+@@ -78,9 +78,6 @@ def _supports_current_device() -> bool:
+-        # Both TP (expert_map=None) and EP are supported: apply() forwards the
+-        # expert_map as aiter's ``expert_mask`` (the per-rank local-expert
+-        # selection), mirroring the native rocm_aiter_moe path.
+@@ -129,17 +126,21 @@ def apply(
+-        # Under EP, aiter expects ``expert_mask`` as a 0/1 *local-expert* mask
+-        # over global ids with a trailing fake-expert sentinel slot
 ```
 
 - 已读文件:
   - tests: `tests/kernels/test_minimax_m3_amd_ops.py` modified +94/-0
+  - runtime: `vllm/model_executor/layers/fused_moe/experts/aiter_mxfp8_moe.py` modified +13/-12
 - 验证与风险: diff 自带测试面 `tests/kernels/test_minimax_m3_amd_ops.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #47287 - [ROCm][MiniMax-M3] Add AITER sparse paged attention
 
 - 链接: https://github.com/vllm-project/vllm/pull/47287
 - 状态/时间: merged / 2026-07-13
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/attention/test_minimax_m3.py`, `tests/kernels/test_fused_minimax_m3_qknorm_rope_kv_insert.py`, `tests/kernels/test_minimax_m3_sparse_attn_fp8_scale.py`, `vllm/models/minimax_m3/amd/model.py`, `vllm/models/minimax_m3/amd/ops/sparse_attn.py` 等 11 个文件；关联提交 `ee5a89f4d7b8`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/attention/test_minimax_m3.py`, `tests/kernels/test_fused_minimax_m3_qknorm_rope_kv_insert.py`, `tests/kernels/test_minimax_m3_sparse_attn_fp8_scale.py`, `vllm/models/minimax_m3/amd/model.py`, `vllm/models/minimax_m3/amd/ops/sparse_attn.py` 等 11 个文件；关联提交 `ee5a89f4d7b8`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 15 个文件，+1553/-127，可读 patch 2389 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[ROCm][MiniMax-M3] Add AITER sparse paged attention」；模型线: MiniMax M2/M3 Series；类别: 性能/后端优化；主要 diff: `vllm/models/minimax_m3/amd/ops/sparse_pa.py`, `vllm/models/minimax_m3/amd/model.py`, `vllm/models/minimax_m3/common/ops/sparse_attn.py`；技术摘要: 覆盖「[ROCm][MiniMax-M3] Add AITER sparse paged attention」；主要实现面是 `vllm/models/minimax_m3/amd/ops/sparse_pa.py`, `vllm/models/minimax_m3/amd/model.py`, `vllm/models/minimax_m3/common/ops/sparse_attn.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/models/minimax_m3/amd/ops/sparse_pa.py` added +466/-0 (466 lines); hunks: -0,0 +1,466; symbols: _is_fp8_kv_cache_tensor, _build_sparse_block_table_kernel, minimax_m3_build_sparse_block_table, _build_sparse_block_table_prefill_kernel，涉及 `_is_fp8_kv_cache_tensor, _build_sparse_block_table_kernel, minimax_m3_build_sparse_block_table`；`vllm/models/minimax_m3/amd/model.py` modified +214/-25 (239 lines); hunks: -35,6 +35,7; -93,6 +94,7; symbols: __init__, get_kv_cache_spec, _ensure_aiter_sparse_pa_kv_cache，涉及 `__init__, get_kv_cache_spec, _ensure_aiter_sparse_pa_kv_cache`；`vllm/models/minimax_m3/common/ops/sparse_attn.py` modified +160/-0 (160 lines); hunks: -52,6 +52,8; -72,6 +74,10 @@ def _gqa_sparse_fwd_kernel(; symbols: _gqa_sparse_fwd_kernel，涉及 `_gqa_sparse_fwd_kernel`；`vllm/models/minimax_m3/amd/sparse_attention_msa.py` added +94/-0 (94 lines); hunks: -0,0 +1,94; symbols: MiniMaxM3SparseAiterPAImpl, forward，涉及 `MiniMaxM3SparseAiterPAImpl, forward`。
@@ -2271,7 +2294,7 @@ diff -- vllm/models/minimax_m3/common/ops/sparse_attn.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/44849
 - 状态/时间: merged / 2026-07-14
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py`；关联提交 `b50ef9c6ed97`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py`；关联提交 `b50ef9c6ed97`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+12/-0，可读 patch 26 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[ROCm][MiniMax-M2] Dispatch fused QK-norm + AllReduce via AITER」；模型线: MiniMax M2/M3 Series；类别: 性能/后端优化；主要 diff: `vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py`；技术摘要: 覆盖「[ROCm][MiniMax-M2] Dispatch fused QK-norm + AllReduce via AITER」；主要实现面是 `vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py` modified +12/-0 (12 lines); hunks: -6,6 +6,7; -235,6 +236,17 @@ def _minimax_qk_norm_fusion(; symbols: _minimax_qk_norm_fusion，涉及 `_minimax_qk_norm_fusion`。
@@ -2298,7 +2321,7 @@ diff -- vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/47984
 - 状态/时间: merged / 2026-07-14
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/attention/test_minimax_m3.py`, `vllm/models/minimax_m3/amd/ops/sparse_pa.py`, `vllm/models/minimax_m3/amd/sparse_attention_msa.py`；关联提交 `95aab66e9585`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/attention/test_minimax_m3.py`, `vllm/models/minimax_m3/amd/ops/sparse_pa.py`, `vllm/models/minimax_m3/amd/sparse_attention_msa.py`；关联提交 `95aab66e9585`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+182/-15，可读 patch 276 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[ROCm][MiniMax-M3][Spec Decode] Support speculative decode with AITER sparse PA」；模型线: MiniMax M2/M3 Series；类别: 性能/后端优化；主要 diff: `vllm/models/minimax_m3/amd/ops/sparse_pa.py`, `vllm/models/minimax_m3/amd/sparse_attention_msa.py`, `tests/kernels/attention/test_minimax_m3.py`；技术摘要: 覆盖「[ROCm][MiniMax-M3][Spec Decode] Support speculative decode with AITER sparse PA」；主要实现面是 `vllm/models/minimax_m3/amd/ops/sparse_pa.py`, `vllm/models/minimax_m3/amd/sparse_attention_msa.py`, `tests/kernels/attention/test_minimax_m3.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/models/minimax_m3/amd/ops/sparse_pa.py` modified +41/-10 (51 lines); hunks: -49,15 +49,16 @@ def _build_sparse_block_table_kernel(; -82,7 +83,7 @@ def _build_sparse_block_table_kernel(; symbols: _build_sparse_block_table_kernel, _build_sparse_block_table_prefill_kernel, minimax_m3_build_sparse_block_table_prefill，涉及 `_build_sparse_block_table_kernel, _build_sparse_block_table_prefill_kernel, minimax_m3_build_sparse_block_table_prefill`；`vllm/models/minimax_m3/amd/sparse_attention_msa.py` modified +1/-5 (6 lines); hunks: -55,11 +55,6 @@ def forward(; -72,6 +67,7 @@ def forward(; symbols: forward，涉及 `forward`；`tests/kernels/attention/test_minimax_m3.py` modified +140/-0 (140 lines); hunks: -1010,6 +1010,146 @@ def _build_decode_inputs(; symbols: _build_decode_inputs, test_aiter_sparse_block_table_handles_padded_decode_rows, test_aiter_decode_sparse_block_table_supports_spec_decode，涉及 `_build_decode_inputs, test_aiter_sparse_block_table_handles_padded_decode_rows, test_aiter_decode_sparse_block_table_supports_spec_decode`。
@@ -2338,7 +2361,7 @@ diff -- tests/kernels/attention/test_minimax_m3.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/48523
 - 状态/时间: merged / 2026-07-14
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tool_parsers/test_minimax_m3_tool_parser.py`；关联提交 `af1f036a70e0`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tool_parsers/test_minimax_m3_tool_parser.py`；关联提交 `af1f036a70e0`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+4/-0，可读 patch 11 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Skip minimax_m3 tool parser tests when Rust extension is absent」；模型线: MiniMax M2/M3 Series；类别: 缺陷修复；主要 diff: `tests/tool_parsers/test_minimax_m3_tool_parser.py`；技术摘要: 覆盖「[Bugfix] Skip minimax_m3 tool parser tests when Rust extension is absent」；主要实现面是 `tests/tool_parsers/test_minimax_m3_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `tests/tool_parsers/test_minimax_m3_tool_parser.py` modified +4/-0 (4 lines); hunks: -14,6 +14,10。
@@ -2362,7 +2385,7 @@ diff -- tests/tool_parsers/test_minimax_m3_tool_parser.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/48846
 - 状态/时间: merged / 2026-07-17
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tool_parsers/test_minimax_m2_tool_parser.py`, `vllm/parser/minimax_m2.py`；关联提交 `11d291511a35`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tool_parsers/test_minimax_m2_tool_parser.py`, `vllm/parser/minimax_m2.py`；关联提交 `11d291511a35`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+164/-9，可读 patch 249 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix][Tool Parser] Preserve whitespace in parameter values (MiniMax M2, Qwen3, MiniCPM5 XML)」；模型线: MiniMax M2/M3 Series；类别: 缺陷修复；主要 diff: `tests/tool_parsers/test_minimax_m2_tool_parser.py`, `vllm/parser/minimax_m2.py`；技术摘要: 覆盖「[Bugfix][Tool Parser] Preserve whitespace in parameter values (MiniMax M2, Qwen3, MiniCPM5 XML)」；主要实现面是 `tests/tool_parsers/test_minimax_m2_tool_parser.py`, `vllm/parser/minimax_m2.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `tests/tool_parsers/test_minimax_m2_tool_parser.py` modified +34/-0 (34 lines); hunks: -567,3 +567,37 @@ def test_nil_string_preserved(self):; symbols: test_nil_string_preserved, TestParameterWhitespace, test_whitespace_preserved, test_whitespace_preserved_across_chunks，涉及 `test_nil_string_preserved, TestParameterWhitespace, test_whitespace_preserved`；`vllm/parser/minimax_m2.py` modified +5/-2 (7 lines); hunks: -69,7 +69,9 @@ def _minimax_m2_arg_converter(raw_args: str, partial: bool) ->...; -82,7 +84,8 @@ def _minimax_m2_arg_converter(raw_args: str, partial: bool) ->...; symbols: _minimax_m2_arg_converter，涉及 `_minimax_m2_arg_converter`。
@@ -2399,7 +2422,7 @@ diff -- vllm/parser/minimax_m2.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/49149
 - 状态/时间: merged / 2026-07-25
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/models/minimax_m3/common/indexer.py`, `vllm/models/minimax_m3/common/sparse_attention.py`；关联提交 `d1a8ba63d9d2`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/models/minimax_m3/common/indexer.py`, `vllm/models/minimax_m3/common/sparse_attention.py`；关联提交 `d1a8ba63d9d2`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+13/-3，可读 patch 44 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix][MiniMax-M3] Fix token-major top-k buffer handling in Triton …」；模型线: MiniMax M2/M3 Series；类别: 缺陷修复；主要 diff: `vllm/models/minimax_m3/common/sparse_attention.py`, `vllm/models/minimax_m3/common/indexer.py`；技术摘要: 覆盖「[Bugfix][MiniMax-M3] Fix token-major top-k buffer handling in Triton …」；主要实现面是 `vllm/models/minimax_m3/common/sparse_attention.py`, `vllm/models/minimax_m3/common/indexer.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/models/minimax_m3/common/sparse_attention.py` modified +8/-1 (9 lines); hunks: -384,7 +384,14 @@ def forward(; symbols: forward，涉及 `forward`；`vllm/models/minimax_m3/common/indexer.py` modified +5/-2 (7 lines); hunks: -424,6 +424,9 @@ def forward(; -441,7 +444,7 @@ def forward(; symbols: forward，涉及 `forward`。

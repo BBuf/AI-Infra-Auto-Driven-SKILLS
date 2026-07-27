@@ -7,11 +7,12 @@ Current model families:
 
 ## Current Watch / Landed Items
 
-Refresh: `2026-07-27`. Source head:
-`lightseekorg/tokenspeed@d73bf0454422092f306d5575e803a08fd35ac41c`.
+Refresh: `2026-07-28`. Source head:
+`lightseekorg/tokenspeed@e41aa8b1609a9412d7ed26aa56d910828607950f`.
 
 | PR | Model / area | Status | Current signal | Why it matters |
 | --- | --- | --- | --- | --- |
+| [#821](https://github.com/lightseekorg/tokenspeed/pull/821) | Kimi K3 | merged | FlatKV KDA/MLA deployment contract | Documents NVIDIA B300 and AMD recipes, checkpoint-layout constraints, sidecar requirements, and validation caveats without claiming a generic benchmark result. |
 | [#780](https://github.com/lightseekorg/tokenspeed/pull/780) | Qwen3.5 / multi-node | merged | topology-safe collectives and staging | Cross-node groups now select NCCL and overlapped Mamba inputs use per-step pinned buffers. |
 | [#797](https://github.com/lightseekorg/tokenspeed/pull/797) | Kimi / DFlash | merged | incremental capture | Wires Kimi hidden-state capture into incremental DFlash projection. |
 | [#795](https://github.com/lightseekorg/tokenspeed/pull/795) | Kimi-K2.7 | merged | EAGLE3.1 | Adds checkpoint-driven FC normalization and output semantics for the MLA speculator. |

@@ -1,11 +1,11 @@
 # TokenSpeed Qwen3.5 模型 PR 优化历史
 
-## 2026-07-27 源码 head 刷新
+## 2026-07-28 源码 head 刷新
 
 已复核 TokenSpeed 上游 main：
-`lightseekorg/tokenspeed@d73bf0454422092f306d5575e803a08fd35ac41c`。
-针对上一 head `d0a7faddb5ec0d4c6d037c4c3e6a781d2c5164a8` 之后的范围执行了
-`git log --name-only -- <model-files>`，并完整阅读了以下 3 个提升条目的源码 diff。
+`lightseekorg/tokenspeed@e41aa8b1609a9412d7ed26aa56d910828607950f`。
+已读完上一 head `d73bf0454422092f306d5575e803a08fd35ac41c`
+之后的 2-commit 完整增量；两项都只是 Kimi K3 文档变化，因此不新增 Qwen3.5 卡片。
 
 结果：Qwen3.5 新增原生优化 DFlash，修正 mixed-precision GDN/MoE FP8 权重加载，并补齐 topology-safe 的多机 collective 与 staging 行为。
 
@@ -100,7 +100,7 @@
 ### PR #780 - 加固 Qwen3.5 多机执行
 
 - 链接: https://github.com/lightseekorg/tokenspeed/pull/780
-- 状态/时间: merged / 2026-07-27
+- 状态/时间: merged / 2026-07-28
 - 反查来源: `git log --name-only -- <model-files>`，并结合最终上游提交和 PR 正文。
 - 代码 diff 已读范围: 完整 555 行 diff，8 个文件，+347/-35。
 - 动机: Qwen3.5 多机布局可能跨节点选择 CUDA-IPC/symmetric-memory collective；overlap H2D copy 尚未完成时，还可能复用 persistent pinned Mamba/GDN staging buffer。

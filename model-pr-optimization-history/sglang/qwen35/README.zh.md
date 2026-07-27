@@ -120,7 +120,7 @@
 | 2026-06-13 | [#27057](https://github.com/sgl-project/sglang/pull/27057) | merged | [AMD] move shared expert check function to quark | `python/sglang/srt/layers/quantization/quark/quark.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen2_moe.py` |
 | 2026-06-13 | [#26924](https://github.com/sgl-project/sglang/pull/26924) | merged | [4/N] Qwen3.5Opt: Overlap mamba verify update with draft extend | `python/sglang/srt/models/qwen3_5.py` |
 | 2026-06-13 | [#28129](https://github.com/sgl-project/sglang/pull/28129) | merged | [Spec] Remove deprecated EAGLE v1 DRAFT_EXTEND forward mode | `python/sglang/srt/layers/attention/aiter_backend.py`, `python/sglang/srt/model_executor/forward_batch_info.py`, `python/sglang/srt/layers/attention/triton_backend.py` |
-| 2026-06-14 | [#27869](https://github.com/sgl-project/sglang/pull/27869) | merged | Fix Qwen3.5 deterministic batch-invariant logprobs | `test/registered/attention/test_qwen35_deterministic.py` |
+| 2026-06-14 | [#27869](https://github.com/sgl-project/sglang/pull/27869) | merged | Fix Qwen3.5 deterministic batch-invariant logprobs | `test/registered/attention/test_qwen35_deterministic.py`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/fused_moe.py`, `python/sglang/srt/layers/attention/fla/layernorm_gated.py` |
 | 2026-06-15 | [#27868](https://github.com/sgl-project/sglang/pull/27868) | merged | fix(qwen3.5): keep CUDA dual-stream overlap (regressed by #25885) | `python/sglang/srt/models/qwen3_5.py` |
 | 2026-06-16 | [#28293](https://github.com/sgl-project/sglang/pull/28293) | merged | [NPU] Add NPU fallback for fused Triton gating kernels | `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen2_moe.py` |
 | 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | merged | Add get_parallel(): a structured accessor for parallel-topology state | `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py` |
@@ -2666,10 +2666,12 @@ diff -- python/sglang/srt/layers/attention/triton_backend.py
 - 状态/时间: merged / 2026-06-14
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/attention/test_qwen35_deterministic.py`；关联提交 `171037c3e73d`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+56/-5，可读 patch 104 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Fix Qwen3.5 deterministic batch-invariant logprobs」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `test/registered/attention/test_qwen35_deterministic.py`；技术摘要: 覆盖「Fix Qwen3.5 deterministic batch-invariant logprobs」；主要实现面是 `test/registered/attention/test_qwen35_deterministic.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `test/registered/attention/test_qwen35_deterministic.py` added +44/-0 (44 lines); hunks: -0,0 +1,44; symbols: TestQwen35Fa3Deterministic, get_model, get_server_args，涉及 `TestQwen35Fa3Deterministic, get_model, get_server_args`。
+- 动机: 标题「Fix Qwen3.5 deterministic batch-invariant logprobs」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `test/registered/attention/test_qwen35_deterministic.py`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/fused_moe.py`, `python/sglang/srt/layers/attention/fla/layernorm_gated.py`；技术摘要: 覆盖「Fix Qwen3.5 deterministic batch-invariant logprobs」；主要实现面是 `test/registered/attention/test_qwen35_deterministic.py`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/fused_moe.py`, `python/sglang/srt/layers/attention/fla/layernorm_gated.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/attention/test_qwen35_deterministic.py` added +44/-0 (44 lines); hunks: -0,0 +1,44; symbols: TestQwen35Fa3Deterministic, get_model, get_server_args，涉及 `TestQwen35Fa3Deterministic, get_model, get_server_args`；`python/sglang/srt/layers/moe/moe_runner/triton_utils/fused_moe.py` modified +7/-2 (9 lines); hunks: -13,6 +13,7; -88,6 +89,10; symbols: _use_moe_sum_reduce_torch_compile, inplace_fused_experts, _fused_moe_kernel_sequence，涉及 `_use_moe_sum_reduce_torch_compile, inplace_fused_experts, _fused_moe_kernel_sequence`；`python/sglang/srt/layers/attention/fla/layernorm_gated.py` modified +5/-3 (8 lines); hunks: -15,6 +15,7; -192,9 +193,10 @@ def _get_sm_count(device: torch.device) -> int:; symbols: _get_sm_count, calc_rows_per_block，涉及 `_get_sm_count, calc_rows_per_block`。
 - 代码 diff 细节:
   - `test/registered/attention/test_qwen35_deterministic.py` added +44/-0 (44 lines); hunks: -0,0 +1,44; symbols: TestQwen35Fa3Deterministic, get_model, get_server_args
+  - `python/sglang/srt/layers/moe/moe_runner/triton_utils/fused_moe.py` modified +7/-2 (9 lines); hunks: -13,6 +13,7; -88,6 +89,10; symbols: _use_moe_sum_reduce_torch_compile, inplace_fused_experts, _fused_moe_kernel_sequence
+  - `python/sglang/srt/layers/attention/fla/layernorm_gated.py` modified +5/-3 (8 lines); hunks: -15,6 +15,7; -192,9 +193,10 @@ def _get_sm_count(device: torch.device) -> int:; symbols: _get_sm_count, calc_rows_per_block
 - 关键代码摘录:
 
 ```diff
@@ -2681,10 +2683,21 @@ diff -- test/registered/attention/test_qwen35_deterministic.py
 +python3 -m unittest test_qwen35_deterministic.TestQwen35Fa3Deterministic
 +"""
 +import unittest
+diff -- python/sglang/srt/layers/moe/moe_runner/triton_utils/fused_moe.py
+@@ -13,6 +13,7 @@
++from sglang.srt.batch_invariant_ops import is_batch_invariant_mode_enabled
+@@ -88,6 +89,10 @@
++def _use_moe_sum_reduce_torch_compile(num_tokens: int) -> bool:
++    return num_tokens <= 32 and not is_batch_invariant_mode_enabled()
+@@ -728,7 +733,7 @@ def _fused_moe_kernel_sequence(
+-            if num_tokens <= 32:
+diff -- python/sglang/srt/layers/attention/fla/layernorm_gated.py
+@@ -15,6 +15,7 @@
 ```
 
 - 已读文件:
   - tests: `test/registered/attention/test_qwen35_deterministic.py` added +44/-0
+  - runtime: `python/sglang/srt/layers/moe/moe_runner/triton_utils/fused_moe.py` modified +7/-2; `python/sglang/srt/layers/attention/fla/layernorm_gated.py` modified +5/-3
 - 验证与风险: diff 自带测试面 `test/registered/attention/test_qwen35_deterministic.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #27868 - fix(qwen3.5): keep CUDA dual-stream overlap (regressed by #25885)
@@ -3053,7 +3066,7 @@ diff -- sgl-kernel/csrc/cpu/mamba/fla.cpp
 
 - 链接: https://github.com/sgl-project/sglang/pull/31258
 - 状态/时间: merged / 2026-07-15
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx`, `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx`；关联提交 `aafa706f8f2d`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx`, `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx`；关联提交 `aafa706f8f2d`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+8/-2，可读 patch 31 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[AMD] Update qwen3.5 cookbook」；模型线: Qwen3.5；类别: 文档/测试/CI；主要 diff: `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx`, `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx`；技术摘要: 覆盖「[AMD] Update qwen3.5 cookbook」；主要实现面是 `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx`, `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx` modified +5/-1 (6 lines); hunks: -435,7 +435,11 @@ export const Qwen35Deployment = () => {；`docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx` modified +3/-1 (4 lines); hunks: -127,7 +127,7 @@ This section provides deployment configurations optimized fo...; -258,6 +258,8 @@ Deploy Qwen3.5-397B-A17B with the following command (MI300X/...。
@@ -3088,7 +3101,7 @@ diff -- docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx
 
 - 链接: https://github.com/sgl-project/sglang/pull/31171
 - 状态/时间: merged / 2026-07-15
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_5.py`；关联提交 `41e0b4b3695e`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_5.py`；关联提交 `41e0b4b3695e`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+238/-94，可读 patch 471 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[CPU] add fused input proj for qwen3.5」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/qwen3_5.py`；技术摘要: 覆盖「[CPU] add fused input proj for qwen3.5」；主要实现面是 `python/sglang/srt/models/qwen3_5.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/qwen3_5.py` modified +33/-18 (51 lines); hunks: -112,6 +112,7; -152,6 +153,9 @@ def _disable_shared_experts_fusion() -> bool:; symbols: _disable_shared_experts_fusion, __init__, _forward_input_proj, forward，涉及 `_disable_shared_experts_fusion, __init__, _forward_input_proj`。
@@ -3115,7 +3128,7 @@ diff -- python/sglang/srt/models/qwen3_5.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/31454
 - 状态/时间: merged / 2026-07-16
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx`；关联提交 `8c9833f9a991`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx`；关联提交 `8c9833f9a991`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+2/-2，可读 patch 13 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「cookbook(qwen3.5): bump AMD ROCm docker images to v0.5.15.post1」；模型线: Qwen3.5；类别: 文档/测试/CI；主要 diff: `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx`；技术摘要: 覆盖「cookbook(qwen3.5): bump AMD ROCm docker images to v0.5.15.post1」；主要实现面是 `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx` modified +2/-2 (4 lines); hunks: -103,10 +103,10 @@ uv pip install 'git+https://github.com/sgl-project/sglang....。
@@ -3140,7 +3153,7 @@ diff -- docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx
 
 - 链接: https://github.com/sgl-project/sglang/pull/31174
 - 状态/时间: merged / 2026-07-17
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_5.py`；关联提交 `302c3b97d2d0`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_5.py`；关联提交 `302c3b97d2d0`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+3/-1，可读 patch 18 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「fix: Qwen3.5-35B-A3B-AWQ w2_weight KeyError and related params for CPU」；模型线: Qwen3.5；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_5.py`；技术摘要: 覆盖「fix: Qwen3.5-35B-A3B-AWQ w2_weight KeyError and related params for CPU」；主要实现面是 `python/sglang/srt/models/qwen3_5.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/qwen3_5.py` modified +1/-1 (2 lines); hunks: -301,7 +301,7 @@ def __init__(; symbols: __init__，涉及 `__init__`。
@@ -3163,7 +3176,7 @@ diff -- python/sglang/srt/models/qwen3_5.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/31737
 - 状态/时间: merged / 2026-07-20
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx`, `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx`；关联提交 `17fdd8487f0f`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx`, `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx`；关联提交 `17fdd8487f0f`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+13/-5，可读 patch 47 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[AMD] Update qwen3.5 cookbook」；模型线: Qwen3.5；类别: 文档/测试/CI；主要 diff: `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx`, `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx`；技术摘要: 覆盖「[AMD] Update qwen3.5 cookbook」；主要实现面是 `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx`, `docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx` modified +12/-4 (16 lines); hunks: -433,16 +433,22 @@ export const Qwen35Deployment = () => {; -464,8 +470,10 @@ export const Qwen35Deployment = () => {；`docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx` modified +1/-1 (2 lines); hunks: -127,7 +127,7 @@ This section provides deployment configurations optimized fo...。
@@ -3195,7 +3208,7 @@ diff -- docs_new/cookbook/autoregressive/Qwen/Qwen3.5.mdx
 
 - 链接: https://github.com/sgl-project/sglang/pull/24651
 - 状态/时间: merged / 2026-07-22
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_5.py`, `test/registered/amd/perf/mi35x/test_qwen35_fp8_ar_fusion_mi35x.py`；关联提交 `e8e765b9d657`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_5.py`, `test/registered/amd/perf/mi35x/test_qwen35_fp8_ar_fusion_mi35x.py`；关联提交 `e8e765b9d657`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 9 个文件，+1192/-8，可读 patch 1376 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[AMD] Add fused all-reduce RMSNorm per-group quant for Qwen3.5 FP8」；模型线: Qwen3.5；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/qwen3_5.py`, `test/registered/amd/perf/mi35x/test_qwen35_fp8_ar_fusion_mi35x.py`；技术摘要: 覆盖「[AMD] Add fused all-reduce RMSNorm per-group quant for Qwen3.5 FP8」；主要实现面是 `python/sglang/srt/models/qwen3_5.py`, `test/registered/amd/perf/mi35x/test_qwen35_fp8_ar_fusion_mi35x.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/qwen3_5.py` modified +115/-0 (115 lines); hunks: -157,6 +157,56 @@ def _disable_shared_experts_fusion() -> bool:; -490,6 +540,14 @@ def fix_query_key_value_ordering(; symbols: _disable_shared_experts_fusion, _enable_qwen35_fused_ar_quant, _linear_accepts_fp8_tuple, _select_fused_ar_input_for_linear，涉及 `_disable_shared_experts_fusion, _enable_qwen35_fused_ar_quant, _linear_accepts_fp8_tuple`；`test/registered/amd/perf/mi35x/test_qwen35_fp8_ar_fusion_mi35x.py` added +234/-0 (234 lines); hunks: -0,0 +1,234; symbols: FusionVariant, _base_url_with_port_offset, get_fusion_variants, _parse_gsm8k_metrics，涉及 `FusionVariant, _base_url_with_port_offset, get_fusion_variants`。
