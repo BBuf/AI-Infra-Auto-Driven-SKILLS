@@ -5,6 +5,7 @@ from __future__ import annotations
 import importlib.util
 import io
 import json
+import subprocess
 import sys
 import unittest
 from contextlib import redirect_stdout
@@ -66,6 +67,13 @@ def load_breakdown():
 
 def load_simulator():
     return _load_module("model_compute_simulator", SIM_SCRIPT_DIR / "model_compute_simulator.py")
+
+
+def load_compute_extractor():
+    return _load_module(
+        "extract_compute_flow_from_trace",
+        SIM_SCRIPT_DIR / "extract_compute_flow_from_trace.py",
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -506,6 +514,89 @@ class TestModelConfigIndex(unittest.TestCase):
         self.assertEqual(sim.resolve_gpu("h100", specs)["display_name"], "NVIDIA H100 SXM 80GB")
         self.assertEqual(sim.resolve_gpu("h200", specs)["display_name"], "NVIDIA H200 SXM 141GB")
         self.assertEqual(sim.resolve_gpu("b200", specs)["display_name"], "NVIDIA B200 SXM 180GB")
+
+
+class TestMeasuredComputeFlow(unittest.TestCase):
+    def test_kernel_flow_drives_summary_mfu_and_keeps_json_pure(self):
+        config = json.loads(CONFIG_INDEX.read_text())["deepseek-v4-flash"]
+        kernel_flow = {
+            "metadata": {
+                "total_dur_us": 2000,
+                "compress_ratio": 0,
+            },
+            "category_summary": {
+                "gemm_bf16": {
+                    "dur_us": 2000,
+                    "count": 1,
+                }
+            },
+            "kernels": [
+                {
+                    "name": "gemm",
+                    "simplified_name": "gemm",
+                    "dur_us": 2000,
+                    "category": "gemm_bf16",
+                }
+            ],
+        }
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(SIM_SCRIPT_DIR / "model_compute_simulator.py"),
+                "deepseek-v4-flash",
+                "--gpu",
+                "b200",
+                "--kernel-flow",
+                json.dumps(kernel_flow),
+                "--format",
+                "json",
+            ],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        payload = json.loads(result.stdout)
+        self.assertEqual(
+            payload["measured_ms"],
+            2.0 * config["num_hidden_layers"],
+        )
+        self.assertIsNotNone(payload["mfu_pct"])
+        self.assertEqual(payload["kernel_flow"]["metadata"]["total_dur_us"], 2000)
+
+    def test_trace_template_comparison_uses_semantic_families(self):
+        mod = load_compute_extractor()
+        self.assertEqual(
+            mod.canonical_trace_op_family("aten::mm", "attention"),
+            "matmul",
+        )
+        self.assertEqual(
+            mod.canonical_template_op_family("q_proj", "attention"),
+            "matmul",
+        )
+        self.assertEqual(
+            mod.canonical_trace_op_family("aten::rms_norm", "norm"),
+            "norm",
+        )
+        self.assertEqual(
+            mod.canonical_template_op_family("rmsnorm", "norm"),
+            "norm",
+        )
+
+    def test_positive_min_flops_excludes_unknown_zero_flop_ops(self):
+        mod = load_compute_extractor()
+        events = [
+            {
+                "cat": "cpu_op",
+                "name": "aten::silu",
+                "ts": 1,
+                "dur": 1,
+                "pid": 1,
+                "tid": 1,
+                "args": {"Input Dims": [[8, 8]]},
+            }
+        ]
+        self.assertEqual(mod.extract_compute_flow(events, min_flops=1), [])
 
 
 # ---------------------------------------------------------------------------

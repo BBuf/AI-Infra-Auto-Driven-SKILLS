@@ -111,6 +111,7 @@ class SimResult:
     per_layer_mfu_pct: Optional[float] = None
     per_op_mfu: list = field(default_factory=list)  # per-operator MFU details
     kernel_ms: Optional[dict] = None  # kernel-category → measured ms mapping
+    kernel_flow: Optional[dict] = None  # raw measured kernel-flow evidence
     model_arch: dict = field(default_factory=dict)  # model architecture summary
 
 
@@ -120,6 +121,21 @@ class SimResult:
 def load_json(path):
     with open(path) as f:
         return json.load(f)
+
+
+def load_json_argument(value: str) -> dict:
+    """Load a JSON CLI argument from an inline document or ``@file``."""
+    if value.startswith("@"):
+        return load_json(value[1:])
+    return json.loads(value)
+
+
+def measured_ms_from_kernel_detail(detail: dict, num_layers: int) -> float:
+    """Convert one measured layer's kernel duration into full-model latency."""
+    layer_us = float(detail.get("metadata", {}).get("total_dur_us", 0))
+    if layer_us <= 0:
+        raise ValueError("kernel detail metadata.total_dur_us must be positive")
+    return layer_us / 1000.0 * num_layers
 
 
 def resolve_model(name: str, config_index: dict) -> Optional[dict]:
@@ -1712,6 +1728,7 @@ def format_json(result: SimResult) -> str:
         "mfu_pct": result.mfu_pct,
         "per_layer_mfu_pct": result.per_layer_mfu_pct,
         "per_op_mfu": result.per_op_mfu if result.per_op_mfu else [],
+        "kernel_flow": result.kernel_flow,
         "model_arch": result.model_arch,
     }
     return json.dumps(data, indent=2)
@@ -1809,33 +1826,48 @@ def main():
         print(f"Use --list-models to see available models.", file=sys.stderr)
         sys.exit(1)
 
-    # If per-layer-ms is provided, compute measured-ms from it
+    specific_timing_inputs = [
+        args.per_layer_ms is not None,
+        args.kernel_ms is not None,
+        args.kernel_detail is not None,
+        args.kernel_flow is not None,
+    ]
+    if sum(specific_timing_inputs) > 1:
+        parser.error(
+            "choose only one of --per-layer-ms, --kernel-ms, "
+            "--kernel-detail, or --kernel-flow"
+        )
+
     measured_ms = args.measured_ms
     kernel_ms = None
     kernel_detail = None
+    kernel_flow_detail = None
     kernel_detail_result = None  # result from map_kernel_detail_to_ops
+    n_layers = cfg.get("num_hidden_layers", 1)
 
-    if args.kernel_detail is not None:
-        # Load kernel detail JSON (from string or @file)
-        kd_input = args.kernel_detail
-        if kd_input.startswith("@"):
-            with open(kd_input[1:], "r") as f:
-                kernel_detail = json.load(f)
-        else:
-            kernel_detail = json.loads(kd_input)
-        # Compute measured_ms from kernel detail
-        meta = kernel_detail.get("metadata", {})
-        layer_dur_ms = meta.get("total_dur_us", 0) / 1000.0
-        n_layers = cfg.get("num_hidden_layers", 1)
-        measured_ms = layer_dur_ms * n_layers
-    elif args.kernel_ms is not None:
-        kernel_ms = json.loads(args.kernel_ms)
-        # Sum all kernel categories for per-layer measured time
-        layer_measured = sum(kernel_ms.values())
-        measured_ms = layer_measured * cfg.get("num_hidden_layers", 1)
-    elif args.per_layer_ms is not None and cfg is not None:
-        n_layers = cfg.get("num_hidden_layers", 1)
-        measured_ms = args.per_layer_ms * n_layers
+    try:
+        if args.kernel_flow is not None:
+            kernel_flow_detail = load_json_argument(args.kernel_flow)
+            measured_ms = measured_ms_from_kernel_detail(
+                kernel_flow_detail, n_layers
+            )
+        elif args.kernel_detail is not None:
+            kernel_detail = load_json_argument(args.kernel_detail)
+            measured_ms = measured_ms_from_kernel_detail(kernel_detail, n_layers)
+        elif args.kernel_ms is not None:
+            kernel_ms = json.loads(args.kernel_ms)
+            layer_measured = sum(float(value) for value in kernel_ms.values())
+            if layer_measured <= 0:
+                raise ValueError("--kernel-ms durations must sum to a positive value")
+            measured_ms = layer_measured * n_layers
+        elif args.per_layer_ms is not None:
+            if args.per_layer_ms <= 0:
+                raise ValueError("--per-layer-ms must be positive")
+            measured_ms = args.per_layer_ms * n_layers
+        elif measured_ms is not None and measured_ms <= 0:
+            raise ValueError("--measured-ms must be positive")
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        parser.error(str(exc))
 
     result = simulate(
         cfg,
@@ -1855,20 +1887,8 @@ def main():
         result._per_layer_measured_ms = args.per_layer_ms
 
     # If kernel-detail was provided, map measured durations to per-operator (precise)
-    kernel_flow_detail = None  # for --kernel-flow output
-    if getattr(args, "kernel_flow", None) is not None:
-        # Load kernel flow JSON (same format as kernel-detail)
-        kf_input = args.kernel_flow
-        if kf_input.startswith("@"):
-            with open(kf_input[1:], "r") as f:
-                kernel_flow_detail = json.load(f)
-        else:
-            kernel_flow_detail = json.loads(kf_input)
-        # Compute measured_ms from kernel detail
-        meta = kernel_flow_detail.get("metadata", {})
-        layer_dur_ms = meta.get("total_dur_us", 0) / 1000.0
-        n_layers_kf = cfg.get("num_hidden_layers", 1)
-        measured_ms = layer_dur_ms * n_layers_kf
+    if kernel_flow_detail is not None:
+        result.kernel_flow = kernel_flow_detail
     elif kernel_detail is not None:
         result.kernel_detail = kernel_detail
         if result.layers and result.per_op_mfu:
@@ -1908,6 +1928,7 @@ def main():
 
     if args.fmt == "json":
         print(format_json(result))
+        return
     else:
         print(format_text(result, skip_compute_flow=kernel_flow_detail is not None))
 

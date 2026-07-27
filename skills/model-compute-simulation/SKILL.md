@@ -117,7 +117,9 @@ flow and adds:
 When `--kernel-flow` is provided, the static per-operator template is omitted
 because the kernel-level MFU table already carries per-kernel shape and FLOPs
 information. The output keeps the model summary, serving configuration, total
-FLOPs, and kernel-level MFU table.
+FLOPs, overall MFU calculated from the measured layer duration, and the
+kernel-level MFU table. In `--format json`, the raw evidence is stored under
+`kernel_flow` and no text table is appended.
 
 Mapping rules:
 - **Direct-match kernels** (mla, moe, mhc, rmsnorm, hadamard, rope, quant, topk, etc.): time is assigned directly to the corresponding operators
@@ -141,6 +143,18 @@ python3 skills/model-compute-simulation/scripts/model_compute_simulator.py "Qwen
   --batch-size 1 --seq-len 8192 \
   --tp 8 --dp 1 --ep 8 \
   --gpu h20 --dtype bf16 \
+  --kernel-detail @/tmp/layer3_detail.json
+```
+
+#### Method C: `--kernel-ms` (category-level approximation)
+
+Use a hand-aggregated category map only when per-kernel detail is unavailable:
+
+```bash
+python3 skills/model-compute-simulation/scripts/model_compute_simulator.py "Qwen3-235B-A22B" \
+  --batch-size 1 --seq-len 8192 \
+  --tp 8 --dp 1 --ep 8 \
+  --gpu h20 --dtype bf16 \
   --kernel-ms '{
     "mla": 4.922, "moe": 1.644, "allreduce": 0.769,
     "hadamard": 0.348, "mhc": 1.388, "gemm_fp8": 1.692,
@@ -154,6 +168,9 @@ The `--kernel-ms` parameter accepts a JSON object mapping **kernel category** na
 to their measured durations in **milliseconds**. It uses FLOPs-proportional
 distribution across entire categories, which is less precise than `--kernel-detail`
 because generic GEMM categories (gemm_fp8, gemm_bf16) span multiple operator categories.
+
+Choose only one of `--per-layer-ms`, `--kernel-ms`, `--kernel-detail`, or
+`--kernel-flow`. All measured durations must be positive.
 
 Output includes:
 - Model architecture summary (layers, hidden_size, attention_type, MoE config)
@@ -225,6 +242,11 @@ python3 skills/model-compute-simulation/scripts/extract_compute_flow_from_trace.
   --compare qwen3-235b-a22b \
   --batch-size 1 --seq-len 1 --tp 8 --ep 8
 ```
+
+Trace/template operation presence is compared through semantic families such
+as `matmul`, `attention`, `norm`, and `router`; raw `aten::*` names are not
+compared directly with semantic template names. A positive `--min-flops`
+threshold removes operations whose FLOPs could not be determined.
 
 ### Compute Flow Confirmation Hierarchy
 
