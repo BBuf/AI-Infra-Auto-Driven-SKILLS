@@ -162,11 +162,11 @@ Framework CLIs move quickly. For every real run:
 4. Record which frameworks were model-smoked and which only passed preflight.
 
 Historical validation from April 2026 used SGLang `0.5.10rc0`, vLLM `0.19.1`,
-and TensorRT-LLM `1.0.0`. A source check on 2026-06-27 saw SGLang
-`e0c0c0a45cb1bda90392bfa2bba4184f5b0638a0`, vLLM
-`091d13976c1c246714bb2112dd2e208561dda6a3`, TensorRT-LLM
-`aaffa2f9fef3025e0f698d978385a73460344e0b`, and TokenSpeed
-`lightseekorg/tokenspeed@d0a7faddb5ec0d4c6d037c4c3e6a781d2c5164a8`. Treat these as source evidence,
+and TensorRT-LLM `1.0.0`. A source check on 2026-07-27 saw SGLang
+`8d6549bc4039d33635844495d86684677a4f0df8`, vLLM
+`ef9975d021448b99a5408e8c78a4c4f6b63443c7`, TensorRT-LLM
+`1b4ffc0291d75a21ad20118e8f44de6e3831f786`, and TokenSpeed
+`lightseekorg/tokenspeed@d73bf0454422092f306d5575e803a08fd35ac41c`. Treat these as source evidence,
 not as a substitute for target-image `--help`. Since the prior refresh, vLLM PR
 `#46735` changed Triton/NVFP4 MoE CUDA graph capture behavior, and
 TensorRT-LLM PR `#11685` / `#15546` changed KV eviction and KV block-offset host

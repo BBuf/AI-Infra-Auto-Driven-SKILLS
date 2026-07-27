@@ -383,8 +383,7 @@ def parse_vllm_memory_line(line: str, info: VllmMemoryInfo) -> bool:
         matched = True
 
     m = re.search(
-        r"Maximum concurrency for\s*([\d,]+)\s*tokens per request:\s*"
-        r"([\d.]+)x",
+        r"Maximum concurrency for\s*([\d,]+)\s*tokens per request:\s*" r"([\d.]+)x",
         line,
     )
     if m:
@@ -662,9 +661,7 @@ def decompose_memory(
     if parsed.framework == "vllm":
         info = parsed.vllm
         if info.initial_free_gib is not None:
-            bd.framework_overhead_gib = max(
-                0.0, gpu_hbm_gib - info.initial_free_gib
-            )
+            bd.framework_overhead_gib = max(0.0, gpu_hbm_gib - info.initial_free_gib)
             bd.derivation["framework_overhead"] = (
                 f"{gpu_hbm_gib:.2f} - {info.initial_free_gib:.2f} "
                 "(HBM - initial free memory)"

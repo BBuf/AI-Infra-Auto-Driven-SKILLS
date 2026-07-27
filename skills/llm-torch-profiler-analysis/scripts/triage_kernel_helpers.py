@@ -452,7 +452,8 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
     FusionPatternSpec(
         pattern="In-place QK RMSNorm",
         candidate_path=(
-            "python/sglang/srt/models/utils.py" "<br>python/sglang/kernels/ops/layernorm/norm.py"
+            "python/sglang/srt/models/utils.py"
+            "<br>python/sglang/kernels/ops/layernorm/norm.py"
         ),
         active_keywords=("fused_inplace_qknorm", "minimaxm2rmsnormtp"),
         split_groups=(("apply_qk_norm", "q_norm", "k_norm", "qknorm"),),
@@ -499,7 +500,8 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
     FusionPatternSpec(
         pattern="Fused RoPE + KV cache store",
         candidate_path=(
-            "python/sglang/kernels/ops/attention/rope.py" "<br>python/sglang/srt/models/utils.py"
+            "python/sglang/kernels/ops/attention/rope.py"
+            "<br>python/sglang/srt/models/utils.py"
         ),
         active_keywords=("fused_set_kv_buffer",),
         split_groups=(

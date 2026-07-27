@@ -14,6 +14,25 @@ def read_skill_file(*parts: str) -> str:
 
 
 class LlmServingDocsTest(unittest.TestCase):
+    def test_current_source_heads_match_refresh_evidence(self) -> None:
+        skill = read_skill_file("SKILL.md")
+        framework_reference = read_skill_file(
+            "references", "framework-reference.md"
+        )
+        heads = [
+            "8d6549bc4039d33635844495d86684677a4f0df8",
+            "ef9975d021448b99a5408e8c78a4c4f6b63443c7",
+            "1b4ffc0291d75a21ad20118e8f44de6e3831f786",
+            "d73bf0454422092f306d5575e803a08fd35ac41c",
+        ]
+
+        for head in heads:
+            with self.subTest(head=head):
+                self.assertIn(head, framework_reference)
+        for head in heads[1:]:
+            with self.subTest(skill_head=head):
+                self.assertIn(head, skill)
+
     def test_tensorrt_llm_backend_policy_is_explicit(self) -> None:
         text = read_skill_file("SKILL.md")
 

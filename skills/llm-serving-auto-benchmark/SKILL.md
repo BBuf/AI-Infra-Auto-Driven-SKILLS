@@ -186,16 +186,16 @@ before starting a long sweep.
   the operator has verified the image.
 - vLLM still exposes `--long-prefill-token-threshold`; verify the exact flag
   against the target image before searching it.
-- vLLM current mainline was checked on 2026-06-27 at
-  `091d13976c1c246714bb2112dd2e208561dda6a3` and includes PR `#46735`
+- vLLM current mainline was checked on 2026-07-27 at
+  `ef9975d021448b99a5408e8c78a4c4f6b63443c7` and includes PR `#46735`
   fixing CUDA graph capture in Triton / NVFP4-emulation MoE. If a target image
   predates it, treat Triton-MoE graph-capture failures or eager fallback as an
   image/runtime issue before scoring it against SGLang.
 - The same vLLM refresh includes PR `#44800` (`VLLM_GPU_SYNC_CHECK`). For
   sync-heavy profiler rows, record whether the target image exposes this debug
   knob before labeling the gap as kernel-local.
-- TensorRT-LLM mainline was checked on 2026-06-27 at
-  `aaffa2f9fef3025e0f698d978385a73460344e0b`. Keep
+- TensorRT-LLM mainline was checked on 2026-07-27 at
+  `1b4ffc0291d75a21ad20118e8f44de6e3831f786`. Keep
   `kv_cache_free_gpu_memory_fraction` in shipped configs until the target
   `trtllm-serve serve --help` proves a shorter alias is accepted.
 - TensorRT-LLM current mainline includes PR `#11685` and PR `#15546`, which
@@ -212,8 +212,8 @@ before starting a long sweep.
   backend, which is pinned to `pytorch` by this skill.
 - `trtllm` `benchmark_serving --dataset-name random` silently falls back to
   ShareGPT sampling without `--random-ids` (or `--download-path`).
-- TokenSpeed is a fast-moving engine. Current mainline checked on 2026-06-27 at
-  `lightseekorg/tokenspeed@d0a7faddb5ec0d4c6d037c4c3e6a781d2c5164a8` exposes `tokenspeed serve`,
+- TokenSpeed is a fast-moving engine. Current mainline checked on 2026-07-27 at
+  `lightseekorg/tokenspeed@d73bf0454422092f306d5575e803a08fd35ac41c` exposes `tokenspeed serve`,
   `tokenspeed bench`, `tokenspeed env`, and `tokenspeed version`. Its server
   command is `tokenspeed serve <model>`, not a `python -m tokenspeed`
   entrypoint.
@@ -514,7 +514,7 @@ TensorRT-LLM flag names are especially version-sensitive. In the validated
 TensorRT-LLM 1.0.0 image, the KV-cache memory flag accepted by
 `trtllm-serve serve` was `--kv_cache_free_gpu_memory_fraction`, not
 `--free_gpu_memory_fraction`. Current mainline was rechecked at
-`aaffa2f9fef3025e0f698d978385a73460344e0b` on 2026-06-27. Always verify flags
+`1b4ffc0291d75a21ad20118e8f44de6e3831f786` on 2026-07-27. Always verify flags
 with `trtllm-serve serve --help` before running a search on any GPU target.
 
 TensorRT-LLM backend policy for this skill:
