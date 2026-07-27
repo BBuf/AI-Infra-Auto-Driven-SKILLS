@@ -71,11 +71,16 @@ Current model-family slugs include:
 ```text
 deepseek-ocr, deepseek-ocr-2, deepseek-v3-r1, deepseek-v31, deepseek-v32,
 deepseek-v4, ernie45, gemma4, glm-vlm-ocr, glm45, glm46-glm47, glm5-glm51,
-gpt-oss, intern-s1, internvl35, jina-reranker-m0, kimi, ling25, llada21,
+gpt-oss, hunyuan3-preview, intern-s1, internvl35, jina-reranker-m0, kimi, ling25, llada21,
 llama31, llama33-70b, llama4, mimo-v2-flash, minimax, mistral-small-4,
-mixtral-quark-int4fp8-moe, nemotron-super, qwen-vlm-omni-asr, qwen3-coder,
-qwen3-core, qwen3-next, qwen35, ring25, step35
+mixtral-quark-int4fp8-moe, moss-vl, nemotron-super, qwen-vlm-omni-asr,
+qwen3-coder, qwen3-core, qwen3-next, qwen35, qwen36, ring25, step35
 ```
+
+Availability is framework-specific. In particular, the current SGLang index
+includes `hunyuan3-preview`, `moss-vl`, and `qwen36`; the current vLLM index
+includes `hunyuan3-preview` and `qwen36`, but not `moss-vl` because the audited
+vLLM source head has no matching implementation surface.
 
 ## SOTA Loop Contract
 

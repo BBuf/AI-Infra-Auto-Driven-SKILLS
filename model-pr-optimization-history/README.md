@@ -20,6 +20,11 @@ validation/risk notes. SGLang, vLLM, TensorRT-LLM, and TokenSpeed entries use
 the same timeline plus per-PR diff-card format whenever a model family has
 upstream PR evidence.
 
+Model availability is framework-specific rather than a cross-framework
+promise. For example, the current generated coverage includes Hunyuan3 Preview
+and Qwen3.6 for both SGLang and vLLM, while MOSS-VL is SGLang-only because the
+audited vLLM source head has no matching implementation files.
+
 When a doc is rechecked for timeliness, a dated `## <YYYY-MM-DD> PR Backfill
 Audit` section is prepended right after the title. It lists PR-numbered merges
 that touched the tracked implementation files after the doc's previous freshness

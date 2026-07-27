@@ -81,7 +81,7 @@ MODEL_TITLES = {
     "llama33-70b": "Llama 3.3 70B",
     "llama4": "Llama 4",
     "mimo-v2-flash": "MiMo V2 Flash",
-    "minimax": "MiniMax M2 Series",
+    "minimax": "MiniMax M2/M3 Series",
     "mistral-small-4": "Mistral Small 4",
     "mixtral-quark-int4fp8-moe": "Mixtral Quark INT4/FP8 MoE",
     "moss-vl": "MOSS-VL",
@@ -150,6 +150,7 @@ FRAMEWORK_MODEL_ORDER = {
         "glm46-glm47",
         "glm5-glm51",
         "gpt-oss",
+        "hunyuan3-preview",
         "intern-s1",
         "internvl35",
         "kimi",
@@ -161,12 +162,14 @@ FRAMEWORK_MODEL_ORDER = {
         "minimax",
         "mistral-small-4",
         "mixtral-quark-int4fp8-moe",
+        "moss-vl",
         "nemotron-super",
         "qwen-vlm-omni-asr",
         "qwen3-coder",
         "qwen3-core",
         "qwen3-next",
         "qwen35",
+        "qwen36",
         "ring25",
         "step35",
     ],
@@ -183,6 +186,7 @@ FRAMEWORK_MODEL_ORDER = {
         "glm45",
         "glm46-glm47",
         "gpt-oss",
+        "hunyuan3-preview",
         "intern-s1",
         "internvl35",
         "jina-reranker-m0",
@@ -200,6 +204,7 @@ FRAMEWORK_MODEL_ORDER = {
         "qwen3-core",
         "qwen3-next",
         "qwen35",
+        "qwen36",
         "ring25",
         "step35",
     ],
@@ -305,7 +310,10 @@ MODEL_FILTERS: dict[str, dict[str, dict[str, list[str]]]] = {
         "qwen3-core": {"include": ["*qwen3.py", "*qwen3_moe.py", "*qwen3_moe_mtp.py", "*qwen3-deployment*", "*Qwen3.mdx"], "exclude": ["*qwen3_next*", "*qwen3_5*", "*qwen35*", "*qwen36*", "*qwen3_vl*", "*qwen3_omni*", "*qwen3_asr*", "*qwen3-coder*", "*qwen-image*", "*diffusion*"]},
         "qwen3-next": {"include": ["*qwen3_next*"], "exclude": []},
         "qwen35": {"include": ["*qwen3_5*", "*qwen35*", "*qwen3.5*", "*qwen3-5*"], "exclude": []},
-        "qwen36": {"include": ["*qwen36*", "*qwen3.6*", "*qwen3-6*"], "exclude": []},
+        "qwen36": {
+            "include": ["*qwen36*", "*qwen3.6*", "*qwen3_6*"],
+            "exclude": [],
+        },
         "ring25": {
             "include": ["*ring-2.5*", "*ring_2_5*", "*ring-25*", "*ring25*"],
             "exclude": ["*diffusion*", "*ring_sp*"],
@@ -364,7 +372,6 @@ MODEL_FILTERS: dict[str, dict[str, dict[str, list[str]]]] = {
         "minimax": {"include": ["*minimax*"], "exclude": []},
         "mistral-small-4": {"include": ["*mistral*", "*ministral*"], "exclude": []},
         "mixtral-quark-int4fp8-moe": {"include": ["*mixtral*", "*quark*"], "exclude": []},
-        "moss-vl": {"include": ["*moss_vl*", "*moss-vl*"], "exclude": []},
         "nemotron-super": {"include": ["*nemotron*", "*jet_nemotron*", "*nano_nemotron*"], "exclude": []},
         "qwen-vlm-omni-asr": {
             "include": [
@@ -384,7 +391,10 @@ MODEL_FILTERS: dict[str, dict[str, dict[str, list[str]]]] = {
         "qwen3-core": {"include": ["*qwen3.py", "*qwen3_moe.py", "*qwen3_moe_mtp.py", "*qwen3_dflash.py", "*qwen3-deployment*", "*Qwen3.mdx"], "exclude": ["*qwen3_next*", "*qwen3_5*", "*qwen35*", "*qwen36*", "*qwen3_vl*", "*qwen3_omni*", "*qwen3_asr*", "*qwen3-coder*", "*qwen-image*", "*diffusion*"]},
         "qwen3-next": {"include": ["*qwen3_next*"], "exclude": []},
         "qwen35": {"include": ["*qwen3_5*", "*qwen35*", "*qwen3.5*", "*qwen3-5*"], "exclude": []},
-        "qwen36": {"include": ["*qwen36*", "*qwen3.6*", "*qwen3-6*"], "exclude": []},
+        "qwen36": {
+            "include": ["*qwen36*", "*qwen3.6*", "*qwen3_6*"],
+            "exclude": [],
+        },
         "ring25": {
             "include": ["*ring-2.5*", "*ring_2_5*", "*ring-25*", "*ring25*"],
             "exclude": [],
@@ -428,9 +438,16 @@ SUBJECT_HINTS = {
     "qwen3-core": ["qwen3", "qwen3-moe", "qwen3 moe"],
     "qwen3-next": ["qwen3-next", "qwen3 next"],
     "qwen35": ["qwen3.5", "qwen35", "qwen3-5"],
-    "qwen36": ["qwen3.6", "qwen36", "qwen3-6"],
+    "qwen36": ["qwen3.6", "qwen36", "qwen3_6"],
     "ring25": ["ring-2.5", "ring 2.5", "ring25"],
     "step35": ["step3.5", "step-3.5", "step35", "step3p5"],
+}
+
+# Some model-specific files are changed by PRs whose subjects only name a
+# shared backend (for example LoRA or quantization). Keep a narrowly scoped
+# path fallback for identifiers that cannot collide with a neighboring model.
+PATH_IDENTITY_HINTS = {
+    ("vllm", "qwen36"): ["qwen3.6", "qwen36", "qwen3_6"],
 }
 
 
@@ -632,14 +649,23 @@ def normalize_hint_text(text: str) -> str:
     return re.sub(r"\s+", " ", text)
 
 
-def filter_traces_by_subject(model: str, traces: dict[int, TraceInfo]) -> dict[int, TraceInfo]:
+def filter_traces_by_subject(
+    framework: str, model: str, traces: dict[int, TraceInfo]
+) -> dict[int, TraceInfo]:
     hints = [normalize_hint_text(hint) for hint in SUBJECT_HINTS.get(model, [])]
+    path_hints = [
+        normalize_hint_text(hint)
+        for hint in PATH_IDENTITY_HINTS.get((framework, model), [])
+    ]
     if not hints:
         return traces
     filtered: dict[int, TraceInfo] = {}
     for number, trace in traces.items():
         haystack = normalize_hint_text(" ".join(trace.subjects))
-        if any(hint in haystack for hint in hints):
+        path_haystack = normalize_hint_text(" ".join(trace.files))
+        if any(hint in haystack for hint in hints) or any(
+            hint in path_haystack for hint in path_hints
+        ):
             filtered[number] = trace
     return filtered
 
@@ -1303,7 +1329,7 @@ def rebuild(dry_run: bool = False) -> None:
         for model in FRAMEWORK_MODEL_ORDER[framework]:
             files = selected_files(framework, model, all_files[framework])
             raw_traces = trace_model_prs(framework, files)
-            traces = filter_traces_by_subject(model, raw_traces)
+            traces = filter_traces_by_subject(framework, model, raw_traces)
             existing = extract_existing_prs(framework, model)
             source_tags: dict[int, set[str]] = defaultdict(set)
             for number in traces:
