@@ -12,37 +12,37 @@
 | `tests/entrypoints/speech_to_text/transcription/test_qwen3_asr_sanitize_prompt.py` | [#35415](https://github.com/vllm-project/vllm/pull/35415) |
 | `tests/model_executor/test_qwen3_omni.py` | [#27721](https://github.com/vllm-project/vllm/pull/27721) |
 | `tests/model_executor/test_qwen3_vl_mrope.py` | 无直接 PR 号提交 |
-| `tests/models/multimodal/generation/test_qwen2_5_vl.py` | [#40830](https://github.com/vllm-project/vllm/pull/40830) |
+| `tests/models/multimodal/generation/test_qwen2_5_vl.py` | [#40830](https://github.com/vllm-project/vllm/pull/40830), [#48072](https://github.com/vllm-project/vllm/pull/48072) |
 | `tests/models/multimodal/generation/test_qwen2_vl.py` | 无直接 PR 号提交 |
 | `tests/models/multimodal/pooling/test_dse_qwen2_vl.py` | 无直接 PR 号提交 |
 | `tests/models/multimodal/pooling/test_qwen3_asr_forced_aligner.py` | 无直接 PR 号提交 |
-| `tests/models/multimodal/processing/test_qwen2_5_omni_embed.py` | [#35368](https://github.com/vllm-project/vllm/pull/35368) |
+| `tests/models/multimodal/processing/test_qwen2_5_omni_embed.py` | [#35368](https://github.com/vllm-project/vllm/pull/35368), [#46213](https://github.com/vllm-project/vllm/pull/46213) |
 | `tests/models/multimodal/processing/test_qwen2_vl.py` | 无直接 PR 号提交 |
 | `tests/models/multimodal/processing/test_qwen3_omni.py` | [#29255](https://github.com/vllm-project/vllm/pull/29255) |
 | `tests/models/multimodal/processing/test_qwen3_vl.py` | [#36136](https://github.com/vllm-project/vllm/pull/36136), [#46026](https://github.com/vllm-project/vllm/pull/46026), [#46305](https://github.com/vllm-project/vllm/pull/46305) |
 | `vllm/model_executor/models/glmasr.py` | [#31436](https://github.com/vllm-project/vllm/pull/31436), [#31779](https://github.com/vllm-project/vllm/pull/31779), [#32540](https://github.com/vllm-project/vllm/pull/32540), [#40160](https://github.com/vllm-project/vllm/pull/40160) |
 | `vllm/model_executor/models/glmasr_utils.py` | [#31436](https://github.com/vllm-project/vllm/pull/31436), [#31779](https://github.com/vllm-project/vllm/pull/31779) |
 | `vllm/model_executor/models/mimo_v2_omni.py` | 无直接 PR 号提交 |
-| `vllm/model_executor/models/qwen2_5_omni_thinker.py` | [#15130](https://github.com/vllm-project/vllm/pull/15130), [#16872](https://github.com/vllm-project/vllm/pull/16872), [#17301](https://github.com/vllm-project/vllm/pull/17301), [#17838](https://github.com/vllm-project/vllm/pull/17838), [#23058](https://github.com/vllm-project/vllm/pull/23058), [#24231](https://github.com/vllm-project/vllm/pull/24231), [#24420](https://github.com/vllm-project/vllm/pull/24420), [#26004](https://github.com/vllm-project/vllm/pull/26004), [#27721](https://github.com/vllm-project/vllm/pull/27721), [#27920](https://github.com/vllm-project/vllm/pull/27920), [#30883](https://github.com/vllm-project/vllm/pull/30883), [#32772](https://github.com/vllm-project/vllm/pull/32772), ... (17 total) |
+| `vllm/model_executor/models/qwen2_5_omni_thinker.py` | [#15130](https://github.com/vllm-project/vllm/pull/15130), [#16872](https://github.com/vllm-project/vllm/pull/16872), [#17301](https://github.com/vllm-project/vllm/pull/17301), [#17838](https://github.com/vllm-project/vllm/pull/17838), [#23058](https://github.com/vllm-project/vllm/pull/23058), [#24231](https://github.com/vllm-project/vllm/pull/24231), [#24420](https://github.com/vllm-project/vllm/pull/24420), [#26004](https://github.com/vllm-project/vllm/pull/26004), [#27721](https://github.com/vllm-project/vllm/pull/27721), [#27920](https://github.com/vllm-project/vllm/pull/27920), [#30883](https://github.com/vllm-project/vllm/pull/30883), [#32772](https://github.com/vllm-project/vllm/pull/32772), ... (19 total) |
 | `vllm/model_executor/models/qwen2_5_vl.py` | [#12944](https://github.com/vllm-project/vllm/pull/12944), [#13155](https://github.com/vllm-project/vllm/pull/13155), [#13286](https://github.com/vllm-project/vllm/pull/13286), [#13533](https://github.com/vllm-project/vllm/pull/13533), [#13968](https://github.com/vllm-project/vllm/pull/13968), [#14377](https://github.com/vllm-project/vllm/pull/14377), [#15130](https://github.com/vllm-project/vllm/pull/15130), [#15200](https://github.com/vllm-project/vllm/pull/15200), [#15273](https://github.com/vllm-project/vllm/pull/15273), [#16907](https://github.com/vllm-project/vllm/pull/16907), [#16974](https://github.com/vllm-project/vllm/pull/16974), [#17726](https://github.com/vllm-project/vllm/pull/17726), ... (29 total) |
 | `vllm/model_executor/models/qwen2_audio.py` | [#11258](https://github.com/vllm-project/vllm/pull/11258), [#35994](https://github.com/vllm-project/vllm/pull/35994) |
 | `vllm/model_executor/models/qwen2_vl.py` | [#7905](https://github.com/vllm-project/vllm/pull/7905), [#8442](https://github.com/vllm-project/vllm/pull/8442), [#8696](https://github.com/vllm-project/vllm/pull/8696), [#8770](https://github.com/vllm-project/vllm/pull/8770), [#8837](https://github.com/vllm-project/vllm/pull/8837), [#9250](https://github.com/vllm-project/vllm/pull/9250), [#10112](https://github.com/vllm-project/vllm/pull/10112), [#10169](https://github.com/vllm-project/vllm/pull/10169), [#10221](https://github.com/vllm-project/vllm/pull/10221), [#11258](https://github.com/vllm-project/vllm/pull/11258), [#11430](https://github.com/vllm-project/vllm/pull/11430), [#11663](https://github.com/vllm-project/vllm/pull/11663), ... (32 total) |
-| `vllm/model_executor/models/qwen3_asr.py` | [#33312](https://github.com/vllm-project/vllm/pull/33312), [#33410](https://github.com/vllm-project/vllm/pull/33410), [#33644](https://github.com/vllm-project/vllm/pull/33644), [#35415](https://github.com/vllm-project/vllm/pull/35415), [#37247](https://github.com/vllm-project/vllm/pull/37247) |
+| `vllm/model_executor/models/qwen3_asr.py` | [#33312](https://github.com/vllm-project/vllm/pull/33312), [#33410](https://github.com/vllm-project/vllm/pull/33410), [#33644](https://github.com/vllm-project/vllm/pull/33644), [#35415](https://github.com/vllm-project/vllm/pull/35415), [#37247](https://github.com/vllm-project/vllm/pull/37247), [#42478](https://github.com/vllm-project/vllm/pull/42478) |
 | `vllm/model_executor/models/qwen3_asr_forced_aligner.py` | 无直接 PR 号提交 |
 | `vllm/model_executor/models/qwen3_asr_realtime.py` | [#34613](https://github.com/vllm-project/vllm/pull/34613), [#35869](https://github.com/vllm-project/vllm/pull/35869) |
-| `vllm/model_executor/models/qwen3_omni_moe_thinker.py` | [#25550](https://github.com/vllm-project/vllm/pull/25550), [#26608](https://github.com/vllm-project/vllm/pull/26608), [#26815](https://github.com/vllm-project/vllm/pull/26815), [#27705](https://github.com/vllm-project/vllm/pull/27705), [#27721](https://github.com/vllm-project/vllm/pull/27721), [#27920](https://github.com/vllm-project/vllm/pull/27920), [#29255](https://github.com/vllm-project/vllm/pull/29255), [#29828](https://github.com/vllm-project/vllm/pull/29828), [#29896](https://github.com/vllm-project/vllm/pull/29896), [#29974](https://github.com/vllm-project/vllm/pull/29974), [#31007](https://github.com/vllm-project/vllm/pull/31007), [#31790](https://github.com/vllm-project/vllm/pull/31790), ... (26 total) |
-| `vllm/model_executor/models/qwen3_vl.py` | [#24727](https://github.com/vllm-project/vllm/pull/24727), [#24955](https://github.com/vllm-project/vllm/pull/24955), [#25337](https://github.com/vllm-project/vllm/pull/25337), [#25347](https://github.com/vllm-project/vllm/pull/25347), [#25557](https://github.com/vllm-project/vllm/pull/25557), [#25646](https://github.com/vllm-project/vllm/pull/25646), [#25648](https://github.com/vllm-project/vllm/pull/25648), [#25788](https://github.com/vllm-project/vllm/pull/25788), [#26000](https://github.com/vllm-project/vllm/pull/26000), [#27104](https://github.com/vllm-project/vllm/pull/27104), [#27705](https://github.com/vllm-project/vllm/pull/27705), [#28663](https://github.com/vllm-project/vllm/pull/28663), ... (24 total) |
-| `vllm/model_executor/models/qwen3_vl_moe.py` | [#24727](https://github.com/vllm-project/vllm/pull/24727), [#24955](https://github.com/vllm-project/vllm/pull/24955), [#25300](https://github.com/vllm-project/vllm/pull/25300), [#26000](https://github.com/vllm-project/vllm/pull/26000), [#42394](https://github.com/vllm-project/vllm/pull/42394), [#42716](https://github.com/vllm-project/vllm/pull/42716) |
+| `vllm/model_executor/models/qwen3_omni_moe_thinker.py` | [#25550](https://github.com/vllm-project/vllm/pull/25550), [#26608](https://github.com/vllm-project/vllm/pull/26608), [#26815](https://github.com/vllm-project/vllm/pull/26815), [#27705](https://github.com/vllm-project/vllm/pull/27705), [#27721](https://github.com/vllm-project/vllm/pull/27721), [#27920](https://github.com/vllm-project/vllm/pull/27920), [#29255](https://github.com/vllm-project/vllm/pull/29255), [#29828](https://github.com/vllm-project/vllm/pull/29828), [#29896](https://github.com/vllm-project/vllm/pull/29896), [#29974](https://github.com/vllm-project/vllm/pull/29974), [#31007](https://github.com/vllm-project/vllm/pull/31007), [#31790](https://github.com/vllm-project/vllm/pull/31790), ... (27 total) |
+| `vllm/model_executor/models/qwen3_vl.py` | [#24727](https://github.com/vllm-project/vllm/pull/24727), [#24955](https://github.com/vllm-project/vllm/pull/24955), [#25337](https://github.com/vllm-project/vllm/pull/25337), [#25347](https://github.com/vllm-project/vllm/pull/25347), [#25557](https://github.com/vllm-project/vllm/pull/25557), [#25646](https://github.com/vllm-project/vllm/pull/25646), [#25648](https://github.com/vllm-project/vllm/pull/25648), [#25788](https://github.com/vllm-project/vllm/pull/25788), [#26000](https://github.com/vllm-project/vllm/pull/26000), [#27104](https://github.com/vllm-project/vllm/pull/27104), [#27705](https://github.com/vllm-project/vllm/pull/27705), [#28663](https://github.com/vllm-project/vllm/pull/28663), ... (25 total) |
+| `vllm/model_executor/models/qwen3_vl_moe.py` | [#24727](https://github.com/vllm-project/vllm/pull/24727), [#24955](https://github.com/vllm-project/vllm/pull/24955), [#25300](https://github.com/vllm-project/vllm/pull/25300), [#26000](https://github.com/vllm-project/vllm/pull/26000), [#42394](https://github.com/vllm-project/vllm/pull/42394), [#42716](https://github.com/vllm-project/vllm/pull/42716), [#44863](https://github.com/vllm-project/vllm/pull/44863) |
 | `vllm/transformers_utils/configs/mimo_v2_omni.py` | 无直接 PR 号提交 |
 | `vllm/transformers_utils/configs/qwen3_asr.py` | [#33312](https://github.com/vllm-project/vllm/pull/33312) |
-| `vllm/transformers_utils/processors/mimo_v2_omni.py` | 无直接 PR 号提交 |
+| `vllm/transformers_utils/processors/mimo_v2_omni.py` | [#43117](https://github.com/vllm-project/vllm/pull/43117) |
 | `vllm/transformers_utils/processors/qwen3_asr.py` | [#33312](https://github.com/vllm-project/vllm/pull/33312) |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 63
-- 原文档显式引用补充 PR 数: 23
-- 当前文档总 PR 数: 77
+- git 追溯 PR 数: 120
+- 原文档显式引用补充 PR 数: 14
+- 当前文档总 PR 数: 134
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -52,72 +52,122 @@
 | --- | --- | --- | --- | --- |
 | 2024-09-11 | [#7905](https://github.com/vllm-project/vllm/pull/7905) | merged | [Model][VLM] Add Qwen2-VL model support | `vllm/model_executor/models/qwen2_vl.py` |
 | 2024-09-13 | [#8442](https://github.com/vllm-project/vllm/pull/8442) | merged | [Misc] Skip loading extra bias for Qwen2-VL GPTQ-Int8 | `vllm/model_executor/models/qwen2_vl.py` |
+| 2024-09-23 | [#8696](https://github.com/vllm-project/vllm/pull/8696) | merged | [Model] Support pp for qwen2-vl | `vllm/model_executor/models/qwen2_vl.py` |
 | 2024-09-25 | [#8770](https://github.com/vllm-project/vllm/pull/8770) | merged | [Hardware][CPU] Enable mrope and support Qwen2-VL on CPU backend | `vllm/model_executor/models/qwen2_vl.py` |
 | 2024-09-26 | [#8837](https://github.com/vllm-project/vllm/pull/8837) | merged | [Misc] Update config loading for Qwen2-VL and remove Granite | `vllm/model_executor/models/qwen2_vl.py` |
 | 2024-10-16 | [#9250](https://github.com/vllm-project/vllm/pull/9250) | merged | [Misc] Standardize RoPE handling for Qwen2-VL | `vllm/model_executor/models/qwen2_vl.py` |
+| 2024-11-07 | [#10112](https://github.com/vllm-project/vllm/pull/10112) | merged | [Bugfix] Make image processor respect `mm_processor_kwargs` for Qwen2-VL | `vllm/model_executor/models/qwen2_vl.py` |
+| 2024-11-09 | [#10169](https://github.com/vllm-project/vllm/pull/10169) | merged | [Bugfix] Ignore GPTQ quantization of Qwen2-VL visual module | `vllm/model_executor/models/qwen2_vl.py` |
+| 2024-11-13 | [#10221](https://github.com/vllm-project/vllm/pull/10221) | merged | [Model] Add support for Qwen2-VL video embeddings input & multiple image embeddings input with varied resolutions | `tests/models/decoder_only/vision_language/test_qwen2_vl.py`, `vllm/model_executor/models/qwen2_vl.py` |
+| 2024-12-19 | [#11258](https://github.com/vllm-project/vllm/pull/11258) | merged | [Model] Refactor Qwen2-VL to use merged multimodal processor | `vllm/model_executor/models/qwen2_vl.py`, `tests/models/decoder_only/vision_language/mm_processor_kwargs/test_qwen2_vl.py`, `vllm/model_executor/models/qwen2_audio.py` |
 | 2024-12-24 | [#11430](https://github.com/vllm-project/vllm/pull/11430) | merged | [Bugfix] Fix Qwen2-VL LoRA weight loading | `vllm/model_executor/models/qwen2_vl.py` |
+| 2025-01-01 | [#11663](https://github.com/vllm-project/vllm/pull/11663) | merged | [Misc] Optimize Qwen2-VL LoRA test | `vllm/model_executor/models/qwen2_vl.py` |
+| 2025-01-19 | [#12128](https://github.com/vllm-project/vllm/pull/12128) | merged | [V1] Add V1 support of Qwen2-VL | `vllm/model_executor/models/qwen2_vl.py`, `tests/models/decoder_only/vision_language/test_qwen2_vl.py` |
 | 2025-02-08 | [#12944](https://github.com/vllm-project/vllm/pull/12944) | merged | [Misc] Add qwen2.5-vl BNB support | `vllm/model_executor/models/qwen2_5_vl.py` |
+| 2025-02-12 | [#13148](https://github.com/vllm-project/vllm/pull/13148) | merged | [Bugfix] Fix num video tokens calculation for Qwen2-VL | `vllm/model_executor/models/qwen2_vl.py` |
+| 2025-02-13 | [#13155](https://github.com/vllm-project/vllm/pull/13155) | merged | [Misc] Qwen2.5-VL Optimization | `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py` |
+| 2025-02-15 | [#13286](https://github.com/vllm-project/vllm/pull/13286) | merged | [Bugfix] Fix qwen2.5-vl image processor | `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py` |
 | 2025-02-20 | [#13533](https://github.com/vllm-project/vllm/pull/13533) | merged | [Misc] add mm_processor_kwargs to extra_body for Qwen2.5-VL | `vllm/model_executor/models/qwen2_5_vl.py` |
 | 2025-02-27 | [#13968](https://github.com/vllm-project/vllm/pull/13968) | merged | [Bugfix] Fix qwen2.5-vl overflow issue | `vllm/model_executor/models/qwen2_5_vl.py` |
 | 2025-03-11 | [#14377](https://github.com/vllm-project/vllm/pull/14377) | merged | [Perf]:Optimize qwen2-vl to reduce cudaMemcpyAsync | `vllm/model_executor/models/qwen2_vl.py`, `vllm/model_executor/models/qwen2_5_vl.py` |
+| 2025-03-21 | [#15200](https://github.com/vllm-project/vllm/pull/15200) | merged | [Bugfix] Fix incorrect qwen2.5-vl attention mask pre-computation | `vllm/model_executor/models/qwen2_5_vl.py` |
+| 2025-03-21 | [#15273](https://github.com/vllm-project/vllm/pull/15273) | merged | [Misc] Add attention mask pre-computation optimization back to Qwen2.5-VL | `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py` |
+| 2025-04-19 | [#15130](https://github.com/vllm-project/vllm/pull/15130) | merged | [Model][VLM] Add Qwen2.5-Omni model support (thinker only) | `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen2_5_vl.py` |
+| 2025-04-19 | [#16872](https://github.com/vllm-project/vllm/pull/16872) | merged | [Model] Qwen2.5-Omni Cleanup | `vllm/model_executor/models/qwen2_5_omni_thinker.py` |
 | 2025-04-21 | [#16907](https://github.com/vllm-project/vllm/pull/16907) | merged | [Bugfix] Fix distributed bug in Qwen2.5-VL & Qwen2.5-Omni | `vllm/model_executor/models/qwen2_5_vl.py` |
 | 2025-04-22 | [#16974](https://github.com/vllm-project/vllm/pull/16974) | merged | [Bugfix] Fix distributed bug again in Qwen2.5-VL & Qwen2.5-Omni | `vllm/model_executor/models/qwen2_5_vl.py` |
+| 2025-04-28 | [#17301](https://github.com/vllm-project/vllm/pull/17301) | merged | [Misc] Clean up Qwen2.5-Omni code | `vllm/model_executor/models/qwen2_5_omni_thinker.py` |
+| 2025-05-07 | [#17726](https://github.com/vllm-project/vllm/pull/17726) | merged | [Misc] Use `apply_rotary_emb` from vllm_flash_attn for Qwen2-VL vision RoPE | `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py` |
+| 2025-05-08 | [#17838](https://github.com/vllm-project/vllm/pull/17838) | merged | [Bugfix] `use_fast` failing to be propagated to Qwen2-VL image processor | `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py` |
 | 2025-05-16 | [#17973](https://github.com/vllm-project/vllm/pull/17973) | merged | [PERF] Speed up Qwen2.5-VL model by speed up rotary position embedding const… | `vllm/model_executor/models/qwen2_5_vl.py` |
 | 2025-06-03 | [#19054](https://github.com/vllm-project/vllm/pull/19054) | merged | [Misc] Update `WeightsMapper` for qwen2-vl/qwen2.5-vl | `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py` |
 | 2025-08-02 | [#22069](https://github.com/vllm-project/vllm/pull/22069) | merged | [FEAT][ROCm] Enable running Flash Attention as ViT attn backend for Qwen-VL models on ROCm platform. | `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py` |
 | 2025-08-07 | [#22184](https://github.com/vllm-project/vllm/pull/22184) | merged | [Model] Switch to Fused RMS norm in Qwen2.5_VL model. | `vllm/model_executor/models/qwen2_5_vl.py` |
 | 2025-08-18 | [#23058](https://github.com/vllm-project/vllm/pull/23058) | merged | [Bugfix] fix Qwen2.5-Omni processor output mapping | `vllm/model_executor/models/qwen2_5_omni_thinker.py` |
+| 2025-08-25 | [#23512](https://github.com/vllm-project/vllm/pull/23512) | merged | [Bugfix] Fix Qwen2.5-VL quantized model weights loading | `vllm/model_executor/models/qwen2_5_vl.py` |
 | 2025-09-04 | [#24231](https://github.com/vllm-project/vllm/pull/24231) | merged | [LoRA]: Add lora support to qwen-2.5-omni | `vllm/model_executor/models/qwen2_5_omni_thinker.py` |
+| 2025-09-08 | [#24420](https://github.com/vllm-project/vllm/pull/24420) | merged | [Model] Enable BNB support for qwen2_5_omni_thinker | `vllm/model_executor/models/qwen2_5_omni_thinker.py` |
 | 2025-09-12 | [#24741](https://github.com/vllm-project/vllm/pull/24741) | merged | [Models] Prevent CUDA sync in Qwen2.5-VL | `vllm/model_executor/models/qwen2_5_vl.py` |
 | 2025-09-17 | [#24727](https://github.com/vllm-project/vllm/pull/24727) | merged | [Model] Support Qwen3-VL Model Series | `vllm/model_executor/models/qwen3_vl.py`, `vllm/model_executor/models/qwen3_vl_moe.py`, `vllm/model_executor/models/qwen2_vl.py` |
+| 2025-09-18 | [#24955](https://github.com/vllm-project/vllm/pull/24955) | merged | [MM Encoder] Apply DP ViT for Qwen3-VL model series | `vllm/model_executor/models/qwen3_vl.py`, `vllm/model_executor/models/qwen3_vl_moe.py` |
 | 2025-09-20 | [#25300](https://github.com/vllm-project/vllm/pull/25300) | merged | [Bugfix] Fix Qwen3-VL-MoE weight loading for EP | `vllm/model_executor/models/qwen3_vl_moe.py` |
 | 2025-09-21 | [#25337](https://github.com/vllm-project/vllm/pull/25337) | merged | [MM][Perf] Minor Optimization on Qwen3-VL `fast_pos_embed_interpolate` | `vllm/model_executor/models/qwen3_vl.py` |
 | 2025-09-21 | [#25347](https://github.com/vllm-project/vllm/pull/25347) | merged | [Perf] Further optimization for Qwen3-VL `fast_pos_embed_interpolate` | `vllm/model_executor/models/qwen3_vl.py` |
+| 2025-09-23 | [#25445](https://github.com/vllm-project/vllm/pull/25445) | merged | [Model] Enable DP for ViT in Qwen2-VL | `vllm/model_executor/models/qwen2_vl.py` |
 | 2025-09-25 | [#25646](https://github.com/vllm-project/vllm/pull/25646) | merged | [Misc] Fix Qwen3-VL `video_grid_thw` typing | `vllm/model_executor/models/qwen3_vl.py` |
 | 2025-09-25 | [#25648](https://github.com/vllm-project/vllm/pull/25648) | merged | [Bugfix] Fix Qwen3-VL max_num_video_tokens calculation for video profiling | `vllm/model_executor/models/qwen3_vl.py`, `vllm/model_executor/models/qwen2_vl.py` |
 | 2025-09-27 | [#25788](https://github.com/vllm-project/vllm/pull/25788) | merged | [Bugfix] Allow Only SDPA Backend for ViT on B200 for Qwen3-VL | `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen3_vl.py` |
+| 2025-09-28 | [#25557](https://github.com/vllm-project/vllm/pull/25557) | merged | [VLM] Update Qwen3-VL max_num_video_tokens calculation for configurable video profiling | `vllm/model_executor/models/qwen3_vl.py`, `vllm/model_executor/models/qwen2_vl.py` |
+| 2025-10-01 | [#26000](https://github.com/vllm-project/vllm/pull/26000) | merged | [MM] Add text-only mode for Qwen3-VL | `vllm/model_executor/models/qwen3_vl.py`, `vllm/model_executor/models/qwen3_vl_moe.py` |
+| 2025-10-01 | [#26004](https://github.com/vllm-project/vllm/pull/26004) | merged | [BugFix][MM] Fix Nonetype error when video is cache in qwen2.5-omni-thinker | `vllm/model_executor/models/qwen2_5_omni_thinker.py` |
 | 2025-10-02 | [#24642](https://github.com/vllm-project/vllm/pull/24642) | merged | [Qwen][ROCm] Flash Attention Rotary Embeddings | `vllm/model_executor/models/qwen2_vl.py` |
 | 2025-10-03 | [#26104](https://github.com/vllm-project/vllm/pull/26104) | merged | [ROCm] [VL] [Bugfix] Fix vit flash attn dispatcher logic for ROCm | `vllm/model_executor/models/ernie45_vl.py`, `vllm/model_executor/models/dots_ocr.py`, `vllm/model_executor/models/qwen2_vl.py` |
 | 2025-10-03 | [#26123](https://github.com/vllm-project/vllm/pull/26123) | merged | [BugFix][QWEN-VL]fix wrong apply_rotary_emb_torch selection introduced by #24642 | `vllm/model_executor/models/qwen2_vl.py` |
+| 2025-10-10 | [#25550](https://github.com/vllm-project/vllm/pull/25550) | merged | Add Qwen3-Omni moe thinker | `vllm/model_executor/models/qwen3_omni_moe_thinker.py` |
+| 2025-10-11 | [#26608](https://github.com/vllm-project/vllm/pull/26608) | merged | [MM] Move Qwen3Omni MRoPE impl to model file | `vllm/model_executor/models/qwen3_omni_moe_thinker.py` |
 | 2025-10-15 | [#26815](https://github.com/vllm-project/vllm/pull/26815) | merged | [Bugfix] Fix qwen3-omni audio truncation issue | `vllm/model_executor/models/qwen3_omni_moe_thinker.py` |
+| 2025-10-17 | [#27104](https://github.com/vllm-project/vllm/pull/27104) | merged | [bugfix] Qwen3-VL fix video incorrect timestamp calculations while do_sample_frames=True | `vllm/model_executor/models/qwen3_vl.py` |
 | 2025-10-26 | [#27190](https://github.com/vllm-project/vllm/pull/27190) | merged | [BUGFIX][ROCM] ViT FlashAttention on ROCm (no GFX9) and contiguous on qwen3vl ROCm TORCH_SDPA | `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py`, `vllm/attention/layer.py` |
 | 2025-10-29 | [#27705](https://github.com/vllm-project/vllm/pull/27705) | merged | [Model] Fix Qwen3VL and Qwen3Omni after torch.compile changes | `vllm/model_executor/models/qwen3_omni_moe_thinker.py`, `vllm/model_executor/models/qwen3_vl.py`, `vllm/model_executor/models/qwen2_5_vl.py` |
 | 2025-10-30 | [#27790](https://github.com/vllm-project/vllm/pull/27790) | merged | [BugFix][VL] Fix FA selection on Qwen2.5-VL | `vllm/model_executor/models/qwen2_5_vl.py` |
+| 2025-11-02 | [#27920](https://github.com/vllm-project/vllm/pull/27920) | merged | [Bugfix] Fix Qwen Omni audio inference | `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py` |
 | 2025-11-12 | [#28271](https://github.com/vllm-project/vllm/pull/28271) | merged | [Refactor] Remove redundant TP gather/split in split_qkv in QwenVL | `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py` |
+| 2025-11-14 | [#28663](https://github.com/vllm-project/vllm/pull/28663) | merged | [Bugfix] resolve Qwen3-VL GPTQModel quantized model loading failure | `vllm/model_executor/models/qwen3_vl.py` |
 | 2025-11-22 | [#29232](https://github.com/vllm-project/vllm/pull/29232) | merged | Fix EVS crash when using `video_embeds` inputs in Qwen2.5-VL | `vllm/model_executor/models/qwen2_5_vl.py` |
 | 2025-11-24 | [#27721](https://github.com/vllm-project/vllm/pull/27721) | merged | [Multimodal][Qwen3 Omni] Make Qwen3 Omni work with audio-in-video inputs in V1 engine. | `tests/model_executor/test_qwen3_omni.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`, `vllm/model_executor/models/qwen2_5_omni_thinker.py` |
 | 2025-12-02 | [#29896](https://github.com/vllm-project/vllm/pull/29896) | merged | feat(model): Add BitsAndBytes quantization support for Qwen3-Omni-MoE | `vllm/model_executor/models/qwen3_omni_moe_thinker.py` |
+| 2025-12-04 | [#29974](https://github.com/vllm-project/vllm/pull/29974) | merged | [ROCm] [Bugfix] [AITER] `compute_attn_mask_seqlen` for qwen3 omni | `vllm/model_executor/models/qwen3_omni_moe_thinker.py` |
+| 2025-12-04 | [#30037](https://github.com/vllm-project/vllm/pull/30037) | merged | support qwen3-vl handle requests with embeddings | `vllm/model_executor/models/qwen3_vl.py` |
+| 2025-12-14 | [#30542](https://github.com/vllm-project/vllm/pull/30542) | merged | [Bugfix] Revert Qwen2-VL part of change in #28271 | `vllm/model_executor/models/qwen2_vl.py` |
 | 2025-12-14 | [#29752](https://github.com/vllm-project/vllm/pull/29752) | merged | [Feature]Add EVS (Efficient Video Sampling) Support for Qwen3-VL | `vllm/model_executor/models/qwen3_vl.py` |
 | 2025-12-18 | [#30883](https://github.com/vllm-project/vllm/pull/30883) | merged | [Chore] Remove v0 dead code for Qwen2.5-omni | `vllm/model_executor/models/qwen2_5_omni_thinker.py` |
+| 2025-12-24 | [#31007](https://github.com/vllm-project/vllm/pull/31007) | merged | [Qwen3-Omni] fixed _get_feat_extract_output_lengths function | `vllm/model_executor/models/qwen3_omni_moe_thinker.py` |
 | 2025-12-31 | [#31436](https://github.com/vllm-project/vllm/pull/31436) | merged | Add GLM-ASR multimodal support | `vllm/model_executor/models/glmasr.py`, `vllm/model_executor/models/glmasr_utils.py` |
 | 2026-01-03 | [#29255](https://github.com/vllm-project/vllm/pull/29255) | merged | Improve HF qwen3_omni: preserve audio_sample_rate in kwargs restructuring | `tests/models/multimodal/processing/test_qwen3_omni.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py` |
 | 2026-01-06 | [#31790](https://github.com/vllm-project/vllm/pull/31790) | merged | [Bugfix]: avoid overriding audio/text kwargs (Qwen3-Omni) | `vllm/model_executor/models/qwen3_omni_moe_thinker.py` |
 | 2026-01-07 | [#31779](https://github.com/vllm-project/vllm/pull/31779) | merged | [Refactor] GLM-ASR Modeling | `vllm/model_executor/models/glmasr.py`, `vllm/model_executor/models/glmasr_utils.py` |
 | 2026-01-08 | [#31890](https://github.com/vllm-project/vllm/pull/31890) | merged | [Models] Allow converting Qwen3-VL into Reranker model | `examples/pooling/score/template/qwen3_vl_reranker.jinja` |
+| 2026-01-13 | [#32126](https://github.com/vllm-project/vllm/pull/32126) | merged | [Model] Use mm_position to compute mrope positions for Qwen2-VL/2.5-VL | `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py` |
+| 2026-01-14 | [#32167](https://github.com/vllm-project/vllm/pull/32167) | merged | [Model] Re-implement Qwen3Omni Audio Encoder | `vllm/model_executor/models/qwen3_omni_moe_thinker.py` |
+| 2026-01-18 | [#32540](https://github.com/vllm-project/vllm/pull/32540) | merged | [Bugfix] Fix GLM-ASR audio encoder RoPE dim | `vllm/model_executor/models/glmasr.py` |
 | 2026-01-25 | [#32772](https://github.com/vllm-project/vllm/pull/32772) | merged | [Model] Use mm_position to compute mrope positions for Qwen2.5-Omni | `vllm/model_executor/models/qwen2_5_omni_thinker.py` |
 | 2026-01-26 | [#33010](https://github.com/vllm-project/vllm/pull/33010) | merged | [Model] Use mm_position to compute mrope positions for Qwen3-Omni | `vllm/model_executor/models/qwen3_omni_moe_thinker.py` |
 | 2026-01-29 | [#33312](https://github.com/vllm-project/vllm/pull/33312) | merged | [Models] Qwen3-ASR | `vllm/model_executor/models/qwen3_asr.py`, `vllm/transformers_utils/configs/qwen3_asr.py`, `vllm/transformers_utils/processors/qwen3_asr.py` |
 | 2026-01-31 | [#33410](https://github.com/vllm-project/vllm/pull/33410) | merged | [Bugfix] Fix `Qwen3ASR` language asr tag in output | `vllm/model_executor/models/qwen3_asr.py` |
+| 2026-02-01 | [#33077](https://github.com/vllm-project/vllm/pull/33077) | merged | [BUGFIX] Fix hipErrorIllegalState in Qwen3-Omni during startup profiling allow inference Omni on ROCM | `vllm/model_executor/models/qwen3_omni_moe_thinker.py` |
+| 2026-02-03 | [#33644](https://github.com/vllm-project/vllm/pull/33644) | merged | [Bugfix] fix qwen3-asr response error | `vllm/model_executor/models/qwen3_asr.py` |
+| 2026-02-04 | [#33605](https://github.com/vllm-project/vllm/pull/33605) | merged | [Bugfix][Model] Fix audio-in-video support for Qwen2.5-Omni and Qwen3-Omni | `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py` |
 | 2026-02-04 | [#29828](https://github.com/vllm-project/vllm/pull/29828) | merged | [Model] Add transcription support for Qwen3-Omni | `vllm/model_executor/models/qwen3_omni_moe_thinker.py` |
+| 2026-02-21 | [#34613](https://github.com/vllm-project/vllm/pull/34613) | merged | [Realtime] Add Qwen3-ASR realtime streaming support | `vllm/model_executor/models/qwen3_asr_realtime.py` |
 | 2026-02-26 | [#35368](https://github.com/vllm-project/vllm/pull/35368) | merged | [Bugfix] Fix Qwen2.5-Omni and Qwen3-Omni mixed-modality embed regression | `tests/models/multimodal/processing/test_qwen2_5_omni_embed.py`, `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py` |
+| 2026-03-02 | [#35741](https://github.com/vllm-project/vllm/pull/35741) | merged | [Bugfix] Fix missing sequence_lengths in qwen3_omni_moe_thinker | `vllm/model_executor/models/qwen3_omni_moe_thinker.py` |
 | 2026-03-04 | [#35869](https://github.com/vllm-project/vllm/pull/35869) | merged | [Bugfix] Add missing dynamic_arg_dims for Qwen3-ASR torch.compile | `vllm/model_executor/models/qwen3_asr_realtime.py` |
 | 2026-03-05 | [#36108](https://github.com/vllm-project/vllm/pull/36108) | merged | refactor funasr model. | `vllm/model_executor/models/qwen3_omni_moe_thinker.py` |
 | 2026-03-05 | [#35994](https://github.com/vllm-project/vllm/pull/35994) | merged | [BUGFIX]Fix Qwen-Omni models audio max_token_per_item estimation error leading to encoder_cache_size is 0 | `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`, `vllm/model_executor/models/qwen2_audio.py` |
+| 2026-03-11 | [#36136](https://github.com/vllm-project/vllm/pull/36136) | merged | [Bugfix] Fix Qwen3-VL timestamp mismatch when using num_frames without fps | `tests/models/multimodal/processing/test_qwen3_vl.py`, `vllm/model_executor/models/qwen3_vl.py` |
+| 2026-03-13 | [#36800](https://github.com/vllm-project/vllm/pull/36800) | merged | [Bugfix] Fix Qwen2.5-omni/Qwen3-omni mm_processor cache for audio_in_video request | `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py` |
+| 2026-03-16 | [#37147](https://github.com/vllm-project/vllm/pull/37147) | merged | [Bugfix] Fix Qwen2.5-Omni/Qwen3-Omni use_audio_in_video with multi-video inputs | `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py` |
+| 2026-03-16 | [#37183](https://github.com/vllm-project/vllm/pull/37183) | merged | Remove unused EVS functions in qwen3_vl.py | `vllm/model_executor/models/qwen3_vl.py` |
 | 2026-03-18 | [#37439](https://github.com/vllm-project/vllm/pull/37439) | merged | [Bugfix] Fix incorrect use of merge_size in Qwen3-VL video timestamp calculation | `vllm/model_executor/models/qwen3_vl.py` |
 | 2026-03-23 | [#35963](https://github.com/vllm-project/vllm/pull/35963) | merged | [Feature] ViT Full CUDA Graph | `vllm/model_executor/models/qwen3_vl.py`, `vllm/model_executor/models/interfaces.py`, `vllm/v1/worker/gpu/mm/encoder_cudagraph.py` |
+| 2026-04-10 | [#37247](https://github.com/vllm-project/vllm/pull/37247) | merged | [Model] Implement LoRA support for Qwen3ASRForConditionalGeneration | `vllm/model_executor/models/qwen3_asr.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py` |
 | 2026-04-14 | [#38061](https://github.com/vllm-project/vllm/pull/38061) | merged | [MM][Perf][CG] Support ViT full CUDA graph for Qwen3-VL video inference | `vllm/model_executor/models/qwen3_vl.py` |
 | 2026-04-18 | [#40160](https://github.com/vllm-project/vllm/pull/40160) | merged | [Bugfix] Fix k_proj's bias for GLM-ASR | `vllm/model_executor/models/glmasr.py` |
 | 2026-04-27 | [#38065](https://github.com/vllm-project/vllm/pull/38065) | merged | [Perf] FP8 FlashInfer Attn for ViT | `vllm/model_executor/layers/attention/mm_encoder_attention.py`, `vllm/model_executor/models/vision.py`, `vllm/config/multimodal.py` |
+| 2026-04-27 | [#40932](https://github.com/vllm-project/vllm/pull/40932) | merged | [Bugfix] Remove invalid deepstack boundary check for Qwen3-VL | `vllm/model_executor/models/qwen3_omni_moe_thinker.py`, `vllm/model_executor/models/qwen3_vl.py` |
 | 2026-04-27 | [#36464](https://github.com/vllm-project/vllm/pull/36464) | merged | [Examples] Resettle generate examples. | `docs/features/multimodal_inputs.md`, `examples/generate/multimodal/qwen2_5_omni/README.md`, `docs/features/reasoning_outputs.md` |
 | 2026-04-27 | [#40967](https://github.com/vllm-project/vllm/pull/40967) | merged | [Model] Add MiMo-V2.5 support | `vllm/model_executor/models/mimo_v2_omni.py`, `vllm/model_executor/models/mimo_audio.py`, `vllm/transformers_utils/processors/mimo_v2_omni.py` |
 | 2026-05-02 | [#40830](https://github.com/vllm-project/vllm/pull/40830) | merged | [MM][CG] Support ViT CG for Qwen2.5-VL | `vllm/model_executor/models/qwen2_5_vl.py`, `tests/models/multimodal/generation/test_qwen2_5_vl.py` |
+| 2026-05-13 | [#42394](https://github.com/vllm-project/vllm/pull/42394) | merged | [Bugfix][Qwen3-VL] Fix pipeline-parallel deepstack initialization | `vllm/model_executor/models/qwen3_vl.py`, `vllm/model_executor/models/qwen3_vl_moe.py` |
 | 2026-05-13 | [#41736](https://github.com/vllm-project/vllm/pull/41736) | merged | [MM][CG] Support ViT CG for Qwen2-VL | `vllm/model_executor/models/qwen2_vl.py` |
 | 2026-05-14 | [#42412](https://github.com/vllm-project/vllm/pull/42412) | merged | [Feature] Add instruction support for score/rerank chat templates | `tests/entrypoints/pooling/scoring/test_cross_encoder_online_vision.py`, `vllm/entrypoints/pooling/scoring/protocol.py`, `vllm/entrypoints/pooling/scoring/io_processor.py` |
 | 2026-05-14 | [#38040](https://github.com/vllm-project/vllm/pull/38040) | merged | [Fix] Misc Fixes in ViT CUDA Graph | `vllm/model_executor/models/qwen3_vl.py`, `tests/v1/cudagraph/test_encoder_cudagraph.py`, `vllm/v1/worker/encoder_cudagraph.py` |
 | 2026-05-17 | [#42716](https://github.com/vllm-project/vllm/pull/42716) | merged | Fix Weight loading for Qwen3.5-MTP and Qwen3-VL using runai_streamer | `vllm/model_executor/models/qwen3_vl_moe.py` |
 | 2026-05-19 | [#42347](https://github.com/vllm-project/vllm/pull/42347) | merged | [Perf][4/n] Eliminate various GPU CPU syncs | `vllm/model_executor/models/utils.py`, `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/granite_speech.py` |
+| 2026-05-23 | [#42787](https://github.com/vllm-project/vllm/pull/42787) | merged | [MM] Enable FlashInfer metadata support for Qwen2.5-VL vision attention | `vllm/model_executor/models/qwen2_5_vl.py` |
 | 2026-05-27 | [#43647](https://github.com/vllm-project/vllm/pull/43647) | merged | [ROCm][CI] Fix ROCm multimodal Qwen2.5-VL activation compile and Phi4MM ragged image mask handling | `vllm/model_executor/models/qwen2_5_vl.py` |
 | 2026-05-27 | [#43617](https://github.com/vllm-project/vllm/pull/43617) | merged | Fix Qwen3-VL and Qwen3-omni-thinker accuracy degradation from deepstack inputs under torch.compile | `vllm/model_executor/models/qwen3_omni_moe_thinker.py`, `vllm/model_executor/models/qwen3_vl.py` |
+| 2026-05-28 | [#42796](https://github.com/vllm-project/vllm/pull/42796) | merged | [MM][CG] Avoid over-padding Qwen2.5-VL encoder cudagraph window metadata | `vllm/model_executor/models/qwen2_5_vl.py` |
 | 2026-06-04 | [#44205](https://github.com/vllm-project/vllm/pull/44205) | merged | [Bugfix] fix EVS for qwen3-vl | `vllm/model_executor/models/qwen3_vl.py` |
 | 2026-06-09 | [#44264](https://github.com/vllm-project/vllm/pull/44264) | merged | [Bugfix][Model] Qwen3-Omni: move cu_seqlens to GPU before VIT attention | `vllm/model_executor/models/qwen3_omni_moe_thinker.py` |
 | 2026-06-10 | [#45131](https://github.com/vllm-project/vllm/pull/45131) | merged | Deprecated 1st generation Qwen and QwenVL models | `vllm/model_executor/models/qwen_vl.py`, `vllm/model_executor/models/qwen.py`, `vllm/tokenizers/qwen_vl.py` |
@@ -125,8 +175,15 @@
 | 2026-06-11 | [#45161](https://github.com/vllm-project/vllm/pull/45161) | merged | Deprecate Transformers v4 support | `vllm/model_executor/models/transformers/base.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`, `vllm/model_executor/model_loader/weight_utils.py` |
 | 2026-06-13 | [#42700](https://github.com/vllm-project/vllm/pull/42700) | merged | [Bugfix] Replace deprecated Qwen2VLImageProcessorFast with Qwen2VLImageProcessor | `vllm/model_executor/models/qwen3_vl.py` |
 | 2026-06-16 | [#43586](https://github.com/vllm-project/vllm/pull/43586) | merged | [MM][Perf][CG] Support dual-path ViT full CUDA graph for DeepSeek-OCR | `vllm/model_executor/models/deepseek_ocr.py`, `docs/design/cuda_graphs_multimodal.md`, `tests/models/multimodal/generation/test_vit_cudagraph.py` |
+| 2026-06-20 | [#46026](https://github.com/vllm-project/vllm/pull/46026) | merged | [Perf] Optimize Qwen3-VL multi-video prompt processing | `vllm/model_executor/models/qwen3_vl.py`, `tests/models/multimodal/processing/test_qwen3_vl.py` |
 | 2026-06-21 | [#45424](https://github.com/vllm-project/vllm/pull/45424) | merged | [Core] Ensure memory is pinned prior to async h2d copy | `vllm/model_executor/layers/attention/mla_attention.py`, `vllm/model_executor/layers/pooler/seqwise/methods.py`, `vllm/multimodal/inputs.py` |
 | 2026-06-21 | [#46305](https://github.com/vllm-project/vllm/pull/46305) | merged | [Bugfix][Qwen3-VL] Fix multi-video crash with list-valued fps/num_frames | `tests/models/multimodal/processing/test_qwen3_vl.py`, `vllm/model_executor/models/qwen3_vl.py` |
+| 2026-07-09 | [#42478](https://github.com/vllm-project/vllm/pull/42478) | merged | [Bugfix] Fix Qwen3-ASR transcription streaming postprocessing | `vllm/model_executor/models/qwen3_asr.py` |
+| 2026-07-11 | [#43117](https://github.com/vllm-project/vllm/pull/43117) | merged | fix(processor): route MiMo-V2-Omni media fetch through MediaConnector | `vllm/transformers_utils/processors/mimo_v2_omni.py` |
+| 2026-07-12 | [#48072](https://github.com/vllm-project/vllm/pull/48072) | merged | [CI][CPU] Add Qwen2-VL multimodal tests for CPU backend and fix incompatibilities | `tests/models/multimodal/generation/test_qwen2_5_vl.py` |
+| 2026-07-13 | [#44863](https://github.com/vllm-project/vllm/pull/44863) | merged | [BugFix] Initialize model_config for Qwen3-VL MoE | `vllm/model_executor/models/qwen3_vl_moe.py` |
+| 2026-07-17 | [#46213](https://github.com/vllm-project/vllm/pull/46213) | merged | [Bugfix][Multimodal] Fix Qwen3-Omni use_audio_in_video with mixed image/video inputs | `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `tests/models/multimodal/processing/test_qwen2_5_omni_embed.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py` |
+| 2026-07-18 | [#49015](https://github.com/vllm-project/vllm/pull/49015) | merged | [Bugfix] Qwen3-VL/Qwen-Omni: honor max_pixels/min_pixels for video prompts | `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen3_vl.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -183,6 +240,33 @@ diff -- vllm/model_executor/models/qwen2_vl.py
 - 已读文件:
   - runtime: `vllm/model_executor/models/qwen2_vl.py` modified +6/-0
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #8696 - [Model] Support pp for qwen2-vl
+
+- 链接: https://github.com/vllm-project/vllm/pull/8696
+- 状态/时间: merged / 2024-09-23
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen2_vl.py`；关联提交 `a79e5229843e`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+46/-14，可读 patch 162 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Model] Support pp for qwen2-vl」；模型线: Qwen VLM/Omni/ASR；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/qwen2_vl.py`；技术摘要: 覆盖「[Model] Support pp for qwen2-vl」；主要实现面是 `vllm/model_executor/models/qwen2_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_vl.py` modified +22/-7 (29 lines); hunks: -45,7 +45,7; -68,6 +68,9; symbols: __init__, _validate_and_reshape_mm_tensor, forward, load_weights，涉及 `__init__, _validate_and_reshape_mm_tensor, forward`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen2_vl.py` modified +22/-7 (29 lines); hunks: -45,7 +45,7; -68,6 +68,9; symbols: __init__, _validate_and_reshape_mm_tensor, forward, load_weights
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_vl.py
+@@ -45,7 +45,7 @@
+-from vllm.distributed import parallel_state
++from vllm.distributed import get_pp_group, parallel_state
+@@ -68,6 +68,9 @@
++from .utils import (PPMissingLayer, is_pp_missing_parameter,
++                    make_empty_intermediate_tensors_factory)
+@@ -856,15 +859,21 @@ def __init__(self,
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen2_vl.py` modified +22/-7
+- 验证与风险: diff 自带测试面 `tests/distributed/test_pipeline_parallel.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #8770 - [Hardware][CPU] Enable mrope and support Qwen2-VL on CPU backend
 
@@ -265,6 +349,137 @@ diff -- vllm/model_executor/models/qwen2_vl.py
   - runtime: `vllm/model_executor/models/qwen2_vl.py` modified +4/-4
 - 验证与风险: diff 自带测试面 `tests/kernels/test_pos_encoding.py`, `tests/lora/test_layers.py`, `tests/test_config.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
+### PR #10112 - [Bugfix] Make image processor respect `mm_processor_kwargs` for Qwen2-VL
+
+- 链接: https://github.com/vllm-project/vllm/pull/10112
+- 状态/时间: merged / 2024-11-07
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen2_vl.py`；关联提交 `999df95b4eef`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+23/-10，可读 patch 68 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] Make image processor respect `mm_processor_kwargs` for Qwen2-VL」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen2_vl.py`；技术摘要: 覆盖「[Bugfix] Make image processor respect `mm_processor_kwargs` for Qwen2-VL」；主要实现面是 `vllm/model_executor/models/qwen2_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_vl.py` modified +23/-10 (33 lines); hunks: -22,8 +22,8; -558,6 +558,17 @@ def forward(; symbols: forward, get_mm_processor_kwargs, mm_input_mapper_for_qwen2_vl, get_max_qwen2_vl_mm_tokens，涉及 `forward, get_mm_processor_kwargs, mm_input_mapper_for_qwen2_vl`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen2_vl.py` modified +23/-10 (33 lines); hunks: -22,8 +22,8; -558,6 +558,17 @@ def forward(; symbols: forward, get_mm_processor_kwargs, mm_input_mapper_for_qwen2_vl, get_max_qwen2_vl_mm_tokens
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_vl.py
+@@ -22,8 +22,8 @@
+-from typing import (Any, Callable, Iterable, List, Literal, Mapping, Optional,
+-                    Tuple, Type, TypedDict, Union)
++from typing import (Any, Callable, Dict, Iterable, List, Literal, Mapping,
++                    Optional, Tuple, Type, TypedDict, Union)
+@@ -558,6 +558,17 @@ def forward(
++def get_mm_processor_kwargs(
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen2_vl.py` modified +23/-10
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #10169 - [Bugfix] Ignore GPTQ quantization of Qwen2-VL visual module
+
+- 链接: https://github.com/vllm-project/vllm/pull/10169
+- 状态/时间: merged / 2024-11-09
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen2_vl.py`；关联提交 `f83feccd7f66`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+12/-2，可读 patch 35 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] Ignore GPTQ quantization of Qwen2-VL visual module」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen2_vl.py`；技术摘要: 覆盖「[Bugfix] Ignore GPTQ quantization of Qwen2-VL visual module」；主要实现面是 `vllm/model_executor/models/qwen2_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_vl.py` modified +12/-2 (14 lines); hunks: -51,7 +51,9; -982,7 +984,7 @@ def __init__(self,; symbols: __init__, _maybe_ignore_quant_config, _validate_and_reshape_mm_tensor，涉及 `__init__, _maybe_ignore_quant_config, _validate_and_reshape_mm_tensor`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen2_vl.py` modified +12/-2 (14 lines); hunks: -51,7 +51,9; -982,7 +984,7 @@ def __init__(self,; symbols: __init__, _maybe_ignore_quant_config, _validate_and_reshape_mm_tensor
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_vl.py
+@@ -51,7 +51,9 @@
+-from vllm.model_executor.layers.quantization import QuantizationConfig
++from vllm.model_executor.layers.quantization import (GPTQConfig,
++                                                     GPTQMarlinConfig,
++                                                     QuantizationConfig)
+@@ -982,7 +984,7 @@ def __init__(self,
+-            quant_config=quant_config,
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen2_vl.py` modified +12/-2
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #10221 - [Model] Add support for Qwen2-VL video embeddings input & multiple image embeddings input with varied resolutions
+
+- 链接: https://github.com/vllm-project/vllm/pull/10221
+- 状态/时间: merged / 2024-11-13
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen2_vl.py`；关联提交 `3945c82346da`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+578/-32，可读 patch 709 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Model] Add support for Qwen2-VL video embeddings input & multiple image embeddings input with varied resolutions」；模型线: Qwen VLM/Omni/ASR；类别: 文档/测试/CI；主要 diff: `tests/models/decoder_only/vision_language/test_qwen2_vl.py`, `vllm/model_executor/models/qwen2_vl.py`；技术摘要: 覆盖「[Model] Add support for Qwen2-VL video embeddings input & multiple image embeddings input with varied resolutions」；主要实现面是 `tests/models/decoder_only/vision_language/test_qwen2_vl.py`, `vllm/model_executor/models/qwen2_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `tests/models/decoder_only/vision_language/test_qwen2_vl.py` added +428/-0 (428 lines); hunks: -0,0 +1,428; symbols: qwen2_vl_chat_template, Qwen2VLPromptImageEmbeddingInput, Qwen2VLPromptVideoEmbeddingInput, batch_make_image_embeddings，涉及 `qwen2_vl_chat_template, Qwen2VLPromptImageEmbeddingInput, Qwen2VLPromptVideoEmbeddingInput`；`vllm/model_executor/models/qwen2_vl.py` modified +149/-31 (180 lines); hunks: -79,7 +79,7; -92,17 +92,31 @@ class Qwen2VLImagePixelInputs(TypedDict):; symbols: Qwen2VLImagePixelInputs, Qwen2VLImageEmbeddingInputs, Qwen2VLVideoInputs, Qwen2VLVideoPixelInputs，涉及 `Qwen2VLImagePixelInputs, Qwen2VLImageEmbeddingInputs, Qwen2VLVideoInputs`。
+- 代码 diff 细节:
+  - `tests/models/decoder_only/vision_language/test_qwen2_vl.py` added +428/-0 (428 lines); hunks: -0,0 +1,428; symbols: qwen2_vl_chat_template, Qwen2VLPromptImageEmbeddingInput, Qwen2VLPromptVideoEmbeddingInput, batch_make_image_embeddings
+  - `vllm/model_executor/models/qwen2_vl.py` modified +149/-31 (180 lines); hunks: -79,7 +79,7; -92,17 +92,31 @@ class Qwen2VLImagePixelInputs(TypedDict):; symbols: Qwen2VLImagePixelInputs, Qwen2VLImageEmbeddingInputs, Qwen2VLVideoInputs, Qwen2VLVideoPixelInputs
+- 关键代码摘录:
+
+```diff
+diff -- tests/models/decoder_only/vision_language/test_qwen2_vl.py
+@@ -0,0 +1,428 @@
++from typing import Any, List, Optional, Tuple, Type, TypedDict, Union
++import numpy.typing as npt
++import pytest
++import torch
++from PIL import Image
++from vllm.entrypoints.llm import LLM
+diff -- vllm/model_executor/models/qwen2_vl.py
+@@ -79,7 +79,7 @@
+-    data: torch.Tensor
++    pixel_values: torch.Tensor
+@@ -92,17 +92,31 @@ class Qwen2VLImagePixelInputs(TypedDict):
+-    data: torch.Tensor
+-    """Shape: `(batch_size * num_images, image_feature_size, hidden_size)`
+-    `hidden_size` must match the hidden size of language model backbone.
+```
+
+- 已读文件:
+  - tests: `tests/models/decoder_only/vision_language/test_qwen2_vl.py` added +428/-0
+  - runtime: `vllm/model_executor/models/qwen2_vl.py` modified +149/-31
+- 验证与风险: diff 自带测试面 `tests/models/decoder_only/vision_language/test_qwen2_vl.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #11258 - [Model] Refactor Qwen2-VL to use merged multimodal processor
+
+- 链接: https://github.com/vllm-project/vllm/pull/11258
+- 状态/时间: merged / 2024-12-19
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen2_audio.py`, `vllm/model_executor/models/qwen2_vl.py`；关联提交 `e24113a8fe5d`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+277/-527，可读 patch 1006 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Model] Refactor Qwen2-VL to use merged multimodal processor」；模型线: Qwen VLM/Omni/ASR；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/qwen2_vl.py`, `tests/models/decoder_only/vision_language/mm_processor_kwargs/test_qwen2_vl.py`, `vllm/model_executor/models/qwen2_audio.py`；技术摘要: 覆盖「[Model] Refactor Qwen2-VL to use merged multimodal processor」；主要实现面是 `vllm/model_executor/models/qwen2_vl.py`, `tests/models/decoder_only/vision_language/mm_processor_kwargs/test_qwen2_vl.py`, `vllm/model_executor/models/qwen2_audio.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_vl.py` modified +187/-393 (580 lines); hunks: -22,28 +22,26; -56,14 +54,14; symbols: Qwen2VisionMLP, __init__, load_weights, get_mm_processor_kwargs，涉及 `Qwen2VisionMLP, __init__, load_weights`；`tests/models/decoder_only/vision_language/mm_processor_kwargs/test_qwen2_vl.py` modified +65/-127 (192 lines); hunks: -1,12 +1,9; -20,22 +17,9; symbols: image_input_mapper_for_qwen2_vl, input_processor_for_qwen2_vl, qwen2_vl_context, processor_for_qwen2_vl，涉及 `image_input_mapper_for_qwen2_vl, input_processor_for_qwen2_vl, qwen2_vl_context`；`vllm/model_executor/models/qwen2_audio.py` modified +3/-1 (4 lines); hunks: -164,7 +164,9 @@ def _get_dummy_mm_inputs(; symbols: _get_dummy_mm_inputs，涉及 `_get_dummy_mm_inputs`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen2_vl.py` modified +187/-393 (580 lines); hunks: -22,28 +22,26; -56,14 +54,14; symbols: Qwen2VisionMLP, __init__, load_weights, get_mm_processor_kwargs
+  - `tests/models/decoder_only/vision_language/mm_processor_kwargs/test_qwen2_vl.py` modified +65/-127 (192 lines); hunks: -1,12 +1,9; -20,22 +17,9; symbols: image_input_mapper_for_qwen2_vl, input_processor_for_qwen2_vl, qwen2_vl_context, processor_for_qwen2_vl
+  - `vllm/model_executor/models/qwen2_audio.py` modified +3/-1 (4 lines); hunks: -164,7 +164,9 @@ def _get_dummy_mm_inputs(; symbols: _get_dummy_mm_inputs
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_vl.py
+@@ -22,28 +22,26 @@
+-from typing import (Any, Callable, Dict, Iterable, List, Literal, Mapping,
+-                    Optional, Set, Tuple, Type, TypedDict, Union)
++from typing import (Any, Iterable, List, Literal, Mapping, Optional, Set,
++                    Tuple, Type, TypedDict, Union)
+-from transformers.image_utils import (get_image_size,
+-                                      infer_channel_dimension_format,
+diff -- tests/models/decoder_only/vision_language/mm_processor_kwargs/test_qwen2_vl.py
+@@ -1,12 +1,9 @@
+-import torch
+-from PIL.Image import Image
+-from vllm.inputs import InputContext, token_inputs
+-from vllm.multimodal import MultiModalRegistry
++from vllm.inputs import InputContext, InputProcessingContext
+@@ -20,22 +17,9 @@
+diff -- vllm/model_executor/models/qwen2_audio.py
+@@ -164,7 +164,9 @@ def _get_dummy_mm_inputs(
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen2_vl.py` modified +187/-393; `vllm/model_executor/models/qwen2_audio.py` modified +3/-1
+  - tests: `tests/models/decoder_only/vision_language/mm_processor_kwargs/test_qwen2_vl.py` modified +65/-127
+- 验证与风险: diff 自带测试面 `tests/models/decoder_only/vision_language/mm_processor_kwargs/test_qwen2_vl.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
 ### PR #11430 - [Bugfix] Fix Qwen2-VL LoRA weight loading
 
 - 链接: https://github.com/vllm-project/vllm/pull/11430
@@ -292,6 +507,70 @@ diff -- vllm/model_executor/models/qwen2_vl.py
   - runtime: `vllm/model_executor/models/qwen2_vl.py` modified +6/-6
 - 验证与风险: diff 自带测试面 `tests/lora/conftest.py`, `tests/lora/test_lora_checkpoints.py`, `tests/lora/test_qwen2vl.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
+### PR #11663 - [Misc] Optimize Qwen2-VL LoRA test
+
+- 链接: https://github.com/vllm-project/vllm/pull/11663
+- 状态/时间: merged / 2025-01-01
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen2_vl.py`；关联提交 `11d8a091c6c7`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+21/-4，可读 patch 67 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Misc] Optimize Qwen2-VL LoRA test」；模型线: Qwen VLM/Omni/ASR；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen2_vl.py`；技术摘要: 覆盖「[Misc] Optimize Qwen2-VL LoRA test」；主要实现面是 `vllm/model_executor/models/qwen2_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_vl.py` modified +19/-1 (20 lines); hunks: -53,6 +53,7; -925,15 +926,23 @@ class Qwen2VLForConditionalGeneration(nn.Module, SupportsM...; symbols: Qwen2VLForConditionalGeneration, load_weights, get_mm_mapping，涉及 `Qwen2VLForConditionalGeneration, load_weights, get_mm_mapping`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen2_vl.py` modified +19/-1 (20 lines); hunks: -53,6 +53,7; -925,15 +926,23 @@ class Qwen2VLForConditionalGeneration(nn.Module, SupportsM...; symbols: Qwen2VLForConditionalGeneration, load_weights, get_mm_mapping
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_vl.py
+@@ -53,6 +53,7 @@
++from vllm.model_executor.models.module_mapping import MultiModelKeys
+@@ -925,15 +926,23 @@ class Qwen2VLForConditionalGeneration(nn.Module, SupportsMultiModal,
+-    # TODO Support LoRA for the visual encoder in the future.
++        # vision tower
++        "qkv",
++        "attn.proj",  # Distinguish patch_embed.proj
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen2_vl.py` modified +19/-1
+- 验证与风险: diff 自带测试面 `tests/lora/test_qwen2vl.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #12128 - [V1] Add V1 support of Qwen2-VL
+
+- 链接: https://github.com/vllm-project/vllm/pull/12128
+- 状态/时间: merged / 2025-01-19
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen2_vl.py`；关联提交 `81763c58a01e`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 9 个文件，+292/-85，可读 patch 616 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[V1] Add V1 support of Qwen2-VL」；模型线: Qwen VLM/Omni/ASR；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/qwen2_vl.py`, `tests/models/decoder_only/vision_language/test_qwen2_vl.py`；技术摘要: 覆盖「[V1] Add V1 support of Qwen2-VL」；主要实现面是 `vllm/model_executor/models/qwen2_vl.py`, `tests/models/decoder_only/vision_language/test_qwen2_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_vl.py` modified +78/-64 (142 lines); hunks: -67,11 +67,15; -135,7 +139,7 @@ class Qwen2VLVideoEmbeddingInputs(TypedDict):; symbols: Qwen2VLVideoEmbeddingInputs, forward, load_weights, get_num_frames_with_most_features，涉及 `Qwen2VLVideoEmbeddingInputs, forward, load_weights`；`tests/models/decoder_only/vision_language/test_qwen2_vl.py` modified +8/-10 (18 lines); hunks: -105,7 +105,7 @@ def batch_make_image_embeddings(; -124,11 +124,10 @@ def batch_make_image_embeddings(; symbols: batch_make_image_embeddings, batch_make_video_embeddings，涉及 `batch_make_image_embeddings, batch_make_video_embeddings`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen2_vl.py` modified +78/-64 (142 lines); hunks: -67,11 +67,15; -135,7 +139,7 @@ class Qwen2VLVideoEmbeddingInputs(TypedDict):; symbols: Qwen2VLVideoEmbeddingInputs, forward, load_weights, get_num_frames_with_most_features
+  - `tests/models/decoder_only/vision_language/test_qwen2_vl.py` modified +8/-10 (18 lines); hunks: -105,7 +105,7 @@ def batch_make_image_embeddings(; -124,11 +124,10 @@ def batch_make_image_embeddings(; symbols: batch_make_image_embeddings, batch_make_video_embeddings
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_vl.py
+@@ -67,11 +67,15 @@
+-                    init_vllm_registered_model, maybe_prefix)
++                    init_vllm_registered_model, maybe_prefix,
++                    merge_multimodal_embeddings)
++# For profile run
++_MAX_FRAMES_PER_VIDEO = 16
+@@ -135,7 +139,7 @@ class Qwen2VLVideoEmbeddingInputs(TypedDict):
+diff -- tests/models/decoder_only/vision_language/test_qwen2_vl.py
+@@ -105,7 +105,7 @@ def batch_make_image_embeddings(
+-    # pixel values to embeddinds & grid_thws
++    # pixel values to embeddings & grid_thws
+@@ -124,11 +124,10 @@ def batch_make_image_embeddings(
+-        cur_batch_embed_len = sum([
+-            grid_thw.prod() // merge_size // merge_size
++        cur_batch_embed_len = sum(
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen2_vl.py` modified +78/-64
+  - tests: `tests/models/decoder_only/vision_language/test_qwen2_vl.py` modified +8/-10
+- 验证与风险: diff 自带测试面 `tests/models/decoder_only/vision_language/test_qwen2_vl.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
 ### PR #12944 - [Misc] Add qwen2.5-vl BNB support
 
 - 链接: https://github.com/vllm-project/vllm/pull/12944
@@ -318,6 +597,104 @@ diff -- vllm/model_executor/models/qwen2_5_vl.py
 - 已读文件:
   - runtime: `vllm/model_executor/models/qwen2_5_vl.py` modified +29/-30
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_5_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #13148 - [Bugfix] Fix num video tokens calculation for Qwen2-VL
+
+- 链接: https://github.com/vllm-project/vllm/pull/13148
+- 状态/时间: merged / 2025-02-12
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen2_vl.py`；关联提交 `985b4a2b1989`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+5/-1，可读 patch 13 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] Fix num video tokens calculation for Qwen2-VL」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen2_vl.py`；技术摘要: 覆盖「[Bugfix] Fix num video tokens calculation for Qwen2-VL」；主要实现面是 `vllm/model_executor/models/qwen2_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_vl.py` modified +5/-1 (6 lines); hunks: -800,7 +800,11 @@ def _get_vision_info(; symbols: _get_vision_info，涉及 `_get_vision_info`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen2_vl.py` modified +5/-1 (6 lines); hunks: -800,7 +800,11 @@ def _get_vision_info(; symbols: _get_vision_info
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_vl.py
+@@ -800,7 +800,11 @@ def _get_vision_info(
+-        grid_t = max(num_frames // temporal_patch_size, 1)
++        # NOTE: Frames are padded to be divisible by `temporal_patch_size`
++        # https://github.com/huggingface/transformers/blob/v4.48.3/src/transformers/models/qwen2_vl/image_processing_qwen2_vl.py#L294
++        padded_num_frames = num_frames + num_frames % temporal_patch_size
++        grid_t = max(padded_num_frames // temporal_patch_size, 1)
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen2_vl.py` modified +5/-1
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #13155 - [Misc] Qwen2.5-VL Optimization
+
+- 链接: https://github.com/vllm-project/vllm/pull/13155
+- 状态/时间: merged / 2025-02-13
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py`；关联提交 `02ed8a1fbe41`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+47/-51，可读 patch 152 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Misc] Qwen2.5-VL Optimization」；模型线: Qwen VLM/Omni/ASR；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py`；技术摘要: 覆盖「[Misc] Qwen2.5-VL Optimization」；主要实现面是 `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_5_vl.py` modified +25/-36 (61 lines); hunks: -45,6 +45,7; -271,8 +272,13 @@ def forward(; symbols: forward, Qwen2RMSNorm, __init__，涉及 `forward, Qwen2RMSNorm, __init__`；`vllm/model_executor/models/qwen2_vl.py` modified +22/-15 (37 lines); hunks: -226,11 +226,15 @@ def apply_rotary_emb_torch(x: torch.Tensor,; -336,20 +340,23 @@ def forward(; symbols: apply_rotary_emb_torch, apply_rotary_pos_emb_vision, forward，涉及 `apply_rotary_emb_torch, apply_rotary_pos_emb_vision, forward`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen2_5_vl.py` modified +25/-36 (61 lines); hunks: -45,6 +45,7; -271,8 +272,13 @@ def forward(; symbols: forward, Qwen2RMSNorm, __init__
+  - `vllm/model_executor/models/qwen2_vl.py` modified +22/-15 (37 lines); hunks: -226,11 +226,15 @@ def apply_rotary_emb_torch(x: torch.Tensor,; -336,20 +340,23 @@ def forward(; symbols: apply_rotary_emb_torch, apply_rotary_pos_emb_vision, forward
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_5_vl.py
+@@ -45,6 +45,7 @@
++from vllm.model_executor.layers.layernorm import RMSNorm
+@@ -271,8 +272,13 @@ def forward(
+-            q = apply_rotary_pos_emb_vision(q, rotary_pos_emb)
+-            k = apply_rotary_pos_emb_vision(k, rotary_pos_emb)
++            use_flash_attn = self.attn_backend == _Backend.FLASH_ATTN
++            q = apply_rotary_pos_emb_vision(q,
+diff -- vllm/model_executor/models/qwen2_vl.py
+@@ -226,11 +226,15 @@ def apply_rotary_emb_torch(x: torch.Tensor,
+-                                freqs: torch.Tensor) -> torch.Tensor:
++                                freqs: torch.Tensor,
++                                use_flash_attn=False) -> torch.Tensor:
+-    output = apply_rotary_emb_torch(t_, cos, sin).type_as(t)
++    apply_rotary_emb = apply_rotary_emb_torch
++    if use_flash_attn:
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen2_5_vl.py` modified +25/-36; `vllm/model_executor/models/qwen2_vl.py` modified +22/-15
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #13286 - [Bugfix] Fix qwen2.5-vl image processor
+
+- 链接: https://github.com/vllm-project/vllm/pull/13286
+- 状态/时间: merged / 2025-02-15
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py`；关联提交 `7fdaaf48ef2a`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+17/-6，可读 patch 67 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] Fix qwen2.5-vl image processor」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py`；技术摘要: 覆盖「[Bugfix] Fix qwen2.5-vl image processor」；主要实现面是 `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_5_vl.py` modified +8/-5 (13 lines); hunks: -33,10 +33,11; -693,7 +694,8 @@ def get_hf_processor(; symbols: get_hf_processor, get_image_processor，涉及 `get_hf_processor, get_image_processor`；`vllm/model_executor/models/qwen2_vl.py` modified +9/-1 (10 lines); hunks: -31,7 +31,9; -759,7 +761,13 @@ def get_image_processor(; symbols: get_image_processor, get_supported_mm_limits，涉及 `get_image_processor, get_supported_mm_limits`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen2_5_vl.py` modified +8/-5 (13 lines); hunks: -33,10 +33,11; -693,7 +694,8 @@ def get_hf_processor(; symbols: get_hf_processor, get_image_processor
+  - `vllm/model_executor/models/qwen2_vl.py` modified +9/-1 (10 lines); hunks: -31,7 +31,9; -759,7 +761,13 @@ def get_image_processor(; symbols: get_image_processor, get_supported_mm_limits
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_5_vl.py
+@@ -33,10 +33,11 @@
+-from transformers.models.qwen2_5_vl import (Qwen2_5_VLImageProcessor,
+-                                            Qwen2_5_VLProcessor)
++from transformers.models.qwen2_5_vl import Qwen2_5_VLProcessor
++from transformers.models.qwen2_vl import (Qwen2VLImageProcessor,
++                                          Qwen2VLImageProcessorFast)
+@@ -693,7 +694,8 @@ def get_hf_processor(
+diff -- vllm/model_executor/models/qwen2_vl.py
+@@ -31,7 +31,9 @@
++from packaging.version import Version
++from transformers import __version__ as TRANSFORMERS_VERSION
+@@ -759,7 +761,13 @@ def get_image_processor(
+-        assert isinstance(image_processor, Qwen2VLImageProcessor)
++        if Version(TRANSFORMERS_VERSION) >= Version("4.49"):
++            from transformers.models.qwen2_vl import Qwen2VLImageProcessorFast
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen2_5_vl.py` modified +8/-5; `vllm/model_executor/models/qwen2_vl.py` modified +9/-1
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #13533 - [Misc] add mm_processor_kwargs to extra_body for Qwen2.5-VL
 
@@ -405,6 +782,129 @@ diff -- vllm/model_executor/models/qwen2_5_vl.py
   - runtime: `vllm/model_executor/models/qwen2_vl.py` modified +37/-12; `vllm/model_executor/models/qwen2_5_vl.py` modified +33/-12
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
+### PR #15200 - [Bugfix] Fix incorrect qwen2.5-vl attention mask pre-computation
+
+- 链接: https://github.com/vllm-project/vllm/pull/15200
+- 状态/时间: merged / 2025-03-21
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen2_5_vl.py`；关联提交 `1e508343e1ec`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+37/-4，可读 patch 72 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] Fix incorrect qwen2.5-vl attention mask pre-computation」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen2_5_vl.py`；技术摘要: 覆盖「[Bugfix] Fix incorrect qwen2.5-vl attention mask pre-computation」；主要实现面是 `vllm/model_executor/models/qwen2_5_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_5_vl.py` modified +6/-4 (10 lines); hunks: -647,15 +647,17 @@ def forward(; symbols: forward，涉及 `forward`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen2_5_vl.py` modified +6/-4 (10 lines); hunks: -647,15 +647,17 @@ def forward(; symbols: forward
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_5_vl.py
+@@ -647,15 +647,17 @@ def forward(
+-        if self.attn_backend == _Backend.FLASH_ATTN:
+-            max_seqlen = (cu_seqlens[1:] - cu_seqlens[:-1]).max().item()
+-        elif self.attn_backend == _Backend.XFORMERS:
+-            seqlens = (cu_seqlens[1:] - cu_seqlens[:-1]).tolist()
++            # pre-compute cu_seqlens for window attn
++            if self.attn_backend == _Backend.FLASH_ATTN:
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen2_5_vl.py` modified +6/-4
+- 验证与风险: diff 自带测试面 `tests/models/decoder_only/vision_language/test_models.py`, `tests/models/decoder_only/vision_language/vlm_utils/custom_inputs.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #15273 - [Misc] Add attention mask pre-computation optimization back to Qwen2.5-VL
+
+- 链接: https://github.com/vllm-project/vllm/pull/15273
+- 状态/时间: merged / 2025-03-21
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py`；关联提交 `47c712621316`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+35/-16，可读 patch 88 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Misc] Add attention mask pre-computation optimization back to Qwen2.5-VL」；模型线: Qwen VLM/Omni/ASR；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py`；技术摘要: 覆盖「[Misc] Add attention mask pre-computation optimization back to Qwen2.5-VL」；主要实现面是 `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_5_vl.py` modified +23/-10 (33 lines); hunks: -608,6 +608,17 @@ def get_window_index(self, grid_thw):; -645,25 +656,27 @@ def forward(; symbols: get_window_index, compute_attn_mask_seqlen, forward，涉及 `get_window_index, compute_attn_mask_seqlen, forward`；`vllm/model_executor/models/qwen2_vl.py` modified +12/-6 (18 lines); hunks: -617,6 +617,16 @@ def rot_pos_emb(self, grid_thw: torch.Tensor) -> torch.Tensor:; -638,12 +648,8 @@ def forward(; symbols: rot_pos_emb, compute_attn_mask_seqlen, forward，涉及 `rot_pos_emb, compute_attn_mask_seqlen, forward`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen2_5_vl.py` modified +23/-10 (33 lines); hunks: -608,6 +608,17 @@ def get_window_index(self, grid_thw):; -645,25 +656,27 @@ def forward(; symbols: get_window_index, compute_attn_mask_seqlen, forward
+  - `vllm/model_executor/models/qwen2_vl.py` modified +12/-6 (18 lines); hunks: -617,6 +617,16 @@ def rot_pos_emb(self, grid_thw: torch.Tensor) -> torch.Tensor:; -638,12 +648,8 @@ def forward(; symbols: rot_pos_emb, compute_attn_mask_seqlen, forward
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_5_vl.py
+@@ -608,6 +608,17 @@ def get_window_index(self, grid_thw):
++    def compute_attn_mask_seqlen(
++        self,
++        cu_seqlens: torch.Tensor,
++    ) -> tuple[Optional[int], Optional[list[int]]]:
++        max_seqlen, seqlens = None, None
++        if self.attn_backend == _Backend.FLASH_ATTN:
+diff -- vllm/model_executor/models/qwen2_vl.py
+@@ -617,6 +617,16 @@ def rot_pos_emb(self, grid_thw: torch.Tensor) -> torch.Tensor:
++    def compute_attn_mask_seqlen(
++            self, cu_seqlens: torch.Tensor
++    ) -> tuple[Optional[int], Optional[list[int]]]:
++        max_seqlen, seqlens = None, None
++        if self.attn_backend == _Backend.FLASH_ATTN:
++            max_seqlen = (cu_seqlens[1:] - cu_seqlens[:-1]).max().item()
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen2_5_vl.py` modified +23/-10; `vllm/model_executor/models/qwen2_vl.py` modified +12/-6
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #15130 - [Model][VLM] Add Qwen2.5-Omni model support (thinker only)
+
+- 链接: https://github.com/vllm-project/vllm/pull/15130
+- 状态/时间: merged / 2025-04-19
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen2_5_vl.py`；关联提交 `2c1bd848a668`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 23 个文件，+1852/-82，可读 patch 2363 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Model][VLM] Add Qwen2.5-Omni model support (thinker only)」；模型线: Qwen VLM/Omni/ASR；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen2_5_vl.py`；技术摘要: 覆盖「[Model][VLM] Add Qwen2.5-Omni model support (thinker only)」；主要实现面是 `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen2_5_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_5_omni_thinker.py` added +977/-0 (977 lines); hunks: -0,0 +1,977; symbols: _qwen2_5_omni_thinker_field_config, Qwen2_5OmniThinkerMultiModalDataParser, _parse_audio_data, Qwen2_5OmniThinkerProcessingInfo，涉及 `_qwen2_5_omni_thinker_field_config, Qwen2_5OmniThinkerMultiModalDataParser, _parse_audio_data`；`vllm/model_executor/models/qwen2_5_vl.py` modified +51/-28 (79 lines); hunks: -38,13 +38,14; -195,6 +196,23 @@ def forward(self, x: torch.Tensor):; symbols: forward, all_gather_interleave, Qwen2_5_VisionAttention, __init__，涉及 `forward, all_gather_interleave, Qwen2_5_VisionAttention`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen2_5_omni_thinker.py` added +977/-0 (977 lines); hunks: -0,0 +1,977; symbols: _qwen2_5_omni_thinker_field_config, Qwen2_5OmniThinkerMultiModalDataParser, _parse_audio_data, Qwen2_5OmniThinkerProcessingInfo
+  - `vllm/model_executor/models/qwen2_5_vl.py` modified +51/-28 (79 lines); hunks: -38,13 +38,14; -195,6 +196,23 @@ def forward(self, x: torch.Tensor):; symbols: forward, all_gather_interleave, Qwen2_5_VisionAttention, __init__
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_5_omni_thinker.py
+@@ -0,0 +1,977 @@
++# SPDX-License-Identifier: Apache-2.0
++# Copyright 2024 The Qwen team.
++# Copyright 2023 The vLLM team.
++# Copyright 2022 EleutherAI and the HuggingFace Inc. team. All rights reserved.
++#
++# This code is based on EleutherAI's GPT-NeoX library and the GPT-NeoX
+diff -- vllm/model_executor/models/qwen2_5_vl.py
+@@ -38,13 +38,14 @@
+-from vllm.distributed import parallel_state, tensor_model_parallel_all_gather
++from vllm.distributed import parallel_state
++                                               QKVParallelLinear,
+@@ -195,6 +196,23 @@ def forward(self, x: torch.Tensor):
++def all_gather_interleave(local_tensor, hidden_size: int, tp_size: int):
++    """All-gather the input tensor interleavely across model parallel group."""
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen2_5_omni_thinker.py` added +977/-0; `vllm/model_executor/models/qwen2_5_vl.py` modified +51/-28
+- 验证与风险: diff 自带测试面 `tests/models/decoder_only/vision_language/test_models.py`, `tests/models/multimodal/processing/test_common.py`, `tests/models/registry.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #16872 - [Model] Qwen2.5-Omni Cleanup
+
+- 链接: https://github.com/vllm-project/vllm/pull/16872
+- 状态/时间: merged / 2025-04-19
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen2_5_omni_thinker.py`；关联提交 `5124f5bf51b8`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+2/-5，可读 patch 21 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Model] Qwen2.5-Omni Cleanup」；模型线: Qwen VLM/Omni/ASR；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/qwen2_5_omni_thinker.py`；技术摘要: 覆盖「[Model] Qwen2.5-Omni Cleanup」；主要实现面是 `vllm/model_executor/models/qwen2_5_omni_thinker.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +0/-3 (3 lines); hunks: -518,9 +518,6 @@ def _apply_hf_processor_main(; symbols: _apply_hf_processor_main，涉及 `_apply_hf_processor_main`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +0/-3 (3 lines); hunks: -518,9 +518,6 @@ def _apply_hf_processor_main(; symbols: _apply_hf_processor_main
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_5_omni_thinker.py
+@@ -518,9 +518,6 @@ def _apply_hf_processor_main(
+-        print(prompt)
+-        print(hf_processor_mm_kwargs)
+-        print(mm_items)
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +0/-3
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_5_omni_thinker.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
 ### PR #16907 - [Bugfix] Fix distributed bug in Qwen2.5-VL & Qwen2.5-Omni
 
 - 链接: https://github.com/vllm-project/vllm/pull/16907
@@ -454,6 +954,108 @@ diff -- vllm/model_executor/models/qwen2_5_vl.py
 - 已读文件:
   - runtime: `vllm/model_executor/models/qwen2_5_vl.py` modified +4/-1
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_5_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #17301 - [Misc] Clean up Qwen2.5-Omni code
+
+- 链接: https://github.com/vllm-project/vllm/pull/17301
+- 状态/时间: merged / 2025-04-28
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen2_5_omni_thinker.py`；关联提交 `8b464d9660a8`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+75/-94，可读 patch 221 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Misc] Clean up Qwen2.5-Omni code」；模型线: Qwen VLM/Omni/ASR；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/qwen2_5_omni_thinker.py`；技术摘要: 覆盖「[Misc] Clean up Qwen2.5-Omni code」；主要实现面是 `vllm/model_executor/models/qwen2_5_omni_thinker.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +8/-51 (59 lines); hunks: -51,11 +51,9; -279,46 +277,17 @@ def _get_mm_fields_config(; symbols: _get_mm_fields_config, apply, _maybe_apply_prompt_updates, _get_prompt_updates，涉及 `_get_mm_fields_config, apply, _maybe_apply_prompt_updates`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +8/-51 (59 lines); hunks: -51,11 +51,9; -279,46 +277,17 @@ def _get_mm_fields_config(; symbols: _get_mm_fields_config, apply, _maybe_apply_prompt_updates, _get_prompt_updates
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_5_omni_thinker.py
+@@ -51,11 +51,9 @@
+-from vllm.multimodal.hasher import MultiModalHasher
+-                                    MultiModalInputs, MultiModalKwargs,
+-                                    NestedTensors)
++                                    MultiModalKwargs, NestedTensors)
+@@ -279,46 +277,17 @@ def _get_mm_fields_config(
+-    def apply(
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +8/-51
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/multimodal/processing.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #17726 - [Misc] Use `apply_rotary_emb` from vllm_flash_attn for Qwen2-VL vision RoPE
+
+- 链接: https://github.com/vllm-project/vllm/pull/17726
+- 状态/时间: merged / 2025-05-07
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py`；关联提交 `c3e9d5060e89`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+6/-12，可读 patch 43 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Misc] Use `apply_rotary_emb` from vllm_flash_attn for Qwen2-VL vision RoPE」；模型线: Qwen VLM/Omni/ASR；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py`；技术摘要: 覆盖「[Misc] Use `apply_rotary_emb` from vllm_flash_attn for Qwen2-VL vision RoPE」；主要实现面是 `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_5_vl.py` modified +2/-7 (9 lines); hunks: -297,13 +297,8 @@ def forward(; symbols: forward，涉及 `forward`；`vllm/model_executor/models/qwen2_vl.py` modified +4/-5 (9 lines); hunks: -64,7 +64,7; -230,14 +230,13 @@ def apply_rotary_emb_torch(x: torch.Tensor,; symbols: apply_rotary_emb_torch, apply_rotary_pos_emb_vision，涉及 `apply_rotary_emb_torch, apply_rotary_pos_emb_vision`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen2_5_vl.py` modified +2/-7 (9 lines); hunks: -297,13 +297,8 @@ def forward(; symbols: forward
+  - `vllm/model_executor/models/qwen2_vl.py` modified +4/-5 (9 lines); hunks: -64,7 +64,7; -230,14 +230,13 @@ def apply_rotary_emb_torch(x: torch.Tensor,; symbols: apply_rotary_emb_torch, apply_rotary_pos_emb_vision
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_5_vl.py
+@@ -297,13 +297,8 @@ def forward(
+-            use_flash_attn = self.attn_backend == _Backend.FLASH_ATTN
+-            q = apply_rotary_pos_emb_vision(q,
+-                                            rotary_pos_emb,
+-                                            use_flash_attn=use_flash_attn)
+-            k = apply_rotary_pos_emb_vision(k,
+-                                            rotary_pos_emb,
+diff -- vllm/model_executor/models/qwen2_vl.py
+@@ -64,7 +64,7 @@
+-from vllm.platforms import _Backend
++from vllm.platforms import _Backend, current_platform
+@@ -230,14 +230,13 @@ def apply_rotary_emb_torch(x: torch.Tensor,
+-                                freqs: torch.Tensor,
+-                                use_flash_attn=False) -> torch.Tensor:
++                                freqs: torch.Tensor) -> torch.Tensor:
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen2_5_vl.py` modified +2/-7; `vllm/model_executor/models/qwen2_vl.py` modified +4/-5
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #17838 - [Bugfix] `use_fast` failing to be propagated to Qwen2-VL image processor
+
+- 链接: https://github.com/vllm-project/vllm/pull/17838
+- 状态/时间: merged / 2025-05-08
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py`；关联提交 `015815fe0141`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+15/-9，可读 patch 45 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] `use_fast` failing to be propagated to Qwen2-VL image processor」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py`；技术摘要: 覆盖「[Bugfix] `use_fast` failing to be propagated to Qwen2-VL image processor」；主要实现面是 `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +5/-3 (8 lines); hunks: -145,9 +145,11 @@ def get_hf_processor(; symbols: get_hf_processor，涉及 `get_hf_processor`；`vllm/model_executor/models/qwen2_5_vl.py` modified +5/-3 (8 lines); hunks: -758,9 +758,11 @@ def get_hf_processor(; symbols: get_hf_processor，涉及 `get_hf_processor`；`vllm/model_executor/models/qwen2_vl.py` modified +5/-3 (8 lines); hunks: -759,9 +759,11 @@ def get_hf_processor(; symbols: get_hf_processor，涉及 `get_hf_processor`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +5/-3 (8 lines); hunks: -145,9 +145,11 @@ def get_hf_processor(; symbols: get_hf_processor
+  - `vllm/model_executor/models/qwen2_5_vl.py` modified +5/-3 (8 lines); hunks: -758,9 +758,11 @@ def get_hf_processor(; symbols: get_hf_processor
+  - `vllm/model_executor/models/qwen2_vl.py` modified +5/-3 (8 lines); hunks: -759,9 +759,11 @@ def get_hf_processor(; symbols: get_hf_processor
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_5_omni_thinker.py
+@@ -145,9 +145,11 @@ def get_hf_processor(
+-            image_processor=self.get_image_processor(min_pixels=min_pixels,
+-                                                     max_pixels=max_pixels,
+-                                                     size=size),
++            image_processor=self.get_image_processor(
++                min_pixels=min_pixels,
++                max_pixels=max_pixels,
+diff -- vllm/model_executor/models/qwen2_5_vl.py
+@@ -758,9 +758,11 @@ def get_hf_processor(
+-            image_processor=self.get_image_processor(min_pixels=min_pixels,
+-                                                     max_pixels=max_pixels,
+-                                                     size=size),
++            image_processor=self.get_image_processor(
++                min_pixels=min_pixels,
++                max_pixels=max_pixels,
+diff -- vllm/model_executor/models/qwen2_vl.py
+@@ -759,9 +759,11 @@ def get_hf_processor(
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +5/-3; `vllm/model_executor/models/qwen2_5_vl.py` modified +5/-3; `vllm/model_executor/models/qwen2_vl.py` modified +5/-3
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #17973 - [PERF] Speed up Qwen2.5-VL model by speed up rotary position embedding const…
 
@@ -606,6 +1208,33 @@ diff -- vllm/model_executor/models/qwen2_5_omni_thinker.py
   - runtime: `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +5/-0
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_5_omni_thinker.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
+### PR #23512 - [Bugfix] Fix Qwen2.5-VL quantized model weights loading
+
+- 链接: https://github.com/vllm-project/vllm/pull/23512
+- 状态/时间: merged / 2025-08-25
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen2_5_vl.py`；关联提交 `a71e4765cc0c`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+5/-1，可读 patch 20 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] Fix Qwen2.5-VL quantized model weights loading」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen2_5_vl.py`；技术摘要: 覆盖「[Bugfix] Fix Qwen2.5-VL quantized model weights loading」；主要实现面是 `vllm/model_executor/models/qwen2_5_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_5_vl.py` modified +5/-1 (6 lines); hunks: -135,7 +135,7 @@ class Qwen2_5_VLVideoPixelInputs(TypedDict):; -852,6 +852,10 @@ class Qwen2_5_VLForConditionalGeneration(nn.Module, Support...; symbols: Qwen2_5_VLVideoPixelInputs, Qwen2_5_VLForConditionalGeneration，涉及 `Qwen2_5_VLVideoPixelInputs, Qwen2_5_VLForConditionalGeneration`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen2_5_vl.py` modified +5/-1 (6 lines); hunks: -135,7 +135,7 @@ class Qwen2_5_VLVideoPixelInputs(TypedDict):; -852,6 +852,10 @@ class Qwen2_5_VLForConditionalGeneration(nn.Module, Support...; symbols: Qwen2_5_VLVideoPixelInputs, Qwen2_5_VLForConditionalGeneration
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_5_vl.py
+@@ -135,7 +135,7 @@ class Qwen2_5_VLVideoPixelInputs(TypedDict):
+-    The video time interval (in seconds) for each grid along the temporal
++    The video time interval (in seconds) for each grid along the temporal
+@@ -852,6 +852,10 @@ class Qwen2_5_VLForConditionalGeneration(nn.Module, SupportsMultiModal,
++    packed_modules_mapping = {
++        "gate_up_proj": ["gate_proj", "up_proj"],
++    }
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen2_5_vl.py` modified +5/-1
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_5_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
 ### PR #24231 - [LoRA]: Add lora support to qwen-2.5-omni
 
 - 链接: https://github.com/vllm-project/vllm/pull/24231
@@ -631,6 +1260,33 @@ diff -- vllm/model_executor/models/qwen2_5_omni_thinker.py
 
 - 已读文件:
   - runtime: `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +13/-2
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_5_omni_thinker.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #24420 - [Model] Enable BNB support for qwen2_5_omni_thinker
+
+- 链接: https://github.com/vllm-project/vllm/pull/24420
+- 状态/时间: merged / 2025-09-08
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen2_5_omni_thinker.py`；关联提交 `6f4a82f8b5a1`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+29/-2，可读 patch 63 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Model] Enable BNB support for qwen2_5_omni_thinker」；模型线: Qwen VLM/Omni/ASR；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/qwen2_5_omni_thinker.py`；技术摘要: 覆盖「[Model] Enable BNB support for qwen2_5_omni_thinker」；主要实现面是 `vllm/model_executor/models/qwen2_5_omni_thinker.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +29/-2 (31 lines); hunks: -41,6 +41,7; -66,7 +67,8; symbols: _process_video_input, Qwen2_5OmniThinkerForConditionalGeneration, get_placeholder_str, load_weights，涉及 `_process_video_input, Qwen2_5OmniThinkerForConditionalGeneration, get_placeholder_str`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +29/-2 (31 lines); hunks: -41,6 +41,7; -66,7 +67,8; symbols: _process_video_input, Qwen2_5OmniThinkerForConditionalGeneration, get_placeholder_str, load_weights
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_5_omni_thinker.py
+@@ -41,6 +41,7 @@
++from vllm.model_executor.models.module_mapping import MultiModelKeys
+@@ -66,7 +67,8 @@
+-from .interfaces import MultiModalEmbeddings, SupportsMultiModal, SupportsPP
++from .interfaces import (MultiModalEmbeddings, SupportsLoRA,
++                         SupportsMultiModal, SupportsPP)
+@@ -726,14 +728,30 @@ def _process_video_input(
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +29/-2
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_5_omni_thinker.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #24741 - [Models] Prevent CUDA sync in Qwen2.5-VL
@@ -698,6 +1354,38 @@ diff -- vllm/model_executor/models/qwen2_vl.py
 - 已读文件:
   - runtime: `vllm/model_executor/models/qwen3_vl.py` added +1478/-0; `vllm/model_executor/models/qwen3_vl_moe.py` added +344/-0; `vllm/model_executor/models/qwen2_vl.py` modified +1/-1
 - 验证与风险: diff 自带测试面 `tests/models/multimodal/processing/test_common.py`, `tests/models/registry.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #24955 - [MM Encoder] Apply DP ViT for Qwen3-VL model series
+
+- 链接: https://github.com/vllm-project/vllm/pull/24955
+- 状态/时间: merged / 2025-09-18
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_vl.py`, `vllm/model_executor/models/qwen3_vl_moe.py`；关联提交 `3127274d022b`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+77/-19，可读 patch 256 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[MM Encoder] Apply DP ViT for Qwen3-VL model series」；模型线: Qwen VLM/Omni/ASR；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/qwen3_vl.py`, `vllm/model_executor/models/qwen3_vl_moe.py`；技术摘要: 覆盖「[MM Encoder] Apply DP ViT for Qwen3-VL model series」；主要实现面是 `vllm/model_executor/models/qwen3_vl.py`, `vllm/model_executor/models/qwen3_vl_moe.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen3_vl.py` modified +75/-19 (94 lines); hunks: -126,20 +126,23 @@ def __init__(self,; -158,23 +161,27 @@ def __init__(; symbols: __init__, forward，涉及 `__init__, forward`；`vllm/model_executor/models/qwen3_vl_moe.py` modified +2/-0 (2 lines); hunks: -315,12 +315,14 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__，涉及 `__init__`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen3_vl.py` modified +75/-19 (94 lines); hunks: -126,20 +126,23 @@ def __init__(self,; -158,23 +161,27 @@ def __init__(; symbols: __init__, forward
+  - `vllm/model_executor/models/qwen3_vl_moe.py` modified +2/-0 (2 lines); hunks: -315,12 +315,14 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_vl.py
+@@ -126,20 +126,23 @@ def __init__(self,
+-                 prefix: str = ""):
++                 prefix: str = "",
++                 use_data_parallel: bool = False):
+-                                               prefix=f"{prefix}.linear_fc1")
++                                               prefix=f"{prefix}.linear_fc1",
++                                               disable_tp=use_data_parallel)
+diff -- vllm/model_executor/models/qwen3_vl_moe.py
+@@ -315,12 +315,14 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = ""):
++        self.use_data_parallel = multimodal_config.mm_encoder_tp_mode == "data"
++            use_data_parallel=self.use_data_parallel,
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen3_vl.py` modified +75/-19; `vllm/model_executor/models/qwen3_vl_moe.py` modified +2/-0
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen3_vl.py`, `vllm/model_executor/models/qwen3_vl_moe.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #25300 - [Bugfix] Fix Qwen3-VL-MoE weight loading for EP
 
@@ -779,6 +1467,33 @@ diff -- vllm/model_executor/models/qwen3_vl.py
 - 已读文件:
   - runtime: `vllm/model_executor/models/qwen3_vl.py` modified +32/-18
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen3_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #25445 - [Model] Enable DP for ViT in Qwen2-VL
+
+- 链接: https://github.com/vllm-project/vllm/pull/25445
+- 状态/时间: merged / 2025-09-23
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen2_vl.py`；关联提交 `c98be0a23276`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+59/-19，可读 patch 252 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Model] Enable DP for ViT in Qwen2-VL」；模型线: Qwen VLM/Omni/ASR；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/qwen2_vl.py`；技术摘要: 覆盖「[Model] Enable DP for ViT in Qwen2-VL」；主要实现面是 `vllm/model_executor/models/qwen2_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_vl.py` modified +59/-19 (78 lines); hunks: -66,6 +66,7; -217,17 +218,20 @@ def __init__(; symbols: __init__, forward，涉及 `__init__, forward`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen2_vl.py` modified +59/-19 (78 lines); hunks: -66,6 +66,7; -217,17 +218,20 @@ def __init__(; symbols: __init__, forward
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_vl.py
+@@ -66,6 +66,7 @@
++from vllm.multimodal.utils import run_dp_sharded_mrope_vision_model
+@@ -217,17 +218,20 @@ def __init__(
++        use_data_parallel: bool = False,
+-                                        prefix=f"{prefix}.fc1")
++                                        prefix=f"{prefix}.fc1",
++                                        disable_tp=use_data_parallel)
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen2_vl.py` modified +59/-19
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #25646 - [Misc] Fix Qwen3-VL `video_grid_thw` typing
 
@@ -870,6 +1585,105 @@ diff -- vllm/model_executor/models/qwen3_vl.py
 - 已读文件:
   - runtime: `vllm/model_executor/models/qwen2_5_vl.py` modified +37/-36; `vllm/model_executor/models/qwen3_vl.py` modified +38/-15
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen3_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #25557 - [VLM] Update Qwen3-VL max_num_video_tokens calculation for configurable video profiling
+
+- 链接: https://github.com/vllm-project/vllm/pull/25557
+- 状态/时间: merged / 2025-09-28
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen2_vl.py`, `vllm/model_executor/models/qwen3_vl.py`；关联提交 `0efd540dbc54`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+74/-9，可读 patch 187 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[VLM] Update Qwen3-VL max_num_video_tokens calculation for configurable video profiling」；模型线: Qwen VLM/Omni/ASR；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/qwen3_vl.py`, `vllm/model_executor/models/qwen2_vl.py`；技术摘要: 覆盖「[VLM] Update Qwen3-VL max_num_video_tokens calculation for configurable video profiling」；主要实现面是 `vllm/model_executor/models/qwen3_vl.py`, `vllm/model_executor/models/qwen2_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen3_vl.py` modified +65/-5 (70 lines); hunks: -33,11 +33,14; -85,6 +88,9; symbols: Qwen3_VisionPatchEmbed, _get_vision_info, _get_max_video_frames, get_num_frames_with_most_features，涉及 `Qwen3_VisionPatchEmbed, _get_vision_info, _get_max_video_frames`；`vllm/model_executor/models/qwen2_vl.py` modified +9/-4 (13 lines); hunks: -79,7 +79,7; -932,6 +932,7 @@ def get_num_image_tokens(; symbols: get_num_image_tokens, get_image_size_with_most_features, get_max_image_tokens, _get_max_video_frames，涉及 `get_num_image_tokens, get_image_size_with_most_features, get_max_image_tokens`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen3_vl.py` modified +65/-5 (70 lines); hunks: -33,11 +33,14; -85,6 +88,9; symbols: Qwen3_VisionPatchEmbed, _get_vision_info, _get_max_video_frames, get_num_frames_with_most_features
+  - `vllm/model_executor/models/qwen2_vl.py` modified +9/-4 (13 lines); hunks: -79,7 +79,7; -932,6 +932,7 @@ def get_num_image_tokens(; symbols: get_num_image_tokens, get_image_size_with_most_features, get_max_image_tokens, _get_max_video_frames
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_vl.py
+@@ -33,11 +33,14 @@
+-from transformers.models.qwen2_vl.image_processing_qwen2_vl import smart_resize
++from transformers.models.qwen2_vl.image_processing_qwen2_vl import (
++    smart_resize as image_smart_resize)
++from transformers.models.qwen3_vl.video_processing_qwen3_vl import (
++    smart_resize as video_smart_resize)
+@@ -85,6 +88,9 @@
+diff -- vllm/model_executor/models/qwen2_vl.py
+@@ -79,7 +79,7 @@
+-_MAX_FRAMES_PER_VIDEO = 32
++_MAX_FRAMES_PER_VIDEO = 14
+@@ -932,6 +932,7 @@ def get_num_image_tokens(
++            num_frames=1,
+@@ -956,6 +957,7 @@ def get_image_size_with_most_features(self) -> ImageSize:
++            num_frames=1,
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen3_vl.py` modified +65/-5; `vllm/model_executor/models/qwen2_vl.py` modified +9/-4
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_vl.py`, `vllm/model_executor/models/qwen3_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #26000 - [MM] Add text-only mode for Qwen3-VL
+
+- 链接: https://github.com/vllm-project/vllm/pull/26000
+- 状态/时间: merged / 2025-10-01
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_vl.py`, `vllm/model_executor/models/qwen3_vl_moe.py`；关联提交 `66bca9b8bd0a`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+45/-26，可读 patch 105 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[MM] Add text-only mode for Qwen3-VL」；模型线: Qwen VLM/Omni/ASR；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/qwen3_vl.py`, `vllm/model_executor/models/qwen3_vl_moe.py`；技术摘要: 覆盖「[MM] Add text-only mode for Qwen3-VL」；主要实现面是 `vllm/model_executor/models/qwen3_vl.py`, `vllm/model_executor/models/qwen3_vl_moe.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen3_vl.py` modified +25/-14 (39 lines); hunks: -1125,14 +1125,17 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: s...; -1148,11 +1151,15 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: s...; symbols: __init__, compute_logits, load_weights, get_mm_mapping，涉及 `__init__, compute_logits, load_weights`；`vllm/model_executor/models/qwen3_vl_moe.py` modified +20/-12 (32 lines); hunks: -319,13 +319,17 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; -341,10 +345,14 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__，涉及 `__init__`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen3_vl.py` modified +25/-14 (39 lines); hunks: -1125,14 +1125,17 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: s...; -1148,11 +1151,15 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: s...; symbols: __init__, compute_logits, load_weights, get_mm_mapping
+  - `vllm/model_executor/models/qwen3_vl_moe.py` modified +20/-12 (32 lines); hunks: -319,13 +319,17 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; -341,10 +345,14 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_vl.py
+@@ -1125,14 +1125,17 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = "model"):
+-        self.visual = Qwen3_VisionTransformer(
+-            config.vision_config,
+-            norm_eps=getattr(config, "rms_norm_eps", 1e-6),
+-            quant_config=quant_config,
+-            prefix=maybe_prefix(prefix, "visual"),
+-            use_data_parallel=self.use_data_parallel,
+diff -- vllm/model_executor/models/qwen3_vl_moe.py
+@@ -319,13 +319,17 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = ""):
+-        self.visual = Qwen3_VisionTransformer(
+-            config.vision_config,
+-            norm_eps=getattr(config, "rms_norm_eps", 1e-6),
+-            quant_config=quant_config,
+-            prefix=maybe_prefix(prefix, "visual"),
+-            use_data_parallel=self.use_data_parallel,
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen3_vl.py` modified +25/-14; `vllm/model_executor/models/qwen3_vl_moe.py` modified +20/-12
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen3_vl.py`, `vllm/model_executor/models/qwen3_vl_moe.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #26004 - [BugFix][MM] Fix Nonetype error when video is cache in qwen2.5-omni-thinker
+
+- 链接: https://github.com/vllm-project/vllm/pull/26004
+- 状态/时间: merged / 2025-10-01
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen2_5_omni_thinker.py`；关联提交 `84d57342b66e`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+9/-3，可读 patch 19 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[BugFix][MM] Fix Nonetype error when video is cache in qwen2.5-omni-thinker」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen2_5_omni_thinker.py`；技术摘要: 覆盖「[BugFix][MM] Fix Nonetype error when video is cache in qwen2.5-omni-thinker」；主要实现面是 `vllm/model_executor/models/qwen2_5_omni_thinker.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +9/-3 (12 lines); hunks: -324,9 +324,15 @@ def _maybe_apply_prompt_updates(; symbols: _maybe_apply_prompt_updates，涉及 `_maybe_apply_prompt_updates`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +9/-3 (12 lines); hunks: -324,9 +324,15 @@ def _maybe_apply_prompt_updates(; symbols: _maybe_apply_prompt_updates
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_5_omni_thinker.py
+@@ -324,9 +324,15 @@ def _maybe_apply_prompt_updates(
+-        use_audio_in_video = (all(
+-            item["use_audio_in_video"].data
+-            for item in mm_kwargs["video"]) if "video" in mm_kwargs else False)
++        use_audio_in_video = False
++        if "video" in mm_kwargs:
++            video_items = [
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +9/-3
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_5_omni_thinker.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #24642 - [Qwen][ROCm] Flash Attention Rotary Embeddings
 
@@ -963,6 +1777,60 @@ diff -- vllm/model_executor/models/qwen2_vl.py
   - runtime: `vllm/model_executor/models/qwen2_vl.py` modified +2/-1
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/layers/rotary_embedding/common.py`, `vllm/model_executor/models/qwen2_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
+### PR #25550 - Add Qwen3-Omni moe thinker
+
+- 链接: https://github.com/vllm-project/vllm/pull/25550
+- 状态/时间: merged / 2025-10-10
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；关联提交 `19a9b169bf1b`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+1795/-36，可读 patch 1940 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Add Qwen3-Omni moe thinker」；模型线: Qwen VLM/Omni/ASR；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；技术摘要: 覆盖「Add Qwen3-Omni moe thinker」；主要实现面是 `vllm/model_executor/models/qwen3_omni_moe_thinker.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen3_omni_moe_thinker.py` added +1409/-0 (1409 lines); hunks: -0,0 +1,1409; symbols: Qwen3_VisionPatchEmbed, __init__, forward, Qwen3_VisionMLP，涉及 `Qwen3_VisionPatchEmbed, __init__, forward`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen3_omni_moe_thinker.py` added +1409/-0 (1409 lines); hunks: -0,0 +1,1409; symbols: Qwen3_VisionPatchEmbed, __init__, forward, Qwen3_VisionMLP
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_omni_moe_thinker.py
+@@ -0,0 +1,1409 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++# Copyright 2025 The Qwen team.
++# Copyright 2023 The vLLM team.
++# Copyright 2022 EleutherAI and the HuggingFace Inc. team. All rights reserved.
++#
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen3_omni_moe_thinker.py` added +1409/-0
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/processing/test_common.py`, `tests/models/registry.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #26608 - [MM] Move Qwen3Omni MRoPE impl to model file
+
+- 链接: https://github.com/vllm-project/vllm/pull/26608
+- 状态/时间: merged / 2025-10-11
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；关联提交 `ddaff2938e0b`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+368/-387，可读 patch 859 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[MM] Move Qwen3Omni MRoPE impl to model file」；模型线: Qwen VLM/Omni/ASR；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；技术摘要: 覆盖「[MM] Move Qwen3Omni MRoPE impl to model file」；主要实现面是 `vllm/model_executor/models/qwen3_omni_moe_thinker.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +329/-26 (355 lines); hunks: -72,7 +72,12; -96,7 +101,7; symbols: _get_feat_extract_output_lengths, Qwen3_VisionPatchEmbed, __init__, get_supported_mm_limits，涉及 `_get_feat_extract_output_lengths, Qwen3_VisionPatchEmbed, __init__`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +329/-26 (355 lines); hunks: -72,7 +72,12; -96,7 +101,7; symbols: _get_feat_extract_output_lengths, Qwen3_VisionPatchEmbed, __init__, get_supported_mm_limits
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_omni_moe_thinker.py
+@@ -72,7 +72,12 @@
+-from .interfaces import MultiModalEmbeddings, SupportsMultiModal, SupportsPP
++from .interfaces import (
++    MultiModalEmbeddings,
++    SupportsMRoPE,
++    SupportsMultiModal,
++    SupportsPP,
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +329/-26
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/layers/rotary_embedding/mrope.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`, `vllm/model_executor/models/vision.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
 ### PR #26815 - [Bugfix] Fix qwen3-omni audio truncation issue
 
 - 链接: https://github.com/vllm-project/vllm/pull/26815
@@ -989,6 +1857,31 @@ diff -- vllm/model_executor/models/qwen3_omni_moe_thinker.py
 - 已读文件:
   - runtime: `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +16/-2
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #27104 - [bugfix] Qwen3-VL fix video incorrect timestamp calculations while do_sample_frames=True
+
+- 链接: https://github.com/vllm-project/vllm/pull/27104
+- 状态/时间: merged / 2025-10-17
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_vl.py`；关联提交 `4c91a28e301d`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+2/-2，可读 patch 12 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[bugfix] Qwen3-VL fix video incorrect timestamp calculations while do_sample_frames=True」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_vl.py`；技术摘要: 覆盖「[bugfix] Qwen3-VL fix video incorrect timestamp calculations while do_sample_frames=True」；主要实现面是 `vllm/model_executor/models/qwen3_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen3_vl.py` modified +2/-2 (4 lines); hunks: -735,9 +735,9 @@ def _get_video_second_idx(; symbols: _get_video_second_idx，涉及 `_get_video_second_idx`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen3_vl.py` modified +2/-2 (4 lines); hunks: -735,9 +735,9 @@ def _get_video_second_idx(; symbols: _get_video_second_idx
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_vl.py
+@@ -735,9 +735,9 @@ def _get_video_second_idx(
+-            video_fps = sampled_fps if sampled_fps else video_processor.fps
++            sampled_fps = sampled_fps if sampled_fps else video_processor.fps
+-            num_frames = int(total_num_frames / metadata["fps"] * video_fps)
++            num_frames = int(total_num_frames / metadata["fps"] * sampled_fps)
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen3_vl.py` modified +2/-2
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen3_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #27190 - [BUGFIX][ROCM] ViT FlashAttention on ROCm (no GFX9) and contiguous on qwen3vl ROCm TORCH_SDPA
 
@@ -1096,6 +1989,39 @@ diff -- vllm/model_executor/models/qwen2_5_vl.py
   - runtime: `vllm/model_executor/models/qwen2_5_vl.py` modified +19/-11
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_5_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
+### PR #27920 - [Bugfix] Fix Qwen Omni audio inference
+
+- 链接: https://github.com/vllm-project/vllm/pull/27920
+- 状态/时间: merged / 2025-11-02
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；关联提交 `853a8eb53b89`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+2/-10，可读 patch 40 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] Fix Qwen Omni audio inference」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；技术摘要: 覆盖「[Bugfix] Fix Qwen Omni audio inference」；主要实现面是 `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +2/-7 (9 lines); hunks: -130,6 +130,8 @@ class Qwen2_5OmniAudioFeatureInputs(TensorSchema):; -732,13 +734,6 @@ def _process_audio_input(; symbols: Qwen2_5OmniAudioFeatureInputs, _process_audio_input，涉及 `Qwen2_5OmniAudioFeatureInputs, _process_audio_input`；`vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +0/-3 (3 lines); hunks: -99,7 +99,6; -1065,8 +1064,6 @@ def _process_audio_input(; symbols: _process_audio_input，涉及 `_process_audio_input`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +2/-7 (9 lines); hunks: -130,6 +130,8 @@ class Qwen2_5OmniAudioFeatureInputs(TensorSchema):; -732,13 +734,6 @@ def _process_audio_input(; symbols: Qwen2_5OmniAudioFeatureInputs, _process_audio_input
+  - `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +0/-3 (3 lines); hunks: -99,7 +99,6; -1065,8 +1064,6 @@ def _process_audio_input(; symbols: _process_audio_input
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_5_omni_thinker.py
+@@ -130,6 +130,8 @@ class Qwen2_5OmniAudioFeatureInputs(TensorSchema):
++    audio_feature_lengths: Annotated[torch.Tensor, TensorShape("na")]
+@@ -732,13 +734,6 @@ def _process_audio_input(
+-        if audio_feature_lengths.shape[0] == 1:
+-            audio_feature_lengths = audio_feature_lengths.squeeze(0)
+-        elif audio_feature_lengths.shape[1] == 1:
+-            audio_feature_lengths = audio_feature_lengths.squeeze(1)
+diff -- vllm/model_executor/models/qwen3_omni_moe_thinker.py
+@@ -99,7 +99,6 @@
+-    flatten_bn,
+@@ -1065,8 +1064,6 @@ def _process_audio_input(
+-        audio_feature_lengths = flatten_bn(audio_feature_lengths, concat=True)
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +2/-7; `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +0/-3
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
 ### PR #28271 - [Refactor] Remove redundant TP gather/split in split_qkv in QwenVL
 
 - 链接: https://github.com/vllm-project/vllm/pull/28271
@@ -1131,6 +2057,31 @@ diff -- vllm/model_executor/models/qwen2_vl.py
 - 已读文件:
   - runtime: `vllm/model_executor/models/qwen2_5_vl.py` modified +0/-30; `vllm/model_executor/models/qwen2_vl.py` modified +1/-12
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #28663 - [Bugfix] resolve Qwen3-VL GPTQModel quantized model loading failure
+
+- 链接: https://github.com/vllm-project/vllm/pull/28663
+- 状态/时间: merged / 2025-11-14
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_vl.py`；关联提交 `cec275efcef6`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+6/-3，可读 patch 24 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] resolve Qwen3-VL GPTQModel quantized model loading failure」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_vl.py`；技术摘要: 覆盖「[Bugfix] resolve Qwen3-VL GPTQModel quantized model loading failure」；主要实现面是 `vllm/model_executor/models/qwen3_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen3_vl.py` modified +3/-1 (4 lines); hunks: -1138,7 +1138,9 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__，涉及 `__init__`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen3_vl.py` modified +3/-1 (4 lines); hunks: -1138,7 +1138,9 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_vl.py
+@@ -1138,7 +1138,9 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = ""):
+-        self.model = Qwen3LLMModel(vllm_config=vllm_config, prefix=prefix)
++        self.model = Qwen3LLMModel(
++            vllm_config=vllm_config, prefix=maybe_prefix(prefix, "model")
++        )
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen3_vl.py` modified +3/-1
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen3_vl.py`, `vllm/model_executor/models/utils.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #29232 - Fix EVS crash when using `video_embeds` inputs in Qwen2.5-VL
 
@@ -1226,6 +2177,86 @@ diff -- vllm/model_executor/models/qwen3_omni_moe_thinker.py
   - runtime: `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +23/-0
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
+### PR #29974 - [ROCm] [Bugfix] [AITER] `compute_attn_mask_seqlen` for qwen3 omni
+
+- 链接: https://github.com/vllm-project/vllm/pull/29974
+- 状态/时间: merged / 2025-12-04
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；关联提交 `3f1b03739ae1`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+4/-1，可读 patch 12 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[ROCm] [Bugfix] [AITER] `compute_attn_mask_seqlen` for qwen3 omni」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；技术摘要: 覆盖「[ROCm] [Bugfix] [AITER] `compute_attn_mask_seqlen` for qwen3 omni」；主要实现面是 `vllm/model_executor/models/qwen3_omni_moe_thinker.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +4/-1 (5 lines); hunks: -494,7 +494,10 @@ def compute_attn_mask_seqlen(; symbols: compute_attn_mask_seqlen，涉及 `compute_attn_mask_seqlen`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +4/-1 (5 lines); hunks: -494,7 +494,10 @@ def compute_attn_mask_seqlen(; symbols: compute_attn_mask_seqlen
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_omni_moe_thinker.py
+@@ -494,7 +494,10 @@ def compute_attn_mask_seqlen(
+-        if self.attn_backend == AttentionBackendEnum.FLASH_ATTN:
++        if self.attn_backend in {
++            AttentionBackendEnum.FLASH_ATTN,
++            AttentionBackendEnum.ROCM_AITER_FA,
++        }:
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +4/-1
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #30037 - support qwen3-vl handle requests with embeddings
+
+- 链接: https://github.com/vllm-project/vllm/pull/30037
+- 状态/时间: merged / 2025-12-04
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_vl.py`；关联提交 `6dcb07f676ae`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+7/-2，可读 patch 30 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「support qwen3-vl handle requests with embeddings」；模型线: Qwen VLM/Omni/ASR；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/qwen3_vl.py`；技术摘要: 覆盖「support qwen3-vl handle requests with embeddings」；主要实现面是 `vllm/model_executor/models/qwen3_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen3_vl.py` modified +5/-2 (7 lines); hunks: -103,7 +103,7; -884,7 +884,10 @@ def _get_dummy_videos(; symbols: _get_dummy_videos, Qwen3VLMultiModalProcessor, _get_data_parser, _call_hf_processor，涉及 `_get_dummy_videos, Qwen3VLMultiModalProcessor, _get_data_parser`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen3_vl.py` modified +5/-2 (7 lines); hunks: -103,7 +103,7; -884,7 +884,10 @@ def _get_dummy_videos(; symbols: _get_dummy_videos, Qwen3VLMultiModalProcessor, _get_data_parser, _call_hf_processor
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_vl.py
+@@ -103,7 +103,7 @@
+-from .qwen2_vl import Qwen2VLProcessingInfo
++from .qwen2_vl import Qwen2VLMultiModalDataParser, Qwen2VLProcessingInfo
+@@ -884,7 +884,10 @@ def _get_dummy_videos(
+-        return MultiModalDataParser(video_needs_metadata=True)
++        return Qwen2VLMultiModalDataParser(
++            self.info.get_hf_config().vision_config.spatial_merge_size,
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen3_vl.py` modified +5/-2
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen3_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #30542 - [Bugfix] Revert Qwen2-VL part of change in #28271
+
+- 链接: https://github.com/vllm-project/vllm/pull/30542
+- 状态/时间: merged / 2025-12-14
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen2_vl.py`；关联提交 `48b8456ff992`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+12/-1，可读 patch 31 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] Revert Qwen2-VL part of change in #28271」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen2_vl.py`；技术摘要: 覆盖「[Bugfix] Revert Qwen2-VL part of change in #28271」；主要实现面是 `vllm/model_executor/models/qwen2_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_vl.py` modified +12/-1 (13 lines); hunks: -49,7 +49,7; -359,10 +359,21 @@ def __init__(; symbols: __init__, split_qkv，涉及 `__init__, split_qkv`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen2_vl.py` modified +12/-1 (13 lines); hunks: -49,7 +49,7; -359,10 +359,21 @@ def __init__(; symbols: __init__, split_qkv
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_vl.py
+@@ -49,7 +49,7 @@
+-from vllm.distributed import parallel_state
++from vllm.distributed import parallel_state, tensor_model_parallel_all_gather
+@@ -359,10 +359,21 @@ def __init__(
++        if self.tp_size > 1:
++            qkv = tensor_model_parallel_all_gather(qkv)
++        # 3 * [s, b, head * head_dim]
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen2_vl.py` modified +12/-1
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
 ### PR #29752 - [Feature]Add EVS (Efficient Video Sampling) Support for Qwen3-VL
 
 - 链接: https://github.com/vllm-project/vllm/pull/29752
@@ -1279,6 +2310,33 @@ diff -- vllm/model_executor/models/qwen2_5_omni_thinker.py
 - 已读文件:
   - runtime: `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +0/-22
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_5_omni_thinker.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #31007 - [Qwen3-Omni] fixed _get_feat_extract_output_lengths function
+
+- 链接: https://github.com/vllm-project/vllm/pull/31007
+- 状态/时间: merged / 2025-12-24
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；关联提交 `bb24592d139b`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+8/-12，可读 patch 65 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Qwen3-Omni] fixed _get_feat_extract_output_lengths function」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；技术摘要: 覆盖「[Qwen3-Omni] fixed _get_feat_extract_output_lengths function」；主要实现面是 `vllm/model_executor/models/qwen3_omni_moe_thinker.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +8/-12 (20 lines); hunks: -118,7 +118,7 @@ def _get_feat_extract_output_lengths(input_lengths: torch.Te...; -921,13 +921,11 @@ def _get_prompt_updates(; symbols: _get_feat_extract_output_lengths, Qwen3_VisionPatchEmbed, _get_prompt_updates, _process_audio_input，涉及 `_get_feat_extract_output_lengths, Qwen3_VisionPatchEmbed, _get_prompt_updates`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +8/-12 (20 lines); hunks: -118,7 +118,7 @@ def _get_feat_extract_output_lengths(input_lengths: torch.Te...; -921,13 +921,11 @@ def _get_prompt_updates(; symbols: _get_feat_extract_output_lengths, Qwen3_VisionPatchEmbed, _get_prompt_updates, _process_audio_input
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_omni_moe_thinker.py
+@@ -118,7 +118,7 @@ def _get_feat_extract_output_lengths(input_lengths: torch.Tensor):
+-    return feat_lengths, output_lengths
++    return output_lengths
+@@ -921,13 +921,11 @@ def _get_prompt_updates(
+-            _, audio_output_lens = _get_feat_extract_output_lengths(
+-                audio_feature_lengths
+-            )
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +8/-12
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #31436 - Add GLM-ASR multimodal support
 
@@ -1443,6 +2501,96 @@ diff -- examples/pooling/score/template/qwen3_vl_reranker.jinja
   - docs: `examples/pooling/score/template/qwen3_vl_reranker.jinja` added +23/-0
 - 验证与风险: diff 自带测试面 `tests/models/registry.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
+### PR #32126 - [Model] Use mm_position to compute mrope positions for Qwen2-VL/2.5-VL
+
+- 链接: https://github.com/vllm-project/vllm/pull/32126
+- 状态/时间: merged / 2026-01-13
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py`；关联提交 `542a4059b2bb`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+113/-190，可读 patch 377 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Model] Use mm_position to compute mrope positions for Qwen2-VL/2.5-VL」；模型线: Qwen VLM/Omni/ASR；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py`；技术摘要: 覆盖「[Model] Use mm_position to compute mrope positions for Qwen2-VL/2.5-VL」；主要实现面是 `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_5_vl.py` modified +57/-95 (152 lines); hunks: -26,11 +26,12; -1044,121 +1045,82 @@ class Qwen2_5_VLForConditionalGeneration(; symbols: Qwen2_5_VLForConditionalGeneration, iter_mm_grid_thw, get_mrope_input_positions, get_placeholder_str，涉及 `Qwen2_5_VLForConditionalGeneration, iter_mm_grid_thw, get_mrope_input_positions`；`vllm/model_executor/models/qwen2_vl.py` modified +56/-95 (151 lines); hunks: -26,7 +26,7; -1137,121 +1137,82 @@ class Qwen2VLForConditionalGeneration(; symbols: Qwen2VLForConditionalGeneration, iter_mm_grid_thw, get_mrope_input_positions, get_placeholder_str，涉及 `Qwen2VLForConditionalGeneration, iter_mm_grid_thw, get_mrope_input_positions`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen2_5_vl.py` modified +57/-95 (152 lines); hunks: -26,11 +26,12; -1044,121 +1045,82 @@ class Qwen2_5_VLForConditionalGeneration(; symbols: Qwen2_5_VLForConditionalGeneration, iter_mm_grid_thw, get_mrope_input_positions, get_placeholder_str
+  - `vllm/model_executor/models/qwen2_vl.py` modified +56/-95 (151 lines); hunks: -26,7 +26,7; -1137,121 +1137,82 @@ class Qwen2VLForConditionalGeneration(; symbols: Qwen2VLForConditionalGeneration, iter_mm_grid_thw, get_mrope_input_positions, get_placeholder_str
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_5_vl.py
+@@ -26,11 +26,12 @@
+-from collections.abc import Callable, Iterable, Mapping, Sequence
++from collections.abc import Callable, Iterable, Iterator, Mapping, Sequence
++import numpy as np
+@@ -1044,121 +1045,82 @@ class Qwen2_5_VLForConditionalGeneration(
++    def iter_mm_grid_thw(
++        self, mm_features: list[MultiModalFeatureSpec]
+diff -- vllm/model_executor/models/qwen2_vl.py
+@@ -26,7 +26,7 @@
+-from collections.abc import Callable, Iterable, Mapping, Sequence
++from collections.abc import Callable, Iterable, Iterator, Mapping, Sequence
+@@ -1137,121 +1137,82 @@ class Qwen2VLForConditionalGeneration(
++    def iter_mm_grid_thw(
++        self, mm_features: list[MultiModalFeatureSpec]
++    ) -> Iterator[tuple[int, int, int, int, float]]:
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen2_5_vl.py` modified +57/-95; `vllm/model_executor/models/qwen2_vl.py` modified +56/-95
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen2_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #32167 - [Model] Re-implement Qwen3Omni Audio Encoder
+
+- 链接: https://github.com/vllm-project/vllm/pull/32167
+- 状态/时间: merged / 2026-01-14
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；关联提交 `b8199f604931`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+428/-29，可读 patch 527 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Model] Re-implement Qwen3Omni Audio Encoder」；模型线: Qwen VLM/Omni/ASR；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；技术摘要: 覆盖「[Model] Re-implement Qwen3Omni Audio Encoder」；主要实现面是 `vllm/model_executor/models/qwen3_omni_moe_thinker.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +428/-29 (457 lines); hunks: -31,29 +31,34; -104,11 +109,6; symbols: _get_feat_extract_output_lengths, SinusoidsPositionEmbedding, __init__, forward，涉及 `_get_feat_extract_output_lengths, SinusoidsPositionEmbedding, __init__`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +428/-29 (457 lines); hunks: -31,29 +31,34; -104,11 +109,6; symbols: _get_feat_extract_output_lengths, SinusoidsPositionEmbedding, __init__, forward
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_omni_moe_thinker.py
+@@ -31,29 +31,34 @@
+-from transformers import PretrainedConfig
+-from transformers import __version__ as TRANSFORMERS_VERSION
++    Qwen3OmniMoeAudioEncoderConfig,
+-from transformers.models.qwen3_omni_moe.modeling_qwen3_omni_moe import (
+-    Qwen3OmniMoeAudioEncoder,
+-)
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +428/-29
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #32540 - [Bugfix] Fix GLM-ASR audio encoder RoPE dim
+
+- 链接: https://github.com/vllm-project/vllm/pull/32540
+- 状态/时间: merged / 2026-01-18
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/glmasr.py`；关联提交 `38bf2ffb21d5`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+40/-30，可读 patch 98 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] Fix GLM-ASR audio encoder RoPE dim」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/glmasr.py`；技术摘要: 覆盖「[Bugfix] Fix GLM-ASR audio encoder RoPE dim」；主要实现面是 `vllm/model_executor/models/glmasr.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/glmasr.py` modified +12/-2 (14 lines); hunks: -181,6 +181,12 @@ def __init__(; -226,8 +232,12 @@ def forward(; symbols: __init__, forward，涉及 `__init__, forward`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/glmasr.py` modified +12/-2 (14 lines); hunks: -181,6 +181,12 @@ def __init__(; -226,8 +232,12 @@ def forward(; symbols: __init__, forward
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/glmasr.py
+@@ -181,6 +181,12 @@ def __init__(
++        rope_params = getattr(config, "rope_parameters", None)
++        if rope_params:
++            partial_rotary_factor = rope_params.get("partial_rotary_factor", 0.5)
++        else:
++            partial_rotary_factor = getattr(config, "partial_rotary_factor", 0.5)
++        self.rotary_dim = int(self.head_dim * partial_rotary_factor)
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/glmasr.py` modified +12/-2
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/glmasr.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
 ### PR #32772 - [Model] Use mm_position to compute mrope positions for Qwen2.5-Omni
 
 - 链接: https://github.com/vllm-project/vllm/pull/32772
@@ -1563,6 +2711,96 @@ diff -- vllm/model_executor/models/qwen3_asr.py
   - runtime: `vllm/model_executor/models/qwen3_asr.py` modified +20/-1
 - 验证与风险: runtime 路径改动集中在 `vllm/entrypoints/openai/translations/speech_to_text.py`, `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/qwen3_asr.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
+### PR #33077 - [BUGFIX] Fix hipErrorIllegalState in Qwen3-Omni during startup profiling allow inference Omni on ROCM
+
+- 链接: https://github.com/vllm-project/vllm/pull/33077
+- 状态/时间: merged / 2026-02-01
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；关联提交 `cd86fff38fee`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+31/-7，可读 patch 45 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[BUGFIX] Fix hipErrorIllegalState in Qwen3-Omni during startup profiling allow inference Omni on ROCM」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；技术摘要: 覆盖「[BUGFIX] Fix hipErrorIllegalState in Qwen3-Omni during startup profiling allow inference Omni on ROCM」；主要实现面是 `vllm/model_executor/models/qwen3_omni_moe_thinker.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +31/-7 (38 lines); hunks: -907,13 +907,37 @@ def forward(; symbols: forward，涉及 `forward`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +31/-7 (38 lines); hunks: -907,13 +907,37 @@ def forward(; symbols: forward
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_omni_moe_thinker.py
+@@ -907,13 +907,37 @@ def forward(
+-        cu_seqlens = torch.repeat_interleave(
+-            grid_thw[:, 1] * grid_thw[:, 2], grid_thw[:, 0]
+-        ).cumsum(
+-            dim=0,
+-            dtype=grid_thw.dtype if torch.jit.is_tracing() else torch.int32,
+-        )
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +31/-7
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #33644 - [Bugfix] fix qwen3-asr response error
+
+- 链接: https://github.com/vllm-project/vllm/pull/33644
+- 状态/时间: merged / 2026-02-03
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_asr.py`；关联提交 `ceab70c89d2b`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+7/-6，可读 patch 27 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] fix qwen3-asr response error」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_asr.py`；技术摘要: 覆盖「[Bugfix] fix qwen3-asr response error」；主要实现面是 `vllm/model_executor/models/qwen3_asr.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen3_asr.py` modified +7/-6 (13 lines); hunks: -125,6 +125,13 @@ def get_feature_extractor(self, **kwargs: object) -> Whispe...; -194,12 +201,6 @@ def _parse_audio_data(; symbols: get_feature_extractor, get_supported_mm_limits, get_data_parser, Qwen3ASRDummyInputsBuilder，涉及 `get_feature_extractor, get_supported_mm_limits, get_data_parser`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen3_asr.py` modified +7/-6 (13 lines); hunks: -125,6 +125,13 @@ def get_feature_extractor(self, **kwargs: object) -> Whispe...; -194,12 +201,6 @@ def _parse_audio_data(; symbols: get_feature_extractor, get_supported_mm_limits, get_data_parser, Qwen3ASRDummyInputsBuilder
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_asr.py
+@@ -125,6 +125,13 @@ def get_feature_extractor(self, **kwargs: object) -> WhisperFeatureExtractor:
++    def get_data_parser(self) -> MultiModalDataParser:
++        feature_extractor = self.get_feature_extractor()
++        return Qwen3ASRMultiModalDataParser(
++            target_sr=feature_extractor.sampling_rate,
++            expected_hidden_size=self._get_expected_hidden_size(),
++        )
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen3_asr.py` modified +7/-6
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen3_asr.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #33605 - [Bugfix][Model] Fix audio-in-video support for Qwen2.5-Omni and Qwen3-Omni
+
+- 链接: https://github.com/vllm-project/vllm/pull/33605
+- 状态/时间: merged / 2026-02-04
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；关联提交 `f8516a1ab95f`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+172/-12，可读 patch 247 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix][Model] Fix audio-in-video support for Qwen2.5-Omni and Qwen3-Omni」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；技术摘要: 覆盖「[Bugfix][Model] Fix audio-in-video support for Qwen2.5-Omni and Qwen3-Omni」；主要实现面是 `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +123/-3 (126 lines); hunks: -113,6 +113,95; -1286,17 +1375,48 @@ def embed_input_ids(; symbols: check_interleaved_audio_video, merge_interleaved_embeddings, Qwen2_5OmniAudioFeatureInputs, embed_input_ids，涉及 `check_interleaved_audio_video, merge_interleaved_embeddings, Qwen2_5OmniAudioFeatureInputs`；`vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +49/-9 (58 lines); hunks: -92,6 +92,8; -1780,6 +1782,19 @@ def embed_input_ids(; symbols: embed_input_ids，涉及 `embed_input_ids`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +123/-3 (126 lines); hunks: -113,6 +113,95; -1286,17 +1375,48 @@ def embed_input_ids(; symbols: check_interleaved_audio_video, merge_interleaved_embeddings, Qwen2_5OmniAudioFeatureInputs, embed_input_ids
+  - `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +49/-9 (58 lines); hunks: -92,6 +92,8; -1780,6 +1782,19 @@ def embed_input_ids(; symbols: embed_input_ids
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_5_omni_thinker.py
+@@ -113,6 +113,95 @@
++def check_interleaved_audio_video(
++    is_video: torch.Tensor,
++    is_audio: torch.Tensor,
++    num_video: int,
++    num_audio: int,
++) -> bool:
+diff -- vllm/model_executor/models/qwen3_omni_moe_thinker.py
+@@ -92,6 +92,8 @@
++    check_interleaved_audio_video,
++    merge_interleaved_embeddings,
+@@ -1780,6 +1782,19 @@ def embed_input_ids(
++        # Detect interleaved audio-in-video early, since it affects
++        # both the deepstack path and the final embedding merge.
++        video_token_id = self.config.video_token_id
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +123/-3; `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +49/-9
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
 ### PR #29828 - [Model] Add transcription support for Qwen3-Omni
 
 - 链接: https://github.com/vllm-project/vllm/pull/29828
@@ -1589,6 +2827,33 @@ diff -- vllm/model_executor/models/qwen3_omni_moe_thinker.py
 - 已读文件:
   - runtime: `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +102/-2
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #34613 - [Realtime] Add Qwen3-ASR realtime streaming support
+
+- 链接: https://github.com/vllm-project/vllm/pull/34613
+- 状态/时间: merged / 2026-02-21
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_asr_realtime.py`；关联提交 `11be2c74dc1e`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+256/-1，可读 patch 286 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Realtime] Add Qwen3-ASR realtime streaming support」；模型线: Qwen VLM/Omni/ASR；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/qwen3_asr_realtime.py`；技术摘要: 覆盖「[Realtime] Add Qwen3-ASR realtime streaming support」；主要实现面是 `vllm/model_executor/models/qwen3_asr_realtime.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen3_asr_realtime.py` added +239/-0 (239 lines); hunks: -0,0 +1,239; symbols: Qwen3ASRRealtimeBuffer, __init__, write_audio, read_audio，涉及 `Qwen3ASRRealtimeBuffer, __init__, write_audio`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen3_asr_realtime.py` added +239/-0 (239 lines); hunks: -0,0 +1,239; symbols: Qwen3ASRRealtimeBuffer, __init__, write_audio, read_audio
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_asr_realtime.py
+@@ -0,0 +1,239 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++# Copyright 2026 The Qwen team.
++# Copyright 2023 The vLLM team.
++#
++# Licensed under the Apache License, Version 2.0 (the "License");
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen3_asr_realtime.py` added +239/-0
+- 验证与风险: diff 自带测试面 `tests/models/registry.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #35368 - [Bugfix] Fix Qwen2.5-Omni and Qwen3-Omni mixed-modality embed regression
 
@@ -1629,6 +2894,33 @@ diff -- vllm/model_executor/models/qwen3_omni_moe_thinker.py
   - tests: `tests/models/multimodal/processing/test_qwen2_5_omni_embed.py` added +358/-0
   - runtime: `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +14/-16; `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +7/-5
 - 验证与风险: diff 自带测试面 `tests/models/multimodal/processing/test_qwen2_5_omni_embed.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #35741 - [Bugfix] Fix missing sequence_lengths in qwen3_omni_moe_thinker
+
+- 链接: https://github.com/vllm-project/vllm/pull/35741
+- 状态/时间: merged / 2026-03-02
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；关联提交 `fa6a6be51978`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+17/-0，可读 patch 45 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] Fix missing sequence_lengths in qwen3_omni_moe_thinker」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；技术摘要: 覆盖「[Bugfix] Fix missing sequence_lengths in qwen3_omni_moe_thinker」；主要实现面是 `vllm/model_executor/models/qwen3_omni_moe_thinker.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +17/-0 (17 lines); hunks: -648,13 +648,15 @@ def forward(; -975,6 +977,20 @@ def forward(; symbols: forward，涉及 `forward`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +17/-0 (17 lines); hunks: -648,13 +648,15 @@ def forward(; -975,6 +977,20 @@ def forward(; symbols: forward
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_omni_moe_thinker.py
+@@ -648,13 +648,15 @@ def forward(
++        sequence_lengths: torch.Tensor | None,  # Only used for FlashInfer CuDNN backend
++            sequence_lengths=sequence_lengths,
+@@ -975,6 +977,20 @@ def forward(
++        # Recompute cu_seqlens in numpy from grid_thw to avoid GPU->CPU sync
++        grid_thw_np = grid_thw.cpu().numpy()
++        cu_seqlens_np = np.repeat(
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +17/-0
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #35869 - [Bugfix] Add missing dynamic_arg_dims for Qwen3-ASR torch.compile
 
@@ -1716,6 +3008,138 @@ diff -- vllm/model_executor/models/qwen2_audio.py
   - runtime: `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +33/-0; `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +33/-0; `vllm/model_executor/models/qwen2_audio.py` modified +20/-0
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen2_audio.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
+### PR #36136 - [Bugfix] Fix Qwen3-VL timestamp mismatch when using num_frames without fps
+
+- 链接: https://github.com/vllm-project/vllm/pull/36136
+- 状态/时间: merged / 2026-03-11
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/processing/test_qwen3_vl.py`, `vllm/model_executor/models/qwen3_vl.py`；关联提交 `724759684cd9`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+116/-4，可读 patch 150 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] Fix Qwen3-VL timestamp mismatch when using num_frames without fps」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `tests/models/multimodal/processing/test_qwen3_vl.py`, `vllm/model_executor/models/qwen3_vl.py`；技术摘要: 覆盖「[Bugfix] Fix Qwen3-VL timestamp mismatch when using num_frames without fps」；主要实现面是 `tests/models/multimodal/processing/test_qwen3_vl.py`, `vllm/model_executor/models/qwen3_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `tests/models/multimodal/processing/test_qwen3_vl.py` added +94/-0 (94 lines); hunks: -0,0 +1,94; symbols: _build_video_mm_data, test_processor_num_frames_timestamp，涉及 `_build_video_mm_data, test_processor_num_frames_timestamp`；`vllm/model_executor/models/qwen3_vl.py` modified +22/-4 (26 lines); hunks: -768,6 +768,7 @@ def _get_video_second_idx(; -782,11 +783,20 @@ def _get_video_second_idx(; symbols: _get_video_second_idx, _call_hf_processor, default，涉及 `_get_video_second_idx, _call_hf_processor, default`。
+- 代码 diff 细节:
+  - `tests/models/multimodal/processing/test_qwen3_vl.py` added +94/-0 (94 lines); hunks: -0,0 +1,94; symbols: _build_video_mm_data, test_processor_num_frames_timestamp
+  - `vllm/model_executor/models/qwen3_vl.py` modified +22/-4 (26 lines); hunks: -768,6 +768,7 @@ def _get_video_second_idx(; -782,11 +783,20 @@ def _get_video_second_idx(; symbols: _get_video_second_idx, _call_hf_processor, default
+- 关键代码摘录:
+
+```diff
+diff -- tests/models/multimodal/processing/test_qwen3_vl.py
+@@ -0,0 +1,94 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++"""Regression tests for Qwen3-VL processor.
++Covers the fix for num_frames-based timestamp calculation
++(issue vllm-project/vllm#35909).
++"""
+diff -- vllm/model_executor/models/qwen3_vl.py
+@@ -768,6 +768,7 @@ def _get_video_second_idx(
++        sampled_num_frames: int | None = None,
+@@ -782,11 +783,20 @@ def _get_video_second_idx(
+-            # here video_fps is the fps of the sampled video, and
+-            # metadata["fps"] refers to the fps of the original video.
+-            sampled_fps = sampled_fps if sampled_fps else video_processor.fps
+-            num_frames = int(total_num_frames / metadata["fps"] * sampled_fps)
+```
+
+- 已读文件:
+  - tests: `tests/models/multimodal/processing/test_qwen3_vl.py` added +94/-0
+  - runtime: `vllm/model_executor/models/qwen3_vl.py` modified +22/-4
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/processing/test_qwen3_vl.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #36800 - [Bugfix] Fix Qwen2.5-omni/Qwen3-omni mm_processor cache for audio_in_video request
+
+- 链接: https://github.com/vllm-project/vllm/pull/36800
+- 状态/时间: merged / 2026-03-13
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；关联提交 `abf61aaa8ef2`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+128/-12，可读 patch 169 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] Fix Qwen2.5-omni/Qwen3-omni mm_processor cache for audio_in_video request」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；技术摘要: 覆盖「[Bugfix] Fix Qwen2.5-omni/Qwen3-omni mm_processor cache for audio_in_video request」；主要实现面是 `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +11/-12 (23 lines); hunks: -80,8 +80,6; -609,6 +607,17 @@ def _maybe_apply_prompt_updates(; symbols: _maybe_apply_prompt_updates, get_replacement_qwen2_use_audio_in_video, _cached_apply_hf_processor, _apply_hf_processor_main，涉及 `_maybe_apply_prompt_updates, get_replacement_qwen2_use_audio_in_video, _cached_apply_hf_processor`；`vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +11/-0 (11 lines); hunks: -1326,6 +1326,17 @@ def _maybe_apply_prompt_updates(; symbols: _maybe_apply_prompt_updates，涉及 `_maybe_apply_prompt_updates`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +11/-12 (23 lines); hunks: -80,8 +80,6; -609,6 +607,17 @@ def _maybe_apply_prompt_updates(; symbols: _maybe_apply_prompt_updates, get_replacement_qwen2_use_audio_in_video, _cached_apply_hf_processor, _apply_hf_processor_main
+  - `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +11/-0 (11 lines); hunks: -1326,6 +1326,17 @@ def _maybe_apply_prompt_updates(; symbols: _maybe_apply_prompt_updates
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_5_omni_thinker.py
+@@ -80,8 +80,6 @@
+-    ProcessorInputs,
+-    TimingContext,
+@@ -609,6 +607,17 @@ def _maybe_apply_prompt_updates(
++            # for mutilmodality cache
++            if any(item is None for item in mm_kwargs["video"]):
++                video_token_id = self.info.get_hf_config().video_token_id
+diff -- vllm/model_executor/models/qwen3_omni_moe_thinker.py
+@@ -1326,6 +1326,17 @@ def _maybe_apply_prompt_updates(
++            # for mutilmodality cache
++            if any(item is None for item in mm_kwargs["video"]):
++                video_token_id = self.info.get_hf_config().video_token_id
++                audio_token_id = self.info.get_hf_config().audio_token_id
++                video_audio_item_num = sum(
++                    id in (video_token_id, audio_token_id) for id in prompt_ids
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +11/-12; `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +11/-0
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/processing/test_audio_in_video.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #37147 - [Bugfix] Fix Qwen2.5-Omni/Qwen3-Omni use_audio_in_video with multi-video inputs
+
+- 链接: https://github.com/vllm-project/vllm/pull/37147
+- 状态/时间: merged / 2026-03-16
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；关联提交 `912fbe9555f9`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+117/-17，可读 patch 187 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] Fix Qwen2.5-Omni/Qwen3-Omni use_audio_in_video with multi-video inputs」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；技术摘要: 覆盖「[Bugfix] Fix Qwen2.5-Omni/Qwen3-Omni use_audio_in_video with multi-video inputs」；主要实现面是 `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +1/-3 (4 lines); hunks: -774,9 +774,7 @@ def get_replacement_qwen2_vision(item_idx: int, modality: str):; symbols: get_replacement_qwen2_vision, get_replacement_qwen2_use_audio_in_video，涉及 `get_replacement_qwen2_vision, get_replacement_qwen2_use_audio_in_video`；`vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +1/-3 (4 lines); hunks: -1489,9 +1489,7 @@ def get_replacement_qwen2_vision(item_idx: int, modality:...; symbols: get_replacement_qwen2_vision, get_replacement_qwen2_use_audio_in_video，涉及 `get_replacement_qwen2_vision, get_replacement_qwen2_use_audio_in_video`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +1/-3 (4 lines); hunks: -774,9 +774,7 @@ def get_replacement_qwen2_vision(item_idx: int, modality: str):; symbols: get_replacement_qwen2_vision, get_replacement_qwen2_use_audio_in_video
+  - `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +1/-3 (4 lines); hunks: -1489,9 +1489,7 @@ def get_replacement_qwen2_vision(item_idx: int, modality:...; symbols: get_replacement_qwen2_vision, get_replacement_qwen2_use_audio_in_video
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_5_omni_thinker.py
+@@ -774,9 +774,7 @@ def get_replacement_qwen2_vision(item_idx: int, modality: str):
+-            audio_num_features = audio_output_lengths[
+-                audio_in_video_item_idx + item_idx
+-            ]
++            audio_num_features = audio_output_lengths[audio_in_video_item_idx]
+diff -- vllm/model_executor/models/qwen3_omni_moe_thinker.py
+@@ -1489,9 +1489,7 @@ def get_replacement_qwen2_vision(item_idx: int, modality: str):
+-            audio_num_features = audio_output_lengths[
+-                audio_in_video_item_idx + item_idx
+-            ]
++            audio_num_features = audio_output_lengths[audio_in_video_item_idx]
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +1/-3; `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +1/-3
+- 验证与风险: diff 自带测试面 `tests/entrypoints/openai/test_audio_in_video.py`, `tests/models/multimodal/processing/test_audio_in_video.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #37183 - Remove unused EVS functions in qwen3_vl.py
+
+- 链接: https://github.com/vllm-project/vllm/pull/37183
+- 状态/时间: merged / 2026-03-16
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_vl.py`；关联提交 `43a73f853bac`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+0/-101，可读 patch 108 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Remove unused EVS functions in qwen3_vl.py」；模型线: Qwen VLM/Omni/ASR；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/qwen3_vl.py`；技术摘要: 覆盖「Remove unused EVS functions in qwen3_vl.py」；主要实现面是 `vllm/model_executor/models/qwen3_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen3_vl.py` modified +0/-101 (101 lines); hunks: -1960,107 +1960,6 @@ def _iter_mm_grid_hw(; symbols: _iter_mm_grid_hw, _get_evs_mask_segments, _extract_frame_offsets_from_mask, _get_actual_frame_token_counts，涉及 `_iter_mm_grid_hw, _get_evs_mask_segments, _extract_frame_offsets_from_mask`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen3_vl.py` modified +0/-101 (101 lines); hunks: -1960,107 +1960,6 @@ def _iter_mm_grid_hw(; symbols: _iter_mm_grid_hw, _get_evs_mask_segments, _extract_frame_offsets_from_mask, _get_actual_frame_token_counts
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_vl.py
+@@ -1960,107 +1960,6 @@ def _iter_mm_grid_hw(
+-    def _get_evs_mask_segments(
+-        self, mm_position: PlaceholderRange, expected_frames: int
+-    ) -> list[torch.Tensor] | None:
+-        """Extract contiguous segments from EVS is_embed mask.
+-        The EVS (Efficient Video Sampling) mask marks which placeholder
+-        positions should be filled with video embeddings. This method splits
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen3_vl.py` modified +0/-101
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen3_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
 ### PR #37439 - [Bugfix] Fix incorrect use of merge_size in Qwen3-VL video timestamp calculation
 
 - 链接: https://github.com/vllm-project/vllm/pull/37439
@@ -1783,6 +3207,42 @@ diff -- vllm/v1/worker/gpu/mm/encoder_cudagraph.py
   - runtime: `vllm/model_executor/models/qwen3_vl.py` modified +270/-30; `vllm/model_executor/models/interfaces.py` modified +141/-0; `vllm/v1/worker/gpu/mm/encoder_cudagraph.py` added +576/-0; `vllm/v1/worker/gpu/mm/encoder_cudagraph_defs.py` added +66/-0; `vllm/v1/worker/gpu_model_runner.py` modified +48/-1; `vllm/config/compilation.py` modified +32/-0
   - tests: `tests/v1/cudagraph/test_encoder_cudagraph.py` added +451/-0
 - 验证与风险: diff 自带测试面 `tests/v1/cudagraph/test_encoder_cudagraph.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #37247 - [Model] Implement LoRA support for Qwen3ASRForConditionalGeneration
+
+- 链接: https://github.com/vllm-project/vllm/pull/37247
+- 状态/时间: merged / 2026-04-10
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_asr.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；关联提交 `8d0f908b98cd`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+63/-5，可读 patch 126 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Model] Implement LoRA support for Qwen3ASRForConditionalGeneration」；模型线: Qwen VLM/Omni/ASR；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/qwen3_asr.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；技术摘要: 覆盖「[Model] Implement LoRA support for Qwen3ASRForConditionalGeneration」；主要实现面是 `vllm/model_executor/models/qwen3_asr.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen3_asr.py` modified +26/-0 (26 lines); hunks: -37,6 +37,7; -266,7 +267,21 @@ class Qwen3ASRForConditionalGeneration(; symbols: Qwen3ASRForConditionalGeneration, get_mm_mapping, get_num_mm_encoder_tokens, get_speech_to_text_config，涉及 `Qwen3ASRForConditionalGeneration, get_mm_mapping, get_num_mm_encoder_tokens`；`vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +22/-3 (25 lines); hunks: -57,6 +57,7; -357,7 +358,13 @@ def __init__(; symbols: __init__，涉及 `__init__`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen3_asr.py` modified +26/-0 (26 lines); hunks: -37,6 +37,7; -266,7 +267,21 @@ class Qwen3ASRForConditionalGeneration(; symbols: Qwen3ASRForConditionalGeneration, get_mm_mapping, get_num_mm_encoder_tokens, get_speech_to_text_config
+  - `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +22/-3 (25 lines); hunks: -57,6 +57,7; -357,7 +358,13 @@ def __init__(; symbols: __init__
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_asr.py
+@@ -37,6 +37,7 @@
++    SupportsLoRA,
+@@ -266,7 +267,21 @@ class Qwen3ASRForConditionalGeneration(
++    SupportsLoRA,
++    # LoRA support
++    packed_modules_mapping = {
++        "qkv_proj": [
+diff -- vllm/model_executor/models/qwen3_omni_moe_thinker.py
+@@ -57,6 +57,7 @@
++    ReplicatedLinear,
+@@ -357,7 +358,13 @@ def __init__(
+-        self.conv_out = nn.Linear(conv_out_dim, config.d_model, bias=False)
++        self.conv_out = ReplicatedLinear(
++            conv_out_dim,
++            config.d_model,
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen3_asr.py` modified +26/-0; `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +22/-3
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen3_asr.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`, `vllm/v1/worker/gpu_model_runner.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #38061 - [MM][Perf][CG] Support ViT full CUDA graph for Qwen3-VL video inference
 
@@ -1878,6 +3338,42 @@ diff -- vllm/config/multimodal.py
   - tests: `tests/config/test_multimodal_config.py` modified +18/-0; `tests/kernels/core/test_vit_fp8_attn.py` added +279/-0
   - other: `benchmarks/kernels/benchmark_vit_fp8_attn.py` added +324/-0
 - 验证与风险: diff 自带测试面 `tests/config/test_multimodal_config.py`, `tests/kernels/core/test_vit_fp8_attn.py`, `tests/kernels/core/test_vit_fp8_quant.py`, `tests/kernels/core/test_vit_fp8_scaling.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #40932 - [Bugfix] Remove invalid deepstack boundary check for Qwen3-VL
+
+- 链接: https://github.com/vllm-project/vllm/pull/40932
+- 状态/时间: merged / 2026-04-27
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_omni_moe_thinker.py`, `vllm/model_executor/models/qwen3_vl.py`；关联提交 `22631f80a01a`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+0/-22，可读 patch 50 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] Remove invalid deepstack boundary check for Qwen3-VL」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_omni_moe_thinker.py`, `vllm/model_executor/models/qwen3_vl.py`；技术摘要: 覆盖「[Bugfix] Remove invalid deepstack boundary check for Qwen3-VL」；主要实现面是 `vllm/model_executor/models/qwen3_omni_moe_thinker.py`, `vllm/model_executor/models/qwen3_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +0/-11 (11 lines); hunks: -1778,11 +1778,6 @@ def _get_deepstack_input_embeds(; -1824,12 +1819,6 @@ def _clear_deepstack_input_embeds(self, num_tokens: int)...; symbols: _get_deepstack_input_embeds, _clear_deepstack_input_embeds，涉及 `_get_deepstack_input_embeds, _clear_deepstack_input_embeds`；`vllm/model_executor/models/qwen3_vl.py` modified +0/-11 (11 lines); hunks: -1707,11 +1707,6 @@ def _get_deepstack_input_embeds(; -1753,12 +1748,6 @@ def _clear_deepstack_input_embeds(self, num_tokens: int)...; symbols: _get_deepstack_input_embeds, _clear_deepstack_input_embeds，涉及 `_get_deepstack_input_embeds, _clear_deepstack_input_embeds`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +0/-11 (11 lines); hunks: -1778,11 +1778,6 @@ def _get_deepstack_input_embeds(; -1824,12 +1819,6 @@ def _clear_deepstack_input_embeds(self, num_tokens: int)...; symbols: _get_deepstack_input_embeds, _clear_deepstack_input_embeds
+  - `vllm/model_executor/models/qwen3_vl.py` modified +0/-11 (11 lines); hunks: -1707,11 +1707,6 @@ def _get_deepstack_input_embeds(; -1753,12 +1748,6 @@ def _clear_deepstack_input_embeds(self, num_tokens: int)...; symbols: _get_deepstack_input_embeds, _clear_deepstack_input_embeds
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_omni_moe_thinker.py
+@@ -1778,11 +1778,6 @@ def _get_deepstack_input_embeds(
+-        if num_tokens > self.deepstack_input_embeds_num_tokens:
+-            raise ValueError(
+-                "Requested more deepstack tokens than available in buffer: "
+-                f"{num_tokens=} > {self.deepstack_input_embeds_num_tokens=}"
+-            )
+@@ -1824,12 +1819,6 @@ def _clear_deepstack_input_embeds(self, num_tokens: int) -> None:
+diff -- vllm/model_executor/models/qwen3_vl.py
+@@ -1707,11 +1707,6 @@ def _get_deepstack_input_embeds(
+-        if num_tokens > self.deepstack_input_embeds_num_tokens:
+-            raise ValueError(
+-                "Requested more deepstack tokens than available in buffer: "
+-                f"{num_tokens=} > {self.deepstack_input_embeds_num_tokens=}"
+-            )
+@@ -1753,12 +1748,6 @@ def _clear_deepstack_input_embeds(self, num_tokens: int) -> None:
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +0/-11; `vllm/model_executor/models/qwen3_vl.py` modified +0/-11
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen3_omni_moe_thinker.py`, `vllm/model_executor/models/qwen3_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #36464 - [Examples] Resettle generate examples.
 
@@ -1998,6 +3494,34 @@ diff -- tests/models/multimodal/generation/test_qwen2_5_vl.py
   - runtime: `vllm/model_executor/models/qwen2_5_vl.py` modified +429/-21
   - tests: `tests/models/multimodal/generation/test_qwen2_5_vl.py` modified +95/-0
 - 验证与风险: diff 自带测试面 `tests/models/multimodal/generation/test_qwen2_5_vl.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #42394 - [Bugfix][Qwen3-VL] Fix pipeline-parallel deepstack initialization
+
+- 链接: https://github.com/vllm-project/vllm/pull/42394
+- 状态/时间: merged / 2026-05-13
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_vl.py`, `vllm/model_executor/models/qwen3_vl_moe.py`；关联提交 `cee6751e5483`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+2/-2，可读 patch 18 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix][Qwen3-VL] Fix pipeline-parallel deepstack initialization」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_vl.py`, `vllm/model_executor/models/qwen3_vl_moe.py`；技术摘要: 覆盖「[Bugfix][Qwen3-VL] Fix pipeline-parallel deepstack initialization」；主要实现面是 `vllm/model_executor/models/qwen3_vl.py`, `vllm/model_executor/models/qwen3_vl_moe.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen3_vl.py` modified +1/-1 (2 lines); hunks: -1697,7 +1697,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__，涉及 `__init__`；`vllm/model_executor/models/qwen3_vl_moe.py` modified +1/-1 (2 lines); hunks: -454,7 +454,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__，涉及 `__init__`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen3_vl.py` modified +1/-1 (2 lines); hunks: -1697,7 +1697,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__
+  - `vllm/model_executor/models/qwen3_vl_moe.py` modified +1/-1 (2 lines); hunks: -454,7 +454,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_vl.py
+@@ -1697,7 +1697,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = "model"):
+-            assert self.language_model.start_layer >= len(
++            assert self.language_model.model.start_layer >= len(
+diff -- vllm/model_executor/models/qwen3_vl_moe.py
+@@ -454,7 +454,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = ""):
+-            assert self.language_model.start_layer >= len(
++            assert self.language_model.model.start_layer >= len(
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen3_vl.py` modified +1/-1; `vllm/model_executor/models/qwen3_vl_moe.py` modified +1/-1
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen3_vl.py`, `vllm/model_executor/models/qwen3_vl_moe.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #41736 - [MM][CG] Support ViT CG for Qwen2-VL
 
@@ -2176,6 +3700,33 @@ diff -- vllm/model_executor/models/granite_speech.py
   - runtime: `vllm/model_executor/models/utils.py` modified +7/-15; `vllm/model_executor/models/qwen2_5_vl.py` modified +12/-7; `vllm/model_executor/models/granite_speech.py` modified +7/-7; `vllm/model_executor/models/phi4mm_audio.py` modified +9/-3; `vllm/model_executor/models/bert.py` modified +3/-6; `vllm/model_executor/models/qwen3_vl.py` modified +6/-3
 - 验证与风险: diff 自带测试面 `tests/v1/logits_processors/test_correctness.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
+### PR #42787 - [MM] Enable FlashInfer metadata support for Qwen2.5-VL vision attention
+
+- 链接: https://github.com/vllm-project/vllm/pull/42787
+- 状态/时间: merged / 2026-05-23
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen2_5_vl.py`；关联提交 `a0be71ee47d3`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+72/-13，可读 patch 183 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[MM] Enable FlashInfer metadata support for Qwen2.5-VL vision attention」；模型线: Qwen VLM/Omni/ASR；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen2_5_vl.py`；技术摘要: 覆盖「[MM] Enable FlashInfer metadata support for Qwen2.5-VL vision attention」；主要实现面是 `vllm/model_executor/models/qwen2_5_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_5_vl.py` modified +72/-13 (85 lines); hunks: -113,6 +113,7; -369,7 +370,8 @@ def forward(; symbols: forward, __init__，涉及 `forward, __init__`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen2_5_vl.py` modified +72/-13 (85 lines); hunks: -113,6 +113,7; -369,7 +370,8 @@ def forward(; symbols: forward, __init__
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_5_vl.py
+@@ -113,6 +113,7 @@
++    get_fp8_padded_hidden_size,
+@@ -369,7 +370,8 @@ def forward(
+-        sequence_lengths: torch.Tensor,  # Only used for FlashInfer CuDNN backend
++        # Only used for FlashInfer CuDNN backend.
++        sequence_lengths: torch.Tensor | None,
+@@ -426,6 +428,7 @@ def forward(
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen2_5_vl.py` modified +72/-13
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_5_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
 ### PR #43647 - [ROCm][CI] Fix ROCm multimodal Qwen2.5-VL activation compile and Phi4MM ragged image mask handling
 
 - 链接: https://github.com/vllm-project/vllm/pull/43647
@@ -2238,6 +3789,33 @@ diff -- vllm/model_executor/models/qwen3_vl.py
 - 已读文件:
   - runtime: `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +14/-11; `vllm/model_executor/models/qwen3_vl.py` modified +14/-11
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen3_omni_moe_thinker.py`, `vllm/model_executor/models/qwen3_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #42796 - [MM][CG] Avoid over-padding Qwen2.5-VL encoder cudagraph window metadata
+
+- 链接: https://github.com/vllm-project/vllm/pull/42796
+- 状态/时间: merged / 2026-05-28
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen2_5_vl.py`；关联提交 `9006204e90d3`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+108/-16，可读 patch 214 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[MM][CG] Avoid over-padding Qwen2.5-VL encoder cudagraph window metadata」；模型线: Qwen VLM/Omni/ASR；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen2_5_vl.py`；技术摘要: 覆盖「[MM][CG] Avoid over-padding Qwen2.5-VL encoder cudagraph window metadata」；主要实现面是 `vllm/model_executor/models/qwen2_5_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_5_vl.py` modified +82/-11 (93 lines); hunks: -122,6 +122,39; -796,6 +829,38 @@ def invert_permutation(perm: torch.Tensor) -> torch.Tensor:; symbols: _pad_cumulative_seqlens_buffer, _pad_flashinfer_cu_seqlens_buffer, invert_permutation, get_encoder_cudagraph_max_window_seqs，涉及 `_pad_cumulative_seqlens_buffer, _pad_flashinfer_cu_seqlens_buffer, invert_permutation`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen2_5_vl.py` modified +82/-11 (93 lines); hunks: -122,6 +122,39; -796,6 +829,38 @@ def invert_permutation(perm: torch.Tensor) -> torch.Tensor:; symbols: _pad_cumulative_seqlens_buffer, _pad_flashinfer_cu_seqlens_buffer, invert_permutation, get_encoder_cudagraph_max_window_seqs
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_5_vl.py
+@@ -122,6 +122,39 @@
++def _pad_cumulative_seqlens_buffer(
++    dst: torch.Tensor,
++    src: torch.Tensor,
++) -> None:
++    n = src.shape[0]
++    dst.zero_()
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen2_5_vl.py` modified +82/-11
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/v1/worker/encoder_cudagraph.py`, `vllm/v1/worker/encoder_cudagraph_defs.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #44205 - [Bugfix] fix EVS for qwen3-vl
 
@@ -2481,6 +4059,43 @@ diff -- tests/models/multimodal/generation/test_vit_cudagraph.py
   - tests: `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +41/-15
 - 验证与风险: diff 自带测试面 `tests/models/multimodal/generation/test_vit_cudagraph.py`, `tests/v1/cudagraph/test_encoder_cudagraph.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
+### PR #46026 - [Perf] Optimize Qwen3-VL multi-video prompt processing
+
+- 链接: https://github.com/vllm-project/vllm/pull/46026
+- 状态/时间: merged / 2026-06-20
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/processing/test_qwen3_vl.py`, `vllm/model_executor/models/qwen3_vl.py`；关联提交 `d272418f459a`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+124/-26，可读 patch 214 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Perf] Optimize Qwen3-VL multi-video prompt processing」；模型线: Qwen VLM/Omni/ASR；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen3_vl.py`, `tests/models/multimodal/processing/test_qwen3_vl.py`；技术摘要: 覆盖「[Perf] Optimize Qwen3-VL multi-video prompt processing」；主要实现面是 `vllm/model_executor/models/qwen3_vl.py`, `tests/models/multimodal/processing/test_qwen3_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen3_vl.py` modified +78/-26 (104 lines); hunks: -1202,6 +1202,49 @@ def _get_dummy_videos(; -1211,15 +1254,23 @@ def _call_hf_processor(; symbols: _get_dummy_videos, _replace_video_token_placeholders, Qwen3VLMultiModalProcessor, _call_hf_processor，涉及 `_get_dummy_videos, _replace_video_token_placeholders, Qwen3VLMultiModalProcessor`；`tests/models/multimodal/processing/test_qwen3_vl.py` modified +46/-0 (46 lines); hunks: -92,3 +92,49 @@ def test_processor_num_frames_timestamp(; symbols: test_processor_num_frames_timestamp, test_processor_multi_video，涉及 `test_processor_num_frames_timestamp, test_processor_multi_video`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen3_vl.py` modified +78/-26 (104 lines); hunks: -1202,6 +1202,49 @@ def _get_dummy_videos(; -1211,15 +1254,23 @@ def _call_hf_processor(; symbols: _get_dummy_videos, _replace_video_token_placeholders, Qwen3VLMultiModalProcessor, _call_hf_processor
+  - `tests/models/multimodal/processing/test_qwen3_vl.py` modified +46/-0 (46 lines); hunks: -92,3 +92,49 @@ def test_processor_num_frames_timestamp(; symbols: test_processor_num_frames_timestamp, test_processor_multi_video
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_vl.py
+@@ -1202,6 +1202,49 @@ def _get_dummy_videos(
++def _replace_video_token_placeholders(
++    prompt_ids: list[int],
++    target: list[int],
++    replacements: list[list[int]],
++) -> list[int]:
++    """Replace each 3-token video placeholder with its expanded sequence.
+diff -- tests/models/multimodal/processing/test_qwen3_vl.py
+@@ -92,3 +92,49 @@ def test_processor_num_frames_timestamp(
++@pytest.mark.parametrize("model_id", [MODEL_ID])
++@pytest.mark.parametrize("num_videos", [2, 4])
++def test_processor_multi_video(
++    model_id: str,
++    num_videos: int,
++) -> None:
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen3_vl.py` modified +78/-26
+  - tests: `tests/models/multimodal/processing/test_qwen3_vl.py` modified +46/-0
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/processing/test_qwen3_vl.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
 ### PR #45424 - [Core] Ensure memory is pinned prior to async h2d copy
 
 - 链接: https://github.com/vllm-project/vllm/pull/45424
@@ -2558,6 +4173,185 @@ diff -- vllm/model_executor/models/qwen3_vl.py
   - tests: `tests/models/multimodal/processing/test_qwen3_vl.py` modified +46/-0
   - runtime: `vllm/model_executor/models/qwen3_vl.py` modified +13/-2
 - 验证与风险: diff 自带测试面 `tests/models/multimodal/processing/test_qwen3_vl.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #42478 - [Bugfix] Fix Qwen3-ASR transcription streaming postprocessing
+
+- 链接: https://github.com/vllm-project/vllm/pull/42478
+- 状态/时间: merged / 2026-07-09
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_asr.py`；关联提交 `a07765c6bd10`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+207/-17，可读 patch 335 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] Fix Qwen3-ASR transcription streaming postprocessing」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_asr.py`；技术摘要: 覆盖「[Bugfix] Fix Qwen3-ASR transcription streaming postprocessing」；主要实现面是 `vllm/model_executor/models/qwen3_asr.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen3_asr.py` modified +54/-8 (62 lines); hunks: -38,6 +38,7; -93,6 +94,53; symbols: _post_process_qwen3_asr_output, Qwen3ASRStreamingPostProcessor, __init__, process_delta，涉及 `_post_process_qwen3_asr_output, Qwen3ASRStreamingPostProcessor, __init__`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen3_asr.py` modified +54/-8 (62 lines); hunks: -38,6 +38,7; -93,6 +94,53; symbols: _post_process_qwen3_asr_output, Qwen3ASRStreamingPostProcessor, __init__, process_delta
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_asr.py
+@@ -38,6 +38,7 @@
++    StreamingTranscriptionPostProcessor,
+@@ -93,6 +94,53 @@
++_LANGUAGE_PREFIX = "language "
++_MAX_STREAMING_PREFIX_CHARS = 50
++def _post_process_qwen3_asr_output(text: str) -> str:
++    if not text or _ASR_TEXT_TAG not in text:
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen3_asr.py` modified +54/-8
+- 验证与风险: diff 自带测试面 `tests/entrypoints/speech_to_text/transcription/test_transcription_inter_chunk_spacing.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #43117 - fix(processor): route MiMo-V2-Omni media fetch through MediaConnector
+
+- 链接: https://github.com/vllm-project/vllm/pull/43117
+- 状态/时间: merged / 2026-07-11
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/transformers_utils/processors/mimo_v2_omni.py`；关联提交 `54503ecec0f3`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+22/-76，可读 patch 190 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「fix(processor): route MiMo-V2-Omni media fetch through MediaConnector」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `vllm/transformers_utils/processors/mimo_v2_omni.py`；技术摘要: 覆盖「fix(processor): route MiMo-V2-Omni media fetch through MediaConnector」；主要实现面是 `vllm/transformers_utils/processors/mimo_v2_omni.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/transformers_utils/processors/mimo_v2_omni.py` modified +22/-76 (98 lines); hunks: -7,33 +7,21; -62,7 +50,7; symbols: ImageInput, VideoInput, AudioInput, _smart_resize，涉及 `ImageInput, VideoInput, AudioInput`。
+- 代码 diff 细节:
+  - `vllm/transformers_utils/processors/mimo_v2_omni.py` modified +22/-76 (98 lines); hunks: -7,33 +7,21; -62,7 +50,7; symbols: ImageInput, VideoInput, AudioInput, _smart_resize
+- 关键代码摘录:
+
+```diff
+diff -- vllm/transformers_utils/processors/mimo_v2_omni.py
+@@ -7,33 +7,21 @@
+-import copy
+-import io
+-from io import BytesIO
+-import requests
+-try:
+-    from torchcodec.decoders import AudioDecoder
+```
+
+- 已读文件:
+  - runtime: `vllm/transformers_utils/processors/mimo_v2_omni.py` modified +22/-76
+- 验证与风险: runtime 路径改动集中在 `vllm/transformers_utils/processors/mimo_v2_omni.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #48072 - [CI][CPU] Add Qwen2-VL multimodal tests for CPU backend and fix incompatibilities
+
+- 链接: https://github.com/vllm-project/vllm/pull/48072
+- 状态/时间: merged / 2026-07-12
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/generation/test_qwen2_5_vl.py`；关联提交 `8e981630c933`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+33/-7，可读 patch 90 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[CI][CPU] Add Qwen2-VL multimodal tests for CPU backend and fix incompatibilities」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `tests/models/multimodal/generation/test_qwen2_5_vl.py`；技术摘要: 覆盖「[CI][CPU] Add Qwen2-VL multimodal tests for CPU backend and fix incompatibilities」；主要实现面是 `tests/models/multimodal/generation/test_qwen2_5_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `tests/models/multimodal/generation/test_qwen2_5_vl.py` modified +19/-6 (25 lines); hunks: -5,6 +5,7; -52,11 +53,15 @@ def _encoder_cudagraph_config(*, max_vision_items: int) -> d...; symbols: _encoder_cudagraph_config, test_qwen2_5_vl_evs_functionality, test_qwen2_5_vl_evs_batched_videos，涉及 `_encoder_cudagraph_config, test_qwen2_5_vl_evs_functionality, test_qwen2_5_vl_evs_batched_videos`。
+- 代码 diff 细节:
+  - `tests/models/multimodal/generation/test_qwen2_5_vl.py` modified +19/-6 (25 lines); hunks: -5,6 +5,7; -52,11 +53,15 @@ def _encoder_cudagraph_config(*, max_vision_items: int) -> d...; symbols: _encoder_cudagraph_config, test_qwen2_5_vl_evs_functionality, test_qwen2_5_vl_evs_batched_videos
+- 关键代码摘录:
+
+```diff
+diff -- tests/models/multimodal/generation/test_qwen2_5_vl.py
+@@ -5,6 +5,7 @@
++from vllm.platforms import current_platform
+@@ -52,11 +53,15 @@ def _encoder_cudagraph_config(*, max_vision_items: int) -> dict:
+-@pytest.mark.parametrize("video_pruning_rate", [0.0, 0.75])
++@pytest.mark.parametrize(
++    "video_pruning_rate", [0.0] if current_platform.is_cpu() else [0.0, 0.75]
++)
+```
+
+- 已读文件:
+  - tests: `tests/models/multimodal/generation/test_qwen2_5_vl.py` modified +19/-6
+- 验证与风险: diff 自带测试面 `.buildkite/hardware_tests/cpu.yaml`, `tests/models/multimodal/generation/test_qwen2_5_vl.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #44863 - [BugFix] Initialize model_config for Qwen3-VL MoE
+
+- 链接: https://github.com/vllm-project/vllm/pull/44863
+- 状态/时间: merged / 2026-07-13
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_vl_moe.py`；关联提交 `9a21f0d1a314`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-0，可读 patch 8 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[BugFix] Initialize model_config for Qwen3-VL MoE」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_vl_moe.py`；技术摘要: 覆盖「[BugFix] Initialize model_config for Qwen3-VL MoE」；主要实现面是 `vllm/model_executor/models/qwen3_vl_moe.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen3_vl_moe.py` modified +1/-0 (1 lines); hunks: -216,6 +216,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__，涉及 `__init__`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen3_vl_moe.py` modified +1/-0 (1 lines); hunks: -216,6 +216,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_vl_moe.py
+@@ -216,6 +216,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = ""):
++        self.model_config = vllm_config.model_config
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen3_vl_moe.py` modified +1/-0
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen3_vl_moe.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #46213 - [Bugfix][Multimodal] Fix Qwen3-Omni use_audio_in_video with mixed image/video inputs
+
+- 链接: https://github.com/vllm-project/vllm/pull/46213
+- 状态/时间: merged / 2026-07-17
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/processing/test_qwen2_5_omni_embed.py`, `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；关联提交 `69d4f5ef6323`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+266/-83，可读 patch 555 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix][Multimodal] Fix Qwen3-Omni use_audio_in_video with mixed image/video inputs」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `tests/models/multimodal/processing/test_qwen2_5_omni_embed.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`；技术摘要: 覆盖「[Bugfix][Multimodal] Fix Qwen3-Omni use_audio_in_video with mixed image/video inputs」；主要实现面是 `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `tests/models/multimodal/processing/test_qwen2_5_omni_embed.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +77/-66 (143 lines); hunks: -138,42 +138,44 @@ def check_interleaved_audio_video(; -182,58 +184,69 @@ def merge_interleaved_embeddings(; symbols: check_interleaved_audio_video, merge_interleaved_embeddings, _merge_embedding_group, embed_input_ids，涉及 `check_interleaved_audio_video, merge_interleaved_embeddings, _merge_embedding_group`；`tests/models/multimodal/processing/test_qwen2_5_omni_embed.py` modified +87/-7 (94 lines); hunks: -19,6 +19,7; -27,6 +28,10; symbols: _mm_embed, test_interleaved, test_multi_video_with_boundary_tokens, test_batched_non_interleaved_no_false_positive，涉及 `_mm_embed, test_interleaved, test_multi_video_with_boundary_tokens`；`vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +5/-5 (10 lines); hunks: -1833,9 +1833,11 @@ def embed_input_ids(; -1856,9 +1858,9 @@ def embed_input_ids(; symbols: embed_input_ids，涉及 `embed_input_ids`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +77/-66 (143 lines); hunks: -138,42 +138,44 @@ def check_interleaved_audio_video(; -182,58 +184,69 @@ def merge_interleaved_embeddings(; symbols: check_interleaved_audio_video, merge_interleaved_embeddings, _merge_embedding_group, embed_input_ids
+  - `tests/models/multimodal/processing/test_qwen2_5_omni_embed.py` modified +87/-7 (94 lines); hunks: -19,6 +19,7; -27,6 +28,10; symbols: _mm_embed, test_interleaved, test_multi_video_with_boundary_tokens, test_batched_non_interleaved_no_false_positive
+  - `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +5/-5 (10 lines); hunks: -1833,9 +1833,11 @@ def embed_input_ids(; -1856,9 +1858,9 @@ def embed_input_ids(; symbols: embed_input_ids
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_5_omni_thinker.py
+@@ -138,42 +138,44 @@ def check_interleaved_audio_video(
+-    Check if video and audio positions are interleaved in the multimodal region.
+-    Returns True only for the use_audio_in_video=True case, where video and
+-    audio tokens alternate within a single contiguous region with no gaps.
+-    A simple range-overlap check produces false positives when multiple
+-    non-interleaved requests are batched together: audio tokens from request N
+-    fall between video tokens from request N and request N+1, making the
+diff -- tests/models/multimodal/processing/test_qwen2_5_omni_embed.py
+@@ -19,6 +19,7 @@
++from vllm.multimodal.utils import set_mm_embedding_modality
+@@ -27,6 +28,10 @@
++def _mm_embed(shape: tuple[int, ...], value: float, modality: str) -> torch.Tensor:
++    return set_mm_embedding_modality(torch.full(shape, value), modality)
+@@ -116,6 +121,24 @@ def test_interleaved(self):
++    def test_multi_video_with_boundary_tokens(self):
+diff -- vllm/model_executor/models/qwen3_omni_moe_thinker.py
+@@ -1833,9 +1833,11 @@ def embed_input_ids(
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +77/-66; `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +5/-5
+  - tests: `tests/models/multimodal/processing/test_qwen2_5_omni_embed.py` modified +87/-7
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/processing/test_qwen2_5_omni_embed.py`, `tests/v1/worker/test_encoder_runner.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #49015 - [Bugfix] Qwen3-VL/Qwen-Omni: honor max_pixels/min_pixels for video prompts
+
+- 链接: https://github.com/vllm-project/vllm/pull/49015
+- 状态/时间: merged / 2026-07-18
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen3_vl.py`；关联提交 `7c2acd38b72d`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+30/-0，可读 patch 44 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] Qwen3-VL/Qwen-Omni: honor max_pixels/min_pixels for video prompts」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen3_vl.py`；技术摘要: 覆盖「[Bugfix] Qwen3-VL/Qwen-Omni: honor max_pixels/min_pixels for video prompts」；主要实现面是 `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen3_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +17/-0 (17 lines); hunks: -509,6 +509,23 @@ def _call_hf_processor(; symbols: _call_hf_processor，涉及 `_call_hf_processor`；`vllm/model_executor/models/qwen3_vl.py` modified +13/-0 (13 lines); hunks: -1272,6 +1272,19 @@ def _call_hf_processor(; symbols: _call_hf_processor，涉及 `_call_hf_processor`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +17/-0 (17 lines); hunks: -509,6 +509,23 @@ def _call_hf_processor(; symbols: _call_hf_processor
+  - `vllm/model_executor/models/qwen3_vl.py` modified +13/-0 (13 lines); hunks: -1272,6 +1272,19 @@ def _call_hf_processor(; symbols: _call_hf_processor
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_5_omni_thinker.py
+@@ -509,6 +509,23 @@ def _call_hf_processor(
++        merged = self.info.ctx.get_merged_mm_kwargs(mm_kwargs)
++        if mm_data.get("videos") and (
++            merged.keys() & {"size", "min_pixels", "max_pixels"}
++        ):
++            mm_kwargs = dict(mm_kwargs)
++            video_size = dict(self.info.get_hf_processor().video_processor.size)
+diff -- vllm/model_executor/models/qwen3_vl.py
+@@ -1272,6 +1272,19 @@ def _call_hf_processor(
++                merged = self.info.ctx.get_merged_mm_kwargs(mm_kwargs)
++                if merged.keys() & {"size", "min_pixels", "max_pixels"}:
++                    video_size = dict(self.info.get_video_processor().size)
++                    size_override = merged.get("size")
++                    if size_override is not None:
++                        video_size = video_size | size_override
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +17/-0; `vllm/model_executor/models/qwen3_vl.py` modified +13/-0
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen3_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ## 补漏结论
 

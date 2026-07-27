@@ -4,7 +4,6 @@
 
 | File | Git-traced PRs |
 | --- | --- |
-| `docs/basic_usage/qwen3_vl.md` | [#12554](https://github.com/sgl-project/sglang/pull/12554) |
 | `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` | [#23907](https://github.com/sgl-project/sglang/pull/23907), [#23968](https://github.com/sgl-project/sglang/pull/23968), [#23998](https://github.com/sgl-project/sglang/pull/23998), [#25198](https://github.com/sgl-project/sglang/pull/25198) |
 | `docs_new/cookbook/omni/FishAudio/S2-Pro.mdx` | no direct PR-number commit |
 | `docs_new/cookbook/omni/intro.mdx` | no direct PR-number commit |
@@ -42,8 +41,8 @@
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 50
-- Extra PRs preserved from existing docs: 51
+- Git-traced PRs: 49
+- Extra PRs preserved from existing docs: 52
 - Total PRs in this document: 101
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
@@ -69,7 +68,7 @@
 | 2025-10-28 | [#12261](https://github.com/sgl-project/sglang/pull/12261) | open | [BugFix][Qwen2.5-VL]: fix cu_seqlens in qwen2.5-vl | `python/sglang/srt/models/qwen2_5_vl.py` |
 | 2025-11-05 | [#12703](https://github.com/sgl-project/sglang/pull/12703) | open | add qwen3-omni docs | `docs/basic_usage/qwen3_omni.md`, `docs/index.rst` |
 | 2025-11-06 | [#12240](https://github.com/sgl-project/sglang/pull/12240) | merged | [VLM] Optimize qwen_vl preprocess_video | `python/sglang/srt/multimodal/processors/qwen_vl.py` |
-| 2025-11-10 | [#12554](https://github.com/sgl-project/sglang/pull/12554) | merged | [Docs] Add docs for Qwen3-VL image and video support | `docs/basic_usage/qwen3_vl.md` |
+| 2025-11-10 | [#12554](https://github.com/sgl-project/sglang/pull/12554) | merged | [Docs] Add docs for Qwen3-VL image and video support | `docs/basic_usage/qwen3_vl.md`, `docs/index.rst` |
 | 2025-11-12 | [#12458](https://github.com/sgl-project/sglang/pull/12458) | merged | fix: duplicate resize images logic of qwen-vl series models | `python/sglang/srt/multimodal/processors/qwen_vl.py` |
 | 2025-11-12 | [#13075](https://github.com/sgl-project/sglang/pull/13075) | merged | [VLM] Support PP for Qwen2.5-VL | `python/sglang/srt/models/qwen2_5_vl.py` |
 | 2025-11-18 | [#13126](https://github.com/sgl-project/sglang/pull/13126) | merged | [VLM][feat] Support encoder DP for Qwen2.5-VL | `python/sglang/srt/models/qwen2_5_vl.py` |
@@ -723,12 +722,13 @@ diff -- python/sglang/srt/multimodal/processors/qwen_vl.py
 
 - Link: https://github.com/sgl-project/sglang/pull/12554
 - Status/date: merged / 2025-11-10
-- Trace source: `git log --name-only -- <model-files>` found it through `docs/basic_usage/qwen3_vl.md`; associated commits `583bb1804e4c`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +131/-0, 139 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Docs] Add docs for Qwen3-VL image and video support"; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `docs/basic_usage/qwen3_vl.md`; technical summary: Covers "[Docs] Add docs for Qwen3-VL image and video support"; the main implementation surface is `docs/basic_usage/qwen3_vl.md`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs/basic_usage/qwen3_vl.md` added +130/-0 (130 lines); hunks: -0,0 +1,130.
+- Motivation: Title: "[Docs] Add docs for Qwen3-VL image and video support"; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `docs/basic_usage/qwen3_vl.md`, `docs/index.rst`; technical summary: Covers "[Docs] Add docs for Qwen3-VL image and video support"; the main implementation surface is `docs/basic_usage/qwen3_vl.md`, `docs/index.rst`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs/basic_usage/qwen3_vl.md` added +130/-0 (130 lines); hunks: -0,0 +1,130; `docs/index.rst` modified +1/-0 (1 lines); hunks: -31,6 +31,7 @@ Its core features include:.
 - Code diff details:
   - `docs/basic_usage/qwen3_vl.md` added +130/-0 (130 lines); hunks: -0,0 +1,130
+  - `docs/index.rst` modified +1/-0 (1 lines); hunks: -31,6 +31,7 @@ Its core features include:
 - Key code excerpts:
 
 ```diff
@@ -740,10 +740,13 @@ diff -- docs/basic_usage/qwen3_vl.md
 +SGLang supports Qwen3-VL Family of models with Image and Video input support.
 +## Launch commands for SGLang
 +Below are suggested launch commands tailored for different hardware / precision modes
+diff -- docs/index.rst
+@@ -31,6 +31,7 @@ Its core features include:
++   basic_usage/qwen3_vl.md
 ```
 
 - Reviewed files:
-  - docs: `docs/basic_usage/qwen3_vl.md` added +130/-0
+  - docs: `docs/basic_usage/qwen3_vl.md` added +130/-0; `docs/index.rst` modified +1/-0
 - Risk and verification: This is mostly docs/examples in `docs/basic_usage/qwen3_vl.md`, `docs/index.rst`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #12458 - fix: duplicate resize images logic of qwen-vl series models

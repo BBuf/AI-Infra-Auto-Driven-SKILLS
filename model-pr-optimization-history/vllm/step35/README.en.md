@@ -20,9 +20,9 @@
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 1
-- Extra PRs preserved from existing docs: 11
-- Total PRs in this document: 5
+- Git-traced PRs: 6
+- Extra PRs preserved from existing docs: 4
+- Total PRs in this document: 10
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -30,6 +30,11 @@
 
 | Date | PR | State | Title | Main files |
 | --- | --- | --- | --- | --- |
+| 2026-02-02 | [#33523](https://github.com/vllm-project/vllm/pull/33523) | merged | [Models] Step-3.5-Flash | `vllm/tool_parsers/step3p5_tool_parser.py`, `vllm/model_executor/models/step3p5.py`, `vllm/model_executor/models/step3p5_mtp.py` |
+| 2026-02-05 | [#33690](https://github.com/vllm-project/vllm/pull/33690) | merged | [Bugfix] Fix step3p5 parser when using mtp | `tests/tool_parsers/test_step3p5_tool_parser.py`, `vllm/tool_parsers/step3p5_tool_parser.py` |
+| 2026-02-07 | [#33755](https://github.com/vllm-project/vllm/pull/33755) | merged | [Model] Enable Step3p5ForCausalLM testing | `vllm/model_executor/models/step3p5.py` |
+| 2026-02-22 | [#34478](https://github.com/vllm-project/vllm/pull/34478) | merged | [Model] Add NVFP4 quantization support for Step3.5-Flash | `vllm/model_executor/models/step3p5.py` |
+| 2026-02-25 | [#34211](https://github.com/vllm-project/vllm/pull/34211) | merged | [Bugfix] Fix step3p5 reasoning with interleaved thinking | `tests/reasoning/test_step3p5_reasoning_parser.py`, `vllm/reasoning/step3p5_reasoning_parser.py` |
 | 2026-05-13 | [#41892](https://github.com/vllm-project/vllm/pull/41892) | merged | [Bugfix][Quark] Fix W8A8 INT8 garbage outputs on Step-3.5-Flash (and other 3-key fused-MoE Quark exports) | `vllm/model_executor/models/step3p5.py` |
 | 2026-05-18 | [#42224](https://github.com/vllm-project/vllm/pull/42224) | merged | [MM][CG] Enable encoder Cudagraph for Step3VL | `vllm/model_executor/models/step3_vl.py`, `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/utils.py` |
 | 2026-06-03 | [#44346](https://github.com/vllm-project/vllm/pull/44346) | merged | [Refactor] Suppress SyntaxWarning from ast.literal_eval in tool parsers | `vllm/tool_parsers/utils.py`, `vllm/tool_parsers/hy_v3_tool_parser.py`, `vllm/tool_parsers/minicpm5xml_tool_parser.py` |
@@ -38,11 +43,180 @@
 
 ## Per-PR Diff Audit Cards
 
+### PR #33523 - [Models] Step-3.5-Flash
+
+- Link: https://github.com/vllm-project/vllm/pull/33523
+- Status/date: merged / 2026-02-02
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/step3p5.py`, `vllm/model_executor/models/step3p5_mtp.py`, `vllm/reasoning/step3p5_reasoning_parser.py`, `vllm/tool_parsers/step3p5_tool_parser.py`, `vllm/transformers_utils/configs/step3p5.py`; associated commits `c3b40dc3e74d`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 18 files, +3107/-4, 3270 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Models] Step-3.5-Flash"; model line: Step 3.5; category: performance/backend optimization; main diff: `vllm/tool_parsers/step3p5_tool_parser.py`, `vllm/model_executor/models/step3p5.py`, `vllm/model_executor/models/step3p5_mtp.py`; technical summary: Covers "[Models] Step-3.5-Flash"; the main implementation surface is `vllm/tool_parsers/step3p5_tool_parser.py`, `vllm/model_executor/models/step3p5.py`, `vllm/model_executor/models/step3p5_mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/tool_parsers/step3p5_tool_parser.py` added +1511/-0 (1511 lines); hunks: -0,0 +1,1511; symbols: StreamingXMLToolCallParser, __init__, reset_streaming_state, parse_single_streaming_chunks, touching `StreamingXMLToolCallParser, __init__, reset_streaming_state`; `vllm/model_executor/models/step3p5.py` added +894/-0 (894 lines); hunks: -0,0 +1,894; symbols: FP32ReplicatedLinear, forward, Step3p5MLP, __init__, touching `FP32ReplicatedLinear, forward, Step3p5MLP`; `vllm/model_executor/models/step3p5_mtp.py` added +315/-0 (315 lines); hunks: -0,0 +1,315; symbols: SharedHead, __init__, forward, Step3p5AMultiTokenPredictorLayer, touching `SharedHead, __init__, forward`; `vllm/reasoning/step3p5_reasoning_parser.py` added +153/-0 (153 lines); hunks: -0,0 +1,153; symbols: Step3p5ReasoningParser, start_token, end_token, __init__, touching `Step3p5ReasoningParser, start_token, end_token`.
+- Code diff details:
+  - `vllm/tool_parsers/step3p5_tool_parser.py` added +1511/-0 (1511 lines); hunks: -0,0 +1,1511; symbols: StreamingXMLToolCallParser, __init__, reset_streaming_state, parse_single_streaming_chunks
+  - `vllm/model_executor/models/step3p5.py` added +894/-0 (894 lines); hunks: -0,0 +1,894; symbols: FP32ReplicatedLinear, forward, Step3p5MLP, __init__
+  - `vllm/model_executor/models/step3p5_mtp.py` added +315/-0 (315 lines); hunks: -0,0 +1,315; symbols: SharedHead, __init__, forward, Step3p5AMultiTokenPredictorLayer
+  - `vllm/reasoning/step3p5_reasoning_parser.py` added +153/-0 (153 lines); hunks: -0,0 +1,153; symbols: Step3p5ReasoningParser, start_token, end_token, __init__
+  - `vllm/transformers_utils/configs/step3p5.py` added +100/-0 (100 lines); hunks: -0,0 +1,100; symbols: Step3p5Config, __init__
+- Key code excerpts:
+
+```diff
+diff -- vllm/tool_parsers/step3p5_tool_parser.py
+@@ -0,0 +1,1511 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++import ast
++import json
++from collections.abc import Sequence
++from typing import Any
+diff -- vllm/model_executor/models/step3p5.py
+@@ -0,0 +1,894 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++"""Inference-only Jurassic model."""
++from collections.abc import Iterable
++from typing import Any
++import torch
+diff -- vllm/model_executor/models/step3p5_mtp.py
+@@ -0,0 +1,315 @@
+```
+
+- Reviewed files:
+  - runtime: `vllm/tool_parsers/step3p5_tool_parser.py` added +1511/-0; `vllm/model_executor/models/step3p5.py` added +894/-0; `vllm/model_executor/models/step3p5_mtp.py` added +315/-0; `vllm/reasoning/step3p5_reasoning_parser.py` added +153/-0; `vllm/transformers_utils/configs/step3p5.py` added +100/-0
+- Risk and verification: The diff ships test coverage in `tests/kernels/core/test_activation.py`, `tests/models/registry.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #33690 - [Bugfix] Fix step3p5 parser when using mtp
+
+- Link: https://github.com/vllm-project/vllm/pull/33690
+- Status/date: merged / 2026-02-05
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_step3p5_tool_parser.py`, `vllm/tool_parsers/step3p5_tool_parser.py`; associated commits `82914d2ae8d0`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +1455/-5, 1508 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Bugfix] Fix step3p5 parser when using mtp"; model line: Step 3.5; category: bug fix; main diff: `tests/tool_parsers/test_step3p5_tool_parser.py`, `vllm/tool_parsers/step3p5_tool_parser.py`; technical summary: Covers "[Bugfix] Fix step3p5 parser when using mtp"; the main implementation surface is `tests/tool_parsers/test_step3p5_tool_parser.py`, `vllm/tool_parsers/step3p5_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/tool_parsers/test_step3p5_tool_parser.py` added +1435/-0 (1435 lines); hunks: -0,0 +1,1435; symbols: step3p5_tokenizer, step3p5_tool_parser, sample_tools, assert_tool_calls, touching `step3p5_tokenizer, step3p5_tool_parser, sample_tools`; `vllm/tool_parsers/step3p5_tool_parser.py` modified +20/-5 (25 lines); hunks: -97,11 +97,26 @@ def parse_single_streaming_chunks(self, xml_chunk: str) -> D...; -110,7 +125,7 @@ def parse_single_streaming_chunks(self, xml_chunk: str) -> D...; symbols: parse_single_streaming_chunks, touching `parse_single_streaming_chunks`.
+- Code diff details:
+  - `tests/tool_parsers/test_step3p5_tool_parser.py` added +1435/-0 (1435 lines); hunks: -0,0 +1,1435; symbols: step3p5_tokenizer, step3p5_tool_parser, sample_tools, assert_tool_calls
+  - `vllm/tool_parsers/step3p5_tool_parser.py` modified +20/-5 (25 lines); hunks: -97,11 +97,26 @@ def parse_single_streaming_chunks(self, xml_chunk: str) -> D...; -110,7 +125,7 @@ def parse_single_streaming_chunks(self, xml_chunk: str) -> D...; symbols: parse_single_streaming_chunks
+- Key code excerpts:
+
+```diff
+diff -- tests/tool_parsers/test_step3p5_tool_parser.py
+@@ -0,0 +1,1435 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++import json
++from collections.abc import Generator
++import pytest
++from vllm.entrypoints.openai.chat_completion.protocol import (
+diff -- vllm/tool_parsers/step3p5_tool_parser.py
+@@ -97,11 +97,26 @@ def parse_single_streaming_chunks(self, xml_chunk: str) -> DeltaMessage:
++        entry_call_id = self.current_call_id
++        entry_tool_call_index = self.tool_call_index
++        fallback_call_id = None
++        if entry_call_id is not None:
++            if (
++                self.current_call_id == entry_call_id
+```
+
+- Reviewed files:
+  - tests: `tests/tool_parsers/test_step3p5_tool_parser.py` added +1435/-0
+  - runtime: `vllm/tool_parsers/step3p5_tool_parser.py` modified +20/-5
+- Risk and verification: The diff ships test coverage in `tests/tool_parsers/test_step3p5_tool_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #33755 - [Model] Enable Step3p5ForCausalLM testing
+
+- Link: https://github.com/vllm-project/vllm/pull/33755
+- Status/date: merged / 2026-02-07
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/step3p5.py`; associated commits `db4ede974343`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +28/-32, 115 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Model] Enable Step3p5ForCausalLM testing"; model line: Step 3.5; category: docs/tests/CI; main diff: `vllm/model_executor/models/step3p5.py`; technical summary: Covers "[Model] Enable Step3p5ForCausalLM testing"; the main implementation surface is `vllm/model_executor/models/step3p5.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/step3p5.py` modified +12/-25 (37 lines); hunks: -36,7 +36,6; -770,37 +769,17 @@ def __init__(; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `vllm/model_executor/models/step3p5.py` modified +12/-25 (37 lines); hunks: -36,7 +36,6; -770,37 +769,17 @@ def __init__(; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/step3p5.py
+@@ -36,7 +36,6 @@
+-    DEFAULT_VOCAB_PADDING_SIZE,
+@@ -770,37 +769,17 @@ def __init__(
+-        lora_config = vllm_config.lora_config
+-        self.config = config
+-        self.vllm_config = vllm_config
+-        self.moe_layers: list[FusedMoEBlock] = []
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/step3p5.py` modified +12/-25
+- Risk and verification: The diff ships test coverage in `tests/models/registry.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #34478 - [Model] Add NVFP4 quantization support for Step3.5-Flash
+
+- Link: https://github.com/vllm-project/vllm/pull/34478
+- Status/date: merged / 2026-02-22
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/step3p5.py`; associated commits `b7892a3beff0`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 5 files, +204/-4, 291 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Model] Add NVFP4 quantization support for Step3.5-Flash"; model line: Step 3.5; category: performance/backend optimization; main diff: `vllm/model_executor/models/step3p5.py`; technical summary: Covers "[Model] Add NVFP4 quantization support for Step3.5-Flash"; the main implementation surface is `vllm/model_executor/models/step3p5.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/step3p5.py` modified +71/-1 (72 lines); hunks: -2,7 +2,8; -231,6 +232,7 @@ def __init__(; symbols: __init__, load_weights, touching `__init__, load_weights`.
+- Code diff details:
+  - `vllm/model_executor/models/step3p5.py` modified +71/-1 (72 lines); hunks: -2,7 +2,8; -231,6 +232,7 @@ def __init__(; symbols: __init__, load_weights
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/step3p5.py
+@@ -2,7 +2,8 @@
+-from collections.abc import Iterable
++import typing
++from collections.abc import Callable, Iterable
+@@ -231,6 +232,7 @@ def __init__(
++                quant_config=quant_config,
+@@ -640,12 +642,22 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Tensor]]) -> set[str]:
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/step3p5.py` modified +71/-1
+- Risk and verification: The diff ships test coverage in `tests/kernels/moe/test_nvfp4_moe.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #34211 - [Bugfix] Fix step3p5 reasoning with interleaved thinking
+
+- Link: https://github.com/vllm-project/vllm/pull/34211
+- Status/date: merged / 2026-02-25
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_step3p5_reasoning_parser.py`, `vllm/reasoning/step3p5_reasoning_parser.py`; associated commits `af5e6afa0af2`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +387/-14, 423 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Bugfix] Fix step3p5 reasoning with interleaved thinking"; model line: Step 3.5; category: bug fix; main diff: `tests/reasoning/test_step3p5_reasoning_parser.py`, `vllm/reasoning/step3p5_reasoning_parser.py`; technical summary: Covers "[Bugfix] Fix step3p5 reasoning with interleaved thinking"; the main implementation surface is `tests/reasoning/test_step3p5_reasoning_parser.py`, `vllm/reasoning/step3p5_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/reasoning/test_step3p5_reasoning_parser.py` added +341/-0 (341 lines); hunks: -0,0 +1,341; symbols: step3p5_tokenizer, test_reasoning, test_step3p5_streaming_drops_leading_newline, touching `step3p5_tokenizer, test_reasoning, test_step3p5_streaming_drops_leading_newline`; `vllm/reasoning/step3p5_reasoning_parser.py` modified +46/-14 (60 lines); hunks: -39,24 +39,59 @@ def __init__(self, tokenizer: TokenizerLike, *args, **kwargs):; -136,9 +171,6 @@ def extract_reasoning_streaming(; symbols: __init__, is_reasoning_end, is_reasoning_end_streaming, _is_reasoning_end_from_ids, touching `__init__, is_reasoning_end, is_reasoning_end_streaming`.
+- Code diff details:
+  - `tests/reasoning/test_step3p5_reasoning_parser.py` added +341/-0 (341 lines); hunks: -0,0 +1,341; symbols: step3p5_tokenizer, test_reasoning, test_step3p5_streaming_drops_leading_newline
+  - `vllm/reasoning/step3p5_reasoning_parser.py` modified +46/-14 (60 lines); hunks: -39,24 +39,59 @@ def __init__(self, tokenizer: TokenizerLike, *args, **kwargs):; -136,9 +171,6 @@ def extract_reasoning_streaming(; symbols: __init__, is_reasoning_end, is_reasoning_end_streaming, _is_reasoning_end_from_ids
+- Key code excerpts:
+
+```diff
+diff -- tests/reasoning/test_step3p5_reasoning_parser.py
+@@ -0,0 +1,341 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++import pytest
++from transformers import AutoTokenizer
++from tests.reasoning.utils import run_reasoning_extraction
++from vllm.reasoning import ReasoningParser, ReasoningParserManager
+diff -- vllm/reasoning/step3p5_reasoning_parser.py
+@@ -39,24 +39,59 @@ def __init__(self, tokenizer: TokenizerLike, *args, **kwargs):
+-        # Used to delay the reasoning end detection.
+-        # This is necessary to remove the newline appears immediately after </think>,
+-        # which may cause the end detection to be delayed by one round.
+-        self.end_offset = 1
++        # Tracks whether we've seen </think> but are still waiting for one more
++        # token to confirm the end.
+```
+
+- Reviewed files:
+  - tests: `tests/reasoning/test_step3p5_reasoning_parser.py` added +341/-0
+  - runtime: `vllm/reasoning/step3p5_reasoning_parser.py` modified +46/-14
+- Risk and verification: The diff ships test coverage in `tests/reasoning/test_step3p5_reasoning_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
 ### PR #41892 - [Bugfix][Quark] Fix W8A8 INT8 garbage outputs on Step-3.5-Flash (and other 3-key fused-MoE Quark exports)
 
 - Link: https://github.com/vllm-project/vllm/pull/41892
 - Status/date: merged / 2026-05-13
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/step3p5.py`; associated commits `3b1ef03be4a3`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/step3p5.py`; associated commits `3b1ef03be4a3`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +46/-4, 97 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix][Quark] Fix W8A8 INT8 garbage outputs on Step-3.5-Flash (and other 3-key fused-MoE Quark exports)"; model line: Step 3.5; category: bug fix; main diff: `vllm/model_executor/models/step3p5.py`; technical summary: Covers "[Bugfix][Quark] Fix W8A8 INT8 garbage outputs on Step-3.5-Flash (and other 3-key fused-MoE Quark exports)"; the main implementation surface is `vllm/model_executor/models/step3p5.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/step3p5.py` modified +6/-0 (6 lines); hunks: -817,6 +817,12 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; symbols: load_weights, Step3p5ForCausalLM, touching `load_weights, Step3p5ForCausalLM`.

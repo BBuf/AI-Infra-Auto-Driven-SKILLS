@@ -4,7 +4,6 @@
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
-| `docs/basic_usage/qwen3_vl.md` | [#12554](https://github.com/sgl-project/sglang/pull/12554) |
 | `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` | [#23907](https://github.com/sgl-project/sglang/pull/23907), [#23968](https://github.com/sgl-project/sglang/pull/23968), [#23998](https://github.com/sgl-project/sglang/pull/23998), [#25198](https://github.com/sgl-project/sglang/pull/25198) |
 | `docs_new/cookbook/omni/FishAudio/S2-Pro.mdx` | 无直接 PR 号提交 |
 | `docs_new/cookbook/omni/intro.mdx` | 无直接 PR 号提交 |
@@ -42,8 +41,8 @@
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 50
-- 原文档显式引用补充 PR 数: 51
+- git 追溯 PR 数: 49
+- 原文档显式引用补充 PR 数: 52
 - 当前文档总 PR 数: 101
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
@@ -69,7 +68,7 @@
 | 2025-10-28 | [#12261](https://github.com/sgl-project/sglang/pull/12261) | open | [BugFix][Qwen2.5-VL]: fix cu_seqlens in qwen2.5-vl | `python/sglang/srt/models/qwen2_5_vl.py` |
 | 2025-11-05 | [#12703](https://github.com/sgl-project/sglang/pull/12703) | open | add qwen3-omni docs | `docs/basic_usage/qwen3_omni.md`, `docs/index.rst` |
 | 2025-11-06 | [#12240](https://github.com/sgl-project/sglang/pull/12240) | merged | [VLM] Optimize qwen_vl preprocess_video | `python/sglang/srt/multimodal/processors/qwen_vl.py` |
-| 2025-11-10 | [#12554](https://github.com/sgl-project/sglang/pull/12554) | merged | [Docs] Add docs for Qwen3-VL image and video support | `docs/basic_usage/qwen3_vl.md` |
+| 2025-11-10 | [#12554](https://github.com/sgl-project/sglang/pull/12554) | merged | [Docs] Add docs for Qwen3-VL image and video support | `docs/basic_usage/qwen3_vl.md`, `docs/index.rst` |
 | 2025-11-12 | [#12458](https://github.com/sgl-project/sglang/pull/12458) | merged | fix: duplicate resize images logic of qwen-vl series models | `python/sglang/srt/multimodal/processors/qwen_vl.py` |
 | 2025-11-12 | [#13075](https://github.com/sgl-project/sglang/pull/13075) | merged | [VLM] Support PP for Qwen2.5-VL | `python/sglang/srt/models/qwen2_5_vl.py` |
 | 2025-11-18 | [#13126](https://github.com/sgl-project/sglang/pull/13126) | merged | [VLM][feat] Support encoder DP for Qwen2.5-VL | `python/sglang/srt/models/qwen2_5_vl.py` |
@@ -723,12 +722,13 @@ diff -- python/sglang/srt/multimodal/processors/qwen_vl.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/12554
 - 状态/时间: merged / 2025-11-10
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/basic_usage/qwen3_vl.md`；关联提交 `583bb1804e4c`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+131/-0，可读 patch 139 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Docs] Add docs for Qwen3-VL image and video support」；模型线: Qwen VLM/Omni/ASR；类别: 文档/测试/CI；主要 diff: `docs/basic_usage/qwen3_vl.md`；技术摘要: 覆盖「[Docs] Add docs for Qwen3-VL image and video support」；主要实现面是 `docs/basic_usage/qwen3_vl.md`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `docs/basic_usage/qwen3_vl.md` added +130/-0 (130 lines); hunks: -0,0 +1,130。
+- 动机: 标题「[Docs] Add docs for Qwen3-VL image and video support」；模型线: Qwen VLM/Omni/ASR；类别: 文档/测试/CI；主要 diff: `docs/basic_usage/qwen3_vl.md`, `docs/index.rst`；技术摘要: 覆盖「[Docs] Add docs for Qwen3-VL image and video support」；主要实现面是 `docs/basic_usage/qwen3_vl.md`, `docs/index.rst`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs/basic_usage/qwen3_vl.md` added +130/-0 (130 lines); hunks: -0,0 +1,130；`docs/index.rst` modified +1/-0 (1 lines); hunks: -31,6 +31,7 @@ Its core features include:。
 - 代码 diff 细节:
   - `docs/basic_usage/qwen3_vl.md` added +130/-0 (130 lines); hunks: -0,0 +1,130
+  - `docs/index.rst` modified +1/-0 (1 lines); hunks: -31,6 +31,7 @@ Its core features include:
 - 关键代码摘录:
 
 ```diff
@@ -740,10 +740,13 @@ diff -- docs/basic_usage/qwen3_vl.md
 +SGLang supports Qwen3-VL Family of models with Image and Video input support.
 +## Launch commands for SGLang
 +Below are suggested launch commands tailored for different hardware / precision modes
+diff -- docs/index.rst
+@@ -31,6 +31,7 @@ Its core features include:
++   basic_usage/qwen3_vl.md
 ```
 
 - 已读文件:
-  - docs: `docs/basic_usage/qwen3_vl.md` added +130/-0
+  - docs: `docs/basic_usage/qwen3_vl.md` added +130/-0; `docs/index.rst` modified +1/-0
 - 验证与风险: 该 PR 主要落在文档/示例 `docs/basic_usage/qwen3_vl.md`, `docs/index.rst`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
 ### PR #12458 - fix: duplicate resize images logic of qwen-vl series models

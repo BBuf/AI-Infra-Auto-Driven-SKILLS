@@ -4,7 +4,6 @@
 
 | File | Git-traced PRs |
 | --- | --- |
-| `docs/basic_usage/llama4.md` | [#13421](https://github.com/sgl-project/sglang/pull/13421) |
 | `docs_new/cookbook/autoregressive/Llama/Llama4.mdx` | no direct PR-number commit |
 | `docs_new/src/snippets/autoregressive/llama4-maverick-deployment.jsx` | no direct PR-number commit |
 | `docs_new/src/snippets/autoregressive/llama4-scout-deployment.jsx` | no direct PR-number commit |
@@ -19,8 +18,8 @@
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 29
-- Extra PRs preserved from existing docs: 5
+- Git-traced PRs: 28
+- Extra PRs preserved from existing docs: 6
 - Total PRs in this document: 34
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
@@ -53,7 +52,7 @@
 | 2025-10-07 | [#11282](https://github.com/sgl-project/sglang/pull/11282) | merged | fix: correct scale parameter remapping logic in Llama4ForConditionalGeneration | `python/sglang/srt/models/mllama4.py` |
 | 2025-10-31 | [#12405](https://github.com/sgl-project/sglang/pull/12405) | merged | Fix the shared expert & routed expert overlap in Llama 4 | `python/sglang/srt/models/llama4.py` |
 | 2025-11-08 | [#12811](https://github.com/sgl-project/sglang/pull/12811) | merged | use fast stream instead of torch.cuda.current_stream in llama 4 shared experts overlap | `python/sglang/srt/models/llama4.py` |
-| 2025-11-25 | [#13421](https://github.com/sgl-project/sglang/pull/13421) | merged | Add Llama4 attention backend auto-selection | `docs/basic_usage/llama4.md` |
+| 2025-11-25 | [#13421](https://github.com/sgl-project/sglang/pull/13421) | merged | Add Llama4 attention backend auto-selection | `python/sglang/srt/server_args.py`, `docs/basic_usage/llama4.md` |
 | 2026-01-07 | [#16599](https://github.com/sgl-project/sglang/pull/16599) | merged | ci: adding llama4 placeholder test to nightly | `test/registered/8-gpu-models/test_llama4.py` |
 | 2026-01-14 | [#16971](https://github.com/sgl-project/sglang/pull/16971) | merged | fix: renaming test file and job names + skip blocking llama4 nightly | `test/registered/8-gpu-models/test_llama4.py` |
 | 2026-01-30 | [#12813](https://github.com/sgl-project/sglang/pull/12813) | merged | add weightless qk norm to RMSNorm interface for Llama 4 | `python/sglang/srt/models/llama4.py` |
@@ -748,15 +747,24 @@ diff -- python/sglang/srt/models/llama4.py
 
 - Link: https://github.com/sgl-project/sglang/pull/13421
 - Status/date: merged / 2025-11-25
-- Trace source: `git log --name-only -- <model-files>` found it through `docs/basic_usage/llama4.md`; associated commits `fcccaf9001ab`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +24/-5, 50 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Add Llama4 attention backend auto-selection"; model line: Llama 4; category: docs/tests/CI; main diff: `docs/basic_usage/llama4.md`; technical summary: Covers "Add Llama4 attention backend auto-selection"; the main implementation surface is `docs/basic_usage/llama4.md`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs/basic_usage/llama4.md` modified +9/-0 (9 lines); hunks: -21,6 +21,15 @@ python3 -m sglang.launch_server \.
+- Motivation: Title: "Add Llama4 attention backend auto-selection"; model line: Llama 4; category: docs/tests/CI; main diff: `python/sglang/srt/server_args.py`, `docs/basic_usage/llama4.md`; technical summary: Covers "Add Llama4 attention backend auto-selection"; the main implementation surface is `python/sglang/srt/server_args.py`, `docs/basic_usage/llama4.md`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/server_args.py` modified +15/-5 (20 lines); hunks: -1027,18 +1027,28 @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments, touching `_handle_model_specific_adjustments`; `docs/basic_usage/llama4.md` modified +9/-0 (9 lines); hunks: -21,6 +21,15 @@ python3 -m sglang.launch_server \.
 - Code diff details:
+  - `python/sglang/srt/server_args.py` modified +15/-5 (20 lines); hunks: -1027,18 +1027,28 @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments
   - `docs/basic_usage/llama4.md` modified +9/-0 (9 lines); hunks: -21,6 +21,15 @@ python3 -m sglang.launch_server \
 - Key code excerpts:
 
 ```diff
+diff -- python/sglang/srt/server_args.py
+@@ -1027,18 +1027,28 @@ def _handle_model_specific_adjustments(self):
++            # Auto-select attention backend for Llama4 if not specified
++            if self.attention_backend is None:
++                if is_sm100_supported():
++                    self.attention_backend, platform = "trtllm_mha", "sm100"
++                elif is_sm90_supported():
++                    self.attention_backend, platform = "fa3", "sm90"
 diff -- docs/basic_usage/llama4.md
 @@ -21,6 +21,15 @@ python3 -m sglang.launch_server \
 +- **Attention Backend Auto-Selection**: SGLang automatically selects the optimal attention backend for Llama 4 based on your hardware. You typically don't need to specify `--atten
@@ -768,6 +776,7 @@ diff -- docs/basic_usage/llama4.md
 ```
 
 - Reviewed files:
+  - runtime: `python/sglang/srt/server_args.py` modified +15/-5
   - docs: `docs/basic_usage/llama4.md` modified +9/-0
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/server_args.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 

@@ -6,16 +6,16 @@
 | --- | --- |
 | `tests/reasoning/test_glm4_moe_reasoning_parser.py` | no direct PR-number commit |
 | `tests/tool_parsers/test_glm4_moe_tool_parser.py` | [#39601](https://github.com/vllm-project/vllm/pull/39601) |
-| `vllm/model_executor/models/glm4_moe.py` | [#21435](https://github.com/vllm-project/vllm/pull/21435), [#22143](https://github.com/vllm-project/vllm/pull/22143), [#22203](https://github.com/vllm-project/vllm/pull/22203), [#22460](https://github.com/vllm-project/vllm/pull/22460), [#22520](https://github.com/vllm-project/vllm/pull/22520), [#22832](https://github.com/vllm-project/vllm/pull/22832), [#24849](https://github.com/vllm-project/vllm/pull/24849), [#25830](https://github.com/vllm-project/vllm/pull/25830), [#41755](https://github.com/vllm-project/vllm/pull/41755) |
+| `vllm/model_executor/models/glm4_moe.py` | [#21435](https://github.com/vllm-project/vllm/pull/21435), [#22143](https://github.com/vllm-project/vllm/pull/22143), [#22203](https://github.com/vllm-project/vllm/pull/22203), [#22460](https://github.com/vllm-project/vllm/pull/22460), [#22520](https://github.com/vllm-project/vllm/pull/22520), [#22832](https://github.com/vllm-project/vllm/pull/22832), [#24849](https://github.com/vllm-project/vllm/pull/24849), [#25830](https://github.com/vllm-project/vllm/pull/25830), [#41755](https://github.com/vllm-project/vllm/pull/41755), [#44313](https://github.com/vllm-project/vllm/pull/44313) |
 | `vllm/model_executor/models/glm4_moe_lite.py` | no direct PR-number commit |
 | `vllm/model_executor/models/glm4_moe_lite_mtp.py` | no direct PR-number commit |
-| `vllm/model_executor/models/glm4_moe_mtp.py` | [#27597](https://github.com/vllm-project/vllm/pull/27597), [#28805](https://github.com/vllm-project/vllm/pull/28805) |
+| `vllm/model_executor/models/glm4_moe_mtp.py` | [#27597](https://github.com/vllm-project/vllm/pull/27597), [#28805](https://github.com/vllm-project/vllm/pull/28805), [#44313](https://github.com/vllm-project/vllm/pull/44313) |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 12
+- Git-traced PRs: 13
 - Extra PRs preserved from existing docs: 43
-- Total PRs in this document: 55
+- Total PRs in this document: 56
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -78,6 +78,7 @@
 | 2026-06-08 | [#41184](https://github.com/vllm-project/vllm/pull/41184) | merged | [MoE Refactor] FusedMoE/MoERunner inversion refactor | `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/routed_experts.py`, `vllm/model_executor/layers/fused_moe/runner/moe_runner.py` |
 | 2026-06-18 | [#45915](https://github.com/vllm-project/vllm/pull/45915) | merged | [Frontend] Add Streaming Parser Engine and new GLM4.7/GLM5.1/GLM5.2 Parser | `tests/tool_parsers/test_glm4_moe_tool_parser.py`, `vllm/tool_parsers/glm4_moe_tool_parser.py`, `tests/reasoning/test_glm4_moe_reasoning_parser.py` |
 | 2026-06-25 | [#46651](https://github.com/vllm-project/vllm/pull/46651) | merged | [Perf] Remove redundant clone for GLM, Deepseek etc | `vllm/model_executor/models/AXK1.py`, `vllm/model_executor/models/deepseek_v2.py`, `vllm/model_executor/models/glm4_moe_lite.py` |
+| 2026-06-28 | [#44313](https://github.com/vllm-project/vllm/pull/44313) | merged | [ROCm][Perf] Add Fused Shared Expert (FSE) support for GLM-4.5/6/7 | `vllm/model_executor/models/glm4_moe.py`, `vllm/model_executor/models/glm4_moe_mtp.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -2011,6 +2012,42 @@ diff -- vllm/model_executor/models/openpangu.py
 - Reviewed files:
   - runtime: `vllm/model_executor/models/AXK1.py` modified +1/-1; `vllm/model_executor/models/deepseek_v2.py` modified +1/-1; `vllm/model_executor/models/glm4_moe_lite.py` modified +1/-1; `vllm/model_executor/models/openpangu.py` modified +1/-1
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/AXK1.py`, `vllm/model_executor/models/deepseek_v2.py`, `vllm/model_executor/models/glm4_moe_lite.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #44313 - [ROCm][Perf] Add Fused Shared Expert (FSE) support for GLM-4.5/6/7
+
+- Link: https://github.com/vllm-project/vllm/pull/44313
+- Status/date: merged / 2026-06-28
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_moe.py`, `vllm/model_executor/models/glm4_moe_mtp.py`; associated commits `c7ca0bccae66`
+- Diff scope read: GitHub Pull Request files API returned 2 files, +254/-105, 482 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[ROCm][Perf] Add Fused Shared Expert (FSE) support for GLM-4.5/6/7"; model line: GLM-4.5; category: performance/backend optimization; main diff: `vllm/model_executor/models/glm4_moe.py`, `vllm/model_executor/models/glm4_moe_mtp.py`; technical summary: Covers "[ROCm][Perf] Add Fused Shared Expert (FSE) support for GLM-4.5/6/7"; the main implementation surface is `vllm/model_executor/models/glm4_moe.py`, `vllm/model_executor/models/glm4_moe_mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/glm4_moe.py` modified +138/-63 (201 lines); hunks: -32,6 +32,7; -168,7 +169,16 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`; `vllm/model_executor/models/glm4_moe_mtp.py` modified +116/-42 (158 lines); hunks: -24,12 +24,14; -239,6 +241,10 @@ def compute_logits(; symbols: compute_logits, load_weights, touching `compute_logits, load_weights`.
+- Code diff details:
+  - `vllm/model_executor/models/glm4_moe.py` modified +138/-63 (201 lines); hunks: -32,6 +32,7; -168,7 +169,16 @@ def __init__(; symbols: __init__, forward
+  - `vllm/model_executor/models/glm4_moe_mtp.py` modified +116/-42 (158 lines); hunks: -24,12 +24,14; -239,6 +241,10 @@ def compute_logits(; symbols: compute_logits, load_weights
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/glm4_moe.py
+@@ -32,6 +32,7 @@
++from vllm._aiter_ops import rocm_aiter_ops
+@@ -168,7 +169,16 @@ def __init__(
+-        if config.n_shared_experts is not None:
++        # AITER fused shared-expert (FSE) gate; mirrors the deepseek_v2.py
++        # pattern (see Glm4MoE / FusedMoE wiring there).
++        self.is_rocm_aiter_moe_enabled = rocm_aiter_ops.is_fused_moe_enabled()
+diff -- vllm/model_executor/models/glm4_moe_mtp.py
+@@ -24,12 +24,14 @@
+-from collections.abc import Iterable
++import typing
++from collections.abc import Callable, Iterable
++from vllm._aiter_ops import rocm_aiter_ops
+@@ -239,6 +241,10 @@ def compute_logits(
++        # FSE weight loading mirrors glm4_moe.py / deepseek_mtp.py.
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/glm4_moe.py` modified +138/-63; `vllm/model_executor/models/glm4_moe_mtp.py` modified +116/-42
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/glm4_moe.py`, `vllm/model_executor/models/glm4_moe_mtp.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ## Gap-Closure Notes
 

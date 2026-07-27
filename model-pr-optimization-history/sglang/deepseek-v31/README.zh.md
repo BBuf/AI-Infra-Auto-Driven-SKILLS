@@ -61,7 +61,7 @@
 | 2026-03-31 | [#21739](https://github.com/sgl-project/sglang/pull/21739) | open | [NPU] Update DeepSeek-V3.1 and DeepSeek-V3.2 model deployment instructions in documentation | `docs/platforms/ascend/ascend_npu_best_practice.md` |
 | 2026-04-09 | [#22433](https://github.com/sgl-project/sglang/pull/22433) | open | [Test] Add unit tests for DeepSeekV31Detector | `test/registered/unit/function_call/test_deepseekv31_detector.py` |
 | 2026-04-11 | [#21593](https://github.com/sgl-project/sglang/pull/21593) | merged | Fix tool call constrained decoding and parsing for models with native formats | `test/registered/unit/function_call/test_function_call_parser.py`, `python/sglang/srt/entrypoints/openai/serving_chat.py`, `python/sglang/srt/function_call/function_call_parser.py` |
-| 2026-04-16 | [#22981](https://github.com/sgl-project/sglang/pull/22981) | open | [Test] Add unit tests for 7 missing function call detectors | `test/registered/unit/function_call/test_function_call_parser.py`, `test/registered/openai_server/function_call/test_tool_choice.py`, `test/registered/unit/function_call/test_kimik2_detector.py` |
+| 2026-04-16 | [#22981](https://github.com/sgl-project/sglang/pull/22981) | open | [Test] Add unit tests for 7 missing function call detectors | `test/registered/unit/function_call/test_function_call_parser.py`, `test/manual/openai_server/function_call/test_tool_choice.py`, `test/registered/unit/function_call/test_kimik2_detector.py` |
 | 2026-04-17 | [#22128](https://github.com/sgl-project/sglang/pull/22128) | merged | Allow piecewise CUDA graph with speculative decoding | `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`, `python/sglang/srt/model_executor/model_runner.py`, `test/registered/piecewise_cuda_graph/test_pcg_with_speculative_decoding.py` |
 | 2026-04-20 | [#21599](https://github.com/sgl-project/sglang/pull/21599) | merged | [SPEC][1/N] feat: add adaptive speculative_num_steps for EAGLE topk=1 | `python/sglang/srt/model_executor/cuda_graph_runner.py`, `benchmark/bench_adaptive_speculative.py`, `test/registered/unit/spec/test_adaptive_spec_params.py` |
 | 2026-04-21 | [#23315](https://github.com/sgl-project/sglang/pull/23315) | merged | Opt-in strip of thinking tokens from radix cache | `test/registered/unit/mem_cache/test_unified_radix_cache_unittest.py`, `python/sglang/srt/managers/schedule_batch.py`, `python/sglang/srt/server_args.py` |
@@ -964,26 +964,26 @@ diff -- python/sglang/srt/function_call/function_call_parser.py
 - 链接: https://github.com/sgl-project/sglang/pull/22981
 - 状态/时间: open / 2026-04-16
 - 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+1017/-1，可读 patch 1063 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Test] Add unit tests for 7 missing function call detectors」；模型线: DeepSeek V3.1；类别: 文档/测试/CI；主要 diff: `test/registered/unit/function_call/test_function_call_parser.py`, `test/registered/openai_server/function_call/test_tool_choice.py`, `test/registered/unit/function_call/test_kimik2_detector.py`；技术摘要: 覆盖「[Test] Add unit tests for 7 missing function call detectors」；主要实现面是 `test/registered/unit/function_call/test_function_call_parser.py`, `test/registered/openai_server/function_call/test_tool_choice.py`, `test/registered/unit/function_call/test_kimik2_detector.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `test/registered/unit/function_call/test_function_call_parser.py` modified +960/-1 (961 lines); hunks: -2,9 +2,11; -15,16 +17,22; symbols: TestPythonicDetector, setUp, test_has_tool_call, test_detect_and_parse_single，涉及 `TestPythonicDetector, setUp, test_has_tool_call`；`test/registered/openai_server/function_call/test_tool_choice.py` modified +57/-0 (57 lines); hunks: -894,5 +894,62 @@ def setUpClass(cls):; symbols: setUpClass, TestToolChoiceWithConstrainedDecoding, test_tool_choice_required_strict_finish_reason，涉及 `setUpClass, TestToolChoiceWithConstrainedDecoding, test_tool_choice_required_strict_finish_reason`；`test/registered/unit/function_call/test_kimik2_detector.py` renamed +0/-0 (0 lines)。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+1015/-0，可读 patch 1059 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Test] Add unit tests for 7 missing function call detectors」；模型线: DeepSeek V3.1；类别: 文档/测试/CI；主要 diff: `test/registered/unit/function_call/test_function_call_parser.py`, `test/manual/openai_server/function_call/test_tool_choice.py`, `test/registered/unit/function_call/test_kimik2_detector.py`；技术摘要: 覆盖「[Test] Add unit tests for 7 missing function call detectors」；主要实现面是 `test/registered/unit/function_call/test_function_call_parser.py`, `test/manual/openai_server/function_call/test_tool_choice.py`, `test/registered/unit/function_call/test_kimik2_detector.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/unit/function_call/test_function_call_parser.py` modified +958/-0 (958 lines); hunks: -7,10 +7,12; -23,13 +25,18; symbols: setUp, test_has_tool_call, test_detect_and_parse_single, test_detect_and_parse_multiple，涉及 `setUp, test_has_tool_call, test_detect_and_parse_single`；`test/manual/openai_server/function_call/test_tool_choice.py` modified +57/-0 (57 lines); hunks: -890,5 +890,62 @@ def setUpClass(cls):; symbols: setUpClass, TestToolChoiceWithConstrainedDecoding, test_tool_choice_required_strict_finish_reason，涉及 `setUpClass, TestToolChoiceWithConstrainedDecoding, test_tool_choice_required_strict_finish_reason`；`test/registered/unit/function_call/test_kimik2_detector.py` renamed +0/-0 (0 lines)。
 - 代码 diff 细节:
-  - `test/registered/unit/function_call/test_function_call_parser.py` modified +960/-1 (961 lines); hunks: -2,9 +2,11; -15,16 +17,22; symbols: TestPythonicDetector, setUp, test_has_tool_call, test_detect_and_parse_single
-  - `test/registered/openai_server/function_call/test_tool_choice.py` modified +57/-0 (57 lines); hunks: -894,5 +894,62 @@ def setUpClass(cls):; symbols: setUpClass, TestToolChoiceWithConstrainedDecoding, test_tool_choice_required_strict_finish_reason
+  - `test/registered/unit/function_call/test_function_call_parser.py` modified +958/-0 (958 lines); hunks: -7,10 +7,12; -23,13 +25,18; symbols: setUp, test_has_tool_call, test_detect_and_parse_single, test_detect_and_parse_multiple
+  - `test/manual/openai_server/function_call/test_tool_choice.py` modified +57/-0 (57 lines); hunks: -890,5 +890,62 @@ def setUpClass(cls):; symbols: setUpClass, TestToolChoiceWithConstrainedDecoding, test_tool_choice_required_strict_finish_reason
   - `test/registered/unit/function_call/test_kimik2_detector.py` renamed +0/-0 (0 lines)
 - 关键代码摘录:
 
 ```diff
 diff -- test/registered/unit/function_call/test_function_call_parser.py
-@@ -2,9 +2,11 @@
+@@ -7,10 +7,12 @@
 +from sglang.srt.environ import envs
 +from sglang.srt.function_call.deepseekv31_detector import DeepSeekV31Detector
-@@ -15,16 +17,22 @@
-+from sglang.srt.function_call.gpt_oss_detector import GptOssDetector
+@@ -23,13 +25,18 @@
 +from sglang.srt.function_call.internlm_detector import InternlmDetector
 +from sglang.srt.function_call.mimo_detector import MiMoDetector
-diff -- test/registered/openai_server/function_call/test_tool_choice.py
-@@ -894,5 +894,62 @@ def setUpClass(cls):
++from sglang.srt.function_call.minimax_m2 import MinimaxM2Detector
+diff -- test/manual/openai_server/function_call/test_tool_choice.py
+@@ -890,5 +890,62 @@ def setUpClass(cls):
 +class TestToolChoiceWithConstrainedDecoding(TestToolChoiceLlama32):
 +    """Test tool_choice with grammar backend (structural_tag + constrained decoding).
 +    Verifies that tool_choice="required" with strict=True produces valid
@@ -993,8 +993,8 @@ diff -- test/registered/openai_server/function_call/test_tool_choice.py
 ```
 
 - 已读文件:
-  - tests: `test/registered/unit/function_call/test_function_call_parser.py` modified +960/-1; `test/registered/openai_server/function_call/test_tool_choice.py` modified +57/-0; `test/registered/unit/function_call/test_kimik2_detector.py` renamed +0/-0
-- 验证与风险: diff 自带测试面 `test/registered/openai_server/function_call/test_tool_choice.py`, `test/registered/unit/function_call/test_function_call_parser.py`, `test/registered/unit/function_call/test_kimik2_detector.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+  - tests: `test/registered/unit/function_call/test_function_call_parser.py` modified +958/-0; `test/manual/openai_server/function_call/test_tool_choice.py` modified +57/-0; `test/registered/unit/function_call/test_kimik2_detector.py` renamed +0/-0
+- 验证与风险: diff 自带测试面 `test/manual/openai_server/function_call/test_tool_choice.py`, `test/registered/unit/function_call/test_function_call_parser.py`, `test/registered/unit/function_call/test_kimik2_detector.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #22128 - Allow piecewise CUDA graph with speculative decoding
 

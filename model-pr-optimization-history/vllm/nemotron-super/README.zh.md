@@ -23,8 +23,8 @@
 | `tests/reasoning/test_nemotron_v3_reasoning_parser.py` | [#36393](https://github.com/vllm-project/vllm/pull/36393), [#36635](https://github.com/vllm-project/vllm/pull/36635), [#39091](https://github.com/vllm-project/vllm/pull/39091), [#45755](https://github.com/vllm-project/vllm/pull/45755) |
 | `vllm/model_executor/models/nano_nemotron_vl.py` | [#23644](https://github.com/vllm-project/vllm/pull/23644), [#25708](https://github.com/vllm-project/vllm/pull/25708), [#26186](https://github.com/vllm-project/vllm/pull/26186), [#26269](https://github.com/vllm-project/vllm/pull/26269), [#27107](https://github.com/vllm-project/vllm/pull/27107), [#30864](https://github.com/vllm-project/vllm/pull/30864), [#32121](https://github.com/vllm-project/vllm/pull/32121), [#32682](https://github.com/vllm-project/vllm/pull/32682), [#35100](https://github.com/vllm-project/vllm/pull/35100), [#35539](https://github.com/vllm-project/vllm/pull/35539), [#35657](https://github.com/vllm-project/vllm/pull/35657), [#36808](https://github.com/vllm-project/vllm/pull/36808), ... (23 total) |
 | `vllm/model_executor/models/nemotron.py` | [#6611](https://github.com/vllm-project/vllm/pull/6611), [#7611](https://github.com/vllm-project/vllm/pull/7611), [#46495](https://github.com/vllm-project/vllm/pull/46495) |
-| `vllm/model_executor/models/nemotron_h.py` | [#18863](https://github.com/vllm-project/vllm/pull/18863), [#19249](https://github.com/vllm-project/vllm/pull/19249), [#22349](https://github.com/vllm-project/vllm/pull/22349), [#25863](https://github.com/vllm-project/vllm/pull/25863), [#27968](https://github.com/vllm-project/vllm/pull/27968), [#30802](https://github.com/vllm-project/vllm/pull/30802), [#31539](https://github.com/vllm-project/vllm/pull/31539), [#31807](https://github.com/vllm-project/vllm/pull/31807), [#31898](https://github.com/vllm-project/vllm/pull/31898), [#32265](https://github.com/vllm-project/vllm/pull/32265), [#32549](https://github.com/vllm-project/vllm/pull/32549), [#32669](https://github.com/vllm-project/vllm/pull/32669), ... (18 total) |
-| `vllm/model_executor/models/nemotron_h_mtp.py` | [#33726](https://github.com/vllm-project/vllm/pull/33726), [#37803](https://github.com/vllm-project/vllm/pull/37803) |
+| `vllm/model_executor/models/nemotron_h.py` | [#18863](https://github.com/vllm-project/vllm/pull/18863), [#19249](https://github.com/vllm-project/vllm/pull/19249), [#22349](https://github.com/vllm-project/vllm/pull/22349), [#25863](https://github.com/vllm-project/vllm/pull/25863), [#27968](https://github.com/vllm-project/vllm/pull/27968), [#30802](https://github.com/vllm-project/vllm/pull/30802), [#31539](https://github.com/vllm-project/vllm/pull/31539), [#31807](https://github.com/vllm-project/vllm/pull/31807), [#31898](https://github.com/vllm-project/vllm/pull/31898), [#32265](https://github.com/vllm-project/vllm/pull/32265), [#32549](https://github.com/vllm-project/vllm/pull/32549), [#32669](https://github.com/vllm-project/vllm/pull/32669), ... (19 total) |
+| `vllm/model_executor/models/nemotron_h_mtp.py` | [#33726](https://github.com/vllm-project/vllm/pull/33726), [#37803](https://github.com/vllm-project/vllm/pull/37803), [#47440](https://github.com/vllm-project/vllm/pull/47440) |
 | `vllm/model_executor/models/nemotron_nas.py` | [#15008](https://github.com/vllm-project/vllm/pull/15008), [#18427](https://github.com/vllm-project/vllm/pull/18427), [#30795](https://github.com/vllm-project/vllm/pull/30795) |
 | `vllm/model_executor/models/nemotron_parse.py` | [#30864](https://github.com/vllm-project/vllm/pull/30864), [#33189](https://github.com/vllm-project/vllm/pull/33189), [#37407](https://github.com/vllm-project/vllm/pull/37407), [#37456](https://github.com/vllm-project/vllm/pull/37456), [#42641](https://github.com/vllm-project/vllm/pull/42641) |
 | `vllm/model_executor/models/nemotron_vl.py` | [#20349](https://github.com/vllm-project/vllm/pull/20349), [#22023](https://github.com/vllm-project/vllm/pull/22023), [#22739](https://github.com/vllm-project/vllm/pull/22739), [#35297](https://github.com/vllm-project/vllm/pull/35297), [#35735](https://github.com/vllm-project/vllm/pull/35735), [#36192](https://github.com/vllm-project/vllm/pull/36192), [#43581](https://github.com/vllm-project/vllm/pull/43581) |
@@ -37,9 +37,9 @@
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 69
+- git 追溯 PR 数: 71
 - 原文档显式引用补充 PR 数: 8
-- 当前文档总 PR 数: 77
+- 当前文档总 PR 数: 79
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -124,6 +124,8 @@
 | 2026-06-16 | [#45755](https://github.com/vllm-project/vllm/pull/45755) | merged | [Frontend] [Parser] Migrate Nemotron V3 to streaming parser engine | `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_engine_reasoning_parser.py`, `tests/parser/engine/test_nemotron_v3.py` |
 | 2026-06-18 | [#42727](https://github.com/vllm-project/vllm/pull/42727) | merged | fix(quantization): Fix AWQ dequantize on Intel XPU and refactor AutoAWQ config | `vllm/model_executor/layers/quantization/auto_awq.py`, `vllm/model_executor/layers/quantization/awq.py`, `vllm/model_executor/layers/quantization/moe_wna16.py` |
 | 2026-06-24 | [#46495](https://github.com/vllm-project/vllm/pull/46495) | merged | [Bugfix] Fix NemotronLayerNorm1P hardcoded cuda device type | `vllm/model_executor/models/nemotron.py` |
+| 2026-07-07 | [#47440](https://github.com/vllm-project/vllm/pull/47440) | merged | fix: ensure no double load of lm head in nemotron mtp | `vllm/model_executor/models/nemotron_h_mtp.py` |
+| 2026-07-25 | [#49781](https://github.com/vllm-project/vllm/pull/49781) | merged | [Docs] Fix confusing docstring indentation in nemotron_h.py | `vllm/model_executor/models/nemotron_h.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -2002,7 +2004,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/41205
 - 状态/时间: merged / 2026-05-04
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/test_nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py`；关联提交 `8c780943b492`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/test_nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py`；关联提交 `8c780943b492`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+130/-5，可读 patch 171 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Fix Nano Nemotron text-only weight loading」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `tests/models/multimodal/test_nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py`；技术摘要: 覆盖「Fix Nano Nemotron text-only weight loading」；主要实现面是 `tests/models/multimodal/test_nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `tests/models/multimodal/test_nano_nemotron_vl.py` added +114/-0 (114 lines); hunks: -0,0 +1,114; symbols: _TextOnlyMultiModalConfig, get_limit_per_prompt, _ImageOnlyMultiModalConfig, _ModelConfig，涉及 `_TextOnlyMultiModalConfig, get_limit_per_prompt, _ImageOnlyMultiModalConfig`；`vllm/model_executor/models/nano_nemotron_vl.py` modified +15/-3 (18 lines); hunks: -1499,6 +1499,11 @@ def compute_logits(; -1523,23 +1528,30 @@ def is_sound_weights(name: str) -> bool:; symbols: compute_logits, load_weights, is_llm, is_sound_weights，涉及 `compute_logits, load_weights, is_llm`。
@@ -2039,7 +2041,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/42244
 - 状态/时间: merged / 2026-05-11
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/test_nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py`；关联提交 `ac062147fae7`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/test_nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py`；关联提交 `ac062147fae7`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+55/-28，可读 patch 108 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Avoid silent weights corruption when loading Nemotron Nano VL with reusable-buffer loaders like runai distributed streaming」；模型线: Nemotron Super；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/nano_nemotron_vl.py`, `tests/models/multimodal/test_nano_nemotron_vl.py`；技术摘要: 覆盖「Avoid silent weights corruption when loading Nemotron Nano VL with reusable-buffer loaders like runai distributed streaming」；主要实现面是 `vllm/model_executor/models/nano_nemotron_vl.py`, `tests/models/multimodal/test_nano_nemotron_vl.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/nano_nemotron_vl.py` modified +41/-27 (68 lines); hunks: -1518,37 +1518,51 @@ def is_vision_weights(name: str) -> bool:; symbols: is_vision_weights, is_sound_weights, llm_weights_gen，涉及 `is_vision_weights, is_sound_weights, llm_weights_gen`；`tests/models/multimodal/test_nano_nemotron_vl.py` modified +14/-1 (15 lines); hunks: -53,6 +53,19 @@ def load_weights(self, weights):; -86,7 +99,7 @@ def test_nano_nemotron_vl_loads_vision_weights_without_sound_e...; symbols: load_weights, _FakeTensor, detach, clone，涉及 `load_weights, _FakeTensor, detach`。
@@ -2076,7 +2078,7 @@ diff -- tests/models/multimodal/test_nano_nemotron_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/42498
 - 状态/时间: merged / 2026-05-13
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/generation/test_nemotron_parse.py`；关联提交 `67671692ace7`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/generation/test_nemotron_parse.py`；关联提交 `67671692ace7`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+12/-9，可读 patch 59 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[CI] Re-enable Nemotron Parse parity test and switch testing to nemotron-parse v1.2」；模型线: Nemotron Super；类别: 文档/测试/CI；主要 diff: `tests/models/multimodal/generation/test_nemotron_parse.py`；技术摘要: 覆盖「[CI] Re-enable Nemotron Parse parity test and switch testing to nemotron-parse v1.2」；主要实现面是 `tests/models/multimodal/generation/test_nemotron_parse.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `tests/models/multimodal/generation/test_nemotron_parse.py` modified +5/-7 (12 lines); hunks: -14,7 +14,9; -85,7 +87,7 @@ def run_test(; symbols: DummyLogprobs, run_test, test_models，涉及 `DummyLogprobs, run_test, test_models`。
@@ -2103,7 +2105,7 @@ diff -- tests/models/multimodal/generation/test_nemotron_parse.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/42641
 - 状态/时间: merged / 2026-05-14
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_parse.py`；关联提交 `b8a25d0e1216`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_parse.py`；关联提交 `b8a25d0e1216`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+5/-1，可读 patch 20 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Fix LM detection for Nemotron Parse」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/nemotron_parse.py`；技术摘要: 覆盖「[Bugfix] Fix LM detection for Nemotron Parse」；主要实现面是 `vllm/model_executor/models/nemotron_parse.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `vllm/model_executor/models/nemotron_parse.py` modified +3/-0 (3 lines); hunks: -281,6 +281,9 @@ def __init__(; symbols: __init__, embed_input_ids, forward，涉及 `__init__, embed_input_ids, forward`。
@@ -2521,6 +2523,57 @@ diff -- vllm/model_executor/models/nemotron.py
 - 已读文件:
   - runtime: `vllm/model_executor/models/nemotron.py` modified +10/-8
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/nemotron.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #47440 - fix: ensure no double load of lm head in nemotron mtp
+
+- 链接: https://github.com/vllm-project/vllm/pull/47440
+- 状态/时间: merged / 2026-07-07
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_h_mtp.py`；关联提交 `7ff656cc8bc7`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-5，可读 patch 13 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「fix: ensure no double load of lm head in nemotron mtp」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/nemotron_h_mtp.py`；技术摘要: 覆盖「fix: ensure no double load of lm head in nemotron mtp」；主要实现面是 `vllm/model_executor/models/nemotron_h_mtp.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/nemotron_h_mtp.py` modified +1/-5 (6 lines); hunks: -415,11 +415,7 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; symbols: load_weights，涉及 `load_weights`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/nemotron_h_mtp.py` modified +1/-5 (6 lines); hunks: -415,11 +415,7 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; symbols: load_weights
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/nemotron_h_mtp.py
+@@ -415,11 +415,7 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Tensor]]) -> set[str]:
+-            if (
+-                not name.startswith("mtp.")
+-                and "embeddings" not in name
+-                and "lm_head" not in name
+-            ):
++            if not name.startswith("mtp.") and "embeddings" not in name:
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/nemotron_h_mtp.py` modified +1/-5
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/nemotron_h_mtp.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #49781 - [Docs] Fix confusing docstring indentation in nemotron_h.py
+
+- 链接: https://github.com/vllm-project/vllm/pull/49781
+- 状态/时间: merged / 2026-07-25
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_h.py`；关联提交 `190be7dad2af`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-2，可读 patch 10 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Docs] Fix confusing docstring indentation in nemotron_h.py」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/nemotron_h.py`；技术摘要: 覆盖「[Docs] Fix confusing docstring indentation in nemotron_h.py」；主要实现面是 `vllm/model_executor/models/nemotron_h.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/nemotron_h.py` modified +1/-2 (3 lines); hunks: -771,8 +771,7 @@ def get_mamba_state_shape_from_config(; symbols: get_mamba_state_shape_from_config，涉及 `get_mamba_state_shape_from_config`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/nemotron_h.py` modified +1/-2 (3 lines); hunks: -771,8 +771,7 @@ def get_mamba_state_shape_from_config(; symbols: get_mamba_state_shape_from_config
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/nemotron_h.py
+@@ -771,8 +771,7 @@ def get_mamba_state_shape_from_config(
+-            - (when use_replayssm is enabled) the x_cache/dt_cache/B_cache
+-              ring-buffer shapes
++            - x_cache/dt_cache/B_cache ring-buffer shapes (use_replayssm only)
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/nemotron_h.py` modified +1/-2
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/nemotron_h.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ## 补漏结论
 

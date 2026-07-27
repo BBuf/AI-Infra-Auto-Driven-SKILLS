@@ -4,11 +4,10 @@
 
 | File | Git-traced PRs |
 | --- | --- |
-| `docs/references/multi_node_deployment/rbg_pd/deepseekv32_pd.md` | [#11877](https://github.com/sgl-project/sglang/pull/11877) |
 | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-R1.mdx` | no direct PR-number commit |
 | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3.mdx` | no direct PR-number commit |
 | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_1.mdx` | no direct PR-number commit |
-| `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` | no direct PR-number commit |
+| `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` | [#30514](https://github.com/sgl-project/sglang/pull/30514) |
 | `docs_new/docs/hardware-platforms/ascend-npus/best_practice/deepseek_r1.mdx` | no direct PR-number commit |
 | `docs_new/docs/hardware-platforms/ascend-npus/model-tutorials/deepseek_r1.mdx` | no direct PR-number commit |
 | `docs_new/docs/references/multi_node_deployment/rbg_pd/deepseekv32_pd.mdx` | no direct PR-number commit |
@@ -20,6 +19,9 @@
 | `examples/chat_template/tool_chat_template_deepseekv3.jinja` | [#5908](https://github.com/sgl-project/sglang/pull/5908), [#9525](https://github.com/sgl-project/sglang/pull/9525), [#10209](https://github.com/sgl-project/sglang/pull/10209) |
 | `examples/chat_template/tool_chat_template_deepseekv31.jinja` | [#9446](https://github.com/sgl-project/sglang/pull/9446), [#9895](https://github.com/sgl-project/sglang/pull/9895), [#14837](https://github.com/sgl-project/sglang/pull/14837) |
 | `examples/chat_template/tool_chat_template_deepseekv32.jinja` | [#11063](https://github.com/sgl-project/sglang/pull/11063) |
+| `python/sglang/kernels/ops/attention/nsa_triton_decode/__init__.py` | no direct PR-number commit |
+| `python/sglang/kernels/ops/attention/nsa_triton_decode/triton_mla_kernels_decode_fused.py` | no direct PR-number commit |
+| `python/sglang/kernels/ops/attention/nsa_triton_decode/triton_mla_kernels_decode_optimized.py` | no direct PR-number commit |
 | `python/sglang/srt/function_call/deepseekv31_detector.py` | [#9446](https://github.com/sgl-project/sglang/pull/9446), [#11589](https://github.com/sgl-project/sglang/pull/11589), [#13394](https://github.com/sgl-project/sglang/pull/13394) |
 | `python/sglang/srt/function_call/deepseekv32_detector.py` | [#14573](https://github.com/sgl-project/sglang/pull/14573), [#14750](https://github.com/sgl-project/sglang/pull/14750), [#15278](https://github.com/sgl-project/sglang/pull/15278), [#16091](https://github.com/sgl-project/sglang/pull/16091), [#18174](https://github.com/sgl-project/sglang/pull/18174), [#25233](https://github.com/sgl-project/sglang/pull/25233) |
 | `python/sglang/srt/function_call/deepseekv3_detector.py` | [#6655](https://github.com/sgl-project/sglang/pull/6655), [#7562](https://github.com/sgl-project/sglang/pull/7562), [#9525](https://github.com/sgl-project/sglang/pull/9525) |
@@ -29,13 +31,9 @@
 | `python/sglang/srt/layers/attention/nsa/index_buf_accessor.py` | [#11061](https://github.com/sgl-project/sglang/pull/11061), [#12520](https://github.com/sgl-project/sglang/pull/12520), [#18280](https://github.com/sgl-project/sglang/pull/18280), [#19319](https://github.com/sgl-project/sglang/pull/19319), [#25205](https://github.com/sgl-project/sglang/pull/25205) |
 | `python/sglang/srt/layers/attention/nsa/nsa_backend_mtp_precompute.py` | no direct PR-number commit |
 | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` | [#11061](https://github.com/sgl-project/sglang/pull/11061), [#11565](https://github.com/sgl-project/sglang/pull/11565), [#11652](https://github.com/sgl-project/sglang/pull/11652), [#11682](https://github.com/sgl-project/sglang/pull/11682), [#11892](https://github.com/sgl-project/sglang/pull/11892), [#12065](https://github.com/sgl-project/sglang/pull/12065), [#12094](https://github.com/sgl-project/sglang/pull/12094), [#12583](https://github.com/sgl-project/sglang/pull/12583), [#12816](https://github.com/sgl-project/sglang/pull/12816), [#13236](https://github.com/sgl-project/sglang/pull/13236), [#13459](https://github.com/sgl-project/sglang/pull/13459), [#13646](https://github.com/sgl-project/sglang/pull/13646), ... (37 total) |
-| `python/sglang/srt/layers/attention/nsa/nsa_mtp_verification.py` | no direct PR-number commit |
 | `python/sglang/srt/layers/attention/nsa/quant_k_cache.py` | [#11061](https://github.com/sgl-project/sglang/pull/11061), [#11655](https://github.com/sgl-project/sglang/pull/11655), [#15938](https://github.com/sgl-project/sglang/pull/15938) |
 | `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` | [#11061](https://github.com/sgl-project/sglang/pull/11061), [#18488](https://github.com/sgl-project/sglang/pull/18488), [#19945](https://github.com/sgl-project/sglang/pull/19945) |
 | `python/sglang/srt/layers/attention/nsa/transform_index.py` | [#11061](https://github.com/sgl-project/sglang/pull/11061), [#12300](https://github.com/sgl-project/sglang/pull/12300) |
-| `python/sglang/srt/layers/attention/nsa/triton_decode/__init__.py` | no direct PR-number commit |
-| `python/sglang/srt/layers/attention/nsa/triton_decode/triton_mla_kernels_decode_fused.py` | no direct PR-number commit |
-| `python/sglang/srt/layers/attention/nsa/triton_decode/triton_mla_kernels_decode_optimized.py` | no direct PR-number commit |
 | `python/sglang/srt/layers/attention/nsa/triton_kernel.py` | no direct PR-number commit |
 | `python/sglang/srt/layers/attention/nsa/utils.py` | [#11061](https://github.com/sgl-project/sglang/pull/11061), [#11682](https://github.com/sgl-project/sglang/pull/11682), [#12065](https://github.com/sgl-project/sglang/pull/12065), [#13959](https://github.com/sgl-project/sglang/pull/13959), [#14541](https://github.com/sgl-project/sglang/pull/14541), [#15938](https://github.com/sgl-project/sglang/pull/15938), [#17076](https://github.com/sgl-project/sglang/pull/17076), [#25205](https://github.com/sgl-project/sglang/pull/25205) |
 | `python/sglang/srt/layers/attention/nsa_backend.py` | [#11061](https://github.com/sgl-project/sglang/pull/11061), [#11652](https://github.com/sgl-project/sglang/pull/11652), [#11655](https://github.com/sgl-project/sglang/pull/11655), [#11892](https://github.com/sgl-project/sglang/pull/11892), [#12065](https://github.com/sgl-project/sglang/pull/12065), [#12215](https://github.com/sgl-project/sglang/pull/12215), [#12294](https://github.com/sgl-project/sglang/pull/12294), [#12583](https://github.com/sgl-project/sglang/pull/12583), [#12788](https://github.com/sgl-project/sglang/pull/12788), [#12964](https://github.com/sgl-project/sglang/pull/12964), [#13022](https://github.com/sgl-project/sglang/pull/13022), [#13236](https://github.com/sgl-project/sglang/pull/13236), ... (28 total) |
@@ -45,12 +43,12 @@
 | `python/sglang/srt/models/deepseek_common/attention_forward_methods/__init__.py` | no direct PR-number commit |
 | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_methods.py` | no direct PR-number commit |
 | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py` | [#22774](https://github.com/sgl-project/sglang/pull/22774) |
-| `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` | [#21405](https://github.com/sgl-project/sglang/pull/21405), [#22774](https://github.com/sgl-project/sglang/pull/22774) |
+| `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` | [#21405](https://github.com/sgl-project/sglang/pull/21405), [#22774](https://github.com/sgl-project/sglang/pull/22774), [#31619](https://github.com/sgl-project/sglang/pull/31619) |
 | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py` | no direct PR-number commit |
 | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_rocm.py` | no direct PR-number commit |
 | `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` | [#18461](https://github.com/sgl-project/sglang/pull/18461), [#22774](https://github.com/sgl-project/sglang/pull/22774) |
 | `python/sglang/srt/models/deepseek_common/utils.py` | [#18461](https://github.com/sgl-project/sglang/pull/18461), [#22774](https://github.com/sgl-project/sglang/pull/22774) |
-| `python/sglang/srt/models/deepseek_v2.py` | [#2667](https://github.com/sgl-project/sglang/pull/2667), [#3237](https://github.com/sgl-project/sglang/pull/3237), [#3550](https://github.com/sgl-project/sglang/pull/3550), [#3582](https://github.com/sgl-project/sglang/pull/3582), [#3730](https://github.com/sgl-project/sglang/pull/3730), [#3785](https://github.com/sgl-project/sglang/pull/3785), [#3888](https://github.com/sgl-project/sglang/pull/3888), [#4836](https://github.com/sgl-project/sglang/pull/4836), [#4918](https://github.com/sgl-project/sglang/pull/4918), [#5571](https://github.com/sgl-project/sglang/pull/5571), [#5662](https://github.com/sgl-project/sglang/pull/5662), [#5707](https://github.com/sgl-project/sglang/pull/5707), ... (79 total) |
+| `python/sglang/srt/models/deepseek_v2.py` | [#2667](https://github.com/sgl-project/sglang/pull/2667), [#3237](https://github.com/sgl-project/sglang/pull/3237), [#3550](https://github.com/sgl-project/sglang/pull/3550), [#3582](https://github.com/sgl-project/sglang/pull/3582), [#3730](https://github.com/sgl-project/sglang/pull/3730), [#3785](https://github.com/sgl-project/sglang/pull/3785), [#3888](https://github.com/sgl-project/sglang/pull/3888), [#4836](https://github.com/sgl-project/sglang/pull/4836), [#4918](https://github.com/sgl-project/sglang/pull/4918), [#5571](https://github.com/sgl-project/sglang/pull/5571), [#5662](https://github.com/sgl-project/sglang/pull/5662), [#5707](https://github.com/sgl-project/sglang/pull/5707), ... (81 total) |
 | `test/registered/amd/accuracy/mi30x/test_deepseek_r1_eval_amd.py` | no direct PR-number commit |
 | `test/registered/amd/accuracy/mi35x/test_deepseek_r1_eval_mi35x.py` | [#17523](https://github.com/sgl-project/sglang/pull/17523) |
 | `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_ar_fusion_eval_mi35x.py` | no direct PR-number commit |
@@ -58,6 +56,7 @@
 | `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_kv_fp8_eval_mi35x.py` | no direct PR-number commit |
 | `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp2_mi35x.py` | [#27188](https://github.com/sgl-project/sglang/pull/27188), [#27243](https://github.com/sgl-project/sglang/pull/27243) |
 | `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp4_mi35x.py` | [#27188](https://github.com/sgl-project/sglang/pull/27188), [#27243](https://github.com/sgl-project/sglang/pull/27243) |
+| `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp4_mtp_mi35x.py` | [#29290](https://github.com/sgl-project/sglang/pull/29290) |
 | `test/registered/amd/perf/mi35x/test_deepseek_r1_mxfp4_ar_fusion_perf_mi35x.py` | no direct PR-number commit |
 | `test/registered/amd/perf/mi35x/test_deepseek_r1_mxfp4_kv_fp8_perf_mi35x.py` | no direct PR-number commit |
 | `test/registered/amd/perf/mi35x/test_deepseek_r1_mxfp4_perf_mi35x.py` | [#17179](https://github.com/sgl-project/sglang/pull/17179) |
@@ -67,9 +66,9 @@
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 143
-- Extra PRs preserved from existing docs: 183
-- Total PRs in this document: 326
+- Git-traced PRs: 146
+- Extra PRs preserved from existing docs: 184
+- Total PRs in this document: 330
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -193,7 +192,7 @@
 | 2025-10-19 | [#11652](https://github.com/sgl-project/sglang/pull/11652) | merged | [Spec Decoding] Support MTP for dsv3.2 | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2025-10-24 | [#12000](https://github.com/sgl-project/sglang/pull/12000) | merged | [1/2] deepseek deterministic: support deterministic inference for deepseek arch models on a single GPU | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/batch_invariant_ops/batch_invariant_ops.py`, `python/sglang/srt/server_args.py` |
 | 2025-10-25 | [#8464](https://github.com/sgl-project/sglang/pull/8464) | merged | [2/N]Support DeepSeek-R1 w4a8 low latency deepep | `python/sglang/srt/layers/moe/ep_moe/kernels.py`, `python/sglang/srt/layers/moe/cutlass_w4a8_moe.py`, `python/sglang/srt/layers/quantization/w4afp8.py` |
-| 2025-10-25 | [#11877](https://github.com/sgl-project/sglang/pull/11877) | merged | [Doc] Add documentation for DeepSeek V3.2 | `docs/references/multi_node_deployment/rbg_pd/deepseekv32_pd.md` |
+| 2025-10-25 | [#11877](https://github.com/sgl-project/sglang/pull/11877) | merged | [Doc] Add documentation for DeepSeek V3.2 | `docs/references/multi_node_deployment/rbg_pd/deepseekv32_pd.md`, `docs/basic_usage/deepseek_v32.md`, `docs/basic_usage/deepseek.md` |
 | 2025-10-27 | [#12057](https://github.com/sgl-project/sglang/pull/12057) | merged | [doc] add example of using w4fp8 for Deepseek | `benchmark/deepseek_v3/README.md` |
 | 2025-10-28 | [#11708](https://github.com/sgl-project/sglang/pull/11708) | merged | Support running FP4 Deepseek on SM120. | `python/sglang/srt/layers/quantization/modelopt_quant.py`, `python/sglang/srt/models/gpt_oss.py`, `python/sglang/srt/models/deepseek_v2.py` |
 | 2025-10-28 | [#11655](https://github.com/sgl-project/sglang/pull/11655) | merged | [DeepseekV32] Enable flashmla_prefill kernel with fp8 kvcache | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/layers/attention/nsa/dequant_k_cache.py`, `python/sglang/srt/layers/attention/nsa/quant_k_cache.py` |
@@ -403,6 +402,10 @@
 | 2026-06-26 | [#21531](https://github.com/sgl-project/sglang/pull/21531) | merged | [JIT Kernel] Migrate dsv3_router_gemm from AOT sgl-kernel to JIT kernel | `python/sglang/srt/models/deepseek_v2.py` |
 | 2026-06-26 | [#29452](https://github.com/sgl-project/sglang/pull/29452) | merged | Revert "[DeepSeek V3] Run routed experts on main stream in dual-stream MoE" | `python/sglang/srt/models/deepseek_v2.py` |
 | 2026-06-27 | [#22268](https://github.com/sgl-project/sglang/pull/22268) | closed | [Bugfix] Fix prepare_qkv_latent bypassing LoRA adapters in DeepSeek V2/V3 | `python/sglang/srt/models/deepseek_v2.py` |
+| 2026-06-29 | [#29463](https://github.com/sgl-project/sglang/pull/29463) | merged | [DeepSeek V3] Reland: run routed experts on main stream in dual-stream MoE | `python/sglang/srt/models/deepseek_v2.py` |
+| 2026-07-01 | [#29290](https://github.com/sgl-project/sglang/pull/29290) | merged | [AMD] Cover DeepSeek-R1 MXFP4 TP4 MTP nightly CI | `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp4_mtp_mi35x.py` |
+| 2026-07-18 | [#31619](https://github.com/sgl-project/sglang/pull/31619) | merged | [CP] Migrate MLA prefill CP (DeepSeek V3) to CP-v2 zigzag strategy | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` |
+| 2026-07-19 | [#30514](https://github.com/sgl-project/sglang/pull/30514) | merged | [DSA] Integrate Q8KV8 FP8 Sparse MLA Prefill into the DSA Backend (DeepSeek-V3.2) | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` |
 
 ## Per-PR Diff Audit Cards
 
@@ -4161,12 +4164,14 @@ diff -- python/sglang/srt/layers/quantization/w4afp8.py
 
 - Link: https://github.com/sgl-project/sglang/pull/11877
 - Status/date: merged / 2025-10-25
-- Trace source: `git log --name-only -- <model-files>` found it through `docs/references/multi_node_deployment/rbg_pd/deepseekv32_pd.md`; associated commits `729b242934cb`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +723/-3, 749 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Doc] Add documentation for DeepSeek V3.2"; model line: DeepSeek V3/R1; category: docs/tests/CI; main diff: `docs/references/multi_node_deployment/rbg_pd/deepseekv32_pd.md`; technical summary: Covers "[Doc] Add documentation for DeepSeek V3.2"; the main implementation surface is `docs/references/multi_node_deployment/rbg_pd/deepseekv32_pd.md`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs/references/multi_node_deployment/rbg_pd/deepseekv32_pd.md` added +570/-0 (570 lines); hunks: -0,0 +1,570.
+- Motivation: Title: "[Doc] Add documentation for DeepSeek V3.2"; model line: DeepSeek V3/R1; category: docs/tests/CI; main diff: `docs/references/multi_node_deployment/rbg_pd/deepseekv32_pd.md`, `docs/basic_usage/deepseek_v32.md`, `docs/basic_usage/deepseek.md`; technical summary: Covers "[Doc] Add documentation for DeepSeek V3.2"; the main implementation surface is `docs/references/multi_node_deployment/rbg_pd/deepseekv32_pd.md`, `docs/basic_usage/deepseek_v32.md`, `docs/basic_usage/deepseek.md`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs/references/multi_node_deployment/rbg_pd/deepseekv32_pd.md` added +570/-0 (570 lines); hunks: -0,0 +1,570; `docs/basic_usage/deepseek_v32.md` added +150/-0 (150 lines); hunks: -0,0 +1,150; `docs/basic_usage/deepseek.md` modified +1/-1 (2 lines); hunks: -170,7 +170,7 @@ python3 -m sglang.launch_server \.
 - Code diff details:
   - `docs/references/multi_node_deployment/rbg_pd/deepseekv32_pd.md` added +570/-0 (570 lines); hunks: -0,0 +1,570
+  - `docs/basic_usage/deepseek_v32.md` added +150/-0 (150 lines); hunks: -0,0 +1,150
+  - `docs/basic_usage/deepseek.md` modified +1/-1 (2 lines); hunks: -170,7 +170,7 @@ python3 -m sglang.launch_server \
 - Key code excerpts:
 
 ```diff
@@ -4178,10 +4183,20 @@ diff -- docs/references/multi_node_deployment/rbg_pd/deepseekv32_pd.md
 +2. lws installed on k8s.
 +3. rbg installed on k8s.
 +For RBG installation, please refer to: https://github.com/sgl-project/rbg
+diff -- docs/basic_usage/deepseek_v32.md
+@@ -0,0 +1,150 @@
++# DeepSeek V3.2 Usage
++[DeepSeek-V3.2-Exp](https://huggingface.co/deepseek-ai/DeepSeek-V3.2-Exp) equips DeepSeek-V3.1-Terminus with DeepSeek Sparse Attention (DSA) through continued training. With DSA,
++For reporting issues or tracking upcoming features, please refer to this [Roadmap](https://github.com/sgl-project/sglang/issues/11060).
++## Installation
++### Docker
++'''bash
+diff -- docs/basic_usage/deepseek.md
+@@ -170,7 +170,7 @@ python3 -m sglang.launch_server \
 ```
 
 - Reviewed files:
-  - docs: `docs/references/multi_node_deployment/rbg_pd/deepseekv32_pd.md` added +570/-0
+  - docs: `docs/references/multi_node_deployment/rbg_pd/deepseekv32_pd.md` added +570/-0; `docs/basic_usage/deepseek_v32.md` added +150/-0; `docs/basic_usage/deepseek.md` modified +1/-1
 - Risk and verification: This is mostly docs/examples in `docs/basic_usage/deepseek.md`, `docs/basic_usage/deepseek_v32.md`, `docs/references/multi_node_deployment/rbg_pd/deepseekv32_pd.md`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #12057 - [doc] add example of using w4fp8 for Deepseek
@@ -8041,7 +8056,7 @@ diff -- python/sglang/srt/models/deepseek_common/attention_forward_methods/forwa
 
 - Link: https://github.com/sgl-project/sglang/pull/24356
 - Status/date: merged / 2026-05-05
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`; associated commits `fdfc46f3a5b6`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`; associated commits `fdfc46f3a5b6`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +14/-1, 29 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Intel GPU] Enable DeepSeek V3.2 inference on XPU"; model line: DeepSeek V3/R1; category: model support/runtime entry; main diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`; technical summary: Covers "[Intel GPU] Enable DeepSeek V3.2 inference on XPU"; the main implementation surface is `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +13/-0 (13 lines); hunks: -1062,6 +1062,19 @@ def _store_index_k_cache(; symbols: _store_index_k_cache, forward_xpu, forward_cuda, touching `_store_index_k_cache, forward_xpu, forward_cuda`.
@@ -8110,7 +8125,7 @@ diff -- python/sglang/srt/speculative/eagle_worker.py
 
 - Link: https://github.com/sgl-project/sglang/pull/23965
 - Status/date: merged / 2026-05-09
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`; associated commits `05d1ab51e87b`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`; associated commits `05d1ab51e87b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +71/-22, 289 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Enable PDL for various kernels in DSV32/GLM5"; model line: DeepSeek V3/R1; category: model support/runtime entry; main diff: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`; technical summary: Covers "Enable PDL for various kernels in DSV32/GLM5"; the main implementation surface is `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +7/-1 (8 lines); hunks: -297,6 +297,12 @@ def _get_logits_head_gate(; -1135,7 +1141,7 @@ def forward_cuda(; symbols: _get_logits_head_gate, _apply_q_scale_and_softmax_scale, _get_q_k_bf16, forward_cuda, touching `_get_logits_head_gate, _apply_q_scale_and_softmax_scale, _get_q_k_bf16`.
@@ -9564,7 +9579,7 @@ diff -- python/sglang/srt/layers/attention/nsa/triton_decode/triton_mla_kernels_
 
 - Link: https://github.com/sgl-project/sglang/pull/26395
 - Status/date: merged / 2026-05-27
-- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/amd/test_deepseek_r1_hicache_mi35x.py`; associated commits `bf5bc234310b`
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/amd/test_deepseek_r1_hicache_mi35x.py`; associated commits `bf5bc234310b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +171/-0, 172 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[AMD] [CI] Add DeepSeek-R1-0528 FP8 HiCache GSM8K test on MI35x"; model line: DeepSeek V3/R1; category: performance/backend optimization; main diff: `test/registered/amd/test_deepseek_r1_hicache_mi35x.py`; technical summary: Covers "[AMD] [CI] Add DeepSeek-R1-0528 FP8 HiCache GSM8K test on MI35x"; the main implementation surface is `test/registered/amd/test_deepseek_r1_hicache_mi35x.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `test/registered/amd/test_deepseek_r1_hicache_mi35x.py` added +171/-0 (171 lines); hunks: -0,0 +1,171; symbols: TestDeepSeekR1HiCacheMI35x, setUpClass, tearDownClass, test_gsm8k, touching `TestDeepSeekR1HiCacheMI35x, setUpClass, tearDownClass`.
@@ -10013,7 +10028,7 @@ diff -- test/registered/amd/test_deepseek_r1_mxfp4_8gpu.py
 
 - Link: https://github.com/sgl-project/sglang/pull/27188
 - Status/date: merged / 2026-06-03
-- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp2_mi35x.py`, `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp4_mi35x.py`; associated commits `cfb7fb4fad03`
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp2_mi35x.py`, `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp4_mi35x.py`; associated commits `cfb7fb4fad03`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +518/-1, 619 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[AMD] Fix TP2 DeepSeek-R1 nhead=64 MLA decode crash and add nightly coverage"; model line: DeepSeek V3/R1; category: bug fix; main diff: `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp2_mi35x.py`, `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp4_mi35x.py`; technical summary: Covers "[AMD] Fix TP2 DeepSeek-R1 nhead=64 MLA decode crash and add nightly coverage"; the main implementation surface is `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp2_mi35x.py`, `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp4_mi35x.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp2_mi35x.py` added +185/-0 (185 lines); hunks: -0,0 +1,185; symbols: get_model_path, get_one_example, get_few_shot_examples, get_answer_value, touching `get_model_path, get_one_example, get_few_shot_examples`; `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp4_mi35x.py` added +184/-0 (184 lines); hunks: -0,0 +1,184; symbols: get_model_path, get_one_example, get_few_shot_examples, get_answer_value, touching `get_model_path, get_one_example, get_few_shot_examples`.
@@ -11035,7 +11050,7 @@ diff -- python/sglang/srt/model_executor/runner/eager_runner.py
 
 - Link: https://github.com/sgl-project/sglang/pull/27243
 - Status/date: merged / 2026-06-22
-- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp2_mi35x.py`, `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp4_mi35x.py`; associated commits `e2540188ce8b`
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp2_mi35x.py`, `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp4_mi35x.py`; associated commits `e2540188ce8b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +4/-36, 92 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[AMD] Clean up DeepSeek-R1-MXFP4 TP2/TP4 MLA GSM8K tests"; model line: DeepSeek V3/R1; category: performance/backend optimization; main diff: `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp2_mi35x.py`, `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp4_mi35x.py`; technical summary: Covers "[AMD] Clean up DeepSeek-R1-MXFP4 TP2/TP4 MLA GSM8K tests"; the main implementation surface is `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp2_mi35x.py`, `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp4_mi35x.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp2_mi35x.py` modified +2/-18 (20 lines); hunks: -9,11 +9,6; -39,21 +34,10; symbols: get_model_path, get_one_example, few_shot_gsm8k, TestDeepSeekR1MXFP4TP2MI35x, touching `get_model_path, get_one_example, few_shot_gsm8k`; `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp4_mi35x.py` modified +2/-18 (20 lines); hunks: -8,11 +8,6; -38,21 +33,10; symbols: get_model_path, get_one_example, few_shot_gsm8k, TestDeepSeekR1MXFP4TP4MI35x, touching `get_model_path, get_one_example, few_shot_gsm8k`.
@@ -11359,7 +11374,7 @@ diff -- python/sglang/srt/models/deepseek_v2.py
 
 - Link: https://github.com/sgl-project/sglang/pull/29452
 - Status/date: merged / 2026-06-26
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/deepseek_v2.py`; associated commits `7b02eab7a688`
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/deepseek_v2.py`; associated commits `7b02eab7a688`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +46/-48, 108 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Revert "[DeepSeek V3] Run routed experts on main stream in dual-stream MoE""; model line: DeepSeek V3/R1; category: model implementation change; main diff: `python/sglang/srt/models/deepseek_v2.py`; technical summary: Covers "Revert "[DeepSeek V3] Run routed experts on main stream in dual-stream MoE""; the main implementation surface is `python/sglang/srt/models/deepseek_v2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/deepseek_v2.py` modified +46/-48 (94 lines); hunks: -927,61 +927,59 @@ def forward_normal_dual_stream(; symbols: forward_normal_dual_stream, touching `forward_normal_dual_stream`.
@@ -11407,6 +11422,119 @@ diff -- python/sglang/srt/models/deepseek_v2.py
 - Reviewed files:
   - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +5/-0
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/deepseek_v2.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #29463 - [DeepSeek V3] Reland: run routed experts on main stream in dual-stream MoE
+
+- Link: https://github.com/sgl-project/sglang/pull/29463
+- Status/date: merged / 2026-06-29
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/deepseek_v2.py`; associated commits `6bdecb8206b8`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +49/-46, 111 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[DeepSeek V3] Reland: run routed experts on main stream in dual-stream MoE"; model line: DeepSeek V3/R1; category: model implementation change; main diff: `python/sglang/srt/models/deepseek_v2.py`; technical summary: Covers "[DeepSeek V3] Reland: run routed experts on main stream in dual-stream MoE"; the main implementation surface is `python/sglang/srt/models/deepseek_v2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/deepseek_v2.py` modified +49/-46 (95 lines); hunks: -925,61 +925,64 @@ def forward_normal_dual_stream(; symbols: forward_normal_dual_stream, touching `forward_normal_dual_stream`.
+- Code diff details:
+  - `python/sglang/srt/models/deepseek_v2.py` modified +49/-46 (95 lines); hunks: -925,61 +925,64 @@ def forward_normal_dual_stream(; symbols: forward_normal_dual_stream
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -925,61 +925,64 @@ def forward_normal_dual_stream(
++        # Note(kpham-sgl): launch the shared expert BEFORE the routed call.
++        # The routed deep_gemm pre-permute calls `dispose_tensor` which
++        # `set_()`s `hidden_states` to empty (host-side); any later kernel
++        # launch consuming `hidden_states` then captures `data_ptr() == 0`
++        # into the decode CUDA graph and replays from null.
+-        shared_output = self._forward_shared_experts(
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +49/-46
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/deepseek_v2.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #29290 - [AMD] Cover DeepSeek-R1 MXFP4 TP4 MTP nightly CI
+
+- Link: https://github.com/sgl-project/sglang/pull/29290
+- Status/date: merged / 2026-07-01
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp4_mtp_mi35x.py`; associated commits `548f505cc54a`
+- Diff scope read: GitHub Pull Request files API returned 3 files, +226/-2, 243 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[AMD] Cover DeepSeek-R1 MXFP4 TP4 MTP nightly CI"; model line: DeepSeek V3/R1; category: performance/backend optimization; main diff: `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp4_mtp_mi35x.py`; technical summary: Covers "[AMD] Cover DeepSeek-R1 MXFP4 TP4 MTP nightly CI"; the main implementation surface is `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp4_mtp_mi35x.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp4_mtp_mi35x.py` added +202/-0 (202 lines); hunks: -0,0 +1,202; symbols: get_one_example, get_few_shot_examples, get_answer_value, run_gsm8k_benchmark, touching `get_one_example, get_few_shot_examples, get_answer_value`.
+- Code diff details:
+  - `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp4_mtp_mi35x.py` added +202/-0 (202 lines); hunks: -0,0 +1,202; symbols: get_one_example, get_few_shot_examples, get_answer_value, run_gsm8k_benchmark
+- Key code excerpts:
+
+```diff
+diff -- test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp4_mtp_mi35x.py
+@@ -0,0 +1,202 @@
++"""MI35x DeepSeek-R1-MXFP4 TP=4 EAGLE GSM8K regression.
++This mirrors the production-style TP=4 launch recipe with EAGLE speculative
++decoding, overlap plan stream, FP8 KV cache, long context, and full GSM8K
++client pressure enabled.
++Registry: nightly-amd-8-gpu-mi35x-deepseek-r1-mxfp4-tp4 suite
++"""
+```
+
+- Reviewed files:
+  - tests: `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp4_mtp_mi35x.py` added +202/-0
+- Risk and verification: The diff ships test coverage in `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp4_mtp_mi35x.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #31619 - [CP] Migrate MLA prefill CP (DeepSeek V3) to CP-v2 zigzag strategy
+
+- Link: https://github.com/sgl-project/sglang/pull/31619
+- Status/date: merged / 2026-07-18
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/models/deepseek_v2.py`; associated commits `7a896215e765`
+- Diff scope read: GitHub Pull Request files API returned 7 files, +123/-76, 309 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[CP] Migrate MLA prefill CP (DeepSeek V3) to CP-v2 zigzag strategy"; model line: DeepSeek V3/R1; category: model implementation change; main diff: `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`; technical summary: Covers "[CP] Migrate MLA prefill CP (DeepSeek V3) to CP-v2 zigzag strategy"; the main implementation surface is `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/deepseek_v2.py` modified +9/-7 (16 lines); hunks: -77,6 +77,7; -2546,9 +2547,13 @@ def forward(; symbols: forward, touching `forward`; `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +8/-2 (10 lines); hunks: -19,6 +19,7; -565,8 +566,13 @@ def forward_absorb_prepare(; symbols: forward_absorb_prepare, touching `forward_absorb_prepare`.
+- Code diff details:
+  - `python/sglang/srt/models/deepseek_v2.py` modified +9/-7 (16 lines); hunks: -77,6 +77,7; -2546,9 +2547,13 @@ def forward(; symbols: forward
+  - `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +8/-2 (10 lines); hunks: -19,6 +19,7; -565,8 +566,13 @@ def forward_absorb_prepare(; symbols: forward_absorb_prepare
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -77,6 +77,7 @@
++from sglang.srt.layers.cp.utils import is_cp_v2_active
+@@ -2546,9 +2547,13 @@ def forward(
+-        if dsa_use_prefill_cp(
+-            forward_batch, self.dsa_enable_prefill_cp
+-        ) or mla_use_prefill_cp(forward_batch, self.mla_enable_prefill_cp):
++        # CP-v2 shards/gathers at the eager-runner boundary instead.
+diff -- python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py
+@@ -19,6 +19,7 @@
++from sglang.srt.layers.cp.utils import is_cp_v2_active
+@@ -565,8 +566,13 @@ def forward_absorb_prepare(
+-        if (dsa_prefill_cp or mla_prefill_cp) and not defer_kv_gather_until_after_rope:
+-            # support allgather+rerrange
++        if (
++            (dsa_prefill_cp or mla_prefill_cp)
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +9/-7; `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +8/-2
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/attention/flashattention_backend.py`, `python/sglang/srt/layers/cp/utils.py`, `python/sglang/srt/layers/cp/zigzag.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #30514 - [DSA] Integrate Q8KV8 FP8 Sparse MLA Prefill into the DSA Backend (DeepSeek-V3.2)
+
+- Link: https://github.com/sgl-project/sglang/pull/30514
+- Status/date: merged / 2026-07-19
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx`; associated commits `b8ec544946f1`
+- Diff scope read: GitHub Pull Request files API returned 10 files, +801/-95, 1275 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[DSA] Integrate Q8KV8 FP8 Sparse MLA Prefill into the DSA Backend (DeepSeek-V3.2)"; model line: DeepSeek V3/R1; category: performance/backend optimization; main diff: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx`; technical summary: Covers "[DSA] Integrate Q8KV8 FP8 Sparse MLA Prefill into the DSA Backend (DeepSeek-V3.2)"; the main implementation surface is `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` modified +1/-1 (2 lines); hunks: -64,7 +64,7 @@ import { DeepSeekV32Deployment } from "/src/snippets/autoregre....
+- Code diff details:
+  - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` modified +1/-1 (2 lines); hunks: -64,7 +64,7 @@ import { DeepSeekV32Deployment } from "/src/snippets/autoregre...
+- Key code excerpts:
+
+```diff
+diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx
+@@ -64,7 +64,7 @@ import { DeepSeekV32Deployment } from "/src/snippets/autoregressive/deepseek-v32
+-- **DSA prefill/decode attention kernels (`--dsa-prefill-backend`, `--dsa-decode-backend`):** The `dsa` backend is automatically selected for DeepSeek-V3.2. Available kernels: `fl
++- **DSA prefill/decode attention kernels (`--dsa-prefill-backend`, `--dsa-decode-backend`):** The `dsa` backend is automatically selected for DeepSeek-V3.2. Available kernels: `fl
+```
+
+- Reviewed files:
+  - docs: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` modified +1/-1
+- Risk and verification: The diff ships test coverage in `test/registered/jit/test_sparse_mla_q8kv8_prefill_sm90.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes
 

@@ -6,7 +6,7 @@
 | --- | --- |
 | `docs_new/cookbook/autoregressive/Mistral/Devstral-2.mdx` | 无直接 PR 号提交 |
 | `docs_new/cookbook/autoregressive/Mistral/Ministral-3.mdx` | 无直接 PR 号提交 |
-| `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx` | 无直接 PR 号提交 |
+| `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx` | [#31507](https://github.com/sgl-project/sglang/pull/31507) |
 | `docs_new/cookbook/autoregressive/Mistral/Mistral-Small-4.mdx` | 无直接 PR 号提交 |
 | `docs_new/src/snippets/autoregressive/ministral-3-deployment.jsx` | 无直接 PR 号提交 |
 | `docs_new/src/snippets/autoregressive/mistral-medium-3-5-deployment.jsx` | 无直接 PR 号提交 |
@@ -17,7 +17,7 @@
 | `python/sglang/srt/models/mistral_eagle.py` | 无直接 PR 号提交 |
 | `python/sglang/srt/models/mistral_large_3.py` | [#14213](https://github.com/sgl-project/sglang/pull/14213), [#14466](https://github.com/sgl-project/sglang/pull/14466), [#14485](https://github.com/sgl-project/sglang/pull/14485) |
 | `python/sglang/srt/models/mistral_large_3_eagle.py` | [#14466](https://github.com/sgl-project/sglang/pull/14466), [#14485](https://github.com/sgl-project/sglang/pull/14485), [#20708](https://github.com/sgl-project/sglang/pull/20708) |
-| `python/sglang/srt/utils/hf_transformers/mistral_utils.py` | 无直接 PR 号提交 |
+| `python/sglang/srt/utils/hf_transformers/mistral_utils.py` | [#30396](https://github.com/sgl-project/sglang/pull/30396) |
 | `test/manual/models/test_mistral_large3_basic.py` | 无直接 PR 号提交 |
 | `test/registered/8-gpu-models/test_mistral_large3.py` | [#15422](https://github.com/sgl-project/sglang/pull/15422), [#18065](https://github.com/sgl-project/sglang/pull/18065), [#19402](https://github.com/sgl-project/sglang/pull/19402) |
 | `test/registered/ascend/llm_models/test_npu_mistral_7b.py` | 无直接 PR 号提交 |
@@ -28,9 +28,9 @@
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 14
+- git 追溯 PR 数: 16
 - 原文档显式引用补充 PR 数: 8
-- 当前文档总 PR 数: 22
+- 当前文档总 PR 数: 24
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -60,6 +60,8 @@
 | 2026-05-23 | [#23292](https://github.com/sgl-project/sglang/pull/23292) | merged | [CP] 1/N: Support MLA Prefill Context Parallel | `python/sglang/srt/layers/attention/flashattention_backend.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/utils/cp_utils.py` |
 | 2026-06-19 | [#28697](https://github.com/sgl-project/sglang/pull/28697) | merged | [docs] Add B300 cookbook deployment options | `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` |
 | 2026-06-25 | [#29111](https://github.com/sgl-project/sglang/pull/29111) | merged | [Bugfix] Fix Ministral3 init argument forwarding | `python/sglang/srt/models/ministral3.py` |
+| 2026-07-09 | [#30396](https://github.com/sgl-project/sglang/pull/30396) | merged | Fix garbage output for bare-tekken Mistral checkpoints (e.g. Leanstral) | `python/sglang/srt/utils/hf_transformers/mistral_utils.py` |
+| 2026-07-17 | [#31507](https://github.com/sgl-project/sglang/pull/31507) | merged | [Docs] Mistral Medium 3.5 cookbook: replace stale day-0 dev images with latest | `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx` |
 
 ## 逐 PR diff 审计卡
 
@@ -757,6 +759,60 @@ diff -- python/sglang/srt/models/ministral3.py
 - 已读文件:
   - runtime: `python/sglang/srt/models/ministral3.py` modified +37/-17
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/ministral3.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #30396 - Fix garbage output for bare-tekken Mistral checkpoints (e.g. Leanstral)
+
+- 链接: https://github.com/sgl-project/sglang/pull/30396
+- 状态/时间: merged / 2026-07-09
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/utils/hf_transformers/mistral_utils.py`；关联提交 `7132af28de0b`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+138/-12，可读 patch 190 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Fix garbage output for bare-tekken Mistral checkpoints (e.g. Leanstral)」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `python/sglang/srt/utils/hf_transformers/mistral_utils.py`；技术摘要: 覆盖「Fix garbage output for bare-tekken Mistral checkpoints (e.g. Leanstral)」；主要实现面是 `python/sglang/srt/utils/hf_transformers/mistral_utils.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/utils/hf_transformers/mistral_utils.py` modified +34/-1 (35 lines); hunks: -11,7 +11,12; -430,6 +435,34 @@ def wrap_as_pixtral(processor, config):; symbols: adapt_config_dict, wrap_as_pixtral, is_bare_tekken_checkpoint, retry_without_mistral_common_kwargs，涉及 `adapt_config_dict, wrap_as_pixtral, is_bare_tekken_checkpoint`。
+- 代码 diff 细节:
+  - `python/sglang/srt/utils/hf_transformers/mistral_utils.py` modified +34/-1 (35 lines); hunks: -11,7 +11,12; -430,6 +435,34 @@ def wrap_as_pixtral(processor, config):; symbols: adapt_config_dict, wrap_as_pixtral, is_bare_tekken_checkpoint, retry_without_mistral_common_kwargs
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/utils/hf_transformers/mistral_utils.py
+@@ -11,7 +11,12 @@
+-from .common import _ensure_sub_configs, download_from_hf
++from .common import (
++    _cached_file_exists,
++    _ensure_sub_configs,
++    _remote_file_exists,
++    download_from_hf,
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/utils/hf_transformers/mistral_utils.py` modified +34/-1
+- 验证与风险: diff 自带测试面 `test/registered/unit/tokenizer/test_tekken_tokenizer_routing.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #31507 - [Docs] Mistral Medium 3.5 cookbook: replace stale day-0 dev images with latest
+
+- 链接: https://github.com/sgl-project/sglang/pull/31507
+- 状态/时间: merged / 2026-07-17
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx`；关联提交 `40a3bd765975`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-8，可读 patch 16 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Docs] Mistral Medium 3.5 cookbook: replace stale day-0 dev images with latest」；模型线: Mistral Small 4；类别: 文档/测试/CI；主要 diff: `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx`；技术摘要: 覆盖「[Docs] Mistral Medium 3.5 cookbook: replace stale day-0 dev images with latest」；主要实现面是 `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx` modified +1/-8 (9 lines); hunks: -41,14 +41,7 @@ The HuggingFace repo ships both the mistral native layout (`p...。
+- 代码 diff 细节:
+  - `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx` modified +1/-8 (9 lines); hunks: -41,14 +41,7 @@ The HuggingFace repo ships both the mistral native layout (`p...
+- 关键代码摘录:
+
+```diff
+diff -- docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx
+@@ -41,14 +41,7 @@ The HuggingFace repo ships both the mistral native layout (`params.json` + `cons
+-**Docker Images by Hardware:**
+-| Hardware | Docker Image |
+-| --- | --- |
+-| H100 / H200 (Hopper, CUDA 12.9) | `lmsysorg/sglang:dev-mistral-medium-3.5` |
+-| B200 / B300 (Blackwell, CUDA 13.0) | `lmsysorg/sglang:dev-cu13-mistral-medium-3.5` |
+-> Day-0 support for Mistral Medium 3.5 is not yet in `lmsysorg/sglang:latest` — pull one of the tags above (matching your GPU's CUDA driver) until the changes propagate to the nex
+```
+
+- 已读文件:
+  - docs: `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx` modified +1/-8
+- 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
 ## 补漏结论
 

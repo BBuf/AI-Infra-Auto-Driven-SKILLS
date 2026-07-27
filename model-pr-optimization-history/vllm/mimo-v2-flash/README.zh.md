@@ -7,17 +7,17 @@
 | `vllm/model_executor/models/mimo.py` | [#17433](https://github.com/vllm-project/vllm/pull/17433) |
 | `vllm/model_executor/models/mimo_audio.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
 | `vllm/model_executor/models/mimo_mtp.py` | [#17433](https://github.com/vllm-project/vllm/pull/17433), [#25136](https://github.com/vllm-project/vllm/pull/25136) |
-| `vllm/model_executor/models/mimo_v2.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967), [#41029](https://github.com/vllm-project/vllm/pull/41029), [#41797](https://github.com/vllm-project/vllm/pull/41797), [#45200](https://github.com/vllm-project/vllm/pull/45200) |
+| `vllm/model_executor/models/mimo_v2.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967), [#41029](https://github.com/vllm-project/vllm/pull/41029), [#41797](https://github.com/vllm-project/vllm/pull/41797), [#45200](https://github.com/vllm-project/vllm/pull/45200), [#46104](https://github.com/vllm-project/vllm/pull/46104) |
 | `vllm/model_executor/models/mimo_v2_mtp.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967), [#41905](https://github.com/vllm-project/vllm/pull/41905) |
 | `vllm/model_executor/models/mimo_v2_omni.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
 | `vllm/transformers_utils/configs/mimo_v2_omni.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
-| `vllm/transformers_utils/processors/mimo_v2_omni.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
+| `vllm/transformers_utils/processors/mimo_v2_omni.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967), [#43117](https://github.com/vllm-project/vllm/pull/43117) |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 7
+- git 追溯 PR 数: 9
 - 原文档显式引用补充 PR 数: 4
-- 当前文档总 PR 数: 11
+- 当前文档总 PR 数: 13
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -36,6 +36,8 @@
 | 2026-06-05 | [#43167](https://github.com/vllm-project/vllm/pull/43167) | merged | Remove KV cache scale boilerplate from model weight loading methods | `tests/model_executor/test_eagle_quantization.py`, `vllm/model_executor/models/gpt_oss.py`, `vllm/model_executor/layers/quantization/kv_cache.py` |
 | 2026-06-11 | [#41797](https://github.com/vllm-project/vllm/pull/41797) | merged | [Attention] add triton diff-kv backend for mimo | `vllm/model_executor/models/mimo_v2.py` |
 | 2026-06-15 | [#45200](https://github.com/vllm-project/vllm/pull/45200) | merged | [Models] Fix MiMo v2.x QKV TP sharding + FP4 support | `vllm/model_executor/models/mimo_v2.py` |
+| 2026-07-01 | [#46104](https://github.com/vllm-project/vllm/pull/46104) | merged | [Spec Decode] Support SWA + DFlash for MiMo | `vllm/model_executor/models/mimo_v2.py` |
+| 2026-07-11 | [#43117](https://github.com/vllm-project/vllm/pull/43117) | merged | fix(processor): route MiMo-V2-Omni media fetch through MediaConnector | `vllm/transformers_utils/processors/mimo_v2_omni.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -401,6 +403,60 @@ diff -- vllm/model_executor/models/mimo_v2.py
 - 已读文件:
   - runtime: `vllm/model_executor/models/mimo_v2.py` modified +160/-5
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/layers/quantization/fp8.py`, `vllm/model_executor/models/mimo_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #46104 - [Spec Decode] Support SWA + DFlash for MiMo
+
+- 链接: https://github.com/vllm-project/vllm/pull/46104
+- 状态/时间: merged / 2026-07-01
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mimo_v2.py`；关联提交 `9969466a5978`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+243/-25，可读 patch 500 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Spec Decode] Support SWA + DFlash for MiMo」；模型线: MiMo V2 Flash；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/mimo_v2.py`；技术摘要: 覆盖「[Spec Decode] Support SWA + DFlash for MiMo」；主要实现面是 `vllm/model_executor/models/mimo_v2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/mimo_v2.py` modified +16/-3 (19 lines); hunks: -53,7 +53,12; -539,7 +544,7 @@ def _shard_fp8_qkv_proj(; symbols: _shard_fp8_qkv_proj, MiMoV2Model, __init__, forward，涉及 `_shard_fp8_qkv_proj, MiMoV2Model, __init__`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/mimo_v2.py` modified +16/-3 (19 lines); hunks: -53,7 +53,12; -539,7 +544,7 @@ def _shard_fp8_qkv_proj(; symbols: _shard_fp8_qkv_proj, MiMoV2Model, __init__, forward
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/mimo_v2.py
+@@ -53,7 +53,12 @@
+-from .interfaces import MixtureOfExperts, SupportsPP
++from .interfaces import (
++    EagleModelMixin,
++    MixtureOfExperts,
++    SupportsEagle3,
++    SupportsPP,
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/mimo_v2.py` modified +16/-3
+- 验证与风险: diff 自带测试面 `tests/models/registry.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #43117 - fix(processor): route MiMo-V2-Omni media fetch through MediaConnector
+
+- 链接: https://github.com/vllm-project/vllm/pull/43117
+- 状态/时间: merged / 2026-07-11
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/transformers_utils/processors/mimo_v2_omni.py`；关联提交 `54503ecec0f3`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+22/-76，可读 patch 190 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「fix(processor): route MiMo-V2-Omni media fetch through MediaConnector」；模型线: MiMo V2 Flash；类别: 缺陷修复；主要 diff: `vllm/transformers_utils/processors/mimo_v2_omni.py`；技术摘要: 覆盖「fix(processor): route MiMo-V2-Omni media fetch through MediaConnector」；主要实现面是 `vllm/transformers_utils/processors/mimo_v2_omni.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/transformers_utils/processors/mimo_v2_omni.py` modified +22/-76 (98 lines); hunks: -7,33 +7,21; -62,7 +50,7; symbols: ImageInput, VideoInput, AudioInput, _smart_resize，涉及 `ImageInput, VideoInput, AudioInput`。
+- 代码 diff 细节:
+  - `vllm/transformers_utils/processors/mimo_v2_omni.py` modified +22/-76 (98 lines); hunks: -7,33 +7,21; -62,7 +50,7; symbols: ImageInput, VideoInput, AudioInput, _smart_resize
+- 关键代码摘录:
+
+```diff
+diff -- vllm/transformers_utils/processors/mimo_v2_omni.py
+@@ -7,33 +7,21 @@
+-import copy
+-import io
+-from io import BytesIO
+-import requests
+-try:
+-    from torchcodec.decoders import AudioDecoder
+```
+
+- 已读文件:
+  - runtime: `vllm/transformers_utils/processors/mimo_v2_omni.py` modified +22/-76
+- 验证与风险: runtime 路径改动集中在 `vllm/transformers_utils/processors/mimo_v2_omni.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ## 补漏结论
 

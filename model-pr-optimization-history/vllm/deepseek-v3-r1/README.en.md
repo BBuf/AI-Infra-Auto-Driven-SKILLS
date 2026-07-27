@@ -15,18 +15,18 @@
 | `tests/tool_parsers/test_deepseekv31_tool_parser.py` | no direct PR-number commit |
 | `tests/tool_parsers/test_deepseekv32_tool_parser.py` | [#33703](https://github.com/vllm-project/vllm/pull/33703), [#36056](https://github.com/vllm-project/vllm/pull/36056), [#41198](https://github.com/vllm-project/vllm/pull/41198), [#41801](https://github.com/vllm-project/vllm/pull/41801), [#43019](https://github.com/vllm-project/vllm/pull/43019), [#43255](https://github.com/vllm-project/vllm/pull/43255) |
 | `tests/tool_parsers/test_deepseekv3_tool_parser.py` | no direct PR-number commit |
-| `vllm/model_executor/models/deepseek_mtp.py` | [#25896](https://github.com/vllm-project/vllm/pull/25896), [#29545](https://github.com/vllm-project/vllm/pull/29545), [#38684](https://github.com/vllm-project/vllm/pull/38684), [#38870](https://github.com/vllm-project/vllm/pull/38870) |
-| `vllm/model_executor/models/deepseek_v2.py` | [#13833](https://github.com/vllm-project/vllm/pull/13833), [#23971](https://github.com/vllm-project/vllm/pull/23971), [#24119](https://github.com/vllm-project/vllm/pull/24119), [#25896](https://github.com/vllm-project/vllm/pull/25896), [#25999](https://github.com/vllm-project/vllm/pull/25999), [#26456](https://github.com/vllm-project/vllm/pull/26456), [#26465](https://github.com/vllm-project/vllm/pull/26465), [#26670](https://github.com/vllm-project/vllm/pull/26670), [#26763](https://github.com/vllm-project/vllm/pull/26763), [#27532](https://github.com/vllm-project/vllm/pull/27532), [#27568](https://github.com/vllm-project/vllm/pull/27568), [#28968](https://github.com/vllm-project/vllm/pull/28968), ... (27 total) |
+| `vllm/model_executor/models/deepseek_mtp.py` | [#25896](https://github.com/vllm-project/vllm/pull/25896), [#29545](https://github.com/vllm-project/vllm/pull/29545), [#38684](https://github.com/vllm-project/vllm/pull/38684), [#38870](https://github.com/vllm-project/vllm/pull/38870), [#48036](https://github.com/vllm-project/vllm/pull/48036) |
+| `vllm/model_executor/models/deepseek_v2.py` | [#13833](https://github.com/vllm-project/vllm/pull/13833), [#23971](https://github.com/vllm-project/vllm/pull/23971), [#24119](https://github.com/vllm-project/vllm/pull/24119), [#25896](https://github.com/vllm-project/vllm/pull/25896), [#25999](https://github.com/vllm-project/vllm/pull/25999), [#26456](https://github.com/vllm-project/vllm/pull/26456), [#26465](https://github.com/vllm-project/vllm/pull/26465), [#26670](https://github.com/vllm-project/vllm/pull/26670), [#26763](https://github.com/vllm-project/vllm/pull/26763), [#27532](https://github.com/vllm-project/vllm/pull/27532), [#27568](https://github.com/vllm-project/vllm/pull/27568), [#28968](https://github.com/vllm-project/vllm/pull/28968), ... (29 total) |
 | `vllm/reasoning/deepseek_r1_reasoning_parser.py` | no direct PR-number commit |
 | `vllm/tool_parsers/deepseekv31_tool_parser.py` | no direct PR-number commit |
-| `vllm/tool_parsers/deepseekv32_tool_parser.py` | [#33703](https://github.com/vllm-project/vllm/pull/33703), [#33964](https://github.com/vllm-project/vllm/pull/33964), [#36056](https://github.com/vllm-project/vllm/pull/36056), [#41198](https://github.com/vllm-project/vllm/pull/41198), [#41801](https://github.com/vllm-project/vllm/pull/41801), [#43019](https://github.com/vllm-project/vllm/pull/43019) |
+| `vllm/tool_parsers/deepseekv32_engine_tool_parser.py` | no direct PR-number commit |
 | `vllm/tool_parsers/deepseekv3_tool_parser.py` | no direct PR-number commit |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 40
-- Extra PRs preserved from existing docs: 13
-- Total PRs in this document: 53
+- Git-traced PRs: 42
+- Extra PRs preserved from existing docs: 14
+- Total PRs in this document: 56
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -66,17 +66,17 @@
 | 2026-02-23 | [#34302](https://github.com/vllm-project/vllm/pull/34302) | merged | [ModelBash][DSV3] Add TRTLLM DSV3 Router GEMM kernel (6% B1 Speedup) | `vllm/model_executor/models/deepseek_v2.py` |
 | 2026-03-02 | [#35751](https://github.com/vllm-project/vllm/pull/35751) | merged | [MoE][Perf] Wrap DSV3 QKVAProj GEMM in custom op for torch.compile | `vllm/model_executor/models/deepseek_v2.py` |
 | 2026-03-07 | [#36247](https://github.com/vllm-project/vllm/pull/36247) | merged | [Bugfix] Fix compressed-tensors quantization failure for DeepSeek-R1 on MI300x | `vllm/model_executor/models/deepseek_v2.py` |
-| 2026-03-19 | [#36056](https://github.com/vllm-project/vllm/pull/36056) | merged | [Bugfix] Fix Deepseekv32 tool parser when stream interval > 1 | `vllm/tool_parsers/deepseekv32_tool_parser.py`, `tests/tool_parsers/test_deepseekv32_tool_parser.py` |
-| 2026-03-30 | [#33703](https://github.com/vllm-project/vllm/pull/33703) | merged | [Bugfix] Support multi-type params parsing for DeepSeek v3.2 | `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `vllm/tool_parsers/deepseekv32_tool_parser.py` |
+| 2026-03-19 | [#36056](https://github.com/vllm-project/vllm/pull/36056) | merged | [Bugfix] Fix Deepseekv32 tool parser when stream interval > 1 | `tests/tool_parsers/test_deepseekv32_tool_parser.py` |
+| 2026-03-30 | [#33703](https://github.com/vllm-project/vllm/pull/33703) | merged | [Bugfix] Support multi-type params parsing for DeepSeek v3.2 | `tests/tool_parsers/test_deepseekv32_tool_parser.py` |
 | 2026-04-02 | [#38684](https://github.com/vllm-project/vllm/pull/38684) | merged | [Perf] DSV3.2 Indexer Fused Weights Projection | `vllm/model_executor/models/deepseek_v2.py`, `vllm/model_executor/models/deepseek_mtp.py` |
 | 2026-04-04 | [#38870](https://github.com/vllm-project/vllm/pull/38870) | merged | [Bugfix] Fix DSV32 weight loading | `vllm/model_executor/models/deepseek_v2.py`, `vllm/model_executor/models/deepseek_mtp.py` |
 | 2026-04-08 | [#37421](https://github.com/vllm-project/vllm/pull/37421) | merged | [Perf][Kernel] Persistent TopK scheduler: unified CUDAGraph-safe kernel with dynamic per-row dispatch - DeepSeek-V3.2 DSA decode | `vllm/model_executor/models/deepseek_v2.py` |
 | 2026-04-27 | [#35968](https://github.com/vllm-project/vllm/pull/35968) | closed | [Performance] DeepSeek V3.2 multi-stream indexer overlap | `vllm/model_executor/models/deepseek_v2.py`, `vllm/model_executor/layers/layernorm.py`, `tests/utils_/test_indexer_dual_stream.py` |
-| 2026-04-29 | [#41198](https://github.com/vllm-project/vllm/pull/41198) | merged | [Bugfix] DSV32/V4 add missing type conversion for non-streaming tool calls | `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `vllm/tool_parsers/deepseekv32_tool_parser.py` |
+| 2026-04-29 | [#41198](https://github.com/vllm-project/vllm/pull/41198) | merged | [Bugfix] DSV32/V4 add missing type conversion for non-streaming tool calls | `tests/tool_parsers/test_deepseekv32_tool_parser.py` |
 | 2026-05-01 | [#41217](https://github.com/vllm-project/vllm/pull/41217) | merged | [ROCm][Deepseek] dsv3.2 further optimization | `vllm/model_executor/models/deepseek_v2.py` |
-| 2026-05-06 | [#41801](https://github.com/vllm-project/vllm/pull/41801) | merged | [Bugfix] DeepSeekV32/v4: respect string='true\|false' attribute andunwrap arguments/input wrapper | `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `vllm/tool_parsers/deepseekv32_tool_parser.py` |
+| 2026-05-06 | [#41801](https://github.com/vllm-project/vllm/pull/41801) | merged | [Bugfix] DeepSeekV32/v4: respect string='true\|false' attribute andunwrap arguments/input wrapper | `tests/tool_parsers/test_deepseekv32_tool_parser.py` |
 | 2026-05-14 | [#41778](https://github.com/vllm-project/vllm/pull/41778) | merged | [MLA Attention Backend] Add TOKENSPEED_MLA backend for DSR1/Kimi K25 prefill + decode on Blackwell | `benchmarks/attention_benchmarks/configs/mla_prefill.yaml`, `benchmarks/attention_benchmarks/configs/mla_decode.yaml`, `vllm/model_executor/layers/attention/mla_attention.py` |
-| 2026-05-20 | [#43019](https://github.com/vllm-project/vllm/pull/43019) | merged | [Bugfix] Use shared coerce_to_schema_type in DeepSeekV32 tool parser | `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `vllm/tool_parsers/deepseekv32_tool_parser.py` |
+| 2026-05-20 | [#43019](https://github.com/vllm-project/vllm/pull/43019) | merged | [Bugfix] Use shared coerce_to_schema_type in DeepSeekV32 tool parser | `tests/tool_parsers/test_deepseekv32_tool_parser.py` |
 | 2026-05-21 | [#43255](https://github.com/vllm-project/vllm/pull/43255) | merged | [CI] Add composed-schema regression tests for DeepSeek V3.2/V4 parsers | `tests/tool_parsers/test_deepseekv32_tool_parser.py` |
 | 2026-05-28 | [#42879](https://github.com/vllm-project/vllm/pull/42879) | merged | [Bugfix] Stream DeepSeek DSML tool-call argument deltas incrementally | `vllm/tool_parsers/deepseekv32_tool_parser.py`, `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `tests/tool_parsers/test_deepseekv4_tool_parser.py` |
 | 2026-05-28 | [#43781](https://github.com/vllm-project/vllm/pull/43781) | merged | [Bugfix][ROCm] Fix Accuracy Drop in Sparse Indexer on gfx950 | `vllm/model_executor/models/deepseek_v2.py`, `vllm/v1/attention/ops/rocm_aiter_mla_sparse.py` |
@@ -87,6 +87,9 @@
 | 2026-06-19 | [#45895](https://github.com/vllm-project/vllm/pull/45895) | merged | [bugfix]Indexer init skip and MTP TopK share for iteration | `vllm/model_executor/models/deepseek_v2.py`, `vllm/model_executor/models/deepseek_mtp.py`, `vllm/model_executor/layers/attention/mla_attention.py` |
 | 2026-06-20 | [#46199](https://github.com/vllm-project/vllm/pull/46199) | merged | [Bugfix] Move extract_layer_index back inside is_v32 guard | `vllm/model_executor/models/deepseek_v2.py` |
 | 2026-06-25 | [#46651](https://github.com/vllm-project/vllm/pull/46651) | merged | [Perf] Remove redundant clone for GLM, Deepseek etc | `vllm/model_executor/models/AXK1.py`, `vllm/model_executor/models/deepseek_v2.py`, `vllm/model_executor/models/glm4_moe_lite.py` |
+| 2026-06-28 | [#46600](https://github.com/vllm-project/vllm/pull/46600) | merged | [Bugfix][DSv3.2] Skip indexer weights for index-cache-skipped layers | `vllm/model_executor/models/deepseek_v2.py` |
+| 2026-07-14 | [#48036](https://github.com/vllm-project/vllm/pull/48036) | merged | [CI Bug] Fully solve accuracy issue for DSv3.2 + MTP + Sequence Parallel | `vllm/model_executor/models/deepseek_mtp.py` |
+| 2026-07-20 | [#45964](https://github.com/vllm-project/vllm/pull/45964) | merged | [Attention][MLA][DCP] Query replication for MLA decode (DeepSeek-V2/R1 + Kimi-K2.5) | `vllm/model_executor/models/deepseek_v2.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -814,7 +817,7 @@ diff -- vllm/model_executor/models/deepseek_v2.py
 
 - Link: https://github.com/vllm-project/vllm/pull/33964
 - Status/date: merged / 2026-02-06
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/tool_parsers/deepseekv32_tool_parser.py`; associated commits `7bec4351305f`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +12/-0, 19 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix the issue where tool calling does not work when using fast detokenization with dsv32"; model line: DeepSeek V3/R1; category: bug fix; main diff: `vllm/tool_parsers/deepseekv32_tool_parser.py`; technical summary: Covers "[Bugfix] Fix the issue where tool calling does not work when using fast detokenization with dsv32"; the main implementation surface is `vllm/tool_parsers/deepseekv32_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/tool_parsers/deepseekv32_tool_parser.py` modified +12/-0 (12 lines); hunks: -110,6 +110,18 @@ def _generate_tool_call_id(self) -> str:; symbols: _generate_tool_call_id, adjust_request, _reset_streaming_state, touching `_generate_tool_call_id, adjust_request, _reset_streaming_state`.
@@ -1001,24 +1004,15 @@ diff -- vllm/model_executor/models/deepseek_v2.py
 
 - Link: https://github.com/vllm-project/vllm/pull/36056
 - Status/date: merged / 2026-03-19
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `vllm/tool_parsers/deepseekv32_tool_parser.py`; associated commits `be12afd284f3`; preserved from an explicit existing history/skill citation
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_deepseekv32_tool_parser.py`; associated commits `be12afd284f3`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +622/-437, 1113 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix Deepseekv32 tool parser when stream interval > 1"; model line: DeepSeek V3/R1; category: bug fix; main diff: `vllm/tool_parsers/deepseekv32_tool_parser.py`, `tests/tool_parsers/test_deepseekv32_tool_parser.py`; technical summary: Covers "[Bugfix] Fix Deepseekv32 tool parser when stream interval > 1"; the main implementation surface is `vllm/tool_parsers/deepseekv32_tool_parser.py`, `tests/tool_parsers/test_deepseekv32_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `vllm/tool_parsers/deepseekv32_tool_parser.py` modified +146/-437 (583 lines); hunks: -48,41 +48,12 @@ def __init__(self, tokenizer: TokenizerLike):; -106,10 +77,6 @@ def __init__(self, tokenizer: TokenizerLike):; symbols: __init__, type, _generate_tool_call_id, adjust_request, touching `__init__, type, _generate_tool_call_id`; `tests/tool_parsers/test_deepseekv32_tool_parser.py` added +476/-0 (476 lines); hunks: -0,0 +1,476; symbols: make_parser, make_tool_param, make_request, build_tool_call, touching `make_parser, make_tool_param, make_request`.
+- Motivation: Title: "[Bugfix] Fix Deepseekv32 tool parser when stream interval > 1"; model line: DeepSeek V3/R1; category: bug fix; main diff: `tests/tool_parsers/test_deepseekv32_tool_parser.py`; technical summary: Covers "[Bugfix] Fix Deepseekv32 tool parser when stream interval > 1"; the main implementation surface is `tests/tool_parsers/test_deepseekv32_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/tool_parsers/test_deepseekv32_tool_parser.py` added +476/-0 (476 lines); hunks: -0,0 +1,476; symbols: make_parser, make_tool_param, make_request, build_tool_call, touching `make_parser, make_tool_param, make_request`.
 - Code diff details:
-  - `vllm/tool_parsers/deepseekv32_tool_parser.py` modified +146/-437 (583 lines); hunks: -48,41 +48,12 @@ def __init__(self, tokenizer: TokenizerLike):; -106,10 +77,6 @@ def __init__(self, tokenizer: TokenizerLike):; symbols: __init__, type, _generate_tool_call_id, adjust_request
   - `tests/tool_parsers/test_deepseekv32_tool_parser.py` added +476/-0 (476 lines); hunks: -0,0 +1,476; symbols: make_parser, make_tool_param, make_request, build_tool_call
 - Key code excerpts:
 
 ```diff
-diff -- vllm/tool_parsers/deepseekv32_tool_parser.py
-@@ -48,41 +48,12 @@ def __init__(self, tokenizer: TokenizerLike):
--        # Sentinel tokens
--        self.dsml_token: str = "｜DSML｜"
--        self.dsml_start_check: str = "<" + self.dsml_token
-+        # Sentinel token
--        self.tool_call_end_token: str = "</｜DSML｜function_calls>"
--        self.invoke_start_prefix: str = "<｜DSML｜invoke name="
 diff -- tests/tool_parsers/test_deepseekv32_tool_parser.py
 @@ -0,0 +1,476 @@
 +# SPDX-License-Identifier: Apache-2.0
@@ -1030,7 +1024,6 @@ diff -- tests/tool_parsers/test_deepseekv32_tool_parser.py
 ```
 
 - Reviewed files:
-  - runtime: `vllm/tool_parsers/deepseekv32_tool_parser.py` modified +146/-437
   - tests: `tests/tool_parsers/test_deepseekv32_tool_parser.py` added +476/-0
 - Risk and verification: The diff ships test coverage in `tests/tool_parsers/test_deepseekv32_tool_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
@@ -1038,13 +1031,12 @@ diff -- tests/tool_parsers/test_deepseekv32_tool_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/33703
 - Status/date: merged / 2026-03-30
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `vllm/tool_parsers/deepseekv32_tool_parser.py`; associated commits `a6db99ba02ec`; preserved from an explicit existing history/skill citation
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_deepseekv32_tool_parser.py`; associated commits `a6db99ba02ec`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +201/-18, 250 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Support multi-type params parsing for DeepSeek v3.2"; model line: DeepSeek V3/R1; category: bug fix; main diff: `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `vllm/tool_parsers/deepseekv32_tool_parser.py`; technical summary: Covers "[Bugfix] Support multi-type params parsing for DeepSeek v3.2"; the main implementation surface is `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `vllm/tool_parsers/deepseekv32_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `tests/tool_parsers/test_deepseekv32_tool_parser.py` modified +181/-0 (181 lines); hunks: -11,6 +11,7; -474,3 +475,183 @@ def test_no_emission_while_incomplete(self, parser):; symbols: test_no_emission_while_incomplete, deepseekv32_tokenizer, parser, test_convert_param_value_single_types, touching `test_no_emission_while_incomplete, deepseekv32_tokenizer, parser`; `vllm/tool_parsers/deepseekv32_tool_parser.py` modified +20/-18 (38 lines); hunks: -100,7 +100,7 @@ def _parse_invoke_params(self, invoke_str: str) -> dict:; -109,29 +109,31 @@ def _convert_param_value(self, value: str, param_type: str...; symbols: _parse_invoke_params, _convert_param_value, _convert_param_value_checked, touching `_parse_invoke_params, _convert_param_value, _convert_param_value_checked`.
+- Motivation: Title: "[Bugfix] Support multi-type params parsing for DeepSeek v3.2"; model line: DeepSeek V3/R1; category: bug fix; main diff: `tests/tool_parsers/test_deepseekv32_tool_parser.py`; technical summary: Covers "[Bugfix] Support multi-type params parsing for DeepSeek v3.2"; the main implementation surface is `tests/tool_parsers/test_deepseekv32_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/tool_parsers/test_deepseekv32_tool_parser.py` modified +181/-0 (181 lines); hunks: -11,6 +11,7; -474,3 +475,183 @@ def test_no_emission_while_incomplete(self, parser):; symbols: test_no_emission_while_incomplete, deepseekv32_tokenizer, parser, test_convert_param_value_single_types, touching `test_no_emission_while_incomplete, deepseekv32_tokenizer, parser`.
 - Code diff details:
   - `tests/tool_parsers/test_deepseekv32_tool_parser.py` modified +181/-0 (181 lines); hunks: -11,6 +11,7; -474,3 +475,183 @@ def test_no_emission_while_incomplete(self, parser):; symbols: test_no_emission_while_incomplete, deepseekv32_tokenizer, parser, test_convert_param_value_single_types
-  - `vllm/tool_parsers/deepseekv32_tool_parser.py` modified +20/-18 (38 lines); hunks: -100,7 +100,7 @@ def _parse_invoke_params(self, invoke_str: str) -> dict:; -109,29 +109,31 @@ def _convert_param_value(self, value: str, param_type: str...; symbols: _parse_invoke_params, _convert_param_value, _convert_param_value_checked
 - Key code excerpts:
 
 ```diff
@@ -1056,19 +1048,10 @@ diff -- tests/tool_parsers/test_deepseekv32_tool_parser.py
 +def deepseekv32_tokenizer():
 +    return get_tokenizer(tokenizer_name="deepseek-ai/DeepSeek-V3.2")
 +@pytest.fixture
-diff -- vllm/tool_parsers/deepseekv32_tool_parser.py
-@@ -100,7 +100,7 @@ def _parse_invoke_params(self, invoke_str: str) -> dict:
--    def _convert_param_value(self, value: str, param_type: str) -> Any:
-+    def _convert_param_value_checked(self, value: str, param_type: str) -> Any:
-@@ -109,29 +109,31 @@ def _convert_param_value(self, value: str, param_type: str) -> Any:
--            try:
--                return int(value)
--            except (ValueError, TypeError):
 ```
 
 - Reviewed files:
   - tests: `tests/tool_parsers/test_deepseekv32_tool_parser.py` modified +181/-0
-  - runtime: `vllm/tool_parsers/deepseekv32_tool_parser.py` modified +20/-18
 - Risk and verification: The diff ships test coverage in `tests/tool_parsers/test_deepseekv32_tool_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #38684 - [Perf] DSV3.2 Indexer Fused Weights Projection
@@ -1211,13 +1194,12 @@ diff -- tests/utils_/test_indexer_dual_stream.py
 
 - Link: https://github.com/vllm-project/vllm/pull/41198
 - Status/date: merged / 2026-04-29
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `vllm/tool_parsers/deepseekv32_tool_parser.py`; associated commits `762022cafb1a`; preserved from an explicit existing history/skill citation
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_deepseekv32_tool_parser.py`; associated commits `762022cafb1a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +26/-1, 46 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] DSV32/V4 add missing type conversion for non-streaming tool calls"; model line: DeepSeek V3/R1; category: bug fix; main diff: `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `vllm/tool_parsers/deepseekv32_tool_parser.py`; technical summary: Covers "[Bugfix] DSV32/V4 add missing type conversion for non-streaming tool calls"; the main implementation surface is `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `vllm/tool_parsers/deepseekv32_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `tests/tool_parsers/test_deepseekv32_tool_parser.py` modified +24/-0 (24 lines); hunks: -188,6 +188,30 @@ def test_multiple_tools(self, parser):; symbols: test_multiple_tools, test_type_conversion_in_non_streaming, touching `test_multiple_tools, test_type_conversion_in_non_streaming`; `vllm/tool_parsers/deepseekv32_tool_parser.py` modified +2/-1 (3 lines); hunks: -191,12 +191,13 @@ def extract_tool_calls(; symbols: extract_tool_calls, touching `extract_tool_calls`.
+- Motivation: Title: "[Bugfix] DSV32/V4 add missing type conversion for non-streaming tool calls"; model line: DeepSeek V3/R1; category: bug fix; main diff: `tests/tool_parsers/test_deepseekv32_tool_parser.py`; technical summary: Covers "[Bugfix] DSV32/V4 add missing type conversion for non-streaming tool calls"; the main implementation surface is `tests/tool_parsers/test_deepseekv32_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/tool_parsers/test_deepseekv32_tool_parser.py` modified +24/-0 (24 lines); hunks: -188,6 +188,30 @@ def test_multiple_tools(self, parser):; symbols: test_multiple_tools, test_type_conversion_in_non_streaming, touching `test_multiple_tools, test_type_conversion_in_non_streaming`.
 - Code diff details:
   - `tests/tool_parsers/test_deepseekv32_tool_parser.py` modified +24/-0 (24 lines); hunks: -188,6 +188,30 @@ def test_multiple_tools(self, parser):; symbols: test_multiple_tools, test_type_conversion_in_non_streaming
-  - `vllm/tool_parsers/deepseekv32_tool_parser.py` modified +2/-1 (3 lines); hunks: -191,12 +191,13 @@ def extract_tool_calls(; symbols: extract_tool_calls
 - Key code excerpts:
 
 ```diff
@@ -1229,23 +1211,17 @@ diff -- tests/tool_parsers/test_deepseekv32_tool_parser.py
 +            function=FunctionDefinition(
 +                name="toggle",
 +                parameters={
-diff -- vllm/tool_parsers/deepseekv32_tool_parser.py
-@@ -191,12 +191,13 @@ def extract_tool_calls(
-+                    params = self._convert_params_with_schema(invoke_name, param_dict)
--                                arguments=json.dumps(param_dict, ensure_ascii=False),
-+                                arguments=json.dumps(params, ensure_ascii=False),
 ```
 
 - Reviewed files:
   - tests: `tests/tool_parsers/test_deepseekv32_tool_parser.py` modified +24/-0
-  - runtime: `vllm/tool_parsers/deepseekv32_tool_parser.py` modified +2/-1
 - Risk and verification: The diff ships test coverage in `tests/tool_parsers/test_deepseekv32_tool_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #41217 - [ROCm][Deepseek] dsv3.2 further optimization
 
 - Link: https://github.com/vllm-project/vllm/pull/41217
 - Status/date: merged / 2026-05-01
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/deepseek_v2.py`; associated commits `bc635fad2389`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/deepseek_v2.py`; associated commits `bc635fad2389`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +293/-73, 605 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm][Deepseek] dsv3.2 further optimization"; model line: DeepSeek V3/R1; category: performance/backend optimization; main diff: `vllm/model_executor/models/deepseek_v2.py`; technical summary: Covers "[ROCm][Deepseek] dsv3.2 further optimization"; the main implementation surface is `vllm/model_executor/models/deepseek_v2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/deepseek_v2.py` modified +38/-23 (61 lines); hunks: -674,30 +674,45 @@ def forward(; symbols: forward, touching `forward`.
@@ -1272,13 +1248,12 @@ diff -- vllm/model_executor/models/deepseek_v2.py
 
 - Link: https://github.com/vllm-project/vllm/pull/41801
 - Status/date: merged / 2026-05-06
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `vllm/tool_parsers/deepseekv32_tool_parser.py`; associated commits `95582868efd4`
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_deepseekv32_tool_parser.py`; associated commits `95582868efd4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +224/-10, 298 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] DeepSeekV32/v4: respect string='true|false' attribute andunwrap arguments/input wrapper"; model line: DeepSeek V3/R1; category: bug fix; main diff: `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `vllm/tool_parsers/deepseekv32_tool_parser.py`; technical summary: Covers "[Bugfix] DeepSeekV32/v4: respect string='true|false' attribute andunwrap arguments/input wrapper"; the main implementation surface is `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `vllm/tool_parsers/deepseekv32_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `tests/tool_parsers/test_deepseekv32_tool_parser.py` modified +155/-2 (157 lines); hunks: -203,7 +203,14 @@ def test_type_conversion_in_non_streaming(self):; -212,6 +219,118 @@ def test_type_conversion_in_non_streaming(self):; symbols: test_type_conversion_in_non_streaming, test_string_attr_true_preserves_literal_despite_schema, test_string_attr_false_allows_schema_conversion, test_arguments_wrapper_repaired, touching `test_type_conversion_in_non_streaming, test_string_attr_true_preserves_literal_despite_schema, test_string_attr_false_allows_schema_conversion`; `vllm/tool_parsers/deepseekv32_tool_parser.py` modified +36/-8 (44 lines); hunks: -69,7 +69,7 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[Tool]...; -101,10 +101,12 @@ def _generate_tool_call_id(self) -> str:; symbols: __init__, _generate_tool_call_id, _parse_invoke_params, _convert_param_value_checked, touching `__init__, _generate_tool_call_id, _parse_invoke_params`.
+- Motivation: Title: "[Bugfix] DeepSeekV32/v4: respect string='true|false' attribute andunwrap arguments/input wrapper"; model line: DeepSeek V3/R1; category: bug fix; main diff: `tests/tool_parsers/test_deepseekv32_tool_parser.py`; technical summary: Covers "[Bugfix] DeepSeekV32/v4: respect string='true|false' attribute andunwrap arguments/input wrapper"; the main implementation surface is `tests/tool_parsers/test_deepseekv32_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/tool_parsers/test_deepseekv32_tool_parser.py` modified +155/-2 (157 lines); hunks: -203,7 +203,14 @@ def test_type_conversion_in_non_streaming(self):; -212,6 +219,118 @@ def test_type_conversion_in_non_streaming(self):; symbols: test_type_conversion_in_non_streaming, test_string_attr_true_preserves_literal_despite_schema, test_string_attr_false_allows_schema_conversion, test_arguments_wrapper_repaired, touching `test_type_conversion_in_non_streaming, test_string_attr_true_preserves_literal_despite_schema, test_string_attr_false_allows_schema_conversion`.
 - Code diff details:
   - `tests/tool_parsers/test_deepseekv32_tool_parser.py` modified +155/-2 (157 lines); hunks: -203,7 +203,14 @@ def test_type_conversion_in_non_streaming(self):; -212,6 +219,118 @@ def test_type_conversion_in_non_streaming(self):; symbols: test_type_conversion_in_non_streaming, test_string_attr_true_preserves_literal_despite_schema, test_string_attr_false_allows_schema_conversion, test_arguments_wrapper_repaired
-  - `vllm/tool_parsers/deepseekv32_tool_parser.py` modified +36/-8 (44 lines); hunks: -69,7 +69,7 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[Tool]...; -101,10 +101,12 @@ def _generate_tool_call_id(self) -> str:; symbols: __init__, _generate_tool_call_id, _parse_invoke_params, _convert_param_value_checked
 - Key code excerpts:
 
 ```diff
@@ -1290,19 +1265,10 @@ diff -- tests/tool_parsers/test_deepseekv32_tool_parser.py
 +            f'{INV_START}toggle">\n'
 +            f'{PARAM_START}enabled" string="false">true{PARAM_END}\n'
 +            f'{PARAM_START}count" string="false">42{PARAM_END}\n'
-diff -- vllm/tool_parsers/deepseekv32_tool_parser.py
-@@ -69,7 +69,7 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[Tool] | None = None):
--            r'<｜DSML｜parameter\s+name="([^"]+)"\s+string="(?:true|false)"\s*>(.*?)</｜DSML｜parameter>',
-+            r'<｜DSML｜parameter\s+name="([^"]+)"\s+string="(true|false)"\s*>(.*?)</｜DSML｜parameter>',
-@@ -101,10 +101,12 @@ def _generate_tool_call_id(self) -> str:
--    def _parse_invoke_params(self, invoke_str: str) -> dict:
--        param_dict = dict()
--        for param_name, param_val in self.parameter_complete_regex.findall(invoke_str):
 ```
 
 - Reviewed files:
   - tests: `tests/tool_parsers/test_deepseekv32_tool_parser.py` modified +155/-2
-  - runtime: `vllm/tool_parsers/deepseekv32_tool_parser.py` modified +36/-8
 - Risk and verification: The diff ships test coverage in `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `tests/tool_parsers/test_deepseekv4_tool_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #41778 - [MLA Attention Backend] Add TOKENSPEED_MLA backend for DSR1/Kimi K25 prefill + decode on Blackwell
@@ -1352,13 +1318,12 @@ diff -- vllm/v1/attention/backends/mla/tokenspeed_mla.py
 
 - Link: https://github.com/vllm-project/vllm/pull/43019
 - Status/date: merged / 2026-05-20
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `vllm/tool_parsers/deepseekv32_tool_parser.py`; associated commits `a10d69116cb2`; preserved from an explicit existing history/skill citation
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_deepseekv32_tool_parser.py`; associated commits `a10d69116cb2`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +270/-285, 615 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Use shared coerce_to_schema_type in DeepSeekV32 tool parser"; model line: DeepSeek V3/R1; category: bug fix; main diff: `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `vllm/tool_parsers/deepseekv32_tool_parser.py`; technical summary: Covers "[Bugfix] Use shared coerce_to_schema_type in DeepSeekV32 tool parser"; the main implementation surface is `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `vllm/tool_parsers/deepseekv32_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `tests/tool_parsers/test_deepseekv32_tool_parser.py` modified +261/-233 (494 lines); hunks: -16,7 +16,6; -65,58 +64,6 @@ def build_tool_call(func_name: str, params: dict[str, str]) -...; symbols: build_tool_call, TestConvertParamValue, parser, test_null, touching `build_tool_call, TestConvertParamValue, parser`; `vllm/tool_parsers/deepseekv32_tool_parser.py` modified +9/-52 (61 lines); hunks: -26,7 +26,12; -109,41 +114,6 @@ def _parse_invoke_params(self, invoke_str: str) -> dict[str...; symbols: _parse_invoke_params, _convert_param_value_checked, _convert_param_value, _repair_param_dict, touching `_parse_invoke_params, _convert_param_value_checked, _convert_param_value`.
+- Motivation: Title: "[Bugfix] Use shared coerce_to_schema_type in DeepSeekV32 tool parser"; model line: DeepSeek V3/R1; category: bug fix; main diff: `tests/tool_parsers/test_deepseekv32_tool_parser.py`; technical summary: Covers "[Bugfix] Use shared coerce_to_schema_type in DeepSeekV32 tool parser"; the main implementation surface is `tests/tool_parsers/test_deepseekv32_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/tool_parsers/test_deepseekv32_tool_parser.py` modified +261/-233 (494 lines); hunks: -16,7 +16,6; -65,58 +64,6 @@ def build_tool_call(func_name: str, params: dict[str, str]) -...; symbols: build_tool_call, TestConvertParamValue, parser, test_null, touching `build_tool_call, TestConvertParamValue, parser`.
 - Code diff details:
   - `tests/tool_parsers/test_deepseekv32_tool_parser.py` modified +261/-233 (494 lines); hunks: -16,7 +16,6; -65,58 +64,6 @@ def build_tool_call(func_name: str, params: dict[str, str]) -...; symbols: build_tool_call, TestConvertParamValue, parser, test_null
-  - `vllm/tool_parsers/deepseekv32_tool_parser.py` modified +9/-52 (61 lines); hunks: -26,7 +26,12; -109,41 +114,6 @@ def _parse_invoke_params(self, invoke_str: str) -> dict[str...; symbols: _parse_invoke_params, _convert_param_value_checked, _convert_param_value, _repair_param_dict
 - Key code excerpts:
 
 ```diff
@@ -1370,19 +1335,10 @@ diff -- tests/tool_parsers/test_deepseekv32_tool_parser.py
 -# Tests: DeepSeekV32ToolParser._convert_param_value
 -# ---------------------------------------------------------------------------
 -class TestConvertParamValue:
-diff -- vllm/tool_parsers/deepseekv32_tool_parser.py
-@@ -26,7 +26,12 @@
--from vllm.tool_parsers.utils import partial_tag_overlap
-+from vllm.tool_parsers.utils import (
-+    coerce_to_schema_type,
-+    extract_types_from_schema,
-+    find_tool_properties,
-+    partial_tag_overlap,
 ```
 
 - Reviewed files:
   - tests: `tests/tool_parsers/test_deepseekv32_tool_parser.py` modified +261/-233
-  - runtime: `vllm/tool_parsers/deepseekv32_tool_parser.py` modified +9/-52
 - Risk and verification: The diff ships test coverage in `tests/tool_parsers/test_deepseekv32_tool_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #43255 - [CI] Add composed-schema regression tests for DeepSeek V3.2/V4 parsers
@@ -1739,6 +1695,87 @@ diff -- vllm/model_executor/models/openpangu.py
 - Reviewed files:
   - runtime: `vllm/model_executor/models/AXK1.py` modified +1/-1; `vllm/model_executor/models/deepseek_v2.py` modified +1/-1; `vllm/model_executor/models/glm4_moe_lite.py` modified +1/-1; `vllm/model_executor/models/openpangu.py` modified +1/-1
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/AXK1.py`, `vllm/model_executor/models/deepseek_v2.py`, `vllm/model_executor/models/glm4_moe_lite.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #46600 - [Bugfix][DSv3.2] Skip indexer weights for index-cache-skipped layers
+
+- Link: https://github.com/vllm-project/vllm/pull/46600
+- Status/date: merged / 2026-06-28
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/deepseek_v2.py`; associated commits `6eb63a1da699`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +10/-0, 24 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Bugfix][DSv3.2] Skip indexer weights for index-cache-skipped layers"; model line: DeepSeek V3/R1; category: bug fix; main diff: `vllm/model_executor/models/deepseek_v2.py`; technical summary: Covers "[Bugfix][DSv3.2] Skip indexer weights for index-cache-skipped layers"; the main implementation surface is `vllm/model_executor/models/deepseek_v2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/deepseek_v2.py` modified +10/-0 (10 lines); hunks: -1438,6 +1438,11 @@ def load_weights(self, weights: Iterable[tuple[str, torch...; -1446,6 +1451,11 @@ def load_weights(self, weights: Iterable[tuple[str, torch...; symbols: load_weights, touching `load_weights`.
+- Code diff details:
+  - `vllm/model_executor/models/deepseek_v2.py` modified +10/-0 (10 lines); hunks: -1438,6 +1438,11 @@ def load_weights(self, weights: Iterable[tuple[str, torch...; -1446,6 +1451,11 @@ def load_weights(self, weights: Iterable[tuple[str, torch...; symbols: load_weights
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/deepseek_v2.py
+@@ -1438,6 +1438,11 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Tensor]]) -> set[str]:
++        # With index_topk_freq>1 only some layers build an indexer, yet the
++        # checkpoint ships indexer weights for all of them; track the built ones.
++        indexer_present_prefixes = {
++            n.rsplit(".indexer.", 1)[0] for n in params_dict if ".indexer." in n
++        }
+@@ -1446,6 +1451,11 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Tensor]]) -> set[str]:
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/deepseek_v2.py` modified +10/-0
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/deepseek_v2.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #48036 - [CI Bug] Fully solve accuracy issue for DSv3.2 + MTP + Sequence Parallel
+
+- Link: https://github.com/vllm-project/vllm/pull/48036
+- Status/date: merged / 2026-07-14
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/deepseek_mtp.py`; associated commits `1ff9429655f0`
+- Diff scope read: GitHub Pull Request files API returned 3 files, +34/-3, 79 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[CI Bug] Fully solve accuracy issue for DSv3.2 + MTP + Sequence Parallel"; model line: DeepSeek V3/R1; category: bug fix; main diff: `vllm/model_executor/models/deepseek_mtp.py`; technical summary: Covers "[CI Bug] Fully solve accuracy issue for DSv3.2 + MTP + Sequence Parallel"; the main implementation surface is `vllm/model_executor/models/deepseek_mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/deepseek_mtp.py` modified +24/-0 (24 lines); hunks: -10,6 +10,7; -40,6 +41,24; symbols: _restore_full_token_layout_if_needed, SharedHead, __init__, forward, touching `_restore_full_token_layout_if_needed, SharedHead, __init__`.
+- Code diff details:
+  - `vllm/model_executor/models/deepseek_mtp.py` modified +24/-0 (24 lines); hunks: -10,6 +10,7; -40,6 +41,24; symbols: _restore_full_token_layout_if_needed, SharedHead, __init__, forward
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/deepseek_mtp.py
+@@ -10,6 +10,7 @@
++from vllm.distributed import tensor_model_parallel_all_gather
+@@ -40,6 +41,24 @@
++def _restore_full_token_layout_if_needed(
++    hidden_states: torch.Tensor,
++    residual: torch.Tensor,
++    num_tokens: int,
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/deepseek_mtp.py` modified +24/-0
+- Risk and verification: Runtime changes concentrate in `vllm/config/parallel.py`, `vllm/model_executor/models/deepseek_mtp.py`, `vllm/models/deepseek_v32/nvidia/mtp.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #45964 - [Attention][MLA][DCP] Query replication for MLA decode (DeepSeek-V2/R1 + Kimi-K2.5)
+
+- Link: https://github.com/vllm-project/vllm/pull/45964
+- Status/date: merged / 2026-07-20
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/deepseek_v2.py`; associated commits `2396a611085d`
+- Diff scope read: GitHub Pull Request files API returned 6 files, +157/-15, 443 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Attention][MLA][DCP] Query replication for MLA decode (DeepSeek-V2/R1 + Kimi-K2.5)"; model line: DeepSeek V3/R1; category: model implementation change; main diff: `vllm/model_executor/models/deepseek_v2.py`; technical summary: Covers "[Attention][MLA][DCP] Query replication for MLA decode (DeepSeek-V2/R1 + Kimi-K2.5)"; the main implementation surface is `vllm/model_executor/models/deepseek_v2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/deepseek_v2.py` modified +12/-2 (14 lines); hunks: -33,6 +33,7; -56,6 +57,7; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `vllm/model_executor/models/deepseek_v2.py` modified +12/-2 (14 lines); hunks: -33,6 +33,7; -56,6 +57,7; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/deepseek_v2.py
+@@ -33,6 +33,7 @@
++import vllm.envs as envs
+@@ -56,6 +57,7 @@
++    DCPGroupColumnParallelLinear,
+@@ -1015,17 +1017,25 @@ def __init__(
++        qrep_enabled = (
++            envs.VLLM_DCP_Q_REPLICATE
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/deepseek_v2.py` modified +12/-2
+- Risk and verification: The diff ships test coverage in `tests/v1/attention/test_mla_backends.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes
 

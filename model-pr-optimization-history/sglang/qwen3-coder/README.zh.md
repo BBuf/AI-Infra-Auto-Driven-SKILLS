@@ -9,7 +9,7 @@
 | `docs_new/src/snippets/autoregressive/qwen3-coder-480b-a35b-deployment.jsx` | 无直接 PR 号提交 |
 | `docs_new/src/snippets/autoregressive/qwen3-coder-deployment.jsx` | [#24435](https://github.com/sgl-project/sglang/pull/24435) |
 | `docs_new/src/snippets/autoregressive/qwen3-coder-next-deployment.jsx` | 无直接 PR 号提交 |
-| `python/sglang/srt/function_call/qwen3_coder_detector.py` | [#8371](https://github.com/sgl-project/sglang/pull/8371), [#16744](https://github.com/sgl-project/sglang/pull/16744) |
+| `python/sglang/srt/function_call/qwen3_coder_detector.py` | [#8371](https://github.com/sgl-project/sglang/pull/8371), [#16744](https://github.com/sgl-project/sglang/pull/16744), [#30832](https://github.com/sgl-project/sglang/pull/30832) |
 | `python/sglang/srt/models/qwen3.py` | 无直接 PR 号提交 |
 | `test/registered/amd/accuracy/mi35x/test_qwen3_coder_next_eval_mi35x.py` | [#18608](https://github.com/sgl-project/sglang/pull/18608) |
 | `test/registered/amd/test_qwen3_coder_next_8gpu.py` | [#18608](https://github.com/sgl-project/sglang/pull/18608) |
@@ -19,9 +19,9 @@
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 4
+- git 追溯 PR 数: 5
 - 原文档显式引用补充 PR 数: 36
-- 当前文档总 PR 数: 40
+- 当前文档总 PR 数: 41
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -69,6 +69,7 @@
 | 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | merged | Add get_parallel(): a structured accessor for parallel-topology state | `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py` |
 | 2026-06-19 | [#28697](https://github.com/sgl-project/sglang/pull/28697) | merged | [docs] Add B300 cookbook deployment options | `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` |
 | 2026-06-20 | [#28810](https://github.com/sgl-project/sglang/pull/28810) | merged | [CI] Remove deprecated test/srt legacy CI setup | `test/srt/cpu/test_qkv_proj_with_rope.py`, `test/srt/cpu/utils.py`, `test/srt/cpu/test_norm.py` |
+| 2026-07-22 | [#30832](https://github.com/sgl-project/sglang/pull/30832) | merged | Add 'anyOf' schema support for qwen3_coder tool call parser | `python/sglang/srt/function_call/qwen3_coder_detector.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -1543,6 +1544,33 @@ diff -- test/srt/cpu/test_norm.py
 - 已读文件:
   - tests: `test/srt/cpu/test_qkv_proj_with_rope.py` removed +0/-440; `test/srt/cpu/utils.py` removed +0/-440; `test/srt/cpu/test_norm.py` removed +0/-432; `test/srt/cpu/test_extend.py` removed +0/-400; `test/srt/cpu/test_mamba.py` removed +0/-394; `test/srt/cpu/test_moe.py` removed +0/-352
 - 验证与风险: diff 自带测试面 `test/README.md`, `test/srt/cpu/arm64/test_moe.py`, `test/srt/cpu/test_activation.py`, `test/srt/cpu/test_binding.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #30832 - Add 'anyOf' schema support for qwen3_coder tool call parser
+
+- 链接: https://github.com/sgl-project/sglang/pull/30832
+- 状态/时间: merged / 2026-07-22
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/function_call/qwen3_coder_detector.py`；关联提交 `c20c48b8fd94`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+159/-7，可读 patch 215 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Add 'anyOf' schema support for qwen3_coder tool call parser」；模型线: Qwen3 Coder；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/function_call/qwen3_coder_detector.py`；技术摘要: 覆盖「Add 'anyOf' schema support for qwen3_coder tool call parser」；主要实现面是 `python/sglang/srt/function_call/qwen3_coder_detector.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/function_call/qwen3_coder_detector.py` modified +9/-7 (16 lines); hunks: -11,6 +11,7; -86,6 +87,13 @@ def _get_arguments_config(; symbols: _get_arguments_config, _get_param_type, _convert_param_value，涉及 `_get_arguments_config, _get_param_type, _convert_param_value`。
+- 代码 diff 细节:
+  - `python/sglang/srt/function_call/qwen3_coder_detector.py` modified +9/-7 (16 lines); hunks: -11,6 +11,7; -86,6 +87,13 @@ def _get_arguments_config(; symbols: _get_arguments_config, _get_param_type, _convert_param_value
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/function_call/qwen3_coder_detector.py
+@@ -11,6 +11,7 @@
++from sglang.srt.function_call.utils import infer_type_from_json_schema
+@@ -86,6 +87,13 @@ def _get_arguments_config(
++    def _get_param_type(self, param_schema: Any) -> str:
++        """Infer the parser conversion type from a JSON schema parameter."""
++        inferred_type = infer_type_from_json_schema(param_schema)
++        if inferred_type is None:
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/function_call/qwen3_coder_detector.py` modified +9/-7
+- 验证与风险: diff 自带测试面 `test/registered/unit/function_call/test_function_call_parser.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论
 

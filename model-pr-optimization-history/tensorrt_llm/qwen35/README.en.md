@@ -1,17 +1,18 @@
 # TensorRT-LLM Qwen3.5 Model PR Optimization History
 
-## 2026-06-27 Source Head Refresh
+## 2026-07-27 Source Head Refresh
 
-Rechecked TensorRT-LLM upstream main with `git ls-remote` at `NVIDIA/TensorRT-LLM@aaffa2f9fef3025e0f698d978385a73460344e0b`.
-The existing file-level source-scan rows below remain the last tracked-file audit; use `model-pr-optimization-history/open-pr-watch.md` before relying on current open PR state.
+Rechecked TensorRT-LLM upstream main at `NVIDIA/TensorRT-LLM@1b4ffc0291d75a21ad20118e8f44de6e3831f786`.
+The range after the previous recorded head `aaffa2f9fef3025e0f698d978385a73460344e0b` was traced with `git log --name-only -- <model-files>`. Four runtime PRs were promoted only after their complete upstream diffs were read.
 
-Result: 3 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
+Result: the Qwen3.5 MoE and dense VLM paths landed, followed by fused attention preprocessing and fused AllReduce + Gemma RMSNorm. Test-only unwaives remain outside the runtime evidence set.
 
-| Merged | PR | Title | Tracked files touched |
-| --- | --- | --- | --- |
-| 2026-06-26 | [#15481](https://github.com/NVIDIA/TensorRT-LLM/pull/15481) | [https://nvbugs/6239637][fix] Unwaive Qwen3.5 cases on A100 platform | `test_llm_api_pytorch.py` |
-| 2026-06-26 | [#15361](https://github.com/NVIDIA/TensorRT-LLM/pull/15361) | [TRTLLM-12762][test] Add Test coverage for MiniMax Model with multi-node, M2.5 checkpoints eval | `test_llm_api_pytorch.py` |
-| 2026-06-26 | [#14837](https://github.com/NVIDIA/TensorRT-LLM/pull/14837) | [TRTLLM-13712][feat] Add Qwen-Image-Bench evaluator | `qwen3_5_weight_mapper.py` |
+| Merged | PR | Runtime signal |
+| --- | --- | --- |
+| 2026-07-04 | [#14599](https://github.com/NVIDIA/TensorRT-LLM/pull/14599) | Qwen3.5 MoE VLM + MTP |
+| 2026-07-07 | [#15249](https://github.com/NVIDIA/TensorRT-LLM/pull/15249) | Qwen3.5 dense VLM |
+| 2026-07-21 | [#16469](https://github.com/NVIDIA/TensorRT-LLM/pull/16469) | fused QK norm + RoPE + gate |
+| 2026-07-24 | [#15194](https://github.com/NVIDIA/TensorRT-LLM/pull/15194) | fused AllReduce + Gemma RMSNorm |
 
 ## 2026-06-27 PR Backfill Audit
 
@@ -66,6 +67,88 @@ Filter used in this pass: merged PRs whose titles or files matched `Qwen3.5`, `Q
 | 2026-06-26 | [#15543](https://github.com/NVIDIA/TensorRT-LLM/pull/15543) | merged | Add EPLB support for Qwen3.5 | MoE load balancer and B200/GB200 tests |
 
 ## Per-PR Diff Audit Cards
+
+### PR #14599 - Add support for Qwen3.5 VL MoE with MTP fixes
+
+- Link: https://github.com/NVIDIA/TensorRT-LLM/pull/14599
+- Status/date: merged / 2026-07-04
+- Trace source: `git log --name-only -- <model-files>` plus the final upstream commit and PR body.
+- Diff scope read: full 1,734-line diff, 16 files, +1140/-256.
+- Motivation: TensorRT-LLM had a reusable Qwen3Next text runtime and Qwen3-VL vision tower, but lacked the composite Qwen3.5-35B-A3B multimodal architecture, native config normalization, weight mapping, and speculative-decoding token plumbing.
+- Key implementation: registers `Qwen3_5MoeForConditionalGeneration`, preserves the HF text/vision subconfigs while normalizing runtime aliases, composes `Qwen3VisionModel` with the MoE decoder, maps language-model weights, and recovers `orig_input_ids` for MTP/Eagle after the VLM wrapper builds embeddings.
+- Code diff details: the VLM class owns multimodal placeholder metadata and device paths while reusing the Qwen3Next LM; tests cover config routing, weight loading, modality parity, MTP, and MMMU accuracy.
+- Key code excerpts:
+
+```diff
++@register_auto_model("Qwen3_5MoeForConditionalGeneration")
++class Qwen3_5MoeVLModel(Qwen3VLModelBase):
++    """VLM wrapper composing Qwen3 vision encoder with Qwen3.5 MoE text decoder."""
++    kwargs["vision_model_class"] = Qwen3VisionModel
+```
+
+- Reviewed files: runtime: `modeling_qwen3_5.py`, `qwen3_5_weight_mapper.py`, `modeling_speculative.py`, model loader/config utilities; tests/docs: `test_modeling_qwen3_5_vl_moe.py`, MMMU references, supported-model matrix.
+- Risk and verification: benchmark rows must distinguish text-only Qwen3.5 from MoE VLM; verify mRoPE, image/video placeholders, FP8 exclude-module normalization, and MTP prompt-token recovery.
+
+### PR #15249 - Add support for Qwen3.5 VL Dense
+
+- Link: https://github.com/NVIDIA/TensorRT-LLM/pull/15249
+- Status/date: merged / 2026-07-07
+- Trace source: `git log --name-only -- <model-files>` plus the final upstream commit and PR body.
+- Diff scope read: full 776-line diff, 11 files, +594/-26.
+- Motivation: the MoE VLM wrapper did not cover the dense Qwen3.5-27B checkpoint, whose text decoder uses a dense `GatedMLP` and a different architecture registration.
+- Key implementation: generalizes the shared Qwen3.5 VLM base, registers `Qwen3_5ForConditionalGeneration`, selects the dense decoder while keeping Qwen3 vision/mRoPE handling, and extends the same HF mapper to the dense architecture.
+- Code diff details: production config normalization preserves dense `intermediate_size` and empty deepstack indexes; the parity suite covers image, multi-image, video, chunked-prefill position slicing, and model construction.
+- Key code excerpts:
+
+```diff
++@register_auto_model("Qwen3_5ForConditionalGeneration")
++class Qwen3_5VLModel(_Qwen3_5VLModel):
++    """VLM wrapper composing Qwen3 vision encoder with dense Qwen3.5 text decoder."""
+```
+
+- Reviewed files: runtime: `modeling_qwen3_5.py`, `qwen3_5_weight_mapper.py`, model/config registries; tests/docs: `test_modeling_qwen3_5_vl.py`, MMMU references, supported-model matrix.
+- Risk and verification: dense and MoE checkpoints need separate accuracy/performance rows; validate composite config aliases, mRoPE chunk slicing, SSM-cache dtype, and multimodal forward parity.
+
+### PR #16469 - Fuse Qwen3.5/3.6 attention preprocessing
+
+- Link: https://github.com/NVIDIA/TensorRT-LLM/pull/16469
+- Status/date: merged / 2026-07-21
+- Trace source: `git log --name-only -- <model-files>` plus the final upstream commit and PR body.
+- Diff scope read: full 913-line diff, 6 files, +775/-19.
+- Motivation: full-attention layers separately deinterleaved Q/gate, normalized Q and K, applied RoPE, copied V, and later launched sigmoid/multiply for the output gate.
+- Key implementation: adds a Triton fast path that reads the interleaved projection once, emits packed QKV plus gate while applying Gemma RMSNorm and plain/interleaved mRoPE, and performs output gating with an in-place fused sigmoid-multiply; unsupported layouts fall back to the generic path.
+- Code diff details: `QKNormRoPEAttention.preprocess_qkv` gates the fusion by dtype/layout/RoPE contract, keeping weight loading, LoRA, compilation, HIP, and unsupported scaling decoupled.
+- Key code excerpts:
+
+```diff
++qkv, gate = fused_qkv_gemma_rmsnorm_rope_gate(
++    qkv, self.q_norm.weight, self.k_norm.weight,
++    self.rotary_emb.rotary_cos_sin, positions.contiguous(), ...)
++return qkv, None, None, gate
+```
+
+- Reviewed files: runtime: `attention.py`, `qk_norm_attention.py`, `modeling_qwen3_next.py`, `fused_qk_norm_rope_gate.py`; tests: `test_fused_qk_norm_rope_gate.py`, B200 test database.
+- Risk and verification: validate BF16/FP16, partial/full rotary dimensions, mRoPE sectioning, zero-token and non-contiguous cases, and compare against both the Python reference and production THOP path.
+
+### PR #15194 - Fuse Gemma RMSNorm into AllReduce for Qwen3-Next/Qwen3.5
+
+- Link: https://github.com/NVIDIA/TensorRT-LLM/pull/15194
+- Status/date: merged / 2026-07-24
+- Trace source: `git log --name-only -- <model-files>` plus the final upstream commit and PR body.
+- Diff scope read: full 418-line diff, 3 files, +278/-29.
+- Motivation: tensor-parallel Qwen3.5 decoder layers paid separate collective and Gemma-RMSNorm work, while the existing fused collective expected a plain norm weight rather than Gemma's `(1 + weight)` convention.
+- Key implementation: enables eager fusion for non-attention-DP TP, defers the attention/MoE collective to `RESIDUAL_RMS_NORM`, precomputes the Gemma-adjusted norm weight once after loading, and keeps MTP post-MoE fusion disabled where no next-layer norm is available.
+- Code diff details: a related FlashInfer GDN decode guard clones only misaligned scalar slices so the CuTe-DSL 32-byte alignment contract is satisfied without penalizing aligned shapes.
+- Key code excerpts:
+
+```diff
++norm._fused_norm_weight = (w.float() + 1.0).to(w.dtype)
++fusion_op=AllReduceFusionOp.RESIDUAL_RMS_NORM,
++norm_weight=_fused_norm_weight(self.post_attention_layernorm),
+```
+
+- Reviewed files: runtime: `modeling_qwen3_next.py`, `fused_sigmoid_gating_recurrent.py`; tests: `test_qwen3_next_eager_fusion.py`.
+- Risk and verification: confirm exactly one collective owner, attention-DP stays unfused, cached derived weights refresh after loading, Gemma numerics use `(1 + weight)`, and misaligned Qwen3.6 head slices take the guarded copy.
 
 ### PR #11728 - Added Qwen3.5 Cookbook
 

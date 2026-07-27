@@ -4,7 +4,6 @@
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
-| `docs/basic_usage/glm45.md` | 无直接 PR 号提交 |
 | `docs_new/cookbook/autoregressive/GLM/GLM-4.5.mdx` | 无直接 PR 号提交 |
 | `docs_new/cookbook/autoregressive/GLM/GLM-4.5V.mdx` | 无直接 PR 号提交 |
 | `python/sglang/srt/function_call/glm4_moe_detector.py` | [#8224](https://github.com/sgl-project/sglang/pull/8224), [#8445](https://github.com/sgl-project/sglang/pull/8445), [#11017](https://github.com/sgl-project/sglang/pull/11017) |

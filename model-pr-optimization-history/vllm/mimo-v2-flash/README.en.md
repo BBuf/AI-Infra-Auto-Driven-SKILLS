@@ -7,17 +7,17 @@
 | `vllm/model_executor/models/mimo.py` | [#17433](https://github.com/vllm-project/vllm/pull/17433) |
 | `vllm/model_executor/models/mimo_audio.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
 | `vllm/model_executor/models/mimo_mtp.py` | [#17433](https://github.com/vllm-project/vllm/pull/17433), [#25136](https://github.com/vllm-project/vllm/pull/25136) |
-| `vllm/model_executor/models/mimo_v2.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967), [#41029](https://github.com/vllm-project/vllm/pull/41029), [#41797](https://github.com/vllm-project/vllm/pull/41797), [#45200](https://github.com/vllm-project/vllm/pull/45200) |
+| `vllm/model_executor/models/mimo_v2.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967), [#41029](https://github.com/vllm-project/vllm/pull/41029), [#41797](https://github.com/vllm-project/vllm/pull/41797), [#45200](https://github.com/vllm-project/vllm/pull/45200), [#46104](https://github.com/vllm-project/vllm/pull/46104) |
 | `vllm/model_executor/models/mimo_v2_mtp.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967), [#41905](https://github.com/vllm-project/vllm/pull/41905) |
 | `vllm/model_executor/models/mimo_v2_omni.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
 | `vllm/transformers_utils/configs/mimo_v2_omni.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
-| `vllm/transformers_utils/processors/mimo_v2_omni.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
+| `vllm/transformers_utils/processors/mimo_v2_omni.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967), [#43117](https://github.com/vllm-project/vllm/pull/43117) |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 7
+- Git-traced PRs: 9
 - Extra PRs preserved from existing docs: 4
-- Total PRs in this document: 11
+- Total PRs in this document: 13
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -36,6 +36,8 @@
 | 2026-06-05 | [#43167](https://github.com/vllm-project/vllm/pull/43167) | merged | Remove KV cache scale boilerplate from model weight loading methods | `tests/model_executor/test_eagle_quantization.py`, `vllm/model_executor/models/gpt_oss.py`, `vllm/model_executor/layers/quantization/kv_cache.py` |
 | 2026-06-11 | [#41797](https://github.com/vllm-project/vllm/pull/41797) | merged | [Attention] add triton diff-kv backend for mimo | `vllm/model_executor/models/mimo_v2.py` |
 | 2026-06-15 | [#45200](https://github.com/vllm-project/vllm/pull/45200) | merged | [Models] Fix MiMo v2.x QKV TP sharding + FP4 support | `vllm/model_executor/models/mimo_v2.py` |
+| 2026-07-01 | [#46104](https://github.com/vllm-project/vllm/pull/46104) | merged | [Spec Decode] Support SWA + DFlash for MiMo | `vllm/model_executor/models/mimo_v2.py` |
+| 2026-07-11 | [#43117](https://github.com/vllm-project/vllm/pull/43117) | merged | fix(processor): route MiMo-V2-Omni media fetch through MediaConnector | `vllm/transformers_utils/processors/mimo_v2_omni.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -401,6 +403,60 @@ diff -- vllm/model_executor/models/mimo_v2.py
 - Reviewed files:
   - runtime: `vllm/model_executor/models/mimo_v2.py` modified +160/-5
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/quantization/fp8.py`, `vllm/model_executor/models/mimo_v2.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #46104 - [Spec Decode] Support SWA + DFlash for MiMo
+
+- Link: https://github.com/vllm-project/vllm/pull/46104
+- Status/date: merged / 2026-07-01
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mimo_v2.py`; associated commits `9969466a5978`
+- Diff scope read: GitHub Pull Request files API returned 4 files, +243/-25, 500 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Spec Decode] Support SWA + DFlash for MiMo"; model line: MiMo V2 Flash; category: performance/backend optimization; main diff: `vllm/model_executor/models/mimo_v2.py`; technical summary: Covers "[Spec Decode] Support SWA + DFlash for MiMo"; the main implementation surface is `vllm/model_executor/models/mimo_v2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/mimo_v2.py` modified +16/-3 (19 lines); hunks: -53,7 +53,12; -539,7 +544,7 @@ def _shard_fp8_qkv_proj(; symbols: _shard_fp8_qkv_proj, MiMoV2Model, __init__, forward, touching `_shard_fp8_qkv_proj, MiMoV2Model, __init__`.
+- Code diff details:
+  - `vllm/model_executor/models/mimo_v2.py` modified +16/-3 (19 lines); hunks: -53,7 +53,12; -539,7 +544,7 @@ def _shard_fp8_qkv_proj(; symbols: _shard_fp8_qkv_proj, MiMoV2Model, __init__, forward
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/mimo_v2.py
+@@ -53,7 +53,12 @@
+-from .interfaces import MixtureOfExperts, SupportsPP
++from .interfaces import (
++    EagleModelMixin,
++    MixtureOfExperts,
++    SupportsEagle3,
++    SupportsPP,
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/mimo_v2.py` modified +16/-3
+- Risk and verification: The diff ships test coverage in `tests/models/registry.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #43117 - fix(processor): route MiMo-V2-Omni media fetch through MediaConnector
+
+- Link: https://github.com/vllm-project/vllm/pull/43117
+- Status/date: merged / 2026-07-11
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/transformers_utils/processors/mimo_v2_omni.py`; associated commits `54503ecec0f3`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +22/-76, 190 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "fix(processor): route MiMo-V2-Omni media fetch through MediaConnector"; model line: MiMo V2 Flash; category: bug fix; main diff: `vllm/transformers_utils/processors/mimo_v2_omni.py`; technical summary: Covers "fix(processor): route MiMo-V2-Omni media fetch through MediaConnector"; the main implementation surface is `vllm/transformers_utils/processors/mimo_v2_omni.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/transformers_utils/processors/mimo_v2_omni.py` modified +22/-76 (98 lines); hunks: -7,33 +7,21; -62,7 +50,7; symbols: ImageInput, VideoInput, AudioInput, _smart_resize, touching `ImageInput, VideoInput, AudioInput`.
+- Code diff details:
+  - `vllm/transformers_utils/processors/mimo_v2_omni.py` modified +22/-76 (98 lines); hunks: -7,33 +7,21; -62,7 +50,7; symbols: ImageInput, VideoInput, AudioInput, _smart_resize
+- Key code excerpts:
+
+```diff
+diff -- vllm/transformers_utils/processors/mimo_v2_omni.py
+@@ -7,33 +7,21 @@
+-import copy
+-import io
+-from io import BytesIO
+-import requests
+-try:
+-    from torchcodec.decoders import AudioDecoder
+```
+
+- Reviewed files:
+  - runtime: `vllm/transformers_utils/processors/mimo_v2_omni.py` modified +22/-76
+- Risk and verification: Runtime changes concentrate in `vllm/transformers_utils/processors/mimo_v2_omni.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ## Gap-Closure Notes
 

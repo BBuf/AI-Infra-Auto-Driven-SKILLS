@@ -13,25 +13,25 @@
 | `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-Fp8-AutoFp8-fi-cutlass.yaml` | [#31759](https://github.com/vllm-project/vllm/pull/31759), [#33807](https://github.com/vllm-project/vllm/pull/33807) |
 | `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-Fp8-AutoFp8-triton.yaml` | [#31759](https://github.com/vllm-project/vllm/pull/31759) |
 | `tests/lora/test_mixtral.py` | [#2831](https://github.com/vllm-project/vllm/pull/2831), [#9008](https://github.com/vllm-project/vllm/pull/9008), [#11390](https://github.com/vllm-project/vllm/pull/11390), [#28322](https://github.com/vllm-project/vllm/pull/28322) |
-| `tests/quantization/test_quark.py` | [#10765](https://github.com/vllm-project/vllm/pull/10765), [#12612](https://github.com/vllm-project/vllm/pull/12612), [#16236](https://github.com/vllm-project/vllm/pull/16236), [#17888](https://github.com/vllm-project/vllm/pull/17888), [#24649](https://github.com/vllm-project/vllm/pull/24649), [#26364](https://github.com/vllm-project/vllm/pull/26364), [#35658](https://github.com/vllm-project/vllm/pull/35658), [#35859](https://github.com/vllm-project/vllm/pull/35859), [#36320](https://github.com/vllm-project/vllm/pull/36320), [#41184](https://github.com/vllm-project/vllm/pull/41184), [#46142](https://github.com/vllm-project/vllm/pull/46142) |
+| `tests/quantization/test_quark.py` | [#10765](https://github.com/vllm-project/vllm/pull/10765), [#12612](https://github.com/vllm-project/vllm/pull/12612), [#16236](https://github.com/vllm-project/vllm/pull/16236), [#17888](https://github.com/vllm-project/vllm/pull/17888), [#24649](https://github.com/vllm-project/vllm/pull/24649), [#26364](https://github.com/vllm-project/vllm/pull/26364), [#35658](https://github.com/vllm-project/vllm/pull/35658), [#35859](https://github.com/vllm-project/vllm/pull/35859), [#36320](https://github.com/vllm-project/vllm/pull/36320), [#41184](https://github.com/vllm-project/vllm/pull/41184), [#46142](https://github.com/vllm-project/vllm/pull/46142), [#47330](https://github.com/vllm-project/vllm/pull/47330), ... (13 total) |
 | `vllm/model_executor/layers/quantization/quark/__init__.py` | [#10765](https://github.com/vllm-project/vllm/pull/10765) |
-| `vllm/model_executor/layers/quantization/quark/quark.py` | [#10765](https://github.com/vllm-project/vllm/pull/10765), [#15734](https://github.com/vllm-project/vllm/pull/15734), [#16943](https://github.com/vllm-project/vllm/pull/16943), [#17215](https://github.com/vllm-project/vllm/pull/17215), [#17888](https://github.com/vllm-project/vllm/pull/17888), [#20251](https://github.com/vllm-project/vllm/pull/20251), [#24239](https://github.com/vllm-project/vllm/pull/24239), [#28275](https://github.com/vllm-project/vllm/pull/28275), [#28638](https://github.com/vllm-project/vllm/pull/28638), [#29008](https://github.com/vllm-project/vllm/pull/29008), [#30071](https://github.com/vllm-project/vllm/pull/30071), [#32779](https://github.com/vllm-project/vllm/pull/32779), ... (17 total) |
-| `vllm/model_executor/layers/quantization/quark/quark_moe.py` | [#10765](https://github.com/vllm-project/vllm/pull/10765), [#11528](https://github.com/vllm-project/vllm/pull/11528), [#13784](https://github.com/vllm-project/vllm/pull/13784), [#14245](https://github.com/vllm-project/vllm/pull/14245), [#17888](https://github.com/vllm-project/vllm/pull/17888), [#22035](https://github.com/vllm-project/vllm/pull/22035), [#22537](https://github.com/vllm-project/vllm/pull/22537), [#23123](https://github.com/vllm-project/vllm/pull/23123), [#24649](https://github.com/vllm-project/vllm/pull/24649), [#26545](https://github.com/vllm-project/vllm/pull/26545), [#26739](https://github.com/vllm-project/vllm/pull/26739), [#27029](https://github.com/vllm-project/vllm/pull/27029), ... (57 total) |
+| `vllm/model_executor/layers/quantization/quark/quark.py` | [#10765](https://github.com/vllm-project/vllm/pull/10765), [#15734](https://github.com/vllm-project/vllm/pull/15734), [#16943](https://github.com/vllm-project/vllm/pull/16943), [#17215](https://github.com/vllm-project/vllm/pull/17215), [#17888](https://github.com/vllm-project/vllm/pull/17888), [#20251](https://github.com/vllm-project/vllm/pull/20251), [#24239](https://github.com/vllm-project/vllm/pull/24239), [#28275](https://github.com/vllm-project/vllm/pull/28275), [#28638](https://github.com/vllm-project/vllm/pull/28638), [#29008](https://github.com/vllm-project/vllm/pull/29008), [#30071](https://github.com/vllm-project/vllm/pull/30071), [#32779](https://github.com/vllm-project/vllm/pull/32779), ... (18 total) |
+| `vllm/model_executor/layers/quantization/quark/quark_moe.py` | [#10765](https://github.com/vllm-project/vllm/pull/10765), [#11528](https://github.com/vllm-project/vllm/pull/11528), [#13784](https://github.com/vllm-project/vllm/pull/13784), [#14245](https://github.com/vllm-project/vllm/pull/14245), [#17888](https://github.com/vllm-project/vllm/pull/17888), [#22035](https://github.com/vllm-project/vllm/pull/22035), [#22537](https://github.com/vllm-project/vllm/pull/22537), [#23123](https://github.com/vllm-project/vllm/pull/23123), [#24649](https://github.com/vllm-project/vllm/pull/24649), [#26545](https://github.com/vllm-project/vllm/pull/26545), [#26739](https://github.com/vllm-project/vllm/pull/26739), [#27029](https://github.com/vllm-project/vllm/pull/27029), ... (61 total) |
 | `vllm/model_executor/layers/quantization/quark/schemes/__init__.py` | [#10765](https://github.com/vllm-project/vllm/pull/10765), [#16943](https://github.com/vllm-project/vllm/pull/16943), [#35316](https://github.com/vllm-project/vllm/pull/35316), [#35859](https://github.com/vllm-project/vllm/pull/35859) |
 | `vllm/model_executor/layers/quantization/quark/schemes/quark_nvfp4.py` | [#35859](https://github.com/vllm-project/vllm/pull/35859) |
-| `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py` | [#36100](https://github.com/vllm-project/vllm/pull/36100), [#36232](https://github.com/vllm-project/vllm/pull/36232) |
+| `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py` | [#36100](https://github.com/vllm-project/vllm/pull/36100), [#36232](https://github.com/vllm-project/vllm/pull/36232), [#48015](https://github.com/vllm-project/vllm/pull/48015) |
 | `vllm/model_executor/layers/quantization/quark/schemes/quark_scheme.py` | [#10765](https://github.com/vllm-project/vllm/pull/10765) |
 | `vllm/model_executor/layers/quantization/quark/schemes/quark_w4a8_mxfp4_fp8.py` | [#35316](https://github.com/vllm-project/vllm/pull/35316) |
 | `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py` | [#10765](https://github.com/vllm-project/vllm/pull/10765), [#12612](https://github.com/vllm-project/vllm/pull/12612), [#14245](https://github.com/vllm-project/vllm/pull/14245), [#14390](https://github.com/vllm-project/vllm/pull/14390), [#14578](https://github.com/vllm-project/vllm/pull/14578), [#16236](https://github.com/vllm-project/vllm/pull/16236), [#19830](https://github.com/vllm-project/vllm/pull/19830), [#20251](https://github.com/vllm-project/vllm/pull/20251), [#27814](https://github.com/vllm-project/vllm/pull/27814), [#33892](https://github.com/vllm-project/vllm/pull/33892), [#44626](https://github.com/vllm-project/vllm/pull/44626) |
 | `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_int8.py` | [#10765](https://github.com/vllm-project/vllm/pull/10765), [#16236](https://github.com/vllm-project/vllm/pull/16236), [#27814](https://github.com/vllm-project/vllm/pull/27814), [#41892](https://github.com/vllm-project/vllm/pull/41892) |
-| `vllm/model_executor/layers/quantization/quark/utils.py` | [#10765](https://github.com/vllm-project/vllm/pull/10765), [#35859](https://github.com/vllm-project/vllm/pull/35859) |
+| `vllm/model_executor/layers/quantization/quark/utils.py` | [#10765](https://github.com/vllm-project/vllm/pull/10765), [#35859](https://github.com/vllm-project/vllm/pull/35859), [#46757](https://github.com/vllm-project/vllm/pull/46757) |
 | `vllm/model_executor/models/mixtral.py` | [#2011](https://github.com/vllm-project/vllm/pull/2011), [#2015](https://github.com/vllm-project/vllm/pull/2015), [#2036](https://github.com/vllm-project/vllm/pull/2036), [#2090](https://github.com/vllm-project/vllm/pull/2090), [#2208](https://github.com/vllm-project/vllm/pull/2208), [#2542](https://github.com/vllm-project/vllm/pull/2542), [#2677](https://github.com/vllm-project/vllm/pull/2677), [#2769](https://github.com/vllm-project/vllm/pull/2769), [#2831](https://github.com/vllm-project/vllm/pull/2831), [#2875](https://github.com/vllm-project/vllm/pull/2875), [#2880](https://github.com/vllm-project/vllm/pull/2880), [#3597](https://github.com/vllm-project/vllm/pull/3597), ... (41 total) |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 125
+- Git-traced PRs: 133
 - Extra PRs preserved from existing docs: 20
-- Total PRs in this document: 145
+- Total PRs in this document: 153
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -184,6 +184,14 @@
 | 2026-06-22 | [#43721](https://github.com/vllm-project/vllm/pull/43721) | merged | [ROCm][Quantization][4/N] refactor quark_moe fp8 w/ oracle | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
 | 2026-06-23 | [#46142](https://github.com/vllm-project/vllm/pull/46142) | merged | [AMD][OCP MX][CI] Fix tests to not dispatch on `UNFUSED_TRITON` backend on MI300, improve w_mxfp4_a_fp8 emulation support | `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `tests/quantization/test_quark.py` |
 | 2026-06-26 | [#46820](https://github.com/vllm-project/vllm/pull/46820) | merged | Fix Transformers backend FP8 MoE and remove some boilerplate | `vllm/model_executor/models/mixtral.py` |
+| 2026-06-29 | [#43373](https://github.com/vllm-project/vllm/pull/43373) | merged | [MoE Refactor] Standardize Humming MoE experts + utilities | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
+| 2026-07-03 | [#47220](https://github.com/vllm-project/vllm/pull/47220) | merged | [AMD][EPLB] Enable EPLB for Quark OCP MXFP4 MoE | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
+| 2026-07-06 | [#41652](https://github.com/vllm-project/vllm/pull/41652) | merged | [Quantization] add humming moe backend to all dense/moe oracles | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
+| 2026-07-15 | [#47330](https://github.com/vllm-project/vllm/pull/47330) | merged | [ROCm][CI] Remove mxfp4 test skips after `amd-quark` 0.12 release | `tests/quantization/test_quark.py` |
+| 2026-07-16 | [#48015](https://github.com/vllm-project/vllm/pull/48015) | merged | [ROCm][CI] Avoid HIP init at config time via lazy aiter import in Quark OCP-MX | `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py` |
+| 2026-07-16 | [#46757](https://github.com/vllm-project/vllm/pull/46757) | merged | Fix Quark mxfp4 quantized model loading issue under mtp | `vllm/model_executor/layers/quantization/quark/utils.py`, `vllm/model_executor/layers/quantization/quark/quark.py` |
+| 2026-07-18 | [#43979](https://github.com/vllm-project/vllm/pull/43979) | merged | [ROCm][Bugfix] Fix GPT-OSS Quark MXFP4 MoE loading - emulation buffer not block-aligned | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
+| 2026-07-24 | [#48050](https://github.com/vllm-project/vllm/pull/48050) | merged | [ROCm][Quantization] Add Quark W4A8 (INT4-FP8) MoE CI coverage | `tests/quantization/test_quark.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -4478,7 +4486,7 @@ diff -- tests/quantization/test_quark.py
 
 - Link: https://github.com/vllm-project/vllm/pull/46820
 - Status/date: merged / 2026-06-26
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `d8eb734d94fe`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `d8eb734d94fe`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 29 files, +80/-156, 748 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Fix Transformers backend FP8 MoE and remove some boilerplate"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "Fix Transformers backend FP8 MoE and remove some boilerplate"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/mixtral.py` modified +0/-1 (1 lines); hunks: -512,7 +512,6 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__, touching `__init__`.
@@ -4495,6 +4503,218 @@ diff -- vllm/model_executor/models/mixtral.py
 - Reviewed files:
   - runtime: `vllm/model_executor/models/mixtral.py` modified +0/-1
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/AXK1.py`, `vllm/model_executor/models/afmoe.py`, `vllm/model_executor/models/deepseek_mtp.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #43373 - [MoE Refactor] Standardize Humming MoE experts + utilities
+
+- Link: https://github.com/vllm-project/vllm/pull/43373
+- Status/date: merged / 2026-06-29
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `bc8481af09cd`
+- Diff scope read: GitHub Pull Request files API returned 8 files, +1178/-392, 2022 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[MoE Refactor] Standardize Humming MoE experts + utilities"; model line: Mixtral Quark INT4/FP8 MoE; category: model implementation change; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[MoE Refactor] Standardize Humming MoE experts + utilities"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +1/-0 (1 lines); hunks: -1280,6 +1280,7 @@ def get_fused_moe_quant_config(; symbols: get_fused_moe_quant_config, touching `get_fused_moe_quant_config`.
+- Code diff details:
+  - `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +1/-0 (1 lines); hunks: -1280,6 +1280,7 @@ def get_fused_moe_quant_config(; symbols: get_fused_moe_quant_config
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
+@@ -1280,6 +1280,7 @@ def get_fused_moe_quant_config(
++                layer=layer,
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +1/-0
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/fused_moe/experts/fused_humming_moe.py`, `vllm/model_executor/layers/fused_moe/oracle/mxfp4.py`, `vllm/model_executor/layers/quantization/compressed_tensors/compressed_tensors_moe/compressed_tensors_moe_w4a4_mxfp4.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #47220 - [AMD][EPLB] Enable EPLB for Quark OCP MXFP4 MoE
+
+- Link: https://github.com/vllm-project/vllm/pull/47220
+- Status/date: merged / 2026-07-03
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `576bf75d0e79`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +5/-0, 12 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[AMD][EPLB] Enable EPLB for Quark OCP MXFP4 MoE"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[AMD][EPLB] Enable EPLB for Quark OCP MXFP4 MoE"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +5/-0 (5 lines); hunks: -1322,6 +1322,11 @@ def get_fused_moe_quant_config(; symbols: get_fused_moe_quant_config, supports_eplb, is_monolithic, touching `get_fused_moe_quant_config, supports_eplb, is_monolithic`.
+- Code diff details:
+  - `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +5/-0 (5 lines); hunks: -1322,6 +1322,11 @@ def get_fused_moe_quant_config(; symbols: get_fused_moe_quant_config, supports_eplb, is_monolithic
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
+@@ -1322,6 +1322,11 @@ def get_fused_moe_quant_config(
++    @property
++    def supports_eplb(self) -> bool:
++        # AITER shuffle keeps expert dim outermost, so EPLB row moves are layout-safe.
++        return True
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +5/-0
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/quantization/quark/quark_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #41652 - [Quantization] add humming moe backend to all dense/moe oracles
+
+- Link: https://github.com/vllm-project/vllm/pull/41652
+- Status/date: merged / 2026-07-06
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `d891b9bd51ce`
+- Diff scope read: GitHub Pull Request files API returned 73 files, +1336/-122, 2552 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Quantization] add humming moe backend to all dense/moe oracles"; model line: Mixtral Quark INT4/FP8 MoE; category: model support/runtime entry; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[Quantization] add humming moe backend to all dense/moe oracles"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +3/-0 (3 lines); hunks: -1557,7 +1557,9 @@ def process_weights_after_loading(self, layer: RoutedExper...; -1571,6 +1573,7 @@ def get_fused_moe_quant_config(; symbols: process_weights_after_loading, get_fused_moe_quant_config, apply, touching `process_weights_after_loading, get_fused_moe_quant_config, apply`.
+- Code diff details:
+  - `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +3/-0 (3 lines); hunks: -1557,7 +1557,9 @@ def process_weights_after_loading(self, layer: RoutedExper...; -1571,6 +1573,7 @@ def get_fused_moe_quant_config(; symbols: process_weights_after_loading, get_fused_moe_quant_config, apply
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
+@@ -1557,7 +1557,9 @@ def process_weights_after_loading(self, layer: RoutedExperts) -> None:
++                backend=self.nvfp4_backend,
++                layer=layer,
+@@ -1571,6 +1573,7 @@ def get_fused_moe_quant_config(
++            layer=layer,
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +3/-0
+- Risk and verification: The diff ships test coverage in `tests/evals/gsm8k/configs/humming/Qwen2-1.5B-Instruct-FP8W8-humming-act-fp8.yaml`, `tests/evals/gsm8k/configs/humming/Qwen2-1.5B-Instruct-FP8W8-humming.yaml`, `tests/evals/gsm8k/configs/humming/Qwen3-0.6B-MXFP8-humming-act-fp8.yaml`, `tests/evals/gsm8k/configs/humming/Qwen3-0.6B-MXFP8-humming.yaml`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #47330 - [ROCm][CI] Remove mxfp4 test skips after `amd-quark` 0.12 release
+
+- Link: https://github.com/vllm-project/vllm/pull/47330
+- Status/date: merged / 2026-07-15
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/quantization/test_quark.py`; associated commits `6e073440b175`
+- Diff scope read: GitHub Pull Request files API returned 5 files, +11/-59, 162 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[ROCm][CI] Remove mxfp4 test skips after `amd-quark` 0.12 release"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `tests/quantization/test_quark.py`; technical summary: Covers "[ROCm][CI] Remove mxfp4 test skips after `amd-quark` 0.12 release"; the main implementation surface is `tests/quantization/test_quark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/quantization/test_quark.py` modified +1/-1 (2 lines); hunks: -41,7 +41,7 @@ def on_gfx950() -> bool:; symbols: on_gfx950, touching `on_gfx950`.
+- Code diff details:
+  - `tests/quantization/test_quark.py` modified +1/-1 (2 lines); hunks: -41,7 +41,7 @@ def on_gfx950() -> bool:; symbols: on_gfx950
+- Key code excerpts:
+
+```diff
+diff -- tests/quantization/test_quark.py
+@@ -41,7 +41,7 @@ def on_gfx950() -> bool:
+-QUARK_MXFP4_MIN_VERSION = "0.8.99"
++QUARK_MXFP4_MIN_VERSION = "0.12"
+```
+
+- Reviewed files:
+  - tests: `tests/quantization/test_quark.py` modified +1/-1
+- Risk and verification: The diff ships test coverage in `tests/evals/gsm8k/test_gsm8k_correctness.py`, `tests/kernels/moe/test_ocp_mx_moe.py`, `tests/lora/test_gptoss_tp.py`, `tests/quantization/test_quark.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #48015 - [ROCm][CI] Avoid HIP init at config time via lazy aiter import in Quark OCP-MX
+
+- Link: https://github.com/vllm-project/vllm/pull/48015
+- Status/date: merged / 2026-07-16
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py`; associated commits `7d56fe2adc93`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +29/-21, 101 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[ROCm][CI] Avoid HIP init at config time via lazy aiter import in Quark OCP-MX"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py`; technical summary: Covers "[ROCm][CI] Avoid HIP init at config time via lazy aiter import in Quark OCP-MX"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py` modified +29/-21 (50 lines); hunks: -9,7 +9,7; -36,19 +36,15; symbols: gemm_with_dynamic_quant, gemm_with_dynamic_quant_fake, QuarkOCP_MX, __init__, touching `gemm_with_dynamic_quant, gemm_with_dynamic_quant_fake, QuarkOCP_MX`.
+- Code diff details:
+  - `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py` modified +29/-21 (50 lines); hunks: -9,7 +9,7; -36,19 +36,15; symbols: gemm_with_dynamic_quant, gemm_with_dynamic_quant_fake, QuarkOCP_MX, __init__
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py
+@@ -9,7 +9,7 @@
+-from vllm._aiter_ops import rocm_aiter_ops
++from vllm._aiter_ops import is_aiter_found_and_supported, rocm_aiter_ops
+@@ -36,19 +36,15 @@
+-try:
+-    from aiter.ops.shuffle import shuffle_weight
+-    from aiter.ops.triton.gemm_afp4wfp4 import (
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py` modified +29/-21
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #46757 - Fix Quark mxfp4 quantized model loading issue under mtp
+
+- Link: https://github.com/vllm-project/vllm/pull/46757
+- Status/date: merged / 2026-07-16
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark.py`, `vllm/model_executor/layers/quantization/quark/utils.py`; associated commits `02bf9c7907b4`
+- Diff scope read: GitHub Pull Request files API returned 2 files, +26/-2, 54 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Fix Quark mxfp4 quantized model loading issue under mtp"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/layers/quantization/quark/utils.py`, `vllm/model_executor/layers/quantization/quark/quark.py`; technical summary: Covers "Fix Quark mxfp4 quantized model loading issue under mtp"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/utils.py`, `vllm/model_executor/layers/quantization/quark/quark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/layers/quantization/quark/utils.py` modified +16/-0 (16 lines); hunks: -27,10 +27,26 @@ def should_ignore_layer(; symbols: should_ignore_layer, touching `should_ignore_layer`; `vllm/model_executor/layers/quantization/quark/quark.py` modified +10/-2 (12 lines); hunks: -9,7 +9,10; -146,8 +149,13 @@ def get_quant_method(; symbols: get_quant_method, touching `get_quant_method`.
+- Code diff details:
+  - `vllm/model_executor/layers/quantization/quark/utils.py` modified +16/-0 (16 lines); hunks: -27,10 +27,26 @@ def should_ignore_layer(; symbols: should_ignore_layer
+  - `vllm/model_executor/layers/quantization/quark/quark.py` modified +10/-2 (12 lines); hunks: -9,7 +9,10; -146,8 +149,13 @@ def get_quant_method(; symbols: get_quant_method
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/layers/quantization/quark/utils.py
+@@ -27,10 +27,26 @@ def should_ignore_layer(
++    *,
++    check_children: bool = False,
++    # MoE layers are currently all-or-nothing: if any child is ignored,
++    # the parent layer must be ignored as well. For example, the
++    # amd/GLM-5.2-MXFP4 config ignores children like
++    # model.layers.78.mlp.experts.*.down_proj, while the layer checked
+diff -- vllm/model_executor/layers/quantization/quark/quark.py
+@@ -9,7 +9,10 @@
+-from vllm.model_executor.layers.fused_moe import RoutedExperts
++from vllm.model_executor.layers.fused_moe import (
++    RoutedExperts,
++    UnquantizedFusedMoEMethod,
++)
+@@ -146,8 +149,13 @@ def get_quant_method(
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/layers/quantization/quark/utils.py` modified +16/-0; `vllm/model_executor/layers/quantization/quark/quark.py` modified +10/-2
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/quantization/quark/quark.py`, `vllm/model_executor/layers/quantization/quark/utils.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #43979 - [ROCm][Bugfix] Fix GPT-OSS Quark MXFP4 MoE loading - emulation buffer not block-aligned
+
+- Link: https://github.com/vllm-project/vllm/pull/43979
+- Status/date: merged / 2026-07-18
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `f12b80c6efa1`
+- Diff scope read: GitHub Pull Request files API returned 3 files, +59/-7, 91 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[ROCm][Bugfix] Fix GPT-OSS Quark MXFP4 MoE loading - emulation buffer not block-aligned"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[ROCm][Bugfix] Fix GPT-OSS Quark MXFP4 MoE loading - emulation buffer not block-aligned"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +3/-6 (9 lines); hunks: -1063,12 +1063,9 @@ def maybe_roundup_sizes(; symbols: maybe_roundup_sizes, touching `maybe_roundup_sizes`.
+- Code diff details:
+  - `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +3/-6 (9 lines); hunks: -1063,12 +1063,9 @@ def maybe_roundup_sizes(; symbols: maybe_roundup_sizes
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
+@@ -1063,12 +1063,9 @@ def maybe_roundup_sizes(
+-        # In case quantization emulation backend is used, there is no need to apply
+-        # MXFP4-specific padding logic as the compute happens in higher precision.
+-        if (
+-            self.mxfp4_backend is not None
+-            and self.mxfp4_backend != Mxfp4MoeBackend.EMULATION
+-        ):
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +3/-6
+- Risk and verification: The diff ships test coverage in `tests/kernels/moe/test_ocp_mx_moe.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #48050 - [ROCm][Quantization] Add Quark W4A8 (INT4-FP8) MoE CI coverage
+
+- Link: https://github.com/vllm-project/vllm/pull/48050
+- Status/date: merged / 2026-07-24
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/quantization/test_quark.py`; associated commits `80c9d5d5e044`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +37/-1, 61 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[ROCm][Quantization] Add Quark W4A8 (INT4-FP8) MoE CI coverage"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `tests/quantization/test_quark.py`; technical summary: Covers "[ROCm][Quantization] Add Quark W4A8 (INT4-FP8) MoE CI coverage"; the main implementation surface is `tests/quantization/test_quark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/quantization/test_quark.py` modified +37/-1 (38 lines); hunks: -23,6 +23,7; -31,9 +32,12; symbols: on_gfx942, on_gfx950, check_model, test_quark_w4a8_fp8_moe, touching `on_gfx942, on_gfx950, check_model`.
+- Code diff details:
+  - `tests/quantization/test_quark.py` modified +37/-1 (38 lines); hunks: -23,6 +23,7; -31,9 +32,12; symbols: on_gfx942, on_gfx950, check_model, test_quark_w4a8_fp8_moe
+- Key code excerpts:
+
+```diff
+diff -- tests/quantization/test_quark.py
+@@ -23,6 +23,7 @@
++    QuarkW4A8Fp8MoEMethod,
+@@ -31,9 +32,12 @@
+-    from vllm.platforms.rocm import on_gfx950
++    from vllm.platforms.rocm import on_gfx942, on_gfx950
++    def on_gfx942() -> bool:
++        return False
+```
+
+- Reviewed files:
+  - tests: `tests/quantization/test_quark.py` modified +37/-1
+- Risk and verification: The diff ships test coverage in `tests/quantization/test_quark.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes
 

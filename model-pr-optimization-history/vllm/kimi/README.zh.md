@@ -4,18 +4,19 @@
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
-| `tests/reasoning/test_kimi_k2_reasoning_parser.py` | [#37438](https://github.com/vllm-project/vllm/pull/37438), [#41068](https://github.com/vllm-project/vllm/pull/41068) |
+| `tests/reasoning/test_kimi_k2_reasoning_parser.py` | [#37438](https://github.com/vllm-project/vllm/pull/37438), [#41068](https://github.com/vllm-project/vllm/pull/41068), [#46610](https://github.com/vllm-project/vllm/pull/46610) |
 | `tests/tool_parsers/test_kimi_k2_tool_parser.py` | [#31207](https://github.com/vllm-project/vllm/pull/31207), [#38579](https://github.com/vllm-project/vllm/pull/38579) |
 | `vllm/model_executor/layers/mamba/gdn/kimi_gdn_linear_attn.py` | 无直接 PR 号提交 |
 | `vllm/model_executor/models/kimi_audio.py` | [#36127](https://github.com/vllm-project/vllm/pull/36127), [#36903](https://github.com/vllm-project/vllm/pull/36903) |
-| `vllm/model_executor/models/kimi_k25.py` | [#33131](https://github.com/vllm-project/vllm/pull/33131), [#33320](https://github.com/vllm-project/vllm/pull/33320), [#33346](https://github.com/vllm-project/vllm/pull/33346), [#33562](https://github.com/vllm-project/vllm/pull/33562), [#33876](https://github.com/vllm-project/vllm/pull/33876), [#34427](https://github.com/vllm-project/vllm/pull/34427), [#34501](https://github.com/vllm-project/vllm/pull/34501), [#36192](https://github.com/vllm-project/vllm/pull/36192), [#36361](https://github.com/vllm-project/vllm/pull/36361), [#37693](https://github.com/vllm-project/vllm/pull/37693), [#39344](https://github.com/vllm-project/vllm/pull/39344), [#42869](https://github.com/vllm-project/vllm/pull/42869), ... (13 total) |
+| `vllm/model_executor/models/kimi_k25.py` | [#33131](https://github.com/vllm-project/vllm/pull/33131), [#33320](https://github.com/vllm-project/vllm/pull/33320), [#33346](https://github.com/vllm-project/vllm/pull/33346), [#33562](https://github.com/vllm-project/vllm/pull/33562), [#33876](https://github.com/vllm-project/vllm/pull/33876), [#34427](https://github.com/vllm-project/vllm/pull/34427), [#34501](https://github.com/vllm-project/vllm/pull/34501), [#36192](https://github.com/vllm-project/vllm/pull/36192), [#36361](https://github.com/vllm-project/vllm/pull/36361), [#37693](https://github.com/vllm-project/vllm/pull/37693), [#39344](https://github.com/vllm-project/vllm/pull/39344), [#42869](https://github.com/vllm-project/vllm/pull/42869), ... (14 total) |
 | `vllm/model_executor/models/kimi_k25_vit.py` | [#33131](https://github.com/vllm-project/vllm/pull/33131), [#33346](https://github.com/vllm-project/vllm/pull/33346), [#34501](https://github.com/vllm-project/vllm/pull/34501), [#42081](https://github.com/vllm-project/vllm/pull/42081), [#44493](https://github.com/vllm-project/vllm/pull/44493) |
 | `vllm/model_executor/models/kimi_linear.py` | [#27809](https://github.com/vllm-project/vllm/pull/27809), [#27834](https://github.com/vllm-project/vllm/pull/27834), [#27885](https://github.com/vllm-project/vllm/pull/27885), [#37371](https://github.com/vllm-project/vllm/pull/37371) |
 | `vllm/model_executor/models/kimi_vl.py` | [#16387](https://github.com/vllm-project/vllm/pull/16387), [#16833](https://github.com/vllm-project/vllm/pull/16833), [#17156](https://github.com/vllm-project/vllm/pull/17156), [#21769](https://github.com/vllm-project/vllm/pull/21769), [#23114](https://github.com/vllm-project/vllm/pull/23114), [#23817](https://github.com/vllm-project/vllm/pull/23817), [#31738](https://github.com/vllm-project/vllm/pull/31738), [#41992](https://github.com/vllm-project/vllm/pull/41992) |
 | `vllm/model_executor/models/moonvit.py` | [#16387](https://github.com/vllm-project/vllm/pull/16387), [#23817](https://github.com/vllm-project/vllm/pull/23817), [#29309](https://github.com/vllm-project/vllm/pull/29309), [#31738](https://github.com/vllm-project/vllm/pull/31738), [#41992](https://github.com/vllm-project/vllm/pull/41992) |
-| `vllm/reasoning/kimi_k2_reasoning_parser.py` | [#33131](https://github.com/vllm-project/vllm/pull/33131), [#33646](https://github.com/vllm-project/vllm/pull/33646), [#41068](https://github.com/vllm-project/vllm/pull/41068) |
+| `vllm/parser/kimi_k2.py` | [#46610](https://github.com/vllm-project/vllm/pull/46610) |
+| `vllm/reasoning/kimi_k2_reasoning_parser.py` | [#33131](https://github.com/vllm-project/vllm/pull/33131), [#33646](https://github.com/vllm-project/vllm/pull/33646), [#41068](https://github.com/vllm-project/vllm/pull/41068), [#46610](https://github.com/vllm-project/vllm/pull/46610) |
 | `vllm/tokenizers/kimi_audio.py` | [#36127](https://github.com/vllm-project/vllm/pull/36127) |
-| `vllm/tool_parsers/kimi_k2_tool_parser.py` | [#31207](https://github.com/vllm-project/vllm/pull/31207), [#38579](https://github.com/vllm-project/vllm/pull/38579) |
+| `vllm/tool_parsers/kimi_k2_tool_parser.py` | [#31207](https://github.com/vllm-project/vllm/pull/31207), [#38579](https://github.com/vllm-project/vllm/pull/38579), [#46610](https://github.com/vllm-project/vllm/pull/46610) |
 | `vllm/transformers_utils/chat_templates/template_kimi_audio.jinja` | [#36127](https://github.com/vllm-project/vllm/pull/36127) |
 | `vllm/transformers_utils/configs/kimi_k25.py` | [#33131](https://github.com/vllm-project/vllm/pull/33131) |
 | `vllm/transformers_utils/configs/kimi_linear.py` | [#27809](https://github.com/vllm-project/vllm/pull/27809) |
@@ -23,12 +24,13 @@
 | `vllm/transformers_utils/configs/moonvit.py` | [#16387](https://github.com/vllm-project/vllm/pull/16387) |
 | `vllm/transformers_utils/processors/kimi_audio.py` | [#36127](https://github.com/vllm-project/vllm/pull/36127) |
 | `vllm/transformers_utils/processors/kimi_k25.py` | [#37693](https://github.com/vllm-project/vllm/pull/37693) |
+| `vllm/transformers_utils/processors/kimi_k25_vision_fused.py` | [#47416](https://github.com/vllm-project/vllm/pull/47416) |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 34
+- git 追溯 PR 数: 35
 - 原文档显式引用补充 PR 数: 7
-- 当前文档总 PR 数: 41
+- 当前文档总 PR 数: 42
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -58,7 +60,6 @@
 | 2026-02-13 | [#34501](https://github.com/vllm-project/vllm/pull/34501) | merged | [Bugfix] Add quant_config in ViT of Kimi-K2.5 | `vllm/model_executor/models/kimi_k25_vit.py`, `vllm/model_executor/models/kimi_k25.py` |
 | 2026-02-27 | [#33646](https://github.com/vllm-project/vllm/pull/33646) | merged | [Bugfix] Handle case when kimi ends reasoning with a tool call | `vllm/reasoning/kimi_k2_reasoning_parser.py` |
 | 2026-03-06 | [#36192](https://github.com/vllm-project/vllm/pull/36192) | merged | [Security] Respect user trust_remote_code setting in NemotronVL and KimiK25 | `vllm/model_executor/models/kimi_k25.py` |
-| 2026-03-11 | [#36127](https://github.com/vllm-project/vllm/pull/36127) | merged | [Model] Add support for moonshotai/Kimi-Audio-7B-Instruct | `vllm/model_executor/models/kimi_audio.py`, `vllm/tokenizers/kimi_audio.py`, `vllm/transformers_utils/processors/kimi_audio.py` |
 | 2026-03-11 | [#36361](https://github.com/vllm-project/vllm/pull/36361) | merged | Kimi k2.5 MLA based eagle3 | `vllm/model_executor/models/kimi_k25.py` |
 | 2026-03-14 | [#36903](https://github.com/vllm-project/vllm/pull/36903) | merged | [Misc] Clean up Kimi-audio whisper encoder loading | `vllm/model_executor/models/kimi_audio.py` |
 | 2026-03-18 | [#37371](https://github.com/vllm-project/vllm/pull/37371) | merged | standardize load_weights using AutoWeightsLoader for kimi_linear and minimax_text_01 | `vllm/model_executor/models/kimi_linear.py` |
@@ -77,6 +78,8 @@
 | 2026-06-12 | [#45003](https://github.com/vllm-project/vllm/pull/45003) | merged | [Frontend] Support strict mode for tool calling | `vllm/tool_parsers/qwen3xml_tool_parser.py`, `vllm/tool_parsers/structural_tag_registry.py`, `tests/tool_parsers/test_structural_tag_registry.py` |
 | 2026-06-17 | [#41992](https://github.com/vllm-project/vllm/pull/41992) | merged | [MM][Perf][CG] Support ViT full CUDA graph for Kimi-VL | `vllm/model_executor/models/moonvit.py`, `vllm/model_executor/models/kimi_vl.py` |
 | 2026-06-21 | [#45424](https://github.com/vllm-project/vllm/pull/45424) | merged | [Core] Ensure memory is pinned prior to async h2d copy | `vllm/model_executor/layers/attention/mla_attention.py`, `vllm/model_executor/layers/pooler/seqwise/methods.py`, `vllm/multimodal/inputs.py` |
+| 2026-06-30 | [#46610](https://github.com/vllm-project/vllm/pull/46610) | merged | [Frontend] Add Streaming Parser Engine and new Kimi k2.5/k2.6/k2.7 Parser | `vllm/tool_parsers/kimi_k2_tool_parser.py`, `vllm/reasoning/kimi_k2_reasoning_parser.py`, `tests/reasoning/test_kimi_k2_reasoning_parser.py` |
+| 2026-07-06 | [#47416](https://github.com/vllm-project/vllm/pull/47416) | merged | [perf]Add fused Kimi image preprocessing | `vllm/transformers_utils/processors/kimi_k25_vision_fused.py`, `vllm/model_executor/models/kimi_k25.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -752,47 +755,6 @@ diff -- vllm/model_executor/models/kimi_k25.py
   - runtime: `vllm/model_executor/models/kimi_k25.py` modified +2/-1
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/kimi_k25.py`, `vllm/model_executor/models/nemotron_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #36127 - [Model] Add support for moonshotai/Kimi-Audio-7B-Instruct
-
-- 链接: https://github.com/vllm-project/vllm/pull/36127
-- 状态/时间: merged / 2026-03-11
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_audio.py`, `vllm/tokenizers/kimi_audio.py`, `vllm/transformers_utils/chat_templates/template_kimi_audio.jinja`, `vllm/transformers_utils/processors/kimi_audio.py`；关联提交 `42fadebecb79`；保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 14 个文件，+1446/-29，可读 patch 1583 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Model] Add support for moonshotai/Kimi-Audio-7B-Instruct」；模型线: Kimi K2/K2.5/Linear/VL；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/kimi_audio.py`, `vllm/tokenizers/kimi_audio.py`, `vllm/transformers_utils/processors/kimi_audio.py`；技术摘要: 覆盖「[Model] Add support for moonshotai/Kimi-Audio-7B-Instruct」；主要实现面是 `vllm/model_executor/models/kimi_audio.py`, `vllm/tokenizers/kimi_audio.py`, `vllm/transformers_utils/processors/kimi_audio.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `vllm/model_executor/models/kimi_audio.py` added +725/-0 (725 lines); hunks: -0,0 +1,725; symbols: _get_feat_extract_output_lengths, KimiAudioWhisperEncoder, __init__, KimiAudioProcessingInfo，涉及 `_get_feat_extract_output_lengths, KimiAudioWhisperEncoder, __init__`；`vllm/tokenizers/kimi_audio.py` added +410/-0 (410 lines); hunks: -0,0 +1,410; symbols: _load_tiktoken_encoding, KimiAudioTokenizer, from_pretrained, __init__，涉及 `_load_tiktoken_encoding, KimiAudioTokenizer, from_pretrained`；`vllm/transformers_utils/processors/kimi_audio.py` added +163/-0 (163 lines); hunks: -0,0 +1,163; symbols: _get_feat_extract_output_lengths, KimiAudioProcessor, __init__, check_argument_for_proper_class，涉及 `_get_feat_extract_output_lengths, KimiAudioProcessor, __init__`；`vllm/renderers/kimi_audio.py` added +49/-0 (49 lines); hunks: -0,0 +1,49; symbols: KimiAudioRenderer, from_config，涉及 `KimiAudioRenderer, from_config`。
-- 代码 diff 细节:
-  - `vllm/model_executor/models/kimi_audio.py` added +725/-0 (725 lines); hunks: -0,0 +1,725; symbols: _get_feat_extract_output_lengths, KimiAudioWhisperEncoder, __init__, KimiAudioProcessingInfo
-  - `vllm/tokenizers/kimi_audio.py` added +410/-0 (410 lines); hunks: -0,0 +1,410; symbols: _load_tiktoken_encoding, KimiAudioTokenizer, from_pretrained, __init__
-  - `vllm/transformers_utils/processors/kimi_audio.py` added +163/-0 (163 lines); hunks: -0,0 +1,163; symbols: _get_feat_extract_output_lengths, KimiAudioProcessor, __init__, check_argument_for_proper_class
-  - `vllm/renderers/kimi_audio.py` added +49/-0 (49 lines); hunks: -0,0 +1,49; symbols: KimiAudioRenderer, from_config
-  - `vllm/transformers_utils/chat_templates/template_kimi_audio.jinja` added +13/-0 (13 lines); hunks: -0,0 +1,13
-- 关键代码摘录:
-
-```diff
-diff -- vllm/model_executor/models/kimi_audio.py
-@@ -0,0 +1,725 @@
-+# SPDX-License-Identifier: Apache-2.0
-+# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
-+"""Inference-only Kimi-Audio model compatible with HuggingFace weights."""
-+import os
-+from collections.abc import Iterable, Mapping, Sequence
-+from typing import Any, ClassVar, Literal
-diff -- vllm/tokenizers/kimi_audio.py
-@@ -0,0 +1,410 @@
-+# SPDX-License-Identifier: Apache-2.0
-+# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
-+"""Tokenizer for Kimi-Audio using TikToken."""
-+import contextlib
-+import json
-+from pathlib import Path
-diff -- vllm/transformers_utils/processors/kimi_audio.py
-@@ -0,0 +1,163 @@
-```
-
-- 已读文件:
-  - runtime: `vllm/model_executor/models/kimi_audio.py` added +725/-0; `vllm/tokenizers/kimi_audio.py` added +410/-0; `vllm/transformers_utils/processors/kimi_audio.py` added +163/-0; `vllm/renderers/kimi_audio.py` added +49/-0; `vllm/transformers_utils/chat_templates/template_kimi_audio.jinja` added +13/-0
-- 验证与风险: diff 自带测试面 `tests/models/multimodal/processing/test_common.py`, `tests/models/registry.py`, `tests/models/test_initialization.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
-
 ### PR #36361 - Kimi k2.5 MLA based eagle3
 
 - 链接: https://github.com/vllm-project/vllm/pull/36361
@@ -1403,6 +1365,83 @@ diff -- vllm/multimodal/inputs.py
 - 已读文件:
   - runtime: `vllm/model_executor/layers/attention/mla_attention.py` modified +10/-8; `vllm/model_executor/layers/pooler/seqwise/methods.py` modified +8/-8; `vllm/multimodal/inputs.py` modified +14/-2; `vllm/model_executor/models/moonvit.py` modified +3/-2; `vllm/model_executor/models/qwen2_5_vl.py` modified +2/-3; `vllm/model_executor/layers/attention/mm_encoder_attention.py` modified +2/-1
 - 验证与风险: diff 自带测试面 `tests/v1/logits_processors/test_correctness.py`, `tests/v1/streaming_input/test_gpu_model_runner_streaming.py`, `tests/v1/worker/test_gpu_input_batch.py`, `tests/v1/worker/test_gpu_model_runner.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #46610 - [Frontend] Add Streaming Parser Engine and new Kimi k2.5/k2.6/k2.7 Parser
+
+- 链接: https://github.com/vllm-project/vllm/pull/46610
+- 状态/时间: merged / 2026-06-30
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/reasoning/test_kimi_k2_reasoning_parser.py`, `vllm/parser/kimi_k2.py`, `vllm/reasoning/kimi_k2_reasoning_parser.py`, `vllm/tool_parsers/kimi_k2_tool_parser.py`；关联提交 `2bc20e8abaf7`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+397/-570，可读 patch 1069 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Frontend] Add Streaming Parser Engine and new Kimi k2.5/k2.6/k2.7 Parser」；模型线: Kimi K2/K2.5/Linear/VL；类别: 文档/测试/CI；主要 diff: `vllm/tool_parsers/kimi_k2_tool_parser.py`, `vllm/reasoning/kimi_k2_reasoning_parser.py`, `tests/reasoning/test_kimi_k2_reasoning_parser.py`；技术摘要: 覆盖「[Frontend] Add Streaming Parser Engine and new Kimi k2.5/k2.6/k2.7 Parser」；主要实现面是 `vllm/tool_parsers/kimi_k2_tool_parser.py`, `vllm/reasoning/kimi_k2_reasoning_parser.py`, `tests/reasoning/test_kimi_k2_reasoning_parser.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/tool_parsers/kimi_k2_tool_parser.py` modified +4/-262 (266 lines); hunks: -1,278 +1,20; symbols: KimiK2ToolParser, __init__, adjust_request, extract_tool_calls，涉及 `KimiK2ToolParser, __init__, adjust_request`；`vllm/reasoning/kimi_k2_reasoning_parser.py` modified +3/-240 (243 lines); hunks: -1,245 +1,8; symbols: KimiK2ReasoningParser, __init__, reasoning_start_str, reasoning_end_str，涉及 `KimiK2ReasoningParser, __init__, reasoning_start_str`；`tests/reasoning/test_kimi_k2_reasoning_parser.py` modified +5/-67 (72 lines); hunks: -7,7 +7,6; -33,20 +32,6 @@ def kimi_k2_tokenizer():; symbols: kimi_k2_tokenizer, test_parser_selection_thinking_enabled, test_parser_selection_thinking_disabled, test_extract_reasoning_with_think_tags，涉及 `kimi_k2_tokenizer, test_parser_selection_thinking_enabled, test_parser_selection_thinking_disabled`；`vllm/parser/kimi_k2.py` added +285/-0 (285 lines); hunks: -0,0 +1,285; symbols: kimi_k2_config, KimiK2Parser, __init__, _extract_tool_id_and_name，涉及 `kimi_k2_config, KimiK2Parser, __init__`。
+- 代码 diff 细节:
+  - `vllm/tool_parsers/kimi_k2_tool_parser.py` modified +4/-262 (266 lines); hunks: -1,278 +1,20; symbols: KimiK2ToolParser, __init__, adjust_request, extract_tool_calls
+  - `vllm/reasoning/kimi_k2_reasoning_parser.py` modified +3/-240 (243 lines); hunks: -1,245 +1,8; symbols: KimiK2ReasoningParser, __init__, reasoning_start_str, reasoning_end_str
+  - `tests/reasoning/test_kimi_k2_reasoning_parser.py` modified +5/-67 (72 lines); hunks: -7,7 +7,6; -33,20 +32,6 @@ def kimi_k2_tokenizer():; symbols: kimi_k2_tokenizer, test_parser_selection_thinking_enabled, test_parser_selection_thinking_disabled, test_extract_reasoning_with_think_tags
+  - `vllm/parser/kimi_k2.py` added +285/-0 (285 lines); hunks: -0,0 +1,285; symbols: kimi_k2_config, KimiK2Parser, __init__, _extract_tool_id_and_name
+- 关键代码摘录:
+
+```diff
+diff -- vllm/tool_parsers/kimi_k2_tool_parser.py
+@@ -1,278 +1,20 @@
+-from collections.abc import Sequence
+-import regex as re
+-from vllm.entrypoints.openai.engine.protocol import (
+-    DeltaFunctionCall,
+-    DeltaMessage,
+-    DeltaToolCall,
+diff -- vllm/reasoning/kimi_k2_reasoning_parser.py
+@@ -1,245 +1,8 @@
+-from collections.abc import Iterable, Sequence
+-from typing import TYPE_CHECKING
++from vllm.parser.engine.registered_adapters import KimiK2ParserReasoningAdapter
+-from transformers import PreTrainedTokenizerBase
++KimiK2ReasoningParser = KimiK2ParserReasoningAdapter
+-from vllm.entrypoints.openai.engine.protocol import DeltaMessage
+diff -- tests/reasoning/test_kimi_k2_reasoning_parser.py
+@@ -7,7 +7,6 @@
+```
+
+- 已读文件:
+  - runtime: `vllm/tool_parsers/kimi_k2_tool_parser.py` modified +4/-262; `vllm/reasoning/kimi_k2_reasoning_parser.py` modified +3/-240; `vllm/parser/kimi_k2.py` added +285/-0
+  - tests: `tests/reasoning/test_kimi_k2_reasoning_parser.py` modified +5/-67
+- 验证与风险: diff 自带测试面 `tests/parser/engine/trace_builder.py`, `tests/reasoning/test_kimi_k2_reasoning_parser.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #47416 - [perf]Add fused Kimi image preprocessing
+
+- 链接: https://github.com/vllm-project/vllm/pull/47416
+- 状态/时间: merged / 2026-07-06
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/kimi_k25.py`, `vllm/transformers_utils/processors/kimi_k25_vision_fused.py`；关联提交 `5ad11172b791`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+402/-2，可读 patch 462 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[perf]Add fused Kimi image preprocessing」；模型线: Kimi K2/K2.5/Linear/VL；类别: 性能/后端优化；主要 diff: `vllm/transformers_utils/processors/kimi_k25_vision_fused.py`, `vllm/model_executor/models/kimi_k25.py`；技术摘要: 覆盖「[perf]Add fused Kimi image preprocessing」；主要实现面是 `vllm/transformers_utils/processors/kimi_k25_vision_fused.py`, `vllm/model_executor/models/kimi_k25.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/transformers_utils/processors/kimi_k25_vision_fused.py` added +352/-0 (352 lines); hunks: -0,0 +1,352; symbols: _write_fused_patches, navit_resize_image, navit_resize_video, _to_pil，涉及 `_write_fused_patches, navit_resize_image, navit_resize_video`；`vllm/model_executor/models/kimi_k25.py` modified +10/-0 (10 lines); hunks: -56,6 +56,10; -108,10 +112,16 @@ def __init__(self, ctx: InputProcessingContext) -> None:; symbols: __init__，涉及 `__init__`。
+- 代码 diff 细节:
+  - `vllm/transformers_utils/processors/kimi_k25_vision_fused.py` added +352/-0 (352 lines); hunks: -0,0 +1,352; symbols: _write_fused_patches, navit_resize_image, navit_resize_video, _to_pil
+  - `vllm/model_executor/models/kimi_k25.py` modified +10/-0 (10 lines); hunks: -56,6 +56,10; -108,10 +112,16 @@ def __init__(self, ctx: InputProcessingContext) -> None:; symbols: __init__
+- 关键代码摘录:
+
+```diff
+diff -- vllm/transformers_utils/processors/kimi_k25_vision_fused.py
+@@ -0,0 +1,352 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++"""Optimized CPU image processor for Kimi-K2.5/K2.6 vision chunks."""
++import io
++import json
++import math
+diff -- vllm/model_executor/models/kimi_k25.py
+@@ -56,6 +56,10 @@
++from vllm.transformers_utils.processors.kimi_k25_vision_fused import (
++    KimiK25FusedVisionProcessor,
++)
++from vllm.utils.import_utils import is_numba_available
+@@ -108,10 +112,16 @@ def __init__(self, ctx: InputProcessingContext) -> None:
++        processor_cls = KimiK25FusedVisionProcessor if is_numba_available() else None
+```
+
+- 已读文件:
+  - runtime: `vllm/transformers_utils/processors/kimi_k25_vision_fused.py` added +352/-0; `vllm/model_executor/models/kimi_k25.py` modified +10/-0
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/kimi_k25.py`, `vllm/transformers_utils/processor.py`, `vllm/transformers_utils/processors/kimi_k25_vision_fused.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ## 补漏结论
 

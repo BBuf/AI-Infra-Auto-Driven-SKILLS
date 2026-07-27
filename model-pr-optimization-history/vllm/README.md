@@ -1,6 +1,6 @@
 # vLLM Model PR Optimization History
 
-Refresh: `2026-06-27`. Source head: `vllm-project/vllm@091d13976c1c246714bb2112dd2e208561dda6a3`.
+Refresh: `2026-07-27`. Source head: `vllm-project/vllm@ef9975d021448b99a5408e8c78a4c4f6b63443c7`.
 
 Current model families:
 
@@ -16,6 +16,7 @@ Current model families:
 - `glm45`
 - `glm46-glm47`
 - `gpt-oss`
+- `hunyuan3-preview`
 - `intern-s1`
 - `internvl35`
 - `jina-reranker-m0`
@@ -33,6 +34,7 @@ Current model families:
 - `qwen3-core`
 - `qwen3-next`
 - `qwen35`
+- `qwen36`
 - `ring25`
 - `step35`
 

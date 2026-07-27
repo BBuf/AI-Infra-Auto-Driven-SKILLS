@@ -7,6 +7,7 @@
 | `tests/evals/gsm8k/configs/moe-refactor/DeepSeek-V4-Flash-deepgemm-mega-moe.yaml` | [#42111](https://github.com/vllm-project/vllm/pull/42111) |
 | `tests/kernels/test_fused_deepseek_v4_qnorm_rope_kv_insert.py` | [#40860](https://github.com/vllm-project/vllm/pull/40860), [#42353](https://github.com/vllm-project/vllm/pull/42353), [#43073](https://github.com/vllm-project/vllm/pull/43073), [#43162](https://github.com/vllm-project/vllm/pull/43162), [#43827](https://github.com/vllm-project/vllm/pull/43827), [#45681](https://github.com/vllm-project/vllm/pull/45681) |
 | `tests/models/test_deepseek_v4_mega_moe.py` | [#40860](https://github.com/vllm-project/vllm/pull/40860), [#43004](https://github.com/vllm-project/vllm/pull/43004), [#43077](https://github.com/vllm-project/vllm/pull/43077), [#43632](https://github.com/vllm-project/vllm/pull/43632) |
+| `tests/parser/engine/test_deepseek_v4.py` | [#45877](https://github.com/vllm-project/vllm/pull/45877) |
 | `tests/tokenizers_/fixtures/deepseek_v4/test_input_1.json` | [#40860](https://github.com/vllm-project/vllm/pull/40860) |
 | `tests/tokenizers_/fixtures/deepseek_v4/test_input_2.json` | [#40860](https://github.com/vllm-project/vllm/pull/40860) |
 | `tests/tokenizers_/fixtures/deepseek_v4/test_input_3.json` | [#40860](https://github.com/vllm-project/vllm/pull/40860) |
@@ -18,42 +19,47 @@
 | `tests/tokenizers_/test_deepseek_v4.py` | [#40860](https://github.com/vllm-project/vllm/pull/40860), [#40982](https://github.com/vllm-project/vllm/pull/40982) |
 | `tests/v1/attention/test_indexer_deepseek_v4_slot_mapping.py` | [#40860](https://github.com/vllm-project/vllm/pull/40860) |
 | `vllm/model_executor/warmup/deepseek_v4_mhc_warmup.py` | [#43477](https://github.com/vllm-project/vllm/pull/43477) |
-| `vllm/models/deepseek_v4/__init__.py` | [#42953](https://github.com/vllm-project/vllm/pull/42953), [#43004](https://github.com/vllm-project/vllm/pull/43004), [#43077](https://github.com/vllm-project/vllm/pull/43077) |
+| `vllm/models/deepseek_v4/__init__.py` | [#42953](https://github.com/vllm-project/vllm/pull/42953), [#43004](https://github.com/vllm-project/vllm/pull/43004), [#43077](https://github.com/vllm-project/vllm/pull/43077), [#47419](https://github.com/vllm-project/vllm/pull/47419), [#47677](https://github.com/vllm-project/vllm/pull/47677) |
 | `vllm/models/deepseek_v4/amd/__init__.py` | [#43004](https://github.com/vllm-project/vllm/pull/43004) |
-| `vllm/models/deepseek_v4/amd/model.py` | [#43077](https://github.com/vllm-project/vllm/pull/43077), [#43162](https://github.com/vllm-project/vllm/pull/43162), [#43385](https://github.com/vllm-project/vllm/pull/43385), [#43629](https://github.com/vllm-project/vllm/pull/43629), [#43679](https://github.com/vllm-project/vllm/pull/43679), [#43746](https://github.com/vllm-project/vllm/pull/43746), [#44246](https://github.com/vllm-project/vllm/pull/44246), [#44262](https://github.com/vllm-project/vllm/pull/44262), [#44569](https://github.com/vllm-project/vllm/pull/44569), [#45931](https://github.com/vllm-project/vllm/pull/45931) |
-| `vllm/models/deepseek_v4/amd/mtp.py` | [#43077](https://github.com/vllm-project/vllm/pull/43077), [#43385](https://github.com/vllm-project/vllm/pull/43385), [#43629](https://github.com/vllm-project/vllm/pull/43629), [#43679](https://github.com/vllm-project/vllm/pull/43679), [#43746](https://github.com/vllm-project/vllm/pull/43746), [#44821](https://github.com/vllm-project/vllm/pull/44821), [#45931](https://github.com/vllm-project/vllm/pull/45931) |
-| `vllm/models/deepseek_v4/amd/rocm.py` | [#43149](https://github.com/vllm-project/vllm/pull/43149), [#43162](https://github.com/vllm-project/vllm/pull/43162), [#43385](https://github.com/vllm-project/vllm/pull/43385), [#43827](https://github.com/vllm-project/vllm/pull/43827), [#44569](https://github.com/vllm-project/vllm/pull/44569), [#44699](https://github.com/vllm-project/vllm/pull/44699), [#45681](https://github.com/vllm-project/vllm/pull/45681) |
-| `vllm/models/deepseek_v4/attention.py` | [#43039](https://github.com/vllm-project/vllm/pull/43039), [#43073](https://github.com/vllm-project/vllm/pull/43073), [#43149](https://github.com/vllm-project/vllm/pull/43149), [#43162](https://github.com/vllm-project/vllm/pull/43162), [#43477](https://github.com/vllm-project/vllm/pull/43477), [#43827](https://github.com/vllm-project/vllm/pull/43827), [#43891](https://github.com/vllm-project/vllm/pull/43891), [#44246](https://github.com/vllm-project/vllm/pull/44246), [#44561](https://github.com/vllm-project/vllm/pull/44561), [#44569](https://github.com/vllm-project/vllm/pull/44569), [#45309](https://github.com/vllm-project/vllm/pull/45309), [#45972](https://github.com/vllm-project/vllm/pull/45972) |
+| `vllm/models/deepseek_v4/amd/dspark.py` | [#47419](https://github.com/vllm-project/vllm/pull/47419) |
+| `vllm/models/deepseek_v4/amd/model.py` | [#43077](https://github.com/vllm-project/vllm/pull/43077), [#43162](https://github.com/vllm-project/vllm/pull/43162), [#43385](https://github.com/vllm-project/vllm/pull/43385), [#43629](https://github.com/vllm-project/vllm/pull/43629), [#43679](https://github.com/vllm-project/vllm/pull/43679), [#43746](https://github.com/vllm-project/vllm/pull/43746), [#43950](https://github.com/vllm-project/vllm/pull/43950), [#44246](https://github.com/vllm-project/vllm/pull/44246), [#44262](https://github.com/vllm-project/vllm/pull/44262), [#44569](https://github.com/vllm-project/vllm/pull/44569), [#45931](https://github.com/vllm-project/vllm/pull/45931), [#47419](https://github.com/vllm-project/vllm/pull/47419), ... (13 total) |
+| `vllm/models/deepseek_v4/amd/mtp.py` | [#43077](https://github.com/vllm-project/vllm/pull/43077), [#43385](https://github.com/vllm-project/vllm/pull/43385), [#43629](https://github.com/vllm-project/vllm/pull/43629), [#43679](https://github.com/vllm-project/vllm/pull/43679), [#43746](https://github.com/vllm-project/vllm/pull/43746), [#43950](https://github.com/vllm-project/vllm/pull/43950), [#44821](https://github.com/vllm-project/vllm/pull/44821), [#45931](https://github.com/vllm-project/vllm/pull/45931), [#48044](https://github.com/vllm-project/vllm/pull/48044) |
+| `vllm/models/deepseek_v4/amd/rocm.py` | [#43149](https://github.com/vllm-project/vllm/pull/43149), [#43162](https://github.com/vllm-project/vllm/pull/43162), [#43385](https://github.com/vllm-project/vllm/pull/43385), [#43827](https://github.com/vllm-project/vllm/pull/43827), [#44569](https://github.com/vllm-project/vllm/pull/44569), [#44699](https://github.com/vllm-project/vllm/pull/44699), [#45681](https://github.com/vllm-project/vllm/pull/45681), [#47419](https://github.com/vllm-project/vllm/pull/47419) |
+| `vllm/models/deepseek_v4/attention.py` | [#43039](https://github.com/vllm-project/vllm/pull/43039), [#43073](https://github.com/vllm-project/vllm/pull/43073), [#43149](https://github.com/vllm-project/vllm/pull/43149), [#43162](https://github.com/vllm-project/vllm/pull/43162), [#43477](https://github.com/vllm-project/vllm/pull/43477), [#43827](https://github.com/vllm-project/vllm/pull/43827), [#43891](https://github.com/vllm-project/vllm/pull/43891), [#44246](https://github.com/vllm-project/vllm/pull/44246), [#44561](https://github.com/vllm-project/vllm/pull/44561), [#44569](https://github.com/vllm-project/vllm/pull/44569), [#45309](https://github.com/vllm-project/vllm/pull/45309), [#45972](https://github.com/vllm-project/vllm/pull/45972), ... (16 total) |
 | `vllm/models/deepseek_v4/common/__init__.py` | [#43073](https://github.com/vllm-project/vllm/pull/43073) |
 | `vllm/models/deepseek_v4/common/ops/__init__.py` | [#43073](https://github.com/vllm-project/vllm/pull/43073), [#43710](https://github.com/vllm-project/vllm/pull/43710), [#43746](https://github.com/vllm-project/vllm/pull/43746), [#43827](https://github.com/vllm-project/vllm/pull/43827) |
-| `vllm/models/deepseek_v4/common/ops/cache_utils.py` | [#43073](https://github.com/vllm-project/vllm/pull/43073), [#43710](https://github.com/vllm-project/vllm/pull/43710), [#43827](https://github.com/vllm-project/vllm/pull/43827), [#45681](https://github.com/vllm-project/vllm/pull/45681) |
-| `vllm/models/deepseek_v4/common/ops/fused_compress_quant_cache.py` | [#43073](https://github.com/vllm-project/vllm/pull/43073), [#43710](https://github.com/vllm-project/vllm/pull/43710) |
-| `vllm/models/deepseek_v4/common/ops/fused_indexer_q.py` | [#43073](https://github.com/vllm-project/vllm/pull/43073), [#43710](https://github.com/vllm-project/vllm/pull/43710) |
+| `vllm/models/deepseek_v4/common/ops/cache_utils.py` | [#43073](https://github.com/vllm-project/vllm/pull/43073), [#43710](https://github.com/vllm-project/vllm/pull/43710), [#43827](https://github.com/vllm-project/vllm/pull/43827), [#45681](https://github.com/vllm-project/vllm/pull/45681), [#47493](https://github.com/vllm-project/vllm/pull/47493) |
+| `vllm/models/deepseek_v4/common/ops/fused_compress_quant_cache.py` | [#43073](https://github.com/vllm-project/vllm/pull/43073), [#43710](https://github.com/vllm-project/vllm/pull/43710), [#47718](https://github.com/vllm-project/vllm/pull/47718) |
+| `vllm/models/deepseek_v4/common/ops/fused_indexer_q.py` | [#43073](https://github.com/vllm-project/vllm/pull/43073), [#43710](https://github.com/vllm-project/vllm/pull/43710), [#45991](https://github.com/vllm-project/vllm/pull/45991), [#46730](https://github.com/vllm-project/vllm/pull/46730) |
 | `vllm/models/deepseek_v4/common/ops/fused_inv_rope_fp8_quant.py` | [#42950](https://github.com/vllm-project/vllm/pull/42950), [#43073](https://github.com/vllm-project/vllm/pull/43073), [#43477](https://github.com/vllm-project/vllm/pull/43477) |
 | `vllm/models/deepseek_v4/common/ops/fused_mtp_input_rmsnorm.py` | [#43746](https://github.com/vllm-project/vllm/pull/43746) |
 | `vllm/models/deepseek_v4/common/ops/fused_qk_rmsnorm.py` | [#43073](https://github.com/vllm-project/vllm/pull/43073) |
 | `vllm/models/deepseek_v4/common/ops/save_partial_states.py` | [#43710](https://github.com/vllm-project/vllm/pull/43710) |
 | `vllm/models/deepseek_v4/common/rope.py` | [#44262](https://github.com/vllm-project/vllm/pull/44262) |
-| `vllm/models/deepseek_v4/compressor.py` | [#42950](https://github.com/vllm-project/vllm/pull/42950), [#42953](https://github.com/vllm-project/vllm/pull/42953), [#43039](https://github.com/vllm-project/vllm/pull/43039), [#43073](https://github.com/vllm-project/vllm/pull/43073), [#43477](https://github.com/vllm-project/vllm/pull/43477), [#43690](https://github.com/vllm-project/vllm/pull/43690), [#43710](https://github.com/vllm-project/vllm/pull/43710), [#43827](https://github.com/vllm-project/vllm/pull/43827) |
+| `vllm/models/deepseek_v4/compressor.py` | [#42950](https://github.com/vllm-project/vllm/pull/42950), [#42953](https://github.com/vllm-project/vllm/pull/42953), [#43039](https://github.com/vllm-project/vllm/pull/43039), [#43073](https://github.com/vllm-project/vllm/pull/43073), [#43477](https://github.com/vllm-project/vllm/pull/43477), [#43690](https://github.com/vllm-project/vllm/pull/43690), [#43710](https://github.com/vllm-project/vllm/pull/43710), [#43827](https://github.com/vllm-project/vllm/pull/43827), [#47474](https://github.com/vllm-project/vllm/pull/47474), [#47493](https://github.com/vllm-project/vllm/pull/47493), [#47718](https://github.com/vllm-project/vllm/pull/47718), [#48957](https://github.com/vllm-project/vllm/pull/48957) |
 | `vllm/models/deepseek_v4/nvidia/__init__.py` | [#43004](https://github.com/vllm-project/vllm/pull/43004) |
-| `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py` | [#43477](https://github.com/vllm-project/vllm/pull/43477), [#43827](https://github.com/vllm-project/vllm/pull/43827), [#44569](https://github.com/vllm-project/vllm/pull/44569), [#44699](https://github.com/vllm-project/vllm/pull/44699), [#44892](https://github.com/vllm-project/vllm/pull/44892), [#45863](https://github.com/vllm-project/vllm/pull/45863) |
+| `vllm/models/deepseek_v4/nvidia/dspark.py` | [#47429](https://github.com/vllm-project/vllm/pull/47429), [#49415](https://github.com/vllm-project/vllm/pull/49415) |
+| `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py` | [#43477](https://github.com/vllm-project/vllm/pull/43477), [#43827](https://github.com/vllm-project/vllm/pull/43827), [#44569](https://github.com/vllm-project/vllm/pull/44569), [#44699](https://github.com/vllm-project/vllm/pull/44699), [#44892](https://github.com/vllm-project/vllm/pull/44892), [#45863](https://github.com/vllm-project/vllm/pull/45863), [#47493](https://github.com/vllm-project/vllm/pull/47493) |
 | `vllm/models/deepseek_v4/nvidia/flashmla.py` | [#43149](https://github.com/vllm-project/vllm/pull/43149), [#43162](https://github.com/vllm-project/vllm/pull/43162), [#43827](https://github.com/vllm-project/vllm/pull/43827), [#44569](https://github.com/vllm-project/vllm/pull/44569), [#44699](https://github.com/vllm-project/vllm/pull/44699), [#45061](https://github.com/vllm-project/vllm/pull/45061) |
-| `vllm/models/deepseek_v4/nvidia/model.py` | [#42925](https://github.com/vllm-project/vllm/pull/42925), [#42950](https://github.com/vllm-project/vllm/pull/42950), [#43077](https://github.com/vllm-project/vllm/pull/43077), [#43149](https://github.com/vllm-project/vllm/pull/43149), [#43162](https://github.com/vllm-project/vllm/pull/43162), [#43339](https://github.com/vllm-project/vllm/pull/43339), [#43477](https://github.com/vllm-project/vllm/pull/43477), [#43632](https://github.com/vllm-project/vllm/pull/43632), [#43710](https://github.com/vllm-project/vllm/pull/43710), [#43746](https://github.com/vllm-project/vllm/pull/43746), [#43829](https://github.com/vllm-project/vllm/pull/43829), [#43891](https://github.com/vllm-project/vllm/pull/43891), ... (19 total) |
-| `vllm/models/deepseek_v4/nvidia/mtp.py` | [#43077](https://github.com/vllm-project/vllm/pull/43077), [#43746](https://github.com/vllm-project/vllm/pull/43746), [#43829](https://github.com/vllm-project/vllm/pull/43829), [#43905](https://github.com/vllm-project/vllm/pull/43905), [#44821](https://github.com/vllm-project/vllm/pull/44821) |
+| `vllm/models/deepseek_v4/nvidia/model.py` | [#42925](https://github.com/vllm-project/vllm/pull/42925), [#42950](https://github.com/vllm-project/vllm/pull/42950), [#43077](https://github.com/vllm-project/vllm/pull/43077), [#43149](https://github.com/vllm-project/vllm/pull/43149), [#43162](https://github.com/vllm-project/vllm/pull/43162), [#43339](https://github.com/vllm-project/vllm/pull/43339), [#43477](https://github.com/vllm-project/vllm/pull/43477), [#43632](https://github.com/vllm-project/vllm/pull/43632), [#43710](https://github.com/vllm-project/vllm/pull/43710), [#43746](https://github.com/vllm-project/vllm/pull/43746), [#43829](https://github.com/vllm-project/vllm/pull/43829), [#43891](https://github.com/vllm-project/vllm/pull/43891), ... (21 total) |
+| `vllm/models/deepseek_v4/nvidia/mtp.py` | [#43077](https://github.com/vllm-project/vllm/pull/43077), [#43746](https://github.com/vllm-project/vllm/pull/43746), [#43829](https://github.com/vllm-project/vllm/pull/43829), [#43905](https://github.com/vllm-project/vllm/pull/43905), [#44821](https://github.com/vllm-project/vllm/pull/44821), [#49415](https://github.com/vllm-project/vllm/pull/49415) |
 | `vllm/models/deepseek_v4/nvidia/ops/__init__.py` | [#43073](https://github.com/vllm-project/vllm/pull/43073), [#43710](https://github.com/vllm-project/vllm/pull/43710) |
 | `vllm/models/deepseek_v4/nvidia/ops/dequant_gather_k_cutedsl.py` | [#43073](https://github.com/vllm-project/vllm/pull/43073) |
 | `vllm/models/deepseek_v4/nvidia/ops/fused_indexer_q_cutedsl.py` | [#43073](https://github.com/vllm-project/vllm/pull/43073) |
 | `vllm/models/deepseek_v4/nvidia/ops/o_proj.py` | [#44569](https://github.com/vllm-project/vllm/pull/44569), [#45681](https://github.com/vllm-project/vllm/pull/45681) |
 | `vllm/models/deepseek_v4/nvidia/ops/prepare_megamoe.py` | [#43632](https://github.com/vllm-project/vllm/pull/43632) |
 | `vllm/models/deepseek_v4/nvidia/ops/sparse_attn_compress_cutedsl.py` | [#43710](https://github.com/vllm-project/vllm/pull/43710), [#43827](https://github.com/vllm-project/vllm/pull/43827), [#44161](https://github.com/vllm-project/vllm/pull/44161), [#44236](https://github.com/vllm-project/vllm/pull/44236) |
-| `vllm/models/deepseek_v4/quant_config.py` | [#42209](https://github.com/vllm-project/vllm/pull/42209), [#43004](https://github.com/vllm-project/vllm/pull/43004), [#44914](https://github.com/vllm-project/vllm/pull/44914) |
-| `vllm/models/deepseek_v4/sparse_mla.py` | [#43477](https://github.com/vllm-project/vllm/pull/43477), [#44699](https://github.com/vllm-project/vllm/pull/44699), [#44892](https://github.com/vllm-project/vllm/pull/44892) |
+| `vllm/models/deepseek_v4/quant_config.py` | [#42209](https://github.com/vllm-project/vllm/pull/42209), [#43004](https://github.com/vllm-project/vllm/pull/43004), [#44914](https://github.com/vllm-project/vllm/pull/44914), [#48044](https://github.com/vllm-project/vllm/pull/48044) |
+| `vllm/models/deepseek_v4/sparse_mla.py` | [#43477](https://github.com/vllm-project/vllm/pull/43477), [#44699](https://github.com/vllm-project/vllm/pull/44699), [#44892](https://github.com/vllm-project/vllm/pull/44892), [#47474](https://github.com/vllm-project/vllm/pull/47474) |
 | `vllm/models/deepseek_v4/xpu/__init__.py` | [#42953](https://github.com/vllm-project/vllm/pull/42953) |
-| `vllm/models/deepseek_v4/xpu/model.py` | [#42953](https://github.com/vllm-project/vllm/pull/42953), [#44144](https://github.com/vllm-project/vllm/pull/44144) |
+| `vllm/models/deepseek_v4/xpu/dspark.py` | [#47677](https://github.com/vllm-project/vllm/pull/47677) |
+| `vllm/models/deepseek_v4/xpu/model.py` | [#42953](https://github.com/vllm-project/vllm/pull/42953), [#44144](https://github.com/vllm-project/vllm/pull/44144), [#47677](https://github.com/vllm-project/vllm/pull/47677) |
 | `vllm/models/deepseek_v4/xpu/mtp.py` | [#42953](https://github.com/vllm-project/vllm/pull/42953), [#43746](https://github.com/vllm-project/vllm/pull/43746), [#44821](https://github.com/vllm-project/vllm/pull/44821), [#45240](https://github.com/vllm-project/vllm/pull/45240) |
 | `vllm/models/deepseek_v4/xpu/xpu_qnorm_rope_kv_fp8_insert.py` | [#42953](https://github.com/vllm-project/vllm/pull/42953) |
 | `vllm/models/deepseek_v4/xpu/xpu_sparse.py` | [#42953](https://github.com/vllm-project/vllm/pull/42953) |
 | `vllm/models/deepseek_v4/xpu/xpu_sparse_decode_fp8.py` | [#42953](https://github.com/vllm-project/vllm/pull/42953) |
+| `vllm/parser/deepseek_v4.py` | [#45877](https://github.com/vllm-project/vllm/pull/45877) |
+| `vllm/reasoning/deepseek_v4_engine_reasoning_parser.py` | [#45877](https://github.com/vllm-project/vllm/pull/45877) |
 | `vllm/renderers/deepseek_v4.py` | [#40860](https://github.com/vllm-project/vllm/pull/40860) |
 | `vllm/tokenizers/deepseek_v4.py` | [#40860](https://github.com/vllm-project/vllm/pull/40860), [#40982](https://github.com/vllm-project/vllm/pull/40982) |
 | `vllm/tokenizers/deepseek_v4_encoding.py` | [#40860](https://github.com/vllm-project/vllm/pull/40860) |
@@ -61,9 +67,9 @@
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 48
+- Git-traced PRs: 65
 - Extra PRs preserved from existing docs: 39
-- Total PRs in this document: 87
+- Total PRs in this document: 104
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -158,6 +164,23 @@
 | 2026-06-22 | [#43477](https://github.com/vllm-project/vllm/pull/43477) | merged | Enable DeepSeek V4 and GLM-5.1 on SM120 | `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py`, `vllm/model_executor/warmup/deepseek_v4_mhc_warmup.py`, `vllm/models/deepseek_v4/attention.py` |
 | 2026-06-23 | [#46428](https://github.com/vllm-project/vllm/pull/46428) | merged | [Optimization] Skip DP padding tokens in MoE | `tests/models/test_deepseek_v4_mega_moe.py`, `vllm/model_executor/layers/fused_moe/modular_kernel.py`, `vllm/models/deepseek_v4/nvidia/ops/prepare_megamoe.py` |
 | 2026-06-25 | [#40811](https://github.com/vllm-project/vllm/pull/40811) | closed | [Perf][Kernel] BF16 input support for persistent topK - DeepSeekV4 | `vllm/model_executor/layers/sparse_attn_indexer.py`, `vllm/model_executor/layers/deepseek_v4_attention.py`, `csrc/persistent_topk.cuh` |
+| 2026-07-01 | [#43950](https://github.com/vllm-project/vllm/pull/43950) | merged | [ROCm][DSV4] Use aiter mHC pre/post as the default ROCm path | `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/amd/mtp.py` |
+| 2026-07-01 | [#46730](https://github.com/vllm-project/vllm/pull/46730) | merged | [ROCm][Perf][Bugfix] DSv4 indexer: use platform FP8 dtype (fnuz) for Q-quant on gfx942 | `vllm/models/deepseek_v4/common/ops/fused_indexer_q.py` |
+| 2026-07-04 | [#45877](https://github.com/vllm-project/vllm/pull/45877) | merged | [Frontend] [Parser] Port DeepSeek V4 to streaming parser engine framework | `vllm/reasoning/deepseek_v4_engine_reasoning_parser.py`, `tests/parser/engine/test_deepseek_v4.py`, `vllm/parser/deepseek_v4.py` |
+| 2026-07-06 | [#47429](https://github.com/vllm-project/vllm/pull/47429) | merged | [Bugfix][Spec Decode] Add missing draft_id_to_target_id to DSparkDeepseekV4ForCausalLM | `vllm/models/deepseek_v4/nvidia/dspark.py` |
+| 2026-07-06 | [#47474](https://github.com/vllm-project/vllm/pull/47474) | merged | [Perf] Cache `token_to_req_indices` for dsv4, 5x~6x kernel performance improvement | `vllm/models/deepseek_v4/sparse_mla.py`, `vllm/models/deepseek_v4/compressor.py` |
+| 2026-07-06 | [#47716](https://github.com/vllm-project/vllm/pull/47716) | merged | [Bugfix]Fix DeepSeek-V4 fp8_ds_mla KV cache reshape | `vllm/models/deepseek_v4/attention.py` |
+| 2026-07-08 | [#47493](https://github.com/vllm-project/vllm/pull/47493) | merged | [Bugfix] DSV4 TP16 garbage output | `vllm/models/deepseek_v4/common/ops/cache_utils.py`, `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py`, `vllm/models/deepseek_v4/attention.py` |
+| 2026-07-10 | [#47419](https://github.com/vllm-project/vllm/pull/47419) | merged | [ROCm] Enable DeepSeek-V4 DSpark speculative decoding on AMD (MI350X / MI355X, gfx950) | `vllm/models/deepseek_v4/amd/dspark.py`, `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/amd/rocm.py` |
+| 2026-07-15 | [#48137](https://github.com/vllm-project/vllm/pull/48137) | merged | [Perf] Remove redundant repeat and copy for dsv4, 1.8% E2E TPOT improvement. | `vllm/models/deepseek_v4/nvidia/model.py` |
+| 2026-07-15 | [#47718](https://github.com/vllm-project/vllm/pull/47718) | merged | [ROCm][Perf] DSv4 two-stage compressor kernel for HCA prefill | `vllm/models/deepseek_v4/common/ops/fused_compress_quant_cache.py`, `vllm/models/deepseek_v4/compressor.py` |
+| 2026-07-16 | [#47677](https://github.com/vllm-project/vllm/pull/47677) | merged | [XPU] Add DSpark speculative decoding support for DeepSeek-V4 | `vllm/models/deepseek_v4/xpu/dspark.py`, `vllm/models/deepseek_v4/xpu/model.py`, `vllm/models/deepseek_v4/__init__.py` |
+| 2026-07-21 | [#45991](https://github.com/vllm-project/vllm/pull/45991) | merged | [XPU][DeepSeekV4]Add DeepSeek-V4 fuse_index_q SYCL kernel path | `vllm/models/deepseek_v4/common/ops/fused_indexer_q.py` |
+| 2026-07-22 | [#48957](https://github.com/vllm-project/vllm/pull/48957) | merged | [DSv4 Perf] Skip empty c128 kernel launch, around 2x kernel performance improvement. | `vllm/models/deepseek_v4/compressor.py` |
+| 2026-07-22 | [#48993](https://github.com/vllm-project/vllm/pull/48993) | merged | [Core][DSV4] Compact MXFP4 indexer KV cache and packed group overlays | `vllm/models/deepseek_v4/attention.py` |
+| 2026-07-23 | [#48044](https://github.com/vllm-project/vllm/pull/48044) | merged | [ROCm] Fused Shared Expert Support for AMD Quark DeepSeek-V4 Model Checkpoints | `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/quant_config.py`, `vllm/models/deepseek_v4/amd/mtp.py` |
+| 2026-07-23 | [#49415](https://github.com/vllm-project/vllm/pull/49415) | merged | [Bugfix] Fix DeepSeek-V4 DSpark draft shared-expert padding for TP > 8 | `vllm/models/deepseek_v4/nvidia/dspark.py`, `vllm/models/deepseek_v4/nvidia/mtp.py`, `vllm/models/deepseek_v4/nvidia/model.py` |
+| 2026-07-23 | [#49486](https://github.com/vllm-project/vllm/pull/49486) | merged | [DSv4 Perf] Skip topk and router when not needed, 3.4% E2E TTFT improvement for Decode case | `vllm/models/deepseek_v4/attention.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -1740,7 +1763,7 @@ diff -- vllm/models/deepseek_v4/amd/deepseek_v4_mtp.py
 
 - Link: https://github.com/vllm-project/vllm/pull/42111
 - Status/date: merged / 2026-05-20
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/evals/gsm8k/configs/moe-refactor/DeepSeek-V4-Flash-deepgemm-mega-moe.yaml`; associated commits `cd0ff26e7acf`
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/evals/gsm8k/configs/moe-refactor/DeepSeek-V4-Flash-deepgemm-mega-moe.yaml`; associated commits `cd0ff26e7acf`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +12/-1, 47 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[CI] Add DSV4-Flash to gsm8k moe-refactor/config-b200.txt"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `tests/evals/gsm8k/configs/moe-refactor/DeepSeek-V4-Flash-deepgemm-mega-moe.yaml`; technical summary: Covers "[CI] Add DSV4-Flash to gsm8k moe-refactor/config-b200.txt"; the main implementation surface is `tests/evals/gsm8k/configs/moe-refactor/DeepSeek-V4-Flash-deepgemm-mega-moe.yaml`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `tests/evals/gsm8k/configs/moe-refactor/DeepSeek-V4-Flash-deepgemm-mega-moe.yaml` added +5/-0 (5 lines); hunks: -0,0 +1,5.
@@ -1766,7 +1789,7 @@ diff -- tests/evals/gsm8k/configs/moe-refactor/DeepSeek-V4-Flash-deepgemm-mega-m
 
 - Link: https://github.com/vllm-project/vllm/pull/42209
 - Status/date: merged / 2026-05-22
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/quant_config.py`; associated commits `fb21d8b4f902`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/quant_config.py`; associated commits `fb21d8b4f902`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 9 files, +217/-17, 488 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Add NVFP4 MOE support for Deepseek V4."; model line: DeepSeek V4; category: performance/backend optimization; main diff: `vllm/models/deepseek_v4/quant_config.py`; technical summary: Covers "Add NVFP4 MOE support for Deepseek V4."; the main implementation surface is `vllm/models/deepseek_v4/quant_config.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/quant_config.py` modified +53/-1 (54 lines); hunks: -2,6 +2,10; -14,6 +18,11; symbols: DeepseekV4FP8Config, __init__, is_scale_e8m0, _resolve_moe_overrides, touching `DeepseekV4FP8Config, __init__, is_scale_e8m0`.
@@ -1793,7 +1816,7 @@ diff -- vllm/models/deepseek_v4/quant_config.py
 
 - Link: https://github.com/vllm-project/vllm/pull/43149
 - Status/date: merged / 2026-05-22
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/amd/rocm.py`, `vllm/models/deepseek_v4/attention.py`, `vllm/models/deepseek_v4/nvidia/flashmla.py`, `vllm/models/deepseek_v4/nvidia/model.py`; associated commits `843715739b7b`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/amd/rocm.py`, `vllm/models/deepseek_v4/attention.py`, `vllm/models/deepseek_v4/nvidia/flashmla.py`, `vllm/models/deepseek_v4/nvidia/model.py`; associated commits `843715739b7b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 9 files, +485/-402, 1059 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Refactor] Extract DeepSeek V4 sparse MLA impl into model folder"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `vllm/models/deepseek_v4/nvidia/flashmla.py`, `vllm/models/deepseek_v4/nvidia/ops/attention.py`, `vllm/models/deepseek_v4/amd/rocm.py`; technical summary: Covers "[Refactor] Extract DeepSeek V4 sparse MLA impl into model folder"; the main implementation surface is `vllm/models/deepseek_v4/nvidia/flashmla.py`, `vllm/models/deepseek_v4/nvidia/ops/attention.py`, `vllm/models/deepseek_v4/amd/rocm.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/nvidia/flashmla.py` added +402/-0 (402 lines); hunks: -0,0 +1,402; symbols: DeepseekV4SparseMLAAttentionImpl, forward_mqa, DeepseekV4FlashMLASparseBackend, get_supported_kernel_block_sizes, touching `DeepseekV4SparseMLAAttentionImpl, forward_mqa, DeepseekV4FlashMLASparseBackend`; `vllm/models/deepseek_v4/nvidia/ops/attention.py` renamed +23/-309 (332 lines); hunks: -20,9 +20,6; -62,28 +59,36; symbols: _select_v4_sparse_impl, wq_b_kv_insert, __init__, get_attn_backend, touching `_select_v4_sparse_impl, wq_b_kv_insert, __init__`; `vllm/models/deepseek_v4/amd/rocm.py` renamed +47/-59 (106 lines); hunks: -8,14 +8,15; -31,7 +32,9; symbols: _build_indptr_from_lengths, build, DeepseekV4ROCMAiterMLASparseImpl, DeepseekV4ROCMAiterMLASparseBackend, touching `_build_indptr_from_lengths, build, DeepseekV4ROCMAiterMLASparseImpl`; `vllm/models/deepseek_v4/nvidia/model.py` modified +1/-1 (2 lines); hunks: -56,7 +56,7.
@@ -1860,7 +1883,7 @@ diff -- tests/kernels/test_fused_deepseek_v4_qnorm_rope_kv_insert.py
 
 - Link: https://github.com/vllm-project/vllm/pull/42950
 - Status/date: merged / 2026-05-22
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/common/ops/fused_inv_rope_fp8_quant.py`, `vllm/models/deepseek_v4/compressor.py`, `vllm/models/deepseek_v4/nvidia/model.py`; associated commits `8de5cabeb70d`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/common/ops/fused_inv_rope_fp8_quant.py`, `vllm/models/deepseek_v4/compressor.py`, `vllm/models/deepseek_v4/nvidia/model.py`; associated commits `8de5cabeb70d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +31/-18, 133 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[XPU]fix: add XPU platform guards to DeepSeek-V4 ops"; model line: DeepSeek V4; category: bug fix; main diff: `vllm/models/deepseek_v4/nvidia/model.py`, `vllm/models/deepseek_v4/common/ops/fused_inv_rope_fp8_quant.py`, `vllm/models/deepseek_v4/compressor.py`; technical summary: Covers "[XPU]fix: add XPU platform guards to DeepSeek-V4 ops"; the main implementation surface is `vllm/models/deepseek_v4/nvidia/model.py`, `vllm/models/deepseek_v4/common/ops/fused_inv_rope_fp8_quant.py`, `vllm/models/deepseek_v4/compressor.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/nvidia/model.py` modified +5/-5 (10 lines); hunks: -1153,7 +1153,7 @@ def _forward_cuda(; -1193,8 +1193,8 @@ def forward(; symbols: _forward_cuda, _forward_rocm, _forward_native, forward, touching `_forward_cuda, _forward_rocm, _forward_native`; `vllm/models/deepseek_v4/common/ops/fused_inv_rope_fp8_quant.py` modified +5/-1 (6 lines); hunks: -243,7 +243,11 @@ def _fused_inv_rope_fp8_quant_kernel_impl(; symbols: _fused_inv_rope_fp8_quant_kernel_impl, touching `_fused_inv_rope_fp8_quant_kernel_impl`; `vllm/models/deepseek_v4/compressor.py` modified +5/-1 (6 lines); hunks: -296,7 +296,11 @@ def forward(; symbols: forward, touching `forward`.
@@ -1899,7 +1922,7 @@ diff -- vllm/models/deepseek_v4/compressor.py
 
 - Link: https://github.com/vllm-project/vllm/pull/42925
 - Status/date: merged / 2026-05-23
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/nvidia/model.py`; associated commits `367cb81966f9`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/nvidia/model.py`; associated commits `367cb81966f9`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +61/-29, 141 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[DSV4] More multi-stream enablement for c4a"; model line: DeepSeek V4; category: model support/runtime entry; main diff: `vllm/models/deepseek_v4/nvidia/model.py`; technical summary: Covers "[DSV4] More multi-stream enablement for c4a"; the main implementation surface is `vllm/models/deepseek_v4/nvidia/model.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/nvidia/model.py` modified +7/-0 (7 lines); hunks: -935,6 +935,12 @@ def __init__(; -945,6 +951,7 @@ def __init__(; symbols: __init__, touching `__init__`.
@@ -1926,7 +1949,7 @@ diff -- vllm/models/deepseek_v4/nvidia/model.py
 
 - Link: https://github.com/vllm-project/vllm/pull/43385
 - Status/date: merged / 2026-05-24
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/amd/mtp.py`, `vllm/models/deepseek_v4/amd/rocm.py`; associated commits `1806d1adfc9b`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/amd/mtp.py`, `vllm/models/deepseek_v4/amd/rocm.py`; associated commits `1806d1adfc9b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +2340/-52, 2496 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm] [DSv4] [Perf] Support DeepSeek v4 MTP"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/amd/mtp.py`, `vllm/models/deepseek_v4/amd/rocm.py`; technical summary: Covers "[ROCm] [DSv4] [Perf] Support DeepSeek v4 MTP"; the main implementation surface is `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/amd/mtp.py`, `vllm/models/deepseek_v4/amd/rocm.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/amd/model.py` added +1612/-0 (1612 lines); hunks: -0,0 +1,1612; symbols: DeepseekV4MLP, __init__, forward, _deepseek_v4_stage_mega_moe_inputs_kernel, touching `DeepseekV4MLP, __init__, forward`; `vllm/models/deepseek_v4/amd/mtp.py` added +520/-0 (520 lines); hunks: -0,0 +1,520; symbols: DeepSeekV4MultiTokenPredictorLayer, __init__, forward, DeepSeekV4MultiTokenPredictor, touching `DeepSeekV4MultiTokenPredictorLayer, __init__, forward`; `vllm/models/deepseek_v4/amd/rocm.py` modified +134/-23 (157 lines); hunks: -44,6 +44,127 @@ def _build_indptr_from_lengths(lengths: torch.Tensor) -> tor...; -704,38 +825,28 @@ def _forward_prefill(; symbols: _build_indptr_from_lengths, _combine_topk_swa_indices_kernel, combine_topk_swa_indices, _compute_topk_lens_kernel, touching `_build_indptr_from_lengths, _combine_topk_swa_indices_kernel, combine_topk_swa_indices`; `vllm/models/deepseek_v4/amd/model.py` removed +0/-1 (1 lines); hunks: -1 +0,0.
@@ -2049,7 +2072,7 @@ diff -- vllm/models/deepseek_v4/amd/rocm.py
 
 - Link: https://github.com/vllm-project/vllm/pull/43629
 - Status/date: merged / 2026-05-26
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/amd/mtp.py`; associated commits `c8414a82712b`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/amd/mtp.py`; associated commits `c8414a82712b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +10/-645, 793 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm] Remove MegaMoE integration in deepseek v4"; model line: DeepSeek V4; category: model implementation change; main diff: `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/amd/mtp.py`; technical summary: Covers "[ROCm] Remove MegaMoE integration in deepseek v4"; the main implementation surface is `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/amd/mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/amd/model.py` modified +2/-623 (625 lines); hunks: -11,17 +11,12; -52,16 +47,13; symbols: DeepseekV4MLP, forward, _deepseek_v4_stage_mega_moe_inputs_kernel, _stage_deepseek_v4_mega_moe_inputs, touching `DeepseekV4MLP, forward, _deepseek_v4_stage_mega_moe_inputs_kernel`; `vllm/models/deepseek_v4/amd/mtp.py` modified +8/-22 (30 lines); hunks: -40,10 +40,7; -330,19 +327,13 @@ def _find_mtp_layer_idx(name: str) -> int:; symbols: _find_mtp_layer_idx, finalize_mega_moe_weights, _rewrite_spec_layer_name, touching `_find_mtp_layer_idx, finalize_mega_moe_weights, _rewrite_spec_layer_name`.
@@ -2085,7 +2108,7 @@ diff -- vllm/models/deepseek_v4/amd/mtp.py
 
 - Link: https://github.com/vllm-project/vllm/pull/43690
 - Status/date: merged / 2026-05-26
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/compressor.py`; associated commits `193ce8812eb4`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/compressor.py`; associated commits `193ce8812eb4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +5/-33, 59 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[DSv4] Drop _get_compressed_kv_buffer in DeepseekCompressor"; model line: DeepSeek V4; category: model implementation change; main diff: `vllm/models/deepseek_v4/compressor.py`; technical summary: Covers "[DSv4] Drop _get_compressed_kv_buffer in DeepseekCompressor"; the main implementation surface is `vllm/models/deepseek_v4/compressor.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/compressor.py` modified +5/-33 (38 lines); hunks: -173,33 +173,6 @@ def get_attn_backend(self) -> type[AttentionBackend]:; -276,11 +249,6 @@ def __init__(; symbols: get_attn_backend, DeepseekCompressor, _get_compressed_kv_buffer, __init__, touching `get_attn_backend, DeepseekCompressor, _get_compressed_kv_buffer`.
@@ -2112,7 +2135,7 @@ diff -- vllm/models/deepseek_v4/compressor.py
 
 - Link: https://github.com/vllm-project/vllm/pull/43710
 - Status/date: merged / 2026-05-27
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/common/ops/__init__.py`, `vllm/models/deepseek_v4/common/ops/cache_utils.py`, `vllm/models/deepseek_v4/common/ops/fused_compress_quant_cache.py`, `vllm/models/deepseek_v4/common/ops/fused_indexer_q.py`, `vllm/models/deepseek_v4/common/ops/save_partial_states.py` and 9 files; associated commits `adaa5e455ad8`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/common/ops/__init__.py`, `vllm/models/deepseek_v4/common/ops/cache_utils.py`, `vllm/models/deepseek_v4/common/ops/fused_compress_quant_cache.py`, `vllm/models/deepseek_v4/common/ops/fused_indexer_q.py`, `vllm/models/deepseek_v4/common/ops/save_partial_states.py` and 9 files; associated commits `adaa5e455ad8`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 9 files, +364/-239, 753 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[DSv4] Refactor compressor & Fix ROCm compatibility"; model line: DeepSeek V4; category: bug fix; main diff: `vllm/models/deepseek_v4/compressor.py`, `vllm/models/deepseek_v4/common/ops/fused_compress_quant_cache.py`, `vllm/models/deepseek_v4/common/ops/save_partial_states.py`; technical summary: Covers "[DSv4] Refactor compressor & Fix ROCm compatibility"; the main implementation surface is `vllm/models/deepseek_v4/compressor.py`, `vllm/models/deepseek_v4/common/ops/fused_compress_quant_cache.py`, `vllm/models/deepseek_v4/common/ops/save_partial_states.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/compressor.py` modified +68/-198 (266 lines); hunks: -13,15 +13,13; -173,6 +171,16 @@ def get_attn_backend(self) -> type[AttentionBackend]:; symbols: get_attn_backend, DeepseekCompressor, __init__, forward, touching `get_attn_backend, DeepseekCompressor, __init__`; `vllm/models/deepseek_v4/common/ops/fused_compress_quant_cache.py` modified +78/-34 (112 lines); hunks: -11,12 +11,6; -25,43 +19,93; symbols: _get_sparse_attn_cutedsl_impls, compress_norm_rope_store_triton, _compress_kv_sparse_attn_cutedsl, _norm_rope_insert_sparse_attn_cutedsl, touching `_get_sparse_attn_cutedsl_impls, compress_norm_rope_store_triton, _compress_kv_sparse_attn_cutedsl`; `vllm/models/deepseek_v4/common/ops/save_partial_states.py` added +101/-0 (101 lines); hunks: -0,0 +1,101; symbols: save_partial_states, _save_partial_states_kernel, touching `save_partial_states, _save_partial_states_kernel`; `vllm/models/deepseek_v4/nvidia/ops/sparse_attn_compress_cutedsl.py` renamed +95/-3 (98 lines); hunks: -8,6 +8,7; -1086,7 +1087,7 @@ def compile(; symbols: compile, _compress_kv_sparse_attn_cutedsl, compress_kv_sparse_attn_cutedsl, _norm_rope_insert_sparse_attn_cutedsl, touching `compile, _compress_kv_sparse_attn_cutedsl, compress_kv_sparse_attn_cutedsl`.
@@ -2153,7 +2176,7 @@ diff -- vllm/models/deepseek_v4/common/ops/save_partial_states.py
 
 - Link: https://github.com/vllm-project/vllm/pull/43679
 - Status/date: merged / 2026-05-28
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/amd/mtp.py`; associated commits `0ba46d4b11d2`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/amd/mtp.py`; associated commits `0ba46d4b11d2`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 13 files, +716/-99, 1234 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm][DSV4] Enable Tilelang MHC replacing torch/triton mhc"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/amd/mtp.py`; technical summary: Covers "[ROCm][DSV4] Enable Tilelang MHC replacing torch/triton mhc"; the main implementation surface is `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/amd/mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/amd/model.py` modified +11/-7 (18 lines); hunks: -54,6 +54,7; -473,6 +474,7 @@ def __init__(; symbols: DeepseekV4MLP, __init__, hc_pre, hc_post, touching `DeepseekV4MLP, __init__, hc_pre`; `vllm/models/deepseek_v4/amd/mtp.py` modified +3/-1 (4 lines); hunks: -39,6 +39,7; -118,6 +119,7 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
@@ -2189,7 +2212,7 @@ diff -- vllm/models/deepseek_v4/amd/mtp.py
 
 - Link: https://github.com/vllm-project/vllm/pull/43829
 - Status/date: merged / 2026-05-28
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/nvidia/model.py`, `vllm/models/deepseek_v4/nvidia/mtp.py`; associated commits `a04afd76aa91`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/nvidia/model.py`, `vllm/models/deepseek_v4/nvidia/mtp.py`; associated commits `a04afd76aa91`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +8/-78, 171 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[DSV4] Remove AMD/XPU path in deepseek_v4/nvidia"; model line: DeepSeek V4; category: model implementation change; main diff: `vllm/models/deepseek_v4/nvidia/model.py`, `vllm/models/deepseek_v4/nvidia/mtp.py`; technical summary: Covers "[DSV4] Remove AMD/XPU path in deepseek_v4/nvidia"; the main implementation surface is `vllm/models/deepseek_v4/nvidia/model.py`, `vllm/models/deepseek_v4/nvidia/mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/nvidia/model.py` modified +3/-64 (67 lines); hunks: -60,7 +60,6; -262,13 +261,7 @@ def _ue8m0_uint8_to_float(sf: torch.Tensor) -> torch.Tensor:; symbols: _ue8m0_uint8_to_float, _check_runtime_supported, hc_post, _forward_cuda, touching `_ue8m0_uint8_to_float, _check_runtime_supported, hc_post`; `vllm/models/deepseek_v4/nvidia/mtp.py` modified +5/-14 (19 lines); hunks: -37,7 +37,6; -147,10 +146,9 @@ def forward(; symbols: forward, __init__, touching `forward, __init__`.
@@ -2225,7 +2248,7 @@ diff -- vllm/models/deepseek_v4/nvidia/mtp.py
 
 - Link: https://github.com/vllm-project/vllm/pull/43746
 - Status/date: merged / 2026-05-28
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/amd/mtp.py`, `vllm/models/deepseek_v4/common/ops/__init__.py`, `vllm/models/deepseek_v4/common/ops/fused_mtp_input_rmsnorm.py`, `vllm/models/deepseek_v4/nvidia/model.py` and 7 files; associated commits `04cec9e4d846`, `9957e4d240aa`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/amd/mtp.py`, `vllm/models/deepseek_v4/common/ops/__init__.py`, `vllm/models/deepseek_v4/common/ops/fused_mtp_input_rmsnorm.py`, `vllm/models/deepseek_v4/nvidia/model.py` and 7 files; associated commits `04cec9e4d846`, `9957e4d240aa`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +270/-24, 424 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model Refactoring] Remove torch compile dependency in DSv4"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `vllm/models/deepseek_v4/common/ops/fused_mtp_input_rmsnorm.py`, `vllm/models/deepseek_v4/amd/mtp.py`, `vllm/models/deepseek_v4/nvidia/mtp.py`; technical summary: Covers "[Model Refactoring] Remove torch compile dependency in DSv4"; the main implementation surface is `vllm/models/deepseek_v4/common/ops/fused_mtp_input_rmsnorm.py`, `vllm/models/deepseek_v4/amd/mtp.py`, `vllm/models/deepseek_v4/nvidia/mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/common/ops/fused_mtp_input_rmsnorm.py` added +203/-0 (203 lines); hunks: -0,0 +1,203; symbols: _rmsnorm_row, _fused_mtp_input_rmsnorm_kernel, _mtp_shared_head_rmsnorm_kernel, mtp_shared_head_rmsnorm, touching `_rmsnorm_row, _fused_mtp_input_rmsnorm_kernel, _mtp_shared_head_rmsnorm_kernel`; `vllm/models/deepseek_v4/amd/mtp.py` modified +21/-10 (31 lines); hunks: -18,7 +18,6; -37,6 +36,10; symbols: forward, compute_logits, DeepSeekV4MTP, __init__, touching `forward, compute_logits, DeepSeekV4MTP`; `vllm/models/deepseek_v4/nvidia/mtp.py` modified +21/-10 (31 lines); hunks: -18,7 +18,6; -37,6 +36,10; symbols: forward, compute_logits, DeepSeekV4MTP, __init__, touching `forward, compute_logits, DeepSeekV4MTP`; `vllm/models/deepseek_v4/common/ops/__init__.py` modified +3/-0 (3 lines); hunks: -9,6 +9,7; -19,7 +20,9.
@@ -2266,7 +2289,7 @@ diff -- vllm/models/deepseek_v4/nvidia/mtp.py
 
 - Link: https://github.com/vllm-project/vllm/pull/43891
 - Status/date: merged / 2026-05-28
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/attention.py`, `vllm/models/deepseek_v4/nvidia/model.py`; associated commits `69b8956dcd5a`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/attention.py`, `vllm/models/deepseek_v4/nvidia/model.py`; associated commits `69b8956dcd5a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +10/-110, 188 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model Refactoring] Remove unncessary torch op registration for DSv4"; model line: DeepSeek V4; category: model implementation change; main diff: `vllm/models/deepseek_v4/attention.py`, `vllm/models/deepseek_v4/nvidia/model.py`; technical summary: Covers "[Model Refactoring] Remove unncessary torch op registration for DSv4"; the main implementation surface is `vllm/models/deepseek_v4/attention.py`, `vllm/models/deepseek_v4/nvidia/model.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/attention.py` modified +9/-59 (68 lines); hunks: -25,7 +25,6; -292,8 +291,10 @@ def forward(; symbols: forward, deepseek_v4_attention, deepseek_v4_attention_fake, deepseek_v4_fp8_einsum, touching `forward, deepseek_v4_attention, deepseek_v4_attention_fake`; `vllm/models/deepseek_v4/nvidia/model.py` modified +1/-51 (52 lines); hunks: -15,7 +15,6; -60,7 +59,6; symbols: DeepseekV4MLP, __init__, _map_global_expert_id, forward, touching `DeepseekV4MLP, __init__, _map_global_expert_id`.
@@ -2302,7 +2325,7 @@ diff -- vllm/models/deepseek_v4/nvidia/model.py
 
 - Link: https://github.com/vllm-project/vllm/pull/43905
 - Status/date: merged / 2026-05-29
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/nvidia/model.py`, `vllm/models/deepseek_v4/nvidia/mtp.py`; associated commits `7bd45da5857d`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/nvidia/model.py`, `vllm/models/deepseek_v4/nvidia/mtp.py`; associated commits `7bd45da5857d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +72/-102, 380 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[DSv4] Move mHC tilelang kernels & Don't use CustomOP in dsv4/nvidia"; model line: DeepSeek V4; category: model implementation change; main diff: `vllm/models/deepseek_v4/nvidia/model.py`, `vllm/models/deepseek_v4/nvidia/mtp.py`; technical summary: Covers "[DSv4] Move mHC tilelang kernels & Don't use CustomOP in dsv4/nvidia"; the main implementation surface is `vllm/models/deepseek_v4/nvidia/model.py`, `vllm/models/deepseek_v4/nvidia/mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/nvidia/model.py` modified +20/-54 (74 lines); hunks: -15,6 +15,12; -28,12 +34,6; symbols: __init__, hc_pre, hc_post, forward, touching `__init__, hc_pre, hc_post`; `vllm/models/deepseek_v4/nvidia/mtp.py` modified +6/-7 (13 lines); hunks: -24,11 +24,14; -122,8 +125,6 @@ def __init__(; symbols: __init__, forward, compute_logits, touching `__init__, forward, compute_logits`.
@@ -2338,7 +2361,7 @@ diff -- vllm/models/deepseek_v4/nvidia/mtp.py
 
 - Link: https://github.com/vllm-project/vllm/pull/44161
 - Status/date: merged / 2026-06-01
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/nvidia/ops/sparse_attn_compress_cutedsl.py`; associated commits `035733515f25`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/nvidia/ops/sparse_attn_compress_cutedsl.py`; associated commits `035733515f25`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +139/-91, 312 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Kernel][DSv4] Optimize sparse FP8 compressor kernels"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `vllm/models/deepseek_v4/nvidia/ops/sparse_attn_compress_cutedsl.py`; technical summary: Covers "[Kernel][DSv4] Optimize sparse FP8 compressor kernels"; the main implementation surface is `vllm/models/deepseek_v4/nvidia/ops/sparse_attn_compress_cutedsl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/nvidia/ops/sparse_attn_compress_cutedsl.py` modified +139/-91 (230 lines); hunks: -96,9 +96,16 @@ def __init__(; -156,8 +163,9 @@ def kernel(; symbols: __init__, kernel, touching `__init__, kernel`.
@@ -2365,7 +2388,7 @@ diff -- vllm/models/deepseek_v4/nvidia/ops/sparse_attn_compress_cutedsl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/44246
 - Status/date: merged / 2026-06-01
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/attention.py`, `vllm/models/deepseek_v4/nvidia/model.py`; associated commits `8c3cc98cffd3`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/attention.py`, `vllm/models/deepseek_v4/nvidia/model.py`; associated commits `8c3cc98cffd3`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +62/-124, 362 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[DSV4] Remove unncessary classes & functions"; model line: DeepSeek V4; category: model implementation change; main diff: `vllm/models/deepseek_v4/attention.py`, `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/nvidia/model.py`; technical summary: Covers "[DSV4] Remove unncessary classes & functions"; the main implementation surface is `vllm/models/deepseek_v4/attention.py`, `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/nvidia/model.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/attention.py` modified +34/-88 (122 lines); hunks: -5,7 +5,6; -38,9 +37,8; symbols: _select_v4_sparse_impl, DeepseekV4MLAModules, DeepseekV4MultiHeadLatentAttentionWrapper, takes, touching `_select_v4_sparse_impl, DeepseekV4MLAModules, DeepseekV4MultiHeadLatentAttentionWrapper`; `vllm/models/deepseek_v4/amd/model.py` modified +14/-18 (32 lines); hunks: -48,8 +48,7; -314,7 +313,7 @@ def __init__(; symbols: __init__, touching `__init__`; `vllm/models/deepseek_v4/nvidia/model.py` modified +14/-18 (32 lines); hunks: -54,8 +54,7; -697,7 +696,7 @@ def __init__(; symbols: __init__, touching `__init__`.
@@ -2404,7 +2427,7 @@ diff -- vllm/models/deepseek_v4/nvidia/model.py
 
 - Link: https://github.com/vllm-project/vllm/pull/44262
 - Status/date: merged / 2026-06-02
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/common/rope.py`, `vllm/models/deepseek_v4/nvidia/model.py`; associated commits `517e74a9644f`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/common/rope.py`, `vllm/models/deepseek_v4/nvidia/model.py`; associated commits `517e74a9644f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +50/-40, 133 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[DSV4] Refactor RoPE initialization"; model line: DeepSeek V4; category: model support/runtime entry; main diff: `vllm/models/deepseek_v4/common/rope.py`, `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/nvidia/model.py`; technical summary: Covers "[DSV4] Refactor RoPE initialization"; the main implementation surface is `vllm/models/deepseek_v4/common/rope.py`, `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/nvidia/model.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/common/rope.py` added +36/-0 (36 lines); hunks: -0,0 +1,36; symbols: build_deepseek_v4_rope, touching `build_deepseek_v4_rope`; `vllm/models/deepseek_v4/amd/model.py` modified +7/-20 (27 lines); hunks: -30,7 +30,6; -50,6 +49,7; symbols: __init__, touching `__init__`; `vllm/models/deepseek_v4/nvidia/model.py` modified +7/-20 (27 lines); hunks: -35,7 +35,6; -56,6 +55,7; symbols: __init__, touching `__init__`.
@@ -2443,7 +2466,7 @@ diff -- vllm/models/deepseek_v4/nvidia/model.py
 
 - Link: https://github.com/vllm-project/vllm/pull/43339
 - Status/date: merged / 2026-06-02
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/nvidia/model.py`; associated commits `242709415287`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/nvidia/model.py`; associated commits `242709415287`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +232/-46, 449 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Feature] Support EPLB for DeepSeek v4 Mega Moe"; model line: DeepSeek V4; category: model support/runtime entry; main diff: `vllm/models/deepseek_v4/nvidia/model.py`; technical summary: Covers "[Feature] Support EPLB for DeepSeek v4 Mega Moe"; the main implementation surface is `vllm/models/deepseek_v4/nvidia/model.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/nvidia/model.py` modified +211/-38 (249 lines); hunks: -1,7 +1,7; -15,6 +15,7; symbols: __init__, _map_global_expert_id, touching `__init__, _map_global_expert_id`.
@@ -2470,7 +2493,7 @@ diff -- vllm/models/deepseek_v4/nvidia/model.py
 
 - Link: https://github.com/vllm-project/vllm/pull/44367
 - Status/date: merged / 2026-06-03
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/nvidia/model.py`; associated commits `b254e0456c98`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/nvidia/model.py`; associated commits `b254e0456c98`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-18, 34 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[DSV4] Minor cleanup for DeepseekV4MegaMoEExperts"; model line: DeepSeek V4; category: model implementation change; main diff: `vllm/models/deepseek_v4/nvidia/model.py`; technical summary: Covers "[DSV4] Minor cleanup for DeepseekV4MegaMoEExperts"; the main implementation surface is `vllm/models/deepseek_v4/nvidia/model.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/nvidia/model.py` modified +1/-18 (19 lines); hunks: -420,25 +420,7 @@ def forward(; -484,6 +466,7 @@ def _run_mega_moe(; symbols: forward, _run_mega_moe, touching `forward, _run_mega_moe`.
@@ -2497,7 +2520,7 @@ diff -- vllm/models/deepseek_v4/nvidia/model.py
 
 - Link: https://github.com/vllm-project/vllm/pull/44356
 - Status/date: merged / 2026-06-03
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/nvidia/model.py`; associated commits `969aec4bc845`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/nvidia/model.py`; associated commits `969aec4bc845`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +8/-0, 15 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix Deepseek v4 non-mega-moe model init error"; model line: DeepSeek V4; category: bug fix; main diff: `vllm/models/deepseek_v4/nvidia/model.py`; technical summary: Covers "[Bugfix] Fix Deepseek v4 non-mega-moe model init error"; the main implementation surface is `vllm/models/deepseek_v4/nvidia/model.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/nvidia/model.py` modified +8/-0 (8 lines); hunks: -637,6 +637,14 @@ def _init_fused_moe_experts(; symbols: _init_fused_moe_experts, touching `_init_fused_moe_experts`.
@@ -2524,7 +2547,7 @@ diff -- vllm/models/deepseek_v4/nvidia/model.py
 
 - Link: https://github.com/vllm-project/vllm/pull/44236
 - Status/date: merged / 2026-06-03
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/nvidia/ops/sparse_attn_compress_cutedsl.py`; associated commits `597bc1593635`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/nvidia/ops/sparse_attn_compress_cutedsl.py`; associated commits `597bc1593635`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +4/-4, 28 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "fix: resolve CUTLASS fmin compatibility for DeepSeek-V4 init"; model line: DeepSeek V4; category: bug fix; main diff: `vllm/models/deepseek_v4/nvidia/ops/sparse_attn_compress_cutedsl.py`; technical summary: Covers "fix: resolve CUTLASS fmin compatibility for DeepSeek-V4 init"; the main implementation surface is `vllm/models/deepseek_v4/nvidia/ops/sparse_attn_compress_cutedsl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/nvidia/ops/sparse_attn_compress_cutedsl.py` modified +4/-4 (8 lines); hunks: -370,11 +370,11 @@ def kernel(; -1026,11 +1026,11 @@ def kernel(; symbols: kernel, touching `kernel`.
@@ -2592,7 +2615,7 @@ diff -- vllm/models/deepseek_v4/common/ops/cache_utils.py
 
 - Link: https://github.com/vllm-project/vllm/pull/44569
 - Status/date: merged / 2026-06-05
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/amd/rocm.py`, `vllm/models/deepseek_v4/attention.py`, `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py`, `vllm/models/deepseek_v4/nvidia/flashmla.py` and 7 files; associated commits `4efd6ffde094`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/amd/rocm.py`, `vllm/models/deepseek_v4/attention.py`, `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py`, `vllm/models/deepseek_v4/nvidia/flashmla.py` and 7 files; associated commits `4efd6ffde094`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +521/-918, 2210 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[DSV4] Refactor DeepseekV4Attention"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `vllm/models/deepseek_v4/attention.py`, `vllm/models/deepseek_v4/nvidia/flashmla.py`, `vllm/models/deepseek_v4/nvidia/model.py`; technical summary: Covers "[DSV4] Refactor DeepseekV4Attention"; the main implementation surface is `vllm/models/deepseek_v4/attention.py`, `vllm/models/deepseek_v4/nvidia/flashmla.py`, `vllm/models/deepseek_v4/nvidia/model.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/attention.py` modified +224/-345 (569 lines); hunks: -4,8 +4,9; -15,16 +16,16; symbols: _resolve_dsv4_backend, _select_v4_sparse_impl, _resolve_dsv4_kv_cache_dtype, DeepseekV4Attention, touching `_resolve_dsv4_backend, _select_v4_sparse_impl, _resolve_dsv4_kv_cache_dtype`; `vllm/models/deepseek_v4/nvidia/flashmla.py` modified +72/-118 (190 lines); hunks: -1,22 +1,22; -28,63 +28,9; symbols: DeepseekV4SparseMLAAttentionImpl, forward_mqa, get_padded_num_q_heads, init_layer_buffers, touching `DeepseekV4SparseMLAAttentionImpl, forward_mqa, get_padded_num_q_heads`; `vllm/models/deepseek_v4/nvidia/model.py` modified +17/-163 (180 lines); hunks: -33,7 +33,6; -55,13 +54,14; symbols: DeepseekV4MLP, finalize_mega_moe_weights, DeepseekV4Attention, __init__, touching `DeepseekV4MLP, finalize_mega_moe_weights, DeepseekV4Attention`; `vllm/models/deepseek_v4/amd/model.py` modified +3/-161 (164 lines); hunks: -18,7 +18,6; -45,11 +44,7; symbols: forward, DeepseekV4Attention, __init__, DeepseekV4DecoderLayer, touching `forward, DeepseekV4Attention, __init__`.
@@ -2633,7 +2656,7 @@ diff -- vllm/models/deepseek_v4/nvidia/model.py
 
 - Link: https://github.com/vllm-project/vllm/pull/44561
 - Status/date: merged / 2026-06-05
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/attention.py`; associated commits `02d2da0748a1`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/attention.py`; associated commits `02d2da0748a1`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +30/-14, 67 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[DSV4] Move more ops out of eager breakpoint"; model line: DeepSeek V4; category: model implementation change; main diff: `vllm/models/deepseek_v4/attention.py`; technical summary: Covers "[DSV4] Move more ops out of eager breakpoint"; the main implementation surface is `vllm/models/deepseek_v4/attention.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/attention.py` modified +30/-14 (44 lines); hunks: -330,10 +330,34 @@ def forward(; -403,25 +427,17 @@ def fused_wqa_wkv() -> torch.Tensor:; symbols: forward, fused_wqa_wkv, attention_impl, touching `forward, fused_wqa_wkv, attention_impl`.
@@ -2660,7 +2683,7 @@ diff -- vllm/models/deepseek_v4/attention.py
 
 - Link: https://github.com/vllm-project/vllm/pull/44699
 - Status/date: merged / 2026-06-07
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/amd/rocm.py`, `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py`, `vllm/models/deepseek_v4/nvidia/flashmla.py`, `vllm/models/deepseek_v4/sparse_mla.py`; associated commits `2a983c79acdb`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/amd/rocm.py`, `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py`, `vllm/models/deepseek_v4/nvidia/flashmla.py`, `vllm/models/deepseek_v4/sparse_mla.py`; associated commits `2a983c79acdb`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +449/-333, 984 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[DSV4] Decouple DS V4 Sparse MLA Metadata from DS V3.2"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `vllm/models/deepseek_v4/sparse_mla.py`, `vllm/models/deepseek_v4/nvidia/flashmla.py`, `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py`; technical summary: Covers "[DSV4] Decouple DS V4 Sparse MLA Metadata from DS V3.2"; the main implementation surface is `vllm/models/deepseek_v4/sparse_mla.py`, `vllm/models/deepseek_v4/nvidia/flashmla.py`, `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/sparse_mla.py` added +416/-0 (416 lines); hunks: -0,0 +1,416; symbols: DeepseekV4FlashMLABackend, get_supported_kernel_block_sizes, get_name, get_builder_cls, touching `DeepseekV4FlashMLABackend, get_supported_kernel_block_sizes, get_name`; `vllm/models/deepseek_v4/nvidia/flashmla.py` modified +7/-39 (46 lines); hunks: -16,10 +16,9; -31,41 +30,10; symbols: DeepseekV4FlashMLASparseBackend, get_supported_kernel_block_sizes, get_name, get_supported_head_sizes, touching `DeepseekV4FlashMLASparseBackend, get_supported_kernel_block_sizes, get_name`; `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py` modified +13/-10 (23 lines); hunks: -18,13 +18,15; -47,13 +49,14 @@ def _get_flashinfer_dsv4_workspace(device: torch.device) ->...; symbols: _get_flashinfer_dsv4_workspace, DeepseekV4FlashInferMLASparseBackend, forward_mqa, _build_sparse_index_metadata, touching `_get_flashinfer_dsv4_workspace, DeepseekV4FlashInferMLASparseBackend, forward_mqa`; `vllm/models/deepseek_v4/amd/rocm.py` modified +8/-10 (18 lines); hunks: -9,17 +9,15; -445,7 +443,7 @@ def _copy_ragged_to_graph_buffers(; symbols: _copy_ragged_to_graph_buffers, DeepseekV4ROCMAiterMLASparseMetadata, DeepseekV4ROCMAiterSparseSWAMetadata, DeepseekV4ROCMAiterMLASparseMetadataBuilder, touching `_copy_ragged_to_graph_buffers, DeepseekV4ROCMAiterMLASparseMetadata, DeepseekV4ROCMAiterSparseSWAMetadata`.
@@ -2700,7 +2723,7 @@ diff -- vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py
 
 - Link: https://github.com/vllm-project/vllm/pull/42953
 - Status/date: merged / 2026-06-08
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/__init__.py`, `vllm/models/deepseek_v4/compressor.py`, `vllm/models/deepseek_v4/xpu/__init__.py`, `vllm/models/deepseek_v4/xpu/model.py`, `vllm/models/deepseek_v4/xpu/mtp.py` and 8 files; associated commits `eebce65756f0`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/__init__.py`, `vllm/models/deepseek_v4/compressor.py`, `vllm/models/deepseek_v4/xpu/__init__.py`, `vllm/models/deepseek_v4/xpu/model.py`, `vllm/models/deepseek_v4/xpu/mtp.py` and 8 files; associated commits `eebce65756f0`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 11 files, +2759/-11, 2844 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "feat: add DeepSeek-V4 XPU attention decode path"; model line: DeepSeek V4; category: model support/runtime entry; main diff: `vllm/models/deepseek_v4/xpu/model.py`, `vllm/models/deepseek_v4/xpu/mtp.py`, `vllm/models/deepseek_v4/xpu/xpu_sparse.py`; technical summary: Covers "feat: add DeepSeek-V4 XPU attention decode path"; the main implementation surface is `vllm/models/deepseek_v4/xpu/model.py`, `vllm/models/deepseek_v4/xpu/mtp.py`, `vllm/models/deepseek_v4/xpu/xpu_sparse.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/xpu/model.py` added +1340/-0 (1340 lines); hunks: -0,0 +1,1340; symbols: DeepseekV4MLP, __init__, forward, _deepseek_v4_stage_mega_moe_inputs_kernel, touching `DeepseekV4MLP, __init__, forward`; `vllm/models/deepseek_v4/xpu/mtp.py` added +511/-0 (511 lines); hunks: -0,0 +1,511; symbols: DeepSeekV4MultiTokenPredictorLayer, __init__, forward, DeepSeekV4MultiTokenPredictor, touching `DeepSeekV4MultiTokenPredictorLayer, __init__, forward`; `vllm/models/deepseek_v4/xpu/xpu_sparse.py` added +350/-0 (350 lines); hunks: -0,0 +1,350; symbols: DeepseekV4XPUSparseBackend, get_name, DeepseekV4XPUAttention, __init__, touching `DeepseekV4XPUSparseBackend, get_name, DeepseekV4XPUAttention`; `vllm/models/deepseek_v4/xpu/xpu_sparse_decode_fp8.py` added +290/-0 (290 lines); hunks: -0,0 +1,290; symbols: _dequant_gather_slots_kernel, dequant_gather_slots, xpu_sparse_decode_fp8, touching `_dequant_gather_slots_kernel, dequant_gather_slots, xpu_sparse_decode_fp8`.
@@ -2741,7 +2764,7 @@ diff -- vllm/models/deepseek_v4/xpu/xpu_sparse.py
 
 - Link: https://github.com/vllm-project/vllm/pull/44144
 - Status/date: merged / 2026-06-09
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/xpu/model.py`; associated commits `70db1488c5d5`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/xpu/model.py`; associated commits `70db1488c5d5`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +112/-17, 168 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[DSV4][XPU] Add MHC fused_post_pre support"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `vllm/models/deepseek_v4/xpu/model.py`; technical summary: Covers "[DSV4][XPU] Add MHC fused_post_pre support"; the main implementation surface is `vllm/models/deepseek_v4/xpu/model.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/xpu/model.py` modified +40/-14 (54 lines); hunks: -930,22 +930,48 @@ def forward(; -1096,6 +1122,10 @@ def forward(; symbols: forward, load_weights, touching `forward, load_weights`.
@@ -2768,7 +2791,7 @@ diff -- vllm/models/deepseek_v4/xpu/model.py
 
 - Link: https://github.com/vllm-project/vllm/pull/44914
 - Status/date: merged / 2026-06-09
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/quant_config.py`; associated commits `d7607ad2730f`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/quant_config.py`; associated commits `d7607ad2730f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +10/-3, 33 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bug] Fix deepseek v4 OOM issue"; model line: DeepSeek V4; category: bug fix; main diff: `vllm/models/deepseek_v4/quant_config.py`; technical summary: Covers "[Bug] Fix deepseek v4 OOM issue"; the main implementation surface is `vllm/models/deepseek_v4/quant_config.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/quant_config.py` modified +10/-3 (13 lines); hunks: -7,7 +7,11; -129,7 +133,7 @@ def override_quantization_method(; symbols: override_quantization_method, get_quant_method, is_mxfp4_quant, touching `override_quantization_method, get_quant_method, is_mxfp4_quant`.
@@ -2795,7 +2818,7 @@ diff -- vllm/models/deepseek_v4/quant_config.py
 
 - Link: https://github.com/vllm-project/vllm/pull/44821
 - Status/date: merged / 2026-06-10
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/amd/mtp.py`, `vllm/models/deepseek_v4/nvidia/mtp.py`, `vllm/models/deepseek_v4/xpu/mtp.py`; associated commits `04cec9e4d846`, `4673ca1d7869`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/amd/mtp.py`, `vllm/models/deepseek_v4/nvidia/mtp.py`, `vllm/models/deepseek_v4/xpu/mtp.py`; associated commits `04cec9e4d846`, `4673ca1d7869`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +4/-0, 32 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "fix: prefix DeepSeek V4 MTP projections"; model line: DeepSeek V4; category: bug fix; main diff: `vllm/models/deepseek_v4/amd/mtp.py`, `vllm/models/deepseek_v4/nvidia/mtp.py`; technical summary: Covers "fix: prefix DeepSeek V4 MTP projections"; the main implementation surface is `vllm/models/deepseek_v4/amd/mtp.py`, `vllm/models/deepseek_v4/nvidia/mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/amd/mtp.py` modified +2/-0 (2 lines); hunks: -86,13 +86,15 @@ def __init__(; symbols: __init__, touching `__init__`; `vllm/models/deepseek_v4/nvidia/mtp.py` modified +2/-0 (2 lines); hunks: -92,13 +92,15 @@ def __init__(; symbols: __init__, touching `__init__`.
@@ -2823,7 +2846,7 @@ diff -- vllm/models/deepseek_v4/nvidia/mtp.py
 
 - Link: https://github.com/vllm-project/vllm/pull/45240
 - Status/date: merged / 2026-06-12
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/xpu/mtp.py`; associated commits `04cec9e4d846`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/xpu/mtp.py`; associated commits `04cec9e4d846`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +29/-18, 119 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[XPU][DeepSeek-V4] Fix MTP: sync with upstream fixes #44821 and #43746"; model line: DeepSeek V4; category: bug fix; main diff: `vllm/models/deepseek_v4/xpu/mtp.py`; technical summary: Covers "[XPU][DeepSeek-V4] Fix MTP: sync with upstream fixes #44821 and #43746"; the main implementation surface is `vllm/models/deepseek_v4/xpu/mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/xpu/mtp.py` modified +29/-18 (47 lines); hunks: -18,7 +18,6; -39,6 +38,10; symbols: __init__, forward, compute_logits, DeepSeekV4MTP, touching `__init__, forward, compute_logits`.
@@ -2850,7 +2873,7 @@ diff -- vllm/models/deepseek_v4/xpu/mtp.py
 
 - Link: https://github.com/vllm-project/vllm/pull/45061
 - Status/date: merged / 2026-06-15
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/nvidia/flashmla.py`; associated commits `e18fe932ca61`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/nvidia/flashmla.py`; associated commits `e18fe932ca61`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +133/-23, 272 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Perf] Optimize DSv4 prefill chunk planning, 4.0% E2E Throughput Improvement"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `vllm/models/deepseek_v4/nvidia/flashmla.py`; technical summary: Covers "[Perf] Optimize DSv4 prefill chunk planning, 4.0% E2E Throughput Improvement"; the main implementation surface is `vllm/models/deepseek_v4/nvidia/flashmla.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/nvidia/flashmla.py` modified +12/-20 (32 lines); hunks: -246,7 +246,6 @@ def _forward_prefill(; -274,29 +273,22 @@ def _forward_prefill(; symbols: _forward_prefill, touching `_forward_prefill`.
@@ -2877,7 +2900,7 @@ diff -- vllm/models/deepseek_v4/nvidia/flashmla.py
 
 - Link: https://github.com/vllm-project/vllm/pull/44892
 - Status/date: merged / 2026-06-16
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py`, `vllm/models/deepseek_v4/sparse_mla.py`; associated commits `f4359a70f9e0`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py`, `vllm/models/deepseek_v4/sparse_mla.py`; associated commits `f4359a70f9e0`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +8/-8, 44 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[DSV4][Minor] Fix supported KV cache dtypes"; model line: DeepSeek V4; category: bug fix; main diff: `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py`, `vllm/models/deepseek_v4/sparse_mla.py`; technical summary: Covers "[DSV4][Minor] Fix supported KV cache dtypes"; the main implementation surface is `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py`, `vllm/models/deepseek_v4/sparse_mla.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py` modified +6/-5 (11 lines); hunks: -13,6 +13,7; -52,13 +53,13 @@ def _get_flashinfer_dsv4_workspace(device: torch.device) ->...; symbols: _get_flashinfer_dsv4_workspace, DeepseekV4FlashInferMLASparseBackend, get_name, touching `_get_flashinfer_dsv4_workspace, DeepseekV4FlashInferMLASparseBackend, get_name`; `vllm/models/deepseek_v4/sparse_mla.py` modified +0/-1 (1 lines); hunks: -46,7 +46,6 @@ class DeepseekV4FlashMLABackend(AttentionBackend):; symbols: DeepseekV4FlashMLABackend, touching `DeepseekV4FlashMLABackend`.
@@ -2908,7 +2931,7 @@ diff -- vllm/models/deepseek_v4/sparse_mla.py
 
 - Link: https://github.com/vllm-project/vllm/pull/45863
 - Status/date: merged / 2026-06-17
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py`; associated commits `0a7bacdcacc5`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py`; associated commits `0a7bacdcacc5`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +184/-18, 227 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[DSv4 Perf] DSv4 flashinfer sparse index cache for metadata, 2%~4% TTFT improvement"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py`; technical summary: Covers "[DSv4 Perf] DSv4 flashinfer sparse index cache for metadata, 2%~4% TTFT improvement"; the main implementation surface is `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py` modified +33/-17 (50 lines); hunks: -288,24 +288,40 @@ def _build_sparse_index_metadata(; symbols: _build_sparse_index_metadata, _forward, touching `_build_sparse_index_metadata, _forward`.
@@ -2935,7 +2958,7 @@ diff -- vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py
 
 - Link: https://github.com/vllm-project/vllm/pull/45309
 - Status/date: merged / 2026-06-17
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/attention.py`; associated commits `1797576237cc`, `2a47a9ff0f4f`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/attention.py`; associated commits `1797576237cc`, `2a47a9ff0f4f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +37/-30, 104 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[DSV4 Perf] Optimize dsv4 cudagraph by reducing `eager_break_during_capture`, 26.8% ~ 27.9% E2E TTFT improvement"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `vllm/models/deepseek_v4/attention.py`; technical summary: Covers "[DSV4 Perf] Optimize dsv4 cudagraph by reducing `eager_break_during_capture`, 26.8% ~ 27.9% E2E TTFT improvement"; the main implementation surface is `vllm/models/deepseek_v4/attention.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/attention.py` modified +37/-30 (67 lines); hunks: -14,7 +14,7; -331,8 +331,8 @@ def forward(; symbols: forward, fused_wqa_wkv, attention_impl, touching `forward, fused_wqa_wkv, attention_impl`.
@@ -2962,7 +2985,7 @@ diff -- vllm/models/deepseek_v4/attention.py
 
 - Link: https://github.com/vllm-project/vllm/pull/45972
 - Status/date: merged / 2026-06-18
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/attention.py`; associated commits `1797576237cc`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/attention.py`; associated commits `1797576237cc`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +30/-37, 104 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Revert "[DSV4 Perf] Optimize dsv4 cudagraph by reducing `eager_break_during_capture`" (#45309)"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `vllm/models/deepseek_v4/attention.py`; technical summary: Covers "Revert "[DSV4 Perf] Optimize dsv4 cudagraph by reducing `eager_break_during_capture`" (#45309)"; the main implementation surface is `vllm/models/deepseek_v4/attention.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/attention.py` modified +30/-37 (67 lines); hunks: -14,7 +14,7; -331,8 +331,8 @@ def forward(; symbols: forward, fused_wqa_wkv, attention_impl, touching `forward, fused_wqa_wkv, attention_impl`.
@@ -3030,7 +3053,7 @@ diff -- vllm/models/deepseek_v4/nvidia/ops/o_proj.py
 
 - Link: https://github.com/vllm-project/vllm/pull/46001
 - Status/date: merged / 2026-06-19
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/nvidia/model.py`; associated commits `2a6c6b94293e`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/nvidia/model.py`; associated commits `2a6c6b94293e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +44/-0, 80 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[DeepSeek-V4] Support TEP=16 for the block-FP8 shared expert"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `vllm/models/deepseek_v4/nvidia/model.py`; technical summary: Covers "[DeepSeek-V4] Support TEP=16 for the block-FP8 shared expert"; the main implementation surface is `vllm/models/deepseek_v4/nvidia/model.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/nvidia/model.py` modified +44/-0 (44 lines); hunks: -64,6 +64,7; -85,6 +86,15 @@ def __init__(; symbols: __init__, load_weights, _pad_shared_expert_weight, touching `__init__, load_weights, _pad_shared_expert_weight`.
@@ -3057,7 +3080,7 @@ diff -- vllm/models/deepseek_v4/nvidia/model.py
 
 - Link: https://github.com/vllm-project/vllm/pull/45931
 - Status/date: merged / 2026-06-22
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/amd/mtp.py`; associated commits `89accad2cc96`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/amd/mtp.py`; associated commits `89accad2cc96`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +56/-22, 207 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm][DSV4] Disable TileLang MHC dispatch on gfx942"; model line: DeepSeek V4; category: model implementation change; main diff: `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/amd/mtp.py`; technical summary: Covers "[ROCm][DSV4] Disable TileLang MHC dispatch on gfx942"; the main implementation surface is `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/amd/mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/amd/model.py` modified +3/-3 (6 lines); hunks: -27,6 +27,7; -51,7 +52,6; symbols: DeepseekV4MLP, __init__, hc_pre, touching `DeepseekV4MLP, __init__, hc_pre`; `vllm/models/deepseek_v4/amd/mtp.py` modified +2/-3 (5 lines); hunks: -28,7 +28,7; -42,7 +42,6; symbols: __init__, forward, touching `__init__, forward`.
@@ -3093,7 +3116,7 @@ diff -- vllm/models/deepseek_v4/amd/mtp.py
 
 - Link: https://github.com/vllm-project/vllm/pull/43477
 - Status/date: merged / 2026-06-22
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/warmup/deepseek_v4_mhc_warmup.py`, `vllm/models/deepseek_v4/attention.py`, `vllm/models/deepseek_v4/common/ops/fused_inv_rope_fp8_quant.py`, `vllm/models/deepseek_v4/compressor.py`, `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py` and 7 files; associated commits `44d95069e9d6`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/warmup/deepseek_v4_mhc_warmup.py`, `vllm/models/deepseek_v4/attention.py`, `vllm/models/deepseek_v4/common/ops/fused_inv_rope_fp8_quant.py`, `vllm/models/deepseek_v4/compressor.py`, `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py` and 7 files; associated commits `44d95069e9d6`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 37 files, +2340/-469, 3895 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Enable DeepSeek V4 and GLM-5.1 on SM120"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py`, `vllm/model_executor/warmup/deepseek_v4_mhc_warmup.py`, `vllm/models/deepseek_v4/attention.py`; technical summary: Covers "Enable DeepSeek V4 and GLM-5.1 on SM120"; the main implementation surface is `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py`, `vllm/model_executor/warmup/deepseek_v4_mhc_warmup.py`, `vllm/models/deepseek_v4/attention.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py` modified +473/-27 (500 lines); hunks: -1,13 +1,6; -18,6 +11,7; symbols: _get_flashinfer_dsv4_workspace, DeepseekV4FlashInferMLASparseBackend, get_supported_kernel_block_sizes, get_name, touching `_get_flashinfer_dsv4_workspace, DeepseekV4FlashInferMLASparseBackend, get_supported_kernel_block_sizes`; `vllm/model_executor/warmup/deepseek_v4_mhc_warmup.py` added +226/-0 (226 lines); hunks: -0,0 +1,226; symbols: _compute_mhc_pre_num_split, _normalize_token_sizes, _select_mhc_warmup_token_sizes, _find_first_mhc_layer, touching `_compute_mhc_pre_num_split, _normalize_token_sizes, _select_mhc_warmup_token_sizes`; `vllm/models/deepseek_v4/attention.py` modified +34/-32 (66 lines); hunks: -62,23 +62,22; -100,18 +99,20 @@ class DeepseekV4Attention(nn.Module, AttentionLayerBase, ABC):; symbols: _resolve_dsv4_kv_cache_dtype, DeepseekV4Attention, dispatches, _o_proj, touching `_resolve_dsv4_kv_cache_dtype, DeepseekV4Attention, dispatches`; `vllm/model_executor/layers/attention/mla_attention.py` modified +29/-14 (43 lines); hunks: -208,6 +208,7; -319,6 +320,22 @@ def _detect_output_quant_key(; symbols: _detect_output_quant_key, _canonicalize_sparse_mla_kv_cache_dtype, MLAAttention, __init__, touching `_detect_output_quant_key, _canonicalize_sparse_mla_kv_cache_dtype, MLAAttention`.
@@ -3213,6 +3236,563 @@ diff -- csrc/persistent_topk.cuh
   - runtime: `vllm/model_executor/layers/sparse_attn_indexer.py` modified +6/-0; `vllm/model_executor/layers/deepseek_v4_attention.py` modified +1/-0; `vllm/utils/deep_gemm.py` modified +4/-0
   - other: `csrc/persistent_topk.cuh` modified +623/-232; `csrc/topk.cu` modified +143/-115
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/deepseek_v4_attention.py`, `vllm/model_executor/layers/sparse_attn_indexer.py`, `vllm/utils/deep_gemm.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #43950 - [ROCm][DSV4] Use aiter mHC pre/post as the default ROCm path
+
+- Link: https://github.com/vllm-project/vllm/pull/43950
+- Status/date: merged / 2026-07-01
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/amd/mtp.py`; associated commits `ed41aa270a9e`
+- Diff scope read: GitHub Pull Request files API returned 3 files, +32/-39, 155 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[ROCm][DSV4] Use aiter mHC pre/post as the default ROCm path"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/amd/mtp.py`; technical summary: Covers "[ROCm][DSV4] Use aiter mHC pre/post as the default ROCm path"; the main implementation surface is `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/amd/mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/models/deepseek_v4/amd/model.py` modified +6/-4 (10 lines); hunks: -27,6 +27,7; -303,7 +304,9 @@ def __init__(; symbols: __init__, hc_pre, forward, touching `__init__, hc_pre, forward`; `vllm/models/deepseek_v4/amd/mtp.py` modified +2/-3 (5 lines); hunks: -28,7 +28,7; -123,7 +123,6 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
+- Code diff details:
+  - `vllm/models/deepseek_v4/amd/model.py` modified +6/-4 (10 lines); hunks: -27,6 +27,7; -303,7 +304,9 @@ def __init__(; symbols: __init__, hc_pre, forward
+  - `vllm/models/deepseek_v4/amd/mtp.py` modified +2/-3 (5 lines); hunks: -28,7 +28,7; -123,7 +123,6 @@ def __init__(; symbols: __init__, forward
+- Key code excerpts:
+
+```diff
+diff -- vllm/models/deepseek_v4/amd/model.py
+@@ -27,6 +27,7 @@
++    HAS_AITER_MHC,
+@@ -303,7 +304,9 @@ def __init__(
+-        self.has_tilelang = HAS_TILELANG_MHC
++        self.use_fused_mhc = HAS_TILELANG_MHC and not (
++            HAS_AITER_MHC and self.hidden_size % 256 == 0
++        )
+diff -- vllm/models/deepseek_v4/amd/mtp.py
+@@ -28,7 +28,7 @@
+-from vllm.model_executor.layers.mhc import HAS_TILELANG_MHC, HCHeadOp
++from vllm.model_executor.layers.mhc import HCHeadOp
+@@ -123,7 +123,6 @@ def __init__(
+-        self.has_tilelang = HAS_TILELANG_MHC
+@@ -156,7 +155,7 @@ def forward(
+-        if self.has_tilelang:
+```
+
+- Reviewed files:
+  - runtime: `vllm/models/deepseek_v4/amd/model.py` modified +6/-4; `vllm/models/deepseek_v4/amd/mtp.py` modified +2/-3
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/mhc.py`, `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/amd/mtp.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #46730 - [ROCm][Perf][Bugfix] DSv4 indexer: use platform FP8 dtype (fnuz) for Q-quant on gfx942
+
+- Link: https://github.com/vllm-project/vllm/pull/46730
+- Status/date: merged / 2026-07-01
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/common/ops/fused_indexer_q.py`; associated commits `aa8bb5562ebe`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +19/-8, 84 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[ROCm][Perf][Bugfix] DSv4 indexer: use platform FP8 dtype (fnuz) for Q-quant on gfx942"; model line: DeepSeek V4; category: bug fix; main diff: `vllm/models/deepseek_v4/common/ops/fused_indexer_q.py`; technical summary: Covers "[ROCm][Perf][Bugfix] DSv4 indexer: use platform FP8 dtype (fnuz) for Q-quant on gfx942"; the main implementation surface is `vllm/models/deepseek_v4/common/ops/fused_indexer_q.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/models/deepseek_v4/common/ops/fused_indexer_q.py` modified +19/-8 (27 lines); hunks: -3,6 +3,7; -88,6 +89,8 @@ def _fused_indexer_q_rope_quant_kernel(; symbols: _fused_indexer_q_rope_quant_kernel, fused_indexer_q_rope_quant, touching `_fused_indexer_q_rope_quant_kernel, fused_indexer_q_rope_quant`.
+- Code diff details:
+  - `vllm/models/deepseek_v4/common/ops/fused_indexer_q.py` modified +19/-8 (27 lines); hunks: -3,6 +3,7; -88,6 +89,8 @@ def _fused_indexer_q_rope_quant_kernel(; symbols: _fused_indexer_q_rope_quant_kernel, fused_indexer_q_rope_quant
+- Key code excerpts:
+
+```diff
+diff -- vllm/models/deepseek_v4/common/ops/fused_indexer_q.py
+@@ -3,6 +3,7 @@
++from vllm.platforms import current_platform
+@@ -88,6 +89,8 @@ def _fused_indexer_q_rope_quant_kernel(
++    FP8_MAX: tl.constexpr = 448.0,
++    USE_FNUZ: tl.constexpr = False,
+@@ -128,26 +131,28 @@ def _fused_indexer_q_rope_quant_kernel(
+-    index_q_scale = tl.div_rn(tl.maximum(amax, 1e-4), 448.0)
+```
+
+- Reviewed files:
+  - runtime: `vllm/models/deepseek_v4/common/ops/fused_indexer_q.py` modified +19/-8
+- Risk and verification: Runtime changes concentrate in `vllm/models/deepseek_v4/common/ops/fused_indexer_q.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #45877 - [Frontend] [Parser] Port DeepSeek V4 to streaming parser engine framework
+
+- Link: https://github.com/vllm-project/vllm/pull/45877
+- Status/date: merged / 2026-07-04
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/parser/engine/test_deepseek_v4.py`, `vllm/parser/deepseek_v4.py`, `vllm/reasoning/deepseek_v4_engine_reasoning_parser.py`; associated commits `fb5291b35b0b`
+- Diff scope read: GitHub Pull Request files API returned 22 files, +1900/-671, 2959 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Frontend] [Parser] Port DeepSeek V4 to streaming parser engine framework"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `vllm/reasoning/deepseek_v4_engine_reasoning_parser.py`, `tests/parser/engine/test_deepseek_v4.py`, `vllm/parser/deepseek_v4.py`; technical summary: Covers "[Frontend] [Parser] Port DeepSeek V4 to streaming parser engine framework"; the main implementation surface is `vllm/reasoning/deepseek_v4_engine_reasoning_parser.py`, `tests/parser/engine/test_deepseek_v4.py`, `vllm/parser/deepseek_v4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/reasoning/deepseek_v4_engine_reasoning_parser.py` added +6/-0 (6 lines); hunks: -0,0 +1,6; `tests/parser/engine/test_deepseek_v4.py` added +922/-0 (922 lines); hunks: -0,0 +1,922; symbols: _param, mock_tokenizer, TestArgConverter, _raw, touching `_param, mock_tokenizer, TestArgConverter`; `vllm/parser/deepseek_v4.py` added +237/-0 (237 lines); hunks: -0,0 +1,237; symbols: _dsml_arg_converter, _unwrap_wrapper_args, deepseek_v4_config, DeepSeekV4Parser, touching `_dsml_arg_converter, _unwrap_wrapper_args, deepseek_v4_config`.
+- Code diff details:
+  - `vllm/reasoning/deepseek_v4_engine_reasoning_parser.py` added +6/-0 (6 lines); hunks: -0,0 +1,6
+  - `tests/parser/engine/test_deepseek_v4.py` added +922/-0 (922 lines); hunks: -0,0 +1,922; symbols: _param, mock_tokenizer, TestArgConverter, _raw
+  - `vllm/parser/deepseek_v4.py` added +237/-0 (237 lines); hunks: -0,0 +1,237; symbols: _dsml_arg_converter, _unwrap_wrapper_args, deepseek_v4_config, DeepSeekV4Parser
+- Key code excerpts:
+
+```diff
+diff -- vllm/reasoning/deepseek_v4_engine_reasoning_parser.py
+@@ -0,0 +1,6 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++from vllm.parser.engine.registered_adapters import DeepSeekV4ParserReasoningAdapter
++__all__ = ["DeepSeekV4ParserReasoningAdapter"]
+diff -- tests/parser/engine/test_deepseek_v4.py
+@@ -0,0 +1,922 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++"""Tests for DeepSeek V4-specific parser engine semantics."""
++import json
++import pytest
++from tests.parser.engine.conftest import make_mock_tokenizer
+diff -- vllm/parser/deepseek_v4.py
+@@ -0,0 +1,237 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
+```
+
+- Reviewed files:
+  - runtime: `vllm/reasoning/deepseek_v4_engine_reasoning_parser.py` added +6/-0; `vllm/parser/deepseek_v4.py` added +237/-0
+  - tests: `tests/parser/engine/test_deepseek_v4.py` added +922/-0
+- Risk and verification: The diff ships test coverage in `tests/parser/engine/test_deepseek_v32.py`, `tests/parser/engine/test_deepseek_v4.py`, `tests/parser/engine/test_replay.py`, `tests/parser/engine/trace_builder.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #47429 - [Bugfix][Spec Decode] Add missing draft_id_to_target_id to DSparkDeepseekV4ForCausalLM
+
+- Link: https://github.com/vllm-project/vllm/pull/47429
+- Status/date: merged / 2026-07-06
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/nvidia/dspark.py`; associated commits `8d8ec383619d`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +2/-0, 9 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Bugfix][Spec Decode] Add missing draft_id_to_target_id to DSparkDeepseekV4ForCausalLM"; model line: DeepSeek V4; category: bug fix; main diff: `vllm/models/deepseek_v4/nvidia/dspark.py`; technical summary: Covers "[Bugfix][Spec Decode] Add missing draft_id_to_target_id to DSparkDeepseekV4ForCausalLM"; the main implementation surface is `vllm/models/deepseek_v4/nvidia/dspark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/models/deepseek_v4/nvidia/dspark.py` modified +2/-0 (2 lines); hunks: -269,6 +269,8 @@ class DSparkDeepseekV4ForCausalLM(nn.Module):; symbols: DSparkDeepseekV4ForCausalLM, __init__, touching `DSparkDeepseekV4ForCausalLM, __init__`.
+- Code diff details:
+  - `vllm/models/deepseek_v4/nvidia/dspark.py` modified +2/-0 (2 lines); hunks: -269,6 +269,8 @@ class DSparkDeepseekV4ForCausalLM(nn.Module):; symbols: DSparkDeepseekV4ForCausalLM, __init__
+- Key code excerpts:
+
+```diff
+diff -- vllm/models/deepseek_v4/nvidia/dspark.py
+@@ -269,6 +269,8 @@ class DSparkDeepseekV4ForCausalLM(nn.Module):
++    # Full-vocab draft: draft ids are target ids, no remapping needed.
++    draft_id_to_target_id = None
+```
+
+- Reviewed files:
+  - runtime: `vllm/models/deepseek_v4/nvidia/dspark.py` modified +2/-0
+- Risk and verification: Runtime changes concentrate in `vllm/models/deepseek_v4/nvidia/dspark.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #47474 - [Perf] Cache `token_to_req_indices` for dsv4, 5x~6x kernel performance improvement
+
+- Link: https://github.com/vllm-project/vllm/pull/47474
+- Status/date: merged / 2026-07-06
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/compressor.py`, `vllm/models/deepseek_v4/sparse_mla.py`; associated commits `f70caef48b92`
+- Diff scope read: GitHub Pull Request files API returned 4 files, +34/-25, 122 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Perf] Cache `token_to_req_indices` for dsv4, 5x~6x kernel performance improvement"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `vllm/models/deepseek_v4/sparse_mla.py`, `vllm/models/deepseek_v4/compressor.py`; technical summary: Covers "[Perf] Cache `token_to_req_indices` for dsv4, 5x~6x kernel performance improvement"; the main implementation surface is `vllm/models/deepseek_v4/sparse_mla.py`, `vllm/models/deepseek_v4/compressor.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/models/deepseek_v4/sparse_mla.py` modified +1/-14 (15 lines); hunks: -5,15 +5,13; -203,18 +201,7 @@ def build(; symbols: build, touching `build`; `vllm/models/deepseek_v4/compressor.py` modified +3/-6 (9 lines); hunks: -104,12 +104,9 @@ def build(; symbols: build, touching `build`.
+- Code diff details:
+  - `vllm/models/deepseek_v4/sparse_mla.py` modified +1/-14 (15 lines); hunks: -5,15 +5,13; -203,18 +201,7 @@ def build(; symbols: build
+  - `vllm/models/deepseek_v4/compressor.py` modified +3/-6 (9 lines); hunks: -104,12 +104,9 @@ def build(; symbols: build
+- Key code excerpts:
+
+```diff
+diff -- vllm/models/deepseek_v4/sparse_mla.py
+@@ -5,15 +5,13 @@
+-import numpy as np
+-from vllm.utils.torch_utils import np_to_pinned_tensor
+@@ -203,18 +201,7 @@ def build(
+-        num_tokens = cm.num_actual_tokens
+-        starts = np.asarray(cm.query_start_loc_cpu, dtype=np.int32)
+-        seg_lengths = np.diff(starts)
+diff -- vllm/models/deepseek_v4/compressor.py
+@@ -104,12 +104,9 @@ def build(
+-        query_start_loc_cpu = common_attn_metadata.query_start_loc_cpu
+-        num_reqs = common_attn_metadata.num_reqs
+-        query_lens = query_start_loc_cpu[1:] - query_start_loc_cpu[:-1]
+-        x = torch.repeat_interleave(torch.arange(num_reqs), query_lens).pin_memory()
+-        token_to_req_indices = self.token_to_req_indices[: x.shape[0]]
+-        token_to_req_indices.copy_(x, non_blocking=True)
+```
+
+- Reviewed files:
+  - runtime: `vllm/models/deepseek_v4/sparse_mla.py` modified +1/-14; `vllm/models/deepseek_v4/compressor.py` modified +3/-6
+- Risk and verification: Runtime changes concentrate in `vllm/models/deepseek_v4/compressor.py`, `vllm/models/deepseek_v4/sparse_mla.py`, `vllm/v1/attention/backend.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #47716 - [Bugfix]Fix DeepSeek-V4 fp8_ds_mla KV cache reshape
+
+- Link: https://github.com/vllm-project/vllm/pull/47716
+- Status/date: merged / 2026-07-06
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/attention.py`; associated commits `04adc8843bbe`
+- Diff scope read: GitHub Pull Request files API returned 3 files, +14/-2, 51 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Bugfix]Fix DeepSeek-V4 fp8_ds_mla KV cache reshape"; model line: DeepSeek V4; category: bug fix; main diff: `vllm/models/deepseek_v4/attention.py`; technical summary: Covers "[Bugfix]Fix DeepSeek-V4 fp8_ds_mla KV cache reshape"; the main implementation surface is `vllm/models/deepseek_v4/attention.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/models/deepseek_v4/attention.py` modified +6/-1 (7 lines); hunks: -56,7 +56,11; -616,6 +620,7 @@ def get_kv_cache_spec(self, vllm_config: VllmConfig) -> KVCa...; symbols: get_kv_cache_spec, touching `get_kv_cache_spec`.
+- Code diff details:
+  - `vllm/models/deepseek_v4/attention.py` modified +6/-1 (7 lines); hunks: -56,7 +56,11; -616,6 +620,7 @@ def get_kv_cache_spec(self, vllm_config: VllmConfig) -> KVCa...; symbols: get_kv_cache_spec
+- Key code excerpts:
+
+```diff
+diff -- vllm/models/deepseek_v4/attention.py
+@@ -56,7 +56,11 @@
+-from vllm.v1.kv_cache_interface import KVCacheSpec, MLAAttentionSpec
++from vllm.v1.kv_cache_interface import (
++    KVCacheSpec,
++    MLAAttentionSpec,
++    get_kv_quant_mode,
++)
+```
+
+- Reviewed files:
+  - runtime: `vllm/models/deepseek_v4/attention.py` modified +6/-1
+- Risk and verification: Runtime changes concentrate in `vllm/models/deepseek_v4/attention.py`, `vllm/v1/attention/backends/mla/sparse_swa.py`, `vllm/v1/worker/gpu_model_runner.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #47493 - [Bugfix] DSV4 TP16 garbage output
+
+- Link: https://github.com/vllm-project/vllm/pull/47493
+- Status/date: merged / 2026-07-08
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/attention.py`, `vllm/models/deepseek_v4/common/ops/cache_utils.py`, `vllm/models/deepseek_v4/compressor.py`, `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py`; associated commits `80eb01e93dcd`
+- Diff scope read: GitHub Pull Request files API returned 5 files, +61/-6, 200 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Bugfix] DSV4 TP16 garbage output"; model line: DeepSeek V4; category: bug fix; main diff: `vllm/models/deepseek_v4/common/ops/cache_utils.py`, `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py`, `vllm/models/deepseek_v4/attention.py`; technical summary: Covers "[Bugfix] DSV4 TP16 garbage output"; the main implementation surface is `vllm/models/deepseek_v4/common/ops/cache_utils.py`, `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py`, `vllm/models/deepseek_v4/attention.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/models/deepseek_v4/common/ops/cache_utils.py` modified +35/-0 (35 lines); hunks: -654,6 +654,8 @@ def build_flashinfer_mixed_sparse_indices(; -730,6 +732,13 @@ def build_flashinfer_mixed_sparse_indices(; symbols: build_flashinfer_mixed_sparse_indices, _remap_flashinfer_index, touching `build_flashinfer_mixed_sparse_indices, _remap_flashinfer_index`; `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py` modified +19/-0 (19 lines); hunks: -45,6 +45,21 @@ def _get_flashinfer_dsv4_workspace(device: torch.device) -> t...; -368,6 +383,8 @@ def _build_sparse_index_metadata(; symbols: _get_flashinfer_dsv4_workspace, _packed_block_span, DeepseekV4FlashInferMLASparseBackend, _build_sparse_index_metadata, touching `_get_flashinfer_dsv4_workspace, _packed_block_span, DeepseekV4FlashInferMLASparseBackend`; `vllm/models/deepseek_v4/attention.py` modified +4/-4 (8 lines); hunks: -618,7 +618,7 @@ def get_kv_cache_spec(self, vllm_config: VllmConfig) -> KVCa...; -648,15 +648,15 @@ def __init__(; symbols: get_kv_cache_spec, __init__, forward, touching `get_kv_cache_spec, __init__, forward`; `vllm/models/deepseek_v4/compressor.py` modified +1/-1 (2 lines); hunks: -162,7 +162,7 @@ def get_kv_cache_spec(self, vllm_config: VllmConfig) -> KVCa...; symbols: get_kv_cache_spec, forward, touching `get_kv_cache_spec, forward`.
+- Code diff details:
+  - `vllm/models/deepseek_v4/common/ops/cache_utils.py` modified +35/-0 (35 lines); hunks: -654,6 +654,8 @@ def build_flashinfer_mixed_sparse_indices(; -730,6 +732,13 @@ def build_flashinfer_mixed_sparse_indices(; symbols: build_flashinfer_mixed_sparse_indices, _remap_flashinfer_index
+  - `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py` modified +19/-0 (19 lines); hunks: -45,6 +45,21 @@ def _get_flashinfer_dsv4_workspace(device: torch.device) -> t...; -368,6 +383,8 @@ def _build_sparse_index_metadata(; symbols: _get_flashinfer_dsv4_workspace, _packed_block_span, DeepseekV4FlashInferMLASparseBackend, _build_sparse_index_metadata
+  - `vllm/models/deepseek_v4/attention.py` modified +4/-4 (8 lines); hunks: -618,7 +618,7 @@ def get_kv_cache_spec(self, vllm_config: VllmConfig) -> KVCa...; -648,15 +648,15 @@ def __init__(; symbols: get_kv_cache_spec, __init__, forward
+  - `vllm/models/deepseek_v4/compressor.py` modified +1/-1 (2 lines); hunks: -162,7 +162,7 @@ def get_kv_cache_spec(self, vllm_config: VllmConfig) -> KVCa...; symbols: get_kv_cache_spec, forward
+- Key code excerpts:
+
+```diff
+diff -- vllm/models/deepseek_v4/common/ops/cache_utils.py
+@@ -654,6 +654,8 @@ def build_flashinfer_mixed_sparse_indices(
++    swa_block_span: int | None = None,
++    compressed_block_span: int | None = None,
+@@ -730,6 +732,13 @@ def build_flashinfer_mixed_sparse_indices(
++    # block_span = page_stride / token_stride; == block_size (no-op) for unpacked KV.
++    swa_span = swa_block_size if swa_block_span is None else swa_block_span
++    compressed_span = (
+diff -- vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py
+@@ -45,6 +45,21 @@ def _get_flashinfer_dsv4_workspace(device: torch.device) -> torch.Tensor:
++def _packed_block_span(pool: torch.Tensor) -> int:
++    """Per-block stride of ``pool`` in tokens (``stride(0)//stride(-2)``): ==
++    block_size for unpacked KV, larger when packed (#44577). Raises if not
++    token-aligned."""
++    block_stride = pool.stride(0)
++    token_stride = pool.stride(-2)
+diff -- vllm/models/deepseek_v4/attention.py
+@@ -618,7 +618,7 @@ def get_kv_cache_spec(self, vllm_config: VllmConfig) -> KVCacheSpec | None:
+```
+
+- Reviewed files:
+  - runtime: `vllm/models/deepseek_v4/common/ops/cache_utils.py` modified +35/-0; `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py` modified +19/-0; `vllm/models/deepseek_v4/attention.py` modified +4/-4; `vllm/models/deepseek_v4/compressor.py` modified +1/-1
+- Risk and verification: Runtime changes concentrate in `vllm/models/deepseek_v4/attention.py`, `vllm/models/deepseek_v4/common/ops/cache_utils.py`, `vllm/models/deepseek_v4/compressor.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #47419 - [ROCm] Enable DeepSeek-V4 DSpark speculative decoding on AMD (MI350X / MI355X, gfx950)
+
+- Link: https://github.com/vllm-project/vllm/pull/47419
+- Status/date: merged / 2026-07-10
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/__init__.py`, `vllm/models/deepseek_v4/amd/dspark.py`, `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/amd/rocm.py`; associated commits `c227aaa3f8ed`
+- Diff scope read: GitHub Pull Request files API returned 6 files, +586/-14, 686 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[ROCm] Enable DeepSeek-V4 DSpark speculative decoding on AMD (MI350X / MI355X, gfx950)"; model line: DeepSeek V4; category: model support/runtime entry; main diff: `vllm/models/deepseek_v4/amd/dspark.py`, `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/amd/rocm.py`; technical summary: Covers "[ROCm] Enable DeepSeek-V4 DSpark speculative decoding on AMD (MI350X / MI355X, gfx950)"; the main implementation surface is `vllm/models/deepseek_v4/amd/dspark.py`, `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/amd/rocm.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/models/deepseek_v4/amd/dspark.py` added +499/-0 (499 lines); hunks: -0,0 +1,499; symbols: DSparkDeepseekV4Model, __init__, embed_input_ids, combine_hidden_states, touching `DSparkDeepseekV4Model, __init__, embed_input_ids`; `vllm/models/deepseek_v4/amd/model.py` modified +45/-5 (50 lines); hunks: -40,7 +40,11; -437,7 +441,7 @@ def forward(; symbols: forward, DeepseekV4Model, __init__, touching `forward, DeepseekV4Model, __init__`; `vllm/models/deepseek_v4/amd/rocm.py` modified +8/-2 (10 lines); hunks: -518,8 +518,12 @@ class DeepseekV4ROCMAiterSparseSWAMetadataBuilder(DeepseekS...; -558,7 +562,9 @@ def build(; symbols: DeepseekV4ROCMAiterSparseSWAMetadataBuilder, __init__, build, touching `DeepseekV4ROCMAiterSparseSWAMetadataBuilder, __init__, build`; `vllm/models/deepseek_v4/__init__.py` modified +4/-4 (8 lines); hunks: -15,16 +15,16.
+- Code diff details:
+  - `vllm/models/deepseek_v4/amd/dspark.py` added +499/-0 (499 lines); hunks: -0,0 +1,499; symbols: DSparkDeepseekV4Model, __init__, embed_input_ids, combine_hidden_states
+  - `vllm/models/deepseek_v4/amd/model.py` modified +45/-5 (50 lines); hunks: -40,7 +40,11; -437,7 +441,7 @@ def forward(; symbols: forward, DeepseekV4Model, __init__
+  - `vllm/models/deepseek_v4/amd/rocm.py` modified +8/-2 (10 lines); hunks: -518,8 +518,12 @@ class DeepseekV4ROCMAiterSparseSWAMetadataBuilder(DeepseekS...; -558,7 +562,9 @@ def build(; symbols: DeepseekV4ROCMAiterSparseSWAMetadataBuilder, __init__, build
+  - `vllm/models/deepseek_v4/__init__.py` modified +4/-4 (8 lines); hunks: -15,16 +15,16
+- Key code excerpts:
+
+```diff
+diff -- vllm/models/deepseek_v4/amd/dspark.py
+@@ -0,0 +1,499 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++"""DSpark draft model for DeepSeek-V4 on ROCm/AMD (gfx950).
++ROCm port of ``nvidia/dspark.py``. Follows the same nvidia->amd recipe used for
++``amd/mtp.py``:
++  * import ``DeepseekV4DecoderLayer`` from the AMD ``.model`` (aiter/triton
+diff -- vllm/models/deepseek_v4/amd/model.py
+@@ -40,7 +40,11 @@
+-from vllm.model_executor.models.interfaces import SupportsPP
++from vllm.model_executor.models.interfaces import (
++    EagleModelMixin,
++    SupportsEagle3,
++    SupportsPP,
++)
+diff -- vllm/models/deepseek_v4/amd/rocm.py
+@@ -518,8 +518,12 @@ class DeepseekV4ROCMAiterSparseSWAMetadataBuilder(DeepseekSparseSWAMetadataBuild
+```
+
+- Reviewed files:
+  - runtime: `vllm/models/deepseek_v4/amd/dspark.py` added +499/-0; `vllm/models/deepseek_v4/amd/model.py` modified +45/-5; `vllm/models/deepseek_v4/amd/rocm.py` modified +8/-2; `vllm/models/deepseek_v4/__init__.py` modified +4/-4
+- Risk and verification: The diff ships test coverage in `tests/models/test_registry.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #48137 - [Perf] Remove redundant repeat and copy for dsv4, 1.8% E2E TPOT improvement.
+
+- Link: https://github.com/vllm-project/vllm/pull/48137
+- Status/date: merged / 2026-07-15
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/nvidia/model.py`; associated commits `442c421e7943`
+- Diff scope read: GitHub Pull Request files API returned 3 files, +316/-15, 387 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Perf] Remove redundant repeat and copy for dsv4, 1.8% E2E TPOT improvement."; model line: DeepSeek V4; category: performance/backend optimization; main diff: `vllm/models/deepseek_v4/nvidia/model.py`; technical summary: Covers "[Perf] Remove redundant repeat and copy for dsv4, 1.8% E2E TPOT improvement."; the main implementation surface is `vllm/models/deepseek_v4/nvidia/model.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/models/deepseek_v4/nvidia/model.py` modified +45/-15 (60 lines); hunks: -22,6 +22,7; -827,6 +828,7 @@ def __init__(; symbols: __init__, forward, finalize_mega_moe_weights, finalize_mhc_broadcast_weights, touching `__init__, forward, finalize_mega_moe_weights`.
+- Code diff details:
+  - `vllm/models/deepseek_v4/nvidia/model.py` modified +45/-15 (60 lines); hunks: -22,6 +22,7; -827,6 +828,7 @@ def __init__(; symbols: __init__, forward, finalize_mega_moe_weights, finalize_mhc_broadcast_weights
+- Key code excerpts:
+
+```diff
+diff -- vllm/models/deepseek_v4/nvidia/model.py
+@@ -22,6 +22,7 @@
++    mhc_pre_broadcast_tilelang,
+@@ -827,6 +828,7 @@ def __init__(
++        self.hc_attn_fn_broadcast: torch.Tensor | None = None
+@@ -876,20 +878,37 @@ def forward(
+-            residual = x
+-            post_mix, res_mix, x = mhc_pre_tilelang(
+```
+
+- Reviewed files:
+  - runtime: `vllm/models/deepseek_v4/nvidia/model.py` modified +45/-15
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/kernels/mhc/tilelang.py`, `vllm/model_executor/kernels/mhc/tilelang_kernels.py`, `vllm/models/deepseek_v4/nvidia/model.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #47718 - [ROCm][Perf] DSv4 two-stage compressor kernel for HCA prefill
+
+- Link: https://github.com/vllm-project/vllm/pull/47718
+- Status/date: merged / 2026-07-15
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/common/ops/fused_compress_quant_cache.py`, `vllm/models/deepseek_v4/compressor.py`; associated commits `eb33ff34dd65`
+- Diff scope read: GitHub Pull Request files API returned 3 files, +528/-0, 615 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[ROCm][Perf] DSv4 two-stage compressor kernel for HCA prefill"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `vllm/models/deepseek_v4/common/ops/fused_compress_quant_cache.py`, `vllm/models/deepseek_v4/compressor.py`; technical summary: Covers "[ROCm][Perf] DSv4 two-stage compressor kernel for HCA prefill"; the main implementation surface is `vllm/models/deepseek_v4/common/ops/fused_compress_quant_cache.py`, `vllm/models/deepseek_v4/compressor.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/models/deepseek_v4/common/ops/fused_compress_quant_cache.py` modified +355/-0 (355 lines); hunks: -19,6 +19,7; -296,6 +297,360 @@ def _fused_kv_compress_norm_rope_insert_sparse_attn(; symbols: _fused_kv_compress_norm_rope_insert_sparse_attn, _n_cu, _pick_compress_num_splits, _compress_gather_split_sparse_attn, touching `_fused_kv_compress_norm_rope_insert_sparse_attn, _n_cu, _pick_compress_num_splits`; `vllm/models/deepseek_v4/compressor.py` modified +43/-0 (43 lines); hunks: -14,6 +14,7; -27,13 +28,20; symbols: _prefer_two_stage_compressor, CompressorBackend, __init__, CompressorMetadata, touching `_prefer_two_stage_compressor, CompressorBackend, __init__`.
+- Code diff details:
+  - `vllm/models/deepseek_v4/common/ops/fused_compress_quant_cache.py` modified +355/-0 (355 lines); hunks: -19,6 +19,7; -296,6 +297,360 @@ def _fused_kv_compress_norm_rope_insert_sparse_attn(; symbols: _fused_kv_compress_norm_rope_insert_sparse_attn, _n_cu, _pick_compress_num_splits, _compress_gather_split_sparse_attn
+  - `vllm/models/deepseek_v4/compressor.py` modified +43/-0 (43 lines); hunks: -14,6 +14,7; -27,13 +28,20; symbols: _prefer_two_stage_compressor, CompressorBackend, __init__, CompressorMetadata
+- Key code excerpts:
+
+```diff
+diff -- vllm/models/deepseek_v4/common/ops/fused_compress_quant_cache.py
+@@ -19,6 +19,7 @@
++from functools import lru_cache
+@@ -296,6 +297,360 @@ def _fused_kv_compress_norm_rope_insert_sparse_attn(
++# =============================================================================
++# Split kernels variant of the head=512 compressor (deep cr=128 gather).
++#  - compress gather: instead of launching one program per token, split along
++#    the head dimension to maximize CU occupancy. The head dimension split
+diff -- vllm/models/deepseek_v4/compressor.py
+@@ -14,6 +14,7 @@
++    compress_norm_rope_store_two_stage_triton,
+@@ -27,13 +28,20 @@
++from vllm.v1.attention.backends.utils import split_decodes_and_prefills
++def _prefer_two_stage_compressor() -> bool:
++    # Platforms that favor the triton variant of two-stage compressor split.
++    # Currently only tested on ROCm
+```
+
+- Reviewed files:
+  - runtime: `vllm/models/deepseek_v4/common/ops/fused_compress_quant_cache.py` modified +355/-0; `vllm/models/deepseek_v4/compressor.py` modified +43/-0
+- Risk and verification: The diff ships test coverage in `tests/kernels/test_compressor_kv_cache.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #47677 - [XPU] Add DSpark speculative decoding support for DeepSeek-V4
+
+- Link: https://github.com/vllm-project/vllm/pull/47677
+- Status/date: merged / 2026-07-16
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/__init__.py`, `vllm/models/deepseek_v4/xpu/dspark.py`, `vllm/models/deepseek_v4/xpu/model.py`; associated commits `9d1c695be587`
+- Diff scope read: GitHub Pull Request files API returned 3 files, +454/-6, 512 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[XPU] Add DSpark speculative decoding support for DeepSeek-V4"; model line: DeepSeek V4; category: model support/runtime entry; main diff: `vllm/models/deepseek_v4/xpu/dspark.py`, `vllm/models/deepseek_v4/xpu/model.py`, `vllm/models/deepseek_v4/__init__.py`; technical summary: Covers "[XPU] Add DSpark speculative decoding support for DeepSeek-V4"; the main implementation surface is `vllm/models/deepseek_v4/xpu/dspark.py`, `vllm/models/deepseek_v4/xpu/model.py`, `vllm/models/deepseek_v4/__init__.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/models/deepseek_v4/xpu/dspark.py` added +436/-0 (436 lines); hunks: -0,0 +1,436; symbols: DSparkDeepseekV4Model, __init__, embed_input_ids, combine_hidden_states, touching `DSparkDeepseekV4Model, __init__, embed_input_ids`; `vllm/models/deepseek_v4/xpu/model.py` modified +17/-4 (21 lines); hunks: -44,7 +44,11; -975,7 +979,7 @@ def forward(; symbols: forward, DeepseekV4Model, __init__, touching `forward, DeepseekV4Model, __init__`; `vllm/models/deepseek_v4/__init__.py` modified +1/-2 (3 lines); hunks: -21,10 +21,9.
+- Code diff details:
+  - `vllm/models/deepseek_v4/xpu/dspark.py` added +436/-0 (436 lines); hunks: -0,0 +1,436; symbols: DSparkDeepseekV4Model, __init__, embed_input_ids, combine_hidden_states
+  - `vllm/models/deepseek_v4/xpu/model.py` modified +17/-4 (21 lines); hunks: -44,7 +44,11; -975,7 +979,7 @@ def forward(; symbols: forward, DeepseekV4Model, __init__
+  - `vllm/models/deepseek_v4/__init__.py` modified +1/-2 (3 lines); hunks: -21,10 +21,9
+- Key code excerpts:
+
+```diff
+diff -- vllm/models/deepseek_v4/xpu/dspark.py
+@@ -0,0 +1,436 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++"""DSpark draft model for DeepSeek-V4 on Intel XPU.
++Minimal XPU port of nvidia/dspark.py. Replaces tilelang MHC kernels with
++the platform-agnostic custom ops (HCHeadOp, MHCPostOp) already used by the
++XPU MTP path, and uses the XPU Triton-based qnorm_rope_kv_fp8_insert for
+diff -- vllm/models/deepseek_v4/xpu/model.py
+@@ -44,7 +44,11 @@
+-from vllm.model_executor.models.interfaces import SupportsPP
++from vllm.model_executor.models.interfaces import (
++    EagleModelMixin,
++    SupportsEagle3,
++    SupportsPP,
++)
+diff -- vllm/models/deepseek_v4/__init__.py
+@@ -21,10 +21,9 @@
+```
+
+- Reviewed files:
+  - runtime: `vllm/models/deepseek_v4/xpu/dspark.py` added +436/-0; `vllm/models/deepseek_v4/xpu/model.py` modified +17/-4; `vllm/models/deepseek_v4/__init__.py` modified +1/-2
+- Risk and verification: Runtime changes concentrate in `vllm/models/deepseek_v4/__init__.py`, `vllm/models/deepseek_v4/xpu/dspark.py`, `vllm/models/deepseek_v4/xpu/model.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #45991 - [XPU][DeepSeekV4]Add DeepSeek-V4 fuse_index_q SYCL kernel path
+
+- Link: https://github.com/vllm-project/vllm/pull/45991
+- Status/date: merged / 2026-07-21
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/common/ops/fused_indexer_q.py`; associated commits `c67650f04bc9`
+- Diff scope read: GitHub Pull Request files API returned 2 files, +150/-0, 178 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[XPU][DeepSeekV4]Add DeepSeek-V4 fuse_index_q SYCL kernel path"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `vllm/models/deepseek_v4/common/ops/fused_indexer_q.py`; technical summary: Covers "[XPU][DeepSeekV4]Add DeepSeek-V4 fuse_index_q SYCL kernel path"; the main implementation surface is `vllm/models/deepseek_v4/common/ops/fused_indexer_q.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/models/deepseek_v4/common/ops/fused_indexer_q.py` modified +23/-0 (23 lines); hunks: -367,6 +367,18 @@ def fused_indexer_q_rope_quant(; -423,6 +435,17 @@ def fused_indexer_q_rope_quant(; symbols: fused_indexer_q_rope_quant, touching `fused_indexer_q_rope_quant`.
+- Code diff details:
+  - `vllm/models/deepseek_v4/common/ops/fused_indexer_q.py` modified +23/-0 (23 lines); hunks: -367,6 +367,18 @@ def fused_indexer_q_rope_quant(; -423,6 +435,17 @@ def fused_indexer_q_rope_quant(; symbols: fused_indexer_q_rope_quant
+- Key code excerpts:
+
+```diff
+diff -- vllm/models/deepseek_v4/common/ops/fused_indexer_q.py
+@@ -367,6 +367,18 @@ def fused_indexer_q_rope_quant(
++        elif current_platform.is_xpu():
++            torch.ops.vllm.xpu_deepseek_fused_indexer_q_rope_mxfp4(
++                index_q,
++                positions,
++                index_q_cos_sin_cache,
++                index_weights,
+```
+
+- Reviewed files:
+  - runtime: `vllm/models/deepseek_v4/common/ops/fused_indexer_q.py` modified +23/-0
+- Risk and verification: Runtime changes concentrate in `vllm/_xpu_ops.py`, `vllm/models/deepseek_v4/common/ops/fused_indexer_q.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #48957 - [DSv4 Perf] Skip empty c128 kernel launch, around 2x kernel performance improvement.
+
+- Link: https://github.com/vllm-project/vllm/pull/48957
+- Status/date: merged / 2026-07-22
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/compressor.py`; associated commits `37e370fe936f`
+- Diff scope read: GitHub Pull Request files API returned 2 files, +53/-2, 118 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[DSv4 Perf] Skip empty c128 kernel launch, around 2x kernel performance improvement."; model line: DeepSeek V4; category: performance/backend optimization; main diff: `vllm/models/deepseek_v4/compressor.py`; technical summary: Covers "[DSv4 Perf] Skip empty c128 kernel launch, around 2x kernel performance improvement."; the main implementation surface is `vllm/models/deepseek_v4/compressor.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/models/deepseek_v4/compressor.py` modified +32/-2 (34 lines); hunks: -7,7 +7,7; -42,6 +42,19 @@ def _prefer_two_stage_compressor() -> bool:; symbols: _prefer_two_stage_compressor, _get_c128_boundary, CompressorBackend, __init__, touching `_prefer_two_stage_compressor, _get_c128_boundary, CompressorBackend`.
+- Code diff details:
+  - `vllm/models/deepseek_v4/compressor.py` modified +32/-2 (34 lines); hunks: -7,7 +7,7; -42,6 +42,19 @@ def _prefer_two_stage_compressor() -> bool:; symbols: _prefer_two_stage_compressor, _get_c128_boundary, CompressorBackend, __init__
+- Key code excerpts:
+
+```diff
+diff -- vllm/models/deepseek_v4/compressor.py
+@@ -7,7 +7,7 @@
+-from vllm.config import VllmConfig, get_current_vllm_config
++from vllm.config import CUDAGraphMode, VllmConfig, get_current_vllm_config
+@@ -42,6 +42,19 @@ def _prefer_two_stage_compressor() -> bool:
++def _get_c128_boundary(metadata: CommonAttentionMetadata) -> bool | None:
++    starts = metadata._num_computed_tokens_cpu
++    if starts is None:
+```
+
+- Reviewed files:
+  - runtime: `vllm/models/deepseek_v4/compressor.py` modified +32/-2
+- Risk and verification: The diff ships test coverage in `tests/kernels/test_compressor_kv_cache.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #48993 - [Core][DSV4] Compact MXFP4 indexer KV cache and packed group overlays
+
+- Link: https://github.com/vllm-project/vllm/pull/48993
+- Status/date: merged / 2026-07-22
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/attention.py`; associated commits `f3a920a07640`
+- Diff scope read: GitHub Pull Request files API returned 3 files, +216/-84, 401 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Core][DSV4] Compact MXFP4 indexer KV cache and packed group overlays"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `vllm/models/deepseek_v4/attention.py`; technical summary: Covers "[Core][DSV4] Compact MXFP4 indexer KV cache and packed group overlays"; the main implementation surface is `vllm/models/deepseek_v4/attention.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/models/deepseek_v4/attention.py` modified +11/-5 (16 lines); hunks: -26,6 +26,7; -727,11 +728,16 @@ def __init__(; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `vllm/models/deepseek_v4/attention.py` modified +11/-5 (16 lines); hunks: -26,6 +26,7; -727,11 +728,16 @@ def __init__(; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- vllm/models/deepseek_v4/attention.py
+@@ -26,6 +26,7 @@
++from vllm.models.deepseek_v4.common.ops.fused_indexer_q import MXFP4_BLOCK_SIZE
+@@ -727,11 +728,16 @@ def __init__(
+-        # NOTE(yifan): FP8 indxer cache use the same layout as V3.2:
+-        # head_dim bytes = 128 fp8 + 4 fp32 scale = 132.
+-        # For FP4 indexer cache, we still allocate the same amount of memory as FP8,
+-        # but only use the first half of the memory.
+```
+
+- Reviewed files:
+  - runtime: `vllm/models/deepseek_v4/attention.py` modified +11/-5
+- Risk and verification: The diff ships test coverage in `tests/v1/core/test_contiguous_kv_packing.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #48044 - [ROCm] Fused Shared Expert Support for AMD Quark DeepSeek-V4 Model Checkpoints
+
+- Link: https://github.com/vllm-project/vllm/pull/48044
+- Status/date: merged / 2026-07-23
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/amd/mtp.py`, `vllm/models/deepseek_v4/quant_config.py`; associated commits `27ffbfde8dec`
+- Diff scope read: GitHub Pull Request files API returned 3 files, +175/-13, 314 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[ROCm] Fused Shared Expert Support for AMD Quark DeepSeek-V4 Model Checkpoints"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/quant_config.py`, `vllm/models/deepseek_v4/amd/mtp.py`; technical summary: Covers "[ROCm] Fused Shared Expert Support for AMD Quark DeepSeek-V4 Model Checkpoints"; the main implementation surface is `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/quant_config.py`, `vllm/models/deepseek_v4/amd/mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/models/deepseek_v4/amd/model.py` modified +121/-11 (132 lines); hunks: -8,7 +8,8; -110,6 +111,51 @@ def forward(self, x):; symbols: forward, _shared_experts_are_fp4, _fuse_shared_experts_enabled, DeepseekV4MoE, touching `forward, _shared_experts_are_fp4, _fuse_shared_experts_enabled`; `vllm/models/deepseek_v4/quant_config.py` modified +37/-2 (39 lines); hunks: -4,7 +4,7; -117,20 +117,55 @@ def _get_nvfp4_config(self) -> ModelOptNvFp4Config:; symbols: _get_nvfp4_config, get_name, _is_quark_mxfp4_ocp, override_quantization_method, touching `_get_nvfp4_config, get_name, _is_quark_mxfp4_ocp`; `vllm/models/deepseek_v4/amd/mtp.py` modified +17/-0 (17 lines); hunks: -334,6 +334,21 @@ def _find_mtp_layer_idx(name: str) -> int:; -393,6 +408,7 @@ def _find_mtp_layer_idx(name: str) -> int:; symbols: _find_mtp_layer_idx, _resolve_scale_name, touching `_find_mtp_layer_idx, _resolve_scale_name`.
+- Code diff details:
+  - `vllm/models/deepseek_v4/amd/model.py` modified +121/-11 (132 lines); hunks: -8,7 +8,8; -110,6 +111,51 @@ def forward(self, x):; symbols: forward, _shared_experts_are_fp4, _fuse_shared_experts_enabled, DeepseekV4MoE
+  - `vllm/models/deepseek_v4/quant_config.py` modified +37/-2 (39 lines); hunks: -4,7 +4,7; -117,20 +117,55 @@ def _get_nvfp4_config(self) -> ModelOptNvFp4Config:; symbols: _get_nvfp4_config, get_name, _is_quark_mxfp4_ocp, override_quantization_method
+  - `vllm/models/deepseek_v4/amd/mtp.py` modified +17/-0 (17 lines); hunks: -334,6 +334,21 @@ def _find_mtp_layer_idx(name: str) -> int:; -393,6 +408,7 @@ def _find_mtp_layer_idx(name: str) -> int:; symbols: _find_mtp_layer_idx, _resolve_scale_name
+- Key code excerpts:
+
+```diff
+diff -- vllm/models/deepseek_v4/amd/model.py
+@@ -8,7 +8,8 @@
+-from vllm.config import VllmConfig
++import vllm.envs as envs
++from vllm.config import VllmConfig, get_current_vllm_config
+@@ -110,6 +111,51 @@ def forward(self, x):
++def _shared_experts_are_fp4(config, layer_idx: int | None = None) -> bool:
++    """Whether the shared experts are MXFP4 and thus fusable.
+diff -- vllm/models/deepseek_v4/quant_config.py
+@@ -4,7 +4,7 @@
+-from typing import TYPE_CHECKING
++from typing import TYPE_CHECKING, cast
+@@ -117,20 +117,55 @@ def _get_nvfp4_config(self) -> ModelOptNvFp4Config:
++    @staticmethod
++    def _is_quark_mxfp4_ocp(hf_quant_cfg: dict) -> bool:
++        """True for AMD-Quark exports whose global scheme is MXFP4."""
+diff -- vllm/models/deepseek_v4/amd/mtp.py
+@@ -334,6 +334,21 @@ def _find_mtp_layer_idx(name: str) -> int:
+```
+
+- Reviewed files:
+  - runtime: `vllm/models/deepseek_v4/amd/model.py` modified +121/-11; `vllm/models/deepseek_v4/quant_config.py` modified +37/-2; `vllm/models/deepseek_v4/amd/mtp.py` modified +17/-0
+- Risk and verification: Runtime changes concentrate in `vllm/models/deepseek_v4/amd/model.py`, `vllm/models/deepseek_v4/amd/mtp.py`, `vllm/models/deepseek_v4/quant_config.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #49415 - [Bugfix] Fix DeepSeek-V4 DSpark draft shared-expert padding for TP > 8
+
+- Link: https://github.com/vllm-project/vllm/pull/49415
+- Status/date: merged / 2026-07-23
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/nvidia/dspark.py`, `vllm/models/deepseek_v4/nvidia/model.py`, `vllm/models/deepseek_v4/nvidia/mtp.py`; associated commits `76bf55240cf8`
+- Diff scope read: GitHub Pull Request files API returned 3 files, +31/-11, 119 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Bugfix] Fix DeepSeek-V4 DSpark draft shared-expert padding for TP > 8"; model line: DeepSeek V4; category: bug fix; main diff: `vllm/models/deepseek_v4/nvidia/dspark.py`, `vllm/models/deepseek_v4/nvidia/mtp.py`, `vllm/models/deepseek_v4/nvidia/model.py`; technical summary: Covers "[Bugfix] Fix DeepSeek-V4 DSpark draft shared-expert padding for TP > 8"; the main implementation surface is `vllm/models/deepseek_v4/nvidia/dspark.py`, `vllm/models/deepseek_v4/nvidia/mtp.py`, `vllm/models/deepseek_v4/nvidia/model.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/models/deepseek_v4/nvidia/dspark.py` modified +12/-4 (16 lines); hunks: -43,6 +43,7; -277,6 +278,11 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__, load_weights, touching `__init__, load_weights`; `vllm/models/deepseek_v4/nvidia/mtp.py` modified +11/-4 (15 lines); hunks: -52,6 +52,7; -265,6 +266,10 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__, _find_mtp_layer_idx, touching `__init__, _find_mtp_layer_idx`; `vllm/models/deepseek_v4/nvidia/model.py` modified +8/-3 (11 lines); hunks: -1181,7 +1181,9 @@ def load_weights(self, weights: Iterable[tuple[str, torch....; -1256,15 +1258,18 @@ def load_weights(self, weights: Iterable[tuple[str, torc...; symbols: load_weights, _pad_shared_expert_weight, touching `load_weights, _pad_shared_expert_weight`.
+- Code diff details:
+  - `vllm/models/deepseek_v4/nvidia/dspark.py` modified +12/-4 (16 lines); hunks: -43,6 +43,7; -277,6 +278,11 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__, load_weights
+  - `vllm/models/deepseek_v4/nvidia/mtp.py` modified +11/-4 (15 lines); hunks: -52,6 +52,7; -265,6 +266,10 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__, _find_mtp_layer_idx
+  - `vllm/models/deepseek_v4/nvidia/model.py` modified +8/-3 (11 lines); hunks: -1181,7 +1181,9 @@ def load_weights(self, weights: Iterable[tuple[str, torch....; -1256,15 +1258,18 @@ def load_weights(self, weights: Iterable[tuple[str, torc...; symbols: load_weights, _pad_shared_expert_weight
+- Key code excerpts:
+
+```diff
+diff -- vllm/models/deepseek_v4/nvidia/dspark.py
+@@ -43,6 +43,7 @@
++    DeepseekV4Model,
+@@ -277,6 +278,11 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = "") -> None:
++        self.quant_config = vllm_config.quant_config
++        self.pad_shared_expert = (
++            getattr(self.quant_config, "weight_block_size", None) is not None
++            and not vllm_config.parallel_config.use_sequence_parallel_moe
+diff -- vllm/models/deepseek_v4/nvidia/mtp.py
+@@ -52,6 +52,7 @@
++    DeepseekV4Model,
+@@ -265,6 +266,10 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = ""):
++        self.pad_shared_expert = (
++            getattr(self.quant_config, "weight_block_size", None) is not None
++            and not vllm_config.parallel_config.use_sequence_parallel_moe
++        )
+diff -- vllm/models/deepseek_v4/nvidia/model.py
+@@ -1181,7 +1181,9 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Tensor]]) -> set[str]:
+```
+
+- Reviewed files:
+  - runtime: `vllm/models/deepseek_v4/nvidia/dspark.py` modified +12/-4; `vllm/models/deepseek_v4/nvidia/mtp.py` modified +11/-4; `vllm/models/deepseek_v4/nvidia/model.py` modified +8/-3
+- Risk and verification: Runtime changes concentrate in `vllm/models/deepseek_v4/nvidia/dspark.py`, `vllm/models/deepseek_v4/nvidia/model.py`, `vllm/models/deepseek_v4/nvidia/mtp.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #49486 - [DSv4 Perf] Skip topk and router when not needed, 3.4% E2E TTFT improvement for Decode case
+
+- Link: https://github.com/vllm-project/vllm/pull/49486
+- Status/date: merged / 2026-07-23
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/deepseek_v4/attention.py`; associated commits `b0cb1da1bde6`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +43/-0, 64 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[DSv4 Perf] Skip topk and router when not needed, 3.4% E2E TTFT improvement for Decode case"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `vllm/models/deepseek_v4/attention.py`; technical summary: Covers "[DSv4 Perf] Skip topk and router when not needed, 3.4% E2E TTFT improvement for Decode case"; the main implementation surface is `vllm/models/deepseek_v4/attention.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/models/deepseek_v4/attention.py` modified +43/-0 (43 lines); hunks: -46,6 +46,7; -65,6 +66,25; symbols: _fill_short_context_topk_indices, _resolve_dsv4_kv_cache_dtype, forward, wq_b_and_q_quant, touching `_fill_short_context_topk_indices, _resolve_dsv4_kv_cache_dtype, forward`.
+- Code diff details:
+  - `vllm/models/deepseek_v4/attention.py` modified +43/-0 (43 lines); hunks: -46,6 +46,7; -65,6 +66,25; symbols: _fill_short_context_topk_indices, _resolve_dsv4_kv_cache_dtype, forward, wq_b_and_q_quant
+- Key code excerpts:
+
+```diff
+diff -- vllm/models/deepseek_v4/attention.py
+@@ -46,6 +46,7 @@
++from vllm.triton_utils import tl, triton
+@@ -65,6 +66,25 @@
++@triton.jit
++def _fill_short_context_topk_indices(
++    output,
++    positions,
+```
+
+- Reviewed files:
+  - runtime: `vllm/models/deepseek_v4/attention.py` modified +43/-0
+- Risk and verification: Runtime changes concentrate in `vllm/models/deepseek_v4/attention.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ## Gap-Closure Notes
 

@@ -5,24 +5,28 @@
 | 文件 | git 追溯到的 PR |
 | --- | --- |
 | `python/sglang/srt/layers/quantization/quark/__init__.py` | 无直接 PR 号提交 |
-| `python/sglang/srt/layers/quantization/quark/quark.py` | [#10485](https://github.com/sgl-project/sglang/pull/10485), [#13147](https://github.com/sgl-project/sglang/pull/13147), [#18005](https://github.com/sgl-project/sglang/pull/18005), [#18182](https://github.com/sgl-project/sglang/pull/18182), [#18252](https://github.com/sgl-project/sglang/pull/18252), [#27057](https://github.com/sgl-project/sglang/pull/27057), [#28213](https://github.com/sgl-project/sglang/pull/28213) |
-| `python/sglang/srt/layers/quantization/quark/schemes/__init__.py` | [#10485](https://github.com/sgl-project/sglang/pull/10485), [#18252](https://github.com/sgl-project/sglang/pull/18252) |
+| `python/sglang/srt/layers/quantization/quark/quark.py` | [#10485](https://github.com/sgl-project/sglang/pull/10485), [#13147](https://github.com/sgl-project/sglang/pull/13147), [#18005](https://github.com/sgl-project/sglang/pull/18005), [#18182](https://github.com/sgl-project/sglang/pull/18182), [#18252](https://github.com/sgl-project/sglang/pull/18252), [#25467](https://github.com/sgl-project/sglang/pull/25467), [#25694](https://github.com/sgl-project/sglang/pull/25694), [#27057](https://github.com/sgl-project/sglang/pull/27057), [#27204](https://github.com/sgl-project/sglang/pull/27204), [#28213](https://github.com/sgl-project/sglang/pull/28213), [#28291](https://github.com/sgl-project/sglang/pull/28291) |
+| `python/sglang/srt/layers/quantization/quark/schemes/__init__.py` | [#10485](https://github.com/sgl-project/sglang/pull/10485), [#18252](https://github.com/sgl-project/sglang/pull/18252), [#27204](https://github.com/sgl-project/sglang/pull/27204) |
 | `python/sglang/srt/layers/quantization/quark/schemes/quark_scheme.py` | [#18252](https://github.com/sgl-project/sglang/pull/18252) |
-| `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4.py` | [#10485](https://github.com/sgl-project/sglang/pull/10485), [#18005](https://github.com/sgl-project/sglang/pull/18005), [#18182](https://github.com/sgl-project/sglang/pull/18182), [#18252](https://github.com/sgl-project/sglang/pull/18252), [#19422](https://github.com/sgl-project/sglang/pull/19422), [#28213](https://github.com/sgl-project/sglang/pull/28213) |
-| `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` | [#18005](https://github.com/sgl-project/sglang/pull/18005), [#18182](https://github.com/sgl-project/sglang/pull/18182), [#18252](https://github.com/sgl-project/sglang/pull/18252), [#18684](https://github.com/sgl-project/sglang/pull/18684), [#21040](https://github.com/sgl-project/sglang/pull/21040), [#21067](https://github.com/sgl-project/sglang/pull/21067), [#21097](https://github.com/sgl-project/sglang/pull/21097), [#23585](https://github.com/sgl-project/sglang/pull/23585), [#23597](https://github.com/sgl-project/sglang/pull/23597), [#23760](https://github.com/sgl-project/sglang/pull/23760), [#28213](https://github.com/sgl-project/sglang/pull/28213) |
-| `python/sglang/srt/layers/quantization/quark/schemes/quark_w8a8_fp8.py` | [#10485](https://github.com/sgl-project/sglang/pull/10485), [#18252](https://github.com/sgl-project/sglang/pull/18252) |
-| `python/sglang/srt/layers/quantization/quark/schemes/quark_w8a8_fp8_moe.py` | [#18252](https://github.com/sgl-project/sglang/pull/18252) |
-| `python/sglang/srt/layers/quantization/quark/utils.py` | [#10485](https://github.com/sgl-project/sglang/pull/10485), [#18182](https://github.com/sgl-project/sglang/pull/18182), [#28213](https://github.com/sgl-project/sglang/pull/28213) |
+| `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4.py` | [#10485](https://github.com/sgl-project/sglang/pull/10485), [#18005](https://github.com/sgl-project/sglang/pull/18005), [#18182](https://github.com/sgl-project/sglang/pull/18182), [#18252](https://github.com/sgl-project/sglang/pull/18252), [#19422](https://github.com/sgl-project/sglang/pull/19422), [#28213](https://github.com/sgl-project/sglang/pull/28213), [#28291](https://github.com/sgl-project/sglang/pull/28291) |
+| `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` | [#18005](https://github.com/sgl-project/sglang/pull/18005), [#18182](https://github.com/sgl-project/sglang/pull/18182), [#18252](https://github.com/sgl-project/sglang/pull/18252), [#18684](https://github.com/sgl-project/sglang/pull/18684), [#21040](https://github.com/sgl-project/sglang/pull/21040), [#21067](https://github.com/sgl-project/sglang/pull/21067), [#21097](https://github.com/sgl-project/sglang/pull/21097), [#23585](https://github.com/sgl-project/sglang/pull/23585), [#23597](https://github.com/sgl-project/sglang/pull/23597), [#23760](https://github.com/sgl-project/sglang/pull/23760), [#28213](https://github.com/sgl-project/sglang/pull/28213), [#28291](https://github.com/sgl-project/sglang/pull/28291) |
+| `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a8_mxfp4_moe.py` | [#27204](https://github.com/sgl-project/sglang/pull/27204) |
+| `python/sglang/srt/layers/quantization/quark/schemes/quark_w8a8_fp8.py` | [#10485](https://github.com/sgl-project/sglang/pull/10485), [#18252](https://github.com/sgl-project/sglang/pull/18252), [#29630](https://github.com/sgl-project/sglang/pull/29630) |
+| `python/sglang/srt/layers/quantization/quark/schemes/quark_w8a8_fp8_moe.py` | [#18252](https://github.com/sgl-project/sglang/pull/18252), [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30786](https://github.com/sgl-project/sglang/pull/30786) |
+| `python/sglang/srt/layers/quantization/quark/utils.py` | [#10485](https://github.com/sgl-project/sglang/pull/10485), [#18182](https://github.com/sgl-project/sglang/pull/18182), [#25467](https://github.com/sgl-project/sglang/pull/25467), [#28213](https://github.com/sgl-project/sglang/pull/28213), [#28291](https://github.com/sgl-project/sglang/pull/28291) |
+| `python/sglang/srt/layers/quantization/quark/weights.py` | [#27204](https://github.com/sgl-project/sglang/pull/27204) |
 | `python/sglang/srt/layers/quantization/quark_int4fp8_moe.py` | [#7392](https://github.com/sgl-project/sglang/pull/7392), [#23597](https://github.com/sgl-project/sglang/pull/23597), [#23760](https://github.com/sgl-project/sglang/pull/23760) |
 | `python/sglang/srt/models/mixtral.py` | [#460](https://github.com/sgl-project/sglang/pull/460), [#1081](https://github.com/sgl-project/sglang/pull/1081), [#1290](https://github.com/sgl-project/sglang/pull/1290), [#1418](https://github.com/sgl-project/sglang/pull/1418), [#1835](https://github.com/sgl-project/sglang/pull/1835), [#2156](https://github.com/sgl-project/sglang/pull/2156), [#2163](https://github.com/sgl-project/sglang/pull/2163), [#2300](https://github.com/sgl-project/sglang/pull/2300), [#2371](https://github.com/sgl-project/sglang/pull/2371), [#2563](https://github.com/sgl-project/sglang/pull/2563), [#6223](https://github.com/sgl-project/sglang/pull/6223), [#7966](https://github.com/sgl-project/sglang/pull/7966), ... (17 total) |
 | `python/sglang/srt/models/mixtral_quant.py` | [#460](https://github.com/sgl-project/sglang/pull/460), [#1081](https://github.com/sgl-project/sglang/pull/1081) |
-| `test/registered/quant/test_quark_mxfp4.py` | [#18005](https://github.com/sgl-project/sglang/pull/18005), [#18182](https://github.com/sgl-project/sglang/pull/18182), [#28213](https://github.com/sgl-project/sglang/pull/28213) |
+| `test/registered/quant/test_quark_mxfp4.py` | [#18005](https://github.com/sgl-project/sglang/pull/18005), [#18182](https://github.com/sgl-project/sglang/pull/18182), [#28213](https://github.com/sgl-project/sglang/pull/28213), [#28291](https://github.com/sgl-project/sglang/pull/28291) |
+| `test/registered/unit/layers/quantization/test_quark_config.py` | [#25694](https://github.com/sgl-project/sglang/pull/25694) |
+| `test/registered/unit/layers/quantization/test_quark_utils.py` | 无直接 PR 号提交 |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 33
-- 原文档显式引用补充 PR 数: 10
-- 当前文档总 PR 数: 42
+- git 追溯 PR 数: 38
+- 原文档显式引用补充 PR 数: 9
+- 当前文档总 PR 数: 47
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -72,6 +76,11 @@
 | 2026-06-13 | [#18182](https://github.com/sgl-project/sglang/pull/18182) | merged | [AMD][Quantization] Online MXFP4 quantization 2/N - FP8 to MXFP4 requantization on AMD GPUs | `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`, `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4.py`, `python/sglang/srt/layers/quantization/quark/quark.py` |
 | 2026-06-14 | [#28213](https://github.com/sgl-project/sglang/pull/28213) | merged | Revert "[AMD][Quantization] Online MXFP4 quantization 2/N - FP8 to MXFP4 requantization on AMD GPUs" | `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`, `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4.py`, `python/sglang/srt/layers/quantization/quark/quark.py` |
 | 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | merged | Add get_parallel(): a structured accessor for parallel-topology state | `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py` |
+| 2026-06-30 | [#27204](https://github.com/sgl-project/sglang/pull/27204) | merged | [AMD] Implement QuarkW4A8MXFp4MoE to support amd/gpt-oss-120b-w-mxfp4-a-fp8 | `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a8_mxfp4_moe.py`, `python/sglang/srt/layers/quantization/quark/weights.py`, `python/sglang/srt/layers/quantization/quark/quark.py` |
+| 2026-07-09 | [#25467](https://github.com/sgl-project/sglang/pull/25467) | merged | [Quantization] Update error message strings with correct framework name in Quark/compressed-tensors | `python/sglang/srt/layers/quantization/compressed_tensors/utils.py`, `python/sglang/srt/layers/quantization/quark/utils.py`, `python/sglang/srt/layers/quantization/quark/quark.py` |
+| 2026-07-09 | [#25694](https://github.com/sgl-project/sglang/pull/25694) | merged | [Quantization][Bugfix]: Join multi-arg RuntimeError in Quark _check_scheme_supported | `test/registered/unit/layers/quantization/test_quark_config.py`, `python/sglang/srt/layers/quantization/quark/quark.py` |
+| 2026-07-14 | [#30786](https://github.com/sgl-project/sglang/pull/30786) | merged | [Kernel] Migrate scattered MoE kernels to sglang.kernels (RFC #29630, Phase 2.5, 2/7) | `python/sglang/srt/layers/quantization/quark/schemes/quark_w8a8_fp8_moe.py` |
+| 2026-07-21 | [#28291](https://github.com/sgl-project/sglang/pull/28291) | merged | [AMD][MXFP4] Reland "Online MXFP4 quantization 2/N - FP8 to MXFP4 requantization on AMD GPUs" | `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`, `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4.py`, `python/sglang/srt/layers/quantization/quark/quark.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -1396,6 +1405,185 @@ diff -- python/sglang/srt/models/gpt_oss.py
 - 已读文件:
   - runtime: `python/sglang/srt/models/apertus.py` modified +686/-687; `python/sglang/srt/models/solar.py` modified +28/-27; `python/sglang/srt/models/gpt_oss.py` modified +17/-24; `python/sglang/srt/models/deepseek_v2.py` modified +14/-23; `python/sglang/srt/layers/communicator.py` modified +13/-19; `python/sglang/srt/models/qwen3_moe.py` modified +12/-18
 - 验证与风险: diff 自带测试面 `python/sglang/test/kits/attention_unittest/attention_methods/dense_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsa_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsv4_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dual_chunk_attention.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #27204 - [AMD] Implement QuarkW4A8MXFp4MoE to support amd/gpt-oss-120b-w-mxfp4-a-fp8
+
+- 链接: https://github.com/sgl-project/sglang/pull/27204
+- 状态/时间: merged / 2026-06-30
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/quantization/quark/quark.py`, `python/sglang/srt/layers/quantization/quark/schemes/__init__.py`, `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a8_mxfp4_moe.py`, `python/sglang/srt/layers/quantization/quark/weights.py`；关联提交 `a5e6dd37677f`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+948/-3，可读 patch 998 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[AMD] Implement QuarkW4A8MXFp4MoE to support amd/gpt-oss-120b-w-mxfp4-a-fp8」；模型线: Mixtral Quark INT4/FP8 MoE；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a8_mxfp4_moe.py`, `python/sglang/srt/layers/quantization/quark/weights.py`, `python/sglang/srt/layers/quantization/quark/quark.py`；技术摘要: 覆盖「[AMD] Implement QuarkW4A8MXFp4MoE to support amd/gpt-oss-120b-w-mxfp4-a-fp8」；主要实现面是 `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a8_mxfp4_moe.py`, `python/sglang/srt/layers/quantization/quark/weights.py`, `python/sglang/srt/layers/quantization/quark/quark.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a8_mxfp4_moe.py` added +407/-0 (407 lines); hunks: -0,0 +1,407; symbols: QuarkW4A8MXFp4MoE, __init__, get_min_capability, create_weights，涉及 `QuarkW4A8MXFp4MoE, __init__, get_min_capability`；`python/sglang/srt/layers/quantization/quark/weights.py` added +248/-0 (248 lines); hunks: -0,0 +1,248; symbols: load_gptoss_weight_quark, _load_gptoss_quark_expert_weights，涉及 `load_gptoss_weight_quark, _load_gptoss_quark_expert_weights`；`python/sglang/srt/layers/quantization/quark/quark.py` modified +26/-0 (26 lines); hunks: -20,6 +20,7; -385,6 +386,28 @@ def _is_mx_fp4(; symbols: _is_mx_fp4, _is_mx_w4a8, _find_matched_config, get_moe_scheme，涉及 `_is_mx_fp4, _is_mx_w4a8, _find_matched_config`；`python/sglang/srt/layers/quantization/quark/schemes/__init__.py` modified +2/-0 (2 lines); hunks: -3,6 +3,7; -12,5 +13,6。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a8_mxfp4_moe.py` added +407/-0 (407 lines); hunks: -0,0 +1,407; symbols: QuarkW4A8MXFp4MoE, __init__, get_min_capability, create_weights
+  - `python/sglang/srt/layers/quantization/quark/weights.py` added +248/-0 (248 lines); hunks: -0,0 +1,248; symbols: load_gptoss_weight_quark, _load_gptoss_quark_expert_weights
+  - `python/sglang/srt/layers/quantization/quark/quark.py` modified +26/-0 (26 lines); hunks: -20,6 +20,7; -385,6 +386,28 @@ def _is_mx_fp4(; symbols: _is_mx_fp4, _is_mx_w4a8, _find_matched_config, get_moe_scheme
+  - `python/sglang/srt/layers/quantization/quark/schemes/__init__.py` modified +2/-0 (2 lines); hunks: -3,6 +3,7; -12,5 +13,6
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/quantization/quark/schemes/quark_w4a8_mxfp4_moe.py
+@@ -0,0 +1,407 @@
++# SPDX-License-Identifier: Apache-2.0
++from __future__ import annotations
++import logging
++from dataclasses import replace
++from typing import TYPE_CHECKING, Any
++import torch
+diff -- python/sglang/srt/layers/quantization/quark/weights.py
+@@ -0,0 +1,248 @@
++# SPDX-License-Identifier: Apache-2.0
++import math
++import re
++import torch
++from sglang.srt.distributed import (
++    get_moe_expert_parallel_rank,
+diff -- python/sglang/srt/layers/quantization/quark/quark.py
+@@ -20,6 +20,7 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a8_mxfp4_moe.py` added +407/-0; `python/sglang/srt/layers/quantization/quark/weights.py` added +248/-0; `python/sglang/srt/layers/quantization/quark/quark.py` modified +26/-0; `python/sglang/srt/layers/quantization/quark/schemes/__init__.py` modified +2/-0
+- 验证与风险: diff 自带测试面 `test/registered/amd/accuracy/mi35x/test_gpt_oss_w4a8_mxfp4_eval_mi35x.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #25467 - [Quantization] Update error message strings with correct framework name in Quark/compressed-tensors
+
+- 链接: https://github.com/sgl-project/sglang/pull/25467
+- 状态/时间: merged / 2026-07-09
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/quantization/quark/quark.py`, `python/sglang/srt/layers/quantization/quark/utils.py`；关联提交 `966350408eba`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+5/-5，可读 patch 31 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Quantization] Update error message strings with correct framework name in Quark/compressed-tensors」；模型线: Mixtral Quark INT4/FP8 MoE；类别: 缺陷修复；主要 diff: `python/sglang/srt/layers/quantization/compressed_tensors/utils.py`, `python/sglang/srt/layers/quantization/quark/utils.py`, `python/sglang/srt/layers/quantization/quark/quark.py`；技术摘要: 覆盖「[Quantization] Update error message strings with correct framework name in Quark/compressed-tensors」；主要实现面是 `python/sglang/srt/layers/quantization/compressed_tensors/utils.py`, `python/sglang/srt/layers/quantization/quark/utils.py`, `python/sglang/srt/layers/quantization/quark/quark.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/quantization/compressed_tensors/utils.py` modified +2/-2 (4 lines); hunks: -59,8 +59,8 @@ def should_ignore_layer(; symbols: should_ignore_layer，涉及 `should_ignore_layer`；`python/sglang/srt/layers/quantization/quark/utils.py` modified +2/-2 (4 lines); hunks: -72,8 +72,8 @@ def should_ignore_layer(; symbols: should_ignore_layer，涉及 `should_ignore_layer`；`python/sglang/srt/layers/quantization/quark/quark.py` modified +1/-1 (2 lines); hunks: -407,7 +407,7 @@ def _find_matched_config(; symbols: _find_matched_config，涉及 `_find_matched_config`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/quantization/compressed_tensors/utils.py` modified +2/-2 (4 lines); hunks: -59,8 +59,8 @@ def should_ignore_layer(; symbols: should_ignore_layer
+  - `python/sglang/srt/layers/quantization/quark/utils.py` modified +2/-2 (4 lines); hunks: -72,8 +72,8 @@ def should_ignore_layer(; symbols: should_ignore_layer
+  - `python/sglang/srt/layers/quantization/quark/quark.py` modified +1/-1 (2 lines); hunks: -407,7 +407,7 @@ def _find_matched_config(; symbols: _find_matched_config
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/quantization/compressed_tensors/utils.py
+@@ -59,8 +59,8 @@ def should_ignore_layer(
+-                    f"Found a different quantization schemes for "
+-                    f"{shard_proj_names} in {layer_name}. vLLM "
++                    f"Found different quantization schemes for "
++                    f"{shard_proj_names} in {layer_name}. SGLang "
+diff -- python/sglang/srt/layers/quantization/quark/utils.py
+@@ -72,8 +72,8 @@ def should_ignore_layer(
+-                    f"Found a different quantization schemes for "
+-                    f"{shard_proj_names} in {layer_name}. vLLM "
++                    f"Found different quantization schemes for "
++                    f"{shard_proj_names} in {layer_name}. SGLang "
+diff -- python/sglang/srt/layers/quantization/quark/quark.py
+@@ -407,7 +407,7 @@ def _find_matched_config(
+-                    f"{shard_proj_names} in {layer_name}. vLLM "
++                    f"{shard_proj_names} in {layer_name}. SGLang "
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/quantization/compressed_tensors/utils.py` modified +2/-2; `python/sglang/srt/layers/quantization/quark/utils.py` modified +2/-2; `python/sglang/srt/layers/quantization/quark/quark.py` modified +1/-1
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/quantization/compressed_tensors/utils.py`, `python/sglang/srt/layers/quantization/quark/quark.py`, `python/sglang/srt/layers/quantization/quark/utils.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #25694 - [Quantization][Bugfix]: Join multi-arg RuntimeError in Quark _check_scheme_supported
+
+- 链接: https://github.com/sgl-project/sglang/pull/25694
+- 状态/时间: merged / 2026-07-09
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/quantization/quark/quark.py`, `test/registered/unit/layers/quantization/test_quark_config.py`；关联提交 `40a522203c53`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+92/-3，可读 patch 104 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Quantization][Bugfix]: Join multi-arg RuntimeError in Quark _check_scheme_supported」；模型线: Mixtral Quark INT4/FP8 MoE；类别: 缺陷修复；主要 diff: `test/registered/unit/layers/quantization/test_quark_config.py`, `python/sglang/srt/layers/quantization/quark/quark.py`；技术摘要: 覆盖「[Quantization][Bugfix]: Join multi-arg RuntimeError in Quark _check_scheme_supported」；主要实现面是 `test/registered/unit/layers/quantization/test_quark_config.py`, `python/sglang/srt/layers/quantization/quark/quark.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/unit/layers/quantization/test_quark_config.py` added +87/-0 (87 lines); hunks: -0,0 +1,87; symbols: _bare_config, TestCheckSchemeSupportedError, test_error_is_single_argument, test_error_message_renders_as_sentence，涉及 `_bare_config, TestCheckSchemeSupportedError, test_error_is_single_argument`；`python/sglang/srt/layers/quantization/quark/quark.py` modified +5/-3 (8 lines); hunks: -294,10 +294,12 @@ def _check_scheme_supported(self, min_capability: int, err...; symbols: _check_scheme_supported，涉及 `_check_scheme_supported`。
+- 代码 diff 细节:
+  - `test/registered/unit/layers/quantization/test_quark_config.py` added +87/-0 (87 lines); hunks: -0,0 +1,87; symbols: _bare_config, TestCheckSchemeSupportedError, test_error_is_single_argument, test_error_message_renders_as_sentence
+  - `python/sglang/srt/layers/quantization/quark/quark.py` modified +5/-3 (8 lines); hunks: -294,10 +294,12 @@ def _check_scheme_supported(self, min_capability: int, err...; symbols: _check_scheme_supported
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/unit/layers/quantization/test_quark_config.py
+@@ -0,0 +1,87 @@
++"""Unit tests for QuarkConfig — CPU-only, no model loading."""
++from sglang.test.ci.ci_register import register_cpu_ci
++register_cpu_ci(est_time=5, suite="base-a-test-cpu")
++import unittest
++from unittest.mock import patch
++from sglang.srt.layers.quantization.quark.quark import QuarkConfig
+diff -- python/sglang/srt/layers/quantization/quark/quark.py
+@@ -294,10 +294,12 @@ def _check_scheme_supported(self, min_capability: int, error: bool = True) -> bo
++                # Pass a single joined message; RuntimeError stringifies
++                # multiple positional args as a tuple repr.
+-                    "Quantization scheme is not supported for ",
+-                    f"the current GPU. Min capability: {min_capability}. ",
+-                    f"Current capability: {capability}.",
++                    "Quantization scheme is not supported for "
+```
+
+- 已读文件:
+  - tests: `test/registered/unit/layers/quantization/test_quark_config.py` added +87/-0
+  - runtime: `python/sglang/srt/layers/quantization/quark/quark.py` modified +5/-3
+- 验证与风险: diff 自带测试面 `test/registered/unit/layers/quantization/test_quark_config.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #30786 - [Kernel] Migrate scattered MoE kernels to sglang.kernels (RFC #29630, Phase 2.5, 2/7)
+
+- 链接: https://github.com/sgl-project/sglang/pull/30786
+- 状态/时间: merged / 2026-07-14
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/quantization/quark/schemes/quark_w8a8_fp8_moe.py`；关联提交 `ee464fedc63e`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 31 个文件，+480/-475，可读 patch 1267 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Kernel] Migrate scattered MoE kernels to sglang.kernels (RFC #29630, Phase 2.5, 2/7)」；模型线: Mixtral Quark INT4/FP8 MoE；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/quantization/quark/schemes/quark_w8a8_fp8_moe.py`；技术摘要: 覆盖「[Kernel] Migrate scattered MoE kernels to sglang.kernels (RFC #29630, Phase 2.5, 2/7)」；主要实现面是 `python/sglang/srt/layers/quantization/quark/schemes/quark_w8a8_fp8_moe.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/quantization/quark/schemes/quark_w8a8_fp8_moe.py` modified +1/-1 (2 lines); hunks: -31,7 +31,7; symbols: QuarkW8A8FP8MoE，涉及 `QuarkW8A8FP8MoE`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/quantization/quark/schemes/quark_w8a8_fp8_moe.py` modified +1/-1 (2 lines); hunks: -31,7 +31,7; symbols: QuarkW8A8FP8MoE
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/quantization/quark/schemes/quark_w8a8_fp8_moe.py
+@@ -31,7 +31,7 @@
+-    from sglang.srt.layers.moe.rocm_moe_utils import rocm_fused_experts_tkw1
++    from sglang.kernels.ops.moe.rocm_moe_utils import rocm_fused_experts_tkw1
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/quantization/quark/schemes/quark_w8a8_fp8_moe.py` modified +1/-1
+- 验证与风险: diff 自带测试面 `python/sglang/jit_kernel/tests/test_minimax_m3_mxfp8.py`, `test/registered/jit/benchmark/bench_post_reorder_deepgemm.py`, `test/registered/jit/minimax/test_minimax_quant_scatter.py`, `test/registered/jit/test_post_reorder_deepgemm.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #28291 - [AMD][MXFP4] Reland "Online MXFP4 quantization 2/N - FP8 to MXFP4 requantization on AMD GPUs"
+
+- 链接: https://github.com/sgl-project/sglang/pull/28291
+- 状态/时间: merged / 2026-07-21
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/quantization/quark/quark.py`, `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4.py`, `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`, `python/sglang/srt/layers/quantization/quark/utils.py`, `test/registered/quant/test_quark_mxfp4.py`；关联提交 `dcd9014f1503`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 14 个文件，+1054/-131，可读 patch 1729 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[AMD][MXFP4] Reland "Online MXFP4 quantization 2/N - FP8 to MXFP4 requantization on AMD GPUs"」；模型线: Mixtral Quark INT4/FP8 MoE；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`, `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4.py`, `python/sglang/srt/layers/quantization/quark/quark.py`；技术摘要: 覆盖「[AMD][MXFP4] Reland "Online MXFP4 quantization 2/N - FP8 to MXFP4 requantization on AMD GPUs"」；主要实现面是 `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`, `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4.py`, `python/sglang/srt/layers/quantization/quark/quark.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` modified +375/-28 (403 lines); hunks: -3,12 +3,20; -51,10 +59,12 @@ def __init__(; symbols: __init__, create_weights, get_online_weight_loader，涉及 `__init__, create_weights, get_online_weight_loader`；`python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4.py` modified +214/-33 (247 lines); hunks: -1,11 +1,19; -162,12 +170,14 @@ def __init__(; symbols: __init__, create_weights, get_online_mxfp4_weight_loader, online_mxfp4_weight_loader，涉及 `__init__, create_weights, get_online_mxfp4_weight_loader`；`python/sglang/srt/layers/quantization/quark/quark.py` modified +83/-15 (98 lines); hunks: -14,6 +14,7; -55,13 +56,14 @@ class QuarkConfig(QuantizationConfig):; symbols: QuarkConfig, __init__, quantized_layers, log_online_quantization，涉及 `QuarkConfig, __init__, quantized_layers`；`python/sglang/srt/layers/quantization/quark/utils.py` modified +4/-0 (4 lines); hunks: -206,5 +206,9 @@ def quark_post_load_weights(self_attn: nn.Module, w: torch.T...; symbols: quark_post_load_weights，涉及 `quark_post_load_weights`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` modified +375/-28 (403 lines); hunks: -3,12 +3,20; -51,10 +59,12 @@ def __init__(; symbols: __init__, create_weights, get_online_weight_loader
+  - `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4.py` modified +214/-33 (247 lines); hunks: -1,11 +1,19; -162,12 +170,14 @@ def __init__(; symbols: __init__, create_weights, get_online_mxfp4_weight_loader, online_mxfp4_weight_loader
+  - `python/sglang/srt/layers/quantization/quark/quark.py` modified +83/-15 (98 lines); hunks: -14,6 +14,7; -55,13 +56,14 @@ class QuarkConfig(QuantizationConfig):; symbols: QuarkConfig, __init__, quantized_layers, log_online_quantization
+  - `python/sglang/srt/layers/quantization/quark/utils.py` modified +4/-0 (4 lines); hunks: -206,5 +206,9 @@ def quark_post_load_weights(self_attn: nn.Module, w: torch.T...; symbols: quark_post_load_weights
+  - `python/sglang/srt/layers/quantization/fp8_utils.py` modified +2/-0 (2 lines); hunks: -1378,6 +1378,8 @@ def block_quant_dequant(; symbols: block_quant_dequant
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py
+@@ -3,12 +3,20 @@
++import threading
++from sglang.srt.layers.quantization.base_config import QuantizationConfig
++from sglang.srt.layers.quantization.dequantization import (
++    copy_missing_attrs,
++    dequantize_fp8,
++)
+diff -- python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4.py
+@@ -1,11 +1,19 @@
++import threading
++from sglang.srt.layers.quantization import QuantizationConfig
++from sglang.srt.layers.quantization.dequantization import (
++    copy_missing_attrs,
++    dequantize_fp8,
++)
+diff -- python/sglang/srt/layers/quantization/quark/quark.py
+@@ -14,6 +14,7 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` modified +375/-28; `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4.py` modified +214/-33; `python/sglang/srt/layers/quantization/quark/quark.py` modified +83/-15; `python/sglang/srt/layers/quantization/quark/utils.py` modified +4/-0; `python/sglang/srt/layers/quantization/fp8_utils.py` modified +2/-0; `python/sglang/srt/model_loader/utils.py` modified +15/-1
+  - tests: `test/registered/quant/test_quark_mxfp4.py` modified +134/-0
+- 验证与风险: diff 自带测试面 `test/registered/quant/test_quark_mxfp4.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论
 

@@ -1,12 +1,14 @@
 # TensorRT-LLM Kimi 模型 PR 优化历史
 
-## 2026-06-27 源码 head 刷新
+## 2026-07-27 源码 head 刷新
 
-已用 `git ls-remote` 复核 TensorRT-LLM 上游 main head：
-`NVIDIA/TensorRT-LLM@aaffa2f9fef3025e0f698d978385a73460344e0b`。
-下方文件级 source-scan 行仍是上一轮 tracked-file 审计结果；引用当前 open PR 状态前，先看 `model-pr-optimization-history/open-pr-watch.md`。
+已复核 TensorRT-LLM 上游 main：
+`NVIDIA/TensorRT-LLM@1b4ffc0291d75a21ad20118e8f44de6e3831f786`。
+针对上一记录 head `aaffa2f9fef3025e0f698d978385a73460344e0b` 之后的范围执行了
+`git log --name-only -- <model-files>`，并从上游最终提交逐文件读完下方高信号 Kimi runtime 合并的源码 diff。
 
-结果：除了本文已有 timeline/backfill 行之外，没有额外 PR-numbered merge 命中 tracked files。
+结果：PR #14848 已提升为完整 diff 审计卡。仅调整超时或 disaggregated 测试 lane 的变化保留在
+`model-pr-optimization-history/open-pr-watch.md`，不冒充新的 runtime 优化证据。
 
 ## 2026-06-27 PR 补漏复核
 
@@ -58,6 +60,30 @@ diff 审计卡。
 | 2026-06-25 | [#15180](https://github.com/NVIDIA/TensorRT-LLM/pull/15180) | merged | Add necessary methods for guided decoding in Kimi K2.5 | `modeling_kimi_k25.py` |
 
 ## 逐 PR diff 审计卡
+
+### PR #14848 - DeepSeek-V3.2 / Kimi-K2.5 的 RMSNorm NVFP4 量化融合
+
+- 链接: https://github.com/NVIDIA/TensorRT-LLM/pull/14848
+- 状态/时间: merged / 2026-07-15
+- 反查来源: `git log --name-only -- <model-files>`，并结合最终上游提交和 PR 正文。
+- 代码 diff 已读范围: 完整 2,487 行 diff，16 个文件，+1993/-101。
+- 动机: 静态 NVFP4 Kimi-K2.5 在兼容 Linear 前会分别启动 RMSNorm 和激活量化 kernel，既落地中间归一化张量，也多一次 launch。
+- 实现要点: 新增 Blackwell 专用 C++/CUDA 算子，把可选 residual-add、RMSNorm 和 NVFP4 量化融合；同时支持紧凑与按行有 stride 的输入，需要其他消费者时还能返回未量化 norm，并把合适的 RMSNorm→Linear 边接到融合结果。
+- 代码 diff 细节: `rmsNormFp4QuantKernel` 同时完成 reduction、E2M1 打包和 E4M3 block scale 输出；Python dispatch 对不支持的架构/shape 保持原路径。
+- 关键代码摘录:
+
+```diff
++// Fused (optional residual-add +) RMSNorm + NVFP4 input-quantize.
++__global__ void rmsNormFp4QuantKernel(RmsNormFp4QuantParams params)
++{
++    float const denom = rsqrtf(acc / params.hidden_size + params.eps);
++    uint32_t const quant_val = cvt_warp_fp16_to_fp4<T, kSfVecSize, false>(
++        pv, sf_scale, sf_out_ptr);
++}
+```
+
+- 已读文件: runtime：`cpp/tensorrt_llm/kernels/rmsNormFp4QuantKernels.{cu,h}`、`cpp/tensorrt_llm/thop/rmsNormFp4Quant.cpp`、`tensorrt_llm/_torch/modules/{rms_norm,linear,mla}.py`、`modeling_deepseekv3.py`；测试：`test_fused_rmsnorm_fp4_quantize.py`、`test_fp4_num_tokens_slice.py`、B200 test database。
+- 验证与风险: 融合 FP4 epilogue 仅支持 SM10.x；验证同时比较 packed FP4 与反 swizzle 后的 scale factor，覆盖 stride 输入和不修改输入，并区分 RMSNorm 舍入漂移与对返回 norm 重新量化时的 bit-exact 要求。
 
 ### PR #9711 - Deployment Guide for Kimi K2 Thinking on TensorRT LLM - Blackwell
 

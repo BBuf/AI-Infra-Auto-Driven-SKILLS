@@ -1,0 +1,149 @@
+# sglang Hunyuan3 Preview 模型 PR 优化历史
+
+## 模型实现文件覆盖
+
+| 文件 | git 追溯到的 PR |
+| --- | --- |
+| `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` | [#23532](https://github.com/sgl-project/sglang/pull/23532), [#30201](https://github.com/sgl-project/sglang/pull/30201) |
+| `docs_new/cookbook/autoregressive/Tencent/Hy3.mdx` | [#30201](https://github.com/sgl-project/sglang/pull/30201) |
+| `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx` | [#23532](https://github.com/sgl-project/sglang/pull/23532) |
+| `docs_new/src/snippets/configs/tencent/hy3-benchmarks.jsx` | [#30201](https://github.com/sgl-project/sglang/pull/30201) |
+| `docs_new/src/snippets/configs/tencent/hy3.jsx` | [#30201](https://github.com/sgl-project/sglang/pull/30201) |
+| `python/sglang/srt/function_call/hunyuan_detector.py` | [#23533](https://github.com/sgl-project/sglang/pull/23533) |
+| `test/registered/unit/function_call/test_hunyuan_detector.py` | [#23533](https://github.com/sgl-project/sglang/pull/23533) |
+
+## PR 覆盖总览
+
+- git 追溯 PR 数: 3
+- 原文档显式引用补充 PR 数: 0
+- 当前文档总 PR 数: 3
+- 文件追溯命令: `git log --name-only -- <model-files>`
+- diff 审计来源: GitHub Pull Request files API
+
+## 时间线
+
+| 日期 | PR | 状态 | 标题 | 主要文件 |
+| --- | --- | --- | --- | --- |
+| 2026-04-23 | [#23532](https://github.com/sgl-project/sglang/pull/23532) | merged | docs: add Hunyuan 3 Preview cookbook | `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`, `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx` |
+| 2026-04-24 | [#23533](https://github.com/sgl-project/sglang/pull/23533) | merged | support Hy3 preview | `test/registered/unit/function_call/test_hunyuan_detector.py`, `python/sglang/srt/function_call/hunyuan_detector.py` |
+| 2026-07-06 | [#30201](https://github.com/sgl-project/sglang/pull/30201) | merged | cookbook: add Hunyuan 3 (Hy3) Day-0 page | `docs_new/src/snippets/configs/tencent/hy3.jsx`, `docs_new/src/snippets/configs/tencent/hy3-benchmarks.jsx`, `docs_new/cookbook/autoregressive/Tencent/Hy3.mdx` |
+
+## 逐 PR diff 审计卡
+
+### PR #23532 - docs: add Hunyuan 3 Preview cookbook
+
+- 链接: https://github.com/sgl-project/sglang/pull/23532
+- 状态/时间: merged / 2026-04-23
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`, `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx`；关联提交 `4868e367f851`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+707/-0，可读 patch 716 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「docs: add Hunyuan 3 Preview cookbook」；模型线: Hunyuan3 Preview；类别: 文档/测试/CI；主要 diff: `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`, `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx`；技术摘要: 覆盖「docs: add Hunyuan 3 Preview cookbook」；主要实现面是 `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`, `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` added +527/-0 (527 lines); hunks: -0,0 +1,527; symbols: GPUs，涉及 `GPUs`；`docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx` added +174/-0 (174 lines); hunks: -0,0 +1,174; symbols: GPUs，涉及 `GPUs`。
+- 代码 diff 细节:
+  - `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` added +527/-0 (527 lines); hunks: -0,0 +1,527; symbols: GPUs
+  - `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx` added +174/-0 (174 lines); hunks: -0,0 +1,174; symbols: GPUs
+- 关键代码摘录:
+
+```diff
+diff -- docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx
+@@ -0,0 +1,527 @@
++---
++title: Hunyuan 3 Preview
++metatags:
++    description: "Deploy Tencent Hunyuan 3 Preview BF16 (~276B / ~20B active MoE) on NVIDIA GPUs with SGLang — hybrid thinking, native tool calling, 256K context, and built-in MTP
++tag: NEW
++---
+diff -- docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx
+@@ -0,0 +1,174 @@
++export const Hunyuan3PreviewDeployment = () => {
++  // Hunyuan 3 Preview (~276B total / ~20B active MoE) — BF16 only.
++  // ~552GB weights; 80GB-class GPUs (A100/H100) cannot fit single-node.
++  //   H200 (141GB): tp=8
++  //   B200 (180GB): tp=8
++  //   B300 (275GB): tp=4
+```
+
+- 已读文件:
+  - docs: `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` added +527/-0; `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx` added +174/-0
+- 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`, `docs_new/docs.json`, `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #23533 - support Hy3 preview
+
+- 链接: https://github.com/sgl-project/sglang/pull/23533
+- 状态/时间: merged / 2026-04-24
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/function_call/hunyuan_detector.py`, `test/registered/unit/function_call/test_hunyuan_detector.py`；关联提交 `6d038614760f`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 25 个文件，+4095/-3，可读 patch 4205 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「support Hy3 preview」；模型线: Hunyuan3 Preview；类别: 文档/测试/CI；主要 diff: `test/registered/unit/function_call/test_hunyuan_detector.py`, `python/sglang/srt/function_call/hunyuan_detector.py`；技术摘要: 覆盖「support Hy3 preview」；主要实现面是 `test/registered/unit/function_call/test_hunyuan_detector.py`, `python/sglang/srt/function_call/hunyuan_detector.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/unit/function_call/test_hunyuan_detector.py` added +733/-0 (733 lines); hunks: -0,0 +1,733; symbols: _make_tools, TestHunyuanDetectorHasToolCall, setUp, test_has_tool_call_true，涉及 `_make_tools, TestHunyuanDetectorHasToolCall, setUp`；`python/sglang/srt/function_call/hunyuan_detector.py` added +476/-0 (476 lines); hunks: -0,0 +1,476; symbols: HunyuanDetector, __init__, _normalize_type, _get_arg_schema，涉及 `HunyuanDetector, __init__, _normalize_type`。
+- 代码 diff 细节:
+  - `test/registered/unit/function_call/test_hunyuan_detector.py` added +733/-0 (733 lines); hunks: -0,0 +1,733; symbols: _make_tools, TestHunyuanDetectorHasToolCall, setUp, test_has_tool_call_true
+  - `python/sglang/srt/function_call/hunyuan_detector.py` added +476/-0 (476 lines); hunks: -0,0 +1,476; symbols: HunyuanDetector, __init__, _normalize_type, _get_arg_schema
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/unit/function_call/test_hunyuan_detector.py
+@@ -0,0 +1,733 @@
++"""Unit tests for HunyuanDetector - no server, no model loading."""
++import json
++import unittest
++from sglang.srt.entrypoints.openai.protocol import Function, Tool
++from sglang.srt.function_call.hunyuan_detector import HunyuanDetector
++from sglang.test.ci.ci_register import register_cpu_ci
+diff -- python/sglang/srt/function_call/hunyuan_detector.py
+@@ -0,0 +1,476 @@
++import json
++import logging
++import re
++from typing import Any, Dict, List, Optional, Set
++from sglang.srt.entrypoints.openai.protocol import Tool
++from sglang.srt.environ import envs
+```
+
+- 已读文件:
+  - tests: `test/registered/unit/function_call/test_hunyuan_detector.py` added +733/-0
+  - runtime: `python/sglang/srt/function_call/hunyuan_detector.py` added +476/-0
+- 验证与风险: diff 自带测试面 `test/registered/unit/entrypoints/openai/test_serving_chat.py`, `test/registered/unit/function_call/test_hunyuan_detector.py`, `test/registered/unit/parser/test_reasoning_parser.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #30201 - cookbook: add Hunyuan 3 (Hy3) Day-0 page
+
+- 链接: https://github.com/sgl-project/sglang/pull/30201
+- 状态/时间: merged / 2026-07-06
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`, `docs_new/cookbook/autoregressive/Tencent/Hy3.mdx`, `docs_new/src/snippets/configs/tencent/hy3-benchmarks.jsx`, `docs_new/src/snippets/configs/tencent/hy3.jsx`；关联提交 `6f22790943a8`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+944/-2，可读 patch 970 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「cookbook: add Hunyuan 3 (Hy3) Day-0 page」；模型线: Hunyuan3 Preview；类别: 文档/测试/CI；主要 diff: `docs_new/src/snippets/configs/tencent/hy3.jsx`, `docs_new/src/snippets/configs/tencent/hy3-benchmarks.jsx`, `docs_new/cookbook/autoregressive/Tencent/Hy3.mdx`；技术摘要: 覆盖「cookbook: add Hunyuan 3 (Hy3) Day-0 page」；主要实现面是 `docs_new/src/snippets/configs/tencent/hy3.jsx`, `docs_new/src/snippets/configs/tencent/hy3-benchmarks.jsx`, `docs_new/cookbook/autoregressive/Tencent/Hy3.mdx`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs_new/src/snippets/configs/tencent/hy3.jsx` added +546/-0 (546 lines); hunks: -0,0 +1,546；`docs_new/src/snippets/configs/tencent/hy3-benchmarks.jsx` added +26/-0 (26 lines); hunks: -0,0 +1,26；`docs_new/cookbook/autoregressive/Tencent/Hy3.mdx` added +370/-0 (370 lines); hunks: -0,0 +1,370；`docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` modified +0/-1 (1 lines); hunks: -2,7 +2,6。
+- 代码 diff 细节:
+  - `docs_new/src/snippets/configs/tencent/hy3.jsx` added +546/-0 (546 lines); hunks: -0,0 +1,546
+  - `docs_new/src/snippets/configs/tencent/hy3-benchmarks.jsx` added +26/-0 (26 lines); hunks: -0,0 +1,26
+  - `docs_new/cookbook/autoregressive/Tencent/Hy3.mdx` added +370/-0 (370 lines); hunks: -0,0 +1,370
+  - `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` modified +0/-1 (1 lines); hunks: -2,7 +2,6
+- 关键代码摘录:
+
+```diff
+diff -- docs_new/src/snippets/configs/tencent/hy3.jsx
+@@ -0,0 +1,546 @@
++// Hy3 cookbook config. Consumed by _deployment.jsx + _playground.jsx;
++// see _deployment.jsx header for the field contract.
++//
++// The shipping Hy3 tokenizer appends a shared suffix to every special token
++// (e.g. <tool_calls:TAG>); SGLang's `hunyuan` reasoning/tool-call parsers
++// resolve the real token strings from the vocab at runtime (PR #29920), so the
+diff -- docs_new/src/snippets/configs/tencent/hy3-benchmarks.jsx
+@@ -0,0 +1,26 @@
++// Hy3 per-cell benchmark numbers, keyed by the same `match` tuple as hy3.jsx cells.
++// See _deployment.jsx for the speed/accuracy schema.
++// H200 BF16 low-latency + balanced verified on 8×H200 (sgl-eval, single-shot, temp=0).
++// FP8 cells not yet verified.
++export const benchmarks = [
++  { match: { hw: "h200",  variant: "default", quant: "bf16", strategy: "low-latency",     nodes: "single" }, gsm8k_pct: 95.75 },
+diff -- docs_new/cookbook/autoregressive/Tencent/Hy3.mdx
+@@ -0,0 +1,370 @@
+```
+
+- 已读文件:
+  - docs: `docs_new/src/snippets/configs/tencent/hy3.jsx` added +546/-0; `docs_new/src/snippets/configs/tencent/hy3-benchmarks.jsx` added +26/-0; `docs_new/cookbook/autoregressive/Tencent/Hy3.mdx` added +370/-0; `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` modified +0/-1
+- 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`, `docs_new/cookbook/autoregressive/Tencent/Hy3.mdx`, `docs_new/cookbook/autoregressive/intro.mdx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+## 补漏结论
+
+- 验收规则: 每个 PR 卡片必须保留反查来源、diff 范围、实现要点、代码摘录、已读文件和验证风险。
+- 如果新模型文件落在当前过滤规则之外，先补文件过滤规则，再重新执行本轮 `git log --name-only -- <model-files>` 追溯。

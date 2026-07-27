@@ -1,11 +1,11 @@
 # TokenSpeed Qwen3.5 Model PR Optimization History
 
-## 2026-06-27 Source Head Refresh
+## 2026-07-27 Source Head Refresh
 
-Rechecked TokenSpeed upstream main with `git ls-remote` at `lightseekorg/tokenspeed@d0a7faddb5ec0d4c6d037c4c3e6a781d2c5164a8`.
-The existing file-level source-scan rows below remain the last tracked-file audit; use `model-pr-optimization-history/open-pr-watch.md` before relying on current open PR state.
+Rechecked TokenSpeed upstream main at `lightseekorg/tokenspeed@d73bf0454422092f306d5575e803a08fd35ac41c`.
+The range after the previous head `d0a7faddb5ec0d4c6d037c4c3e6a781d2c5164a8` was traced with `git log --name-only -- <model-files>` and the three promoted source diffs were read in full.
 
-Result: no additional PR-numbered merges touched the tracked files beyond the existing timeline/backfill rows.
+Result: Qwen3.5 gained native optimized DFlash, corrected mixed-precision GDN/MoE FP8 loading, and topology-safe multi-node collective/staging behavior.
 
 ## 2026-06-27 PR Backfill Audit
 
@@ -51,6 +51,70 @@ Filter used in this pass: merged GitHub PRs whose title or files matched `Qwen3.
 | 2026-06-25 | [#456](https://github.com/lightseekorg/tokenspeed/pull/456) | merged | perf(kernel): optimize Qwen vision QKV rotary layout | packed rotary kernel, Qwen3.5 VLM E2E test |
 
 ## Per-PR Diff Audit Cards
+
+### PR #510 - Support Qwen3.5 DFlash and optimize its runtime
+
+- Link: https://github.com/lightseekorg/tokenspeed/pull/510
+- Status/date: merged / 2026-07-15
+- Trace source: `git log --name-only -- <model-files>` plus the final upstream commit and PR body.
+- Diff scope read: full 2,169-line diff, 12 files, +1597/-81.
+- Motivation: Qwen3.5 lacked a native DFlash path, and a direct implementation would still pay separate hidden-state projection, KV materialization, prepare-decode, QK normalization/RoPE, and draft-cache launches.
+- Key implementation: captures selected target layers, incrementally projects them on an auxiliary stream, adds fused KV RMSNorm/RoPE/scatter with FP8 draft-cache support, fuses prepare-decode bookkeeping, enables FA4 non-causal draft attention, and fixes the draft RoPE configuration.
+- Code diff details: the DFlash drafter caches KV buffer pointers, writes per-layer KV directly into the pool, synchronizes the incremental projection with an event, and adds a fused QK-RMSNorm+RoPE Triton kernel for the draft model.
+- Key code excerpts:
+
+```diff
++_fused_norm_rope_scatter_kernel[(total_ctx, num_kv_heads, n_layers)](
++    kv, k_norm_weight, eps, cos_sin_cache, positions, loc, k_ptrs, v_ptrs, ...)
++self.drafter._prepare_incremental_proj(
++    ctx.input_num_tokens, positions, out_cache_loc)
+```
+
+- Reviewed files: runtime: `execution/drafter/{dflash,_dflash_fused_kv}.py`, `cache_loc_kernel.py`, CUDA-graph/model executor/runner, `models/{dflash,qwen3_5}.py`, MHA config; kernels/tests: FlashAttention registry, `layernorm/triton.py`, `test_layernorm.py`.
+- Risk and verification: record target/draft checkpoints, draft attention backend, KV dtype, captured layers, and speculative token count; validate FP8 scales, non-causal FA4 windowing, auxiliary-stream ordering, CUDA-graph replay, and acceptance rate after RoPE correction.
+
+### PR #766 - Fix Qwen3.5 FP8 weight loading
+
+- Link: https://github.com/lightseekorg/tokenspeed/pull/766
+- Status/date: merged / 2026-07-22
+- Trace source: `git log --name-only -- <model-files>` plus the final upstream commit and PR body.
+- Diff scope read: full 283-line diff, 2 files, +118/-67.
+- Motivation: Qwen3.5-35B-A3B FP8 checkpoints quantize GDN `qkv/z` but leave `b/a` in BF16, so packing all six projections into one quantized linear produced garbled output; the MoE kernel also received an unsharded intermediate size under TP.
+- Key implementation: derives quantization per GDN projection group from `ignored_layers`, splits the module into `in_proj_qkvz` and `in_proj_ba` only when their quantization differs, adapts checkpoint mappings to the selected layout, and derives MoE intermediate size from the TP-sharded `w2_weight`.
+- Code diff details: fully quantized or fully unquantized checkpoints retain the single fused projection; only mixed checkpoints pay the split-linear cost.
+- Key code excerpts:
+
+```diff
++self._split_in_proj = quant_config is not None and (qkvz_unquant != ba_unquant)
++if self._split_in_proj:
++    self.in_proj_qkvz = MergedColumnParallelLinear(..., quant_config=...)
++    self.in_proj_ba = MergedColumnParallelLinear(..., quant_config=...)
++intermediate_size = w.w2_weight.shape[-1]
+```
+
+- Reviewed files: runtime: `python/tokenspeed/runtime/models/qwen3_5.py`; kernel wrapper: `tokenspeed_kernel/ops/moe/flashinfer/trtllm_fp8.py`.
+- Risk and verification: test BF16, all-FP8, and mixed ignored-layer checkpoints under TP, EP, and hybrid layouts; the PR reports correct Qwen3.5-35B-A3B-FP8 output on TP2 and DP4EP4.
+
+### PR #780 - Harden Qwen3.5 multi-node execution
+
+- Link: https://github.com/lightseekorg/tokenspeed/pull/780
+- Status/date: merged / 2026-07-27
+- Trace source: `git log --name-only -- <model-files>` plus the final upstream commit and PR body.
+- Diff scope read: full 555-line diff, 8 files, +347/-35.
+- Motivation: Qwen3.5 multi-node layouts could select CUDA-IPC/symmetric-memory collectives across nodes and could reuse persistent pinned Mamba/GDN staging buffers while an overlapped H2D copy was still in flight.
+- Key implementation: detects process groups spanning nodes and forces NCCL for all-reduce, all-gather, token collectives, and logits gather/argmax; moves Mamba indices to per-step bulk pinned staging and documents consistent NCCL settings.
+- Code diff details: node-local groups retain low-latency RSAG/custom paths, while only cross-node groups fall back; tests assert backend selection and non-reused staging behavior.
+- Key code excerpts:
+
+```diff
++if self._group_spans_nodes(group):
++    return self._nccl.token_all_gather(tensor, group, scattered_num_tokens)
++(...mamba staging...) = self._bulk_pinned(
++    (batch_size, torch.int32), (batch_size, torch.int32), ...)
+```
+
+- Reviewed files: runtime: `distributed/comm_backend/auto.py`, `execution/{input_buffer,model_executor}.py`, `layers/logits_processor.py`; tests/docs: `test_comm_ops.py`, `test_input_buffer_mamba_staging.py`, `test_logits_processor.py`, `docs/serving/parallelism.md`.
+- Risk and verification: validate node-rank mapping and NCCL transport consistency, ensure custom collectives remain node-local, and run overlap/CUDA-graph replay with GDN state copy-on-write plus TP logits paths.
 
 ### PR #181 - feat(qwen3): add Qwen3 MoE causal LM support
 

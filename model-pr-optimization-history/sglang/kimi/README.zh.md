@@ -16,21 +16,23 @@
 | `docs_new/src/snippets/autoregressive/kimi-k26-deployment.jsx` | [#24441](https://github.com/sgl-project/sglang/pull/24441), [#27714](https://github.com/sgl-project/sglang/pull/27714) |
 | `docs_new/src/snippets/autoregressive/kimi-k27-code-deployment.jsx` | [#28064](https://github.com/sgl-project/sglang/pull/28064) |
 | `docs_new/src/snippets/autoregressive/kimi-linear-deployment.jsx` | 无直接 PR 号提交 |
-| `python/sglang/jit_kernel/csrc/trtllm_lora_temp/kimi_k2_moe_fused_gate.cuh` | 无直接 PR 号提交 |
-| `python/sglang/jit_kernel/trtllm_lora_temp/kimi_k2_moe_fused_gate.py` | 无直接 PR 号提交 |
+| `python/sglang/kernels/jit/csrc/trtllm_lora_temp/kimi_k2_moe_fused_gate.cuh` | 无直接 PR 号提交 |
+| `python/sglang/kernels/ops/moe/trtllm_lora_temp/kimi_k2_moe_fused_gate.py` | 无直接 PR 号提交 |
 | `python/sglang/srt/configs/kimi_k25.py` | [#17789](https://github.com/sgl-project/sglang/pull/17789) |
 | `python/sglang/srt/configs/kimi_linear.py` | [#12469](https://github.com/sgl-project/sglang/pull/12469) |
 | `python/sglang/srt/configs/kimi_vl.py` | [#5383](https://github.com/sgl-project/sglang/pull/5383) |
 | `python/sglang/srt/configs/kimi_vl_moonvit.py` | [#5383](https://github.com/sgl-project/sglang/pull/5383) |
 | `python/sglang/srt/function_call/kimik2_detector.py` | [#7940](https://github.com/sgl-project/sglang/pull/7940), [#8043](https://github.com/sgl-project/sglang/pull/8043), [#8968](https://github.com/sgl-project/sglang/pull/8968), [#10972](https://github.com/sgl-project/sglang/pull/10972), [#19120](https://github.com/sgl-project/sglang/pull/19120), [#19552](https://github.com/sgl-project/sglang/pull/19552), [#23950](https://github.com/sgl-project/sglang/pull/23950), [#25071](https://github.com/sgl-project/sglang/pull/25071) |
-| `python/sglang/srt/models/kimi_k25.py` | [#17789](https://github.com/sgl-project/sglang/pull/17789), [#18370](https://github.com/sgl-project/sglang/pull/18370), [#18434](https://github.com/sgl-project/sglang/pull/18434), [#18440](https://github.com/sgl-project/sglang/pull/18440), [#18689](https://github.com/sgl-project/sglang/pull/18689), [#19331](https://github.com/sgl-project/sglang/pull/19331), [#19689](https://github.com/sgl-project/sglang/pull/19689), [#19959](https://github.com/sgl-project/sglang/pull/19959), [#20747](https://github.com/sgl-project/sglang/pull/20747), [#21004](https://github.com/sgl-project/sglang/pull/21004), [#22269](https://github.com/sgl-project/sglang/pull/22269), [#22858](https://github.com/sgl-project/sglang/pull/22858), ... (16 total) |
-| `python/sglang/srt/models/kimi_k25_eagle3.py` | [#24826](https://github.com/sgl-project/sglang/pull/24826), [#25033](https://github.com/sgl-project/sglang/pull/25033), [#26506](https://github.com/sgl-project/sglang/pull/26506), [#27647](https://github.com/sgl-project/sglang/pull/27647) |
-| `python/sglang/srt/models/kimi_linear.py` | [#12469](https://github.com/sgl-project/sglang/pull/12469), [#12660](https://github.com/sgl-project/sglang/pull/12660), [#14337](https://github.com/sgl-project/sglang/pull/14337), [#17160](https://github.com/sgl-project/sglang/pull/17160), [#17506](https://github.com/sgl-project/sglang/pull/17506), [#17731](https://github.com/sgl-project/sglang/pull/17731), [#18849](https://github.com/sgl-project/sglang/pull/18849), [#20396](https://github.com/sgl-project/sglang/pull/20396) |
-| `python/sglang/srt/models/kimi_vl.py` | [#5383](https://github.com/sgl-project/sglang/pull/5383), [#22490](https://github.com/sgl-project/sglang/pull/22490) |
-| `python/sglang/srt/models/kimi_vl_moonvit.py` | [#5383](https://github.com/sgl-project/sglang/pull/5383) |
+| `python/sglang/srt/models/kimi_k25.py` | [#17789](https://github.com/sgl-project/sglang/pull/17789), [#18370](https://github.com/sgl-project/sglang/pull/18370), [#18434](https://github.com/sgl-project/sglang/pull/18434), [#18440](https://github.com/sgl-project/sglang/pull/18440), [#18689](https://github.com/sgl-project/sglang/pull/18689), [#19331](https://github.com/sgl-project/sglang/pull/19331), [#19689](https://github.com/sgl-project/sglang/pull/19689), [#19959](https://github.com/sgl-project/sglang/pull/19959), [#20747](https://github.com/sgl-project/sglang/pull/20747), [#21004](https://github.com/sgl-project/sglang/pull/21004), [#22269](https://github.com/sgl-project/sglang/pull/22269), [#22858](https://github.com/sgl-project/sglang/pull/22858), ... (19 total) |
+| `python/sglang/srt/models/kimi_k25_eagle3.py` | [#24826](https://github.com/sgl-project/sglang/pull/24826), [#25033](https://github.com/sgl-project/sglang/pull/25033), [#26506](https://github.com/sgl-project/sglang/pull/26506), [#27647](https://github.com/sgl-project/sglang/pull/27647), [#29223](https://github.com/sgl-project/sglang/pull/29223) |
+| `python/sglang/srt/models/kimi_linear.py` | [#12469](https://github.com/sgl-project/sglang/pull/12469), [#12660](https://github.com/sgl-project/sglang/pull/12660), [#14337](https://github.com/sgl-project/sglang/pull/14337), [#17160](https://github.com/sgl-project/sglang/pull/17160), [#17506](https://github.com/sgl-project/sglang/pull/17506), [#17731](https://github.com/sgl-project/sglang/pull/17731), [#18849](https://github.com/sgl-project/sglang/pull/18849), [#20396](https://github.com/sgl-project/sglang/pull/20396), [#32262](https://github.com/sgl-project/sglang/pull/32262) |
+| `python/sglang/srt/models/kimi_vl.py` | [#5383](https://github.com/sgl-project/sglang/pull/5383), [#22490](https://github.com/sgl-project/sglang/pull/22490), [#30869](https://github.com/sgl-project/sglang/pull/30869) |
+| `python/sglang/srt/models/kimi_vl_moonvit.py` | [#5383](https://github.com/sgl-project/sglang/pull/5383), [#30869](https://github.com/sgl-project/sglang/pull/30869) |
 | `python/sglang/srt/multimodal/processors/kimi_common.py` | [#22490](https://github.com/sgl-project/sglang/pull/22490) |
-| `python/sglang/srt/multimodal/processors/kimi_k25.py` | [#17789](https://github.com/sgl-project/sglang/pull/17789), [#22269](https://github.com/sgl-project/sglang/pull/22269), [#22368](https://github.com/sgl-project/sglang/pull/22368), [#22490](https://github.com/sgl-project/sglang/pull/22490), [#22858](https://github.com/sgl-project/sglang/pull/22858), [#23501](https://github.com/sgl-project/sglang/pull/23501), [#28647](https://github.com/sgl-project/sglang/pull/28647) |
+| `python/sglang/srt/multimodal/processors/kimi_k25.py` | [#17789](https://github.com/sgl-project/sglang/pull/17789), [#22269](https://github.com/sgl-project/sglang/pull/22269), [#22368](https://github.com/sgl-project/sglang/pull/22368), [#22490](https://github.com/sgl-project/sglang/pull/22490), [#22858](https://github.com/sgl-project/sglang/pull/22858), [#23501](https://github.com/sgl-project/sglang/pull/23501), [#28647](https://github.com/sgl-project/sglang/pull/28647), [#31227](https://github.com/sgl-project/sglang/pull/31227) |
 | `python/sglang/srt/multimodal/processors/kimi_vl.py` | [#22490](https://github.com/sgl-project/sglang/pull/22490) |
+| `scripts/ci/slurm/recipes/mi355x-fp8/kimik26/1k1k/1p1d-mtp.yaml` | [#29855](https://github.com/sgl-project/sglang/pull/29855) |
+| `scripts/ci/slurm/recipes/mi355x-fp8/kimik26/1k1k/1p1d.yaml` | [#29855](https://github.com/sgl-project/sglang/pull/29855) |
 | `test/manual/models/test_kimi_k2_models.py` | 无直接 PR 号提交 |
 | `test/registered/8-gpu-models/test_kimi_k25.py` | [#19802](https://github.com/sgl-project/sglang/pull/19802), [#21391](https://github.com/sgl-project/sglang/pull/21391), [#21898](https://github.com/sgl-project/sglang/pull/21898) |
 | `test/registered/amd/accuracy/mi30x/test_kimi_k25_eval_amd.py` | [#18269](https://github.com/sgl-project/sglang/pull/18269) |
@@ -48,19 +50,24 @@
 | `test/registered/amd/test_kimi_k2_instruct.py` | [#17656](https://github.com/sgl-project/sglang/pull/17656), [#24762](https://github.com/sgl-project/sglang/pull/24762) |
 | `test/registered/ascend/performance/kimi_k2_6/test_npu_kimi_k2_6_w4a8_16p_in64k_out1k_100ms_aime25.py` | 无直接 PR 号提交 |
 | `test/registered/ascend/vlm_models/test_npu_kimi_vl_a3b_instruct.py` | 无直接 PR 号提交 |
+| `test/registered/disaggregation/test_disaggregation_kimi_linear.py` | [#32262](https://github.com/sgl-project/sglang/pull/32262) |
 | `test/registered/function_call/test_kimik2_detector.py` | [#19552](https://github.com/sgl-project/sglang/pull/19552), [#23950](https://github.com/sgl-project/sglang/pull/23950), [#25071](https://github.com/sgl-project/sglang/pull/25071) |
 | `test/registered/gb300/test_kimi_k25.py` | [#28103](https://github.com/sgl-project/sglang/pull/28103) |
 | `test/registered/gb300/test_kimi_k25_nvfp4.py` | [#28103](https://github.com/sgl-project/sglang/pull/28103) |
 | `test/registered/lora/test_lora_kimi_k25_logprob_diff.py` | [#22381](https://github.com/sgl-project/sglang/pull/22381) |
-| `test/registered/models_e2e/test_kimi_linear_models.py` | 无直接 PR 号提交 |
+| `test/registered/models_e2e/test_kimi_linear_models.py` | [#31474](https://github.com/sgl-project/sglang/pull/31474) |
 | `test/registered/quant/test_kimi_k25_nvfp4_eagle.py` | [#28467](https://github.com/sgl-project/sglang/pull/28467) |
+| `test/registered/quant/test_kimi_k26_nvfp4_dflash.py` | [#29218](https://github.com/sgl-project/sglang/pull/29218) |
 | `test/registered/stress/test_stress_kimi_k2.py` | 无直接 PR 号提交 |
+| `test/registered/unit/models/test_kimi_k25.py` | [#31227](https://github.com/sgl-project/sglang/pull/31227) |
+| `test/registered/unit/models/test_kimi_vl.py` | [#30869](https://github.com/sgl-project/sglang/pull/30869) |
+| `test/registered/unit/models/test_kimi_vl_moonvit.py` | [#30869](https://github.com/sgl-project/sglang/pull/30869) |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 61
+- git 追溯 PR 数: 70
 - 原文档显式引用补充 PR 数: 60
-- 当前文档总 PR 数: 121
+- 当前文档总 PR 数: 130
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -129,7 +136,6 @@
 | 2026-03-20 | [#20396](https://github.com/sgl-project/sglang/pull/20396) | merged | perf(kimi_linear): replace einops rearrange with native torch ops in Kimi-Linear KDA path | `python/sglang/srt/models/kimi_linear.py` |
 | 2026-03-26 | [#21004](https://github.com/sgl-project/sglang/pull/21004) | merged | [Fix] Add EPLB rebalance support for Kimi K2.5 | `python/sglang/srt/models/kimi_k25.py` |
 | 2026-03-26 | [#21391](https://github.com/sgl-project/sglang/pull/21391) | merged | Fix Kimi K2.5 dp attention+ spec decoding launch crash | `test/registered/8-gpu-models/test_kimi_k25.py` |
-| 2026-03-31 | [#21741](https://github.com/sgl-project/sglang/pull/21741) | open | [1/N] feat: support compressed-tensors w4afp8 MoE | `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a8_fp8_moe.py`, `python/sglang/srt/layers/moe/ep_moe/kernels.py`, `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py` |
 | 2026-04-02 | [#21898](https://github.com/sgl-project/sglang/pull/21898) | merged | [CI] Remove crashing Kimi K2.5 EAGLE3/MTP variants, keep TP8 and TP8+DP8 | `test/registered/8-gpu-models/test_kimi_k25.py` |
 | 2026-04-05 | [#21213](https://github.com/sgl-project/sglang/pull/21213) | merged | [AMD]: Support MLA with nhead<16 and FP8 KV cache for TP=8 (Kimi K2.5… | `test/registered/amd/accuracy/mi35x/test_kimi_k25_mxfp4_eval_mi35x.py`, `test/registered/amd/test_kimi_k25_mxfp4.py` |
 | 2026-04-06 | [#22208](https://github.com/sgl-project/sglang/pull/22208) | open | [AMD] Optimize fused MoE kernel config for small-M decode on gfx950 | `python/sglang/srt/layers/moe/fused_moe_triton/fused_moe_triton_config.py` |
@@ -189,6 +195,16 @@
 | 2026-06-24 | [#25071](https://github.com/sgl-project/sglang/pull/25071) | merged | kimik2_detector fix the normal text detection before tool call. | `test/registered/function_call/test_kimik2_detector.py`, `python/sglang/srt/function_call/kimik2_detector.py` |
 | 2026-06-24 | [#28623](https://github.com/sgl-project/sglang/pull/28623) | merged | [CI] reduce CPU CI scope with base-c suite | `test/registered/function_call/test_kimik2_detector.py`, `test/registered/models/test_transformers_backend_eval.py`, `test/registered/unit/entrypoints/openai/test_serving_embedding.py` |
 | 2026-06-25 | [#28103](https://github.com/sgl-project/sglang/pull/28103) | merged | Add DeepSeek V4 Pro GB300 nightly and expand Kimi K25 nightly test | `test/registered/gb300/test_kimi_k25_nvfp4.py`, `test/registered/gb300/test_kimi_k25.py` |
+| 2026-06-28 | [#29223](https://github.com/sgl-project/sglang/pull/29223) | merged | (perf): Shard Kimi-K2.5 Eagle3 draft fc + symm-mem AG | `python/sglang/srt/models/kimi_k25_eagle3.py` |
+| 2026-07-05 | [#29855](https://github.com/sgl-project/sglang/pull/29855) | merged | [AMD][DI][CI] 3/N Add Kimi K2.6 FP8 MI355X 1P1D nightly recipes | `scripts/ci/slurm/recipes/mi355x-fp8/kimik26/1k1k/1p1d-mtp.yaml`, `scripts/ci/slurm/recipes/mi355x-fp8/kimik26/1k1k/1p1d.yaml` |
+| 2026-07-08 | [#29218](https://github.com/sgl-project/sglang/pull/29218) | merged | [Spec] DFlash: support pure-MLA targets with an fp8 KV cache (Kimi-K2.x-NVFP4) | `test/registered/quant/test_kimi_k26_nvfp4_dflash.py` |
+| 2026-07-12 | [#30878](https://github.com/sgl-project/sglang/pull/30878) | merged | perf: reuse MoonViT FA3 max-seqlen metadata | `python/sglang/srt/models/kimi_k25.py` |
+| 2026-07-14 | [#30869](https://github.com/sgl-project/sglang/pull/30869) | merged | fix: fix Kimi-VL encoder parallelism | `python/sglang/srt/models/kimi_vl_moonvit.py`, `test/registered/unit/models/test_kimi_vl.py`, `test/registered/unit/models/test_kimi_vl_moonvit.py` |
+| 2026-07-16 | [#31227](https://github.com/sgl-project/sglang/pull/31227) | merged | perf: shard Kimi DP image feature transport | `test/registered/unit/models/test_kimi_k25.py`, `python/sglang/srt/multimodal/processors/kimi_k25.py`, `python/sglang/srt/models/kimi_k25.py` |
+| 2026-07-17 | [#21741](https://github.com/sgl-project/sglang/pull/21741) | closed | [1/N] feat: support compressed-tensors w4afp8 MoE | `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a8_fp8_moe.py`, `python/sglang/srt/layers/moe/ep_moe/kernels.py`, `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py` |
+| 2026-07-17 | [#31514](https://github.com/sgl-project/sglang/pull/31514) | merged | [DCP] Enable decode context parallel for Kimi K2.5 NVFP4 | `python/sglang/srt/models/kimi_k25.py` |
+| 2026-07-19 | [#31474](https://github.com/sgl-project/sglang/pull/31474) | merged | Fix KDA prefix caching under mamba extra_buffer and enable it for kimi_linear | `test/registered/models_e2e/test_kimi_linear_models.py` |
+| 2026-07-24 | [#32262](https://github.com/sgl-project/sglang/pull/32262) | merged | [Bugfix] Fix Kimi-Linear state transfer across heterogeneous TP | `python/sglang/srt/models/kimi_linear.py`, `test/registered/disaggregation/test_disaggregation_kimi_linear.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -2075,49 +2091,6 @@ diff -- test/registered/8-gpu-models/test_kimi_k25.py
   - tests: `test/registered/8-gpu-models/test_kimi_k25.py` modified +11/-1
 - 验证与风险: diff 自带测试面 `test/registered/8-gpu-models/test_kimi_k25.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
-### PR #21741 - [1/N] feat: support compressed-tensors w4afp8 MoE
-
-- 链接: https://github.com/sgl-project/sglang/pull/21741
-- 状态/时间: open / 2026-03-31
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 12 个文件，+1657/-37，可读 patch 1828 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[1/N] feat: support compressed-tensors w4afp8 MoE」；模型线: Kimi K2/K2.5/Linear/VL；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a8_fp8_moe.py`, `python/sglang/srt/layers/moe/ep_moe/kernels.py`, `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py`；技术摘要: 覆盖「[1/N] feat: support compressed-tensors w4afp8 MoE」；主要实现面是 `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a8_fp8_moe.py`, `python/sglang/srt/layers/moe/ep_moe/kernels.py`, `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a8_fp8_moe.py` added +315/-0 (315 lines); hunks: -0,0 +1,315; symbols: _unpack_repack_int32_to_cutlass_int8, CompressedTensorsW4AFP8MoE, __init__, get_min_capability，涉及 `_unpack_repack_int32_to_cutlass_int8, CompressedTensorsW4AFP8MoE, __init__`；`python/sglang/srt/layers/moe/ep_moe/kernels.py` modified +62/-0 (62 lines); hunks: -429,6 +429,68 @@ def silu_and_mul_masked_post_quant_fwd(; symbols: silu_and_mul_masked_post_quant_fwd, silu_mul_dynamic_scale_triton_kernel_for_cutlass_moe, silu_mul_dynamic_tensorwise_quant_for_cutlass_moe, silu_mul_static_tensorwise_quant_triton_kernel_for_cutlass_moe，涉及 `silu_and_mul_masked_post_quant_fwd, silu_mul_dynamic_scale_triton_kernel_for_cutlass_moe, silu_mul_dynamic_tensorwise_quant_for_cutlass_moe`；`python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py` modified +27/-8 (35 lines); hunks: -43,6 +43,7; -304,15 +305,16 @@ def _quantization_scheme_map_from_config(; symbols: _quantization_scheme_map_from_config, _is_dynamic_token_w4a8, _is_w4afp8, _is_static_tensor_w8a8，涉及 `_quantization_scheme_map_from_config, _is_dynamic_token_w4a8, _is_w4afp8`；`python/sglang/srt/layers/moe/cutlass_w4a8_moe.py` modified +19/-6 (25 lines); hunks: -13,11 +13,11; -29,6 +29,7; symbols: cutlass_w4a8_moe，涉及 `cutlass_w4a8_moe`。
-- 代码 diff 细节:
-  - `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a8_fp8_moe.py` added +315/-0 (315 lines); hunks: -0,0 +1,315; symbols: _unpack_repack_int32_to_cutlass_int8, CompressedTensorsW4AFP8MoE, __init__, get_min_capability
-  - `python/sglang/srt/layers/moe/ep_moe/kernels.py` modified +62/-0 (62 lines); hunks: -429,6 +429,68 @@ def silu_and_mul_masked_post_quant_fwd(; symbols: silu_and_mul_masked_post_quant_fwd, silu_mul_dynamic_scale_triton_kernel_for_cutlass_moe, silu_mul_dynamic_tensorwise_quant_for_cutlass_moe, silu_mul_static_tensorwise_quant_triton_kernel_for_cutlass_moe
-  - `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py` modified +27/-8 (35 lines); hunks: -43,6 +43,7; -304,15 +305,16 @@ def _quantization_scheme_map_from_config(; symbols: _quantization_scheme_map_from_config, _is_dynamic_token_w4a8, _is_w4afp8, _is_static_tensor_w8a8
-  - `python/sglang/srt/layers/moe/cutlass_w4a8_moe.py` modified +19/-6 (25 lines); hunks: -13,11 +13,11; -29,6 +29,7; symbols: cutlass_w4a8_moe
-  - `python/sglang/srt/layers/quantization/compressed_tensors/schemes/__init__.py` modified +2/-0 (2 lines); hunks: -7,6 +7,7; -41,4 +42,5
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a8_fp8_moe.py
-@@ -0,0 +1,315 @@
-+"""W4AFP8 MoE scheme: INT4 group-quantized weights + FP8 dynamic activations.
-+Loads INT4 weights from compressed-tensors pack-quantized format,
-+converts to CUTLASS W4A8 layout, and runs CUTLASS grouped GEMM
-+with dynamic FP8 activation quantization.
-+"""
-+from __future__ import annotations
-diff -- python/sglang/srt/layers/moe/ep_moe/kernels.py
-@@ -429,6 +429,68 @@ def silu_and_mul_masked_post_quant_fwd(
-+@triton.jit
-+def silu_mul_dynamic_scale_triton_kernel_for_cutlass_moe(
-+    input_ptr,
-+    scale_ptr,
-+    num_tokens_tensor_ptr,
-+    intermediate_size,
-diff -- python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py
-@@ -43,6 +43,7 @@
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a8_fp8_moe.py` added +315/-0; `python/sglang/srt/layers/moe/ep_moe/kernels.py` modified +62/-0; `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py` modified +27/-8; `python/sglang/srt/layers/moe/cutlass_w4a8_moe.py` modified +19/-6; `python/sglang/srt/layers/quantization/compressed_tensors/schemes/__init__.py` modified +2/-0; `python/sglang/srt/layers/quantization/compressed_tensors/utils.py` modified +1/-0
-  - other: `benchmark/kernels/quantization/bench_w4a8_moe_decode.py` added +887/-0
-  - tests: `python/sglang/test/test_cutlass_w4a8_moe.py` modified +66/-23
-- 验证与风险: diff 自带测试面 `python/sglang/jit_kernel/tests/test_per_tensor_absmax_fp8.py`, `python/sglang/test/test_cutlass_w4a8_moe.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
-
 ### PR #21898 - [CI] Remove crashing Kimi K2.5 EAGLE3/MTP variants, keep TP8 and TP8+DP8
 
 - 链接: https://github.com/sgl-project/sglang/pull/21898
@@ -2702,7 +2675,7 @@ diff -- test/registered/amd/accuracy/mi35x/test_kimi_k26_eval_mi35x.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/24441
 - 状态/时间: merged / 2026-05-05
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.6.mdx`, `docs_new/src/snippets/autoregressive/kimi-k26-deployment.jsx`；关联提交 `e0faed8ebcad`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.6.mdx`, `docs_new/src/snippets/autoregressive/kimi-k26-deployment.jsx`；关联提交 `e0faed8ebcad`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+7/-1，可读 patch 31 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Docs] Add B200, GB200, GB300 NVIDIA hardware platform support for Kimi-K2.6」；模型线: Kimi K2/K2.5/Linear/VL；类别: 文档/测试/CI；主要 diff: `docs_new/src/snippets/autoregressive/kimi-k26-deployment.jsx`, `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.6.mdx`；技术摘要: 覆盖「[Docs] Add B200, GB200, GB300 NVIDIA hardware platform support for Kimi-K2.6」；主要实现面是 `docs_new/src/snippets/autoregressive/kimi-k26-deployment.jsx`, `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.6.mdx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/src/snippets/autoregressive/kimi-k26-deployment.jsx` modified +6/-0 (6 lines); hunks: -6,7 +6,10 @@ export const KimiK26Deployment = () => {; -41,7 +44,10 @@ export const KimiK26Deployment = () => {；`docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.6.mdx` modified +1/-1 (2 lines); hunks: -86,7 +86,7 @@ import { KimiK26Deployment } from '/src/snippets/autoregressiv...。
@@ -2734,7 +2707,7 @@ diff -- docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.6.mdx
 
 - 链接: https://github.com/sgl-project/sglang/pull/23950
 - 状态/时间: merged / 2026-05-07
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/function_call/kimik2_detector.py`, `test/registered/function_call/test_kimik2_detector.py`；关联提交 `af2a2ac61839`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/function_call/kimik2_detector.py`, `test/registered/function_call/test_kimik2_detector.py`；关联提交 `af2a2ac61839`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+244/-22，可读 patch 358 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「fix(function_call): handle Kimi-K2.5 bare numeric tool call IDs」；模型线: Kimi K2/K2.5/Linear/VL；类别: 缺陷修复；主要 diff: `test/registered/function_call/test_kimik2_detector.py`, `python/sglang/srt/function_call/kimik2_detector.py`；技术摘要: 覆盖「fix(function_call): handle Kimi-K2.5 bare numeric tool call IDs」；主要实现面是 `test/registered/function_call/test_kimik2_detector.py`, `python/sglang/srt/function_call/kimik2_detector.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/function_call/test_kimik2_detector.py` modified +143/-0 (143 lines); hunks: -663,5 +663,148 @@ def test_e2e_multiple_tool_calls_without_think_close(self):; symbols: test_e2e_multiple_tool_calls_without_think_close, TestKimiK2BareCounterParsing, setUp, test_standard_format_with_functions_prefix，涉及 `test_e2e_multiple_tool_calls_without_think_close, TestKimiK2BareCounterParsing, setUp`；`python/sglang/srt/function_call/kimik2_detector.py` modified +101/-22 (123 lines); hunks: -35,13 +35,18 @@ class KimiK2Detector(BaseFormatDetector):; -55,23 +60,96 @@ def __init__(self):; symbols: KimiK2Detector, __init__, _parse_tool_call_id, _infer_tool_name，涉及 `KimiK2Detector, __init__, _parse_tool_call_id`。
@@ -3186,7 +3159,7 @@ diff -- python/sglang/srt/models/kimi_k25.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/26506
 - 状态/时间: merged / 2026-05-28
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/kimi_k25_eagle3.py`；关联提交 `93445e6359f8`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/kimi_k25_eagle3.py`；关联提交 `93445e6359f8`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+38/-5，可读 patch 85 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[spec decoding] support kimi-k2.6-eagle3.1-mla draft」；模型线: Kimi K2/K2.5/Linear/VL；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/kimi_k25_eagle3.py`；技术摘要: 覆盖「[spec decoding] support kimi-k2.6-eagle3.1-mla draft」；主要实现面是 `python/sglang/srt/models/kimi_k25_eagle3.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/kimi_k25_eagle3.py` modified +38/-5 (43 lines); hunks: -1,10 +1,18; -196,13 +204,28 @@ def __init__(; symbols: __init__, forward，涉及 `__init__, forward`。
@@ -3553,7 +3526,7 @@ diff -- python/sglang/jit_kernel/tests/test_moe_fused_gate_ungrouped.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/27647
 - 状态/时间: merged / 2026-06-09
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/kimi_k25_eagle3.py`；关联提交 `8ae328e5f042`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/kimi_k25_eagle3.py`；关联提交 `8ae328e5f042`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+4/-3，可读 patch 14 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[sgl] Fix kimi-k2.5 EAGLE3 MLA draft embeds for batched MM prefill」；模型线: Kimi K2/K2.5/Linear/VL；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/kimi_k25_eagle3.py`；技术摘要: 覆盖「[sgl] Fix kimi-k2.5 EAGLE3 MLA draft embeds for batched MM prefill」；主要实现面是 `python/sglang/srt/models/kimi_k25_eagle3.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `python/sglang/srt/models/kimi_k25_eagle3.py` modified +4/-3 (7 lines); hunks: -261,9 +261,10 @@ def forward(; symbols: forward，涉及 `forward`。
@@ -3741,7 +3714,7 @@ diff -- docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.6.mdx
 
 - 链接: https://github.com/sgl-project/sglang/pull/28467
 - 状态/时间: merged / 2026-06-16
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/quant/test_kimi_k25_nvfp4_eagle.py`；关联提交 `2ad00faae1f4`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/quant/test_kimi_k25_nvfp4_eagle.py`；关联提交 `2ad00faae1f4`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+68/-0，可读 patch 69 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[ci] add kimi nvfp4 nightly tests」；模型线: Kimi K2/K2.5/Linear/VL；类别: 性能/后端优化；主要 diff: `test/registered/quant/test_kimi_k25_nvfp4_eagle.py`；技术摘要: 覆盖「[ci] add kimi nvfp4 nightly tests」；主要实现面是 `test/registered/quant/test_kimi_k25_nvfp4_eagle.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/quant/test_kimi_k25_nvfp4_eagle.py` added +68/-0 (68 lines); hunks: -0,0 +1,68; symbols: TestKimiK25Nvfp4Eagle, test_kimi_k25_nvfp4_eagle，涉及 `TestKimiK25Nvfp4Eagle, test_kimi_k25_nvfp4_eagle`。
@@ -3999,7 +3972,7 @@ diff -- python/sglang/srt/layers/moe/ep_moe/layer.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/27833
 - 状态/时间: merged / 2026-06-24
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py`；关联提交 `20b2817bdfcc`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py`；关联提交 `20b2817bdfcc`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+187/-0，可读 patch 202 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[AMD] Enable BCG on ROCm + route aiter prefill via MHA during PCG/BCG capture for Kimi-2.5」；模型线: Kimi K2/K2.5/Linear/VL；类别: 性能/后端优化；主要 diff: `test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py`；技术摘要: 覆盖「[AMD] Enable BCG on ROCm + route aiter prefill via MHA during PCG/BCG capture for Kimi-2.5」；主要实现面是 `test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py` added +179/-0 (179 lines); hunks: -0,0 +1,179; symbols: CaptureConfig, get_capture_configs, TestKimiK25MXFP4BcgMI35x, setUpClass，涉及 `CaptureConfig, get_capture_configs, TestKimiK25MXFP4BcgMI35x`。
@@ -4134,6 +4107,334 @@ diff -- test/registered/gb300/test_kimi_k25.py
 - 已读文件:
   - tests: `test/registered/gb300/test_kimi_k25_nvfp4.py` modified +26/-10; `test/registered/gb300/test_kimi_k25.py` modified +4/-1
 - 验证与风险: diff 自带测试面 `test/registered/gb300/test_deepseek_v4_pro_fp4.py`, `test/registered/gb300/test_glm5_fp8.py`, `test/registered/gb300/test_glm5_nvfp4.py`, `test/registered/gb300/test_kimi_k25.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #29223 - (perf): Shard Kimi-K2.5 Eagle3 draft fc + symm-mem AG
+
+- 链接: https://github.com/sgl-project/sglang/pull/29223
+- 状态/时间: merged / 2026-06-28
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/kimi_k25_eagle3.py`；关联提交 `da802ddcafe5`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+885/-7，可读 patch 942 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「(perf): Shard Kimi-K2.5 Eagle3 draft fc + symm-mem AG」；模型线: Kimi K2/K2.5/Linear/VL；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/kimi_k25_eagle3.py`；技术摘要: 覆盖「(perf): Shard Kimi-K2.5 Eagle3 draft fc + symm-mem AG」；主要实现面是 `python/sglang/srt/models/kimi_k25_eagle3.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/kimi_k25_eagle3.py` modified +15/-3 (18 lines); hunks: -25,9 +25,10; -207,10 +208,20 @@ def __init__(; symbols: __init__, forward，涉及 `__init__, forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/kimi_k25_eagle3.py` modified +15/-3 (18 lines); hunks: -25,9 +25,10; -207,10 +208,20 @@ def __init__(; symbols: __init__, forward
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/kimi_k25_eagle3.py
+@@ -25,9 +25,10 @@
++from sglang.srt.distributed.device_communicators import triton_symm_mem_ag
+-from sglang.srt.layers.linear import ReplicatedLinear
++from sglang.srt.layers.linear import ColumnParallelLinear, ReplicatedLinear
+@@ -207,10 +208,20 @@ def __init__(
+-        self.fc = nn.Linear(
++        self.fc = ColumnParallelLinear(
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/kimi_k25_eagle3.py` modified +15/-3
+- 验证与风险: diff 自带测试面 `test/registered/jit/benchmark/bench_symm_mem_all_gather.py`, `test/registered/jit/test_symm_mem_all_gather.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #29855 - [AMD][DI][CI] 3/N Add Kimi K2.6 FP8 MI355X 1P1D nightly recipes
+
+- 链接: https://github.com/sgl-project/sglang/pull/29855
+- 状态/时间: merged / 2026-07-05
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `scripts/ci/slurm/recipes/mi355x-fp8/kimik26/1k1k/1p1d-mtp.yaml`, `scripts/ci/slurm/recipes/mi355x-fp8/kimik26/1k1k/1p1d.yaml`；关联提交 `67361ff91b5f`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+303/-22，可读 patch 414 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[AMD][DI][CI] 3/N Add Kimi K2.6 FP8 MI355X 1P1D nightly recipes」；模型线: Kimi K2/K2.5/Linear/VL；类别: 性能/后端优化；主要 diff: `scripts/ci/slurm/recipes/mi355x-fp8/kimik26/1k1k/1p1d-mtp.yaml`, `scripts/ci/slurm/recipes/mi355x-fp8/kimik26/1k1k/1p1d.yaml`；技术摘要: 覆盖「[AMD][DI][CI] 3/N Add Kimi K2.6 FP8 MI355X 1P1D nightly recipes」；主要实现面是 `scripts/ci/slurm/recipes/mi355x-fp8/kimik26/1k1k/1p1d-mtp.yaml`, `scripts/ci/slurm/recipes/mi355x-fp8/kimik26/1k1k/1p1d.yaml`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `scripts/ci/slurm/recipes/mi355x-fp8/kimik26/1k1k/1p1d-mtp.yaml` added +85/-0 (85 lines); hunks: -0,0 +1,85；`scripts/ci/slurm/recipes/mi355x-fp8/kimik26/1k1k/1p1d.yaml` added +75/-0 (75 lines); hunks: -0,0 +1,75。
+- 代码 diff 细节:
+  - `scripts/ci/slurm/recipes/mi355x-fp8/kimik26/1k1k/1p1d-mtp.yaml` added +85/-0 (85 lines); hunks: -0,0 +1,85
+  - `scripts/ci/slurm/recipes/mi355x-fp8/kimik26/1k1k/1p1d.yaml` added +75/-0 (75 lines); hunks: -0,0 +1,75
+- 关键代码摘录:
+
+```diff
+diff -- scripts/ci/slurm/recipes/mi355x-fp8/kimik26/1k1k/1p1d-mtp.yaml
+@@ -0,0 +1,85 @@
++# MI355X Kimi-K2.6 (FP8) 2-node 1P1D disaggregation recipe (base + EAGLE3 MTP).
++#
++# Self-contained (no inheritance): same as 1p1d.yaml plus the `mtp:` block. Uses
++# EAGLE3 speculative decoding with an EXTERNAL draft checkpoint (unlike DSV4's
++# built-in EAGLE NextN head): the launcher resolves mtp.draft_model_path through
++# the HF-cache snapshot logic and appends --speculative-draft-model-path. The
+diff -- scripts/ci/slurm/recipes/mi355x-fp8/kimik26/1k1k/1p1d.yaml
+@@ -0,0 +1,75 @@
++# MI355X Kimi-K2.6 (FP8) 2-node 1P1D disaggregation recipe (base).
++#
++# All Kimi-specific config lives in this recipe's `model:` block (docker env +
++# sglang server args) and `runtime` (split attention backends); nothing about
++# Kimi is hardcoded in launch_mi355x.sh. Mirrors the single-node registered test
++# test/registered/amd/accuracy/mi35x/test_kimi_k26_eval_mi35x.py (TP8, split
+```
+
+- 已读文件:
+  - other: `scripts/ci/slurm/recipes/mi355x-fp8/kimik26/1k1k/1p1d-mtp.yaml` added +85/-0; `scripts/ci/slurm/recipes/mi355x-fp8/kimik26/1k1k/1p1d.yaml` added +75/-0
+- 验证与风险: 未看到显式测试文件；下一次修改同一区域时需要补足模型加载、短文本生成和 parser/多模态输入的回归验证。
+
+### PR #29218 - [Spec] DFlash: support pure-MLA targets with an fp8 KV cache (Kimi-K2.x-NVFP4)
+
+- 链接: https://github.com/sgl-project/sglang/pull/29218
+- 状态/时间: merged / 2026-07-08
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/quant/test_kimi_k26_nvfp4_dflash.py`；关联提交 `7bc343470f29`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+96/-8，可读 patch 142 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Spec] DFlash: support pure-MLA targets with an fp8 KV cache (Kimi-K2.x-NVFP4)」；模型线: Kimi K2/K2.5/Linear/VL；类别: 性能/后端优化；主要 diff: `test/registered/quant/test_kimi_k26_nvfp4_dflash.py`；技术摘要: 覆盖「[Spec] DFlash: support pure-MLA targets with an fp8 KV cache (Kimi-K2.x-NVFP4)」；主要实现面是 `test/registered/quant/test_kimi_k26_nvfp4_dflash.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/quant/test_kimi_k26_nvfp4_dflash.py` added +70/-0 (70 lines); hunks: -0,0 +1,70; symbols: TestKimiK26Nvfp4Dflash, test_kimi_k26_nvfp4_dflash，涉及 `TestKimiK26Nvfp4Dflash, test_kimi_k26_nvfp4_dflash`。
+- 代码 diff 细节:
+  - `test/registered/quant/test_kimi_k26_nvfp4_dflash.py` added +70/-0 (70 lines); hunks: -0,0 +1,70; symbols: TestKimiK26Nvfp4Dflash, test_kimi_k26_nvfp4_dflash
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/quant/test_kimi_k26_nvfp4_dflash.py
+@@ -0,0 +1,70 @@
++import unittest
++from sglang.test.accuracy_test_runner import AccuracyTestParams
++from sglang.test.ci.ci_register import register_cuda_ci
++from sglang.test.performance_test_runner import PerformanceTestParams
++from sglang.test.run_combined_tests import run_combined_tests
++from sglang.test.test_utils import ModelLaunchSettings
+```
+
+- 已读文件:
+  - tests: `test/registered/quant/test_kimi_k26_nvfp4_dflash.py` added +70/-0
+- 验证与风险: diff 自带测试面 `test/registered/quant/test_kimi_k26_nvfp4_dflash.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #30878 - perf: reuse MoonViT FA3 max-seqlen metadata
+
+- 链接: https://github.com/sgl-project/sglang/pull/30878
+- 状态/时间: merged / 2026-07-12
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/kimi_k25.py`；关联提交 `bce3fc987d89`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+97/-3，可读 patch 122 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「perf: reuse MoonViT FA3 max-seqlen metadata」；模型线: Kimi K2/K2.5/Linear/VL；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/kimi_k25.py`；技术摘要: 覆盖「perf: reuse MoonViT FA3 max-seqlen metadata」；主要实现面是 `python/sglang/srt/models/kimi_k25.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/kimi_k25.py` modified +5/-1 (6 lines); hunks: -150,6 +150,7 @@ def forward(; -469,7 +470,10 @@ def forward(; symbols: forward，涉及 `forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/kimi_k25.py` modified +5/-1 (6 lines); hunks: -150,6 +150,7 @@ def forward(; -469,7 +470,10 @@ def forward(; symbols: forward
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/kimi_k25.py
+@@ -150,6 +150,7 @@ def forward(
++            max_seqlen=max_seqlen,
+@@ -469,7 +470,10 @@ def forward(
+-        max_seqlen = lengths.max()
++        # FlashAttention needs a host integer.  Compute it once per MoonViT
++        # forward and pass it to every encoder block instead of synchronizing
++        # once per block inside the attention backend.
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/kimi_k25.py` modified +5/-1
+- 验证与风险: diff 自带测试面 `test/registered/unit/layers/attention/test_vision_max_seqlen.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #30869 - fix: fix Kimi-VL encoder parallelism
+
+- 链接: https://github.com/sgl-project/sglang/pull/30869
+- 状态/时间: merged / 2026-07-14
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/kimi_vl.py`, `python/sglang/srt/models/kimi_vl_moonvit.py`, `test/registered/unit/models/test_kimi_vl.py`, `test/registered/unit/models/test_kimi_vl_moonvit.py`；关联提交 `33f83011e0b7`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 10 个文件，+596/-71，可读 patch 992 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「fix: fix Kimi-VL encoder parallelism」；模型线: Kimi K2/K2.5/Linear/VL；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/kimi_vl_moonvit.py`, `test/registered/unit/models/test_kimi_vl.py`, `test/registered/unit/models/test_kimi_vl_moonvit.py`；技术摘要: 覆盖「fix: fix Kimi-VL encoder parallelism」；主要实现面是 `python/sglang/srt/models/kimi_vl_moonvit.py`, `test/registered/unit/models/test_kimi_vl.py`, `test/registered/unit/models/test_kimi_vl_moonvit.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/kimi_vl_moonvit.py` modified +175/-32 (207 lines); hunks: -61,11 +61,19; -74,6 +82,7 @@ def multihead_attention(; symbols: multihead_attention, sdpa_attention, __init__，涉及 `multihead_attention, sdpa_attention, __init__`；`test/registered/unit/models/test_kimi_vl.py` added +159/-0 (159 lines); hunks: -0,0 +1,159; symbols: _VisionTower, __init__, __call__, _Projector，涉及 `_VisionTower, __init__, __call__`；`test/registered/unit/models/test_kimi_vl_moonvit.py` added +64/-0 (64 lines); hunks: -0,0 +1,64; symbols: test_learnable_2d_pos_emb_caches_inference_interpolation, counting_interpolate, test_learnable_2d_pos_emb_does_not_cache_training_interpolation, test_learnable_2d_pos_emb_evicts_oldest_inference_cache_entry，涉及 `test_learnable_2d_pos_emb_caches_inference_interpolation, counting_interpolate, test_learnable_2d_pos_emb_does_not_cache_training_interpolation`；`python/sglang/srt/models/kimi_vl.py` modified +30/-11 (41 lines); hunks: -43,14 +43,14; -73,6 +73,8; symbols: __init__, get_image_feature, pad_input_ids, load_weights，涉及 `__init__, get_image_feature, pad_input_ids`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/kimi_vl_moonvit.py` modified +175/-32 (207 lines); hunks: -61,11 +61,19; -74,6 +82,7 @@ def multihead_attention(; symbols: multihead_attention, sdpa_attention, __init__
+  - `test/registered/unit/models/test_kimi_vl.py` added +159/-0 (159 lines); hunks: -0,0 +1,159; symbols: _VisionTower, __init__, __call__, _Projector
+  - `test/registered/unit/models/test_kimi_vl_moonvit.py` added +64/-0 (64 lines); hunks: -0,0 +1,64; symbols: test_learnable_2d_pos_emb_caches_inference_interpolation, counting_interpolate, test_learnable_2d_pos_emb_does_not_cache_training_interpolation, test_learnable_2d_pos_emb_evicts_oldest_inference_cache_entry
+  - `python/sglang/srt/models/kimi_vl.py` modified +30/-11 (41 lines); hunks: -43,14 +43,14; -73,6 +73,8; symbols: __init__, get_image_feature, pad_input_ids, load_weights
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/kimi_vl_moonvit.py
+@@ -61,11 +61,19 @@
+-from sglang.srt.layers.linear import ReplicatedLinear
++from sglang.srt.layers.linear import (
++    ColumnParallelLinear,
++    QKVParallelLinear,
++    ReplicatedLinear,
++    RowParallelLinear,
+diff -- test/registered/unit/models/test_kimi_vl.py
+@@ -0,0 +1,159 @@
++"""CPU-only coverage for Kimi-VL encoder parallelism wiring."""
++from types import SimpleNamespace
++from unittest.mock import patch
++import pytest
++import torch
++import torch.nn as nn
+diff -- test/registered/unit/models/test_kimi_vl_moonvit.py
+@@ -0,0 +1,64 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/kimi_vl_moonvit.py` modified +175/-32; `python/sglang/srt/models/kimi_vl.py` modified +30/-11
+  - tests: `test/registered/unit/models/test_kimi_vl.py` added +159/-0; `test/registered/unit/models/test_kimi_vl_moonvit.py` added +64/-0
+- 验证与风险: diff 自带测试面 `test/registered/unit/models/test_kimi_vl.py`, `test/registered/unit/models/test_kimi_vl_moonvit.py`, `test/registered/unit/multimodal/test_vit_cuda_graph_runner.py`, `test/registered/unit/utils/test_hf_transformers.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #31227 - perf: shard Kimi DP image feature transport
+
+- 链接: https://github.com/sgl-project/sglang/pull/31227
+- 状态/时间: merged / 2026-07-16
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/kimi_k25.py`, `python/sglang/srt/multimodal/processors/kimi_k25.py`, `test/registered/unit/models/test_kimi_k25.py`；关联提交 `7d0fd5101d04`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 13 个文件，+972/-99，可读 patch 1452 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「perf: shard Kimi DP image feature transport」；模型线: Kimi K2/K2.5/Linear/VL；类别: 性能/后端优化；主要 diff: `test/registered/unit/models/test_kimi_k25.py`, `python/sglang/srt/multimodal/processors/kimi_k25.py`, `python/sglang/srt/models/kimi_k25.py`；技术摘要: 覆盖「perf: shard Kimi DP image feature transport」；主要实现面是 `test/registered/unit/models/test_kimi_k25.py`, `python/sglang/srt/multimodal/processors/kimi_k25.py`, `python/sglang/srt/models/kimi_k25.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/unit/models/test_kimi_k25.py` added +241/-0 (241 lines); hunks: -0,0 +1,241; symbols: _MoonViT3dTower, __init__, __call__, _Projector，涉及 `_MoonViT3dTower, __init__, __call__`；`python/sglang/srt/multimodal/processors/kimi_k25.py` modified +68/-11 (79 lines); hunks: -19,6 +19,9; -143,6 +146,49 @@ def _process_single_image(; symbols: _process_single_image, _resize_images_by_source_shape, _gpu_preprocess_images, process_mm_data_async，涉及 `_process_single_image, _resize_images_by_source_shape, _gpu_preprocess_images`；`python/sglang/srt/models/kimi_k25.py` modified +65/-12 (77 lines); hunks: -30,8 +30,11; -142,6 +145,7 @@ def forward(; symbols: forward, __setattr__，涉及 `forward, __setattr__`。
+- 代码 diff 细节:
+  - `test/registered/unit/models/test_kimi_k25.py` added +241/-0 (241 lines); hunks: -0,0 +1,241; symbols: _MoonViT3dTower, __init__, __call__, _Projector
+  - `python/sglang/srt/multimodal/processors/kimi_k25.py` modified +68/-11 (79 lines); hunks: -19,6 +19,9; -143,6 +146,49 @@ def _process_single_image(; symbols: _process_single_image, _resize_images_by_source_shape, _gpu_preprocess_images, process_mm_data_async
+  - `python/sglang/srt/models/kimi_k25.py` modified +65/-12 (77 lines); hunks: -30,8 +30,11; -142,6 +145,7 @@ def forward(; symbols: forward, __setattr__
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/unit/models/test_kimi_k25.py
+@@ -0,0 +1,241 @@
++"""CPU coverage for Kimi-K2.5/K2.7 encoder-DP wiring."""
++from types import SimpleNamespace
++from unittest.mock import Mock, patch
++import pytest
++import torch
++import torch.nn as nn
+diff -- python/sglang/srt/multimodal/processors/kimi_k25.py
+@@ -19,6 +19,9 @@
++from sglang.srt.utils.cuda_ipc_transport_utils import (
++    DEFER_CUDA_IPC_FEATURE_RECONSTRUCTION_KEY,
++)
+@@ -143,6 +146,49 @@ def _process_single_image(
++def _resize_images_by_source_shape(
++    indexed_images: list[tuple[int, torch.Tensor]],
+diff -- python/sglang/srt/models/kimi_k25.py
+@@ -30,8 +30,11 @@
+```
+
+- 已读文件:
+  - tests: `test/registered/unit/models/test_kimi_k25.py` added +241/-0
+  - runtime: `python/sglang/srt/multimodal/processors/kimi_k25.py` modified +68/-11; `python/sglang/srt/models/kimi_k25.py` modified +65/-12
+- 验证与风险: diff 自带测试面 `test/registered/unit/layers/attention/test_vision_max_seqlen.py`, `test/registered/unit/models/test_kimi_k25.py`, `test/registered/unit/multimodal/test_cuda_ipc_pool_budget.py`, `test/registered/unit/multimodal/test_cuda_ipc_transport.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #21741 - [1/N] feat: support compressed-tensors w4afp8 MoE
+
+- 链接: https://github.com/sgl-project/sglang/pull/21741
+- 状态/时间: closed / 2026-07-17
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 12 个文件，+1657/-37，可读 patch 1828 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[1/N] feat: support compressed-tensors w4afp8 MoE」；模型线: Kimi K2/K2.5/Linear/VL；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a8_fp8_moe.py`, `python/sglang/srt/layers/moe/ep_moe/kernels.py`, `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py`；技术摘要: 覆盖「[1/N] feat: support compressed-tensors w4afp8 MoE」；主要实现面是 `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a8_fp8_moe.py`, `python/sglang/srt/layers/moe/ep_moe/kernels.py`, `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a8_fp8_moe.py` added +315/-0 (315 lines); hunks: -0,0 +1,315; symbols: _unpack_repack_int32_to_cutlass_int8, CompressedTensorsW4AFP8MoE, __init__, get_min_capability，涉及 `_unpack_repack_int32_to_cutlass_int8, CompressedTensorsW4AFP8MoE, __init__`；`python/sglang/srt/layers/moe/ep_moe/kernels.py` modified +62/-0 (62 lines); hunks: -429,6 +429,68 @@ def silu_and_mul_masked_post_quant_fwd(; symbols: silu_and_mul_masked_post_quant_fwd, silu_mul_dynamic_scale_triton_kernel_for_cutlass_moe, silu_mul_dynamic_tensorwise_quant_for_cutlass_moe, silu_mul_static_tensorwise_quant_triton_kernel_for_cutlass_moe，涉及 `silu_and_mul_masked_post_quant_fwd, silu_mul_dynamic_scale_triton_kernel_for_cutlass_moe, silu_mul_dynamic_tensorwise_quant_for_cutlass_moe`；`python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py` modified +27/-8 (35 lines); hunks: -43,6 +43,7; -304,15 +305,16 @@ def _quantization_scheme_map_from_config(; symbols: _quantization_scheme_map_from_config, _is_dynamic_token_w4a8, _is_w4afp8, _is_static_tensor_w8a8，涉及 `_quantization_scheme_map_from_config, _is_dynamic_token_w4a8, _is_w4afp8`；`python/sglang/srt/layers/moe/cutlass_w4a8_moe.py` modified +19/-6 (25 lines); hunks: -13,11 +13,11; -29,6 +29,7; symbols: cutlass_w4a8_moe，涉及 `cutlass_w4a8_moe`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a8_fp8_moe.py` added +315/-0 (315 lines); hunks: -0,0 +1,315; symbols: _unpack_repack_int32_to_cutlass_int8, CompressedTensorsW4AFP8MoE, __init__, get_min_capability
+  - `python/sglang/srt/layers/moe/ep_moe/kernels.py` modified +62/-0 (62 lines); hunks: -429,6 +429,68 @@ def silu_and_mul_masked_post_quant_fwd(; symbols: silu_and_mul_masked_post_quant_fwd, silu_mul_dynamic_scale_triton_kernel_for_cutlass_moe, silu_mul_dynamic_tensorwise_quant_for_cutlass_moe, silu_mul_static_tensorwise_quant_triton_kernel_for_cutlass_moe
+  - `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py` modified +27/-8 (35 lines); hunks: -43,6 +43,7; -304,15 +305,16 @@ def _quantization_scheme_map_from_config(; symbols: _quantization_scheme_map_from_config, _is_dynamic_token_w4a8, _is_w4afp8, _is_static_tensor_w8a8
+  - `python/sglang/srt/layers/moe/cutlass_w4a8_moe.py` modified +19/-6 (25 lines); hunks: -13,11 +13,11; -29,6 +29,7; symbols: cutlass_w4a8_moe
+  - `python/sglang/srt/layers/quantization/compressed_tensors/schemes/__init__.py` modified +2/-0 (2 lines); hunks: -7,6 +7,7; -41,4 +42,5
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a8_fp8_moe.py
+@@ -0,0 +1,315 @@
++"""W4AFP8 MoE scheme: INT4 group-quantized weights + FP8 dynamic activations.
++Loads INT4 weights from compressed-tensors pack-quantized format,
++converts to CUTLASS W4A8 layout, and runs CUTLASS grouped GEMM
++with dynamic FP8 activation quantization.
++"""
++from __future__ import annotations
+diff -- python/sglang/srt/layers/moe/ep_moe/kernels.py
+@@ -429,6 +429,68 @@ def silu_and_mul_masked_post_quant_fwd(
++@triton.jit
++def silu_mul_dynamic_scale_triton_kernel_for_cutlass_moe(
++    input_ptr,
++    scale_ptr,
++    num_tokens_tensor_ptr,
++    intermediate_size,
+diff -- python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py
+@@ -43,6 +43,7 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a8_fp8_moe.py` added +315/-0; `python/sglang/srt/layers/moe/ep_moe/kernels.py` modified +62/-0; `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py` modified +27/-8; `python/sglang/srt/layers/moe/cutlass_w4a8_moe.py` modified +19/-6; `python/sglang/srt/layers/quantization/compressed_tensors/schemes/__init__.py` modified +2/-0; `python/sglang/srt/layers/quantization/compressed_tensors/utils.py` modified +1/-0
+  - other: `benchmark/kernels/quantization/bench_w4a8_moe_decode.py` added +887/-0
+  - tests: `python/sglang/test/test_cutlass_w4a8_moe.py` modified +66/-23
+- 验证与风险: diff 自带测试面 `python/sglang/jit_kernel/tests/test_per_tensor_absmax_fp8.py`, `python/sglang/test/test_cutlass_w4a8_moe.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #31514 - [DCP] Enable decode context parallel for Kimi K2.5 NVFP4
+
+- 链接: https://github.com/sgl-project/sglang/pull/31514
+- 状态/时间: merged / 2026-07-17
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/kimi_k25.py`；关联提交 `ead703815ef3`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+30/-1，可读 patch 45 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[DCP] Enable decode context parallel for Kimi K2.5 NVFP4」；模型线: Kimi K2/K2.5/Linear/VL；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/kimi_k25.py`；技术摘要: 覆盖「[DCP] Enable decode context parallel for Kimi K2.5 NVFP4」；主要实现面是 `python/sglang/srt/models/kimi_k25.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/kimi_k25.py` modified +29/-0 (29 lines); hunks: -786,6 +786,35 @@ def routed_experts_weights_of_layer(self):; symbols: routed_experts_weights_of_layer, prepare_context_parallel_metadata_for_dcp, forward，涉及 `routed_experts_weights_of_layer, prepare_context_parallel_metadata_for_dcp, forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/kimi_k25.py` modified +29/-0 (29 lines); hunks: -786,6 +786,35 @@ def routed_experts_weights_of_layer(self):; symbols: routed_experts_weights_of_layer, prepare_context_parallel_metadata_for_dcp, forward
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/kimi_k25.py
+@@ -786,6 +786,35 @@ def routed_experts_weights_of_layer(self):
++    def prepare_context_parallel_metadata_for_dcp(
++        self,
++        seq_lens: torch.Tensor,
++        extend_prefix_lens: torch.Tensor,
++        extend_prefix_lens_cpu: torch.Tensor,
++        extend_seq_lens: torch.Tensor,
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/kimi_k25.py` modified +29/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/dcp/comm.py`, `python/sglang/srt/models/kimi_k25.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #31474 - Fix KDA prefix caching under mamba extra_buffer and enable it for kimi_linear
+
+- 链接: https://github.com/sgl-project/sglang/pull/31474
+- 状态/时间: merged / 2026-07-19
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/models_e2e/test_kimi_linear_models.py`；关联提交 `a03ca46a2847`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 11 个文件，+153/-19，可读 patch 453 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Fix KDA prefix caching under mamba extra_buffer and enable it for kimi_linear」；模型线: Kimi K2/K2.5/Linear/VL；类别: 缺陷修复；主要 diff: `test/registered/models_e2e/test_kimi_linear_models.py`；技术摘要: 覆盖「Fix KDA prefix caching under mamba extra_buffer and enable it for kimi_linear」；主要实现面是 `test/registered/models_e2e/test_kimi_linear_models.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/models_e2e/test_kimi_linear_models.py` modified +35/-2 (37 lines); hunks: -3,21 +3,27; -45,5 +51,32 @@ def test_gsm8k(self):; symbols: TestKimiLinear, setUpClass, test_gsm8k, TestKimiLinearExtraBuffer，涉及 `TestKimiLinear, setUpClass, test_gsm8k`。
+- 代码 diff 细节:
+  - `test/registered/models_e2e/test_kimi_linear_models.py` modified +35/-2 (37 lines); hunks: -3,21 +3,27; -45,5 +51,32 @@ def test_gsm8k(self):; symbols: TestKimiLinear, setUpClass, test_gsm8k, TestKimiLinearExtraBuffer
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/models_e2e/test_kimi_linear_models.py
+@@ -3,21 +3,27 @@
++from sglang.test.kits.eval_accuracy_kit import GSM8KMixin
++from sglang.test.kits.kl_divergence_kit import KLDivergenceMixin
++from sglang.test.kits.prefix_cache_branching_kit import PrefixCacheBranchingMixin
++from sglang.test.server_fixtures.default_fixture import DefaultServerBase
+-register_cuda_ci(est_time=178, stage="base-b", runner_config="2-gpu-large")
++register_cuda_ci(est_time=600, stage="base-b", runner_config="2-gpu-large")
+```
+
+- 已读文件:
+  - tests: `test/registered/models_e2e/test_kimi_linear_models.py` modified +35/-2
+- 验证与风险: diff 自带测试面 `python/sglang/test/kits/kl_divergence_kit.py`, `python/sglang/test/kl_test_utils.py`, `test/registered/models_e2e/test_kimi_linear_models.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #32262 - [Bugfix] Fix Kimi-Linear state transfer across heterogeneous TP
+
+- 链接: https://github.com/sgl-project/sglang/pull/32262
+- 状态/时间: merged / 2026-07-24
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/kimi_linear.py`, `test/registered/disaggregation/test_disaggregation_kimi_linear.py`；关联提交 `2428f5614561`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 10 个文件，+306/-130，可读 patch 769 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] Fix Kimi-Linear state transfer across heterogeneous TP」；模型线: Kimi K2/K2.5/Linear/VL；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/kimi_linear.py`, `test/registered/disaggregation/test_disaggregation_kimi_linear.py`；技术摘要: 覆盖「[Bugfix] Fix Kimi-Linear state transfer across heterogeneous TP」；主要实现面是 `python/sglang/srt/models/kimi_linear.py`, `test/registered/disaggregation/test_disaggregation_kimi_linear.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/kimi_linear.py` modified +1/-1 (2 lines); hunks: -185,7 +185,7 @@ def __init__(; symbols: __init__，涉及 `__init__`；`test/registered/disaggregation/test_disaggregation_kimi_linear.py` added +105/-0 (105 lines); hunks: -0,0 +1,105; symbols: TestKimiLinearHeterogeneousTPDisaggregation, setUpClass, generate, test_logprob_parity，涉及 `TestKimiLinearHeterogeneousTPDisaggregation, setUpClass, generate`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/kimi_linear.py` modified +1/-1 (2 lines); hunks: -185,7 +185,7 @@ def __init__(; symbols: __init__
+  - `test/registered/disaggregation/test_disaggregation_kimi_linear.py` added +105/-0 (105 lines); hunks: -0,0 +1,105; symbols: TestKimiLinearHeterogeneousTPDisaggregation, setUpClass, generate, test_logprob_parity
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/kimi_linear.py
+@@ -185,7 +185,7 @@ def __init__(
+-        self.head_v_dim = config.v_head_dim
++        self.head_v_dim = config.linear_attn_config["head_dim"]
+diff -- test/registered/disaggregation/test_disaggregation_kimi_linear.py
+@@ -0,0 +1,105 @@
++import time
++import unittest
++import requests
++from sglang.srt.utils import kill_process_tree
++from sglang.test.ci.ci_register import register_cuda_ci
++from sglang.test.server_fixtures.disaggregation_fixture import (
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/kimi_linear.py` modified +1/-1
+  - tests: `test/registered/disaggregation/test_disaggregation_kimi_linear.py` added +105/-0
+- 验证与风险: diff 自带测试面 `python/sglang/test/server_fixtures/disaggregation_fixture.py`, `test/registered/disaggregation/test_disaggregation_kimi_linear.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论
 

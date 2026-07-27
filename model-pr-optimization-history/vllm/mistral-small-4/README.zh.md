@@ -15,7 +15,7 @@
 | `tests/reasoning/test_mistral_reasoning_parser.py` | [#26358](https://github.com/vllm-project/vllm/pull/26358), [#30391](https://github.com/vllm-project/vllm/pull/30391) |
 | `tests/renderers/test_mistral.py` | 无直接 PR 号提交 |
 | `tests/tokenizers_/test_mistral.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#41658](https://github.com/vllm-project/vllm/pull/41658), [#44622](https://github.com/vllm-project/vllm/pull/44622) |
-| `tests/tool_parsers/test_mistral_tool_parser.py` | [#30724](https://github.com/vllm-project/vllm/pull/30724), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#39217](https://github.com/vllm-project/vllm/pull/39217), [#40531](https://github.com/vllm-project/vllm/pull/40531), [#41730](https://github.com/vllm-project/vllm/pull/41730), [#44596](https://github.com/vllm-project/vllm/pull/44596) |
+| `tests/tool_parsers/test_mistral_tool_parser.py` | [#30724](https://github.com/vllm-project/vllm/pull/30724), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#39217](https://github.com/vllm-project/vllm/pull/39217), [#40531](https://github.com/vllm-project/vllm/pull/40531), [#41730](https://github.com/vllm-project/vllm/pull/41730), [#44596](https://github.com/vllm-project/vllm/pull/44596), [#47550](https://github.com/vllm-project/vllm/pull/47550) |
 | `tests/tool_use/mistral/__init__.py` | 无直接 PR 号提交 |
 | `tests/tool_use/mistral/conftest.py` | 无直接 PR 号提交 |
 | `tests/tool_use/mistral/test_mistral_tool_calls.py` | [#39217](https://github.com/vllm-project/vllm/pull/39217) |
@@ -23,21 +23,21 @@
 | `vllm/model_executor/models/mistral.py` | [#1196](https://github.com/vllm-project/vllm/pull/1196), [#1220](https://github.com/vllm-project/vllm/pull/1220), [#1254](https://github.com/vllm-project/vllm/pull/1254), [#1303](https://github.com/vllm-project/vllm/pull/1303), [#2868](https://github.com/vllm-project/vllm/pull/2868), [#32780](https://github.com/vllm-project/vllm/pull/32780), [#33095](https://github.com/vllm-project/vllm/pull/33095) |
 | `vllm/model_executor/models/mistral3.py` | [#15505](https://github.com/vllm-project/vllm/pull/15505), [#15950](https://github.com/vllm-project/vllm/pull/15950), [#17270](https://github.com/vllm-project/vllm/pull/17270), [#17428](https://github.com/vllm-project/vllm/pull/17428), [#21945](https://github.com/vllm-project/vllm/pull/21945), [#33939](https://github.com/vllm-project/vllm/pull/33939), [#36928](https://github.com/vllm-project/vllm/pull/36928) |
 | `vllm/model_executor/models/mistral_eagle.py` | [#41024](https://github.com/vllm-project/vllm/pull/41024) |
-| `vllm/model_executor/models/mistral_large_3.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757) |
-| `vllm/model_executor/models/mistral_large_3_eagle.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757), [#36163](https://github.com/vllm-project/vllm/pull/36163), [#37232](https://github.com/vllm-project/vllm/pull/37232), [#45217](https://github.com/vllm-project/vllm/pull/45217) |
+| `vllm/model_executor/models/mistral_large_3.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757), [#48153](https://github.com/vllm-project/vllm/pull/48153) |
+| `vllm/model_executor/models/mistral_large_3_eagle.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757), [#36163](https://github.com/vllm-project/vllm/pull/36163), [#37232](https://github.com/vllm-project/vllm/pull/37232), [#45217](https://github.com/vllm-project/vllm/pull/45217), [#48153](https://github.com/vllm-project/vllm/pull/48153) |
 | `vllm/parser/mistral.py` | [#44596](https://github.com/vllm-project/vllm/pull/44596) |
 | `vllm/reasoning/mistral_reasoning_parser.py` | [#30391](https://github.com/vllm-project/vllm/pull/30391), [#44596](https://github.com/vllm-project/vllm/pull/44596) |
 | `vllm/renderers/mistral.py` | 无直接 PR 号提交 |
 | `vllm/tokenizers/mistral.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757), [#31138](https://github.com/vllm-project/vllm/pull/31138), [#34651](https://github.com/vllm-project/vllm/pull/34651), [#36971](https://github.com/vllm-project/vllm/pull/36971), [#37209](https://github.com/vllm-project/vllm/pull/37209), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#39217](https://github.com/vllm-project/vllm/pull/39217), [#41658](https://github.com/vllm-project/vllm/pull/41658) |
-| `vllm/tool_parsers/mistral_tool_parser.py` | [#30724](https://github.com/vllm-project/vllm/pull/30724), [#34651](https://github.com/vllm-project/vllm/pull/34651), [#37209](https://github.com/vllm-project/vllm/pull/37209), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#39217](https://github.com/vllm-project/vllm/pull/39217), [#39294](https://github.com/vllm-project/vllm/pull/39294), [#40043](https://github.com/vllm-project/vllm/pull/40043), [#40531](https://github.com/vllm-project/vllm/pull/40531), [#41658](https://github.com/vllm-project/vllm/pull/41658), [#41730](https://github.com/vllm-project/vllm/pull/41730), [#44596](https://github.com/vllm-project/vllm/pull/44596) |
+| `vllm/tool_parsers/mistral_tool_parser.py` | [#30724](https://github.com/vllm-project/vllm/pull/30724), [#34651](https://github.com/vllm-project/vllm/pull/34651), [#37209](https://github.com/vllm-project/vllm/pull/37209), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#39217](https://github.com/vllm-project/vllm/pull/39217), [#39294](https://github.com/vllm-project/vllm/pull/39294), [#40043](https://github.com/vllm-project/vllm/pull/40043), [#40531](https://github.com/vllm-project/vllm/pull/40531), [#41658](https://github.com/vllm-project/vllm/pull/41658), [#41730](https://github.com/vllm-project/vllm/pull/41730), [#44596](https://github.com/vllm-project/vllm/pull/44596), [#47550](https://github.com/vllm-project/vllm/pull/47550) |
 | `vllm/transformers_utils/configs/mistral.py` | [#1196](https://github.com/vllm-project/vllm/pull/1196), [#1254](https://github.com/vllm-project/vllm/pull/1254), [#20570](https://github.com/vllm-project/vllm/pull/20570), [#28659](https://github.com/vllm-project/vllm/pull/28659), [#29172](https://github.com/vllm-project/vllm/pull/29172), [#29239](https://github.com/vllm-project/vllm/pull/29239), [#29757](https://github.com/vllm-project/vllm/pull/29757), [#33521](https://github.com/vllm-project/vllm/pull/33521), [#34028](https://github.com/vllm-project/vllm/pull/34028), [#34104](https://github.com/vllm-project/vllm/pull/34104), [#36163](https://github.com/vllm-project/vllm/pull/36163), [#37104](https://github.com/vllm-project/vllm/pull/37104), ... (13 total) |
 | `vllm/utils/mistral.py` | [#34651](https://github.com/vllm-project/vllm/pull/34651), [#40043](https://github.com/vllm-project/vllm/pull/40043) |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 49
+- git 追溯 PR 数: 51
 - 原文档显式引用补充 PR 数: 12
-- 当前文档总 PR 数: 61
+- 当前文档总 PR 数: 63
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -106,6 +106,8 @@
 | 2026-06-11 | [#45161](https://github.com/vllm-project/vllm/pull/45161) | merged | Deprecate Transformers v4 support | `vllm/model_executor/models/transformers/base.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`, `vllm/model_executor/model_loader/weight_utils.py` |
 | 2026-06-12 | [#45217](https://github.com/vllm-project/vllm/pull/45217) | merged | [Bugfix] Initialize missing attributes in mistral eagle | `tests/model_executor/test_mistral_large_3_eagle.py`, `vllm/model_executor/models/mistral_large_3_eagle.py` |
 | 2026-06-18 | [#45988](https://github.com/vllm-project/vllm/pull/45988) | merged | [Perf] Remove unused loggers in `reasoning/` | `vllm/reasoning/deepseek_v3_reasoning_parser.py`, `vllm/reasoning/ernie45_reasoning_parser.py`, `vllm/reasoning/granite_reasoning_parser.py` |
+| 2026-07-06 | [#47550](https://github.com/vllm-project/vllm/pull/47550) | merged | [ROCm][CI][Bugfix] Fix flaky parallel tool-call streaming (test assertion + Mistral/Granite parsers) | `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py` |
+| 2026-07-10 | [#48153](https://github.com/vllm-project/vllm/pull/48153) | merged | [Model] Migrate MistralLarge3ForCausalLM to AutoWeightsLoader | `vllm/model_executor/models/mistral_large_3.py`, `vllm/model_executor/models/mistral_large_3_eagle.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -2012,6 +2014,79 @@ diff -- vllm/reasoning/identity_reasoning_parser.py
 - 已读文件:
   - runtime: `vllm/reasoning/deepseek_v3_reasoning_parser.py` modified +0/-3; `vllm/reasoning/ernie45_reasoning_parser.py` modified +0/-3; `vllm/reasoning/granite_reasoning_parser.py` modified +0/-3; `vllm/reasoning/hunyuan_a13b_reasoning_parser.py` modified +0/-3; `vllm/reasoning/identity_reasoning_parser.py` modified +0/-3; `vllm/reasoning/minimax_m2_reasoning_parser.py` modified +0/-3
 - 验证与风险: runtime 路径改动集中在 `vllm/reasoning/deepseek_v3_reasoning_parser.py`, `vllm/reasoning/ernie45_reasoning_parser.py`, `vllm/reasoning/granite_reasoning_parser.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #47550 - [ROCm][CI][Bugfix] Fix flaky parallel tool-call streaming (test assertion + Mistral/Granite parsers)
+
+- 链接: https://github.com/vllm-project/vllm/pull/47550
+- 状态/时间: merged / 2026-07-06
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`；关联提交 `5769a7382cb1`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+142/-47，可读 patch 302 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[ROCm][CI][Bugfix] Fix flaky parallel tool-call streaming (test assertion + Mistral/Granite parsers)」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`；技术摘要: 覆盖「[ROCm][CI][Bugfix] Fix flaky parallel tool-call streaming (test assertion + Mistral/Granite parsers)」；主要实现面是 `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `tests/tool_parsers/test_mistral_tool_parser.py` modified +60/-13 (73 lines); hunks: -144,6 +144,7 @@ def stream_delta_message_generator(; -182,43 +183,53 @@ def stream_delta_message_generator(; symbols: stream_delta_message_generator, test_grammar_from_tool_parser_set_by_adjust_request, test_streaming_pre_v11_parallel_calls_batched_deltas，涉及 `stream_delta_message_generator, test_grammar_from_tool_parser_set_by_adjust_request, test_streaming_pre_v11_parallel_calls_batched_deltas`；`vllm/tool_parsers/mistral_tool_parser.py` modified +5/-12 (17 lines); hunks: -533,6 +533,7 @@ def update_stream_state_pre_v11_tokenizer(self):; -640,18 +641,10 @@ def _extract_tool_calls_streaming_pre_v11_tokenizer(; symbols: update_stream_state_pre_v11_tokenizer, _extract_tool_calls_streaming_pre_v11_tokenizer，涉及 `update_stream_state_pre_v11_tokenizer, _extract_tool_calls_streaming_pre_v11_tokenizer`。
+- 代码 diff 细节:
+  - `tests/tool_parsers/test_mistral_tool_parser.py` modified +60/-13 (73 lines); hunks: -144,6 +144,7 @@ def stream_delta_message_generator(; -182,43 +183,53 @@ def stream_delta_message_generator(; symbols: stream_delta_message_generator, test_grammar_from_tool_parser_set_by_adjust_request, test_streaming_pre_v11_parallel_calls_batched_deltas
+  - `vllm/tool_parsers/mistral_tool_parser.py` modified +5/-12 (17 lines); hunks: -533,6 +533,7 @@ def update_stream_state_pre_v11_tokenizer(self):; -640,18 +641,10 @@ def _extract_tool_calls_streaming_pre_v11_tokenizer(; symbols: update_stream_state_pre_v11_tokenizer, _extract_tool_calls_streaming_pre_v11_tokenizer
+- 关键代码摘录:
+
+```diff
+diff -- tests/tool_parsers/test_mistral_tool_parser.py
+@@ -144,6 +144,7 @@ def stream_delta_message_generator(
++    chunk_size: int = 1,
+@@ -182,43 +183,53 @@ def stream_delta_message_generator(
++    pending_text = ""
++    pending_token_ids: list[int] = []
+-        delta_token_ids = [delta_token]
+-        previous_token_ids = all_token_ids[:i]
+diff -- vllm/tool_parsers/mistral_tool_parser.py
+@@ -533,6 +533,7 @@ def update_stream_state_pre_v11_tokenizer(self):
++                self.starting_new_tool = True
+@@ -640,18 +641,10 @@ def _extract_tool_calls_streaming_pre_v11_tokenizer(
+-            if (
+-                (streaming_state_before_parse != self.streaming_state)
+-                and streaming_state_before_parse
+-                in [StreamingState.WAITING_FOR_TOOL_START, StreamingState.TOOL_COMPLETE]
+```
+
+- 已读文件:
+  - tests: `tests/tool_parsers/test_mistral_tool_parser.py` modified +60/-13
+  - runtime: `vllm/tool_parsers/mistral_tool_parser.py` modified +5/-12
+- 验证与风险: diff 自带测试面 `tests/entrypoints/openai/chat_completion/test_thinking_token_budget.py`, `tests/tool_parsers/test_granite_tool_parser.py`, `tests/tool_parsers/test_mistral_tool_parser.py`, `tests/tool_use/test_parallel_tool_calls.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #48153 - [Model] Migrate MistralLarge3ForCausalLM to AutoWeightsLoader
+
+- 链接: https://github.com/vllm-project/vllm/pull/48153
+- 状态/时间: merged / 2026-07-10
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mistral_large_3.py`, `vllm/model_executor/models/mistral_large_3_eagle.py`；关联提交 `fabec87f63cd`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+89/-57，可读 patch 179 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Model] Migrate MistralLarge3ForCausalLM to AutoWeightsLoader」；模型线: Mistral Small 4；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/mistral_large_3.py`, `vllm/model_executor/models/mistral_large_3_eagle.py`；技术摘要: 覆盖「[Model] Migrate MistralLarge3ForCausalLM to AutoWeightsLoader」；主要实现面是 `vllm/model_executor/models/mistral_large_3.py`, `vllm/model_executor/models/mistral_large_3_eagle.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/mistral_large_3.py` modified +80/-51 (131 lines); hunks: -2,62 +2,91; symbols: MistralLarge3ForCausalLM, load_weights, _remap_mistral_to_ds，涉及 `MistralLarge3ForCausalLM, load_weights, _remap_mistral_to_ds`；`vllm/model_executor/models/mistral_large_3_eagle.py` modified +9/-6 (15 lines); hunks: -5,6 +5,7; -22,7 +23,7; symbols: forward, EagleMistralLarge3ForCausalLM, __init__，涉及 `forward, EagleMistralLarge3ForCausalLM, __init__`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/mistral_large_3.py` modified +80/-51 (131 lines); hunks: -2,62 +2,91; symbols: MistralLarge3ForCausalLM, load_weights, _remap_mistral_to_ds
+  - `vllm/model_executor/models/mistral_large_3_eagle.py` modified +9/-6 (15 lines); hunks: -5,6 +5,7; -22,7 +23,7; symbols: forward, EagleMistralLarge3ForCausalLM, __init__
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/mistral_large_3.py
+@@ -2,62 +2,91 @@
+-import regex as re
++import regex
++from vllm.model_executor.models.utils import AutoWeightsLoader, WeightsMapper
+-    # fmt: off
+-    remapping = {
+-        r"layers\.(\d+)\.attention_norm\.weight": r"model.layers.\1.input_layernorm.weight",  # noqa: E501
+diff -- vllm/model_executor/models/mistral_large_3_eagle.py
+@@ -5,6 +5,7 @@
++import regex
+@@ -22,7 +23,7 @@
+-from .utils import make_empty_intermediate_tensors_factory, maybe_prefix
++from .utils import WeightsMapper, make_empty_intermediate_tensors_factory, maybe_prefix
+@@ -107,11 +108,13 @@ def forward(
+-    remapping = MistralLarge3ForCausalLM.remapping | {
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/mistral_large_3.py` modified +80/-51; `vllm/model_executor/models/mistral_large_3_eagle.py` modified +9/-6
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/mistral_large_3.py`, `vllm/model_executor/models/mistral_large_3_eagle.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ## 补漏结论
 

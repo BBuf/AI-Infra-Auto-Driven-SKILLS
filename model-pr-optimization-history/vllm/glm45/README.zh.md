@@ -6,16 +6,16 @@
 | --- | --- |
 | `tests/reasoning/test_glm4_moe_reasoning_parser.py` | 无直接 PR 号提交 |
 | `tests/tool_parsers/test_glm4_moe_tool_parser.py` | [#39601](https://github.com/vllm-project/vllm/pull/39601) |
-| `vllm/model_executor/models/glm4_moe.py` | [#21435](https://github.com/vllm-project/vllm/pull/21435), [#22143](https://github.com/vllm-project/vllm/pull/22143), [#22203](https://github.com/vllm-project/vllm/pull/22203), [#22460](https://github.com/vllm-project/vllm/pull/22460), [#22520](https://github.com/vllm-project/vllm/pull/22520), [#22832](https://github.com/vllm-project/vllm/pull/22832), [#24849](https://github.com/vllm-project/vllm/pull/24849), [#25830](https://github.com/vllm-project/vllm/pull/25830), [#41755](https://github.com/vllm-project/vllm/pull/41755) |
+| `vllm/model_executor/models/glm4_moe.py` | [#21435](https://github.com/vllm-project/vllm/pull/21435), [#22143](https://github.com/vllm-project/vllm/pull/22143), [#22203](https://github.com/vllm-project/vllm/pull/22203), [#22460](https://github.com/vllm-project/vllm/pull/22460), [#22520](https://github.com/vllm-project/vllm/pull/22520), [#22832](https://github.com/vllm-project/vllm/pull/22832), [#24849](https://github.com/vllm-project/vllm/pull/24849), [#25830](https://github.com/vllm-project/vllm/pull/25830), [#41755](https://github.com/vllm-project/vllm/pull/41755), [#44313](https://github.com/vllm-project/vllm/pull/44313) |
 | `vllm/model_executor/models/glm4_moe_lite.py` | 无直接 PR 号提交 |
 | `vllm/model_executor/models/glm4_moe_lite_mtp.py` | 无直接 PR 号提交 |
-| `vllm/model_executor/models/glm4_moe_mtp.py` | [#27597](https://github.com/vllm-project/vllm/pull/27597), [#28805](https://github.com/vllm-project/vllm/pull/28805) |
+| `vllm/model_executor/models/glm4_moe_mtp.py` | [#27597](https://github.com/vllm-project/vllm/pull/27597), [#28805](https://github.com/vllm-project/vllm/pull/28805), [#44313](https://github.com/vllm-project/vllm/pull/44313) |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 12
+- git 追溯 PR 数: 13
 - 原文档显式引用补充 PR 数: 43
-- 当前文档总 PR 数: 55
+- 当前文档总 PR 数: 56
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -78,6 +78,7 @@
 | 2026-06-08 | [#41184](https://github.com/vllm-project/vllm/pull/41184) | merged | [MoE Refactor] FusedMoE/MoERunner inversion refactor | `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/routed_experts.py`, `vllm/model_executor/layers/fused_moe/runner/moe_runner.py` |
 | 2026-06-18 | [#45915](https://github.com/vllm-project/vllm/pull/45915) | merged | [Frontend] Add Streaming Parser Engine and new GLM4.7/GLM5.1/GLM5.2 Parser | `tests/tool_parsers/test_glm4_moe_tool_parser.py`, `vllm/tool_parsers/glm4_moe_tool_parser.py`, `tests/reasoning/test_glm4_moe_reasoning_parser.py` |
 | 2026-06-25 | [#46651](https://github.com/vllm-project/vllm/pull/46651) | merged | [Perf] Remove redundant clone for GLM, Deepseek etc | `vllm/model_executor/models/AXK1.py`, `vllm/model_executor/models/deepseek_v2.py`, `vllm/model_executor/models/glm4_moe_lite.py` |
+| 2026-06-28 | [#44313](https://github.com/vllm-project/vllm/pull/44313) | merged | [ROCm][Perf] Add Fused Shared Expert (FSE) support for GLM-4.5/6/7 | `vllm/model_executor/models/glm4_moe.py`, `vllm/model_executor/models/glm4_moe_mtp.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -2011,6 +2012,42 @@ diff -- vllm/model_executor/models/openpangu.py
 - 已读文件:
   - runtime: `vllm/model_executor/models/AXK1.py` modified +1/-1; `vllm/model_executor/models/deepseek_v2.py` modified +1/-1; `vllm/model_executor/models/glm4_moe_lite.py` modified +1/-1; `vllm/model_executor/models/openpangu.py` modified +1/-1
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/AXK1.py`, `vllm/model_executor/models/deepseek_v2.py`, `vllm/model_executor/models/glm4_moe_lite.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #44313 - [ROCm][Perf] Add Fused Shared Expert (FSE) support for GLM-4.5/6/7
+
+- 链接: https://github.com/vllm-project/vllm/pull/44313
+- 状态/时间: merged / 2026-06-28
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/glm4_moe.py`, `vllm/model_executor/models/glm4_moe_mtp.py`；关联提交 `c7ca0bccae66`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+254/-105，可读 patch 482 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[ROCm][Perf] Add Fused Shared Expert (FSE) support for GLM-4.5/6/7」；模型线: GLM-4.5；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/glm4_moe.py`, `vllm/model_executor/models/glm4_moe_mtp.py`；技术摘要: 覆盖「[ROCm][Perf] Add Fused Shared Expert (FSE) support for GLM-4.5/6/7」；主要实现面是 `vllm/model_executor/models/glm4_moe.py`, `vllm/model_executor/models/glm4_moe_mtp.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/glm4_moe.py` modified +138/-63 (201 lines); hunks: -32,6 +32,7; -168,7 +169,16 @@ def __init__(; symbols: __init__, forward，涉及 `__init__, forward`；`vllm/model_executor/models/glm4_moe_mtp.py` modified +116/-42 (158 lines); hunks: -24,12 +24,14; -239,6 +241,10 @@ def compute_logits(; symbols: compute_logits, load_weights，涉及 `compute_logits, load_weights`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/glm4_moe.py` modified +138/-63 (201 lines); hunks: -32,6 +32,7; -168,7 +169,16 @@ def __init__(; symbols: __init__, forward
+  - `vllm/model_executor/models/glm4_moe_mtp.py` modified +116/-42 (158 lines); hunks: -24,12 +24,14; -239,6 +241,10 @@ def compute_logits(; symbols: compute_logits, load_weights
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/glm4_moe.py
+@@ -32,6 +32,7 @@
++from vllm._aiter_ops import rocm_aiter_ops
+@@ -168,7 +169,16 @@ def __init__(
+-        if config.n_shared_experts is not None:
++        # AITER fused shared-expert (FSE) gate; mirrors the deepseek_v2.py
++        # pattern (see Glm4MoE / FusedMoE wiring there).
++        self.is_rocm_aiter_moe_enabled = rocm_aiter_ops.is_fused_moe_enabled()
+diff -- vllm/model_executor/models/glm4_moe_mtp.py
+@@ -24,12 +24,14 @@
+-from collections.abc import Iterable
++import typing
++from collections.abc import Callable, Iterable
++from vllm._aiter_ops import rocm_aiter_ops
+@@ -239,6 +241,10 @@ def compute_logits(
++        # FSE weight loading mirrors glm4_moe.py / deepseek_mtp.py.
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/glm4_moe.py` modified +138/-63; `vllm/model_executor/models/glm4_moe_mtp.py` modified +116/-42
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/glm4_moe.py`, `vllm/model_executor/models/glm4_moe_mtp.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ## 补漏结论
 

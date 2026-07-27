@@ -5,27 +5,30 @@
 | 文件 | git 追溯到的 PR |
 | --- | --- |
 | `benchmark/gpt_oss/README.md` | [#9728](https://github.com/sgl-project/sglang/pull/9728) |
-| `docs/basic_usage/gpt_oss.md` | [#9497](https://github.com/sgl-project/sglang/pull/9497), [#9613](https://github.com/sgl-project/sglang/pull/9613), [#9626](https://github.com/sgl-project/sglang/pull/9626) |
 | `docs_new/cookbook/autoregressive/OpenAI/GPT-OSS.mdx` | 无直接 PR 号提交 |
 | `docs_new/src/snippets/autoregressive/gpt-oss-deployment.jsx` | 无直接 PR 号提交 |
 | `python/sglang/srt/function_call/gpt_oss_detector.py` | [#9043](https://github.com/sgl-project/sglang/pull/9043), [#9190](https://github.com/sgl-project/sglang/pull/9190), [#9657](https://github.com/sgl-project/sglang/pull/9657) |
-| `python/sglang/srt/models/gpt_oss.py` | [#8824](https://github.com/sgl-project/sglang/pull/8824), [#8843](https://github.com/sgl-project/sglang/pull/8843), [#8944](https://github.com/sgl-project/sglang/pull/8944), [#9028](https://github.com/sgl-project/sglang/pull/9028), [#9146](https://github.com/sgl-project/sglang/pull/9146), [#9161](https://github.com/sgl-project/sglang/pull/9161), [#9359](https://github.com/sgl-project/sglang/pull/9359), [#9433](https://github.com/sgl-project/sglang/pull/9433), [#9469](https://github.com/sgl-project/sglang/pull/9469), [#9783](https://github.com/sgl-project/sglang/pull/9783), [#14197](https://github.com/sgl-project/sglang/pull/14197), [#16775](https://github.com/sgl-project/sglang/pull/16775), ... (19 total) |
+| `python/sglang/srt/models/gpt_oss.py` | [#8824](https://github.com/sgl-project/sglang/pull/8824), [#8843](https://github.com/sgl-project/sglang/pull/8843), [#8944](https://github.com/sgl-project/sglang/pull/8944), [#9028](https://github.com/sgl-project/sglang/pull/9028), [#9146](https://github.com/sgl-project/sglang/pull/9146), [#9161](https://github.com/sgl-project/sglang/pull/9161), [#9359](https://github.com/sgl-project/sglang/pull/9359), [#9433](https://github.com/sgl-project/sglang/pull/9433), [#9469](https://github.com/sgl-project/sglang/pull/9469), [#9783](https://github.com/sgl-project/sglang/pull/9783), [#14197](https://github.com/sgl-project/sglang/pull/14197), [#16775](https://github.com/sgl-project/sglang/pull/16775), ... (21 total) |
 | `python/sglang/test/gpt_oss_common.py` | [#16426](https://github.com/sgl-project/sglang/pull/16426) |
 | `test/manual/core/test_gpt_oss_1gpu.py` | 无直接 PR 号提交 |
 | `test/registered/8-gpu-models/test_gpt_oss_120b.py` | [#18134](https://github.com/sgl-project/sglang/pull/18134) |
 | `test/registered/amd/accuracy/mi30x/test_gpt_oss_eval_amd.py` | 无直接 PR 号提交 |
 | `test/registered/amd/accuracy/mi35x/test_gpt_oss_eval_mi35x.py` | [#26884](https://github.com/sgl-project/sglang/pull/26884) |
+| `test/registered/amd/accuracy/mi35x/test_gpt_oss_w4a8_mxfp4_eval_mi35x.py` | [#27204](https://github.com/sgl-project/sglang/pull/27204) |
+| `test/registered/cp/test_gpt_oss_4gpu_mxfp4_cp.py` | [#31732](https://github.com/sgl-project/sglang/pull/31732) |
+| `test/registered/disaggregation/test_disaggregation_dwdp_gpt_oss.py` | 无直接 PR 号提交 |
 | `test/registered/lora/test_lora_gpt_oss_20b_logprob_diff.py` | [#21570](https://github.com/sgl-project/sglang/pull/21570) |
 | `test/registered/models_e2e/test_gpt_oss_4gpu_bf16.py` | 无直接 PR 号提交 |
 | `test/registered/models_e2e/test_gpt_oss_4gpu_mxfp4.py` | 无直接 PR 号提交 |
 | `test/registered/models_e2e/test_gpt_oss_sm120.py` | 无直接 PR 号提交 |
+| `test/registered/page_major/test_page_major_gpt_oss.py` | 无直接 PR 号提交 |
 | `test/registered/perf/test_gpt_oss_4gpu_perf.py` | 无直接 PR 号提交 |
 
 ## PR 覆盖总览
 
 - git 追溯 PR 数: 29
-- 原文档显式引用补充 PR 数: 16
-- 当前文档总 PR 数: 45
+- 原文档显式引用补充 PR 数: 19
+- 当前文档总 PR 数: 48
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -48,7 +51,7 @@
 | 2025-08-25 | [#9613](https://github.com/sgl-project/sglang/pull/9613) | merged | [docs] Refactor, remove compiled results and add gpt-oss | `docs/basic_usage/gpt_oss.md` |
 | 2025-08-28 | [#9728](https://github.com/sgl-project/sglang/pull/9728) | merged | gpt-oss blog reproduction document | `benchmark/gpt_oss/README.md` |
 | 2025-09-01 | [#9783](https://github.com/sgl-project/sglang/pull/9783) | merged | support fp8 kvcache for hybrid attn backend on GPT-OSS | `python/sglang/srt/models/gpt_oss.py` |
-| 2025-09-15 | [#9626](https://github.com/sgl-project/sglang/pull/9626) | merged | Add reasoning examples for GPT-OSS in Markdown examples | `docs/basic_usage/gpt_oss.md` |
+| 2025-09-15 | [#9626](https://github.com/sgl-project/sglang/pull/9626) | merged | Add reasoning examples for GPT-OSS in Markdown examples | `python/sglang/srt/entrypoints/openai/protocol.py`, `docs/basic_usage/gpt_oss.md` |
 | 2025-09-15 | [#9657](https://github.com/sgl-project/sglang/pull/9657) | merged | fix: gpt-oss streaming dropping normal content when tools are provided but not used | `python/sglang/srt/function_call/gpt_oss_detector.py` |
 | 2025-12-30 | [#14920](https://github.com/sgl-project/sglang/pull/14920) | merged | Eagle: GPT-OSS Eagle v2 support | `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/model_executor/cuda_graph_runner.py`, `python/sglang/srt/speculative/eagle_worker.py` |
 | 2026-01-07 | [#16426](https://github.com/sgl-project/sglang/pull/16426) | merged | Fix gpt_oss_common import path and migrate core tests | `python/sglang/test/gpt_oss_common.py` |
@@ -78,6 +81,9 @@
 | 2026-06-12 | [#27941](https://github.com/sgl-project/sglang/pull/27941) | merged | Enable PDL for GPT-OSS tinygemm router | `python/sglang/srt/models/gpt_oss.py` |
 | 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | merged | Add get_parallel(): a structured accessor for parallel-topology state | `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py` |
 | 2026-06-19 | [#28697](https://github.com/sgl-project/sglang/pull/28697) | merged | [docs] Add B300 cookbook deployment options | `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` |
+| 2026-06-30 | [#27204](https://github.com/sgl-project/sglang/pull/27204) | merged | [AMD] Implement QuarkW4A8MXFp4MoE to support amd/gpt-oss-120b-w-mxfp4-a-fp8 | `python/sglang/srt/models/gpt_oss.py`, `test/registered/amd/accuracy/mi35x/test_gpt_oss_w4a8_mxfp4_eval_mi35x.py` |
+| 2026-07-20 | [#31649](https://github.com/sgl-project/sglang/pull/31649) | merged | Enable GPT-OSS TinyGEMM on CUDA 13 | `python/sglang/srt/models/gpt_oss.py` |
+| 2026-07-20 | [#31732](https://github.com/sgl-project/sglang/pull/31732) | merged | Support GPT-OSS zigzag CP with TRTLLM-MHA | `test/registered/cp/test_gpt_oss_4gpu_mxfp4_cp.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -347,7 +353,7 @@ diff -- python/sglang/srt/models/gpt_oss.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/9497
 - 状态/时间: merged / 2025-08-22
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/basic_usage/gpt_oss.md`；关联提交 `fedfe91c1a6e`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+106/-0，可读 patch 110 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Docs] Add doc and quick demo for gpt-oss responses api & buildin tools」；模型线: GPT-OSS；类别: 文档/测试/CI；主要 diff: `docs/basic_usage/gpt_oss.md`；技术摘要: 覆盖「[Docs] Add doc and quick demo for gpt-oss responses api & buildin tools」；主要实现面是 `docs/basic_usage/gpt_oss.md`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs/basic_usage/gpt_oss.md` modified +106/-0 (106 lines); hunks: -1,3 +1,109。
@@ -401,7 +407,7 @@ diff -- python/sglang/srt/function_call/gpt_oss_detector.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/9613
 - 状态/时间: merged / 2025-08-25
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/basic_usage/gpt_oss.md`；关联提交 `9b08d975a0a5`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+166/-611，可读 patch 638 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[docs] Refactor, remove compiled results and add gpt-oss」；模型线: GPT-OSS；类别: 文档/测试/CI；主要 diff: `docs/basic_usage/gpt_oss.md`；技术摘要: 覆盖「[docs] Refactor, remove compiled results and add gpt-oss」；主要实现面是 `docs/basic_usage/gpt_oss.md`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs/basic_usage/gpt_oss.md` modified +5/-0 (5 lines); hunks: -23,6 +23,11 @@ GPT‑OSS can call built‑in tools for web search and Python exe...。
@@ -478,15 +484,20 @@ diff -- python/sglang/srt/models/gpt_oss.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/9626
 - 状态/时间: merged / 2025-09-15
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/basic_usage/gpt_oss.md`；关联提交 `0b14159fc4e0`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+12/-2，可读 patch 35 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Add reasoning examples for GPT-OSS in Markdown examples」；模型线: GPT-OSS；类别: 文档/测试/CI；主要 diff: `docs/basic_usage/gpt_oss.md`；技术摘要: 覆盖「Add reasoning examples for GPT-OSS in Markdown examples」；主要实现面是 `docs/basic_usage/gpt_oss.md`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `docs/basic_usage/gpt_oss.md` modified +11/-1 (12 lines); hunks: -6,7 +6,7 @@ Please refer to [https://github.com/sgl-project/sglang/issues/88...; -69,6 +69,16 @@ tools = [。
+- 动机: 标题「Add reasoning examples for GPT-OSS in Markdown examples」；模型线: GPT-OSS；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/entrypoints/openai/protocol.py`, `docs/basic_usage/gpt_oss.md`；技术摘要: 覆盖「Add reasoning examples for GPT-OSS in Markdown examples」；主要实现面是 `python/sglang/srt/entrypoints/openai/protocol.py`, `docs/basic_usage/gpt_oss.md`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/entrypoints/openai/protocol.py` modified +1/-1 (2 lines); hunks: -444,7 +444,7 @@ class ChatCompletionRequest(BaseModel):; symbols: ChatCompletionRequest，涉及 `ChatCompletionRequest`；`docs/basic_usage/gpt_oss.md` modified +11/-1 (12 lines); hunks: -6,7 +6,7 @@ Please refer to [https://github.com/sgl-project/sglang/issues/88...; -69,6 +69,16 @@ tools = [。
 - 代码 diff 细节:
+  - `python/sglang/srt/entrypoints/openai/protocol.py` modified +1/-1 (2 lines); hunks: -444,7 +444,7 @@ class ChatCompletionRequest(BaseModel):; symbols: ChatCompletionRequest
   - `docs/basic_usage/gpt_oss.md` modified +11/-1 (12 lines); hunks: -6,7 +6,7 @@ Please refer to [https://github.com/sgl-project/sglang/issues/88...; -69,6 +69,16 @@ tools = [
 - 关键代码摘录:
 
 ```diff
+diff -- python/sglang/srt/entrypoints/openai/protocol.py
+@@ -444,7 +444,7 @@ class ChatCompletionRequest(BaseModel):
+-        "Currently only supported for OpenAI models.",
++        "Currently only supported for OpenAI models in the harmony path, i.e GPT-OSS models.",
 diff -- docs/basic_usage/gpt_oss.md
 @@ -6,7 +6,7 @@ Please refer to [https://github.com/sgl-project/sglang/issues/8833](https://gith
 -GPT‑OSS is compatible with the OpenAI Responses API. Use `client.responses.create(...)` with `model`, `instructions`, `input`, and optional `tools` to enable built‑in tool use.
@@ -498,6 +509,7 @@ diff -- docs/basic_usage/gpt_oss.md
 ```
 
 - 已读文件:
+  - runtime: `python/sglang/srt/entrypoints/openai/protocol.py` modified +1/-1
   - docs: `docs/basic_usage/gpt_oss.md` modified +11/-1
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/entrypoints/openai/protocol.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
@@ -1454,6 +1466,95 @@ diff -- docs_new/src/snippets/autoregressive/glm-5-deployment.jsx
 - 已读文件:
   - docs: `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx` added +167/-0; `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx` modified +68/-2; `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` modified +40/-16; `docs_new/src/snippets/autoregressive/deepseek-v32-deployment.jsx` modified +29/-10; `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx` modified +23/-15; `docs_new/cookbook/autoregressive/InternLM/Intern-S1.mdx` modified +16/-13
 - 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/InternLM/Intern-S1.mdx`, `docs_new/src/snippets/autoregressive/deepseek-math-v2-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #27204 - [AMD] Implement QuarkW4A8MXFp4MoE to support amd/gpt-oss-120b-w-mxfp4-a-fp8
+
+- 链接: https://github.com/sgl-project/sglang/pull/27204
+- 状态/时间: merged / 2026-06-30
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/gpt_oss.py`, `test/registered/amd/accuracy/mi35x/test_gpt_oss_w4a8_mxfp4_eval_mi35x.py`；关联提交 `a5e6dd37677f`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+948/-3，可读 patch 998 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[AMD] Implement QuarkW4A8MXFp4MoE to support amd/gpt-oss-120b-w-mxfp4-a-fp8」；模型线: GPT-OSS；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/gpt_oss.py`, `test/registered/amd/accuracy/mi35x/test_gpt_oss_w4a8_mxfp4_eval_mi35x.py`；技术摘要: 覆盖「[AMD] Implement QuarkW4A8MXFp4MoE to support amd/gpt-oss-120b-w-mxfp4-a-fp8」；主要实现面是 `python/sglang/srt/models/gpt_oss.py`, `test/registered/amd/accuracy/mi35x/test_gpt_oss_w4a8_mxfp4_eval_mi35x.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/gpt_oss.py` modified +14/-3 (17 lines); hunks: -879,12 +879,23 @@ def load_weights(; symbols: load_weights，涉及 `load_weights`；`test/registered/amd/accuracy/mi35x/test_gpt_oss_w4a8_mxfp4_eval_mi35x.py` added +251/-0 (251 lines); hunks: -0,0 +1,251; symbols: ModelConfig, __post_init__, get_one_example, get_few_shot_examples，涉及 `ModelConfig, __post_init__, get_one_example`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/gpt_oss.py` modified +14/-3 (17 lines); hunks: -879,12 +879,23 @@ def load_weights(; symbols: load_weights
+  - `test/registered/amd/accuracy/mi35x/test_gpt_oss_w4a8_mxfp4_eval_mi35x.py` added +251/-0 (251 lines); hunks: -0,0 +1,251; symbols: ModelConfig, __post_init__, get_one_example, get_few_shot_examples
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/gpt_oss.py
+@@ -879,12 +879,23 @@ def load_weights(
+-        if quant_config_name != "mxfp4":
+-            self._load_normal_weights(
++        if quant_config_name == "mxfp4":
++            self._load_weights_mxfp4(
++        elif quant_config_name == "quark":
++            from sglang.srt.layers.quantization.quark.weights import (
+diff -- test/registered/amd/accuracy/mi35x/test_gpt_oss_w4a8_mxfp4_eval_mi35x.py
+@@ -0,0 +1,251 @@
++"""MI35x GPT-OSS W4A8 MXFP4-FP8 GSM8K Completion Evaluation Test (8-GPU)
++Tests the AMD Quark `gpt-oss-120b-w-mxfp4-a-fp8` checkpoint (MXFP4
++weights + static per-tensor FP8 activations) using few-shot completion
++benchmark on MI35x.
++Registry: nightly-amd-8-gpu-mi35x suite
++"""
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/gpt_oss.py` modified +14/-3
+  - tests: `test/registered/amd/accuracy/mi35x/test_gpt_oss_w4a8_mxfp4_eval_mi35x.py` added +251/-0
+- 验证与风险: diff 自带测试面 `test/registered/amd/accuracy/mi35x/test_gpt_oss_w4a8_mxfp4_eval_mi35x.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #31649 - Enable GPT-OSS TinyGEMM on CUDA 13
+
+- 链接: https://github.com/sgl-project/sglang/pull/31649
+- 状态/时间: merged / 2026-07-20
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/gpt_oss.py`；关联提交 `8bf2ab9be931`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-2，可读 patch 17 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Enable GPT-OSS TinyGEMM on CUDA 13」；模型线: GPT-OSS；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/gpt_oss.py`；技术摘要: 覆盖「Enable GPT-OSS TinyGEMM on CUDA 13」；主要实现面是 `python/sglang/srt/models/gpt_oss.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/gpt_oss.py` modified +1/-2 (3 lines); hunks: -72,7 +72,6; -94,7 +93,7。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/gpt_oss.py` modified +1/-2 (3 lines); hunks: -72,7 +72,6; -94,7 +93,7
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/gpt_oss.py
+@@ -72,7 +72,6 @@
+-    get_cuda_version,
+@@ -94,7 +93,7 @@
+-if _is_tinygemm_supported and get_cuda_version()[0] < 13:
++if _is_tinygemm_supported:
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/gpt_oss.py` modified +1/-2
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/gpt_oss.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #31732 - Support GPT-OSS zigzag CP with TRTLLM-MHA
+
+- 链接: https://github.com/sgl-project/sglang/pull/31732
+- 状态/时间: merged / 2026-07-20
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/cp/test_gpt_oss_4gpu_mxfp4_cp.py`；关联提交 `9668d9ea72ae`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+143/-33，可读 patch 289 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Support GPT-OSS zigzag CP with TRTLLM-MHA」；模型线: GPT-OSS；类别: 性能/后端优化；主要 diff: `test/registered/cp/test_gpt_oss_4gpu_mxfp4_cp.py`；技术摘要: 覆盖「Support GPT-OSS zigzag CP with TRTLLM-MHA」；主要实现面是 `test/registered/cp/test_gpt_oss_4gpu_mxfp4_cp.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/cp/test_gpt_oss_4gpu_mxfp4_cp.py` added +32/-0 (32 lines); hunks: -0,0 +1,32; symbols: TestGptOss4GpuMxfp4CP, test_mxfp4_120b，涉及 `TestGptOss4GpuMxfp4CP, test_mxfp4_120b`。
+- 代码 diff 细节:
+  - `test/registered/cp/test_gpt_oss_4gpu_mxfp4_cp.py` added +32/-0 (32 lines); hunks: -0,0 +1,32; symbols: TestGptOss4GpuMxfp4CP, test_mxfp4_120b
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/cp/test_gpt_oss_4gpu_mxfp4_cp.py
+@@ -0,0 +1,32 @@
++import unittest
++from sglang.test.ci.ci_register import register_cuda_ci
++from sglang.test.gpt_oss_common import BaseTestGptOss
++register_cuda_ci(est_time=220, stage="extra-b", runner_config="4-gpu-b200")
++class TestGptOss4GpuMxfp4CP(BaseTestGptOss):
++    def test_mxfp4_120b(self):
+```
+
+- 已读文件:
+  - tests: `test/registered/cp/test_gpt_oss_4gpu_mxfp4_cp.py` added +32/-0
+- 验证与风险: diff 自带测试面 `test/registered/cp/test_gpt_oss_4gpu_mxfp4_cp.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论
 

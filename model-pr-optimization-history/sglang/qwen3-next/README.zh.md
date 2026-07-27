@@ -2360,7 +2360,7 @@ diff -- test/registered/ascend/basic_function/parallel_strategy/expert_paralleli
 
 - 链接: https://github.com/sgl-project/sglang/pull/27419
 - 状态/时间: merged / 2026-06-06
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/models_e2e/test_qwen3_next_models.py`；关联提交 `163fafba5162`
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/models_e2e/test_qwen3_next_models.py`；关联提交 `163fafba5162`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+4/-4，可读 patch 36 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「fix test_qwen3_next_models flaky」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `test/registered/models_e2e/test_qwen3_next_models.py`；技术摘要: 覆盖「fix test_qwen3_next_models flaky」；主要实现面是 `test/registered/models_e2e/test_qwen3_next_models.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/models_e2e/test_qwen3_next_models.py` modified +4/-4 (8 lines); hunks: -40,7 +40,7 @@ class TestQwen3NextLazyExtraBuffer(; -50,7 +50,7 @@ class TestQwen3NextLazyExtraBufferLargePage(; symbols: TestQwen3NextLazyExtraBuffer, TestQwen3NextLazyExtraBufferLargePage, TestQwen3NextLazyExtraBufferAllocFail, TestQwen3NextLazyExtraBufferLargePageAllocFail，涉及 `TestQwen3NextLazyExtraBuffer, TestQwen3NextLazyExtraBufferLargePage, TestQwen3NextLazyExtraBufferAllocFail`。

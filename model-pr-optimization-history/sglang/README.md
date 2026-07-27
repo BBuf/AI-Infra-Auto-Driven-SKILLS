@@ -1,6 +1,6 @@
 # SGLang Model PR Optimization History
 
-Refresh: `2026-06-27`. Source head: `sgl-project/sglang@e0c0c0a45cb1bda90392bfa2bba4184f5b0638a0`.
+Refresh: `2026-07-27`. Source head: `sgl-project/sglang@8d6549bc4039d33635844495d86684677a4f0df8`.
 
 Current model families:
 
@@ -16,6 +16,7 @@ Current model families:
 - `glm46-glm47`
 - `glm5-glm51`
 - `gpt-oss`
+- `hunyuan3-preview`
 - `intern-s1`
 - `internvl35`
 - `kimi`
@@ -27,12 +28,14 @@ Current model families:
 - `minimax`
 - `mistral-small-4`
 - `mixtral-quark-int4fp8-moe`
+- `moss-vl`
 - `nemotron-super`
 - `qwen-vlm-omni-asr`
 - `qwen3-coder`
 - `qwen3-core`
 - `qwen3-next`
 - `qwen35`
+- `qwen36`
 - `ring25`
 - `step35`
 

@@ -11,7 +11,7 @@
 | `python/sglang/srt/function_call/glm47_moe_detector.py` | [#15333](https://github.com/sgl-project/sglang/pull/15333), [#15753](https://github.com/sgl-project/sglang/pull/15753), [#28149](https://github.com/sgl-project/sglang/pull/28149) |
 | `python/sglang/srt/function_call/glm4_moe_detector.py` | [#13989](https://github.com/sgl-project/sglang/pull/13989), [#15333](https://github.com/sgl-project/sglang/pull/15333), [#15753](https://github.com/sgl-project/sglang/pull/15753) |
 | `python/sglang/srt/models/glm4_moe.py` | [#13873](https://github.com/sgl-project/sglang/pull/13873), [#14585](https://github.com/sgl-project/sglang/pull/14585), [#15333](https://github.com/sgl-project/sglang/pull/15333), [#17166](https://github.com/sgl-project/sglang/pull/17166), [#21403](https://github.com/sgl-project/sglang/pull/21403), [#21660](https://github.com/sgl-project/sglang/pull/21660), [#21851](https://github.com/sgl-project/sglang/pull/21851) |
-| `python/sglang/srt/models/glm4_moe_lite.py` | [#21851](https://github.com/sgl-project/sglang/pull/21851), [#22509](https://github.com/sgl-project/sglang/pull/22509), [#26088](https://github.com/sgl-project/sglang/pull/26088), [#28516](https://github.com/sgl-project/sglang/pull/28516) |
+| `python/sglang/srt/models/glm4_moe_lite.py` | [#21851](https://github.com/sgl-project/sglang/pull/21851), [#22509](https://github.com/sgl-project/sglang/pull/22509), [#26088](https://github.com/sgl-project/sglang/pull/26088), [#28516](https://github.com/sgl-project/sglang/pull/28516), [#31388](https://github.com/sgl-project/sglang/pull/31388) |
 | `python/sglang/srt/models/glm4_moe_lite_nextn.py` | [#26088](https://github.com/sgl-project/sglang/pull/26088) |
 | `python/sglang/srt/models/glm4_moe_nextn.py` | [#13873](https://github.com/sgl-project/sglang/pull/13873) |
 | `test/registered/amd/accuracy/mi35x/test_glm47_fp8_eval_mi35x.py` | [#21534](https://github.com/sgl-project/sglang/pull/21534) |
@@ -19,9 +19,9 @@
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 15
+- Git-traced PRs: 16
 - Extra PRs preserved from existing docs: 38
-- Total PRs in this document: 53
+- Total PRs in this document: 54
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -82,6 +82,7 @@
 | 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | merged | Add get_parallel(): a structured accessor for parallel-topology state | `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py` |
 | 2026-06-18 | [#28516](https://github.com/sgl-project/sglang/pull/28516) | merged | [NPU] Add MTP support for GLM-4.7-Flash | `python/sglang/srt/models/glm4_moe_lite.py` |
 | 2026-06-25 | [#29261](https://github.com/sgl-project/sglang/pull/29261) | merged | [Docs] Fix broken links in cookbook | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/cookbook/autoregressive/GLM/GLM-4.7.mdx`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` |
+| 2026-07-16 | [#31388](https://github.com/sgl-project/sglang/pull/31388) | merged | [NPU]revert add scoring func for GLM 4.7 Flash | `python/sglang/srt/models/glm4_moe_lite.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -1941,6 +1942,28 @@ diff -- docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx
 - Reviewed files:
   - docs: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/GLM/GLM-4.7.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` modified +1/-1
 - Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/cookbook/autoregressive/GLM/GLM-4.7.mdx`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #31388 - [NPU]revert add scoring func for GLM 4.7 Flash
+
+- Link: https://github.com/sgl-project/sglang/pull/31388
+- Status/date: merged / 2026-07-16
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/glm4_moe_lite.py`; associated commits `871c6482037e`
+- Diff scope read: GitHub Pull Request files API returned 2 files, +1/-2, 17 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[NPU]revert add scoring func for GLM 4.7 Flash"; model line: GLM-4.6/4.7; category: performance/backend optimization; main diff: `python/sglang/srt/models/glm4_moe_lite.py`; technical summary: Covers "[NPU]revert add scoring func for GLM 4.7 Flash"; the main implementation surface is `python/sglang/srt/models/glm4_moe_lite.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/glm4_moe_lite.py` modified +0/-1 (1 lines); hunks: -225,7 +225,6 @@ def __init__(; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `python/sglang/srt/models/glm4_moe_lite.py` modified +0/-1 (1 lines); hunks: -225,7 +225,6 @@ def __init__(; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/glm4_moe_lite.py
+@@ -225,7 +225,6 @@ def __init__(
+-            **({"scoring_func": "sigmoid"}),
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/glm4_moe_lite.py` modified +0/-1
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/hardware_backend/npu/moe/topk.py`, `python/sglang/srt/models/glm4_moe_lite.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ## Gap-Closure Notes
 
