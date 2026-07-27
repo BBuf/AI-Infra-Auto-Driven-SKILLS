@@ -89,6 +89,14 @@ The bundle script collects:
 - `/metrics`
 - `/hicache/storage-backend` on a best-effort basis
 
+If stale or corrupt HiCache contents are the working diagnosis, capture the
+bundle and relevant request dumps before calling
+`POST /hicache/storage-backend/clear`. That endpoint clears the attached
+backend's contents without detaching it; treat it as destructive and use it
+only when losing the cached contents is acceptable. Attach, detach, and clear
+details are in
+[references/endpoints-and-signals.md](references/endpoints-and-signals.md).
+
 Use the summary for a quick read on:
 
 - health vs. active health state

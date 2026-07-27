@@ -108,6 +108,15 @@ def iter_files(args: argparse.Namespace) -> Sequence[Path]:
     raise SystemExit("Either --input-file or --input-folder must be provided.")
 
 
+def validate_replay_args(args: argparse.Namespace) -> None:
+    if args.speed <= 0:
+        raise ValueError("--speed must be greater than zero")
+    if args.parallel <= 0:
+        raise ValueError("--parallel must be greater than zero")
+    if args.timeout <= 0:
+        raise ValueError("--timeout must be greater than zero")
+
+
 def run_one_request(
     record: Record,
     args: argparse.Namespace,
@@ -135,6 +144,7 @@ def run_one_request(
         timeout=args.timeout,
         stream=bool(json_data.get("stream")),
     )
+    response.raise_for_status()
     elapsed = time.time() - t0
 
     if json_data.get("stream"):
@@ -181,6 +191,10 @@ def main() -> int:
     parser.add_argument("--speed", type=float, default=1.0)
     parser.add_argument("--timeout", type=float, default=120.0)
     args = parser.parse_args()
+    try:
+        validate_replay_args(args)
+    except ValueError as exc:
+        parser.error(str(exc))
 
     files = iter_files(args)
     print(f"Replay files: {[str(p) for p in files]}")
