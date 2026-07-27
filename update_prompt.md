@@ -7,15 +7,18 @@ Use this prompt when refreshing a branch or pull request for
 说明和真实验证证据更新到当前日期，避免过期 SHA、幻觉式框架支持、以及未验证的
 benchmark/profiler 结论。完成后提交并推送到当前 PR 分支。
 
-## 固定机器
+## B200 机器
 
-Use the B200 machine:
+先读取当前 B200/Radix 机器 skill，并确认分配仍然有效：
 
 ```bash
-ssh -i ~/.ssh/id_ed25519 bbuf@216.114.73.196
-# or
-radix shell cirrascale-gpuc5a6
+radix machines mine --json
 ```
+
+使用 skill 里当前有效的 SSH 或 `radix shell` 命令。不要把历史机器名、IP 或已过期
+assignment 当成永久入口；连接后先核对 hostname、GPU 型号/数量、进程所有者和容器
+归属。如果指定节点不可用，可以使用另一个已分配的 8x B200 skill，但必须在最终报告
+中记录实际节点和环境差异。
 
 Main container:
 
@@ -77,7 +80,7 @@ MiniMax-M3 验证结束后如果是本轮启动的 `sglang_m3`，要停止容器
      model-pr-optimization-history skills README.md tests tools
    ```
 
-8. 在 B200 `sglang_bbuf` 里建立 artifact root，例如：
+8. 在当前 B200 skill 指定的个人 `sglang_bbuf` 容器里建立 artifact root，例如：
 
    ```bash
    ART=/data/bbuf/ai_infra_skills_refresh_$(date +%Y%m%d)

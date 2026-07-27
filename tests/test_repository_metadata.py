@@ -61,6 +61,10 @@ def test_refresh_prompt_is_pr_agnostic_and_preserves_evidence_gates() -> None:
 
     assert "PR 72" not in prompt
     assert "pr72" not in prompt
+    assert "216.114.73.196" not in prompt
+    assert "cirrascale-gpuc5a6" not in prompt
+    assert "radix machines mine --json" in prompt
+    assert "不要把历史机器名、IP 或已过期" in prompt
     for required in [
         "open-pr-watch.md",
         "5 个不同规模模型",
