@@ -1,3 +1,4 @@
+import importlib.util
 import json
 import subprocess
 from pathlib import Path
@@ -10,6 +11,10 @@ SCRIPT = (
     / "scripts"
     / "model_architecture_diagram.py"
 )
+SPEC = importlib.util.spec_from_file_location("model_architecture_diagram", SCRIPT)
+assert SPEC and SPEC.loader
+MODULE = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(MODULE)
 
 
 def run_script(*args: str) -> subprocess.CompletedProcess[str]:
@@ -36,6 +41,14 @@ def test_existing_glm5_returns_raw_image() -> None:
     assert result["kind"] == "existing"
     assert result["diagrams"][0]["source"] == "InfraTech"
     assert result["diagrams"][0]["url"].startswith("https://raw.githubusercontent.com/")
+
+
+def test_kimi_k3_resolves_public_original_diagram() -> None:
+    result = MODULE.find_existing("moonshotai/kimi-k3", 1)[0]
+
+    assert result["id"] == "kimi-k3-architecture"
+    assert result["source"] == "InfraTech"
+    assert result["url"].endswith("/models/kimi_k_3/kimi_k_3_architecture.jpg")
 
 
 def test_nearby_versions_without_originals_do_not_match_wrong_originals() -> None:
