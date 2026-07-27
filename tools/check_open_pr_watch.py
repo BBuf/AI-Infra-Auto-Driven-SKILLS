@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import subprocess
 import sys
 from dataclasses import dataclass
@@ -32,7 +33,11 @@ DEFAULT_TERMS = [
     "Qwen3.6",
     "DeepSeek V4",
     "Kimi K2.5",
+    "Kimi K3",
     "KimiLinear",
+    "MiniMax M3",
+    "Inkling",
+    "Unlimited OCR",
     "GLM-5",
     "GLM-5.2",
     "MLA",
@@ -108,8 +113,14 @@ def http_fetch_open_prs(repo: str, per_page: int) -> list[dict[str, Any]]:
 
 
 def matched_terms_for_item(item: dict[str, Any], terms: list[str]) -> tuple[str, ...]:
-    haystack = " ".join(str(item.get(key) or "") for key in ("title", "body")).lower()
-    matched = [term for term in terms if term.lower() in haystack]
+    haystack = " ".join(str(item.get(key) or "") for key in ("title", "body"))
+    normalized_haystack = re.sub(r"[^a-z0-9]+", " ", haystack.lower()).strip()
+    matched = [
+        term
+        for term in terms
+        if re.sub(r"[^a-z0-9]+", " ", term.lower()).strip()
+        in normalized_haystack
+    ]
     return tuple(sorted(matched))
 
 
