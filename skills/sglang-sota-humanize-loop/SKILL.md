@@ -162,8 +162,11 @@ Rules:
 - Read competitor history too when a selected comparison framework later becomes
   the leading competitor or its source/trace suggests a missing SGLang fast path.
 - Write `history/model-pr-history-notes.md` with the paths read, PR numbers,
-  source files, symbols, validation risks, and the concrete decision each item
-  influences.
+  immutable source heads, PR state (`open`, `merged`, or `closed-unmerged`),
+  source files, symbols, validation evidence, known limitations, validation
+  risks, and the concrete decision each item influences.
+- Treat open PRs as candidate baselines only. Record their full head SHAs and
+  never describe them as behavior already present in the recorded source head.
 - Treat these notes as source and PR memory that helps choose a better SGLang
   patch, not measured proof by itself.
 
@@ -186,14 +189,17 @@ Hard requirements:
 - Use the same model weights, tokenizer, precision, quantization, GPU type/count,
   GPU ids, endpoint path, sampling settings, and SLA.
 - Record package version or git commit plus server/benchmark `--help` snapshots
-  for SGLang and every selected comparison framework. The 2026-06-27 live
-  source anchors checked for this skill are SGLang
-  `e0c0c0a45cb1bda90392bfa2bba4184f5b0638a0`, vLLM
-  `091d13976c1c246714bb2112dd2e208561dda6a3`, TensorRT-LLM
-  `aaffa2f9fef3025e0f698d978385a73460344e0b`, and
-  `lightseekorg/tokenspeed@d0a7faddb5ec0d4c6d037c4c3e6a781d2c5164a8`;
+  for SGLang and every selected comparison framework. The 2026-07-27 immutable
+  source heads checked for this skill are SGLang
+  `8d6549bc4039d33635844495d86684677a4f0df8`, vLLM
+  `ef9975d021448b99a5408e8c78a4c4f6b63443c7`, TensorRT-LLM
+  `1b4ffc0291d75a21ad20118e8f44de6e3831f786`, and
+  `lightseekorg/tokenspeed@d73bf0454422092f306d5575e803a08fd35ac41c`;
   still prefer target-image `--help` over these source notes and re-check
   open PRs before every long SOTA run.
+- Use the target image's current commands: `python -m sglang.launch_server`,
+  `vllm serve`, `trtllm-serve serve --backend pytorch`, and, when selected,
+  `tokenspeed serve <model>` (or its verified image alias).
 - Use the default two dataset scenarios from `llm-serving-auto-benchmark` unless
   the user explicitly provides a production workload:
   - dataset kind `random`, `num_prompts: 80`
@@ -217,6 +223,12 @@ Hard requirements:
 - Record optional fairness fields in normalized rows whenever available:
   speculative accept length, pre-scheduler/scheduler time, cache hit rate,
   offload or memory residency, endpoint, and request-shape notes.
+
+Before finishing or reporting a blocker, stop only the server, benchmark,
+profiler, downloader, and log-tail processes started by this run. Remove only
+this run's explicit model snapshot, lock, mirror directory, and run-specific
+cache entries. Record before/after process and GPU state; never kill another
+user's process or delete shared model caches.
 
 Write:
 

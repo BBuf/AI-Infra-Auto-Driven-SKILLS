@@ -99,6 +99,36 @@ artifact_root: /Users/bbuf/工作目录/Common/opt_model/b200_qwen3_30b_a3b_fp8_
 要求: 如果达到预算上限、GPU 资源阻塞、benchmark/profile 无法获得可信证据，或者没有可辩护的下一步 patch，就停止实质性工作并报告已尝试路径、证据、阻塞点和继续推进所需输入。
 ```
 
+### Qwen/Qwen3.6-35B-A3B-FP8
+```text
+/goal 持续推进 `Qwen/Qwen3.6-35B-A3B-FP8` 在 single-node 1x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 1 张 B200、FP8、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis skill、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环，所有迭代都在当前 Goal 中推进。
+model_id: Qwen/Qwen3.6-35B-A3B-FP8
+root_dir: /Users/bbuf/工作目录/Common
+target_hardware: single-node 1x NVIDIA B200
+minimum_gpu_count: 1
+precision_quantization: FP8
+initial_deployment: SGLang TP=1
+要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
+要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
+要求: 做环境准备时这台机器只执行一次 git pull；本任务开始前必须确认容器内 SGLang、vLLM、TensorRT-LLM 没有本地修改：repo/workspace 要是干净分支，latest 镜像不能挂载带本地改动的 repo；如果有本地修改、git pull 失败或没有 upstream，停止并报告 blocker，不要 reset/rebase/覆盖未知改动。
+要求: 如果本地远程连接 skills 或远端容器里的 Hugging Face token 无法访问当前 model_id，先记录 401/403/404 等错误和所用 token 来源；确认不是模型名写错后，可以尝试使用中国可访问的 Hugging Face 国内镜像下载当前模型，例如设置 HF_ENDPOINT 或等价镜像环境变量，但必须记录镜像地址、下载命令和最终模型快照路径。
+要求: 做当前模型 benchmark/profile/patch 前，必须先查询 sgl-project/sglang 和 BBuf/sglang 的 open PR，确认是否已有针对当前 model_id 或同模型家族的性能/正确性优化；如果有，优先在独立分支或临时工作树把这些相关 PR 合入或逐个试跑，记录 PR、commit/patch、命令和结果，用包含相关 open PR 的最佳可复现结果作为 SGLang 候选 baseline；不要把未包含这些 open PR 的 main 分支性能直接当作 baseline。
+要求: 使用当前 Codex Goal 作为唯一持久循环。远端 ion-b200 只能作为执行、benchmark、profile、验证环境，不要在远端启动 agent loop；所有决策、状态总结、完成/阻塞判定都留在本地 Codex Goal 线程。
+要求: 每次 benchmark/profile 前必须确认这 1 张 B200 没有其他人的重负载进程，并记录 nvidia-smi、进程、显存、利用率、CUDA_VISIBLE_DEVICES；受干扰的数据不可信。
+要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
+要求: 只使用 1 张 B200；不要测试更多卡。
+要求: 对 SGLang、vLLM、TensorRT-LLM 做同样 1 卡预算下的公平搜索；使用 llm-serving-auto-benchmark 默认 workload。
+要求: 如果 SGLang 稳定落后超过 1%，在同一 Goal 中先 profile，再使用 llm-torch-profiler-analysis skill 和 llm-pipeline-analysis skill，必要时使用 ncu-report-skill，随后只 patch 有证据支持的 SGLang 代码路径；重点看 linear attention/Gated DeltaNet、full-attention 层、MoE、CUDA graph 和 decode throughput。
+要求: 当前模型的所有任务文件都必须放在上面的 artifact_root 独立目录；任务完成或停止前必须清理远端机器上本任务下载的当前模型文件和当前模型 Hugging Face 权重缓存，例如 /root/.cache/huggingface/hub/models--<org>--<repo>、对应当前模型 lock、镜像下载目录或本任务显式指定的模型快照路径；不要删除其他模型、共享 cache、镜像或别人的容器。
+要求: 任务完成或停止前必须终止远端机器上本任务启动的所有相关进程，包括 SGLang/vLLM/TensorRT-LLM server、benchmark、profile、下载、watch/log tail 进程，并记录清理前后的 ps/nvidia-smi；不要 kill 别人的进程。
+要求: 如果需要提交 PR，只能 push/open 到 BBuf/sglang；不要 push 到或向 sgl-project/sglang 开 PR。
+要求: 一个任务可以提交多个优化 PR 来推进模型性能；只要所有优化 PR 叠加后的效果让 SGLang 在该模型上超越或持平其它框架，就算完成目标；每个优化 PR 的 PR 描述都必须用表格给出性能 benchmark 对比，以及 GSM8K、MMLU 全量精度对比。
+artifact_root: /Users/bbuf/工作目录/Common/opt_model/b200_qwen36_35b_a3b_fp8_sota_goal
+要求: 固定公平 benchmark 完成前不要选择代码 patch；benchmark 之后的 gap decision、profile、llm-pipeline-analysis skill、patch、revalidate 全部属于当前 Codex Goal 的持续迭代。
+要求: 每一轮都更新 artifact_root 下的 manifest、benchmark/profile/analysis 证据、失败尝试和下一步判断；Goal 只有在证据满足完成条件后才能完成。
+要求: 如果达到预算上限、GPU 资源阻塞、benchmark/profile 无法获得可信证据，或者没有可辩护的下一步 patch，就停止实质性工作并报告已尝试路径、证据、阻塞点和继续推进所需输入。
+```
+
 ### google/gemma-4-31B-it
 ```text
 /goal 持续推进 `google/gemma-4-31B-it` 在 single-node 1x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 1 张 B200、BF16、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis skill、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环，所有迭代都在当前 Goal 中推进。
@@ -435,14 +465,14 @@ artifact_root: /Users/bbuf/工作目录/Common/opt_model/b200_kimi_k2_instruct_s
 要求: 如果达到预算上限、GPU 资源阻塞、benchmark/profile 无法获得可信证据，或者没有可辩护的下一步 patch，就停止实质性工作并报告已尝试路径、证据、阻塞点和继续推进所需输入。
 ```
 
-### MiniMaxAI/MiniMax-M2.7
+### MiniMaxAI/MiniMax-M3-MXFP8
 ```text
-/goal 持续推进 `MiniMaxAI/MiniMax-M2.7` 在 single-node 8x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 8 张 B200、FP8、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis skill、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环，所有迭代都在当前 Goal 中推进。
-model_id: MiniMaxAI/MiniMax-M2.7
+/goal 持续推进 `MiniMaxAI/MiniMax-M3-MXFP8` 在 single-node 8x NVIDIA B200 上的 SGLang SOTA serving 优化，直到 SGLang 在同样 8 张 B200、MXFP8、相同 workload 和 SLA 下匹配或超越可复现的最佳 vLLM/TensorRT-LLM 结果；由固定公平 benchmark、profile、llm-pipeline-analysis skill、必要的 NCU 证据、最终报告以及 PR 中的 benchmark/GSM8K/MMLU 全量精度表验证，同时保持正确性、精度和环境安全约束不回退。Goal 本身就是循环，所有迭代都在当前 Goal 中推进。
+model_id: MiniMaxAI/MiniMax-M3-MXFP8
 root_dir: /Users/bbuf/工作目录/Common
 target_hardware: single-node 8x NVIDIA B200
 minimum_gpu_count: 8
-precision_quantization: FP8
+precision_quantization: MXFP8
 initial_deployment: SGLang TP=8
 要求: 远端使用 ion-b200；SGLang 使用已有 sglang_bbuf 容器，容器内 repo 为 /home/sglang-omni/bbuf/repos/sglang。
 要求: vLLM 和 TensorRT-LLM 直接使用最新镜像 vllm/vllm-openai:latest 与 nvcr.io/nvidia/tensorrt-llm/release:latest。
@@ -454,12 +484,12 @@ initial_deployment: SGLang TP=8
 要求: 如果暂时没有足够的空闲资源继续把任务做下去，就等待半小时；如果半小时内仍然没有可用资源，再停止并报告 blocker。
 要求: 只使用 8 张 B200；不要测试更多卡。
 要求: 对 SGLang、vLLM、TensorRT-LLM 做同样 8 卡预算下的公平搜索；使用 llm-serving-auto-benchmark 默认 workload。
-要求: 如果 SGLang 稳定落后超过 1%，在同一 Goal 中先 profile，再使用 llm-torch-profiler-analysis skill 和 llm-pipeline-analysis skill，必要时使用 ncu-report-skill，随后只 patch 有证据支持的 SGLang 代码路径；重点看 MoE、attention、memory pressure、decode throughput。
+要求: 如果 SGLang 稳定落后超过 1%，在同一 Goal 中先 profile，再使用 llm-torch-profiler-analysis skill 和 llm-pipeline-analysis skill，必要时使用 ncu-report-skill，随后只 patch 有证据支持的 SGLang 代码路径；重点看 sparse attention/indexer、dense-prefix 与 MoE 切换、MXFP8、memory pressure 和 decode throughput。
 要求: 当前模型的所有任务文件都必须放在上面的 artifact_root 独立目录；任务完成或停止前必须清理远端机器上本任务下载的当前模型文件和当前模型 Hugging Face 权重缓存，例如 /root/.cache/huggingface/hub/models--<org>--<repo>、对应当前模型 lock、镜像下载目录或本任务显式指定的模型快照路径；不要删除其他模型、共享 cache、镜像或别人的容器。
 要求: 任务完成或停止前必须终止远端机器上本任务启动的所有相关进程，包括 SGLang/vLLM/TensorRT-LLM server、benchmark、profile、下载、watch/log tail 进程，并记录清理前后的 ps/nvidia-smi；不要 kill 别人的进程。
 要求: 如果需要提交 PR，只能 push/open 到 BBuf/sglang；不要 push 到或向 sgl-project/sglang 开 PR。
 要求: 一个任务可以提交多个优化 PR 来推进模型性能；只要所有优化 PR 叠加后的效果让 SGLang 在该模型上超越或持平其它框架，就算完成目标；每个优化 PR 的 PR 描述都必须用表格给出性能 benchmark 对比，以及 GSM8K、MMLU 全量精度对比。
-artifact_root: /Users/bbuf/工作目录/Common/opt_model/b200_minimax_m27_sota_goal
+artifact_root: /Users/bbuf/工作目录/Common/opt_model/b200_minimax_m3_mxfp8_sota_goal
 要求: 固定公平 benchmark 完成前不要选择代码 patch；benchmark 之后的 gap decision、profile、llm-pipeline-analysis skill、patch、revalidate 全部属于当前 Codex Goal 的持续迭代。
 要求: 每一轮都更新 artifact_root 下的 manifest、benchmark/profile/analysis 证据、失败尝试和下一步判断；Goal 只有在证据满足完成条件后才能完成。
 要求: 如果达到预算上限、GPU 资源阻塞、benchmark/profile 无法获得可信证据，或者没有可辩护的下一步 patch，就停止实质性工作并报告已尝试路径、证据、阻塞点和继续推进所需输入。

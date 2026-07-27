@@ -47,6 +47,14 @@ ALIAS_MAP = {
     "kimi-k2": "kimi-k2",
     "kimi-k2.5": "kimi-k2.5",
     "minimax-m2": "minimax-m2",
+    "minimax-m3": "minimax-m3",
+    "minimax-m3-mxfp8": "minimax-m3",
+    "minimaxai/minimax-m3": "minimax-m3",
+    "minimaxai/minimax-m3-mxfp8": "minimax-m3",
+    "qwen3.6": "qwen3.6-35b-a3b",
+    "qwen3.6-35b-a3b": "qwen3.6-35b-a3b",
+    "qwen3.6-35b-a3b-fp8": "qwen3.6-35b-a3b",
+    "qwen/qwen3.6-35b-a3b-fp8": "qwen3.6-35b-a3b",
     "glm-5": "glm-5",
 }
 
@@ -211,9 +219,40 @@ def build_layer_ops(
     n_heads = cfg["num_attention_heads"]
     n_kv_heads = cfg.get("num_key_value_heads", n_heads)
     d_head = cfg.get("head_dim", H // n_heads)
-    attn_type = cfg.get("attention_type", "gqa")
-    is_moe = cfg.get("moe", False)
     n_layers = cfg.get("num_hidden_layers", 1)
+    layer_types = cfg.get("layer_types")
+    if layer_types:
+        if len(layer_types) != n_layers:
+            raise ValueError(
+                "layer_types length mismatch: "
+                f"got {len(layer_types)}, expected num_hidden_layers={n_layers}"
+            )
+        layer_type = layer_types[layer_idx]
+        attn_type = "gated_delta" if layer_type == "linear_attention" else "gqa_qk_norm"
+    else:
+        attn_type = cfg.get("attention_type", "gqa")
+
+    is_moe = cfg.get("moe", False)
+    moe_layer_freq = cfg.get("moe_layer_freq")
+    if moe_layer_freq is not None:
+        if len(moe_layer_freq) != n_layers:
+            raise ValueError(
+                "moe_layer_freq length mismatch: "
+                f"got {len(moe_layer_freq)}, expected num_hidden_layers={n_layers}"
+            )
+        is_moe = is_moe and bool(moe_layer_freq[layer_idx])
+
+    sparse_attention_freq = cfg.get("sparse_attention_freq")
+    is_sparse_attention = False
+    if sparse_attention_freq is not None:
+        if len(sparse_attention_freq) != n_layers:
+            raise ValueError(
+                "sparse_attention_freq length mismatch: "
+                f"got {len(sparse_attention_freq)}, "
+                f"expected num_hidden_layers={n_layers}"
+            )
+        is_sparse_attention = bool(sparse_attention_freq[layer_idx])
+
     n_hash_layers = cfg.get("num_hash_layers", 0)
     is_hash = n_hash_layers > 0 and layer_idx >= n_layers - n_hash_layers
 
@@ -552,6 +591,72 @@ def build_layer_ops(
                 )
             )
 
+    elif attn_type == "gated_delta":
+        n_k_heads = cfg["linear_num_key_heads"]
+        n_v_heads = cfg["linear_num_value_heads"]
+        k_head_dim = cfg["linear_key_head_dim"]
+        v_head_dim = cfg["linear_value_head_dim"]
+        conv_kernel = cfg["linear_conv_kernel_dim"]
+        key_dim = n_k_heads * k_head_dim
+        value_dim = n_v_heads * v_head_dim
+        qkvz_dim = 2 * key_dim + 2 * value_dim
+
+        ops.append(
+            Op(
+                "linear_in_proj_qkvz",
+                matmul_flops(B * S, qkvz_dim, H),
+                fmt_shape(B, S, H),
+                fmt_shape(B, S, qkvz_dim),
+                "attention",
+            )
+        )
+        ops.append(
+            Op(
+                "linear_in_proj_ba",
+                matmul_flops(B * S, 2 * n_v_heads, H),
+                fmt_shape(B, S, H),
+                fmt_shape(B, S, 2 * n_v_heads),
+                "attention",
+            )
+        )
+        conv_dim = 2 * key_dim + value_dim
+        ops.append(
+            Op(
+                "linear_conv1d",
+                2 * B * S * conv_dim * conv_kernel,
+                fmt_shape(B, S, conv_dim),
+                fmt_shape(B, S, conv_dim),
+                "attention",
+            )
+        )
+        ops.append(
+            Op(
+                "gated_delta_attention",
+                2 * B * S * (key_dim + value_dim) * v_head_dim,
+                fmt_shape(B, S, n_k_heads, k_head_dim),
+                fmt_shape(B, S, n_v_heads, v_head_dim),
+                "attention",
+            )
+        )
+        ops.append(
+            Op(
+                "linear_gated_norm",
+                6 * B * S * value_dim,
+                fmt_shape(B, S, n_v_heads, v_head_dim),
+                fmt_shape(B, S, value_dim),
+                "attention",
+            )
+        )
+        ops.append(
+            Op(
+                "linear_out_proj",
+                matmul_flops(B * S, H, value_dim),
+                fmt_shape(B, S, value_dim),
+                fmt_shape(B, S, H),
+                "attention",
+            )
+        )
+
     elif attn_type == "gqa" or attn_type == "gqa_qk_norm":
         # GQA: grouped-query attention
         q_flops = matmul_flops(B * S, n_heads * d_head, H)
@@ -585,25 +690,75 @@ def build_layer_ops(
                     "attention",
                 )
             )
-        # Attention
-        n_groups = n_heads // n_kv_heads
-        attn_score_flops = matmul_flops(B * n_heads, S, d_head) if S > 1 else 0
-        if attn_score_flops > 0:
+        if is_sparse_attention:
+            index_heads = cfg["sparse_num_index_heads"]
+            index_dim = cfg["sparse_index_dim"]
+            disable_values = cfg.get("sparse_disable_index_value")
+            disable_index_value = (
+                bool(disable_values[layer_idx]) if disable_values else False
+            )
+            index_qkv_heads = index_heads + 1 + (0 if disable_index_value else 1)
+            index_qkv_dim = index_qkv_heads * index_dim
             ops.append(
                 Op(
-                    "attn_score",
-                    attn_score_flops,
-                    fmt_shape(B, n_heads, S, d_head),
-                    fmt_shape(B, n_heads, S, S),
+                    (
+                        "sparse_index_qk_proj"
+                        if disable_index_value
+                        else "sparse_index_qkv_proj"
+                    ),
+                    matmul_flops(B * S, index_qkv_dim, H),
+                    fmt_shape(B, S, H),
+                    fmt_shape(B, S, index_qkv_heads, index_dim),
                     "attention",
                 )
             )
-        attn_v_flops = matmul_flops(B * n_heads, S if S > 1 else 1, d_head)
+            ops.append(
+                Op(
+                    "sparse_index_topk",
+                    2 * B * index_heads * S * S * index_dim,
+                    fmt_shape(B, index_heads, S, index_dim),
+                    fmt_shape(B, S, cfg["sparse_topk_blocks"]),
+                    "attention",
+                )
+            )
+        # Attention
+        sparse_kv_len = min(
+            S,
+            cfg.get("sparse_topk_blocks", 0) * cfg.get("sparse_block_size", 0),
+        )
+        if is_sparse_attention and S > 1:
+            attn_score_flops = 2 * B * n_heads * S * sparse_kv_len * d_head
+        else:
+            attn_score_flops = matmul_flops(B * n_heads, S, d_head) if S > 1 else 0
+        if attn_score_flops > 0:
+            ops.append(
+                Op(
+                    "sparse_attn_score" if is_sparse_attention else "attn_score",
+                    attn_score_flops,
+                    fmt_shape(B, n_heads, S, d_head),
+                    fmt_shape(
+                        B,
+                        n_heads,
+                        S,
+                        sparse_kv_len if is_sparse_attention else S,
+                    ),
+                    "attention",
+                )
+            )
+        if is_sparse_attention and S > 1:
+            attn_v_flops = 2 * B * n_heads * S * sparse_kv_len * d_head
+        else:
+            attn_v_flops = matmul_flops(B * n_heads, S if S > 1 else 1, d_head)
         ops.append(
             Op(
-                "attn_v",
+                "sparse_attn_v" if is_sparse_attention else "attn_v",
                 attn_v_flops,
-                fmt_shape(B, n_heads, S, d_head),
+                fmt_shape(
+                    B,
+                    n_heads,
+                    sparse_kv_len if is_sparse_attention else S,
+                    d_head,
+                ),
                 fmt_shape(B, n_heads, S, d_head),
                 "attention",
             )
@@ -822,17 +977,21 @@ def simulate(
 
     # Per-layer (with per-layer compress_ratio)
     compress_ratios = normalize_compress_ratios(cfg, n_layers)
-    layer_ops_cache = {}  # compress_ratio → ops list (cache identical layers)
+    layer_ops_cache = {}  # layer-shape signature → ops list
 
     total_layer_flops = 0
     layers = []
     for i in range(n_layers):
         cr = compress_ratios[i] if compress_ratios and i < len(compress_ratios) else 0
-        if cr not in layer_ops_cache:
-            layer_ops_cache[cr] = build_layer_ops(
+        layer_type = (cfg.get("layer_types") or [None] * n_layers)[i]
+        moe_layer = (cfg.get("moe_layer_freq") or [None] * n_layers)[i]
+        sparse_layer = (cfg.get("sparse_attention_freq") or [None] * n_layers)[i]
+        cache_key = (cr, layer_type, moe_layer, sparse_layer)
+        if cache_key not in layer_ops_cache:
+            layer_ops_cache[cache_key] = build_layer_ops(
                 cfg, B, S, tp, ep, compress_ratio=cr, layer_idx=i
             )
-        layer_ops = layer_ops_cache[cr]
+        layer_ops = layer_ops_cache[cache_key]
 
         lr = LayerResult(layer_idx=i)
         lr.compress_ratio = cr
@@ -1848,9 +2007,7 @@ def main():
     try:
         if args.kernel_flow is not None:
             kernel_flow_detail = load_json_argument(args.kernel_flow)
-            measured_ms = measured_ms_from_kernel_detail(
-                kernel_flow_detail, n_layers
-            )
+            measured_ms = measured_ms_from_kernel_detail(kernel_flow_detail, n_layers)
         elif args.kernel_detail is not None:
             kernel_detail = load_json_argument(args.kernel_detail)
             measured_ms = measured_ms_from_kernel_detail(kernel_detail, n_layers)

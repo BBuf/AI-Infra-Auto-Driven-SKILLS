@@ -165,6 +165,36 @@ def test_model_runbook_skill_directories_are_removed() -> None:
     assert not list(SKILL_ROOT.glob("*/*/references/pr-history.md"))
 
 
+def test_dossier_contract_requires_reproducible_source_and_limitations() -> None:
+    skill = (SKILL_ROOT / "model-pr-diff-dossier" / "SKILL.md").read_text(
+        encoding="utf-8"
+    )
+    schema = (
+        SKILL_ROOT / "model-pr-diff-dossier" / "references" / "card-schema.md"
+    ).read_text(encoding="utf-8")
+
+    for required in [
+        "immutable source head",
+        "open",
+        "merged",
+        "Motivation",
+        "Key implementation",
+        "Validation implications",
+        "Limitations",
+    ]:
+        assert required in skill or required in schema
+
+    for required in [
+        "Source head:",
+        "State:",
+        "Motivation:",
+        "Key implementation:",
+        "Validation implications:",
+        "Limitations:",
+    ]:
+        assert required in schema
+
+
 def test_readme_installs_model_pr_diff_dossier_skill() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     skill_path = "skills/model-optimization/model-pr-diff-dossier"

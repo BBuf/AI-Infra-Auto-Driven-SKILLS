@@ -13,10 +13,7 @@ from pathlib import Path
 
 
 SCRIPT_DIR = (
-    Path(__file__).resolve().parents[1]
-    / "skills"
-    / "llm-pipeline-analysis"
-    / "scripts"
+    Path(__file__).resolve().parents[1] / "skills" / "llm-pipeline-analysis" / "scripts"
 )
 SIM_SCRIPT_DIR = (
     Path(__file__).resolve().parents[1]
@@ -58,15 +55,21 @@ def load_profiles():
 
 
 def load_timeline():
-    return _load_module("layer_timeline_analyzer", SCRIPT_DIR / "layer_timeline_analyzer.py")
+    return _load_module(
+        "layer_timeline_analyzer", SCRIPT_DIR / "layer_timeline_analyzer.py"
+    )
 
 
 def load_breakdown():
-    return _load_module("layer_kernel_breakdown", SCRIPT_DIR / "layer_kernel_breakdown.py")
+    return _load_module(
+        "layer_kernel_breakdown", SCRIPT_DIR / "layer_kernel_breakdown.py"
+    )
 
 
 def load_simulator():
-    return _load_module("model_compute_simulator", SIM_SCRIPT_DIR / "model_compute_simulator.py")
+    return _load_module(
+        "model_compute_simulator", SIM_SCRIPT_DIR / "model_compute_simulator.py"
+    )
 
 
 def load_compute_extractor():
@@ -79,6 +82,7 @@ def load_compute_extractor():
 # ---------------------------------------------------------------------------
 # Test: ModelProfile data structure and built-in profiles
 # ---------------------------------------------------------------------------
+
 
 class TestModelProfile(unittest.TestCase):
     def setUp(self):
@@ -127,6 +131,7 @@ class TestModelProfile(unittest.TestCase):
 # ---------------------------------------------------------------------------
 # Test: Profile inference
 # ---------------------------------------------------------------------------
+
 
 class TestInferProfile(unittest.TestCase):
     def setUp(self):
@@ -184,6 +189,7 @@ class TestInferProfile(unittest.TestCase):
 # Test: Kernel classification with profiles
 # ---------------------------------------------------------------------------
 
+
 class TestClassifyKernel(unittest.TestCase):
     def setUp(self):
         self.mod = load_profiles()
@@ -239,6 +245,7 @@ class TestClassifyKernel(unittest.TestCase):
 # Test: detect_num_layers with configurable blocks_per_layer
 # ---------------------------------------------------------------------------
 
+
 class TestDetectNumLayers(unittest.TestCase):
     def setUp(self):
         self.mod = load_timeline()
@@ -247,21 +254,25 @@ class TestDetectNumLayers(unittest.TestCase):
         """Create fake GPU kernel events with anchor kernels at given indices."""
         kernels = []
         for i in range(n_blocks * 3):  # some filler between anchors
-            kernels.append({"name": f"kernel_{i}", "dur": block_dur, "ts": i * block_dur})
+            kernels.append(
+                {"name": f"kernel_{i}", "dur": block_dur, "ts": i * block_dur}
+            )
         return kernels
 
     def test_returns_default_when_too_few_blocks(self):
         gpu = [{"name": "k", "dur": 100, "ts": 0}] * 10
         indices = list(range(3))
-        result = self.mod.detect_num_layers(indices, gpu, blocks_per_layer=2,
-                                             default_num_layers=43)
+        result = self.mod.detect_num_layers(
+            indices, gpu, blocks_per_layer=2, default_num_layers=43
+        )
         self.assertEqual(result, 43)
 
     def test_default_num_layers_is_configurable(self):
         gpu = [{"name": "k", "dur": 100, "ts": 0}] * 10
         indices = list(range(3))
-        result = self.mod.detect_num_layers(indices, gpu, blocks_per_layer=1,
-                                             default_num_layers=7)
+        result = self.mod.detect_num_layers(
+            indices, gpu, blocks_per_layer=1, default_num_layers=7
+        )
         self.assertEqual(result, 7)
 
 
@@ -283,15 +294,11 @@ class TestTimelineSelection(unittest.TestCase):
 
     def test_select_steady_state_pass_uses_relative_stability(self):
         self.assertEqual(
-            self.timeline.select_steady_state_pass(
-                [1000.0, 5100.0, 5050.0, 5075.0]
-            ),
+            self.timeline.select_steady_state_pass([1000.0, 5100.0, 5050.0, 5075.0]),
             1,
         )
         self.assertIsNone(
-            self.timeline.select_steady_state_pass(
-                [1000.0, 2000.0, 4000.0, 8000.0]
-            )
+            self.timeline.select_steady_state_pass([1000.0, 2000.0, 4000.0, 8000.0])
         )
 
     def test_select_steady_state_pass_rejects_invalid_window(self):
@@ -322,6 +329,7 @@ class TestTimelineSelection(unittest.TestCase):
 # Test: get_layer_kernels with configurable blocks_per_layer
 # ---------------------------------------------------------------------------
 
+
 class TestGetLayerKernels(unittest.TestCase):
     def setUp(self):
         self.mod = load_breakdown()
@@ -331,8 +339,9 @@ class TestGetLayerKernels(unittest.TestCase):
         profile = self.profiles.get_profile("dsv4_csa_hca")
         # 2 layers, 2 blocks/layer = 4 anchor blocks, plus one more as boundary
         # Create 5 anchor positions (4 blocks + 1 end boundary)
-        gpu = [{"name": f"k{i}", "dur": 10, "ts": i * 10, "args": {}}
-               for i in range(20)]
+        gpu = [
+            {"name": f"k{i}", "dur": 10, "ts": i * 10, "args": {}} for i in range(20)
+        ]
         anchor_indices = [0, 5, 10, 15, 20]
         # This should not crash
         kernels = self.mod.get_layer_kernels(gpu, anchor_indices, 0, 0, 2, profile)
@@ -345,8 +354,9 @@ class TestGetLayerKernels(unittest.TestCase):
 
     def test_generic_one_block_per_layer(self):
         profile = self.profiles.get_profile("generic")
-        gpu = [{"name": f"k{i}", "dur": 10, "ts": i * 10, "args": {}}
-               for i in range(20)]
+        gpu = [
+            {"name": f"k{i}", "dur": 10, "ts": i * 10, "args": {}} for i in range(20)
+        ]
         anchor_indices = [0, 10, 20]
         kernels = self.mod.get_layer_kernels(gpu, anchor_indices, 0, 0, 2, profile)
         self.assertEqual([k["idx"] for k in kernels], list(range(10)))
@@ -371,7 +381,9 @@ class TestHotKernelOutput(unittest.TestCase):
 
     def test_hot_kernel_order_sorts_by_duration_then_trace_order(self):
         ordered = self.mod.hot_kernel_order(self._kernels())
-        self.assertEqual([k["name"] for k in ordered], ["hot_a", "hot_b", "short", "tiny"])
+        self.assertEqual(
+            [k["name"] for k in ordered], ["hot_a", "hot_b", "short", "tiny"]
+        )
 
     def test_json_kernel_list_is_hotness_sorted_without_changing_wall_time(self):
         payload = json.loads(
@@ -426,6 +438,7 @@ class TestHotKernelOutput(unittest.TestCase):
 # Test: layer timeline classification and half-open boundaries
 # ---------------------------------------------------------------------------
 
+
 class TestLayerTimelineInfo(unittest.TestCase):
     def setUp(self):
         self.mod = load_timeline()
@@ -433,8 +446,9 @@ class TestLayerTimelineInfo(unittest.TestCase):
         self.profile = self.profiles.get_profile("dsv4_csa_hca")
 
     def test_get_layer_info_uses_machine_keys_and_half_open_blocks(self):
-        gpu = [{"name": f"k{i}", "dur": 10, "ts": i * 10, "args": {}}
-               for i in range(20)]
+        gpu = [
+            {"name": f"k{i}", "dur": 10, "ts": i * 10, "args": {}} for i in range(20)
+        ]
         gpu[1]["name"] = "flash_fwd_splitkv_mla_kernel"
         gpu[2]["name"] = "mhc_post_tilelang_kernel"
         gpu[9]["name"] = "ncclAllReduce_bf16_RING_LL"
@@ -452,15 +466,23 @@ class TestLayerTimelineInfo(unittest.TestCase):
         self.assertEqual(info["allreduce"], 10)
 
     def test_print_layer_detail_smoke(self):
-        gpu = [{"name": f"k{i}", "dur": 10, "ts": i * 10, "args": {}}
-               for i in range(20)]
+        gpu = [
+            {"name": f"k{i}", "dur": 10, "ts": i * 10, "args": {}} for i in range(20)
+        ]
         gpu[1]["name"] = "flash_fwd_splitkv_mla_kernel"
         anchor_indices = [0, 5, 10, 15, 20]
 
         out = io.StringIO()
         with redirect_stdout(out):
             self.mod.print_layer_detail(
-                gpu, anchor_indices, 0, 2, [0, 4], 0, 0, self.profile,
+                gpu,
+                anchor_indices,
+                0,
+                2,
+                [0, 4],
+                0,
+                0,
+                self.profile,
             )
 
         output = out.getvalue()
@@ -472,7 +494,66 @@ class TestLayerTimelineInfo(unittest.TestCase):
 # Test: model config consistency for compress_ratios
 # ---------------------------------------------------------------------------
 
+
 class TestModelConfigIndex(unittest.TestCase):
+    def test_new_public_model_configs_have_simulator_dimensions(self):
+        configs = json.loads(CONFIG_INDEX.read_text())
+        required = {
+            "num_hidden_layers",
+            "hidden_size",
+            "num_attention_heads",
+            "num_key_value_heads",
+            "head_dim",
+            "vocab_size",
+            "attention_type",
+            "moe",
+            "num_experts",
+            "num_experts_per_tok",
+            "routed_expert_intermediate_size",
+        }
+
+        for key in ["minimax-m3", "qwen3.6-35b-a3b"]:
+            with self.subTest(model=key):
+                self.assertIn(key, configs)
+                self.assertFalse(required - configs[key].keys())
+
+    def test_minimax_m3_dense_prefix_and_qwen36_hybrid_layers_build(self):
+        sim = load_simulator()
+        configs = json.loads(CONFIG_INDEX.read_text())
+
+        minimax = configs["minimax-m3"]
+        dense_ops = sim.build_layer_ops(minimax, 1, 128, 8, 8, layer_idx=0)
+        moe_ops = sim.build_layer_ops(minimax, 1, 128, 8, 8, layer_idx=3)
+        self.assertIn("ffn_swiglu", {op.name for op in dense_ops})
+        self.assertNotIn("sparse_index_qk_proj", {op.name for op in dense_ops})
+        self.assertNotIn("routed_experts_swiglu", {op.name for op in dense_ops})
+        self.assertIn("sparse_index_qk_proj", {op.name for op in moe_ops})
+        self.assertIn("routed_experts_swiglu", {op.name for op in moe_ops})
+
+        qwen36 = configs["qwen3.6-35b-a3b"]
+        linear_ops = sim.build_layer_ops(qwen36, 1, 128, 1, 1, layer_idx=0)
+        full_ops = sim.build_layer_ops(qwen36, 1, 128, 1, 1, layer_idx=3)
+        self.assertIn("gated_delta_attention", {op.name for op in linear_ops})
+        self.assertNotIn("attn_score", {op.name for op in linear_ops})
+        self.assertIn("attn_score", {op.name for op in full_ops})
+        self.assertEqual(
+            next(op for op in linear_ops if op.name == "linear_in_proj_qkvz").shape_out,
+            "[1×128×12288]",
+        )
+
+    def test_new_model_aliases_resolve_checkpoint_names(self):
+        sim = load_simulator()
+        configs = json.loads(CONFIG_INDEX.read_text())
+
+        self.assertEqual(
+            sim.resolve_model("MiniMaxAI/MiniMax-M3-MXFP8", configs)["display_name"],
+            "MiniMax-M3",
+        )
+        self.assertEqual(
+            sim.resolve_model("Qwen/Qwen3.6-35B-A3B-FP8", configs)["display_name"],
+            "Qwen3.6-35B-A3B",
+        )
+
     def test_compress_ratios_lengths_are_explained(self):
         configs = json.loads(CONFIG_INDEX.read_text())
         for key, cfg in configs.items():
@@ -511,9 +592,15 @@ class TestModelConfigIndex(unittest.TestCase):
     def test_gpu_aliases_resolve_local_short_names(self):
         sim = load_simulator()
         specs = json.loads(GPU_SPECS.read_text())
-        self.assertEqual(sim.resolve_gpu("h100", specs)["display_name"], "NVIDIA H100 SXM 80GB")
-        self.assertEqual(sim.resolve_gpu("h200", specs)["display_name"], "NVIDIA H200 SXM 141GB")
-        self.assertEqual(sim.resolve_gpu("b200", specs)["display_name"], "NVIDIA B200 SXM 180GB")
+        self.assertEqual(
+            sim.resolve_gpu("h100", specs)["display_name"], "NVIDIA H100 SXM 80GB"
+        )
+        self.assertEqual(
+            sim.resolve_gpu("h200", specs)["display_name"], "NVIDIA H200 SXM 141GB"
+        )
+        self.assertEqual(
+            sim.resolve_gpu("b200", specs)["display_name"], "NVIDIA B200 SXM 180GB"
+        )
 
 
 class TestMeasuredComputeFlow(unittest.TestCase):
@@ -602,6 +689,7 @@ class TestMeasuredComputeFlow(unittest.TestCase):
 # ---------------------------------------------------------------------------
 # Test: simplify_name uses profile rules
 # ---------------------------------------------------------------------------
+
 
 class TestSimplifyName(unittest.TestCase):
     def setUp(self):

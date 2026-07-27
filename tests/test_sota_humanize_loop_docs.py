@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import unittest
+import re
 from pathlib import Path
 
 
@@ -11,9 +12,104 @@ SOTA_SKILL_ROOTS = [
 ]
 REMOVED_STRICT_FLAG = "--strict" "-success"
 REMOVED_STRICT_STATE = "strict" "_success"
+PROMPT_PAIRS = [
+    (
+        ROOT / "prompts" / "sglang-sota-b200-prompts.md",
+        ROOT / "prompts" / "sglang-sota-b200-codex-goal-prompts.md",
+    ),
+    (
+        ROOT / "prompts" / "sglang-sota-h200-prompts.md",
+        ROOT / "prompts" / "sglang-sota-h200-codex-goal-prompts.md",
+    ),
+]
+SOURCE_HEADS = {
+    "sglang": "8d6549bc4039d33635844495d86684677a4f0df8",
+    "vllm": "ef9975d021448b99a5408e8c78a4c4f6b63443c7",
+    "tensorrt_llm": "1b4ffc0291d75a21ad20118e8f44de6e3831f786",
+    "tokenspeed": "d73bf0454422092f306d5575e803a08fd35ac41c",
+}
+
+
+def _model_metadata(text: str) -> list[tuple[str, ...]]:
+    fields = [
+        "model_id",
+        "target_hardware",
+        "minimum_gpu_count",
+        "precision_quantization",
+        "initial_deployment",
+    ]
+    blocks = re.findall(r"```text\n(.*?)\n```", text, re.S)
+    metadata = []
+    for block in blocks:
+        if not re.search(r"^model_id:", block, re.M):
+            continue
+        values = []
+        for field in fields:
+            match = re.search(rf"^{field}: (.+)$", block, re.M)
+            if not match:
+                raise AssertionError(f"missing {field} in prompt block")
+            values.append(match.group(1))
+        metadata.append(tuple(values))
+    return metadata
 
 
 class SotaHumanizeLoopDocsTest(unittest.TestCase):
+    def test_prompt_variants_share_ordered_model_metadata(self) -> None:
+        for regular_path, goal_path in PROMPT_PAIRS:
+            with self.subTest(hardware=regular_path.name):
+                regular = regular_path.read_text(encoding="utf-8")
+                goal = goal_path.read_text(encoding="utf-8")
+                self.assertEqual(_model_metadata(regular), _model_metadata(goal))
+
+    def test_b200_prompts_use_verified_minimax_m3_and_qwen36_shapes(self) -> None:
+        for prompt_path in PROMPT_PAIRS[0]:
+            with self.subTest(prompt=prompt_path.name):
+                text = prompt_path.read_text(encoding="utf-8")
+                self.assertIn("MiniMaxAI/MiniMax-M3-MXFP8", text)
+                self.assertIn("Qwen/Qwen3.6-35B-A3B-FP8", text)
+                self.assertNotIn("MiniMaxAI/MiniMax-M2.7", text)
+                self.assertRegex(
+                    text,
+                    r"(?s)model_id: Qwen/Qwen3\.6-35B-A3B-FP8.*?"
+                    r"target_hardware: single-node 1x NVIDIA B200",
+                )
+                self.assertRegex(
+                    text,
+                    r"(?s)model_id: MiniMaxAI/MiniMax-M3-MXFP8.*?"
+                    r"target_hardware: single-node 8x NVIDIA B200",
+                )
+
+    def test_skills_record_current_immutable_source_heads(self) -> None:
+        sglang = (SOTA_SKILL_ROOTS[0] / "SKILL.md").read_text(encoding="utf-8")
+        vllm = (SOTA_SKILL_ROOTS[1] / "SKILL.md").read_text(encoding="utf-8")
+        for framework, source_head in SOURCE_HEADS.items():
+            with self.subTest(framework=framework):
+                self.assertIn(source_head, sglang)
+                if framework != "tokenspeed":
+                    self.assertIn(source_head, vllm)
+
+    def test_templates_share_framework_neutral_checkpoint_evidence(self) -> None:
+        templates = [
+            (root / "references" / "refined-plan-template.md").read_text(
+                encoding="utf-8"
+            )
+            for root in SOTA_SKILL_ROOTS
+        ]
+        shared_fields = [
+            "immutable source heads",
+            "PR state",
+            "validation evidence",
+            "known limitations",
+            "selected comparison frameworks",
+            "user-excluded or unsupported frameworks",
+            "current leading selected comparison result",
+            "remaining gap",
+        ]
+        for field in shared_fields:
+            with self.subTest(field=field):
+                for template in templates:
+                    self.assertIn(field, template)
+
     def test_rlcr_startup_uses_supported_humanize_options(self) -> None:
         for skill_root in SOTA_SKILL_ROOTS:
             with self.subTest(skill=skill_root.name):
