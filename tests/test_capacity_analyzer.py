@@ -84,6 +84,16 @@ SGLANG_LOG_MFS060 = """\
 [2026-05-15 09:10:53] The server is fired up and ready to roll!
 """
 
+VLLM_LOG = """\
+INFO vllm engine starting
+Initial free memory: 79.20 GiB; Requested memory: 0.900000 (util), 72.00 GiB
+Model loading took 14.50 GiB memory and 12.000000 seconds
+Available KV cache memory: 52.25 GiB
+Graph capturing finished in 8 secs, took 1.25 GiB
+GPU KV cache size: 1,572,864 tokens
+Maximum concurrency for 8,192 tokens per request: 192.00x
+"""
+
 NVIDIA_SMI_MFS088 = """\
 0, 89846 MiB, 7522 MiB
 1, 89942 MiB, 7426 MiB
@@ -233,6 +243,20 @@ class TestLogParsing:
         assert len(parsed.sw_kv_calcs) == 2
         assert parsed.final_info is not None
         assert parsed.final_info.max_total_num_tokens == 1317632
+
+    def test_parse_current_vllm_capacity_evidence(self):
+        parsed = parse_log(VLLM_LOG)
+        assert parsed.framework == "vllm"
+        assert parsed.server_args is None
+        assert parsed.vllm.initial_free_gib == 79.20
+        assert parsed.vllm.requested_utilization == 0.9
+        assert parsed.vllm.requested_memory_gib == 72.0
+        assert parsed.vllm.model_loading_gib == 14.5
+        assert parsed.vllm.available_kv_cache_gib == 52.25
+        assert parsed.vllm.cuda_graph_gib == 1.25
+        assert parsed.vllm.gpu_kv_cache_tokens == 1_572_864
+        assert parsed.vllm.max_model_len == 8192
+        assert parsed.vllm.maximum_concurrency == 192.0
 
 
 # ---------------------------------------------------------------------------
@@ -550,5 +574,38 @@ class TestEndToEnd:
             output = result.stdout
             assert "2048" in output
             assert "16384" in output
+        finally:
+            os.unlink(log_path)
+
+    def test_vllm_json_output_contains_only_proven_evidence(self):
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".log", delete=False) as f:
+            f.write(VLLM_LOG)
+            log_path = f.name
+
+        try:
+            import subprocess
+
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT_DIR / "capacity_analyzer.py"),
+                    "--log-file",
+                    log_path,
+                    "--gpu",
+                    "h100",
+                    "--format",
+                    "json",
+                ],
+                capture_output=True,
+                text=True,
+                timeout=30,
+            )
+            assert result.returncode == 0, f"Script failed: {result.stderr}"
+            data = json.loads(result.stdout)
+            assert data["framework"] == "vllm"
+            assert data["vllm"]["gpu_kv_cache_tokens"] == 1_572_864
+            assert data["vllm"]["maximum_concurrency"] == 192.0
+            assert data["vllm"]["mem_fraction_static"] is None
+            assert data["vllm"]["cuda_graph_max_bs"] is None
         finally:
             os.unlink(log_path)
