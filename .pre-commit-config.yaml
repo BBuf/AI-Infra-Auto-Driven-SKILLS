@@ -21,12 +21,12 @@ repos:
       - id: debug-statements
       - id: no-commit-to-branch
   - repo: https://github.com/PyCQA/isort
-    rev: 7.0.0
+    rev: 8.0.1
     hooks:
       - id: isort
         files: ^skills/.*\.py$
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.1
+    rev: v0.16.0
     hooks:
       - id: ruff
         args:
@@ -34,23 +34,23 @@ repos:
           - --fix
         files: ^skills/.*\.py$
   - repo: https://github.com/psf/black
-    rev: 26.1.0
+    rev: 26.5.1
     hooks:
       - id: black-jupyter
         files: ^skills/.*\.py$
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.4.1
+    rev: v2.4.3
     hooks:
       - id: codespell
         args: ["--config", ".codespellrc"]
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v20.1.7
+    rev: v22.1.8
     hooks:
       - id: clang-format
         types_or: [c++, cuda]
         args: [--style=file, --verbose]
   - repo: https://github.com/lycheeverse/lychee.git
-    rev: lychee-v0.22.0
+    rev: lychee-v0.24.2
     hooks:
       - id: lychee
         name: check doc links (offline)

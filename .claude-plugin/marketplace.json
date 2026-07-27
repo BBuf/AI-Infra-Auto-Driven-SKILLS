@@ -1,5 +1,6 @@
 {
   "name": "ai-infra-auto-driven-skills",
+  "description": "Agent-ready LLM serving, profiling, capacity, SOTA optimization, incident triage, architecture, and PR-history skills.",
   "owner": {
     "name": "BBuf",
     "url": "https://github.com/BBuf"

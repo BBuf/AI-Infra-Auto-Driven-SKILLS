@@ -1,6 +1,6 @@
 # AI-Infra-Auto-Driven-SKILLS Refresh Prompt
 
-Use this prompt when refreshing PR 72 or a successor PR for
+Use this prompt when refreshing a branch or pull request for
 `BBuf/AI-Infra-Auto-Driven-SKILLS`.
 
 目标：把仓库里的 skills、model PR history、open PR watch、benchmark/profiler
@@ -80,7 +80,7 @@ MiniMax-M3 验证结束后如果是本轮启动的 `sglang_m3`，要停止容器
 8. 在 B200 `sglang_bbuf` 里建立 artifact root，例如：
 
    ```bash
-   ART=/data/bbuf/ai_infra_skills_pr72_$(date +%Y%m%d)
+   ART=/data/bbuf/ai_infra_skills_refresh_$(date +%Y%m%d)
    mkdir -p "$ART"/{help,serving,profiler,logs,minimax_m3}
    ```
 
@@ -120,7 +120,7 @@ MiniMax-M3 验证结束后如果是本轮启动的 `sglang_m3`，要停止容器
     只写真实验证过的结论，明确环境 gap。
 16. 清理远端临时 repo、kill 任何 server、确认 8 张 B200 都回到 0 MiB。停止本轮启动的
     `sglang_m3`。
-17. 提交、推送当前分支，更新 PR 72 描述或评论，等待 GitHub checks。若 CI 失败，
+17. 提交、推送当前分支，更新当前 PR 描述或评论，等待 GitHub checks。若 CI 失败，
     读取日志并修到通过。
 
 ## 完成标准
