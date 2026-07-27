@@ -6,6 +6,7 @@ import importlib.util
 import sys
 import unittest
 from pathlib import Path
+from unittest import mock
 
 
 SCRIPT = (
@@ -124,6 +125,53 @@ class TestModelHistoryConfiguration(unittest.TestCase):
             set(self.mod.filter_traces_by_subject("sglang", "qwen36", traces)),
             {1, 3},
         )
+
+    def test_transient_fetch_errors_do_not_poison_the_cache(self):
+        key = "vllm-project/vllm#123"
+        cache = {
+            "prs": {
+                key: {
+                    "info": {
+                        "fetch_error": "API rate limit exceeded (HTTP 403)",
+                    },
+                    "files": [],
+                }
+            }
+        }
+        info = {
+            "number": 123,
+            "title": "real PR",
+            "html_url": "https://github.com/vllm-project/vllm/pull/123",
+        }
+        files = [{"filename": "tests/lora/test_qwen36_moe_lora.py"}]
+
+        with mock.patch.object(self.mod, "gh_api", side_effect=[info, files]):
+            fetched_info, fetched_files = self.mod.fetch_pr_bundle(
+                "vllm", 123, cache
+            )
+
+        self.assertEqual(fetched_info, info)
+        self.assertEqual(fetched_files, files)
+        self.assertEqual(cache["prs"][key], {"info": info, "files": files})
+
+    def test_empty_cached_success_is_refetched(self):
+        key = "sgl-project/sglang#28940"
+        cache = {"prs": {key: {"info": {}, "files": []}}}
+        info = {
+            "number": 28940,
+            "title": "MOSS-VL preprocessing optimizations",
+            "html_url": "https://github.com/sgl-project/sglang/pull/28940",
+        }
+        files = [{"filename": "python/sglang/srt/models/moss_vl.py"}]
+
+        with mock.patch.object(self.mod, "gh_api", side_effect=[info, files]):
+            fetched_info, fetched_files = self.mod.fetch_pr_bundle(
+                "sglang", 28940, cache
+            )
+
+        self.assertEqual(fetched_info, info)
+        self.assertEqual(fetched_files, files)
+        self.assertEqual(cache["prs"][key], {"info": info, "files": files})
 
 
 if __name__ == "__main__":

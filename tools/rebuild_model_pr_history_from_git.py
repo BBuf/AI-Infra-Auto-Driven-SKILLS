@@ -687,18 +687,59 @@ def extract_existing_prs(framework: str, model: str) -> set[int]:
     return numbers
 
 
+def is_transient_fetch_error(message: str) -> bool:
+    lowered = message.lower()
+    return any(
+        marker in lowered
+        for marker in (
+            "rate limit",
+            "secondary rate",
+            "http 403",
+            "http 429",
+            "eof",
+            "timeout",
+            "timed out",
+            "connection reset",
+            "http 500",
+            "http 502",
+            "http 503",
+            "http 504",
+            "malformed github pr response",
+        )
+    )
+
+
+def is_valid_pr_info(info: Any, number: int) -> bool:
+    return (
+        isinstance(info, dict)
+        and int(info.get("number") or 0) == number
+        and bool(info.get("title"))
+        and bool(info.get("html_url"))
+    )
+
+
 def fetch_pr_bundle(framework: str, number: int, cache: dict[str, Any]) -> tuple[dict[str, Any] | None, list[dict[str, Any]]]:
     repo = REPOS[framework]
     key = f"{repo}#{number}"
     if key in cache["prs"]:
         entry = cache["prs"][key]
-        return entry.get("info"), entry.get("files", [])
+        cached_info = entry.get("info") or {}
+        fetch_error = str(cached_info.get("fetch_error") or "")
+        if fetch_error and not is_transient_fetch_error(fetch_error):
+            return entry.get("info"), entry.get("files", [])
+        if not fetch_error and is_valid_pr_info(cached_info, number):
+            return cached_info, entry.get("files", [])
     try:
         info = gh_api(f"repos/{repo}/pulls/{number}")
+        if not is_valid_pr_info(info, number):
+            raise RuntimeError("malformed GitHub PR response")
         files = gh_api(f"repos/{repo}/pulls/{number}/files?per_page=100", paginate=True)
     except Exception as exc:  # keep the rebuild resilient to deleted private refs
         info = {"number": number, "html_url": f"https://github.com/{repo}/pull/{number}", "title": f"unavailable PR #{number}", "state": "unknown", "fetch_error": str(exc)}
         files = []
+        if not is_transient_fetch_error(str(exc)):
+            cache["prs"][key] = {"info": info, "files": files}
+        return info, files
     cache["prs"][key] = {"info": info, "files": files}
     return info, files
 
