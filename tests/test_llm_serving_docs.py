@@ -93,6 +93,13 @@ class LlmServingDocsTest(unittest.TestCase):
             self.assertIn("skipped", normalized)
             self.assertIn("SLA", normalized)
 
+    def test_cookbook_documents_intentionally_excluded_current_models(self) -> None:
+        readme = read_skill_file("configs", "cookbook-llm", "README.md")
+
+        for model in ("Inkling", "Unlimited OCR", "Kimi K3", "DeepSeek V4"):
+            self.assertIn(model, readme)
+        self.assertIn("not_verified_at_recorded_head", readme)
+
 
 if __name__ == "__main__":
     unittest.main()

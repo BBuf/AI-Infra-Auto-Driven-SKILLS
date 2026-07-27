@@ -80,10 +80,8 @@ STATIC_SERVER_FLAGS = {
         "host",
         "kv_cache_dtype",
         "long_prefill_token_threshold",
-        "max_long_partial_prefills",
         "max_model_len",
         "max_num_batched_tokens",
-        "max_num_partial_prefills",
         "max_num_seqs",
         "pipeline_parallel_size",
         "port",
@@ -281,6 +279,11 @@ def _validate_framework(
     if not isinstance(server, dict):
         return [f"missing frameworks.{framework}"]
     if not server.get("enabled", False):
+        if server.get("support_status") != "not_verified_at_recorded_head":
+            return [
+                f"{framework}: disabled sections must set "
+                "support_status to not_verified_at_recorded_head"
+            ]
         return []
 
     base_flags = server.get("base_server_flags")

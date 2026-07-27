@@ -1,0 +1,113 @@
+schema_version: 1
+source:
+  kind: llm_serving_cookbook
+  source_recipe_file: sglang/docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx
+  recorded_heads:
+    sglang: 8d6549bc4039d33635844495d86684677a4f0df8
+    vllm: ef9975d021448b99a5408e8c78a4c4f6b63443c7
+    tensorrt_llm: 1b4ffc0291d75a21ad20118e8f44de6e3831f786
+    tokenspeed: d73bf0454422092f306d5575e803a08fd35ac41c
+  translation: The enabled SGLang section preserves its verified single-node
+    8xB200 MXFP8 recipe. vLLM uses a generic translation after its recorded
+    supported-model table named this exact checkpoint. Other frameworks stay
+    disabled where the recorded evidence uses a different checkpoint or
+    hardware contract.
+model:
+  name: MiniMaxAI/MiniMax-M3-MXFP8
+  tokenizer: MiniMaxAI/MiniMax-M3-MXFP8
+  precision: auto
+  quantization: mxfp8
+hardware:
+  accelerator: NVIDIA B200
+  gpu_count: 8
+  multi_node: false
+dataset:
+  kind: random
+  num_prompts: 80
+  scenario_names:
+  - chat
+  - summarization
+  input_len:
+  - 1000
+  - 8000
+  output_len:
+  - 1000
+  - 1000
+benchmark:
+  endpoint: /v1/chat/completions
+  backend: openai-compatible
+  tokenizer: MiniMaxAI/MiniMax-M3-MXFP8
+  max_concurrency:
+  - null
+  - 24
+  - 64
+  extra_request_body:
+    temperature: 1.0
+    top_p: 0.95
+  qps:
+    lower: 0.25
+    upper: 4.0
+    tolerance: 0.1
+  sla:
+    max_p50_ttft_ms: 1500
+    max_p50_tpot_ms: 30
+    min_success_rate: 0.99
+  output_dir: ./auto_benchmark_results/cookbook-llm/minimax-m3
+search:
+  tier: 2
+  max_candidates_per_framework: 6
+  candidate_generation: baseline_first_bounded_product
+  resume: true
+frameworks:
+  sglang:
+    enabled: true
+    support_status: verified_at_recorded_head
+    server_command: python -m sglang.launch_server
+    config_source: sglang_minimax_m3_b200_verified_recipe
+    base_server_flags:
+      model_path: MiniMaxAI/MiniMax-M3-MXFP8
+      trust_remote_code: true
+      tp_size: 8
+      attention_backend: fa4
+      moe_runner_backend: deep_gemm
+      reasoning_parser: auto
+      tool_call_parser: auto
+      chunked_prefill_size: 8192
+      mem_fraction_static: 0.65
+      host: 0.0.0.0
+      port: 30000
+    search_space:
+      max_running_requests:
+      - 24
+      - 64
+      chunked_prefill_size:
+      - 8192
+      - 16384
+  vllm:
+    enabled: true
+    support_status: model_and_flags_verified_at_recorded_head
+    server_command: vllm serve
+    config_source: vllm_supported_model_generic_translation
+    base_server_flags:
+      tensor_parallel_size: 8
+      gpu_memory_utilization: 0.9
+      max_model_len: 12288
+      dtype: auto
+      enable_chunked_prefill: true
+      kv_cache_dtype: auto
+    search_space:
+      max_num_seqs:
+      - 24
+      - 64
+      max_num_batched_tokens:
+      - 8192
+      - 16384
+      long_prefill_token_threshold:
+      - 0
+      - 4096
+  tensorrt_llm:
+    enabled: false
+    support_status: not_verified_at_recorded_head
+  tokenspeed:
+    enabled: false
+    support_status: not_verified_at_recorded_head

@@ -184,8 +184,8 @@ before starting a long sweep.
 - vLLM `--enable-dbo` only works when the target vLLM image is built with a
   supported all2all backend. Keep DBO out of the default candidate list unless
   the operator has verified the image.
-- vLLM `--max-num-partial-prefills > 1` is model- and runtime-gated. Keep `1`
-  in the default pass; raise only after a preflight with the actual model.
+- vLLM still exposes `--long-prefill-token-threshold`; verify the exact flag
+  against the target image before searching it.
 - vLLM current mainline was checked on 2026-06-27 at
   `091d13976c1c246714bb2112dd2e208561dda6a3` and includes PR `#46735`
   fixing CUDA graph capture in Triton / NVFP4-emulation MoE. If a target image
@@ -464,7 +464,7 @@ Version-sensitive vLLM knob families to verify:
 - `max_num_seqs`
 - `max_num_batched_tokens`
 - `max_model_len`
-- `enable_chunked_prefill`, partial prefill limits, and DBO thresholds
+- `enable_chunked_prefill`, `long_prefill_token_threshold`, and DBO thresholds
 - KV cache dtype and block size
 - dtype and quantization settings
 - CUDA graph capture sizes or eager-mode toggles when relevant
@@ -483,9 +483,8 @@ against throughput.
 Keep DBO and all2all backend settings out of the default pass unless the target
 vLLM environment is already set up for them. They are real tuning knobs, but a
 candidate can fail at startup if the required all2all backend is not available.
-Also preflight concurrent partial prefill before raising
-`max_num_partial_prefills` above 1; some model/runtime combinations reject it at
-startup.
+Verify `long_prefill_token_threshold` on the concrete `vllm serve --help=all`
+surface before adding it to a search.
 
 ### 6. Tune TensorRT-LLM
 

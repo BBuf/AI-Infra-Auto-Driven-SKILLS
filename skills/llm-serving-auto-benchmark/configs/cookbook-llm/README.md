@@ -8,6 +8,17 @@ Scope:
 - TensorRT-LLM uses `trtllm-serve serve` with `backend: pytorch` fixed in `base_server_flags`. Backend choice is never searched.
 - TokenSpeed uses `tokenspeed serve <model>` with framework-native TP, memory, max sequence, batching, chunked-prefill, and prefix-cache knobs. Treat these sections as first-pass candidates and validate them against the target `tokenspeed serve --help`.
 - The two default random scenarios remain aligned pairs: `chat` uses `1000 -> 1000`, and `summarization` uses `8000 -> 1000`.
+- A framework is enabled only when the recorded upstream head exposes the exact model/checkpoint and required launch flags. Otherwise its section is retained as `enabled: false` with `support_status: not_verified_at_recorded_head`; that status is not a claim that the framework can never support the model.
+
+Current narrow additions:
+
+- `MiniMaxAI/MiniMax-M3-MXFP8`: the enabled SGLang recipe follows the verified single-node 8×B200 launch (`tp=8`, FA4 sparse attention, DeepGEMM MoE, 0.65 static-memory fraction) at SGLang head `8d6549bc4039d33635844495d86684677a4f0df8`. vLLM head `ef9975d021448b99a5408e8c78a4c4f6b63443c7` lists the exact checkpoint, so its section is an enabled generic translation; TensorRT-LLM and TokenSpeed stay disabled because their recorded recipes use a different hardware or checkpoint contract.
+- `Qwen/Qwen3.6-35B-A3B-FP8`: the enabled SGLang recipe follows its current B200 single-GPU cookbook entry at the same recorded head. The other recorded heads do not expose this exact FP8 checkpoint contract, so those sections stay disabled.
+
+Inkling, Unlimited OCR, Kimi K3, and DeepSeek V4 are intentionally excluded
+from the cross-framework cookbook in this refresh because their current
+endpoint, checkpoint, or four-framework comparison contracts are not uniform
+enough for a defensible recipe.
 
 Before a real run, capture the target framework `--help` output and validate the configs:
 
