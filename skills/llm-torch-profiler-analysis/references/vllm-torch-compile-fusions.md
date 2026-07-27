@@ -1,13 +1,11 @@
 # vLLM Torch Compile Fusion Patterns
 
-Refresh: `2026-06-27`.
+Refresh: `2026-07-27`.
 Source tree: vLLM `origin/main` at
-`091d13976c1c246714bb2112dd2e208561dda6a3`; no new LLM compile-fusion pass was
-added after `2317682f9` in this refresh. The mainline `#40392` MLA RoPE +
-KV-cache cat fusion is already included below. Recent post-`#46735` vLLM
-changes include runtime / model-runner work such as `#44800`, `#46762`, `#46862`,
-and `#45924`, but they do not add a new torch.compile pass registration to this
-inventory.
+`a89015c6df8eeb37a843b717c97a5be1355de83d`. This refresh adds the
+ROCm-specific `QkNormRopeKvCacheFusionPass` introduced by merged PR `#42749`;
+it supersedes the separate QK-norm/RoPE and RoPE/KV-cache passes for supported
+attention layers and head dimensions.
 
 Use this file when the fuse-pattern table reports split kernels in a trace and
 you need to decide whether the shape is already covered by vLLM's
@@ -36,6 +34,7 @@ vLLM registers these passes from
 | `fuse_attn_quant` | `AttnQuantFusionPass` | attention output followed by FP8 / NVFP4 quant |
 | `fuse_attn_quant` | `MLAAttnQuantFusionPass` | MLA attention output followed by FP8 / NVFP4 / FP8 group quant |
 | `enable_qk_norm_rope_fusion` | `QKNormRoPEFusionPass` | Q/K RMSNorm plus RoPE on packed QKV tensors |
+| `fuse_qk_norm_rope_kvcache` | `QkNormRopeKvCacheFusionPass` | supported ROCm attention layers fuse Q/K RMSNorm, RoPE, unified KV-cache update, and optional query quantization |
 
 ## Pattern Inventory
 
@@ -49,6 +48,7 @@ vLLM registers these passes from
 | `fusion/rocm_aiter_fusion.py` | `AddAiterRMSNormPadPattern` | AITER fused-add-RMSNorm output padded before the next op | AITER add-RMSNorm-pad op |
 | `fusion/rocm_aiter_fusion.py` | `MLADualRMSNormPattern` | MLA Q branch and KV branch each run RMSNorm | `torch.ops.vllm.fused_mla_dual_rms_norm` backed by AITER fused QK RMSNorm |
 | `fusion/qk_norm_rope_fusion.py` | `QkNormRopePattern` | Q/K RMSNorm, split/getitem reshapes, then RoPE | `_C.fused_qk_norm_rope` |
+| `fusion/qk_norm_rope_kvcache_fusion.py` | `QkNormRopeKvCachePattern` | Q/K RMSNorm and RoPE flow directly into unified KV-cache update, optionally with FP8 query quantization | `vllm.fused_qk_norm_rope_and_unified_kv_cache_update` |
 | `fusion/rope_kvcache_fusion.py` | `RopeReshapeKVCachePattern` | RoPE output followed by reshape/cache update | `vllm.fused_rope_and_unified_kv_cache_update` |
 | `fusion/mla_rope_kvcache_cat_fusion.py` | `MLARoPEKVCacheCatPattern` | MLA RoPE on `q_pe` and `k_pe` flows into `unified_mla_kv_cache_update` | `vllm.fused_rope_unified_mla_kv_cache_update`, backed by `concat_and_cache_mla_rope_fused` |
 | `fusion/attn_quant_fusion.py` | `AttnFp8StaticQuantPattern`, `AttnNvfp4QuantPattern` | attention output followed by FP8 static quant or NVFP4 quant | backend attention op with fused output quant when supported |
@@ -65,8 +65,11 @@ vLLM registers these passes from
   `AttnQuantFusionPass` or `MLAAttnQuantFusionPass`, not only handwritten
   attention kernels.
 - If the trace shows Q/K norm followed by RoPE or cache update, compare
-  `QKNormRoPEFusionPass`, `RopeKVCacheFusionPass`, and the MLA-specific
-  `MLARoPEKVCacheCatFusionPass`; they are separate passes.
+  `QkNormRopeKvCacheFusionPass`, `QKNormRoPEFusionPass`,
+  `RopeKVCacheFusionPass`, and the MLA-specific
+  `MLARoPEKVCacheCatFusionPass`. The combined ROCm pass supersedes the first
+  two separate stages when its platform, backend, graph-range, and head-size
+  guards pass.
 - If the trace is a TP decode trace with visible collectives, check whether
   `enable_sp` and `fuse_gemm_comms` would transform the same region into
   sequence-parallel or AsyncTP overlap.

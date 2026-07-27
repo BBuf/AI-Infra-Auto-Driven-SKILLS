@@ -18,6 +18,10 @@ SCRIPT_DIR = (
     / "scripts"
 )
 SCRIPT = SCRIPT_DIR / "analyze_llm_torch_profile.py"
+SKILL_DIR = SCRIPT_DIR.parent
+SOURCE_MAP = SKILL_DIR / "references" / "source-map.md"
+FUSE_CATALOG = SKILL_DIR / "references" / "fuse-overlap-catalog.md"
+OVERLAP_CATALOG = SKILL_DIR / "references" / "overlap-catalog.md"
 
 
 def load_module():
@@ -68,6 +72,105 @@ class LlmTorchProfilerAnalysisTest(unittest.TestCase):
         }
         values.update(overrides)
         return SimpleNamespace(**values)
+
+    def test_auto_framework_does_not_guess_sglang(self) -> None:
+        profile_common = sys.modules["profile_common"]
+        with self.assertRaisesRegex(ValueError, "--framework"):
+            profile_common.resolve_framework(
+                "auto",
+                input_path=Path("/tmp/framework-neutral-trace"),
+            )
+
+    def test_current_sglang_kernel_paths_replace_jit_kernel(self) -> None:
+        text = "\n".join(
+            [
+                SOURCE_MAP.read_text(),
+                FUSE_CATALOG.read_text(),
+                Path(self.mod.kernel_helpers.__file__).read_text(),
+                Path(self.mod.overlap_helpers.__file__).read_text(),
+            ]
+        )
+        self.assertNotIn("python/sglang/jit_kernel/", text)
+        self.assertNotIn("scheduler_profiler_mixin.py", text)
+
+    def test_pr_evidence_states_are_explicit(self) -> None:
+        text = "\n".join(
+            [FUSE_CATALOG.read_text(), OVERLAP_CATALOG.read_text()]
+        )
+        lines = text.splitlines()
+
+        def evidence_lines(pr_number: int) -> list[str]:
+            marker = f"#{pr_number}"
+            return [line for line in lines if marker in line]
+
+        for pr_number in (
+            21877,
+            21889,
+            21491,
+            22005,
+            20667,
+            24168,
+            2720,
+            38621,
+            36413,
+            41446,
+        ):
+            matches = evidence_lines(pr_number)
+            self.assertTrue(matches, msg=f"missing open PR #{pr_number}")
+            self.assertTrue(
+                any("open" in line.lower() for line in matches),
+                msg=f"PR #{pr_number} is not labeled open",
+            )
+
+        for pr_number in (
+            18612,
+            22918,
+            22851,
+            24125,
+            24007,
+            23965,
+            12525,
+            12544,
+            12738,
+            38445,
+            37646,
+            41263,
+            41428,
+            41255,
+            36823,
+        ):
+            matches = evidence_lines(pr_number)
+            self.assertTrue(matches, msg=f"missing merged PR #{pr_number}")
+            self.assertTrue(
+                any(
+                    "merged" in line.lower() or "mainline" in line.lower()
+                    for line in matches
+                ),
+                msg=f"PR #{pr_number} is not labeled merged/mainline",
+            )
+            self.assertFalse(
+                any("in-flight" in line.lower() for line in matches),
+                msg=f"merged PR #{pr_number} is still labeled in-flight",
+            )
+
+        for pr_number in (
+            22392,
+            24150,
+            21878,
+            12557,
+            35968,
+            37110,
+            39301,
+            41455,
+            41441,
+            39748,
+        ):
+            matches = evidence_lines(pr_number)
+            self.assertTrue(
+                not matches
+                or all("closed-unmerged" in line.lower() for line in matches),
+                msg=f"closed-unmerged PR #{pr_number} is ambiguous",
+            )
 
     def test_mapping_formal_overlap_uses_matching_formal_stage_payload(self) -> None:
         args = self.make_args(

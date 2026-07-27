@@ -452,7 +452,7 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
     FusionPatternSpec(
         pattern="In-place QK RMSNorm",
         candidate_path=(
-            "python/sglang/srt/models/utils.py" "<br>python/sglang/jit_kernel/norm.py"
+            "python/sglang/srt/models/utils.py" "<br>python/sglang/kernels/ops/layernorm/norm.py"
         ),
         active_keywords=("fused_inplace_qknorm", "minimaxm2rmsnormtp"),
         split_groups=(("apply_qk_norm", "q_norm", "k_norm", "qknorm"),),
@@ -466,7 +466,7 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
     FusionPatternSpec(
         pattern="Fused QK RMSNorm + RoPE",
         candidate_path=(
-            "python/sglang/jit_kernel/fused_qknorm_rope.py"
+            "python/sglang/kernels/ops/attention/fused_qknorm_rope.py"
             "<br>python/sglang/srt/models/qwen3_moe.py"
         ),
         active_keywords=("fused_qknorm_rope", "fused_qk_norm_rope"),
@@ -481,7 +481,7 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
     ),
     FusionPatternSpec(
         pattern="Fused QK RoPE reshape + KV cache write",
-        candidate_path="python/sglang/srt/layers/attention/utils.py",
+        candidate_path="python/sglang/kernels/ops/kvcache/rope_cache.py",
         active_keywords=("fused_qk_rope_reshape_and_cache",),
         split_groups=(
             ("rotary", "rope", "mrope"),
@@ -499,7 +499,7 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
     FusionPatternSpec(
         pattern="Fused RoPE + KV cache store",
         candidate_path=(
-            "python/sglang/jit_kernel/rope.py" "<br>python/sglang/srt/models/utils.py"
+            "python/sglang/kernels/ops/attention/rope.py" "<br>python/sglang/srt/models/utils.py"
         ),
         active_keywords=("fused_set_kv_buffer",),
         split_groups=(
@@ -531,7 +531,7 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
     ),
     FusionPatternSpec(
         pattern="NSA fused metadata copy for graph replay",
-        candidate_path="python/sglang/jit_kernel/fused_metadata_copy.py",
+        candidate_path="python/sglang/kernels/ops/attention/fused_metadata_copy.py",
         active_keywords=(
             "fused_metadata_copy",
             "fused_metadata_copy_multi",
@@ -619,7 +619,7 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
     ),
     FusionPatternSpec(
         pattern="Fused MoE router / top-k / softcapping",
-        candidate_path="python/sglang/srt/layers/moe/router.py",
+        candidate_path="python/sglang/kernels/ops/moe/router.py",
         active_keywords=("fusedmoerouter", "fused_moe_router"),
         split_groups=(
             ("router", "gate", "router logits"),
@@ -680,7 +680,9 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
     ),
     FusionPatternSpec(
         pattern="Fused MoE sum + all-reduce",
-        candidate_path=("python/sglang/srt/layers/moe/fused_moe_triton/fused_moe.py"),
+        candidate_path=(
+            "python/sglang/srt/layers/moe/moe_runner/triton_utils/fused_moe.py"
+        ),
         active_keywords=("fuse_sum_all_reduce", "enable_fused_moe_sum_all_reduce"),
         split_groups=(
             ("fused_moe", "expert", "moe"),
@@ -697,9 +699,9 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
     FusionPatternSpec(
         pattern="Fused MoE activation + quant / re-quant",
         candidate_path=(
-            "python/sglang/srt/layers/moe/ep_moe/kernels.py"
-            "<br>python/sglang/jit_kernel/nvfp4.py"
-            "<br>python/sglang/srt/layers/moe/cutlass_w4a8_moe.py"
+            "python/sglang/kernels/ops/moe/ep_moe_kernels.py"
+            "<br>python/sglang/kernels/ops/quantization/nvfp4_gemm_swiglu_nvfp4_quant.py"
+            "<br>python/sglang/srt/hardware_backend/npu/moe/activation.py"
         ),
         active_keywords=(
             "silu_and_mul_scaled_fp4",
@@ -759,7 +761,7 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
     FusionPatternSpec(
         pattern="NSA fused quantize + indexed K-cache store",
         candidate_path=(
-            "python/sglang/jit_kernel/fused_store_index_cache.py"
+            "python/sglang/kernels/ops/attention/fused_store_index_cache.py"
             "<br>python/sglang/srt/layers/attention/nsa/nsa_indexer.py"
         ),
         active_keywords=("fused_store_index_k_cache",),
@@ -774,26 +776,9 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
         likely_share=1.0,
     ),
     FusionPatternSpec(
-        pattern="Fused sampling temperature + softmax",
-        candidate_path=(
-            "python/sglang/srt/layers/fused_sampling.py"
-            "<br>python/sglang/srt/layers/sampler.py"
-        ),
-        active_keywords=("fused_temperature_softmax",),
-        split_groups=(
-            ("temperature", "temp_scale"),
-            ("softmax", "sampling"),
-        ),
-        rationale_hint=(
-            "Decode-time sampling already has fused temperature and softmax" " kernels."
-        ),
-        min_share=0.05,
-        likely_share=0.5,
-    ),
-    FusionPatternSpec(
         pattern="Fused logit softcap",
         candidate_path=(
-            "python/sglang/srt/layers/elementwise.py"
+            "python/sglang/kernels/ops/elementwise/elementwise.py"
             "<br>python/sglang/srt/layers/logits_processor.py"
         ),
         active_keywords=("fused_softcap", "final_logit_softcapping"),
@@ -835,10 +820,9 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
         ),
     ),
     FusionPatternSpec(
-        pattern="PR #22392 CUTLASS FP8 scaled MM replacing nvjet",
+        pattern="SGLang mainline FP8 scaled MM",
         candidate_path=(
-            "PR #22392"
-            "<br>sgl-kernel/python/sgl_kernel/gemm.py"
+            "sgl-kernel/python/sgl_kernel/gemm.py"
             "<br>python/sglang/srt/layers/quantization/fp8_utils.py"
         ),
         active_keywords=("cutlass_scaled_mm", "fp8_scaled_mm"),
@@ -847,10 +831,11 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
             ("memset", "memcpy128"),
         ),
         rationale_hint=(
-            "Open SGLang PR replaces nvjet FP8 GEMM with CUTLASS to remove"
-            " memset bubbles and extra copies."
+            "Current SGLang routes eligible FP8 GEMMs through"
+            " sgl_kernel.fp8_scaled_mm; diagnose nvjet and fallback bubbles"
+            " against that shipped implementation."
         ),
-        origin="inflight",
+        origin="upstream",
         min_share=0.2,
         likely_share=1.0,
         priority=90,
@@ -859,7 +844,7 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
         pattern="SGLang LTX2 fused Ada values",
         candidate_path=(
             "PR #29390"
-            "<br>python/sglang/jit_kernel/diffusion/triton/ltx2_ada_values.py"
+            "<br>python/sglang/kernels/ops/diffusion/triton/ltx2_ada_values.py"
             "<br>python/sglang/multimodal_gen/runtime/models/dits/ltx_2.py"
         ),
         active_keywords=(
@@ -886,8 +871,8 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
         pattern="SGLang LTX2 residual-gate add CUDA fast path",
         candidate_path=(
             "PR #29361"
-            "<br>python/sglang/jit_kernel/diffusion/residual_gate_add.py"
-            "<br>python/sglang/jit_kernel/csrc/diffusion/residual_gate_add.cuh"
+            "<br>python/sglang/kernels/ops/diffusion/residual_gate_add.py"
+            "<br>python/sglang/kernels/jit/csrc/diffusion/residual_gate_add.cuh"
             "<br>python/sglang/multimodal_gen/runtime/models/dits/ltx_2.py"
         ),
         active_keywords=(

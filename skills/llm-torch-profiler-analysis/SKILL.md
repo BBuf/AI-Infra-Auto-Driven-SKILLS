@@ -177,7 +177,7 @@ H100 notes:
 - SGLang kernel-site reconstruction keeps sampling disabled in the mapping path so the optimized parser does not perturb SGLang table output; equality rechecks matched for `Mixtral-8x7B-Instruct-v0.1`, `Qwen3-32B`, and `nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8`
 - vLLM live capture requires `--output-dir` to match the server `torch_profiler_dir`; the validated H100 flow uses `--profiler-config {"profiler":"torch","torch_profiler_dir":"..."}` and then drives `/start_profile` and `/stop_profile`
 - TensorRT-LLM validation stays on `--backend pytorch`; the H100 flow writes the trace with `TLLM_TORCH_PROFILE_TRACE` and then analyzes the saved trace
-- TensorRT-LLM current mainline was rechecked at `aaffa2f9fef3025e0f698d978385a73460344e0b` on 2026-06-27; the latest delta still affects runtime/model serving surfaces rather than the profiler trace controls, so the `b9e1945` profiler evidence still applies: PyTorch profiling uses `record_shapes=True` and `with_modules=True`, but not `with_stack=True`; keep the override path for table-quality Python locations unless the target image proves otherwise
+- TensorRT-LLM current mainline was rechecked at `aae253ef60a9a01cf7508b69eb706adb3571f48d` on 2026-07-27; PyTorch profiling still uses `record_shapes=True` and `with_modules=True`, but not `with_stack=True`; keep the override path for table-quality Python locations unless the target image proves otherwise
 - TokenSpeed trace analysis has first-class registry rows for native TokenSpeed CuTe DSL MLA, MLA KV pack + FP8 quantize, fused top-k/top-p sampling, persistent lm_head GEMM, and NVFP4 GEMM + SwiGLU + quant; live capture still requires an existing torch-profiler trace until the target TokenSpeed image exposes a supported profiler API
 - on this host, keep all trace roots under `/data/...`, not `/home/...`
 
@@ -478,6 +478,11 @@ For TokenSpeed, either use `--mapping-url` and `--formal-url` against servers
 that expose `/start_profile` and `/stop_profile`, or pass two existing trace
 directories with `--mapping-input` and `--formal-input`.
 
+`--framework auto` uses trace, path, server-argument, and endpoint signatures.
+If none is conclusive, the analyzer now stops and asks for an explicit
+`sglang`, `vllm`, `trtllm`, or `tokenspeed` value; never interpret an unknown
+trace as SGLang by default.
+
 ## `profile_by_stage`
 
 `--profile-by-stage` is only meaningful on the SGLang live-capture path.
@@ -541,7 +546,7 @@ It exists to recover `kernel -> cpu_op -> python scope`.
    - kernel table
    - overlap-opportunity table
    - fuse-pattern table
-5. Before calling something a "new" optimization idea, compare the top rows against both [references/fuse-overlap-catalog.md](references/fuse-overlap-catalog.md) and [references/overlap-catalog.md](references/overlap-catalog.md). Check mainline rows first, then the `PR-backed / in-flight` sections. Prefer reporting:
+5. Before calling something a "new" optimization idea, compare the top rows against both [references/fuse-overlap-catalog.md](references/fuse-overlap-catalog.md) and [references/overlap-catalog.md](references/overlap-catalog.md). Check mainline rows first, then the status-audited PR evidence. Prefer reporting:
    - an existing fused or overlap path that should already apply here
    - an existing path that appears disabled, unsupported, or regressed in this trace
    - an upstream pattern that is mainline elsewhere but missing locally, or still open upstream
@@ -561,7 +566,7 @@ Load these only when needed:
 - [references/heuristics.md](references/heuristics.md)
   - overlap labels, dependency-risk interpretation, and limits
 - [references/fuse-overlap-catalog.md](references/fuse-overlap-catalog.md)
-  - mixed source-backed catalog of existing fuse and overlap patterns, including mainline rows plus PR-backed / in-flight rows
+  - mixed source-backed catalog of existing fuse and overlap patterns, including mainline rows plus explicitly labeled open, merged, and closed-unmerged PR evidence
 - [references/vllm-torch-compile-fusions.md](references/vllm-torch-compile-fusions.md)
   - current vLLM torch.compile fusion passes and the source patterns they target
 - [references/overlap-catalog.md](references/overlap-catalog.md)
