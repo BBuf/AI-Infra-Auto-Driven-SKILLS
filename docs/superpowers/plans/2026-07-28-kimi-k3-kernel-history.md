@@ -61,9 +61,9 @@ file count, and line statistics.
 Run:
 
 ```bash
-git -C /tmp/sglang-kimi-audit-20260728 \
+git -C /tmp/public-sglang-audit-20260728 \
   fetch public refs/pull/32541/head:refs/audit/public-32541-current
-git -C /tmp/sglang-kimi-audit-20260728 \
+git -C /tmp/public-sglang-audit-20260728 \
   merge-base 8d6549bc4039d33635844495d86684677a4f0df8 \
   refs/audit/public-32541-current
 ```
@@ -76,10 +76,10 @@ merge-base command returns the comparison base used by the public PR.
 Run:
 
 ```bash
-git -C /tmp/sglang-kimi-audit-20260728 diff --name-status \
+git -C /tmp/public-sglang-audit-20260728 diff --name-status \
   a23f6ea09032811f200a103a40ccd92d03fd5285 \
   refs/audit/public-32541-current
-git -C /tmp/sglang-kimi-audit-20260728 diff --shortstat \
+git -C /tmp/public-sglang-audit-20260728 diff --shortstat \
   a23f6ea09032811f200a103a40ccd92d03fd5285 \
   refs/audit/public-32541-current
 ```
