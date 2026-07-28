@@ -84,7 +84,7 @@ git -C /tmp/public-sglang-audit-20260728 diff --shortstat \
   refs/audit/public-32541-current
 ```
 
-Expected: the inventory covers all 320 public changed files and the shortstat
+Expected: the inventory covers all 322 public changed files and the shortstat
 matches GitHub's additions and deletions.
 
 - [ ] **Step 4: Confirm open-PR watch has one public entry**
@@ -114,8 +114,8 @@ title is inconsistent with the fresh query.
 
 Add an `OPEN` card for `[Kimi] Support kimi-k3` with:
 
-- exact public URL, audit date, head SHA, `+57450/-1534`, 58,984 changed lines,
-  and 320 files;
+- exact public URL, audit date, head SHA, `+57584/-1535`, 59,119 changed lines,
+  and 322 files;
 - motivation covering launch overhead, memory traffic, small-shape compute,
   communication critical path, recurrent-state preparation, and vision
   preprocessing;
@@ -149,9 +149,9 @@ docs = {
 }
 needles = (
     "https://github.com/sgl-project/sglang/pull/32541",
-    "ac6d795427cb9f0d149a8c318cbfcd4efa3aa62a",
-    "58,984",
-    "320",
+    "4b6e6fc24c27d3621a43013c049d281b54a25ee4",
+    "59,119",
+    "322",
 )
 for needle in needles:
     assert all(needle in text for text in docs.values()), needle

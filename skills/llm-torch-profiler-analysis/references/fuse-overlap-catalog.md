@@ -49,7 +49,7 @@ family.
 The public Kimi K3 Day-0 PR
 [`sgl-project/sglang#32541`](https://github.com/sgl-project/sglang/pull/32541)
 was audited while open at immutable head
-`ac6d795427cb9f0d149a8c318cbfcd4efa3aa62a`; its rows remain
+`4b6e6fc24c27d3621a43013c049d281b54a25ee4`; its rows remain
 status-sensitive and shape-gated until merged.
 
 ## 1. LLM / SRT fused-kernel families

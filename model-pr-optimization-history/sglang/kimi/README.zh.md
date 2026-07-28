@@ -29,6 +29,7 @@
 | `python/sglang/kernels/ops/mm/process/image.py` | [#32541](https://github.com/sgl-project/sglang/pull/32541) |
 | `python/sglang/kernels/ops/moe/moe_front.py` | [#32541](https://github.com/sgl-project/sglang/pull/32541) |
 | `python/sglang/kernels/ops/moe/moe_route_radix.py` | [#32541](https://github.com/sgl-project/sglang/pull/32541) |
+| `python/sglang/kernels/ops/sampling/top_p_renorm_triton.py` | [#32541](https://github.com/sgl-project/sglang/pull/32541) |
 | `python/sglang/srt/configs/kimi_k25.py` | [#17789](https://github.com/sgl-project/sglang/pull/17789) |
 | `python/sglang/srt/configs/kimi_linear.py` | [#12469](https://github.com/sgl-project/sglang/pull/12469) |
 | `python/sglang/srt/configs/kimi_vl.py` | [#5383](https://github.com/sgl-project/sglang/pull/5383) |
@@ -4544,9 +4545,9 @@ diff -- test/registered/disaggregation/test_disaggregation_kimi_linear.py
 ### PR #32541 - [Kimi] Support kimi-k3
 
 - 链接: https://github.com/sgl-project/sglang/pull/32541
-- 状态/时间: open / 创建于 2026-07-27；本卡审计于 2026-07-28。不可变 source head: `ac6d795427cb9f0d149a8c318cbfcd4efa3aa62a`。该状态只代表审计快照，不代表已经合入或发布。
+- 状态/时间: open / 创建于 2026-07-27；本卡审计于 2026-07-28。不可变 source head: `4b6e6fc24c27d3621a43013c049d281b54a25ee4`。该状态只代表审计快照，不代表已经合入或发布。
 - 反查来源: `model-pr-optimization-history/open-pr-watch.md` 的公开 open-PR 记录；随后通过 `git fetch refs/pull/32541/head` 获取精确公开 head，并以 `git log --name-only -- <model-files>` 的同一模型文件口径补齐 K3 runtime、kernel、benchmark 和 test 文件分类。
-- 代码 diff 已读范围: 公开 PR 的三点比较以 merge base `a23f6ea09032811f200a103a40ccd92d03fd5285` 到 source head 计算，共 320 个文件、+57,450/-1,534，即 58,984 个变更行。已检查完整文件清单；逐行人工审计集中在 K3 模型接线、KDA/MLA、MoE、collective、ReplaySSM、VLM 预处理、dispatcher、benchmark 和测试面，其余服务、配置与解析器文件按职责分类核对。
+- 代码 diff 已读范围: 公开 PR 的三点比较以 merge base `a23f6ea09032811f200a103a40ccd92d03fd5285` 到 source head 计算，共 322 个文件、+57,584/-1,535，即 59,119 个变更行。已检查完整文件清单；逐行人工审计集中在 K3 模型接线、KDA/MLA、MoE、collective、ReplaySSM、VLM 预处理、sampling、dispatcher、benchmark 和测试面，其余服务、配置与解析器文件按职责分类核对。
 - 动机: K3 的单 token 路径交错 69 个 KDA 层、24 个 MLA 层和 92 个 LatentMoE 层；batch 1 的主要问题是几百个短 kernel 的 launch/copy 延迟、窄矩阵形状不匹配、collective 同步点、双分支串行化，以及 speculative verify 对可变 KDA 状态的快照开销。公开的 [Day-0 工程报告](https://www.lmsys.org/blog/2026-07-27-kimi-k3-day0-support) 把这轮优化归为 launch/copy elimination、NVIDIA compute kernels、communication fusion、overlap/prologue fusion，并报告固定 batch-1 协议下 kernel ladder 达到约 113 tok/s。
 - 实现要点:
   - **减少 launch 与显存往返**: MoE front 把 gate、latent down projection 和适用形状下的 top-k 前处理合并；KDA 的成对 skinny projection 合并；不变量和 sequence-length 元数据移出逐层热路径；zero-copy 输出让 expert finalize 或 collective 直接写入下游目标，避免中间 tensor 与 `copy_`。
@@ -4557,6 +4558,7 @@ diff -- test/registered/disaggregation/test_disaggregation_kimi_linear.py
   - **KDA prefill、MTP 与 ReplaySSM**: prefill 按请求长度分 bucket，保留 fallback 与失败回滚；MTP verify kernel 把 raw `v/k/g/beta` 写入小 ring。采样确定 accept length 后，一个跨 layer/head 的 batched fold 只重放接受前缀，避免每个 draft step 保存完整 recurrent state。
   - **SP/DCP 数据路径**: sequence-parallel reduce-scatter/all-gather 选择 measured token bucket，并可把 residual 或 attention-residual 聚合放进 collective；DCP 的 cache location 按逻辑 token owner 映射，不能把每 rank 的物理 slot 当成全局位置。
   - **VLM 路径**: 一个 Triton kernel 以越界 load 的零值语义完成 padding、normalization 与 patchify；vision attention 根据 shape/hardware 选 backend 并预热；ViT CUDA Graph 仅缓存重复出现的精确 grid shape，并受 hit count、sequence length 和容量限制，未命中或捕获失败走 eager fallback。
+  - **可扩展 sampling fallback**: HIP 路径用 device-side sort、cumsum 与 searchsorted 求 exact top-p pivot，再让 Triton 完成带宽密集的 mask、partial reduction 和 normalize；这避免把 100K+ vocabulary 的排序硬塞进寄存器，同时保留 pivot tie 语义。它是可移植性/可扩展实现，不计入公开 batch-1 kernel ladder 的性能归因。
   - **可复用判断**: 优先优化 trace 上真正位于 critical path 的同步点。公开报告在同一 batch-1 ladder 中给出的分类增量是 launch/copy +19.9 tok/s、compute +10.3 tok/s、communication fusion +27.6 tok/s、overlap/prologue +10.4 tok/s；这些是整段工程的归因，不是任一 kernel 在其他模型、shape 或 GPU 上的保证。
 - 代码 diff 细节:
   - model/runtime: `python/sglang/srt/models/kimi_k3.py` added +3175/-0；`python/sglang/srt/models/kimi_k3_vl.py` added +936/-0；`python/sglang/srt/layers/attention/linear/kernels/kda_nvidia.py` added +495/-0
@@ -4564,6 +4566,7 @@ diff -- test/registered/disaggregation/test_disaggregation_kimi_linear.py
   - collective: `python/sglang/kernels/jit/csrc/kimi_k3/comm/ar_fusion.cuh` added +936/-0；`python/sglang/kernels/jit/csrc/kimi_k3/comm/gemm_ag.cuh` added +306/-0；`python/sglang/kernels/jit/csrc/kimi_k3/comm/sp_collective.cuh` added +439/-0；`python/sglang/kernels/jit/csrc/kimi_k3/attn_res/fused_tma.cuh` added +811/-0
   - MoE: `python/sglang/kernels/jit/csrc/moe/moe_front.cuh` added +454/-0；`python/sglang/kernels/jit/csrc/moe/route_radix.cuh` added +374/-0；对应 Python dispatcher 分别 added +237/-0 和 +97/-0
   - VLM: `python/sglang/kernels/ops/mm/process/image.py` added +124/-0；`python/sglang/srt/multimodal/kimi_k3_vit_cuda_graph_runner.py` added +211/-0
+  - sampling: `python/sglang/kernels/ops/sampling/top_p_renorm_triton.py` added +127/-0；`python/sglang/srt/speculative/dflash_utils.py` modified +7/-1
 - 关键代码摘录:
 
 ```diff
@@ -4585,7 +4588,7 @@ diff -- python/sglang/srt/models/kimi_k3.py
 - 已读文件:
   - model/runtime: `python/sglang/srt/models/kimi_k3.py`, `python/sglang/srt/models/kimi_k3_vl.py`, `python/sglang/srt/layers/k3_ar_fusion.py`, `python/sglang/srt/layers/k3_sp_collective.py`, `python/sglang/srt/layers/attention/linear/kernels/kda_nvidia.py`
   - kernels: `python/sglang/kernels/jit/csrc/attention/kda_fused_decode.cuh`, `python/sglang/kernels/jit/csrc/kimi_k3/attn_res/fused_tma.cuh`, `python/sglang/kernels/jit/csrc/kimi_k3/comm/ar_fusion.cuh`, `python/sglang/kernels/jit/csrc/kimi_k3/comm/gemm_ag.cuh`, `python/sglang/kernels/jit/csrc/kimi_k3/comm/sp_collective.cuh`, `python/sglang/kernels/jit/csrc/moe/moe_front.cuh`, `python/sglang/kernels/jit/csrc/moe/route_radix.cuh`
-  - dispatch/state/VLM: `python/sglang/kernels/ops/kimi_k3/`, `python/sglang/kernels/ops/attention/set_mla_kv_concat_q.py`, `python/sglang/kernels/ops/attention/fla/kda_replayssm_spec_decode.py`, `python/sglang/kernels/ops/mm/process/image.py`, `python/sglang/srt/multimodal/kimi_k3_vit_cuda_graph_runner.py`
+  - dispatch/state/VLM/sampling: `python/sglang/kernels/ops/kimi_k3/`, `python/sglang/kernels/ops/attention/set_mla_kv_concat_q.py`, `python/sglang/kernels/ops/attention/fla/kda_replayssm_spec_decode.py`, `python/sglang/kernels/ops/mm/process/image.py`, `python/sglang/kernels/ops/sampling/top_p_renorm_triton.py`, `python/sglang/srt/multimodal/kimi_k3_vit_cuda_graph_runner.py`, `python/sglang/srt/speculative/dflash_utils.py`
   - tests/benchmarks: `test/registered/kernels/ops/kimi_k3/`, `test/registered/kernels/test_kda_replayssm_*.py`, `test/registered/unit/models/test_kimi_k3_bfa_overlap.py`, `test/registered/unit/models/test_kimi_k3_vision.py`, `test/registered/unit/multimodal/test_kimi_k3_gpu_preprocess.py`, `test/registered/jit/test_set_mla_kv_concat_q*.py`, `benchmark/bench_linear_attention/`
 - 验证与风险: 公开 diff 同时提供 direct kernel correctness、dispatcher/fallback、模型 overlap、ReplaySSM bit-parity、VLM preprocess/graph 以及 microbenchmark 覆盖；真实模型仍需用端到端 accuracy 和 trace 证明 fast path 实际命中。symmetric memory 的相同字节数不等于各 rank 指向相同逻辑 segment，rank 间动态分配顺序不一致时应使用持久 arena 或安全 fallback；PDL producer 必须在写入可见后 trigger，barrier generation 不能复用错误；CUDA Graph 的 side stream 拓扑、join 与 tensor lifetime 必须固定且每次 replay 无条件一致；base pointer 和 stride alignment、DCP virtual location、FP32 routing、FP8 overflow/rounding 都是 correctness contract。ViT exact-shape graph 保持有界且 opt-in。该 PR 在审计时仍 open，任何被撤回、默认关闭或 dispatcher 不可达的实验路径都不应作为已落地优化传播。
 
