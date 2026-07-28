@@ -1,6 +1,6 @@
 # Model Architecture Diagram Source Notes
 
-Audited on `2026-05-01`.
+Audited on `2026-07-27`.
 
 Selection rule added on `2026-05-01`: prefer detailed implementation,
 cookbook, and architecture-card diagrams over direct paper figures whenever the
@@ -11,7 +11,7 @@ model.
 ## Upstream Diagram Sources
 
 - `datawhalechina/self-llm` at `a7cd4ef135b0` (`master`): broad model deployment/tutorial repository. Confirmed architecture-style diagrams include Hunyuan-A13B, Kimi-VL, Qwen3, Qwen3-VL detail flows, MiniMax M2, and Llama 4.
-- `CalvinXKY/InfraTech` at `fc85c8e112a1` (`main`): architecture-card repository with original diagrams for DeepSeek V3/V3.2/V4, GLM-5, Kimi K2/K2.5, MiniMax M2.5, Qwen3.5, Qwen3-VL, and Step 3.5 Flash.
+- `CalvinXKY/InfraTech` at `16a34a7494f0f7b270501064033e3ce35ef41bdf` (`main`): architecture-card repository with original diagrams for DeepSeek V3/V3.2/V4, GLM-5, Kimi K2/K2.5/K3, MiniMax M2.5, Qwen3.5, Qwen3-VL, and Step 3.5 Flash. The Kimi K3 original is `models/kimi_k_3/kimi_k_3_architecture.jpg` (10,850 × 12,619 pixels); the skill links to the public raw image rather than vendoring it.
 - `Tongyi-MAI/Z-Image` at `26f23eda626f` (`main`): official Z-Image repository. Confirmed diagrams include S3-DiT architecture, training pipeline, Decoupled-DMD, and DMDR.
 - `Wan-Video/Wan2.1` at `9737cba9c1c3` (`main`): official Wan2.1 repository. Confirmed architecture-style diagram includes the video DiT architecture.
 - `Wan-Video/Wan2.2` at `42bf4cfaa384` (`main`): official Wan2.2 repository. Confirmed diagrams include MoE architecture, MoE transition schedule, and high-compression VAE.

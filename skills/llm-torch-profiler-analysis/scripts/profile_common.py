@@ -456,7 +456,10 @@ def resolve_framework(
     ):
         if hint:
             return hint
-    return "sglang"
+    raise ValueError(
+        "Could not infer the serving framework; pass "
+        "--framework sglang|vllm|trtllm|tokenspeed."
+    )
 
 
 def parse_stage(path: Path) -> str:

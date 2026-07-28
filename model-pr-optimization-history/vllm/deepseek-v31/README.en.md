@@ -23,7 +23,7 @@
 
 | Date | PR | State | Title | Main files |
 | --- | --- | --- | --- | --- |
-| 2025-08-23 | [#23454](https://github.com/vllm-project/vllm/pull/23454) | merged | Support DeepSeek-V3.1 tool call | `examples/tool_chat_template_deepseekv31.jinja` |
+| 2025-08-23 | [#23454](https://github.com/vllm-project/vllm/pull/23454) | merged | Support DeepSeek-V3.1 tool call | `examples/tool_chat_template_deepseekv31.jinja`, `vllm/entrypoints/openai/tool_parsers/deepseekv31_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py` |
 | 2025-08-27 | [#23666](https://github.com/vllm-project/vllm/pull/23666) | merged | [Feature] Add Hopper DeepGEMM E8M0 for DeepSeekV3.1 scale_fmt | `vllm/model_executor/layers/quantization/fp8.py`, `vllm/model_executor/layers/fused_moe/fused_moe.py`, `vllm/model_executor/layers/fused_moe/triton_deep_gemm_moe.py` |
 | 2025-10-15 | [#25589](https://github.com/vllm-project/vllm/pull/25589) | merged | [Model] Add DeepSeek-V3.1 reasoning parser (split from PR #24972) | `tests/reasoning/test_deepseekv3_reasoning_parser.py`, `vllm/reasoning/deepseek_v3_reasoning_parser.py`, `vllm/reasoning/identity_reasoning_parser.py` |
 | 2026-01-13 | [#29867](https://github.com/vllm-project/vllm/pull/29867) | merged | [Quantization] fix: overflow with static per-tensor scaling | `vllm/model_executor/layers/quantization/utils/quant_utils.py`, `vllm/v1/attention/backends/mla/common.py` |
@@ -85,10 +85,12 @@
 - Status/date: merged / 2025-08-23
 - Trace source: `git log --name-only -- <model-files>` found it through `examples/tool_chat_template_deepseekv31.jinja`; associated commits `b8f17f5d980e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +468/-0, 491 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Support DeepSeek-V3.1 tool call"; model line: DeepSeek V3.1; category: model support/runtime entry; main diff: `examples/tool_chat_template_deepseekv31.jinja`; technical summary: Covers "Support DeepSeek-V3.1 tool call"; the main implementation surface is `examples/tool_chat_template_deepseekv31.jinja`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `examples/tool_chat_template_deepseekv31.jinja` added +91/-0 (91 lines); hunks: -0,0 +1,91.
+- Motivation: Title: "Support DeepSeek-V3.1 tool call"; model line: DeepSeek V3.1; category: model support/runtime entry; main diff: `examples/tool_chat_template_deepseekv31.jinja`, `vllm/entrypoints/openai/tool_parsers/deepseekv31_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py`; technical summary: Covers "Support DeepSeek-V3.1 tool call"; the main implementation surface is `examples/tool_chat_template_deepseekv31.jinja`, `vllm/entrypoints/openai/tool_parsers/deepseekv31_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `examples/tool_chat_template_deepseekv31.jinja` added +91/-0 (91 lines); hunks: -0,0 +1,91; `vllm/entrypoints/openai/tool_parsers/deepseekv31_tool_parser.py` added +367/-0 (367 lines); hunks: -0,0 +1,367; symbols: DeepSeekV31ToolParser, __init__, extract_tool_calls, extract_tool_calls_streaming, touching `DeepSeekV31ToolParser, __init__, extract_tool_calls`; `vllm/entrypoints/openai/tool_parsers/__init__.py` modified +2/-0 (2 lines); hunks: -3,6 +3,7; -36,6 +37,7.
 - Code diff details:
   - `examples/tool_chat_template_deepseekv31.jinja` added +91/-0 (91 lines); hunks: -0,0 +1,91
+  - `vllm/entrypoints/openai/tool_parsers/deepseekv31_tool_parser.py` added +367/-0 (367 lines); hunks: -0,0 +1,367; symbols: DeepSeekV31ToolParser, __init__, extract_tool_calls, extract_tool_calls_streaming
+  - `vllm/entrypoints/openai/tool_parsers/__init__.py` modified +2/-0 (2 lines); hunks: -3,6 +3,7; -36,6 +37,7
 - Key code excerpts:
 
 ```diff
@@ -100,10 +102,21 @@ diff -- examples/tool_chat_template_deepseekv31.jinja
 +{% if not thinking is defined %}
 +  {% set thinking = false %}
 +{% endif %}
+diff -- vllm/entrypoints/openai/tool_parsers/deepseekv31_tool_parser.py
+@@ -0,0 +1,367 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++from collections.abc import Sequence
++from typing import Union
++import regex as re
++from vllm.entrypoints.chat_utils import make_tool_call_id
+diff -- vllm/entrypoints/openai/tool_parsers/__init__.py
+@@ -3,6 +3,7 @@
 ```
 
 - Reviewed files:
   - docs: `examples/tool_chat_template_deepseekv31.jinja` added +91/-0
+  - runtime: `vllm/entrypoints/openai/tool_parsers/deepseekv31_tool_parser.py` added +367/-0; `vllm/entrypoints/openai/tool_parsers/__init__.py` modified +2/-0
 - Risk and verification: Runtime changes concentrate in `vllm/entrypoints/openai/tool_parsers/__init__.py`, `vllm/entrypoints/openai/tool_parsers/deepseekv31_tool_parser.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #23666 - [Feature] Add Hopper DeepGEMM E8M0 for DeepSeekV3.1 scale_fmt

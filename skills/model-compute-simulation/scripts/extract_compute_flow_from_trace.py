@@ -110,6 +110,46 @@ MATMUL_OPS = frozenset(
     }
 )
 
+
+def canonical_trace_op_family(op_name: str, category: str) -> str:
+    """Normalize an ATen trace operator into a semantic operation family."""
+    if op_name in MATMUL_OPS:
+        return "matmul"
+    lowered = op_name.lower()
+    if "attention" in lowered:
+        return "attention"
+    if "norm" in lowered:
+        return "norm"
+    if "topk" in lowered or "scatter" in lowered or "index_add" in lowered:
+        return "router"
+    if any(token in lowered for token in ("silu", "gelu", "relu", "sigmoid")):
+        return "activation"
+    if "embedding" in lowered:
+        return "embedding"
+    return category if category != "other" else lowered.removeprefix("aten::")
+
+
+def canonical_template_op_family(op_name: str, category: str) -> str:
+    """Normalize a simulator operation into the trace family's vocabulary."""
+    lowered = op_name.lower()
+    if any(token in lowered for token in ("rmsnorm", "layernorm", "norm")):
+        return "norm"
+    if any(token in lowered for token in ("topk", "router", "moe_gate")):
+        return "router"
+    if any(token in lowered for token in ("silu", "gelu", "activation")):
+        return "activation"
+    if any(
+        token in lowered
+        for token in ("attn_score", "attn_v", "paged_mqa", "flash_attn")
+    ):
+        return "attention"
+    if "embed_tokens" in lowered or lowered == "embedding":
+        return "embedding"
+    if category in {"attention", "moe", "ffn", "mhc", "embed"}:
+        return "matmul"
+    return category
+
+
 # ---------------------------------------------------------------------------
 # Scope → Category mapping
 # ---------------------------------------------------------------------------
@@ -716,7 +756,7 @@ def extract_compute_flow(
 
     # Apply min_flops filter
     if min_flops > 0:
-        results = [r for r in results if r["flops"] >= min_flops or r["flops"] == 0]
+        results = [r for r in results if r["flops"] >= min_flops]
 
     # Apply layer_limit
     if layer_limit > 0:
@@ -938,14 +978,16 @@ def compare_with_template(
 
         trace_cat_flops[cat] += flops_scaled
         trace_layer_flops[lidx][cat] += flops_scaled
-        trace_op_names[cat].add(op["op"])
+        trace_op_names[cat].add(canonical_trace_op_family(op["op"], cat))
 
     # Aggregate template FLOPs by category
     tmpl_cat_flops: Dict[str, int] = defaultdict(int)
     tmpl_op_names: Dict[str, set] = defaultdict(set)
     for top in template_ops:
         tmpl_cat_flops[top.category] += top.flops
-        tmpl_op_names[top.category].add(top.name)
+        tmpl_op_names[top.category].add(
+            canonical_template_op_family(top.name, top.category)
+        )
 
     # Build comparison output
     lines = []
@@ -1028,9 +1070,9 @@ def compare_with_template(
     else:
         lines.append("    (No Layer 0 ops found in trace)")
 
-    # Template ops not seen in trace
+    # Canonical operation families not seen in trace/template.
     lines.append("")
-    lines.append("  Template ops vs trace ops:")
+    lines.append("  Template operation families vs trace operation families:")
     for cat in sorted(tmpl_op_names.keys()):
         tmpl_names = tmpl_op_names[cat]
         trace_names = trace_op_names.get(cat, set())

@@ -161,6 +161,14 @@ Use this when long-context or PD problems may involve storage-backed KV reuse.
 
 Runtime attach or detach. These are operational actions, not passive checks.
 
+### `POST /hicache/storage-backend/clear`
+
+Clears the contents of the attached storage backend without changing its
+attachment state. This is a destructive operational action: capture the
+incident bundle, relevant request dumps, and cache-status output first. Use it
+only when stale or corrupt backend state is the working diagnosis and losing
+the cached contents is acceptable.
+
 ## Profiling And Tracing Controls
 
 ### `/start_profile`

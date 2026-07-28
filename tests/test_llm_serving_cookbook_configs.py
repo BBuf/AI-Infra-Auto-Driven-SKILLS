@@ -51,14 +51,78 @@ class LlmServingCookbookConfigsTest(unittest.TestCase):
                     {"sglang", "vllm", "tensorrt_llm", "tokenspeed"},
                 )
 
+                for framework, section in config["frameworks"].items():
+                    if not section["enabled"]:
+                        self.assertEqual(
+                            section["support_status"],
+                            "not_verified_at_recorded_head",
+                        )
+
                 trt = config["frameworks"]["tensorrt_llm"]
-                self.assertEqual(trt["backend_policy"], "fixed_pytorch")
-                self.assertEqual(trt["base_server_flags"]["backend"], "pytorch")
-                self.assertNotIn("backend", trt["search_space"])
+                if trt["enabled"]:
+                    self.assertEqual(trt["backend_policy"], "fixed_pytorch")
+                    self.assertEqual(trt["base_server_flags"]["backend"], "pytorch")
+                    self.assertNotIn("backend", trt["search_space"])
 
                 tokenspeed = config["frameworks"]["tokenspeed"]
-                self.assertTrue(tokenspeed["enabled"])
-                self.assertEqual(tokenspeed["server_command"], "tokenspeed serve")
+                if tokenspeed["enabled"]:
+                    self.assertEqual(tokenspeed["server_command"], "tokenspeed serve")
+
+    def test_retired_vllm_partial_prefill_flags_are_absent(self) -> None:
+        targets = [
+            *self.config_paths(),
+            VALIDATOR,
+            SKILL_ROOT / "SKILL.md",
+            SKILL_ROOT / "references" / "example-plan.yaml",
+            SKILL_ROOT / "references" / "framework-reference.md",
+            CONFIG_ROOT / "README.md",
+        ]
+        retired = (
+            "max_num_partial_prefills",
+            "max_long_partial_prefills",
+            "max-num-partial-prefills",
+            "max-long-partial-prefills",
+        )
+
+        for path in targets:
+            text = path.read_text(encoding="utf-8")
+            with self.subTest(path=path.name):
+                for flag in retired:
+                    self.assertNotIn(flag, text)
+
+        self.assertIn(
+            "long_prefill_token_threshold",
+            self.mod.STATIC_SERVER_FLAGS["vllm"],
+        )
+
+    def test_current_model_recipes_validate_and_render_enabled_frameworks(
+        self,
+    ) -> None:
+        expected = {
+            "minimax-m3.yaml": "MiniMaxAI/MiniMax-M3-MXFP8",
+            "qwen36-35b-a3b-fp8.yaml": "Qwen/Qwen3.6-35B-A3B-FP8",
+        }
+
+        for filename, model in expected.items():
+            path = CONFIG_ROOT / filename
+            with self.subTest(path=filename):
+                config = self.load_config(path)
+                self.assertEqual(config["model"]["name"], model)
+                self.assertEqual(self.mod.validate_config(path), [])
+                enabled = [
+                    framework
+                    for framework, section in config["frameworks"].items()
+                    if section["enabled"]
+                ]
+                self.assertGreaterEqual(len(enabled), 1)
+                for framework in enabled:
+                    section = config["frameworks"][framework]
+                    command = self.mod.render_command(
+                        framework,
+                        config,
+                        section["base_server_flags"],
+                    )
+                    self.assertIn(model, command)
 
     def test_rendered_commands_use_framework_native_flags(self) -> None:
         config = self.load_config(CONFIG_ROOT / "qwen3-235b-a22b.yaml")

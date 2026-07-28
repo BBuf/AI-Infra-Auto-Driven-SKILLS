@@ -1,6 +1,6 @@
 # Open PR Watch
 
-Generated: `2026-06-27`.
+Generated: `2026-07-28`.
 
 This report is a triage aid for skill updates. Read the linked PR diffs
 before changing benchmark, profiler, or model-history guidance.
@@ -9,103 +9,113 @@ before changing benchmark, profiler, or model-history guidance.
 
 | PR | Updated | Matched terms | Title |
 | --- | --- | --- | --- |
-| [#12262](https://github.com/NVIDIA/TensorRT-LLM/pull/12262) | 2026-06-27 | `DFlash` | [TRTLLM-11556][feat] Expand dynamic speculation to all spec decode algorithms |
-| [#13404](https://github.com/NVIDIA/TensorRT-LLM/pull/13404) | 2026-06-27 | `MoE`, `WideEP` | [TRTLLM-12200][feat] WideEP FT: add active_rank_mask to NVLink AlltoAll kernels (1a.2) |
-| [#14599](https://github.com/NVIDIA/TensorRT-LLM/pull/14599) | 2026-06-27 | `MoE`, `Qwen3.5` | [TRTLLM-12500][feat] Add support for Qwen3.5 VL MoE (with the MTP fixes) |
-| [#14668](https://github.com/NVIDIA/TensorRT-LLM/pull/14668) | 2026-06-27 | `FP4`, `NVFP4` | [https://nvbugs/5970614][fix] Sync CTA before PDL trigger in quantize_with_block_size |
-| [#14810](https://github.com/NVIDIA/TensorRT-LLM/pull/14810) | 2026-06-27 | `FP4`, `MLA`, `MoE`, `NVFP4` | [#14588][feat] AutoDeploy: DeepSeek-R1 optimization for low concurrency |
-| [#15099](https://github.com/NVIDIA/TensorRT-LLM/pull/15099) | 2026-06-27 | `FP4`, `NVFP4` | [https://nvbugs/6248837][fix] Free worker GPU memory on executor shutdown |
-| [#15343](https://github.com/NVIDIA/TensorRT-LLM/pull/15343) | 2026-06-27 | `MLA` | [https://nvbugs/6287561][fix] Add `get_sm_version() < 90` check at the top of `run_MTP()` in… |
-| [#15386](https://github.com/NVIDIA/TensorRT-LLM/pull/15386) | 2026-06-27 | `MoE`, `WideEP` | [TRTLLM-13248][feat] Wave 3: migrate MoE staged hooks |
-| [#15414](https://github.com/NVIDIA/TensorRT-LLM/pull/15414) | 2026-06-27 | `FP4`, `MLA`, `MoE`, `NVFP4` | [None][feat] DSv4: model, tokenizer, and integration coverage |
-| [#15464](https://github.com/NVIDIA/TensorRT-LLM/pull/15464) | 2026-06-27 | `MLA` | [https://nvbugs/6329052][fix] Add `attn_backend: FLASHINFER` and `model_kwargs: {num_hidden_layers: 4}` to… |
-| [#15525](https://github.com/NVIDIA/TensorRT-LLM/pull/15525) | 2026-06-27 | `MoE`, `WideEP` | [TRTLLM-13543][feat] WideEP FT: add EPLB mask-only reconfigure (1b.1) |
-| [#15624](https://github.com/NVIDIA/TensorRT-LLM/pull/15624) | 2026-06-27 | `FP4`, `MoE`, `NVFP4`, `WideEP` | [TRTLLM-13629][test] Optimize MoE CI test-db |
-| [#15625](https://github.com/NVIDIA/TensorRT-LLM/pull/15625) | 2026-06-27 | `MoE` | [None][perf] DSv4 follow-up: disagg routing improvements |
-| [#15633](https://github.com/NVIDIA/TensorRT-LLM/pull/15633) | 2026-06-27 | `DeepSeek V4`, `MLA` | [None][feat] DSv4 follow-up: runtime KV and cache foundations |
-| [#15659](https://github.com/NVIDIA/TensorRT-LLM/pull/15659) | 2026-06-27 | `FP4`, `GLM-5`, `NVFP4` | [None][fix] GLM-5.1 NVFP4 fallback to AR-Norm fusion for unquantized dense layers |
-| [#15677](https://github.com/NVIDIA/TensorRT-LLM/pull/15677) | 2026-06-27 | `WideEP` | [TRTLLM-13546][feat] Add error classification patterns (1c.1) |
-| [#15680](https://github.com/NVIDIA/TensorRT-LLM/pull/15680) | 2026-06-27 | `FP4`, `MoE`, `NVFP4`, `Qwen3.5`, `Qwen3.6` | [#14575][feat] Add Qwen3.5/3.6 MoE NVFP4 + MTP support for SM120/SM121 |
-| [#15681](https://github.com/NVIDIA/TensorRT-LLM/pull/15681) | 2026-06-27 | `MoE` | [https://nvbugs/6379316][fix] Keep the prior `7e134dd249` gate that adds `_is_pcie_nvl_sku()` + DeepEP-LL… |
-| [#15683](https://github.com/NVIDIA/TensorRT-LLM/pull/15683) | 2026-06-27 | `FP4`, `MLA` | [None][feat] DSA: adaptive indexer prefill chunk size for long sequences |
+| [#16095](https://github.com/NVIDIA/TensorRT-LLM/pull/16095) | 2026-07-27 | `FP4` | [TRTLLM-14135][feat] Add Qwen-Image-Edit-2511 support |
+| [#16514](https://github.com/NVIDIA/TensorRT-LLM/pull/16514) | 2026-07-27 | `MoE` | [https://nvbugs/6463829][fix] Fix fp8 MoE test |
+| [#16558](https://github.com/NVIDIA/TensorRT-LLM/pull/16558) | 2026-07-27 | `DeepSeek V4`, `FP4`, `GLM-5`, `GLM-5.2`, `MLA`, `MoE`, `NVFP4` | [None][perf] Allocate DSA indexer k-cache only for layers that own an indexer |
+| [#16561](https://github.com/NVIDIA/TensorRT-LLM/pull/16561) | 2026-07-27 | `FP4`, `NVFP4`, `Qwen3.6` | [None][feat] MTP one-model `advanced_sampling_mode`: skip redundant top-k / top-p filter kernels with additional config enum |
+| [#16568](https://github.com/NVIDIA/TensorRT-LLM/pull/16568) | 2026-07-27 | `MoE`, `Qwen3.5` | [https://nvbugs/6442073][fix] Enforce a fixed max_seq_len for Qwen's AttentionOp caching purposes |
+| [#16603](https://github.com/NVIDIA/TensorRT-LLM/pull/16603) | 2026-07-27 | `MLA`, `MoE` | [https://nvbugs/6379316][fix] Reject MNNVL on split NVLink topology |
+| [#16629](https://github.com/NVIDIA/TensorRT-LLM/pull/16629) | 2026-07-27 | `MLA` | [https://nvbugs/6478707][fix] detect v2 inside remove_functionalize_inner, resolve each mutates_args via… |
+| [#16683](https://github.com/NVIDIA/TensorRT-LLM/pull/16683) | 2026-07-27 | `FP4`, `NVFP4` | [TRTLLM-14557][test] Add single-device visual-gen feature accuracy regression tests |
+| [#16759](https://github.com/NVIDIA/TensorRT-LLM/pull/16759) | 2026-07-27 | `DFlash`, `GDN` | [None][fix] SA spec dec: promote accepted hybrid recurrent states in-worker |
+| [#16783](https://github.com/NVIDIA/TensorRT-LLM/pull/16783) | 2026-07-27 | `DeepSeek V4`, `FP4`, `NVFP4` | [None][perf] Preserve default V2 KV cache pool sizing |
+| [#16788](https://github.com/NVIDIA/TensorRT-LLM/pull/16788) | 2026-07-27 | `FP4`, `NVFP4` | [https://nvbugs/6490028][fix] Bump only the cross-library `cublas_tolerance` from 1.05 to 1.10 in the test… |
+| [#16810](https://github.com/NVIDIA/TensorRT-LLM/pull/16810) | 2026-07-27 | `MoE` | [None][feat] Support dense FP8 LoRA end to end |
+| [#16852](https://github.com/NVIDIA/TensorRT-LLM/pull/16852) | 2026-07-27 | `MiniMax M3` | [None][perf] Fuse MiniMax-M3 prefill projections |
+| [#16856](https://github.com/NVIDIA/TensorRT-LLM/pull/16856) | 2026-07-27 | `MiniMax M3` | [None][perf] Avoid Index-K cache materialization for MSA |
+| [#16862](https://github.com/NVIDIA/TensorRT-LLM/pull/16862) | 2026-07-27 | `MoE` | [TRTLLM-14609][chore] Remove legacy MoE path in TRTLLMGenFusedMoE |
+| [#16864](https://github.com/NVIDIA/TensorRT-LLM/pull/16864) | 2026-07-27 | `MoE` | [TRTLLM-14609][chore] Remove legacy MoE path in DeepGemmFusedMoE |
+| [#16887](https://github.com/NVIDIA/TensorRT-LLM/pull/16887) | 2026-07-27 | `DeepSeek V4` | [https://nvbugs/6463967][fix] DeepSeek-V4 one-model MTP separate draft kv cache (TEP) |
+| [#16905](https://github.com/NVIDIA/TensorRT-LLM/pull/16905) | 2026-07-27 | `FP4`, `MiniMax M3`, `NVFP4` | [None][perf] Fused GEMM + SwiGLU-OAI |
+| [#16906](https://github.com/NVIDIA/TensorRT-LLM/pull/16906) | 2026-07-27 | `FP4`, `MiniMax M3`, `NVFP4` | [None][perf] Fuse QK-norm + RoPE and overlap qkv/idx_qk math |
+| [#16908](https://github.com/NVIDIA/TensorRT-LLM/pull/16908) | 2026-07-27 | `MoE` | [[TRTLLM-13948][feat] Set DeepSeekV3 to use Python KV-cache transceiver V2 by default |
 
 ## lightseekorg/tokenspeed
 
 | PR | Updated | Matched terms | Title |
 | --- | --- | --- | --- |
-| [#6](https://github.com/lightseekorg/tokenspeed/pull/6) | 2026-06-14 | `MLA` | perf(cache): overlap target and draft KV loadback independently  |
-| [#238](https://github.com/lightseekorg/tokenspeed/pull/238) | 2026-06-24 | `FP4` | perf(deepseek-v4): vectorize read_deepseek_v4_indexer_fp8_cache |
-| [#280](https://github.com/lightseekorg/tokenspeed/pull/280) | 2026-06-27 | `MoE` | Add Triton sampling backends alongside FlashInfer |
-| [#382](https://github.com/lightseekorg/tokenspeed/pull/382) | 2026-06-27 | `GDN` | perf(gdn): fuse causal_conv1d and QKV split for GDN prefill |
-| [#383](https://github.com/lightseekorg/tokenspeed/pull/383) | 2026-06-25 | `MoE`, `Qwen3.5` | [WIP] feat(config): runtime config decoupling(design for reference) |
-| [#412](https://github.com/lightseekorg/tokenspeed/pull/412) | 2026-06-26 | `FP4`, `NVFP4` | Port mamba2 kernels and runtime from sglang#03c77dc |
-| [#416](https://github.com/lightseekorg/tokenspeed/pull/416) | 2026-06-22 | `FP4`, `NVFP4` | Fix EP8 DP/TP RSAG init and empty LM head |
-| [#437](https://github.com/lightseekorg/tokenspeed/pull/437) | 2026-06-25 | `FP4`, `NVFP4` | [WIP] EPD: encode-worker path, async embedding receive, E2P row-sharding |
-| [#461](https://github.com/lightseekorg/tokenspeed/pull/461) | 2026-06-22 | `FP4`, `NVFP4` | test(ci): add DeepSeek-V4-Flash MTP AIME25 eval |
-| [#510](https://github.com/lightseekorg/tokenspeed/pull/510) | 2026-06-25 | `DFlash`, `Qwen3.5` | [WIP] feat:support qwen3.5 dflash |
-| [#520](https://github.com/lightseekorg/tokenspeed/pull/520) | 2026-06-25 | `GDN`, `MoE`, `Qwen3.5` | feat: support qwen3.5 on Hopper GPUs |
-| [#528](https://github.com/lightseekorg/tokenspeed/pull/528) | 2026-06-26 | `GLM-5`, `GLM-5.2`, `MoE` | [WIP] Initial glm 5.2 support on amd |
-| [#532](https://github.com/lightseekorg/tokenspeed/pull/532) | 2026-06-26 | `GLM-5`, `GLM-5.2` | test: glm-5.2 agentic bench |
-| [#534](https://github.com/lightseekorg/tokenspeed/pull/534) | 2026-06-26 | `FP4`, `MoE` | Fix gathered MXFP4 activation scales in Gluon MoE |
+| [#555](https://github.com/lightseekorg/tokenspeed/pull/555) | 2026-07-14 | `FP4`, `Kimi K2.5`, `MLA`, `MoE`, `NVFP4` |  perf(scheduler): Split mixed prefill/decode forwards to preserve decode graphs |
+| [#556](https://github.com/lightseekorg/tokenspeed/pull/556) | 2026-07-14 | `FP4`, `Kimi K2.5`, `MLA`, `MoE`, `NVFP4` | perf(multimodal): Prewarm Kimi vision encoder before readiness |
+| [#563](https://github.com/lightseekorg/tokenspeed/pull/563) | 2026-07-25 | `DFlash`, `DeepSeek V4`, `FP4`, `MLA` | perf(deepseek-v4): accelerate indexer Q and packed FP8 quantization |
+| [#580](https://github.com/lightseekorg/tokenspeed/pull/580) | 2026-07-21 | `DeepSeek V4`, `MoE` | feat(distributed): wire TensorRT-LLM all-reduce backend |
+| [#608](https://github.com/lightseekorg/tokenspeed/pull/608) | 2026-07-15 | `Qwen3.5` | perf(multimodal): optimize Qwen3.5 M-RoPE preparation |
+| [#616](https://github.com/lightseekorg/tokenspeed/pull/616) | 2026-07-25 | `MLA` | fix(trtllm-mla): make spec-decode CUDA graph capture causal |
+| [#617](https://github.com/lightseekorg/tokenspeed/pull/617) | 2026-07-25 | `MLA` | feat(mla): support custom tree masks in decode |
+| [#620](https://github.com/lightseekorg/tokenspeed/pull/620) | 2026-07-27 | `DeepSeek V4`, `FP4`, `MoE` | feat: add DeepSeek V4 L2 KV cache offload and perf optimize. |
+| [#621](https://github.com/lightseekorg/tokenspeed/pull/621) | 2026-07-25 | `DeepSeek V4` | perf(deepseek-v4): widen sparse compress cache launch for large ratios |
+| [#645](https://github.com/lightseekorg/tokenspeed/pull/645) | 2026-07-27 | `FP4`, `MoE` | feat(kernel): add SM120 FlashInfer MXFP4 MoE |
+| [#648](https://github.com/lightseekorg/tokenspeed/pull/648) | 2026-07-13 | `DeepSeek V4`, `FP4`, `MLA`, `MoE` | feat(deepseek-v4): enable SM120 serving |
+| [#651](https://github.com/lightseekorg/tokenspeed/pull/651) | 2026-07-27 | `FP4`, `Kimi K2.5` | feat(runtime): scheduler-driven full_refresh bit for page-table mirror |
+| [#660](https://github.com/lightseekorg/tokenspeed/pull/660) | 2026-07-13 | `DeepSeek V4` | fix(pd): correct DeepSeek V4 layerwise cache handoff |
+| [#694](https://github.com/lightseekorg/tokenspeed/pull/694) | 2026-07-22 | `Inkling` | feat(scheduler): live-tail allocation for sliding groups |
+| [#714](https://github.com/lightseekorg/tokenspeed/pull/714) | 2026-07-18 | `DeepSeek V4`, `FP4` | perf(deepseek-v4): capture DSA projections and cache writes into the prefill graph |
+| [#720](https://github.com/lightseekorg/tokenspeed/pull/720) | 2026-07-18 | `FP4`, `MoE`, `NVFP4`, `Qwen3.5` | [WIP][AMD] Implement MTP support for qwen3.5 MXFP4 |
+| [#721](https://github.com/lightseekorg/tokenspeed/pull/721) | 2026-07-18 | `FP4`, `GDN`, `Qwen3.5` | [wip] refactor(kernel): migrate GDN Triton kernels to tensor descriptors |
+| [#737](https://github.com/lightseekorg/tokenspeed/pull/737) | 2026-07-20 | `MoE` | feat(moe): R3 rollout routing replay — slot-indexed expert-routing pool (scaffold) |
+| [#738](https://github.com/lightseekorg/tokenspeed/pull/738) | 2026-07-20 | `FP4`, `MoE`, `Qwen3.5` | feat(lora): LoRA adapter serving |
+| [#745](https://github.com/lightseekorg/tokenspeed/pull/745) | 2026-07-23 | `DeepSeek V4` | refactor(runtime): make ForwardContext tensor-free (restore "Do not contain Tensor")' |
+| [#750](https://github.com/lightseekorg/tokenspeed/pull/750) | 2026-07-27 | `DeepSeek V4` | [WIP] feat(deepseek): land V4 L1 KV cache on heterogeneous flat kv pools |
+| [#758](https://github.com/lightseekorg/tokenspeed/pull/758) | 2026-07-22 | `MiniMax M3` | Support MiniMax M3 CPU KVStore |
+| [#782](https://github.com/lightseekorg/tokenspeed/pull/782) | 2026-07-27 | `GLM-5`, `GLM-5.2` | perf(kernel): optimize gluon gfx950 DSA top-k selection kernel |
+| [#793](https://github.com/lightseekorg/tokenspeed/pull/793) | 2026-07-24 | `MLA`, `MoE` | feat(kernel): support small-batch Gluon MLA decode |
+| [#819](https://github.com/lightseekorg/tokenspeed/pull/819) | 2026-07-27 | `FP4`, `MiniMax M3`, `MoE`, `NVFP4` | perf(m3): avoid per-layer D2H sync in MSA prefill |
+| [#822](https://github.com/lightseekorg/tokenspeed/pull/822) | 2026-07-27 | `Kimi K3` | feat(kimi-k3): integrate Kimi K3 support |
 
 ## sgl-project/sglang
 
 | PR | Updated | Matched terms | Title |
 | --- | --- | --- | --- |
-| [#27397](https://github.com/sgl-project/sglang/pull/27397) | 2026-06-27 | `FP4`, `GLM-5`, `MLA`, `NVFP4` | Support JIT fused A GEMM (MLA down projection) and support GLM-5 hidden size, SM120 |
-| [#27705](https://github.com/sgl-project/sglang/pull/27705) | 2026-06-27 | `FP4`, `GLM-5`, `GLM-5.2`, `NVFP4` | Fuse the DSA (V3.2, GLM-5.x) indexer Q/K paths into single kernels |
-| [#28245](https://github.com/sgl-project/sglang/pull/28245) | 2026-06-27 | `FP4`, `MLA`, `MoE`, `NVFP4` | [JIT Kernel] Unify all jit_kernel benchmarks onto the marker framework (drop triton.testing) |
-| [#28417](https://github.com/sgl-project/sglang/pull/28417) | 2026-06-27 | `MoE`, `Qwen3.5` |  [NPU] Enable piecewise CUDA graph support on NPU |
-| [#28713](https://github.com/sgl-project/sglang/pull/28713) | 2026-06-27 | `MoE` | [minimax-m3] Split 2/4: mem-cache / HiCache / sparse KV pool |
-| [#28980](https://github.com/sgl-project/sglang/pull/28980) | 2026-06-27 | `DeepSeek V4` | [NPU] Support DeepSeek V4 Flash MTP on Ascend |
-| [#28994](https://github.com/sgl-project/sglang/pull/28994) | 2026-06-27 | `GLM-5`, `GLM-5.2` | [server_args][deepep] DeepEP-safe reland of DP mem_fraction_static + DeepEP capacity auto-tuning |
-| [#29029](https://github.com/sgl-project/sglang/pull/29029) | 2026-06-27 | `GLM-5`, `GLM-5.2` | [NPU][Bugfix] Fix a ModelSlim loading failure |
-| [#29151](https://github.com/sgl-project/sglang/pull/29151) | 2026-06-27 | `FP4`, `NVFP4` | Fix ModelOpt NVFP4 scalar scales for merged linears |
-| [#29161](https://github.com/sgl-project/sglang/pull/29161) | 2026-06-27 | `MLA` | [Fix]: Defer DSA MLA CP KV gather for fp8 trtllm prefill in PD mode |
-| [#29186](https://github.com/sgl-project/sglang/pull/29186) | 2026-06-27 | `MoE` | [New Model] Add Baidu Unlimited-OCR |
-| [#29223](https://github.com/sgl-project/sglang/pull/29223) | 2026-06-27 | `FP4`, `NVFP4` | (perf): Shard Kimi-K2.5 Eagle3 draft fc + symm-mem AG |
-| [#29304](https://github.com/sgl-project/sglang/pull/29304) | 2026-06-27 | `FP4`, `NVFP4` | [Feature] NVFP4 KV cache: SM120 + SM121, Gemma-4 VO-split, FP4 prefix-cache correctness (builds on #21954) |
-| [#29305](https://github.com/sgl-project/sglang/pull/29305) | 2026-06-27 | `FP4`, `NVFP4` | [Feature] DiffusionGemma: retire Triton onto FA2 NVFP4 KV cache (stacked on #29304 + #28054) |
-| [#29325](https://github.com/sgl-project/sglang/pull/29325) | 2026-06-27 | `DFlash`, `Qwen3.6` | Responses support |
-| [#29393](https://github.com/sgl-project/sglang/pull/29393) | 2026-06-27 | `FP4`, `GLM-5`, `GLM-5.2`, `NVFP4` | [Deps] Bump transformers to 5.12.1 |
-| [#29439](https://github.com/sgl-project/sglang/pull/29439) | 2026-06-27 | `MoE` | [Apple Silicon][MLX] Fix scheduler OOM on long prompts and concurrent requests |
-| [#29464](https://github.com/sgl-project/sglang/pull/29464) | 2026-06-27 | `DFlash` | Fix EAGLE draft hidden dim extraction and centralize spec helpers |
-| [#29472](https://github.com/sgl-project/sglang/pull/29472) | 2026-06-27 | `KDA` | [KDA] Add FlashKDA prefill backend for safe-gate KDA linear attention |
-| [#29484](https://github.com/sgl-project/sglang/pull/29484) | 2026-06-27 | `MoE` | [Benchmark] Filter fused MoE Triton tuning configs by estimated shared memory |
-| [#29485](https://github.com/sgl-project/sglang/pull/29485) | 2026-06-27 | `FP4`, `GLM-5`, `MoE`, `NVFP4` | [BUGFIX] Fix FlashInfer allreduce fusion auto backend on single-node sm_103 |
-| [#29490](https://github.com/sgl-project/sglang/pull/29490) | 2026-06-27 | `GDN`, `MoE`, `Qwen3.6` | [MLX] Minimal Apple Silicon server startup for hybrid GDN models |
-| [#29491](https://github.com/sgl-project/sglang/pull/29491) | 2026-06-27 | `MLA` | fix(kv-events): offset ZMQ publisher port by dp_rank, not attn_dp_rank |
-| [#29493](https://github.com/sgl-project/sglang/pull/29493) | 2026-06-27 | `MoE` | [NPU][Bugfix] Add scoring_func for mimo_v2 |
-| [#29495](https://github.com/sgl-project/sglang/pull/29495) | 2026-06-27 | `GDN`, `Qwen3.6` |  [NPU] correct SSM state transpose for spec decode extend with prefix |
-| [#29497](https://github.com/sgl-project/sglang/pull/29497) | 2026-06-27 | `FP4`, `MoE`, `Qwen3.5` | [CPU] Fix model failures on Xeon |
-| [#29499](https://github.com/sgl-project/sglang/pull/29499) | 2026-06-27 | `FP4`, `GLM-5`, `GLM-5.2`, `NVFP4` | [DSA] Optimize DSA CUDA graph replay metadata generation |
+| [#18589](https://github.com/sgl-project/sglang/pull/18589) | 2026-07-27 | `MoE` | Make per‑token expert‑distribution recorder use asynchronous data syncing |
+| [#20907](https://github.com/sgl-project/sglang/pull/20907) | 2026-07-27 | `MoE` | Expose Model Parallelism Information |
+| [#27770](https://github.com/sgl-project/sglang/pull/27770) | 2026-07-27 | `DeepSeek V4` | [P/D disagg] Decode-side radix cache for SWA hybrid models (unified radix tree) |
+| [#28354](https://github.com/sgl-project/sglang/pull/28354) | 2026-07-27 | `FP4`, `MoE`, `NVFP4` | [FlashInfer v0.6.16] Support FlashInfer CuTe DSL NVFP4 MoE quantization |
+| [#30393](https://github.com/sgl-project/sglang/pull/30393) | 2026-07-27 | `DeepSeek V4` | [HiCache] Add HiCache draft sidecar pool support for MTP/EAGLE |
+| [#30825](https://github.com/sgl-project/sglang/pull/30825) | 2026-07-27 | `MLA` | [FullCG] Support chunked cached-prefix prefill |
+| [#30967](https://github.com/sgl-project/sglang/pull/30967) | 2026-07-27 | `FP4`, `GDN`, `MoE`, `NVFP4`, `Qwen3.5` | [GDN] Add MTP cache mode for final-state recompute, with FlashInfer kernel integration and overlapped CUDA-graph state recovery |
+| [#31057](https://github.com/sgl-project/sglang/pull/31057) | 2026-07-27 | `MLA` | feat(mem_cache): semantic KV cache reuse via a pluggable fuzzy-match radix backend |
+| [#31099](https://github.com/sgl-project/sglang/pull/31099) | 2026-07-27 | `FP4`, `NVFP4` | Remove stale non-Standard-GQA gate for Nemotron BCG |
+| [#31220](https://github.com/sgl-project/sglang/pull/31220) | 2026-07-27 | `FP4`, `GDN`, `MoE`, `NVFP4`, `Qwen3.5` | Qwen3.5-MoE: support modelopt_fp4 checkpoints that quantize attention (+ load baked FP8 KV scales) |
+| [#31470](https://github.com/sgl-project/sglang/pull/31470) | 2026-07-27 | `DeepSeek V4`, `FP4`, `MoE`, `NVFP4` | Mega moe flashinfer |
+| [#31522](https://github.com/sgl-project/sglang/pull/31522) | 2026-07-27 | `GDN`, `MoE`, `Qwen3.5` | [LoRA] Support GDN in_proj_ba adapters for Qwen3.5 |
+| [#31768](https://github.com/sgl-project/sglang/pull/31768) | 2026-07-27 | `MoE` | [Model] Add LLaDA2.2 Block Routing MoE support |
+| [#31946](https://github.com/sgl-project/sglang/pull/31946) | 2026-07-27 | `MLA` | [HiCache]handle TP-replicated hybrid cache backups per pool |
+| [#32104](https://github.com/sgl-project/sglang/pull/32104) | 2026-07-27 | `Kimi K2.5` | [EPD][VLM] Fix Kimi-VL 2D encoder grids |
+| [#32405](https://github.com/sgl-project/sglang/pull/32405) | 2026-07-27 | `FP4`, `MoE` | [MoE Refactor] Migrate SM100 trtllm-gen mxfp4 MoE onto MoeRunner |
+| [#32413](https://github.com/sgl-project/sglang/pull/32413) | 2026-07-27 | `DeepSeek V4` | [PD] Handle unsupported decode KV retraction |
+| [#32480](https://github.com/sgl-project/sglang/pull/32480) | 2026-07-27 | `FP4`, `Inkling`, `MoE`, `NVFP4` | [FA4] SM100 relative-bias decode kernel + paged dispatch |
+| [#32541](https://github.com/sgl-project/sglang/pull/32541) | 2026-07-27 | `Kimi K3` | [Kimi] Support kimi-k3 |
+| [#32544](https://github.com/sgl-project/sglang/pull/32544) | 2026-07-27 | `Kimi K3` | [NPU][Kimi] Support Kimi-K3 on NPU |
+| [#32555](https://github.com/sgl-project/sglang/pull/32555) | 2026-07-27 | `GDN`, `KDA` | [Nemotron] Fix decode track-save reading the stale tail of the CUDA-graph track buffer |
+| [#32556](https://github.com/sgl-project/sglang/pull/32556) | 2026-07-27 | `FP4`, `MoE`, `NVFP4` | Autotune flashinfer extend buckets at warmup |
+| [#32557](https://github.com/sgl-project/sglang/pull/32557) | 2026-07-27 | `DeepSeek V4` | [Fix] Clear generic legacy CP alias in DeepSeek V4 hook (fixes crash with --enable-prefill-cp) |
+| [#32561](https://github.com/sgl-project/sglang/pull/32561) | 2026-07-27 | `Inkling` | Fix: Prevent redundant text re-tokenization on text-only requests for multimodal models |
+| [#32565](https://github.com/sgl-project/sglang/pull/32565) | 2026-07-27 | `MoE` | feat: expand weight loader v2 PR2 coverage |
+| [#32567](https://github.com/sgl-project/sglang/pull/32567) | 2026-07-27 | `Kimi K3` | fix kimi-k3 reasoning parser on elided think close |
+| [#32568](https://github.com/sgl-project/sglang/pull/32568) | 2026-07-27 | `FP4`, `KDA`, `Kimi K3`, `MLA`, `MoE`, `Qwen3.5` | [AMD] Add Kimi-K3 8-GPU MI35x nightly accuracy CI |
 
 ## vllm-project/vllm
 
 | PR | Updated | Matched terms | Title |
 | --- | --- | --- | --- |
-| [#38433](https://github.com/vllm-project/vllm/pull/38433) | 2026-06-27 | `MLA` | feat(nixl,dcp): Supports MLA DCP for PD disaggregation with nixl connector |
-| [#38434](https://github.com/vllm-project/vllm/pull/38434) | 2026-06-27 | `GDN`, `MoE`, `Qwen3.5` | [Fix] Improve ROCm detection in WSL environments |
-| [#43950](https://github.com/vllm-project/vllm/pull/43950) | 2026-06-27 | `DeepSeek V4`, `MLA`, `MoE` | [ROCm][DSV4] Use aiter mHC pre/post as the default ROCm path |
-| [#44297](https://github.com/vllm-project/vllm/pull/44297) | 2026-06-27 | `Qwen3.5` | [Bugfix][Structured Output][Spec Decode] Constrain bitmask and trim grammar advance at the reasoning boundary |
-| [#44573](https://github.com/vllm-project/vllm/pull/44573) | 2026-06-27 | `MLA`, `MoE` | Add DeepSeek-V4  DCP decode support |
-| [#44677](https://github.com/vllm-project/vllm/pull/44677) | 2026-06-27 | `MoE` | [Core] DBO ++: Overlap TP all-reduce with compute |
-| [#45033](https://github.com/vllm-project/vllm/pull/45033) | 2026-06-27 | `FP4`, `MLA` | [ROCm][Perf][MLA] Add AITER FlashAttention MLA prefill backend (`ROCM_AITER_FA`) |
-| [#45222](https://github.com/vllm-project/vllm/pull/45222) | 2026-06-27 | `WideEP` | [Bugfix] MoRIIO toy P/D proxy: honor max_completion_tokens, add /health, fix round-robin off-by-one |
-| [#45223](https://github.com/vllm-project/vllm/pull/45223) | 2026-06-27 | `WideEP` | [Bugfix][Core] DP: sync engines_running finish-state every step to prevent multi-node deadlock |
-| [#45225](https://github.com/vllm-project/vllm/pull/45225) | 2026-06-27 | `FP4`, `MoE`, `WideEP` | [Bugfix][ROCm][MoE] MoRI: pass num_qp_per_pe/quant_type explicitly; preserve router top-k for finalize |
-| [#45226](https://github.com/vllm-project/vllm/pull/45226) | 2026-06-27 | `MoE`, `WideEP` | [ROCm][MoE] Route batched expert layout through flat-reshape wrapper for AITER FP8 |
-| [#45227](https://github.com/vllm-project/vllm/pull/45227) | 2026-06-27 | `DeepSeek V4`, `FP4`, `MLA`, `MoE`, `WideEP` | [Bugfix][ROCm] MLA MTP decode: size verification metadata for real qlen/dtype, gate persistent path, fix CUDA-graph padding |
-| [#45228](https://github.com/vllm-project/vllm/pull/45228) | 2026-06-27 | `MLA` | [Core][KV-transfer] MoRIIO: multi-node TP prefill→decode dispatch via published host list |
-| [#45229](https://github.com/vllm-project/vllm/pull/45229) | 2026-06-27 | `MLA`, `MoE` | [V1][Spec Decode] Relaxed acceptance for thinking-phase tokens (port of #22238) |
-| [#45230](https://github.com/vllm-project/vllm/pull/45230) | 2026-06-27 | `MoE` | [Bugfix][KV-transfer] MoRIIO: READ-mode stability fixes (completion IDs, DP routing, drain, keepalive) |
-| [#46182](https://github.com/vllm-project/vllm/pull/46182) | 2026-06-27 | `MLA` | [Feat][1/N] CuTeDSL warmup infrastructure, FA4 MLA |
-| [#46184](https://github.com/vllm-project/vllm/pull/46184) | 2026-06-27 | `MoE` | [ROCm][Perf] Use flydsl moe with Minimax-M3 mxfp8 weights on gfx950 and implemented moe-backend selection |
-| [#46267](https://github.com/vllm-project/vllm/pull/46267) | 2026-06-27 | `FP4`, `MoE` | [ROCm][Test] Resurrect test_rocm_mxfp4_moe_oracle |
-| [#46474](https://github.com/vllm-project/vllm/pull/46474) | 2026-06-27 | `FP4`, `MoE` | [ROCm][Perf] Fused shared expert for Minimax M3 |
-| [#46724](https://github.com/vllm-project/vllm/pull/46724) | 2026-06-27 | `FP4`, `NVFP4` | [Attention] Occupancy-gated 3D segmented decode for multi-query (diffusion-LM canvas) over long KV |
-| [#46786](https://github.com/vllm-project/vllm/pull/46786) | 2026-06-27 | `GLM-5`, `GLM-5.2` | [Model Runner V2][Spec Decode] Handle tuple hidden states from MTP draft models |
-| [#46883](https://github.com/vllm-project/vllm/pull/46883) | 2026-06-27 | `FP4`, `NVFP4`, `Qwen3.6` | [Core] Use FlashInfer workspace sizing helper |
-| [#46901](https://github.com/vllm-project/vllm/pull/46901) | 2026-06-27 | `MoE` | [MoE] [MoE Refactor] Migrate int8 w4a8int8 oracle 37753 |
-| [#46907](https://github.com/vllm-project/vllm/pull/46907) | 2026-06-27 | `MoE` | [CPU][Bugfix] Build cpu_fused_moe on Apple Silicon |
-| [#46908](https://github.com/vllm-project/vllm/pull/46908) | 2026-06-27 | `MLA` | [Bugfix] Handle list slot mappings in attention context |
+| [#42351](https://github.com/vllm-project/vllm/pull/42351) | 2026-07-27 | `FP4`, `MoE`, `NVFP4` | Create `test_kimi_k2_thinking_nvfp4.py` for accuracy check |
+| [#42458](https://github.com/vllm-project/vllm/pull/42458) | 2026-07-27 | `FP4`, `NVFP4` | Kimi NVFP4 specialized model |
+| [#43229](https://github.com/vllm-project/vllm/pull/43229) | 2026-07-27 | `FP4`, `NVFP4` | [CompressedTensors] FP4 Qutlass Integration |
+| [#43952](https://github.com/vllm-project/vllm/pull/43952) | 2026-07-27 | `Kimi K2.5` | Kimi K2.5/2.6 LoRA adapter loading |
+| [#44651](https://github.com/vllm-project/vllm/pull/44651) | 2026-07-27 | `FP4`, `MoE` | [ROCm][Bugfix] Add quantization compatibility guard for Fused Shared Expert in DeepSeek-V2/V3/Kimi-K2 |
+| [#44941](https://github.com/vllm-project/vllm/pull/44941) | 2026-07-27 | `MoE` | [MoE Refactor] Rename FusedMoE to FusedMoEFactory |
+| [#45642](https://github.com/vllm-project/vllm/pull/45642) | 2026-07-27 | `FP4`, `Kimi K2.5`, `NVFP4` | Add Kimi-K2.5 NVFP4 CuTe DSL decode kernels |
+| [#45764](https://github.com/vllm-project/vllm/pull/45764) | 2026-07-27 | `MLA` | [BugFix] Add kimi_k2 to MLA allowlist for EAGLE3 draft model detection |
+| [#46516](https://github.com/vllm-project/vllm/pull/46516) | 2026-07-27 | `FP4` | Enable gfx1250 ROCm architecture |
+| [#46720](https://github.com/vllm-project/vllm/pull/46720) | 2026-07-27 | `DeepSeek V4`, `MLA`, `MoE` | [ROCm][DSV4] B-preshuffle the attention fp8 projections |
+| [#46912](https://github.com/vllm-project/vllm/pull/46912) | 2026-07-27 | `GDN`, `KDA` | [Hybird][PrefixCache] Pre-copy-free align prefix cache |
+| [#48250](https://github.com/vllm-project/vllm/pull/48250) | 2026-07-27 | `MLA` | Support MLA properly in the Transformers modeling backend |
+| [#48280](https://github.com/vllm-project/vllm/pull/48280) | 2026-07-27 | `MoE`, `Qwen3.5`, `Qwen3.6` | [RFC] Heterogeneous rank-to-GPU mapping + Qwen3.5/3.6 GGUF enablement |
+| [#48427](https://github.com/vllm-project/vllm/pull/48427) | 2026-07-27 | `MiniMax M3`, `MoE` | [ROCm][Quant] Requantize serialized MXFP8 linears to FP8 PTPC |
+| [#49430](https://github.com/vllm-project/vllm/pull/49430) | 2026-07-27 | `KimiLinear` | [Bugfix] Fix pipeline parallelism for Kimi-Linear |
+| [#49483](https://github.com/vllm-project/vllm/pull/49483) | 2026-07-27 | `FP4` | [compressed-tensors] update `find_matched_target` order to prioritize fused name matches over class match |
+| [#49688](https://github.com/vllm-project/vllm/pull/49688) | 2026-07-27 | `GDN`, `Qwen3.5` | [Bugfix][CPU] Use C++ causal_conv1d kernels for GDN attention on non-AMX AVX-512BF16 CPUs |
+| [#49894](https://github.com/vllm-project/vllm/pull/49894) | 2026-07-27 | `MoE` | [Misc] Add unit test for moe_fused_mul_sum Triton kernel |
+| [#50000](https://github.com/vllm-project/vllm/pull/50000) | 2026-07-27 | `Kimi K3` | [New model] Kimi K3 |
+| [#50019](https://github.com/vllm-project/vllm/pull/50019) | 2026-07-27 | `MoE` | Enable ModelOpt FP8 emulation on SM80 |
+| [#50030](https://github.com/vllm-project/vllm/pull/50030) | 2026-07-27 | `FP4`, `MoE`, `NVFP4` | [Quantization] Add per-token NVFP4 CuTe-DSL MoE backend |
+| [#50040](https://github.com/vllm-project/vllm/pull/50040) | 2026-07-27 | `MoE` | [Perf] Use Triton moe backend for tensor fp8 quant scheme on Hopper |

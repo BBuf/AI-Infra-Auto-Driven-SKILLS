@@ -30,6 +30,16 @@ The matching PR-driven model history has been read from
 records the SGLang and selected competitor PR evidence that influenced
 source-path selection.
 
+Campaign evidence contract:
+
+- `manifest.md` records immutable source heads for every selected framework.
+- Every cited PR records PR state as `open`, `merged`, or `closed-unmerged`;
+  open PRs are candidate evidence and include their immutable head SHAs.
+- Every accepted patch records validation evidence and known limitations.
+- The checkpoint preserves selected comparison frameworks,
+  user-excluded or unsupported frameworks, the current leading selected
+  comparison result, and the remaining gap.
+
 ## Acceptance Criteria
 
 - AC-1: Fixed benchmark evidence is preserved
@@ -56,8 +66,9 @@ source-path selection.
     - The notes cite matching competitor history when a selected comparison
       framework is the leading competitor or when competitor evidence influenced
       a suspected missing SGLang fast path.
-    - The notes include docs read, PR numbers, source files, symbols,
-      validation risks, and the decision each item influenced.
+    - The notes include docs read, PR numbers, immutable source heads, PR state,
+      source files, symbols, validation evidence, known limitations, validation
+      risks, and the decision each item influenced.
   - Negative Tests (expected to FAIL):
     - A model-specific source patch is proposed without checking matching model
       PR history for prior SGLang changes and relevant competitor evidence.
@@ -151,8 +162,9 @@ source-path selection.
       winners, selected comparison frameworks, user-excluded or unsupported
       frameworks, workload/SLA, SGLang commit, applied patches, current best
       SGLang result, current leading selected comparison result, remaining gap,
-      model PR history notes, profiler rows, layer-pipeline notes, NCU digest
-      paths, rejected source ideas, and the next planned SGLang patch.
+      model PR history notes, immutable source heads, PR state, validation
+      evidence, known limitations, profiler rows, layer-pipeline notes, NCU
+      digest paths, rejected source ideas, and the next planned SGLang patch.
     - The campaign can resume from the same model-loop artifacts with benchmark,
       profile, source-evidence, and patch lineage intact.
     - The active `.humanize/rlcr/<timestamp>/state.md` exists for the
@@ -253,6 +265,9 @@ revalidation, unless the current in-loop evidence proves no patch is needed.
 - Keep model PR history notes under `<artifact-root>/history/`.
 - Keep layer-pipeline reports under `<artifact-root>/analysis/`.
 - Keep NCU digests under `<artifact-root>/kernel/ncu-digests/`.
+- Before exit, stop only processes started by this run and remove only its
+  explicit model downloads/cache entries; record before/after process and GPU
+  state and preserve shared caches.
 - Commit SGLang changes after each round summary.
 - Mention exact changed files, commands, result deltas, and remaining risk in
   each Humanize round summary.

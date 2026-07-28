@@ -6,16 +6,15 @@
 | --- | --- |
 | `docs_new/cookbook/autoregressive/InclusionAI/LLaDA-2.1.mdx` | 无直接 PR 号提交 |
 | `docs_new/src/snippets/autoregressive/llada-21-deployment.jsx` | 无直接 PR 号提交 |
-| `python/sglang/srt/models/llada2.py` | [#18485](https://github.com/sgl-project/sglang/pull/18485) |
-| `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py` | 无直接 PR 号提交 |
-| `test/registered/dllm/test_llada2_mini.py` | 无直接 PR 号提交 |
+| `python/sglang/srt/models/llada2.py` | [#18485](https://github.com/sgl-project/sglang/pull/18485), [#27127](https://github.com/sgl-project/sglang/pull/27127), [#31772](https://github.com/sgl-project/sglang/pull/31772) |
+| `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py` | [#31772](https://github.com/sgl-project/sglang/pull/31772) |
 | `test/registered/dllm/test_llada2_mini_amd.py` | 无直接 PR 号提交 |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 1
-- 原文档显式引用补充 PR 数: 35
-- 当前文档总 PR 数: 35
+- git 追溯 PR 数: 3
+- 原文档显式引用补充 PR 数: 34
+- 当前文档总 PR 数: 37
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -58,6 +57,8 @@
 | 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | merged | Add get_parallel(): a structured accessor for parallel-topology state | `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py` |
 | 2026-06-19 | [#28697](https://github.com/sgl-project/sglang/pull/28697) | merged | [docs] Add B300 cookbook deployment options | `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` |
 | 2026-06-25 | [#29042](https://github.com/sgl-project/sglang/pull/29042) | merged | [NPU] Fix the DeepSeek-V2-Coder model accuracy issue | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/llada2.py`, `python/sglang/srt/hardware_backend/npu/moe/topk.py` |
+| 2026-07-20 | [#27127](https://github.com/sgl-project/sglang/pull/27127) | merged | use sgl_kernel_npu rmsrope accelerate llada2 | `python/sglang/srt/models/llada2.py` |
+| 2026-07-21 | [#31772](https://github.com/sgl-project/sglang/pull/31772) | merged | [NPU] Fix LLaDA2 MoE OOM after the FRACTAL_NZ cast, re-enabling the NZ speedup | `python/sglang/srt/models/llada2.py`, `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -1472,6 +1473,70 @@ diff -- python/sglang/srt/hardware_backend/npu/moe/topk.py
 - 已读文件:
   - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +1/-0; `python/sglang/srt/models/llada2.py` modified +1/-0; `python/sglang/srt/hardware_backend/npu/moe/topk.py` modified +2/-1
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/hardware_backend/npu/moe/topk.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/llada2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #27127 - use sgl_kernel_npu rmsrope accelerate llada2
+
+- 链接: https://github.com/sgl-project/sglang/pull/27127
+- 状态/时间: merged / 2026-07-20
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/llada2.py`；关联提交 `e856eae92198`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+60/-26，可读 patch 102 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「use sgl_kernel_npu rmsrope accelerate llada2」；模型线: LLaDA 2.1；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/llada2.py`；技术摘要: 覆盖「use sgl_kernel_npu rmsrope accelerate llada2」；主要实现面是 `python/sglang/srt/models/llada2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/llada2.py` modified +60/-26 (86 lines); hunks: -96,6 +96,15; -521,34 +530,59 @@ def forward(; symbols: LLaDA2MoeMLP, __init__, forward，涉及 `LLaDA2MoeMLP, __init__, forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/llada2.py` modified +60/-26 (86 lines); hunks: -96,6 +96,15; -521,34 +530,59 @@ def forward(; symbols: LLaDA2MoeMLP, __init__, forward
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/llada2.py
+@@ -96,6 +96,15 @@
++split_qkv_rmsnorm_rope_pos_cache_half_npu = None
++if _is_npu:
++    try:
++        from sgl_kernel_npu.norm.split_qkv_rmsnorm_rope_pos_cache_half_npu import (
++            split_qkv_rmsnorm_rope_pos_cache_half_npu,
++        )
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/llada2.py` modified +60/-26
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/llada2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #31772 - [NPU] Fix LLaDA2 MoE OOM after the FRACTAL_NZ cast, re-enabling the NZ speedup
+
+- 链接: https://github.com/sgl-project/sglang/pull/31772
+- 状态/时间: merged / 2026-07-21
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/llada2.py`, `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py`；关联提交 `c0ed009f5b56`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+12/-11，可读 patch 48 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[NPU] Fix LLaDA2 MoE OOM after the FRACTAL_NZ cast, re-enabling the NZ speedup」；模型线: LLaDA 2.1；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/llada2.py`, `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py`；技术摘要: 覆盖「[NPU] Fix LLaDA2 MoE OOM after the FRACTAL_NZ cast, re-enabling the NZ speedup」；主要实现面是 `python/sglang/srt/models/llada2.py`, `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/llada2.py` modified +12/-6 (18 lines); hunks: -83,6 +83,7; -965,12 +966,17 @@ def load_weights(self, weights: Iterable[Tuple[str, torch....; symbols: load_weights, get_model_config_for_expert_location，涉及 `load_weights, get_model_config_for_expert_location`；`test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py` modified +0/-5 (5 lines); hunks: -1,4 +1,3; -31,10 +30,6 @@ class TestLLaDA2Mini(GSM8KAscendMixin, CustomTestCase):; symbols: TestLLaDA2Mini，涉及 `TestLLaDA2Mini`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/llada2.py` modified +12/-6 (18 lines); hunks: -83,6 +83,7; -965,12 +966,17 @@ def load_weights(self, weights: Iterable[Tuple[str, torch....; symbols: load_weights, get_model_config_for_expert_location
+  - `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py` modified +0/-5 (5 lines); hunks: -1,4 +1,3; -31,10 +30,6 @@ class TestLLaDA2Mini(GSM8KAscendMixin, CustomTestCase):; symbols: TestLLaDA2Mini
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/llada2.py
+@@ -83,6 +83,7 @@
++    LazyValue,
+@@ -965,12 +966,17 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]]):
+-        self.routed_experts_weights_of_layer = {
+-            layer_id: layer.mlp.get_moe_weights()
+-            for layer_id, layer in enumerate(self.model.layers)
+-            if not isinstance(layer, PPMissingLayer)
+diff -- test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py
+@@ -1,4 +1,3 @@
+-import os
+@@ -31,10 +30,6 @@ class TestLLaDA2Mini(GSM8KAscendMixin, CustomTestCase):
+-    env = {
+-        **os.environ,
+-        "SGLANG_NPU_DISABLE_ACL_FORMAT_WEIGHT": "1",  # Need to avoid OOM issue
+-    }
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/llada2.py` modified +12/-6
+  - tests: `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py` modified +0/-5
+- 验证与风险: diff 自带测试面 `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论
 

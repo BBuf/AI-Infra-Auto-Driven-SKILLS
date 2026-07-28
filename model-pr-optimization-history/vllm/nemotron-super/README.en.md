@@ -23,8 +23,8 @@
 | `tests/reasoning/test_nemotron_v3_reasoning_parser.py` | [#36393](https://github.com/vllm-project/vllm/pull/36393), [#36635](https://github.com/vllm-project/vllm/pull/36635), [#39091](https://github.com/vllm-project/vllm/pull/39091), [#45755](https://github.com/vllm-project/vllm/pull/45755) |
 | `vllm/model_executor/models/nano_nemotron_vl.py` | [#23644](https://github.com/vllm-project/vllm/pull/23644), [#25708](https://github.com/vllm-project/vllm/pull/25708), [#26186](https://github.com/vllm-project/vllm/pull/26186), [#26269](https://github.com/vllm-project/vllm/pull/26269), [#27107](https://github.com/vllm-project/vllm/pull/27107), [#30864](https://github.com/vllm-project/vllm/pull/30864), [#32121](https://github.com/vllm-project/vllm/pull/32121), [#32682](https://github.com/vllm-project/vllm/pull/32682), [#35100](https://github.com/vllm-project/vllm/pull/35100), [#35539](https://github.com/vllm-project/vllm/pull/35539), [#35657](https://github.com/vllm-project/vllm/pull/35657), [#36808](https://github.com/vllm-project/vllm/pull/36808), ... (23 total) |
 | `vllm/model_executor/models/nemotron.py` | [#6611](https://github.com/vllm-project/vllm/pull/6611), [#7611](https://github.com/vllm-project/vllm/pull/7611), [#46495](https://github.com/vllm-project/vllm/pull/46495) |
-| `vllm/model_executor/models/nemotron_h.py` | [#18863](https://github.com/vllm-project/vllm/pull/18863), [#19249](https://github.com/vllm-project/vllm/pull/19249), [#22349](https://github.com/vllm-project/vllm/pull/22349), [#25863](https://github.com/vllm-project/vllm/pull/25863), [#27968](https://github.com/vllm-project/vllm/pull/27968), [#30802](https://github.com/vllm-project/vllm/pull/30802), [#31539](https://github.com/vllm-project/vllm/pull/31539), [#31807](https://github.com/vllm-project/vllm/pull/31807), [#31898](https://github.com/vllm-project/vllm/pull/31898), [#32265](https://github.com/vllm-project/vllm/pull/32265), [#32549](https://github.com/vllm-project/vllm/pull/32549), [#32669](https://github.com/vllm-project/vllm/pull/32669), ... (18 total) |
-| `vllm/model_executor/models/nemotron_h_mtp.py` | [#33726](https://github.com/vllm-project/vllm/pull/33726), [#37803](https://github.com/vllm-project/vllm/pull/37803) |
+| `vllm/model_executor/models/nemotron_h.py` | [#18863](https://github.com/vllm-project/vllm/pull/18863), [#19249](https://github.com/vllm-project/vllm/pull/19249), [#22349](https://github.com/vllm-project/vllm/pull/22349), [#25863](https://github.com/vllm-project/vllm/pull/25863), [#27968](https://github.com/vllm-project/vllm/pull/27968), [#30802](https://github.com/vllm-project/vllm/pull/30802), [#31539](https://github.com/vllm-project/vllm/pull/31539), [#31807](https://github.com/vllm-project/vllm/pull/31807), [#31898](https://github.com/vllm-project/vllm/pull/31898), [#32265](https://github.com/vllm-project/vllm/pull/32265), [#32549](https://github.com/vllm-project/vllm/pull/32549), [#32669](https://github.com/vllm-project/vllm/pull/32669), ... (19 total) |
+| `vllm/model_executor/models/nemotron_h_mtp.py` | [#33726](https://github.com/vllm-project/vllm/pull/33726), [#37803](https://github.com/vllm-project/vllm/pull/37803), [#47440](https://github.com/vllm-project/vllm/pull/47440) |
 | `vllm/model_executor/models/nemotron_nas.py` | [#15008](https://github.com/vllm-project/vllm/pull/15008), [#18427](https://github.com/vllm-project/vllm/pull/18427), [#30795](https://github.com/vllm-project/vllm/pull/30795) |
 | `vllm/model_executor/models/nemotron_parse.py` | [#30864](https://github.com/vllm-project/vllm/pull/30864), [#33189](https://github.com/vllm-project/vllm/pull/33189), [#37407](https://github.com/vllm-project/vllm/pull/37407), [#37456](https://github.com/vllm-project/vllm/pull/37456), [#42641](https://github.com/vllm-project/vllm/pull/42641) |
 | `vllm/model_executor/models/nemotron_vl.py` | [#20349](https://github.com/vllm-project/vllm/pull/20349), [#22023](https://github.com/vllm-project/vllm/pull/22023), [#22739](https://github.com/vllm-project/vllm/pull/22739), [#35297](https://github.com/vllm-project/vllm/pull/35297), [#35735](https://github.com/vllm-project/vllm/pull/35735), [#36192](https://github.com/vllm-project/vllm/pull/36192), [#43581](https://github.com/vllm-project/vllm/pull/43581) |
@@ -37,9 +37,9 @@
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 69
+- Git-traced PRs: 71
 - Extra PRs preserved from existing docs: 8
-- Total PRs in this document: 77
+- Total PRs in this document: 79
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -80,7 +80,7 @@
 | 2026-02-02 | [#32790](https://github.com/vllm-project/vllm/pull/32790) | merged | [MoE] Enable Shared/Routed Overlap For Latent MoE (Nemotron-H) | `vllm/model_executor/models/nemotron_h.py` |
 | 2026-02-12 | [#33506](https://github.com/vllm-project/vllm/pull/33506) | merged | [Kernel] Support Flashinfer trtllm fused MoE non gated FP8 & NVFP4 | `vllm/model_executor/layers/quantization/utils/flashinfer_utils.py`, `vllm/model_executor/layers/quantization/utils/flashinfer_fp4_moe.py`, `vllm/model_executor/layers/fused_moe/flashinfer_trtllm_moe.py` |
 | 2026-02-16 | [#34582](https://github.com/vllm-project/vllm/pull/34582) | merged | [NemotronH] Do not force router to run in fp32 | `vllm/model_executor/models/nemotron_h.py` |
-| 2026-02-18 | [#34725](https://github.com/vllm-project/vllm/pull/34725) | merged | [Bugfix] Fix NVFP4 TRTLLM MoE non-gated support; add gsm8k for Nemotron-3-Nano FP8+NVFP4 | `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-Fp8-ModelOpt-fi-trtllm.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-fi-cutlass.yaml` |
+| 2026-02-18 | [#34725](https://github.com/vllm-project/vllm/pull/34725) | merged | [Bugfix] Fix NVFP4 TRTLLM MoE non-gated support; add gsm8k for Nemotron-3-Nano FP8+NVFP4 | `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-Fp8-ModelOpt-fi-trtllm.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-fi-cutlass.yaml`, `vllm/model_executor/layers/quantization/utils/flashinfer_fp4_moe.py` |
 | 2026-02-19 | [#34808](https://github.com/vllm-project/vllm/pull/34808) | merged | Revert "[NemotronH] Do not force router to run in fp32 (#34582)" | `vllm/model_executor/models/nemotron_h.py` |
 | 2026-02-24 | [#33726](https://github.com/vllm-project/vllm/pull/33726) | merged | [Model][Spec Decode] Nemotron-H MTP and Mamba Speculative Decoding Support | `vllm/model_executor/models/nemotron_h_mtp.py`, `vllm/transformers_utils/configs/nemotron_h.py`, `vllm/model_executor/models/nemotron_h.py` |
 | 2026-02-26 | [#35297](https://github.com/vllm-project/vllm/pull/35297) | merged | [Model] Add nvidia/llama-nemotron-embed-vl-1b-v2 multimodal embedding model | `vllm/model_executor/models/nemotron_vl.py`, `examples/pooling/embed/template/nemotron_embed_vl.jinja` |
@@ -90,8 +90,8 @@
 | 2026-03-04 | [#35539](https://github.com/vllm-project/vllm/pull/35539) | merged | Support Audio Extraction from MP4 Video for Nemotron Nano VL | `vllm/model_executor/models/nano_nemotron_vl.py` |
 | 2026-03-06 | [#36192](https://github.com/vllm-project/vllm/pull/36192) | merged | [Security] Respect user trust_remote_code setting in NemotronVL and KimiK25 | `vllm/model_executor/models/nemotron_vl.py` |
 | 2026-03-08 | [#35657](https://github.com/vllm-project/vllm/pull/35657) | merged | [Model] Nano Nemotron VL - fast media preprocessing | `vllm/model_executor/models/nano_nemotron_vl.py` |
-| 2026-03-09 | [#36393](https://github.com/vllm-project/vllm/pull/36393) | merged | add nemotron v3 reasoning parser | `tests/reasoning/test_nemotron_v3_reasoning_parser.py` |
-| 2026-03-11 | [#36635](https://github.com/vllm-project/vllm/pull/36635) | merged | [NemotronH] Small fix reasoning parser | `tests/reasoning/test_nemotron_v3_reasoning_parser.py` |
+| 2026-03-09 | [#36393](https://github.com/vllm-project/vllm/pull/36393) | merged | add nemotron v3 reasoning parser | `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`, `vllm/reasoning/__init__.py` |
+| 2026-03-11 | [#36635](https://github.com/vllm-project/vllm/pull/36635) | merged | [NemotronH] Small fix reasoning parser | `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py` |
 | 2026-03-18 | [#37456](https://github.com/vllm-project/vllm/pull/37456) | merged | [Model] Remove unnecessary processor definition for Nemotron Parse | `vllm/transformers_utils/processors/nemotron_parse.py`, `vllm/model_executor/models/nemotron_parse.py` |
 | 2026-03-19 | [#36808](https://github.com/vllm-project/vllm/pull/36808) | merged | Support temporal compression for Nemotron-3-VL videos | `vllm/transformers_utils/processors/nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py` |
 | 2026-03-19 | [#37407](https://github.com/vllm-project/vllm/pull/37407) | merged | [Bugfix] Fix Nemotron Parse loading | `tests/models/multimodal/generation/test_nemotron_parse.py`, `vllm/model_executor/models/nemotron_parse.py` |
@@ -119,11 +119,13 @@
 | 2026-05-28 | [#43581](https://github.com/vllm-project/vllm/pull/43581) | merged | [Model][Bugfix] Rename weight_mapper to hf_to_vllm_mapper in LlamaNemotronVL pooling models | `vllm/model_executor/models/nemotron_vl.py` |
 | 2026-06-05 | [#43167](https://github.com/vllm-project/vllm/pull/43167) | merged | Remove KV cache scale boilerplate from model weight loading methods | `tests/model_executor/test_eagle_quantization.py`, `vllm/model_executor/models/gpt_oss.py`, `vllm/model_executor/layers/quantization/kv_cache.py` |
 | 2026-06-08 | [#41184](https://github.com/vllm-project/vllm/pull/41184) | merged | [MoE Refactor] FusedMoE/MoERunner inversion refactor | `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/routed_experts.py`, `vllm/model_executor/layers/fused_moe/runner/moe_runner.py` |
-| 2026-06-10 | [#39091](https://github.com/vllm-project/vllm/pull/39091) | merged | [Bugfix][Reasoning] Nemotron V3: surface reasoning as content when thinking is unterminated | `tests/reasoning/test_nemotron_v3_reasoning_parser.py` |
+| 2026-06-10 | [#39091](https://github.com/vllm-project/vllm/pull/39091) | merged | [Bugfix][Reasoning] Nemotron V3: surface reasoning as content when thinking is unterminated | `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`, `vllm/parser/abstract_parser.py` |
 | 2026-06-11 | [#45128](https://github.com/vllm-project/vllm/pull/45128) | merged | [Model] Remove InternLMForCausalLM registry alias | `tests/models/registry.py`, `vllm/model_executor/models/registry.py`, `docs/models/supported_models.md` |
 | 2026-06-16 | [#45755](https://github.com/vllm-project/vllm/pull/45755) | merged | [Frontend] [Parser] Migrate Nemotron V3 to streaming parser engine | `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_engine_reasoning_parser.py`, `tests/parser/engine/test_nemotron_v3.py` |
 | 2026-06-18 | [#42727](https://github.com/vllm-project/vllm/pull/42727) | merged | fix(quantization): Fix AWQ dequantize on Intel XPU and refactor AutoAWQ config | `vllm/model_executor/layers/quantization/auto_awq.py`, `vllm/model_executor/layers/quantization/awq.py`, `vllm/model_executor/layers/quantization/moe_wna16.py` |
 | 2026-06-24 | [#46495](https://github.com/vllm-project/vllm/pull/46495) | merged | [Bugfix] Fix NemotronLayerNorm1P hardcoded cuda device type | `vllm/model_executor/models/nemotron.py` |
+| 2026-07-07 | [#47440](https://github.com/vllm-project/vllm/pull/47440) | merged | fix: ensure no double load of lm head in nemotron mtp | `vllm/model_executor/models/nemotron_h_mtp.py` |
+| 2026-07-25 | [#49781](https://github.com/vllm-project/vllm/pull/49781) | merged | [Docs] Fix confusing docstring indentation in nemotron_h.py | `vllm/model_executor/models/nemotron_h.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -1113,11 +1115,12 @@ diff -- vllm/model_executor/models/nemotron_h.py
 - Status/date: merged / 2026-02-18
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-Fp8-ModelOpt-fi-trtllm.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-fi-cutlass.yaml`; associated commits `caeb887bf633`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +20/-0, 33 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix NVFP4 TRTLLM MoE non-gated support; add gsm8k for Nemotron-3-Nano FP8+NVFP4"; model line: Nemotron Super; category: bug fix; main diff: `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-Fp8-ModelOpt-fi-trtllm.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-fi-cutlass.yaml`; technical summary: Covers "[Bugfix] Fix NVFP4 TRTLLM MoE non-gated support; add gsm8k for Nemotron-3-Nano FP8+NVFP4"; the main implementation surface is `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-Fp8-ModelOpt-fi-trtllm.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-fi-cutlass.yaml`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-Fp8-ModelOpt-fi-trtllm.yaml` added +8/-0 (8 lines); hunks: -0,0 +1,8; `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-fi-cutlass.yaml` added +8/-0 (8 lines); hunks: -0,0 +1,8.
+- Motivation: Title: "[Bugfix] Fix NVFP4 TRTLLM MoE non-gated support; add gsm8k for Nemotron-3-Nano FP8+NVFP4"; model line: Nemotron Super; category: bug fix; main diff: `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-Fp8-ModelOpt-fi-trtllm.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-fi-cutlass.yaml`, `vllm/model_executor/layers/quantization/utils/flashinfer_fp4_moe.py`; technical summary: Covers "[Bugfix] Fix NVFP4 TRTLLM MoE non-gated support; add gsm8k for Nemotron-3-Nano FP8+NVFP4"; the main implementation surface is `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-Fp8-ModelOpt-fi-trtllm.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-fi-cutlass.yaml`, `vllm/model_executor/layers/quantization/utils/flashinfer_fp4_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-Fp8-ModelOpt-fi-trtllm.yaml` added +8/-0 (8 lines); hunks: -0,0 +1,8; `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-fi-cutlass.yaml` added +8/-0 (8 lines); hunks: -0,0 +1,8; `vllm/model_executor/layers/quantization/utils/flashinfer_fp4_moe.py` modified +2/-0 (2 lines); hunks: -122,6 +122,8 @@ def _make_reason(reason: str) -> str:; symbols: _make_reason, touching `_make_reason`.
 - Code diff details:
   - `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-Fp8-ModelOpt-fi-trtllm.yaml` added +8/-0 (8 lines); hunks: -0,0 +1,8
   - `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-fi-cutlass.yaml` added +8/-0 (8 lines); hunks: -0,0 +1,8
+  - `vllm/model_executor/layers/quantization/utils/flashinfer_fp4_moe.py` modified +2/-0 (2 lines); hunks: -122,6 +122,8 @@ def _make_reason(reason: str) -> str:; symbols: _make_reason
 - Key code excerpts:
 
 ```diff
@@ -1137,10 +1140,13 @@ diff -- tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-
 +num_fewshot: 5
 +server_args: "--enforce-eager --max-model-len 8192 --tensor-parallel-size 2"
 +env:
+diff -- vllm/model_executor/layers/quantization/utils/flashinfer_fp4_moe.py
+@@ -122,6 +122,8 @@ def _make_reason(reason: str) -> str:
 ```
 
 - Reviewed files:
   - tests: `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-Fp8-ModelOpt-fi-trtllm.yaml` added +8/-0; `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-fi-cutlass.yaml` added +8/-0
+  - runtime: `vllm/model_executor/layers/quantization/utils/flashinfer_fp4_moe.py` modified +2/-0
 - Risk and verification: The diff ships test coverage in `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-Fp8-ModelOpt-fi-trtllm.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-fi-cutlass.yaml`, `tests/evals/gsm8k/configs/moe-refactor/config-b200.txt`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #34808 - Revert "[NemotronH] Do not force router to run in fp32 (#34582)"
@@ -1426,10 +1432,12 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 - Status/date: merged / 2026-03-09
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_nemotron_v3_reasoning_parser.py`; associated commits `203a7f27dac2`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +186/-0, 195 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "add nemotron v3 reasoning parser"; model line: Nemotron Super; category: docs/tests/CI; main diff: `tests/reasoning/test_nemotron_v3_reasoning_parser.py`; technical summary: Covers "add nemotron v3 reasoning parser"; the main implementation surface is `tests/reasoning/test_nemotron_v3_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `tests/reasoning/test_nemotron_v3_reasoning_parser.py` added +150/-0 (150 lines); hunks: -0,0 +1,150; symbols: ReasoningCase, FakeNemotronTokenizer, __init__, get_vocab, touching `ReasoningCase, FakeNemotronTokenizer, __init__`.
+- Motivation: Title: "add nemotron v3 reasoning parser"; model line: Nemotron Super; category: docs/tests/CI; main diff: `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`, `vllm/reasoning/__init__.py`; technical summary: Covers "add nemotron v3 reasoning parser"; the main implementation surface is `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`, `vllm/reasoning/__init__.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/reasoning/test_nemotron_v3_reasoning_parser.py` added +150/-0 (150 lines); hunks: -0,0 +1,150; symbols: ReasoningCase, FakeNemotronTokenizer, __init__, get_vocab, touching `ReasoningCase, FakeNemotronTokenizer, __init__`; `vllm/reasoning/nemotron_v3_reasoning_parser.py` added +32/-0 (32 lines); hunks: -0,0 +1,32; symbols: NemotronV3ReasoningParser, extract_reasoning, touching `NemotronV3ReasoningParser, extract_reasoning`; `vllm/reasoning/__init__.py` modified +4/-0 (4 lines); hunks: -68,6 +68,10.
 - Code diff details:
   - `tests/reasoning/test_nemotron_v3_reasoning_parser.py` added +150/-0 (150 lines); hunks: -0,0 +1,150; symbols: ReasoningCase, FakeNemotronTokenizer, __init__, get_vocab
+  - `vllm/reasoning/nemotron_v3_reasoning_parser.py` added +32/-0 (32 lines); hunks: -0,0 +1,32; symbols: NemotronV3ReasoningParser, extract_reasoning
+  - `vllm/reasoning/__init__.py` modified +4/-0 (4 lines); hunks: -68,6 +68,10
 - Key code excerpts:
 
 ```diff
@@ -1441,10 +1449,21 @@ diff -- tests/reasoning/test_nemotron_v3_reasoning_parser.py
 +import pytest
 +import regex as re
 +from tests.reasoning.utils import run_reasoning_extraction
+diff -- vllm/reasoning/nemotron_v3_reasoning_parser.py
+@@ -0,0 +1,32 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++from vllm.entrypoints.openai.chat_completion.protocol import (
++    ChatCompletionRequest,
++)
++from vllm.entrypoints.openai.responses.protocol import (
+diff -- vllm/reasoning/__init__.py
+@@ -68,6 +68,10 @@
 ```
 
 - Reviewed files:
   - tests: `tests/reasoning/test_nemotron_v3_reasoning_parser.py` added +150/-0
+  - runtime: `vllm/reasoning/nemotron_v3_reasoning_parser.py` added +32/-0; `vllm/reasoning/__init__.py` modified +4/-0
 - Risk and verification: The diff ships test coverage in `tests/reasoning/test_nemotron_v3_reasoning_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #36635 - [NemotronH] Small fix reasoning parser
@@ -1453,10 +1472,11 @@ diff -- tests/reasoning/test_nemotron_v3_reasoning_parser.py
 - Status/date: merged / 2026-03-11
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_nemotron_v3_reasoning_parser.py`; associated commits `e661b9ee83d9`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +26/-1, 41 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[NemotronH] Small fix reasoning parser"; model line: Nemotron Super; category: bug fix; main diff: `tests/reasoning/test_nemotron_v3_reasoning_parser.py`; technical summary: Covers "[NemotronH] Small fix reasoning parser"; the main implementation surface is `tests/reasoning/test_nemotron_v3_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `tests/reasoning/test_nemotron_v3_reasoning_parser.py` modified +22/-0 (22 lines); hunks: -128,6 +128,28 @@ def test_nemotron_v3_without_thinking_returns_content(; symbols: test_nemotron_v3_without_thinking_returns_content, test_nemotron_v3_force_nonempty_content_returns_content, test_nemotron_v3_with_thinking_keeps_truncated_reasoning, touching `test_nemotron_v3_without_thinking_returns_content, test_nemotron_v3_force_nonempty_content_returns_content, test_nemotron_v3_with_thinking_keeps_truncated_reasoning`.
+- Motivation: Title: "[NemotronH] Small fix reasoning parser"; model line: Nemotron Super; category: bug fix; main diff: `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`; technical summary: Covers "[NemotronH] Small fix reasoning parser"; the main implementation surface is `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/reasoning/test_nemotron_v3_reasoning_parser.py` modified +22/-0 (22 lines); hunks: -128,6 +128,28 @@ def test_nemotron_v3_without_thinking_returns_content(; symbols: test_nemotron_v3_without_thinking_returns_content, test_nemotron_v3_force_nonempty_content_returns_content, test_nemotron_v3_with_thinking_keeps_truncated_reasoning, touching `test_nemotron_v3_without_thinking_returns_content, test_nemotron_v3_force_nonempty_content_returns_content, test_nemotron_v3_with_thinking_keeps_truncated_reasoning`; `vllm/reasoning/nemotron_v3_reasoning_parser.py` modified +4/-1 (5 lines); hunks: -24,7 +24,10 @@ def extract_reasoning(; symbols: extract_reasoning, touching `extract_reasoning`.
 - Code diff details:
   - `tests/reasoning/test_nemotron_v3_reasoning_parser.py` modified +22/-0 (22 lines); hunks: -128,6 +128,28 @@ def test_nemotron_v3_without_thinking_returns_content(; symbols: test_nemotron_v3_without_thinking_returns_content, test_nemotron_v3_force_nonempty_content_returns_content, test_nemotron_v3_with_thinking_keeps_truncated_reasoning
+  - `vllm/reasoning/nemotron_v3_reasoning_parser.py` modified +4/-1 (5 lines); hunks: -24,7 +24,10 @@ def extract_reasoning(; symbols: extract_reasoning
 - Key code excerpts:
 
 ```diff
@@ -1468,10 +1488,18 @@ diff -- tests/reasoning/test_nemotron_v3_reasoning_parser.py
 +    parser_cls = ReasoningParserManager.get_reasoning_parser(parser_name)
 +    parser = parser_cls(tokenizer)
 +    request = ChatCompletionRequest(
+diff -- vllm/reasoning/nemotron_v3_reasoning_parser.py
+@@ -24,7 +24,10 @@ def extract_reasoning(
+-            and chat_template_kwargs.get("enable_thinking") is False
++            and (
++                chat_template_kwargs.get("enable_thinking") is False
++                or chat_template_kwargs.get("force_nonempty_content") is True
++            )
 ```
 
 - Reviewed files:
   - tests: `tests/reasoning/test_nemotron_v3_reasoning_parser.py` modified +22/-0
+  - runtime: `vllm/reasoning/nemotron_v3_reasoning_parser.py` modified +4/-1
 - Risk and verification: The diff ships test coverage in `tests/reasoning/test_nemotron_v3_reasoning_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #37456 - [Model] Remove unnecessary processor definition for Nemotron Parse
@@ -2002,7 +2030,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/41205
 - Status/date: merged / 2026-05-04
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/test_nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `8c780943b492`
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/test_nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `8c780943b492`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +130/-5, 171 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Fix Nano Nemotron text-only weight loading"; model line: Nemotron Super; category: bug fix; main diff: `tests/models/multimodal/test_nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py`; technical summary: Covers "Fix Nano Nemotron text-only weight loading"; the main implementation surface is `tests/models/multimodal/test_nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `tests/models/multimodal/test_nano_nemotron_vl.py` added +114/-0 (114 lines); hunks: -0,0 +1,114; symbols: _TextOnlyMultiModalConfig, get_limit_per_prompt, _ImageOnlyMultiModalConfig, _ModelConfig, touching `_TextOnlyMultiModalConfig, get_limit_per_prompt, _ImageOnlyMultiModalConfig`; `vllm/model_executor/models/nano_nemotron_vl.py` modified +15/-3 (18 lines); hunks: -1499,6 +1499,11 @@ def compute_logits(; -1523,23 +1528,30 @@ def is_sound_weights(name: str) -> bool:; symbols: compute_logits, load_weights, is_llm, is_sound_weights, touching `compute_logits, load_weights, is_llm`.
@@ -2039,7 +2067,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/42244
 - Status/date: merged / 2026-05-11
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/test_nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `ac062147fae7`
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/test_nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `ac062147fae7`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +55/-28, 108 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Avoid silent weights corruption when loading Nemotron Nano VL with reusable-buffer loaders like runai distributed streaming"; model line: Nemotron Super; category: docs/tests/CI; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`, `tests/models/multimodal/test_nano_nemotron_vl.py`; technical summary: Covers "Avoid silent weights corruption when loading Nemotron Nano VL with reusable-buffer loaders like runai distributed streaming"; the main implementation surface is `vllm/model_executor/models/nano_nemotron_vl.py`, `tests/models/multimodal/test_nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/nano_nemotron_vl.py` modified +41/-27 (68 lines); hunks: -1518,37 +1518,51 @@ def is_vision_weights(name: str) -> bool:; symbols: is_vision_weights, is_sound_weights, llm_weights_gen, touching `is_vision_weights, is_sound_weights, llm_weights_gen`; `tests/models/multimodal/test_nano_nemotron_vl.py` modified +14/-1 (15 lines); hunks: -53,6 +53,19 @@ def load_weights(self, weights):; -86,7 +99,7 @@ def test_nano_nemotron_vl_loads_vision_weights_without_sound_e...; symbols: load_weights, _FakeTensor, detach, clone, touching `load_weights, _FakeTensor, detach`.
@@ -2076,7 +2104,7 @@ diff -- tests/models/multimodal/test_nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/42498
 - Status/date: merged / 2026-05-13
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/generation/test_nemotron_parse.py`; associated commits `67671692ace7`
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/generation/test_nemotron_parse.py`; associated commits `67671692ace7`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +12/-9, 59 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[CI] Re-enable Nemotron Parse parity test and switch testing to nemotron-parse v1.2"; model line: Nemotron Super; category: docs/tests/CI; main diff: `tests/models/multimodal/generation/test_nemotron_parse.py`; technical summary: Covers "[CI] Re-enable Nemotron Parse parity test and switch testing to nemotron-parse v1.2"; the main implementation surface is `tests/models/multimodal/generation/test_nemotron_parse.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `tests/models/multimodal/generation/test_nemotron_parse.py` modified +5/-7 (12 lines); hunks: -14,7 +14,9; -85,7 +87,7 @@ def run_test(; symbols: DummyLogprobs, run_test, test_models, touching `DummyLogprobs, run_test, test_models`.
@@ -2103,7 +2131,7 @@ diff -- tests/models/multimodal/generation/test_nemotron_parse.py
 
 - Link: https://github.com/vllm-project/vllm/pull/42641
 - Status/date: merged / 2026-05-14
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_parse.py`; associated commits `b8a25d0e1216`
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_parse.py`; associated commits `b8a25d0e1216`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +5/-1, 20 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix LM detection for Nemotron Parse"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nemotron_parse.py`; technical summary: Covers "[Bugfix] Fix LM detection for Nemotron Parse"; the main implementation surface is `vllm/model_executor/models/nemotron_parse.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/nemotron_parse.py` modified +3/-0 (3 lines); hunks: -281,6 +281,9 @@ def __init__(; symbols: __init__, embed_input_ids, forward, touching `__init__, embed_input_ids, forward`.
@@ -2349,10 +2377,12 @@ diff -- vllm/model_executor/layers/fused_moe/runner/moe_runner.py
 - Status/date: merged / 2026-06-10
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_nemotron_v3_reasoning_parser.py`; associated commits `4882fd763282`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +163/-10, 237 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix][Reasoning] Nemotron V3: surface reasoning as content when thinking is unterminated"; model line: Nemotron Super; category: bug fix; main diff: `tests/reasoning/test_nemotron_v3_reasoning_parser.py`; technical summary: Covers "[Bugfix][Reasoning] Nemotron V3: surface reasoning as content when thinking is unterminated"; the main implementation surface is `tests/reasoning/test_nemotron_v3_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `tests/reasoning/test_nemotron_v3_reasoning_parser.py` modified +118/-2 (120 lines); hunks: -8,7 +8,9; -106,7 +108,7 @@ def test_nemotron_v3_reasoning(; symbols: test_nemotron_v3_reasoning, test_nemotron_v3_without_thinking_returns_content, test_nemotron_v3_without_thinking_moves_into_content, test_nemotron_v3_force_nonempty_content_returns_content, touching `test_nemotron_v3_reasoning, test_nemotron_v3_without_thinking_returns_content, test_nemotron_v3_without_thinking_moves_into_content`.
+- Motivation: Title: "[Bugfix][Reasoning] Nemotron V3: surface reasoning as content when thinking is unterminated"; model line: Nemotron Super; category: bug fix; main diff: `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`, `vllm/parser/abstract_parser.py`; technical summary: Covers "[Bugfix][Reasoning] Nemotron V3: surface reasoning as content when thinking is unterminated"; the main implementation surface is `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`, `vllm/parser/abstract_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/reasoning/test_nemotron_v3_reasoning_parser.py` modified +118/-2 (120 lines); hunks: -8,7 +8,9; -106,7 +108,7 @@ def test_nemotron_v3_reasoning(; symbols: test_nemotron_v3_reasoning, test_nemotron_v3_without_thinking_returns_content, test_nemotron_v3_without_thinking_moves_into_content, test_nemotron_v3_force_nonempty_content_returns_content, touching `test_nemotron_v3_reasoning, test_nemotron_v3_without_thinking_returns_content, test_nemotron_v3_without_thinking_moves_into_content`; `vllm/reasoning/nemotron_v3_reasoning_parser.py` modified +22/-7 (29 lines); hunks: -14,20 +14,35 @@ class NemotronV3ReasoningParser(DeepSeekR1ReasoningParser):; symbols: NemotronV3ReasoningParser, extract_reasoning, _should_force_content, get_streaming_fallback_content, touching `NemotronV3ReasoningParser, extract_reasoning, _should_force_content`; `vllm/parser/abstract_parser.py` modified +23/-1 (24 lines); hunks: -776,6 +776,28 @@ def _append_unstreamed_tool_args(; -883,6 +905,6 @@ def parse_delta(; symbols: _append_unstreamed_tool_args, finalize_generation, parse, parse_delta, touching `_append_unstreamed_tool_args, finalize_generation, parse`.
 - Code diff details:
   - `tests/reasoning/test_nemotron_v3_reasoning_parser.py` modified +118/-2 (120 lines); hunks: -8,7 +8,9; -106,7 +108,7 @@ def test_nemotron_v3_reasoning(; symbols: test_nemotron_v3_reasoning, test_nemotron_v3_without_thinking_returns_content, test_nemotron_v3_without_thinking_moves_into_content, test_nemotron_v3_force_nonempty_content_returns_content
+  - `vllm/reasoning/nemotron_v3_reasoning_parser.py` modified +22/-7 (29 lines); hunks: -14,20 +14,35 @@ class NemotronV3ReasoningParser(DeepSeekR1ReasoningParser):; symbols: NemotronV3ReasoningParser, extract_reasoning, _should_force_content, get_streaming_fallback_content
+  - `vllm/parser/abstract_parser.py` modified +23/-1 (24 lines); hunks: -776,6 +776,28 @@ def _append_unstreamed_tool_args(; -883,6 +905,6 @@ def parse_delta(; symbols: _append_unstreamed_tool_args, finalize_generation, parse, parse_delta
 - Key code excerpts:
 
 ```diff
@@ -2364,10 +2394,21 @@ diff -- tests/reasoning/test_nemotron_v3_reasoning_parser.py
 -def test_nemotron_v3_without_thinking_returns_content(
 +def test_nemotron_v3_without_thinking_moves_into_content(
 @@ -124,11 +126,13 @@ def test_nemotron_v3_without_thinking_returns_content(
+diff -- vllm/reasoning/nemotron_v3_reasoning_parser.py
+@@ -14,20 +14,35 @@ class NemotronV3ReasoningParser(DeepSeekR1ReasoningParser):
+-    def extract_reasoning(
+-        self, model_output: str, request: ChatCompletionRequest | ResponsesRequest
+-    ) -> tuple[str | None, str | None]:
+-        reasoning, final_content = super().extract_reasoning(model_output, request)
++    def _should_force_content(
++        self, request: ChatCompletionRequest | ResponsesRequest
+diff -- vllm/parser/abstract_parser.py
+@@ -776,6 +776,28 @@ def _append_unstreamed_tool_args(
 ```
 
 - Reviewed files:
   - tests: `tests/reasoning/test_nemotron_v3_reasoning_parser.py` modified +118/-2
+  - runtime: `vllm/reasoning/nemotron_v3_reasoning_parser.py` modified +22/-7; `vllm/parser/abstract_parser.py` modified +23/-1
 - Risk and verification: The diff ships test coverage in `tests/reasoning/test_nemotron_v3_reasoning_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #45128 - [Model] Remove InternLMForCausalLM registry alias
@@ -2521,6 +2562,57 @@ diff -- vllm/model_executor/models/nemotron.py
 - Reviewed files:
   - runtime: `vllm/model_executor/models/nemotron.py` modified +10/-8
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/nemotron.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #47440 - fix: ensure no double load of lm head in nemotron mtp
+
+- Link: https://github.com/vllm-project/vllm/pull/47440
+- Status/date: merged / 2026-07-07
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h_mtp.py`; associated commits `7ff656cc8bc7`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +1/-5, 13 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "fix: ensure no double load of lm head in nemotron mtp"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nemotron_h_mtp.py`; technical summary: Covers "fix: ensure no double load of lm head in nemotron mtp"; the main implementation surface is `vllm/model_executor/models/nemotron_h_mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/nemotron_h_mtp.py` modified +1/-5 (6 lines); hunks: -415,11 +415,7 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; symbols: load_weights, touching `load_weights`.
+- Code diff details:
+  - `vllm/model_executor/models/nemotron_h_mtp.py` modified +1/-5 (6 lines); hunks: -415,11 +415,7 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; symbols: load_weights
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/nemotron_h_mtp.py
+@@ -415,11 +415,7 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Tensor]]) -> set[str]:
+-            if (
+-                not name.startswith("mtp.")
+-                and "embeddings" not in name
+-                and "lm_head" not in name
+-            ):
++            if not name.startswith("mtp.") and "embeddings" not in name:
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/nemotron_h_mtp.py` modified +1/-5
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/nemotron_h_mtp.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #49781 - [Docs] Fix confusing docstring indentation in nemotron_h.py
+
+- Link: https://github.com/vllm-project/vllm/pull/49781
+- Status/date: merged / 2026-07-25
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `190be7dad2af`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +1/-2, 10 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Docs] Fix confusing docstring indentation in nemotron_h.py"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nemotron_h.py`; technical summary: Covers "[Docs] Fix confusing docstring indentation in nemotron_h.py"; the main implementation surface is `vllm/model_executor/models/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/nemotron_h.py` modified +1/-2 (3 lines); hunks: -771,8 +771,7 @@ def get_mamba_state_shape_from_config(; symbols: get_mamba_state_shape_from_config, touching `get_mamba_state_shape_from_config`.
+- Code diff details:
+  - `vllm/model_executor/models/nemotron_h.py` modified +1/-2 (3 lines); hunks: -771,8 +771,7 @@ def get_mamba_state_shape_from_config(; symbols: get_mamba_state_shape_from_config
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/nemotron_h.py
+@@ -771,8 +771,7 @@ def get_mamba_state_shape_from_config(
+-            - (when use_replayssm is enabled) the x_cache/dt_cache/B_cache
+-              ring-buffer shapes
++            - x_cache/dt_cache/B_cache ring-buffer shapes (use_replayssm only)
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/nemotron_h.py` modified +1/-2
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/nemotron_h.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ## Gap-Closure Notes
 

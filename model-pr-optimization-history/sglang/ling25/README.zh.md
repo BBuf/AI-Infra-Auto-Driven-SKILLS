@@ -10,7 +10,7 @@
 ## PR 覆盖总览
 
 - git 追溯 PR 数: 0
-- 原文档显式引用补充 PR 数: 44
+- 原文档显式引用补充 PR 数: 43
 - 当前文档总 PR 数: 43
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API

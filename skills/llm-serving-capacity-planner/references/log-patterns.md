@@ -121,9 +121,39 @@ Expected format (from `nvidia-smi --query-gpu=index,memory.used,memory.free --fo
 
 This provides per-rank memory comparison, useful for identifying uneven distribution.
 
-## vLLM Patterns (planned)
+## vLLM Patterns
 
-vLLM log patterns will be added when encountered in practice. Key expected patterns:
-- `# GPU blocks: X, # CPU blocks: Y` — KV block allocation
-- `Attention backend: <name>` — attention implementation
-- Memory usage line with `GPU KV cache` and `non-KV cache` breakdown
+These patterns match the current vLLM V1 sources in
+`vllm/v1/worker/gpu_worker.py`,
+`vllm/v1/worker/gpu_model_runner.py`, and
+`vllm/v1/core/kv_cache_utils.py`.
+
+```text
+Initial free memory: 79.20 GiB; Requested memory: 0.900000 (util), 72.00 GiB
+Model loading took 14.50 GiB memory and 12.000000 seconds
+Available KV cache memory: 52.25 GiB
+Graph capturing finished in 8 secs, took 1.25 GiB
+GPU KV cache size: 1,572,864 tokens
+Maximum concurrency for 8,192 tokens per request: 192.00x
+```
+
+The analyzer records initial/requested memory, model-loading memory, available
+KV-cache memory, CUDA-graph memory, total GPU KV tokens, the model length used
+for vLLM's calculation, and its reported theoretical concurrency.
+
+vLLM and SGLang do not expose identical checkpoints. A missing vLLM field is
+reported as unknown; the analyzer does not synthesize
+`mem_fraction_static`, `cuda_graph_max_bs`, or SGLang memory-pool events.
+
+### vLLM Memory Decomposition
+
+```text
+framework_overhead = GPU_HBM - initial_free_memory
+model_weights      = model_loading_memory
+kv_pool            = available_kv_cache_memory
+cuda_graph         = graph_capture_memory
+other              = nvidia_smi_used - sum(above)
+```
+
+Without `nvidia-smi`, the known fields are summed and the unreported residual
+remains unknown rather than being assigned to a fabricated category.

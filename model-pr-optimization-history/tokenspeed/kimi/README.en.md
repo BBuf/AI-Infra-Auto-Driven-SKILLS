@@ -1,16 +1,23 @@
 # TokenSpeed Kimi Model PR Optimization History
 
-## 2026-06-27 Source Head Refresh
+## 2026-07-28 Source Head Refresh
 
-Rechecked TokenSpeed upstream main with `git ls-remote` at `lightseekorg/tokenspeed@d0a7faddb5ec0d4c6d037c4c3e6a781d2c5164a8`.
-The existing file-level source-scan rows below remain the last tracked-file audit; use `model-pr-optimization-history/open-pr-watch.md` before relying on current open PR state.
+Rechecked TokenSpeed upstream main at `lightseekorg/tokenspeed@e41aa8b1609a9412d7ed26aa56d910828607950f`.
+The two-commit range after the previous head
+`d73bf0454422092f306d5575e803a08fd35ac41c` was read in full.
 
-Result: 2 additional PR-numbered merge(s) touched tracked files and are not yet promoted into full per-PR diff audit cards below. Treat this section as a freshness index; promote any row into a full card only after manual diff review.
+Result: PR #821 adds the Kimi K3 FlatKV/KDA/MLA deployment contract and is
+promoted as source guidance with its hardware and validation limitations.
+PR #823 only adds the corresponding README news link. The page continues to
+cover the DP+EAGLE3 collective-size hang fix, Kimi incremental DFlash capture,
+and Kimi-K2.7 EAGLE3.1 model semantics.
 
-| Merged | PR | Title | Tracked files touched |
-| --- | --- | --- | --- |
-| 2026-06-26 | [#519](https://github.com/lightseekorg/tokenspeed/pull/519) | feat: distributed argmax for EAGLE greedy sampling | `logits_processor.py` |
-| 2026-06-25 | [#456](https://github.com/lightseekorg/tokenspeed/pull/456) | perf(kernel): optimize Qwen vision QKV rotary layout | `qkv_rotary.py` |
+| Merged | PR | Runtime signal |
+| --- | --- | --- |
+| 2026-07-27 | [#821](https://github.com/lightseekorg/tokenspeed/pull/821) | Kimi K3 deployment contract |
+| 2026-07-07 | [#596](https://github.com/lightseekorg/tokenspeed/pull/596) | DP + EAGLE3 mixed-step hang |
+| 2026-07-25 | [#795](https://github.com/lightseekorg/tokenspeed/pull/795) | Kimi-K2.7 EAGLE3.1 |
+| 2026-07-26 | [#797](https://github.com/lightseekorg/tokenspeed/pull/797) | incremental DFlash capture |
 
 ## 2026-06-27 PR Backfill Audit
 
@@ -57,6 +64,102 @@ Filter used in this pass: merged PRs whose titles or files matched `Kimi`, `kimi
 | 2026-06-26 | [#476](https://github.com/lightseekorg/tokenspeed/pull/476) | merged | Add AMD Kimi MXFP4 CI job | AMD eval YAML, MLA metadata unit test |
 
 ## Per-PR Diff Audit Cards
+
+### PR #821 - Add the Kimi K3 deployment recipe
+
+- Link: https://github.com/lightseekorg/tokenspeed/pull/821
+- Status/date: merged / 2026-07-27
+- Trace source: final upstream commit
+  `55a8390007e5ace17919d76e5cfaef0c68c79e25`; complete two-commit increment
+  and full recipe diff read locally.
+- Diff scope read: 1 file, +117/-0.
+- Motivation: document the runtime and packaging constraints required to serve
+  Kimi K3 instead of treating K2.5 flags as interchangeable.
+- Key implementation: requires FlatKV, describes vendor-neutral KDA dispatch
+  with NVIDIA FLA-derived or AMD native state layouts, selects MLA backends,
+  and gives separate NVIDIA B300 and AMD gfx950 commands.
+- Code diff details: the recipe adds FlatKV build/preflight constraints,
+  flattened-checkpoint and writable-module-cache requirements, an NVIDIA
+  `tokenspeed-situ` sidecar path with Triton fallback, and an AMD Gluon path.
+- Key code excerpts:
+
+```diff
++- K3 is FlatKV-only. Build the `tokenspeed_scheduler` extension with
++  `-DTOKENSPEED_FLAT_KVCACHE=ON`
++tokenspeed serve moonshotai/Kimi-K3 \
++  --kv-cache-dtype fp8 \
++  --tensor-parallel-size 8
+```
+
+- Reviewed files: `docs/recipes/models.md`; the following README commit only
+  links the new K3 announcement.
+- Risk and verification: NVIDIA uses a B300/CUDA 13 `tokenspeed-situ` sidecar
+  or falls back to Triton on other platforms; the checkpoint must be flattened,
+  remote-code caches must be writable, and default FP8 KV scales can affect
+  accuracy. This recipe is not a measured cross-framework benchmark.
+
+### PR #596 - Fix Kimi DP EAGLE3 mixed-step hang
+
+- Link: https://github.com/lightseekorg/tokenspeed/pull/596
+- Status/date: merged / 2026-07-07
+- Trace source: `git log --name-only -- <model-files>` plus the final upstream commit and PR body.
+- Diff scope read: full 184-line diff, 6 files, +27/-30.
+- Motivation: when DP ranks mixed EXTEND and DECODE in one scheduler step, active and idle ranks could size the EAGLE3 first catch-up collective differently and hang.
+- Key implementation: makes first-step activation reduction an explicit draft-model capability shared by active EAGLE execution and idle replay, marks Kimi/DeepSeek, Llama, and Qwen3.5 draft models accordingly, and prevents fused `lm_head_gemm` from launching with zero tokens.
+- Code diff details: the old class checks are replaced with `draft_first_step_reduce_for_catchup`, so collective sizing follows model behavior rather than a hard-coded model list.
+- Key code excerpts:
+
+```diff
++def draft_model_reduces_first_step_catchup(draft_model) -> bool:
++    return bool(getattr(draft_model, "draft_first_step_reduce_for_catchup", False))
++draft_first_step_reduce = step_idx == 0 and (
++    all_decode_or_idle or draft_reduces_first_step_catchup)
+```
+
+- Reviewed files: runtime: `execution/drafter/eagle.py`, `execution/model_executor.py`, `models/{deepseek_v3,llama_eagle3,qwen3_5_nextn}.py`, `lm_head_gemm.py`; no separate test file was added.
+- Risk and verification: all ranks must derive identical collective row counts for mixed forward modes; the PR reports DP8 + EAGLE3 AIME25 completion at 28/30 after the fix, and zero-row fused lm-head routing must remain a no-op.
+
+### PR #795 - Support EAGLE3.1 for Kimi-K2.7 Code
+
+- Link: https://github.com/lightseekorg/tokenspeed/pull/795
+- Status/date: merged / 2026-07-25
+- Trace source: `git log --name-only -- <model-files>` plus the final upstream commit and PR body.
+- Diff scope read: full 49-line diff, 1 file, +24/-0.
+- Motivation: the Kimi-K2.7 EAGLE3.1 MLA speculator publishes per-input FC normalization and optional normalized auxiliary-output semantics that the shared DeepSeek-style drafter did not implement.
+- Key implementation: constructs one RMSNorm per concatenated FC input chunk when `fc_norm` is enabled, normalizes each chunk before the projection, and honors `norm_output` for the auxiliary hidden-state output.
+- Code diff details: all behavior is config-gated inside `Eagle3MlaModel`, preserving older EAGLE checkpoints.
+- Key code excerpts:
+
+```diff
++if self.fc_norm is not None:
++    chunks = hidden_states.chunk(self.num_fc_input_dim, dim=-1)
++    hidden_states = torch.cat(
++        [norm(chunk) for norm, chunk in zip(self.fc_norm, chunks, strict=True)], dim=-1)
+```
+
+- Reviewed files: runtime: `python/tokenspeed/runtime/models/deepseek_v3.py`; validation evidence: PR benchmark and launch recipe for `nvidia/Kimi-K2.7-Code-NVFP4`.
+- Risk and verification: keep `fc_norm`/`norm_output` tied to checkpoint config; the reported 4xGB200 1-3-4 run shows 1.36x-1.91x category speedups, which should not be generalized to other acceptance lengths or serving shapes.
+
+### PR #797 - Support incremental DFlash capture for Kimi
+
+- Link: https://github.com/lightseekorg/tokenspeed/pull/797
+- Status/date: merged / 2026-07-26
+- Trace source: `git log --name-only -- <model-files>` plus the final upstream commit and PR body.
+- Diff scope read: full 166-line diff, 4 files, +61/-7.
+- Motivation: Kimi delegated DFlash capture to its DeepSeek-style language model, but the wrapper dropped the incremental projection callback and slot buffers expected by the executor, preventing startup with incremental projection enabled.
+- Key implementation: threads callback and slot buffers through `KimiK25ForConditionalGeneration.set_dflash_layers_to_capture`, stores a layer-to-slot map, copies each captured hidden state into its slot, and invokes the incremental projection callback as soon as that layer finishes.
+- Code diff details: the model tracks `_dflash_incr_active`; CI plumbing also aligns Slurm server startup timeout with readiness so long Kimi startup does not fail independently.
+- Key code excerpts:
+
+```diff
++self.model._dflash_capture_idx_map = {
++    layer_idx: i for i, layer_idx in enumerate(sorted(self.model.layers_to_capture))
++}
++self.model._dflash_incremental_callback(capture_idx, num_tokens)
+```
+
+- Reviewed files: runtime: `models/deepseek_v3.py`, `models/kimi_k25.py`; tests/CI: `test/ci_system/{pipeline,test_pipeline}.py`.
+- Risk and verification: callback ordering, slot capacity, CUDA-stream lifetime, and `_dflash_incr_active` reset must match the executor; the PR records syntax/pre-commit checks and a live B200 validation lane.
 
 ### PR #29 - Add Kimi K2.5 agentic perf CI task
 

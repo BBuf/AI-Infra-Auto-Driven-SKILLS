@@ -1,12 +1,13 @@
 # TokenSpeed Qwen3.5 模型 PR 优化历史
 
-## 2026-06-27 源码 head 刷新
+## 2026-07-28 源码 head 刷新
 
-已用 `git ls-remote` 复核 TokenSpeed 上游 main head：
-`lightseekorg/tokenspeed@d0a7faddb5ec0d4c6d037c4c3e6a781d2c5164a8`。
-下方文件级 source-scan 行仍是上一轮 tracked-file 审计结果；引用当前 open PR 状态前，先看 `model-pr-optimization-history/open-pr-watch.md`。
+已复核 TokenSpeed 上游 main：
+`lightseekorg/tokenspeed@e41aa8b1609a9412d7ed26aa56d910828607950f`。
+已读完上一 head `d73bf0454422092f306d5575e803a08fd35ac41c`
+之后的 2-commit 完整增量；两项都只是 Kimi K3 文档变化，因此不新增 Qwen3.5 卡片。
 
-结果：除了本文已有 timeline/backfill 行之外，没有额外 PR-numbered merge 命中 tracked files。
+结果：Qwen3.5 新增原生优化 DFlash，修正 mixed-precision GDN/MoE FP8 权重加载，并补齐 topology-safe 的多机 collective 与 staging 行为。
 
 ## 2026-06-27 PR 补漏复核
 
@@ -52,6 +53,70 @@
 | 2026-06-25 | [#456](https://github.com/lightseekorg/tokenspeed/pull/456) | merged | perf(kernel): optimize Qwen vision QKV rotary layout | packed rotary kernel, Qwen3.5 VLM E2E test |
 
 ## 逐 PR diff 审计卡
+
+### PR #510 - 支持 Qwen3.5 DFlash 并优化 runtime
+
+- 链接: https://github.com/lightseekorg/tokenspeed/pull/510
+- 状态/时间: merged / 2026-07-15
+- 反查来源: `git log --name-only -- <model-files>`，并结合最终上游提交和 PR 正文。
+- 代码 diff 已读范围: 完整 2,169 行 diff，12 个文件，+1597/-81。
+- 动机: Qwen3.5 缺少原生 DFlash；直接移植仍会分别支付 hidden-state projection、KV materialization、prepare-decode、QK norm/RoPE 和 draft-cache 多次 launch。
+- 实现要点: 捕获选定 target layer，在 auxiliary stream 上增量投影；加入融合 KV RMSNorm/RoPE/scatter 与 FP8 draft-cache，融合 prepare-decode bookkeeping，支持 FA4 非因果 draft attention，并修复 draft RoPE 配置。
+- 代码 diff 细节: DFlash drafter 缓存 KV buffer pointer、把每层 KV 直接写入 pool，用 event 同步 incremental projection，并为 draft model 新增融合 QK-RMSNorm+RoPE Triton kernel。
+- 关键代码摘录:
+
+```diff
++_fused_norm_rope_scatter_kernel[(total_ctx, num_kv_heads, n_layers)](
++    kv, k_norm_weight, eps, cos_sin_cache, positions, loc, k_ptrs, v_ptrs, ...)
++self.drafter._prepare_incremental_proj(
++    ctx.input_num_tokens, positions, out_cache_loc)
+```
+
+- 已读文件: runtime：`execution/drafter/{dflash,_dflash_fused_kv}.py`、`cache_loc_kernel.py`、CUDA-graph/model executor/runner、`models/{dflash,qwen3_5}.py`、MHA config；kernel/测试：FlashAttention registry、`layernorm/triton.py`、`test_layernorm.py`。
+- 验证与风险: 必须记录 target/draft checkpoint、draft attention backend、KV dtype、capture layer 和 speculative token 数；验证 FP8 scale、非因果 FA4 window、auxiliary-stream 顺序、CUDA-graph replay，以及 RoPE 修复后的 acceptance rate。
+
+### PR #766 - 修复 Qwen3.5 FP8 权重加载
+
+- 链接: https://github.com/lightseekorg/tokenspeed/pull/766
+- 状态/时间: merged / 2026-07-22
+- 反查来源: `git log --name-only -- <model-files>`，并结合最终上游提交和 PR 正文。
+- 代码 diff 已读范围: 完整 283 行 diff，2 个文件，+118/-67。
+- 动机: Qwen3.5-35B-A3B FP8 checkpoint 量化 GDN `qkv/z`，但让 `b/a` 保持 BF16；把 6 个 projection 全塞进一个 quantized linear 会输出乱码，MoE kernel 在 TP 下还拿到了未分片 intermediate size。
+- 实现要点: 从 `ignored_layers` 推导各 GDN projection group 的量化属性，仅在量化不同的时候拆成 `in_proj_qkvz` 与 `in_proj_ba`，按所选布局调整 checkpoint mapping，并从 TP-sharded `w2_weight` 推导 MoE intermediate size。
+- 代码 diff 细节: 全量化或全不量化 checkpoint 继续使用单一 fused projection；只有 mixed checkpoint 承担 split-linear 成本。
+- 关键代码摘录:
+
+```diff
++self._split_in_proj = quant_config is not None and (qkvz_unquant != ba_unquant)
++if self._split_in_proj:
++    self.in_proj_qkvz = MergedColumnParallelLinear(..., quant_config=...)
++    self.in_proj_ba = MergedColumnParallelLinear(..., quant_config=...)
++intermediate_size = w.w2_weight.shape[-1]
+```
+
+- 已读文件: runtime：`python/tokenspeed/runtime/models/qwen3_5.py`；kernel wrapper：`tokenspeed_kernel/ops/moe/flashinfer/trtllm_fp8.py`。
+- 验证与风险: 需在 TP、EP、hybrid 下覆盖 BF16、全 FP8 和 mixed ignored-layer checkpoint；PR 报告 Qwen3.5-35B-A3B-FP8 在 TP2 与 DP4EP4 输出正确。
+
+### PR #780 - 加固 Qwen3.5 多机执行
+
+- 链接: https://github.com/lightseekorg/tokenspeed/pull/780
+- 状态/时间: merged / 2026-07-28
+- 反查来源: `git log --name-only -- <model-files>`，并结合最终上游提交和 PR 正文。
+- 代码 diff 已读范围: 完整 555 行 diff，8 个文件，+347/-35。
+- 动机: Qwen3.5 多机布局可能跨节点选择 CUDA-IPC/symmetric-memory collective；overlap H2D copy 尚未完成时，还可能复用 persistent pinned Mamba/GDN staging buffer。
+- 实现要点: 检测跨节点 process group，对 all-reduce、all-gather、token collective、logits gather/argmax 强制回退 NCCL；把 Mamba index 改为逐 step bulk pinned staging，并补充一致 NCCL 设置的文档。
+- 代码 diff 细节: node-local group 继续走低延迟 RSAG/custom path，只有 cross-node group 回退；测试断言 backend selection 与 staging 不复用。
+- 关键代码摘录:
+
+```diff
++if self._group_spans_nodes(group):
++    return self._nccl.token_all_gather(tensor, group, scattered_num_tokens)
++(...mamba staging...) = self._bulk_pinned(
++    (batch_size, torch.int32), (batch_size, torch.int32), ...)
+```
+
+- 已读文件: runtime：`distributed/comm_backend/auto.py`、`execution/{input_buffer,model_executor}.py`、`layers/logits_processor.py`；测试/文档：`test_comm_ops.py`、`test_input_buffer_mamba_staging.py`、`test_logits_processor.py`、`docs/serving/parallelism.md`。
+- 验证与风险: 验证 node-rank mapping 与 NCCL transport 一致性，确保 custom collective 仍只用于 node-local，并结合 GDN state copy-on-write 与 TP logits 路径跑 overlap/CUDA-graph replay。
 
 ### PR #181 - feat(qwen3): add Qwen3 MoE causal LM support
 

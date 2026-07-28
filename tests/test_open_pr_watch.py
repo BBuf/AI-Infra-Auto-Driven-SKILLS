@@ -31,6 +31,39 @@ class OpenPrWatchTest(unittest.TestCase):
         self.assertIn("is:open", query)
         self.assertIn("Qwen3.5", query)
 
+    def test_default_terms_cover_current_model_families(self) -> None:
+        self.assertTrue(
+            {"MiniMax M3", "Kimi K3", "Inkling", "Unlimited OCR"}
+            <= set(self.mod.DEFAULT_TERMS)
+        )
+
+    def test_new_terms_match_case_and_punctuation_once_per_pr(self) -> None:
+        def fetch(repo: str, terms: list[str], per_page: int) -> list[dict]:
+            return [
+                {
+                    "number": 7,
+                    "title": "MINIMAX-M3 and kimi-k3 runtime",
+                    "body": "Inkling plus Unlimited-OCR",
+                    "html_url": f"https://github.com/{repo}/pull/7",
+                    "updated_at": "2026-07-27T00:00:00Z",
+                }
+            ]
+
+        self.mod.gh_search_open_prs = fetch
+        items = self.mod.collect_watch_items(
+            {"x": "owner/repo"},
+            ["MiniMax M3", "Kimi K3", "Inkling", "Unlimited OCR"],
+            10,
+        )
+
+        self.assertEqual(len(items), 1)
+        self.assertEqual(
+            set(items[0].terms),
+            {"MiniMax M3", "Kimi K3", "Inkling", "Unlimited OCR"},
+        )
+        rendered = self.mod.render_markdown(items, generated_on="2026-07-27")
+        self.assertEqual(rendered.count("[#7]("), 1)
+
     def test_render_markdown_groups_repos_and_terms(self) -> None:
         items = [
             self.mod.WatchItem(

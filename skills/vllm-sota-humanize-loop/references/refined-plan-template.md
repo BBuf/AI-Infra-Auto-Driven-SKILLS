@@ -8,9 +8,16 @@ fixed fair benchmark and model PR history notes have already been captured.
 
 ## Goal Description
 
-Make vLLM match or beat the best observed SGLang/TensorRT-LLM serving
-performance for `<model>` on `<hardware>` under the fixed workload, precision,
-quantization, and SLA captured in `<artifact-root>`.
+Target framework: vLLM.
+
+Comparison framework set: `<comparison-frameworks>`.
+
+Make vLLM match or beat the best observed SLA-passing result among the selected
+comparison frameworks for `<model>` on `<hardware>` under the fixed workload,
+precision, quantization, and SLA captured in `<artifact-root>`.
+
+User-excluded or unsupported frameworks and reasons:
+`<skipped-frameworks-and-reasons>`.
 
 The fixed benchmark phase is complete. The RLCR loop must perform the current
 gap decision, collect profiler evidence, run layer-pipeline deep dives, patch
@@ -22,12 +29,24 @@ The matching PR-driven model history has been read from
 `model-pr-optimization-history`, and `history/model-pr-history-notes.md`
 records the vLLM/SGLang PR evidence that influenced source-path selection.
 
+Campaign evidence contract:
+
+- `manifest.md` records immutable source heads for every selected framework.
+- Every cited PR records PR state as `open`, `merged`, or `closed-unmerged`;
+  open PRs are candidate evidence and include their immutable head SHAs.
+- Every accepted patch records validation evidence and known limitations.
+- The checkpoint preserves selected comparison frameworks,
+  user-excluded or unsupported frameworks, the current leading selected
+  comparison result, and the remaining gap.
+
 ## Acceptance Criteria
 
 - AC-1: Fixed benchmark evidence is preserved
   - Positive Tests (expected to PASS):
     - `benchmark/candidates.jsonl`, `benchmark/summary.md`, and
       `benchmark/winning-commands.md` exist under `<artifact-root>`.
+    - `manifest.md` records `target_framework: vllm`, selected comparison
+      frameworks, and user-excluded or unsupported frameworks with reasons.
     - The workload uses the fixed scenario set or a user-provided production
       workload recorded before RLCR began.
   - Negative Tests (expected to FAIL):
@@ -41,8 +60,9 @@ records the vLLM/SGLang PR evidence that influenced source-path selection.
     - The notes cite matching SGLang history when SGLang is the leading
       competitor or when SGLang evidence influenced a suspected missing vLLM
       fast path.
-    - The notes include docs read, PR numbers, source files, symbols,
-      validation risks, and the decision each item influenced.
+    - The notes include docs read, PR numbers, immutable source heads, PR state,
+      source files, symbols, validation evidence, known limitations, validation
+      risks, and the decision each item influenced.
   - Negative Tests (expected to FAIL):
     - A model-specific source patch is proposed without checking matching model
       PR history for prior vLLM changes and relevant competitor evidence.
@@ -127,10 +147,12 @@ records the vLLM/SGLang PR evidence that influenced source-path selection.
     - Attempt, optimization, source-idea, lineage, and profile-digest artifacts
       are updated after each round.
     - `humanize/model-loop-checkpoint.md` records the original benchmark
-      winners, workload/SLA, vLLM commit, applied patches, current best vLLM
-      result, remaining gap, model PR history notes, profiler rows,
-      layer-pipeline notes, NCU digest paths, rejected source ideas, and the
-      next planned vLLM patch.
+      winners, selected comparison frameworks, user-excluded or unsupported
+      frameworks, workload/SLA, vLLM commit, applied patches, current best vLLM
+      result, current leading selected comparison result, remaining gap, model
+      PR history notes, immutable source heads, PR state, validation evidence,
+      known limitations, profiler rows, layer-pipeline notes, NCU digest paths,
+      rejected source ideas, and the next planned vLLM patch.
     - The campaign can resume from the same model-loop artifacts with benchmark,
       profile, source-evidence, and patch lineage intact.
     - The active `.humanize/rlcr/<timestamp>/state.md` exists for the
@@ -216,6 +238,9 @@ unless the current in-loop evidence proves no patch is needed.
 - Keep model PR history notes under `<artifact-root>/history/`.
 - Keep layer-pipeline reports under `<artifact-root>/analysis/`.
 - Keep NCU digests under `<artifact-root>/kernel/ncu-digests/`.
+- Before exit, stop only processes started by this run and remove only its
+  explicit model downloads/cache entries; record before/after process and GPU
+  state and preserve shared caches.
 - Commit vLLM changes after each round summary.
 - Mention exact changed files, commands, result deltas, and remaining risk in
   each Humanize round summary.

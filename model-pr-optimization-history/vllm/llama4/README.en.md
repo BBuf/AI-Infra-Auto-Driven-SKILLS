@@ -33,13 +33,13 @@
 | 2025-04-09 | [#16311](https://github.com/vllm-project/vllm/pull/16311) | merged | [BugFix] llama4 qknorm should be not shared across head | `vllm/model_executor/models/llama4.py` |
 | 2025-04-10 | [#16365](https://github.com/vllm-project/vllm/pull/16365) | merged | [Model] Remove image mm limit for LLaMa4 | `vllm/model_executor/models/mllama4.py` |
 | 2025-04-11 | [#16439](https://github.com/vllm-project/vllm/pull/16439) | merged | [Llama4] Enable attention temperature tuning by default for long context (>32k) | `vllm/model_executor/models/llama4.py` |
-| 2025-04-11 | [#16463](https://github.com/vllm-project/vllm/pull/16463) | merged | [Frontend] Added chat templates for LLaMa4 pythonic tool calling | `examples/tool_chat_template_llama4_pythonic.jinja` |
+| 2025-04-11 | [#16463](https://github.com/vllm-project/vllm/pull/16463) | merged | [Frontend] Added chat templates for LLaMa4 pythonic tool calling | `examples/tool_chat_template_llama4_pythonic.jinja`, `vllm/entrypoints/openai/tool_parsers/pythonic_tool_parser.py` |
 | 2025-04-12 | [#16512](https://github.com/vllm-project/vllm/pull/16512) | merged | Optimized topk for topk=1 (Llama-4) | `vllm/model_executor/models/llama4.py` |
 | 2025-04-18 | [#16801](https://github.com/vllm-project/vllm/pull/16801) | merged | [BugFix] Accuracy fix for llama4 int4 - improperly casted scales | `vllm/model_executor/models/llama4.py` |
 | 2025-04-18 | [#16746](https://github.com/vllm-project/vllm/pull/16746) | merged | [Bugfix] fix pp for llama4 | `vllm/model_executor/models/mllama4.py` |
-| 2025-04-24 | [#16428](https://github.com/vllm-project/vllm/pull/16428) | merged | Add chat template for Llama 4 models | `examples/tool_chat_template_llama4_json.jinja` |
+| 2025-04-24 | [#16428](https://github.com/vllm-project/vllm/pull/16428) | merged | Add chat template for Llama 4 models | `examples/tool_chat_template_llama4_json.jinja`, `vllm/entrypoints/openai/tool_parsers/llama_tool_parser.py` |
 | 2025-04-29 | [#17315](https://github.com/vllm-project/vllm/pull/17315) | merged | [model] make llama4 compatible with pure dense layers | `vllm/model_executor/models/llama4.py` |
-| 2025-05-22 | [#17917](https://github.com/vllm-project/vllm/pull/17917) | merged | [Frontend][Bug Fix] Update llama4 pythonic jinja template and llama4_pythonic parser | `examples/tool_chat_template_llama4_pythonic.jinja` |
+| 2025-05-22 | [#17917](https://github.com/vllm-project/vllm/pull/17917) | merged | [Frontend][Bug Fix] Update llama4 pythonic jinja template and llama4_pythonic parser | `examples/tool_chat_template_llama4_pythonic.jinja`, `vllm/entrypoints/openai/tool_parsers/llama4_pythonic_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py` |
 | 2025-06-02 | [#18368](https://github.com/vllm-project/vllm/pull/18368) | merged | [Model] enable data parallel for Llama4 vision encoder | `vllm/model_executor/models/mllama4.py` |
 | 2025-06-25 | [#19997](https://github.com/vllm-project/vllm/pull/19997) | merged | [Llama4] Update `attn_temperature_tuning` | `vllm/model_executor/models/llama4.py` |
 | 2025-07-12 | [#20419](https://github.com/vllm-project/vllm/pull/20419) | merged | Enable ModelOpt Llama4 fp8 checkpoint deployment | `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py` |
@@ -284,10 +284,11 @@ diff -- vllm/model_executor/models/llama4.py
 - Status/date: merged / 2025-04-11
 - Trace source: `git log --name-only -- <model-files>` found it through `examples/tool_chat_template_llama4_pythonic.jinja`; associated commits `16eda8c43a9d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +182/-2, 223 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Frontend] Added chat templates for LLaMa4 pythonic tool calling"; model line: Llama 4; category: model implementation change; main diff: `examples/tool_chat_template_llama4_pythonic.jinja`; technical summary: Covers "[Frontend] Added chat templates for LLaMa4 pythonic tool calling"; the main implementation surface is `examples/tool_chat_template_llama4_pythonic.jinja`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `examples/tool_chat_template_llama4_pythonic.jinja` added +139/-0 (139 lines); hunks: -0,0 +1,139.
+- Motivation: Title: "[Frontend] Added chat templates for LLaMa4 pythonic tool calling"; model line: Llama 4; category: model implementation change; main diff: `examples/tool_chat_template_llama4_pythonic.jinja`, `vllm/entrypoints/openai/tool_parsers/pythonic_tool_parser.py`; technical summary: Covers "[Frontend] Added chat templates for LLaMa4 pythonic tool calling"; the main implementation surface is `examples/tool_chat_template_llama4_pythonic.jinja`, `vllm/entrypoints/openai/tool_parsers/pythonic_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `examples/tool_chat_template_llama4_pythonic.jinja` added +139/-0 (139 lines); hunks: -0,0 +1,139; `vllm/entrypoints/openai/tool_parsers/pythonic_tool_parser.py` modified +1/-1 (2 lines); hunks: -28,7 +28,7 @@ class _UnexpectedAstError(Exception):; symbols: _UnexpectedAstError, PythonicToolParser, touching `_UnexpectedAstError, PythonicToolParser`.
 - Code diff details:
   - `examples/tool_chat_template_llama4_pythonic.jinja` added +139/-0 (139 lines); hunks: -0,0 +1,139
+  - `vllm/entrypoints/openai/tool_parsers/pythonic_tool_parser.py` modified +1/-1 (2 lines); hunks: -28,7 +28,7 @@ class _UnexpectedAstError(Exception):; symbols: _UnexpectedAstError, PythonicToolParser
 - Key code excerpts:
 
 ```diff
@@ -299,10 +300,15 @@ diff -- examples/tool_chat_template_llama4_pythonic.jinja
 +{%- endif %}
 +{%- if not tools_in_user_message is defined %}
 +    {%- set tools_in_user_message = false %}
+diff -- vllm/entrypoints/openai/tool_parsers/pythonic_tool_parser.py
+@@ -28,7 +28,7 @@ class _UnexpectedAstError(Exception):
+-    such as Llama 3.2 models.
++    such as Llama 3.2 and Llama 4 models.
 ```
 
 - Reviewed files:
   - docs: `examples/tool_chat_template_llama4_pythonic.jinja` added +139/-0
+  - runtime: `vllm/entrypoints/openai/tool_parsers/pythonic_tool_parser.py` modified +1/-1
 - Risk and verification: The diff ships test coverage in `tests/tool_use/conftest.py`, `tests/tool_use/utils.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #16512 - Optimized topk for topk=1 (Llama-4)
@@ -389,10 +395,11 @@ diff -- vllm/model_executor/models/mllama4.py
 - Status/date: merged / 2025-04-24
 - Trace source: `git log --name-only -- <model-files>` found it through `examples/tool_chat_template_llama4_json.jinja`; associated commits `05e1fbfc52ca`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +139/-1, 172 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Add chat template for Llama 4 models"; model line: Llama 4; category: model support/runtime entry; main diff: `examples/tool_chat_template_llama4_json.jinja`; technical summary: Covers "Add chat template for Llama 4 models"; the main implementation surface is `examples/tool_chat_template_llama4_json.jinja`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `examples/tool_chat_template_llama4_json.jinja` added +116/-0 (116 lines); hunks: -0,0 +1,116.
+- Motivation: Title: "Add chat template for Llama 4 models"; model line: Llama 4; category: model support/runtime entry; main diff: `examples/tool_chat_template_llama4_json.jinja`, `vllm/entrypoints/openai/tool_parsers/llama_tool_parser.py`; technical summary: Covers "Add chat template for Llama 4 models"; the main implementation surface is `examples/tool_chat_template_llama4_json.jinja`, `vllm/entrypoints/openai/tool_parsers/llama_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `examples/tool_chat_template_llama4_json.jinja` added +116/-0 (116 lines); hunks: -0,0 +1,116; `vllm/entrypoints/openai/tool_parsers/llama_tool_parser.py` modified +1/-0 (1 lines); hunks: -27,6 +27,7; symbols: Llama3JsonToolParser, touching `Llama3JsonToolParser`.
 - Code diff details:
   - `examples/tool_chat_template_llama4_json.jinja` added +116/-0 (116 lines); hunks: -0,0 +1,116
+  - `vllm/entrypoints/openai/tool_parsers/llama_tool_parser.py` modified +1/-0 (1 lines); hunks: -27,6 +27,7; symbols: Llama3JsonToolParser
 - Key code excerpts:
 
 ```diff
@@ -404,10 +411,14 @@ diff -- examples/tool_chat_template_llama4_json.jinja
 +        {%- for item in var -%}
 +            {%- if 'type' not in item -%}
 +                {%- set valid = false -%}
+diff -- vllm/entrypoints/openai/tool_parsers/llama_tool_parser.py
+@@ -27,6 +27,7 @@
++@ToolParserManager.register_module("llama4_json")
 ```
 
 - Reviewed files:
   - docs: `examples/tool_chat_template_llama4_json.jinja` added +116/-0
+  - runtime: `vllm/entrypoints/openai/tool_parsers/llama_tool_parser.py` modified +1/-0
 - Risk and verification: The diff ships test coverage in `tests/tool_use/utils.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #17315 - [model] make llama4 compatible with pure dense layers
@@ -441,10 +452,12 @@ diff -- vllm/model_executor/models/llama4.py
 - Status/date: merged / 2025-05-22
 - Trace source: `git log --name-only -- <model-files>` found it through `examples/tool_chat_template_llama4_pythonic.jinja`; associated commits `c91fe7b1b9c4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +541/-72, 720 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Frontend][Bug Fix] Update llama4 pythonic jinja template and llama4_pythonic parser"; model line: Llama 4; category: bug fix; main diff: `examples/tool_chat_template_llama4_pythonic.jinja`; technical summary: Covers "[Frontend][Bug Fix] Update llama4 pythonic jinja template and llama4_pythonic parser"; the main implementation surface is `examples/tool_chat_template_llama4_pythonic.jinja`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `examples/tool_chat_template_llama4_pythonic.jinja` modified +36/-64 (100 lines); hunks: -1,85 +1,51; -91,10 +57,12.
+- Motivation: Title: "[Frontend][Bug Fix] Update llama4 pythonic jinja template and llama4_pythonic parser"; model line: Llama 4; category: bug fix; main diff: `examples/tool_chat_template_llama4_pythonic.jinja`, `vllm/entrypoints/openai/tool_parsers/llama4_pythonic_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py`; technical summary: Covers "[Frontend][Bug Fix] Update llama4 pythonic jinja template and llama4_pythonic parser"; the main implementation surface is `examples/tool_chat_template_llama4_pythonic.jinja`, `vllm/entrypoints/openai/tool_parsers/llama4_pythonic_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `examples/tool_chat_template_llama4_pythonic.jinja` modified +36/-64 (100 lines); hunks: -1,85 +1,51; -91,10 +57,12; `vllm/entrypoints/openai/tool_parsers/llama4_pythonic_tool_parser.py` added +303/-0 (303 lines); hunks: -0,0 +1,303; symbols: _UnexpectedAstError, Llama4PythonicToolParser, __init__, current_tool_index, touching `_UnexpectedAstError, Llama4PythonicToolParser, __init__`; `vllm/entrypoints/openai/tool_parsers/__init__.py` modified +3/-1 (4 lines); hunks: -7,6 +7,7; -16,5 +17,6.
 - Code diff details:
   - `examples/tool_chat_template_llama4_pythonic.jinja` modified +36/-64 (100 lines); hunks: -1,85 +1,51; -91,10 +57,12
+  - `vllm/entrypoints/openai/tool_parsers/llama4_pythonic_tool_parser.py` added +303/-0 (303 lines); hunks: -0,0 +1,303; symbols: _UnexpectedAstError, Llama4PythonicToolParser, __init__, current_tool_index
+  - `vllm/entrypoints/openai/tool_parsers/__init__.py` modified +3/-1 (4 lines); hunks: -7,6 +7,7; -16,5 +17,6
 - Key code excerpts:
 
 ```diff
@@ -456,10 +469,21 @@ diff -- examples/tool_chat_template_llama4_pythonic.jinja
 -    {%- set tools_in_user_message = false %}
 -{%- endif %}
 -{%- if not tools is defined %}
+diff -- vllm/entrypoints/openai/tool_parsers/llama4_pythonic_tool_parser.py
+@@ -0,0 +1,303 @@
++# SPDX-License-Identifier: Apache-2.0
++import ast
++import json
++import re
++from collections.abc import Sequence
++from typing import Any, Union
+diff -- vllm/entrypoints/openai/tool_parsers/__init__.py
+@@ -7,6 +7,7 @@
 ```
 
 - Reviewed files:
   - docs: `examples/tool_chat_template_llama4_pythonic.jinja` modified +36/-64
+  - runtime: `vllm/entrypoints/openai/tool_parsers/llama4_pythonic_tool_parser.py` added +303/-0; `vllm/entrypoints/openai/tool_parsers/__init__.py` modified +3/-1
 - Risk and verification: The diff ships test coverage in `tests/entrypoints/openai/tool_parsers/test_llama4_pythonic_tool_parser.py`, `tests/tool_use/utils.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #18368 - [Model] enable data parallel for Llama4 vision encoder

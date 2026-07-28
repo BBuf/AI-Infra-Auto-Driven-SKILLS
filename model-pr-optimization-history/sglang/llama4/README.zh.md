@@ -4,7 +4,6 @@
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
-| `docs/basic_usage/llama4.md` | [#13421](https://github.com/sgl-project/sglang/pull/13421) |
 | `docs_new/cookbook/autoregressive/Llama/Llama4.mdx` | 无直接 PR 号提交 |
 | `docs_new/src/snippets/autoregressive/llama4-maverick-deployment.jsx` | 无直接 PR 号提交 |
 | `docs_new/src/snippets/autoregressive/llama4-scout-deployment.jsx` | 无直接 PR 号提交 |
@@ -19,8 +18,8 @@
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 29
-- 原文档显式引用补充 PR 数: 5
+- git 追溯 PR 数: 28
+- 原文档显式引用补充 PR 数: 6
 - 当前文档总 PR 数: 34
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
@@ -36,7 +35,7 @@
 | 2025-04-09 | [#5144](https://github.com/sgl-project/sglang/pull/5144) | merged | model: support mllama4 | `python/sglang/srt/models/mllama4.py`, `python/sglang/srt/managers/multimodal_processors/mllama4.py`, `python/sglang/srt/models/llama4.py` |
 | 2025-04-11 | [#5127](https://github.com/sgl-project/sglang/pull/5127) | merged | Optimize attention in llama4 | `python/sglang/srt/models/llama4.py` |
 | 2025-05-09 | [#6162](https://github.com/sgl-project/sglang/pull/6162) | merged | [Bugfix] Fix Llama4 gibberish output with long context and CUDA graph | `python/sglang/srt/layers/attention/flashattention_backend.py` |
-| 2025-05-31 | [#6679](https://github.com/sgl-project/sglang/pull/6679) | merged | update llama4 chat template and pythonic parser | `examples/chat_template/tool_chat_template_llama4_pythonic.jinja` |
+| 2025-05-31 | [#6679](https://github.com/sgl-project/sglang/pull/6679) | merged | update llama4 chat template and pythonic parser | `examples/chat_template/tool_chat_template_llama4_pythonic.jinja`, `python/sglang/srt/function_call/pythonic_detector.py` |
 | 2025-07-01 | [#6985](https://github.com/sgl-project/sglang/pull/6985) | merged | support llama4 eagle3 | `python/sglang/srt/models/mllama4.py` |
 | 2025-07-04 | [#7729](https://github.com/sgl-project/sglang/pull/7729) | merged | refactor llama4 dp attention logic | `python/sglang/srt/models/llama4.py` |
 | 2025-07-08 | [#7129](https://github.com/sgl-project/sglang/pull/7129) | merged | Enable ModelOpt Llama4 fp8 checkpoint deployment in SGLang | `python/sglang/srt/models/mllama4.py` |
@@ -53,7 +52,7 @@
 | 2025-10-07 | [#11282](https://github.com/sgl-project/sglang/pull/11282) | merged | fix: correct scale parameter remapping logic in Llama4ForConditionalGeneration | `python/sglang/srt/models/mllama4.py` |
 | 2025-10-31 | [#12405](https://github.com/sgl-project/sglang/pull/12405) | merged | Fix the shared expert & routed expert overlap in Llama 4 | `python/sglang/srt/models/llama4.py` |
 | 2025-11-08 | [#12811](https://github.com/sgl-project/sglang/pull/12811) | merged | use fast stream instead of torch.cuda.current_stream in llama 4 shared experts overlap | `python/sglang/srt/models/llama4.py` |
-| 2025-11-25 | [#13421](https://github.com/sgl-project/sglang/pull/13421) | merged | Add Llama4 attention backend auto-selection | `docs/basic_usage/llama4.md` |
+| 2025-11-25 | [#13421](https://github.com/sgl-project/sglang/pull/13421) | merged | Add Llama4 attention backend auto-selection | `python/sglang/srt/server_args.py`, `docs/basic_usage/llama4.md` |
 | 2026-01-07 | [#16599](https://github.com/sgl-project/sglang/pull/16599) | merged | ci: adding llama4 placeholder test to nightly | `test/registered/8-gpu-models/test_llama4.py` |
 | 2026-01-14 | [#16971](https://github.com/sgl-project/sglang/pull/16971) | merged | fix: renaming test file and job names + skip blocking llama4 nightly | `test/registered/8-gpu-models/test_llama4.py` |
 | 2026-01-30 | [#12813](https://github.com/sgl-project/sglang/pull/12813) | merged | add weightless qk norm to RMSNorm interface for Llama 4 | `python/sglang/srt/models/llama4.py` |
@@ -289,10 +288,11 @@ diff -- python/sglang/srt/layers/attention/flashattention_backend.py
 - 状态/时间: merged / 2025-05-31
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `examples/chat_template/tool_chat_template_llama4_pythonic.jinja`；关联提交 `4fac524b14a0`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+165/-73，可读 patch 350 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「update llama4 chat template and pythonic parser」；模型线: Llama 4；类别: 模型实现调整；主要 diff: `examples/chat_template/tool_chat_template_llama4_pythonic.jinja`；技术摘要: 覆盖「update llama4 chat template and pythonic parser」；主要实现面是 `examples/chat_template/tool_chat_template_llama4_pythonic.jinja`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `examples/chat_template/tool_chat_template_llama4_pythonic.jinja` modified +35/-63 (98 lines); hunks: -1,86 +1,52; -92,10 +58,12。
+- 动机: 标题「update llama4 chat template and pythonic parser」；模型线: Llama 4；类别: 模型实现调整；主要 diff: `examples/chat_template/tool_chat_template_llama4_pythonic.jinja`, `python/sglang/srt/function_call/pythonic_detector.py`；技术摘要: 覆盖「update llama4 chat template and pythonic parser」；主要实现面是 `examples/chat_template/tool_chat_template_llama4_pythonic.jinja`, `python/sglang/srt/function_call/pythonic_detector.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `examples/chat_template/tool_chat_template_llama4_pythonic.jinja` modified +35/-63 (98 lines); hunks: -1,86 +1,52; -92,10 +58,12；`python/sglang/srt/function_call/pythonic_detector.py` modified +55/-10 (65 lines); hunks: -32,13 +32,24 @@ def __init__(self):; -117,6 +128,30 @@ def _find_matching_bracket(self, buffer: str, start: int) -...; symbols: __init__, _text_strip, has_tool_call, detect_and_parse，涉及 `__init__, _text_strip, has_tool_call`。
 - 代码 diff 细节:
   - `examples/chat_template/tool_chat_template_llama4_pythonic.jinja` modified +35/-63 (98 lines); hunks: -1,86 +1,52; -92,10 +58,12
+  - `python/sglang/srt/function_call/pythonic_detector.py` modified +55/-10 (65 lines); hunks: -32,13 +32,24 @@ def __init__(self):; -117,6 +128,30 @@ def _find_matching_bracket(self, buffer: str, start: int) -...; symbols: __init__, _text_strip, has_tool_call, detect_and_parse
 - 关键代码摘录:
 
 ```diff
@@ -304,10 +304,19 @@ diff -- examples/chat_template/tool_chat_template_llama4_pythonic.jinja
 +{%- if custom_tools is defined and custom_tools %}
 -{%- if not tools_in_user_message is defined %}
 -    {%- set tools_in_user_message = false %}
+diff -- python/sglang/srt/function_call/pythonic_detector.py
+@@ -32,13 +32,24 @@ def __init__(self):
++    @staticmethod
++    def _text_strip(text: str) -> str:
++        # Llama 4 model sometime will output <|python_start|> and <|python_end|> tokens
++        # remove those tokens
++        text = text.replace("<|python_start|>", "")
++        text = text.replace("<|python_end|>", "")
 ```
 
 - 已读文件:
   - docs: `examples/chat_template/tool_chat_template_llama4_pythonic.jinja` modified +35/-63
+  - runtime: `python/sglang/srt/function_call/pythonic_detector.py` modified +55/-10
 - 验证与风险: diff 自带测试面 `test/srt/test_function_call_parser.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #6985 - support llama4 eagle3
@@ -748,15 +757,24 @@ diff -- python/sglang/srt/models/llama4.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/13421
 - 状态/时间: merged / 2025-11-25
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/basic_usage/llama4.md`；关联提交 `fcccaf9001ab`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+24/-5，可读 patch 50 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Add Llama4 attention backend auto-selection」；模型线: Llama 4；类别: 文档/测试/CI；主要 diff: `docs/basic_usage/llama4.md`；技术摘要: 覆盖「Add Llama4 attention backend auto-selection」；主要实现面是 `docs/basic_usage/llama4.md`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `docs/basic_usage/llama4.md` modified +9/-0 (9 lines); hunks: -21,6 +21,15 @@ python3 -m sglang.launch_server \。
+- 动机: 标题「Add Llama4 attention backend auto-selection」；模型线: Llama 4；类别: 文档/测试/CI；主要 diff: `python/sglang/srt/server_args.py`, `docs/basic_usage/llama4.md`；技术摘要: 覆盖「Add Llama4 attention backend auto-selection」；主要实现面是 `python/sglang/srt/server_args.py`, `docs/basic_usage/llama4.md`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/server_args.py` modified +15/-5 (20 lines); hunks: -1027,18 +1027,28 @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments，涉及 `_handle_model_specific_adjustments`；`docs/basic_usage/llama4.md` modified +9/-0 (9 lines); hunks: -21,6 +21,15 @@ python3 -m sglang.launch_server \。
 - 代码 diff 细节:
+  - `python/sglang/srt/server_args.py` modified +15/-5 (20 lines); hunks: -1027,18 +1027,28 @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments
   - `docs/basic_usage/llama4.md` modified +9/-0 (9 lines); hunks: -21,6 +21,15 @@ python3 -m sglang.launch_server \
 - 关键代码摘录:
 
 ```diff
+diff -- python/sglang/srt/server_args.py
+@@ -1027,18 +1027,28 @@ def _handle_model_specific_adjustments(self):
++            # Auto-select attention backend for Llama4 if not specified
++            if self.attention_backend is None:
++                if is_sm100_supported():
++                    self.attention_backend, platform = "trtllm_mha", "sm100"
++                elif is_sm90_supported():
++                    self.attention_backend, platform = "fa3", "sm90"
 diff -- docs/basic_usage/llama4.md
 @@ -21,6 +21,15 @@ python3 -m sglang.launch_server \
 +- **Attention Backend Auto-Selection**: SGLang automatically selects the optimal attention backend for Llama 4 based on your hardware. You typically don't need to specify `--atten
@@ -768,6 +786,7 @@ diff -- docs/basic_usage/llama4.md
 ```
 
 - 已读文件:
+  - runtime: `python/sglang/srt/server_args.py` modified +15/-5
   - docs: `docs/basic_usage/llama4.md` modified +9/-0
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/server_args.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 

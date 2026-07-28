@@ -9,7 +9,7 @@
 | `docs_new/src/snippets/autoregressive/qwen3-coder-480b-a35b-deployment.jsx` | no direct PR-number commit |
 | `docs_new/src/snippets/autoregressive/qwen3-coder-deployment.jsx` | [#24435](https://github.com/sgl-project/sglang/pull/24435) |
 | `docs_new/src/snippets/autoregressive/qwen3-coder-next-deployment.jsx` | no direct PR-number commit |
-| `python/sglang/srt/function_call/qwen3_coder_detector.py` | [#8371](https://github.com/sgl-project/sglang/pull/8371), [#16744](https://github.com/sgl-project/sglang/pull/16744) |
+| `python/sglang/srt/function_call/qwen3_coder_detector.py` | [#8371](https://github.com/sgl-project/sglang/pull/8371), [#16744](https://github.com/sgl-project/sglang/pull/16744), [#30832](https://github.com/sgl-project/sglang/pull/30832) |
 | `python/sglang/srt/models/qwen3.py` | no direct PR-number commit |
 | `test/registered/amd/accuracy/mi35x/test_qwen3_coder_next_eval_mi35x.py` | [#18608](https://github.com/sgl-project/sglang/pull/18608) |
 | `test/registered/amd/test_qwen3_coder_next_8gpu.py` | [#18608](https://github.com/sgl-project/sglang/pull/18608) |
@@ -19,9 +19,9 @@
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 4
+- Git-traced PRs: 5
 - Extra PRs preserved from existing docs: 36
-- Total PRs in this document: 40
+- Total PRs in this document: 41
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -69,6 +69,7 @@
 | 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | merged | Add get_parallel(): a structured accessor for parallel-topology state | `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py` |
 | 2026-06-19 | [#28697](https://github.com/sgl-project/sglang/pull/28697) | merged | [docs] Add B300 cookbook deployment options | `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` |
 | 2026-06-20 | [#28810](https://github.com/sgl-project/sglang/pull/28810) | merged | [CI] Remove deprecated test/srt legacy CI setup | `test/srt/cpu/test_qkv_proj_with_rope.py`, `test/srt/cpu/utils.py`, `test/srt/cpu/test_norm.py` |
+| 2026-07-22 | [#30832](https://github.com/sgl-project/sglang/pull/30832) | merged | Add 'anyOf' schema support for qwen3_coder tool call parser | `python/sglang/srt/function_call/qwen3_coder_detector.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -1543,6 +1544,33 @@ diff -- test/srt/cpu/test_norm.py
 - Reviewed files:
   - tests: `test/srt/cpu/test_qkv_proj_with_rope.py` removed +0/-440; `test/srt/cpu/utils.py` removed +0/-440; `test/srt/cpu/test_norm.py` removed +0/-432; `test/srt/cpu/test_extend.py` removed +0/-400; `test/srt/cpu/test_mamba.py` removed +0/-394; `test/srt/cpu/test_moe.py` removed +0/-352
 - Risk and verification: The diff ships test coverage in `test/README.md`, `test/srt/cpu/arm64/test_moe.py`, `test/srt/cpu/test_activation.py`, `test/srt/cpu/test_binding.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #30832 - Add 'anyOf' schema support for qwen3_coder tool call parser
+
+- Link: https://github.com/sgl-project/sglang/pull/30832
+- Status/date: merged / 2026-07-22
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/function_call/qwen3_coder_detector.py`; associated commits `c20c48b8fd94`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +159/-7, 215 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Add 'anyOf' schema support for qwen3_coder tool call parser"; model line: Qwen3 Coder; category: model support/runtime entry; main diff: `python/sglang/srt/function_call/qwen3_coder_detector.py`; technical summary: Covers "Add 'anyOf' schema support for qwen3_coder tool call parser"; the main implementation surface is `python/sglang/srt/function_call/qwen3_coder_detector.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/function_call/qwen3_coder_detector.py` modified +9/-7 (16 lines); hunks: -11,6 +11,7; -86,6 +87,13 @@ def _get_arguments_config(; symbols: _get_arguments_config, _get_param_type, _convert_param_value, touching `_get_arguments_config, _get_param_type, _convert_param_value`.
+- Code diff details:
+  - `python/sglang/srt/function_call/qwen3_coder_detector.py` modified +9/-7 (16 lines); hunks: -11,6 +11,7; -86,6 +87,13 @@ def _get_arguments_config(; symbols: _get_arguments_config, _get_param_type, _convert_param_value
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/function_call/qwen3_coder_detector.py
+@@ -11,6 +11,7 @@
++from sglang.srt.function_call.utils import infer_type_from_json_schema
+@@ -86,6 +87,13 @@ def _get_arguments_config(
++    def _get_param_type(self, param_schema: Any) -> str:
++        """Infer the parser conversion type from a JSON schema parameter."""
++        inferred_type = infer_type_from_json_schema(param_schema)
++        if inferred_type is None:
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/function_call/qwen3_coder_detector.py` modified +9/-7
+- Risk and verification: The diff ships test coverage in `test/registered/unit/function_call/test_function_call_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes
 

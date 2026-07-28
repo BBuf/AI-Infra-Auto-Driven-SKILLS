@@ -18,7 +18,7 @@
 
 | Date | PR | State | Title | Main files |
 | --- | --- | --- | --- | --- |
-| 2024-09-27 | [#8343](https://github.com/vllm-project/vllm/pull/8343) | merged | [Feature] Add support for Llama 3.1 and 3.2 tool use | `examples/tool_chat_template_llama3.1_json.jinja` |
+| 2024-09-27 | [#8343](https://github.com/vllm-project/vllm/pull/8343) | merged | [Feature] Add support for Llama 3.1 and 3.2 tool use | `examples/tool_chat_template_llama3.1_json.jinja`, `vllm/entrypoints/openai/tool_parsers/llama_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py` |
 | 2024-11-23 | [#10164](https://github.com/vllm-project/vllm/pull/10164) | merged | [Bugfix][Frontend] Update Llama Chat Templates to also support Non-Tool use | `tests/entrypoints/test_chat_utils.py`, `examples/tool_chat_template_llama3.2_json.jinja`, `examples/tool_chat_template_llama3.1_json.jinja` |
 | 2025-10-30 | [#25786](https://github.com/vllm-project/vllm/pull/25786) | merged | [Benchmark] Cleanup deprecated nightly benchmark and adjust the docstring for performance benchmark | `.buildkite/nightly-benchmarks/scripts/download-tokenizer.py`, `.buildkite/nightly-benchmarks/scripts/run-nightly-benchmarks.sh`, `.buildkite/nightly-benchmarks/nightly-pipeline.yaml` |
 | 2026-02-06 | [#33731](https://github.com/vllm-project/vllm/pull/33731) | merged | [torch.compile] Reorganize vllm/compilation and tests/compile (0/N for vLLM IR) | `vllm/compilation/passes/fusion/collective_fusion.py`, `vllm/compilation/passes/fusion/allreduce_rms_fusion.py`, `tests/compile/passes/distributed/test_async_tp.py` |
@@ -46,10 +46,14 @@
 - Status/date: merged / 2024-09-27
 - Trace source: `git log --name-only -- <model-files>` found it through `examples/tool_chat_template_llama3.1_json.jinja`; associated commits `344cd2b6f4c2`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +576/-27, 741 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Feature] Add support for Llama 3.1 and 3.2 tool use"; model line: Llama 3.1; category: model support/runtime entry; main diff: `examples/tool_chat_template_llama3.1_json.jinja`; technical summary: Covers "[Feature] Add support for Llama 3.1 and 3.2 tool use"; the main implementation surface is `examples/tool_chat_template_llama3.1_json.jinja`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `examples/tool_chat_template_llama3.1_json.jinja` added +94/-0 (94 lines); hunks: -0,0 +1,94.
+- Motivation: Title: "[Feature] Add support for Llama 3.1 and 3.2 tool use"; model line: Llama 3.1; category: model support/runtime entry; main diff: `examples/tool_chat_template_llama3.1_json.jinja`, `vllm/entrypoints/openai/tool_parsers/llama_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py`; technical summary: Covers "[Feature] Add support for Llama 3.1 and 3.2 tool use"; the main implementation surface is `examples/tool_chat_template_llama3.1_json.jinja`, `vllm/entrypoints/openai/tool_parsers/llama_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `examples/tool_chat_template_llama3.1_json.jinja` added +94/-0 (94 lines); hunks: -0,0 +1,94; `vllm/entrypoints/openai/tool_parsers/llama_tool_parser.py` added +273/-0 (273 lines); hunks: -0,0 +1,273; symbols: partial_json_loads, is_complete_json, Llama3JsonToolParser, __init__, touching `partial_json_loads, is_complete_json, Llama3JsonToolParser`; `vllm/entrypoints/openai/tool_parsers/__init__.py` modified +5/-1 (6 lines); hunks: -1,5 +1,9; `vllm/entrypoints/openai/serving_chat.py` modified +3/-0 (3 lines); hunks: -30,6 +30,7; -85,6 +86,8 @@ def __init__(self,; symbols: __init__, touching `__init__`.
 - Code diff details:
   - `examples/tool_chat_template_llama3.1_json.jinja` added +94/-0 (94 lines); hunks: -0,0 +1,94
+  - `vllm/entrypoints/openai/tool_parsers/llama_tool_parser.py` added +273/-0 (273 lines); hunks: -0,0 +1,273; symbols: partial_json_loads, is_complete_json, Llama3JsonToolParser, __init__
+  - `vllm/entrypoints/openai/tool_parsers/__init__.py` modified +5/-1 (6 lines); hunks: -1,5 +1,9
+  - `vllm/entrypoints/openai/serving_chat.py` modified +3/-0 (3 lines); hunks: -30,6 +30,7; -85,6 +86,8 @@ def __init__(self,; symbols: __init__
+  - `vllm/entrypoints/openai/cli_args.py` modified +1/-1 (2 lines); hunks: -193,7 +193,7 @@ def make_arg_parser(parser: FlexibleArgumentParser) -> Flexi...; symbols: make_arg_parser
 - Key code excerpts:
 
 ```diff
@@ -61,10 +65,21 @@ diff -- examples/tool_chat_template_llama3.1_json.jinja
 +{%- endif %}
 +{%- if not tools_in_user_message is defined %}
 +    {#- Llama 3.1 doesn't pass all tests if the tools are in the system prompt #}
+diff -- vllm/entrypoints/openai/tool_parsers/llama_tool_parser.py
+@@ -0,0 +1,273 @@
++import json
++import re
++from json import JSONDecodeError, JSONDecoder
++from typing import Dict, List, Sequence, Union
++import partial_json_parser
++from partial_json_parser.core.options import Allow
+diff -- vllm/entrypoints/openai/tool_parsers/__init__.py
+@@ -1,5 +1,9 @@
 ```
 
 - Reviewed files:
   - docs: `examples/tool_chat_template_llama3.1_json.jinja` added +94/-0
+  - runtime: `vllm/entrypoints/openai/tool_parsers/llama_tool_parser.py` added +273/-0; `vllm/entrypoints/openai/tool_parsers/__init__.py` modified +5/-1; `vllm/entrypoints/openai/serving_chat.py` modified +3/-0; `vllm/entrypoints/openai/cli_args.py` modified +1/-1
 - Risk and verification: The diff ships test coverage in `tests/tool_use/test_chat_completions.py`, `tests/tool_use/test_parallel_tool_calls.py`, `tests/tool_use/utils.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #10164 - [Bugfix][Frontend] Update Llama Chat Templates to also support Non-Tool use

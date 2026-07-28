@@ -4,13 +4,13 @@
 
 | File | Git-traced PRs |
 | --- | --- |
-| `docs/basic_usage/deepseek_ocr.md` | [#17897](https://github.com/sgl-project/sglang/pull/17897) |
 | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR-2.mdx` | no direct PR-number commit |
 | `docs_new/src/snippets/autoregressive/deepseek-ocr-v2-deployment.jsx` | no direct PR-number commit |
 | `python/sglang/srt/configs/deepseek_ocr.py` | [#17897](https://github.com/sgl-project/sglang/pull/17897) |
 | `python/sglang/srt/models/deepseek_ocr.py` | [#17897](https://github.com/sgl-project/sglang/pull/17897), [#19732](https://github.com/sgl-project/sglang/pull/19732) |
 | `python/sglang/srt/multimodal/processors/deepseek_ocr.py` | [#17897](https://github.com/sgl-project/sglang/pull/17897) |
 | `test/registered/xpu/test_deepseek_ocr.py` | no direct PR-number commit |
+| `test/registered/xpu/test_deepseek_ocr_2_olmbench.py` | no direct PR-number commit |
 | `test/registered/xpu/test_deepseek_ocr_triton.py` | no direct PR-number commit |
 
 ## PR Coverage Summary
@@ -45,7 +45,6 @@
 | 2026-04-21 | [#23337](https://github.com/sgl-project/sglang/pull/23337) | merged | [Docs] Sync docs_new with legacy docs and update migration redirects | `docs_new/docs/supported-models/multimodal_language_models.mdx`, `docs_new/docs/advanced_features/structured_outputs_for_reasoning_models.mdx`, `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_best_practice.mdx` |
 | 2026-04-29 | [#23820](https://github.com/sgl-project/sglang/pull/23820) | merged | Update XPU Docker runtime stack & hf_home config | `test/srt/xpu/test_intel_xpu_backend.py`, `test/srt/xpu/test_deepseek_ocr.py`, `docker/xpu.Dockerfile` |
 | 2026-05-13 | [#25182](https://github.com/sgl-project/sglang/pull/25182) | merged | chore: add vLLM SPDX copyright headers to ported files | `python/sglang/srt/models/baichuan.py`, `python/sglang/srt/models/commandr.py`, `python/sglang/srt/models/dbrx.py` |
-| 2026-05-15 | [#25364](https://github.com/sgl-project/sglang/pull/25364) | open | Add Accuracy Benchmark for OCR models | `benchmark/ocr/bench_sglang.py`, `benchmark/ocr/eval_utils.py`, `benchmark/ocr/generate_report.py` |
 | 2026-05-21 | [#25257](https://github.com/sgl-project/sglang/pull/25257) | merged | [NPU] Support model DeepSeek-OCR and DeepSeek-OCR-2 | `python/sglang/srt/models/deepseek.py` |
 | 2026-05-22 | [#24751](https://github.com/sgl-project/sglang/pull/24751) | merged | fix(mm): make multimodal data loading non-blocking to prevent health check stalls | `python/sglang/srt/multimodal/processors/base_processor.py`, `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/multimodal/processors/minicpm.py` |
 | 2026-05-22 | [#25589](https://github.com/sgl-project/sglang/pull/25589) | closed | [Fix] DeepSeek-OCR-2 bench_serving: fix processor loading and GPU JPEG tensor conversion | `python/sglang/srt/configs/deepseek_ocr.py`, `python/sglang/benchmark/utils.py` |
@@ -56,6 +55,7 @@
 | 2026-06-06 | [#27248](https://github.com/sgl-project/sglang/pull/27248) | merged | [Doc][CPU]Update Cookbook with Xeon support info | `docs_new/src/snippets/autoregressive/deepseek-v3-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-v31-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-basic-deployment.jsx` |
 | 2026-06-23 | [#27527](https://github.com/sgl-project/sglang/pull/27527) | merged | Vectorize _create_custom_4d_mask in CustomQwen2Decoder | `python/sglang/srt/models/deepseek_ocr.py`, `test/manual/test_create_custom_4d_mask.py` |
 | 2026-06-23 | [#28988](https://github.com/sgl-project/sglang/pull/28988) | merged | [CI] Fix lint brought by #27527 | `python/sglang/srt/models/deepseek_ocr.py`, `test/manual/test_create_custom_4d_mask.py` |
+| 2026-07-06 | [#25364](https://github.com/sgl-project/sglang/pull/25364) | merged | Add Accuracy Benchmark for OCR models | `benchmark/ocr/bench_sglang.py`, `benchmark/ocr/eval_utils.py`, `benchmark/ocr/generate_report.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -238,15 +238,14 @@ diff -- python/sglang/srt/models/deepseek_ocr.py
 
 - Link: https://github.com/sgl-project/sglang/pull/17897
 - Status/date: merged / 2026-01-30
-- Trace source: `git log --name-only -- <model-files>` found it through `docs/basic_usage/deepseek_ocr.md`, `python/sglang/srt/configs/deepseek_ocr.py`, `python/sglang/srt/models/deepseek_ocr.py`, `python/sglang/srt/multimodal/processors/deepseek_ocr.py`; associated commits `84ab611af8b7`; preserved from an explicit existing history/skill citation
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/deepseek_ocr.py`, `python/sglang/srt/models/deepseek_ocr.py`, `python/sglang/srt/multimodal/processors/deepseek_ocr.py`; associated commits `84ab611af8b7`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 9 files, +618/-140, 1057 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Support DeepSeek-OCR-2 in SGLang (OCR2 vision pipeline, tokenization alignment, and weight loading fixes)#17833"; model line: DeepSeek OCR 2; category: bug fix; main diff: `python/sglang/srt/models/deepseek_ocr.py`, `python/sglang/srt/configs/deepseek_ocr.py`, `python/sglang/srt/multimodal/processors/deepseek_ocr.py`; technical summary: Covers "Support DeepSeek-OCR-2 in SGLang (OCR2 vision pipeline, tokenization alignment, and weight loading fixes)#17833"; the main implementation surface is `python/sglang/srt/models/deepseek_ocr.py`, `python/sglang/srt/configs/deepseek_ocr.py`, `python/sglang/srt/multimodal/processors/deepseek_ocr.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/models/deepseek_ocr.py` modified +446/-116 (562 lines); hunks: -24,6 +24,7; -702,6 +703,7 @@ def __init__(; symbols: __init__, forward, _build_sam, touching `__init__, forward, _build_sam`; `python/sglang/srt/configs/deepseek_ocr.py` modified +32/-9 (41 lines); hunks: -196,6 +196,7 @@ def __init__(; -243,6 +244,7 @@ def __init__(; symbols: __init__, process_one, tokenize_with_images, touching `__init__, process_one, tokenize_with_images`; `python/sglang/srt/multimodal/processors/deepseek_ocr.py` modified +8/-0 (8 lines); hunks: -12,6 +12,14 @@ class DeepseekOCRProcessor(BaseMultimodalProcessor):; symbols: DeepseekOCRProcessor, __init__, touching `DeepseekOCRProcessor, __init__`; `docs/basic_usage/deepseek_ocr.md` added +54/-0 (54 lines); hunks: -0,0 +1,54.
+- Key implementation: `python/sglang/srt/models/deepseek_ocr.py` modified +446/-116 (562 lines); hunks: -24,6 +24,7; -702,6 +703,7 @@ def __init__(; symbols: __init__, forward, _build_sam, touching `__init__, forward, _build_sam`; `python/sglang/srt/configs/deepseek_ocr.py` modified +32/-9 (41 lines); hunks: -196,6 +196,7 @@ def __init__(; -243,6 +244,7 @@ def __init__(; symbols: __init__, process_one, tokenize_with_images, touching `__init__, process_one, tokenize_with_images`; `python/sglang/srt/multimodal/processors/deepseek_ocr.py` modified +8/-0 (8 lines); hunks: -12,6 +12,14 @@ class DeepseekOCRProcessor(BaseMultimodalProcessor):; symbols: DeepseekOCRProcessor, __init__, touching `DeepseekOCRProcessor, __init__`.
 - Code diff details:
   - `python/sglang/srt/models/deepseek_ocr.py` modified +446/-116 (562 lines); hunks: -24,6 +24,7; -702,6 +703,7 @@ def __init__(; symbols: __init__, forward, _build_sam
   - `python/sglang/srt/configs/deepseek_ocr.py` modified +32/-9 (41 lines); hunks: -196,6 +196,7 @@ def __init__(; -243,6 +244,7 @@ def __init__(; symbols: __init__, process_one, tokenize_with_images
   - `python/sglang/srt/multimodal/processors/deepseek_ocr.py` modified +8/-0 (8 lines); hunks: -12,6 +12,14 @@ class DeepseekOCRProcessor(BaseMultimodalProcessor):; symbols: DeepseekOCRProcessor, __init__
-  - `docs/basic_usage/deepseek_ocr.md` added +54/-0 (54 lines); hunks: -0,0 +1,54
 - Key code excerpts:
 
 ```diff
@@ -272,7 +271,6 @@ diff -- python/sglang/srt/multimodal/processors/deepseek_ocr.py
 
 - Reviewed files:
   - runtime: `python/sglang/srt/models/deepseek_ocr.py` modified +446/-116; `python/sglang/srt/configs/deepseek_ocr.py` modified +32/-9; `python/sglang/srt/multimodal/processors/deepseek_ocr.py` modified +8/-0
-  - docs: `docs/basic_usage/deepseek_ocr.md` added +54/-0
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/configs/deepseek_ocr.py`, `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/model_loader/utils.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #13561 - [XPU] Integrate MoE and minor improvements in XPU attention backend
@@ -800,48 +798,6 @@ diff -- python/sglang/srt/models/gemma.py
   - runtime: `python/sglang/srt/models/baichuan.py` modified +4/-0; `python/sglang/srt/models/commandr.py` modified +4/-0; `python/sglang/srt/models/dbrx.py` modified +3/-0; `python/sglang/srt/models/gemma.py` modified +3/-0; `python/sglang/srt/models/gemma2.py` modified +3/-0; `python/sglang/srt/models/gpt_bigcode.py` modified +3/-0
 - Risk and verification: The diff ships test coverage in `python/sglang/test/test_custom_ops.py`, `python/sglang/test/test_marlin_utils.py`, `sgl-kernel/tests/test_causal_conv1d.py`, `test/registered/layers/mamba/test_causal_conv1d.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
-### PR #25364 - Add Accuracy Benchmark for OCR models
-
-- Link: https://github.com/sgl-project/sglang/pull/25364
-- Status/date: open / 2026-05-15
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 6 files, +1928/-0, 1946 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Add Accuracy Benchmark for OCR models"; model line: DeepSeek OCR 2; category: docs/tests/CI; main diff: `benchmark/ocr/bench_sglang.py`, `benchmark/ocr/eval_utils.py`, `benchmark/ocr/generate_report.py`; technical summary: Covers "Add Accuracy Benchmark for OCR models"; the main implementation surface is `benchmark/ocr/bench_sglang.py`, `benchmark/ocr/eval_utils.py`, `benchmark/ocr/generate_report.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `benchmark/ocr/bench_sglang.py` added +735/-0 (735 lines); hunks: -0,0 +1,735; symbols: BenchArgs, add_cli_args, preflight_check, pdf_page_to_base64_png, touching `BenchArgs, add_cli_args, preflight_check`; `benchmark/ocr/eval_utils.py` added +631/-0 (631 lines); hunks: -0,0 +1,631; symbols: normalize_text, strip_markdown, fuzzy_contains, exact_contains, touching `normalize_text, strip_markdown, fuzzy_contains`; `benchmark/ocr/generate_report.py` added +382/-0 (382 lines); hunks: -0,0 +1,382; symbols: _ocr_to_html, _latex_to_display, _render_sample, generate_report, touching `_ocr_to_html, _latex_to_display, _render_sample`; `benchmark/ocr/README.md` added +178/-0 (178 lines); hunks: -0,0 +1,178.
-- Code diff details:
-  - `benchmark/ocr/bench_sglang.py` added +735/-0 (735 lines); hunks: -0,0 +1,735; symbols: BenchArgs, add_cli_args, preflight_check, pdf_page_to_base64_png
-  - `benchmark/ocr/eval_utils.py` added +631/-0 (631 lines); hunks: -0,0 +1,631; symbols: normalize_text, strip_markdown, fuzzy_contains, exact_contains
-  - `benchmark/ocr/generate_report.py` added +382/-0 (382 lines); hunks: -0,0 +1,382; symbols: _ocr_to_html, _latex_to_display, _render_sample, generate_report
-  - `benchmark/ocr/README.md` added +178/-0 (178 lines); hunks: -0,0 +1,178
-  - `python/pyproject.toml` modified +1/-0 (1 lines); hunks: -85,6 +85,7 @@ dependencies = [
-- Key code excerpts:
-
-```diff
-diff -- benchmark/ocr/bench_sglang.py
-@@ -0,0 +1,735 @@
-+"""
-+Benchmark DeepSeek-OCR-2 (and similar OCR VLMs) on olmOCR-bench via a running sglang server.
-+Usage:
-+    # 0. Download the dataset (one-time, ~2 GB with PDFs via Git LFS)
-+    hf download --repo-type dataset \\
-+        allenai/olmOCR-bench --local-dir ./olmOCR-bench
-diff -- benchmark/ocr/eval_utils.py
-@@ -0,0 +1,631 @@
-+"""
-+Evaluation utilities for the OCR benchmark (olmOCR-bench test classes).
-+Implements:
-+  - text_presence      : short text segment must be present in OCR output
-+  - text_absence       : text (headers/footers/page numbers) must NOT appear
-+  - natural_reading_order : two text spans must appear in correct relative order
-diff -- benchmark/ocr/generate_report.py
-@@ -0,0 +1,382 @@
-```
-
-- Reviewed files:
-  - other: `benchmark/ocr/bench_sglang.py` added +735/-0; `benchmark/ocr/eval_utils.py` added +631/-0; `benchmark/ocr/generate_report.py` added +382/-0; `benchmark/ocr/README.md` added +178/-0
-  - runtime: `python/pyproject.toml` modified +1/-0; `python/pyproject_xpu.toml` modified +1/-0
-- Risk and verification: Runtime changes concentrate in `python/pyproject.toml`, `python/pyproject_xpu.toml`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
 ### PR #25257 - [NPU] Support model DeepSeek-OCR and DeepSeek-OCR-2
 
 - Link: https://github.com/sgl-project/sglang/pull/25257
@@ -1195,6 +1151,48 @@ diff -- test/manual/test_create_custom_4d_mask.py
   - runtime: `python/sglang/srt/models/deepseek_ocr.py` modified +3/-3
   - tests: `test/manual/test_create_custom_4d_mask.py` modified +65/-46
 - Risk and verification: The diff ships test coverage in `test/manual/test_create_custom_4d_mask.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #25364 - Add Accuracy Benchmark for OCR models
+
+- Link: https://github.com/sgl-project/sglang/pull/25364
+- Status/date: merged / 2026-07-06
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 9 files, +1915/-0, 1954 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Add Accuracy Benchmark for OCR models"; model line: DeepSeek OCR 2; category: docs/tests/CI; main diff: `benchmark/ocr/bench_sglang.py`, `benchmark/ocr/eval_utils.py`, `benchmark/ocr/generate_report.py`; technical summary: Covers "Add Accuracy Benchmark for OCR models"; the main implementation surface is `benchmark/ocr/bench_sglang.py`, `benchmark/ocr/eval_utils.py`, `benchmark/ocr/generate_report.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `benchmark/ocr/bench_sglang.py` added +727/-0 (727 lines); hunks: -0,0 +1,727; symbols: BenchArgs, add_cli_args, from_cli_args, preflight_check, touching `BenchArgs, add_cli_args, from_cli_args`; `benchmark/ocr/eval_utils.py` added +631/-0 (631 lines); hunks: -0,0 +1,631; symbols: normalize_text, strip_markdown, fuzzy_contains, exact_contains, touching `normalize_text, strip_markdown, fuzzy_contains`; `benchmark/ocr/generate_report.py` added +381/-0 (381 lines); hunks: -0,0 +1,381; symbols: _ocr_to_html, _latex_to_display, _render_sample, generate_report, touching `_ocr_to_html, _latex_to_display, _render_sample`; `benchmark/ocr/README.md` added +171/-0 (171 lines); hunks: -0,0 +1,171.
+- Code diff details:
+  - `benchmark/ocr/bench_sglang.py` added +727/-0 (727 lines); hunks: -0,0 +1,727; symbols: BenchArgs, add_cli_args, from_cli_args, preflight_check
+  - `benchmark/ocr/eval_utils.py` added +631/-0 (631 lines); hunks: -0,0 +1,631; symbols: normalize_text, strip_markdown, fuzzy_contains, exact_contains
+  - `benchmark/ocr/generate_report.py` added +381/-0 (381 lines); hunks: -0,0 +1,381; symbols: _ocr_to_html, _latex_to_display, _render_sample, generate_report
+  - `benchmark/ocr/README.md` added +171/-0 (171 lines); hunks: -0,0 +1,171
+  - `python/pyproject.toml` modified +1/-0 (1 lines); hunks: -141,6 +141,7 @@ test = [
+- Key code excerpts:
+
+```diff
+diff -- benchmark/ocr/bench_sglang.py
+@@ -0,0 +1,727 @@
++"""
++Benchmark DeepSeek-OCR-2 (and similar OCR VLMs) on olmOCR-bench via a running sglang server.
++Usage:
++    # 0. Download the dataset (one-time, ~2 GB with PDFs via Git LFS)
++    hf download --repo-type dataset \\
++        allenai/olmOCR-bench --local-dir ./olmOCR-bench
+diff -- benchmark/ocr/eval_utils.py
+@@ -0,0 +1,631 @@
++"""
++Evaluation utilities for the OCR benchmark (olmOCR-bench test classes).
++Implements:
++  - text_presence      : short text segment must be present in OCR output
++  - text_absence       : text (headers/footers/page numbers) must NOT appear
++  - natural_reading_order : two text spans must appear in correct relative order
+diff -- benchmark/ocr/generate_report.py
+@@ -0,0 +1,381 @@
+```
+
+- Reviewed files:
+  - other: `benchmark/ocr/bench_sglang.py` added +727/-0; `benchmark/ocr/eval_utils.py` added +631/-0; `benchmark/ocr/generate_report.py` added +381/-0; `benchmark/ocr/README.md` added +171/-0
+  - runtime: `python/pyproject.toml` modified +1/-0; `python/pyproject_cpu.toml` modified +1/-0; `python/pyproject_npu.toml` modified +1/-0; `python/pyproject_other.toml` modified +1/-0
+- Risk and verification: Runtime changes concentrate in `python/pyproject.toml`, `python/pyproject_cpu.toml`, `python/pyproject_npu.toml`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ## Gap-Closure Notes
 

@@ -13,14 +13,14 @@
 | `vllm/model_executor/models/ernie45_vl.py` | [#39753](https://github.com/vllm-project/vllm/pull/39753) |
 | `vllm/model_executor/models/ernie45_vl_moe.py` | [#25936](https://github.com/vllm-project/vllm/pull/25936), [#26885](https://github.com/vllm-project/vllm/pull/26885) |
 | `vllm/model_executor/models/ernie_mtp.py` | 无直接 PR 号提交 |
-| `vllm/reasoning/ernie45_reasoning_parser.py` | [#25027](https://github.com/vllm-project/vllm/pull/25027), [#27973](https://github.com/vllm-project/vllm/pull/27973) |
+| `vllm/reasoning/ernie45_reasoning_parser.py` | [#25027](https://github.com/vllm-project/vllm/pull/25027), [#27973](https://github.com/vllm-project/vllm/pull/27973), [#46255](https://github.com/vllm-project/vllm/pull/46255) |
 | `vllm/tool_parsers/ernie45_tool_parser.py` | 无直接 PR 号提交 |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 8
+- git 追溯 PR 数: 9
 - 原文档显式引用补充 PR 数: 13
-- 当前文档总 PR 数: 21
+- 当前文档总 PR 数: 22
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -49,6 +49,7 @@
 | 2026-05-30 | [#43997](https://github.com/vllm-project/vllm/pull/43997) | merged | [Refactor] Remove dead current_tool_name_sent assignments from tool parsers | `vllm/tool_parsers/hunyuan_a13b_tool_parser.py`, `vllm/tool_parsers/ernie45_tool_parser.py`, `vllm/tool_parsers/hy_v3_tool_parser.py` |
 | 2026-06-08 | [#41184](https://github.com/vllm-project/vllm/pull/41184) | merged | [MoE Refactor] FusedMoE/MoERunner inversion refactor | `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/routed_experts.py`, `vllm/model_executor/layers/fused_moe/runner/moe_runner.py` |
 | 2026-06-18 | [#45988](https://github.com/vllm-project/vllm/pull/45988) | merged | [Perf] Remove unused loggers in `reasoning/` | `vllm/reasoning/deepseek_v3_reasoning_parser.py`, `vllm/reasoning/ernie45_reasoning_parser.py`, `vllm/reasoning/granite_reasoning_parser.py` |
+| 2026-07-01 | [#46255](https://github.com/vllm-project/vllm/pull/46255) | merged | fix(reasoning): guard rfind in ernie45 streaming branch | `vllm/reasoning/ernie45_reasoning_parser.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -780,6 +781,30 @@ diff -- vllm/reasoning/identity_reasoning_parser.py
 - 已读文件:
   - runtime: `vllm/reasoning/deepseek_v3_reasoning_parser.py` modified +0/-3; `vllm/reasoning/ernie45_reasoning_parser.py` modified +0/-3; `vllm/reasoning/granite_reasoning_parser.py` modified +0/-3; `vllm/reasoning/hunyuan_a13b_reasoning_parser.py` modified +0/-3; `vllm/reasoning/identity_reasoning_parser.py` modified +0/-3; `vllm/reasoning/minimax_m2_reasoning_parser.py` modified +0/-3
 - 验证与风险: runtime 路径改动集中在 `vllm/reasoning/deepseek_v3_reasoning_parser.py`, `vllm/reasoning/ernie45_reasoning_parser.py`, `vllm/reasoning/granite_reasoning_parser.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #46255 - fix(reasoning): guard rfind in ernie45 streaming branch
+
+- 链接: https://github.com/vllm-project/vllm/pull/46255
+- 状态/时间: merged / 2026-07-01
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/reasoning/ernie45_reasoning_parser.py`；关联提交 `9294dd27eb9c`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+2/-1，可读 patch 10 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「fix(reasoning): guard rfind in ernie45 streaming branch」；模型线: ERNIE 4.5；类别: 缺陷修复；主要 diff: `vllm/reasoning/ernie45_reasoning_parser.py`；技术摘要: 覆盖「fix(reasoning): guard rfind in ernie45 streaming branch」；主要实现面是 `vllm/reasoning/ernie45_reasoning_parser.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/reasoning/ernie45_reasoning_parser.py` modified +2/-1 (3 lines); hunks: -114,7 +114,8 @@ def extract_reasoning_streaming(; symbols: extract_reasoning_streaming，涉及 `extract_reasoning_streaming`。
+- 代码 diff 细节:
+  - `vllm/reasoning/ernie45_reasoning_parser.py` modified +2/-1 (3 lines); hunks: -114,7 +114,8 @@ def extract_reasoning_streaming(; symbols: extract_reasoning_streaming
+- 关键代码摘录:
+
+```diff
+diff -- vllm/reasoning/ernie45_reasoning_parser.py
+@@ -114,7 +114,8 @@ def extract_reasoning_streaming(
+-                content = content[:response_end_idx]
++                if response_end_idx != -1:
++                    content = content[:response_end_idx]
+```
+
+- 已读文件:
+  - runtime: `vllm/reasoning/ernie45_reasoning_parser.py` modified +2/-1
+- 验证与风险: runtime 路径改动集中在 `vllm/reasoning/ernie45_reasoning_parser.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ## 补漏结论
 

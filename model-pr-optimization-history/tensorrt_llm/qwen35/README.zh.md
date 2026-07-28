@@ -1,18 +1,22 @@
 # TensorRT-LLM Qwen3.5 模型 PR 优化历史
 
-## 2026-06-27 源码 head 刷新
+## 2026-07-28 源码 head 刷新
 
-已用 `git ls-remote` 复核 TensorRT-LLM 上游 main head：
-`NVIDIA/TensorRT-LLM@aaffa2f9fef3025e0f698d978385a73460344e0b`。
-下方文件级 source-scan 行仍是上一轮 tracked-file 审计结果；引用当前 open PR 状态前，先看 `model-pr-optimization-history/open-pr-watch.md`。
+已复核 TensorRT-LLM 上游 main：
+`NVIDIA/TensorRT-LLM@9fe5853263750ade5b7dc24fb31a1215ec822d45`。
+已读完上一记录 head `1b4ffc0291d75a21ad20118e8f44de6e3831f786`
+之后的 7-commit 完整增量；其中没有新的 Qwen3.5 专属实现提交，最新 PR #16677
+仅涉及 VisualGen/Wan 的 Attention2D + TP，以下 4 个此前提升的 runtime PR
+继续作为当前模型证据。
 
-结果：发现 3 个额外 PR-numbered merge 触及 tracked files，但尚未提升为下方完整逐 PR diff audit card。此节只作为 freshness index；需要引用实现细节时，仍应先人工阅读 PR diff 再补完整卡片。
+结果：Qwen3.5 的 MoE 与 Dense VLM 路径先后落地，随后加入注意力预处理融合以及 AllReduce + Gemma RMSNorm 融合。只改 waiver 的测试 PR 不混入 runtime 证据集。
 
-| 合并日期 | PR | 标题 | 命中的 tracked files |
-| --- | --- | --- | --- |
-| 2026-06-26 | [#15481](https://github.com/NVIDIA/TensorRT-LLM/pull/15481) | [https://nvbugs/6239637][fix] Unwaive Qwen3.5 cases on A100 platform | `test_llm_api_pytorch.py` |
-| 2026-06-26 | [#15361](https://github.com/NVIDIA/TensorRT-LLM/pull/15361) | [TRTLLM-12762][test] Add Test coverage for MiniMax Model with multi-node, M2.5 checkpoints eval | `test_llm_api_pytorch.py` |
-| 2026-06-26 | [#14837](https://github.com/NVIDIA/TensorRT-LLM/pull/14837) | [TRTLLM-13712][feat] Add Qwen-Image-Bench evaluator | `qwen3_5_weight_mapper.py` |
+| 合并日期 | PR | Runtime 信号 |
+| --- | --- | --- |
+| 2026-07-04 | [#14599](https://github.com/NVIDIA/TensorRT-LLM/pull/14599) | Qwen3.5 MoE VLM + MTP |
+| 2026-07-07 | [#15249](https://github.com/NVIDIA/TensorRT-LLM/pull/15249) | Qwen3.5 Dense VLM |
+| 2026-07-21 | [#16469](https://github.com/NVIDIA/TensorRT-LLM/pull/16469) | 融合 QK norm + RoPE + gate |
+| 2026-07-24 | [#15194](https://github.com/NVIDIA/TensorRT-LLM/pull/15194) | 融合 AllReduce + Gemma RMSNorm |
 
 ## 2026-06-27 PR 补漏复核
 
@@ -67,6 +71,88 @@ PR，并采用 SGLang 风格的模型实现覆盖、PR 时间线和逐 PR diff �
 | 2026-06-26 | [#15543](https://github.com/NVIDIA/TensorRT-LLM/pull/15543) | merged | Add EPLB support for Qwen3.5 | MoE load balancer and B200/GB200 tests |
 
 ## 逐 PR diff 审计卡
+
+### PR #14599 - 支持 Qwen3.5 VL MoE 并修复 MTP
+
+- 链接: https://github.com/NVIDIA/TensorRT-LLM/pull/14599
+- 状态/时间: merged / 2026-07-04
+- 反查来源: `git log --name-only -- <model-files>`，并结合最终上游提交和 PR 正文。
+- 代码 diff 已读范围: 完整 1,734 行 diff，16 个文件，+1140/-256。
+- 动机: TensorRT-LLM 已有可复用的 Qwen3Next 文本 runtime 和 Qwen3-VL vision tower，但缺少 Qwen3.5-35B-A3B 的复合多模态架构、原生配置归一化、权重映射以及 speculative decoding 的 token 传递。
+- 实现要点: 注册 `Qwen3_5MoeForConditionalGeneration`，保留 HF text/vision 子配置并归一化 runtime alias，把 `Qwen3VisionModel` 与 MoE decoder 组合起来，映射语言模型权重；VLM wrapper 构造 embedding 后，MTP/Eagle 从 `orig_input_ids` 取回 prompt token。
+- 代码 diff 细节: 新 VLM 类负责多模态 placeholder 元数据与 device path，同时复用 Qwen3Next LM；测试覆盖配置路由、权重加载、模态 parity、MTP 和 MMMU accuracy。
+- 关键代码摘录:
+
+```diff
++@register_auto_model("Qwen3_5MoeForConditionalGeneration")
++class Qwen3_5MoeVLModel(Qwen3VLModelBase):
++    """VLM wrapper composing Qwen3 vision encoder with Qwen3.5 MoE text decoder."""
++    kwargs["vision_model_class"] = Qwen3VisionModel
+```
+
+- 已读文件: runtime：`modeling_qwen3_5.py`、`qwen3_5_weight_mapper.py`、`modeling_speculative.py`、model loader/config utilities；测试/文档：`test_modeling_qwen3_5_vl_moe.py`、MMMU references、supported-model matrix。
+- 验证与风险: benchmark 必须区分 text-only Qwen3.5 与 MoE VLM；需验证 mRoPE、图片/视频 placeholder、FP8 exclude-module 归一化和 MTP prompt-token 恢复。
+
+### PR #15249 - 支持 Qwen3.5 VL Dense
+
+- 链接: https://github.com/NVIDIA/TensorRT-LLM/pull/15249
+- 状态/时间: merged / 2026-07-07
+- 反查来源: `git log --name-only -- <model-files>`，并结合最终上游提交和 PR 正文。
+- 代码 diff 已读范围: 完整 776 行 diff，11 个文件，+594/-26。
+- 动机: MoE VLM wrapper 无法覆盖 Dense Qwen3.5-27B；后者使用 Dense `GatedMLP`，并有不同的 architecture 注册。
+- 实现要点: 泛化共享 Qwen3.5 VLM 基类，注册 `Qwen3_5ForConditionalGeneration`，在保留 Qwen3 vision/mRoPE 处理的同时选择 Dense decoder，并把同一 HF mapper 扩展到 Dense 架构。
+- 代码 diff 细节: 生产配置归一化保留 Dense `intermediate_size` 与空 deepstack index；新 parity suite 覆盖 image、multi-image、video、chunked-prefill position slicing 和模型构造。
+- 关键代码摘录:
+
+```diff
++@register_auto_model("Qwen3_5ForConditionalGeneration")
++class Qwen3_5VLModel(_Qwen3_5VLModel):
++    """VLM wrapper composing Qwen3 vision encoder with dense Qwen3.5 text decoder."""
+```
+
+- 已读文件: runtime：`modeling_qwen3_5.py`、`qwen3_5_weight_mapper.py`、model/config registries；测试/文档：`test_modeling_qwen3_5_vl.py`、MMMU references、supported-model matrix。
+- 验证与风险: Dense 与 MoE checkpoint 需要独立的 accuracy/performance 行；需验证 composite config alias、mRoPE chunk slicing、SSM-cache dtype 和多模态 forward parity。
+
+### PR #16469 - 融合 Qwen3.5/3.6 注意力预处理
+
+- 链接: https://github.com/NVIDIA/TensorRT-LLM/pull/16469
+- 状态/时间: merged / 2026-07-21
+- 反查来源: `git log --name-only -- <model-files>`，并结合最终上游提交和 PR 正文。
+- 代码 diff 已读范围: 完整 913 行 diff，6 个文件，+775/-19。
+- 动机: full-attention layer 过去分别执行 Q/gate 解交错、Q/K 归一化、RoPE、V 拷贝，并在输出端另启 sigmoid/multiply gate。
+- 实现要点: 新增 Triton fast path，一次读取 interleaved projection，完成 Gemma RMSNorm、普通/交错 mRoPE 并输出 packed QKV 与 gate；输出 gate 用 in-place fused sigmoid-multiply，不支持的布局回退到通用路径。
+- 代码 diff 细节: `QKNormRoPEAttention.preprocess_qkv` 按 dtype/layout/RoPE contract 控制融合，使权重加载、LoRA、编译、HIP 和不支持的 scaling 与优化解耦。
+- 关键代码摘录:
+
+```diff
++qkv, gate = fused_qkv_gemma_rmsnorm_rope_gate(
++    qkv, self.q_norm.weight, self.k_norm.weight,
++    self.rotary_emb.rotary_cos_sin, positions.contiguous(), ...)
++return qkv, None, None, gate
+```
+
+- 已读文件: runtime：`attention.py`、`qk_norm_attention.py`、`modeling_qwen3_next.py`、`fused_qk_norm_rope_gate.py`；测试：`test_fused_qk_norm_rope_gate.py`、B200 test database。
+- 验证与风险: 需验证 BF16/FP16、partial/full rotary dim、mRoPE section、zero-token 与非连续输入，并同时对照 Python reference 和生产 THOP 路径。
+
+### PR #15194 - 为 Qwen3-Next/Qwen3.5 融合 Gemma RMSNorm 与 AllReduce
+
+- 链接: https://github.com/NVIDIA/TensorRT-LLM/pull/15194
+- 状态/时间: merged / 2026-07-24
+- 反查来源: `git log --name-only -- <model-files>`，并结合最终上游提交和 PR 正文。
+- 代码 diff 已读范围: 完整 418 行 diff，3 个文件，+278/-29。
+- 动机: TP Qwen3.5 decoder layer 需要分别做 collective 和 Gemma RMSNorm，而已有融合 collective 读取普通 norm weight，不包含 Gemma 的 `(1 + weight)` 语义。
+- 实现要点: 对非 attention-DP 的 TP 默认开启 eager fusion，把 attention/MoE collective 延迟到 `RESIDUAL_RMS_NORM`，权重加载后一次性预计算 Gemma-adjusted norm weight；MTP 没有下一层 norm 时禁用 post-MoE fusion。
+- 代码 diff 细节: 同一 PR 还为 FlashInfer GDN decode 增加仅在标量 slice 未满足 CuTe-DSL 32-byte 对齐时 clone 的保护，避免拖慢已对齐 shape。
+- 关键代码摘录:
+
+```diff
++norm._fused_norm_weight = (w.float() + 1.0).to(w.dtype)
++fusion_op=AllReduceFusionOp.RESIDUAL_RMS_NORM,
++norm_weight=_fused_norm_weight(self.post_attention_layernorm),
+```
+
+- 已读文件: runtime：`modeling_qwen3_next.py`、`fused_sigmoid_gating_recurrent.py`；测试：`test_qwen3_next_eager_fusion.py`。
+- 验证与风险: 需确认 collective 只有一个 owner、attention-DP 保持非融合、加载后 derived weight 会刷新、Gemma 数值使用 `(1 + weight)`，未对齐 Qwen3.6 head slice 走受控 copy。
 
 ### PR #11728 - Added Qwen3.5 Cookbook
 

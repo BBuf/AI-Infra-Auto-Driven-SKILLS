@@ -13,14 +13,14 @@
 | `vllm/model_executor/models/ernie45_vl.py` | [#39753](https://github.com/vllm-project/vllm/pull/39753) |
 | `vllm/model_executor/models/ernie45_vl_moe.py` | [#25936](https://github.com/vllm-project/vllm/pull/25936), [#26885](https://github.com/vllm-project/vllm/pull/26885) |
 | `vllm/model_executor/models/ernie_mtp.py` | no direct PR-number commit |
-| `vllm/reasoning/ernie45_reasoning_parser.py` | [#25027](https://github.com/vllm-project/vllm/pull/25027), [#27973](https://github.com/vllm-project/vllm/pull/27973) |
+| `vllm/reasoning/ernie45_reasoning_parser.py` | [#25027](https://github.com/vllm-project/vllm/pull/25027), [#27973](https://github.com/vllm-project/vllm/pull/27973), [#46255](https://github.com/vllm-project/vllm/pull/46255) |
 | `vllm/tool_parsers/ernie45_tool_parser.py` | no direct PR-number commit |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 8
+- Git-traced PRs: 9
 - Extra PRs preserved from existing docs: 13
-- Total PRs in this document: 21
+- Total PRs in this document: 22
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -49,6 +49,7 @@
 | 2026-05-30 | [#43997](https://github.com/vllm-project/vllm/pull/43997) | merged | [Refactor] Remove dead current_tool_name_sent assignments from tool parsers | `vllm/tool_parsers/hunyuan_a13b_tool_parser.py`, `vllm/tool_parsers/ernie45_tool_parser.py`, `vllm/tool_parsers/hy_v3_tool_parser.py` |
 | 2026-06-08 | [#41184](https://github.com/vllm-project/vllm/pull/41184) | merged | [MoE Refactor] FusedMoE/MoERunner inversion refactor | `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/routed_experts.py`, `vllm/model_executor/layers/fused_moe/runner/moe_runner.py` |
 | 2026-06-18 | [#45988](https://github.com/vllm-project/vllm/pull/45988) | merged | [Perf] Remove unused loggers in `reasoning/` | `vllm/reasoning/deepseek_v3_reasoning_parser.py`, `vllm/reasoning/ernie45_reasoning_parser.py`, `vllm/reasoning/granite_reasoning_parser.py` |
+| 2026-07-01 | [#46255](https://github.com/vllm-project/vllm/pull/46255) | merged | fix(reasoning): guard rfind in ernie45 streaming branch | `vllm/reasoning/ernie45_reasoning_parser.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -780,6 +781,30 @@ diff -- vllm/reasoning/identity_reasoning_parser.py
 - Reviewed files:
   - runtime: `vllm/reasoning/deepseek_v3_reasoning_parser.py` modified +0/-3; `vllm/reasoning/ernie45_reasoning_parser.py` modified +0/-3; `vllm/reasoning/granite_reasoning_parser.py` modified +0/-3; `vllm/reasoning/hunyuan_a13b_reasoning_parser.py` modified +0/-3; `vllm/reasoning/identity_reasoning_parser.py` modified +0/-3; `vllm/reasoning/minimax_m2_reasoning_parser.py` modified +0/-3
 - Risk and verification: Runtime changes concentrate in `vllm/reasoning/deepseek_v3_reasoning_parser.py`, `vllm/reasoning/ernie45_reasoning_parser.py`, `vllm/reasoning/granite_reasoning_parser.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #46255 - fix(reasoning): guard rfind in ernie45 streaming branch
+
+- Link: https://github.com/vllm-project/vllm/pull/46255
+- Status/date: merged / 2026-07-01
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/reasoning/ernie45_reasoning_parser.py`; associated commits `9294dd27eb9c`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +2/-1, 10 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "fix(reasoning): guard rfind in ernie45 streaming branch"; model line: ERNIE 4.5; category: bug fix; main diff: `vllm/reasoning/ernie45_reasoning_parser.py`; technical summary: Covers "fix(reasoning): guard rfind in ernie45 streaming branch"; the main implementation surface is `vllm/reasoning/ernie45_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/reasoning/ernie45_reasoning_parser.py` modified +2/-1 (3 lines); hunks: -114,7 +114,8 @@ def extract_reasoning_streaming(; symbols: extract_reasoning_streaming, touching `extract_reasoning_streaming`.
+- Code diff details:
+  - `vllm/reasoning/ernie45_reasoning_parser.py` modified +2/-1 (3 lines); hunks: -114,7 +114,8 @@ def extract_reasoning_streaming(; symbols: extract_reasoning_streaming
+- Key code excerpts:
+
+```diff
+diff -- vllm/reasoning/ernie45_reasoning_parser.py
+@@ -114,7 +114,8 @@ def extract_reasoning_streaming(
+-                content = content[:response_end_idx]
++                if response_end_idx != -1:
++                    content = content[:response_end_idx]
+```
+
+- Reviewed files:
+  - runtime: `vllm/reasoning/ernie45_reasoning_parser.py` modified +2/-1
+- Risk and verification: Runtime changes concentrate in `vllm/reasoning/ernie45_reasoning_parser.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ## Gap-Closure Notes
 

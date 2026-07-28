@@ -4,16 +4,15 @@
 
 | File | Git-traced PRs |
 | --- | --- |
-| `docs/platforms/ascend/ascend_npu_glm5_examples.md` | [#22712](https://github.com/sgl-project/sglang/pull/22712), [#23708](https://github.com/sgl-project/sglang/pull/23708) |
 | `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx` | [#27708](https://github.com/sgl-project/sglang/pull/27708), [#28437](https://github.com/sgl-project/sglang/pull/28437), [#29194](https://github.com/sgl-project/sglang/pull/29194), [#29313](https://github.com/sgl-project/sglang/pull/29313) |
-| `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` | [#28437](https://github.com/sgl-project/sglang/pull/28437), [#28448](https://github.com/sgl-project/sglang/pull/28448), [#28454](https://github.com/sgl-project/sglang/pull/28454), [#28460](https://github.com/sgl-project/sglang/pull/28460), [#29380](https://github.com/sgl-project/sglang/pull/29380) |
+| `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` | [#28437](https://github.com/sgl-project/sglang/pull/28437), [#28448](https://github.com/sgl-project/sglang/pull/28448), [#28454](https://github.com/sgl-project/sglang/pull/28454), [#28460](https://github.com/sgl-project/sglang/pull/28460), [#28471](https://github.com/sgl-project/sglang/pull/28471), [#28731](https://github.com/sgl-project/sglang/pull/28731), [#29380](https://github.com/sgl-project/sglang/pull/29380), [#29544](https://github.com/sgl-project/sglang/pull/29544), [#30826](https://github.com/sgl-project/sglang/pull/30826), [#31577](https://github.com/sgl-project/sglang/pull/31577) |
 | `docs_new/cookbook/autoregressive/GLM/GLM-5.mdx` | [#25814](https://github.com/sgl-project/sglang/pull/25814) |
-| `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_glm5.2_examples.mdx` | [#28433](https://github.com/sgl-project/sglang/pull/28433) |
 | `docs_new/docs/hardware-platforms/ascend-npus/best_practice/glm5_1.mdx` | no direct PR-number commit |
 | `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` | [#25814](https://github.com/sgl-project/sglang/pull/25814) |
 | `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx` | [#23540](https://github.com/sgl-project/sglang/pull/23540), [#27708](https://github.com/sgl-project/sglang/pull/27708), [#29194](https://github.com/sgl-project/sglang/pull/29194), [#29313](https://github.com/sgl-project/sglang/pull/29313) |
-| `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` | [#28437](https://github.com/sgl-project/sglang/pull/28437), [#28448](https://github.com/sgl-project/sglang/pull/28448), [#28460](https://github.com/sgl-project/sglang/pull/28460), [#29380](https://github.com/sgl-project/sglang/pull/29380), [#29486](https://github.com/sgl-project/sglang/pull/29486) |
-| `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` | [#28437](https://github.com/sgl-project/sglang/pull/28437), [#28448](https://github.com/sgl-project/sglang/pull/28448), [#28460](https://github.com/sgl-project/sglang/pull/28460), [#29380](https://github.com/sgl-project/sglang/pull/29380), [#29466](https://github.com/sgl-project/sglang/pull/29466), [#29486](https://github.com/sgl-project/sglang/pull/29486) |
+| `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` | [#28437](https://github.com/sgl-project/sglang/pull/28437), [#28448](https://github.com/sgl-project/sglang/pull/28448), [#28460](https://github.com/sgl-project/sglang/pull/28460), [#28471](https://github.com/sgl-project/sglang/pull/28471), [#28731](https://github.com/sgl-project/sglang/pull/28731), [#29380](https://github.com/sgl-project/sglang/pull/29380), [#29486](https://github.com/sgl-project/sglang/pull/29486), [#29557](https://github.com/sgl-project/sglang/pull/29557), [#29674](https://github.com/sgl-project/sglang/pull/29674), [#30826](https://github.com/sgl-project/sglang/pull/30826) |
+| `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` | [#28437](https://github.com/sgl-project/sglang/pull/28437), [#28448](https://github.com/sgl-project/sglang/pull/28448), [#28460](https://github.com/sgl-project/sglang/pull/28460), [#28471](https://github.com/sgl-project/sglang/pull/28471), [#28731](https://github.com/sgl-project/sglang/pull/28731), [#29380](https://github.com/sgl-project/sglang/pull/29380), [#29466](https://github.com/sgl-project/sglang/pull/29466), [#29486](https://github.com/sgl-project/sglang/pull/29486), [#29544](https://github.com/sgl-project/sglang/pull/29544), [#29557](https://github.com/sgl-project/sglang/pull/29557), [#29674](https://github.com/sgl-project/sglang/pull/29674), [#30826](https://github.com/sgl-project/sglang/pull/30826) |
+| `test/registered/8-gpu-models/test_glm52_fp8.py` | no direct PR-number commit |
 | `test/registered/amd/accuracy/mi30x/test_glm51_eval_amd.py` | [#22336](https://github.com/sgl-project/sglang/pull/22336) |
 | `test/registered/amd/accuracy/mi30x/test_glm51_hisparse_eval_mi30x.py` | no direct PR-number commit |
 | `test/registered/amd/accuracy/mi30x/test_glm5_eval_amd.py` | [#18911](https://github.com/sgl-project/sglang/pull/18911), [#21710](https://github.com/sgl-project/sglang/pull/21710) |
@@ -28,19 +27,22 @@
 | `test/registered/amd/perf/mi35x/test_glm5_mxfp4_perf_mi35x.py` | [#21773](https://github.com/sgl-project/sglang/pull/21773) |
 | `test/registered/amd/perf/mi35x/test_glm5_perf_mi35x.py` | [#21710](https://github.com/sgl-project/sglang/pull/21710) |
 | `test/registered/ascend/performance/glm5_1/test_npu_glm5_1_w4a8_1p1d_32p_in64k_out1k_50ms_aime26.py` | no direct PR-number commit |
-| `test/registered/cuda_graph/piecewise/test_pcg_glm5_fp4.py` | no direct PR-number commit |
-| `test/registered/cuda_graph/piecewise/test_pcg_glm5_fp8_tp8.py` | [#27053](https://github.com/sgl-project/sglang/pull/27053) |
-| `test/registered/gb300/test_glm5_fp8.py` | [#22399](https://github.com/sgl-project/sglang/pull/22399) |
-| `test/registered/gb300/test_glm5_nvfp4.py` | no direct PR-number commit |
-| `test/registered/models_e2e/test_dsa_glm5_dp_mtp.py` | no direct PR-number commit |
-| `test/registered/models_e2e/test_dsa_glm5_hisparse.py` | [#28607](https://github.com/sgl-project/sglang/pull/28607) |
-| `test/registered/models_e2e/test_dsa_glm5_tp_mtp.py` | no direct PR-number commit |
+| `test/registered/cp/test_glm52_cp_index_share.py` | [#30992](https://github.com/sgl-project/sglang/pull/30992) |
+| `test/registered/cuda_graph/piecewise/test_pcg_glm52_fp4.py` | no direct PR-number commit |
+| `test/registered/cuda_graph/piecewise/test_pcg_glm52_fp8_tp8.py` | no direct PR-number commit |
+| `test/registered/gb300/test_glm52_nvfp4.py` | no direct PR-number commit |
+| `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py` | [#29421](https://github.com/sgl-project/sglang/pull/29421), [#31512](https://github.com/sgl-project/sglang/pull/31512) |
+| `test/registered/models_e2e/test_dsa_glm52_dp_mtp.py` | no direct PR-number commit |
+| `test/registered/models_e2e/test_dsa_glm52_hisparse.py` | no direct PR-number commit |
+| `test/registered/models_e2e/test_dsa_glm52_nvfp4_dp_mtp.py` | [#30021](https://github.com/sgl-project/sglang/pull/30021) |
+| `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py` | [#30021](https://github.com/sgl-project/sglang/pull/30021), [#31289](https://github.com/sgl-project/sglang/pull/31289) |
+| `test/registered/models_e2e/test_dsa_glm52_tp_mtp.py` | no direct PR-number commit |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 22
-- Extra PRs preserved from existing docs: 22
-- Total PRs in this document: 44
+- Git-traced PRs: 29
+- Extra PRs preserved from existing docs: 28
+- Total PRs in this document: 57
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -56,7 +58,7 @@
 | 2026-04-08 | [#22314](https://github.com/sgl-project/sglang/pull/22314) | merged | [AMD] Fix GLM-5 fp8 KV quant path dispatch on MI300 | `python/sglang/srt/mem_cache/memory_pool.py` |
 | 2026-04-08 | [#21710](https://github.com/sgl-project/sglang/pull/21710) | merged | [AMD] Add GLM-5-FP8 nightly performance benchmarks for MI30x and MI35x | `test/registered/amd/perf/mi35x/test_glm5_perf_mi35x.py`, `test/registered/amd/perf/mi30x/test_glm5_perf_amd.py`, `test/registered/amd/accuracy/mi30x/test_glm5_eval_amd.py` |
 | 2026-04-08 | [#22285](https://github.com/sgl-project/sglang/pull/22285) | merged | Add CI tests for GLM-5 | `test/registered/8-gpu-models/test_dsa_models_basic.py`, `test/registered/8-gpu-models/test_dsa_models_mtp.py` |
-| 2026-04-09 | [#22399](https://github.com/sgl-project/sglang/pull/22399) | merged | [CI] Add GLM-5.1 nightly tests and update Qwen3.5 model | `test/registered/gb300/test_glm5_fp8.py` |
+| 2026-04-09 | [#22399](https://github.com/sgl-project/sglang/pull/22399) | merged | [CI] Add GLM-5.1 nightly tests and update Qwen3.5 model | `test/registered/8-gpu-models/test_glm_51_fp8.py`, `test/registered/8-gpu-models/test_qwen35.py`, `test/registered/gb300/test_glm5_fp8.py` |
 | 2026-04-09 | [#22336](https://github.com/sgl-project/sglang/pull/22336) | merged | [AMD] Add GLM-5.1-FP8 nightly accuracy and performance benchmarks for MI30x and MI35x | `test/registered/amd/accuracy/mi35x/test_glm51_eval_mi35x.py`, `test/registered/amd/accuracy/mi30x/test_glm51_eval_amd.py`, `test/registered/amd/perf/mi35x/test_glm51_perf_mi35x.py` |
 | 2026-04-13 | [#22712](https://github.com/sgl-project/sglang/pull/22712) | merged | [NPU] update GLM5 running guide | `docs/platforms/ascend/ascend_npu_glm5_examples.md` |
 | 2026-04-14 | [#22543](https://github.com/sgl-project/sglang/pull/22543) | merged | GLM-5/5.1 MXFP4 Checkpoint Inference Compatibility Fix | `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`, `python/sglang/srt/model_loader/loader.py`, `python/sglang/srt/server_args.py` |
@@ -82,16 +84,29 @@
 | 2026-06-16 | [#28454](https://github.com/sgl-project/sglang/pull/28454) | merged | docs(cookbook): fix GLM-5.2 thinking toggle kwarg + document reasoning effort | `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
 | 2026-06-17 | [#28433](https://github.com/sgl-project/sglang/pull/28433) | merged | [Ascend]GLM 5.2 deployment | `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_glm5.2_examples.mdx` |
 | 2026-06-17 | [#28460](https://github.com/sgl-project/sglang/pull/28460) | merged | docs(cookbook): verify GLM-5.2 single-node B300 (FP8 + BF16) | `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
-| 2026-06-18 | [#28607](https://github.com/sgl-project/sglang/pull/28607) | merged | [misc] Drop redundant req_pool_indices_cpu guards; fold hisparse into GLM-5.1 e2e | `test/registered/models_e2e/test_dsa_glm5_hisparse.py` |
+| 2026-06-18 | [#28607](https://github.com/sgl-project/sglang/pull/28607) | merged | [misc] Drop redundant req_pool_indices_cpu guards; fold hisparse into GLM-5.1 e2e | `test/registered/unit/managers/test_schedule_batch_req_pool_indices.py`, `test/registered/8-gpu-models/test_dsa_models_hisparse.py`, `test/registered/models_e2e/test_dsa_glm5_hisparse.py` |
 | 2026-06-19 | [#28697](https://github.com/sgl-project/sglang/pull/28697) | merged | [docs] Add B300 cookbook deployment options | `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` |
 | 2026-06-19 | [#28536](https://github.com/sgl-project/sglang/pull/28536) | merged | ci: run GB300 nightly suite in the standard Nvidia nightly workflow | `test/registered/gb300/test_deepseek_v32_nvfp4.py`, `test/registered/gb300/test_deepseek_v32.py`, `test/registered/gb300/test_qwen35_fp8.py` |
 | 2026-06-22 | [#27893](https://github.com/sgl-project/sglang/pull/27893) | merged | [NPU] [DOC] Create deployment tutorials for mainstream models on Ascend NPU | `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_best_practice.mdx`, `docs_new/docs/hardware-platforms/ascend-npus/model-tutorials/qwen3_235b_a22b.mdx`, `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_qwen3_5_examples.mdx` |
-| 2026-06-24 | [#27053](https://github.com/sgl-project/sglang/pull/27053) | merged | [BCG][GLM5] perf: BCG support and prefill enhancements | `test/registered/cuda_graph/piecewise/test_pcg_glm5_fp8_tp8.py` |
+| 2026-06-24 | [#27053](https://github.com/sgl-project/sglang/pull/27053) | merged | [BCG][GLM5] perf: BCG support and prefill enhancements | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/layers/attention/dsa/dsa_indexer.py`, `python/sglang/srt/models/deepseek_v2.py` |
 | 2026-06-25 | [#29194](https://github.com/sgl-project/sglang/pull/29194) | merged | [AMD] [GLM5] GLM-5.1 MXFP4 (MI355X) + enable EAGLE for gfx950 in cookbook | `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx`, `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx` |
 | 2026-06-25 | [#28103](https://github.com/sgl-project/sglang/pull/28103) | merged | Add DeepSeek V4 Pro GB300 nightly and expand Kimi K25 nightly test | `test/registered/gb300/test_deepseek_v4_pro_fp4.py`, `test/registered/gb300/test_kimi_k25_nvfp4.py`, `.github/workflows/nightly-test-nvidia.yml` |
 | 2026-06-26 | [#29313](https://github.com/sgl-project/sglang/pull/29313) | merged | [AMD] [GLM5] Mark EAGLE verified on MI300X/MI325X (gfx942) in GLM-5.1 cookbook | `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx` |
 | 2026-06-26 | [#29380](https://github.com/sgl-project/sglang/pull/29380) | merged | [Docs] Add NVFP4 quantization to GLM-5.2 cookbook | `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
 | 2026-06-26 | [#29466](https://github.com/sgl-project/sglang/pull/29466) | merged | Update GLM-5.2 B300 and GB300 NVFP4 cookbook settings | `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` |
+| 2026-06-27 | [#29486](https://github.com/sgl-project/sglang/pull/29486) | merged | [Cookbook] GLM-5.2: tune GB300 NVFP4 recipes + fill benchmarks | `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` |
+| 2026-06-29 | [#28731](https://github.com/sgl-project/sglang/pull/28731) | merged | [cookbook] drop redundant serve flags (GLM-5.2) + fix M3 page-size note | `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
+| 2026-06-29 | [#29674](https://github.com/sgl-project/sglang/pull/29674) | merged | docs: add B200 NVFP4 recipes + benchmarks to GLM-5.2 cookbook | `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` |
+| 2026-06-29 | [#29557](https://github.com/sgl-project/sglang/pull/29557) | merged | [cookbook] GLM-5.2 NVFP4 B300: TP8 recipe + 3 strategies | `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` |
+| 2026-06-30 | [#28471](https://github.com/sgl-project/sglang/pull/28471) | merged | docs(cookbook): add AMD MI300X/MI325X/MI355X support for GLM-5.2 | `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
+| 2026-07-02 | [#29544](https://github.com/sgl-project/sglang/pull/29544) | merged | docs: add PD disaggregation to GLM-5.2 cookbook playground | `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
+| 2026-07-03 | [#30021](https://github.com/sgl-project/sglang/pull/30021) | merged | [CI] Add GLM52 NVFP4 MTP B200 tests | `test/registered/models_e2e/test_dsa_glm52_nvfp4_dp_mtp.py`, `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py` |
+| 2026-07-09 | [#29421](https://github.com/sgl-project/sglang/pull/29421) | merged | [Feat][GLM5.2] Add DSA Cache Layer Split under Prefill CP | `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py`, `python/sglang/srt/layers/cp/utils.py`, `python/sglang/srt/layers/attention/dsa/dsa_indexer.py` |
+| 2026-07-10 | [#30826](https://github.com/sgl-project/sglang/pull/30826) | merged | Update GLM-5.2 NVFP4 cookbook | `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
+| 2026-07-14 | [#30992](https://github.com/sgl-project/sglang/pull/30992) | merged | support GLM-5.2 MTP index sharing with prefill CP | `test/registered/cp/test_glm52_cp_index_share.py`, `python/sglang/srt/layers/attention/dsa/transform_index.py`, `python/sglang/srt/models/deepseek_nextn.py` |
+| 2026-07-15 | [#31289](https://github.com/sgl-project/sglang/pull/31289) | merged | [CI] Lower GLM-5.2 NVFP4 MTP speed threshold | `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py` |
+| 2026-07-17 | [#31512](https://github.com/sgl-project/sglang/pull/31512) | merged | Add nightly test for GLM5.2 LayerSplit | `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py` |
+| 2026-07-17 | [#31577](https://github.com/sgl-project/sglang/pull/31577) | merged | [Doc] Update GLM5.2 Cookbook with LayerSplit usage | `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
 
 ## Per-PR Diff Audit Cards
 
@@ -371,27 +386,39 @@ diff -- test/registered/8-gpu-models/test_dsa_models_mtp.py
 
 - Link: https://github.com/sgl-project/sglang/pull/22399
 - Status/date: merged / 2026-04-09
-- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/gb300/test_glm5_fp8.py`; associated commits `46c2b7762765`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +82/-6, 131 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[CI] Add GLM-5.1 nightly tests and update Qwen3.5 model"; model line: GLM-5/5.1; category: performance/backend optimization; main diff: `test/registered/gb300/test_glm5_fp8.py`; technical summary: Covers "[CI] Add GLM-5.1 nightly tests and update Qwen3.5 model"; the main implementation surface is `test/registered/gb300/test_glm5_fp8.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `test/registered/gb300/test_glm5_fp8.py` modified +3/-3 (6 lines); hunks: -8,7 +8,7; -27,7 +27,7; symbols: TestGlm5Fp8, test_glm5_fp8, touching `TestGlm5Fp8, test_glm5_fp8`.
+- Motivation: Title: "[CI] Add GLM-5.1 nightly tests and update Qwen3.5 model"; model line: GLM-5/5.1; category: performance/backend optimization; main diff: `test/registered/8-gpu-models/test_glm_51_fp8.py`, `test/registered/8-gpu-models/test_qwen35.py`, `test/registered/gb300/test_glm5_fp8.py`; technical summary: Covers "[CI] Add GLM-5.1 nightly tests and update Qwen3.5 model"; the main implementation surface is `test/registered/8-gpu-models/test_glm_51_fp8.py`, `test/registered/8-gpu-models/test_qwen35.py`, `test/registered/gb300/test_glm5_fp8.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/8-gpu-models/test_glm_51_fp8.py` added +69/-0 (69 lines); hunks: -0,0 +1,69; symbols: TestGlm51Fp8, test_glm51_fp8, touching `TestGlm51Fp8, test_glm51_fp8`; `test/registered/8-gpu-models/test_qwen35.py` modified +10/-3 (13 lines); hunks: -9,7 +9,7; -30,6 +30,7 @@ def test_qwen35(self):; symbols: TestQwen35, test_qwen35, touching `TestQwen35, test_qwen35`; `test/registered/gb300/test_glm5_fp8.py` modified +3/-3 (6 lines); hunks: -8,7 +8,7; -27,7 +27,7; symbols: TestGlm5Fp8, test_glm5_fp8, touching `TestGlm5Fp8, test_glm5_fp8`.
 - Code diff details:
+  - `test/registered/8-gpu-models/test_glm_51_fp8.py` added +69/-0 (69 lines); hunks: -0,0 +1,69; symbols: TestGlm51Fp8, test_glm51_fp8
+  - `test/registered/8-gpu-models/test_qwen35.py` modified +10/-3 (13 lines); hunks: -9,7 +9,7; -30,6 +30,7 @@ def test_qwen35(self):; symbols: TestQwen35, test_qwen35
   - `test/registered/gb300/test_glm5_fp8.py` modified +3/-3 (6 lines); hunks: -8,7 +8,7; -27,7 +27,7; symbols: TestGlm5Fp8, test_glm5_fp8
 - Key code excerpts:
 
 ```diff
+diff -- test/registered/8-gpu-models/test_glm_51_fp8.py
+@@ -0,0 +1,69 @@
++import unittest
++from sglang.test.accuracy_test_runner import AccuracyTestParams
++from sglang.test.ci.ci_register import register_cuda_ci
++from sglang.test.performance_test_runner import PerformanceTestParams
++from sglang.test.run_combined_tests import run_combined_tests
++from sglang.test.test_utils import ModelLaunchSettings
+diff -- test/registered/8-gpu-models/test_qwen35.py
+@@ -9,7 +9,7 @@
+-QWEN35_MODEL_PATH = "Qwen/Qwen3.5-397B-A17B"
++QWEN35_MODEL_PATH = "Qwen/Qwen3.5-397B-A17B-FP8"
+@@ -30,6 +30,7 @@ def test_qwen35(self):
++        dp_args = ["--dp=8", "--enable-dp-attention"]
+@@ -48,8 +49,14 @@ def test_qwen35(self):
+-                extra_args=base_args + mtp_args,
 diff -- test/registered/gb300/test_glm5_fp8.py
 @@ -8,7 +8,7 @@
--MODEL_PATH = "zai-org/GLM-5-FP8"
-+MODEL_PATH = "zai-org/GLM-5.1-FP8"
-@@ -27,7 +27,7 @@
--    """GLM-5 FP8 on GB300 (4x B200 NVL4, tp=4)."""
-+    """GLM-5.1 FP8 on GB300 (4x B200 NVL4, tp=4)."""
-@@ -56,7 +56,7 @@ def test_glm5_fp8(self):
 ```
 
 - Reviewed files:
-  - tests: `test/registered/gb300/test_glm5_fp8.py` modified +3/-3
+  - tests: `test/registered/8-gpu-models/test_glm_51_fp8.py` added +69/-0; `test/registered/8-gpu-models/test_qwen35.py` modified +10/-3; `test/registered/gb300/test_glm5_fp8.py` modified +3/-3
 - Risk and verification: The diff ships test coverage in `test/registered/8-gpu-models/test_glm_51_fp8.py`, `test/registered/8-gpu-models/test_qwen35.py`, `test/registered/gb300/test_glm5_fp8.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #22336 - [AMD] Add GLM-5.1-FP8 nightly accuracy and performance benchmarks for MI30x and MI35x
@@ -438,7 +465,7 @@ diff -- test/registered/amd/perf/mi35x/test_glm51_perf_mi35x.py
 
 - Link: https://github.com/sgl-project/sglang/pull/22712
 - Status/date: merged / 2026-04-13
-- Trace source: `git log --name-only -- <model-files>` found it through `docs/platforms/ascend/ascend_npu_glm5_examples.md`; associated commits `13a4aafdbe69`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +8/-2, 19 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[NPU] update GLM5 running guide"; model line: GLM-5/5.1; category: docs/tests/CI; main diff: `docs/platforms/ascend/ascend_npu_glm5_examples.md`; technical summary: Covers "[NPU] update GLM5 running guide"; the main implementation surface is `docs/platforms/ascend/ascend_npu_glm5_examples.md`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs/platforms/ascend/ascend_npu_glm5_examples.md` modified +8/-2 (10 lines); hunks: -53,10 +53,16 @@ docker run -itd --shm-size=16g --privileged=true --name ${NA....
@@ -677,7 +704,7 @@ diff -- docs_new/src/snippets/autoregressive/glm-51-deployment.jsx
 
 - Link: https://github.com/sgl-project/sglang/pull/23708
 - Status/date: merged / 2026-05-08
-- Trace source: `git log --name-only -- <model-files>` found it through `docs/platforms/ascend/ascend_npu_glm5_examples.md`; associated commits `461bc8af494c`
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-3, 20 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[NPU][Doc] Update GLM-5 docs, enabling deepep by default"; model line: GLM-5/5.1; category: performance/backend optimization; main diff: `docs/platforms/ascend/ascend_npu_glm5_examples.md`; technical summary: Covers "[NPU][Doc] Update GLM-5 docs, enabling deepep by default"; the main implementation surface is `docs/platforms/ascend/ascend_npu_glm5_examples.md`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs/platforms/ascend/ascend_npu_glm5_examples.md` modified +3/-3 (6 lines); hunks: -161,8 +161,6 @@ P_IP=('your ip1' 'your ip2'); -182,7 +180,9 @@ do.
@@ -880,7 +907,7 @@ diff -- .github/workflows/pr-test-amd-rocm720.yml
 
 - Link: https://github.com/sgl-project/sglang/pull/26396
 - Status/date: merged / 2026-05-27
-- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/amd/accuracy/mi35x/test_glm51_mxfp4_tp2_gsm8k_mi35x.py`; associated commits `d44584e8d8b2`
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/amd/accuracy/mi35x/test_glm51_mxfp4_tp2_gsm8k_mi35x.py`; associated commits `d44584e8d8b2`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +144/-0, 145 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[AMD] [CI] Add GLM-5.1 MXFP4 TP2 accuracy gate"; model line: GLM-5/5.1; category: performance/backend optimization; main diff: `test/registered/amd/accuracy/mi35x/test_glm51_mxfp4_tp2_gsm8k_mi35x.py`; technical summary: Covers "[AMD] [CI] Add GLM-5.1 MXFP4 TP2 accuracy gate"; the main implementation surface is `test/registered/amd/accuracy/mi35x/test_glm51_mxfp4_tp2_gsm8k_mi35x.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `test/registered/amd/accuracy/mi35x/test_glm51_mxfp4_tp2_gsm8k_mi35x.py` added +144/-0 (144 lines); hunks: -0,0 +1,144; symbols: _raise_nofile_limit, _get_model_path, TestGLM51MXFP4TP2GSM8KMI35x, setUpClass, touching `_raise_nofile_limit, _get_model_path, TestGLM51MXFP4TP2GSM8KMI35x`.
@@ -1108,7 +1135,7 @@ diff -- docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx
 
 - Link: https://github.com/sgl-project/sglang/pull/28448
 - Status/date: merged / 2026-06-16
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; associated commits `00081a00d5b3`
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; associated commits `00081a00d5b3`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +36/-54, 354 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "docs(cookbook): tune GLM-5.2 MTP to 5-1-6 and simplify launch flags"; model line: GLM-5/5.1; category: docs/tests/CI; main diff: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`; technical summary: Covers "docs(cookbook): tune GLM-5.2 MTP to 5-1-6 and simplify launch flags"; the main implementation surface is `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +20/-45 (65 lines); hunks: -36,7 +36,6 @@ export const config = {; -141,10 +140,10 @@ sgl-eval run aime25 \\; `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +11/-6 (17 lines); hunks: -5,13 +5,16; -36,13 +39,14 @@ export const benchmarks = [; `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +2/-2 (4 lines); hunks: -92,8 +92,8 @@ import { Playground } from "/src/snippets/_playground.jsx";.
@@ -1147,7 +1174,7 @@ diff -- docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx
 
 - Link: https://github.com/sgl-project/sglang/pull/28454
 - Status/date: merged / 2026-06-16
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`; associated commits `33f205d8c5b2`
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`; associated commits `33f205d8c5b2`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +10/-2, 26 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "docs(cookbook): fix GLM-5.2 thinking toggle kwarg + document reasoning effort"; model line: GLM-5/5.1; category: bug fix; main diff: `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`; technical summary: Covers "docs(cookbook): fix GLM-5.2 thinking toggle kwarg + document reasoning effort"; the main implementation surface is `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +10/-2 (12 lines); hunks: -104,7 +104,15 @@ import { Playground } from "/src/snippets/_playground.jsx";; -115,7 +123,7 @@ client = OpenAI(base_url="http://localhost:30000/v1", api_ke....
@@ -1174,7 +1201,7 @@ diff -- docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx
 
 - Link: https://github.com/sgl-project/sglang/pull/28433
 - Status/date: merged / 2026-06-17
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_glm5.2_examples.mdx`; associated commits `71b090a8e785`
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +376/-0, 377 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Ascend]GLM 5.2 deployment"; model line: GLM-5/5.1; category: docs/tests/CI; main diff: `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_glm5.2_examples.mdx`; technical summary: Covers "[Ascend]GLM 5.2 deployment"; the main implementation surface is `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_glm5.2_examples.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_glm5.2_examples.mdx` added +376/-0 (376 lines); hunks: -0,0 +1,376.
@@ -1201,7 +1228,7 @@ diff -- docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_glm5.2_examples.
 
 - Link: https://github.com/sgl-project/sglang/pull/28460
 - Status/date: merged / 2026-06-17
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; associated commits `72ccfec5949d`
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; associated commits `72ccfec5949d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +76/-23, 170 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "docs(cookbook): verify GLM-5.2 single-node B300 (FP8 + BF16)"; model line: GLM-5/5.1; category: performance/backend optimization; main diff: `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`; technical summary: Covers "docs(cookbook): verify GLM-5.2 single-node B300 (FP8 + BF16)"; the main implementation surface is `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +61/-8 (69 lines); hunks: -100,14 +100,67 @@ export const benchmarks = [; symbols: kernels, touching `kernels`; `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +12/-12 (24 lines); hunks: -354,13 +354,13 @@ sgl-eval run aime25 \\; -377,7 +377,7 @@ sgl-eval run aime25 \\; symbols: kernels, touching `kernels`; `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +3/-3 (6 lines); hunks: -1,6 +1,6; -94,10 +94,10 @@ import { Playground } from "/src/snippets/_playground.jsx";.
@@ -1240,27 +1267,41 @@ diff -- docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx
 
 - Link: https://github.com/sgl-project/sglang/pull/28607
 - Status/date: merged / 2026-06-18
-- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/models_e2e/test_dsa_glm5_hisparse.py`; associated commits `8f6d9ef9a55e`
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +124/-203, 368 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[misc] Drop redundant req_pool_indices_cpu guards; fold hisparse into GLM-5.1 e2e"; model line: GLM-5/5.1; category: docs/tests/CI; main diff: `test/registered/models_e2e/test_dsa_glm5_hisparse.py`; technical summary: Covers "[misc] Drop redundant req_pool_indices_cpu guards; fold hisparse into GLM-5.1 e2e"; the main implementation surface is `test/registered/models_e2e/test_dsa_glm5_hisparse.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `test/registered/models_e2e/test_dsa_glm5_hisparse.py` added +54/-0 (54 lines); hunks: -0,0 +1,54; symbols: TestGLM5HiSparse, touching `TestGLM5HiSparse`.
+- Motivation: Title: "[misc] Drop redundant req_pool_indices_cpu guards; fold hisparse into GLM-5.1 e2e"; model line: GLM-5/5.1; category: docs/tests/CI; main diff: `test/registered/unit/managers/test_schedule_batch_req_pool_indices.py`, `test/registered/8-gpu-models/test_dsa_models_hisparse.py`, `test/registered/models_e2e/test_dsa_glm5_hisparse.py`; technical summary: Covers "[misc] Drop redundant req_pool_indices_cpu guards; fold hisparse into GLM-5.1 e2e"; the main implementation surface is `test/registered/unit/managers/test_schedule_batch_req_pool_indices.py`, `test/registered/8-gpu-models/test_dsa_models_hisparse.py`, `test/registered/models_e2e/test_dsa_glm5_hisparse.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/unit/managers/test_schedule_batch_req_pool_indices.py` modified +68/-96 (164 lines); hunks: -9,112 +9,84; symbols: TestScheduleBatchReqPoolIndices, test_prepare_for_decode_restores_missing_req_pool_indices_cpu, _make_req, TestHisparseDecodeBatchReqPoolCpu, touching `TestScheduleBatchReqPoolIndices, test_prepare_for_decode_restores_missing_req_pool_indices_cpu, _make_req`; `test/registered/8-gpu-models/test_dsa_models_hisparse.py` removed +0/-84 (84 lines); hunks: -1,84 +0,0; symbols: TestGLM5DPHiSparse, setUpClass, tearDownClass, test_a_gsm8k, touching `TestGLM5DPHiSparse, setUpClass, tearDownClass`; `test/registered/models_e2e/test_dsa_glm5_hisparse.py` added +54/-0 (54 lines); hunks: -0,0 +1,54; symbols: TestGLM5HiSparse, touching `TestGLM5HiSparse`; `python/sglang/srt/managers/schedule_batch.py` modified +2/-23 (25 lines); hunks: -2602,10 +2602,6 @@ def cumulate_penalty_output_tokens(self):; -2699,17 +2695,9 @@ def filter_batch(; symbols: cumulate_penalty_output_tokens, prepare_for_decode, filter_batch, merge_batch, touching `cumulate_penalty_output_tokens, prepare_for_decode, filter_batch`.
 - Code diff details:
+  - `test/registered/unit/managers/test_schedule_batch_req_pool_indices.py` modified +68/-96 (164 lines); hunks: -9,112 +9,84; symbols: TestScheduleBatchReqPoolIndices, test_prepare_for_decode_restores_missing_req_pool_indices_cpu, _make_req, TestHisparseDecodeBatchReqPoolCpu
+  - `test/registered/8-gpu-models/test_dsa_models_hisparse.py` removed +0/-84 (84 lines); hunks: -1,84 +0,0; symbols: TestGLM5DPHiSparse, setUpClass, tearDownClass, test_a_gsm8k
   - `test/registered/models_e2e/test_dsa_glm5_hisparse.py` added +54/-0 (54 lines); hunks: -0,0 +1,54; symbols: TestGLM5HiSparse
+  - `python/sglang/srt/managers/schedule_batch.py` modified +2/-23 (25 lines); hunks: -2602,10 +2602,6 @@ def cumulate_penalty_output_tokens(self):; -2699,17 +2695,9 @@ def filter_batch(; symbols: cumulate_penalty_output_tokens, prepare_for_decode, filter_batch, merge_batch
 - Key code excerpts:
 
 ```diff
+diff -- test/registered/unit/managers/test_schedule_batch_req_pool_indices.py
+@@ -9,112 +9,84 @@
+-from sglang.srt.managers.schedule_batch import ScheduleBatch  # noqa: E402
++from sglang.srt.managers.hisparse_coordinator import HiSparseCoordinator  # noqa: E402
++from sglang.srt.managers.scheduler import Scheduler  # noqa: E402
+-class TestScheduleBatchReqPoolIndices(unittest.TestCase):
+-    def test_prepare_for_decode_restores_missing_req_pool_indices_cpu(self):
+-        req = types.SimpleNamespace(
+diff -- test/registered/8-gpu-models/test_dsa_models_hisparse.py
+@@ -1,84 +0,0 @@
+-import unittest
+-from types import SimpleNamespace
+-from sglang.srt.utils import kill_process_tree
+-from sglang.test.ci.ci_register import register_cuda_ci
+-from sglang.test.run_eval import run_eval
+-from sglang.test.test_utils import (
 diff -- test/registered/models_e2e/test_dsa_glm5_hisparse.py
 @@ -0,0 +1,54 @@
-+import unittest
-+from sglang.test.ci.ci_register import register_cuda_ci
-+from sglang.test.kits.eval_accuracy_kit import GSM8KMixin
-+from sglang.test.server_fixtures.default_fixture import DefaultServerBase
-+register_cuda_ci(est_time=720, stage="extra-b", runner_config="8-gpu-h200")
-+GLM5_FP8_MODEL_PATH = "zai-org/GLM-5-FP8"
 ```
 
 - Reviewed files:
-  - tests: `test/registered/models_e2e/test_dsa_glm5_hisparse.py` added +54/-0
+  - tests: `test/registered/unit/managers/test_schedule_batch_req_pool_indices.py` modified +68/-96; `test/registered/8-gpu-models/test_dsa_models_hisparse.py` removed +0/-84; `test/registered/models_e2e/test_dsa_glm5_hisparse.py` added +54/-0
+  - runtime: `python/sglang/srt/managers/schedule_batch.py` modified +2/-23
 - Risk and verification: The diff ships test coverage in `test/registered/8-gpu-models/test_dsa_models_hisparse.py`, `test/registered/models_e2e/test_dsa_glm5_hisparse.py`, `test/registered/unit/managers/test_schedule_batch_req_pool_indices.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #28697 - [docs] Add B300 cookbook deployment options
@@ -1391,26 +1432,41 @@ diff -- docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_kimi_k2.5_exampl
 
 - Link: https://github.com/sgl-project/sglang/pull/27053
 - Status/date: merged / 2026-06-24
-- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/cuda_graph/piecewise/test_pcg_glm5_fp8_tp8.py`; associated commits `d5e9176f6581`
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +694/-224, 1292 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[BCG][GLM5] perf: BCG support and prefill enhancements"; model line: GLM-5/5.1; category: performance/backend optimization; main diff: `test/registered/cuda_graph/piecewise/test_pcg_glm5_fp8_tp8.py`; technical summary: Covers "[BCG][GLM5] perf: BCG support and prefill enhancements"; the main implementation surface is `test/registered/cuda_graph/piecewise/test_pcg_glm5_fp8_tp8.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `test/registered/cuda_graph/piecewise/test_pcg_glm5_fp8_tp8.py` added +75/-0 (75 lines); hunks: -0,0 +1,75; symbols: TestBCGGlm5Fp8TP8, setUpClass, tearDownClass, test_gsm8k, touching `TestBCGGlm5Fp8TP8, setUpClass, tearDownClass`.
+- Motivation: Title: "[BCG][GLM5] perf: BCG support and prefill enhancements"; model line: GLM-5/5.1; category: performance/backend optimization; main diff: `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/layers/attention/dsa/dsa_indexer.py`, `python/sglang/srt/models/deepseek_v2.py`; technical summary: Covers "[BCG][GLM5] perf: BCG support and prefill enhancements"; the main implementation surface is `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/layers/attention/dsa/dsa_indexer.py`, `python/sglang/srt/models/deepseek_v2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +287/-104 (391 lines); hunks: -1,18 +1,24; -28,6 +34,12; symbols: MlaBmmFusionPlan, init_mla_forward, _can_fuse_bmm_into_attention, _split_q_nope_pe, touching `MlaBmmFusionPlan, init_mla_forward, _can_fuse_bmm_into_attention`; `python/sglang/srt/layers/attention/dsa/dsa_indexer.py` modified +216/-101 (317 lines); hunks: -12,16 +12,24; -39,6 +47,7; symbols: _is_in_piecewise_or_breakable_cuda_graph, _uses_dsa_attention_backend, k_cache_and_topk_result, _logits_head_gate_pcg_fake_impl, touching `_is_in_piecewise_or_breakable_cuda_graph, _uses_dsa_attention_backend, k_cache_and_topk_result`; `python/sglang/srt/models/deepseek_v2.py` modified +89/-16 (105 lines); hunks: -94,7 +94,7; -135,6 +135,13; symbols: DeepseekV2MLP, __init__, get_moe_weights, _can_dual_stream_graph, touching `DeepseekV2MLP, __init__, get_moe_weights`; `python/sglang/srt/layers/attention/dsa/utils.py` modified +20/-1 (21 lines); hunks: -9,9 +9,15; -80,6 +86,19 @@ def is_dsa_prefill_cp_round_robin_split():; symbols: is_dsa_prefill_cp_round_robin_split, is_graph_dsa_split_op_surface, can_dsa_prefill_cp_round_robin_split, touching `is_dsa_prefill_cp_round_robin_split, is_graph_dsa_split_op_surface, can_dsa_prefill_cp_round_robin_split`.
 - Code diff details:
-  - `test/registered/cuda_graph/piecewise/test_pcg_glm5_fp8_tp8.py` added +75/-0 (75 lines); hunks: -0,0 +1,75; symbols: TestBCGGlm5Fp8TP8, setUpClass, tearDownClass, test_gsm8k
+  - `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +287/-104 (391 lines); hunks: -1,18 +1,24; -28,6 +34,12; symbols: MlaBmmFusionPlan, init_mla_forward, _can_fuse_bmm_into_attention, _split_q_nope_pe
+  - `python/sglang/srt/layers/attention/dsa/dsa_indexer.py` modified +216/-101 (317 lines); hunks: -12,16 +12,24; -39,6 +47,7; symbols: _is_in_piecewise_or_breakable_cuda_graph, _uses_dsa_attention_backend, k_cache_and_topk_result, _logits_head_gate_pcg_fake_impl
+  - `python/sglang/srt/models/deepseek_v2.py` modified +89/-16 (105 lines); hunks: -94,7 +94,7; -135,6 +135,13; symbols: DeepseekV2MLP, __init__, get_moe_weights, _can_dual_stream_graph
+  - `python/sglang/srt/layers/attention/dsa/utils.py` modified +20/-1 (21 lines); hunks: -9,9 +9,15; -80,6 +86,19 @@ def is_dsa_prefill_cp_round_robin_split():; symbols: is_dsa_prefill_cp_round_robin_split, is_graph_dsa_split_op_surface, can_dsa_prefill_cp_round_robin_split
+  - `python/sglang/srt/layers/attention/dsa_backend.py` modified +6/-2 (8 lines); hunks: -2432,14 +2432,18 @@ def set_dsa_prefill_impl(self, forward_batch: Optional[F...; symbols: set_dsa_prefill_impl
 - Key code excerpts:
 
 ```diff
-diff -- test/registered/cuda_graph/piecewise/test_pcg_glm5_fp8_tp8.py
-@@ -0,0 +1,75 @@
-+import unittest
-+from types import SimpleNamespace
-+from sglang.srt.utils import kill_process_tree
-+from sglang.test.ci.ci_register import register_cuda_ci
-+from sglang.test.run_eval import run_eval
-+from sglang.test.test_utils import (
+diff -- python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py
+@@ -1,18 +1,24 @@
++from dataclasses import dataclass
++from sglang.srt.compilation.compilation_config import register_split_op
+-from sglang.srt.layers.attention.dsa.utils import dsa_use_prefill_cp
++from sglang.srt.layers.attention.dsa.utils import (
++    dsa_use_prefill_cp,
++    is_graph_dsa_split_op_surface,
+diff -- python/sglang/srt/layers/attention/dsa/dsa_indexer.py
+@@ -12,16 +12,24 @@
++from sglang.srt.compilation.compilation_config import register_split_op
++    is_graph_dsa_split_op_surface,
++from sglang.srt.model_executor.runner_backend_utils.breakable_cuda_graph import (
++    eager_on_graph,
++)
++from sglang.srt.model_executor.runner_backend_utils.breakable_cuda_graph.context import (
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -94,7 +94,7 @@
 ```
 
 - Reviewed files:
+  - runtime: `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +287/-104; `python/sglang/srt/layers/attention/dsa/dsa_indexer.py` modified +216/-101; `python/sglang/srt/models/deepseek_v2.py` modified +89/-16; `python/sglang/srt/layers/attention/dsa/utils.py` modified +20/-1; `python/sglang/srt/layers/attention/dsa_backend.py` modified +6/-2; `python/sglang/srt/environ.py` modified +1/-0
   - tests: `test/registered/cuda_graph/piecewise/test_pcg_glm5_fp8_tp8.py` added +75/-0
 - Risk and verification: The diff ships test coverage in `test/registered/cuda_graph/piecewise/test_pcg_glm5_fp8_tp8.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
@@ -1532,7 +1588,7 @@ diff -- docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx
 
 - Link: https://github.com/sgl-project/sglang/pull/29380
 - Status/date: merged / 2026-06-26
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; associated commits `dd56a9f06948`
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; associated commits `dd56a9f06948`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +112/-12, 224 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Docs] Add NVFP4 quantization to GLM-5.2 cookbook"; model line: GLM-5/5.1; category: performance/backend optimization; main diff: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`; technical summary: Covers "[Docs] Add NVFP4 quantization to GLM-5.2 cookbook"; the main implementation surface is `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +79/-0 (79 lines); hunks: -15,6 +15,7 @@ export const config = {; -29,6 +30,7 @@ export const config = {; `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +5/-0 (5 lines); hunks: -171,4 +171,9 @@ export const benchmarks = [; `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +11/-2 (13 lines); hunks: -52,6 +52,10 @@ import { benchmarks } from "/src/snippets/configs/zai-org/glm...; -62,7 +66,7 @@ import { Playground } from "/src/snippets/_playground.jsx";.
@@ -1571,7 +1627,7 @@ diff -- docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx
 
 - Link: https://github.com/sgl-project/sglang/pull/29466
 - Status/date: merged / 2026-06-26
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; associated commits `12f76d115cd8`
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; associated commits `12f76d115cd8`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +8/-8, 44 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Update GLM-5.2 B300 and GB300 NVFP4 cookbook settings"; model line: GLM-5/5.1; category: performance/backend optimization; main diff: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; technical summary: Covers "Update GLM-5.2 B300 and GB300 NVFP4 cookbook settings"; the main implementation surface is `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +8/-8 (16 lines); hunks: -652,8 +652,8 @@ sgl-eval run aime25 \\; -667,8 +667,8 @@ sgl-eval run aime25 \\.
@@ -1593,6 +1649,459 @@ diff -- docs_new/src/snippets/configs/zai-org/glm-5.2.jsx
 - Reviewed files:
   - docs: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +8/-8
 - Risk and verification: This is mostly docs/examples in `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #29486 - [Cookbook] GLM-5.2: tune GB300 NVFP4 recipes + fill benchmarks
+
+- Link: https://github.com/sgl-project/sglang/pull/29486
+- Status/date: merged / 2026-06-27
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; associated commits `e0c0c0a45cb1`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +68/-12, 132 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Cookbook] GLM-5.2: tune GB300 NVFP4 recipes + fill benchmarks"; model line: GLM-5/5.1; category: performance/backend optimization; main diff: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`; technical summary: Covers "[Cookbook] GLM-5.2: tune GB300 NVFP4 recipes + fill benchmarks"; the main implementation surface is `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +32/-9 (41 lines); hunks: -635,16 +635,16 @@ sgl-eval run aime25 \\; -663,7 +663,6 @@ sgl-eval run aime25 \\; `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +36/-3 (39 lines); hunks: -171,9 +171,42 @@ export const benchmarks = [.
+- Code diff details:
+  - `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +32/-9 (41 lines); hunks: -635,16 +635,16 @@ sgl-eval run aime25 \\; -663,7 +663,6 @@ sgl-eval run aime25 \\
+  - `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +36/-3 (39 lines); hunks: -171,9 +171,42 @@ export const benchmarks = [
+- Key code excerpts:
+
+```diff
+diff -- docs_new/src/snippets/configs/zai-org/glm-5.2.jsx
+@@ -635,16 +635,16 @@ sgl-eval run aime25 \\
+-    // NVFP4 (Blackwell Ultra) — nvidia/GLM-5.2-NVFP4 (Model Optimizer).
+-    // TP4 on B300 / GB300, low-latency + balanced. GB300 mirrors the B300
+-    // recipe (same TP4 / flags; the 4-GPU GB300 node fits the ~381 GB build).
++    // NVFP4 (Blackwell Ultra) — nvidia/GLM-5.2-NVFP4 (Model Optimizer). TP4.
++    // B300: low-latency + balanced (the 4-GPU GB300 node fits the ~381 GB build).
++    // GB300: low-latency / balanced / high-throughput measured on a single 4xGB300
+diff -- docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx
+@@ -171,9 +171,42 @@ export const benchmarks = [
+-  // ---- NVFP4 (Blackwell Ultra) ----  benchmarks pending
++  // ---- NVFP4 (Blackwell Ultra) ----
+-  { match: { hw: "gb300", variant: "default", quant: "nvfp4", strategy: "low-latency", nodes: "single" } },
+-  { match: { hw: "gb300", variant: "default", quant: "nvfp4", strategy: "balanced",    nodes: "single" } },
++  // ---- GB300 + NVFP4 ----  (4-GPU single node, TP4; nvidia/GLM-5.2-NVFP4 via --quantization modelopt_fp4,
++  // measured on the lmsysorg/sglang:dev-glm52-nvfp4 preview image, flush-cache every run.
+```
+
+- Reviewed files:
+  - docs: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +32/-9; `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +36/-3
+- Risk and verification: This is mostly docs/examples in `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #28731 - [cookbook] drop redundant serve flags (GLM-5.2) + fix M3 page-size note
+
+- Link: https://github.com/sgl-project/sglang/pull/28731
+- Status/date: merged / 2026-06-29
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; associated commits `38d4ffcd863b`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 5 files, +64/-193, 543 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[cookbook] drop redundant serve flags (GLM-5.2) + fix M3 page-size note"; model line: GLM-5/5.1; category: bug fix; main diff: `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`; technical summary: Covers "[cookbook] drop redundant serve flags (GLM-5.2) + fix M3 page-size note"; the main implementation surface is `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +50/-157 (207 lines); hunks: -3,164 +3,95; -171,42 +102,4 @@ export const benchmarks = [; symbols: kernels, touching `kernels`; `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +8/-30 (38 lines); hunks: -55,6 +55,7 @@ export const config = {; -185,7 +186,6 @@ sgl-eval run aime25 \\; `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +4/-0 (4 lines); hunks: -52,6 +52,10 @@ import { benchmarks } from "/src/snippets/configs/zai-org/glm....
+- Code diff details:
+  - `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +50/-157 (207 lines); hunks: -3,164 +3,95; -171,42 +102,4 @@ export const benchmarks = [; symbols: kernels
+  - `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +8/-30 (38 lines); hunks: -55,6 +55,7 @@ export const config = {; -185,7 +186,6 @@ sgl-eval run aime25 \\
+  - `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +4/-0 (4 lines); hunks: -52,6 +52,10 @@ import { benchmarks } from "/src/snippets/configs/zai-org/glm...
+- Key code excerpts:
+
+```diff
+diff -- docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx
+@@ -3,164 +3,95 @@
+-  // ---- H200 + FP8 ----  (measured on the v0.5.13.post1 release image, flush-cache on every run)
+-  {
+-    // EAGLE MTP 5-1-6 (was 3-1-4): accept ~5.96/6 → +31%/+15% throughput, -25%/-11% TPOT vs 3-1-4.
+-    // KV stays bf16 (Hopper auto-default). fp8 KV measured worse on H200 (slower flashmla_kv prefill
+-    // + lower decode throughput): conc=1 31 gpu / TTFT 838, conc=16 96 gpu / TTFT 6650.
+-    match: { hw: "h200", variant: "default", quant: "fp8", strategy: "low-latency", nodes: "single" },
+diff -- docs_new/src/snippets/configs/zai-org/glm-5.2.jsx
+@@ -55,6 +55,7 @@ export const config = {
++  --random-range-ratio 1.0 \\
+@@ -185,7 +186,6 @@ sgl-eval run aime25 \\
+-        "--cuda-graph-max-bs-decode 32",
+@@ -205,11 +205,10 @@ sgl-eval run aime25 \\
+-        "--cuda-graph-max-bs-decode 128",
+-        "--max-running-requests 80",
+diff -- docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx
+@@ -52,6 +52,10 @@ import { benchmarks } from "/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx
+```
+
+- Reviewed files:
+  - docs: `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +50/-157; `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +8/-30; `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +4/-0
+- Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx`, `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #29674 - docs: add B200 NVFP4 recipes + benchmarks to GLM-5.2 cookbook
+
+- Link: https://github.com/sgl-project/sglang/pull/29674
+- Status/date: merged / 2026-06-29
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; associated commits `74a197af9d27`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +97/-4, 121 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "docs: add B200 NVFP4 recipes + benchmarks to GLM-5.2 cookbook"; model line: GLM-5/5.1; category: performance/backend optimization; main diff: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`; technical summary: Covers "docs: add B200 NVFP4 recipes + benchmarks to GLM-5.2 cookbook"; the main implementation surface is `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +65/-4 (69 lines); hunks: -94,6 +94,7 @@ sgl-eval run aime25 \\; -613,11 +614,71 @@ sgl-eval run aime25 \\; `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +32/-0 (32 lines); hunks: -102,4 +102,36 @@ export const benchmarks = [.
+- Code diff details:
+  - `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +65/-4 (69 lines); hunks: -94,6 +94,7 @@ sgl-eval run aime25 \\; -613,11 +614,71 @@ sgl-eval run aime25 \\
+  - `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +32/-0 (32 lines); hunks: -102,4 +102,36 @@ export const benchmarks = [
+- Key code excerpts:
+
+```diff
+diff -- docs_new/src/snippets/configs/zai-org/glm-5.2.jsx
+@@ -94,6 +94,7 @@ sgl-eval run aime25 \\
++    "b200|nvfp4":  "lmsysorg/sglang:dev-glm52-nvfp4",
+@@ -613,11 +614,71 @@ sgl-eval run aime25 \\
+-    // NVFP4 (Blackwell Ultra) — nvidia/GLM-5.2-NVFP4 (Model Optimizer). TP4.
+-    // B300: low-latency + balanced (the 4-GPU GB300 node fits the ~381 GB build).
+-    // GB300: low-latency / balanced / high-throughput measured on a single 4xGB300
+-    // node — balanced & high-throughput add DP-Attention (dp4); low-latency uses MTP 5-1-6.
+diff -- docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx
+@@ -102,4 +102,36 @@ export const benchmarks = [
++  // ---- B200 + NVFP4 ----  (8-GPU single node, TP8; nvidia/GLM-5.2-NVFP4 via --quantization modelopt_fp4,
++  // measured on the lmsysorg/sglang:dev-glm52-nvfp4 preview image, flush-cache every run.
++  // ttft_ms/tpot_ms are P50; tokens_per_sec_per_gpu = output tok/s/GPU.
++  // balanced & high-throughput add DP-Attention (dp8); low-latency uses MTP 5-1-6, balanced MTP 2-1-3.)
++  {
++    match: { hw: "b200", variant: "default", quant: "nvfp4", strategy: "low-latency", nodes: "single" },
+```
+
+- Reviewed files:
+  - docs: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +65/-4; `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +32/-0
+- Risk and verification: This is mostly docs/examples in `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #29557 - [cookbook] GLM-5.2 NVFP4 B300: TP8 recipe + 3 strategies
+
+- Link: https://github.com/sgl-project/sglang/pull/29557
+- Status/date: merged / 2026-06-29
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; associated commits `5106b42cbd98`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +74/-8, 117 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[cookbook] GLM-5.2 NVFP4 B300: TP8 recipe + 3 strategies"; model line: GLM-5/5.1; category: performance/backend optimization; main diff: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`; technical summary: Covers "[cookbook] GLM-5.2 NVFP4 B300: TP8 recipe + 3 strategies"; the main implementation surface is `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +39/-8 (47 lines); hunks: -614,11 +614,12 @@ sgl-eval run aime25 \\; -685,14 +686,14 @@ sgl-eval run aime25 \\; `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +35/-0 (35 lines); hunks: -134,4 +134,39 @@ export const benchmarks = [.
+- Code diff details:
+  - `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +39/-8 (47 lines); hunks: -614,11 +614,12 @@ sgl-eval run aime25 \\; -685,14 +686,14 @@ sgl-eval run aime25 \\
+  - `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +35/-0 (35 lines); hunks: -134,4 +134,39 @@ export const benchmarks = [
+- Key code excerpts:
+
+```diff
+diff -- docs_new/src/snippets/configs/zai-org/glm-5.2.jsx
+@@ -614,11 +614,12 @@ sgl-eval run aime25 \\
+-    // NVFP4 — nvidia/GLM-5.2-NVFP4 (Model Optimizer).
+-    // B200: 8-GPU single node, TP8 (low-latency / balanced / high-throughput); balanced &
++    // NVFP4 — nvidia/GLM-5.2-NVFP4 (Model Optimizer). TP8 on B200/B300, TP4 on GB300.
++    // B200/B300: 8-GPU single node, TP8 (low-latency / balanced / high-throughput); balanced &
+-    // B300/GB300: 4-GPU single node, TP4 (the node fits the ~381 GB build); GB300 adds dp4 on
+-    // balanced & high-throughput. Blackwell NVFP4 measured on the dev-glm52-nvfp4 preview image.
+diff -- docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx
+@@ -134,4 +134,39 @@ export const benchmarks = [
++  // ---- B300 + NVFP4 ----  (8-GPU single node, TP8; nvidia/GLM-5.2-NVFP4 via --quantization modelopt_fp4,
++  // measured on the lmsysorg/sglang:dev-glm52-nvfp4 preview image, flush-cache every run.
++  // tokens_per_sec_per_gpu = total server output tok/s / 8 GPUs (410→51, 1793→224, 1220→153, 1641→205, 3439→430).
++  // aime25 overrides the variant default (87.7 → 89.58, measured on this NVFP4 build); gsm8k inherits the default.)
++  {
++    match: { hw: "b300", variant: "default", quant: "nvfp4", strategy: "low-latency", nodes: "single" },
+```
+
+- Reviewed files:
+  - docs: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +39/-8; `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +35/-0
+- Risk and verification: This is mostly docs/examples in `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #28471 - docs(cookbook): add AMD MI300X/MI325X/MI355X support for GLM-5.2
+
+- Link: https://github.com/sgl-project/sglang/pull/28471
+- Status/date: merged / 2026-06-30
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; associated commits `bb98629157e2`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +324/-5, 383 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "docs(cookbook): add AMD MI300X/MI325X/MI355X support for GLM-5.2"; model line: GLM-5/5.1; category: docs/tests/CI; main diff: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`; technical summary: Covers "docs(cookbook): add AMD MI300X/MI325X/MI355X support for GLM-5.2"; the main implementation surface is `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +284/-4 (288 lines); hunks: -6,6 +6,7 @@ export const config = {; -93,6 +94,9 @@ sgl-eval run aime25 \\; `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +31/-0 (31 lines); hunks: -169,4 +169,35 @@ export const benchmarks = [; `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +9/-1 (10 lines); hunks: -1,6 +1,6; -113,6 +113,14 @@ import { Playground } from "/src/snippets/_playground.jsx";.
+- Code diff details:
+  - `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +284/-4 (288 lines); hunks: -6,6 +6,7 @@ export const config = {; -93,6 +94,9 @@ sgl-eval run aime25 \\
+  - `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +31/-0 (31 lines); hunks: -169,4 +169,35 @@ export const benchmarks = [
+  - `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +9/-1 (10 lines); hunks: -1,6 +1,6; -113,6 +113,14 @@ import { Playground } from "/src/snippets/_playground.jsx";
+- Key code excerpts:
+
+```diff
+diff -- docs_new/src/snippets/configs/zai-org/glm-5.2.jsx
+@@ -6,6 +6,7 @@ export const config = {
++    "mi355x", "mi325x", "mi300x",
+@@ -93,6 +94,9 @@ sgl-eval run aime25 \\
++    mi355x: "lmsysorg/sglang-rocm:v0.5.13.post1-rocm720-mi35x-20260618",
++    mi325x: "lmsysorg/sglang-rocm:v0.5.13.post1-rocm700-mi30x-20260616",
++    mi300x: "lmsysorg/sglang-rocm:v0.5.13.post1-rocm700-mi30x-20260616",
+@@ -113,8 +117,8 @@ sgl-eval run aime25 \\
+diff -- docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx
+@@ -169,4 +169,35 @@ export const benchmarks = [
++  // ---- MI355X + FP8 ----  gfx950, TP8, DSA tilelang, NO MTP (disabled on AMD).
++  // Measured on lmsysorg/sglang-rocm:v0.5.13.post1-rocm720-mi35x-20260618, flush-cache every run.
++  // No spec-decoding, so not directly comparable to the NVIDIA low-latency cells (EAGLE MTP).
++  {
++    match: { hw: "mi355x", variant: "default", quant: "fp8", strategy: "low-latency", nodes: "single" },
++    sglang_version: "0.5.13.post1",
+diff -- docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx
+@@ -1,6 +1,6 @@
+```
+
+- Reviewed files:
+  - docs: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +284/-4; `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +31/-0; `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +9/-1
+- Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #29544 - docs: add PD disaggregation to GLM-5.2 cookbook playground
+
+- Link: https://github.com/sgl-project/sglang/pull/29544
+- Status/date: merged / 2026-07-02
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; associated commits `cba3801f5214`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +53/-8, 91 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "docs: add PD disaggregation to GLM-5.2 cookbook playground"; model line: GLM-5/5.1; category: docs/tests/CI; main diff: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`; technical summary: Covers "docs: add PD disaggregation to GLM-5.2 cookbook playground"; the main implementation surface is `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +42/-1 (43 lines); hunks: -156,7 +156,48 @@ sgl-eval run aime25 \\; `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-0 (1 lines); hunks: -111,6 +111,7 @@ import { Playground } from "/src/snippets/_playground.jsx";.
+- Code diff details:
+  - `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +42/-1 (43 lines); hunks: -156,7 +156,48 @@ sgl-eval run aime25 \\
+  - `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-0 (1 lines); hunks: -111,6 +111,7 @@ import { Playground } from "/src/snippets/_playground.jsx";
+- Key code excerpts:
+
+```diff
+diff -- docs_new/src/snippets/configs/zai-org/glm-5.2.jsx
+@@ -156,7 +156,48 @@ sgl-eval run aime25 \\
+-    // ----- Card 5: "Hierarchical KV Cache" -----
++    // ----- Card 5: "PD Disaggregation" -----
++    // GLM-5.2 is a DSA model (same family as DeepSeek-V3.2/V4) and supports
++    // prefill/decode disaggregation. Owns the `--disaggregation-*` flags; the
++    // engine also pins role-specific serving ports (spaced apart) so prefill +
++    // decode don't collide on one host.
+diff -- docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx
+@@ -111,6 +111,7 @@ import { Playground } from "/src/snippets/_playground.jsx";
++- **PD Disaggregation (prefill/decode).** GLM-5.2 is a DSA model and runs under prefill/decode disaggregation — toggle the **PD Disagg** card in the [Playground above](#playground
+```
+
+- Reviewed files:
+  - docs: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +42/-1; `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-0
+- Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/_playground.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #30021 - [CI] Add GLM52 NVFP4 MTP B200 tests
+
+- Link: https://github.com/sgl-project/sglang/pull/30021
+- Status/date: merged / 2026-07-03
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/models_e2e/test_dsa_glm52_nvfp4_dp_mtp.py`, `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py`; associated commits `1f0f353d9218`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +83/-8, 134 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[CI] Add GLM52 NVFP4 MTP B200 tests"; model line: GLM-5/5.1; category: performance/backend optimization; main diff: `test/registered/models_e2e/test_dsa_glm52_nvfp4_dp_mtp.py`, `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py`; technical summary: Covers "[CI] Add GLM52 NVFP4 MTP B200 tests"; the main implementation surface is `test/registered/models_e2e/test_dsa_glm52_nvfp4_dp_mtp.py`, `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/models_e2e/test_dsa_glm52_nvfp4_dp_mtp.py` added +36/-0 (36 lines); hunks: -0,0 +1,36; symbols: TestGLM52NVFP4DPMTP, touching `TestGLM52NVFP4DPMTP`; `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py` added +34/-0 (34 lines); hunks: -0,0 +1,34; symbols: TestGLM52NVFP4TPMTP, touching `TestGLM52NVFP4TPMTP`.
+- Code diff details:
+  - `test/registered/models_e2e/test_dsa_glm52_nvfp4_dp_mtp.py` added +36/-0 (36 lines); hunks: -0,0 +1,36; symbols: TestGLM52NVFP4DPMTP
+  - `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py` added +34/-0 (34 lines); hunks: -0,0 +1,34; symbols: TestGLM52NVFP4TPMTP
+- Key code excerpts:
+
+```diff
+diff -- test/registered/models_e2e/test_dsa_glm52_nvfp4_dp_mtp.py
+@@ -0,0 +1,36 @@
++import unittest
++from sglang.test.ci.ci_register import register_cuda_ci
++from sglang.test.kits.eval_accuracy_kit import GSM8KMixin
++from sglang.test.kits.spec_decoding_kit import SpecDecodingMixin
++from sglang.test.server_fixtures.dsa_mtp_fixture import (
++    DsaMtpEvalConfigDefaults,
+diff -- test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py
+@@ -0,0 +1,34 @@
++import unittest
++from sglang.test.ci.ci_register import register_cuda_ci
++from sglang.test.kits.eval_accuracy_kit import GSM8KMixin
++from sglang.test.kits.spec_decoding_kit import SpecDecodingMixin
++from sglang.test.server_fixtures.dsa_mtp_fixture import (
++    DsaMtpEvalConfigDefaults,
+```
+
+- Reviewed files:
+  - tests: `test/registered/models_e2e/test_dsa_glm52_nvfp4_dp_mtp.py` added +36/-0; `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py` added +34/-0
+- Risk and verification: The diff ships test coverage in `python/sglang/test/server_fixtures/dsa_mtp_fixture.py`, `test/registered/models_e2e/test_dsa_glm52_nvfp4_dp_mtp.py`, `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #29421 - [Feat][GLM5.2] Add DSA Cache Layer Split under Prefill CP
+
+- Link: https://github.com/sgl-project/sglang/pull/29421
+- Status/date: merged / 2026-07-09
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py`; associated commits `8e54517f0276`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 21 files, +1507/-72, 2185 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Feat][GLM5.2] Add DSA Cache Layer Split under Prefill CP"; model line: GLM-5/5.1; category: docs/tests/CI; main diff: `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py`, `python/sglang/srt/layers/cp/utils.py`, `python/sglang/srt/layers/attention/dsa/dsa_indexer.py`; technical summary: Covers "[Feat][GLM5.2] Add DSA Cache Layer Split under Prefill CP"; the main implementation surface is `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py`, `python/sglang/srt/layers/cp/utils.py`, `python/sglang/srt/layers/attention/dsa/dsa_indexer.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py` added +83/-0 (83 lines); hunks: -0,0 +1,83; symbols: TestGLM52DSACacheLayerSplit, setUpClass, touching `TestGLM52DSACacheLayerSplit, setUpClass`; `python/sglang/srt/layers/cp/utils.py` modified +92/-1 (93 lines); hunks: -14,7 +14,7; -33,13 +33,99; symbols: is_glm_dsa_cache_layer_split_enabled, get_glm_dsa_cp_layer_shard_info, get_glm_dsa_layer_split_effective_num_layers, get_layer_shard_range, touching `is_glm_dsa_cache_layer_split_enabled, get_glm_dsa_cp_layer_shard_info, get_glm_dsa_layer_split_effective_num_layers`; `python/sglang/srt/layers/attention/dsa/dsa_indexer.py` modified +26/-13 (39 lines); hunks: -673,6 +673,10 @@ def _fused_k_prepare_and_store(; -801,6 +805,15 @@ def _update_rope_guarded(dst: torch.Tensor, src: torch.Tens...; symbols: _fused_k_prepare_and_store, _update_rope_guarded, _get_index_k_read_buffer, _pad_heads_for_deep_gemm, touching `_fused_k_prepare_and_store, _update_rope_guarded, _get_index_k_read_buffer`; `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py` modified +18/-3 (21 lines); hunks: -947,16 +947,31 @@ def _init_pools(self: ModelRunner):; symbols: _init_pools, touching `_init_pools`.
+- Code diff details:
+  - `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py` added +83/-0 (83 lines); hunks: -0,0 +1,83; symbols: TestGLM52DSACacheLayerSplit, setUpClass
+  - `python/sglang/srt/layers/cp/utils.py` modified +92/-1 (93 lines); hunks: -14,7 +14,7; -33,13 +33,99; symbols: is_glm_dsa_cache_layer_split_enabled, get_glm_dsa_cp_layer_shard_info, get_glm_dsa_layer_split_effective_num_layers, get_layer_shard_range
+  - `python/sglang/srt/layers/attention/dsa/dsa_indexer.py` modified +26/-13 (39 lines); hunks: -673,6 +673,10 @@ def _fused_k_prepare_and_store(; -801,6 +805,15 @@ def _update_rope_guarded(dst: torch.Tensor, src: torch.Tens...; symbols: _fused_k_prepare_and_store, _update_rope_guarded, _get_index_k_read_buffer, _pad_heads_for_deep_gemm
+  - `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py` modified +18/-3 (21 lines); hunks: -947,16 +947,31 @@ def _init_pools(self: ModelRunner):; symbols: _init_pools
+  - `python/sglang/srt/layers/communicator_dsa_cp.py` modified +20/-0 (20 lines); hunks: -38,6 +38,7; -48,6 +49,25 @@ def dsa_enable_prefill_cp():; symbols: dsa_enable_prefill_cp, maybe_prefetch_next_full_attention_kv, dsa_cp_gather_hidden_states
+- Key code excerpts:
+
+```diff
+diff -- test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py
+@@ -0,0 +1,83 @@
++"""End-to-end GSM8K accuracy test for DSA cache layer split (GLM-5.2).
++Layer split shards the DSA GPU KV/indexer cache layers across prefill CP ranks
++(``--enable-dsa-cache-layer-split``); non-owner ranks read a layer via an
++owner-broadcast into a small remote scratch buffer. It only applies to PD
++prefill workers running DSA prefill-CP (a unified server would decode on the
++same worker, where non-owner ranks lack the full cache), so this test drives a
+diff -- python/sglang/srt/layers/cp/utils.py
+@@ -14,7 +14,7 @@
+-from typing import Any, Optional, Tuple
++from typing import TYPE_CHECKING, Any, Optional, Tuple
+@@ -33,13 +33,99 @@
++if TYPE_CHECKING:
++    from sglang.srt.model_executor.model_runner import ModelRunner
++def is_glm_dsa_cache_layer_split_enabled(model_runner: "ModelRunner") -> bool:
+diff -- python/sglang/srt/layers/attention/dsa/dsa_indexer.py
+@@ -673,6 +673,10 @@ def _fused_k_prepare_and_store(
+```
+
+- Reviewed files:
+  - tests: `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py` added +83/-0
+  - runtime: `python/sglang/srt/layers/cp/utils.py` modified +92/-1; `python/sglang/srt/layers/attention/dsa/dsa_indexer.py` modified +26/-13; `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py` modified +18/-3; `python/sglang/srt/layers/communicator_dsa_cp.py` modified +20/-0; `python/sglang/srt/model_executor/pool_configurator.py` modified +14/-5; `python/sglang/srt/models/deepseek_v2.py` modified +17/-1
+- Risk and verification: The diff ships test coverage in `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py`, `test/registered/unit/mem_cache/test_dsa_layer_shard_utils.py`, `test/registered/unit/mem_cache/test_dsa_layer_split_broadcast.py`, `test/registered/unit/mem_cache/test_hicache_staged_write_back_dispatch.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #30826 - Update GLM-5.2 NVFP4 cookbook
+
+- Link: https://github.com/sgl-project/sglang/pull/30826
+- Status/date: merged / 2026-07-10
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; associated commits `e8646701c14d`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +13/-18, 122 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Update GLM-5.2 NVFP4 cookbook"; model line: GLM-5/5.1; category: performance/backend optimization; main diff: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`; technical summary: Covers "Update GLM-5.2 NVFP4 cookbook"; the main implementation surface is `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +10/-5 (15 lines); hunks: -97,10 +97,6 @@ sgl-eval run aime25 \\; -668,7 +664,6 @@ sgl-eval run aime25 \\; `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +2/-8 (10 lines); hunks: -103,12 +103,11 @@ export const benchmarks = [; -118,7 +117,6 @@ export const benchmarks = [; `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-5 (6 lines); hunks: -56,10 +56,6 @@ import { benchmarks } from "/src/snippets/configs/zai-org/glm...; -107,7 +103,7 @@ import { Playground } from "/src/snippets/_playground.jsx";.
+- Code diff details:
+  - `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +10/-5 (15 lines); hunks: -97,10 +97,6 @@ sgl-eval run aime25 \\; -668,7 +664,6 @@ sgl-eval run aime25 \\
+  - `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +2/-8 (10 lines); hunks: -103,12 +103,11 @@ export const benchmarks = [; -118,7 +117,6 @@ export const benchmarks = [
+  - `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-5 (6 lines); hunks: -56,10 +56,6 @@ import { benchmarks } from "/src/snippets/configs/zai-org/glm...; -107,7 +103,7 @@ import { Playground } from "/src/snippets/_playground.jsx";
+- Key code excerpts:
+
+```diff
+diff -- docs_new/src/snippets/configs/zai-org/glm-5.2.jsx
+@@ -97,10 +97,6 @@ sgl-eval run aime25 \\
+-    // NVFP4 needs the dev image with modelopt_fp4 support (per-quant override).
+-    "b200|nvfp4":  "lmsysorg/sglang:dev-glm52-nvfp4",
+-    "b300|nvfp4":  "lmsysorg/sglang:dev-glm52-nvfp4",
+-    "gb300|nvfp4": "lmsysorg/sglang:dev-glm52-nvfp4",
+@@ -668,7 +664,6 @@ sgl-eval run aime25 \\
+-    // Blackwell NVFP4 measured on the dev-glm52-nvfp4 preview image.
+diff -- docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx
+@@ -103,12 +103,11 @@ export const benchmarks = [
+-  // measured on the lmsysorg/sglang:dev-glm52-nvfp4 preview image, flush-cache every run.
++  // flush-cache every run.
+-    sglang_version: "dev-glm52-nvfp4",
+@@ -118,7 +117,6 @@ export const benchmarks = [
+-    sglang_version: "dev-glm52-nvfp4",
+@@ -128,19 +126,17 @@ export const benchmarks = [
+diff -- docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx
+@@ -56,10 +56,6 @@ import { benchmarks } from "/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx
+```
+
+- Reviewed files:
+  - docs: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +10/-5; `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +2/-8; `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-5
+- Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #30992 - support GLM-5.2 MTP index sharing with prefill CP
+
+- Link: https://github.com/sgl-project/sglang/pull/30992
+- Status/date: merged / 2026-07-14
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/cp/test_glm52_cp_index_share.py`; associated commits `7e229e2a817d`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 7 files, +529/-51, 760 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "support GLM-5.2 MTP index sharing with prefill CP"; model line: GLM-5/5.1; category: docs/tests/CI; main diff: `test/registered/cp/test_glm52_cp_index_share.py`, `python/sglang/srt/layers/attention/dsa/transform_index.py`, `python/sglang/srt/models/deepseek_nextn.py`; technical summary: Covers "support GLM-5.2 MTP index sharing with prefill CP"; the main implementation surface is `test/registered/cp/test_glm52_cp_index_share.py`, `python/sglang/srt/layers/attention/dsa/transform_index.py`, `python/sglang/srt/models/deepseek_nextn.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/cp/test_glm52_cp_index_share.py` added +63/-0 (63 lines); hunks: -0,0 +1,63; symbols: TestGLM52CPInterleave, setUpClass, tearDownClass, touching `TestGLM52CPInterleave, setUpClass, tearDownClass`; `python/sglang/srt/layers/attention/dsa/transform_index.py` modified +142/-20 (162 lines); hunks: -1,3 +1,4; -6,11 +7,39; symbols: transform_index_page_table_prefill, transform_index_page_table_decode, _allocate_prefill_result, transform_index_page_table_decode_kernel, touching `transform_index_page_table_prefill, transform_index_page_table_decode, _allocate_prefill_result`; `python/sglang/srt/models/deepseek_nextn.py` modified +61/-18 (79 lines); hunks: -33,6 +33,7; -60,6 +61,34; symbols: _gather_dsa_topk_indices_for_cp, forward, touching `_gather_dsa_topk_indices_for_cp, forward`; `python/sglang/srt/layers/attention/dsa_backend.py` modified +22/-9 (31 lines); hunks: -1898,19 +1898,20 @@ def forward_extend(; -1929,6 +1930,12 @@ def forward_extend(; symbols: forward_extend, _forward_trtllm, touching `forward_extend, _forward_trtllm`.
+- Code diff details:
+  - `test/registered/cp/test_glm52_cp_index_share.py` added +63/-0 (63 lines); hunks: -0,0 +1,63; symbols: TestGLM52CPInterleave, setUpClass, tearDownClass
+  - `python/sglang/srt/layers/attention/dsa/transform_index.py` modified +142/-20 (162 lines); hunks: -1,3 +1,4; -6,11 +7,39; symbols: transform_index_page_table_prefill, transform_index_page_table_decode, _allocate_prefill_result, transform_index_page_table_decode_kernel
+  - `python/sglang/srt/models/deepseek_nextn.py` modified +61/-18 (79 lines); hunks: -33,6 +33,7; -60,6 +61,34; symbols: _gather_dsa_topk_indices_for_cp, forward
+  - `python/sglang/srt/layers/attention/dsa_backend.py` modified +22/-9 (31 lines); hunks: -1898,19 +1898,20 @@ def forward_extend(; -1929,6 +1930,12 @@ def forward_extend(; symbols: forward_extend, _forward_trtllm
+  - `python/sglang/srt/speculative/eagle_worker_v2.py` modified +0/-3 (3 lines); hunks: -15,7 +15,6; -825,11 +824,9 @@ def _draft_extend_for_prefill(; symbols: _draft_extend_for_prefill
+- Key code excerpts:
+
+```diff
+diff -- test/registered/cp/test_glm52_cp_index_share.py
+@@ -0,0 +1,63 @@
++import unittest
++from sglang.srt.utils import kill_process_tree
++from sglang.test.ci.ci_register import register_cuda_ci
++from sglang.test.kits.eval_accuracy_kit import GSM8KMixin
++from sglang.test.test_utils import (
++    DEFAULT_TIMEOUT_FOR_SERVER_LAUNCH,
+diff -- python/sglang/srt/layers/attention/dsa/transform_index.py
+@@ -1,3 +1,4 @@
++from itertools import accumulate
+@@ -6,11 +7,39 @@
+-    return transform_index_page_table_prefill_ref(**kwargs)
++    return transform_index_page_table_prefill_fast(**kwargs)
+-    return transform_index_page_table_decode_ref(**kwargs)
++    return transform_index_page_table_decode_fast(**kwargs)
+diff -- python/sglang/srt/models/deepseek_nextn.py
+@@ -33,6 +33,7 @@
+```
+
+- Reviewed files:
+  - tests: `test/registered/cp/test_glm52_cp_index_share.py` added +63/-0
+  - runtime: `python/sglang/srt/layers/attention/dsa/transform_index.py` modified +142/-20; `python/sglang/srt/models/deepseek_nextn.py` modified +61/-18; `python/sglang/srt/layers/attention/dsa_backend.py` modified +22/-9; `python/sglang/srt/speculative/eagle_worker_v2.py` modified +0/-3; `python/sglang/srt/server_args.py` modified +1/-1
+- Risk and verification: The diff ships test coverage in `test/registered/cp/test_glm52_cp_index_share.py`, `test/registered/kernels/test_dsa_transform_index.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #31289 - [CI] Lower GLM-5.2 NVFP4 MTP speed threshold
+
+- Link: https://github.com/sgl-project/sglang/pull/31289
+- Status/date: merged / 2026-07-15
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py`; associated commits `5af670284e78`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[CI] Lower GLM-5.2 NVFP4 MTP speed threshold"; model line: GLM-5/5.1; category: performance/backend optimization; main diff: `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py`; technical summary: Covers "[CI] Lower GLM-5.2 NVFP4 MTP speed threshold"; the main implementation surface is `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py` modified +1/-1 (2 lines); hunks: -21,7 +21,7 @@ class TestGLM52NVFP4TPMTP(; symbols: TestGLM52NVFP4TPMTP, touching `TestGLM52NVFP4TPMTP`.
+- Code diff details:
+  - `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py` modified +1/-1 (2 lines); hunks: -21,7 +21,7 @@ class TestGLM52NVFP4TPMTP(; symbols: TestGLM52NVFP4TPMTP
+- Key code excerpts:
+
+```diff
+diff -- test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py
+@@ -21,7 +21,7 @@ class TestGLM52NVFP4TPMTP(
+-    bs_1_speed_thres = 300
++    bs_1_speed_thres = 250
+```
+
+- Reviewed files:
+  - tests: `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py` modified +1/-1
+- Risk and verification: The diff ships test coverage in `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #31512 - Add nightly test for GLM5.2 LayerSplit
+
+- Link: https://github.com/sgl-project/sglang/pull/31512
+- Status/date: merged / 2026-07-17
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py`; associated commits `e83551230383`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +30/-14, 85 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Add nightly test for GLM5.2 LayerSplit"; model line: GLM-5/5.1; category: docs/tests/CI; main diff: `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py`; technical summary: Covers "Add nightly test for GLM5.2 LayerSplit"; the main implementation surface is `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py` modified +30/-14 (44 lines); hunks: -9,8 +9,7; -22,10 +21,9; symbols: TestGLM52DSACacheLayerSplit, touching `TestGLM52DSACacheLayerSplit`.
+- Code diff details:
+  - `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py` modified +30/-14 (44 lines); hunks: -9,8 +9,7; -22,10 +21,9; symbols: TestGLM52DSACacheLayerSplit
+- Key code excerpts:
+
+```diff
+diff -- test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py
+@@ -9,8 +9,7 @@
+-Sized for the 4-GPU B200 runner (prefill TP=2 + decode TP=2) rather than an
+-8-GPU deployment, since the 8-gpu-b200 runner is nightly-only.
++Runs nightly on an 8-GPU B200 runner (prefill TP=4 + decode TP=4).
+@@ -22,10 +21,9 @@
+-    est_time=1200,
+-    stage="extra-b",
+```
+
+- Reviewed files:
+  - tests: `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py` modified +30/-14
+- Risk and verification: The diff ships test coverage in `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #31577 - [Doc] Update GLM5.2 Cookbook with LayerSplit usage
+
+- Link: https://github.com/sgl-project/sglang/pull/31577
+- Status/date: merged / 2026-07-17
+- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`; associated commits `eaeb779ea4b1`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +18/-1, 30 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Doc] Update GLM5.2 Cookbook with LayerSplit usage"; model line: GLM-5/5.1; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`; technical summary: Covers "[Doc] Update GLM5.2 Cookbook with LayerSplit usage"; the main implementation surface is `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +18/-1 (19 lines); hunks: -107,7 +107,6 @@ import { Playground } from "/src/snippets/_playground.jsx";; -247,3 +246,21 @@ Two of these matter specifically for GLM-5.2:.
+- Code diff details:
+  - `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +18/-1 (19 lines); hunks: -107,7 +107,6 @@ import { Playground } from "/src/snippets/_playground.jsx";; -247,3 +246,21 @@ Two of these matter specifically for GLM-5.2:
+- Key code excerpts:
+
+```diff
+diff -- docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx
+@@ -107,7 +107,6 @@ import { Playground } from "/src/snippets/_playground.jsx";
+-- **Context Parallelism (CP) for long prefill.** DSA prefill CP splits the long-prefill attention across `--attn-cp-size` ranks. This gives a large prefill-latency win at long con
+@@ -247,3 +246,21 @@ Two of these matter specifically for GLM-5.2:
++### 3.5 Context Parallelism
++Prefill context parallelism can help with reduction of TTFT under long context. To enable prefill context parallelism for GLM 5.2, please append the following arguments:
++'''bash
++--attn-cp-size 8 \
+```
+
+- Reviewed files:
+  - docs: `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +18/-1
+- Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ## Gap-Closure Notes
 

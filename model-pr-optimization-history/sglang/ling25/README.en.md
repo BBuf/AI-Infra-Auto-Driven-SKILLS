@@ -10,7 +10,7 @@
 ## PR Coverage Summary
 
 - Git-traced PRs: 0
-- Extra PRs preserved from existing docs: 44
+- Extra PRs preserved from existing docs: 43
 - Total PRs in this document: 43
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API

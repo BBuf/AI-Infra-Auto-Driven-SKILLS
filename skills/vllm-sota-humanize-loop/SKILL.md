@@ -142,8 +142,11 @@ Rules:
   becomes the leading competitor, or its source/trace suggests a missing vLLM
   fast path.
 - Write `history/model-pr-history-notes.md` with the paths read, PR numbers,
-  source files, symbols, validation risks, and the concrete decision each item
-  influences.
+  immutable source heads, PR state (`open`, `merged`, or `closed-unmerged`),
+  source files, symbols, validation evidence, known limitations, validation
+  risks, and the concrete decision each item influences.
+- Treat open PRs as candidate baselines only. Record their full head SHAs and
+  never describe them as behavior already present in the recorded source head.
 - Treat these notes as source and PR memory that helps choose a better vLLM
   patch, not measured proof by itself.
 
@@ -165,6 +168,17 @@ Hard requirements:
   its own bounded search.
 - Use the same model weights, tokenizer, precision, quantization, GPU type/count,
   GPU ids, endpoint path, sampling settings, and SLA.
+- Record package version or git commit plus server/benchmark `--help` snapshots
+  for every selected framework. The 2026-07-28 immutable source heads checked
+  for this skill are vLLM
+  `b5bcb3ce881e1d324ff7f6176ef27606558dbd74`, SGLang
+  `8a311d1c889244ab1f857d7df79de7e5f0a6891c`, and TensorRT-LLM
+  `9fe5853263750ade5b7dc24fb31a1215ec822d45`. Prefer the target image's
+  current `--help`, re-check open PRs, and do not add TokenSpeed to this scoped
+  workflow unless its executable benchmark path is verified end to end.
+- Use the target image's current commands: `vllm serve`,
+  `python -m sglang.launch_server`, and
+  `trtllm-serve serve --backend pytorch`.
 - Use the default two dataset scenarios from `llm-serving-auto-benchmark` unless
   the user explicitly provides a production workload:
   - dataset kind `random`, `num_prompts: 80`
@@ -177,6 +191,12 @@ Hard requirements:
 - For TensorRT-LLM, keep `trtllm-serve serve --backend pytorch`; reject
   non-PyTorch TensorRT-LLM server backends for this skill.
 - Keep failed, skipped, and SLA-failing candidates in the benchmark artifact.
+
+Before finishing or reporting a blocker, stop only the server, benchmark,
+profiler, downloader, and log-tail processes started by this run. Remove only
+this run's explicit model snapshot, lock, mirror directory, and run-specific
+cache entries. Record before/after process and GPU state; never kill another
+user's process or delete shared model caches.
 
 Write:
 

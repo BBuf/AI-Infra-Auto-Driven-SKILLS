@@ -711,7 +711,7 @@ def choose_best_scope(scope_chain: Sequence[str]) -> Optional[str]:
             score += 10.0
         if "utils.py" in scope and "__call__" in scope:
             score -= 15.0
-        if "scheduler_profiler_mixin.py" in scope:
+        if "scheduler_components/profiler_manager.py" in scope:
             score -= 20.0
         if is_low_signal_scope(scope):
             score -= 25.0

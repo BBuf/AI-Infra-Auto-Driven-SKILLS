@@ -95,10 +95,6 @@ frameworks:
       max_num_batched_tokens:
       - 8192
       - 16384
-      max_num_partial_prefills:
-      - 1
-      max_long_partial_prefills:
-      - 1
       long_prefill_token_threshold:
       - 0
       - 4096

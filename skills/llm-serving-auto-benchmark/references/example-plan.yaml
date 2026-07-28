@@ -114,9 +114,7 @@ frameworks:
       max_num_seqs: [64, 128]
       max_num_batched_tokens: [8192, 16384]
       enable_chunked_prefill: [true]
-      # Raise above 1 only after the target model/runtime supports concurrent partial prefill.
-      max_num_partial_prefills: [1]
-      max_long_partial_prefills: [1]
+      # This threshold remains in current vLLM; verify it against `--help=all`.
       long_prefill_token_threshold: [0, 4096]
       enable_prefix_caching: [true]
       kv_cache_dtype: [auto]

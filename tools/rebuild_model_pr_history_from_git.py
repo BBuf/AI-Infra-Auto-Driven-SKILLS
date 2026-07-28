@@ -81,7 +81,7 @@ MODEL_TITLES = {
     "llama33-70b": "Llama 3.3 70B",
     "llama4": "Llama 4",
     "mimo-v2-flash": "MiMo V2 Flash",
-    "minimax": "MiniMax M2 Series",
+    "minimax": "MiniMax M2/M3 Series",
     "mistral-small-4": "Mistral Small 4",
     "mixtral-quark-int4fp8-moe": "Mixtral Quark INT4/FP8 MoE",
     "moss-vl": "MOSS-VL",
@@ -150,6 +150,7 @@ FRAMEWORK_MODEL_ORDER = {
         "glm46-glm47",
         "glm5-glm51",
         "gpt-oss",
+        "hunyuan3-preview",
         "intern-s1",
         "internvl35",
         "kimi",
@@ -161,12 +162,14 @@ FRAMEWORK_MODEL_ORDER = {
         "minimax",
         "mistral-small-4",
         "mixtral-quark-int4fp8-moe",
+        "moss-vl",
         "nemotron-super",
         "qwen-vlm-omni-asr",
         "qwen3-coder",
         "qwen3-core",
         "qwen3-next",
         "qwen35",
+        "qwen36",
         "ring25",
         "step35",
     ],
@@ -183,6 +186,7 @@ FRAMEWORK_MODEL_ORDER = {
         "glm45",
         "glm46-glm47",
         "gpt-oss",
+        "hunyuan3-preview",
         "intern-s1",
         "internvl35",
         "jina-reranker-m0",
@@ -200,6 +204,7 @@ FRAMEWORK_MODEL_ORDER = {
         "qwen3-core",
         "qwen3-next",
         "qwen35",
+        "qwen36",
         "ring25",
         "step35",
     ],
@@ -305,7 +310,10 @@ MODEL_FILTERS: dict[str, dict[str, dict[str, list[str]]]] = {
         "qwen3-core": {"include": ["*qwen3.py", "*qwen3_moe.py", "*qwen3_moe_mtp.py", "*qwen3-deployment*", "*Qwen3.mdx"], "exclude": ["*qwen3_next*", "*qwen3_5*", "*qwen35*", "*qwen36*", "*qwen3_vl*", "*qwen3_omni*", "*qwen3_asr*", "*qwen3-coder*", "*qwen-image*", "*diffusion*"]},
         "qwen3-next": {"include": ["*qwen3_next*"], "exclude": []},
         "qwen35": {"include": ["*qwen3_5*", "*qwen35*", "*qwen3.5*", "*qwen3-5*"], "exclude": []},
-        "qwen36": {"include": ["*qwen36*", "*qwen3.6*", "*qwen3-6*"], "exclude": []},
+        "qwen36": {
+            "include": ["*qwen36*", "*qwen3.6*", "*qwen3_6*"],
+            "exclude": [],
+        },
         "ring25": {
             "include": ["*ring-2.5*", "*ring_2_5*", "*ring-25*", "*ring25*"],
             "exclude": ["*diffusion*", "*ring_sp*"],
@@ -364,7 +372,6 @@ MODEL_FILTERS: dict[str, dict[str, dict[str, list[str]]]] = {
         "minimax": {"include": ["*minimax*"], "exclude": []},
         "mistral-small-4": {"include": ["*mistral*", "*ministral*"], "exclude": []},
         "mixtral-quark-int4fp8-moe": {"include": ["*mixtral*", "*quark*"], "exclude": []},
-        "moss-vl": {"include": ["*moss_vl*", "*moss-vl*"], "exclude": []},
         "nemotron-super": {"include": ["*nemotron*", "*jet_nemotron*", "*nano_nemotron*"], "exclude": []},
         "qwen-vlm-omni-asr": {
             "include": [
@@ -384,7 +391,10 @@ MODEL_FILTERS: dict[str, dict[str, dict[str, list[str]]]] = {
         "qwen3-core": {"include": ["*qwen3.py", "*qwen3_moe.py", "*qwen3_moe_mtp.py", "*qwen3_dflash.py", "*qwen3-deployment*", "*Qwen3.mdx"], "exclude": ["*qwen3_next*", "*qwen3_5*", "*qwen35*", "*qwen36*", "*qwen3_vl*", "*qwen3_omni*", "*qwen3_asr*", "*qwen3-coder*", "*qwen-image*", "*diffusion*"]},
         "qwen3-next": {"include": ["*qwen3_next*"], "exclude": []},
         "qwen35": {"include": ["*qwen3_5*", "*qwen35*", "*qwen3.5*", "*qwen3-5*"], "exclude": []},
-        "qwen36": {"include": ["*qwen36*", "*qwen3.6*", "*qwen3-6*"], "exclude": []},
+        "qwen36": {
+            "include": ["*qwen36*", "*qwen3.6*", "*qwen3_6*"],
+            "exclude": [],
+        },
         "ring25": {
             "include": ["*ring-2.5*", "*ring_2_5*", "*ring-25*", "*ring25*"],
             "exclude": [],
@@ -428,9 +438,16 @@ SUBJECT_HINTS = {
     "qwen3-core": ["qwen3", "qwen3-moe", "qwen3 moe"],
     "qwen3-next": ["qwen3-next", "qwen3 next"],
     "qwen35": ["qwen3.5", "qwen35", "qwen3-5"],
-    "qwen36": ["qwen3.6", "qwen36", "qwen3-6"],
+    "qwen36": ["qwen3.6", "qwen36", "qwen3_6"],
     "ring25": ["ring-2.5", "ring 2.5", "ring25"],
     "step35": ["step3.5", "step-3.5", "step35", "step3p5"],
+}
+
+# Some model-specific files are changed by PRs whose subjects only name a
+# shared backend (for example LoRA or quantization). Keep a narrowly scoped
+# path fallback for identifiers that cannot collide with a neighboring model.
+PATH_IDENTITY_HINTS = {
+    ("vllm", "qwen36"): ["qwen3.6", "qwen36", "qwen3_6"],
 }
 
 
@@ -632,33 +649,117 @@ def normalize_hint_text(text: str) -> str:
     return re.sub(r"\s+", " ", text)
 
 
-def filter_traces_by_subject(model: str, traces: dict[int, TraceInfo]) -> dict[int, TraceInfo]:
+def filter_traces_by_subject(
+    framework: str, model: str, traces: dict[int, TraceInfo]
+) -> dict[int, TraceInfo]:
     hints = [normalize_hint_text(hint) for hint in SUBJECT_HINTS.get(model, [])]
+    path_hints = [
+        normalize_hint_text(hint)
+        for hint in PATH_IDENTITY_HINTS.get((framework, model), [])
+    ]
     if not hints:
         return traces
     filtered: dict[int, TraceInfo] = {}
     for number, trace in traces.items():
         haystack = normalize_hint_text(" ".join(trace.subjects))
-        if any(hint in haystack for hint in hints):
+        path_haystack = normalize_hint_text(" ".join(trace.files))
+        if any(hint in haystack for hint in hints) or any(
+            hint in path_haystack for hint in path_hints
+        ):
             filtered[number] = trace
     return filtered
 
 
+def read_existing_history(framework: str, model: str, lang: str) -> str:
+    path = HISTORY_ROOT / framework / model / f"README.{lang}.md"
+    relpath = path.relative_to(ROOT)
+    # Preserve both cards committed on the branch being refreshed and cards
+    # present at the branch point. Reading only `main` drops cards added by an
+    # earlier regeneration; reading only `HEAD` cannot recover a historical
+    # card that an earlier, partially failed regeneration already removed.
+    head_text = run(
+        ["git", "show", f"HEAD:{relpath.as_posix()}"], ROOT, check=False
+    )
+    base = run(["git", "merge-base", "HEAD", "main"], ROOT, check=False).strip()
+    base_text = (
+        run(["git", "show", f"{base}:{relpath.as_posix()}"], ROOT, check=False)
+        if base
+        else ""
+    )
+    return "\n".join(part for part in (head_text, base_text) if part)
+
+
 def extract_existing_prs(framework: str, model: str) -> set[int]:
     repo = REPOS[framework]
-    paths = [
-        HISTORY_ROOT / framework / model / "README.zh.md",
-        HISTORY_ROOT / framework / model / "README.en.md",
-    ]
     numbers: set[int] = set()
-    for path in paths:
-        relpath = path.relative_to(ROOT)
-        text = run(["git", "show", f"main:{relpath.as_posix()}"], ROOT, check=False)
-        if not text:
-            continue
-        for match in re.finditer(rf"https://github\.com/{re.escape(repo)}/pull/(\d+)", text):
+    for lang in ("zh", "en"):
+        text = read_existing_history(framework, model, lang)
+        for match in re.finditer(
+            rf"https://github\.com/{re.escape(repo)}/pull/(\d+)", text
+        ):
             numbers.add(int(match.group(1)))
     return numbers
+
+
+def extract_existing_cards(
+    framework: str, model: str, lang: str
+) -> dict[int, str]:
+    text = read_existing_history(framework, model, lang)
+    cards: dict[int, str] = {}
+    pattern = re.compile(
+        r"(?ms)^(### PR #(\d+)\b.*?)(?=^### PR #\d+\b|^## |\Z)"
+    )
+    for match in pattern.finditer(text):
+        # HEAD text is concatenated before the branch-point text, so retain
+        # the current-branch version when the card exists in both.
+        cards.setdefault(int(match.group(2)), match.group(1).rstrip())
+    return cards
+
+
+def extract_existing_timeline_rows(
+    framework: str, model: str, lang: str
+) -> dict[int, str]:
+    text = read_existing_history(framework, model, lang)
+    rows: dict[int, str] = {}
+    for line in text.splitlines():
+        match = re.match(
+            r"^\| \d{4}-\d{2}-\d{2} \| \[#(\d+)\]\(https://github\.com/",
+            line,
+        )
+        if match:
+            rows.setdefault(int(match.group(1)), line)
+    return rows
+
+
+def is_transient_fetch_error(message: str) -> bool:
+    lowered = message.lower()
+    return any(
+        marker in lowered
+        for marker in (
+            "rate limit",
+            "secondary rate",
+            "http 403",
+            "http 429",
+            "eof",
+            "timeout",
+            "timed out",
+            "connection reset",
+            "http 500",
+            "http 502",
+            "http 503",
+            "http 504",
+            "malformed github pr response",
+        )
+    )
+
+
+def is_valid_pr_info(info: Any, number: int) -> bool:
+    return (
+        isinstance(info, dict)
+        and int(info.get("number") or 0) == number
+        and bool(info.get("title"))
+        and bool(info.get("html_url"))
+    )
 
 
 def fetch_pr_bundle(framework: str, number: int, cache: dict[str, Any]) -> tuple[dict[str, Any] | None, list[dict[str, Any]]]:
@@ -666,13 +767,23 @@ def fetch_pr_bundle(framework: str, number: int, cache: dict[str, Any]) -> tuple
     key = f"{repo}#{number}"
     if key in cache["prs"]:
         entry = cache["prs"][key]
-        return entry.get("info"), entry.get("files", [])
+        cached_info = entry.get("info") or {}
+        fetch_error = str(cached_info.get("fetch_error") or "")
+        if fetch_error and not is_transient_fetch_error(fetch_error):
+            return entry.get("info"), entry.get("files", [])
+        if not fetch_error and is_valid_pr_info(cached_info, number):
+            return cached_info, entry.get("files", [])
     try:
         info = gh_api(f"repos/{repo}/pulls/{number}")
+        if not is_valid_pr_info(info, number):
+            raise RuntimeError("malformed GitHub PR response")
         files = gh_api(f"repos/{repo}/pulls/{number}/files?per_page=100", paginate=True)
     except Exception as exc:  # keep the rebuild resilient to deleted private refs
         info = {"number": number, "html_url": f"https://github.com/{repo}/pull/{number}", "title": f"unavailable PR #{number}", "state": "unknown", "fetch_error": str(exc)}
         files = []
+        if not is_transient_fetch_error(str(exc)):
+            cache["prs"][key] = {"info": info, "files": files}
+        return info, files
     cache["prs"][key] = {"info": info, "files": files}
     return info, files
 
@@ -755,10 +866,32 @@ def is_relevant_file(bundle: PRBundle, filename: str) -> bool:
 def top_files(bundle: PRBundle, limit: int = 8) -> list[dict[str, Any]]:
     files = [file for file in (bundle.files or []) if not is_global_excluded(file.get("filename", ""))]
     relevant = [f for f in files if is_relevant_file(bundle, f.get("filename", ""))]
-    chosen = relevant or files
+    if relevant and not any(
+        file_category(file.get("filename", "")) == "runtime" for file in relevant
+    ):
+        # A model trace can reach a PR through a test or cookbook file while
+        # the actual fix lives in a shared runtime module. Keep the traced
+        # files first, but do not drop supporting runtime implementation when
+        # none of the traced files is itself runtime code.
+        relevant_names = {f.get("filename", "") for f in relevant}
+        supporting_runtime = [
+            f
+            for f in files
+            if f.get("filename", "") not in relevant_names
+            and file_category(f.get("filename", "")) == "runtime"
+        ]
+        chosen = relevant + supporting_runtime
+    elif relevant:
+        chosen = relevant
+    else:
+        chosen = files
     chosen = sorted(
         chosen,
-        key=lambda item: (0 if is_runtime_file(item.get("filename", "")) else 1, -int(item.get("changes") or 0)),
+        key=lambda item: (
+            0 if item in relevant else 1,
+            0 if is_runtime_file(item.get("filename", "")) else 1,
+            -int(item.get("changes") or 0),
+        ),
     )
     return chosen[:limit]
 
@@ -775,6 +908,99 @@ def is_unusable_or_disallowed_bundle(bundle: PRBundle) -> bool:
     if files and all(is_global_excluded(file.get("filename", "")) for file in files):
         return True
     return False
+
+
+def existing_card_info(
+    framework: str,
+    number: int,
+    card_en_text: str,
+    card_zh_text: str,
+) -> dict[str, Any]:
+    card_text = card_en_text or card_zh_text
+    heading = re.search(rf"(?m)^### PR #{number} - (.+)$", card_text)
+    link = re.search(r"(?m)^- (?:Link|链接):\s*(\S+)", card_text)
+    status = re.search(
+        r"(?m)^- (?:Status/date|状态/时间):\s*([^/\n]+?)\s*/\s*(\d{4}-\d{2}-\d{2}|unknown)",
+        card_text,
+    )
+    state = status.group(1).strip() if status else "unknown"
+    when = status.group(2) if status else "unknown"
+    info: dict[str, Any] = {
+        "number": number,
+        "title": heading.group(1).strip() if heading else f"PR #{number}",
+        "html_url": (
+            link.group(1)
+            if link
+            else f"https://github.com/{REPOS[framework]}/pull/{number}"
+        ),
+        "state": state,
+    }
+    if when != "unknown":
+        timestamp = f"{when}T00:00:00Z"
+        if state == "merged":
+            info["merged_at"] = timestamp
+        elif state in {"closed", "closed-unmerged"}:
+            info["closed_at"] = timestamp
+        else:
+            info["created_at"] = timestamp
+    return info
+
+
+def retain_existing_card_fallbacks(
+    framework: str,
+    bundles: list[PRBundle],
+    cards_en: dict[int, str],
+    cards_zh: dict[int, str],
+) -> list[PRBundle]:
+    retained: list[PRBundle] = []
+    for bundle in bundles:
+        if not is_unusable_or_disallowed_bundle(bundle):
+            retained.append(bundle)
+            continue
+        info = bundle.info or {}
+        has_existing_card = bundle.number in cards_en or bundle.number in cards_zh
+        if not (info.get("fetch_error") and not bundle.files and has_existing_card):
+            continue
+        fallback_info = existing_card_info(
+            framework,
+            bundle.number,
+            cards_en.get(bundle.number, ""),
+            cards_zh.get(bundle.number, ""),
+        )
+        fallback_info["fetch_error"] = str(info["fetch_error"])
+        retained.append(
+            PRBundle(
+                framework=bundle.framework,
+                repo=bundle.repo,
+                number=bundle.number,
+                info=fallback_info,
+                files=[],
+                trace=bundle.trace,
+                source_tags=bundle.source_tags | {"existing-card-fallback"},
+            )
+        )
+    return sorted(retained, key=sort_key)
+
+
+def annotate_preserved_card(card: str, bundle: PRBundle, lang: str) -> str:
+    marker = "Metadata refresh note" if lang == "en" else "元数据刷新说明"
+    if marker in card:
+        return card
+    error = plain(str((bundle.info or {}).get("fetch_error") or "unknown error"), 180)
+    if lang == "en":
+        note = (
+            "- Metadata refresh note: the current GitHub API lookup failed "
+            f"(`{error}`); this previously audited card is retained instead of "
+            "discarding immutable commit and diff evidence."
+        )
+        field = r"(?m)^- Status/date:.*$"
+    else:
+        note = (
+            "- 元数据刷新说明: 当前 GitHub API 查询失败"
+            f"（`{error}`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。"
+        )
+        field = r"(?m)^- 状态/时间:.*$"
+    return re.sub(field, lambda match: f"{match.group(0)}\n{note}", card, count=1)
 
 
 def is_runtime_file(path: str) -> bool:
@@ -1111,17 +1337,35 @@ def coverage_table_zh(files: list[str], traces: dict[int, TraceInfo]) -> str:
     return "\n".join(rows).replace("https://github.com/{repo}", "https://github.com/{repo}")
 
 
-def timeline_zh(bundles: list[PRBundle]) -> str:
+def timeline_zh(
+    bundles: list[PRBundle], existing_rows: dict[int, str] | None = None
+) -> str:
     rows = ["| 日期 | PR | 状态 | 标题 | 主要文件 |", "| --- | --- | --- | --- | --- |"]
+    existing_rows = existing_rows or {}
     for bundle in bundles:
+        if (
+            "existing-card-fallback" in bundle.source_tags
+            and bundle.number in existing_rows
+        ):
+            rows.append(existing_rows[bundle.number])
+            continue
         files = ", ".join(f"`{f.get('filename')}`" for f in top_files(bundle, 3))
         rows.append(f"| {pr_when(bundle)} | [#{bundle.number}]({pr_url(bundle)}) | {pr_state(bundle)} | {md_escape(pr_title(bundle))} | {md_escape(files)} |")
     return "\n".join(rows)
 
 
-def timeline_en(bundles: list[PRBundle]) -> str:
+def timeline_en(
+    bundles: list[PRBundle], existing_rows: dict[int, str] | None = None
+) -> str:
     rows = ["| Date | PR | State | Title | Main files |", "| --- | --- | --- | --- | --- |"]
+    existing_rows = existing_rows or {}
     for bundle in bundles:
+        if (
+            "existing-card-fallback" in bundle.source_tags
+            and bundle.number in existing_rows
+        ):
+            rows.append(existing_rows[bundle.number])
+            continue
         files = ", ".join(f"`{f.get('filename')}`" for f in top_files(bundle, 3))
         rows.append(f"| {pr_when(bundle)} | [#{bundle.number}]({pr_url(bundle)}) | {pr_state(bundle)} | {md_escape(pr_title(bundle))} | {md_escape(files)} |")
     return "\n".join(rows)
@@ -1176,14 +1420,30 @@ def no_pr_section_en(model_title: str, framework: str, files: list[str]) -> str:
     )
 
 
-def render_history_zh(framework: str, model: str, files: list[str], traces: dict[int, TraceInfo], bundles: list[PRBundle], existing_only_count: int) -> str:
+def render_history_zh(
+    framework: str,
+    model: str,
+    files: list[str],
+    traces: dict[int, TraceInfo],
+    bundles: list[PRBundle],
+    existing_only_count: int,
+    existing_cards: dict[int, str] | None = None,
+    existing_timeline_rows: dict[int, str] | None = None,
+) -> str:
     title = MODEL_TITLES[model]
     repo = REPOS[framework]
-    cards = "\n\n".join(card_zh(bundle, title) for bundle in bundles)
+    existing_cards = existing_cards or {}
+    cards = "\n\n".join(
+        annotate_preserved_card(existing_cards[bundle.number], bundle, "zh")
+        if "existing-card-fallback" in bundle.source_tags
+        and bundle.number in existing_cards
+        else card_zh(bundle, title)
+        for bundle in bundles
+    )
     pr_section = f"## 逐 PR diff 审计卡\n\n{cards}" if cards else no_pr_section_zh(title, framework, files)
     traced_count = sum(1 for bundle in bundles if bundle.trace.files)
     timeline = (
-        timeline_zh(bundles)
+        timeline_zh(bundles, existing_timeline_rows)
         if bundles
         else "| 日期 | PR | 状态 | 标题 | 主要文件 |\n| --- | --- | --- | --- | --- |\n| - | - | - | 未发现可归档 PR | - |"
     )
@@ -1218,14 +1478,30 @@ def render_history_zh(framework: str, model: str, files: list[str], traces: dict
     return body.strip() + "\n"
 
 
-def render_history_en(framework: str, model: str, files: list[str], traces: dict[int, TraceInfo], bundles: list[PRBundle], existing_only_count: int) -> str:
+def render_history_en(
+    framework: str,
+    model: str,
+    files: list[str],
+    traces: dict[int, TraceInfo],
+    bundles: list[PRBundle],
+    existing_only_count: int,
+    existing_cards: dict[int, str] | None = None,
+    existing_timeline_rows: dict[int, str] | None = None,
+) -> str:
     title = MODEL_TITLES[model]
     repo = REPOS[framework]
-    cards = "\n\n".join(card_en(bundle, title) for bundle in bundles)
+    existing_cards = existing_cards or {}
+    cards = "\n\n".join(
+        annotate_preserved_card(existing_cards[bundle.number], bundle, "en")
+        if "existing-card-fallback" in bundle.source_tags
+        and bundle.number in existing_cards
+        else card_en(bundle, title)
+        for bundle in bundles
+    )
     pr_section = f"## Per-PR Diff Audit Cards\n\n{cards}" if cards else no_pr_section_en(title, framework, files)
     traced_count = sum(1 for bundle in bundles if bundle.trace.files)
     timeline = (
-        timeline_en(bundles)
+        timeline_en(bundles, existing_timeline_rows)
         if bundles
         else "| Date | PR | State | Title | Main files |\n| --- | --- | --- | --- | --- |\n| - | - | - | no archived PR found | - |"
     )
@@ -1303,8 +1579,16 @@ def rebuild(dry_run: bool = False) -> None:
         for model in FRAMEWORK_MODEL_ORDER[framework]:
             files = selected_files(framework, model, all_files[framework])
             raw_traces = trace_model_prs(framework, files)
-            traces = filter_traces_by_subject(model, raw_traces)
+            traces = filter_traces_by_subject(framework, model, raw_traces)
             existing = extract_existing_prs(framework, model)
+            existing_cards_zh = extract_existing_cards(framework, model, "zh")
+            existing_cards_en = extract_existing_cards(framework, model, "en")
+            existing_timeline_rows_zh = extract_existing_timeline_rows(
+                framework, model, "zh"
+            )
+            existing_timeline_rows_en = extract_existing_timeline_rows(
+                framework, model, "en"
+            )
             source_tags: dict[int, set[str]] = defaultdict(set)
             for number in traces:
                 source_tags[number].add("git-trace")
@@ -1324,20 +1608,39 @@ def rebuild(dry_run: bool = False) -> None:
                 f"raw_git_prs={len(raw_traces)} existing_extra={existing_only_count} fetching={len(numbers)}",
                 flush=True,
             )
-            bundles = [
-                bundle
-                for bundle in fetch_many(framework, numbers, traces, source_tags, cache)
-                if not is_unusable_or_disallowed_bundle(bundle)
-            ]
+            bundles = retain_existing_card_fallbacks(
+                framework,
+                fetch_many(framework, numbers, traces, source_tags, cache),
+                existing_cards_en,
+                existing_cards_zh,
+            )
             print(f"{framework}/{model}: fetched total={len(bundles)}", flush=True)
             model_dir = HISTORY_ROOT / framework / model
             model_dir.mkdir(parents=True, exist_ok=True)
             (model_dir / "README.zh.md").write_text(
-                render_history_zh(framework, model, files, traces, bundles, existing_only_count),
+                render_history_zh(
+                    framework,
+                    model,
+                    files,
+                    traces,
+                    bundles,
+                    existing_only_count,
+                    existing_cards_zh,
+                    existing_timeline_rows_zh,
+                ),
                 encoding="utf-8",
             )
             (model_dir / "README.en.md").write_text(
-                render_history_en(framework, model, files, traces, bundles, existing_only_count),
+                render_history_en(
+                    framework,
+                    model,
+                    files,
+                    traces,
+                    bundles,
+                    existing_only_count,
+                    existing_cards_en,
+                    existing_timeline_rows_en,
+                ),
                 encoding="utf-8",
             )
             save_cache(cache)

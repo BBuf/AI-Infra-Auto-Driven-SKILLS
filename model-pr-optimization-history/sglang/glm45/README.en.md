@@ -4,7 +4,6 @@
 
 | File | Git-traced PRs |
 | --- | --- |
-| `docs/basic_usage/glm45.md` | no direct PR-number commit |
 | `docs_new/cookbook/autoregressive/GLM/GLM-4.5.mdx` | no direct PR-number commit |
 | `docs_new/cookbook/autoregressive/GLM/GLM-4.5V.mdx` | no direct PR-number commit |
 | `python/sglang/srt/function_call/glm4_moe_detector.py` | [#8224](https://github.com/sgl-project/sglang/pull/8224), [#8445](https://github.com/sgl-project/sglang/pull/8445), [#11017](https://github.com/sgl-project/sglang/pull/11017) |

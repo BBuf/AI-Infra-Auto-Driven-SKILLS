@@ -4,13 +4,13 @@
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
-| `docs/basic_usage/deepseek_ocr.md` | [#17897](https://github.com/sgl-project/sglang/pull/17897) |
 | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR-2.mdx` | 无直接 PR 号提交 |
 | `docs_new/src/snippets/autoregressive/deepseek-ocr-v2-deployment.jsx` | 无直接 PR 号提交 |
 | `python/sglang/srt/configs/deepseek_ocr.py` | [#17897](https://github.com/sgl-project/sglang/pull/17897) |
 | `python/sglang/srt/models/deepseek_ocr.py` | [#17897](https://github.com/sgl-project/sglang/pull/17897), [#19732](https://github.com/sgl-project/sglang/pull/19732) |
 | `python/sglang/srt/multimodal/processors/deepseek_ocr.py` | [#17897](https://github.com/sgl-project/sglang/pull/17897) |
 | `test/registered/xpu/test_deepseek_ocr.py` | 无直接 PR 号提交 |
+| `test/registered/xpu/test_deepseek_ocr_2_olmbench.py` | 无直接 PR 号提交 |
 | `test/registered/xpu/test_deepseek_ocr_triton.py` | 无直接 PR 号提交 |
 
 ## PR 覆盖总览
@@ -45,7 +45,6 @@
 | 2026-04-21 | [#23337](https://github.com/sgl-project/sglang/pull/23337) | merged | [Docs] Sync docs_new with legacy docs and update migration redirects | `docs_new/docs/supported-models/multimodal_language_models.mdx`, `docs_new/docs/advanced_features/structured_outputs_for_reasoning_models.mdx`, `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_best_practice.mdx` |
 | 2026-04-29 | [#23820](https://github.com/sgl-project/sglang/pull/23820) | merged | Update XPU Docker runtime stack & hf_home config | `test/srt/xpu/test_intel_xpu_backend.py`, `test/srt/xpu/test_deepseek_ocr.py`, `docker/xpu.Dockerfile` |
 | 2026-05-13 | [#25182](https://github.com/sgl-project/sglang/pull/25182) | merged | chore: add vLLM SPDX copyright headers to ported files | `python/sglang/srt/models/baichuan.py`, `python/sglang/srt/models/commandr.py`, `python/sglang/srt/models/dbrx.py` |
-| 2026-05-15 | [#25364](https://github.com/sgl-project/sglang/pull/25364) | open | Add Accuracy Benchmark for OCR models | `benchmark/ocr/bench_sglang.py`, `benchmark/ocr/eval_utils.py`, `benchmark/ocr/generate_report.py` |
 | 2026-05-21 | [#25257](https://github.com/sgl-project/sglang/pull/25257) | merged | [NPU] Support model DeepSeek-OCR and DeepSeek-OCR-2 | `python/sglang/srt/models/deepseek.py` |
 | 2026-05-22 | [#24751](https://github.com/sgl-project/sglang/pull/24751) | merged | fix(mm): make multimodal data loading non-blocking to prevent health check stalls | `python/sglang/srt/multimodal/processors/base_processor.py`, `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/multimodal/processors/minicpm.py` |
 | 2026-05-22 | [#25589](https://github.com/sgl-project/sglang/pull/25589) | closed | [Fix] DeepSeek-OCR-2 bench_serving: fix processor loading and GPU JPEG tensor conversion | `python/sglang/srt/configs/deepseek_ocr.py`, `python/sglang/benchmark/utils.py` |
@@ -56,6 +55,7 @@
 | 2026-06-06 | [#27248](https://github.com/sgl-project/sglang/pull/27248) | merged | [Doc][CPU]Update Cookbook with Xeon support info | `docs_new/src/snippets/autoregressive/deepseek-v3-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-v31-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-basic-deployment.jsx` |
 | 2026-06-23 | [#27527](https://github.com/sgl-project/sglang/pull/27527) | merged | Vectorize _create_custom_4d_mask in CustomQwen2Decoder | `python/sglang/srt/models/deepseek_ocr.py`, `test/manual/test_create_custom_4d_mask.py` |
 | 2026-06-23 | [#28988](https://github.com/sgl-project/sglang/pull/28988) | merged | [CI] Fix lint brought by #27527 | `python/sglang/srt/models/deepseek_ocr.py`, `test/manual/test_create_custom_4d_mask.py` |
+| 2026-07-06 | [#25364](https://github.com/sgl-project/sglang/pull/25364) | merged | Add Accuracy Benchmark for OCR models | `benchmark/ocr/bench_sglang.py`, `benchmark/ocr/eval_utils.py`, `benchmark/ocr/generate_report.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -238,15 +238,14 @@ diff -- python/sglang/srt/models/deepseek_ocr.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/17897
 - 状态/时间: merged / 2026-01-30
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/basic_usage/deepseek_ocr.md`, `python/sglang/srt/configs/deepseek_ocr.py`, `python/sglang/srt/models/deepseek_ocr.py`, `python/sglang/srt/multimodal/processors/deepseek_ocr.py`；关联提交 `84ab611af8b7`；保留自原 history/skill 显式引用
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/configs/deepseek_ocr.py`, `python/sglang/srt/models/deepseek_ocr.py`, `python/sglang/srt/multimodal/processors/deepseek_ocr.py`；关联提交 `84ab611af8b7`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 9 个文件，+618/-140，可读 patch 1057 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Support DeepSeek-OCR-2 in SGLang (OCR2 vision pipeline, tokenization alignment, and weight loading fixes)#17833」；模型线: DeepSeek OCR 2；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/deepseek_ocr.py`, `python/sglang/srt/configs/deepseek_ocr.py`, `python/sglang/srt/multimodal/processors/deepseek_ocr.py`；技术摘要: 覆盖「Support DeepSeek-OCR-2 in SGLang (OCR2 vision pipeline, tokenization alignment, and weight loading fixes)#17833」；主要实现面是 `python/sglang/srt/models/deepseek_ocr.py`, `python/sglang/srt/configs/deepseek_ocr.py`, `python/sglang/srt/multimodal/processors/deepseek_ocr.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/deepseek_ocr.py` modified +446/-116 (562 lines); hunks: -24,6 +24,7; -702,6 +703,7 @@ def __init__(; symbols: __init__, forward, _build_sam，涉及 `__init__, forward, _build_sam`；`python/sglang/srt/configs/deepseek_ocr.py` modified +32/-9 (41 lines); hunks: -196,6 +196,7 @@ def __init__(; -243,6 +244,7 @@ def __init__(; symbols: __init__, process_one, tokenize_with_images，涉及 `__init__, process_one, tokenize_with_images`；`python/sglang/srt/multimodal/processors/deepseek_ocr.py` modified +8/-0 (8 lines); hunks: -12,6 +12,14 @@ class DeepseekOCRProcessor(BaseMultimodalProcessor):; symbols: DeepseekOCRProcessor, __init__，涉及 `DeepseekOCRProcessor, __init__`；`docs/basic_usage/deepseek_ocr.md` added +54/-0 (54 lines); hunks: -0,0 +1,54。
+- 实现要点: `python/sglang/srt/models/deepseek_ocr.py` modified +446/-116 (562 lines); hunks: -24,6 +24,7; -702,6 +703,7 @@ def __init__(; symbols: __init__, forward, _build_sam，涉及 `__init__, forward, _build_sam`；`python/sglang/srt/configs/deepseek_ocr.py` modified +32/-9 (41 lines); hunks: -196,6 +196,7 @@ def __init__(; -243,6 +244,7 @@ def __init__(; symbols: __init__, process_one, tokenize_with_images，涉及 `__init__, process_one, tokenize_with_images`；`python/sglang/srt/multimodal/processors/deepseek_ocr.py` modified +8/-0 (8 lines); hunks: -12,6 +12,14 @@ class DeepseekOCRProcessor(BaseMultimodalProcessor):; symbols: DeepseekOCRProcessor, __init__，涉及 `DeepseekOCRProcessor, __init__`。
 - 代码 diff 细节:
   - `python/sglang/srt/models/deepseek_ocr.py` modified +446/-116 (562 lines); hunks: -24,6 +24,7; -702,6 +703,7 @@ def __init__(; symbols: __init__, forward, _build_sam
   - `python/sglang/srt/configs/deepseek_ocr.py` modified +32/-9 (41 lines); hunks: -196,6 +196,7 @@ def __init__(; -243,6 +244,7 @@ def __init__(; symbols: __init__, process_one, tokenize_with_images
   - `python/sglang/srt/multimodal/processors/deepseek_ocr.py` modified +8/-0 (8 lines); hunks: -12,6 +12,14 @@ class DeepseekOCRProcessor(BaseMultimodalProcessor):; symbols: DeepseekOCRProcessor, __init__
-  - `docs/basic_usage/deepseek_ocr.md` added +54/-0 (54 lines); hunks: -0,0 +1,54
 - 关键代码摘录:
 
 ```diff
@@ -272,7 +271,6 @@ diff -- python/sglang/srt/multimodal/processors/deepseek_ocr.py
 
 - 已读文件:
   - runtime: `python/sglang/srt/models/deepseek_ocr.py` modified +446/-116; `python/sglang/srt/configs/deepseek_ocr.py` modified +32/-9; `python/sglang/srt/multimodal/processors/deepseek_ocr.py` modified +8/-0
-  - docs: `docs/basic_usage/deepseek_ocr.md` added +54/-0
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/configs/deepseek_ocr.py`, `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/model_loader/utils.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #13561 - [XPU] Integrate MoE and minor improvements in XPU attention backend
@@ -800,48 +798,6 @@ diff -- python/sglang/srt/models/gemma.py
   - runtime: `python/sglang/srt/models/baichuan.py` modified +4/-0; `python/sglang/srt/models/commandr.py` modified +4/-0; `python/sglang/srt/models/dbrx.py` modified +3/-0; `python/sglang/srt/models/gemma.py` modified +3/-0; `python/sglang/srt/models/gemma2.py` modified +3/-0; `python/sglang/srt/models/gpt_bigcode.py` modified +3/-0
 - 验证与风险: diff 自带测试面 `python/sglang/test/test_custom_ops.py`, `python/sglang/test/test_marlin_utils.py`, `sgl-kernel/tests/test_causal_conv1d.py`, `test/registered/layers/mamba/test_causal_conv1d.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
-### PR #25364 - Add Accuracy Benchmark for OCR models
-
-- 链接: https://github.com/sgl-project/sglang/pull/25364
-- 状态/时间: open / 2026-05-15
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+1928/-0，可读 patch 1946 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Add Accuracy Benchmark for OCR models」；模型线: DeepSeek OCR 2；类别: 文档/测试/CI；主要 diff: `benchmark/ocr/bench_sglang.py`, `benchmark/ocr/eval_utils.py`, `benchmark/ocr/generate_report.py`；技术摘要: 覆盖「Add Accuracy Benchmark for OCR models」；主要实现面是 `benchmark/ocr/bench_sglang.py`, `benchmark/ocr/eval_utils.py`, `benchmark/ocr/generate_report.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `benchmark/ocr/bench_sglang.py` added +735/-0 (735 lines); hunks: -0,0 +1,735; symbols: BenchArgs, add_cli_args, preflight_check, pdf_page_to_base64_png，涉及 `BenchArgs, add_cli_args, preflight_check`；`benchmark/ocr/eval_utils.py` added +631/-0 (631 lines); hunks: -0,0 +1,631; symbols: normalize_text, strip_markdown, fuzzy_contains, exact_contains，涉及 `normalize_text, strip_markdown, fuzzy_contains`；`benchmark/ocr/generate_report.py` added +382/-0 (382 lines); hunks: -0,0 +1,382; symbols: _ocr_to_html, _latex_to_display, _render_sample, generate_report，涉及 `_ocr_to_html, _latex_to_display, _render_sample`；`benchmark/ocr/README.md` added +178/-0 (178 lines); hunks: -0,0 +1,178。
-- 代码 diff 细节:
-  - `benchmark/ocr/bench_sglang.py` added +735/-0 (735 lines); hunks: -0,0 +1,735; symbols: BenchArgs, add_cli_args, preflight_check, pdf_page_to_base64_png
-  - `benchmark/ocr/eval_utils.py` added +631/-0 (631 lines); hunks: -0,0 +1,631; symbols: normalize_text, strip_markdown, fuzzy_contains, exact_contains
-  - `benchmark/ocr/generate_report.py` added +382/-0 (382 lines); hunks: -0,0 +1,382; symbols: _ocr_to_html, _latex_to_display, _render_sample, generate_report
-  - `benchmark/ocr/README.md` added +178/-0 (178 lines); hunks: -0,0 +1,178
-  - `python/pyproject.toml` modified +1/-0 (1 lines); hunks: -85,6 +85,7 @@ dependencies = [
-- 关键代码摘录:
-
-```diff
-diff -- benchmark/ocr/bench_sglang.py
-@@ -0,0 +1,735 @@
-+"""
-+Benchmark DeepSeek-OCR-2 (and similar OCR VLMs) on olmOCR-bench via a running sglang server.
-+Usage:
-+    # 0. Download the dataset (one-time, ~2 GB with PDFs via Git LFS)
-+    hf download --repo-type dataset \\
-+        allenai/olmOCR-bench --local-dir ./olmOCR-bench
-diff -- benchmark/ocr/eval_utils.py
-@@ -0,0 +1,631 @@
-+"""
-+Evaluation utilities for the OCR benchmark (olmOCR-bench test classes).
-+Implements:
-+  - text_presence      : short text segment must be present in OCR output
-+  - text_absence       : text (headers/footers/page numbers) must NOT appear
-+  - natural_reading_order : two text spans must appear in correct relative order
-diff -- benchmark/ocr/generate_report.py
-@@ -0,0 +1,382 @@
-```
-
-- 已读文件:
-  - other: `benchmark/ocr/bench_sglang.py` added +735/-0; `benchmark/ocr/eval_utils.py` added +631/-0; `benchmark/ocr/generate_report.py` added +382/-0; `benchmark/ocr/README.md` added +178/-0
-  - runtime: `python/pyproject.toml` modified +1/-0; `python/pyproject_xpu.toml` modified +1/-0
-- 验证与风险: runtime 路径改动集中在 `python/pyproject.toml`, `python/pyproject_xpu.toml`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #25257 - [NPU] Support model DeepSeek-OCR and DeepSeek-OCR-2
 
 - 链接: https://github.com/sgl-project/sglang/pull/25257
@@ -1195,6 +1151,48 @@ diff -- test/manual/test_create_custom_4d_mask.py
   - runtime: `python/sglang/srt/models/deepseek_ocr.py` modified +3/-3
   - tests: `test/manual/test_create_custom_4d_mask.py` modified +65/-46
 - 验证与风险: diff 自带测试面 `test/manual/test_create_custom_4d_mask.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #25364 - Add Accuracy Benchmark for OCR models
+
+- 链接: https://github.com/sgl-project/sglang/pull/25364
+- 状态/时间: merged / 2026-07-06
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 9 个文件，+1915/-0，可读 patch 1954 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Add Accuracy Benchmark for OCR models」；模型线: DeepSeek OCR 2；类别: 文档/测试/CI；主要 diff: `benchmark/ocr/bench_sglang.py`, `benchmark/ocr/eval_utils.py`, `benchmark/ocr/generate_report.py`；技术摘要: 覆盖「Add Accuracy Benchmark for OCR models」；主要实现面是 `benchmark/ocr/bench_sglang.py`, `benchmark/ocr/eval_utils.py`, `benchmark/ocr/generate_report.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `benchmark/ocr/bench_sglang.py` added +727/-0 (727 lines); hunks: -0,0 +1,727; symbols: BenchArgs, add_cli_args, from_cli_args, preflight_check，涉及 `BenchArgs, add_cli_args, from_cli_args`；`benchmark/ocr/eval_utils.py` added +631/-0 (631 lines); hunks: -0,0 +1,631; symbols: normalize_text, strip_markdown, fuzzy_contains, exact_contains，涉及 `normalize_text, strip_markdown, fuzzy_contains`；`benchmark/ocr/generate_report.py` added +381/-0 (381 lines); hunks: -0,0 +1,381; symbols: _ocr_to_html, _latex_to_display, _render_sample, generate_report，涉及 `_ocr_to_html, _latex_to_display, _render_sample`；`benchmark/ocr/README.md` added +171/-0 (171 lines); hunks: -0,0 +1,171。
+- 代码 diff 细节:
+  - `benchmark/ocr/bench_sglang.py` added +727/-0 (727 lines); hunks: -0,0 +1,727; symbols: BenchArgs, add_cli_args, from_cli_args, preflight_check
+  - `benchmark/ocr/eval_utils.py` added +631/-0 (631 lines); hunks: -0,0 +1,631; symbols: normalize_text, strip_markdown, fuzzy_contains, exact_contains
+  - `benchmark/ocr/generate_report.py` added +381/-0 (381 lines); hunks: -0,0 +1,381; symbols: _ocr_to_html, _latex_to_display, _render_sample, generate_report
+  - `benchmark/ocr/README.md` added +171/-0 (171 lines); hunks: -0,0 +1,171
+  - `python/pyproject.toml` modified +1/-0 (1 lines); hunks: -141,6 +141,7 @@ test = [
+- 关键代码摘录:
+
+```diff
+diff -- benchmark/ocr/bench_sglang.py
+@@ -0,0 +1,727 @@
++"""
++Benchmark DeepSeek-OCR-2 (and similar OCR VLMs) on olmOCR-bench via a running sglang server.
++Usage:
++    # 0. Download the dataset (one-time, ~2 GB with PDFs via Git LFS)
++    hf download --repo-type dataset \\
++        allenai/olmOCR-bench --local-dir ./olmOCR-bench
+diff -- benchmark/ocr/eval_utils.py
+@@ -0,0 +1,631 @@
++"""
++Evaluation utilities for the OCR benchmark (olmOCR-bench test classes).
++Implements:
++  - text_presence      : short text segment must be present in OCR output
++  - text_absence       : text (headers/footers/page numbers) must NOT appear
++  - natural_reading_order : two text spans must appear in correct relative order
+diff -- benchmark/ocr/generate_report.py
+@@ -0,0 +1,381 @@
+```
+
+- 已读文件:
+  - other: `benchmark/ocr/bench_sglang.py` added +727/-0; `benchmark/ocr/eval_utils.py` added +631/-0; `benchmark/ocr/generate_report.py` added +381/-0; `benchmark/ocr/README.md` added +171/-0
+  - runtime: `python/pyproject.toml` modified +1/-0; `python/pyproject_cpu.toml` modified +1/-0; `python/pyproject_npu.toml` modified +1/-0; `python/pyproject_other.toml` modified +1/-0
+- 验证与风险: runtime 路径改动集中在 `python/pyproject.toml`, `python/pyproject_cpu.toml`, `python/pyproject_npu.toml`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ## 补漏结论
 

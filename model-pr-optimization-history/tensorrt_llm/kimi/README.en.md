@@ -1,11 +1,83 @@
 # TensorRT-LLM Kimi Model PR Optimization History
 
-## 2026-06-27 Source Head Refresh
+## 2026-07-28 Source Head Refresh
 
-Rechecked TensorRT-LLM upstream main with `git ls-remote` at `NVIDIA/TensorRT-LLM@aaffa2f9fef3025e0f698d978385a73460344e0b`.
-The existing file-level source-scan rows below remain the last tracked-file audit; use `model-pr-optimization-history/open-pr-watch.md` before relying on current open PR state.
+Rechecked TensorRT-LLM upstream main at `NVIDIA/TensorRT-LLM@9fe5853263750ade5b7dc24fb31a1215ec822d45`.
+The seven-commit range from the previous recorded head
+`1b4ffc0291d75a21ad20118e8f44de6e3831f786` was inspected with
+`git log --name-only` and complete local source diffs.
 
-Result: no additional PR-numbered merges touched the tracked files beyond the existing timeline/backfill rows.
+Result: PR #16805 is promoted because it fixes disaggregated speculative
+draft-token and sequence-length accounting used by Kimi-style PD flows.
+PR #16763 is retained as a cross-model startup-memory card. The remaining four
+commits only adjust CI, fakes, Slurm cleanup, or Docker copies and are not
+presented as model optimization evidence. The seventh commit, VisualGen/Wan
+Attention2D plus TP PR #16677, is also outside the Kimi LLM scope. PR #14848
+remains the prior high-signal Kimi runtime merge.
+
+### PR #16805 - Fix disaggregated draft-token accounting
+
+- Link: https://github.com/NVIDIA/TensorRT-LLM/pull/16805
+- Status/date: merged / 2026-07-27
+- Trace source: merge commit
+  `93924532ff65e6dce000c1dcee604e585386781b`; full six-commit increment and
+  five-file PR diff read locally.
+- Diff scope read: 5 files, +164/-4.
+- Motivation: generation-only requests received first-generation and draft
+  tokens through `ContextPhaseParams`, but the decode request did not adopt the
+  draft tokens and sequence-length setup counted only the first token.
+- Key implementation: `GenericLlmRequest` adopts handoff draft tokens at
+  construction or late context assignment; a shared helper counts first-gen
+  plus draft tokens, and decoder sequence-length setup uses that total.
+- Code diff details: `llmRequest.h` adds draft-token adoption and the shared
+  count helper; `createNewDecoderRequests.cpp` replaces first-token-only
+  arithmetic; C++ and Python tests cover constructor and late-assignment paths.
+- Key code excerpts:
+
+```diff
++        adoptContextPhaseDraftTokens();
++        auto numTokens = static_cast<SizeType32>(
++            contextPhaseParams.getFirstGenTokens().size());
++        numTokens += static_cast<SizeType32>(draftTokens->size());
+```
+
+- Reviewed files: `llmRequest.h`, `createNewDecoderRequests.cpp`, C++ request
+  tests, Python executor-request tests, and binding tests.
+- Risk and verification: validate context/decode handoff with and without draft
+  tokens, late context assignment, and downstream sequence lengths; this is a
+  correctness fix, not throughput evidence.
+
+### PR #16763 - Unify phase-1 CUDA graph cleanup
+
+- Link: https://github.com/NVIDIA/TensorRT-LLM/pull/16763
+- Status/date: merged / 2026-07-27
+- Trace source: final upstream commit
+  `6046f34e1ac8fc20c2c5553d00a98eb15a172555`; complete two-file diff read
+  locally.
+- Diff scope read: 2 files, +5/-8.
+- Motivation: KV-capacity estimation already shuts down the phase-1 executor
+  and releases its CUDA graphs; a second explicit graph release duplicated
+  ownership and complicated final KV-cache allocation.
+- Key implementation: rely on `configure_kv_cache_capacity` for graph/resource
+  teardown and clear only profiling attention metadata before rebuilding the
+  final KV managers.
+- Code diff details: removes the second `_release_cuda_graphs()` call from
+  `py_executor_creator.py`, keeps `eng.attn_metadata = None`, and unwaives the
+  two configurations that exercise the corrected ownership path.
+- Key code excerpts:
+
+```diff
+-            if eng.attn_metadata is not None:
+-                if llm_args.cuda_graph_config is not None:
+-                    eng._release_cuda_graphs()
++            if eng is not None:
+                 eng.attn_metadata = None
+```
+
+- Reviewed files: `py_executor_creator.py` and the two newly unwaived
+  DeepSeek-V3Lite integration cases.
+- Risk and verification: compare startup memory before/after capacity
+  estimation and ensure graph resources are released exactly once.
 
 ## 2026-06-27 PR Backfill Audit
 
@@ -57,6 +129,30 @@ Filter used in this pass: merged PRs whose titles or files matched `Kimi`, `kimi
 | 2026-06-25 | [#15180](https://github.com/NVIDIA/TensorRT-LLM/pull/15180) | merged | Add necessary methods for guided decoding in Kimi K2.5 | `modeling_kimi_k25.py` |
 
 ## Per-PR Diff Audit Cards
+
+### PR #14848 - RMSNorm NVFP4 quant fusion for DeepSeek-V3.2 / Kimi-K2.5
+
+- Link: https://github.com/NVIDIA/TensorRT-LLM/pull/14848
+- Status/date: merged / 2026-07-15
+- Trace source: `git log --name-only -- <model-files>` plus the final upstream commit and PR body.
+- Diff scope read: full 2,487-line diff, 16 files, +1993/-101.
+- Motivation: static-NVFP4 Kimi-K2.5 executed RMSNorm and activation quantization as separate kernels before each compatible linear, materializing the normalized tensor and paying an extra launch.
+- Key implementation: adds Blackwell-only C++/CUDA operators for fused optional residual-add + RMSNorm + NVFP4 quantization, supports packed and row-strided input, returns the unquantized norm when another consumer needs it, and routes eligible RMSNorm-to-linear edges through the fused result.
+- Code diff details: `rmsNormFp4QuantKernel` performs the reduction and emits packed E2M1 values plus E4M3 block scales; Python dispatch keeps unsupported architectures and shapes on the existing path.
+- Key code excerpts:
+
+```diff
++// Fused (optional residual-add +) RMSNorm + NVFP4 input-quantize.
++__global__ void rmsNormFp4QuantKernel(RmsNormFp4QuantParams params)
++{
++    float const denom = rsqrtf(acc / params.hidden_size + params.eps);
++    uint32_t const quant_val = cvt_warp_fp16_to_fp4<T, kSfVecSize, false>(
++        pv, sf_scale, sf_out_ptr);
++}
+```
+
+- Reviewed files: runtime: `cpp/tensorrt_llm/kernels/rmsNormFp4QuantKernels.{cu,h}`, `cpp/tensorrt_llm/thop/rmsNormFp4Quant.cpp`, `tensorrt_llm/_torch/modules/{rms_norm,linear,mla}.py`, `modeling_deepseekv3.py`; tests: `test_fused_rmsnorm_fp4_quantize.py`, `test_fp4_num_tokens_slice.py`, B200 test database.
+- Risk and verification: the fused FP4 epilogue is restricted to SM10.x; validation compares packed FP4 values and unswizzled scale factors, checks strided inputs and no input mutation, and separates acceptable RMSNorm rounding drift from bit-exact re-quantization of the returned norm.
 
 ### PR #9711 - Deployment Guide for Kimi K2 Thinking on TensorRT LLM - Blackwell
 

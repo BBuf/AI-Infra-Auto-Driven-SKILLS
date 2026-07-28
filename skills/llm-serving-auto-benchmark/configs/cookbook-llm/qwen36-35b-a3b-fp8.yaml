@@ -1,0 +1,88 @@
+schema_version: 1
+source:
+  kind: llm_serving_cookbook
+  source_recipe_file: sglang/docs_new/src/snippets/autoregressive/qwen36-deployment.jsx
+  recorded_heads:
+    sglang: 8a311d1c889244ab1f857d7df79de7e5f0a6891c
+    vllm: b5bcb3ce881e1d324ff7f6176ef27606558dbd74
+    tensorrt_llm: 9fe5853263750ade5b7dc24fb31a1215ec822d45
+    tokenspeed: e41aa8b1609a9412d7ed26aa56d910828607950f
+  translation: The enabled SGLang section preserves the current B200
+    single-GPU FP8 recipe. Other frameworks stay disabled because the exact
+    FP8 checkpoint contract was not verified at their recorded heads.
+model:
+  name: Qwen/Qwen3.6-35B-A3B-FP8
+  tokenizer: Qwen/Qwen3.6-35B-A3B-FP8
+  precision: fp8
+  quantization: model default
+hardware:
+  accelerator: NVIDIA B200
+  gpu_count: 1
+  multi_node: false
+dataset:
+  kind: random
+  num_prompts: 80
+  scenario_names:
+  - chat
+  - summarization
+  input_len:
+  - 1000
+  - 8000
+  output_len:
+  - 1000
+  - 1000
+benchmark:
+  endpoint: /v1/chat/completions
+  backend: openai-compatible
+  tokenizer: Qwen/Qwen3.6-35B-A3B-FP8
+  max_concurrency:
+  - null
+  - 8
+  - 16
+  extra_request_body:
+    temperature: 0.0
+  qps:
+    lower: 0.25
+    upper: 4.0
+    tolerance: 0.1
+  sla:
+    max_p50_ttft_ms: 1500
+    max_p50_tpot_ms: 30
+    min_success_rate: 0.99
+  output_dir: ./auto_benchmark_results/cookbook-llm/qwen36-35b-a3b-fp8
+search:
+  tier: 2
+  max_candidates_per_framework: 6
+  candidate_generation: baseline_first_bounded_product
+  resume: true
+frameworks:
+  sglang:
+    enabled: true
+    support_status: verified_at_recorded_head
+    server_command: python -m sglang.launch_server
+    config_source: sglang_qwen36_b200_verified_recipe
+    base_server_flags:
+      model_path: Qwen/Qwen3.6-35B-A3B-FP8
+      tp_size: 1
+      attention_backend: trtllm_mha
+      reasoning_parser: qwen3
+      tool_call_parser: qwen3_coder
+      mem_fraction_static: 0.8
+      host: 0.0.0.0
+      port: 30000
+    search_space:
+      chunked_prefill_size:
+      - 4096
+      - 8192
+      max_running_requests:
+      - 8
+      - 16
+  vllm:
+    enabled: false
+    support_status: not_verified_at_recorded_head
+  tensorrt_llm:
+    enabled: false
+    support_status: not_verified_at_recorded_head
+  tokenspeed:
+    enabled: false
+    support_status: not_verified_at_recorded_head

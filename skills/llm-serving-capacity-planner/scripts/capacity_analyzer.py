@@ -149,6 +149,21 @@ class FinalInfo:
 
 
 @dataclass
+class VllmMemoryInfo:
+    """Memory and KV capacity fields emitted by current vLLM startup logs."""
+
+    initial_free_gib: Optional[float] = None
+    requested_utilization: Optional[float] = None
+    requested_memory_gib: Optional[float] = None
+    model_loading_gib: Optional[float] = None
+    available_kv_cache_gib: Optional[float] = None
+    cuda_graph_gib: Optional[float] = None
+    gpu_kv_cache_tokens: Optional[int] = None
+    max_model_len: Optional[int] = None
+    maximum_concurrency: Optional[float] = None
+
+
+@dataclass
 class NvidiaSmiEntry:
     """One row from nvidia-smi query output."""
 
@@ -326,6 +341,59 @@ def parse_max_total_tokens(line: str) -> Optional[FinalInfo]:
     return None
 
 
+def parse_vllm_memory_line(line: str, info: VllmMemoryInfo) -> bool:
+    """Parse one current vLLM startup-memory line into ``info``."""
+    matched = False
+
+    m = re.search(
+        r"Initial free memory:\s*([\d.]+)\s*GiB;\s*"
+        r"Requested memory:\s*([\d.]+)\s*\(util\),\s*([\d.]+)\s*GiB",
+        line,
+    )
+    if m:
+        info.initial_free_gib = float(m.group(1))
+        info.requested_utilization = float(m.group(2))
+        info.requested_memory_gib = float(m.group(3))
+        matched = True
+
+    m = re.search(
+        r"Model loading took\s*([\d.]+)\s*GiB(?:\s+memory)?(?:\s+and|\b)",
+        line,
+    )
+    if m:
+        info.model_loading_gib = float(m.group(1))
+        matched = True
+
+    m = re.search(r"Available KV cache memory:\s*([\d.]+)\s*GiB", line)
+    if m:
+        info.available_kv_cache_gib = float(m.group(1))
+        matched = True
+
+    m = re.search(
+        r"Graph capturing finished in\s*[\d.]+\s*secs?,\s*took\s*([\d.]+)\s*GiB",
+        line,
+    )
+    if m:
+        info.cuda_graph_gib = float(m.group(1))
+        matched = True
+
+    m = re.search(r"GPU KV cache size:\s*([\d,]+)\s*tokens", line)
+    if m:
+        info.gpu_kv_cache_tokens = int(m.group(1).replace(",", ""))
+        matched = True
+
+    m = re.search(
+        r"Maximum concurrency for\s*([\d,]+)\s*tokens per request:\s*" r"([\d.]+)x",
+        line,
+    )
+    if m:
+        info.max_model_len = int(m.group(1).replace(",", ""))
+        info.maximum_concurrency = float(m.group(2))
+        matched = True
+
+    return matched
+
+
 def parse_nvidia_smi(text: str) -> List[NvidiaSmiEntry]:
     """Parse nvidia-smi --query-gpu=index,memory.used,memory.free --format=csv,noheader output."""
     entries = []
@@ -365,6 +433,7 @@ class ParsedLog:
     cuda_graphs: List[CudaGraphInfo] = field(default_factory=list)
     final_info: Optional[FinalInfo] = None
     framework: str = "unknown"  # "sglang" or "vllm"
+    vllm: VllmMemoryInfo = field(default_factory=VllmMemoryInfo)
 
 
 def parse_log(text: str) -> ParsedLog:
@@ -379,6 +448,8 @@ def parse_log(text: str) -> ParsedLog:
         if result.framework == "unknown":
             if "vllm" in line.lower() or "vllm_engine" in line.lower():
                 result.framework = "vllm"
+
+        parse_vllm_memory_line(line, result.vllm)
 
         # server_args (only parse once, from the first occurrence)
         if result.server_args is None and "server_args=ServerArgs(" in line:
@@ -413,6 +484,18 @@ def parse_log(text: str) -> ParsedLog:
         fi = parse_max_total_tokens(line)
         if fi:
             result.final_info = fi
+
+    if (
+        result.framework == "vllm"
+        and result.vllm.gpu_kv_cache_tokens is not None
+        and result.vllm.maximum_concurrency is not None
+    ):
+        result.final_info = FinalInfo(
+            max_total_num_tokens=result.vllm.gpu_kv_cache_tokens,
+            max_running_requests=int(result.vllm.maximum_concurrency),
+            context_len=result.vllm.max_model_len or 0,
+            available_gpu_mem_gb=result.vllm.available_kv_cache_gib or 0.0,
+        )
 
     return result
 
@@ -574,6 +657,57 @@ def decompose_memory(
                 bd.smi_used_mib = e.memory_used_mib
                 bd.smi_free_mib = e.memory_free_mib
                 break
+
+    if parsed.framework == "vllm":
+        info = parsed.vllm
+        if info.initial_free_gib is not None:
+            bd.framework_overhead_gib = max(0.0, gpu_hbm_gib - info.initial_free_gib)
+            bd.derivation["framework_overhead"] = (
+                f"{gpu_hbm_gib:.2f} - {info.initial_free_gib:.2f} "
+                "(HBM - initial free memory)"
+            )
+        else:
+            bd.derivation["framework_overhead"] = (
+                "initial free memory not found in vLLM log"
+            )
+        if info.model_loading_gib is not None:
+            bd.model_weights_gib = info.model_loading_gib
+            bd.derivation["model_weights"] = "vLLM Model loading took"
+        else:
+            bd.derivation["model_weights"] = "model loading memory not found"
+        if info.available_kv_cache_gib is not None:
+            bd.kv_pool_gib = info.available_kv_cache_gib
+            bd.derivation["kv_pool"] = "vLLM Available KV cache memory"
+        else:
+            bd.derivation["kv_pool"] = "available KV cache memory not found"
+        if info.cuda_graph_gib is not None:
+            bd.cuda_graph_gib = info.cuda_graph_gib
+            bd.derivation["cuda_graph"] = "vLLM Graph capturing finished"
+        else:
+            bd.derivation["cuda_graph"] = "CUDA graph memory not found"
+
+        known_total = (
+            bd.framework_overhead_gib
+            + bd.model_weights_gib
+            + bd.kv_pool_gib
+            + bd.cuda_graph_gib
+        )
+        if bd.smi_used_mib > 0:
+            smi_used_gib = bd.smi_used_mib / 1024.0
+            bd.other_gib = max(0.0, smi_used_gib - known_total)
+            bd.total_used_gib = smi_used_gib
+            bd.derivation["other"] = "nvidia-smi used memory minus known vLLM fields"
+        else:
+            bd.total_used_gib = known_total
+            bd.derivation["other"] = "nvidia-smi data not available"
+
+        total = bd.total_used_gib if bd.total_used_gib > 0 else 1.0
+        bd.weight_pct = bd.model_weights_gib / total * 100
+        bd.kv_pool_pct = bd.kv_pool_gib / total * 100
+        bd.cuda_graph_pct = bd.cuda_graph_gib / total * 100
+        bd.framework_pct = bd.framework_overhead_gib / total * 100
+        bd.other_pct = bd.other_gib / total * 100
+        return bd
 
     # Find load_weight_begin for target rank
     avail_before_weight = None
@@ -775,10 +909,6 @@ def estimate_concurrency(
 
 def infer_gpu_from_log(parsed: ParsedLog, gpu_specs: Dict) -> Optional[str]:
     """Try to infer the GPU model from the log content."""
-    # Check for device_name in MoE config warnings
-    for line_text in []:  # we don't have raw lines here, rely on --gpu flag
-        pass
-
     # If avail_before_weight is known, try to match GPU HBM
     avail_before = None
     for ck in parsed.checkpoints:
@@ -791,6 +921,12 @@ def infer_gpu_from_log(parsed: ParsedLog, gpu_specs: Dict) -> Optional[str]:
             hbm = spec.get("hbm_gb", 0)
             # avail should be slightly less than HBM (framework overhead ~2GB)
             if abs(hbm - avail_before) < 5.0 and hbm > avail_before:
+                return gpu_key
+
+    if parsed.vllm.initial_free_gib is not None:
+        for gpu_key, spec in gpu_specs.items():
+            hbm = spec.get("hbm_gb", 0)
+            if abs(hbm - parsed.vllm.initial_free_gib) < 5.0:
                 return gpu_key
 
     return None
@@ -872,6 +1008,31 @@ def format_smi_table(smi_entries: List[NvidiaSmiEntry]) -> str:
     avg = sum(e.memory_used_mib for e in smi_entries) / len(smi_entries)
     lines.append(f"{'Avg':>4}  {avg:>12.0f}  {avg / 1024:>12.2f}")
     lines.append("")
+    return "\n".join(lines)
+
+
+def format_vllm_evidence(info: VllmMemoryInfo) -> str:
+    """Format fields that vLLM explicitly reported during startup."""
+
+    def show(value: object, suffix: str = "") -> str:
+        return f"{value}{suffix}" if value is not None else "unknown"
+
+    lines = [
+        "=" * 80,
+        "vLLM Startup Evidence",
+        "=" * 80,
+        "",
+        f"  Initial free memory:       {show(info.initial_free_gib, ' GiB')}",
+        f"  Requested utilization:     {show(info.requested_utilization)}",
+        f"  Requested memory:          {show(info.requested_memory_gib, ' GiB')}",
+        f"  Model loading memory:      {show(info.model_loading_gib, ' GiB')}",
+        f"  Available KV cache memory: {show(info.available_kv_cache_gib, ' GiB')}",
+        f"  CUDA graph memory:         {show(info.cuda_graph_gib, ' GiB')}",
+        f"  GPU KV cache tokens:       {show(info.gpu_kv_cache_tokens)}",
+        f"  Reported max model length: {show(info.max_model_len)}",
+        f"  Reported concurrency:      {show(info.maximum_concurrency, 'x')}",
+        "",
+    ]
     return "\n".join(lines)
 
 
@@ -1010,11 +1171,23 @@ def format_tuning_suggestions(
 
     # Check if there's significant free memory
     if avail_free_gib > 10:
-        suggestions.append(
-            f"1. Free GPU memory: {avail_free_gib:.2f} GiB — consider increasing --mem-fraction-static\n"
-            f"   Current mfs={mfs}, suggest trying mfs={min(mfs + 0.1, 0.95):.2f}\n"
-            f"   Expected KV pool increase: ~{avail_free_gib * 0.8:.1f} GiB"
-        )
+        if parsed.framework == "vllm":
+            current = parsed.vllm.requested_utilization
+            current_text = f"{current:.2f}" if current is not None else "unknown"
+            suggestions.append(
+                f"1. Free GPU memory: {avail_free_gib:.2f} GiB — review "
+                "--gpu-memory-utilization\n"
+                f"   Current reported utilization={current_text}; increase it only "
+                "after accounting for runtime headroom"
+            )
+        else:
+            suggestions.append(
+                f"1. Free GPU memory: {avail_free_gib:.2f} GiB — consider "
+                "increasing --mem-fraction-static\n"
+                f"   Current mfs={mfs}, suggest trying "
+                f"mfs={min(mfs + 0.1, 0.95):.2f}\n"
+                f"   Expected KV pool increase: ~{avail_free_gib * 0.8:.1f} GiB"
+            )
 
     # FP8 KV suggestion
     if "fp8" not in kv_dtype.lower():
@@ -1074,11 +1247,10 @@ def generate_report(
     header.append(f"  Framework:          {parsed.framework}")
     header.append(f"  Model:              {sa.model_path if sa else 'N/A'}")
     header.append(f"  GPU:                {gpu_key} ({gpu_hbm_gib:.0f} GiB HBM)")
-    header.append(
-        f"  TP / PP / EP:       {sa.tp_size if sa else '?'}/{sa.pp_size if sa else '?'}/{sa.ep_size if sa else '?'}"
-    )
-    header.append(f"  mem-fraction-static: {sa.mem_fraction_static if sa else '?'}")
-    header.append(f"  kv-cache-dtype:     {sa.kv_cache_dtype if sa else '?'}")
+    if sa:
+        header.append(f"  TP / PP / EP:       {sa.tp_size}/{sa.pp_size}/{sa.ep_size}")
+        header.append(f"  mem-fraction-static: {sa.mem_fraction_static}")
+        header.append(f"  kv-cache-dtype:     {sa.kv_cache_dtype}")
     if sa and sa.disable_radix_cache:
         header.append(f"  radix-cache:        disabled")
     header.append("")
@@ -1087,6 +1259,9 @@ def generate_report(
 
     # Memory breakdown
     sections.append(format_breakdown_table(bd))
+
+    if parsed.framework == "vllm":
+        sections.append(format_vllm_evidence(parsed.vllm))
 
     # Per-rank comparison
     if smi_entries:
@@ -1172,6 +1347,19 @@ def generate_json_report(
         ],
         "kv_pool": {},
         "concurrency": [],
+        "vllm": {
+            "initial_free_gib": parsed.vllm.initial_free_gib,
+            "requested_utilization": parsed.vllm.requested_utilization,
+            "requested_memory_gib": parsed.vllm.requested_memory_gib,
+            "model_loading_gib": parsed.vllm.model_loading_gib,
+            "available_kv_cache_gib": parsed.vllm.available_kv_cache_gib,
+            "cuda_graph_gib": parsed.vllm.cuda_graph_gib,
+            "gpu_kv_cache_tokens": parsed.vllm.gpu_kv_cache_tokens,
+            "max_model_len": parsed.vllm.max_model_len,
+            "maximum_concurrency": parsed.vllm.maximum_concurrency,
+            "mem_fraction_static": None,
+            "cuda_graph_max_bs": None,
+        },
     }
 
     if parsed.sw_kv_calcs:

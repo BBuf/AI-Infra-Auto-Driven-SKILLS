@@ -1,17 +1,23 @@
 # TokenSpeed Kimi 模型 PR 优化历史
 
-## 2026-06-27 源码 head 刷新
+## 2026-07-28 源码 head 刷新
 
-已用 `git ls-remote` 复核 TokenSpeed 上游 main head：
-`lightseekorg/tokenspeed@d0a7faddb5ec0d4c6d037c4c3e6a781d2c5164a8`。
-下方文件级 source-scan 行仍是上一轮 tracked-file 审计结果；引用当前 open PR 状态前，先看 `model-pr-optimization-history/open-pr-watch.md`。
+已复核 TokenSpeed 上游 main：
+`lightseekorg/tokenspeed@e41aa8b1609a9412d7ed26aa56d910828607950f`。
+已读完上一 head `d73bf0454422092f306d5575e803a08fd35ac41c`
+之后的 2-commit 完整增量。
 
-结果：发现 2 个额外 PR-numbered merge 触及 tracked files，但尚未提升为下方完整逐 PR diff audit card。此节只作为 freshness index；需要引用实现细节时，仍应先人工阅读 PR diff 再补完整卡片。
+结果：PR #821 新增 Kimi K3 FlatKV/KDA/MLA 部署契约，并在保留硬件与验证限制的
+前提下提升为源码指南；PR #823 只增加 README 新闻链接。本文继续覆盖 DP + EAGLE3
+collective-size hang、Kimi incremental DFlash capture，以及 Kimi-K2.7 EAGLE3.1
+模型语义。
 
-| 合并日期 | PR | 标题 | 命中的 tracked files |
-| --- | --- | --- | --- |
-| 2026-06-26 | [#519](https://github.com/lightseekorg/tokenspeed/pull/519) | feat: distributed argmax for EAGLE greedy sampling | `logits_processor.py` |
-| 2026-06-25 | [#456](https://github.com/lightseekorg/tokenspeed/pull/456) | perf(kernel): optimize Qwen vision QKV rotary layout | `qkv_rotary.py` |
+| 合并日期 | PR | Runtime 信号 |
+| --- | --- | --- |
+| 2026-07-27 | [#821](https://github.com/lightseekorg/tokenspeed/pull/821) | Kimi K3 部署契约 |
+| 2026-07-07 | [#596](https://github.com/lightseekorg/tokenspeed/pull/596) | DP + EAGLE3 mixed-step hang |
+| 2026-07-25 | [#795](https://github.com/lightseekorg/tokenspeed/pull/795) | Kimi-K2.7 EAGLE3.1 |
+| 2026-07-26 | [#797](https://github.com/lightseekorg/tokenspeed/pull/797) | incremental DFlash capture |
 
 ## 2026-06-27 PR 补漏复核
 
@@ -58,6 +64,97 @@
 | 2026-06-26 | [#476](https://github.com/lightseekorg/tokenspeed/pull/476) | merged | Add AMD Kimi MXFP4 CI job | AMD eval YAML, MLA metadata unit test |
 
 ## 逐 PR diff 审计卡
+
+### PR #821 - 新增 Kimi K3 部署 recipe
+
+- 链接: https://github.com/lightseekorg/tokenspeed/pull/821
+- 状态/时间: merged / 2026-07-27
+- 反查来源: 最终上游提交
+  `55a8390007e5ace17919d76e5cfaef0c68c79e25`；已读完 2-commit 增量和
+  recipe 完整 diff。
+- 代码 diff 已读范围: 1 file，+117/-0。
+- 动机: 明确 Kimi K3 的 runtime/packaging 约束，避免把 K2.5 flags 当成可互换配置。
+- 实现要点: 要求 FlatKV，记录 vendor-neutral KDA dispatch 与 NVIDIA FLA-derived /
+  AMD native state layout、MLA backend 选择，以及 NVIDIA B300、AMD gfx950 分离命令。
+- 代码 diff 细节: recipe 新增 FlatKV build/preflight、flattened checkpoint、
+  writable module cache、NVIDIA `tokenspeed-situ` + Triton fallback 和 AMD Gluon 路径。
+- 关键代码摘录:
+
+```diff
++- K3 is FlatKV-only. Build the `tokenspeed_scheduler` extension with
++  `-DTOKENSPEED_FLAT_KVCACHE=ON`
++tokenspeed serve moonshotai/Kimi-K3 \
++  --kv-cache-dtype fp8 \
++  --tensor-parallel-size 8
+```
+
+- 已读文件: `docs/recipes/models.md`；后续 README commit 只链接 K3 公告。
+- 验证与风险: NVIDIA 依赖 B300/CUDA 13 `tokenspeed-situ` sidecar，其他平台回退
+  Triton；checkpoint 需 flattened、remote-code cache 需可写，默认 FP8 KV scale
+  可能影响精度。这不是跨框架性能实测。
+
+### PR #596 - 修复 Kimi DP EAGLE3 mixed-step hang
+
+- 链接: https://github.com/lightseekorg/tokenspeed/pull/596
+- 状态/时间: merged / 2026-07-07
+- 反查来源: `git log --name-only -- <model-files>`，并结合最终上游提交和 PR 正文。
+- 代码 diff 已读范围: 完整 184 行 diff，6 个文件，+27/-30。
+- 动机: 同一 scheduler step 中 DP rank 混合 EXTEND 与 DECODE 时，active 与 idle rank 可能为 EAGLE3 首次 catch-up collective 计算出不同 row 数，最终 hang。
+- 实现要点: 把首步激活缩减定义为 active EAGLE 与 idle replay 共享的 draft-model capability，为 Kimi/DeepSeek、Llama、Qwen3.5 draft model 标记该能力，并禁止 fused `lm_head_gemm` 对 zero-token 发起 kernel。
+- 代码 diff 细节: 用 `draft_first_step_reduce_for_catchup` 替换硬编码 class check，让 collective sizing 跟随模型行为而不是模型列表。
+- 关键代码摘录:
+
+```diff
++def draft_model_reduces_first_step_catchup(draft_model) -> bool:
++    return bool(getattr(draft_model, "draft_first_step_reduce_for_catchup", False))
++draft_first_step_reduce = step_idx == 0 and (
++    all_decode_or_idle or draft_reduces_first_step_catchup)
+```
+
+- 已读文件: runtime：`execution/drafter/eagle.py`、`execution/model_executor.py`、`models/{deepseek_v3,llama_eagle3,qwen3_5_nextn}.py`、`lm_head_gemm.py`；没有新增独立测试文件。
+- 验证与风险: mixed forward mode 下所有 rank 必须得到相同 collective row count；PR 报告修复后 DP8 + EAGLE3 AIME25 以 28/30 完成，zero-row fused lm-head routing 必须保持 no-op。
+
+### PR #795 - 为 Kimi-K2.7 Code 支持 EAGLE3.1
+
+- 链接: https://github.com/lightseekorg/tokenspeed/pull/795
+- 状态/时间: merged / 2026-07-25
+- 反查来源: `git log --name-only -- <model-files>`，并结合最终上游提交和 PR 正文。
+- 代码 diff 已读范围: 完整 49 行 diff，1 个文件，+24/-0。
+- 动机: Kimi-K2.7 EAGLE3.1 MLA speculator 定义了逐 FC 输入的归一化与可选 normalized auxiliary output，而共享 DeepSeek-style drafter 尚未实现。
+- 实现要点: `fc_norm` 开启时为每个拼接 FC 输入 chunk 建立 RMSNorm，在 projection 前分别归一化，并用 `norm_output` 控制 auxiliary hidden-state 输出。
+- 代码 diff 细节: 所有变化都在 `Eagle3MlaModel` 内受 config gate 控制，不改变旧 EAGLE checkpoint。
+- 关键代码摘录:
+
+```diff
++if self.fc_norm is not None:
++    chunks = hidden_states.chunk(self.num_fc_input_dim, dim=-1)
++    hidden_states = torch.cat(
++        [norm(chunk) for norm, chunk in zip(self.fc_norm, chunks, strict=True)], dim=-1)
+```
+
+- 已读文件: runtime：`python/tokenspeed/runtime/models/deepseek_v3.py`；验证证据：`nvidia/Kimi-K2.7-Code-NVFP4` 的 PR benchmark 与 launch recipe。
+- 验证与风险: `fc_norm`/`norm_output` 必须与 checkpoint config 绑定；PR 报告 4xGB200 1-3-4 配置各类别 1.36x-1.91x，但不能外推到不同 acceptance length 或 serving shape。
+
+### PR #797 - 支持 Kimi incremental DFlash capture
+
+- 链接: https://github.com/lightseekorg/tokenspeed/pull/797
+- 状态/时间: merged / 2026-07-26
+- 反查来源: `git log --name-only -- <model-files>`，并结合最终上游提交和 PR 正文。
+- 代码 diff 已读范围: 完整 166 行 diff，4 个文件，+61/-7。
+- 动机: Kimi 把 DFlash capture 委托给 DeepSeek-style language model 时丢失了 executor 所需的 incremental projection callback 与 slot buffer，导致开启 incremental projection 后无法启动。
+- 实现要点: 让 `KimiK25ForConditionalGeneration.set_dflash_layers_to_capture` 透传 callback 与 slot buffer，保存 layer-to-slot map，每层完成时把 hidden state 拷入相应 slot 并立即调用 incremental projection callback。
+- 代码 diff 细节: 模型用 `_dflash_incr_active` 控制生命周期；CI 还让 Slurm server startup timeout 与 readiness 对齐，避免长时间 Kimi 启动被另一套超时提前终止。
+- 关键代码摘录:
+
+```diff
++self.model._dflash_capture_idx_map = {
++    layer_idx: i for i, layer_idx in enumerate(sorted(self.model.layers_to_capture))
++}
++self.model._dflash_incremental_callback(capture_idx, num_tokens)
+```
+
+- 已读文件: runtime：`models/deepseek_v3.py`、`models/kimi_k25.py`；测试/CI：`test/ci_system/{pipeline,test_pipeline}.py`。
+- 验证与风险: callback 顺序、slot 容量、CUDA stream 生命周期和 `_dflash_incr_active` reset 必须与 executor 一致；PR 记录了 syntax/pre-commit 检查和 live B200 验证 lane。
 
 ### PR #29 - Add Kimi K2.5 agentic perf CI task
 

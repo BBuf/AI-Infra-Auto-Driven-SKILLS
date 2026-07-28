@@ -229,44 +229,26 @@ cp -R model-pr-optimization-history <agent-skill-dir>/model-pr-history-knowledge
 These skills are exercised with coding agents in full-autonomy mode. For
 reproducibility, here is exactly how I launch them.
 
-**Claude Code** — Opus 4.8 at max effort with Auto mode (the "Effort (Max)" +
-"Auto mode" toggles), i.e. auto/bypass-permission so the agent runs unattended:
+**Claude Code** — use the current Opus alias with Auto permission mode:
 
 ```bash
-claude --permission-mode bypassPermissions --model opus --effort max
+claude --model opus --permission-mode auto
 ```
 
-**Ultracode mode** — the maximum-thoroughness setting (the "Effort (Ultracode –
-xhigh + workflows)" entry in the effort menu, paired with Auto mode). Ultracode
-is *not* a launch-flag effort value: `claude --effort ultracode` warns (`Unknown
---effort value 'ultracode'`) and falls back to the default — the valid `--effort`
-flag levels are `low, medium, high, xhigh, max`. It is a composite of **xhigh
-effort + dynamic workflows enabled**, so the agent reasons at xhigh and authors
-multi-agent workflows on substantive tasks. Enable dynamic workflows once — the
-**Dynamic workflows** toggle in `/config` (settings key `enableWorkflows`) — then
-launch at xhigh:
-
-```bash
-claude --permission-mode bypassPermissions --model opus --effort xhigh
-```
-
-Or in one self-contained command:
-
-```bash
-claude --permission-mode bypassPermissions --model opus --effort xhigh --settings '{"enableWorkflows": true}'
-```
-
-With workflows enabled, the in-session `/effort` menu shows "Ultracode"; to opt a
-single prompt in instead, include the keyword `ultracode` in that message.
+`opus` tracks Claude Code's current Opus model instead of pinning a model number.
+Auto mode can approve routine work while retaining the permission system.
+`bypassPermissions` (or `--dangerously-skip-permissions`) should be reserved for
+an isolated sandbox, ideally without internet access.
 
 **Codex** — full-access, no approval prompts:
 
 ```bash
-codex --yolo --sandbox danger-full-access --ask-for-approval never
+codex --sandbox danger-full-access --ask-for-approval never
 ```
 
-Both run unsandboxed / auto-approve because the work happens against isolated
-checkouts with their own benchmark + correctness gates.
+The Codex command is intentionally unsandboxed and should likewise be used only
+inside an isolated environment with a scoped checkout and its own benchmark and
+correctness gates.
 
 ## Repository Map
 

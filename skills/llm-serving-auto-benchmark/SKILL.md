@@ -184,24 +184,33 @@ before starting a long sweep.
 - vLLM `--enable-dbo` only works when the target vLLM image is built with a
   supported all2all backend. Keep DBO out of the default candidate list unless
   the operator has verified the image.
-- vLLM `--max-num-partial-prefills > 1` is model- and runtime-gated. Keep `1`
-  in the default pass; raise only after a preflight with the actual model.
-- vLLM current mainline was checked on 2026-06-27 at
-  `091d13976c1c246714bb2112dd2e208561dda6a3` and includes PR `#46735`
+- vLLM still exposes `--long-prefill-token-threshold`; verify the exact flag
+  against the target image before searching it.
+- vLLM current mainline was checked on 2026-07-28 at
+  `b5bcb3ce881e1d324ff7f6176ef27606558dbd74` and includes PR `#46735`
   fixing CUDA graph capture in Triton / NVFP4-emulation MoE. If a target image
   predates it, treat Triton-MoE graph-capture failures or eager fallback as an
   image/runtime issue before scoring it against SGLang.
 - The same vLLM refresh includes PR `#44800` (`VLLM_GPU_SYNC_CHECK`). For
   sync-heavy profiler rows, record whether the target image exposes this debug
   knob before labeling the gap as kernel-local.
-- TensorRT-LLM mainline was checked on 2026-06-27 at
-  `aaffa2f9fef3025e0f698d978385a73460344e0b`. Keep
+- vLLM PR `#42669` extends FlashAttention-4 SM100 support to head dimension
+  256, while PR `#49982` fixes MLA padding, grouped top-k routing, and routed
+  scaling in the Transformers modeling backend. Treat images predating either
+  change as stale when those exact paths affect a row; neither merge is itself
+  benchmark evidence.
+- TensorRT-LLM mainline was checked on 2026-07-28 at
+  `9fe5853263750ade5b7dc24fb31a1215ec822d45`. Keep
   `kv_cache_free_gpu_memory_fraction` in shipped configs until the target
   `trtllm-serve serve --help` proves a shorter alias is accepted.
 - TensorRT-LLM current mainline includes PR `#11685` and PR `#15546`, which
   affect KV block eviction and KV block-offset host staging. If a target image
   predates them, record stale-runtime risk when cache pressure, block-offset
   races, or prefix/KV residency affect benchmark rows.
+- TensorRT-LLM PR `#16805` fixes disaggregated draft-token adoption and
+  sequence-length accounting; PR `#16763` unifies phase-1 CUDA graph cleanup
+  before final KV-cache allocation. Record the image SHA when disaggregated
+  speculative output or startup memory differs across runs.
 - The historical TensorRT-LLM 1.0.0 multi-GPU PyTorch-backend validation used
   `--ipc=host`, `--ulimit memlock=-1`, `--ulimit stack=67108864`,
   `--shm-size=16g`, and `NCCL_IB_DISABLE=1` (for single-node) or an equivalent
@@ -212,11 +221,16 @@ before starting a long sweep.
   backend, which is pinned to `pytorch` by this skill.
 - `trtllm` `benchmark_serving --dataset-name random` silently falls back to
   ShareGPT sampling without `--random-ids` (or `--download-path`).
-- TokenSpeed is a fast-moving engine. Current mainline checked on 2026-06-27 at
-  `lightseekorg/tokenspeed@d0a7faddb5ec0d4c6d037c4c3e6a781d2c5164a8` exposes `tokenspeed serve`,
+- TokenSpeed is a fast-moving engine. Current mainline checked on 2026-07-28 at
+  `lightseekorg/tokenspeed@e41aa8b1609a9412d7ed26aa56d910828607950f` exposes `tokenspeed serve`,
   `tokenspeed bench`, `tokenspeed env`, and `tokenspeed version`. Its server
   command is `tokenspeed serve <model>`, not a `python -m tokenspeed`
   entrypoint.
+- TokenSpeed PR `#821` documents Kimi K3 FlatKV, KDA/MLA, and B300/AMD
+  deployment contracts. Keep it as source guidance only: the recipe contains
+  platform-specific sidecars, checkpoint-layout requirements, and explicit
+  output-quality and validation caveats, so it does not enable a generic benchmark lane
+  without target-image and model smoke evidence.
 - TokenSpeed's SGLang/vLLM-compatible parameter names are not always identical
   in meaning. Prefer `--max-model-len`, `--max-num-seqs`,
   `--chunked-prefill-size`, `--max-prefill-tokens`, `--max-total-tokens`,
@@ -464,7 +478,7 @@ Version-sensitive vLLM knob families to verify:
 - `max_num_seqs`
 - `max_num_batched_tokens`
 - `max_model_len`
-- `enable_chunked_prefill`, partial prefill limits, and DBO thresholds
+- `enable_chunked_prefill`, `long_prefill_token_threshold`, and DBO thresholds
 - KV cache dtype and block size
 - dtype and quantization settings
 - CUDA graph capture sizes or eager-mode toggles when relevant
@@ -483,9 +497,8 @@ against throughput.
 Keep DBO and all2all backend settings out of the default pass unless the target
 vLLM environment is already set up for them. They are real tuning knobs, but a
 candidate can fail at startup if the required all2all backend is not available.
-Also preflight concurrent partial prefill before raising
-`max_num_partial_prefills` above 1; some model/runtime combinations reject it at
-startup.
+Verify `long_prefill_token_threshold` on the concrete `vllm serve --help=all`
+surface before adding it to a search.
 
 ### 6. Tune TensorRT-LLM
 
@@ -515,7 +528,7 @@ TensorRT-LLM flag names are especially version-sensitive. In the validated
 TensorRT-LLM 1.0.0 image, the KV-cache memory flag accepted by
 `trtllm-serve serve` was `--kv_cache_free_gpu_memory_fraction`, not
 `--free_gpu_memory_fraction`. Current mainline was rechecked at
-`aaffa2f9fef3025e0f698d978385a73460344e0b` on 2026-06-27. Always verify flags
+`9fe5853263750ade5b7dc24fb31a1215ec822d45` on 2026-07-28. Always verify flags
 with `trtllm-serve serve --help` before running a search on any GPU target.
 
 TensorRT-LLM backend policy for this skill:

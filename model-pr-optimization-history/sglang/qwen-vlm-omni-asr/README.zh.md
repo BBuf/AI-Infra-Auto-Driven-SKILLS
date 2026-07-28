@@ -4,7 +4,6 @@
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
-| `docs/basic_usage/qwen3_vl.md` | [#12554](https://github.com/sgl-project/sglang/pull/12554) |
 | `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` | [#23907](https://github.com/sgl-project/sglang/pull/23907), [#23968](https://github.com/sgl-project/sglang/pull/23968), [#23998](https://github.com/sgl-project/sglang/pull/23998), [#25198](https://github.com/sgl-project/sglang/pull/25198) |
 | `docs_new/cookbook/omni/FishAudio/S2-Pro.mdx` | 无直接 PR 号提交 |
 | `docs_new/cookbook/omni/intro.mdx` | 无直接 PR 号提交 |
@@ -42,8 +41,8 @@
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 50
-- 原文档显式引用补充 PR 数: 51
+- git 追溯 PR 数: 49
+- 原文档显式引用补充 PR 数: 52
 - 当前文档总 PR 数: 101
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
@@ -69,7 +68,7 @@
 | 2025-10-28 | [#12261](https://github.com/sgl-project/sglang/pull/12261) | open | [BugFix][Qwen2.5-VL]: fix cu_seqlens in qwen2.5-vl | `python/sglang/srt/models/qwen2_5_vl.py` |
 | 2025-11-05 | [#12703](https://github.com/sgl-project/sglang/pull/12703) | open | add qwen3-omni docs | `docs/basic_usage/qwen3_omni.md`, `docs/index.rst` |
 | 2025-11-06 | [#12240](https://github.com/sgl-project/sglang/pull/12240) | merged | [VLM] Optimize qwen_vl preprocess_video | `python/sglang/srt/multimodal/processors/qwen_vl.py` |
-| 2025-11-10 | [#12554](https://github.com/sgl-project/sglang/pull/12554) | merged | [Docs] Add docs for Qwen3-VL image and video support | `docs/basic_usage/qwen3_vl.md` |
+| 2025-11-10 | [#12554](https://github.com/sgl-project/sglang/pull/12554) | merged | [Docs] Add docs for Qwen3-VL image and video support | `docs/basic_usage/qwen3_vl.md`, `docs/index.rst` |
 | 2025-11-12 | [#12458](https://github.com/sgl-project/sglang/pull/12458) | merged | fix: duplicate resize images logic of qwen-vl series models | `python/sglang/srt/multimodal/processors/qwen_vl.py` |
 | 2025-11-12 | [#13075](https://github.com/sgl-project/sglang/pull/13075) | merged | [VLM] Support PP for Qwen2.5-VL | `python/sglang/srt/models/qwen2_5_vl.py` |
 | 2025-11-18 | [#13126](https://github.com/sgl-project/sglang/pull/13126) | merged | [VLM][feat] Support encoder DP for Qwen2.5-VL | `python/sglang/srt/models/qwen2_5_vl.py` |
@@ -144,7 +143,7 @@
 | 2026-05-25 | [#26094](https://github.com/sgl-project/sglang/pull/26094) | merged | [VLM] fix: fix only the grids from last split mm item is collected for qwen-vl | `python/sglang/srt/multimodal/processors/qwen_vl.py` |
 | 2026-05-25 | [#19242](https://github.com/sgl-project/sglang/pull/19242) | closed | [feat] feat: add Qwen3-ASR support like whisper | `python/sglang/srt/multimodal/processors/qwen3_asr.py`, `python/sglang/srt/configs/qwen3_asr.py`, `python/sglang/srt/configs/__init__.py` |
 | 2026-05-27 | [#12662](https://github.com/sgl-project/sglang/pull/12662) | merged | [CPU] Add support for Qwen3-vl and Qwen3-omni | `python/sglang/srt/models/qwen3_omni_moe.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`, `python/sglang/srt/models/qwen3_vl.py` |
-| 2026-05-27 | [#22848](https://github.com/sgl-project/sglang/pull/22848) | merged | [Feature] WebSocket streaming audio input for ASR | `test/manual/models/test_qwen3_asr.py` |
+| 2026-05-27 | [#22848](https://github.com/sgl-project/sglang/pull/22848) | merged | [Feature] WebSocket streaming audio input for ASR | `test/manual/models/test_qwen3_asr.py`, `python/sglang/srt/entrypoints/openai/realtime/session.py`, `python/sglang/srt/entrypoints/openai/streaming_asr.py` |
 | 2026-06-02 | [#25813](https://github.com/sgl-project/sglang/pull/25813) | merged | docs(cookbook): port popular model usage guides into cookbook pages | `docs_new/docs/basic_usage/deepseek_v32.mdx`, `docs_new/docs/basic_usage/deepseek_v3.mdx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` |
 | 2026-06-03 | [#25198](https://github.com/sgl-project/sglang/pull/25198) | merged | [Docs] Update Nemotron3-Nano-Omni cookbook to reflect new model paths | `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx` |
 | 2026-06-04 | [#27240](https://github.com/sgl-project/sglang/pull/27240) | merged | [Docs] re-organize nemotron cookbook | `docs_new/docs.json`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` |
@@ -723,12 +722,13 @@ diff -- python/sglang/srt/multimodal/processors/qwen_vl.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/12554
 - 状态/时间: merged / 2025-11-10
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/basic_usage/qwen3_vl.md`；关联提交 `583bb1804e4c`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+131/-0，可读 patch 139 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Docs] Add docs for Qwen3-VL image and video support」；模型线: Qwen VLM/Omni/ASR；类别: 文档/测试/CI；主要 diff: `docs/basic_usage/qwen3_vl.md`；技术摘要: 覆盖「[Docs] Add docs for Qwen3-VL image and video support」；主要实现面是 `docs/basic_usage/qwen3_vl.md`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `docs/basic_usage/qwen3_vl.md` added +130/-0 (130 lines); hunks: -0,0 +1,130。
+- 动机: 标题「[Docs] Add docs for Qwen3-VL image and video support」；模型线: Qwen VLM/Omni/ASR；类别: 文档/测试/CI；主要 diff: `docs/basic_usage/qwen3_vl.md`, `docs/index.rst`；技术摘要: 覆盖「[Docs] Add docs for Qwen3-VL image and video support」；主要实现面是 `docs/basic_usage/qwen3_vl.md`, `docs/index.rst`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs/basic_usage/qwen3_vl.md` added +130/-0 (130 lines); hunks: -0,0 +1,130；`docs/index.rst` modified +1/-0 (1 lines); hunks: -31,6 +31,7 @@ Its core features include:。
 - 代码 diff 细节:
   - `docs/basic_usage/qwen3_vl.md` added +130/-0 (130 lines); hunks: -0,0 +1,130
+  - `docs/index.rst` modified +1/-0 (1 lines); hunks: -31,6 +31,7 @@ Its core features include:
 - 关键代码摘录:
 
 ```diff
@@ -740,10 +740,13 @@ diff -- docs/basic_usage/qwen3_vl.md
 +SGLang supports Qwen3-VL Family of models with Image and Video input support.
 +## Launch commands for SGLang
 +Below are suggested launch commands tailored for different hardware / precision modes
+diff -- docs/index.rst
+@@ -31,6 +31,7 @@ Its core features include:
++   basic_usage/qwen3_vl.md
 ```
 
 - 已读文件:
-  - docs: `docs/basic_usage/qwen3_vl.md` added +130/-0
+  - docs: `docs/basic_usage/qwen3_vl.md` added +130/-0; `docs/index.rst` modified +1/-0
 - 验证与风险: 该 PR 主要落在文档/示例 `docs/basic_usage/qwen3_vl.md`, `docs/index.rst`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
 ### PR #12458 - fix: duplicate resize images logic of qwen-vl series models
@@ -3110,10 +3113,14 @@ diff -- python/sglang/srt/models/qwen3_vl.py
 - 状态/时间: merged / 2026-05-27
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `test/manual/models/test_qwen3_asr.py`；关联提交 `a95b4e2e09eb`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 11 个文件，+1707/-49，可读 patch 1980 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Feature] WebSocket streaming audio input for ASR」；模型线: Qwen VLM/Omni/ASR；类别: 文档/测试/CI；主要 diff: `test/manual/models/test_qwen3_asr.py`；技术摘要: 覆盖「[Feature] WebSocket streaming audio input for ASR」；主要实现面是 `test/manual/models/test_qwen3_asr.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `test/manual/models/test_qwen3_asr.py` modified +547/-3 (550 lines); hunks: -1,17 +1,31; -29,8 +43,83; symbols: _normalize_for_wer, _wer, download_audio, _pcm16_from_audio_bytes，涉及 `_normalize_for_wer, _wer, download_audio`。
+- 动机: 标题「[Feature] WebSocket streaming audio input for ASR」；模型线: Qwen VLM/Omni/ASR；类别: 文档/测试/CI；主要 diff: `test/manual/models/test_qwen3_asr.py`, `python/sglang/srt/entrypoints/openai/realtime/session.py`, `python/sglang/srt/entrypoints/openai/streaming_asr.py`；技术摘要: 覆盖「[Feature] WebSocket streaming audio input for ASR」；主要实现面是 `test/manual/models/test_qwen3_asr.py`, `python/sglang/srt/entrypoints/openai/realtime/session.py`, `python/sglang/srt/entrypoints/openai/streaming_asr.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/manual/models/test_qwen3_asr.py` modified +547/-3 (550 lines); hunks: -1,17 +1,31; -29,8 +43,83; symbols: _normalize_for_wer, _wer, download_audio, _pcm16_from_audio_bytes，涉及 `_normalize_for_wer, _wer, download_audio`；`python/sglang/srt/entrypoints/openai/realtime/session.py` added +740/-0 (740 lines); hunks: -0,0 +1,740; symbols: _resample_to_target_rate, _pcm_to_wav, _parse_client_event, _SessionConfig，涉及 `_resample_to_target_rate, _pcm_to_wav, _parse_client_event`；`python/sglang/srt/entrypoints/openai/streaming_asr.py` modified +123/-7 (130 lines); hunks: -1,8 +1,26; -22,13 +40,23 @@ class StreamingASRState:; symbols: StreamingASRState, get_prefix_text, _record_emit, update，涉及 `StreamingASRState, get_prefix_text, _record_emit`；`python/sglang/srt/entrypoints/openai/realtime/handler.py` added +119/-0 (119 lines); hunks: -0,0 +1,119; symbols: _safe_send, _safe_close, _reject_before_session, handle_realtime_transcription，涉及 `_safe_send, _safe_close, _reject_before_session`。
 - 代码 diff 细节:
   - `test/manual/models/test_qwen3_asr.py` modified +547/-3 (550 lines); hunks: -1,17 +1,31; -29,8 +43,83; symbols: _normalize_for_wer, _wer, download_audio, _pcm16_from_audio_bytes
+  - `python/sglang/srt/entrypoints/openai/realtime/session.py` added +740/-0 (740 lines); hunks: -0,0 +1,740; symbols: _resample_to_target_rate, _pcm_to_wav, _parse_client_event, _SessionConfig
+  - `python/sglang/srt/entrypoints/openai/streaming_asr.py` modified +123/-7 (130 lines); hunks: -1,8 +1,26; -22,13 +40,23 @@ class StreamingASRState:; symbols: StreamingASRState, get_prefix_text, _record_emit, update
+  - `python/sglang/srt/entrypoints/openai/realtime/handler.py` added +119/-0 (119 lines); hunks: -0,0 +1,119; symbols: _safe_send, _safe_close, _reject_before_session, handle_realtime_transcription
+  - `python/sglang/srt/entrypoints/openai/realtime/protocol.py` added +78/-0 (78 lines); hunks: -0,0 +1,78; symbols: AudioPCM, AudioPCMU, AudioPCMA, AudioTranscription
 - 关键代码摘录:
 
 ```diff
@@ -3125,10 +3132,21 @@ diff -- test/manual/models/test_qwen3_asr.py
 +import asyncio
 +import base64
 +import json
+diff -- python/sglang/srt/entrypoints/openai/realtime/session.py
+@@ -0,0 +1,740 @@
++"""WebSocket session for realtime ASR.
++Pre-commit deltas reference the reserved current_item_id that the
++subsequent input_audio_buffer.committed and conversation.item.created
++events will announce — sglang-specific, deviates from OpenAI's
++commit-only delta emission.
++"""
+diff -- python/sglang/srt/entrypoints/openai/streaming_asr.py
+@@ -1,8 +1,26 @@
 ```
 
 - 已读文件:
   - tests: `test/manual/models/test_qwen3_asr.py` modified +547/-3
+  - runtime: `python/sglang/srt/entrypoints/openai/realtime/session.py` added +740/-0; `python/sglang/srt/entrypoints/openai/streaming_asr.py` modified +123/-7; `python/sglang/srt/entrypoints/openai/realtime/handler.py` added +119/-0; `python/sglang/srt/entrypoints/openai/realtime/protocol.py` added +78/-0; `python/sglang/srt/entrypoints/openai/serving_transcription.py` modified +32/-37; `python/sglang/srt/entrypoints/http_server.py` modified +12/-0
 - 验证与风险: diff 自带测试面 `test/manual/models/test_qwen3_asr.py`, `test/registered/unit/entrypoints/openai/test_serving_transcription.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #25813 - docs(cookbook): port popular model usage guides into cookbook pages

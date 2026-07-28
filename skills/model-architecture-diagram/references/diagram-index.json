@@ -1,11 +1,11 @@
 {
-  "version": "2026-05-02",
+  "version": "2026-07-27",
   "sources": [
     {
       "name": "InfraTech",
       "repo": "https://github.com/CalvinXKY/InfraTech",
       "branch": "main",
-      "audited_commit": "fc85c8e112a1"
+      "audited_commit": "16a34a7494f0f7b270501064033e3ce35ef41bdf"
     },
     {
       "name": "self-llm",
@@ -139,6 +139,15 @@
       "source": "InfraTech",
       "path": "models/kimi_k_2_5/kimi_k_2_5_architecture.jpg",
       "url": "https://raw.githubusercontent.com/CalvinXKY/InfraTech/main/models/kimi_k_2_5/kimi_k_2_5_architecture.jpg",
+      "rank": 1
+    },
+    {
+      "id": "kimi-k3-architecture",
+      "title": "Kimi K3 architecture",
+      "aliases": ["kimi-k3", "kimi k3", "kimi_k3", "moonshotai/kimi-k3"],
+      "source": "InfraTech",
+      "path": "models/kimi_k_3/kimi_k_3_architecture.jpg",
+      "url": "https://raw.githubusercontent.com/CalvinXKY/InfraTech/main/models/kimi_k_3/kimi_k_3_architecture.jpg",
       "rank": 1
     },
     {

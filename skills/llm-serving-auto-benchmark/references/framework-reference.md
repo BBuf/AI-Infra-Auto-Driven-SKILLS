@@ -145,7 +145,7 @@ to the target CLI.
 | --- | --- | --- | --- | --- |
 | Parallelism | `--tp-size`, `--pp-size`, `--dp-size`, `--ep-size`, `--expert-parallel-size` | `--tensor-parallel-size`, `--pipeline-parallel-size`, `--data-parallel-size`, `--enable-expert-parallel` | `--tp_size`, `--pp_size`, `--ep_size`, `--gpus_per_node`, `--cluster_size` | `--tensor-parallel-size`, `--attn-tp-size`, `--dense-tp-size`, `--moe-tp-size`, `--enable-expert-parallel`, data-parallel flags |
 | Memory and KV cache | `--mem-fraction-static`, `--max-total-tokens`, `--kv-cache-dtype`, `--page-size`, `--cpu-offload-gb` | `--gpu-memory-utilization`, `--kv-cache-memory-bytes`, `--kv-cache-dtype`, `--block-size`, `--cpu-offload-gb` | `--kv_cache_free_gpu_memory_fraction`, plus `--max_num_tokens`, `--max_seq_len`, `--max_batch_size` | `--gpu-memory-utilization`, `--kv-cache-dtype`, `--max-total-tokens`, `--max-model-len`, `--max-prefill-tokens` |
-| Batching and scheduler | `--max-running-requests`, `--schedule-policy`, `--chunked-prefill-size`, `--max-prefill-tokens`, `--prefill-max-requests` | `--max-num-seqs`, `--max-num-batched-tokens`, `--enable-chunked-prefill`, partial-prefill and DBO flags | `--max_batch_size`, `--max_num_tokens`, `--max_seq_len`; extra scheduler knobs may require `--extra_llm_api_options` | `--max-num-seqs`, `--chunked-prefill-size`, `--max-prefill-tokens`, `--max-total-tokens` |
+| Batching and scheduler | `--max-running-requests`, `--schedule-policy`, `--chunked-prefill-size`, `--max-prefill-tokens`, `--prefill-max-requests` | `--max-num-seqs`, `--max-num-batched-tokens`, `--enable-chunked-prefill`, `--long-prefill-token-threshold`, and DBO flags | `--max_batch_size`, `--max_num_tokens`, `--max_seq_len`; extra scheduler knobs may require `--extra_llm_api_options` | `--max-num-seqs`, `--chunked-prefill-size`, `--max-prefill-tokens`, `--max-total-tokens` |
 | Attention/backend | `--attention-backend`, `--prefill-attention-backend`, `--decode-attention-backend`, `--sampling-backend` | `--attention-backend`, `--gdn-prefill-backend`, `--mm-encoder-attn-backend` | `--backend pytorch` is fixed; do not search backend choice | `--attention-backend`, `--drafter-attention-backend`, `--moe-backend`, `--draft-moe-backend` |
 | CUDA graph and compile | `--disable-cuda-graph`, `--cuda-graph-bs`, `--cuda-graph-max-bs`, `--disable-piecewise-cuda-graph`, `--enable-torch-compile` | `--enforce-eager`, `--compilation-config`, `--cudagraph-capture-sizes`, `--max-cudagraph-capture-size` | use direct flags or `--extra_llm_api_options`; record resolved PyTorch config from logs | CUDA graph padding flags, runtime graph settings, and communication-fusion flags accepted by the target image |
 | Prefix/speculative | `--disable-radix-cache`, `--disable-chunked-prefix-cache`, speculative decoding flags | `--enable-prefix-caching`, `--speculative-config` | only use PyTorch-backend options accepted by the target image | `--enable-prefix-caching`, `--speculative-config`, `--speculative-algorithm`, `--speculative-num-steps`, `--speculative-num-draft-tokens` |
@@ -162,12 +162,17 @@ Framework CLIs move quickly. For every real run:
 4. Record which frameworks were model-smoked and which only passed preflight.
 
 Historical validation from April 2026 used SGLang `0.5.10rc0`, vLLM `0.19.1`,
-and TensorRT-LLM `1.0.0`. A source check on 2026-06-27 saw SGLang
-`e0c0c0a45cb1bda90392bfa2bba4184f5b0638a0`, vLLM
-`091d13976c1c246714bb2112dd2e208561dda6a3`, TensorRT-LLM
-`aaffa2f9fef3025e0f698d978385a73460344e0b`, and TokenSpeed
-`lightseekorg/tokenspeed@d0a7faddb5ec0d4c6d037c4c3e6a781d2c5164a8`. Treat these as source evidence,
+and TensorRT-LLM `1.0.0`. A source check on 2026-07-28 saw SGLang
+`8a311d1c889244ab1f857d7df79de7e5f0a6891c`, vLLM
+`b5bcb3ce881e1d324ff7f6176ef27606558dbd74`, TensorRT-LLM
+`9fe5853263750ade5b7dc24fb31a1215ec822d45`, and TokenSpeed
+`lightseekorg/tokenspeed@e41aa8b1609a9412d7ed26aa56d910828607950f`. Treat these as source evidence,
 not as a substitute for target-image `--help`. Since the prior refresh, vLLM PR
 `#46735` changed Triton/NVFP4 MoE CUDA graph capture behavior, and
 TensorRT-LLM PR `#11685` / `#15546` changed KV eviction and KV block-offset host
-staging behavior; record stale-image risk when these surfaces affect a row.
+staging behavior. The final increment also includes vLLM `#42669` /
+`#49982`, TensorRT-LLM `#16805` / `#16763`, and TokenSpeed `#821`; these widen
+FA4/modeling coverage, correct disaggregated speculative accounting and
+phase-1 graph cleanup, and document the Kimi K3 deployment contract
+respectively. Record stale-image risk when these surfaces affect a row, but do
+not treat source presence as benchmark validation.

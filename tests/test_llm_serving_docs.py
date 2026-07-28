@@ -14,6 +14,25 @@ def read_skill_file(*parts: str) -> str:
 
 
 class LlmServingDocsTest(unittest.TestCase):
+    def test_current_source_heads_match_refresh_evidence(self) -> None:
+        skill = read_skill_file("SKILL.md")
+        framework_reference = read_skill_file(
+            "references", "framework-reference.md"
+        )
+        heads = [
+            "8a311d1c889244ab1f857d7df79de7e5f0a6891c",
+            "b5bcb3ce881e1d324ff7f6176ef27606558dbd74",
+            "9fe5853263750ade5b7dc24fb31a1215ec822d45",
+            "e41aa8b1609a9412d7ed26aa56d910828607950f",
+        ]
+
+        for head in heads:
+            with self.subTest(head=head):
+                self.assertIn(head, framework_reference)
+        for head in heads[1:]:
+            with self.subTest(skill_head=head):
+                self.assertIn(head, skill)
+
     def test_tensorrt_llm_backend_policy_is_explicit(self) -> None:
         text = read_skill_file("SKILL.md")
 
@@ -92,6 +111,13 @@ class LlmServingDocsTest(unittest.TestCase):
             self.assertIn("failed", normalized)
             self.assertIn("skipped", normalized)
             self.assertIn("SLA", normalized)
+
+    def test_cookbook_documents_intentionally_excluded_current_models(self) -> None:
+        readme = read_skill_file("configs", "cookbook-llm", "README.md")
+
+        for model in ("Inkling", "Unlimited OCR", "Kimi K3", "DeepSeek V4"):
+            self.assertIn(model, readme)
+        self.assertIn("not_verified_at_recorded_head", readme)
 
 
 if __name__ == "__main__":

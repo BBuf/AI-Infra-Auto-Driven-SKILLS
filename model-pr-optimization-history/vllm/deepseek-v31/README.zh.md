@@ -23,7 +23,7 @@
 
 | 日期 | PR | 状态 | 标题 | 主要文件 |
 | --- | --- | --- | --- | --- |
-| 2025-08-23 | [#23454](https://github.com/vllm-project/vllm/pull/23454) | merged | Support DeepSeek-V3.1 tool call | `examples/tool_chat_template_deepseekv31.jinja` |
+| 2025-08-23 | [#23454](https://github.com/vllm-project/vllm/pull/23454) | merged | Support DeepSeek-V3.1 tool call | `examples/tool_chat_template_deepseekv31.jinja`, `vllm/entrypoints/openai/tool_parsers/deepseekv31_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py` |
 | 2025-08-27 | [#23666](https://github.com/vllm-project/vllm/pull/23666) | merged | [Feature] Add Hopper DeepGEMM E8M0 for DeepSeekV3.1 scale_fmt | `vllm/model_executor/layers/quantization/fp8.py`, `vllm/model_executor/layers/fused_moe/fused_moe.py`, `vllm/model_executor/layers/fused_moe/triton_deep_gemm_moe.py` |
 | 2025-10-15 | [#25589](https://github.com/vllm-project/vllm/pull/25589) | merged | [Model] Add DeepSeek-V3.1 reasoning parser (split from PR #24972) | `tests/reasoning/test_deepseekv3_reasoning_parser.py`, `vllm/reasoning/deepseek_v3_reasoning_parser.py`, `vllm/reasoning/identity_reasoning_parser.py` |
 | 2026-01-13 | [#29867](https://github.com/vllm-project/vllm/pull/29867) | merged | [Quantization] fix: overflow with static per-tensor scaling | `vllm/model_executor/layers/quantization/utils/quant_utils.py`, `vllm/v1/attention/backends/mla/common.py` |
@@ -85,10 +85,12 @@
 - 状态/时间: merged / 2025-08-23
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `examples/tool_chat_template_deepseekv31.jinja`；关联提交 `b8f17f5d980e`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+468/-0，可读 patch 491 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Support DeepSeek-V3.1 tool call」；模型线: DeepSeek V3.1；类别: 模型支持/运行时入口；主要 diff: `examples/tool_chat_template_deepseekv31.jinja`；技术摘要: 覆盖「Support DeepSeek-V3.1 tool call」；主要实现面是 `examples/tool_chat_template_deepseekv31.jinja`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `examples/tool_chat_template_deepseekv31.jinja` added +91/-0 (91 lines); hunks: -0,0 +1,91。
+- 动机: 标题「Support DeepSeek-V3.1 tool call」；模型线: DeepSeek V3.1；类别: 模型支持/运行时入口；主要 diff: `examples/tool_chat_template_deepseekv31.jinja`, `vllm/entrypoints/openai/tool_parsers/deepseekv31_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py`；技术摘要: 覆盖「Support DeepSeek-V3.1 tool call」；主要实现面是 `examples/tool_chat_template_deepseekv31.jinja`, `vllm/entrypoints/openai/tool_parsers/deepseekv31_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `examples/tool_chat_template_deepseekv31.jinja` added +91/-0 (91 lines); hunks: -0,0 +1,91；`vllm/entrypoints/openai/tool_parsers/deepseekv31_tool_parser.py` added +367/-0 (367 lines); hunks: -0,0 +1,367; symbols: DeepSeekV31ToolParser, __init__, extract_tool_calls, extract_tool_calls_streaming，涉及 `DeepSeekV31ToolParser, __init__, extract_tool_calls`；`vllm/entrypoints/openai/tool_parsers/__init__.py` modified +2/-0 (2 lines); hunks: -3,6 +3,7; -36,6 +37,7。
 - 代码 diff 细节:
   - `examples/tool_chat_template_deepseekv31.jinja` added +91/-0 (91 lines); hunks: -0,0 +1,91
+  - `vllm/entrypoints/openai/tool_parsers/deepseekv31_tool_parser.py` added +367/-0 (367 lines); hunks: -0,0 +1,367; symbols: DeepSeekV31ToolParser, __init__, extract_tool_calls, extract_tool_calls_streaming
+  - `vllm/entrypoints/openai/tool_parsers/__init__.py` modified +2/-0 (2 lines); hunks: -3,6 +3,7; -36,6 +37,7
 - 关键代码摘录:
 
 ```diff
@@ -100,10 +102,21 @@ diff -- examples/tool_chat_template_deepseekv31.jinja
 +{% if not thinking is defined %}
 +  {% set thinking = false %}
 +{% endif %}
+diff -- vllm/entrypoints/openai/tool_parsers/deepseekv31_tool_parser.py
+@@ -0,0 +1,367 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++from collections.abc import Sequence
++from typing import Union
++import regex as re
++from vllm.entrypoints.chat_utils import make_tool_call_id
+diff -- vllm/entrypoints/openai/tool_parsers/__init__.py
+@@ -3,6 +3,7 @@
 ```
 
 - 已读文件:
   - docs: `examples/tool_chat_template_deepseekv31.jinja` added +91/-0
+  - runtime: `vllm/entrypoints/openai/tool_parsers/deepseekv31_tool_parser.py` added +367/-0; `vllm/entrypoints/openai/tool_parsers/__init__.py` modified +2/-0
 - 验证与风险: runtime 路径改动集中在 `vllm/entrypoints/openai/tool_parsers/__init__.py`, `vllm/entrypoints/openai/tool_parsers/deepseekv31_tool_parser.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #23666 - [Feature] Add Hopper DeepGEMM E8M0 for DeepSeekV3.1 scale_fmt

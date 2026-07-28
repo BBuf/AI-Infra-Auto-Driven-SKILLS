@@ -6,17 +6,17 @@
 | --- | --- |
 | `docs_new/cookbook/autoregressive/Qwen/Qwen3.mdx` | [#25971](https://github.com/sgl-project/sglang/pull/25971) |
 | `docs_new/src/snippets/autoregressive/qwen3-deployment.jsx` | [#25971](https://github.com/sgl-project/sglang/pull/25971) |
-| `python/sglang/srt/models/qwen3.py` | [#4693](https://github.com/sgl-project/sglang/pull/4693), [#6250](https://github.com/sgl-project/sglang/pull/6250), [#6990](https://github.com/sgl-project/sglang/pull/6990), [#7312](https://github.com/sgl-project/sglang/pull/7312), [#7681](https://github.com/sgl-project/sglang/pull/7681), [#7740](https://github.com/sgl-project/sglang/pull/7740), [#10574](https://github.com/sgl-project/sglang/pull/10574), [#15223](https://github.com/sgl-project/sglang/pull/15223), [#15390](https://github.com/sgl-project/sglang/pull/15390), [#16115](https://github.com/sgl-project/sglang/pull/16115), [#17535](https://github.com/sgl-project/sglang/pull/17535), [#19532](https://github.com/sgl-project/sglang/pull/19532), ... (16 total) |
-| `python/sglang/srt/models/qwen3_moe.py` | [#4693](https://github.com/sgl-project/sglang/pull/4693), [#5917](https://github.com/sgl-project/sglang/pull/5917), [#6120](https://github.com/sgl-project/sglang/pull/6120), [#6250](https://github.com/sgl-project/sglang/pull/6250), [#6533](https://github.com/sgl-project/sglang/pull/6533), [#6598](https://github.com/sgl-project/sglang/pull/6598), [#6652](https://github.com/sgl-project/sglang/pull/6652), [#6709](https://github.com/sgl-project/sglang/pull/6709), [#6820](https://github.com/sgl-project/sglang/pull/6820), [#7740](https://github.com/sgl-project/sglang/pull/7740), [#8751](https://github.com/sgl-project/sglang/pull/8751), [#9973](https://github.com/sgl-project/sglang/pull/9973), ... (30 total) |
+| `python/sglang/srt/models/qwen3.py` | [#4693](https://github.com/sgl-project/sglang/pull/4693), [#6250](https://github.com/sgl-project/sglang/pull/6250), [#6990](https://github.com/sgl-project/sglang/pull/6990), [#7312](https://github.com/sgl-project/sglang/pull/7312), [#7681](https://github.com/sgl-project/sglang/pull/7681), [#7740](https://github.com/sgl-project/sglang/pull/7740), [#10574](https://github.com/sgl-project/sglang/pull/10574), [#15223](https://github.com/sgl-project/sglang/pull/15223), [#15390](https://github.com/sgl-project/sglang/pull/15390), [#16115](https://github.com/sgl-project/sglang/pull/16115), [#17535](https://github.com/sgl-project/sglang/pull/17535), [#19532](https://github.com/sgl-project/sglang/pull/19532), ... (17 total) |
+| `python/sglang/srt/models/qwen3_moe.py` | [#4693](https://github.com/sgl-project/sglang/pull/4693), [#5917](https://github.com/sgl-project/sglang/pull/5917), [#6120](https://github.com/sgl-project/sglang/pull/6120), [#6250](https://github.com/sgl-project/sglang/pull/6250), [#6533](https://github.com/sgl-project/sglang/pull/6533), [#6598](https://github.com/sgl-project/sglang/pull/6598), [#6652](https://github.com/sgl-project/sglang/pull/6652), [#6709](https://github.com/sgl-project/sglang/pull/6709), [#6820](https://github.com/sgl-project/sglang/pull/6820), [#7740](https://github.com/sgl-project/sglang/pull/7740), [#8751](https://github.com/sgl-project/sglang/pull/8751), [#9973](https://github.com/sgl-project/sglang/pull/9973), ... (31 total) |
 | `python/sglang/srt/models/qwen3_moe_mtp.py` | [#26468](https://github.com/sgl-project/sglang/pull/26468) |
-| `test/registered/cpu/test_qwen3.py` | 无直接 PR 号提交 |
+| `test/registered/cpu/test_qwen3.py` | [#31171](https://github.com/sgl-project/sglang/pull/31171) |
 | `test/registered/lora/test_lora_qwen3.py` | 无直接 PR 号提交 |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 40
+- git 追溯 PR 数: 43
 - 原文档显式引用补充 PR 数: 66
-- 当前文档总 PR 数: 106
+- 当前文档总 PR 数: 109
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -99,7 +99,6 @@
 | 2026-04-01 | [#21654](https://github.com/sgl-project/sglang/pull/21654) | merged | Fused_qknorm_rope kernel optimization: up to 2.4× faster | `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/jit_kernel/csrc/elementwise/fused_qknorm_rope.cuh`, `python/sglang/jit_kernel/benchmark/bench_fused_qknorm_rope.py` |
 | 2026-04-01 | [#21458](https://github.com/sgl-project/sglang/pull/21458) | merged | [AMD] Optimize Qwen3-VL decode - fuse QK-norm + 3D mRoPE + KV cache write | `python/sglang/srt/models/qwen3.py` |
 | 2026-04-09 | [#22429](https://github.com/sgl-project/sglang/pull/22429) | merged | [NPU]add Qwen3-32b and Qwen3-8b low latency md | `docs/platforms/ascend/ascend_npu_best_practice.md` |
-| 2026-04-09 | [#22450](https://github.com/sgl-project/sglang/pull/22450) | open | [NPU] Add Qwen3-14B low latency doc | `docs/platforms/ascend/ascend_npu_best_practice.md` |
 | 2026-04-09 | [#22358](https://github.com/sgl-project/sglang/pull/22358) | merged | Enable DFLASH support for additional model backends | `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/kimi_k25.py`, `python/sglang/srt/models/qwen3_next.py` |
 | 2026-04-10 | [#22529](https://github.com/sgl-project/sglang/pull/22529) | open | [Model] Support sliding window attention for Qwen3 | `python/sglang/srt/models/qwen3.py` |
 | 2026-04-11 | [#22446](https://github.com/sgl-project/sglang/pull/22446) | merged | [NPU] add qwen3-30b-a3b low latency example | `docs/platforms/ascend/ascend_npu_best_practice.md` |
@@ -130,6 +129,10 @@
 | 2026-06-18 | [#28421](https://github.com/sgl-project/sglang/pull/28421) | merged | [3/N][CP] Implement zigzag CP strategy | `python/sglang/srt/layers/cp/zigzag.py`, `python/sglang/srt/layers/cp/utils.py`, `python/sglang/srt/model_executor/model_runner.py` |
 | 2026-06-19 | [#28697](https://github.com/sgl-project/sglang/pull/28697) | merged | [docs] Add B300 cookbook deployment options | `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` |
 | 2026-06-20 | [#28810](https://github.com/sgl-project/sglang/pull/28810) | merged | [CI] Remove deprecated test/srt legacy CI setup | `test/srt/cpu/test_qkv_proj_with_rope.py`, `test/srt/cpu/utils.py`, `test/srt/cpu/test_norm.py` |
+| 2026-06-29 | [#29505](https://github.com/sgl-project/sglang/pull/29505) | merged | [NPU] Qwen3-VL-30B use split_qkv_rmsnorm_rope for extend | `python/sglang/srt/models/qwen3_moe.py` |
+| 2026-06-30 | [#29627](https://github.com/sgl-project/sglang/pull/29627) | merged | [NPU] Qwen3-VL-8B use split_qkv_rmsnorm_rope for extend | `python/sglang/srt/models/qwen3.py` |
+| 2026-07-06 | [#22450](https://github.com/sgl-project/sglang/pull/22450) | closed | [NPU] Add Qwen3-14B low latency doc | `docs/platforms/ascend/ascend_npu_best_practice.md` |
+| 2026-07-15 | [#31171](https://github.com/sgl-project/sglang/pull/31171) | merged | [CPU] add fused input proj for qwen3.5 | `test/registered/cpu/test_qwen3.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/model_executor/cpu_graph_runner.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -2729,33 +2732,6 @@ diff -- docs/platforms/ascend/ascend_npu_best_practice.md
   - docs: `docs/platforms/ascend/ascend_npu_best_practice.md` modified +296/-0
 - 验证与风险: 该 PR 主要落在文档/示例 `docs/platforms/ascend/ascend_npu_best_practice.md`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
-### PR #22450 - [NPU] Add Qwen3-14B low latency doc
-
-- 链接: https://github.com/sgl-project/sglang/pull/22450
-- 状态/时间: open / 2026-04-09
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+323/-0，可读 patch 344 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[NPU] Add Qwen3-14B low latency doc」；模型线: Qwen3 Core；类别: 文档/测试/CI；主要 diff: `docs/platforms/ascend/ascend_npu_best_practice.md`；技术摘要: 覆盖「[NPU] Add Qwen3-14B low latency doc」；主要实现面是 `docs/platforms/ascend/ascend_npu_best_practice.md`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `docs/platforms/ascend/ascend_npu_best_practice.md` modified +323/-0 (323 lines); hunks: -39,6 +39,9 @@ you encounter issues or have any questions, please [open an is...; -53,6 +56,7 @@ you encounter issues or have any questions, please [open an is...。
-- 代码 diff 细节:
-  - `docs/platforms/ascend/ascend_npu_best_practice.md` modified +323/-0 (323 lines); hunks: -39,6 +39,9 @@ you encounter issues or have any questions, please [open an is...; -53,6 +56,7 @@ you encounter issues or have any questions, please [open an is...
-- 关键代码摘录:
-
-```diff
-diff -- docs/platforms/ascend/ascend_npu_best_practice.md
-@@ -39,6 +39,9 @@ you encounter issues or have any questions, please [open an issue](https://githu
-+| Qwen3-14B       | Atlas 800I A3 | 1     | PD Mixed    | 1K+0.3K | 9ms | W8A8 INT8  | [Optimal Configuration](#qwen3-14b-1k-0_3k-9ms-on-a3-1-card-mixed-mode)      |
-+| Qwen3-14B       | Atlas 800I A3 | 1     | PD Mixed    | 6K+1.5K | 11ms | W8A8 INT8 | [Optimal Configuration](#qwen3-14b-6k-1_5k-11ms-on-a3-1-card-mixed-mode)     |
-+| Qwen3-14B       | Atlas 800I A3 | 1     | PD Mixed    | 3.5K+1.5K | 8ms | W8A8 INT8 | [Optimal Configuration](#qwen3-14b-3_5k-1_5k-8ms-on-a3-1-card-mixed-mode)    |
-@@ -53,6 +56,7 @@ you encounter issues or have any questions, please [open an issue](https://githu
-+| Qwen3-14B                      | Atlas 800I A3 | 1     | PD Mixed          | 3.5K+1.5K | 50ms  | W8A8 INT8    | [Optimal Configuration](#qwen3-14b-3_5k-1_5k-50ms-on-a3-1-card-mi
-@@ -1864,6 +1868,325 @@ We tested it based on the `RANDOM` dataset.
-```
-
-- 已读文件:
-  - docs: `docs/platforms/ascend/ascend_npu_best_practice.md` modified +323/-0
-- 验证与风险: 该 PR 主要落在文档/示例 `docs/platforms/ascend/ascend_npu_best_practice.md`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
-
 ### PR #22358 - Enable DFLASH support for additional model backends
 
 - 链接: https://github.com/sgl-project/sglang/pull/22358
@@ -3810,6 +3786,125 @@ diff -- test/srt/cpu/test_norm.py
 - 已读文件:
   - tests: `test/srt/cpu/test_qkv_proj_with_rope.py` removed +0/-440; `test/srt/cpu/utils.py` removed +0/-440; `test/srt/cpu/test_norm.py` removed +0/-432; `test/srt/cpu/test_extend.py` removed +0/-400; `test/srt/cpu/test_mamba.py` removed +0/-394; `test/srt/cpu/test_moe.py` removed +0/-352
 - 验证与风险: diff 自带测试面 `test/README.md`, `test/srt/cpu/arm64/test_moe.py`, `test/srt/cpu/test_activation.py`, `test/srt/cpu/test_binding.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #29505 - [NPU] Qwen3-VL-30B use split_qkv_rmsnorm_rope for extend
+
+- 链接: https://github.com/sgl-project/sglang/pull/29505
+- 状态/时间: merged / 2026-06-29
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_moe.py`；关联提交 `f85cc94d82a5`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-4，可读 patch 12 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[NPU] Qwen3-VL-30B use split_qkv_rmsnorm_rope for extend」；模型线: Qwen3 Core；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/qwen3_moe.py`；技术摘要: 覆盖「[NPU] Qwen3-VL-30B use split_qkv_rmsnorm_rope for extend」；主要实现面是 `python/sglang/srt/models/qwen3_moe.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/qwen3_moe.py` modified +1/-4 (5 lines); hunks: -661,10 +661,7 @@ def forward_prepare(; symbols: forward_prepare，涉及 `forward_prepare`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/qwen3_moe.py` modified +1/-4 (5 lines); hunks: -661,10 +661,7 @@ def forward_prepare(; symbols: forward_prepare
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_moe.py
+@@ -661,10 +661,7 @@ def forward_prepare(
+-        if (
+-            not _is_npu
+-            or forward_batch.forward_mode.is_extend_or_draft_extend_or_mixed()
+-        ):
++        if not _is_npu:
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/qwen3_moe.py` modified +1/-4
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen3_moe.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #29627 - [NPU] Qwen3-VL-8B use split_qkv_rmsnorm_rope for extend
+
+- 链接: https://github.com/sgl-project/sglang/pull/29627
+- 状态/时间: merged / 2026-06-30
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3.py`；关联提交 `ff51acd67b22`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-4，可读 patch 12 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[NPU] Qwen3-VL-8B use split_qkv_rmsnorm_rope for extend」；模型线: Qwen3 Core；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/qwen3.py`；技术摘要: 覆盖「[NPU] Qwen3-VL-8B use split_qkv_rmsnorm_rope for extend」；主要实现面是 `python/sglang/srt/models/qwen3.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/qwen3.py` modified +1/-4 (5 lines); hunks: -287,10 +287,7 @@ def forward(; symbols: forward，涉及 `forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/qwen3.py` modified +1/-4 (5 lines); hunks: -287,10 +287,7 @@ def forward(; symbols: forward
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/qwen3.py
+@@ -287,10 +287,7 @@ def forward(
+-        elif (
+-            not _is_npu
+-            or forward_batch.forward_mode.is_extend_or_draft_extend_or_mixed()
+-        ):
++        elif not _is_npu:
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/qwen3.py` modified +1/-4
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen3.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #22450 - [NPU] Add Qwen3-14B low latency doc
+
+- 链接: https://github.com/sgl-project/sglang/pull/22450
+- 状态/时间: closed / 2026-07-06
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+323/-0，可读 patch 344 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[NPU] Add Qwen3-14B low latency doc」；模型线: Qwen3 Core；类别: 文档/测试/CI；主要 diff: `docs/platforms/ascend/ascend_npu_best_practice.md`；技术摘要: 覆盖「[NPU] Add Qwen3-14B low latency doc」；主要实现面是 `docs/platforms/ascend/ascend_npu_best_practice.md`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs/platforms/ascend/ascend_npu_best_practice.md` modified +323/-0 (323 lines); hunks: -39,6 +39,9 @@ you encounter issues or have any questions, please [open an is...; -53,6 +56,7 @@ you encounter issues or have any questions, please [open an is...。
+- 代码 diff 细节:
+  - `docs/platforms/ascend/ascend_npu_best_practice.md` modified +323/-0 (323 lines); hunks: -39,6 +39,9 @@ you encounter issues or have any questions, please [open an is...; -53,6 +56,7 @@ you encounter issues or have any questions, please [open an is...
+- 关键代码摘录:
+
+```diff
+diff -- docs/platforms/ascend/ascend_npu_best_practice.md
+@@ -39,6 +39,9 @@ you encounter issues or have any questions, please [open an issue](https://githu
++| Qwen3-14B       | Atlas 800I A3 | 1     | PD Mixed    | 1K+0.3K | 9ms | W8A8 INT8  | [Optimal Configuration](#qwen3-14b-1k-0_3k-9ms-on-a3-1-card-mixed-mode)      |
++| Qwen3-14B       | Atlas 800I A3 | 1     | PD Mixed    | 6K+1.5K | 11ms | W8A8 INT8 | [Optimal Configuration](#qwen3-14b-6k-1_5k-11ms-on-a3-1-card-mixed-mode)     |
++| Qwen3-14B       | Atlas 800I A3 | 1     | PD Mixed    | 3.5K+1.5K | 8ms | W8A8 INT8 | [Optimal Configuration](#qwen3-14b-3_5k-1_5k-8ms-on-a3-1-card-mixed-mode)    |
+@@ -53,6 +56,7 @@ you encounter issues or have any questions, please [open an issue](https://githu
++| Qwen3-14B                      | Atlas 800I A3 | 1     | PD Mixed          | 3.5K+1.5K | 50ms  | W8A8 INT8    | [Optimal Configuration](#qwen3-14b-3_5k-1_5k-50ms-on-a3-1-card-mi
+@@ -1864,6 +1868,325 @@ We tested it based on the `RANDOM` dataset.
+```
+
+- 已读文件:
+  - docs: `docs/platforms/ascend/ascend_npu_best_practice.md` modified +323/-0
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/platforms/ascend/ascend_npu_best_practice.md`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #31171 - [CPU] add fused input proj for qwen3.5
+
+- 链接: https://github.com/sgl-project/sglang/pull/31171
+- 状态/时间: merged / 2026-07-15
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/cpu/test_qwen3.py`；关联提交 `41e0b4b3695e`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+238/-94，可读 patch 471 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[CPU] add fused input proj for qwen3.5」；模型线: Qwen3 Core；类别: 性能/后端优化；主要 diff: `test/registered/cpu/test_qwen3.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/model_executor/cpu_graph_runner.py`；技术摘要: 覆盖「[CPU] add fused input proj for qwen3.5」；主要实现面是 `test/registered/cpu/test_qwen3.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/model_executor/cpu_graph_runner.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/cpu/test_qwen3.py` modified +82/-58 (140 lines); hunks: -1,10 +1,11; -85,69 +86,92 @@ def fix_query_key_value_ordering_reshape_cat_contiguous(; symbols: fix_query_key_value_ordering_reshape_cat_contiguous, TestQwen3, test_fused_qkvzba_split_reshape_cat, test_fused_input_proj，涉及 `fix_query_key_value_ordering_reshape_cat_contiguous, TestQwen3, test_fused_qkvzba_split_reshape_cat`；`python/sglang/srt/models/qwen3_5.py` modified +33/-18 (51 lines); hunks: -112,6 +112,7; -152,6 +153,9 @@ def _disable_shared_experts_fusion() -> bool:; symbols: _disable_shared_experts_fusion, __init__, _forward_input_proj, forward，涉及 `_disable_shared_experts_fusion, __init__, _forward_input_proj`；`python/sglang/srt/model_executor/cpu_graph_runner.py` modified +9/-0 (9 lines); hunks: -490,6 +490,15 @@ def _(mixed_qkvz, mixed_ba, num_heads_qk, num_heads_v, head...; symbols: _，涉及 `_`。
+- 代码 diff 细节:
+  - `test/registered/cpu/test_qwen3.py` modified +82/-58 (140 lines); hunks: -1,10 +1,11; -85,69 +86,92 @@ def fix_query_key_value_ordering_reshape_cat_contiguous(; symbols: fix_query_key_value_ordering_reshape_cat_contiguous, TestQwen3, test_fused_qkvzba_split_reshape_cat, test_fused_input_proj
+  - `python/sglang/srt/models/qwen3_5.py` modified +33/-18 (51 lines); hunks: -112,6 +112,7; -152,6 +153,9 @@ def _disable_shared_experts_fusion() -> bool:; symbols: _disable_shared_experts_fusion, __init__, _forward_input_proj, forward
+  - `python/sglang/srt/model_executor/cpu_graph_runner.py` modified +9/-0 (9 lines); hunks: -490,6 +490,15 @@ def _(mixed_qkvz, mixed_ba, num_heads_qk, num_heads_v, head...; symbols: _
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/cpu/test_qwen3.py
+@@ -1,10 +1,11 @@
+-import unittest
++import sys
++import pytest
++from sglang.srt.utils import is_host_cpu_arm64
+-from sglang.test.test_utils import CustomTestCase
+@@ -85,69 +86,92 @@ def fix_query_key_value_ordering_reshape_cat_contiguous(
+diff -- python/sglang/srt/models/qwen3_5.py
+@@ -112,6 +112,7 @@
++    use_intel_amx_backend,
+@@ -152,6 +153,9 @@ def _disable_shared_experts_fusion() -> bool:
++    fused_qkvzba_split_reshape_cat_contiguous = (
++        torch.ops.sgl_kernel.fused_qkvzba_split_reshape_cat_contiguous_cpu
++    )
+@@ -233,6 +237,17 @@ def __init__(
+diff -- python/sglang/srt/model_executor/cpu_graph_runner.py
+@@ -490,6 +490,15 @@ def _(mixed_qkvz, mixed_ba, num_heads_qk, num_heads_v, head_qk, head_v):
+```
+
+- 已读文件:
+  - tests: `test/registered/cpu/test_qwen3.py` modified +82/-58
+  - runtime: `python/sglang/srt/models/qwen3_5.py` modified +33/-18; `python/sglang/srt/model_executor/cpu_graph_runner.py` modified +9/-0
+- 验证与风险: diff 自带测试面 `test/registered/cpu/test_qwen3.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论
 
