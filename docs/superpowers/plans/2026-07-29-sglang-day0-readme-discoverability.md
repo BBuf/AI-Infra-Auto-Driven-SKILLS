@@ -22,12 +22,15 @@
   update.
 - Modify `tests/test_repository_metadata.py`: enforce documentation and plugin
   metadata consistency.
+- Modify `tests/test_model_pr_dossier_quality.py`: update the plugin skill count
+  contract shared with the dossier documentation test.
 
 ### Task 1: Add failing metadata contracts
 
 **Files:**
 
 - Modify: `tests/test_repository_metadata.py`
+- Modify: `tests/test_model_pr_dossier_quality.py`
 
 - [ ] **Step 1: Update the README count assertion**
 
@@ -80,12 +83,26 @@ assert "Day-0" in marketplace["description"]
 assert "Day-0" in plugin["description"]
 ```
 
-- [ ] **Step 4: Run the focused tests and confirm failure**
+- [ ] **Step 4: Update the shared plugin-count contract**
+
+In `tests/test_model_pr_dossier_quality.py`, replace:
+
+```python
+assert "After reload, the 12 skills appear" in readme
+```
+
+with:
+
+```python
+assert "After reload, the 13 skills appear" in readme
+```
+
+- [ ] **Step 5: Run the focused tests and confirm failure**
 
 Run:
 
 ```bash
-pytest -q tests/test_repository_metadata.py
+pytest -q tests/test_repository_metadata.py tests/test_model_pr_dossier_quality.py
 ```
 
 Expected: failures for the old core/plugin counts, missing install entry, and
@@ -220,14 +237,14 @@ Preserve all existing tags and add `"day0"` after `"sglang"`.
 
 **Files:**
 
-- Modify only the five implementation files listed in the file map.
+- Modify only the six implementation files listed in the file map.
 
 - [ ] **Step 1: Run focused tests**
 
 Run:
 
 ```bash
-pytest -q tests/test_repository_metadata.py
+pytest -q tests/test_repository_metadata.py tests/test_model_pr_dossier_quality.py
 ```
 
 Expected: all repository metadata tests pass.
@@ -253,8 +270,9 @@ git diff --stat
 ```
 
 Expected: only `README.md`, `skills/model-optimization/README.md`, both plugin
-metadata files, and `tests/test_repository_metadata.py` are modified beyond
-the already committed design and plan documents.
+metadata files, `tests/test_repository_metadata.py`, and
+`tests/test_model_pr_dossier_quality.py` are modified beyond the already
+committed design and plan documents.
 
 - [ ] **Step 4: Commit**
 
@@ -263,7 +281,7 @@ Run:
 ```bash
 git add README.md skills/model-optimization/README.md \
   .claude-plugin/plugin.json .claude-plugin/marketplace.json \
-  tests/test_repository_metadata.py \
+  tests/test_repository_metadata.py tests/test_model_pr_dossier_quality.py \
   docs/superpowers/plans/2026-07-29-sglang-day0-readme-discoverability.md
 git commit -m "docs: expose SGLang Day-0 support skill"
 ```
