@@ -1,0 +1,4 @@
+interface:
+  display_name: "SGLang Model Day-0 Support"
+  short_description: "Plan and audit model Day-0 support for SGLang"
+  default_prompt: "Use $sglang-model-day0-support to design and validate an auditable SGLang Day-0 support bundle for this model."
