@@ -22,6 +22,13 @@
 | `docs_new/src/snippets/configs/moonshotai/kimi-k3.jsx` | [#32542](https://github.com/sgl-project/sglang/pull/32542), [#32547](https://github.com/sgl-project/sglang/pull/32547) |
 | `python/sglang/kernels/jit/csrc/trtllm_lora_temp/kimi_k2_moe_fused_gate.cuh` | no direct PR-number commit |
 | `python/sglang/kernels/ops/moe/trtllm_lora_temp/kimi_k2_moe_fused_gate.py` | no direct PR-number commit |
+| `python/sglang/kernels/ops/attention/set_mla_kv_concat_q.py` | [#32541](https://github.com/sgl-project/sglang/pull/32541) |
+| `python/sglang/kernels/ops/kimi_k3/all_reduce.py` | [#32541](https://github.com/sgl-project/sglang/pull/32541) |
+| `python/sglang/kernels/ops/kimi_k3/gemm_ag.py` | [#32541](https://github.com/sgl-project/sglang/pull/32541) |
+| `python/sglang/kernels/ops/kimi_k3/sp_collective.py` | [#32541](https://github.com/sgl-project/sglang/pull/32541) |
+| `python/sglang/kernels/ops/mm/process/image.py` | [#32541](https://github.com/sgl-project/sglang/pull/32541) |
+| `python/sglang/kernels/ops/moe/moe_front.py` | [#32541](https://github.com/sgl-project/sglang/pull/32541) |
+| `python/sglang/kernels/ops/moe/moe_route_radix.py` | [#32541](https://github.com/sgl-project/sglang/pull/32541) |
 | `python/sglang/srt/configs/kimi_k25.py` | [#17789](https://github.com/sgl-project/sglang/pull/17789) |
 | `python/sglang/srt/configs/kimi_linear.py` | [#12469](https://github.com/sgl-project/sglang/pull/12469) |
 | `python/sglang/srt/configs/kimi_vl.py` | [#5383](https://github.com/sgl-project/sglang/pull/5383) |
@@ -29,11 +36,14 @@
 | `python/sglang/srt/function_call/kimik2_detector.py` | [#7940](https://github.com/sgl-project/sglang/pull/7940), [#8043](https://github.com/sgl-project/sglang/pull/8043), [#8968](https://github.com/sgl-project/sglang/pull/8968), [#10972](https://github.com/sgl-project/sglang/pull/10972), [#19120](https://github.com/sgl-project/sglang/pull/19120), [#19552](https://github.com/sgl-project/sglang/pull/19552), [#23950](https://github.com/sgl-project/sglang/pull/23950), [#25071](https://github.com/sgl-project/sglang/pull/25071) |
 | `python/sglang/srt/models/kimi_k25.py` | [#17789](https://github.com/sgl-project/sglang/pull/17789), [#18370](https://github.com/sgl-project/sglang/pull/18370), [#18434](https://github.com/sgl-project/sglang/pull/18434), [#18440](https://github.com/sgl-project/sglang/pull/18440), [#18689](https://github.com/sgl-project/sglang/pull/18689), [#19331](https://github.com/sgl-project/sglang/pull/19331), [#19689](https://github.com/sgl-project/sglang/pull/19689), [#19959](https://github.com/sgl-project/sglang/pull/19959), [#20747](https://github.com/sgl-project/sglang/pull/20747), [#21004](https://github.com/sgl-project/sglang/pull/21004), [#22269](https://github.com/sgl-project/sglang/pull/22269), [#22858](https://github.com/sgl-project/sglang/pull/22858), ... (19 total) |
 | `python/sglang/srt/models/kimi_k25_eagle3.py` | [#24826](https://github.com/sgl-project/sglang/pull/24826), [#25033](https://github.com/sgl-project/sglang/pull/25033), [#26506](https://github.com/sgl-project/sglang/pull/26506), [#27647](https://github.com/sgl-project/sglang/pull/27647), [#29223](https://github.com/sgl-project/sglang/pull/29223) |
+| `python/sglang/srt/models/kimi_k3.py` | [#32541](https://github.com/sgl-project/sglang/pull/32541) |
+| `python/sglang/srt/models/kimi_k3_vl.py` | [#32541](https://github.com/sgl-project/sglang/pull/32541) |
 | `python/sglang/srt/models/kimi_linear.py` | [#12469](https://github.com/sgl-project/sglang/pull/12469), [#12660](https://github.com/sgl-project/sglang/pull/12660), [#14337](https://github.com/sgl-project/sglang/pull/14337), [#17160](https://github.com/sgl-project/sglang/pull/17160), [#17506](https://github.com/sgl-project/sglang/pull/17506), [#17731](https://github.com/sgl-project/sglang/pull/17731), [#18849](https://github.com/sgl-project/sglang/pull/18849), [#20396](https://github.com/sgl-project/sglang/pull/20396), [#32262](https://github.com/sgl-project/sglang/pull/32262) |
 | `python/sglang/srt/models/kimi_vl.py` | [#5383](https://github.com/sgl-project/sglang/pull/5383), [#22490](https://github.com/sgl-project/sglang/pull/22490), [#30869](https://github.com/sgl-project/sglang/pull/30869) |
 | `python/sglang/srt/models/kimi_vl_moonvit.py` | [#5383](https://github.com/sgl-project/sglang/pull/5383), [#30869](https://github.com/sgl-project/sglang/pull/30869) |
 | `python/sglang/srt/multimodal/processors/kimi_common.py` | [#22490](https://github.com/sgl-project/sglang/pull/22490) |
 | `python/sglang/srt/multimodal/processors/kimi_k25.py` | [#17789](https://github.com/sgl-project/sglang/pull/17789), [#22269](https://github.com/sgl-project/sglang/pull/22269), [#22368](https://github.com/sgl-project/sglang/pull/22368), [#22490](https://github.com/sgl-project/sglang/pull/22490), [#22858](https://github.com/sgl-project/sglang/pull/22858), [#23501](https://github.com/sgl-project/sglang/pull/23501), [#28647](https://github.com/sgl-project/sglang/pull/28647), [#31227](https://github.com/sgl-project/sglang/pull/31227) |
+| `python/sglang/srt/multimodal/kimi_k3_vit_cuda_graph_runner.py` | [#32541](https://github.com/sgl-project/sglang/pull/32541) |
 | `python/sglang/srt/multimodal/processors/kimi_vl.py` | [#22490](https://github.com/sgl-project/sglang/pull/22490) |
 | `scripts/ci/slurm/recipes/mi355x-fp8/kimik26/1k1k/1p1d-mtp.yaml` | [#29855](https://github.com/sgl-project/sglang/pull/29855) |
 | `scripts/ci/slurm/recipes/mi355x-fp8/kimik26/1k1k/1p1d.yaml` | [#29855](https://github.com/sgl-project/sglang/pull/29855) |
@@ -70,8 +80,8 @@
 ## PR Coverage Summary
 
 - Git-traced PRs: 72
-- Extra PRs preserved from existing docs: 60
-- Total PRs in this document: 132
+- Extra PRs preserved from existing docs and the open-PR audit: 61
+- Total PRs in this document: 133
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -209,6 +219,7 @@
 | 2026-07-17 | [#31514](https://github.com/sgl-project/sglang/pull/31514) | merged | [DCP] Enable decode context parallel for Kimi K2.5 NVFP4 | `python/sglang/srt/models/kimi_k25.py` |
 | 2026-07-19 | [#31474](https://github.com/sgl-project/sglang/pull/31474) | merged | Fix KDA prefix caching under mamba extra_buffer and enable it for kimi_linear | `test/registered/models_e2e/test_kimi_linear_models.py`, `python/sglang/srt/layers/attention/linear/kda_backend.py`, `python/sglang/srt/layers/attention/linear/kernels/kda_flashkda.py` |
 | 2026-07-24 | [#32262](https://github.com/sgl-project/sglang/pull/32262) | merged | [Bugfix] Fix Kimi-Linear state transfer across heterogeneous TP | `python/sglang/srt/models/kimi_linear.py`, `test/registered/disaggregation/test_disaggregation_kimi_linear.py` |
+| 2026-07-27 | [#32541](https://github.com/sgl-project/sglang/pull/32541) | open | [Kimi] Support kimi-k3 | `python/sglang/srt/models/kimi_k3.py`, `python/sglang/kernels/ops/kimi_k3/all_reduce.py`, `python/sglang/kernels/jit/csrc/attention/kda_fused_decode.cuh` |
 | 2026-07-27 | [#32542](https://github.com/sgl-project/sglang/pull/32542) | merged | docs(cookbook): add the Kimi-K3 serving cookbook | `docs_new/src/snippets/configs/moonshotai/kimi-k3.jsx`, `docs_new/src/snippets/configs/moonshotai/kimi-k3-benchmarks.jsx`, `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` |
 | 2026-07-27 | [#32547](https://github.com/sgl-project/sglang/pull/32547) | merged | docs: point Kimi-K3 references to public branch | `docs_new/src/snippets/configs/moonshotai/kimi-k3.jsx`, `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` |
 
@@ -4529,6 +4540,54 @@ diff -- test/registered/disaggregation/test_disaggregation_kimi_linear.py
   - runtime: `python/sglang/srt/models/kimi_linear.py` modified +1/-1
   - tests: `test/registered/disaggregation/test_disaggregation_kimi_linear.py` added +105/-0
 - Risk and verification: The diff ships test coverage in `python/sglang/test/server_fixtures/disaggregation_fixture.py`, `test/registered/disaggregation/test_disaggregation_kimi_linear.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #32541 - [Kimi] Support kimi-k3
+
+- Link: https://github.com/sgl-project/sglang/pull/32541
+- Status/date: open / created 2026-07-27; audited here on 2026-07-28. Immutable source head: `ac6d795427cb9f0d149a8c318cbfcd4efa3aa62a`. This is a point-in-time state, not evidence that the change has merged or shipped.
+- Trace source: the public open-PR entry in `model-pr-optimization-history/open-pr-watch.md`; the exact public head was then fetched with `git fetch refs/pull/32541/head`, and K3 runtime, kernel, benchmark, and test files were classified with the same model-file scope used by `git log --name-only -- <model-files>`.
+- Diff scope read: the public three-dot comparison from merge base `a23f6ea09032811f200a103a40ccd92d03fd5285` to the source head contains 320 files, +57,450/-1,534, or 58,984 changed lines. The complete file inventory was checked; manual line review concentrated on K3 model wiring, KDA/MLA, MoE, collectives, ReplaySSM, VLM preprocessing, dispatchers, benchmarks, and tests, while the remaining serving, configuration, and parser files were classified by responsibility.
+- Motivation: a K3 single-token path interleaves 69 KDA layers, 24 MLA layers, and 92 LatentMoE layers. At batch 1 the dominant costs are hundreds of short kernel launches and copies, poorly matched skinny matrix shapes, collective synchronization points, serialized independent branches, and full-state snapshots during speculative verification. The public [Day-0 engineering report](https://www.lmsys.org/blog/2026-07-27-kimi-k3-day0-support) groups the work into launch/copy elimination, NVIDIA compute kernels, communication fusion, and overlap/prologue fusion, and reports that the fixed batch-1 kernel ladder reaches about 113 tok/s.
+- Key implementation:
+  - **Launch and memory-traffic removal**: the MoE front combines the gate, latent down projection, and eligible top-k preparation; paired skinny KDA projections are merged; invariant and sequence-length metadata moves out of the per-layer hot path; zero-copy outputs let expert finalize or a collective write into the downstream destination without an intermediate tensor and `copy_`.
+  - **Shape- and hardware-specialized compute**: fused KDA decode covers convolution, gating, recurrent update, and output; a TMA kernel aggregates banked attention residuals; small-M BF16 GEMMs use a CuTeDSL/TGV path; the W4A8 SiTU MoE path is selected only when hardware, shape, dtype, and numerical contracts are covered.
+  - **MoE routing**: a register-resident radix select handles the fixed `[M, 896]`, top-16 shape while preserving ranking bias, emitted-weight, and FP32 routing semantics. The merged front and standalone router share the same routing contract and uncovered shapes fall back.
+  - **Collective/compute fusion**: small messages use multicast push and larger messages use a low-SM NVLS pull. Residual add, RMSNorm, and deferred MoE finalize can execute during collective staging/finalization. A column-parallel up projection computes only the local column slice and completes the output with multicast all-gather instead of a replicated GEMM.
+  - **Multiple streams and PDL**: small KDA `f_a/b` GEMVs overlap the wide `qkvg` GEMM; the MLA output-gate projection overlaps the attention core; shared experts overlap routed-expert dispatch/A2A with a deliberately late join. The MLA decode prologue combines KV scatter, absorbed-Q concatenation, and BF16/FP8 layout/cast/quant work, then uses PDL only after producer writes are visible.
+  - **KDA prefill, MTP, and ReplaySSM**: prefill buckets requests by length with fallback and failure rollback. The MTP verify kernel writes raw `v/k/g/beta` values into a small ring. Once sampling fixes the accepted length, one batched fold across layers and heads replays only the accepted prefix instead of snapshotting the full recurrent state after every draft step.
+  - **SP/DCP data paths**: sequence-parallel reduce-scatter/all-gather selects measured token buckets and can absorb residual or attention-residual aggregation. DCP cache locations are mapped through logical token ownership; a rank-local physical slot is not a global position.
+  - **VLM path**: one Triton kernel uses masked out-of-bounds loads to combine padding, normalization, and patchification. Vision attention selects and warms a backend by shape and hardware. ViT CUDA Graphs cache only repeated exact grid shapes and are bounded by hit count, sequence length, and capacity; misses and capture failures use eager fallback.
+  - **Reusable decision rule**: optimize synchronization points proven to be on the trace's critical path first. The public report attributes +19.9 tok/s to launch/copy removal, +10.3 tok/s to compute kernels, +27.6 tok/s to communication fusion, and +10.4 tok/s to overlap/prologue work within the same batch-1 ladder. These are campaign-level attributions, not guarantees for any one kernel on another model, shape, or GPU.
+- Code diff details:
+  - model/runtime: `python/sglang/srt/models/kimi_k3.py` added +3175/-0; `python/sglang/srt/models/kimi_k3_vl.py` added +936/-0; `python/sglang/srt/layers/attention/linear/kernels/kda_nvidia.py` added +495/-0
+  - KDA/MLA: `python/sglang/kernels/jit/csrc/attention/kda_fused_decode.cuh` added +976/-0; `python/sglang/kernels/ops/attention/linear/kda_nvidia_prefill/` added +7219/-0; `python/sglang/kernels/ops/attention/set_mla_kv_concat_q.py` added +318/-0
+  - collectives: `python/sglang/kernels/jit/csrc/kimi_k3/comm/ar_fusion.cuh` added +936/-0; `python/sglang/kernels/jit/csrc/kimi_k3/comm/gemm_ag.cuh` added +306/-0; `python/sglang/kernels/jit/csrc/kimi_k3/comm/sp_collective.cuh` added +439/-0; `python/sglang/kernels/jit/csrc/kimi_k3/attn_res/fused_tma.cuh` added +811/-0
+  - MoE: `python/sglang/kernels/jit/csrc/moe/moe_front.cuh` added +454/-0; `python/sglang/kernels/jit/csrc/moe/route_radix.cuh` added +374/-0; their Python dispatchers are respectively added +237/-0 and +97/-0
+  - VLM: `python/sglang/kernels/ops/mm/process/image.py` added +124/-0; `python/sglang/srt/multimodal/kimi_k3_vit_cuda_graph_runner.py` added +211/-0
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/kernels/ops/attention/set_mla_kv_concat_q.py
+@@
++"""Fused MLA decode prepare tail: paged-KV scatter + absorbed-q concat.
++One launch replacing the back-to-back ``set_mla_kv_buffer`` +
++``concat_mla_absorb_q`` pair on the trtllm-mla decode graph path.
+diff -- python/sglang/srt/models/kimi_k3.py
+@@
++        with zero_copy_context.set_moe_output(latent):
++            expert_output = self.experts(routed_input, topk_output)
+@@
++                    alt.wait_stream(cur)
++                    with torch.cuda.stream(alt):
++                        bfa = gemm(hidden_states, w)
+```
+
+- Reviewed files:
+  - model/runtime: `python/sglang/srt/models/kimi_k3.py`, `python/sglang/srt/models/kimi_k3_vl.py`, `python/sglang/srt/layers/k3_ar_fusion.py`, `python/sglang/srt/layers/k3_sp_collective.py`, `python/sglang/srt/layers/attention/linear/kernels/kda_nvidia.py`
+  - kernels: `python/sglang/kernels/jit/csrc/attention/kda_fused_decode.cuh`, `python/sglang/kernels/jit/csrc/kimi_k3/attn_res/fused_tma.cuh`, `python/sglang/kernels/jit/csrc/kimi_k3/comm/ar_fusion.cuh`, `python/sglang/kernels/jit/csrc/kimi_k3/comm/gemm_ag.cuh`, `python/sglang/kernels/jit/csrc/kimi_k3/comm/sp_collective.cuh`, `python/sglang/kernels/jit/csrc/moe/moe_front.cuh`, `python/sglang/kernels/jit/csrc/moe/route_radix.cuh`
+  - dispatch/state/VLM: `python/sglang/kernels/ops/kimi_k3/`, `python/sglang/kernels/ops/attention/set_mla_kv_concat_q.py`, `python/sglang/kernels/ops/attention/fla/kda_replayssm_spec_decode.py`, `python/sglang/kernels/ops/mm/process/image.py`, `python/sglang/srt/multimodal/kimi_k3_vit_cuda_graph_runner.py`
+  - tests/benchmarks: `test/registered/kernels/ops/kimi_k3/`, `test/registered/kernels/test_kda_replayssm_*.py`, `test/registered/unit/models/test_kimi_k3_bfa_overlap.py`, `test/registered/unit/models/test_kimi_k3_vision.py`, `test/registered/unit/multimodal/test_kimi_k3_gpu_preprocess.py`, `test/registered/jit/test_set_mla_kv_concat_q*.py`, `benchmark/bench_linear_attention/`
+- Risk and verification: the public diff includes direct-kernel correctness, dispatcher/fallback, model overlap, ReplaySSM bit-parity, VLM preprocessing/graph, and microbenchmark coverage; a real model still needs end-to-end accuracy and a trace proving that the fast path engaged. Equal symmetric-memory byte counts do not prove that ranks refer to the same logical segment, so rank-divergent dynamic allocation requires a persistent arena or a safe fallback. A PDL producer must trigger only after its writes are visible and must use the correct barrier generation. CUDA Graph side-stream topology, joins, and tensor lifetimes must be fixed and unconditional on every replay. Base-pointer and stride alignment, DCP virtual locations, FP32 routing, and FP8 overflow/rounding are correctness contracts. Exact-shape ViT graphs remain bounded and opt-in. This PR was still open at audit time; an experiment that is removed, default-disabled, or unreachable through the public dispatcher must not be propagated as a landed optimization.
 
 ### PR #32542 - docs(cookbook): add the Kimi-K3 serving cookbook
 
