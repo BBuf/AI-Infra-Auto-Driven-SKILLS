@@ -7,7 +7,7 @@ import time
 from pathlib import Path
 from typing import Any
 
-from .state import LeaseUnavailable, StateStore
+from .state import LeaseUnavailable, StateStore, TERMINAL_STATUSES
 
 
 class WatchdogError(RuntimeError):
@@ -29,14 +29,9 @@ class CampaignWatchdog:
         self.campaign_dir = campaign_dir.resolve()
         self.store = store
         self.stale_after_seconds = stale_after_seconds
+        self._controller: subprocess.Popen[bytes] | None = None
 
     def tick(self) -> int | None:
-        heartbeat = self.campaign_dir / "controller-heartbeat.json"
-        if heartbeat.is_file():
-            age = time.time() - heartbeat.stat().st_mtime
-            if age <= self.stale_after_seconds:
-                return None
-
         manifest = self._manifest()
         command = manifest.get("controller_command")
         campaign_id = manifest.get("campaign_id")
@@ -47,6 +42,24 @@ class CampaignWatchdog:
             or not isinstance(campaign_id, str)
         ):
             raise WatchdogError("campaign manifest has no safe controller command")
+        if self.store.status(campaign_id) in TERMINAL_STATUSES:
+            return None
+
+        if self._controller is not None:
+            if self._controller.poll() is None:
+                return None
+            self._controller = None
+
+        heartbeat = self.campaign_dir / "controller-heartbeat.json"
+        if heartbeat.is_file():
+            age = time.time() - heartbeat.stat().st_mtime
+            pid = self._heartbeat_pid(heartbeat)
+            if (
+                age <= self.stale_after_seconds
+                and pid is not None
+                and self._pid_alive(pid)
+            ):
+                return None
 
         owner = f"watchdog:{os.getpid()}"
         resource = f"controller:{campaign_id}"
@@ -66,6 +79,7 @@ class CampaignWatchdog:
                 stdout=stdout,
                 stderr=stderr,
             )
+        self._controller = process
         receipt = self.campaign_dir / "watchdog-restart.json"
         receipt.write_text(
             json.dumps(
@@ -82,6 +96,29 @@ class CampaignWatchdog:
             encoding="utf-8",
         )
         return process.pid
+
+    @staticmethod
+    def _heartbeat_pid(path: Path) -> int | None:
+        try:
+            value = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            return None
+        pid = value.get("pid") if isinstance(value, dict) else None
+        return (
+            pid
+            if isinstance(pid, int) and not isinstance(pid, bool) and pid > 0
+            else None
+        )
+
+    @staticmethod
+    def _pid_alive(pid: int) -> bool:
+        try:
+            os.kill(pid, 0)
+        except ProcessLookupError:
+            return False
+        except PermissionError:
+            return True
+        return True
 
     def run_forever(self, *, interval_seconds: float = 30.0) -> None:
         if interval_seconds <= 0:
