@@ -18,6 +18,9 @@ from .state import StateStore
 from .watchdog import CampaignWatchdog
 
 
+PACKAGE_ROOT = Path(__file__).resolve().parents[2]
+
+
 def _campaign_store(campaign: Path) -> StateStore:
     return StateStore.open(campaign / "state.sqlite", campaign / "events.jsonl")
 
@@ -116,9 +119,13 @@ def build_parser() -> argparse.ArgumentParser:
     contracts.add_argument(
         "--source-lock",
         type=Path,
-        default=Path("contracts/sol_engine/source-lock.json"),
+        default=PACKAGE_ROOT / "contracts/sol_engine/source-lock.json",
     )
-    contracts.add_argument("--hashes", type=Path, required=True)
+    contracts.add_argument(
+        "--hashes",
+        type=Path,
+        default=PACKAGE_ROOT / "contracts/sol_engine/source-hashes.json",
+    )
     return parser
 
 
@@ -154,8 +161,7 @@ def main(argv: list[str] | None = None) -> int:
         from .knowledge import load_registry, sync_source
 
         campaign = args.campaign.resolve()
-        package_root = Path(__file__).resolve().parents[2]
-        registry = load_registry(package_root / "knowledge/registry.toml")
+        registry = load_registry(PACKAGE_ROOT / "knowledge/registry.toml")
         locks = json.loads((campaign / "SOURCE-LOCKS.json").read_text())
         snapshots: dict[str, str] = {}
         for name, patterns in registry.items():

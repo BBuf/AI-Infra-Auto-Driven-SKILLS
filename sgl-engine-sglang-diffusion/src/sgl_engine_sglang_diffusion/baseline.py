@@ -42,7 +42,7 @@ class BaselineRunner:
             benchmark = self.driver.run(
                 goal, run_dir, activation=activation, profile=False
             )
-            frame_root = campaign_dir / "baseline" / "frames"
+            frame_root = run_dir / "frames"
             self._align_frames(
                 benchmark,
                 frame_root,

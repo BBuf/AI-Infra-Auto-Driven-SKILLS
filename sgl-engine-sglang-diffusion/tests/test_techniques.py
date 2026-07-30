@@ -50,9 +50,9 @@ def test_registry_default_pass_excludes_optional_topology() -> None:
 
 
 def test_contract_preserves_correctness_split() -> None:
-    contract = (
-        ROOT / "contracts" / "sol_engine" / "loop-and-gate.md"
-    ).read_text(encoding="utf-8")
+    contract = (ROOT / "contracts" / "sol_engine" / "loop-and-gate.md").read_text(
+        encoding="utf-8"
+    )
     assert "never rejected using output differences" in contract
     assert "LPIPS" in contract
     assert "multimodal" in contract
@@ -78,6 +78,14 @@ def test_source_lock_records_reviewed_sol_engine_revision() -> None:
         "workflow/attention_pa/nodes/codex_executor/attention_scope.md",
         "workflow/topology_ta/nodes/codex_executor/topology_scope.md",
     ]
+    source_hashes = json.loads(
+        (ROOT / "contracts" / "sol_engine" / "source-hashes.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert source_hashes["commit"] == commit
+    assert set(source_hashes["hashes"]) == set(source_lock["authoritative_paths"])
+    assert all(len(digest) == 64 for digest in source_hashes["hashes"].values())
 
 
 def test_registry_rejects_unknown_correctness_mode(tmp_path: Path) -> None:

@@ -172,7 +172,7 @@ runs/<campaign-id>/
 ├── baseline/
 │   ├── attempt-001/COMMAND.json
 │   ├── attempt-001/PERFORMANCE.json
-│   └── frames/prompt-*/
+│   └── attempt-001/frames/prompt-*/
 ├── profiles/<epoch>/attempt-*/
 ├── knowledge/<source>/<commit>/
 ├── executors/<epoch>/<technique>/
