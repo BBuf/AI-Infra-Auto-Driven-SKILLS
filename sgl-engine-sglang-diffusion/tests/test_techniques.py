@@ -77,6 +77,7 @@ def test_source_lock_records_reviewed_sol_engine_revision() -> None:
         "workflow/cache_ca/nodes/codex_executor/cache_scope.md",
         "workflow/attention_pa/nodes/codex_executor/attention_scope.md",
         "workflow/topology_ta/nodes/codex_executor/topology_scope.md",
+        "tools/vision/lpips_judge.py",
     ]
     source_hashes = json.loads(
         (ROOT / "contracts" / "sol_engine" / "source-hashes.json").read_text(
