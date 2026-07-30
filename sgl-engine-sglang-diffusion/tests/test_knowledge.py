@@ -148,6 +148,8 @@ def test_load_registry_exposes_expected_sources() -> None:
     assert set(registry) == {"sglang", "fastvideo", "kda_pilot"}
     assert any("KernelWiki" in path for path in registry["kda_pilot"])
     assert any("kernels/ops/diffusion" in path for path in registry["sglang"])
+    assert any("kernels/aot/CMakeLists.txt" in path for path in registry["sglang"])
+    assert any("kernels/fused_op.py" in path for path in registry["sglang"])
 
 
 def test_contract_hash_check_reports_drift(tmp_path: Path) -> None:
