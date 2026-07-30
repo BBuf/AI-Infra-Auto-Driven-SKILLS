@@ -22,9 +22,145 @@ locked workload and passed clean-room revalidation. A search plateau produces
 certificate showing that the target latency is below the scoped achievable
 bound.
 
-## Install
+## Quick start: install the conversational skill
 
-Python 3.11 or newer is required:
+Most users should install
+[`sglang-diffusion-auto-optimize`](../skills/sglang-diffusion-auto-optimize/)
+and let the agent own this controller. The controller does not need to be
+installed manually on the local machine.
+
+For Codex:
+
+```bash
+git clone https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS.git
+cd AI-Infra-Auto-Driven-SKILLS
+mkdir -p ~/.codex/skills
+ln -s "$PWD/skills/sglang-diffusion-auto-optimize" \
+  ~/.codex/skills/sglang-diffusion-auto-optimize
+```
+
+Restart Codex after installing. For Claude Code:
+
+```text
+/plugin marketplace add BBuf/AI-Infra-Auto-Driven-SKILLS
+/plugin install ai-infra-auto-driven-skills@ai-infra-auto-driven-skills
+/reload-plugins
+```
+
+The Claude Code skill is named
+`ai-infra-auto-driven-skills:sglang-diffusion-auto-optimize`.
+
+## Start a campaign with one request
+
+Provide four inputs: the target machine, model, exact native SGLang Diffusion
+baseline command, and measured end-to-end speedup target.
+
+```text
+Use sglang-diffusion-auto-optimize.
+
+Machine: <machine skill or SSH alias>
+Model: Wan-AI/Wan2.2-T2V-A14B-Diffusers
+Baseline command:
+CUDA_VISIBLE_DEVICES=0 python
+python/sglang/multimodal_gen/benchmarks/bench_offline_throughput.py
+--model-path Wan-AI/Wan2.2-T2V-A14B-Diffusers
+--dataset vbench
+--dataset-path /persistent/benchmarks/validation-prompts.txt
+--num-prompts 5
+--output-dir /persistent/benchmarks/wan22-baseline
+
+Target: 2x measured end-to-end speedup.
+Own the campaign until the target is verified, the reviewed search space is
+exhausted, or a checkable unreachable certificate is produced.
+```
+
+The prompt file must contain exactly five non-empty validation prompts. The
+baseline command must be a native SGLang Diffusion offline benchmark command;
+shell pipelines, redirects, command substitutions, secret assignments, model
+mismatches, and ambiguous duplicate workload flags are rejected rather than
+silently rewritten.
+
+The skill resolves the matching host instructions or SSH alias, finds the
+container and persistent storage, locks the latest fetched SGLang `main`
+commit, bootstraps this controller remotely, freezes the command, and invokes
+the detached launcher. It owns profiling, candidate routing, Executor/Master
+rounds, correctness checks, integration, monitoring, recovery, and patch
+packaging. The conversation and SSH connection do not need to remain open.
+
+Submitting the same request again is idempotent: it reuses the existing
+campaign and restarts only a missing or stale campaign-owned watchdog. It does
+not rerun or refresh the frozen baseline.
+
+## Progress display
+
+The agent sends concise updates at meaningful transitions. Every update comes
+from persisted campaign evidence rather than an executor's projected
+microbenchmark claim. A live campaign renders like this:
+
+```text
+Wan-AI/Wan2.2-T2V-A14B-Diffusers · gpu-host · TARGET 2.00x
+
+performance [██████████████░░░░░░] 1.68x / 2.00x
+search      [███████░░░░░░░░░░░░░] 43 / 120 rounds
+phase       SEARCHING · epoch 3 · elapsed 06:14:09
+latency     128.4000s baseline -> 76.4286s integrated
+tokens      182,430 total · 151,201 input · 31,229 output
+            [██████░░░░░░░░░░░░░░] 182,430 / 600,000
+            by role: executor=146,118, master=36,312
+
+technique          state       gate           tries  isolated e2e
+kernel             integrated  passed             8         1.27x
+cache              verified    passed             3         1.18x
+quantization       attempted   rejected_last      2             -
+-------------------------------------------------------------------
+integrated stack                                  1.68x
+
+current: optimizing attention and fused normalization kernels
+```
+
+The performance bar measures progress from `1.00x` to the requested target.
+The search bar measures consumed reviewed technique rounds, not an estimated
+completion time. Token totals are exact only when the agent runtime emits
+usage; missing usage is marked unavailable and is never estimated from text,
+bytes, or elapsed time.
+
+Each technique row reports its best independently verified end-to-end result on
+the frozen workload. `integrated stack` is measured again after accepted
+changes are composed. The controller never adds isolated speedups together.
+
+The durable files are:
+
+- `PROGRESS.json`: current atomic progress projection;
+- `TOKEN-USAGE.jsonl`: append-only normalized Agent token ledger;
+- `events.jsonl`: campaign state transitions and attempt history; and
+- `controller-heartbeat.json` and `WATCHDOG.json`: liveness and recovery
+  receipts.
+
+The agent owns polling. An operator may attach without changing campaign state:
+
+```bash
+sgl-diffusion-engine progress --campaign <campaign-dir>
+sgl-diffusion-engine progress --campaign <campaign-dir> --watch
+sgl-diffusion-engine progress --campaign <campaign-dir> --json
+```
+
+The workflow stops only at:
+
+| Terminal state | Meaning |
+| --- | --- |
+| `TARGET_REACHED` | The integrated patch reached the requested speedup and passed clean-room revalidation. |
+| `SEARCH_SPACE_EXHAUSTED` | All reviewed routed budgets ended without reaching the target. This is not a theoretical impossibility claim. |
+| `UNREACHABLE_CERTIFIED` | An independently checkable lower-bound certificate proves the target is outside the scoped achievable bound. |
+
+The final report includes the locked SGLang commit, frozen workload, baseline
+and integrated latency, isolated technique measurements, exact available token
+usage, patch path and SHA-256, application command, and GPU revalidation
+command.
+
+## Advanced: install and operate the controller directly
+
+The Skill normally performs these steps remotely. Controller developers and
+automation systems can install it directly with Python 3.11 or newer:
 
 ```bash
 python3 -m venv .venv
@@ -43,26 +179,7 @@ python -m pytest sgl-engine-sglang-diffusion/tests -q
 The configured agent command must be installed separately. It is always
 launched as an argv vector without shell interpolation.
 
-## Recommended: install the conversational skill
-
-Install `skills/sglang-diffusion-auto-optimize` in Codex, Claude Code, or
-another compatible skill runtime. Then make one request:
-
-```text
-Use sglang-diffusion-auto-optimize.
-Machine: <machine skill or SSH alias>
-Model: Wan-AI/Wan2.2-T2V-A14B-Diffusers
-Baseline command: CUDA_VISIBLE_DEVICES=0 python
-  python/sglang/multimodal_gen/benchmarks/bench_offline_throughput.py ...
-Target: 2x measured end-to-end speedup
-```
-
-The skill resolves the matching machine instructions, enters the remote
-container, freezes the supplied command, and invokes the one-shot detached
-launcher. It owns monitoring and recovery; you do not create the YAML or run
-the commands below yourself.
-
-The underlying reproducible command is:
+The Skill's underlying one-shot command is:
 
 ```bash
 sgl-diffusion-engine launch \
@@ -70,20 +187,10 @@ sgl-diffusion-engine launch \
   --detach
 ```
 
-Inspect a running campaign with:
+It prints the campaign ID and path, watchdog PID, progress command, and status
+command. The request is indexed by a stable idempotency key and content digest.
 
-```bash
-sgl-diffusion-engine progress --campaign runs/<campaign-id>
-sgl-diffusion-engine progress --campaign runs/<campaign-id> --watch
-sgl-diffusion-engine progress --campaign runs/<campaign-id> --json
-```
-
-`PROGRESS.json` and `TOKEN-USAGE.jsonl` persist exact emitted token totals,
-technique attempts and gate results, each technique's best isolated measured
-end-to-end speedup, and the combined integrated-stack speedup. Isolated gains
-are never added together.
-
-## Minimal goal
+## Advanced: manual goal
 
 ```yaml
 schema_version: 1
@@ -117,7 +224,7 @@ agent:
 Exactly five non-empty validation prompts are required for Sol-Engine
 compatibility. The campaign copies them into its immutable run directory.
 
-## Run and resume
+## Advanced: manual lifecycle
 
 ```bash
 sgl-diffusion-engine init --goal goal.yaml --run-root runs/

@@ -78,20 +78,107 @@ evidence, integrates accepted candidates, and emits a clean-room-checked
 
 The recommended entrypoint is the installable
 [`sglang-diffusion-auto-optimize`](skills/sglang-diffusion-auto-optimize/)
-skill. Tell it the machine, model, exact baseline command, and target:
+skill. You do not need to write a campaign YAML, install the controller by
+hand on the GPU machine, keep an SSH terminal open, or manually resume failed
+agent rounds.
+
+### Install
+
+For Codex, clone this repository and expose the one skill:
+
+```bash
+git clone https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS.git
+cd AI-Infra-Auto-Driven-SKILLS
+mkdir -p ~/.codex/skills
+ln -s "$PWD/skills/sglang-diffusion-auto-optimize" \
+  ~/.codex/skills/sglang-diffusion-auto-optimize
+```
+
+Restart Codex after installing. For Claude Code, install the complete plugin:
+
+```text
+/plugin marketplace add BBuf/AI-Infra-Auto-Driven-SKILLS
+/plugin install ai-infra-auto-driven-skills@ai-infra-auto-driven-skills
+/reload-plugins
+```
+
+The Claude Code skill name is
+`ai-infra-auto-driven-skills:sglang-diffusion-auto-optimize`.
+
+### Start one autonomous campaign
+
+Tell the agent only the machine, model, exact native SGLang Diffusion baseline
+command, and measured end-to-end target:
 
 ```text
 Use sglang-diffusion-auto-optimize.
+
 Machine: <machine skill or SSH alias>
-Model: <model>
-Baseline command: <exact SGLang Diffusion benchmark command>
-Target: 2x measured end-to-end speedup
+Model: Wan-AI/Wan2.2-T2V-A14B-Diffusers
+Baseline command:
+CUDA_VISIBLE_DEVICES=0 python
+python/sglang/multimodal_gen/benchmarks/bench_offline_throughput.py
+--model-path Wan-AI/Wan2.2-T2V-A14B-Diffusers
+--dataset vbench
+--dataset-path /persistent/benchmarks/validation-prompts.txt
+--num-prompts 5
+--output-dir /persistent/benchmarks/wan22-baseline
+
+Target: 2x measured end-to-end speedup.
+Own the campaign until the target is verified, the reviewed search space is
+exhausted, or a checkable unreachable certificate is produced.
 ```
 
-The skill enters the target environment, launches a detached idempotent
-campaign, and reports exact emitted token usage plus each technique's isolated
-and integrated end-to-end result. No hand-written `goal.yaml`, manual
-`init/run/resume`, or watchdog terminal is required.
+The prompt file must contain exactly five non-empty validation prompts. The
+agent discovers the named host instructions, enters its container, locks the
+latest fetched SGLang `main` commit, freezes the supplied command, runs the
+authoritative baseline, and starts a detached idempotent campaign. It then owns
+profiling, SGLang and kernel changes, Sol-compatible correctness checks,
+recovery, integration, and final `sglang.patch` packaging.
+
+### Progress display
+
+The agent reports meaningful state changes in the conversation. The durable
+campaign also maintains `PROGRESS.json` and renders a live view like this:
+
+```text
+Wan-AI/Wan2.2-T2V-A14B-Diffusers · gpu-host · TARGET 2.00x
+
+performance [██████████████░░░░░░] 1.68x / 2.00x
+search      [███████░░░░░░░░░░░░░] 43 / 120 rounds
+phase       SEARCHING · epoch 3 · elapsed 06:14:09
+latency     128.4000s baseline -> 76.4286s integrated
+tokens      182,430 total · 151,201 input · 31,229 output
+            [██████░░░░░░░░░░░░░░] 182,430 / 600,000
+            by role: executor=146,118, master=36,312
+
+technique          state       gate           tries  isolated e2e
+kernel             integrated  passed             8         1.27x
+cache              verified    passed             3         1.18x
+quantization       attempted   rejected_last      2             -
+-------------------------------------------------------------------
+integrated stack                                  1.68x
+
+current: optimizing attention and fused normalization kernels
+```
+
+Token counts are recorded only when the agent runtime emits exact usage; they
+are never estimated from text size. Technique rows show independently verified
+full-workload results, while `integrated stack` is measured again after
+composition. Isolated speedups are never added together.
+
+The agent owns monitoring, but an operator can attach to the same durable
+campaign when needed:
+
+```bash
+sgl-diffusion-engine progress --campaign <campaign-dir> --watch
+```
+
+The workflow finishes only as `TARGET_REACHED`, `SEARCH_SPACE_EXHAUSTED`, or
+`UNREACHABLE_CERTIFIED`. Search exhaustion is not presented as a theoretical
+impossibility. See the
+[engineering README](sgl-engine-sglang-diffusion/README.md) for the evidence
+contract, low-level controller interface, artifacts, and patch application.
 
 ## Model PR History Catalog
 
