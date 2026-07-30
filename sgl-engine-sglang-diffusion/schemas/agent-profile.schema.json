@@ -1,9 +1,55 @@
 {
+  "$defs": {
+    "DerivedCheckpoint": {
+      "additionalProperties": false,
+      "properties": {
+        "revision": {
+          "minLength": 1,
+          "title": "Revision",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "size_bytes": {
+          "exclusiveMinimum": 0,
+          "title": "Size Bytes",
+          "type": "integer"
+        },
+        "uri": {
+          "minLength": 1,
+          "title": "Uri",
+          "type": "string"
+        }
+      },
+      "required": [
+        "uri",
+        "revision",
+        "size_bytes",
+        "sha256"
+      ],
+      "title": "DerivedCheckpoint",
+      "type": "object"
+    }
+  },
   "additionalProperties": false,
   "properties": {
     "campaign_id": {
       "title": "Campaign Id",
       "type": "string"
+    },
+    "derived_checkpoint": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/DerivedCheckpoint"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
     },
     "fallback_policy": {
       "enum": [

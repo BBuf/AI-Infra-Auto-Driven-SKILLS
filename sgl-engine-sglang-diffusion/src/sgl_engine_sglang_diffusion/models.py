@@ -172,6 +172,13 @@ class IntegratedDelivery(Delivery):
     component: Literal["integrator"]
 
 
+class DerivedCheckpoint(StrictModel):
+    uri: str = Field(min_length=1)
+    revision: str = Field(min_length=1)
+    size_bytes: int = Field(gt=0)
+    sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+
+
 class AgentProfile(StrictModel):
     schema_version: Literal[1] = 1
     profile_id: str
@@ -186,6 +193,7 @@ class AgentProfile(StrictModel):
     source_hashes: dict[str, str]
     integrated_delivery_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     speedup: float = Field(gt=1)
+    derived_checkpoint: DerivedCheckpoint | None = None
 
 
 class EngagementReceipt(StrictModel):
