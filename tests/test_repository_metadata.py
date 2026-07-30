@@ -16,25 +16,23 @@ def test_readme_uses_current_claude_and_codex_launch_commands() -> None:
     assert "codex --yolo" not in readme
     assert "`opus`" in readme and "current Opus" in readme
     assert "bypassPermissions" in readme and "isolated" in readme
-    assert "core_skills-12" in readme
+    assert "core_skills-13" in readme
     assert "After reload, the 13 skills appear" in readme
 
 
 def test_sglang_day0_skill_is_discoverable_and_installable() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    model_index = (
-        ROOT / "skills" / "model-optimization" / "README.md"
-    ).read_text(encoding="utf-8")
+    model_index = (ROOT / "skills" / "model-optimization" / "README.md").read_text(
+        encoding="utf-8"
+    )
     skill_path = "skills/model-optimization/sglang-model-day0-support"
 
     assert "[`sglang-model-day0-support`]" in readme
     assert (
-        f'ln -s "$PWD/{skill_path}" '
-        "~/.claude/skills/sglang-model-day0-support"
+        f'ln -s "$PWD/{skill_path}" ' "~/.claude/skills/sglang-model-day0-support"
     ) in readme
     assert (
-        f"cp -R {skill_path} "
-        "<agent-skill-dir>/sglang-model-day0-support"
+        f"cp -R {skill_path} " "<agent-skill-dir>/sglang-model-day0-support"
     ) in readme
     assert "└── sglang-model-day0-support/" in readme
     assert "`sglang-model-day0-support/`" in model_index
@@ -51,11 +49,22 @@ def test_marketplace_has_top_level_description() -> None:
     assert marketplace["description"]
     assert "LLM serving" in marketplace["description"]
     assert marketplace["plugins"][0]["description"]
-    assert marketplace["plugins"][0]["version"] == "0.2.0"
-    assert plugin["version"] == "0.2.0"
+    assert marketplace["plugins"][0]["version"] == "0.3.0"
+    assert plugin["version"] == "0.3.0"
     assert marketplace["plugins"][0]["version"] == plugin["version"]
     assert "Day-0" in marketplace["description"]
     assert "Day-0" in plugin["description"]
+
+
+def test_diffusion_auto_optimize_skill_is_discoverable() -> None:
+    skill = ROOT / "skills" / "sglang-diffusion-auto-optimize" / "SKILL.md"
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert skill.is_file()
+    text = skill.read_text(encoding="utf-8")
+    assert "name: sglang-diffusion-auto-optimize" in text
+    assert "sgl-diffusion-engine launch" in text
+    assert "sglang-diffusion-auto-optimize" in readme
+    assert "core_skills-13" in readme
 
 
 def test_precommit_versions_are_current_verified_tags() -> None:
@@ -104,3 +113,23 @@ def test_refresh_prompt_is_pr_agnostic_and_preserves_evidence_gates() -> None:
         "CI 状态已核对",
     ]:
         assert required in prompt
+
+
+def test_sglang_diffusion_engine_is_discoverable() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    engine_readme = (ROOT / "sgl-engine-sglang-diffusion" / "README.md").read_text(
+        encoding="utf-8"
+    )
+
+    assert "[`sgl-engine-sglang-diffusion`]" in readme
+    for required in [
+        "sgl-diffusion-engine init",
+        "sgl-diffusion-engine run",
+        "sgl-diffusion-engine resume",
+        "sglang.patch",
+        "--agent-optimization",
+        "Sol-Engine",
+        "KDA-Pilot",
+        "FastVideo",
+    ]:
+        assert required in engine_readme

@@ -1,0 +1,50 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "hotspots": {
+      "items": {
+        "type": "object"
+      },
+      "title": "Hotspots",
+      "type": "array"
+    },
+    "run_dir": {
+      "format": "path",
+      "title": "Run Dir",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version"
+    },
+    "stage_ms": {
+      "additionalProperties": {
+        "type": "number"
+      },
+      "title": "Stage Ms",
+      "type": "object"
+    },
+    "timing_scope": {
+      "title": "Timing Scope",
+      "type": "string"
+    },
+    "trace_paths": {
+      "items": {
+        "format": "path",
+        "type": "string"
+      },
+      "title": "Trace Paths",
+      "type": "array"
+    }
+  },
+  "required": [
+    "run_dir",
+    "timing_scope",
+    "stage_ms",
+    "hotspots",
+    "trace_paths"
+  ],
+  "title": "ProfileDigest",
+  "type": "object"
+}

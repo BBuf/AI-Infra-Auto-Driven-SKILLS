@@ -1,0 +1,66 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "activation": {
+      "title": "Activation",
+      "type": "object"
+    },
+    "base_commit": {
+      "pattern": "^[0-9a-f]{40}$",
+      "title": "Base Commit",
+      "type": "string"
+    },
+    "candidate_commit": {
+      "pattern": "^[0-9a-f]{40}$",
+      "title": "Candidate Commit",
+      "type": "string"
+    },
+    "candidate_id": {
+      "title": "Candidate Id",
+      "type": "string"
+    },
+    "eval_profile": {
+      "title": "Eval Profile",
+      "type": "object"
+    },
+    "kind": {
+      "enum": [
+        "patch",
+        "control"
+      ],
+      "title": "Kind",
+      "type": "string"
+    },
+    "knowledge_origin": {
+      "items": {
+        "additionalProperties": {
+          "type": "string"
+        },
+        "type": "object"
+      },
+      "title": "Knowledge Origin",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version"
+    },
+    "technique": {
+      "title": "Technique",
+      "type": "string"
+    }
+  },
+  "required": [
+    "candidate_id",
+    "technique",
+    "kind",
+    "base_commit",
+    "candidate_commit",
+    "activation",
+    "eval_profile",
+    "knowledge_origin"
+  ],
+  "title": "CandidateManifest",
+  "type": "object"
+}
