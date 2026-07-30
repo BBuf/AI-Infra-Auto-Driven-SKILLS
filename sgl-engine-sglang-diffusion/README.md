@@ -105,8 +105,7 @@ Supporting maintenance commands are:
 ```bash
 sgl-diffusion-engine sync-knowledge --campaign runs/<campaign-id>
 sgl-diffusion-engine check-contracts \
-  --sol-checkout /path/to/locked/sol-engine \
-  --hashes runs/<campaign-id>/contract-hashes.json
+  --sol-checkout runs/<campaign-id>/source-worktrees/sol_engine
 sgl-diffusion-engine watchdog --campaign runs/<campaign-id>
 ```
 
