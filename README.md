@@ -67,6 +67,14 @@ comparison_frameworks: [vllm]
 Do not consider TensorRT-LLM or TokenSpeed; record them as user-excluded.
 ```
 
+## SGL-Engine for SGLang Diffusion
+
+[`sgl-engine-sglang-diffusion`](sgl-engine-sglang-diffusion/) is an executable,
+persistent Sol-Engine-compatible optimization controller. It locks an SGLang
+revision, runs isolated technique agents, independently verifies their real GPU
+evidence, integrates accepted candidates, and emits a clean-room-checked
+`sglang.patch` with an `--agent-optimization` runtime profile.
+
 ## Model PR History Catalog
 
 The model optimization layer is now one knowledge base:
