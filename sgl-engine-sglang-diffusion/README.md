@@ -147,15 +147,25 @@ machine-local home paths are redacted.
 Generated model kernels must live below:
 
 ```text
-python/sglang/kernels/agent/diffusion/<model-slug>/
+python/sglang/kernels/agent/diffusion/<model-slug>/          # profiles/dispatch/receipts
+python/sglang/kernels/ops/diffusion/agent/<model-slug>/      # callable wrappers
 python/sglang/kernels/jit/csrc/diffusion/agent/<model-slug>/
 test/registered/kernels/ops/diffusion/agent/<model-slug>/
 test/registered/kernels/benchmark/diffusion/agent/<model-slug>/
 ```
 
 JIT CUDA sources stay under `python/sglang/kernels/jit/csrc` because SGLang's
-JIT loader resolves sources relative to that tree. Shared runtime registration
-lives under `python/sglang/kernels/agent/`.
+JIT loader resolves sources relative to that tree. Callable operators remain
+in the canonical `sglang.kernels.ops` namespace; shared agent profile
+registration lives under `python/sglang/kernels/agent/`. Heavyweight
+AOT/CUTLASS work uses `python/sglang/kernels/aot` and must complete its
+declaration, torch-op registration, build, Python export, test, benchmark, and
+wheel-validation steps.
+
+The controller derives these locations from the locked checkout. It supports
+the current unified kernel tree and an explicit legacy `sglang.jit_kernel`
+compatibility lane, and fails closed for an unknown layout. The full contract
+is in `contracts/sglang/placement-and-registration.md`.
 
 ## Campaign artifacts
 
