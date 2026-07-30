@@ -1,0 +1,201 @@
+{
+  "$defs": {
+    "FrontierPoint": {
+      "additionalProperties": false,
+      "properties": {
+        "activation": {
+          "title": "Activation",
+          "type": "object"
+        },
+        "artifacts": {
+          "items": {
+            "format": "path",
+            "type": "string"
+          },
+          "title": "Artifacts",
+          "type": "array"
+        },
+        "candidate_id": {
+          "title": "Candidate Id",
+          "type": "string"
+        },
+        "implementation_manifest": {
+          "title": "Implementation Manifest",
+          "type": "object"
+        },
+        "performance": {
+          "$ref": "#/$defs/PerformanceRecord"
+        },
+        "quality": {
+          "$ref": "#/$defs/QualityRecord"
+        },
+        "run_dir": {
+          "format": "path",
+          "title": "Run Dir",
+          "type": "string"
+        }
+      },
+      "required": [
+        "candidate_id",
+        "run_dir",
+        "activation",
+        "implementation_manifest",
+        "performance",
+        "quality",
+        "artifacts"
+      ],
+      "title": "FrontierPoint",
+      "type": "object"
+    },
+    "PerformanceRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "baseline_total_s": {
+          "exclusiveMinimum": 0.0,
+          "title": "Baseline Total S",
+          "type": "number"
+        },
+        "candidate_total_s": {
+          "exclusiveMinimum": 0.0,
+          "title": "Candidate Total S",
+          "type": "number"
+        },
+        "frontier_axis": {
+          "enum": [
+            "latency",
+            "peak_memory"
+          ],
+          "title": "Frontier Axis",
+          "type": "string"
+        },
+        "speedup": {
+          "exclusiveMinimum": 0.0,
+          "title": "Speedup",
+          "type": "number"
+        }
+      },
+      "required": [
+        "frontier_axis",
+        "baseline_total_s",
+        "candidate_total_s",
+        "speedup"
+      ],
+      "title": "PerformanceRecord",
+      "type": "object"
+    },
+    "QualityRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "lpips_max": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Lpips Max"
+        },
+        "lpips_mean": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Lpips Mean"
+        },
+        "mode": {
+          "enum": [
+            "quality_gated",
+            "not_gated"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "relation": {
+          "enum": [
+            "equivalent",
+            "better",
+            "worse",
+            "not_applicable"
+          ],
+          "title": "Relation",
+          "type": "string"
+        },
+        "visual_overall": {
+          "enum": [
+            "pass",
+            "fail",
+            "authenticity_only"
+          ],
+          "title": "Visual Overall",
+          "type": "string"
+        },
+        "visual_verdict": {
+          "format": "path",
+          "title": "Visual Verdict",
+          "type": "string"
+        }
+      },
+      "required": [
+        "mode",
+        "lpips_max",
+        "lpips_mean",
+        "visual_overall",
+        "visual_verdict",
+        "relation"
+      ],
+      "title": "QualityRecord",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "baseline": {
+      "title": "Baseline",
+      "type": "object"
+    },
+    "component": {
+      "title": "Component",
+      "type": "string"
+    },
+    "frontier_points": {
+      "items": {
+        "$ref": "#/$defs/FrontierPoint"
+      },
+      "title": "Frontier Points",
+      "type": "array"
+    },
+    "model_id": {
+      "title": "Model Id",
+      "type": "string"
+    },
+    "pareto_assessment": {
+      "title": "Pareto Assessment",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 2,
+      "title": "Schema Version"
+    },
+    "status": {
+      "const": "complete",
+      "title": "Status"
+    }
+  },
+  "required": [
+    "schema_version",
+    "status",
+    "component",
+    "model_id",
+    "baseline",
+    "frontier_points",
+    "pareto_assessment"
+  ],
+  "title": "Delivery",
+  "type": "object"
+}

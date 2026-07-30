@@ -1,0 +1,28 @@
+schema_version: 1
+model:
+  id: Wan-AI/Wan2.2-T2V-A14B-Diffusers
+hardware:
+  environment: b200
+  gpu_count: 1
+workload:
+  prompts: validation-prompts.txt
+  prompt_count: 5
+  seed: 42
+  height: 720
+  width: 1280
+  frames: 81
+  fps: 24
+  steps: 50
+  guidance: 5.0
+  dtype: bfloat16
+  timing_scope: load_excluded_end_to_end
+goal:
+  target_speedup: 2.0
+  allow_quality_gated: true
+source:
+  sglang_repo: https://github.com/sgl-project/sglang.git
+  sglang_ref: main
+agent:
+  command:
+    - codex
+    - exec

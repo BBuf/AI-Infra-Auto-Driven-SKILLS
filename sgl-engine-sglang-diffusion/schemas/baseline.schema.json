@@ -1,0 +1,54 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "baseline_frames": {
+      "format": "path",
+      "title": "Baseline Frames",
+      "type": "string"
+    },
+    "model_id": {
+      "title": "Model Id",
+      "type": "string"
+    },
+    "peak_memory_mib": {
+      "exclusiveMinimum": 0.0,
+      "title": "Peak Memory Mib",
+      "type": "number"
+    },
+    "run_dir": {
+      "format": "path",
+      "title": "Run Dir",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version"
+    },
+    "sglang_commit": {
+      "pattern": "^[0-9a-f]{40}$",
+      "title": "Sglang Commit",
+      "type": "string"
+    },
+    "timing_scope": {
+      "title": "Timing Scope",
+      "type": "string"
+    },
+    "total_s": {
+      "exclusiveMinimum": 0.0,
+      "title": "Total S",
+      "type": "number"
+    }
+  },
+  "required": [
+    "model_id",
+    "total_s",
+    "peak_memory_mib",
+    "timing_scope",
+    "run_dir",
+    "baseline_frames",
+    "sglang_commit"
+  ],
+  "title": "BaselineRecord",
+  "type": "object"
+}
