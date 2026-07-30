@@ -27,7 +27,18 @@ class Profiler:
         epoch: int,
         activation: Activation | None = None,
     ) -> ProfileDigest:
-        profile_dir = campaign_dir.resolve() / "profiles" / str(epoch)
+        epoch_dir = campaign_dir.resolve() / "profiles" / str(epoch)
+        existing = epoch_dir / "PROFILE-DIGEST.json"
+        if existing.is_file():
+            return ProfileDigest.model_validate_json(
+                existing.read_text(encoding="utf-8")
+            )
+        attempt_numbers = [
+            int(path.name.removeprefix("attempt-"))
+            for path in epoch_dir.glob("attempt-[0-9][0-9][0-9]")
+            if path.is_dir() and path.name.removeprefix("attempt-").isdigit()
+        ]
+        profile_dir = epoch_dir / (f"attempt-{max(attempt_numbers, default=0) + 1:03d}")
         benchmark = self.driver.run(
             goal, profile_dir, activation=activation, profile=True
         )
@@ -45,7 +56,7 @@ class Profiler:
             hotspots=hotspots,
             trace_paths=traces,
         )
-        target = profile_dir / "PROFILE-DIGEST.json"
+        target = epoch_dir / "PROFILE-DIGEST.json"
         temporary = target.with_name(f".{target.name}.{os.getpid()}.tmp")
         temporary.write_text(
             json.dumps(digest.model_dump(mode="json"), indent=2, sort_keys=True) + "\n",

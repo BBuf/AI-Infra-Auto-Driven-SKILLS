@@ -81,7 +81,9 @@ def test_profiler_preserves_trace_and_normalizes_summary(tmp_path: Path) -> None
         "aten::mul",
     ]
     assert digest.trace_paths[0].is_file()
-    assert (digest.run_dir / "PROFILE-DIGEST.json").is_file()
+    assert (tmp_path / "campaign/profiles/1/PROFILE-DIGEST.json").is_file()
+    repeated = Profiler(driver).collect(goal, tmp_path / "campaign", epoch=1)
+    assert repeated == digest
 
 
 def test_profile_routes_attention_and_glue_hotspots(tmp_path: Path) -> None:

@@ -37,7 +37,7 @@ class BaselineRunner:
                 f"frozen baseline already exists and cannot be refreshed: {baseline_path}"
             )
 
-        run_dir = campaign_dir / "baseline" / "run"
+        run_dir = self._next_attempt(campaign_dir / "baseline")
         try:
             benchmark = self.driver.run(
                 goal, run_dir, activation=activation, profile=False
@@ -65,6 +65,16 @@ class BaselineRunner:
     @staticmethod
     def load(path: Path) -> BaselineRecord:
         return BaselineRecord.model_validate_json(path.read_text(encoding="utf-8"))
+
+    @staticmethod
+    def _next_attempt(root: Path) -> Path:
+        root.mkdir(parents=True, exist_ok=True)
+        attempts = [
+            int(path.name.removeprefix("attempt-"))
+            for path in root.glob("attempt-[0-9][0-9][0-9]")
+            if path.is_dir() and path.name.removeprefix("attempt-").isdigit()
+        ]
+        return root / f"attempt-{max(attempts, default=0) + 1:03d}"
 
     @staticmethod
     def _align_frames(

@@ -170,10 +170,10 @@ runs/<campaign-id>/
 ├── state.sqlite
 ├── events.jsonl
 ├── baseline/
-│   ├── run/COMMAND.json
-│   ├── run/PERFORMANCE.json
+│   ├── attempt-001/COMMAND.json
+│   ├── attempt-001/PERFORMANCE.json
 │   └── frames/prompt-*/
-├── profiles/<epoch>/
+├── profiles/<epoch>/attempt-*/
 ├── knowledge/<source>/<commit>/
 ├── executors/<epoch>/<technique>/
 │   ├── PROCESS.json
@@ -241,4 +241,3 @@ Do not place tokens in goal files, prompts, agent argv, patches, or evidence.
 Pass credentials through the execution environment; receipts redact common
 secret names. Use isolated worktrees and dedicated GPU hosts for autonomous
 agent commands.
-

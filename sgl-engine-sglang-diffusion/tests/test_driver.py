@@ -174,6 +174,23 @@ def test_fallback_never_writes_baseline(tmp_path: Path) -> None:
     assert not (campaign / "BASELINE.json").exists()
 
 
+def test_failed_baseline_attempt_can_retry_without_overwriting(
+    tmp_path: Path,
+) -> None:
+    goal = make_goal(tmp_path)
+    runner = FakeRunner(fallback=True)
+    driver = SGLangDiffusionDriver(make_checkout(tmp_path), runner=runner)
+    campaign = tmp_path / "campaign"
+    with pytest.raises(BaselineError):
+        BaselineRunner(driver).freeze(goal, campaign, sglang_commit=COMMIT)
+
+    runner.fallback = False
+    record = BaselineRunner(driver).freeze(goal, campaign, sglang_commit=COMMIT)
+    assert record.run_dir.name == "attempt-002"
+    assert (campaign / "baseline/attempt-001/COMMAND.json").is_file()
+    assert (campaign / "baseline/attempt-002/COMMAND.json").is_file()
+
+
 def test_normalizer_rejects_failed_requests(tmp_path: Path) -> None:
     result = tmp_path / "benchmark.jsonl"
     result.write_text(
