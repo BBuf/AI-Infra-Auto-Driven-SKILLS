@@ -10,7 +10,7 @@ and model PR intelligence.**
 [![GitHub stars](https://img.shields.io/github/stars/BBuf/AI-Infra-Auto-Driven-SKILLS?style=social)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/BBuf/AI-Infra-Auto-Driven-SKILLS?style=social)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/forks)
 [![Last commit](https://img.shields.io/github/last-commit/BBuf/AI-Infra-Auto-Driven-SKILLS?style=flat-square)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/commits/main)
-[![Core skills](https://img.shields.io/badge/core_skills-12-2f80ed?style=flat-square)](#core-skills)
+[![Core skills](https://img.shields.io/badge/core_skills-13-2f80ed?style=flat-square)](#core-skills)
 [![PR histories](https://img.shields.io/badge/pr_histories-66-2ea44f?style=flat-square)](#model-pr-history-catalog)
 [![KDA-Pilot](https://img.shields.io/badge/sibling-KDA--Pilot-ff7b72?style=flat-square)](https://github.com/BBuf/KDA-Pilot)
 
@@ -46,6 +46,7 @@ find it.
 | [`model-compute-simulation`](skills/model-compute-simulation/) | You need operator shapes, FLOPs, MFU estimates, kernel-to-op mapping, or parallelism what-if analysis for an LLM serving shape. |
 | [`model-pr-diff-dossier`](skills/model-optimization/model-pr-diff-dossier/) | You need to create or revise model PR history docs with manual diff-reviewed cards instead of shallow PR-title summaries. |
 | [`sglang-model-day0-support`](skills/model-optimization/sglang-model-day0-support/) | You need to turn a new SGLang model architecture into a public Day-0 PR DAG, parallel/kernel adaptation plan, seven-gate validation matrix, release lock, and sanitized evidence bundle. |
+| [`sglang-diffusion-auto-optimize`](skills/sglang-diffusion-auto-optimize/) | You want to name a GPU machine, diffusion model, baseline command, and end-to-end speedup target, then let one persistent agent campaign own SGLang/kernel optimization, Sol-compatible validation, token accounting, progress, recovery, and patch packaging. |
 | [`sglang-sota-humanize-loop`](skills/sglang-sota-humanize-loop/) | You want one model-level Humanize RLCR loop that owns SGLang gap decisions against a selected comparison framework set, profiler triage, required layer-pipeline deep dives, SGLang patches, optional `ncu-report-skill` evidence, and real-model revalidation after the fixed fair benchmark. |
 | [`vllm-sota-humanize-loop`](skills/vllm-sota-humanize-loop/) | You want one model-level Humanize RLCR loop that owns gap decisions, profiler triage, required layer-pipeline deep dives, vLLM patches, optional `ncu-report-skill` evidence, and real-model revalidation after the fixed fair benchmark. |
 | [`sglang-prod-incident-triage`](skills/sglang-prod-incident-triage/) | You need to turn queue growth, timeouts, wrong outputs, crashes, or distributed stalls into a replay and next debug step. |
@@ -74,6 +75,23 @@ persistent Sol-Engine-compatible optimization controller. It locks an SGLang
 revision, runs isolated technique agents, independently verifies their real GPU
 evidence, integrates accepted candidates, and emits a clean-room-checked
 `sglang.patch` with an `--agent-optimization` runtime profile.
+
+The recommended entrypoint is the installable
+[`sglang-diffusion-auto-optimize`](skills/sglang-diffusion-auto-optimize/)
+skill. Tell it the machine, model, exact baseline command, and target:
+
+```text
+Use sglang-diffusion-auto-optimize.
+Machine: <machine skill or SSH alias>
+Model: <model>
+Baseline command: <exact SGLang Diffusion benchmark command>
+Target: 2x measured end-to-end speedup
+```
+
+The skill enters the target environment, launches a detached idempotent
+campaign, and reports exact emitted token usage plus each technique's isolated
+and integrated end-to-end result. No hand-written `goal.yaml`, manual
+`init/run/resume`, or watchdog terminal is required.
 
 ## Model PR History Catalog
 
@@ -198,6 +216,7 @@ ln -s "$PWD/skills/llm-pipeline-analysis" ~/.claude/skills/llm-pipeline-analysis
 ln -s "$PWD/skills/model-compute-simulation" ~/.claude/skills/model-compute-simulation
 ln -s "$PWD/skills/model-optimization/model-pr-diff-dossier" ~/.claude/skills/model-pr-diff-dossier
 ln -s "$PWD/skills/model-optimization/sglang-model-day0-support" ~/.claude/skills/sglang-model-day0-support
+ln -s "$PWD/skills/sglang-diffusion-auto-optimize" ~/.claude/skills/sglang-diffusion-auto-optimize
 ln -s "$PWD/skills/sglang-sota-humanize-loop" ~/.claude/skills/sglang-sota-humanize-loop
 ln -s "$PWD/skills/vllm-sota-humanize-loop" ~/.claude/skills/vllm-sota-humanize-loop
 ln -s "$PWD/skills/sglang-prod-incident-triage" ~/.claude/skills/sglang-prod-incident-triage
@@ -210,6 +229,7 @@ for example `[$llm-serving-auto-benchmark]`,
 `[$llm-serving-capacity-planner]`, `[$llm-torch-profiler-analysis]`,
 `[$llm-pipeline-analysis]`, `[$model-compute-simulation]`,
 `[$model-pr-diff-dossier]`, `[$sglang-model-day0-support]`,
+`[$sglang-diffusion-auto-optimize]`,
 `[$sglang-sota-humanize-loop]`, or `[$vllm-sota-humanize-loop]`.
 
 If you prefer copies instead of symlinks, replace `ln -s` with `cp -R`. Copy
@@ -230,6 +250,7 @@ cp -R skills/llm-pipeline-analysis <agent-skill-dir>/llm-pipeline-analysis
 cp -R skills/model-compute-simulation <agent-skill-dir>/model-compute-simulation
 cp -R skills/model-optimization/model-pr-diff-dossier <agent-skill-dir>/model-pr-diff-dossier
 cp -R skills/model-optimization/sglang-model-day0-support <agent-skill-dir>/sglang-model-day0-support
+cp -R skills/sglang-diffusion-auto-optimize <agent-skill-dir>/sglang-diffusion-auto-optimize
 cp -R skills/sglang-sota-humanize-loop <agent-skill-dir>/sglang-sota-humanize-loop
 cp -R skills/vllm-sota-humanize-loop <agent-skill-dir>/vllm-sota-humanize-loop
 cp -R skills/sglang-prod-incident-triage <agent-skill-dir>/sglang-prod-incident-triage
@@ -272,6 +293,7 @@ skills/
 ├── llm-torch-profiler-analysis/     # profiler capture and trace triage
 ├── llm-pipeline-analysis/           # forward/layer/kernel trace analysis
 ├── model-compute-simulation/        # operator FLOPs, tensor shapes, and MFU
+├── sglang-diffusion-auto-optimize/  # remote autonomous diffusion speedup campaigns
 ├── sglang-sota-humanize-loop/       # Humanize-governed SGLang SOTA loop
 ├── vllm-sota-humanize-loop/         # Humanize-governed vLLM SOTA loop
 ├── sglang-prod-incident-triage/     # replay-first serving incident workflow

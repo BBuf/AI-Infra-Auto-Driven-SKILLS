@@ -68,9 +68,9 @@ request is:
 
 ```text
 Use sglang-diffusion-auto-optimize.
-Machine: ion-b200
+Machine: <machine skill or SSH alias>
 Model: Wan-AI/Wan2.2-T2V-A14B-Diffusers
-SGLang checkout: /home/sglang-omni/bbuf/repos/sglang
+SGLang checkout: <absolute SGLang checkout>
 Baseline command:
 CUDA_VISIBLE_DEVICES=0 python python/sglang/multimodal_gen/benchmarks/bench_offline_throughput.py ...
 Target: 2x end-to-end speedup
