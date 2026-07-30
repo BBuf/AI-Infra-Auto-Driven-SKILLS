@@ -1,0 +1,51 @@
+schema_version = 1
+default_order = [
+  "kernel",
+  "cache",
+  "pisa",
+  "quantization",
+  "token_pruning",
+]
+
+[techniques.kernel]
+workflow_uid = "kernel_aw"
+scope = "techniques/kernel.md"
+correctness = "lossless"
+round_budget = 40
+origin = "sol-engine-lightweight"
+
+[techniques.cache]
+workflow_uid = "cache_ca"
+scope = "techniques/cache.md"
+correctness = "quality_gated"
+round_budget = 20
+origin = "sol-engine-lightweight"
+
+[techniques.pisa]
+workflow_uid = "attention_pa"
+scope = "techniques/pisa.md"
+correctness = "quality_gated"
+round_budget = 20
+origin = "sol-engine-lightweight"
+
+[techniques.topology]
+workflow_uid = "topology_ta"
+scope = "techniques/topology.md"
+correctness = "lossless"
+round_budget = 20
+origin = "sol-engine-lightweight"
+optional = true
+
+[techniques.quantization]
+workflow_uid = "quantization_sglang"
+scope = "techniques/quantization.md"
+correctness = "quality_gated"
+round_budget = 20
+origin = "sol-engine-full-adaptation"
+
+[techniques.token_pruning]
+workflow_uid = "token_pruning_sglang"
+scope = "techniques/token_pruning.md"
+correctness = "quality_gated"
+round_budget = 20
+origin = "sol-engine-full-adaptation"

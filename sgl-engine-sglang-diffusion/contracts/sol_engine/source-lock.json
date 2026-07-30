@@ -1,0 +1,22 @@
+{
+  "repository": "https://github.com/NVlabs/Sana.git",
+  "branch": "sol-engine",
+  "commit": "cee25847afdd34bc656abcca126262200b088dc8",
+  "authoritative_paths": [
+    "orchestration/prompts/loop_and_gate_contract.md",
+    "orchestration/prompts/master.md",
+    "orchestration/techniques.toml",
+    "workflow/kernel_aw/nodes/codex_executor/kernel_scope.md",
+    "workflow/cache_ca/nodes/codex_executor/cache_scope.md",
+    "workflow/attention_pa/nodes/codex_executor/attention_scope.md",
+    "workflow/topology_ta/nodes/codex_executor/topology_scope.md"
+  ],
+  "precedence": [
+    "orchestration/prompts/loop_and_gate_contract.md",
+    "orchestration/prompts/master.md",
+    "applicable workflow executor scope",
+    "deterministic delivery verifier and schemas",
+    "technique documentation",
+    "paper prose"
+  ]
+}
