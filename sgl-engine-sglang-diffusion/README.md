@@ -88,6 +88,18 @@ sgl-diffusion-engine resume --campaign runs/<campaign-id>
 sgl-diffusion-engine package --campaign runs/<campaign-id>
 ```
 
+To keep advancing without manually issuing `resume`, run the watchdog in a
+long-lived terminal or service:
+
+```bash
+sgl-diffusion-engine watchdog --campaign runs/<campaign-id>
+```
+
+It starts only the frozen controller command, notices when each one-shot
+controller process exits, and advances again on the next poll. It stops
+launching work after a terminal state. SQLite idempotency, process receipts,
+and leases make restarting the watchdog safe.
+
 Supporting maintenance commands are:
 
 ```bash
@@ -102,7 +114,8 @@ sgl-diffusion-engine watchdog --campaign runs/<campaign-id>
 leases, worktrees, attempts, feedback, and delivery files. It never refreshes
 `BASELINE.json` and never double-spawns an executor whose lease and process
 receipt are live. The watchdog may restart only the exact controller argv
-recorded in `CAMPAIGN.json`; it does not rewrite scientific state.
+recorded in `CAMPAIGN.json`; it does not rewrite scientific state or relaunch a
+terminal campaign.
 
 ## Correctness and quality
 
