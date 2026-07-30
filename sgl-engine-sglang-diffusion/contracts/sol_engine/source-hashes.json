@@ -4,6 +4,7 @@
     "orchestration/prompts/loop_and_gate_contract.md": "03a9c3ac9d8b26d93d104b569ecedae2576c8f6357fa9f06e454a28ebbf6b75e",
     "orchestration/prompts/master.md": "4f911d6fab453bae7ffb05730cd41ac3d17706a84f1560291263542dac734c1b",
     "orchestration/techniques.toml": "29852c2d47ae0c2ed95303fc8d572225f15dc7a3c9957de8e9faa4bd62476edd",
+    "tools/vision/lpips_judge.py": "90845cf0ebfa46d8018ca3d86f0fe5346a150afd52bf39f1c5d1dbe6cbc398d9",
     "workflow/attention_pa/nodes/codex_executor/attention_scope.md": "d847f065def9a0c2c99d93c51bfb255830c457bcc27fbd877b0e90c326b1b468",
     "workflow/cache_ca/nodes/codex_executor/cache_scope.md": "481a8f3e61bff56db9cd8dd88b1b14e643564a2e753494249d058306cd4cb3e5",
     "workflow/kernel_aw/nodes/codex_executor/kernel_scope.md": "e409791333e03816c4d5e91a52bbc2684c0eb8aba867778859660a021f01e3f2",
