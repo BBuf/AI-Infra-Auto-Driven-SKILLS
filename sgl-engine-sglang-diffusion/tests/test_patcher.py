@@ -78,6 +78,18 @@ def test_path_policy_rejects_generated_kernel_outside_agent_folder() -> None:
             ),
             (
                 "A",
+                "python/sglang/kernels/ops/diffusion/agent/test-model/wrapper.py",
+            ),
+            (
+                "A",
+                "python/sglang/kernels/aot/csrc/diffusion/agent/test-model/op.cu",
+            ),
+            (
+                "A",
+                "python/sglang/kernels/aot/include/diffusion/agent/test-model/op.h",
+            ),
+            (
+                "A",
                 "test/registered/kernels/ops/diffusion/agent/test-model/test.py",
             ),
         ]

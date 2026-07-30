@@ -74,8 +74,19 @@ class SGLangPathPolicy:
         self.model_slug = model_slug
         self.allowed_generated_roots = (
             PurePosixPath(f"python/sglang/kernels/agent/diffusion/{model_slug}"),
+            PurePosixPath(f"python/sglang/kernels/ops/diffusion/agent/{model_slug}"),
             PurePosixPath(
                 f"python/sglang/kernels/jit/csrc/diffusion/agent/{model_slug}"
+            ),
+            PurePosixPath(
+                "python/sglang/kernels/aot/csrc/diffusion/agent/" f"{model_slug}"
+            ),
+            PurePosixPath(
+                "python/sglang/kernels/aot/include/diffusion/agent/" f"{model_slug}"
+            ),
+            PurePosixPath(
+                "python/sglang/kernels/aot/python/sgl_kernel/diffusion/agent/"
+                f"{model_slug}"
             ),
             PurePosixPath(f"test/registered/kernels/ops/diffusion/agent/{model_slug}"),
             PurePosixPath(
