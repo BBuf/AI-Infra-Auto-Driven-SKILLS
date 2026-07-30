@@ -13,6 +13,9 @@ For a generated model slug `<model>`, keep agent-owned artifacts isolated:
 python/sglang/kernels/agent/diffusion/<model>/         profile, dispatch, manifest, receipts
 python/sglang/kernels/ops/diffusion/agent/<model>/     callable Python wrappers
 python/sglang/kernels/jit/csrc/diffusion/agent/<model>/ lightweight JIT CUDA sources
+python/sglang/kernels/aot/csrc/diffusion/agent/<model>/ heavyweight AOT sources
+python/sglang/kernels/aot/include/diffusion/agent/<model>/ AOT headers
+python/sglang/kernels/aot/python/sgl_kernel/diffusion/agent/<model>/ AOT Python implementation
 test/registered/kernels/ops/diffusion/agent/<model>/   GPU correctness tests
 test/registered/kernels/benchmark/diffusion/agent/<model>/ focused benchmarks
 ```
@@ -53,8 +56,9 @@ must ship in the prebuilt kernel wheel. A complete operator change includes:
 5. correctness tests and benchmarks; and
 6. an AOT build/import validation.
 
-Reusable operators belong in the normal AOT operator group. Model-specific
-profile selection remains under `sglang.kernels.agent`.
+The generated implementation remains in the model-scoped agent subtree while
+its declarations, extension registration, build entries, and canonical
+`sglang.kernels.ops` wrapper use the normal AOT integration points.
 
 ## Runtime and evidence
 

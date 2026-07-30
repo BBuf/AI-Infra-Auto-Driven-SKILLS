@@ -163,6 +163,9 @@ Generated model kernels must live below:
 python/sglang/kernels/agent/diffusion/<model-slug>/          # profiles/dispatch/receipts
 python/sglang/kernels/ops/diffusion/agent/<model-slug>/      # callable wrappers
 python/sglang/kernels/jit/csrc/diffusion/agent/<model-slug>/
+python/sglang/kernels/aot/csrc/diffusion/agent/<model-slug>/
+python/sglang/kernels/aot/include/diffusion/agent/<model-slug>/
+python/sglang/kernels/aot/python/sgl_kernel/diffusion/agent/<model-slug>/
 test/registered/kernels/ops/diffusion/agent/<model-slug>/
 test/registered/kernels/benchmark/diffusion/agent/<model-slug>/
 ```
@@ -171,9 +174,10 @@ JIT CUDA sources stay under `python/sglang/kernels/jit/csrc` because SGLang's
 JIT loader resolves sources relative to that tree. Callable operators remain
 in the canonical `sglang.kernels.ops` namespace; shared agent profile
 registration lives under `python/sglang/kernels/agent/`. Heavyweight
-AOT/CUTLASS work uses `python/sglang/kernels/aot` and must complete its
-declaration, torch-op registration, build, Python export, test, benchmark, and
-wheel-validation steps.
+AOT/CUTLASS implementation files use the corresponding
+`python/sglang/kernels/aot/{csrc,include,python}/.../agent/<model-slug>/`
+subtrees and must complete the shared declaration, torch-op registration,
+build, Python export, test, benchmark, and wheel-validation steps.
 
 The controller derives these locations from the locked checkout. It supports
 the current unified kernel tree and an explicit legacy `sglang.jit_kernel`

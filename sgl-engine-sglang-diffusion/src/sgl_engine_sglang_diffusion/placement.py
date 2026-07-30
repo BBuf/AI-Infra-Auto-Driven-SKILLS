@@ -31,6 +31,11 @@ class PlacementContract:
         profile_root = f"{self.profile_root}/{model_slug}"
         wrapper_root = f"{self.wrapper_root}/{model_slug}"
         jit_source_root = f"{self.jit_source_root}/{model_slug}"
+        aot_source_root = f"{self.aot_root}/csrc/diffusion/agent/{model_slug}"
+        aot_include_root = f"{self.aot_root}/include/diffusion/agent/{model_slug}"
+        aot_python_root = (
+            f"{self.aot_root}/python/sgl_kernel/diffusion/agent/{model_slug}"
+        )
         return f"""\
 Locked SGLang kernel layout: {self.layout.value}.
 
@@ -38,10 +43,11 @@ Agent-owned model profiles, dispatch policy, manifests, and engagement
 receipts belong below {profile_root}/. Callable Python operator wrappers belong
 below {wrapper_root}/ and runtime code must import them through the canonical
 sglang.kernels.ops namespace. Lightweight JIT CUDA sources belong below
-{jit_source_root}/. Heavyweight AOT/CUTLASS implementations use
-{self.aot_root}/ and must complete that tree's declaration, torch-op
-registration, sorted build-source, Python wrapper/export, test, benchmark, and
-wheel-build steps.
+{jit_source_root}/. Agent-generated heavyweight AOT/CUTLASS implementation,
+header, and Python implementation files belong below {aot_source_root}/,
+{aot_include_root}/, and {aot_python_root}/. They must also complete the
+{self.aot_root}/ declaration, torch-op registration, sorted build-source,
+Python wrapper/export, test, benchmark, and wheel-build steps.
 
 GPU correctness tests belong below {self.test_root}/; focused kernel
 benchmarks belong below {self.benchmark_root}/. A microbenchmark can justify a

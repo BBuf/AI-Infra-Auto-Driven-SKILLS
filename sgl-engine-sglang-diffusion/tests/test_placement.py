@@ -24,6 +24,7 @@ def test_detects_current_unified_layout_and_renders_canonical_paths(
     assert contract.aot_root == "python/sglang/kernels/aot"
     assert "python/sglang/kernels/ops/diffusion/agent/wan-a14b/" in rendered
     assert "python/sglang/kernels/jit/csrc/diffusion/agent/wan-a14b/" in rendered
+    assert "python/sglang/kernels/aot/csrc/diffusion/agent/wan-a14b/" in rendered
     assert "sglang.kernels.ops namespace" in rendered
     assert "--agent-optimization off|auto|<profile-id>" in rendered
 
