@@ -444,7 +444,9 @@ class PatchPackager:
         cpu_lines = "\n".join(
             shlex.join(list(argv)) for argv in cpu_validation_commands
         )
-        gpu = shlex.join(list(gpu_validation_command))
+        gpu_array = " ".join(
+            shlex.quote(argument) for argument in gpu_validation_command
+        )
         return f"""#!/usr/bin/env bash
 set -euo pipefail
 
@@ -461,15 +463,17 @@ git apply --check "$patch_file"
 git apply "$patch_file"
 {cpu_lines}
 
-gpu_command={shlex.quote(gpu)}
+gpu_command=({gpu_array})
 if [[ "${{1:-}}" == "--run-gpu-validation" ]]; then
-  if [[ -z "$gpu_command" ]]; then
+  if [[ "${{#gpu_command[@]}}" -eq 0 ]]; then
     echo "no GPU validation command was packaged" >&2
     exit 3
   fi
-  eval "$gpu_command"
+  "${{gpu_command[@]}}"
 else
-  echo "GPU revalidation command: $gpu_command"
+  printf 'GPU revalidation command:'
+  printf ' %q' "${{gpu_command[@]}}"
+  printf '\\n'
 fi
 """
 

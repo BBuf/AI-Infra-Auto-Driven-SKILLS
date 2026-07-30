@@ -97,6 +97,8 @@ def test_packager_validates_profile_and_clean_room_patch(tmp_path: Path) -> None
     )
     assert bundle.patch.read_text().startswith("diff --git")
     assert bundle.apply_script.stat().st_mode & 0o111
+    assert 'eval "$gpu_command"' not in bundle.apply_script.read_text()
+    assert '"${gpu_command[@]}"' in bundle.apply_script.read_text()
     assert "sglang.patch" in bundle.checksums.read_text()
 
 

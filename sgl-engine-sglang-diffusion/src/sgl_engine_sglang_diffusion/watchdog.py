@@ -54,14 +54,18 @@ class CampaignWatchdog:
             self.store.acquire_lease(resource, owner, ttl_seconds=60)
         except LeaseUnavailable:
             return None
-        process = subprocess.Popen(
-            command,
-            cwd=self.campaign_dir,
-            start_new_session=True,
-            stdin=subprocess.DEVNULL,
-            stdout=(self.campaign_dir / "watchdog-controller.stdout.log").open("ab"),
-            stderr=(self.campaign_dir / "watchdog-controller.stderr.log").open("ab"),
-        )
+        with (
+            (self.campaign_dir / "watchdog-controller.stdout.log").open("ab") as stdout,
+            (self.campaign_dir / "watchdog-controller.stderr.log").open("ab") as stderr,
+        ):
+            process = subprocess.Popen(
+                command,
+                cwd=self.campaign_dir,
+                start_new_session=True,
+                stdin=subprocess.DEVNULL,
+                stdout=stdout,
+                stderr=stderr,
+            )
         receipt = self.campaign_dir / "watchdog-restart.json"
         receipt.write_text(
             json.dumps(
