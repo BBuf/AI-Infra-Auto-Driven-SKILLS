@@ -12,7 +12,7 @@ from dataclasses import asdict
 from pathlib import Path
 from typing import Any
 
-from .agents import AgentRunner, redact_argv
+from .agents import AgentRunner, build_agent_argv, redact_argv
 from .baseline import BaselineRunner
 from .config import load_goal
 from .controller import CampaignController, StepResult
@@ -48,6 +48,7 @@ from .patcher import PatchPackager, sha256_file
 from .placement import detect_placement_contract
 from .process import run
 from .profiler import Profiler, TechniqueRouter
+from .request import FrozenBenchmarkCommand
 from .sources import SourceManager
 from .state import LeaseUnavailable, RECOVERABLE_STATUSES, StateStore
 from .techniques import TechniqueRegistry
@@ -265,10 +266,8 @@ class IndependentMasterMethodAuditor:
                 f"method_argument_sha256='{method_digest}'.\n",
                 encoding="utf-8",
             )
-            argv = [*self.agent_command]
-            if self.agent_model:
-                argv.extend(["--model", self.agent_model])
-            argv.append(str(prompt))
+            argv = build_agent_argv(self.agent_command, self.agent_model, prompt)
+            stdout_path = review_dir / "stdout.log"
             _atomic_json(
                 review_dir / "MASTER-METHOD-COMMAND.json",
                 {
@@ -276,10 +275,15 @@ class IndependentMasterMethodAuditor:
                     "argv": redact_argv(argv),
                     "cwd": str(review_dir),
                     "prompt_sha256": sha256_file(prompt),
+                    "campaign_id": self.campaign_dir.name,
+                    "agent_role": "master_method",
+                    "technique": technique,
+                    "invocation_id": (f"master-method:{manifest.candidate_commit}"),
+                    "stdout": str(stdout_path),
                 },
             )
             result = run(argv, cwd=review_dir, check=False)
-            (review_dir / "stdout.log").write_text(result.stdout, encoding="utf-8")
+            stdout_path.write_text(result.stdout, encoding="utf-8")
             (review_dir / "stderr.log").write_text(result.stderr, encoding="utf-8")
             if result.returncode != 0 or not assessment_path.is_file():
                 return (
@@ -463,10 +467,8 @@ class LockedSolQualityEvaluator:
                 "prompt_evidence with at least five entries.\n",
                 encoding="utf-8",
             )
-            argv = [*self.agent_command]
-            if self.agent_model:
-                argv.extend(["--model", self.agent_model])
-            argv.append(str(prompt))
+            argv = build_agent_argv(self.agent_command, self.agent_model, prompt)
+            stdout_path = review_dir / "master-visual.stdout.log"
             _atomic_json(
                 review_dir / "MASTER-VISUAL-COMMAND.json",
                 {
@@ -474,12 +476,15 @@ class LockedSolQualityEvaluator:
                     "argv": redact_argv(argv),
                     "cwd": str(review_dir),
                     "prompt_sha256": sha256_file(prompt),
+                    "campaign_id": self.campaign_dir.name,
+                    "agent_role": "master_visual",
+                    "technique": None,
+                    "invocation_id": f"master-visual:{key}",
+                    "stdout": str(stdout_path),
                 },
             )
             result = run(argv, cwd=review_dir, check=False)
-            (review_dir / "master-visual.stdout.log").write_text(
-                result.stdout, encoding="utf-8"
-            )
+            stdout_path.write_text(result.stdout, encoding="utf-8")
             (review_dir / "master-visual.stderr.log").write_text(
                 result.stderr, encoding="utf-8"
             )
@@ -857,6 +862,20 @@ class FileCampaignHooks:
             runner=self.runner,
         )
 
+    def _driver(self, checkout: Path) -> SGLangDiffusionDriver:
+        template = self.campaign_dir / "BASELINE-COMMAND.json"
+        if template.is_file():
+            return SGLangDiffusionDriver.from_template(checkout, template)
+        return SGLangDiffusionDriver(checkout)
+
+    def _command_template(self) -> FrozenBenchmarkCommand | None:
+        path = self.campaign_dir / "BASELINE-COMMAND.json"
+        if not path.is_file():
+            return None
+        return FrozenBenchmarkCommand.model_validate_json(
+            path.read_text(encoding="utf-8")
+        )
+
     def freeze_sources_and_baseline(self) -> StepResult:
         locks = self._ensure_source_locks()
         worktrees = self._ensure_source_worktrees(locks)
@@ -870,9 +889,7 @@ class FileCampaignHooks:
                     "frozen baseline does not match SOURCE-LOCKS.json"
                 )
         else:
-            baseline = BaselineRunner(
-                SGLangDiffusionDriver(worktrees["sglang"])
-            ).freeze(
+            baseline = BaselineRunner(self._driver(worktrees["sglang"])).freeze(
                 self.goal,
                 self.campaign_dir,
                 sglang_commit=locks["sglang"].commit,
@@ -903,7 +920,7 @@ class FileCampaignHooks:
                 profile_path.read_text(encoding="utf-8")
             )
         else:
-            digest = Profiler(SGLangDiffusionDriver(worktree)).collect(
+            digest = Profiler(self._driver(worktree)).collect(
                 self.goal,
                 self.campaign_dir,
                 epoch=0,
@@ -990,6 +1007,7 @@ class FileCampaignHooks:
                 agent_model=self.goal.agent.model,
             ),
             quality_evaluator=quality,
+            command_template=self._command_template(),
         )
 
         for technique in routes:
@@ -1044,6 +1062,7 @@ class FileCampaignHooks:
                     f"verified in isolated {technique} executor",
                     f"authoritative speedup {point.authoritative_speedup:.8g}x",
                 ],
+                verified_speedup=point.authoritative_speedup,
                 verified=True,
             )
             verified[technique] = candidate
@@ -1090,6 +1109,7 @@ class FileCampaignHooks:
             self.source_manager,
             locks["sglang"],
             RuntimeIntegrationVerifier(quality),
+            command_template=self._command_template(),
         )
         epoch_root = integration_receipt.parent
         attempt = 1
@@ -1363,6 +1383,17 @@ class FileCampaignHooks:
             for name, index in sorted(knowledge_manifest["snapshots"].items())
         )
         baseline = (self.campaign_dir / "BASELINE.json").read_text(encoding="utf-8")
+        command_template = self.campaign_dir / "BASELINE-COMMAND.json"
+        if command_template.is_file():
+            baseline += (
+                "\n\nFrozen user baseline command template (binding):\n"
+                "Materialize this template for your assigned worktree and "
+                "candidate run directory. Preserve every frozen workload flag, "
+                "append only your declared activation, and retain the generated "
+                "COMMAND.json. The independent Master compares its full argv, "
+                "cwd, environment, and template SHA-256; another benchmark "
+                "command is rejected.\n" + command_template.read_text(encoding="utf-8")
+            )
         profile = (
             self.campaign_dir / "profiles" / "0" / "PROFILE-DIGEST.json"
         ).read_text(encoding="utf-8")

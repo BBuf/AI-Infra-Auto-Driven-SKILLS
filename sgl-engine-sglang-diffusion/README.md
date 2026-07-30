@@ -43,6 +43,46 @@ python -m pytest sgl-engine-sglang-diffusion/tests -q
 The configured agent command must be installed separately. It is always
 launched as an argv vector without shell interpolation.
 
+## Recommended: install the conversational skill
+
+Install `skills/sglang-diffusion-auto-optimize` in Codex, Claude Code, or
+another compatible skill runtime. Then make one request:
+
+```text
+Use sglang-diffusion-auto-optimize.
+Machine: <machine skill or SSH alias>
+Model: Wan-AI/Wan2.2-T2V-A14B-Diffusers
+Baseline command: CUDA_VISIBLE_DEVICES=0 python
+  python/sglang/multimodal_gen/benchmarks/bench_offline_throughput.py ...
+Target: 2x measured end-to-end speedup
+```
+
+The skill resolves the matching machine instructions, enters the remote
+container, freezes the supplied command, and invokes the one-shot detached
+launcher. It owns monitoring and recovery; you do not create the YAML or run
+the commands below yourself.
+
+The underlying reproducible command is:
+
+```bash
+sgl-diffusion-engine launch \
+  --request campaign-request.yaml \
+  --detach
+```
+
+Inspect a running campaign with:
+
+```bash
+sgl-diffusion-engine progress --campaign runs/<campaign-id>
+sgl-diffusion-engine progress --campaign runs/<campaign-id> --watch
+sgl-diffusion-engine progress --campaign runs/<campaign-id> --json
+```
+
+`PROGRESS.json` and `TOKEN-USAGE.jsonl` persist exact emitted token totals,
+technique attempts and gate results, each technique's best isolated measured
+end-to-end speedup, and the combined integrated-stack speedup. Isolated gains
+are never added together.
+
 ## Minimal goal
 
 ```yaml

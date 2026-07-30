@@ -10,6 +10,7 @@ from typing import Any, Protocol
 
 from pydantic import ValidationError
 
+from .agents import redact_argv, redact_environment
 from .models import (
     BaselineRecord,
     CandidateManifest,
@@ -18,6 +19,7 @@ from .models import (
     FrontierPoint,
 )
 from .process import run
+from .request import FrozenBenchmarkCommand
 from .techniques import TechniqueRegistry
 
 
@@ -139,12 +141,14 @@ class DeliveryVerifier:
         campaign_artifact_root: Path,
         method_auditor: MethodEquivalenceAuditor,
         quality_evaluator: QualityEvaluator | None = None,
+        command_template: FrozenBenchmarkCommand | None = None,
     ) -> None:
         self.registry = registry
         self.baseline = baseline
         self.campaign_artifact_root = campaign_artifact_root.resolve()
         self.method_auditor = method_auditor
         self.quality_evaluator = quality_evaluator
+        self.command_template = command_template
 
     def verify(
         self,
@@ -254,6 +258,17 @@ class DeliveryVerifier:
                 artifacts.append(self._resolve_point_path(artifact, run_dir, roots))
             except VerificationError as error:
                 issue("invalid_artifact", str(error))
+
+        if self.command_template is not None:
+            try:
+                self._verify_frozen_command(
+                    point,
+                    run_dir=run_dir,
+                    artifacts=artifacts,
+                    executor_worktree=executor_worktree,
+                )
+            except VerificationError as error:
+                issue("baseline_command_mismatch", str(error))
 
         try:
             performance_path = self._required_artifact(
@@ -387,6 +402,54 @@ class DeliveryVerifier:
             implementation_manifest=manifest,
             source_hashes=dict(source_hashes),
         )
+
+    def _verify_frozen_command(
+        self,
+        point: FrontierPoint,
+        *,
+        run_dir: Path,
+        artifacts: Sequence[Path],
+        executor_worktree: Path,
+    ) -> None:
+        assert self.command_template is not None
+        receipt_path = self._required_artifact(run_dir, artifacts, ("COMMAND.json",))
+        receipt = self._json_object(receipt_path)
+        activation_env = point.activation.get("env", {})
+        activation_args = point.activation.get("server_args", [])
+        if not isinstance(activation_env, Mapping) or not isinstance(
+            activation_args, list
+        ):
+            raise VerificationError(
+                "candidate activation must contain env and server_args"
+            )
+        prompts = self.campaign_artifact_root / "validation-prompts.txt"
+        if not prompts.is_file():
+            raise VerificationError("frozen validation prompt file is missing")
+        expected_argv, expected_env = self.command_template.render(
+            checkout=executor_worktree,
+            prompts=prompts,
+            output_file=run_dir / "outputs" / "benchmark.jsonl",
+            media_dir=run_dir / "outputs" / "media",
+            activation_env={
+                str(name): str(value) for name, value in activation_env.items()
+            },
+            activation_args=[str(value) for value in activation_args],
+        )
+        expected = {
+            "argv": redact_argv(list(expected_argv)),
+            "declared_env": redact_environment(expected_env),
+            "cwd": str(executor_worktree.resolve()),
+            "profile": False,
+            "baseline_command_template_sha256": (self.command_template.template_sha256),
+        }
+        mismatches = [
+            name for name, value in expected.items() if receipt.get(name) != value
+        ]
+        if mismatches:
+            raise VerificationError(
+                "candidate command differs from the frozen user baseline "
+                "template: " + ", ".join(mismatches)
+            )
 
     def _verify_performance(
         self,

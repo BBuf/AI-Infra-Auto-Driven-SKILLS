@@ -94,5 +94,6 @@ def test_terminal_campaign_is_never_restarted(tmp_path: Path) -> None:
         )
         assert watchdog.tick() is None
         assert not marker.exists()
+        watchdog.run_forever(interval_seconds=0.01)
     finally:
         store.close()

@@ -2,15 +2,16 @@ from __future__ import annotations
 
 import json
 import os
-import re
 import sys
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+from .agents import redact_argv, redact_environment
 from .models import CampaignGoal
 from .process import CommandResult, run
+from .request import FrozenBenchmarkCommand
 
 
 _FALLBACK_MARKERS = (
@@ -18,7 +19,6 @@ _FALLBACK_MARKERS = (
     "using diffusers backend",
     "loaded diffusers pipeline",
 )
-_SECRET_NAME = re.compile(r"(?:token|secret|password|api[_-]?key|credential)", re.I)
 
 
 class DriverError(RuntimeError):
@@ -67,30 +67,11 @@ def _atomic_json(path: Path, payload: Mapping[str, Any]) -> None:
 
 
 def _redact_env(env: Mapping[str, str]) -> dict[str, str]:
-    return {
-        name: "<redacted>" if _SECRET_NAME.search(name) else value
-        for name, value in sorted(env.items())
-    }
+    return redact_environment(env)
 
 
 def _redact_argv(argv: Sequence[str]) -> list[str]:
-    redacted: list[str] = []
-    hide_next = False
-    for argument in argv:
-        if hide_next:
-            redacted.append("<redacted>")
-            hide_next = False
-            continue
-        if argument.startswith("-") and _SECRET_NAME.search(argument):
-            if "=" in argument:
-                name, _ = argument.split("=", 1)
-                redacted.append(f"{name}=<redacted>")
-            else:
-                redacted.append(argument)
-                hide_next = True
-            continue
-        redacted.append(argument)
-    return redacted
+    return redact_argv(list(argv))
 
 
 class SGLangDiffusionDriver:
@@ -103,6 +84,25 @@ class SGLangDiffusionDriver:
     def __init__(self, checkout: Path, *, runner: Runner = run) -> None:
         self.checkout = checkout.resolve()
         self.runner = runner
+        self.command_template: FrozenBenchmarkCommand | None = None
+
+    @classmethod
+    def from_template(
+        cls,
+        checkout: Path,
+        command_template: Path | FrozenBenchmarkCommand,
+        *,
+        runner: Runner = run,
+    ) -> SGLangDiffusionDriver:
+        driver = cls(checkout, runner=runner)
+        driver.command_template = (
+            command_template
+            if isinstance(command_template, FrozenBenchmarkCommand)
+            else FrozenBenchmarkCommand.model_validate_json(
+                command_template.read_text(encoding="utf-8")
+            )
+        )
+        return driver
 
     @property
     def benchmark_path(self) -> Path:
@@ -135,6 +135,25 @@ class SGLangDiffusionDriver:
             for name, value in activation.env.items()
         ):
             raise TypeError("activation environment must contain only strings")
+        if self.command_template is not None:
+            profile_dir = run_dir if profile else None
+            argv, environment = self.command_template.render(
+                checkout=self.checkout,
+                prompts=prompts,
+                output_file=output_file,
+                media_dir=media_dir,
+                activation_env=activation.env,
+                activation_args=activation.server_args,
+                profile=profile,
+                profile_dir=profile_dir,
+            )
+            return BenchmarkCommand(
+                argv=argv,
+                env=environment,
+                output_file=output_file,
+                media_dir=media_dir,
+                profile_dir=profile_dir,
+            )
 
         argv = [
             sys.executable,
@@ -212,6 +231,11 @@ class SGLangDiffusionDriver:
                 "declared_env": _redact_env(command.env),
                 "cwd": str(self.checkout),
                 "profile": profile,
+                "baseline_command_template_sha256": (
+                    self.command_template.template_sha256
+                    if self.command_template is not None
+                    else None
+                ),
             },
         )
 

@@ -10,6 +10,7 @@ import pytest
 
 from sgl_engine_sglang_diffusion.models import BaselineRecord
 from sgl_engine_sglang_diffusion.process import run
+from sgl_engine_sglang_diffusion.request import FrozenBenchmarkCommand
 from sgl_engine_sglang_diffusion.techniques import TechniqueRegistry
 from sgl_engine_sglang_diffusion.verifier import (
     DeliveryVerifier,
@@ -231,6 +232,7 @@ def make_verifier(
     *,
     auditor: AuditSpy | None = None,
     quality: Any = None,
+    command_template: FrozenBenchmarkCommand | None = None,
 ) -> DeliveryVerifier:
     return DeliveryVerifier(
         registry=registry,
@@ -238,6 +240,7 @@ def make_verifier(
         campaign_artifact_root=evidence["campaign"],
         method_auditor=auditor or AuditSpy(),
         quality_evaluator=quality,
+        command_template=command_template,
     )
 
 
@@ -268,6 +271,91 @@ def test_valid_lossless_never_calls_quality_evaluator(
     assert result.verified_points[0].activation == {"enable_agent_kernel": True}
     assert result.verified_points[0].source_hashes == evidence["source_hashes"]
     assert auditor.calls == 1
+
+
+def test_launched_campaign_rejects_candidate_command_drift(
+    evidence: dict[str, Any], registry: TechniqueRegistry
+) -> None:
+    campaign = evidence["campaign"]
+    prompts = campaign / "validation-prompts.txt"
+    prompts.write_text("\n".join(f"prompt {index}" for index in range(5)) + "\n")
+    frozen = {
+        "--model-path": "test/model",
+        "--dataset": "vbench",
+        "--dataset-path": "{{prompts}}",
+        "--num-prompts": "5",
+    }
+    template = FrozenBenchmarkCommand(
+        adapter="sglang_diffusion_offline",
+        mode="script",
+        argv_template=[
+            "python",
+            "{{benchmark}}",
+            "--model-path",
+            "test/model",
+            "--dataset",
+            "vbench",
+            "--dataset-path",
+            "{{prompts}}",
+            "--num-prompts",
+            "5",
+            "--output-file",
+            "{{output_file}}",
+            "--output-path",
+            "{{media_dir}}",
+        ],
+        original_cwd=evidence["worktree"],
+        original_command_sha256="a" * 64,
+        template_sha256="b" * 64,
+        frozen_flags=frozen,
+    )
+    delivery = deepcopy(evidence["delivery"])
+    activation = {"env": {"FAST_PATH": "1"}, "server_args": ["--enable-fast"]}
+    point = delivery["frontier_points"][0]
+    point["activation"] = activation
+    point["implementation_manifest"]["activation"] = activation
+    (evidence["run_dir"] / "implementation-manifest.json").write_text(
+        json.dumps(point["implementation_manifest"])
+    )
+    argv, environment = template.render(
+        checkout=evidence["worktree"],
+        prompts=prompts,
+        output_file=evidence["run_dir"] / "outputs" / "benchmark.jsonl",
+        media_dir=evidence["run_dir"] / "outputs" / "media",
+        activation_env=activation["env"],
+        activation_args=activation["server_args"],
+    )
+    command = {
+        "argv": list(argv),
+        "declared_env": environment,
+        "cwd": str(evidence["worktree"]),
+        "profile": False,
+        "baseline_command_template_sha256": template.template_sha256,
+    }
+    command_path = evidence["run_dir"] / "COMMAND.json"
+    command_path.write_text(json.dumps(command))
+    point["artifacts"].append("COMMAND.json")
+    delivery_path = write_delivery(evidence, delivery)
+    verifier = make_verifier(evidence, registry, command_template=template)
+
+    accepted = verifier.verify(
+        delivery_path,
+        technique="kernel",
+        executor_worktree=evidence["worktree"],
+    )
+    assert accepted.accepted, accepted.findings
+
+    command["argv"].append("--num-inference-steps=1")
+    command_path.write_text(json.dumps(command))
+    rejected = verifier.verify(
+        delivery_path,
+        technique="kernel",
+        executor_worktree=evidence["worktree"],
+    )
+    assert not rejected.accepted
+    assert "baseline_command_mismatch" in {
+        finding.code for finding in rejected.findings
+    }
 
 
 def test_resolve_inside_and_verifier_reject_path_escape(

@@ -547,6 +547,13 @@ class ExecutorManager:
                 stdout=executor_root / f"stdout-{attempt:03d}.log",
                 stderr=executor_root / f"stderr-{attempt:03d}.log",
                 env=self.agent_environment,
+                context={
+                    "campaign_id": campaign_id,
+                    "agent_role": "executor",
+                    "technique": technique,
+                    "attempt": attempt,
+                    "invocation_id": (f"executor:{executor_id}:attempt:{attempt}"),
+                },
             )
             pid = process.pid
         handle = ExecutorHandle(

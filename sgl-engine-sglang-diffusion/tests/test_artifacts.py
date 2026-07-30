@@ -17,6 +17,7 @@ EXPECTED_SCHEMAS = {
     "engagement-receipt.schema.json",
     "goal.schema.json",
     "integrated-delivery.schema.json",
+    "launch-request.schema.json",
     "profile-digest.schema.json",
     "source-lock.schema.json",
     "technique.schema.json",

@@ -74,6 +74,26 @@ def redact_environment(environment: Mapping[str, str]) -> dict[str, str]:
     }
 
 
+def is_codex_exec(command: list[str] | tuple[str, ...]) -> bool:
+    return (
+        len(command) >= 2 and Path(command[0]).name == "codex" and command[1] == "exec"
+    )
+
+
+def build_agent_argv(
+    command: list[str] | tuple[str, ...],
+    model: str | None,
+    prompt: Path,
+) -> list[str]:
+    argv = [*command]
+    if is_codex_exec(command) and "--json" not in argv:
+        argv.append("--json")
+    if model:
+        argv.extend(["--model", model])
+    argv.append(str(prompt))
+    return argv
+
+
 def _write_json_atomic(path: Path, payload: Mapping[str, object]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
@@ -98,11 +118,7 @@ class AgentRunner:
         self._processes: dict[int, subprocess.Popen[bytes]] = {}
 
     def argv(self, prompt: Path) -> list[str]:
-        argv = [*self.command]
-        if self.model:
-            argv.extend(["--model", self.model])
-        argv.append(str(prompt))
-        return argv
+        return build_agent_argv(self.command, self.model, prompt)
 
     def launch(
         self,
@@ -113,6 +129,7 @@ class AgentRunner:
         stdout: Path | None = None,
         stderr: Path | None = None,
         env: Mapping[str, str] | None = None,
+        context: Mapping[str, object] | None = None,
     ) -> AgentProcess:
         prompt = prompt.resolve()
         cwd = cwd.resolve()
@@ -161,6 +178,7 @@ class AgentRunner:
                     "stdout": str(stdout),
                     "stderr": str(stderr),
                     "start_new_session": True,
+                    "context": dict(context or {}),
                 },
             )
         except BaseException:

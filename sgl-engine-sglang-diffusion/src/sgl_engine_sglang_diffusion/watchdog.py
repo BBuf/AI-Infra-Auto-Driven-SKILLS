@@ -125,6 +125,13 @@ class CampaignWatchdog:
             raise ValueError("interval_seconds must be positive")
         while True:
             self.tick()
+            manifest = self._manifest()
+            campaign_id = manifest.get("campaign_id")
+            if (
+                isinstance(campaign_id, str)
+                and self.store.status(campaign_id) in TERMINAL_STATUSES
+            ):
+                return
             time.sleep(interval_seconds)
 
     def _manifest(self) -> dict[str, Any]:

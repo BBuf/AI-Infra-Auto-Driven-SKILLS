@@ -16,6 +16,7 @@ from .models import (
     TechniqueContract,
     UnreachableCertificate,
 )
+from .request import LaunchRequest
 
 
 SCHEMA_MODELS = {
@@ -30,6 +31,7 @@ SCHEMA_MODELS = {
     "engagement-receipt": EngagementReceipt,
     "profile-digest": ProfileDigest,
     "unreachable-certificate": UnreachableCertificate,
+    "launch-request": LaunchRequest,
 }
 
 

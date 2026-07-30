@@ -51,6 +51,12 @@ agent:
     assert status["status"] == "NEW"
     assert status["epoch"] == 0
 
+    assert main(["progress", "--campaign", str(campaign), "--json"]) == 0
+    progress = json.loads(capsys.readouterr().out)  # type: ignore[attr-defined]
+    assert progress["status"] == "NEW"
+    assert progress["target_speedup"] == 2.0
+    assert (campaign / "PROGRESS.json").is_file()
+
 
 def test_help_exposes_all_campaign_commands(capsys: object) -> None:
     try:
@@ -63,6 +69,8 @@ def test_help_exposes_all_campaign_commands(capsys: object) -> None:
         "run",
         "resume",
         "status",
+        "progress",
+        "launch",
         "sync-knowledge",
         "check-contracts",
         "package",

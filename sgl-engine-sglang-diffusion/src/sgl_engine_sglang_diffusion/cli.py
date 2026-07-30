@@ -14,6 +14,7 @@ from typing import Any
 import yaml
 
 from .config import load_goal
+from .models import CampaignGoal
 from .state import StateStore
 from .watchdog import CampaignWatchdog
 
@@ -42,9 +43,7 @@ def _atomic_json(path: Path, value: dict[str, Any]) -> None:
     os.replace(temporary, path)
 
 
-def initialize(goal_path: Path, run_root: Path) -> Path:
-    goal_path = goal_path.resolve()
-    goal = load_goal(goal_path)
+def initialize_goal(goal: CampaignGoal, run_root: Path) -> Path:
     timestamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
     identifier = f"{timestamp}-{uuid.uuid4().hex[:8]}"
     campaign = run_root.resolve() / identifier
@@ -78,6 +77,10 @@ def initialize(goal_path: Path, run_root: Path) -> Path:
     return campaign
 
 
+def initialize(goal_path: Path, run_root: Path) -> Path:
+    return initialize_goal(load_goal(goal_path.resolve()), run_root)
+
+
 def status_payload(campaign: Path) -> dict[str, Any]:
     campaign = campaign.resolve()
     manifest = _load_manifest(campaign)
@@ -106,11 +109,26 @@ def build_parser() -> argparse.ArgumentParser:
     init.add_argument("--goal", type=Path, required=True)
     init.add_argument("--run-root", type=Path, required=True)
 
-    for name in ("run", "resume", "status", "sync-knowledge", "package", "watchdog"):
+    launch = subparsers.add_parser("launch")
+    launch.add_argument("--request", type=Path, required=True)
+    launch.add_argument("--detach", action="store_true")
+
+    for name in (
+        "run",
+        "resume",
+        "status",
+        "progress",
+        "sync-knowledge",
+        "package",
+        "watchdog",
+    ):
         command = subparsers.add_parser(name)
         command.add_argument("--campaign", type=Path, required=True)
-        if name == "status":
+        if name in {"status", "progress"}:
             command.add_argument("--json", action="store_true")
+        if name == "progress":
+            command.add_argument("--watch", action="store_true")
+            command.add_argument("--interval", type=float, default=5.0)
         if name == "watchdog":
             command.add_argument("--once", action="store_true")
 
@@ -137,6 +155,12 @@ def main(argv: list[str] | None = None) -> int:
         payload["artifacts"].extend(["CAMPAIGN.json", "GOAL.yaml"])
         print(json.dumps(payload, indent=2, sort_keys=True))
         return 0
+    if args.command == "launch":
+        from .launcher import launch_campaign
+
+        payload = launch_campaign(args.request.resolve(), detach=args.detach)
+        print(json.dumps(payload, indent=2, sort_keys=True))
+        return 0
     if args.command == "status":
         payload = status_payload(args.campaign)
         if args.json:
@@ -146,6 +170,24 @@ def main(argv: list[str] | None = None) -> int:
                 f"{payload['campaign_id']}: {payload['status']} "
                 f"(epoch {payload['epoch']})"
             )
+        return 0
+    if args.command == "progress":
+        from .progress import watch_progress, write_progress
+
+        if args.watch:
+            watch_progress(
+                args.campaign.resolve(),
+                interval_seconds=args.interval,
+                json_output=args.json,
+            )
+        else:
+            projection = write_progress(args.campaign.resolve())
+            if args.json:
+                print(json.dumps(projection, indent=2, sort_keys=True))
+            else:
+                from .progress import render_progress
+
+                print(render_progress(projection))
         return 0
     if args.command == "watchdog":
         campaign = args.campaign.resolve()
@@ -194,6 +236,9 @@ def main(argv: list[str] | None = None) -> int:
         from .runtime import run_campaign_command
 
         result = run_campaign_command(args.command, args.campaign.resolve())
+        from .progress import write_progress
+
+        write_progress(args.campaign.resolve())
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0
     raise AssertionError(args.command)

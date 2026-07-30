@@ -23,6 +23,7 @@ from .models import (
     StrictModel,
 )
 from .process import run
+from .request import FrozenBenchmarkCommand
 from .sources import SourceManager
 
 
@@ -57,6 +58,7 @@ class VerifiedCandidate(StrictModel):
     activation: CandidateActivation = Field(default_factory=CandidateActivation)
     source_hashes: dict[str, str] = Field(min_length=1)
     compatibility_notes: list[str] = Field(default_factory=list)
+    verified_speedup: float | None = Field(default=None, gt=0)
     verified: bool
 
     @model_validator(mode="after")
@@ -187,11 +189,13 @@ class IntegrationManager:
         verifier: DeliveryVerifierAdapter,
         *,
         driver_type: type[SGLangDiffusionDriver] = SGLangDiffusionDriver,
+        command_template: FrozenBenchmarkCommand | None = None,
     ) -> None:
         self.source_manager = source_manager
         self.source_lock = source_lock
         self.verifier = verifier
         self.driver_type = driver_type
+        self.command_template = command_template
 
     def build_recipe(
         self,
@@ -399,7 +403,15 @@ class IntegrationManager:
         if composed.status == "needs_executor_revision":
             return composed
 
-        driver = self.driver_type(composed.worktree)
+        if (
+            self.command_template is not None
+            and self.driver_type is SGLangDiffusionDriver
+        ):
+            driver = SGLangDiffusionDriver.from_template(
+                composed.worktree, self.command_template
+            )
+        else:
+            driver = self.driver_type(composed.worktree)
         benchmark = driver.run(
             goal,
             integration_root / "run",
