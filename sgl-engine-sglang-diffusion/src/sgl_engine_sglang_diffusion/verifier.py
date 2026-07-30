@@ -568,10 +568,10 @@ class DeliveryVerifier:
                 "unaligned_lpips", "quality evaluator did not confirm frame alignment"
             )
         prompt_scores = assessed.get("prompt_scores")
-        if not isinstance(prompt_scores, list) or not prompt_scores:
+        if not isinstance(prompt_scores, list) or len(prompt_scores) < 5:
             issue(
                 "missing_prompt_scores",
-                "quality evidence must include prompt-level scores",
+                "quality evidence must include all five prompt-level scores",
             )
         self._compare_quality_metric(
             "lpips_mean", point.quality.lpips_mean, assessed.get("lpips_mean"), issue
@@ -601,8 +601,19 @@ class DeliveryVerifier:
             if verdict.get("external_api") is not False:
                 raise VerificationError("external visual API verdict is disallowed")
             evidence = verdict.get("prompt_evidence")
-            if not isinstance(evidence, list) or not evidence:
+            if not isinstance(evidence, list) or len(evidence) < 5:
                 raise VerificationError("visual verdict lacks prompt-level evidence")
+            if assessed.get("visual_overall") != "pass":
+                raise VerificationError(
+                    "independent built-in multimodal assessment did not pass"
+                )
+            assessed_digest = assessed.get("visual_verdict_sha256")
+            actual_digest = hashlib.sha256(verdict_path.read_bytes()).hexdigest()
+            if assessed_digest != actual_digest:
+                raise VerificationError(
+                    "visual verdict is not the one approved by the "
+                    "independent quality evaluator"
+                )
         except VerificationError as error:
             issue("invalid_visual_verdict", str(error))
 
