@@ -62,7 +62,7 @@ class VerificationError(RuntimeError):
 
 
 class MethodEquivalenceAuditor(Protocol):
-    """Independent code/method auditor used only by lossless techniques."""
+    """Optional code/method audit provider used only by lossless techniques."""
 
     def audit(
         self,
@@ -75,7 +75,7 @@ class MethodEquivalenceAuditor(Protocol):
 
 
 class QualityEvaluator(Protocol):
-    """Adapter around the locked Sol plan-eval command."""
+    """Deterministic adapter around the locked Sol metric command."""
 
     def assess(
         self,
@@ -139,9 +139,10 @@ class DeliveryVerifier:
         registry: TechniqueRegistry,
         baseline: BaselineRecord,
         campaign_artifact_root: Path,
-        method_auditor: MethodEquivalenceAuditor,
+        method_auditor: MethodEquivalenceAuditor | None = None,
         quality_evaluator: QualityEvaluator | None = None,
         command_template: FrozenBenchmarkCommand | None = None,
+        review_validator: Any | None = None,
     ) -> None:
         self.registry = registry
         self.baseline = baseline
@@ -149,6 +150,7 @@ class DeliveryVerifier:
         self.method_auditor = method_auditor
         self.quality_evaluator = quality_evaluator
         self.command_template = command_template
+        self.review_validator = review_validator
 
     def verify(
         self,
@@ -377,6 +379,8 @@ class DeliveryVerifier:
                 point,
                 run_dir=run_dir,
                 candidate_frames=candidate_frames,
+                manifest=manifest,
+                executor_worktree=executor_worktree,
                 issue=issue,
             )
 
@@ -562,14 +566,14 @@ class DeliveryVerifier:
             issue("invalid_equivalence", str(error))
             return
 
+        verdict_path: Path | None = None
         try:
-            authenticity = self._json_object(
-                self._resolve_point_path(
-                    point.quality.visual_verdict,
-                    run_dir,
-                    (executor_worktree, self.campaign_artifact_root),
-                )
+            verdict_path = self._resolve_point_path(
+                point.quality.visual_verdict,
+                run_dir,
+                (executor_worktree, self.campaign_artifact_root),
             )
+            authenticity = self._json_object(verdict_path)
             if not (
                 authenticity.get("authentic") is True
                 or authenticity.get("overall") in {"pass", "authenticity_only"}
@@ -580,18 +584,38 @@ class DeliveryVerifier:
 
         if manifest is None:
             return
-        try:
-            result = self.method_auditor.audit(
-                technique=technique,
-                executor_worktree=executor_worktree,
-                manifest=manifest,
-                equivalence=equivalence,
+        if self.method_auditor is not None:
+            try:
+                result = self.method_auditor.audit(
+                    technique=technique,
+                    executor_worktree=executor_worktree,
+                    manifest=manifest,
+                    equivalence=equivalence,
+                )
+                audit_issues = self._auditor_issues(result)
+                for message in audit_issues:
+                    issue("method_equivalence_rejected", message)
+            except Exception as error:  # audit failure must fail closed
+                issue("method_auditor_failed", str(error))
+        if self.review_validator is not None and verdict_path is not None:
+            try:
+                review_issues = self.review_validator.validate(
+                    technique=technique,
+                    executor_worktree=executor_worktree,
+                    manifest=manifest,
+                    method_argument=str(equivalence["method_argument"]),
+                    visual_verdict_path=verdict_path,
+                    quality_gated=False,
+                )
+                for message in review_issues:
+                    issue("same_agent_review_rejected", str(message))
+            except Exception as error:
+                issue("same_agent_review_failed", str(error))
+        elif self.method_auditor is None:
+            issue(
+                "missing_same_agent_review",
+                "lossless verification requires a bound same-agent review",
             )
-            audit_issues = self._auditor_issues(result)
-            for message in audit_issues:
-                issue("method_equivalence_rejected", message)
-        except Exception as error:  # auditor failure must fail closed
-            issue("method_auditor_failed", str(error))
 
     def _verify_quality(
         self,
@@ -599,6 +623,8 @@ class DeliveryVerifier:
         *,
         run_dir: Path,
         candidate_frames: Path,
+        manifest: CandidateManifest | None,
+        executor_worktree: Path,
         issue: Any,
     ) -> None:
         if point.quality.mode != "quality_gated":
@@ -643,6 +669,7 @@ class DeliveryVerifier:
             "lpips_max", point.quality.lpips_max, assessed.get("lpips_max"), issue
         )
 
+        verdict_path: Path | None = None
         try:
             verdict_path = self._resolve_point_path(
                 point.quality.visual_verdict,
@@ -654,31 +681,42 @@ class DeliveryVerifier:
                 verdict.get("overall") != "pass"
                 or point.quality.visual_overall != "pass"
             ):
-                raise VerificationError(
-                    "built-in multimodal visual verdict did not pass"
-                )
-            if verdict.get("producer") != "coding-agent-built-in-vision":
-                raise VerificationError(
-                    "visual verdict was not produced by coding-agent built-in vision"
-                )
+                raise VerificationError("same-agent visual verdict did not pass")
+            if verdict.get("producer") != "interactive-root-agent":
+                raise VerificationError("visual verdict producer is not the root agent")
             if verdict.get("external_api") is not False:
                 raise VerificationError("external visual API verdict is disallowed")
             evidence = verdict.get("prompt_evidence")
             if not isinstance(evidence, list) or len(evidence) < 5:
                 raise VerificationError("visual verdict lacks prompt-level evidence")
-            if assessed.get("visual_overall") != "pass":
-                raise VerificationError(
-                    "independent built-in multimodal assessment did not pass"
-                )
-            assessed_digest = assessed.get("visual_verdict_sha256")
-            actual_digest = hashlib.sha256(verdict_path.read_bytes()).hexdigest()
-            if assessed_digest != actual_digest:
-                raise VerificationError(
-                    "visual verdict is not the one approved by the "
-                    "independent quality evaluator"
-                )
         except VerificationError as error:
             issue("invalid_visual_verdict", str(error))
+        if (
+            self.review_validator is not None
+            and verdict_path is not None
+            and manifest is not None
+        ):
+            method_argument = json.dumps(
+                {
+                    "activation": manifest.activation,
+                    "technique": manifest.technique,
+                },
+                sort_keys=True,
+                separators=(",", ":"),
+            )
+            try:
+                review_issues = self.review_validator.validate(
+                    technique=manifest.technique,
+                    executor_worktree=executor_worktree,
+                    manifest=manifest,
+                    method_argument=method_argument,
+                    visual_verdict_path=verdict_path,
+                    quality_gated=True,
+                )
+                for message in review_issues:
+                    issue("same_agent_review_rejected", str(message))
+            except Exception as error:
+                issue("same_agent_review_failed", str(error))
 
     def _verify_topology(
         self,
@@ -861,7 +899,7 @@ class DeliveryVerifier:
         if result is True:
             return []
         if result is False:
-            return ["independent method-equivalence audit rejected the candidate"]
+            return ["method-equivalence audit rejected the candidate"]
         if isinstance(result, str):
             return [result] if result else ["method auditor returned an empty verdict"]
         messages = [str(value) for value in result if str(value)]

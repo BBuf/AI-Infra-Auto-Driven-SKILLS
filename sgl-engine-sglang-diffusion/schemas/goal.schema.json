@@ -1,35 +1,5 @@
 {
   "$defs": {
-    "AgentSpec": {
-      "additionalProperties": false,
-      "properties": {
-        "command": {
-          "items": {
-            "type": "string"
-          },
-          "minItems": 1,
-          "title": "Command",
-          "type": "array"
-        },
-        "model": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Model"
-        }
-      },
-      "required": [
-        "command"
-      ],
-      "title": "AgentSpec",
-      "type": "object"
-    },
     "GoalTarget": {
       "additionalProperties": false,
       "properties": {
@@ -210,8 +180,10 @@
   },
   "additionalProperties": false,
   "properties": {
-    "agent": {
-      "$ref": "#/$defs/AgentSpec"
+    "execution_mode": {
+      "const": "interactive_single_agent",
+      "default": "interactive_single_agent",
+      "title": "Execution Mode"
     },
     "goal": {
       "$ref": "#/$defs/GoalTarget"
@@ -223,7 +195,8 @@
       "$ref": "#/$defs/ModelSpec"
     },
     "schema_version": {
-      "const": 1,
+      "const": 2,
+      "default": 2,
       "title": "Schema Version"
     },
     "source": {
@@ -234,13 +207,11 @@
     }
   },
   "required": [
-    "schema_version",
     "model",
     "hardware",
     "workload",
     "goal",
-    "source",
-    "agent"
+    "source"
   ],
   "title": "CampaignGoal",
   "type": "object"

@@ -35,14 +35,11 @@ class QualitySpy:
 
     def assess(self, **kwargs: Any) -> dict[str, Any]:
         self.calls += 1
-        verdict = kwargs["run_dir"] / "visual_verdict.json"
         return {
             "aligned": True,
             "lpips_mean": 0.1,
             "lpips_max": 0.2,
             "prompt_scores": [{"prompt": index, "lpips": 0.1} for index in range(5)],
-            "visual_overall": "pass",
-            "visual_verdict_sha256": hashlib.sha256(verdict.read_bytes()).hexdigest(),
         }
 
 
@@ -489,7 +486,7 @@ def make_quality_delivery(evidence: dict[str, Any]) -> Path:
     verdict = {
         "candidate_id": "candidate-1",
         "overall": "pass",
-        "producer": "coding-agent-built-in-vision",
+        "producer": "interactive-root-agent",
         "external_api": False,
         "prompt_evidence": [{"prompt": index, "verdict": "pass"} for index in range(5)],
     }

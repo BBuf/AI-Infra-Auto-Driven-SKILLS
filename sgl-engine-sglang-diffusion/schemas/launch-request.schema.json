@@ -137,7 +137,16 @@
   "additionalProperties": false,
   "properties": {
     "agent": {
-      "$ref": "#/$defs/AgentSpec"
+      "anyOf": [
+        {
+          "$ref": "#/$defs/AgentSpec"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Legacy compatibility input; ignored because campaigns are owned by the current interactive root agent"
     },
     "allow_quality_gated": {
       "default": true,
