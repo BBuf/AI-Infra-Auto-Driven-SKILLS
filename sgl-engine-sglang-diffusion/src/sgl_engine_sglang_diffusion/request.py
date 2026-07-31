@@ -103,8 +103,12 @@ class LaunchRequest(StrictModel):
     target_speedup: float = Field(gt=1.0)
     allow_quality_gated: bool = True
     baseline: BaselineCommandRequest
-    agent: AgentSpec = Field(
-        default_factory=lambda: AgentSpec(command=["codex", "exec"])
+    agent: AgentSpec | None = Field(
+        default=None,
+        description=(
+            "Legacy compatibility input; ignored because campaigns are owned by "
+            "the current interactive root agent"
+        ),
     )
     token_budget: int | None = Field(default=None, gt=0)
     run_root: Path = Path("runs/sglang-diffusion-auto-optimize")
@@ -307,7 +311,8 @@ def normalize_launch_request(
         sglang_ref=request.sglang_ref,
     )
     goal = CampaignGoal(
-        schema_version=1,
+        schema_version=2,
+        execution_mode="interactive_single_agent",
         model=ModelSpec(id=request.model),
         hardware=HardwareSpec(
             environment=request.machine,
@@ -331,7 +336,6 @@ def normalize_launch_request(
             allow_quality_gated=request.allow_quality_gated,
         ),
         source=source,
-        agent=request.agent,
     )
     return goal, command
 

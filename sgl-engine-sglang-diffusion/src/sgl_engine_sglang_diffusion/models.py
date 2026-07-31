@@ -1,10 +1,11 @@
 from __future__ import annotations
 
+from collections.abc import Mapping
 from enum import StrEnum
 from pathlib import Path
 from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 
 class StrictModel(BaseModel):
@@ -20,6 +21,7 @@ class CampaignStatus(StrEnum):
     NEW = "NEW"
     BASELINE_LOCKED = "BASELINE_LOCKED"
     PROFILED = "PROFILED"
+    AWAITING_AGENT = "AWAITING_AGENT"
     SEARCHING = "SEARCHING"
     INTEGRATING = "INTEGRATING"
     FINAL_VERIFYING = "FINAL_VERIFYING"
@@ -77,13 +79,25 @@ class AgentSpec(StrictModel):
 
 
 class CampaignGoal(StrictModel):
-    schema_version: Literal[1]
+    schema_version: Literal[2] = 2
+    execution_mode: Literal["interactive_single_agent"] = "interactive_single_agent"
     model: ModelSpec
     hardware: HardwareSpec
     workload: WorkloadSpec
     goal: GoalTarget
     source: SourceSpec
-    agent: AgentSpec
+
+    @model_validator(mode="before")
+    @classmethod
+    def migrate_legacy_agent_goal(cls, value: Any) -> Any:
+        if not isinstance(value, Mapping):
+            return value
+        migrated = dict(value)
+        if migrated.get("schema_version", 1) == 1:
+            migrated["schema_version"] = 2
+        migrated.pop("agent", None)
+        migrated.setdefault("execution_mode", "interactive_single_agent")
+        return migrated
 
     @field_validator("workload")
     @classmethod

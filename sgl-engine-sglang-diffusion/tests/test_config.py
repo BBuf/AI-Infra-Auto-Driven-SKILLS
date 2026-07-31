@@ -53,6 +53,9 @@ agent:
 
     goal = load_goal(goal_file)
 
+    assert goal.schema_version == 2
+    assert goal.execution_mode == "interactive_single_agent"
+    assert not hasattr(goal, "agent")
     assert goal.goal.target_speedup == 2.0
     assert goal.workload.prompt_count == 5
 
