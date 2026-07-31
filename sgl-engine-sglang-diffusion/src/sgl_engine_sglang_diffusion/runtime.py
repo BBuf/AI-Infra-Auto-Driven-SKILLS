@@ -915,7 +915,7 @@ class FileCampaignHooks:
                     "failure_signature": signature,
                 },
             )
-        if result.status == "needs_executor_revision":
+        if result.status == "needs_agent_revision":
             assert result.failed_candidate_id is not None
             failed_technique = next(
                 name

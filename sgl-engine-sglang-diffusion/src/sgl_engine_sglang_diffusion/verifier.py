@@ -10,7 +10,6 @@ from typing import Any, Protocol
 
 from pydantic import ValidationError
 
-from .agents import redact_argv, redact_environment
 from .models import (
     BaselineRecord,
     CandidateManifest,
@@ -19,6 +18,7 @@ from .models import (
     FrontierPoint,
 )
 from .process import run
+from .redaction import redact_argv, redact_environment
 from .request import FrozenBenchmarkCommand
 from .techniques import TechniqueRegistry
 

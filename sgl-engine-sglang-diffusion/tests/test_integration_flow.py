@@ -293,7 +293,7 @@ def test_composition_is_canonical_and_does_not_modify_candidate_repository(
     )
 
 
-def test_conflict_aborts_and_returns_executor_revision_diagnostics(
+def test_conflict_aborts_and_returns_agent_revision_diagnostics(
     tmp_path: Path, fake_git_repo: Path
 ) -> None:
     topology_commit = _commit(
@@ -312,11 +312,11 @@ def test_conflict_aborts_and_returns_executor_revision_diagnostics(
         tmp_path / "integration",
     )
 
-    assert result.status == "needs_executor_revision"
+    assert result.status == "needs_agent_revision"
     assert result.failed_candidate_id == "kernel"
     assert result.diagnostics_path is not None
     diagnostics = json.loads(result.diagnostics_path.read_text())
-    assert diagnostics["status"] == "needs_executor_revision"
+    assert diagnostics["status"] == "needs_agent_revision"
     assert diagnostics["conflict_files"] == ["README.md"]
     assert not (result.worktree / ".git" / "CHERRY_PICK_HEAD").exists()
     assert run(["git", "status", "--porcelain"], cwd=result.worktree).stdout == ""

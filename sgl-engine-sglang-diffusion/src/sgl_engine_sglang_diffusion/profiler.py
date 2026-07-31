@@ -148,7 +148,7 @@ class Profiler:
 
 
 class TechniqueRouter:
-    """Choose applicable executor lanes without choosing their hypotheses."""
+    """Suggest applicable techniques without choosing their hypotheses."""
 
     def __init__(self) -> None:
         self.last_evidence: dict[str, dict[str, Any]] = {}

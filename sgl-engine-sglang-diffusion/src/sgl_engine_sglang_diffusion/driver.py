@@ -8,7 +8,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from .agents import redact_argv, redact_environment
+from .redaction import redact_argv, redact_environment
 from .models import CampaignGoal
 from .process import CommandResult, run
 from .request import FrozenBenchmarkCommand

@@ -161,7 +161,7 @@ class IntegrationResult(StrictModel):
     status: Literal[
         "ready_for_verification",
         "integrated",
-        "needs_executor_revision",
+        "needs_agent_revision",
     ]
     recipe: IntegrationRecipe
     worktree: Path
@@ -337,7 +337,7 @@ class IntegrationManager:
                 diagnostics_path,
                 {
                     "schema_version": 1,
-                    "status": "needs_executor_revision",
+                    "status": "needs_agent_revision",
                     "failed_candidate_id": candidate_id,
                     "failed_commit": candidate_commit,
                     "conflict_files": conflict_files,
@@ -349,7 +349,7 @@ class IntegrationManager:
                 },
             )
             return IntegrationResult(
-                status="needs_executor_revision",
+                status="needs_agent_revision",
                 recipe=recipe,
                 worktree=worktree,
                 failed_candidate_id=candidate_id,
@@ -400,7 +400,7 @@ class IntegrationManager:
             integration_root / "worktree",
             diagnostics_path=integration_root / "CONFLICT.json",
         )
-        if composed.status == "needs_executor_revision":
+        if composed.status == "needs_agent_revision":
             return composed
 
         if (

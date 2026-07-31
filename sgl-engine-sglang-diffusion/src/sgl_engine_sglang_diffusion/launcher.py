@@ -12,7 +12,7 @@ from typing import Any
 
 import yaml
 
-from .agents import redact_argv
+from .redaction import redact_argv
 from .request import load_launch_request, normalize_launch_request
 from .state import StateStore, TERMINAL_STATUSES
 
