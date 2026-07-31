@@ -5,6 +5,7 @@ from pathlib import Path
 
 from sgl_engine_sglang_diffusion.cli import initialize
 from sgl_engine_sglang_diffusion.progress import render_progress, write_progress
+from sgl_engine_sglang_diffusion.models import CampaignStatus
 from sgl_engine_sglang_diffusion.state import StateStore
 
 
@@ -13,7 +14,8 @@ def make_campaign(tmp_path: Path) -> Path:
     prompts.write_text("\n".join(f"prompt {index}" for index in range(5)) + "\n")
     goal = tmp_path / "goal.yaml"
     goal.write_text(
-        f"""schema_version: 1
+        f"""schema_version: 2
+execution_mode: interactive_single_agent
 model: {{id: test/model}}
 hardware: {{environment: test-b200, gpu_count: 1}}
 workload:
@@ -30,7 +32,6 @@ workload:
   timing_scope: load_excluded_end_to_end
 goal: {{target_speedup: 2.0, allow_quality_gated: true}}
 source: {{sglang_repo: local}}
-agent: {{command: [codex, exec], model: gpt-test}}
 """
     )
     campaign = initialize(goal, tmp_path / "runs")
@@ -38,7 +39,7 @@ agent: {{command: [codex, exec], model: gpt-test}}
     return campaign
 
 
-def test_progress_reports_tokens_techniques_and_nonadditive_stack(
+def test_progress_reports_single_agent_rounds_and_nonadditive_stack(
     tmp_path: Path,
 ) -> None:
     campaign = make_campaign(tmp_path)
@@ -47,24 +48,16 @@ def test_progress_reports_tokens_techniques_and_nonadditive_stack(
     with StateStore.open(campaign / "state.sqlite", campaign / "events.jsonl") as store:
         store.record_event(
             campaign_id,
-            "executor_spawned",
-            "spawn-kernel",
+            "candidate_submitted",
+            "submit-kernel",
             {
-                "executor_id": "kernel-1",
                 "technique": "kernel",
-                "attempt": 1,
+                "epoch": 1,
+                "delivery": "DELIVERY.json",
             },
         )
-        store.record_event(
-            campaign_id,
-            "executor_resumed",
-            "resume-kernel",
-            {"executor_id": "kernel-1", "attempt": 2},
-        )
 
-    verified = campaign / "search" / "1"
-    verified.mkdir(parents=True)
-    (verified / "VERIFIED-CANDIDATES.json").write_text(
+    (campaign / "VERIFIED-CANDIDATES.json").write_text(
         json.dumps(
             {
                 "candidates": {
@@ -95,55 +88,55 @@ def test_progress_reports_tokens_techniques_and_nonadditive_stack(
             }
         )
     )
-    agent = campaign / "executors" / "kernel-1"
-    agent.mkdir(parents=True)
-    stream = agent / "stdout-002.log"
-    stream.write_text(
-        json.dumps(
-            {
-                "type": "turn.completed",
-                "usage": {"input_tokens": 100, "output_tokens": 20},
-            }
-        )
-        + "\n"
-    )
-    (agent / "process-002.json").write_text(
-        json.dumps(
-            {
-                "pid": 1,
-                "argv": ["codex", "exec", "--json", "goal.md"],
-                "stdout": str(stream),
-                "context": {
-                    "campaign_id": campaign_id,
-                    "agent_role": "executor",
-                    "technique": "kernel",
-                    "attempt": 2,
-                    "invocation_id": "kernel-1:2",
-                },
-            }
-        )
-    )
-
     progress = write_progress(campaign)
+    assert progress["execution_mode"] == "interactive_single_agent"
     assert progress["best_verified_speedup"] == 1.68
     assert progress["performance_progress"] == 0.68
     assert progress["integrated_stack_speedup"] == 1.68
     assert progress["baseline_total_s"] == 10.0
     assert progress["integrated_total_s"] == 5.95238095
-    assert progress["tokens"]["total_tokens"] == 120
-    assert progress["tokens"]["by_role"] == {"executor": 120}
-    assert progress["tokens"]["by_technique"] == {"kernel": 120}
+    assert progress["interactive_agent_usage"]["available"] is False
+    assert "tokens" not in progress
     kernel = next(
         item for item in progress["techniques"] if item["technique"] == "kernel"
     )
-    assert kernel["attempts"] == 2
+    assert kernel["scientific_rounds_used"] == 1
+    assert kernel["scientific_rounds_remaining"] == 39
     assert kernel["best_isolated_e2e_speedup"] == 1.27
     assert kernel["integrated"] is True
     assert kernel["marginal_attribution"] == "not_measured"
     rendered = render_progress(progress)
     assert "1.68x / 2.00x" in rendered
-    assert "120 total" in rendered
-    assert "executor=120" in rendered
+    assert "tokens" not in rendered
     assert "integrated stack" in rendered
     assert "10.0000s baseline" in rendered
     assert (campaign / "PROGRESS.json").is_file()
+
+
+def test_progress_yields_at_interactive_agent_boundary(tmp_path: Path) -> None:
+    campaign = make_campaign(tmp_path)
+    manifest = json.loads((campaign / "CAMPAIGN.json").read_text())
+    campaign_id = manifest["campaign_id"]
+    with StateStore.open(campaign / "state.sqlite", campaign / "events.jsonl") as store:
+        store.transition(
+            campaign_id,
+            CampaignStatus.BASELINE_LOCKED,
+            idempotency_key="baseline",
+        )
+        store.transition(
+            campaign_id,
+            CampaignStatus.PROFILED,
+            idempotency_key="profile",
+        )
+        store.transition(
+            campaign_id,
+            CampaignStatus.AWAITING_AGENT,
+            idempotency_key="await",
+        )
+
+    progress = write_progress(campaign)
+
+    assert progress["yielded"] is True
+    assert progress["terminal"] is False
+    assert "current root agent" in progress["current_work"]
+    assert any(action["action"] == "claim" for action in progress["legal_actions"])

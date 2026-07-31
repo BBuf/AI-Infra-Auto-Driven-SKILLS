@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 
 import sgl_engine_sglang_diffusion.runtime as runtime_module
-from sgl_engine_sglang_diffusion.cli import initialize
+from sgl_engine_sglang_diffusion.cli import initialize, main
 from sgl_engine_sglang_diffusion.models import CampaignStatus, SourceLock
 from sgl_engine_sglang_diffusion.process import run
 from sgl_engine_sglang_diffusion.runtime import (
@@ -15,7 +15,6 @@ from sgl_engine_sglang_diffusion.runtime import (
     run_campaign_command,
 )
 from sgl_engine_sglang_diffusion.state import StateStore
-from sgl_engine_sglang_diffusion.work_orders import WorkOrderManager
 
 pytest_plugins = ("helpers",)
 
@@ -136,7 +135,10 @@ source:
 
 
 def test_runtime_yields_to_one_root_agent_and_rejects_one_submission(
-    tmp_path: Path, fake_git_repo: Path, monkeypatch: pytest.MonkeyPatch
+    tmp_path: Path,
+    fake_git_repo: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
 ) -> None:
     monkeypatch.setattr(
         runtime_module,
@@ -162,19 +164,32 @@ def test_runtime_yields_to_one_root_agent_and_rejects_one_submission(
 
     manifest = json.loads((campaign / "CAMPAIGN.json").read_text())
     routes = json.loads((campaign / "ROUTES.json").read_text())["routes"]
-    with StateStore.open(campaign / "state.sqlite", campaign / "events.jsonl") as store:
-        manager = WorkOrderManager(
-            campaign,
-            campaign_id=manifest["campaign_id"],
-            store=store,
+    assert main(["work", "--campaign", str(campaign), "--json"]) == 0
+    work = json.loads(capsys.readouterr().out)
+    assert work["execution_mode"] == "interactive_single_agent"
+    assert work["legal_actions"]
+    assert (
+        main(
+            [
+                "claim",
+                "--campaign",
+                str(campaign),
+                "--technique",
+                routes[0],
+            ]
         )
-        order = manager.claim(routes[0])
-        order.delivery_path.write_text("{}", encoding="utf-8")
-        manager.submit(order.delivery_path)
+        == 0
+    )
+    claimed = json.loads(capsys.readouterr().out)
+    delivery = Path(claimed["claimed_work_order"]["delivery_path"])
+    delivery.write_text("{}", encoding="utf-8")
+    assert (
+        main(["submit", "--campaign", str(campaign), "--delivery", str(delivery)]) == 0
+    )
+    rejected = json.loads(capsys.readouterr().out)
 
-    rejected = run_campaign_command("resume", campaign)
-
-    assert rejected["new_state"] == "AWAITING_AGENT"
+    assert rejected["status"] == "AWAITING_AGENT"
+    assert rejected["verification"]["new_state"] == "AWAITING_AGENT"
     with StateStore.open(campaign / "state.sqlite", campaign / "events.jsonl") as store:
         assert store.status(manifest["campaign_id"]) is CampaignStatus.AWAITING_AGENT
         assert (

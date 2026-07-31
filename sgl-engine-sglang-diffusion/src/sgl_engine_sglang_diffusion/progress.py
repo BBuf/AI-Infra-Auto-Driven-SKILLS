@@ -12,7 +12,6 @@ import yaml
 from .models import CampaignStatus
 from .state import StateStore, TERMINAL_STATUSES
 from .techniques import TechniqueRegistry
-from .telemetry import refresh_token_usage, token_totals
 
 
 _PACKAGE_ROOT = Path(__file__).resolve().parents[2]
@@ -31,7 +30,9 @@ def build_progress(campaign: Path) -> dict[str, Any]:
 
     registry = TechniqueRegistry.load(_PACKAGE_ROOT / "techniques" / "registry.toml")
     routes = _routes(campaign, registry.default_order)
-    attempts = _technique_attempts(events)
+    rounds = _technique_rounds(events)
+    dispositions = _dispositions(campaign)
+    active_work_order = _active_work_order(campaign, status, epoch)
     isolated = _isolated_speedups(campaign)
     integrated_speedup, integrated_total_s, integrated_techniques = _integrated(
         campaign
@@ -51,16 +52,28 @@ def build_progress(campaign: Path) -> dict[str, Any]:
             state = "integrated"
         elif technique in isolated:
             state = "verified"
-        elif attempts.get(technique, 0) > 0:
-            state = "running" if status is CampaignStatus.SEARCHING else "attempted"
+        elif (
+            active_work_order is not None
+            and active_work_order.get("technique") == technique
+        ):
+            state = "active"
+        elif technique in dispositions:
+            state = str(dispositions[technique].get("classification", "reviewed"))
+        elif rounds.get(technique, 0) > 0:
+            state = "measured"
         else:
-            state = "pending"
+            state = "suggested"
         rows.append(
             {
                 "technique": technique,
                 "status": state,
-                "attempts": attempts.get(technique, 0),
+                "scientific_rounds_used": rounds.get(technique, 0),
                 "round_budget": registry[technique].round_budget,
+                "scientific_rounds_remaining": max(
+                    0,
+                    registry[technique].round_budget - rounds.get(technique, 0),
+                ),
+                "disposition": dispositions.get(technique),
                 "best_isolated_e2e_speedup": isolated.get(technique),
                 "gate": (
                     "passed"
@@ -77,23 +90,8 @@ def build_progress(campaign: Path) -> dict[str, Any]:
     target = float(goal["goal"]["target_speedup"])
     best = max([1.0, integrated_speedup or 0.0, *isolated.values()])
     performance_fraction = round(_clamp((best - 1.0) / (target - 1.0)), 8)
-    search_used = sum(attempts.get(name, 0) for name in routes)
+    search_used = sum(rounds.get(name, 0) for name in routes)
     search_budget = sum(registry[name].round_budget for name in routes)
-
-    token_records = refresh_token_usage(campaign)
-    tokens = token_totals(token_records)
-    tokens_by_role = _token_breakdown(token_records, "agent_role")
-    tokens_by_technique = _token_breakdown(token_records, "technique")
-    launch_request = _read_object_optional(campaign / "LAUNCH-REQUEST.json") or {}
-    token_budget = launch_request.get("token_budget")
-    if not isinstance(token_budget, int) or token_budget <= 0:
-        token_budget = None
-    token_fraction = (
-        _clamp(tokens["total_tokens"] / token_budget)
-        if token_budget is not None
-        else None
-    )
-    unavailable = sum(1 for record in token_records if record.get("available") is False)
     created = datetime.fromisoformat(str(manifest["created_at"]))
     now = datetime.now(UTC)
     if created.tzinfo is None:
@@ -103,12 +101,14 @@ def build_progress(campaign: Path) -> dict[str, Any]:
     certificate = campaign / "UNREACHABLE.json"
     return {
         "schema_version": 1,
+        "execution_mode": "interactive_single_agent",
         "campaign_id": campaign_id,
         "campaign": str(campaign),
         "model": str(goal["model"]["id"]),
         "machine": str(goal["hardware"]["environment"]),
         "status": status.value,
         "terminal": status in TERMINAL_STATUSES,
+        "yielded": status is CampaignStatus.AWAITING_AGENT,
         "epoch": epoch,
         "created_at": created.isoformat(),
         "updated_at": now.isoformat(),
@@ -124,25 +124,19 @@ def build_progress(campaign: Path) -> dict[str, Any]:
             "round_budget": search_budget,
             "fraction": _clamp(search_used / search_budget) if search_budget else 0.0,
         },
-        "tokens": {
-            **tokens,
-            "budget": token_budget,
-            "fraction": token_fraction,
-            "exact_invocations": sum(
-                1 for item in token_records if item.get("available") is True
-            ),
-            "unavailable_invocations": unavailable,
-            "by_role": tokens_by_role,
-            "by_technique": tokens_by_technique,
+        "interactive_agent_usage": {
+            "available": False,
+            "reason": "current-conversation token usage is not exposed to the CLI",
         },
         "techniques": rows,
+        "active_work_order": active_work_order,
+        "legal_actions": _legal_actions(status, active_work_order, rows),
         "current_work": _current_work(status, events),
         "artifacts": {
             "patch": str(patch) if patch.is_file() else None,
             "unreachable_certificate": (
                 str(certificate) if certificate.is_file() else None
             ),
-            "token_ledger": str(campaign / "TOKEN-USAGE.jsonl"),
             "events": str(campaign / "events.jsonl"),
         },
     }
@@ -182,28 +176,10 @@ def render_progress(progress: dict[str, Any]) -> str:
             f"elapsed {_duration(progress['elapsed_seconds'])}"
         ),
     ]
-    tokens = progress["tokens"]
-    token_line = (
-        f"tokens      {tokens['total_tokens']:,} total · "
-        f"{tokens['input_tokens']:,} input · "
-        f"{tokens['output_tokens']:,} output"
-    )
-    if tokens["budget"] is not None:
-        token_line += (
-            f"\n            {_bar(tokens['fraction'])} "
-            f"{tokens['total_tokens']:,} / {tokens['budget']:,}"
-        )
-    if tokens["unavailable_invocations"]:
-        token_line += f" · {tokens['unavailable_invocations']} runtime(s) unavailable"
-    if tokens["by_role"]:
-        token_line += "\n            by role: " + ", ".join(
-            f"{name}={value:,}" for name, value in tokens["by_role"].items()
-        )
     lines.extend(
         [
-            token_line,
             "",
-            "technique          state       gate           tries  isolated e2e",
+            "technique          state       gate          rounds  isolated e2e",
         ]
     )
     if progress["baseline_total_s"] is not None:
@@ -216,7 +192,8 @@ def render_progress(progress: dict[str, Any]) -> str:
         speedup_text = f"{speedup:.2f}x" if speedup is not None else "-"
         lines.append(
             f"{row['technique']:<18} {row['status']:<11} "
-            f"{row['gate']:<14} {row['attempts']:>5}  {speedup_text:>12}"
+            f"{row['gate']:<13} {row['scientific_rounds_used']:>6}  "
+            f"{speedup_text:>12}"
         )
     integrated = progress["integrated_stack_speedup"]
     lines.extend(
@@ -250,7 +227,7 @@ def watch_progress(
             print(json.dumps(projection, sort_keys=True), flush=True)
         else:
             print(render_progress(projection), flush=True)
-        if projection["terminal"]:
+        if projection["terminal"] or projection["yielded"]:
             return
         time.sleep(interval_seconds)
 
@@ -262,41 +239,71 @@ def _routes(campaign: Path, defaults: list[str]) -> list[str]:
     return [str(item) for item in value["routes"]]
 
 
-def _token_breakdown(records: list[dict[str, Any]], field: str) -> dict[str, int]:
-    totals: dict[str, int] = {}
-    for record in records:
-        label = record.get(field)
-        if (
-            record.get("available") is not True
-            or not isinstance(label, str)
-            or not label
-        ):
-            continue
-        totals[label] = totals.get(label, 0) + int(record.get("total_tokens", 0))
-    return dict(sorted(totals.items()))
-
-
-def _technique_attempts(events: list[dict[str, Any]]) -> dict[str, int]:
-    executor_techniques: dict[str, str] = {}
-    attempts: dict[str, int] = {}
+def _technique_rounds(events: list[dict[str, Any]]) -> dict[str, int]:
+    rounds: dict[str, int] = {}
     for event in events:
         payload = event["payload"]
-        if event["event_type"] == "executor_spawned":
+        if event["event_type"] == "candidate_submitted":
             technique = payload.get("technique")
-            executor_id = payload.get("executor_id")
-            if isinstance(technique, str) and isinstance(executor_id, str):
-                executor_techniques[executor_id] = technique
-                attempts[technique] = attempts.get(technique, 0) + 1
-        elif event["event_type"] == "executor_resumed":
-            technique = executor_techniques.get(str(payload.get("executor_id")))
-            if technique is not None:
-                attempts[technique] = attempts.get(technique, 0) + 1
-    return attempts
+            if isinstance(technique, str):
+                rounds[technique] = rounds.get(technique, 0) + 1
+    return rounds
+
+
+def _dispositions(campaign: Path) -> dict[str, dict[str, Any]]:
+    value = _read_object_optional(campaign / "TECHNIQUE-DISPOSITIONS.json")
+    raw = value.get("techniques") if value is not None else None
+    if not isinstance(raw, dict):
+        return {}
+    return {
+        str(name): dict(disposition)
+        for name, disposition in raw.items()
+        if isinstance(disposition, dict)
+    }
+
+
+def _active_work_order(
+    campaign: Path,
+    status: CampaignStatus,
+    epoch: int,
+) -> dict[str, Any] | None:
+    if status is not CampaignStatus.SEARCHING:
+        return None
+    return _read_object_optional(campaign / "search" / str(epoch) / "AGENT-WORK.json")
+
+
+def _legal_actions(
+    status: CampaignStatus,
+    active: dict[str, Any] | None,
+    techniques: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    if status is CampaignStatus.AWAITING_AGENT:
+        actions = [
+            {"action": "claim", "technique": item["technique"]}
+            for item in techniques
+            if item["scientific_rounds_remaining"] > 0
+            and not (
+                isinstance(item["disposition"], dict)
+                and item["disposition"].get("closed") is True
+            )
+        ]
+        actions.extend(
+            {"action": "skip", "technique": item["technique"]} for item in techniques
+        )
+        return actions
+    if status is CampaignStatus.SEARCHING and active is not None:
+        return [
+            {"action": "submit", "delivery": active.get("delivery_path")},
+            {"action": "skip", "technique": active.get("technique")},
+        ]
+    return []
 
 
 def _isolated_speedups(campaign: Path) -> dict[str, float]:
     result: dict[str, float] = {}
-    for path in sorted(campaign.glob("search/*/VERIFIED-CANDIDATES.json")):
+    paths = [campaign / "VERIFIED-CANDIDATES.json"]
+    paths.extend(sorted(campaign.glob("search/*/VERIFIED-CANDIDATES.json")))
+    for path in paths:
         value = _read_object_optional(path)
         if value is None or not isinstance(value.get("candidates"), dict):
             continue
@@ -372,11 +379,14 @@ def _current_work(status: CampaignStatus, events: list[dict[str, Any]]) -> str:
         CampaignStatus.NEW: "locking sources and preparing the baseline",
         CampaignStatus.BASELINE_LOCKED: "profiling the frozen baseline",
         CampaignStatus.PROFILED: "routing optimization techniques",
-        CampaignStatus.SEARCHING: "optimization executors are running",
+        CampaignStatus.AWAITING_AGENT: (
+            "waiting for the current root agent to claim or complete one work order"
+        ),
+        CampaignStatus.SEARCHING: "the current root agent owns one work order",
         CampaignStatus.INTEGRATING: "integrating verified candidates",
         CampaignStatus.FINAL_VERIFYING: "running final full-workload verification",
         CampaignStatus.TARGET_REACHED: "target reached and patch packaged",
-        CampaignStatus.UNREACHABLE_CERTIFIED: "target independently certified unreachable",
+        CampaignStatus.UNREACHABLE_CERTIFIED: "target certified unreachable",
         CampaignStatus.SEARCH_SPACE_EXHAUSTED: "reviewed search budgets exhausted",
         CampaignStatus.WAITING_RESOURCE: "waiting for an owned GPU/resource",
         CampaignStatus.INFRA_BLOCKED: "infrastructure blocked",
