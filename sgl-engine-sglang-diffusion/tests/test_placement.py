@@ -26,7 +26,7 @@ def test_detects_current_unified_layout_and_renders_canonical_paths(
     assert "python/sglang/kernels/jit/csrc/diffusion/agent/wan-a14b/" in rendered
     assert "python/sglang/kernels/aot/csrc/diffusion/agent/wan-a14b/" in rendered
     assert "sglang.kernels.ops namespace" in rendered
-    assert "--agent-optimization off|auto|<profile-id>" in rendered
+    assert "--quality off|auto|<profile-id>" in rendered
 
 
 def test_detects_legacy_jit_layout_without_using_unlocked_host_paths(

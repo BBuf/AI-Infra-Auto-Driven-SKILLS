@@ -334,5 +334,6 @@ environment and are redacted from receipts. Preserve campaign evidence and
 clean only campaign-owned processes and temporary paths.
 
 When the packaged SGLang change exposes an optimization profile, its runtime
-entry remains `--agent-optimization off|auto|<profile-id>`. Here “agent”
-labels the generated profile namespace; it does not launch another AI process.
+entry is `--quality off|auto|<profile-id>`. The validated manifest lives under
+`sglang.multimodal_gen.quality_profiles.profiles`; generated kernels may remain
+model-scoped under `sglang.kernels.agent`.

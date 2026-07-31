@@ -209,6 +209,16 @@ The tool integrates only verified latency-positive candidates. It does not
 wait for every suggested technique and never adds isolated speedups.
 Composition conflicts return to this root agent for a changed candidate.
 
+Package every deployable profile through SGLang Diffusion's
+`--quality off|auto|<profile-id>` contract. Keep the detailed generated
+implementation manifest under the model-scoped kernel subtree, and add the
+matching strict runtime manifest under
+`sglang.multimodal_gen.quality_profiles.profiles`. The two profile IDs,
+model IDs, workload, activation arguments, and evidence bindings must agree.
+Emit `status: validated` only after the integrated five-prompt quality gate,
+native-backend/no-fallback verification, and positive end-to-end measurement
+pass. Do not create a second profile CLI.
+
 Use:
 
 ```bash

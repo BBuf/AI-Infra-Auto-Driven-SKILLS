@@ -32,7 +32,7 @@ def write_candidate(repository: Path, base: str, *, derived: object = None) -> N
     agent.mkdir(parents=True)
     for name in ("registry.py", "manifest.py", "runtime.py", "receipt.py"):
         (agent / name).write_text(
-            'OPTION = "--agent-optimization"\nMODES = ("off", "auto")\n'
+            'OPTION = "--quality"\nMODES = ("off", "auto")\n'
         )
     model = agent / "diffusion/test-model"
     model.mkdir(parents=True)
@@ -47,7 +47,7 @@ def write_candidate(repository: Path, base: str, *, derived: object = None) -> N
         "hardware": {"gpu": "test"},
         "workload": {"width": 64},
         "techniques": {"kernel": {"enabled": True}},
-        "server_args": {"agent_optimization": "profile-1"},
+        "server_args": {"quality": "profile-1"},
         "fallback_policy": "native",
         "source_hashes": {
             "python/sglang/kernels/agent/diffusion/test-model/kernel.py": (
@@ -60,6 +60,37 @@ def write_candidate(repository: Path, base: str, *, derived: object = None) -> N
     if derived is not None:
         profile["derived_checkpoint"] = derived
     (model / "manifest.json").write_text(json.dumps(profile))
+    quality_root = (
+        repository
+        / "python/sglang/multimodal_gen/quality_profiles/profiles"
+    )
+    quality_root.mkdir(parents=True)
+    quality_profile = {
+        "schema_version": 1,
+        "profile_id": "profile-1",
+        "status": "validated",
+        "model_ids": ["test/model"],
+        "evidence": {
+            "prompt_count": 5,
+            "visual_overall": "pass",
+            "native_backend": True,
+            "fallback_count": 0,
+            "vbench_baseline_mean": 0.8,
+            "vbench_candidate_mean": 0.81,
+            "vbench_dimensions": {
+                "subject_consistency": [0.8, 0.81],
+                "background_consistency": [0.8, 0.81],
+                "motion_smoothness": [0.8, 0.81],
+                "temporal_flickering": [0.8, 0.81],
+                "aesthetic_quality": [0.8, 0.81],
+                "imaging_quality": [0.8, 0.81],
+            },
+            "baseline_e2e_seconds": 10.0,
+            "candidate_e2e_seconds": 5.0,
+            "artifact_sha256": {"visual_verdict": "c" * 64},
+        },
+    }
+    (quality_root / "profile-1.json").write_text(json.dumps(quality_profile))
     run(["git", "add", "."], cwd=repository)
     run(["git", "commit", "-m", "candidate"], cwd=repository)
 

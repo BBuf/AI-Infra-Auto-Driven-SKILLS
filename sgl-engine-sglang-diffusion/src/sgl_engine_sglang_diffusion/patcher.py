@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import os
 import re
 import shlex
@@ -18,6 +19,16 @@ from .process import run
 
 _MODEL_SLUG = re.compile(r"^[a-z0-9][a-z0-9_-]*$")
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
+_VBENCH_DIMENSIONS = frozenset(
+    {
+        "subject_consistency",
+        "background_consistency",
+        "motion_smoothness",
+        "temporal_flickering",
+        "aesthetic_quality",
+        "imaging_quality",
+    }
+)
 _FORBIDDEN_CONTENT = (
     re.compile(r"/Users/"),
     re.compile(r"/home/[^/\s]+/"),
@@ -168,11 +179,24 @@ class PatchPackager:
             raise PatchError(
                 "agent profile was not built from the requested SGLang base SHA"
             )
+        if profile.server_args.get("quality") != profile.profile_id:
+            raise PatchError(
+                "agent profile must activate through "
+                f"--quality {profile.profile_id}"
+            )
+        quality_profile_path = self._require_file(
+            "python/sglang/multimodal_gen/quality_profiles/profiles/"
+            f"{profile.profile_id}.json"
+        )
+        self._validate_quality_profile(
+            json.loads(quality_profile_path.read_text(encoding="utf-8")),
+            profile=profile,
+        )
         diff = run(
             ["git", "diff", "--binary", "--full-index", f"{self.base_sha}..HEAD"],
             cwd=self.worktree,
         ).stdout
-        for required_literal in ("--agent-optimization", "off", "auto"):
+        for required_literal in ("--quality", "off", "auto"):
             if required_literal not in diff:
                 raise PatchError(
                     f"SGLang diff is missing runtime option literal "
@@ -233,6 +257,11 @@ class PatchPackager:
             "profile_sha256": sha256_file(
                 self.worktree
                 / f"python/sglang/kernels/agent/diffusion/{model_slug}/manifest.json"
+            ),
+            "quality_profile_sha256": sha256_file(
+                self.worktree
+                / "python/sglang/multimodal_gen/quality_profiles/profiles"
+                / f"{profile.profile_id}.json"
             ),
             "patch_sha256": sha256_file(patch_path),
             "evidence": copied_evidence,
@@ -424,6 +453,72 @@ class PatchPackager:
             or not _SHA256.fullmatch(digest)
         ):
             raise PatchError("derived checkpoint immutable metadata is invalid")
+
+    @staticmethod
+    def _validate_quality_profile(
+        payload: Mapping[str, Any], *, profile: AgentProfile
+    ) -> None:
+        if payload.get("schema_version") != 1:
+            raise PatchError("SGLang quality profile schema_version must be 1")
+        if payload.get("profile_id") != profile.profile_id:
+            raise PatchError("SGLang quality profile ID does not match agent profile")
+        if payload.get("status") != "validated":
+            raise PatchError("SGLang quality profile must have status='validated'")
+        model_ids = payload.get("model_ids")
+        if (
+            not isinstance(model_ids, list)
+            or not set(model_ids).intersection(profile.model_ids)
+        ):
+            raise PatchError("SGLang quality profile model IDs do not match")
+        evidence = payload.get("evidence")
+        if not isinstance(evidence, dict):
+            raise PatchError("SGLang quality profile evidence is missing")
+        if (
+            evidence.get("prompt_count") != 5
+            or evidence.get("visual_overall") != "pass"
+            or evidence.get("native_backend") is not True
+            or evidence.get("fallback_count") != 0
+        ):
+            raise PatchError(
+                "SGLang quality profile requires five prompts, passing visual "
+                "review, native execution, and zero fallbacks"
+            )
+        try:
+            baseline_vbench = float(evidence["vbench_baseline_mean"])
+            candidate_vbench = float(evidence["vbench_candidate_mean"])
+        except (KeyError, TypeError, ValueError) as error:
+            raise PatchError("SGLang quality profile VBench evidence is invalid") from error
+        dimensions = evidence.get("vbench_dimensions")
+        if (
+            not math.isfinite(baseline_vbench)
+            or not math.isfinite(candidate_vbench)
+            or candidate_vbench < baseline_vbench
+            or not isinstance(dimensions, dict)
+            or set(dimensions) != _VBENCH_DIMENSIONS
+        ):
+            raise PatchError(
+                "SGLang quality profile must cover six VBench dimensions "
+                "without aggregate regression"
+            )
+        artifacts = evidence.get("artifact_sha256")
+        if not isinstance(artifacts, dict) or not artifacts:
+            raise PatchError("SGLang quality profile artifact hashes are missing")
+        if any(
+            not isinstance(digest, str) or not _SHA256.fullmatch(digest)
+            for digest in artifacts.values()
+        ):
+            raise PatchError("SGLang quality profile artifact hashes are invalid")
+        try:
+            baseline_e2e = float(evidence["baseline_e2e_seconds"])
+            candidate_e2e = float(evidence["candidate_e2e_seconds"])
+        except (KeyError, TypeError, ValueError) as error:
+            raise PatchError(
+                "SGLang quality profile end-to-end evidence is invalid"
+            ) from error
+        if baseline_e2e <= 0 or candidate_e2e <= 0 or candidate_e2e >= baseline_e2e:
+            raise PatchError(
+                "SGLang quality profile must show positive end-to-end speedup"
+            )
 
     @staticmethod
     def _compare_source_hashes(root: Path, source_hashes: Mapping[str, str]) -> None:

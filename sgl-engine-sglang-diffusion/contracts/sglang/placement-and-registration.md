@@ -65,9 +65,9 @@ its declarations, extension registration, build entries, and canonical
 The final patch exposes:
 
 ```text
---agent-optimization off
---agent-optimization auto
---agent-optimization <profile-id>
+--quality off
+--quality auto
+--quality <profile-id>
 ```
 
 `off` is identical to the locked native source. `auto` activates only an exact

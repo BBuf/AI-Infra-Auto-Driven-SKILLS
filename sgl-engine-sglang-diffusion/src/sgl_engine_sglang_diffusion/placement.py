@@ -62,7 +62,7 @@ registry backends are inventory, not an implicit priority policy.
 Every optimized path needs exact model/hardware/shape/dtype eligibility,
 native fallback or declared hard error, positive engagement and fallback
 counters, parity tests, and a benchmark. The delivered patch must expose
---agent-optimization off|auto|<profile-id>. `off` is the identity path for the
+--quality off|auto|<profile-id>. `off` is the identity path for the
 locked source revision. `auto` may activate only when the immutable profile
 matches. Native SGLang backend logs are mandatory; any Diffusers fallback
 invalidates performance evidence.
