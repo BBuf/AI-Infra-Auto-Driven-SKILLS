@@ -152,6 +152,37 @@ def test_skip_active_work_returns_to_interactive_boundary(
     store.close()
 
 
+def test_closing_verified_candidate_reintegrates_remaining_subset_without_round(
+    tmp_path: Path,
+    fake_git_repo: Path,
+) -> None:
+    manager, store, campaign = _manager(tmp_path, fake_git_repo)
+    _write_json(
+        campaign / "VERIFIED-CANDIDATES.json",
+        {
+            "schema_version": 1,
+            "epoch": 0,
+            "candidates": {
+                "kernel": {"verified": True, "verified_speedup": 1.2},
+                "cache": {"verified": True, "verified_speedup": 1.1},
+            },
+        },
+    )
+
+    manager.skip(
+        "cache",
+        classification="no_gain",
+        reason="the composed stack regressed when cache was included",
+    )
+
+    assert store.status("campaign") is CampaignStatus.INTEGRATING
+    assert store.epoch("campaign") == 1
+    assert store.events("campaign", event_type="candidate_submitted") == []
+    transition = store.events("campaign", event_type="transition")[-1]["payload"]
+    assert transition["excluded_technique"] == "cache"
+    store.close()
+
+
 def test_delivery_must_be_the_regular_file_assigned_by_the_work_order(
     tmp_path: Path, fake_git_repo: Path
 ) -> None:

@@ -68,7 +68,7 @@ class MethodEquivalenceAuditor(Protocol):
         self,
         *,
         technique: str,
-        executor_worktree: Path,
+        candidate_worktree: Path,
         manifest: CandidateManifest,
         equivalence: Mapping[str, Any],
     ) -> bool | str | Sequence[str]: ...
@@ -131,7 +131,7 @@ def resolve_inside(root: Path, relative: Path) -> Path:
 
 
 class DeliveryVerifier:
-    """Independently verify an executor delivery without trusting its numbers."""
+    """Independently verify an submitted delivery without trusting its numbers."""
 
     def __init__(
         self,
@@ -157,11 +157,11 @@ class DeliveryVerifier:
         delivery_path: Path,
         *,
         technique: str,
-        executor_worktree: Path,
+        candidate_worktree: Path,
     ) -> VerificationResult:
         contract = self.registry[technique]
         lossless = contract.correctness == "lossless"
-        worktree = executor_worktree.resolve()
+        worktree = candidate_worktree.resolve()
         findings: list[VerificationFinding] = []
         verified: list[VerifiedFrontierPoint] = []
 
@@ -212,7 +212,7 @@ class DeliveryVerifier:
                 point,
                 technique=technique,
                 lossless=lossless,
-                executor_worktree=worktree,
+                candidate_worktree=worktree,
             )
             findings.extend(point_findings)
             if not point_findings and verified_point is not None:
@@ -232,7 +232,7 @@ class DeliveryVerifier:
         *,
         technique: str,
         lossless: bool,
-        executor_worktree: Path,
+        candidate_worktree: Path,
     ) -> tuple[list[VerificationFinding], VerifiedFrontierPoint | None]:
         candidate_id = point.candidate_id
         issues: list[VerificationFinding] = []
@@ -240,7 +240,7 @@ class DeliveryVerifier:
         def issue(code: str, message: str) -> None:
             issues.append(VerificationFinding(code, message, candidate_id))
 
-        roots = (executor_worktree, self.campaign_artifact_root)
+        roots = (candidate_worktree, self.campaign_artifact_root)
         try:
             run_dir = self._resolve_allowed(point.run_dir, roots)
             if not run_dir.is_dir():
@@ -267,7 +267,7 @@ class DeliveryVerifier:
                     point,
                     run_dir=run_dir,
                     artifacts=artifacts,
-                    executor_worktree=executor_worktree,
+                    candidate_worktree=candidate_worktree,
                 )
             except VerificationError as error:
                 issue("baseline_command_mismatch", str(error))
@@ -327,7 +327,7 @@ class DeliveryVerifier:
                 raise VerificationError(
                     "manifest eval_profile timing scope differs from baseline"
                 )
-            self._verify_candidate_commit(manifest, executor_worktree)
+            self._verify_candidate_commit(manifest, candidate_worktree)
         except (ValidationError, VerificationError) as error:
             issue("invalid_implementation", str(error))
 
@@ -338,7 +338,7 @@ class DeliveryVerifier:
             )
             source_hashes = self._load_source_hashes(source_hash_path)
             self._verify_source_hashes(
-                source_hashes, executor_worktree, manifest=manifest
+                source_hashes, candidate_worktree, manifest=manifest
             )
         except VerificationError as error:
             issue("invalid_source_hash", str(error))
@@ -371,7 +371,7 @@ class DeliveryVerifier:
                 artifacts=artifacts,
                 manifest=manifest,
                 technique=technique,
-                executor_worktree=executor_worktree,
+                candidate_worktree=candidate_worktree,
                 issue=issue,
             )
         else:
@@ -380,7 +380,7 @@ class DeliveryVerifier:
                 run_dir=run_dir,
                 candidate_frames=candidate_frames,
                 manifest=manifest,
-                executor_worktree=executor_worktree,
+                candidate_worktree=candidate_worktree,
                 issue=issue,
             )
 
@@ -413,7 +413,7 @@ class DeliveryVerifier:
         *,
         run_dir: Path,
         artifacts: Sequence[Path],
-        executor_worktree: Path,
+        candidate_worktree: Path,
     ) -> None:
         assert self.command_template is not None
         receipt_path = self._required_artifact(run_dir, artifacts, ("COMMAND.json",))
@@ -430,7 +430,7 @@ class DeliveryVerifier:
         if not prompts.is_file():
             raise VerificationError("frozen validation prompt file is missing")
         expected_argv, expected_env = self.command_template.render(
-            checkout=executor_worktree,
+            checkout=candidate_worktree,
             prompts=prompts,
             output_file=run_dir / "outputs" / "benchmark.jsonl",
             media_dir=run_dir / "outputs" / "media",
@@ -442,7 +442,7 @@ class DeliveryVerifier:
         expected = {
             "argv": redact_argv(list(expected_argv)),
             "declared_env": redact_environment(expected_env),
-            "cwd": str(executor_worktree.resolve()),
+            "cwd": str(candidate_worktree.resolve()),
             "profile": False,
             "baseline_command_template_sha256": (self.command_template.template_sha256),
         }
@@ -553,7 +553,7 @@ class DeliveryVerifier:
         artifacts: Sequence[Path],
         manifest: CandidateManifest | None,
         technique: str,
-        executor_worktree: Path,
+        candidate_worktree: Path,
         issue: Any,
     ) -> None:
         try:
@@ -571,7 +571,7 @@ class DeliveryVerifier:
             verdict_path = self._resolve_point_path(
                 point.quality.visual_verdict,
                 run_dir,
-                (executor_worktree, self.campaign_artifact_root),
+                (candidate_worktree, self.campaign_artifact_root),
             )
             authenticity = self._json_object(verdict_path)
             if not (
@@ -588,7 +588,7 @@ class DeliveryVerifier:
             try:
                 result = self.method_auditor.audit(
                     technique=technique,
-                    executor_worktree=executor_worktree,
+                    candidate_worktree=candidate_worktree,
                     manifest=manifest,
                     equivalence=equivalence,
                 )
@@ -601,7 +601,7 @@ class DeliveryVerifier:
             try:
                 review_issues = self.review_validator.validate(
                     technique=technique,
-                    executor_worktree=executor_worktree,
+                    candidate_worktree=candidate_worktree,
                     manifest=manifest,
                     method_argument=str(equivalence["method_argument"]),
                     visual_verdict_path=verdict_path,
@@ -624,7 +624,7 @@ class DeliveryVerifier:
         run_dir: Path,
         candidate_frames: Path,
         manifest: CandidateManifest | None,
-        executor_worktree: Path,
+        candidate_worktree: Path,
         issue: Any,
     ) -> None:
         if point.quality.mode != "quality_gated":
@@ -707,7 +707,7 @@ class DeliveryVerifier:
             try:
                 review_issues = self.review_validator.validate(
                     technique=manifest.technique,
-                    executor_worktree=executor_worktree,
+                    candidate_worktree=candidate_worktree,
                     manifest=manifest,
                     method_argument=method_argument,
                     visual_verdict_path=verdict_path,
@@ -1070,12 +1070,12 @@ class DeliveryVerifier:
     @staticmethod
     def _verify_source_hashes(
         source_hashes: Mapping[str, str],
-        executor_worktree: Path,
+        candidate_worktree: Path,
         *,
         manifest: CandidateManifest | None,
     ) -> None:
         for relative, expected in source_hashes.items():
-            source = resolve_inside(executor_worktree, Path(relative))
+            source = resolve_inside(candidate_worktree, Path(relative))
             if not source.is_file():
                 raise VerificationError(f"hashed source is not a file: {relative}")
             actual = hashlib.sha256(source.read_bytes()).hexdigest()
@@ -1091,7 +1091,7 @@ class DeliveryVerifier:
                 manifest.base_commit,
                 manifest.candidate_commit,
             ],
-            cwd=executor_worktree,
+            cwd=candidate_worktree,
         ).stdout.splitlines()
         required: set[str] = set()
         for line in changed:
@@ -1107,18 +1107,18 @@ class DeliveryVerifier:
 
     @staticmethod
     def _verify_candidate_commit(
-        manifest: CandidateManifest, executor_worktree: Path
+        manifest: CandidateManifest, candidate_worktree: Path
     ) -> None:
         head = run(
             ["git", "rev-parse", "--verify", "HEAD^{commit}"],
-            cwd=executor_worktree,
+            cwd=candidate_worktree,
             check=False,
         )
         if head.returncode != 0:
-            raise VerificationError("executor worktree is not a valid Git checkout")
+            raise VerificationError("candidate worktree is not a valid Git checkout")
         if head.stdout.strip() != manifest.candidate_commit:
             raise VerificationError(
-                "manifest candidate_commit differs from executor HEAD"
+                "manifest candidate_commit differs from candidate HEAD"
             )
         ancestor = run(
             [
@@ -1128,7 +1128,7 @@ class DeliveryVerifier:
                 manifest.base_commit,
                 manifest.candidate_commit,
             ],
-            cwd=executor_worktree,
+            cwd=candidate_worktree,
             check=False,
         )
         if ancestor.returncode != 0:
@@ -1143,7 +1143,7 @@ class DeliveryVerifier:
                 manifest.base_commit,
                 manifest.candidate_commit,
             ],
-            cwd=executor_worktree,
+            cwd=candidate_worktree,
         ).stdout.splitlines()
         if not changed:
             raise VerificationError("candidate commit contains no source changes")

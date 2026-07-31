@@ -1,12 +1,12 @@
-# Token-pruning executor scope
+# Token-pruning work-order scope
 
 ## Adaptation status and identity
 
 `token_pruning` brings Sol-Engine's full pruning/merging family into a
-standalone SGLang executor. It exists in Sol-Engine's paper, implementation, and
-technique documentation but not in the reviewed lightweight registry. The
-**20-round hard budget is an SGLang adaptation default**, not an upstream
-lightweight setting.
+standalone SGLang work-order lane. It exists in Sol-Engine's paper,
+implementation, and technique documentation but not in the reviewed
+lightweight registry. The **20-round hard budget is an SGLang adaptation
+default**, not an upstream lightweight setting.
 
 This is a quality-gated lane. It reduces work on low-salience image/video tokens
 in selected layers and denoising steps, then restores the full positional and

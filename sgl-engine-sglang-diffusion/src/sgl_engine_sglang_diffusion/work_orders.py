@@ -266,6 +266,11 @@ class WorkOrderManager:
                 closed=classification in _CLOSED_CLASSIFICATIONS,
             )
             dispositions = self._dispositions()
+            if (
+                status is CampaignStatus.AWAITING_AGENT
+                and dispositions.get(technique) == disposition
+            ):
+                return disposition
             dispositions[technique] = disposition
             _atomic_json(
                 self.campaign_dir / "TECHNIQUE-DISPOSITIONS.json",
@@ -299,7 +304,32 @@ class WorkOrderManager:
                         "classification": classification,
                     },
                 )
-            if self._all_routes_closed_or_exhausted():
+            removed_verified, remaining_verified = self._verified_selection_after_skip(
+                technique,
+                exclude=disposition.closed,
+            )
+            if disposition.closed and removed_verified and remaining_verified:
+                selection_epoch = self.store.increment_epoch(
+                    self.campaign_id,
+                    idempotency_key=(
+                        f"{self.campaign_id}:skip:{epoch}:{technique}:"
+                        "selection-epoch"
+                    ),
+                )
+                self.store.transition(
+                    self.campaign_id,
+                    CampaignStatus.INTEGRATING,
+                    idempotency_key=(
+                        f"{self.campaign_id}:skip:{epoch}:{technique}:"
+                        "reintegrate-subset"
+                    ),
+                    payload={
+                        "excluded_technique": technique,
+                        "selection_epoch": selection_epoch,
+                        "reason": "reviewed_subset_changed",
+                    },
+                )
+            elif self._all_routes_closed_or_exhausted():
                 self.store.transition(
                     self.campaign_id,
                     CampaignStatus.SEARCH_SPACE_EXHAUSTED,
@@ -420,6 +450,47 @@ class WorkOrderManager:
                 continue
             return False
         return True
+
+    def _verified_selection_after_skip(
+        self,
+        technique: str,
+        *,
+        exclude: bool,
+    ) -> tuple[bool, bool]:
+        if not exclude:
+            return False, False
+        path = self.campaign_dir / "VERIFIED-CANDIDATES.json"
+        if not path.is_file():
+            return False, False
+        candidates = _read_object(path).get("candidates")
+        if not isinstance(candidates, dict):
+            raise WorkOrderError("VERIFIED-CANDIDATES.json is malformed")
+        dispositions = self._dispositions()
+
+        def latency_positive(candidate: object) -> bool:
+            if not isinstance(candidate, dict):
+                return False
+            speedup = candidate.get("verified_speedup")
+            return (
+                candidate.get("verified") is True
+                and isinstance(speedup, (int, float))
+                and not isinstance(speedup, bool)
+                and float(speedup) > 1.0
+            )
+
+        def eligible(name: str, candidate: object) -> bool:
+            disposition = dispositions.get(name)
+            return latency_positive(candidate) and not (
+                disposition is not None and disposition.closed
+            )
+
+        removed = latency_positive(candidates.get(technique))
+        remaining = any(
+            eligible(str(name), candidate)
+            for name, candidate in candidates.items()
+            if str(name) != technique
+        )
+        return removed, remaining
 
     @staticmethod
     def _legal_actions(

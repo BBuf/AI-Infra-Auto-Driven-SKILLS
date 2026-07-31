@@ -110,7 +110,14 @@ class LaunchRequest(StrictModel):
             "the current interactive root agent"
         ),
     )
-    token_budget: int | None = Field(default=None, gt=0)
+    token_budget: int | None = Field(
+        default=None,
+        gt=0,
+        description=(
+            "Legacy compatibility input; ignored because the controller cannot "
+            "observe current-conversation token usage"
+        ),
+    )
     run_root: Path = Path("runs/sglang-diffusion-auto-optimize")
     idempotency_key: str | None = None
     source: SourceSpec | None = None

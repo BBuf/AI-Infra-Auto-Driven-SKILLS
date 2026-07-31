@@ -3,7 +3,9 @@ from __future__ import annotations
 import json
 import os
 import subprocess
+import sys
 import time
+from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
@@ -16,7 +18,7 @@ class WatchdogError(RuntimeError):
 
 
 class CampaignWatchdog:
-    """Restart only the controller command declared by the campaign itself."""
+    """Restart only the exact deterministic campaign-resume command."""
 
     def __init__(
         self,
@@ -24,25 +26,22 @@ class CampaignWatchdog:
         store: StateStore,
         *,
         stale_after_seconds: float = 300.0,
+        popen_factory: Callable[..., subprocess.Popen[bytes]] = subprocess.Popen,
     ) -> None:
         if stale_after_seconds <= 0:
             raise ValueError("stale_after_seconds must be positive")
         self.campaign_dir = campaign_dir.resolve()
         self.store = store
         self.stale_after_seconds = stale_after_seconds
+        self._popen_factory = popen_factory
         self._controller: subprocess.Popen[bytes] | None = None
 
     def tick(self) -> int | None:
         manifest = self._manifest()
-        command = manifest.get("controller_command")
         campaign_id = manifest.get("campaign_id")
-        if (
-            not isinstance(command, list)
-            or not command
-            or any(not isinstance(value, str) for value in command)
-            or not isinstance(campaign_id, str)
-        ):
-            raise WatchdogError("campaign manifest has no safe controller command")
+        if not isinstance(campaign_id, str):
+            raise WatchdogError("campaign manifest has no campaign ID")
+        command = self._controller_command(manifest)
         if self.store.status(campaign_id) in {
             *TERMINAL_STATUSES,
             CampaignStatus.AWAITING_AGENT,
@@ -75,7 +74,7 @@ class CampaignWatchdog:
             (self.campaign_dir / "watchdog-controller.stdout.log").open("ab") as stdout,
             (self.campaign_dir / "watchdog-controller.stderr.log").open("ab") as stderr,
         ):
-            process = subprocess.Popen(
+            process = self._popen_factory(
                 command,
                 cwd=self.campaign_dir,
                 start_new_session=True,
@@ -100,6 +99,26 @@ class CampaignWatchdog:
             encoding="utf-8",
         )
         return process.pid
+
+    def _controller_command(self, manifest: dict[str, Any]) -> list[str]:
+        expected = [
+            sys.executable,
+            "-m",
+            "sgl_engine_sglang_diffusion.cli",
+            "resume",
+            "--campaign",
+            str(self.campaign_dir),
+        ]
+        if (
+            manifest.get("schema_version") != 2
+            or manifest.get("execution_mode") != "interactive_single_agent"
+            or manifest.get("controller_command") != expected
+        ):
+            raise WatchdogError(
+                "campaign manifest does not contain the exact deterministic "
+                "single-agent resume command"
+            )
+        return expected
 
     @staticmethod
     def _heartbeat_pid(path: Path) -> int | None:
@@ -131,14 +150,10 @@ class CampaignWatchdog:
             self.tick()
             manifest = self._manifest()
             campaign_id = manifest.get("campaign_id")
-            if (
-                isinstance(campaign_id, str)
-                and self.store.status(campaign_id)
-                in {
-                    *TERMINAL_STATUSES,
-                    CampaignStatus.AWAITING_AGENT,
-                }
-            ):
+            if isinstance(campaign_id, str) and self.store.status(campaign_id) in {
+                *TERMINAL_STATUSES,
+                CampaignStatus.AWAITING_AGENT,
+            }:
                 return
             time.sleep(interval_seconds)
 

@@ -35,9 +35,7 @@ _SECRET_ASSIGNMENT_RE = re.compile(
     r"API_KEY|ACCESS_TOKEN|SECRET|PASSWORD"
     r")\b(\s*[:=]\s*)([^\s`\"']+)"
 )
-_PRIVATE_PATH_RE = re.compile(
-    r"(?<![\w.-])/(?:Users|home)/[^/\s`\"']+(?:/[^\s`\"']*)?"
-)
+_PRIVATE_PATH_RE = re.compile(r"(?<![\w.-])/(?:Users|home)/[^/\s`\"']+(?:/[^\s`\"']*)?")
 _MARKDOWN_HEADING_RE = re.compile(r"(?m)^#{1,6}\s+(.+?)\s*$")
 _DECLARATION_RE = re.compile(
     r"(?m)^\s*(?:async\s+def|def|class|struct|enum|namespace)\s+"
@@ -279,7 +277,9 @@ def compute_contract_hashes(
         try:
             source.relative_to(root)
         except ValueError as exc:
-            raise KnowledgeSyncError(f"contract path escapes checkout: {relative}") from exc
+            raise KnowledgeSyncError(
+                f"contract path escapes checkout: {relative}"
+            ) from exc
         if not source.is_file():
             raise KnowledgeSyncError(f"missing Sol-Engine contract: {relative}")
         result[relative.as_posix()] = hashlib.sha256(source.read_bytes()).hexdigest()

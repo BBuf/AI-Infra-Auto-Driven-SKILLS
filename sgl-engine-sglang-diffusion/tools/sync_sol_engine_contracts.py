@@ -31,9 +31,7 @@ def main() -> int:
         print(f"updated {args.hashes}")
         return 0
 
-    issues = check_contract_hashes(
-        args.source_lock, args.sol_checkout, args.hashes
-    )
+    issues = check_contract_hashes(args.source_lock, args.sol_checkout, args.hashes)
     for issue in issues:
         print(issue, file=sys.stderr)
     return 1 if issues else 0

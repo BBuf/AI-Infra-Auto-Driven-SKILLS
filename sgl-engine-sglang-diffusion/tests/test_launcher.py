@@ -29,6 +29,8 @@ def write_request(tmp_path: Path) -> Path:
         "sglang_ref": "main",
         "gpu_count": 1,
         "target_speedup": 2.0,
+        "agent": {"command": ["legacy-agent"]},
+        "token_budget": 1000,
         "baseline": {
             "cwd": str(checkout),
             "command": (
@@ -69,6 +71,9 @@ def test_launch_is_one_shot_detached_and_idempotent(tmp_path: Path) -> None:
     frozen_request = (campaign / "REQUEST.yaml").read_text()
     assert "CUDA_VISIBLE_DEVICES" not in frozen_request
     assert "agent:" not in frozen_request
+    assert "token_budget:" not in frozen_request
+    launch_request = json.loads((campaign / "LAUNCH-REQUEST.json").read_text())
+    assert "token_budget" not in launch_request
     assert second["progress_command"][-1] == "--watch"
     assert second["execution_mode"] == "interactive_single_agent"
     assert second["work_command"][-1] == "--json"

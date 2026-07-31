@@ -23,12 +23,5 @@ source:
   sglang_repo: <verified-sglang-origin-url>
   sglang_ref: <full-fetched-main-commit>
 
-agent:
-  command: [codex, exec]
-  model: <requested-model-or-null>
-
 run_root: <absolute-persistent-campaign-root>
 idempotency_key: <stable-machine-model-workload-target-key>
-
-# Include only when the user supplied a positive budget.
-# token_budget: 10000000

@@ -82,7 +82,7 @@ def test_same_agent_review_is_bound_to_exact_commits_and_method(
     assert (
         validator.validate(
             technique="kernel",
-            executor_worktree=worktree,
+            candidate_worktree=worktree,
             manifest=manifest,
             method_argument=method_argument,
             visual_verdict_path=verdict,
@@ -106,7 +106,7 @@ def test_stale_review_diff_and_method_are_rejected(tmp_path: Path) -> None:
 
     issues = validator.validate(
         technique="kernel",
-        executor_worktree=worktree,
+        candidate_worktree=worktree,
         manifest=manifest,
         method_argument=method_argument + " drift",
         visual_verdict_path=verdict,
@@ -144,7 +144,7 @@ def test_quality_review_requires_five_bound_prompt_artifacts(tmp_path: Path) -> 
 
     issues = validator.validate(
         technique="cache",
-        executor_worktree=worktree,
+        candidate_worktree=worktree,
         manifest=manifest,
         method_argument=method_argument,
         visual_verdict_path=verdict,

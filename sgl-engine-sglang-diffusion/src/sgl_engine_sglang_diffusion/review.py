@@ -88,13 +88,13 @@ class SameAgentReviewValidator:
         self,
         *,
         technique: str,
-        executor_worktree: Path,
+        candidate_worktree: Path,
         manifest: CandidateManifest,
         method_argument: str,
         visual_verdict_path: Path,
         quality_gated: bool,
     ) -> tuple[str, ...]:
-        worktree = executor_worktree.resolve()
+        worktree = candidate_worktree.resolve()
         expected_review = (worktree / "AGENT-REVIEW.json").resolve()
         if self.review_path != expected_review:
             raise ReviewError(

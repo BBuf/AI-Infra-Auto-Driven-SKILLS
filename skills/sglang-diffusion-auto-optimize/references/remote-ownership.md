@@ -2,43 +2,33 @@
 
 ## Responsibility Boundary
 
-The host skill owns:
+The host skill owns SSH/jumpbox access, container entry, persistent paths, GPU
+allocation, process-ownership rules, and host-specific cleanup.
 
-- SSH/jumpbox access;
-- container entry;
-- repository and persistent-storage paths;
-- GPU allocation and process-ownership rules; and
-- host-specific cleanup.
+The current interactive root agent owns every hypothesis, code change, visual
+or method review, candidate command, and decision to claim or skip a
+technique.
 
-The Python controller owns:
-
-- immutable source and workload locks;
-- baseline, profiling, search, integration, and correctness state;
-- executor process receipts and leases;
-- watchdog restart behavior;
-- token and progress ledgers; and
-- terminal patch/certificate packaging.
-
-The conversational skill coordinates the two. Do not encode private hostnames,
-addresses, credentials, or container IDs into the public controller.
+The Python tool owns immutable source/workload locks, baseline and profile
+artifacts, one exclusive worktree, deterministic verification, state,
+selected-subset integration, progress, and patch packaging. It never launches
+an AI process.
 
 ## Launch Safety
 
 Before launch:
 
-1. inspect GPU processes and available memory;
-2. verify the SGLang origin and fetched main commit;
+1. inspect GPU processes and memory;
+2. verify the SGLang origin and fetched full commit;
 3. preserve dirty user work;
-4. validate the benchmark entrypoint and five-prompt file;
-5. make the campaign root persistent; and
+4. validate the native benchmark and five-prompt file;
+5. choose persistent storage; and
 6. inherit credentials through the environment.
 
-After launch:
+The detached watchdog runs deterministic setup and stops at `AWAITING_AGENT`.
+The current conversation then performs the work-order loop. If the
+conversation is interrupted, resume the same campaign in one root-agent
+conversation; do not create a background AI worker.
 
-1. record campaign ID/path and watchdog PID;
-2. confirm the watchdog receipt and first heartbeat;
-3. use only campaign-recorded process groups for restart/cleanup; and
-4. leave evidence available after a terminal result.
-
-Do not use broad `pkill`, recursive deletion, `git reset --hard`, or worktree
-cleanup outside the campaign-owned paths.
+Use one candidate GPU run at a time. Do not use broad `pkill`, recursive
+deletion, `git reset --hard`, or cleanup outside campaign-owned paths.

@@ -232,6 +232,7 @@
         }
       ],
       "default": null,
+      "description": "Legacy compatibility input; ignored because the controller cannot observe current-conversation token usage",
       "title": "Token Budget"
     }
   },

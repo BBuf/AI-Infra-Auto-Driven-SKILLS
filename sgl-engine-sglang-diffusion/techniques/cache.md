@@ -1,4 +1,4 @@
-# Cache executor scope
+# Cache work-order scope
 
 ## Identity and method boundary
 
@@ -16,8 +16,8 @@ are outside this compatibility lane. SGLang cache families outside the closed
 set must run in separately labeled extension lanes under the same quality-gated
 semantics.
 
-Within one family the executor may faithfully integrate the method, reduce its
-bookkeeping overhead, choose cache payload and placement, and tune native
+Within one family the root agent may faithfully integrate the method, reduce
+its bookkeeping overhead, choose cache payload and placement, and tune native
 refresh, threshold, history, correction, layer, and timestep controls.
 
 ## Fixed full-workload gate

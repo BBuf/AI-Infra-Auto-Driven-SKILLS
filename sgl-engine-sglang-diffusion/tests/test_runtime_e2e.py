@@ -218,6 +218,22 @@ def test_production_sol_contract_rejects_an_unreviewed_commit() -> None:
         runtime_module._validate_sol_contract(lock)
 
 
+def test_runtime_rejects_legacy_multi_agent_campaign(
+    tmp_path: Path,
+    fake_git_repo: Path,
+) -> None:
+    campaign = initialize(_write_goal(tmp_path, fake_git_repo), tmp_path / "runs")
+    legacy = campaign / "executors" / "1" / "kernel"
+    legacy.mkdir(parents=True)
+    (legacy / "PROCESS.json").write_text("{}\n", encoding="utf-8")
+
+    with pytest.raises(
+        CampaignRuntimeError,
+        match="legacy multi-agent campaign cannot be resumed",
+    ):
+        run_campaign_command("resume", campaign)
+
+
 def test_locked_lpips_rejects_candidate_prompt_symlink(tmp_path: Path) -> None:
     baseline = tmp_path / "baseline"
     candidate = tmp_path / "run/outputs/frames"

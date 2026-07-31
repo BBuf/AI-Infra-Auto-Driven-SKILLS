@@ -1,4 +1,4 @@
-# Kernel executor scope
+# Kernel work-order scope
 
 ## Identity and correctness
 
@@ -32,7 +32,7 @@ include:
 - launch and synchronization reduction; and
 - warm `torch.compile` or other compiler fusion for stable repeated regions.
 
-The executor must first audit SGLang's existing fast paths. Auxiliary SGLang,
+The root agent must first audit SGLang's existing fast paths. Auxiliary SGLang,
 KDA-Pilot, and FastVideo knowledge may suggest implementations, but cannot
 expand correctness or evidence policy.
 

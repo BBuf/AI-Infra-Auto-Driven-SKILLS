@@ -51,9 +51,7 @@ class TechniqueRegistry:
 
             correctness = str(raw["correctness"])
             if correctness not in _CORRECTNESS_MODES:
-                raise ValueError(
-                    f"invalid correctness mode for {name}: {correctness}"
-                )
+                raise ValueError(f"invalid correctness mode for {name}: {correctness}")
             round_budget = int(raw["round_budget"])
             if round_budget <= 0:
                 raise ValueError(f"round_budget must be positive for {name}")

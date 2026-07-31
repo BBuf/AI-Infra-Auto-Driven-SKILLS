@@ -1,4 +1,4 @@
-# PISA executor scope
+# PISA work-order scope
 
 ## Identity and implementation rule
 

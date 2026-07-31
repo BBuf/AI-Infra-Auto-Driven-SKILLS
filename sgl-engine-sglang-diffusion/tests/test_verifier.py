@@ -260,7 +260,7 @@ def test_valid_lossless_never_calls_quality_evaluator(
     result = verifier.verify(
         evidence["delivery_path"],
         technique="kernel",
-        executor_worktree=evidence["worktree"],
+        candidate_worktree=evidence["worktree"],
     )
     assert result.accepted, result.findings
     assert result.lossless_required is True
@@ -338,7 +338,7 @@ def test_launched_campaign_rejects_candidate_command_drift(
     accepted = verifier.verify(
         delivery_path,
         technique="kernel",
-        executor_worktree=evidence["worktree"],
+        candidate_worktree=evidence["worktree"],
     )
     assert accepted.accepted, accepted.findings
 
@@ -347,7 +347,7 @@ def test_launched_campaign_rejects_candidate_command_drift(
     rejected = verifier.verify(
         delivery_path,
         technique="kernel",
-        executor_worktree=evidence["worktree"],
+        candidate_worktree=evidence["worktree"],
     )
     assert not rejected.accepted
     assert "baseline_command_mismatch" in {
@@ -367,7 +367,7 @@ def test_resolve_inside_and_verifier_reject_path_escape(
     result = make_verifier(evidence, registry).verify(
         write_delivery(evidence, delivery),
         technique="kernel",
-        executor_worktree=evidence["worktree"],
+        candidate_worktree=evidence["worktree"],
     )
     assert not result.accepted
     assert {finding.code for finding in result.findings} == {"invalid_run_dir"}
@@ -381,7 +381,7 @@ def test_recomputes_speedup_and_rejects_tamper(
     result = make_verifier(evidence, registry).verify(
         write_delivery(evidence, delivery),
         technique="kernel",
-        executor_worktree=evidence["worktree"],
+        candidate_worktree=evidence["worktree"],
     )
     assert not result.accepted
     assert "speedup_tamper" in {finding.code for finding in result.findings}
@@ -401,7 +401,7 @@ def test_raw_benchmark_must_match_normalized_performance(
     result = make_verifier(evidence, registry).verify(
         write_delivery(evidence, delivery),
         technique="kernel",
-        executor_worktree=evidence["worktree"],
+        candidate_worktree=evidence["worktree"],
     )
     assert not result.accepted
     assert "benchmark_performance_mismatch" in {
@@ -431,7 +431,7 @@ def test_rejects_missing_real_run_evidence(
     result = make_verifier(evidence, registry).verify(
         evidence["delivery_path"],
         technique="kernel",
-        executor_worktree=evidence["worktree"],
+        candidate_worktree=evidence["worktree"],
     )
     assert not result.accepted
     assert expected in {finding.code for finding in result.findings}
@@ -445,7 +445,7 @@ def test_rejects_source_hash_mismatch(
     result = make_verifier(evidence, registry).verify(
         evidence["delivery_path"],
         technique="kernel",
-        executor_worktree=evidence["worktree"],
+        candidate_worktree=evidence["worktree"],
     )
     assert not result.accepted
     assert "invalid_source_hash" in {finding.code for finding in result.findings}
@@ -461,7 +461,7 @@ def test_rejects_zero_engagement_as_noop(
     result = make_verifier(evidence, registry).verify(
         evidence["delivery_path"],
         technique="kernel",
-        executor_worktree=evidence["worktree"],
+        candidate_worktree=evidence["worktree"],
     )
     assert not result.accepted
     assert "invalid_engagement" in {finding.code for finding in result.findings}
@@ -510,7 +510,7 @@ def test_quality_path_calls_locked_evaluator_and_visual_gate(
     result = make_verifier(evidence, registry, quality=quality).verify(
         make_quality_delivery(evidence),
         technique="cache",
-        executor_worktree=evidence["worktree"],
+        candidate_worktree=evidence["worktree"],
     )
     assert result.accepted, result.findings
     assert result.lossless_required is False
@@ -527,7 +527,7 @@ def test_quality_path_rejects_missing_lpips_after_calling_evaluator(
     result = make_verifier(evidence, registry, quality=quality).verify(
         write_delivery(evidence, delivery),
         technique="cache",
-        executor_worktree=evidence["worktree"],
+        candidate_worktree=evidence["worktree"],
     )
     assert not result.accepted
     assert quality.calls == 1
@@ -543,7 +543,7 @@ def test_quality_path_reports_lpips_tamper_without_crashing(
     result = make_verifier(evidence, registry, quality=QualitySpy()).verify(
         write_delivery(evidence, delivery),
         technique="cache",
-        executor_worktree=evidence["worktree"],
+        candidate_worktree=evidence["worktree"],
     )
     assert not result.accepted
     assert "lpips_tamper" in {finding.code for finding in result.findings}
@@ -599,7 +599,7 @@ def test_topology_requires_consistent_durable_artifacts(
     accepted = verifier.verify(
         delivery_path,
         technique="topology",
-        executor_worktree=evidence["worktree"],
+        candidate_worktree=evidence["worktree"],
     )
     assert accepted.accepted, accepted.findings
 
@@ -610,7 +610,7 @@ def test_topology_requires_consistent_durable_artifacts(
     rejected = verifier.verify(
         delivery_path,
         technique="topology",
-        executor_worktree=evidence["worktree"],
+        candidate_worktree=evidence["worktree"],
     )
     assert not rejected.accepted
     assert "topology_run_mismatch" in {finding.code for finding in rejected.findings}

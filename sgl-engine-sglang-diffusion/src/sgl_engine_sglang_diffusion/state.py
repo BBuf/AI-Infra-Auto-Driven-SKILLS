@@ -59,6 +59,7 @@ _FORWARD_TRANSITIONS: dict[CampaignStatus, frozenset[CampaignStatus]] = {
     CampaignStatus.AWAITING_AGENT: frozenset(
         {
             CampaignStatus.SEARCHING,
+            CampaignStatus.INTEGRATING,
             CampaignStatus.SEARCH_SPACE_EXHAUSTED,
             CampaignStatus.UNREACHABLE_CERTIFIED,
         }

@@ -1,12 +1,12 @@
-# Quantization executor scope
+# Quantization work-order scope
 
 ## Adaptation status and identity
 
 `quantization` brings Sol-Engine's full quantization technique family into a
-standalone SGLang executor. Sol-Engine's paper and technique documentation
-contain this family, but its reviewed lightweight registry does not assign it a
-standalone executor. The **20-round hard budget is an SGLang adaptation
-default**, not an upstream lightweight setting.
+standalone SGLang work-order lane. Sol-Engine's paper and technique
+documentation contain this family, but its reviewed lightweight registry does
+not assign it a standalone lane. The **20-round hard budget is an SGLang
+adaptation default**, not an upstream lightweight setting.
 
 This is a quality-gated lane. It may explore selective low-precision weights,
 activations, attention, and linear paths, including NVFP4, diffusion-aware PTQ,

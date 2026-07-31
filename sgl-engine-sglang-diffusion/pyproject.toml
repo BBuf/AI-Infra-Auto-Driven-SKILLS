@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "sgl-engine-sglang-diffusion"
 version = "0.1.0"
-description = "Sol-Engine-compatible optimization controller for SGLang Diffusion"
+description = "Deterministic evidence controller for serial SGLang Diffusion optimization"
 requires-python = ">=3.11"
 dependencies = [
   "pydantic>=2.7,<3",

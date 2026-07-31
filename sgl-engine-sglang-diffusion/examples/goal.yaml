@@ -1,4 +1,5 @@
-schema_version: 1
+schema_version: 2
+execution_mode: interactive_single_agent
 model:
   id: Wan-AI/Wan2.2-T2V-A14B-Diffusers
 hardware:
@@ -22,7 +23,3 @@ goal:
 source:
   sglang_repo: https://github.com/sgl-project/sglang.git
   sglang_ref: main
-agent:
-  command:
-    - codex
-    - exec

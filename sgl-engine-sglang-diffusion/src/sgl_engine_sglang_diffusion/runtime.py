@@ -76,6 +76,30 @@ def _read_object(path: Path) -> dict[str, Any]:
     return value
 
 
+def _reject_legacy_agent_campaign(
+    campaign: Path,
+    manifest: Mapping[str, Any],
+) -> None:
+    markers = [
+        campaign / "executors",
+        *campaign.glob("search/*/EXECUTORS.json"),
+        *campaign.glob("search/*/MASTER*.json"),
+    ]
+    reasons: list[str] = []
+    if manifest.get("schema_version") != 2:
+        reasons.append("CAMPAIGN.json is not schema version 2")
+    if manifest.get("execution_mode") != "interactive_single_agent":
+        reasons.append("execution_mode is not interactive_single_agent")
+    if any(path.exists() for path in markers):
+        reasons.append("legacy executor or Master artifacts are present")
+    if reasons:
+        raise CampaignRuntimeError(
+            "legacy multi-agent campaign cannot be resumed by the interactive "
+            "single-agent runtime; start a new schema-v2 campaign: "
+            + "; ".join(reasons)
+        )
+
+
 def _model_slug(model_id: str) -> str:
     slug = re.sub(r"[^a-z0-9_-]+", "-", model_id.lower()).strip("-_")
     if not slug:
@@ -736,7 +760,7 @@ class FileCampaignHooks:
         result = verifier.verify(
             order.delivery_path,
             technique=order.technique,
-            executor_worktree=order.worktree,
+            candidate_worktree=order.worktree,
         )
         if not result.accepted or not result.verified_points:
             findings = [
@@ -848,10 +872,15 @@ class FileCampaignHooks:
         locks = self._load_locks()
         baseline = BaselineRunner.load(self.campaign_dir / "BASELINE.json")
         verified = self._load_verified(epoch)
+        closed = self._closed_techniques()
         selected = {
             name: candidate
             for name, candidate in verified.items()
-            if candidate.verified and candidate.verified_speedup > 1.0
+            if (
+                candidate.verified
+                and candidate.verified_speedup > 1.0
+                and name not in closed
+            )
         }
         if not selected:
             return StepResult(
@@ -1159,6 +1188,19 @@ class FileCampaignHooks:
         candidates.pop(technique, None)
         self._write_verified(epoch, candidates)
 
+    def _closed_techniques(self) -> set[str]:
+        path = self.campaign_dir / "TECHNIQUE-DISPOSITIONS.json"
+        if not path.is_file():
+            return set()
+        techniques = _read_object(path).get("techniques")
+        if not isinstance(techniques, dict):
+            raise CampaignRuntimeError("TECHNIQUE-DISPOSITIONS.json is malformed")
+        return {
+            str(name)
+            for name, disposition in techniques.items()
+            if isinstance(disposition, dict) and disposition.get("closed") is True
+        }
+
     @staticmethod
     def _gpu_validation_command(delivery: IntegratedDelivery) -> list[str]:
         if not delivery.frontier_points:
@@ -1218,6 +1260,7 @@ def run_campaign_command(command: str, campaign: Path) -> dict[str, Any]:
         raise ValueError(f"unsupported campaign command: {command}")
     campaign = campaign.resolve()
     manifest = _read_object(campaign / "CAMPAIGN.json")
+    _reject_legacy_agent_campaign(campaign, manifest)
     campaign_id = str(manifest["campaign_id"])
     goal = load_goal(campaign / "GOAL.yaml")
     with StateStore.open(campaign / "state.sqlite", campaign / "events.jsonl") as store:
@@ -1266,7 +1309,7 @@ def run_campaign_command(command: str, campaign: Path) -> dict[str, Any]:
                     CampaignStatus.WAITING_RESOURCE,
                     idempotency_key=(f"{campaign_id}:waiting-resource:{ordinal}"),
                     payload={
-                        "reason": "executor_lease_unavailable",
+                        "reason": "campaign_resource_unavailable",
                         "detail": str(error),
                     },
                 )

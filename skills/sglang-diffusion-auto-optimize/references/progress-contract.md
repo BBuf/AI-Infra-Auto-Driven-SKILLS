@@ -1,7 +1,6 @@
 # Progress Contract
 
-`PROGRESS.json` is a projection of campaign evidence. It is not an independent
-source of scientific state.
+`PROGRESS.json` projects durable evidence. It is not scientific source data.
 
 ## Performance
 
@@ -10,32 +9,31 @@ performance_progress =
   clamp((best_verified_speedup - 1) / (target_speedup - 1), 0, 1)
 ```
 
-`best_verified_speedup` is the best independently verified isolated or
-integrated full-workload result. Projected kernel gains and unverified
-executor claims do not move the bar.
+`best_verified_speedup` is the best deterministically verified isolated or
+integrated full-workload result. Projected kernel gains and unsubmitted claims
+do not move the bar.
 
 ## Search
 
-Search progress is consumed routed-technique rounds divided by their total
-reviewed round budgets. It measures budget consumption, not time remaining.
+Search progress is submitted scientific rounds divided by the total reviewed
+round budgets. It is not elapsed time or an ETA. Infrastructure failures and
+preflight failures consume no round.
 
 ## Technique Rows
 
-- `best_isolated_e2e_speedup` is a full frozen-workload result for that
-  technique alone.
-- `integrated` means the current integrated recipe contains the technique.
-- `integrated_stack_speedup` is measured for the combined recipe.
-- `marginal_attribution` remains `not_measured` unless a real ablation was run.
+- `suggested` means profile evidence exposed a possible lane.
+- `active` means the current root agent owns its sole work order.
+- `verified` means a complete isolated run passed deterministic gates.
+- `integrated` means the current measured recipe contains it.
+- `unsupported`, `no_gain`, and `blocked` come from explicit dispositions.
+- `marginal_attribution` stays `not_measured` without a real ablation.
 
 Never sum isolated speedups.
 
-## Tokens
+## Interactive Boundary
 
-`TOKEN-USAGE.jsonl` stores one normalized record per Agent invocation and stream
-digest. The progress projection uses only the latest record for each invocation.
+`yielded: true` with `status: AWAITING_AGENT` is not terminal. Read
+`legal_actions` and continue with `claim` or `skip`.
 
-- `available: true, exact: true` means the runtime emitted usage.
-- `available: false` means the runtime did not expose supported usage.
-- Do not estimate missing tokens from text, bytes, elapsed time, or price.
-- Cached input is displayed separately and is not added to `total_tokens` a
-  second time.
+The CLI does not report per-role or per-agent tokens. The AI owner is the
+current conversation, whose token usage is not observable by the controller.

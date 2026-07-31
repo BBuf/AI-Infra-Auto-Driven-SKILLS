@@ -247,7 +247,10 @@ def main(argv: list[str] | None = None) -> int:
                     "status": store.status(campaign_id).value,
                     "submission": submission,
                 }
-        if args.command == "submit":
+        should_advance = args.command == "submit" or (
+            args.command == "skip" and payload["status"] == "INTEGRATING"
+        )
+        if should_advance:
             from .runtime import run_campaign_command
 
             payload["verification"] = run_campaign_command("resume", campaign)

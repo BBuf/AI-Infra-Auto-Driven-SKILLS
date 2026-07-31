@@ -84,6 +84,7 @@ def launch_campaign(
     goal, command_template = normalize_launch_request(request)
     request_payload = request.model_dump(mode="json")
     request_payload.pop("agent", None)
+    request_payload.pop("token_budget", None)
     request_digest = hashlib.sha256(
         json.dumps(request_payload, sort_keys=True, separators=(",", ":")).encode()
     ).hexdigest()
@@ -150,7 +151,6 @@ def launch_campaign(
             "machine": request.machine,
             "model": request.model,
             "sglang_checkout": str(request.sglang_checkout),
-            "token_budget": request.token_budget,
         },
     )
     campaign_id = json.loads((campaign / "CAMPAIGN.json").read_text(encoding="utf-8"))[

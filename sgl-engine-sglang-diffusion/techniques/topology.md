@@ -1,11 +1,11 @@
-# Topology executor scope
+# Topology work-order scope
 
 ## Identity and correctness
 
-`topology` is an optional Sol-Engine lightweight executor with a hard budget of
-**20 candidate rounds**. It losslessly optimizes how the unchanged SGLang
-Diffusion inference program is partitioned, placed, communicated, and scheduled
-within the exact frozen GPU resource envelope.
+`topology` is an optional Sol-Engine-compatible work-order technique with a
+hard budget of **20 candidate rounds**. It losslessly optimizes how the
+unchanged SGLang Diffusion inference program is partitioned, placed,
+communicated, and scheduled within the exact frozen GPU resource envelope.
 
 The global mathematical function and logical work remain unchanged. Preserve
 global logical denoising-step and DiT/model-call counts. Floating-point
