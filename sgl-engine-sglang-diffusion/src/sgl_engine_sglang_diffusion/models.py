@@ -170,6 +170,34 @@ class TechniqueContract(StrictModel):
     scope_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
 
 
+class AgentWorkOrder(StrictModel):
+    schema_version: Literal[1] = 1
+    campaign_id: str = Field(min_length=1)
+    epoch: int = Field(ge=1)
+    technique: str = Field(min_length=1)
+    correctness: CorrectnessMode
+    worktree: Path
+    delivery_path: Path
+    review_path: Path
+    baseline_path: Path
+    profile_path: Path
+    technique_scope: Path
+    source_lock_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    baseline_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    profile_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    technique_contract_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    scientific_rounds_used: int = Field(ge=0)
+    scientific_rounds_remaining: int = Field(ge=0)
+
+
+class TechniqueDisposition(StrictModel):
+    schema_version: Literal[1] = 1
+    technique: str = Field(min_length=1)
+    classification: Literal["unsupported", "no_gain", "blocked"]
+    reason: str = Field(min_length=1)
+    closed: bool
+
+
 class CandidateManifest(StrictModel):
     schema_version: Literal[1] = 1
     candidate_id: str
