@@ -36,7 +36,14 @@ def _review_fixture(tmp_path: Path) -> tuple[Path, CandidateManifest, Path, str]
         candidate_commit=candidate,
         activation={"enabled": True},
         eval_profile={"timing_scope": "frozen"},
-        knowledge_origin=[],
+        knowledge_origin=[
+            {
+                "source": "sglang",
+                "commit": baseline,
+                "path": "kernel.py",
+                "sha256": "a" * 64,
+            }
+        ],
     )
     verdict = worktree / "authenticity.json"
     verdict.write_text('{"overall":"authenticity_only"}\n', encoding="utf-8")

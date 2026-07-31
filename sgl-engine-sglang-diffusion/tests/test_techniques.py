@@ -14,14 +14,14 @@ def test_registry_preserves_sol_techniques_and_modes() -> None:
     assert set(registry.names()) == {
         "kernel",
         "cache",
-        "pisa",
+        "sparse_attention",
         "topology",
         "quantization",
         "token_pruning",
     }
     assert registry["kernel"].correctness == "lossless"
     assert registry["topology"].correctness == "lossless"
-    for name in ("cache", "pisa", "quantization", "token_pruning"):
+    for name in ("cache", "sparse_attention", "quantization", "token_pruning"):
         assert registry[name].correctness == "quality_gated"
 
 
@@ -29,12 +29,14 @@ def test_round_budgets_match_reviewed_contract() -> None:
     registry = TechniqueRegistry.load(ROOT / "techniques" / "registry.toml")
     assert registry["kernel"].round_budget == 40
     assert registry["cache"].round_budget == 20
-    assert registry["pisa"].round_budget == 20
+    assert registry["sparse_attention"].round_budget == 20
     assert registry["topology"].round_budget == 20
     assert registry["quantization"].round_budget == 20
     assert registry["token_pruning"].round_budget == 20
     assert registry["quantization"].origin == "sol-engine-full-adaptation"
     assert registry["token_pruning"].origin == "sol-engine-full-adaptation"
+    for name in ("kernel", "cache", "sparse_attention", "topology"):
+        assert registry[name].origin == "sol-engine-full-search-space"
 
 
 def test_registry_default_pass_excludes_optional_topology() -> None:
@@ -42,7 +44,7 @@ def test_registry_default_pass_excludes_optional_topology() -> None:
     assert registry.default_order == [
         "kernel",
         "cache",
-        "pisa",
+        "sparse_attention",
         "quantization",
         "token_pruning",
     ]
@@ -69,7 +71,7 @@ def test_source_lock_records_reviewed_sol_engine_revision() -> None:
     assert commit == "cee25847afdd34bc656abcca126262200b088dc8"
     assert len(commit) == 40
     assert all(character in "0123456789abcdef" for character in commit)
-    assert source_lock["authoritative_paths"] == [
+    assert source_lock["authoritative_paths"][:7] == [
         "orchestration/prompts/loop_and_gate_contract.md",
         "orchestration/prompts/master.md",
         "orchestration/techniques.toml",
@@ -77,8 +79,19 @@ def test_source_lock_records_reviewed_sol_engine_revision() -> None:
         "workflow/cache_ca/nodes/codex_executor/cache_scope.md",
         "workflow/attention_pa/nodes/codex_executor/attention_scope.md",
         "workflow/topology_ta/nodes/codex_executor/topology_scope.md",
-        "tools/vision/lpips_judge.py",
     ]
+    assert {
+        "search_space/README.md",
+        "search_space/01_cache.md",
+        "search_space/02_token_pruning.md",
+        "search_space/03_quantization.md",
+        "search_space/04_sparse_attention.md",
+        "search_space/05_kernel_fusion.md",
+        "search_space/06_parallel_topology.md",
+        "techniques/candidate_manifest.py",
+        "techniques/compose.py",
+        "tools/vision/lpips_judge.py",
+    }.issubset(source_lock["authoritative_paths"])
     source_hashes = json.loads(
         (ROOT / "contracts" / "sol_engine" / "source-hashes.json").read_text(
             encoding="utf-8"

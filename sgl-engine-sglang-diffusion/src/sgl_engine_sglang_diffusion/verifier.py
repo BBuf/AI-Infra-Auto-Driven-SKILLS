@@ -331,6 +331,12 @@ class DeliveryVerifier:
         except (ValidationError, VerificationError) as error:
             issue("invalid_implementation", str(error))
 
+        if manifest is not None:
+            try:
+                self._verify_knowledge_origins(manifest)
+            except VerificationError as error:
+                issue("invalid_knowledge_origin", str(error))
+
         source_hashes: dict[str, str] = {}
         try:
             source_hash_path = self._required_artifact(
@@ -1104,6 +1110,59 @@ class DeliveryVerifier:
             raise VerificationError(
                 "source hash artifact omits changed files: " + ", ".join(missing)
             )
+
+    def _verify_knowledge_origins(self, manifest: CandidateManifest) -> None:
+        knowledge_path = resolve_inside(
+            self.campaign_artifact_root, Path("KNOWLEDGE.json")
+        )
+        knowledge = self._json_object(knowledge_path)
+        snapshots = knowledge.get("snapshots")
+        if not isinstance(snapshots, dict) or not snapshots:
+            raise VerificationError("KNOWLEDGE.json has no source snapshots")
+
+        loaded: dict[str, dict[str, Any]] = {}
+        for origin in manifest.knowledge_origin:
+            snapshot_value = snapshots.get(origin.source)
+            if not isinstance(snapshot_value, str) or not snapshot_value:
+                raise VerificationError(
+                    f"unknown knowledge source: {origin.source}"
+                )
+            if origin.source not in loaded:
+                index_path = resolve_inside(
+                    self.campaign_artifact_root, Path(snapshot_value)
+                )
+                index = self._json_object(index_path)
+                if index.get("source") != origin.source:
+                    raise VerificationError(
+                        f"knowledge index source mismatch: {origin.source}"
+                    )
+                loaded[origin.source] = index
+            index = loaded[origin.source]
+            if index.get("commit") != origin.commit:
+                raise VerificationError(
+                    f"knowledge commit mismatch for {origin.source}"
+                )
+            entries = index.get("entries")
+            if not isinstance(entries, list):
+                raise VerificationError(
+                    f"knowledge index entries are invalid for {origin.source}"
+                )
+            entry = next(
+                (
+                    item
+                    for item in entries
+                    if isinstance(item, dict) and item.get("path") == origin.path
+                ),
+                None,
+            )
+            if entry is None:
+                raise VerificationError(
+                    f"unknown knowledge path for {origin.source}: {origin.path}"
+                )
+            if entry.get("sha256") != origin.sha256:
+                raise VerificationError(
+                    f"knowledge hash mismatch for {origin.source}:{origin.path}"
+                )
 
     @staticmethod
     def _verify_candidate_commit(

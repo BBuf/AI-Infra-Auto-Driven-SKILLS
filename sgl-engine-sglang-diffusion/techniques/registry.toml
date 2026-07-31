@@ -2,7 +2,7 @@ schema_version = 1
 default_order = [
   "kernel",
   "cache",
-  "pisa",
+  "sparse_attention",
   "quantization",
   "token_pruning",
 ]
@@ -12,28 +12,28 @@ workflow_uid = "kernel_aw"
 scope = "techniques/kernel.md"
 correctness = "lossless"
 round_budget = 40
-origin = "sol-engine-lightweight"
+origin = "sol-engine-full-search-space"
 
 [techniques.cache]
 workflow_uid = "cache_ca"
 scope = "techniques/cache.md"
 correctness = "quality_gated"
 round_budget = 20
-origin = "sol-engine-lightweight"
+origin = "sol-engine-full-search-space"
 
-[techniques.pisa]
+[techniques.sparse_attention]
 workflow_uid = "attention_pa"
-scope = "techniques/pisa.md"
+scope = "techniques/sparse_attention.md"
 correctness = "quality_gated"
 round_budget = 20
-origin = "sol-engine-lightweight"
+origin = "sol-engine-full-search-space"
 
 [techniques.topology]
 workflow_uid = "topology_ta"
 scope = "techniques/topology.md"
 correctness = "lossless"
 round_budget = 20
-origin = "sol-engine-lightweight"
+origin = "sol-engine-full-search-space"
 optional = true
 
 [techniques.quantization]

@@ -77,8 +77,10 @@ class KnowledgeSnapshot:
     @classmethod
     def from_dict(cls, data: dict[str, object]) -> "KnowledgeSnapshot":
         raw_entries = data.get("entries")
-        if not isinstance(raw_entries, list):
-            raise KnowledgeSyncError("knowledge index entries must be a list")
+        if not isinstance(raw_entries, list) or not raw_entries:
+            raise KnowledgeSyncError(
+                "knowledge index entries must be a nonempty list"
+            )
         entries = tuple(
             KnowledgeEntry(
                 path=str(item["path"]),
@@ -246,6 +248,11 @@ def sync_source(
                 headings=headings,
                 symbols=symbols,
             )
+        )
+
+    if not entries:
+        raise KnowledgeSyncError(
+            f"knowledge source {name!r} matched no allowlisted text files"
         )
 
     snapshot = KnowledgeSnapshot(

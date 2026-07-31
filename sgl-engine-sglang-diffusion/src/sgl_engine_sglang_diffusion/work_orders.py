@@ -127,7 +127,15 @@ class WorkOrderManager:
             source_locks_path = self.campaign_dir / "SOURCE-LOCKS.json"
             baseline_path = self.campaign_dir / "BASELINE.json"
             profile_path = self.campaign_dir / "profiles" / "0" / "PROFILE-DIGEST.json"
-            for required in (source_locks_path, baseline_path, profile_path):
+            knowledge_manifest_path = self.campaign_dir / "KNOWLEDGE.json"
+            search_space_path = self.campaign_dir / "SEARCH-SPACE.json"
+            for required in (
+                source_locks_path,
+                baseline_path,
+                profile_path,
+                knowledge_manifest_path,
+                search_space_path,
+            ):
                 if not required.is_file():
                     raise WorkOrderError(
                         f"cannot claim work before required artifact exists: {required}"
@@ -147,10 +155,14 @@ class WorkOrderManager:
                 baseline_path=baseline_path.resolve(),
                 profile_path=profile_path.resolve(),
                 technique_scope=entry.scope.resolve(),
+                knowledge_manifest_path=knowledge_manifest_path.resolve(),
+                search_space_path=search_space_path.resolve(),
                 source_lock_sha256=_sha256_file(source_locks_path),
                 baseline_sha256=_sha256_file(baseline_path),
                 profile_sha256=_sha256_file(profile_path),
                 technique_contract_sha256=_sha256_file(entry.scope),
+                knowledge_manifest_sha256=_sha256_file(knowledge_manifest_path),
+                search_space_sha256=_sha256_file(search_space_path),
                 scientific_rounds_used=used,
                 scientific_rounds_remaining=entry.round_budget - used,
             )
@@ -398,11 +410,66 @@ class WorkOrderManager:
     def _load_work_order(self, epoch: int) -> AgentWorkOrder:
         path = self.campaign_dir / "search" / str(epoch) / "AGENT-WORK.json"
         try:
-            return AgentWorkOrder.model_validate_json(path.read_text(encoding="utf-8"))
+            order = AgentWorkOrder.model_validate_json(
+                path.read_text(encoding="utf-8")
+            )
         except (OSError, ValueError) as error:
             raise WorkOrderError(
                 f"invalid active work order {path}: {error}"
             ) from error
+        self._verify_work_order_bindings(order)
+        return order
+
+    def _verify_work_order_bindings(self, order: AgentWorkOrder) -> None:
+        if order.technique not in self.registry.names():
+            raise WorkOrderError(
+                f"active work-order has unknown technique {order.technique!r}"
+            )
+        bindings = {
+            "source lock": (
+                self.campaign_dir / "SOURCE-LOCKS.json",
+                order.source_lock_sha256,
+            ),
+            "baseline": (order.baseline_path, order.baseline_sha256),
+            "profile": (order.profile_path, order.profile_sha256),
+            "technique contract": (
+                order.technique_scope,
+                order.technique_contract_sha256,
+            ),
+            "knowledge manifest": (
+                order.knowledge_manifest_path,
+                order.knowledge_manifest_sha256,
+            ),
+            "search space": (
+                order.search_space_path,
+                order.search_space_sha256,
+            ),
+        }
+        expected_paths = {
+            "baseline": self.campaign_dir / "BASELINE.json",
+            "profile": self.campaign_dir
+            / "profiles"
+            / "0"
+            / "PROFILE-DIGEST.json",
+            "technique contract": self.registry[order.technique].scope,
+            "knowledge manifest": self.campaign_dir / "KNOWLEDGE.json",
+            "search space": self.campaign_dir / "SEARCH-SPACE.json",
+        }
+        for label, (artifact, expected_digest) in bindings.items():
+            resolved = artifact.resolve()
+            expected_path = expected_paths.get(label)
+            if expected_path is not None and resolved != expected_path.resolve():
+                raise WorkOrderError(
+                    f"active work-order {label} path differs from campaign binding"
+                )
+            if artifact.is_symlink() or not artifact.is_file():
+                raise WorkOrderError(
+                    f"active work-order {label} is not a regular artifact"
+                )
+            if _sha256_file(artifact) != expected_digest:
+                raise WorkOrderError(
+                    f"active work-order {label} hash differs from its binding"
+                )
 
     def _routes(self) -> list[str]:
         value = _read_object(self.campaign_dir / "ROUTES.json")

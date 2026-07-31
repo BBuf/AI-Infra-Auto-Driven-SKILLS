@@ -1,4 +1,39 @@
 {
+  "$defs": {
+    "KnowledgeOrigin": {
+      "additionalProperties": false,
+      "properties": {
+        "commit": {
+          "pattern": "^[0-9a-f]{40}$",
+          "title": "Commit",
+          "type": "string"
+        },
+        "path": {
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "source": {
+          "minLength": 1,
+          "title": "Source",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source",
+        "commit",
+        "path",
+        "sha256"
+      ],
+      "title": "KnowledgeOrigin",
+      "type": "object"
+    }
+  },
   "additionalProperties": false,
   "properties": {
     "activation": {
@@ -33,11 +68,9 @@
     },
     "knowledge_origin": {
       "items": {
-        "additionalProperties": {
-          "type": "string"
-        },
-        "type": "object"
+        "$ref": "#/$defs/KnowledgeOrigin"
       },
+      "minItems": 1,
       "title": "Knowledge Origin",
       "type": "array"
     },

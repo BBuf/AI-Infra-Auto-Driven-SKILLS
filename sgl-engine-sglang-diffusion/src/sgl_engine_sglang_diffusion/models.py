@@ -182,10 +182,14 @@ class AgentWorkOrder(StrictModel):
     baseline_path: Path
     profile_path: Path
     technique_scope: Path
+    knowledge_manifest_path: Path
+    search_space_path: Path
     source_lock_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     baseline_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     profile_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     technique_contract_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    knowledge_manifest_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    search_space_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     scientific_rounds_used: int = Field(ge=0)
     scientific_rounds_remaining: int = Field(ge=0)
 
@@ -198,6 +202,13 @@ class TechniqueDisposition(StrictModel):
     closed: bool
 
 
+class KnowledgeOrigin(StrictModel):
+    source: str = Field(min_length=1)
+    commit: str = Field(pattern=r"^[0-9a-f]{40}$")
+    path: str = Field(min_length=1)
+    sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+
+
 class CandidateManifest(StrictModel):
     schema_version: Literal[1] = 1
     candidate_id: str
@@ -207,7 +218,7 @@ class CandidateManifest(StrictModel):
     candidate_commit: str = Field(pattern=r"^[0-9a-f]{40}$")
     activation: dict[str, Any]
     eval_profile: dict[str, Any]
-    knowledge_origin: list[dict[str, str]]
+    knowledge_origin: list[KnowledgeOrigin] = Field(min_length=1)
 
 
 class IntegratedDelivery(Delivery):

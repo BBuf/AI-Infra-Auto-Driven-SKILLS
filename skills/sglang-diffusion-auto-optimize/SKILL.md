@@ -26,13 +26,18 @@ Keep Sol correctness and quality rules binding. Additional SGLang, FastVideo,
 KDA-Pilot, KernelWiki, profiler, or model-history evidence may suggest a
 hypothesis but may not relax a gate.
 
+Mirror Sol's complete documented and structured candidate space. Distinguish a
+method that is documented or referenced from one that is SGLang-adapted or
+end-to-end validated.
+
 ## Read Before Acting
 
 Read:
 
 - [references/remote-ownership.md](references/remote-ownership.md);
 - [references/progress-contract.md](references/progress-contract.md); and
-- [references/work-order-protocol.md](references/work-order-protocol.md).
+- [references/work-order-protocol.md](references/work-order-protocol.md); and
+- [references/search-space-and-knowledge.md](references/search-space-and-knowledge.md).
 
 Start from
 [references/request-template.yaml](references/request-template.yaml).
@@ -114,11 +119,14 @@ Repeat this loop until a terminal state:
    ```
 
 2. Inspect the frozen baseline, profile, prior failures, verified frontier,
-   hardware capability, and technique dispositions.
+   hardware capability, technique dispositions, bound `SEARCH-SPACE.json`, and
+   `KNOWLEDGE.json`.
 
-3. Choose one evidence-backed hypothesis. Routes are suggestions, not
-   mandatory lanes. Exclude known-inapplicable methods; for example, do not
-   attempt NVFP4 on Hopper.
+3. Read the routed family's complete method/candidate projection. Query the
+   SGLang, Sol, KDA-Pilot, KernelWiki, NCU, and FastVideo snapshots using the
+   knowledge protocol. Choose one evidence-backed hypothesis. Routes are
+   suggestions, not mandatory lanes. Exclude known-inapplicable methods; for
+   example, do not attempt NVFP4 on Hopper.
 
 4. Claim exactly one technique:
 
@@ -137,6 +145,9 @@ Repeat this loop until a terminal state:
    Preserve the timing scope, prompt set, seed, shape, steps, guidance, dtype,
    GPU set, native backend, command receipt, engagement receipt, source hashes,
    and real media.
+
+   Cite exact snapshot source, commit, relative path, and raw SHA-256 values in
+   the implementation manifest's nonempty `knowledge_origin`.
 
 7. Review the actual diff and evidence yourself. Write the required
    `AGENT-REVIEW.json` and, for quality-changing work, review all five prompt
@@ -189,7 +200,9 @@ candidate and triggers a serial remeasurement of the remaining verified
 subset; this selection-only epoch consumes no scientific round.
 `SEARCH_SPACE_EXHAUSTED` is valid only after every suggested technique is
 explicitly closed or has consumed its scientific budget and the best verified
-integrated subset remains below target.
+integrated subset remains below target. Before closing a technique, satisfy its
+full-Sol candidate-coverage requirements; a PISA-only sparse search or a
+three-family-only cache search is incomplete.
 
 ## Integration And Progress
 

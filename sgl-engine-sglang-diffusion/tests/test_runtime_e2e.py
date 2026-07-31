@@ -87,7 +87,84 @@ def _prepare_fake_source(repository: Path) -> None:
     (repository / "search/plan_eval.py").write_text(
         "raise SystemExit('quality evaluator is not used by this lossless test')\n"
     )
+    search_documents = {
+        "01_cache.md": "- Whole-step reuse: cache output.\n",
+        "02_token_pruning.md": "- Token pruning: remove tokens.\n",
+        "03_quantization.md": "### 1. Selective FP8\n",
+        "04_sparse_attention.md": "### 1. Piecewise PISA\n",
+        "05_kernel_fusion.md": "### 1. GEMM fusion\n",
+        "06_parallel_topology.md": "- Context parallelism: shard sequence.\n",
+    }
+    for name, methods in search_documents.items():
+        document = repository / "search_space" / name
+        document.parent.mkdir(parents=True, exist_ok=True)
+        document.write_text(
+            f"# Search\n\n## Method Families\n\n{methods}\n## Search Axes\n"
+        )
+    (repository / "search_space/README.md").write_text("# Search Space\n")
+    transform = repository / "techniques/transforms/sparse_attention.py"
+    transform.parent.mkdir(parents=True)
+    transform.write_text('@register_transform("sparse_attention")\n')
+    candidate = repository / "candidates/sparse_attention/piecewise.toml"
+    candidate.parent.mkdir(parents=True)
+    candidate.write_text(
+        """
+kind = "methodology"
+purpose = "frontier"
+description = "PISA"
+model_profile = "fake"
+[id]
+name = "piecewise"
+dimension = "sparse_attention"
+family = "pisa"
+[references.local]
+generic_impl = "techniques/transforms/sparse_attention.py"
+[requirements]
+capabilities = ["has_attention_backend_switch"]
+[efficiency]
+kind = "build_transform"
+name = "sparse_attention"
+[verification]
+mode = "gpu"
+quality_gate = "baseline-comparable"
+"""
+    )
+
+    submodules: list[tuple[str, str]] = []
+    for path, marker in (
+        ("external/KernelWiki", "Kernel knowledge"),
+        ("external/ncu-report-skill", "NCU knowledge"),
+        ("external/warp-specialization-report-skill", "Warp knowledge"),
+    ):
+        child = repository.parent / path.replace("/", "-")
+        child.mkdir()
+        run(["git", "init"], cwd=child)
+        run(["git", "config", "user.email", "test@example.invalid"], cwd=child)
+        run(["git", "config", "user.name", "Test"], cwd=child)
+        (child / "SKILL.md").write_text(f"# {marker}\n")
+        run(["git", "add", "SKILL.md"], cwd=child)
+        run(["git", "commit", "-m", "knowledge"], cwd=child)
+        commit = run(["git", "rev-parse", "HEAD"], cwd=child).stdout.strip()
+        submodules.append((path, commit))
+    (repository / ".gitmodules").write_text(
+        "".join(
+            f'[submodule "{path}"]\n\tpath = {path}\n'
+            f"\turl = {repository.parent / path.replace('/', '-')}\n"
+            for path, _ in submodules
+        )
+    )
     run(["git", "add", "."], cwd=repository)
+    for path, commit in submodules:
+        run(
+            [
+                "git",
+                "update-index",
+                "--add",
+                "--cacheinfo",
+                f"160000,{commit},{path}",
+            ],
+            cwd=repository,
+        )
     run(["git", "commit", "-m", "fake SGLang runtime"], cwd=repository)
     run(["git", "branch", "-M", "main"], cwd=repository)
 
@@ -154,6 +231,27 @@ def test_runtime_yields_to_one_root_agent_and_rejects_one_submission(
     assert (campaign / "BASELINE.json").is_file()
     assert (campaign / "profiles/0/PROFILE-DIGEST.json").is_file()
     assert (campaign / "ROUTES.json").is_file()
+    assert (campaign / "SEARCH-SPACE.json").is_file()
+    source_locks = json.loads((campaign / "SOURCE-LOCKS.json").read_text())
+    assert {
+        "sglang",
+        "sol_engine",
+        "fastvideo",
+        "kda_pilot",
+        "kernel_wiki",
+        "ncu_report_skill",
+        "warp_specialization_report_skill",
+    }.issubset(source_locks)
+    knowledge = json.loads((campaign / "KNOWLEDGE.json").read_text())
+    assert set(knowledge["snapshots"]) == {
+        "sglang",
+        "sol_engine",
+        "fastvideo",
+        "kda_pilot",
+        "kernel_wiki",
+        "ncu_report_skill",
+        "warp_specialization_report_skill",
+    }
     assert (campaign / "baseline-invocations.txt").read_text() == "1"
     assert not (campaign / "executors").exists()
     assert not list(campaign.rglob("*MASTER*"))
@@ -163,7 +261,12 @@ def test_runtime_yields_to_one_root_agent_and_rejects_one_submission(
     assert (campaign / "baseline-invocations.txt").read_text() == "1"
 
     manifest = json.loads((campaign / "CAMPAIGN.json").read_text())
-    routes = json.loads((campaign / "ROUTES.json").read_text())["routes"]
+    route_artifact = json.loads((campaign / "ROUTES.json").read_text())
+    routes = route_artifact["routes"]
+    for route in routes:
+        search_space = route_artifact["evidence"][route]["search_space"]
+        assert search_space["method_ids"]
+        assert search_space["review_items"]
     assert main(["work", "--campaign", str(campaign), "--json"]) == 0
     work = json.loads(capsys.readouterr().out)
     assert work["execution_mode"] == "interactive_single_agent"

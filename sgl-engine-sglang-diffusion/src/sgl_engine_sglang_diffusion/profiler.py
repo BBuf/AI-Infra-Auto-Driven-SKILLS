@@ -183,7 +183,12 @@ class TechniqueRouter:
                 "knowledge": ["sglang-distributed-runtime"],
             }
         if allow_quality_gated:
-            for technique in ("cache", "pisa", "quantization", "token_pruning"):
+            for technique in (
+                "cache",
+                "sparse_attention",
+                "quantization",
+                "token_pruning",
+            ):
                 routes.append(technique)
                 self.last_evidence[technique] = {
                     "hotspots": hotspots,

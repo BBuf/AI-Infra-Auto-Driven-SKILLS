@@ -22,6 +22,12 @@ baseline:
 source:
   sglang_repo: <verified-sglang-origin-url>
   sglang_ref: <full-fetched-main-commit>
+  sol_engine_repo: https://github.com/NVlabs/Sana.git
+  sol_engine_ref: cee25847afdd34bc656abcca126262200b088dc8
+  fastvideo_repo: https://github.com/hao-ai-lab/FastVideo.git
+  fastvideo_ref: main
+  kda_pilot_repo: https://github.com/BBuf/KDA-Pilot.git
+  kda_pilot_ref: main
 
 run_root: <absolute-persistent-campaign-root>
 idempotency_key: <stable-machine-model-workload-target-key>

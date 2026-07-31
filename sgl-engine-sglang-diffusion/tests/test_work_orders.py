@@ -37,6 +37,11 @@ def _manager(
         campaign / "profiles/0/PROFILE-DIGEST.json",
         {"stage_ms": {"denoise": 9000.0}},
     )
+    _write_json(campaign / "KNOWLEDGE.json", {"schema_version": 1})
+    _write_json(
+        campaign / "SEARCH-SPACE.json",
+        {"schema_version": 1, "families": {}},
+    )
     _write_json(campaign / "ROUTES.json", {"schema_version": 1, "routes": routes})
     store = StateStore.open(campaign / "state.sqlite", campaign / "events.jsonl")
     store.create_campaign("campaign")
@@ -68,11 +73,30 @@ def test_claim_creates_one_exclusive_detached_worktree(
     assert order.technique == "kernel"
     assert order.worktree.is_dir()
     assert order.delivery_path == order.worktree / "DELIVERY.json"
+    assert order.knowledge_manifest_path == campaign / "KNOWLEDGE.json"
+    assert order.search_space_path == campaign / "SEARCH-SPACE.json"
+    assert len(order.knowledge_manifest_sha256) == 64
+    assert len(order.search_space_sha256) == 64
     assert (campaign / "search/1/AGENT-WORK.json").is_file()
     assert store.status("campaign") is CampaignStatus.SEARCHING
     assert store.epoch("campaign") == 1
     with pytest.raises(WorkOrderError, match="requires AWAITING_AGENT"):
         manager.claim("cache")
+    store.close()
+
+
+def test_active_work_order_rejects_bound_search_space_drift(
+    tmp_path: Path, fake_git_repo: Path
+) -> None:
+    manager, store, campaign = _manager(tmp_path, fake_git_repo)
+    manager.claim("kernel")
+    _write_json(
+        campaign / "SEARCH-SPACE.json",
+        {"schema_version": 1, "families": {"tampered": {}}},
+    )
+
+    with pytest.raises(WorkOrderError, match="search space hash differs"):
+        manager.active_work_order()
     store.close()
 
 

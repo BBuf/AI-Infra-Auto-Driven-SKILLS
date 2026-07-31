@@ -31,7 +31,7 @@ _TECHNIQUE_ORDER = {
     "topology": 0,
     "kernel": 1,
     "cache": 2,
-    "pisa": 3,
+    "sparse_attention": 3,
     "quantization": 4,
     "token_pruning": 5,
 }

@@ -7,6 +7,7 @@ from pathlib import Path
 import pytest
 
 from sgl_engine_sglang_diffusion.knowledge import (
+    KnowledgeSnapshot,
     KnowledgeSyncError,
     check_contract_hashes,
     load_registry,
@@ -145,11 +146,53 @@ def test_snapshot_refuses_different_commit_in_existing_output(
 def test_load_registry_exposes_expected_sources() -> None:
     root = Path(__file__).resolve().parents[1]
     registry = load_registry(root / "knowledge" / "registry.toml")
-    assert set(registry) == {"sglang", "fastvideo", "kda_pilot"}
-    assert any("KernelWiki" in path for path in registry["kda_pilot"])
+    assert set(registry) == {
+        "sglang",
+        "sol_engine",
+        "fastvideo",
+        "kda_pilot",
+        "kernel_wiki",
+        "ncu_report_skill",
+        "warp_specialization_report_skill",
+    }
+    assert ".claude/skills/add-jit-kernel/**" in registry["sglang"]
+    assert "python/sglang/multimodal_gen/.claude/skills/**" in registry["sglang"]
+    assert "search_space/**" in registry["sol_engine"]
+    assert "candidates/**" in registry["sol_engine"]
+    assert "techniques/**" in registry["sol_engine"]
+    assert "diffusion/**" in registry["kda_pilot"]
+    assert "sources/**" in registry["kernel_wiki"]
+    assert "reference/**" in registry["ncu_report_skill"]
     assert any("kernels/ops/diffusion" in path for path in registry["sglang"])
     assert any("kernels/aot/CMakeLists.txt" in path for path in registry["sglang"])
     assert any("kernels/fused_op.py" in path for path in registry["sglang"])
+
+
+def test_sync_rejects_empty_required_source(tmp_path: Path) -> None:
+    repo = _init_repo(tmp_path / "repo")
+    (repo / "unrelated.txt").write_text("not selected\n")
+    commit = _commit_all(repo, "empty")
+
+    with pytest.raises(KnowledgeSyncError, match="matched no allowlisted"):
+        sync_source(
+            name="required",
+            checkout=repo,
+            commit=commit,
+            patterns=["missing/**"],
+            output_dir=tmp_path / "out",
+        )
+
+
+def test_snapshot_rejects_empty_existing_index() -> None:
+    with pytest.raises(KnowledgeSyncError, match="nonempty"):
+        KnowledgeSnapshot.from_dict(
+            {
+                "schema_version": 1,
+                "source": "required",
+                "commit": "a" * 40,
+                "entries": [],
+            }
+        )
 
 
 def test_contract_hash_check_reports_drift(tmp_path: Path) -> None:

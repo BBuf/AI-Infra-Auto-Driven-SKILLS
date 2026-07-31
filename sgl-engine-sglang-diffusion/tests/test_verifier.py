@@ -67,6 +67,33 @@ def evidence(tmp_path: Path) -> dict[str, Any]:
     run(["git", "add", "README.md"], cwd=worktree)
     run(["git", "commit", "-m", "base"], cwd=worktree)
     base_commit = run(["git", "rev-parse", "HEAD"], cwd=worktree).stdout.strip()
+    knowledge_sha = hashlib.sha256(b"base\n").hexdigest()
+    knowledge_index = campaign / "knowledge/sglang" / base_commit / "index.json"
+    knowledge_index.parent.mkdir(parents=True)
+    knowledge_index.write_text(
+        json.dumps(
+            {
+                "schema_version": 1,
+                "source": "sglang",
+                "commit": base_commit,
+                "entries": [
+                    {
+                        "path": "README.md",
+                        "sha256": knowledge_sha,
+                        "reference_sha256": knowledge_sha,
+                    }
+                ],
+            }
+        )
+    )
+    (campaign / "KNOWLEDGE.json").write_text(
+        json.dumps(
+            {
+                "schema_version": 1,
+                "snapshots": {"sglang": str(knowledge_index)},
+            }
+        )
+    )
     baseline_run = campaign / "baseline" / "run"
     baseline_run.mkdir(parents=True)
     baseline_frames = campaign / "baseline" / "frames"
@@ -120,7 +147,14 @@ def evidence(tmp_path: Path) -> dict[str, Any]:
         "candidate_commit": candidate_commit,
         "activation": {"enable_agent_kernel": True},
         "eval_profile": {"timing_scope": "frozen_e2e"},
-        "knowledge_origin": [],
+        "knowledge_origin": [
+            {
+                "source": "sglang",
+                "commit": base_commit,
+                "path": "README.md",
+                "sha256": knowledge_sha,
+            }
+        ],
     }
     (run_dir / "implementation-manifest.json").write_text(json.dumps(manifest))
     source_hashes = {relative_source: digest}
@@ -449,6 +483,42 @@ def test_rejects_source_hash_mismatch(
     )
     assert not result.accepted
     assert "invalid_source_hash" in {finding.code for finding in result.findings}
+
+
+@pytest.mark.parametrize(
+    ("field", "value", "message"),
+    [
+        ("source", "unknown", "unknown knowledge source"),
+        ("commit", "f" * 40, "knowledge commit mismatch"),
+        ("path", "missing.py", "unknown knowledge path"),
+        ("sha256", "f" * 64, "knowledge hash mismatch"),
+    ],
+)
+def test_rejects_fabricated_knowledge_provenance(
+    evidence: dict[str, Any],
+    registry: TechniqueRegistry,
+    field: str,
+    value: str,
+    message: str,
+) -> None:
+    delivery = deepcopy(evidence["delivery"])
+    manifest = delivery["frontier_points"][0]["implementation_manifest"]
+    manifest["knowledge_origin"][0][field] = value
+    (evidence["run_dir"] / "implementation-manifest.json").write_text(
+        json.dumps(manifest)
+    )
+
+    result = make_verifier(evidence, registry).verify(
+        write_delivery(evidence, delivery),
+        technique="kernel",
+        candidate_worktree=evidence["worktree"],
+    )
+
+    assert not result.accepted
+    finding = next(
+        item for item in result.findings if item.code == "invalid_knowledge_origin"
+    )
+    assert message in finding.message
 
 
 def test_rejects_zero_engagement_as_noop(

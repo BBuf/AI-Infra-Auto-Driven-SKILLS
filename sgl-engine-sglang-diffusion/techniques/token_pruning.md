@@ -12,6 +12,12 @@ This is a quality-gated lane. It reduces work on low-salience image/video tokens
 in selected layers and denoising steps, then restores the full positional and
 shape contract before downstream consumers.
 
+Read every method and candidate in the `token_pruning` projection of the bound
+`SEARCH-SPACE.json`, then query locked SGLang model/layout source, Sol
+implementations, and transferable FastVideo/KDA evidence. Preserve the
+documented, referenced, adapted, and validated status of each direction and
+cite exact knowledge origins in every implementation manifest.
+
 ## Method families and boundaries
 
 Profile and map the live token layout before selecting a pruning site. Preserve
@@ -25,10 +31,15 @@ shape-stable compute masking, cluster representatives, and dynamic
 layer/step/region density. Tune criterion, keep/prune ratio, layer and timestep
 schedule, refresh policy, reconstruction/restoration, and dense fallback.
 
-Do not claim cache-family reuse, PISA attention approximation, quantization,
+Do not claim cache-family reuse, sparse-attention approximation, quantization,
 kernel fusion, topology, scheduler, step-count, resolution, prompt, or decode
 gains. Token-wise feature reuse belongs here only when token selection is the
 primary mechanism and is labeled explicitly.
+
+Before closing the lane as `no_gain`, compare at least five applicable,
+distinct reduction families: direct pruning, merging, compute masking,
+region/dynamics-aware selection, and one of cluster, context, token-wise cache,
+or dynamic-density policies. Preflight failures consume no scientific round.
 
 ## Required full-workload gate
 

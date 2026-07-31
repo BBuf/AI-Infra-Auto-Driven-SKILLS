@@ -13,6 +13,13 @@ activations, attention, and linear paths, including NVFP4, diffusion-aware PTQ,
 SVDQuant/Nunchaku, SageAttention, and ModelOpt FP8. Uniform low-bit conversion
 without profiling and sensitivity evidence is not the objective.
 
+Read the `quantization` projection in the bound `SEARCH-SPACE.json`. Its
+structured Sol candidates are NVFP4-focused, while the wider locked Sol site
+documentation and SGLang knowledge also expose diffusion PTQ, ModelOpt FP8,
+SVDQuant/Nunchaku, and SageAttention directions. Preserve the distinction
+between documented, referenced, SGLang-adapted, and end-to-end validated
+methods. Cite exact knowledge origins in every implementation manifest.
+
 ## Search and ownership
 
 Run a hardware/runtime preflight before consuming candidate rounds. Record GPU
@@ -27,7 +34,7 @@ padding, calibration, recipe flags, and fused epilogues. Early and late
 denoising steps and model boundary layers are expected sensitivity probes, not
 preselected answers.
 
-Do not claim unrelated cache, PISA, token-pruning, topology, scheduler,
+Do not claim unrelated cache, sparse-attention, token-pruning, topology, scheduler,
 step-count, resolution, or prompt gains. Kernel work may implement the
 quantized primitive, but the quality/performance claim and activation remain
 owned by this lane.

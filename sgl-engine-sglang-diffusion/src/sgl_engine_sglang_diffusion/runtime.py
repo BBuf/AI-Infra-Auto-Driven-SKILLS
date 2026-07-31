@@ -41,7 +41,8 @@ from .process import run
 from .profiler import Profiler, TechniqueRouter
 from .request import FrozenBenchmarkCommand
 from .review import SameAgentReviewValidator
-from .sources import SourceManager
+from .search_space import build_sol_search_space_catalog
+from .sources import SourceManager, derive_submodule_sources
 from .state import LeaseUnavailable, RECOVERABLE_STATUSES, StateStore
 from .techniques import TechniqueRegistry
 from .work_orders import WorkOrderManager
@@ -52,7 +53,13 @@ class CampaignRuntimeError(RuntimeError):
 
 
 _PACKAGE_ROOT = Path(__file__).resolve().parents[2]
-_SOURCE_NAMES = ("sglang", "sol_engine", "fastvideo", "kda_pilot")
+_PRIMARY_SOURCE_NAMES = ("sglang", "sol_engine", "fastvideo", "kda_pilot")
+_KDA_SKILL_SUBMODULES = {
+    "external/KernelWiki": "kernel_wiki",
+    "external/ncu-report-skill": "ncu_report_skill",
+    "external/warp-specialization-report-skill": "warp_specialization_report_skill",
+}
+_SOURCE_NAMES = _PRIMARY_SOURCE_NAMES + tuple(_KDA_SKILL_SUBMODULES.values())
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 
 
@@ -74,6 +81,49 @@ def _read_object(path: Path) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise CampaignRuntimeError(f"JSON artifact must contain an object: {path}")
     return value
+
+
+def _attach_search_space_evidence(
+    evidence: dict[str, dict[str, Any]],
+    *,
+    catalog: Mapping[str, Any],
+    routes: Sequence[str],
+) -> None:
+    families = catalog.get("families")
+    if not isinstance(families, dict):
+        raise CampaignRuntimeError("SEARCH-SPACE.json has no family catalog")
+    for route in routes:
+        family = families.get(route)
+        if not isinstance(family, dict):
+            raise CampaignRuntimeError(
+                f"SEARCH-SPACE.json has no routed family {route!r}"
+            )
+        methods = family.get("methods")
+        candidates = family.get("candidates")
+        review_items = family.get("review_items")
+        if (
+            not isinstance(methods, list)
+            or not methods
+            or not isinstance(candidates, list)
+            or not isinstance(review_items, list)
+            or not review_items
+        ):
+            raise CampaignRuntimeError(
+                f"SEARCH-SPACE.json has incomplete family {route!r}"
+            )
+        evidence.setdefault(route, {})["search_space"] = {
+            "method_ids": [
+                str(item["id"])
+                for item in methods
+                if isinstance(item, dict) and item.get("id")
+            ],
+            "candidate_ids": [
+                str(item["id"])
+                for item in candidates
+                if isinstance(item, dict) and item.get("id")
+            ],
+            "review_items": [str(item) for item in review_items],
+        }
 
 
 def _reject_legacy_agent_campaign(
@@ -609,6 +659,11 @@ class FileCampaignHooks:
         locks = self._ensure_source_locks()
         worktrees = self._ensure_source_worktrees(locks)
         self._sync_knowledge(locks, worktrees)
+        build_sol_search_space_catalog(
+            sol_checkout=worktrees["sol_engine"],
+            sol_commit=locks["sol_engine"].commit,
+            output_path=self.campaign_dir / "SEARCH-SPACE.json",
+        )
 
         baseline_path = self.campaign_dir / "BASELINE.json"
         if baseline_path.is_file():
@@ -665,6 +720,12 @@ class FileCampaignHooks:
             raise CampaignRuntimeError(
                 "router selected unregistered techniques: " + ", ".join(sorted(unknown))
             )
+        catalog = _read_object(self.campaign_dir / "SEARCH-SPACE.json")
+        _attach_search_space_evidence(
+            router.last_evidence,
+            catalog=catalog,
+            routes=routes,
+        )
         _atomic_json(
             route_path,
             {
@@ -1077,6 +1138,15 @@ class FileCampaignHooks:
         locks: dict[str, SourceLock] = {}
         for name, (repository, requested_ref) in _source_specs(self.goal).items():
             locks[name] = self.source_manager.lock(name, repository, requested_ref)
+        derived = derive_submodule_sources(
+            self.source_manager,
+            locks["kda_pilot"],
+            _KDA_SKILL_SUBMODULES,
+        )
+        for name, spec in derived.items():
+            locks[name] = self.source_manager.lock(
+                name, spec.repository, spec.commit
+            )
         _validate_sol_contract(locks["sol_engine"])
         _atomic_json(
             path,
@@ -1089,15 +1159,39 @@ class FileCampaignHooks:
 
     def _load_locks(self) -> dict[str, SourceLock]:
         value = _read_object(self.campaign_dir / "SOURCE-LOCKS.json")
-        locks = {name: SourceLock.model_validate(value[name]) for name in _SOURCE_NAMES}
-        _validate_sol_contract(locks["sol_engine"])
+        missing = [name for name in _SOURCE_NAMES if name not in value]
+        if missing:
+            raise CampaignRuntimeError(
+                "SOURCE-LOCKS.json is missing required sources: "
+                + ", ".join(missing)
+            )
+        locks = {
+            name: SourceLock.model_validate(value[name]) for name in _SOURCE_NAMES
+        }
         expected = _source_specs(self.goal)
-        for name, lock in locks.items():
+        for name in _PRIMARY_SOURCE_NAMES:
+            lock = locks[name]
             repository, requested_ref = expected[name]
             if lock.repository != repository or lock.requested_ref != requested_ref:
                 raise CampaignRuntimeError(
                     f"source lock {name} differs from frozen GOAL.yaml"
                 )
+        derived = derive_submodule_sources(
+            self.source_manager,
+            locks["kda_pilot"],
+            _KDA_SKILL_SUBMODULES,
+        )
+        for name, spec in derived.items():
+            lock = locks[name]
+            if (
+                lock.repository != spec.repository
+                or lock.requested_ref != spec.commit
+                or lock.commit != spec.commit
+            ):
+                raise CampaignRuntimeError(
+                    f"source lock {name} differs from the locked KDA gitlink"
+                )
+        _validate_sol_contract(locks["sol_engine"])
         return locks
 
     def _ensure_source_worktrees(

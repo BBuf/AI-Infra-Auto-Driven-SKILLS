@@ -5,7 +5,10 @@ from pathlib import Path
 import pytest
 
 from sgl_engine_sglang_diffusion.process import run
-from sgl_engine_sglang_diffusion.sources import SourceManager
+from sgl_engine_sglang_diffusion.sources import (
+    SourceManager,
+    derive_submodule_sources,
+)
 
 pytest_plugins = ("helpers",)
 
@@ -106,3 +109,46 @@ def test_old_lock_remains_materializable_after_a_new_lock(
     assert run(["git", "rev-parse", "HEAD"], cwd=old_worktree).stdout.strip() == (
         old_lock.commit
     )
+
+
+def test_derive_submodule_sources_uses_exact_parent_gitlinks(
+    fake_git_repo: Path, tmp_path: Path
+) -> None:
+    child = tmp_path / "kernel-wiki"
+    child.mkdir()
+    run(["git", "init"], cwd=child)
+    run(["git", "config", "user.email", "tests@example.invalid"], cwd=child)
+    run(["git", "config", "user.name", "Test Author"], cwd=child)
+    (child / "SKILL.md").write_text("# Kernel knowledge\n")
+    run(["git", "add", "SKILL.md"], cwd=child)
+    run(["git", "commit", "-m", "skill"], cwd=child)
+    child_commit = run(["git", "rev-parse", "HEAD"], cwd=child).stdout.strip()
+
+    (fake_git_repo / ".gitmodules").write_text(
+        '[submodule "external/KernelWiki"]\n'
+        "\tpath = external/KernelWiki\n"
+        f"\turl = {child}\n"
+    )
+    run(["git", "add", ".gitmodules"], cwd=fake_git_repo)
+    run(
+        [
+            "git",
+            "update-index",
+            "--add",
+            "--cacheinfo",
+            f"160000,{child_commit},external/KernelWiki",
+        ],
+        cwd=fake_git_repo,
+    )
+    run(["git", "commit", "-m", "pin kernel knowledge"], cwd=fake_git_repo)
+
+    manager = SourceManager(tmp_path / "sources")
+    parent = manager.lock("kda_pilot", str(fake_git_repo), "main")
+    specs = derive_submodule_sources(
+        manager,
+        parent,
+        {"external/KernelWiki": "kernel_wiki"},
+    )
+
+    assert specs["kernel_wiki"].commit == child_commit
+    assert specs["kernel_wiki"].repository == str(child)

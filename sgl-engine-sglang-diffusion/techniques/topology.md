@@ -28,10 +28,15 @@ bottleneck per candidate. In scope are:
 - exact collective or P2P scheduling, chunking, prefetch, and overlap when
   covered by the frozen timing scope.
 
+Read the `topology` projection in the bound `SEARCH-SPACE.json`, the locked
+SGLang distributed source and distributed-debugging skills, and relevant
+KDA/KernelWiki evidence before choosing a topology. Cite exact knowledge
+origins in every implementation manifest.
+
 Kernel owns local backend, fusion, compilation, and local kernels. Cache owns
-cross-step approximation, PISA owns attention approximation, quantization owns
-precision reduction, and token pruning owns reduced token work. Preserve the
-frozen GPU count and dtype policy.
+cross-step approximation, sparse attention owns attention approximation,
+quantization owns precision reduction, and token pruning owns reduced token
+work. Preserve the frozen GPU count and dtype policy.
 
 ## Candidate and evidence contract
 

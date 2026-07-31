@@ -20,8 +20,13 @@ sgl-diffusion-engine skip --campaign <campaign> --technique <name> \
 ```
 
 `claim` returns absolute paths for `worktree`, `delivery_path`, `review_path`,
-the frozen baseline/profile, and the technique scope. It also returns SHA-256
-bindings and remaining scientific rounds.
+the frozen baseline/profile, the technique scope, `KNOWLEDGE.json`, and
+`SEARCH-SPACE.json`. It also returns SHA-256 bindings and remaining scientific
+rounds.
+
+Before editing, verify those hashes, read the selected family projection, and
+query only relevant files from the bound knowledge snapshot indices. Follow
+[search-space-and-knowledge.md](search-space-and-knowledge.md).
 
 ## Same-Agent Review
 
@@ -88,6 +93,23 @@ Set `visual_review.required` to `true`, `prompt_count` to `5`, and bind the
 
 Do not call this independent review. The same root agent implemented and
 reviewed the candidate; deterministic hashing makes that fact auditable.
+
+Every durable `implementation-manifest.json` includes a nonempty
+`knowledge_origin`:
+
+```json
+[
+  {
+    "source": "sglang",
+    "commit": "40-lowercase-hex",
+    "path": "python/sglang/relative/source.py",
+    "sha256": "64-lowercase-hex"
+  }
+]
+```
+
+Use exact values from a snapshot index. The verifier resolves every citation
+through the bound `KNOWLEDGE.json`.
 
 ## Submission Integrity
 

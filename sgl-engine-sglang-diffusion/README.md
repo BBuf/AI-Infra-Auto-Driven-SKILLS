@@ -13,8 +13,11 @@ Its `AWAITING_AGENT` state is a deliberate boundary at which the current
 conversation reads evidence and continues the campaign.
 
 The verification contract remains compatible with the reviewed Sol-Engine
-correctness rules. Additional SGLang, FastVideo, KDA-Pilot, profiler, or model
-history evidence may suggest a hypothesis but cannot weaken a gate.
+correctness rules. The Controller also mirrors Sol's six-family search space,
+structured candidates, recipes, and technique implementation references.
+Locked SGLang, FastVideo, KDA-Pilot, KernelWiki, NCU, warp-specialization,
+profiler, or model-history evidence may suggest a hypothesis but cannot weaken
+a gate.
 
 ## Why the flow is serial
 
@@ -31,6 +34,26 @@ integration barrier. This implementation instead permits:
 Routes are suggestions rather than required parallel lanes. A rejection
 returns to `AWAITING_AGENT`; it does not terminate the campaign. Repeated
 failure signatures close only the affected hypothesis.
+
+## Search space and knowledge
+
+Deterministic setup creates two bound artifacts before the baseline:
+
+- `SEARCH-SPACE.json` normalizes the locked Sol revision into kernel, cache,
+  sparse-attention, quantization, token-pruning, and topology families. It
+  preserves method directions, structured candidate requirements,
+  model-specific recipes, site documentation, and registered implementations.
+- `KNOWLEDGE.json` points to commit-locked, per-file-hashed text snapshots from
+  Sol, SGLang, FastVideo, KDA-Pilot, KernelWiki, the NCU report skill, and the
+  warp-specialization skill.
+
+KDA's three skill submodules receive independent locks at the exact gitlink
+commits stored by the locked KDA revision. They are not treated as files owned
+by the parent commit.
+
+The catalog records opportunities, not results. A method moves through
+`documented -> referenced -> adapted -> validated`; only the last state has a
+passing SGLang end-to-end result.
 
 ## Install
 
@@ -109,11 +132,14 @@ sgl-diffusion-engine claim \
 - the absolute worktree and required `DELIVERY.json` path;
 - the required `AGENT-REVIEW.json` path;
 - hashes of the frozen source, baseline, profile, and technique contract; and
+- bound paths and hashes for `KNOWLEDGE.json` and `SEARCH-SPACE.json`; and
 - scientific rounds used and remaining.
 
 The current root agent edits the returned worktree, commits the candidate,
 runs the complete frozen workload, inspects the diff and evidence, and writes
-the same-agent review. It then submits the exact delivery path:
+the same-agent review. Every implementation manifest cites at least one exact
+source, commit, path, and raw SHA-256 from a bound knowledge index. It then
+submits the exact delivery path:
 
 ```bash
 sgl-diffusion-engine submit \
@@ -165,8 +191,10 @@ disconnects, preflight dependency failures, launch failures before model
 execution, and malformed metadata without a measured run consume no round.
 
 The search reaches `SEARCH_SPACE_EXHAUSTED` only after every routed suggestion
-is explicitly closed or consumes its scientific budget. A performance plateau
-is not a proof of impossibility. `UNREACHABLE_CERTIFIED` requires a
+is explicitly closed or consumes its scientific budget and its complete
+family-level Sol coverage requirement was reviewed. A PISA-only sparse search
+or a three-family-only cache search is incomplete. A performance plateau is
+not a proof of impossibility. `UNREACHABLE_CERTIFIED` requires a
 deterministically checkable lower-bound certificate.
 
 ## Verification and integration
@@ -184,7 +212,7 @@ The correctness branches are deliberately asymmetric:
 | Technique | Mode | Required gate |
 | --- | --- | --- |
 | kernel, topology | lossless | Unchanged global steps and DiT calls, unchanged logical work, method/code review, authentic real media. |
-| cache, PISA, quantization, token pruning | quality-gated | Full workload, positive engagement, no fallback, aligned LPIPS, and five-prompt same-agent visual review. |
+| cache, sparse attention, quantization, token pruning | quality-gated | Full workload, positive engagement, no fallback, aligned LPIPS, and five-prompt same-agent visual review. |
 
 Only verified candidates with measured speedup greater than `1.0x` enter the
 integration subset. Integration remeasures the composed stack; isolated
@@ -250,6 +278,8 @@ runs/<campaign-id>/
 ├── CAMPAIGN.json
 ├── GOAL.yaml
 ├── SOURCE-LOCKS.json
+├── KNOWLEDGE.json
+├── SEARCH-SPACE.json
 ├── BASELINE-COMMAND.json
 ├── BASELINE.json
 ├── ROUTES.json
@@ -258,6 +288,9 @@ runs/<campaign-id>/
 ├── PROGRESS.json
 ├── state.sqlite
 ├── events.jsonl
+├── knowledge/<source>/<commit>/
+│   ├── index.json
+│   └── references/
 ├── profiles/0/PROFILE-DIGEST.json
 ├── search/<epoch>/
 │   ├── AGENT-WORK.json
