@@ -1,4 +1,4 @@
 interface:
   display_name: "SGLang Diffusion Auto-Optimize"
-  short_description: "Search Sol-complete diffusion optimizations with one agent"
-  default_prompt: "Use $sglang-diffusion-auto-optimize to search the full locked Sol optimization space plus SGLang and KDA kernel knowledge in this root-agent conversation until the measured target or a reviewed terminal result."
+  short_description: "Search full diffusion optimizations with one agent"
+  default_prompt: "Use $sglang-diffusion-auto-optimize to search the bundled optimization space plus SGLang and KDA kernel knowledge in this root-agent conversation until the measured target or a reviewed terminal result."

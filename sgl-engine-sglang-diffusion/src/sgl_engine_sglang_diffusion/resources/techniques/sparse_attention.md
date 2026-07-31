@@ -2,12 +2,12 @@
 
 ## Identity and complete method space
 
-`sparse_attention` owns Sol-Engine's complete quality-gated, training-free
-sparse-attention space and has a hard budget of **20 candidate rounds**. PISA
-is one candidate family, not the boundary of this lane.
+`sparse_attention` owns the bundled quality-gated, training-free
+sparse-attention space and has a hard budget of **20 candidate rounds**.
+Piecewise sparse attention is one candidate family, not the lane boundary.
 
 Read the `sparse_attention` projection in the work order's
-`SEARCH-SPACE.json`. Consider all nine canonical Sol directions:
+`SEARCH-SPACE.json`. Consider all nine bundled directions:
 
 1. Piecewise/PISA exact-block selection with an approximate remainder;
 2. Sparse VideoGen-style spatial/temporal head routing;
@@ -19,10 +19,9 @@ Read the `sparse_attention` projection in the work order's
 8. HASTE-style head-wise adaptive budgets; and
 9. MInference-style dynamic pattern selection.
 
-Also inspect the locked Sol-Attn backends and policy code when the target GPU,
-attention shape, dtype, token layout, and SGLang backend seam are compatible.
-Some Sol manifests are `env_only` or `blocker_probe`; preserve that status and
-do not present them as complete public CUDA ports.
+Inspect compatible sparse backends only when the target GPU, attention shape,
+dtype, token layout, and SGLang backend seam match. Treat environment-only
+probes and blocker probes as evidence, not complete CUDA implementations.
 
 Before closing the family as `no_gain`, review all applicable method entries
 and compare at least five genuinely distinct sparse policies when model and
@@ -36,16 +35,15 @@ Use the bound sources in this order:
 
 1. locked SGLang attention implementations, model token layout, distributed
    partitions, attention backend registry, and Diffusion skills;
-2. Sol search documents, structured candidates, policy implementations,
-   Sol-Attn kernels, capability requirements, and composition rules;
+2. the bundled search catalog, capability requirements, and composition rules;
 3. KDA-Pilot/KernelWiki/NCU material for kernel implementation and measured
    bottleneck analysis;
 4. FastVideo attention and sparse-routing evidence.
 
 Every implementation manifest cites exact knowledge origins. The final patch
 must be self-contained in SGLang and must prove that its activation reaches the
-adapted SGLang path. A Sol dry run, environment variable, manifest, or policy
-name is reference evidence only.
+adapted SGLang path. A dry run, environment variable, manifest, or policy name
+is reference evidence only.
 
 ## Algorithm and ownership rules
 

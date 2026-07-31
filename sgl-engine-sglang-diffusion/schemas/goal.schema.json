@@ -87,16 +87,6 @@
         "sglang_repo": {
           "title": "Sglang Repo",
           "type": "string"
-        },
-        "sol_engine_ref": {
-          "default": "cee25847afdd34bc656abcca126262200b088dc8",
-          "title": "Sol Engine Ref",
-          "type": "string"
-        },
-        "sol_engine_repo": {
-          "default": "https://github.com/NVlabs/Sana.git",
-          "title": "Sol Engine Repo",
-          "type": "string"
         }
       },
       "required": [

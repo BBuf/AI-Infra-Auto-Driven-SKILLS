@@ -11,6 +11,7 @@ import pytest
 from sgl_engine_sglang_diffusion.models import BaselineRecord
 from sgl_engine_sglang_diffusion.process import run
 from sgl_engine_sglang_diffusion.request import FrozenBenchmarkCommand
+from sgl_engine_sglang_diffusion.resources import TECHNIQUE_REGISTRY
 from sgl_engine_sglang_diffusion.techniques import TechniqueRegistry
 from sgl_engine_sglang_diffusion.verifier import (
     DeliveryVerifier,
@@ -50,8 +51,7 @@ class ForbiddenQualityEvaluator:
 
 @pytest.fixture
 def registry() -> TechniqueRegistry:
-    root = Path(__file__).parents[1]
-    return TechniqueRegistry.load(root / "techniques/registry.toml")
+    return TechniqueRegistry.load(TECHNIQUE_REGISTRY)
 
 
 @pytest.fixture

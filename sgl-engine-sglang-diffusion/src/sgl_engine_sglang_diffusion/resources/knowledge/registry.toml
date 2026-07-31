@@ -42,17 +42,6 @@ paths = [
   "test/registered/kernels/benchmark/diffusion/**",
 ]
 
-[sources.sol_engine]
-paths = [
-  "search_space/**",
-  "candidates/**",
-  "techniques/**",
-  "site_docs/techniques/**",
-  "models/*.toml",
-  "workflow/**/nodes/codex_executor/*_scope.md",
-  "orchestration/techniques.toml",
-]
-
 [sources.fastvideo]
 paths = [
   "docs/inference/optimizations.md",

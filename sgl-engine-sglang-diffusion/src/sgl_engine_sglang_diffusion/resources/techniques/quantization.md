@@ -2,11 +2,9 @@
 
 ## Adaptation status and identity
 
-`quantization` brings Sol-Engine's full quantization technique family into a
-standalone SGLang work-order lane. Sol-Engine's paper and technique
-documentation contain this family, but its reviewed lightweight registry does
-not assign it a standalone lane. The **20-round hard budget is an SGLang
-adaptation default**, not an upstream lightweight setting.
+`quantization` is a standalone SGLang work-order lane covering the complete
+bundled quantization family. The **20-round hard budget is an SGLang campaign
+default**.
 
 This is a quality-gated lane. It may explore selective low-precision weights,
 activations, attention, and linear paths, including NVFP4, diffusion-aware PTQ,
@@ -14,8 +12,8 @@ SVDQuant/Nunchaku, SageAttention, and ModelOpt FP8. Uniform low-bit conversion
 without profiling and sensitivity evidence is not the objective.
 
 Read the `quantization` projection in the bound `SEARCH-SPACE.json`. Its
-structured Sol candidates are NVFP4-focused, while the wider locked Sol site
-documentation and SGLang knowledge also expose diffusion PTQ, ModelOpt FP8,
+structured candidates include native low-precision linear paths, while locked
+SGLang knowledge also exposes diffusion PTQ, ModelOpt FP8,
 SVDQuant/Nunchaku, and SageAttention directions. Preserve the distinction
 between documented, referenced, SGLang-adapted, and end-to-end validated
 methods. Cite exact knowledge origins in every implementation manifest.

@@ -4,8 +4,8 @@
 
 Every valid campaign creates:
 
-- `SEARCH-SPACE.json`: the normalized catalog derived from the locked
-  Sol-Engine revision;
+- `SEARCH-SPACE.json`: the controller's bundled, versioned optimization
+  catalog;
 - `KNOWLEDGE.json`: source-to-snapshot index paths; and
 - `knowledge/<source>/<commit>/index.json`: per-file path, raw SHA-256,
   redacted-reference SHA-256, headings, and symbols.
@@ -18,12 +18,13 @@ adapted to the locked SGLang source.
 
 For a claimed family:
 
-1. read its methods, candidates, required capabilities, implementation
-   references, and `review_items` in `SEARCH-SPACE.json`;
+1. read its methods, candidates, required capabilities, and `review_items` in
+   `SEARCH-SPACE.json`;
 2. inspect the measured profile and the live SGLang model/pipeline seam;
 3. search the SGLang snapshot for the model, hotspot symbols, existing backend
    hooks, and relevant SGLang skills;
-4. search Sol for complete opportunity coverage and composition constraints;
+4. search the bundled catalog for complete opportunity coverage and
+   composition constraints;
 5. search KDA-Pilot, KernelWiki, and NCU material for matching shapes,
    implementations, profiling methods, and hardware-specific limitations;
 6. search FastVideo for transferable diffusion implementations; and
@@ -37,9 +38,8 @@ candidate worktree.
 
 ## Capability and readiness rules
 
-- `documented` means only that a method appears in a locked search document.
-- `referenced` means a candidate manifest, recipe, policy, or implementation
-  reference exists.
+- `documented` means only that a method appears in the bundled catalog.
+- `referenced` means a candidate or composition recipe exists.
 - `adapted` requires a real SGLang/model/hardware path with an OFF guard.
 - `validated` requires positive engagement and the complete frozen end-to-end
   gate.
@@ -50,7 +50,7 @@ does not expose the required seam. Record those as preflight evidence without
 consuming a scientific round.
 
 Before `no_gain`, cover every applicable family item required by the technique
-scope. A Sol `env_only` or `blocker_probe` manifest is not an implementation
+scope. An environment-only or blocker-probe row is not an implementation
 success.
 
 ## Candidate provenance
@@ -67,6 +67,6 @@ Every implementation manifest contains at least one exact origin:
 ```
 
 Copy all four values from a bound knowledge index. Cite the most direct sources
-that informed the hypothesis: normally the live SGLang seam plus the Sol/KDA
-reference used for adaptation. The deterministic verifier rejects unknown
-sources, commits, paths, and hashes.
+that informed the hypothesis: normally the live SGLang seam plus a KDA,
+KernelWiki, NCU, or FastVideo reference used for adaptation. The deterministic
+verifier rejects unknown sources, commits, paths, and hashes.

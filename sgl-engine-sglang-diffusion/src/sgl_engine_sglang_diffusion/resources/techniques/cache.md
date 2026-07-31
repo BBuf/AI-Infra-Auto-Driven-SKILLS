@@ -2,11 +2,11 @@
 
 ## Identity and search-space boundary
 
-`cache` owns Sol-Engine's complete quality-gated cross-step reuse and
-prediction space, adapted to the locked SGLang Diffusion model. It has a hard
-budget of **20 candidate rounds**.
+`cache` owns the bundled quality-gated cross-step reuse and prediction space,
+adapted to the locked SGLang Diffusion model. It has a hard budget of **20
+candidate rounds**.
 
-Do not inherit the lightweight Sol workflow's closed three-family boundary.
+Do not inherit the older flow's closed three-family boundary.
 Read the `cache` projection in the work order's `SEARCH-SPACE.json` before
 selecting a hypothesis. Consider every applicable family:
 
@@ -26,8 +26,8 @@ selecting a hypothesis. Consider every applicable family:
 Method names are discovery anchors, not portable implementations. Inspect the
 live denoising loop, block boundaries, guidance branches, token layout, and
 existing SGLang cache hooks before adapting a candidate. Do not copy
-Cosmos3-specific Sol paths or environment flags without proving that the
-locked SGLang code consumes them.
+model-specific paths or environment flags from another runtime without proving
+that the locked SGLang code consumes them.
 
 Before closing the family as `no_gain`, compare at least five distinct,
 applicable directions: timestep-aware reuse, adaptive transform reuse,
@@ -40,14 +40,13 @@ as preflight findings without consuming a scientific round.
 Use the bound `KNOWLEDGE.json` snapshots in this order:
 
 1. locked SGLang cache/model/pipeline source and SGLang Diffusion skills;
-2. the full Sol search document, candidate manifests, techniques, and site
-   documentation;
+2. the bundled search catalog and this technique scope;
 3. KDA-Pilot and KernelWiki when cache bookkeeping exposes a kernel hotspot;
 4. FastVideo cache/attention implementation evidence.
 
 Every implementation manifest cites at least one exact source, commit, relative
 path, and raw SHA-256 from those snapshots. Classify a method as documented,
-referenced, adapted, or validated; never infer validation from a Sol manifest.
+referenced, adapted, or validated; never infer validation from a catalog row.
 
 ## Search axes and ownership
 

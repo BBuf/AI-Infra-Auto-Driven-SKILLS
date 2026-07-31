@@ -75,7 +75,7 @@ class MethodEquivalenceAuditor(Protocol):
 
 
 class QualityEvaluator(Protocol):
-    """Deterministic adapter around the locked Sol metric command."""
+    """Deterministic quality-metric adapter."""
 
     def assess(
         self,
@@ -642,7 +642,7 @@ class DeliveryVerifier:
         if self.quality_evaluator is None:
             issue(
                 "missing_quality_evaluator",
-                "locked Sol quality evaluator is unavailable",
+                "local quality evaluator is unavailable",
             )
             return
         try:
@@ -1124,9 +1124,7 @@ class DeliveryVerifier:
         for origin in manifest.knowledge_origin:
             snapshot_value = snapshots.get(origin.source)
             if not isinstance(snapshot_value, str) or not snapshot_value:
-                raise VerificationError(
-                    f"unknown knowledge source: {origin.source}"
-                )
+                raise VerificationError(f"unknown knowledge source: {origin.source}")
             if origin.source not in loaded:
                 index_path = resolve_inside(
                     self.campaign_artifact_root, Path(snapshot_value)

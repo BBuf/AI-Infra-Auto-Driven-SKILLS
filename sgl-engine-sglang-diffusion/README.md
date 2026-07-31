@@ -12,12 +12,11 @@ agent, AI reviewer, nested Codex or Claude command, or per-agent token budget.
 Its `AWAITING_AGENT` state is a deliberate boundary at which the current
 conversation reads evidence and continues the campaign.
 
-The verification contract remains compatible with the reviewed Sol-Engine
-correctness rules. The Controller also mirrors Sol's six-family search space,
-structured candidates, recipes, and technique implementation references.
-Locked SGLang, FastVideo, KDA-Pilot, KernelWiki, NCU, warp-specialization,
-profiler, or model-history evidence may suggest a hypothesis but cannot weaken
-a gate.
+The controller is self-contained: it does not clone, import, or read another
+optimization engine at runtime. Its bundled six-family catalog covers kernel,
+cache, sparse attention, quantization, token pruning, and topology. Locked
+SGLang, FastVideo, KDA-Pilot, KernelWiki, NCU, warp-specialization, profiler,
+or model-history evidence may suggest a hypothesis but cannot weaken a gate.
 
 ## Why the flow is serial
 
@@ -39,12 +38,11 @@ failure signatures close only the affected hypothesis.
 
 Deterministic setup creates two bound artifacts before the baseline:
 
-- `SEARCH-SPACE.json` normalizes the locked Sol revision into kernel, cache,
-  sparse-attention, quantization, token-pruning, and topology families. It
-  preserves method directions, structured candidate requirements,
-  model-specific recipes, site documentation, and registered implementations.
+- `SEARCH-SPACE.json` materializes the versioned catalog bundled with this
+  package. It preserves method directions, candidate capability requirements,
+  review items, and portable composition recipes.
 - `KNOWLEDGE.json` points to commit-locked, per-file-hashed text snapshots from
-  Sol, SGLang, FastVideo, KDA-Pilot, KernelWiki, the NCU report skill, and the
+  SGLang, FastVideo, KDA-Pilot, KernelWiki, the NCU report skill, and the
   warp-specialization skill.
 
 KDA's three skill submodules receive independent locks at the exact gitlink
@@ -180,8 +178,8 @@ those roles are independent. `AGENT-REVIEW.json` binds:
 - the authenticity or five-prompt visual-verdict SHA-256.
 
 The controller verifies those bindings deterministically. Quality-gated
-candidates additionally require aligned Sol LPIPS evidence and five reviewed
-prompt outputs. External VLM verdict services are not used.
+candidates additionally require aligned locally computed LPIPS evidence and
+five reviewed prompt outputs. External VLM verdict services are not used.
 
 ## Scientific rounds and failures
 
@@ -192,7 +190,7 @@ execution, and malformed metadata without a measured run consume no round.
 
 The search reaches `SEARCH_SPACE_EXHAUSTED` only after every routed suggestion
 is explicitly closed or consumes its scientific budget and its complete
-family-level Sol coverage requirement was reviewed. A PISA-only sparse search
+family-level catalog coverage requirement was reviewed. A PISA-only sparse search
 or a three-family-only cache search is incomplete. A performance plateau is
 not a proof of impossibility. `UNREACHABLE_CERTIFIED` requires a
 deterministically checkable lower-bound certificate.
@@ -213,6 +211,14 @@ The correctness branches are deliberately asymmetric:
 | --- | --- | --- |
 | kernel, topology | lossless | Unchanged global steps and DiT calls, unchanged logical work, method/code review, authentic real media. |
 | cache, sparse attention, quantization, token pruning | quality-gated | Full workload, positive engagement, no fallback, aligned LPIPS, and five-prompt same-agent visual review. |
+
+## Acknowledgements
+
+The optimization taxonomy and verification ideas were informed by the
+[Sol-Engine code](https://github.com/NVlabs/Sana/tree/sol-engine) and the
+[Sol Video Inference Engine paper](https://arxiv.org/abs/2606.23743). The
+necessary portable ideas are implemented locally; neither source is a runtime
+dependency.
 
 Only verified candidates with measured speedup greater than `1.0x` enter the
 integration subset. Integration remeasures the composed stack; isolated

@@ -45,7 +45,7 @@ guidance, and FastVideo kernel material. Start with exact live shapes and
 hotspots; a kernel that was successful on another model or GPU is only a
 reference until its SGLang dispatch and end-to-end gain are measured.
 
-Cover all applicable Sol kernel directions before declaring the lane exhausted:
+Cover all applicable bundled kernel directions before declaring the lane exhausted:
 GEMM epilogues, norm/modulation/residual fusion, attention-adjacent fusion,
 compile/graph capture, layout/copy elimination, launch reduction,
 stream/communication overlap, and decode/VAE/postprocess work. Every

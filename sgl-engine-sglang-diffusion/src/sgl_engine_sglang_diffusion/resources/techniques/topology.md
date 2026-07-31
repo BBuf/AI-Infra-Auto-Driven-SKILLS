@@ -2,8 +2,8 @@
 
 ## Identity and correctness
 
-`topology` is an optional Sol-Engine-compatible work-order technique with a
-hard budget of **20 candidate rounds**. It losslessly optimizes how the
+`topology` is an optional work-order technique with a hard budget of **20
+candidate rounds**. It losslessly optimizes how the
 unchanged SGLang Diffusion inference program is partitioned, placed,
 communicated, and scheduled within the exact frozen GPU resource envelope.
 

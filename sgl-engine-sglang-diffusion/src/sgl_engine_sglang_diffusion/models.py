@@ -65,8 +65,6 @@ class GoalTarget(StrictModel):
 class SourceSpec(StrictModel):
     sglang_repo: str
     sglang_ref: str = "main"
-    sol_engine_repo: str = "https://github.com/NVlabs/Sana.git"
-    sol_engine_ref: str = "cee25847afdd34bc656abcca126262200b088dc8"
     fastvideo_repo: str = "https://github.com/hao-ai-lab/FastVideo.git"
     fastvideo_ref: str = "main"
     kda_pilot_repo: str = "https://github.com/BBuf/KDA-Pilot.git"
@@ -103,7 +101,9 @@ class CampaignGoal(StrictModel):
     @classmethod
     def require_five_prompt_contract(cls, value: WorkloadSpec) -> WorkloadSpec:
         if value.prompt_count != 5:
-            raise ValueError("prompt_count must be exactly 5 for Sol-Engine parity")
+            raise ValueError(
+                "prompt_count must be exactly 5 for the quality-review contract"
+            )
         return value
 
 

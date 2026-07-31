@@ -1,325 +1,299 @@
-"""Build a deterministic, provenance-rich view of Sol's optimization space."""
+"""Materialize the self-contained SGLang Diffusion optimization catalog."""
 
 from __future__ import annotations
 
-import hashlib
 import json
 import os
-import re
-import tomllib
-from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
 
 
-class SearchSpaceError(RuntimeError):
-    """The locked Sol checkout cannot produce a complete search-space catalog."""
+_METHOD_IDS = {
+    "cache": (
+        "whole_step_denoiser_output_reuse",
+        "teacache_style_timestep_aware_reuse",
+        "easycache_style_runtime_adaptive_transform_vector_reuse",
+        "pab_style_attention_broadcast",
+        "block_layer_feature_caching",
+        "fora_style_transformer_layer_caching",
+        "token_wise_feature_caching",
+        "cfg_aware_feature_caching",
+        "content_or_motion_adaptive_schedules",
+        "predictive_delta_or_forecast_caching",
+        "architecture_aware_feature_reuse",
+    ),
+    "token_pruning": (
+        "token_pruning",
+        "tome_style_token_merging",
+        "importance_preserving_token_merging",
+        "token_masking_compute_masking",
+        "region_aware_token_reduction",
+        "attention_guided_token_reduction",
+        "dynamics_aware_token_pruning",
+        "cluster_aware_token_pruning",
+        "dynamic_token_density_control",
+        "video_token_carving",
+        "context_reference_token_pruning",
+        "token_wise_feature_caching",
+        "conservative_aggressive_dual_token_policies",
+    ),
+    "quantization": (
+        "conservative_ffn_only_nvfp4",
+        "selective_hot_linear_nvfp4",
+        "transformer_engine_recipe_variants",
+        "dense_guard_policies",
+        "backend_and_padding_policy",
+        "fused_epilogue_paths",
+    ),
+    "sparse_attention": (
+        "piecewise_exact_block_sparse_attention",
+        "spatial_temporal_head_routing",
+        "semantic_aware_token_permutation",
+        "online_precise_search_with_mask_reuse",
+        "proxy_or_universal_mask_prediction",
+        "rotating_anchors_and_long_video_windows",
+        "layer_profiling_and_qk_coclustering",
+        "head_wise_adaptive_budgets",
+        "dynamic_attention_pattern_selection",
+    ),
+    "kernel": (
+        "gemm_epilogue_fusion",
+        "norm_modulation_and_residual_fusion",
+        "attention_adjacent_fusion",
+        "compile_and_graph_capture",
+        "memory_layout_and_copy_elimination",
+        "launch_overhead_reduction",
+        "overlap_streams_and_pipeline_scheduling",
+        "decode_vae_and_postprocess_fusion",
+    ),
+    "topology": (
+        "context_and_sequence_parallelism",
+        "tensor_parallelism",
+        "expert_parallelism",
+        "parameter_sharding_and_residency",
+        "cfg_execution",
+        "device_mesh_and_rank_mapping",
+        "collective_scheduling",
+    ),
+}
 
+_CANDIDATE_SPECS = {
+    "cache": (
+        (
+            "adaptive_delta_forecast",
+            "predictive_delta_cache",
+            ("has_denoise_steps", "supports_step_cache"),
+        ),
+        (
+            "attention_broadcast",
+            "attention_broadcast",
+            ("has_attention_layers", "supports_step_cache"),
+        ),
+        (
+            "block_layer_feature_cache",
+            "block_layer_feature_cache",
+            ("has_transformer_blocks", "supports_step_cache"),
+        ),
+        (
+            "scheduled_step_reuse",
+            "whole_step_cache",
+            ("has_denoise_steps", "supports_step_cache"),
+        ),
+        (
+            "teacache_signal_reuse",
+            "timestep_aware_cache",
+            ("has_denoise_steps", "supports_step_cache"),
+        ),
+    ),
+    "token_pruning": (
+        (
+            "cluster_representative_update",
+            "cluster_representative",
+            (
+                "has_spatiotemporal_token_layout",
+                "has_token_sequence_axis",
+                "supports_token_gather_scatter",
+            ),
+        ),
+        (
+            "feature_norm_prune",
+            "feature_norm",
+            (
+                "has_spatiotemporal_token_layout",
+                "has_token_sequence_axis",
+                "supports_token_gather_scatter",
+            ),
+        ),
+        (
+            "region_dynamic_density",
+            "region_density",
+            (
+                "has_spatiotemporal_token_layout",
+                "has_token_sequence_axis",
+                "supports_token_gather_scatter",
+            ),
+        ),
+        (
+            "shape_stable_compute_mask",
+            "shape_stable_compute_mask",
+            (
+                "has_spatiotemporal_token_layout",
+                "has_token_sequence_axis",
+                "supports_token_gather_scatter",
+            ),
+        ),
+        (
+            "tome_merge_restore",
+            "token_merge_restore",
+            (
+                "has_spatiotemporal_token_layout",
+                "has_token_sequence_axis",
+                "supports_token_gather_scatter",
+            ),
+        ),
+    ),
+    "quantization": tuple(
+        (
+            candidate_id,
+            family,
+            ("has_ffn_linear_modules", "supports_native_low_precision_linear"),
+        )
+        for candidate_id, family in (
+            ("backend_padding_policy", "backend_padding_policy"),
+            ("conservative_ffn_low_precision", "conservative_ffn"),
+            ("dense_guard_policy", "dense_guard_policy"),
+            ("profiled_hot_linear_low_precision", "profiled_hot_linear"),
+            ("backend_recipe_variant", "backend_recipe_variant"),
+        )
+    ),
+    "sparse_attention": tuple(
+        (
+            candidate_id,
+            family,
+            (
+                "has_attention_backend_switch",
+                "has_attention_layers",
+                "has_spatiotemporal_token_layout",
+            ),
+        )
+        for candidate_id, family in (
+            ("dynamic_pattern_probe", "dynamic_patterns"),
+            ("headwise_adaptive_budgets", "headwise_topk_budget"),
+            ("online_mask_search_reuse", "online_mask_reuse"),
+            ("piecewise_exact_blocks", "piecewise_sparse"),
+            ("proxy_mask_prediction", "proxy_mask_prediction"),
+            ("qk_coclustering", "qk_similarity_block_map"),
+            ("rotating_anchor_windows", "rotating_anchor_windows"),
+            ("semantic_permutation", "semantic_permutation"),
+            ("spatial_temporal_head_routing", "head_routing"),
+        )
+    ),
+    "kernel": (
+        (
+            "backend_selection_probe",
+            "backend_selection",
+            ("has_attention_backend_switch", "has_attention_layers"),
+        ),
+        (
+            "compile_graph_capture",
+            "compile_or_cuda_graph",
+            ("has_transformer_blocks", "supports_cuda_graph_probe"),
+        ),
+        (
+            "existing_fast_path_audit",
+            "existing_fast_paths",
+            ("has_transformer_blocks",),
+        ),
+        (
+            "gemm_epilogue_fusion",
+            "gemm_epilogue_fusion",
+            ("has_ffn_linear_modules", "has_transformer_blocks"),
+        ),
+        (
+            "layout_copy_elimination",
+            "layout_copy_elimination",
+            ("has_transformer_blocks",),
+        ),
+        (
+            "norm_modulation_residual_fusion",
+            "norm_modulation_residual_fusion",
+            ("has_transformer_blocks",),
+        ),
+    ),
+    "topology": (),
+}
 
-_FAMILY_DOCUMENTS = {
-    "cache": "search_space/01_cache.md",
-    "token_pruning": "search_space/02_token_pruning.md",
-    "quantization": "search_space/03_quantization.md",
-    "sparse_attention": "search_space/04_sparse_attention.md",
-    "kernel": "search_space/05_kernel_fusion.md",
-    "topology": "search_space/06_parallel_topology.md",
-}
-_DIMENSION_FAMILIES = {
-    "kwl_fusion": "kernel",
-    "step_cache": "cache",
-    "sparse_attention": "sparse_attention",
-    "nvfp4_ffn": "quantization",
-    "token_prune": "token_pruning",
-}
-_SITE_DOC_FAMILIES = {
-    "cache": "cache",
-    "kernel": "kernel",
-    "quant": "quantization",
-    "sparse": "sparse_attention",
-    "token_prune": "token_pruning",
-}
-_REGISTER_RE = re.compile(
-    r"""@register_(technique|transform)\(\s*["']([^"']+)["']"""
+_COMPOSITION_RECIPES = (
+    ("kernel_only", ("kernel",)),
+    ("cache_only", ("cache",)),
+    ("sparse_attention_only", ("sparse_attention",)),
+    ("quantization_only", ("quantization",)),
+    ("token_pruning_only", ("token_pruning",)),
+    ("kernel_cache", ("kernel", "cache")),
+    (
+        "kernel_cache_sparse_attention",
+        ("kernel", "cache", "sparse_attention"),
+    ),
+    (
+        "compatible_full_stack",
+        (
+            "kernel",
+            "cache",
+            "sparse_attention",
+            "quantization",
+            "token_pruning",
+            "topology",
+        ),
+    ),
 )
-_SHA40_RE = re.compile(r"^[0-9a-f]{40}$")
 
 
-def _sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as source:
-        for chunk in iter(lambda: source.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
-def _slug(value: str) -> str:
-    value = re.sub(r"^\d+\.\s*", "", value.strip())
-    value = re.sub(r"[^a-z0-9]+", "_", value.lower()).strip("_")
-    if not value:
-        raise SearchSpaceError("method-family title has no stable identifier")
-    return value
-
-
-def _method_families(document: Path) -> list[dict[str, str]]:
-    text = document.read_text(encoding="utf-8")
-    lines = text.splitlines()
-    start: int | None = None
-    for index, line in enumerate(lines):
-        if re.fullmatch(r"##\s+Method [Ff]amilies", line.strip()):
-            start = index + 1
-            break
-    if start is None:
-        raise SearchSpaceError(f"missing Method Families section: {document}")
-
-    section: list[str] = []
-    for line in lines[start:]:
-        stripped = line.strip()
-        if stripped.startswith("## "):
-            break
-        section.append(stripped)
-
-    headings = [
-        line.removeprefix("### ").strip()
-        for line in section
-        if line.startswith("### ")
-    ]
-    raw_titles = (
-        headings
-        if headings
-        else [
-            line.removeprefix("- ").split(":", 1)[0].strip()
-            for line in section
-            if line.startswith("- ")
-        ]
-    )
-    methods: list[dict[str, str]] = []
-    for raw_title in raw_titles:
-        title = re.sub(r"^\d+\.\s*", "", raw_title)
-        method_id = _slug(title)
-        if method_id not in {item["id"] for item in methods}:
-            methods.append(
-                {
-                    "id": method_id,
-                    "title": title,
-                    "coverage_status": "documented",
-                }
-            )
-    if not methods:
-        raise SearchSpaceError(f"no method families found in {document}")
-    return methods
-
-
-def _site_documents(root: Path) -> dict[str, list[dict[str, str]]]:
-    result = {family: [] for family in _FAMILY_DOCUMENTS}
-    site_root = root / "site_docs" / "techniques"
-    if not site_root.is_dir():
-        return result
-    for path in sorted(site_root.rglob("*.md")):
-        relative = path.relative_to(root).as_posix()
-        stem = path.relative_to(site_root).parts[0]
-        stem = Path(stem).stem
-        family = _SITE_DOC_FAMILIES.get(stem)
-        if family is None:
-            continue
-        result[family].append({"path": relative, "sha256": _sha256(path)})
-    return result
-
-
-def _structured_candidate(
-    *,
-    root: Path,
-    path: Path,
-    data: Mapping[str, Any],
-) -> tuple[str, dict[str, Any]]:
-    identity = data["id"]
-    assert isinstance(identity, dict)
-    candidate_id = str(identity.get("name", "")).strip()
-    dimension = str(identity.get("dimension", "")).strip()
-    candidate_family = str(identity.get("family", "")).strip()
-    if not candidate_id or not dimension or not candidate_family:
-        raise SearchSpaceError(f"incomplete structured candidate identity: {path}")
-    family = _DIMENSION_FAMILIES.get(dimension)
-    if family is None:
-        raise SearchSpaceError(
-            f"unknown Sol candidate dimension {dimension!r}: "
-            f"{path.relative_to(root)}"
-        )
-
-    references = data.get("references")
-    local = references.get("local") if isinstance(references, dict) else None
-    generic_impl = (
-        str(local.get("generic_impl", "")).strip()
-        if isinstance(local, dict)
-        else ""
-    )
-    if not generic_impl:
-        raise SearchSpaceError(
-            f"structured candidate {candidate_id!r} has no generic implementation"
-        )
-    implementation = root / generic_impl
-    if not implementation.is_file():
-        raise SearchSpaceError(
-            f"structured candidate {candidate_id!r} references missing "
-            f"implementation {generic_impl!r}"
-        )
-
-    requirements = data.get("requirements")
-    capabilities = (
-        requirements.get("capabilities")
-        if isinstance(requirements, dict)
-        else None
-    )
-    if not isinstance(capabilities, list) or not capabilities:
-        raise SearchSpaceError(
-            f"structured candidate {candidate_id!r} has no capabilities"
-        )
-    efficiency = data.get("efficiency")
-    verification = data.get("verification")
-    if not isinstance(efficiency, dict) or not isinstance(verification, dict):
-        raise SearchSpaceError(
-            f"structured candidate {candidate_id!r} lacks execution metadata"
-        )
-
-    return family, {
-        "id": candidate_id,
-        "coverage_status": "referenced",
-        "dimension": dimension,
-        "candidate_family": candidate_family,
-        "kind": str(data.get("kind", "")),
-        "purpose": str(data.get("purpose", "")),
-        "description": str(data.get("description", "")),
-        "model_profile": str(data.get("model_profile", "")),
-        "required_capabilities": sorted(str(item) for item in capabilities),
-        "efficiency_kind": str(efficiency.get("kind", "")),
-        "efficiency_name": str(efficiency.get("name", "")),
-        "generic_impl": generic_impl,
-        "generic_impl_sha256": _sha256(implementation),
-        "quality_gate": str(verification.get("quality_gate", "")),
-        "source_path": path.relative_to(root).as_posix(),
-        "source_sha256": _sha256(path),
-    }
-
-
-def _candidate_catalog(
-    root: Path,
-) -> tuple[dict[str, list[dict[str, Any]]], list[dict[str, Any]]]:
-    candidates = {family: [] for family in _FAMILY_DOCUMENTS}
-    recipes: list[dict[str, Any]] = []
-    candidates_root = root / "candidates"
-    if not candidates_root.is_dir():
-        raise SearchSpaceError("locked Sol checkout has no candidates directory")
-    for path in sorted(candidates_root.rglob("*.toml")):
-        try:
-            data = tomllib.loads(path.read_text(encoding="utf-8"))
-        except (OSError, UnicodeError, tomllib.TOMLDecodeError) as error:
-            raise SearchSpaceError(f"invalid Sol candidate manifest {path}: {error}")
-        identity = data.get("id")
-        if isinstance(identity, dict):
-            family, candidate = _structured_candidate(
-                root=root, path=path, data=data
-            )
-            candidates[family].append(candidate)
-        elif isinstance(identity, str) and identity.strip():
-            recipes.append(
-                {
-                    "id": identity.strip(),
-                    "coverage_status": "referenced",
-                    "kind": str(data.get("kind", "")),
-                    "purpose": str(data.get("purpose", "")),
-                    "description": str(data.get("description", "")),
-                    "model_profile": str(data.get("model_profile", "")),
-                    "source_path": path.relative_to(root).as_posix(),
-                    "source_sha256": _sha256(path),
-                }
-            )
-    return candidates, recipes
-
-
-def _registered_implementations(root: Path) -> list[dict[str, str]]:
-    technique_root = root / "techniques"
-    if not technique_root.is_dir():
-        raise SearchSpaceError("locked Sol checkout has no techniques directory")
-    implementations: list[dict[str, str]] = []
-    for path in sorted(technique_root.rglob("*.py")):
-        text = path.read_text(encoding="utf-8", errors="replace")
-        for kind, name in _REGISTER_RE.findall(text):
-            implementations.append(
-                {
-                    "kind": kind,
-                    "name": name,
-                    "coverage_status": "referenced",
-                    "source_path": path.relative_to(root).as_posix(),
-                    "source_sha256": _sha256(path),
-                }
-            )
-    return implementations
-
-
-def build_sol_search_space_catalog(
-    *,
-    sol_checkout: Path,
-    sol_commit: str,
-    output_path: Path,
-) -> dict[str, Any]:
-    """Build and atomically persist the complete reviewed Sol opportunity index."""
-    if not _SHA40_RE.fullmatch(sol_commit):
-        raise SearchSpaceError("Sol search-space catalog requires a full commit")
-    root = sol_checkout.resolve()
-    if not root.is_dir():
-        raise SearchSpaceError(f"Sol checkout does not exist: {root}")
-
-    candidates, recipes = _candidate_catalog(root)
-    site_documents = _site_documents(root)
+def build_search_space_catalog(*, output_path: Path) -> dict[str, Any]:
+    """Write the bundled opportunity catalog without consulting another repo."""
     families: dict[str, dict[str, Any]] = {}
-    for family, relative_text in _FAMILY_DOCUMENTS.items():
-        document = root / relative_text
-        if not document.is_file():
-            raise SearchSpaceError(
-                f"missing canonical Sol search document: {relative_text}"
-            )
-        methods = _method_families(document)
-        family_candidates = sorted(candidates[family], key=lambda item: item["id"])
-        review_items = [
-            *[f"method:{item['id']}" for item in methods],
-            *[f"candidate:{item['id']}" for item in family_candidates],
+    for family, method_ids in _METHOD_IDS.items():
+        methods = [
+            {
+                "id": method_id,
+                "title": method_id.replace("_", " "),
+                "coverage_status": "documented",
+            }
+            for method_id in method_ids
+        ]
+        candidates = [
+            {
+                "id": candidate_id,
+                "candidate_family": candidate_family,
+                "required_capabilities": list(capabilities),
+                "coverage_status": "referenced",
+            }
+            for candidate_id, candidate_family, capabilities in _CANDIDATE_SPECS[family]
         ]
         families[family] = {
-            "document": relative_text,
-            "document_sha256": _sha256(document),
             "methods": methods,
-            "site_documents": site_documents[family],
-            "candidates": family_candidates,
-            "review_items": sorted(set(review_items)),
+            "candidates": candidates,
+            "review_items": [
+                *[f"method:{item['id']}" for item in methods],
+                *[f"candidate:{item['id']}" for item in candidates],
+            ],
         }
 
-    implementations = _registered_implementations(root)
-    registered = {(item["kind"], item["name"]) for item in implementations}
-    for value in families.values():
-        for candidate in value["candidates"]:
-            expected_kind = (
-                "transform"
-                if candidate["efficiency_kind"] in {"build_transform", "transform"}
-                else "technique"
-            )
-            candidate["implementation_registered"] = (
-                expected_kind,
-                candidate["efficiency_name"],
-            ) in registered
-
+    recipes = [
+        {
+            "id": recipe_id,
+            "techniques": list(techniques),
+            "coverage_status": "referenced",
+        }
+        for recipe_id, techniques in _COMPOSITION_RECIPES
+    ]
     payload: dict[str, Any] = {
         "schema_version": 1,
-        "source": "sol_engine",
-        "sol_commit": sol_commit,
+        "source": "bundled_sglang_diffusion_catalog",
+        "catalog_version": 1,
         "families": families,
-        "candidate_count": sum(
-            len(value["candidates"]) for value in families.values()
-        ),
-        "recipes": sorted(recipes, key=lambda item: item["id"]),
+        "candidate_count": sum(len(value["candidates"]) for value in families.values()),
+        "recipes": recipes,
         "recipe_count": len(recipes),
-        "implementations": sorted(
-            implementations,
-            key=lambda item: (item["kind"], item["name"], item["source_path"]),
-        ),
     }
     output_path.parent.mkdir(parents=True, exist_ok=True)
     temporary = output_path.with_name(f".{output_path.name}.{os.getpid()}.tmp")

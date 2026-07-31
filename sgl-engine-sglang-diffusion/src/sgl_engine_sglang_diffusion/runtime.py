@@ -6,7 +6,6 @@ import math
 import os
 import re
 import statistics
-import sys
 from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any
@@ -23,9 +22,8 @@ from .integrator import (
     IntegrationVerificationRequest,
     VerifiedCandidate,
 )
-from .knowledge import check_contract_hashes
 from .knowledge import load_registry as load_knowledge_registry
-from .knowledge import read_source_lock, sync_source
+from .knowledge import sync_source
 from .models import (
     CampaignGoal,
     CampaignStatus,
@@ -39,9 +37,11 @@ from .models import (
 from .patcher import PatchPackager, sha256_file
 from .process import run
 from .profiler import Profiler, TechniqueRouter
+from .quality import MetricUnavailable, score_frame_pairs
 from .request import FrozenBenchmarkCommand
+from .resources import KNOWLEDGE_REGISTRY, TECHNIQUE_REGISTRY
 from .review import SameAgentReviewValidator
-from .search_space import build_sol_search_space_catalog
+from .search_space import build_search_space_catalog
 from .sources import SourceManager, derive_submodule_sources
 from .state import LeaseUnavailable, RECOVERABLE_STATUSES, StateStore
 from .techniques import TechniqueRegistry
@@ -52,8 +52,7 @@ class CampaignRuntimeError(RuntimeError):
     """The durable campaign cannot safely advance in its current state."""
 
 
-_PACKAGE_ROOT = Path(__file__).resolve().parents[2]
-_PRIMARY_SOURCE_NAMES = ("sglang", "sol_engine", "fastvideo", "kda_pilot")
+_PRIMARY_SOURCE_NAMES = ("sglang", "fastvideo", "kda_pilot")
 _KDA_SKILL_SUBMODULES = {
     "external/KernelWiki": "kernel_wiki",
     "external/ncu-report-skill": "ncu_report_skill",
@@ -160,10 +159,6 @@ def _model_slug(model_id: str) -> str:
 def _source_specs(goal: CampaignGoal) -> dict[str, tuple[str, str]]:
     return {
         "sglang": (goal.source.sglang_repo, goal.source.sglang_ref),
-        "sol_engine": (
-            goal.source.sol_engine_repo,
-            goal.source.sol_engine_ref,
-        ),
         "fastvideo": (goal.source.fastvideo_repo, goal.source.fastvideo_ref),
         "kda_pilot": (
             goal.source.kda_pilot_repo,
@@ -172,33 +167,14 @@ def _source_specs(goal: CampaignGoal) -> dict[str, tuple[str, str]]:
     }
 
 
-def _validate_sol_contract(lock: SourceLock, checkout: Path | None = None) -> None:
-    source_lock = _PACKAGE_ROOT / "contracts" / "sol_engine" / "source-lock.json"
-    expected_hashes = _PACKAGE_ROOT / "contracts" / "sol_engine" / "source-hashes.json"
-    reviewed = read_source_lock(source_lock)
-    if lock.commit != reviewed["commit"]:
-        raise CampaignRuntimeError(
-            "campaign Sol-Engine commit differs from the reviewed correctness "
-            f"contract: {lock.commit} != {reviewed['commit']}"
-        )
-    if checkout is not None:
-        issues = check_contract_hashes(source_lock, checkout, expected_hashes)
-        if issues:
-            raise CampaignRuntimeError(
-                "locked Sol-Engine contract drift: " + "; ".join(issues)
-            )
-
-
-class LockedSolQualityEvaluator:
-    """Recompute locked Sol LPIPS without launching an AI reviewer."""
+class LPIPSQualityEvaluator:
+    """Recompute aligned LPIPS with the controller's local implementation."""
 
     def __init__(
         self,
         *,
-        sol_checkout: Path,
         campaign_dir: Path,
     ) -> None:
-        self.sol_checkout = sol_checkout.resolve()
         self.campaign_dir = campaign_dir.resolve()
 
     def assess(
@@ -208,11 +184,6 @@ class LockedSolQualityEvaluator:
         candidate_frames: Path,
         run_dir: Path,
     ) -> Mapping[str, Any]:
-        lpips_judge = self.sol_checkout / "tools/vision/lpips_judge.py"
-        if not lpips_judge.is_file():
-            raise CampaignRuntimeError(
-                f"locked Sol LPIPS evaluator is missing: {lpips_judge}"
-            )
         run_dir = run_dir.resolve()
         prompt_pairs = self._aligned_prompt_pairs(
             baseline_frames.resolve(),
@@ -247,46 +218,18 @@ class LockedSolQualityEvaluator:
         prompt_scores: list[dict[str, Any]] = []
         all_scores: list[float] = []
         for index, pairs in enumerate(prompt_pairs):
-            prompt_output = review_dir / f"lpips-prompt-{index:02d}.json"
-            argv = [sys.executable, str(lpips_judge)]
-            for baseline, candidate in pairs:
-                argv.extend(
-                    [
-                        "--baseline-frame",
-                        str(baseline),
-                        "--candidate-frame",
-                        str(candidate),
-                    ]
-                )
-            argv.extend(["--out", str(prompt_output)])
-            if not prompt_output.is_file():
-                result = run(argv, cwd=self.sol_checkout, check=False)
-                (review_dir / f"lpips-prompt-{index:02d}.stdout.log").write_text(
-                    result.stdout, encoding="utf-8"
-                )
-                (review_dir / f"lpips-prompt-{index:02d}.stderr.log").write_text(
-                    result.stderr, encoding="utf-8"
-                )
-                if result.returncode != 0 or not prompt_output.is_file():
-                    raise CampaignRuntimeError(
-                        f"locked Sol LPIPS failed for prompt {index}"
-                    )
-            payload = _read_object(prompt_output)
-            raw_scores = payload.get("per_frame")
-            if (
-                payload.get("status") != "ok"
-                or not isinstance(raw_scores, list)
-                or len(raw_scores) != len(pairs)
-                or any(
-                    not isinstance(value, (int, float))
-                    or isinstance(value, bool)
-                    or not math.isfinite(float(value))
-                    or float(value) < 0
-                    for value in raw_scores
-                )
+            try:
+                raw_scores = score_frame_pairs(pairs)
+            except MetricUnavailable as error:
+                raise CampaignRuntimeError(
+                    f"LPIPS is unavailable for prompt {index}: {error}"
+                ) from error
+            if len(raw_scores) != len(pairs) or any(
+                not math.isfinite(float(value)) or float(value) < 0
+                for value in raw_scores
             ):
                 raise CampaignRuntimeError(
-                    f"locked Sol LPIPS is unavailable for prompt {index}"
+                    f"LPIPS returned invalid scores for prompt {index}"
                 )
             scores = [float(value) for value in raw_scores]
             all_scores.extend(scores)
@@ -321,13 +264,13 @@ class LockedSolQualityEvaluator:
         candidate_frames: Path,
         run_dir: Path,
     ) -> list[list[tuple[Path, Path]]]:
-        baseline_prompts = LockedSolQualityEvaluator._safe_prompt_dirs(
+        baseline_prompts = LPIPSQualityEvaluator._safe_prompt_dirs(
             baseline_frames, baseline_frames
         )
         candidate_root = run_dir / "outputs" / "frames"
         if not candidate_root.is_dir():
             candidate_root = candidate_frames
-        candidate_prompts = LockedSolQualityEvaluator._safe_prompt_dirs(
+        candidate_prompts = LPIPSQualityEvaluator._safe_prompt_dirs(
             candidate_root, run_dir
         )
         if len(baseline_prompts) != 5 or len(candidate_prompts) != 5:
@@ -339,10 +282,10 @@ class LockedSolQualityEvaluator:
         for index, (baseline_prompt, candidate_prompt) in enumerate(
             zip(baseline_prompts, candidate_prompts, strict=True)
         ):
-            baseline = LockedSolQualityEvaluator._safe_frames(
+            baseline = LPIPSQualityEvaluator._safe_frames(
                 baseline_prompt, baseline_frames, suffixes
             )
-            candidate = LockedSolQualityEvaluator._safe_frames(
+            candidate = LPIPSQualityEvaluator._safe_frames(
                 candidate_prompt, run_dir, suffixes
             )
             if not baseline or len(baseline) != len(candidate):
@@ -413,7 +356,7 @@ class LockedSolQualityEvaluator:
 class RuntimeIntegrationVerifier:
     """Reapply engagement and correctness gates to the composed full run."""
 
-    def __init__(self, quality_evaluator: LockedSolQualityEvaluator | None) -> None:
+    def __init__(self, quality_evaluator: LPIPSQualityEvaluator | None) -> None:
         self.quality_evaluator = quality_evaluator
 
     def verify_integrated(
@@ -637,9 +580,7 @@ class FileCampaignHooks:
         self.source_manager = SourceManager(
             self.campaign_dir.parent / ".sgl-diffusion-source-cache"
         )
-        self.registry = TechniqueRegistry.load(
-            _PACKAGE_ROOT / "techniques" / "registry.toml"
-        )
+        self.registry = TechniqueRegistry.load(TECHNIQUE_REGISTRY)
 
     def _driver(self, checkout: Path) -> SGLangDiffusionDriver:
         template = self.campaign_dir / "BASELINE-COMMAND.json"
@@ -659,11 +600,7 @@ class FileCampaignHooks:
         locks = self._ensure_source_locks()
         worktrees = self._ensure_source_worktrees(locks)
         self._sync_knowledge(locks, worktrees)
-        build_sol_search_space_catalog(
-            sol_checkout=worktrees["sol_engine"],
-            sol_commit=locks["sol_engine"].commit,
-            output_path=self.campaign_dir / "SEARCH-SPACE.json",
-        )
+        build_search_space_catalog(output_path=self.campaign_dir / "SEARCH-SPACE.json")
 
         baseline_path = self.campaign_dir / "BASELINE.json"
         if baseline_path.is_file():
@@ -802,8 +739,7 @@ class FileCampaignHooks:
 
         verified = self._load_verified(epoch)
         baseline = BaselineRunner.load(self.campaign_dir / "BASELINE.json")
-        quality = LockedSolQualityEvaluator(
-            sol_checkout=self.campaign_dir / "source-worktrees" / "sol_engine",
+        quality = LPIPSQualityEvaluator(
             campaign_dir=self.campaign_dir,
         )
         verifier = DeliveryVerifier(
@@ -948,8 +884,7 @@ class FileCampaignHooks:
                 CampaignStatus.AWAITING_AGENT,
                 payload={"reason": "no_verified_latency_positive_candidate"},
             )
-        quality = LockedSolQualityEvaluator(
-            sol_checkout=self.campaign_dir / "source-worktrees" / "sol_engine",
+        quality = LPIPSQualityEvaluator(
             campaign_dir=self.campaign_dir,
         )
         manager = IntegrationManager(
@@ -1144,10 +1079,7 @@ class FileCampaignHooks:
             _KDA_SKILL_SUBMODULES,
         )
         for name, spec in derived.items():
-            locks[name] = self.source_manager.lock(
-                name, spec.repository, spec.commit
-            )
-        _validate_sol_contract(locks["sol_engine"])
+            locks[name] = self.source_manager.lock(name, spec.repository, spec.commit)
         _atomic_json(
             path,
             {
@@ -1162,12 +1094,9 @@ class FileCampaignHooks:
         missing = [name for name in _SOURCE_NAMES if name not in value]
         if missing:
             raise CampaignRuntimeError(
-                "SOURCE-LOCKS.json is missing required sources: "
-                + ", ".join(missing)
+                "SOURCE-LOCKS.json is missing required sources: " + ", ".join(missing)
             )
-        locks = {
-            name: SourceLock.model_validate(value[name]) for name in _SOURCE_NAMES
-        }
+        locks = {name: SourceLock.model_validate(value[name]) for name in _SOURCE_NAMES}
         expected = _source_specs(self.goal)
         for name in _PRIMARY_SOURCE_NAMES:
             lock = locks[name]
@@ -1191,7 +1120,6 @@ class FileCampaignHooks:
                 raise CampaignRuntimeError(
                     f"source lock {name} differs from the locked KDA gitlink"
                 )
-        _validate_sol_contract(locks["sol_engine"])
         return locks
 
     def _ensure_source_worktrees(
@@ -1209,7 +1137,6 @@ class FileCampaignHooks:
             else:
                 self.source_manager.create_worktree(lock, destination)
             roots[name] = destination.resolve()
-        _validate_sol_contract(locks["sol_engine"], roots["sol_engine"])
         return roots
 
     def _sync_knowledge(
@@ -1217,9 +1144,7 @@ class FileCampaignHooks:
         locks: Mapping[str, SourceLock],
         worktrees: Mapping[str, Path],
     ) -> None:
-        registry = load_knowledge_registry(
-            _PACKAGE_ROOT / "knowledge" / "registry.toml"
-        )
+        registry = load_knowledge_registry(KNOWLEDGE_REGISTRY)
         snapshots: dict[str, str] = {}
         for name, patterns in registry.items():
             lock = locks[name]

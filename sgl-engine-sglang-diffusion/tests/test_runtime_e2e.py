@@ -5,13 +5,12 @@ from pathlib import Path
 
 import pytest
 
-import sgl_engine_sglang_diffusion.runtime as runtime_module
 from sgl_engine_sglang_diffusion.cli import initialize, main
-from sgl_engine_sglang_diffusion.models import CampaignStatus, SourceLock
+from sgl_engine_sglang_diffusion.models import CampaignStatus
 from sgl_engine_sglang_diffusion.process import run
 from sgl_engine_sglang_diffusion.runtime import (
     CampaignRuntimeError,
-    LockedSolQualityEvaluator,
+    LPIPSQualityEvaluator,
     run_campaign_command,
 )
 from sgl_engine_sglang_diffusion.state import StateStore
@@ -83,53 +82,6 @@ def _prepare_fake_source(repository: Path) -> None:
     (repository / "docs/inference/optimizations.md").write_text("fake optimization\n")
     (repository / "diffusion/docs").mkdir(parents=True)
     (repository / "diffusion/docs/optimization.md").write_text("fake KDA note\n")
-    (repository / "search").mkdir()
-    (repository / "search/plan_eval.py").write_text(
-        "raise SystemExit('quality evaluator is not used by this lossless test')\n"
-    )
-    search_documents = {
-        "01_cache.md": "- Whole-step reuse: cache output.\n",
-        "02_token_pruning.md": "- Token pruning: remove tokens.\n",
-        "03_quantization.md": "### 1. Selective FP8\n",
-        "04_sparse_attention.md": "### 1. Piecewise PISA\n",
-        "05_kernel_fusion.md": "### 1. GEMM fusion\n",
-        "06_parallel_topology.md": "- Context parallelism: shard sequence.\n",
-    }
-    for name, methods in search_documents.items():
-        document = repository / "search_space" / name
-        document.parent.mkdir(parents=True, exist_ok=True)
-        document.write_text(
-            f"# Search\n\n## Method Families\n\n{methods}\n## Search Axes\n"
-        )
-    (repository / "search_space/README.md").write_text("# Search Space\n")
-    transform = repository / "techniques/transforms/sparse_attention.py"
-    transform.parent.mkdir(parents=True)
-    transform.write_text('@register_transform("sparse_attention")\n')
-    candidate = repository / "candidates/sparse_attention/piecewise.toml"
-    candidate.parent.mkdir(parents=True)
-    candidate.write_text(
-        """
-kind = "methodology"
-purpose = "frontier"
-description = "PISA"
-model_profile = "fake"
-[id]
-name = "piecewise"
-dimension = "sparse_attention"
-family = "pisa"
-[references.local]
-generic_impl = "techniques/transforms/sparse_attention.py"
-[requirements]
-capabilities = ["has_attention_backend_switch"]
-[efficiency]
-kind = "build_transform"
-name = "sparse_attention"
-[verification]
-mode = "gpu"
-quality_gate = "baseline-comparable"
-"""
-    )
-
     submodules: list[tuple[str, str]] = []
     for path, marker in (
         ("external/KernelWiki", "Kernel knowledge"),
@@ -199,8 +151,6 @@ goal:
 source:
   sglang_repo: {repository}
   sglang_ref: main
-  sol_engine_repo: {repository}
-  sol_engine_ref: main
   fastvideo_repo: {repository}
   fastvideo_ref: main
   kda_pilot_repo: {repository}
@@ -214,14 +164,8 @@ source:
 def test_runtime_yields_to_one_root_agent_and_rejects_one_submission(
     tmp_path: Path,
     fake_git_repo: Path,
-    monkeypatch: pytest.MonkeyPatch,
     capsys: pytest.CaptureFixture[str],
 ) -> None:
-    monkeypatch.setattr(
-        runtime_module,
-        "_validate_sol_contract",
-        lambda lock, checkout=None: None,
-    )
     _prepare_fake_source(fake_git_repo)
     campaign = initialize(_write_goal(tmp_path, fake_git_repo), tmp_path / "runs")
 
@@ -235,7 +179,6 @@ def test_runtime_yields_to_one_root_agent_and_rejects_one_submission(
     source_locks = json.loads((campaign / "SOURCE-LOCKS.json").read_text())
     assert {
         "sglang",
-        "sol_engine",
         "fastvideo",
         "kda_pilot",
         "kernel_wiki",
@@ -245,7 +188,6 @@ def test_runtime_yields_to_one_root_agent_and_rejects_one_submission(
     knowledge = json.loads((campaign / "KNOWLEDGE.json").read_text())
     assert set(knowledge["snapshots"]) == {
         "sglang",
-        "sol_engine",
         "fastvideo",
         "kda_pilot",
         "kernel_wiki",
@@ -309,18 +251,6 @@ def test_runtime_yields_to_one_root_agent_and_rejects_one_submission(
     assert "executor_resumed" not in (campaign / "events.jsonl").read_text()
 
 
-def test_production_sol_contract_rejects_an_unreviewed_commit() -> None:
-    lock = SourceLock(
-        name="sol_engine",
-        repository="https://github.com/NVlabs/Sana.git",
-        requested_ref="main",
-        commit="f" * 40,
-    )
-
-    with pytest.raises(CampaignRuntimeError, match="reviewed correctness contract"):
-        runtime_module._validate_sol_contract(lock)
-
-
 def test_runtime_rejects_legacy_multi_agent_campaign(
     tmp_path: Path,
     fake_git_repo: Path,
@@ -356,7 +286,7 @@ def test_locked_lpips_rejects_candidate_prompt_symlink(tmp_path: Path) -> None:
             (candidate_prompt / "frame.png").write_bytes(b"candidate")
 
     with pytest.raises(CampaignRuntimeError, match="unsafe aligned prompt path"):
-        LockedSolQualityEvaluator._aligned_prompt_pairs(
+        LPIPSQualityEvaluator._aligned_prompt_pairs(
             baseline,
             candidate,
             tmp_path / "run",

@@ -193,7 +193,7 @@ class TechniqueRouter:
                 self.last_evidence[technique] = {
                     "hotspots": hotspots,
                     "knowledge": [
-                        "sol-engine-contract",
+                        "bundled-search-space",
                         "sglang-diffusion-performance",
                     ],
                 }

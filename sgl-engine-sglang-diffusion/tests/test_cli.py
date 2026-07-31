@@ -76,7 +76,6 @@ def test_help_exposes_all_campaign_commands(capsys: object) -> None:
         "submit",
         "skip",
         "sync-knowledge",
-        "check-contracts",
         "package",
         "watchdog",
     ):

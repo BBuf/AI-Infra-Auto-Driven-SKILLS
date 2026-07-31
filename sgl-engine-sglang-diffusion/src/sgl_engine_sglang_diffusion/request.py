@@ -244,7 +244,7 @@ def normalize_launch_request(
             f"{request.model!r} != {flags['--model-path']!r}"
         )
     if flags.get("--dataset") != "vbench":
-        raise RequestError("Sol-compatible campaigns require --dataset vbench")
+        raise RequestError("quality-reviewed campaigns require --dataset vbench")
     prompt_path = Path(flags["--dataset-path"])
     if not prompt_path.is_absolute():
         prompt_path = (cwd / prompt_path).resolve()
@@ -256,7 +256,7 @@ def normalize_launch_request(
     prompt_count = int(flags["--num-prompts"])
     if prompt_count != 5 or len(prompts) < 5:
         raise RequestError(
-            "Sol-compatible campaigns require --num-prompts 5 and at least "
+            "quality-reviewed campaigns require --num-prompts 5 and at least "
             "five non-empty prompts"
         )
 

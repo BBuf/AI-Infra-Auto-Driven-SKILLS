@@ -1,6 +1,6 @@
 ---
 name: sglang-diffusion-auto-optimize
-description: Autonomously optimize one SGLang Diffusion model on a named GPU machine from a frozen baseline command until a measured end-to-end target or reviewed terminal boundary. Use when the current interactive root agent should directly own profiling, serial SGLang or kernel changes, Sol-compatible verification, integration, progress, recovery, and patch packaging without spawning subagents or nested AI processes.
+description: Autonomously optimize one SGLang Diffusion model on a named GPU machine from a frozen baseline command until a measured end-to-end target or reviewed terminal boundary. Use when the current interactive root agent should directly own profiling, serial SGLang or kernel changes, self-contained verification, integration, progress, recovery, and patch packaging without spawning subagents or nested AI processes.
 ---
 
 # SGLang Diffusion Auto-Optimize
@@ -22,13 +22,12 @@ The Python controller is a deterministic evidence tool. It may lock sources,
 run benchmarks and profilers, create one worktree, verify artifacts, integrate
 candidates, and package a patch. It must not choose hypotheses or launch AI.
 
-Keep Sol correctness and quality rules binding. Additional SGLang, FastVideo,
-KDA-Pilot, KernelWiki, profiler, or model-history evidence may suggest a
-hypothesis but may not relax a gate.
+Keep the bundled correctness and quality rules binding. Additional SGLang,
+FastVideo, KDA-Pilot, KernelWiki, profiler, or model-history evidence may
+suggest a hypothesis but may not relax a gate.
 
-Mirror Sol's complete documented and structured candidate space. Distinguish a
-method that is documented or referenced from one that is SGLang-adapted or
-end-to-end validated.
+Use the complete bundled method and candidate space. Distinguish a documented
+or referenced method from one that is SGLang-adapted or end-to-end validated.
 
 ## Read Before Acting
 
@@ -123,7 +122,7 @@ Repeat this loop until a terminal state:
    `KNOWLEDGE.json`.
 
 3. Read the routed family's complete method/candidate projection. Query the
-   SGLang, Sol, KDA-Pilot, KernelWiki, NCU, and FastVideo snapshots using the
+   SGLang, KDA-Pilot, KernelWiki, NCU, and FastVideo snapshots using the
    knowledge protocol. Choose one evidence-backed hypothesis. Routes are
    suggestions, not mandatory lanes. Exclude known-inapplicable methods; for
    example, do not attempt NVFP4 on Hopper.
@@ -201,7 +200,7 @@ subset; this selection-only epoch consumes no scientific round.
 `SEARCH_SPACE_EXHAUSTED` is valid only after every suggested technique is
 explicitly closed or has consumed its scientific budget and the best verified
 integrated subset remains below target. Before closing a technique, satisfy its
-full-Sol candidate-coverage requirements; a PISA-only sparse search or a
+full bundled candidate-coverage requirements; a PISA-only sparse search or a
 three-family-only cache search is incomplete.
 
 ## Integration And Progress

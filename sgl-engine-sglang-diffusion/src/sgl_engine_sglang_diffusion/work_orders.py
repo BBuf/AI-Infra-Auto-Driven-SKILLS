@@ -16,6 +16,7 @@ from .models import (
     SourceLock,
     TechniqueDisposition,
 )
+from .resources import TECHNIQUE_REGISTRY
 from .sources import SourceManager
 from .state import StateStore
 from .techniques import TechniqueRegistry
@@ -25,7 +26,6 @@ class WorkOrderError(RuntimeError):
     """The requested interactive action is unsafe in the current campaign."""
 
 
-_PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 _CLOSED_CLASSIFICATIONS = frozenset({"unsupported", "no_gain"})
 
 
@@ -75,9 +75,7 @@ class WorkOrderManager:
         self.source_manager = source_manager or SourceManager(
             self.campaign_dir.parent / ".sgl-diffusion-source-cache"
         )
-        self.registry = registry or TechniqueRegistry.load(
-            _PACKAGE_ROOT / "techniques" / "registry.toml"
-        )
+        self.registry = registry or TechniqueRegistry.load(TECHNIQUE_REGISTRY)
 
     @contextmanager
     def _campaign_lock(self) -> Iterator[None]:
@@ -410,9 +408,7 @@ class WorkOrderManager:
     def _load_work_order(self, epoch: int) -> AgentWorkOrder:
         path = self.campaign_dir / "search" / str(epoch) / "AGENT-WORK.json"
         try:
-            order = AgentWorkOrder.model_validate_json(
-                path.read_text(encoding="utf-8")
-            )
+            order = AgentWorkOrder.model_validate_json(path.read_text(encoding="utf-8"))
         except (OSError, ValueError) as error:
             raise WorkOrderError(
                 f"invalid active work order {path}: {error}"
@@ -447,10 +443,7 @@ class WorkOrderManager:
         }
         expected_paths = {
             "baseline": self.campaign_dir / "BASELINE.json",
-            "profile": self.campaign_dir
-            / "profiles"
-            / "0"
-            / "PROFILE-DIGEST.json",
+            "profile": self.campaign_dir / "profiles" / "0" / "PROFILE-DIGEST.json",
             "technique contract": self.registry[order.technique].scope,
             "knowledge manifest": self.campaign_dir / "KNOWLEDGE.json",
             "search space": self.campaign_dir / "SEARCH-SPACE.json",

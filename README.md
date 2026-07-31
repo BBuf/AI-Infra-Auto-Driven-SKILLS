@@ -71,13 +71,19 @@ Do not consider TensorRT-LLM or TokenSpeed; record them as user-excluded.
 ## SGL-Engine for SGLang Diffusion
 
 [`sgl-engine-sglang-diffusion`](sgl-engine-sglang-diffusion/) is a persistent
-evidence controller for one serial interactive campaign. It mirrors the locked
-Sol search space and combines it with commit-bound SGLang Diffusion skills,
-SGLang runtime source, KDA-Pilot diffusion kernels, KernelWiki, NCU guidance,
-and FastVideo knowledge. The current root agent chooses hypotheses and edits
-code; the controller locks the SGLang revision and workload, issues one work
-order, deterministically verifies real GPU evidence, integrates the
-latency-positive subset, and emits a clean-room-checked `sglang.patch`.
+evidence controller for one serial interactive campaign. It combines a
+self-contained six-family optimization catalog with commit-bound SGLang
+Diffusion skills, SGLang runtime source, KDA-Pilot diffusion kernels,
+KernelWiki, NCU guidance, and FastVideo knowledge. The current root agent
+chooses hypotheses and edits code; the controller locks the SGLang revision and
+workload, issues one work order, deterministically verifies real GPU evidence,
+integrates the latency-positive subset, and emits a clean-room-checked
+`sglang.patch`.
+
+Its taxonomy and verification design acknowledge the
+[Sol-Engine code](https://github.com/NVlabs/Sana/tree/sol-engine) and
+[paper](https://arxiv.org/abs/2606.23743), but the controller does not clone,
+import, or read Sol-Engine at runtime.
 
 The controller is not another AI agent. It never starts an executor, reviewer,
 nested Codex process, or Claude process. Its `AWAITING_AGENT` state means the

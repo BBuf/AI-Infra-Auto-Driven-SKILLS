@@ -15,11 +15,9 @@ import yaml
 
 from .config import load_goal
 from .models import CampaignGoal
+from .resources import KNOWLEDGE_REGISTRY
 from .state import StateStore
 from .watchdog import CampaignWatchdog
-
-
-PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 
 
 def _campaign_store(campaign: Path) -> StateStore:
@@ -103,7 +101,7 @@ def status_payload(campaign: Path) -> dict[str, Any]:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="sgl-diffusion-engine",
-        description="Persistent Sol-Engine-compatible SGLang Diffusion optimizer",
+        description="Persistent self-contained SGLang Diffusion optimizer",
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
@@ -156,18 +154,6 @@ def build_parser() -> argparse.ArgumentParser:
         if name == "watchdog":
             command.add_argument("--once", action="store_true")
 
-    contracts = subparsers.add_parser("check-contracts")
-    contracts.add_argument("--sol-checkout", type=Path, required=True)
-    contracts.add_argument(
-        "--source-lock",
-        type=Path,
-        default=PACKAGE_ROOT / "contracts/sol_engine/source-lock.json",
-    )
-    contracts.add_argument(
-        "--hashes",
-        type=Path,
-        default=PACKAGE_ROOT / "contracts/sol_engine/source-hashes.json",
-    )
     return parser
 
 
@@ -277,7 +263,7 @@ def main(argv: list[str] | None = None) -> int:
         from .knowledge import load_registry, sync_source
 
         campaign = args.campaign.resolve()
-        registry = load_registry(PACKAGE_ROOT / "knowledge/registry.toml")
+        registry = load_registry(KNOWLEDGE_REGISTRY)
         locks = json.loads((campaign / "SOURCE-LOCKS.json").read_text())
         snapshots: dict[str, str] = {}
         for name, patterns in registry.items():
@@ -294,17 +280,6 @@ def main(argv: list[str] | None = None) -> int:
             snapshots[name] = str(output / "index.json")
         print(json.dumps({"campaign": str(campaign), "snapshots": snapshots}))
         return 0
-    if args.command == "check-contracts":
-        from .knowledge import check_contract_hashes
-
-        issues = check_contract_hashes(
-            args.source_lock.resolve(),
-            args.sol_checkout.resolve(),
-            args.hashes.resolve(),
-        )
-        for issue in issues:
-            print(issue, file=sys.stderr)
-        return 1 if issues else 0
     if args.command in {"run", "resume", "package"}:
         # The default runtime is imported lazily so status/init remain CPU-only.
         from .runtime import run_campaign_command

@@ -23,7 +23,7 @@ class Technique:
 
 
 class TechniqueRegistry:
-    """Load and expose the reviewed Sol-Engine technique registry."""
+    """Load and expose the bundled SGLang Diffusion technique registry."""
 
     def __init__(self, entries: dict[str, Technique], default_order: list[str]):
         self._entries = entries

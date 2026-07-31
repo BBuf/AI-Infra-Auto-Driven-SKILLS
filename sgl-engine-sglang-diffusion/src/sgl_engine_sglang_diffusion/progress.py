@@ -10,11 +10,9 @@ from typing import Any
 import yaml
 
 from .models import CampaignStatus
+from .resources import TECHNIQUE_REGISTRY
 from .state import StateStore, TERMINAL_STATUSES
 from .techniques import TechniqueRegistry
-
-
-_PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 
 
 def build_progress(campaign: Path) -> dict[str, Any]:
@@ -28,7 +26,7 @@ def build_progress(campaign: Path) -> dict[str, Any]:
         events = store.events(campaign_id)
         failures = store.failures(campaign_id)
 
-    registry = TechniqueRegistry.load(_PACKAGE_ROOT / "techniques" / "registry.toml")
+    registry = TechniqueRegistry.load(TECHNIQUE_REGISTRY)
     routes = _routes(campaign, registry.default_order)
     rounds = _technique_rounds(events)
     dispositions = _dispositions(campaign)
