@@ -7,6 +7,7 @@ import time
 from pathlib import Path
 from typing import Any
 
+from .models import CampaignStatus
 from .state import LeaseUnavailable, StateStore, TERMINAL_STATUSES
 
 
@@ -42,7 +43,10 @@ class CampaignWatchdog:
             or not isinstance(campaign_id, str)
         ):
             raise WatchdogError("campaign manifest has no safe controller command")
-        if self.store.status(campaign_id) in TERMINAL_STATUSES:
+        if self.store.status(campaign_id) in {
+            *TERMINAL_STATUSES,
+            CampaignStatus.AWAITING_AGENT,
+        }:
             return None
 
         if self._controller is not None:
@@ -129,7 +133,11 @@ class CampaignWatchdog:
             campaign_id = manifest.get("campaign_id")
             if (
                 isinstance(campaign_id, str)
-                and self.store.status(campaign_id) in TERMINAL_STATUSES
+                and self.store.status(campaign_id)
+                in {
+                    *TERMINAL_STATUSES,
+                    CampaignStatus.AWAITING_AGENT,
+                }
             ):
                 return
             time.sleep(interval_seconds)

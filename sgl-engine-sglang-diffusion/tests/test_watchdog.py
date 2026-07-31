@@ -97,3 +97,28 @@ def test_terminal_campaign_is_never_restarted(tmp_path: Path) -> None:
         watchdog.run_forever(interval_seconds=0.01)
     finally:
         store.close()
+
+
+def test_awaiting_agent_campaign_is_yielded_not_restarted(tmp_path: Path) -> None:
+    watchdog, store, marker = _watchdog(tmp_path)
+    try:
+        store.transition(
+            "campaign-1",
+            CampaignStatus.BASELINE_LOCKED,
+            idempotency_key="baseline",
+        )
+        store.transition(
+            "campaign-1",
+            CampaignStatus.PROFILED,
+            idempotency_key="profile",
+        )
+        store.transition(
+            "campaign-1",
+            CampaignStatus.AWAITING_AGENT,
+            idempotency_key="await",
+        )
+        assert watchdog.tick() is None
+        assert not marker.exists()
+        watchdog.run_forever(interval_seconds=0.01)
+    finally:
+        store.close()
