@@ -72,6 +72,7 @@ def test_terminal_status_rejects_outgoing_transition(tmp_path: Path) -> None:
     store.create_campaign("c1")
     store.transition("c1", CampaignStatus.BASELINE_LOCKED, idempotency_key="base")
     store.transition("c1", CampaignStatus.PROFILED, idempotency_key="profile")
+    store.transition("c1", CampaignStatus.AWAITING_AGENT, idempotency_key="await")
     store.transition("c1", CampaignStatus.SEARCHING, idempotency_key="search")
     store.transition("c1", CampaignStatus.INTEGRATING, idempotency_key="integrate")
     store.transition(
@@ -83,6 +84,18 @@ def test_terminal_status_rejects_outgoing_transition(tmp_path: Path) -> None:
         store.transition(
             "c1", CampaignStatus.SEARCHING, idempotency_key="cannot-reopen"
         )
+
+
+def test_interactive_agent_wait_is_a_first_class_transition(tmp_path: Path) -> None:
+    store = make_store(tmp_path)
+    store.create_campaign("c1")
+    store.transition("c1", CampaignStatus.BASELINE_LOCKED, idempotency_key="base")
+    store.transition("c1", CampaignStatus.PROFILED, idempotency_key="profile")
+    store.transition("c1", CampaignStatus.AWAITING_AGENT, idempotency_key="await")
+    assert store.status("c1") is CampaignStatus.AWAITING_AGENT
+    store.transition("c1", CampaignStatus.SEARCHING, idempotency_key="claim")
+    store.transition("c1", CampaignStatus.AWAITING_AGENT, idempotency_key="reject")
+    assert store.status("c1") is CampaignStatus.AWAITING_AGENT
 
 
 def test_recoverable_status_only_returns_to_prior_active_status(

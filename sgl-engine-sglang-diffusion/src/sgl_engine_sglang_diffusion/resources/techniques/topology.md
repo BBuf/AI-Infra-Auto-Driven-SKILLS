@@ -1,11 +1,11 @@
-# Topology executor scope
+# Topology work-order scope
 
 ## Identity and correctness
 
-`topology` is an optional Sol-Engine lightweight executor with a hard budget of
-**20 candidate rounds**. It losslessly optimizes how the unchanged SGLang
-Diffusion inference program is partitioned, placed, communicated, and scheduled
-within the exact frozen GPU resource envelope.
+`topology` is an optional work-order technique with a hard budget of **20
+candidate rounds**. It losslessly optimizes how the
+unchanged SGLang Diffusion inference program is partitioned, placed,
+communicated, and scheduled within the exact frozen GPU resource envelope.
 
 The global mathematical function and logical work remain unchanged. Preserve
 global logical denoising-step and DiT/model-call counts. Floating-point
@@ -28,10 +28,15 @@ bottleneck per candidate. In scope are:
 - exact collective or P2P scheduling, chunking, prefetch, and overlap when
   covered by the frozen timing scope.
 
+Read the `topology` projection in the bound `SEARCH-SPACE.json`, the locked
+SGLang distributed source and distributed-debugging skills, and relevant
+KDA/KernelWiki evidence before choosing a topology. Cite exact knowledge
+origins in every implementation manifest.
+
 Kernel owns local backend, fusion, compilation, and local kernels. Cache owns
-cross-step approximation, PISA owns attention approximation, quantization owns
-precision reduction, and token pruning owns reduced token work. Preserve the
-frozen GPU count and dtype policy.
+cross-step approximation, sparse attention owns attention approximation,
+quantization owns precision reduction, and token pruning owns reduced token
+work. Preserve the frozen GPU count and dtype policy.
 
 ## Candidate and evidence contract
 

@@ -23,7 +23,7 @@ class Technique:
 
 
 class TechniqueRegistry:
-    """Load and expose the reviewed Sol-Engine technique registry."""
+    """Load and expose the bundled SGLang Diffusion technique registry."""
 
     def __init__(self, entries: dict[str, Technique], default_order: list[str]):
         self._entries = entries
@@ -51,9 +51,7 @@ class TechniqueRegistry:
 
             correctness = str(raw["correctness"])
             if correctness not in _CORRECTNESS_MODES:
-                raise ValueError(
-                    f"invalid correctness mode for {name}: {correctness}"
-                )
+                raise ValueError(f"invalid correctness mode for {name}: {correctness}")
             round_budget = int(raw["round_budget"])
             if round_budget <= 0:
                 raise ValueError(f"round_budget must be positive for {name}")

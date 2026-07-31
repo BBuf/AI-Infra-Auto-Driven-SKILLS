@@ -1,10 +1,11 @@
 from __future__ import annotations
 
+from collections.abc import Mapping
 from enum import StrEnum
 from pathlib import Path
 from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 
 class StrictModel(BaseModel):
@@ -20,6 +21,7 @@ class CampaignStatus(StrEnum):
     NEW = "NEW"
     BASELINE_LOCKED = "BASELINE_LOCKED"
     PROFILED = "PROFILED"
+    AWAITING_AGENT = "AWAITING_AGENT"
     SEARCHING = "SEARCHING"
     INTEGRATING = "INTEGRATING"
     FINAL_VERIFYING = "FINAL_VERIFYING"
@@ -63,8 +65,6 @@ class GoalTarget(StrictModel):
 class SourceSpec(StrictModel):
     sglang_repo: str
     sglang_ref: str = "main"
-    sol_engine_repo: str = "https://github.com/NVlabs/Sana.git"
-    sol_engine_ref: str = "cee25847afdd34bc656abcca126262200b088dc8"
     fastvideo_repo: str = "https://github.com/hao-ai-lab/FastVideo.git"
     fastvideo_ref: str = "main"
     kda_pilot_repo: str = "https://github.com/BBuf/KDA-Pilot.git"
@@ -77,19 +77,33 @@ class AgentSpec(StrictModel):
 
 
 class CampaignGoal(StrictModel):
-    schema_version: Literal[1]
+    schema_version: Literal[2] = 2
+    execution_mode: Literal["interactive_single_agent"] = "interactive_single_agent"
     model: ModelSpec
     hardware: HardwareSpec
     workload: WorkloadSpec
     goal: GoalTarget
     source: SourceSpec
-    agent: AgentSpec
+
+    @model_validator(mode="before")
+    @classmethod
+    def migrate_legacy_agent_goal(cls, value: Any) -> Any:
+        if not isinstance(value, Mapping):
+            return value
+        migrated = dict(value)
+        if migrated.get("schema_version", 1) == 1:
+            migrated["schema_version"] = 2
+        migrated.pop("agent", None)
+        migrated.setdefault("execution_mode", "interactive_single_agent")
+        return migrated
 
     @field_validator("workload")
     @classmethod
     def require_five_prompt_contract(cls, value: WorkloadSpec) -> WorkloadSpec:
         if value.prompt_count != 5:
-            raise ValueError("prompt_count must be exactly 5 for Sol-Engine parity")
+            raise ValueError(
+                "prompt_count must be exactly 5 for the quality-review contract"
+            )
         return value
 
 
@@ -156,6 +170,45 @@ class TechniqueContract(StrictModel):
     scope_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
 
 
+class AgentWorkOrder(StrictModel):
+    schema_version: Literal[1] = 1
+    campaign_id: str = Field(min_length=1)
+    epoch: int = Field(ge=1)
+    technique: str = Field(min_length=1)
+    correctness: CorrectnessMode
+    worktree: Path
+    delivery_path: Path
+    review_path: Path
+    baseline_path: Path
+    profile_path: Path
+    technique_scope: Path
+    knowledge_manifest_path: Path
+    search_space_path: Path
+    source_lock_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    baseline_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    profile_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    technique_contract_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    knowledge_manifest_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    search_space_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    scientific_rounds_used: int = Field(ge=0)
+    scientific_rounds_remaining: int = Field(ge=0)
+
+
+class TechniqueDisposition(StrictModel):
+    schema_version: Literal[1] = 1
+    technique: str = Field(min_length=1)
+    classification: Literal["unsupported", "no_gain", "blocked"]
+    reason: str = Field(min_length=1)
+    closed: bool
+
+
+class KnowledgeOrigin(StrictModel):
+    source: str = Field(min_length=1)
+    commit: str = Field(pattern=r"^[0-9a-f]{40}$")
+    path: str = Field(min_length=1)
+    sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+
+
 class CandidateManifest(StrictModel):
     schema_version: Literal[1] = 1
     candidate_id: str
@@ -165,7 +218,7 @@ class CandidateManifest(StrictModel):
     candidate_commit: str = Field(pattern=r"^[0-9a-f]{40}$")
     activation: dict[str, Any]
     eval_profile: dict[str, Any]
-    knowledge_origin: list[dict[str, str]]
+    knowledge_origin: list[KnowledgeOrigin] = Field(min_length=1)
 
 
 class IntegratedDelivery(Delivery):

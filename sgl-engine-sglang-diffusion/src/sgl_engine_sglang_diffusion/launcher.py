@@ -12,7 +12,7 @@ from typing import Any
 
 import yaml
 
-from .agents import redact_argv
+from .redaction import redact_argv
 from .request import load_launch_request, normalize_launch_request
 from .state import StateStore, TERMINAL_STATUSES
 
@@ -83,6 +83,8 @@ def launch_campaign(
     request = load_launch_request(request_path)
     goal, command_template = normalize_launch_request(request)
     request_payload = request.model_dump(mode="json")
+    request_payload.pop("agent", None)
+    request_payload.pop("token_budget", None)
     request_digest = hashlib.sha256(
         json.dumps(request_payload, sort_keys=True, separators=(",", ":")).encode()
     ).hexdigest()
@@ -101,7 +103,7 @@ def launch_campaign(
         watchdog_pid = _recorded_watchdog_pid(campaign)
         if (
             detach
-            and not _campaign_terminal(campaign)
+            and not _campaign_quiescent(campaign)
             and (watchdog_pid is None or not _pid_alive(watchdog_pid))
         ):
             watchdog_pid = watchdog_spawner(campaign)
@@ -149,7 +151,6 @@ def launch_campaign(
             "machine": request.machine,
             "model": request.model,
             "sglang_checkout": str(request.sglang_checkout),
-            "token_budget": request.token_budget,
         },
     )
     campaign_id = json.loads((campaign / "CAMPAIGN.json").read_text(encoding="utf-8"))[
@@ -200,10 +201,11 @@ def _pid_alive(pid: int) -> bool:
     return True
 
 
-def _campaign_terminal(campaign: Path) -> bool:
+def _campaign_quiescent(campaign: Path) -> bool:
     manifest = json.loads((campaign / "CAMPAIGN.json").read_text(encoding="utf-8"))
     with StateStore.open(campaign / "state.sqlite", campaign / "events.jsonl") as store:
-        return store.status(str(manifest["campaign_id"])) in TERMINAL_STATUSES
+        status = store.status(str(manifest["campaign_id"]))
+        return status in TERMINAL_STATUSES or status.value == "AWAITING_AGENT"
 
 
 def _launch_payload(
@@ -219,6 +221,7 @@ def _launch_payload(
     return {
         "campaign_id": manifest["campaign_id"],
         "campaign": str(campaign),
+        "execution_mode": "interactive_single_agent",
         "watchdog_pid": watchdog_pid,
         "reused": reused,
         "progress_command": [*base, "--watch"],
@@ -227,6 +230,13 @@ def _launch_payload(
             "status",
             "--campaign",
             str(campaign),
+        ],
+        "work_command": [
+            "sgl-diffusion-engine",
+            "work",
+            "--campaign",
+            str(campaign),
+            "--json",
         ],
         "resume_command": [
             "sgl-diffusion-engine",

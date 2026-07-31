@@ -148,7 +148,7 @@ class Profiler:
 
 
 class TechniqueRouter:
-    """Choose applicable executor lanes without choosing their hypotheses."""
+    """Suggest applicable techniques without choosing their hypotheses."""
 
     def __init__(self) -> None:
         self.last_evidence: dict[str, dict[str, Any]] = {}
@@ -183,12 +183,17 @@ class TechniqueRouter:
                 "knowledge": ["sglang-distributed-runtime"],
             }
         if allow_quality_gated:
-            for technique in ("cache", "pisa", "quantization", "token_pruning"):
+            for technique in (
+                "cache",
+                "sparse_attention",
+                "quantization",
+                "token_pruning",
+            ):
                 routes.append(technique)
                 self.last_evidence[technique] = {
                     "hotspots": hotspots,
                     "knowledge": [
-                        "sol-engine-contract",
+                        "bundled-search-space",
                         "sglang-diffusion-performance",
                     ],
                 }
