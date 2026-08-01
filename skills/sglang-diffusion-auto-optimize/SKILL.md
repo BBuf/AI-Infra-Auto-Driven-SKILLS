@@ -23,6 +23,12 @@ Keep Sol-Engine correctness and quality gates binding. Additional SGLang,
 FastVideo, KDA-Pilot, KernelWiki, profiler, or model-history knowledge may
 generate hypotheses but may not relax those gates.
 
+The new `sgl-diffusion-engine` is the sole outer controller. It may reuse
+pinned Sol-Engine components, including Executor/Master conventions, quality
+evaluators, and kernel utilities, but must not launch Sol-Engine's full
+campaign flow. The controller owns baseline/profile state, serial GPU
+measurement scheduling, candidate composition, final quality, and termination.
+
 ## Read Before Acting
 
 Read [references/remote-ownership.md](references/remote-ownership.md) and
@@ -40,11 +46,14 @@ Read these installed skills when available:
 - `sglang-diffusion-performance`;
 - `model-pr-history-knowledge`.
 
-Read `KernelWiki`, `kernel-knowledge`, `ncu-report`, `ncu-report-skill`,
-`add-jit-kernel`, or `add-sgl-kernel` only when a routed candidate actually
-touches a GPU kernel or needs NCU evidence. The controller already snapshots
-its checked-in Sol, SGLang, FastVideo, and KDA-Pilot knowledge; do not replace
-those immutable inputs with memory.
+For every routed kernel lane, read and use the pinned `KernelWiki`,
+`ncu-report-skill`, and `warp-specialization-report-skill` resources. Use
+`kernel-knowledge`, `ncu-report`, `add-jit-kernel`, or `add-sgl-kernel` when the
+candidate needs their upstream evidence or implementation workflow. The
+controller snapshots these resources and enforces `KERNEL-EVIDENCE.json`; do
+not replace immutable inputs with memory. Warp timeline instrumentation is
+conditional on an actually warp-specialized CUDA/CuTe candidate, but the
+applicability audit is always required.
 
 ## Phase 1: Resolve The Remote Environment
 
@@ -111,6 +120,11 @@ Translate the baseline command to the request without changing its workload:
 - use the user's requested Agent model when supplied;
 - add a token budget only when the user gave one.
 
+The supplied baseline also selects the fixed parallel topology. Do not add
+`--performance-mode speed`. Do not add or change TP/PP/CP/SP/Ulysses/ring/CFG
+degrees after the baseline is frozen; the controller rejects such candidate
+activation drift.
+
 The launcher rejects shell pipelines, redirects, substitutions, ambiguous
 duplicate workload flags, and baseline/model mismatch. Do not work around those
 failures by weakening validation. Convert a safe command into explicit
@@ -161,6 +175,14 @@ Do not reinterpret an executor's microbenchmark claim as progress. Report only:
 - exact emitted token totals and unavailable runtimes;
 - current phase, epoch, round-budget consumption, and active technique.
 
+The detached controller launches and resumes Executor/Master agents itself.
+Only one GPU-capable Executor is active at a time. A scientific round means one
+authenticated complete frozen-workload candidate measurement—not a process
+launch, retry, microbenchmark, malformed delivery, or infrastructure failure.
+A rejected hypothesis feeds the same lane; it does not close the lane or the
+campaign. Retain every independently verified positive candidate for combined
+remeasurement.
+
 Never add technique speedups together. `marginal_attribution: not_measured`
 means no leave-one-out measurement exists.
 
@@ -189,6 +211,11 @@ For `TARGET_REACHED`, report:
 - integrated stack result;
 - total exact tokens by role/technique when available;
 - patch path, SHA-256, application command, and GPU revalidation command.
+
+Before accepting `TARGET_REACHED`, verify that the same integrated commit has
+exactly five prompt records for LPIPS, VBench, visual review, media contract,
+and, when baseline media has audio, audio quality and AV synchronization.
+Missing tools or evidence are blocking failures, never implicit passes.
 
 Leave the remote artifacts and detached worktrees available for audit. Clean up
 only processes and temporary paths recorded as owned by this campaign.

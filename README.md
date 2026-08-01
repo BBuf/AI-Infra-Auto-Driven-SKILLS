@@ -74,7 +74,14 @@ Do not consider TensorRT-LLM or TokenSpeed; record them as user-excluded.
 persistent Sol-Engine-compatible optimization controller. It locks an SGLang
 revision, runs isolated technique agents, independently verifies their real GPU
 evidence, integrates accepted candidates, and emits a clean-room-checked
-`sglang.patch` with an `--agent-optimization` runtime profile.
+`sglang.patch` with a `--quality off|auto|<profile-id>` runtime profile.
+
+The controller is agentic but remains the sole outer state machine: it launches
+serial GPU-active Executor/Master rounds, can reuse pinned Sol components
+without invoking Sol's full campaign, parses raw traces, actively writes and
+profiles kernels with KernelWiki/NCU/warp-specialization evidence, composes all
+positive candidates, and fails closed on the five-prompt video/audio quality
+gate.
 
 The recommended entrypoint is the installable
 [`sglang-diffusion-auto-optimize`](skills/sglang-diffusion-auto-optimize/)

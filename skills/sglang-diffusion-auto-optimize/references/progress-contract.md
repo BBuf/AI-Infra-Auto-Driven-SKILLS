@@ -18,6 +18,10 @@ executor claims do not move the bar.
 
 Search progress is consumed routed-technique rounds divided by their total
 reviewed round budgets. It measures budget consumption, not time remaining.
+A round is counted only after the controller authenticates a distinct complete
+frozen-workload candidate measurement. Agent launches/resumes, crashes,
+preflight, profile capture, NCU/microbenchmarks, malformed submissions, and
+unmeasured hypotheses consume no scientific round.
 
 ## Technique Rows
 

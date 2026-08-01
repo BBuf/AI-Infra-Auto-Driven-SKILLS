@@ -14,6 +14,11 @@ placement rules, selected KDA-Pilot kernel skills, and allowlisted FastVideo
 optimization sources. Those additions can suggest hypotheses; they cannot
 weaken Sol-Engine's acceptance contract.
 
+`sgl-diffusion-engine` remains the only outer state machine. It may reuse
+pinned Sol contracts, evaluators, kernel utilities, and agent conventions, but
+it never invokes Sol-Engine's complete campaign flow or delegates baseline,
+GPU scheduling, composition, quality, or terminal-state ownership to it.
+
 This is a controller, not a promise that every requested speedup exists.
 `TARGET_REACHED` means the integrated patch achieved the target on the exact
 locked workload and passed clean-room revalidation. A search plateau produces
@@ -80,6 +85,11 @@ shell pipelines, redirects, command substitutions, secret assignments, model
 mismatches, and ambiguous duplicate workload flags are rejected rather than
 silently rewritten.
 
+The user-selected command also freezes the parallel topology. The controller
+does not add `--performance-mode speed`, and candidates cannot add or change
+TP/PP/CP/SP/Ulysses/ring/CFG degrees. Profiling instrumentation and relocated
+output paths are recorded separately from the frozen invocation.
+
 The skill resolves the matching host instructions or SSH alias, finds the
 container and persistent storage, locks the latest fetched SGLang `main`
 commit, bootstraps this controller remotely, freezes the command, and invokes
@@ -123,6 +133,12 @@ The search bar measures consumed reviewed technique rounds, not an estimated
 completion time. Token totals are exact only when the agent runtime emits
 usage; missing usage is marked unavailable and is never estimated from text,
 bytes, or elapsed time.
+
+Only an authenticated complete frozen-workload candidate measurement consumes
+a scientific round. Executor spawn/resume, source inspection, preflight,
+microbenchmarks, malformed deliveries, and crashes do not. The controller
+activates one GPU-capable Executor at a time, so campaign GPU measurements do
+not overlap.
 
 Each technique row reports its best independently verified end-to-end result on
 the frozen workload. `integrated stack` is measured again after accepted
@@ -272,6 +288,12 @@ The following rule is deliberately asymmetric:
 | kernel, topology | lossless | Method/code audit, unchanged global denoising steps and DiT calls, no approximation or reduced logical work. Output frames prove run authenticity only. No output diff, tolerance, PSNR, LPIPS, or visual-quality rejection is allowed. |
 | cache, PISA, quantization, token pruning | quality-gated | Complete frozen workload, real engagement, aligned LPIPS, and the coding agent's built-in multimodal review. External Gemini/VLM verdict services are not used. |
 
+The table governs candidate admission. Final completion is stricter for every
+integrated revision: an independent Master must bind exactly five prompt
+records for LPIPS, VBench, visual review, media stream contract, and—when the
+frozen baseline contains audio—audio quality plus AV synchronization. Missing,
+stale, non-finite, wrong-commit, or unhashed tool evidence fails closed.
+
 The Master reads real run directories, hashes, benchmark rows, frames,
 implementation manifests, engagement/fallback receipts, and candidate commits.
 It recomputes:
@@ -302,6 +324,21 @@ Remote documentation is treated as untrusted data, never executable
 instructions. Every knowledge entry records repository, full commit, path,
 source SHA-256, and sanitized reference SHA-256. Credential assignments and
 machine-local home paths are redacted.
+
+Kernel deliveries additionally require `KERNEL-EVIDENCE.json`. The Executor
+must query the pinned KernelWiki, use before/after Nsight Compute reports for
+implemented Triton/CUDA/CuTe/upstream kernels, and complete the
+warp-specialization applicability audit. Warp timelines are required for an
+actually warp-specialized CUDA/CuTe design; a non-applicable result must still
+carry a concrete reason. One slower `torch.compile` experiment never exhausts
+the kernel lane.
+
+Verified latency-positive points are retained even when each is below the
+campaign target. Integration composes and remeasures them on the full workload;
+a conflicting combination is excluded without deleting the independently
+verified wins. A technique closes only after its complete coverage ledger or
+authenticated scientific budget is exhausted, and that closure never closes
+another lane.
 
 Generated model kernels must live below:
 
@@ -382,9 +419,9 @@ runs the packaged CPU validation commands. It prints the exact GPU command;
 pass `--run-gpu-validation` to execute it. The resulting SGLang runtime exposes:
 
 ```text
---agent-optimization off
---agent-optimization auto
---agent-optimization <profile-id>
+--quality off
+--quality auto
+--quality <profile-id>
 ```
 
 `off` preserves source-current behavior. `auto` activates a profile only when

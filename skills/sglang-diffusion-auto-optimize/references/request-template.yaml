@@ -19,6 +19,9 @@ baseline:
     --num-prompts 5
     <the-rest-of-the-user-command>
 
+# The command above is the user-selected discovery baseline. Do not inject
+# --performance-mode speed. Its explicit parallelism flags are frozen.
+
 source:
   sglang_repo: <verified-sglang-origin-url>
   sglang_ref: <full-fetched-main-commit>

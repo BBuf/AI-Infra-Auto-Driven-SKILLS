@@ -14,10 +14,15 @@ The Python controller owns:
 
 - immutable source and workload locks;
 - baseline, profiling, search, integration, and correctness state;
+- the campaign-wide serial GPU measurement schedule;
 - executor process receipts and leases;
 - watchdog restart behavior;
 - token and progress ledgers; and
 - terminal patch/certificate packaging.
+
+The controller may reuse pinned Sol-Engine internals but never transfers this
+outer ownership to Sol's complete campaign flow. Only one GPU-capable Executor
+may be active at a time.
 
 The conversational skill coordinates the two. Do not encode private hostnames,
 addresses, credentials, or container IDs into the public controller.
