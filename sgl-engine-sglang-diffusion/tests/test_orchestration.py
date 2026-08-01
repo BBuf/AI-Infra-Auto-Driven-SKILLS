@@ -118,7 +118,53 @@ def _manager(
             "HF_TOKEN": "environment-secret",
         },
     )
+    assert manager.agent_environment["GIT_AUTHOR_NAME"] == (
+        "sgl-diffusion-engine executor"
+    )
+    assert manager.agent_environment["GIT_AUTHOR_EMAIL"] == (
+        "sgl-diffusion-engine@localhost"
+    )
+    assert manager.agent_environment["GIT_COMMITTER_NAME"] == (
+        "sgl-diffusion-engine executor"
+    )
+    assert manager.agent_environment["GIT_COMMITTER_EMAIL"] == (
+        "sgl-diffusion-engine@localhost"
+    )
     return manager, state, lock
+
+
+def test_executor_git_identity_respects_explicit_environment(
+    fake_git_repo: Path, tmp_path: Path
+) -> None:
+    state = StateStore.open(tmp_path / "state.sqlite", tmp_path / "events.jsonl")
+    sources = SourceManager(tmp_path / "sources")
+    runner = AgentRunner([sys.executable, str(_fake_agent(tmp_path))])
+    manager = ExecutorManager(
+        tmp_path / "run",
+        state=state,
+        sources=sources,
+        runner=runner,
+        agent_environment={
+            "GIT_AUTHOR_NAME": "Explicit Author",
+            "GIT_AUTHOR_EMAIL": "author@example.test",
+            "GIT_COMMITTER_NAME": "Explicit Committer",
+            "GIT_COMMITTER_EMAIL": "committer@example.test",
+        },
+    )
+    try:
+        assert manager.agent_environment["GIT_AUTHOR_NAME"] == "Explicit Author"
+        assert manager.agent_environment["GIT_AUTHOR_EMAIL"] == (
+            "author@example.test"
+        )
+        assert manager.agent_environment["GIT_COMMITTER_NAME"] == (
+            "Explicit Committer"
+        )
+        assert manager.agent_environment["GIT_COMMITTER_EMAIL"] == (
+            "committer@example.test"
+        )
+    finally:
+        manager.close()
+        state.close()
 
 
 def _wait_until_stopped(manager: ExecutorManager, handle: object) -> None:

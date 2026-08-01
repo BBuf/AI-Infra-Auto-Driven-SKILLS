@@ -246,6 +246,22 @@ class ExecutorManager:
         self.runner = runner
         self.lease_ttl_seconds = lease_ttl_seconds
         self.agent_environment = dict(agent_environment or {})
+        # Executors work in detached worktrees and are expected to commit their
+        # candidate before delivery.  Minimal containers often have no global
+        # Git identity, so provide a deterministic process-local identity
+        # without mutating either the user's global config or the source repo.
+        self.agent_environment.setdefault(
+            "GIT_AUTHOR_NAME", "sgl-diffusion-engine executor"
+        )
+        self.agent_environment.setdefault(
+            "GIT_AUTHOR_EMAIL", "sgl-diffusion-engine@localhost"
+        )
+        self.agent_environment.setdefault(
+            "GIT_COMMITTER_NAME", "sgl-diffusion-engine executor"
+        )
+        self.agent_environment.setdefault(
+            "GIT_COMMITTER_EMAIL", "sgl-diffusion-engine@localhost"
+        )
         self._lock = threading.RLock()
 
     def spawn(
