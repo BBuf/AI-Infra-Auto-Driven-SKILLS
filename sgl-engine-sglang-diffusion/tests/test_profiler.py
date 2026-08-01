@@ -141,7 +141,12 @@ def test_profiler_preserves_trace_and_normalizes_summary(tmp_path: Path) -> None
 def test_profile_routes_attention_and_glue_hotspots(tmp_path: Path) -> None:
     digest = make_profile_digest(tmp_path)
     router = TechniqueRouter()
-    routed = router.route(digest, allow_quality_gated=True, gpu_count=1)
+    routed = router.route(
+        digest,
+        allow_quality_gated=True,
+        gpu_count=1,
+        target_speedup=2.0,
+    )
     assert routed == [
         "residency",
         "kernel",
@@ -158,8 +163,45 @@ def test_profile_routes_attention_and_glue_hotspots(tmp_path: Path) -> None:
 
 def test_profile_freezes_parallel_topology_for_multi_gpu(tmp_path: Path) -> None:
     digest = make_profile_digest(tmp_path)
-    routed = TechniqueRouter().route(digest, allow_quality_gated=False, gpu_count=4)
+    routed = TechniqueRouter().route(
+        digest,
+        allow_quality_gated=False,
+        gpu_count=4,
+        target_speedup=5.0,
+    )
     assert routed == ["residency", "kernel"]
+
+
+def test_large_quality_gated_target_prioritizes_high_leverage_lanes(
+    tmp_path: Path,
+) -> None:
+    digest = make_profile_digest(tmp_path)
+    router = TechniqueRouter()
+
+    routed = router.route(
+        digest,
+        allow_quality_gated=True,
+        gpu_count=4,
+        target_speedup=5.0,
+    )
+
+    assert routed == [
+        "residency",
+        "cache",
+        "pisa",
+        "quantization",
+        "token_pruning",
+        "kernel",
+    ]
+    assert router.route_policy == "large-gap-quality-first-v1"
+
+    router.route(
+        digest,
+        allow_quality_gated=False,
+        gpu_count=4,
+        target_speedup=2.0,
+    )
+    assert router.route_policy == "lossless-first-v1"
 
 
 def test_profile_rejects_corrupt_or_event_empty_raw_trace(tmp_path: Path) -> None:

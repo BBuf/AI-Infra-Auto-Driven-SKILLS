@@ -13,7 +13,8 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Mapping
 
-from .agents import AgentRunner
+from .agents import AgentRunner, read_codex_thread_id
+from .delivery_contract import materialize_delivery_contract
 from .models import SourceLock
 from .sources import SourceManager
 from .state import IdempotencyConflict, StateStore
@@ -54,6 +55,7 @@ class ExecutorPrompt:
     baseline: PromptSection
     search_state: Mapping[str, Any]
     rejected_signatures: tuple[str, ...] = ()
+    delivery_contract: Mapping[str, Any] | None = None
 
 
 @dataclass(frozen=True)
@@ -70,6 +72,7 @@ class ExecutorHandle:
     attempt: int
     lease_resource: str
     lease_owner: str
+    session_id: str | None = None
 
 
 @dataclass(frozen=True)
@@ -112,6 +115,7 @@ def assemble_executor_prompt(
     *,
     worktree: Path,
     delivery: Path,
+    contract_path: Path | None = None,
 ) -> str:
     """Assemble a provenance-addressed prompt in contract precedence order."""
     worktree = worktree.resolve()
@@ -151,11 +155,31 @@ def assemble_executor_prompt(
                 ),
             )
         )
+    sections.append(("5", inputs.baseline))
+    next_index = 6
+    if inputs.delivery_contract is not None:
+        if contract_path is None:
+            raise ValueError("delivery contract path is required")
+        sections.append(
+            (
+                str(next_index),
+                PromptSection(
+                    name="Controller delivery contract and static preflight",
+                    content=_canonical_json(dict(inputs.delivery_contract)),
+                    source=str(contract_path.resolve()),
+                ),
+            )
+        )
+        next_index += 1
+        destination_content += (
+            f"Controller contract: {contract_path.resolve()}\n"
+            "Run its preflight_argv and repair every finding before exiting. "
+            "Static preflight is required but is not independent approval.\n"
+        )
     sections.extend(
         [
-            ("5", inputs.baseline),
             (
-                "6",
+                str(next_index),
                 PromptSection(
                     name="Current search state and rejected signatures",
                     content=search_content,
@@ -163,7 +187,7 @@ def assemble_executor_prompt(
                 ),
             ),
             (
-                "7",
+                str(next_index + 1),
                 PromptSection(
                     name="Assigned worktree and delivery contract",
                     content=destination_content,
@@ -284,8 +308,35 @@ class ExecutorManager:
         executor_root = self.root / "executors" / executor_id
         worktree = executor_root / "worktree"
         delivery = worktree / "DELIVERY.json"
+        contract_path = executor_root / "DELIVERY-CONTRACT.json"
+        materialized_contract = (
+            materialize_delivery_contract(
+                prompt.delivery_contract,
+                worktree=worktree,
+                delivery=delivery,
+            )
+            if prompt.delivery_contract is not None
+            else None
+        )
+        effective_prompt = (
+            ExecutorPrompt(
+                correctness_contract=prompt.correctness_contract,
+                technique_scope=prompt.technique_scope,
+                placement_rules=prompt.placement_rules,
+                knowledge=prompt.knowledge,
+                baseline=prompt.baseline,
+                search_state=prompt.search_state,
+                rejected_signatures=prompt.rejected_signatures,
+                delivery_contract=materialized_contract,
+            )
+            if materialized_contract is not None
+            else prompt
+        )
         prompt_text = assemble_executor_prompt(
-            prompt, worktree=worktree, delivery=delivery
+            effective_prompt,
+            worktree=worktree,
+            delivery=delivery,
+            contract_path=(contract_path if materialized_contract is not None else None),
         )
         event_payload = {
             "executor_id": executor_id,
@@ -333,6 +384,15 @@ class ExecutorManager:
                 return handle
 
             executor_root.mkdir(parents=True, exist_ok=True)
+            if materialized_contract is not None:
+                contract_text = _canonical_json(materialized_contract)
+                if contract_path.is_file():
+                    if contract_path.read_text(encoding="utf-8") != contract_text:
+                        raise IdempotencyConflict(
+                            "delivery contract changed for an existing executor"
+                        )
+                else:
+                    _write_text_atomic(contract_path, contract_text)
             if not worktree.exists():
                 self.sources.create_worktree(source_lock, worktree)
             elif not (worktree / ".git").exists():
@@ -373,6 +433,8 @@ class ExecutorManager:
             delivery = require_regular_delivery(handle.worktree, handle.delivery)
             delivered = True
         if not status.alive:
+            if self.runner.supports_session_resume:
+                self._session_id(handle, required=False)
             self.state.release_lease(handle.lease_resource, handle.lease_owner)
         return ExecutorPoll(
             executor_id=handle.executor_id,
@@ -476,8 +538,13 @@ class ExecutorManager:
         else:
             _write_text_atomic(feedback_path, feedback)
 
-        base_prompt = (handle.root / "goal.base.md").read_text(encoding="utf-8")
-        prompt_text = self._prompt_with_feedback(base_prompt, handle.root)
+        resume_session_id: str | None = None
+        if self.runner.supports_session_resume:
+            resume_session_id = self._session_id(handle, required=True)
+            prompt_text = self._compact_feedback_prompt(handle, feedback)
+        else:
+            base_prompt = (handle.root / "goal.base.md").read_text(encoding="utf-8")
+            prompt_text = self._prompt_with_feedback(base_prompt, handle.root)
         _write_text_atomic(handle.prompt, prompt_text)
 
         # The receipt is the launch boundary. If it exists, recover the
@@ -495,6 +562,7 @@ class ExecutorManager:
                 attempt=attempt,
                 lease_resource=handle.lease_resource,
                 lease_owner=handle.lease_owner,
+                resume_session_id=resume_session_id,
             )
 
         if handle.delivery.exists() or handle.delivery.is_symlink():
@@ -517,6 +585,7 @@ class ExecutorManager:
             attempt=attempt,
             lease_resource=handle.lease_resource,
             lease_owner=handle.lease_owner,
+            resume_session_id=resume_session_id,
         )
 
     def close(self) -> None:
@@ -535,6 +604,7 @@ class ExecutorManager:
         attempt: int,
         lease_resource: str,
         lease_owner: str,
+        resume_session_id: str | None = None,
     ) -> ExecutorHandle:
         receipt = executor_root / f"process-{attempt:03d}.json"
         if receipt.exists() or receipt.is_symlink():
@@ -545,6 +615,7 @@ class ExecutorManager:
             if (
                 process_receipt.get("schema_version") != 1
                 or process_receipt.get("start_new_session") is not True
+                or process_receipt.get("resumed_thread_id") != resume_session_id
                 or Path(process_receipt["cwd"]).resolve() != worktree.resolve()
                 or Path(process_receipt["prompt"]).resolve() != prompt.resolve()
                 or process_receipt["prompt_sha256"] != expected_prompt_hash
@@ -563,6 +634,7 @@ class ExecutorManager:
                 stdout=executor_root / f"stdout-{attempt:03d}.log",
                 stderr=executor_root / f"stderr-{attempt:03d}.log",
                 env=self.agent_environment,
+                resume_session_id=resume_session_id,
                 context={
                     "campaign_id": campaign_id,
                     "agent_role": "executor",
@@ -585,6 +657,7 @@ class ExecutorManager:
             attempt=attempt,
             lease_resource=lease_resource,
             lease_owner=lease_owner,
+            session_id=resume_session_id,
         )
         payload = self._handle_payload(handle)
         _write_json_atomic(executor_root / f"attempt-{attempt:03d}.json", payload)
@@ -618,6 +691,11 @@ class ExecutorManager:
             attempt=int(payload["attempt"]),
             lease_resource=str(payload["lease_resource"]),
             lease_owner=str(payload["lease_owner"]),
+            session_id=(
+                str(payload["session_id"])
+                if payload.get("session_id") is not None
+                else None
+            ),
         )
         if handle.root.resolve() != executor_root.resolve():
             raise OrchestrationError(f"executor manifest root mismatch: {handle.root}")
@@ -668,6 +746,70 @@ class ExecutorManager:
                 f"{feedback}\n"
             )
         return result
+
+    @staticmethod
+    def _compact_feedback_prompt(handle: ExecutorHandle, feedback: str) -> str:
+        contract = handle.root / "DELIVERY-CONTRACT.json"
+        lines = [
+            "# Continue the existing optimization executor turn",
+            "",
+            "Repair the existing candidate and delivery in the assigned worktree.",
+            f"Required delivery path: {handle.delivery}",
+        ]
+        if contract.is_file():
+            lines.append(f"Controller delivery contract: {contract}")
+            payload = json.loads(contract.read_text(encoding="utf-8"))
+            preflight = payload.get("preflight_argv")
+            if isinstance(preflight, list) and all(
+                isinstance(item, str) for item in preflight
+            ):
+                lines.extend(
+                    [
+                        "Static preflight argv (execute directly, without a shell):",
+                        json.dumps(preflight),
+                    ]
+                )
+        lines.extend(["", "## New verifier findings", "", feedback.strip(), ""])
+        return "\n".join(lines)
+
+    def _session_id(
+        self,
+        handle: ExecutorHandle,
+        *,
+        required: bool,
+    ) -> str | None:
+        session_path = handle.root / "SESSION.json"
+        if session_path.is_file() and not session_path.is_symlink():
+            payload = json.loads(session_path.read_text(encoding="utf-8"))
+            thread_id = payload.get("thread_id")
+            if isinstance(thread_id, str) and thread_id:
+                return thread_id
+            raise OrchestrationError(f"invalid executor session manifest: {session_path}")
+
+        observed: set[str] = set()
+        for stream in sorted(handle.root.glob("stdout-*.log")):
+            thread_id = read_codex_thread_id(stream)
+            if thread_id is not None:
+                observed.add(thread_id)
+        if len(observed) > 1:
+            raise OrchestrationError("executor attempts contain conflicting Codex threads")
+        if observed:
+            thread_id = next(iter(observed))
+            _write_json_atomic(
+                session_path,
+                {
+                    "schema_version": 1,
+                    "executor_id": handle.executor_id,
+                    "thread_id": thread_id,
+                },
+            )
+            return thread_id
+        if required:
+            raise OrchestrationError(
+                "Codex executor produced no thread.started event; refusing to start "
+                "a fresh conversation during resume"
+            )
+        return None
 
     def _event_by_key(
         self, campaign_id: str, idempotency_key: str

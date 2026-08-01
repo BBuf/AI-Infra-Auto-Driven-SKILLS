@@ -84,9 +84,15 @@ def build_agent_argv(
     command: list[str] | tuple[str, ...],
     model: str | None,
     prompt: Path,
+    *,
+    resume_session_id: str | None = None,
 ) -> list[str]:
+    if resume_session_id is not None and not resume_session_id.strip():
+        raise ValueError("resume_session_id must not be empty")
     argv = [*command]
     if is_codex_exec(command):
+        if resume_session_id is not None:
+            argv.insert(2, "resume")
         if "--json" not in argv:
             argv.append("--json")
         if not any(
@@ -100,8 +106,35 @@ def build_agent_argv(
             argv.append("--dangerously-bypass-approvals-and-sandbox")
     if model:
         argv.extend(["--model", model])
+    if resume_session_id is not None:
+        if not is_codex_exec(command):
+            raise AgentRunnerError(
+                "session resumption is supported only for codex exec commands"
+            )
+        argv.append(resume_session_id)
     argv.append(str(prompt))
     return argv
+
+
+def read_codex_thread_id(stream: Path) -> str | None:
+    """Extract one durable Codex thread ID from a JSONL event stream."""
+    if not stream.is_file():
+        return None
+    thread_ids: set[str] = set()
+    for line in stream.read_text(encoding="utf-8", errors="replace").splitlines():
+        try:
+            event = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if not isinstance(event, dict) or event.get("type") != "thread.started":
+            continue
+        thread_id = event.get("thread_id")
+        if not isinstance(thread_id, str) or not thread_id.strip():
+            raise AgentRunnerError("Codex thread.started event has no thread_id")
+        thread_ids.add(thread_id)
+    if len(thread_ids) > 1:
+        raise AgentRunnerError("Codex JSONL stream contains conflicting thread IDs")
+    return next(iter(thread_ids), None)
 
 
 def _write_json_atomic(path: Path, payload: Mapping[str, object]) -> None:
@@ -127,8 +160,22 @@ class AgentRunner:
         self.model = model
         self._processes: dict[int, subprocess.Popen[bytes]] = {}
 
-    def argv(self, prompt: Path) -> list[str]:
-        return build_agent_argv(self.command, self.model, prompt)
+    @property
+    def supports_session_resume(self) -> bool:
+        return is_codex_exec(self.command)
+
+    def argv(
+        self,
+        prompt: Path,
+        *,
+        resume_session_id: str | None = None,
+    ) -> list[str]:
+        return build_agent_argv(
+            self.command,
+            self.model,
+            prompt,
+            resume_session_id=resume_session_id,
+        )
 
     def launch(
         self,
@@ -140,6 +187,7 @@ class AgentRunner:
         stderr: Path | None = None,
         env: Mapping[str, str] | None = None,
         context: Mapping[str, object] | None = None,
+        resume_session_id: str | None = None,
     ) -> AgentProcess:
         prompt = prompt.resolve()
         cwd = cwd.resolve()
@@ -155,7 +203,7 @@ class AgentRunner:
         stderr = (stderr or receipt.with_suffix(".stderr.log")).resolve()
         stdout.parent.mkdir(parents=True, exist_ok=True)
         stderr.parent.mkdir(parents=True, exist_ok=True)
-        argv = self.argv(prompt)
+        argv = self.argv(prompt, resume_session_id=resume_session_id)
         merged_environment = os.environ.copy()
         environment_overrides = dict(env or {})
         merged_environment.update(environment_overrides)
@@ -188,6 +236,10 @@ class AgentRunner:
                     "stdout": str(stdout),
                     "stderr": str(stderr),
                     "start_new_session": True,
+                    "agent_session_mode": (
+                        "resume" if resume_session_id is not None else "new"
+                    ),
+                    "resumed_thread_id": resume_session_id,
                     "context": dict(context or {}),
                 },
             )

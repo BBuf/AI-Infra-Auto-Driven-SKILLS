@@ -115,6 +115,80 @@ def test_snapshot_is_idempotent_for_same_source_lock(tmp_path: Path) -> None:
     assert first == second
 
 
+def test_snapshot_requires_entries_and_required_prefixes(tmp_path: Path) -> None:
+    repo = _init_repo(tmp_path / "repo")
+    (repo / "README.md").write_text("# KDA\n")
+    commit = _commit_all(repo, "knowledge")
+
+    with pytest.raises(KnowledgeSyncError, match="no allowlisted files"):
+        sync_source(
+            name="kda_pilot",
+            checkout=repo,
+            commit=commit,
+            patterns=["missing/**"],
+            required_prefixes=("external/KernelWiki/",),
+            output_dir=tmp_path / "empty",
+        )
+
+    with pytest.raises(KnowledgeSyncError, match="required knowledge prefix"):
+        sync_source(
+            name="kda_pilot",
+            checkout=repo,
+            commit=commit,
+            patterns=["README.md"],
+            required_prefixes=("external/KernelWiki/",),
+            output_dir=tmp_path / "incomplete",
+        )
+
+
+def test_reused_snapshot_revalidates_reference_digest(tmp_path: Path) -> None:
+    repo = _init_repo(tmp_path / "repo")
+    (repo / "allowed.md").write_text("# Stable\n")
+    commit = _commit_all(repo, "knowledge")
+    output = tmp_path / "out"
+    sync_source(
+        name="fake",
+        checkout=repo,
+        commit=commit,
+        patterns=["allowed.md"],
+        output_dir=output,
+    )
+    (output / "references/allowed.md").write_text("tampered\n")
+
+    with pytest.raises(KnowledgeSyncError, match="digest"):
+        sync_source(
+            name="fake",
+            checkout=repo,
+            commit=commit,
+            patterns=["allowed.md"],
+            output_dir=output,
+        )
+
+
+def test_reused_snapshot_reports_corrupt_index_as_recoverable(tmp_path: Path) -> None:
+    repo = _init_repo(tmp_path / "repo")
+    (repo / "allowed.md").write_text("# Stable\n")
+    commit = _commit_all(repo, "knowledge")
+    output = tmp_path / "out"
+    sync_source(
+        name="fake",
+        checkout=repo,
+        commit=commit,
+        patterns=["allowed.md"],
+        output_dir=output,
+    )
+    (output / "index.json").write_text("{broken\n")
+
+    with pytest.raises(KnowledgeSyncError, match="knowledge index is invalid"):
+        sync_source(
+            name="fake",
+            checkout=repo,
+            commit=commit,
+            patterns=["allowed.md"],
+            output_dir=output,
+        )
+
+
 def test_snapshot_refuses_different_commit_in_existing_output(
     tmp_path: Path,
 ) -> None:

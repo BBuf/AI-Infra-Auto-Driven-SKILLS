@@ -5,6 +5,8 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import shutil
+import tempfile
 import tomllib
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -185,18 +187,95 @@ def _iter_allowed_files(checkout: Path, patterns: Iterable[str]) -> list[Path]:
     return sorted(matched, key=lambda path: path.relative_to(root).as_posix())
 
 
+def _read_snapshot(index_path: Path) -> KnowledgeSnapshot:
+    try:
+        data = json.loads(index_path.read_text(encoding="utf-8"))
+        if not isinstance(data, dict):
+            raise KnowledgeSyncError("knowledge index must contain an object")
+        return KnowledgeSnapshot.from_dict(data)
+    except (OSError, UnicodeError, json.JSONDecodeError, KeyError, TypeError, ValueError) as error:
+        raise KnowledgeSyncError(
+            f"knowledge index is invalid: {index_path}: {error}"
+        ) from error
+
+
 def _load_existing_snapshot(
     index_path: Path, *, source: str, commit: str
 ) -> KnowledgeSnapshot | None:
     if not index_path.is_file():
         return None
-    data = json.loads(index_path.read_text(encoding="utf-8"))
-    snapshot = KnowledgeSnapshot.from_dict(data)
+    snapshot = _read_snapshot(index_path)
     if snapshot.source != source or snapshot.commit != commit:
         raise KnowledgeSyncError(
             "knowledge output already belongs to a different source revision"
         )
     return snapshot
+
+
+def _validate_snapshot(
+    output_dir: Path,
+    snapshot: KnowledgeSnapshot,
+    *,
+    required_prefixes: Iterable[str],
+) -> None:
+    if not snapshot.entries:
+        raise KnowledgeSyncError("knowledge snapshot contains no allowlisted files")
+    entry_paths = [entry.path for entry in snapshot.entries]
+    for raw_prefix in required_prefixes:
+        prefix = Path(raw_prefix)
+        if prefix.is_absolute() or ".." in prefix.parts:
+            raise KnowledgeSyncError(
+                f"unsafe required knowledge prefix: {raw_prefix}"
+            )
+        normalized = prefix.as_posix().rstrip("/") + "/"
+        if not any(path.startswith(normalized) for path in entry_paths):
+            raise KnowledgeSyncError(
+                f"required knowledge prefix has no entries: {normalized}"
+            )
+    references = (output_dir / "references").resolve()
+    for entry in snapshot.entries:
+        reference = (references / entry.path).resolve()
+        try:
+            reference.relative_to(references)
+        except ValueError as exc:
+            raise KnowledgeSyncError(
+                f"knowledge reference escapes snapshot: {entry.path}"
+            ) from exc
+        if not reference.is_file() or reference.is_symlink():
+            raise KnowledgeSyncError(
+                f"knowledge reference is missing or unsafe: {entry.path}"
+            )
+        actual = hashlib.sha256(reference.read_bytes()).hexdigest()
+        if actual != entry.reference_sha256:
+            raise KnowledgeSyncError(
+                f"knowledge reference digest mismatch: {entry.path}"
+            )
+
+
+def snapshot_reference_files(
+    index_path: Path,
+    *,
+    prefix: str | None = None,
+) -> dict[Path, str]:
+    """Return validated copied references and their immutable digests."""
+    index_path = index_path.resolve()
+    if not index_path.is_file():
+        raise KnowledgeSyncError(f"knowledge index is missing: {index_path}")
+    snapshot = _read_snapshot(index_path)
+    _validate_snapshot(index_path.parent, snapshot, required_prefixes=())
+    normalized = prefix.rstrip("/") + "/" if prefix is not None else None
+    result = {
+        (index_path.parent / "references" / entry.path).resolve(): (
+            entry.reference_sha256
+        )
+        for entry in snapshot.entries
+        if normalized is None or entry.path.startswith(normalized)
+    }
+    if normalized is not None and not result:
+        raise KnowledgeSyncError(
+            f"required knowledge prefix has no entries: {normalized}"
+        )
+    return result
 
 
 def sync_source(
@@ -206,6 +285,7 @@ def sync_source(
     commit: str,
     patterns: Iterable[str],
     output_dir: Path,
+    required_prefixes: Iterable[str] = (),
 ) -> KnowledgeSnapshot:
     """Create an immutable text-only knowledge snapshot for one locked source."""
     if not re.fullmatch(r"[0-9a-f]{40}", commit):
@@ -217,52 +297,77 @@ def sync_source(
     index_path = output_dir / "index.json"
     existing = _load_existing_snapshot(index_path, source=name, commit=commit)
     if existing is not None:
+        _validate_snapshot(
+            output_dir,
+            existing,
+            required_prefixes=required_prefixes,
+        )
         return existing
     if output_dir.exists() and any(output_dir.iterdir()):
         raise KnowledgeSyncError(
             f"knowledge output is nonempty without a valid index: {output_dir}"
         )
 
-    references_dir = output_dir / "references"
+    source_paths = _iter_allowed_files(checkout, patterns)
+    if not source_paths:
+        raise KnowledgeSyncError("knowledge source matched no allowlisted files")
+
+    output_dir.parent.mkdir(parents=True, exist_ok=True)
+    staging = Path(
+        tempfile.mkdtemp(prefix=f".{output_dir.name}.staging-", dir=output_dir.parent)
+    )
+    references_dir = staging / "references"
     references_dir.mkdir(parents=True, exist_ok=True)
     entries: list[KnowledgeEntry] = []
-    for source_path in _iter_allowed_files(checkout, patterns):
-        raw = source_path.read_bytes()
-        if len(raw) > MAX_KNOWLEDGE_FILE_BYTES:
-            raise KnowledgeSyncError(
-                f"knowledge file exceeds {MAX_KNOWLEDGE_FILE_BYTES} bytes: "
-                f"{source_path.relative_to(checkout)}"
+    try:
+        for source_path in source_paths:
+            raw = source_path.read_bytes()
+            if len(raw) > MAX_KNOWLEDGE_FILE_BYTES:
+                raise KnowledgeSyncError(
+                    f"knowledge file exceeds {MAX_KNOWLEDGE_FILE_BYTES} bytes: "
+                    f"{source_path.relative_to(checkout)}"
+                )
+            relative = source_path.relative_to(checkout)
+            text = sanitize_text(raw.decode("utf-8", errors="replace"))
+            reference = references_dir / relative
+            reference.parent.mkdir(parents=True, exist_ok=True)
+            reference.write_text(text, encoding="utf-8")
+            headings, symbols = _extract_metadata(text)
+            entries.append(
+                KnowledgeEntry(
+                    path=relative.as_posix(),
+                    media_type=_media_type(source_path),
+                    sha256=hashlib.sha256(raw).hexdigest(),
+                    reference_sha256=hashlib.sha256(text.encode()).hexdigest(),
+                    headings=headings,
+                    symbols=symbols,
+                )
             )
-        relative = source_path.relative_to(checkout)
-        text = sanitize_text(raw.decode("utf-8", errors="replace"))
-        reference = references_dir / relative
-        reference.parent.mkdir(parents=True, exist_ok=True)
-        reference.write_text(text, encoding="utf-8")
-        headings, symbols = _extract_metadata(text)
-        entries.append(
-            KnowledgeEntry(
-                path=relative.as_posix(),
-                media_type=_media_type(source_path),
-                sha256=hashlib.sha256(raw).hexdigest(),
-                reference_sha256=hashlib.sha256(text.encode()).hexdigest(),
-                headings=headings,
-                symbols=symbols,
-            )
-        )
 
-    snapshot = KnowledgeSnapshot(
-        schema_version=1,
-        source=name,
-        commit=commit,
-        entries=tuple(entries),
-    )
-    temporary_index = output_dir / ".index.json.tmp"
-    temporary_index.write_text(
-        json.dumps(snapshot.to_dict(), indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-    )
-    temporary_index.replace(index_path)
-    return snapshot
+        snapshot = KnowledgeSnapshot(
+            schema_version=1,
+            source=name,
+            commit=commit,
+            entries=tuple(entries),
+        )
+        temporary_index = staging / ".index.json.tmp"
+        temporary_index.write_text(
+            json.dumps(snapshot.to_dict(), indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
+        temporary_index.replace(staging / "index.json")
+        _validate_snapshot(
+            staging,
+            snapshot,
+            required_prefixes=required_prefixes,
+        )
+        if output_dir.exists():
+            output_dir.rmdir()
+        staging.replace(output_dir)
+        return snapshot
+    except BaseException:
+        shutil.rmtree(staging, ignore_errors=True)
+        raise
 
 
 def compute_contract_hashes(

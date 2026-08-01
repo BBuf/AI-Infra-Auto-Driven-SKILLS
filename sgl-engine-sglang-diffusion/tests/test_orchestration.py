@@ -7,7 +7,11 @@ from pathlib import Path
 
 import pytest
 
-from sgl_engine_sglang_diffusion.agents import AgentRunner, build_agent_argv
+from sgl_engine_sglang_diffusion.agents import (
+    AgentRunner,
+    build_agent_argv,
+    read_codex_thread_id,
+)
 from sgl_engine_sglang_diffusion.orchestration import (
     ExecutorManager,
     ExecutorPrompt,
@@ -43,7 +47,9 @@ time.sleep(float(os.environ.get("FAKE_AGENT_DELAY", "0.02")))
     return script
 
 
-def _prompt() -> ExecutorPrompt:
+def _prompt(
+    *, delivery_contract: dict[str, object] | None = None
+) -> ExecutorPrompt:
     return ExecutorPrompt(
         correctness_contract=PromptSection(
             "Sol correctness", "correctness contract\n", "locked:sol"
@@ -69,6 +75,7 @@ def _prompt() -> ExecutorPrompt:
         ),
         search_state={"round": 1, "frontier": []},
         rejected_signatures=("prior-failure",),
+        delivery_contract=delivery_contract,
     )
 
 
@@ -85,6 +92,130 @@ def test_codex_exec_is_noninteractive_and_writable(tmp_path: Path) -> None:
         "--dangerously-bypass-approvals-and-sandbox",
         str(prompt),
     ]
+
+
+def test_codex_resume_uses_exact_persisted_thread(tmp_path: Path) -> None:
+    prompt = tmp_path / "feedback.md"
+    prompt.write_text("repair the delivery\n")
+    thread_id = "67e55044-10b1-426f-9247-bb680e5fe0c8"
+
+    argv = build_agent_argv(
+        ["codex", "exec"],
+        "gpt-test",
+        prompt,
+        resume_session_id=thread_id,
+    )
+
+    assert argv == [
+        "codex",
+        "exec",
+        "resume",
+        "--json",
+        "--dangerously-bypass-approvals-and-sandbox",
+        "--model",
+        "gpt-test",
+        thread_id,
+        str(prompt),
+    ]
+
+
+def test_codex_thread_id_is_read_from_jsonl_and_conflicts_fail(tmp_path: Path) -> None:
+    stream = tmp_path / "stdout.log"
+    thread_id = "67e55044-10b1-426f-9247-bb680e5fe0c8"
+    stream.write_text(
+        json.dumps({"type": "thread.started", "thread_id": thread_id}) + "\n"
+    )
+    assert read_codex_thread_id(stream) == thread_id
+
+    stream.write_text(
+        "\n".join(
+            [
+                json.dumps({"type": "thread.started", "thread_id": thread_id}),
+                json.dumps({"type": "thread.started", "thread_id": "different"}),
+            ]
+        )
+        + "\n"
+    )
+    with pytest.raises(Exception, match="conflicting"):
+        read_codex_thread_id(stream)
+
+
+def test_executor_resume_continues_same_codex_thread_with_compact_feedback(
+    fake_git_repo: Path, tmp_path: Path
+) -> None:
+    codex = tmp_path / "codex"
+    codex.write_text(
+        """#!/usr/bin/env python3
+import json
+import re
+import sys
+from pathlib import Path
+
+thread_id = "67e55044-10b1-426f-9247-bb680e5fe0c8"
+print(json.dumps({"type": "thread.started", "thread_id": thread_id}), flush=True)
+prompt = Path(sys.argv[-1]).read_text(encoding="utf-8")
+match = re.search(r"^Required delivery path: (.+)$", prompt, re.MULTILINE)
+if match is None:
+    raise SystemExit("missing delivery path")
+Path(match.group(1)).write_text('{"status":"complete"}\\n')
+""",
+        encoding="utf-8",
+    )
+    codex.chmod(0o755)
+    state = StateStore.open(tmp_path / "state.sqlite", tmp_path / "events.jsonl")
+    state.create_campaign("campaign-1")
+    sources = SourceManager(tmp_path / "sources")
+    lock = sources.lock("sglang", str(fake_git_repo), "main")
+    manager = ExecutorManager(
+        tmp_path / "run",
+        state=state,
+        sources=sources,
+        runner=AgentRunner([str(codex), "exec"]),
+    )
+    try:
+        first = manager.spawn(
+            campaign_id="campaign-1",
+            technique="kernel",
+            source_lock=lock,
+            prompt=_prompt(
+                delivery_contract={
+                    "schema_version": 1,
+                    "executor_worktree": "{{executor_worktree}}",
+                    "delivery_path": "{{delivery_path}}",
+                    "preflight_argv": [
+                        "sgl-diffusion-engine",
+                        "preflight-delivery",
+                        "--executor-worktree",
+                        "{{executor_worktree}}",
+                        "--delivery",
+                        "{{delivery_path}}",
+                    ],
+                }
+            ),
+            idempotency_key="spawn-kernel",
+        )
+        _wait_until_stopped(manager, first)
+        resumed = manager.resume(
+            first,
+            feedback="[invalid_kernel_evidence] use the pinned citation",
+            idempotency_key="resume-kernel",
+        )
+
+        session = json.loads((first.root / "SESSION.json").read_text())
+        receipt = json.loads(resumed.receipt.read_text())
+        assert session["thread_id"] == "67e55044-10b1-426f-9247-bb680e5fe0c8"
+        assert receipt["agent_session_mode"] == "resume"
+        assert receipt["resumed_thread_id"] == session["thread_id"]
+        assert "resume" in receipt["argv"]
+        assert session["thread_id"] in receipt["argv"]
+        compact = resumed.prompt.read_text()
+        assert "invalid_kernel_evidence" in compact
+        assert "Sol correctness" not in compact
+        assert "preflight-delivery" in compact
+        assert str(first.worktree) in compact
+    finally:
+        manager.close()
+        state.close()
 
 
 def _manager(

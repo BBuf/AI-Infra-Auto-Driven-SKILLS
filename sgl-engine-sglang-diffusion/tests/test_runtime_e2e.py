@@ -545,6 +545,37 @@ delivery_path.write_text(json.dumps(delivery, sort_keys=True))
 """
 
 
+def _add_fixture_submodule(
+    repository: Path,
+    tmp_path: Path,
+    submodule_path: str,
+    files: dict[str, str],
+) -> None:
+    source = tmp_path / f"{Path(submodule_path).name}-upstream"
+    source.mkdir()
+    run(["git", "init"], cwd=source)
+    run(["git", "config", "user.email", "tests@example.invalid"], cwd=source)
+    run(["git", "config", "user.name", "Test Author"], cwd=source)
+    for relative, content in files.items():
+        path = source / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content)
+    run(["git", "add", "."], cwd=source)
+    run(["git", "commit", "-m", "fixture knowledge"], cwd=source)
+    run(
+        [
+            "git",
+            "-c",
+            "protocol.file.allow=always",
+            "submodule",
+            "add",
+            str(source),
+            submodule_path,
+        ],
+        cwd=repository,
+    )
+
+
 def _prepare_fake_source(repository: Path, tmp_path: Path) -> Path:
     benchmark = (
         repository
@@ -567,10 +598,32 @@ def _prepare_fake_source(repository: Path, tmp_path: Path) -> Path:
     (repository / "docs/inference/optimizations.md").write_text("fake optimization\n")
     (repository / "diffusion/docs").mkdir(parents=True)
     (repository / "diffusion/docs/optimization.md").write_text("fake KDA note\n")
-    (repository / "external/KernelWiki/wiki/techniques").mkdir(parents=True)
-    (repository / "external/KernelWiki/SKILL.md").write_text("# KernelWiki fixture\n")
-    (repository / "external/KernelWiki/wiki/techniques/kernel-fusion.md").write_text(
-        "# Kernel fusion fixture\n"
+    _add_fixture_submodule(
+        repository,
+        tmp_path,
+        "external/KernelWiki",
+        {
+            "SKILL.md": "# KernelWiki fixture\n",
+            "wiki/techniques/kernel-fusion.md": "# Kernel fusion fixture\n",
+        },
+    )
+    _add_fixture_submodule(
+        repository,
+        tmp_path,
+        "external/ncu-report-skill",
+        {
+            "SKILL.md": "# NCU report fixture\n",
+            "reference/metrics.md": "# NCU metrics fixture\n",
+        },
+    )
+    _add_fixture_submodule(
+        repository,
+        tmp_path,
+        "external/warp-specialization-report-skill",
+        {
+            "SKILL.md": "# Warp specialization fixture\n",
+            "helpers/README.md": "# Warp specialization helper fixture\n",
+        },
     )
     (repository / "search").mkdir()
     (repository / "search/plan_eval.py").write_text(

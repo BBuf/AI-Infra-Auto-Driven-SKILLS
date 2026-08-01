@@ -144,6 +144,11 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         default=PACKAGE_ROOT / "contracts/sol_engine/source-hashes.json",
     )
+    preflight = subparsers.add_parser("preflight-delivery")
+    preflight.add_argument("--campaign", type=Path, required=True)
+    preflight.add_argument("--technique", required=True)
+    preflight.add_argument("--executor-worktree", type=Path, required=True)
+    preflight.add_argument("--delivery", type=Path, required=True)
     return parser
 
 
@@ -231,6 +236,54 @@ def main(argv: list[str] | None = None) -> int:
         for issue in issues:
             print(issue, file=sys.stderr)
         return 1 if issues else 0
+    if args.command == "preflight-delivery":
+        from .baseline import BaselineRunner
+        from .request import FrozenBenchmarkCommand
+        from .techniques import TechniqueRegistry
+        from .verifier import DeliveryVerifier
+
+        class StaticAuditor:
+            def audit(self, **_: Any) -> bool:
+                raise AssertionError("static preflight invoked an independent auditor")
+
+        campaign = args.campaign.resolve()
+        registry = TechniqueRegistry.load(PACKAGE_ROOT / "techniques/registry.toml")
+        if args.technique not in registry.names():
+            raise ValueError(f"unknown technique: {args.technique}")
+        template_path = campaign / "BASELINE-COMMAND.json"
+        template = (
+            FrozenBenchmarkCommand.model_validate_json(template_path.read_text())
+            if template_path.is_file()
+            else None
+        )
+        result = DeliveryVerifier(
+            registry=registry,
+            baseline=BaselineRunner.load(campaign / "BASELINE.json"),
+            campaign_artifact_root=campaign,
+            method_auditor=StaticAuditor(),
+            quality_evaluator=None,
+            command_template=template,
+        ).verify(
+            args.delivery.resolve(),
+            technique=args.technique,
+            executor_worktree=args.executor_worktree.resolve(),
+            independent_gates=False,
+        )
+        payload = {
+            "accepted": result.accepted,
+            "technique": result.technique,
+            "independent_gates_run": False,
+            "findings": [
+                {
+                    "code": finding.code,
+                    "message": finding.message,
+                    "candidate_id": finding.candidate_id,
+                }
+                for finding in result.findings
+            ],
+        }
+        print(json.dumps(payload, indent=2, sort_keys=True))
+        return 0 if result.accepted else 1
     if args.command in {"run", "resume", "package"}:
         # The default runtime is imported lazily so status/init remain CPU-only.
         from .runtime import run_campaign_command

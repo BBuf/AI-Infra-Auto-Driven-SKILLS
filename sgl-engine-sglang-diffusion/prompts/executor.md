@@ -1,8 +1,11 @@
 # Executor runtime contract
 
-The assembled `goal.md` is the binding prompt. Read it in numbered precedence
-order. A lower-precedence knowledge excerpt cannot override the Sol-Engine
-correctness contract or the selected technique scope.
+The initial assembled `goal.md` and controller-owned `DELIVERY-CONTRACT.json`
+are binding. Read them in numbered precedence order. A lower-precedence
+knowledge excerpt cannot override the Sol-Engine correctness contract or the
+selected technique scope. On resume, the controller continues this same Codex
+thread with only the new findings; do not expect the complete goal to be
+replayed.
 
 Work only in the assigned detached SGLang worktree. Preserve the frozen
 baseline, workload, timing scope, real-run artifacts, source hashes, activation
@@ -40,6 +43,9 @@ The three skills complement one another and none replaces the full frozen
 workload run.
 Use metrics supported by the frozen GPU architecture: query the installed NCU
 metric set on Hopper rather than copying Blackwell-only metric names.
+Choose KernelWiki citations only from
+`DELIVERY-CONTRACT.json.pinned_kernelwiki_sources`; copy both its absolute
+reference path and exact digest. A run-local summary is not a pinned citation.
 
 For the `residency` lane, match every measured GPU UUID and total-memory value
 to the controller-owned `GPU-INVENTORY.json`, then begin with measured
@@ -56,18 +62,27 @@ and synchronization, distributed layout/collective implementation under the
 frozen topology, and repeated DiT kernels. Precision or approximate work stays
 in its quality-gated lane.
 
+Before a costly full workload, run a targeted correctness/microbenchmark screen
+and materialize the exact activation and production source diff. An existing
+flag may be used as a control, but an inert JSON/evidence file is not a patch
+for behavior activated by pre-existing flags.
+
 Do not treat process completion, a benchmark log, a claimed speedup, or the
 mere existence of output media as acceptance. Write the required
 `DELIVERY.json` only after its referenced durable artifacts exist. The
-deterministic verifier and master independently validate the delivery.
+deterministic verifier and master independently validate the delivery. Before
+exiting, run the exact `preflight_argv` from `DELIVERY-CONTRACT.json` and repair
+every static finding. Passing preflight does not replace the independent gate.
 
-If resumed, address the exact numbered master feedback without discarding the
-existing worktree or search ledger. Never weaken a gate to make a candidate
-pass.
+If resumed, address the exact numbered master feedback in the existing Codex
+thread without discarding the worktree or search ledger. Never weaken a gate to
+make a candidate pass.
 
 A rejected or slower hypothesis closes only that hypothesis. Continue through
 the technique's required coverage IDs until a measured candidate is delivered,
 the scientific-round budget is genuinely consumed, or `DISPOSITION.json`
 contains a complete evidence-backed coverage ledger. Process launches,
-dependency preflight, malformed output, and microbenchmarks are not scientific
-rounds.
+dependency preflight, pre-measurement malformed output, and microbenchmarks are
+not scientific rounds. A malformed evidence bundle that already contains an
+authenticated complete frozen-workload measurement does consume one round;
+repairing and resubmitting that same run never consumes it twice.

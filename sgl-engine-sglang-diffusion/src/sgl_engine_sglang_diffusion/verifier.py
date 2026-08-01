@@ -11,6 +11,7 @@ from typing import Any, Protocol
 from pydantic import ValidationError
 
 from .agents import redact_argv, redact_environment
+from .knowledge import KnowledgeSyncError, snapshot_reference_files
 from .models import (
     BaselineRecord,
     CandidateManifest,
@@ -63,6 +64,20 @@ _RESIDENCY_EVIDENCE_NAMES = (
     "RESIDENCY-EVIDENCE.json",
     "residency-evidence.json",
 )
+_MEASUREMENT_INVALID_CODES = frozenset(
+    {
+        "invalid_run_dir",
+        "baseline_command_mismatch",
+        "missing_performance",
+        "missing_benchmark",
+        "missing_media",
+        "invalid_performance",
+        "invalid_benchmark_metrics",
+        "benchmark_performance_mismatch",
+        "timing_scope_mismatch",
+        "fallback_detected",
+    }
+)
 
 
 class VerificationError(RuntimeError):
@@ -114,11 +129,23 @@ class VerifiedFrontierPoint:
 
 
 @dataclass(frozen=True)
+class AuthenticatedMeasurement:
+    candidate_id: str
+    run_dir: Path
+    authoritative_speedup: float
+    candidate_mean_e2e_s: float
+    candidate_workload_total_s: float
+    request_count: int
+    peak_memory_mib: float
+
+
+@dataclass(frozen=True)
 class VerificationResult:
     accepted: bool
     technique: str
     findings: tuple[VerificationFinding, ...]
     verified_points: tuple[VerifiedFrontierPoint, ...]
+    authenticated_measurements: tuple[AuthenticatedMeasurement, ...]
     lossless_required: bool
 
 
@@ -164,12 +191,14 @@ class DeliveryVerifier:
         *,
         technique: str,
         executor_worktree: Path,
+        independent_gates: bool = True,
     ) -> VerificationResult:
         contract = self.registry[technique]
         lossless = contract.correctness == "lossless"
         worktree = executor_worktree.resolve()
         findings: list[VerificationFinding] = []
         verified: list[VerifiedFrontierPoint] = []
+        measurements: list[AuthenticatedMeasurement] = []
 
         try:
             durable_delivery = self._resolve_allowed(
@@ -189,6 +218,7 @@ class DeliveryVerifier:
                 technique=technique,
                 findings=tuple(findings),
                 verified_points=(),
+                authenticated_measurements=(),
                 lossless_required=lossless,
             )
 
@@ -214,21 +244,25 @@ class DeliveryVerifier:
             )
 
         for point in delivery.frontier_points:
-            point_findings, verified_point = self._verify_point(
+            point_findings, verified_point, measurement = self._verify_point(
                 point,
                 technique=technique,
                 lossless=lossless,
                 executor_worktree=worktree,
+                independent_gates=independent_gates,
             )
             findings.extend(point_findings)
             if not point_findings and verified_point is not None:
                 verified.append(verified_point)
+            if measurement is not None:
+                measurements.append(measurement)
 
         return VerificationResult(
             accepted=not findings and len(verified) == len(delivery.frontier_points),
             technique=technique,
             findings=tuple(findings),
             verified_points=tuple(verified),
+            authenticated_measurements=tuple(measurements),
             lossless_required=lossless,
         )
 
@@ -239,7 +273,12 @@ class DeliveryVerifier:
         technique: str,
         lossless: bool,
         executor_worktree: Path,
-    ) -> tuple[list[VerificationFinding], VerifiedFrontierPoint | None]:
+        independent_gates: bool,
+    ) -> tuple[
+        list[VerificationFinding],
+        VerifiedFrontierPoint | None,
+        AuthenticatedMeasurement | None,
+    ]:
         candidate_id = point.candidate_id
         issues: list[VerificationFinding] = []
 
@@ -258,7 +297,7 @@ class DeliveryVerifier:
                 )
         except VerificationError as error:
             issue("invalid_run_dir", str(error))
-            return issues, None
+            return issues, None, None
 
         artifacts: list[Path] = []
         for artifact in point.artifacts:
@@ -378,6 +417,7 @@ class DeliveryVerifier:
                 manifest=manifest,
                 technique=technique,
                 executor_worktree=executor_worktree,
+                independent_gates=independent_gates,
                 issue=issue,
             )
         else:
@@ -385,6 +425,7 @@ class DeliveryVerifier:
                 point,
                 run_dir=run_dir,
                 candidate_frames=candidate_frames,
+                independent_gates=independent_gates,
                 issue=issue,
             )
 
@@ -413,8 +454,22 @@ class DeliveryVerifier:
                 issue=issue,
             )
 
+        measurement: AuthenticatedMeasurement | None = None
+        if authoritative is not None and not any(
+            item.code in _MEASUREMENT_INVALID_CODES for item in issues
+        ):
+            speedup, candidate_mean, peak_memory = authoritative
+            measurement = AuthenticatedMeasurement(
+                candidate_id=candidate_id,
+                run_dir=run_dir,
+                authoritative_speedup=speedup,
+                candidate_mean_e2e_s=candidate_mean,
+                candidate_workload_total_s=candidate_mean * self.baseline.request_count,
+                request_count=self.baseline.request_count,
+                peak_memory_mib=peak_memory,
+            )
         if issues or authoritative is None or manifest is None:
-            return issues, None
+            return issues, None, measurement
         speedup, candidate_mean, peak_memory = authoritative
         return issues, VerifiedFrontierPoint(
             candidate_id=candidate_id,
@@ -425,7 +480,7 @@ class DeliveryVerifier:
             activation=dict(point.activation),
             implementation_manifest=manifest,
             source_hashes=dict(source_hashes),
-        )
+        ), measurement
 
     def _verify_kernel_evidence(
         self,
@@ -635,31 +690,19 @@ class DeliveryVerifier:
             if not isinstance(raw_index, str):
                 raise VerificationError("campaign has no pinned KDA-Pilot snapshot")
             index_path = self._resolve_allowed(Path(raw_index), (knowledge_root,))
-            index = self._json_object(index_path)
-            entries = index.get("entries")
-            if not isinstance(entries, list):
-                raise VerificationError("KDA-Pilot knowledge index has no entries")
-        except (OSError, VerificationError) as error:
-            raise VerificationError(f"cannot load pinned KernelWiki index: {error}") from error
-        result: dict[Path, str] = {}
-        for entry in entries:
-            if not isinstance(entry, Mapping):
-                continue
-            relative = entry.get("path")
-            digest = entry.get("reference_sha256")
-            if (
-                not isinstance(relative, str)
-                or not relative.startswith("external/KernelWiki/")
-                or not isinstance(digest, str)
-            ):
-                continue
-            reference = self._resolve_allowed(
-                index_path.parent / "references" / relative,
-                (knowledge_root,),
+            result = snapshot_reference_files(
+                index_path,
+                prefix="external/KernelWiki",
             )
-            result[reference] = digest
-        if not result:
-            raise VerificationError("pinned KDA-Pilot snapshot contains no KernelWiki files")
+        except (OSError, KnowledgeSyncError, VerificationError) as error:
+            raise VerificationError(f"cannot load pinned KernelWiki index: {error}") from error
+        for path in result:
+            try:
+                path.relative_to(knowledge_root.resolve())
+            except ValueError as error:
+                raise VerificationError(
+                    "pinned KernelWiki reference escapes knowledge root"
+                ) from error
         return result
 
     @staticmethod
@@ -868,6 +911,7 @@ class DeliveryVerifier:
         manifest: CandidateManifest | None,
         technique: str,
         executor_worktree: Path,
+        independent_gates: bool,
         issue: Any,
     ) -> None:
         try:
@@ -898,6 +942,8 @@ class DeliveryVerifier:
 
         if manifest is None:
             return
+        if not independent_gates:
+            return
         try:
             result = self.method_auditor.audit(
                 technique=technique,
@@ -917,6 +963,7 @@ class DeliveryVerifier:
         *,
         run_dir: Path,
         candidate_frames: Path,
+        independent_gates: bool,
         issue: Any,
     ) -> None:
         if point.quality.mode != "quality_gated":
@@ -925,6 +972,8 @@ class DeliveryVerifier:
             )
         if point.quality.lpips_mean is None or point.quality.lpips_max is None:
             issue("missing_lpips", "quality-gated point requires aligned LPIPS metrics")
+        if not independent_gates:
+            return
         if self.quality_evaluator is None:
             issue(
                 "missing_quality_evaluator",

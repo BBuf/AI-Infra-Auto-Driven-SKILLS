@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 from sgl_engine_sglang_diffusion.cli import initialize
+from sgl_engine_sglang_diffusion.models import CampaignStatus
 from sgl_engine_sglang_diffusion.progress import render_progress, write_progress
 from sgl_engine_sglang_diffusion.state import StateStore
 
@@ -173,3 +174,38 @@ def test_progress_reports_tokens_techniques_and_nonadditive_stack(
     assert "50.0000s/5 requests baseline" in rendered
     assert "29.7619s/5 requests integrated" in rendered
     assert (campaign / "PROGRESS.json").is_file()
+
+
+def test_progress_marks_only_manifest_active_lane_as_running(tmp_path: Path) -> None:
+    campaign = make_campaign(tmp_path)
+    manifest = json.loads((campaign / "CAMPAIGN.json").read_text())
+    campaign_id = manifest["campaign_id"]
+    with StateStore.open(campaign / "state.sqlite", campaign / "events.jsonl") as store:
+        for status in (
+            CampaignStatus.BASELINE_LOCKED,
+            CampaignStatus.PROFILED,
+            CampaignStatus.SEARCHING,
+        ):
+            store.transition(
+                campaign_id,
+                status,
+                idempotency_key=f"to-{status.value}",
+            )
+        for technique in ("kernel", "cache"):
+            store.record_event(
+                campaign_id,
+                "executor_spawned",
+                f"spawn-{technique}",
+                {"executor_id": technique, "technique": technique, "attempt": 1},
+            )
+    search = campaign / "search/0"
+    search.mkdir(parents=True)
+    (search / "EXECUTORS.json").write_text(
+        json.dumps({"active_technique": "cache", "executors": {}})
+    )
+
+    progress = write_progress(campaign)
+    states = {item["technique"]: item["status"] for item in progress["techniques"]}
+
+    assert states["kernel"] == "attempted"
+    assert states["cache"] == "running"
