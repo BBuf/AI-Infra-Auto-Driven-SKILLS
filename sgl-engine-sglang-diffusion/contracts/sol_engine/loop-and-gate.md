@@ -10,7 +10,8 @@ acceptance semantics.
 - Every candidate edits only its isolated experiment worktree, preserves the
   frozen workload and timing scope, and has an explicit OFF path that restores
   the source-current behavior.
-- Lossless kernel/topology candidates are judged by mathematical and
+- Lossless residency/kernel candidates (and any imported legacy topology
+  artifact) are judged by mathematical and
   algorithmic equivalence, unchanged global logical denoising-step and
   DiT/model-call counts, and no approximation, sparsity, step skipping,
   sub-16-bit quantization, rank reduction, or changed logical work.

@@ -14,6 +14,11 @@ placement rules, selected KDA-Pilot kernel skills, and allowlisted FastVideo
 optimization sources. Those additions can suggest hypotheses; they cannot
 weaken Sol-Engine's acceptance contract.
 
+A checked-in, manually diff-reviewed SGLang PR catalog supplies active-lane
+hypotheses. The default lossless residency lane runs before kernel search and
+measures whether component, partial-DiT, prefetch, compile-time, or load-lifetime
+placement can remove transfers safely. It never accepts a copied VRAM cutoff.
+
 `sgl-diffusion-engine` remains the only outer state machine. It may reuse
 pinned Sol contracts, evaluators, kernel utilities, and agent conventions, but
 it never invokes Sol-Engine's complete campaign flow or delegates baseline,
@@ -111,7 +116,7 @@ microbenchmark claim. A live campaign renders like this:
 Wan-AI/Wan2.2-T2V-A14B-Diffusers · gpu-host · TARGET 2.00x
 
 performance [██████████████░░░░░░] 1.68x / 2.00x
-search      [███████░░░░░░░░░░░░░] 43 / 120 rounds
+search      [█████░░░░░░░░░░░░░░░] 43 / 160 rounds
 phase       SEARCHING · epoch 3 · elapsed 06:14:09
 latency     128.4000s baseline -> 76.4286s integrated
 tokens      182,430 total · 151,201 input · 31,229 output
@@ -119,6 +124,7 @@ tokens      182,430 total · 151,201 input · 31,229 output
             by role: executor=146,118, master=36,312
 
 technique          state       gate           tries  isolated e2e
+residency          integrated  passed             4         1.12x
 kernel             integrated  passed             8         1.27x
 cache              verified    passed             3         1.18x
 quantization       attempted   rejected_last      2             -
@@ -285,7 +291,7 @@ The following rule is deliberately asymmetric:
 
 | Lane | Correctness | Gate |
 | --- | --- | --- |
-| kernel, topology | lossless | Method/code audit, unchanged global denoising steps and DiT calls, no approximation or reduced logical work. Output frames prove run authenticity only. No output diff, tolerance, PSNR, LPIPS, or visual-quality rejection is allowed. |
+| residency, kernel, optional legacy topology | lossless | Method/code audit, unchanged global denoising steps and DiT calls, frozen GPUs/parallel degrees in the current flow, no approximation or reduced logical work. Output frames prove run authenticity only. No output diff, tolerance, PSNR, LPIPS, or visual-quality rejection is allowed. |
 | cache, PISA, quantization, token pruning | quality-gated | Complete frozen workload, real engagement, aligned LPIPS, and the coding agent's built-in multimodal review. External Gemini/VLM verdict services are not used. |
 
 The table governs candidate admission. Final completion is stricter for every
@@ -332,6 +338,19 @@ warp-specialization applicability audit. Warp timelines are required for an
 actually warp-specialized CUDA/CuTe design; a non-applicable result must still
 carry a concrete reason. One slower `torch.compile` experiment never exhausts
 the kernel lane.
+
+Residency deliveries require `RESIDENCY-EVIDENCE.json`: raw-profile hash,
+GPU UUIDs and totals matched against the controller-owned `GPU-INVENTORY.json`,
+per-GPU total/minimum-free/peak/safety memory, component
+strategies and footprints, H2D counts/times, compile and steady-state placement,
+conflict checks, positive engagement, and hashed performance/equivalence files.
+High total VRAM without those measurements fails closed.
+
+Kernel coverage spans the complete load-excluded E2E profile: the repeated DiT
+path, compile/graph/warmup, VAE decode/postprocess/output, scheduler/exact
+precompute/synchronization, and distributed layout/collective implementation
+under the frozen topology. Precision reduction and approximation remain in
+quality-gated lanes.
 
 Verified latency-positive points are retained even when each is below the
 campaign target. Integration composes and remeasures them on the full workload;

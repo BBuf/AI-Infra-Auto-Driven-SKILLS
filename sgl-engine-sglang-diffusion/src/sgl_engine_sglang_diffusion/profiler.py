@@ -339,18 +339,22 @@ class TechniqueRouter:
             for row in digest.hotspots
         ]
         self.last_evidence = {
+            "residency": {
+                "hotspots": hotspots,
+                "stages": dict(digest.stage_ms),
+                "knowledge": [
+                    "sglang-residency-history",
+                    "profile-evidence",
+                ],
+            },
             "kernel": {
                 "hotspots": hotspots,
                 "knowledge": ["sglang-kernel-placement", "profile-evidence"],
             }
         }
-        routes = ["kernel"]
-        if gpu_count > 1:
-            routes.append("topology")
-            self.last_evidence["topology"] = {
-                "gpu_count": gpu_count,
-                "knowledge": ["sglang-distributed-runtime"],
-            }
+        # Parallel degrees and rank maps are frozen by the baseline contract.
+        # Multi-GPU profiles still feed collective/layout candidates to kernel.
+        routes = ["residency", "kernel"]
         if allow_quality_gated:
             for technique in ("cache", "pisa", "quantization", "token_pruning"):
                 routes.append(technique)

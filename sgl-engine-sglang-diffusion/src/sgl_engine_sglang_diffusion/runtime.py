@@ -26,6 +26,7 @@ from .integrator import (
     IntegrationVerificationRequest,
     VerifiedCandidate,
 )
+from .history_rules import HistoryRuleCatalog
 from .knowledge import check_contract_hashes
 from .knowledge import load_registry as load_knowledge_registry
 from .knowledge import read_source_lock, sync_source
@@ -35,6 +36,8 @@ from .models import (
     CorrectnessMode,
     EngagementReceipt,
     FinalQualityEvidence,
+    GpuInventory,
+    GpuInventoryDevice,
     IntegratedDelivery,
     ProfileDigest,
     QualityRecord,
@@ -228,7 +231,7 @@ class IndependentMasterMethodAuditor:
             )
         if equivalence.get("logical_work_unchanged") is not True:
             return "lossless method argument does not preserve logical work"
-        if technique not in {"kernel", "topology"}:
+        if technique not in {"residency", "kernel", "topology"}:
             return f"{technique} is not a registered lossless audit lane"
 
         method_argument = str(equivalence.get("method_argument", ""))
@@ -880,10 +883,130 @@ class FileCampaignHooks:
             path.read_text(encoding="utf-8")
         )
 
+    def _ensure_gpu_inventory(self) -> GpuInventory | None:
+        """Freeze the baseline-selected GPU identity before executors can run."""
+
+        inventory_path = self.campaign_dir / "GPU-INVENTORY.json"
+        if inventory_path.is_file():
+            inventory = GpuInventory.model_validate_json(
+                inventory_path.read_text(encoding="utf-8")
+            )
+            if inventory.gpu_count != self.goal.hardware.gpu_count:
+                raise CampaignRuntimeError(
+                    "frozen GPU inventory differs from campaign gpu_count"
+                )
+            return inventory
+
+        template = self._command_template()
+        declared_visibility = (
+            template.env.get("CUDA_VISIBLE_DEVICES") if template is not None else None
+        )
+        if declared_visibility is not None:
+            visibility_source = "frozen_command_env"
+            visibility = declared_visibility
+        elif "CUDA_VISIBLE_DEVICES" in os.environ:
+            visibility_source = "controller_env"
+            visibility = os.environ["CUDA_VISIBLE_DEVICES"]
+        else:
+            visibility_source = "default_order"
+            visibility = None
+
+        query = [
+            "nvidia-smi",
+            "--query-gpu=index,uuid,memory.total",
+            "--format=csv,noheader,nounits",
+        ]
+        try:
+            result = run(query, cwd=self.campaign_dir, check=False)
+            if result.returncode != 0:
+                raise CampaignRuntimeError(
+                    "nvidia-smi GPU inventory query failed: "
+                    + result.stderr.strip()[:500]
+                )
+            available: list[GpuInventoryDevice] = []
+            for line in result.stdout.splitlines():
+                if not line.strip():
+                    continue
+                fields = [field.strip() for field in line.split(",")]
+                if len(fields) != 3:
+                    raise CampaignRuntimeError(
+                        f"unexpected nvidia-smi inventory row: {line!r}"
+                    )
+                available.append(
+                    GpuInventoryDevice(
+                        physical_index=int(fields[0]),
+                        uuid=fields[1],
+                        total_mib=float(fields[2]),
+                    )
+                )
+            if not available:
+                raise CampaignRuntimeError("nvidia-smi returned an empty GPU inventory")
+
+            tokens = None
+            if visibility is not None:
+                tokens = [token.strip() for token in visibility.split(",")]
+                if not tokens or any(not token or token == "-1" for token in tokens):
+                    raise CampaignRuntimeError(
+                        "CUDA_VISIBLE_DEVICES selects no usable baseline GPU"
+                    )
+                selected = [
+                    self._resolve_inventory_token(token, available) for token in tokens
+                ]
+            else:
+                selected = available
+            gpu_count = self.goal.hardware.gpu_count
+            if len(selected) < gpu_count:
+                raise CampaignRuntimeError(
+                    "visible GPU inventory is smaller than frozen gpu_count"
+                )
+            selected = selected[:gpu_count]
+            inventory = GpuInventory(
+                gpu_count=gpu_count,
+                visibility_source=visibility_source,
+                visible_device_tokens=tokens,
+                baseline_command_template_sha256=(
+                    template.template_sha256 if template is not None else None
+                ),
+                devices=selected,
+            )
+            _atomic_json(inventory_path, inventory.model_dump(mode="json"))
+            return inventory
+        except (OSError, RuntimeError, ValueError) as error:
+            _atomic_json(
+                self.campaign_dir / "GPU-INVENTORY-UNAVAILABLE.json",
+                {
+                    "schema_version": 1,
+                    "reason": str(error),
+                    "effect": (
+                        "residency candidates are fail-closed; other lanes may continue"
+                    ),
+                },
+            )
+            return None
+
+    @staticmethod
+    def _resolve_inventory_token(
+        token: str, available: Sequence[GpuInventoryDevice]
+    ) -> GpuInventoryDevice:
+        if token.startswith("MIG-"):
+            raise CampaignRuntimeError(
+                "MIG CUDA visibility cannot yet be bound to the physical GPU inventory"
+            )
+        if token.isdigit():
+            matches = [item for item in available if item.physical_index == int(token)]
+        else:
+            matches = [item for item in available if item.uuid.startswith(token)]
+        if len(matches) != 1:
+            raise CampaignRuntimeError(
+                f"CUDA_VISIBLE_DEVICES token {token!r} does not resolve uniquely"
+            )
+        return matches[0]
+
     def freeze_sources_and_baseline(self) -> StepResult:
         locks = self._ensure_source_locks()
         worktrees = self._ensure_source_worktrees(locks)
         self._sync_knowledge(locks, worktrees)
+        inventory = self._ensure_gpu_inventory()
 
         baseline_path = self.campaign_dir / "BASELINE.json"
         if baseline_path.is_file():
@@ -903,6 +1026,11 @@ class FileCampaignHooks:
             payload={
                 "baseline": str(baseline_path),
                 "sglang_commit": baseline.sglang_commit,
+                "gpu_inventory": (
+                    str(self.campaign_dir / "GPU-INVENTORY.json")
+                    if inventory is not None
+                    else None
+                ),
             },
         )
 
@@ -1707,13 +1835,30 @@ class FileCampaignHooks:
             self.campaign_dir / "source-worktrees" / "sglang"
         ).render(model_slug=_model_slug(self.goal.model.id))
         knowledge_manifest = _read_object(self.campaign_dir / "KNOWLEDGE.json")
-        knowledge = tuple(
+        locked_knowledge = tuple(
             PromptSection.from_path(
                 f"Locked {name} optimization knowledge",
                 Path(index),
             )
             for name, index in sorted(knowledge_manifest["snapshots"].items())
         )
+        history_catalog = HistoryRuleCatalog.load(
+            _PACKAGE_ROOT / "knowledge" / "history-rules.toml", self.registry
+        )
+        history_rules = history_catalog.for_technique(technique)
+        history_knowledge = (
+            (
+                PromptSection(
+                    f"Diff-reviewed {technique} historical rules",
+                    history_catalog.render(technique),
+                    "checked-in:knowledge/history-rules.toml"
+                    f"#sha256={history_catalog.sha256}",
+                ),
+            )
+            if history_rules
+            else ()
+        )
+        knowledge = history_knowledge + locked_knowledge
         baseline = (self.campaign_dir / "BASELINE.json").read_text(encoding="utf-8")
         command_template = self.campaign_dir / "BASELINE-COMMAND.json"
         if command_template.is_file():
@@ -1725,6 +1870,19 @@ class FileCampaignHooks:
                 "COMMAND.json. The independent Master compares its full argv, "
                 "cwd, environment, and template SHA-256; another benchmark "
                 "command is rejected.\n" + command_template.read_text(encoding="utf-8")
+            )
+        inventory_path = self.campaign_dir / "GPU-INVENTORY.json"
+        unavailable_inventory = self.campaign_dir / "GPU-INVENTORY-UNAVAILABLE.json"
+        if inventory_path.is_file():
+            baseline += (
+                "\n\nController-owned baseline GPU inventory (binding):\n"
+                + inventory_path.read_text(encoding="utf-8")
+            )
+        elif unavailable_inventory.is_file():
+            baseline += (
+                "\n\nGPU inventory unavailable; residency candidates must fail "
+                "closed, while independent non-residency lanes may continue:\n"
+                + unavailable_inventory.read_text(encoding="utf-8")
             )
         profile = (
             self.campaign_dir / "profiles" / "0" / "PROFILE-DIGEST.json"

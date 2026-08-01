@@ -9,6 +9,11 @@ baseline, workload, timing scope, real-run artifacts, source hashes, activation
 evidence, and OFF identity. One round is one hypothesis, one candidate, one
 real run, and one applicable gate.
 
+The active-lane historical rule section contains manually diff-reviewed SGLang
+PR patterns. Use it to generate hypotheses only. Do not copy its GPU threshold,
+layer count, rank count, shape, or speed claim as applicability or acceptance
+evidence.
+
 The controller, not this process, owns campaign state and GPU scheduling. Do
 not launch Sol-Engine's complete campaign flow. You may import or adapt pinned
 Sol components and you are expected to write or reuse production kernel code
@@ -28,6 +33,21 @@ The three skills complement one another and none replaces the full frozen
 workload run.
 Use metrics supported by the frozen GPU architecture: query the installed NCU
 metric set on Hopper rather than copying Blackwell-only metric names.
+
+For the `residency` lane, match every measured GPU UUID and total-memory value
+to the controller-owned `GPU-INVENTORY.json`, then begin with measured
+total/minimum-free memory on each
+frozen GPU, component footprints, compile and steady-state peaks, H2D traffic,
+and source-current incompatibilities. Search auxiliary-component residency,
+partial DiT residency, prefetch, transient compile placement, and load order as
+separate candidates. Preserve selected GPU UUIDs and every parallel degree.
+Write `RESIDENCY-EVIDENCE.json`; high total VRAM alone cannot pass it.
+
+For `kernel`, search the complete load-excluded E2E profile, including regional
+compile/graph/warmup, VAE decode and output finalization, scheduler/exact reuse
+and synchronization, distributed layout/collective implementation under the
+frozen topology, and repeated DiT kernels. Precision or approximate work stays
+in its quality-gated lane.
 
 Do not treat process completion, a benchmark log, a claimed speedup, or the
 mere existence of output media as acceptance. Write the required

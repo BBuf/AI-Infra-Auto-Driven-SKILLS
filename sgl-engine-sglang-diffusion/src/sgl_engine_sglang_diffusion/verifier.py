@@ -17,7 +17,9 @@ from .models import (
     Delivery,
     EngagementReceipt,
     FrontierPoint,
+    GpuInventory,
     KernelEvidence,
+    ResidencyEvidence,
 )
 from .process import run
 from .request import FrozenBenchmarkCommand
@@ -57,6 +59,10 @@ _ENGAGEMENT_NAMES = (
     "ENGAGEMENT.json",
 )
 _KERNEL_EVIDENCE_NAMES = ("KERNEL-EVIDENCE.json", "kernel-evidence.json")
+_RESIDENCY_EVIDENCE_NAMES = (
+    "RESIDENCY-EVIDENCE.json",
+    "residency-evidence.json",
+)
 
 
 class VerificationError(RuntimeError):
@@ -398,6 +404,14 @@ class DeliveryVerifier:
                 executor_worktree=executor_worktree,
                 issue=issue,
             )
+        if technique == "residency":
+            self._verify_residency_evidence(
+                run_dir,
+                artifacts,
+                candidate_id=candidate_id,
+                performance=performance,
+                issue=issue,
+            )
 
         if issues or authoritative is None or manifest is None:
             return issues, None
@@ -496,6 +510,105 @@ class DeliveryVerifier:
                 raise VerificationError("kernel evidence references an empty artifact")
         except (ValidationError, VerificationError) as error:
             issue("invalid_kernel_evidence", str(error))
+
+    def _verify_residency_evidence(
+        self,
+        run_dir: Path,
+        artifacts: Sequence[Path],
+        *,
+        candidate_id: str,
+        performance: Mapping[str, Any],
+        issue: Any,
+    ) -> None:
+        try:
+            evidence_path = self._required_artifact(
+                run_dir, artifacts, _RESIDENCY_EVIDENCE_NAMES
+            )
+            evidence = ResidencyEvidence.model_validate(
+                self._json_object(evidence_path)
+            )
+            if evidence.candidate_id != candidate_id:
+                raise VerificationError(
+                    "residency evidence candidate_id differs from the delivery"
+                )
+            if evidence.run_id != performance.get("run_id"):
+                raise VerificationError(
+                    "residency evidence run_id differs from PERFORMANCE.json"
+                )
+            if evidence.coverage_id not in self.registry["residency"].coverage:
+                raise VerificationError(
+                    "residency evidence coverage_id is outside reviewed coverage"
+                )
+            profile = (
+                self.campaign_artifact_root
+                / "profiles"
+                / "0"
+                / "PROFILE-DIGEST.json"
+            )
+            if not profile.is_file():
+                raise VerificationError("campaign raw profile digest is missing")
+            if self._sha256_file(profile) != evidence.profile_digest_sha256:
+                raise VerificationError(
+                    "residency evidence is not bound to the active profile digest"
+                )
+            inventory_path = self.campaign_artifact_root / "GPU-INVENTORY.json"
+            if not inventory_path.is_file():
+                raise VerificationError(
+                    "controller-owned frozen GPU inventory is missing"
+                )
+            inventory = GpuInventory.model_validate(
+                self._json_object(inventory_path)
+            )
+            if self.command_template is not None and (
+                inventory.baseline_command_template_sha256
+                != self.command_template.template_sha256
+            ):
+                raise VerificationError(
+                    "controller-owned GPU inventory is not bound to the active "
+                    "baseline command template"
+                )
+            inventory_by_uuid = {item.uuid: item for item in inventory.devices}
+            if evidence.gpu_uuids != [item.uuid for item in inventory.devices]:
+                raise VerificationError(
+                    "residency evidence GPU UUIDs differ from the controller-owned "
+                    "baseline inventory"
+                )
+            for snapshot in (*evidence.baseline_memory, *evidence.candidate_memory):
+                frozen = inventory_by_uuid[snapshot.gpu_uuid]
+                if snapshot.total_mib != frozen.total_mib:
+                    raise VerificationError(
+                        "residency memory total differs from the controller-owned "
+                        f"baseline inventory for {snapshot.gpu_uuid}"
+                    )
+
+            performance_file = self._verify_evidence_file(
+                evidence.performance_artifact.path,
+                evidence.performance_artifact.sha256,
+                roots=(run_dir,),
+            )
+            equivalence_file = self._verify_evidence_file(
+                evidence.equivalence_artifact.path,
+                evidence.equivalence_artifact.sha256,
+                roots=(run_dir,),
+            )
+            required_performance = self._required_artifact(
+                run_dir, artifacts, ("PERFORMANCE.json",)
+            )
+            if performance_file != required_performance:
+                raise VerificationError(
+                    "residency performance_artifact is not the scored full-run artifact"
+                )
+            equivalence = self._json_object(equivalence_file)
+            if equivalence.get("candidate_id") != candidate_id:
+                raise VerificationError(
+                    "residency equivalence candidate_id differs from delivery"
+                )
+            if equivalence.get("run_id") != evidence.run_id:
+                raise VerificationError(
+                    "residency equivalence run_id differs from evidence"
+                )
+        except (ValidationError, VerificationError) as error:
+            issue("invalid_residency_evidence", str(error))
 
     def _verify_evidence_file(
         self,

@@ -234,6 +234,36 @@ if delivery_match is None:
 delivery_path = Path(delivery_match.group(1).strip())
 executor_root = worktree.parent
 campaign = executor_root.parent.parent
+technique_match = re.search(r'"technique": "([a-z_]+)"', prompt)
+if technique_match is None:
+    raise RuntimeError("technique")
+technique = technique_match.group(1)
+if technique == "residency":
+    evidence_path = worktree / "residency-preflight.md"
+    evidence_path.write_text(
+        "CPU fixture has no GPU memory, component offload, or H2D residency path.\n"
+    )
+    profile = campaign / "profiles/0/PROFILE-DIGEST.json"
+    (worktree / "DISPOSITION.json").write_text(json.dumps({
+        "schema_version": 1,
+        "technique": "residency",
+        "classification": "unsupported",
+        "reason": "CPU fixture has no component-residency implementation.",
+        "coverage": [{
+            "id": coverage_id,
+            "status": "inapplicable",
+            "evidence": [str(evidence_path)],
+            "scientific_round_ids": [],
+        } for coverage_id in (
+            "component-residency",
+            "partial-dit-residency",
+            "layerwise-prefetch",
+            "compile-time-residency",
+            "load-order-lifetime",
+        )],
+        "profile_digest_sha256": hashlib.sha256(profile.read_bytes()).hexdigest(),
+    }))
+    raise SystemExit(0)
 attempt_path = executor_root / "fake-agent-attempt.txt"
 attempt = int(attempt_path.read_text()) + 1 if attempt_path.is_file() else 1
 attempt_path.write_text(str(attempt))

@@ -39,7 +39,8 @@ hashes, run provenance, output frames, and engagement receipt.
 
 ## Correctness branch
 
-For `kernel` and `topology`, correctness is mathematical and algorithmic. The
+For `residency`, `kernel`, and the optional legacy `topology` lane, correctness
+is mathematical and algorithmic. The
 master audits the actual method and code and accepts only the same global
 algorithm with unchanged logical denoising-step and DiT/model-call counts and
 no approximation, step skip, sparsity, sub-16-bit quantization, rank reduction,
@@ -47,7 +48,9 @@ or changed logical work. It must not compute or gate on bit identity, tensor or
 latent differences, floating-point tolerances, LPIPS, PSNR, or visual
 similarity. Frames establish authenticity only.
 
-Kernel verification owns local operator, backend, fusion, compilation, exact
+Residency verification owns declared component placement, transfer scheduling,
+measured memory headroom, and compile-versus-steady-state restoration while
+preserving the baseline GPU set and parallel degrees. Kernel verification owns local operator, backend, fusion, compilation, exact
 invariant preparation, and layout semantics while preserving the frozen
 distributed topology. Topology verification owns world size, active ranks,
 rank map, process groups, placement, token/head/expert/parameter/CFG coverage,
@@ -63,7 +66,8 @@ no external Gemini or vision API may supply the verdict.
 
 ## Composition
 
-Topology, when selected, is the distributed substrate and is applied before
+The baseline topology is frozen in the default flow. Topology, only when an
+explicit legacy flow selected it before baseline freeze, is the distributed substrate and is applied before
 local techniques. The master re-audits local shape, process-group, dispatch,
 and fallback assumptions under that topology. Every selected technique must
 show real engagement in the integrated run. Any quality-gated component makes

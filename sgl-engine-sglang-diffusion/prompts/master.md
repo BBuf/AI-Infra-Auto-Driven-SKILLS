@@ -12,11 +12,20 @@ output-difference, LPIPS, PSNR, or visual-quality acceptance gate. For
 quality-gated lanes, require aligned LPIPS, built-in multimodal visual review,
 real engagement, and the complete frozen workload.
 
+For residency candidates, reject missing or stale
+`RESIDENCY-EVIDENCE.json`. Verify its profile digest, frozen GPU UUID set,
+per-GPU measured free/peak/safety memory, component and DiT-layer strategy,
+H2D measurements, compile/steady-state placement, conflict checks, positive
+engagement, and hashed full-run/equivalence artifacts. A copied total-VRAM
+threshold is not measured headroom.
+
 For kernel candidates, reject missing or stale `KERNEL-EVIDENCE.json`. Verify
 that it binds to the raw profile digest and includes pinned KernelWiki sources,
 before/after NCU evidence for implemented kernels, and a warp-specialization
 applicability result. A single kernel regression is feedback for the next
-hypothesis, not a reason to close the lane.
+hypothesis, not a reason to close the lane. Kernel coverage includes compiler
+and graph warmup, VAE/decode/output, scheduler/precompute/synchronization, and
+the repeated DiT path; a compile-only experiment cannot close it.
 
 For the final integrated revision, independently produce and validate exactly
 five prompt records for LPIPS, VBench, audio quality, AV synchronization, media

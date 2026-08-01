@@ -23,6 +23,11 @@ Keep Sol-Engine correctness and quality gates binding. Additional SGLang,
 FastVideo, KDA-Pilot, KernelWiki, profiler, or model-history knowledge may
 generate hypotheses but may not relax those gates.
 
+The controller ships a diff-reviewed SGLang Diffusion history catalog. It
+injects only the active lane's rules and their catalog digest into an Executor.
+Historical GPU thresholds, layer counts, shapes, or speedups are hypothesis
+seeds, never acceptance criteria.
+
 The new `sgl-diffusion-engine` is the sole outer controller. It may reuse
 pinned Sol-Engine components, including Executor/Master conventions, quality
 evaluators, and kernel utilities, but must not launch Sol-Engine's full
@@ -125,6 +130,24 @@ The supplied baseline also selects the fixed parallel topology. Do not add
 degrees after the baseline is frozen; the controller rejects such candidate
 activation drift.
 
+Before kernel search, the default lossless `residency` lane measures the memory
+and transfer behavior of the frozen workload. On high-memory GPUs it must
+consider keeping the DiT, VAE, encoders, vocoder, bridges, or other reused
+components resident; when full DiT residency does not fit, it must separately
+consider partial resident layers and layerwise prefetch. It must also separate
+transient compile placement from steady-state placement and inspect component
+load/release lifetime. Do not blindly disable all offload or copy a total-VRAM
+cutoff. Every retained point needs per-GPU minimum-free/peak/safety memory, H2D
+before/after measurements, positive engagement, conflict checks, and a valid
+`RESIDENCY-EVIDENCE.json` bound to the raw profile plus the controller-owned
+`GPU-INVENTORY.json`. Missing or mismatched baseline GPU identity fails closed.
+
+Kernel search covers every hot region inside the full load-excluded E2E scope,
+not only the repeated DiT: compiler/graph/warmup, VAE decode/postprocess/media
+output, scheduler/exact precomputation/synchronization, communication layout
+under the frozen topology, and custom/upstream kernels. Precision changes and
+approximate reuse stay in quality-gated lanes.
+
 The launcher rejects shell pipelines, redirects, substitutions, ambiguous
 duplicate workload flags, and baseline/model mismatch. Do not work around those
 failures by weakening validation. Convert a safe command into explicit
@@ -174,6 +197,10 @@ Do not reinterpret an executor's microbenchmark claim as progress. Report only:
 - integrated-stack speedup separately from isolated gains;
 - exact emitted token totals and unavailable runtimes;
 - current phase, epoch, round-budget consumption, and active technique.
+
+For residency updates, report the tested component map, minimum measured
+headroom, peak-memory delta, and H2D count/time delta. Do not report “high VRAM”
+as a result by itself.
 
 The detached controller launches and resumes Executor/Master agents itself.
 Only one GPU-capable Executor is active at a time. A scientific round means one

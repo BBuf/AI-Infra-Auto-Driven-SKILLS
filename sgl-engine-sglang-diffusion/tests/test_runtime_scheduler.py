@@ -3,9 +3,12 @@ from __future__ import annotations
 import json
 import hashlib
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Any
 
 import pytest
+
+import sgl_engine_sglang_diffusion.runtime as runtime_module
 
 from sgl_engine_sglang_diffusion.integrator import VerifiedCandidate
 from sgl_engine_sglang_diffusion.models import CorrectnessMode, SourceLock
@@ -14,6 +17,85 @@ from sgl_engine_sglang_diffusion.runtime import FileCampaignHooks
 from sgl_engine_sglang_diffusion.runtime import CampaignRuntimeError
 from sgl_engine_sglang_diffusion.state import StateStore
 from sgl_engine_sglang_diffusion.techniques import TechniqueRegistry
+
+
+def test_gpu_inventory_resolves_frozen_visibility_before_search(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    campaign = tmp_path / "campaign"
+    campaign.mkdir()
+    hooks = object.__new__(FileCampaignHooks)
+    hooks.campaign_dir = campaign
+    hooks.goal = SimpleNamespace(hardware=SimpleNamespace(gpu_count=2))
+    hooks._command_template = lambda: SimpleNamespace(  # type: ignore[method-assign]
+        env={"CUDA_VISIBLE_DEVICES": "2,GPU-b"},
+        template_sha256="a" * 64,
+    )
+    monkeypatch.setattr(
+        runtime_module,
+        "run",
+        lambda *_args, **_kwargs: SimpleNamespace(
+            returncode=0,
+            stdout=(
+                "0, GPU-a, 81920\n"
+                "1, GPU-b, 81920\n"
+                "2, GPU-c, 141312\n"
+            ),
+            stderr="",
+        ),
+    )
+
+    inventory = hooks._ensure_gpu_inventory()
+
+    assert inventory is not None
+    assert inventory.visibility_source == "frozen_command_env"
+    assert [item.uuid for item in inventory.devices] == ["GPU-c", "GPU-b"]
+    assert inventory.baseline_command_template_sha256 == "a" * 64
+    assert json.loads((campaign / "GPU-INVENTORY.json").read_text())["gpu_count"] == 2
+
+
+def test_executor_prompt_injects_only_active_lane_history_rules(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    campaign = tmp_path / "campaign"
+    (campaign / "profiles/0").mkdir(parents=True)
+    (campaign / "source-worktrees/sglang").mkdir(parents=True)
+    (campaign / "KNOWLEDGE.json").write_text(
+        json.dumps({"schema_version": 1, "snapshots": {}})
+    )
+    (campaign / "BASELINE.json").write_text('{"total_s": 10.0}\n')
+    (campaign / "profiles/0/PROFILE-DIGEST.json").write_text(
+        '{"profile": "bound"}\n'
+    )
+    (campaign / "GPU-INVENTORY.json").write_text(
+        '{"schema_version": 1, "gpu_count": 1, "devices": '
+        '[{"uuid": "GPU-test"}]}\n'
+    )
+    store = StateStore.open(campaign / "state.sqlite", campaign / "events.jsonl")
+    store.create_campaign("campaign-1")
+    hooks = object.__new__(FileCampaignHooks)
+    hooks.campaign_dir = campaign
+    hooks.campaign_id = "campaign-1"
+    hooks.goal = SimpleNamespace(model=SimpleNamespace(id="test/model"))
+    hooks.store = store
+    hooks.registry = TechniqueRegistry.load(
+        Path(__file__).resolve().parents[1] / "techniques/registry.toml"
+    )
+    monkeypatch.setattr(
+        runtime_module,
+        "detect_placement_contract",
+        lambda _: SimpleNamespace(render=lambda **_: "placement\n"),
+    )
+    try:
+        prompt = hooks._executor_prompt("residency", 1)
+        history = prompt.knowledge[0]
+        assert "Diff-reviewed residency historical rules" == history.name
+        assert "#sha256=" in history.source
+        assert "residency.partial-dit-layers" in history.content
+        assert "kernel.regional-compile-graph" not in history.content
+        assert "GPU-test" in prompt.baseline.content
+    finally:
+        store.close()
 
 
 class RecordingExecutors:
@@ -128,6 +210,7 @@ def test_positive_candidates_compose_and_exclusion_preserves_other_wins(
             verified=True,
         )
         for technique, commit, speedup in (
+            ("residency", "e", 1.08),
             ("kernel", "b", 1.2),
             ("topology", "c", 1.15),
         )
@@ -136,15 +219,16 @@ def test_positive_candidates_compose_and_exclusion_preserves_other_wins(
         hooks._register_candidate(candidate, epoch=1)
 
     selected = hooks._selected_candidates(2)
-    assert set(selected) == {"kernel", "topology"}
+    assert set(selected) == {"residency", "kernel", "topology"}
     assert all(candidate.verified_speedup < 2.0 for candidate in selected.values())
 
     hooks._exclude_candidate("topology-win", "combined patch regressed")
     remaining = hooks._selected_candidates(2)
-    assert set(remaining) == {"kernel"}
+    assert set(remaining) == {"residency", "kernel"}
     registry = json.loads((tmp_path / "CANDIDATE-REGISTRY.json").read_text())
     assert {item["candidate"]["candidate_id"] for item in registry["history"]} == {
         "kernel-win",
+        "residency-win",
         "topology-win",
     }
 

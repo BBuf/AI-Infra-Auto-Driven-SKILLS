@@ -143,19 +143,23 @@ def test_profile_routes_attention_and_glue_hotspots(tmp_path: Path) -> None:
     router = TechniqueRouter()
     routed = router.route(digest, allow_quality_gated=True, gpu_count=1)
     assert routed == [
+        "residency",
         "kernel",
         "cache",
         "pisa",
         "quantization",
         "token_pruning",
     ]
+    assert "sglang-residency-history" in router.last_evidence["residency"][
+        "knowledge"
+    ]
     assert "profile-evidence" in router.last_evidence["kernel"]["knowledge"]
 
 
-def test_profile_adds_topology_only_for_multi_gpu(tmp_path: Path) -> None:
+def test_profile_freezes_parallel_topology_for_multi_gpu(tmp_path: Path) -> None:
     digest = make_profile_digest(tmp_path)
     routed = TechniqueRouter().route(digest, allow_quality_gated=False, gpu_count=4)
-    assert routed == ["kernel", "topology"]
+    assert routed == ["residency", "kernel"]
 
 
 def test_profile_rejects_corrupt_or_event_empty_raw_trace(tmp_path: Path) -> None:

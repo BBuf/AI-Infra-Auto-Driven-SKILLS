@@ -1,5 +1,6 @@
 schema_version = 1
 default_order = [
+  "residency",
   "kernel",
   "cache",
   "pisa",
@@ -7,11 +8,25 @@ default_order = [
   "token_pruning",
 ]
 
+[techniques.residency]
+workflow_uid = "residency_sglang"
+scope = "techniques/residency.md"
+correctness = "lossless"
+round_budget = 20
+origin = "sglang-pr-history-adaptation"
+coverage = [
+  "component-residency",
+  "partial-dit-residency",
+  "layerwise-prefetch",
+  "compile-time-residency",
+  "load-order-lifetime",
+]
+
 [techniques.kernel]
 workflow_uid = "kernel_aw"
 scope = "techniques/kernel.md"
 correctness = "lossless"
-round_budget = 40
+round_budget = 60
 origin = "sol-engine-lightweight"
 coverage = [
   "layout-copy-launch",
@@ -20,6 +35,9 @@ coverage = [
   "gemm-quantization-epilogue",
   "communication-layout-overlap",
   "custom-or-upstream-kernel",
+  "compile-graph-warmup",
+  "vae-decode-postprocess",
+  "scheduler-precompute-sync",
 ]
 
 [techniques.cache]

@@ -86,7 +86,7 @@ can establish campaign speedup.
 These rules add implementation placement and optimization knowledge. They do
 not weaken the locked Sol-Engine correctness contract:
 
-- lossless kernel/topology work must preserve logical denoising work and pass
+- lossless residency/kernel work must preserve logical denoising work and pass
   independent method/code audit;
 - cache, PISA, quantization, and token-pruning work must pass aligned LPIPS and
   independent built-in-vision review on the complete five-prompt workload.

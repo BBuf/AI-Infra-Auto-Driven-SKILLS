@@ -29,11 +29,12 @@ from .sources import SourceManager
 
 _TECHNIQUE_ORDER = {
     "topology": 0,
-    "kernel": 1,
-    "cache": 2,
-    "pisa": 3,
-    "quantization": 4,
-    "token_pruning": 5,
+    "residency": 1,
+    "kernel": 2,
+    "cache": 3,
+    "pisa": 4,
+    "quantization": 5,
+    "token_pruning": 6,
 }
 
 

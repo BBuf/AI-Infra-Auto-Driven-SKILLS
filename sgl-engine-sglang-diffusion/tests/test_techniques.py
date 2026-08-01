@@ -13,12 +13,14 @@ def test_registry_preserves_sol_techniques_and_modes() -> None:
     registry = TechniqueRegistry.load(ROOT / "techniques" / "registry.toml")
     assert set(registry.names()) == {
         "kernel",
+        "residency",
         "cache",
         "pisa",
         "topology",
         "quantization",
         "token_pruning",
     }
+    assert registry["residency"].correctness == "lossless"
     assert registry["kernel"].correctness == "lossless"
     assert registry["topology"].correctness == "lossless"
     for name in ("cache", "pisa", "quantization", "token_pruning"):
@@ -27,12 +29,14 @@ def test_registry_preserves_sol_techniques_and_modes() -> None:
 
 def test_round_budgets_match_reviewed_contract() -> None:
     registry = TechniqueRegistry.load(ROOT / "techniques" / "registry.toml")
-    assert registry["kernel"].round_budget == 40
+    assert registry["residency"].round_budget == 20
+    assert registry["kernel"].round_budget == 60
     assert registry["cache"].round_budget == 20
     assert registry["pisa"].round_budget == 20
     assert registry["topology"].round_budget == 20
     assert registry["quantization"].round_budget == 20
     assert registry["token_pruning"].round_budget == 20
+    assert registry["residency"].origin == "sglang-pr-history-adaptation"
     assert registry["quantization"].origin == "sol-engine-full-adaptation"
     assert registry["token_pruning"].origin == "sol-engine-full-adaptation"
 
@@ -40,6 +44,7 @@ def test_round_budgets_match_reviewed_contract() -> None:
 def test_registry_default_pass_excludes_optional_topology() -> None:
     registry = TechniqueRegistry.load(ROOT / "techniques" / "registry.toml")
     assert registry.default_order == [
+        "residency",
         "kernel",
         "cache",
         "pisa",
@@ -47,6 +52,18 @@ def test_registry_default_pass_excludes_optional_topology() -> None:
         "token_pruning",
     ]
     assert registry["topology"].optional is True
+    assert registry["residency"].coverage == (
+        "component-residency",
+        "partial-dit-residency",
+        "layerwise-prefetch",
+        "compile-time-residency",
+        "load-order-lifetime",
+    )
+    assert registry["kernel"].coverage[-3:] == (
+        "compile-graph-warmup",
+        "vae-decode-postprocess",
+        "scheduler-precompute-sync",
+    )
 
 
 def test_contract_preserves_correctness_split() -> None:

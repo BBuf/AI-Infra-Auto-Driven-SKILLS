@@ -33,6 +33,16 @@ unmeasured hypotheses consume no scientific round.
 
 Never sum isolated speedups.
 
+The default lossless search begins with `residency`, then `kernel`. Multi-GPU
+does not automatically add a topology-changing lane: GPU UUIDs, rank map, and
+parallel degrees are frozen by the user baseline. Collective and layout
+implementations may still be optimized under that frozen topology.
+
+A residency point is verified only when `RESIDENCY-EVIDENCE.json` binds the
+profile, GPU set, memory safety envelope, transfer measurements, placement map,
+conflict checks, engagement, performance, and equivalence evidence. Historical
+VRAM thresholds do not advance performance or search progress.
+
 ## Tokens
 
 `TOKEN-USAGE.jsonl` stores one normalized record per Agent invocation and stream

@@ -2,8 +2,9 @@
 
 ## Identity and correctness
 
-`kernel` owns mathematically lossless optimization of SGLang Diffusion's
-repeated transformer/DiT path. It has a hard budget of **40 candidate rounds**.
+`kernel` owns mathematically lossless optimization of every hot region inside
+SGLang Diffusion's frozen load-excluded end-to-end path. It has a hard budget
+of **60 candidate rounds**.
 One round is one profiled hypothesis, one isolated implementation, one real run,
 and one gate.
 
@@ -31,12 +32,19 @@ include:
 - local layout and data-movement improvements;
 - launch and synchronization reduction; and
 - warm `torch.compile` or other compiler fusion for stable repeated regions.
+- regional compile, breakable graph capture, persistent compiler caches, and
+  graph-break reduction;
+- VAE decode layout propagation, exact decode parallelism, halo/copy removal,
+  postprocess, and media-finalization fast paths; and
+- scheduler synchronization removal, invariant precomputation, exact K/V
+  reuse, inference-mode overhead, and other measured runtime glue.
 
-The coverage ledger must disposition all six registry IDs. In particular,
+The coverage ledger must disposition all nine registry IDs. In particular,
 `layout-copy-launch` includes permute/contiguous/reshape traffic around
 distributed attention, and `custom-or-upstream-kernel` requires an active
 search for a Triton, CUDA/CuTe, JIT, AOT, or pinned upstream implementation.
-Trying `torch.compile` once does not exhaust this lane.
+Trying `torch.compile` once does not exhaust this lane. A compile-only attempt
+cannot disposition VAE/output or scheduler/runtime coverage.
 
 The executor must first audit SGLang's existing fast paths. Auxiliary SGLang,
 KDA-Pilot, and FastVideo knowledge may suggest implementations, but cannot
@@ -52,9 +60,10 @@ instead of reusing Blackwell-only metric identifiers.
 
 ## Ownership boundaries
 
-Topology owns CP/SP/TP/EP/FSDP/CFG degrees, process groups, rank maps,
-collectives, placement, and multi-device scheduling. Kernel candidates preserve
-the frozen topology. Cache owns approximate cross-step reuse; PISA owns
+Residency owns component placement/offload and transfer prefetch. Baseline
+CP/SP/TP/EP/FSDP/CFG degrees, process groups, rank maps, and selected GPUs are
+frozen. Kernel may optimize equivalent collective implementation, layout, and
+overlap without changing that topology. Cache owns approximate cross-step reuse; PISA owns
 approximate attention; quantization owns sub-16-bit behavior; token pruning owns
 reduced token work. Do not claim their gains in this lane.
 
@@ -76,6 +85,6 @@ Maintain a cumulative ON stack and periodically rerun its full-DiT and complete
 frozen-workload gate. Delivery contains the fastest measured exact composed
 stack plus its method-equivalence argument and unchanged logical counts.
 
-Deliver at round 40, after a genuine multi-hypothesis plateau, or after a target
+Deliver at round 60, after a genuine multi-hypothesis plateau, or after a target
 is reached and fully gated. A target is search pressure, not an acceptance rule
 or proof of reachability.

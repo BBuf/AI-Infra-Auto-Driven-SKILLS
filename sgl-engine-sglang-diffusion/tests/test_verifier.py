@@ -199,6 +199,24 @@ def evidence(tmp_path: Path) -> dict[str, Any]:
             }
         )
     )
+    (campaign / "GPU-INVENTORY.json").write_text(
+        json.dumps(
+            {
+                "schema_version": 1,
+                "gpu_count": 1,
+                "visibility_source": "frozen_command_env",
+                "visible_device_tokens": ["0"],
+                "baseline_command_template_sha256": "b" * 64,
+                "devices": [
+                    {
+                        "physical_index": 0,
+                        "uuid": "GPU-test-0",
+                        "total_mib": 81920.0,
+                    }
+                ],
+            }
+        )
+    )
     microbenchmark = run_dir / "kernel-microbenchmark.json"
     microbenchmark.write_text('{"before_us": 12.0, "after_us": 8.0}\n')
     kernel_evidence = {
@@ -575,6 +593,209 @@ def test_implemented_kernel_requires_before_after_ncu_reports(
     )
     assert not result.accepted
     assert "implemented kernel candidates require" in " ".join(
+        finding.message for finding in result.findings
+    )
+
+
+def make_residency_delivery(evidence: dict[str, Any]) -> Path:
+    run_dir = evidence["run_dir"]
+    delivery = deepcopy(evidence["delivery"])
+    delivery["component"] = "residency"
+    point = delivery["frontier_points"][0]
+    point["activation"] = {"resident_components": ["vae"]}
+    point["implementation_manifest"]["technique"] = "residency"
+    point["implementation_manifest"]["activation"] = point["activation"]
+    (run_dir / "implementation-manifest.json").write_text(
+        json.dumps(point["implementation_manifest"])
+    )
+    receipt_path = run_dir / "engagement-receipt.json"
+    receipt = json.loads(receipt_path.read_text())
+    receipt["techniques"] = {
+        "residency": {
+            "engaged": True,
+            "resident_component_count": 1,
+            "fallback_count": 0,
+        }
+    }
+    receipt_path.write_text(json.dumps(receipt))
+    profile = evidence["campaign"] / "profiles/0/PROFILE-DIGEST.json"
+    performance = run_dir / "PERFORMANCE.json"
+    equivalence = run_dir / "equivalence.json"
+    residency = {
+        "schema_version": 1,
+        "candidate_id": "candidate-1",
+        "run_id": "run-1",
+        "coverage_id": "component-residency",
+        "profile_digest_sha256": hashlib.sha256(profile.read_bytes()).hexdigest(),
+        "gpu_uuids": ["GPU-test-0"],
+        "baseline_memory": [
+            {
+                "gpu_uuid": "GPU-test-0",
+                "total_mib": 81920.0,
+                "min_free_before_mib": 50000.0,
+                "peak_reserved_mib": 30000.0,
+                "safety_margin_mib": 4096.0,
+            }
+        ],
+        "candidate_memory": [
+            {
+                "gpu_uuid": "GPU-test-0",
+                "total_mib": 81920.0,
+                "min_free_before_mib": 50000.0,
+                "peak_reserved_mib": 36000.0,
+                "safety_margin_mib": 4096.0,
+            }
+        ],
+        "baseline_transfers": {"h2d_copy_count": 20, "h2d_total_ms": 100.0},
+        "candidate_transfers": {"h2d_copy_count": 0, "h2d_total_ms": 0.0},
+        "components": [
+            {
+                "component": "vae",
+                "baseline_strategy": "component_cpu_offload",
+                "candidate_strategy": "resident",
+                "footprint_mib": 6000.0,
+            }
+        ],
+        "compile_strategy": "unchanged",
+        "steady_state_strategy": "vae resident",
+        "conflicts": {
+            "explicit_policy_declared": True,
+            "fsdp_compatible": True,
+            "cache_dit_compatible": True,
+            "steady_state_restored": True,
+            "unsupported_components_absent": True,
+        },
+        "engagement_counts": {"resident_component_count": 1},
+        "performance_artifact": {
+            "path": str(performance),
+            "sha256": hashlib.sha256(performance.read_bytes()).hexdigest(),
+        },
+        "equivalence_artifact": {
+            "path": str(equivalence),
+            "sha256": hashlib.sha256(equivalence.read_bytes()).hexdigest(),
+        },
+    }
+    (run_dir / "RESIDENCY-EVIDENCE.json").write_text(json.dumps(residency))
+    point["artifacts"].append("RESIDENCY-EVIDENCE.json")
+    return write_delivery(evidence, delivery)
+
+
+def test_residency_accepts_profile_bound_measured_headroom(
+    evidence: dict[str, Any], registry: TechniqueRegistry
+) -> None:
+    result = make_verifier(evidence, registry).verify(
+        make_residency_delivery(evidence),
+        technique="residency",
+        executor_worktree=evidence["worktree"],
+    )
+    assert result.accepted, result.findings
+
+
+@pytest.mark.parametrize(
+    ("mutation", "message"),
+    [
+        (
+            lambda payload: payload.update(profile_digest_sha256="0" * 64),
+            "active profile digest",
+        ),
+        (
+            lambda payload: payload["candidate_memory"][0].update(
+                peak_reserved_mib=80000.0
+            ),
+            "peak plus safety margin",
+        ),
+        (
+            lambda payload: payload.update(gpu_uuids=["GPU-other"]),
+            "frozen GPU UUIDs",
+        ),
+        (
+            lambda payload: payload["candidate_memory"][0].update(
+                total_mib=90000.0
+            ),
+            "total memory changed",
+        ),
+        (
+            lambda payload: payload.update(engagement_counts={"resident": 0}),
+            "positive engagement",
+        ),
+        (
+            lambda payload: payload["conflicts"].update(
+                steady_state_restored=False
+            ),
+            "steady_state_restored",
+        ),
+    ],
+)
+def test_residency_rejects_unmeasured_or_contradictory_evidence(
+    evidence: dict[str, Any],
+    registry: TechniqueRegistry,
+    mutation: Any,
+    message: str,
+) -> None:
+    delivery_path = make_residency_delivery(evidence)
+    path = evidence["run_dir"] / "RESIDENCY-EVIDENCE.json"
+    payload = json.loads(path.read_text())
+    mutation(payload)
+    path.write_text(json.dumps(payload))
+    result = make_verifier(evidence, registry).verify(
+        delivery_path,
+        technique="residency",
+        executor_worktree=evidence["worktree"],
+    )
+    assert not result.accepted
+    assert "invalid_residency_evidence" in {
+        finding.code for finding in result.findings
+    }
+    assert message in " ".join(finding.message for finding in result.findings)
+
+
+def test_residency_requires_lane_specific_evidence(
+    evidence: dict[str, Any], registry: TechniqueRegistry
+) -> None:
+    delivery_path = make_residency_delivery(evidence)
+    (evidence["run_dir"] / "RESIDENCY-EVIDENCE.json").unlink()
+    result = make_verifier(evidence, registry).verify(
+        delivery_path,
+        technique="residency",
+        executor_worktree=evidence["worktree"],
+    )
+    assert not result.accepted
+    assert "invalid_residency_evidence" in {
+        finding.code for finding in result.findings
+    }
+
+
+def test_residency_requires_controller_owned_gpu_inventory(
+    evidence: dict[str, Any], registry: TechniqueRegistry
+) -> None:
+    delivery_path = make_residency_delivery(evidence)
+    (evidence["campaign"] / "GPU-INVENTORY.json").unlink()
+    result = make_verifier(evidence, registry).verify(
+        delivery_path,
+        technique="residency",
+        executor_worktree=evidence["worktree"],
+    )
+    assert not result.accepted
+    assert "controller-owned frozen GPU inventory is missing" in " ".join(
+        finding.message for finding in result.findings
+    )
+
+
+def test_residency_rejects_gpu_total_drift_from_controller_inventory(
+    evidence: dict[str, Any], registry: TechniqueRegistry
+) -> None:
+    delivery_path = make_residency_delivery(evidence)
+    inventory_path = evidence["campaign"] / "GPU-INVENTORY.json"
+    inventory = json.loads(inventory_path.read_text())
+    inventory["devices"][0]["total_mib"] = 90112.0
+    inventory_path.write_text(json.dumps(inventory))
+    result = make_verifier(evidence, registry).verify(
+        delivery_path,
+        technique="residency",
+        executor_worktree=evidence["worktree"],
+    )
+    assert not result.accepted
+    assert "controller-owned baseline inventory" in " ".join(
         finding.message for finding in result.findings
     )
 

@@ -251,6 +251,163 @@ class KernelEvidence(StrictModel):
         return self
 
 
+class ResidencyMemorySnapshot(StrictModel):
+    gpu_uuid: str = Field(min_length=1)
+    total_mib: float = Field(gt=0)
+    min_free_before_mib: float = Field(ge=0)
+    peak_reserved_mib: float = Field(ge=0)
+    safety_margin_mib: float = Field(gt=0)
+
+    @model_validator(mode="after")
+    def require_measured_headroom(self) -> ResidencyMemorySnapshot:
+        if self.min_free_before_mib > self.total_mib:
+            raise ValueError("residency minimum-free memory exceeds total GPU memory")
+        if (
+            self.peak_reserved_mib + self.safety_margin_mib
+            > self.min_free_before_mib
+        ):
+            raise ValueError(
+                "residency peak plus safety margin exceeds measured free GPU memory"
+            )
+        return self
+
+
+class ResidencyTransferMeasurement(StrictModel):
+    h2d_copy_count: int = Field(ge=0)
+    h2d_total_ms: float = Field(ge=0)
+
+
+class ResidencyComponentPlacement(StrictModel):
+    component: str = Field(min_length=1)
+    baseline_strategy: Literal[
+        "resident",
+        "component_cpu_offload",
+        "layerwise_offload",
+        "partial_dit_resident",
+        "fsdp",
+        "compile_transient_offload",
+    ]
+    candidate_strategy: Literal[
+        "resident",
+        "component_cpu_offload",
+        "layerwise_offload",
+        "partial_dit_resident",
+        "fsdp",
+        "compile_transient_offload",
+    ]
+    footprint_mib: float = Field(gt=0)
+    total_layers: int | None = Field(default=None, gt=0)
+    resident_layers: int | None = Field(default=None, gt=0)
+    prefetch_depth: int | None = Field(default=None, gt=0)
+
+    @model_validator(mode="after")
+    def require_strategy_specific_counts(self) -> ResidencyComponentPlacement:
+        if self.candidate_strategy == "partial_dit_resident":
+            if self.total_layers is None or self.resident_layers is None:
+                raise ValueError("partial DiT residency requires layer counts")
+            if self.resident_layers >= self.total_layers:
+                raise ValueError("partial DiT resident layers must be below total layers")
+        elif self.resident_layers is not None:
+            raise ValueError("resident_layers is valid only for partial DiT residency")
+        if self.prefetch_depth is not None and self.candidate_strategy not in {
+            "layerwise_offload",
+            "partial_dit_resident",
+        }:
+            raise ValueError("prefetch_depth requires a layerwise residency strategy")
+        return self
+
+
+class ResidencyConflictChecks(StrictModel):
+    explicit_policy_declared: Literal[True]
+    fsdp_compatible: Literal[True]
+    cache_dit_compatible: Literal[True]
+    steady_state_restored: Literal[True]
+    unsupported_components_absent: Literal[True]
+
+
+class GpuInventoryDevice(StrictModel):
+    physical_index: int = Field(ge=0)
+    uuid: str = Field(min_length=1)
+    total_mib: float = Field(gt=0)
+
+
+class GpuInventory(StrictModel):
+    """Controller-owned identity of the GPUs selected by the frozen baseline."""
+
+    schema_version: Literal[1] = 1
+    gpu_count: int = Field(gt=0)
+    visibility_source: Literal[
+        "frozen_command_env",
+        "controller_env",
+        "default_order",
+    ]
+    visible_device_tokens: list[str] | None = None
+    baseline_command_template_sha256: str | None = Field(
+        default=None, pattern=r"^[0-9a-f]{64}$"
+    )
+    devices: list[GpuInventoryDevice] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def require_exact_unique_device_set(self) -> GpuInventory:
+        if len(self.devices) != self.gpu_count:
+            raise ValueError("GPU inventory device count differs from frozen gpu_count")
+        if len({item.uuid for item in self.devices}) != len(self.devices):
+            raise ValueError("GPU inventory contains duplicate UUIDs")
+        if len({item.physical_index for item in self.devices}) != len(self.devices):
+            raise ValueError("GPU inventory contains duplicate physical indices")
+        if self.visible_device_tokens is not None and not self.visible_device_tokens:
+            raise ValueError("visible_device_tokens must be nonempty when declared")
+        return self
+
+
+class ResidencyEvidence(StrictModel):
+    schema_version: Literal[1] = 1
+    candidate_id: str = Field(min_length=1)
+    run_id: str = Field(min_length=1)
+    coverage_id: str = Field(min_length=1)
+    profile_digest_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    gpu_uuids: list[str] = Field(min_length=1)
+    baseline_memory: list[ResidencyMemorySnapshot] = Field(min_length=1)
+    candidate_memory: list[ResidencyMemorySnapshot] = Field(min_length=1)
+    baseline_transfers: ResidencyTransferMeasurement
+    candidate_transfers: ResidencyTransferMeasurement
+    components: list[ResidencyComponentPlacement] = Field(min_length=1)
+    compile_strategy: str = Field(min_length=1)
+    steady_state_strategy: str = Field(min_length=1)
+    conflicts: ResidencyConflictChecks
+    engagement_counts: dict[str, int] = Field(min_length=1)
+    performance_artifact: EvidenceFile
+    equivalence_artifact: EvidenceFile
+
+    @model_validator(mode="after")
+    def require_frozen_gpus_and_engagement(self) -> ResidencyEvidence:
+        if len(self.gpu_uuids) != len(set(self.gpu_uuids)):
+            raise ValueError("residency gpu_uuids contains duplicates")
+        expected = set(self.gpu_uuids)
+        baseline = {item.gpu_uuid for item in self.baseline_memory}
+        candidate = {item.gpu_uuid for item in self.candidate_memory}
+        if (
+            baseline != expected
+            or candidate != expected
+            or len(self.baseline_memory) != len(expected)
+            or len(self.candidate_memory) != len(expected)
+        ):
+            raise ValueError("residency memory snapshots drift from frozen GPU UUIDs")
+        baseline_by_gpu = {item.gpu_uuid: item for item in self.baseline_memory}
+        candidate_by_gpu = {item.gpu_uuid: item for item in self.candidate_memory}
+        if any(
+            baseline_by_gpu[gpu_uuid].total_mib
+            != candidate_by_gpu[gpu_uuid].total_mib
+            for gpu_uuid in expected
+        ):
+            raise ValueError("residency GPU total memory changed between measurements")
+        if any(value < 0 for value in self.engagement_counts.values()) or not any(
+            value > 0 for value in self.engagement_counts.values()
+        ):
+            raise ValueError("residency evidence requires positive engagement")
+        return self
+
+
 class VBenchDimensions(StrictModel):
     subject_consistency: float
     background_consistency: float
